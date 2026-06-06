@@ -1,3 +1,4 @@
+<!-- doc:owner=DBA doc:audience=COD,PLN,TSR updated=2026-06-06T12:00:00+09:00 -->
 # 데이터 보존·파기 정책 (DATA_RETENTION_POLICY.md)
 
 > **작성**: db_architect 에이전트  
@@ -62,7 +63,7 @@
    - PII 컬럼: NULL 또는 토큰화·익명화 (이름 → `퇴소이용자-{내부ID}`).
    - `resident_registration_no_encrypted` **완전 삭제**.
    - 사진 스토리지 객체 삭제.
-3. 출석·건강·청구: 법정 보존 기간까지 유지 후 집계용 통계만 남기고 상세 삭제(정책 확정 시). purge 시 `idx_attendance_client_purge` / `idx_health_records_client_purge` / `idx_billing_claim_items_client_purge`(V33)로 `client_id IN (…)` 일괄 삭제·익명화.
+3. 출석·건강·청구·보호자 연결: 법정 보존 기간까지 유지 후 집계용 통계만 남기고 상세 삭제(정책 확정 시). purge 시 `idx_attendance_client_purge` / `idx_health_records_client_purge` / `idx_billing_claim_items_client_purge`(V33) / `idx_guardian_clients_client`(V2)로 `client_id IN (…)` 일괄 삭제·익명화. `guardian_clients`는 `ON DELETE CASCADE`이므로 이용자 행 **물리 삭제** 시 자동 제거; 익명화(행 유지) 시에는 연결 행을 앱·배치에서 명시 삭제.
 
 ### 4-2. Tenant(Organization) 해지
 
@@ -129,7 +130,7 @@
 | guardian_clients Tenant | `guardian_clients.organization_id`는 **연결 `clients`에서 복사** — V23 트리거가 자동 설정 (V5 Tenant FK 보완) |
 | 결석 출석 | `POST /attendance/absence` — `check_out_at`·`transport_type` NULL, `check_in_method=manual` (V14 CHECK) |
 | actor Tenant FK | `created_by`·`recorded_by`·`generated_by`·`imported_by`는 JWT `organization_id`와 일치하는 사용자만 (V14 복합 FK) |
-| actor 자동 적재 | V32 `trg_attendance_set_created_by`·`trg_billing_claims_set_generated_by`·V33 `trg_health_records_set_recorded_by`·`trg_nhis_batches_set_imported_by` — 쓰기 트랜잭션에서 `DbSessionContext.setActorUserId` 호출 시 NULL actor 컬럼 자동 채움 |
+| actor 자동 적재 | V32 `trg_attendance_set_created_by`·`trg_billing_claims_set_generated_by`·V33 `trg_health_records_set_recorded_by`·`trg_nhis_batches_set_imported_by`·V35 `trg_fee_schedules_set_created_by`·`trg_branch_qr_tokens_set_created_by` — 쓰기 트랜잭션에서 `DbSessionContext.setActorUserId` 호출 시 NULL actor 컬럼 자동 채움 |
 | 퇴소 purge 스캔 | `@Scheduled` + `idx_clients_org_discharged_at`(V32) — Tenant별 `discharged_at IS NOT NULL AND discharged_at < cutoff`; 자식 행은 V33 `idx_*_client_purge`로 `client_id IN (…)`. **지점 단위** 정리(지점 폐쇄·부분 rollback)는 V34 `idx_clients_org_branch_discharged_at`로 `(organization_id, branch_id, discharged_at < cutoff)` |
 | 퇴소 ↔ 활성 정합 | V5 `chk_clients_discharge_active`(`discharged_at IS NULL OR is_active = FALSE`) + V34 `chk_clients_discharged_after_created`(`discharged_at >= created_at`) — `ClientService.discharge()`는 두 컬럼을 동시 적재해야 하며, raw SQL로 한쪽만 토글하거나 backdated discharge로 시간 역전 시 DB가 거부 |
 | 토큰 purge | `@Scheduled` + `idx_refresh_tokens_expires` / `idx_password_reset_tokens_expires` / `idx_branch_qr_tokens_expires` / `idx_refresh_tokens_revoked` / `idx_password_reset_tokens_used` |

@@ -1,7 +1,9 @@
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T15:00:00+09:00 -->
 # 주간보호센터 웹 시스템 — REST API 명세 (API_SPEC.md)
 
 > **작성**: planner 에이전트
 > **최초 작성일**: 2026-06-05
+> **최종 갱신**: 2026-06-06 (NHIS reconciliation·청구 status 필터)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, 대시보드
 > **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`
@@ -281,11 +283,16 @@
 | 메서드 | 경로 | 설명 |
 |--------|------|------|
 | POST | `/billing/claims/generate` | 월별 청구 자동 계산·생성(지점·월 기준) |
-| GET | `/billing/claims` | 청구 내역 목록(상태·기간·지점 필터) |
+| GET | `/billing/claims` | 청구 내역 목록 — `?branchId=&status=DRAFT\|CONFIRMED\|PAID` (V31 인덱스) |
 | GET | `/billing/claims/{id}` | 청구서 상세(이용자별 명세) |
-| PATCH | `/billing/claims/{id}/status` | 상태 변경(작성중→확정→수납완료) |
+| PATCH | `/billing/claims/{id}/status` | 상태 변경(작성중→확정→수납완료) — 확정 후 금액 불변(V8) |
 | GET | `/billing/claims/{id}/statement.pdf` | 급여비용 명세서 출력(PDF) |
-| POST | `/billing/imports/nhis` | 공단 청구내역상세 **엑셀 import** |
+| POST | `/billing/imports/nhis` | 공단 청구내역상세 **엑셀 import** (multipart) |
+
+**GET `/billing/claims` 쿼리**
+
+- `branchId` (optional): 토큰 스코프 내 지점 필터
+- `status` (optional): `DRAFT` | `CONFIRMED` | `PAID` — US-G07, `idx_billing_claims_org_branch_status_generated`
 
 **POST `/billing/claims/generate`**
 
@@ -294,6 +301,45 @@
 ```
 
 > **계산 규칙**: 이용자별 `총 급여비용 = 등급 수가(7-1) × 출석일수`, `본인부담금 = 총액 × 이용자 copayType 비율(7-2)`, `공단부담 = 총액 − 본인부담금`. 과거 청구는 당시 수가·비율 버전 유지.
+
+### 7-4. NHIS Import Reconciliation — §3-9-4, US-G04/G06
+
+케어포 4단계(공단 엑셀 업로드 → 행별 대조) 벤치마크. 배치·행 매칭 상태는 `MATCHED` | `DISCREPANCY` | `UNMATCHED`.
+
+| 메서드 | 경로 | 설명 |
+|--------|------|------|
+| POST | `/billing/imports/nhis` | 엑셀 업로드 — `branchId`, `yearMonth`, `claimId`(optional), `file` (multipart) |
+| GET | `/billing/imports/nhis` | 배치 목록 — `?branchId=&yearMonth=&claimId=` |
+| GET | `/billing/imports/nhis/{batchId}` | 배치 상세 + reconciliation 행 목록 |
+| GET | `/billing/imports/nhis/{batchId}/candidates` | `UNMATCHED` 행 수동 매칭 후보 이용자 검색 — `?q=&page=&size=` |
+| PATCH | `/billing/imports/nhis/rows/{rowId}/match` | 수동 매칭 — `{ "clientId": "uuid" }` → `MATCHED`/`DISCREPANCY` 전이 |
+
+**POST `/billing/imports/nhis`** (multipart/form-data)
+
+| 필드 | 필수 | 설명 |
+|------|------|------|
+| `branchId` | ✅ | 지점 단위 import (V21 지점 일치) |
+| `yearMonth` | ✅ | `YYYY-MM` — 연결 청구와 동일 월(V17) |
+| `claimId` | — | reconciliation 대상 청구(선택, 업로드 후 연결 가능) |
+| `file` | ✅ | 공단 「청구내역상세」엑셀 |
+
+**배치 상태**: `PENDING` → `PROCESSING` → `COMPLETED` | `FAILED`. `COMPLETED` 시 `imported_at` 필수(V19/V32).
+
+**행 매칭 규칙**
+
+- 자동 매칭 키: `ltc_cert_no`(인정번호) + 이름·생년월일
+- `MATCHED`/`DISCREPANCY`: `client_id` **필수** (`chk_nhis_import_rows_match_requires_client`, V19)
+- `UNMATCHED`만 `client_id` NULL 허용
+- 수동 매칭: `client_id` + 상태 전이 **단일 트랜잭션** (부분 업데이트 금지)
+- 매칭 이용자 `branch_id` = 배치 `branch_id` (V21 `trg_nhis_rows_client_branch`)
+
+**PATCH `/billing/imports/nhis/rows/{rowId}/match`**
+
+```json
+{ "clientId": "uuid" }
+```
+
+> UI 안내: 「공단 [longtermcare.or.kr](https://www.longtermcare.or.kr/)에서 청구 전송 후 청구내역상세 엑셀을 다운로드하세요」— 공단 직접 전송 API는 MVP 제외.
 
 ---
 
@@ -322,10 +368,12 @@
 
 ## 10. 미확정 (구현 전 확정 필요)
 
-- 주민등록번호 **수집 여부** 및 암호화·마스킹 정책 (PLAN_NOTES 추가질문 28)
-- 공단 청구내역상세 **엑셀 컬럼 스펙**(샘플) (추가질문 27)
-- 알림(SMS/알림톡) 엔드포인트 — v1 이후
-- 식사·프로그램·직원 관리 API — v1 이후(Should)
+- ~~주민등록번호 수집·암호화~~ → **확정** (REQUIREMENTS §3-2-1)
+- 공단 청구내역상세 **엑셀 컬럼 스펙**(샘플) — 파일럿 센터 확보 전 가정 컬럼 사용 (PLAN_NOTES #27, BENCHMARK G7)
+- 본인부담 구분 4→3 통폐합 여부 — 파일럿 분포 확인 (PLAN_NOTES #30)
+- 알림(SMS/알림톡) 엔드포인트 — v2
+- CMS·간편결제 API — v2 (BENCHMARK G2)
+- 식사·프로그램·직원 관리 API — v3(Should)
 
 ---
 

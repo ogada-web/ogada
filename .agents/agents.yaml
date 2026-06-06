@@ -468,7 +468,7 @@ agents:
 # =============================================================================
 workflow:
   schedule:
-    pipeline: "900s (15min) — planner → ux_designer → coder → tester (backend → frontend)"
+    pipeline: "900s (15min) — planner → db_architect → ux_designer → coder → tester (backend → frontend)"
     benchmark_researcher: "86400s (24h) — 경쟁사 벤치마크 조사"
     security_auditor: "86400s (24h) — 일일 보안 점검"
   phases:

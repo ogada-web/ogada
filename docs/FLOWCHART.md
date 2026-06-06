@@ -1,7 +1,9 @@
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T15:00:00+09:00 -->
 # 주간보호센터 웹 시스템 — 화면 흐름도 (FLOWCHART.md)
 
 > **작성**: planner 에이전트
 > **최초 작성일**: 2026-06-05
+> **최종 갱신**: 2026-06-06 (NHIS reconciliation 흐름 추가)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) — 7역할 + `client_user`
 > **기준 문서**: `REQUIREMENTS.md`(§2-4 역할별 홈, §5 화면 목록), `API_SPEC.md`
@@ -178,12 +180,33 @@ flowchart TD
     R6 -->|확정| R8[명세서 PDF 출력]
     R6 -->|수납완료| R9[수납 기록]
     R5 --> R10[공단 청구내역상세 엑셀 import]
+    R10 --> R11[7-1 NHIS reconciliation]
   end
   P2 --> R2
   P4 --> R4
 ```
 
 > 공단 포털 직접 전송·보호자 발송·CMS 결제는 MVP 제외(후속).
+
+### 7-1. NHIS Import Reconciliation (케어포 4단계) — §3-9-4, US-G06
+
+```mermaid
+flowchart TD
+  A[롱텀에서 청구내역상세 엑셀 다운로드] --> B[/billing imports nhis 업로드/]
+  B --> C[배치 생성 PENDING→PROCESSING→COMPLETED]
+  C --> D[행별 자동 매칭 ltc_cert_no]
+  D --> E{match_status}
+  E -->|MATCHED| F[정상 - 청구서 대조 완료]
+  E -->|DISCREPANCY| G[금액·일수 차이 강조 + 청구 라인 비교]
+  E -->|UNMATCHED| H[후보 이용자 검색]
+  H --> I[수동 연결 PATCH rows match]
+  I --> J{재평가}
+  J -->|일치| F
+  J -->|차이| G
+  G --> K[센터장 검토·재계산 또는 공단 재확인]
+```
+
+> 매칭 이용자는 배치와 **동일 지점**만 허용. `MATCHED`/`DISCREPANCY`는 `client_id` 필수(V19).
 
 ---
 
@@ -235,7 +258,7 @@ flowchart TD
 | `/attendance*` | caregiver 이상 | `/attendance*`, `/branches/{id}/qr` |
 | `/guardian*` | guardian·client_user | `/attendance/qr/scan`, `/guardian/checkin-targets` |
 | `/health*` | caregiver 이상 | `/clients/{id}/health*` |
-| `/billing*` | hq_admin·branch_admin | `/billing/*` |
+| `/billing*` | hq_admin·branch_admin | `/billing/*`, `/billing/imports/nhis*` |
 | `/settings` | sysadmin | `/settings/*` |
 
 ---

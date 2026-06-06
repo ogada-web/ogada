@@ -1,3 +1,4 @@
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T15:00:00+09:00 -->
 # 주간보호센터 웹 시스템 — 요구사항 명세 (REQUIREMENTS.md)
 
 > **작성**: planner 에이전트  

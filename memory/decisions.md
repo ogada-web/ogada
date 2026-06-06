@@ -4,6 +4,58 @@
 
 ---
 
+## 2026-06-06 — benchmark_researcher: 3차 경쟁사 재검증 (EZCARE·NHIS·롱텀2026)
+
+공식 사이트·매뉴얼·앱스토어·공지 재조사(조사일 **2026-06-06**). 산출물:
+`docs/BENCHMARK_REPORT.md`, `docs/COMPETITOR_MATRIX.md` 3차 갱신.
+
+| # | 결정·권고 | 근거 | planner/coder 영향 |
+|---|----------|------|-------------------|
+| 1 | **NHIS 엑셀 파서** — 선행 `처리상태` 열 **스킵·정규화** 필수 | 케어포 [44438](https://www.carefor.co.kr/cs/view_notice.php?calmgno=44438), [visitcare.pdf §4-1](https://www.carefor.co.kr/pdf_manual/visitcare.pdf) | import 파서·reconciliation — G7 파일럿 샘플과 병행 검증 |
+| 2 | **롱텀 2026.01.16 개편** — IE 불가, Chrome/Edge 필수 안내 | [longtermcare 개편 공지](https://longtermcare.or.kr/npbs/e/g/540/openCyberCstMain.web?menuId=npe0000002594) | USER_MANUAL·파일럿 온보딩: 엑셀 export 전 브라우저 체크 |
+| 3 | **이지케어 EZCARE 앱** — 보호자 **초대·명세 조회** 지원 확인 | [App Store](https://apps.apple.com/kr/app/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-ezcare/id6740553966), 2026.03 주야간 확대 | G8 신규 — v1.1 보호자 포털은 **초대 흐름+명세 탭**이 최소 패리티 |
+| 4 | **다지점 HQ** — 경쟁사는 **1기관번호=1계정** 모델(△), ogada Org-Branch **차별 유지** | 케어포 가입·기관기호 11자리; 공식 HQ 대시보드 **미확인** | `/dashboard/hq` Must — PLAN_NOTES #32 |
+| 5 | **엔젤 CMS TCO** — 월 30,000원 + 건당 수수료 벤치마크 | [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | v2 CMS·가격 정책(PLAN_NOTES #31) 입력 |
+| 6 | **이지케어 규모** — 9,210 재가기관(2026.06.06 실시간) | [ezcare.easyms.co.kr](https://ezcare.easyms.co.kr/) | 영업·경쟁 포지셔닝 참고 |
+
+**미변경(2차와 동일)**: 청구 2단계, QR B, platform_admin, MVP 제외(평가·회계·CMS).
+
+---
+
+## 2026-06-06 — planner(PLN): 자동 기획 동기화 3차 (QA 0건·문서 식별자 PLA→PLN 정렬)
+
+`build --role planner` 자동 동기화. 입력 문서 재확인 결과 **신규 기획 변경 없음** —
+정합성 정렬과 기록만 수행.
+
+| # | 점검·반영 | 산출물 |
+|---|----------|--------|
+| 1 | `QA_FEEDBACK.md` Open **0건**, `TEST_REPORT.md` 미작성 — Planned 이동 없음 | (변경 없음) |
+| 2 | BENCHMARK·COMPETITOR_MATRIX 2차 조사(결정 29–35) **이미 반영** 확인 | (변경 없음) |
+| 3 | planner 문서 식별자 정본 정렬: `agents.yaml` 기준 `PLA→PLN`, audience `coder,tester→COD,TSR,UXD,DBA,BNK,TWR` (BNK는 선행 마이그레이션 완료) | `ROADMAP.md`·`PLAN_NOTES.md`·`FLOWCHART.md`·`API_SPEC.md`·`REQUIREMENTS.md`·`USER_STORIES.md` 메타, PLAN_NOTES 섹션 `[PLA]→[PLN]` |
+| 4 | 자동 동기화 3차 기록 | `PLAN_NOTES.md` `### [PLN] 자동 기획 동기화 — 3차`, `ROADMAP.md` 변경 이력 |
+
+**트레이드오프**: 식별자 정렬은 본문 메타 주석만 변경(파일명·git 충돌 회피). REQUIREMENTS·
+USER_STORIES는 기존에 메타 주석이 없어 신규 추가 — 향후 `doc:owner`/`audience` 자동 점검과 정합.
+**미해결 추적**: 추가질문 #27(공단 엑셀 실컬럼·G7), #31(가격 tier), #32(다지점 HQ 사례) — 신규 입력 없어 변동 없음.
+
+---
+
+## 2026-06-06 — planner: 자동 기획 동기화 (벤치마크 2차 → ROADMAP·API·FLOWCHART)
+
+`build --role planner` 자동 동기화. QA_FEEDBACK Open **0건**, TEST_REPORT 미작성.
+
+| # | 반영 | 산출물 |
+|---|------|--------|
+| 1 | v1 ROADMAP에 P0–P3·NHIS reconciliation 완료 기준·파일럿 P8 추가 | `docs/ROADMAP.md` |
+| 2 | API_SPEC §7-4 NHIS reconciliation 5엔드포인트·`?status=` 필터 명세 | `docs/API_SPEC.md` |
+| 3 | FLOWCHART §7-1 reconciliation Mermaid 흐름 | `docs/FLOWCHART.md` |
+| 4 | PLAN_NOTES `[PLA]` QA·벤치마크 동기화 섹션, 결정 29–35, 추가질문 #30–32 | `docs/PLAN_NOTES.md` |
+| 5 | USER_STORIES 파일럿 P8(US-G06) | `docs/USER_STORIES.md` |
+
+**미변경(기존 반영 완료)**: REQUIREMENTS §1-5·§6-2, USER_STORIES US-G06, BENCHMARK/COMPETITOR_MATRIX.
+
+---
+
 ## 2026-06-06 — benchmark_researcher: 2차 경쟁사 벤치마크 (케어포·이지케어·엔젤·롱텀)
 
 공식 사이트·매뉴얼·FAQ·공지(조사일 **2026-06-06**) 재조사. 산출물:

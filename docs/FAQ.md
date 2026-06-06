@@ -1,3 +1,4 @@
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-06T15:30:00+09:00 -->
 # ogada 자주 묻는 질문 (FAQ.md)
 
 > **작성**: tech_writer 에이전트  
@@ -19,7 +20,7 @@ ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
 | 백엔드 API | **Must 범위 구현** | 인증·플랫폼·이용자·출석·건강·청구·대시보드·설정 REST API 동작 |
-| 데이터베이스 | Flyway **V1–V33** | actor backstop·퇴소 purge·활성 이용자 목록 인덱스 포함 |
+| 데이터베이스 | Flyway **V1–V34** | actor backstop·퇴소 purge·퇴소 시각 무결성·활성 이용자 목록 인덱스 포함 |
 | 프론트엔드 | **골격 단계** | 역할별 홈 라우팅만 존재. JWT 로그인·업무 CRUD UI 미구현 |
 | 본 FAQ | **MVP 목표 동작 기준** | 명세·구현이 일치하는 항목은 「구현됨」으로 표기 |
 
@@ -466,7 +467,8 @@ ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능
 1. **배치 생성** (`nhis_import_batches`) — 파일 메타·상태 기록
 2. **행 단위 매칭** (`nhis_import_rows`) — 각 행을 `client_id` + 청구 라인과 매핑 (지점·인정번호 기준, V27 인덱스)
 3. **상태 판정** — `MATCHED` / `UNMATCHED` / `DISCREPANCY` 부여
-4. **대사 리포트** — 불일치 내역 조회 후 수정·재import
+4. **`UNMATCHED` 보정** — `GET .../candidates` 후 `PATCH .../rows/{rowId}/match`로 수동 연결 (Q73)
+5. **대사 리포트** — 불일치 내역 조회 후 수정·재import
 
 요청 파라미터: `branchId`, `yearMonth`(YYYY-MM), (선택) `claimId`, `file`(xlsx).
 
@@ -650,6 +652,39 @@ ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능
 
 ---
 
+## 13-8. NHIS 수동 매칭·퇴소 무결성 (2026-06-06 신규)
+
+### Q73. 공단 엑셀 import 후 `UNMATCHED` 행은 어떻게 처리하나요?
+
+**A.** 자동 매칭(인정번호·이름·생년월일)에 실패한 행은 **수동 연결** API로 보정합니다.
+
+| 단계 | API | 설명 |
+|------|-----|------|
+| 1 | `GET /api/v1/billing/imports/nhis/{batchId}` | 배치 상세·행별 `matchStatus` 확인 |
+| 2 | `GET /api/v1/billing/imports/nhis/{batchId}/candidates?q=` | 같은 지점 소속 **후보 이용자** 검색 |
+| 3 | `PATCH /api/v1/billing/imports/nhis/rows/{rowId}/match` | `{ "clientId": "uuid" }` — **단일 트랜잭션**으로 연결 |
+
+연결 후 상태는 **`MATCHED`** 또는 금액·일수 차이 시 **`DISCREPANCY`**로 전환됩니다. 이미 `MATCHED`/`DISCREPANCY`인 행은 재연결할 수 없습니다 (`422 BUSINESS_RULE`).
+
+> **구현됨**: `NhisImportService.matchRow()`. UI는 `/billing/imports/nhis` reconciliation 화면 후속.
+
+### Q74. 퇴소 처리 시 과거 날짜로 퇴소 시각을 넣을 수 있나요?
+
+**A.** **아니요.** V34 `chk_clients_discharged_after_created` CHECK로 **`discharged_at`은 `created_at` 이후**만 허용됩니다. API `POST /api/v1/clients/{id}/discharge`는 현재 시각(`NOW()`)을 기록하므로 정상 흐름에서는 위반되지 않습니다. 잘못된 SQL·백필은 DB에서 거부됩니다.
+
+### Q75. 출석 API 경로에 `/check-in`과 `/checkin` 두 가지가 있나요?
+
+**A.** **예, 동일합니다.** 하위 호환을 위해 다음 별칭이 모두 수용됩니다.
+
+| 동작 | 경로 (동등) |
+|------|------------|
+| 수기 체크인 | `POST /api/v1/attendance/check-in` · `/checkin` |
+| 수기 체크아웃 | `POST /api/v1/attendance/check-out` · `/checkout` |
+
+API 명세·프론트엔드는 **하이픈 형식**(`/check-in`, `/check-out`)을 권장합니다.
+
+---
+
 ## 14. 관련 문서
 
 | 문서 | 대상 | 내용 |
@@ -683,6 +718,7 @@ ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-06 | V34·Q73–Q75(NHIS 수동 매칭·퇴소 시각 무결성·출석 경로 별칭) |
 | 2026-06-06 | V32–V33·Q69–Q72(actor 감사·퇴소 purge·NHIS imported_at·활성 이용자 목록), Q66 청구 상태 필터 API 구현 반영 |
 | 2026-06-06 | V29–V31·Q64–Q68(이메일 UK·비밀번호 재설정 세션·청구 상태 필터·대표 보호자) 추가 |
 | 2026-06-06 | V28·이용자 탭 API·주민번호 복호화·QR 60분·FAQ Q53 중복 수정, Q60–Q63 추가 |

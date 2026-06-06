@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 순차 파이프라인 (순서 보장):
-#   planner → ux_designer → [backend: coder → tester] → [frontend: coder → tester]
+#   planner → db_architect → ux_designer
+#   → [backend: coder → tester] → [frontend: coder → tester]
 #
 # 한 사이클 완료 후 AGENT_INTERVAL_SECONDS(기본 900=15분) 대기.
 #
@@ -46,6 +47,7 @@ stream_cycle() {
 
 cycle() {
   run_step planner
+  run_step db_architect
   run_step ux_designer
   for stream in "${STREAMS[@]}"; do
     stream_cycle "$stream"
@@ -53,7 +55,7 @@ cycle() {
 }
 
 echo "[pipeline] streams=${STREAMS[*]} interval=${INTERVAL}s"
-echo "[pipeline] order: planner → ux_designer → coder → tester (×2 streams)"
+echo "[pipeline] order: planner → db_architect → ux_designer → coder → tester (×2 streams)"
 while true; do
   cycle
   if [[ "$ONCE" -eq 1 ]]; then

@@ -7,7 +7,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 PIPELINE_SESSION="${AGENT_PIPELINE_SESSION:-ogada-pipeline}"
-DB_SESSION="${AGENT_DB_SESSION:-ogada-db}"
 WRITER_SESSION="${AGENT_WRITER_SESSION:-ogada-writer}"
 SECURITY_SESSION="${AGENT_SECURITY_SESSION:-ogada-security}"
 BENCHMARK_SESSION="${AGENT_BENCHMARK_SESSION:-ogada-benchmark}"
@@ -23,8 +22,7 @@ check_session() {
 }
 
 echo "[team tmux]"
-check_session "$PIPELINE_SESSION" "pipeline (PLN→UXD→COD→TSR backend→frontend)"
-check_session "$DB_SESSION" "db_architect"
+check_session "$PIPELINE_SESSION" "pipeline (PLN→DBA→UXD→COD→TSR backend→frontend)"
 check_session "$SECURITY_SESSION" "security_auditor (daily)"
 check_session "$BENCHMARK_SESSION" "benchmark_researcher (daily)"
 check_session "$WRITER_SESSION" "tech_writer"
