@@ -1,9 +1,9 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T15:00:00+09:00 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T19:00:00+09:00 -->
 # 주간보호센터 웹 시스템 — REST API 명세 (API_SPEC.md)
 
 > **작성**: planner 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-06 (NHIS reconciliation·청구 status 필터)
+> **최종 갱신**: 2026-06-06 (NHIS `처리상태` 파서·롱텀2026 안내)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, 대시보드
 > **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`
@@ -323,6 +323,12 @@
 | `claimId` | — | reconciliation 대상 청구(선택, 업로드 후 연결 가능) |
 | `file` | ✅ | 공단 「청구내역상세」엑셀 |
 
+**엑셀 파서 정규화** (3차 벤치마크 — 케어포 [44438](https://www.carefor.co.kr/cs/view_notice.php?calmgno=44438))
+
+- 첫 열이 **`처리상태`**(또는 공단 변형 헤더)이면 **자동 스킵** 후 표준 컬럼 매핑
+- 헤더명 공백·대소문자 **정규화** — 알 수 없는 선행 열은 무시(파일럿 샘플로 화이트리스트 확장, PLAN_NOTES #27)
+- 파싱 실패 시 배치 `FAILED` + 사용자 메시지(내부 스택 미노출)
+
 **배치 상태**: `PENDING` → `PROCESSING` → `COMPLETED` | `FAILED`. `COMPLETED` 시 `imported_at` 필수(V19/V32).
 
 **행 매칭 규칙**
@@ -339,7 +345,8 @@
 { "clientId": "uuid" }
 ```
 
-> UI 안내: 「공단 [longtermcare.or.kr](https://www.longtermcare.or.kr/)에서 청구 전송 후 청구내역상세 엑셀을 다운로드하세요」— 공단 직접 전송 API는 MVP 제외.
+> UI 안내: 「공단 [longtermcare.or.kr](https://www.longtermcare.or.kr/)에서 청구 전송 후 청구내역상세 엑셀을 다운로드하세요」— 공단 직접 전송 API는 MVP 제외.  
+> **롱텀 2026**: IE 접속 불가 — 엑셀 export 전 **Chrome/Edge** 사용 안내(온보딩·import 화면).
 
 ---
 
@@ -369,7 +376,7 @@
 ## 10. 미확정 (구현 전 확정 필요)
 
 - ~~주민등록번호 수집·암호화~~ → **확정** (REQUIREMENTS §3-2-1)
-- 공단 청구내역상세 **엑셀 컬럼 스펙**(샘플) — 파일럿 센터 확보 전 가정 컬럼 사용 (PLAN_NOTES #27, BENCHMARK G7)
+- 공단 청구내역상세 **엑셀 컬럼 스펙**(샘플) — 파일럿 센터 확보 전 가정 컬럼 + **`처리상태` 스킵** 구현 (PLAN_NOTES #27, BENCHMARK G7)
 - 본인부담 구분 4→3 통폐합 여부 — 파일럿 분포 확인 (PLAN_NOTES #30)
 - 알림(SMS/알림톡) 엔드포인트 — v2
 - CMS·간편결제 API — v2 (BENCHMARK G2)

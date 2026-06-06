@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-06-06 — benchmark_researcher: 4차 경쟁사 재검증 (이지케어 요금·2026 수가·G9)
+
+공식 사이트·요금표·롱텀 수가·케어포 2026 매뉴얼 재조사(조사일 **2026-06-06**). 산출물:
+`docs/BENCHMARK_REPORT.md`, `docs/COMPETITOR_MATRIX.md` 4차 갱신.
+
+| # | 결정·권고 | 근거 | planner/coder 영향 |
+|---|----------|------|-------------------|
+| 1 | **`fee_schedules`에 duration_band(이용시간대) 축 검토** — 공단 2026 수가는 **등급×시간(3~6h…13h+)** 2차원 | [롱텀 2026 수가](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742), [케어포 2026 고시](https://www.carefor.co.kr/cs/view_pds.php?calmgno=46327) | G9 — MVP는 파일럿 **1밴드 고정** 가능, v1.1 다밴드; §3-9-1·ERD 보강 |
+| 2 | **이지케어 공개 tier 요금** — 10,000 + (일정관리 N−10)×500 + VAT; 37명=25,850 | [ezCare_charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | G10 — ogada 가격: 케어포 **flat 33k** vs 이지케어 **인원 비례** (PLAN_NOTES #31) |
+| 3 | **롱텀 엑셀 다운로드** — Chrome/Edge 「안전하지 않은 콘텐츠」 허용 필수 | [케어포 FAQ cscmgno=1237](https://www.carefor.co.kr/cs/view_notice.php?cscmgno=1237) | USER_MANUAL·파일럿 NHIS import 온보딩 체크리스트 |
+| 4 | **케어포 다지점** — getting_started에 **다기관 통합 매뉴얼 없음** 재확인; 1기관번호=1계정 유지 | [getting_started](https://www.carefor.co.kr/cs/getting_started.php) | ogada `/dashboard/hq` 차별 유지 — PLAN_NOTES #32 |
+| 5 | **copay 15/9/6/0%** — 2026 공단·센터 안내와 ogada 4구분 **일치** 확인 | [강남구청 2026 안내](https://www.gangnam.go.kr/board/happyapgu_faq/613/view.do) | §3-9-2 유지; 케어포 3구분(7.5%)과의 UI 라벨 차이만 주의 |
+| 6 | **이지케어 EZCARE 보호자** — **기관 초대 → 프로필 수락** 후 명세·청구 조회 | [Google Play](https://play.google.com/store/apps/details?hl=ko&id=com.easyms.ezcare) | v1.1 G8 — ogada `guardian` 초대 흐름 벤치마크 |
+
+**미변경(3차와 동일)**: 청구 2단계, QR B, platform_admin, NHIS `처리상태` 파서, MVP 제외(평가·회계·CMS).
+
+---
+
 ## 2026-06-06 — benchmark_researcher: 3차 경쟁사 재검증 (EZCARE·NHIS·롱텀2026)
 
 공식 사이트·매뉴얼·앱스토어·공지 재조사(조사일 **2026-06-06**). 산출물:

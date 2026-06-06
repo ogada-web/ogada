@@ -1,9 +1,9 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-06T18:00:00+09:00 -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-06T22:00:00+09:00 -->
 # 경쟁사 벤치마크 보고서 (BENCHMARK_REPORT.md)
 
 > **작성**: benchmark_researcher 에이전트 `[BNK]`  
-> **최종 갱신**: 2026-06-06 (3차 재검증)  
-> **상태**: 3차 상세 조사 반영 — 공식 사이트·매뉴얼·공지·앱스토어·2026 롱텀 개편  
+> **최종 갱신**: 2026-06-06 (4차 재검증)  
+> **상태**: 4차 상세 조사 — 이지케어 공개 요금·2026 수가(등급×시간대)·케어포 2026 매뉴얼·롱텀 엑셀 다운로드  
 > **조사 범위**: 주간보호(주·야간보호) 중심 — 이용자·출석·건강·청구·대시보드·보호자·다지점·SaaS
 
 ---
@@ -14,9 +14,10 @@
 
 | 항목 | 내용 |
 |------|------|
-| 조사일 | **2026-06-06** (3차 재검증 — 본 문서 갱신) |
+| 조사일 | **2026-06-06** (4차 재검증 — 본 문서 갱신) |
 | 1차 조사 | 2026-06-05 (planner, REQUIREMENTS §1-5) |
 | 2차 조사 | 2026-06-06 (benchmark_researcher, 초판) |
+| 3차 조사 | 2026-06-06 (EZCARE·NHIS·롱텀2026) |
 | 근거 유형 | 공식 홈페이지, PDF 매뉴얼, 교육 공지, FAQ, 앱스토어, 롱텀 개편 공지 |
 | 미확인 | 로그인 후 메뉴 전체·비공개 API·다지점 HQ 화면 — 「가정」으로 표기 |
 
@@ -27,7 +28,7 @@
 | 서비스 | URL | 유형 | 주야간보호 | 시장 포지션 (공개 자료) |
 |--------|-----|------|-----------|------------------------|
 | **케어포** | https://www.carefor.co.kr/ | 민간 ERP (웹+앱) | ✅ 전용 모듈 | 사용자 지정 1순위. 전국 **14,000+** 기관(2024 공지·소개). 평가·청구·보호자앱 |
-| **이지케어** | https://ezcare.easyms.co.kr/ | 민간 ERP (웹+앱) | ✅ 지원·확대 | 재가 ERP **점유 1위** 주장. 홈페이지 실시간 **9,210** 재가기관(2026.06.06). 방문+주간보호+**재무회계** |
+| **이지케어** | https://ezcare.easyms.co.kr/ | 민간 ERP (웹+앱) | ✅ 지원·확대 | 재가 ERP **점유 1위** 주장. 홈페이지 **9,210** 재가기관(2026.06.06). **공개 tier 요금**(기본 10,000+인당 500). 방문+주간보호+**재무회계** |
 | **엔젤시스템** | https://www.lcms.or.kr/ / https://www.silverangel.kr/ | 민간 ERP (웹+앱) | ✅ 지원 | 시설·주야간 통합사례관리. **CMS 본인부담 자동이체**. 평가·필수교육 연동 |
 | **롱텀(공단)** | https://www.longtermcare.or.kr/ | 공단 공식 | ✅ 급여청구 | **무료**. 공단 급여청구·심사·입퇴소신고. **운영·본인부담·보호자 UX 약함** |
 
@@ -39,10 +40,11 @@
 
 | 항목 | 내용 |
 |------|------|
-| **조사일** | 2026-06-06 |
+| **조사일** | 2026-06-06 (4차) |
 | **제공 형태** | 웹 브라우저 + **직원 모바일 앱** + **보호자 앱(가족돌봄앱)** |
-| **온보딩** | 홈페이지 **셀프 회원가입** → 기관 정보(사업자·장기요양기관번호) 입력 → **1개월 무료** ([이용요금](https://www.carefor.co.kr/price/cost.php)) |
-| **가격 (주야간)** | 수급자 수 구간별 **월 33,000원(부가세 포함)** — 10인 이하~131인 이상 동일 구간 요금표. 6개월 결제 +1개월, 12개월 +2개월 ([이용요금](https://www.carefor.co.kr/price/cost.php)) |
+| **온보딩** | 홈페이지 **셀프 회원가입** → 기관 정보(사업자·장기요양기관번호) 입력 → **1개월 무료** ([이용요금](https://www.carefor.co.kr/price/cost.php), [시작하기](https://www.carefor.co.kr/cs/getting_started.php)) |
+| **가격 (주야간)** | 수급자 수 구간(10~131+) **전 구간 동일 월 33,000원(VAT 포함)** — flat 요금. 6개월 +1개월, 12개월 +2개월. 세팅비 별도 없음 ([이용요금](https://www.carefor.co.kr/price/cost.php)) |
+| **2026 매뉴얼** | [시작하기](https://www.carefor.co.kr/cs/getting_started.php) — `주야간_2026`·`방문요양_2026` 등 **연도별 PDF/동영상** 분리 제공. **다기관 통합 매뉴얼 공식 없음** |
 
 #### 주야간보호 모듈 (매뉴얼·소개 페이지)
 
@@ -101,6 +103,8 @@
 #### 평가·규정 대응
 
 - **2026 공단 평가지표** 반영 업데이트·교육·자료실 ([공지 calmgno=46130](https://www.carefor.co.kr/cs/view_notice.php?calmgno=46130)).
+- **2026 급여 고시** 개정 자료·Q&A·동영상 ([자료실 calmgno=46327](https://www.carefor.co.kr/cs/view_pds.php?calmgno=46327)) — 2026.1.1 시행, 일부 조항 2026.7.1 시행.
+- **2026 평가매뉴얼(안)** 주야간 PDF 7.0M ([자료실 calmgno=45931](https://www.carefor.co.kr/cs/view_pds.php?calmgno=45931)) — 확정 전 안(草案).
 - 사례관리 회의록·참여 직종·대화체 기록 등 **평가 항목 전용 UI** (YouTube 매뉴얼 2025.12).
 
 #### 다지점·SaaS
@@ -125,10 +129,10 @@
 
 | 항목 | 내용 |
 |------|------|
-| **조사일** | 2026-06-06 |
+| **조사일** | 2026-06-06 (4차) |
 | **URL** | https://ezcare.easyms.co.kr/ |
 | **제공 형태** | **웹 SaaS** + **EZCARE 모바일 앱** (2025~2026 출시, [App Store](https://apps.apple.com/kr/app/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-ezcare/id6740553966)) |
-| **규모** | 홈페이지 실시간 **9,210** 재가기관 (2026.06.06, [ezcare.easyms.co.kr](https://ezcare.easyms.co.kr/)); 소개页 **8,931**(2026.03, [ezCare.html](https://ezcare.easyms.co.kr/new/ezCare.html)) |
+| **규모** | 홈페이지 **9,210** 재가기관 (2026.06.06); 소개页 **8,931**(2026.03); 이용후기页 **9,142**(2026.04, [Use_letter](https://www.easyms.co.kr/new/Use_letter.html)) |
 | **포지션** | 방문요양 **1위** → **주간보호 ERP·재무회계·세무·4대보험** 통합 ([동아일보 2025.11](https://www.donga.com/news/It/article/all/20251127/132855747/1)) |
 
 #### 핵심 모듈 ([기능 소개](https://ezcare.easyms.co.kr/new/ezCare_fnc.html))
@@ -165,13 +169,16 @@
 - 케어포와 유사: **내부 일정·수가 계산** + **공단 엑셀 import** + 공단 포털 청구.
 - 본인부담금 청구서·명세서 자동 생성 ([기능 소개](https://ezcare.easyms.co.kr/new/ezCare_fnc.html)).
 
-#### 온보딩·가격
+#### 온보딩·가격 (4차 — **공개 요금표 신규 확인**)
 
 | 항목 | 내용 |
 |------|------|
 | 가입 | 홈페이지 **상담 신청** → 전화/방문 ([가입상담](https://ezcare.easyms.co.kr/)) |
-| 공개 요금표 | ❌ — 영업 상담 |
-| ogada 대비 | ogada **`platform_admin` 개통** vs 이지케어 **영업 주도** |
+| **공개 요금** | **기본료 10,000원** + **(일정관리 수급자 − 10) × 500원** + VAT. 10명 이하 = 기본료만. **후불**(익월 1일 청구) ([ezCare_charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html)) |
+| **요금 예시** | 일정관리 37명 → 10,000 + (27×500) + VAT = **25,850원/월** |
+| **프로모션** | 2026.05.31까지 40% 할인(55,000→**33,000**), **30일 무료** + 문자 1,000p ([ezCare_charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html)) |
+| 셋팅비 | 최초 1회, 해지 시 **반환 없음** |
+| ogada 대비 | ogada **`platform_admin` 개통** vs 이지케어 **영업 주도**; ogada 가격은 **tier(지점·이용자)** 검토 필요 (PLAN_NOTES #31) |
 
 ---
 
@@ -216,6 +223,8 @@
 | **비용** | **무료** (공단 공식) |
 | **역할** | 급여 **청구·심사·지급** 공식 채널. 입퇴소신고·종사자 근무통보·관리현황 통보 |
 | **2026 개편** | 홈페이지 **2026-01-16** 개편 — **IE 접속 불가**, Chrome/Edge 필수 ([개편 안내](https://longtermcare.or.kr/npbs/e/g/540/openCyberCstMain.web?menuId=npe0000002594)) |
+| **엑셀 다운로드** | Chrome/Edge **「안전하지 않은 콘텐츠」 허용** 필요 — 케어포 공식 FAQ ([공지 cscmgno=1237](https://www.carefor.co.kr/cs/view_notice.php?cscmgno=1237)) |
+| **2026 수가표** | 주야간 **등급 × 이용시간대**(3~6h, 6~8h, 8~10h, 10~13h, 13h+) — [롱텀 수가 조회](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) |
 
 #### 제공·미제공
 
@@ -234,9 +243,27 @@
 
 ### 4-1. 청구·정산
 
+#### 2026 주야간 수가 구조 (공단 공식 — ogada `fee_schedules` 설계 영향)
+
+> 출처: [롱텀 수가 조회](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742), [케어포 2026 고시 자료](https://www.carefor.co.kr/cs/view_pds.php?calmgno=46327)
+
+공단 2026.1.1 시행 주야간 급여는 **등급(1~5·인지지원) × 1일 이용시간대** 2차원 테이블이다.
+
+| 시간대 | 1등급 (원/일) | 5등급 (원/일) | 인지지원 (원/일) |
+|--------|-------------|-------------|----------------|
+| 3~6h | 41,820 | 32,490 | 32,490 |
+| 6~8h | 56,060 | 44,650 | 44,650 |
+| 8~10h | 69,730 | 56,360 | 56,360 |
+| 10~13h | 76,820 | 62,460 | 56,360 |
+| 13h+ | 82,370 | 67,240 | 56,360 |
+
+- ogada REQUIREMENTS §3-9-1은 **등급×연도** 1일당 수가 가정 — **시간대(duration_band) 축 추가 검토** 필요 (G9).
+- 경쟁사(케어포·이지케어)는 일정·출석 시간 연동으로 **시간대별 수가 자동 적용** (가정 — 매뉴얼 「일정 및 청구」).
+- MVP 파일럿: 센터 **표준 이용시간**(예: 09:00~18h) 1밴드 고정으로 시작 가능, 다밴드는 v1.1.
+
 | 단계 | 업계 공통 | ogada MVP |
 |------|----------|-----------|
-| A | 기관 ERP에서 출석·등급·수가 → **내부 계산** | ✅ §3-9 |
+| A | 기관 ERP에서 출석·등급·수가 → **내부 계산** | ✅ §3-9 (시간대 축 △) |
 | B | **롱텀**에서 공단 급여 청구·전송 | 공단 UI (MVP **제외**) |
 | C | 공단 **청구내역상세** 엑셀 ↓ ERP **upload** | ✅ NHIS import |
 | C-1 | 엑셀 **컬럼 변동**(예: `처리상태` 선행열) | 파서 **스킵·정규화** — 케어포 [44438](https://www.carefor.co.kr/cs/view_notice.php?calmgno=44438) |
@@ -295,6 +322,8 @@
 | G6 | NFC/RFID 출석 | 케어포·이지케어 | ❌ (QR 선택) | **의도적** — B방식 유지 |
 | G7 | 공단 엑셀 **컬럼 스펙** 실측 | 업계 공통 | △ 가정 | **즉시** — 파일럿 센터 샘플 확보 (PLAN_NOTES #27) |
 | G8 | 보호자 **명세서 모바일**(초대·조회) | 케어포·**이지케어 EZCARE** ✅ | △ MVP: QR+열람 골격 | **v1.1** — 초대 흐름·명세 탭 |
+| G9 | **수가표 시간대(duration_band)** — 등급×시간 2차원 | 케어포·이지케어 ✅(가정) | △ 등급×연도만 | **파일럿**: 1밴드 고정 → v1.1 다밴드 |
+| G10 | **가격 tier** 공개·경쟁 TCO | 케어포 flat 33k / 이지케어 10k+500×N | 미정 | 영업 — PLAN_NOTES #31 |
 
 ### 5-3. MVP 우선순위 제안 (planner)
 
@@ -316,7 +345,8 @@
 | §3-3 QR B방식 | ✅ 경쟁사 대비 **차별화** — 유지 |
 | §1-3 platform_admin | ✅ 경쟁사 셀프가입과 **의도적 차별** |
 | §3-2-1 주민번호 암호화 | ✅ 법정 필수 — 경쟁사도 수집 (PLAN_NOTES #28) |
-| §3-9-1 수가표 B방식 | ✅ 공단 개정 대응 — ERP 공통 |
+| §3-9-1 수가표 B방식 | △ **시간대(duration_band) 축** 추가 검토 — G9. 등급×연도는 ✅ |
+| §3-9-2 copay 15/9/6/0% | ✅ 2026 공단·센터 안내와 **일치** ([강남구청 예시](https://www.gangnam.go.kr/board/happyapgu_faq/613/view.do)) |
 
 ---
 
@@ -324,8 +354,8 @@
 
 | 서비스 | 공개 가격 | 비고 |
 |--------|----------|------|
-| 케어포 주야간 | **월 33,000원~** (구간 동일, 부가세 포함) | [cost.php](https://www.carefor.co.kr/price/cost.php) |
-| 이지케어 | 상담 | 업무+재무 패키지 |
+| 케어포 주야간 | **월 33,000원** flat (수급자 구간 무관, VAT 포함) | [cost.php](https://www.carefor.co.kr/price/cost.php) |
+| 이지케어 | **10,000 + (일정관리 N−10)×500 + VAT** (예: 37명=25,850) | [ezCare_charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) |
 | 엔젤 | 상담 | ERP 상담 + CMS **월 30,000원** + 건당 수수료 ([extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do)) |
 | 롱텀 | 무료 | 청구만 |
 | **ogada** | 미정 | **가정**: 지점·이용자 tier 또는 flat SaaS — 영업 정책 필요 |
@@ -354,17 +384,24 @@
 | 16 | 이지케어 EZCARE 앱 | https://apps.apple.com/kr/app/%EC%9D%B4%EC%A7%80%EC%BC%80%EC%96%B4-ezcare/id6740553966 | 2026-06-06 |
 | 17 | 엔젤 CMS 요금 | https://www.silverangel.kr/newSilverangel/service/extraService.do | 2026-06-06 |
 | 18 | 케어포 2026 평가 PDF | https://www.carefor.co.kr/ct_att/contents_article/0/202602/46102/lIxDliWswE.pdf | 2026-06-06 |
+| 19 | 이지케어 공개 요금 | https://ezcare.easyms.co.kr/new/ezCare_charge.html | 2026-06-06 |
+| 20 | 케어포 2026 고시 자료 | https://www.carefor.co.kr/cs/view_pds.php?calmgno=46327 | 2026-06-06 |
+| 21 | 롱텀 2026 주야간 수가표 | https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742 | 2026-06-06 |
+| 22 | 케어포 롱텀 엑셀 다운로드 FAQ | https://www.carefor.co.kr/cs/view_notice.php?cscmgno=1237 | 2026-06-06 |
+| 23 | 케어포 시작하기(2026 매뉴얼) | https://www.carefor.co.kr/cs/getting_started.php | 2026-06-06 |
+| 24 | 이지케어 Channel FAQ(2026) | https://docs.channel.io/ezcare/ko/articles/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96 | 2026-06-06 |
 
 ---
 
 ## 8. 다음 조사 우선순위
 
-1. **공단 청구내역상세 엑셀** 실제 컬럼·`처리상태` 포함 여부 (파일럿 센터 샘플) — PLAN_NOTES #27
-2. 케어포 **로그인 후 주야간 메뉴 트리** (체험 계정 또는 교육 PDF 추가)
-3. 이지케어 **주간보호 전용** 화면·FAQ (방문과 분리) — EZCARE 앱 주야간 메뉴
-4. 경쟁사 **다지점/본사 통합** — 공식 매뉴얼·고객센터 확인 (현재 △)
-5. ogada **가격 tier** — 케어포 33,000원/월·엔젤 CMS 30,000원/월 TCO 벤치마크 (PLAN_NOTES #31)
-6. 롱텀 **2026 UI** 청구내역상세 export 경로 스크린샷 (파일럿 온보딩 가이드용)
+1. **공단 청구내역상세 엑셀** 실제 컬럼·`처리상태` 포함 여부 (파일럿 센터 샘플) — PLAN_NOTES #27, G7
+2. **ogada `fee_schedules` 시간대(duration_band) 축** — 파일럿 센터 표준 이용시간 확인 후 §3-9-1 보강 (G9)
+3. 케어포 **로그인 후 주야간 메뉴 트리** — `주야간_2026` PDF 상세 (체험·교육)
+4. 이지케어 **주간보호 전용** 화면·FAQ (방문과 분리) — EZCARE 앱 주야간 메뉴
+5. 경쟁사 **다지점/본사 통합** — 케어포 getting_started에 **다기관 통합 매뉴얼 없음** 재확인, 영업 자료 추가 (PLAN_NOTES #32)
+6. ogada **가격 tier** — 케어포 flat 33k vs 이지케어 10k+500×N vs 엔젤 CMS 30k TCO (PLAN_NOTES #31, G10)
+7. 롱텀 **2026 UI** 청구내역상세 export 경로 + Chrome 「안전하지 않은 콘텐츠」 온보딩 가이드
 
 ---
 

@@ -1,9 +1,9 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T15:00:00+09:00 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T19:00:00+09:00 -->
 # 주간보호센터 웹 시스템 — 화면 흐름도 (FLOWCHART.md)
 
 > **작성**: planner 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-06 (NHIS reconciliation 흐름 추가)
+> **최종 갱신**: 2026-06-06 (NHIS `처리상태` 정규화·v1.1 보호자 초대)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) — 7역할 + `client_user`
 > **기준 문서**: `REQUIREMENTS.md`(§2-4 역할별 홈, §5 화면 목록), `API_SPEC.md`
@@ -192,7 +192,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  A[롱텀에서 청구내역상세 엑셀 다운로드] --> B[/billing imports nhis 업로드/]
+  A[롱텀 Chrome/Edge에서 청구내역상세 엑셀 다운로드] --> A1{처리상태 선행열?}
+  A1 -->|예| A2[파서 스킵·헤더 정규화]
+  A1 -->|아니오| B
+  A2 --> B[/billing imports nhis 업로드/]
   B --> C[배치 생성 PENDING→PROCESSING→COMPLETED]
   C --> D[행별 자동 매칭 ltc_cert_no]
   D --> E{match_status}
@@ -241,6 +244,20 @@ flowchart TD
   A --> D[/guardian/checkin QR 체크인/]
   D --> E[5-2 QR 셀프 흐름]
 ```
+
+### 9-1. 보호자 초대·명세 (v1.1, G8) — §3-7, US-J01·J02
+
+```mermaid
+flowchart TD
+  S[branch_admin 이용자 프로필] --> I[보호자 초대 발송]
+  I --> G[guardian 초대 수락·계정 생성]
+  G --> P[/guardian 포털/]
+  P --> T1[일일 기록 탭 - MVP]
+  P --> T2[명세·청구 탭 - v1.1]
+  T2 --> B[월별 본인부담금 명세 조회]
+```
+
+> v1.1: 이지케어 EZCARE·케어포 가족돌봄앱 **최소 패리티** — 알림·CMS는 v2.
 
 > MVP 보호자 포털은 **기록 열람 + QR 체크인** 중심. 알림(알림톡/SMS)은 v1 이후(§3-7).
 

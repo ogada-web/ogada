@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-06T15:30:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-06T16:00:00+09:00 -->
 # ogada 변경 이력 (CHANGELOG.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-06 (V34·NHIS 수동 매칭·출석 경로 별칭 반영)  
+> **최종 갱신**: 2026-06-06 (V35·수가표·QR actor backstop 반영)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 개발·운영·기획 담당자, 고객 센터 IT (`sysadmin`)  
 > **기준 문서**: `docs/REQUIREMENTS.md`, `docs/API_SPEC.md`, `src/backend/`, `src/frontend/`  
@@ -14,7 +14,7 @@
 
 ---
 
-## [Unreleased] — MVP v1 개발 중 (2026-06-06 V34 업데이트)
+## [Unreleased] — MVP v1 개발 중 (2026-06-06 V35 업데이트)
 
 ### Added
 
@@ -42,11 +42,11 @@
 - **보안·PII**: 주민등록번호 AES-GCM 암호화·마스킹, 연락처·주소 암호화, JWT 스코프 검증, 공통 에러 응답(`traceId`)
 - **백업 스케줄러**: 일 1회 Tenant별 manifest 백업 (`BackupRunService`, `FileTenantBackupExecutor`), `backup_runs` 이력 기록, **완료 메타데이터 검증** (V20)
 - **NHIS import 서비스**: 엑셀 파서, 행별 `MATCHED` / `DISCREPANCY` / `UNMATCHED` 상태 대사, **배치·행 지점 검증** (V21), **자동 Tenant 설정** (V22)
-- **행위자(actor) 감사**: `DbSessionContext.setActorUserId` — 출석·건강·청구 생성·NHIS import 쓰기 트랜잭션에서 JWT subject를 DB 세션 변수(`ogada.actor_user_id`)로 전달 (V32–V33 트리거 backstop)
+- **행위자(actor) 감사**: `DbSessionContext.setActorUserId` — 출석·건강·청구 생성·NHIS import 쓰기 트랜잭션에서 JWT subject를 DB 세션 변수(`ogada.actor_user_id`)로 전달 (V32–V35 트리거 backstop)
 - **단위 테스트 22 클래스**: 인증, 이용자(마스킹·퇴소·복호화), 출석·보호자 QR·포털(**경로 별칭 라우팅**), 건강, 청구(상태 필터 포함)·NHIS 파서·대사·import·**수동 매칭**, 대시보드·건강 알림, 설정·백업, 플랫폼 조직
 - **NHIS 수동 매칭 API**: `GET /billing/imports/nhis/{batchId}/candidates`, `PATCH /billing/imports/nhis/rows/{rowId}/match` — `UNMATCHED` 행 후보 검색·연결 (단일 트랜잭션)
 
-#### 데이터베이스 (Flyway V1–V34)
+#### 데이터베이스 (Flyway V1–V35)
 - **V1**: 멀티테넌트 핵심 스키마 — `organizations`, `branches`, `users`, `clients`, `attendance`, `health_records`, `fee_schedules`, `copay_rates`, `billing_claims`, `audit_logs`
 - **V2**: 보호자 연결, QR·인증 토큰, 청구 명세 라인, NHIS import, 이용자 퇴소·사진·`client_user` 링크, `platform_admin` 조직 NULL 허용, 청구 라인 클라이언트 unique 제약 (`uq_claim_item_client`)
 - **V3–V4**: 인덱스·CHECK 제약, 주민번호 동의 규칙, 테넌트 FK·도메인 제약
@@ -79,6 +79,7 @@
 - **V32**: `ogada_read_actor_user_id()` 공통 함수, 출석 `created_by`·청구 `generated_by` actor 자동 적재 트리거, NHIS COMPLETED `imported_at` backstop, 퇴소 purge partial 인덱스 (`idx_clients_org_discharged_at`)
 - **V33**: 건강 `recorded_by`·NHIS `imported_by` actor backstop 트리거, 퇴소 후 child purge 인덱스(`attendance`/`health_records`/`billing_claim_items` by `client_id`), 활성 이용자 목록 pagination 인덱스
 - **V34**: `chk_clients_discharged_after_created`(퇴소 시각 ≥ 등록 시각), `idx_clients_org_branch_discharged_at`(지점별 퇴소 cohort purge 인덱스)
+- **V35**: `trg_fee_schedules_set_created_by`·`trg_branch_qr_tokens_set_created_by` — 수가표·QR `created_by` actor 세션 자동 적재 (V32/V33 패턴 확장, `BillingService.createFeeSchedule` 앱 누락 방어)
 
 #### 프론트엔드 (React 18 + Vite 5)
 - SPA 초기 골격: `/`, `/dashboard`, `/dashboard/hq`, `/platform`, `/guardian`, `/settings` 역할별 홈 라우팅
@@ -105,6 +106,7 @@
 - **청구 목록 상태 필터**: `GET /billing/claims?status=` 구현 — `DRAFT`/`CONFIRMED`/`PAID` 필터, 미지정 시 전체 목록 (V31 인덱스 활용)
 - **비밀번호 재설정 보안**: `resetPassword` 성공 시 `refreshTokenRepository.revokeAllActiveForUser` 호출 (V30 인덱스 활용)
 - **FAQ QR 유효시간 정정**: 기본 **60분** (`DEFAULT_QR_EXPIRES_MINUTES`, 생성 시 1–720분 설정 가능) — 24시간 설명 제거
+- **V35 actor backstop**: `fee_schedules.created_by`·`branch_qr_tokens.created_by` INSERT 시 session actor 자동 적재 — 수가 등록·QR 발급 감사 누락 방어
 - **출석 API 경로 별칭**: `POST /attendance/check-in` ↔ `/checkin`, `/check-out` ↔ `/checkout` 동등 수용 (`AttendanceControllerRoutingTest`)
 
 ### Security
@@ -121,6 +123,7 @@
 | 백엔드 REST API | **Must 범위 완료** | 인증·플랫폼·이용자·출석·건강·청구(상태 필터·NHIS 수동 매칭 포함)·대시보드·설정 모두 구현. 테스트 22개 클래스 통과 |
 | 퇴소 데이터 purge 배치 | **인덱스만 준비** | V32–V34 purge 인덱스 적용. `@Scheduled` retention 배치는 후속 구현 (`DATA_RETENTION_POLICY` §4-1) |
 | NHIS reconciliation UI | **API 완료·UI 미구현** | 배치 목록·상세·후보 검색·수동 매칭 REST 구현. `/billing/imports/nhis` 화면은 후속 |
+| Must 업무 화면 (프론트) | **미구현** | `/clients`, `/attendance`, `/health`, `/billing`, `/guardian/checkin` 등 — API만 동작. FAQ Q77 참고 |
 | 프론트엔드 우선순위 (v1 직전) | **대기** | ① 로그인·토큰 ② 이용자 목록 ③ 수기 출석 ④ 건강 기록 ⑤ 청구서(상태 필터 UI) ⑥ 대시보드 ⑦ 보호자 QR |
 | 백업 실행체 | **MVP manifest** | `FileTenantBackupExecutor` — 프로덕션 `pg_dump` 교체 예정 |
 | 이용자 사진·정적 파일 | **로컬 디스크** | `CLIENT_PHOTOS_DIR` — 오브젝트 스토리지 연동 후속 |

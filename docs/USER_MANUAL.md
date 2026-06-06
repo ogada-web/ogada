@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-06T15:30:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-06T16:00:00+09:00 -->
 # ogada 사용자 매뉴얼 (USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-06 (V34·NHIS 수동 매칭·출석 경로 별칭 반영)
+> **최종 갱신**: 2026-06-06 (V35·수가표·QR actor 감사 backstop 반영)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/REQUIREMENTS.md`, `docs/API_SPEC.md`, `docs/FLOWCHART.md`, `docs/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -30,8 +30,9 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 영역 | 상태 | 비고 |
 |------|------|------|
 | 백엔드 API | **Must 범위 구현 완료** | 인증·플랫폼·이용자·출석·건강·청구·대시보드·설정 REST API 동작 |
-| 데이터베이스 | Flyway **V1–V34** | actor backstop·퇴소 purge·퇴소 시각 무결성·활성 이용자 목록 인덱스 포함 |
+| 데이터베이스 | Flyway **V1–V35** | actor backstop(수가표·QR 포함)·퇴소 purge·퇴소 시각 무결성·활성 이용자 목록 인덱스 |
 | 프론트엔드 | **골격 단계** | `/`, `/dashboard`, `/dashboard/hq`, `/platform`, `/guardian`, `/settings` 홈만 존재. JWT 로그인·업무 CRUD UI 미구현 |
+| Must UI 미구현 | **API만 동작** | `/clients`, `/attendance`, `/attendance/checkin`, `/attendance/qr/generate`, `/health`, `/billing`, `/billing/imports/nhis`, `/guardian/checkin`, `/branches`, `/users` — Swagger·API 클라이언트로 Must 기능 검증 가능 |
 | 본 매뉴얼 | **MVP 목표 동작 기준** | API·명세와 동기화. UI 완성 시 버튼·캡처 갱신 |
 
 > 파일럿 현장(지점 2, 센터장 1, 요양보호사 5)은 **`branch_admin` + `caregiver`** 수기 출석·건강 기록 중심으로 검증합니다.
@@ -207,6 +208,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 2. 유형(**입소** / **귀가**)과 **유효 시간(분)**을 설정합니다. (기본 60분, 1–720분 범위)
 3. 생성된 QR을 **인쇄**하거나 이미지로 저장해 지점 입구에 게시합니다.
 4. 유효 시간이 지나면 새 QR을 생성해야 합니다. `GET /api/v1/branches/{id}/qr`로 당일 유효 QR을 재조회·출력할 수 있습니다.
+5. QR 발급 시 **발급자 UUID**(`branch_qr_tokens.created_by`)가 자동 기록됩니다 (V35).「누가 QR을 생성했는지」감사 추적에 사용됩니다.
 
 > 파일럿 현장은 수기 출석 중심이나, MVP에서는 QR 기능도 함께 제공됩니다.
 
@@ -351,6 +353,7 @@ ogada 청구는 **2단계 모델**입니다 (케어포 벤치마킹).
 1. **청구·정산** → **수가표 관리**로 이동합니다.
 2. 대상 **연도**와 **등급**별 1일 수가를 입력합니다.
 3. 수가 개정 시 **수정**하면 새 버전이 생성되고, 이전 버전 이력이 보존됩니다.
+4. 등록·수정 시 **등록자 UUID**(`fee_schedules.created_by`)가 자동 기록됩니다 (V35 DB 트리거 backstop). 감사·분쟁 대응 시「누가 수가를 등록했는지」추적할 수 있습니다.
 
 #### 본인부담 비율표 (`copay_rates`)
 
@@ -424,7 +427,7 @@ ogada 청구는 **2단계 모델**입니다 (케어포 벤치마킹).
 4. 이미 입소된 이용자에게 중복 체크인을 시도하면 오류가 표시됩니다 — 센터장에게 확인하세요.
 5. 결석 시 **결석 사유**를 입력합니다.
 
-> 출석·건강 기록에는 **입력한 직원 UUID**(`created_by`/`recorded_by`)가 자동 저장됩니다. 감사·분쟁 대응 시「누가 기록했는지」추적할 수 있습니다 (V32–V33).
+> 출석·건강 기록에는 **입력한 직원 UUID**(`attendance.created_by`/`health_records.recorded_by`)가 자동 저장됩니다. 수가표 등록·QR 발급에도 동일 actor 감사가 적용됩니다 (V32–V35). 감사·분쟁 대응 시「누가 기록·등록했는지」추적할 수 있습니다.
 
 > QR 셀프 체크인은 보호자·이용자가 처리합니다. 직원은 **지점 QR 생성·게시**만 담당합니다 (센터장 권한).
 
@@ -677,6 +680,8 @@ ogada 청구는 **2단계 모델**입니다 (케어포 벤치마킹).
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-06 | V35: 수가표·QR actor backstop(`created_by`), §4-4·§5-4·§6-3 감사 안내 |
+| 2026-06-06 | §1-3 Must UI 미구현 경로 목록 추가 (API-only 검증 안내) |
 | 2026-06-06 | V34: 퇴소 시각 무결성·지점별 purge 인덱스, NHIS UNMATCHED 수동 매칭 절차(§4-6-1) |
 | 2026-06-06 | V32–V33: actor 감사·청구 상태 필터 API(`?status=`)·퇴소 purge 인덱스 반영 |
 | 2026-06-06 | V29–V31: 사업자번호 검색·이메일 UK·대표 보호자·비밀번호 재설정 세션 폐기 |
