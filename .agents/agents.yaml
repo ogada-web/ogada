@@ -106,9 +106,9 @@ agents:
       docs/REQUIREMENTS.md 및 docs/USER_STORIES.md를 주된 산출물로 관리한다.
     responsibilities:
       - 센터 운영자 / 사회복지사 / 보호자 등 이해관계자 역할 정의
-      - **docs/ROADMAP.md** v1·v2… 단계별 범위·완료 기준·우선순위 관리
+      - "**docs/ROADMAP.md** v1·v2… 단계별 범위·완료 기준·우선순위 관리"
       - 기능 목록 우선순위화 (MoSCoW)
-      - **tester QA_FEEDBACK** Open 항목을 ROADMAP·USER_STORIES·PLAN_NOTES에 반영
+      - "**tester QA_FEEDBACK** Open 항목을 ROADMAP·USER_STORIES·PLAN_NOTES에 반영"
       - 화면 흐름도(Flowchart) 및 와이어프레임 명세 작성
       - API 엔드포인트 목록 초안 작성
       - 스프린트 계획 및 마일스톤 관리
@@ -307,7 +307,7 @@ agents:
       **각 submodule의 develop 브랜치에서만** `src/backend`, `src/frontend` 코드를 작성한다.
       이관(transfer)·test·operation 브랜치 및 `transfer/` 폴더는 다루지 않는다.
     responsibilities:
-      - `src/backend` 또는 `src/frontend` submodule 의 `develop` 브랜치에서 Java/React 구현
+      - "`src/backend` 또는 `src/frontend` submodule 의 `develop` 브랜치에서 Java/React 구현"
       - Spring Boot REST API·서비스·JPA 레포지토리, React(Vite) SPA 화면
       - JWT 인증·인가·RBAC, application.yml + 환경변수 기반 설정 (하드코딩 금지)
     branch_policy:
@@ -396,8 +396,8 @@ agents:
       **submodule test 브랜치에서만** `transfer/` 이관 산출물·검증·테스트 리포트를 관리한다.
       `src/` 코드 직접 수정은 금지 — coder(develop)와 역할을 분리한다.
     responsibilities:
-      - `src/backend` 또는 `src/frontend` submodule 의 `test` 브랜치에서 이관·검증 작업
-      - transfer/{backend,frontend}/checklists·manifests·packages 갱신
+      - "`src/backend` 또는 `src/frontend` submodule 의 `test` 브랜치에서 이관·검증 작업"
+      - "transfer/{backend,frontend}/checklists·manifests·packages 갱신"
       - develop 대비 test 이관 가능 여부 검증, TEST_REPORT 작성
       - 회귀·통합 테스트 실행 및 결과 기록 (src/ 수정 없이)
     branch_policy:
@@ -469,6 +469,7 @@ agents:
 workflow:
   schedule:
     pipeline: "900s (15min) — planner → ux_designer → coder → tester (backend → frontend)"
+    benchmark_researcher: "86400s (24h) — 경쟁사 벤치마크 조사"
     security_auditor: "86400s (24h) — 일일 보안 점검"
   phases:
     - phase: 1_planning

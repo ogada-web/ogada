@@ -102,6 +102,7 @@ DEFAULT_INTERVAL = int(os.environ.get("AGENT_INTERVAL_SECONDS", "900"))
 DEFAULT_WRITER_INTERVAL = int(os.environ.get("AGENT_WRITER_INTERVAL_SECONDS", "3600"))
 DEFAULT_TESTER_INTERVAL = int(os.environ.get("AGENT_TESTER_INTERVAL_SECONDS", "900"))
 DEFAULT_PLANNING_INTERVAL = int(os.environ.get("AGENT_PLANNING_INTERVAL_SECONDS", "900"))
+DEFAULT_BENCHMARK_INTERVAL = int(os.environ.get("AGENT_BENCHMARK_INTERVAL_SECONDS", "86400"))
 DEFAULT_UX_INTERVAL = int(os.environ.get("AGENT_UX_INTERVAL_SECONDS", "900"))
 DEFAULT_SECURITY_INTERVAL = int(os.environ.get("AGENT_SECURITY_INTERVAL_SECONDS", "86400"))
 
@@ -1433,11 +1434,13 @@ def _role_default_interval(role: str) -> int:
         return DEFAULT_WRITER_INTERVAL
     if role == "security_auditor":
         return DEFAULT_SECURITY_INTERVAL
+    if role == "benchmark_researcher":
+        return DEFAULT_BENCHMARK_INTERVAL
     if role == "ux_designer":
         return DEFAULT_UX_INTERVAL
     if role == "tester":
         return DEFAULT_TESTER_INTERVAL
-    if role in AUTO_ROLES:
+    if role == "planner":
         return DEFAULT_PLANNING_INTERVAL
     return DEFAULT_INTERVAL
 
@@ -2386,7 +2389,7 @@ def main() -> None:
         "--interval",
         type=int,
         default=None,
-        help="--loop 반복 간격(초). 미지정 시 coder/db/ux/tester/planner=900, tech_writer=3600, security=86400",
+        help="--loop 반복 간격(초). 미지정 시 coder/db/ux/tester/planner=900, tech_writer=3600, security/benchmark=86400",
     )
     p_build.add_argument("--loop", action="store_true", help="반복 실행")
     p_build.set_defaults(func=cmd_build)

@@ -10,10 +10,11 @@ PIPELINE_SESSION="${AGENT_PIPELINE_SESSION:-ogada-pipeline}"
 DB_SESSION="${AGENT_DB_SESSION:-ogada-db}"
 WRITER_SESSION="${AGENT_WRITER_SESSION:-ogada-writer}"
 SECURITY_SESSION="${AGENT_SECURITY_SESSION:-ogada-security}"
+BENCHMARK_SESSION="${AGENT_BENCHMARK_SESSION:-ogada-benchmark}"
 
 killed=0
 
-for s in "$PIPELINE_SESSION" "$DB_SESSION" "$SECURITY_SESSION" "$WRITER_SESSION"; do
+for s in "$PIPELINE_SESSION" "$DB_SESSION" "$SECURITY_SESSION" "$BENCHMARK_SESSION" "$WRITER_SESSION"; do
   if command -v tmux >/dev/null 2>&1 && tmux has-session -t "$s" 2>/dev/null; then
     echo "[stop] tmux $s"
     tmux kill-session -t "$s" || true
