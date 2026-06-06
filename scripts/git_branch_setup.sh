@@ -75,7 +75,15 @@ EOF
 fi
 
 ROOT_BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null || echo main)"
-echo "[ok] 루트 저장소 branch: $ROOT_BRANCH (docs·transfer·agents)"
+
+# 루트 기본 브랜치: main (docs·transfer·agents 메타)
+if git show-ref --verify --quiet refs/heads/main; then
+  git checkout main
+elif [[ "$ROOT_BRANCH" != "main" ]]; then
+  git checkout -B main
+fi
+
+echo "[ok] 루트 저장소 branch: $(git branch --show-current) (docs·transfer·agents)"
 echo ""
 echo "coder   → git -C src/backend checkout develop  (또는 src/frontend)"
 echo "tester  → git -C src/backend checkout test      (또는 src/frontend)"

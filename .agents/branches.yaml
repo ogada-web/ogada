@@ -3,7 +3,7 @@
 # =============================================================================
 #
 # 루트 monorepo 브랜치(backend/develop 등)가 아니라,
-# 각 submodule 독립 저장소 안에서 3단계 브랜치를 운영한다.
+# 각 submodule 독립 저장소 + 루트 meta repo(main) 를 운영한다.
 #
 # 흐름 (submodule 내부):
 #   develop(개발) ──[버전 완료 merge]──▶ test(이관·검증) ──[승인·배포]──▶ operation(운영)

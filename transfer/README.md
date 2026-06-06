@@ -17,12 +17,14 @@ transfer/
     └── packages/
 ```
 
-## 브랜치
+## 브랜치 (submodule 내부)
 
-| 스트림 | 개발 | 이관·검증 | 운영 |
-|--------|------|-----------|------|
-| backend | `backend/develop` | `backend/test` | `backend/operation` |
-| frontend | `frontend/develop` | `frontend/test` | `frontend/operation` |
+| 스트림 | develop | test (이관·검증) | operation (운영) |
+|--------|---------|------------------|------------------|
+| backend | `develop` | `test` | `operation` |
+| frontend | `develop` | `test` | `operation` |
+
+> 루트 meta repo 는 **`main`** 브랜치만 사용 (`docs/`, `memory/`, `transfer/`, `.agents/`).
 
 ## QA(tester) 실행
 
