@@ -1,0 +1,50 @@
+# =============================================================================
+# Git 브랜치 전략 — backend / frontend × 개발·이관·운영
+# =============================================================================
+#
+# 흐름:
+#   develop(개발) ──[QA 이관]──▶ migration(이관) ──[승인·배포]──▶ operation(운영)
+#
+# 에이전트:
+#   coder  → develop 브랜치만, src/ 코드 작성
+#   tester → migration 브랜치만, transfer/ 이관 산출물·검증
+#
+# 초기화: ./scripts/git_branch_setup.sh
+
+version: "1.0"
+
+streams:
+  backend:
+    develop: backend/develop
+    migration: backend/migration
+    operation: backend/operation
+    src: src/backend
+    transfer: transfer/backend
+  frontend:
+    develop: frontend/develop
+    migration: frontend/migration
+    operation: frontend/operation
+    src: src/frontend
+    transfer: transfer/frontend
+
+agents:
+  coder:
+    phase: develop
+    description: 개발 브랜치에서만 src/ 구현
+    allowed_write:
+      - src/backend
+      - src/frontend
+    forbidden_write:
+      - transfer/
+      - docs/TEST_REPORT.md
+  tester:
+    phase: migration
+    description: 이관 브랜치에서만 transfer/ 이관·검증 (src/ 직접 수정 금지)
+    allowed_write:
+      - transfer/backend
+      - transfer/frontend
+      - docs/TEST_REPORT.md
+      - tests/
+    forbidden_write:
+      - src/backend
+      - src/frontend

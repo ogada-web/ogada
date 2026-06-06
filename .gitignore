@@ -1,0 +1,40 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Node / frontend
+node_modules/
+dist/
+build/
+.vite/
+
+# Java / backend
+src/backend/target/
+src/backend/.venv/
+*.class
+*.jar
+!src/backend/.mvn/wrapper/maven-wrapper.jar
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Agent session (local)
+.agents/.planner_session.json
+.agents/.planner_history
+
+# Logs
+*.log
+/tmp/
