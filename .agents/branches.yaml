@@ -1,50 +1,84 @@
 # =============================================================================
-# Git 브랜치 전략 — backend / frontend × 개발·이관·운영
+# Git 브랜치 전략 — submodule별 develop · test · operation
 # =============================================================================
 #
-# 흐름:
-#   develop(개발) ──[QA 이관]──▶ migration(이관) ──[승인·배포]──▶ operation(운영)
+# 루트 monorepo 브랜치(backend/develop 등)가 아니라,
+# 각 submodule 독립 저장소 안에서 3단계 브랜치를 운영한다.
 #
-# 에이전트:
-#   coder  → develop 브랜치만, src/ 코드 작성
-#   tester → migration 브랜치만, transfer/ 이관 산출물·검증
+# 흐름 (submodule 내부):
+#   develop(개발) ──[버전 완료 merge]──▶ test(이관·검증) ──[승인·배포]──▶ operation(운영)
+#
+# 루트 저장소(.) 는 docs · memory · transfer · .agents 만 관리 (브랜치: main).
+#
+# 에이전트 협업:
+#   planner → docs/ROADMAP.md (v1·v2…) 작성·유지
+#   coder   → submodule develop 브랜치, ROADMAP in_progress 버전 구현
+#   tester  → submodule test 브랜치, transfer/ 이관·검증
 #
 # 초기화: ./scripts/git_branch_setup.sh
 
-version: "1.0"
+version: "2.0"
 
-streams:
+root:
+  path: .
+  branch: main
+  description: docs, memory, transfer, .agents (메타·문서 전용)
+
+submodules:
   backend:
-    develop: backend/develop
-    migration: backend/migration
-    operation: backend/operation
-    src: src/backend
+    path: src/backend
+    branches:
+      develop: develop
+      test: test
+      operation: operation
     transfer: transfer/backend
   frontend:
-    develop: frontend/develop
-    migration: frontend/migration
-    operation: frontend/operation
-    src: src/frontend
+    path: src/frontend
+    branches:
+      develop: develop
+      test: test
+      operation: operation
     transfer: transfer/frontend
 
 agents:
   coder:
     phase: develop
-    description: 개발 브랜치에서만 src/ 구현
+    submodule_checkout: true
+    description: submodule develop 브랜치에서 ROADMAP in_progress 버전 구현
     allowed_write:
       - src/backend
       - src/frontend
+      - docs/ROADMAP.md
+      - docs/QA_FEEDBACK.md
     forbidden_write:
       - transfer/
       - docs/TEST_REPORT.md
   tester:
-    phase: migration
-    description: 이관 브랜치에서만 transfer/ 이관·검증 (src/ 직접 수정 금지)
+    phase: test
+    submodule_checkout: true
+    description: submodule test 브랜치에서 검증·QA_FEEDBACK 기록 (src/ 직접 수정 금지)
     allowed_write:
       - transfer/backend
       - transfer/frontend
       - docs/TEST_REPORT.md
+      - docs/QA_FEEDBACK.md
       - tests/
     forbidden_write:
       - src/backend
       - src/frontend
+  planner:
+    phase: planning
+    submodule_checkout: false
+    description: ROADMAP·기획 문서·QA_FEEDBACK 반영 (submodule src/ 수정 금지)
+    allowed_write:
+      - docs/
+      - memory/
+  ux_designer:
+    phase: design
+    submodule_checkout: true
+    checkout_phase: develop
+    description: submodule develop 브랜치에서 React UI·디자인 토큰 작업
+    allowed_write:
+      - docs/DESIGN_SYSTEM.md
+      - src/frontend/src/styles/
+      - src/frontend/src/components/ui/

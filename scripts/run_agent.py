@@ -81,6 +81,9 @@ ROLES_FILE = AGENTS_DIR / "agents.yaml"
 BRANCHES_FILE = AGENTS_DIR / "branches.yaml"
 DOCS_DIR = WORKSPACE_ROOT / "docs"
 PLAN_NOTES_FILE = DOCS_DIR / "PLAN_NOTES.md"
+ROADMAP_FILE = DOCS_DIR / "ROADMAP.md"
+QA_FEEDBACK_FILE = DOCS_DIR / "QA_FEEDBACK.md"
+TEST_REPORT_FILE = DOCS_DIR / "TEST_REPORT.md"
 REQUIREMENTS_FILE = DOCS_DIR / "REQUIREMENTS.md"
 BENCHMARK_REPORT_FILE = DOCS_DIR / "BENCHMARK_REPORT.md"
 COMPETITOR_MATRIX_FILE = DOCS_DIR / "COMPETITOR_MATRIX.md"
@@ -97,9 +100,14 @@ DEFAULT_MODEL_FALLBACK = "composer-2.5"
 ENV_MODEL = os.environ.get("AGENT_MODEL")
 DEFAULT_INTERVAL = int(os.environ.get("AGENT_INTERVAL_SECONDS", "900"))
 DEFAULT_WRITER_INTERVAL = int(os.environ.get("AGENT_WRITER_INTERVAL_SECONDS", "3600"))
-DEFAULT_PLANNING_INTERVAL = int(os.environ.get("AGENT_PLANNING_INTERVAL_SECONDS", "10800"))
+DEFAULT_TESTER_INTERVAL = int(os.environ.get("AGENT_TESTER_INTERVAL_SECONDS", "900"))
+DEFAULT_PLANNING_INTERVAL = int(os.environ.get("AGENT_PLANNING_INTERVAL_SECONDS", "900"))
+DEFAULT_UX_INTERVAL = int(os.environ.get("AGENT_UX_INTERVAL_SECONDS", "900"))
+DEFAULT_SECURITY_INTERVAL = int(os.environ.get("AGENT_SECURITY_INTERVAL_SECONDS", "86400"))
 
-BUILD_ROLES = frozenset({"coder", "db_architect", "tech_writer", "tester"})
+BUILD_ROLES = frozenset({
+    "coder", "db_architect", "tech_writer", "tester", "ux_designer", "security_auditor",
+})
 AUTO_ROLES = frozenset({"benchmark_researcher", "planner"})
 ALL_BUILD_ROLES = BUILD_ROLES | AUTO_ROLES
 ROLE_LABELS = {
@@ -107,6 +115,8 @@ ROLE_LABELS = {
     "db_architect": "DB 설계자",
     "tech_writer": "기술 문서",
     "tester": "QA(이관)",
+    "ux_designer": "UX 디자이너",
+    "security_auditor": "보안 감사",
     "benchmark_researcher": "벤치마크 분석",
     "planner": "기획자(자동)",
 }
@@ -115,6 +125,8 @@ ROLE_QUESTION_MARKERS = {
     "db_architect": "DB 설계 질문",
     "tech_writer": "문서 작성 질문",
     "tester": "QA 이관 질문",
+    "ux_designer": "UX 설계 질문",
+    "security_auditor": "보안 감사 질문",
     "benchmark_researcher": "벤치마크 질문",
     "planner": "기획 질문",
 }
@@ -136,11 +148,12 @@ def _load_branches_yaml() -> dict | None:
         return None
 
 
-def _git_repo_ready() -> bool:
+def _git_repo_ready(cwd: Path | None = None) -> bool:
+    work = cwd or WORKSPACE_ROOT
     try:
         subprocess.run(
             ["git", "rev-parse", "--git-dir"],
-            cwd=WORKSPACE_ROOT,
+            cwd=work,
             capture_output=True,
             check=True,
         )
@@ -149,13 +162,14 @@ def _git_repo_ready() -> bool:
         return False
 
 
-def _git_current_branch() -> str | None:
-    if not _git_repo_ready():
+def _git_current_branch(cwd: Path | None = None) -> str | None:
+    work = cwd or WORKSPACE_ROOT
+    if not _git_repo_ready(work):
         return None
     try:
         r = subprocess.run(
             ["git", "branch", "--show-current"],
-            cwd=WORKSPACE_ROOT,
+            cwd=work,
             capture_output=True,
             text=True,
             check=True,
@@ -166,22 +180,170 @@ def _git_current_branch() -> str | None:
         return None
 
 
-def _git_checkout(branch: str) -> None:
+def _git_checkout(branch: str, cwd: Path) -> None:
     subprocess.run(
         ["git", "checkout", branch],
-        cwd=WORKSPACE_ROOT,
+        cwd=cwd,
         check=True,
     )
 
 
-def branch_for_stream(stream: str, phase: str) -> str:
+def stream_config(stream: str) -> dict:
     data = _load_branches_yaml() or {}
-    streams = data.get("streams") or {}
-    cfg = streams.get(stream) or {}
-    name = cfg.get(phase)
+    submodules = data.get("submodules") or data.get("streams") or {}
+    cfg = submodules.get(stream) or {}
+    return cfg if isinstance(cfg, dict) else {}
+
+
+def submodule_dir_for_stream(stream: str) -> Path:
+    cfg = stream_config(stream)
+    rel = cfg.get("path") or cfg.get("src") or f"src/{stream}"
+    return WORKSPACE_ROOT / str(rel)
+
+
+def git_cwd_for_role(role: str, stream: str) -> Path | None:
+    """역할별 git checkout 대상. planner 등은 submodule checkout 불필요."""
+
+    if role in ("planner", "benchmark_researcher", "tech_writer", "db_architect"):
+        return None
+    if role in ("coder", "tester", "ux_designer"):
+        return submodule_dir_for_stream(stream if role != "ux_designer" else "frontend")
+    return None
+
+
+def _roadmap_parse_versions(text: str) -> list[dict[str, str]]:
+    """ROADMAP.md 에서 ## vN 블록 메타데이터 추출."""
+
+    import re
+
+    versions: list[dict[str, str]] = []
+    for match in re.finditer(
+        r"^## (v[\w.]+)[^\n]*\n(.*?)(?=^## v|\Z)",
+        text,
+        re.MULTILINE | re.DOTALL,
+    ):
+        block = match.group(2)
+        meta = {"id": match.group(1)}
+
+        def _field(name: str) -> str | None:
+            m = re.search(rf"\*\*{name}\*\*:\s*(\S+)", block)
+            return m.group(1).strip() if m else None
+
+        for key in ("status", "merge_status", "stream"):
+            val = _field(key)
+            if val:
+                meta[key] = val
+        versions.append(meta)
+    return versions
+
+
+def _roadmap_merge_ready(stream: str) -> str | None:
+    """stream 과 일치하고 merge_status=ready 인 첫 버전 id."""
+
+    if not ROADMAP_FILE.exists():
+        return None
+    text = ROADMAP_FILE.read_text(encoding="utf-8")
+    for ver in _roadmap_parse_versions(text):
+        if ver.get("merge_status") != "ready":
+            continue
+        ver_stream = ver.get("stream", "backend")
+        if ver_stream == stream:
+            return ver.get("id")
+    return None
+
+
+def _roadmap_mark_merged(version_id: str) -> None:
+    """버전 블록의 merge_status 를 merged, status 를 done 으로 갱신."""
+
+    if not ROADMAP_FILE.exists():
+        return
+    import re
+
+    text = ROADMAP_FILE.read_text(encoding="utf-8")
+    pattern = rf"(## {re.escape(version_id)}[^\n]*\n.*?)(- \*\*merge_status\*\*:\s*)\w+"
+    if not re.search(pattern, text, re.DOTALL):
+        return
+    text = re.sub(
+        pattern,
+        r"\1\2merged",
+        text,
+        count=1,
+        flags=re.DOTALL,
+    )
+    status_pat = rf"(## {re.escape(version_id)}[^\n]*\n.*?)(- \*\*status\*\*:\s*)\w+"
+    text = re.sub(
+        status_pat,
+        r"\1\2done",
+        text,
+        count=1,
+        flags=re.DOTALL,
+    )
+    ROADMAP_FILE.write_text(text, encoding="utf-8")
+
+
+def merge_develop_to_test(stream: str, version_id: str) -> bool:
+    """submodule develop 브랜치를 test 브랜치에 merge. 완료 후 develop 으로 복귀."""
+
+    submodule = submodule_dir_for_stream(stream)
+    if not _git_repo_ready(submodule):
+        print(f"[merge-skip] submodule git 없음: {submodule}")
+        return False
+
+    develop = branch_for_stream(stream, "develop")
+    test = branch_for_stream(stream, "test")
+    current = _git_current_branch(submodule)
+
+    try:
+        _git_checkout(test, submodule)
+        result = subprocess.run(
+            [
+                "git",
+                "merge",
+                develop,
+                "-m",
+                f"chore({stream}): merge {develop} into {test} ({version_id})",
+            ],
+            cwd=submodule,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            err = (result.stderr or result.stdout or "").strip()
+            print(f"[merge-fail] {submodule}: {develop} → {test}: {err[:500]}", file=sys.stderr)
+            return False
+        print(f"[merge-ok] {submodule}: {develop} → {test} ({version_id})")
+        return True
+    except subprocess.CalledProcessError as exc:
+        print(f"[merge-error] checkout failed: {exc}", file=sys.stderr)
+        return False
+    finally:
+        restore = develop if current != test else (current or develop)
+        try:
+            _git_checkout(restore, submodule)
+        except subprocess.CalledProcessError:
+            pass
+
+
+def maybe_merge_version_to_test(stream: str) -> None:
+    """ROADMAP merge_status=ready 이면 develop → test 자동 merge."""
+
+    version_id = _roadmap_merge_ready(stream)
+    if not version_id:
+        return
+    if merge_develop_to_test(stream, version_id):
+        _roadmap_mark_merged(version_id)
+        print(f"[merge] ROADMAP {version_id} → merge_status=merged")
+
+
+def branch_for_stream(stream: str, phase: str) -> str:
+    cfg = stream_config(stream)
+    branches = cfg.get("branches") or {}
+    name = branches.get(phase) if isinstance(branches, dict) else None
+    if not name:
+        name = cfg.get(phase)
     if isinstance(name, str) and name.strip():
         return name.strip()
-    return f"{stream}/{phase}"
+    return phase
 
 
 def resolve_stream(args: argparse.Namespace, target: Path) -> str:
@@ -198,33 +360,38 @@ def required_branch_for_role(role: str, stream: str) -> str | None:
     if role == "coder":
         return branch_for_stream(stream, "develop")
     if role == "tester":
-        return branch_for_stream(stream, "migration")
+        return branch_for_stream(stream, "test")
+    if role == "ux_designer":
+        return branch_for_stream("frontend", "develop")
     return None
 
 
 def ensure_role_branch(role: str, stream: str) -> str | None:
-    """역할·스트림에 맞는 git 브랜치로 checkout. 저장소 없으면 경고만."""
+    """역할·스트림에 맞는 submodule git 브랜치로 checkout."""
 
     branch = required_branch_for_role(role, stream)
     if branch is None:
         return None
-    if not _git_repo_ready():
+    submodule = git_cwd_for_role(role, stream)
+    if submodule is None:
+        return branch
+    if not _git_repo_ready(submodule):
         print(
-            "[warn] git 저장소 없음 — 브랜치 정책 미적용. "
+            f"[warn] submodule git 없음 ({submodule}) — 브랜치 정책 미적용. "
             "./scripts/git_branch_setup.sh 실행 권장.",
             file=sys.stderr,
         )
         return branch
-    current = _git_current_branch()
+    current = _git_current_branch(submodule)
     if current == branch:
-        print(f"[git] branch={branch} (ok)")
+        print(f"[git] {submodule.name} branch={branch} (ok)")
         return branch
-    print(f"[git] checkout {branch} (was: {current or 'unknown'})")
+    print(f"[git] {submodule.name} checkout {branch} (was: {current or 'unknown'})")
     try:
-        _git_checkout(branch)
+        _git_checkout(branch, submodule)
     except subprocess.CalledProcessError as err:
         print(
-            f"[fatal] git checkout 실패: {branch}. "
+            f"[fatal] git checkout 실패: {submodule} → {branch}. "
             "./scripts/git_branch_setup.sh 로 브랜치를 생성하세요.",
             file=sys.stderr,
         )
@@ -248,6 +415,32 @@ def _load_agents_yaml() -> dict | None:
         return data if isinstance(data, dict) else None
     except Exception:
         return None
+
+
+def _agent_meta(role: str) -> dict[str, str | list[str]]:
+    """agents.yaml 의 id · doc_signature · doc_audience 조회."""
+
+    data = _load_agents_yaml() or {}
+    for a in data.get("agents", []) or []:
+        if isinstance(a, dict) and a.get("name") == role:
+            return {
+                "id": str(a.get("id") or role[:3].upper()),
+                "doc_signature": str(a.get("doc_signature") or f"[{role[:3].upper()}]"),
+                "doc_audience": a.get("doc_audience") or [],
+            }
+    return {"id": role[:3].upper(), "doc_signature": f"[{role[:3].upper()}]", "doc_audience": []}
+
+
+def _doc_identity_block(role: str) -> str:
+    meta = _agent_meta(role)
+    aud = meta.get("doc_audience") or []
+    aud_str = ",".join(str(x) for x in aud) if aud else "(해당 역할 소비자)"
+    return (
+        "## 문서 식별 (agent_identity)\n"
+        f"- 작성자 id: `{meta['id']}` | 섹션 postfix: `{meta['doc_signature']}`\n"
+        f"- 문서 최상단 메타: `<!-- doc:owner={meta['id']} doc:audience={aud_str} updated=ISO8601 -->`\n"
+        f"- PLAN_NOTES 질문 섹션: `### {meta['doc_signature']} ...`\n"
+    )
 
 
 def resolve_model_chain(role: str | None = None) -> list[str]:
@@ -450,8 +643,69 @@ def call_agent(prompt: str, cwd: Path, role: str | None = None):
     return None
 
 
-def _sprint_progress_hint(target: Path) -> str:
-    """src/backend·frontend 상태로 §7 스프린트 중 다음 작업을 추정."""
+def _roadmap_progress_hint(stream: str = "backend") -> str:
+    """ROADMAP.md 기준 현재 in_progress 버전 작업 힌트."""
+
+    if not ROADMAP_FILE.exists():
+        return (
+            "현재 진행: **ROADMAP 미작성**\n"
+            "→ planner 가 `docs/ROADMAP.md` 를 작성할 때까지 "
+            "`docs/REQUIREMENTS.md` §7 순서로 진행."
+        )
+    text = ROADMAP_FILE.read_text(encoding="utf-8")
+    versions = _roadmap_parse_versions(text)
+    active = next(
+        (
+            v
+            for v in versions
+            if v.get("status") == "in_progress"
+            and v.get("stream", "backend") == stream
+        ),
+        None,
+    )
+    if not active:
+        planned = next(
+            (v for v in versions if v.get("status") == "planned"),
+            None,
+        )
+        if planned:
+            return (
+                f"현재 진행: **{stream} in_progress 버전 없음**\n"
+                f"→ `docs/ROADMAP.md` 에서 `{planned['id']}` 를 "
+                f"`status: in_progress` 로 전환 후 구현 시작."
+            )
+        return (
+            f"현재 진행: **{stream} 활성 버전 없음**\n"
+            "→ ROADMAP·QA_FEEDBACK 확인 후 planner 와 협의."
+        )
+    vid = active["id"]
+    merge_st = active.get("merge_status", "pending")
+    qa_note = ""
+    if QA_FEEDBACK_FILE.exists():
+        qa = QA_FEEDBACK_FILE.read_text(encoding="utf-8")
+        if "### [OPEN]" in qa or "### [PLANNED]" in qa:
+            qa_note = (
+                "\n→ **우선**: `docs/QA_FEEDBACK.md` Open/Planned BLOCK·HIGH 항목부터 수정."
+            )
+    if merge_st == "ready":
+        return (
+            f"현재 진행: **{vid} 완료 — test merge 대기**\n"
+            f"→ 완료 기준 재확인 후 merge_status=ready 유지 "
+            f"(다음 build 시 {stream}/develop → {stream}/test 자동 merge)."
+        )
+    return (
+        f"현재 진행: **ROADMAP {vid} ({stream}) — in_progress**\n"
+        f"→ `docs/ROADMAP.md` 의 `{vid}` 범위·완료 기준만 구현.\n"
+        f"→ 모든 완료 기준 `[x]` 후 `merge_status: ready` 로 변경.{qa_note}"
+    )
+
+
+def _sprint_progress_hint(target: Path, stream: str = "backend") -> str:
+    """src/backend·frontend + ROADMAP 상태로 다음 작업 추정."""
+
+    roadmap_hint = _roadmap_progress_hint(stream)
+    if ROADMAP_FILE.exists():
+        return roadmap_hint
 
     backend = WORKSPACE_ROOT / "src/backend"
     frontend = WORKSPACE_ROOT / "src/frontend"
@@ -492,7 +746,7 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
     """build 모드용 코더 프롬프트. 거대한 REQUIREMENTS 전문 인라인 대신 워크스페이스 파일 참조."""
 
     rules = must_read(RULES_FILE)
-    progress = _sprint_progress_hint(target)
+    progress = _sprint_progress_hint(target, stream=stream)
     task_block = (
         f"## 이번 build 명시 작업\n{task.strip()}\n"
         if task and task.strip()
@@ -509,11 +763,19 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
         "지금 너의 역할은 `.agents/agents.yaml` 의 `coder` 이다.\n"
         "역할 상세·출력 경로는 agents.yaml 의 coder 섹션을 워크스페이스에서 읽어라.\n\n"
         "## 0. 브랜치·범위 (CRITICAL)\n"
-        f"- **현재 스트림**: `{stream}` | **작업 브랜치**: `{develop_branch}` (개발 전용)\n"
-        "- **개발(develop) 브랜치에서만** `src/backend` 또는 `src/frontend` 코드를 작성한다.\n"
-        "- `transfer/`, migration·operation 브랜치, `docs/TEST_REPORT.md` 는 **수정 금지** "
+        f"- **현재 스트림**: `{stream}` | **submodule**: `src/{stream}` | **브랜치**: `{develop_branch}`\n"
+        f"- submodule `src/{stream}` 의 **develop** 브랜치에서만 코드를 작성한다.\n"
+        "- `transfer/`, test·operation 브랜치, `docs/TEST_REPORT.md` 는 **수정 금지** "
         "(QA/tester 이관 전담).\n"
-        "- `.agents/branches.yaml` 브랜치 정책을 따른다.\n\n"
+        "- `.agents/branches.yaml` submodule 브랜치 정책을 따른다.\n\n"
+        f"{_doc_identity_block('coder')}\n"
+        "## 0-1. 버전·피드백 (CRITICAL)\n"
+        "- **`docs/ROADMAP.md`** 의 `status: in_progress` 버전 **하나만** 구현.\n"
+        "- **`docs/QA_FEEDBACK.md`** Open/Planned 항목(BLOCK·HIGH)을 **우선** 수정.\n"
+        "- 수정 완료 시 QA_FEEDBACK 항목을 **Fixed** 섹션으로 이동.\n"
+        "- 해당 버전 **완료 기준 전부 [x]** 후 `merge_status: ready` 로 변경 "
+        f"→ 다음 build 시 `{develop_branch}`가 `{branch_for_stream(stream, 'test')}`에 **자동 merge**.\n"
+        "- test·operation 브랜치 직접 checkout·merge **금지** (스크립트가 처리).\n\n"
         "## 1. 스택 강제 (최우선)\n"
         "- **반드시** `docs/REQUIREMENTS.md` §1-1 기술 스택 표를 읽고 그대로 따른다.\n"
         "  (Java Spring Boot 3.x / React Vite SPA / PostgreSQL / JWT+RBAC / SaaS 멀티테넌트)\n"
@@ -526,6 +788,8 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
         "- 비밀값 하드코딩 금지 (.agents/rules.md §3).\n\n"
         f"{task_block}\n\n"
         "## 3. 읽어야 할 문서 (워크스페이스에서 직접 열기)\n"
+        "- docs/ROADMAP.md (현재 in_progress 버전·완료 기준)\n"
+        "- docs/QA_FEEDBACK.md (Open/Planned — tester 피드백)\n"
         "- docs/REQUIREMENTS.md (§1-1 스택, §7 스프린트, Must 기능)\n"
         "- docs/API_SPEC.md\n"
         "- docs/USER_STORIES.md\n"
@@ -613,6 +877,7 @@ def _build_db_architect_prompt(task: str | None = None) -> str:
         f"=== .agents/rules.md ===\n{rules}\n\n"
         "지금 너의 역할은 `.agents/agents.yaml` 의 `db_architect` 이다.\n"
         "agents.yaml 의 db_architect 섹션(출력물·core_entities)을 워크스페이스에서 읽어라.\n\n"
+        f"{_doc_identity_block('db_architect')}\n"
         "## 0. 스택 (REQUIREMENTS §1-1 우선)\n"
         "- DB: **PostgreSQL**. 백엔드: **Java Spring Boot 3.x**.\n"
         "- 마이그레이션: Flyway (`src/backend/src/main/resources/db/migration/V*.sql`).\n"
@@ -647,6 +912,7 @@ def _build_tech_writer_prompt(task: str | None = None) -> str:
     return (
         f"=== .agents/rules.md ===\n{rules}\n\n"
         "지금 너의 역할은 `.agents/agents.yaml` 의 `tech_writer` 이다.\n\n"
+        f"{_doc_identity_block('tech_writer')}\n"
         "## 0. 범위\n"
         "- **docs/ 아래 문서만** 작성·갱신. src/ 코드 변경 금지.\n"
         "- 스택은 REQUIREMENTS §1-1 (Java Spring Boot + React + PostgreSQL) 기준으로 서술.\n\n"
@@ -701,14 +967,24 @@ def _planner_auto_progress_hint() -> str:
         if benchmark_ready
         else "벤치마크 산출물 없음 — REQUIREMENTS §1-5 기준으로 기획 유지·보강."
     )
+    qa_note = ""
+    if QA_FEEDBACK_FILE.exists():
+        qa = QA_FEEDBACK_FILE.read_text(encoding="utf-8")
+        if "### [OPEN]" in qa:
+            qa_note = (
+                "\n→ **우선**: `docs/QA_FEEDBACK.md` Open 항목을 읽고 "
+                "ROADMAP·USER_STORIES·PLAN_NOTES에 태스크 반영 후 Planned 로 이동."
+            )
     return (
         f"현재 진행: **자동 기획 동기화**\n"
         f"→ {benchmark_note}\n"
+        "→ **docs/ROADMAP.md** 를 v1·v2… 단계별 로드맵으로 유지·갱신 "
+        "(status / merge_status / 완료 기준).\n"
         "→ docs/REQUIREMENTS.md, docs/USER_STORIES.md, docs/PLAN_NOTES.md, "
-        "docs/FLOWCHART.md, docs/API_SPEC.md 중 **벤치마크·갭 분석에 따라 수정이 필요한 문서**를 갱신.\n"
+        "docs/FLOWCHART.md, docs/API_SPEC.md 중 **벤치마크·QA 피드백·갭 분석에 따라 수정이 필요한 문서**를 갱신.\n"
         "→ 미확정 사항은 PLAN_NOTES `### 추가 질문`에 누적.\n"
         "→ 사용자 승인 마커(`<!-- approved-by-user: true -->`) 추가 금지.\n"
-        "→ src/ 코드 작성 금지. 사용자 질문 금지."
+        f"→ src/ 코드 작성 금지. 사용자 질문 금지.{qa_note}"
     )
 
 
@@ -724,6 +1000,7 @@ def _build_benchmark_researcher_prompt(task: str | None = None) -> str:
         f"=== .agents/rules.md ===\n{rules}\n\n"
         "지금 너의 역할은 `.agents/agents.yaml` 의 `benchmark_researcher` 이다.\n"
         "agents.yaml 의 benchmark_researcher 섹션(research_focus·outputs)을 읽어라.\n\n"
+        f"{_doc_identity_block('benchmark_researcher')}\n"
         "## 0. 범위\n"
         "- **docs/ 및 memory/decisions.md 만** 작성·갱신. src/ 코드 변경 금지.\n"
         "- 주간보호·요양기관 관리 SaaS/ERP 경쟁사의 **서비스 제공 항목·기능·모듈**을 조사·정리.\n"
@@ -767,49 +1044,60 @@ def _build_planner_auto_prompt(task: str | None = None) -> str:
         f"=== .agents/rules.md ===\n{rules}\n\n"
         "지금 너의 역할은 `.agents/agents.yaml` 의 `planner` 이다.\n"
         "이번 호출은 **자동 기획 동기화** — 사용자 대화 없이 벤치마크 결과를 반영한다.\n\n"
+        f"{_doc_identity_block('planner')}\n"
         "## 0. 범위\n"
         "- **docs/ 기획 문서만** 작성·갱신. src/ 코드 변경 금지.\n"
         "- `docs/BENCHMARK_REPORT.md`, `docs/COMPETITOR_MATRIX.md`, "
         "`memory/decisions.md` 를 **먼저 읽고** ogada 기획에 반영한다.\n"
+        "- **`docs/QA_FEEDBACK.md`**, **`docs/TEST_REPORT.md`**, **`docs/ROADMAP.md`** 를 읽고 "
+        "tester 검증 이슈를 기획·로드맵에 반영한다.\n"
         "- REQUIREMENTS §1-1 스택(Java Spring Boot + React + PostgreSQL) 유지.\n\n"
         "## 1. 자율 실행 (필수)\n"
         "- 사용자에게 질문하지 말고 **반드시 docs/ 파일을 생성·수정**한다.\n"
+        "- **버전 로드맵**: `docs/ROADMAP.md` 에 v1·v2… 단계별 범위·완료 기준·status 유지.\n"
+        "- **QA 피드백 반영**: QA_FEEDBACK Open → ROADMAP/USER_STORIES/PLAN_NOTES 태스크화 후 "
+        "QA_FEEDBACK Planned 섹션으로 이동, `docs/PLAN_NOTES.md` `### QA 피드백 반영` 기록.\n"
         "- 경쟁사 대비 갭·차별화·MVP 우선순위를 REQUIREMENTS·USER_STORIES에 반영.\n"
         "- 미확정 사항은 `docs/PLAN_NOTES.md` `### 추가 질문`에 누적.\n"
         "- **`<!-- approved-by-user: true -->` 승인 마커는 절대 추가하지 않는다.**\n"
         "- 불명확해 중단해야 하면 `docs/PLAN_NOTES.md` `### 기획 질문`에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 문서 (우선순위)\n"
-        "1. docs/BENCHMARK_REPORT.md, docs/COMPETITOR_MATRIX.md\n"
-        "2. memory/decisions.md\n"
-        "3. docs/REQUIREMENTS.md, docs/USER_STORIES.md, docs/PLAN_NOTES.md\n"
-        "4. docs/FLOWCHART.md, docs/API_SPEC.md (필요 시만 갱신)\n\n"
+        "1. docs/QA_FEEDBACK.md, docs/TEST_REPORT.md (tester 산출물)\n"
+        "2. docs/ROADMAP.md\n"
+        "3. docs/BENCHMARK_REPORT.md, docs/COMPETITOR_MATRIX.md\n"
+        "4. memory/decisions.md\n"
+        "5. docs/REQUIREMENTS.md, docs/USER_STORIES.md, docs/PLAN_NOTES.md\n"
+        "6. docs/FLOWCHART.md, docs/API_SPEC.md (필요 시만 갱신)\n\n"
         "## 3. 출력·갱신 대상\n"
+        "- docs/ROADMAP.md — v1·v2… 단계별 범위·완료 기준·status\n"
         "- docs/REQUIREMENTS.md — §1-5 벤치마킹·기능 우선순위·갭 반영\n"
-        "- docs/USER_STORIES.md — 경쟁사 대비 누락 스토리 추가\n"
-        "- docs/PLAN_NOTES.md — 확인된 결정·추가 질문\n"
-        "- docs/FLOWCHART.md, docs/API_SPEC.md — 벤치마크 기반 수정 필요 시\n\n"
+        "- docs/USER_STORIES.md — 경쟁사·QA 대비 누락 스토리 추가\n"
+        "- docs/PLAN_NOTES.md — 확인된 결정·추가 질문·`### QA 피드백 반영`\n"
+        "- docs/QA_FEEDBACK.md — Open → Planned 이동 (반영 완료 시)\n"
+        "- docs/FLOWCHART.md, docs/API_SPEC.md — 벤치마크·QA 기반 수정 필요 시\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## 기획 동기화 요약\n"
-        "  - 반영한 벤치마크 인사이트\n"
+        "  - 반영한 QA 피드백·벤치마크 인사이트\n"
+        "  - 갱신한 ROADMAP 버전·우선순위\n"
         "  - 생성/수정한 문서\n"
         "  - 추가·변경한 기능/우선순위\n"
         "  - planner·사용자가 확인할 미확정 질문\n"
     )
 
 
-def _tester_migration_hint(stream: str) -> str:
+def _tester_test_hint(stream: str) -> str:
     transfer = transfer_dir_for_stream(stream)
     develop = branch_for_stream(stream, "develop")
-    migration = branch_for_stream(stream, "migration")
-    checklist = transfer / "checklists" / "migration.md"
+    test_branch = branch_for_stream(stream, "test")
+    checklist = transfer / "checklists" / "test.md"
     manifest = transfer / "manifests" / "latest.yaml"
 
     if not checklist.exists():
         return (
             f"현재 진행: **{stream} 이관 체크리스트 미작성**\n"
-            f"→ `transfer/{stream}/checklists/migration.md` 초안 작성.\n"
-            f"→ develop(`{develop}`) 산출물 대비 migration(`{migration}`) 이관 가능 여부 점검.\n"
+            f"→ `transfer/{stream}/checklists/test.md` 초안 작성.\n"
+            f"→ develop(`{develop}`) 산출물 대비 test(`{test_branch}`) 이관 가능 여부 점검.\n"
             f"→ `transfer/{stream}/manifests/latest.yaml` 에 버전·커밋·빌드 정보 기록.\n"
             "→ src/ 코드 **수정 금지** — transfer/·TEST_REPORT·tests/ 만 갱신."
         )
@@ -817,26 +1105,158 @@ def _tester_migration_hint(stream: str) -> str:
         return (
             f"현재 진행: **체크리스트 있음 — 매니페스트 미작성**\n"
             f"→ `transfer/{stream}/manifests/latest.yaml` 작성 "
-            f"(develop→migration 이관 대상 커밋, Flyway 버전, npm version 등).\n"
+            f"(develop→test 이관 대상 커밋, Flyway 버전, npm version 등).\n"
             "→ src/ 수정 금지."
         )
     return (
         f"현재 진행: **{stream} 기본 이관 산출물 있음**\n"
-        f"→ develop 최신 대비 migration 체크리스트·매니페스트·packages/ diff 요약 갱신.\n"
-        "→ Maven/npm 테스트 실행 결과를 docs/TEST_REPORT.md 에 반영.\n"
-        "→ src/ 수정 금지."
+        f"→ `docs/ROADMAP.md` merged 버전 기준 회귀·통합 테스트 실행.\n"
+        f"→ 실패·누락은 **`docs/QA_FEEDBACK.md` Open** 에 기록 (템플릿 준수).\n"
+        "→ Maven/npm 결과를 docs/TEST_REPORT.md 에 반영.\n"
+        "→ transfer/ 체크리스트·매니페스트 갱신.\n"
+        "→ src/ 수정 금지 — planner 가 QA_FEEDBACK 을 기획에 반영."
     )
 
 
-def _build_tester_prompt(stream: str = "backend", task: str | None = None) -> str:
+def _ux_progress_hint() -> str:
+    design = DOCS_DIR / "DESIGN_SYSTEM.md"
+    frontend = WORKSPACE_ROOT / "src/frontend"
+    tokens = frontend / "src/styles/tokens.css"
+    components = frontend / "src/styles/components.css"
+    ui_dir = frontend / "src/components/ui"
+
+    if not design.exists():
+        return (
+            "현재 진행: **DESIGN_SYSTEM.md 미작성**\n"
+            "→ `docs/DESIGN_SYSTEM.md` 초안: 색상·타이포·간격 토큰, WCAG AA, 터치 44px.\n"
+            "→ REQUIREMENTS·USER_STORIES·FLOWCHART 기반 React 컴포넌트 가이드."
+        )
+    if not tokens.exists() or not components.exists():
+        return (
+            "현재 진행: **디자인 문서 있음 — CSS 토큰 미작성**\n"
+            "→ `src/frontend/src/styles/tokens.css`, `components.css` 생성.\n"
+            "→ submodule frontend/develop 브랜치에서 작업."
+        )
+    if not ui_dir.exists() or not any(ui_dir.iterdir()):
+        return (
+            "현재 진행: **토큰 있음 — 공통 UI 컴포넌트 미작성**\n"
+            "→ `src/frontend/src/components/ui/` Button, Input, Card 등 초안."
+        )
+    return (
+        "현재 진행: **기본 디자인 시스템 있음**\n"
+        "→ USER_STORIES·FLOWCHART 대비 누락 화면·컴포넌트 보강.\n"
+        "→ 접근성(ARIA, 대비) 재점검."
+    )
+
+
+def _security_progress_hint() -> str:
+    outputs = {
+        "SECURITY_AUDIT.md": "OWASP Top 10 기반 취약점 점검 결과",
+        "SECURITY_CHECKLIST.md": "배포 전 보안 체크리스트",
+        "THREAT_MODEL.md": "STRIDE 위협 모델",
+    }
+    missing = [name for name in outputs if not (DOCS_DIR / name).exists()]
+    if missing:
+        first = missing[0]
+        return (
+            f"현재 진행: **{len(missing)}개 보안 문서 미작성**\n"
+            f"→ 지금 즉시 `docs/{first}` 초안 작성 ({outputs[first]}).\n"
+            "→ src/backend(Java Spring), src/frontend(React) 코드·설정 점검.\n"
+            "→ Maven dependency-check 또는 npm audit 결과 요약 포함.\n"
+            "→ src/ 코드 **수정 금지**, docs/SECURITY_*.md 만 갱신."
+        )
+    return (
+        "현재 진행: **기본 보안 문서 있음 — 일일 재점검**\n"
+        "→ 최근 src/ 변경·의존성·JWT/RBAC·PII 처리 재검토.\n"
+        "→ docs/SECURITY_AUDIT.md 에 신규/미해결 이슈 추가.\n"
+        "→ BLOCK 이슈는 docs/QA_FEEDBACK.md Open 에 `[SEC]` 항목으로 기록."
+    )
+
+
+def _build_security_auditor_prompt(task: str | None = None) -> str:
     rules = must_read(RULES_FILE)
-    progress = _tester_migration_hint(stream)
+    progress = _security_progress_hint()
     task_block = (
         f"## 이번 build 명시 작업\n{task.strip()}\n"
         if task and task.strip()
         else progress
     )
-    migration_branch = branch_for_stream(stream, "migration")
+    return (
+        f"=== .agents/rules.md ===\n{rules}\n\n"
+        "지금 너의 역할은 `.agents/agents.yaml` 의 `security_auditor` 이다.\n\n"
+        f"{_doc_identity_block('security_auditor')}\n"
+        "## 0. 범위\n"
+        "- **docs/SECURITY_*.md 만** 작성·갱신. src/ 코드 변경 **금지**.\n"
+        "- Java Spring Boot + React + PostgreSQL 스택 기준 OWASP Top 10 점검.\n"
+        "- Maven(`src/backend`)·npm(`src/frontend`) 의존성 취약점 스캔 결과 요약.\n\n"
+        "## 1. 자율 실행 (필수)\n"
+        "- 사용자 질문 금지. 이번 호출에서 docs/ 보안 문서를 반드시 생성·수정.\n"
+        "- 치명적 이슈는 `docs/QA_FEEDBACK.md` Open 에 `[SEC]` prefix 로 기록.\n"
+        "- 불확실하면 `docs/PLAN_NOTES.md` `### 보안 감사 질문` 에 기록 후 중단.\n\n"
+        f"{task_block}\n\n"
+        "## 2. 읽을 자료\n"
+        "- src/backend/, src/frontend/ (읽기 전용)\n"
+        "- docs/DATA_RETENTION_POLICY.md, docs/API_SPEC.md, docs/REQUIREMENTS.md\n"
+        "- docs/SECURITY_AUDIT.md 등 기존 보안 문서\n\n"
+        "## 3. 출력 위치\n"
+        "- docs/SECURITY_AUDIT.md\n"
+        "- docs/SECURITY_CHECKLIST.md\n"
+        "- docs/THREAT_MODEL.md\n\n"
+        "## 4. 최종 응답 포맷\n"
+        "  ## 보안 감사 작업 요약\n"
+        "  - 점검 범위 (backend/frontend)\n"
+        "  - 신규·미해결 취약점 (severity)\n"
+        "  - QA_FEEDBACK Open 에 기록한 [SEC] 항목\n"
+        "  - coder/planner 에게 전달할 조치\n"
+    )
+
+
+def _build_ux_designer_prompt(task: str | None = None) -> str:
+    rules = must_read(RULES_FILE)
+    progress = _ux_progress_hint()
+    task_block = (
+        f"## 이번 build 명시 작업\n{task.strip()}\n"
+        if task and task.strip()
+        else progress
+    )
+    develop_branch = branch_for_stream("frontend", "develop")
+    return (
+        f"=== .agents/rules.md ===\n{rules}\n\n"
+        "지금 너의 역할은 `.agents/agents.yaml` 의 `ux_designer` 이다.\n\n"
+        f"{_doc_identity_block('ux_designer')}\n"
+        "## 0. 브랜치·범위 (CRITICAL)\n"
+        f"- **submodule**: `src/frontend` | **브랜치**: `{develop_branch}`\n"
+        "- React(Vite) + TypeScript 기반 UI·디자인 토큰만 작성.\n"
+        "- `src/backend`, `transfer/` 수정 **금지**.\n\n"
+        "## 1. 자율 실행 (필수)\n"
+        "- 사용자 질문 금지. docs/DESIGN_SYSTEM.md 또는 frontend 스타일·UI 파일 생성·수정.\n"
+        "- 불확실하면 `docs/PLAN_NOTES.md` `### UX 설계 질문` 에 기록 후 중단.\n\n"
+        f"{task_block}\n\n"
+        "## 2. 읽을 문서\n"
+        "- docs/FLOWCHART.md, docs/USER_STORIES.md, docs/REQUIREMENTS.md\n"
+        "- docs/DESIGN_SYSTEM.md (있으면 갱신)\n\n"
+        "## 3. 출력 위치\n"
+        "- docs/DESIGN_SYSTEM.md\n"
+        "- src/frontend/src/styles/tokens.css, components.css\n"
+        "- src/frontend/src/components/ui/\n\n"
+        "## 4. 최종 응답 포맷\n"
+        "  ## UX 설계 작업 요약\n"
+        f"  - 브랜치: frontend/{develop_branch}\n"
+        "  - 생성/수정한 파일\n"
+        "  - 접근성·디자인 결정\n"
+        "  - coder 에게 전달할 구현 메모\n"
+    )
+
+
+def _build_tester_prompt(stream: str = "backend", task: str | None = None) -> str:
+    rules = must_read(RULES_FILE)
+    progress = _tester_test_hint(stream)
+    task_block = (
+        f"## 이번 build 명시 작업\n{task.strip()}\n"
+        if task and task.strip()
+        else progress
+    )
+    test_branch = branch_for_stream(stream, "test")
     develop_branch = branch_for_stream(stream, "develop")
     transfer = transfer_dir_for_stream(stream)
 
@@ -845,31 +1265,40 @@ def _build_tester_prompt(stream: str = "backend", task: str | None = None) -> st
         "지금 너의 역할은 `.agents/agents.yaml` 의 `tester`(QA·이관) 이다.\n"
         "agents.yaml tester 섹션과 `.agents/branches.yaml` 을 읽어라.\n\n"
         "## 0. 브랜치·범위 (CRITICAL)\n"
-        f"- **현재 스트림**: `{stream}` | **작업 브랜치**: `{migration_branch}` (이관 전용)\n"
-        f"- develop 브랜치 `{develop_branch}` 산출물은 **읽기만** — src/ 직접 수정 **금지**.\n"
-        f"- **수정 허용**: `transfer/{stream}/`, `docs/TEST_REPORT.md`, `tests/`.\n"
-        "- operation 브랜치·develop 브랜치 checkout·src/ 패치는 **금지**.\n\n"
+        f"- **현재 스트림**: `{stream}` | **submodule**: `src/{stream}` | **브랜치**: `{test_branch}`\n"
+        f"- submodule `src/{stream}` 의 **test** 브랜치에서 이관·검증.\n"
+        f"- develop(`{develop_branch}`) 산출물은 **읽기만** — src/ 직접 수정 **금지**.\n"
+        f"- **수정 허용**: `transfer/{stream}/`, `docs/TEST_REPORT.md`, `docs/QA_FEEDBACK.md`, `tests/`.\n"
+        "- operation·develop 브랜치 checkout·src/ 패치는 **금지**.\n\n"
+        f"{_doc_identity_block('tester')}\n"
         "## 1. 자율 실행 (필수)\n"
-        "- develop → migration **이관** 체크리스트·매니페스트·검증 리포트를 갱신.\n"
-        "- Maven(`src/backend`) 또는 npm(`src/frontend`) 테스트 **실행·결과 기록**.\n"
+        "- `docs/ROADMAP.md` merged 버전 기준으로 회귀·통합 테스트 실행.\n"
+        "- **실패·누락·불일치**는 `docs/QA_FEEDBACK.md` **Open** 섹션에 기록 "
+        "(템플릿·severity·version 포함) — **planner 가 기획 반영**.\n"
+        "- develop → test 이관 체크리스트·매니페스트·검증 리포트 갱신.\n"
+        "- Maven(`src/backend`) 또는 npm(`src/frontend`) 테스트 실행·결과 기록.\n"
+        "- BLOCK 이슈 있으면 transfer/ 체크리스트에 PASS 금지 명시.\n"
         "- 불확실하면 `docs/PLAN_NOTES.md` `### QA 이관 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 자료\n"
+        "- docs/ROADMAP.md (검증 대상 버전·완료 기준)\n"
         "- docs/USER_STORIES.md, docs/API_SPEC.md, docs/REQUIREMENTS.md\n"
-        f"- src/{stream}/ (읽기 전용 — develop 산출물)\n"
+        f"- src/{stream}/ (읽기 전용 — test 브랜치 산출물)\n"
         f"- {transfer}/ (이관 산출물)\n\n"
         "## 3. 출력 위치\n"
-        f"- transfer/{stream}/checklists/migration.md\n"
+        f"- transfer/{stream}/checklists/test.md\n"
         f"- transfer/{stream}/manifests/latest.yaml\n"
         f"- transfer/{stream}/packages/ (diff·빌드 메타)\n"
         "- docs/TEST_REPORT.md\n"
+        "- docs/QA_FEEDBACK.md (Open — 미해결 이슈)\n"
         "- tests/ (회귀 테스트 추가·수정 가능)\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## QA 이관 작업 요약\n"
-        f"  - 브랜치: {migration_branch}\n"
+        f"  - 브랜치: {test_branch}\n"
         "  - 이관 가능 여부 (PASS/BLOCK)\n"
-        "  - 갱신한 transfer/ 파일\n"
-        "  - 테스트 실행 결과 요약\n"
+        "  - QA_FEEDBACK Open 항목 수·severity\n"
+        "  - 갱신한 transfer/·TEST_REPORT·QA_FEEDBACK\n"
+        "  - planner 에게 전달할 핵심 수정 요청\n"
         "  - operation 승격 전 잔여 리스크\n"
     )
 
@@ -892,6 +1321,10 @@ def _build_role_prompt(
         return _build_planner_auto_prompt(task=task)
     if role == "tester":
         return _build_tester_prompt(stream=stream, task=task)
+    if role == "ux_designer":
+        return _build_ux_designer_prompt(task=task)
+    if role == "security_auditor":
+        return _build_security_auditor_prompt(task=task)
     raise ValueError(f"unknown role: {role}")
 
 
@@ -900,6 +1333,8 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
     if role == "coder":
         paths.update(_build_watched_paths(target))
         paths.update(_build_watched_paths(WORKSPACE_ROOT / "src/frontend"))
+        for doc in (ROADMAP_FILE, QA_FEEDBACK_FILE):
+            paths.add(doc)
     elif role == "db_architect":
         for name in ("ERD.md", "DATA_RETENTION_POLICY.md"):
             paths.add(DOCS_DIR / name)
@@ -948,6 +1383,9 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
             FLOWCHART_FILE,
             API_SPEC_FILE,
             DECISIONS_FILE,
+            ROADMAP_FILE,
+            QA_FEEDBACK_FILE,
+            TEST_REPORT_FILE,
         ):
             paths.add(path)
     elif role == "tester":
@@ -956,12 +1394,30 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
             for p in transfer.rglob("*"):
                 if p.is_file():
                     paths.add(p)
-        paths.add(DOCS_DIR / "TEST_REPORT.md")
+        for doc in (TEST_REPORT_FILE, QA_FEEDBACK_FILE, ROADMAP_FILE):
+            paths.add(doc)
         tests_root = WORKSPACE_ROOT / "tests"
         if tests_root.is_dir():
             for p in tests_root.rglob("*"):
                 if p.is_file():
                     paths.add(p)
+    elif role == "ux_designer":
+        for path in (
+            DOCS_DIR / "DESIGN_SYSTEM.md",
+            WORKSPACE_ROOT / "src/frontend/src/styles/tokens.css",
+            WORKSPACE_ROOT / "src/frontend/src/styles/components.css",
+            WORKSPACE_ROOT / "src/frontend/src/components/ui",
+        ):
+            if path.is_dir():
+                for p in path.rglob("*"):
+                    if p.is_file():
+                        paths.add(p)
+            else:
+                paths.add(path)
+    elif role == "security_auditor":
+        for name in ("SECURITY_AUDIT.md", "SECURITY_CHECKLIST.md", "THREAT_MODEL.md"):
+            paths.add(DOCS_DIR / name)
+        paths.add(QA_FEEDBACK_FILE)
     paths.add(PLAN_NOTES_FILE)
     return sorted(paths)
 
@@ -975,6 +1431,12 @@ def approval_present() -> bool:
 def _role_default_interval(role: str) -> int:
     if role == "tech_writer":
         return DEFAULT_WRITER_INTERVAL
+    if role == "security_auditor":
+        return DEFAULT_SECURITY_INTERVAL
+    if role == "ux_designer":
+        return DEFAULT_UX_INTERVAL
+    if role == "tester":
+        return DEFAULT_TESTER_INTERVAL
     if role in AUTO_ROLES:
         return DEFAULT_PLANNING_INTERVAL
     return DEFAULT_INTERVAL
@@ -1011,6 +1473,9 @@ def planner_system_prompt() -> str:
         f"- 사용자 승인 마커 `{APPROVAL_MARKER}` 는 절대로 추가하지 않는다 "
         "  (승인은 사용자가 직접 추가한다).\n"
         "- 미확정/추가 질문은 docs/PLAN_NOTES.md 의 '### 추가 질문' 섹션에 누적한다.\n"
+        "- docs/QA_FEEDBACK.md 의 Open 항목을 읽고 ROADMAP·USER_STORIES·PLAN_NOTES "
+        "('### QA 피드백 반영')에 반영한다.\n"
+        "- docs/ROADMAP.md 를 v1·v2… 단계별 로드맵으로 유지한다.\n"
         "- 벤치마크 산출물(docs/BENCHMARK_REPORT.md, docs/COMPETITOR_MATRIX.md)과 "
         "memory/decisions.md 를 참고해 기획에 반영한다.\n"
         "- 코드는 절대 작성하지 않는다. build 단계는 별도로 사용자 승인 후 실행된다.\n"
@@ -1545,13 +2010,22 @@ def cmd_status(_: argparse.Namespace) -> None:
     print(f"benchmark_researcher : {resolve_model_chain('benchmark_researcher')}")
     print(f"coder                : {resolve_model_chain('coder')}")
     print(f"db_architect         : {resolve_model_chain('db_architect')}")
+    print(f"ux_designer          : {resolve_model_chain('ux_designer')}")
+    print(f"security_auditor     : {resolve_model_chain('security_auditor')}")
     print(f"tech_writer          : {resolve_model_chain('tech_writer')}")
     print(f"default              : {resolve_model_chain(None)}")
-    if _git_repo_ready():
-        print(f"git branch  : {_git_current_branch() or '(detached)'}")
-    else:
-        print("git branch  : (no repo — run ./scripts/git_branch_setup.sh)")
-    print(f"branch policy: .agents/branches.yaml")
+    if _git_repo_ready(WORKSPACE_ROOT):
+        print(f"git root branch     : {_git_current_branch(WORKSPACE_ROOT) or '(detached)'}")
+    for stream in ("backend", "frontend"):
+        sub = submodule_dir_for_stream(stream)
+        if _git_repo_ready(sub):
+            print(
+                f"git {stream:8}       : "
+                f"{_git_current_branch(sub) or '(detached)'} ({sub.relative_to(WORKSPACE_ROOT)})"
+            )
+        else:
+            print(f"git {stream:8}       : (no repo — run ./scripts/git_branch_setup.sh)")
+    print(f"branch policy: .agents/branches.yaml (submodule develop/test/operation)")
 
 
 def cmd_plan(args: argparse.Namespace) -> None:
@@ -1742,10 +2216,12 @@ def cmd_build(args: argparse.Namespace) -> None:
     target = (WORKSPACE_ROOT / args.target).resolve()
     stream = resolve_stream(args, target)
 
-    if role in ("coder", "tester"):
-        ensure_role_branch(role, stream)
+    if role in ("coder", "tester", "ux_designer"):
+        ensure_role_branch(role, stream if role != "ux_designer" else "frontend")
         if role == "tester":
             target = transfer_dir_for_stream(stream)
+        elif role == "ux_designer":
+            target = WORKSPACE_ROOT / "src" / "frontend"
         elif stream == "frontend":
             target = WORKSPACE_ROOT / "src" / "frontend"
         else:
@@ -1755,6 +2231,10 @@ def cmd_build(args: argparse.Namespace) -> None:
 
     if role == "coder" and not target.exists():
         print(f"[fatal] 작업 대상이 존재하지 않습니다: {target}", file=sys.stderr)
+        sys.exit(2)
+
+    if role == "ux_designer" and not (WORKSPACE_ROOT / "src/frontend").exists():
+        print("[fatal] src/frontend submodule 이 없습니다.", file=sys.stderr)
         sys.exit(2)
 
     if role in AUTO_ROLES:
@@ -1816,14 +2296,21 @@ def cmd_build(args: argparse.Namespace) -> None:
         if role == "coder":
             print("  - git diff 로 코드 확인 후 커밋")
             print(f"      git -C {WORKSPACE_ROOT / 'src/backend'} status")
+        elif role == "tester":
+            print(f"  - transfer/{stream}/checklists · manifests 확인")
+            print("  - docs/TEST_REPORT.md · docs/QA_FEEDBACK.md 확인")
+            print("  - planner 자동 반영: agent_pipeline.sh")
+            maybe_merge_version_to_test(stream)
         elif role == "db_architect":
             print("  - docs/ERD.md · db/migration SQL 확인")
         elif role == "benchmark_researcher":
             print("  - docs/BENCHMARK_REPORT.md · docs/COMPETITOR_MATRIX.md 확인")
-            print("  - planner 자동 동기화: build --role planner")
-        elif role == "tester":
-            print(f"  - transfer/{stream}/checklists · manifests 확인")
-            print("  - docs/TEST_REPORT.md 확인")
+            print("  - planner 자동 동기화: agent_pipeline.sh")
+        elif role == "security_auditor":
+            print("  - docs/SECURITY_AUDIT.md · SECURITY_CHECKLIST.md 확인")
+            print("  - [SEC] QA_FEEDBACK Open 항목 → coder/planner 반영")
+        elif role == "ux_designer":
+            print("  - docs/DESIGN_SYSTEM.md · src/frontend/src/styles 확인")
         elif role == "planner":
             print("  - docs/REQUIREMENTS.md · docs/USER_STORIES.md · docs/PLAN_NOTES.md 확인")
             print("  - 사용자 승인 전 plan --resume 으로 대화형 검토 권장")
@@ -1874,15 +2361,17 @@ def main() -> None:
         choices=sorted(ALL_BUILD_ROLES),
         help=(
             "에이전트 역할: coder(코드), db_architect(DB), tech_writer(문서), "
-            "benchmark_researcher(경쟁사 벤치마크), planner(벤치마크 반영 자동 기획), "
-            "tester(QA 이관 — migration 브랜치·transfer/ 전용)"
+            "ux_designer(UX/UI), security_auditor(보안·1일1회), "
+            "benchmark_researcher(경쟁사 벤치마크), "
+            "planner(벤치마크 반영 자동 기획), "
+            "tester(QA 이관 — submodule test·transfer/ 전용)"
         ),
     )
     p_build.add_argument(
         "--stream",
         choices=["backend", "frontend"],
         default=None,
-        help="coder/tester 스트림: backend(기본) 또는 frontend. develop/migration 브랜치 선택",
+        help="coder/tester 스트림: backend(기본) 또는 frontend. develop/test 브랜치 선택",
     )
     p_build.add_argument(
         "--target",
@@ -1897,7 +2386,7 @@ def main() -> None:
         "--interval",
         type=int,
         default=None,
-        help="--loop 반복 간격(초). 미지정 시 coder/db=900, tech_writer=3600, benchmark/planner=10800",
+        help="--loop 반복 간격(초). 미지정 시 coder/db/ux/tester/planner=900, tech_writer=3600, security=86400",
     )
     p_build.add_argument("--loop", action="store_true", help="반복 실행")
     p_build.set_defaults(func=cmd_build)

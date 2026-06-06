@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# benchmark_researcher + planner 를 각각 별도 tmux 세션에서 3시간 간격 loop 실행.
+# benchmark_researcher 를 3시간 간격 loop 실행.
+# planner 는 agent_team_start.sh 의 pipeline(planner→coder→tester) 에서 15분 주기로 실행.
 #
 # benchmark_researcher: 경쟁사 기능·서비스 조사 → BENCHMARK_REPORT, COMPETITOR_MATRIX
-# planner:            벤치마크 산출물을 읽고 REQUIREMENTS·USER_STORIES 등 기획 갱신
 #
 # 사용 예:
 #   ./scripts/agent_planning_start.sh
@@ -18,7 +18,6 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 VENV="$ROOT/.venv/bin/activate"
 
 BENCHMARK_SESSION="${AGENT_BENCHMARK_SESSION:-ogada-benchmark}"
-PLANNER_SESSION="${AGENT_PLANNER_SESSION:-ogada-planner}"
 INTERVAL="${AGENT_PLANNING_INTERVAL_SECONDS:-10800}"
 
 LOOP_FLAG=(--loop)
@@ -47,14 +46,10 @@ start_session() {
 start_session "$BENCHMARK_SESSION" \
   build --role benchmark_researcher --interval "$INTERVAL" "${LOOP_FLAG[@]}"
 
-# planner: 벤치마크 반영 자동 기획 (승인 마커 불필요)
-start_session "$PLANNER_SESSION" \
-  build --role planner --interval "$INTERVAL" "${LOOP_FLAG[@]}"
-
 echo ""
-echo "[ok] 기획·벤치마크 에이전트 tmux 세션"
-echo "  benchmark_researcher : tmux attach -t $BENCHMARK_SESSION   (interval ${INTERVAL}s = 3h)"
-echo "  planner (auto)       : tmux attach -t $PLANNER_SESSION      (interval ${INTERVAL}s = 3h)"
+echo "[ok] 벤치마크 에이전트 tmux 세션"
+echo "  benchmark_researcher : tmux attach -t $BENCHMARK_SESSION   (interval ${INTERVAL}s)"
 echo ""
+echo "  planner 는 ./scripts/agent_team_start.sh pipeline 에서 15분 주기로 실행됩니다."
 echo "  전체 상태: ./scripts/agent_planning_status.sh"
 echo "  전체 중지: ./scripts/agent_planning_stop.sh"

@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
-# agent_team_start.sh 로 띄운 3개 tmux 세션 + run_agent.py 프로세스 정리.
+# agent_team_start.sh 로 띄운 tmux 세션 + pipeline 프로세스 정리.
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-CODER_SESSION="${AGENT_CODER_SESSION:-ogada-coder}"
+PIPELINE_SESSION="${AGENT_PIPELINE_SESSION:-ogada-pipeline}"
 DB_SESSION="${AGENT_DB_SESSION:-ogada-db}"
 WRITER_SESSION="${AGENT_WRITER_SESSION:-ogada-writer}"
+SECURITY_SESSION="${AGENT_SECURITY_SESSION:-ogada-security}"
 
 killed=0
 
-for s in "$CODER_SESSION" "$DB_SESSION" "$WRITER_SESSION"; do
+for s in "$PIPELINE_SESSION" "$DB_SESSION" "$SECURITY_SESSION" "$WRITER_SESSION"; do
   if command -v tmux >/dev/null 2>&1 && tmux has-session -t "$s" 2>/dev/null; then
     echo "[stop] tmux $s"
     tmux kill-session -t "$s" || true
@@ -20,9 +21,9 @@ for s in "$CODER_SESSION" "$DB_SESSION" "$WRITER_SESSION"; do
   fi
 done
 
-PIDS=$(pgrep -f "run_agent.py build" || true)
+PIDS=$(pgrep -f "run_agent.py build|agent_pipeline.sh" || true)
 if [[ -n "$PIDS" ]]; then
-  echo "[stop] run_agent.py build PIDs: $PIDS"
+  echo "[stop] agent PIDs: $PIDS"
   # shellcheck disable=SC2086
   kill $PIDS 2>/dev/null || true
   sleep 1

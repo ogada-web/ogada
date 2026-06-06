@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# coder / db_architect / tech_writer tmux 세션 상태 요약.
+# pipeline / db / security / tech_writer tmux 세션 상태 요약.
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-CODER_SESSION="${AGENT_CODER_SESSION:-ogada-coder}"
+PIPELINE_SESSION="${AGENT_PIPELINE_SESSION:-ogada-pipeline}"
 DB_SESSION="${AGENT_DB_SESSION:-ogada-db}"
 WRITER_SESSION="${AGENT_WRITER_SESSION:-ogada-writer}"
+SECURITY_SESSION="${AGENT_SECURITY_SESSION:-ogada-security}"
 
 check_session() {
   local name=$1
@@ -21,13 +22,14 @@ check_session() {
 }
 
 echo "[team tmux]"
-check_session "$CODER_SESSION" "coder"
+check_session "$PIPELINE_SESSION" "pipeline (PLN→UXD→COD→TSR backend→frontend)"
 check_session "$DB_SESSION" "db_architect"
+check_session "$SECURITY_SESSION" "security_auditor (daily)"
 check_session "$WRITER_SESSION" "tech_writer"
 
 echo ""
 echo "[processes]"
-ps -ef | grep -E "run_agent.py build|cursor-sdk-bridge" | grep -v grep || echo "  none"
+ps -ef | grep -E "run_agent.py build|agent_pipeline.sh|cursor-sdk-bridge" | grep -v grep || echo "  none"
 
 echo ""
 "$ROOT/.venv/bin/python" "$ROOT/scripts/run_agent.py" status || true

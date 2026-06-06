@@ -9,10 +9,11 @@ project:
   description: 주간보호센터 운영 관리 웹 시스템
   domain: healthcare / elderly-care
   stack:
-    frontend: HTML / Vanilla CSS / JavaScript
-    backend: Python (FastAPI)
-    database: SQLite (dev) / PostgreSQL (prod)
-    auth: JWT (세션 기반 인증)
+    frontend: React 18 + Vite + TypeScript
+    backend: Java 17+ / Spring Boot 3.x
+    database: PostgreSQL (dev/prod)
+    orm: Spring Data JPA + Flyway
+    auth: JWT + RBAC (7역할, SaaS 멀티테넌트)
 
 # =============================================================================
 # MODELS (Cursor SDK model IDs)
@@ -59,6 +60,25 @@ models:
     tech_writer: composer-2.5
 
 # =============================================================================
+# AGENT IDENTITY (문서 postfix · 소유자 · 독자 구분)
+# =============================================================================
+# 각 에이전트는 고유 `id`(3~4자)와 `doc_signature`를 갖는다.
+# 문서·메모에 메타 태그를 남겨 누가 썼고 누가 읽어야 하는지 구분한다.
+#
+# 권장 메타 (HTML 주석, 문서 최상단):
+#   <!-- doc:owner=PLN doc:audience=COD,TSR updated=2026-06-06T12:00:00+09:00 -->
+#
+# PLAN_NOTES / QA_FEEDBACK 섹션 제목 postfix:
+#   ### [PLN] 추가 질문
+#   ### [TSR] Open — v1.2 로그인 실패
+#
+# 파일명 postfix 는 사용하지 않고(충돌·git noise 방지), 본문 메타만 사용한다.
+agent_identity:
+  meta_format: html_comment
+  meta_template: "<!-- doc:owner={owner} doc:audience={audience} updated={iso8601} -->"
+  section_title: "### {doc_signature} {title}"
+
+# =============================================================================
 # AGENTS
 # =============================================================================
 agents:
@@ -67,6 +87,9 @@ agents:
   # 1. 기획자 (Planner / Product Manager)
   # ---------------------------------------------------------------------------
   - name: planner
+    id: PLN
+    doc_signature: "[PLN]"
+    doc_audience: [COD, TSR, UXD, DBA, BNK, TWR]
     role: Product Planner
     # 기획은 깊은 추론과 누락 항목 발견이 중요 → Opus 1순위.
     # 한도 초과 시 다른 Opus 버전 → Sonnet → GPT-5 → composer 로 폴백.
@@ -83,19 +106,24 @@ agents:
       docs/REQUIREMENTS.md 및 docs/USER_STORIES.md를 주된 산출물로 관리한다.
     responsibilities:
       - 센터 운영자 / 사회복지사 / 보호자 등 이해관계자 역할 정의
+      - **docs/ROADMAP.md** v1·v2… 단계별 범위·완료 기준·우선순위 관리
       - 기능 목록 우선순위화 (MoSCoW)
+      - **tester QA_FEEDBACK** Open 항목을 ROADMAP·USER_STORIES·PLAN_NOTES에 반영
       - 화면 흐름도(Flowchart) 및 와이어프레임 명세 작성
       - API 엔드포인트 목록 초안 작성
       - 스프린트 계획 및 마일스톤 관리
     inputs:
       - 사용자 인터뷰 요약 (memory/scratchpad.md)
       - 법적·행정 요건 (노인복지법, 장기요양보험법 관련 항목)
+      - docs/QA_FEEDBACK.md           # tester 검증 이슈
+      - docs/TEST_REPORT.md           # tester 테스트 결과
       - docs/BENCHMARK_REPORT.md      # benchmark_researcher 최신 조사
       - docs/COMPETITOR_MATRIX.md     # 기능·서비스 비교 매트릭스
       - memory/decisions.md           # 벤치마킹 기반 결정 이력
     outputs:
       - docs/REQUIREMENTS.md       # 기능 요구사항 명세
       - docs/USER_STORIES.md       # 사용자 스토리
+      - docs/ROADMAP.md            # v1·v2… 단계별 구현 로드맵
       - docs/FLOWCHART.md          # 화면 흐름도
       - docs/API_SPEC.md           # REST API 명세 초안
     key_features_to_plan:
@@ -117,6 +145,9 @@ agents:
   # 1-b. 경쟁사 벤치마크 분석가 (Benchmark Researcher)
   # ---------------------------------------------------------------------------
   - name: benchmark_researcher
+    id: BNK
+    doc_signature: "[BNK]"
+    doc_audience: [PLN]
     role: Competitive Research / Benchmark Analyst
     model: claude-opus-4-8
     fallback_models:
@@ -160,6 +191,9 @@ agents:
   #    필수적이며, 별도 설계 에이전트가 디자인 시스템을 일관되게 관리해야 함.
   # ---------------------------------------------------------------------------
   - name: ux_designer
+    id: UXD
+    doc_signature: "[UXD]"
+    doc_audience: [PLN, COD, TSR]
     role: UX / UI Designer
     # 시각/접근성/디자인 토큰 일관성 → Opus 1순위
     model: claude-opus-4-8
@@ -170,22 +204,29 @@ agents:
       - composer-2.5
       - default
     description: |
-      사용자 경험을 설계하고 일관된 디자인 시스템을 구축한다.
+      사용자 경험을 설계하고 React 기반 디자인 시스템을 구축한다.
       고령자·복지사·관리자 각 페르소나에 최적화된 화면을 설계하며,
-      src/styles/ 하위에 CSS 토큰과 컴포넌트 스타일을 정의한다.
+      `src/frontend` submodule develop 브랜치에서 UI 토큰·공통 컴포넌트를 정의한다.
     responsibilities:
       - 디자인 시스템(색상 팔레트, 타이포그래피, 간격 토큰) 정의
-      - 각 페이지 레이아웃 및 컴포넌트 설계
-      - 접근성 검토 (색 대비, 키보드 내비게이션, 스크린 리더)
+      - React 공통 UI 컴포넌트(Button, Form, Layout) 설계·스타일
+      - 접근성 검토 (색 대비, 키보드 내비게이션, 스크린 리더, ARIA)
       - 반응형 그리드 및 브레이크포인트 결정
       - 모션·인터랙션 가이드라인 작성
+    branch_policy:
+      allowed_phases: [develop]
+      submodule: frontend
+      checkout_branch: develop
+      forbidden_paths: [transfer/, src/backend]
     inputs:
       - docs/FLOWCHART.md
       - docs/USER_STORIES.md
+      - docs/REQUIREMENTS.md
     outputs:
-      - docs/DESIGN_SYSTEM.md      # 디자인 토큰 및 컴포넌트 가이드
-      - src/styles/tokens.css      # CSS 커스텀 프로퍼티
-      - src/styles/components.css  # 공통 컴포넌트 스타일
+      - docs/DESIGN_SYSTEM.md
+      - src/frontend/src/styles/tokens.css
+      - src/frontend/src/styles/components.css
+      - src/frontend/src/components/ui/
     design_principles:
       - 큰 폰트(기본 16px 이상, 주요 항목 18~20px)
       - 고대비 색상 (WCAG AA 4.5:1 이상)
@@ -199,6 +240,9 @@ agents:
   #    등 복잡한 스키마 설계가 필요하므로 전담 에이전트가 필요함.
   # ---------------------------------------------------------------------------
   - name: db_architect
+    id: DBA
+    doc_signature: "[DBA]"
+    doc_audience: [COD, PLN, TSR]
     role: Database Architect
     # 스키마 정합성/인덱스/감사 로그 설계 → Opus 1순위
     model: claude-opus-4-8
@@ -214,7 +258,7 @@ agents:
     responsibilities:
       - ERD(Entity Relationship Diagram) 작성
       - 테이블 정의서 및 컬럼 명세 작성
-      - 마이그레이션 스크립트 생성 (src/db/migrations/)
+      - Flyway 마이그레이션 (src/backend/src/main/resources/db/migration/)
       - 인덱스·쿼리 최적화 제안
       - 개인정보 분리 저장 전략 (PII 컬럼 암호화 여부 결정)
       - 감사 로그(audit_log) 테이블 설계
@@ -223,10 +267,9 @@ agents:
       - docs/REQUIREMENTS.md
       - docs/API_SPEC.md
     outputs:
-      - docs/ERD.md                      # ERD 및 관계 설명
-      - src/db/schema.sql                # DDL 스크립트
-      - src/db/migrations/               # 버전별 마이그레이션
-      - docs/DATA_RETENTION_POLICY.md    # 데이터 보존 정책
+      - docs/ERD.md
+      - src/backend/src/main/resources/db/migration/
+      - docs/DATA_RETENTION_POLICY.md
     core_entities:
       - users (직원·관리자 계정)
       - clients (이용자 / 어르신)
@@ -244,6 +287,9 @@ agents:
   # 4. 코더 (Backend + Frontend Developer)
   # ---------------------------------------------------------------------------
   - name: coder
+    id: COD
+    doc_signature: "[COD]"
+    doc_audience: [TSR, PLN, SEC]
     role: Full-Stack Developer
     # 코드 특화 모델 1순위 (doctor OK 확인됨).
     # 한도 초과 시 다른 코덱스 변형 → 일반 GPT-5 → Opus → composer 순으로 폴백.
@@ -258,16 +304,17 @@ agents:
       - default
     description: |
       기획·설계 산출물을 바탕으로 백엔드 API와 프론트엔드 화면을 구현한다.
-      **개발(develop) 브랜치에서만** `src/backend`, `src/frontend` 코드를 작성한다.
-      이관(transfer)·migration·operation 브랜치 및 `transfer/` 폴더는 다루지 않는다.
+      **각 submodule의 develop 브랜치에서만** `src/backend`, `src/frontend` 코드를 작성한다.
+      이관(transfer)·test·operation 브랜치 및 `transfer/` 폴더는 다루지 않는다.
     responsibilities:
-      - `backend/develop` 또는 `frontend/develop` 브랜치에서 Java/React 구현
-      - Spring Boot API·서비스·레포지토리, React(Vite) SPA 화면
-      - JWT 인증·인가·RBAC, 환경변수 기반 설정 (하드코딩 금지)
+      - `src/backend` 또는 `src/frontend` submodule 의 `develop` 브랜치에서 Java/React 구현
+      - Spring Boot REST API·서비스·JPA 레포지토리, React(Vite) SPA 화면
+      - JWT 인증·인가·RBAC, application.yml + 환경변수 기반 설정 (하드코딩 금지)
     branch_policy:
       allowed_phases: [develop]
-      backend_branch: backend/develop
-      frontend_branch: frontend/develop
+      submodule_checkout: true
+      backend_branch: develop
+      frontend_branch: develop
       forbidden_paths: [transfer/]
     inputs:
       - docs/API_SPEC.md
@@ -277,12 +324,12 @@ agents:
       - src/backend/       # Java Spring Boot (develop 브랜치)
       - src/frontend/      # React Vite SPA (develop 브랜치)
     coding_standards:
-      - PEP 8 준수
-      - 함수 단위 Docstring 작성
-      - 타입 힌트 필수
+      - Java: Google Java Style / Spring Boot 관례, Lombok 최소화
+      - React: TypeScript strict, 함수형 컴포넌트 + hooks
+      - API: REST + OpenAPI 3, DTO·Entity 분리
       - 시크릿·비밀번호는 환경변수(.env)로만 관리
-      - SQL은 ORM 또는 파라미터 바인딩만 사용 (Raw string 금지)
-      - innerHTML 사용 금지 → textContent / DOM API 사용
+      - SQL은 JPA/JPQL 또는 PreparedStatement만 (문자열 concat 금지)
+      - React: dangerouslySetInnerHTML 금지 → JSX 이스케이프 기본
 
   # ---------------------------------------------------------------------------
   # 5. 보안 감사관 (Security Auditor)
@@ -290,6 +337,9 @@ agents:
   #    및 개인정보보호법 준수 여부를 전담 검토하는 에이전트가 필수임.
   # ---------------------------------------------------------------------------
   - name: security_auditor
+    id: SEC
+    doc_signature: "[SEC]"
+    doc_audience: [COD, PLN, TSR]
     role: Security Auditor
     # 위협 모델링/엣지 케이스/취약점 추론 → Opus 1순위
     model: claude-opus-4-8
@@ -308,7 +358,7 @@ agents:
       - 인증·인가 로직 검토 (JWT 유효성, 권한 분리)
       - SQL Injection / XSS / CSRF 취약점 점검
       - 민감 정보 노출 여부 점검 (로그, 에러 메시지, API 응답)
-      - 의존성 취약점 스캔 (pip-audit)
+      - 의존성 취약점 스캔 (Maven OWASP dependency-check, npm audit)
       - HTTPS 강제, 보안 헤더(CSP, HSTS 등) 점검
       - 개인정보 처리방침 및 동의 흐름 검토
       - 침투 테스트 시나리오 작성 및 결과 문서화
@@ -330,7 +380,10 @@ agents:
   # 6. 테스터 (QA Engineer)
   # ---------------------------------------------------------------------------
   - name: tester
-    role: QA Engineer (Migration / 이관)
+    id: TSR
+    doc_signature: "[TSR]"
+    doc_audience: [PLN, COD]
+    role: QA Engineer (Test / 이관)
     # 이관 검증·체크리스트·매니페스트 → Opus 1순위
     model: claude-opus-4-8
     fallback_models:
@@ -339,18 +392,19 @@ agents:
       - composer-2.5
       - default
     description: |
-      develop → migration 이관 단계를 전담한다.
-      **migration 브랜치에서만** `transfer/` 이관 산출물·검증·테스트 리포트를 관리한다.
+      develop → test 이관·검증 단계를 전담한다.
+      **submodule test 브랜치에서만** `transfer/` 이관 산출물·검증·테스트 리포트를 관리한다.
       `src/` 코드 직접 수정은 금지 — coder(develop)와 역할을 분리한다.
     responsibilities:
-      - `backend/migration` 또는 `frontend/migration` 브랜치에서 이관 작업
+      - `src/backend` 또는 `src/frontend` submodule 의 `test` 브랜치에서 이관·검증 작업
       - transfer/{backend,frontend}/checklists·manifests·packages 갱신
-      - develop 대비 migration 이관 가능 여부 검증, TEST_REPORT 작성
+      - develop 대비 test 이관 가능 여부 검증, TEST_REPORT 작성
       - 회귀·통합 테스트 실행 및 결과 기록 (src/ 수정 없이)
     branch_policy:
-      allowed_phases: [migration]
-      backend_branch: backend/migration
-      frontend_branch: frontend/migration
+      allowed_phases: [test]
+      submodule_checkout: true
+      backend_branch: test
+      frontend_branch: test
       allowed_paths: [transfer/, docs/TEST_REPORT.md, tests/]
       forbidden_paths: [src/backend, src/frontend]
     inputs:
@@ -378,6 +432,9 @@ agents:
   #    사용자 매뉴얼, 관리자 가이드, API 문서가 별도로 필요함.
   # ---------------------------------------------------------------------------
   - name: tech_writer
+    id: TWR
+    doc_signature: "[TWR]"
+    doc_audience: [PLN, COD]
     role: Technical Writer
     # 문서/매뉴얼/CHANGELOG → 빠르고 저비용 기본 모델
     model: composer-2.5
@@ -410,6 +467,9 @@ agents:
 # WORKFLOW (에이전트 간 협업 흐름)
 # =============================================================================
 workflow:
+  schedule:
+    pipeline: "900s (15min) — planner → ux_designer → coder → tester (backend → frontend)"
+    security_auditor: "86400s (24h) — 일일 보안 점검"
   phases:
     - phase: 1_planning
       name: 기획 및 요구사항 정의
@@ -438,7 +498,7 @@ workflow:
       support: [db_architect, security_auditor]
       deliverables:
         - src/ (전체 구현)
-        - src/db/migrations/
+        - src/backend/src/main/resources/db/migration/
 
     - phase: 4_testing
       name: 테스트 및 보안 감사

@@ -35,6 +35,14 @@ src/backend/.venv/
 .agents/.planner_session.json
 .agents/.planner_history
 
+# Accidental / disabled git backups (do not commit)
+.git.accidental-*/
+.git.disabled-*/
+
+# Embedded repos — track as normal dirs if nested .git removed
+# src/backend/.git
+# src/frontend/.git
+
 # Logs
 *.log
 /tmp/
