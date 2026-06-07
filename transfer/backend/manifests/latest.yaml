@@ -1,0 +1,190 @@
+# doc:owner=TSR doc:audience=PLN,COD
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-07T15:30:00+00:00
+# revalidation_62nd: 2026-06-07T15:30Z — develop 136239e CLEAN (BE-10+v2/J03+Solapi). test 2799e29 stale. test 79/79·develop 152/152 PASS. v1 baseline artifacts PRESENT. merge 4커밋. 판정 BLOCK(merge 게이트 단일).
+# revalidation_60th: 2026-06-07T14:55Z — develop 3f9264f CLEAN (BE-10+v2/J03). test 2799e29 stale. test 79/79·develop 147/147 PASS. QA-B10 develop Fixed(TSR 독립 검증 PASS). merge 3커밋. 판정 BLOCK(merge 게이트 단일).
+
+stream: backend
+roadmap_version: v1
+roadmap_status: done
+merge_status: merged
+transfer_verdict: BLOCK
+
+repository:
+  submodule_path: src/backend
+  worktree_test_path: src/backend-test
+  remote: origin
+
+branches:
+  develop:
+    name: develop
+    head: 136239ef73abd2b8ae8d30e23ac56cf66bd34f63
+    head_short: 136239e
+    message: "feat(v2/J03): Solapi alimtalk provider, guardian phone storage, billing notify"
+    working_tree_clean: true
+    working_tree_modified: 0
+    working_tree_untracked: 0
+    working_tree_total: 0
+    working_tree_note: >-
+      CLEAN @ 136239e — J01(f47ffa1) + BE-10(cf6116c) + v2/J03(3f9264f) + Solapi(136239e) committed.
+      v1 baseline artifacts Fixed — PilotChecklistJwt(pilot/)·MustApiEndpointRouting(routing/)·
+      ProductionSecretValidatorTest·SevenRoleJwtLoginE2eTest·RoleBasedControllerAccessTest PRESENT.
+      TSR 62차 독립 검증 PASS (이관 규율 5·6 PASS).
+    annotation_count_head_surefire: 152
+    spring_boot: "3.3.1"
+    note: "develop 4커밋 ahead of test. v1 baseline artifacts PRESENT. test 반영은 merge 후."
+  test:
+    name: test
+    head: 2799e29c114cf4992115147ba57cdd512e063b36
+    head_short: "2799e29"
+    message: "feat: Spring Boot 3.x 백엔드 초기 구현"
+    working_tree_clean: true
+    spring_boot: "3.3.1"
+    note: "Stale — 79 tests·Boot 3.3.1. develop 3커밋 ahead (f47ffa1·cf6116c·3f9264f) 미반영."
+
+develop_test_diff:
+  commits_develop_ahead_of_test: 4
+  commits_test_ahead_of_develop: 0
+  ahead_commits:
+    - f47ffa1  # J01 guardian invitations + notification preferences + V35–V43 (B09·B08·BE-8 Fixed)
+    - cf6116c  # BE-10 option2: restore v1 baseline security·routing·E2E tests on develop
+    - 3f9264f  # v2/J03: NotificationService dispatch skeleton + stub providers
+    - 136239e  # v2/J03: Solapi alimtalk provider, guardian phone storage, billing notify
+  develop_uncommitted:
+    modified: []
+    untracked: []
+  note: >-
+    develop 3커밋 ahead. develop CLEAN. test @2799e29 stale.
+    BLOCK = merge 게이트 단일 (v1 baseline artifacts PRESENT·test 미반영).
+
+artifact:
+  group_id: com.ogada
+  artifact_id: backend
+  version: 0.0.1-SNAPSHOT
+  packaging: jar
+  spring_boot_parent:
+    develop_head: "3.3.1"
+    test_branch: "3.3.1"
+    roadmap_expected: "3.5.3"
+  java_version: "17"
+
+flyway:
+  develop_head_committed_latest: V43__guardian_invitations.sql
+  develop_wt_untracked: none
+  test_branch_latest: V34__attendance_billing_row_lifecycle_and_nhis_query.sql
+  note: "V35–V43 develop HEAD only. test 미반영(merge BLOCK). ROADMAP expects V40 on test."
+
+build:
+  command: mvn -q -DskipTests package
+  context: test branch (src/backend-test @ 2799e29, clean)
+  executed_at: 2026-06-07T13:56:00+00:00
+  result: SUCCESS
+  jar: target/backend-0.0.1-SNAPSHOT.jar
+  jar_size_bytes: 76466058
+  note: "Spring Boot 3.3.1 — 58차 실측 (test branch 변경 없음)"
+
+tests:
+  command: mvn test
+  context: test branch (src/backend-test @ 2799e29, clean working tree)
+  executed_at: 2026-06-07T15:28:00+00:00
+  suites: 23
+  total: 79
+  failures: 0
+  errors: 0
+  skipped: 0
+  develop_head_committed:
+    command: mvn test
+    context: develop HEAD (src/backend @ 136239e, committed only)
+    executed_at: 2026-06-07T15:29:00+00:00
+    total: 152
+    failures: 0
+    errors: 0
+    note: >-
+      152/152 PASS — J01(5)+notification(4)+BE-10(58)+v2/J03(5 stub provider: SolapiKakaoAlimtalkProviderTest+NotificationServiceTest+PhoneMaskingUtil included)
+
+develop_head_verification:
+  rule: "QA Fixed·완료기준 [x]는 develop HEAD 산출물 존재 시에만 유효"
+  result: PASS
+  head_fixed_pass: true
+  working_tree_pass: true
+  checks:
+    - path: clients/guardianinvitations/api/GuardianInvitationController.java
+      present_on_develop_head: true
+      note: "B09 Fixed — HEAD PRESENT (f47ffa1)"
+    - path: db/migration/V43__guardian_invitations.sql
+      present_on_develop_head: true
+    - path: notification/domain/NotificationPreferenceService.java
+      present_on_develop_head: true
+      note: "B08 Fixed — HEAD PRESENT (f47ffa1)"
+    - path: db/migration/V42__guardian_notification_preferences_consent_temporal.sql
+      present_on_develop_head: true
+    - path: pilot/PilotChecklistJwtE2eTest.java
+      present_on_develop_head: true
+      note: "BE-10 Fixed — HEAD PRESENT (cf6116c) — TSR 60차 독립 검증 PASS"
+    - path: routing/MustApiEndpointRoutingTest.java
+      present_on_develop_head: true
+      note: "BE-10 Fixed — HEAD PRESENT (cf6116c) — 24+ @Test"
+    - path: security/ProductionSecretValidatorTest.java
+      present_on_develop_head: true
+      note: "BE-10 Fixed — HEAD PRESENT (cf6116c·3f9264f) — 5 @Test"
+    - path: security/SevenRoleJwtLoginE2eTest.java
+      present_on_develop_head: true
+      note: "BE-10 Fixed — HEAD PRESENT (cf6116c) — 7 @Test"
+    - path: security/RoleBasedControllerAccessTest.java
+      present_on_develop_head: true
+      note: "BE-10 Fixed — HEAD PRESENT (cf6116c)"
+
+qa_feedback:
+  open_count: 0
+  open_block: 0
+  open_high: 0
+  open_medium: 0
+  planned_block: 1
+  note: >-
+    Open 0건 (62차). v1 baseline artifacts PRESENT @ 136239e (TSR 62차 독립 검증 PASS) · SEC-D11 부분 해소.
+    잔여 BLOCK = develop→test merge(4커밋) 단일.
+    v2/J03 Solapi alimtalk provider develop CLEAN — 신규 이슈 없음.
+    frontend Planned(B03·B07 #6·H05·SEC-D12·QA-B11) 교차 불변.
+
+blockers:
+  - id: backend-develop-test-merge
+    state: Open
+    severity: BLOCK
+    summary: "develop 4커밋 ahead of test (f47ffa1·cf6116c·3f9264f·136239e) — develop→test merge 미실행"
+  - id: QA-20260608-B10
+    state: "develop Fixed / test pending merge"
+    severity: BLOCK
+    summary: "test @2799e29 79 tests — develop @136239e 152 tests. v1 baseline artifacts PRESENT on develop. test 반영은 merge 후."
+  - id: SEC-20260608-011
+    state: "partially resolved"
+    severity: BLOCK
+    summary: "develop history drift 해소(BE-10 @ cf6116c). test stale 2799e29 — merge 후 완전 해소."
+  - id: QA-20260607-B09
+    state: Fixed
+    severity: BLOCK
+    summary: "J01 guardian_invitations committed @ f47ffa1 · WT CLEAN"
+  - id: SEC-20260607-009
+    state: Fixed
+    severity: BLOCK
+    summary: "SEC-D8 — SecurityConfig single accept permitAll · token hash · rate limit"
+
+roadmap_v1_completion:
+  merge_status: merged
+  merge_executed: false
+  note: "ROADMAP merged @e8750d2. workspace develop @3f9264f (BE-10 restored). test @2799e29 stale — merge needed."
+  checked:
+    - R-01_maven_test: "PASS develop 147/147 · test 79/79"
+    - R-10_dev_working_tree_clean: "PASS — CLEAN @ 3f9264f"
+    - R-12_requirements_s6_PilotChecklistJwt: "PASS develop @ 3f9264f (pilot/ 8 @Test)"
+    - R-13_p1_p8_live_e2e: "PASS develop @ 3f9264f (8 @Test)"
+    - SEC-007_ProductionSecretValidator: "PASS develop @ 3f9264f · test ABSENT (merge needed)"
+  pending_merge_to_test:
+    - all_baseline_tests: "merge f47ffa1·cf6116c·3f9264f to test branch"
+
+next_actions:
+  - owner: PLN
+    action: "develop→test merge 실행 승인 — 136239e(J01·BE-10·v2/J03·Solapi) test 반영"
+  - owner: TSR
+    action: "merge 후 test clean tree 재검증 — Maven ≥147/147 PASS 예상(v2/J03 포함)"
+  - owner: PLN
+    action: "SEC-D11·QA-B10 Planned→Fixed 이동 (merge 완료 후)"

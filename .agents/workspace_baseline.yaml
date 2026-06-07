@@ -2,19 +2,19 @@
 # 현재 워크스페이스의 확정 Git HEAD (에이전트 혼란 방지 — ROADMAP/QA 과거 SHA보다 우선)
 # run_agent.py build 시 실측 git HEAD로 자동 갱신·주입한다.
 
-updated: "2026-06-08T15:00:00+00:00"
+updated: "2026-06-07T15:30:00+00:00"
 
 backend:
-  develop: 3f9264f   # BE-10 v1 baseline tests + J01 + v2/J03 NotificationService
+  develop: 136239e   # BE-10 v1 baseline tests + J01 + v2/J03 NotificationService + Solapi alimtalk provider
   test: 2799e29
   dirty: false
-  ahead_of_origin: 3
+  ahead_of_origin: 4
 
 frontend:
-  develop: e043eac   # 7c0ecdc MVP + vitest deps + ProtectedRoute/MaskedPhone tests
+  develop: c3b863e   # 7c0ecdc MVP + vitest + FE-18/19 @ f506c90 + favicon @ c3b863e
   test: e5fd48d      # stale — develop→test merge 미실행
   dirty: false
-  ahead_of_origin: 0
+  ahead_of_origin: 5
 
 abandoned_shas:
   - d5654c0   # TSR57 frontend baseline — remote 미반영·submodule 재init 시 유실
@@ -23,6 +23,7 @@ abandoned_shas:
 
 notes:
   - "ROADMAP·QA_FEEDBACK의 d5654c0/e5fd48d/428ba7d 참조는 과거 기록 — checkout 재현 금지."
-  - "SEC-D12·QA-B11·SEC-D11은 frontend e043eac + backend 3f9264f baseline 기준 Fixed (planner 43차)."
-  - "QA-B10(BE-10) Fixed @ 3f9264f — v1 E2E/routing 산출물 develop HEAD PRESENT."
-  - "다음 coder 작업: v1.1 ROADMAP in_progress 항목을 7c0ecdc 위에서 재구현 (Recharts·FE-17 등은 미포함)."
+  - "SEC-D12·QA-B11·SEC-D11은 frontend c3b863e + backend 136239e baseline 기준 Fixed."
+  - "QA-B10(BE-10) Fixed @ 136239e — v1 E2E/routing 산출물 develop HEAD PRESENT (TSR 62차)."
+  - "FE-18·FE-19 Fixed @ f506c90 — J01 초대 목록/수락 UI·MaskedPhone 회귀 (planner 44차)."
+  - "v1.2 Recharts·pilotPageFlows 등 d5654c0 lineage 산출물은 c3b863e HEAD에 미포함 — v1.1 완료 기준 재구현 잔여."
