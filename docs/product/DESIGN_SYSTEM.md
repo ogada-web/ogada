@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T15:25:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T16:30:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-07 (31차 — **실측 baseline `c3b863e` 접근성 재점검** — `GuardianInvitationList`(US-J01) 행별 재발송/취소 `Button`에 보호자명 포함 `aria-label` 추가(여러 행에서 SR이 동작 대상을 식별 가능)·`aria-busy` 처리, 회귀 테스트 `GuardianInvitationList.test.jsx` +1. `NavLink`는 활성 시 `aria-current="page"` 기본 적용 확인. `npm test` 10/10·build 70 modules PASS)
+> **최종 갱신**: 2026-06-07 (32차 — **실측 baseline `7170b2a` 접근성 재점검** — ① **`Alert` 라이브 리전 정중도(politeness)를 tone 기준으로 분기**: `danger`/`warning`→`role="alert"`(assertive), `info`/`success`/`neutral`→`role="status"`(polite). 정적 안내(info)가 assertive로 스크린리더를 끊던 갭 해소, `role` 명시 override는 유지. ② **`PublicAuthLayout` 컴포넌트 신설**(§7-7n 문서화만 있고 재이관 baseline엔 부재) — skip link + 브랜드 + **페이지 `h1`** 제공. ③ **`GuardianInvitationAcceptPage`(US-J01) 헤딩 계층 결함 수정** — 기존엔 `<h1>` 없이 `Card` `<h2>`만 있던 공개 화면을 `PublicAuthLayout`로 전환해 단일 h1·skip link·브랜드 일관성 확보. `Alert.test.jsx`(4)·`PublicAuthLayout.test.jsx`(2) 추가, `npm test` 46/13·build 75 modules·audit 0 PASS)
+> **이전 갱신**: 2026-06-07 (31차 — **실측 baseline `c3b863e` 접근성 재점검** — `GuardianInvitationList`(US-J01) 행별 재발송/취소 `Button`에 보호자명 포함 `aria-label` 추가(여러 행에서 SR이 동작 대상을 식별 가능)·`aria-busy` 처리, 회귀 테스트 `GuardianInvitationList.test.jsx` +1. `NavLink`는 활성 시 `aria-current="page"` 기본 적용 확인. `npm test` 10/10·build 70 modules PASS)
 > **이전 갱신**: 2026-06-07 (30차 — **스켈레톤 재이관 baseline 위에 폼 입력·토글·연락처 마스킹 컴포넌트 보강** — `Switch`(US-I03·§3-3)·`DateInput`(US-D01·§3-1)·`MonthInput`(US-E05·G02/G04/G07)·`MaskedPhone`(US-K01·L02), `DashboardPage` AppShell skip-link/topbar 적용·존재하지 않는 `ds-stack*` 클래스 제거, `ForbiddenPage` `.ds-auth-page` 패턴 적용)
 > **이전 갱신**: 2026-06-07 (29차 — **스켈레톤 재이관 후 CSS 토큰·컴포넌트 스타일·핵심 UI 초안** — `tokens.css`·`components.css`·`theme.js`·`chartColors.js`·`components/ui/` Button/Field/TextInput/Card/Alert/Badge/Modal/ThemeToggle 등 + `LoginPage` DS 적용)
 > **이전 갱신**: 2026-06-08 (28차 — **`DateInput` 표준화 잔여**(US-D01 `ClientFormPage` 생년월일·인정유효일·US-L01 `PaymentRecordModal` 입금일)·**접근성 재점검**(`ClientPhotoField` 사진 버튼 `aria-label`·`GuardianInviteModal` `aria-busy`·`ClientDetailPage` 초대 Alert `ds-page-alert`))
@@ -189,6 +190,7 @@
 
 ## 6. 접근성 체크리스트 (tester 검증 기준) [UXD]
 
+> **32차 (2026-06-07)**: 실측 baseline `7170b2a` 접근성 재점검 — ① **`Alert` 라이브 리전 정중도**: 기존 모든 tone이 `role="alert"`(assertive)이라 정적 info/success 배너가 스크린리더 흐름을 끊던 갭을 **tone 기준 분기**로 해소(`danger`/`warning`→`alert`, `info`/`success`/`neutral`→`status`). 호출부의 `role` 명시는 그대로 우선(override). ② **공개 인증 화면 헤딩 계층**: `GuardianInvitationAcceptPage`(US-J01)가 페이지 `<h1>` 없이 `Card` 제목(`<h2>`)만 노출하던 결함을 **`PublicAuthLayout`** 도입으로 수정 — 단일 h1·skip link(`#public-auth-content`)·브랜드 모노그램을 LoginPage와 일관되게 제공(미인증 화면은 AppShell/SideNav 금지 원칙 유지, §7-7n). `Alert.test.jsx`·`PublicAuthLayout.test.jsx` 회귀 추가.
 > **31차 (2026-06-07)**: 실측 baseline `c3b863e` 접근성 재점검 — `GuardianInvitationList`(US-J01) 표 행의 「재발송」/「취소」`Button`이 동일 라벨이라 여러 행에서 SR이 **어느 보호자 동작인지 식별 불가**하던 갭을 보호자명 포함 `aria-label`(예: `홍보호 초대 재발송`)로 해소(27차 체크리스트 의도가 실측 baseline에 미반영이던 것을 반영). 동작 묶음 `aria-busy` 처리. `NavLink`(AppShell SideNav)는 활성 시 react-router 기본 `aria-current="page"` 노출 확인(색만 의존 아님). `GuardianInvitationList.test.jsx` 행 동작 라벨 회귀 +1.
 > **30차 (2026-06-07)**: 스켈레톤 재이관(29차) 위 **폼 입력·토글·연락처 마스킹 컴포넌트 보강** — `Switch`(WAI-ARIA `role="switch"`·켜짐/꺼짐 텍스트 병행·44px·CSS 토큰 재사용, US-I03·§3-3), `DateInput`(US-D01 생년월일/인정유효일·US-L01 입금일·§3-1 기간 필터 — raw `<input type=date>` 차단), `MonthInput`(US-E05 통계·US-G02/G04/G07 청구·NHIS 대상월 — raw `<input type=month>` 차단), `MaskedPhone`(US-K01·L02 — `010-****-5678` 부분 마스킹 + `tel:` 링크 + `aria-label` 다이얼 안내). `DashboardPage` 미정의 `ds-stack*` 클래스 제거 → `.ds-app/.ds-topbar/.ds-main`+skip link 적용으로 키보드/SR 진입 흐름 수정. `ForbiddenPage` `.ds-auth-page`+`Card`로 LoginPage와 일관된 미인증 레이아웃.
 > **5차 현행화 (2026-06-06)**: 구현 완료 항목을 `[x]`로 갱신.
@@ -332,6 +334,8 @@
 - [x] ForbiddenPage(30차): `.ds-auth-page`+`Card` 사용으로 LoginPage와 동일한 미인증 카드 레이아웃, `aria-labelledby` 연결, 「로그인으로 이동」 primary 버튼.
 - [x] 초대 이력 행 동작 라벨(31차, US-J01): `GuardianInvitationList` 표 「재발송」/「취소」`Button` — 보호자명 포함 `aria-label`(`{이름} 초대 재발송|취소`)로 다중 행에서 SR 동작 대상 식별, `ds-table-actions` `aria-busy={pending}`. 시각 버튼 텍스트는 「재발송」/「취소」 유지(공간 절약), 접근성 이름만 컨텍스트 보강. `GuardianInvitationList.test.jsx` 회귀.
 - [x] SideNav 활성 표시(31차): `AppShell`의 react-router `NavLink`가 활성 시 `aria-current="page"`를 기본 출력 — 활성 메뉴를 색(`.ds-nav-item--active`) 외 SR/접근성 트리에도 노출(색만 의존 금지 원칙 충족).
+- [x] Alert 라이브 리전 정중도(32차): `Alert` 기본 `role`을 tone 기준 분기 — `danger`/`warning`→`role="alert"`(assertive), `info`/`success`/`neutral`→`role="status"`(polite). 정적 안내가 스크린리더 흐름을 끊지 않도록 함. `role` prop 명시 시 그대로 우선. `Alert.test.jsx` 회귀.
+- [x] 공개 인증 화면 헤딩 계층(32차, US-J01): `GuardianInvitationAcceptPage`를 `PublicAuthLayout`로 전환 — 페이지 단일 `<h1>`(화면 제목)·skip link(`#public-auth-content`)·브랜드 모노그램(LoginPage 일관). 기존 `Card`(`<h2>`)만 있던 헤딩 결함 해소. `PublicAuthLayout.test.jsx` 회귀.
 
 ---
 
@@ -341,7 +345,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 ### 7-1. 기존 컴포넌트
 
-> **30차 baseline 현황 (2026-06-07)**: 29차 재이관 직후 실제 구현된 컴포넌트는 `Alert`·`Badge`/`StatusBadge`·`Button`·`Card`·`Checkbox`·`EmptyState`·`Field`·`Modal`·`Select`·`Spinner`·`TextInput`·`Textarea`·`ThemeToggle` 13종 + 30차 추가 `Switch`·`DateInput`·`MonthInput`·`MaskedPhone` 4종 = **17종**. 아래 표의 `StatCard`·`Tabs/TabPanel`·`Table`·`BranchSwitcher`·`AppShell` 등은 **이전 사이클 산출물 카탈로그**로, COD가 본 baseline 위에 다시 구현해야 한다(과거 구현은 git 히스토리·과거 DESIGN_SYSTEM 기록 참조).
+> **30차 baseline 현황 (2026-06-07)**: 29차 재이관 직후 실제 구현된 컴포넌트는 `Alert`·`Badge`/`StatusBadge`·`Button`·`Card`·`Checkbox`·`EmptyState`·`Field`·`Modal`·`Select`·`Spinner`·`TextInput`·`Textarea`·`ThemeToggle` 13종 + 30차 추가 `Switch`·`DateInput`·`MonthInput`·`MaskedPhone` 4종 + 32차 추가 `PublicAuthLayout`(레이아웃) = **18종**. 아래 표의 `StatCard`·`Tabs/TabPanel`·`Table`·`BranchSwitcher`·`AppShell` 등은 **이전 사이클 산출물 카탈로그**로, COD가 본 baseline 위에 다시 구현해야 한다(과거 구현은 git 히스토리·과거 DESIGN_SYSTEM 기록 참조).
 
 | 컴포넌트 | 주요 props | 용도 / 화면 | baseline |
 |----------|-----------|------------|---------|
@@ -562,6 +566,16 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `ClientUserAccountField` | `enabled`,`onEnabledChange`,`loginId`,`onLoginIdChange`,`allowSelfCheckin`,`error` | 이용자 등록 시 **이용자 본인(`client_user`) 계정 발급·연결** (US-D01 선택, FLOWCHART §4 J). 토글 체크 시 로그인 이메일 `Field` 노출, `allow_client_self_checkin` off면 QR 셀프 비활성 `Alert` 안내. `ClientFormPage` |
 
 > **CopayTypeSelect 실적용**: `ClientFormPage`의 본인부담 구분 입력을 raw `<Select>`에서 `CopayTypeSelect`로 교체 완료(§7-9 인계 메모 이행). 구분별 비율 help 텍스트·`aria-invalid`가 자동 적용된다.
+
+### 7-7q. 32차 보강 컴포넌트 (2026-06-07, 공개 인증 레이아웃·Alert 정중도)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `PublicAuthLayout` | `title`(h1로 렌더), `subtitle?`, `wide?`, `children` | 미인증 공개 인증 화면 레이아웃 (US-B01·US-J01). LoginPage `.ds-login` 카드·브랜드 재사용 + skip link(`#public-auth-content`) + **페이지 h1**. **AppShell/SideNav 금지**. `GuardianInvitationAcceptPage` 적용 |
+
+> **Alert 정중도 (32차)**: `Alert`의 기본 `role`은 이제 tone에서 파생된다 — `danger`/`warning`→`alert`(assertive), `info`/`success`/`neutral`→`status`(polite). 정적 안내(예: NHIS Chrome/Edge 가이드 info)가 스크린리더를 끊지 않는다. 긴급도를 직접 지정하려면 `role` prop으로 override(`<Alert tone="danger" role="status">`). 기존에 `role`을 명시하던 페이지는 동작 불변.
+>
+> **PublicAuthLayout (32차)**: 26차 §7-7n에 문서화됐으나 재이관 baseline에는 부재하던 컴포넌트를 실제 구현. 26차의 `GuardianInvitationAcceptForm`(별도 폼 컴포넌트)·`success`/`disabled`(만료 잠금) 패턴은 백엔드 J01 API live 연동 시점에 후속. 현재는 레이아웃(h1·skip·브랜드)만 우선 도입해 헤딩 계층 결함을 해소.
 
 ### 7-7p. 30차 보강 컴포넌트 (2026-06-07, 폼 입력·토글·연락처 마스킹)
 
