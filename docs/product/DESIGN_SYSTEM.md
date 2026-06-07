@@ -1,9 +1,22 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T00:16:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T15:25:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-07 (14차 — **`BATCH_STATUS` 공유 상수 승격**(NHISImportPage 로컬 정의 → Badge 모듈), **`FeeRateHistoryPanel`** 신설(US-G00a 수가 이력·연도별 그룹), **Recharts 차트 색상 토큰**(토큰·chartColors.js·다크 팔레트), **`ds-progress-steps`·`ds-fee-history`·`ds-fee-table-cell`** CSS, §2-3 BATCH_STATUS 도메인 매핑 추가, UXD-1·UXD-4 해소)
+> **최종 갱신**: 2026-06-07 (31차 — **실측 baseline `c3b863e` 접근성 재점검** — `GuardianInvitationList`(US-J01) 행별 재발송/취소 `Button`에 보호자명 포함 `aria-label` 추가(여러 행에서 SR이 동작 대상을 식별 가능)·`aria-busy` 처리, 회귀 테스트 `GuardianInvitationList.test.jsx` +1. `NavLink`는 활성 시 `aria-current="page"` 기본 적용 확인. `npm test` 10/10·build 70 modules PASS)
+> **이전 갱신**: 2026-06-07 (30차 — **스켈레톤 재이관 baseline 위에 폼 입력·토글·연락처 마스킹 컴포넌트 보강** — `Switch`(US-I03·§3-3)·`DateInput`(US-D01·§3-1)·`MonthInput`(US-E05·G02/G04/G07)·`MaskedPhone`(US-K01·L02), `DashboardPage` AppShell skip-link/topbar 적용·존재하지 않는 `ds-stack*` 클래스 제거, `ForbiddenPage` `.ds-auth-page` 패턴 적용)
+> **이전 갱신**: 2026-06-07 (29차 — **스켈레톤 재이관 후 CSS 토큰·컴포넌트 스타일·핵심 UI 초안** — `tokens.css`·`components.css`·`theme.js`·`chartColors.js`·`components/ui/` Button/Field/TextInput/Card/Alert/Badge/Modal/ThemeToggle 등 + `LoginPage` DS 적용)
+> **이전 갱신**: 2026-06-08 (28차 — **`DateInput` 표준화 잔여**(US-D01 `ClientFormPage` 생년월일·인정유효일·US-L01 `PaymentRecordModal` 입금일)·**접근성 재점검**(`ClientPhotoField` 사진 버튼 `aria-label`·`GuardianInviteModal` `aria-busy`·`ClientDetailPage` 초대 Alert `ds-page-alert`))
+> **이전 갱신**: 2026-06-08 (27차 — **`DateInput`**(§3-1 감사·로그인 이력 기간 필터)·**`GuardianInvitationList`**(US-J01 초대 이력·`INVITATION_STATUS`·재발송/취소 `aria-label`)·`GuardianListCard` 초대 이력 통합·`AuditLogPanel`/`LoginHistoryPanel`/`ClientPhotoField` raw input→`TextInput`/`DateInput`·만료 토큰 수락 폼 잠금)
+> **이전 갱신**: 2026-06-08 (26차 — **US-J01 보호자 초대 수락 UI** `PublicAuthLayout`+`GuardianInvitationAcceptForm`(LoginPage 카드 패턴·AppShell 금지)·**`INVITATION_STATUS` Badge**(PENDING/SENT/ACCEPTED/EXPIRED/REVOKED)·`.ds-auth-page*` CSS·접근성 `autoComplete`·수락 완료 폼 잠금)
+> **이전 갱신**: 2026-06-07 (23차 — **`ClientDetailPage`(US-D03/D04/M01) 잔여 인라인 style 전량 제거** → `.ds-inline-actions`·`.ds-client-summary*`·`.ds-dl-grid`·`.ds-section-gap`·`.ds-table-empty` 유틸 승격, `ClientFormPage` 폼 액션 `.ds-form-actions--end`, `PlatformPage` 사업자번호 `.ds-mono`, `GuardiansPage` `.ds-text-muted` — 다크/forced-colors 일관성·접근성 재점검)
+> **이전 갱신**: 2026-06-07 (21차 — **`FeeScheduleTable`**(US-G00a)·**`BillingDetailPage` 상태 확인 모달**(US-G07)·**`StatCard tone=danger`**(US-L02)·텍스트 유틸(`.ds-text-*`·`.ds-mono`·`.ds-diff-amount`)·Must 페이지 **`ds-page-alert`** 잔여 통일·접근성 재점검)
+> **이전 갱신**: 2026-06-07 (20차 — **`BillingStatusConfirmModal`**(US-G07)·**`NhisImportGuidePanel`**(US-G04)·**`CopayRateTable`**(US-G00b)·**`GuardianDailySummary`**·**`HealthAlertList`**(US-I02/H01)·Must 페이지 **`ds-page-alert`** 잔여 통일·접근성 재점검)
+> **이전 갱신**: 2026-06-07 (19차 — **`SettingsPage` 보안 탭** `PasswordChangeModal`+`PasswordResetRequestModal` 통합·`token` useAuth 누락 버그 수정·`.ds-security-panel` CSS 신설·§8-3 미구현 현행화·접근성 재점검 완료)
+> **이전 갱신**: 2026-06-07 (18차 — **`LoginHistoryPanel`**(REQUIREMENTS §3-1)·**`PasswordResetRequestModal`**(§3-1)·페이지 오류 **`Alert`+`ds-page-alert` 통일**·`PlatformOrgDetailModal.test.jsx`)
+> **이전 갱신**: 2026-06-07 (17차 — **`AuditLogPanel`**·**`BackupSettingsPanel`**(US-I03)·**`PasswordChangeModal`**(US-A02)·**`FilterChips` counts**(US-G07)·페이지 `Alert`/`ds-link` 통일·`Modal` 필수 모드 props)
+> **이전 갱신**: 2026-06-07 (15차 — **Recharts 접근성 차트 컴포넌트**(`ChartContainer`·`AttendanceRateChart`·`HealthTrendChart`·`BranchCompareChart`) 신설, 플레이스홀더→실차트 교체(US-F04/H01/E05/H02), `useChartColors` 테마 실시간 반영, `.ds-chart`·`.ds-link` CSS, UXD-1·UXD-4 완료)
+> **이전 갱신**: 2026-06-07 (14차 — **`BATCH_STATUS` 공유 상수 승격**(NHISImportPage 로컬 정의 → Badge 모듈), **`FeeRateHistoryPanel`** 신설(US-G00a 수가 이력·연도별 그룹), **Recharts 차트 색상 토큰**(토큰·chartColors.js·다크 팔레트), **`ds-progress-steps`·`ds-fee-history`·`ds-fee-table-cell`** CSS, §2-3 BATCH_STATUS 도메인 매핑 추가, UXD-1·UXD-4 해소)
 > **이전 갱신**: 2026-06-06 (13차 — **전사 설정 토글** 누락 보강: WAI-ARIA `switch` 패턴 `Switch` 컴포넌트 신설(`role="switch"`·`aria-checked`·키보드·44px·켜짐/꺼짐 텍스트 병행), `SettingsPage` `allow_client_self_checkin`(REQUIREMENTS §3-3·FLOWCHART §2) 정적 안내 → 실 토글 컨트롤로 교체, `forced-colors` 식별성)
 > **이전 갱신**: 2026-06-06 (12차 — **로그인 진입 화면** 스타일 정비(미정의 `.ds-label` 해소·`.ds-login`), **Modal 포커스 트랩**(WAI-ARIA dialog), **고대비/강제 색상 모드**(`forced-colors`·`prefers-contrast`, WCAG 1.4.11) 지원)
 > **이전 갱신**: 2026-06-06 (11차 — **다크 모드** 토큰·`ThemeToggle` 추가: agents.yaml design_principles 「다크모드 지원(운영자 야간 근무)」 구현, §2-4 다크 대비표·§10 해소)
@@ -101,8 +114,13 @@
 | | `PROCESSING` | info | 처리중 |
 | | `COMPLETED` | success | 완료 |
 | | `FAILED` | danger | 실패 |
+| 보호자 초대 (US-J01) | `PENDING` | neutral | 대기 |
+| | `SENT` | info | 발송됨 |
+| | `ACCEPTED` | success | 수락됨 |
+| | `EXPIRED` | warning | 만료 |
+| | `REVOKED` | danger | 취소됨 |
 
-> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격.
+> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격.
 
 ### 2-4. 다크 모드 토큰 (11차, 운영자 야간 근무) [UXD]
 
@@ -171,6 +189,8 @@
 
 ## 6. 접근성 체크리스트 (tester 검증 기준) [UXD]
 
+> **31차 (2026-06-07)**: 실측 baseline `c3b863e` 접근성 재점검 — `GuardianInvitationList`(US-J01) 표 행의 「재발송」/「취소」`Button`이 동일 라벨이라 여러 행에서 SR이 **어느 보호자 동작인지 식별 불가**하던 갭을 보호자명 포함 `aria-label`(예: `홍보호 초대 재발송`)로 해소(27차 체크리스트 의도가 실측 baseline에 미반영이던 것을 반영). 동작 묶음 `aria-busy` 처리. `NavLink`(AppShell SideNav)는 활성 시 react-router 기본 `aria-current="page"` 노출 확인(색만 의존 아님). `GuardianInvitationList.test.jsx` 행 동작 라벨 회귀 +1.
+> **30차 (2026-06-07)**: 스켈레톤 재이관(29차) 위 **폼 입력·토글·연락처 마스킹 컴포넌트 보강** — `Switch`(WAI-ARIA `role="switch"`·켜짐/꺼짐 텍스트 병행·44px·CSS 토큰 재사용, US-I03·§3-3), `DateInput`(US-D01 생년월일/인정유효일·US-L01 입금일·§3-1 기간 필터 — raw `<input type=date>` 차단), `MonthInput`(US-E05 통계·US-G02/G04/G07 청구·NHIS 대상월 — raw `<input type=month>` 차단), `MaskedPhone`(US-K01·L02 — `010-****-5678` 부분 마스킹 + `tel:` 링크 + `aria-label` 다이얼 안내). `DashboardPage` 미정의 `ds-stack*` 클래스 제거 → `.ds-app/.ds-topbar/.ds-main`+skip link 적용으로 키보드/SR 진입 흐름 수정. `ForbiddenPage` `.ds-auth-page`+`Card`로 LoginPage와 일관된 미인증 레이아웃.
 > **5차 현행화 (2026-06-06)**: 구현 완료 항목을 `[x]`로 갱신.
 > **6차 (2026-06-06)**: v1.2 P0 화면·컴포넌트 추가 — SideNav 2단 그룹, 등급 타임라인, 대시보드 위젯, 연락처 마스킹.
 > **7차 (2026-06-06)**: USER_STORIES·FLOWCHART 대비 누락 보강 — `/billing/:id` 상세, 결석 사유 모달(US-E01), 이용자 사진+alt(US-D01), 보호자 초대 모달(US-J01), 청구 상태 이력 타임라인(US-G07), SideNav NHIS import, ClientPicker 키보드 탐색.
@@ -179,6 +199,19 @@
 > **11차 (2026-06-06)**: **다크 모드** — `tokens.css` `[data-theme="dark"]` 토큰, `ThemeToggle`(AppShell topbar), `theme.js`. 다크 대비 AA 검증(§2-4).
 > **12차 (2026-06-06)**: **로그인 진입 화면**(US-B01) 스타일 정비 — `LoginPage`가 참조하던 미정의 `.ds-label`로 라벨이 무스타일이던 문제를 `Field`/`TextInput`/`Button`(block·lg) 전환으로 해소, `.ds-login` 카드 레이아웃·브랜드 모노그램. **Modal 포커스 트랩**(Tab/Shift+Tab 순환). **고대비/강제 색상 모드**(`forced-colors`·`prefers-contrast: more`) — 배경 틴트 제거 시 경계선·시스템 강조색으로 식별성 보장.
 > **13차 (2026-06-06)**: **전사 설정 토글 누락 보강**(US-I03·REQUIREMENTS §3-3·FLOWCHART §2) — `SettingsPage` 「조직 설정」의 `allow_client_self_checkin`이 정적 `<dl>` 설명 + `TODO`뿐이어서 조작 컨트롤이 없던 갭을 WAI-ARIA `switch` 패턴 `Switch` 컴포넌트로 해소. 켜짐/꺼짐 **텍스트 라벨 병행**(색·노브 위치만 의존 금지), 네이티브 `<button>` Enter/Space 토글, 44px 트랙, `forced-colors`에서 경계선+`Highlight` 채움으로 식별성.
+> **16차 (2026-06-07)**: USER_STORIES·FLOWCHART 잔여 — `BatchProgressSteps`(US-G04), `PlatformOrgDetailModal`(US-A02), `PlatformPage` SearchInput·관리 모달, `ForbiddenPage` `ds-link`, 차트·진행단계 `forced-colors`.
+> **17차 (2026-06-07)**: FLOWCHART §2·US-A02/I03/G07 — `AuditLogPanel`(sysadmin 감사 로그)·`BackupSettingsPanel`(백업 정책)·`PasswordChangeModal`(최초 로그인 필수 변경)·`FilterChips` 상태 카운트 배지·`LoginPage` 재설정 링크 스텁·`BillingPage`/`GuardianPage` raw `role=alert` → `Alert`·`Modal` `closeOnOverlay`/`closeOnEscape`/`showCloseButton`.
+> **18차 (2026-06-07)**: REQUIREMENTS §3-1 잔여 — `LoginHistoryPanel`(sysadmin 로그인 이력 탭)·`PasswordResetRequestModal`(로그인 재설정 요청 UI)·Must 페이지 13곳 inline `role=alert` → `Alert tone=danger`+`.ds-page-alert` 통일(고대비 배경·경계선)·`GuardianCheckinPage` 피드백 `Alert tone=success|danger`·`PlatformOrgDetailModal.test.jsx` 회귀.
+> **19차 (2026-06-07)**: `SettingsPage` security 탭 통합·`.ds-security-panel`·`token` useAuth 버그 수정.
+> **20차 (2026-06-07)**: USER_STORIES·FLOWCHART 잔여 — `BillingStatusConfirmModal`·`NhisImportGuidePanel`·`CopayRateTable`·`GuardianDailySummary`·`HealthAlertList`·Must 페이지 `ds-page-alert` 잔여 5곳 통일.
+> **21차 (2026-06-07)**: USER_STORIES·FLOWCHART 잔여 — `FeeScheduleTable`(US-G00a raw input 제거)·`BillingDetailPage` `BillingStatusConfirmModal` 연동(US-G07)·`StatCard tone=danger`(US-L02)·`.ds-text-secondary`·`.ds-mono`·`.ds-diff-amount`·`.ds-table-actions` 유틸·`HealthDetailPage`·`QrGeneratePage`·`ClientDetailPage` 탭·`ForbiddenPage` 접근성·Alert 통일.
+> **22차 (2026-06-07)**: USER_STORIES·FLOWCHART 잔여 — `MonthInput`(US-E05·G04 raw month input 제거)·`PaymentRecordModal`(US-L01 PaymentPage 모달 추출)·`ReconciliationSummaryBar`(US-G06 `role=group`+sr-only 건수)·`ClientListPage` `SearchInput`·`NHISImportPage`/`AttendanceStatsPage`/`ReconciliationPage` 인라인 style→유틸 클래스·`.ds-page-alert` NHIS 업로드 오류.
+> **23차 (2026-06-07)**: 인라인 style→유틸 클래스 잔여 정리 — Must 화면 `ClientDetailPage`(US-D03 탭·US-D04 주민번호 마스킹·US-M01 등급 이력)의 inline `style={{}}` 16건을 전량 제거하고 `.ds-inline-actions`(버튼·뱃지 중앙 정렬)·`.ds-client-summary*`(요약 헤더)·`.ds-dl-grid`(기본정보 정의 목록)·`.ds-section-gap`·`.ds-table-empty`로 승격. `ClientFormPage` 폼 하단 액션 `.ds-form-actions--end`(우측 정렬)·`PlatformPage` 사업자번호 `.ds-mono`·`GuardiansPage` 미지정 표시 `.ds-text-muted`. 토큰 기반이라 시각 동작 동일하나 다크/`forced-colors`에서 일관 적용 보장. `npm run build`·`npm test` 185/33 PASS(회귀 없음).
+> **25차 (2026-06-08)**: USER_STORIES·FLOWCHART 잔여 — `BillingPage` raw month input → `MonthInput`(US-G02/G07)·`ChartContainer` `axisTextColor` prop + `.ds-chart__legend-label`(HealthTrendChart·BranchCompareChart 인라인 style 제거)·`PaymentPage` `.ds-section-gap`/`.ds-table-actions`·`GuardianDetailPage` 빈 상태 `EmptyState`(US-K02)·`LogoutButton` `aria-label` 회귀 테스트·`styles.css` 데모 `.role-link`/`.demo-grid` 제거·`.ds-input--month` → `.ds-month-input` 통합. `BillingPage.layout.test.jsx`·`LogoutButton.test.jsx`·`ChartContainer.test.jsx` axisTextColor 회귀.
+> **26차 (2026-06-08)**: USER_STORIES·FLOWCHART **US-J01(FE-17) 잔여** — `GuardianInvitationAcceptPage`가 AppShell+SideNav를 사용하던 패턴을 **`PublicAuthLayout`**(LoginPage `.ds-login` 카드·skip link·브랜드) + **`GuardianInvitationAcceptForm`**(Field 라벨·`autoComplete` name/email/new-password·비밀번호/확인 구분·수락 완료 시 입력 잠금+「로그인하기」CTA)로 분리. **`INVITATION_STATUS`** Badge 상수(PENDING/SENT/ACCEPTED/EXPIRED/REVOKED). `.ds-auth-page*` CSS. `PublicAuthLayout.test.jsx`·`GuardianInvitationAcceptForm.test.jsx` 회귀.
+> **27차 (2026-06-08)**: USER_STORIES·FLOWCHART **US-J01 초대 이력·§3-1 기간 필터** — **`DateInput`**(`MonthInput` 패턴, `AuditLogPanel`·`LoginHistoryPanel` raw `type=date` 제거)·**`GuardianInvitationList`**(`INVITATION_STATUS`+표 `caption`+재발송/취소 `aria-label`+`MaskedPhone`)·`GuardianListCard` 초대 이력 섹션·`ClientDetailPage` `guardianInvitations[]` 연동·`GuardianInvitationAcceptPage` 404/410 만료 시 `disabled` 폼 잠금·`ClientPhotoField` alt→`TextInput`·`GuardianInviteModal` `autoComplete`.
+> **28차 (2026-06-08)**: USER_STORIES·FLOWCHART **DateInput·J01 접근성 잔여** — `ClientFormPage`(US-D01) 생년월일·인정 유효 시작일 raw `type=date` → **`DateInput`**·`PaymentRecordModal`(US-L01) 입금일 → **`DateInput`**·`ClientPhotoField` 사진 선택/변경/삭제 **`aria-label`**·`GuardianInviteModal` 발송 중 **`aria-busy`**·`ClientDetailPage` 초대 피드백 Alert **`ds-page-alert`** 통일. Must 화면 `type=date` raw input **0건**(DateInput·MonthInput만 허용).
+> **24차 (2026-06-08)**: Must 페이지·모달 인라인 style 잔여 — `AttendancePage`(US-E01/E02 `.ds-page-lede`·`.ds-grid--gap-bottom`·`.ds-table-actions`)·`DashboardPage`(US-H01 `.ds-section-gap--lg`·`.ds-card-link`)·`GuardianPage`(US-J02 `.ds-card--mb`·`.ds-tab-panel-body`·`.ds-table-empty`)·`HealthPage`(US-F01~F03 `.ds-section-gap`)·`QrGeneratePage`(US-E03 `.ds-form-row__action`·`.ds-section-gap--bottom`)·`OverduePage`(US-L02 `.ds-page-footnote`+`.ds-link`)·`GuardianCheckinPage`(US-E04 `.ds-submit-block`)·모달 `CheckoutModal`/`AttendanceAbsentModal`/`SessionTimeoutModal`→`.ds-modal-intro`/`.ds-page-footnote`·`MedicationDuplicateAlert`/`HealthAbnormalBanner`→`.ds-alert-body*`·`PlatformOrgDetailModal`(US-A02 `.ds-mono`·`.ds-dl-grid--spaced`)·`BatchProgressSteps`/`FeeRateHistoryPanel` CSS 승격. `AttendancePage.layout.test.jsx` 회귀 추가.
 
 - [x] 모든 폼 컨트롤에 `<label htmlFor>` 연결 — `Field` render-prop 패턴이 강제 (`htmlFor` ↔ `id` 자동 연결).
 - [x] 오류는 색상 + 텍스트(`role="alert"`) + `aria-invalid`로 표기 — `Field error` prop 사용 시 자동 적용.
@@ -239,6 +272,66 @@
 - [x] NHIS 배치 상태(US-G04): `BATCH_STATUS` Badge 모듈로 승격(14차) — NHISImportPage 로컬 중복 제거, 색상+텍스트 라벨 일관성.
 - [x] 수가 이력(US-G00a): `FeeRateHistoryPanel` — 표 `caption` 스크린리더 행 설명, 수가 숫자 `aria-label` 포함.
 - [x] NHIS 배치 진행(US-G04): `.ds-progress-steps` — 단계별 텍스트 라벨(`ds-progress-steps__label`) 병행(색만 의존 금지), `ds-sr-only` 단계 설명 포함.
+- [x] Recharts 차트(15차, US-F04/H01/E05/H02): `ChartContainer` — `role="figure"`+`figcaption`+`aria-describedby` sr-only 데이터 요약, 빈 데이터 `role="status"`. `HealthTrendChart` Legend 텍스트 라벨 병행(색만 의존 금지). `useChartColors` MutationObserver로 다크 전환 실시간 반영.
+- [x] 수가표 1밴드 안내(15차, UXD-4): `FeeSchedulePage` Alert·Card actions에 「표준 이용시간 8~10h · 1밴드 고정」help 텍스트.
+- [x] 인라인 링크(15차): `.ds-link` — `DashboardPage` `role-link` → `ds-link` 전환, `forced-colors` LinkText.
+- [x] NHIS 배치 진행(16차, US-G04): `BatchProgressSteps` — `nav`+`aria-label`+`sr-only` 현재 단계 안내, 단계별 텍스트 라벨 병행, `FAILED` 시 처리중 단계 실패 표시.
+- [x] 플랫폼 고객사(16차, US-A01/A02): `PlatformPage` `SearchInput` 라벨 연결, Tenant 상태 `StatusBadge`+`BRANCH_STATUS`, 「관리」`aria-label`, `PlatformOrgDetailModal` 관리자 발급 `Field`+`Alert`.
+- [x] 403 페이지(16차): `ForbiddenPage` 로그인 링크 `ds-link` 통일.
+- [x] 보호자 초대(16차): `GuardianListCard` 「초대 발송」`aria-label` 명시.
+- [x] 차트·진행단계 고대비(16차): `forced-colors` 시 `.ds-chart__viewport`·`.ds-progress-steps__dot` 경계선 보강.
+- [x] 감사 로그(17차, US-I03): `AuditLogPanel` — `Field` 라벨·이벤트 `Badge` 텍스트 라벨·표 `caption`·PII `ds-masked`·로딩 `Spinner` `aria-label`.
+- [x] 백업 설정(17차, US-I03): `BackupSettingsPanel` — `Switch` 자동 백업·상태 `Badge` 텍스트·수동 백업 `Button` `aria-busy`.
+- [x] 최초 비밀번호 변경(17차, US-A02): `PasswordChangeModal` — 필수 모드 ESC/오버레이/✕ 차단·`Alert` 보안 안내·`Field`+`autoComplete=new-password`.
+- [x] 청구 상태 카운트(17차, US-G07): `FilterChips` `counts` prop — 숫자 배지 + `aria-label` 「N건」 병행(색만 의존 금지).
+- [x] 페이지 오류 표시(17차): `BillingPage`·`GuardianPage` inline `role=alert` → `Alert tone=danger` 통일.
+- [x] 테이블 내 링크(17차): `BillingPage` 이용자명 `button.ds-link`(키보드·포커스 링 일관).
+- [x] 로그인 이력(18차, §3-1): `LoginHistoryPanel` — `Field` 필터·표 `caption`·이메일/IP `ds-masked`·결과 `Badge` 텍스트 라벨·`SettingsPage` 「로그인 이력」탭.
+- [x] 비밀번호 재설정(18차, §3-1): `PasswordResetRequestModal` — `Field`+`autoComplete=username`·요청 완료 `Alert tone=success`·`LoginPage` `button.ds-link` 진입.
+- [x] 페이지 오류 표시(18차): Must 페이지 API 오류 — inline `<p role=alert>` 금지, `Alert tone=danger`+`.ds-page-alert` 통일(`forced-colors` 배경·테두리 포함). 대상: ClientList/Detail, Attendance/Stats, Health, Branches, Guardians/Detail, BillingDetail, Payment, Overdue, Reconciliation matchError, GuardianCheckin 피드백.
+- [x] 보안 탭 통합(19차, §3-1): `SettingsPage` security 탭 — `PasswordChangeModal`(비밀번호 변경)·`PasswordResetRequestModal`(재설정 요청)을 LoginPage 진입 외 SettingsPage에서도 독립 접근 가능. `.ds-security-panel`(flex 컨테이너) 내 `Alert tone=info` 안내 + `ds-action-bar__actions` 버튼 그룹. sysadmin·hq_admin·platform_admin 역할만 노출, 외 역할은 `Alert tone=info` 권한 안내.
+- [x] `token` 세션 버그(19차): `SettingsPage.jsx` `handlePasswordChange` 내 `token` 참조 — `useAuth()` 구조분해에 `token` 누락 → 수정 완료(`const { user, token } = useAuth()`). REQUIREMENTS §3-1 세션 만료 감지.
+- [x] 청구 상태 전이 확인(20차, US-G07): `BillingStatusConfirmModal` — 확정(CONFIRMED) 시 「수정 불가」`Alert tone=warning`, `StatusBadge`+금액 요약 `dl`, `BillingPage` 목록 액션 전 확인 모달. `BILLING_STATUS_TRANSITIONS` 상수 export.
+- [x] NHIS import 온보딩(20차, US-G04): `NhisImportGuidePanel` — Chrome/Edge `Alert`, 4단계 `ol`+`sr-only` 단계 번호, `처리상태` 선행열 안내, `NHISImportPage` 인라인 중복 제거.
+- [x] 본인부담 비율표(20차, US-G00b): `CopayRateTable` — `TextInput type=number`+`aria-label`, `COPAY_TYPES` 기본값·변경 `sr-only` 안내, `CopayRatePage` raw `<input>` 제거.
+- [x] 보호자 포털 요약(20차, US-I02): `GuardianDailySummary` — `ATTENDANCE_STATUS` 라벨 StatCard, `HealthAlertList` 연동, `GuardianPage` `EmptyState` 빈 연결 이용자.
+- [x] 건강 이상 목록 공통(20차): `HealthAlertList` — `Badge tone=warning` 「주의」텍스트+색 병행, `DashboardPage`·`GuardianDailySummary` 재사용.
+- [x] 페이지 오류 Alert 잔여(20차): `PlatformPage`·`BillingPage`·`DashboardPage`·`GuardianPage`·`CopayRatePage` → `Alert`+`.ds-page-alert` 패턴 통일.
+- [x] 수가표 편집(21차, US-G00a): `FeeScheduleTable` — `TextInput`+`aria-label`+`caption`, `FeeSchedulePage` raw `<input>` 제거.
+- [x] 청구 상세 상태 전이(21차, US-G07): `BillingDetailPage` topbar 「확정」/「수납완료」→ `BillingStatusConfirmModal` — 목록과 동일 패턴.
+- [x] 미납 지표(21차, US-L02): `OverduePage` 인라인 danger 색상 → `StatCard tone=danger`+`.ds-stat__value--danger`(텍스트 라벨 병행).
+- [x] NHIS reconciliation 차이(21차, US-G06): `ReconciliationPage` 차이 금액 `.ds-diff-amount`+`sr-only` 「차이」+`aria-label`, 인정번호 `.ds-mono`.
+- [x] 페이지 오류 Alert 잔여(21차): `HealthDetailPage`·`QrGeneratePage`·`ClientDetailPage` 건강/출석 탭 → `Alert tone=danger`+`.ds-page-alert`.
+- [x] 403 페이지(21차): `ForbiddenPage` 인라인 style → `.ds-forbidden-page__desc`·`__actions`+`.ds-link`.
+- [x] 대상 월 입력(22차, US-E05·G04): `MonthInput` — `Field`+`TextInput type=month`+`.ds-month-input`, raw `<input class=ds-input>` 금지. `AttendanceStatsPage`·`NHISImportPage`.
+- [x] 입금 기록(22차, US-L01): `PaymentRecordModal` — `Field` 라벨·`aria-invalid`·수단 `Select`·`.ds-modal-intro` 요약. `PaymentPage` 목록 「입금 기록」`aria-label`.
+- [x] NHIS reconciliation 요약(22차, US-G06): `ReconciliationSummaryBar` — `role=group`·Badge 숫자+`sr-only` 「N건」·`.ds-summary-bar`. `ReconciliationPage`.
+- [x] 이용자 검색(22차, US-D02): `ClientListPage` raw search → `SearchInput hideLabel` (`htmlFor`·`type=search`).
+- [x] 인라인 style 잔여 제거(23차, US-D03/D04/M01): `ClientDetailPage` inline `style={{}}` 16건 → `.ds-inline-actions`·`.ds-client-summary*`·`.ds-dl-grid`·`.ds-section-gap`·`.ds-table-empty`. `ClientFormPage` `.ds-form-actions--end`·`PlatformPage` `.ds-mono`·`GuardiansPage` `.ds-text-muted`. 토큰 기반이라 `forced-colors`·다크에서 일관 적용.
+- [x] 청구 목록 월 필터(25차, US-G02/G07): `BillingPage` `MonthInput`+`Field` — raw `ds-input--month` 제거.
+- [x] 차트 범례 텍스트(25차): `ChartContainer` `axisTextColor` → `--chart-axis-text` CSS 변수, `.ds-chart__legend-label` — 다크/`forced-colors` 일관.
+- [x] 입금 처리(25차, US-L01): `PaymentPage` 안내 `Alert` `.ds-section-gap`, 표 액션 `.ds-table-actions`.
+- [x] 보호자 상세 빈 상태(25차, US-K02): `GuardianDetailPage` API 미응답 시 `EmptyState`+`ds-page-alert` — raw `role=status` 문단 제거.
+- [x] 로그아웃 버튼(25차, US-B03): `LogoutButton` AppShell topbar — `aria-label="{이름} 로그아웃"`, 미인증 시 null 렌더.
+- [x] 보호자 초대 수락(26차, US-J01): `PublicAuthLayout`+`GuardianInvitationAcceptForm` — 미인증 공개 화면은 **AppShell/SideNav 금지**, LoginPage와 동일 `.ds-login` 카드·skip link, Field+`autoComplete`, 비밀번호/확인 라벨 분리, 수락 완료 `Alert tone=success`+입력 `disabled`+「로그인하기」CTA, 만료 `Alert tone=danger`.
+- [x] 보호자 초대 상태(26차, US-J01): `INVITATION_STATUS` — `StatusBadge` 텍스트+색(PENDING/SENT/ACCEPTED/EXPIRED/REVOKED).
+- [x] 기간 필터 DateInput(27차, §3-1): `AuditLogPanel`·`LoginHistoryPanel` — raw `type=date`+`ds-input` → `DateInput`+`Field` 라벨 연결, `.ds-date-input` max-width.
+- [x] 보호자 초대 이력(27차, US-J01): `GuardianInvitationList` — 표 `caption`·`scope`·`INVITATION_STATUS` Badge·`MaskedPhone`·재발송/취소 `Button` `aria-label`·`GuardianListCard` 「초대 이력」섹션.
+- [x] 만료 초대 수락(27차, US-J01): `GuardianInvitationAcceptPage` API 404/410 → `GuardianInvitationAcceptForm disabled` 입력 잠금.
+- [x] alt·사진 설명(27차, US-D01): `ClientPhotoField` alt 입력 raw `<input>` → `TextInput`+`Field`.
+- [x] DateInput 표준화(28차, US-D01·US-L01): `ClientFormPage` 생년월일·인정 유효 시작일·`PaymentRecordModal` 입금일 — raw `TextInput type=date` → `DateInput`+`Field`. 신규 `type=date`는 **DateInput만** 사용(MonthInput과 대칭).
+- [x] 사진 업로드 버튼(28차, US-D01): `ClientPhotoField` — 선택/변경/삭제 `Button`에 `aria-label`+`aria-controls`(숨김 file input id) 연결.
+- [x] 보호자 초대 발송(28차, US-J01): `GuardianInviteModal` — 발송 중 `Button` `aria-busy`. `ClientDetailPage` 초대 성공/오류 `Alert`+`.ds-page-alert`.
+- [x] Must 페이지 인라인 style 잔여(24차, US-E01~E04/H01/F01~F03/J02/L02/A02): `AttendancePage` `.ds-page-lede`·`.ds-grid--gap-bottom`·`.ds-table-actions`·`DashboardPage` `.ds-section-gap--lg`·`.ds-card-link`·`GuardianPage` `.ds-card--mb`·`.ds-tab-panel-body`·`.ds-table-empty`·`HealthPage` `.ds-section-gap`·`QrGeneratePage` `.ds-form-row__action`·`OverduePage` `.ds-page-footnote`·`GuardianCheckinPage` `.ds-submit-block`·모달 `.ds-modal-intro`/`.ds-alert-body*`. `AttendancePage.layout.test.jsx` 회귀.
+- [ ] 키보드만으로 로그인→대시보드→이용자 등록 핵심 흐름 완주 가능 — **tester E2E 검증 필요** (중복 항목 — 구현 완료 후 tester 검증 대기).
+- [x] Switch(30차, US-I03·§3-3): `Switch` 컴포넌트 재도입 — `role="switch"` + `aria-checked`, 라벨 `aria-labelledby`·설명 `aria-describedby` 연결, 켜짐/꺼짐 **텍스트 병행**(색·노브 위치만 의존 금지), `<button type=button>` 네이티브 키보드 토글, 44px 트랙 hit target, `forced-colors`에서 트랙 경계선+`Highlight` 채움(§9 CSS). `onChange(next)`가 다음 boolean 값을 인자로 받음(이벤트 객체 아님).
+- [x] DateInput(30차, US-D01·US-L01·§3-1): `DateInput` 컴포넌트 재도입 — `Field` 안 `TextInput type=date` 래퍼 + `.ds-date-input` max-width. raw `<input type=date class=ds-input>` **금지**.
+- [x] MonthInput(30차, US-E05·G02/G04/G07): `MonthInput` 컴포넌트 재도입 — `Field` 안 `TextInput type=month` 래퍼 + `.ds-month-input` max-width. raw `<input type=month>` **금지**.
+- [x] MaskedPhone(30차, US-K01·L02): `MaskedPhone` 컴포넌트 — 가운데 그룹 마스킹(`010-****-5678`, 10자리·11자리·기타 포맷 허용)·`<a href="tel:">` 링크·`aria-label`로 SR 다이얼 안내. **PII 보호**: 시각 UI는 항상 마스킹 유지, `withLink=false`이면 `<span>` 정적 표시.
+- [x] DashboardPage 골격(30차): 존재하지 않는 `.ds-stack*`/`.ds-gap-sm` 잔재 제거 → `.ds-app`+`.ds-topbar`(`ThemeToggle`+`로그아웃` `aria-label`)+`.ds-main`+skip link로 AppShell 패턴 확립. `<dl class=ds-dl-grid>`로 역할/세션/다음 단계 요약(색만 의존 금지).
+- [x] ForbiddenPage(30차): `.ds-auth-page`+`Card` 사용으로 LoginPage와 동일한 미인증 카드 레이아웃, `aria-labelledby` 연결, 「로그인으로 이동」 primary 버튼.
+- [x] 초대 이력 행 동작 라벨(31차, US-J01): `GuardianInvitationList` 표 「재발송」/「취소」`Button` — 보호자명 포함 `aria-label`(`{이름} 초대 재발송|취소`)로 다중 행에서 SR 동작 대상 식별, `ds-table-actions` `aria-busy={pending}`. 시각 버튼 텍스트는 「재발송」/「취소」 유지(공간 절약), 접근성 이름만 컨텍스트 보강. `GuardianInvitationList.test.jsx` 회귀.
+- [x] SideNav 활성 표시(31차): `AppShell`의 react-router `NavLink`가 활성 시 `aria-current="page"`를 기본 출력 — 활성 메뉴를 색(`.ds-nav-item--active`) 외 SR/접근성 트리에도 노출(색만 의존 금지 원칙 충족).
 
 ---
 
@@ -248,19 +341,24 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 ### 7-1. 기존 컴포넌트
 
-| 컴포넌트 | 주요 props | 용도 / 화면 |
-|----------|-----------|------------|
-| `Button` | `variant(primary/secondary/danger/ghost)`, `size(sm/md/lg)`, `block` | 전 화면 액션 |
-| `Field` | `label`, `required`, `help`, `error`, `children(render prop)` | 폼 라벨·오류 접근성 래퍼 (이용자 등록 §US-D01) |
-| `TextInput`/`Textarea`/`Select` | 네이티브 props 패스스루 | Field 안에서 사용 |
-| `Checkbox` | `label`, `checked`, `onChange` | **주민번호 수집 동의**(US-D04) 등 |
-| `Card` / `StatCard` | `title`,`actions` / `label`,`value`,`unit` | 카드 · 대시보드 지표(US-H01) |
-| `Badge` / `StatusBadge` | `tone` / `status`,`map` | 청구·매칭·출석 상태 (`BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`) |
-| `Alert` | `tone`, `title` | 안내·경고(예: 롱텀 Chrome/Edge 안내 US-G04) |
-| `Tabs` / `TabPanel` | `tabs`,`activeId`,`onChange` | 이용자 상세 탭(기본/건강/출석/청구 US-D03) |
-| `Table` | `columns`, `caption` + 행 강조 `ds-row--warning/danger` | 청구 목록·NHIS reconciliation 행(US-G06) |
-| `BranchSwitcher` | `branches`,`value`,`onChange` | 지점 전환(US-B02, `active_branch_id`) |
-| `AppShell` | `brand`,`topbarRight`,`title`,`nav` | 로그인 이후 공통 레이아웃 + skip link + 사이드바 |
+> **30차 baseline 현황 (2026-06-07)**: 29차 재이관 직후 실제 구현된 컴포넌트는 `Alert`·`Badge`/`StatusBadge`·`Button`·`Card`·`Checkbox`·`EmptyState`·`Field`·`Modal`·`Select`·`Spinner`·`TextInput`·`Textarea`·`ThemeToggle` 13종 + 30차 추가 `Switch`·`DateInput`·`MonthInput`·`MaskedPhone` 4종 = **17종**. 아래 표의 `StatCard`·`Tabs/TabPanel`·`Table`·`BranchSwitcher`·`AppShell` 등은 **이전 사이클 산출물 카탈로그**로, COD가 본 baseline 위에 다시 구현해야 한다(과거 구현은 git 히스토리·과거 DESIGN_SYSTEM 기록 참조).
+
+| 컴포넌트 | 주요 props | 용도 / 화면 | baseline |
+|----------|-----------|------------|---------|
+| `Button` | `variant(primary/secondary/danger/ghost)`, `size(sm/md/lg)`, `block` | 전 화면 액션 | ✅ 29차 |
+| `Field` | `label`, `required`, `help`, `error`, `children(render prop)` | 폼 라벨·오류 접근성 래퍼 (이용자 등록 §US-D01) | ✅ 29차 |
+| `TextInput`/`Textarea`/`Select` | 네이티브 props 패스스루 | Field 안에서 사용 | ✅ 29차 |
+| `Checkbox` | `label`, `checked`, `onChange` | **주민번호 수집 동의**(US-D04) 등 | ✅ 29차 |
+| `Card` / `StatCard` | `title`,`actions` / `label`,`value`,`unit` | 카드 · 대시보드 지표(US-H01) | Card ✅ 29차 / StatCard ⏳ COD |
+| `Badge` / `StatusBadge` | `tone` / `status`,`map` | 청구·매칭·출석 상태 (`BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BATCH_STATUS`·`INVITATION_STATUS`) | ✅ 29차 |
+| `Alert` | `tone`, `title` | 안내·경고(예: 롱텀 Chrome/Edge 안내 US-G04) | ✅ 29차 |
+| `Modal` | `isOpen`,`onClose`,`title`,`size`,`footer`,`closeOnOverlay/Escape`,`showCloseButton` | 다이얼로그 — `useId()` 인스턴스별 고유 `aria-labelledby`, 포커스 트랩, ESC | ✅ 29차 |
+| `Spinner` / `EmptyState` | — | 로딩·빈 목록 | ✅ 29차 |
+| `ThemeToggle` | `className?` | 라이트/다크 전환 (다크모드 §2-4) | ✅ 29차 |
+| `Tabs` / `TabPanel` | `tabs`,`activeId`,`onChange` | 이용자 상세 탭(기본/건강/출석/청구 US-D03) | ⏳ COD |
+| `Table` | `columns`, `caption` + 행 강조 `ds-row--warning/danger` | 청구 목록·NHIS reconciliation 행(US-G06) | ⏳ COD (`.ds-table*` CSS는 29차) |
+| `BranchSwitcher` | `branches`,`value`,`onChange` | 지점 전환(US-B02, `active_branch_id`) | ⏳ COD |
+| `AppShell` | `brand`,`topbarRight`,`title`,`nav` | 로그인 이후 공통 레이아웃 + skip link + 사이드바 | ⏳ COD (CSS·DashboardPage 30차 패턴 참조) |
 
 ### 7-2. 신규·보강 컴포넌트 (2026-06-06)
 
@@ -340,6 +438,115 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 > **Switch vs Checkbox**: `Checkbox`는 폼 제출 시 반영되는 **동의/선택**(예: 주민번호 수집 동의 US-D04)에, `Switch`는 즉시 적용되는 **on/off 설정**(예: 전사 셀프 체크인 허용)에 쓴다. `Switch`는 `onChange`가 **다음 boolean 값**을 인자로 받는다(이벤트 객체 아님).
 
+### 7-7h. 17차 보강 컴포넌트 (2026-06-07, Settings·비밀번호·상태 카운트)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `AuditLogPanel` | `entries[]`, `loading`, `eventFilter`, `onEventFilterChange`, `dateFrom/To`, `page`, `totalPages` | sysadmin 감사 로그 (US-I03). `AUDIT_EVENT_TYPES` 상수 export |
+| `BackupSettingsPanel` | `autoBackupEnabled`, `onAutoBackupChange`, `lastBackupAt`, `lastBackupStatus`, `retentionDays`, `onManualBackup` | Tenant 백업 설정 (US-I03). `SettingsPage` backup 탭 |
+| `PasswordChangeModal` | `isOpen`, `required`, `onSubmit({ newPassword })`, `loading`, `error` | 최초 로그인·비밀번호 변경 (US-A02). `LoginPage` + `AuthContext.mustChangePassword` |
+
+> **FilterChips counts (US-G07)**: `counts={{ __all__: 12, DRAFT: 3, ... }}` — API `statusCounts` 응답을 `BillingPage`에서 매핑. **Modal 필수 모드**: `closeOnOverlay={false}`·`closeOnEscape={false}`·`showCloseButton={false}` — `PasswordChangeModal required` 패턴.
+
+### 7-7k. 21차 보강 컴포넌트 (2026-06-07, 수가표·청구 상세·StatCard·텍스트 유틸)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `FeeScheduleTable` | `rows[]`, `onRowChange(grade, field, value)`, `disabled?` | 등급별 1일 수가 편집 (US-G00a). `FeeSchedulePage` — `CopayRateTable`과 동일 접근성 패턴 |
+| `StatCard` (확장) | `tone?: 'default' \| 'danger'` | 미납 총액 등 위험 지표 강조 (US-L02). 라벨 텍스트 병행 — 색만 의존 금지 |
+
+> **BillingDetailPage 상태 전이 (21차)**: topbar 「확정」/「수납완료」→ `BillingStatusConfirmModal` → `PATCH /billing/claims/:id/status`. `BillingPage`와 동일 UX.
+
+> **텍스트 유틸 (21차)**: `.ds-text-secondary`·`.ds-text-muted`·`.ds-mono`·`.ds-diff-amount`·`.ds-table-actions`·`.ds-section-gap`·`.ds-table-empty` — 인라인 `style={{ color }}` 금지, `forced-colors` 대응 포함.
+
+### 7-7l. 22차 보강 컴포넌트 (2026-06-07, MonthInput·입금·reconciliation 요약)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `MonthInput` | native `type=month` props | 대상 월 선택 (US-E05·US-G04). `Field` 안에서 `TextInput` 래퍼 — `.ds-month-input` max-width |
+| `PaymentRecordModal` | `isOpen`, `claim`, `form`, `onFormChange(patch)`, `onSubmit`, `error` | 본인부담 입금 기록 (US-L01). `PAYMENT_METHODS` export. `PaymentPage` |
+| `ReconciliationSummaryBar` | `batchId`, `branchName`, `targetMonth`, `batchStatus`, `stats` | NHIS 배치 매칭 요약 (US-G06). Badge+sr-only 건수. `ReconciliationPage` |
+
+> **MonthInput (22차)**: `AttendanceStatsPage`·`NHISImportPage`의 raw `<input type=month class=ds-input>` 제거. coder 신규 월 필터도 `MonthInput`+`Field` 패턴 준수.
+>
+> **PaymentRecordModal (22차)**: `PaymentPage` 인라인 Modal 폼 → 컴포넌트 추출. API: `POST /billing/claims/:id/payments { paidAt, amount, method }`.
+
+### 7-7j. 20차 보강 컴포넌트 (2026-06-07, 청구 확인·NHIS 가이드·copay·보호자 요약)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `BillingStatusConfirmModal` | `isOpen`, `onClose`, `claim`, `nextStatus`, `onConfirm`, `loading`, `error` | 청구 상태 전이 확인 (US-G07). `BILLING_STATUS_TRANSITIONS` export. `BillingPage`·`BillingDetailPage`(후속) |
+| `NhisImportGuidePanel` | `className?` | 공단 엑셀 import 4단계 온보딩 + Chrome/Edge 안내 (US-G04). `NHISImportPage` |
+| `CopayRateTable` | `rates[]`, `onRateChange(code, rate)`, `disabled?` | 본인부담 구분별 비율 편집 (US-G00b). `CopayRatePage` |
+| `HealthAlertList` | `items[]`, `emptyMessage?`, `ariaLabel?` | 건강 이상 알림 — Badge 「주의」+이름+사유 (US-F01/H01/I02). `DashboardPage`·`GuardianDailySummary` |
+| `GuardianDailySummary` | `summary`, `clientName?` | 보호자 포털 오늘 출석·건강 지표 (US-I02). `GuardianPage` summary 탭 |
+
+> **BillingPage 상태 전이 (20차)**: 목록 「확정」/「수납완료」 클릭 → `BillingStatusConfirmModal` → 확인 시 `PATCH /billing/claims/:id/status`. 즉시 PATCH 금지 — 되돌릴 수 없음(US-G07 V8) UX 보장.
+
+### 7-7i. 18차 보강 컴포넌트 (2026-06-07, 인증·로그인 이력·오류 Alert 통일)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `LoginHistoryPanel` | `entries[]`, `loading`, `roleFilter`, `dateFrom/To`, `page`, `totalPages` | sysadmin 로그인 이력 (REQUIREMENTS §3-1). `LOGIN_RESULT_STATUS` export. `SettingsPage` login-history 탭 |
+| `PasswordResetRequestModal` | `isOpen`, `onClose`, `onSubmit(email)`, `loading`, `error`, `submitted` | 비밀번호 재설정 요청 (§3-1). `LoginPage` 「재설정 요청」 |
+
+> **페이지 오류 패턴 (18차)**: `{error && <Alert tone="danger" className="ds-page-alert">{error}</Alert>}`. raw `style={{ color: danger-text }}` + `<p role=alert>` **금지** — 고대비·다크에서 배경 틴트·경계선 일관.
+
+### 7-7g. 16차 보강 컴포넌트 (2026-06-07, NHIS 배치 진행·플랫폼 고객사)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `BatchProgressSteps` | `status`(PENDING/PROCESSING/COMPLETED/FAILED), `ariaLabel?` | NHIS import 배치 처리 단계 (US-G04). `ReconciliationPage`·`NHISImportPage` |
+| `PlatformOrgDetailModal` | `isOpen`,`onClose`,`org`,`onIssueAdmin(email)`,`issuing?`,`issueError?` | platform_admin 고객사 상세 + hq_admin 발급 (US-A02). `PlatformPage` |
+
+### 7-7o. 27차 보강 컴포넌트 (2026-06-08, DateInput·초대 이력)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `DateInput` | native `type=date` props | 날짜 입력·기간 필터 (US-D01·US-L01·§3-1). `Field` 안 `TextInput` 래퍼 — `.ds-date-input`. `ClientFormPage`·`PaymentRecordModal`·`AuditLogPanel`·`LoginHistoryPanel` |
+| `GuardianInvitationList` | `invitations[]`, `canManage`, `onResend`, `onRevoke`, `busyId` | 보호자 초대 이력·상태·재발송/취소 (US-J01). `GuardianListCard`·`ClientDetailPage` |
+
+> **`GuardianListCard` 확장 (27차)**: `invitations` prop + 「초대 이력」하위 `GuardianInvitationList`. API: `GET /clients/:id` 응답 `guardianInvitations[]` — `{ id, guardianName, email?, phone?, status, expiresAt? }`. 재발송 `POST /guardian/invitations/{id}/resend`, 취소 `DELETE /guardian/invitations/{id}` (coder J01).
+>
+> **DateInput (27·28차)**: `MonthInput`과 동일 패턴. 신규 `type=date`는 **`DateInput`+`Field`만** 허용 — raw `<input class=ds-input type=date>` **금지**. 대상: 이용자 등록(생년월일·인정유효일)·입금일·감사/로그인 이력 기간 필터.
+
+### 7-7n. 26차 보강 컴포넌트 (2026-06-08, US-J01 수락 UI)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `PublicAuthLayout` | `title`, `subtitle?`, `wide?`, `footer?` | 미인증 공개 인증 화면 레이아웃 (US-B01·US-J01). LoginPage `.ds-login` 카드 패턴 — **AppShell/SideNav 사용 금지** |
+| `GuardianInvitationAcceptForm` | `form`, `onChange`, `onSubmit`, `onGoLogin`, `isSubmitting?`, `error?`, `success?`, `disabled?` | 보호자 초대 수락 폼 (US-J01). `/guardian/invitations/:token/accept` |
+
+> **`INVITATION_STATUS` (26차)**: `Badge.jsx` export — 초대 목록·상세(향후 ClientDetailPage)에서 `StatusBadge status map={INVITATION_STATUS}` 사용.
+>
+> **GuardianInvitationAcceptPage 마이그레이션 (COD)**: 현재 WIP 페이지는 AppShell+SideNav — 아래 패턴으로 교체:
+> ```jsx
+> <PublicAuthLayout title="보호자 초대 수락" subtitle="센터에서 보낸 초대 링크로 계정을 활성화합니다." wide>
+>   <GuardianInvitationAcceptForm form={form} onChange={setField} onSubmit={handleSubmit} onGoLogin={() => navigate("/")} ... />
+> </PublicAuthLayout>
+> ```
+
+### 7-7m. 25차 보강 컴포넌트 (2026-06-08, MonthInput 잔여·로그아웃·차트 범례)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `LogoutButton` | (없음 — `useAuth` 내부) | AppShell topbar 공통 로그아웃 (US-B03). `aria-label="{이름} 로그아웃"`, `Button secondary size=sm` |
+
+> **ChartContainer 확장 (25차)**: `axisTextColor` prop → viewport `--chart-axis-text` CSS 변수. 범례 라벨은 `.ds-chart__legend-label` 클래스 사용(인라인 `style={{ color }}` 금지).
+>
+> **MonthInput 잔여 (25차)**: `BillingPage` 조회 월 필터 — 22차 `AttendanceStatsPage`·`NHISImportPage`와 동일 패턴. `.ds-input--month` deprecated → `.ds-month-input`만 사용.
+
+### 7-7f. 15차 보강 컴포넌트 (2026-06-07, Recharts 접근성 차트)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `ChartContainer` | `title`, `description?`, `height?`, `axisTextColor?`, `empty?`, `emptyMessage?`, `children` | Recharts 공통 래퍼 — `role="figure"`+`figcaption`+sr-only 요약 |
+| `AttendanceRateChart` | `data[{label,rate}]`, `variant(line\|bar)`, `title?` | 월별 출석률 추이(US-H01 `DashboardPage`), 일자별 막대(US-E05 `AttendanceStatsPage`) |
+| `HealthTrendChart` | `data[{date,systolic,diastolic,temperature,bloodSugar,spo2}]`, `metrics?` | 이용자 건강 추이 다중 라인(US-F04 `HealthDetailPage`) |
+| `BranchCompareChart` | `branches[{branchName,attendanceRate,clientCount?}]` | HQ 지점별 출석률 비교 막대(US-H02 `DashboardPage` hq) |
+
+> **의존성**: `recharts@^2.15` (package.json). 색상은 `useChartColors()` 훅으로 라이트/다크 자동 전환 — coder는 raw hex 금지.
+
 ### 7-7e. 14차 보강 컴포넌트 (2026-06-07, 수가 이력·Recharts 토큰)
 
 | 컴포넌트 | 주요 props | 용도 / 화면 |
@@ -355,6 +562,44 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `ClientUserAccountField` | `enabled`,`onEnabledChange`,`loginId`,`onLoginIdChange`,`allowSelfCheckin`,`error` | 이용자 등록 시 **이용자 본인(`client_user`) 계정 발급·연결** (US-D01 선택, FLOWCHART §4 J). 토글 체크 시 로그인 이메일 `Field` 노출, `allow_client_self_checkin` off면 QR 셀프 비활성 `Alert` 안내. `ClientFormPage` |
 
 > **CopayTypeSelect 실적용**: `ClientFormPage`의 본인부담 구분 입력을 raw `<Select>`에서 `CopayTypeSelect`로 교체 완료(§7-9 인계 메모 이행). 구분별 비율 help 텍스트·`aria-invalid`가 자동 적용된다.
+
+### 7-7p. 30차 보강 컴포넌트 (2026-06-07, 폼 입력·토글·연락처 마스킹)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `Switch` | `label`,`checked`,`onChange(next)`,`description?`,`onLabel?`,`offLabel?`,`disabled?`,`className?` | 즉시 적용 on/off 설정 (US-I03 — `allow_client_self_checkin` 등). WAI-ARIA `role="switch"` + `aria-checked` |
+| `DateInput` | native `type=date` props 패스스루 | 날짜 입력·기간 필터 (US-D01·US-L01·§3-1). `Field` 안 `TextInput` 래퍼 — `.ds-date-input` |
+| `MonthInput` | native `type=month` props 패스스루 | 대상 월 입력 (US-E05·US-G02/G04/G07). `Field` 안 `TextInput` 래퍼 — `.ds-month-input` |
+| `MaskedPhone` | `phone`,`masked?`,`withLink?`,`className?` | 보호자·미납 목록 연락처 부분 마스킹 + `tel:` (US-K01·US-L02). `maskPhone(raw)` 헬퍼 export — 11자리 `010-****-5678`, 10자리 `02-***-5678` |
+
+> **Switch vs Checkbox 재확인 (30차)**: `Checkbox`는 폼 제출 시 반영되는 **동의/선택**(US-D04 주민번호 수집 동의)에, `Switch`는 즉시 적용되는 **on/off 설정**(US-I03 셀프 체크인 허용)에 사용. `Switch.onChange`는 **다음 boolean 값**을 인자로 받는다(이벤트 객체 아님).
+>
+> **DateInput / MonthInput 사용 규칙 (30차)**: 신규 `type=date|month` 입력은 **`DateInput`/`MonthInput` + `Field`만** 허용 — raw `<input type="date" class="ds-input">` **금지**(접근성·다크/forced-colors 일관성·max-width 일관). 기존에 raw input을 사용한 페이지는 COD가 이 컴포넌트로 교체.
+>
+> **MaskedPhone PII (30차)**: 마스킹 결과는 시각 UI 기본값. `aria-label`은 마스킹된 값을 그대로 사용해 SR도 평문 노출 없음. `tel:` 링크의 href는 다이얼 가능한 raw digits(`01012345678`)로 — 모바일에서 「전화 걸기」를 트리거하기 위한 최소 노출이며, 백엔드는 이 컴포넌트에 가능한 한 **이미 마스킹된 값**을 전달해 클라이언트 메모리에 평문 잔류 시간을 줄인다(SEC).
+
+```jsx
+// 30차 사용 예시 — Switch (조직 설정)
+<Switch
+  label="이용자 본인 셀프 체크인 허용"
+  description="QR 셀프 체크인 시 client_user 계정도 출석을 처리할 수 있습니다."
+  checked={form.allowClientSelfCheckin}
+  onChange={(next) => updateOrg({ allowClientSelfCheckin: next })}
+/>
+```
+
+```jsx
+// 30차 사용 예시 — DateInput / MonthInput / MaskedPhone
+<Field label="생년월일" required error={err.birthdate}>
+  {(p) => <DateInput {...p} value={form.birthdate} onChange={(e) => set({ birthdate: e.target.value })} />}
+</Field>
+
+<Field label="대상 월">
+  {(p) => <MonthInput {...p} value={month} onChange={(e) => setMonth(e.target.value)} />}
+</Field>
+
+<MaskedPhone phone={guardian.phone} masked={guardian.phoneMasked} />
+```
 
 ### 7-8. 사용 예시
 
@@ -431,7 +676,43 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - **전사 설정 토글(US-I03·§3-3)** — `SettingsPage` 「조직 설정」탭의 `Switch`(`allow_client_self_checkin`). 초기값은 `GET /api/v1/settings/organization`으로 주입(현재 `user.allowClientSelfCheckin` 가정 — coder가 실제 소스에 배선), 변경 시 `PATCH /api/v1/settings/organization { allowClientSelfCheckin }` 호출(낙관적 업데이트 또는 응답 후 확정). 이 값은 US-E04 QR 셀프 체크인(`client_user`) 허용과 `ClientUserAccountField`(US-D01) 안내에 연동된다.
 - **세션 만료(US-B03)** — `SessionTimeoutProvider`가 idle 감지. refresh 토큰 연장 API는 coder가 `onExtend`에 연동.
 - **수가 이력(US-G00a)** — `FeeSchedulePage` 「이력 보기」 → `Modal` + `FeeRateHistoryPanel`. API: `GET /api/v1/billing/fee-schedules/history?year=` 응답에 `[{ year, grade, dailyRate, effectiveFrom, createdAt, createdByName? }]` 배열 포함. 현재 `historyEntries` 빈 배열 스켈레톤 — coder가 API 연동.
+- **건강 추이 차트(US-F04)** — `HealthDetailPage`: `GET /api/v1/clients/:id/health?days=7|30` 응답을 `HealthTrendChart` `data` prop에 주입. 각 항목: `{ date, systolic, diastolic, temperature, bloodSugar, spo2 }`.
+- **월별 출석률 차트(US-H01)** — `DashboardPage`: `branchDashboard.monthlyAttendanceRates[]` → `AttendanceRateChart` `data={ label: yearMonth, rate: attendanceRate }`.
+- **일자별 출석률(US-E05)** — `AttendanceStatsPage`: `summary.dailyRates[]` → `AttendanceRateChart variant="bar"`. API 미포함 시 빈 상태 안내.
+- **HQ 지점 비교(US-H02)** — `DashboardPage` hq: `hqDashboard.branches[]` → `BranchCompareChart`. 각 지점 `attendanceRate` 필수.
 - **NHIS 배치 상태(US-G04)** — `BATCH_STATUS` 상수를 `import { BATCH_STATUS } from "../components/ui"` 로 가져온다(NHISImportPage 로컬 정의 제거·14차). coder는 모든 신규 페이지에서 Badge 모듈 상수를 사용.
+- **플랫폼 고객사 관리(US-A01/A02)** — `PlatformPage` 「관리」→ `PlatformOrgDetailModal`. Tenant 상세 `dl` + `POST /api/v1/platform/organizations/:id/admins { email }` 발급. 목록 검색은 `SearchInput`, 상태는 `StatusBadge`+`BRANCH_STATUS`.
+- **NHIS 배치 진행(US-G04)** — `BatchProgressSteps`로 PENDING→PROCESSING→COMPLETED 파이프라인 표시. `ReconciliationPage` 배치 카드 상단, `NHISImportPage` 미완료 배치 행에 인라인 표시. FAILED 시 처리중 단계 `--failed` 스타일.
+- **감사 로그(US-I03)** — `SettingsPage` audit 탭 → `AuditLogPanel`. API: `GET /api/v1/settings/audit-logs?eventType=&from=&to=&page=`. `actorLabel`·`ipMasked`는 마스킹 문자열.
+- **백업 설정(US-I03)** — `BackupSettingsPanel`. API: `GET/PATCH /api/v1/settings/backup`, `POST /api/v1/settings/backup/trigger`.
+- **최초 비밀번호 변경(US-A02)** — `login()` 응답 `mustChangePassword` → `LoginPage` `PasswordChangeModal required`. API: `POST /api/v1/auth/change-password { newPassword }`. 완료 후 `clearMustChangePassword()` + 홈 이동.
+- **청구 상태 카운트(US-G07)** — `GET /billing/claims` 응답 `statusCounts: { total, draft, confirmed, paid }` → `FilterChips counts`.
+- **로그인 이력(§3-1)** — `SettingsPage` login-history 탭 → `LoginHistoryPanel`. API: `GET /api/v1/settings/login-history?role=&from=&to=&page=`. `emailMasked`·`ipMasked` 마스킹 문자열.
+- **비밀번호 재설정(§3-1)** — `LoginPage` → `PasswordResetRequestModal`. API: `POST /api/v1/auth/password-reset/request { email }`. v1.1 실발송 전 스텁 UI.
+- **페이지 오류 Alert(18·20차)** — 모든 Must 페이지 API 오류는 `Alert tone=danger`+`ds-page-alert`. coder 신규 페이지도 동일 패턴 준수. 20차 대상: `PlatformPage`·`BillingPage`·`DashboardPage`·`GuardianPage`·`CopayRatePage`.
+- **청구 상태 확인(US-G07)** — `BillingPage` `openStatusConfirm(claim, nextStatus)` → `BillingStatusConfirmModal`. `BillingDetailPage` 상태 버튼도 동일 패턴 적용 권장.
+- **NHIS 가이드(US-G04)** — `NhisImportGuidePanel`을 import 페이지 상단에 배치. 중복 Alert/ol 인라인 금지.
+- **본인부담 비율(US-G00b)** — `CopayRateTable`+`PATCH /api/v1/billing/copay-rates`. `COPAY_TYPES`와 테이블 기본값 동기화.
+- **보호자 포털(US-I02)** — `GuardianDailySummary`+`GET /guardian/clients/:id/summary`. `attendanceStatus`는 `ATTENDANCE_STATUS` 키.
+- **건강 알림 공통** — 대시보드·보호자 포털 모두 `HealthAlertList` 사용. raw `<span class=ds-health-alert-list__badge>` 인라인 금지.
+- **수가표 편집(US-G00a)** — `FeeScheduleTable`+`FeeSchedulePage`. raw `<input class=ds-input>` 인라인 금지 — `TextInput`+`aria-label` 패턴.
+- **청구 상세 상태(US-G07)** — `BillingDetailPage` `openStatusConfirm` → `BillingStatusConfirmModal`. 목록 `BillingPage`와 동일.
+- **미납 지표(US-L02)** — `OverduePage` `StatCard tone=danger`. 인라인 `color: danger-text` 금지.
+- **페이지 오류 Alert(21차)** — `HealthDetailPage`·`QrGeneratePage`·`ClientDetailPage` 탭 오류도 `Alert tone=danger`+`.ds-page-alert`.
+- **대상 월(22차)** — `MonthInput`+`Field`. raw month input 금지.
+- **입금(22차)** — `PaymentRecordModal`+`PaymentPage`. inline Modal 폼 금지.
+- **reconciliation 요약(22차)** — `ReconciliationSummaryBar`. inline flex summary 금지.
+- **이용자 검색(22차)** — `SearchInput hideLabel`. action bar raw search 금지.
+- **Must 페이지 레이아웃(24차)** — Card `className="ds-section-gap|ds-section-gap--lg|ds-card--mb"`·페이지 `.ds-page-lede`/`.ds-page-footnote`·표 빈 셀 `.ds-table-empty`·액션 `.ds-table-actions`. raw `style={{ marginTop/color }}` **금지** — ChartContainer `height`·`axisTextColor` prop 등 동적 값만 예외.
+- **청구 월 필터(25차)** — `BillingPage` `MonthInput`+`Field`. raw `type=month`+`ds-input--month` **금지**.
+- **차트 범례(25차)** — `HealthTrendChart`·`BranchCompareChart` Legend `formatter` → `<span className="ds-chart__legend-label">`. `ChartContainer`에 `axisTextColor={axisText}` 전달.
+- **로그아웃(25차)** — `AppShell`이 `LogoutButton`을 topbar에 기본 탑재. 페이지별 로그아웃 버튼 중복 추가 금지.
+- **보호자 초대 수락(26차, US-J01)** — `GuardianInvitationAcceptPage` → `PublicAuthLayout wide` + `GuardianInvitationAcceptForm`. AppShell/SideNav **금지**. API: `POST /guardian/invitations/{token}/accept`. 만료(404/410) → `error` Alert + `disabled`. 성공 → `success` + 폼 잠금 + `navigate("/")`. **`INVITATION_STATUS`** — 초대 목록 Badge.
+- **보호자 초대 이력(27차, US-J01)** — `ClientDetailPage` `client.guardianInvitations[]` → `GuardianListCard` → `GuardianInvitationList`. 재발송/취소 API 연동 후 `handleResendInvitation`·`handleRevokeInvitation` 스텁 제거.
+- **기간 필터(27·28차, §3-1·US-D01·US-L01)** — `AuditLogPanel`·`LoginHistoryPanel`·`ClientFormPage`·`PaymentRecordModal` `DateInput`+`Field`. raw `type=date` 금지.
+- **사진 업로드(28차, US-D01)** — `ClientPhotoField` 트리거 버튼 `aria-label`+`aria-controls`. alt는 `TextInput`+`Field`.
+- **보호자 초대 피드백(28차, US-J01)** — `ClientDetailPage` 초대 성공/오류 `Alert tone=success|warning`+`.ds-page-alert`. `GuardianInviteModal` 발송 `aria-busy`.
+- **보호자 상세 빈 상태(25차)** — `GuardianDetailPage` API 실패/미응답 → `EmptyState`+`Alert tone=danger`+`ds-page-alert`.
 - **ToastProvider** — `main.jsx`에서 `<BrowserRouter>` 안 `<App />`을 감싼다. `SessionTimeoutProvider`는 `App.jsx` `AuthProvider` **내부**.
 - **FileUpload `accept`**: NHIS 엑셀은 `".xlsx,.xls"`.
 - **Modal `aria-labelledby`**: `useId()` 기반 고유 ID — 동일 페이지에 Modal 복수 렌더 시 중복 ID 없음. React 18+ 필수.
@@ -471,6 +752,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/platform` | `PlatformPage` | platform_admin | US-A01, US-A02 |
 | `/guardian` | `GuardianPage` | guardian, client_user | US-I02, US-J02 |
 | `/guardian/checkin` | `GuardianCheckinPage` | guardian, client_user | US-E04 |
+| `/guardian/invitations/:token/accept` | `GuardianInvitationAcceptPage` | **공개**(미인증) | **US-J01** |
 | `/settings` | `SettingsPage` | sysadmin, hq_admin, platform_admin | US-I03 |
 | `/forbidden` | `ForbiddenPage` | 공개 | — |
 
@@ -503,9 +785,17 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 > **2026-06-06 4차 보강**: `BranchesPage`(US-C01)·`AttendanceStatsPage`(US-E05) **스켈레톤 추가 완료**.
 > **2026-06-06 6차 보강 (v1.2 P0)**: `SideNav` 2단 그룹, `GuardiansPage`·`GuardianDetailPage`, `PaymentPage`·`OverduePage`, `GradeHistoryTimeline` 탭, `DashboardWidgetGrid`.
 > **2026-06-06 7차 보강**: `BillingDetailPage`, `ClaimStatusTimeline`, `GuardianInviteModal`, `ClientPhotoField`, `AttendanceAbsentModal`, SideNav NHIS import.
+> **2026-06-07 16차 보강**: `BatchProgressSteps`(US-G04 CSS→컴포넌트), `PlatformOrgDetailModal`(US-A02), `PlatformPage` SearchInput·관리 모달.
+> **2026-06-07 17차 보강**: `AuditLogPanel`·`BackupSettingsPanel`(US-I03), `PasswordChangeModal`(US-A02), `FilterChips` counts(US-G07).
+> **2026-06-07 18차 보강**: `LoginHistoryPanel`·`PasswordResetRequestModal`(REQUIREMENTS §3-1), Must 페이지 `Alert`+`ds-page-alert` 오류 통일.
+> **2026-06-07 19차 보강**: `SettingsPage` 보안 탭 `PasswordChangeModal`·`PasswordResetRequestModal` 통합(§3-1), `token` 누락 버그 수정, `.ds-security-panel` CSS 신설.
 
 | 화면/기능 | 경로/파일 | 비고 |
 |----------|-----------|------|
+| 로그인 이력 API | `SettingsPage` login-history 탭 | §3-1 — UI 완료, `GET login-history` 연동 잔여 |
+| 비밀번호 재설정 API | `LoginPage`·`SettingsPage` 보안 탭 | §3-1 — UI 완료(양쪽 진입), `POST password-reset/request` API 연동 잔여 |
+| 감사·백업 API | `SettingsPage` | US-I03 — UI 완료, `GET audit-logs`·`POST backup/trigger` 연동 잔여 |
+| 비밀번호 변경 API | `LoginPage`·`SettingsPage` 보안 탭 | US-A02 — UI 완료(양쪽 진입), `POST /auth/change-password` API 연동 잔여 |
 | 청구 상세 API | `BillingDetailPage` | US-G02 — `GET /billing/claims/:id` + items + status-history |
 | 결석 API | `AttendancePage` | US-E01 — `POST /attendance/absent` |
 | 이용자 사진 API | `ClientFormPage` | US-D01 — `POST /clients/:id/photo` multipart |
@@ -516,7 +806,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | 직원 관리 | `/staff` | Should — v1 이후 |
 | 보호자 초대 실 API 연동 | `GuardianListCard` 내 버튼 | US-J01 v1.1 — `POST /clients/:id/guardian-invites` |
 | QR 카메라 스캔 | `GuardianCheckinPage` | html5-qrcode 등 라이브러리 연동 (§10 UXD-2) |
-| 건강·대시보드·출석통계 차트 | `HealthDetailPage`, `DashboardPage`, `AttendanceStatsPage` | Recharts 등 — §10 참고 (`.ds-chart-placeholder` 위치) |
+| 건강·대시보드·출석통계 차트 API | `HealthDetailPage`, `DashboardPage`, `AttendanceStatsPage` | 15차 UI 완료 — coder가 API 응답을 `HealthTrendChart`/`AttendanceRateChart`/`BranchCompareChart` data prop에 연동 |
 
 ---
 
@@ -544,7 +834,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `.ds-linked-clients` | 보호자 상세 연결 이용자 카드 (US-K02) |
 | `.ds-timeline` | 등급 변동 이력 타임라인 (US-M01) |
 | `.ds-dashboard-widgets` | 대시보드 위젯 그리드 (US-M02) |
-| `.ds-masked-phone` | 마스킹 연락처 링크 |
+| `.ds-masked-phone` | 마스킹 연락처 + `tel:` 링크 (30차 — `MaskedPhone`) |
 | `.ds-sidenav__sublist` | 2단 SideNav 하위 메뉴 (US-UX-02) |
 | `.ds-grid--2` | 2열 폼 그리드 (초대 모달 등) |
 | `.ds-photo-field` | 이용자 사진 업로드+미리보기 (US-D01) |
@@ -568,6 +858,58 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `.ds-progress-steps` / `__step`·`__dot`·`__label` / `--done`·`--active`·`--failed` | NHIS 배치 진행 단계 시각화 (14차, US-G04) |
 | `.ds-fee-history` / `__title`·`__empty`·`__year-group`·`__year-label`·`__table` | 수가 이력 패널 (14차, US-G00a — FeeRateHistoryPanel) |
 | `.ds-fee-table-cell` | 표 내 수가 인라인 입력 셀 (14차, FeeSchedulePage) |
+| `.ds-chart` / `__title`·`__viewport`·`__empty`·`__hint`·`__legend-label` | Recharts 접근성 래퍼 (15차, ChartContainer; 25차 범례 라벨) |
+| `.ds-link` | 인라인 텍스트 링크 — `role-link` 대체 (15차) |
+| `.ds-audit-log` / `__filters`·`__loading` | 감사 로그 패널 (17차, AuditLogPanel) |
+| `.ds-backup-settings` / `__summary`·`__actions`·`__note` | 백업 설정 패널 (17차) |
+| `.ds-filter-chip__count` | FilterChips 상태 건수 배지 (17차, US-G07) |
+| `.ds-login__footer` | 로그인 하단 재설정 링크 (17차) |
+| `button.ds-link` | 표·목록·로그인 내 텍스트 링크 버튼 (17·18차) |
+| `.ds-page-alert` | 페이지 상단/본문 API 오류·피드백 Alert 여백 (18차) |
+| `.ds-login-history` / `__title`·`__help`·`__filters`·`__loading` | 로그인 이력 패널 (18차, LoginHistoryPanel) |
+| `.ds-security-panel` | 보안 탭 PasswordChange·PasswordReset 액션 컨테이너 (19차, SettingsPage) |
+| `.ds-billing-confirm__summary` | 청구 상태 확인 모달 요약 dl (20차) |
+| `.ds-nhis-guide` / `__steps`·`__note`·`__intro` | NHIS import 온보딩 패널 (20차, US-G04) |
+| `.ds-copay-rate-cell` / `__unit` | 본인부담 비율 입력 셀 (20차, US-G00b) |
+| `.ds-guardian-summary` / `__stats`·`__alerts` | 보호자 포털 오늘 현황 (20차, US-I02) |
+| `.ds-health-alert-list__empty`·`__reasons` | HealthAlertList 빈 상태·사유 (20차) |
+| `.ds-action-bar__actions--start` | action-bar 좌측 정렬 (20차, CopayRatePage) |
+| `.ds-text-secondary` / `.ds-text-muted` | 보조·플레이스홀더 텍스트 (21차) |
+| `.ds-mono` | 인정번호·배치 ID 등 고정폭 (21차) |
+| `.ds-diff-amount` | NHIS reconciliation 차이 금액 강조 (21차, US-G06) |
+| `.ds-table-actions` | 표 내 액션 버튼 flex 래퍼 (21차) |
+| `.ds-section-gap` | 카드·섹션 상단 여백 (21차) |
+| `.ds-table-empty` | 표 빈 상태 셀 (21차) |
+| `.ds-stat__value--danger` | StatCard 위험 지표 값 색 (21차, US-L02) |
+| `.ds-fee-schedule-hint` | 수가표 1밴드 안내 텍스트 (21차) |
+| `.ds-forbidden-page__desc` / `__actions` | 403 페이지 본문·링크 (21차) |
+| `.ds-summary-bar` / `.ds-summary-item` | NHIS reconciliation 배치 요약 (22차, US-G06) |
+| `.ds-month-input` | 대상 월 입력 max-width (22차, US-E05·G04) |
+| `.ds-modal-intro` | 모달 상단 요약 텍스트 (22차, US-L01) |
+| `.ds-form-actions` | 카드·폼 하단 액션 버튼 여백 (22차) |
+| `.ds-section-gap--lg` | 섹션 간 24px 여백 (22차) |
+| `.ds-batch-progress-inline` | 표 셀 내 NHIS 진행 단계 (22차) |
+| `.ds-summary-item__label` / `__value` | Reconciliation 배치 요약 항목 (21차) |
+| `.ds-inline-actions` | 버튼·뱃지 수평 중앙 정렬 묶음 (23차, ClientDetailPage 등) |
+| `.ds-client-summary` / `__avatar`·`__name`·`__meta` | 이용자 상세 요약 헤더 (23차, US-D03) |
+| `.ds-form-actions--end` | 폼 하단 액션 버튼 우측 정렬 (23차, ClientFormPage) |
+| `.ds-page-lede` | 페이지 상단 보조 텍스트(날짜·안내) (24차, AttendancePage) |
+| `.ds-grid--gap-bottom` | StatCard 그리드 하단 여백 (24차, AttendancePage) |
+| `.ds-card--mb` | Card 하단 간격 (24차, GuardianPage) |
+| `.ds-form-row__action` | 폼 행 내 버튼 정렬 (24차, QrGeneratePage) |
+| `.ds-page-footnote` | 페이지 하단 각주·v2 안내 (24차, OverduePage·SessionTimeoutModal) |
+| `.ds-card-link` | 카드 내부 링크 여백 (24차, DashboardPage) |
+| `.ds-dl-grid--spaced` | description list 하단 여백 (24차, PlatformOrgDetailModal) |
+| `.ds-alert--stack` / `.ds-form--stack` | Alert·폼 스택 여백 (24차) |
+| `.ds-tab-panel-body` / `.ds-submit-block` | 탭 패널·주요 CTA 상단 여백 (24차, GuardianPage·GuardianCheckinPage) |
+| `.ds-alert-body` / `.ds-alert-body--flush` / `.ds-alert-action` | Alert 본문·액션 (24차, MedicationDuplicateAlert·HealthAbnormalBanner) |
+| `.ds-tabular-nums` | 표 숫자 열 (24차, FeeRateHistoryPanel) |
+| `.ds-progress-steps__list` | NHIS 배치 진행 ol (24차, BatchProgressSteps) |
+| `.ds-section-gap--bottom` | 하단만 24px 여백 (24차, QrGeneratePage) |
+| `.ds-auth-page` / `--wide` / `__lede` / `__actions` | 공개 인증 카드 (26차, US-J01 — LoginPage `.ds-login` 확장, AppShell 대체) |
+| `.ds-date-input` | 기간 필터 date input max-width (27차, §3-1) |
+| `.ds-guardian-card__subtitle` / `__invitations` | 보호자 카드 초대 이력 섹션 (27차, US-J01) |
+| `.ds-guardian-invitations` | 초대 이력 표 overflow (27차) |
 
 ---
 
@@ -612,7 +954,9 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 ## 10. 미해결·후속 (UX) [UXD]
 
 - 아이콘 세트 미선정 — 의존성 추가는 coder/planner 협의 필요(현재 텍스트 기반).
-- ~~차트(월별 출석률 US-H01/F04) — Recharts vs Chart.js 미선정~~ → **14차 UXD-1 해소**: **Recharts** 채택. 토큰: `tokens.css` `--chart-color-*`, JS 매핑: `src/styles/chartColors.js` `CHART_COLORS` / `useChartColors()` 훅. 다크 팔레트 `CHART_COLORS_DARK` 동기화.
+- ~~차트(월별 출석률 US-H01/F04) — Recharts vs Chart.js 미선정~~ → **15차 UXD-1 완료**: **Recharts** 채택 + `ChartContainer`·`AttendanceRateChart`·`HealthTrendChart`·`BranchCompareChart` 구현. 플레이스홀더 제거. coder는 API data prop 연동만 남음.
+- ~~NHIS 배치 진행 UI — CSS만 존재~~ → **16차 완료**: `BatchProgressSteps` React 컴포넌트 + `ReconciliationPage`/`NHISImportPage` 통합.
+- ~~플랫폼 고객사 「관리」버튼 무기능~~ → **16차 완료**: `PlatformOrgDetailModal` + US-A02 관리자 발급 폼.
 - QR 스캐너 — **html5-qrcode** vs native BarcodeDetector → #UXD-2. `GuardianCheckinPage`는 현재 토큰 수동입력 폴백 제공.
 - ~~다크 모드 미정~~ → **11차 구현 완료**: `tokens.css` `[data-theme="dark"]` 토큰 오버라이드 + `ThemeToggle`(AppShell topbar) + `theme.js`. 컴포넌트가 시맨틱 토큰만 쓰므로 코드 변경 0. 대비 AA 검증 §2-4. 후속: 차트(Recharts 등) 도입 시 다크 팔레트 색 매핑 별도 확인.
 - 미확정 사항은 `docs/planning/PLAN_NOTES.md`의 `### [UXD] UX 설계 질문` 섹션에 기록.
@@ -620,7 +964,15 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - SessionTimeoutModal: `SessionTimeoutProvider`가 AuthContext 30분 타이머와 연동 (US-B03). **9차 배선 완료**.
 - 보호자 초대(US-J01 v1.1): `GuardianListCard` 「초대 발송」 버튼은 현재 `disabled` — v1.1 착수(v1 backend merged 이후) 시 활성화.
 - **고대비/강제 색상(12차)**: `forced-colors`/`prefers-contrast` 규칙은 CSS만으로 동작(컴포넌트 코드 변경 0). **tester 검증 권장**: Windows 고대비 모드·`prefers-contrast: more`에서 로그인·대시보드·청구 표·모달 캡처해 경계선·포커스 식별성 확인.
-- `styles.css`의 데모 잔여 클래스(`.role-link`·`.demo-grid`)는 LoginPage 정비(12차)로 미사용 — 별도 데모 화면 부활 전까지 제거 후보(coder 정리 시).
+- ~~`styles.css`의 데모 잔여 클래스(`.role-link`·`.demo-grid`)~~ → **25차 제거 완료**. 신규 링크는 `.ds-link`·`button.ds-link`만 사용.
+- **30차 baseline 후속 (COD 우선순위 — Must 화면 진입에 필수)**:
+  1. `AppShell` 컴포넌트 — 30차에 `DashboardPage`가 사용한 `.ds-app/.ds-topbar/.ds-main`+skip link 패턴을 재사용 가능한 컴포넌트로 추출. 보호자/관리자/HQ 모든 로그인 후 화면이 동일 패턴.
+  2. `SideNav`(2단 그룹) — 운영/출석/기록/청구 4그룹, `aria-expanded`, 모바일 접힘.
+  3. `Table`/`Tabs/TabPanel` — CSS는 29차 존재, React 컴포넌트는 미구현. 이용자 상세(US-D03) 및 청구·NHIS 목록의 진입 차단.
+  4. `BranchSwitcher` — US-B02 다지점 권한자(branch_admin/hq_admin) 필수.
+  5. `StatCard`·`SearchInput`·`FilterChips`·`Pagination` — 목록 화면 공통.
+  6. `ToastProvider`·`SessionTimeoutProvider`·`SessionTimeoutModal` — 30분 비활성(US-B03)·전역 피드백.
+  7. 1~6 후 페이지(스토리별)가 가능. 30차에서 `Switch`·`DateInput`·`MonthInput`·`MaskedPhone`은 위 페이지 구현 시 즉시 사용.
 
 ---
 
