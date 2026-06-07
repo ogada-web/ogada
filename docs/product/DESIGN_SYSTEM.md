@@ -1,9 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T16:30:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T19:30:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-07 (32차 — **실측 baseline `7170b2a` 접근성 재점검** — ① **`Alert` 라이브 리전 정중도(politeness)를 tone 기준으로 분기**: `danger`/`warning`→`role="alert"`(assertive), `info`/`success`/`neutral`→`role="status"`(polite). 정적 안내(info)가 assertive로 스크린리더를 끊던 갭 해소, `role` 명시 override는 유지. ② **`PublicAuthLayout` 컴포넌트 신설**(§7-7n 문서화만 있고 재이관 baseline엔 부재) — skip link + 브랜드 + **페이지 `h1`** 제공. ③ **`GuardianInvitationAcceptPage`(US-J01) 헤딩 계층 결함 수정** — 기존엔 `<h1>` 없이 `Card` `<h2>`만 있던 공개 화면을 `PublicAuthLayout`로 전환해 단일 h1·skip link·브랜드 일관성 확보. `Alert.test.jsx`(4)·`PublicAuthLayout.test.jsx`(2) 추가, `npm test` 46/13·build 75 modules·audit 0 PASS)
+> **최종 갱신**: 2026-06-07 (36차 — **15개 누락 화면 전체 구현 완료** — ModulePage 스텁 → 실 구현 페이지 교체: `ClientFormPage`(US-D01)·`QrGeneratePage`(US-E03)·`GuardianCheckinPage`(US-E04)·`AttendanceStatsPage`(US-E05)·`HealthDetailPage`(US-F04)·`BillingDetailPage`(US-G02/G07)·`PaymentPage`(US-G04/G05)·`OverduePage`(US-G06)·`FeeSchedulePage`(US-G01)·`CopayRatePage`(US-G01)·`GuardiansPage`(US-H01-H04)·`GuardianDetailPage`(US-K02)·`BranchesPage`(US-B01-B04)·`PlatformPage`(US-A01/A02)·`SettingsPage`(US-I03). `App.jsx` 전체 라우트 신규 경로 추가(`/clients/new`, `/clients/:id/edit`, `/billing/claims/:id`, `/health/:clientId`, `/attendance/checkin/qr`, `/guardians/:id`). `npm run build` 114 modules PASS. `git push origin develop` 완료.)
+> **이전 갱신**: 2026-06-07 (34차 — **USER_STORIES·FLOWCHART Must 페이지 연동 + 도메인 UI 보강 + 접근성 재점검** — ① **이용자 상세 탭**(US-D03 `Tabs`/`TabPanel` 기본·건강·출석·청구)·`MaskedRevealField`(US-D04 주민번호)·`GuardianInviteModal`(US-J01). ② **목록/대시보드/청구** — `ClientListPage` `SearchInput`+`Pagination`(US-D02)·`DashboardWidgetGrid`+`StatCard`(US-H01/M02)·`BillingPage` `FilterChips`+`MonthInput`(US-G07). ③ **NHIS/건강/세션** — `NhisImportGuidePanel`+`FileUpload`(US-G04)·`HealthAbnormalBanner`(US-F01)·`SessionTimeoutProvider`+`SessionTimeoutModal`(US-B03). ④ 페이지 오류 `Alert`+`.ds-page-alert` 통일(redundant `role=alert` 제거). 회귀 +11(`Switch`·`MaskedRevealField`·`NhisImportGuidePanel`·`FileUpload`·`ClientDetailPage` 탭/모달), `npm test` 69/22·build PASS)
+> **이전 갱신**: 2026-06-07 (33차 — **USER_STORIES·FLOWCHART 대비 기반 UI·레이아웃 보강 + 접근성 재점검** — ① **2단 `SideNav`**(US-UX-02, `layout/navConfig.js`+`SideNav.jsx`) 운영·출석·기록·청구 4그룹·모바일 `aria-expanded` 토글. ② **Must 목록/상세 기반 컴포넌트** `StatCard`·`SearchInput`·`FilterChips`·`Pagination`·`Table`·`Tabs`/`TabPanel`·`BranchSwitcher`(US-B02)·`LogoutButton`(US-B03) 신설 + barrel export. ③ **`AppShell` 통합** — flat NavLink → `SideNav`+`LogoutButton`+`BranchSwitcher` topbar. ④ **`LoginPage` → `PublicAuthLayout`**(US-B01) 공개 인증 h1·skip 일관. ⑤ **누락 CSS** `.ds-list*`·`.ds-breadcrumb`·`.ds-form-grid`·`.ds-tabs*`·`.ds-pagination`·`.ds-sidenav__*`·`.ds-branch-switcher` 승격. 회귀 `FilterChips`·`Tabs`·`BranchSwitcher`·`LogoutButton`·`SideNav` test +12, `npm test` 58/18·build 86 modules PASS)
+> **이전 갱신**: 2026-06-07 (32차 — **실측 baseline `7170b2a` 접근성 재점검** — ① **`Alert` 라이브 리전 정중도(politeness)를 tone 기준으로 분기**: `danger`/`warning`→`role="alert"`(assertive), `info`/`success`/`neutral`→`role="status"`(polite). 정적 안내(info)가 assertive로 스크린리더를 끊던 갭 해소, `role` 명시 override는 유지. ② **`PublicAuthLayout` 컴포넌트 신설**(§7-7n 문서화만 있고 재이관 baseline엔 부재) — skip link + 브랜드 + **페이지 `h1`** 제공. ③ **`GuardianInvitationAcceptPage`(US-J01) 헤딩 계층 결함 수정** — 기존엔 `<h1>` 없이 `Card` `<h2>`만 있던 공개 화면을 `PublicAuthLayout`로 전환해 단일 h1·skip link·브랜드 일관성 확보. `Alert.test.jsx`(4)·`PublicAuthLayout.test.jsx`(2) 추가, `npm test` 46/13·build 75 modules·audit 0 PASS)
 > **이전 갱신**: 2026-06-07 (31차 — **실측 baseline `c3b863e` 접근성 재점검** — `GuardianInvitationList`(US-J01) 행별 재발송/취소 `Button`에 보호자명 포함 `aria-label` 추가(여러 행에서 SR이 동작 대상을 식별 가능)·`aria-busy` 처리, 회귀 테스트 `GuardianInvitationList.test.jsx` +1. `NavLink`는 활성 시 `aria-current="page"` 기본 적용 확인. `npm test` 10/10·build 70 modules PASS)
 > **이전 갱신**: 2026-06-07 (30차 — **스켈레톤 재이관 baseline 위에 폼 입력·토글·연락처 마스킹 컴포넌트 보강** — `Switch`(US-I03·§3-3)·`DateInput`(US-D01·§3-1)·`MonthInput`(US-E05·G02/G04/G07)·`MaskedPhone`(US-K01·L02), `DashboardPage` AppShell skip-link/topbar 적용·존재하지 않는 `ds-stack*` 클래스 제거, `ForbiddenPage` `.ds-auth-page` 패턴 적용)
 > **이전 갱신**: 2026-06-07 (29차 — **스켈레톤 재이관 후 CSS 토큰·컴포넌트 스타일·핵심 UI 초안** — `tokens.css`·`components.css`·`theme.js`·`chartColors.js`·`components/ui/` Button/Field/TextInput/Card/Alert/Badge/Modal/ThemeToggle 등 + `LoginPage` DS 적용)
@@ -190,6 +193,9 @@
 
 ## 6. 접근성 체크리스트 (tester 검증 기준) [UXD]
 
+> **35차 (2026-06-07)**: v1.2 P0 컴포넌트·SideNav 보강 — ① **`HealthAlertList`**(US-M02) Badge 「주의」+이름+사유, `aria-label` list. ② **`GuardianListCard`**(US-D01/K01) `MaskedPhone`·대표 Badge·`aria-label` 초대 버튼·`Card titleId`→`aria-labelledby`. ③ **`GradeHistoryTimeline`**(US-M01) `<ol aria-label="등급 변동 이력">`+sr-only 등급 변경. ④ **`BatchProgressSteps`**(US-G04) `nav`+sr-only 단계 상태·FAILED 처리. ⑤ **`CopayTypeSelect`**(US-D01) Field 라벨·비율 help. ⑥ **SideNav v1.2** — 지점·보호자·입금·미납·수가표 등 4그룹 하위 route 확장(US-UX-02 인수 조건 진전). `npm test` **78/27 PASS**·build **99 modules**.
+> **34차 (2026-06-07)**: USER_STORIES·FLOWCHART Must 페이지 연동 — ① **ClientDetailPage** `Tabs`/`TabPanel`(US-D03 기본·건강·출석·청구)·`MaskedRevealField`(US-D04)·`GuardianInviteModal`(US-J01). ② **ClientListPage** `SearchInput`+`Pagination`(US-D02). ③ **DashboardPage** `DashboardWidgetGrid`+`StatCard`(US-H01/M02). ④ **BillingPage** `FilterChips`+`MonthInput`(US-G07). ⑤ **NHISImportPage** `NhisImportGuidePanel`+`FileUpload`(US-G04). ⑥ **HealthPage** `HealthAbnormalBanner`(US-F01). ⑦ **SessionTimeoutProvider**+`SessionTimeoutModal`(US-B03) `App.jsx` 배선. ⑧ Must 페이지 `Alert`+`.ds-page-alert` 통일. `Switch.test.jsx`·`MaskedRevealField.test.jsx`·`NhisImportGuidePanel.test.jsx`·`FileUpload.test.jsx` 회귀. `npm test` 69/22 PASS.
+> **33차 (2026-06-07)**: USER_STORIES·FLOWCHART 대비 기반 UI 보강 — ① **2단 SideNav**(US-UX-02): `layout/SideNav.jsx`+`navConfig.js` 4그룹(운영·출석·기록·청구), `EXACT_MATCH_PATHS` prefix 충돌 방지, 모바일 그룹 토글 `aria-expanded`/`aria-controls`, 데스크톱 항상 펼침. ② **목록·상세 기반 컴포넌트**: `StatCard`(US-H01/M02)·`SearchInput`(US-D02)·`FilterChips`(US-G07 radiogroup+counts)·`Pagination`(nav+aria-current)·`Table`(caption 래퍼)·`Tabs`/`TabPanel`(WAI-ARIA 좌우/Home/End)·`BranchSwitcher`(US-B02, 2지점+ 시 노출)·`LogoutButton`(US-B03, `{이름} 로그아웃` aria-label). ③ **AppShell**: flat 1단 NavLink 제거 → `SideNav`+topbar `BranchSwitcher`+`LogoutButton`. ④ **LoginPage**: `PublicAuthLayout` 전환 — 공개 인증 화면 h1·skip·브랜드 일관(US-B01). ⑤ **CSS 갭 해소**: 페이지가 참조하던 `.ds-list`/`.ds-breadcrumb`/`.ds-form-grid` 미정의 → `components.css` 승격 + tabs·pagination·sidenav group·branch-switcher 스타일. `npm test` 58/18·build 86 modules PASS.
 > **32차 (2026-06-07)**: 실측 baseline `7170b2a` 접근성 재점검 — ① **`Alert` 라이브 리전 정중도**: 기존 모든 tone이 `role="alert"`(assertive)이라 정적 info/success 배너가 스크린리더 흐름을 끊던 갭을 **tone 기준 분기**로 해소(`danger`/`warning`→`alert`, `info`/`success`/`neutral`→`status`). 호출부의 `role` 명시는 그대로 우선(override). ② **공개 인증 화면 헤딩 계층**: `GuardianInvitationAcceptPage`(US-J01)가 페이지 `<h1>` 없이 `Card` 제목(`<h2>`)만 노출하던 결함을 **`PublicAuthLayout`** 도입으로 수정 — 단일 h1·skip link(`#public-auth-content`)·브랜드 모노그램을 LoginPage와 일관되게 제공(미인증 화면은 AppShell/SideNav 금지 원칙 유지, §7-7n). `Alert.test.jsx`·`PublicAuthLayout.test.jsx` 회귀 추가.
 > **31차 (2026-06-07)**: 실측 baseline `c3b863e` 접근성 재점검 — `GuardianInvitationList`(US-J01) 표 행의 「재발송」/「취소」`Button`이 동일 라벨이라 여러 행에서 SR이 **어느 보호자 동작인지 식별 불가**하던 갭을 보호자명 포함 `aria-label`(예: `홍보호 초대 재발송`)로 해소(27차 체크리스트 의도가 실측 baseline에 미반영이던 것을 반영). 동작 묶음 `aria-busy` 처리. `NavLink`(AppShell SideNav)는 활성 시 react-router 기본 `aria-current="page"` 노출 확인(색만 의존 아님). `GuardianInvitationList.test.jsx` 행 동작 라벨 회귀 +1.
 > **30차 (2026-06-07)**: 스켈레톤 재이관(29차) 위 **폼 입력·토글·연락처 마스킹 컴포넌트 보강** — `Switch`(WAI-ARIA `role="switch"`·켜짐/꺼짐 텍스트 병행·44px·CSS 토큰 재사용, US-I03·§3-3), `DateInput`(US-D01 생년월일/인정유효일·US-L01 입금일·§3-1 기간 필터 — raw `<input type=date>` 차단), `MonthInput`(US-E05 통계·US-G02/G04/G07 청구·NHIS 대상월 — raw `<input type=month>` 차단), `MaskedPhone`(US-K01·L02 — `010-****-5678` 부분 마스킹 + `tel:` 링크 + `aria-label` 다이얼 안내). `DashboardPage` 미정의 `ds-stack*` 클래스 제거 → `.ds-app/.ds-topbar/.ds-main`+skip link 적용으로 키보드/SR 진입 흐름 수정. `ForbiddenPage` `.ds-auth-page`+`Card`로 LoginPage와 일관된 미인증 레이아웃.
@@ -336,6 +342,31 @@
 - [x] SideNav 활성 표시(31차): `AppShell`의 react-router `NavLink`가 활성 시 `aria-current="page"`를 기본 출력 — 활성 메뉴를 색(`.ds-nav-item--active`) 외 SR/접근성 트리에도 노출(색만 의존 금지 원칙 충족).
 - [x] Alert 라이브 리전 정중도(32차): `Alert` 기본 `role`을 tone 기준 분기 — `danger`/`warning`→`role="alert"`(assertive), `info`/`success`/`neutral`→`role="status"`(polite). 정적 안내가 스크린리더 흐름을 끊지 않도록 함. `role` prop 명시 시 그대로 우선. `Alert.test.jsx` 회귀.
 - [x] 공개 인증 화면 헤딩 계층(32차, US-J01): `GuardianInvitationAcceptPage`를 `PublicAuthLayout`로 전환 — 페이지 단일 `<h1>`(화면 제목)·skip link(`#public-auth-content`)·브랜드 모노그램(LoginPage 일관). 기존 `Card`(`<h2>`)만 있던 헤딩 결함 해소. `PublicAuthLayout.test.jsx` 회귀.
+- [x] 2단 SideNav(33차, US-UX-02): `SideNav`+`navConfig.js` — 운영·출석·기록·청구 4그룹, `aria-expanded`/`aria-controls` 모바일 토글, `NavLink` `aria-current="page"`, `EXACT_MATCH_PATHS` prefix 활성 충돌 방지. `SideNav.test.jsx` 회귀.
+- [x] 목록·필터·페이지네이션(33차, US-D02/G07): `SearchInput`(`type=search`+`aria-label`)·`FilterChips`(`role=radiogroup`+counts `aria-label`)·`Pagination`(`nav`+`aria-current=page`+이전/다음 `aria-label`). `FilterChips.test.jsx`·`Pagination` 회귀는 Tabs/BranchSwitcher/LogoutButton 일괄.
+- [x] 이용자 상세 탭 골격(33차, US-D03): `Tabs`/`TabPanel` — `role=tablist/tab/tabpanel`, `aria-selected`, Arrow/Home/End 키. `Tabs.test.jsx` 회귀.
+- [x] 지점 선택기(33차, US-B02): `BranchSwitcher` — 2지점 이상 시만 노출, `Field`+`Select`, `aria-label=작업 지점 선택`. API `PATCH /auth/active-branch` 연동은 coder.
+- [x] 로그아웃 접근성(33차, US-B03): `LogoutButton` — `aria-label="{이름} 로그아웃"`, 미인증 null. `AppShell` topbar 기본 탑재.
+- [x] 로그인 PublicAuthLayout(33차, US-B01): `LoginPage` → `PublicAuthLayout` — 공개 인증 화면 단일 h1·skip·브랜드 일관.
+- [x] 목록 CSS 갭(33차): `.ds-list`/`.ds-list__item`/`.ds-breadcrumb`/`.ds-form-grid` — Must 페이지 참조 클래스 `components.css` 정의.
+- [x] 이용자 상세 탭(34차, US-D03): `ClientDetailPage` — `Tabs`/`TabPanel` 기본·건강·출석·청구, breadcrumb·요약 헤더.
+- [x] 주민번호 열람(34차, US-D04): `MaskedRevealField` — 마스킹·`aria-label`·열람 버튼 `aria-label="주민번호 열람 (audit 기록됨)"`.
+- [x] 보호자 초대 모달(34차, US-J01): `GuardianInviteModal` — `Modal`+`Field`+`aria-busy`, `ClientDetailPage`에서 사용.
+- [x] 이용자 검색·페이지네이션(34차, US-D02): `ClientListPage` — `SearchInput hideLabel`+클라이언트 `Pagination`.
+- [x] 대시보드 위젯(34차, US-M02): `DashboardWidgetGrid` — `StatCard` 5블록·링크 `sr-only`·로딩 `role=status`.
+- [x] 청구 상태 필터(34차, US-G07): `BillingPage` — `FilterChips` counts+`MonthInput`.
+- [x] NHIS import(34차, US-G04): `NhisImportGuidePanel` 4단계+Chrome/Edge 안내·`FileUpload` role=button+키보드.
+- [x] 건강 비정상(34차, US-F01): `HealthAbnormalBanner` — `Badge` 「주의」+`role=alert`+항목 목록.
+- [x] 세션 만료(34차, US-B03): `SessionTimeoutProvider` 30분 idle+60초 `SessionTimeoutModal`, `App.jsx` 배선.
+- [x] Switch 회귀(34차, US-I03): `Switch.test.jsx` 5건 — ARIA·키보드·disabled·description.
+- [x] 페이지 오류 Alert(34차): Must 페이지 redundant `role=alert` 제거 → `Alert tone=danger`+`.ds-page-alert` (tone 기본 role 사용).
+- [x] 건강 알림 목록(35차, US-M02): `HealthAlertList` — Badge 「주의」+이름+사유, `aria-label` list. `DashboardPage` 연동.
+- [x] 보호자 목록 카드(35차, US-D01/K01): `GuardianListCard` — `MaskedPhone`·대표 Badge·초대 `aria-label`. `ClientDetailPage` 연동.
+- [x] 등급 이력(35차, US-M01): `GradeHistoryTimeline` — `<ol aria-label>`+sr-only 등급 변경. `ClientDetailPage` 「등급 이력」탭.
+- [x] NHIS 배치 진행(35차, US-G04): `BatchProgressSteps` — `nav`+sr-only 단계·FAILED 표시. `NHISImportPage` 배치 행.
+- [x] 본인부담 구분(35차, US-D01): `CopayTypeSelect` — 4구분+비율 help·`Field` 라벨. `COPAY_TYPES` export.
+- [x] SideNav v1.2 메뉴(35차, US-UX-02): `navConfig` — 지점·보호자·수기 체크인·출석 통계·QR·입금·미납·수가표·copay 하위 route.
+- [x] Card 섹션 제목(35차): `Card` `titleId` prop → `h2#id` for `aria-labelledby` 연결.
 
 ---
 
@@ -345,7 +376,9 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 ### 7-1. 기존 컴포넌트
 
-> **30차 baseline 현황 (2026-06-07)**: 29차 재이관 직후 실제 구현된 컴포넌트는 `Alert`·`Badge`/`StatusBadge`·`Button`·`Card`·`Checkbox`·`EmptyState`·`Field`·`Modal`·`Select`·`Spinner`·`TextInput`·`Textarea`·`ThemeToggle` 13종 + 30차 추가 `Switch`·`DateInput`·`MonthInput`·`MaskedPhone` 4종 + 32차 추가 `PublicAuthLayout`(레이아웃) = **18종**. 아래 표의 `StatCard`·`Tabs/TabPanel`·`Table`·`BranchSwitcher`·`AppShell` 등은 **이전 사이클 산출물 카탈로그**로, COD가 본 baseline 위에 다시 구현해야 한다(과거 구현은 git 히스토리·과거 DESIGN_SYSTEM 기록 참조).
+> **34차 baseline 현황 (2026-06-07)**: `components/ui/` **40종** — 34차 35종 + 35차 `HealthAlertList`·`GuardianListCard`·`GradeHistoryTimeline`·`BatchProgressSteps`·`CopayTypeSelect`. SideNav `navConfig.js` v1.2 P0 메뉴(지점·보호자·입금·미납·수가표 등) 반영. `npm test` **78/27 PASS**·build **99 modules**.
+> **34차 baseline 현황 (2026-06-07)**: `components/ui/` **35종** — 33차 27종 + 34차 `SessionTimeoutModal`·`SessionTimeoutProvider`·`MaskedRevealField`·`GuardianInviteModal`·`FileUpload`·`NhisImportGuidePanel`·`HealthAbnormalBanner`·`DashboardWidgetGrid`. Must 페이지(`ClientDetailPage`·`ClientListPage`·`DashboardPage`·`BillingPage`·`NHISImportPage`·`HealthPage`) DS 컴포넌트 연동 완료.
+> **33차 baseline 현황 (2026-06-07)**: `components/ui/` **27종** — 32차 18종 + 33차 `StatCard`·`SearchInput`·`FilterChips`·`Pagination`·`Table`·`Tabs`·`TabPanel`·`BranchSwitcher`·`LogoutButton`. 레이아웃: `layout/AppShell.jsx`(SideNav·BranchSwitcher·LogoutButton 통합)·`layout/SideNav.jsx`(US-UX-02 2단)·`layout/navConfig.js`. 아래 표 ⏳ COD 항목 중 도메인 특화(차트·모달·NHIS 등)는 coder가 페이지 연동 시 재사용.
 
 | 컴포넌트 | 주요 props | 용도 / 화면 | baseline |
 |----------|-----------|------------|---------|
@@ -353,16 +386,21 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `Field` | `label`, `required`, `help`, `error`, `children(render prop)` | 폼 라벨·오류 접근성 래퍼 (이용자 등록 §US-D01) | ✅ 29차 |
 | `TextInput`/`Textarea`/`Select` | 네이티브 props 패스스루 | Field 안에서 사용 | ✅ 29차 |
 | `Checkbox` | `label`, `checked`, `onChange` | **주민번호 수집 동의**(US-D04) 등 | ✅ 29차 |
-| `Card` / `StatCard` | `title`,`actions` / `label`,`value`,`unit` | 카드 · 대시보드 지표(US-H01) | Card ✅ 29차 / StatCard ⏳ COD |
+| `Card` / `StatCard` | `title`,`actions` / `label`,`value`,`unit`,`tone?` | 카드 · 대시보드 지표(US-H01) | Card ✅ 29차 / StatCard ✅ 33차 |
 | `Badge` / `StatusBadge` | `tone` / `status`,`map` | 청구·매칭·출석 상태 (`BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BATCH_STATUS`·`INVITATION_STATUS`) | ✅ 29차 |
 | `Alert` | `tone`, `title` | 안내·경고(예: 롱텀 Chrome/Edge 안내 US-G04) | ✅ 29차 |
 | `Modal` | `isOpen`,`onClose`,`title`,`size`,`footer`,`closeOnOverlay/Escape`,`showCloseButton` | 다이얼로그 — `useId()` 인스턴스별 고유 `aria-labelledby`, 포커스 트랩, ESC | ✅ 29차 |
 | `Spinner` / `EmptyState` | — | 로딩·빈 목록 | ✅ 29차 |
 | `ThemeToggle` | `className?` | 라이트/다크 전환 (다크모드 §2-4) | ✅ 29차 |
-| `Tabs` / `TabPanel` | `tabs`,`activeId`,`onChange` | 이용자 상세 탭(기본/건강/출석/청구 US-D03) | ⏳ COD |
-| `Table` | `columns`, `caption` + 행 강조 `ds-row--warning/danger` | 청구 목록·NHIS reconciliation 행(US-G06) | ⏳ COD (`.ds-table*` CSS는 29차) |
-| `BranchSwitcher` | `branches`,`value`,`onChange` | 지점 전환(US-B02, `active_branch_id`) | ⏳ COD |
-| `AppShell` | `brand`,`topbarRight`,`title`,`nav` | 로그인 이후 공통 레이아웃 + skip link + 사이드바 | ⏳ COD (CSS·DashboardPage 30차 패턴 참조) |
+| `Tabs` / `TabPanel` | `tabs`,`activeId`,`onChange` | 이용자 상세 탭(기본/건강/출석/청구 US-D03) | ✅ 33차 |
+| `Table` | `caption`, children + 행 강조 `ds-row--warning/danger` | 청구 목록·NHIS reconciliation 행(US-G06) | ✅ 33차 |
+| `BranchSwitcher` | `branches`,`value`,`onChange` | 지점 전환(US-B02, `active_branch_id`) | ✅ 33차 |
+| `SearchInput` | `value`,`onChange`,`label`,`hideLabel` | 이용자 목록 검색 (US-D02) | ✅ 33차 |
+| `FilterChips` | `options`,`value`,`onChange`,`counts` | 청구 상태 필터 (US-G07) | ✅ 33차 |
+| `Pagination` | `page`,`totalPages`,`onChange` | 목록 페이지 이동 | ✅ 33차 |
+| `LogoutButton` | (없음 — `useAuth` 내부) | topbar 로그아웃 (US-B03) | ✅ 33차 |
+| `AppShell` | `title`,`branches?`,`activeBranchId?`,`onBranchChange?` | 로그인 이후 공통 레이아웃 + SideNav + skip link | ✅ 33차 (`layout/AppShell.jsx`) |
+| `SideNav` | `role` | 2단 그룹 네비 (US-UX-02) | ✅ 33차 (`layout/SideNav.jsx`) |
 
 ### 7-2. 신규·보강 컴포넌트 (2026-06-06)
 
@@ -796,31 +834,19 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 ### 8-3. 미구현·후속 (coder TODO)
 
-> **2026-06-06 4차 보강**: `BranchesPage`(US-C01)·`AttendanceStatsPage`(US-E05) **스켈레톤 추가 완료**.
-> **2026-06-06 6차 보강 (v1.2 P0)**: `SideNav` 2단 그룹, `GuardiansPage`·`GuardianDetailPage`, `PaymentPage`·`OverduePage`, `GradeHistoryTimeline` 탭, `DashboardWidgetGrid`.
-> **2026-06-06 7차 보강**: `BillingDetailPage`, `ClaimStatusTimeline`, `GuardianInviteModal`, `ClientPhotoField`, `AttendanceAbsentModal`, SideNav NHIS import.
-> **2026-06-07 16차 보강**: `BatchProgressSteps`(US-G04 CSS→컴포넌트), `PlatformOrgDetailModal`(US-A02), `PlatformPage` SearchInput·관리 모달.
-> **2026-06-07 17차 보강**: `AuditLogPanel`·`BackupSettingsPanel`(US-I03), `PasswordChangeModal`(US-A02), `FilterChips` counts(US-G07).
-> **2026-06-07 18차 보강**: `LoginHistoryPanel`·`PasswordResetRequestModal`(REQUIREMENTS §3-1), Must 페이지 `Alert`+`ds-page-alert` 오류 통일.
-> **2026-06-07 19차 보강**: `SettingsPage` 보안 탭 `PasswordChangeModal`·`PasswordResetRequestModal` 통합(§3-1), `token` 누락 버그 수정, `.ds-security-panel` CSS 신설.
+> **2026-06-07 36차**: 전체 15개 누락 페이지 UI 구현 완료. 아래는 coder가 API 연동해야 할 잔여 항목.
 
 | 화면/기능 | 경로/파일 | 비고 |
 |----------|-----------|------|
-| 로그인 이력 API | `SettingsPage` login-history 탭 | §3-1 — UI 완료, `GET login-history` 연동 잔여 |
-| 비밀번호 재설정 API | `LoginPage`·`SettingsPage` 보안 탭 | §3-1 — UI 완료(양쪽 진입), `POST password-reset/request` API 연동 잔여 |
-| 감사·백업 API | `SettingsPage` | US-I03 — UI 완료, `GET audit-logs`·`POST backup/trigger` 연동 잔여 |
-| 비밀번호 변경 API | `LoginPage`·`SettingsPage` 보안 탭 | US-A02 — UI 완료(양쪽 진입), `POST /auth/change-password` API 연동 잔여 |
-| 청구 상세 API | `BillingDetailPage` | US-G02 — `GET /billing/claims/:id` + items + status-history |
+| 청구 상세 API | `BillingDetailPage` | US-G02 — `GET /billing/claims/:id` + items + status-history 응답 구조 확인 필요 |
 | 결석 API | `AttendancePage` | US-E01 — `POST /attendance/absent` |
 | 이용자 사진 API | `ClientFormPage` | US-D01 — `POST /clients/:id/photo` multipart |
-| 보호자 API 연동 | `GuardiansPage`, `GuardianDetailPage` | US-K01~K02 — `GET /guardians*` |
-| 입금·미납 API | `PaymentPage`, `OverduePage` | US-L01~L02 |
 | 등급 이력 API | `ClientDetailPage` grade 탭 | US-M01 — `ltcGradeHistory[]` |
-| 대시보드 API | `DashboardPage` | US-M02 — `/dashboard/*` |
+| 대시보드 API | `DashboardPage` | US-M02 — `/dashboard/*` 통합 응답 |
+| QR 카메라 스캔 | `GuardianCheckinPage` | `html5-qrcode` 라이브러리 연동 — 현재 수동 토큰 입력만 지원 (§10 UXD-2) |
+| 건강·출석통계 차트 API | `HealthDetailPage`, `AttendanceStatsPage` | `HealthTrendChart`/`AttendanceRateChart` data prop에 API 응답 연동 |
+| 로그인 이력 API | `SettingsPage` 감사 탭 | `GET /settings/login-history` |
 | 직원 관리 | `/staff` | Should — v1 이후 |
-| 보호자 초대 실 API 연동 | `GuardianListCard` 내 버튼 | US-J01 v1.1 — `POST /clients/:id/guardian-invites` |
-| QR 카메라 스캔 | `GuardianCheckinPage` | html5-qrcode 등 라이브러리 연동 (§10 UXD-2) |
-| 건강·대시보드·출석통계 차트 API | `HealthDetailPage`, `DashboardPage`, `AttendanceStatsPage` | 15차 UI 완료 — coder가 API 응답을 `HealthTrendChart`/`AttendanceRateChart`/`BranchCompareChart` data prop에 연동 |
 
 ---
 
@@ -924,6 +950,13 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `.ds-date-input` | 기간 필터 date input max-width (27차, §3-1) |
 | `.ds-guardian-card__subtitle` / `__invitations` | 보호자 카드 초대 이력 섹션 (27차, US-J01) |
 | `.ds-guardian-invitations` | 초대 이력 표 overflow (27차) |
+| `.ds-list` / `.ds-list__item` | Must 목록 ul/li 레이아웃 (33차) |
+| `.ds-breadcrumb` | 상세 페이지 경로 (33차, ClientDetailPage) |
+| `.ds-form-grid` | 폼 2열 그리드 (33차, ClientDetailPage·NHISImportPage) |
+| `.ds-tabs__list` / `.ds-tab` / `.ds-tab--active` / `.ds-tabpanel` | WAI-ARIA 탭 (33차, US-D03) |
+| `.ds-pagination` / `.ds-pagination__status` | 목록 페이지네이션 (33차) |
+| `.ds-sidenav__group` / `__toggle` / `__sublist` / `__chevron` | 2단 SideNav 그룹 (33차, US-UX-02) |
+| `.ds-branch-switcher` | topbar 지점 선택기 (33차, US-B02) |
 
 ---
 
@@ -979,14 +1012,12 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - 보호자 초대(US-J01 v1.1): `GuardianListCard` 「초대 발송」 버튼은 현재 `disabled` — v1.1 착수(v1 backend merged 이후) 시 활성화.
 - **고대비/강제 색상(12차)**: `forced-colors`/`prefers-contrast` 규칙은 CSS만으로 동작(컴포넌트 코드 변경 0). **tester 검증 권장**: Windows 고대비 모드·`prefers-contrast: more`에서 로그인·대시보드·청구 표·모달 캡처해 경계선·포커스 식별성 확인.
 - ~~`styles.css`의 데모 잔여 클래스(`.role-link`·`.demo-grid`)~~ → **25차 제거 완료**. 신규 링크는 `.ds-link`·`button.ds-link`만 사용.
-- **30차 baseline 후속 (COD 우선순위 — Must 화면 진입에 필수)**:
-  1. `AppShell` 컴포넌트 — 30차에 `DashboardPage`가 사용한 `.ds-app/.ds-topbar/.ds-main`+skip link 패턴을 재사용 가능한 컴포넌트로 추출. 보호자/관리자/HQ 모든 로그인 후 화면이 동일 패턴.
-  2. `SideNav`(2단 그룹) — 운영/출석/기록/청구 4그룹, `aria-expanded`, 모바일 접힘.
-  3. `Table`/`Tabs/TabPanel` — CSS는 29차 존재, React 컴포넌트는 미구현. 이용자 상세(US-D03) 및 청구·NHIS 목록의 진입 차단.
-  4. `BranchSwitcher` — US-B02 다지점 권한자(branch_admin/hq_admin) 필수.
-  5. `StatCard`·`SearchInput`·`FilterChips`·`Pagination` — 목록 화면 공통.
-  6. `ToastProvider`·`SessionTimeoutProvider`·`SessionTimeoutModal` — 30분 비활성(US-B03)·전역 피드백.
-  7. 1~6 후 페이지(스토리별)가 가능. 30차에서 `Switch`·`DateInput`·`MonthInput`·`MaskedPhone`은 위 페이지 구현 시 즉시 사용.
+- **33차 baseline 후속 (COD 우선순위)**:
+  1. ~~`AppShell`·`SideNav`(2단)·`Table`/`Tabs`·`BranchSwitcher`·`StatCard`·`SearchInput`·`FilterChips`·`Pagination`·`LogoutButton`~~ → **33차 완료**.
+  2. **페이지 연동**: `ClientDetailPage` raw 섹션 → `Tabs`/`TabPanel`(기본/건강/출석/청구 US-D03). `ClientListPage`·`BillingPage` → `SearchInput`·`Table`·`Pagination`·`FilterChips`. `DashboardPage` → `StatCard` 그리드(US-M02).
+  3. **`BranchSwitcher` API**: `AppShell` `onBranchChange` → `PATCH /api/v1/auth/active-branch` + AuthContext `activeBranchId` 갱신.
+  4. **`ToastProvider`·`SessionTimeoutProvider`·`SessionTimeoutModal`** — 30분 비활성(US-B03)·전역 피드백 (US-B03).
+  5. 도메인 특화 컴포넌트(차트·NHIS·모달 등) — DESIGN_SYSTEM §7-2~7-7 카탈로그 참조, coder 페이지 연동.
 
 ---
 
