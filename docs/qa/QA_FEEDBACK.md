@@ -1,5 +1,10 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T15:30:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T16:30:00+00:00 -->
+<!-- tester-sync: TSR 64차 2026-06-07T16:30 — backend develop `80bdb1e` CLEAN·158/158·test 79/79·6커밋 ahead·**BE-11 Fixed @ `8d42bdd`**(AuthRateLimitService·Test PRESENT)·V45 PRESENT @ `80bdb1e`·SEC-20260608-014 **Planned→Fixed**·Open 0건·BLOCK(merge 게이트 6커밋 단일). -->
+<!-- sec-sync: SEC 6차 2026-06-08T16:30 — workspace baseline 재점검 @ `136239e`/`7170b2a` CLEAN; SEC-D10·D11·D12 **Fixed** 확인; **신규 Open 2건 [SEC]** SEC-20260608-013(test merge gap SEC-D14)·SEC-20260608-014(auth rate limit SEC-D13). -->
+<!-- tester-sync: TSR 63차 2026-06-07T15:40 UTC (frontend) — develop HEAD **`811aef3`**(baseline `c3b863e` 대비 +2커밋: `b87a8f5` US-J01 초대 행 a11y 레이블·**`811aef3`** Must API pages·pilot checklist·7-role tests·SEC-008) · working tree **CLEAN**(0 dirty) · develop `npm run build` **74 modules PASS**(vite 6.4.3) · develop `npm test` **35/9 PASS**(vitest 4.1.8, 61차 6/2 → +29/+7) · develop `npm audit` **0 vulnerabilities**(**SEC-008 develop HEAD 해소** — 61차 4 vuln→0) · test `@e5fd48d`(src/frontend-test) build **36 PASS**·npm test **N/A** · develop **7커밋 ahead** of test · merge **미실행**. **이관 규율 5 PASS @ `811aef3`**: `git cat-file -e HEAD:` `src/api/services.js`·`pilotChecklist.js`(+test)·`pilotPageFlows.test.jsx`·`sevenRoleJwtLogin.test.jsx`·`sevenRoleRouteGuard.test.jsx`·`sevenRoleRouteMatrix.js`·Must pages(`AttendancePage`·`BillingPage`·`ClientDetailPage`·`HealthPage`·`NHISImportPage`·`ReconciliationPage`)·`src/auth/ProtectedRoute.jsx`·`AuthContext.jsx`(SEC-005 localStorage 0건) **전부 PRESENT**. **61차 FAIL/ABSENT 해소**: H04 Must API·M01 vitest 확장·R-04a 7-role·R-05 pilotPageFlows·SEC-008 audit **develop HEAD 반영**(라이브 E2E·J01 백엔드 API는 merge·backend 후). **신규 Open 0건** — 잔여 Planned BLOCK = **B03 frontend merge 게이트 단일**(develop→test 8커밋 미머지 + Must 라이브 E2E·J01 백엔드 API) + backend merge(4커밋 @ `136239e`). 판정 **BLOCK**(B03). **추가 관측**: 검증 직후 coder가 `811aef3`→**`bb0cec4`**(+1 billing 라우트 admin RBAC·`STAFF_NAV` 분리) 커밋 — WT CLEAN·`npm test` **37/9 PASS**·develop **8 ahead**·판정 불변. coder 동시 진행 중. -->
 <!-- tester-sync: TSR 62차 2026-06-07T15:30 UTC (backend) — develop HEAD **`136239e`**(+1커밋 vs 60차 `3f9264f`: `136239e` v2/J03 Solapi alimtalk provider·GuardianPhoneStorage·BillingNotifyService·PhoneMaskingUtil) · working tree **CLEAN** · **`mvn test` develop 152/152 PASS**(+5 vs 60차 147) · test `2799e29` **79/79 PASS**(23 suites) · develop **4커밋 ahead** of test · merge **미실행**. **v1 baseline artifacts PRESENT @ 136239e(TSR 독립 검증 PASS)**: `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccess`·`SolapiKakaoAlimtalkProvider` **전부 PRESENT**(이관 규율 5 PASS). **신규 Open 0건** — 판정 **BLOCK**(merge 게이트 4커밋 단일). frontend 61차 baseline(`c3b863e`·9/9·BLOCK B03) **변경 없음**. -->
+<!-- planner-sync: 46차 2026-06-08T17:30 — SEC 6차 Open 2건→Planned(SEC-D14·SEC-D13→BE-11) · baseline 불변 `136239e`/`7170b2a` CLEAN · mvn 152/152 · npm 40/11 · Open 0건 · 잔여 BLOCK **merge(4+9)+B03+FE-22+BE-11** -->
+<!-- planner-sync: 45차 2026-06-08T16:10 — TSR 62·63 + COD Must API·J01 REST @ `7170b2a` · baseline backend `136239e`(4 ahead)·frontend `7170b2a`(9 ahead) · QA-H04·M01·R-04a·R-05·SEC-008 Fixed @ `811aef3` · Open 0건 · 잔여 BLOCK **backend merge(4) + frontend merge(9) + B03** + v1.1 Must 라이브 E2E·J01 live API E2E -->
 <!-- planner-sync: 44차 2026-06-08T16:00 — TSR 61 + COD FE-18/FE-19 Fixed @ `f506c90` · baseline frontend `c3b863e`(5 ahead) · B07 #6·H05·SEC-D9 Fixed · US-UX-01 @ `c3b863e` · Open 0건 · 잔여 BLOCK **backend merge(3) + frontend merge(5) + B03**(v1.1 H04·P1–P8·J01 live E2E·SEC-008) -->
 <!-- tester-sync: TSR 61차 2026-06-07T15:00 UTC (frontend) — develop HEAD **`e043eac`**(+2 vs baseline `7c0ecdc`) · working tree **CLEAN** · develop build **65 modules PASS** · develop `npm test` **6/6 PASS**(ProtectedRoute 3·MaskedPhone 3) · develop audit **4 vuln**(SEC-008 lineage 미적용·non-blocking) · test `e5fd48d` build **36 PASS**·npm test **N/A** · develop **3 ahead** · SEC-D12 @HEAD **PRESENT** · **신규 Open 0건** · 판정 **BLOCK**(B03 + v1.1 완료 기준) · TSR57 B07 #6 dirty-tree **소멸**(new baseline) · FE-18·FE-19(J01 UI) **Planned 유지** -->
 <!-- planner-sync: 43차 2026-06-08T15:00 — workspace baseline 확정(backend `3f9264f`·frontend `7c0ecdc`) · SEC-D12·QA-B11·SEC-D11 Fixed · d5654c0/e5fd48d checkout 재현 **폐기** · `.agents/workspace_baseline.yaml` + run_agent 실측 주입 · 잔여 BLOCK **backend merge(3커밋) + FE-18·FE-19 + B03** -->
@@ -102,13 +107,29 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(tester·security_auditor가 검증 중 발견한 미해결 이슈 — TSR 61차 재검증 후 **0건**)_
+_(tester·security_auditor가 검증 중 발견한 미해결 이슈 — planner 46차 SEC 6차 2건 **Planned 이동** 후 **0건**)_
 
 ---
 
 ## Planned
 
 _(planner가 ROADMAP·PLAN_NOTES에 반영 완료, coder 대기 중)_
+
+> **2026-06-07T16:30 TSR 64차 반영**: backend develop **`80bdb1e`** CLEAN · `mvn test` **158/158** · **BE-11 Fixed @ `8d42bdd`** (`AuthRateLimitService`·`AuthRateLimitServiceTest` HEAD PRESENT) · **V45 PRESENT** @ `80bdb1e` · **SEC-20260608-014 Planned→Fixed** (BE-11 완료, Fixed 섹션 이동). **Open 0건** — 잔여 BLOCK **merge(6)+B03+FE-22**.
+
+> **2026-06-08T17:30 planner 46차 반영**: SEC 6차 **Open 2건→Planned** — ① **SEC-20260608-013**(SEC-D14 develop→test 미승격) → **B03·backend/frontend merge 게이트** 동반 · ② **SEC-20260608-014**(SEC-D13 auth rate limit) → **BE-11**. baseline **`136239e`/`7170b2a`** WT CLEAN · `mvn test` **152/152** · `npm test` **40/11** · audit **0** — **45차와 동일**. **FE-22**(Must·J01 live E2E) 신설. **Open 0건** — 잔여 BLOCK **merge(4+9)+B03+FE-22+BE-11**.
+
+### [SEC] v1/v1.1 — develop→test 보안 패치 미승격 (SEC-D14) — Planned 46차
+- **id**: SEC-20260608-013
+- **severity**: BLOCK
+- **stream**: backend + frontend
+- **version**: v1 / v1.1
+- **planner_task**: B03 merge 게이트 · backend merge(6) · frontend merge(9) — `git_merge_to_test.sh` 후 TSR·SEC 재검증
+- **related**: SEC-007 · `SECURITY_AUDIT.md` SEC-D14
+
+> **2026-06-08T16:10 planner 45차 반영**: TSR 62·63 + COD **`811aef3`**(Must API·pilot·7-role·SEC-008)·**`7170b2a`**(guardian REST+J01/J02 tests) — frontend develop **`7170b2a`** · backend **`136239e`** · WT **CLEAN** · `npm test` **40/11 PASS** · `mvn test` **152/152 PASS**. **QA-H04·M01·R-04a·R-05·SEC-008 Fixed @ `811aef3`**. **Open 0건** — 잔여 BLOCK **backend merge(4) + frontend merge(9) + B03** + v1.1 Must 라이브 E2E·J01 live API E2E.
+
+> **2026-06-07T15:40 TSR 63차 재검증 (frontend)**: develop HEAD **`811aef3`**(baseline `c3b863e` +2커밋) · working tree **CLEAN** · `npm run build` **74 modules PASS**(vite 6.4.3) · `npm test` **35/9 PASS**(vitest 4.1.8) · `npm audit` **0 vulnerabilities**. **61차 FAIL/ABSENT 항목이 develop HEAD 반영**: **QA-H04 Must API**(`services.js`·Must pages REST 연동)·**QA-M01 vitest 확장**(35/9, pilotChecklist·pilotPageFlows·7-role 포함)·**R-04a 7-role**·**R-05 pilotPageFlows**·**SEC-008**(audit 0, vite 6.4.3·vitest 4.1.8). 이관 규율 5 — 전 산출물 `git cat-file -e HEAD:` PRESENT. **잔여 BLOCK = B03 merge 게이트 단일**(develop→test 7커밋 미머지·Must 라이브 E2E·J01 백엔드 API). **Open 0건** — coder는 v1.1 잔여 완료 기준(라이브 E2E·J01 백엔드 API) 충족 후 `merge_status: ready`.
 
 > **2026-06-08T16:00 planner 44차 반영**: COD **`f506c90`**(FE-18/FE-19 J01 UI)·**`c3b863e`**(favicon) — frontend develop **`c3b863e`** · WT **CLEAN** · `npm test` **9/9 PASS** · build **70 modules**. **B07 #6·H05·SEC-D9 Fixed @ `f506c90`**. TSR 61 baseline(`e043eac`) 위 진전. **Open 0건** — 잔여 BLOCK **backend merge(3) + frontend merge(5) + B03**.
 
@@ -119,6 +140,20 @@ _(planner가 ROADMAP·PLAN_NOTES에 반영 완료, coder 대기 중)_
 > **2026-06-08T03:00 planner 42차 반영**: TSR 58·59차 — ① **QA-B10·SEC-D11·SEC-D12·QA-B11 Open→Planned** → **BE-10·INFRA-B12·FE-20**·ROADMAP·USER_STORIES·PLAN_NOTES. ② **B09·SEC-D8 Fixed @ `f47ffa1`**(58차). ③ **BNK-8** v1.3-A=케어포 패리티·v1.3-B=차별화. **Open 0건** — 잔여 BLOCK **INFRA-B12 + BE-10 + FE-19 + FE-18 + backend merge(1커밋 @ `f47ffa1`) + B03**.
 
 > **2026-06-07T14:00 TSR 58차 반영 (backend)**: develop **`f47ffa1` CLEAN** · **QA-B09·SEC-D8 Fixed** · test **`2799e29` 79/79** · develop **89/89** · merge **1커밋 ahead** · **신규 Open QA-B10**(v1 merged baseline regression) · **SEC-D11** updated. **Open 2건(BLOCK)** — Planned BLOCK **B03 + backend merge(1커밋) + B07 #6 + H05**.
+
+### [SEC] v1 — 인증 API rate limiting 부재 (SEC-D13) — **Fixed @ `8d42bdd`**
+- **id**: SEC-20260608-014
+- **severity**: HIGH
+- **stream**: backend
+- **version**: v1
+- **found_at**: 2026-06-08T16:30:00+00:00
+- **planned_at**: 2026-06-08T17:30:00+00:00 (planner 46차 — BE-11)
+- **fixed_at**: 2026-06-07T16:28:00+00:00
+- **verified_at**: 2026-06-07T16:30:00+00:00 (TSR 64차 — `auth/domain/AuthRateLimitService.java`·`AuthRateLimitServiceTest.java` **PRESENT** @ `8d42bdd` · `mvn test` **158/158 PASS** · WT **CLEAN**)
+- **summary**: **BE-11 완료** — `AuthRateLimitService` IP+account 슬라이딩 윈도우(60s), login·refresh·password-reset rate limit, 429 RATE_LIMITED 응답, `DEPLOYMENT_GUIDE` `AUTH_*_RATE_LIMIT_*` 환경변수 연동. **SEC-D13 credential stuffing 방어 충족**.
+- **security_gate**: ① login rate limit ✓ ② refresh rate limit ✓ ③ password-reset rate limit ✓ ④ 429 RATE_LIMITED 응답 ✓ ⑤ 환경변수 설정 ✓
+- **artifacts**: `docs/qa/TEST_REPORT.md` (64차), `transfer/backend/manifests/latest.yaml` (64차)
+- **changes**: develop `8d42bdd` — `auth/domain/AuthRateLimitService.java` + `auth/domain/AuthRateLimitServiceTest.java`
 
 ### [SEC] v1.1 — J01 GuardianInvitation SecurityConfig 공개 endpoint 허용 범위 (SEC-D8, QA-B09 동반) — **Fixed @ `f47ffa1`**
 - **id**: SEC-20260607-009

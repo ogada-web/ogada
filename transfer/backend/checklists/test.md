@@ -1,4 +1,4 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T15:30:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T16:30:00+00:00 -->
 # Backend develop → test 이관 체크리스트
 
 > **스트림**: backend  
@@ -6,7 +6,9 @@
 > **test 브랜치**: `test` (`src/backend-test` worktree)  
 > **검증 기준**: `docs/planning/ROADMAP.md` v1 (`merge_status: merged`)  
 > **작성**: tester (`TSR`)  
-> **최종 갱신**: 2026-06-07T15:30:00+00:00
+> **최종 갱신**: 2026-06-07T16:30:00+00:00
+
+> **64차 재검증 (2026-06-07T16:30 UTC) — develop `80bdb1e` CLEAN·BE-11 AuthRateLimitService·V45·develop 158/158·test 79/79·develop 6커밋 ahead·merge 미실행·BLOCK(merge 게이트 단일)**: develop HEAD **`80bdb1e`**(+2커밋 vs 62차 `136239e` — `8d42bdd` BE-11 AuthRateLimitService · `80bdb1e` V45 v2 notification integrity), working tree **CLEAN**. **BE-11 develop HEAD Fixed(TSR 64차 독립 검증 PASS)**: `auth/domain/AuthRateLimitService`·`auth/domain/AuthRateLimitServiceTest` **PRESENT** @ `8d42bdd`(이관 규율 5·6 PASS). **V45 PRESENT** — `V45__v2_notification_prefs_integrity_and_users_phone_pair.sql` HEAD **PRESENT**. v1 baseline artifacts **전부 PRESENT** — `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`. develop `mvn test` **158/158 PASS**(62차 152 → +6 BE-11+V45)·test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop **6커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) — merge **미실행**. **SEC-20260608-014(BE-11) Fixed** — QA_FEEDBACK Planned→Fixed 완료. **신규 Open 0건**. 판정 **BLOCK** — merge 게이트 단일.
 
 > **62차 재검증 (2026-06-07T15:30 UTC) — develop `136239e` CLEAN·v2/J03 Solapi 추가·develop 152/152·test 79/79·develop 4커밋 ahead·merge 미실행·BLOCK(merge 게이트 단일)**: develop HEAD **`136239e`**(+1커밋 vs 60차 `3f9264f` — `feat(v2/J03): Solapi alimtalk provider, guardian phone storage, billing notify`), working tree **CLEAN**. **v1 baseline artifacts develop HEAD 독립 검증(TSR 62차 PASS)**: `src/test/java/com/ogada/backend/pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest` **전부 PRESENT**(이관 규율 5·6 PASS). develop `mvn test` **152/152 PASS**(60차 147→+5 Solapi provider tests)·test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop **4커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`) — merge **미실행**. **신규 Open 0건**. 판정 **BLOCK** — merge 게이트 단일.
 
@@ -50,12 +52,14 @@
 |------|-----|
 | **대상 버전** | v1 (MVP Must — backend stream) |
 | **ROADMAP `merge_status`** | **`merged`** (문서) — workspace test **미반영** ✗ |
-| **develop HEAD** | `136239e` — v2/J03 Solapi alimtalk provider (62차) |
+| **develop HEAD** | `80bdb1e` — v2: V45 notification prefs integrity + users phone pair (64차) |
 | **test HEAD** | `2799e29` — 초기 구현 baseline (ROADMAP 기대 `e8750d2` **미달**) |
-| **develop vs test** | **develop 4커밋 ahead** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`) — merge 미실행 |
+| **develop vs test** | **develop 6커밋 ahead** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) — merge 미실행 |
 | **develop working tree** | **CLEAN** ✓ |
 | **test working tree** | CLEAN |
 | **이관 판정** | **BLOCK** — develop→test merge 게이트 (v1 baseline artifacts develop HEAD Fixed·test 미반영) |
+
+> **PASS 금지 사유 (64차)**: ① develop·test **비동기**(develop **6커밋 ahead** `f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) — merge **미실행**. ② test `@2799e29` **79/79** (ROADMAP 기대 기준 미달 — v1 baseline tests test 브랜치 **미반영**). ✅ **BE-11·V45 develop HEAD Fixed(TSR 64차 독립 검증 PASS)** — `AuthRateLimitService`·`AuthRateLimitServiceTest`·`V45__*.sql`·v1 baseline artifacts 전부 **PRESENT**·WT **CLEAN**·develop `mvn test` **158/158 PASS**. **테스트 PASS ≠ 이관 PASS** — merge 완료 후 test 재검증 필수.
 
 > **PASS 금지 사유 (60차)**: ① develop·test **비동기**(develop **3커밋 ahead** `f47ffa1`·`cf6116c`·`3f9264f`) — merge **미실행**. ② test `@2799e29` **79/79** (ROADMAP 기대 기준 미달 — v1 baseline tests test 브랜치 **미반영**). ✅ **QA-B10 develop HEAD Fixed(TSR 60차 독립 검증 PASS)** — `pilot/PilotChecklistJwtE2eTest`(8 @Test)·`routing/MustApiEndpointRoutingTest`(24+ @Test)·`security/ProductionSecretValidatorTest`(5)·`security/SevenRoleJwtLoginE2eTest`(7)·`security/RoleBasedControllerAccessTest` **PRESENT**·WT **CLEAN**·develop `mvn test` **147/147 PASS**. **테스트 PASS ≠ 이관 PASS** — merge 완료 후 test 재검증 필수.
 
@@ -83,36 +87,38 @@
 
 ---
 
-## 2. 브랜치·커밋 정합 (60차 갱신 — 2026-06-07T14:55 UTC)
+## 2. 브랜치·커밋 정합 (64차 갱신 — 2026-06-07T16:30 UTC)
 
 | # | 항목 | 기대 | 실제 | 결과 |
 |---|------|------|------|------|
-| B-01 | develop → test merge (136239e — J01·BE-10·v2/J03·Solapi) | develop = test | develop **4커밋 ahead** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`) | **FAIL** ✗ (merge 게이트) |
+| B-01 | develop → test merge (80bdb1e — J01·BE-10·v2/J03·Solapi·BE-11·V45) | develop = test | develop **6커밋 ahead** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) | **FAIL** ✗ (merge 게이트) |
 | B-02 | test working tree clean | clean | CLEAN | PASS |
 | B-03 | develop working tree clean | clean | **CLEAN** ✓ | **PASS** ✓ |
 | B-04 | ROADMAP `merge_status` vs workspace test | test @ `e8750d2` | test @ **`2799e29`** (79 tests) | **FAIL** ✗ (stale) |
-| B-05 | v1 P1–P8 live E2E (PilotChecklistJwt) | develop HEAD PRESENT | **PRESENT** @ `136239e` (`pilot/` 8 @Test) | **PASS** ✓ (BE-10 Fixed — TSR 62차) |
-| B-06 | develop HEAD ↔ J01·notification+BE-10+v2/J03+Solapi (규율 5) | GuardianInvitation·V43·V41–V42·baseline tests PRESENT | **PRESENT** @ `136239e` | **PASS** ✓ |
+| B-05 | v1 P1–P8 live E2E (PilotChecklistJwt) | develop HEAD PRESENT | **PRESENT** @ `80bdb1e` (`pilot/` 8 @Test) | **PASS** ✓ (BE-10 Fixed — TSR 60차) |
+| B-06 | develop HEAD ↔ J01·notification+BE-10+v2/J03+Solapi+BE-11+V45 (규율 5) | GuardianInvitation·V43·V41–V45·baseline tests·AuthRateLimitService PRESENT | **PRESENT** @ `80bdb1e` | **PASS** ✓ |
 | B-07 | API 계약 문서화 (규율 6) | API_SPEC §4-1 J01 | V43·controller committed — **API_SPEC 갱신 planner 확인** | **PARTIAL** |
-| B-08 | test P0 보안 패치 (SEC-007/ProductionSecretValidator) | PRESENT @ develop HEAD | develop **PRESENT** @ `136239e`·test **ABSENT** (stale) | **PARTIAL** (develop Fixed·test 미반영) |
+| B-08 | test P0 보안 패치 (SEC-007/ProductionSecretValidator) | PRESENT @ develop HEAD | develop **PRESENT** @ `80bdb1e`·test **ABSENT** (stale) | **PARTIAL** (develop Fixed·test 미반영) |
+| B-09 | BE-11 AuthRateLimitService (SEC-D13) | develop HEAD PRESENT | **PRESENT** @ `8d42bdd` — `AuthRateLimitService`·`AuthRateLimitServiceTest` PRESENT | **PASS** ✓ (TSR 64차 Fixed) |
 
 ---
 
-## 3. 빌드·테스트 (62차 갱신 — test @ 2799e29 / develop @ 136239e)
+## 3. 빌드·테스트 (64차 갱신 — test @ 2799e29 / develop @ 80bdb1e)
 
 | # | 항목 | 명령 | 결과 | 비고 |
 |---|------|------|------|------|
-| T-01 | Maven unit/integration test (test) | `mvn test` | **79 tests, 0 fail** (23 suites) | **2026-06-07T15:28 UTC (62차 실측)** |
+| T-01 | Maven unit/integration test (test) | `mvn test` | **79 tests, 0 fail** (23 suites) | **2026-06-07T16:28 UTC (64차 실측)** |
 | T-02 | JAR package (test) | `mvn -q -DskipTests package` | **SUCCESS** | `backend-0.0.1-SNAPSHOT.jar` (76,466,058 B) |
 | T-03 | Spring Boot 버전 (test) | `pom.xml` parent | **3.3.1** | ROADMAP 기대 3.5.3 미달 — test 미반영 |
 | T-04 | NHIS 선행열 파서 (test) | `NhisExcelParserTest` | **PASS** | baseline |
-| T-05 | rate limit / secret validator (test) | `ProductionSecretValidatorTest` | **N/A** | test **ABSENT** — develop PRESENT @ `136239e` |
-| T-06 | 7-role RBAC (test) | `RoleBasedControllerAccessTest` | **N/A** (test) | test **ABSENT** — develop **PRESENT** @ `136239e` (BE-10) |
-| T-07 | Must API 라우팅 (test) | `MustApiEndpointRoutingTest` | **N/A** (test) | test **ABSENT** — develop **PRESENT** @ `136239e` (`routing/`) |
-| T-08 | 7역할 JWT live E2E (test) | `SevenRoleJwtLoginE2eTest` | **N/A** (test) | test **ABSENT** — develop **PRESENT** @ `136239e` (7 @Test) |
-| T-09 | **develop HEAD committed test** | `mvn test` @ `136239e` (62차 실측) | **152/152 PASS** | J01+notification+BE-10+v2/J03+Solapi 포함 |
+| T-05 | rate limit / secret validator (test) | `ProductionSecretValidatorTest` | **N/A** | test **ABSENT** — develop PRESENT @ `80bdb1e` |
+| T-06 | 7-role RBAC (test) | `RoleBasedControllerAccessTest` | **N/A** (test) | test **ABSENT** — develop **PRESENT** @ `80bdb1e` (BE-10) |
+| T-07 | Must API 라우팅 (test) | `MustApiEndpointRoutingTest` | **N/A** (test) | test **ABSENT** — develop **PRESENT** @ `80bdb1e` (`routing/`) |
+| T-08 | 7역할 JWT live E2E (test) | `SevenRoleJwtLoginE2eTest` | **N/A** (test) | test **ABSENT** — develop **PRESENT** @ `80bdb1e` (7 @Test) |
+| T-09 | **develop HEAD committed test** | `mvn test` @ `80bdb1e` (64차 실측) | **158/158 PASS** | J01+notification+BE-10+v2/J03+Solapi+BE-11+V45 포함 |
 | T-10 | **develop WT** | develop working tree | **CLEAN** | WT CLEAN — dirty-tree **소멸** |
-| T-11 | develop→test merge 차이 | `git rev-list --count test..develop` | **4 commits** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`) | merge 미실행 |
+| T-11 | develop→test merge 차이 | `git rev-list --count test..develop` | **6 commits** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) | merge 미실행 |
+| T-12 | **BE-11 AuthRateLimitService** | `git cat-file -e HEAD:` (64차) | **PRESENT** @ `8d42bdd` | `AuthRateLimitService`·`AuthRateLimitServiceTest` PRESENT — SEC-D13 Fixed |
 
 ---
 
@@ -242,6 +248,8 @@
 
 | 역할 | id | 판정 | 일시 |
 |------|-----|------|------|
+| QA·이관 | TSR | **BLOCK** (64차 — develop `80bdb1e` CLEAN·**BE-11 Fixed @ `8d42bdd`·V45 PRESENT**·158/158 PASS·test 79/79·develop 6커밋 ahead·merge 미실행·Open 0·SEC-014 Fixed) | 2026-06-07T16:30:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (62차 — develop `136239e` CLEAN·**v2/J03 Solapi Fixed**·152/152 PASS·test 79/79·develop 4커밋 ahead·merge 미실행·Open 0) | 2026-06-07T15:30:00+00:00 |
 | QA·이관 | TSR | **BLOCK** (60차 — develop `3f9264f` CLEAN·**QA-B10 develop Fixed TSR 독립 검증 PASS**·147/147 PASS·test 79/79·develop 3커밋 ahead·merge 미실행·Open 0) | 2026-06-07T14:55:00+00:00 |
 | QA·이관 | TSR | **BLOCK** (58차 — B09·SEC-D8 Fixed·develop CLEAN 89/89·test 79/79·QA-B10 history regression·merge 1커밋) | 2026-06-07T14:00:00+00:00 |
 | QA·이관 | TSR | **BLOCK** (56차 — develop DIRTY 27 files·J01 WIP·QA-B09 Open·merge 3커밋·213/213 test PASS) | 2026-06-07T10:01:00+00:00 |

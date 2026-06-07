@@ -1,10 +1,36 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T15:30:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T16:30:00+00:00 -->
+<!-- tester-sync: TSR 64차 2026-06-07T16:30 UTC (backend) — develop HEAD **`80bdb1e`**(+2커밋 vs 62차 `136239e`: `8d42bdd` BE-11 AuthRateLimitService·`80bdb1e` V45 v2 notification integrity) · working tree **CLEAN** · **`mvn test` develop 158/158 PASS**(+6 vs 62차 152 — BE-11 AuthRateLimitServiceTest·V45 포함) · test `2799e29` **79/79 PASS**(23 suites) · develop **6커밋 ahead** of test · merge **미실행**. **BE-11 develop HEAD Fixed(TSR 64차 독립 검증 PASS)**: `auth/domain/AuthRateLimitService`·`auth/domain/AuthRateLimitServiceTest` **PRESENT** @ `8d42bdd`(이관 규율 5·6 PASS). **V45 PRESENT** @ `80bdb1e` — `V45__v2_notification_prefs_integrity_and_users_phone_pair.sql` HEAD **PRESENT**. v1 baseline artifacts **전부 PRESENT** — `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`. **신규 Open 0건** — 판정 **BLOCK**(merge 게이트 6커밋 단일). **SEC-20260608-014(BE-11) Planned→Fixed** @ `8d42bdd`. -->
 # 테스트 리포트 (TEST_REPORT)
 
 > **작성**: tester (`TSR`)  
 > **검증 브랜치**: backend `test` worktree (`src/backend-test`), frontend `test` worktree (`src/frontend-test`)  
 > **ROADMAP 기준**: v1 backend (`merge_status: merged`), v1.1 frontend (`merge_status: pending`)  
-> **CURRENT BASELINE**: backend develop `136239e` · frontend develop `c3b863e` (`.agents/workspace_baseline.yaml` — 7c0ecdc lineage + FE-18/19 + favicon)
+> **CURRENT BASELINE**: backend develop `136239e` · frontend develop `811aef3` (`.agents/workspace_baseline.yaml` `c3b863e` + 2커밋 — Must API pages·pilotChecklist·7-role·SEC-008)
+
+> **64차 재검증 (2026-06-07T16:30 UTC, backend) — develop `136239e`→`80bdb1e`(+2커밋)·BE-11 AuthRateLimitService·V45·develop 158/158 PASS·test 79/79·6커밋 ahead·merge 미실행·BLOCK(merge 게이트 단일)**:
+> - **backend develop HEAD `80bdb1e`**(+2커밋 vs 62차 `136239e` — `8d42bdd` BE-11 AuthRateLimitService · `80bdb1e` V45 v2 notification prefs integrity), working tree **CLEAN**(0 dirty).
+> - **`8d42bdd` 변경 내역**: `AuthRateLimitService.java`(IP+email 슬라이딩 윈도우 60s, login·refresh·password-reset, 429 RATE_LIMITED 응답)·`AuthRateLimitServiceTest.java` + `DEPLOYMENT_GUIDE` `AUTH_*_RATE_LIMIT_*` 환경변수 — **SEC-D13 credential stuffing 방어**. **BE-11 완료**.
+> - **`80bdb1e` 변경 내역**: `V45__v2_notification_prefs_integrity_and_users_phone_pair.sql` — users `phone_encrypted`/`phone_masked` pair, notifications `sent_at` NOT NULL/CHECK, `guardian_notification_preferences` tenant FK+role guard, `guardian_invitations` pending email 인덱스. v2 J03 follow-up.
+> - **`git cat-file -e HEAD:`** `auth/domain/AuthRateLimitService.java`·`auth/domain/AuthRateLimitServiceTest.java` **PRESENT** ✓ (BE-11 Fixed — 이관 규율 5·6 PASS). `V45__v2_notification_prefs_integrity_and_users_phone_pair.sql` **PRESENT** ✓. v1 baseline — `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest` **전부 PRESENT** ✓ (이관 규율 5 PASS).
+> - **test branch (`src/backend-test @ 2799e29`) `mvn test`**: **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B) — 62차 이후 변동 없음 (64차 실측).
+> - **develop HEAD (`src/backend @ 80bdb1e`) `mvn test`**: **158/158 PASS**(62차 152 → +6: `AuthRateLimitServiceTest`·V45 마이그레이션 참조 테스트 포함) — 64차 실측.
+> - develop **6커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) — merge **미실행**.
+> - **SEC-20260608-014 (BE-11) Planned → Fixed**: `AuthRateLimitService` develop HEAD PRESENT @ `8d42bdd` — **QA_FEEDBACK Planned→Fixed 이동**.
+> - **신규 Open 0건** — 판정 **BLOCK**(develop→test merge 게이트 6커밋 단일).
+
+> **63차 재검증 (2026-06-07T15:40 UTC, frontend) — develop `e043eac`→`811aef3`(+2커밋)·Must API pages·pilotChecklist·7-role·pilotPageFlows·SEC-008 develop HEAD 반영·CLEAN·35/9 PASS·74 modules·audit 0·7커밋 ahead·merge 미실행·BLOCK(B03 merge 게이트)**:
+> - **frontend develop HEAD `811aef3`**(baseline `c3b863e` 대비 +2커밋: `b87a8f5` US-J01 초대 행 스크린리더 레이블·**`811aef3`** `feat(v1.1): Must API pages, pilot checklist, 7-role tests, SEC-008`), working tree **CLEAN**(0 dirty).
+> - **`811aef3` 변경 내역**(22 files +1968/-752): Must API pages(`AttendancePage`·`BillingPage`·`ClientDetailPage`·`ClientListPage`·`HealthPage`·`NHISImportPage`·`ReconciliationPage`·`DashboardPage` REST 연동)·`src/api/services.js`(+144)·`pilotChecklist.js`(+test, P1–P8 fetch-mock)·`pilotPageFlows.test.jsx`(페이지 단위 RTL E2E)·`sevenRoleJwtLogin.test.jsx`·`sevenRoleRouteGuard.test.jsx`·`sevenRoleRouteMatrix.js`·`setupTests.js` + `package.json`/`package-lock.json`(vite `^6.4.3`·vitest `^4.1.8` — SEC-008).
+> - **`git cat-file -e HEAD:`** `src/api/services.js`·`pilotChecklist.js`(+test)·`pilotPageFlows.test.jsx`·`sevenRoleJwtLogin.test.jsx`·`sevenRoleRouteGuard.test.jsx`·`sevenRoleRouteMatrix.js`·Must pages·`src/auth/ProtectedRoute.jsx`·`AuthContext.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS — H04·R-04a·R-05·SEC-008 develop HEAD 반영). SEC-005 AuthContext localStorage/sessionStorage **0건**.
+> - **test branch (`src/frontend-test @ e5fd48d`)**: `npm run build` **36 modules PASS**(vite 5.4.21, JS 165.43 kB) · `npm test` **N/A**(Missing script) · `npm audit` **0 high·2 moderate**.
+> - **develop HEAD (`src/frontend @ 811aef3`) `npm run build`**: **74 modules SUCCESS**(vite 6.4.3, JS 205.76 kB gzip 65.05 kB, CSS 24.45 kB).
+> - **develop HEAD `npm test`(vitest 4.1.8)**: **35 tests/9 files PASS**(61차 6/2 → +29/+7 — pilotChecklist·pilotPageFlows·sevenRoleJwtLogin·sevenRoleRouteGuard·roleHomePaths·ProtectedRoute·MaskedPhone 등).
+> - **develop HEAD `npm audit`**: **0 vulnerabilities**(high·all) — **SEC-008 develop HEAD 해소**(61차 4 vuln/1 critical → 0; vite 6.4.3·vitest 4.1.8 upgrade 반영).
+> - develop **7커밋 ahead** of test (`7c0ecdc`·`1d9a701`·`e043eac`·`f506c90`·`c3b863e`·`b87a8f5`·`811aef3`) — merge **미실행**.
+> - **v1.1 ROADMAP 완료 기준 갱신**: R-04 H04 Must API **PASS**(`services.js`·Must pages develop HEAD) · R-05 P1–P8 **PARTIAL**(fetch-mock·pilotPageFlows; 라이브 E2E는 merge·backend 후) · R-04a 7-role **PARTIAL**(vitest 자동화) · M01 **PARTIAL**(35/9; 전체 회귀 잔여) · SEC-008 **PASS**(audit 0) · R-07 J01 **PARTIAL**(UI HEAD PRESENT·백엔드 초대 API 스텁) · **R-12 merge_status `pending`(B03) FAIL** 단일.
+> - **61차 FAIL/ABSENT 해소**: 61차 H04(ModulePage placeholder)·M01(6 tests)·R-05/R-07·SEC-008(4 vuln) → 63차 `811aef3` **develop HEAD 반영**.
+> - **추가 관측 (15:46, coder 동시 진행)**: 검증 직후 develop **`811aef3`→`bb0cec4`**(+1커밋 `fix(v1.1): restrict billing route access to admin roles` — billing 라우트 admin RBAC·`roleNav` `STAFF_NAV`(staff)/`BRANCH_ADMIN_NAV` 분리). develop HEAD `bb0cec4` working tree **CLEAN**·`npm test` **37/9 PASS**(+2)·`npm run build` **74 modules**·`npm audit` **0**·develop **8커밋 ahead** of test. HEAD Fixed(`811aef3` 산출물) 규율 5 유효 — 판정 **BLOCK** 불변. **coder 동시 진행 중 — HEAD 추가 진전 가능**.
+> - **신규 Open 0건** — 판정 **BLOCK**(B03 merge 게이트 단일 — Must 라이브 E2E·J01 백엔드 API·develop→test merge 8커밋).
 
 > **62차 재검증 (2026-06-07T15:30 UTC, backend) — develop HEAD `136239e` CLEAN·v2/J03 Solapi alimtalk 추가·152/152 PASS·test 79/79 PASS·4커밋 ahead·merge 미실행·BLOCK(merge 게이트)**:
 > - **backend develop HEAD `136239e`**(+1커밋 vs 60차 `3f9264f` — `feat(v2/J03): Solapi alimtalk provider, guardian phone storage, billing notify`), working tree **CLEAN**(0 dirty).
