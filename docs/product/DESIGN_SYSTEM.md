@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T19:30:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-07T21:10:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-07 (36차 — **15개 누락 화면 전체 구현 완료** — ModulePage 스텁 → 실 구현 페이지 교체: `ClientFormPage`(US-D01)·`QrGeneratePage`(US-E03)·`GuardianCheckinPage`(US-E04)·`AttendanceStatsPage`(US-E05)·`HealthDetailPage`(US-F04)·`BillingDetailPage`(US-G02/G07)·`PaymentPage`(US-G04/G05)·`OverduePage`(US-G06)·`FeeSchedulePage`(US-G01)·`CopayRatePage`(US-G01)·`GuardiansPage`(US-H01-H04)·`GuardianDetailPage`(US-K02)·`BranchesPage`(US-B01-B04)·`PlatformPage`(US-A01/A02)·`SettingsPage`(US-I03). `App.jsx` 전체 라우트 신규 경로 추가(`/clients/new`, `/clients/:id/edit`, `/billing/claims/:id`, `/health/:clientId`, `/attendance/checkin/qr`, `/guardians/:id`). `npm run build` 114 modules PASS. `git push origin develop` 완료.)
+> **최종 갱신**: 2026-06-07 (38차 — **수기 출석 체크인/아웃·결석 흐름 보강(US-E01·E02, 파일럿 P2)** — 재이관 baseline의 `AttendancePage`가 **읽기 전용 목록**뿐이라 파일럿 핵심 시나리오 P2(아침 수기 체크인)가 동작하지 않던 갭을 해소. ① **`CheckoutModal`**(귀가 교통편 `Select`·미선택 시 확인 `disabled`·`error` Alert) 신설. ② **`AttendanceAbsentModal`**(결석 사유 필수 — 빈 값 시 `Field error`(role=alert)·제출 차단) 신설. ③ `AttendancePage` — 당일 출석 요약 `StatCard` 4종(입소·귀가 완료·결석·미처리, US-E02) + 이용자별 `Table`에 **입소/귀가/결석** 액션(버튼 `aria-label`에 **이용자명** 포함 — 다중 행 SR 식별)·상태별 노출(미처리→입소·결석, 입소→귀가, 완료→안내). 기존 `checkInApi`·`checkOutApi`(미사용 상태)를 연결하고 `markAbsentApi`(`POST /attendance/absent`) 추가. ④ 회귀 — `CheckoutModal.test.jsx`(3)·`AttendanceAbsentModal.test.jsx`(2)·`AttendancePage.test.jsx`(3, 요약·체크인·교통편 귀가). `npm test` **105/33 PASS**·build **116 modules**·audit 0.)
+> **이전 갱신**: 2026-06-07 (37차 — **`GuardianCheckinPage`(US-E04) 체크인 유형 접근성·DS 정합** — 인라인 `style`이 박힌 raw `<fieldset>`+`<input type=radio>`(입소/귀가)를 DS `FilterChips`(`role="radiogroup"`·44px·색상+텍스트·`forced-colors`)로 교체. 인라인 style 0건. `GuardianCheckinPage.test.jsx`(2건 — 기본 선택·전환·제출 라벨) 회귀 추가. **§8-1 라우트 표 실측 정합**: `/billing/claims/:claimId`·`/billing/imports/nhis(/:batchId)`·`/attendance/checkin/qr`·`GuardianPortalPage` 등 App.jsx 실제 경로로 갱신. **잔여(coder/planner)**: `/attendance/checkin/qr`가 staff 역할로 가드되어 guardian/client_user가 자기 QR 체크인 화면 접근 불가 — PLAN_NOTES `### [UXD]` UXD-6 기록. `npm test` 91/29 PASS.)
+> **이전 갱신**: 2026-06-07 (36차 — **15개 누락 화면 전체 구현 완료** — ModulePage 스텁 → 실 구현 페이지 교체: `ClientFormPage`(US-D01)·`QrGeneratePage`(US-E03)·`GuardianCheckinPage`(US-E04)·`AttendanceStatsPage`(US-E05)·`HealthDetailPage`(US-F04)·`BillingDetailPage`(US-G02/G07)·`PaymentPage`(US-G04/G05)·`OverduePage`(US-G06)·`FeeSchedulePage`(US-G01)·`CopayRatePage`(US-G01)·`GuardiansPage`(US-H01-H04)·`GuardianDetailPage`(US-K02)·`BranchesPage`(US-B01-B04)·`PlatformPage`(US-A01/A02)·`SettingsPage`(US-I03). `App.jsx` 전체 라우트 신규 경로 추가(`/clients/new`, `/clients/:id/edit`, `/billing/claims/:id`, `/health/:clientId`, `/attendance/checkin/qr`, `/guardians/:id`). `npm run build` 114 modules PASS. `git push origin develop` 완료.)
 > **이전 갱신**: 2026-06-07 (34차 — **USER_STORIES·FLOWCHART Must 페이지 연동 + 도메인 UI 보강 + 접근성 재점검** — ① **이용자 상세 탭**(US-D03 `Tabs`/`TabPanel` 기본·건강·출석·청구)·`MaskedRevealField`(US-D04 주민번호)·`GuardianInviteModal`(US-J01). ② **목록/대시보드/청구** — `ClientListPage` `SearchInput`+`Pagination`(US-D02)·`DashboardWidgetGrid`+`StatCard`(US-H01/M02)·`BillingPage` `FilterChips`+`MonthInput`(US-G07). ③ **NHIS/건강/세션** — `NhisImportGuidePanel`+`FileUpload`(US-G04)·`HealthAbnormalBanner`(US-F01)·`SessionTimeoutProvider`+`SessionTimeoutModal`(US-B03). ④ 페이지 오류 `Alert`+`.ds-page-alert` 통일(redundant `role=alert` 제거). 회귀 +11(`Switch`·`MaskedRevealField`·`NhisImportGuidePanel`·`FileUpload`·`ClientDetailPage` 탭/모달), `npm test` 69/22·build PASS)
 > **이전 갱신**: 2026-06-07 (33차 — **USER_STORIES·FLOWCHART 대비 기반 UI·레이아웃 보강 + 접근성 재점검** — ① **2단 `SideNav`**(US-UX-02, `layout/navConfig.js`+`SideNav.jsx`) 운영·출석·기록·청구 4그룹·모바일 `aria-expanded` 토글. ② **Must 목록/상세 기반 컴포넌트** `StatCard`·`SearchInput`·`FilterChips`·`Pagination`·`Table`·`Tabs`/`TabPanel`·`BranchSwitcher`(US-B02)·`LogoutButton`(US-B03) 신설 + barrel export. ③ **`AppShell` 통합** — flat NavLink → `SideNav`+`LogoutButton`+`BranchSwitcher` topbar. ④ **`LoginPage` → `PublicAuthLayout`**(US-B01) 공개 인증 h1·skip 일관. ⑤ **누락 CSS** `.ds-list*`·`.ds-breadcrumb`·`.ds-form-grid`·`.ds-tabs*`·`.ds-pagination`·`.ds-sidenav__*`·`.ds-branch-switcher` 승격. 회귀 `FilterChips`·`Tabs`·`BranchSwitcher`·`LogoutButton`·`SideNav` test +12, `npm test` 58/18·build 86 modules PASS)
 > **이전 갱신**: 2026-06-07 (32차 — **실측 baseline `7170b2a` 접근성 재점검** — ① **`Alert` 라이브 리전 정중도(politeness)를 tone 기준으로 분기**: `danger`/`warning`→`role="alert"`(assertive), `info`/`success`/`neutral`→`role="status"`(polite). 정적 안내(info)가 assertive로 스크린리더를 끊던 갭 해소, `role` 명시 override는 유지. ② **`PublicAuthLayout` 컴포넌트 신설**(§7-7n 문서화만 있고 재이관 baseline엔 부재) — skip link + 브랜드 + **페이지 `h1`** 제공. ③ **`GuardianInvitationAcceptPage`(US-J01) 헤딩 계층 결함 수정** — 기존엔 `<h1>` 없이 `Card` `<h2>`만 있던 공개 화면을 `PublicAuthLayout`로 전환해 단일 h1·skip link·브랜드 일관성 확보. `Alert.test.jsx`(4)·`PublicAuthLayout.test.jsx`(2) 추가, `npm test` 46/13·build 75 modules·audit 0 PASS)
@@ -193,6 +195,8 @@
 
 ## 6. 접근성 체크리스트 (tester 검증 기준) [UXD]
 
+> **38차 (2026-06-07)**: 수기 출석 체크인/아웃·결석 흐름(US-E01·E02, 파일럿 P2) — ① **`CheckoutModal`**: `Modal`(role=dialog·focus trap) + 귀가 교통편 `Field`+`Select`, 미선택 시 「귀가 확인」 `disabled`(색만 의존 금지), 실패 시 `Alert tone=danger`. ② **`AttendanceAbsentModal`**: 결석 사유 `Field`+`Textarea` 필수 — 빈 값 제출 시 `Field error`(role=alert)·`aria-invalid`로 차단. ③ **`AttendancePage`**: 당일 요약 `StatCard`(입소·귀가 완료·결석·미처리) + 이용자별 액션 `Table`(`caption`·`scope=col`), 행 액션 버튼 `aria-label`에 **이용자명 포함**(예: `홍길동 입소 처리`)으로 다중 행에서 SR 동작 대상 식별, 처리 중 `aria-busy`. 상태(입소/귀가/결석)는 `StatusBadge`+텍스트, 미처리/완료는 텍스트 라벨. `CheckoutModal.test.jsx`·`AttendanceAbsentModal.test.jsx`·`AttendancePage.test.jsx` 회귀.
+> **37차 (2026-06-07)**: `GuardianCheckinPage`(US-E04) 체크인 유형(입소/귀가) — 인라인 style raw radio `<fieldset>` → DS `FilterChips`(`role="radiogroup"`·`role="radio"`·`aria-checked`·44px·`forced-colors` 경계선). 색상만으로 의미를 전달하지 않도록 칩 텍스트(입소/귀가)+선택 버튼 라벨 변경(입소/귀가 처리) 병행. 인라인 `style` 0건. `GuardianCheckinPage.test.jsx` 회귀 2건.
 > **35차 (2026-06-07)**: v1.2 P0 컴포넌트·SideNav 보강 — ① **`HealthAlertList`**(US-M02) Badge 「주의」+이름+사유, `aria-label` list. ② **`GuardianListCard`**(US-D01/K01) `MaskedPhone`·대표 Badge·`aria-label` 초대 버튼·`Card titleId`→`aria-labelledby`. ③ **`GradeHistoryTimeline`**(US-M01) `<ol aria-label="등급 변동 이력">`+sr-only 등급 변경. ④ **`BatchProgressSteps`**(US-G04) `nav`+sr-only 단계 상태·FAILED 처리. ⑤ **`CopayTypeSelect`**(US-D01) Field 라벨·비율 help. ⑥ **SideNav v1.2** — 지점·보호자·입금·미납·수가표 등 4그룹 하위 route 확장(US-UX-02 인수 조건 진전). `npm test` **78/27 PASS**·build **99 modules**.
 > **34차 (2026-06-07)**: USER_STORIES·FLOWCHART Must 페이지 연동 — ① **ClientDetailPage** `Tabs`/`TabPanel`(US-D03 기본·건강·출석·청구)·`MaskedRevealField`(US-D04)·`GuardianInviteModal`(US-J01). ② **ClientListPage** `SearchInput`+`Pagination`(US-D02). ③ **DashboardPage** `DashboardWidgetGrid`+`StatCard`(US-H01/M02). ④ **BillingPage** `FilterChips`+`MonthInput`(US-G07). ⑤ **NHISImportPage** `NhisImportGuidePanel`+`FileUpload`(US-G04). ⑥ **HealthPage** `HealthAbnormalBanner`(US-F01). ⑦ **SessionTimeoutProvider**+`SessionTimeoutModal`(US-B03) `App.jsx` 배선. ⑧ Must 페이지 `Alert`+`.ds-page-alert` 통일. `Switch.test.jsx`·`MaskedRevealField.test.jsx`·`NhisImportGuidePanel.test.jsx`·`FileUpload.test.jsx` 회귀. `npm test` 69/22 PASS.
 > **33차 (2026-06-07)**: USER_STORIES·FLOWCHART 대비 기반 UI 보강 — ① **2단 SideNav**(US-UX-02): `layout/SideNav.jsx`+`navConfig.js` 4그룹(운영·출석·기록·청구), `EXACT_MATCH_PATHS` prefix 충돌 방지, 모바일 그룹 토글 `aria-expanded`/`aria-controls`, 데스크톱 항상 펼침. ② **목록·상세 기반 컴포넌트**: `StatCard`(US-H01/M02)·`SearchInput`(US-D02)·`FilterChips`(US-G07 radiogroup+counts)·`Pagination`(nav+aria-current)·`Table`(caption 래퍼)·`Tabs`/`TabPanel`(WAI-ARIA 좌우/Home/End)·`BranchSwitcher`(US-B02, 2지점+ 시 노출)·`LogoutButton`(US-B03, `{이름} 로그아웃` aria-label). ③ **AppShell**: flat 1단 NavLink 제거 → `SideNav`+topbar `BranchSwitcher`+`LogoutButton`. ④ **LoginPage**: `PublicAuthLayout` 전환 — 공개 인증 화면 h1·skip·브랜드 일관(US-B01). ⑤ **CSS 갭 해소**: 페이지가 참조하던 `.ds-list`/`.ds-breadcrumb`/`.ds-form-grid` 미정의 → `components.css` 승격 + tabs·pagination·sidenav group·branch-switcher 스타일. `npm test` 58/18·build 86 modules PASS.
@@ -367,6 +371,9 @@
 - [x] 본인부담 구분(35차, US-D01): `CopayTypeSelect` — 4구분+비율 help·`Field` 라벨. `COPAY_TYPES` export.
 - [x] SideNav v1.2 메뉴(35차, US-UX-02): `navConfig` — 지점·보호자·수기 체크인·출석 통계·QR·입금·미납·수가표·copay 하위 route.
 - [x] Card 섹션 제목(35차): `Card` `titleId` prop → `h2#id` for `aria-labelledby` 연결.
+- [x] 수기 귀가 처리(38차, US-E01): `CheckoutModal` — `Modal`(role=dialog·focus trap), 귀가 교통편 `Field`+`Select`, 미선택 시 「귀가 확인」`disabled`, 실패 `Alert tone=danger`. `AttendancePage` 「귀가」행 액션.
+- [x] 수기 결석 처리(38차, US-E01): `AttendanceAbsentModal` — 결석 사유 `Field`+`Textarea` 필수, 빈 값 제출 시 `Field error`(role=alert)+`aria-invalid` 차단.
+- [x] 수기 체크인 표·요약(38차, US-E01·E02): `AttendancePage` — `Table`(`caption`·`scope=col`) 행 액션 버튼 `aria-label`에 이용자명 포함, 처리 중 `aria-busy`, 당일 요약 `StatCard`(입소·귀가 완료·결석·미처리), 상태 `StatusBadge`+텍스트(미처리/완료 텍스트 라벨).
 
 ---
 
@@ -605,6 +612,17 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 > **CopayTypeSelect 실적용**: `ClientFormPage`의 본인부담 구분 입력을 raw `<Select>`에서 `CopayTypeSelect`로 교체 완료(§7-9 인계 메모 이행). 구분별 비율 help 텍스트·`aria-invalid`가 자동 적용된다.
 
+### 7-7r. 38차 보강 컴포넌트 (2026-06-07, 수기 출석 체크인/아웃·결석)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `CheckoutModal` | `isOpen`,`client`,`onClose`,`onConfirm({ transportMethod })`,`loading?`,`error?` | 귀가(체크아웃) 교통편 선택 (US-E01). `TRANSPORT_METHODS` export. `AttendancePage` 「귀가」 |
+| `AttendanceAbsentModal` | `isOpen`,`client`,`onClose`,`onConfirm({ reason })`,`loading?`,`error?` | 결석 사유 입력 (US-E01). 사유 필수. `AttendancePage` 「결석」 |
+
+> **AttendancePage 흐름 (38차, US-E01·E02)**: 당일 출석 목록을 `Table`로 표시하고, 상태에 따라 행 액션을 노출한다 — **미처리** → 「입소」(`checkInApi({ clientId, method:"manual" })`)·「결석」(`AttendanceAbsentModal` → `markAbsentApi({ clientId, reason })`), **입소(CHECKED_IN)** → 「귀가」(`CheckoutModal` → `checkOutApi({ clientId, transportMethod })`), **귀가/결석** → 「완료」 텍스트. 체크인/귀가/결석 시각은 백엔드가 자동 기록. 상단 `StatCard` 4종으로 당일 요약(US-E02). API 응답 스키마(`{ id, clientId, clientName, status }`)는 coder가 백엔드와 정합.
+>
+> **coder 인계 (38차)**: `markAbsentApi`(`POST /api/v1/attendance/absent { clientId, reason }`)는 `services.js`에 추가됨 — 백엔드 엔드포인트 구현·결석일수 청구 제외 로직 연동 필요. `checkInApi`·`checkOutApi`는 기존에 정의돼 있었으나 페이지에서 미사용이던 것을 38차에 연결.
+
 ### 7-7q. 32차 보강 컴포넌트 (2026-06-07, 공개 인증 레이아웃·Alert 정중도)
 
 | 컴포넌트 | 주요 props | 용도 / 화면 |
@@ -794,16 +812,16 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/health` | `HealthPage` | branch_admin, social_worker, caregiver, hq_admin | US-F01~F03 |
 | `/health/:clientId` | `HealthDetailPage` | branch_admin, social_worker, caregiver, hq_admin | US-F04 |
 | `/billing` | `BillingPage` | branch_admin, hq_admin | US-G02, US-G07 |
-| `/billing/:id` | `BillingDetailPage` | branch_admin, hq_admin | **US-G02**, US-G07 |
+| `/billing/claims/:claimId` | `BillingDetailPage` | branch_admin, hq_admin | **US-G02**, US-G07 |
 | `/billing/payments` | `PaymentPage` | branch_admin, hq_admin | **US-L01** |
 | `/billing/overdue` | `OverduePage` | branch_admin, hq_admin | **US-L02** |
-| `/billing/nhis-import` | `NHISImportPage` | branch_admin, hq_admin | US-G04 |
-| `/billing/nhis-import/:batchId` | `ReconciliationPage` | branch_admin, hq_admin | US-G06 |
+| `/billing/imports/nhis` | `NHISImportPage` | branch_admin, hq_admin | US-G04 |
+| `/billing/imports/nhis/:batchId` | `ReconciliationPage` | branch_admin, hq_admin | US-G06 |
 | `/billing/fee-schedules` | `FeeSchedulePage` | hq_admin | US-G00a |
 | `/billing/copay-rates` | `CopayRatePage` | hq_admin | US-G00b |
 | `/platform` | `PlatformPage` | platform_admin | US-A01, US-A02 |
-| `/guardian` | `GuardianPage` | guardian, client_user | US-I02, US-J02 |
-| `/guardian/checkin` | `GuardianCheckinPage` | guardian, client_user | US-E04 |
+| `/guardian` | `GuardianPortalPage` | guardian, client_user | US-I02, US-J02 |
+| `/attendance/checkin/qr` | `GuardianCheckinPage` | branch_admin, social_worker, caregiver, hq_admin ⚠️(US-E04 guardian/client_user 미허용 — `### [UXD]` 잔여) | US-E04 |
 | `/guardian/invitations/:token/accept` | `GuardianInvitationAcceptPage` | **공개**(미인증) | **US-J01** |
 | `/settings` | `SettingsPage` | sysadmin, hq_admin, platform_admin | US-I03 |
 | `/forbidden` | `ForbiddenPage` | 공개 | — |
