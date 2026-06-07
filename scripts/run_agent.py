@@ -2,14 +2,14 @@
 Cursor SDK 기반 멀티 모드 에이전트 실행기.
 
 모드:
-  plan    기획자(planner)가 사용자에게 인터뷰 → docs/PLAN_NOTES.md 및 REQUIREMENTS.md 갱신
+  plan    기획자(planner)가 사용자에게 인터뷰 → docs/planning/PLAN_NOTES.md 및 REQUIREMENTS.md 갱신
   build   승인된 REQUIREMENTS 기반 구현 (--role: coder | db_architect | tech_writer |
           benchmark_researcher | planner). benchmark/planner 는 승인 없이 docs/ 만 갱신
   status  현재 상태(승인 여부, 최근 작업) 출력
 
 핵심 정책:
 - 모든 프롬프트에 .agents/rules.md 와 .agents/agents.yaml 을 강제 주입한다.
-- build 모드는 docs/REQUIREMENTS.md 안에 사용자 승인 마커가 있어야만 실행된다.
+- build 모드는 docs/planning/REQUIREMENTS.md 안에 사용자 승인 마커가 있어야만 실행된다.
   마커: HTML 주석 한 줄로 `<!-- approved-by-user: true -->`
 - 비밀값은 환경변수/.env 로만 관리하고 로그에 출력하지 않는다.
 - 자율 무한 실행을 피하기 위해, build 모드는 1회 실행을 기본으로 한다.
@@ -26,6 +26,7 @@ import subprocess
 import sys
 import time
 import traceback
+from collections.abc import Mapping
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -34,6 +35,8 @@ from cursor_sdk import (
     AgentOptions,
     CursorAgentError,
     LocalAgentOptions,
+    SendOptions,
+    close_default_client,
 )
 
 # UTF-8 강제 (한국어/이모지 깨짐 방지)
@@ -80,19 +83,30 @@ RULES_FILE = AGENTS_DIR / "rules.md"
 ROLES_FILE = AGENTS_DIR / "agents.yaml"
 BRANCHES_FILE = AGENTS_DIR / "branches.yaml"
 DOCS_DIR = WORKSPACE_ROOT / "docs"
-PLAN_NOTES_FILE = DOCS_DIR / "PLAN_NOTES.md"
-ROADMAP_FILE = DOCS_DIR / "ROADMAP.md"
-QA_FEEDBACK_FILE = DOCS_DIR / "QA_FEEDBACK.md"
-TEST_REPORT_FILE = DOCS_DIR / "TEST_REPORT.md"
-REQUIREMENTS_FILE = DOCS_DIR / "REQUIREMENTS.md"
-BENCHMARK_REPORT_FILE = DOCS_DIR / "BENCHMARK_REPORT.md"
-COMPETITOR_MATRIX_FILE = DOCS_DIR / "COMPETITOR_MATRIX.md"
-USER_STORIES_FILE = DOCS_DIR / "USER_STORIES.md"
-FLOWCHART_FILE = DOCS_DIR / "FLOWCHART.md"
-API_SPEC_FILE = DOCS_DIR / "API_SPEC.md"
+PLANNING_DIR = DOCS_DIR / "planning"
+RESEARCH_DIR = PLANNING_DIR / "research"
+QA_DIR = DOCS_DIR / "qa"
+TECHNICAL_DIR = DOCS_DIR / "technical"
+PRODUCT_DIR = DOCS_DIR / "product"
+OPS_DIR = DOCS_DIR / "ops"
+SECURITY_DIR = DOCS_DIR / "security"
+PLAN_NOTES_FILE = PLANNING_DIR / "PLAN_NOTES.md"
+ROADMAP_FILE = PLANNING_DIR / "ROADMAP.md"
+QA_FEEDBACK_FILE = QA_DIR / "QA_FEEDBACK.md"
+TEST_REPORT_FILE = QA_DIR / "TEST_REPORT.md"
+REQUIREMENTS_FILE = PLANNING_DIR / "REQUIREMENTS.md"
+BENCHMARK_REPORT_FILE = RESEARCH_DIR / "BENCHMARK_REPORT.md"
+COMPETITOR_MATRIX_FILE = RESEARCH_DIR / "COMPETITOR_MATRIX.md"
+USER_STORIES_FILE = PLANNING_DIR / "USER_STORIES.md"
+FLOWCHART_FILE = PLANNING_DIR / "FLOWCHART.md"
+API_SPEC_FILE = TECHNICAL_DIR / "API_SPEC.md"
+ERD_FILE = TECHNICAL_DIR / "ERD.md"
+DATA_RETENTION_POLICY_FILE = OPS_DIR / "DATA_RETENTION_POLICY.md"
+DESIGN_SYSTEM_FILE = PRODUCT_DIR / "DESIGN_SYSTEM.md"
 DECISIONS_FILE = WORKSPACE_ROOT / "memory" / "decisions.md"
 PLANNER_SESSION_FILE = AGENTS_DIR / ".planner_session.json"
 PLANNER_HISTORY_FILE = AGENTS_DIR / ".planner_history"
+WORKSPACE_BASELINE_FILE = AGENTS_DIR / "workspace_baseline.yaml"
 
 APPROVAL_MARKER = "<!-- approved-by-user: true -->"
 
@@ -135,6 +149,27 @@ ROLE_QUESTION_MARKERS = {
 # 일시적인 네트워크/브리지 오류에 대한 재시도 정책
 RETRY_MAX = max(0, int(os.environ.get("AGENT_RETRY_MAX", "3")))
 RETRY_BASE_DELAY = max(0.1, float(os.environ.get("AGENT_RETRY_BASE_DELAY", "1.5")))
+# plan send: bridge 끊김·일시 internal 에 더 관대하게 (환경변수로 조절 가능)
+PLAN_SEND_RETRY_MAX = max(
+    1, int(os.environ.get("AGENT_PLAN_RETRY_MAX", os.environ.get("AGENT_RETRY_MAX", "6")))
+)
+BRIDGE_RECOVER_MAX = max(1, int(os.environ.get("AGENT_BRIDGE_RECOVER_MAX", "5")))
+BRIDGE_RECOVER_DELAY = max(0.2, float(os.environ.get("AGENT_BRIDGE_RECOVER_DELAY", "1.0")))
+BRIDGE_POST_INTERNAL_RETRY = max(
+    0, int(os.environ.get("AGENT_BRIDGE_POST_INTERNAL_RETRY", "1"))
+)
+# 연속 internal error N 모델이면 API/bridge 전역 장애로 보고 체인 중단
+PLAN_INTERNAL_ABORT_STREAK = max(
+    1, int(os.environ.get("AGENT_PLAN_INTERNAL_ABORT", "2"))
+)
+# 체인 전체 실패 시 bridge 재시작 후 처음부터 재시도
+PLAN_CHAIN_PASS_MAX = max(1, int(os.environ.get("AGENT_PLAN_CHAIN_PASS", "1")))
+# plan: 매 답변 전 ping (별도 Agent.prompt — bridge 간섭 가능). 기본 OFF
+PLAN_PROBE_BEFORE_SEND = os.environ.get("AGENT_PLAN_PROBE", "0").strip().lower() in (
+    "1",
+    "true",
+    "yes",
+)
 
 
 def _load_branches_yaml() -> dict | None:
@@ -189,6 +224,252 @@ def _git_checkout(branch: str, cwd: Path) -> None:
     )
 
 
+def _git_status_porcelain(cwd: Path) -> str:
+    if not _git_repo_ready(cwd):
+        return ""
+    try:
+        r = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return r.stdout or ""
+    except Exception:
+        return ""
+
+
+def _git_commits_ahead(cwd: Path, branch: str, remote: str = "origin") -> int:
+    """로컬 branch 가 remote/{branch} 보다 앞선 커밋 수."""
+    if not _git_repo_ready(cwd):
+        return 0
+    try:
+        subprocess.run(
+            ["git", "fetch", remote, branch],
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+    except Exception:
+        pass
+    try:
+        r = subprocess.run(
+            ["git", "rev-list", "--count", f"{remote}/{branch}..{branch}"],
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return int((r.stdout or "0").strip() or "0")
+    except Exception:
+        return 0
+
+
+def _git_short_rev(cwd: Path, ref: str = "HEAD") -> str | None:
+    if not _git_repo_ready(cwd):
+        return None
+    try:
+        r = subprocess.run(
+            ["git", "rev-parse", "--short", ref],
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        rev = (r.stdout or "").strip()
+        return rev or None
+    except Exception:
+        return None
+
+
+def _measure_submodule_baseline(stream: str) -> dict[str, object]:
+    repo = submodule_dir_for_stream(stream)
+    develop = branch_for_stream(stream, "develop")
+    test = branch_for_stream(stream, "test")
+    head = _git_short_rev(repo) or "unknown"
+    test_head = _git_short_rev(repo, test) or "unknown"
+    dirty_lines = [
+        ln.strip()
+        for ln in _git_status_porcelain(repo).splitlines()
+        if ln.strip()
+    ]
+    return {
+        "stream": stream,
+        "path": f"src/{stream}",
+        "develop": head,
+        "test": test_head,
+        "dirty": bool(dirty_lines),
+        "dirty_count": len(dirty_lines),
+        "ahead_of_origin": _git_commits_ahead(repo, develop),
+    }
+
+
+def measure_workspace_baseline() -> dict[str, object]:
+    return {
+        "backend": _measure_submodule_baseline("backend"),
+        "frontend": _measure_submodule_baseline("frontend"),
+    }
+
+
+def _load_workspace_baseline_notes() -> list[str]:
+    if not WORKSPACE_BASELINE_FILE.exists():
+        return []
+    notes: list[str] = []
+    in_notes = False
+    for raw in WORKSPACE_BASELINE_FILE.read_text(encoding="utf-8").splitlines():
+        line = raw.rstrip()
+        if line.startswith("notes:"):
+            in_notes = True
+            continue
+        if in_notes:
+            if line and not line.startswith(" ") and not line.startswith("-"):
+                break
+            stripped = line.strip()
+            if stripped.startswith("- "):
+                note = stripped[2:].strip().strip('"')
+                if note:
+                    notes.append(note)
+    return notes
+
+
+def format_baseline_prompt_block(stream: str | None = None) -> str:
+    """coder 프롬프트에 주입할 실측 baseline 블록."""
+    measured = measure_workspace_baseline()
+    notes = _load_workspace_baseline_notes()
+    lines = [
+        "## 0-0. 실측 baseline (CRITICAL — ROADMAP/QA 과거 SHA보다 우선)",
+        "",
+        "다음은 **지금 워크스페이스 git 실측**이다. ROADMAP·QA_FEEDBACK·PLAN_NOTES의 "
+        "과거 SHA(`d5654c0`, `e5fd48d`, `428ba7d` 등)는 **유실·폐기** — "
+        "**checkout 재현 금지**. `.agents/workspace_baseline.yaml` 과 동일 우선순위.",
+        "",
+        "| stream | develop HEAD | test HEAD | dirty | ahead(origin/develop) |",
+        "|--------|--------------|-----------|-------|------------------------|",
+    ]
+    for key in ("backend", "frontend"):
+        info = measured[key]
+        dirty = "YES" if info["dirty"] else "clean"
+        if info["dirty_count"]:
+            dirty += f" ({info['dirty_count']} files)"
+        lines.append(
+            f"| {key} | `{info['develop']}` | `{info['test']}` | {dirty} | "
+            f"{info['ahead_of_origin']} |"
+        )
+    if notes:
+        lines.extend(["", "**확정 메모:**"])
+        lines.extend(f"- {n}" for n in notes[:6])
+    if stream in ("backend", "frontend"):
+        cur = measured[stream]
+        lines.extend(
+            [
+                "",
+                f"**이번 스트림 (`{stream}`)**: `src/{stream}` @ develop **`{cur['develop']}`** "
+                f"에서만 작업. working tree **clean** 유지 후 커밋·push.",
+            ]
+        )
+    return "\n".join(lines)
+
+
+def _roadmap_in_progress_streams() -> list[str]:
+    if not ROADMAP_FILE.exists():
+        return []
+    text = ROADMAP_FILE.read_text(encoding="utf-8")
+    versions = _roadmap_parse_versions(text)
+    return [
+        v.get("stream", "backend")
+        for v in versions
+        if v.get("status") == "in_progress"
+    ]
+
+
+def coder_preflight_warnings(stream: str) -> list[str]:
+    warnings: list[str] = []
+    measured = measure_workspace_baseline()
+    for name in ("backend", "frontend"):
+        info = measured[name]
+        if info["dirty"]:
+            warnings.append(
+                f"{info['path']} working tree dirty "
+                f"({info['dirty_count']} entries) — 커밋 후 작업"
+            )
+    active = _roadmap_in_progress_streams()
+    if len(active) > 1:
+        warnings.append(
+            f"ROADMAP in_progress 스트림 {len(active)}개({', '.join(active)}) — "
+            "한 번에 하나만 구현"
+        )
+    if stream not in active and active:
+        warnings.append(
+            f"현재 --stream={stream} 이지만 ROADMAP in_progress는 "
+            f"{', '.join(active)} — stream 확인"
+        )
+    return warnings
+
+
+def print_coder_preflight(stream: str) -> None:
+    for msg in coder_preflight_warnings(stream):
+        print(f"[preflight-warn] {msg}", file=sys.stderr)
+    block = format_baseline_prompt_block(stream)
+    print(block)
+
+
+def push_submodule_develop(role: str, stream: str) -> None:
+    """coder/ux_designer 작업 후 submodule develop 을 origin 에 push."""
+    if role not in ("coder", "ux_designer"):
+        return
+
+    stream = "frontend" if role == "ux_designer" else stream
+    if stream not in ("backend", "frontend"):
+        return
+
+    repo = submodule_dir_for_stream(stream)
+    if not _git_repo_ready(repo):
+        print(f"[push-skip] submodule git 없음: {repo}", file=sys.stderr)
+        return
+
+    branch = branch_for_stream(stream, "develop")
+    current = _git_current_branch(repo)
+    if current != branch:
+        print(
+            f"[push-warn] {repo.name} branch={current or 'unknown'} "
+            f"(expected {branch}) — push 생략",
+            file=sys.stderr,
+        )
+        return
+
+    if _git_status_porcelain(repo).strip():
+        print(
+            f"[push-warn] {repo.name} working tree dirty — "
+            "커밋 후 push 필요 (run_agent build 종료 시 자동 push)",
+            file=sys.stderr,
+        )
+        return
+
+    ahead = _git_commits_ahead(repo, branch)
+    if ahead <= 0:
+        print(f"[push-ok] {repo.name}@{branch} origin 과 동기화됨 (push 불필요)")
+        return
+
+    try:
+        subprocess.run(
+            ["git", "push", "origin", branch],
+            cwd=repo,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+        print(f"[push-ok] {repo.name} → origin/{branch} ({ahead} commit(s))")
+    except subprocess.CalledProcessError as err:
+        detail = (err.stderr or err.stdout or str(err)).strip()
+        print(
+            f"[push-fail] {repo.name} git push origin {branch} 실패: {detail}",
+            file=sys.stderr,
+        )
+
+
 def stream_config(stream: str) -> dict:
     data = _load_branches_yaml() or {}
     submodules = data.get("submodules") or data.get("streams") or {}
@@ -202,14 +483,128 @@ def submodule_dir_for_stream(stream: str) -> Path:
     return WORKSPACE_ROOT / str(rel)
 
 
+def worktree_dir_for_stream(stream: str, phase: str = "test") -> Path:
+    """branches.yaml worktrees.{phase} 경로. 없으면 src/{stream}-{phase} 관례."""
+
+    cfg = stream_config(stream)
+    worktrees = cfg.get("worktrees") or {}
+    rel = worktrees.get(phase) if isinstance(worktrees, dict) else None
+    if isinstance(rel, str) and rel.strip():
+        return WORKSPACE_ROOT / rel.strip()
+    return WORKSPACE_ROOT / f"src/{stream}-{phase}"
+
+
+def role_src_dir(role: str, stream: str) -> Path | None:
+    """역할별 소스코드 디렉터리 (develop 주 경로 vs test worktree)."""
+
+    if role in ("coder", "ux_designer"):
+        return submodule_dir_for_stream(stream if role != "ux_designer" else "frontend")
+    if role == "tester":
+        return worktree_dir_for_stream(stream, "test")
+    return None
+
+
+def _worktree_registered(primary: Path, wt_path: Path) -> bool:
+    if not _git_repo_ready(primary):
+        return False
+    try:
+        r = subprocess.run(
+            ["git", "worktree", "list", "--porcelain"],
+            cwd=primary,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except Exception:
+        return False
+    target = wt_path.resolve().as_posix()
+    for line in (r.stdout or "").splitlines():
+        if line.startswith("worktree "):
+            listed = line.split(" ", 1)[1].strip()
+            if Path(listed).resolve().as_posix() == target:
+                return True
+    return False
+
+
+def ensure_worktree(stream: str, phase: str = "test") -> Path:
+    """test worktree 를 생성·검증한다. primary(develop) 는 checkout 하지 않는다."""
+
+    primary = submodule_dir_for_stream(stream)
+    wt_path = worktree_dir_for_stream(stream, phase)
+    branch = branch_for_stream(stream, phase)
+    develop = branch_for_stream(stream, "develop")
+
+    if not _git_repo_ready(primary):
+        print(
+            f"[warn] submodule git 없음 ({primary}) — worktree 미적용. "
+            "./scripts/git_branch_setup.sh 실행 권장.",
+            file=sys.stderr,
+        )
+        return wt_path
+
+    if _worktree_registered(primary, wt_path):
+        current = _git_current_branch(wt_path)
+        if current != branch:
+            print(f"[worktree] {wt_path.name} checkout {branch} (was: {current or 'unknown'})")
+            try:
+                _git_checkout(branch, wt_path)
+            except subprocess.CalledProcessError as err:
+                print(
+                    f"[fatal] worktree checkout 실패: {wt_path} → {branch}",
+                    file=sys.stderr,
+                )
+                raise SystemExit(2) from err
+        else:
+            print(f"[worktree] {wt_path.name} branch={branch} (ok)")
+        return wt_path
+
+    if wt_path.exists():
+        print(
+            f"[fatal] worktree 경로가 이미 있으나 등록되지 않음: {wt_path}. "
+            "수동 정리 후 ./scripts/git_branch_setup.sh 실행.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+
+    current = _git_current_branch(primary)
+    if current == branch:
+        print(
+            f"[worktree] primary({primary.name}) 가 {branch} 에 있음 "
+            f"→ {develop} 로 전환 후 worktree 생성"
+        )
+        try:
+            _git_checkout(develop, primary)
+        except subprocess.CalledProcessError as err:
+            print(
+                f"[fatal] primary checkout 실패: {primary} → {develop}. "
+                "dirty tree 를 commit/stash 한 뒤 ./scripts/git_branch_setup.sh 실행.",
+                file=sys.stderr,
+            )
+            raise SystemExit(2) from err
+
+    print(f"[worktree] create {wt_path.name} ← {branch}")
+    try:
+        subprocess.run(
+            ["git", "worktree", "add", str(wt_path), branch],
+            cwd=primary,
+            check=True,
+        )
+    except subprocess.CalledProcessError as err:
+        print(
+            f"[fatal] worktree 생성 실패: {wt_path}. "
+            "./scripts/git_branch_setup.sh 실행.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2) from err
+    return wt_path
+
+
 def git_cwd_for_role(role: str, stream: str) -> Path | None:
-    """역할별 git checkout 대상. planner 등은 submodule checkout 불필요."""
+    """역할별 git 작업 디렉터리. tester 는 test worktree, coder/ux 는 develop 주 경로."""
 
     if role in ("planner", "benchmark_researcher", "tech_writer", "db_architect"):
         return None
-    if role in ("coder", "tester", "ux_designer"):
-        return submodule_dir_for_stream(stream if role != "ux_designer" else "frontend")
-    return None
+    return role_src_dir(role, stream)
 
 
 def _roadmap_parse_versions(text: str) -> list[dict[str, str]]:
@@ -283,46 +678,38 @@ def _roadmap_mark_merged(version_id: str) -> None:
 
 
 def merge_develop_to_test(stream: str, version_id: str) -> bool:
-    """submodule develop 브랜치를 test 브랜치에 merge. 완료 후 develop 으로 복귀."""
+    """develop 을 test worktree 에 merge (primary develop 경로는 그대로 유지)."""
 
-    submodule = submodule_dir_for_stream(stream)
-    if not _git_repo_ready(submodule):
-        print(f"[merge-skip] submodule git 없음: {submodule}")
+    primary = submodule_dir_for_stream(stream)
+    if not _git_repo_ready(primary):
+        print(f"[merge-skip] submodule git 없음: {primary}")
         return False
 
     develop = branch_for_stream(stream, "develop")
     test = branch_for_stream(stream, "test")
-    current = _git_current_branch(submodule)
+    test_wt = ensure_worktree(stream, "test")
 
-    try:
-        _git_checkout(test, submodule)
-        result = subprocess.run(
-            [
-                "git",
-                "merge",
-                develop,
-                "-m",
-                f"chore({stream}): merge {develop} into {test} ({version_id})",
-            ],
-            cwd=submodule,
-            capture_output=True,
-            text=True,
+    result = subprocess.run(
+        [
+            "git",
+            "merge",
+            develop,
+            "-m",
+            f"chore({stream}): merge {develop} into {test} ({version_id})",
+        ],
+        cwd=test_wt,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        err = (result.stderr or result.stdout or "").strip()
+        print(
+            f"[merge-fail] {test_wt.name}: {develop} → {test}: {err[:500]}",
+            file=sys.stderr,
         )
-        if result.returncode != 0:
-            err = (result.stderr or result.stdout or "").strip()
-            print(f"[merge-fail] {submodule}: {develop} → {test}: {err[:500]}", file=sys.stderr)
-            return False
-        print(f"[merge-ok] {submodule}: {develop} → {test} ({version_id})")
-        return True
-    except subprocess.CalledProcessError as exc:
-        print(f"[merge-error] checkout failed: {exc}", file=sys.stderr)
         return False
-    finally:
-        restore = develop if current != test else (current or develop)
-        try:
-            _git_checkout(restore, submodule)
-        except subprocess.CalledProcessError:
-            pass
+    print(f"[merge-ok] {test_wt.name}: {develop} → {test} ({version_id})")
+    return True
 
 
 def maybe_merge_version_to_test(stream: str) -> None:
@@ -354,6 +741,8 @@ def resolve_stream(args: argparse.Namespace, target: Path) -> str:
     target_str = target.as_posix()
     if "frontend" in target_str:
         return "frontend"
+    if "backend" in target_str:
+        return "backend"
     return "backend"
 
 
@@ -368,31 +757,39 @@ def required_branch_for_role(role: str, stream: str) -> str | None:
 
 
 def ensure_role_branch(role: str, stream: str) -> str | None:
-    """역할·스트림에 맞는 submodule git 브랜치로 checkout."""
+    """역할·스트림에 맞는 worktree/브랜치를 준비한다.
+
+    - coder/ux_designer: 주 경로(src/{stream})를 develop 으로 checkout
+    - tester: 별도 worktree(src/{stream}-test)만 사용 — 주 경로는 건드리지 않음
+    """
 
     branch = required_branch_for_role(role, stream)
     if branch is None:
         return None
-    submodule = git_cwd_for_role(role, stream)
-    if submodule is None:
+
+    if role == "tester":
+        ensure_worktree(stream, "test")
         return branch
-    if not _git_repo_ready(submodule):
+
+    primary = submodule_dir_for_stream(stream if role != "ux_designer" else "frontend")
+    if not _git_repo_ready(primary):
         print(
-            f"[warn] submodule git 없음 ({submodule}) — 브랜치 정책 미적용. "
+            f"[warn] submodule git 없음 ({primary}) — 브랜치 정책 미적용. "
             "./scripts/git_branch_setup.sh 실행 권장.",
             file=sys.stderr,
         )
         return branch
-    current = _git_current_branch(submodule)
+
+    current = _git_current_branch(primary)
     if current == branch:
-        print(f"[git] {submodule.name} branch={branch} (ok)")
+        print(f"[git] {primary.name} branch={branch} (ok)")
         return branch
-    print(f"[git] {submodule.name} checkout {branch} (was: {current or 'unknown'})")
+    print(f"[git] {primary.name} checkout {branch} (was: {current or 'unknown'})")
     try:
-        _git_checkout(branch, submodule)
+        _git_checkout(branch, primary)
     except subprocess.CalledProcessError as err:
         print(
-            f"[fatal] git checkout 실패: {submodule} → {branch}. "
+            f"[fatal] git checkout 실패: {primary} → {branch}. "
             "./scripts/git_branch_setup.sh 로 브랜치를 생성하세요.",
             file=sys.stderr,
         )
@@ -447,32 +844,36 @@ def _doc_identity_block(role: str) -> str:
 def resolve_model_chain(role: str | None = None) -> list[str]:
     """모델 우선순위 체인을 반환한다.
 
-    1) 환경변수 AGENT_MODEL 이 있으면 그 값만 단일 항목으로 (폴백 없음)
-    2) agents[<role>].model -> agents[<role>].fallback_models[*] -> models.default
+    1) agents[<role>].model -> agents[<role>].fallback_models[*] -> models.default
        -> DEFAULT_MODEL_FALLBACK
+    2) 환경변수 AGENT_MODEL 이 있으면 체인 **맨 앞**에 끼워 넣는다 (폴백 유지).
     """
-
-    if ENV_MODEL:
-        return [ENV_MODEL]
 
     data = _load_agents_yaml() or {}
     chain: list[str] = []
+    chain_exclusive = False
 
     if role:
         for a in data.get("agents", []) or []:
             if isinstance(a, dict) and a.get("name") == role:
+                for p in a.get("preferred_models") or []:
+                    if isinstance(p, str) and p.strip():
+                        chain.append(p.strip())
                 m = a.get("model")
                 if isinstance(m, str) and m.strip():
                     chain.append(m.strip())
                 for f in a.get("fallback_models") or []:
                     if isinstance(f, str) and f.strip():
                         chain.append(f.strip())
+                if a.get("model_chain_exclusive") is True or a.get("preferred_models"):
+                    chain_exclusive = True
+                break
 
-    default = (data.get("models") or {}).get("default")
-    if isinstance(default, str) and default.strip():
-        chain.append(default.strip())
-
-    chain.append(DEFAULT_MODEL_FALLBACK)
+    if not chain_exclusive:
+        default = (data.get("models") or {}).get("default")
+        if isinstance(default, str) and default.strip():
+            chain.append(default.strip())
+        chain.append(DEFAULT_MODEL_FALLBACK)
 
     # 순서 보존 dedupe
     seen: set[str] = set()
@@ -481,6 +882,12 @@ def resolve_model_chain(role: str | None = None) -> list[str]:
         if m not in seen:
             seen.add(m)
             out.append(m)
+
+    if ENV_MODEL:
+        override = ENV_MODEL.strip()
+        if override:
+            out = [override] + [m for m in out if m != override]
+
     return out
 
 
@@ -510,6 +917,13 @@ _QUOTA_KEYWORDS = (
 def _looks_like_quota_or_unavailable(message: str) -> bool:
     msg = (message or "").lower()
     return any(k in msg for k in _QUOTA_KEYWORDS)
+
+
+def _looks_like_global_api_error(message: str) -> bool:
+    """모델을 바꿔도 동일하게 실패하는 Cursor 백엔드/계정 전역 오류."""
+
+    msg = (message or "").lower()
+    return "internal error" in msg or msg.startswith("internal:")
 
 
 def _retry_call(fn, label: str, max_retries: int = RETRY_MAX):
@@ -650,8 +1064,8 @@ def _roadmap_progress_hint(stream: str = "backend") -> str:
     if not ROADMAP_FILE.exists():
         return (
             "현재 진행: **ROADMAP 미작성**\n"
-            "→ planner 가 `docs/ROADMAP.md` 를 작성할 때까지 "
-            "`docs/REQUIREMENTS.md` §7 순서로 진행."
+            "→ planner 가 `docs/planning/ROADMAP.md` 를 작성할 때까지 "
+            "`docs/planning/REQUIREMENTS.md` §7 순서로 진행."
         )
     text = ROADMAP_FILE.read_text(encoding="utf-8")
     versions = _roadmap_parse_versions(text)
@@ -672,7 +1086,7 @@ def _roadmap_progress_hint(stream: str = "backend") -> str:
         if planned:
             return (
                 f"현재 진행: **{stream} in_progress 버전 없음**\n"
-                f"→ `docs/ROADMAP.md` 에서 `{planned['id']}` 를 "
+                f"→ `docs/planning/ROADMAP.md` 에서 `{planned['id']}` 를 "
                 f"`status: in_progress` 로 전환 후 구현 시작."
             )
         return (
@@ -686,7 +1100,7 @@ def _roadmap_progress_hint(stream: str = "backend") -> str:
         qa = QA_FEEDBACK_FILE.read_text(encoding="utf-8")
         if "### [OPEN]" in qa or "### [PLANNED]" in qa:
             qa_note = (
-                "\n→ **우선**: `docs/QA_FEEDBACK.md` Open/Planned BLOCK·HIGH 항목부터 수정."
+                "\n→ **우선**: `docs/qa/QA_FEEDBACK.md` Open/Planned BLOCK·HIGH 항목부터 수정."
             )
     if merge_st == "ready":
         return (
@@ -696,7 +1110,7 @@ def _roadmap_progress_hint(stream: str = "backend") -> str:
         )
     return (
         f"현재 진행: **ROADMAP {vid} ({stream}) — in_progress**\n"
-        f"→ `docs/ROADMAP.md` 의 `{vid}` 범위·완료 기준만 구현.\n"
+        f"→ `docs/planning/ROADMAP.md` 의 `{vid}` 범위·완료 기준만 구현.\n"
         f"→ 모든 완료 기준 `[x]` 후 `merge_status: ready` 로 변경.{qa_note}"
     )
 
@@ -738,7 +1152,7 @@ def _sprint_progress_hint(target: Path, stream: str = "backend") -> str:
         )
     return (
         "현재 진행: **초기화·인증 골격 이후**\n"
-        "→ `docs/REQUIREMENTS.md` §7 순서표·§7 완료 기준표를 읽고, "
+        "→ `docs/planning/REQUIREMENTS.md` §7 순서표·§7 완료 기준표를 읽고, "
         "아직 산출물이 없는 **다음 번호** 작업을 즉시 구현."
     )
 
@@ -758,43 +1172,49 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
     except ValueError:
         target_rel = target
     develop_branch = branch_for_stream(stream, "develop")
+    baseline_block = format_baseline_prompt_block(stream)
 
     return (
         f"=== .agents/rules.md ===\n{rules}\n\n"
         "지금 너의 역할은 `.agents/agents.yaml` 의 `coder` 이다.\n"
         "역할 상세·출력 경로는 agents.yaml 의 coder 섹션을 워크스페이스에서 읽어라.\n\n"
+        f"{baseline_block}\n\n"
         "## 0. 브랜치·범위 (CRITICAL)\n"
         f"- **현재 스트림**: `{stream}` | **submodule**: `src/{stream}` | **브랜치**: `{develop_branch}`\n"
         f"- submodule `src/{stream}` 의 **develop** 브랜치에서만 코드를 작성한다.\n"
-        "- `transfer/`, test·operation 브랜치, `docs/TEST_REPORT.md` 는 **수정 금지** "
+        "- `transfer/`, test·operation 브랜치, `docs/qa/TEST_REPORT.md` 는 **수정 금지** "
         "(QA/tester 이관 전담).\n"
-        "- `.agents/branches.yaml` submodule 브랜치 정책을 따른다.\n\n"
+        "- `.agents/branches.yaml` submodule 브랜치 정책을 따른다.\n"
+        f"- 작업 후 **반드시** `src/{stream}` @ `{develop_branch}` 에 **커밋**한다 "
+        "(working tree clean). build 종료 시 `git push origin {develop_branch}` 가 "
+        "자동 실행되며, **미커밋 변경은 push 되지 않는다**.\n\n"
         f"{_doc_identity_block('coder')}\n"
         "## 0-1. 버전·피드백 (CRITICAL)\n"
-        "- **`docs/ROADMAP.md`** 의 `status: in_progress` 버전 **하나만** 구현.\n"
-        "- **`docs/QA_FEEDBACK.md`** Open/Planned 항목(BLOCK·HIGH)을 **우선** 수정.\n"
+        "- **`docs/planning/ROADMAP.md`** 의 `status: in_progress` 버전 **하나만** 구현.\n"
+        "- **`docs/qa/QA_FEEDBACK.md`** Open/Planned 항목(BLOCK·HIGH)을 **우선** 수정.\n"
         "- 수정 완료 시 QA_FEEDBACK 항목을 **Fixed** 섹션으로 이동.\n"
         "- 해당 버전 **완료 기준 전부 [x]** 후 `merge_status: ready` 로 변경 "
         f"→ 다음 build 시 `{develop_branch}`가 `{branch_for_stream(stream, 'test')}`에 **자동 merge**.\n"
         "- test·operation 브랜치 직접 checkout·merge **금지** (스크립트가 처리).\n\n"
         "## 1. 스택 강제 (최우선)\n"
-        "- **반드시** `docs/REQUIREMENTS.md` §1-1 기술 스택 표를 읽고 그대로 따른다.\n"
+        "- **반드시** `docs/planning/REQUIREMENTS.md` §1-1 기술 스택 표를 읽고 그대로 따른다.\n"
         "  (Java Spring Boot 3.x / React Vite SPA / PostgreSQL / JWT+RBAC / SaaS 멀티테넌트)\n"
         "- Python/FastAPI 등 다른 스택 코드는 **작성 금지**. `src/backend/.venv` 등 레거시는 무시.\n"
         "- agents.yaml 에 Python/FastAPI 가 적혀 있어도 REQUIREMENTS §1-1 이 우선.\n\n"
         "## 2. 자율 실행 (필수 — 위반 시 실패)\n"
         "- 사용자에게 \"무엇부터 할까요?\" \"어떤 작업부터?\" 같은 **질문 금지**.\n"
         "- 이번 호출에서 **반드시 파일을 생성·수정**한다. 텍스트만 돌려주면 실패.\n"
-        "- 불확실하면 `docs/PLAN_NOTES.md` 의 `### 코더 질문` 에 기록 후 중단.\n"
+        "- 불확실하면 `docs/planning/PLAN_NOTES.md` 의 `### 코더 질문` 에 기록 후 중단.\n"
         "- 비밀값 하드코딩 금지 (.agents/rules.md §3).\n\n"
         f"{task_block}\n\n"
         "## 3. 읽어야 할 문서 (워크스페이스에서 직접 열기)\n"
-        "- docs/ROADMAP.md (현재 in_progress 버전·완료 기준)\n"
-        "- docs/QA_FEEDBACK.md (Open/Planned — tester 피드백)\n"
-        "- docs/REQUIREMENTS.md (§1-1 스택, §7 스프린트, Must 기능)\n"
-        "- docs/API_SPEC.md\n"
-        "- docs/USER_STORIES.md\n"
-        "- docs/FLOWCHART.md\n\n"
+        "- `.agents/workspace_baseline.yaml` (확정 baseline — **최우선**)\n"
+        "- docs/planning/ROADMAP.md (현재 in_progress 버전·완료 기준)\n"
+        "- docs/qa/QA_FEEDBACK.md (Open/Planned — tester 피드백)\n"
+        "- docs/planning/REQUIREMENTS.md (§1-1 스택, §7 스프린트, Must 기능)\n"
+        "- docs/technical/API_SPEC.md\n"
+        "- docs/planning/USER_STORIES.md\n"
+        "- docs/planning/FLOWCHART.md\n\n"
         "## 4. 코드 작성 위치\n"
         f"- 백엔드: `src/backend/` (Java Spring Boot) — stream=backend\n"
         "- 프론트: `src/frontend/` (React Vite) — stream=frontend\n"
@@ -810,8 +1230,8 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
 
 
 def _db_progress_hint() -> str:
-    erd = DOCS_DIR / "ERD.md"
-    retention = DOCS_DIR / "DATA_RETENTION_POLICY.md"
+    erd = ERD_FILE
+    retention = DATA_RETENTION_POLICY_FILE
     backend = WORKSPACE_ROOT / "src/backend"
     migrations = list(backend.rglob("db/migration/*.sql")) if backend.exists() else []
     migrations += list(backend.rglob("db/migrations/*.sql")) if backend.exists() else []
@@ -820,7 +1240,7 @@ def _db_progress_hint() -> str:
     if not erd.exists():
         return (
             "현재 진행: **ERD 미작성**\n"
-            "→ `docs/ERD.md` 작성: SaaS 멀티테넌트(organization/branch), "
+            "→ `docs/technical/ERD.md` 작성: SaaS 멀티테넌트(organization/branch), "
             "7역할 RBAC, core_entities(이용자·출석·건강·청구·audit_logs 등) 관계도.\n"
             "→ REQUIREMENTS §3·API_SPEC 과 정합성 유지. 사용자 질문 금지, 파일 생성 필수."
         )
@@ -833,7 +1253,7 @@ def _db_progress_hint() -> str:
     if not retention.exists():
         return (
             "현재 진행: **마이그레이션 있음 — 데이터 보존 정책 미작성**\n"
-            "→ `docs/DATA_RETENTION_POLICY.md` 작성 (PII·의료 데이터 보관·삭제 정책)."
+            "→ `docs/ops/DATA_RETENTION_POLICY.md` 작성 (PII·의료 데이터 보관·삭제 정책)."
         )
     return (
         "현재 진행: **기본 DB 산출물 있음**\n"
@@ -850,18 +1270,18 @@ def _tech_writer_progress_hint() -> str:
         "CHANGELOG.md": "버전별 변경 이력",
         "FAQ.md": "자주 묻는 질문",
     }
-    missing = [name for name in outputs if not (DOCS_DIR / name).exists()]
+    missing = [name for name in outputs if not (OPS_DIR / name).exists()]
     if missing:
         first = missing[0]
         return (
             f"현재 진행: **{len(missing)}개 문서 미작성**\n"
-            f"→ 지금 즉시 `docs/{first}` 초안 작성 ({outputs[first]}).\n"
-            "→ `src/` 구현·`docs/REQUIREMENTS.md`·`docs/API_SPEC.md` 를 근거로 작성.\n"
+            f"→ 지금 즉시 `docs/ops/{first}` 초안 작성 ({outputs[first]}).\n"
+            "→ `src/` 구현·`docs/planning/REQUIREMENTS.md`·`docs/technical/API_SPEC.md` 를 근거로 작성.\n"
             "→ 코드 변경 금지, docs/ 만 수정. 사용자 질문 금지."
         )
     return (
         "현재 진행: **기본 문서 세트 있음**\n"
-        "→ 최근 `src/`·`CHANGELOG.md` 변경 반영, FAQ/매뉴얼 보강.\n"
+        "→ 최근 `src/`·`docs/ops/CHANGELOG.md` 변경 반영, FAQ/매뉴얼 보강.\n"
         "→ 아직 문서화 안 된 Must 기능(API·화면) 우선."
     )
 
@@ -886,13 +1306,13 @@ def _build_db_architect_prompt(task: str | None = None) -> str:
         "## 1. 자율 실행 (필수)\n"
         "- 사용자에게 질문하지 말고 **docs/ 또는 migration SQL 파일**을 생성·수정.\n"
         "- 애플리케이션 Java 코드는 작성하지 않는다 (coder 역할).\n"
-        "- 불확실하면 `docs/PLAN_NOTES.md` 의 `### DB 설계 질문` 에 기록 후 중단.\n\n"
+        "- 불확실하면 `docs/planning/PLAN_NOTES.md` 의 `### DB 설계 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 문서\n"
-        "- docs/REQUIREMENTS.md, docs/API_SPEC.md, docs/USER_STORIES.md\n"
-        "- docs/ERD.md (있으면 갱신)\n\n"
+        "- docs/planning/REQUIREMENTS.md, docs/technical/API_SPEC.md, docs/planning/USER_STORIES.md\n"
+        "- docs/technical/ERD.md (있으면 갱신)\n\n"
         "## 3. 출력 위치\n"
-        "- docs/ERD.md, docs/DATA_RETENTION_POLICY.md\n"
+        "- docs/technical/ERD.md, docs/ops/DATA_RETENTION_POLICY.md\n"
         "- src/backend/src/main/resources/db/migration/\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## DB 설계 작업 요약\n"
@@ -919,14 +1339,14 @@ def _build_tech_writer_prompt(task: str | None = None) -> str:
         "- 스택은 REQUIREMENTS §1-1 (Java Spring Boot + React + PostgreSQL) 기준으로 서술.\n\n"
         "## 1. 자율 실행 (필수)\n"
         "- 사용자 질문 금지. 이번 호출에서 docs/ 파일을 반드시 생성·수정.\n"
-        "- 불확실하면 `docs/PLAN_NOTES.md` 의 `### 문서 작성 질문` 에 기록 후 중단.\n\n"
+        "- 불확실하면 `docs/planning/PLAN_NOTES.md` 의 `### 문서 작성 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 자료\n"
-        "- docs/REQUIREMENTS.md, docs/API_SPEC.md, docs/FLOWCHART.md\n"
+        "- docs/planning/REQUIREMENTS.md, docs/technical/API_SPEC.md, docs/planning/FLOWCHART.md\n"
         "- src/backend/, src/frontend/ (구현 상태 파악용, 수정 금지)\n\n"
         "## 3. 출력 위치\n"
-        "- docs/USER_MANUAL.md, docs/ADMIN_GUIDE.md, docs/DEPLOYMENT_GUIDE.md\n"
-        "- docs/CHANGELOG.md, docs/FAQ.md\n\n"
+        "- docs/ops/USER_MANUAL.md, docs/ops/ADMIN_GUIDE.md, docs/ops/DEPLOYMENT_GUIDE.md\n"
+        "- docs/ops/CHANGELOG.md, docs/ops/FAQ.md\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## 문서 작업 요약\n"
         "  - 생성/수정한 문서\n"
@@ -948,7 +1368,7 @@ def _benchmark_progress_hint() -> str:
         first = missing[0]
         return (
             f"현재 진행: **{len(missing)}개 벤치마크 산출물 미작성**\n"
-            f"→ 지금 즉시 `docs/{first}` 초안 작성.\n"
+            f"→ 지금 즉시 `docs/planning/research/{first}` 초안 작성.\n"
             "→ REQUIREMENTS §1-5, PLAN_NOTES 의 경쟁사 목록(케어포·이지케어·엔젤시스템·롱텀)을 우선 조사.\n"
             "→ 각 서비스의 **제공 항목·기능·모듈·역할별 화면·청구·출석·보호자 포털**을 표로 정리.\n"
             "→ 출처 URL·조사일 기록. 사용자 질문 금지, docs/·memory/ 파일 생성 필수."
@@ -973,16 +1393,16 @@ def _planner_auto_progress_hint() -> str:
         qa = QA_FEEDBACK_FILE.read_text(encoding="utf-8")
         if "### [OPEN]" in qa:
             qa_note = (
-                "\n→ **우선**: `docs/QA_FEEDBACK.md` Open 항목을 읽고 "
+                "\n→ **우선**: `docs/qa/QA_FEEDBACK.md` Open 항목을 읽고 "
                 "ROADMAP·USER_STORIES·PLAN_NOTES에 태스크 반영 후 Planned 로 이동."
             )
     return (
         f"현재 진행: **자동 기획 동기화**\n"
         f"→ {benchmark_note}\n"
-        "→ **docs/ROADMAP.md** 를 v1·v2… 단계별 로드맵으로 유지·갱신 "
+        "→ **docs/planning/ROADMAP.md** 를 v1·v2… 단계별 로드맵으로 유지·갱신 "
         "(status / merge_status / 완료 기준).\n"
-        "→ docs/REQUIREMENTS.md, docs/USER_STORIES.md, docs/PLAN_NOTES.md, "
-        "docs/FLOWCHART.md, docs/API_SPEC.md 중 **벤치마크·QA 피드백·갭 분석에 따라 수정이 필요한 문서**를 갱신.\n"
+        "→ docs/planning/REQUIREMENTS.md, docs/planning/USER_STORIES.md, docs/planning/PLAN_NOTES.md, "
+        "docs/planning/FLOWCHART.md, docs/technical/API_SPEC.md 중 **벤치마크·QA 피드백·갭 분석에 따라 수정이 필요한 문서**를 갱신.\n"
         "→ 미확정 사항은 PLAN_NOTES `### 추가 질문`에 누적.\n"
         "→ 사용자 승인 마커(`<!-- approved-by-user: true -->`) 추가 금지.\n"
         f"→ src/ 코드 작성 금지. 사용자 질문 금지.{qa_note}"
@@ -1009,16 +1429,16 @@ def _build_benchmark_researcher_prompt(task: str | None = None) -> str:
         "## 1. 자율 실행 (필수)\n"
         "- 사용자에게 질문하지 말고 **반드시 파일을 생성·수정**한다.\n"
         "- 불확실한 내용은 「가정」으로 표시하고 출처·조사일을 남긴다.\n"
-        "- 불명확해 작업을 중단해야 하면 `docs/PLAN_NOTES.md` 의 "
+        "- 불명확해 작업을 중단해야 하면 `docs/planning/PLAN_NOTES.md` 의 "
         "`### 벤치마크 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 문서\n"
-        "- docs/REQUIREMENTS.md (§1-5 벤치마킹, MVP 범위)\n"
-        "- docs/PLAN_NOTES.md\n"
-        "- docs/BENCHMARK_REPORT.md, docs/COMPETITOR_MATRIX.md (있으면 갱신)\n\n"
+        "- docs/planning/REQUIREMENTS.md (§1-5 벤치마킹, MVP 범위)\n"
+        "- docs/planning/PLAN_NOTES.md\n"
+        "- docs/planning/research/BENCHMARK_REPORT.md, docs/planning/research/COMPETITOR_MATRIX.md (있으면 갱신)\n\n"
         "## 3. 출력 위치\n"
-        "- docs/BENCHMARK_REPORT.md — 경쟁사별 상세 분석(기능·UX·청구·출석·가격 등)\n"
-        "- docs/COMPETITOR_MATRIX.md — 기능·서비스 항목 비교 표(ogada vs 경쟁사)\n"
+        "- docs/planning/research/BENCHMARK_REPORT.md — 경쟁사별 상세 분석(기능·UX·청구·출석·가격 등)\n"
+        "- docs/planning/research/COMPETITOR_MATRIX.md — 기능·서비스 항목 비교 표(ogada vs 경쟁사)\n"
         "- memory/decisions.md — 벤치마킹에서 도출된 기획 결정(최상단 추가)\n\n"
         "## 4. COMPETITOR_MATRIX 권장 구조\n"
         "- 행: 기능/서비스 항목 (이용자관리, 출석, 건강기록, 청구, 대시보드, 보호자포털, 다지점, QR 등)\n"
@@ -1048,35 +1468,35 @@ def _build_planner_auto_prompt(task: str | None = None) -> str:
         f"{_doc_identity_block('planner')}\n"
         "## 0. 범위\n"
         "- **docs/ 기획 문서만** 작성·갱신. src/ 코드 변경 금지.\n"
-        "- `docs/BENCHMARK_REPORT.md`, `docs/COMPETITOR_MATRIX.md`, "
+        "- `docs/planning/research/BENCHMARK_REPORT.md`, `docs/planning/research/COMPETITOR_MATRIX.md`, "
         "`memory/decisions.md` 를 **먼저 읽고** ogada 기획에 반영한다.\n"
-        "- **`docs/QA_FEEDBACK.md`**, **`docs/TEST_REPORT.md`**, **`docs/ROADMAP.md`** 를 읽고 "
+        "- **`docs/qa/QA_FEEDBACK.md`**, **`docs/qa/TEST_REPORT.md`**, **`docs/planning/ROADMAP.md`** 를 읽고 "
         "tester 검증 이슈를 기획·로드맵에 반영한다.\n"
         "- REQUIREMENTS §1-1 스택(Java Spring Boot + React + PostgreSQL) 유지.\n\n"
         "## 1. 자율 실행 (필수)\n"
         "- 사용자에게 질문하지 말고 **반드시 docs/ 파일을 생성·수정**한다.\n"
-        "- **버전 로드맵**: `docs/ROADMAP.md` 에 v1·v2… 단계별 범위·완료 기준·status 유지.\n"
+        "- **버전 로드맵**: `docs/planning/ROADMAP.md` 에 v1·v2… 단계별 범위·완료 기준·status 유지.\n"
         "- **QA 피드백 반영**: QA_FEEDBACK Open → ROADMAP/USER_STORIES/PLAN_NOTES 태스크화 후 "
-        "QA_FEEDBACK Planned 섹션으로 이동, `docs/PLAN_NOTES.md` `### QA 피드백 반영` 기록.\n"
+        "QA_FEEDBACK Planned 섹션으로 이동, `docs/planning/PLAN_NOTES.md` `### QA 피드백 반영` 기록.\n"
         "- 경쟁사 대비 갭·차별화·MVP 우선순위를 REQUIREMENTS·USER_STORIES에 반영.\n"
-        "- 미확정 사항은 `docs/PLAN_NOTES.md` `### 추가 질문`에 누적.\n"
+        "- 미확정 사항은 `docs/planning/PLAN_NOTES.md` `### 추가 질문`에 누적.\n"
         "- **`<!-- approved-by-user: true -->` 승인 마커는 절대 추가하지 않는다.**\n"
-        "- 불명확해 중단해야 하면 `docs/PLAN_NOTES.md` `### 기획 질문`에 기록 후 중단.\n\n"
+        "- 불명확해 중단해야 하면 `docs/planning/PLAN_NOTES.md` `### 기획 질문`에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 문서 (우선순위)\n"
-        "1. docs/QA_FEEDBACK.md, docs/TEST_REPORT.md (tester 산출물)\n"
-        "2. docs/ROADMAP.md\n"
-        "3. docs/BENCHMARK_REPORT.md, docs/COMPETITOR_MATRIX.md\n"
+        "1. docs/qa/QA_FEEDBACK.md, docs/qa/TEST_REPORT.md (tester 산출물)\n"
+        "2. docs/planning/ROADMAP.md\n"
+        "3. docs/planning/research/BENCHMARK_REPORT.md, docs/planning/research/COMPETITOR_MATRIX.md\n"
         "4. memory/decisions.md\n"
-        "5. docs/REQUIREMENTS.md, docs/USER_STORIES.md, docs/PLAN_NOTES.md\n"
-        "6. docs/FLOWCHART.md, docs/API_SPEC.md (필요 시만 갱신)\n\n"
+        "5. docs/planning/REQUIREMENTS.md, docs/planning/USER_STORIES.md, docs/planning/PLAN_NOTES.md\n"
+        "6. docs/planning/FLOWCHART.md, docs/technical/API_SPEC.md (필요 시만 갱신)\n\n"
         "## 3. 출력·갱신 대상\n"
-        "- docs/ROADMAP.md — v1·v2… 단계별 범위·완료 기준·status\n"
-        "- docs/REQUIREMENTS.md — §1-5 벤치마킹·기능 우선순위·갭 반영\n"
-        "- docs/USER_STORIES.md — 경쟁사·QA 대비 누락 스토리 추가\n"
-        "- docs/PLAN_NOTES.md — 확인된 결정·추가 질문·`### QA 피드백 반영`\n"
-        "- docs/QA_FEEDBACK.md — Open → Planned 이동 (반영 완료 시)\n"
-        "- docs/FLOWCHART.md, docs/API_SPEC.md — 벤치마크·QA 기반 수정 필요 시\n\n"
+        "- docs/planning/ROADMAP.md — v1·v2… 단계별 범위·완료 기준·status\n"
+        "- docs/planning/REQUIREMENTS.md — §1-5 벤치마킹·기능 우선순위·갭 반영\n"
+        "- docs/planning/USER_STORIES.md — 경쟁사·QA 대비 누락 스토리 추가\n"
+        "- docs/planning/PLAN_NOTES.md — 확인된 결정·추가 질문·`### QA 피드백 반영`\n"
+        "- docs/qa/QA_FEEDBACK.md — Open → Planned 이동 (반영 완료 시)\n"
+        "- docs/planning/FLOWCHART.md, docs/technical/API_SPEC.md — 벤치마크·QA 기반 수정 필요 시\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## 기획 동기화 요약\n"
         "  - 반영한 QA 피드백·벤치마크 인사이트\n"
@@ -1091,6 +1511,8 @@ def _tester_test_hint(stream: str) -> str:
     transfer = transfer_dir_for_stream(stream)
     develop = branch_for_stream(stream, "develop")
     test_branch = branch_for_stream(stream, "test")
+    test_rel = worktree_dir_for_stream(stream, "test").relative_to(WORKSPACE_ROOT)
+    develop_rel = submodule_dir_for_stream(stream).relative_to(WORKSPACE_ROOT)
     checklist = transfer / "checklists" / "test.md"
     manifest = transfer / "manifests" / "latest.yaml"
 
@@ -1098,9 +1520,9 @@ def _tester_test_hint(stream: str) -> str:
         return (
             f"현재 진행: **{stream} 이관 체크리스트 미작성**\n"
             f"→ `transfer/{stream}/checklists/test.md` 초안 작성.\n"
-            f"→ develop(`{develop}`) 산출물 대비 test(`{test_branch}`) 이관 가능 여부 점검.\n"
+            f"→ `{develop_rel}`(`{develop}`) 대비 `{test_rel}`(`{test_branch}`) 이관 가능 여부 점검.\n"
             f"→ `transfer/{stream}/manifests/latest.yaml` 에 버전·커밋·빌드 정보 기록.\n"
-            "→ src/ 코드 **수정 금지** — transfer/·TEST_REPORT·tests/ 만 갱신."
+            f"→ `{test_rel}` 에서 테스트 실행. src 주 경로·코드 **수정 금지**."
         )
     if not manifest.exists():
         return (
@@ -1111,16 +1533,16 @@ def _tester_test_hint(stream: str) -> str:
         )
     return (
         f"현재 진행: **{stream} 기본 이관 산출물 있음**\n"
-        f"→ `docs/ROADMAP.md` merged 버전 기준 회귀·통합 테스트 실행.\n"
-        f"→ 실패·누락은 **`docs/QA_FEEDBACK.md` Open** 에 기록 (템플릿 준수).\n"
-        "→ Maven/npm 결과를 docs/TEST_REPORT.md 에 반영.\n"
+        f"→ `docs/planning/ROADMAP.md` merged 버전 기준 회귀·통합 테스트 실행.\n"
+        f"→ 실패·누락은 **`docs/qa/QA_FEEDBACK.md` Open** 에 기록 (템플릿 준수).\n"
+        f"→ `{test_rel}` 에서 Maven/npm 결과를 docs/qa/TEST_REPORT.md 에 반영.\n"
         "→ transfer/ 체크리스트·매니페스트 갱신.\n"
-        "→ src/ 수정 금지 — planner 가 QA_FEEDBACK 을 기획에 반영."
+        f"→ `{develop_rel}`·`{test_rel}` 소스 수정 금지 — planner 가 QA_FEEDBACK 을 기획에 반영."
     )
 
 
 def _ux_progress_hint() -> str:
-    design = DOCS_DIR / "DESIGN_SYSTEM.md"
+    design = DESIGN_SYSTEM_FILE
     frontend = WORKSPACE_ROOT / "src/frontend"
     tokens = frontend / "src/styles/tokens.css"
     components = frontend / "src/styles/components.css"
@@ -1129,7 +1551,7 @@ def _ux_progress_hint() -> str:
     if not design.exists():
         return (
             "현재 진행: **DESIGN_SYSTEM.md 미작성**\n"
-            "→ `docs/DESIGN_SYSTEM.md` 초안: 색상·타이포·간격 토큰, WCAG AA, 터치 44px.\n"
+            "→ `docs/product/DESIGN_SYSTEM.md` 초안: 색상·타이포·간격 토큰, WCAG AA, 터치 44px.\n"
             "→ REQUIREMENTS·USER_STORIES·FLOWCHART 기반 React 컴포넌트 가이드."
         )
     if not tokens.exists() or not components.exists():
@@ -1156,12 +1578,12 @@ def _security_progress_hint() -> str:
         "SECURITY_CHECKLIST.md": "배포 전 보안 체크리스트",
         "THREAT_MODEL.md": "STRIDE 위협 모델",
     }
-    missing = [name for name in outputs if not (DOCS_DIR / name).exists()]
+    missing = [name for name in outputs if not (SECURITY_DIR / name).exists()]
     if missing:
         first = missing[0]
         return (
             f"현재 진행: **{len(missing)}개 보안 문서 미작성**\n"
-            f"→ 지금 즉시 `docs/{first}` 초안 작성 ({outputs[first]}).\n"
+            f"→ 지금 즉시 `docs/security/{first}` 초안 작성 ({outputs[first]}).\n"
             "→ src/backend(Java Spring), src/frontend(React) 코드·설정 점검.\n"
             "→ Maven dependency-check 또는 npm audit 결과 요약 포함.\n"
             "→ src/ 코드 **수정 금지**, docs/SECURITY_*.md 만 갱신."
@@ -1169,8 +1591,8 @@ def _security_progress_hint() -> str:
     return (
         "현재 진행: **기본 보안 문서 있음 — 일일 재점검**\n"
         "→ 최근 src/ 변경·의존성·JWT/RBAC·PII 처리 재검토.\n"
-        "→ docs/SECURITY_AUDIT.md 에 신규/미해결 이슈 추가.\n"
-        "→ BLOCK 이슈는 docs/QA_FEEDBACK.md Open 에 `[SEC]` 항목으로 기록."
+        "→ docs/security/SECURITY_AUDIT.md 에 신규/미해결 이슈 추가.\n"
+        "→ BLOCK 이슈는 docs/qa/QA_FEEDBACK.md Open 에 `[SEC]` 항목으로 기록."
     )
 
 
@@ -1192,17 +1614,17 @@ def _build_security_auditor_prompt(task: str | None = None) -> str:
         "- Maven(`src/backend`)·npm(`src/frontend`) 의존성 취약점 스캔 결과 요약.\n\n"
         "## 1. 자율 실행 (필수)\n"
         "- 사용자 질문 금지. 이번 호출에서 docs/ 보안 문서를 반드시 생성·수정.\n"
-        "- 치명적 이슈는 `docs/QA_FEEDBACK.md` Open 에 `[SEC]` prefix 로 기록.\n"
-        "- 불확실하면 `docs/PLAN_NOTES.md` `### 보안 감사 질문` 에 기록 후 중단.\n\n"
+        "- 치명적 이슈는 `docs/qa/QA_FEEDBACK.md` Open 에 `[SEC]` prefix 로 기록.\n"
+        "- 불확실하면 `docs/planning/PLAN_NOTES.md` `### 보안 감사 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 자료\n"
         "- src/backend/, src/frontend/ (읽기 전용)\n"
-        "- docs/DATA_RETENTION_POLICY.md, docs/API_SPEC.md, docs/REQUIREMENTS.md\n"
-        "- docs/SECURITY_AUDIT.md 등 기존 보안 문서\n\n"
+        "- docs/ops/DATA_RETENTION_POLICY.md, docs/technical/API_SPEC.md, docs/planning/REQUIREMENTS.md\n"
+        "- docs/security/SECURITY_AUDIT.md 등 기존 보안 문서\n\n"
         "## 3. 출력 위치\n"
-        "- docs/SECURITY_AUDIT.md\n"
-        "- docs/SECURITY_CHECKLIST.md\n"
-        "- docs/THREAT_MODEL.md\n\n"
+        "- docs/security/SECURITY_AUDIT.md\n"
+        "- docs/security/SECURITY_CHECKLIST.md\n"
+        "- docs/security/THREAT_MODEL.md\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## 보안 감사 작업 요약\n"
         "  - 점검 범위 (backend/frontend)\n"
@@ -1228,16 +1650,18 @@ def _build_ux_designer_prompt(task: str | None = None) -> str:
         "## 0. 브랜치·범위 (CRITICAL)\n"
         f"- **submodule**: `src/frontend` | **브랜치**: `{develop_branch}`\n"
         "- React(Vite) + TypeScript 기반 UI·디자인 토큰만 작성.\n"
-        "- `src/backend`, `transfer/` 수정 **금지**.\n\n"
+        "- `src/backend`, `transfer/` 수정 **금지**.\n"
+        f"- 작업 후 **반드시** frontend @ `{develop_branch}` 에 **커밋**한다. "
+        f"build 종료 시 `git push origin {develop_branch}` 자동 실행.\n\n"
         "## 1. 자율 실행 (필수)\n"
-        "- 사용자 질문 금지. docs/DESIGN_SYSTEM.md 또는 frontend 스타일·UI 파일 생성·수정.\n"
-        "- 불확실하면 `docs/PLAN_NOTES.md` `### UX 설계 질문` 에 기록 후 중단.\n\n"
+        "- 사용자 질문 금지. docs/product/DESIGN_SYSTEM.md 또는 frontend 스타일·UI 파일 생성·수정.\n"
+        "- 불확실하면 `docs/planning/PLAN_NOTES.md` `### UX 설계 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 문서\n"
-        "- docs/FLOWCHART.md, docs/USER_STORIES.md, docs/REQUIREMENTS.md\n"
-        "- docs/DESIGN_SYSTEM.md (있으면 갱신)\n\n"
+        "- docs/planning/FLOWCHART.md, docs/planning/USER_STORIES.md, docs/planning/REQUIREMENTS.md\n"
+        "- docs/product/DESIGN_SYSTEM.md (있으면 갱신)\n\n"
         "## 3. 출력 위치\n"
-        "- docs/DESIGN_SYSTEM.md\n"
+        "- docs/product/DESIGN_SYSTEM.md\n"
         "- src/frontend/src/styles/tokens.css, components.css\n"
         "- src/frontend/src/components/ui/\n\n"
         "## 4. 최종 응답 포맷\n"
@@ -1260,38 +1684,49 @@ def _build_tester_prompt(stream: str = "backend", task: str | None = None) -> st
     test_branch = branch_for_stream(stream, "test")
     develop_branch = branch_for_stream(stream, "develop")
     transfer = transfer_dir_for_stream(stream)
+    develop_dir = submodule_dir_for_stream(stream)
+    test_dir = worktree_dir_for_stream(stream, "test")
+    try:
+        develop_rel = develop_dir.relative_to(WORKSPACE_ROOT)
+    except ValueError:
+        develop_rel = develop_dir
+    try:
+        test_rel = test_dir.relative_to(WORKSPACE_ROOT)
+    except ValueError:
+        test_rel = test_dir
 
     return (
         f"=== .agents/rules.md ===\n{rules}\n\n"
         "지금 너의 역할은 `.agents/agents.yaml` 의 `tester`(QA·이관) 이다.\n"
         "agents.yaml tester 섹션과 `.agents/branches.yaml` 을 읽어라.\n\n"
         "## 0. 브랜치·범위 (CRITICAL)\n"
-        f"- **현재 스트림**: `{stream}` | **submodule**: `src/{stream}` | **브랜치**: `{test_branch}`\n"
-        f"- submodule `src/{stream}` 의 **test** 브랜치에서 이관·검증.\n"
-        f"- develop(`{develop_branch}`) 산출물은 **읽기만** — src/ 직접 수정 **금지**.\n"
-        f"- **수정 허용**: `transfer/{stream}/`, `docs/TEST_REPORT.md`, `docs/QA_FEEDBACK.md`, `tests/`.\n"
-        "- operation·develop 브랜치 checkout·src/ 패치는 **금지**.\n\n"
+        f"- **현재 스트림**: `{stream}` | **검증 worktree**: `{test_rel}` | **브랜치**: `{test_branch}`\n"
+        f"- `{test_rel}` (git worktree) 에서 이관·검증·Maven/npm 테스트 실행.\n"
+        f"- develop 산출물은 `{develop_rel}` (`{develop_branch}`) — **읽기만**, 수정·checkout **금지**.\n"
+        f"- **수정 허용**: `transfer/{stream}/`, `docs/qa/TEST_REPORT.md`, `docs/qa/QA_FEEDBACK.md`, `tests/`.\n"
+        f"- `{develop_rel}` 패치·브랜치 전환 **금지** (coder 와 worktree 분리).\n\n"
         f"{_doc_identity_block('tester')}\n"
         "## 1. 자율 실행 (필수)\n"
-        "- `docs/ROADMAP.md` merged 버전 기준으로 회귀·통합 테스트 실행.\n"
-        "- **실패·누락·불일치**는 `docs/QA_FEEDBACK.md` **Open** 섹션에 기록 "
+        "- `docs/planning/ROADMAP.md` merged 버전 기준으로 회귀·통합 테스트 실행.\n"
+        "- **실패·누락·불일치**는 `docs/qa/QA_FEEDBACK.md` **Open** 섹션에 기록 "
         "(템플릿·severity·version 포함) — **planner 가 기획 반영**.\n"
         "- develop → test 이관 체크리스트·매니페스트·검증 리포트 갱신.\n"
-        "- Maven(`src/backend`) 또는 npm(`src/frontend`) 테스트 실행·결과 기록.\n"
+        f"- `{'Maven' if stream == 'backend' else 'npm'}` 테스트는 `{test_rel}` 에서 실행·결과 기록.\n"
         "- BLOCK 이슈 있으면 transfer/ 체크리스트에 PASS 금지 명시.\n"
-        "- 불확실하면 `docs/PLAN_NOTES.md` `### QA 이관 질문` 에 기록 후 중단.\n\n"
+        "- 불확실하면 `docs/planning/PLAN_NOTES.md` `### QA 이관 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 자료\n"
-        "- docs/ROADMAP.md (검증 대상 버전·완료 기준)\n"
-        "- docs/USER_STORIES.md, docs/API_SPEC.md, docs/REQUIREMENTS.md\n"
-        f"- src/{stream}/ (읽기 전용 — test 브랜치 산출물)\n"
+        "- docs/planning/ROADMAP.md (검증 대상 버전·완료 기준)\n"
+        "- docs/planning/USER_STORIES.md, docs/technical/API_SPEC.md, docs/planning/REQUIREMENTS.md\n"
+        f"- {test_rel}/ (읽기 전용 — test 브랜치 산출물, worktree)\n"
+        f"- {develop_rel}/ (읽기 전용 — develop 대비 diff 참고)\n"
         f"- {transfer}/ (이관 산출물)\n\n"
         "## 3. 출력 위치\n"
         f"- transfer/{stream}/checklists/test.md\n"
         f"- transfer/{stream}/manifests/latest.yaml\n"
         f"- transfer/{stream}/packages/ (diff·빌드 메타)\n"
-        "- docs/TEST_REPORT.md\n"
-        "- docs/QA_FEEDBACK.md (Open — 미해결 이슈)\n"
+        "- docs/qa/TEST_REPORT.md\n"
+        "- docs/qa/QA_FEEDBACK.md (Open — 미해결 이슈)\n"
         "- tests/ (회귀 테스트 추가·수정 가능)\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## QA 이관 작업 요약\n"
@@ -1337,8 +1772,8 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
         for doc in (ROADMAP_FILE, QA_FEEDBACK_FILE):
             paths.add(doc)
     elif role == "db_architect":
-        for name in ("ERD.md", "DATA_RETENTION_POLICY.md"):
-            paths.add(DOCS_DIR / name)
+        for path in (ERD_FILE, DATA_RETENTION_POLICY_FILE):
+            paths.add(path)
         backend = WORKSPACE_ROOT / "src/backend"
         if backend.is_dir():
             for p in backend.rglob("*"):
@@ -1364,7 +1799,7 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
             "CHANGELOG.md",
             "FAQ.md",
         ):
-            paths.add(DOCS_DIR / name)
+            paths.add(OPS_DIR / name)
     elif role == "benchmark_researcher":
         for path in (
             BENCHMARK_REPORT_FILE,
@@ -1404,7 +1839,7 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
                     paths.add(p)
     elif role == "ux_designer":
         for path in (
-            DOCS_DIR / "DESIGN_SYSTEM.md",
+            DESIGN_SYSTEM_FILE,
             WORKSPACE_ROOT / "src/frontend/src/styles/tokens.css",
             WORKSPACE_ROOT / "src/frontend/src/styles/components.css",
             WORKSPACE_ROOT / "src/frontend/src/components/ui",
@@ -1417,7 +1852,7 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
                 paths.add(path)
     elif role == "security_auditor":
         for name in ("SECURITY_AUDIT.md", "SECURITY_CHECKLIST.md", "THREAT_MODEL.md"):
-            paths.add(DOCS_DIR / name)
+            paths.add(SECURITY_DIR / name)
         paths.add(QA_FEEDBACK_FILE)
     paths.add(PLAN_NOTES_FILE)
     return sorted(paths)
@@ -1445,23 +1880,36 @@ def _role_default_interval(role: str) -> int:
     return DEFAULT_INTERVAL
 
 
-def save_planner_session(agent_id: str) -> None:
+def save_planner_session(
+    agent_id: str,
+    *,
+    locked_model: str | None = None,
+    model_locked: bool = False,
+) -> None:
     AGENTS_DIR.mkdir(parents=True, exist_ok=True)
+    payload: dict[str, object] = {"agent_id": agent_id}
+    if model_locked and locked_model:
+        payload["locked_model"] = locked_model
+        payload["model_locked"] = True
     PLANNER_SESSION_FILE.write_text(
-        json.dumps({"agent_id": agent_id}, ensure_ascii=False, indent=2),
+        json.dumps(payload, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
 
 
-def load_planner_session() -> str | None:
+def load_planner_session() -> tuple[str | None, str | None, bool]:
     if not PLANNER_SESSION_FILE.exists():
-        return None
+        return None, None, False
     try:
         data = json.loads(PLANNER_SESSION_FILE.read_text(encoding="utf-8"))
         agent_id = data.get("agent_id")
-        return agent_id if isinstance(agent_id, str) and agent_id else None
+        locked = data.get("locked_model")
+        model_locked = bool(data.get("model_locked"))
+        aid = agent_id if isinstance(agent_id, str) and agent_id else None
+        lm = locked if isinstance(locked, str) and locked else None
+        return aid, lm, model_locked and bool(lm)
     except Exception:
-        return None
+        return None, None, False
 
 
 def planner_system_prompt() -> str:
@@ -1472,14 +1920,14 @@ def planner_system_prompt() -> str:
         "원칙:\n"
         "- 사용자와 한국어로 대화하며 요구사항을 명확하게 다듬는다.\n"
         "- 매 턴 마지막에 다음에 답해야 할 질문을 1~3개로 명시한다.\n"
-        "- 사용자의 답이 들어올 때마다 docs/REQUIREMENTS.md 를 갱신한다.\n"
+        "- 사용자의 답이 들어올 때마다 docs/planning/REQUIREMENTS.md 를 갱신한다.\n"
         f"- 사용자 승인 마커 `{APPROVAL_MARKER}` 는 절대로 추가하지 않는다 "
         "  (승인은 사용자가 직접 추가한다).\n"
-        "- 미확정/추가 질문은 docs/PLAN_NOTES.md 의 '### 추가 질문' 섹션에 누적한다.\n"
-        "- docs/QA_FEEDBACK.md 의 Open 항목을 읽고 ROADMAP·USER_STORIES·PLAN_NOTES "
+        "- 미확정/추가 질문은 docs/planning/PLAN_NOTES.md 의 '### 추가 질문' 섹션에 누적한다.\n"
+        "- docs/qa/QA_FEEDBACK.md 의 Open 항목을 읽고 ROADMAP·USER_STORIES·PLAN_NOTES "
         "('### QA 피드백 반영')에 반영한다.\n"
-        "- docs/ROADMAP.md 를 v1·v2… 단계별 로드맵으로 유지한다.\n"
-        "- 벤치마크 산출물(docs/BENCHMARK_REPORT.md, docs/COMPETITOR_MATRIX.md)과 "
+        "- docs/planning/ROADMAP.md 를 v1·v2… 단계별 로드맵으로 유지한다.\n"
+        "- 벤치마크 산출물(docs/planning/research/BENCHMARK_REPORT.md, docs/planning/research/COMPETITOR_MATRIX.md)과 "
         "memory/decisions.md 를 참고해 기획에 반영한다.\n"
         "- 코드는 절대 작성하지 않는다. build 단계는 별도로 사용자 승인 후 실행된다.\n"
         "- 응답은 간결하게(불릿/번호 위주) 작성한다.\n"
@@ -1592,14 +2040,14 @@ def render_build_changes(
                 Panel(
                     "변경된 파일이 없습니다. coder 가 (1) 요구사항 누락으로 중단했거나 "
                     "(2) 작업할 항목이 없다고 판단했을 수 있습니다.\n"
-                    "→ docs/PLAN_NOTES.md '### 코더 질문' 섹션을 확인하세요.",
+                    "→ docs/planning/PLAN_NOTES.md '### 코더 질문' 섹션을 확인하세요.",
                     title="변경 없음",
                     border_style="yellow",
                 )
             )
         else:
             print("[빈 결과] 변경된 파일이 없습니다.")
-            print("  → docs/PLAN_NOTES.md '### 코더 질문' 섹션을 확인하세요.")
+            print("  → docs/planning/PLAN_NOTES.md '### 코더 질문' 섹션을 확인하세요.")
         return
 
     rows: list[str] = []
@@ -1692,6 +2140,430 @@ def render_file_changes(changes: list[tuple[Path, str]]) -> None:
         print()
 
 
+def _message_field_text(message: object) -> str:
+    """AgentMessage.message 등에서 텍스트를 최대한 추출."""
+
+    if message is None:
+        return ""
+    if isinstance(message, str):
+        return message.strip()
+    if isinstance(message, Mapping):
+        for key in ("text", "content", "result"):
+            val = message.get(key)
+            if isinstance(val, str) and val.strip():
+                return val.strip()
+            if isinstance(val, list):
+                parts: list[str] = []
+                for item in val:
+                    if isinstance(item, str) and item.strip():
+                        parts.append(item.strip())
+                    elif isinstance(item, Mapping):
+                        t = item.get("text") or item.get("content")
+                        if isinstance(t, str) and t.strip():
+                            parts.append(t.strip())
+                if parts:
+                    return "\n".join(parts)
+    text_attr = getattr(message, "text", None)
+    if isinstance(text_attr, str) and text_attr.strip():
+        return text_attr.strip()
+    return ""
+
+
+def _extract_run_text(run, agent) -> str:
+    """Run.result 가 비어도 conversation/stream/messages 에서 텍스트를 수집."""
+
+    primary = (getattr(run, "result", "") or "").strip()
+    if primary:
+        return primary
+
+    try:
+        waited = run.text() or ""
+        if waited.strip():
+            return waited.strip()
+    except Exception:
+        pass
+
+    try:
+        streamed = "".join(run.iter_text()).strip()
+        if streamed:
+            return streamed
+    except Exception:
+        pass
+
+    try:
+        for turn in reversed(run.conversation()):
+            if turn.type != "agentConversationTurn":
+                continue
+            agent_turn = turn.turn
+            steps = getattr(agent_turn, "steps", ()) or ()
+            chunks: list[str] = []
+            for step in steps:
+                if getattr(step, "type", None) != "assistantMessage":
+                    continue
+                msg = getattr(step, "message", None)
+                text = getattr(msg, "text", "") if msg is not None else ""
+                if isinstance(text, str) and text.strip():
+                    chunks.append(text.strip())
+            if chunks:
+                return "\n\n".join(chunks)
+    except Exception:
+        pass
+
+    try:
+        for msg in reversed(agent.list_messages()):
+            text = _message_field_text(getattr(msg, "message", None))
+            if text:
+                return text
+    except Exception:
+        pass
+
+    return ""
+
+
+class PlanSendState:
+    """plan 모드 send 시 모델 체인 폴백을 위해 가변 agent/model 인덱스를 보관."""
+
+    __slots__ = (
+        "agent",
+        "agent_id",
+        "chain",
+        "model_idx",
+        "api_key",
+        "model_locked",
+        "session_rebuilt",
+    )
+
+    def __init__(
+        self,
+        agent,
+        agent_id: str,
+        chain: list[str],
+        model_idx: int,
+        api_key: str,
+    ) -> None:
+        self.agent = agent
+        self.agent_id = agent_id
+        self.chain = chain
+        self.model_idx = model_idx
+        self.api_key = api_key
+        self.model_locked = False
+        self.session_rebuilt = False
+
+    @property
+    def active_model(self) -> str:
+        return self.chain[self.model_idx]
+
+    def begin_send(self, *, force_chain_walk: bool = False) -> None:
+        """send 직전: 첫 연결(또는 강제)에만 체인 맨 위부터, 이후엔 고정 모델."""
+
+        fresh = resolve_model_chain("planner")
+        if fresh:
+            # yaml 변경 반영. 잠금 전이면 idx 유지 가능, 잠금 후엔 active_model 이름으로 idx 재매칭
+            prev = self.active_model if self.chain else None
+            self.chain = fresh
+            if self.model_locked and prev:
+                try:
+                    self.model_idx = fresh.index(prev)
+                except ValueError:
+                    self.model_idx = min(self.model_idx, len(fresh) - 1)
+            elif not self.model_locked or force_chain_walk:
+                self.model_idx = 0
+
+        if force_chain_walk:
+            self.model_locked = False
+            self.model_idx = 0
+
+    def lock_model(self) -> None:
+        """한 번 성공한 모델을 세션 동안 유지."""
+
+        self.model_locked = True
+        save_planner_session(
+            self.agent_id,
+            locked_model=self.active_model,
+            model_locked=True,
+        )
+
+
+def _looks_like_transient_send_error(message: str) -> bool:
+    msg = (message or "").lower()
+    return _looks_like_bridge_down(msg) or "internal error" in msg
+
+
+def _looks_like_bridge_down(message: str) -> bool:
+    msg = (message or "").lower()
+    return (
+        "connection refused" in msg
+        or "bridge request failed" in msg
+        or "client has been closed" in msg
+    )
+
+
+def _looks_like_bridge_restart_needed(message: str) -> bool:
+    """bridge 프로세스 재시작이 필요한 오류 (Connection refused, bridge crash 등)."""
+
+    msg = (message or "").lower()
+    return (
+        _looks_like_bridge_down(msg)
+        or "bridge exited" in msg
+        or "tool-callback" in msg
+        or "cursor-sdk-bridge failed" in msg
+    )
+
+
+def _plan_send_resilient(
+    plan_state: PlanSendState | None,
+    agent,
+    message: str,
+    *,
+    model_id: str | None,
+    label: str,
+) -> tuple[str, str, str, str]:
+    """plan send: bridge 끊김 시 즉시 재연결, send 실패 시 충분히 재시도."""
+
+    bridge_recoveries = 0
+    post_bridge_internal = 0
+    last_err: Exception | None = None
+
+    for attempt in range(PLAN_SEND_RETRY_MAX + 1):
+        active = plan_state.agent if plan_state else agent
+        try:
+            return _plan_raw_send(active, message, model_id=model_id)
+        except RuntimeError as err:
+            last_err = err
+            msg = str(err)
+            if (
+                _looks_like_bridge_restart_needed(msg)
+                and bridge_recoveries < BRIDGE_RECOVER_MAX
+            ):
+                bridge_recoveries += 1
+                print(
+                    f"[recover] bridge 재시작 ({bridge_recoveries}/{BRIDGE_RECOVER_MAX}) "
+                    f"— {msg[:80]}",
+                    file=sys.stderr,
+                )
+                _recover_plan_bridge(plan_state, restart_bridge=True)
+                time.sleep(BRIDGE_RECOVER_DELAY * bridge_recoveries)
+                continue
+            raise
+        except CursorAgentError as err:
+            last_err = err
+            msg = err.message or ""
+            if (
+                _looks_like_bridge_restart_needed(msg)
+                and bridge_recoveries < BRIDGE_RECOVER_MAX
+            ):
+                bridge_recoveries += 1
+                print(
+                    f"[recover] bridge 재시작 ({bridge_recoveries}/{BRIDGE_RECOVER_MAX}) "
+                    f"— {msg[:80]}",
+                    file=sys.stderr,
+                )
+                _recover_plan_bridge(plan_state, restart_bridge=True)
+                time.sleep(BRIDGE_RECOVER_DELAY * bridge_recoveries)
+                post_bridge_internal = 0
+                continue
+            if (
+                "internal error" in msg.lower()
+                and post_bridge_internal < BRIDGE_POST_INTERNAL_RETRY
+            ):
+                post_bridge_internal += 1
+                delay = RETRY_BASE_DELAY * post_bridge_internal
+                print(
+                    f"[retry] {label} API 일시 오류 "
+                    f"({post_bridge_internal}/{BRIDGE_POST_INTERNAL_RETRY}) "
+                    f"delay={delay:.1f}s",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
+                continue
+            if getattr(err, "is_retryable", False) and attempt < PLAN_SEND_RETRY_MAX:
+                retry_after = getattr(err, "retry_after", None)
+                if isinstance(retry_after, (int, float)) and retry_after > 0:
+                    delay = float(retry_after)
+                else:
+                    delay = RETRY_BASE_DELAY * (2 ** min(attempt, 4))
+                print(
+                    f"[retry] {label} attempt={attempt + 1}/{PLAN_SEND_RETRY_MAX} "
+                    f"delay={delay:.1f}s reason={msg[:120]}",
+                    file=sys.stderr,
+                )
+                time.sleep(delay)
+                continue
+            raise
+    if last_err is not None:
+        raise last_err
+    raise RuntimeError("plan send retry exhausted")
+
+
+def _recover_plan_bridge(
+    state: PlanSendState | None = None,
+    *,
+    restart_bridge: bool = True,
+) -> None:
+    """plan agent 를 resume 으로 재연결한다.
+
+    `restart_bridge=True` 일 때만 bridge 프로세스를 죽였다 다시 띄운다.
+    internal error 마다 bridge 를 재시작하면 tool-callback 서버가 깨질 수 있다.
+    """
+
+    if restart_bridge:
+        try:
+            close_default_client()
+        except Exception:
+            pass
+    if state is None:
+        return
+    try:
+        state.agent = Agent.resume(
+            state.agent_id,
+            AgentOptions(api_key=state.api_key, model=state.active_model),
+        )
+    except CursorAgentError as err:
+        print(
+            f"[recover-fail] agent resume 실패: {err.message!s:.120}",
+            file=sys.stderr,
+        )
+        raise
+
+
+def _is_stale_plan_agent_error(message: str) -> bool:
+    return "internal error" in (message or "").lower()
+
+
+def _recreate_plan_agent(state: PlanSendState) -> None:
+    """cloud 쪽 agent 세션이 깨졌을 때 새 agent 를 만든다 (로컬 docs 는 유지)."""
+
+    model = state.active_model
+    print(
+        f"[recover] cloud agent 손상 — 새 agent 생성 (model={model}). "
+        "REQUIREMENTS/PLAN_NOTES 는 디스크에 그대로.",
+        file=sys.stderr,
+    )
+    try:
+        close_default_client()
+    except Exception:
+        pass
+    new_agent = Agent.create(
+        api_key=state.api_key,
+        model=model,
+        local=LocalAgentOptions(cwd=str(WORKSPACE_ROOT)),
+    )
+    state.agent = new_agent
+    state.agent_id = new_agent.agent_id
+    state.model_locked = False
+    state.session_rebuilt = True
+    save_planner_session(state.agent_id)
+
+
+def _ensure_plan_agent_alive(state: PlanSendState) -> None:
+    """resume 직후 짧은 send 로 cloud agent 가 살아있는지 확인."""
+
+    try:
+        run = state.agent.send("ping", SendOptions(model=state.active_model))
+        status = str(getattr(run, "status", "") or "")
+        if status == "error":
+            raise CursorAgentError("run status=error on probe", status=500, code="internal")
+    except CursorAgentError as err:
+        if _is_stale_plan_agent_error(err.message or ""):
+            _recreate_plan_agent(state)
+            return
+        raise
+
+
+def _plan_raw_send(
+    agent, message: str, model_id: str | None = None
+) -> tuple[str, str, str, str]:
+    """send 1회 실행. (text, status, run_id, error_detail) 반환."""
+
+    send_opts = SendOptions(model=model_id) if model_id else None
+    run = agent.send(message, send_opts)
+    text = _extract_run_text(run, agent)
+    status = str(getattr(run, "status", "?") or "?")
+    run_id = str(getattr(run, "id", "?") or "?")
+    err_detail = (getattr(run, "result", "") or "").strip()
+    if status == "error" and not err_detail:
+        try:
+            for turn in run.conversation():
+                steps = getattr(getattr(turn, "turn", None), "steps", ()) or ()
+                for step in steps:
+                    if getattr(step, "type", None) != "statusMessage":
+                        continue
+                    msg = getattr(step, "message", None)
+                    body = getattr(msg, "message", "") if msg is not None else ""
+                    if isinstance(body, str) and body.strip():
+                        err_detail = body.strip()
+                        break
+                if err_detail:
+                    break
+        except Exception:
+            pass
+    return text, status, run_id, err_detail
+
+
+def _advance_plan_model(state: PlanSendState) -> bool:
+    """체인에서 다음 모델로 전환. 성공 시 True, 더 이상 없으면 False.
+
+    같은 agent 세션을 유지하고 다음 send 에 model override 만 넘긴다.
+    (Agent.close + resume 은 로컬 bridge 를 끊어 Connection refused 를 유발할 수 있음)
+    """
+
+    next_idx = state.model_idx + 1
+    if next_idx >= len(state.chain):
+        return False
+    model_id = state.chain[next_idx]
+    state.model_idx = next_idx
+    print(
+        f"[fallback] planner send → model={model_id} "
+        f"({next_idx + 1}/{len(state.chain)})",
+        file=sys.stderr,
+    )
+    return True
+
+
+def _plan_fallback_with_bridge(state: PlanSendState, *, reason: str = "") -> bool:
+    """다음 모델로 넘긴다. bridge crash/refused 일 때만 bridge 재시작."""
+
+    if _looks_like_bridge_restart_needed(reason):
+        print(
+            f"[recover] bridge crash/refused — 재시작 후 다음 모델 ({reason!s:.60})",
+            file=sys.stderr,
+        )
+        try:
+            _recover_plan_bridge(state, restart_bridge=True)
+            time.sleep(BRIDGE_RECOVER_DELAY)
+        except CursorAgentError as err:
+            print(f"[recover-warn] {err.message!s:.80}", file=sys.stderr)
+    return _advance_plan_model(state)
+
+
+def _probe_planner_model(api_key: str, model_id: str) -> bool:
+    """최소 ping 으로 SDK run 가능 여부 확인 (기획자 대화 세션과 분리)."""
+
+    try:
+        t0 = time.time()
+        result = Agent.prompt(
+            "Reply with exactly: ok",
+            AgentOptions(
+                api_key=api_key,
+                model=model_id,
+                local=LocalAgentOptions(cwd=str(WORKSPACE_ROOT)),
+            ),
+        )
+        dt = time.time() - t0
+        ok = str(getattr(result, "status", "") or "") == "finished"
+        print(
+            f"[probe] {model_id:24s} {'OK' if ok else 'ERR':<4s} time={dt:.1f}s",
+            file=sys.stderr,
+        )
+        return ok
+    except CursorAgentError as err:
+        print(
+            f"[probe] {model_id:24s} FAIL {err.message!s:.100}",
+            file=sys.stderr,
+        )
+        return False
+
+
 def render_agent_output(text: str, title: str = "기획자") -> None:
     """에이전트 응답을 가독성 좋게 출력한다."""
 
@@ -1709,62 +2581,264 @@ def send_and_print(
     agent,
     message: str,
     watch_before: dict[str, str | None] | None = None,
+    plan_state: PlanSendState | None = None,
 ) -> None:
     """에이전트에게 메시지를 보내고 응답을 렌더링한다.
 
     - 일시적 브리지/네트워크 오류는 자동 재시도한다.
+    - plan_state 가 주어지면 **세션 첫 send** 에만 체인 맨 위(고급)부터 확인하고,
+      성공 후에는 같은 모델을 유지한다.
     - watch_before 가 주어지면 전송 전후 docs 변경을 함께 표시한다.
     """
 
-    def _do_send() -> str:
-        run = agent.send(message)
-        return run.text() or ""
+    current_message = message
+    last_send_error = ""
 
-    try:
-        if _RICH and _CONSOLE is not None:
-            with _CONSOLE.status(
-                "[bold cyan]기획자 생각 중...[/bold cyan]",
-                spinner="dots",
-            ):
-                text = _retry_call(_do_send, label="plan send")
-        else:
-            sys.stdout.write("  (기획자 생각 중...)")
-            sys.stdout.flush()
-            text = _retry_call(_do_send, label="plan send")
-            sys.stdout.write("\r" + " " * 40 + "\r")
-            sys.stdout.flush()
-    except CursorAgentError as err:
-        msg = err.message or ""
-        print(
-            f"[send-error] retryable={err.is_retryable} message={msg}",
-            file=sys.stderr,
-        )
-        if "internal error" in msg.lower():
-            hint = (
-                "팁: 세션 컨텍스트가 너무 길어졌거나 모델 백엔드 일시 오류일 수 있습니다.\n"
-                "  1) 가용 모델/계정 상태부터 진단:\n"
-                "     .venv/bin/python scripts/run_agent.py doctor\n"
-                "  2) 짧은 질문으로 다시 시도\n"
-                "  3) 새 세션으로 재시작 (대화 기록은 초기화됨):\n"
-                "     .venv/bin/python scripts/run_agent.py plan --new\n"
-                "  4) 환경변수로 특정 모델만 강제:\n"
-                "     AGENT_MODEL=composer-2.5 .venv/bin/python scripts/run_agent.py plan --new"
-            )
-            if _RICH and _CONSOLE is not None:
-                _CONSOLE.print(Panel(hint, title="복구 안내", border_style="red"))
+    for chain_pass in range(PLAN_CHAIN_PASS_MAX):
+        if plan_state is not None:
+            force_walk = chain_pass > 0 and not plan_state.model_locked
+            plan_state.begin_send(force_chain_walk=force_walk)
+            if chain_pass > 0:
+                print(
+                    f"[recover] 체인 전체 실패 — bridge 재시작 후 "
+                    f"{chain_pass + 1}/{PLAN_CHAIN_PASS_MAX}회차 재시도",
+                    file=sys.stderr,
+                )
+                _recover_plan_bridge(plan_state, restart_bridge=True)
+                time.sleep(BRIDGE_RECOVER_DELAY * 2)
+            if plan_state.model_locked:
+                print(
+                    f"[chain] 세션 고정 모델: {plan_state.active_model}",
+                    file=sys.stderr,
+                )
             else:
-                print(hint, file=sys.stderr)
-        return
-    except Exception:
-        print("[unexpected-error]", file=sys.stderr)
-        traceback.print_exc()
-        return
+                print(
+                    f"[chain] 첫 연결 — agents.yaml 체인: {' → '.join(plan_state.chain)}",
+                    file=sys.stderr,
+                )
 
-    render_agent_output(text)
+        same_model_retry = False
+        internal_streak = 0
 
-    if watch_before is not None:
-        changes = diff_snapshots(watch_before, _watched_paths())
-        render_file_changes(changes)
+        while True:
+            active_model = plan_state.active_model if plan_state else "?"
+            has_next = (
+                plan_state is not None
+                and plan_state.model_idx < len(plan_state.chain) - 1
+            )
+            mid = plan_state.active_model if plan_state else None
+            label = f"plan send model={active_model}"
+
+            if plan_state is not None and PLAN_PROBE_BEFORE_SEND and not plan_state.model_locked:
+                if not _probe_planner_model(plan_state.api_key, active_model):
+                    if has_next:
+                        nxt = plan_state.chain[plan_state.model_idx + 1]
+                        print(
+                            f"[chain] {active_model} 가용하지 않음 → {nxt} 시도",
+                            file=sys.stderr,
+                        )
+                        if _advance_plan_model(plan_state):
+                            continue
+                    else:
+                        print(
+                            f"[chain] {active_model} probe FAIL — "
+                            "마지막 모델, send 그대로 시도",
+                            file=sys.stderr,
+                        )
+                else:
+                    print(
+                        f"[chain] {active_model} probe OK — 본문 send 시작",
+                        file=sys.stderr,
+                    )
+
+            try:
+                if _RICH and _CONSOLE is not None:
+                    with _CONSOLE.status(
+                        f"[bold cyan]기획자 생각 중 ({active_model})...[/bold cyan]",
+                        spinner="dots",
+                    ):
+                        text, status, run_id, err_detail = _plan_send_resilient(
+                            plan_state,
+                            agent,
+                            current_message,
+                            model_id=mid,
+                            label=label,
+                        )
+                else:
+                    sys.stdout.write(f"  (기획자 생각 중 — {active_model}...)")
+                    sys.stdout.flush()
+                    text, status, run_id, err_detail = _plan_send_resilient(
+                        plan_state,
+                        agent,
+                        current_message,
+                        model_id=mid,
+                        label=label,
+                    )
+                    sys.stdout.write("\r" + " " * 40 + "\r")
+                    sys.stdout.flush()
+            except CursorAgentError as err:
+                msg = err.message or ""
+                last_send_error = msg
+                if (
+                    plan_state is not None
+                    and not same_model_retry
+                    and _looks_like_bridge_restart_needed(msg)
+                ):
+                    same_model_retry = True
+                    print(
+                        f"[recover] {active_model} bridge 오류 — 재시작 후 같은 모델 재시도",
+                        file=sys.stderr,
+                    )
+                    _recover_plan_bridge(plan_state, restart_bridge=True)
+                    time.sleep(BRIDGE_RECOVER_DELAY)
+                    continue
+                same_model_retry = False
+                if "internal error" in msg.lower():
+                    internal_streak += 1
+                    if internal_streak >= PLAN_INTERNAL_ABORT_STREAK:
+                        print(
+                            "[abort] 연속 internal error — Cursor API/bridge 전역 장애로 "
+                            "판단, 남은 모델 시도 중단",
+                            file=sys.stderr,
+                        )
+                        last_send_error = msg
+                        break
+                if has_next:
+                    print(
+                        f"[fallback] planner model={active_model} send 실패 → "
+                        f"{plan_state.chain[plan_state.model_idx + 1]}  "
+                        f"reason={msg!s:.120}",
+                        file=sys.stderr,
+                    )
+                    if _plan_fallback_with_bridge(plan_state, reason=msg):
+                        continue
+                break
+            except Exception:
+                print("[unexpected-error]", file=sys.stderr)
+                traceback.print_exc()
+                return
+
+            if status == "error":
+                last_send_error = err_detail or "run status=error"
+                if err_detail:
+                    short = err_detail[:800] + ("…" if len(err_detail) > 800 else "")
+                    print(
+                        f"[run-error-detail] model={active_model} {short}",
+                        file=sys.stderr,
+                    )
+                else:
+                    print(
+                        f"[info] run status=error id={run_id} model={active_model}",
+                        file=sys.stderr,
+                    )
+                if has_next:
+                    print(
+                        f"[fallback] planner model={active_model} run-error → "
+                        f"{plan_state.chain[plan_state.model_idx + 1]}",
+                        file=sys.stderr,
+                    )
+                    internal_streak += 1
+                    if internal_streak >= PLAN_INTERNAL_ABORT_STREAK:
+                        print(
+                            "[abort] 연속 run-error/internal — 남은 모델 시도 중단",
+                            file=sys.stderr,
+                        )
+                        break
+                    if _plan_fallback_with_bridge(plan_state, reason=last_send_error):
+                        same_model_retry = False
+                        continue
+                break
+            elif not text.strip():
+                print(
+                    f"[info] run status={status} id={run_id} — "
+                    "assistant 텍스트 없음 (파일 수정만 했을 수 있음)",
+                    file=sys.stderr,
+                )
+
+            if watch_before is not None:
+                changes = diff_snapshots(watch_before, _watched_paths())
+                if not text.strip() and changes:
+                    note = (
+                        "기획자가 채팅 텍스트는 비웠지만 아래 파일을 변경했습니다.\n"
+                        "  → `:show` 로 REQUIREMENTS 확인, 또는 diff 로 내용 검토"
+                    )
+                    if _RICH and _CONSOLE is not None:
+                        _CONSOLE.print(
+                            Panel(note, title="파일 변경됨", border_style="yellow")
+                        )
+                    else:
+                        print(note)
+                    render_file_changes(changes)
+                    return
+
+            if plan_state is not None:
+                plan_state.lock_model()
+                print(f"[chain] 답변 모델: {active_model} (세션 고정)", file=sys.stderr)
+            render_agent_output(text, title=f"기획자 ({active_model})")
+
+            if not text.strip():
+                hint = (
+                    "텍스트 응답이 없습니다. 시도:\n"
+                    "  1) `:show` — REQUIREMENTS 가 갱신됐는지 확인\n"
+                    "  2) 짧은 질문으로 다시 입력\n"
+                    "  3) `AGENT_PLAN_PROBE=0 plan --resume` (probe 끄기)\n"
+                    "  4) 새 세션: plan --new"
+                )
+                if status == "error":
+                    hint = (
+                        f"모델 `{active_model}` run 이 error 로 끝났습니다.\n" + hint
+                    )
+                if _RICH and _CONSOLE is not None:
+                    _CONSOLE.print(
+                        Panel(hint, title="빈 응답 복구", border_style="yellow")
+                    )
+                else:
+                    print(hint)
+                if watch_before is not None:
+                    changes = diff_snapshots(watch_before, _watched_paths())
+                    render_file_changes(changes)
+                return
+
+            if watch_before is not None:
+                changes = diff_snapshots(watch_before, _watched_paths())
+                render_file_changes(changes)
+            return
+
+        if chain_pass + 1 < PLAN_CHAIN_PASS_MAX:
+            continue
+
+    if (
+        plan_state is not None
+        and not plan_state.session_rebuilt
+        and _is_stale_plan_agent_error(last_send_error)
+    ):
+        try:
+            _recreate_plan_agent(plan_state)
+            plan_state.begin_send(force_chain_walk=False)
+            print("[recover] 새 agent 로 같은 메시지 재시도...", file=sys.stderr)
+            return send_and_print(agent, message, watch_before=watch_before, plan_state=plan_state)
+        except CursorAgentError as err:
+            last_send_error = err.message or last_send_error
+
+    if plan_state is not None:
+        plan_state.model_locked = False
+    print(
+        f"[send-error] {PLAN_CHAIN_PASS_MAX}회차 체인 모두 실패 "
+        f"message={last_send_error!s:.120}",
+        file=sys.stderr,
+    )
+    hint = (
+        "답변 실패. API 키/모델은 doctor 기준 정상일 수 있으나, "
+        "저장된 cloud agent 세션이 손상된 경우가 많습니다.\n"
+        "  → `plan --new` 로 새 agent (로컬 REQUIREMENTS 는 유지)\n"
+        "  → 또는 위 [recover] 새 agent 생성 후 같은 질문 재입력\n"
+        "  → `:show` 로 REQUIREMENTS 확인\n"
+        "  → doctor: `.venv/bin/python scripts/run_agent.py doctor --ok-only`"
+    )
+    if _RICH and _CONSOLE is not None:
+        _CONSOLE.print(Panel(hint, title="복구 안내", border_style="red"))
+    else:
+        print(hint, file=sys.stderr)
 
 
 def setup_input_history() -> None:
@@ -1849,15 +2923,16 @@ _HELP_TEXT = (
     "명령어:\n"
     "  :q | :quit | :exit | :bye   대화 종료\n"
     "  :multi                      여러 줄 입력 시작 (:end 로 종료)\n"
-    "  :show                       현재 docs/REQUIREMENTS.md 출력\n"
-    "  :reload                     현재 docs/REQUIREMENTS.md 를 기획자에게 다시 컨텍스트로 전달\n"
+    "  :show                       현재 docs/planning/REQUIREMENTS.md 출력\n"
+    "  :reload                     현재 docs/planning/REQUIREMENTS.md 를 기획자에게 다시 컨텍스트로 전달\n"
     "  :help                       이 도움말 표시\n"
 )
 
 
-def cmd_doctor(_: argparse.Namespace) -> None:
+def cmd_doctor(args: argparse.Namespace) -> None:
     """가용 모델에 최소 프롬프트를 보내서 어떤 모델/계정이 동작하는지 진단."""
 
+    ok_only = getattr(args, "ok_only", False)
     api_key = require_api_key()
     masked = api_key[:6] + "..." + api_key[-4:]
     candidates = [
@@ -1904,6 +2979,7 @@ def cmd_doctor(_: argparse.Namespace) -> None:
     print("[doctor] 최소 프롬프트로 모델 가용성 점검")
     results: list[tuple[str, str, object, object, str]] = []
     # (model, kind, status, code, message)
+    # kind: RUN-OK | RUN-ERR | FAIL | CRASH
     for m in candidates:
         t0 = time.time()
         try:
@@ -1916,9 +2992,24 @@ def cmd_doctor(_: argparse.Namespace) -> None:
                 ),
             )
             dt = time.time() - t0
-            status = result.status
-            print(f"  {m:32s}  OK     status={status:<10s} time={dt:.1f}s")
-            results.append((m, "OK", status, None, ""))
+            status = str(result.status or "?")
+            detail = (getattr(result, "result", "") or "").strip()
+            if detail:
+                short = detail[:80] + ("…" if len(detail) > 80 else "")
+            else:
+                short = ""
+            if status == "finished":
+                kind = "RUN-OK"
+                label = "RUN-OK"
+            else:
+                kind = "RUN-ERR"
+                label = "RUN-ERR"
+            extra = f" detail={short!s}" if short else ""
+            if not ok_only or kind != "RUN-ERR":
+                print(
+                    f"  {m:32s}  {label:<7s} status={status:<10s} time={dt:.1f}s{extra}"
+                )
+            results.append((m, kind, status, None, detail))
         except CursorAgentError as err:
             dt = time.time() - t0
             msg = err.message or ""
@@ -1934,7 +3025,8 @@ def cmd_doctor(_: argparse.Namespace) -> None:
             results.append((m, "FAIL", status, code, msg))
         except Exception as e:
             dt = time.time() - t0
-            print(f"  {m:32s}  CRASH  {type(e).__name__}: {e} time={dt:.1f}s")
+            if not ok_only:
+                print(f"  {m:32s}  CRASH  {type(e).__name__}: {e} time={dt:.1f}s")
             results.append((m, "CRASH", None, type(e).__name__, str(e)))
 
     import re
@@ -1956,11 +3048,24 @@ def cmd_doctor(_: argparse.Namespace) -> None:
             server_allowed = parts
             break
 
-    ok_models = [m for m, kind, *_ in results if kind == "OK"]
+    ok_models = [m for m, kind, *_ in results if kind == "RUN-OK"]
+    run_err_models = [m for m, kind, *_ in results if kind == "RUN-ERR"]
+    fail_models = [m for m, kind, *_ in results if kind == "FAIL"]
+    if ok_only and run_err_models:
+        print(f"  (... RUN-ERR {len(run_err_models)}개 생략 — 전체는 doctor 만 실행)")
     if ok_models:
         print()
-        print("[doctor] 실제 OK 응답을 받은 모델:")
-        print("  " + ", ".join(ok_models))
+        print("[doctor] SDK 에서 실제 사용 가능 (RUN-OK, status=finished):")
+        for m in ok_models:
+            print(f"  - {m}")
+        print()
+        print("  agents.yaml model / fallback_models 는 위 목록 안에서만 구성하세요.")
+    if run_err_models and not ok_only:
+        print()
+        print(
+            "[doctor] API 호출은 됐지만 run status=error (plan/build 에서도 실패 가능):"
+        )
+        print("  " + ", ".join(run_err_models))
 
     if server_allowed:
         print()
@@ -2021,14 +3126,30 @@ def cmd_status(_: argparse.Namespace) -> None:
         print(f"git root branch     : {_git_current_branch(WORKSPACE_ROOT) or '(detached)'}")
     for stream in ("backend", "frontend"):
         sub = submodule_dir_for_stream(stream)
+        wt = worktree_dir_for_stream(stream, "test")
         if _git_repo_ready(sub):
             print(
-                f"git {stream:8}       : "
-                f"{_git_current_branch(sub) or '(detached)'} ({sub.relative_to(WORKSPACE_ROOT)})"
+                f"git {stream:8} dev   : "
+                f"{_git_current_branch(sub) or '(detached)'} "
+                f"({sub.relative_to(WORKSPACE_ROOT)})"
             )
+            if _worktree_registered(sub, wt):
+                print(
+                    f"git {stream:8} test  : "
+                    f"{_git_current_branch(wt) or '(detached)'} "
+                    f"({wt.relative_to(WORKSPACE_ROOT)})"
+                )
+            else:
+                print(
+                    f"git {stream:8} test  : (worktree missing — "
+                    f"run ./scripts/git_branch_setup.sh)"
+                )
         else:
             print(f"git {stream:8}       : (no repo — run ./scripts/git_branch_setup.sh)")
-    print(f"branch policy: .agents/branches.yaml (submodule develop/test/operation)")
+    print(
+        "branch policy: .agents/branches.yaml "
+        "(develop=주 경로, test=worktree 분리)"
+    )
 
 
 def cmd_plan(args: argparse.Namespace) -> None:
@@ -2041,6 +3162,7 @@ def cmd_plan(args: argparse.Namespace) -> None:
     """
 
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    PLAN_NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
     PLAN_NOTES_FILE.touch(exist_ok=True)
     api_key = require_api_key()
     setup_input_history()
@@ -2051,7 +3173,9 @@ def cmd_plan(args: argparse.Namespace) -> None:
 
     planner_chain = resolve_model_chain("planner")
 
-    prev_id = load_planner_session() if args.resume else None
+    prev_id, locked_model, was_locked = (
+        load_planner_session() if args.resume else (None, None, False)
+    )
     if args.resume and not prev_id:
         print("[warn] 저장된 planner 세션이 없습니다. 새 세션을 시작합니다.")
 
@@ -2116,7 +3240,7 @@ def cmd_plan(args: argparse.Namespace) -> None:
         print(_HELP_TEXT)
         print()
 
-    def handle_slash(line: str, agent) -> bool:
+    def handle_slash(line: str, plan_state: PlanSendState) -> bool:
         """슬래시 명령을 처리하면 True를 반환, 아니면 False."""
 
         if line == ":show":
@@ -2136,12 +3260,13 @@ def cmd_plan(args: argparse.Namespace) -> None:
             current = REQUIREMENTS_FILE.read_text(encoding="utf-8")
             before = snapshot_files(_watched_paths())
             send_and_print(
-                agent,
-                "다음은 현재 docs/REQUIREMENTS.md 의 전체 내용이다. "
+                plan_state.agent,
+                "다음은 현재 docs/planning/REQUIREMENTS.md 의 전체 내용이다. "
                 "이 내용을 컨텍스트로 받아들이고, 모순/누락/추가 질문이 있으면 짚어 줘. "
                 "코드는 작성하지 마라.\n\n"
                 f"=== REQUIREMENTS.md ===\n{current}\n",
                 watch_before=before,
+                plan_state=plan_state,
             )
             return True
         return False
@@ -2149,7 +3274,30 @@ def cmd_plan(args: argparse.Namespace) -> None:
     try:
         agent_ctx, active_model = _open_with_chain()
         with agent_ctx as agent:
+            try:
+                model_idx = planner_chain.index(active_model)
+            except ValueError:
+                model_idx = 0
+            plan_state = PlanSendState(
+                agent=agent,
+                agent_id=agent.agent_id,
+                chain=planner_chain,
+                model_idx=model_idx,
+                api_key=api_key,
+            )
+            if was_locked and locked_model:
+                try:
+                    plan_state.model_idx = planner_chain.index(locked_model)
+                    plan_state.model_locked = True
+                    print(f"[session] 고정 모델 복원: {locked_model}", file=sys.stderr)
+                except ValueError:
+                    pass
             save_planner_session(agent.agent_id)
+            if prev_id:
+                try:
+                    _ensure_plan_agent_alive(plan_state)
+                except CursorAgentError as err:
+                    print(f"[warn] planner 세션 probe: {err.message}", file=sys.stderr)
             print(f"[session] {agent.agent_id} | model={active_model}")
             print()
 
@@ -2161,12 +3309,24 @@ def cmd_plan(args: argparse.Namespace) -> None:
                         print("[abort] 입력이 비어 있어 종료합니다.")
                         return
                     first_user = user_line
-                before = snapshot_files(_watched_paths())
-                send_and_print(
-                    agent,
-                    f"{planner_system_prompt()}\n\n=== 사용자 첫 입력 ===\n{first_user}\n",
-                    watch_before=before,
-                )
+                if first_user.startswith(":"):
+                    if handle_slash(first_user, plan_state):
+                        pass
+                    else:
+                        print(f"[info] 알 수 없는 명령: {first_user}. :help 참고")
+                else:
+                    before = snapshot_files(_watched_paths())
+                    send_and_print(
+                        plan_state.agent,
+                        f"{planner_system_prompt()}\n\n=== 사용자 첫 입력 ===\n{first_user}\n",
+                        watch_before=before,
+                        plan_state=plan_state,
+                    )
+                    if plan_state.active_model != active_model:
+                        print(
+                            f"[session] model={plan_state.active_model} "
+                            "(send 폴백으로 전환됨)"
+                        )
 
             while True:
                 user_input = read_user_line("사용자: ")
@@ -2176,17 +3336,27 @@ def cmd_plan(args: argparse.Namespace) -> None:
                 if user_input == "":
                     continue
                 if user_input.startswith(":"):
-                    if handle_slash(user_input, agent):
+                    if handle_slash(user_input, plan_state):
                         continue
                     print(f"[info] 알 수 없는 명령: {user_input}. :help 참고")
                     continue
                 before = snapshot_files(_watched_paths())
-                send_and_print(agent, user_input, watch_before=before)
+                send_and_print(
+                    plan_state.agent,
+                    user_input,
+                    watch_before=before,
+                    plan_state=plan_state,
+                )
     except CursorAgentError as err:
         print(
-            f"[fatal] planner 세션 시작 실패: retryable={err.is_retryable} message={err.message}",
+            f"[fatal] planner 세션 오류: retryable={err.is_retryable} message={err.message}",
             file=sys.stderr,
         )
+        if _looks_like_bridge_down(err.message or ""):
+            print(
+                "[hint] bridge 끊김 → plan --resume 으로 같은 agent_id 에 재접속",
+                file=sys.stderr,
+            )
         sys.exit(2)
 
     print()
@@ -2210,7 +3380,7 @@ def cmd_build(args: argparse.Namespace) -> None:
 
     if role in BUILD_ROLES and not approval_present():
         print(
-            "[blocked] docs/REQUIREMENTS.md 에 사용자 승인 마커가 없습니다. "
+            "[blocked] docs/planning/REQUIREMENTS.md 에 사용자 승인 마커가 없습니다. "
             f"파일 끝에 `{APPROVAL_MARKER}` 를 추가한 뒤 다시 실행하세요.",
             file=sys.stderr,
         )
@@ -2237,11 +3407,20 @@ def cmd_build(args: argparse.Namespace) -> None:
         sys.exit(2)
 
     if role == "ux_designer" and not (WORKSPACE_ROOT / "src/frontend").exists():
-        print("[fatal] src/frontend submodule 이 없습니다.", file=sys.stderr)
+        print(
+            "[fatal] src/frontend submodule 이 없습니다.\n"
+            "  git submodule update --init src/frontend\n"
+            "  ./scripts/git_branch_setup.sh",
+            file=sys.stderr,
+        )
         sys.exit(2)
+
+    if role == "coder":
+        print_coder_preflight(stream)
 
     if role in AUTO_ROLES:
         DOCS_DIR.mkdir(parents=True, exist_ok=True)
+        PLAN_NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
         PLAN_NOTES_FILE.touch(exist_ok=True)
         DECISIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -2283,7 +3462,7 @@ def cmd_build(args: argparse.Namespace) -> None:
         )
         if plan_notes_after != plan_notes_before and question_marker in plan_notes_after:
             msg = (
-                f"{role} 가 docs/PLAN_NOTES.md '### {question_marker}' 섹션에 "
+                f"{role} 가 docs/planning/PLAN_NOTES.md '### {question_marker}' 섹션에 "
                 "질문을 추가했습니다.\n"
                 "→ plan 모드에서 해결:\n"
                 "    .venv/bin/python scripts/run_agent.py plan --resume"
@@ -2294,31 +3473,35 @@ def cmd_build(args: argparse.Namespace) -> None:
                 print("[확인 필요]")
                 print(msg)
 
+        if role in ("coder", "ux_designer"):
+            push_submodule_develop(role, stream)
+
         print()
         print(f"[다음 단계] role={role}")
         if role == "coder":
-            print("  - git diff 로 코드 확인 후 커밋")
-            print(f"      git -C {WORKSPACE_ROOT / 'src/backend'} status")
+            sub = submodule_dir_for_stream(stream)
+            print(f"  - git -C {sub} status · develop 커밋 후 push (자동 push 시도 완료)")
         elif role == "tester":
-            print(f"  - transfer/{stream}/checklists · manifests 확인")
-            print("  - docs/TEST_REPORT.md · docs/QA_FEEDBACK.md 확인")
+            wt = worktree_dir_for_stream(stream, "test")
+            print(f"  - {wt.relative_to(WORKSPACE_ROOT)} (test worktree) · transfer/{stream}/ 확인")
+            print("  - docs/qa/TEST_REPORT.md · docs/qa/QA_FEEDBACK.md 확인")
             print("  - planner 자동 반영: agent_pipeline.sh")
             maybe_merge_version_to_test(stream)
         elif role == "db_architect":
-            print("  - docs/ERD.md · db/migration SQL 확인")
+            print("  - docs/technical/ERD.md · db/migration SQL 확인")
         elif role == "benchmark_researcher":
-            print("  - docs/BENCHMARK_REPORT.md · docs/COMPETITOR_MATRIX.md 확인")
+            print("  - docs/planning/research/BENCHMARK_REPORT.md · docs/planning/research/COMPETITOR_MATRIX.md 확인")
             print("  - planner 자동 동기화: agent_pipeline.sh")
         elif role == "security_auditor":
-            print("  - docs/SECURITY_AUDIT.md · SECURITY_CHECKLIST.md 확인")
+            print("  - docs/security/SECURITY_AUDIT.md · SECURITY_CHECKLIST.md 확인")
             print("  - [SEC] QA_FEEDBACK Open 항목 → coder/planner 반영")
         elif role == "ux_designer":
-            print("  - docs/DESIGN_SYSTEM.md · src/frontend/src/styles 확인")
+            print("  - docs/product/DESIGN_SYSTEM.md · src/frontend/src/styles 확인")
         elif role == "planner":
-            print("  - docs/REQUIREMENTS.md · docs/USER_STORIES.md · docs/PLAN_NOTES.md 확인")
+            print("  - docs/planning/REQUIREMENTS.md · docs/planning/USER_STORIES.md · docs/planning/PLAN_NOTES.md 확인")
             print("  - 사용자 승인 전 plan --resume 으로 대화형 검토 권장")
         else:
-            print("  - docs/USER_MANUAL.md 등 문서 확인")
+            print("  - docs/ops/USER_MANUAL.md 등 문서 확인")
 
     if not args.loop:
         one_iteration()
@@ -2331,6 +3514,89 @@ def cmd_build(args: argparse.Namespace) -> None:
             sys.exit(3)
         one_iteration()
         time.sleep(interval)
+
+
+def _iter_all_agents(api_key: str) -> list:
+    page = Agent.list({"apiKey": api_key})
+    items = list(page.items)
+    while page.next_cursor:
+        page = page.get_next_page()
+        items.extend(page.items)
+    return items
+
+
+def cmd_cleanup_agents(_: argparse.Namespace) -> None:
+    """running 상태 cloud agent 를 cancel → close → archive 로 정리."""
+
+    api_key = require_api_key()
+    opts = {"apiKey": api_key}
+    resume_opts = AgentOptions(api_key=api_key)
+
+    agents = _iter_all_agents(api_key)
+    running = [
+        a
+        for a in agents
+        if getattr(a, "status", None) == "running" and not getattr(a, "archived", False)
+    ]
+    if not running:
+        print("[cleanup] running agent 없음.")
+        return
+
+    print(f"[cleanup] running agent {len(running)}개 정리 시도...")
+    cancelled = closed = archived = failed = 0
+
+    for info in running:
+        aid = info.agent_id
+        label = aid[:28]
+
+        try:
+            for run in Agent.list_runs(aid, opts):
+                if getattr(run, "status", None) != "running":
+                    continue
+                try:
+                    Agent.cancel_run(run.id, agent_id=aid)
+                    print(f"  [cancel] {label} run={run.id[:20]}")
+                    cancelled += 1
+                except CursorAgentError as err:
+                    print(f"  [cancel-skip] {label} {err.message!s:.80}")
+        except CursorAgentError as err:
+            print(f"  [list-runs-skip] {label} {err.message!s:.80}")
+
+        try:
+            Agent.resume(aid, resume_opts).close()
+            closed += 1
+        except CursorAgentError as err:
+            print(f"  [close-skip] {label} {err.message!s:.80}")
+
+        try:
+            Agent.archive(aid, opts)
+            print(f"  [archive] {label}")
+            archived += 1
+        except CursorAgentError as err:
+            print(f"  [archive-fail] {label} {err.message!s:.80}")
+            failed += 1
+
+    if PLANNER_SESSION_FILE.exists():
+        PLANNER_SESSION_FILE.unlink()
+        print("[cleanup] .agents/.planner_session.json 삭제")
+
+    remaining = [
+        a.agent_id
+        for a in _iter_all_agents(api_key)
+        if getattr(a, "status", None) == "running" and not getattr(a, "archived", False)
+    ]
+    print(
+        f"[cleanup] cancel={cancelled} close={closed} archive={archived} "
+        f"archive_fail={failed} running_remaining={len(remaining)}"
+    )
+    if remaining:
+        print("  남은 running:")
+        for aid in remaining:
+            print(f"    {aid}")
+        print(
+            "  → Cursor API 가 500 internal 이면 cloud 에서 상태가 안 바뀝니다.\n"
+            "     doctor 가 RUN-OK 일 때 다시 실행하거나 Dashboard Cloud Agents 에서 확인."
+        )
 
 
 def main() -> None:
@@ -2355,7 +3621,18 @@ def main() -> None:
         "doctor",
         help="SDK 연결/모델 가용성 진단 (각 모델에 ping)",
     )
+    p_doctor.add_argument(
+        "--ok-only",
+        action="store_true",
+        help="RUN-OK 모델만 자세히 표시 (RUN-ERR 목록 생략)",
+    )
     p_doctor.set_defaults(func=cmd_doctor)
+
+    p_cleanup = sub.add_parser(
+        "cleanup-agents",
+        help="running 상태 cloud agent 정리 (cancel/close/archive)",
+    )
+    p_cleanup.set_defaults(func=cmd_cleanup_agents)
 
     p_build = sub.add_parser("build", help="구현/설계/문서 에이전트 (승인된 REQUIREMENTS 기반)")
     p_build.add_argument(

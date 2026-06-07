@@ -1,0 +1,28 @@
+# .agents/workspace_baseline.yaml
+# 현재 워크스페이스의 확정 Git HEAD (에이전트 혼란 방지 — ROADMAP/QA 과거 SHA보다 우선)
+# run_agent.py build 시 실측 git HEAD로 자동 갱신·주입한다.
+
+updated: "2026-06-08T15:00:00+00:00"
+
+backend:
+  develop: 3f9264f   # BE-10 v1 baseline tests + J01 + v2/J03 NotificationService
+  test: 2799e29
+  dirty: false
+  ahead_of_origin: 3
+
+frontend:
+  develop: e043eac   # 7c0ecdc MVP + vitest deps + ProtectedRoute/MaskedPhone tests
+  test: e5fd48d      # stale — develop→test merge 미실행
+  dirty: false
+  ahead_of_origin: 0
+
+abandoned_shas:
+  - d5654c0   # TSR57 frontend baseline — remote 미반영·submodule 재init 시 유실
+  - e5fd48d   # frontend skeleton (develop=test 동기화 전)
+  - 428ba7d   # backend TSR56 baseline — 3f9264f lineage로 대체
+
+notes:
+  - "ROADMAP·QA_FEEDBACK의 d5654c0/e5fd48d/428ba7d 참조는 과거 기록 — checkout 재현 금지."
+  - "SEC-D12·QA-B11·SEC-D11은 frontend e043eac + backend 3f9264f baseline 기준 Fixed (planner 43차)."
+  - "QA-B10(BE-10) Fixed @ 3f9264f — v1 E2E/routing 산출물 develop HEAD PRESENT."
+  - "다음 coder 작업: v1.1 ROADMAP in_progress 항목을 7c0ecdc 위에서 재구현 (Recharts·FE-17 등은 미포함)."

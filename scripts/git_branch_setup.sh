@@ -30,15 +30,35 @@ setup_submodule_branches() {
     git -C "$path" commit -m "chore: initial commit for ogada ${name}" || true
   fi
 
-  local base
-  base="$(git -C "$path" symbolic-ref --short HEAD 2>/dev/null || echo main)"
-  if ! git -C "$path" show-ref --verify --quiet "refs/heads/$base"; then
-    base="main"
+  git -C "$path" fetch origin 2>/dev/null || true
+
+  local base=""
+  if git -C "$path" show-ref --verify --quiet refs/remotes/origin/develop; then
+    base="origin/develop"
+  elif git -C "$path" show-ref --verify --quiet refs/remotes/origin/main; then
+    base="origin/main"
+  else
+    base="$(git -C "$path" symbolic-ref --short HEAD 2>/dev/null || echo main)"
+    if ! git -C "$path" show-ref --verify --quiet "refs/heads/$base"; then
+      base="main"
+    fi
   fi
 
   for b in "${PHASE_BRANCHES[@]}"; do
     if git -C "$path" show-ref --verify --quiet "refs/heads/$b"; then
-      echo "[skip] $name: branch exists: $b"
+      if [[ "$b" == "develop" && "$base" == "origin/develop" ]]; then
+        local local_sha remote_sha
+        local_sha="$(git -C "$path" rev-parse "refs/heads/$b" 2>/dev/null || true)"
+        remote_sha="$(git -C "$path" rev-parse "refs/remotes/origin/develop" 2>/dev/null || true)"
+        if [[ -n "$local_sha" && -n "$remote_sha" && "$local_sha" != "$remote_sha" ]]; then
+          echo "[sync] $name: develop ← origin/develop (was stale)"
+          git -C "$path" branch -f develop origin/develop
+        else
+          echo "[skip] $name: branch exists: $b"
+        fi
+      else
+        echo "[skip] $name: branch exists: $b"
+      fi
     else
       echo "[create] $name: $b (from $base)"
       git -C "$path" branch "$b" "$base"
@@ -55,11 +75,71 @@ setup_submodule_branches() {
   echo ""
 }
 
+setup_worktree() {
+  local name=$1
+  local primary=$2
+  local wt_path=$3
+  local branch=$4
+  local develop_branch=$5
+
+  if [[ ! -d "$primary" ]]; then
+    echo "[skip] worktree primary missing: $primary ($name)"
+    return 0
+  fi
+
+  if ! git -C "$primary" rev-parse --git-dir >/dev/null 2>&1; then
+    echo "[skip] worktree git repo missing: $primary ($name)"
+    return 0
+  fi
+
+  if git -C "$primary" worktree list --porcelain 2>/dev/null | grep -q "^worktree $wt_path$"; then
+    echo "[skip] $name worktree exists: $wt_path"
+    git -C "$wt_path" checkout "$branch" 2>/dev/null || true
+    echo "       worktree branch: $(git -C "$wt_path" branch --show-current)"
+    echo ""
+    return 0
+  fi
+
+  if [[ -e "$wt_path" ]]; then
+    echo "[warn] $name: path exists but is not a registered worktree: $wt_path" >&2
+    echo "       remove or rename it, then re-run this script." >&2
+    echo ""
+    return 0
+  fi
+
+  local current
+  current="$(git -C "$primary" branch --show-current 2>/dev/null || true)"
+  if [[ "$current" == "$branch" ]]; then
+    echo "[prep] $name: primary is on $branch — switching primary to $develop_branch"
+    if ! git -C "$primary" checkout "$develop_branch" 2>/dev/null; then
+      echo "[fatal] $name: cannot checkout $develop_branch on $primary (dirty tree?)." >&2
+      echo "        commit or stash changes in $primary, then re-run." >&2
+      exit 1
+    fi
+  fi
+
+  echo "[create] $name worktree: $wt_path ← $branch"
+  git -C "$primary" worktree add "$wt_path" "$branch"
+  git -C "$primary" checkout "$develop_branch" 2>/dev/null || true
+  echo "[ok] $name worktrees:"
+  git -C "$primary" worktree list
+  echo ""
+}
+
 cd "$ROOT"
+
+echo "=== submodule 초기화 (git submodule) ==="
+git submodule update --init src/backend src/frontend 2>/dev/null || {
+  git submodule update --init --recursive
+}
 
 echo "=== submodule 브랜치 설정 ==="
 setup_submodule_branches backend "$ROOT/src/backend"
 setup_submodule_branches frontend "$ROOT/src/frontend"
+
+echo "=== test worktree (coder/tester 분리) ==="
+setup_worktree backend "$ROOT/src/backend" "$ROOT/src/backend-test" test develop
+setup_worktree frontend "$ROOT/src/frontend" "$ROOT/src/frontend-test" test develop
 
 # 루트 저장소 (docs·transfer·agents)
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
@@ -85,6 +165,6 @@ fi
 
 echo "[ok] 루트 저장소 branch: $(git branch --show-current) (docs·transfer·agents)"
 echo ""
-echo "coder   → git -C src/backend checkout develop  (또는 src/frontend)"
-echo "tester  → git -C src/backend checkout test      (또는 src/frontend)"
+echo "coder   → src/backend · src/frontend @ develop (주 worktree)"
+echo "tester  → src/backend-test · src/frontend-test @ test (별도 worktree)"
 echo "planner → 루트 main (submodule checkout 불필요)"

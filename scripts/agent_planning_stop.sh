@@ -1,29 +1,23 @@
 #!/usr/bin/env bash
-# agent_planning_start.sh 로 띄운 benchmark tmux 세션 + 관련 프로세스 정리.
+# benchmark_researcher tmux 세션만 정리 (하위 호환).
+# 전체 중지는 ./scripts/agent_stop.sh 권장.
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# shellcheck source=_agent_common.sh
+source "$SCRIPT_DIR/_agent_common.sh"
 
-BENCHMARK_SESSION="${AGENT_BENCHMARK_SESSION:-ogada-benchmark}"
-
+_agent_common_init
 killed=0
 
-if command -v tmux >/dev/null 2>&1 && tmux has-session -t "$BENCHMARK_SESSION" 2>/dev/null; then
-  echo "[stop] tmux $BENCHMARK_SESSION"
-  tmux kill-session -t "$BENCHMARK_SESSION" || true
+if agent_stop_session "$_AGENT_BENCHMARK_SESSION"; then
   killed=1
 fi
 
-PIDS=$(pgrep -f "run_agent.py build --role benchmark_researcher" || true)
-if [[ -n "$PIDS" ]]; then
-  echo "[stop] benchmark run_agent PIDs: $PIDS"
-  # shellcheck disable=SC2086
-  kill $PIDS 2>/dev/null || true
-  sleep 1
-  # shellcheck disable=SC2086
-  kill -9 $PIDS 2>/dev/null || true
+pids="$(agent_pgrep_workspace "run_agent.py build --role benchmark_researcher")"
+if [[ -n "$pids" ]]; then
+  agent_kill_pids "$pids"
   killed=1
 fi
 

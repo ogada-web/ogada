@@ -1,29 +1,17 @@
 #!/usr/bin/env bash
-# benchmark_researcher tmux 세션 상태 요약.
+# benchmark_researcher 상태 요약 (하위 호환).
+# 전체 상태는 ./scripts/agent_status.sh 권장.
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+# shellcheck source=_agent_common.sh
+source "$SCRIPT_DIR/_agent_common.sh"
 
-BENCHMARK_SESSION="${AGENT_BENCHMARK_SESSION:-ogada-benchmark}"
-
-check_session() {
-  local name=$1
-  local role=$2
-  if command -v tmux >/dev/null 2>&1 && tmux has-session -t "$name" 2>/dev/null; then
-    echo "  $role ($name): RUNNING"
-  else
-    echo "  $role ($name): STOPPED"
-  fi
-}
-
+_agent_common_init
 echo "[planning tmux]"
-check_session "$BENCHMARK_SESSION" "benchmark_researcher (daily)"
-
+agent_check_session "$_AGENT_BENCHMARK_SESSION" "benchmark_researcher (daily)"
 echo ""
-echo "[processes]"
-ps -ef | grep -E "run_agent.py build --role benchmark_researcher|cursor-sdk-bridge" | grep -v grep || echo "  none"
-
+agent_show_processes
 echo ""
-"$ROOT/.venv/bin/python" "$ROOT/scripts/run_agent.py" status || true
+agent_show_approval
