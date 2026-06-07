@@ -1,4 +1,4 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T16:30:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T17:22:00+00:00 -->
 # Backend develop → test 이관 체크리스트
 
 > **스트림**: backend  
@@ -6,7 +6,9 @@
 > **test 브랜치**: `test` (`src/backend-test` worktree)  
 > **검증 기준**: `docs/planning/ROADMAP.md` v1 (`merge_status: merged`)  
 > **작성**: tester (`TSR`)  
-> **최종 갱신**: 2026-06-07T16:30:00+00:00
+> **최종 갱신**: 2026-06-07T17:22:00+00:00
+
+> **66차 재검증 (2026-06-07T17:22 UTC) — develop `c221531` CLEAN·v2/J03 daily care·emergency alimtalk E2E·develop 169/169·test 79/79·develop 7커밋 ahead·merge 미실행·BLOCK(merge 게이트 단일)**: develop HEAD **`c221531`**(+1커밋 vs 64차 `80bdb1e` — `feat(v2/J03): wire daily care·emergency health notifications and alimtalk E2E tests`), working tree **CLEAN**. **v1 baseline artifacts develop HEAD 독립 검증(TSR 66차 PASS)**: `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`·`auth/domain/AuthRateLimitService`+Test·`V45` **전부 PRESENT**(이관 규율 5·6 PASS). develop `mvn test` **169/169 PASS**(64차 158 → +11: `NotificationAlimtalkDispatchE2eTest` 7·`AttendanceServiceTest` +1·`BillingServiceTest` +1)·test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop **7커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`·`c221531`) — merge **미실행**. **신규 Open 0건**. 판정 **BLOCK** — merge 게이트 단일.
 
 > **64차 재검증 (2026-06-07T16:30 UTC) — develop `80bdb1e` CLEAN·BE-11 AuthRateLimitService·V45·develop 158/158·test 79/79·develop 6커밋 ahead·merge 미실행·BLOCK(merge 게이트 단일)**: develop HEAD **`80bdb1e`**(+2커밋 vs 62차 `136239e` — `8d42bdd` BE-11 AuthRateLimitService · `80bdb1e` V45 v2 notification integrity), working tree **CLEAN**. **BE-11 develop HEAD Fixed(TSR 64차 독립 검증 PASS)**: `auth/domain/AuthRateLimitService`·`auth/domain/AuthRateLimitServiceTest` **PRESENT** @ `8d42bdd`(이관 규율 5·6 PASS). **V45 PRESENT** — `V45__v2_notification_prefs_integrity_and_users_phone_pair.sql` HEAD **PRESENT**. v1 baseline artifacts **전부 PRESENT** — `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`. develop `mvn test` **158/158 PASS**(62차 152 → +6 BE-11+V45)·test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop **6커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) — merge **미실행**. **SEC-20260608-014(BE-11) Fixed** — QA_FEEDBACK Planned→Fixed 완료. **신규 Open 0건**. 판정 **BLOCK** — merge 게이트 단일.
 
@@ -52,12 +54,14 @@
 |------|-----|
 | **대상 버전** | v1 (MVP Must — backend stream) |
 | **ROADMAP `merge_status`** | **`merged`** (문서) — workspace test **미반영** ✗ |
-| **develop HEAD** | `80bdb1e` — v2: V45 notification prefs integrity + users phone pair (64차) |
+| **develop HEAD** | `c221531` — v2/J03: daily care·emergency health alimtalk E2E (66차) |
 | **test HEAD** | `2799e29` — 초기 구현 baseline (ROADMAP 기대 `e8750d2` **미달**) |
-| **develop vs test** | **develop 6커밋 ahead** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) — merge 미실행 |
+| **develop vs test** | **develop 7커밋 ahead** (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`·`c221531`) — merge 미실행 |
 | **develop working tree** | **CLEAN** ✓ |
 | **test working tree** | CLEAN |
 | **이관 판정** | **BLOCK** — develop→test merge 게이트 (v1 baseline artifacts develop HEAD Fixed·test 미반영) |
+
+> **PASS 금지 사유 (66차)**: ① develop·test **비동기**(develop **7커밋 ahead** `f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`·`c221531`) — merge **미실행**. ② test `@2799e29` **79/79** (ROADMAP 기대 기준 미달 — v1 baseline tests test 브랜치 **미반영**). ✅ **v1 baseline artifacts + BE-11 + V45 + v2/J03 alimtalk E2E develop HEAD Fixed(TSR 66차 독립 검증 PASS)** — 모든 artifacts PRESENT·WT **CLEAN**·develop `mvn test` **169/169 PASS**. **테스트 PASS ≠ 이관 PASS** — merge 완료 후 test 재검증 필수.
 
 > **PASS 금지 사유 (64차)**: ① develop·test **비동기**(develop **6커밋 ahead** `f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`) — merge **미실행**. ② test `@2799e29` **79/79** (ROADMAP 기대 기준 미달 — v1 baseline tests test 브랜치 **미반영**). ✅ **BE-11·V45 develop HEAD Fixed(TSR 64차 독립 검증 PASS)** — `AuthRateLimitService`·`AuthRateLimitServiceTest`·`V45__*.sql`·v1 baseline artifacts 전부 **PRESENT**·WT **CLEAN**·develop `mvn test` **158/158 PASS**. **테스트 PASS ≠ 이관 PASS** — merge 완료 후 test 재검증 필수.
 
@@ -248,6 +252,7 @@
 
 | 역할 | id | 판정 | 일시 |
 |------|-----|------|------|
+| QA·이관 | TSR | **BLOCK** (66차 — develop `c221531` CLEAN·**v2/J03 daily care alimtalk E2E·169/169 PASS**·test 79/79·develop 7커밋 ahead·merge 미실행·Open 0) | 2026-06-07T17:22:00+00:00 |
 | QA·이관 | TSR | **BLOCK** (64차 — develop `80bdb1e` CLEAN·**BE-11 Fixed @ `8d42bdd`·V45 PRESENT**·158/158 PASS·test 79/79·develop 6커밋 ahead·merge 미실행·Open 0·SEC-014 Fixed) | 2026-06-07T16:30:00+00:00 |
 | QA·이관 | TSR | **BLOCK** (62차 — develop `136239e` CLEAN·**v2/J03 Solapi Fixed**·152/152 PASS·test 79/79·develop 4커밋 ahead·merge 미실행·Open 0) | 2026-06-07T15:30:00+00:00 |
 | QA·이관 | TSR | **BLOCK** (60차 — develop `3f9264f` CLEAN·**QA-B10 develop Fixed TSR 독립 검증 PASS**·147/147 PASS·test 79/79·develop 3커밋 ahead·merge 미실행·Open 0) | 2026-06-07T14:55:00+00:00 |
