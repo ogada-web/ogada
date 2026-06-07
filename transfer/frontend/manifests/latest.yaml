@@ -1,0 +1,216 @@
+# doc:owner=TSR doc:audience=PLN,COD
+# Frontend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-07T19:20:00+00:00
+# revalidation_71st: 2026-06-07T19:20 — test @4f71543 불변·PASS.
+#   test npm test 58/18 PASS·build 86 modules·audit 0 (unchanged from 69차).
+#   develop 42f48e1 (+4 v1.2 CLEAN)·89/28 PASS·114 modules·audit 0.
+#   Open 0. verdict PASS (v1.1). backend merge(9) 잔여.
+# revalidation_69th: 2026-06-07T18:12 — v1.1 merge 완료 test @4f71543.
+#   test npm test 58/18 PASS·build 86 modules·audit 0.
+#   develop e0eaf32 (+2 v1.2 CLEAN)·82/27 PASS.
+#   Open 0. verdict PASS (v1.1). backend merge(8) 잔여.
+
+stream: frontend
+roadmap_version: v1.1
+roadmap_status: done
+merge_status: merged
+prerequisite:
+  version: v1
+  merge_status: merged
+  note: "v1 backend ROADMAP merged — backend develop 44e0f02 · test 2799e29 stale (8 commits behind develop)"
+
+baseline:
+  workspace_yaml: .agents/workspace_baseline.yaml
+  frontend_develop_yaml: 4f71543
+  frontend_develop_actual: 42f48e1
+  frontend_test_actual: 4f71543
+  note: "v1.1 merged @ test 4f71543. develop +4 v1.2 (64468a3 UXD35·e0eaf32 guardians RBAC·0d83a42 15 pages·42f48e1 P0 KPI) CLEAN."
+
+transfer_verdict: PASS
+verdict_reason: "v1.1 test @4f71543 validated (71차 재확인) — 58/18 PASS·86 modules·audit 0·이관 규율 5 PRESENT. develop +4 v1.2 CLEAN (non-blocking). backend merge(9) 잔여."
+
+repository:
+  submodule_path: src/frontend
+  test_worktree: src/frontend-test
+  remote: origin
+
+branches:
+  develop:
+    name: develop
+    head: 42f48e1
+    head_short: 42f48e1
+    message: "fix(v1.2): P0 page-flow tests, module coverage KPI, title alignment"
+    v1_1_merge_commit: 4f71543
+    ahead_of_test: 4
+    working_tree_clean: true
+    working_tree:
+      modified: 0
+      untracked: 0
+      total_dirty: 0
+      note: "71차 — CLEAN · v1.2 +4(64468a3·e0eaf32·0d83a42·42f48e1) · vitest 89/28 PASS · 114 modules"
+  test:
+    name: test
+    head: 4f71543
+    message: "test(v1.1): enforce FE-22 live E2E config preconditions"
+    working_tree_clean: true
+    note: "v1.1 merged — 58/18 PASS·86 modules·audit 0 (71차 재확인)"
+
+develop_test_diff:
+  test_behind_develop: true
+  commits_ahead: 4
+  commits:
+    - 64468a3
+    - e0eaf32
+    - 0d83a42
+    - 42f48e1
+  note: "v1.2 develop 선행 커밋 4건 — v1.1 test PASS 후 v1.2 merge 대기"
+
+artifact:
+  name: ogada-frontend
+  version: 0.0.1
+  stack:
+    react: "18.3.1"
+    vite: "6.4.3"
+    vitest: "4.1.8"
+    react_router_dom: "6.26.1"
+    recharts: null
+
+fixed_verification:
+  valid:
+    - id: SEC-20260608-012
+      artifact: ProtectedRoute.jsx (src/auth) + App.jsx role guards
+      test_head: PRESENT
+    - id: QA-20260608-B11
+      artifact: baseline c3b863e/811aef3 lineage
+      test_head: PRESENT
+    - id: SEC-20260606-003
+      artifact: ProtectedRoute + AuthContext
+      test_head: PRESENT
+    - id: SEC-20260606-005
+      artifact: AuthContext memory session (localStorage/sessionStorage 0)
+      test_head: PRESENT
+    - id: QA-20260606-H04
+      artifact: src/api/services.js + Must pages REST 연동 + GuardianPortalPage REST
+      test_head: PRESENT
+    - id: SEC-20260606-008
+      artifact: npm audit 0 vuln (vite 6.4.3 / vitest 4.1.8 upgrade)
+      test_head: PRESENT
+    - id: FE-22
+      artifact: live E2E harness + liveConfig preconditions (src/e2e/* + vitest.live.config.js + test:live-e2e)
+      test_head: PRESENT
+      note: "4f71543 — harness PRESENT + liveConfig fail-fast. 실 live run 은 post-merge 권장(결정 73)"
+    - id: UXD-33
+      artifact: SideNav 2-tier + AppShell a11y (src/layout/SideNav.jsx + SideNav.test.jsx)
+      test_head: PRESENT
+      note: "f64e1dd — 2단 SideNav·BranchSwitcher·FilterChips·Tabs 등"
+  partial:
+    - id: QA-20260606-M01
+      artifact: Vitest Must E2E suite
+      note: "test HEAD 58/18 PASS — live run post-merge 권장"
+    - id: QA-20260607-H05
+      artifact: MaskedPhone PII masking
+      note: "MaskedPhone 마스킹 정합 @ test HEAD"
+  absent_at_head:
+    - id: "(live-run)"
+      artifact: Must API + J01/J02 live E2E run (실 백엔드 대상)
+      note: "harness+precondition(FE-22) test HEAD PRESENT — 실 LIVE_E2E run 은 backend test 승격 후(post-merge 권장, 결정 73)"
+
+build:
+  test_branch:
+    command: npm run build
+    worktree: src/frontend-test
+    executed_at: 2026-06-07T19:20:00+00:00
+    result: SUCCESS
+    vite: "6.4.3"
+    modules: 86
+    assets:
+      js_kb: 210.46
+      js_gzip_kb: 66.20
+      css_kb: 27.27
+    note: "71차 실측 — test @4f71543 불변"
+  develop_head:
+    command: npm run build
+    worktree: src/frontend
+    executed_at: 2026-06-07T19:20:00+00:00
+    head: 42f48e1
+    result: SUCCESS
+    vite: "6.4.3"
+    modules: 114
+    assets:
+      js_kb: 295.02
+      js_gzip_kb: 84.80
+      css_kb: 30.23
+    note: "71차 실측 — v1.2 +4 (15 pages + page-flow tests + KPI)"
+
+tests:
+  test_branch:
+    command: npm test (vitest run)
+    worktree: src/frontend-test
+    executed_at: 2026-06-07T19:20:00+00:00
+    head: 4f71543
+    result: PASS
+    vitest: "4.1.8"
+    tests_passed: 58
+    test_files: 18
+    note: "71차 실측 — test @4f71543 불변 (69차 동일)"
+  develop_head:
+    command: npm test (vitest run)
+    worktree: src/frontend
+    executed_at: 2026-06-07T19:20:00+00:00
+    head: 42f48e1
+    result: PASS
+    vitest: "4.1.8"
+    tests_passed: 89
+    test_files: 28
+    note: "71차 실측 — v1.2 +4 (+7/+1 vs 69차 82/27: competitorModuleCoverage 3건·pilotPageFlows 강화)"
+
+npm_audit:
+  test_branch:
+    executed_at: 2026-06-07T19:20:00+00:00
+    high: 0
+    moderate: 0
+    critical: 0
+    note: "0 vulnerabilities — 71차 실측"
+  develop_head:
+    executed_at: 2026-06-07T19:20:00+00:00
+    high: 0
+    moderate: 0
+    critical: 0
+    note: "0 vulnerabilities — 71차 실측"
+
+qa_feedback:
+  open_block: 0
+  open_ids: []
+  planned_block: 1
+  planned_ids:
+    - SEC-20260608-013  # SEC-D14 backend develop→test 미승격 (frontend portion resolved @ 69차)
+  note: "Open 0 · v1.1 frontend PASS @ test 4f71543 (71차 재확인) · 잔여 BLOCK = backend merge(9) only"
+
+blockers:
+  - id: SEC-20260608-013
+    state: Planned
+    severity: BLOCK
+    stream: backend
+    summary: "SEC-D14 — backend develop→test merge 미실행(9 commits ahead). frontend portion resolved @ 69차."
+
+next_actions:
+  - owner: COD/PLN
+    action: "backend develop→test merge (9 commits) → TSR backend 재검증"
+  - owner: TSR
+    action: "post-merge: LIVE_E2E=1 npm run test:live-e2e (실 백엔드 P1–P8·J01/J02, 결정 73 권장)"
+  - owner: COD
+    action: "v1.2 develop +4 commits — merge_status ready 후 develop→test merge"
+
+revalidation_history:
+  - nth: 71
+    at: 2026-06-07T19:20:00+00:00
+    verdict: PASS
+    note: "test @4f71543 불변·58/18 PASS·86 modules·audit 0 · develop 42f48e1 +4 CLEAN·89/28 PASS·114 modules·audit 0 · 이관 규율 5 PRESENT · SEC-005 0건 · Open 0 · PASS(v1.1)"
+  - nth: 69
+    at: 2026-06-07T18:12:00+00:00
+    verdict: PASS
+    note: "v1.1 test @4f71543 merged · 58/18 PASS·86 modules·audit 0 · develop +2 v1.2 CLEAN · Open 0 · PASS(v1.1)"
+  - nth: 67
+    at: 2026-06-07T17:31:00+00:00
+    verdict: BLOCK
+    note: "develop d592a17→f64e1dd→4f71543(+2) CLEAN · build 86·npm test 58/18 PASS·audit 0 · test stale 13 behind · UXD SideNav·FE-22 preconditions develop HEAD 반영 · Open 0 · BLOCK B03/SEC-D14 (merge 미실행, ROADMAP ready)"

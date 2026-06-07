@@ -1,4 +1,9 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T17:22:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T19:20:00+00:00 -->
+<!-- tester-sync: TSR 71차 2026-06-07T19:20 UTC (frontend) — test `@4f71543` **불변** · `npm test` **58/18 PASS** · build **86 modules** · audit **0** · develop `42f48e1`(+2 vs 69차 `e0eaf32`: `0d83a42` UXD 15 missing pages(US-D01·E03-E05·F04·G01-G07·H01-H04·B01·A01) · `42f48e1` P0 page-flow tests·module coverage KPI·title 정렬) CLEAN · `npm test` **89/28 PASS** · build **114 modules** · audit **0** · 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** · SEC-005 **0건** · **신규 Open 0건** · **PASS**(v1.1). -->
+<!-- tester-sync: TSR 70차 2026-06-07T19:05 UTC (backend) — develop HEAD **`78e8928`**(+1커밋 vs 68차 `44e0f02`: `feat(v2/J03): dispatch DAILY_CARE alimtalk on medication records`) · working tree **CLEAN** · **`mvn test` develop 171/171 PASS**(68차 170 → +1: `HealthRecordServiceTest` DAILY_CARE dispatch) · test `2799e29` **79/79 PASS**(23 suites) · develop **9커밋 ahead** of test · merge **미실행**. **v1 baseline artifacts PRESENT @ 78e8928(TSR 독립 검증 PASS)**: `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`·`auth/domain/AuthRateLimitService`+Test·`V45`·`notification/domain/NotificationAlimtalkDispatchE2eTest`·`notification/config/NotificationConfigTest`·`health/domain/HealthRecordServiceTest` **전부 PRESENT** ✓ (이관 규율 5·6 PASS). **신규 Open 0건** — 판정 **BLOCK**(merge 게이트 9커밋 단일). -->
+<!-- tester-sync: TSR 69차 2026-06-07T18:12 UTC (frontend) — v1.1 merge 완료 test `@4f71543` · `npm ci`+`npm test` **58/18 PASS** · build **86 modules** · audit **0** · develop `e0eaf32`(+2 v1.2 CLEAN) · develop `npm test` **82/27 PASS** · ROADMAP v1.1 **merged** · 이관 규율 5 PRESENT · Open 0 · **PASS**(v1.1). -->
+<!-- tester-sync: TSR 68차 2026-06-07T18:07 UTC (backend) — develop HEAD **`44e0f02`**(+1커밋 vs 66차 `c221531`: `Ensure quiet hours clock is provided and add coverage`) · working tree **CLEAN** · **`mvn test` develop 170/170 PASS**(66차 169 → +1: `NotificationConfigTest`) · test `2799e29` **79/79 PASS**(23 suites) · develop **8커밋 ahead** of test · merge **미실행**. **v1 baseline artifacts PRESENT @ 44e0f02(TSR 독립 검증 PASS)**: `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`·`auth/domain/AuthRateLimitService`+Test·`V45`·`notification/domain/NotificationAlimtalkDispatchE2eTest`·`notification/config/NotificationConfigTest` **전부 PRESENT** ✓ (이관 규율 5·6 PASS). **신규 Open 0건** — 판정 **BLOCK**(merge 게이트 8커밋 단일). -->
+<!-- tester-sync: TSR 67차 2026-06-07T17:31 UTC (frontend) — develop `4f71543`(+2 vs `d592a17`) CLEAN · build 86 · npm test 58/18 · audit 0 · 13 ahead · ROADMAP ready · merge 미실행 · Open 0 · BLOCK(B03/SEC-D14). -->
 <!-- tester-sync: TSR 66차 2026-06-07T17:22 UTC (backend) — develop HEAD **`c221531`**(+1커밋 vs 64차 `80bdb1e`: `c221531` v2/J03 daily care·emergency health alimtalk E2E) · working tree **CLEAN** · **`mvn test` develop 169/169 PASS**(64차 158 → +11: `NotificationAlimtalkDispatchE2eTest` 7·`AttendanceServiceTest` +1·`BillingServiceTest` +1) · test `2799e29` **79/79 PASS**(23 suites) · develop **7커밋 ahead** of test · merge **미실행**. **v1 baseline artifacts PRESENT @ c221531(TSR 독립 검증 PASS)**: `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`·`auth/domain/AuthRateLimitService`+Test·`V45` **전부 PRESENT** ✓ (이관 규율 5·6 PASS). **신규 Open 0건** — 판정 **BLOCK**(merge 게이트 7커밋 단일). -->
 <!-- tester-sync: TSR 65차 2026-06-07T16:50 UTC (frontend) — develop HEAD **`d592a17`**(+3커밋 vs 63차 `bb0cec4`: `7170b2a` guardian portal REST+J01/J02 tests·`449cd4f` tone Alert live region·PublicAuthLayout h1/skip-link(US-J01)·`d592a17` **FE-22** Must P1–P8·J01/J02 live E2E harness) · working tree **CLEAN** · develop `npm run build` **75 modules PASS**(vite 6.4.3, JS 209.19 kB) · develop `npm test` **46/13 PASS**(vitest 4.1.8, 63차 37/9 → +9/+4) · develop `npm audit` **0 vulnerabilities** · test `@e5fd48d` build **36 PASS**·npm test **N/A**·audit **2 moderate** · develop **11커밋 ahead** of test · merge **미실행**. **이관 규율 5 PASS @ `d592a17`**: `git cat-file -e HEAD:` `services.js`·`GuardianPortalPage.jsx`(+test)·`ClientDetailPage.jsx`·`Alert.jsx`·`PublicAuthLayout.jsx`·`pilotChecklist`·`pilotPageFlows`·`sevenRoleRouteMatrix`·`ProtectedRoute.jsx` + `src/e2e/pilotLiveApi.e2e.test.js`·`pilotLivePages.e2e.test.jsx`·`guardianLiveApi.e2e.test.js`·`liveConfig.js`·`vitest.live.config.js` **전부 PRESENT**. SEC-005 localStorage/sessionStorage **0건**. **FE-22 게이팅**: `src/e2e/**` 는 `vite.config.js` test `exclude` → 기본 `npm test` 제외, 별도 `test:live-e2e`(`LIVE_E2E=1`)로만 실행 — 실 live run 은 develop→test merge·backend v1 test 승격(SEC-D14) 후. **신규 Open 0건** — 판정 **BLOCK**(B03/SEC-D14 frontend merge 게이트 단일 — develop→test 11커밋 미머지 + Must·J01/J02 라이브 E2E run). -->
 <!-- tester-sync: TSR 64차 2026-06-07T16:30 UTC (backend) — develop HEAD **`80bdb1e`**(+2커밋 vs 62차 `136239e`: `8d42bdd` BE-11 AuthRateLimitService·`80bdb1e` V45 v2 notification integrity) · working tree **CLEAN** · **`mvn test` develop 158/158 PASS**(+6 vs 62차 152 — BE-11 AuthRateLimitServiceTest·V45 포함) · test `2799e29` **79/79 PASS**(23 suites) · develop **6커밋 ahead** of test · merge **미실행**. **BE-11 develop HEAD Fixed(TSR 64차 독립 검증 PASS)**: `auth/domain/AuthRateLimitService`·`auth/domain/AuthRateLimitServiceTest` **PRESENT** @ `8d42bdd`(이관 규율 5·6 PASS). **V45 PRESENT** @ `80bdb1e` — `V45__v2_notification_prefs_integrity_and_users_phone_pair.sql` HEAD **PRESENT**. v1 baseline artifacts **전부 PRESENT** — `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`. **신규 Open 0건** — 판정 **BLOCK**(merge 게이트 6커밋 단일). **SEC-20260608-014(BE-11) Planned→Fixed** @ `8d42bdd`. -->
@@ -6,8 +11,55 @@
 
 > **작성**: tester (`TSR`)  
 > **검증 브랜치**: backend `test` worktree (`src/backend-test`), frontend `test` worktree (`src/frontend-test`)  
-> **ROADMAP 기준**: v1 backend (`merge_status: merged`), v1.1 frontend (`merge_status: pending`)  
-> **CURRENT BASELINE**: backend develop `80bdb1e` · frontend develop `d592a17` (`.agents/workspace_baseline.yaml` `7170b2a` + 2커밋 — FE-22 live E2E harness·guardian REST·J01/J02)
+> **ROADMAP 기준**: v1 backend (`merge_status: merged`), v1.1 frontend (`merge_status: ready`)  
+> **CURRENT BASELINE**: backend develop `78e8928` · frontend test `4f71543` · frontend develop `42f48e1`
+
+> **71차 재검증 (2026-06-07T19:20 UTC, frontend) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `42f48e1`(+2 vs 69차)·89/28 PASS·114 modules·audit 0·PASS**:
+> - **frontend test HEAD `4f71543`**(69차 불변), working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **58 tests/18 files PASS**(vitest 4.1.8) — 71차 실측.
+> - **`src/frontend-test` `npm run build`**: **86 modules SUCCESS**(vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) — 71차 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 71차 실측.
+> - **`git cat-file -e HEAD:`** `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`liveConfig.js`·`AuthContext.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `42f48e1`**(+2 vs 69차 `e0eaf32`: `0d83a42` feat(ux) 15 missing pages · `42f48e1` fix(v1.2) P0 page-flow tests·module coverage KPI·title 정렬), working tree **CLEAN**.
+> - develop `npm test`: **89/28 PASS**(vitest 4.1.8, 69차 82/27 → +7/+1: `competitorModuleCoverage.test.js` 3건·pilotPageFlows 강화) — 71차 실측.
+> - develop `npm run build`: **114 modules SUCCESS**(vite 6.4.3, JS 295.02 kB gzip 84.80 kB, CSS 30.23 kB) — 71차 실측.
+> - develop `npm audit`: **0 vulnerabilities** — 71차 실측.
+> - **ROADMAP v1.1 `merge_status: merged`** — test 브랜치 검증 **PASS**(69차 이후 불변).
+> - **신규 Open 0건** — 판정 **PASS**(v1.1). 잔여: backend merge(9) + post-merge live E2E(결정 73 권장) + v1.2 develop +4 ahead.
+
+> **70차 재검증 (2026-06-07T19:05 UTC, backend) — develop `44e0f02`→`78e8928`(+1커밋)·v2/J03 DAILY_CARE medication dispatch·develop 171/171 PASS·test 79/79·9커밋 ahead·merge 미실행·BLOCK(merge 게이트)**:
+> - **backend develop HEAD `78e8928`**(+1커밋 vs 68차 `44e0f02` — `feat(v2/J03): dispatch DAILY_CARE alimtalk on medication records`), working tree **CLEAN**(0 dirty).
+> - **`78e8928` 변경 내역**: `HealthRecordService.java`(+20 — `createMedication` 시 `NotificationService` 통해 보호자 DAILY_CARE 알림톡 디스패치 연동, `formatMedicationDetail` 헬퍼)·`HealthRecordServiceTest.java`(+60 — dispatch payload 단위 테스트). US-J03, PLAN_NOTES round 65 후속.
+> - **`git cat-file -e HEAD:`** `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`·`auth/domain/AuthRateLimitService`·`auth/domain/AuthRateLimitServiceTest`·`V45`·`notification/domain/NotificationAlimtalkDispatchE2eTest`·`notification/config/NotificationConfigTest`·`health/domain/HealthRecordServiceTest` **전부 PRESENT** ✓ (이관 규율 5 PASS — 68차 PASS 유지).
+> - **test branch (`src/backend-test @ 2799e29`) `mvn test`**: **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B) — 70차 실측.
+> - **develop HEAD (`src/backend @ 78e8928`) `mvn test`**: **171/171 PASS**(48 suites, 68차 170 → +1: `HealthRecordServiceTest`) — 70차 실측.
+> - develop **9커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`·`c221531`·`44e0f02`·`78e8928`) — merge **미실행**.
+> - **신규 Open 0건** — 판정 **BLOCK**(develop→test merge 게이트 9커밋 단일).
+
+> **69차 재검증 (2026-06-07T18:12 UTC, frontend) — v1.1 merge 완료·test `@4f71543`·58/18 PASS·86 modules·audit 0·develop +2 v1.2·PASS**:
+> - **frontend test HEAD `4f71543`**(v1.1 merged — 67차 `e5fd48d` stale → merge 완료), working tree **CLEAN**.
+> - **`src/frontend-test` `npm ci`+`npm test`**: **58 tests/18 files PASS**(vitest 4.1.8) — 69차 실측.
+> - **`src/frontend-test` `npm run build`**: **86 modules SUCCESS**(vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB).
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities**.
+> - **`git cat-file -e HEAD:`** `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`pilotPageFlows.test.jsx`·`liveConfig.js`·`vitest.live.config.js`·`AuthContext.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `e0eaf32`**(+2 v1.2 vs test: `64468a3` UXD 35 P0 UI · `e0eaf32` guardians RBAC), working tree **CLEAN**, `npm test` **82/27 PASS**.
+> - **ROADMAP v1.1 `merge_status: merged`** — test 브랜치 검증 **PASS**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.1). 잔여: backend merge(8) + post-merge live E2E(결정 73 권장) + v1.2 develop +2 ahead.
+
+> **68차 재검증 (2026-06-07T18:07 UTC, backend) — develop `c221531`→`44e0f02`(+1커밋)·NotificationConfig quiet hours·develop 170/170 PASS·test 79/79·8커밋 ahead·merge 미실행·BLOCK(merge 게이트)**:
+> - **backend develop HEAD `44e0f02`**(+1커밋 vs 66차 `c221531` — `Ensure quiet hours clock is provided and add coverage`), working tree **CLEAN**(0 dirty).
+> - **`44e0f02` 변경 내역**: `NotificationConfig.java`(quiet hours clock provider)·`NotificationConfigTest.java`(1 @Test — quiet hours coverage)·`GlobalExceptionHandler.java`·`SecurityConfig.java` 정리.
+> - **`git cat-file -e HEAD:`** `pilot/PilotChecklistJwtE2eTest`·`routing/MustApiEndpointRoutingTest`·`security/ProductionSecretValidatorTest`·`security/SevenRoleJwtLoginE2eTest`·`security/RoleBasedControllerAccessTest`·`auth/domain/AuthRateLimitService`·`auth/domain/AuthRateLimitServiceTest`·`V45`·`notification/domain/NotificationAlimtalkDispatchE2eTest`·`notification/config/NotificationConfigTest` **전부 PRESENT** ✓ (이관 규율 5 PASS — 66차 PASS 유지).
+> - **test branch (`src/backend-test @ 2799e29`) `mvn test`**: **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B) — 68차 실측.
+> - **develop HEAD (`src/backend @ 44e0f02`) `mvn test`**: **170/170 PASS**(48 suites, 66차 169 → +1: `NotificationConfigTest`) — 68차 실측.
+> - develop **8커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`·`136239e`·`8d42bdd`·`80bdb1e`·`c221531`·`44e0f02`) — merge **미실행**.
+> - **신규 Open 0건** — 판정 **BLOCK**(develop→test merge 게이트 8커밋 단일).
+
+> **67차 재검증 (2026-06-07T17:31 UTC, frontend) — develop `4f71543`(+2)·UXD SideNav·FE-22 liveConfig preconditions·58/18 PASS·86 modules·13 ahead·ROADMAP ready·BLOCK(B03/SEC-D14)**:
+> - **frontend develop HEAD `4f71543`**(+2 vs 65차 `d592a17`: `f64e1dd` SideNav·AppShell · `4f71543` liveConfig fail-fast), working tree **CLEAN**.
+> - develop `npm run build` **86 modules PASS** · `npm test` **58/18 PASS** · audit **0**.
+> - test `@e5fd48d`: build **36 PASS** · npm test **N/A** · audit **2 moderate**.
+> - develop **13 commits ahead** — merge **미실행**. **Open 0** — **BLOCK**(merge 게이트).
 
 > **66차 재검증 (2026-06-07T17:22 UTC, backend) — develop `80bdb1e`→`c221531`(+1커밋)·v2/J03 daily care·emergency alimtalk E2E·develop 169/169 PASS·test 79/79·7커밋 ahead·merge 미실행·BLOCK(merge 게이트)**:
 > - **backend develop HEAD `c221531`**(+1커밋 vs 64차 `80bdb1e` — `feat(v2/J03): wire daily care·emergency health notifications and alimtalk E2E tests`), working tree **CLEAN**(0 dirty).
