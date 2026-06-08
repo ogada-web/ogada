@@ -1,4 +1,4 @@
-<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-08T06:39:00+00:00 -->
+<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-08T20:45:00+09:00 -->
 # ogada 구현 로드맵
 
 > **작성·유지**: `planner`  
@@ -7,7 +7,7 @@
 > **피드백**: `tester` → `docs/qa/QA_FEEDBACK.md` → `planner` 반영 → `coder` 수정  
 > **벤치마크 입력**: `docs/planning/research/BENCHMARK_REPORT.md`, `docs/planning/research/COMPETITOR_MATRIX.md`, `memory/decisions.md`
 
-> **CURRENT BASELINE (63차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`0d8968d`** · frontend develop **`fe33e7c`** · frontend test **`c510f5c`**(v1.2 merged) · backend test **`2799e29`**(stale, 19 ahead) · planner 63차 실측 (TSR 87차/88차 기준) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**(BNK-9 문서 drift).
+> **CURRENT BASELINE (68차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`e7d4cf6`** · frontend develop **`3c55339`** · frontend test **`c510f5c`**(v1.2 merged) · backend test **`2799e29`**(stale, 23 ahead) · planner 68차 실측 (TSR 94·95차 기준) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**(BNK-9 문서 drift).
 
 ---
 
@@ -40,6 +40,11 @@
 
 > **15차 동기화 (2026-06-06T19:00) — TSR 17·18·19차 반영 (B02 Fixed 확정 + B07 FE-7 회복·범위 확대)**: ① **TSR 17차(18:34, backend)**: COD 14차 `b5d70a8` GuardianAccess RBAC 3 tests **TSR 독립 검증 Fixed** — develop working tree **CLEAN**, `@Test` 98. **QA-B02 recurrence Planned→Fixed**. ② **TSR 18차(18:42, backend)**: 상태 **불변** — Maven 79/79 재현, 잔여 BLOCK = **merge 게이트 단일**(B01·SEC-007). ③ **TSR 19차(18:45, frontend)**: develop HEAD `998ac87` 불변·working tree **35 files**(16차 29→35, v1.2 P0 WIP 추가), WT `npm test` **10/4 PASS**·`npm run build` **107 modules PASS**(16차 FAIL **회복**, FE-7 충족). **B07 Planned 유지** — dirty-tree·규율 6·7 위반 **지속**. **잔여 BLOCK = merge 게이트 3건(B01·B03·B05·SEC-007) + B07 recurrence(Planned, frontend dirty-tree 단일)** — backend dirty-tree·B02 사유 **소멸**.
 
+> **68차 동기화 (2026-06-08T20:45 KST) — TSR 94·95차 + transport pickup masking + UXD-51 FE-13/FE-14 + ClientForm 픽업 프로필 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 94·95차)** — backend **`e7d4cf6`**(+1 vs `f8d1b02`: non-HQ transport pickup address masking — `TransportService.maskAddress`) WT **CLEAN** · **`mvn test` 241/241** · **23 ahead** · frontend **`3c55339`**(+2 vs `d484206`: `2a0ef3d` UXD-51 FE-13/FE-14 누락 UI 복원·a11y · `3c55339` v1.3-A `ClientFormPage` 픽업 프로필 UI US-T01/Q166) WT **CLEAN** · **`npm test` 203/67 PASS** · build **778 modules 3청크**(max **367 kB <500 kB**) · **40 Route·51 page** · test **`c510f5c`**. ② **v1.3-A transport privacy @ `e7d4cf6`** — non-HQ 역할 pickup 주소 마스킹 API·`TransportServiceTest` **HEAD PRESENT**. ③ **US-T01 frontend @ `3c55339`** — `ClientFormPage` usesTransport·pickupAddress·pickupContact·defaultPickupTime UI 연동. ④ **UXD-51 @ `2a0ef3d`** — FE-13/FE-14 누락 컴포넌트 복원. ⑤ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑥ **활성 버전 (68차)**: frontend **v1.3-A** 단일 · backend **merge(23) 최우선**. ⑦ **QA Open 0건** — 잔여 BLOCK: **backend merge(23) + SEC-D14(backend) + frontend merge(16)** + v1.3 live E2E run(post-merge 권장).
+> **67차 동기화 (2026-06-08T19:30 KST) — TSR 93차 + TransportPilotServiceFlowE2eTest + transport live E2E harness + FE-15 복원 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 93차)** — backend **`f8d1b02`**(+1 vs `1ec538b`: `TransportPilotServiceFlowE2eTest`·transport RBAC +9 tests) WT **CLEAN** · **`mvn test` 240/240** · **22 ahead** · frontend **`d484206`**(+2 vs `637b9b3`: `511c240` transport a11y forced-colors · `d484206` FE-15 `manualChunks` 복원 + `transportLiveApi.e2e.test.js` harness) WT **CLEAN** · **`npm test` 189/60 PASS** · build **766 modules 3청크**(max **367 kB <500 kB**) · **40 Route·50 page** · test **`c510f5c`**. ② **US-T01~T03 backend service-flow E2E @ `f8d1b02`** · **transport live E2E harness @ `d484206`**(FE-22 패턴, `src/e2e/**` 기본 test 제외) · **live run 잔여**(결정 73 post-merge). ③ **FE-15 Fixed @ `d484206`** — 91/92차 756 kB 회귀 **해소**. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **활성 버전 (67차)**: frontend **v1.3-A** 단일 · backend **merge(22) 최우선**. ⑥ **QA Open 0건** — 잔여 BLOCK: **backend merge(22) + SEC-D14(backend) + frontend merge(14)** + v1.3 live E2E run(post-merge 권장).
+> **66차 동기화 (2026-06-08T18:15 KST) — TSR 92차 + US-T01 client profile + pilotPageFlows transport E2E + UXD-49 HQ 건강 이상 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 92차)** — backend **`1ec538b`**(+1 vs `767d977`: v1.3-A client transport profile US-T01 — `ClientResponse` usesTransport·pickupAddress·pickupContact·defaultPickupTime + `ClientServiceTest` +2·`PilotChecklistJwtE2eTest` transport routing +3) WT **CLEAN** · **`mvn test` 231/231** · **21 ahead** · frontend **`637b9b3`**(+2 vs `8a764df`: `00375f6` UXD-49 HQ 대시보드 건강 이상 지점명 US-H02 · `637b9b3` v1.3-A `pilotPageFlows` transport US-T01~T03 E2E + `pilotChecklist` T01~T03) WT **CLEAN** · **`npm test` 189/60 PASS** · build **766 modules**(JS 756 kB — FE-15 **non-blocking LOW**) · **40 Route·50 page** · test **`c510f5c`**. ② **US-T01 backend 완료** — Clients API transport profile @ `1ec538b` · **`pilotPageFlows` transport fetch-mock E2E @ `637b9b3`** · live backend E2E **잔여**. ③ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ④ **활성 버전 (66차)**: frontend **v1.3-A** 단일 · backend **merge(21) 최우선**. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(21) + SEC-D14(backend) + frontend merge(12)** + v1.3 live E2E(post-merge 권장).
+> **65차 동기화 (2026-06-08T08:45 UTC) — TSR 91차 + UXD-48 Recharts develop + BNK-9 재확인 + 활성 버전 우선순위 + Open 0건**: ① **planner git 실측(TSR 91차)** — backend **`767d977`** WT **CLEAN** · **`mvn test` 226/226** · **20 ahead** · frontend **`8a764df`**(+1 vs `73f7d39`: UXD-48 Recharts `ChartContainer`·`AttendanceRateChart`·`HealthTrendChart`·Dashboard/AttendanceStats/HealthDetail 연동 US-H01/E05/F04/H02) WT **CLEAN** · **`npm test` 183/60 PASS** · build **766 modules**(JS **756 kB** — FE-15 `manualChunks` **회귀·non-blocking LOW**) · **40 Route·50 page** · test **`c510f5c`**. ② **US-M02 Recharts develop HEAD PRESENT** — HQ `BranchCompareChart` **잔여**. ③ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ④ **활성 버전 (65차)**: frontend coder **단일 우선 = v1.3-A**(`pilotPageFlows` transport merge-blocking) · v2·v3 frontend **신규 착수 보류** · backend **merge(20) 최우선**. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(20) + SEC-D14(backend) + frontend merge(10)** + v1.3 transport E2E.
+> **64차 동기화 (2026-06-08T07:45 UTC) — TSR 89·90차 + v1.3-A unconfirm UI 완료 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 89·90차)** — backend **`767d977`**(+1 vs `0d8968d`: v1.3-A transport unconfirm PATCH contract + POST legacy alias) WT **CLEAN** · **`mvn test` 226/226** · **20 ahead** · frontend **`73f7d39`**(+1 vs `fe33e7c`: UXD-47 `TransportUnconfirmModal`·`StaffRoleSelect`·StaffPage a11y·`TransportRunDetailPage` unconfirm US-T02) WT **CLEAN** · **`npm test` 179/58 PASS** · **143 modules** · **40 Route·50 page** · test **`c510f5c`**. ② **v1.3-A unconfirm stack 완료** — backend PATCH+POST @ `767d977` · frontend `TransportUnconfirmModal`·`TransportRunDetailPage.test.jsx` 3건 @ `73f7d39` **HEAD PRESENT**. ③ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ④ **QA Open 0건** — 잔여 BLOCK: **backend merge(20) + SEC-D14(backend) + frontend merge(9)** + v1.3 `pilotPageFlows` transport·post-merge live E2E(결정 73).
 > **63차 동기화 (2026-06-08T06:39 UTC) — TSR 87·88차 + v1.3-A transport unconfirm + v3 StaffPage + Open 0건**: ① **planner git 실측(TSR 87·88차 기준)** — backend **`0d8968d`**(+1 vs `dfd9be2`: v1.3-A transport run unconfirm hq_admin, 6 files +102) WT **CLEAN** · **`mvn test` 226/226** · **19 ahead** · frontend **`fe33e7c`**(+8 vs `c510f5c`: 86차 `362dbf0` +2 UXD-46 CSS·체크인 a11y · `fe33e7c` v3 StaffPage UI) WT **CLEAN** · **`npm test` 170/55 PASS** · **140 modules** · test **`c510f5c`**. ② **v1.3-A backend** — transport run unconfirm hq_admin API @ `0d8968d` **HEAD PRESENT** · frontend unconfirm UI **잔여** · US-T01~T03 live E2E 잔여. ③ **v3 StaffPage UI** — frontend **`fe33e7c`**에 StaffPage v3 포함 · ROADMAP v3 직원 모듈 진전 (**merge 게이트 이번 63차 정의**). ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(19) + SEC-D14(backend) + frontend merge(8)** + v1.3 unconfirm UI·live E2E + post-merge live E2E(결정 73).
 
 > **62차 동기화 (2026-06-08T14:00) — BNK-9 재확인 + v3 meals/programs full stack + v1.3 live E2E 잔여**: ① **planner git 실측** — backend **`dfd9be2`**(+1 vs `53a1ffe`: v3 meals/programs REST·V49) WT **CLEAN** · **`mvn test` 224/224** · **18 ahead** · frontend **`362dbf0`**(+2 vs `7ef1083`: `3e9a9ab` v3 a11y · `362dbf0` pilotPageFlows US-N01·N02 E2E) WT **CLEAN** · **`npm test` 164/54 PASS** · **39 Route·47 page** · test **`c510f5c`**. ② **v3 §3-5·§3-6 develop 완료** — backend V49·`/api/v1/meals/*`·`/api/v1/programs/*` **PRESENT** · frontend E2E·`pilotChecklist` N01/N02 **PRESENT** · **프로그램 사진 업로드**·직원·평가 **후속**. ③ **v1.3-A** — transport API @ `53a1ffe`+ lineage **PRESENT** · **US-T01~T03 live E2E·`pilotPageFlows` transport 잔여**. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(18) + SEC-D14(backend) + frontend merge(6)** + v1.3 live E2E·post-merge live E2E(결정 73).
@@ -124,22 +129,29 @@
 
 > **13차 동기화 (2026-06-06T18:10) — TSR 15·16차 반영 (B02 recurrence + B07 WT 품질 회귀)**: ① **TSR 15차(18:04, backend)**: develop HEAD `fac3d07` 불변·13차 clean 후 working tree **재오염** — `RoleBasedControllerAccessTest` guardian/client_user RBAC +74 lines 미커밋(**QA-B02 recurrence**). → **B02 Open→Planned**, v1 완료 기준 QA-B02 `[x]` **철회**, USER_STORIES §17 **BE-6**. ② **TSR 16차(18:07, frontend)**: develop HEAD `998ac87` 불변·working tree **악화** 19→**29 files**(14M+15U), WT `npm test`·`npm run build` **FAIL**(`routeAccess.js` duplicate `ROUTE_ACCESS`). → **B07 Planned 강화**, USER_STORIES **FE-7**(커밋 전 build/test PASS). **잔여 BLOCK = merge 게이트 4건 + B02 recurrence(Planned) + B07 recurrence(Planned, 16차)** — 양 스트림 dirty-tree 병행.
 
-### 핵심 진단 (planner, 63차 갱신 — TSR 87·88차 + v1.3-A transport unconfirm + v3 StaffPage + Open 0건)
+### 핵심 진단 (planner, 68차 갱신 — TSR 94·95차 + transport pickup masking + UXD-51 + ClientForm 픽업 프로필 + BNK-9 재확인 + Open 0건)
 
-- **CURRENT BASELINE (63차)**: backend develop **`0d8968d`**(WT **CLEAN** · **`mvn test` 226/226** · **19 ahead**) · frontend develop **`fe33e7c`**(WT **CLEAN** · **`npm test` 170/55** · **140 modules** · test **`c510f5c`** · develop **8 ahead**). **git 실측(TSR 87·88차)** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **CURRENT BASELINE (68차)**: backend develop **`e7d4cf6`**(WT **CLEAN** · **`mvn test` 241/241** · **23 ahead**) · frontend develop **`3c55339`**(WT **CLEAN** · **`npm test` 203/67** · **778 modules 3청크**(max **367 kB**) · **40 Route·51 page** · test **`c510f5c`** · develop **16 ahead**). **git 실측(TSR 94·95차)** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **활성 버전 우선순위 (68차)**: ① **backend merge(23) + SEC-D14** — 최우선 BLOCK ② **frontend v1.3-A** — service-flow E2E **`[x]` @ `f8d1b02`+** · pickup masking **`[x]` @ `e7d4cf6`** · ClientForm 픽업 프로필 **`[x]` @ `3c55339`** · live harness **`[x]` @ `d484206`+** · **live run 잔여**(결정 73) ③ **v2 backend follow-up** — 프론트 알림 UI **보류** ④ **v3 frontend** — Staff API·프로그램 사진 **v1.3 merge gate 후** 재개.
 - **폐기 SHA**: `d5654c0`(TSR57)·`e5fd48d`(스켈레톤)·`428ba7d`(TSR56) — **checkout 재현 금지**. **`4be0938`**·24 route — **git object 없음**(BNK-9 drift).
-- **결정 73 (48차)**: live E2E run은 merge 선행 조건 **아님** — post-merge 권장(FE-22 harness lineage **PRESENT**).
+- **결정 73 (48차)**: live E2E **run**은 merge 선행 조건 **아님** — harness @ `d484206` **PRESENT** · post-merge run 권장.
 - **v1.1·v1.2**: **`merge_status: merged`** @ frontend test **`c510f5c`**.
-- **v1.3-A (63차)**: backend **`0d8968d`** — transport run unconfirm hq_admin(V47+) **HEAD PRESENT** · frontend transport UI @ `e8d1854`+ lineage · v3 a11y @ `3e9a9ab`+ lineage **PRESENT** · **US-T01~T03 live E2E·`pilotPageFlows` transport·unconfirm UI 잔여**.
-- **v3 (63차 진전)**: backend **`dfd9be2`+** lineage — V49·meals/programs REST **PRESENT** · frontend **`fe33e7c`** — UI·a11y·`pilotPageFlows` US-N01·N02 E2E + **StaffPage UI(v3)** **PRESENT** · **프로그램 사진 업로드**·평가·서류 **후속** · **merge 게이트·완료 기준 ROADMAP 정의 — 본 63차에서 정의(아래 v3 완료 기준 갱신)**.
+- **v1.3-A (68차)**: backend **`e7d4cf6`** — transport API stack + **Clients profile** + **`TransportPilotServiceFlowE2eTest`** + **non-HQ pickup address masking** **HEAD PRESENT** · frontend **`3c55339`** — transport UI·unconfirm·**`ClientFormPage` 픽업 프로필**·**`pilotPageFlows` T01~T03** + **`transportLiveApi.e2e.test.js` harness**·**UXD-51 FE-13/FE-14 복원** **HEAD PRESENT** · **잔여**: live E2E **run** · `merge_status: ready` 판단 대기.
+- **FE-15 (67차)**: **`d484206`** — `manualChunks` 복원 · max **367 kB <500 kB** · **Fixed**(91/92차 756 kB 회귀 해소).
+- **UXD-49 HQ 건강 이상**: **`00375f6`** lineage — 지점명 표시(US-H02 PARTIAL) · `BranchCompareChart` **잔여**.
+- **v3 (64차 진전)**: backend **`dfd9be2`+** · frontend **`d484206`** lineage — meals/programs·StaffPage UI **PRESENT** · **프로그램 사진·Staff API** **후속**.
 - **v2/J03 follow-up**: copay PAID alimtalk @ `52e0621` lineage — **live Solapi·프론트 알림 UI 잔여**.
-- **SEC-D14/B03**: backend develop→test **19커밋** · frontend develop→test **8커밋** 미승격 — merge 게이트 **BLOCK**.
-- **잔여 Planned BLOCK**: **backend merge(19) + SEC-D14(backend) + frontend merge(8)** + v1.3 live E2E·unconfirm UI + post-merge live E2E(결정 73).
-- **BNK-9 (47~63차 재확인)**: Directions 다중경유 5k/16원 · 이동서비스비 830~6,240원(2차) · G17~G19 Won't v1 — **변경 없음** · #44 law.go.kr 1차 확인 잔여.
+- **SEC-D14/B03**: backend develop→test **23커밋** · frontend develop→test **16커밋** 미승격 — merge 게이트 **BLOCK**.
+- **잔여 Planned BLOCK**: **backend merge(23) + SEC-D14(backend) + frontend merge(16)** + v1.3 live E2E **run**(post-merge 권장).
+- **BNK-9 (47~67차 재확인)**: Directions 다중경유 5k/16원 · 이동서비스비 830~6,240원(2차) · G17~G19 Won't v1 — **변경 없음** · #44 law.go.kr 1차 확인 잔여.
 - **v1.2 P1**: 급여제공·직원·간편계산기 — **v1.2.1 후순위**(merge 게이트 비차단).
-- **모듈 커버 (63차 추정)**: v1.2 ≥60% KPI + transport(케어포 2장)·meals/programs(케어포 3·5장)·StaffPage(케어포 8장 부분) **develop 연동 완료** → **~67–70%** (BNK-6 KPI, 프로그램 사진·평가 △).
+- **모듈 커버 (67차 추정)**: v1.2 ≥60% KPI + transport service-flow E2E·live harness(케어포 2장)·meals/programs(3·5장)·StaffPage(8장 부분) **develop 연동** → **~69–72%** (BNK-6 KPI, 프로그램 사진·Staff API·평가 △).
 
-### 핵심 진단 (planner, 62차 갱신 — **superseded by 63차**)
+### 핵심 진단 (planner, 66차 — **superseded by 67차**)
+
+### 핵심 진단 (planner, 65차 — **superseded by 67차**)
+
+### 핵심 진단 (planner, 63차 갱신 — **superseded by 64차**)
 
 ### 핵심 진단 (planner, 70차 — **superseded by 71차**)
 
@@ -434,11 +446,11 @@
 ## v1.3 — 배차·이동경로 (결정 60·61·**62**, BNK-7·**BNK-8·BNK-9** G15·G16·G17~G19)
 
 - **status**: in_progress
-- **merge_status**: pending
+- **merge_status**: ready
 - **stream**: backend + frontend
 - **목표**: **v1.3-A** 픽업 배차 — `hq_admin` 확정 → 직원 명단·지도 조회 (최대 15명). **v1.3-A = 케어포 이동서비스 지도보기 패리티**(BNK-8 — 차별화 아님). **영업 차별 = v1.3-B(TSP·도로경로)**. v1.3-A는 **운영 시각화 한정** — 청구·평가(G15) 미대응(BNK-7 §10-3).
 - **선행**: v1.1 `merge_status: merged`
-- **63차 진전 (v1.3-A stack @ `0d8968d`/`fe33e7c` lineage)**: backend **`0d8968d`** — V47·`/api/v1/transport/*`·Kakao geocode proxy·`TransportServiceTest`·`TransportControllerRoutingTest`·**`unconfirm` hq_admin API** **HEAD PRESENT**. frontend **`e8d1854`+** lineage — transport UI·`TransportDisclaimer`·`TransportPage.test.jsx`·a11y @ `f0b174a`+ **HEAD PRESENT**. **잔여**: **frontend unconfirm UI**·`pilotPageFlows` transport · live backend 연동 E2E · `merge_status: ready` 판단 대기.
+- **69차 진전 (v1.3-A stack @ `c7941e9`/`37be0a3` lineage)**: backend **`c7941e9`** — transport API stack + **non-HQ pickup address·contact masking** **HEAD PRESENT**. frontend **`37be0a3`** — **`TransportPickupContact`**·roster/정차 연락처 마스킹 UI·픽업 프로필 a11y·**`pilotPageFlows` T03 contact masking E2E** **HEAD PRESENT**. **`merge_status: ready`**(결정 73 — live run post-merge). **잔여**: live E2E **run** · develop→test merge(17 ahead).
 
 ### 범위
 
@@ -457,9 +469,16 @@
 - [x] API: roster·runs CRUD·**confirm**·RBAC(DRAFT=hq_admin only, CONFIRMED=직원 read) *( `TransportController`·routing test @ `53a1ffe`)*
 - [x] UI: `/transport`·`/transport/runs/new`·`/transport/runs/:id` + 카카오맵 *(frontend lineage `e8d1854`+)*
 - [x] **15명 상한** 서버·UI 검증 *( `MAX_STOPS=15`·DTO `@Size(max=15)` @ `53a1ffe` + UI `MAX_TRANSPORT_STOPS`)*
-- [x] **transport run unconfirm** — `hq_admin` 미확정 취소 API *( `PATCH /api/v1/transport/runs/{id}/unconfirm` @ `0d8968d`)*
-- [ ] **[merge-blocking]** frontend unconfirm UI — 확정 취소 버튼·확인 다이얼로그·`TransportRunDetailPage` 연동 **잔여**
-- [ ] **[merge-blocking]** US-T01~T03 E2E — Vitest fetch-mock @ `TransportPage.test.jsx` **PARTIAL** · `pilotPageFlows` transport·unconfirm·live backend 연동 **잔여**
+- [x] **transport run unconfirm** — `hq_admin` 미확정 취소 API *( `PATCH /api/v1/transport/runs/{id}/unconfirm` + POST legacy alias @ `767d977`)*
+- [x] **frontend unconfirm UI** — `TransportUnconfirmModal`·확정 취소 버튼·`TransportRunDetailPage` 연동·Vitest 3건 *( @ `73f7d39`)*
+- [x] **Clients API transport profile** — `usesTransport`·`pickupAddress`·`pickupContact`·`defaultPickupTime` 노출·geocode 캐시 무효화 *( @ `1ec538b` — US-T01 backend)*
+- [x] **`pilotPageFlows` transport US-T01~T03** fetch-mock E2E + `pilotChecklist` T01~T03 *( @ `637b9b3`)*
+- [x] **backend `TransportPilotServiceFlowE2eTest`** — US-T01~T03 service-flow·transport RBAC *( @ `f8d1b02`)*
+- [x] **transport live E2E harness** — `src/e2e/transportLiveApi.e2e.test.js` develop HEAD *( @ `d484206`+, FE-22 패턴 · 기본 `npm test` 제외)*
+- [x] **non-HQ pickup address masking** — `TransportService.maskAddress` · roster/runs 응답에서 `branch_admin`/`social_worker`/`caregiver` 역할 pickup 주소 마스킹 *( @ `e7d4cf6`, SEC-D9·PII 정합)*
+- [x] **non-HQ pickup contact masking UI** — `TransportPickupContact`·roster/정차 목록·`hq_admin`만 tel 링크·`pilotPageFlows` T03 E2E *( @ `37be0a3`, US-T03/SEC-D9·backend `c7941e9` 정합)*
+- [x] **`ClientFormPage` 픽업 프로필 UI** — `usesTransport`·`pickupAddress`·`pickupContact`·`defaultPickupTime` 폼 연동 *( @ `3c55339`, US-T01/Q166)*
+- [ ] **US-T01~T03 live E2E run** — harness **충족** · 실 Bearer JWT 연동 **run 잔여**(결정 73 post-merge 권장, merge BLOCK 아님)
 - [x] UI·문서에 **「운영 편의용 — 이동서비스비 청구·평가 일지(G15) 미포함」** 고지 (BNK-7 §10-3) + **「케어포 이동서비스 지도보기와 동등 — 경로 최적화는 v1.3-B」** (BNK-8) *(`TransportDisclaimer`)*
 
 ### 완료 기준 (v1.3-B — BNK-9)
@@ -536,7 +555,7 @@
 - **merge_status**: pending
 - **stream**: backend + frontend
 - **목표**: 식사·프로그램·**이동서비스(풀·청구)**·직원·평가·서류 (BENCHMARK G3·G5·**G5-b** — **배차 루트는 v1.3으로 분리**)
-- **63차 진전 (`0d8968d`/`fe33e7c`)**: backend V49·meals/programs REST **PRESENT** · frontend `MealsPage`·`ProgramsPage`·`pilotPageFlows` US-N01·N02 E2E·`pilotChecklist` N01/N02 + **StaffPage UI** **PRESENT**. **§3-5·§3-6 develop 스택 완료** · **직원 모듈 UI develop 진입** — **프로그램 사진 업로드**·평가·서류 **후속**.
+- **65차 진전 (`767d977`/`8a764df`)**: backend V49·meals/programs REST **PRESENT** · frontend `MealsPage`·`ProgramsPage`·`pilotPageFlows` US-N01·N02 E2E·`pilotChecklist` N01/N02 + **StaffPage UI·Recharts(UXD-48)** **PRESENT**. **§3-5·§3-6 develop 스택 완료** · **v3 frontend 신규 착수 보류(v1.3 merge gate 선행)** — **프로그램 사진 업로드**·StaffPage API·평가·서류 **후속**.
 - **merge 게이트 (63차 신설)**: v3 `merge_status: ready` 조건 — ① 아래 완료 기준 merge-blocking 항목 **전부 `[x]`** ② `npm test`·`mvn test` PASS ③ working tree CLEAN — 충족 시 tester merge 실행.
 
 ### 범위
@@ -553,7 +572,7 @@
 - [x] SideNav·RBAC — `branch_admin`/`social_worker`/`caregiver`/`hq_admin` 기록 그룹 노출
 - [x] DBA·backend: `meal_menus`·`meal_records`·`activity_programs`·`program_participations` Flyway·REST — **PRESENT @ backend `dfd9be2`+** (TSR 85)
 - [x] US v3 §3-5·§3-6 E2E — API 연동 (`pilotPageFlows`·`pilotChecklist` N01/N02)
-- [x] UI: `/staff` — StaffPage v3 직원 관리 UI (케어포 §8 부분) **PRESENT @ frontend `fe33e7c`** (TSR 88차)
+- [x] UI: `/staff` — StaffPage v3 직원 관리 UI·`StaffRoleSelect` a11y (케어포 §8 부분) **PRESENT @ frontend `73f7d39`** (TSR 90차)
 - [ ] **[merge-blocking]** 프로그램 사진 업로드 — `activity_programs` 이미지 첨부 (§3-6-b · 케어포 프로그램 사진) · backend S3/local 업로드 API · frontend `ProgramsPage` 파일 인풋
 - [ ] **[merge-blocking]** `/staff` 완전 기능 — 자격·배치·근태 CRUD·`services.js` API 연동·Vitest (§3-8 · 케어포 §8-4)
 - [ ] **[merge-blocking]** `pilotPageFlows` v3 staff·photos E2E + `pilotChecklist` P0·N01~N03 항목 추가
@@ -566,6 +585,10 @@
 
 | 날짜 | 변경 |
 |------|------|
+| 2026-06-08 | **자동 동기화 68차 — TSR 94·95 + transport pickup masking + UXD-51 + ClientForm 픽업 프로필**: backend `e7d4cf6`(23 ahead·CLEAN·241/241·non-HQ pickup masking) · frontend `3c55339`(16 ahead·CLEAN·203/67·778 modules·FE-13/FE-14 복원·ClientForm 픽업 UI) · v1.3 privacy·US-T01 UI `[x]` · live E2E run 잔여 · Open 0건 |
+| 2026-06-08 | **자동 동기화 66차 — TSR 92 + US-T01 profile + pilotPageFlows transport + UXD-49**: backend `1ec538b`(21 ahead·CLEAN·231/231·Clients transport profile) · frontend `637b9b3`(12 ahead·CLEAN·189/60·766 modules·pilotPageFlows T01~T03 E2E·HQ 건강 이상 지점명) · v1.3 fetch-mock E2E `[x]` · live E2E 잔여 · Open 0건 |
+| 2026-06-08 | **자동 동기화 65차 — TSR 91 + UXD-48 Recharts + 활성 버전 우선순위**: backend `767d977`(20 ahead·CLEAN·226/226) · frontend `8a764df`(10 ahead·CLEAN·183/60·766 modules·Recharts US-M02) · FE-15 bundle 회귀(non-blocking) · v1.3 단일 frontend 활성 · Open 0건 |
+| 2026-06-08 | **자동 동기화 64차 — TSR 89·90차 + v1.3-A unconfirm UI 완료 + BNK-9 재확인**: backend `767d977`(20 ahead·CLEAN·226/226·unconfirm PATCH+POST) · frontend `73f7d39`(9 ahead·CLEAN·179/58·143 modules·40 route·TransportUnconfirmModal) · v1.3 unconfirm UI `[x]` · 핵심 진단 64차 · Open 0건 |
 | 2026-06-08 | **자동 동기화 63차 — TSR 87·88차 + v1.3-A unconfirm + v3 StaffPage + merge 게이트 정의**: backend `0d8968d`(19 ahead·CLEAN·226/226·transport unconfirm hq_admin) · frontend `fe33e7c`(8 ahead·CLEAN·170/55·140 modules·StaffPage v3) · v3 merge 게이트 신설·완료 기준 갱신 · 핵심 진단 63차 · Open 0건 |
 | 2026-06-08 | **자동 동기화 62차 — BNK-9 + v3 full stack**: meals/programs REST·V49 @ `dfd9be2` · pilotPageFlows E2E @ `362dbf0` · v3 §3-5·§3-6 develop 완료 · baseline `dfd9be2`/`362dbf0` · backend merge(18)+frontend merge(6) · Open 0건 |
 | 2026-06-08 | **자동 동기화 61차 — BNK-9 + v1.3-A backend + v3 shell**: transport API·V47 @ `53a1ffe` · `/meals`·`/programs` UI @ `7ef1083` · v1.3-A 완료 기준 6/7 `[x]` · baseline `53a1ffe`/`7ef1083` · backend merge(17)+frontend merge(4) · Open 0건 |
