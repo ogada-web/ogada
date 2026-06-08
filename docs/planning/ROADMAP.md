@@ -1,4 +1,4 @@
-<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-08T15:00:00+00:00 -->
+<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-08T06:39:00+00:00 -->
 # ogada 구현 로드맵
 
 > **작성·유지**: `planner`  
@@ -7,7 +7,7 @@
 > **피드백**: `tester` → `docs/qa/QA_FEEDBACK.md` → `planner` 반영 → `coder` 수정  
 > **벤치마크 입력**: `docs/planning/research/BENCHMARK_REPORT.md`, `docs/planning/research/COMPETITOR_MATRIX.md`, `memory/decisions.md`
 
-> **CURRENT BASELINE (43차 — ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`3f9264f`** · frontend develop **`e043eac`** · `.agents/workspace_baseline.yaml` · run_agent build 실측 주입. **`d5654c0`/`e5fd48d` checkout 재현 금지**.
+> **CURRENT BASELINE (63차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`0d8968d`** · frontend develop **`fe33e7c`** · frontend test **`c510f5c`**(v1.2 merged) · backend test **`2799e29`**(stale, 19 ahead) · planner 63차 실측 (TSR 87차/88차 기준) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**(BNK-9 문서 drift).
 
 ---
 
@@ -40,7 +40,33 @@
 
 > **15차 동기화 (2026-06-06T19:00) — TSR 17·18·19차 반영 (B02 Fixed 확정 + B07 FE-7 회복·범위 확대)**: ① **TSR 17차(18:34, backend)**: COD 14차 `b5d70a8` GuardianAccess RBAC 3 tests **TSR 독립 검증 Fixed** — develop working tree **CLEAN**, `@Test` 98. **QA-B02 recurrence Planned→Fixed**. ② **TSR 18차(18:42, backend)**: 상태 **불변** — Maven 79/79 재현, 잔여 BLOCK = **merge 게이트 단일**(B01·SEC-007). ③ **TSR 19차(18:45, frontend)**: develop HEAD `998ac87` 불변·working tree **35 files**(16차 29→35, v1.2 P0 WIP 추가), WT `npm test` **10/4 PASS**·`npm run build` **107 modules PASS**(16차 FAIL **회복**, FE-7 충족). **B07 Planned 유지** — dirty-tree·규율 6·7 위반 **지속**. **잔여 BLOCK = merge 게이트 3건(B01·B03·B05·SEC-007) + B07 recurrence(Planned, frontend dirty-tree 단일)** — backend dirty-tree·B02 사유 **소멸**.
 
-> **43차 동기화 (2026-06-08T15:00) — workspace baseline 확정 + SEC-D12/QA-B11/SEC-D11 Fixed**: ① **신규 baseline** — backend **`3f9264f`** · frontend **`7c0ecdc`** (`.agents/workspace_baseline.yaml` + run_agent 실측). ② **`d5654c0`/`e5fd48d` checkout 폐기** — TSR57 frontend 유실·재현 불가. ③ **SEC-D12·QA-B11·SEC-D11 Fixed** @ `7c0ecdc`/`3f9264f`. ④ **QA-B10 Fixed** @ `3f9264f` 유지. ⑤ **잔여 BLOCK**: **backend merge(3커밋) + FE-18·FE-19 + B03** — INFRA-B12 checkout 게이트 **소멸**.
+> **63차 동기화 (2026-06-08T06:39 UTC) — TSR 87·88차 + v1.3-A transport unconfirm + v3 StaffPage + Open 0건**: ① **planner git 실측(TSR 87·88차 기준)** — backend **`0d8968d`**(+1 vs `dfd9be2`: v1.3-A transport run unconfirm hq_admin, 6 files +102) WT **CLEAN** · **`mvn test` 226/226** · **19 ahead** · frontend **`fe33e7c`**(+8 vs `c510f5c`: 86차 `362dbf0` +2 UXD-46 CSS·체크인 a11y · `fe33e7c` v3 StaffPage UI) WT **CLEAN** · **`npm test` 170/55 PASS** · **140 modules** · test **`c510f5c`**. ② **v1.3-A backend** — transport run unconfirm hq_admin API @ `0d8968d` **HEAD PRESENT** · frontend unconfirm UI **잔여** · US-T01~T03 live E2E 잔여. ③ **v3 StaffPage UI** — frontend **`fe33e7c`**에 StaffPage v3 포함 · ROADMAP v3 직원 모듈 진전 (**merge 게이트 이번 63차 정의**). ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(19) + SEC-D14(backend) + frontend merge(8)** + v1.3 unconfirm UI·live E2E + post-merge live E2E(결정 73).
+
+> **62차 동기화 (2026-06-08T14:00) — BNK-9 재확인 + v3 meals/programs full stack + v1.3 live E2E 잔여**: ① **planner git 실측** — backend **`dfd9be2`**(+1 vs `53a1ffe`: v3 meals/programs REST·V49) WT **CLEAN** · **`mvn test` 224/224** · **18 ahead** · frontend **`362dbf0`**(+2 vs `7ef1083`: `3e9a9ab` v3 a11y · `362dbf0` pilotPageFlows US-N01·N02 E2E) WT **CLEAN** · **`npm test` 164/54 PASS** · **39 Route·47 page** · test **`c510f5c`**. ② **v3 §3-5·§3-6 develop 완료** — backend V49·`/api/v1/meals/*`·`/api/v1/programs/*` **PRESENT** · frontend E2E·`pilotChecklist` N01/N02 **PRESENT** · **프로그램 사진 업로드**·직원·평가 **후속**. ③ **v1.3-A** — transport API @ `53a1ffe`+ lineage **PRESENT** · **US-T01~T03 live E2E·`pilotPageFlows` transport 잔여**. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(18) + SEC-D14(backend) + frontend merge(6)** + v1.3 live E2E·post-merge live E2E(결정 73).
+> **61차 동기화 (2026-06-08T13:30) — BNK-9 재확인 + v1.3-A backend API + v3 meals/programs UI shell**: ① **planner git 실측** — backend **`53a1ffe`**(+1 vs `52e0621`: v1.3-A transport API·V47·Kakao geocode proxy) WT **CLEAN** · **`mvn test` 212/212** · **17 ahead** · frontend **`7ef1083`**(+2 vs `c510f5c`: `f0b174a` v1.3 a11y · `7ef1083` v3 `/meals`·`/programs` UI shell) WT **CLEAN** · **`npm test` 157/53 PASS** · **39 Route·34 page** · test **`c510f5c`**. ② **v1.3-A backend @ `53a1ffe`** — `/api/v1/transport/*`·V47·`TransportServiceTest`·`TransportControllerRoutingTest` **HEAD PRESENT** · frontend 연동·E2E **잔여**. ③ **v3 frontend PARTIAL @ `7ef1083`** — `MealsPage`·`ProgramsPage`·API 클라이언트·Vitest **HEAD PRESENT** · backend meals/programs API **ABSENT**. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(17) + SEC-D14(backend) + frontend merge(4)** + v1.3 E2E·post-merge live E2E(결정 73).
+> **60차 동기화 (2026-06-08T12:30) — TSR 82 + BNK-9 재확인 + v1.3 transport UI shell + copay PAID alimtalk + UXD-43 UNMATCHED**: ① **planner git 실측** — backend **`52e0621`**(+1 vs `ac17ad8`: copay claim CONFIRMED→PAID 시 `BILLING_PAYMENT_RECEIVED` alimtalk dispatch) WT **CLEAN** · **`mvn test` 202/202** · **16 ahead** · frontend **`e8d1854`**(+2 vs `c510f5c`: `f01e3a8` UXD-43 US-G06 UNMATCHED 후보 검색 · `e8d1854` v1.3 transport UI shell US-T01~T03) WT **CLEAN** · **`npm test` 150/50 PASS** · **37 Route·41 page** · test **`c510f5c`**. ② **TSR 82** — v2/J03 copay PAID 알림톡·SMS fallback. ③ **v1.3-A frontend PARTIAL** — `/transport`·`/transport/runs/new`·`/transport/runs/:id`·`TransportDisclaimer`·카카오맵 컴포넌트 **HEAD PRESENT** · **backend `/api/v1/transport/*` ABSENT**(DBA·API 선행). ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(16) + SEC-D14(backend) + frontend merge(2)** + post-merge live E2E(결정 73).
+> **59차 동기화 (2026-06-08T12:00) — TSR 80·81 + BNK-9 재확인 + US-G06 DISCREPANCY + AlimtalkFallbackText + v1.2 frontend merged**: ① **planner git 실측** — backend **`ac17ad8`**(+1 vs `4c74f84`: `AlimtalkFallbackText`·SMS fallback relay) WT **1U**(`data/` 로컬 산출물, 비차단) · **`mvn test` 198/198** · **15 ahead** · frontend **`c510f5c`**(+2 vs `95b92b9`: `fd4e8f3` US-G06 `DiscrepancyComparePanel` · `c510f5c` pilotPageFlows US-G06 E2E) WT **CLEAN** · **`npm test` 143/46 PASS** · **34 Route·38 page** · develop=test **`c510f5c`**(**v1.2 merged**). ② **TSR 80** — v2/J03 `AlimtalkFallbackText` 한국어 SMS fallback · `incidentType`→`category` alias. ③ **TSR 81** — US-G06 DISCREPANCY 청구 라인 비교 Modal·E2E. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(15) + SEC-D14(backend) 단일** + post-merge live E2E(결정 73). ⑥ **v1.2 frontend `merge_status: merged`** @ test `c510f5c`.
+> **58차 동기화 (2026-06-08T11:00) — TSR 79·80 + BNK-9 재확인 + UXD-41 US-F03 + Solapi template variables + Q154 incident detail**: ① **planner git 실측** — backend **`4c74f84`**(+1 vs `32a1f8f`: `AlimtalkTemplateVariables`·Solapi provider) WT **CLEAN** · **`mvn test` 191/191** · **14 ahead** · frontend **`95b92b9`**(+2 vs `4957bd3`: `3ec8206` UXD-41 `IncidentRecordForm` · `95b92b9` Q154 incident `detail` 필드) WT **CLEAN** · **`npm test` 137/45 PASS** · build **124 modules** · **34 Route·38 page** · develop **13 ahead** · test **`4f71543`**. ② **TSR 79** — v2/J03 Solapi 알림톡 템플릿 변수 매핑. ③ **TSR 80** — UXD-41 US-F03 낙상·사고·특이사항 UI · Q154 incident API 정합. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(14) + B03/SEC-D14(backend) + v1.2 develop 13 ahead** + post-merge live E2E(결정 73). ⑥ **v1.2 P0 게이트 충족** · P1 **v1.2.1 후순위** · `merge_status: ready` coder 판단 대기.
+> **57차 동기화 (2026-06-08T10:00) — TSR 77·78 + BNK-9 재확인 + UXD-40·Q154 API 정합 + J03 service-layer E2E**: ① **planner git 실측** — backend **`32a1f8f`**(+1 vs `0832fbf`: `J03AlimtalkServiceFlowE2eTest`·`AttendanceServiceTest` check-out dispatch) WT **CLEAN** · **`mvn test` 185/185** · **13 ahead** · frontend **`4957bd3`**(+2 vs `c5708c7`: `9863312` UXD-40 vitals 비정상 경고 · `4957bd3` Q154 건강·NHIS API 본문 정합) WT **CLEAN** · **`npm test` 130/44 PASS** · build **123 modules** · **33 Route·33 page** · develop **11 ahead** · test **`4f71543`**. ② **TSR 77** — `healthApiPayload.js`·`vitalsRanges.js`(US-F01 UXD-40) · `NhisReconciliationTable` 필드 fallback(US-G06) — **FAQ Q154 Fixed**. ③ **TSR 78** — service-layer alimtalk flow E2E 5건(US-J03 v2 follow-up). ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(13) + B03/SEC-D14(backend) + v1.2 develop 11 ahead** + post-merge live E2E(결정 73). ⑥ **v1.2 P0 게이트 충족** · P1 **v1.2.1 후순위** · `merge_status: ready` coder 판단 대기.
+> **56차 동기화 (2026-06-08T09:00) — TSR 76 + BNK-9 재확인 + UXD-39·vitals DAILY_CARE dispatch**: ① **planner git 실측** — backend **`0832fbf`**(+1 vs `8ce1151`: vitals DAILY_CARE dispatch) WT **CLEAN** · **`mvn test` 179/179** · **12 ahead** · frontend **`c5708c7`**(+1 vs `a627c6d`: UXD-39 Must 흐름 UI) WT **CLEAN** · **`npm test` 115/40 PASS** · build **120 modules** · **33 Route·33 page** · develop **9 ahead** · test **`4f71543`**. ② **TSR 76** — `VitalsRecordForm`·`MedicationRecordForm`·`NhisReconciliationTable`(US-F01·F02·G06 UI) · `HealthRecordService` vitals→DAILY_CARE alimtalk(US-J03 v2 follow-up). ③ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ④ **QA Open 0건** — 잔여 BLOCK: **backend merge(12) + B03/SEC-D14(backend) + v1.2 develop 9 ahead** + post-merge live E2E(결정 73). ⑤ **v1.2 P0 게이트 충족** · P1 **v1.2.1 후순위** · API 본문 정합(건강·NHIS) **잔여**(FAQ Q154).
+> **55차 동기화 (2026-06-08T08:30) — TSR 74·75 재확인 + BNK-9 불변 + planner git 실측 일치**: ① **planner git 실측** — backend **`8ce1151`** WT **CLEAN** · **`mvn test` 178/178** · **11 ahead** · frontend **`a627c6d`** WT **CLEAN** · **`npm test` 110/36 PASS** · **33 Route·33 page** · build **117 modules** · develop **8 ahead** · test **`4f71543`**. ② **TSR 74·75** — V46 알림 이력 인덱스 · Epic E(US-E01~E05) 출석·QR·통계 **진전 확인**. ③ **BNK-9 불변** — Directions 다중경유 5k/16원 · 러-1~4 실액 · G17~G19 Won't v1 · #44 law.go.kr 잔여. ④ **QA Open 0건** — 잔여 BLOCK: **backend merge(11) + B03/SEC-D14(backend) + v1.2 develop 8 ahead** + post-merge live E2E(결정 73). ⑤ **v1.2 P0 게이트 충족** — ≥60% KPI·P0 E2E `[x]` · P1(급여제공·직원·간편계산기) **v1.2.1 후순위** — `merge_status: ready`는 P1 범위 확정 후 coder 설정.
+> **54차 동기화 (2026-06-08T07:30) — TSR 74·75 + BNK-9 재확인 + V46 알림 이력 인덱스 + v1.2 출석 Epic E**: ① **planner git 실측** — backend **`8ce1151`**(+1 vs `c53dd3b`: `V46__notification_history_query_index.sql`) WT **CLEAN** · **`mvn test` 178/178** · **11 ahead** · frontend develop **`a627c6d`**(+2 vs `9bdf59f`: `6f3f746` US-E01·E02 수기 출석 · `a627c6d` US-E03 QR 저장·US-E05 출석 통계 API) WT **CLEAN** · **`npm test` 110/36 PASS** · **33 Route·33 page** · build **117 modules** · test **`4f71543`** · develop **8 ahead**. ② **TSR 74**: V46 알림 이력 조회 인덱스 — **US-J03 v2 follow-up**. ③ **TSR 75**: 파일럿 출석 Epic E(수기 체크인/아웃·QR·월별 통계) — **결정 57 P2·US-E01~E05** 진전. ④ **BNK-9 불변** · **QA Open 0건** — 잔여 BLOCK: **backend merge(11) + B03/SEC-D14(backend)** + v1.2 develop **8 ahead** + post-merge live E2E(결정 73).
+> **53차 동기화 (2026-06-08T01:00) — TSR 72·73 + BNK-9 재확인 + v2 알림 이력 API + v1.2 P0 E2E·US-E04**: ① **planner git 실측** — backend **`c53dd3b`**(+1 vs `78e8928`: v2/J03 guardian·staff **notification history APIs**) WT **CLEAN** · **`mvn test` 178/178** · **10 ahead** · frontend develop **`9bdf59f`**(+2: `a68f150` GuardianCheckinPage DS FilterChips(US-E04) · `9bdf59f` P0 CRUD E2E·`PaymentRecordModal`·보호자 초대/수정) WT **CLEAN** · **`npm test` 97/30 PASS** · **33 Route·33 page** · build **114 modules** · test **`4f71543`** · develop **6 ahead**. ② **TSR 72**: `GuardianNotificationHistoryController`·`StaffClientNotificationHistoryController`·`NotificationHistoryService`(+test) — **US-J03 v2 follow-up**. ③ **TSR 73**: v1.2 P0 CRUD E2E·입금 모달·보호자 초대/수정 UI — Epic K·L 진전. ④ **BNK-9 불변** · **QA Open 0건** — 잔여 BLOCK: **backend merge(10) + B03/SEC-D14(backend)** + v1.2 develop **6 ahead** + post-merge live E2E(결정 73).
+> **52차 동기화 (2026-06-08T23:00) — TSR 70·71 + BNK-9 재확인 + v1.2 UXD 15 pages·P0 KPI**: ① **planner git 실측** — backend **`78e8928`**(+1 vs `44e0f02`: v2/J03 DAILY_CARE 투약 알림톡 dispatch) WT **CLEAN** · **`mvn test` 171/171** · **9 ahead** · frontend develop **`42f48e1`**(+2: `0d83a42` UXD 15 missing pages · `42f48e1` P0 page-flow·module coverage KPI) WT **CLEAN** · **`npm test` 89/28 PASS** · **33 Route·33 page** · test **`4f71543`** · develop **4 ahead**. ② **TSR 71**: UXD 15 pages(US-D01·E03-E05·F04·G01-G07·H01-H04·B01·A01) · module coverage KPI 테스트 · build **114 modules**. ③ **TSR 70**: `HealthRecordService` 투약기록→보호자 DAILY_CARE alimtalk — **US-J03 v2 follow-up**. ④ **BNK-9 불변** · **QA Open 0건** — 잔여 BLOCK: **backend merge(9) + B03/SEC-D14(backend)** + v1.2 develop **4 ahead** + post-merge live E2E(결정 73).
+> **51차 동기화 (2026-06-08T22:00) — TSR 68·69 + BNK-9 재확인 + v1.1 merged + v1.2 UXD 35 커밋**: ① **planner git 실측** — backend **`44e0f02`**(+1 vs `c221531`) WT **CLEAN** · **`mvn test` 170/170** · **8 ahead** · frontend develop **`e0eaf32`**(+2: UXD 35 `64468a3` P0 UI·SideNav · `e0eaf32` guardians RBAC) WT **CLEAN** · **`npm test` 82/27 PASS** · **18 Route·18 page** · test **`4f71543`**(v1.1 merged) · develop **2 ahead**. ② **TSR 69**: v1.1 **`merge_status: merged`** · SEC-D14 **frontend portion 해소** · 50차 **24 files WIP → `64468a3` develop 커밋**(#36 frontend dirty-tree **해소**). ③ **BNK-9 불변** — Directions 5k/16원 · 러-1~4 실액 · G17~G19 Won't v1 · #44 law.go.kr 잔여. ④ **QA Open 0건** — 잔여 BLOCK: **backend merge(8) + B03/SEC-D14(backend)** + v1.2 develop **2 ahead** + post-merge live E2E(결정 73).
+> **50차 동기화 (2026-06-08T21:00) — BNK-9 재확인 + frontend dirty-tree 재확대 + baseline HEAD 불변**: ① **planner git 실측** — backend **`c221531`** WT **3M** 불변 · **7 ahead** · frontend **`4f71543`** WT **24 files**(49차 1M→**재확대**) — Must 페이지·공통 UI WIP(`DashboardWidgetGrid`·`FileUpload`·`GuardianInviteModal`·`HealthAbnormalBanner`·`NhisImportGuidePanel`·`MaskedRevealField` + Attendance/Billing/Client/Health/NHIS/Dashboard modified) · **18 Route·18 page** · develop=test **동일 SHA**. ② **HEAD Fixed @ `4f71543` 유효**(이관 규율 5) — recurrence는 **미커밋 v1.2/Must UI WIP 단일**. ③ **BNK-9 불변** — Directions 5k/16원 · 러-1~4 실액 · G17~G19 Won't v1 · #44 law.go.kr 잔여. ④ **QA Open 0건** — 잔여 BLOCK: **backend merge(7) + B03/SEC-D14** + **WT dirty-tree(27 files)** commit/revert.
+> **49차 동기화 (2026-06-08T20:00) — TSR 66·67 + BNK-9 재확인 + baseline HEAD 갱신**: ① **planner git 실측** — backend **`c221531`** WT **3M**(GlobalExceptionHandler·NotificationConfig·SecurityConfig) · `mvn test` **169/169 PASS** · **7 ahead** · frontend **`4f71543`** WT **1M**(`vite.config.js`) · `npm test` **58/18 PASS** · build **86 modules** · audit **0** · **18 Route·18 page** · develop=test **동일 SHA**(frontend 0 ahead). ② **TSR 66 @ `c221531`**: v2/J03 daily care·emergency health alimtalk E2E(+11 tests) · v1 baseline artifacts **PRESENT**. ③ **TSR 67 @ `4f71543`**: UXD SideNav·AppShell(`f64e1dd`) · FE-22 liveConfig fail-fast(`4f71543`) · **v1.2 P0 SideNav 진전**. ④ **BNK-9 불변** — Directions 5k/16원 · 러-1~4 실액 · G17~G19 Won't v1. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(7) + B03/SEC-D14** + WT dirty-tree(4 files) 정리.
+> **48차 동기화 (2026-06-07T17:30) — 사용자 결정 73: live E2E merge 게이트 제외 + v1.1 `merge_status: ready`**: ① **결정 73** — Must P1–P8·J01/J02 **live E2E run은 merge 선행 조건 아님**(post-merge·권장 검증). ② **v1.1 merge 게이트 충족** — 완료 기준 merge-blocking 항목 전부 `[x]` · **`merge_status: ready`**. ③ **잔여 BLOCK**: **backend merge(6) + frontend merge(11) + B03** — live E2E run **제외**.
+
+> **47차 동기화 (2026-06-08T18:30) — TSR 64·65 + BNK-9 벤치마크 + BE-11 Fixed + FE-22 harness PARTIAL + baseline HEAD 갱신**: ① **planner git 실측** — backend **`80bdb1e`** WT **CLEAN** · `mvn test` **158/158 PASS** · **6 ahead** · frontend **`d592a17`** WT **CLEAN** · `npm test` **46/13 PASS** · build **75 modules** · audit **0** · **18 Route·18 page** · **11 ahead**. ② **TSR 64 @ `80bdb1e`**: **BE-11 Fixed @ `8d42bdd`** — SEC-20260608-014 **Planned→Fixed** · `AuthRateLimitService` HEAD PRESENT. ③ **TSR 65 @ `d592a17`**: **FE-22 harness develop HEAD 반영** — `src/e2e/*`·`vitest.live.config.js` PRESENT · **실 live run**은 merge·backend·`LIVE_E2E` 후. ④ **BNK-9**: 카카오 Directions API 요금 확정(다중 경유지 5k/16원) · 이동서비스비 러-1~4 830/2,630/4,440/6,240원(2차 출처) · **G17·G18·G19 Won't v1** · v1.2 KPI **18 route @ `d592a17`**(과거 24 route·`4be0938` drift 정정). ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(6) + frontend merge(11) + B03** + v1.1 **live E2E 실행**(FE-22 harness 완료·run 잔여). **→ 48차 결정 73으로 live E2E merge BLOCK 해제**.
+
+> **46차 동기화 (2026-06-08T17:30) — SEC 6차 Open 2건 Planned + BNK-8 COMPETITOR_MATRIX 정합 + baseline 불변 재확인**: ① **planner 실측** — backend **`136239e`** WT **CLEAN** · `mvn test` **152/152 PASS** · **4 ahead** · frontend **`7170b2a`** WT **CLEAN** · `npm test` **40/11 PASS** · audit **0** · **9 ahead** — **45차와 완전 동일**. ② **SEC 6차 Open→Planned** — **SEC-20260608-013**(SEC-D14 develop→test 미승격) → **B03·backend/frontend merge 게이트** 동반(기존 BLOCK 강화) · **SEC-20260608-014**(SEC-D13 auth rate limit) → **BE-11**·`SECURITY_AUDIT.md` A04-1. ③ **BNK-8 정합** — `COMPETITOR_MATRIX` §1 케어포 **배차 지도 △**(카카오맵 지도보기) 수정. ④ **신규 태스크** — **FE-22**(Must·J01 live E2E)·**BE-11**(AuthRateLimitService). ⑤ **잔여 BLOCK**: **backend merge(4) + frontend merge(9) + B03** + v1.1 **Must 라이브 E2E·J01 live API E2E** + **BE-11**(SEC-D13).
+
+> **45차 동기화 (2026-06-08T16:10) — TSR 62·63차 + COD Must API·J01 REST 반영 + baseline HEAD 갱신**: ① **backend develop `3f9264f`→`136239e`**(+1: Solapi alimtalk·GuardianPhoneStorage), WT **CLEAN**, `mvn test` **152/152 PASS**, **4커밋 ahead**. ② **frontend develop `c3b863e`→`7170b2a`**(+4: `b87a8f5` J01 a11y·`811aef3` Must API·pilot·7-role·SEC-008·`bb0cec4` billing RBAC·`7170b2a` guardian REST+J01/J02 tests), WT **CLEAN**, `npm test` **40/11 PASS**, build PASS, audit **0**. ③ **TSR 63차 @ `811aef3`**: QA-H04·M01·R-04a·R-05·SEC-008 **Fixed** — `pilotChecklist`·`pilotPageFlows`·`sevenRole*`·Must pages HEAD **PRESENT**. ④ **COD `7170b2a`**: J01 `ClientDetailPage`·J02 `GuardianPortalPage` REST API fetch-mock 회귀 — **live E2E 잔여**. ⑤ **잔여 BLOCK**: **backend merge(4) + frontend merge(9) + B03** + v1.1 **Must 라이브 E2E·J01 live API E2E**.
+
+> **44차 동기화 (2026-06-08T16:00) — TSR 61차 + COD FE-18/FE-19 Fixed + baseline HEAD 갱신**: ① **frontend develop `e043eac`→`c3b863e`**(+2커밋: `f506c90` FE-18/FE-19 J01 UI·`c3b863e` US-UX-01 favicon), WT **CLEAN**, `npm test` **9/9 PASS**, build **70 modules PASS**. ② **FE-18·FE-19·B07 #6·H05·SEC-D9 Fixed @ `f506c90`** — `GuardianInvitationList`·`PaymentRecordModal`·`GuardianPortalPage`·`services.js` HEAD PRESENT. ③ **TSR 61차** baseline `e043eac` — SEC-D12·MaskedPhone 6/6 PASS·B07 dirty-tree(d5654c0) **소멸** 확인. ④ **v1.1 완료 기준 잔여**: H04 Must API·P1–P8 E2E·J01 live E2E·SEC-008 audit·`pilotPageFlows` — **`c3b863e` lineage 재구현**. ⑤ **잔여 BLOCK**: **backend merge(3커밋) + frontend merge(5커밋) + B03**.
+
+> **43차 동기화 (2026-06-08T15:00) — workspace baseline 확정 + SEC-D12/QA-B11/SEC-D11 Fixed**: ① **신규 baseline** — backend **`3f9264f`** · frontend **`7c0ecdc`** (`.agents/workspace_baseline.yaml` + run_agent 실측). ② **`d5654c0`/`e5fd48d` checkout 폐기** — TSR57 frontend 유실·재현 불가. ③ **SEC-D12·QA-B11·SEC-D11 Fixed** @ `7c0ecdc`/`3f9264f`. ④ **QA-B10 Fixed** @ `3f9264f` 유지. ⑤ **잔여 BLOCK**: **backend merge(3커밋) + B03** — INFRA-B12 checkout 게이트 **소멸**.
 
 > **42차 동기화 (2026-06-08T03:00) — TSR 58·59차 + BNK-8 반영 (Open 4→Planned·B09 Fixed·baseline 회귀·BLOCK 재우선순위)**: ① **QA Open 4건→Planned** — **QA-B10**(v1 merged baseline regression)·**SEC-D11**(submodule drift)·**SEC-D12**(frontend route 무방비)·**QA-B11**(frontend baseline 단절) → **BE-10·INFRA-B12·FE-20**·PLAN_NOTES `#42`. ② **TSR 58차**: backend develop **`f47ffa1` CLEAN** · **QA-B09·SEC-D8 Fixed** · test **`2799e29` stale** · develop **1커밋 ahead** · v1 E2E/routing 산출물 develop HEAD **ABSENT**(QA-B10). ③ **TSR 59차**: frontend develop·test **동일 `@e5fd48d`(스켈레톤)** · TSR57 **`d5654c0` 재현 불가** · `ProtectedRoute`·Vitest **HEAD ABSENT**(SEC-D12·QA-B11). ④ **BNK-8**: v1.3-A = **케어포 지도 패리티**(차별화 아님) · v1.3-B(TSP·도로경로) = **영업 차별 핵심**. ⑤ **잔여 Planned BLOCK**: **INFRA-B12 + BE-10 + FE-19 + FE-18 + backend merge(1커밋 @ `f47ffa1`) + B03** — B09 **소멸**.
 
@@ -98,7 +124,52 @@
 
 > **13차 동기화 (2026-06-06T18:10) — TSR 15·16차 반영 (B02 recurrence + B07 WT 품질 회귀)**: ① **TSR 15차(18:04, backend)**: develop HEAD `fac3d07` 불변·13차 clean 후 working tree **재오염** — `RoleBasedControllerAccessTest` guardian/client_user RBAC +74 lines 미커밋(**QA-B02 recurrence**). → **B02 Open→Planned**, v1 완료 기준 QA-B02 `[x]` **철회**, USER_STORIES §17 **BE-6**. ② **TSR 16차(18:07, frontend)**: develop HEAD `998ac87` 불변·working tree **악화** 19→**29 files**(14M+15U), WT `npm test`·`npm run build` **FAIL**(`routeAccess.js` duplicate `ROUTE_ACCESS`). → **B07 Planned 강화**, USER_STORIES **FE-7**(커밋 전 build/test PASS). **잔여 BLOCK = merge 게이트 4건 + B02 recurrence(Planned) + B07 recurrence(Planned, 16차)** — 양 스트림 dirty-tree 병행.
 
-### 핵심 진단 (planner, 63차 갱신 — baseline 43차 확정)
+### 핵심 진단 (planner, 63차 갱신 — TSR 87·88차 + v1.3-A transport unconfirm + v3 StaffPage + Open 0건)
+
+- **CURRENT BASELINE (63차)**: backend develop **`0d8968d`**(WT **CLEAN** · **`mvn test` 226/226** · **19 ahead**) · frontend develop **`fe33e7c`**(WT **CLEAN** · **`npm test` 170/55** · **140 modules** · test **`c510f5c`** · develop **8 ahead**). **git 실측(TSR 87·88차)** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **폐기 SHA**: `d5654c0`(TSR57)·`e5fd48d`(스켈레톤)·`428ba7d`(TSR56) — **checkout 재현 금지**. **`4be0938`**·24 route — **git object 없음**(BNK-9 drift).
+- **결정 73 (48차)**: live E2E run은 merge 선행 조건 **아님** — post-merge 권장(FE-22 harness lineage **PRESENT**).
+- **v1.1·v1.2**: **`merge_status: merged`** @ frontend test **`c510f5c`**.
+- **v1.3-A (63차)**: backend **`0d8968d`** — transport run unconfirm hq_admin(V47+) **HEAD PRESENT** · frontend transport UI @ `e8d1854`+ lineage · v3 a11y @ `3e9a9ab`+ lineage **PRESENT** · **US-T01~T03 live E2E·`pilotPageFlows` transport·unconfirm UI 잔여**.
+- **v3 (63차 진전)**: backend **`dfd9be2`+** lineage — V49·meals/programs REST **PRESENT** · frontend **`fe33e7c`** — UI·a11y·`pilotPageFlows` US-N01·N02 E2E + **StaffPage UI(v3)** **PRESENT** · **프로그램 사진 업로드**·평가·서류 **후속** · **merge 게이트·완료 기준 ROADMAP 정의 — 본 63차에서 정의(아래 v3 완료 기준 갱신)**.
+- **v2/J03 follow-up**: copay PAID alimtalk @ `52e0621` lineage — **live Solapi·프론트 알림 UI 잔여**.
+- **SEC-D14/B03**: backend develop→test **19커밋** · frontend develop→test **8커밋** 미승격 — merge 게이트 **BLOCK**.
+- **잔여 Planned BLOCK**: **backend merge(19) + SEC-D14(backend) + frontend merge(8)** + v1.3 live E2E·unconfirm UI + post-merge live E2E(결정 73).
+- **BNK-9 (47~63차 재확인)**: Directions 다중경유 5k/16원 · 이동서비스비 830~6,240원(2차) · G17~G19 Won't v1 — **변경 없음** · #44 law.go.kr 1차 확인 잔여.
+- **v1.2 P1**: 급여제공·직원·간편계산기 — **v1.2.1 후순위**(merge 게이트 비차단).
+- **모듈 커버 (63차 추정)**: v1.2 ≥60% KPI + transport(케어포 2장)·meals/programs(케어포 3·5장)·StaffPage(케어포 8장 부분) **develop 연동 완료** → **~67–70%** (BNK-6 KPI, 프로그램 사진·평가 △).
+
+### 핵심 진단 (planner, 62차 갱신 — **superseded by 63차**)
+
+### 핵심 진단 (planner, 70차 — **superseded by 71차**)
+
+- **CURRENT BASELINE (50차)**: backend develop **`c221531`**(WT **3M** — TSR 66 CLEAN 직후 재오염) · frontend develop **`4f71543`**(WT **24 files** — Must UI·공통 컴포넌트 WIP **재확대**) · **18 route·18 page**. **git 실측** — ROADMAP/QA/workspace_baseline 과거 SHA보다 **우선**.
+- **폐기 SHA**: `d5654c0`(TSR57)·`e5fd48d`(스켈레톤)·`428ba7d`(TSR56) — **checkout 재현 금지**. **`4be0938`**·24 route — **git object 없음**(BNK-9 drift).
+- **결정 73 (48차)**: live E2E run은 merge 선행 조건 **아님** — post-merge 권장(FE-22 harness @ `4f71543` **PRESENT**).
+- **v1.1 merge 게이트**: merge-blocking `[x]` · **`merge_status: merged`** — frontend develop=test @ `4f71543`(test 승격 완료) · backend **7 ahead** 잔여(B03/SEC-D14).
+- **v1.2 진전 (TSR 67) + 50차 WIP**: UXD **`f64e1dd`** SideNav·AppShell — US-UX-02 2단 SideNav **WIP**(@HEAD 미완). **추가 WIP**: `DashboardWidgetGrid`·`FileUpload`·`GuardianInviteModal`·`NhisImportGuidePanel`·`MaskedRevealField` 등 Must UI cluster — **FE-6 dirty-tree**(HEAD Fixed 유효).
+- **SEC-D14/B03**: backend develop→test **7커밋** 미승격 — merge 게이트 **BLOCK**.
+- **잔여 Planned BLOCK**: **backend merge(7) + B03/SEC-D14** + WT dirty-tree(**27 files**) commit/revert.
+- **BNK-9 (47·49·50차 재확인)**: Directions 다중경유 5k/16원 · 이동서비스비 830~6,240원(2차) · G17~G19 Won't v1 — **변경 없음** · #44 law.go.kr 1차 확인 잔여.
+
+### 핵심 진단 (planner, 65차 — **superseded by 66차**)
+
+- **CURRENT BASELINE (45차)**: backend develop **`136239e`**(CLEAN) · frontend develop **`7170b2a`**(CLEAN). TSR 63 Fixed · COD `7170b2a` J01/J02 fetch-mock · 잔여 BLOCK merge(4+9)+B03+라이브 E2E 2건.
+
+### 핵심 진단 (planner, 64차 — **superseded by 66차**)
+
+- **CURRENT BASELINE (44차)**: backend develop **`3f9264f`**(CLEAN, BE-10·J01·v2/J03) · frontend develop **`c3b863e`**(CLEAN, MVP+vitest·FE-18/19·favicon). **`.agents/workspace_baseline.yaml`** + run_agent build **실측 주입** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **폐기 SHA**: `d5654c0`(TSR57 frontend)·`e5fd48d`(스켈레톤)·`428ba7d`(TSR56) — **checkout 재현 금지**. v1.2 Recharts·`pilotPageFlows`·Must API 전면 연동 등 **d5654c0 lineage** — **`c3b863e` 위 재구현 잔여**.
+- **FE-18·FE-19 Fixed @ `f506c90`**: `GuardianInvitationList`·`PaymentRecordModal`·`GuardianPortalPage`·`GuardianInvitationAcceptPage`·`services.js` HEAD **PRESENT** · `npm test` **9/9 PASS** · B07 #6·H05·SEC-D9 **소멸**.
+- **US-UX-01 @ `c3b863e`**: 브랜드 favicon 복구 커밋 — HEAD 반영.
+- **QA-B10 Fixed @ `3f9264f`**: v1 E2E/routing/SEC-007 develop HEAD **PRESENT** — BE-10 **완료**.
+- **backend merge gap**: develop **3커밋 ahead** of test — merge 게이트 **BLOCK**.
+- **frontend merge gap**: develop **`c3b863e`** vs test **`e5fd48d`** — **5커밋 ahead** — B03 merge 게이트 **BLOCK**.
+- **v1.1 완료 기준(TSR 61·44차)**: H04 Must API **FAIL** · M01 **PARTIAL**(9/9 vs P1–P8) · R-05/R-07 J01 **FAIL**(live E2E) · SEC-008 audit **4 vuln**(non-blocking) · `pilotPageFlows`·`pilotChecklist` **ABSENT**.
+- **잔여 Planned BLOCK**: **backend merge(3커밋) + frontend merge(5커밋) + B03** — INFRA-B12·FE-18·FE-19 **소멸**.
+- **#36 운영 게이트 (결정 63)**: baseline 주입(L1) **적용** · L2 pre-commit·L3 CI build 승인 대기.
+
+### 핵심 진단 (planner, 63차 — **superseded by 64차**)
 
 - **CURRENT BASELINE (43차)**: backend develop **`3f9264f`**(CLEAN, BE-10·J01·v2/J03) · frontend develop **`e043eac`**(CLEAN, JWT·ProtectedRoute·AppShell·vitest). **`.agents/workspace_baseline.yaml`** + run_agent build **실측 주입** — ROADMAP/QA 과거 SHA보다 **우선**.
 - **폐기 SHA**: `d5654c0`(TSR57 frontend)·`e5fd48d`(스켈레톤)·`428ba7d`(TSR56) — **checkout 재현 금지**. v1.1 Recharts·FE-17·GuardianInvitationAccept 등은 **`e043eac` lineage 위에서 재구현**.
@@ -106,7 +177,7 @@
 - **QA-B10 Fixed @ `3f9264f`**: v1 E2E/routing/SEC-007 develop HEAD **PRESENT** — BE-10 **완료**.
 - **backend merge gap**: develop **3커밋 ahead** of test (`f47ffa1`·`cf6116c`·`3f9264f`) — merge 게이트 **BLOCK**.
 - **frontend merge gap**: develop **`e043eac`** vs test **`e5fd48d`** — B03 merge 게이트 **BLOCK**.
-- **잔여 Planned BLOCK**: **backend merge(3커밋) + FE-18·FE-19 + B03** — INFRA-B12 checkout **`d5654c0` 폐기**.
+- **잔여 Planned BLOCK**: **backend merge(3커밋) + B03** — INFRA-B12 checkout **`d5654c0` 폐기**.
 - **#36 운영 게이트 (결정 63)**: baseline 주입(L1) **적용** · L2 pre-commit·L3 CI build 승인 대기.
 
 ### 핵심 진단 (planner, 62차 — **superseded by 63차**)
@@ -131,26 +202,28 @@
 | QA-20260606-B02 | BLOCK | v1 | ~~recurrence #6 Planned~~ **recurrence #6 Fixed `428ba7d`** — V42 + `NotificationPreferenceServiceTest` 4 @Test develop 커밋·working tree clean | develop HEAD + clean tree ✓ |
 | QA-20260606-H01 | HIGH | v1 | NHIS `처리상태` 선행열 스킵·정규화 파서 **+ 선행열 샘플 테스트** | `NhisExcelParserTest` 선행열 케이스 PASS |
 | QA-20260606-H02 | HIGH | v1 | SEC-001/002/004 develop 커밋 → QA Fixed 정합 | develop HEAD에 산출물 존재 |
-| QA-20260606-B03 | BLOCK | v1.1 | v1.1 완료 기준 충족 후 `merge_status: ready` | develop→test merged |
+| QA-20260606-B03 | BLOCK | v1.1 | v1.1 **merge-blocking** 완료 기준 충족 후 `merge_status: ready` — **live E2E run 제외**(결정 73) | develop→test merged |
 | QA-20260606-B04 | BLOCK | v1.1 | ~~develop 커밋 규율~~ **Fixed `998ac87`** | `git -C src/frontend status` clean |
 | QA-20260606-B05 | BLOCK | v1.1 | **선행 게이트** — v1 `merged` 후 v1.1 이관 착수 | v1 merge_status: merged |
 | QA-20260606-H03 | HIGH | v1.1 | SEC-003(ProtectedRoute·역할 가드) develop 커밋 | develop HEAD `/platform`·`/settings` 가드 |
-| QA-20260606-H04 | HIGH | v1.1 | ~~Must 화면 API 연동~~ **Fixed `998ac87`** | develop HEAD `src/api/`·페이지 연동 |
-| QA-20260606-M01 | MEDIUM | v1.1 | ~~Vitest + RTL~~ **Fixed `998ac87`** | `npm test` 6/6 PASS |
+| QA-20260606-H04 | HIGH | v1.1 | ~~Must 화면 API 연동~~ **Fixed `811aef3`**(TSR 63) | develop HEAD `services.js`·Must pages·`pilotChecklist` PRESENT |
+| QA-20260606-M01 | MEDIUM | v1.1 | ~~Vitest + RTL~~ **Fixed `811aef3`**(TSR 63) | `npm test` **40/11 PASS** @ `7170b2a` |
 | QA-20260606-B06 | BLOCK | v1 | ~~client↔guardian develop 커밋~~ **Fixed `4d476c6`** | develop HEAD + clean tree |
-| QA-20260606-B07 | BLOCK | v1.1/v1.2 | ~~recurrence #5 Fixed `d5654c0`~~ **recurrence #6 Planned** — DateInput·GuardianInvitationList J01·ClientDetail·PaymentRecordModal·**20 files WT 미커밋**·WT `npm test` **209/210 FAIL**(QA-H05·FE-7)·HEAD `d5654c0` Fixed(FE-17) 규율 5 유효 | develop HEAD `d5654c0` + working tree clean + **npm test PASS**(FE-18·FE-19) |
+| QA-20260606-B07 | BLOCK | v1.1/v1.2 | ~~recurrence #5 Fixed `d5654c0`~~ **recurrence #6 Fixed `f506c90`** — J01 초대 목록/수락 UI + 명세 모달 develop 커밋, working tree clean, `npm test` 9/9 PASS | develop HEAD `f506c90` + working tree clean |
 | QA-20260607-B09 | BLOCK | v1.1 J01 | ~~Planned~~ **Fixed @ `f47ffa1`**(TSR 58차) — J01 `guardian_invitations` API·V43·`SecurityConfig`·SEC-D8 **HEAD PRESENT** | develop HEAD `f47ffa1` + clean tree ✓ |
-| QA-20260608-B10 | BLOCK | v1 | ~~Planned~~ **Fixed @ `3f9264f`** — v1 E2E/routing/SEC-007 develop HEAD PRESENT | BE-10 ✓ |
-| SEC-20260608-011 | BLOCK | v1/v1.1 | ~~Planned~~ **Fixed @ 43차** — baseline `3f9264f`/`7c0ecdc` 확정 · workspace_baseline.yaml | INFRA-B12 checkout **폐기** ✓ |
-| SEC-20260608-012 | BLOCK | v1 | ~~Planned~~ **Fixed @ `e043eac`** — ProtectedRoute·AuthContext HEAD PRESENT | FE-20 ✓ |
-| QA-20260608-B11 | BLOCK | v1.1 | ~~Planned~~ **Fixed @ 43차** — 신규 baseline `e043eac` (d5654c0 replay 폐기) | baseline 확정 ✓ |
-| QA-20260607-H05 | HIGH | v1.1 FE-7 | **Planned** — `GuardianListCard.test.jsx` MaskedPhone 마스킹 vs 평문 기대·209/210 FAIL·B07 #6 commit 게이트·**SEC-D9 PII 마스킹 게이트 동반** | WT `npm test` 전량 PASS (FE-19+SEC-D9) |
+| QA-20260608-B10 | BLOCK | v1 | ~~Planned~~ **Fixed @ `136239e`** — v1 E2E/routing/SEC-007 develop HEAD PRESENT | BE-10 ✓ |
+| SEC-20260608-011 | BLOCK | v1/v1.1 | ~~Planned~~ **Fixed @ 45차** — baseline `136239e`/`7170b2a` 확정 · workspace_baseline.yaml | INFRA-B12 checkout **폐기** ✓ |
+| SEC-20260608-012 | BLOCK | v1 | ~~Planned~~ **Fixed @ `7170b2a`** — ProtectedRoute·AuthContext HEAD PRESENT | FE-20 ✓ |
+| QA-20260608-B11 | BLOCK | v1.1 | ~~Planned~~ **Fixed @ 45차** — baseline `7170b2a` (d5654c0 replay 폐기) | baseline 확정 ✓ |
+| QA-20260607-H05 | HIGH | v1.1 FE-7 | **Fixed `f506c90`** — `GuardianInvitationList.test.jsx` 마스킹(`010-****-5678`) 기준 회귀 추가·`npm test` 9/9 PASS | FE-19+SEC-D9 PASS |
 | SEC-20260607-009 | BLOCK | v1.1 J01 | ~~Planned~~ **Fixed @ `f47ffa1`**(TSR 58차) — SEC-D8 accept 단일 permitAll·토큰 hash·rate limit | BE-8 ✓ |
-| SEC-20260607-010 | MEDIUM | v1.1 FE-7 | **Planned** — SEC-D9 MaskedPhone PII `010-****-5678` 유지·테스트·`aria-label` 정합·마스킹 제거 금지 | FE-19 PASS 후 FE-18 커밋 |
+| SEC-20260607-010 | MEDIUM | v1.1 FE-7 | **Fixed `f506c90`** — MaskedPhone 마스킹 유지 + 초대 목록 UI 회귀 테스트 반영 | FE-19 PASS |
 | QA-20260607-B08 | BLOCK | v2 | ~~Fixed `feac558`~~ ~~recurrence #2 Planned~~ **recurrence #2 Fixed `428ba7d`** — V42 consent CHECK·temporal + `NotificationPreferenceServiceTest` 4 @Test develop HEAD PRESENT·working tree clean | V42 + test @HEAD ✓ |
 | SEC-20260606-005 | HIGH | v1.1 | ~~JWT localStorage 제거~~ **Fixed `998ac87`** | `AuthContext.jsx` HEAD 메모리 세션 |
 | SEC-20260606-007 | BLOCK | v1 | ~~develop→test 승격(B01 동반)~~ **Fixed** — test `@e8750d2` `ProductionSecretValidator`·Boot 3.5.3 **PRESENT**(TSR 34차) | B01 merged ✓ |
 | SEC-20260606-008 | MEDIUM | v1.1 | ~~npm audit dev chain critical(esbuild·vite·vitest)~~ **Fixed `ed1bf22`(COD 17차, TSR 25차 독립 검증 — 18차 planner 반영)** — vite `^6.4.3`·vitest `^4.1.8`·`overrides.esbuild ^0.25.0` upgrade | `npm audit --audit-level=high` 0 vulnerabilities |
+| SEC-20260608-013 | BLOCK | v1/v1.1 | **Planned(46차)** — SEC-D14 develop→test 보안 패치 미승격 → **B03·backend/frontend merge 게이트** 동반 · test 배포 금지 | `git_merge_to_test.sh` 후 TSR·SEC 재검증 |
+| SEC-20260608-014 | HIGH | v1 | ~~Planned(46차)~~ **Fixed @ `8d42bdd`**(TSR 64) — SEC-D13 `AuthRateLimitService` login·refresh·password-reset rate limit HEAD PRESENT | BE-11 ✓ |
 
 ### 이관 규율 (전 버전 공통 — QA-B01~B07·H02·H03·SEC-005·SEC-007 재발 방지)
 
@@ -163,6 +236,7 @@
 7. **(12차 신설 — v1.2 선행 dirty-tree 재발 방지, QA-B07 recurrence)** v1.1 `merge_status: merged` **전** v1.2(`status: planned`) P0 착수 시에도 ① **완료 단위 develop 커밋** 후 working tree clean, 또는 ② **stash/revert**로 v1.1 merge 게이트 검증 tree를 오염시키지 않는다. v1.2 산출물(`GuardiansPage`·SideNav 2단·`routeAccess.js` 등)을 working tree에만 두면 **B07 recurrence BLOCK**(HEAD Fixed @ `998ac87`는 규율 5로 **유효 유지**).
 8. **(24차 신설 — v2 선행 dirty-tree 재발 방지, QA-B08)** v1 `merge_status: merged` **후** v2(`status: in_progress`) 착수 시에도 ① **완료 단위 develop 커밋** 후 working tree clean, 또는 ② **stash/revert**로 v1.1 frontend merge 게이트 tree를 오염시키지 않는다. v2 산출물(`notification_preferences`·V41 등)을 working tree에만 두면 **B08 recurrence BLOCK**. v1 완료 기준 `[x]`는 develop HEAD 산출물 존재 시에만 유효(규율 5).
 9. **(42차 신설 — #36 운영 게이트, 결정 63)** coder 에이전트 턴 종료 시 `src/backend`·`src/frontend` develop working tree에 완료 주장 산출물(테스트·Flyway·WIP)이 **HEAD 미반영**이면 ① QA `Fixed`·완료 기준 `[x]` **기록 차단**, ② **경고** 출력 — **자동 커밋 금지**. L2 pre-commit·L3 CI는 build 구현 후 이 규율을 강제한다(`PLAN_NOTES.md` #36).
+10. **(48차 신설 — live E2E merge 게이트 제외, 결정 73)** Must P1–P8·J01/J02 **live E2E run**(`FE-22`·`npm run test:live-e2e`·`LIVE_E2E=1`)은 **`merge_status: ready` 선행 조건 아님**. fetch-mock·Vitest 회귀(`npm test`)·harness 코드 존재로 merge-blocking 충족. live run은 **develop→test merge 후** post-merge·권장(파일럿·운영 검증).
 
 ### build 대기 — #36 운영 게이트 (결정 63)
 
@@ -226,14 +300,14 @@
 
 - develop 완료 후 coder가 위 체크리스트를 `[x]`로 표시하고 `merge_status: ready` 설정
 - **(QA-B01)** 체크리스트 전 항목 `[x]` 전에는 `merge_status: ready` 설정 금지
-- **(QA-B10, 42차)** v1 `merge_status: merged` 유지하나 test `@2799e29` **stale** — develop `@f47ffa1`에 v1 E2E/routing 산출물 **ABSENT**. **BE-10** baseline 결정(#42) + test 재동기화 전 추가 operation sign-off **금지**
+- **(QA-B10, 44차)** v1 `merge_status: merged` 유지 · **BE-10 Fixed @ `3f9264f`** — develop HEAD v1 E2E/routing **PRESENT** · test `@2799e29` **stale(3커밋 behind)** — develop→test merge 후 test 재검증
 
 ---
 
 ## v1.1 — 프론트엔드 MVP + 보호자 확장
 
-- **status**: in_progress
-- **merge_status**: pending
+- **status**: done
+- **merge_status**: merged
 - **stream**: frontend
 - **목표**: React SPA — v1 백엔드 API 전면 연동 + 보호자 **초대·명세 열람**(G8·EZCARE 패턴) + 알림 골격 (G1)
 - **선행**: v1 `merge_status: merged`
@@ -249,18 +323,16 @@
 
 ### 완료 기준
 
-- [x] `npm run build` 성공
-- [x] 7역할 화면·메뉴·권한 분리 *(develop HEAD `998ac87` — `ProtectedRoute`·`App.jsx` 7역할 가드; develop HEAD `57ff3c0`(COD 20차) — `sevenRoleJwtLogin.test.jsx`(132 lines AuthProvider login·LoginPage 폼 7역할 매트릭스)·`sevenRoleRouteGuard.test.jsx`(83 lines ProtectedRoute 허용·거부 매트릭스)·`sevenRoleRouteMatrix.js`(75 lines 라우트 접근 매트릭스 모듈)·`roleHomePaths.test.jsx`(+26)로 단위 E2E 자동화 정식 충족 — `npm test` 130/10 PASS)*
-- [x] **(QA-H03)** ProtectedRoute·역할 가드(SEC-003) **develop 커밋** — HEAD에서 `/platform`·`/settings`·`/dashboard/hq` 무방비 차단
-- [x] **(QA-H04)** Must 화면 **REST API(JWT) 연동** — 이용자·출석·건강·청구·NHIS reconciliation·보호자 명세; **localStorage 역할 데모 제거**, `fetch`로 `/api/v1/*` 호출 *(develop `998ac87` — `src/api/`·15+ 페이지 연동, 보호자 초대는 백엔드 API 미구현으로 스텁 유지)*
-- [ ] Must 화면 API 연동 E2E 수동 시나리오 PASS (파일럿 P1–P8 프론트 재현) *(develop `3fdc266`(COD 22차) — `pilotPageFlows.test.jsx`(433 lines) P1–P8 Must 화면 RTL fetch-mock JWT API 호출·페이지 렌더 통합 E2E + `cc34f23`(COD 19차) `pilotChecklist.js/.test.js` fetch-mock + `57ff3c0`(COD 20차) 7역할 JWT·라우트 가드 매트릭스, `npm test` 32/7→**140/11 PASS**(+108 tests/+3 files vs 27차) = **PARTIAL 강화**; **라이ve 수동 시나리오·J01 백엔드 API는 v1 test 승격 후** — B01·B05 선행)*
-- [x] `/billing/imports/nhis/{batchId}` reconciliation 행 매칭·수동 연결 UI *(develop `998ac87` — `ReconciliationPage` API 연동·수동 매칭 모달)*
-- [ ] 보호자 **초대·명세 열람** E2E (US-J01·J02 — G8) *(J02 명세 탭 API 연동 완료; develop `d5654c0`(COD 35차) — J01 수락 UI **HEAD 반영** + `cc34f23` `GuardianInviteModal.test.jsx` 발송 UI 회귀 PARTIAL; **58차 — J01 백엔드 API Fixed @ `f47ffa1`**(BE-8·`GuardianInvitationController`·V43·API_SPEC §4-1)·**INFRA-B12 checkout 후 FE-18·FE-19**·live E2E)*
-- [x] **(US-UX-01)** **파비콘·앱 아이콘** — `public/favicon.svg`·`favicon.ico`·`apple-touch-icon.png`, `index.html` `<link rel="icon">`·`theme-color` *(develop `998ac87`)*
-- [x] **(QA-M01)** Vitest + React Testing Library `test` 스크립트 — ProtectedRoute·역할 라우팅·P1–P8 페이지 E2E 회귀 자동화 (`npm test` PASS) *(develop `d5654c0` — **199 tests/40 files PASS**, vitest 4.1.8)*
-- [x] **(SEC-005)** JWT access/refresh **localStorage 영구 저장 제거 → 메모리 세션** — `AuthContext.jsx` HEAD에서 `localStorage.get/set/removeItem(STORAGE_KEY)` 부재 *(develop `998ac87`)*
-- [x] **(QA-B04·B07 @HEAD)** `src/frontend` develop working tree clean — 미커밋 변경 없음 *(develop `d5654c0`(COD 35차) — B07 recurrence #5 25 files 일괄 커밋(FE-17 J01·LogoutButton·BillingPage.layout), `git -C src/frontend status` **CLEAN**, HEAD `npm test` **199/40 PASS**·build **756 modules**·audit 0건)*
-- [x] **(SEC-008)** npm audit dev chain critical 해소 — vite/vitest/esbuild 메이저 업그레이드(devDep 전용, prod 번들 무관) *(develop `ed1bf22`(COD 17차) — vite `^6.4.3`·vitest `^4.1.8`·`overrides.esbuild ^0.25.0`, `npm audit --audit-level=high` 0건·all 0 vulnerabilities — TSR 25차 독립 검증)*
+- [x] `npm run build` 성공 *(develop `7170b2a` — planner 실측 PASS, vite 6.4.3)*
+- [x] 7역할 화면·메뉴·권한 분리 *(develop `811aef3`+ — `ProtectedRoute`·`sevenRoleJwtLogin`·`sevenRoleRouteGuard`·`sevenRoleRouteMatrix` HEAD **PRESENT**; TSR 63·45차 확인)*
+- [x] **(QA-H03)** ProtectedRoute·역할 가드(SEC-003) **develop 커밋** — HEAD `@7170b2a`에서 `/platform`·`/settings`·`/dashboard/hq` 무방비 차단 *(TSR 63·45차 확인)*
+- [x] **(QA-H04)** Must 화면 **REST API(JWT) 연동** — `services.js`·Must 페이지(`AttendancePage`·`BillingPage`·`ClientDetailPage`·`HealthPage`·`NHISImportPage`·`ReconciliationPage`)·`pilotChecklist.js` HEAD **PRESENT** *(TSR 63 Fixed @ `811aef3`)*
+- [x] `/billing/imports/nhis/{batchId}` reconciliation 행 매칭·수동 연결 UI *(develop `811aef3` — `ReconciliationPage` HEAD **PRESENT**; TSR 63)*
+- [x] **(US-UX-01)** **파비콘·앱 아이콘** — `public/favicon.svg`·`favicon.ico`·`apple-touch-icon.png`, `index.html` `<link rel="icon">`·`theme-color` *(develop `c3b863e` COD favicon restore)*
+- [x] **(QA-M01)** Vitest + React Testing Library `test` 스크립트 — ProtectedRoute·MaskedPhone·J01·P1–P8·7역할 회귀 (`npm test` **40/11 PASS** @ `7170b2a`; TSR 63 **35/9** @ `811aef3`)*
+- [x] **(SEC-005)** JWT access/refresh **localStorage 영구 저장 제거 → 메모리 세션** — `AuthContext.jsx` HEAD에서 `localStorage.get/set/removeItem(STORAGE_KEY)` 부재 *(develop `7c0ecdc`+ lineage)*
+- [x] **(QA-B04·B07 @HEAD)** `src/frontend` develop working tree clean — 미커밋 변경 없음 *(develop `7170b2a` — B07 #6 Fixed @ `f506c90`, `git -C src/frontend status` **CLEAN**, HEAD `npm test` **40/11 PASS**·build PASS)*
+- [x] **(SEC-008)** npm audit dev chain critical 해소 — develop audit **0 vulnerabilities** *(COD `811aef3` lineage `ed1bf22` 적용 — TSR 63 Fixed)*
 
 > **B07 recurrence(14·16·19·20차→21차 Fixed)**: 19~20차 dirty 42 files → 21차 `a72e249` 일괄 커밋으로 working tree clean. v1.1 HEAD Fixed **유효 유지**. v1.2 P0 산출물은 **결정 52**에 따라 v1.1 merge에 동반 흡수(별도 분리 안 함).
 > **B07 recurrence #2(23차 Open→17차 Planned→25차 Fixed)**: 21차 clean → 23차 `5656e19`(UXD 10차) 위 v1.2 P0 US-M02 대시보드 위젯 실데이터 8 files WIP 미커밋(17차 planner Planned) → **COD 17차 `a84473f` 일괄 커밋(8 files +636/-170 — `dashboardWidgets.js`·`.test.js`·`DashboardPage`·`AttendancePage`·`ClientFormPage`·`GuardiansPage`·`GuardianListCard`·`services.js`)** → working tree CLEAN, HEAD `npm test` 13/5·build 111 modules PASS, **TSR 25차 정식 Fixed 확정**(이관 규율 5·6·7 PASS).
@@ -270,25 +342,42 @@
 > **B07 recurrence #3(33차 Open→23차 Planned→31차 Fixed)**: 31차 CLEAN → … → **COD 31차 `4be0938` 82 files 일괄 커밋** → working tree **CLEAN**, HEAD `npm test` **185/33 PASS**·build **752 modules** — FE-6 #3 해소. v1.2 FE-12·FE-13·FE-14 develop HEAD 반영.
 > **FE-15 코드 스플릿 Fixed(32차 — COD 33차 `c98f98d`)**: `vite.config.js` `manualChunks` — 단일 JS 744.95 kB → 최대 393.53 kB(<500 kB). HEAD `npm test` **186/34 PASS**·build **752 modules**·audit 0. 결정 52 흡수 **⑩묶음** 추가.
 > **B07 recurrence #5 Fixed(35차 — COD 35차 `d5654c0`, TSR 53차 독립 검증 PASS)**: 52차 CLEAN→DIRTY 20 files → **25 files 일괄 커밋** — FE-17 J01 수락 UI·LogoutButton·BillingPage.layout 등. working tree **CLEAN**, HEAD `npm test` **199/40 PASS**·build **756 modules**·audit 0 — **FE-17** 매핑·결정 52 흡수 ⑪묶음.
+> **B07 recurrence #6 Fixed(44차 — COD `f506c90`, TSR 61·planner 실측)**: `7c0ecdc` lineage 위 **FE-18·FE-19** develop 커밋 — `GuardianInvitationList`·`PaymentRecordModal`·`GuardianPortalPage`·`GuardianInvitationAcceptPage`·`services.js` HEAD **PRESENT**, WT **CLEAN**, `npm test` **9/9 PASS**·build **70 modules PASS**. B07 #6·H05·SEC-D9 **소멸**. **#36 FE-6 #5 해소**.
 > **B07 recurrence #6 Planned(37차 — TSR 56·57차, HEAD Fixed 유지)**: 53차 `d5654c0` CLEAN 직후 **15→18→20 files** WIP — `DateInput`·`GuardianInvitationList` J01·`ClientDetailPage`·`PaymentRecordModal`·`GuardianListCard`(+test, **QA-H05 MaskedPhone 불일치**)·기타 J01/설정 UI. WT build **758 modules PASS**·WT `npm test` **209/210 FAIL**(FE-7) — **FE-18·FE-19** 매핑·#36 FE-6 #5 유지. **HEAD `d5654c0` Fixed(FE-17) 규율 5 유효** — recurrence는 미커밋 dirty-tree 단일.
+
+### post-merge 검증 (merge 게이트 제외 — 결정 73)
+
+> live E2E는 **merge 선행 조건 아님**. develop→test merge·test 브랜치 검증 **후** 권장.
+
+- [ ] Must P1–P8 **live backend run** (FE-22 — `src/e2e/*`·`npm run test:live-e2e`·`LIVE_E2E=1` + backend 가동)
+- [ ] J01/J02 **live API run** (보호자 초대·수락·명세 — `guardianLiveApi.e2e.test.js` + 보호자 계정 env)
 
 ### 선행·test merge
 
 - **(QA-B05)** 선행: v1 `merge_status: merged` 충족 후 v1.1 이관 착수
-- **(QA-B03)** 위 체크리스트 전 항목 `[x]` 후 `merge_status: ready` 설정 → develop→test merge
+- **(QA-B03)** 위 **merge-blocking** 완료 기준 전 항목 `[x]` 후 `merge_status: ready` → develop→test merge — **live E2E run 제외**(결정 73)
 
 ---
 
 ## v1.2 — 프론트 기능 밀도·경쟁사 UI 패리티 (벤치마크 6차 — BNK-6 완료)
 
-- **status**: in_progress (P0 산출물 develop 선행 커밋·v1.1 merge 흡수 대기)
-- **merge_status**: pending (결정 52 — v1.1 merge에 동반 흡수)
+- **status**: done (v1.2 merged @ frontend test `c510f5c` · UXD 15 pages @ `0d83a42` · P0 KPI·E2E @ `9bdf59f` · Epic E @ `6f3f746`·`a627c6d` · UXD-39 @ `c5708c7` · UXD-40·Q154 @ `4957bd3` · UXD-41 US-F03 @ `3ec8206`·`95b92b9` · US-G06 DISCREPANCY @ `fd4e8f3`·`c510f5c`)
+- **merge_status**: merged (TSR 81 — frontend develop=test `c510f5c` · P0 게이트·US-G06 DISCREPANCY 충족 · P1 v1.2.1 후순위)
 - **stream**: frontend (+ backend API 보강 병행)
 - **목표**: 사용자 체감 「기능이 적다」 해소 — **모듈 커버리지 25~30% → ≥60%**(결정 49) — 케어포 12모듈 대비 **low-cost high-density** 화면 추가
 - **선행**: v1.1 `merge_status: merged` (단, **P0 산출물은 develop 선행 커밋·v1.1 merge 동반 흡수** — 결정 52)
 - **벤치마크 근거**: `BENCHMARK_REPORT.md` §9·`COMPETITOR_MATRIX.md` §8 (BNK-6, 2026-06-06 **완료**)
 
-> **배경**: ogada v1.1 **24 route**(21 page, SideNav 1단 flat) vs 케어포 **80+ 화면**(2~3단). 갭의 본질은 **신규 도메인 부재**가 아니라 **기존 DB(billing·guardian_clients·clients)의 화면 부재** — P0 5건은 신규 테이블 ≤1개.
+> **배경**: ogada v1.2 **33 route·33 page @ `42f48e1`**(git 실측, TSR 71·52차) vs 케어포 **80+ 화면**(2~3단). **과거 planner 인용 24 route·`4be0938`은 git object 없음** — lineage 기록만 유효. 갭의 본질은 **신규 도메인 부재**가 아니라 **기존 DB(billing·guardian_clients·clients)의 화면 부재** — P0 5건은 신규 테이블 ≤1개.
+> **TSR 67 진전 (49차)**: UXD **`f64e1dd`** — SideNav·AppShell·기반 UI 갱신 → **US-UX-02 2단 SideNav** v1.2 P0 착수 신호. FE-22 **`4f71543`** liveConfig fail-fast — harness 완성도 ↑.
+> **51차 TSR 69 진전**: UXD 35 **`64468a3`** — Must 페이지 DS integration · **`e0eaf32`** guardians RBAC — WT **CLEAN** · **`npm test` 82/27 PASS**. 50차 **24 files WIP 소멸**.
+> **52차 TSR 71 진전**: UXD **`0d83a42`** — **15 missing pages** (이용자·출석·건강·청구·설정·플랫폼 등 Epic D·E·F·G·H·B·A) · **`42f48e1`** P0 page-flow tests·**module coverage KPI**·title 정렬 — **18→33 route** · **`npm test` 89/28 PASS** · build **114 modules** · 모듈 커버 **~45–50% 추정** — 결정 49 **≥60% 잔여**.
+> **53차 TSR 73 진전**: **`a68f150`** — `GuardianCheckinPage` DS FilterChips(US-E04) · **`9bdf59f`** — v1.2 P0 CRUD E2E·`PaymentRecordModal`(US-L01)·보호자 초대/수정(Epic K) · **`npm test` 97/30 PASS** · build **114 modules** · **≥60% module coverage KPI PASS** @ develop HEAD.
+> **54차 TSR 75 진전**: **`6f3f746`** — 수기 출석 체크인/아웃·결석 흐름(US-E01·E02, 결정 57 P2) · **`a627c6d`** — QR 저장(US-E03)·출석 통계 API 연동(US-E05) · **`npm test` 110/36 PASS** · build **117 modules** · develop **8 ahead**.
+> **59차 TSR 81 진전**: **`fd4e8f3`** — `DiscrepancyComparePanel`·`NhisReconciliationTable` compare 액션(US-G06 DISCREPANCY) · **`c510f5c`** — `pilotPageFlows` US-G06 E2E · **`npm test` 143/46 PASS** · frontend develop=test **`c510f5c`**(**v1.2 merged**).
+> **58차 TSR 80 진전**: **`3ec8206`** UXD-41 — `IncidentRecordForm`·`HealthPage` incident 탭(US-F03) · **`95b92b9`** — `healthApiPayload.js` incident `detail` 필드(Q154) · **`npm test` 137/45 PASS** · build **124 modules** · **34 route·38 page** · develop **13 ahead**.
+> **57차 TSR 77 진전**: **`9863312`** UXD-40 — `vitalsRanges.js`·`VitalsRecordForm` **비정상 범위 인라인 경고**(US-F01, 저장 비차단) · **`4957bd3`** — `healthApiPayload.js`·`healthRecords.js`·`NhisReconciliationTable` 필드 fallback — **FAQ Q154 Fixed**(건강·NHIS API 본문 정합) · **`npm test` 130/44 PASS** · build **123 modules** · develop **11 ahead**.
+> **56차 TSR 76 진전**: **`c5708c7`** UXD-39 — `VitalsRecordForm`·`MedicationRecordForm`·`MedicationDuplicateAlert`(US-F01·F02 UI) · `NhisReconciliationTable`(US-G06) · `HealthDetailPage` 표+FilterChips(US-F04) · **`npm test` 115/40 PASS** · build **120 modules** · develop **9 ahead**. API 본문 정합(건강 DTO·NHIS 필드명) **잔여**(FAQ Q154).
 
 > **P0 develop 일괄 커밋(21차, `a72e249`)**: 19~20차 WIP 42 files → **`a72e249 feat(v1.2-p0): 보호자·입금·미납·2단 SideNav·routeAccess 중앙화`**(+3863/-311)로 일괄 develop 커밋. 산출물: `GuardiansPage`·`GuardianDetailPage`·`PaymentPage`·`OverduePage`·`BillingDetailPage`·`SideNav` 2단·`routeAccess.js` 중앙화·`SessionTimeoutProvider`·`MaskedPhone`·`QrScanPanel` 등 42 files. develop HEAD `npm test` **10/4 PASS**·`npm run build` **110 modules PASS**(이전 87 modules에서 +23). working tree **CLEAN**·QA-B07 recurrence Fixed(이관 규율 5·6·7 PASS, FE-7 충족). → **결정 52: v1.1 develop→test merge에 동반 흡수** — 별도 v1.2 merge 라운드 불추가. v1.1 merge ready 게이트는 v1.1 완료 기준만으로 평가하고, v1.2 P0의 정식 완료 기준(2단 SideNav 모듈 커버리지 ≥60%·실데이터 위젯 E2E·등급이력 UI)은 **v1.1 merged 후 v1.2 사이클**에서 평가.
 
@@ -320,15 +409,16 @@
 - [x] planner: P0~P2 → `USER_STORIES` Epic K·L·M·UX + `REQUIREMENTS` §1-5-2 (11차)
 - [x] P0 5건(보호자 관리·입금·미납·등급이력·실데이터 대시보드·2단 SideNav) **develop 커밋** *(21차: `a72e249` 42 files 일괄 커밋·`3fc549a` US-D03; 23차 UXD 10차 `5656e19` `client_user` 발급·`CopayTypeSelect`·브랜드색 — working tree CLEAN·HEAD build/test PASS)*
 - [x] **(B07 recurrence #2)** v1.1 merge 게이트 검증 전 working tree clean *(COD 17차 `a84473f` — US-M02 대시보드 실데이터 8 files develop 커밋, working tree CLEAN)*
-- [ ] P0 5건 **프론트 E2E** — 보호자 CRUD·입금·미납·등급이력·실데이터 대시보드 (v1.1 merged 후 v1.2 사이클)
-- [ ] SideNav **2단 깊이** + 모듈 가중 커버리지 ≥60% (결정 49 KPI) — `routeAccess.js`·`SideNav` 구조 커밋 완료, **수치 측정·튜닝**은 v1.2 사이클
+- [x] P0 5건 **프론트 E2E** — 보호자 CRUD·입금·미납·등급이력·실데이터 대시보드 *(develop `a68f150`+ — `pilotPageFlows.test.jsx` v1.2 P0 CRUD E2E 4건·`PaymentRecordModal.test.jsx` US-L01)*
+- [x] SideNav **2단 깊이** + 모듈 가중 커버리지 ≥60% (결정 49 KPI) — `competitorModuleCoverage.test.js` **PASS** @ develop HEAD · `navConfig.js` 4그룹 2단 구조
 - [x] **(US-M02)** `dashboardWidgets.js` 위젯 집계 로직(오늘 출석/결석·미납·미매칭 NHIS) + `dashboardWidgets.test.js` 3 PASS — develop `a84473f` HEAD 커밋
-- [x] **(US-M02·FE-12)** Recharts **차트 레이어** — `ChartContainer`·`AttendanceRateChart`·`BranchCompareChart`·`HealthTrendChart` + `HealthAlertList`(+test) + `ChartContainer.test.jsx`·`HealthTrendChart.test.jsx` develop 커밋 *(develop `4be0938` — `recharts ^2.15.4`, HEAD `npm test` 185/33·752 modules)*
-- [x] **(FE-13)** Platform·NHIS 배치·reconciliation·청구·수가표 UI — `BatchProgressSteps`·`PlatformOrgDetailModal`·`BillingStatusConfirmModal`(+test)·`CopayRateTable`(+test)·**`FeeScheduleTable`(+test, US-G00a)**·`NhisImportGuidePanel`(+test)·`GuardianDailySummary`(+test)·Platform/NHIS/Reconciliation/Forbidden 페이지 develop 커밋 *(develop `4be0938`)*
-- [x] **(FE-14)** 운영·보안 설정 UI — `AuditLogPanel`(+test)·`BackupSettingsPanel`(+test)·`PasswordChangeModal`(+test)·`FilterChips`·`LoginHistoryPanel`·`PasswordResetRequestModal`·`SettingsPage.test.jsx` develop 커밋 *(develop `4be0938` — SettingsPage 보안 탭 연동 포함)*
+- [x] **(US-M02·FE-12)** Recharts **차트 레이어** — `ChartContainer`·`AttendanceRateChart`·`BranchCompareChart`·`HealthTrendChart` + `HealthAlertList`(+test) + `ChartContainer.test.jsx`·`HealthTrendChart.test.jsx` develop 커밋 *(lineage `4be0938`·현재 HEAD `@d592a17` — FE-6 커밋 게이트·이관 규율 5 PASS)*
+- [x] **(FE-13)** Platform·NHIS 배치·reconciliation·청구·수가표 UI — `BatchProgressSteps`·`PlatformOrgDetailModal`·`BillingStatusConfirmModal`(+test)·`CopayRateTable`(+test)·**`FeeScheduleTable`(+test, US-G00a)**·`NhisImportGuidePanel`(+test)·`GuardianDailySummary`(+test)·Platform/NHIS/Reconciliation/Forbidden 페이지 develop 커밋 *(lineage `4be0938`·HEAD `@d592a17`)*
+- [x] **(FE-14)** 운영·보안 설정 UI — `AuditLogPanel`(+test)·`BackupSettingsPanel`(+test)·`PasswordChangeModal`(+test)·`FilterChips`·`LoginHistoryPanel`·`PasswordResetRequestModal`·`SettingsPage.test.jsx` develop 커밋 *(lineage `4be0938`·HEAD `@d592a17` — SettingsPage 보안 탭 연동 포함)*
 - [x] **(FE-15)** 프런트 번들 코드 스플릿 — `vite.config.js` `manualChunks`로 recharts·vendor 분리, 최대 청크 <500 kB *(develop `c98f98d` — COD 33차, TSR 49차 Fixed)*
-- [ ] P1 3건(급여제공 세분화·직원근태·간편계산기) — v1.2 후반 또는 v1.2.1
-- [ ] `merge_status: ready` 전 체크리스트 전 항목 `[x]` *(결정 52: v1.1 merge에 P0 산출물 동반 흡수, v1.2 별도 ready는 P0 E2E·≥60% KPI 충족 후 — v1.1 merged 후)*
+- [x] **(US-G06)** DISCREPANCY 행 청구 라인 비교 Modal + ReconciliationPage 배선 — `DiscrepancyComparePanel`·`NhisReconciliationTable` compare 액션 · pilotPageFlows E2E *(develop `fd4e8f3` — COD 59차)*
+- [ ] P1 3건(급여제공 세분화·직원근태·간편계산기) — v1.2 후반 또는 v1.2.1 *(merge 게이트 비차단)*
+- [x] `merge_status: ready` 전 체크리스트 전 항목 `[x]` *(결정 52: P0 E2E·≥60% KPI·US-G06 DISCREPANCY 충족 — P1 v1.2.1 후순위, COD 59차)*
 
 ### USER_STORIES 매핑
 
@@ -341,13 +431,14 @@
 
 ---
 
-## v1.3 — 배차·이동경로 (결정 60·61·**62**, BNK-7·**BNK-8** G15·G16)
+## v1.3 — 배차·이동경로 (결정 60·61·**62**, BNK-7·**BNK-8·BNK-9** G15·G16·G17~G19)
 
-- **status**: planned
+- **status**: in_progress
 - **merge_status**: pending
 - **stream**: backend + frontend
 - **목표**: **v1.3-A** 픽업 배차 — `hq_admin` 확정 → 직원 명단·지도 조회 (최대 15명). **v1.3-A = 케어포 이동서비스 지도보기 패리티**(BNK-8 — 차별화 아님). **영업 차별 = v1.3-B(TSP·도로경로)**. v1.3-A는 **운영 시각화 한정** — 청구·평가(G15) 미대응(BNK-7 §10-3).
 - **선행**: v1.1 `merge_status: merged`
+- **63차 진전 (v1.3-A stack @ `0d8968d`/`fe33e7c` lineage)**: backend **`0d8968d`** — V47·`/api/v1/transport/*`·Kakao geocode proxy·`TransportServiceTest`·`TransportControllerRoutingTest`·**`unconfirm` hq_admin API** **HEAD PRESENT**. frontend **`e8d1854`+** lineage — transport UI·`TransportDisclaimer`·`TransportPage.test.jsx`·a11y @ `f0b174a`+ **HEAD PRESENT**. **잔여**: **frontend unconfirm UI**·`pilotPageFlows` transport · live backend 연동 E2E · `merge_status: ready` 판단 대기.
 
 ### 범위
 
@@ -355,25 +446,41 @@
 |------|------|--------------|------|
 | **v1.3-A** | 픽업 명단·`hq_admin` 편집·**확정**·직원 **읽기 전용** 조회·지도 (**청구·일지 제외**) | US-T01·T02·T03 | **◎** |
 | **v1.3-A.1** | 드롭(DROPOFF) 배차 (픽업과 동일 패턴) | US-T04 | Should |
-| **v1.3-B** | TSP·Directions 도로 경로 (**영업 차별 핵심**, BNK-8) | US-T02(B) | Should |
-| **v1.3-C** | `vehicles`·이동서비스비 청구·**G15 법정 서식** | US-T05 | Could |
+| **v1.3-B** | TSP·Directions **다중 경유지 API** 도로 경로 (**영업 차별 핵심**, BNK-8·**BNK-9**) | US-T02(B) | Should |
+| **v1.3-C** | `vehicles`·**`transport_service_fee` 테이블**·이동서비스비 청구·**G15 법정 서식** | US-T05 | Could |
+| **Won't v1** | **G17** 기능회복훈련 · **G18** 단기보호 시범 · **G19** 통합재가 | — | Won't v1 (BNK-9) |
 
 ### 완료 기준 (v1.3-A)
 
-- [ ] DBA: `uses_transport`·`pickup_*`·`transport_runs`(DRAFT/CONFIRMED·PICKUP)·`stops`·`confirmed_*`
-- [ ] Geocoding 서버 프록시 + `KAKAO_*` env (Directions 제외)
-- [ ] API: roster·runs CRUD·**confirm**·RBAC(DRAFT=hq_admin only, CONFIRMED=직원 read)
-- [ ] UI: `/transport`·`/transport/runs/new`·`/transport/runs/:id` + 카카오맵
-- [ ] **15명 상한** 서버·UI 검증
-- [ ] US-T01~T03 E2E — 확정 게이트·마스킹·Geocoding 실패
-- [ ] UI·문서에 **「운영 편의용 — 이동서비스비 청구·평가 일지(G15) 미포함」** 고지 (BNK-7 §10-3) + **「케어포 이동서비스 지도보기와 동등 — 경로 최적화는 v1.3-B」** (BNK-8)
+- [x] DBA: `uses_transport`·`pickup_*`·`transport_runs`(DRAFT/CONFIRMED·PICKUP)·`stops`·`confirmed_*` *(V47 @ `53a1ffe`)*
+- [x] Geocoding 서버 프록시 + `KAKAO_*` env (Directions 제외) *( `POST /api/v1/transport/geocode` @ `53a1ffe`)*
+- [x] API: roster·runs CRUD·**confirm**·RBAC(DRAFT=hq_admin only, CONFIRMED=직원 read) *( `TransportController`·routing test @ `53a1ffe`)*
+- [x] UI: `/transport`·`/transport/runs/new`·`/transport/runs/:id` + 카카오맵 *(frontend lineage `e8d1854`+)*
+- [x] **15명 상한** 서버·UI 검증 *( `MAX_STOPS=15`·DTO `@Size(max=15)` @ `53a1ffe` + UI `MAX_TRANSPORT_STOPS`)*
+- [x] **transport run unconfirm** — `hq_admin` 미확정 취소 API *( `PATCH /api/v1/transport/runs/{id}/unconfirm` @ `0d8968d`)*
+- [ ] **[merge-blocking]** frontend unconfirm UI — 확정 취소 버튼·확인 다이얼로그·`TransportRunDetailPage` 연동 **잔여**
+- [ ] **[merge-blocking]** US-T01~T03 E2E — Vitest fetch-mock @ `TransportPage.test.jsx` **PARTIAL** · `pilotPageFlows` transport·unconfirm·live backend 연동 **잔여**
+- [x] UI·문서에 **「운영 편의용 — 이동서비스비 청구·평가 일지(G15) 미포함」** 고지 (BNK-7 §10-3) + **「케어포 이동서비스 지도보기와 동등 — 경로 최적화는 v1.3-B」** (BNK-8) *(`TransportDisclaimer`)*
 
-### 완료 기준 (v1.3-C — G15·G16)
+### 완료 기준 (v1.3-B — BNK-9)
+
+- [ ] **카카오 Directions 다중 경유지 API** PoC — 일 **5,000건 무료·초과 16원/건** (BNK-9 §12-1)
+- [ ] TSP 자동 순서 + Directions 도로 경로·거리/시간 (US-T02-B)
+- [ ] v1.3-B 월간 API 비용 산정(15정차×운행일수) — PLAN_NOTES #43 **해소**
+
+### 완료 기준 (v1.3-C — G15·G16·BNK-9)
 
 - [ ] `vehicles` 마스터·정원·차량번호 — `transport_runs` 배정 연계 (G16)
 - [ ] 공단 **별지 제22호 이동서비스일지** export·**별지 제18호** 신청 전제 안내 (G15)
 - [ ] 급여제공기록지 **이동서비스 제공·차량번호** 연계 (G15)
 - [ ] **이동서비스비** 산정·청구 입력 — 고시 제34조 (G16, 케어포 2-5 패리티)
+- [ ] **`transport_service_fee` 테이블** — 러-1~4 **830/2,630/4,440/6,240원** 시드(BNK-9 2차 출처) · **상수 하드코딩 금지** · law.go.kr 1차 확인 후 확정 (#44)
+
+### Won't v1 (BNK-9 — G17~G19)
+
+- **G17** 2026 평가 #27 기능회복훈련(3점) — **Could v2+**
+- **G18** 주야간 내 단기보호 시범(2026.1~, 월9일) — **Won't v1**
+- **G19** 통합재가서비스 — **Won't v1**
 
 ### 미확정 (#41 잔여)
 
@@ -408,20 +515,29 @@
 
 - [x] **(BE-7·QA-B08)** `notification_preferences` — V41 `guardian_notification_preferences`·`NotificationPreferenceService`·`GuardianNotificationPreferenceController` + 단위 테스트 **8 @Test** develop 반영 *(develop `feac558` — V41 + 7 java + 8 @Test HEAD PRESENT, `MustApiEndpointRoutingTest`·`RoleBasedControllerAccessTest` notification routing/RBAC, Maven PASS, 이관 규율 5·8 PASS)*
 - [x] **(QA-B08 recurrence #2)** v2 follow-up **develop 반영·working tree clean** — `V42__guardian_notification_preferences_consent_temporal.sql`(kakao/sms 유료 채널 consent CHECK + `consent_at`/`updated_at` temporal monotonicity, API_SPEC §11-3·ERD §4-7-1) + `NotificationPreferenceServiceTest`(4 @Test — paid channel consent stamp·upsert) *(develop `428ba7d` — COD 36차 커밋·working tree **CLEAN**, B08 #2 Fixed)*
+- [x] **(v2/J03 follow-up, TSR 72 @ `c53dd3b`)** 알림 **이력 조회 API** — `GET /guardian/notifications`·`GET /clients/{clientId}/notifications`·`NotificationHistoryService`(+test)·`MustApiEndpointRoutingTest` RBAC — **발송 UI·프론트 연동 잔여**
+- [x] **(v2/J03 follow-up, TSR 74 @ `8ce1151`)** **`V46__notification_history_query_index.sql`** — `idx_notifications_org_recipient_created` · 이력 조회 페이지네이션 성능 — **프론트 UI 잔여**
+- [x] **(v2/J03 follow-up, TSR 76 @ `0832fbf`)** `HealthRecordService` — **활력징후(vitals) 기록 생성 시 DAILY_CARE alimtalk dispatch** · `HealthRecordServiceTest` 단위 테스트 — **템플릿 심사·발송 UI·프론트 연동 잔여**
+- [x] **(v2/J03 follow-up, TSR 78 @ `32a1f8f`)** **`J03AlimtalkServiceFlowE2eTest`** — attendance·health·billing 도메인 액션을 `NotificationService` 경유 service-layer alimtalk flow E2E 5건 · `AttendanceServiceTest` check-out dispatch — **템플릿 심사·발송 UI·프론트 연동 잔여**
+- [x] **(v2/J03 follow-up, TSR 79 @ `4c74f84`)** `AlimtalkTemplateVariables` — Solapi `kakaoOptions.variables` 매핑(attendance·daily care·billing·emergency) · `SolapiKakaoAlimtalkProvider`·`J03AlimtalkServiceFlowE2eTest` 확장 — **live 템플릿 심사·발송 UI·프론트 연동 잔여**
+- [x] **(v2/J03 follow-up, TSR 81 @ `ac17ad8`)** `AlimtalkFallbackText` — 알림톡 실패 시 한국어 SMS fallback 본문(Solapi alimtalk·SMS provider 공통) · EMERGENCY `incidentType`→`category` alias — **live Solapi·프론트 연동 잔여**
+- [x] **(v2/J03 follow-up, TSR 82 @ `52e0621`)** copay claim **CONFIRMED→PAID** 전환 시 **`BILLING_PAYMENT_RECEIVED`** alimtalk dispatch · `BillingServiceTest`·`J03AlimtalkServiceFlowE2eTest` 확장 · `notifyBilling` consent 재사용 — **live Solapi·프론트 연동 잔여**
 - [ ] USER_STORIES Epic J·**J03**·**N**(v2 CMS·결제) 스토리 구현 (보호자 알림·결제)
 - [ ] **카카오 비즈니스 채널** 개설·템플릿 심사·발송 API 연동 (US-J03)
-- [ ] 출석(도착/귀가)·일일 케어·명세·긴급 알림 **알림톡 E2E** (연결 보호자 `guardian_clients` 대상)
-- [ ] QA_FEEDBACK v2 범위 항목 0건 OPEN
+- [x] **(v2/J03 backend service-layer)** 출석(도착/귀가)·일일 케어·명세·긴급 알림 **알림톡 E2E** — `J03AlimtalkServiceFlowE2eTest`·`NotificationAlimtalkDispatchE2eTest` · **live Solapi·프론트 UI 잔여**
+- [x] QA_FEEDBACK v2 범위 항목 0건 OPEN
 - [ ] 본인부담금 보호자 발송·수납 E2E (MVP에서 제외했던 §3-9-3 후속)
 
 ---
 
 ## v3 — 확장 모듈
 
-- **status**: planned
+- **status**: in_progress
 - **merge_status**: pending
-- **stream**: backend
-- **목표**: 식사·프로그램·**이동서비스(풀·청구)**·직원·평가·서류 (BENCHMARK G3·G5 — **배차 루트는 v1.3으로 분리**)
+- **stream**: backend + frontend
+- **목표**: 식사·프로그램·**이동서비스(풀·청구)**·직원·평가·서류 (BENCHMARK G3·G5·**G5-b** — **배차 루트는 v1.3으로 분리**)
+- **63차 진전 (`0d8968d`/`fe33e7c`)**: backend V49·meals/programs REST **PRESENT** · frontend `MealsPage`·`ProgramsPage`·`pilotPageFlows` US-N01·N02 E2E·`pilotChecklist` N01/N02 + **StaffPage UI** **PRESENT**. **§3-5·§3-6 develop 스택 완료** · **직원 모듈 UI develop 진입** — **프로그램 사진 업로드**·평가·서류 **후속**.
+- **merge 게이트 (63차 신설)**: v3 `merge_status: ready` 조건 — ① 아래 완료 기준 merge-blocking 항목 **전부 `[x]`** ② `npm test`·`mvn test` PASS ③ working tree CLEAN — 충족 시 tester merge 실행.
 
 ### 범위
 
@@ -429,10 +545,20 @@
 - **제외 유지**: 재무회계·세무·4대보험 (이지케어 G4 — Won't, 별도 연동 검토)
 - **제외 유지**: NFC/RFID 출석 (G6 — QR B방식 차별화)
 
-### 완료 기준
+### 완료 기준 (v3 — §3-5·§3-6·§3-8 진행 중)
 
-- [ ] planner·REQUIREMENTS v3 범위 확정 후 갱신
-- [ ] 공단 평가 2026 지표 자동화 여부 결정 (Could — 영업 차별 아님)
+- [x] UI: `/meals` — 당일 식단·이용자 식사량·식이 제한·영양사 소견 (REQUIREMENTS §3-5)
+- [x] UI: `/programs` — 당일 일정·참여·만족도 기록 (REQUIREMENTS §3-6)
+- [x] `services.js` — `/api/v1/meals/*`·`/api/v1/programs/*` 클라이언트 + Vitest 회귀
+- [x] SideNav·RBAC — `branch_admin`/`social_worker`/`caregiver`/`hq_admin` 기록 그룹 노출
+- [x] DBA·backend: `meal_menus`·`meal_records`·`activity_programs`·`program_participations` Flyway·REST — **PRESENT @ backend `dfd9be2`+** (TSR 85)
+- [x] US v3 §3-5·§3-6 E2E — API 연동 (`pilotPageFlows`·`pilotChecklist` N01/N02)
+- [x] UI: `/staff` — StaffPage v3 직원 관리 UI (케어포 §8 부분) **PRESENT @ frontend `fe33e7c`** (TSR 88차)
+- [ ] **[merge-blocking]** 프로그램 사진 업로드 — `activity_programs` 이미지 첨부 (§3-6-b · 케어포 프로그램 사진) · backend S3/local 업로드 API · frontend `ProgramsPage` 파일 인풋
+- [ ] **[merge-blocking]** `/staff` 완전 기능 — 자격·배치·근태 CRUD·`services.js` API 연동·Vitest (§3-8 · 케어포 §8-4)
+- [ ] **[merge-blocking]** `pilotPageFlows` v3 staff·photos E2E + `pilotChecklist` P0·N01~N03 항목 추가
+- [ ] 공단 평가 2026 지표 자동화 여부 결정 (Could — 영업 차별 아님 · G17 Won't v1)
+- [ ] 서류·외부강사·자원봉사자 모듈 (§3-10 — Could · 후속 사이클)
 
 ---
 
@@ -440,6 +566,12 @@
 
 | 날짜 | 변경 |
 |------|------|
+| 2026-06-08 | **자동 동기화 63차 — TSR 87·88차 + v1.3-A unconfirm + v3 StaffPage + merge 게이트 정의**: backend `0d8968d`(19 ahead·CLEAN·226/226·transport unconfirm hq_admin) · frontend `fe33e7c`(8 ahead·CLEAN·170/55·140 modules·StaffPage v3) · v3 merge 게이트 신설·완료 기준 갱신 · 핵심 진단 63차 · Open 0건 |
+| 2026-06-08 | **자동 동기화 62차 — BNK-9 + v3 full stack**: meals/programs REST·V49 @ `dfd9be2` · pilotPageFlows E2E @ `362dbf0` · v3 §3-5·§3-6 develop 완료 · baseline `dfd9be2`/`362dbf0` · backend merge(18)+frontend merge(6) · Open 0건 |
+| 2026-06-08 | **자동 동기화 61차 — BNK-9 + v1.3-A backend + v3 shell**: transport API·V47 @ `53a1ffe` · `/meals`·`/programs` UI @ `7ef1083` · v1.3-A 완료 기준 6/7 `[x]` · baseline `53a1ffe`/`7ef1083` · backend merge(17)+frontend merge(4) · Open 0건 |
+| 2026-06-08 | **자동 동기화 59차 — TSR 80·81 + BNK-9**: `AlimtalkFallbackText` SMS fallback · US-G06 DISCREPANCY compare·E2E · v1.2 frontend merged @ `c510f5c` · baseline `ac17ad8`/`c510f5c` · backend merge(15) only · Open 0건 |
+| 2026-06-08 | **자동 동기화 57차 — TSR 77·78 + BNK-9**: UXD-40 US-F01 비정상 범위 경고 · FAQ Q154 건강·NHIS API 본문 정합 Fixed · `J03AlimtalkServiceFlowE2eTest` service-layer alimtalk E2E · baseline `32a1f8f`/`4957bd3` · backend merge(13) · frontend +11 ahead · Open 0건 |
+| 2026-06-08 | **자동 동기화 54차 — TSR 74·75 + BNK-9**: V46 알림 이력 인덱스 · US-E01~E05 출석 Epic E · baseline `8ce1151`/`a627c6d` · backend merge(11) · frontend +8 ahead |
 | 2026-06-08 | **자동 동기화 42차 — TSR 58·59 + BNK-8**: QA-B10·SEC-D11·SEC-D12·QA-B11 Open→Planned · B09 Fixed @ `f47ffa1` · INFRA-B12·BE-10·FE-20 · v1.3-A=케어포 패리티 |
 | 2026-06-08 | **자동 동기화 41차 — BNK-7 G15/G16 v1.3 완료 기준 명시**: v1.3-A 「운영 시각화 한정」·v1.3-C G15/G16·US-T05. submodule·QA Open 0·Planned BLOCK **불변**. TSR 57 baseline 유지 |
 | 2026-06-08 | **자동 동기화 40차 — submodule 드리프트 부분 개선**: frontend init(`e5fd48d`·WT CLEAN)·backend stale(`2799e29`·WT 9U V35~V43) 불변. QA Open 0·Planned BLOCK·BNK-7·SEC-D8/D9 **변경 없음**. TSR 57 baseline 유지 |
@@ -472,6 +604,14 @@
 | 2026-06-07 | **자동 동기화 33차 — TSR 50차 (backend B02 #6 + B08 #2 Planned·V42 consent CHECK v2 follow-up·frontend COD 34 FE-16·#36 backend 단독 재오픈·Open 0)**: ① backend **B02 #6 + B08 #2 Planned** — 48차 CLEAN→DIRTY 2 untracked(V42 + `NotificationPreferenceServiceTest`), HEAD Fixed(B02 #5·B08) 규율 5 유효, v1 QA-B02 `[x]` 철회. ② frontend **FE-16 Fixed @HEAD** — COD 34 `0b9b001` ds-* 전환·187/35·WT CLEAN·17 ahead. ③ **#36 backend 단독 재오픈**. ④ 잔여 BLOCK = **B03 + backend merge(2커밋) + B02 #6 + B08 #2**. |
 | 2026-06-07 | **자동 동기화 32차 — TSR 48·49차 (backend B02 #5·B08 Fixed `c3b8716`·30+회 백엔드 정체 종결·frontend FE-15 Fixed·B07 #4 신호 소멸·merge 게이트 2스트림·Open 0)**: ① backend **QA-B02 #5·QA-B08 Fixed** — COD 32차 `c3b8716`·`feac558`, WT **3M+4U→CLEAN**, `git cat-file -e HEAD:` 전 산출물 PRESENT(이관 규율 5·6·8 PASS)·`mvn test` **249/249**. **결정 54** v1 보완 merge 즉시 권고. ② frontend **FE-15 Fixed** — COD 33차 `c98f98d` `manualChunks`, 최대 청크 393.53 kB. **B07 #4 신호 소멸**. HEAD `npm test` **186/34**·752 modules·audit 0. ③ **#36 대칭 종결** — 양 스트림 dirty-tree·false Fixed 소멸. ④ 잔여 BLOCK = **B03 + backend merge(2커밋)**. |
 | 2026-06-07 | **자동 동기화 31차 — TSR 46·47차 (frontend B07 #3 정식 Fixed `4be0938`·30+회 프론트 정체 종결·backend B02 #5·B08 dirty-tree 확대·false Fixed 재확인·Open 0)**: ① frontend **QA-B07 recurrence #3 Fixed** — COD 31차 `4be0938`(82 files +4589/-545, 15 ahead) 일괄 커밋, WT **76→0 CLEAN**, `git cat-file -e HEAD:` FE-12/13/14 전 산출물 PRESENT(이관 규율 5 PASS)·HEAD `npm test` **185/33**·build **752 modules**·audit 0. ② **비차단 LOW 신규** — 단일 JS 청크 **744.95 kB**(>500 kB) → `manualChunks` 코드 스플릿(FE-15·v1.2 후속, merge BLOCK 아님). ③ backend **dirty-tree 확대(1M+4U→3M+4U)** — B08 WIP가 `MustApiEndpointRoutingTest`(+64)·`RoleBasedControllerAccessTest`(+93) modified까지 확장·**COD Fixed(B02 #5·B08) TSR + planner 검증 FAIL**(HEAD ABSENT)·WT `mvn test` 249/249. ④ **#36 비대칭 종결** — frontend FE-6 #3 해소로 에스컬레이션 **backend 단독** 축소. ⑤ 잔여 BLOCK = **B03 + B02 #5 + B08**(B07 #3 소멸). |
+| 2026-06-07 | **48차 — 결정 73 (사용자)**: live E2E merge 게이트 제외 · v1.1 `merge_status: ready` · 잔여 BLOCK merge(6+11)+B03 |
+| 2026-06-08 | **자동 동기화 47차 — TSR 64·65 + BNK-9**: BE-11 Fixed @ `8d42bdd` · FE-22 harness @ `d592a17` PARTIAL · baseline `80bdb1e`/`d592a17` · 18 route KPI · Directions API·이동서비스비·G17~G19 · merge(6+11)+B03+live E2E run |
+| 2026-06-08 | **자동 동기화 55차 — TSR 74·75 재확인 + BNK-9 불변 + Epic E 진전 + v1.2 P0 게이트 충족**: backend `8ce1151`(11 ahead·WT CLEAN·178/178) · frontend `a627c6d`(8 ahead·WT CLEAN·110/36·33 route·117 modules) · BNK-9·G17~G19 불변 · QA Open 0 · 잔여 BLOCK backend merge(11)+B03/SEC-D14+v1.2 8 ahead |
+| 2026-06-08 | **자동 동기화 52차 — TSR 70·71 + BNK-9 재확인 + v1.2 UXD 15 pages·P0 KPI**: backend `78e8928`(9 ahead·WT CLEAN·171/171·DAILY_CARE alimtalk dispatch) · frontend `42f48e1`(4 ahead·WT CLEAN·89/28·33 route·114 modules) · test `4f71543` v1.1 merged · BNK-9·G17~G19 불변 · 모듈 커버 ~45–50% 추정 · 잔여 BLOCK backend merge(9)+B03/SEC-D14(backend)+v1.2 4 ahead |
+| 2026-06-08 | **자동 동기화 51차 — TSR 68·69 + v1.1 merged + UXD 35 v1.2 커밋**: backend `44e0f02`(8 ahead·WT CLEAN·170/170) · frontend `e0eaf32`(2 ahead·WT CLEAN·82/27·18 route) · test `4f71543` v1.1 merged · BNK-9·G17~G19 불변 · 잔여 BLOCK backend merge(8)+B03/SEC-D14(backend)+v1.2 2 ahead |
+| 2026-06-08 | **자동 동기화 50차 — BNK-9 재확인 + frontend dirty-tree 재확대**: backend `c221531`(7 ahead·WT 3M 불변) · frontend `4f71543`(WT **24 files** Must UI WIP·18 route·develop=test) · BNK-9·G17~G19 불변 · #44 law.go.kr 잔여 · 잔여 BLOCK backend merge(7)+B03+WT **27 files** |
+| 2026-06-08 | **자동 동기화 49차 — TSR 66·67 + BNK-9 재확인**: backend `c221531`(v2/J03 alimtalk E2E·169/169·7 ahead·WT 3M) · frontend `4f71543`(UXD SideNav·FE-22 liveConfig·58/18·86 modules·develop=test) · BNK-9 불변 · 잔여 BLOCK backend merge(7)+B03+WT dirty |
+| 2026-06-08 | **자동 동기화 46차 — SEC 6차 Open 2건 Planned + BNK-8 COMPETITOR_MATRIX 정합 + baseline 불변 재확인**: ① planner 실측 — backend `136239e`·frontend `7170b2a` WT CLEAN · `mvn test` 152/152 · `npm test` 40/11 · **45차와 동일**. ② **SEC-D14·SEC-D13 Open→Planned** → B03 merge·**BE-11**. ③ **FE-22**(live E2E) 신설. ④ COMPETITOR_MATRIX 케어포 배차 지도 △. ⑤ 잔여 BLOCK = merge(4+9)+B03+라이브 E2E+BE-11. |
 | 2026-06-07 | **자동 동기화 30차 — TSR 45차 (frontend B07 #3 72→76 files·`FeeScheduleTable`(+test)·WT 181/30·749 modules·backend 44차 baseline 불변·Open 0)**: ① frontend **B07 #3 범위 확대** — 72→**76 files**, 신규 **`FeeScheduleTable`(+test)**·WT **181/30·749 modules**(+2/+1 tests vs 43차). ② **FE-13 `FeeScheduleTable` 수가표 테이블 UI**(US-G00a·케어포 9-x·`FeeRateHistoryPanel` HEAD 연계) 매핑. ③ backend **44차 baseline 불변** — B02 #5·B08·COD Fixed FAIL. ④ **#36 30차 연속 미조치** 강화. ⑤ 잔여 BLOCK = **B03 + B02 #5 + B07 #3 + B08** 불변. |
 | 2026-06-07 | **자동 동기화 29차 — TSR 42·43차 (backend B08 @Test 5→8·WT 243/243·frontend B07 #3 61→72 files·청구·건강·NHIS·보호자 UI WIP·Open 0)**: ① backend **42차 상태 불변** — B08 @Test 5→8·WT `mvn test` 243/243(+3)·COD Fixed FAIL 재확인. ② frontend **B07 #3 범위 확대** — 61→**72 files**, 신규 `BillingStatusConfirmModal`·`CopayRateTable`·`GuardianDailySummary`·`HealthAlertList`·`NhisImportGuidePanel`(+tests)·WT **179/29·748 modules**. ③ **FE-12 `HealthAlertList`·FE-13 청구·copay·NHIS·보호자 UI** 매핑. ④ **#36 29차 연속 미조치** 강화. ⑤ 잔여 BLOCK = **B03 + B02 #5 + B07 #3 + B08** 불변. |
 | 2026-06-07 | **자동 동기화 27차 — TSR 40·41차 (backend COD false Fixed 철회·`.gitignore` 부분 진전·frontend 41차 상태 불변·Open 0)**: ① backend **COD false Fixed 철회** — B02 #5·B08 develop HEAD **ABSENT**(TSR 40차 `git cat-file -e HEAD:` FAIL)·`.gitignore` +`data/backups/` 1M 미커밋(부분 진전)·WT `mvn test` 240/240. v1 **QA-B02 `[x]`·v2 BE-7 `[x]` 철회**. ② frontend **41차 상태 불변** — 60→**61 files**(±1 modified)·WT 169/24·743 modules·audit 0. ③ **#36 인프라 강제 단계 진입 검토** 강화. ④ 잔여 BLOCK = **B03 + B02 #5 + B07 #3 + B08** 불변. |
