@@ -1,6 +1,11 @@
 # doc:owner=TSR doc:audience=PLN,COD
 # Frontend develop → test 이관 매니페스트 (최신)
-# updated: 2026-06-08T00:30:00+00:00
+# updated: 2026-06-08T01:35:00+00:00
+# revalidation_81st: 2026-06-08T01:35 — test @4f71543 불변·PASS.
+#   test npm test 58/18 PASS·build 86 modules·audit 0 (독립 실측 CONFIRMED).
+#   develop c510f5c (+2 v1.2 CLEAN: fd4e8f3 US-G06 DISCREPANCY UI + c510f5c US-G06 E2E) · 15 ahead.
+#   develop npm test 143/46 PASS·audit 0.
+#   이관 규율 5 PRESENT·SEC-005 0건. Open 0. verdict PASS (v1.1). backend merge(15) 잔여.
 # revalidation_80th: 2026-06-08T00:30 — test @4f71543 불변·PASS.
 #   test npm test 58/18 PASS·build 86 modules·audit 0 (독립 실측 CONFIRMED).
 #   develop 95b92b9 (+2 v1.2 CLEAN: 3ec8206 US-F03 낙상·사고 UI + 95b92b9 US-F03 incident API detail 정합) · 13 ahead.
@@ -34,12 +39,12 @@ prerequisite:
 baseline:
   workspace_yaml: .agents/workspace_baseline.yaml
   frontend_develop_yaml: 4f71543
-  frontend_develop_actual: 95b92b9
+  frontend_develop_actual: c510f5c
   frontend_test_actual: 4f71543
-  note: "v1.1 merged @ test 4f71543. develop +13 v1.2 (64468a3·e0eaf32·0d83a42·42f48e1·a68f150·9bdf59f·6f3f746·a627c6d·c5708c7·9863312·4957bd3·3ec8206·95b92b9) CLEAN."
+  note: "v1.1 merged @ test 4f71543. develop +15 v1.2 (64468a3·…·95b92b9·3ec8206·fd4e8f3·c510f5c) CLEAN."
 
 transfer_verdict: PASS
-verdict_reason: "v1.1 test @4f71543 validated (80차 독립 실측) — 58/18 PASS·86 modules·audit 0·이관 규율 5 PRESENT. develop +13 v1.2 CLEAN·137/45 PASS·124 modules·audit 0 (non-blocking). backend merge(14) 잔여."
+verdict_reason: "v1.1 test @4f71543 validated (81차 독립 실측) — 58/18 PASS·86 modules·audit 0·이관 규율 5 PRESENT. develop +15 v1.2 CLEAN·143/46 PASS·audit 0 (non-blocking). backend merge(15) 잔여."
 
 repository:
   submodule_path: src/frontend
@@ -49,27 +54,27 @@ repository:
 branches:
   develop:
     name: develop
-    head: 95b92b9
-    head_short: 95b92b9
-    message: "fix(v1.2): US-F03 incident API 본문 detail 필드 정합 (Q154)"
+    head: c510f5c
+    head_short: c510f5c
+    message: "test(v1.2): US-G06 DISCREPANCY compare pilotPageFlows E2E"
     v1_1_merge_commit: 4f71543
-    ahead_of_test: 13
+    ahead_of_test: 15
     working_tree_clean: true
     working_tree:
       modified: 0
       untracked: 0
       total_dirty: 0
-      note: "80차 — CLEAN · v1.2 +13(…·4957bd3·3ec8206 UXD-41·95b92b9) · 이관 규율 5 PRESENT · 137/45 PASS · 124 modules"
+      note: "81차 — CLEAN · v1.2 +15(…·95b92b9·fd4e8f3 US-G06 DISCREPANCY UI·c510f5c US-G06 E2E) · 이관 규율 5 PRESENT · 143/46 PASS · audit 0"
   test:
     name: test
     head: 4f71543
     message: "test(v1.1): enforce FE-22 live E2E config preconditions"
     working_tree_clean: true
-    note: "v1.1 merged — 58/18 PASS·86 modules·audit 0 (77차 재확인)"
+    note: "v1.1 merged — 58/18 PASS·86 modules·audit 0 (81차 재확인)"
 
 develop_test_diff:
   test_behind_develop: true
-  commits_ahead: 13
+  commits_ahead: 15
   commits:
     - 64468a3
     - e0eaf32
@@ -84,7 +89,9 @@ develop_test_diff:
     - 4957bd3
     - 3ec8206
     - 95b92b9
-  note: "v1.2 develop 선행 커밋 13건 — v1.1 test PASS 후 v1.2 merge 대기"
+    - fd4e8f3
+    - c510f5c
+  note: "v1.2 develop 선행 커밋 15건 — v1.1 test PASS 후 v1.2 merge 대기"
 
 artifact:
   name: ogada-frontend
@@ -152,52 +159,47 @@ build:
   develop_head:
     command: npm run build
     worktree: src/frontend
-    executed_at: 2026-06-08T00:30:00+00:00
-    head: 95b92b9
+    executed_at: 2026-06-08T01:35:00+00:00
+    head: c510f5c
     result: SUCCESS
     vite: "6.4.3"
-    modules: 124
-    assets:
-      js_kb: 316.89
-      js_gzip_kb: 90.47
-      css_kb: 30.85
-    note: "80차 실측 — v1.2 +13 (UXD-41 US-F03 낙상·사고 이벤트 기록 UI + incident API detail 정합)"
+    note: "81차 실측 — v1.2 +15 (fd4e8f3 US-G06 DISCREPANCY UI + c510f5c US-G06 E2E)"
 
 tests:
   test_branch:
     command: npm test (vitest run)
     worktree: src/frontend-test
-    executed_at: 2026-06-08T00:30:00+00:00
+    executed_at: 2026-06-08T01:35:00+00:00
     head: 4f71543
     result: PASS
     vitest: "4.1.8"
     tests_passed: 58
     test_files: 18
-    note: "80차 실측 — test @4f71543 불변 (69/71/73/75/76/77차 동일)"
+    note: "81차 실측 — test @4f71543 불변 (69/71/73/75/76/77/80/81차 동일)"
   develop_head:
     command: npm test (vitest run)
     worktree: src/frontend
-    executed_at: 2026-06-08T00:30:00+00:00
-    head: 95b92b9
+    executed_at: 2026-06-08T01:35:00+00:00
+    head: c510f5c
     result: PASS
     vitest: "4.1.8"
-    tests_passed: 137
-    test_files: 45
-    note: "80차 실측 — v1.2 +13 (+7/+1 vs 77차 130/44: US-F03 이벤트 기록 회귀)"
+    tests_passed: 143
+    test_files: 46
+    note: "81차 실측 — v1.2 +15 (+6/+1 vs 80차 137/45: US-G06 DISCREPANCY 회귀)"
 
 npm_audit:
   test_branch:
-    executed_at: 2026-06-08T00:30:00+00:00
+    executed_at: 2026-06-08T01:35:00+00:00
     high: 0
     moderate: 0
     critical: 0
-    note: "0 vulnerabilities — 80차 실측"
+    note: "0 vulnerabilities — 81차 실측"
   develop_head:
-    executed_at: 2026-06-08T00:30:00+00:00
+    executed_at: 2026-06-08T01:35:00+00:00
     high: 0
     moderate: 0
     critical: 0
-    note: "0 vulnerabilities — 80차 실측 @ 95b92b9"
+    note: "0 vulnerabilities — 81차 실측 @ c510f5c"
 
 qa_feedback:
   open_block: 0
@@ -205,24 +207,28 @@ qa_feedback:
   planned_block: 1
   planned_ids:
     - SEC-20260608-013  # SEC-D14 backend develop→test 미승격 (frontend portion resolved @ 69차)
-  note: "Open 0 · v1.1 frontend PASS @ test 4f71543 (80차 독립 실측) · 잔여 BLOCK = backend merge(14) only"
+  note: "Open 0 · v1.1 frontend PASS @ test 4f71543 (81차 독립 실측) · 잔여 BLOCK = backend merge(15) only"
 
 blockers:
   - id: SEC-20260608-013
     state: Planned
     severity: BLOCK
     stream: backend
-    summary: "SEC-D14 — backend develop→test merge 미실행(14 commits ahead). frontend portion resolved @ 69차."
+    summary: "SEC-D14 — backend develop→test merge 미실행(15 commits ahead). frontend portion resolved @ 69차."
 
 next_actions:
   - owner: COD/PLN
-    action: "backend develop→test merge (14 commits) → TSR backend 재검증"
+    action: "backend develop→test merge (15 commits) → TSR backend 재검증"
   - owner: TSR
     action: "post-merge: LIVE_E2E=1 npm run test:live-e2e (실 백엔드 P1–P8·J01/J02, 결정 73 권장)"
   - owner: COD
-    action: "v1.2 develop +13 commits — merge_status ready 후 develop→test merge"
+    action: "v1.2 develop +15 commits — merge_status ready 후 develop→test merge"
 
 revalidation_history:
+  - nth: 81
+    at: 2026-06-08T01:35:00+00:00
+    verdict: PASS
+    note: "test @4f71543 불변·58/18 PASS·86 modules·audit 0 (독립 실측) · develop c510f5c +15 CLEAN·143/46 PASS·audit 0 · 이관 규율 5 PRESENT · SEC-005 0건 · Open 0 · PASS(v1.1)"
   - nth: 80
     at: 2026-06-08T00:30:00+00:00
     verdict: PASS

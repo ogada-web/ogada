@@ -1,3 +1,50 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T01:35:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08 81차 재검증)
+
+> **81차 재검증 (01:35) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `c510f5c`(+2 v1.2 CLEAN)·15 ahead·develop 143/46 PASS·PASS**: 80차(develop `95b92b9` +13·PASS) 대비 develop HEAD **`c510f5c`**(+2: `fd4e8f3` feat(ux): US-G06 DISCREPANCY 청구 라인 비교 링크·접근성 재점검 · `c510f5c` test(v1.2): US-G06 DISCREPANCY compare pilotPageFlows E2E). test HEAD `4f71543` **불변** — 58/18 PASS·86 modules·audit 0 유지(독립 실측 CONFIRMED). develop WT **CLEAN** (0 dirty). develop `npm test` **143/46 PASS**·audit **0**. 이관 규율 5 PRESENT · SEC-005 0건. **신규 Open 0건** — 판정 **PASS**(v1.1). backend merge(15) 잔여.
+
+## 커밋 수준 (81차)
+
+| 항목 | 80차 | 81차 |
+|------|------|------|
+| develop HEAD | `95b92b9` | **`c510f5c`** (+2) |
+| test HEAD | `4f71543` (v1.1 merged) | **`4f71543`** (불변) |
+| commits gap | develop 13 ahead | **develop 15 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 137/45 PASS | **143/46 PASS** |
+
+### v1.2 develop 신규 커밋 (80차 `95b92b9` 이후, 81차)
+
+| SHA | Message |
+|-----|---------|
+| `fd4e8f3` | feat(ux): US-G06 DISCREPANCY 청구 라인 비교 링크·접근성 재점검 |
+| `c510f5c` | test(v1.2): US-G06 DISCREPANCY compare pilotPageFlows E2E |
+
+## test 브랜치 (frontend-test @ `4f71543`, 81차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **86 modules PASS** (vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) |
+| npm test | **58/18 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`c510f5c`, 81차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **143/46 PASS** (+6/+1 vs 80차 137/45 — US-G06 DISCREPANCY 회귀) |
+| npm audit | **0 vulnerabilities** |
+
+## 판정 (81차)
+
+**PASS** — v1.1 test `@4f71543` 검증 유지. develop v1.2 **+15 CLEAN** (non-blocking). post-merge **live E2E run** 권장(결정 73). backend merge(15) 잔여.
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T00:30:00+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-08T00:30 80차 재검증)
 

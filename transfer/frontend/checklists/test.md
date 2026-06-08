@@ -1,12 +1,24 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T00:30:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T01:35:00+00:00 -->
 # Frontend develop → test 이관 체크리스트
 
 > **스트림**: frontend  
 > **develop 브랜치**: `develop` (`src/frontend`)  
 > **test 브랜치**: `test` (`src/frontend-test` worktree)  
-> **검증 기준**: `docs/planning/ROADMAP.md` v1.1 완료 기준 (선행: v1 `merge_status: merged`) · **CURRENT BASELINE**: frontend test `4f71543` · develop `95b92b9` (+13 v1.2)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.1 완료 기준 (선행: v1 `merge_status: merged`) · **CURRENT BASELINE**: frontend test `4f71543` · develop `c510f5c` (+15 v1.2)  
 > **작성**: tester (`TSR`)  
-> **최종 갱신**: 2026-06-08T00:30:00+00:00
+> **최종 갱신**: 2026-06-08T01:35:00+00:00
+
+> **81차 재검증 (2026-06-08T01:35) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `c510f5c`(+2 vs 80차 v1.2 CLEAN)·15 ahead·develop 143/46 PASS·PASS**:
+> - **frontend test HEAD `4f71543`** 불변 — working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **58 tests/18 files PASS** (vitest 4.1.8) — 81차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **86 modules SUCCESS** (vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) — 81차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 81차 독립 실측.
+> - **`git cat-file -e HEAD:`** `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`liveConfig.js`·`vitest.live.config.js`·`AuthContext.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `c510f5c`** (+2 vs 80차 `95b92b9`: `fd4e8f3` feat(ux): US-G06 DISCREPANCY 청구 라인 비교 링크·접근성 재점검 · `c510f5c` test(v1.2): US-G06 DISCREPANCY compare pilotPageFlows E2E), working tree **CLEAN** (0 dirty).
+> - develop `npm test`: **143/46 PASS**(vitest 4.1.8, 80차 137/45 → +6/+1: US-G06 DISCREPANCY 회귀) · develop audit: **0 vulnerabilities** — 81차 실측.
+> - develop **15커밋 ahead** of test (80차 13 → +2) — v1.2 WIP, non-blocking.
+> - **ROADMAP v1.1 `merge_status: merged`** — test 브랜치 검증 **PASS** (69차 이후 불변).
+> - **신규 Open 0건** — 판정 **PASS**(v1.1). 잔여: backend merge(15) + post-merge live E2E(결정 73 권장) + v1.2 develop +15 ahead.
 
 > **80차 재검증 (2026-06-08T00:30) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `95b92b9`(+2 v1.2 CLEAN)·13 ahead·develop 137/45 PASS·124 modules·PASS**: 77차(`4f71543`·58/18·86 modules·PASS) 대비 **test HEAD 불변** — `src/frontend-test` `npm test` **58/18 PASS**·`npm run build` **86 modules**(vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB)·`npm audit` **0** **그대로 PASS**(80차 독립 재실측 CONFIRMED). develop HEAD **`95b92b9`**(+2 vs 77차 `4957bd3`: `3ec8206` feat(uxd-41) US-F03 낙상·사고·특이사항 이벤트 기록 UI 신설 · `95b92b9` fix(v1.2) US-F03 incident API 본문 detail 필드 정합, 15 files approx.) · WT **CLEAN** · develop **13커밋 ahead**(77차 11→+2) · develop `npm test` **137/45 PASS**(77차 130/44 → +7/+1: US-F03 회귀)·`npm run build` **124 modules PASS**(vite 6.4.3, JS 316.89 kB gzip 90.47 kB, CSS 30.85 kB)·`npm audit` **0**. 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** @ test·develop HEAD. SEC-005 localStorage/sessionStorage **0건**. **신규 Open 0건** — **판정 PASS**(v1.1 test `4f71543` 유효). 잔여: backend merge(14) + v1.2 develop 13 ahead + post-merge live E2E(결정 73 권장).
 
