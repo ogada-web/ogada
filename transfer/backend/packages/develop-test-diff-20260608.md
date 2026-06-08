@@ -1,5 +1,49 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T17:22:00+00:00 -->
-# develop ↔ test diff 메타 (2026-06-08, 66차 재검증)
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T00:18:00+00:00 -->
+# develop ↔ test diff 메타 (2026-06-08, 79차 재검증)
+
+> **79차 재검증 (00:18 UTC) — develop `4c74f84` CLEAN·v2/J03 alimtalk payload Solapi 변수 매핑·merge 14커밋·develop 191/191·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`4c74f84`**(+1커밋 vs 78차 `32a1f8f` — `feat(v2/J03): map alimtalk payload to Solapi template variables`: `AlimtalkTemplateVariables.java`(74 lines — 카카오 템플릿 변수 매핑 도메인 모델)·`SolapiKakaoAlimtalkProvider.java`(+9 — `kakaoOptions.variables` 주입)·`SolapiMessageClient.java`(+11 — variables 전달)·`AlimtalkTemplateVariablesTest.java`(67 lines — 빌더·직렬화 단위 테스트)·`J03AlimtalkServiceFlowE2eTest.java`(+35 — medication·note daily-care dispatch 경로 확장)·`SolapiKakaoAlimtalkProviderTest.java`(+6 — variables 주입 커버리지), 6 files, +197/-5), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **191/191 PASS**(51→52 suites, 78차 185 → +6: `AlimtalkTemplateVariablesTest` + `J03AlimtalkServiceFlowE2eTest` medication·note E2E + `SolapiKakaoAlimtalkProviderTest` variables).
+> develop **14커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + service-layer alimtalk flow E2E + AlimtalkTemplateVariables PRESENT @ 4c74f84(TSR 79차 독립 검증 PASS)**.
+
+> **78차 재검증 (23:20 UTC) — develop `32a1f8f` CLEAN·v2/J03 service-layer alimtalk flow E2E·merge 13커밋·develop 185/185·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+
+> **78차 재검증 (23:20 UTC) — develop `32a1f8f` CLEAN·v2/J03 service-layer alimtalk flow E2E·merge 13커밋·develop 185/185·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`32a1f8f`**(+1커밋 vs 76차 `0832fbf` — `feat(v2/J03): add service-layer alimtalk flow E2E tests`: `J03AlimtalkServiceFlowE2eTest`(357 lines — attendance·health·billing 도메인 액션을 `NotificationService` 경유로 wire·US-J03 커버리지)·`AttendanceServiceTest`(+67 lines — check-out dispatch 커버리지), 2 files +424), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **185/185 PASS**(51 suites, 76차 179 → +6: `J03AlimtalkServiceFlowE2eTest` + `AttendanceServiceTest` check-out dispatch).
+> develop **13커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + service-layer alimtalk flow E2E PRESENT @ 32a1f8f(TSR 78차 독립 검증 PASS)**.
+
+> **76차 재검증 (22:23 UTC) — develop `0832fbf` CLEAN·v2/J03 DAILY_CARE vitals dispatch·merge 12커밋·develop 179/179·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`0832fbf`**(+1커밋 vs 74차 `8ce1151` — `feat(v2/J03): dispatch DAILY_CARE notifications for vitals`: `HealthRecordService`(활력징후 기록 생성 시 보호자 일일돌봄 알림톡 디스패치)·`HealthRecordServiceTest`(vitals dispatch payload 단위 테스트 +53 lines), 2 files +96), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **179/179 PASS**(50 suites, 74차 178 → +1: `HealthRecordServiceTest` vitals dispatch).
+> develop **12커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + vitals dispatch PRESENT @ 0832fbf(TSR 76차 독립 검증 PASS)**.
+
+> **74차 재검증 (21:20 UTC) — develop `8ce1151` CLEAN·V46 notification history query index·merge 11커밋·develop 178/178·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`8ce1151`**(+1커밋 vs 72차 `c53dd3b` — `feat(v2/J03): add notification history query index (V46)`: `V46__notification_history_query_index.sql`(9 lines — `idx_notifications_org_recipient_created`(organization_id, recipient_user_id, created_at DESC)), 1 file +9), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **178/178 PASS**(50 suites, 72차 불변 — V46 신규 @Test 없음).
+> develop **11커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + V46 PRESENT @ 8ce1151(TSR 74차 독립 검증 PASS)**.
+
+> **72차 재검증 (20:10 UTC) — develop `c53dd3b` CLEAN·v2/J03 guardian·staff 알림 이역 API·merge 10커밋·develop 178/178·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`c53dd3b`**(+1커밋 vs 70차 `78e8928` — `feat(v2/J03): add guardian and staff notification history APIs`: `GuardianNotificationHistoryController`·`StaffClientNotificationHistoryController`·`NotificationHistoryService`(187)·`NotificationHistoryServiceTest`(168)·`MustApiEndpointRoutingTest`(+46 알림 이력 RBAC), 8 files +514), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **178/178 PASS**(50 suites, 70차 171 → +7: `NotificationHistoryServiceTest` + `MustApiEndpointRoutingTest` 알림 이력).
+> develop **10커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + 신규 알림 이력 API PRESENT @ c53dd3b(TSR 72차 독립 검증 PASS)**.
+
+> **70차 재검증 (19:05 UTC) — develop `78e8928` CLEAN·v2/J03 DAILY_CARE medication dispatch·merge 9커밋·develop 171/171·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`78e8928`**(+1커밋 vs 68차 `44e0f02` — `feat(v2/J03): dispatch DAILY_CARE alimtalk on medication records`: `HealthRecordService`(투약기록 생성 시 보호자 일일돌봄 알림톡 디스패치)·`HealthRecordServiceTest`(dispatch payload 단위 테스트)), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **171/171 PASS**(48 suites, 68차 170 → +1: `HealthRecordServiceTest`).
+> develop **9커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts PRESENT @ 78e8928(TSR 70차 독립 검증 PASS)**.
+
+> **68차 재검증 (18:07 UTC) — develop `44e0f02` CLEAN·NotificationConfig quiet hours·merge 8커밋·develop 170/170·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`44e0f02`**(+1커밋 vs 66차 `c221531` — `Ensure quiet hours clock is provided and add coverage`: `NotificationConfig`·`NotificationConfigTest`·`GlobalExceptionHandler`·`SecurityConfig`), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **170/170 PASS**(66차 169 → +1: `NotificationConfigTest`).
+> develop **8커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts PRESENT @ 44e0f02(TSR 68차 독립 검증 PASS)**.
 
 > **66차 재검증 (17:22 UTC) — develop `c221531` CLEAN·v2/J03 daily care·emergency health alimtalk E2E·merge 7커밋·develop 169/169·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
 > develop HEAD **`c221531`**(+1커밋 vs 64차 `80bdb1e` — `feat(v2/J03): wire daily care·emergency health notifications and alimtalk E2E tests`), working tree **CLEAN**.
@@ -7,24 +51,18 @@
 > test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **169/169 PASS**(64차 158 → +11).
 > develop **7커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts PRESENT @ c221531(TSR 66차 독립 검증 PASS)**.
 
-> **64차 재검증 (16:30 UTC) — develop `80bdb1e` CLEAN·BE-11 AuthRateLimitService Fixed·V45 Fixed·merge 6커밋·develop 158/158·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
-> develop HEAD **`80bdb1e`**(+2커밋 vs 62차 `136239e` — `8d42bdd` BE-11 AuthRateLimitService · `80bdb1e` V45), working tree **CLEAN**.
-> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
-> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **158/158 PASS**.
-> develop **6커밋 ahead** — merge 미실행. **BE-11 Fixed @ `8d42bdd`** · **V45 Fixed @ `80bdb1e`** · **SEC-20260608-014 Planned→Fixed**.
-
-## 커밋 수준 (66차)
+## 커밋 수준 (79차)
 
 | 항목 | 값 |
 |------|-----|
-| `develop` HEAD | `c221531` — `feat(v2/J03): wire daily care·emergency health notifications and alimtalk E2E tests` |
+| `develop` HEAD | `4c74f84` — `feat(v2/J03): map alimtalk payload to Solapi template variables` |
 | `test` HEAD | `2799e29` — `feat: Spring Boot 3.x 백엔드 초기 구현` |
 | ROADMAP v1 merged 기대 test | `e8750d2` — **미달** (213 tests·Boot 3.5.3·SEC-007) |
-| `git rev-list --count test..develop` | **7** |
+| `git rev-list --count test..develop` | **14** |
 | develop working tree | **CLEAN** (0 dirty) |
 | test working tree | **CLEAN** |
 
-### develop 7커밋 ahead (test 미반영 — merge 게이트)
+### develop 14커밋 ahead (test 미반영 — merge 게이트)
 
 | 커밋 | QA | 요약 |
 |------|-----|------|
@@ -35,8 +73,15 @@
 | `8d42bdd` | **BE-11 Fixed (SEC-D13)** | `AuthRateLimitService` IP+email 슬라이딩 윈도우 60s, login·refresh·reset rate limit, 429 RATE_LIMITED |
 | `80bdb1e` | v2 V45 | `V45__v2_notification_prefs_integrity_and_users_phone_pair.sql` — users phone pair·notifications FK·guardian_invitations index |
 | `c221531` | v2/J03 | `NotificationAlimtalkDispatchE2eTest`(7 @Test) — daily care·emergency health notifications alimtalk dispatch E2E |
+| `44e0f02` | v2/J03 follow-up | `NotificationConfig` quiet hours clock·`NotificationConfigTest`·`GlobalExceptionHandler`·`SecurityConfig` 정리 |
+| `78e8928` | v2/J03 | `HealthRecordService` 투약기록 생성 시 보호자 DAILY_CARE 알림톡 디스패치 연동·`HealthRecordServiceTest` dispatch payload 단위 테스트 |
+| `c53dd3b` | v2/J03 | `GuardianNotificationHistoryController`·`StaffClientNotificationHistoryController`·`NotificationHistoryService`(187)·`NotificationHistoryServiceTest`(168)·`MustApiEndpointRoutingTest`(+46) — 보호자/직원 알림 이력 조회 API |
+| `8ce1151` | v2/J03 V46 | `V46__notification_history_query_index.sql`(9 lines) — `idx_notifications_org_recipient_created`(organization_id, recipient_user_id, created_at DESC) — tenant-scoped pagination 성능 최적화 |
+| `0832fbf` | v2/J03 | `HealthRecordService` 활력징후 기록 생성 시 보호자 DAILY_CARE 알림톡 디스패치·`HealthRecordServiceTest` vitals dispatch payload 단위 테스트 (+53 lines) |
+| `32a1f8f` | v2/J03 | `J03AlimtalkServiceFlowE2eTest`(357 lines — attendance·health·billing 도메인 액션 `NotificationService` 경유 wire·US-J03 커버리지)·`AttendanceServiceTest`(+67 — check-out dispatch) |
+| `4c74f84` | v2/J03 | `AlimtalkTemplateVariables.java`(74 lines — 카카오 템플릿 변수 매핑)·`SolapiKakaoAlimtalkProvider`(+9 variables 주입)·`AlimtalkTemplateVariablesTest.java`(67 lines)·`J03AlimtalkServiceFlowE2eTest`(+35 medication·note path)·`SolapiKakaoAlimtalkProviderTest`(+6) |
 
-### develop HEAD 산출물 검증 (규율 5, 66차)
+### develop HEAD 산출물 검증 (규율 5, 79차)
 
 | path | HEAD |
 |------|------|
@@ -52,18 +97,31 @@
 | `auth/domain/AuthRateLimitService.java` | **PRESENT** (8d42bdd) ← **BE-11 Fixed** |
 | `auth/domain/AuthRateLimitServiceTest.java` | **PRESENT** (8d42bdd) |
 | `db/migration/V45__*.sql` | **PRESENT** (80bdb1e) ← **V45** |
+| `notification/domain/NotificationAlimtalkDispatchE2eTest.java` | **PRESENT** (c221531) |
+| `notification/config/NotificationConfigTest.java` | **PRESENT** (44e0f02) ← **quiet hours coverage** |
+| `health/domain/HealthRecordServiceTest.java` | **PRESENT** (78e8928·0832fbf) ← **DAILY_CARE medication + vitals dispatch coverage** |
+| `notification/api/GuardianNotificationHistoryController.java` | **PRESENT** (c53dd3b) ← **보호자 알림 이력** |
+| `notification/api/StaffClientNotificationHistoryController.java` | **PRESENT** (c53dd3b) ← **직원 알림 이력** |
+| `notification/domain/NotificationHistoryService.java` | **PRESENT** (c53dd3b) ← **스코프 페이지네이션 이력** |
+| `db/migration/V46__notification_history_query_index.sql` | **PRESENT** (8ce1151) ← **V46 tenant-scoped pagination index** |
+| `notification/domain/NotificationHistoryServiceTest.java` | **PRESENT** (c53dd3b) ← **이력 조회 단위 테스트** |
+| `notification/domain/J03AlimtalkServiceFlowE2eTest.java` | **PRESENT** (32a1f8f·4c74f84) ← **service-layer alimtalk flow E2E + medication·note path** |
+| `attendance/domain/AttendanceServiceTest.java` | **PRESENT** (32a1f8f) ← **check-out dispatch 커버리지** |
+| `notification/provider/solapi/AlimtalkTemplateVariables.java` | **PRESENT** (4c74f84) ← **Solapi 변수 매핑 도메인 모델** |
+| `notification/provider/solapi/AlimtalkTemplateVariablesTest.java` | **PRESENT** (4c74f84) ← **변수 매핑 단위 테스트** |
+| `notification/provider/solapi/SolapiKakaoAlimtalkProvider.java` | **PRESENT** (4c74f84) ← **kakaoOptions.variables 주입** |
 
-## Maven (64차 실측)
+## Maven (79차 실측)
 
 | context | command | result |
 |---------|---------|--------|
 | test `@2799e29` | `mvn test` | **79/79 PASS** (23 suites) |
-| develop `@80bdb1e` | `mvn test` | **158/158 PASS** |
-| test package | `mvn -q -DskipTests package` | SUCCESS — JAR **76,466,058 B** |
+| develop `@4c74f84` | `mvn test` | **191/191 PASS** (51+ suites, 78차 185 → +6) |
+| test package | `mvn -q -DskipTests package` | SUCCESS — JAR **76,466,058 B** (test 불변) |
 
 ## 판정
 
-**BLOCK** — merge 게이트(6커밋). BE-11·V45 dirty-tree **소멸**(Fixed @ `8d42bdd`/`80bdb1e`). SEC-20260608-014 **Fixed**.
+**BLOCK** — merge 게이트(14커밋). develop CLEAN·v1 baseline artifacts + AlimtalkTemplateVariables + service-layer alimtalk flow E2E PRESENT·191/191 PASS. test `@2799e29` stale 79/79. **Open 0건**.
 
 ---
 
