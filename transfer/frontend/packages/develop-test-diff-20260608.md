@@ -1,3 +1,194 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T09:13:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08 92차 재검증)
+
+> **92차 재검증 (09:13) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `637b9b3`(+2 UXD-49·v1.3-A T01~T03 E2E CLEAN)·189/60 PASS·766 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**: 91차(test `c510f5c`·develop `8a764df` +10) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`8a764df`→`637b9b3`**(+2: `00375f6` feat(uxd-49): HQ 통합 대시보드 건강 이상 목록 지점명 표시 US-H02 · `637b9b3` feat(v1.3-A): pilotPageFlows transport US-T01~T03 E2E + pilotChecklist T01~T03). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `pending`(backend transport API test 미승격·US-T01~T03 live E2E 잔여, pilotPageFlows E2E develop PRESENT) · v3 **develop-only(+UXD-48·UXD-49)**. develop build JS 756 kB(vite >500kB **non-blocking LOW**).
+
+> **91차 재검증 (08:05) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `8a764df`(+1 UXD-48 CLEAN)·183/60 PASS·766 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**: 90차(test `c510f5c`·develop `73f7d39` +9) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`73f7d39`→`8a764df`**(+1: `8a764df` feat(uxd-48): Recharts 차트 레이어 복원·대시보드/출석/건강 연동). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `pending`(backend transport API test 미승격·live E2E 잔여) · v3 **develop-only(+Recharts)**. develop build JS 756 kB(vite >500kB **non-blocking LOW**).
+
+> **90차 재검증 (07:08) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `73f7d39`(+1 UXD-47 CLEAN)·179/58 PASS·143 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**: 88차(test `c510f5c`·develop `fe33e7c` +8) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`fe33e7c`→`73f7d39`**(+1: `73f7d39` fix(uxd-47): StaffPage 접근성·배차 확정 취소 UI (US-T02) — `TransportUnconfirmModal`·`StaffRoleSelect`·`TransportRunDetailPage` unconfirm). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `pending`(backend transport API test 미승격·live E2E 잔여, **unconfirm UI develop PRESENT**) · v3 **develop-only**.
+
+## 커밋 수준 (92차)
+
+| 항목 | 91차 | 92차 |
+|------|------|------|
+| develop HEAD | `8a764df` (+10) | **`637b9b3`** (+12) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 10 ahead | **develop 12 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 183/60 PASS | **189/60 PASS** |
+| develop build | 766 modules (JS 756 kB) | **766 modules** (JS 756 kB, vite >500kB LOW) |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 92차 — 91차 대비 +2)
+
+| SHA | Message |
+|-----|---------|
+| `00375f6` | feat(uxd-49): HQ 통합 대시보드 건강 이상 목록 지점명 표시 (US-H02) |
+| `637b9b3` | feat(v1.3-A): pilotPageFlows transport US-T01~T03 E2E + pilotChecklist T01~T03 |
+
+> **`8a764df..637b9b3` diff stat**: 2커밋 추가. UXD-49 HQ 통합 대시보드 건강 이상 목록 지점명 표시(US-H02) + v1.3-A transport US-T01~T03 pilotPageFlows E2E·pilotChecklist T01~T03 항목 추가.
+
+### develop 전체 커밋 (test `c510f5c` 이후, 92차 — 12커밋)
+
+| SHA | Message |
+|-----|---------|
+| `f01e3a8` | feat(uxd-43): US-G06 UNMATCHED 후보 이용자 검색 UI 보강 |
+| `e8d1854` | feat(v1.3): add transport pickup dispatch UI shell (US-T01~T03) |
+| `f0b174a` | fix(a11y): v1.3 배차 UI 접근성 재점검 (US-T01~T03) |
+| `7ef1083` | feat(v3): add meals and programs management UI shell (§3-5·§3-6) |
+| `3e9a9ab` | fix(a11y): v3 식사·프로그램 기록 폼 접근성 재점검 (US-N01·N02) |
+| `362dbf0` | test(v3): add meals/programs API E2E via pilotPageFlows (US-N01·N02) |
+| `762b5a8` | fix(uxd-46): 누락 CSS 유틸·인라인 style 제거·체크인 라우트 접근성 |
+| `fe33e7c` | feat(v3): add staff management UI flow for frontend |
+| `73f7d39` | fix(uxd-47): StaffPage 접근성·배차 확정 취소 UI (US-T02) |
+| `8a764df` | feat(uxd-48): Recharts 차트 레이어 복원·대시보드/출석/건강 연동 (US-H01/E05/F04/H02) |
+| `00375f6` | feat(uxd-49): HQ 통합 대시보드 건강 이상 목록 지점명 표시 (US-H02) |
+| `637b9b3` | feat(v1.3-A): pilotPageFlows transport US-T01~T03 E2E + pilotChecklist T01~T03 |
+
+> **`c510f5c..637b9b3` diff stat**: 66 files, +4994/-62 — v1.3-A Transport(UI 셸·unconfirm·T01~T03 pilotPageFlows E2E) + v3(Meals·Programs·Staff·Recharts) + UXD-46·UXD-47·UXD-48·UXD-49.
+
+## 커밋 수준 (91차)
+
+| 항목 | 90차 | 91차 |
+|------|------|------|
+| develop HEAD | `73f7d39` (+9) | **`8a764df`** (+10) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 9 ahead | **develop 10 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 179/58 PASS | **183/60 PASS** |
+| develop build | 143 modules | **766 modules** (JS 756 kB, vite >500kB LOW) |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 91차 — 90차 대비 +1)
+
+| SHA | Message |
+|-----|---------|
+| `8a764df` | feat(uxd-48): Recharts 차트 레이어 복원·대시보드/출석/건강 연동 (US-H01/E05/F04/H02) |
+
+> **`73f7d39..8a764df` diff stat**: 17 files, +877/-16 — UXD-48 `ChartContainer`(+test)·`AttendanceRateChart`(+test)·`BranchCompareChart`·`HealthTrendChart`·`chartColors.js`·`DashboardPage`·`AttendanceStatsPage`·`HealthDetailPage` Recharts 연동.
+
+## 커밋 수준 (90차)
+
+| 항목 | 88차 | 90차 |
+|------|------|------|
+| develop HEAD | `fe33e7c` (+8) | **`73f7d39`** (+9) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 8 ahead | **develop 9 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 170/55 PASS | **179/58 PASS** |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 90차 — 88차 대비 +1)
+
+| SHA | Message |
+|-----|---------|
+| `73f7d39` | fix(uxd-47): StaffPage 접근성·배차 확정 취소 UI (US-T02) |
+
+> **`fe33e7c..73f7d39` diff stat**: 12 files, +471/-25 — UXD-47 `TransportUnconfirmModal`(+test)·`StaffRoleSelect`(+test)·`config/staff.js`·`StaffPage` DS 필드 검증·`TransportRunDetailPage` hq_admin unconfirm 흐름(+test)·`services.js` transport unconfirm API.
+
+## test 브랜치 (frontend-test @ `c510f5c`, 90차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **125 modules PASS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) |
+| npm test | **143/46 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·AuthContext·ReconciliationPage **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`8a764df`, 91차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **183/60 PASS** (+4/+2 vs 90차 179/58 — ChartContainer·AttendanceRateChart 회귀) |
+| npm run build | **766 modules PASS** (vite 6.4.3, JS 756.06 kB gzip 209.97 kB, CSS 34.91 kB gzip 6.37 kB — **vite >500 kB 경고, non-blocking LOW**) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | TransportPage·RunNew·RunDetail·KakaoMap·Disclaimer·StopList·TransportUnconfirmModal·transport.js·transportUtils **HEAD PRESENT** |
+| v3 산출물 | MealsPage·ProgramsPage·StaffPage·MealRecordForm·ProgramParticipationForm + a11y + pilotPageFlows **HEAD PRESENT** |
+| UXD-48 Recharts | ChartContainer·AttendanceRateChart·BranchCompareChart·HealthTrendChart·DashboardPage·AttendanceStatsPage·HealthDetailPage **HEAD PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15` |
+
+## 판정 (91차)
+
+**PASS** (v1.2) — test `@c510f5c` v1.2 merged 검증 불변. develop +10 v1.3-A·v3·Recharts **CLEAN** (non-blocking). develop build JS 756 kB — FE-15 code-split 후속 권장(LOW).
+
+## develop HEAD (`73f7d39`, 90차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **179/58 PASS** (+9/+3 vs 88차 170/55 — TransportUnconfirmModal·StaffRoleSelect·TransportRunDetailPage·StaffPage 회귀) |
+| npm run build | **143 modules PASS** (vite 6.4.3, JS 354.29 kB gzip 99.15 kB, CSS 34.02 kB gzip 6.28 kB) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | TransportPage·RunNew·RunDetail·KakaoMap·Disclaimer·StopList·**TransportUnconfirmModal**·transport.js·transportUtils **HEAD PRESENT** |
+| v3 산출물 | MealsPage·ProgramsPage·StaffPage·MealRecordForm·ProgramParticipationForm + a11y + pilotPageFlows **HEAD PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15` |
+
+## 판정 (90차)
+
+**PASS** (v1.2) — test `@c510f5c` v1.2 merged 검증 불변. develop +9 v1.3-A·v3·unconfirm UI **CLEAN** (non-blocking).
+**v1.3 이관 게이트 미충족(pending)** — backend v1.3-A transport API(develop `767d977` PRESENT, **test 미승격**)·US-T01~T03 **라이브 E2E** 잔여. unconfirm UI develop HEAD **PRESENT** @ `73f7d39`. **v3 develop-only** — ROADMAP merge 게이트 미정의, 정상(결함 아님). 잔여 BLOCK: backend merge(20) + SEC-D14 + post-merge live E2E(결정 73).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T06:10:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08 88차 재검증)
+
+> **88차 재검증 (06:10) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `fe33e7c`(+8 v1.3-A·v3·UXD-46·staff CLEAN)·170/55 PASS·140 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**: 86차(test `c510f5c`·develop `362dbf0` +6) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`362dbf0`→`fe33e7c`**(+2: `762b5a8` fix(uxd-46): 누락 CSS 유틸·인라인 style 제거·체크인 라우트 접근성 · `fe33e7c` feat(v3): add staff management UI flow for frontend). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `in_progress`/`pending`(backend transport API test 미승격·unconfirm UI) · v3 **develop-only**(+staff UI, merge 게이트 미설정).
+
+## 커밋 수준 (88차)
+
+| 항목 | 86차 | 88차 |
+|------|------|------|
+| develop HEAD | `362dbf0` (+6) | **`fe33e7c`** (+8) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 6 ahead | **develop 8 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 164/54 PASS | **170/55 PASS** |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 88차 — 86차 대비 +2)
+
+| SHA | Message |
+|-----|---------|
+| `762b5a8` | fix(uxd-46): 누락 CSS 유틸·인라인 style 제거·체크인 라우트 접근성 |
+| `fe33e7c` | feat(v3): add staff management UI flow for frontend |
+
+> **`362dbf0..fe33e7c` diff stat**: 21 files, +443/-34 — UXD-46 `components.css` ds 유틸 추가·`AttendancePage`·`MealsPage`·`ProgramsPage`·`GuardianDetailPage` 인라인 style 제거·체크인 라우트 접근성 + v3 `StaffPage.jsx`(+test)·`services.js` staff API·`App.jsx`·`navConfig`·`roleNav`·`pilotPageFlows` staff 흐름.
+
+## test 브랜치 (frontend-test @ `c510f5c`, 88차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **125 modules PASS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) |
+| npm test | **143/46 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·AuthContext·ReconciliationPage **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`fe33e7c`, 88차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **170/55 PASS** (+6/+1 vs 86차 164/54 — StaffPage·UXD-46 AttendancePage 회귀) |
+| npm run build | **140 modules PASS** (vite 6.4.3, JS 351.51 kB gzip 98.38 kB, CSS 33.97 kB gzip 6.28 kB) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | TransportPage·RunNew·RunDetail·KakaoMap·Disclaimer·StopList·transport.js·transportUtils **HEAD PRESENT** |
+| v3 산출물 | MealsPage·ProgramsPage·MealRecordForm·ProgramParticipationForm·meals.js·programs.js + a11y + pilotPageFlows US-N01·N02 **HEAD PRESENT** |
+| v3 staff 산출물 | StaffPage·StaffPage.test.jsx·services.js staff API **HEAD PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15` |
+
+## 판정 (88차)
+
+**PASS** (v1.2) — test `@c510f5c` v1.2 merged 검증 불변. develop +8 v1.3-A·v3·staff **CLEAN** (non-blocking).
+**v1.3 이관 게이트 미충족(pending)** — backend v1.3-A transport API(develop `0d8968d` PRESENT, **test 미승격**)·unconfirm UI·US-T01~T03 라이브 E2E 동반 후 merge. **v3(+staff UI) develop-only** — ROADMAP 버전·merge 게이트 미정의(planner 정의 대기), 정상(결함 아님). 잔여 BLOCK: backend merge(19) + SEC-D14 + post-merge live E2E(결정 73).
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T05:00:00+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-08 86차 재검증)
 

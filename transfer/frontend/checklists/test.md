@@ -1,12 +1,59 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T05:00:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T09:13:00+00:00 -->
 # Frontend develop → test 이관 체크리스트
 
 > **스트림**: frontend  
 > **develop 브랜치**: `develop` (`src/frontend`)  
 > **test 브랜치**: `test` (`src/frontend-test` worktree)  
-> **검증 기준**: `docs/planning/ROADMAP.md` v1.2 `merge_status: merged` 검증 · v1.3 `in_progress`(pending) · v3 develop-only(merge 게이트 미설정) · **CURRENT BASELINE**: frontend test `c510f5c` (v1.2 merged) · develop `362dbf0` (v1.3-A + v3 UI 셸 + v3 a11y + v3 meals/programs E2E, +6)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2 `merge_status: merged` 검증 · v1.3 `in_progress`(pending) · v3 develop-only(merge 게이트 미설정) · **CURRENT BASELINE**: frontend test `c510f5c` (v1.2 merged) · develop `637b9b3` (v1.3-A pilotPageFlows T01~T03 E2E + UXD-49 HQ 대시보드, +12)  
 > **작성**: tester (`TSR`)  
-> **최종 갱신**: 2026-06-08T03:55:00+00:00
+> **최종 갱신**: 2026-06-08T08:05:40+00:00
+
+> **92차 재검증 (2026-06-08T09:13) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `637b9b3`(+2 UXD-49·v1.3-A T01~T03 E2E CLEAN)·189/60 PASS·766 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 92차 독립 실측 (91차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 92차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 92차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `637b9b3`** (+2 vs 91차 `8a764df`: `00375f6` UXD-49 HQ 통합 대시보드 건강 이상 목록 지점명 표시 US-H02 · `637b9b3` v1.3-A pilotPageFlows transport US-T01~T03 E2E + pilotChecklist T01~T03), working tree **CLEAN** (0 dirty).
+> - develop `npm test`: **189/60 PASS**(+6/0 vs 91차 183/60: v1.3-A transport T01~T03 pilotPageFlows 회귀) · build **766 modules**(JS 756.46 kB gzip 210.03 kB, CSS 34.96 kB — vite >500 kB 경고, **non-blocking LOW**) · audit **0**.
+> - **v1.3-A T01~T03 E2E·UXD-49·v3·Recharts 산출물 develop HEAD PRESENT** ✓ · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15`.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격)·US-T01~T03 live E2E 잔여(pilotPageFlows E2E develop PRESENT). **v3(+UXD-48·UXD-49) develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend merge(21) + SEC-D14 + post-merge live E2E(결정 73).
+
+> **91차 재검증 (2026-06-08T08:05) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `8a764df`(+1 UXD-48 CLEAN)·183/60 PASS·766 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 91차 독립 실측 (90차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 91차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 91차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `8a764df`** (+1 vs 90차 `73f7d39`: UXD-48 `feat(uxd-48): Recharts 차트 레이어 복원·대시보드/출석/건강 연동 (US-H01/E05/F04/H02)`), working tree **CLEAN** (0 dirty).
+> - **`73f7d39..8a764df` 변경**(17 files, +877/-16): UXD-48 `ChartContainer`(+test)·`AttendanceRateChart`(+test)·`BranchCompareChart`·`HealthTrendChart`·`chartColors.js`·`DashboardPage`·`AttendanceStatsPage`·`HealthDetailPage` Recharts 연동.
+> - develop `npm test`: **183/60 PASS**(+4/+2 vs 90차 179/58: ChartContainer·AttendanceRateChart 회귀) · build **766 modules**(JS 756.06 kB gzip 209.97 kB, CSS 34.91 kB — vite >500 kB 경고, **non-blocking LOW**) · audit **0**.
+> - **v1.3-A·v3·unconfirm·Recharts 산출물 develop HEAD PRESENT** ✓ · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15`.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격)·US-T01~T03 live E2E 잔여(unconfirm UI develop PRESENT). **v3(+UXD-48 Recharts) develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend merge(20) + SEC-D14 + post-merge live E2E(결정 73).
+
+> **90차 재검증 (2026-06-08T07:08) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `73f7d39`(+1 UXD-47 CLEAN)·179/58 PASS·143 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 90차 독립 실측 (88차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 90차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 90차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `73f7d39`** (+1 vs 88차 `fe33e7c`: UXD-47 `TransportUnconfirmModal`·`StaffRoleSelect`·StaffPage a11y·`TransportRunDetailPage` unconfirm US-T02), working tree **CLEAN** (0 dirty).
+> - **`fe33e7c..73f7d39` 변경**(12 files, +471/-25): UXD-47 StaffPage DS 필드 검증·hq_admin 배차 확정 취소 Modal·TransportRunDetailPage unconfirm 연동.
+> - develop `npm test`: **179/58 PASS**(+9/+3 vs 88차 170/55) · build **143 modules**(JS 354.29 kB gzip 99.15 kB, CSS 34.02 kB) · audit **0**.
+> - **v1.3-A·v3·unconfirm 산출물 develop HEAD PRESENT** ✓ · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15`.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격)·US-T01~T03 live E2E 잔여(unconfirm UI develop PRESENT). **v3(+UXD-47) develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend merge(20) + SEC-D14 + post-merge live E2E(결정 73).
+
+> **88차 재검증 (2026-06-08T06:10) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `fe33e7c`(+8 v1.3-A·v3·UXD-46·staff CLEAN)·170/55 PASS·140 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 88차 독립 실측 (86차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 88차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 88차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `fe33e7c`** (+8 vs `c510f5c`: 86차 `362dbf0` 대비 +2 — `762b5a8` UXD-46 CSS 유틸·체크인 접근성 · `fe33e7c` v3 직원 관리 UI), working tree **CLEAN** (0 dirty).
+> - **`362dbf0..fe33e7c` 변경**(21 files, +443/-34): UXD-46 `components.css` ds 유틸·`AttendancePage`·`MealsPage`·`ProgramsPage` a11y + v3 `StaffPage.jsx`(+test)·`services.js` staff API·`pilotPageFlows` staff 흐름.
+> - develop `npm test`: **170/55 PASS**(+6/+1 vs 86차 164/54) · build **140 modules**(JS 351.51 kB gzip 98.38 kB, CSS 33.97 kB) · audit **0**.
+> - **v1.3-A·v3·staff 산출물 develop HEAD PRESENT** ✓ · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15`.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격)·unconfirm UI·라이브 E2E 동반 후 merge. **v3(+staff UI) develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend merge(19) + SEC-D14 + post-merge live E2E(결정 73).
 
 > **86차 재검증 (2026-06-08T05:00) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `362dbf0`(+6 v1.3-A·v3 CLEAN)·164/54 PASS·139 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**:
 > - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
@@ -137,12 +184,18 @@
 | **ROADMAP v1.2 `merge_status`** | **`merged`** (test `@c510f5c` 승격 완료) |
 | **ROADMAP v1.3 `status` / `merge_status`** | `in_progress` / **`pending`** (v1.3-A UI 셸·backend 의존 잔여) |
 | **선행 v1 `merge_status`** | `merged` (backend develop `53a1ffe` · test stale `2799e29` · 17 ahead) |
-| **develop HEAD** | `7ef1083` — v3 식사·프로그램 관리 UI 셸 (§3-5·§3-6) (+ v1.3-A 배차 UI 셸·a11y·US-G06 UNMATCHED) |
+| **develop HEAD** | `8a764df` — UXD-48 Recharts 차트 레이어 복원 (+ v1.3-A·v3·staff·unconfirm) |
 | **develop working tree** | **CLEAN** (0 dirty) |
 | **test HEAD** | `c510f5c` — v1.2 merged (US-G06 DISCREPANCY 비교·UXD-39~41·US-E/F·15 pages) |
 | **test working tree** | **CLEAN** |
-| **develop ahead of test** | **4 commits** (`f01e3a8`·`e8d1854`·`f0b174a`·`7ef1083`) |
+| **develop ahead of test** | **10 commits** (`f01e3a8`·`e8d1854`·`f0b174a`·`7ef1083`·`3e9a9ab`·`362dbf0`·`762b5a8`·`fe33e7c`·`73f7d39`·`8a764df`) |
 | **이관 판정** | **PASS** (v1.2 test 검증 완료) · v1.3 **pending**(in_progress, 게이트 미충족) · v3 develop-only |
+
+> **PASS 근거 (91차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +10 v1.3-A·v3·Recharts **CLEAN**·183/60 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ develop build 단일 JS 756 kB(vite >500 kB 경고, **non-blocking LOW** — FE-15 code-split 후속 권장). ⑥ v1.3 merge 게이트 미충족(backend transport API test 미승격·live E2E post-merge, unconfirm UI develop PRESENT) — 정상.
+
+> **PASS 근거 (90차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +9 v1.3-A·v3·unconfirm UI **CLEAN**·179/58 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ v1.3 merge 게이트 미충족(backend transport API test 미승격·live E2E post-merge, unconfirm UI develop PRESENT) — 정상.
+
+> **PASS 근거 (88차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +8 v1.3-A·v3·staff **CLEAN**·170/55 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ v1.3 merge 게이트 미충족(backend transport API test 미승격·unconfirm UI·라이브 E2E post-merge, 결정 73) — 정상.
 
 > **PASS 근거 (84차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm ci`+`npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +4 v1.3-A·v3 **CLEAN**·157/53 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ v1.3 merge 게이트 미충족(backend transport API test 미승격·라이브 E2E post-merge, 결정 73) — 정상.
 
@@ -426,6 +479,10 @@
 
 | 역할 | id | 판정 | 일시 |
 |------|-----|------|------|
+| QA·이관 | TSR | **PASS** (92차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`637b9b3` +12 UXD-49·v1.3-A T01~T03 E2E CLEAN**·**189/60 PASS**·**766 modules**(JS 756 kB, vite >500 kB LOW)·audit 0·이관 규율 5 PRESENT(+T01~T03 pilotPageFlows)·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T09:13:00+00:00 |
+| QA·이관 | TSR | **PASS** (91차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`8a764df` +10 UXD-48 Recharts CLEAN**·**183/60 PASS**·**766 modules**(JS 756 kB, vite >500 kB LOW)·audit 0·이관 규율 5 PRESENT(+ChartContainer·TransportUnconfirmModal)·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T08:05:40+00:00 |
+| QA·이관 | TSR | **PASS** (90차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`73f7d39` +9 UXD-47·unconfirm UI CLEAN**·**179/58 PASS**·**143 modules**·audit 0·이관 규율 5 PRESENT(+TransportUnconfirmModal)·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T07:08:00+00:00 |
+| QA·이관 | TSR | **PASS** (88차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`fe33e7c` +8 v1.3-A·v3·UXD-46·staff CLEAN**·**170/55 PASS**·**140 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T06:10:00+00:00 |
 | QA·이관 | TSR | **PASS** (84차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`7ef1083` +4 v1.3-A·v3 CLEAN**·**157/53 PASS**·**139 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T03:55:00+00:00 |
 | QA·이관 | TSR | **PASS** (77차 — test **`4f71543`** 불변·**58/18 PASS**·**86 modules**·audit **0**·develop **`4957bd3` +11 v1.2 CLEAN**·**130/44 PASS**·**123 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**) | 2026-06-07T23:30:00+00:00 |
 | QA·이관 | TSR | **PASS** (76차 — test **`4f71543`** 불변·**58/18 PASS**·**86 modules**·audit **0**·develop **`c5708c7` +9 v1.2 CLEAN**·**115/40 PASS**·**120 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**) | 2026-06-07T22:27:00+00:00 |

@@ -1,6 +1,30 @@
 # doc:owner=TSR doc:audience=PLN,COD
 # Frontend develop → test 이관 매니페스트 (최신)
-# updated: 2026-06-08T05:00:00+00:00
+# updated: 2026-06-08T09:13:00+00:00
+# revalidation_92nd: 2026-06-08T09:13 — test @c510f5c 불변·PASS(v1.2).
+#   test npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측, 91차와 동일).
+#   develop 637b9b3 (+2 vs 8a764df: 00375f6 UXD-49 HQ 대시보드 건강 이상 지점명 US-H02 · 637b9b3 v1.3-A pilotPageFlows transport US-T01~T03 E2E + pilotChecklist T01~T03) · 12 ahead.
+#   develop npm test 189/60 PASS·build 766 modules(JS 756 kB, vite >500kB LOW)·audit 0.
+#   이관 규율 5 PRESENT(+T01~T03 pilotPageFlows)·SEC-005 0건·KAKAO 키 env(하드코딩 0).
+#   Open 0. verdict PASS(v1.2). v1.3 pending(backend transport API test 미승격·live E2E 잔여). v3 develop-only(+UXD-49·T01~T03 E2E). backend merge(21) 잔여.
+# revalidation_91st: 2026-06-08T08:05 — test @c510f5c 불변·PASS(v1.2).
+#   test npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측, 90차와 동일).
+#   develop 8a764df (+1 vs 73f7d39: UXD-48 Recharts ChartContainer·AttendanceRateChart·HealthTrendChart) · 10 ahead.
+#   develop npm test 183/60 PASS·build 766 modules(JS 756 kB, vite >500kB LOW)·audit 0.
+#   이관 규율 5 PRESENT(+ChartContainer·TransportUnconfirmModal)·SEC-005 0건·KAKAO 키 env(하드코딩 0).
+#   Open 0. verdict PASS(v1.2). v1.3 pending(live E2E 잔여). v3 develop-only(+Recharts). backend merge(20) 잔여.
+# revalidation_90th: 2026-06-08T07:08 — test @c510f5c 불변·PASS(v1.2).
+#   test npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측, 88차와 동일).
+#   develop 73f7d39 (+1 vs fe33e7c: UXD-47 StaffPage a11y·TransportUnconfirmModal US-T02) · 9 ahead.
+#   develop npm test 179/58 PASS·build 143 modules·audit 0.
+#   이관 규율 5 PRESENT(+TransportUnconfirmModal)·SEC-005 0건·KAKAO 키 env(하드코딩 0).
+#   Open 0. verdict PASS(v1.2). v1.3 pending(unconfirm UI develop PRESENT·live E2E 잔여). v3 develop-only. backend merge(20) 잔여.
+# revalidation_88th: 2026-06-08T06:10 — test @c510f5c 불변·PASS(v1.2).
+#   test npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측, 86차와 동일).
+#   develop fe33e7c (+8 v1.3-A·v3·UXD-46·staff CLEAN: 86차 362dbf0 +2 762b5a8 UXD-46 CSS·체크인 a11y + fe33e7c v3 StaffPage UI) · 8 ahead.
+#   develop npm test 170/55 PASS·build 140 modules·audit 0.
+#   이관 규율 5 PRESENT(+v1.3-A Transport·v3 Meals/Programs·StaffPage)·SEC-005 0건·KAKAO 키 env(하드코딩 0).
+#   Open 0. verdict PASS(v1.2). v1.3 in_progress/pending — backend transport API(test 미승격)·unconfirm UI·라이브 E2E 잔여. v3 develop-only(+staff UI). backend merge(19) 잔여.
 # revalidation_86th: 2026-06-08T05:00 — test @c510f5c 불변·PASS(v1.2).
 #   test npm ci+test 143/46 PASS·build 125 modules·audit 0 (독립 실측, 84차와 동일).
 #   develop 362dbf0 (+6 v1.3-A·v3 CLEAN: f01e3a8 US-G06 UNMATCHED + e8d1854 v1.3-A 배차 UI 셸 + f0b174a v1.3 배차 a11y + 7ef1083 v3 식사·프로그램 UI 셸 §3-5·§3-6 + 3e9a9ab v3 a11y 재점검 + 362dbf0 v3 meals/programs pilotPageFlows E2E US-N01·N02) · 6 ahead.
@@ -53,20 +77,20 @@ next_version:
   version: v1.3
   status: in_progress
   merge_status: pending
-  note: "v1.3-A 픽업 배차 develop UI 셸(e8d1854·a11y f0b174a) — backend v1.3-A transport API(develop 53a1ffe: transport_runs/stops 스키마 V47/V48·roster/runs/confirm API·Kakao geocode proxy PRESENT, test 미승격)·RBAC·US-T01~T03 라이브 E2E 동반 후 merge. v3(식사·프로그램 §3-5·§3-6 7ef1083+·3e9a9ab a11y·362dbf0 pilotPageFlows E2E)은 develop-only — ROADMAP merge 게이트 미설정."
+  note: "v1.3-A 픽업 배차 develop UI 셸(e8d1854·a11y f0b174a·unconfirm UI 73f7d39·T01~T03 pilotPageFlows E2E 637b9b3) — backend v1.3-A transport API(develop 1ec538b: transport_runs/stops·unconfirm PATCH·client transport profile PRESENT, test 미승격)·RBAC·US-T01~T03 라이브 E2E 동반 후 merge. v3(식사·프로그램·직원 §3-5·§3-6 + staff/unconfirm UI)은 develop-only — ROADMAP merge 게이트 미설정."
 prerequisite:
   version: v1
   merge_status: merged
-  note: "v1 backend ROADMAP merged — backend develop dfd9be2 · test 2799e29 stale (18 commits behind develop)"
+  note: "v1 backend ROADMAP merged — backend develop 1ec538b · test 2799e29 stale (21 commits behind develop)"
 
 baseline:
   workspace_yaml: .agents/workspace_baseline.yaml
-  frontend_develop_actual: 362dbf0
+  frontend_develop_actual: 637b9b3
   frontend_test_actual: c510f5c
-  note: "v1.2 merged @ test c510f5c. develop +6 (f01e3a8 US-G06 UNMATCHED + e8d1854 v1.3-A 배차 UI 셸 + f0b174a v1.3 a11y + 7ef1083 v3 식사·프로그램 UI 셸 + 3e9a9ab v3 a11y + 362dbf0 v3 meals/programs pilotPageFlows E2E) CLEAN."
+  note: "v1.2 merged @ test c510f5c. develop +12 (…·8a764df UXD-48 Recharts · 00375f6 UXD-49 HQ 대시보드 · 637b9b3 v1.3-A T01~T03 E2E) CLEAN."
 
 transfer_verdict: PASS
-verdict_reason: "v1.2 test @c510f5c validated (86차 독립 실측) — npm ci+test 143/46 PASS·build 125 modules·audit 0·이관 규율 5 PRESENT. develop +6 v1.3-A·v3 CLEAN·164/54 PASS·audit 0 (non-blocking). v1.3 in_progress/pending — backend transport API test 미승격·라이브 E2E 잔여. v3 develop-only. backend merge(18) 잔여."
+verdict_reason: "v1.2 test @c510f5c validated (92차 독립 실측) — npm test 143/46 PASS·build 125 modules·audit 0·이관 규율 5 PRESENT(+T01~T03 pilotPageFlows). develop +12 v1.3-A·v3·Recharts·UXD-49 CLEAN·189/60 PASS·audit 0 (non-blocking). develop build JS 756 kB(vite >500kB LOW, FE-15 후속 권장). v1.3 in_progress/pending — backend transport API test 미승격·live E2E 잔여. v3 develop-only(+UXD-48 Recharts·UXD-49·T01~T03 E2E). backend merge(21) 잔여."
 
 repository:
   submodule_path: src/frontend
@@ -76,17 +100,17 @@ repository:
 branches:
   develop:
     name: develop
-    head: 362dbf0
-    head_short: 362dbf0
-    message: "test(v3): add meals/programs API E2E via pilotPageFlows (US-N01·N02)"
+    head: 637b9b3
+    head_short: 637b9b3
+    message: "feat(v1.3-A): pilotPageFlows transport US-T01~T03 E2E + pilotChecklist T01~T03"
     v1_2_merge_commit: c510f5c
-    ahead_of_test: 6
+    ahead_of_test: 12
     working_tree_clean: true
     working_tree:
       modified: 0
       untracked: 0
       total_dirty: 0
-      note: "86차 — CLEAN · +6(f01e3a8 US-G06 UNMATCHED·e8d1854 v1.3-A 배차 UI 셸·f0b174a v1.3 a11y·7ef1083 v3 식사·프로그램 UI 셸·3e9a9ab v3 a11y·362dbf0 v3 pilotPageFlows E2E) · 이관 규율 5 PRESENT(+Transport·Meals/Programs·v3 E2E 산출물) · 164/54 PASS · audit 0"
+      note: "92차 — CLEAN · +12(…·8a764df UXD-48 Recharts · 00375f6 UXD-49 · 637b9b3 v1.3-A T01~T03 E2E) · 이관 규율 5 PRESENT(+ChartContainer·Transport·Meals/Programs·StaffPage·TransportUnconfirmModal·T01~T03 pilotPageFlows) · 189/60 PASS · build 766 modules · audit 0"
   test:
     name: test
     head: c510f5c
@@ -96,7 +120,7 @@ branches:
 
 develop_test_diff:
   test_behind_develop: true
-  commits_ahead: 6
+  commits_ahead: 12
   commits:
     - f01e3a8  # feat(uxd-43): US-G06 UNMATCHED 후보 이용자 검색 UI 보강
     - e8d1854  # feat(v1.3): add transport pickup dispatch UI shell (US-T01~T03)
@@ -104,7 +128,13 @@ develop_test_diff:
     - 7ef1083  # feat(v3): add meals and programs management UI shell (§3-5·§3-6)
     - 3e9a9ab  # fix(a11y): v3 식사·프로그램 기록 폼 접근성 재점검 (US-N01·N02)
     - 362dbf0  # test(v3): add meals/programs API E2E via pilotPageFlows (US-N01·N02)
-  note: "develop 선행 6커밋 — v1.3-A(배차 UI 셸·a11y) in_progress/pending(backend transport API test 미승격) + v3(식사·프로그램 UI 셸·a11y·pilotPageFlows E2E) develop-only(merge 게이트 미설정)."
+    - 762b5a8  # fix(uxd-46): 누락 CSS 유틸·인라인 style 제거·체크인 라우트 접근성
+    - fe33e7c  # feat(v3): add staff management UI flow for frontend
+    - 73f7d39  # fix(uxd-47): StaffPage 접근성·배차 확정 취소 UI (US-T02)
+    - 8a764df  # feat(uxd-48): Recharts 차트 레이어 복원·대시보드/출석/건강 연동 (US-H01/E05/F04/H02)
+    - 00375f6  # feat(uxd-49): HQ 통합 대시보드 건강 이상 목록 지점명 표시 (US-H02)
+    - 637b9b3  # feat(v1.3-A): pilotPageFlows transport US-T01~T03 E2E + pilotChecklist T01~T03
+  note: "develop 선행 12커밋 — v1.3-A(배차 UI 셸·a11y·unconfirm UI·T01~T03 pilotPageFlows E2E) in_progress/pending(backend transport API test 미승격·live E2E) + v3(식사·프로그램·직원·Recharts UXD-48·HQ 대시보드 UXD-49) develop-only(merge 게이트 미설정)."
 
 artifact:
   name: ogada-frontend
@@ -152,6 +182,18 @@ fixed_verification:
       artifact: Meals·Programs management UI shell + a11y + pilotPageFlows E2E (MealsPage·ProgramsPage·MealRecordForm·ProgramParticipationForm·config/meals.js·config/programs.js + US-N01·N02 E2E)
       develop_head: PRESENT
       note: "362dbf0 — develop HEAD PRESENT(test 미승격, develop-only). REQUIREMENTS §3-5(식사)·§3-6(프로그램). a11y 재점검(3e9a9ab) + pilotPageFlows US-N01·N02 meals/programs API E2E(362dbf0) PRESENT. ROADMAP 버전·merge 게이트 미설정 — planner 정의 대기."
+    - id: v3-staff-UI
+      artifact: Staff management UI shell (StaffPage·StaffPage.test.jsx·services.js staff API·navConfig·roleNav·pilotPageFlows staff flow)
+      develop_head: PRESENT
+      note: "fe33e7c — develop HEAD PRESENT(test 미승격, develop-only). v3 직원 관리 UI 셸. backend staff API 연동·ROADMAP v3 merge 게이트 — planner 정의 대기."
+    - id: v1.3-A-unconfirm-UI
+      artifact: Transport unconfirm UI (TransportUnconfirmModal·TransportRunDetailPage hq_admin unconfirm flow·services.js transport unconfirm API)
+      develop_head: PRESENT
+      note: "73f7d39 — develop HEAD PRESENT(test 미승격). US-T02 hq_admin 배차 확정 취소 Modal. backend unconfirm PATCH(develop 767d977) 연동. v1.3 merge는 backend test 승격·live E2E 후."
+    - id: UXD-48-recharts
+      artifact: Recharts chart layer (ChartContainer·AttendanceRateChart·BranchCompareChart·HealthTrendChart·chartColors.js — DashboardPage·AttendanceStatsPage·HealthDetailPage)
+      develop_head: PRESENT
+      note: "8a764df — develop HEAD PRESENT(test 미승격, develop-only). US-H01/E05/F04/H02. build 단일 JS 756 kB(vite >500kB 경고, non-blocking LOW — FE-15 manualChunks 후속 권장)."
   partial:
     - id: QA-20260606-M01
       artifact: Vitest Must E2E suite
@@ -168,7 +210,7 @@ build:
   test_branch:
     command: npm run build
     worktree: src/frontend-test
-    executed_at: 2026-06-08T05:00:00+00:00
+    executed_at: 2026-06-08T09:13:00+00:00
     head: c510f5c
     result: SUCCESS
     vite: "6.4.3"
@@ -177,56 +219,56 @@ build:
       js_kb: 320.10
       js_gzip_kb: 91.25
       css_kb: 31.03
-    note: "86차 독립 실측 — v1.2 merged @ test c510f5c (84차와 동일)"
+    note: "92차 독립 실측 — v1.2 merged @ test c510f5c (91차와 동일)"
   develop_head:
     command: npm run build
     worktree: src/frontend
-    executed_at: 2026-06-08T05:00:00+00:00
-    head: 362dbf0
+    executed_at: 2026-06-08T09:13:00+00:00
+    head: 637b9b3
     result: SUCCESS
     vite: "6.4.3"
-    modules: 139
+    modules: 766
     assets:
-      js_kb: 347.60
-      js_gzip_kb: 97.57
-      css_kb: 33.35
-    note: "86차 실측 — +6 (v1.3-A 배차 UI 셸·a11y + v3 식사·프로그램 UI 셸·a11y + v3 pilotPageFlows E2E)"
+      js_kb: 756.46
+      js_gzip_kb: 210.03
+      css_kb: 34.96
+    note: "92차 실측 — +12 (UXD-49·v1.3-A T01~T03 E2E). vite >500kB 경고(non-blocking LOW)"
 
 tests:
   test_branch:
-    command: npm ci + npm test (vitest run)
+    command: npm test (vitest run)
     worktree: src/frontend-test
-    executed_at: 2026-06-08T05:00:00+00:00
+    executed_at: 2026-06-08T09:13:00+00:00
     head: c510f5c
     result: PASS
     vitest: "4.1.8"
     tests_passed: 143
     test_files: 46
-    note: "86차 독립 실측 — v1.2 merged (84차와 동일)"
+    note: "92차 독립 실측 — v1.2 merged (91차와 동일)"
   develop_head:
     command: npm test (vitest run)
     worktree: src/frontend
-    executed_at: 2026-06-08T05:00:00+00:00
-    head: 362dbf0
+    executed_at: 2026-06-08T09:13:00+00:00
+    head: 637b9b3
     result: PASS
     vitest: "4.1.8"
-    tests_passed: 164
-    test_files: 54
-    note: "86차 실측 — +21/+8 vs test 143/46 (Transport·v3 Meals/Programs·v3 E2E US-N01·N02·ReconciliationPage UNMATCHED 회귀)"
+    tests_passed: 189
+    test_files: 60
+    note: "92차 실측 — +46/+14 vs test 143/46 (v1.3-A T01~T03 pilotPageFlows·UXD-49·UXD-48 회귀)"
 
 npm_audit:
   test_branch:
-    executed_at: 2026-06-08T05:00:00+00:00
+    executed_at: 2026-06-08T09:13:00+00:00
     high: 0
     moderate: 0
     critical: 0
-    note: "0 vulnerabilities — 86차 독립 실측 @ c510f5c"
+    note: "0 vulnerabilities — 92차 독립 실측 @ c510f5c"
   develop_head:
-    executed_at: 2026-06-08T05:00:00+00:00
+    executed_at: 2026-06-08T09:13:00+00:00
     high: 0
     moderate: 0
     critical: 0
-    note: "0 vulnerabilities — 86차 실측 @ 362dbf0"
+    note: "0 vulnerabilities — 92차 실측 @ 637b9b3"
 
 qa_feedback:
   open_block: 0
@@ -234,26 +276,42 @@ qa_feedback:
   planned_block: 1
   planned_ids:
     - SEC-20260608-013  # SEC-D14 backend develop→test 미승격 (frontend portion resolved @ 69차)
-  note: "Open 0 · v1.2 frontend PASS @ test c510f5c (86차 독립 실측) · 잔여 BLOCK = backend merge(18) · v1.3 frontend pending(in_progress) · v3 develop-only"
+  note: "Open 0 · v1.2 frontend PASS @ test c510f5c (92차 독립 실측) · 잔여 BLOCK = backend merge(21) · v1.3 frontend pending(in_progress) · v3 develop-only(+UXD-48 Recharts·UXD-49·T01~T03 E2E)"
 
 blockers:
   - id: SEC-20260608-013
     state: Planned
     severity: BLOCK
     stream: backend
-    summary: "SEC-D14 — backend develop→test merge 미실행(18 commits ahead). frontend portion resolved @ 69차."
+    summary: "SEC-D14 — backend develop→test merge 미실행(21 commits ahead). frontend portion resolved @ 69차."
 
 next_actions:
   - owner: COD/PLN
-    action: "backend develop→test merge (17 commits — v1·v2/J03·v1.3-A transport API 포함) → TSR backend 재검증"
+    action: "backend develop→test merge (21 commits — v1·v2/J03·v1.3-A transport API·unconfirm PATCH·client transport profile·US-T01 포함) → TSR backend 재검증"
   - owner: TSR
-    action: "post-merge: LIVE_E2E=1 npm run test:live-e2e (실 백엔드 P1–P8·J01/J02, 결정 73 권장)"
+    action: "post-merge: LIVE_E2E=1 npm run test:live-e2e (실 백엔드 P1–P8·J01/J02·US-T01~T03, 결정 73 권장)"
   - owner: COD/DBA/PLN
-    action: "v1.3-A — backend transport API(develop 53a1ffe PRESENT) test 승격·RBAC·라이브 E2E 연동 후 frontend UI 셸과 v1.3 merge_status ready"
+    action: "v1.3-A — backend transport API(develop 1ec538b PRESENT·client transport profile US-T01 완료) test 승격·RBAC·라이브 E2E 연동 후 frontend UI 셸과 v1.3 merge_status ready"
   - owner: PLN
-    action: "v3(식사·프로그램 §3-5·§3-6) develop UI 셸(362dbf0·a11y·pilotPageFlows E2E US-N01·N02) + backend API(dfd9be2) — ROADMAP v3 버전·완료 기준·merge 게이트·USER_STORIES·API_SPEC v3 정의 검토"
+    action: "v3(식사·프로그램·직원 §3-5·§3-6·UXD-49 HQ 대시보드) develop UI 셸 + backend API — ROADMAP v3 버전·완료 기준·merge 게이트·USER_STORIES·API_SPEC v3 정의 검토"
 
 revalidation_history:
+  - nth: 92
+    at: 2026-06-08T09:13:00+00:00
+    verdict: PASS
+    note: "test @c510f5c 불변·npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측) · develop 637b9b3 +2(00375f6 UXD-49·637b9b3 v1.3-A T01~T03 E2E) CLEAN·189/60 PASS·766 modules(JS 756 kB LOW)·audit 0 · 이관 규율 5 PRESENT(+T01~T03 pilotPageFlows)·SEC-005 0건 · Open 0 · PASS(v1.2). v1.3 pending(backend test 미승격·live E2E 잔여)·v3 develop-only(+UXD-48·UXD-49·T01~T03 E2E)"
+  - nth: 91
+    at: 2026-06-08T08:05:40+00:00
+    verdict: PASS
+    note: "test @c510f5c 불변·npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측) · develop 8a764df +1 UXD-48 Recharts CLEAN·183/60 PASS·766 modules(JS 756 kB LOW)·audit 0 · 이관 규율 5 PRESENT(+ChartContainer·TransportUnconfirmModal)·SEC-005 0건 · Open 0 · PASS(v1.2). v1.3 pending·v3 develop-only(+Recharts)"
+  - nth: 90
+    at: 2026-06-08T07:08:00+00:00
+    verdict: PASS
+    note: "test @c510f5c 불변·npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측) · develop 73f7d39 +1 UXD-47 TransportUnconfirmModal·StaffPage a11y CLEAN·179/58 PASS·143 modules·audit 0 · 이관 규율 5 PRESENT(+TransportUnconfirmModal)·SEC-005 0건 · Open 0 · PASS(v1.2). v1.3 pending(unconfirm UI develop PRESENT·live E2E 잔여)·v3 develop-only"
+  - nth: 88
+    at: 2026-06-08T06:10:00+00:00
+    verdict: PASS
+    note: "test @c510f5c 불변·npm test 143/46 PASS·build 125 modules·audit 0 (독립 실측) · develop fe33e7c +8 v1.3-A·v3·UXD-46·staff CLEAN·170/55 PASS·140 modules·audit 0 · 이관 규율 5 PRESENT(+Transport·Meals/Programs·StaffPage)·SEC-005 0건 · Open 0 · PASS(v1.2). v1.3 pending(backend transport API test 미승격·unconfirm UI)·v3 develop-only(+staff UI)"
   - nth: 86
     at: 2026-06-08T05:00:00+00:00
     verdict: PASS
