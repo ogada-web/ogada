@@ -1,6 +1,11 @@
 # doc:owner=TSR doc:audience=PLN,COD
 # Backend develop → test 이관 매니페스트 (최신)
-# updated: 2026-06-08T03:40:00+00:00
+# updated: 2026-06-08T09:00:00+00:00
+# revalidation_92nd: 2026-06-08T09:00Z — develop 1ec538b CLEAN (v1.3-A client transport profile US-T01: ClientResponse usesTransport/pickup/defaultPickupTime + ClientService transport profile + geocode 캐시 무효화 + ClientServiceTest 9 @Test + PilotChecklistJwtE2eTest transport routing smoke). test 2799e29 stale. test 79/79·develop 231/231 PASS (92차 독립 실측, 91차 226 → +5). v1 baseline + v1.3-A transport(unconfirm PATCH+POST·client transport profile) + v3 meals/programs artifacts PRESENT(TSR 92차 독립 검증 PASS). merge 21커밋. Open 0건. 판정 BLOCK(merge 게이트 단일). US-T01 backend 완료 — frontend roster 구성 가능. US-T02·T03 live E2E 잔여.
+# revalidation_91st: 2026-06-08T08:00Z — develop 767d977 불변·CLEAN (v1.3-A transport unconfirm PATCH+POST). test 2799e29 stale. test 79/79·develop 226/226 PASS (91차 독립 실측). v1 baseline + v1.3-A transport + v3 meals/programs artifacts PRESENT(TSR 91차 독립 검증 PASS). merge 20커밋. Open 0건. 판정 BLOCK(merge 게이트 단일). frontend 73f7d39 TransportUnconfirmModal 교차 PRESENT — backend test 미승격·live E2E 잔여.
+# revalidation_89th: 2026-06-08T07:02Z — develop 767d977 CLEAN (v1.3-A transport unconfirm PATCH contract + POST legacy alias). test 2799e29 stale. test 79/79·develop 226/226 PASS. v1 baseline + v1.3-A transport(unconfirm PATCH+POST) + v3 meals/programs artifacts PRESENT(TSR 독립 검증 PASS). merge 20커밋. Open 0건. 판정 BLOCK(merge 게이트 단일). v3 develop-only — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
+# revalidation_87th: 2026-06-08T05:58Z — develop 0d8968d CLEAN (v1.3-A transport run unconfirm for hq_admin). test 2799e29 stale. test 79/79·develop 226/226 PASS. v1 baseline + v1.3-A transport(unconfirm) + v3 meals/programs artifacts PRESENT(TSR 독립 검증 PASS). merge 19커밋. Open 0건. 판정 BLOCK(merge 게이트 단일). v3 develop-only — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
+# revalidation_85th: 2026-06-08T04:55Z — develop dfd9be2 CLEAN (v3 meals/programs REST API + Flyway V49 schema). test 2799e29 stale. test 79/79·develop 224/224 PASS. v1 baseline + v1.3-A transport + v3 meals/programs artifacts PRESENT(TSR 독립 검증 PASS). merge 18커밋. Open 0건. 판정 BLOCK(merge 게이트 단일). v3 develop-only — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
 # revalidation_83rd: 2026-06-08T03:40Z — develop 53a1ffe CLEAN (v1.3-A transport API + Flyway V47/V48 + Kakao geocode proxy). test 2799e29 stale. test 79/79·develop 212/212 PASS. v1 baseline + v1.3-A transport artifacts PRESENT(TSR 독립 검증 PASS). merge 17커밋. Open 0건. 판정 BLOCK(merge 게이트 단일).
 # revalidation_82nd: 2026-06-08T02:30Z — develop 52e0621 CLEAN (v2/J03 dispatch alimtalk when copay claim is marked PAID). test 2799e29 stale. test 79/79·develop 202/202 PASS. v1 baseline + J03 alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + BILLING_PAYMENT_RECEIVED copay-paid dispatch artifacts PRESENT(TSR 독립 검증 PASS). merge 16커밋. Open 0건. 판정 BLOCK(merge 게이트 단일).
 # revalidation_80th: 2026-06-08T01:25Z — develop ac17ad8 CLEAN (v2/J03 Korean SMS fallback text for alimtalk relay). test 2799e29 stale. test 79/79·develop 198/198 PASS. v1 baseline + J03 alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText artifacts PRESENT(TSR 독립 검증 PASS). merge 15커밋. Open 0건. 판정 BLOCK(merge 게이트 단일).
@@ -26,25 +31,27 @@ repository:
 branches:
   develop:
     name: develop
-    head: 53a1ffe71a5ee5d250b78ac2de55dc352b5ddb51
-    head_short: 53a1ffe
-    message: "feat(v1.3-A): add transport API, Flyway schema, and Kakao geocode proxy"
+    head: 1ec538b32df9e6058d5c0b457c7869ce3ae459e8
+    head_short: 1ec538b
+    message: "feat(v1.3-A): expose client transport profile on Clients API (US-T01)"
     working_tree_clean: true
     working_tree_modified: 0
     working_tree_untracked: 0
     working_tree_total: 0
     working_tree_note: >-
-      CLEAN @ 53a1ffe — J01(f47ffa1) + BE-10(cf6116c) + v2/J03(3f9264f) + Solapi(136239e) + BE-11(8d42bdd) + V45(80bdb1e) + v2/J03 alimtalk E2E(c221531) + NotificationConfig quiet hours(44e0f02) + DAILY_CARE medication dispatch(78e8928) + guardian·staff notification history APIs(c53dd3b) + V46 notification history query index(8ce1151) + DAILY_CARE vitals dispatch(0832fbf) + service-layer alimtalk flow E2E(32a1f8f) + alimtalk payload Solapi variables(4c74f84) + Korean SMS fallback text(ac17ad8) + copay-claim PAID alimtalk dispatch(52e0621) + v1.3-A transport API·V47·V48·Kakao geocode proxy(53a1ffe) committed.
+      CLEAN @ 1ec538b — J01(f47ffa1) + BE-10(cf6116c) + v2/J03(3f9264f) + Solapi(136239e) + BE-11(8d42bdd) + V45(80bdb1e) + v2/J03 alimtalk E2E(c221531) + NotificationConfig quiet hours(44e0f02) + DAILY_CARE medication dispatch(78e8928) + guardian·staff notification history APIs(c53dd3b) + V46 notification history query index(8ce1151) + DAILY_CARE vitals dispatch(0832fbf) + service-layer alimtalk flow E2E(32a1f8f) + alimtalk payload Solapi variables(4c74f84) + Korean SMS fallback text(ac17ad8) + copay-claim PAID alimtalk dispatch(52e0621) + v1.3-A transport API·V47·V48·Kakao geocode proxy(53a1ffe) + v3 meals/programs REST API·V49(dfd9be2) + v1.3-A transport run unconfirm(0d8968d) + v1.3-A transport unconfirm PATCH contract(767d977) + v1.3-A client transport profile US-T01(1ec538b) committed.
       v1 baseline artifacts Fixed — PilotChecklistJwt(pilot/)·MustApiEndpointRouting(routing/)·
       ProductionSecretValidatorTest·SevenRoleJwtLoginE2eTest·RoleBasedControllerAccessTest PRESENT.
       BE-11 AuthRateLimitService·AuthRateLimitServiceTest PRESENT @ 8d42bdd (SEC-D13 Fixed).
-      V45 PRESENT @ 80bdb1e. V46 PRESENT @ 8ce1151. V47 PRESENT @ 53a1ffe (transport_runs·stops·geocode_cache). V48 PRESENT @ 53a1ffe (client_ltc_grade_history).
+      V45 PRESENT @ 80bdb1e. V46 PRESENT @ 8ce1151. V47 PRESENT @ 53a1ffe (transport_runs·stops·geocode_cache). V48 PRESENT @ 53a1ffe (client_ltc_grade_history). V49 PRESENT @ dfd9be2 (meal_menus·meal_records·activity_programs·program_participations).
       TransportController(DRAFT/CONFIRMED RBAC·15-stop) + TransportService + KakaoGeocodeClient + TransportGeocodeService PRESENT @ 53a1ffe.
-      TransportServiceTest(210 lines) + TransportControllerRoutingTest(100 lines) + MustApiEndpointRoutingTest$TransportRouting PRESENT @ 53a1ffe.
-      TSR 83차 독립 검증 PASS (이관 규율 5·6 PASS).
-    annotation_count_head_surefire: 212
+      MealController + MealService + ProgramController + ProgramService + MealServiceTest + MealControllerRoutingTest + ProgramServiceTest + ProgramControllerRoutingTest PRESENT @ dfd9be2.
+      ClientResponse(usesTransport·pickup address/contact·defaultPickupTime) + ClientService(transport profile + geocode 캐시 무효화) + ClientServiceTest(9 @Test) PRESENT @ 1ec538b (US-T01 Fixed).
+      PilotChecklistJwtE2eTest(transport roster·run detail routing smoke) PRESENT @ 1ec538b.
+      TSR 92차 독립 검증 PASS (이관 규율 5·6 PASS).
+    annotation_count_head_surefire: 231
     spring_boot: "3.3.1"
-    note: "develop 17커밋 ahead of test. v1 baseline + BE-11 + V45 + V46 + v2/J03 alimtalk E2E + NotificationConfig + DAILY_CARE medication·vitals dispatch + guardian·staff 알림 이력 API + notification history query index + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + copay-claim PAID dispatch + v1.3-A transport API·V47·V48·Kakao geocode proxy PRESENT. test 반영은 merge 후."
+    note: "develop 21커밋 ahead of test. v1 baseline + BE-11 + V45 + V46 + v2/J03 alimtalk E2E + NotificationConfig + DAILY_CARE medication·vitals dispatch + guardian·staff 알림 이력 API + notification history query index + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + copay-claim PAID dispatch + v1.3-A transport API·V47·V48·Kakao geocode proxy + transport run unconfirm PATCH+POST + v3 meals/programs REST API·V49 + v1.3-A client transport profile(US-T01) PRESENT. test 반영은 merge 후. v3 develop-only — ROADMAP v3 버전 미정의. US-T01 backend 완료 — US-T02·T03 live E2E 잔여."
   test:
     name: test
     head: 2799e29c114cf4992115147ba57cdd512e063b36
@@ -52,10 +59,10 @@ branches:
     message: "feat: Spring Boot 3.x 백엔드 초기 구현"
     working_tree_clean: true
     spring_boot: "3.3.1"
-    note: "Stale — 79 tests·Boot 3.3.1. develop 17커밋 ahead (f47ffa1·cf6116c·3f9264f·136239e·8d42bdd·80bdb1e·c221531·44e0f02·78e8928·c53dd3b·8ce1151·0832fbf·32a1f8f·4c74f84·ac17ad8·52e0621·53a1ffe) 미반영."
+    note: "Stale — 79 tests·Boot 3.3.1. develop 20커밋 ahead (f47ffa1·cf6116c·3f9264f·136239e·8d42bdd·80bdb1e·c221531·44e0f02·78e8928·c53dd3b·8ce1151·0832fbf·32a1f8f·4c74f84·ac17ad8·52e0621·53a1ffe·dfd9be2·0d8968d·767d977) 미반영."
 
 develop_test_diff:
-  commits_develop_ahead_of_test: 17
+  commits_develop_ahead_of_test: 21
   commits_test_ahead_of_develop: 0
   ahead_commits:
     - f47ffa1  # J01 guardian invitations + notification preferences + V35–V43 (B09·B08·BE-8 Fixed)
@@ -75,12 +82,16 @@ develop_test_diff:
     - ac17ad8  # v2/J03: Korean SMS fallback text for alimtalk relay (AlimtalkFallbackText + incidentType emergency alias + SolapiSmsProvider + tests)
     - 52e0621  # v2/J03: dispatch alimtalk when copay claim is marked PAID (BILLING_PAYMENT_RECEIVED event type + template code + BillingService CONFIRMED→PAID dispatch + tests)
     - 53a1ffe  # v1.3-A: transport roster·runs CRUD·confirm API + RBAC + V47 Flyway schema + V48 ltcGrade + KakaoGeocodeClient + 15-stop limit + TransportServiceTest + TransportControllerRoutingTest
+    - dfd9be2  # v3: meals/programs REST API (MealController·MealService·ProgramController·ProgramService) + V49 Flyway schema (meal_menus·meal_records·activity_programs·program_participations) + MealServiceTest·MealControllerRoutingTest·ProgramServiceTest·ProgramControllerRoutingTest + MustApiEndpointRouting meals/programs
+    - 0d8968d  # v1.3-A: transport run unconfirm flow (POST /runs/{runId}/unconfirm hq_admin RBAC·TransportService.unconfirmRun·TransportRunResponse unconfirmedAt/unconfirmedBy·TransportServiceTest +2·TransportControllerRoutingTest·MustApiEndpointRouting unconfirm)
+    - 767d977  # v1.3-A: transport unconfirm PATCH contract (PATCH /runs/{runId}/unconfirm v1.3 API 정합·POST legacy alias·TransportControllerRoutingTest·MustApiEndpointRouting PATCH+POST dual-method)
+    - 1ec538b  # v1.3-A: expose client transport profile on Clients API (US-T01) — usesTransport·pickup address/contact·defaultPickupTime 필드 + ClientService transport profile + geocode 캐시 무효화 + ClientServiceTest 9 @Test + PilotChecklistJwtE2eTest transport roster·run detail routing smoke (+5 tests: 226→231)
   develop_uncommitted:
     modified: []
     untracked: []
   note: >-
-    develop 17커밋 ahead. develop CLEAN. test @2799e29 stale.
-    BLOCK = merge 게이트 단일 (v1 baseline artifacts + BE-11 + V45 + V46 + v2/J03 alimtalk E2E + NotificationConfig + DAILY_CARE medication·vitals dispatch + guardian·staff 알림 이력 API + notification history query index + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + copay-claim PAID dispatch + v1.3-A transport API·V47·V48·Kakao geocode proxy PRESENT·test 미반영).
+    develop 21커밋 ahead. develop CLEAN. test @2799e29 stale.
+    BLOCK = merge 게이트 단일 (v1 baseline artifacts + BE-11 + V45 + V46 + v2/J03 alimtalk E2E + NotificationConfig + DAILY_CARE medication·vitals dispatch + guardian·staff 알림 이력 API + notification history query index + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + copay-claim PAID dispatch + v1.3-A transport API·V47·V48·Kakao geocode proxy + transport run unconfirm PATCH+POST + v3 meals/programs REST API·V49 + v1.3-A client transport profile(US-T01) PRESENT·test 미반영). v3 develop-only — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기, 정상·결함 아님). US-T01 backend 완료 — frontend roster 구성 가능. US-T02·T03 live E2E 잔여.
 
 artifact:
   group_id: com.ogada
@@ -94,24 +105,24 @@ artifact:
   java_version: "17"
 
 flyway:
-  develop_head_committed_latest: V48__client_ltc_grade_history.sql
+  develop_head_committed_latest: V49__meals_programs_v3_schema.sql
   develop_wt_untracked: none
   test_branch_latest: V34__attendance_billing_row_lifecycle_and_nhis_query.sql
-  note: "V35–V48 develop HEAD only. test 미반영(merge BLOCK). V47: transport_runs·stops·geocode_cache. V48: client_ltc_grade_history."
+  note: "V35–V49 develop HEAD only. test 미반영(merge BLOCK). V47: transport_runs·stops·geocode_cache. V48: client_ltc_grade_history. V49: meal_menus·meal_records·activity_programs·program_participations."
 
 build:
   command: mvn -q -DskipTests package
   context: test branch (src/backend-test @ 2799e29, clean)
-  executed_at: 2026-06-08T03:38:00+00:00
+  executed_at: 2026-06-08T09:00:00+00:00
   result: SUCCESS
   jar: target/backend-0.0.1-SNAPSHOT.jar
   jar_size_bytes: 76466058
-  note: "Spring Boot 3.3.1 — 83차 실측 (test branch 변경 없음)"
+  note: "Spring Boot 3.3.1 — 92차 실측 (test branch 변경 없음)"
 
 tests:
   command: mvn test
   context: test branch (src/backend-test @ 2799e29, clean working tree)
-  executed_at: 2026-06-08T03:38:00+00:00
+  executed_at: 2026-06-08T08:00:00+00:00
   suites: 23
   total: 79
   failures: 0
@@ -119,23 +130,50 @@ tests:
   skipped: 0
   develop_head_committed:
     command: mvn test
-    context: develop HEAD (src/backend @ 53a1ffe, committed only)
-    executed_at: 2026-06-08T03:39:00+00:00
-    total: 212
+    context: develop HEAD (src/backend @ 1ec538b, committed only)
+    executed_at: 2026-06-08T09:00:00+00:00
+    total: 231
     failures: 0
     errors: 0
-    suites: 56
+    suites: 62
     note: >-
-      212/212 PASS — 82차 202 산출물 + TransportServiceTest(210 lines) + TransportControllerRoutingTest(100 lines) + MustApiEndpointRoutingTest$TransportRouting(1) 포함.
-      82차 202→83차 212: +10 @ 53a1ffe (v1.3-A transport API).
+      231/231 PASS — 91차 226 → 92차 231 (+5: ClientServiceTest transport profile +2·PilotChecklistJwtE2eTest transport routing smoke +3).
+      1ec538b: usesTransport·pickup address/contact·defaultPickupTime — Clients API transport profile 노출(US-T01). ClientService geocode 캐시 무효화.
 
 develop_head_verification:
   rule: "QA Fixed·완료기준 [x]는 develop HEAD 산출물 존재 시에만 유효"
   result: PASS
   head_fixed_pass: true
   working_tree_pass: true
-  revalidation: "TSR 83차 2026-06-08T03:40 UTC — develop HEAD 53a1ffe 독립 검증 PASS"
+  revalidation: "TSR 92차 2026-06-08T09:00 UTC — develop HEAD 1ec538b 독립 검증 PASS (91차 767d977 → +1커밋 v1.3-A client transport profile US-T01)"
   checks:
+    - path: meals/api/MealController.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 식단 메뉴·식사 기록 CRUD"
+    - path: meals/domain/MealService.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 179 lines"
+    - path: meals/domain/MealServiceTest.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 146 lines"
+    - path: meals/api/MealControllerRoutingTest.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 67 lines RBAC routing"
+    - path: programs/api/ProgramController.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 프로그램 일정·참여 CRUD"
+    - path: programs/domain/ProgramService.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 249 lines"
+    - path: programs/domain/ProgramServiceTest.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 171 lines"
+    - path: programs/api/ProgramControllerRoutingTest.java
+      present_on_develop_head: true
+      note: "v3 — HEAD PRESENT (dfd9be2) — 67 lines RBAC routing"
+    - path: db/migration/V49__meals_programs_v3_schema.sql
+      present_on_develop_head: true
+      note: "v3 Flyway — HEAD PRESENT (dfd9be2) — meal_menus·meal_records·activity_programs·program_participations (403 lines)"
     - path: transport/api/TransportController.java
       present_on_develop_head: true
       note: "v1.3-A — HEAD PRESENT (53a1ffe) — roster·runs CRUD·confirm RBAC·15-stop"
@@ -251,6 +289,15 @@ develop_head_verification:
     - path: billing/domain/BillingServiceTest.java
       present_on_develop_head: true
       note: "52e0621 — copay-claim PAID dispatch 커버리지 (+62 lines)"
+    - path: clients/api/ClientResponse.java
+      present_on_develop_head: true
+      note: "1ec538b — usesTransport·pickupAddress·pickupContact·defaultPickupTime transport profile fields (US-T01)"
+    - path: clients/domain/ClientService.java
+      present_on_develop_head: true
+      note: "1ec538b — transport profile create/update + pickup geocode 캐시 무효화 (+52 lines)"
+    - path: clients/domain/ClientServiceTest.java
+      present_on_develop_head: true
+      note: "1ec538b — transport profile 단위 테스트 9 @Test (기존 7 → 9, +176 lines)"
 
 qa_feedback:
   open_count: 0
@@ -259,16 +306,18 @@ qa_feedback:
   open_medium: 0
   planned_block: 1
   note: >-
-    Open 0건 (83차). v1 baseline artifacts + BE-11 + V45 + V46 + NotificationConfig + DAILY_CARE medication·vitals dispatch + guardian·staff 알림 이력 API + notification history query index + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + copay-claim PAID dispatch + v1.3-A transport API·V47·V48·Kakao geocode proxy PRESENT @ 53a1ffe (TSR 83차 독립 검증 PASS).
+    Open 0건 (92차). v1 baseline artifacts + BE-11 + V45 + V46 + NotificationConfig + DAILY_CARE medication·vitals dispatch + guardian·staff 알림 이력 API + notification history query index + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + copay-claim PAID dispatch + v1.3-A transport API·V47·V48·Kakao geocode proxy + transport run unconfirm PATCH+POST + v3 meals/programs REST API·V49 + v1.3-A client transport profile(US-T01) PRESENT @ 1ec538b (TSR 92차 독립 검증 PASS).
     SEC-20260608-014(BE-11) Fixed @ 8d42bdd — SEC-D13 credential stuffing 방어 충족.
-    잔여 BLOCK = develop→test merge(17커밋) 단일.
+    잔여 BLOCK = develop→test merge(21커밋) 단일.
     SEC-20260608-013(SEC-D14 merge 게이트) Planned 유지.
+    v3(식사·프로그램) develop-only — ROADMAP v3 버전·완료 기준·merge 게이트 미정의(planner 정의 대기, 정상·결함 아님).
+    US-T01 backend 완료 (1ec538b) — Clients API transport profile 노출. US-T02·T03 live E2E 잔여(frontend unconfirm UI 연동 + test 승격 후).
 
 blockers:
   - id: backend-develop-test-merge
     state: Open
     severity: BLOCK
-    summary: "develop 17커밋 ahead of test (f47ffa1·cf6116c·3f9264f·136239e·8d42bdd·80bdb1e·c221531·44e0f02·78e8928·c53dd3b·8ce1151·0832fbf·32a1f8f·4c74f84·ac17ad8·52e0621·53a1ffe) — develop→test merge 미실행"
+    summary: "develop 21커밋 ahead of test (f47ffa1·cf6116c·3f9264f·136239e·8d42bdd·80bdb1e·c221531·44e0f02·78e8928·c53dd3b·8ce1151·0832fbf·32a1f8f·4c74f84·ac17ad8·52e0621·53a1ffe·dfd9be2·0d8968d·767d977·1ec538b) — develop→test merge 미실행"
   - id: SEC-20260608-013
     state: Planned
     severity: BLOCK
@@ -297,24 +346,24 @@ blockers:
 roadmap_v1_completion:
   merge_status: merged
   merge_executed: false
-  note: "ROADMAP merged @e8750d2. workspace develop @53a1ffe. test @2799e29 stale — merge needed."
+  note: "ROADMAP merged @e8750d2. workspace develop @767d977. test @2799e29 stale — merge needed."
   checked:
-    - R-01_maven_test: "PASS develop 212/212 · test 79/79"
-    - R-10_dev_working_tree_clean: "PASS — CLEAN @ 53a1ffe"
-    - R-12_requirements_s6_PilotChecklistJwt: "PASS develop @ 53a1ffe (pilot/ 8 @Test)"
-    - R-13_p1_p8_live_e2e: "PASS develop @ 53a1ffe (8 @Test)"
-    - SEC-007_ProductionSecretValidator: "PASS develop @ 53a1ffe · test ABSENT (merge needed)"
+    - R-01_maven_test: "PASS develop 226/226 · test 79/79"
+    - R-10_dev_working_tree_clean: "PASS — CLEAN @ 767d977"
+    - R-12_requirements_s6_PilotChecklistJwt: "PASS develop @ 767d977 (pilot/ 8 @Test)"
+    - R-13_p1_p8_live_e2e: "PASS develop @ 767d977 (8 @Test)"
+    - SEC-007_ProductionSecretValidator: "PASS develop @ 767d977 · test ABSENT (merge needed)"
   pending_merge_to_test:
-    - all_baseline_tests: "merge f47ffa1·cf6116c·3f9264f·136239e·8d42bdd·80bdb1e·c221531·44e0f02·78e8928·c53dd3b·8ce1151·0832fbf·32a1f8f·4c74f84·ac17ad8·52e0621·53a1ffe to test branch"
+    - all_baseline_tests: "merge f47ffa1·cf6116c·3f9264f·136239e·8d42bdd·80bdb1e·c221531·44e0f02·78e8928·c53dd3b·8ce1151·0832fbf·32a1f8f·4c74f84·ac17ad8·52e0621·53a1ffe·dfd9be2·0d8968d·767d977·1ec538b to test branch"
 
 next_actions:
   - owner: PLN
-    action: "develop→test merge 실행 승인 — 53a1ffe(J01·BE-10·v2/J03·Solapi·BE-11·V45·alimtalk E2E·NotificationConfig·DAILY_CARE medication·vitals dispatch·guardian·staff 알림 이력 API·V46 query index·service-layer alimtalk flow E2E·AlimtalkTemplateVariables·AlimtalkFallbackText·copay-claim PAID dispatch·v1.3-A transport API·V47·V48·Kakao geocode proxy) test 반영 (17커밋)"
+    action: "develop→test merge 실행 승인 — 1ec538b(J01·BE-10·v2/J03·Solapi·BE-11·V45·alimtalk E2E·NotificationConfig·DAILY_CARE medication·vitals dispatch·guardian·staff 알림 이력 API·V46 query index·service-layer alimtalk flow E2E·AlimtalkTemplateVariables·AlimtalkFallbackText·copay-claim PAID dispatch·v1.3-A transport API·V47·V48·Kakao geocode proxy·transport run unconfirm PATCH+POST·v3 meals/programs REST API·V49·v1.3-A client transport profile US-T01) test 반영 (21커밋)"
   - owner: TSR
-    action: "merge 후 test clean tree 재검증 — Maven ≥212/212 PASS 예상(v1 baseline+BE-11+V45+V46+v2/J03 alimtalk E2E+NotificationConfig+DAILY_CARE medication·vitals dispatch+알림 이력 API+notification history query index+service-layer alimtalk flow E2E+AlimtalkTemplateVariables+AlimtalkFallbackText+copay-claim PAID dispatch+v1.3-A transport API·V47·V48·Kakao geocode proxy 포함)"
+    action: "merge 후 test clean tree 재검증 — Maven ≥231/231 PASS 예상(v1 baseline+BE-11+V45+V46+v2/J03 alimtalk E2E+NotificationConfig+DAILY_CARE medication·vitals dispatch+알림 이력 API+notification history query index+service-layer alimtalk flow E2E+AlimtalkTemplateVariables+AlimtalkFallbackText+copay-claim PAID dispatch+v1.3-A transport API·V47·V48·Kakao geocode proxy+transport run unconfirm PATCH+POST+v3 meals/programs REST API·V49+v1.3-A client transport profile(US-T01) 포함)"
   - owner: PLN
     action: "SEC-D11·QA-B10·SEC-D14 Planned→Fixed 이동 (merge 완료 후)"
   - owner: PLN
-    action: "53a1ffe v1.3-A transport API — ROADMAP v1.3·USER_STORIES(US-T01~T03)·API_SPEC v1.3-A 갱신 확인 (roster·runs CRUD·confirm·Kakao geocode proxy·V47·V48 — backend develop 완료·frontend UI 셸 연동 준비)"
+    action: "dfd9be2 v3 meals/programs REST API + V49 — ROADMAP **v3 버전·완료 기준·merge 게이트 정의 권장**. 이제 v3 backend API(dfd9be2) + v3 frontend UI 셸(7ef1083) 양 스트림 develop 존재 (식사 §3-5·프로그램 §3-6) → ROADMAP v3·USER_STORIES·API_SPEC v3 정의·연동 E2E 계획 필요"
   - owner: PLN
-    action: "52e0621 BILLING_PAYMENT_RECEIVED copay-claim PAID alimtalk dispatch → ROADMAP·USER_STORIES(US-J03)·API_SPEC v2/J03 follow-up 갱신 확인 (입금/수납 확인 시 보호자 알림톡 — notifyBilling consent 재사용)"
+    action: "53a1ffe v1.3-A transport API — ROADMAP v1.3·USER_STORIES(US-T01~T03)·API_SPEC v1.3-A 갱신 확인 (roster·runs CRUD·confirm·Kakao geocode proxy·V47·V48 — backend develop 완료·frontend UI 셸 연동 준비)"

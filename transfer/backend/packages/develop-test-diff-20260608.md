@@ -1,5 +1,44 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T03:40:00+00:00 -->
-# develop ↔ test diff 메타 (2026-06-08, 83차 재검증)
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T09:00:00+00:00 -->
+# develop ↔ test diff 메타 (2026-06-08, 92차 재검증)
+
+> **92차 재검증 (09:00 UTC) — develop `1ec538b` CLEAN·v1.3-A client transport profile(US-T01)·merge 21커밋·develop 231/231·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`1ec538b`**(+1커밋 vs 91차 `767d977` — `feat(v1.3-A): expose client transport profile on Clients API (US-T01)`: `ClientResponse.java`(+5 — usesTransport·pickup address/contact·defaultPickupTime 필드)·`CreateClientRequest.java`(+7 — transport profile 입력)·`UpdateClientRequest.java`(+7 — transport profile 수정)·`ClientService.java`(+52 — transport profile 처리·pickup geocode 캐시 무효화)·`ClientServiceTest.java`(+176 — transport profile 9 @Test·기존 7→9)·`PilotChecklistJwtE2eTest.java`(+45 — transport roster·run detail endpoint 라우팅 smoke test), 6 files, +286/-6), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **231/231 PASS**(62 suites, 91차 226 → +5: `ClientServiceTest` transport profile +2·`PilotChecklistJwtE2eTest` transport routing +3).
+> develop **21커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm PATCH+POST·client transport profile US-T01) + v3 meals/programs artifacts PRESENT @ 1ec538b(TSR 92차 독립 검증 PASS)**.
+> **US-T01 backend 완료**: Clients API 에 transport profile 노출(usesTransport·pickup address/contact·defaultPickupTime) — frontend roster 구성 가능. US-T02·T03 live E2E 잔여(frontend unconfirm UI 연동·test 승격 후).
+> **v3 develop-only** — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
+
+> **91차 재검증 (08:00 UTC) — develop `767d977` 불변·CLEAN·merge 20커밋·develop 226/226·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+
+> **91차 재검증 (08:00 UTC) — develop `767d977` 불변·CLEAN·merge 20커밋·develop 226/226·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`767d977`**(89차 대비 **불변** — v1.3-A transport unconfirm PATCH contract + POST legacy alias), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **226/226 PASS**(62 suites, 91차 독립 실측).
+> develop **20커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm PATCH+POST) + v3 meals/programs artifacts PRESENT @ 767d977(TSR 91차 독립 검증 PASS)**.
+> **교차 관측**: frontend `73f7d39` `TransportUnconfirmModal`·US-T02 unconfirm UI PRESENT — backend test 미승격·live E2E 잔여.
+> **v3 develop-only** — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
+
+> **89차 재검증 (07:02 UTC) — develop `767d977` CLEAN·v1.3-A transport unconfirm PATCH 계약·merge 20커밋·develop 226/226·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`767d977`**(+1커밋 vs 87차 `0d8968d` — `fix(v1.3-A): align transport unconfirm route with PATCH contract`: `TransportController.java`(+11 — `PATCH /runs/{runId}/unconfirm` v1.3 API 계약·`POST` legacy alias)·`TransportControllerRoutingTest.java`(+3 — PATCH·POST dual-method RBAC)·`MustApiEndpointRoutingTest`(+2 transport unconfirm PATCH routing), 3 files, +15/-1), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **226/226 PASS**(62 suites, 87차 불변 — routing assertion 확장만).
+> develop **20커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm PATCH+POST) + v3 meals/programs artifacts PRESENT @ 767d977(TSR 89차 독립 검증 PASS)**.
+> **v3 develop-only** — ROADMAP v3 버전·완료 기준·merge 게이트 미정의(planner 정의 대기). v1.3-A transport unconfirm PATCH API develop-only — frontend unconfirm UI·US-T01~T03 live E2E 잔여.
+
+> **87차 재검증 (05:58 UTC) — develop `0d8968d` CLEAN·v1.3-A transport run unconfirm·merge 19커밋·develop 226/226·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`0d8968d`**(+1커밋 vs 85차 `dfd9be2` — `feat(v1.3-A): support transport run unconfirm flow for hq_admin`: `TransportController.java`(+9 — `POST /runs/{runId}/unconfirm` hq_admin RBAC)·`TransportService.java`(+31 — `unconfirmRun` CONFIRMED→DRAFT·`unconfirmedAt`/`unconfirmedBy`)·`TransportRunResponse.java`(+3)·`TransportServiceTest.java`(+46 — 2 @Test)·`TransportControllerRoutingTest.java`(+7)·`MustApiEndpointRoutingTest`(+6 transport unconfirm RBAC), 6 files, +102 insertions), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **226/226 PASS**(62 suites, 85차 224 → +2: `TransportServiceTest` unconfirm 2건).
+> develop **19커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm) + v3 meals/programs artifacts PRESENT @ 0d8968d(TSR 87차 독립 검증 PASS)**.
+> **v3 develop-only** — ROADMAP v3 버전·완료 기준·merge 게이트 미정의(planner 정의 대기). v1.3-A transport unconfirm API develop-only — frontend unconfirm UI·US-T01~T03 live E2E 잔여.
+
+> **85차 재검증 (04:55 UTC) — develop `dfd9be2` CLEAN·v3 meals/programs REST API·Flyway V49·merge 18커밋·develop 224/224·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`dfd9be2`**(+1커밋 vs 83차 `53a1ffe` — `feat(v3): add meals and programs REST API with Flyway V49 schema`: `meals/api/MealController.java`(54 lines)·`meals/domain/MealService.java`(179 lines)·`meals/persistence/MealMenuEntity`(132)·`MealRecordEntity`(154)+Repository 2종·meals DTO 6종·`programs/api/ProgramController.java`(56 lines)·`programs/domain/ProgramService.java`(249 lines)·`programs/persistence/ActivityProgramEntity`(155)·`ProgramParticipationEntity`(143)+Repository 2종·programs DTO 6종·`db/migration/V49__meals_programs_v3_schema.sql`(403 lines — meal_menus·meal_records·activity_programs·program_participations)·`meals/domain/MealServiceTest`(146)·`meals/api/MealControllerRoutingTest`(67)·`programs/domain/ProgramServiceTest`(171)·`programs/api/ProgramControllerRoutingTest`(67)·`routing/MustApiEndpointRoutingTest`(+100 meals/programs RBAC nested), 28 files, +2265 insertions), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **224/224 PASS**(62 suites, 83차 212 → +12: MealServiceTest + MealControllerRoutingTest + ProgramServiceTest + ProgramControllerRoutingTest + MustApiEndpointRoutingTest meals/programs).
+> develop **18커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport + v3 meals/programs artifacts PRESENT @ dfd9be2(TSR 85차 독립 검증 PASS)**.
+> **v3 develop-only** — ROADMAP v3 버전·완료 기준·merge 게이트 미정의(planner 정의 대기). v3 backend API(dfd9be2) + v3 frontend UI 셸(7ef1083) 양 스트림 develop 존재 → planner ROADMAP v3 정의 권장(정상·결함 아님).
 
 > **83차 재검증 (03:40 UTC) — develop `53a1ffe` CLEAN·v1.3-A transport API·Flyway V47·V48·Kakao geocode proxy·merge 17커밋·develop 212/212·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
 > develop HEAD **`53a1ffe`**(+1커밋 vs 82차 `52e0621` — `feat(v1.3-A): add transport API, Flyway schema, and Kakao geocode proxy`: `TransportController.java`(98 lines — roster·runs CRUD·confirm RBAC·15-stop 검증)·`TransportService.java`(409 lines)·`KakaoGeocodeClient.java`(103 lines)·`TransportGeocodeService.java`(124 lines)·`TransportRunEntity.java`(165 lines)·`TransportRunStopEntity.java`(155 lines)·`TransportRunRepository`·`TransportRunStopRepository`·DTOs 8종·`TransportConfig`·`TransportProperties`·`V47__transport_v1_3_a.sql`(326 lines)·`V48__client_ltc_grade_history.sql`(85 lines)·`ClientEntity.java`(145 lines, ltcGrade 추가)·`ClientRepository.java`(+15)·`TransportServiceTest.java`(210 lines)·`TransportControllerRoutingTest.java`(100 lines)·`MustApiEndpointRoutingTest`(+79 TransportRouting nested class)·`application.yml`(+2 kakao.geocode), 30 files, +2233 insertions), working tree **CLEAN**.
