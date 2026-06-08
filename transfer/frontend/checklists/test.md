@@ -1,12 +1,22 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T19:20:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T00:30:00+00:00 -->
 # Frontend develop → test 이관 체크리스트
 
 > **스트림**: frontend  
 > **develop 브랜치**: `develop` (`src/frontend`)  
 > **test 브랜치**: `test` (`src/frontend-test` worktree)  
-> **검증 기준**: `docs/planning/ROADMAP.md` v1.1 완료 기준 (선행: v1 `merge_status: merged`) · **CURRENT BASELINE**: frontend test `4f71543` · develop `42f48e1` (+4 v1.2)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.1 완료 기준 (선행: v1 `merge_status: merged`) · **CURRENT BASELINE**: frontend test `4f71543` · develop `95b92b9` (+13 v1.2)  
 > **작성**: tester (`TSR`)  
-> **최종 갱신**: 2026-06-07T19:20:00+00:00
+> **최종 갱신**: 2026-06-08T00:30:00+00:00
+
+> **80차 재검증 (2026-06-08T00:30) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `95b92b9`(+2 v1.2 CLEAN)·13 ahead·develop 137/45 PASS·124 modules·PASS**: 77차(`4f71543`·58/18·86 modules·PASS) 대비 **test HEAD 불변** — `src/frontend-test` `npm test` **58/18 PASS**·`npm run build` **86 modules**(vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB)·`npm audit` **0** **그대로 PASS**(80차 독립 재실측 CONFIRMED). develop HEAD **`95b92b9`**(+2 vs 77차 `4957bd3`: `3ec8206` feat(uxd-41) US-F03 낙상·사고·특이사항 이벤트 기록 UI 신설 · `95b92b9` fix(v1.2) US-F03 incident API 본문 detail 필드 정합, 15 files approx.) · WT **CLEAN** · develop **13커밋 ahead**(77차 11→+2) · develop `npm test` **137/45 PASS**(77차 130/44 → +7/+1: US-F03 회귀)·`npm run build` **124 modules PASS**(vite 6.4.3, JS 316.89 kB gzip 90.47 kB, CSS 30.85 kB)·`npm audit` **0**. 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** @ test·develop HEAD. SEC-005 localStorage/sessionStorage **0건**. **신규 Open 0건** — **판정 PASS**(v1.1 test `4f71543` 유효). 잔여: backend merge(14) + v1.2 develop 13 ahead + post-merge live E2E(결정 73 권장).
+
+> **77차 재검증 (2026-06-07T23:30) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `4957bd3`(+2 v1.2 CLEAN)·11 ahead·develop 130/44 PASS·123 modules·PASS**: 76차(`4f71543`·58/18·86 modules·PASS) 대비 **test HEAD 불변** — `src/frontend-test` `npm test` **58/18 PASS**·`npm run build` **86 modules**(vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB)·`npm audit` **0** **그대로 PASS**(76차 독립 재실측 CONFIRMED). develop HEAD **`4957bd3`**(+2 vs 76차 `c5708c7`: `9863312` feat(uxd-40) US-F01 활력징후 비정상 범위 입력 경고·정상 범위 단일 원천(`src/utils/vitalsRanges.js`·`healthRecords.js` +test) · `4957bd3` fix(v1.2) FAQ Q154 건강·NHIS API 본문 정합, 15 files +572/-75) · WT **CLEAN** · develop **11커밋 ahead**(76차 9→+2) · develop `npm test` **130/44 PASS**(76차 115/40 → +15/+4: vitalsRanges·healthRecords 회귀)·`npm run build` **123 modules PASS**(vite 6.4.3, JS 313.51 kB gzip 89.67 kB, CSS 30.85 kB)·`npm audit` **0**. 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** @ test·develop HEAD. SEC-005 localStorage/sessionStorage **0건**. **신규 Open 0건** — **판정 PASS**(v1.1 test `4f71543` 유효). 잔여: backend merge(13) + v1.2 develop 11 ahead + post-merge live E2E(결정 73 권장).
+
+> **76차 재검증 (2026-06-07T22:27) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `c5708c7`(+1 v1.2 CLEAN)·9 ahead·develop 115/40 PASS·120 modules·PASS**: 75차(`4f71543`·58/18·86 modules·PASS) 대비 **test HEAD 불변** — `src/frontend-test` `npm test` **58/18 PASS**·`npm run build` **86 modules**(vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB)·`npm audit` **0** **그대로 PASS**(75차 독립 재실측 CONFIRMED). develop HEAD **`c5708c7`**(+1 vs 75차 `a627c6d`: `feat(uxd-39): Must 흐름 UI 보강 — guardian/checkin·건강·NHIS·접근성` — `MedicationRecordForm`·`VitalsRecordForm`·`NhisReconciliationTable`·`MedicationDuplicateAlert`·`HealthPage`/`HealthDetailPage`/`ReconciliationPage`/`GuardianPortalPage` DS 통합, 17 files +748/-91) · WT **CLEAN** · develop **9커밋 ahead**(75차 8→+1) · develop `npm test` **115/40 PASS**(75차 110/36 → +5/+4: `MedicationRecordForm`·`NhisReconciliationTable`·`HealthDetailPage`·`MedicationDuplicateAlert` 회귀)·`npm run build` **120 modules PASS**(vite 6.4.3, JS 310.33 kB gzip 88.52 kB, CSS 30.77 kB)·`npm audit` **0**. 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** @ test·develop HEAD. SEC-005 localStorage/sessionStorage **0건**. **신규 Open 0건** — **판정 PASS**(v1.1 test `4f71543` 유효). 잔여: backend merge(12) + v1.2 develop 9 ahead + post-merge live E2E(결정 73 권장).
+
+> **75차 재검증 (2026-06-07T21:24) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `a627c6d`(+2 v1.2 CLEAN)·8 ahead·develop 110/36 PASS·117 modules·PASS**: 73차(`4f71543`·58/18·86 modules·PASS) 대비 **test HEAD 불변** — `src/frontend-test` `npm test` **58/18 PASS**·`npm run build` **86 modules**(vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB)·`npm audit` **0** **그대로 PASS**(73차 독립 재실측 CONFIRMED). develop HEAD **`a627c6d`**(+2 vs 73차 `9bdf59f`: `6f3f746` 수기 출석 체크인/아웃·결석 흐름(US-E01·E02) · `a627c6d` US-E03 QR 저장·US-E05 출석 통계 API 통합) · WT **CLEAN** · develop **8커밋 ahead**(73차 6→+2) · develop `npm test` **110/36 PASS**(71차 89/28 → +21/+8: AttendancePage·AttendanceStatsPage·QrGeneratePage·AttendanceAbsentModal·CheckoutModal·downloadDataUrl 회귀)·`npm run build` **117 modules PASS**(vite 6.4.3, JS 303.24 kB gzip 86.86 kB, CSS 30.33 kB)·`npm audit` **0**. 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** @ test·develop HEAD. SEC-005 localStorage/sessionStorage **0건**. **신규 Open 0건** — **판정 PASS**(v1.1 test `4f71543` 유효). 잔여: backend merge(11) + v1.2 develop 8 ahead + post-merge live E2E(결정 73 권장).
+
+> **73차 재검증 (2026-06-07T20:21) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `9bdf59f`(+2 v1.2 CLEAN)·6 ahead·PASS**: 71차(`4f71543`·58/18·86 modules·PASS) 대비 **test HEAD 불변** — 58/18 PASS·86 modules·audit 0 **그대로 PASS**. develop HEAD **`9bdf59f`**(+2 vs 71차 `42f48e1`: `a68f150` GuardianCheckinPage DS FilterChips(US-E04) · `9bdf59f` P0 CRUD E2E·입금 모달·보호자 초대/수정 수정) · WT **CLEAN** · develop **6커밋 ahead** (71차 4→+2). 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** @ develop HEAD. SEC-005 **0건**. **신규 Open 0건** — **판정 PASS**(v1.1 test `4f71543` 유효). 잔여: backend merge(10) + v1.2 develop 6 ahead + post-merge live E2E(결정 73 권장).
 
 > **71차 재검증 (2026-06-07T19:20) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `42f48e1`(+4 v1.2 CLEAN)·89/28 PASS·114 modules·PASS**: 69차(`4f71543`·58/18·86 modules·PASS) 대비 **test HEAD 불변** — 58/18 PASS·86 modules·audit 0 **그대로 PASS**. develop HEAD **`42f48e1`**(+2 vs 69차 `e0eaf32`: `0d83a42` UXD 15 missing pages(US-D01·E03-E05·F04·G01-G07·H01-H04·B01·A01) · `42f48e1` P0 page-flow tests·module coverage KPI·title 정렬) · WT **CLEAN** · develop `npm test` **89/28 PASS**(69차 82/27 → +7/+1: `competitorModuleCoverage.test.js` 3건·pilotPageFlows 강화) · develop `npm run build` **114 modules PASS**(vite 6.4.3, JS 295.02 kB gzip 84.80 kB, CSS 30.23 kB) · develop `npm audit` **0**. 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** @ develop HEAD. SEC-005 **0건**. **신규 Open 0건** — **판정 PASS**(v1.1 test `4f71543` 유효). 잔여: backend merge(9) + v1.2 develop 4 ahead + post-merge live E2E(결정 73 권장).
 
@@ -77,13 +87,13 @@
 |------|-----|
 | **대상 버전** | v1.1 (프론트엔드 MVP — frontend stream) |
 | **ROADMAP `merge_status`** | **`merged`** (test `@4f71543` 승격 완료) |
-| **선행 v1 `merge_status`** | `merged` (backend develop `44e0f02` · test stale `2799e29` · 8 ahead) |
-| **develop HEAD** | `42f48e1` — v1.2 P0 page-flow tests·module KPI (+ `0d83a42` 15 pages) |
+| **선행 v1 `merge_status`** | `merged` (backend develop `4c74f84` · test stale `2799e29` · 14 ahead) |
+| **develop HEAD** | `95b92b9` — US-F03 incident API detail 필드 정합 (+ `3ec8206` UXD-41 낙상·사고 UI · `4957bd3` FAQ Q154 정합) |
 | **develop working tree** | **CLEAN** (0 dirty) |
 | **test HEAD** | `4f71543` — v1.1 merged (FE-22 liveConfig + UXD SideNav·Must API·guardian REST) |
 | **test working tree** | **CLEAN** |
-| **develop ahead of test** | **4 commits** (v1.2 `64468a3`·`e0eaf32`·`0d83a42`·`42f48e1`) |
-| **이관 판정** | **PASS** — v1.1 test 브랜치 검증 완료 (71차 재확인) |
+| **develop ahead of test** | **13 commits** (v1.2 `64468a3`·`e0eaf32`·`0d83a42`·`42f48e1`·`a68f150`·`9bdf59f`·`6f3f746`·`a627c6d`·`c5708c7`·`9863312`·`4957bd3`·`3ec8206`·`95b92b9`) |
+| **이관 판정** | **PASS** — v1.1 test 브랜치 검증 완료 (80차 재확인) |
 
 > **PASS 근거 (69차)**: ① **v1.1 develop→test merge 완료** — test `@4f71543` = ROADMAP merged HEAD. ② test `npm test` **58/18 PASS** · build **86 modules** · audit **0**. ③ 이관 규율 5 — Must API·SideNav·FE-22 harness·ProtectedRoute **PRESENT** @ test HEAD. ④ develop v1.2 **+2 commits CLEAN** — B07 recurrence 없음. ⑤ Must·J01/J02 **live E2E run** 미실행 — **결정 73 post-merge 권장**(merge-blocking 아님).
 
@@ -365,6 +375,10 @@
 
 | 역할 | id | 판정 | 일시 |
 |------|-----|------|------|
+| QA·이관 | TSR | **PASS** (77차 — test **`4f71543`** 불변·**58/18 PASS**·**86 modules**·audit **0**·develop **`4957bd3` +11 v1.2 CLEAN**·**130/44 PASS**·**123 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**) | 2026-06-07T23:30:00+00:00 |
+| QA·이관 | TSR | **PASS** (76차 — test **`4f71543`** 불변·**58/18 PASS**·**86 modules**·audit **0**·develop **`c5708c7` +9 v1.2 CLEAN**·**115/40 PASS**·**120 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**) | 2026-06-07T22:27:00+00:00 |
+| QA·이관 | TSR | **PASS** (75차 — test **`4f71543`** 불변·**58/18 PASS**·**86 modules**·audit **0**·develop **`a627c6d` +8 v1.2 CLEAN**·**110/36 PASS**·**117 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**) | 2026-06-07T21:24:00+00:00 |
+| QA·이관 | TSR | **PASS** (73차 — test **`4f71543`** 불변·**58/18 PASS**·**86 modules**·audit **0**·develop **`9bdf59f` +6 v1.2 CLEAN**·이관 규율 5 PRESENT·SEC-005 0건·Open **0**) | 2026-06-07T20:21:00+00:00 |
 | QA·이관 | TSR | **PASS** (71차 — test **`4f71543`** 불변·**58/18 PASS**·**86 modules**·audit **0**·develop **`42f48e1` +4 v1.2 CLEAN**·**89/28 PASS**·**114 modules**·이관 규율 5 PRESENT·SEC-005 0건·Open **0**) | 2026-06-07T19:20:00+00:00 |
 | QA·이관 | TSR | **PASS** (69차 — v1.1 test **`4f71543` merged**·**58/18 PASS**·build **86 modules**·audit **0**·이관 규율 5 PRESENT·develop **`e0eaf32` +2 v1.2 CLEAN**·82/27 PASS·post-merge live E2E 권장·Open **0**) | 2026-06-07T18:12:00+00:00 |
 | QA·이관 | TSR | **BLOCK** (67차 — develop **`4f71543` CLEAN**·**58/18 PASS**·build **86 modules**·audit **0**·UXD SideNav·FE-22 preconditions develop HEAD 반영·test **36 PASS/N/A**·develop **13 ahead**·ROADMAP **ready**·잔여 **B03/SEC-D14 merge 미실행**·Open **0**) | 2026-06-07T17:31:00+00:00 |

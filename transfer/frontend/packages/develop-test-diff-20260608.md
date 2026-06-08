@@ -1,3 +1,224 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T00:30:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08T00:30 80차 재검증)
+
+> **80차 재검증 (00:30) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `95b92b9`(+2 v1.2 CLEAN)·13 ahead·develop 137/45 PASS·124 modules·PASS**: 77차(develop `4957bd3` +11·PASS) 대비 develop HEAD **`95b92b9`**(+2: `3ec8206` feat(uxd-41): US-F03 낙상·사고·특이사항 이벤트 기록 UI 신설 · `95b92b9` fix(v1.2): US-F03 incident API 본문 detail 필드 정합). test HEAD `4f71543` **불변** — 58/18 PASS·86 modules·audit 0 유지(독립 재실측 CONFIRMED). develop WT **CLEAN** (0 dirty). develop `npm test` **137/45 PASS**·build **124 modules**·audit **0**. 이관 규율 5 PRESENT · SEC-005 0건. **신규 Open 0건** — 판정 **PASS**(v1.1). backend merge(14) 잔여.
+
+## 커밋 수준 (80차)
+
+| 항목 | 77차 | 80차 |
+|------|------|------|
+| develop HEAD | `4957bd3` | **`95b92b9`** (+2) |
+| test HEAD | `4f71543` (v1.1 merged) | **`4f71543`** (불변) |
+| commits gap | develop 11 ahead | **develop 13 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 130/44 PASS | **137/45 PASS** |
+| develop modules | 123 modules | **124 modules** |
+
+### v1.2 develop 신규 커밋 (77차 `4957bd3` 이후, 80차)
+
+| SHA | Message |
+|-----|---------|
+| `3ec8206` | feat(uxd-41): US-F03 낙상·사고·특이사항 이벤트 기록 UI 신설 |
+| `95b92b9` | fix(v1.2): US-F03 incident API 본문 detail 필드 정합 (Q154) |
+
+## test 브랜치 (frontend-test @ `4f71543`, 80차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **86 modules PASS** (vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) |
+| npm test | **58/18 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`95b92b9`, 80차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **137/45 PASS** (+7/+1 vs 77차 130/44 — US-F03 이벤트 기록 회귀) |
+| npm run build | **124 modules PASS** (vite 6.4.3, JS 316.89 kB gzip 90.47 kB, CSS 30.85 kB) |
+| npm audit | **0 vulnerabilities** |
+
+## 판정 (80차)
+
+**PASS** — v1.1 test `@4f71543` 검증 유지. develop v1.2 **+13 CLEAN** (non-blocking). post-merge **live E2E run** 권장(결정 73). backend merge(14) 잔여.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T23:30:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-07T23:30 77차 재검증)
+
+> **77차 재검증 (23:30) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `4957bd3`(+2 v1.2 CLEAN)·11 ahead·develop 130/44 PASS·123 modules·PASS**: 76차(develop `c5708c7` +9·PASS) 대비 develop HEAD **`4957bd3`**(+2: `9863312` feat(uxd-40): US-F01 활력징후 비정상 범위 입력 경고·정상 범위 단일 원천 · `4957bd3` fix(v1.2): FAQ Q154 건강·NHIS API 본문 정합). test HEAD `4f71543` **불변** — 58/18 PASS·86 modules·audit 0 유지(독립 재실측 CONFIRMED). develop WT **CLEAN** (0 dirty). develop `npm test` **130/44 PASS**·build **123 modules**·audit **0**. 이관 규율 5 PRESENT · SEC-005 0건. **신규 Open 0건** — 판정 **PASS**(v1.1). backend merge(13) 잔여.
+
+## 커밋 수준 (77차)
+
+| 항목 | 76차 | 77차 |
+|------|------|------|
+| develop HEAD | `c5708c7` | **`4957bd3`** (+2) |
+| test HEAD | `4f71543` (v1.1 merged) | **`4f71543`** (불변) |
+| commits gap | develop 9 ahead | **develop 11 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 115/40 PASS | **130/44 PASS** |
+| develop modules | 120 modules | **123 modules** |
+
+### v1.2 develop 신규 커밋 (76차 `c5708c7` 이후, 77차)
+
+| SHA | Message |
+|-----|---------|
+| `9863312` | feat(uxd-40): US-F01 활력징후 비정상 범위 입력 경고·정상 범위 단일 원천 |
+| `4957bd3` | fix(v1.2): FAQ Q154 건강·NHIS API 본문 정합 |
+
+> **`c5708c7..4957bd3` diff stat**: 15 files, +572/-75 — 신규 `src/utils/vitalsRanges.js`(+test)·`src/utils/healthRecords.js`(+test) (활력징후 정상 범위 단일 원천·비정상 경고) + `VitalsRecordForm.jsx`·`HealthPage`/`HealthDetailPage` 등 연동.
+
+## test 브랜치 (frontend-test @ `4f71543`, 77차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **86 modules PASS** (vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) |
+| npm test | **58/18 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`4957bd3`, 77차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **130/44 PASS** (+15/+4 vs 76차 115/40 — vitalsRanges·healthRecords 회귀) |
+| npm run build | **123 modules PASS** (vite 6.4.3, JS 313.51 kB gzip 89.67 kB, CSS 30.85 kB) |
+| npm audit | **0 vulnerabilities** |
+
+## 판정 (77차)
+
+**PASS** — v1.1 test `@4f71543` 검증 유지. develop v1.2 **+11 CLEAN** (non-blocking). post-merge **live E2E run** 권장(결정 73). backend merge(13) 잔여.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T22:27:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-07T22:27 76차 재검증)
+
+> **76차 재검증 (22:27) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `c5708c7`(+1 v1.2 CLEAN)·9 ahead·develop 115/40 PASS·120 modules·PASS**: 75차(develop `a627c6d` +8·PASS) 대비 develop HEAD **`c5708c7`**(+1: `feat(uxd-39): Must 흐름 UI 보강 — guardian/checkin·건강·NHIS·접근성`). test HEAD `4f71543` **불변** — 58/18 PASS·86 modules·audit 0 유지(독립 재실측 CONFIRMED). develop WT **CLEAN** (0 dirty). develop `npm test` **115/40 PASS**·build **120 modules**·audit **0**. 이관 규율 5 PRESENT · SEC-005 0건. **신규 Open 0건** — 판정 **PASS**(v1.1). backend merge(12) 잔여.
+
+## 커밋 수준 (76차)
+
+| 항목 | 75차 | 76차 |
+|------|------|------|
+| develop HEAD | `a627c6d` | **`c5708c7`** (+1) |
+| test HEAD | `4f71543` (v1.1 merged) | **`4f71543`** (불변) |
+| commits gap | develop 8 ahead | **develop 9 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 110/36 PASS | **115/40 PASS** |
+| develop modules | 117 modules | **120 modules** |
+
+### v1.2 develop 신규 커밋 (75차 `a627c6d` 이후, 76차)
+
+| SHA | Message |
+|-----|---------|
+| `c5708c7` | feat(uxd-39): Must 흐름 UI 보강 — guardian/checkin·건강·NHIS·접근성 |
+
+> **`a627c6d..c5708c7` diff stat**: 17 files, +748/-91 — `MedicationRecordForm.jsx`(+test)·`VitalsRecordForm.jsx`·`NhisReconciliationTable.jsx`(+test)·`MedicationDuplicateAlert.jsx`(+test)·`HealthPage.jsx`·`HealthDetailPage.jsx`(+test)·`ReconciliationPage.jsx`·`GuardianPortalPage.jsx`·`navConfig.js`·`components.css`.
+
+## test 브랜치 (frontend-test @ `4f71543`, 76차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **86 modules PASS** (vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) |
+| npm test | **58/18 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## 판정 (76차)
+
+**PASS** — v1.1 test `@4f71543` 검증 유지. develop v1.2 **+9 CLEAN** (non-blocking). post-merge **live E2E run** 권장(결정 73). backend merge(12) 잔여.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T21:24:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-07T21:24 75차 재검증)
+
+> **75차 재검증 (21:24) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `a627c6d`(+2 v1.2 CLEAN)·8 ahead·develop 110/36 PASS·117 modules·PASS**: 73차(develop `9bdf59f` +6·PASS) 대비 develop HEAD **`a627c6d`**(+2: `6f3f746` 수기 출석 체크인/아웃·결석 흐름(US-E01·E02) · `a627c6d` US-E03 QR 저장·US-E05 출석 통계 API 통합). test HEAD `4f71543` **불변** — 58/18 PASS·86 modules·audit 0 유지(독립 재실측 CONFIRMED). develop WT **CLEAN** (0 dirty). develop `npm test` **110/36 PASS**·build **117 modules**·audit **0**. 이관 규율 5 PRESENT · SEC-005 0건. **신규 Open 0건** — 판정 **PASS**(v1.1). backend merge(11) 잔여.
+
+## 커밋 수준 (75차)
+
+| 항목 | 73차 | 75차 |
+|------|------|------|
+| develop HEAD | `9bdf59f` | **`a627c6d`** (+2) |
+| test HEAD | `4f71543` (v1.1 merged) | **`4f71543`** (불변) |
+| commits gap | develop 6 ahead | **develop 8 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | (73차 미재실행) | **110/36 PASS** |
+| develop modules | — | **117 modules** |
+
+### v1.2 develop 신규 커밋 (73차 `9bdf59f` 이후, 75차)
+
+| SHA | Message |
+|-----|---------|
+| `6f3f746` | feat(ux): 수기 출석 체크인/아웃·결석 흐름 보강 (US-E01·E02) |
+| `a627c6d` | feat(v1.2): US-E03 QR 저장·US-E05 출석 통계 API 통합 |
+
+> **`9bdf59f..a627c6d` diff stat**: 14 files, +767/-47 — `services.js`(+18)·`AttendanceAbsentModal.jsx`(+test)·`CheckoutModal.jsx`(+test)·`AttendancePage.jsx`(+243)(+test)·`AttendanceStatsPage.jsx`(+test)·`QrGeneratePage.jsx`(+test)·`utils/downloadDataUrl.js`(+test)·`components/ui/index.js`.
+
+## test 브랜치 (frontend-test @ `4f71543`, 75차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **86 modules PASS** (vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) |
+| npm test | **58/18 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## 판정 (75차)
+
+**PASS** — v1.1 test `@4f71543` 검증 유지. develop v1.2 **+8 CLEAN** (non-blocking). post-merge **live E2E run** 권장(결정 73). backend merge(11) 잔여.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T20:21:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-07T20:21 73차 재검증)
+
+> **73차 재검증 (20:21) — test `@4f71543` 불변·58/18 PASS·86 modules·audit 0·develop `9bdf59f`(+2 v1.2 CLEAN)·6 ahead·PASS**: 71차(develop `42f48e1` +4·PASS) 대비 develop HEAD **`9bdf59f`**(+2: `a68f150` GuardianCheckinPage DS FilterChips(US-E04) · `9bdf59f` P0 CRUD E2E·입금 모달·보호자 초대/수정 수정). test HEAD `4f71543` **불변** — 58/18 PASS 유지. develop WT **CLEAN** (0 dirty). 이관 규율 5 PRESENT · SEC-005 0건. **신규 Open 0건** — 판정 **PASS**(v1.1). backend merge(10) 잔여.
+
+## 커밋 수준 (73차)
+
+| 항목 | 71차 | 73차 |
+|------|------|------|
+| develop HEAD | `42f48e1` | **`9bdf59f`** (+2) |
+| test HEAD | `4f71543` (v1.1 merged) | **`4f71543`** (불변) |
+| commits gap | develop 4 ahead | **develop 6 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+
+### v1.2 develop 신규 커밋 (71차 `42f48e1` 이후, 73차)
+
+| SHA | Message |
+|-----|---------|
+| `a68f150` | fix(ux): GuardianCheckinPage 체크인 유형 DS FilterChips 전환 (US-E04) |
+| `9bdf59f` | feat(v1.2): P0 CRUD E2E·입금 모달·보호자 초대/수정 수정 |
+
+## test 브랜치 (frontend-test @ `4f71543`, 73차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **86 modules PASS** (vite 6.4.3, JS 210.46 kB gzip 66.20 kB, CSS 27.27 kB) |
+| npm test | **58/18 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·FE-22 **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## 판정 (73차)
+
+**PASS** — v1.1 test `@4f71543` 검증 유지. develop v1.2 **+6 CLEAN** (non-blocking). post-merge **live E2E run** 권장(결정 73). backend merge(10) 잔여.
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-07T19:20:00+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-07T19:20 71차 재검증)
 
