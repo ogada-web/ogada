@@ -1,3 +1,170 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T05:00:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08 86차 재검증)
+
+> **86차 재검증 (05:00) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `362dbf0`(+6 v1.3-A·v3 CLEAN)·164/54 PASS·139 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**: 84차(test `c510f5c`·develop `7ef1083` +4) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`7ef1083`→`362dbf0`**(+2: `3e9a9ab` fix(a11y): v3 식사·프로그램 기록 폼 접근성 재점검 (US-N01·N02) · `362dbf0` test(v3): add meals/programs API E2E via pilotPageFlows (US-N01·N02)). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `in_progress`/`pending`(backend transport API test 미승격) · v3 **develop-only**(merge 게이트 미설정).
+
+## 커밋 수준 (86차)
+
+| 항목 | 84차 | 86차 |
+|------|------|------|
+| develop HEAD | `7ef1083` (+4) | **`362dbf0`** (+6) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 4 ahead | **develop 6 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 157/53 PASS | **164/54 PASS** |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 86차 — 84차 대비 +2)
+
+| SHA | Message |
+|-----|---------|
+| `3e9a9ab` | fix(a11y): v3 식사·프로그램 기록 폼 접근성 재점검 (US-N01·N02) |
+| `362dbf0` | test(v3): add meals/programs API E2E via pilotPageFlows (US-N01·N02) |
+
+> **`c510f5c..362dbf0` diff stat**: 33 files, +2602/-21 — v1.3-A Transport + a11y + v3 MealsPage·ProgramsPage·MealRecordForm·ProgramParticipationForm + US-G06 ReconciliationPage + **신규** v3 `MealRecordForm`·`ProgramParticipationForm`·`MealsPage`·`ProgramsPage` a11y 재점검(ARIA·레이블·키보드 내비게이션) + pilotPageFlows US-N01(식사 기록 API E2E)·US-N02(프로그램 참여 API E2E) + `services.js`(+v3 meals/programs endpoints).
+
+## test 브랜치 (frontend-test @ `c510f5c`, 86차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **125 modules PASS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) |
+| npm ci + npm test | **143/46 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·AuthContext·ReconciliationPage **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`362dbf0`, 86차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **164/54 PASS** (+21/+8 vs test 143/46 — Transport·v3 Meals/Programs·v3 E2E US-N01·N02·UNMATCHED 회귀) |
+| npm run build | **139 modules PASS** (vite 6.4.3, JS 347.60 kB gzip 97.57 kB, CSS 33.35 kB gzip 6.20 kB) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | TransportPage·RunNew·RunDetail·KakaoMap·Disclaimer·StopList·transport.js·transportUtils **HEAD PRESENT** |
+| v3 산출물 | MealsPage·ProgramsPage·MealRecordForm·ProgramParticipationForm·meals.js·programs.js + a11y + pilotPageFlows US-N01·N02 **HEAD PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15` |
+
+## 판정 (86차)
+
+**PASS** (v1.2) — test `@c510f5c` v1.2 merged 검증 불변. develop +6 v1.3-A·v3 **CLEAN** (non-blocking).
+**v1.3 이관 게이트 미충족(pending)** — v1.3-A frontend UI 셸은 backend v1.3-A transport API(develop `53a1ffe` PRESENT, **test 미승격**)·RBAC·US-T01~T03 라이브 E2E 동반 후 merge. **v3(식사·프로그램) develop-only** — ROADMAP 버전·merge 게이트 미설정(planner 정의 대기), 정상(결함 아님). 잔여 BLOCK: backend merge(18) + SEC-D14 + post-merge live E2E(결정 73).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T03:55:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08 84차 재검증)
+
+> **84차 재검증 (03:55) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `7ef1083`(+4 v1.3-A·v3 CLEAN)·157/53 PASS·139 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**: 82차(test `c510f5c`·develop `e8d1854` +2) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`e8d1854`→`7ef1083`**(+2: `f0b174a` fix(a11y): v1.3 배차 UI 접근성 재점검 · `7ef1083` feat(v3): add meals and programs management UI shell §3-5·§3-6). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `in_progress`/`pending`(backend transport API test 미승격) · v3 **develop-only**(merge 게이트 미설정).
+
+## 커밋 수준 (84차)
+
+| 항목 | 82차 | 84차 |
+|------|------|------|
+| develop HEAD | `e8d1854` (+2) | **`7ef1083`** (+4) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 2 ahead | **develop 4 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 150/50 PASS | **157/53 PASS** |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 84차)
+
+| SHA | Message |
+|-----|---------|
+| `f01e3a8` | feat(uxd-43): US-G06 UNMATCHED 후보 이용자 검색 UI 보강 |
+| `e8d1854` | feat(v1.3): add transport pickup dispatch UI shell (US-T01~T03) |
+| `f0b174a` | fix(a11y): v1.3 배차 UI 접근성 재점검 (US-T01~T03) |
+| `7ef1083` | feat(v3): add meals and programs management UI shell (§3-5·§3-6) |
+
+> **`c510f5c..7ef1083` diff stat**: 31 files, +2540/-15 — v1.3-A Transport(`TransportPage`(+test)·`TransportRunNewPage`·`TransportRunDetailPage`·`transportUtils`(+test)·`KakaoTransportMap`·`TransportStopList`(+test)·`TransportDisclaimer`·`config/transport.js`) + a11y 재점검 + **v3 신규** `MealsPage`(+test)·`ProgramsPage`(+test)·`components/meals/MealRecordForm`(+test)·`components/programs/ProgramParticipationForm`·`config/meals.js`·`config/programs.js` + `App.jsx`·`navConfig`·`roleNav`·`sevenRoleRouteMatrix`·`services.js`(+75)·`components.css`(+150) + US-G06 `ReconciliationPage`(+test).
+
+## test 브랜치 (frontend-test @ `c510f5c`, 84차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **125 modules PASS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) |
+| npm ci + npm test | **143/46 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·AuthContext·ReconciliationPage **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`7ef1083`, 84차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **157/53 PASS** (+14/+7 vs test 143/46 — Transport·v3 Meals/Programs·UNMATCHED 회귀) |
+| npm run build | **139 modules PASS** (vite 6.4.3, JS 347.26 kB gzip 97.45 kB, CSS 33.35 kB gzip 6.20 kB) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | TransportPage·RunNew·RunDetail·KakaoMap·Disclaimer·StopList·transport.js·transportUtils **HEAD PRESENT** |
+| v3 산출물 | MealsPage·ProgramsPage·MealRecordForm·ProgramParticipationForm·meals.js·programs.js **HEAD PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · `MAX_TRANSPORT_STOPS=15` |
+
+## 판정 (84차)
+
+**PASS** (v1.2) — test `@c510f5c` v1.2 merged 검증 불변. develop +4 v1.3-A·v3 **CLEAN** (non-blocking).
+**v1.3 이관 게이트 미충족(pending)** — v1.3-A frontend UI 셸은 backend v1.3-A transport API(develop `53a1ffe` PRESENT, **test 미승격**)·RBAC·US-T01~T03 라이브 E2E 동반 후 merge. **v3(식사·프로그램) develop-only** — ROADMAP 버전·merge 게이트 미설정(planner 정의 대기), 정상(결함 아님). 잔여 BLOCK: backend merge(17) + SEC-D14 + post-merge live E2E(결정 73).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T02:37:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08 82차 재검증)
+
+> **82차 재검증 (02:37) — v1.2 develop→test merge 완료·test `@c510f5c`·143/46 PASS·125 modules·audit 0·develop `e8d1854`(+2 v1.3-A CLEAN)·2 ahead·develop 150/50 PASS·133 modules·PASS(v1.2)·v1.3 pending**: 81차(test `4f71543`·develop `c510f5c` +15) 대비 **v1.2 develop→test merge 실행** — test HEAD **`4f71543`→`c510f5c`**(v1.2 merged, ROADMAP 부합). develop HEAD **`c510f5c`→`e8d1854`**(+2: `f01e3a8` feat(uxd-43): US-G06 UNMATCHED 후보 이용자 검색 UI 보강 · `e8d1854` feat(v1.3): add transport pickup dispatch UI shell (US-T01~T03)). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `in_progress`/`merge_status: pending` — v1.3-A UI 셸 한정.
+
+## 커밋 수준 (82차)
+
+| 항목 | 81차 | 82차 |
+|------|------|------|
+| develop HEAD | `c510f5c` | **`e8d1854`** (+2) |
+| test HEAD | `4f71543` (v1.1 merged) | **`c510f5c`** (v1.2 merged) |
+| commits gap | develop 15 ahead | **develop 2 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 143/46 PASS | **150/50 PASS** |
+| test tests | 58/18 PASS | **143/46 PASS** (v1.2 흡수) |
+
+### v1.3-A develop 신규 커밋 (test `c510f5c` 이후, 82차)
+
+| SHA | Message |
+|-----|---------|
+| `f01e3a8` | feat(uxd-43): US-G06 UNMATCHED 후보 이용자 검색 UI 보강 |
+| `e8d1854` | feat(v1.3): add transport pickup dispatch UI shell (US-T01~T03) |
+
+> **`c510f5c..e8d1854` diff stat**: 20 files, +1483/-11 — v1.3-A `TransportPage.jsx`(+test)·`TransportRunNewPage.jsx`·`TransportRunDetailPage.jsx`·`transportUtils.js`(+test)·`components/transport/KakaoTransportMap.jsx`·`TransportStopList.jsx`(+test)·`TransportDisclaimer.jsx`·`config/transport.js`·`layout/navConfig.js`·`auth/roleNav.js`·`App.jsx`·`api/services.js`(+41)·`auth/sevenRoleRouteMatrix.js`·`styles/components.css`(+150) + US-G06 `pages/ReconciliationPage.jsx`(+test) UNMATCHED 후보 검색.
+
+## test 브랜치 (frontend-test @ `c510f5c`, 82차 TSR 독립 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| build | **125 modules PASS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) |
+| npm ci + npm test | **143/46 PASS** (vitest 4.1.8) |
+| npm audit | **0 vulnerabilities** |
+| 이관 규율 5 | ProtectedRoute·services.js·SideNav·pilotChecklist·liveConfig·AuthContext·ReconciliationPage **PRESENT** |
+| SEC-005 | AuthContext localStorage/sessionStorage **0건** |
+
+## develop HEAD (`e8d1854`, 82차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **150/50 PASS** (+7/+4 vs test 143/46 — Transport·UNMATCHED 회귀) |
+| npm run build | **133 modules PASS** (vite 6.4.3, JS 334.18 kB gzip 94.86 kB, CSS 33.35 kB) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | TransportPage·TransportRunNewPage·TransportRunDetailPage·KakaoTransportMap·TransportDisclaimer·transport.js·transportUtils **HEAD PRESENT** |
+| 운영 고지 | BNK-7 §10-3(이동서비스비 청구·G15 미포함) + BNK-8(케어포 패리티·경로 최적화 v1.3-B) **PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0·키 누락 graceful) · `MAX_TRANSPORT_STOPS=15` |
+
+## 판정 (82차)
+
+**PASS** (v1.2) — test `@c510f5c` v1.2 merged 검증 완료. develop v1.3-A **+2 CLEAN** (non-blocking).
+**v1.3 이관 게이트 미충족(pending)** — v1.3-A develop는 frontend UI 셸 한정. 완료 기준 중 DBA `transport_runs`/`stops` 스키마·roster/runs CRUD·**confirm** API·RBAC(DRAFT=hq_admin/CONFIRMED=직원 read)·Geocoding **서버 프록시**·US-T01~T03 라이브 E2E **미완**(backend 의존). v1.3 merge는 backend v1.3-A API 동반 완료 후 — 현 단계 정상(결함 아님). 잔여 BLOCK: backend merge(16) + SEC-D14 + post-merge live E2E(결정 73).
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T01:35:00+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-08 81차 재검증)
 
