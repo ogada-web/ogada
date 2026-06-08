@@ -1,5 +1,23 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T00:18:00+00:00 -->
-# develop ↔ test diff 메타 (2026-06-08, 79차 재검증)
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T03:40:00+00:00 -->
+# develop ↔ test diff 메타 (2026-06-08, 83차 재검증)
+
+> **83차 재검증 (03:40 UTC) — develop `53a1ffe` CLEAN·v1.3-A transport API·Flyway V47·V48·Kakao geocode proxy·merge 17커밋·develop 212/212·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`53a1ffe`**(+1커밋 vs 82차 `52e0621` — `feat(v1.3-A): add transport API, Flyway schema, and Kakao geocode proxy`: `TransportController.java`(98 lines — roster·runs CRUD·confirm RBAC·15-stop 검증)·`TransportService.java`(409 lines)·`KakaoGeocodeClient.java`(103 lines)·`TransportGeocodeService.java`(124 lines)·`TransportRunEntity.java`(165 lines)·`TransportRunStopEntity.java`(155 lines)·`TransportRunRepository`·`TransportRunStopRepository`·DTOs 8종·`TransportConfig`·`TransportProperties`·`V47__transport_v1_3_a.sql`(326 lines)·`V48__client_ltc_grade_history.sql`(85 lines)·`ClientEntity.java`(145 lines, ltcGrade 추가)·`ClientRepository.java`(+15)·`TransportServiceTest.java`(210 lines)·`TransportControllerRoutingTest.java`(100 lines)·`MustApiEndpointRoutingTest`(+79 TransportRouting nested class)·`application.yml`(+2 kakao.geocode), 30 files, +2233 insertions), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **212/212 PASS**(82차 202 → +10: TransportServiceTest + TransportControllerRoutingTest + MustApiEndpointRoutingTest$TransportRouting).
+> develop **17커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + v1.3-A transport artifacts PRESENT @ 53a1ffe(TSR 83차 독립 검증 PASS)**.
+
+> **82차 재검증 (02:30 UTC) — develop `52e0621` CLEAN·v2/J03 copay claim PAID alimtalk dispatch·merge 16커밋·develop 202/202·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`52e0621`**(+1커밋 vs 80차 `ac17ad8` — `feat(v2/J03): dispatch alimtalk when copay claim is marked PAID`: `NotificationEventType.java`(+1 — `BILLING_PAYMENT_RECEIVED` 이벤트 타입·`notifyBilling` consent 재사용)·`NotificationTemplateCodes.java`(+1)·`application.yml`(+1 — `KAKAO_TPL_BILLING_PAYMENT`)·`BillingService.java`(+17 — copay claim CONFIRMED→PAID 전환 시 보호자 알림톡 디스패치)·`AlimtalkFallbackText.java`(+25)·`AlimtalkTemplateVariables.java`(+3)·`BillingServiceTest.java`(+62)·`AlimtalkFallbackTextTest.java`(+12)·`AlimtalkTemplateVariablesTest.java`(+16)·`J03AlimtalkServiceFlowE2eTest.java`(+34), 11 files, +159/-16), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **202/202 PASS**(53 suites, 80차 198 → +4: `BillingServiceTest` copay PAID + `AlimtalkTemplateVariablesTest` + `AlimtalkFallbackTextTest` + `J03AlimtalkServiceFlowE2eTest`).
+> develop **16커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText + copay-claim PAID dispatch PRESENT @ 52e0621(TSR 82차 독립 검증 PASS)**.
+
+> **80차 재검증 (01:25 UTC) — develop `ac17ad8` CLEAN·v2/J03 Korean SMS fallback text for alimtalk relay·merge 15커밋·develop 198/198·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`ac17ad8`**(+1커밋 vs 79차 `4c74f84` — `feat(v2/J03): add Korean SMS fallback text for alimtalk relay`: `AlimtalkFallbackText.java`(89 lines — 알림 payload→Solapi 한국어 SMS fallback 메시지 매핑 도메인 모델)·`AlimtalkTemplateVariables.java`(+3 — `incidentType` emergency 카테고리 alias)·`SolapiKakaoAlimtalkProvider.java`(+3 — fallback text 전달)·`SolapiSmsProvider.java`(+6 — SMS fallback 본문 적용)·`AlimtalkFallbackTextTest.java`(64 lines)·`AlimtalkTemplateVariablesTest.java`(+31)·`SolapiKakaoAlimtalkProviderTest.java`(+31), 7 files, +225/-2), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **198/198 PASS**(53 suites, 79차 191 → +7: `AlimtalkFallbackTextTest` + `AlimtalkTemplateVariablesTest` incidentType + `SolapiKakaoAlimtalkProviderTest` fallback).
+> develop **15커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts + service-layer alimtalk flow E2E + AlimtalkTemplateVariables + AlimtalkFallbackText PRESENT @ ac17ad8(TSR 80차 독립 검증 PASS)**.
 
 > **79차 재검증 (00:18 UTC) — develop `4c74f84` CLEAN·v2/J03 alimtalk payload Solapi 변수 매핑·merge 14커밋·develop 191/191·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
 > develop HEAD **`4c74f84`**(+1커밋 vs 78차 `32a1f8f` — `feat(v2/J03): map alimtalk payload to Solapi template variables`: `AlimtalkTemplateVariables.java`(74 lines — 카카오 템플릿 변수 매핑 도메인 모델)·`SolapiKakaoAlimtalkProvider.java`(+9 — `kakaoOptions.variables` 주입)·`SolapiMessageClient.java`(+11 — variables 전달)·`AlimtalkTemplateVariablesTest.java`(67 lines — 빌더·직렬화 단위 테스트)·`J03AlimtalkServiceFlowE2eTest.java`(+35 — medication·note daily-care dispatch 경로 확장)·`SolapiKakaoAlimtalkProviderTest.java`(+6 — variables 주입 커버리지), 6 files, +197/-5), working tree **CLEAN**.
@@ -51,18 +69,18 @@
 > test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1). develop HEAD `mvn test` **169/169 PASS**(64차 158 → +11).
 > develop **7커밋 ahead** — merge 미실행. **모든 v1 baseline artifacts PRESENT @ c221531(TSR 66차 독립 검증 PASS)**.
 
-## 커밋 수준 (79차)
+## 커밋 수준 (80차)
 
 | 항목 | 값 |
 |------|-----|
-| `develop` HEAD | `4c74f84` — `feat(v2/J03): map alimtalk payload to Solapi template variables` |
+| `develop` HEAD | `ac17ad8` — `feat(v2/J03): add Korean SMS fallback text for alimtalk relay` |
 | `test` HEAD | `2799e29` — `feat: Spring Boot 3.x 백엔드 초기 구현` |
 | ROADMAP v1 merged 기대 test | `e8750d2` — **미달** (213 tests·Boot 3.5.3·SEC-007) |
-| `git rev-list --count test..develop` | **14** |
+| `git rev-list --count test..develop` | **15** |
 | develop working tree | **CLEAN** (0 dirty) |
 | test working tree | **CLEAN** |
 
-### develop 14커밋 ahead (test 미반영 — merge 게이트)
+### develop 15커밋 ahead (test 미반영 — merge 게이트)
 
 | 커밋 | QA | 요약 |
 |------|-----|------|
@@ -80,8 +98,9 @@
 | `0832fbf` | v2/J03 | `HealthRecordService` 활력징후 기록 생성 시 보호자 DAILY_CARE 알림톡 디스패치·`HealthRecordServiceTest` vitals dispatch payload 단위 테스트 (+53 lines) |
 | `32a1f8f` | v2/J03 | `J03AlimtalkServiceFlowE2eTest`(357 lines — attendance·health·billing 도메인 액션 `NotificationService` 경유 wire·US-J03 커버리지)·`AttendanceServiceTest`(+67 — check-out dispatch) |
 | `4c74f84` | v2/J03 | `AlimtalkTemplateVariables.java`(74 lines — 카카오 템플릿 변수 매핑)·`SolapiKakaoAlimtalkProvider`(+9 variables 주입)·`AlimtalkTemplateVariablesTest.java`(67 lines)·`J03AlimtalkServiceFlowE2eTest`(+35 medication·note path)·`SolapiKakaoAlimtalkProviderTest`(+6) |
+| `ac17ad8` | v2/J03 | `AlimtalkFallbackText.java`(89 lines — 알림 payload→Solapi 한국어 SMS fallback 메시지 매핑)·`AlimtalkTemplateVariables`(+3 `incidentType` emergency alias)·`SolapiKakaoAlimtalkProvider`(+3 fallback text 전달)·`SolapiSmsProvider`(+6 SMS fallback 본문)·`AlimtalkFallbackTextTest.java`(64 lines)·`AlimtalkTemplateVariablesTest`(+31)·`SolapiKakaoAlimtalkProviderTest`(+31) |
 
-### develop HEAD 산출물 검증 (규율 5, 79차)
+### develop HEAD 산출물 검증 (규율 5, 80차)
 
 | path | HEAD |
 |------|------|
@@ -109,19 +128,22 @@
 | `attendance/domain/AttendanceServiceTest.java` | **PRESENT** (32a1f8f) ← **check-out dispatch 커버리지** |
 | `notification/provider/solapi/AlimtalkTemplateVariables.java` | **PRESENT** (4c74f84) ← **Solapi 변수 매핑 도메인 모델** |
 | `notification/provider/solapi/AlimtalkTemplateVariablesTest.java` | **PRESENT** (4c74f84) ← **변수 매핑 단위 테스트** |
-| `notification/provider/solapi/SolapiKakaoAlimtalkProvider.java` | **PRESENT** (4c74f84) ← **kakaoOptions.variables 주입** |
+| `notification/provider/solapi/SolapiKakaoAlimtalkProvider.java` | **PRESENT** (4c74f84·ac17ad8) ← **kakaoOptions.variables + fallback text** |
+| `notification/domain/AlimtalkFallbackText.java` | **PRESENT** (ac17ad8) ← **한국어 SMS fallback 매핑 도메인 모델** |
+| `notification/domain/AlimtalkFallbackTextTest.java` | **PRESENT** (ac17ad8) ← **fallback 매핑 단위 테스트** |
+| `notification/provider/solapi/SolapiSmsProvider.java` | **PRESENT** (ac17ad8) ← **SMS fallback 본문 적용** |
 
-## Maven (79차 실측)
+## Maven (80차 실측)
 
 | context | command | result |
 |---------|---------|--------|
 | test `@2799e29` | `mvn test` | **79/79 PASS** (23 suites) |
-| develop `@4c74f84` | `mvn test` | **191/191 PASS** (51+ suites, 78차 185 → +6) |
+| develop `@ac17ad8` | `mvn test` | **198/198 PASS** (53 suites, 79차 191 → +7) |
 | test package | `mvn -q -DskipTests package` | SUCCESS — JAR **76,466,058 B** (test 불변) |
 
 ## 판정
 
-**BLOCK** — merge 게이트(14커밋). develop CLEAN·v1 baseline artifacts + AlimtalkTemplateVariables + service-layer alimtalk flow E2E PRESENT·191/191 PASS. test `@2799e29` stale 79/79. **Open 0건**.
+**BLOCK** — merge 게이트(15커밋). develop CLEAN·v1 baseline artifacts + AlimtalkTemplateVariables + service-layer alimtalk flow E2E + AlimtalkFallbackText PRESENT·198/198 PASS. test `@2799e29` stale 79/79. **Open 0건**.
 
 ---
 
