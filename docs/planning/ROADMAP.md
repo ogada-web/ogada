@@ -1,4 +1,4 @@
-<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-08T20:45:00+09:00 -->
+<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-09T09:00:00+09:00 -->
 # ogada 구현 로드맵
 
 > **작성·유지**: `planner`  
@@ -7,7 +7,7 @@
 > **피드백**: `tester` → `docs/qa/QA_FEEDBACK.md` → `planner` 반영 → `coder` 수정  
 > **벤치마크 입력**: `docs/planning/research/BENCHMARK_REPORT.md`, `docs/planning/research/COMPETITOR_MATRIX.md`, `memory/decisions.md`
 
-> **CURRENT BASELINE (68차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`e7d4cf6`** · frontend develop **`3c55339`** · frontend test **`c510f5c`**(v1.2 merged) · backend test **`2799e29`**(stale, 23 ahead) · planner 68차 실측 (TSR 94·95차 기준) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**(BNK-9 문서 drift).
+> **CURRENT BASELINE (76차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`2012945`** · test **`598d108`** · **1 ahead** · WT **CLEAN** · **`246/246 PASS`** · frontend develop **`6d0a03a`** · test **`c7c8f07`** · **2 ahead** · WT **CLEAN** · **`225/72 PASS`** · **39 Route·36 page** · planner 76차 (BNK-14 + TSR 105 + v1.2.1 in_progress) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**. **모듈 커버 ~68.7%** @ `6d0a03a`(BNK-14 `competitorModuleCoverage.js` 실측 · ≥60% PASS).
 
 ---
 
@@ -40,6 +40,12 @@
 
 > **15차 동기화 (2026-06-06T19:00) — TSR 17·18·19차 반영 (B02 Fixed 확정 + B07 FE-7 회복·범위 확대)**: ① **TSR 17차(18:34, backend)**: COD 14차 `b5d70a8` GuardianAccess RBAC 3 tests **TSR 독립 검증 Fixed** — develop working tree **CLEAN**, `@Test` 98. **QA-B02 recurrence Planned→Fixed**. ② **TSR 18차(18:42, backend)**: 상태 **불변** — Maven 79/79 재현, 잔여 BLOCK = **merge 게이트 단일**(B01·SEC-007). ③ **TSR 19차(18:45, frontend)**: develop HEAD `998ac87` 불변·working tree **35 files**(16차 29→35, v1.2 P0 WIP 추가), WT `npm test` **10/4 PASS**·`npm run build` **107 modules PASS**(16차 FAIL **회복**, FE-7 충족). **B07 Planned 유지** — dirty-tree·규율 6·7 위반 **지속**. **잔여 BLOCK = merge 게이트 3건(B01·B03·B05·SEC-007) + B07 recurrence(Planned, frontend dirty-tree 단일)** — backend dirty-tree·B02 사유 **소멸**.
 
+> **76차 동기화 (2026-06-09T09:00 KST) — BNK-14 + TSR 105 + v1.2.1 진전 (US-M02 닫힘·G14 API 잔여)**: ① **planner git 실측** — backend develop **`2012945`**(WT CLEAN · test **`598d108`** · **1 ahead**) · frontend develop **`6d0a03a`**(WT CLEAN · test **`c7c8f07`** · **2 ahead**). ② **BNK-14** — US-M02 대시보드 실데이터 **닫힘** · US-M01 등급이력 **UI+DB(V48) ✅** · `GET /ltc-grade-history` **미구현** · 모듈 **~68.7%** · 이지케어 RFID→**G21 v2**. ③ **TSR 105** — test **`c7c8f07`** 217/70 PASS · develop **`6d0a03a`** 225/72 PASS · **QA Open 0건**. ④ **v1.2.1** — P0-1 US-M02 **`[x]`** · P0-2 US-M01 **GET API 1건 잔여** · P1 **7-6~7-10 본인부담 리포트**(BNK-13). ⑤ **잔여**: G14 backend API · v1.2.1 merge(2+1) · G7 NHIS · v1.3 live E2E run.
+> **75차 동기화 (2026-06-09T04:00 KST) — QA-B12·SEC-D14 Fixed + v1.2.1 in_progress + API_SPEC G14**: ① **planner git 실측** — backend develop/test/origin **`598d108`**(WT DIRTY 13) · frontend develop/test/origin **`c7c8f07`**(0 ahead·CLEAN). ② **QA-B12·SEC-D14 Planned→Fixed** — origin push·frontend merge(22) **완료**. ③ **v1.2.1 `status: in_progress`** — frontend 단일 활성 버전(US-M01 G14·US-M02). ④ **API_SPEC §4-2** `ltc_grade_history` 명세 신설. ⑤ **BNK-10~12 불변** — G14·US-M02 잔여만 coder 착수. ⑥ **잔여**: backend WT 13 commit/revert · v1.3 live E2E run(결정 73) · G7 NHIS 샘플.
+> **74차 동기화 (2026-06-09T03:00 KST) — BNK-10·11·12 + TSR 102·103 + SEC-D14 Planned + v1.2.1 + UXD-55 + baseline `@c7c8f07`**: ① **BNK-10** — 이지케어 ERP 9축·**계획/청구 이중 일정**·급여·4대보험 lock-in → ogada **Won't v1**(G4) · EZCARE 보호자 초대 패턴 G8 유지. ② **BNK-11** — 케어포 **demo-work=시설급여 셸**(이동서비스 없음) · 주야간 **정본=func.php 109항목** · **G20** 시설특화 Won't v1. ③ **BNK-12** — ogada **`c7c8f07` 40 Route·35 page·~74–78% KPI PASS** · 이지케어 **9,298개소** · v1.2 P0 잔여 **G14·대시보드 실데이터** → **v1.2.1**. ④ **TSR 102·103** — backend test `@598d108` 246/246 · frontend **`c7c8f07`** UXD-55 `GuardianBillingDetailModal`(US-J02) · **217/70 PASS** · develop **22 ahead**. ⑤ **QA Open 1건→Planned** — SEC-D14(origin STALE) QA-B12 동반. ⑥ **활성 frontend `in_progress` 없음** — merge gate 선행.
+> **73차 동기화 (2026-06-09T00:15 KST) — TSR 100·101 + QA-B12 origin/test push gap + UXD-54 + v2 copay @598d108 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 100·101차)** — backend develop **`598d108`**(+1 vs merge base `32575aa`: v2 copay payment·V50) WT **CLEAN** · local test **`598d108`**(=develop) · **origin/test STALE `2799e29`** — **26 ahead·미푸시**(QA-B12) · frontend **`7cd9293`**(+1 vs `e641f62`: UXD-54 `BranchScopeNotice` QR·배차 연동) WT **CLEAN** · **`npm test` 214/69 PASS** · **780 modules 3청크**(max **367 kB**) · test **`c510f5c`** · develop **49 ahead**. ② **TSR 100**: 로컬 develop→test merge **243/243 PASS** @ `32575aa` lineage — v1 baseline + v1.3-A transport + v3 meals/programs test 반영 · **origin push 미실행**. ③ **TSR 101**: UXD-54 US-UX-04 QR·Transport `BranchScopeNotice` — **판정 PASS(v1.2)**. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **QA Open 0건** — **QA-20260608-B12 Planned**. ⑥ **잔여 BLOCK**: **origin/test push(QA-B12)** + **SEC-D14(origin)** + **frontend merge(49)** + v1.3 live E2E run(post-merge).
+> **72차 동기화 (2026-06-08T23:45 KST) — TSR 98·99차 + transport masking 단위테스트 + UXD-53 BranchScopeNotice + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 98·99차)** — backend **`32575aa`**(+1 vs `c7941e9`: `TransportServiceTest` pickup contact masking 단위 테스트 +2 @Test) WT **CLEAN** · **`mvn test` 243/243** · **25 ahead** · frontend **`e641f62`**(+2 vs `1d910c2`: `0d36e30` UXD-53 `BranchScopeNotice`·출석·QR·배차 a11y · `e641f62` `pilotPageFlows` US-E01/E05 E2E) WT **CLEAN** · **`npm test` 212/69 PASS** · build **780 modules 3청크**(max **367 kB <500 kB**) · **40 Route·51 page** · test **`c510f5c`**. ② **v1.3-A SEC-D9 회귀 보강** — masking API(`c7941e9`) + 단위 테스트(`32575aa`) **HEAD PRESENT**. ③ **UXD-53 지점 스코프 UI** — `BranchScopeNotice` Attendance·QR·Transport 연동 · `pilotPageFlows` E2E **HEAD PRESENT**. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **v1.3 `merge_status: ready` 유지** — develop→test merge(25+20) + live E2E run(post-merge). ⑥ **QA Open 0건** — 잔여 BLOCK: **backend merge(25) + SEC-D14(backend) + frontend merge(20)**.
+> **70차 동기화 (2026-06-08T22:30 KST) — TSR 96·97차 + transport pickup contact masking UI + pilotPageFlows T03 E2E + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 96·97차)** — backend **`c7941e9`**(+1 vs `e7d4cf6`: non-HQ transport pickup **contact** masking — `TransportService.maskPhone`) WT **CLEAN** · **`mvn test` 241/241** · **24 ahead** · frontend **`1d910c2`**(+2 vs `3c55339`: `37be0a3` `TransportPickupContact`·픽업 프로필 a11y US-T03/UXD-52 · `1d910c2` `pilotPageFlows` T03 연락처 마스킹 E2E) WT **CLEAN** · **`npm test` 208/68 PASS** · build **779 modules 3청크**(max **367 kB <500 kB**) · **40 Route·51 page** · test **`c510f5c`**. ② **v1.3-A transport privacy 완성** — non-HQ pickup **주소(e7d4cf6) + 연락처(c7941e9)** API · **`TransportPickupContact` UI @ `37be0a3`** · T03 E2E @ `1d910c2` **HEAD PRESENT**. ③ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ④ **v1.3 `merge_status: ready` 유지** — live E2E **run**만 잔여(결정 73 post-merge). ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(24) + SEC-D14(backend) + frontend merge(18)** + v1.3 live E2E run(post-merge 권장).
 > **68차 동기화 (2026-06-08T20:45 KST) — TSR 94·95차 + transport pickup masking + UXD-51 FE-13/FE-14 + ClientForm 픽업 프로필 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 94·95차)** — backend **`e7d4cf6`**(+1 vs `f8d1b02`: non-HQ transport pickup address masking — `TransportService.maskAddress`) WT **CLEAN** · **`mvn test` 241/241** · **23 ahead** · frontend **`3c55339`**(+2 vs `d484206`: `2a0ef3d` UXD-51 FE-13/FE-14 누락 UI 복원·a11y · `3c55339` v1.3-A `ClientFormPage` 픽업 프로필 UI US-T01/Q166) WT **CLEAN** · **`npm test` 203/67 PASS** · build **778 modules 3청크**(max **367 kB <500 kB**) · **40 Route·51 page** · test **`c510f5c`**. ② **v1.3-A transport privacy @ `e7d4cf6`** — non-HQ 역할 pickup 주소 마스킹 API·`TransportServiceTest` **HEAD PRESENT**. ③ **US-T01 frontend @ `3c55339`** — `ClientFormPage` usesTransport·pickupAddress·pickupContact·defaultPickupTime UI 연동. ④ **UXD-51 @ `2a0ef3d`** — FE-13/FE-14 누락 컴포넌트 복원. ⑤ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑥ **활성 버전 (68차)**: frontend **v1.3-A** 단일 · backend **merge(23) 최우선**. ⑦ **QA Open 0건** — 잔여 BLOCK: **backend merge(23) + SEC-D14(backend) + frontend merge(16)** + v1.3 live E2E run(post-merge 권장).
 > **67차 동기화 (2026-06-08T19:30 KST) — TSR 93차 + TransportPilotServiceFlowE2eTest + transport live E2E harness + FE-15 복원 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 93차)** — backend **`f8d1b02`**(+1 vs `1ec538b`: `TransportPilotServiceFlowE2eTest`·transport RBAC +9 tests) WT **CLEAN** · **`mvn test` 240/240** · **22 ahead** · frontend **`d484206`**(+2 vs `637b9b3`: `511c240` transport a11y forced-colors · `d484206` FE-15 `manualChunks` 복원 + `transportLiveApi.e2e.test.js` harness) WT **CLEAN** · **`npm test` 189/60 PASS** · build **766 modules 3청크**(max **367 kB <500 kB**) · **40 Route·50 page** · test **`c510f5c`**. ② **US-T01~T03 backend service-flow E2E @ `f8d1b02`** · **transport live E2E harness @ `d484206`**(FE-22 패턴, `src/e2e/**` 기본 test 제외) · **live run 잔여**(결정 73 post-merge). ③ **FE-15 Fixed @ `d484206`** — 91/92차 756 kB 회귀 **해소**. ④ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ⑤ **활성 버전 (67차)**: frontend **v1.3-A** 단일 · backend **merge(22) 최우선**. ⑥ **QA Open 0건** — 잔여 BLOCK: **backend merge(22) + SEC-D14(backend) + frontend merge(14)** + v1.3 live E2E run(post-merge 권장).
 > **66차 동기화 (2026-06-08T18:15 KST) — TSR 92차 + US-T01 client profile + pilotPageFlows transport E2E + UXD-49 HQ 건강 이상 + BNK-9 재확인 + Open 0건**: ① **planner git 실측(TSR 92차)** — backend **`1ec538b`**(+1 vs `767d977`: v1.3-A client transport profile US-T01 — `ClientResponse` usesTransport·pickupAddress·pickupContact·defaultPickupTime + `ClientServiceTest` +2·`PilotChecklistJwtE2eTest` transport routing +3) WT **CLEAN** · **`mvn test` 231/231** · **21 ahead** · frontend **`637b9b3`**(+2 vs `8a764df`: `00375f6` UXD-49 HQ 대시보드 건강 이상 지점명 US-H02 · `637b9b3` v1.3-A `pilotPageFlows` transport US-T01~T03 E2E + `pilotChecklist` T01~T03) WT **CLEAN** · **`npm test` 189/60 PASS** · build **766 modules**(JS 756 kB — FE-15 **non-blocking LOW**) · **40 Route·50 page** · test **`c510f5c`**. ② **US-T01 backend 완료** — Clients API transport profile @ `1ec538b` · **`pilotPageFlows` transport fetch-mock E2E @ `637b9b3`** · live backend E2E **잔여**. ③ **BNK-9 불변** — Directions·러-1~4·G17~G19 · #44 law.go.kr 잔여. ④ **활성 버전 (66차)**: frontend **v1.3-A** 단일 · backend **merge(21) 최우선**. ⑤ **QA Open 0건** — 잔여 BLOCK: **backend merge(21) + SEC-D14(backend) + frontend merge(12)** + v1.3 live E2E(post-merge 권장).
@@ -129,7 +135,46 @@
 
 > **13차 동기화 (2026-06-06T18:10) — TSR 15·16차 반영 (B02 recurrence + B07 WT 품질 회귀)**: ① **TSR 15차(18:04, backend)**: develop HEAD `fac3d07` 불변·13차 clean 후 working tree **재오염** — `RoleBasedControllerAccessTest` guardian/client_user RBAC +74 lines 미커밋(**QA-B02 recurrence**). → **B02 Open→Planned**, v1 완료 기준 QA-B02 `[x]` **철회**, USER_STORIES §17 **BE-6**. ② **TSR 16차(18:07, frontend)**: develop HEAD `998ac87` 불변·working tree **악화** 19→**29 files**(14M+15U), WT `npm test`·`npm run build` **FAIL**(`routeAccess.js` duplicate `ROUTE_ACCESS`). → **B07 Planned 강화**, USER_STORIES **FE-7**(커밋 전 build/test PASS). **잔여 BLOCK = merge 게이트 4건 + B02 recurrence(Planned) + B07 recurrence(Planned, 16차)** — 양 스트림 dirty-tree 병행.
 
-### 핵심 진단 (planner, 68차 갱신 — TSR 94·95차 + transport pickup masking + UXD-51 + ClientForm 픽업 프로필 + BNK-9 재확인 + Open 0건)
+### 핵심 진단 (planner, 76차 갱신 — BNK-14 + v1.2.1 US-M02 닫힘·G14 API 잔여)
+
+- **CURRENT BASELINE (76차)**: backend develop **`2012945`** · test **`598d108`** · **1 ahead** · WT **CLEAN** · **`246/246 PASS`** · frontend develop **`6d0a03a`** · test **`c7c8f07`** · **2 ahead** · WT **CLEAN** · **`225/72 PASS`** · **39 Route·36 page**. **git 실측(planner 76차)** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **BNK-14 (76차)**: US-M02 **닫힘** @ `6d0a03a` · US-M01 **UI+DB(V48) ✅** · `GET /ltc-grade-history` **미구현** · 모듈 **~68.7%**(≥60% PASS) · 케어포 1-9 **전수 리포트 Route 없음**(개별 탭만) · **7-6~7-10 리포트 P1** · 이지케어 RFID→**G21 v2**.
+- **활성 버전 우선순위 (76차)**: ① **v1.2.1 `in_progress`** — **G14 GET API**(US-M01 마무리 1건) ② **v1.2.1 merge(develop 2+backend 1)** — P0 `[x]` 후 tester ③ **v1.3 live E2E run**(결정 73) ④ **G7 NHIS 샘플** ⑤ **P1 7-6~7-10 본인부담 리포트** ⑥ v2·v3 frontend **보류**.
+- **v1.2.1 (76차)**: **US-M02 `[x]`** · **US-M01 △** (GET API 잔여) · US-J02·G13·G7 **잔여**.
+- **v1.3-A**: **`merge_status: merged`** @ test **`c7c8f07`** · live E2E **run**만 잔여.
+- **v2 backend @ `2012945`**: regions V51·branch profile V52·V50 copay — Epic L **부분 진전**.
+- **QA Open 0건** · TSR 105 PASS(v1.2+v1.3-A @ test).
+- **BNK-9 (불변)**: Directions 5k/16원 · 러-1~4 · G17~G19 Won't v1 · #44 law.go.kr 잔여.
+- **잔여 BLOCK**: **G14 backend GET API** + v1.2.1 merge(3 commits) + v1.3 live E2E **run** + G7 NHIS 샘플.
+
+### 핵심 진단 (planner, 74차 — **superseded by 75차**)
+
+- **CURRENT BASELINE (74차)**: backend develop **`598d108`**(WT **DIRTY 13**) · **origin/test STALE `2799e29`**(QA-B12) · frontend **`c7c8f07`** · test **`c510f5c`** · develop **22 ahead**.
+- **잔여 Planned BLOCK (74차)**: origin/test push + SEC-D14 + frontend merge(22).
+
+### 핵심 진단 (planner, 73차 — **superseded by 74차**)
+
+- **CURRENT BASELINE (73차)**: backend develop **`598d108`**(WT **CLEAN** · develop **`246/246 PASS`**) · local test **`598d108`**(=develop) · **origin/test STALE `2799e29`** — **26 ahead·미푸시**(QA-B12) · frontend develop **`7cd9293`**(WT **CLEAN** · **`npm test` 214/69** · **780 modules 3청크**(max **367 kB**) · test **`c510f5c`** · develop **49 ahead**). **git 실측(TSR 100·101차)** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **활성 버전 우선순위 (73차)**: ① **`origin/test` push(QA-B12)** — tester/merge 스크립트 전담 · operation·SEC-D14 선행 ② **frontend merge(49)** — v1.3 local merged·origin 미동기화 ③ **v1.3 live E2E run**(post-merge·결정 73) ④ v3 Staff API·프로그램 사진(merge 후) ⑤ v2 프론트 알림 UI·Epic L UI **보류** · **frontend 단일 `in_progress` 없음**.
+- **v1.3-A (73차)**: local test **merged** @ `32575aa` lineage(+ develop `598d108` v2 bleed) · **`merge_status: merged`(local)** · **origin/test push 전 operation 승격 불가**(QA-B12).
+- **v2 backend bleed @ `598d108`**: `RecordCopayPaymentRequest`·`OverdueClaimListResponse`·V50 copay payment metadata — **develop-only** · Epic L(US-L01·L02) backend API **부분 진전** · frontend UI·origin test 승격 **잔여**.
+- **UXD-54 (73차)**: `BranchScopeNotice` — QrGeneratePage·TransportRunNewPage·TransportRunDetailPage·TransportPage 연동(US-UX-04 보완) @ `7cd9293`.
+- **v1.1·v1.2**: **`merge_status: merged`** @ frontend test **`c510f5c`**.
+- **BNK-9 (47~73차 재확인)**: Directions 다중경유 5k/16원 · 이동서비스비 830~6,240원(2차) · G17~G19 Won't v1 — **변경 없음** · #44 law.go.kr 1차 확인 잔여.
+- **잔여 Planned BLOCK**: **origin/test push(QA-B12) + SEC-D14(origin) + frontend merge(49)** + v1.3 live E2E **run**(post-merge 권장).
+
+### 핵심 진단 (planner, 72차 — **superseded by 74차**)
+
+- **CURRENT BASELINE (72차)**: backend develop **`32575aa`**(WT **CLEAN** · **`mvn test` 243/243** · **25 ahead**) · frontend develop **`e641f62`**(WT **CLEAN** · **`npm test` 212/69** · **780 modules 3청크**(max **367 kB**) · **40 Route·51 page** · test **`c510f5c`** · develop **20 ahead**). **git 실측(TSR 98·99차)** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **활성 버전 우선순위 (72차)**: ① **backend merge(25) + SEC-D14** — 최우선 BLOCK ② **frontend merge(20)** — v1.3 `merge_status: ready` ③ **v1.3 live E2E run**(post-merge·결정 73) ④ v3 Staff API·프로그램 사진(merge 후) ⑤ v2 프론트 알림 UI **보류** · **frontend 단일 `in_progress` 없음**(v1.3 done·v3 보류).
+- **v1.3-A transport privacy (72차)**: masking API @ `c7941e9` + **단위 테스트 보강 @ `32575aa`**(`TransportServiceTest` 10 @Test) · UI @ `1d910c2`+ — SEC-D9·PII 정합.
+- **UXD-53 (72차)**: `BranchScopeNotice` — 출석·QR·배차 **활성 지점 조회 범위** 노출(US-B02/E01/E05) · `pilotPageFlows` E2E @ `e641f62`.
+- **v1.1·v1.2**: **`merge_status: merged`** @ frontend test **`c510f5c`**.
+- **v1.3-A**: **`merge_status: ready`** — merge-blocking **전부 `[x]`** · develop→test merge + live E2E **run** 잔여.
+- **BNK-9 (47~72차 재확인)**: Directions 다중경유 5k/16원 · 이동서비스비 830~6,240원(2차) · G17~G19 Won't v1 — **변경 없음** · #44 law.go.kr 1차 확인 잔여.
+- **잔여 Planned BLOCK**: **backend merge(25) + SEC-D14(backend) + frontend merge(20)** + v1.3 live E2E **run**(post-merge 권장).
+
+### 핵심 진단 (planner, 68차 — **superseded by 70차**)
 
 - **CURRENT BASELINE (68차)**: backend develop **`e7d4cf6`**(WT **CLEAN** · **`mvn test` 241/241** · **23 ahead**) · frontend develop **`3c55339`**(WT **CLEAN** · **`npm test` 203/67** · **778 modules 3청크**(max **367 kB**) · **40 Route·51 page** · test **`c510f5c`** · develop **16 ahead**). **git 실측(TSR 94·95차)** — ROADMAP/QA 과거 SHA보다 **우선**.
 - **활성 버전 우선순위 (68차)**: ① **backend merge(23) + SEC-D14** — 최우선 BLOCK ② **frontend v1.3-A** — service-flow E2E **`[x]` @ `f8d1b02`+** · pickup masking **`[x]` @ `e7d4cf6`** · ClientForm 픽업 프로필 **`[x]` @ `3c55339`** · live harness **`[x]` @ `d484206`+** · **live run 잔여**(결정 73) ③ **v2 backend follow-up** — 프론트 알림 UI **보류** ④ **v3 frontend** — Staff API·프로그램 사진 **v1.3 merge gate 후** 재개.
@@ -236,6 +281,7 @@
 | SEC-20260606-008 | MEDIUM | v1.1 | ~~npm audit dev chain critical(esbuild·vite·vitest)~~ **Fixed `ed1bf22`(COD 17차, TSR 25차 독립 검증 — 18차 planner 반영)** — vite `^6.4.3`·vitest `^4.1.8`·`overrides.esbuild ^0.25.0` upgrade | `npm audit --audit-level=high` 0 vulnerabilities |
 | SEC-20260608-013 | BLOCK | v1/v1.1 | **Planned(46차)** — SEC-D14 develop→test 보안 패치 미승격 → **B03·backend/frontend merge 게이트** 동반 · test 배포 금지 | `git_merge_to_test.sh` 후 TSR·SEC 재검증 |
 | SEC-20260608-014 | HIGH | v1 | ~~Planned(46차)~~ **Fixed @ `8d42bdd`**(TSR 64) — SEC-D13 `AuthRateLimitService` login·refresh·password-reset rate limit HEAD PRESENT | BE-11 ✓ |
+| QA-20260608-B12 | HIGH | v1/v1.3/v2 | **Fixed(75차)** — origin/test push·frontend merge(22) 완료 · develop/test/origin **`598d108`**/`c7c8f07` 동기화 | SEC-D14 Fixed · v1.2.1 착수 |
 
 ### 이관 규율 (전 버전 공통 — QA-B01~B07·H02·H03·SEC-005·SEC-007 재발 방지)
 
@@ -249,6 +295,8 @@
 8. **(24차 신설 — v2 선행 dirty-tree 재발 방지, QA-B08)** v1 `merge_status: merged` **후** v2(`status: in_progress`) 착수 시에도 ① **완료 단위 develop 커밋** 후 working tree clean, 또는 ② **stash/revert**로 v1.1 frontend merge 게이트 tree를 오염시키지 않는다. v2 산출물(`notification_preferences`·V41 등)을 working tree에만 두면 **B08 recurrence BLOCK**. v1 완료 기준 `[x]`는 develop HEAD 산출물 존재 시에만 유효(규율 5).
 9. **(42차 신설 — #36 운영 게이트, 결정 63)** coder 에이전트 턴 종료 시 `src/backend`·`src/frontend` develop working tree에 완료 주장 산출물(테스트·Flyway·WIP)이 **HEAD 미반영**이면 ① QA `Fixed`·완료 기준 `[x]` **기록 차단**, ② **경고** 출력 — **자동 커밋 금지**. L2 pre-commit·L3 CI는 build 구현 후 이 규율을 강제한다(`PLAN_NOTES.md` #36).
 10. **(48차 신설 — live E2E merge 게이트 제외, 결정 73)** Must P1–P8·J01/J02 **live E2E run**(`FE-22`·`npm run test:live-e2e`·`LIVE_E2E=1`)은 **`merge_status: ready` 선행 조건 아님**. fetch-mock·Vitest 회귀(`npm test`)·harness 코드 존재로 merge-blocking 충족. live run은 **develop→test merge 후** post-merge·권장(파일럿·운영 검증).
+
+11. **(73차 신설 — origin push 게이트, QA-B12)** develop→test merge는 **로컬 worktree만으로 완료 처리 금지**. `git_merge_to_test.sh`로 **`origin/test` push**까지 완료되어야 SEC-D14·operation 승격·원격 CI 검증 가능. 로컬 test ahead·origin STALE 상태는 **Planned BLOCK** — push 후 Fixed.
 
 ### build 대기 — #36 운영 게이트 (결정 63)
 
@@ -443,14 +491,48 @@
 
 ---
 
-## v1.3 — 배차·이동경로 (결정 60·61·**62**, BNK-7·**BNK-8·BNK-9** G15·G16·G17~G19)
+## v1.2.1 — develop-only 패리티 잔여 (BNK-12·14·76차 활성 · **결정 92**)
 
 - **status**: in_progress
-- **merge_status**: ready
+- **merge_status**: pending — **P0(US-M01 GET API) 완료 후에만 `ready` 승격** (결정 92 · 76차: US-M02 **닫힘**)
+- **stream**: frontend + **backend API (G14 GET)**
+- **목표**: 케어포 func.php 대비 **~68.7%** 유지(≥60% PASS) · **G14 GET API** P0 1건 잔여(BNK-14 §17)
+- **선행**: v1.2 `merge_status: merged` · QA-B12·SEC-D14 Fixed(75차)
+- **구현 순서 (76차 갱신)**: **US-M02 `[x]`** @ `6d0a03a` → **US-M01 GET API** → merge/push는 P0 `[x]` 후 tester 전담
+- **벤치마크 근거**: `BENCHMARK_REPORT.md` §13~§17 (BNK-10~14)
+
+| 우선 | 항목 | 경쟁 근거 | ogada @ `6d0a03a` / `@2012945` | 신규 DB |
+|------|------|-----------|----------------------------------|---------|
+| **P0-1** | **대시보드 실데이터** (US-M02) | 케어포 3블록 | ✅ 5위젯+Recharts+`BranchCompareChart` | 불필요 |
+| **P0-2** | **등급변동 이력** (G14, US-M01) | 케어포 1-9 | △ UI+DB(V48) · **GET API 잔여** | ✅ V48 |
+| **P1** | **본인부담 대장 리포트** (7-6~7-10) | 케어포 7장 | ❌ Route 없음 | 불필요 |
+| **P1** | **보호자 명세 상세** (G8, US-J02) | EZCARE·가족돌봄앱 | △ `GuardianBillingDetailModal` @ `c7c8f07` | 불필요 |
+| **P1** | **본인부담 수납 E2E** (G13) | 케어포 7-2→7-3 | △ Route 있음 · 상태전이 E2E 잔여 | 불필요 |
+| **P1** | 급여제공 **세분화** | 케어포 3-1 한장 | △ `/health` 통합 | 유형 컬럼 |
+| **즉시** | **G7 NHIS 엑셀 샘플** | 업계 공통 | △ 파서 가정 | 파일럿 샘플 |
+
+### 완료 기준 (v1.2.1)
+
+- [x] **US-M02** — HQ `BranchCompareChart`·대시보드 5위젯 **100% API 실데이터** @ `6d0a03a` (BNK-14 §17-2)
+- [ ] **US-M01** — `GET /api/v1/clients/{id}/ltc-grade-history` + `ClientController` 연동 **← P0 유일 잔여** (UI+DB V48 ✅)
+- [ ] **US-M01-b** — (선택) 케어포 1-9 **전 수급자 등급변동 리포트** Route — v1.2.1 **범위 외** · v2 검토(BNK-14 §17-3)
+- [ ] **US-J02** — `GuardianBillingDetailModal` live API E2E + `/guardian` 명세 탭 통합 *(UXD-55 develop @ `c7c8f07` — UI **[x] partial**)*
+- [ ] **US-L01·L02** — 입금→미납 상태전이 E2E (`/billing/payments`→`/billing/overdue`)
+- [ ] **G7** — 파일럿 센터 NHIS 엑셀 샘플 확보·파서 정규화 검증
+- [ ] **P0 `[x]` 후** working tree CLEAN · `npm test`/`mvn test` PASS · `merge_status: ready` → tester develop→test merge (결정 92)
+
+> **Won't (BNK-11 G20)**: 케어포 demo-work 시설특화(생활실·욕창·집중배설) — ogada 주야간 commute 모델 **의도적 제외**.
+
+---
+
+## v1.3 — 배차·이동경로 (결정 60·61·**62**, BNK-7·**BNK-8·BNK-9** G15·G16·G17~G19)
+
+- **status**: done
+- **merge_status**: merged
 - **stream**: backend + frontend
 - **목표**: **v1.3-A** 픽업 배차 — `hq_admin` 확정 → 직원 명단·지도 조회 (최대 15명). **v1.3-A = 케어포 이동서비스 지도보기 패리티**(BNK-8 — 차별화 아님). **영업 차별 = v1.3-B(TSP·도로경로)**. v1.3-A는 **운영 시각화 한정** — 청구·평가(G15) 미대응(BNK-7 §10-3).
 - **선행**: v1.1 `merge_status: merged`
-- **69차 진전 (v1.3-A stack @ `c7941e9`/`37be0a3` lineage)**: backend **`c7941e9`** — transport API stack + **non-HQ pickup address·contact masking** **HEAD PRESENT**. frontend **`37be0a3`** — **`TransportPickupContact`**·roster/정차 연락처 마스킹 UI·픽업 프로필 a11y·**`pilotPageFlows` T03 contact masking E2E** **HEAD PRESENT**. **`merge_status: ready`**(결정 73 — live run post-merge). **잔여**: live E2E **run** · develop→test merge(17 ahead).
+- **75차 진전 (v1.3-A stack — origin 동기화 완료)**: backend develop/test/origin **`598d108`** · frontend develop/test/origin **`c7c8f07`** — UXD-53·UXD-54·**UXD-55**·transport privacy·`pilotPageFlows` **HEAD PRESENT**. **잔여**: live E2E **run**(결정 73) · v1.2.1 G14·US-M02.
 
 ### 범위
 
@@ -476,7 +558,9 @@
 - [x] **backend `TransportPilotServiceFlowE2eTest`** — US-T01~T03 service-flow·transport RBAC *( @ `f8d1b02`)*
 - [x] **transport live E2E harness** — `src/e2e/transportLiveApi.e2e.test.js` develop HEAD *( @ `d484206`+, FE-22 패턴 · 기본 `npm test` 제외)*
 - [x] **non-HQ pickup address masking** — `TransportService.maskAddress` · roster/runs 응답에서 `branch_admin`/`social_worker`/`caregiver` 역할 pickup 주소 마스킹 *( @ `e7d4cf6`, SEC-D9·PII 정합)*
-- [x] **non-HQ pickup contact masking UI** — `TransportPickupContact`·roster/정차 목록·`hq_admin`만 tel 링크·`pilotPageFlows` T03 E2E *( @ `37be0a3`, US-T03/SEC-D9·backend `c7941e9` 정합)*
+- [x] **non-HQ pickup contact masking UI** — `TransportPickupContact`·roster/정차 목록·`hq_admin`만 tel 링크·`pilotPageFlows` T03 E2E *( @ `1d910c2` lineage `37be0a3`+, US-T03/SEC-D9·backend `c7941e9` 정합)*
+- [x] **non-HQ pickup masking 단위 테스트** — `TransportServiceTest` hq_admin 전체 노출·caregiver `getRun` 마스킹 어서션 *( @ `32575aa`, SEC-D9 회귀 안전망)*
+- [x] **UXD-53·UXD-54 지점 스코프 UI** — `BranchScopeNotice`(`role="status"`) Attendance·QR·Transport(신규·상세·목록) 연동·`pilotPageFlows` US-E01/E05 E2E *( @ `7cd9293` lineage `0d36e30`+/`e641f62`+, US-B02/E01/E05/US-UX-04)*
 - [x] **`ClientFormPage` 픽업 프로필 UI** — `usesTransport`·`pickupAddress`·`pickupContact`·`defaultPickupTime` 폼 연동 *( @ `3c55339`, US-T01/Q166)*
 - [ ] **US-T01~T03 live E2E run** — harness **충족** · 실 Bearer JWT 연동 **run 잔여**(결정 73 post-merge 권장, merge BLOCK 아님)
 - [x] UI·문서에 **「운영 편의용 — 이동서비스비 청구·평가 일지(G15) 미포함」** 고지 (BNK-7 §10-3) + **「케어포 이동서비스 지도보기와 동등 — 경로 최적화는 v1.3-B」** (BNK-8) *(`TransportDisclaimer`)*
@@ -507,20 +591,27 @@
 
 ---
 
-## v2 — 보호자·알림·결제
+## v2 — 보호자·알림·결제 · **방문요양** (결정 90)
 
 - **status**: in_progress
 - **merge_status**: pending
-- **stream**: backend
-- **목표**: 보호자 풀 포털, **카카오톡 채널(비즈메시지) 알림톡**·SMS, CMS·간편결제 (BENCHMARK G1·G2 — 케어포·엔젤 패리티; 엔젤 CMS **월 30,000원+건당 수수료** TCO 벤치마크)
-- **선행**: v1.1 프론트 MVP
+- **stream**: backend + frontend
+- **목표**: 보호자 풀 포털·알림톡·CMS + **방문요양 일정 엔진(G21)** — **W3~4 (6/23~7/6)**
+- **완성 목표**: **2026-08-09** (결정 91 8주 스프린트)
+- **선행**: v1.2.1 `done` (W1~2)
 
 ### 범위
 
 1. 보호자 풀 포털 (명세·기록·사진 열람 — 케어포 가족돌봄앱 수준)
-2. **카카오톡 채널 알림톡** 연동 (출석·일일 케어·명세·긴급 알림) + SMS fallback (솔라피·NHN 등 중계 1종)
-3. `NotificationService` + `notification_preferences` (보호자별 채널·수신 동의)
-4. 본인부담금 **CMS·간편결제** (엔젤 LCMS 벤치마크)
+2. **카카오톡 채널 알림톡** 연동 + SMS fallback
+3. `NotificationService` + `notification_preferences`
+4. 본인부담금 **CMS·간편결제** (Hyosung FCMS 커넥터, 결정 87)
+5. **방문요양 (G21, Epic V)** — 이지케어 3장 패리티
+   - `branches.service_types` + `HOME_CARE` 지점
+   - `/visits` 달력형 방문일정 CRUD·확정/취소
+   - **계획일정 vs 청구일정** 이중 모델 (`plan_schedules` / `billing_schedules`)
+   - 사회복지사 **모바일 방문 체크인** (RFID 대안)
+   - 공단 일정 import 확장 · 일정확정 → 본인부담 연동
 
 ### 알림 채널 단계 (확정 2026-06-06)
 
@@ -541,30 +632,42 @@
 - [x] **(v2/J03 follow-up, TSR 79 @ `4c74f84`)** `AlimtalkTemplateVariables` — Solapi `kakaoOptions.variables` 매핑(attendance·daily care·billing·emergency) · `SolapiKakaoAlimtalkProvider`·`J03AlimtalkServiceFlowE2eTest` 확장 — **live 템플릿 심사·발송 UI·프론트 연동 잔여**
 - [x] **(v2/J03 follow-up, TSR 81 @ `ac17ad8`)** `AlimtalkFallbackText` — 알림톡 실패 시 한국어 SMS fallback 본문(Solapi alimtalk·SMS provider 공통) · EMERGENCY `incidentType`→`category` alias — **live Solapi·프론트 연동 잔여**
 - [x] **(v2/J03 follow-up, TSR 82 @ `52e0621`)** copay claim **CONFIRMED→PAID** 전환 시 **`BILLING_PAYMENT_RECEIVED`** alimtalk dispatch · `BillingServiceTest`·`J03AlimtalkServiceFlowE2eTest` 확장 · `notifyBilling` consent 재사용 — **live Solapi·프론트 연동 잔여**
+- [x] **(v2/Epic L backend, TSR 100 @ `598d108`)** copay **입금 기록·미납 목록·보호자 billing API** — `RecordCopayPaymentRequest`·`OverdueClaimListResponse`·`V50__billing_copay_payment_metadata.sql`·`BillingServiceTest`(+198) — **develop-only** · frontend Epic L UI·origin test 승격 **잔여**
 - [ ] USER_STORIES Epic J·**J03**·**N**(v2 CMS·결제) 스토리 구현 (보호자 알림·결제)
 - [ ] **카카오 비즈니스 채널** 개설·템플릿 심사·발송 API 연동 (US-J03)
 - [x] **(v2/J03 backend service-layer)** 출석(도착/귀가)·일일 케어·명세·긴급 알림 **알림톡 E2E** — `J03AlimtalkServiceFlowE2eTest`·`NotificationAlimtalkDispatchE2eTest` · **live Solapi·프론트 UI 잔여**
 - [x] QA_FEEDBACK v2 범위 항목 0건 OPEN
 - [ ] 본인부담금 보호자 발송·수납 E2E (MVP에서 제외했던 §3-9-3 후속)
+- [x] **(v2/G21 backend, COD @ develop)** `V53__visit_schedules_v2.sql`·`VisitService`·`VisitController` — `GET/POST/PATCH /api/v1/visits`·확정/취소·체크인/아웃 · `VisitServiceTest`(+5)·`RoleBasedControllerAccessTest` RBAC — **`/visits` UI·NHIS import 잔여**
+- [ ] **계획/청구 이중 일정** — PLAN/BILLING `schedule_kind`·`paired_schedule_id` **backend ✅** · 분리 UX + import **잔여**
+- [x] **(v2/G21 backend)** **방문 체크인 API** — `POST /visits/{id}/check-in`·`check-out` (MOBILE|MANUAL) — **프론트 UI 잔여**
+- [ ] `pilotPageFlows` 방문요양 E2E (US-V01~V03)
 
 ---
 
-## v3 — 확장 모듈
+## v3 — 확장 모듈 · **재무회계** · **시설급여** (결정 90)
 
-- **status**: in_progress
+- **status**: planned
 - **merge_status**: pending
-- **stream**: backend + frontend
-- **목표**: 식사·프로그램·**이동서비스(풀·청구)**·직원·평가·서류 (BENCHMARK G3·G5·**G5-b** — **배차 루트는 v1.3으로 분리**)
+- **stream**: backend + frontend + DBA
+- **목표**: 식사·프로그램·직원 + **재무회계(G4)** + **시설급여(G20)** — **W5~8 (7/7~8/9)**
+- **완성 목표**: **2026-08-09** (결정 91)
 - **65차 진전 (`767d977`/`8a764df`)**: backend V49·meals/programs REST **PRESENT** · frontend `MealsPage`·`ProgramsPage`·`pilotPageFlows` US-N01·N02 E2E·`pilotChecklist` N01/N02 + **StaffPage UI·Recharts(UXD-48)** **PRESENT**. **§3-5·§3-6 develop 스택 완료** · **v3 frontend 신규 착수 보류(v1.3 merge gate 선행)** — **프로그램 사진 업로드**·StaffPage API·평가·서류 **후속**.
 - **merge 게이트 (63차 신설)**: v3 `merge_status: ready` 조건 — ① 아래 완료 기준 merge-blocking 항목 **전부 `[x]`** ② `npm test`·`mvn test` PASS ③ working tree CLEAN — 충족 시 tester merge 실행.
 
 ### 범위
 
 - Should/Could 모듈 (REQUIREMENTS §3-5~§3-8, §3-10)
-- **제외 유지**: 재무회계·세무·4대보험 (이지케어 G4 — Won't, 별도 연동 검토)
-- **제외 유지**: NFC/RFID 출석 (G6 — QR B방식 차별화)
+- **재무회계 (G4, Epic F, W5~6)** — 이지케어 5·7·12장
+  - `/finance/ledger` 수입지출·결의 CRUD
+  - `/finance/payroll` 급여 산출·명세·4대보험 기본
+  - 본인부담 PAID → **회계 자동분개**
+- **시설급여 (G20, Epic S, W7~8)** — 케어포 demo-work MVP
+  - `facility_rooms` · `bed_assignments` · `/facility/residents`
+  - 욕창·집중배설 기록 · 시설급여 청구 분기
+- **제외 (v3.1+)**: NFC/RFID · 평가 서식 80종 · 통장 OpenAPI 실연동
 
-### 완료 기준 (v3 — §3-5·§3-6·§3-8 진행 중)
+### 완료 기준 (v3 — §3-5~§3-8 + G4 + G20)
 
 - [x] UI: `/meals` — 당일 식단·이용자 식사량·식이 제한·영양사 소견 (REQUIREMENTS §3-5)
 - [x] UI: `/programs` — 당일 일정·참여·만족도 기록 (REQUIREMENTS §3-6)
@@ -577,7 +680,21 @@
 - [ ] **[merge-blocking]** `/staff` 완전 기능 — 자격·배치·근태 CRUD·`services.js` API 연동·Vitest (§3-8 · 케어포 §8-4)
 - [ ] **[merge-blocking]** `pilotPageFlows` v3 staff·photos E2E + `pilotChecklist` P0·N01~N03 항목 추가
 - [ ] 공단 평가 2026 지표 자동화 여부 결정 (Could — 영업 차별 아님 · G17 Won't v1)
-- [ ] 서류·외부강사·자원봉사자 모듈 (§3-10 — Could · 후속 사이클)
+- [ ] 서류·외부강사·자원봉사자 모듈 (§3-10 — v3.1 후속)
+- [ ] **재무회계 (G4, W5~6 Must)** — `chart_of_accounts`·`journal_entries` Flyway·REST
+- [ ] **`/finance/ledger`** 수입지출·결의 UI
+- [ ] **`/finance/payroll`** 급여 산출·4대보험·명세
+- [ ] 본인부담 PAID → 회계 **자동분개**
+- [ ] **시설급여 (G20, W7~8 Must)** — `facility_rooms`·`bed_assignments` Flyway·REST
+- [ ] **`/facility/rooms`** · **`/facility/residents`** UI
+- [ ] 욕창·배설 기록 화면
+- [ ] v3 통합 E2E · `merge_status: ready` @ **2026-08-09**
+
+---
+
+## v4 — *(결정 90 폐기 — v2·v3로 흡수)*
+
+> 방문요양→**v2** · 회계·시설급여→**v3**. 잔여 polish는 **v3.1** 후속.
 
 ---
 
@@ -585,6 +702,8 @@
 
 | 날짜 | 변경 |
 |------|------|
+| 2026-06-08 | **자동 동기화 72차 — TSR 98·99 + masking 단위테스트 + UXD-53**: backend `32575aa`(25 ahead·CLEAN·243/243·TransportServiceTest +2) · frontend `e641f62`(20 ahead·CLEAN·212/69·780 modules·BranchScopeNotice·pilotPageFlows E01/E05 E2E) · v1.3 `merge_status: ready` · merge(25+20) 잔여 · Open 0건 |
+| 2026-06-08 | **자동 동기화 70차 — TSR 96·97 + transport pickup contact masking UI + T03 E2E**: backend `c7941e9`(24 ahead·CLEAN·241/241·contact masking) · frontend `1d910c2`(18 ahead·CLEAN·208/68·779 modules·TransportPickupContact·T03 E2E) · v1.3 privacy 완성·`merge_status: ready` · live E2E run 잔여 · Open 0건 |
 | 2026-06-08 | **자동 동기화 68차 — TSR 94·95 + transport pickup masking + UXD-51 + ClientForm 픽업 프로필**: backend `e7d4cf6`(23 ahead·CLEAN·241/241·non-HQ pickup masking) · frontend `3c55339`(16 ahead·CLEAN·203/67·778 modules·FE-13/FE-14 복원·ClientForm 픽업 UI) · v1.3 privacy·US-T01 UI `[x]` · live E2E run 잔여 · Open 0건 |
 | 2026-06-08 | **자동 동기화 66차 — TSR 92 + US-T01 profile + pilotPageFlows transport + UXD-49**: backend `1ec538b`(21 ahead·CLEAN·231/231·Clients transport profile) · frontend `637b9b3`(12 ahead·CLEAN·189/60·766 modules·pilotPageFlows T01~T03 E2E·HQ 건강 이상 지점명) · v1.3 fetch-mock E2E `[x]` · live E2E 잔여 · Open 0건 |
 | 2026-06-08 | **자동 동기화 65차 — TSR 91 + UXD-48 Recharts + 활성 버전 우선순위**: backend `767d977`(20 ahead·CLEAN·226/226) · frontend `8a764df`(10 ahead·CLEAN·183/60·766 modules·Recharts US-M02) · FE-15 bundle 회귀(non-blocking) · v1.3 단일 frontend 활성 · Open 0건 |
