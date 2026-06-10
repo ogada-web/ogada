@@ -1,4 +1,12 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-10T02:25:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-10T03:41:02+00:00 -->
+<!-- tester-sync: TSR 181차 2026-06-10T03:41 UTC (frontend) — test `@c7c8f07` 불변·origin/test 동기화·`npm test` **217/70 PASS** · develop **`6fe853b`**(+1 vs 178차 `3f96d95`: G9 duration band fallback billing/guardian UI) WT **CLEAN** · develop **382/382 PASS** · develop **46 ahead** · origin/develop **동기화 @ `6fe853b`** · **신규 Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(backend 180차): Open 1 BLOCK QA-B14 · develop `@0719648` WT DIRTY 2M · 36 ahead. 잔여: merge(46)·LIVE_E2E run(결정 73)·backend WT clean 선행. -->
+<!-- tester-sync: TSR 180차 2026-06-10T03:28 UTC (backend) — test `@598d108` 불변·origin/test 동기화·`mvn test` **246/246 PASS**(64 suites) · develop **`0719648`** HEAD **불변** · develop WT **DIRTY 2M**(`EmailNotificationContent.java`+46/-15·`EmailNotificationContentTest.java`+20 — G2/US-J03 billing email body `formatWon`·청구 금액 포맷 WIP, **177차 CLEAN→재오염**) · develop HEAD **364/364 PASS**·WT **365/365 PASS**(+1 @Test) · develop **36 ahead** · origin/develop **동기화 @ `0719648`** · Open **1 BLOCK**(`QA-20260610-B14`·179차 대비 **불변**) · PASS(v1 merged baseline @ test) · **v1.2.1 merge BLOCK**(develop WT clean 선행). 교차(frontend 178차): Open 0 · develop `@3f96d95` WT CLEAN · 45 ahead. -->
+<!-- tester-sync: TSR 179차 2026-06-10T03:26 UTC (backend) — test `@598d108` 불변·origin/test 동기화·`mvn test` **246/246 PASS**(64 suites) · develop **`0719648`** HEAD **불변** · develop WT **DIRTY 2M**(`EmailNotificationContent.java`+46/-15·`EmailNotificationContentTest.java`+20 — G2/US-J03 billing email body `formatWon`·청구 금액 포맷 WIP, **177차 CLEAN→재오염**) · develop HEAD **364/364 PASS**·WT **365/365 PASS**(+1 @Test) · develop **36 ahead** · origin/develop **동기화 @ `0719648`** · **신규 Open 1건(BLOCK)**: **QA-20260610-B14** · PASS(v1 merged baseline @ test) · **v1.2.1 merge BLOCK**(develop WT clean 선행). 교차(frontend 178차): Open 0 · develop `@3f96d95` WT CLEAN · 45 ahead. -->
+<!-- tester-sync: TSR 178차 2026-06-10T03:10 UTC (frontend) — test `@c7c8f07` 불변·origin/test 동기화·`npm test` **217/70 PASS** · develop **`3f96d95`**(+1 vs 176차 `0c34f85`: G9 durationBandSnapshot billing/guardian UI) WT **CLEAN** · develop **382/382 PASS** · develop **45 ahead** · origin/develop **동기화 @ `3f96d95`** · **신규 Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(backend 177차): Open 0 · develop `@0719648` WT CLEAN · 36 ahead. 잔여: merge(45)·LIVE_E2E run(결정 73)·backend merge(36). -->
+<!-- tester-sync: TSR 177차 2026-06-10T03:02 UTC (backend) — test `@598d108` 불변·origin/test 동기화·`mvn test` **246/246 PASS**(64 suites) · develop **`0719648`**(+1 vs 175차 `a4a1393`: `feat(v2/G9): expose duration band snapshot on billing claim APIs` — `BillingClaimItemResponse`·`ClientBillingHistoryItemResponse`·`BillingService`·`BillingServiceTest`·`CopayGuardianNotifyPaymentE2eTest`·`FeeScheduleDurationBandTest`, 6 files +240, 363→364 +1 @Test) WT **CLEAN** · develop **364/364 PASS**(84 suites) · develop **36 ahead** · origin/develop **동기화 @ `0719648`** · **신규 Open 0건(backend)** · PASS(v1 merged baseline @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(frontend 176차): Open 0 · develop `@0c34f85` WT CLEAN · 44 ahead. 잔여: merge(36+44)·LIVE_E2E run(결정 73). -->
+<!-- tester-sync: TSR 176차 2026-06-10T02:52 UTC (frontend) — test `@c7c8f07` 불변·origin/test 동기화·`npm test` **217/70 PASS** · develop **`0c34f85`**(+1 vs 174차 `0dc4c4a`: `feat(G9): add 2D fee schedule matrix and NHIS 2026 seed` — `FeeScheduleMatrix`(+test)·`feeSchedules.js`(+test)·`FeeSchedulePage.jsx`, 7 files +367/-10) WT **CLEAN** · develop **382/382 PASS**(+5/+1) · build **816 modules 3 청크**(max 367 kB) · audit **0** · develop **44 ahead** · origin/develop **동기화 @ `0c34f85`** · **신규 Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(backend 175차): Open 0 · develop `@a4a1393` WT CLEAN · 35 ahead. 잔여: merge(44)·LIVE_E2E run(결정 73)·backend merge(35). -->
+<!-- tester-sync: TSR 175차 2026-06-10T02:42 UTC (backend) — test `@598d108` 불변·origin/test 동기화·`mvn test` **246/246 PASS**(64 suites) · develop **`a4a1393`**(+1 vs 173차 `06d68dd`: `fix(v2/g2): guard CMS debit client scope and snapshot duration band` — `CmsService`·`CmsServiceTest`·`BillingService`·`BillingClaimItemEntity`·`V62__billing_claim_item_duration_band_snapshot.sql`, 5 files +136/-1, 362→363 +1 @Test) WT **CLEAN** · develop **363/363 PASS**(83 suites) · develop **35 ahead** · origin/develop **동기화 @ `a4a1393`** · **QA-20260610-B13 Fixed** · **신규 Open 0건(backend)** · PASS(v1 merged baseline @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(frontend 174차): Open 0 · develop `@0dc4c4a` WT CLEAN · 43 ahead. 잔여: merge(35+43)·LIVE_E2E run(결정 73). -->
+<!-- tester-sync: TSR 174차 2026-06-10T02:31 UTC (frontend) — test `@c7c8f07` 불변·origin/test 동기화·`npm test` **217/70 PASS** · develop **`0dc4c4a`**(+2 vs 172차 `527ba2d`: `147048c` G9 duration_band UI+US-J02 billing hardening · `0dc4c4a` guardian billing helpers+E2E) WT **CLEAN** · develop **377/377 PASS**(+9/+3) · build **815 modules 3 청크**(max 367 kB) · audit **0** · develop **43 ahead** · origin/develop **동기화 @ `0dc4c4a`** · **QA-20260610-B07 Fixed**(#10) · **신규 Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(backend 173차): Open 1 BLOCK `QA-20260610-B13` · develop `@06d68dd` WT DIRTY 3 · 34 ahead. 잔여: merge(43)·LIVE_E2E run(결정 73)·backend WT clean 선행. -->
 <!-- tester-sync: TSR 173차 2026-06-10T02:25 UTC (backend) — test `@598d108` 불변·origin/test 동기화·`mvn test` **246/246 PASS**(64 suites) · develop **`06d68dd`** HEAD **불변** · develop WT **DIRTY 3**(2M+1U: `CmsService.java`+12/-1·`CmsServiceTest.java`+19·`V62__billing_claim_item_duration_band_snapshot.sql` untracked — G2 CMS billing claim snapshot WIP, **171차 CLEAN→재오염**) · develop HEAD **362/362 PASS**·WT **363/363 PASS**(+1 @Test) · develop **34 ahead** · origin/develop **동기화 @ `06d68dd`** · **신규 Open 1건(BLOCK)**: **QA-20260610-B13** · PASS(v1 merged baseline @ test) · **v1.2.1 merge BLOCK**(develop WT clean 선행). 교차(frontend 172차): Open 1 BLOCK `QA-20260610-B07`(#10) · develop `@527ba2d` WT DIRTY 2M · 41 ahead. -->
 <!-- tester-sync: TSR 172차 2026-06-10T01:47 UTC (frontend) — test `@c7c8f07` 불변·origin/test 동기화·`npm test` **217/70 PASS** · develop **`527ba2d`** HEAD 불변·WT **DIRTY 2M**(`GuardianPortalPage.jsx`·`GuardianPortalPage.test.jsx` — US-J02 billing status filter·pagination dedupe·retry UI WIP, 170차 CLEAN→재오염) · develop HEAD **368/368 PASS**·WT **370/370 PASS**(+2/+2) · develop **41 ahead** · origin/develop **동기화 @ `527ba2d`** · **신규 Open 1건(BLOCK)**: **QA-20260610-B07**(#10) · PASS(v1.2+v1.3-A @ test) · **v1.2.1 merge BLOCK**(develop WT clean 선행). 교차(backend 171차): Open 0 · develop `@06d68dd` WT CLEAN · 34 ahead. -->
 <!-- tester-sync: TSR 171차 2026-06-10T01:36 UTC (backend) — test `@598d108` 불변·origin/test 동기화·`mvn test` **246/246 PASS** · develop **`06d68dd`**(+1 vs 169차 `425a05f`: fix(billing) forward-only fee schedule versions) WT **CLEAN** · develop **362/362 PASS**(+1, 83 suites) · develop **34 ahead** · origin/develop **동기화 @ `06d68dd`** · **신규 Open 0건(backend)** · PASS(v1 merged baseline @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(frontend 170차): Open 0 · develop `@527ba2d` WT CLEAN · 41 ahead. 잔여: merge(34)·LIVE_E2E run(결정 73)·frontend merge(41). -->
@@ -251,32 +259,21 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(현재 Open 2건 — backend 1 BLOCK(QA-20260610-B13) · frontend 1 BLOCK(QA-20260610-B07#10) — TSR 173차 2026-06-10T02:25 UTC)_
-
-### [TSR] QA-20260610-B13 — backend develop WT DIRTY 3 (G2 CMS billing claim snapshot WIP)
-
-| 항목 | 내용 |
-|---|---|
-| **ID** | QA-20260610-B13 |
-| **severity** | BLOCK |
-| **stream** | backend |
-| **version** | v1.2.1 merge gate |
-| **발견** | TSR 173차 2026-06-10T02:25 UTC |
-| **상태** | Open |
-| **담당** | COD |
-
-**현상**: develop `@06d68dd` HEAD 불변 · WT **DIRTY 3**(2M+1U):
-- `CmsService.java` +12/-1 (modified)
-- `CmsServiceTest.java` +19 (modified, +1 @Test)
-- `V62__billing_claim_item_duration_band_snapshot.sql` (untracked)
-
-**영향**: v1.2.1 merge gate **BLOCK** — develop WT clean 선행 조건 미충족. test 246/246 PASS 불변(비차단).
-
-**재현**: `git -C src/backend status --short` → 2M+1U 확인.
-
-**수정 액션 (COD)**: G2 CMS billing claim duration_band snapshot WIP(`CmsService`·`CmsServiceTest`·`V62`) 커밋 후 push.
+_(현재 Open 항목 없음 — 181차 COD @ `872e040` B14 Fixed)_
 
 ---
+
+> **TSR 180차 (2026-06-10T03:28 UTC, backend) — 신규 Open 0건(backend)·179차 대비 불변**: test `@598d108` **불변**(v1 merged) · origin/test **동기화** · `mvn test` **246/246 PASS**(64 suites) · Boot **3.3.1** · Flyway **V50** · develop `@0719648` HEAD **불변** · develop WT **DIRTY 2M**(`EmailNotificationContent.java`+46/-15·`EmailNotificationContentTest.java`+20 — G2/US-J03 billing email `formatWon` WIP, **177차 CLEAN→재오염**) · develop HEAD **364/364 PASS** · WT **365/365 PASS**(+1 @Test) · develop **36 ahead** · origin/develop **동기화 @ `0719648`** · **HEAD Fixed @ `0719648`** ✓ · **판정 PASS(v1 merged baseline @ test)** · **v1.2.1 merge BLOCK**(WT clean 선행·`QA-20260610-B14` 불변). 교차(frontend 178차): Open 0 · develop `@3f96d95` WT CLEAN · 45 ahead. 잔여: **COD WT clean→merge(36)** · **frontend merge(45)** · **LIVE_E2E run**(결정 73·merge 후).
+
+> **TSR 178차 (2026-06-10T03:10 UTC, frontend) — 신규 Open 0건(frontend)**: test `@c7c8f07` **불변**(v1.2+v1.3-A merged) · origin/test **동기화** · `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0** · develop `3f96d95`(+1 vs 176차 `0c34f85`: `feat(G9): show duration band snapshot on billing and guardian statements` — `BillingDetailPage`·`GuardianBillingDetailModal`·`guardianBilling.js` durationBandSnapshot UI, 7 files +77/-19) **WT CLEAN** · develop **382/382 PASS**(불변) · build **816 modules 3 청크**(index 306.65 kB, max 367.09 kB) · audit **0** · develop **45 ahead** · origin/develop **동기화 @ `3f96d95`** · `git cat-file -e HEAD:` `guardianBilling.js`·`BillingDetailPage.jsx`·`GuardianBillingDetailModal.jsx` **PRESENT** · **판정 PASS(v1.2+v1.3-A @ test)** · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(backend 177차): Open 0 · develop `@0719648` WT CLEAN · 36 ahead. 잔여: **v1.2.1 develop→test merge(45)** · **LIVE_E2E run**(결정 73) · backend merge(36).
+
+> **TSR 177차 (2026-06-10T03:02 UTC, backend) — 신규 Open 0건(backend)**: test `@598d108` **불변**(v1 merged) · origin/test **동기화** · `mvn test` **246/246 PASS**(64 suites) · Boot **3.3.1** · Flyway **V50** · develop `0719648`(+1 vs 175차 `a4a1393`: `feat(v2/G9): expose duration band snapshot on billing claim APIs` — `BillingClaimItemResponse`·`ClientBillingHistoryItemResponse`·`BillingService`·`BillingServiceTest`·`CopayGuardianNotifyPaymentE2eTest`·`FeeScheduleDurationBandTest`, 6 files +240, 363→364 +1 @Test) **WT CLEAN** · develop **364/364 PASS**(84 suites) · develop **36 ahead** · origin/develop **동기화 @ `0719648`** · `git cat-file -e HEAD:` `CopayGuardianNotifyPaymentE2eTest` **PRESENT** · **판정 PASS(v1 merged baseline @ test)** · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(frontend 176차): Open 0 · develop `@0c34f85` WT CLEAN · 44 ahead. 잔여: **develop→test merge(36)** · **frontend merge(44)** · **LIVE_E2E run**(결정 73).
+
+> **TSR 176차 (2026-06-10T02:52 UTC, frontend) — 신규 Open 0건(frontend)**: test `@c7c8f07` **불변**(v1.2+v1.3-A merged) · origin/test **동기화** · `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0** · develop `0c34f85`(+1 vs 174차 `0dc4c4a`: `feat(G9): add 2D fee schedule matrix and NHIS 2026 seed` — `FeeScheduleMatrix`(+test)·`feeSchedules.js`(+test)·`FeeSchedulePage.jsx`, 7 files +367/-10) **WT CLEAN** · develop **382/382 PASS**(+5/+1) · build **816 modules 3 청크**(index 306.23 kB, max 367.09 kB) · audit **0** · develop **44 ahead** · origin/develop **동기화 @ `0c34f85`** · `git cat-file -e HEAD:` `FeeScheduleMatrix.jsx`·`feeSchedules.js`·`DurationBandSelect.jsx`·`guardianBilling.js` **PRESENT** · **판정 PASS(v1.2+v1.3-A @ test)** · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(backend 175차): Open 0 · develop `@a4a1393` WT CLEAN · 35 ahead. 잔여: **v1.2.1 develop→test merge(44)** · **LIVE_E2E run**(결정 73) · **backend merge(35)**.
+
+> **TSR 175차 (2026-06-10T02:42 UTC, backend) — QA-20260610-B13 Fixed·신규 Open 0건(backend)**: test `@598d108` **불변**(v1 merged) · origin/test **동기화** · `mvn test` **246/246 PASS**(64 suites) · Boot **3.3.1** · Flyway **V50** · develop `a4a1393`(+1 vs 173차 `06d68dd`: `fix(v2/g2): guard CMS debit client scope and snapshot duration band` — `CmsService`·`CmsServiceTest`·`BillingService`·`BillingClaimItemEntity`·`V62__billing_claim_item_duration_band_snapshot.sql`, 5 files +136/-1, 362→363 +1 @Test) **WT CLEAN** · develop **363/363 PASS**(83 suites) · develop **35 ahead** · origin/develop **동기화 @ `a4a1393`** · `git cat-file -e HEAD:` `CmsService`·`CmsServiceTest`·`V62` **PRESENT** · **판정 PASS(v1 merged baseline @ test)** · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(frontend 174차): Open 0 · develop `@0dc4c4a` WT CLEAN · 43 ahead. 잔여: **develop→test merge(35)** · **frontend merge(43)** · **LIVE_E2E run**(결정 73).
+
+> **TSR 174차 (2026-06-10T02:31 UTC, frontend) — QA-20260610-B07 Fixed·신규 Open 0건(frontend)**: test `@c7c8f07` **불변**(v1.2+v1.3-A merged) · origin/test **동기화** · `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0** · develop `0dc4c4a`(+2 vs 172차 `527ba2d`: `147048c` feat(ux) G9 duration_band UI+US-J02 guardian billing hardening · `0dc4c4a` test(US-J02) extract guardian billing helpers+E2E, 17 files +494/-55) **WT CLEAN** · develop **377/377 PASS**(+9/+3) · build **815 modules 3 청크**(index 302.84 kB, max 367.09 kB) · audit **0** · develop **43 ahead** · origin/develop **동기화 @ `0dc4c4a`** · `git cat-file -e HEAD:` `guardianBilling.js`·`DurationBandSelect.jsx`·`GuardianPortalPage.jsx`(+test) **PRESENT** · **판정 PASS(v1.2+v1.3-A @ test)** · ★ **v1.2.1 merge gate FULLY UNBLOCKED** · 교차(backend 173차): Open 1 BLOCK `QA-20260610-B13` · develop `@06d68dd` WT DIRTY 3 · 34 ahead. 잔여: **v1.2.1 develop→test merge(43)** · **LIVE_E2E run**(결정 73) · backend WT clean 선행.
 
 > **TSR 173차 (2026-06-10T02:25 UTC, backend) — 신규 Open 1건(BLOCK)**: test `@598d108` **불변**(v1 merged) · origin/test **동기화** · `mvn test` **246/246 PASS**(64 suites) · Boot **3.3.1** · Flyway **V50** · develop `@06d68dd` HEAD **불변** · develop WT **DIRTY 3**(2M+1U — G2 CMS billing claim snapshot WIP, **171차 CLEAN→재오염**) · develop HEAD **362/362 PASS**·WT **363/363 PASS**(+1 @Test) · develop **34 ahead** · origin/develop **동기화 @ `06d68dd`** · **HEAD Fixed @ `06d68dd`** ✓ · **판정 PASS(v1 merged baseline @ test)** · **v1.2.1 merge BLOCK**(WT clean 선행). 교차(frontend 172차): Open 1 BLOCK `QA-20260610-B07`(#10) · develop `@527ba2d` WT DIRTY 2M · 41 ahead. 잔여: **WT clean→merge(34)** · **LIVE_E2E run**(결정 73) · frontend merge(41).
 
@@ -462,21 +459,7 @@ _(현재 Open 2건 — backend 1 BLOCK(QA-20260610-B13) · frontend 1 BLOCK(QA-2
 
 _(planner가 ROADMAP·PLAN_NOTES에 반영 완료, coder/tester 대기 중)_
 
-### [TSR] v1.2.1 — develop working tree 재오염 (GuardianPortal billing filter/dedupe/retry WIP, B07 recurrence #10)
-
-- **id**: QA-20260610-B07 (recurrence #10)
-- **severity**: BLOCK
-- **stream**: frontend
-- **version**: v1.2.1 (merge 게이트) / US-J02
-- **found_at**: 2026-06-10T01:47:30+00:00
-- **planner_reflected_at**: 2026-06-10 (91차 — BNK-38·TSR 172)
-- **summary**: 170차 CLEAN → 172차 **DIRTY 2M** — `GuardianPortalPage.jsx`(+54/-14)·`GuardianPortalPage.test.jsx`(+69). US-J02 WIP: `isGuardianVisibleBillingStatus`(CONFIRMED/PAID only)·`mergeUniqueBillingRecords` pagination dedupe·`handleRetryBilling` error retry UI. develop HEAD `@527ba2d` · WT **370/370 PASS**(+2) · **46 path·40 page**.
-- **repro**: `git -C src/frontend status --short` → `M GuardianPortalPage.jsx` · `M GuardianPortalPage.test.jsx`.
-- **coder_action**: WIP 2 files **커밋+push origin develop** 또는 **revert** → WT CLEAN 선행. 이후 v1.2.1 develop→test merge(**41**) 가능.
-- **planner_tasks**: ROADMAP v1.2.1 US-J02·`merge_status` FE WT clean 선행 · USER_STORIES US-J02 billing filter/dedupe/retry · PLAN_NOTES 91차 QA 반영
-- **impact**: v1.2.1 develop→test merge **BLOCK**(FE WT dirty). backend **FULLY UNBLOCKED** @ `06d68dd` WT CLEAN · merge **34** commits.
-
-> **91차 planner (2026-06-10)**: TSR 172·BNK-38 반영 — **QA-20260610-B07 Open→Planned**. baseline FE `@527ba2d`(41 ahead·WT **DIRTY 2M**) · BE `@06d68dd`(34 ahead·WT **CLEAN**). merge gate **75 commits** · FE WT clean 선행.
+> **91차 planner (2026-06-10)**: TSR 172·BNK-38 반영 — **QA-20260610-B07 Open→Planned**. baseline FE `@527ba2d`(41 ahead·WT **DIRTY 2M**) · BE `@06d68dd`(34 ahead·WT **CLEAN**). merge gate **75 commits** · FE WT clean 선행. → **TSR 174차 Fixed @ `0dc4c4a`** (Planned 해소).
 
 > **76차 (2026-06-09T09:00 KST)**: **Planned 0건** — BNK-14 반영 완료. **G14 GET API** = ROADMAP v1.2.1 P0 (coder 태스크). 잔여: merge(3) · G7 · live E2E.
 
@@ -824,6 +807,39 @@ _(planner가 ROADMAP·PLAN_NOTES에 반영 완료, coder/tester 대기 중)_
 ## Fixed
 
 _(coder가 develop에서 수정 완료 — develop HEAD 검증 통과 항목만)_
+
+### [COD] v1.2.1 — develop G2 EmailNotificationContent billing body WIP 미커밋 해소 (QA-20260610-B14) — Fixed 181차
+- **id**: QA-20260610-B14
+- **severity**: BLOCK
+- **stream**: backend
+- **version**: v1.2.1 (merge 게이트) / v2/G2 / US-J03
+- **found_at**: 2026-06-10T03:26:00+00:00
+- **fixed_at**: 2026-06-10T03:48:00+00:00
+- **verified_at**: 2026-06-10T03:48:00+00:00
+- **summary**: 180차 Open 원인이던 2M WIP가 `872e040`로 커밋됨. `EmailNotificationContent.formatWon`·billing body 템플릿·`EmailNotificationContentTest`(+1 @Test) **PRESENT** @ `872e040`. develop WT **CLEAN** · `mvn test` **365/365 PASS**(+1 @Test) · test `@598d108` **246/246 PASS** 불변.
+- **impact 해소**: v1.2.1 merge 선행조건(develop WT clean) 충족 — backend merge gate UNBLOCKED.
+
+### [TSR] v1.2.1 — develop GuardianPortal billing WIP + G9 duration_band UI 미커밋 해소 (QA-20260610-B07) — Fixed 174차
+- **id**: QA-20260610-B07 (recurrence #10)
+- **severity**: BLOCK
+- **stream**: frontend
+- **version**: v1.2.1 (merge 게이트) / US-J02 / G9
+- **found_at**: 2026-06-10T01:47:30+00:00
+- **fixed_at**: 2026-06-10T02:31:35+00:00
+- **verified_at**: 2026-06-10T02:31:35+00:00
+- **summary**: 172차 Open/Planned 원인이던 2M WIP가 `147048c`·`0dc4c4a` 2커밋으로 develop HEAD 반영됨. `guardianBilling.js`(+test)·`DurationBandSelect`·`GuardianPortalPage`(+test)·`pilotPageFlows` G9/US-J02 E2E **PRESENT** @ `0dc4c4a`. develop WT **CLEAN** · `npm test` **377/377 PASS**(+9/+3) · test `@c7c8f07` **217/70 PASS** 불변.
+- **impact 해소**: frontend v1.2.1 merge 선행조건(develop WT clean) 충족 — merge gate **FULLY UNBLOCKED**(43 commits ff 가능).
+
+### [TSR] v1.2.1 — develop G2 CMS billing claim duration_band snapshot WIP 미커밋 해소 (QA-20260610-B13) — Fixed 175차
+- **id**: QA-20260610-B13
+- **severity**: BLOCK
+- **stream**: backend
+- **version**: v1.2.1 (merge 게이트) / v2/G2
+- **found_at**: 2026-06-10T02:25:00+00:00
+- **fixed_at**: 2026-06-10T02:42:02+00:00
+- **verified_at**: 2026-06-10T02:42:02+00:00
+- **summary**: 173차 Open 원인이던 WT DIRTY 3(2M+1U: `CmsService`·`CmsServiceTest`·`V62`)이 `a4a1393`로 커밋됨. develop WT CLEAN · `git cat-file -e HEAD:` `CmsService`·`CmsServiceTest`·`V62__billing_claim_item_duration_band_snapshot.sql` **PRESENT** · develop `mvn test` **363/363 PASS**(+1 @Test) · test `@598d108` **246/246 PASS** 불변.
+- **impact 해소**: v1.2.1 merge 선행조건(develop WT clean) 충족 — backend merge gate UNBLOCKED.
 
 ### [TSR] v1.2.1 — develop G2 SmtpEmailProvider email validation WIP 미커밋 해소 (QA-20260610-B12) — Fixed 167차
 - **id**: QA-20260610-B12
