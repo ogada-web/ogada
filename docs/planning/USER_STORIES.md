@@ -1,9 +1,9 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-08T14:00:00+09:00 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-10T23:45:00+09:00 -->
 # 주간보호센터 웹 시스템 — 사용자 스토리 (planning/USER_STORIES.md)
 
 > **작성**: planner 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-08 (62차 — v3 meals/programs full stack + v1.3 live E2E 잔여 + BNK-9 재확인)  
+> **최종 갱신**: 2026-06-10 (96차 — BNK-58 · TSR 231~232 · G15 2-2/2-3 · G11 v2 · QA-B19 · FE `6c4c151`/BE `d6d7e7f`)  
 > **상태**: 초안 (Draft) — 사용자 승인 전  
 > **근거 문서**: `docs/planning/REQUIREMENTS.md`, `docs/planning/PLAN_NOTES.md`, `docs/planning/research/BENCHMARK_REPORT.md`, `docs/qa/QA_FEEDBACK.md`
 
@@ -102,6 +102,7 @@
 - [ ] UI 지점 선택기로 `active_branch_id` 변경
 - [ ] 변경 후 이용자·출석·건강·대시보드가 선택 지점 기준으로 갱신
 - [ ] 타 지점 데이터 CRUD 불가
+- [x] **활성 지점 조회 범위 노출** — `BranchScopeNotice`(`role="status"`)로 현재 스코프 안내 *(UXD-53 @ `0d36e30`+, US-UX-04)*
 
 ### US-B03 — 세션 만료
 
@@ -247,6 +248,23 @@
 **인수 조건**
 - [ ] `/attendance` 당일 집계: 입소 N명, 결석 N명, 퇴소 완료 N명
 - [ ] 지점 스코프만 표시
+- [x] **`BranchScopeNotice`** — 활성 지점명·조회 범위 `role="status"` 노출 *(UXD-53 @ `0d36e30`+)*
+
+### US-E06 — 탑승/현장 출석 이원화 (G15, v1.3-C)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `caregiver`, `branch_admin` |
+| 스토리 | 요양보호사로서, **차량 이용(탑승) 수급자**와 **현장(차량 미이용) 수급자** 출석을 **케어포 2-2/2-3처럼 분리**해 관리하고 싶다. |
+| 우선순위 | **v1.3-C P1** (BNK-58) |
+| Pilot | Yes |
+
+**인수 조건**
+- [x] `/attendance/boarding` — 「탑승 출석(차량 이용)」·`usesTransport=true` 수급자만 @ `6c4c151`
+- [x] `/attendance/on-site` — 「현장 출석(차량 미이용)」·`usesTransport=false` 수급자만 @ `6c4c151`
+- [x] SideNav 「출석 구분 (G15)」·`transportMode=all|boarding|on_site` @ `6c4c151`
+- [x] BE `GET /api/v1/attendance?transportMode=boarding|on_site` · `AttendanceTransportMode` 필터 @ `d6d7e7f`
+- [x] FE+BE 이중 필터 — `filterAttendanceByTransportMode` + `AttendanceTransportMode.matches()` (BNK-58 §61-2)
 
 ### US-E03 — 지점 QR 생성
 
@@ -291,6 +309,7 @@
 **인수 조건**
 - [ ] 지점·기간 필터
 - [ ] 이용자별·지점별 출석 일수 집계
+- [x] **`BranchScopeNotice`** + `pilotPageFlows` US-E05 E2E *(UXD-53 @ `e641f62` lineage)*
 
 ---
 
@@ -367,7 +386,8 @@
 - [x] 수가 변경 시 **버전·이력 보존** UI — `FeeRateHistoryPanel`(UXD 14차 `a42d6fb`) 이력 모달·Recharts 토큰(`chartColors.js`) *(과거 청구 당시 수가 유지는 백엔드 이력 API live 연동 후 완료 — v1.1 merge 후)*
 - [ ] (선택) 가산·식대 등 부가 항목 입력 구조
 - [ ] 코드 하드코딩 금지 — 전적으로 테이블 기반
-- [ ] **(G9, 4차 벤치마크)** 2026 공단 수가는 **등급×이용시간대(3~6h…13h+)** 2차원 — **v1: 센터 표준 이용시간 1밴드 고정**, **v1.1: `duration_band` 다밴드** 입력 (추가질문 #35, §3-9-1 보강)
+- [x] **(G9, BNK-41·42)** `duration_band` **FE+BE E2E** — 25셀·`durationBandSnapshot`·폴백 @ `0c34f85`/`0719648`/`6fe853b`/`5348d9c`/`eb3f0fd` · fee schedule forward-only
+- [x] **(G9, 4차 벤치마크)** 2026 공단 수가 **등급×이용시간대(3~6h…13h+)** 2차원 **다밴드 완료**·E2E 검증 (BNK-41·42 · 추가질문 #35 닫힘)
 
 ### US-G00b — 본인부담 비율표 관리
 
@@ -410,6 +430,7 @@
 - [ ] `/billing` 목록: 월·지점·상태(작성중/확정/수납완료)
 - [ ] 개별·일괄 생성
 - [ ] PDF 또는 인쇄 가능 명세서
+- [x] 청구서 상세 **「보호자 알림」** — `POST /billing/claims/{id}/notify` @ `84f3441` · UI @ `c48fb67` (BNK-28 G2-n partial · **templates 5종 partial** @ `0854fbd`/`eedcc80` — 명세·기록지·가정통신문·**납부확인서·학대예방교육** · **SMTP 실연동 v2 잔여**)
 
 ### US-G03 — 본인부담금 계산·청구서
 
@@ -455,7 +476,8 @@
 
 **인수 조건**
 - [x] 배치 상세 화면에서 행 목록 표시 — **`NhisReconciliationTable` @ `c5708c7`(UXD-39)** · **필드 fallback Fixed @ `4957bd3`(Q154)**
-- [x] **매칭 상태 3종**: `MATCHED`(정상) / `DISCREPANCY`(이용자 OK, 금액·일수 차이) / `UNMATCHED`(자동 매칭 실패) — **`NhisReconciliationTable` StatusBadge·행 강조 @ `fd4e8f3`**
+- [x] **매칭 상태 4종**: `MATCHED` / `DISCREPANCY` / `UNMATCHED` / **`PENDING_REVIEW`(대기·보류)** — **`NhisReconciliationTable`·`Badge` tone=info @ `fbb0b7a`**
+- [x] **(G7 P0, BNK-15·16·17·18)** 케어포 대비 **「대기(보류)」`PENDING_REVIEW`** + **`matchStatusReason`** + **`NhisPendingReviewGuide`** + `ReconciliationPage` **`pendingReviewCount`** — BE V54+서비스 @ `4cc328d`/`dd49204` · FE @ `fbb0b7a`/`16402b2` · **`pilotPageFlows` G7 E2E @ `16402b2`**
 - [x] `DISCREPANCY` 행은 강조 표시 + 차이 컬럼·청구 라인 비교 링크 — **`DiscrepancyComparePanel`·`onCompare` @ `fd4e8f3`** · **`pilotPageFlows` US-G06 E2E @ `c510f5c`**
 - [ ] `UNMATCHED` 행은 **후보 이용자 검색·수동 연결** UI — 연결 시 `client_id` 설정과 매칭 상태 전이가 **단일 트랜잭션**(부분 업데이트 금지, `chk_nhis_import_rows_match_requires_client`) — **PARTIAL @ `f01e3a8`(UXD-43)**: `ReconciliationPage` 후보 이용자 검색·선택 UI **HEAD PRESENT** · 매칭 API·트랜잭션 **잔여**
 - [ ] 매칭 이용자는 **배치 지점과 동일 지점**만 허용 (`trg_nhis_rows_client_branch`)
@@ -477,6 +499,21 @@
 - [ ] 동일 상태로의 no-op 전이 거부 (V31 `chk_claim_status_history_distinct_transition`)
 - [ ] `/billing` 목록에 **상태 필터** 쿼리 파라미터(`?status=DRAFT|CONFIRMED|PAID`) — V31 `idx_billing_claims_org_branch_status_generated` 활용
 - [ ] 상태별 카운트 배지 (옵션, 후속)
+
+### US-G25 — 본인부담률 엑셀 업로드·7-1 재계산 (G25, v2 P2) ← **신규 (2026-06-10, 90차 — BNK-35·케어포 공지920)**
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, 케어포 1-1-2처럼 **공단·지자체에서 받은 본인부담률 엑셀을 업로드**해 이용자별 부담률을 일괄 반영하고 **7-1 청구를 재계산**하고 싶다. |
+| 우선순위 | **v2 P2** (G25, BNK-35) |
+| 근거 | 케어포 [공지920](https://web.archive.org/web/20260608120000/https://carefor.co.kr/cs/view_notice.php?cscmgno=920) · COMPETITOR_MATRIX §35 |
+
+**인수 조건**
+- [ ] `/clients` 또는 `/billing` — 본인부담률 엑셀 업로드 UI (지점·적용월 선택)
+- [ ] 행별 이용자 매칭(인정번호·이름·생년월일) 후 `copayType`/부담률 갱신
+- [ ] 업로드 완료 시 **해당월 7-1 청구서 재계산** 트리거(또는 안내)
+- [ ] **파일럿 샘플 엑셀** 확보 전 컬럼 스펙은 PLAN_NOTES #920 미확정
 
 ---
 
@@ -509,7 +546,7 @@
 **인수 조건**
 - [ ] `/dashboard/hq`: 지점별 카드/표
 - [ ] 지점 필터·기간 필터
-- [ ] 전 지점 건강 이상 통합 목록
+- [x] 전 지점 건강 이상 통합 목록 — **지점명 표시 @ `00375f6`(UXD-49, US-H02 PARTIAL)** · `BranchCompareChart` **잔여**
 
 ---
 
@@ -567,11 +604,16 @@
 | Pilot | No |
 
 **인수 조건**
-- [ ] 이용자 프로필 `uses_transport`·픽업 주소(미입력 시 거주지)
+- [x] 이용자 프로필 `uses_transport`·픽업 주소(미입력 시 거주지) — **`ClientResponse` usesTransport·pickupAddress·pickupContact·defaultPickupTime @ backend `1ec538b`**
 - [x] `/transport` — 지점·날짜·**픽업** 명단 (`direction=PICKUP` 고정) — **@ `53a1ffe`/`e8d1854`+**: `TransportPage`·`GET /transport/roster`·`TransportDisclaimer` **HEAD PRESENT**
 - [x] UI에 **「운영 편의용 — 이동서비스비·평가 일지 미포함」** + **「케어포 지도보기 패리티 — 경로 최적화는 v1.3-B」** 안내 (G15 오해 방지, BNK-7·BNK-8) — **`TransportDisclaimer` @ `e8d1854`**
-- [ ] 퇴소·비활성 제외, 주소·연락처 마스킹
+- [x] **`ClientFormPage` 픽업 프로필 UI** — usesTransport·pickupAddress·pickupContact·defaultPickupTime 폼 연동 @ `3c55339` (US-T01/Q166)
+- [x] non-HQ 역할 pickup **주소 마스킹** — `TransportService.maskAddress` @ backend `e7d4cf6` (roster/runs API)
+- [x] non-HQ 역할 pickup **연락처 마스킹** — `TransportService.maskPhone` @ backend `c7941e9` · `TransportPickupContact` UI @ `1d910c2` (SEC-D9)
+- [ ] 퇴소·비활성 제외
 - [x] 선택 인원 **최대 15명** — 초과 시 UI·API 거부 (결정 62) — **`MAX_STOPS=15` @ `53a1ffe`** + UI `MAX_TRANSPORT_STOPS=15`
+- [x] **`pilotPageFlows` transport US-T01 fetch-mock E2E** — @ `637b9b3` **HEAD PRESENT**
+- [x] **backend `TransportPilotServiceFlowE2eTest`** — US-T01 service-flow @ `f8d1b02` **HEAD PRESENT**
 
 ### US-T02 — 배차 루트 편집·확정 (`hq_admin`)
 
@@ -589,7 +631,9 @@
 - [ ] Geocoding 실패 주소 경고
 - [x] 「**배차 확정**」→ `CONFIRMED` — 이후 순서·인원 **수정 불가** — **`POST /transport/runs/{id}/confirm` @ `53a1ffe`** + `TransportRunDetailPage`
 - [ ] `confirmed_at`·`confirmed_by` 기록
-- [x] 「**확정 취소(unconfirm)**」→ `CONFIRMED`→`DRAFT` 복귀 — `hq_admin` 전용 — **`PATCH /api/v1/transport/runs/{id}/unconfirm` @ backend `0d8968d`** — **frontend UI 잔여**
+- [x] 「**확정 취소(unconfirm)**」→ `CONFIRMED`→`DRAFT` 복귀 — `hq_admin` 전용 — **`PATCH /api/v1/transport/runs/{id}/unconfirm` + POST legacy @ backend `767d977`** · **`TransportUnconfirmModal`·`TransportRunDetailPage` @ frontend `73f7d39`** — Vitest 3건 PASS
+- [x] **`pilotPageFlows` transport US-T02 fetch-mock E2E** — @ `637b9b3` **HEAD PRESENT**
+- [x] **backend `TransportPilotServiceFlowE2eTest`** — US-T02 confirm/unconfirm flow @ `f8d1b02` **HEAD PRESENT**
 
 **인수 조건 — v1.3-B (후속, BNK-9)**
 - [ ] TSP 자동 순서 + **카카오 Directions 다중 경유지 API** 도로 경로·거리/시간 (일 5,000건 무료·16원/건)
@@ -604,8 +648,13 @@
 | Pilot | No |
 
 **인수 조건**
-- [x] `CONFIRMED` 루트만 목록·상세 노출 (`DRAFT` 403/숨김) — **@ `53a1ffe`**: RBAC·`TransportPage` 역할별 필터 **HEAD PRESENT** · live E2E **잔여**
-- [ ] 정차 명단(순번·이름·주소 마스킹)·지도 **읽기 전용**
+- [x] `CONFIRMED` 루트만 목록·상세 노출 (`DRAFT` 403/숨김) — **@ `53a1ffe`**: RBAC·`TransportPage` 역할별 필터 **HEAD PRESENT**
+- [x] **`pilotPageFlows` transport US-T03 fetch-mock E2E** — @ `637b9b3` **HEAD PRESENT**
+- [x] **backend `TransportPilotServiceFlowE2eTest`** — US-T03 staff read-only RBAC @ `f8d1b02` **HEAD PRESENT**
+- [x] **transport live E2E harness** — `transportLiveApi.e2e.test.js` @ `d484206` **HEAD PRESENT** (FE-22 패턴)
+- [ ] **live E2E run** — post-merge 권장(결정 73, merge BLOCK 아님)
+- [x] 정차 명단 **주소·연락처 마스킹**(non-HQ 역할) — API @ `e7d4cf6`/`c7941e9` · UI `TransportPickupContact` @ `1d910c2` · **`pilotPageFlows` T03 contact masking E2E** **HEAD PRESENT**
+- [ ] 정차 명단(순번·이름)·지도 **읽기 전용** (연락처 마스킹 **완료**)
 - [ ] 반응형·터치 44px (WCAG)
 - [ ] 픽업 완료 체크·출석 연동 — **v1.3-B 이후**
 
@@ -635,20 +684,26 @@
 - [ ] `transport_runs`에 차량 배정·운행일지 **별지 제22호** export (G15)
 - [ ] **별지 제18호** 신청 전제 안내(공단 포털)
 - [ ] 급여제공기록지 **이동서비스 제공·차량번호** 연계 (G15)
+- [x] **탑승/출석 이원화** — `/attendance/boarding`·`/attendance/on-site`·`transportMode` API @ `6c4c151`/`d6d7e7f` (BNK-58 · US-E06)
+- [x] **이동서비스 수칙·계약 텍스트 정본 UI (부분)** — `TransportCompliancePanel` 5수칙+계약서·일지 Modal @ `3db8db3` (BNK-53)
+- [x] **계약서 서명 저장 API+UI** — `TransportContractService`·V64·`TransportCompliancePanel` @ `3c8f9fe`/`9e3cab5` (BNK-58)
+- [x] **배차 geocode 실패 UX** — `countGeocodeFailures`·경고 Alert·저장/확정 차단·`aria-describedby` @ `318411d` (QA-B19 Fixed)
+- [ ] **외출 리포트(2-9)·외출 관리(2-1-1)** — 케어포 lifecycle (BNK-58 P1)
 - [ ] **이동서비스비** 산정·청구 입력 — 고시 제34조 (G16, 케어포 2-5 패리티)
-- [ ] **`transport_service_fee` 테이블** — 러-1~4 **830/2,630/4,440/6,240원** 시드(BNK-9) · law.go.kr 1차 확인 전 **하드코딩 금지**
+- [ ] **`transport_service_fee` 테이블** — 러-1~4 **830/2,630/4,430/6,230원** 시드(BNK-25 2차 교차 확정·BNK-9 정합·BNK-17 폐기) · **#44 제34조·공단 매뉴얼 1차 출처 재추적** · 「이동지원 시범사업」비해당 · **상수 하드코딩 금지**
 
-### US-T06 — 2026 평가 #27 기능회복훈련 (G17, v2+ Could)
+### US-T06 — 2026 평가 기능회복훈련 (G17, v2+ Could)
 
 | 항목 | 내용 |
 |------|------|
 | 역할 | `social_worker`, `branch_admin` |
-| 스토리 | 사회복지사로서, **기능회복훈련** 급여계획·실시 기록을 공단 평가 #27(3점)에 맞게 관리하고 싶다. |
-| 우선순위 | **Could v2+** (BNK-9 — 케어포·이지케어 반영, ogada **Won't v1**) |
+| 스토리 | 사회복지사로서, **기능회복훈련** 급여계획·실시 기록을 공단 평가 **지표25(계획 2점)+지표26(실행 3점)** 에 맞게 관리하고 싶다. |
+| 우선순위 | **Could v2+** (BNK-25 — 케어포·이지케어 반영, ogada **Won't v1**) |
 | Pilot | No |
 
 **인수 조건**
-- [ ] 급여계획 포함·연 1회 실시 기록 UI (경쟁사 UI 흐름 벤치마크 후 상세화)
+- [ ] **지표25** 급여계획 포함 기록 UI (2점)
+- [ ] **지표26** 연 1회 실시 기록 UI (3점) — v3.1(결정 94) 자동충족 경로 검토
 - [ ] v1.3·v1.2 범위 **미포함** — ROADMAP Won't v1
 
 ---
@@ -685,11 +740,16 @@
 |------|------|
 | 역할 | `guardian` |
 | 스토리 | 보호자로서, **연결 이용자의 본인부담금 명세·청구서**를 모바일에서 조회하고 싶다. (케어포 가족돌봄앱·EZCARE 명세 탭) |
-| 우선순위 | Should → **v1.1 Must** (G8) |
+| 우선순위 | Should → **v1.1 Must** (G8) → **v1.2.1 develop-only** (BNK-12 P1) |
 | Pilot | No (v1.1) |
 
 **인수 조건**
-- [ ] `/guardian` **명세·청구 탭** — 월별 본인부담금 명세 목록·상세(PDF/인쇄)
+- [x] **`GuardianBillingDetailModal`** — 월별 명세 상세·인쇄 UX *(74차 — UXD-55 @ develop `c7c8f07`, TSR 103 — develop-only)*
+- [x] GuardianPortal billing **pagination** @ `75fc91e` (TSR 128 · QA-B07 Fixed)
+- [x] **`isGuardianVisibleBillingStatus`** — CONFIRMED/PAID 상태만 노출 @ `0dc4c4a`/`5348d9c` (QA-B07 #10 Fixed · TSR 183)
+- [x] **`mergeUniqueBillingRecords`** — 페이지네이션 간 중복 제거 @ `0dc4c4a`/`5348d9c` (QA-B07 #10 Fixed)
+- [x] **`handleRetryBilling`** — 오류 시 재시도 UI @ `0dc4c4a`/`5348d9c` (QA-B07 #10 Fixed)
+- [ ] `/guardian` **명세·청구 탭** — 월별 본인부담금 명세 목록·상세(PDF/인쇄) — test `c510f5c` merge 후 live 검증
 - [ ] 연결 이용자 복수 시 이용자 선택 후 조회
 - [ ] CMS·결제·알림톡 발송 **제외** (v2)
 - [ ] US-I02(일일 기록 열람)와 동일 포털 내 탭 통합
@@ -704,11 +764,12 @@
 | Pilot | No (v2) |
 | 선행 | v1.1 무료 채널(인앱·FCM) 골격, `guardian_clients` 연결 완료 |
 | **52차 follow-up (TSR 70 @ `78e8928`)** | `HealthRecordService` — **투약(medication) 기록 생성 시 DAILY_CARE alimtalk dispatch** · `HealthRecordServiceTest` 단위 테스트 |
-| **53차 follow-up (TSR 72 @ `c53dd3b`)** | `GuardianNotificationHistoryController`·`StaffClientNotificationHistoryController`·`NotificationHistoryService`(+test) — **알림 이력 조회 API** · 템플릿 심사·발송 UI·프론트 연동 **잔여** |
-| **56차 follow-up (TSR 76 @ `0832fbf`)** | `HealthRecordService` — **활력징후(vitals) 기록 생성 시 DAILY_CARE alimtalk dispatch** · `HealthRecordServiceTest`(+53 lines) · 템플릿 심사·발송 UI·프론트 연동 **잔여** |
-| **57차 follow-up (TSR 78 @ `32a1f8f`)** | **`J03AlimtalkServiceFlowE2eTest`** — attendance·health·billing 도메인 액션을 `NotificationService` 경유 service-layer alimtalk flow E2E 5건 · `AttendanceServiceTest` check-out dispatch · 템플릿 심사·발송 UI·프론트 연동 **잔여** |
-| **59차 follow-up (TSR 80 @ `ac17ad8`)** | **`AlimtalkFallbackText`** — 알림톡 실패 시 **한국어 SMS relay 본문** 생성 · `incidentType`→`category` alias · `AlimtalkFallbackTextTest` · live Solapi·프론트 연동 **잔여** |
-| **60차 follow-up (TSR 82 @ `52e0621`)** | copay claim **CONFIRMED→PAID** 전환 시 **`BILLING_PAYMENT_RECEIVED`** alimtalk dispatch · `notifyBilling` consent 재사용 · `BillingServiceTest`·`J03AlimtalkServiceFlowE2eTest` 확장 · live Solapi·프론트 연동 **잔여** |
+| **53차 follow-up (TSR 72 @ `c53dd3b`)** | `GuardianNotificationHistoryController`·`StaffClientNotificationHistoryController`·`NotificationHistoryService`(+test) — **알림 이력 조회 API** · 템플릿 심사·발송 UI **잔여** · **프론트 이력 UI ✅ @ `e39164d` (US-J03-h)** |
+| **56차 follow-up (TSR 76 @ `0832fbf`)** | `HealthRecordService` — **활력징후(vitals) 기록 생성 시 DAILY_CARE alimtalk dispatch** · `HealthRecordServiceTest`(+53 lines) · 템플릿 심사·발송 UI **잔여** · **프론트 이력 UI ✅ @ `e39164d` (US-J03-h)** |
+| **57차 follow-up (TSR 78 @ `32a1f8f`)** | **`J03AlimtalkServiceFlowE2eTest`** — attendance·health·billing 도메인 액션을 `NotificationService` 경유 service-layer alimtalk flow E2E 5건 · `AttendanceServiceTest` check-out dispatch · 템플릿 심사·발송 UI **잔여** · **프론트 이력 UI ✅ @ `e39164d` (US-J03-h)** |
+| **59차 follow-up (TSR 80 @ `ac17ad8`)** | **`AlimtalkFallbackText`** — 알림톡 실패 시 **한국어 SMS relay 본문** 생성 · `incidentType`→`category` alias · `AlimtalkFallbackTextTest` · live Solapi·발송 UI **잔여** · **프론트 이력 UI ✅ @ `e39164d` (US-J03-h)** |
+| **60차 follow-up (TSR 82 @ `52e0621`)** | copay claim **CONFIRMED→PAID** 전환 시 **`BILLING_PAYMENT_RECEIVED`** alimtalk dispatch · `notifyBilling` consent 재사용 · `BillingServiceTest`·`J03AlimtalkServiceFlowE2eTest` 확장 · live Solapi·발송 UI **잔여** · **프론트 이력 UI ✅ @ `e39164d` (US-J03-h)** |
+| **85차 follow-up (BNK-22 @ `e39164d`)** | **`NotificationHistoryPanel`** — 보호자 `/guardian`·직원 `/clients/:id` 알림 발송 이력(발송시각·채널·유형·상태) · PIPA 연락처 **비표시** · 케어포 **10-7 안내발송내역** 패리티 — **실발송(10-1) v1.1/v2 잔여** |
 
 **인수 조건**
 - [ ] 센터(Tenant) **카카오 비즈니스 채널** 연동 설정 (채널 ID·발신 프로필·중계 API 키)
@@ -717,6 +778,24 @@
 - [x] 알림톡 실패 시 SMS fallback — **`AlimtalkFallbackText`·`SolapiSmsProvider` @ `ac17ad8`** (한국어 relay 본문, 내부 templateCode·UUID 미노출)
 - [ ] 보호자 **수신 동의**·야간 발송 제한·발송 이력 `notifications` 테이블 기록
 - [ ] v1.1 무료 채널(FCM·인앱)과 **병행** — 앱 사용자는 푸시, 미가입자는 알림톡
+
+### US-J03-h — 알림 발송 이력 열람 (v1.2.1, G8-h)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `guardian` / `staff`·`branch_admin`(이용자별 조회) |
+| 스토리 | 보호자·직원으로서, **알림(알림톡/SMS) 발송 이력**을 조회해 발송 시각·채널·유형·상태를 확인하고 싶다. (케어포 **10-7 안내발송내역** 패리티) |
+| 우선순위 | Should → **v1.2.1 Must** (G8-h) |
+| Pilot | No (v1.2.1) |
+| 선행 | TSR 72 알림 이력 API @ `c53dd3b` lineage |
+| **85차 (BNK-22 @ `e39164d`)** | `NotificationHistoryPanel` · `fetchGuardianNotificationHistoryApi`·`fetchClientNotificationHistoryApi` · 보호자 포털·직원 이용자 상세 연동 · **연락처 비표시**(PIPA) |
+
+**인수 조건**
+- [x] 보호자 `/guardian` — 본인 수신 알림 이력 목록(발송시각·채널·유형·상태) @ `e39164d`
+- [x] 직원 `/clients/:id` — 해당 이용자 알림 이력 목록 @ `e39164d`
+- [x] BE API — `GET /guardian/notifications`·`GET /clients/{clientId}/notifications` @ `c53dd3b` lineage
+- [x] PIPA — 수신자 **연락처·전화번호 UI 비표시**
+- [ ] **실발송**(케어포 10-1 문자메시지 발송) — v1.1/v2 (US-J03 본편)
 
 ---
 
@@ -765,6 +844,23 @@
 - [x] `forced-colors` 미디어 쿼리 — 강제 색 모드 (Windows High Contrast 등) 대비 시각 보존
 - [x] `SettingsPage.jsx` `allow_client_self_checkin` 토글 컨트롤(전사) — `OrganizationSettingsRepository` 1행 갱신 API 연동 골격
 - [x] `Switch.test.jsx` 5건 회귀 (ARIA·키보드·on/off·focus·disabled)
+
+### US-UX-04 — 지점 스코프 안내 배너 (UXD-53, v1.2+)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `caregiver`, `social_worker` (지점 스코프 역할) |
+| 스토리 | 직원으로서, 출석·QR·배차 화면에서 **현재 조회 중인 지점 범위**를 명확히 보고 싶다. 그래야 다지점 권한 시 잘못된 지점 데이터를 다루지 않는다. |
+| 우선순위 | **Should** (접근성·운영 안전 — US-B02 보완) |
+| 근거 | BNK-6 UX 패턴(케어포 대시보드 3블록) · 결정 49 화면 밀도 · UXD-53 @ `0d36e30` |
+| 상태 | develop **`7cd9293`** 반영 — `BranchScopeNotice` + UXD-53(`0d36e30`+)·**UXD-54**(`7cd9293`) QR·배차 전 화면 연동 + `pilotPageFlows` US-E01/E05 E2E |
+
+**인수 조건**
+- [x] `BranchScopeNotice` — `role="status"`·활성 지점명 표시
+- [x] AttendancePage·AttendanceStatsPage·QrGeneratePage·Transport(목록·신규·상세) 페이지 연동 *(UXD-53·UXD-54)*
+- [x] 44px 터치 타깃·`forced-colors` a11y (UXD-53)
+- [x] `pilotPageFlows` US-E01/E05 `BranchScopeNotice` E2E @ `e641f62`+
+- [x] QrGeneratePage·TransportPage `BranchScopeNotice` 회귀 @ `7cd9293` *(UXD-54)*
 - [ ] 라이브 backend 연동 검증 (v1.1 develop→test merge 후 — B03 ready 동반)
 
 > **결정 52 흡수**: UXD 13차 `07fd305`는 v1.1 develop→test merge에 동반 흡수 — `Switch.jsx`·`Switch.test.jsx`·`SettingsPage.jsx`·`tokens.css` 등 7 files. DESIGN_SYSTEM §1 컴포넌트 라이브러리 확장(향후 `Toggle`·`Checkbox`와 함께 boolean 컨트롤 표준화).
@@ -818,11 +914,20 @@
 | 우선순위 | **v1.2 P0** (G13) |
 | 근거 | `billing_claims`·`billing_claim_items`, COMPETITOR_MATRIX §8-1 7-2 |
 | **53차 진전 (TSR 73 @ `9bdf59f`)** | `PaymentRecordModal`(+test) — 입금 모달 UI·P0 E2E **WIP** |
+| **73차 backend (TSR 100 @ `598d108`, develop-only)** | `RecordCopayPaymentRequest`·copay payment recording API·V50 — **frontend UI·origin test 승격 잔여** |
+
+| **94차 (BNK-49 @ `e50533f`/`95bb34d`)** | BE **`POST /billing/imports/bank-deposits`** — 은행엑셀 flexible header parser · **일괄입금 import ✅** |
+| **95차 (BNK-50 @ `9ffff0c`)** | FE **`BankDepositImportPanel`** `/billing/payments` — 은행엑셀 upload UI **✅** · **은행 8종 E2E live 잔여** |
+
+| **93차 (BNK-45 @ `dd72ff8`/`4109680`)** | FE `PaymentRecordModal` **overpayment guard** · BE **non-positive copay amount reject** — QA-20260610-B15 **Fixed** |
 
 **인수 조건**
-- [ ] `/billing/payments` 또는 `/billing/claims?status=CONFIRMED` — 입금일·금액·수단(현금/계좌) 입력
+- [x] `/billing/payments` 또는 `/billing/claims?status=CONFIRMED` — 입금일·금액·수단(현금/계좌) 입력
+- [x] **초과입금·0/음수 금액 차단** — FE @ `dd72ff8` · BE @ `4109680` (BNK-45)
+- [x] **은행엑셀 일괄입금** — BE import @ `e50533f`/`95bb34d` ✅ · FE `BankDepositImportPanel` @ `9ffff0c` ✅ (BNK-49·50)
+- [ ] **은행 8종 E2E live** — 케어포 7-2 p.88 패리티 검증 (BNK-53 P1 잔여)
 - [ ] `billing_claims` 상태 `PAID`(또는 부분입금) 전이
-- [ ] CMS·간편결제 **제외** (v2)
+- [ ] CMS·간편결제 **제외** (v2 — US-L03)
 
 ### US-L02 — 미납 관리·독려 목록
 
@@ -831,15 +936,37 @@
 | 역할 | `branch_admin` |
 | 스토리 | 센터장으로서, **미납 본인부담금 목록**을 보고 독려 대상을 파악하고 싶다. |
 | 우선순위 | **v1.2 P0** (G13) |
+| **73차 backend (TSR 100 @ `598d108`, develop-only)** | `OverdueClaimListResponse`·미납 목록 API — **frontend `/billing/overdue` UI·origin test 승격 잔여** |
+| **89차 (BNK-31 @ `fed457f`/`14e9066`)** | `OverduePage` **pagination·reminder E2E** · BE pagination+guardian @ `4ee652d` · reminder timestamp sync @ `14e9066` |
+| **90차 (BNK-35 @ `c72e9df`/`e6df92c`)** | **cross-page live billing E2E hardening** · paid-state detection normalize @ `e6df92c` — **live run post-merge 잔여**(결정 73) |
 
 **인수 조건**
-- [ ] `/billing/overdue` — 기한 경과·미수금액·이용자·보호자 연락처(마스킹)
-- [ ] 대시보드 미처리 위젯(US-M02)과 연동
+- [x] `/billing/overdue` — 기한 경과·미수금액·이용자·보호자 연락처(마스킹) — UI @ `1462396` lineage
+- [x] **서버 페이지네이션·독려(reminder) 액션** — `pilotPageFlows` US-L02 E2E @ `fed457f`/`14e9066` (BNK-31)
+- [x] **입금→미납 cross-page fetch-mock E2E hardening** — `pilotLiveApi.e2e.test.js`·`pilotPageFlows` @ `c72e9df`/`e6df92c` (BNK-35)
+- [ ] **입금→미납 cross-page live E2E run** (post-merge, 결정 73)
+- [x] 대시보드 미처리 위젯(US-M02-c)과 연동 — `overdueCount` @ `f755428`/`20bfac1`
 - [ ] 알림톡·SMS 발송 **제외** (v2)
+
+### US-L03 — CMS 자동이체 등록·출금 (G2, v2 P1) ← **갱신 (2026-06-10, 91차 — BNK-36·38·엔젤 FCMS)**
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, 케어포 7-4·엔젤 효성CMS처럼 **보호자 CMS 자동이체를 등록**하고 **월별 출금**을 관리하고 싶다. |
+| 우선순위 | **v2 P1** (G2, BNK-17·35·38) |
+| **91차 backend** | `StubFcmsClient`·enrollment·debit skeleton @ `2c6e57e` · `CmsCopayLifecycleE2eTest` |
+| **91차 frontend** | `/billing/cms` Route·`CmsEnrollmentForm`·`CmsDebitPanel` @ `6c6dc7a`/`c0a01b4` |
+
+**인수 조건**
+- [x] backend FCMS enrollment·debit **skeleton API** @ `2c6e57e` (stub)
+- [x] frontend **`/billing/cms`** Route·등록·출금 이력 UI @ `6c6dc7a`/`c0a01b4`
+- [ ] Hyosung FCMS **실연동**(벤더 약정·#33)
+- [ ] 간편결제(7-5) **제외** (v2 후속)
 
 ---
 
-## 12d. Epic M — 등급·대시보드 실데이터 (v1.2 P0, G14)
+## 12d. Epic M — 등급·대시보드·본인부담 리포트 (v1.2/v1.2.1, G14·G22)
 
 ### US-M01 — 등급 변동 이력
 
@@ -847,12 +974,17 @@
 |------|------|
 | 역할 | `branch_admin`, `social_worker`, `hq_admin` |
 | 스토리 | 센터장으로서, 이용자 **등급 상·하향 이력**을 타임라인으로 추적하고 싶다. (케어포 1-9) |
-| 우선순위 | **v1.2 P0** (G14) |
+| 우선순위 | **v1.2.1 P0** (G14, BNK-14) — **닫힘 @ `15e41e3`** (TSR 106) |
+| API | `docs/technical/API_SPEC.md` **§4-2** · DB **`V48__client_ltc_grade_history.sql`** |
 
 **인수 조건**
-- [ ] 이용자 상세 **등급 이력 탭** — 변경일·이전/이후 등급·변경 사유(선택)
-- [ ] `ltc_grade_history` (또는 동등) 테이블 — 등록·수정 시 이력 append
-- [ ] 기존 `clients.ltc_grade` 단일값과 정합
+- [x] 이용자 상세 **등급 이력 탭** — `GradeHistoryTimeline` @ `6d0a03a` *(케어포 1-9 개별 이력 — 전수 리포트 Route는 v2 검토)*
+- [x] `client_ltc_grade_history` 테이블 + 트리거 append @ **V48**
+- [x] `GET /api/v1/clients/{clientId}/ltc-grade-history` — 스코프 내 조회 @ `15e41e3` (`LtcGradeHistoryService`·`LtcGradeHistoryServiceTest` 4 @Test)
+- [x] `ClientFormPage` 등급 변경 시 **사유** 입력 (`ltcGradeChangeReason`)
+- [x] 기존 `clients.ltc_grade` 단일값과 정합 (트리거)
+
+> **BNK-14 (76차)**: 프론트는 API 404 시 `client.ltcGradeHistory` fallback — **79차 GET API 닫힘** 후 live E2E 검증 권장. 케어포 1-9는 **전 수급자 등급변동 리포트** — ogada는 **개별 탭**만 (US-M01-b v2 검토).
 
 ### US-M02 — 대시보드 실데이터 위젯
 
@@ -860,12 +992,83 @@
 |------|------|
 | 역할 | `branch_admin`, `hq_admin`, `caregiver` |
 | 스토리 | 센터장으로서, 케어포처럼 **오늘 출석·미처리 업무·공지**를 실데이터로 대시보드에서 보고 싶다. |
-| 우선순위 | **v1.2 P0** (BNK-6-4) |
+| 우선순위 | **v1.2.1 P0** — **닫힘 @ `6d0a03a`** (BNK-14 §17-2) |
 
 **인수 조건**
-- [ ] StatCard 데모 제거 — `/api/v1/dashboard/*` 집계 API 연동
-- [ ] 위젯 최소 3블록: **오늘 출석/결석**, **미납·미매칭 NHIS**, **건강 알림**(또는 공지)
-- [ ] HQ `/dashboard/hq` — 지점별 비교 차트(Recharts, UXD-1)
+- [x] StatCard 데모 제거 — `/api/v1/dashboard/*` 집계 API 연동 — **`dashboardSummary.js` @ `6d0a03a`**
+- [x] 위젯 5블록: **오늘 입소/결석**, **미처리 업무**, **건강 알림**, **미매칭 NHIS** — **`DashboardWidgetGrid`**
+- [x] Recharts — `ChartContainer`·`AttendanceRateChart`·`HealthTrendChart` Dashboard/AttendanceStats/HealthDetail 연동
+- [x] HQ `/dashboard/hq` — **`BranchCompareChart`** + `fetchHqDashboardApi` @ `6d0a03a`
+- [x] **(P1, US-M02-b, BNK-19·20)** 지점 대시보드 **`pendingReviewCount`** 위젯(6번째 축) — `DashboardPage` **「NHIS 대기(보류)」** · `sumPendingReviewNhisFromBatches` @ `1794e1c` · `ReconciliationPage` `StatCard` 패리티
+- [x] **(P1, US-M02-c, BNK-33·35)** 지점 대시보드 **`overdueCount`** 위젯(7번째 축) — BE `DashboardService` @ `f755428` · FE `DashboardPage`·`pilotPageFlows` E2E @ `20bfac1`/`1c20d17`
+
+> **76차 (BNK-14)**: US-M02 **v1.2.1 P0 닫힘** — 케어포 대시보드 「입소·미처리·건강·NHIS」 패리티. 공지 블록은 **Could**(부가서비스 10-x).  
+> **84차 (BNK-20)**: **US-M02-b 닫힘** @ `1794e1c` — 이지케어 FAQ 21473·케어포 3상태 대기 안내 패턴 **지점 대시보드 반영**.  
+> **90차 (BNK-33·35)**: **US-M02-c 닫힘** @ `f755428`/`20bfac1` — **7 StatCard** 실데이터(미납·NHIS 대기 포함).
+
+### US-M03 — 본인부담 대장 리포트 (G22, v1.2.1 P1)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, 케어포 7-6~7-10처럼 **청구·입금·수납 대장**과 **간편계산기**를 조회하고 싶다. |
+| 우선순위 | **v1.2.1 P1** — **닫힘 @ `dbf485e`** (BNK-16 · UXD-56) |
+
+**인수 조건**
+- [x] `/billing/reports/charges` — 청구대장 (케어포 7-6) — **`BillingChargesReportPage` @ `dbf485e`**
+- [x] `/billing/reports/deposits` — 입금대장 (7-7) — **`BillingDepositsReportPage`**
+- [x] `/billing/reports/receipts` — 수납대장 (7-8) — **`BillingReceiptsReportPage`**
+- [x] `/billing/calculator` — 간편계산기 (7-10) — **`BillingCalculatorPage`**
+- [x] `pilotPageFlows` US-M03 E2E @ `0a07799` (fetch-mock)
+
+> **BNK-42 (92차)**: 7-6~7-10 **패리티 닫힘** · 모듈 커버 **74.81%**(+2.3pp vs BNK-41). **잔여 Could**: 7-2-1 연말정산(의료비공제)·7-9 환불대장 — v2 검토.
+
+### US-M03-b — 청구 생성기준·전월 미입금 가드 (G28, v1.2.1)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, 케어포 9-1처럼 **청구 생성 기준**(말일/1일)을 설정하고, **전월 본인부담 미입금 시 당월 청구 생성을 차단**하고 싶다. |
+| 우선순위 | **v1.2.1 ✅** — **닫힘 @ `5bdb476`/`b953662`/`911e732`/`25f3225`** (BNK-47·49) |
+| 근거 | 케어포 func.php 9-1·7-1↔7-2 「전월 입금 필수」 |
+
+**인수 조건**
+- [x] `/billing/settings` — 청구 생성 기준일(말일/1일) 설정 UI @ `5bdb476`/`25f3225`
+- [x] **전월 미입금 가드** — BE block @ `857bd32` · FE prior-month guard UI @ `911e732`
+- [ ] NHIS import live + 운영 가이드 검증 (잔여)
+
+### US-M04 — 재가급여 월한도액 표기·초과 경고 (G27, v1.2.1 ✅)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, **2026 등급별 재가급여 월한도액**을 확인하고 **월한도 초과 시 경고**를 받고 싶다. |
+| 우선순위 | **v1.2.1 ✅** (BNK-47·49·52) |
+| 근거 | MOHW 247 PDF p.10 · 케어포 **10-2-1** |
+
+**인수 조건**
+- [x] BE `MonthlyBenefitCapCatalog` — 1등급 **2,512,900**~5등급 **1,208,900** MOHW 247 verbatim @ `a92e625`/`20bc1be`
+- [x] BE `GET /monthly-benefit-caps`·`/monthly-benefit-cap-guard` @ `a92e625`
+- [x] **인지지원 676,320** catalog 시드 @ `20bc1be` (BNK-52)
+- [x] FE `/billing`·`/dashboard` — 등급별 월한도 표기·**초과 경고 UX** @ `5e64125`/`fba5ea8`+`MonthlyBenefitCapGuardPanel` (BNK-50~52)
+
+### US-M05 — 수가 가산율 catalog·가이드 (G11, v1.2.1)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `hq_admin`, `branch_admin`, `social_worker` |
+| 스토리 | 센터장으로서, **야간·심야·휴일 가산율**을 공식 catalog로 확인하고 청구 시 참고 가이드를 보고 싶다. |
+| 우선순위 | **v1.2.1 ✅ catalog** (BNK-53) · **v2 P1** 청구 자동 가산 |
+| 근거 | 이지케어 fnc 「(가산)수가 자동계산」·Channel.io 8종 차이 |
+
+**인수 조건**
+- [x] BE `FeeSurchargeRateCatalog` — 야20·심야30·휴일30·유급휴일50% verbatim · `NO_STACKING_NOTE` 중복불가 @ `904072b`
+- [x] BE `GET /billing/fee-surcharge-rates`·`POST /billing/fee-surcharge-preview` RBAC @ `904072b`
+- [x] FE `FeeSurchargeGuidePanel` 「가산율 참고 (G11)」 카드 `/billing/fee-schedules` @ `3db8db3`
+- [x] **v2 청구 생성 시 시간대별 자동 가산 적용** @ `d7475fd` (BNK-56·58 · 이지케어 fnc 패리티)
+
+> **65차 진전 (2026-06-08, TSR 91차 — UXD-48 Recharts @ `8a764df`)**: `ChartContainer`·`AttendanceRateChart`·`HealthTrendChart` develop HEAD 연동 · **`npm test` 183/60 PASS** · build **766 modules**(JS 756 kB — FE-15 bundle **회귀·v1.2.1 후속**). → **Recharts 3/4 항목 충족** · HQ `BranchCompareChart` **잔여**.
+> **67차 갱신 (TSR 93차 — FE-15 @ `d484206`)**: `manualChunks` 복원 · 3청크 max **367 kB <500 kB** — 756 kB 회귀 **해소**.
 
 > **52차 진전 (2026-06-08, planner 52차 — UXD 15 pages @ `0d83a42` + P0 KPI @ `42f48e1`)**: **18→33 route·33 page** — US-D01·E03-E05·F04·G01-G07·H01-H04·B01·A01 화면 **develop 커밋** · P0 page-flow tests·module coverage KPI · WT **CLEAN** · **`npm test` 89/28 PASS** · build **114 modules** · develop **4 ahead** of test. → **모듈 커버 ~45–50% 추정** · 결정 49 **≥60% 잔여** · P0 E2E·SideNav 2단 depth **잔여**.
 > **51차 진전 (2026-06-08, planner 51차 — UXD 35 develop 커밋 @ `64468a3`/`e0eaf32`)**: 50차 **24 files WIP → develop 커밋** — `DashboardWidgetGrid`(+test)·`FileUpload`(+test)·`GuardianInviteModal`·`NhisImportGuidePanel`·`MaskedRevealField` + Must 페이지 6종 DS integration · **`e0eaf32`** `/guardians` RBAC·page-flow 회귀. WT **CLEAN** · **`npm test` 82/27 PASS** · develop **2 ahead** of test `4f71543`(v1.1 merged). → **FE-12·FE-13 lineage 진전** · #36 FE-6 dirty-tree **해소** · ≥60% KPI·P0 E2E **잔여**.
@@ -894,7 +1097,182 @@
 
 ---
 
-## 12e. Epic N — 식사·프로그램 (v3, G5-b) ← **신규 (2026-06-08, 61차 — BNK-6·케어포 3·5장)**
+## 12e. Epic V — 방문요양 일정 (v2, G21) ← **갱신 (2026-06-10, 92차 — BNK-42·baseline `@eb3f0fd`/`@f77a268`)**
+
+> **backend @ `f77a268`/`7fbd219` lineage**: V53·`/api/v1/visits`·PLAN/BILLING 페어·체크인·**NHIS import**·**확정차단**·paired cancel/sync @ `84f3441`/`b63bb1f`/`3e4d3e6` · **`NhisVisitScheduleExcelParser` 한국어 날짜/시간** @ `7fbd219` · **G9 `duration_band` ✅** @ `0c34f85`/`0719648`+폴백 — **frontend `/visits` + billing confirm-lock** @ `c4fb7ff`/`02cd2b2` · `VisitNhisImportPanel`·paired cancel UX · **live E2E 잔여**. **결정 92**: v1.2.1 P0(G14) **선행 완료** · Epic V FE **develop bleed**.
+
+### US-V01 — 방문 일정 CRUD·달력
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `social_worker`, `caregiver` |
+| 스토리 | 사회복지사로서, 이지케어처럼 **방문 일정을 달력형으로 등록·수정·확정/취소**하고 싶다. |
+| 우선순위 | **v2 Must** (G21, W3~4) |
+| API | `docs/technical/API_SPEC.md` **§14** · DB **V53** |
+
+**인수 조건**
+- [x] backend `GET/POST/PATCH /api/v1/visits`·confirm/cancel @ `d768820`
+- [x] frontend `/visits` 달력 UI·`VisitCalendar` @ `371794f` (BNK-17 partial)
+- [ ] `HOME_CARE` 지점(`branches.service_types`)만 허용 — branch guard BE @ `1812165` lineage
+
+### US-V02 — 계획/청구 이중 일정 (PLAN/BILLING)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, 이지케어처럼 **계획일정(안내)과 청구일정(정산)을 분리**하고 PLAN↔BILLING 페어로 연결하고 싶다. |
+| 우선순위 | **v2 Must** (G21, BNK-10·14) |
+| API | `schedule_kind` PLAN|BILLING · `paired_schedule_id` · `createPairedBillingSchedule` |
+
+**인수 조건**
+- [x] backend V53 `schedule_kind`·`paired_schedule_id`·페어 생성 @ `d768820`
+- [x] UI에서 PLAN/BILLING **탭·필터 분리** @ `371794f` (이지케어 2회 import UX 대응 — partial)
+- [x] backend **페어 일정 취소 연동** — `cancel` 시 paired PLAN/BILLING(미완료·미취소)을 함께 취소해 고아 청구일정 방지 (`VisitService.cancelPairedSchedule` + 단위 테스트 3건) @ `b63bb1f`
+- [x] backend **paired PLAN/BILLING draft sync** @ `3e4d3e6` · FE paired cancel UX @ `311c7c0` (TSR 135·136)
+- [x] **확정 PLAN ↔ NHIS import 차단** — BE `hasBlockingConfirmedPlan` @ `84f3441` · FE 확정↔import 가이드 @ `bf3d40d` (BNK-28 G21 P1 **닫힘**)
+- [x] **billing 확정 잠금 가이드** — FE confirm-lock UX @ `c4fb7ff` + cross-page E2E @ `02cd2b2` (BNK-38 **partial**) · **live run 잔여**
+- [ ] NHIS import **청구일정** 확장 (주간 NHIS 1회 모델과 **분리 검토** — PLAN_NOTES #45)
+
+### US-V03 — 모바일 방문 체크인/아웃
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `social_worker`, `caregiver` |
+| 스토리 | 사회복지사로서, 현장에서 **방문 체크인·체크아웃**을 기록하고 싶다. (이지케어 RFID 대안 — QR/수기) |
+| 우선순위 | **v2 Must** (G21) |
+| API | `POST /visits/{id}/check-in`·`check-out` (MOBILE|MANUAL) |
+
+**인수 조건**
+- [x] backend check-in/out API @ `d768820`
+- [x] 모바일 반응형 체크인 UI @ `371794f` (partial)
+- [ ] `pilotPageFlows` US-V01~V03 E2E — **partial @ `16402b2`** (G7·G13·Epic V E2E 동반) · US-V04 import **live E2E 잔여**
+- [ ] (후속) 공단 RFID 태그 연동 — **하드웨어 없음** 우선 · 이지케어도 **RFID 실시간 2016 종료→엑셀**(BNK-20 §23-5) — ogada **QR/모바일** 차별 유지
+
+### US-V04 — NHIS 방문일정 import (G21, v2 Must)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, 공단에서 받은 **방문요양 일정 엑셀**을 import하여 계획/청구 일정에 반영하고 싶다. (이지케어 3-1 이중 import 패턴) |
+| 우선순위 | **v2 Must** (G21, BNK-25) |
+| API | NHIS visit schedule import @ `ee3fa3a` · `HOME_VISIT` branch guard |
+
+**인수 조건**
+- [x] backend NHIS visit schedule import API @ `ee3fa3a` · `VisitServiceTest` 확장
+- [x] **`NhisVisitScheduleExcelParser`** — 한국어 날짜·오전/오후·초 단위 시간 변형 @ `7fbd219` (BNK-31 · 공단 엑셀 포맷 편차)
+- [x] `/visits` import UI partial — `VisitNhisImportPanel`·업로드·결과 요약·import 결과 유지 @ `60cea98`/`311c7c0` (BNK-28 · TSR 136)
+- [ ] `pilotPageFlows` US-V04 **통합 E2E** (fetch-mock → live post-merge · G7 실파일 연계)
+
+---
+
+## 12g. Epic O — 요양 리포트·목욕 (v3.1, 결정 94) ← **신규 (2026-06-09)**
+
+> REQUIREMENTS §3-5-a · 케어포 3-3~3-7
+
+### US-O01 — 목욕 일정·제공 (3-3)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `social_worker`, `caregiver`, `hq_admin` |
+| 스토리 | 요양보호사로서, **이용자별 목욕 일정을 등록**하고 제공 완료를 기록하고 싶다. |
+| 우선순위 | **v3.1 Must** |
+
+**인수 조건**
+- [ ] `/care/bathing` — 일정 CRUD·제공 완료·이용자별 조회
+- [ ] API `GET/POST /api/v1/care/bathing/*` + 테스트
+
+### US-O02 — 요양·목욕 리포트·집계 (3-4~3-7)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `social_worker`, `hq_admin` |
+| 스토리 | 센터장으로서, **요양/식사/화장실·목욕·급여제공 리포트와 월 집계**를 출력하고 싶다. |
+| 우선순위 | **v3.1 Must** |
+
+**인수 조건**
+- [ ] `/reports/care-daily`·`/reports/bathing`·`/reports/care-provision`·`/reports/care-summary`
+- [ ] 인쇄·기간 필터 · E2E 1건 이상
+
+---
+
+## 12h. Epic P — 프로그램 확장 (v3.1, 결정 94) ← **신규 (2026-06-09)**
+
+> REQUIREMENTS §3-6-a · 케어포 5-3~5-10
+
+### US-P01 — 프로그램 그룹·마스터·의견 (5-3~5-6)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `social_worker`, `hq_admin` |
+| 스토리 | 사회복지사로서, **프로그램 그룹·정보·의견수렴·월간 계획**을 관리하고 싶다. |
+| 우선순위 | **v3.1 Must** |
+
+**인수 조건**
+- [ ] `/programs/groups`·`/programs/catalog`·`/programs/feedback`·`/programs/plans`
+- [ ] 그룹 배정·이력 · API + Vitest
+
+### US-P02 — 프로그램 리포트 (5-7~5-10)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, **참여·제공·그룹·일정 리포트**를 조회·인쇄하고 싶다. |
+| 우선순위 | **v3.1 Must** |
+
+**인수 조건**
+- [ ] `/programs/reports/*` 4종 · 인쇄
+
+---
+
+## 12i. Epic Q — 위생·안전·시설운영 (v3.1, 결정 94) ← **신규 (2026-06-09)**
+
+> REQUIREMENTS §3-14 · 케어포 6-2~6-4
+
+### US-Q01 — 점검·감염·시설운영일지
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `social_worker`, `hq_admin` |
+| 스토리 | 센터장으로서, **일일·정기 점검·감염 관리·시설운영일지**를 기록하고 싶다. |
+| 우선순위 | **v3.1 Must** |
+
+**인수 조건**
+- [ ] `/safety/daily-checks`·`/safety/periodic-checks`·`/safety/infection-control`·`/safety/operation-log`
+- [ ] 체크리스트 템플릿 · 인쇄
+
+---
+
+## 12j. Epic R — 직원 HR (v3, 결정 94) ← **신규 (2026-06-09)**
+
+> REQUIREMENTS §3-8-a · 케어포 8-2~8-13
+
+### US-R01 — 근무일정·출퇴근·연차 (8-2·8-4·8-13)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin` |
+| 스토리 | 센터장으로서, **직원 근무일정·출퇴근·연차 대장**을 관리하고 싶다. |
+| 우선순위 | **v3 Must** |
+
+**인수 조건**
+- [ ] `/staff/schedules`·`/staff/attendance`·`/staff/leave-ledger`
+- [ ] API + RBAC
+
+### US-R02 — 교육·회의·건강검진·리포트 (8-5~8-10·8-12)
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `social_worker`, `hq_admin` |
+| 스토리 | 사회복지사로서, **교육일지·회의록·건강검진·직원 현황 리포트**를 남기고 싶다. |
+| 우선순위 | **v3 Must** |
+
+**인수 조건**
+- [ ] `/staff/training`·`/staff/case-meetings`·`/staff/health-checkups`·`/staff/reports/status`
+- [ ] 인쇄 · E2E
+
+---
+
+## 12f. Epic N — 식사·프로그램 (v3, G5-b) ← **신규 (2026-06-08, 61차 — BNK-6·케어포 3·5장)**
 
 > **v3 §3-5·§3-6 develop 완료 @ `dfd9be2`/`362dbf0`**: backend V49·REST·frontend UI·a11y·`pilotPageFlows` E2E — **프로그램 사진 업로드**·직원·평가 **후속**.
 
@@ -976,12 +1354,17 @@
 | G | §3-9 (수가표·본인부담·**reconciliation** 포함), §1-5 | **8** (G00a·G00b·G01–G07) |
 | H | §3-11 | 2 |
 | I | §2-4 | 4 |
-| J | §3-7 (G8·G1) | **3** (v1.1: J01·J02, v2: J03) |
+| J | §3-7 (G8·G1) | **4** (v1.1: J01·J02, v1.2.1: J03-h, v2: J03) |
 | K | §3-7, §1-5-2 | **2** (v1.2 P0: 보호자 관리) |
 | L | §3-9, G13 | **2** (v1.2 P0: 입금·미납) |
-| M | §3-2, §3-11, G14 | **2** (v1.2 P0: 등급이력·대시보드) |
+| M | §3-2, §3-11, G14, G22 | **3** (v1.2.1: 등급이력·대시보드·본인부담 리포트) |
+| V | §1-6, G21 | **3** (v2: 방문일정·이중일정·체크인) |
 | UX | DESIGN_SYSTEM §1·§9 | **3** (v1.1: UX-01·UX-03, v1.2: UX-02) |
-| **합계** | | **46** (v1: 34, v1.1: +3, v1.2: +6, v2: +1) |
+| O | §3-5-a | **2** (v3.1: 목욕·리포트) |
+| P | §3-6-a | **2** (v3.1: 프로그램 확장) |
+| Q | §3-14 | **1** (v3.1: 위생안전) |
+| R | §3-8-a | **2** (v3: 직원 HR) |
+| **합계** | | **56** (v1: 34, v1.1: +3, v1.2: +6, v2: +4, v3/v3.1: +7) |
 
 ---
 
@@ -992,22 +1375,31 @@
 | 갭 | 경쟁사 | 시점 | 후보 Epic·스토리 |
 |----|--------|------|-----------------|
 | G1 — 보호자 풀 포털·알림(SMS·알림톡) | 케어포 가족돌봄앱, 이지케어 문자 | **v2** (알림톡) / v1.1 (무료 푸시) | Epic J — US-J03 **카카오톡 채널 알림톡**, 일일 케어 리포트 |
-| G8 — 보호자 **초대·명세 모바일** | 케어포·**이지케어 EZCARE** | **v1.1 Must** | Epic J — **US-J01·J02** (초대·명세 탭) |
-| G2 — 본인부담금 **CMS·간편결제** | 케어포 부가, 엔젤 CMS(월 30,000원+건당) | **v2** | Epic **N**(v2) — CMS·자동이체 |
+| G8 — 보호자 **초대·명세 모바일** | 케어포·**이지케어 EZCARE** | **v1.1 Must** | Epic J — **US-J01·J02** (초대·명세 탭) · **US-J03-h** (알림 이력 v1.2.1 ✅ @ `e39164d`) |
+| G2 — 본인부담금 **CMS·간편결제** | 케어포 7-4·7-5 · 엔젤 CMS(효성 FCMS) | **v2 P1** `in_progress` (BE stub @ `2c6e57e` · **FE Route ✅** @ `6c6dc7a` · **실연동 잔여**) | Epic **L** — **US-L03** |
 | G3 — 공단 평가 2026 지표 자동화·서식 | 케어포·엔젤·이지케어 | **Could** | v3 / 별도 Epic — 평가지표 체크리스트 |
 | G4 — 재무회계·세무·4대보험 | 이지케어 | **Won't v1** | — (별도 모듈 또는 외부 연동) |
 | G5 — **배차·이동경로** | 케어포 2장(일정·차량) + ogada **경로 최적화** | **v1.3** (결정 60) | Epic **T** — US-T01~T03(A)·T04(A.1)·**T05(C, G15·G16)** |
-| **G15** — **이동서비스 법정 서식** | 케어포·엔젤·이지케어 | **v1.3-C** | Epic **T** — US-T05 |
-| **G16** — **차량·이동서비스비 청구** | 케어포 2-4·2-5 | **v1.3-C** | Epic **T** — US-T05 · **`transport_service_fee`** (BNK-9) |
-| **G17** — **2026 평가 #27 기능회복훈련** | 케어포·이지케어 ✅ | **Won't v1** | Epic **T** — **US-T06** (Could v2+) |
+| **G15** — **이동서비스 법정 서식** | 케어포·엔젤·이지케어 | **v1.3-C** | Epic **T** — US-T05·**US-E06** · **2-2/2-3·계약 서명 ✅** @ `6c4c151`/`d6d7e7f`/`3c8f9fe` · **geocode UX·2-1-1/2-9·운행일지 갭** (BNK-58) |
+| **G11** — **수가 가산율 catalog+자동 적용** | 이지케어 fnc 자동계산 | **v1.2.1 ✅** | Epic **M** — **US-M05** @ `904072b`/`3db8db3`/`d7475fd` |
+| **G16** — **차량·이동서비스비 청구** | 케어포 2-4·2-5 | **v1.3-C** | Epic **T** — US-T05 · **`transport_service_fee`** 830/2,630/4,430/6,230 (BNK-25 · **#44 수동 보류** BNK-47) |
+| **G17** — **2026 평가 기능회복훈련**(지표25+26) | 케어포·이지케어 ✅ · **공지46105** | **Won't v1** | Epic **T** — **US-T06** (Could v2+ · v3.1 `FUNCTIONAL_RECOVERY` 후보) |
 | **G18** — **단기보호 시범** | 케어포 ✅ | **Won't v1** | ROADMAP v1.3 Won't (BNK-9) |
-| **G19** — **통합재가서비스** | 케어포 ✅ | **Won't v1** | ROADMAP v1.3 Won't (BNK-9) |
-| G5-b — 프로그램·식단 풀 모듈 | 케어포 3·5장 | **v3 develop 완료** (`dfd9be2`/`362dbf0`) | Epic **N** — US-N01·N02 · 사진 업로드 잔여 |
+| **G19** — **통합재가서비스** | 케어포 ✅ | **Won't v1** (라벨 partial @ `4c7c994`) | ROADMAP v1.3 Won't (BNK-9 · BNK-45) |
+| G5-b — 프로그램·식단 풀 모듈 | 케어포 3·5장 | **v3 FE POST 닫힘** @ `6a59b74` (BE `@4ee652d`) | Epic **N** — US-N01·N02 · 5-3~5-10·리포트 **v3.1** |
 | G3-b — 직원 관리 UI | 케어포 8장(자격·배치·근태) | **v3 StaffPage develop 진입** (`fe33e7c`) | v3 §3-8 — CRUD·API 연동·Vitest **후속** |
-| G13 — 본인부담 **입금·미납** | 케어포 7-2·7-3 | **v1.2 P0** | Epic **L** — US-L01·L02 |
-| G14 — **등급변동 이력** | 케어포 1-9·엔젤 | **v1.2 P0** | Epic **M** — US-M01 |
+| G13 — 본인부담 **입금·미납** | 케어포 7-2·7-3 | **v1.2 P0** (US-L02 **cross-page hardening partial ✅** · **bank BE+FE ✅** · **은행 8종 E2E live 잔여**) | Epic **L** — US-L01·L02 |
+| G14 — **등급변동 이력** | 케어포 1-9·엔젤 | **v1.2.1 P0 ✅** @ `15e41e3` | Epic **M** — US-M01 |
+| **G22 — 본인부담 대장 리포트 (7-6~10)** | 케어포 7장 | **v1.2.1 P1 ✅** @ `dbf485e` | Epic **M** — US-M03 |
+| **G27 — 재가급여 월한도액 2026** | 케어포 **10-2-1** | **v1.2.1 ✅** @ `a92e625`/`20bc1be`/`fba5ea8` | Epic **M** — **US-M04** |
+| **G28 — 청구 생성기준·전월 가드** | 케어포 9-1 | **v1.2.1 ✅** @ `5bdb476`/`b953662` | Epic **M** — **US-M03-b** |
+| **G21 — 방문요양·이중 일정·NHIS import·billing confirm-lock** | 이지케어 3-1·FAQ 21647 | **v2 Must** `in_progress` (BE `@f77a268` · FE billing confirm-lock @ `c4fb7ff`/`02cd2b2` · **live E2E 잔여**) | Epic **V** — US-V01~V04 |
+| **G2-n — 보호자 명세·법정서식 발송** | 케어포 7-1 · 엔젤 **이메일** 법정서식 | **v2 P1** `in_progress` (API+UI @ `84f3441`/`c48fb67` · **templates 5종 partial** @ `0854fbd`/`eedcc80` · **SMTP 실연동 잔여** BNK-45) | US-G02 |
+| **G25 — 본인부담률 엑셀 업로드** | 케어포 1-1-2·공지920 | **v2 P2** | Epic **G** — **US-G25** |
+| **G23 — 대기 수급자** | 케어포 1-1-1 | **P2** | — |
+| **G20 — 시설급여 특화** | 케어포 demo-work | **Won't v1** (BNK-11) | — |
 | G6 — NFC/RFID 출석 | 케어포·이지케어 | **의도적 미채택** | 없음 — QR B방식 차별화 유지 |
-| G7 — 공단 엑셀 컬럼 스펙·**`처리상태`열** | 업계 공통 (케어포 44438) | **즉시** | US-G04/G06 — 파서 스킵·정규화 Must; 파일럿 샘플 확보 후 검증 |
+| G7 — 공단 엑셀 컬럼 스펙·**`처리상태`열**·**3상태 UX** | 업계 공통 (케어포 44438·BNK-18) | **UX ✅ · 샘플 BLOCK** | US-G04/G06 — 파서·3상태 Must; **실파일** #27 |
 
 **기존 v1 이후 항목 (재확인)**
 
@@ -1040,7 +1432,7 @@
 | FE-12 | v1.2 **Recharts 차트 레이어** — `ChartContainer`·`AttendanceRateChart`·`BranchCompareChart`·`HealthTrendChart` + **`HealthAlertList`(+test, US-M02 건강 알림)** + DESIGN_SYSTEM `chartColors.js` 토큰으로 대시보드·건강·출석 통계 차트를 구현하고 `ChartContainer.test.jsx`·`HealthTrendChart.test.jsx`로 회귀 자동화(BNK-6-4·US-M02) | **47차 COD 31차 `4be0938` develop HEAD 반영(B07 #3 Fixed)** | develop HEAD `ChartContainer`·`AttendanceRateChart`·`HealthTrendChart` PRESENT + HEAD `npm test` 185/33·build 752 modules PASS |
 | FE-13 | v1.2 **Platform·NHIS 배치·reconciliation·청구·수가표 UI** — `BatchProgressSteps`(+test)·`PlatformOrgDetailModal`(+test, US-A01 Tenant 상세)·**`BillingStatusConfirmModal`(+test, US-G06)·`CopayRateTable`(+test, Epic G)·`FeeScheduleTable`(+test, US-G00a·케어포 9-x)·`NhisImportGuidePanel`(+test, 결정 37)·`GuardianDailySummary`(+test, Epic J/K)**·Platform/NHIS/Reconciliation/Forbidden 페이지로 HQ/플랫폼·NHIS import·청구·copay·수가표·보호자 UX를 보강(BNK-6·US-A01·US-G04·US-G06·Epic L) | **47차 COD 31차 `4be0938` develop HEAD 반영(B07 #3 Fixed)** | develop HEAD `BillingStatusConfirmModal`·`CopayRateTable`·`FeeScheduleTable`·`NhisImportGuidePanel`·`GuardianDailySummary` PRESENT·build 752 modules·`npm test` 185/33 PASS |
 | FE-14 | v1.2 **운영·보안·계정 보안 설정 UI** — `AuditLogPanel`(+test)·`BackupSettingsPanel`(+test)·`FilterChips`로 감사 로그·백업 정책·필터 칩 UX, **§3-1 인증 모듈 매핑**으로 `PasswordChangeModal`(+test, 비밀번호 재설정 — SettingsPage 보안 탭 연결)·`PasswordResetRequestModal`(+test, 이메일 재설정 요청)·`LoginHistoryPanel`(+test, 로그인 이력 조회)·`SettingsPage.test.jsx`로 계정 보안 화면을 보강해 케어포 대비 운영/보안 모듈 패리티를 높인다(BNK-6 모듈 커버리지·보안 §3·접근성 §7·REQUIREMENTS §3-1) | **47차 COD 31차 `4be0938` develop HEAD 반영(B07 #3 Fixed, 26→44→60→61→72→76→0 정체 종결)** | develop HEAD `AuditLogPanel`·`BackupSettingsPanel`·`PasswordChangeModal`·`LoginHistoryPanel` PRESENT·build 752 modules·`npm test` 185/33 PASS |
-| FE-15 | v1.2 **프런트 번들 코드 스플릿(성능, 비차단 LOW)** — B07 #3 Fixed 후 `npm run build`가 단일 JS 청크 **744.95 kB**(>500 kB) 경고. `manualChunks`로 `recharts`·vendor 분리해 초기 번들·LCP를 개선한다(BNK-6 모바일 UX·DESIGN_SYSTEM 성능) | **49차 COD 33차 `c98f98d` Fixed** — `manualChunks` 3청크(최대 393.53 kB <500 kB) | develop HEAD `npm run build` 최대 청크 ≤500 kB·`npm test` **186/34 PASS** |
+| FE-15 | v1.2 **프런트 번들 코드 스플릿(성능)** — `manualChunks`로 `recharts`·vendor 분리해 초기 번들·LCP 개선(BNK-6 모바일 UX) | **67차 `d484206` Fixed** — 91/92차 756 kB 회귀 해소 · 3청크 max **367 kB <500 kB** | develop HEAD `npm run build` 최대 청크 ≤500 kB·`npm test` **189/60 PASS** |
 | FE-16 | v1.1/v1.2 **DESIGN_SYSTEM ds-* 유틸리티 마이그레이션(일관성·유지보수)** — Must 페이지·모달·배너 컴포넌트의 **인라인 style을 ds-* 유틸리티 클래스로 전환**해 디자인 토큰 일관성을 높이고, 레이아웃 회귀를 `*.layout.test.jsx`로 자동화한다(DESIGN_SYSTEM §1·§9, UXD 협업) | **50차 COD 34차 `0b9b001`** — 9 컴포넌트(`AttendanceAbsentModal`·`BatchProgressSteps`·`CheckoutModal`·`FeeRateHistoryPanel`·`HealthAbnormalBanner`·`MedicationDuplicateAlert`·`PasswordResetRequestModal`·`PlatformOrgDetailModal`·`SessionTimeoutModal`) ds-* 전환 + `AttendancePage.layout.test.jsx` | develop HEAD `npm test` **187/35 PASS**·build **752 modules**·audit 0·WT CLEAN @HEAD |
 | FE-17 | v1.1 **보호자 초대 수락 UI·로그아웃·레이아웃 회귀(J01·G8/EZCARE 패턴)** — `GuardianInvitationAcceptPage`(+test, `/guardian/invitations/:token/accept` 수락 흐름)·`LogoutButton`(+test)·`BillingPage.layout.test.jsx`·`AuthContext` logout·청구/보호자/Recharts 연동 WIP를 **완료 단위 develop 커밋**한다(BENCHMARK G8·US-J01, API_SPEC §4 연동은 백엔드 API 후) | **53차 COD 35차 `d5654c0` Fixed** — 25 files +823/-57 일괄 커밋·`GuardianInvitationAcceptPage`(+test)·`GuardianInvitationAcceptForm`·`PublicAuthLayout`·`LogoutButton`(+test)·`BillingPage.layout.test`·`acceptGuardianInvitationApi`·AuthContext logout, WT CLEAN·TSR 53차 독립 검증 PASS | develop HEAD `d5654c0` `npm test` **199/40 PASS**·build **756 modules**·audit 0·`git cat-file -e HEAD:` 산출물 PRESENT·**WT CLEAN** |
 | FE-18 | v1.1 **보호자 초대 목록·수락·명세 모달 UI(J01·G8/EZCARE 패턴)** — `GuardianInvitationList.jsx`(+test)·`PaymentRecordModal.jsx`·`GuardianPortalPage.jsx`·`GuardianInvitationAcceptPage.jsx`·`/guardian/invitations/:token/accept` 라우트·`services.js` API 헬퍼를 develop 반영 | **44차 COD `f506c90` Fixed** — HEAD @ `c3b863e` · `npm test` **9/9 PASS**·build **70 modules**·WT CLEAN | develop HEAD `c3b863e` + clean tree |

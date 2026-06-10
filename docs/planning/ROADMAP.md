@@ -1,4 +1,4 @@
-<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-09T09:00:00+09:00 -->
+<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-10T23:45:00+09:00 -->
 # ogada 구현 로드맵
 
 > **작성·유지**: `planner`  
@@ -7,7 +7,7 @@
 > **피드백**: `tester` → `docs/qa/QA_FEEDBACK.md` → `planner` 반영 → `coder` 수정  
 > **벤치마크 입력**: `docs/planning/research/BENCHMARK_REPORT.md`, `docs/planning/research/COMPETITOR_MATRIX.md`, `memory/decisions.md`
 
-> **CURRENT BASELINE (76차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`2012945`** · test **`598d108`** · **1 ahead** · WT **CLEAN** · **`246/246 PASS`** · frontend develop **`6d0a03a`** · test **`c7c8f07`** · **2 ahead** · WT **CLEAN** · **`225/72 PASS`** · **39 Route·36 page** · planner 76차 (BNK-14 + TSR 105 + v1.2.1 in_progress) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**. **모듈 커버 ~68.7%** @ `6d0a03a`(BNK-14 `competitorModuleCoverage.js` 실측 · ≥60% PASS).
+> **CURRENT BASELINE (96차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`d6d7e7f`** · test **`598d108`** · **59 ahead** · WT **CLEAN** · frontend develop **`6c4c151`** · test **`c7c8f07`** · **74 ahead** · WT **DIRTY 4M** · **48 path·40 page** · planner 96차 (BNK-58 · TSR 231~232 · **G15 2-2/2-3 출석 이원화 ✅** @ `6c4c151`/`d6d7e7f` · **G15 계약 서명 API+UI ✅** @ `3c8f9fe`/`9e3cab5` · **G11 v2 청구 자동 가산 ✅** @ `d7475fd` · **QA-B19 geocode failure UI WIP** · **케어포 func.php 108 leaf 불변**) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**. **모듈 커버 74.81%**(BNK-41~58 · ≥60% PASS). **v1.2.1 merge-blocking P0 `[x]` 유지** — BE **`merge_status: ready`** · FE **BLOCK**(WT dirty · QA-B19) · tester merge **74+59=133 commits** · TSR develop **482/127·453 PASS** @ HEAD/WT.
 
 ---
 
@@ -40,6 +40,26 @@
 
 > **15차 동기화 (2026-06-06T19:00) — TSR 17·18·19차 반영 (B02 Fixed 확정 + B07 FE-7 회복·범위 확대)**: ① **TSR 17차(18:34, backend)**: COD 14차 `b5d70a8` GuardianAccess RBAC 3 tests **TSR 독립 검증 Fixed** — develop working tree **CLEAN**, `@Test` 98. **QA-B02 recurrence Planned→Fixed**. ② **TSR 18차(18:42, backend)**: 상태 **불변** — Maven 79/79 재현, 잔여 BLOCK = **merge 게이트 단일**(B01·SEC-007). ③ **TSR 19차(18:45, frontend)**: develop HEAD `998ac87` 불변·working tree **35 files**(16차 29→35, v1.2 P0 WIP 추가), WT `npm test` **10/4 PASS**·`npm run build` **107 modules PASS**(16차 FAIL **회복**, FE-7 충족). **B07 Planned 유지** — dirty-tree·규율 6·7 위반 **지속**. **잔여 BLOCK = merge 게이트 3건(B01·B03·B05·SEC-007) + B07 recurrence(Planned, frontend dirty-tree 단일)** — backend dirty-tree·B02 사유 **소멸**.
 
+> **96차 동기화 (2026-06-10T23:45 KST) — BNK-58 + TSR 231~232 + G15 2-2/2-3·계약서·G11 v2 + FE merge BLOCK + QA Open→Planned 1건**: ① **planner git 재실측** — backend **`d6d7e7f`**(+5 vs `d5e0e01`: G15 `transportMode` API·G11 v2·계약 서명 lineage) · WT **CLEAN** · **`453 PASS`** · frontend **`6c4c151`**(+12 vs `62f022df`: G15 출석 이원화 Route·계약 UI lineage) · WT **DIRTY 4M** · **`482/482 PASS`** · **FE 74+BE 59 ahead** · **48 path·40 page**. ② **BNK-58** — **★ G15 2-2/2-3 출석 이원화 E2E ✅** @ `6c4c151`/`d6d7e7f` · **★ G15 계약 서명 ✅** @ `3c8f9fe`/`9e3cab5` · **★ G11 v2 청구 자동 가산 ✅** @ `d7475fd` · lcms **selectProductGuide** 신규 · **#44 4차 0건** · **케어포 108 leaf 불변** · **가정 번복 0건**. ③ **TSR 231~232** — **QA-20260610-B19 Open→Planned**(G15 geocode failure UI WIP 4M · B07 #12). ④ **merge gate**: BE **FULLY UNBLOCKED** · FE **BLOCK**(WT clean 선행) · 합계 **133 commits**. ⑤ **잔여 P1**: **COD B19 커밋/revert** → FE WT clean → merge(133) · G15 **2-1-1/2-9 외출·운행일지** · G7 실파일(#27) · G2 **SMTP** · G13·US-J02 **live run** · G21 **live E2E** · US-L01 **은행 8종 E2E live** · v1.3 live E2E.
+> **95차 동기화 (2026-06-10T21:30 KST) — BNK-53 + TSR 219~220 + G11 catalog+가이드 E2E + G15 v1.3-C 부분 + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`d5e0e01`**(+7 vs `467cd70`: G11 `FeeSurchargeRateCatalog`+preview API lineage @ `904072b`) · WT **CLEAN** · **`434 PASS`** · frontend **`62f022df`**(+7 vs `c9451a0`: G11 `FeeSurchargeGuidePanel`+G15 `TransportCompliancePanel` lineage @ `3db8db3`) · WT **CLEAN** · **`467/126 PASS`** · **FE 68+BE 54 ahead** · **46 path·40 page**. ② **BNK-53** — **★ G11 가산율 catalog+가이드 E2E 닫힘** @ `904072b`/`3db8db3`(야20·심야30·휴일30·유급휴일50%·중복불가·`V1_NOTICE`) · **★ G15 v1.3-C 부분 닫힘** — `TransportCompliancePanel` 5수칙+계약서·일지 Modal `/transport` · **잔여**: 계약서 서명 저장 API·탑승(2-2)/출석(2-3) 이원화·외출 리포트(2-9) · **G27·US-L01 bank FE ✅** (BNK-50~52·94차 반영 확인) · **케어포 func.php 108 leaf·11 모듈 verbatim 불변** · **#44 수동 보류** · **가정 번복 0건** · **모듈 74.81%**. ③ **TSR 219~220** — **QA Open 0건**. ④ **잔여 P1**: tester merge(**122**) · G11 **v2 청구 자동 가산** · G15 v1.3-C **잔여 3건** · G7 실파일(#27) · G2 **SMTP 실연동** · G13·US-J02 **live run** · G21 **live E2E** · US-L01 **은행 8종 E2E live** · v1.3 live E2E.
+> **94차 동기화 (2026-06-10T18:45 KST) — BNK-49 + TSR 207~208 + US-M03-b·US-L01 BE·G27 BE + 케어포 2-x + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`467cd70`**(+6 vs `0854fbd`: G27 `MonthlyBenefitCapCatalog`+guard·US-L01 bank deposit·US-M03 settings lineage) · WT **CLEAN** · **`412 PASS`** · frontend **`c9451a0`**(+6 vs `eedcc80`: US-M03 settings·basis alias @ `5bdb476`/`c9451a0`) · WT **CLEAN** · **`434/434 PASS`** · **FE 61+BE 49 ahead** · **46 path·40 page**. ② **BNK-49** — **★ G27 재가급여 월한도액 2026 BE catalog+guard 닫힘** @ `a92e625`(1등급 2,512,900~5등급 1,208,900 MOHW 247 verbatim) · **FE 표기·인지지원 676,320 시드 ❌** · **★ US-L01 은행엑셀 BE-only** @ `e50533f`/`95bb34d` · **★ US-M03-b 청구생성기준+전월가드 닫힘** @ `5bdb476`/`b953662`/`911e732`/`25f3225` · **케어포 func.php 2-x 11 leaf verbatim**(탑승/출석 이원화·2-7~2-9 리포트) → **G15 v1.3-C 세부 갭** · **#44 수동 보류** · **가정 번복 0건** · **모듈 74.81%**. ③ **TSR 207~208** — **QA Open 0건** · QA-20260610-B07 #11 **Fixed** @ `c9451a0`. ④ **잔여 P1**: tester merge(**110**) · **G27 FE**(월한도 초과 경고) · **US-L01 FE**(은행엑셀 업로드) · G7 실파일(#27) · G2 **SMTP 실연동** · G13·US-J02 **live run** · G21 **live E2E** · **G15 v1.3-C**(수칙·계약·2-x 리포트) · v1.3 live E2E · G11 가산수가.
+> **93차 동기화 (2026-06-10T15:45 KST) — BNK-45 + TSR 192~196 + US-L01·G2 +2·G19 라벨 + #44 재정의 + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`0854fbd`**(+4 vs `f77a268`: G2 **납부확인서·학대예방교육** email+receipt enrich) · WT **CLEAN** · **`383 PASS`** · frontend **`eedcc80`**(+7 vs `eb3f0fd`: US-L01 **overpayment guard** @ `dd72ff8` · G19 **통합재가 라벨** @ `4c7c994` · G2 **notify UI 2종** @ `eedcc80`) · WT **CLEAN** · **`413/413 PASS`** · **FE 55+BE 43 ahead** · **46 path·40 page**. ② **BNK-45** — **★ #44 「이동지원서비스 시범사업」(동행·3,000원) ≠ 주야간 「이동서비스비」(러-1~4)** 구분 확정 · **이지케어 9,309**(+1) · **케어포 공지 46105** 2026 평가 반영 · **가정 번복 0건** · **모듈 74.81%**. ③ **TSR 192~196** — **QA Open 0건** · QA-20260610-B15 **Fixed** @ `4109680`. ④ **잔여 P1**: tester merge(**98**) · G7 실파일(#27) · G2 **SMTP 실연동** · G13·US-J02 **live run** · G21 **live E2E** · v1.3 live E2E · G15 수칙·계약 Route · G11 가산수가 · **#44 제34조 1차 출처 재추적**.
+> **92차 동기화 (2026-06-10T13:25 KST) — BNK-42 + TSR 183·184 + G9 닫힘 + G2 SMTP templates + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`f77a268`**(+1 vs `872e040`: G2 **SMTP templates 3종**·`GuardianDocumentNotificationService`) · WT **CLEAN** · **`371 PASS`** · frontend **`eb3f0fd`**(+1 vs `5348d9c`: G9/US-J02 **duration band unified fallback**) · WT **CLEAN** · **`390/390 PASS`** · **FE 48+BE 38 ahead** · **46 path·40 page**. ② **BNK-42** — **G9 duration_band ✅** FE 2D+스냅샷+폴백(`6fe853b`/`5348d9c`/`eb3f0fd`) · **G2 원화 포맷** @ `872e040` · **G2 templates 3종** @ `f77a268`(엔젤 명세·기록지·가정통신문 패리티 방향) · **이지케어 9,308/9,231**(+6) · **가정 번복 0건** · **모듈 74.81%**. ③ **TSR 183·184** — **QA Open 0건** · QA-B07 #10 **Fixed** @ `5348d9c`. ④ **잔여 P1**: tester merge(**86**) · G7 실파일(#27) · G2 **SMTP 실연동** · G13·US-J02 **live run** · G21 **live E2E** · v1.3 live E2E · G15 수칙·계약 Route · G11 가산수가 · #44 별표18 수동 추출.
+> **91차 동기화 (2026-06-10T12:30 KST) — BNK-38 + TSR 172 + G9·G21·G2·CMS FE 진전 + QA-B07 #10 Planned + FE merge BLOCK**: ① **planner git 재실측** — backend **`06d68dd`**(+4 vs `2c6e57e`: G9 `duration_band` V61·fee schedule forward-only·SMTP `SmtpEmailProvider`) · WT **CLEAN** · **`359 PASS`** · frontend **`527ba2d`**(+7 vs `e6df92c`: CMS `/billing/cms`·G21 billing confirm-lock·US-J02 pagination·GuardianPortal billing WIP) · WT **DIRTY 2M** · **`370/370 PASS`** · **FE 41+BE 34 ahead** · **46 path·40 page**. ② **BNK-38** — **G9 duration_band partial** @ `425a05f` · **G21 billing confirm-lock partial** @ `c4fb7ff`/`02cd2b2` · **G2 SMTP committed** @ `6ed48ff`/`f23f15a` · **CMS FE Route ✅** @ `6c6dc7a`/`c0a01b4` · **US-J02 billing filter/dedupe/retry WIP**. ③ **TSR 172** — **QA-20260610-B07 #10 Open→Planned** · FE merge **BLOCK**(WT dirty) · BE merge **unblocked**. ④ **잔여 P1**: FE WT clean → merge(**75**) · G7 실파일(#27) · G2 **SMTP templates·실발송** · G9 **duration_band 완료** · G13·US-J02 **live run** · G21 **live E2E** · v1.3 live E2E · G11 가산수가.
+> **90차 동기화 (2026-06-10T23:30 KST) — BNK-35 + TSR 159·160 + G2 email·FCMS stub·7위젯 + merge gate FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`2c6e57e`**(+6 vs `0ebe945`: G2 email enrich·FCMS `StubFcmsClient`·`CmsCopayLifecycleE2eTest`) · WT **CLEAN** · **`350/350 PASS`** · frontend **`e6df92c`**(+6 vs `14e9066`: US-M02-c overdue·US-L01/L02 live harness·cross-page hardening) · WT **CLEAN** · **`351/100 PASS`** · **FE 34+BE 30 ahead** · **45 path·39 page**. ② **BNK-35** — 케어포 func.php **111 leaf·32 리포트(28.8%)** · **7-x 8/11** · **공지920 본인부담률 엑셀 P2(G25)** · **CMS 7-4 BE stub** @ `2c6e57e` · FE `/billing/cms` **미구현** · **G2 email skeleton** @ `fbedcc3` · **US-M02-c 7위젯 닫힘** · **G13 cross-page hardening** @ `c72e9df`. ③ **TSR 159·160** — **신규 Open 0건** · v1.2.1 merge **FULLY UNBLOCKED**. ④ **잔여 P1**: tester merge(**64**) · G7 실파일(#27) · G2 **SMTP/메일벤더 실연동** · G13·US-J02 **live run**(결정 73) · G21 **통합 E2E** · v2 **CMS FE Route** · v1.3 live E2E · G9 **duration_band** · G11 가산수가.
+> **89차 동기화 (2026-06-10T12:00 KST) — BNK-31 + TSR 147·148 + G13 E2E·G21 파서 + merge gate FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`0ebe945`**(+5 vs `3e4d3e6`: visit pilot E2E·overdue notify lifecycle tests) · WT **CLEAN** · **`334/334 PASS`** · frontend **`14e9066`**(+7 vs `311c7c0`: US-L02 overdue·pagination E2E·reminder timestamp) · WT **CLEAN** · **`340/97 PASS`** · **FE 28+BE 24 ahead** · **45 path·39 page**. ② **BNK-31** — **G14·대시보드·#44·v2 CMS 번복 없음** · **G13 US-L02 pagination·reminder E2E 부분 닫힘** @ `fed457f`/`14e9066` · **G21 `NhisVisitScheduleExcelParser` 한국어 날짜/시간** @ `7fbd219` · **v3 식사·프로그램 FE POST** @ `6a59b74` **닫힘** · 케어포 func.php **timeout**·BNK-28 정본 유지 · **G2 이메일 채널 P1**(엔젤 법정서식). ③ **TSR 147·148** — **신규 Open 0건** · v1.2.1 merge **FULLY UNBLOCKED**. ④ **잔여 P1**: tester merge(**52**) · G7 실파일(#27) · G2 **이메일 실발송** · G13 **cross-page 상태전이** live E2E · G21 **통합 E2E** · v1.3 live E2E · 이지케어 **2026.7.1** FAQ.
+> **88차 동기화 (2026-06-10T09:00 KST) — BNK-28 + TSR 135·136 + G21/G2 진전 + merge gate FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`3e4d3e6`**(+7 vs `ee3fa3a`: G21 확정 차단·notify API·paired cancel cascade·draft sync) · WT **CLEAN** · **`329/329 PASS`** · frontend **`311c7c0`**(+7 vs `e1320f4`: G2 notify UI·G21 import 가이드·US-V04·paired cancel UX·QR branch-scoped) · WT **CLEAN** · **`326/93 PASS`** · **FE 21+BE 19 ahead** · **45 path·39 page**. ② **BNK-28** — 케어포 func.php **97 leaf·리포트 44%** · demo-work **120 view·이동서비스 0** · **G21 확정↔import P1 닫힘** @ `bf3d40d`/`84f3441` · **G2 notify API+UI 착수** @ `c48fb67`/`84f3441` · **대기수급자(1-1-1) P2** · 리포트 전수 **P2/v3.1**. ③ **TSR 135·136** — **신규 Open 0건** · v1.2.1 merge **FULLY UNBLOCKED**. ④ **잔여 P1**: tester merge(**40**) · G7 실파일(#27) · G2 **실발송 채널** · US-J02·G13 **live** E2E · v1.3 live E2E · v3 meals/programs **FE 연결**.
+> **87차 동기화 (2026-06-10T06:00 KST) — BNK-25 + TSR 123·124 + merge gate FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`ee3fa3a`**(+6 vs `dd49204`: G21 NHIS visit import·HOME_VISIT guard) · WT **CLEAN** · **`306/306 PASS`** · frontend **`e1320f4`**(+4 vs `e39164d`: SEC-D17 apiFetch·formErrors/http·UXD-62) · WT **CLEAN** · **`311/91 PASS`** · **FE 15+BE 12 ahead** · **45 path·39 page**. ② **BNK-25** — **#44 이동서비스비 러-1~4 2차 출처 충돌 해소** — **830/2,630/4,430/6,230원**(BNK-9 확정·BNK-17 폐기) · 별표18 HWP 1차만 잔여 · **G17** 지표25(계획 2점)+26(실행 3점) 정밀화 · **G21** NHIS visit import BE @ `ee3fa3a` · **SEC-D17** apiFetch FE @ `e1320f4`. ③ **TSR 123·124** — **신규 Open 0건** · v1.2.1 merge **FULLY UNBLOCKED**. ④ **잔여 P1**: tester merge(**27**) · G7 실파일(#27) · US-J02·G13 **live** E2E · v1.3 live E2E · Epic V NHIS import FE · G11·알림톡 실발송(v1.1/v2).
+> **86차 동기화 (2026-06-10T04:30 KST) — TSR 116 재확인 + BNK-22 불변 + QA Open 0건**: ① **planner git 재실측** — baseline **85차와 동일**(FE `e39164d`·BE `dd49204`·**11+6 ahead**·WT **9+26 DIRTY**·**45 path·39 page**). ② **TSR 116** — FE develop **287/89 PASS** @ WT dirty · BE **288/288 PASS** @ HEAD · **신규 Open 0건** · v1.2.1 merge ready · **merge 선행 WT clean 미충족**. ③ **BNK-22** — **US-J03-h 닫힘** 재확인 · **알림톡/SMS 실발송(케어포 10-1) v1.1/v2 잔여**. ④ **잔여 P1**: WT clean → merge(17) · G7 실파일(#27) · US-J02·G13 live E2E · v1.3 live E2E · G11.
+> **85차 동기화 (2026-06-10T03:00 KST) — BNK-22 + US-J03-h/G8 알림 이력 닫힘 + FE WT DIRTY**: ① **planner git 재실측** — backend **`dd49204`**(HEAD 불변) · WT **DIRTY 26** · frontend **`e39164d`**(+1 vs `1794e1c`: US-J03 `NotificationHistoryPanel`·UXD-61 Modal a11y) · **WT DIRTY 9** · **FE 11+BE 6 ahead** · **45 path·39 page** · 테스트 **WT dirty로 미재실행**(BNK-22). ② **BNK-22** — **G8 알림 발송 이력 UI 닫힘** @ `e39164d` — 케어포 **10-7 안내발송내역** 패리티 · PIPA 연락처 비표시 · **알림톡/SMS 실발송(10-1) v1.1/v2 잔여** · 모듈 커버 **72.5%**(발송 연동 시 ~74.4% 예상). ③ **QA Open 0건** · Planned 0건. ④ **잔여 P1**: **양 스트림 WT clean** → merge(**11+6**) · G7 **실파일**(#27) · US-J02·G13 **live** E2E · v1.3 live E2E · G11 가산수가(v1.1).
+> **84차 동기화 (2026-06-10T01:30 KST) — BNK-20 + US-M02-b 닫힘 + FE WT CLEAN**: ① **planner git 재실측** — backend **`dd49204`**(HEAD 불변) · WT **DIRTY 17** · frontend **`1794e1c`**(+1 vs `6db762a`: BNK-19 대시보드 NHIS 대기 위젯·RegionSelector·식단 폼) · **WT CLEAN** · **FE 10+BE 6 ahead** · develop **`275/85`·`288/288 PASS`**. ② **BNK-20** — 이지케어 **RFID 실시간 2016 종료→엑셀** → G7 엑셀 전략 **업계 표준**(약점 아님) · **G11 가산수가** 경쟁사 표준 기대치 · 도입 **9,306**·셋팅 **정가 55k** · G21 이중일정 패리티 · 급여·회계 **Won't v1**. ③ **US-M02-b 닫힘** @ `1794e1c` — `DashboardPage` **「NHIS 대기(보류)」** 6번째 위젯(`nhisPendingReviewCount`). ④ **QA Open 0건** · Planned 0건. ⑤ **잔여 P1**: G7 **실파일 샘플**(#27) · US-J02·G13 **live** E2E · v1.3 live E2E · **merge 선행 BE WT clean**.
+> **83차 동기화 (2026-06-10T00:15 KST) — BNK-19 + TSR 114 + `pendingReviewCount` P1 상향 + WT DIRTY 재오염**: ① **planner git 재실측** — backend **`dd49204`**(HEAD 불변) · WT **DIRTY 15**(meals/programs API·V55 visit integrity) · frontend **`6db762a`**(+1 vs `16402b2`: UXD-59 Epic K·L·J02 `GuardianClientLinks`·`OverdueSummaryBar`) · WT **DIRTY 3U** · **FE 9+BE 6 ahead** · develop **`271/83`·`288/288 PASS`**. ② **BNK-19** — G7 reconciliation **닫힘** 재확인(`fbb0b7a`/`16402b2`) · **대시보드 `pendingReviewCount` 위젯** PLA-82 Could→**P1** (US-M02 6번째 축) · 케어포 **2장 func.php**·공지 **46626** · #44 law.go.kr **1차 미확인 유지**. ③ **QA Open 0건** · Planned 0건. ④ **잔여 P1**: G7 **실파일 샘플**(#27) · **대시보드 `pendingReviewCount`** · US-J02·G13 **live** E2E · v1.3 live E2E · Epic V 공단 import · **merge 선행 WT clean**.
+> **82차 동기화 (2026-06-09T23:30 KST) — BNK-18 + TSR 112·113 + G7 FE 닫힘 + merge gate FULLY UNBLOCKED**: ① **planner git 재실측** — backend **`dd49204`**(+1 vs `4cc328d`: Region API tests·NHIS pilot fixture parser) · frontend **`16402b2`**(+2 vs `371794f`: `fbb0b7a` G7 `PENDING_REVIEW` UI·`16402b2` G7·G13·Epic V `pilotPageFlows` E2E) · **FE 8+BE 6 ahead** · **양 스트림 WT CLEAN** · develop **`288/288`·`267/81 PASS`**. ② **BNK-18** — G7 **3상태 폐루프 BE+FE 닫힘**(`Badge`·`NhisReconciliationTable`·`NhisPendingReviewGuide`·`ReconciliationPage` `pendingReviewCount`) · 케어포 `처리상태`열 **파싱 역전** 확정. ③ **QA Open 0건** · Planned 0건. ④ **잔여 P1**: G7 **파일럿 엑셀 샘플**(데이터 BLOCK) · 대시보드 `pendingReviewCount` 위젯(Could) · US-J02 **live** E2E · v1.3 live E2E run · Epic V 공단 import.
+> **81차 동기화 (2026-06-09T22:00 KST) — BNK-17 + TSR 110·111 + G7 BE 커밋 + Epic V `/visits` FE 착수**: ① **planner git 재실측** — backend **`4cc328d`**(+1 vs `1812165`: `feat(G7) NHIS PENDING_REVIEW` V54·`NhisReconciliationMatcher`·+5 @Test) · frontend **`371794f`**(+1 vs `0a07799`: Epic V `/visits` US-V01~V03) · **FE 6+BE 5 ahead** · FE **WT DIRTY 4**(G7 `NhisReconciliationTable`·`Badge` WIP) · BE **WT CLEAN** · develop **`259/80`·`269/269 PASS`**. ② **BNK-17** — G21 `/visits` FE 착수(이지케어 계획/청구 이중 Tabs) · G7 **V54+서비스 커밋** · #44 law.go.kr 러-1~4 **2차 출처 충돌** · 엔젤 CMS=**효성CMS(FCMS)**. ③ **QA Open 0건** · Planned 0건. ④ **잔여 P1**: G7 FE UI 커밋·파일럿 샘플 · G13 E2E · US-J02 live E2E · v1.3 live E2E · Epic V E2E·공단 import · 7-2-1·7-9 **Could**.
+> **80차 동기화 (2026-06-09T21:00 KST) — BNK-16 + TSR 109 + US-M03 닫힘 + v1.2.1 P1 진전**: ① **planner git 재실측** — backend **`1812165`**(+1 vs `15e41e3`: `feat(v2/G21) home-visit branch guard`) · frontend **`0a07799`**(+2 vs `465bdae`: `dbf485e` US-M03 ledger·calculator UXD-56 · `0a07799` US-J02·US-M03 pilotPageFlows E2E) · **FE 5+BE 4 ahead·WT CLEAN** · **`240/76 PASS`**. ② **US-M03/G22 닫힘** — `/billing/reports/{charges,deposits,receipts}`·`/billing/calculator` @ `dbf485e` **PRESENT** (BNK-16). ③ **모듈 커버 72.5%**(68.7%→+3.8pp). ④ **BNK-16** — 이지케어 FAQ 233건·9,306 기관·payroll lock-in 37% 재확인 · G7 NHIS **3상태(대기)** UX P0. ⑤ **QA Open 0건** · Planned 0건. ⑥ **잔여 P1**: G7 NHIS·G13 E2E·US-J02 live E2E · v1.3 live E2E run · v2 `/visits` UI · 7-2-1·7-9 **Could**.
+> **79차 동기화 (2026-06-09T19:35 KST) — TSR 106·107 + G14 GET API 닫힘 + v1.2.1 P0 완료**: ① **planner git 재실측** — backend **`15e41e3`**(+1 vs `d768820`: `feat(v1.2.1/G14) GET ltc-grade-history` · `LtcGradeHistoryServiceTest` 4 @Test) · frontend **`465bdae`**(+1 vs `6d0a03a`: US-J02 guardian billing live API 필드 정합) · 양 스트림 **3 ahead·WT CLEAN** · **`262/262`·`225/72 PASS`**. ② **US-M01/G14 닫힘** — `GET /api/v1/clients/{id}/ltc-grade-history` @ `15e41e3` **PRESENT** (TSR 106). ③ **v1.2.1 P0 `[x]`** — US-M02 @ `6d0a03a` + US-M01 @ `15e41e3` → **`merge_status: ready`** (결정 92). ④ **QA Open 0건** · Planned 0건. ⑤ **잔여 P1**: US-M03(G22)·US-J02 E2E·G13 E2E·G7 NHIS · v1.3 live E2E run · v2 `/visits` UI.
+> **78차 동기화 (2026-06-09T11:00 KST) — BNK-13·14 재확인 + QA Open 0건 + baseline 불변**: ① **planner git 재실측** — backend **`d768820`** · frontend **`6d0a03a`** · 양 스트림 **2 ahead·WT CLEAN** — **77차 대비 delta 없음**. ② **BNK-14 불변** — US-M02 **닫힘** · G14 **GET API 1건 잔여** · **~68.7%** · 이지케어 RFID→**G21 v2**. ③ **BNK-13 반영** — func.php **106 leaf** · 본인부담 **7-1~7-3 Route ✅** · **7-6~7-10 리포트 5건** → **US-M03 P1**(G22). ④ **QA Open 0건** · Planned 0건 — **이동 없음**. ⑤ **활성 버전**: v1.2.1 **`in_progress` 단일** · v2 G21 backend **`@d768820` bleed** · merge **P0 후 4 commits**.
+> **77차 동기화 (2026-06-09T10:05 KST) — BNK-14 재확인 + backend v2/G21 bleed + v1.2.1 G14 잔여**: ① **planner git 실측** — backend develop **`d768820`**(+1 vs `2012945`: `feat(v2/G21) visit schedules` · V53·`VisitServiceTest`) · test **`598d108`** · **2 ahead** · **`257/257 PASS`** · frontend **`6d0a03a`** · test **`c7c8f07`** · **2 ahead** · **`225/72 PASS`**. ② **BNK-14 불변** — US-M02 **닫힘** · G14 **GET API 미구현** · 모듈 **~68.7%** · 이지케어 RFID→**G21**. ③ **결정 92** — v1.2.1 **P0(G14) 선행** · v2 backend 선행 커밋은 **develop-only bleed**(merge gate **v1.2.1 P0 후**). ④ **v2 G21** — `schedule_kind` PLAN/BILLING·`paired_schedule_id`·체크인 API **backend ✅ @ `d768820`** · `/visits` UI·E2E **잔여**. ⑤ **QA Open 0건** · **잔여**: G14 GET API · v1.2.1 merge(4 commits) · G7 NHIS · v1.3 live E2E run.
 > **76차 동기화 (2026-06-09T09:00 KST) — BNK-14 + TSR 105 + v1.2.1 진전 (US-M02 닫힘·G14 API 잔여)**: ① **planner git 실측** — backend develop **`2012945`**(WT CLEAN · test **`598d108`** · **1 ahead**) · frontend develop **`6d0a03a`**(WT CLEAN · test **`c7c8f07`** · **2 ahead**). ② **BNK-14** — US-M02 대시보드 실데이터 **닫힘** · US-M01 등급이력 **UI+DB(V48) ✅** · `GET /ltc-grade-history` **미구현** · 모듈 **~68.7%** · 이지케어 RFID→**G21 v2**. ③ **TSR 105** — test **`c7c8f07`** 217/70 PASS · develop **`6d0a03a`** 225/72 PASS · **QA Open 0건**. ④ **v1.2.1** — P0-1 US-M02 **`[x]`** · P0-2 US-M01 **GET API 1건 잔여** · P1 **7-6~7-10 본인부담 리포트**(BNK-13). ⑤ **잔여**: G14 backend API · v1.2.1 merge(2+1) · G7 NHIS · v1.3 live E2E run.
 > **75차 동기화 (2026-06-09T04:00 KST) — QA-B12·SEC-D14 Fixed + v1.2.1 in_progress + API_SPEC G14**: ① **planner git 실측** — backend develop/test/origin **`598d108`**(WT DIRTY 13) · frontend develop/test/origin **`c7c8f07`**(0 ahead·CLEAN). ② **QA-B12·SEC-D14 Planned→Fixed** — origin push·frontend merge(22) **완료**. ③ **v1.2.1 `status: in_progress`** — frontend 단일 활성 버전(US-M01 G14·US-M02). ④ **API_SPEC §4-2** `ltc_grade_history` 명세 신설. ⑤ **BNK-10~12 불변** — G14·US-M02 잔여만 coder 착수. ⑥ **잔여**: backend WT 13 commit/revert · v1.3 live E2E run(결정 73) · G7 NHIS 샘플.
 > **74차 동기화 (2026-06-09T03:00 KST) — BNK-10·11·12 + TSR 102·103 + SEC-D14 Planned + v1.2.1 + UXD-55 + baseline `@c7c8f07`**: ① **BNK-10** — 이지케어 ERP 9축·**계획/청구 이중 일정**·급여·4대보험 lock-in → ogada **Won't v1**(G4) · EZCARE 보호자 초대 패턴 G8 유지. ② **BNK-11** — 케어포 **demo-work=시설급여 셸**(이동서비스 없음) · 주야간 **정본=func.php 109항목** · **G20** 시설특화 Won't v1. ③ **BNK-12** — ogada **`c7c8f07` 40 Route·35 page·~74–78% KPI PASS** · 이지케어 **9,298개소** · v1.2 P0 잔여 **G14·대시보드 실데이터** → **v1.2.1**. ④ **TSR 102·103** — backend test `@598d108` 246/246 · frontend **`c7c8f07`** UXD-55 `GuardianBillingDetailModal`(US-J02) · **217/70 PASS** · develop **22 ahead**. ⑤ **QA Open 1건→Planned** — SEC-D14(origin STALE) QA-B12 동반. ⑥ **활성 frontend `in_progress` 없음** — merge gate 선행.
@@ -135,17 +155,96 @@
 
 > **13차 동기화 (2026-06-06T18:10) — TSR 15·16차 반영 (B02 recurrence + B07 WT 품질 회귀)**: ① **TSR 15차(18:04, backend)**: develop HEAD `fac3d07` 불변·13차 clean 후 working tree **재오염** — `RoleBasedControllerAccessTest` guardian/client_user RBAC +74 lines 미커밋(**QA-B02 recurrence**). → **B02 Open→Planned**, v1 완료 기준 QA-B02 `[x]` **철회**, USER_STORIES §17 **BE-6**. ② **TSR 16차(18:07, frontend)**: develop HEAD `998ac87` 불변·working tree **악화** 19→**29 files**(14M+15U), WT `npm test`·`npm run build` **FAIL**(`routeAccess.js` duplicate `ROUTE_ACCESS`). → **B07 Planned 강화**, USER_STORIES **FE-7**(커밋 전 build/test PASS). **잔여 BLOCK = merge 게이트 4건 + B02 recurrence(Planned) + B07 recurrence(Planned, 16차)** — 양 스트림 dirty-tree 병행.
 
-### 핵심 진단 (planner, 76차 갱신 — BNK-14 + v1.2.1 US-M02 닫힘·G14 API 잔여)
+### 핵심 진단 (planner, 96차 갱신 — BNK-58 · TSR 231~232 · FE merge BLOCK)
 
-- **CURRENT BASELINE (76차)**: backend develop **`2012945`** · test **`598d108`** · **1 ahead** · WT **CLEAN** · **`246/246 PASS`** · frontend develop **`6d0a03a`** · test **`c7c8f07`** · **2 ahead** · WT **CLEAN** · **`225/72 PASS`** · **39 Route·36 page**. **git 실측(planner 76차)** — ROADMAP/QA 과거 SHA보다 **우선**.
-- **BNK-14 (76차)**: US-M02 **닫힘** @ `6d0a03a` · US-M01 **UI+DB(V48) ✅** · `GET /ltc-grade-history` **미구현** · 모듈 **~68.7%**(≥60% PASS) · 케어포 1-9 **전수 리포트 Route 없음**(개별 탭만) · **7-6~7-10 리포트 P1** · 이지케어 RFID→**G21 v2**.
-- **활성 버전 우선순위 (76차)**: ① **v1.2.1 `in_progress`** — **G14 GET API**(US-M01 마무리 1건) ② **v1.2.1 merge(develop 2+backend 1)** — P0 `[x]` 후 tester ③ **v1.3 live E2E run**(결정 73) ④ **G7 NHIS 샘플** ⑤ **P1 7-6~7-10 본인부담 리포트** ⑥ v2·v3 frontend **보류**.
-- **v1.2.1 (76차)**: **US-M02 `[x]`** · **US-M01 △** (GET API 잔여) · US-J02·G13·G7 **잔여**.
+- **CURRENT BASELINE (96차)**: backend **`d6d7e7f`** · test **`598d108`** · **59 ahead** · WT **CLEAN** · frontend **`6c4c151`** · test **`c7c8f07`** · **74 ahead** · WT **DIRTY 4M** · **48 path·40 page** · TSR 232 FE **482/127**·TSR 231 BE **453 PASS** @ HEAD/WT.
+- **v1.2.1 merge-blocking P0 `[x]` 유지** · BE **`merge_status: ready`** · FE **BLOCK**(QA-B19 · WT dirty) — merge **133 commits(74+59)** · BE ★ **FULLY UNBLOCKED** · FE **WT clean 선행**.
+- **BNK-58**: **★ G15 2-2/2-3 출석 이원화 ✅** @ `6c4c151`/`d6d7e7f` · **★ G15 계약 서명 ✅** @ `3c8f9fe`/`9e3cab5` · **★ G11 v2 청구 자동 가산 ✅** @ `d7475fd` · **잔여 P1**: geocode failure UI(B19 WIP)·2-1-1/2-9 외출·운행일지 DB · **#44 수동 보류** · lcms **selectProductGuide** 신규(G10).
+- **BNK-53·56 불변**: G11 catalog·G27·US-L01 bank·US-M03-b 닫힘 재확인 · **케어포 108 leaf 불변**.
+- **QA Open 0건** · Planned **1건**(B19) · **활성 P1 우선순위**: ① **COD B19 커밋/revert → FE WT clean** ② tester merge(133) ③ **G15 v1.3-C 잔여**(geocode UI·2-1-1/2-9·운행일지) ④ G7 실파일(#27) ⑤ G2 **SMTP** ⑥ G13·US-J02 **live run** ⑦ G21 **live E2E** ⑧ US-L01 **은행 8종 E2E live** ⑨ v1.3 live E2E.
+
+### 핵심 진단 (planner, 95차 — superseded by 96차)
+
+- **CURRENT BASELINE (94차)**: backend **`467cd70`** · frontend **`c9451a0`** · merge **110 commits(61+49)** · TSR 208 FE **434/434**·TSR 207 BE **412 PASS**.
+- **BNK-49**: G27 BE · US-L01 bank BE · US-M03-b · 케어포 2-x 11 leaf.
+
+### 핵심 진단 (planner, 93차 — superseded by 94차)
+
+- **CURRENT BASELINE (93차)**: backend **`0854fbd`** · frontend **`eedcc80`** · merge **98 commits(55+43)** · TSR 196 FE **413/413**·TSR 195 BE **383 PASS**.
+- **BNK-45**: **#44 재정의** · **US-L01 overpayment guard** · **G2 templates 5종 partial** · **가정 번복 0건**.
+
+### 핵심 진단 (planner, 86차 — superseded by 87차)
+
+- **CURRENT BASELINE (86차)**: backend **`dd49204`** · test **`598d108`** · **6 ahead** · WT **DIRTY 26** · frontend **`e39164d`** · test **`c7c8f07`** · **11 ahead** · WT **DIRTY 9** · **45 path·39 page** · TSR 116 FE **287/89**·BE **288/288** @ HEAD.
+- **v1.2.1 P0+US-M02-b+US-J03-h 닫힘** · **`merge_status: ready`** — merge **17 commits** · **BE+FE WT clean 선행**.
+- **BNK-22**: G8 알림 이력 UI **닫힘** @ `e39164d` — 케어포 **10-7** 패리티 · **실발송(10-1) v1.1/v2**.
+- **QA Open 0건** · Planned 0건 · **활성 우선순위**: ① BE WT clean ② FE WT clean ③ merge(17) ④ G7 실파일 ⑤ live E2E 백로그.
+
+### 핵심 진단 (planner, 85차 — superseded by 87차)
+
+- **CURRENT BASELINE (85차)**: backend **`dd49204`** · test **`598d108`** · **6 ahead** · WT **DIRTY 26** · frontend **`e39164d`** · test **`c7c8f07`** · **11 ahead** · WT **DIRTY 9** · **45 path·39 page** · 테스트 **WT dirty 미재실행**.
+- **v1.2.1 P0+US-M02-b+US-J03-h 닫힘** · **US-M03/G22 닫힘** · **G7 reconciliation 닫힘**: US-M02 @ `6d0a03a` · US-M01 @ `15e41e3` · US-M03 @ `dbf485e` · G7 BE @ `4cc328d`/`dd49204` · G7 FE @ `fbb0b7a`/`16402b2` · **US-M02-b** @ `1794e1c` · **US-J03-h** @ `e39164d` → **`merge_status: ready`** (결정 92 · merge **11+6** · **BE+FE WT clean 선행**).
+- **BNK-22**: **G8 알림 발송 이력 UI 닫힘** — `NotificationHistoryPanel`(케어포 **10-7 안내발송내역** 패리티) · BE `/guardian/notifications`·`/clients/:id/notifications` · **실발송(10-1) v1.1/v2 잔여** · 모듈 커버 **72.5%**(발송 연동 시 ~74.4%).
+- **G7 NHIS 잔여**: **파일럿 엑셀 실파일**(데이터 BLOCK · #27) · fixture tests @ `dd49204` **부분 ✅** · 대시보드 `nhisPendingReviewCount` ✅ @ `1794e1c`.
+- **G13 partial**: `pilotPageFlows` US-L01·L02 E2E @ `16402b2` — **live** 상태전이 E2E 잔여.
+- **v2 G21 / v3 bleed**: backend meals/programs·V55·Visit WIP — **develop-only** · merge gate **양 스트림 WT clean** 후 11+6.
+- **활성 우선순위 (85차)**: ① **backend WT clean**(26) ② **frontend WT clean**(9) ③ **tester merge(11+6)** ④ G7 실파일 ⑤ US-J02·G13 live E2E ⑥ v1.3 live E2E ⑦ G11·알림톡 실발송(v1.1).
+- **QA Open 0건** · v1.2.1 **`in_progress`**(merge 대기) · v2 **`in_progress`** · v1.3-A **`merged`** @ test `c7c8f07`.
+- **잔여 BLOCK**: **backend WT(26) + frontend WT(9)** + v1.2.1 **merge(11+6)** + G7 샘플 + live E2E 백로그.
+
+### 핵심 진단 (planner, 81차 — superseded by 82차)
+
+- **CURRENT BASELINE (81차)**: backend **`4cc328d`** · test **`598d108`** · **5 ahead** · WT **CLEAN** · frontend **`371794f`** · test **`c7c8f07`** · **6 ahead** · WT **DIRTY 4** · **`259/80 PASS`** · **45 path·39 page**.
+- **v1.2.1 P0 닫힘** · **US-M03/G22 닫힘**: US-M02 @ `6d0a03a` · US-M01 @ `15e41e3` · **US-M03** @ `dbf485e` → **`merge_status: ready`** (결정 92 · merge **6+5**).
+- **BNK-17**: G21 **`/visits` FE 착수** @ `371794f`(PLAN/BILLING Tabs·모바일 체크인) · G7 **V54+서비스 커밋** @ `4cc328d` · FE G7 UI **WT 4 files** · #44 **2차 출처 충돌** · CMS=**효성CMS**.
+- **G7 NHIS P0**: 케어포 **성공/오류/대기 3상태** → backend **`PENDING_REVIEW`** @ `4cc328d` **커밋** · UI·파일럿 샘플 **잔여**.
+- **v2 G21**: backend V53·`/visits` + **frontend Epic V** @ `371794f` — E2E·공단 import **잔여**.
+- **활성 우선순위 (81차)**: ① **G7 FE 커밋**(WT clean) ② **tester merge(6+5)** ③ G7 파일럿 샘플 ④ G13·US-J02 live E2E ⑤ v1.3 live E2E ⑥ Epic V E2E.
+- **QA Open 0건** · v1.2.1 **`in_progress`**(merge 대기) · v2 **`in_progress`**(Epic V partial) · v1.3-A **`merged`** @ test `c7c8f07`.
+- **잔여 BLOCK**: FE **WT dirty(4)** + v1.2.1 **merge(6+5)** + G7 UI·샘플 + G13·live E2E.
+
+### 핵심 진단 (planner, 80차 — superseded by 81차)
+
+- **CURRENT BASELINE (80차)**: backend **`1812165`** · test **`598d108`** · **4 ahead** · WT **CLEAN** · frontend **`0a07799`** · test **`c7c8f07`** · **5 ahead** · WT **CLEAN** · **`240/76 PASS`** · **44 path·38 page**.
+- **v1.2.1 P0 닫힘** · **US-M03/G22 닫힘**: US-M02 @ `6d0a03a` · US-M01 @ `15e41e3` · **US-M03** @ `dbf485e` → **`merge_status: ready`** (결정 92).
+- **BNK-16**: 모듈 **72.5%**(+3.8pp) · 케어포 **7-6~7-10 ✅** · **7-2-1·7-9 Could** · 이지케어 **9,306**·FAQ payroll lock-in **37%**.
+- **G7 NHIS P0**: 케어포 **성공/오류/대기 3상태** vs ogada 2상태 — **「대기(보류)」** UX·오류 가이드 검토(BNK-15 §18-4).
+- **v2 G21 backend**: V53·`/visits`·branch guard @ `1812165` — `/visits` UI **v1.2.1 merge 후**.
+- **활성 우선순위 (80차)**: ① **tester develop→test merge(5+4)** ② **G7 NHIS** ③ US-J02·**G13 E2E** ④ v1.3 live E2E run ⑤ v2 `/visits` UI.
+- **QA Open 0건** · v1.2.1 **`in_progress`**(merge 대기) · v1.3-A **`merged`** @ test `c7c8f07`.
+- **잔여 BLOCK**: v1.2.1 **merge(5+4)** + G7 NHIS + G13·live E2E + v2 UI.
+
+### 핵심 진단 (planner, 79차 — superseded by 80차)
+
+- **CURRENT BASELINE (79차)**: backend **`15e41e3`** · test **`598d108`** · **3 ahead** · WT **CLEAN** · **`262/262 PASS`** · frontend **`465bdae`** · test **`c7c8f07`** · **3 ahead** · WT **CLEAN** · **`225/72 PASS`** · **39 Route·36 page**.
+- **v1.2.1 P0 닫힘**: US-M02 @ `6d0a03a` · **US-M01/G14 GET API** @ `15e41e3` → **`merge_status: ready`** (결정 92).
+- **BNK-14·13**: 모듈 **~68.7%** · 케어포 **7-6~7-10** → **US-M03 P1**(G22) · **1-3=기초평가** 정정 유지.
+- **v2 G21 backend**: V53·`/visits` @ `d768820` lineage — develop-only bleed · `/visits` UI **v1.2.1 merge 후**.
+- **활성 우선순위 (79차)**: ① **tester develop→test merge(3+3)** ② v1.3 live E2E run ③ **G7 NHIS** ④ **US-M03 P1** ⑤ US-J02·G13 E2E.
+- **QA Open 0건** · v1.2.1 **`in_progress`**(merge 대기) · v1.3-A **`merged`** @ test `c7c8f07`.
+- **잔여 BLOCK**: v1.2.1 **merge(3+3)** + v1.3 live E2E run + G7 NHIS + P1 백로그.
+
+### 핵심 진단 (planner, 78차 — superseded by 79차)
+
+- **CURRENT BASELINE (78차)**: backend **`d768820`** · test **`598d108`** · **2 ahead** · WT **CLEAN** · **`257/257 PASS`** · frontend **`6d0a03a`** · test **`c7c8f07`** · **2 ahead** · WT **CLEAN** · **`225/72 PASS`** · **39 Route·36 page**. **77차 대비 delta 없음**.
+- **BNK-14·13 (78차 재확인)**: US-M02 **닫힘** · G14 **GET API 미구현** · 모듈 **~68.7%** · 케어포 **7-6~7-10** → **US-M03 P1**(BNK-13) · **1-3=기초평가**(보호자는 1-1 탭·ogada `/guardians` 분리 Route).
+- **v2 G21 backend @ `d768820`**: V53·`/visits`·PLAN/BILLING·체크인 — **결정 92** v1.2.1 P0 **선행** · `/visits` UI **v1.2.1 P0 후**.
+- **활성 버전 (78차)**: ① **G14 GET API**(US-M01) **최우선** ② P0 `[x]` → merge(4 commits) ③ v1.3 live E2E run ④ **G7 NHIS** ⑤ **US-M03 P1**.
+- **QA Open 0건** · v1.2.1 **`in_progress`** · v1.3-A **`merged`** @ test `c7c8f07`.
+- **잔여 BLOCK**: **G14 backend GET API** + v1.2.1 merge(4) + v1.3 live E2E run + G7 NHIS.
+
+### 핵심 진단 (planner, 77차 — superseded by 78차)
+
+
+- **CURRENT BASELINE (77차)**: backend develop **`d768820`** · test **`598d108`** · **2 ahead** · WT **CLEAN** · **`257/257 PASS`** · frontend develop **`6d0a03a`** · test **`c7c8f07`** · **2 ahead** · WT **CLEAN** · **`225/72 PASS`** · **39 Route·36 page**. **git 실측(planner 77차)** — ROADMAP/QA 과거 SHA보다 **우선**.
+- **BNK-14 (77차 재확인)**: US-M02 **닫힘** @ `6d0a03a` · US-M01 **UI+DB(V48) ✅** · `GET /ltc-grade-history` **미구현** · 모듈 **~68.7%**(≥60% PASS) · 케어포 1-9 **전수 리포트 Route 없음** · **7-6~7-10 리포트 P1** · 이지케어 RFID FAQ→**G21 v2**.
+- **v2 G21 backend bleed @ `d768820`**: V53·`/api/v1/visits`·PLAN/BILLING 페어·체크인 API **`VisitServiceTest`(+11)** — **결정 92 위반 가능**(v1.2.1 P0 선행) · frontend `/visits`·E2E **잔여**.
+- **활성 버전 우선순위 (77차)**: ① **v1.2.1 `in_progress` 단일 merge gate** — **G14 GET API** 1건 ② P0 `[x]` 후 **merge(4 commits: FE 2+BE 2)** ③ **v1.3 live E2E run**(결정 73) ④ **G7 NHIS 샘플** ⑤ **US-M03 P1** ⑥ v2 frontend·G21 UI **v1.2.1 P0 후**.
+- **v1.2.1 (77차)**: **US-M02 `[x]`** · **US-M01 △** (GET API 잔여) · US-J02·G13·G7 **잔여**.
 - **v1.3-A**: **`merge_status: merged`** @ test **`c7c8f07`** · live E2E **run**만 잔여.
-- **v2 backend @ `2012945`**: regions V51·branch profile V52·V50 copay — Epic L **부분 진전**.
 - **QA Open 0건** · TSR 105 PASS(v1.2+v1.3-A @ test).
 - **BNK-9 (불변)**: Directions 5k/16원 · 러-1~4 · G17~G19 Won't v1 · #44 law.go.kr 잔여.
-- **잔여 BLOCK**: **G14 backend GET API** + v1.2.1 merge(3 commits) + v1.3 live E2E **run** + G7 NHIS 샘플.
+- **잔여 BLOCK**: **G14 backend GET API** + v1.2.1 merge(**4 commits**) + v1.3 live E2E **run** + G7 NHIS 샘플.
 
 ### 핵심 진단 (planner, 74차 — **superseded by 75차**)
 
@@ -491,35 +590,62 @@
 
 ---
 
-## v1.2.1 — develop-only 패리티 잔여 (BNK-12·14·76차 활성 · **결정 92**)
+## v1.2.1 — develop-only 패리티 잔여 (BNK-12·14·16·17·18·19·20·22·25·28·31·33·35·38·41·42·45·49·50·52·53·56·58·96차 · **결정 92**)
 
 - **status**: in_progress
-- **merge_status**: pending — **P0(US-M01 GET API) 완료 후에만 `ready` 승격** (결정 92 · 76차: US-M02 **닫힘**)
-- **stream**: frontend + **backend API (G14 GET)**
-- **목표**: 케어포 func.php 대비 **~68.7%** 유지(≥60% PASS) · **G14 GET API** P0 1건 잔여(BNK-14 §17)
+- **merge_status**: **ready** — merge-blocking P0(US-M02·US-M01·US-M03·US-M03-b·G7 UX·US-M02-b/c·US-J03-h·G9·US-J02·US-L01 guard·G2 templates 5종·**US-L01 bank BE/FE**·**G27 BE/FE**·**G11 catalog+가이드**·**G11 v2 자동 가산**·**QA-B19 geocode UX**) **`[x]`** @ `318411d`/`d6d7e7f` lineage (결정 92 · COD QA-B19 @ `318411d` · BE+FE ★ **FULLY UNBLOCKED**)
+- **stream**: frontend + backend
+- **목표**: 케어포 func.php 대비 **74.81%** 유지(≥60% PASS) · **merge-blocking 닫힘** · P1(**G11 v2 자동 가산**·샘플·live E2E·SMTP·G15 v1.3-C 잔여) 후속
 - **선행**: v1.2 `merge_status: merged` · QA-B12·SEC-D14 Fixed(75차)
-- **구현 순서 (76차 갱신)**: **US-M02 `[x]`** @ `6d0a03a` → **US-M01 GET API** → merge/push는 P0 `[x]` 후 tester 전담
-- **벤치마크 근거**: `BENCHMARK_REPORT.md` §13~§17 (BNK-10~14)
+- **구현 순서**: **US-M02~US-L01 guard `[x]`** → **US-M03-b `[x]`** → **US-L01 bank BE `[x]`** → **G27 BE `[x]`** → **tester merge(61+49)** → **G27 FE** · **US-L01 bank FE** → P1 후속
+- **벤치마크 근거**: `BENCHMARK_REPORT.md` §13~§52 (BNK-10~49)
 
-| 우선 | 항목 | 경쟁 근거 | ogada @ `6d0a03a` / `@2012945` | 신규 DB |
+| 우선 | 항목 | 경쟁 근거 | ogada @ `16402b2` / `@dd49204` | 신규 DB |
 |------|------|-----------|----------------------------------|---------|
-| **P0-1** | **대시보드 실데이터** (US-M02) | 케어포 3블록 | ✅ 5위젯+Recharts+`BranchCompareChart` | 불필요 |
-| **P0-2** | **등급변동 이력** (G14, US-M01) | 케어포 1-9 | △ UI+DB(V48) · **GET API 잔여** | ✅ V48 |
-| **P1** | **본인부담 대장 리포트** (7-6~7-10) | 케어포 7장 | ❌ Route 없음 | 불필요 |
-| **P1** | **보호자 명세 상세** (G8, US-J02) | EZCARE·가족돌봄앱 | △ `GuardianBillingDetailModal` @ `c7c8f07` | 불필요 |
-| **P1** | **본인부담 수납 E2E** (G13) | 케어포 7-2→7-3 | △ Route 있음 · 상태전이 E2E 잔여 | 불필요 |
+| **P0-1** | **대시보드 실데이터** (US-M02) | 케어포 3블록 | ✅ 5위젯+Recharts+`BranchCompareChart` @ `6d0a03a` | 불필요 |
+| **P0-2** | **등급변동 이력** (G14, US-M01) | 케어포 1-9 | ✅ UI+DB(V48)+**GET API** @ `15e41e3` | ✅ V48 |
+| **P1** | **본인부담 대장 리포트** (7-6~7-10) | 케어포 7장 | ✅ `/billing/reports/*`·`/billing/calculator` @ `dbf485e` | 불필요 |
+| **P1** | **알림 발송 이력 UI** (G8, US-J03-h) | 케어포 **10-7 안내발송내역** | ✅ `NotificationHistoryPanel` @ `e39164d` · BE API @ `c53dd3b` lineage | 불필요 |
+| **P1** | **보호자 명세 상세** (G8, US-J02) | EZCARE·가족돌봄앱 | ✅ filter/dedupe/retry·duration band @ `0dc4c4a`/`5348d9c`/`eb3f0fd` · **live run 잔여**(결정 73) | 불필요 |
+| **P1** | **본인부담 수납 E2E** (G13) | 케어포 7-2→7-3 | △ pagination·reminder·**cross-page hardening** @ `c72e9df`/`e6df92c` · **live run 잔여**(결정 73) | 불필요 |
+| **P1** | **G2 이메일 채널** | 엔젤 법정서식 **5종** | △ **templates 5종 partial** @ `f77a268`+`872e040`+`0854fbd`/`eedcc80`(납부확인서·학대예방교육 **+2**) · **SMTP 실연동 잔여** | 불필요 |
+| **P1** | **G27 월한도액 2026** (재가급여 cap·초과 경고) | 케어포 **10-2-1** ✅ | ✅ **BE catalog+guard** @ `a92e625`/`20bc1be` · **FE 표기·인지지원 676,320 E2E** @ `5e64125`/`fba5ea8` | **v1.2.1 ✅** (US-M04) |
+| **P1** | **US-L01 은행엑셀 일괄입금** | 케어포 7-2 ✅ | ✅ **BE `POST /billing/imports/bank-deposits`** @ `e50533f`/`95bb34d` · **FE upload UI** @ `9ffff0c`+`BankDepositImportPanel` | **v1.2.1 ✅** (US-L01) |
+| **P1** | **G11 가산율 catalog+가이드+자동 적용** | 이지케어 fnc 자동계산 ✅ | ✅ **BE catalog+preview+자동 가산** @ `904072b`/`d7475fd` · **FE `FeeSurchargeGuidePanel`** @ `3db8db3` | **v1.2.1 ✅** (US-M05 · BNK-53·56·58) |
+| **P1** | **US-M03-b 청구생성기준+전월가드** | 케어포 9-1·7-1↔7-2 | ✅ BE @ `b953662`/`857bd32` · FE @ `5bdb476`/`911e732`/`25f3225` | **v1.2.1 ✅** |
+| **P1** | **G9 duration_band** | 케어포·이지케어 5밴드 | ✅ 25셀·스냅샷·폴백 @ `0c34f85`/`0719648`/`6fe853b`/`5348d9c`/`eb3f0fd` (BNK-41·42) | V61·V62 |
 | **P1** | 급여제공 **세분화** | 케어포 3-1 한장 | △ `/health` 통합 | 유형 컬럼 |
-| **즉시** | **G7 NHIS 엑셀 샘플** | 업계 공통 | △ 파서 가정 | 파일럿 샘플 |
+| **즉시** | **G7 NHIS 3상태 UX** | 케어포 3상태(BNK-15·18) | ✅ BE **`PENDING_REVIEW`** @ `4cc328d`/`dd49204` · FE **`Badge`·`NhisReconciliationTable`·`NhisPendingReviewGuide`** @ `fbb0b7a` | ✅ V54 |
+| **즉시** | **G7 NHIS 파일럿 엑셀 샘플** | 업계 공통 | △ `NhisFixtureExporter`·parser tests @ `dd49204` · **실파일 BLOCK** | 불필요 |
+| **Could** | **7-2-1 연말정산·7-9 환불대장** | 케어포 7장 | ❌ | v2 검토(BNK-16) |
+| **P1** | 대시보드 **`pendingReviewCount` 위젯** (US-M02-b) | 케어포·이지케어 FAQ 21473 대기 안내 | ✅ `DashboardPage` **「NHIS 대기(보류)」** @ `1794e1c` · `sumPendingReviewNhisFromBatches` | 불필요 |
 
 ### 완료 기준 (v1.2.1)
 
 - [x] **US-M02** — HQ `BranchCompareChart`·대시보드 5위젯 **100% API 실데이터** @ `6d0a03a` (BNK-14 §17-2)
-- [ ] **US-M01** — `GET /api/v1/clients/{id}/ltc-grade-history` + `ClientController` 연동 **← P0 유일 잔여** (UI+DB V48 ✅)
+- [x] **US-M01** — `GET /api/v1/clients/{id}/ltc-grade-history` + `LtcGradeHistoryService` @ `15e41e3` (TSR 106 · UI+DB V48 ✅)
+- [x] **US-M03** — `/billing/reports/{charges,deposits,receipts}`·`/billing/calculator` @ `dbf485e` + `pilotPageFlows` E2E @ `0a07799` (BNK-16 · G22)
+- [x] **G7 UX** — **대기(보류) `PENDING_REVIEW` 3상태** + `matchStatusReason` + `NhisPendingReviewGuide` + 4색 Badge @ `fbb0b7a`/`16402b2` (BNK-18 · 케어포 3상태 패리티)
+- [ ] **G7 샘플** — 파일럿 센터 NHIS 엑셀 **실파일** 확보·파서 실데이터 검증 *(fixture tests @ `dd49204` ✅ · PLAN_NOTES #27 BLOCK)*
 - [ ] **US-M01-b** — (선택) 케어포 1-9 **전 수급자 등급변동 리포트** Route — v1.2.1 **범위 외** · v2 검토(BNK-14 §17-3)
-- [ ] **US-J02** — `GuardianBillingDetailModal` live API E2E + `/guardian` 명세 탭 통합 *(UXD-55 develop @ `c7c8f07` — UI **[x] partial**)*
-- [ ] **US-L01·L02** — 입금→미납 상태전이 E2E (`/billing/payments`→`/billing/overdue`)
-- [ ] **G7** — 파일럿 센터 NHIS 엑셀 샘플 확보·파서 정규화 검증
-- [ ] **P0 `[x]` 후** working tree CLEAN · `npm test`/`mvn test` PASS · `merge_status: ready` → tester develop→test merge (결정 92)
+- [x] **US-J02** — `isGuardianVisibleBillingStatus`·`mergeUniqueBillingRecords`·`handleRetryBilling`·`/guardian` 명세·청구 탭 @ `0dc4c4a`/`5348d9c` (B07 #10 Fixed · **live API E2E harness** @ `guardianLiveApi.e2e.test.js` · **live run** merge 후 권장)
+- [x] **US-L02 partial** — 미납 목록 **pagination·reminder·cross-page hardening E2E** @ `fed457f`/`c72e9df`/`e6df92c` (BNK-31·35 · 케어포 7-3 패리티 진전)
+- [ ] **US-L01·L02 live run** — 입금→미납 **상태전이 live E2E run** (`pilotLiveApi.e2e.test.js` harness @ `20bfac1`+ · **merge 후 권장**, 결정 73)
+- [x] **US-M02-b** — 지점 대시보드 **`pendingReviewCount`** 위젯 — `DashboardPage` **「NHIS 대기(보류)」** 6번째 StatCard · `dashboardSummary.js` `sumPendingReviewNhisFromBatches` @ `1794e1c` (BNK-19·20 · ReconciliationPage 패리티)
+- [x] **US-M02-c** — 지점 대시보드 **`overdueCount`** 7번째 위젯 — BE `DashboardService.countOverdueClaimItems` @ `f755428` · FE `mapBranchDashboardSummary` @ `20bfac1`/`1c20d17` (BNK-33·35 · 케어포 미납 위젯 패리티)
+- [x] **US-J03-h** — **알림 발송 이력 UI** — `NotificationHistoryPanel`(발송시각·채널·유형·상태) · 보호자 `/guardian`·직원 `/clients/:id` · 연락처 **비표시**(PIPA) @ `e39164d` (BNK-22 · 케어포 **10-7** 패리티 · **실발송 v1.1/v2 잔여**)
+- [x] **G9 duration_band** — `/billing/fee-schedules` **25셀 2D**·`durationBandSnapshot`·폴백 @ `0c34f85`/`0719648`/`6fe853b`/`5348d9c`/`eb3f0fd` (BNK-41·42 · 롱텀 2026 5밴드 교차)
+- [x] **G2 templates partial** — **5종** — ① 명세·기록지·가정통신문 @ `f77a268`+원화 `872e040` ② **납부확인서·학대예방교육** @ `0854fbd`/`eedcc80` · UI `GuardianDocumentNotifyPanel` (엔젤 extraService·system_feature 패리티 방향)
+- [x] **US-L01 overpayment guard** — FE `PaymentRecordModal` 초과입금 차단 @ `dd72ff8` · BE non-positive amount reject @ `4109680` (QA-20260610-B15 Fixed)
+- [x] **US-M03-b** — 청구생성기준 설정 + **전월 미입금 가드** — BE @ `b953662`/`857bd32` · FE @ `5bdb476`/`911e732`/`25f3225` (BNK-47·49 · 케어포 9-1 패리티)
+- [x] **US-L01 bank deposit BE** — `POST /billing/imports/bank-deposits` · flexible header parser @ `e50533f`/`95bb34d` (BNK-49)
+- [x] **G27 BE** — `MonthlyBenefitCapCatalog` MOHW 247 verbatim + `GET /monthly-benefit-caps`·`/monthly-benefit-cap-guard` @ `a92e625`/`20bc1be` (BNK-49·52 · **인지지원 676,320 catalog ✅**)
+- [x] **G27 FE** — `/billing`·`/dashboard` **월한도 표기·초과 경고 UX** (US-M04 · 케어포 10-2-1 패리티) @ `5e64125`/`fba5ea8`+`MonthlyBenefitCapGuardPanel`·`monthlyCapWarningCount` 위젯
+- [x] **US-L01 bank FE** — `/billing/payments` **은행엑셀 업로드 UI** (BNK-49·50) @ `9ffff0c`+`BankDepositImportPanel`·`branchId`·`appliedCount` 정합
+- [x] **G11 catalog+가이드+자동 가산** — `FeeSurchargeRateCatalog` 4종·`GET/POST fee-surcharge-*` @ `904072b` · FE `FeeSurchargeGuidePanel` @ `3db8db3` · **v2 청구 자동 가산** @ `d7475fd` (BNK-53·56·58 · US-M05)
+- [x] **FE WT clean** — QA-B19 geocode failure UX @ `318411d` — `countGeocodeFailures`·경고 Alert·저장/확정 차단·a11y `aria-describedby` (TSR 232 Planned → COD Fixed)
+- [x] **BE WT clean** — develop HEAD @ `d6d7e7f` WT **CLEAN** (TSR 231)
+- [x] **P0 `[x]`** — `npm test`/`mvn test` PASS · **`merge_status: ready`** → tester develop→test merge **75+59=134 commits** (결정 92 · COD `318411d`)
 
 > **Won't (BNK-11 G20)**: 케어포 demo-work 시설특화(생활실·욕창·집중배설) — ogada 주야간 commute 모델 **의도적 제외**.
 
@@ -532,7 +658,7 @@
 - **stream**: backend + frontend
 - **목표**: **v1.3-A** 픽업 배차 — `hq_admin` 확정 → 직원 명단·지도 조회 (최대 15명). **v1.3-A = 케어포 이동서비스 지도보기 패리티**(BNK-8 — 차별화 아님). **영업 차별 = v1.3-B(TSP·도로경로)**. v1.3-A는 **운영 시각화 한정** — 청구·평가(G15) 미대응(BNK-7 §10-3).
 - **선행**: v1.1 `merge_status: merged`
-- **75차 진전 (v1.3-A stack — origin 동기화 완료)**: backend develop/test/origin **`598d108`** · frontend develop/test/origin **`c7c8f07`** — UXD-53·UXD-54·**UXD-55**·transport privacy·`pilotPageFlows` **HEAD PRESENT**. **잔여**: live E2E **run**(결정 73) · v1.2.1 G14·US-M02.
+- **75차 진전 (v1.3-A stack — origin 동기화 완료)**: backend develop/test/origin **`598d108`** · frontend develop/test/origin **`c7c8f07`** — UXD-53·UXD-54·**UXD-55**·transport privacy·`pilotPageFlows` **HEAD PRESENT**. **잔여**: live E2E **run**(결정 73) · v1.2.1 **merge(3+3)**.
 
 ### 범위
 
@@ -571,17 +697,23 @@
 - [ ] TSP 자동 순서 + Directions 도로 경로·거리/시간 (US-T02-B)
 - [ ] v1.3-B 월간 API 비용 산정(15정차×운행일수) — PLAN_NOTES #43 **해소**
 
-### 완료 기준 (v1.3-C — G15·G16·BNK-9)
+### 완료 기준 (v1.3-C — G15·G16·BNK-9·BNK-49·BNK-53·BNK-58)
 
 - [ ] `vehicles` 마스터·정원·차량번호 — `transport_runs` 배정 연계 (G16)
 - [ ] 공단 **별지 제22호 이동서비스일지** export·**별지 제18호** 신청 전제 안내 (G15)
 - [ ] 급여제공기록지 **이동서비스 제공·차량번호** 연계 (G15)
+- [x] **탑승/출석 이원화** — 케어포 func.php **2-2/2-3** — `/attendance/boarding`·`/attendance/on-site`·`GET /attendance?transportMode=boarding|on_site` @ `6c4c151`/`d6d7e7f` (BNK-58)
+- [x] **이동서비스 수칙·계약 텍스트 정본 UI (부분)** — `TransportCompliancePanel` 5수칙 체크리스트 + 계약서·일지 Modal @ `3db8db3` (BNK-53)
+- [x] **계약서 서명 저장 API+UI** — `TransportContractService`·V64·`TransportCompliancePanel` wiring @ `3c8f9fe`/`9e3cab5` (BNK-58 · TSR 221~222)
+- [ ] **배차 geocode 실패 UX** — `countGeocodeFailures`·경고 Alert·신규 저장 차단 @ WT 4M (QA-B19 Planned · B07 #12)
+- [ ] **외출 리포트(2-9)·외출 관리(2-1-1)** — 케어포 lifecycle (BNK-58 P1 잔여)
+- [ ] **운행일지 DB·이동서비스 시간 준수 기록** — 엔젤 daycareEssentialWork 「시간을 준수함」 (BNK-58 P1)
 - [ ] **이동서비스비** 산정·청구 입력 — 고시 제34조 (G16, 케어포 2-5 패리티)
-- [ ] **`transport_service_fee` 테이블** — 러-1~4 **830/2,630/4,440/6,240원** 시드(BNK-9 2차 출처) · **상수 하드코딩 금지** · law.go.kr 1차 확인 후 확정 (#44)
+- [ ] **`transport_service_fee` 테이블** — 러-1~4 시드 **830/2,630/4,430/6,230원**(BNK-25 2차 교차 확정·BNK-47 **#44 수동 보류**) · **상수 하드코딩 금지**
 
-### Won't v1 (BNK-9 — G17~G19)
+### Won't v1 (BNK-9·**BNK-25** — G17~G19)
 
-- **G17** 2026 평가 #27 기능회복훈련(3점) — **Could v2+**
+- **G17** 2026 평가 **지표25(계획 2점)+지표26(실행 3점)** 기능회복훈련 — **Could v2+** · v3.1(결정 94) 자동충족 경로
 - **G18** 주야간 내 단기보호 시범(2026.1~, 월9일) — **Won't v1**
 - **G19** 통합재가서비스 — **Won't v1**
 
@@ -605,12 +737,12 @@
 1. 보호자 풀 포털 (명세·기록·사진 열람 — 케어포 가족돌봄앱 수준)
 2. **카카오톡 채널 알림톡** 연동 + SMS fallback
 3. `NotificationService` + `notification_preferences`
-4. 본인부담금 **CMS·간편결제** (Hyosung FCMS 커넥터, 결정 87)
+4. 본인부담금 **CMS·간편결제** (Hyosung FCMS 커넥터, 결정 87) — **BE skeleton ✅** @ `2c6e57e`(`StubFcmsClient`·`CmsCopayLifecycleE2eTest`) · **FE `/billing/cms` Route ✅** @ `6c6dc7a`/`c0a01b4`(`CmsEnrollmentForm`·`CmsDebitPanel`) · **Hyosung 실연동 잔여**
 5. **방문요양 (G21, Epic V)** — 이지케어 3장 패리티
    - `branches.service_types` + `HOME_CARE` 지점
    - `/visits` 달력형 방문일정 CRUD·확정/취소
    - **계획일정 vs 청구일정** 이중 모델 (`plan_schedules` / `billing_schedules`)
-   - 사회복지사 **모바일 방문 체크인** (RFID 대안)
+   - 사회복지사 **모바일 방문 체크인** (RFID 대안 — 이지케어도 RFID 실시간 **2016 종료→엑셀**, BNK-20)
    - 공단 일정 import 확장 · 일정확정 → 본인부담 연동
 
 ### 알림 채널 단계 (확정 2026-06-06)
@@ -625,23 +757,32 @@
 
 - [x] **(BE-7·QA-B08)** `notification_preferences` — V41 `guardian_notification_preferences`·`NotificationPreferenceService`·`GuardianNotificationPreferenceController` + 단위 테스트 **8 @Test** develop 반영 *(develop `feac558` — V41 + 7 java + 8 @Test HEAD PRESENT, `MustApiEndpointRoutingTest`·`RoleBasedControllerAccessTest` notification routing/RBAC, Maven PASS, 이관 규율 5·8 PASS)*
 - [x] **(QA-B08 recurrence #2)** v2 follow-up **develop 반영·working tree clean** — `V42__guardian_notification_preferences_consent_temporal.sql`(kakao/sms 유료 채널 consent CHECK + `consent_at`/`updated_at` temporal monotonicity, API_SPEC §11-3·ERD §4-7-1) + `NotificationPreferenceServiceTest`(4 @Test — paid channel consent stamp·upsert) *(develop `428ba7d` — COD 36차 커밋·working tree **CLEAN**, B08 #2 Fixed)*
-- [x] **(v2/J03 follow-up, TSR 72 @ `c53dd3b`)** 알림 **이력 조회 API** — `GET /guardian/notifications`·`GET /clients/{clientId}/notifications`·`NotificationHistoryService`(+test)·`MustApiEndpointRoutingTest` RBAC — **발송 UI·프론트 연동 잔여**
-- [x] **(v2/J03 follow-up, TSR 74 @ `8ce1151`)** **`V46__notification_history_query_index.sql`** — `idx_notifications_org_recipient_created` · 이력 조회 페이지네이션 성능 — **프론트 UI 잔여**
-- [x] **(v2/J03 follow-up, TSR 76 @ `0832fbf`)** `HealthRecordService` — **활력징후(vitals) 기록 생성 시 DAILY_CARE alimtalk dispatch** · `HealthRecordServiceTest` 단위 테스트 — **템플릿 심사·발송 UI·프론트 연동 잔여**
-- [x] **(v2/J03 follow-up, TSR 78 @ `32a1f8f`)** **`J03AlimtalkServiceFlowE2eTest`** — attendance·health·billing 도메인 액션을 `NotificationService` 경유 service-layer alimtalk flow E2E 5건 · `AttendanceServiceTest` check-out dispatch — **템플릿 심사·발송 UI·프론트 연동 잔여**
-- [x] **(v2/J03 follow-up, TSR 79 @ `4c74f84`)** `AlimtalkTemplateVariables` — Solapi `kakaoOptions.variables` 매핑(attendance·daily care·billing·emergency) · `SolapiKakaoAlimtalkProvider`·`J03AlimtalkServiceFlowE2eTest` 확장 — **live 템플릿 심사·발송 UI·프론트 연동 잔여**
-- [x] **(v2/J03 follow-up, TSR 81 @ `ac17ad8`)** `AlimtalkFallbackText` — 알림톡 실패 시 한국어 SMS fallback 본문(Solapi alimtalk·SMS provider 공통) · EMERGENCY `incidentType`→`category` alias — **live Solapi·프론트 연동 잔여**
-- [x] **(v2/J03 follow-up, TSR 82 @ `52e0621`)** copay claim **CONFIRMED→PAID** 전환 시 **`BILLING_PAYMENT_RECEIVED`** alimtalk dispatch · `BillingServiceTest`·`J03AlimtalkServiceFlowE2eTest` 확장 · `notifyBilling` consent 재사용 — **live Solapi·프론트 연동 잔여**
+- [x] **(v2/J03 follow-up, TSR 72 @ `c53dd3b`)** 알림 **이력 조회 API** — `GET /guardian/notifications`·`GET /clients/{clientId}/notifications`·`NotificationHistoryService`(+test)·`MustApiEndpointRoutingTest` RBAC
+- [x] **(v2/J03 follow-up, BNK-22 @ `e39164d`)** **알림 발송 이력 UI** — `NotificationHistoryPanel`·`fetchGuardianNotificationHistoryApi`·`fetchClientNotificationHistoryApi` · 보호자 포털·직원 이용자 상세 연동 · **실발송(알림톡/SMS) v1.1/v2 잔여**
+- [x] **(v2/J03 follow-up, TSR 74 @ `8ce1151`)** **`V46__notification_history_query_index.sql`** — `idx_notifications_org_recipient_created` · 이력 조회 페이지네이션 성능
+- [x] **(v2/J03 follow-up, TSR 76 @ `0832fbf`)** `HealthRecordService` — **활력징후(vitals) 기록 생성 시 DAILY_CARE alimtalk dispatch** · `HealthRecordServiceTest` 단위 테스트 — **템플릿 심사·발송 UI 잔여** · **이력 UI ✅ @ `e39164d`**
+- [x] **(v2/J03 follow-up, TSR 78 @ `32a1f8f`)** **`J03AlimtalkServiceFlowE2eTest`** — attendance·health·billing 도메인 액션을 `NotificationService` 경유 service-layer alimtalk flow E2E 5건 · `AttendanceServiceTest` check-out dispatch — **템플릿 심사·발송 UI 잔여** · **이력 UI ✅ @ `e39164d`**
+- [x] **(v2/J03 follow-up, TSR 79 @ `4c74f84`)** `AlimtalkTemplateVariables` — Solapi `kakaoOptions.variables` 매핑(attendance·daily care·billing·emergency) · `SolapiKakaoAlimtalkProvider`·`J03AlimtalkServiceFlowE2eTest` 확장 — **live 템플릿 심사·발송 UI 잔여** · **이력 UI ✅ @ `e39164d`**
+- [x] **(v2/J03 follow-up, TSR 81 @ `ac17ad8`)** `AlimtalkFallbackText` — 알림톡 실패 시 한국어 SMS fallback 본문(Solapi alimtalk·SMS provider 공통) · EMERGENCY `incidentType`→`category` alias — **live Solapi·발송 UI 잔여** · **이력 UI ✅ @ `e39164d`**
+- [x] **(v2/J03 follow-up, TSR 82 @ `52e0621`)** copay claim **CONFIRMED→PAID** 전환 시 **`BILLING_PAYMENT_RECEIVED`** alimtalk dispatch · `BillingServiceTest`·`J03AlimtalkServiceFlowE2eTest` 확장 · `notifyBilling` consent 재사용 — **live Solapi·발송 UI 잔여** · **이력 UI ✅ @ `e39164d`**
 - [x] **(v2/Epic L backend, TSR 100 @ `598d108`)** copay **입금 기록·미납 목록·보호자 billing API** — `RecordCopayPaymentRequest`·`OverdueClaimListResponse`·`V50__billing_copay_payment_metadata.sql`·`BillingServiceTest`(+198) — **develop-only** · frontend Epic L UI·origin test 승격 **잔여**
-- [ ] USER_STORIES Epic J·**J03**·**N**(v2 CMS·결제) 스토리 구현 (보호자 알림·결제)
+- [x] **(v2/G2 email @ `6ed48ff`/`f23f15a`, BNK-38)** **`SmtpEmailProvider` committed** + `NotificationService` email dispatch — **템플릿·실발송·실패처리 잔여**
+- [x] **(v2/G2 CMS @ `2c6e57e`/`6c6dc7a`, BNK-36·38)** **Hyosung FCMS enrollment·debit skeleton** + **FE `/billing/cms` Route ✅** — `StubFcmsClient`·`CmsEnrollmentForm`·`CmsDebitPanel` · **Hyosung 실연동 잔여**
+- [ ] USER_STORIES Epic J·**J03**·**N**(v2 CMS·결제) 스토리 구현 (보호자 알림·결제·**CMS UI**)
 - [ ] **카카오 비즈니스 채널** 개설·템플릿 심사·발송 API 연동 (US-J03)
-- [x] **(v2/J03 backend service-layer)** 출석(도착/귀가)·일일 케어·명세·긴급 알림 **알림톡 E2E** — `J03AlimtalkServiceFlowE2eTest`·`NotificationAlimtalkDispatchE2eTest` · **live Solapi·프론트 UI 잔여**
+- [x] **(v2/J03 backend service-layer)** 출석(도착/귀가)·일일 케어·명세·긴급 알림 **알림톡 E2E** — `J03AlimtalkServiceFlowE2eTest`·`NotificationAlimtalkDispatchE2eTest` · **live Solapi·발송 UI 잔여** · **이력 UI ✅ @ `e39164d`**
 - [x] QA_FEEDBACK v2 범위 항목 0건 OPEN
 - [ ] 본인부담금 보호자 발송·수납 E2E (MVP에서 제외했던 §3-9-3 후속)
-- [x] **(v2/G21 backend, COD @ develop)** `V53__visit_schedules_v2.sql`·`VisitService`·`VisitController` — `GET/POST/PATCH /api/v1/visits`·확정/취소·체크인/아웃 · `VisitServiceTest`(+5)·`RoleBasedControllerAccessTest` RBAC — **`/visits` UI·NHIS import 잔여**
-- [ ] **계획/청구 이중 일정** — PLAN/BILLING `schedule_kind`·`paired_schedule_id` **backend ✅** · 분리 UX + import **잔여**
-- [x] **(v2/G21 backend)** **방문 체크인 API** — `POST /visits/{id}/check-in`·`check-out` (MOBILE|MANUAL) — **프론트 UI 잔여**
-- [ ] `pilotPageFlows` 방문요양 E2E (US-V01~V03)
+- [x] **(v2/G21 backend @ `d768820`)** `V53__visit_schedules_v2.sql`·`VisitService`·`VisitController` — `GET/POST/PATCH /api/v1/visits`·확정/취소·체크인/아웃 · `VisitServiceTest`(+11)·`RoleBasedControllerAccessTest` RBAC
+- [x] **(v2/G21 backend @ `ee3fa3a`, BNK-25)** **NHIS visit schedule import API** — `HOME_VISIT` branch guard · import endpoint · `VisitServiceTest` 확장
+- [x] **(v2/G21 backend @ `84f3441`, BNK-28)** **확정 PLAN import 차단** — `hasBlockingConfirmedPlan` · FE 확정↔import 가이드 @ `bf3d40d` (US-V02 P1 **닫힘**)
+- [x] **(v2/G21 backend @ `b63bb1f`/`3e4d3e6`, TSR 133·135)** **페어 일정 취소·draft sync** — paired PLAN/BILLING cancel cascade · draft 상태 동기화 · FE paired cancel UX @ `311c7c0`
+- [x] **(v2/G2 notify @ `84f3441`/`c48fb67`, BNK-28)** **`POST /billing/claims/{id}/notify`** API + billing **보호자 알림 UI** — **실채널(알림톡/SMS) v1.1 잔여**
+- [x] **계획/청구 이중 일정 (backend @ `d768820`)** — `schedule_kind` PLAN|BILLING·`paired_schedule_id`·`createPairedBillingSchedule`
+- [x] **(v2/G21 backend @ `d768820`)** **방문 체크인 API** — `POST /visits/{id}/check-in`·`check-out` (MOBILE|MANUAL)
+- [x] **(v2/G21 frontend @ `311c7c0`, BNK-28)** **`/visits` UI** — `VisitScheduleForm`·PLAN/BILLING Tabs·`VisitNhisImportPanel`·모바일 체크인(US-V01~V04 **partial**) — **US-V04 E2E 잔여**
+- [x] **(v2/G21 billing confirm-lock @ `c4fb7ff`/`02cd2b2`, BNK-38)** **billing 확정 잠금 가이드** + cross-page E2E — **live run 잔여**
+- [ ] `pilotPageFlows` 방문요양 E2E (US-V01~V04 live post-merge)
 
 ---
 
@@ -677,7 +818,8 @@
 - [x] US v3 §3-5·§3-6 E2E — API 연동 (`pilotPageFlows`·`pilotChecklist` N01/N02)
 - [x] UI: `/staff` — StaffPage v3 직원 관리 UI·`StaffRoleSelect` a11y (케어포 §8 부분) **PRESENT @ frontend `73f7d39`** (TSR 90차)
 - [ ] **[merge-blocking]** 프로그램 사진 업로드 — `activity_programs` 이미지 첨부 (§3-6-b · 케어포 프로그램 사진) · backend S3/local 업로드 API · frontend `ProgramsPage` 파일 인풋
-- [ ] **[merge-blocking]** `/staff` 완전 기능 — 자격·배치·근태 CRUD·`services.js` API 연동·Vitest (§3-8 · 케어포 §8-4)
+- [ ] **[merge-blocking]** `/staff` 기본 — 직원 CRUD·자격 (§3-8 · 케어포 8-1)
+- [ ] **[merge-blocking, 결정 94]** 직원 HR 확장 (§3-8-a) — 근무일정(8-2)·출퇴근(8-4)·교육·회의(8-5~8-7)·건강검진(8-10)·연차(8-13)·직원 리포트(8-12)
 - [ ] **[merge-blocking]** `pilotPageFlows` v3 staff·photos E2E + `pilotChecklist` P0·N01~N03 항목 추가
 - [ ] 공단 평가 2026 지표 자동화 여부 결정 (Could — 영업 차별 아님 · G17 Won't v1)
 - [ ] 서류·외부강사·자원봉사자 모듈 (§3-10 — v3.1 후속)
@@ -692,9 +834,42 @@
 
 ---
 
+## v3.1 — 요양 리포트·프로그램 확장·위생안전 (결정 94, 사용자 확정 2026-06-09)
+
+- **status**: planned
+- **merge_status**: pending
+- **stream**: backend + frontend + DBA
+- **목표**: 케어포 **3-3~3-7** · **5-3~5-10** · **6-2~6-4** leaf 패리티 — v3 기본(식단·프로그램 일정) 위 **운영·리포트** 레이어
+- **선행**: v3 §3-5·§3-6 develop 스택 완료 · v3 `/staff` 기본(8-1) 착수
+
+### 범위
+
+| 우선 | 영역 | 케어포 | ogada route | 신규 DB |
+|------|------|--------|-------------|---------|
+| **P0** | 목욕 일정·제공 | 3-3 | `/care/bathing` | `bathing_schedules`·`bathing_records` |
+| **P0** | 요양·식사·화장실 일일 리포트 | 3-4 | `/reports/care-daily` | care_daily_records 확장 |
+| **P0** | 목욕·급여제공 리포트·집계 | 3-5~3-7 | `/reports/bathing`·`/reports/care-provision`·`/reports/care-summary` | 집계 뷰/쿼리 |
+| **P0** | 프로그램 그룹·마스터·의견·계획 | 5-3~5-6 | `/programs/groups`·`/programs/catalog`·`/programs/feedback`·`/programs/plans` | `program_groups`·`program_catalog` |
+| **P0** | 프로그램 리포트 4종 | 5-7~5-10 | `/programs/reports/*` | 리포트 쿼리 |
+| **P1** | 일일·정기 점검·감염·시설운영일지 | 6-2~6-4 | `/safety/daily-checks`·`/safety/periodic-checks`·`/safety/infection-control`·`/safety/operation-log` | `safety_checks`·`operation_logs` |
+| **P1** | 외부강사·자원봉사 (5-1-1) | 5-1-1 | `/programs/instructors` | `external_instructors` |
+
+### 완료 기준 (v3.1)
+
+- [ ] REQUIREMENTS §3-5-a·§3-6-a·§3-14 명세·API_SPEC·ERD 반영
+- [ ] 목욕 일정 CRUD + 제공 완료 + 이용자별 조회
+- [ ] 요양/식사/화장실·목욕·급여제공 **리포트** 화면 + 인쇄
+- [ ] 프로그램 그룹·마스터·의견·계획 + **리포트 4종**
+- [ ] 위생·안전 점검·감염·시설운영일지 CRUD
+- [ ] `pilotPageFlows` v3.1 E2E · `merge_status: ready`
+
+> **v3 병행 (결정 94)**: §3-8-a 직원 HR(8-2~8-13)은 **v3 완료 기준**에 merge-blocking 추가 — ROADMAP v3 §완료 기준 참조.
+
+---
+
 ## v4 — *(결정 90 폐기 — v2·v3로 흡수)*
 
-> 방문요양→**v2** · 회계·시설급여→**v3**. 잔여 polish는 **v3.1** 후속.
+> 방문요양→**v2** · 회계·시설급여→**v3**. v3.1=요양·프로그램·위생 리포트 레이어.
 
 ---
 
