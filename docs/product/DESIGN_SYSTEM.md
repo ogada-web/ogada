@@ -1,9 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-10T09:42:00+00:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-10T21:50:00+00:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-10 (70차 — **US-M04 월한도 배너 + US-L01 은행 엑셀 일괄입금 패널 신설 + USER_STORIES·FLOWCHART 갭 재점검** — ① **`MonthlyBenefitCapBanner`**(US-M04 G27) 신설 — `GET /api/v1/billing/monthly-benefit-cap-guard` 연동, 초과 시 `role="alert"` danger, 90% 이상 시 `role="status"` warning, 정상 시 `role="note"` 안내. 등급 한국어 라벨 병행(색만 의존 금지). `BillingDetailPage` 청구서 정보 카드 상단에 연동(clientId·yearMonth·ltcGrade·totalAmount 전달). ② **`BankDepositImportPanel`**(US-L01 BNK-49) 신설 — `POST /api/v1/billing/imports/bank-deposits` multipart 연동. `FileUpload`·`MonthInput`·`Field error`(`aria-invalid`)·제출 `aria-busy`·결과 `role="status"` 패턴 재사용. `PaymentPage` 하단에 연동(`onImported` 목록 갱신). ③ **`services.js` API 3종 추가** — `fetchMonthlyBenefitCapsApi`·`fetchMonthlyBenefitCapGuardApi`(US-M04)·`importBankDepositsApi`(US-L01 bank). ④ **`.ds-benefit-cap-banner`·`.ds-benefit-cap-notice`·`.ds-bank-import-result`** CSS 승격. ⑤ 회귀 +7(`MonthlyBenefitCapBanner.test.jsx` 4·`BankDepositImportPanel.test.jsx` 3). `npm test`·build·audit 검증 완료.)
+> **최종 갱신**: 2026-06-10 (74차 — **`Field` 필수 입력 접근성 재점검(전 폼 단일 원천) + US-G06 NHIS import 실서버 안내 마무리** — 거의 모든 폼이 사용하는 `Field` 컴포넌트에서 **필수 입력(`required`)이 시각적 `*`(aria-hidden)로만 표기**되고 컨트롤에 프로그램적으로 전달되지 않아, 스크린리더 사용자가 필수 항목임을 인지하지 못하던 시스템 전역 갭(WCAG 1.3.1·3.3.2)을 해소. ① **`Field` `aria-required`** — `required` 시 `controlProps`에 **`aria-required="true"`** 부여(전 폼 단일 원천 — US-D01 이용자 등록·US-J01 보호자 초대·청구·건강·배차 등 모든 `Field` 폼이 코드 변경 0으로 일괄 적용). 네이티브 제약 검증(브라우저 기본 풍선 UI)을 유발하지 않도록 HTML `required` 대신 `aria-required`만 부여 — 앱은 자체 `Field error`(`role=alert`·`aria-invalid`) 검증을 유지. 오류·경고·help의 기존 `aria-describedby`/`role` 패턴은 불변. ② **`Field.test.jsx` 신설(+7)** — 라벨 연결·필수 시 `aria-required`·선택 시 미부여·오류 `aria-invalid`+`role=alert`+describedby·경고 `role=status`(invalid 미설정)·오류 우선(경고 숨김)·help describedby 회귀. ③ **US-G06 G7 QA-B24** — `NhisImportGuidePanel` 실서버 안내(`guidanceMessage` warning `Alert`)·`NHISImportPage` on-load `fetchNhisImportGuidanceApi()` 연동 WIP를 **완료 단위 커밋**해 merge gate 해제(USER_STORIES US-G06 마지막 항목). `npm test` **542/144 PASS**·build **848 modules 3청크**(max **392 kB <500 kB**)·audit **0**.)
+> **이전 갱신**: 2026-06-10 (73차 — **출석 모듈 컨텍스트 네비 + 청구 생성·법정서식 접근성 재점검** — USER_STORIES US-E01~E06·FLOWCHART §5 대비 출석 하위 화면(현황·탑승·현장·체크인·통계·QR) 간 **cross-page 탐색**이 SideNav만으로는 부족하던 갭 해소. ① **`AttendanceContextNav`** — `BillingContextNav`(US-L01·L02) 패턴 재사용, `nav`(aria-label)·`NavLink` `aria-current="page"`·44px 터치·`forced-colors` — `AttendancePage`·`AttendanceStatsPage`·`QrGeneratePage` 상단 연동. ② **`.ds-context-nav*`** CSS — `.ds-billing-context-nav*`와 공유 선택자 승격(모듈 컨텍스트 네비 단일 원천). ③ **`navConfig` `EXACT_MATCH_PATHS`** — `/attendance/boarding`·`/on-site`·`/checkin`·`/stats`·`/qr/generate` 추가(SideNav 활성 오매칭 방지). ④ **`ClaimGenerationPanel`** — 전월 미입금 가드 시 생성 버튼 `aria-describedby`→`ClaimGenerationGuardBanner` `id`·`aria-busy`·가드 오류 `id` 연결(WCAG 1.3.1, QA-B19·Transport geocode 패턴 정합). ⑤ **`GuardianDocumentNotifyPanel`** — `section`+`h3` `aria-labelledby`(US-G02 법정서식). 회귀 +3. `npm test`·build·audit 검증.)
+> **이전 갱신**: 2026-06-10 (71차 — **G15·G11 신규 패널 접근성 재점검 + §8-1 라우트 표 실측 정합** — ① **`TransportCompliancePanel`(G15)** 5수칙 `Checkbox`에 `aria-describedby`로 상세 설명 `<p id>` 연결(WCAG 1.3.1 — SR이 라벨+상세 함께 안내). ② **`FeeSurchargeGuidePanel`(G11)** 가산 미리보기 결과를 조건부 마운트 `aria-live`에서 **상시 상주 `role="status"`·`aria-live="polite"`** 컨테이너로 전환(WCAG 4.1.3 — 라이브 영역 안내 신뢰성). ③ **§8-1 라우트 표** — 코드 실측 대비 누락됐던 `/billing/cms`·`/billing/reports/{charges,deposits,receipts}`·`/billing/calculator`·`/transport*`·`/meals`·`/programs`·`/staff`·`/organization/settings`·`/login` 추가, §8-2 그룹 표 **이동**그룹·운영 그룹 확장 반영(단일 원천=`navConfig.js`). 회귀 +3. `npm test`·build·audit 검증.)
+> **이전 갱신**: 2026-06-10 (70차 — **US-M04 월한도 배너 + US-L01 은행 엑셀 일괄입금 패널 신설 + USER_STORIES·FLOWCHART 갭 재점검** — ① **`MonthlyBenefitCapBanner`**(US-M04 G27) 신설 — `GET /api/v1/billing/monthly-benefit-cap-guard` 연동, 초과 시 `role="alert"` danger, 90% 이상 시 `role="status"` warning, 정상 시 `role="note"` 안내. 등급 한국어 라벨 병행(색만 의존 금지). `BillingDetailPage` 청구서 정보 카드 상단에 연동(clientId·yearMonth·ltcGrade·totalAmount 전달). ② **`BankDepositImportPanel`**(US-L01 BNK-49) 신설 — `POST /api/v1/billing/imports/bank-deposits` multipart 연동. `FileUpload`·`MonthInput`·`Field error`(`aria-invalid`)·제출 `aria-busy`·결과 `role="status"` 패턴 재사용. `PaymentPage` 하단에 연동(`onImported` 목록 갱신). ③ **`services.js` API 3종 추가** — `fetchMonthlyBenefitCapsApi`·`fetchMonthlyBenefitCapGuardApi`(US-M04)·`importBankDepositsApi`(US-L01 bank). ④ **`.ds-benefit-cap-banner`·`.ds-benefit-cap-notice`·`.ds-bank-import-result`** CSS 승격. ⑤ 회귀 +7(`MonthlyBenefitCapBanner.test.jsx` 4·`BankDepositImportPanel.test.jsx` 3). `npm test`·build·audit 검증 완료.)
 > **이전 갱신**: 2026-06-10 (69차 — **`FilterChips` WAI-ARIA radio group 키보드 패턴 정합(접근성 재점검)** — `FilterChips`(US-G07 상태 필터·US-E04 체크인 유형·US-F04 건강 기간 필터에서 재사용)가 `role="radiogroup"`+`role="radio"`+`aria-checked`는 갖췄으나 **키보드 상호작용이 WAI-ARIA radio group 규격에 미달**하던 갭을 해소. 기존엔 모든 칩이 독립 `<button>`(각 칩이 Tab 순서에 포함)으로 화살표 이동·선택이 없어, 같은 코드베이스의 `Tabs`(←/→·Home/End 구현)와 패턴이 불일치했다. ① **roving tabindex** — 그룹을 **단일 Tab 정지점**으로 만들어 선택된 칩만 `tabIndex=0`, 나머지는 `-1`(선택값 없으면 첫 칩이 진입점, WCAG 2.1.1·2.4.3). ② **방향키 이동·선택** — `ArrowRight`/`ArrowDown`은 다음, `ArrowLeft`/`ArrowUp`은 이전(양끝 wrap), `Home`/`End`는 처음/끝으로 이동하며 `onChange`로 즉시 선택(네이티브 라디오 버튼·`Tabs` 동작 정합). 순수 접근성 보강 리팩터로 클릭·`aria-checked`·counts 등 기존 동작·시각 불변. 회귀 +5(`FilterChips.test.jsx` 3→8 — roving tabindex 2·방향키 wrap 2·Home/End 1). `npm test` PASS·build PASS·audit 0.)
 > **이전 갱신**: 2026-06-10 (68차 — **FE-14 보안 패널 회귀 테스트 추가 + USER_STORIES/FLOWCHART 갭 점검** — USER_STORIES §17 FE-14 「운영·보안·계정 보안·로그인 이력 UI」중 `AuditLogPanel`·`BackupSettingsPanel`·`LoginHistoryPanel` 3개 컴포넌트에 Vitest 회귀 테스트가 없어 접근성 동작·API 연동·마스킹이 검증되지 않던 갭을 해소. ① **`AuditLogPanel.test.jsx`** 4건 — API 행 렌더·빈 상태·오류 Alert·`eventType` 필터 전달. ② **`BackupSettingsPanel.test.jsx`** 4건 — Switch `aria-checked` off/on·`patchSettings` 호출·성공 메시지·백업 이력 행(`1.0 MB` 포맷). ③ **`LoginHistoryPanel.test.jsx`** 4건 — IP 마스킹(`192.168.***.***`)·실패 로그인 「실패」 라벨·빈 상태·`role` 필터 전달. 접근성 패스 확인: `BackupSettingsPanel` Switch는 기존 `role="switch"` + `aria-checked` 패턴(US-UX-03 정합), `AuditLogPanel`·`LoginHistoryPanel`은 `Table`(`caption`+`scope=col`)·`EmptyState`·`Field` 라벨 연결(`DateInput`+`TextInput`)·오류 `Alert tone=danger` 패턴 준수. `npm test` **402/113 PASS** · build PASS · audit 0.)
 > **이전 갱신**: 2026-06-10 (67차 — **US-G00a G9 duration_band 5밴드 UI + US-J02 보호자 명세 보강 + 접근성 재점검** — USER_STORIES US-G00a 인수 조건 「등급×이용시간대(3~6h…13h+) 2차원 다밴드」·backend `DurationBand` @ `425a05f` 대비 frontend 미구현 갭 해소. ① **`config/feeSchedules.js`** — `DURATION_BANDS`(H3_6~H13_PLUS)·`DEFAULT_DURATION_BAND`(H10_13 파일럿)·`durationBandLabel`. ② **`DurationBandSelect`** — `Field`+`Select`·한국어 라벨·`role=note` 선택 안내·기본값 H10_13. ③ **`FeeScheduleTable`·`FeeRateHistoryPanel`·`FeeSchedulePage`** — 이용시간대 열·이력 필터·등록 폼·API payload `ltcGrade`+`durationBand` 정합. ④ **`ClientFormPage`** — 이용자 등록/수정에 이용시간대 필드(US-D01, 청구 수가 매칭). ⑤ **`GuardianPortalPage`** — US-J02 `isGuardianVisibleBillingStatus`·`mergeUniqueBillingRecords`·`handleRetryBilling`·오류 `Alert tone=warning`. 회귀 +5. `npm test`·build·audit 검증 예정.)
@@ -238,6 +241,8 @@
 
 ## 6. 접근성 체크리스트 (tester 검증 기준) [UXD]
 
+> **74차 (2026-06-10)**: `Field` 필수 입력 접근성 — `required` 필드가 시각적 `*`(aria-hidden)로만 필수 표기를 하고 컨트롤에 프로그램적으로 전달하지 않던 갭(WCAG 1.3.1·3.3.2)을 해소. `controlProps`에 `required` 시 **`aria-required="true"`**를 부여해 전 폼(`Field` 단일 원천)이 코드 변경 없이 스크린리더에 필수 상태를 안내한다. 네이티브 제약 검증을 피하려 HTML `required` 대신 `aria-required`만 사용(앱 자체 `Field error` 검증 유지). `Field.test.jsx`(+7) 회귀로 라벨 연결·`aria-required` 유무·`aria-invalid`+`role=alert`·경고 `role=status`·오류 우선·help describedby를 고정. 동반: US-G06 NHIS import 실서버 안내(`guidanceMessage` warning Alert) 완료 단위 커밋. `npm test` 542/144·build 848 modules·audit 0.
+> **71차 (2026-06-10)**: G15·G11 신규 패널 접근성 재점검 + §8-1 라우트 표 실측 정합 — coder가 `3db8db3`에서 추가한 두 패널이 UXD 접근성 패스를 거치지 않아 남은 결함을 해소. ① **`TransportCompliancePanel`(G15)**: 5개 수칙 체크박스의 상세 설명(`rule.detail`)이 `<p>`로만 렌더돼 스크린리더가 체크박스에 도달해도 **짧은 라벨만 읽고 상세 맥락을 놓치던** 갭(WCAG 1.3.1)을 `aria-describedby`로 각 `Checkbox`↔설명 `<p id>` 연결해 해소(앱 `Field` describedby 패턴 정합). ② **`FeeSurchargeGuidePanel`(G11)**: 가산 미리보기 결과가 **조건부로 마운트되는** `aria-live` 영역이라 일부 스크린리더가 새로 삽입된 라이브 영역을 안내하지 못하던 갭(WCAG 4.1.3)을, 결과 컨테이너(`role="status"`·`aria-live="polite"`)를 **항상 DOM에 상주**시키고 텍스트만 토글하도록 전환해 해소. ③ **§8-1 라우트 표 실측 정합** — 코드에는 있으나 표에 누락됐던 `/billing/cms`(US-L03)·`/billing/reports/{charges,deposits,receipts}`·`/billing/calculator`(US-M03)·`/transport*`(US-T01~T03)·`/meals`·`/programs`(US-N01·N02)·`/staff`(§3-8)·`/organization/settings`(US-UX-03)·`/login` 추가, §8-2 그룹 표에 **이동**그룹·운영 그룹 확장 반영. 회귀 +3(`TransportCompliancePanel.test.jsx` aria-describedby 1·`FeeSurchargeGuidePanel.test.jsx` 상주 라이브 영역 1·미리보기 쿼리 정합 1). `npm test` PASS·build PASS·audit 0.
 > **64차 (2026-06-09)**: 날짜 입력 `DateInput` 표준화 — `FeeSchedulePage`(US-G00a 적용 시작일)·`CopayRatePage`(US-G00b 적용 기준일)·`VisitScheduleForm`(US-V01 방문 날짜)의 raw `<TextInput type="date">`를 `DateInput`(`.ds-date-input` 폭·`Field` 라벨/오류 바인딩 단일 원천)으로 전환. 28차 「Must 화면 raw `type=date` 0건」 규율 회귀 해소 — raw `type="date"` 잔존 화면 0건 재확인(컴포넌트 내부만). 순수 표준화·동작 불변, 기존 회귀 PASS. `npm test` 326/93·build 804 modules·audit 0.
 > **55차 (2026-06-09)**: US-J02 본인부담금 명세 상세·인쇄 — ① **`GuardianBillingDetailModal`** 신설: `Modal`(role=dialog·focus trap)로 월별 명세서 상세를 `<table caption(sr-only)·scope=row>`로 노출, **본인부담금 행** 색+굵게+`ds-sr-only` 라벨 병행(색만 의존 금지), 보조 항목(이용일수·총 급여비용·공단부담금·본인부담률)은 값 존재 시 행 렌더, 「열람 전용·CMS/알림 미지원」 안내. ② **인쇄**: `body.ds-statement-printing` 스코프 + `@media print`로 명세서만 노출(QR·청구 상세 인쇄 흐름과 비충돌). ③ **`GuardianPortalPage`**: 「명세 보기」 모달 → 인라인 명세 목록 표(자동 로드·`StatusBadge`·행별 「상세」 `aria-label` 청구월 포함) → 상세 모달 연동, 읽기 전용 `PaymentRecordModal` 의존 제거. `GuardianBillingDetailModal.test.jsx`·`GuardianPortalPage.test.jsx` 회귀 +3.
 > **54차 (2026-06-08)**: US-UX-04 지점 스코프 안내 전면 연동 — ① **`BranchScopeNotice`**(`role=status`)를 `QrGeneratePage`(US-E03)·`TransportPage`·`TransportRunNewPage`·`TransportRunDetailPage`(US-T01~T03)에 연동해 출석·QR·배차 **6개 스코프 화면**에서 활성 지점명·hint를 텍스트로 노출(색만 의존 금지). ② QR 화면 전용 hint 「선택한 지점 기준 QR이 생성됩니다.」 ③ **`forced-colors`** — `.ds-branch-scope-notice` 경계선. `QrGeneratePage.test.jsx`·`TransportPage.test.jsx`·`pilotPageFlows` US-UX-04 4경로 회귀 +3.
@@ -292,6 +297,8 @@
 - [x] SideNav: `<nav aria-label="주 메뉴">`, 활성 링크 `.ds-nav-item--active`.
 - [x] 주민번호 열람: `aria-label="주민번호 열람 (audit 기록됨)"` + 마스킹 표시(US-D04).
 - [x] FilterChips: `role="radiogroup"` + `role="radio"` + `aria-checked` + **WAI-ARIA radio group 키보드 패턴(roving tabindex — 그룹 단일 Tab 정지점, ←/→/↑/↓·Home/End 이동·선택)** (US-G07·69차, `Tabs`와 동일 패턴).
+- [x] 이동서비스 수칙 체크리스트(71차, US-T05/G15): `TransportCompliancePanel` — 각 `Checkbox`에 `aria-describedby`로 상세 설명(`<p id>`) 연결(SR이 라벨+상세 함께 안내, WCAG 1.3.1), 진행 카운터 `role="group"`+`aria-live="polite"`, 계약서·일지 `Modal`(focus trap).
+- [x] 가산율 미리보기 라이브 영역(71차, US-M05/G11): `FeeSurchargeGuidePanel` — 결과 컨테이너를 `role="status"`·`aria-live="polite"`로 **상시 상주**(조건부 마운트 제거, WCAG 4.1.3), 가산표 `caption`(sr-only)·`scope=col`, 중복불가 안내 텍스트 병행.
 - [x] 건강 수치 비정상 시 `aria-invalid="true"` + `role="alert"` 오류 메시지 — `HealthPage` `Field error` + `Alert` (US-F01).
 - [x] 수동 매칭 모달(US-G06): 지점·Tenant 제약 안내 `Alert tone="warning"` 포함 — `ReconciliationPage`.
 - [x] 지점 관리(US-C01): 등록/수정 `Modal`(role=dialog)·`Field` 라벨 연결, 지점명 빈 값 시 `Field error`(role="alert"·`aria-invalid`), 상태 `BRANCH_STATUS` 텍스트+색.
@@ -909,14 +916,27 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/billing/overdue` | `OverduePage` | branch_admin, hq_admin | **US-L02** |
 | `/billing/imports/nhis` | `NHISImportPage` | branch_admin, hq_admin | US-G04 |
 | `/billing/imports/nhis/:batchId` | `ReconciliationPage` | branch_admin, hq_admin | US-G06 |
-| `/billing/fee-schedules` | `FeeSchedulePage` | hq_admin | US-G00a |
+| `/billing/fee-schedules` | `FeeSchedulePage` | hq_admin | US-G00a (G9 duration_band·G11 가산율 가이드) |
 | `/billing/copay-rates` | `CopayRatePage` | hq_admin | US-G00b |
+| `/billing/cms` | `CmsPage` | branch_admin, hq_admin | **US-L03** (CMS 자동이체) |
+| `/billing/reports/charges` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (청구대장 7-6) |
+| `/billing/reports/deposits` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (입금대장 7-7) |
+| `/billing/reports/receipts` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (수납대장 7-8) |
+| `/billing/calculator` | `CopayCalculatorPage` | branch_admin, hq_admin | **US-M03** (간편계산기 7-10) |
 | `/platform` | `PlatformPage` | platform_admin | US-A01, US-A02 |
 | `/guardian` | `GuardianPortalPage` | guardian, client_user | US-I02, US-J02 |
 | `/guardian/checkin` | `GuardianCheckinPage` | guardian, client_user | **US-E04** (FLOWCHART §9 canonical) |
 | `/attendance/checkin/qr` | `GuardianCheckinPage` | branch_admin, social_worker, caregiver, hq_admin | US-E04 (직원 QR 화면 — staff 경로) |
 | `/guardian/invitations/:token/accept` | `GuardianInvitationAcceptPage` | **공개**(미인증) | **US-J01** |
 | `/settings` | `SettingsPage` | sysadmin, hq_admin, platform_admin | US-I03 |
+| `/organization/settings` | `OrganizationSettingsPage` | hq_admin | US-UX-03 (전사 정책·셀프 체크인 토글) |
+| `/transport` | `TransportPage` | hq_admin, branch_admin, social_worker, caregiver | **US-T01·T03** (배차 명단·확정 조회) |
+| `/transport/runs/new` | `TransportRunNewPage` | hq_admin | **US-T02** (루트 편집·확정) |
+| `/transport/runs/:runId` | `TransportRunDetailPage` | hq_admin (편집), 직원 (확정 조회) | **US-T02·T03** (확정/취소·읽기 전용·G15 `TransportCompliancePanel`) |
+| `/meals` | `MealsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-N01** (식사 관리) |
+| `/programs` | `ProgramsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-N02** (프로그램 관리) |
+| `/staff` | `StaffPage` | branch_admin, hq_admin | **§3-8** (직원 관리, v3) |
+| `/login` | `LoginPage` | 공개 | US-B01 (`/`는 `RootRedirect`) |
 | `/forbidden` | `ForbiddenPage` | 공개 | — |
 
 ### 8-2. 사이드 네비게이션 (SideNav.jsx) — **2단 그룹 (US-UX-02)**
@@ -925,10 +945,13 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 | 그룹 | 하위 예시 |
 |------|----------|
-| 운영 | 대시보드, 지점, 이용자, **보호자** |
-| 출석 | 현황, 통계, QR |
+| 운영 | 대시보드, 지점, 이용자, **직원 관리**, **보호자**, 플랫폼 관리(platform_admin), 전사 설정(hq), 시스템 설정(sysadmin), 보호자 포털·QR 체크인(guardian) |
+| 이동 | 배차·이동경로(US-T01~T03) |
+| 출석 | 현황, 수기 체크인, 통계, QR |
 | 기록 | 건강, 식사, 프로그램, **방문 일정**(US-V01) |
-| 청구 | 청구·정산, **공단 엑셀 import**, **입금**, **미납**, 수가표(hq) |
+| 청구 | 청구·정산, **공단 엑셀 import**, **입금**, **미납**, **CMS 자동이체**, 수가표·본인부담 비율(hq), **청구·입금·수납 대장**, **간편계산기** |
+
+> 실제 정의는 `src/frontend/src/layout/navConfig.js` `NAV_GROUPS`(운영·이동·출석·기록·청구 5그룹). 본 표는 요약이며, 라우트 전수는 §8-1을 단일 원천으로 본다.
 
 > **모바일**: 그룹별 접힘/펼침(`aria-expanded`). **데스크톱**: 항상 펼침(769px+).
 
@@ -1066,7 +1089,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `.ds-tabular-nums` | 표 숫자 열 (24차, FeeRateHistoryPanel) |
 | `.ds-progress-steps__list` | NHIS 배치 진행 ol (24차, BatchProgressSteps) |
 | `.ds-section-gap--bottom` | 하단만 24px 여백 (24차, QrGeneratePage) |
-| `.ds-billing-context-nav` / `__list` / `__link` / `__link--active` | 입금·미납 페이지 컨텍스트 네비 (65차, US-L01·L02) |
+| `.ds-context-nav` / `.ds-billing-context-nav` / `__list` / `__link` / `__link--active` | 모듈 컨텍스트 네비 — 출석(73차, US-E01~E06)·입금·미납(65차, US-L01·L02) |
 | `.ds-auth-page` / `--wide` / `__lede` / `__actions` | 공개 인증 카드 (26차, US-J01 — LoginPage `.ds-login` 확장, AppShell 대체) |
 | `.ds-date-input` | 기간 필터 date input max-width (27차, §3-1) |
 | `.ds-guardian-card__subtitle` / `__invitations` | 보호자 카드 초대 이력 섹션 (27차, US-J01) |
