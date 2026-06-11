@@ -1251,4 +1251,46 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 ---
 
+## 13. 청구 추가 UI — 환불·NHIS 비교 (US-M03 · BNK-87) [UXD]
+
+> **79차 UXD 추가 (2026-06-11)** — coder가 구현한 신규 컴포넌트 접근성 검토 및 CSS 보강.
+
+### 13-1. RefundRecordModal (US-M03 7-9)
+
+| 항목 | 상세 |
+|------|------|
+| 위치 | `src/components/ui/RefundRecordModal.jsx` |
+| 사용 | `BillingDetailPage` — PAID 청구서의 「환불 처리」 버튼 |
+| 컴포넌트 | `Modal`(role=dialog, aria-modal, aria-labelledby), `Field`, `TextInput`, `DateInput`, `Textarea`, `Button`, `Alert`, `Spinner` |
+| 필드 | 환불 금액(필수), 환불일(필수, default 오늘), 환불 사유(선택) |
+| A11y | `Modal` 공통 패턴 사용 — `role="dialog"` + `aria-labelledby="[titleId]"` + `aria-modal="true"` + 닫기 `aria-label="닫기"`. 저장 중 `aria-busy={submitting}`. 서버 오류 `role="alert"`. `Field` render-prop으로 label·id 자동 연결. |
+| 금액 검증 | 0원 이하·환불 가능 금액 초과 시 Field 단위 오류 표시 |
+| 테스트 | `RefundRecordModal.test.jsx` — 금액 검증·submit 흐름·오류 처리 포함 |
+
+### 13-2. BillingNhisComparisonPanel (BNK-87)
+
+| 항목 | 상세 |
+|------|------|
+| 위치 | `src/components/ui/BillingNhisComparisonPanel.jsx` |
+| 사용 | `BillingDetailPage` — DRAFT 청구서 상세의 "공단 명세 비교" 탭/섹션 |
+| 컴포넌트 | `section[aria-labelledby]`, `StatCard` ×3, `Table[caption]`, `StatusBadge`, `Alert`, `Spinner` |
+| 상태 | `loading` → `Spinner`(label="공단 명세 비교 로딩 중") / `error` → `Alert(tone=danger)` / `data` → 요약 + 명세 테이블 |
+| StatCard | 일치(success) / 불일치(danger if >0) / 공단 미매칭(warning if >0) — `role="group"` 그룹 |
+| 테이블 | `<Table caption="이용자별 공단 명세 비교" captionVisuallyHidden>` + `scope="col"` th + 서비스일수 불일치 시 `.ds-sr-only` 보조 텍스트 추가 |
+| A11y | `<section aria-labelledby="billing-nhis-comparison-heading">` / 불일치 행 `.ds-row--warning` + `forced-colors` 윤곽선 보강(CSS 추가) / 금액 열 `.ds-tabular-nums` |
+| CSS | `components.css` 에 `.ds-billing-nhis-comparison` 스코핑 앵커 + `.ds-stat-grid` 그리드 + `forced-colors` 규칙 **79차 추가** |
+| 테스트 | `BillingNhisComparisonPanel.test.jsx` — NHIS 배치 없음·불일치·일치 케이스 포함 |
+
+### 13-3. G17/G32 대시보드 — 사례관리 30일 반영 갭 위젯
+
+| 항목 | 상세 |
+|------|------|
+| 위치 | `DashboardPage.jsx` — `mapBranchDashboardSummary` / `mapHqDashboardSummary` |
+| 데이터 | `fetchCaseManagementComplianceApi` → `countCaseManagementReflectionGaps` |
+| StatCard | label="30일 미반영(사례관리)", tone=danger(>0)/default(0) |
+| A11y | 기존 StatCard `ds-stat-grid` 그룹(`role="group"`) 내 추가 — 신규 a11y 변경 없음 |
+| 테스트 | `dashboardSummary.test.js` — 30일 반영 갭 카운트 로직 커버 |
+
+---
+
 *이 문서는 ux_designer 에이전트(UXD)가 관리합니다. 토큰·컴포넌트 변경 시 본 문서와 `memory/decisions.md`를 동기화하세요.*
