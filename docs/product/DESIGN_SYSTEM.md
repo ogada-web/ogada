@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-11T02:30:00+00:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-11T05:00:00+00:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-11 (76차 — **차량 관리(US-T05/G16) 표 행 액션 접근성 + §8-1 라우트 표 실측 정합** — `VehiclesPage` 차량 목록 행별 「수정」 `Button`이 동일 접근성 이름만 노출해 다중 행에서 스크린리더가 대상 차량을 식별 못 하던 갭(WCAG 2.4.6·4.1.2)을 차량번호 포함 `aria-label`(예: 「12가3456 차량 수정」)로 해소(31차 `GuardianInvitationList` 패턴 정합). §8-1 라우트 표에 누락됐던 `/attendance/boarding`·`/on-site`(US-E06)·`/transport/{vehicles,service-fees,outings}`·`/reports/client-outings`(US-T05/G16·BNK-63) 6경로 추가. 회귀 `VehiclesPage.test.jsx` 행 동작 라벨. `npm test` 558/146 PASS·audit 0.)
+> **최종 갱신**: 2026-06-11 (77차 — **US-L04 의료비공제 UI + ClientOuting/CareProvision/TransportForm18 + Field aria-required + CSS 신규 클래스** — ① **`MedicalExpenseDeductionPanel`**(US-L04 G26) — `GET /clients/:id/billing/medical-expense-deduction?year=` / `GET /guardian/clients/:id/billing/medical-expense-deduction?year=` 연동, 귀속 연도 조회·인쇄·CSV 다운로드(`buildMedicalExpenseDeductionCsv`), `StatCard` 3종 요약(`role="group"`)·납입 내역 `Table`(`caption` sr-only)·합계 행 `ds-medical-expense-panel__total`, CMS·간편결제 제외 안내 `Alert tone=info`. staff variant → `ClientDetailPage` 청구 탭, guardian variant → `GuardianPortalPage`. ② **`ClientOutingPanel`**(G15 2-1-1 BNK-63) — 외출 CRUD(`PLANNED→OUT→RETURNED/CANCELLED`) + 출발·복귀 액션(행별 `aria-label` 이용자명 포함), `OUTING_STATUS`(§2-3). `ClientOutingsPage`(`/transport/outings`)·`ClientOutingReportPage`(`/reports/client-outings`)·`ClientDetailPage` 외출 탭 연동. ③ **`CareProvisionRecordPanel`**(G15/G16) — `GET /care-provision-records?clientId=` 재가급여 기록·방문요양/주간보호 분리 표 — `ClientDetailPage` 기본정보 탭 연동. ④ **`TransportVehicleSelect`**(G16) — 지점 차량 `Select`(`GET /transport/vehicles?branchId=`) — `TransportRunNewPage`·`TransportRunDetailPage` 차량 배정. ⑤ **`TransportForm18GuidePanel`**(G15 별지 제18호) — 신청 절차·공단 3분리 신청 유형(적용·변경·중단)·등록상태 4단·전제조건 안내 — `FeeSurchargeGuidePanel`(G11) 내 탭으로 통합. ⑥ **`TransportCompliancePanel`**(G15) — 이동서비스 수칙 체크리스트(`Checkbox` `aria-describedby` 연결)·서명·계약서·일지 서식 인라인 `Modal` — `TransportRunDetailPage` 탭 연동. ⑦ **`Field` `aria-required`**(WCAG 1.3.1·3.3.2) — `required` prop이 있는 모든 `Field`가 `aria-required="true"`를 하위 컨트롤에 전달(HTML `required` 대신 — 프론트 자체 검증 패턴과 일관). ⑧ **CSS 신규 클래스** 11종 승격 — `.ds-form-actions--start`·`.ds-list-plain`·`.ds-transport-form18__steps/__step`·`.ds-transport-compliance__rules/__progress/__template`·`.ds-medical-expense-panel/__summary/__filters/__total`·`.ds-billing-report-print-zone`(인쇄 영역). `npm test` 574/148 PASS·build PASS·audit 0.)
+> **이전 갱신**: 2026-06-11 (76차 — **차량 관리(US-T05/G16) 표 행 액션 접근성 + §8-1 라우트 표 실측 정합** — `VehiclesPage` 차량 목록 행별 「수정」 `Button`이 동일 접근성 이름만 노출해 다중 행에서 스크린리더가 대상 차량을 식별 못 하던 갭(WCAG 2.4.6·4.1.2)을 차량번호 포함 `aria-label`(예: 「12가3456 차량 수정」)로 해소(31차 `GuardianInvitationList` 패턴 정합). §8-1 라우트 표에 누락됐던 `/attendance/boarding`·`/on-site`(US-E06)·`/transport/{vehicles,service-fees,outings}`·`/reports/client-outings`(US-T05/G16·BNK-63) 6경로 추가. 회귀 `VehiclesPage.test.jsx` 행 동작 라벨. `npm test` 558/146 PASS·audit 0.)
 > **이전 갱신**: 2026-06-10 (75차 — **기록 모듈 컨텍스트 네비 + 이동 SideNav·접근성 재점검** — USER_STORIES US-F01·N01·N02·V01·G16·FLOWCHART §6·§3-5·§9b 대비 기록(건강·식사·프로그램·방문) 하위 화면 간 **cross-page 탐색**이 SideNav만으로는 부족하던 갭 해소. ① **`RecordsContextNav`** — `AttendanceContextNav`/`BillingContextNav` 패턴 재사용, `nav`(aria-label)·`NavLink` `aria-current="page"`·44px 터치·`forced-colors` — `HealthPage`·`MealsPage`·`ProgramsPage`·`VisitsPage` 상단 연동. ② **`navConfig`** — SideNav 이동 그룹에 **`/transport/service-fees`(G16)** 추가·`EXACT_MATCH_PATHS`에 service-fees·기록 4경로 등록(SideNav 활성 오매칭 방지). ③ **`TransportContextNav.test.jsx`**(+2) — 이동서비스 5경로 landmark·`aria-current` 회귀. ④ **`SideNav`** — 모바일 접힘 시 하위 `ul`에 **`aria-hidden={!isOpen}`** 부여(WCAG 4.1.2 — 접힌 그룹 SR 노출 차단). ⑤ **`BillingContextNav`** — `.ds-billing-context-nav*` → **`.ds-context-nav*`** 단일 클래스로 정합(스타일 공유 선택자와 일치). 회귀 +4. `npm test`·build·audit 검증.)
 > **이전 갱신**: 2026-06-10 (73차 — **출석 모듈 컨텍스트 네비 + 청구 생성·법정서식 접근성 재점검** — USER_STORIES US-E01~E06·FLOWCHART §5 대비 출석 하위 화면(현황·탑승·현장·체크인·통계·QR) 간 **cross-page 탐색**이 SideNav만으로는 부족하던 갭 해소. ① **`AttendanceContextNav`** — `BillingContextNav`(US-L01·L02) 패턴 재사용, `nav`(aria-label)·`NavLink` `aria-current="page"`·44px 터치·`forced-colors` — `AttendancePage`·`AttendanceStatsPage`·`QrGeneratePage` 상단 연동. ② **`.ds-context-nav*`** CSS — `.ds-billing-context-nav*`와 공유 선택자 승격(모듈 컨텍스트 네비 단일 원천). ③ **`navConfig` `EXACT_MATCH_PATHS`** — `/attendance/boarding`·`/on-site`·`/checkin`·`/stats`·`/qr/generate` 추가(SideNav 활성 오매칭 방지). ④ **`ClaimGenerationPanel`** — 전월 미입금 가드 시 생성 버튼 `aria-describedby`→`ClaimGenerationGuardBanner` `id`·`aria-busy`·가드 오류 `id` 연결(WCAG 1.3.1, QA-B19·Transport geocode 패턴 정합). ⑤ **`GuardianDocumentNotifyPanel`** — `section`+`h3` `aria-labelledby`(US-G02 법정서식). 회귀 +3. `npm test`·build·audit 검증.)
 > **이전 갱신**: 2026-06-10 (71차 — **G15·G11 신규 패널 접근성 재점검 + §8-1 라우트 표 실측 정합** — ① **`TransportCompliancePanel`(G15)** 5수칙 `Checkbox`에 `aria-describedby`로 상세 설명 `<p id>` 연결(WCAG 1.3.1 — SR이 라벨+상세 함께 안내). ② **`FeeSurchargeGuidePanel`(G11)** 가산 미리보기 결과를 조건부 마운트 `aria-live`에서 **상시 상주 `role="status"`·`aria-live="polite"`** 컨테이너로 전환(WCAG 4.1.3 — 라이브 영역 안내 신뢰성). ③ **§8-1 라우트 표** — 코드 실측 대비 누락됐던 `/billing/cms`·`/billing/reports/{charges,deposits,receipts}`·`/billing/calculator`·`/transport*`·`/meals`·`/programs`·`/staff`·`/organization/settings`·`/login` 추가, §8-2 그룹 표 **이동**그룹·운영 그룹 확장 반영(단일 원천=`navConfig.js`). 회귀 +3. `npm test`·build·audit 검증.)
@@ -172,8 +173,14 @@
 | | `IN_PROGRESS`/`CHECKED_IN` | info | 방문중 |
 | | `COMPLETED` | success | 완료 |
 | | `CANCELLED` | danger | 취소 |
+| 외출 상태 (G15 2-1-1) | `PLANNED` | info | 예정 |
+| | `OUT` | warning | 외출 중 |
+| | `RETURNED` | success | 복귀 |
+| | `CANCELLED` | neutral | 취소 |
+| 차량 상태 (G16) | `active` (isActive=true) | success | 운행 |
+| | `inactive` (isActive=false) | neutral | 비활성 |
 
-> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차).
+> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의.
 
 ### 2-4. 다크 모드 토큰 (11차, 운영자 야간 근무) [UXD]
 
@@ -767,6 +774,25 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 <MaskedPhone phone={guardian.phone} masked={guardian.phoneMasked} />
 ```
 
+### 7-7aa. 77차 신규 컴포넌트 (2026-06-11, US-L04·G15·G16 오팅·케어프로비전·이동서비스 법정서식)
+
+| 컴포넌트 | 주요 props | 용도 / 화면 |
+|----------|-----------|------------|
+| `MedicalExpenseDeductionPanel` | `clientId`,`clientName?`,`variant?("staff"\|"guardian")`,`className?` | 연말정산 의료비공제 본인부담 납입 집계 (US-L04 G26). 귀속 연도 조회·인쇄·CSV. `ClientDetailPage` 청구 탭(staff) / `GuardianPortalPage`(guardian) |
+| `ClientOutingPanel` | `clientId`,`clientName?`,`className?` | 이용자별 외출 CRUD + 출발·복귀·취소 생애주기 (G15 BNK-63). `OUTING_STATUS` `StatusBadge`. `ClientDetailPage` 외출 탭 |
+| `CareProvisionRecordPanel` | `clientId`,`className?` | 재가급여 기록 목록 — 방문요양/주간보호 분리 표 (G15/G16). `ClientDetailPage` 기본정보 탭 |
+| `TransportVehicleSelect` | `branchId`,`value`,`onChange`,`disabled?`,`className?` | 지점 차량 `Select` (`GET /transport/vehicles?branchId=`). `TransportRunNewPage`·`TransportRunDetailPage` 차량 배정 |
+| `TransportForm18GuidePanel` | `className?` | 별지 제18호 이동서비스비 신청 안내 — 절차·공단 3분리 신청 유형·등록상태 4단·전제조건 (G15 v1.3-C). `FeeSurchargeGuidePanel` 내 탭 |
+| `TransportCompliancePanel` | `roster?`,`canSave?`,`className?` | 이동서비스 수칙 체크리스트(`Checkbox`·`aria-describedby`)·서명·계약서·일지 서식 (G15). `TransportRunDetailPage` 탭 |
+
+> **Field aria-required (77차 WCAG 1.3.1·3.3.2)**: `Field`의 `required` prop이 하위 컨트롤에 `aria-required="true"` 전달 — HTML native `required` 대신 사용해 브라우저 기본 유효성 팝업 없이 보조 기술이 필수 입력을 인식. 기존 `aria-invalid` + `Field error` 패턴과 조합해 입력 전(aria-required) → 미입력 제출(aria-invalid + role=alert) 흐름을 완성.
+
+> **MedicalExpenseDeductionPanel 접근성(77차, US-L04)**: 요약 `StatCard` 3종은 `role="group" aria-label="의료비공제 납입 요약"`으로 그룹. 납입 내역 `Table`은 `caption` sr-only(시각 h3 중복 방지). 합계 행(`ds-medical-expense-panel__total`)은 `th scope="row"`. 인쇄는 `window.print()`; 보호자 명세서 인쇄(`body.ds-statement-printing`)와 영역 충돌 없도록 `.ds-billing-report-print-zone` 스코프 클래스로 격리. CSV 다운로드 시 `aria-label` 명시.
+
+> **ClientOutingPanel 생애주기(77차, G15 BNK-63)**: 행 액션 버튼(`출발`,`복귀`,`수정`,`취소`)에 이용자명 포함 `aria-label`(31·76차 패턴 정합). `OUTING_STATUS`: PLANNED→출발 버튼(`departClientOutingApi`) → `OUT`→복귀 버튼(`returnClientOutingApi`) → `RETURNED`. `CANCELLED`는 `PLANNED`/`OUT`에서만 가능. 행 `StatusBadge`는 색+텍스트 라벨 병행. `ClientOutingsPage`(`/transport/outings`)는 전 이용자 외출 목록·월 필터, `ClientOutingReportPage`(`/reports/client-outings`)는 월간 외출 리포트 인쇄용.
+
+> **TransportCompliancePanel 접근성(77차, G15)**: 수칙 `Checkbox` 5종에 각 상세 설명 `<p id>`가 `aria-describedby`로 연결(WCAG 1.3.1 — 71차 패턴 재사용). 진행 현황은 `aria-live="polite"` `.ds-transport-compliance__progress` 텍스트(「N / 5 완료」). 계약서·일지는 `Modal`(focus trap) 내 `<pre>`.
+
 ### 7-8. 사용 예시
 
 ```jsx
@@ -844,6 +870,10 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - **낙상·특이사항(41차, US-F03)** — `HealthPage` 「낙상·특이사항」탭의 `IncidentRecordForm` + `createIncidentApi`(`POST /clients/:id/health/incidents`). 백엔드 `incident` recordType·`incidentType` enum 구현 후 정합. **대시보드 「건강 이상」 반영(인수 조건 2)**: 낙상·사고를 `/dashboard/*` 건강 알림 집계에 포함 → `HealthAlertList`로 표시(coder).
 - **활력징후 정상 범위(40차, US-F01)** — `utils/vitalsRanges.js`가 단일 원천. 입력 폼 경고는 `evaluateVital(field, value)`, 건강 이상 배너 목록은 `findAbnormalVitalRecords(records)` 사용. 임계값(수축기 90–140·체온 35.5–37.5·혈당 70–200·SpO₂ ≥92)을 페이지에 재정의(하드코딩) 금지 — 백엔드 비정상 기준과 정합 필요 시 이 파일만 수정. advisory 경고는 `Field warning` prop(`role="status"`)으로 표시하며 저장을 차단하지 않는다.
 - **전사 설정 토글(US-I03·§3-3)** — `SettingsPage` 「조직 설정」탭의 `Switch`(`allow_client_self_checkin`). 초기값은 `GET /api/v1/settings/organization`으로 주입(현재 `user.allowClientSelfCheckin` 가정 — coder가 실제 소스에 배선), 변경 시 `PATCH /api/v1/settings/organization { allowClientSelfCheckin }` 호출(낙관적 업데이트 또는 응답 후 확정). 이 값은 US-E04 QR 셀프 체크인(`client_user`) 허용과 `ClientUserAccountField`(US-D01) 안내에 연동된다.
+- **의료비공제(77차, US-L04 G26)** — `MedicalExpenseDeductionPanel`의 `variant="staff"`는 `fetchClientMedicalExpenseDeductionApi(clientId, year)`(`GET /api/v1/clients/:id/billing/medical-expense-deduction?year=`), `variant="guardian"`은 `fetchGuardianMedicalExpenseDeductionApi(clientId, year)`(`GET /api/v1/guardian/clients/:id/billing/medical-expense-deduction?year=`). 응답 스키마: `{ clientName, taxYear, paymentCount, totalPaidAmount, items: [{ claimId, yearMonth, copayAmount, paidAt, paymentMethod }] }`. **CMS(`EASY_PAY`)·간편결제 제외** — 백엔드가 `paymentMethod` 필터(BANK_TRANSFER·CASH만)를 적용해야 함(BNK-73 `paidAt` 필드 선행).
+- **외출 관리(77차, G15 BNK-63)** — `ClientOutingPanel` API: `GET /clients/:id/outings`, `POST .../outings`(`{ outingDate, plannedDepartureTime, plannedReturnTime, reason, companionName }`), `PATCH .../outings/:outingId`(수정), `POST .../outings/:outingId/depart`(출발), `POST .../outings/:outingId/return`(복귀), `POST .../outings/:outingId/cancel`(취소). `ClientOutingsPage`(`/transport/outings`) — 전 이용자 외출 목록(`GET /outings?branchId=&yearMonth=`). `ClientOutingReportPage`(`/reports/client-outings`) — 월간 외출 리포트(`GET /outings/report?branchId=&yearMonth=`).
+- **차량 관리(77차, G16)** — `TransportVehicleSelect` prop: `branchId`, `value`(vehicleId), `onChange(vehicleId)`. API: `GET /api/v1/transport/vehicles?branchId=`. 응답: `[{ id, plateNumber, capacity, isActive }]`. `VehiclesPage`(`/transport/vehicles`) — 차량 CRUD(`GET/POST /transport/vehicles`, `PATCH .../vehicles/:id`).
+- **이동서비스 수칙(77차, G15)** — `TransportCompliancePanel` API: `GET /transport/contracts?clientId=` → 기존 수칙 완료 체크·서명 로드. `saveTransportContractApi` → `POST /transport/contracts { clientId, completedRuleIds, guardianSignatoryName, guardianSignedOn, institutionSignatoryName, institutionSignedOn }`. `canSave` prop은 `branch_admin`·`social_worker`에서 `true`.
 - **세션 만료(US-B03)** — `SessionTimeoutProvider`가 idle 감지. refresh 토큰 연장 API는 coder가 `onExtend`에 연동.
 - **수가 이력(US-G00a)** — `FeeSchedulePage` 「이력 보기」 → `Modal` + `FeeRateHistoryPanel`. API: `GET /api/v1/billing/fee-schedules/history?year=` 응답에 `[{ year, grade, dailyRate, effectiveFrom, createdAt, createdByName? }]` 배열 포함. 현재 `historyEntries` 빈 배열 스켈레톤 — coder가 API 연동.
 - **건강 추이 차트(US-F04)** — `HealthDetailPage`: `GET /api/v1/clients/:id/health?days=7|30` 응답을 `HealthTrendChart` `data` prop에 주입. 각 항목: `{ date, systolic, diastolic, temperature, bloodSugar, spo2 }`.
@@ -1111,6 +1141,12 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `.ds-branch-switcher` | topbar 지점 선택기 (33차, US-B02) |
 | `.ds-branch-scope-notice` / `__label`·`__value`·`__hint` | 지점 스코프 조회 안내 (54차, US-UX-04 — `BranchScopeNotice` → 출석·QR·배차 6화면) |
 | `.ds-tabs--sticky-mobile` | 모바일 배차 탭 sticky (53차, US-T03) |
+| `.ds-form-actions--start` | 폼 액션 좌측 정렬 (77차) |
+| `.ds-list-plain` | 마커 없는 플레인 목록 (77차) |
+| `.ds-transport-form18__steps`/`__step` | 이동서비스비 별지 제18호 신청 절차 단계 목록 (77차, G15) |
+| `.ds-transport-compliance__rules`/`__progress`/`__template` | 이동서비스 수칙 체크리스트·진행·서식 (77차, G15) |
+| `.ds-medical-expense-panel`/`__summary`/`__filters`/`__total` | 의료비공제 납입 집계 패널 (77차, US-L04 G26) |
+| `.ds-billing-report-print-zone` | 청구·의료비공제 인쇄 영역 격리 스코프 (77차, US-L04·US-M03) |
 
 ---
 
