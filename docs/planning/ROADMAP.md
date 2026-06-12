@@ -1,4 +1,4 @@
-<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-10T23:45:00+09:00 -->
+<!-- doc:owner=PLN doc:audience=TSR,COD,SEC updated=2026-06-12T13:00:00+09:00 -->
 # ogada 구현 로드맵
 
 > **작성·유지**: `planner`  
@@ -7,7 +7,7 @@
 > **피드백**: `tester` → `docs/qa/QA_FEEDBACK.md` → `planner` 반영 → `coder` 수정  
 > **벤치마크 입력**: `docs/planning/research/BENCHMARK_REPORT.md`, `docs/planning/research/COMPETITOR_MATRIX.md`, `memory/decisions.md`
 
-> **CURRENT BASELINE (96차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`d6d7e7f`** · test **`598d108`** · **59 ahead** · WT **CLEAN** · frontend develop **`6c4c151`** · test **`c7c8f07`** · **74 ahead** · WT **DIRTY 4M** · **48 path·40 page** · planner 96차 (BNK-58 · TSR 231~232 · **G15 2-2/2-3 출석 이원화 ✅** @ `6c4c151`/`d6d7e7f` · **G15 계약 서명 API+UI ✅** @ `3c8f9fe`/`9e3cab5` · **G11 v2 청구 자동 가산 ✅** @ `d7475fd` · **QA-B19 geocode failure UI WIP** · **케어포 func.php 108 leaf 불변**) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**. **모듈 커버 74.81%**(BNK-41~58 · ≥60% PASS). **v1.2.1 merge-blocking P0 `[x]` 유지** — BE **`merge_status: ready`** · FE **BLOCK**(WT dirty · QA-B19) · tester merge **74+59=133 commits** · TSR develop **482/127·453 PASS** @ HEAD/WT.
+> **CURRENT BASELINE (110차 — git 실측·ROADMAP/QA 과거 SHA보다 우선)**: backend develop **`a0a7f9c`** · test **`598d108`** · **130 ahead** · WT **CLEAN** · frontend develop **`26499b3`** · test **`c7c8f07`** · **161 ahead** · WT **DIRTY 2M**(`DashboardPage.jsx`·`DashboardPage.test.jsx`) · **58 route·80 page** · planner 110차 (BNK-110~114 · TSR 400~404 · **★ G38 FE+BE+pilot E2E ✅** @ `28c22b0`/`a9f8bda`/`4b2b082` · **★ G39 dashboard widget+weekly/monthly ✅** @ `8e66ae8`/`a16e1fe` · **★ G38/G39 BE dashboard widget counts ✅** @ `a0a7f9c` · **★ G17/G32 edit flow ✅** @ `26499b3` · **★ QA-B49 Planned**(FE snapshot aggregation WIP·merge BLOCK) · **★ SEC-D22 Planned**(infra·BLOCK 아님) · **모듈 78.28%**) · `.agents/workspace_baseline.yaml`(run_agent build 시 갱신). **`d5654c0`/`e5fd48d`/`428ba7d` checkout 재현 금지**. 과거 인용 `4be0938`·24 route **미존재**. **v1.2.1 merge-blocking P0 `[x]` 유지** — BE **`merge_status: ready`** · FE **`merge_status: BLOCK`**(WT clean·QA-B49 선행) · ★ **양 스트림 merge BLOCK**(FE WT clean) · tester merge **161+130=291 commits** · TSR develop **770/770(WT)·769/769(HEAD)·666/666 PASS** @ HEAD/WT.
 
 ---
 
@@ -40,6 +40,20 @@
 
 > **15차 동기화 (2026-06-06T19:00) — TSR 17·18·19차 반영 (B02 Fixed 확정 + B07 FE-7 회복·범위 확대)**: ① **TSR 17차(18:34, backend)**: COD 14차 `b5d70a8` GuardianAccess RBAC 3 tests **TSR 독립 검증 Fixed** — develop working tree **CLEAN**, `@Test` 98. **QA-B02 recurrence Planned→Fixed**. ② **TSR 18차(18:42, backend)**: 상태 **불변** — Maven 79/79 재현, 잔여 BLOCK = **merge 게이트 단일**(B01·SEC-007). ③ **TSR 19차(18:45, frontend)**: develop HEAD `998ac87` 불변·working tree **35 files**(16차 29→35, v1.2 P0 WIP 추가), WT `npm test` **10/4 PASS**·`npm run build` **107 modules PASS**(16차 FAIL **회복**, FE-7 충족). **B07 Planned 유지** — dirty-tree·규율 6·7 위반 **지속**. **잔여 BLOCK = merge 게이트 3건(B01·B03·B05·SEC-007) + B07 recurrence(Planned, frontend dirty-tree 단일)** — backend dirty-tree·B02 사유 **소멸**.
 
+> **110차 동기화 (2026-06-12T13:00 KST) — BNK-110~114 + TSR 400~404 + G38/G39 폐루프 deepen + QA-B49 Planned + merge FE BLOCK**: ① **planner git 재실측** — backend **`a0a7f9c`**(+5 vs `f082933`: G38/G39 dashboard compliance widget counts API lineage) · WT **CLEAN** · **`666/666 PASS`** · frontend **`26499b3`**(+6 vs `1c99bcd`: G38/G39 dashboard widgets·G17/G32 edit flow·snapshot aggregation WIP lineage) · WT **DIRTY 2M** · HEAD **769/769 PASS** · WT **770/770 PASS** · **FE 161+BE 130 ahead** · **58 route·80 page**. ② **BNK-110~114** — **★ G39 FE dashboard widget ✅** @ `a16e1fe`/`8e66ae8` · **★ G38 FE+live E2E harness ✅** @ `28c22b0`/`87e6fae`/`4b2b082` · **★ G38/G39 BE pilot service-flow E2E ✅** @ `a9f8bda` · **★ G38/G39 BE dashboard widget counts ✅** @ `a0a7f9c` · **★ G17/G32 edit flow ✅** @ `26499b3` · **★ FAQ21800 [연간] 정기 욕구사정 P2** → G24/G14 · **★ 케어포 module8 leaf 8-8~8-12 P2** · **★ #44 18차 0건** · **★ ezCare 9,325**. ③ **TSR 400~404** — **QA-B49 Open→Planned**(FE WT 재오염·dashboard snapshot aggregation WIP) · backend Open **0** · SEC-D22 **Planned 유지**. ④ **merge gate**: BE **ready** · FE **BLOCK**(WT clean·QA-B49) · 합계 **291 commits BLOCK**. ⑤ **잔여 P1**: **COD QA-B49 커밋/revert→WT clean→merge(291)** · G17/G32/G33/G37/G38/G39 **live API E2E run** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · **FAQ21800 욕구사정 P2** · **7-5·8-7-1 P2** · **SEC-D22 `.gitignore`**(infra).
+> **109차 동기화 (2026-06-12T10:15 KST) — BNK-106~109 + TSR 389~392 + G37 FE·G38 BE·G39 FE+BE + merge FULLY UNBLOCKED + SEC-D22 Planned** · **superseded by 110차**: ① **planner git 재실측** — backend **`f082933`**(+5 vs `0325d95`: G38 care-plan notification compliance·G39 provision result evaluation·V79/V80 lineage) · WT **CLEAN** · **`657/657 PASS`** · frontend **`1c99bcd`**(+7 vs `8b0c6c7`: G37 attachment UI+live E2E·MIME fallback·G39 provision result evaluation UI lineage) · WT **CLEAN** · **`749/749 PASS`** · **FE 155+BE 125 ahead** · **56 route·80 page**. ② **BNK-106~109** — **★ G37 FE+live E2E harness+MIME spoofing 차단 ✅** @ `e026ae9`/`6875af5`/`e9d1178`(QA-B46 Fixed) · **★ G38 급여계획서 통보 compliance BE ✅** @ `5fd35a6`(BNK-106 · FAQ 21802 · **FE StatCard P2**) · **★ G39 지표44 급여제공결과평가 FE+BE ✅** @ `1c99bcd`/`f082933`(BNK-107 · V80 · **dashboard StatCard P2**) · **★ silverangel 지표44 20차 zero drift** · **★ #44 16차 0건** · **★ ezCare 9,323**(+3 micro-drift). ③ **TSR 389~392** — **QA Open 0건(backend/frontend)** · QA-B45/B46 **Fixed** · SEC-D22 **Planned 유지**. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **280 commits**. ⑤ **잔여 P1**: **tester merge(280)** · G17/G32/G33/G37/G39 **live API E2E run** · **G38 FE 모니터링 UI P2** · **G39 dashboard StatCard P2** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · **본인부담 6단 게이트 P2** · **7-5·8-7-1 P2** · **SEC-D22 `.gitignore`**(infra).
+> **108차 동기화 (2026-06-12T07:00 KST) — BNK-103~105 + TSR 375~380 + program compliance contracts·G33 pilot E2E·J03 dispatch·G37 BE + merge FULLY UNBLOCKED + SEC-D22 Planned** · **superseded by 109차**: ① **planner git 재실측** — backend **`0325d95`**(+6 vs `838a7f6`: J03 primary guardian dispatch·pilot E2E·G37 V78 care-plan attachment lineage) · WT **CLEAN** · **`637/637 PASS`** · frontend **`8b0c6c7`**(+7 vs `c413615`: G17/G32 compliance contracts·G33 settlement pilot E2E·G26 xlsx·pilotPageFlows lineage) · WT **CLEAN** · **`717/717 PASS`** · **FE 149+BE 120 ahead** · **56 route·78 page**. ② **BNK-103~105** — **★ program compliance pilot E2E FE+BE 커밋 닫힘 ✅**(BNK-103~104) · **★ G17/G32 API contracts+422 guard ✅** @ `8b0c6c7` · **★ G33 settlement reload fallback+pilot E2E ✅** @ `730792b` · **★ G26 ClientDetail NTS xlsx E2E ✅** @ `48827b6`(BNK-75 cite-back) · **★ J03 primary guardian dispatch ✅** @ `555a19f`/`d86405c` · **★ G37 등급 인정기간 PDF 첨부 BE ✅** @ `0325d95`(BNK-105 · **FE UI P1**) · **★ Channel.io CIST·전자서명·이용계획서 → G35 P3·G34·G37 P2** · **★ #44 15차 0건**. ③ **TSR 375~380** — **QA Open 0건(backend/frontend)** · SEC-D22 **Planned 유지**. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **269 commits**. ⑤ **잔여 P1**: **tester merge(269)** · G17/G32/G33 **live API E2E run** · **G37 FE care-plan attachment UI** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · **본인부담 6단 게이트 P2** · **7-5·8-7-1 P2** · **SEC-D22 `.gitignore`**(infra).
+> **107차 동기화 (2026-06-12T06:30 KST) — BNK-99~102 + TSR 363~368 + G17 지표27 3행·G2 CMS debit·live E2E harness + merge FULLY UNBLOCKED + SEC-D22 Planned** · **superseded by 108차**: ① **planner git 재실측** — backend **`838a7f6`**(+5 vs `70e6191`: G17 provisionRecordedMet·benefit-start guard·G33 settlement·V77 integrity·CMS debit lineage) · WT **CLEAN** · **`609/609 PASS`** · frontend **`c413615`**(+7 vs `7564c2a`: G17 indicator27 StatCard·G33 settlement UI·programCompliance live E2E harness lineage) · WT **CLEAN** · **`693/693 PASS`** · **FE 142+BE 114 ahead** · **56 route·78 page**. ② **BNK-99~102** — **★ G17 지표27 3행 BE→FE 완전 닫힘 ✅**(BNK-100 BE @ `0048105`/`e820b28` → BNK-101 FE StatCard @ `21b1855`/`f1c60fe` → BNK-102 교차검증) · **★ G2 CMS debit 이력 보존+운영자 재시도 FAILED 응답 ✅** @ `c5a6cec`/`838a7f6` · **★ G33 settlement UI+V77 integrity ✅** @ `359cf0c`/`42bc06e` · **★ 이지케어 FAQ21815·6단 본인부담 게이트 P2** · **★ lcms 상품설명서·단기보호 74,060 P2** · **★ #44 13차 0건** · **★ programCompliance live E2E harness ✅** @ `c413615`(run 잔여). ③ **TSR 363~368** — **QA Open 0건(backend/frontend)** · SEC-D22 **Planned 유지**(MEDIUM·infra). ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **256 commits**. ⑤ **잔여 P1**: **tester merge(256)** · G17/G32/G33 **live E2E run**(post-merge·`vitest.live.config.js`) · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · **본인부담 6단 게이트 P2** · **7-5·8-7-1 P2** · **SEC-D22 `.gitignore`**(infra).
+> **106차 동기화 (2026-06-12T02:55 KST) — BNK-95~98 + TSR 346~356 + G33 폐루프·G32 FE 5기둥·PDF 7-x 정책 + merge FULLY UNBLOCKED + SEC-D22 Planned** · **superseded by 107차**: ① **planner git 재실측** — backend **`70e6191`**(+6 vs `208b37e`: G33 settlement API·overdue start balance·US-D01 primary guardian·G32 plan·evaluationConductedMet lineage) · WT **CLEAN** · **`603/603 PASS`** · frontend **`7564c2a`**(+8 vs `37e6b00`: G33 settings·ledger·overdue surface·G32 StatCard·PilotFixture DEV gate lineage) · WT **CLEAN** · **`679/679 PASS`** · **FE 135+BE 109 ahead** · **55 route·46 page**. ② **BNK-95~98** — **★ G33 청구시작 FE+BE+overdue+settlement ✅**(BNK-94→97→98 폐루프 · V76+`BillingSettingsPanel`+ledger+overdue+settlement @ `3d5eb3e`~`70e6191`/`9e1a2ed`~`7564c2a`) · **★ G32 evaluationConductedMet FE StatCard ✅** @ `7f2289b`/`c89a82b` (BNK-95~96) · **★ US-D01 primary guardian BE ✅** @ `0441a07` · **★ PDF↔func.php 7-x 삼원 불일치 정책**(Route 정본=func.php · PDF=온보딩 보조 · rename 금지) · **★ getting_started 주야간/시설·이동서비스 분리** · **★ 이지케어 FAQ21474 일정확정 4단·본인부담 공단비교 P2** · **#44 11차 0건·수동 보류**. ③ **TSR 346~356** — **QA Open 0건(backend/frontend)** · **SEC-D22 Open→Planned**(MEDIUM·infra `.gitignore` · BLOCK 아님) · SEC-D23 **Fixed** @ `c89a82b`. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **244 commits**. ⑤ **잔여 P1**: **tester merge(244)** · G17/G32 **live E2E** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · **G33 live E2E** · **본인부담 공단비교 P2** · **7-5 간편결제 P2** · **8-7-1 보수교육 P2** · **SEC-D22 `.gitignore`**(infra).
+> **105차 동기화 (2026-06-11T23:30 KST) — BNK-91~94 + TSR 338~344 + G32 triple-source·compliance 4기둥·PilotFixture + merge FULLY UNBLOCKED + QA Open 0건** · **superseded by 106차**: ① **planner git 재실측** — backend **`208b37e`**(+5 vs `5e1828c`: G32 `evaluationConductedMet`·V75 `case_management_plan`·Solapi template guard·CMS re-registration·hq_admin client create lineage) · WT **CLEAN** · **`581/581 PASS`** · frontend **`37e6b00`**(+7 vs `0adf8c6`: G32 plan Field·pilotPageFlows sync·NHIS comparison UX·PilotFixturePanel·response field normalize lineage) · WT **CLEAN** · **`656/656 PASS`** · **FE 129+BE 103 ahead** · **55 route·78 page**. ② **BNK-91~94** — **★ G32 triple-source**(silverangel 지표43+케어포8-5+**이지케어 FAQ21797** 반기·3인·서명) · **★ G32 compliance 4기둥 BE**(`evaluationConductedMet` 지표29 평가실시) @ `11277b9` · **★ V75 `case_management_plan` FE+BE** @ `0a270a2`/`443f379` · **★ PDF p.90 `7-3.청구시작 금액설정` P2 신규 갭**(func.php 7-3 미납과 번호 충돌) · **★ FAQ 45982 K-MMSE·문자 부가과금 P3** · **★ func.php 108항목·리포트 38.3%** · **★ `8-7-1` 보수교육 P2** · **#44 10차 0건·수동 보류**. ③ **TSR 338~344** — **QA Open 0건** · QA-B42/B43 **Fixed** @ `40c303d`/`37e6b00`. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **232 commits**. ⑤ **잔여 P1**: **tester merge(232)** · G32 **`evaluationConductedMet` FE StatCard** · G17/G32 **live E2E** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · **7-3 청구시작 P2** · **본인부담 공단비교 UX P2**.
+> **104차 동기화 (2026-06-11T22:05 KST) — BNK-87~90 + TSR 331~332 + G17/G32 FE+BE 폐루프 마감 + merge FULLY UNBLOCKED + QA Open 0건** · **superseded by 105차**: ① **planner git 재실측** — backend **`5e1828c`**(+4 vs `55fae99`: V74 integrity·G32 quarter bounds·NHIS claim comparison API·US-M03 assertion hardening lineage) · WT **CLEAN** · **`576/576 PASS`** · frontend **`0adf8c6`**(+8 vs `53e4016`: G17/G32 FE pages·compliance widget·NHIS comparison panel lineage) · WT **CLEAN** · **`646/646 PASS`** · **FE 122+BE 98 ahead** · **54 route·45 page**. ② **BNK-87~90** — **★ G17/G32 FE+BE 폐루프 마감**(`FunctionalRecoveryPage`·`CaseManagementPage`·V74·attendee 정규화·30일 widget) · **★ G32 dual-source**(silverangel 지표43+케어포 **8-5.사례관리 회의록** BNK-90) · **★ 이지케어 본인부담 비교 partial** @ `0adf8c6`/`2225a7a` · **★ lcms 셀프 가입 3-step**(ogada A방식 대비) · **#44 7차 0건·수동 보류**. ③ **TSR 331~332** — **QA Open 0건** · QA-B41 **Fixed**. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **220 commits**. ⑤ **잔여 P1**: **tester merge(220)** · G17/G32 **live E2E** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · G15 **P2** · **G26 xlsx E2E P2** · **본인부담 공단비교 UX P2**(이지케어 2d53ea63).
+> **103차 동기화 (2026-06-11T19:15 KST) — BNK-84~86 + TSR 319~320 + 7-9·G17·G32 BE 닫힘 + merge FULLY UNBLOCKED + QA Open 0건** · **superseded by 104차**: ① **planner git 재실측** — backend **`55fae99`**(+1 vs `73e169a`: G32 `CaseManagementController`·V73·지표43 6필드·분기 UNIQUE·30일 윈도우 lineage) · WT **CLEAN** · **`569/569 PASS`** · frontend **`53e4016`**(+1 vs `212e010`: US-G04 `feeSchedules.js` year coverage normalize·upload guard lineage) · WT **CLEAN** · **`616/616 PASS`** · **FE 116+BE 94 ahead** · **54 route·74 page**. ② **BNK-84~86** — **★ 7-9 환불 lifecycle FE+BE ✅**(BNK-84 BE→BNK-85 FE 폐루프·7-x **10/11**) · **★ G17 BE ✅** @ `73e169a`(V72·`FUNCTIONAL_RECOVERY`) · **★ G32 BE ✅** @ `55fae99`(V73·지표43 verbatim) · **★ 통합재가 「주야간 월 10만원」** verbatim(BNK-84) · **★ silverangel 6차 zero drift** · **#44 6차 0건·수동 보류**. ③ **TSR 319~320** — **QA Open 0건** · QA-B37/B38 **Fixed**. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **210 commits**. ⑤ **잔여 P1**: **tester merge(210)** · **G32 FE** · **G17 FE** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G24/G30 Epic** · v1.3 live E2E · G15 **P2** · **G26 xlsx E2E P2**.
+> **102차 동기화 (2026-06-11T14:30 KST) — BNK-78~81 + TSR 307~308 + US-G04·G26 xlsx·G21 진전 + merge FE BLOCK + QA-B37 Planned** · **superseded by 103차**: ① **planner git 재실측** — backend **`970c7af`**(+5 vs `1af5b1f`: US-G04 `FeeScheduleYearCoverage`·`NhisImportService`·G21 dup slot lineage) · WT **CLEAN** · **`532/532 PASS`** · frontend **`5c0d83d`**(+6 vs `c1d9788`: US-G04 `FeeScheduleYearGuardBanner`·G26 NTS xlsx·US-L01 8-bank format lineage) · WT **DIRTY 2M** · HEAD **601/601 PASS** · WT **602/602 PASS** · **FE 110+BE 88 ahead** · **52 route·74 page**. ② **BNK-78~81** — **★ 모듈 76.67%**(id `7-2-1` 등록) · **★ US-G04 연도 수가 가드 UX partial ✅** · **★ G26 NTS xlsx partial ✅** · **★ G21 dup paired slot ✅** · **★ US-L01 8은행 포맷 ✅** · **★ 통합재가 2종 조합 → v2+ Epic V** · **#44 5차 0건·수동 보류**. ③ **TSR 307~308** — **QA-B37 Open→Planned** · FE WT **DIRTY 2M**(upload guard WIP). ④ **merge gate**: BE **ready** · FE **BLOCK** · 합계 **198 commits**. ⑤ **잔여 P1**: **COD FE WT clean→merge(198)** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G17/G24/G30/G32** Epic · v1.3 live E2E · **US-G04 upload guard**(QA-B37) · **G26 xlsx E2E P2**.
+> **101차 동기화 (2026-06-11T13:30 KST) — BNK-74~77 + TSR 295~296 + G26 7-2-1 닫힘 + merge FULLY UNBLOCKED + QA Open 0건** · **superseded by 102차**: ① **planner git 재실측** — backend **`1af5b1f`**(+5 vs `ed730a2`: G26 CMS/easy-pay exclusion·`copayAmount` null guard·CMS debit integrity lineage) · WT **CLEAN** · **`520/520 PASS`** · frontend **`c1d9788`**(+6 vs `0024c88`: G26 `MedicalExpenseDeductionPanel`·taxYear submit UX·CMS/easy-pay exclusion UI copy lineage) · WT **CLEAN** · **`574/574 PASS`** · **FE 104+BE 83 ahead** · **52 route·74 page**. ② **BNK-74~77** — **★ G26 7-2-1 FE+BE E2E ✅** (7-x **10/11**) · **★ CMS·간편결제 제외 = func.php leaf 분리 패리티** · **★ US-L04 taxYear submit UX** · **★ G17 지표27 P1 Epic** · **★ G32 사례관리 회의록 P2 신규** · **★ law.go.kr 별표1 방문요양 원거리교통비** (주야간 #44 별개) · **#44 4차 0건·수동 보류** · **지표41 P2** 유지. ③ **TSR 295~296** — **QA Open 0건** · QA-B34/B35 **Fixed** @ `13272bc`/`be1bdd0`/`1af5b1f`. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **187 commits**. ⑤ **잔여 P1**: **tester merge(187)** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G17 Epic** · **G24/G30/G32 Epic** · v1.3 live E2E · G15 **P2** · **G26 xlsx P3**.
+> **100차 동기화 (2026-06-11T11:10 KST) — BNK-72~73 + TSR 283~284 + paidAt·US-J02 닫힘 + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`ed730a2`**(+1 vs `4001510`: `paidAt` pre-required on PAID transition + `J03AlimtalkServiceFlowE2eTest` fixture) · WT **CLEAN** · **`510/510 PASS`** · frontend **`0024c88`**(+1 vs `189a00d`: FE `paidAt` guard on `PaymentRecordModal`/`BillingDetailPage`) · WT **CLEAN** · **`558/558 PASS`** · **FE 98+BE 78 ahead** · **52 route·74 page**. ② **BNK-72~73** — **★ G2/v2 `paidAt` = 케어포 7-2 패리티 ✅** · **★ US-J02 out-of-order·stale billing error 닫힘** · **★ G17 지표27** 「개인별 기능회복훈련 계획」→ **P1 Epic 후보** · **★ G26 7-2-1 연말정산** P2 신규 · **#44 3차 0건·수동 보류** · **지표41 P2** 유지. ③ **TSR 283~284** — **QA Open 0건** · QA-B31/B32/B33 **Fixed** @ `4001510`/`62058d3`/`ed730a2`. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **176 commits**. ⑤ **잔여 P1**: **tester merge(176)** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G30 Epic** · v1.3 live E2E · **G17 Epic**(지표25~27) · G15 **P2**(계약서 수칙·3-1 leaf) · **G26 P2**(7-2-1).
+> **99차 동기화 (2026-06-11T08:30 KST) — BNK-68~69 + TSR 271~272 + G15 v1.3-C 대부분 닫힘 + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`64ebf6e`**(+5 vs `9a97a1c`: v2 billing PAID payment-method guard) · WT **CLEAN** · **`505 PASS`** · frontend **`fcf713a`**(+1 vs `0abf164`: G15 NHIS form 18/19/20 three-way workflow guide) · WT **CLEAN** · **`547/547 PASS`** · **FE 93+BE 75 ahead** · **52 route·74 page**. ② **BNK-68~69** — **★ G19 [롱텀 통합재가 안내](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) 정본** · **★ 엔젤 지표41/42 화면↔필드 매핑** · **★ G31 공단 인증서 자동 연동**(이지케어 Channel.io · Won't v1·온보딩 P2) · **#44 2차 교차 거리 단가 0건 재확인** · **가정 번복 0건**. ③ **TSR 271~272** — **QA Open 0건** · QA-B24/B26/B28 **Fixed** · G7 guidance·NHIS partial failure·cross-branch TSF guard **닫힘**. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **168 commits**. ⑤ **잔여 P1**: **tester merge(168)** · G7 **실파일**(#27) · G2 **SMTP** · US-L01 **은행 8종 E2E live** · **G30 Epic**(주기별 업무·모니터링) · v1.3 live E2E · **G15 P2**(계약서 수칙 첨부·3-1-1~4 leaf).
+> **98차 동기화 (2026-06-11T06:00 KST) — BNK-65~66 + TSR 260~261 + G16·G15 3-1 닫힘 + FE merge BLOCK + QA Open→Planned 1건**: ① **planner git 재실측** — backend **`dd7a580`**(+7 vs `9d7c17f`: v2 billing RBAC·G15 `CareProvisionRecordService` lineage) · WT **CLEAN** · **`497 PASS`** · frontend **`08dbcf0`**(+7 vs `eef07e5`: G16 `VehiclesPage`·G15 `CareProvisionRecordPanel`·`TransportVehicleSelect` lineage) · WT **DIRTY 4M** · HEAD **534/534 PASS** · WT **535/535 PASS** · **FE 88+BE 70 ahead** · **53 route·74 page**. ② **BNK-65~66** — **★ #44 공단 매뉴얼 1차 정본 ✅** md5 `3f92619c` · **★ G16 FE 닫힘** `/transport/vehicles` @ `107bfb3` · **★ G15 3-1 연계 ✅** `CareProvisionRecordPanel`+BE @ `8bdead6`/`08dbcf0` · **TSF npm 534/534 GREEN** · **모듈 75.77%** · **#44 거리 단가 수동 보류**. ③ **TSR 260~261** — **QA-20260610-B24 Open→Planned**(G7 NHIS import live guidance WIP 4M · B07 #13). ④ **merge gate**: BE **ready** · FE **BLOCK**(WT clean 선행) · 합계 **158 commits**. ⑤ **잔여 P1**: **COD FE WT clean→merge(158)** · G7 **실파일**(#27)·**live guidance 커밋** · G15 **2-1-1/2-9** · **이동서비스비 청구** · G2 **SMTP** · US-L01 **은행 8종 E2E live** · G24 Epic · v1.3 live E2E.
+> **97차 동기화 (2026-06-11T02:00 KST) — BNK-59~61 + TSR 245~246 + G15 v1.3-C 진전 + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`9d7c17f`**(+4 vs `d6d7e7f`: G21 paired schedule sync·G2 no-op guard lineage) · WT **CLEAN** · **`459 PASS`** · frontend **`eef07e5`**(+7 vs `6c4c151`: 서식22 export·제18호 가이드·시간 준수·geocode UX lineage) · WT **CLEAN** · **`508/508 PASS`** · **FE 81+BE 63 ahead** · **49 route·67 page**. ② **BNK-59~61** — **★ QA-B19 geocode UX ✅** @ `318411d`/`695c0f7` · **★ V65 계약 무결성 ✅** @ `24733c7` · **★ 서식22 운행일지 export ✅** @ `7389884` · **★ 제18호 가이드 ✅** @ `eecf0be` · **★ 시간 준수 기록 ✅** @ `eef07e5` · **★ G21 paired schedule sync ✅** @ `9d7c17f` · **신규 갭 G29**(인지활동북)·**G30**(주기별 업무·2026 모니터링) · **demo-work 송영 0건** → G15 차별화 근거 · **#44 수동 보류** · **가정 번복 0건**. ③ **TSR 245~246** — **QA Open 0건** · QA-B19 **Fixed** @ `695c0f7` · QA-B22 **Fixed** @ `9d7c17f`. ④ **merge gate**: BE+FE ★ **FULLY UNBLOCKED** · 합계 **144 commits**. ⑤ **잔여 P1**: tester merge(144) · G15 **2-1-1/2-9 외출** · **이동서비스비 청구** · G7 실파일(#27) · G2 **SMTP** · G13·US-J02 **live run** · G21 **live E2E** · US-L01 **은행 8종 E2E live** · v1.3 live E2E · **G23·G24** v3.1 P3.
 > **96차 동기화 (2026-06-10T23:45 KST) — BNK-58 + TSR 231~232 + G15 2-2/2-3·계약서·G11 v2 + FE merge BLOCK + QA Open→Planned 1건**: ① **planner git 재실측** — backend **`d6d7e7f`**(+5 vs `d5e0e01`: G15 `transportMode` API·G11 v2·계약 서명 lineage) · WT **CLEAN** · **`453 PASS`** · frontend **`6c4c151`**(+12 vs `62f022df`: G15 출석 이원화 Route·계약 UI lineage) · WT **DIRTY 4M** · **`482/482 PASS`** · **FE 74+BE 59 ahead** · **48 path·40 page**. ② **BNK-58** — **★ G15 2-2/2-3 출석 이원화 E2E ✅** @ `6c4c151`/`d6d7e7f` · **★ G15 계약 서명 ✅** @ `3c8f9fe`/`9e3cab5` · **★ G11 v2 청구 자동 가산 ✅** @ `d7475fd` · lcms **selectProductGuide** 신규 · **#44 4차 0건** · **케어포 108 leaf 불변** · **가정 번복 0건**. ③ **TSR 231~232** — **QA-20260610-B19 Open→Planned**(G15 geocode failure UI WIP 4M · B07 #12). ④ **merge gate**: BE **FULLY UNBLOCKED** · FE **BLOCK**(WT clean 선행) · 합계 **133 commits**. ⑤ **잔여 P1**: **COD B19 커밋/revert** → FE WT clean → merge(133) · G15 **2-1-1/2-9 외출·운행일지** · G7 실파일(#27) · G2 **SMTP** · G13·US-J02 **live run** · G21 **live E2E** · US-L01 **은행 8종 E2E live** · v1.3 live E2E.
 > **95차 동기화 (2026-06-10T21:30 KST) — BNK-53 + TSR 219~220 + G11 catalog+가이드 E2E + G15 v1.3-C 부분 + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`d5e0e01`**(+7 vs `467cd70`: G11 `FeeSurchargeRateCatalog`+preview API lineage @ `904072b`) · WT **CLEAN** · **`434 PASS`** · frontend **`62f022df`**(+7 vs `c9451a0`: G11 `FeeSurchargeGuidePanel`+G15 `TransportCompliancePanel` lineage @ `3db8db3`) · WT **CLEAN** · **`467/126 PASS`** · **FE 68+BE 54 ahead** · **46 path·40 page**. ② **BNK-53** — **★ G11 가산율 catalog+가이드 E2E 닫힘** @ `904072b`/`3db8db3`(야20·심야30·휴일30·유급휴일50%·중복불가·`V1_NOTICE`) · **★ G15 v1.3-C 부분 닫힘** — `TransportCompliancePanel` 5수칙+계약서·일지 Modal `/transport` · **잔여**: 계약서 서명 저장 API·탑승(2-2)/출석(2-3) 이원화·외출 리포트(2-9) · **G27·US-L01 bank FE ✅** (BNK-50~52·94차 반영 확인) · **케어포 func.php 108 leaf·11 모듈 verbatim 불변** · **#44 수동 보류** · **가정 번복 0건** · **모듈 74.81%**. ③ **TSR 219~220** — **QA Open 0건**. ④ **잔여 P1**: tester merge(**122**) · G11 **v2 청구 자동 가산** · G15 v1.3-C **잔여 3건** · G7 실파일(#27) · G2 **SMTP 실연동** · G13·US-J02 **live run** · G21 **live E2E** · US-L01 **은행 8종 E2E live** · v1.3 live E2E.
 > **94차 동기화 (2026-06-10T18:45 KST) — BNK-49 + TSR 207~208 + US-M03-b·US-L01 BE·G27 BE + 케어포 2-x + merge FULLY UNBLOCKED + QA Open 0건**: ① **planner git 재실측** — backend **`467cd70`**(+6 vs `0854fbd`: G27 `MonthlyBenefitCapCatalog`+guard·US-L01 bank deposit·US-M03 settings lineage) · WT **CLEAN** · **`412 PASS`** · frontend **`c9451a0`**(+6 vs `eedcc80`: US-M03 settings·basis alias @ `5bdb476`/`c9451a0`) · WT **CLEAN** · **`434/434 PASS`** · **FE 61+BE 49 ahead** · **46 path·40 page**. ② **BNK-49** — **★ G27 재가급여 월한도액 2026 BE catalog+guard 닫힘** @ `a92e625`(1등급 2,512,900~5등급 1,208,900 MOHW 247 verbatim) · **FE 표기·인지지원 676,320 시드 ❌** · **★ US-L01 은행엑셀 BE-only** @ `e50533f`/`95bb34d` · **★ US-M03-b 청구생성기준+전월가드 닫힘** @ `5bdb476`/`b953662`/`911e732`/`25f3225` · **케어포 func.php 2-x 11 leaf verbatim**(탑승/출석 이원화·2-7~2-9 리포트) → **G15 v1.3-C 세부 갭** · **#44 수동 보류** · **가정 번복 0건** · **모듈 74.81%**. ③ **TSR 207~208** — **QA Open 0건** · QA-20260610-B07 #11 **Fixed** @ `c9451a0`. ④ **잔여 P1**: tester merge(**110**) · **G27 FE**(월한도 초과 경고) · **US-L01 FE**(은행엑셀 업로드) · G7 실파일(#27) · G2 **SMTP 실연동** · G13·US-J02 **live run** · G21 **live E2E** · **G15 v1.3-C**(수칙·계약·2-x 리포트) · v1.3 live E2E · G11 가산수가.
@@ -155,13 +169,13 @@
 
 > **13차 동기화 (2026-06-06T18:10) — TSR 15·16차 반영 (B02 recurrence + B07 WT 품질 회귀)**: ① **TSR 15차(18:04, backend)**: develop HEAD `fac3d07` 불변·13차 clean 후 working tree **재오염** — `RoleBasedControllerAccessTest` guardian/client_user RBAC +74 lines 미커밋(**QA-B02 recurrence**). → **B02 Open→Planned**, v1 완료 기준 QA-B02 `[x]` **철회**, USER_STORIES §17 **BE-6**. ② **TSR 16차(18:07, frontend)**: develop HEAD `998ac87` 불변·working tree **악화** 19→**29 files**(14M+15U), WT `npm test`·`npm run build` **FAIL**(`routeAccess.js` duplicate `ROUTE_ACCESS`). → **B07 Planned 강화**, USER_STORIES **FE-7**(커밋 전 build/test PASS). **잔여 BLOCK = merge 게이트 4건 + B02 recurrence(Planned) + B07 recurrence(Planned, 16차)** — 양 스트림 dirty-tree 병행.
 
-### 핵심 진단 (planner, 96차 갱신 — BNK-58 · TSR 231~232 · FE merge BLOCK)
+### 핵심 진단 (planner, 101차 갱신 — BNK-74~77 · TSR 295~296 · merge FULLY UNBLOCKED)
 
-- **CURRENT BASELINE (96차)**: backend **`d6d7e7f`** · test **`598d108`** · **59 ahead** · WT **CLEAN** · frontend **`6c4c151`** · test **`c7c8f07`** · **74 ahead** · WT **DIRTY 4M** · **48 path·40 page** · TSR 232 FE **482/127**·TSR 231 BE **453 PASS** @ HEAD/WT.
-- **v1.2.1 merge-blocking P0 `[x]` 유지** · BE **`merge_status: ready`** · FE **BLOCK**(QA-B19 · WT dirty) — merge **133 commits(74+59)** · BE ★ **FULLY UNBLOCKED** · FE **WT clean 선행**.
-- **BNK-58**: **★ G15 2-2/2-3 출석 이원화 ✅** @ `6c4c151`/`d6d7e7f` · **★ G15 계약 서명 ✅** @ `3c8f9fe`/`9e3cab5` · **★ G11 v2 청구 자동 가산 ✅** @ `d7475fd` · **잔여 P1**: geocode failure UI(B19 WIP)·2-1-1/2-9 외출·운행일지 DB · **#44 수동 보류** · lcms **selectProductGuide** 신규(G10).
-- **BNK-53·56 불변**: G11 catalog·G27·US-L01 bank·US-M03-b 닫힘 재확인 · **케어포 108 leaf 불변**.
-- **QA Open 0건** · Planned **1건**(B19) · **활성 P1 우선순위**: ① **COD B19 커밋/revert → FE WT clean** ② tester merge(133) ③ **G15 v1.3-C 잔여**(geocode UI·2-1-1/2-9·운행일지) ④ G7 실파일(#27) ⑤ G2 **SMTP** ⑥ G13·US-J02 **live run** ⑦ G21 **live E2E** ⑧ US-L01 **은행 8종 E2E live** ⑨ v1.3 live E2E.
+- **CURRENT BASELINE (101차)**: backend **`1af5b1f`** · test **`598d108`** · **83 ahead** · WT **CLEAN** · frontend **`c1d9788`** · test **`c7c8f07`** · **104 ahead** · WT **CLEAN** · **52 route·74 page** · TSR 296 FE **574/574**·TSR 295 BE **520/520 PASS** @ HEAD.
+- **v1.2.1 merge-blocking P0 `[x]` 유지** · BE+FE **`merge_status: ready`** · ★ **양 스트림 FULLY UNBLOCKED** · merge **187 commits(104+83)**.
+- **BNK-74~77**: **★ G26 7-2-1 의료비공제 FE+BE E2E ✅** @ `c1d9788`/`1af5b1f` (7-x **10/11**) · **★ CMS·간편결제 제외** = func.php leaf 분리 패리티 · **★ G17 지표27 P1 Epic** · **★ G32 사례관리 회의록 P2** · **★ law.go.kr 별표1 방문요양 원거리교통비** (v2+ 별도 fee schedule) · **지표41 P2** · **#44 4차 0건·수동 보류** · **모듈 75.77%**.
+- **BNK-72~73·68~69 재확인**: **`paidAt`·US-J02 ✅** · G15 **2-1-1/2-9·TSF·공단 3분리 UI ✅** · G7 **live guidance ✅** · **demo-work 송영 0건** → G15 차별화.
+- **QA Open 0건** · Planned **0건**(B34/B35 Fixed) · **활성 P1 우선순위**: ① **tester merge(187)** ② G7 **실파일**(#27) ③ G2 **SMTP** ④ US-L01 **은행 8종 E2E live** ⑤ **G17 Epic** ⑥ **G24/G30/G32 Epic** ⑦ v1.3 live E2E ⑧ G15 **P2** ⑨ **G26 xlsx P3**.
 
 ### 핵심 진단 (planner, 95차 — superseded by 96차)
 
@@ -590,12 +604,12 @@
 
 ---
 
-## v1.2.1 — develop-only 패리티 잔여 (BNK-12·14·16·17·18·19·20·22·25·28·31·33·35·38·41·42·45·49·50·52·53·56·58·96차 · **결정 92**)
+## v1.2.1 — develop-only 패리티 잔여 (BNK-12·14·16·17·18·19·20·22·25·28·31·33·35·38·41·42·45·49·50·52·53·56·58·59~61·65~69·95~114차 · **결정 92**)
 
 - **status**: in_progress
-- **merge_status**: **ready** — merge-blocking P0(US-M02·US-M01·US-M03·US-M03-b·G7 UX·US-M02-b/c·US-J03-h·G9·US-J02·US-L01 guard·G2 templates 5종·**US-L01 bank BE/FE**·**G27 BE/FE**·**G11 catalog+가이드**·**G11 v2 자동 가산**·**QA-B19 geocode UX**) **`[x]`** @ `318411d`/`d6d7e7f` lineage (결정 92 · COD QA-B19 @ `318411d` · BE+FE ★ **FULLY UNBLOCKED**)
+- **merge_status**: **ready** — merge-blocking P0 **`[x]`** @ `f72da41`/`3ad2a90` lineage (결정 92 · G37·G38·G39 폐루프 닫힘 · QA-B49 Fixed) · **BE+FE WT CLEAN** · tester develop→test merge **164+135=299 commits** pending
 - **stream**: frontend + backend
-- **목표**: 케어포 func.php 대비 **74.81%** 유지(≥60% PASS) · **merge-blocking 닫힘** · P1(**G11 v2 자동 가산**·샘플·live E2E·SMTP·G15 v1.3-C 잔여) 후속
+- **목표**: 케어포 func.php 대비 **78.28%** 유지(≥60% PASS) · **merge-blocking 닫힘** · P1(**COD QA-B49→WT clean→merge(291)**·G17/G32/G33/G37/G38/G39 **live API E2E run**·G7 실파일·SMTP·US-L01 live·G24/G30 Epic·v1.3 live E2E·FAQ21800 P2·본인부담 6단 게이트 P2·7-5·8-7-1 P2) 후속
 - **선행**: v1.2 `merge_status: merged` · QA-B12·SEC-D14 Fixed(75차)
 - **구현 순서**: **US-M02~US-L01 guard `[x]`** → **US-M03-b `[x]`** → **US-L01 bank BE `[x]`** → **G27 BE `[x]`** → **tester merge(61+49)** → **G27 FE** · **US-L01 bank FE** → P1 후속
 - **벤치마크 근거**: `BENCHMARK_REPORT.md` §13~§52 (BNK-10~49)
@@ -617,7 +631,10 @@
 | **P1** | 급여제공 **세분화** | 케어포 3-1 한장 | △ `/health` 통합 | 유형 컬럼 |
 | **즉시** | **G7 NHIS 3상태 UX** | 케어포 3상태(BNK-15·18) | ✅ BE **`PENDING_REVIEW`** @ `4cc328d`/`dd49204` · FE **`Badge`·`NhisReconciliationTable`·`NhisPendingReviewGuide`** @ `fbb0b7a` | ✅ V54 |
 | **즉시** | **G7 NHIS 파일럿 엑셀 샘플** | 업계 공통 | △ `NhisFixtureExporter`·parser tests @ `dd49204` · **실파일 BLOCK** | 불필요 |
-| **Could** | **7-2-1 연말정산·7-9 환불대장** | 케어포 7장 | ❌ | v2 검토(BNK-16) |
+| **P1** | **G26 7-2-1 연말정산**(의료비공제) | 케어포 7-2-1 | ✅ **FE+BE E2E** @ `7e5c806`/`7f10449`+`970f547`/`be1bdd0`/`c1d9788`/`1af5b1f` — CSV export·CMS/easy-pay 제외·taxYear UX · **NTS xlsx 레이아웃 partial ✅** @ `fd569d7` (BNK-75~79) | **v1.2.1 ✅** · **국세청 xlsx E2E P2** |
+| **P1** | **US-G04 연도 수가 가드**(NHIS import) | 이지케어 Channel.io [연도 수가 미적용](https://docs.channel.io/ezcare/ko/articles/%EA%B3%B5%EB%8B%A8%EC%9D%BC%EC%A0%95-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0-%EC%8B%9C-%ED%95%B4%EB%8B%B9-%EC%97%B0%EB%8F%84-%EC%88%98%EA%B0%80-%EB%AF%B8%EC%A0%81%EC%9A%A9-0ccb9026) | ✅ **FE upload block+a11y** @ `9647666` · **BE pre-check API** @ `8f208e4` · **FE API 연동** @ `dd163cf` | **v1.2.1 ✅** (BNK-79·81·82) |
+| **P1** | **US-L01 8은행 엑셀 포맷 가이드** | 케어포 7-2 8개 은행 | ✅ `bankDepositFormats`·`BankDepositImportPanel`·E2E @ `758e590`/`b9845ac` (BNK-80) | **v1.2.1 ✅** |
+| **P1** | **7-9 본인부담금 환불·환불대장** | 케어포 7-9 | ✅ **FE+BE E2E** — `RefundRecordModal`·`/billing/reports/refunds` @ `212e010`/`b92a1d4` · BE V71 @ `de49b21` (BNK-84~85 · 7-x **10/11**) | **v1.2.1 ✅** (US-M03-c) |
 | **P1** | 대시보드 **`pendingReviewCount` 위젯** (US-M02-b) | 케어포·이지케어 FAQ 21473 대기 안내 | ✅ `DashboardPage` **「NHIS 대기(보류)」** @ `1794e1c` · `sumPendingReviewNhisFromBatches` | 불필요 |
 
 ### 완료 기준 (v1.2.1)
@@ -637,15 +654,76 @@
 - [x] **G9 duration_band** — `/billing/fee-schedules` **25셀 2D**·`durationBandSnapshot`·폴백 @ `0c34f85`/`0719648`/`6fe853b`/`5348d9c`/`eb3f0fd` (BNK-41·42 · 롱텀 2026 5밴드 교차)
 - [x] **G2 templates partial** — **5종** — ① 명세·기록지·가정통신문 @ `f77a268`+원화 `872e040` ② **납부확인서·학대예방교육** @ `0854fbd`/`eedcc80` · UI `GuardianDocumentNotifyPanel` (엔젤 extraService·system_feature 패리티 방향)
 - [x] **US-L01 overpayment guard** — FE `PaymentRecordModal` 초과입금 차단 @ `dd72ff8` · BE non-positive amount reject @ `4109680` (QA-20260610-B15 Fixed)
+- [x] **US-L01·G2 `paidAt` 필수 가드** — BE `recordCopayPayment`·PAID 전환 전 입금일 필수 @ `ed730a2`/`4001510` · FE `PaymentRecordModal`/`BillingDetailPage` @ `0024c88` · `J03AlimtalkServiceFlowE2eTest` fixture @ `ed730a2` (BNK-73 · QA-B31/B33 Fixed · 케어포 7-2 패리티)
+- [x] **US-J02 GuardianPortal 안정성** — out-of-order `loadTargets` guard @ `62058d3` · stale billing error clear on client reset @ `189a00d` (BNK-73 · QA-B32 Fixed)
+- [x] **G26 7-2-1 의료비공제** — `MedicalExpenseDeductionPanel`(staff+guardian)·API·CSV export·CMS/easy-pay 제외·taxYear UX @ `7e5c806`/`7f10449`/`970f547`/`be1bdd0`/`c1d9788`/`1af5b1f` (BNK-75~77 · US-L04 · QA-B34/B35 Fixed)
+- [x] **G26 xlsx partial** — NTS xlsx 레이아웃 정렬 @ `fd569d7`/`e2c2ffe` (BNK-79 · CSV+NTS export)
+- [ ] **G26 xlsx E2E P2** — 국세청 제출 E2E·실파일 검증 (케어포 국세청 양식 △ · BNK-75)
+- [x] **US-G04 fee schedule year guard BE** — `FeeScheduleYearCoverage`·`NhisImportService` @ `970c7af` (BNK-81)
+- [x] **US-G04 fee schedule year guard UX partial** — `FeeScheduleYearGuardBanner` @ `5c0d83d` (BNK-79 P2)
+- [x] **US-G04 upload guard FE** — `feeScheduleYearCoverage()` 업로드 차단·`fetchFeeScheduleYearCoverageApi` 연동·에러 메시지 @ `9647666`/`dd163cf` (QA-B37 Fixed · BNK-82)
+- [x] **US-L01 8-bank format guide** — 케어포 8은행 엑셀 포맷 가이드·E2E @ `758e590` (BNK-80)
 - [x] **US-M03-b** — 청구생성기준 설정 + **전월 미입금 가드** — BE @ `b953662`/`857bd32` · FE @ `5bdb476`/`911e732`/`25f3225` (BNK-47·49 · 케어포 9-1 패리티)
 - [x] **US-L01 bank deposit BE** — `POST /billing/imports/bank-deposits` · flexible header parser @ `e50533f`/`95bb34d` (BNK-49)
 - [x] **G27 BE** — `MonthlyBenefitCapCatalog` MOHW 247 verbatim + `GET /monthly-benefit-caps`·`/monthly-benefit-cap-guard` @ `a92e625`/`20bc1be` (BNK-49·52 · **인지지원 676,320 catalog ✅**)
 - [x] **G27 FE** — `/billing`·`/dashboard` **월한도 표기·초과 경고 UX** (US-M04 · 케어포 10-2-1 패리티) @ `5e64125`/`fba5ea8`+`MonthlyBenefitCapGuardPanel`·`monthlyCapWarningCount` 위젯
 - [x] **US-L01 bank FE** — `/billing/payments` **은행엑셀 업로드 UI** (BNK-49·50) @ `9ffff0c`+`BankDepositImportPanel`·`branchId`·`appliedCount` 정합
 - [x] **G11 catalog+가이드+자동 가산** — `FeeSurchargeRateCatalog` 4종·`GET/POST fee-surcharge-*` @ `904072b` · FE `FeeSurchargeGuidePanel` @ `3db8db3` · **v2 청구 자동 가산** @ `d7475fd` (BNK-53·56·58 · US-M05)
-- [x] **FE WT clean** — QA-B19 geocode failure UX @ `318411d` — `countGeocodeFailures`·경고 Alert·저장/확정 차단·a11y `aria-describedby` (TSR 232 Planned → COD Fixed)
-- [x] **BE WT clean** — develop HEAD @ `d6d7e7f` WT **CLEAN** (TSR 231)
-- [x] **P0 `[x]`** — `npm test`/`mvn test` PASS · **`merge_status: ready`** → tester develop→test merge **75+59=134 commits** (결정 92 · COD `318411d`)
+- [x] **FE WT clean (97차)** — QA-B19 geocode failure UX @ `318411d`/`695c0f7` — `countGeocodeFailures`·경고 Alert·저장/확정 차단·a11y `aria-describedby` (TSR 234 Fixed)
+- [x] **FE WT clean (98차)** — QA-B24/B26/B28 G7 NHIS import live guidance @ `0abf164` — `NHISImportPage` partial failure tolerance · **545/545 PASS** (TSR 269)
+- [x] **BE WT clean** — develop HEAD @ `9a97a1c` WT **CLEAN** (TSR 270)
+- [x] **P0 `[x]`** — `npm test`/`mvn test` PASS @ HEAD (결정 92 · TSR 307~308)
+- [x] **FE WT clean (102차)** — QA-B37 `NHISImportPage*` 커밋 @ `9647666`/`dd163cf` · **`merge_status: ready`** → tester develop→test merge **112+89=201 commits**
+- [x] **US-M03-c 7-9 환불 lifecycle** — `RefundRecordModal`·`recordBillingClaimRefundApi`·`/billing/reports/refunds` @ `212e010`/`b92a1d4` · BE V71 `POST /billing/claims/{id}/refunds` @ `de49b21` (BNK-84~85 · QA-B38 Fixed)
+- [x] **US-G04 year coverage normalize** — `feeSchedules.js`·`NHISImportPage` upload guard 정규화 @ `53e4016` (BNK-86 · QA-B37 lineage 완료)
+- [x] **G17 BE functional recovery** — `FunctionalRecoveryController`·V72·`FUNCTIONAL_RECOVERY` program_type @ `73e169a` (BNK-85)
+- [x] **G32 BE case management meeting** — `CaseManagementController`·V73·지표43 6필드·분기 UNIQUE·30일 윈도우 @ `55fae99` (BNK-86)
+- [x] **G17 FE functional recovery** — `FunctionalRecoveryPage`·`/programs/functional-recovery`·서버 검증 오류 필드 매핑 @ `c288fdd`/`b58429d` (BNK-87~90)
+- [x] **G32 FE case management meeting** — `CaseManagementPage`·`/case-management/meetings`·attendee ≥2 정규화·30일 compliance widget @ `c288fdd`/`7eebd8c`/`0821ce8` (BNK-87~88)
+- [x] **V74 integrity constraints** — V71/V72/V73 무결성 후행 제약 @ `622b5e5` (BNK-88)
+- [x] **NHIS 본인부담 비교 partial** — `BillingDetailPage` comparison panel·BE claim comparison API @ `0adf8c6`/`2225a7a` (BNK-87 P2 착수)
+- [x] **FE+BE WT clean (104차)** — **`merge_status: ready`** → tester develop→test merge **122+98=220 commits**
+- [x] **G32 BE evaluationConductedMet** — 지표29 「30일 이내 급여 반영+평가 실시」compliance @ `11277b9` (BNK-92~93)
+- [x] **G32 V75 case_management_plan BE** — 이지케어 FAQ21797 「사례관리 계획」필드 @ `0a270a2` (BNK-91~92)
+- [x] **G32 FE caseManagementPlan Field** — V75 API·validation·서버 오류 매핑 @ `443f379`/`40c303d` (BNK-92~93 · QA-B42 Fixed)
+- [x] **PilotFixturePanel** — NHIS·visit fixture 다운로드·pilot API setup @ `37e6b00` (QA-B43 Fixed)
+- [x] **hq_admin client create** — `ClientController` HQ_ADMIN 이용자 등록 권한 @ `208b37e`
+- [x] **G32 FE evaluationConductedMet StatCard** — `DashboardPage` widget·`CaseManagementPage` StatCard·`caseManagementCompliance.js` @ `7f2289b` (BNK-93~96)
+- [x] **7-3 청구시작 기준금액 FE** — `BillingSettingsPanel` G33 start-balance form·`setBillingStartBalanceApi`·BE V76 @ `3d5eb3e` (BNK-94 P2)
+- [x] **7-3 청구시작 G33 deepen** — ledger opening balance @ `e7df238`/`9e1a2ed` · overdue list surface @ `deaae7a`/`7564c2a` · settlement API+claim guard @ `70e6191` (BNK-97~98)
+- [x] **US-D01 primary guardian BE** — `CreateClientRequest`·`ClientService` primary guardian 필수·persist @ `0441a07` (BNK-96)
+- [x] **SEC-D23 PilotFixturePanel DEV gate** — `isPilotFixtureEnabledByEnv()` @ `c89a82b` (TSR 346)
+- [x] **FE+BE WT clean (106차)** — **`merge_status: ready`** → tester develop→test merge **135+109=244 commits**
+- [x] **G17 지표27 row2/row3 BE** — `provisionRecordedMet`·`planEstablishedBeforeBenefitStartMet`·benefit-start create guard @ `0048105`/`e820b28` (BNK-100~101)
+- [x] **G17 지표27 row2/row3 FE** — `DashboardPage`·`FunctionalRecoveryPage` StatCard·compliance widgets @ `21b1855`/`f1c60fe` (BNK-101~102)
+- [x] **G33 settlement UI** — `BillingStartBalanceSettlementModal`·`BillingSettingsPanel` @ `359cf0c` (BNK-100)
+- [x] **G33 V77 integrity** — `BillingSettingsService`·`V77__billing_start_balance_integrity.sql` @ `42bc06e` (BNK-100 · QA-B44 Fixed)
+- [x] **G2 CMS debit 이력 보존** — `CmsDebitFailureException`·failed debit history @ `c5a6cec` (BNK-102)
+- [x] **G2 CMS debit FAILED 응답** — operator retry `FAILED` response @ `838a7f6` (BNK-102)
+- [x] **programCompliance live E2E harness** — `programComplianceLiveApi.e2e.test.js` @ `c413615` (BNK-102 · run 잔여)
+- [x] **FE+BE WT clean (107차)** — **`merge_status: ready`** → tester develop→test merge **142+114=256 commits**
+- [x] **G33 settlement pilot E2E + reload fallback** — `pilotPageFlows` G33 organization-settings settlement flow·`BillingSettingsPanel` default settings reload @ `730792b`/`eb488799` (BNK-105)
+- [x] **G26 ClientDetail billing tab NTS xlsx E2E** — `ClientDetailPage` billing tab xlsx export @ `48827b6` (BNK-75 cite-back)
+- [x] **J03 primary guardian dispatch** — `NotificationService` primary 우선·중복 방지 @ `555a19f` · E2E @ `d86405c` (BNK-105)
+- [x] **G17/G32 program compliance API contracts + 422 guard** — `programComplianceServices.test.js`·`CaseManagementPage`·`FunctionalRecoveryPage` @ `8b0c6c7` (BNK-105)
+- [x] **G37 care-plan attachment BE** — `LtcGradeHistoryAttachmentStorageService`·V78 @ `0325d95` (BNK-105)
+- [x] **FE+BE WT clean (108차)** — **`merge_status: ready`** → tester develop→test merge **149+120=269 commits**
+- [x] **FE+BE WT clean (109차)** — **`merge_status: ready`** → tester develop→test merge **155+125=280 commits** *(superseded — FE WT 재오염 QA-B49)*
+- [x] **G38 care-plan notification compliance BE** — `CarePlanNotificationComplianceService`·5/11-month milestone·care-plan attachment monitoring @ `5fd35a6` (BNK-106 · FAQ 21802)
+- [x] **G39 provision result evaluation FE+BE** — `ProvisionResultEvaluationPage`·V80·indicator-44 compliance @ `1c99bcd`/`f082933` (BNK-107 · US-T08)
+- [x] **G37 MIME fallback guard** — extension fallback restrict to missing MIME @ `e9d1178` (QA-B46 Fixed · BNK-108)
+- [x] **G38 FE care-plan notification monitoring UI** — `CarePlanNotificationPanel`·dashboard widget·5/11-month milestone·partial-load warning @ `28c22b0`/`4b2b082`/`87e6fae` (BNK-106~112 · US-T08)
+- [x] **G39 FE dashboard StatCard/widget** — weekly/monthly compliance widget·4-pillar counts @ `8e66ae8`/`a16e1fe`/`28c22b0` (BNK-107~113 · US-T08)
+- [x] **G38/G39 BE pilot service-flow E2E** — `ProvisionCompliancePilotServiceFlowE2eTest` @ `a9f8bda` (BNK-112)
+- [x] **G38/G39 BE dashboard widget counts API** — `BranchDashboardResponse` compliance snapshot fields @ `a0a7f9c` (BNK-114)
+- [x] **G17/G32 edit flow FE** — case management meetings·functional recovery plans edit @ `26499b3` (BNK-113)
+- [x] **G38/G39 FE dashboard API snapshot aggregation** — `DashboardPage.jsx` snapshot-first + parallel compliance fallbacks @ `8fa9f3d`/`f72da41` (QA-B49 Fixed)
+- [x] **G17/G32 edit flow pilot E2E** — `pilotPageFlows` PATCH flows + `programComplianceLiveApi` write update @ HEAD (BE `0ed781f` cite-back)
+- [ ] **G17/G32/G33/G37/G38/G39 live API E2E run** — `programComplianceLiveApi.e2e.test.js`·`gradeHistoryAttachmentLiveApi.e2e.test.js`·`vitest.live.config.js` 파일럿 검증 (결정 96 · post-merge 권장)
+- [x] **G37 FE care-plan attachment UI** — `GradeHistoryAttachmentPanel`·`GradeHistoryTimeline`·`ClientDetailPage` 등급 탭 PDF/PNG 업로드·미리보기 @ `e026ae9`/`23bcd8c` (BNK-105 · US-M01-g)
+- [x] **G37 attachment API contracts + pilot E2E** — `gradeHistoryAttachmentServices.test.js`·`pilotPageFlows` G37 flow @ `23bcd8c` (BNK-105)
+- [x] **G37 live E2E harness** — `gradeHistoryAttachmentLiveApi.e2e.test.js`·`vitest.live.config.js` (BNK-106 · run post-merge 권장)
+- [ ] **SEC-D22 `.gitignore`** — `scripts/dev-backend.env` gitignore 매칭 (infra/OPS · MEDIUM · BLOCK 아님)
 
 > **Won't (BNK-11 G20)**: 케어포 demo-work 시설특화(생활실·욕창·집중배설) — ogada 주야간 commute 모델 **의도적 제외**.
 
@@ -697,25 +775,31 @@
 - [ ] TSP 자동 순서 + Directions 도로 경로·거리/시간 (US-T02-B)
 - [ ] v1.3-B 월간 API 비용 산정(15정차×운행일수) — PLAN_NOTES #43 **해소**
 
-### 완료 기준 (v1.3-C — G15·G16·BNK-9·BNK-49·BNK-53·BNK-58)
+### 완료 기준 (v1.3-C — G15·G16·BNK-9·BNK-49·BNK-53·BNK-58~61·65~69)
 
-- [ ] `vehicles` 마스터·정원·차량번호 — `transport_runs` 배정 연계 (G16)
-- [ ] 공단 **별지 제22호 이동서비스일지** export·**별지 제18호** 신청 전제 안내 (G15)
-- [ ] 급여제공기록지 **이동서비스 제공·차량번호** 연계 (G15)
+- [x] `vehicles` 마스터·정원·차량번호 — `VehiclesPage` `/transport/vehicles`·`TransportVehicleSelect` @ `107bfb3`/`08dbcf0` (G16 · BNK-66)
+- [x] 공단 **별지 제22호 이동서비스일지** export — `TransportServiceLogPanel`·`transportServiceLog.js` @ `7389884` (BNK-61 · confirmed run stop → 인쇄/다운로드)
+- [x] **별지 제18호** 신청 전제 안내 — `TransportForm18GuidePanel`·`transportForm18.js` @ `eecf0be` (BNK-61)
+- [x] **공단 3분리 워크플로 UI** — 적용/변경/중단(별지 18·19·20) + 등록상태 4단 라벨 — `TransportForm18GuidePanel` @ `fcf713a` (BNK-65 P2 · BNK-69 · **변경 7일 가드** config detail P2)
+- [x] 급여제공기록지 **이동서비스 제공·차량번호** 연계 (G15) — `CareProvisionRecordPanel`·BE `CareProvisionRecordService` @ `8bdead6`/`08dbcf0` (BNK-66 · 케어포 3-1 부분 패리티)
 - [x] **탑승/출석 이원화** — 케어포 func.php **2-2/2-3** — `/attendance/boarding`·`/attendance/on-site`·`GET /attendance?transportMode=boarding|on_site` @ `6c4c151`/`d6d7e7f` (BNK-58)
 - [x] **이동서비스 수칙·계약 텍스트 정본 UI (부분)** — `TransportCompliancePanel` 5수칙 체크리스트 + 계약서·일지 Modal @ `3db8db3` (BNK-53)
 - [x] **계약서 서명 저장 API+UI** — `TransportContractService`·V64·`TransportCompliancePanel` wiring @ `3c8f9fe`/`9e3cab5` (BNK-58 · TSR 221~222)
-- [ ] **배차 geocode 실패 UX** — `countGeocodeFailures`·경고 Alert·신규 저장 차단 @ WT 4M (QA-B19 Planned · B07 #12)
-- [ ] **외출 리포트(2-9)·외출 관리(2-1-1)** — 케어포 lifecycle (BNK-58 P1 잔여)
-- [ ] **운행일지 DB·이동서비스 시간 준수 기록** — 엔젤 daycareEssentialWork 「시간을 준수함」 (BNK-58 P1)
-- [ ] **이동서비스비** 산정·청구 입력 — 고시 제34조 (G16, 케어포 2-5 패리티)
-- [ ] **`transport_service_fee` 테이블** — 러-1~4 시드 **830/2,630/4,430/6,230원**(BNK-25 2차 교차 확정·BNK-47 **#44 수동 보류**) · **상수 하드코딩 금지**
+- [x] **계약 무결성 DB 가드** — V65 `transport_service_contracts_integrity.sql`·`TransportContractService` @ `24733c7` (BNK-59)
+- [x] **배차 geocode 실패 UX** — `countGeocodeFailures`·경고 Alert·저장/확정 차단 @ `318411d`/`695c0f7` (QA-B19 Fixed · BNK-59)
+- [x] **외출 리포트(2-9)·외출 관리(2-1-1)** — `ClientOutingPanel`·`ClientOutingsPage`·`ClientOutingReportPage`·V67 @ `a0dcfc0`/`7dfcc9e` (BNK-63 · 케어포 2-1-1/2-9 패리티)
+- [x] **이동서비스 시간 준수 기록** — `transportTimeCompliance.js`·`TransportServiceLogPanel` @ `eef07e5` (BNK-61 · BNK-69 엔젤 지표42 ✅)
+- [x] **이동서비스비** 산정·청구 입력 — `TransportServiceFeeService`·`TransportServiceFeePanel`·`/transport/service-fees` @ `88d4c59`/`9dfef92` · cross-branch guard @ `b5218a9` (G16 · BNK-64~66)
+- [x] **`transport_service_fee` API+1일1회 가드** — V68·`TransportServiceFeeBillingService` @ `88d4c59` · FE E2E @ `9dfef92` (BNK-64~66 · **#44 거리 단가 수동 보류** · **상수 하드코딩 금지**)
+- [ ] **계약서 수칙 첨부/서명 저장**(엔젤 지표41) — 평가 자료 제출 기준 **P2** (BNK-69)
+- [ ] **케어포 3-1-1~3-1-4 하위 leaf** — 통합식사·간호·특이사항·선호도 **P2** (BNK-67~69)
 
 ### Won't v1 (BNK-9·**BNK-25** — G17~G19)
 
-- **G17** 2026 평가 **지표25(계획 2점)+지표26(실행 3점)** 기능회복훈련 — **Could v2+** · v3.1(결정 94) 자동충족 경로
+- **G17** 2026 평가 **지표25+26+27** 기능회복훈련 — **BE ✅** @ `73e169a` · **FE 잔여 P1** (BNK-85~86 · v3.1 `FUNCTIONAL_RECOVERY` 병행)
+- **G32** 사례관리 회의록(지표43) — **BE ✅** @ `55fae99` · **FE 잔여 P1** (BNK-84~86 · G24/G30 묶음)
 - **G18** 주야간 내 단기보호 시범(2026.1~, 월9일) — **Won't v1**
-- **G19** 통합재가서비스 — **Won't v1**
+- **G19** 통합재가서비스 — **Won't v1** (BNK-84 「주야간 월 10만원」verbatim → **v2+ Epic V**)
 
 ### 미확정 (#41 잔여)
 
@@ -772,7 +856,7 @@
 - [ ] **카카오 비즈니스 채널** 개설·템플릿 심사·발송 API 연동 (US-J03)
 - [x] **(v2/J03 backend service-layer)** 출석(도착/귀가)·일일 케어·명세·긴급 알림 **알림톡 E2E** — `J03AlimtalkServiceFlowE2eTest`·`NotificationAlimtalkDispatchE2eTest` · **live Solapi·발송 UI 잔여** · **이력 UI ✅ @ `e39164d`**
 - [x] QA_FEEDBACK v2 범위 항목 0건 OPEN
-- [ ] 본인부담금 보호자 발송·수납 E2E (MVP에서 제외했던 §3-9-3 후속)
+- [x] 본인부담금 보호자 발송·수납 E2E (MVP에서 제외했던 §3-9-3 후속) — `CopayGuardianNotifyPaymentE2eTest`에 발송 응답(dispatchedCount)·수납 응답(paidAt/paymentMethod)·납부확인서 재발송 응답 계약 검증 보강
 - [x] **(v2/G21 backend @ `d768820`)** `V53__visit_schedules_v2.sql`·`VisitService`·`VisitController` — `GET/POST/PATCH /api/v1/visits`·확정/취소·체크인/아웃 · `VisitServiceTest`(+11)·`RoleBasedControllerAccessTest` RBAC
 - [x] **(v2/G21 backend @ `ee3fa3a`, BNK-25)** **NHIS visit schedule import API** — `HOME_VISIT` branch guard · import endpoint · `VisitServiceTest` 확장
 - [x] **(v2/G21 backend @ `84f3441`, BNK-28)** **확정 PLAN import 차단** — `hasBlockingConfirmedPlan` · FE 확정↔import 가이드 @ `bf3d40d` (US-V02 P1 **닫힘**)
@@ -783,6 +867,8 @@
 - [x] **(v2/G21 frontend @ `311c7c0`, BNK-28)** **`/visits` UI** — `VisitScheduleForm`·PLAN/BILLING Tabs·`VisitNhisImportPanel`·모바일 체크인(US-V01~V04 **partial**) — **US-V04 E2E 잔여**
 - [x] **(v2/G21 billing confirm-lock @ `c4fb7ff`/`02cd2b2`, BNK-38)** **billing 확정 잠금 가이드** + cross-page E2E — **live run 잔여**
 - [ ] `pilotPageFlows` 방문요양 E2E (US-V01~V04 live post-merge)
+- [x] **(v2/G17 BE @ `73e169a`, BNK-85)** **기능회복훈련 계획 API** — `FunctionalRecoveryController`·V72·`FUNCTIONAL_RECOVERY` program_type · 지표25~27 compliance — **FE Route·폼 잔여 P1**
+- [x] **(v2/G32 BE @ `55fae99`, BNK-86)** **사례관리 회의 API** — `CaseManagementController`·V73·지표43 6필드·분기 UNIQUE·30일 윈도우 — **FE Route·폼·widget 잔여 P1**
 
 ---
 
@@ -853,6 +939,8 @@
 | **P0** | 프로그램 리포트 4종 | 5-7~5-10 | `/programs/reports/*` | 리포트 쿼리 |
 | **P1** | 일일·정기 점검·감염·시설운영일지 | 6-2~6-4 | `/safety/daily-checks`·`/safety/periodic-checks`·`/safety/infection-control`·`/safety/operation-log` | `safety_checks`·`operation_logs` |
 | **P1** | 외부강사·자원봉사 (5-1-1) | 5-1-1 | `/programs/instructors` | `external_instructors` |
+| **P3** | 인지활동북 자료실 (G29) | 이지케어 시범 | `/programs/cognitive-materials` | `cognitive_activity_materials` |
+| **P3** | 주기별 업무·모니터링 가이드 (G30) | 이지케어 FAQ 21782~21842 | `/compliance/periodic-tasks` | `periodic_task_templates` |
 
 ### 완료 기준 (v3.1)
 
@@ -862,6 +950,8 @@
 - [ ] 프로그램 그룹·마스터·의견·계획 + **리포트 4종**
 - [ ] 위생·안전 점검·감염·시설운영일지 CRUD
 - [ ] `pilotPageFlows` v3.1 E2E · `merge_status: ready`
+- [ ] **G29** 인지활동북 — 학습지 PDF·낱장 출력·수급자별 배포 (이지케어 FAQ 21781 패리티 · BNK-59)
+- [ ] **G30** 주기별 업무 체크리스트·2026 모니터링 문항 대응 (이지케어 FAQ 21782~21842 · BNK-61)
 
 > **v3 병행 (결정 94)**: §3-8-a 직원 HR(8-2~8-13)은 **v3 완료 기준**에 merge-blocking 추가 — ROADMAP v3 §완료 기준 참조.
 
