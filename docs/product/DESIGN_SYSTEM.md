@@ -1,9 +1,13 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-12T12:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-12T22:30:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-12 (83차 — **US-T08 G39 지표44 대시보드 위젯 + 접근성 재점검** — USER_STORIES US-T08(BNK-109) 인수 조건 「dashboard StatCard/widget — indicator-44 compliance widget on DashboardPage」 잔여 P2 해소. ① **`DashboardPage` 4개 위젯** — `fetchProvisionResultComplianceApi` 연동·`countProvisionResultAnnualEvaluationGaps`·`countProvisionResultReflectionGaps` 집계 — 「급여제공결과 평가 미등록」·「평가 30일 미반영」(gap, tone=warning)·「급여제공결과 평가」·「평가 반영」(status 충족/미충족/대상없음, `/programs/provision-result-evaluations` 링크). ② **`provisionResultCompliance.js`** — gap count·dashboard widget label 상수·view model `annualEvaluationGapCount`/`reflectionGapCount` 확장. ③ **`dashboardSummary.js`** — branch/HQ widget 필드 전달. ④ **`.ds-provision-result-compliance`** `forced-colors` StatCard 경계선. 회귀 +5. `npm test`·build·audit 검증.)
+> **최종 갱신**: 2026-06-12 (87차 — **US-R03 직원 lifecycle FAQ21825 + StaffDetailPage + 접근성 재점검** — USER_STORIES 115차 신규 P2 Epic G-Staff-LC(이지케어 FAQ21825 입사~퇴사)가 frontend 0건이던 갭을 client lifecycle(G24/G14)과 대칭 surface로 해소. ① **`staffLifecycleCompliance.js`** — FAQ 21825 4단계(입사·신고·근로·퇴사)·서류 체크리스트·`buildStaffLifecycleSteps`. ② **`StaffLifecyclePanel`** — `LifecycleWorkflowPanel`+단계별 `region` 체크리스트·보수교육 `/staff/training` 링크(US-S02 후속)·입사/퇴사 `role=alert` 경고. ③ **`StaffDetailPage`** `/staff/:id` — 기본정보·입사~퇴사 `Tabs`·`StaffContextNav`·breadcrumb. ④ **`StaffPage`** — 이름·상세 링크 `aria-label`에 직원명 포함(WCAG 2.4.6). ⑤ **`.ds-staff-lifecycle-panel*`** CSS·`forced-colors`는 client 패널 선택자 공유. 회귀 +7. `npm test`·build·audit 검증.)
+> **이전 갱신**: 2026-06-12 (86차 — **US-T09·US-T10 ClientDetail 탭 + US-S01 StaffContextNav + G34 행 액션 접근성** — USER_STORIES 111~112차 P2 갭(정기 욕구사정 FAQ21800·급여계약 lifecycle FAQ21805)이 `ClientDetailPage` 탭 surface 없이 `LifecycleWorkflowPanel`만 존재하던 잔여를 해소. ① **`ClientNeedsAssessmentPanel`** — 기초평가 탭: 8항목 FAQ21800 필드 안내·이전 기록 비교 region·`buildNeedsAssessmentLifecycleSteps`. ② **`ClientBenefitContractPanel`** — 급여계약 탭: 등급이력과 분리·계약 타임라인·`buildBenefitContractLifecycleSteps`. ③ **`StaffContextNav`** — `/staff`↔`/staff/lead-caregiver-log` cross-page `nav`·`aria-current`(US-S01·G34). ④ **`LeadCaregiverWorkLogPage`** — 행별 수정·전자서명 `aria-label`에 이용자명 포함(WCAG 2.4.6). ⑤ **`navConfig`** — SideNav 기록 그룹에 선임 업무수행일지·`EXACT_MATCH_PATHS` 등록. ⑥ **`.ds-client-lifecycle-panel*`** CSS·`forced-colors` 경계선. 회귀 +7. `npm test`·build·audit 검증.)
+> **이전 갱신**: 2026-06-12 (85차 — **G34·US-T09·US-T10 lifecycle 공통 UX 보강** — USER_STORIES 111차 신규 갭인 선임 요양보호사 업무수행일지(G34), 정기 욕구사정(FAQ21800), 수급자 급여계약 lifecycle(FAQ21805)은 모두 연/비정기 업무·기한·증빙·서명 상태를 동시에 보여줘야 하므로, API 확정 전 공통 presentational 컴포넌트 **`LifecycleWorkflowPanel`**을 신설. ① 단계별 상태 `LIFECYCLE_STATUS`(`DRAFT/SCHEDULED/IN_PROGRESS/DUE_SOON/OVERDUE/COMPLETED/SIGNED/RENEWED/TERMINATED`)를 `StatusBadge` 텍스트+색상 라벨로 표준화. ② 각 단계는 기한·완료일·담당·서명 필요/완료·증빙 목록을 텍스트로 노출하고, `OVERDUE`는 좌측 보더+danger soft+「기한 초과」Badge로 색상 의존을 피함. ③ `.ds-lifecycle*` CSS와 `forced-colors` 경계선·outline 보강. ④ barrel export + 회귀 3건(`LifecycleWorkflowPanel.test.jsx`). coder 메모: 실제 `/staff/lead-caregiver-log`, `ClientDetailPage` 기초평가/계약 탭은 이 패널을 붙이고 API·권한만 연결.)
+> **이전 갱신**: 2026-06-12 (84차 — **G11·G15 폼 날짜 입력 `DateInput` 표준화 회귀 해소(FE-16·§1 단일 원천)** — 64차에서 확립한 「Must·도메인 폼 `type=date` raw input **0건** — `DateInput`/`MonthInput` 컴포넌트만 허용」 규율이, 이후 신설된 두 패널에서 회귀해 적용일 필드가 raw `<TextInput type="date">`로 남아 공유 날짜 입력 토큰(`.ds-date-input` 폭 캡)을 적용받지 못하던 갭을 해소(다른 날짜 폼 — `ClientFormPage` 생년월일·`PaymentRecordModal` 입금일·`VisitScheduleForm` 방문일 등과 시각·동작 불일치). ① **`FeeSurchargeGuidePanel`(G11 가산율 미리보기)** 「제공일」 필드를 `DateInput`으로 전환(시각/시간 필드는 `type=time`로 유지). ② **`TransportCompliancePanel`(G15 이동서비스 계약)** 「수급자(보호자) 서명일」·「기관 담당자 서명일」 2개 필드를 `DateInput`으로 전환 — `max={todayIsoDate()}` 미래 일자 차단·`disabled`·`Field` `error`(`aria-invalid`) 바인딩 보존. ③ raw `type=date` 잔존 컴포넌트 **0건** 재확인(스캔: `DateInput`/`MonthInput` 내부만 잔존). 순수 표준화 리팩터로 동작 불변. 회귀 +2(`FeeSurchargeGuidePanel.test.jsx`·`TransportCompliancePanel.test.jsx` — `.ds-date-input` 클래스·`type=date` 검증). `npm test` **772/176 PASS**·build PASS·audit 0.)
+> **이전 갱신**: 2026-06-12 (83차 — **US-T08 G39 지표44 대시보드 위젯 + 접근성 재점검** — USER_STORIES US-T08(BNK-109) 인수 조건 「dashboard StatCard/widget — indicator-44 compliance widget on DashboardPage」 잔여 P2 해소. ① **`DashboardPage` 4개 위젯** — `fetchProvisionResultComplianceApi` 연동·`countProvisionResultAnnualEvaluationGaps`·`countProvisionResultReflectionGaps` 집계 — 「급여제공결과 평가 미등록」·「평가 30일 미반영」(gap, tone=warning)·「급여제공결과 평가」·「평가 반영」(status 충족/미충족/대상없음, `/programs/provision-result-evaluations` 링크). ② **`provisionResultCompliance.js`** — gap count·dashboard widget label 상수·view model `annualEvaluationGapCount`/`reflectionGapCount` 확장. ③ **`dashboardSummary.js`** — branch/HQ widget 필드 전달. ④ **`.ds-provision-result-compliance`** `forced-colors` StatCard 경계선. 회귀 +5. `npm test`·build·audit 검증.)
 > **이전 갱신**: 2026-06-11 (82차 — **US-M01-g G37 등급 인정기간 첨부 UI + 접근성 재점검** — USER_STORIES US-M01-g·API_SPEC §4-2 G37·FLOWCHART §4 대비 **frontend 첨부 UI ❌ P1** 잔여 갭 해소(backend CRUD @ `0325d95`). ① **`GradeHistoryAttachmentPanel`** — `<details>`/`<summary>` lazy-load·`fetchLtcGradeHistoryAttachmentsApi`·`FileUpload`(PDF/PNG·10MB 클라이언트 가드)·미리보기(PDF `window.open`·PNG `Modal`)·삭제·행별 `aria-label`(등급 변경 문맥). ② **`GradeHistoryTimeline`** — `clientId`·`userRole` RBAC(branch_admin/social_worker 업로드·caregiver 읽기) 연동·`attachmentCount` 배지. ③ **`services.js`** — list/upload/delete/`apiFetchBlob` download. ④ **`.ds-grade-history-attachments*`** CSS·`forced-colors` 경계선. ⑤ **`config/gradeHistoryAttachments.js`** — MIME·크기 검증 단일 원천. `ClientDetailPage` 등급 탭 연동. 회귀 +9. `npm test`·build·audit 검증.)
 > **이전 갱신**: 2026-06-11 (81차 — **US-L05 G33 1회 설정 UX + US-M03 대장 컨텍스트 네비 + US-T07 RecordsContextNav + NHIS 비교 링크·접근성 재점검** — USER_STORIES·FLOWCHART 잔여 갭 해소. ① **`BillingStartBalanceOneTimeWarning`**·**`BillingStartBalanceLockedNotice`** — G33 청구시작 기준금액 1회 설정 사전 경고(`role=status`·submit `aria-describedby`)·잠금 후 수정 불가 안내(적용월 문맥)·`BillingSettingsPanel` 연동(US-L05). ② **`BillingReportsContextNav`** — 청구·입금·수납·환불 대장 + 간편계산기 cross-page `nav`·`aria-current` — `BillingReportPage`·`CopayCalculatorPage` 연동(US-M03). ③ **`CaseManagementPage`** — `RecordsContextNav` 연동(US-T07·G32). ④ **`BillingNhisComparisonPanel`** — 깨진 `/billing/reconciliation` 링크 → `/billing/imports/nhis`(한국어 라벨). ⑤ **`navConfig` `EXACT_MATCH_PATHS`** — 청구 하위 11경로 추가(SideNav 활성 오매칭 방지). ⑥ **`.ds-billing-start-balance-notice`** `forced-colors` 경계선. 회귀 +6. `npm test`·build·audit 검증.)
 > **이전 갱신**: 2026-06-11 (80차 — **미정의 `ds-text-input` 클래스 제거 + 인라인 너비 style → 유틸리티 클래스(FE-16·§1)** — `CaseManagementPage`(US-T07)·`FunctionalRecoveryPage`(US-T06) 필터·폼의 raw `<input className="ds-text-input">`가 **CSS에 정의되지 않은 클래스**여서 공유 입력 토큰(`.ds-input` 테두리·높이·포커스·`aria-invalid` 경계색)을 전혀 적용받지 못하고, 폭은 인라인 `style={{ width: "90px" }}`/`{{ width: "160px" }}`로만 지정되던 갭을 해소(FE-16 「인라인 style → ds-* 유틸리티」 회귀). ① 4개 raw `<input>`(연도·계획연도·참석자)을 **`TextInput`** 컴포넌트로 전환 — `.ds-input` 표준 스타일·`aria-describedby`/`aria-invalid` 전달 유지. ② **`.ds-input--year`**(`max-width: 6rem`)·**`.ds-select--inline`**(`max-width: 12rem`) 신규 유틸리티 승격 — `.ds-month-input`/`.ds-date-input` `max-width` 캡 패턴과 정합, 360px 반응형 축소 보존. ③ `CaseManagementPage` 분기 `Select` 인라인 `style` → `.ds-select--inline`. 순수 스타일 정합 리팩터로 동작 불변. 회귀 +1(`FunctionalRecoveryPage.test.jsx` — 연도 필터 `.ds-input`·`.ds-input--year` 클래스 검증). `npm test` 681/165 PASS·build 869 modules(max 465 kB)·audit 0.)
@@ -174,6 +178,12 @@
 | 알림 상태 (US-J03) | `SENT` | success | 발송완료 |
 | | `FAILED` | danger | 실패 |
 | | `PENDING` | neutral | 대기 |
+| lifecycle 상태 (G34·US-T09·US-T10) | `DRAFT` | neutral | 작성중 |
+| | `SCHEDULED` / `IN_PROGRESS` | info | 예정 / 진행중 |
+| | `DUE_SOON` | warning | 기한 임박 |
+| | `OVERDUE` | danger | 기한 초과 |
+| | `COMPLETED` / `SIGNED` / `RENEWED` | success | 완료 / 서명 완료 / 갱신 |
+| | `TERMINATED` | danger | 해지 |
 | 방문 일정 (US-V01) | `DRAFT` | neutral | 작성중 |
 | | `CONFIRMED` | info | 확정 |
 | | `IN_PROGRESS`/`CHECKED_IN` | info | 방문중 |
@@ -186,7 +196,7 @@
 | 차량 상태 (G16) | `active` (isActive=true) | success | 운행 |
 | | `inactive` (isActive=false) | neutral | 비활성 |
 
-> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의.
+> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`LIFECYCLE_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의.
 
 ### 2-4. 다크 모드 토큰 (11차, 운영자 야간 근무) [UXD]
 
@@ -321,6 +331,7 @@
 - [x] 보호자 목록(US-D01·US-J01): `GuardianListCard` — `aria-labelledby` 섹션 제목, 전화번호 `<a href="tel:">` + `aria-label`, 초대 스텁 `aria-disabled="true"` + `title` 설명.
 - [x] 2단 SideNav(US-UX-02): 그룹 토글 `aria-expanded`/`aria-controls`, 하위 항목 `.ds-nav-item--nested`, 데스크톱 항상 펼침·모바일 접힘/펼침.
 - [x] 등급 이력(US-M01): `GradeHistoryTimeline` — `<ol aria-label="등급 변동 이력">`, 등급 변경 `sr-only` 텍스트, 화살표는 `aria-hidden`.
+- [x] lifecycle 업무 패널(85차, G34·US-T09·US-T10): `LifecycleWorkflowPanel` — 단계 `ol`에 상태 `StatusBadge` 텍스트 라벨, 기한·완료일·담당·서명 필요/완료·증빙 목록을 텍스트로 노출. `OVERDUE`는 danger 색상 외 「기한 초과」Badge와 좌측 보더를 병행하고, `forced-colors`에서 outline으로 보강.
 - [x] 연락처 마스킹(US-K01·L02): `MaskedPhone` — 부분 마스킹 + `tel:` 링크 + `aria-label`.
 - [x] 보호자 연결(US-K02): `LinkedClientsCard` — 대표 보호자 `Checkbox` 라벨 연결, `aria-labelledby` 섹션 제목.
 - [x] 입금 처리(US-L01): `PaymentPage` — `Field` 라벨·`type="date"`/`inputMode="numeric"`, Modal `useId()` 패턴 재사용.
@@ -481,6 +492,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `Checkbox` | `label`, `checked`, `onChange` | **주민번호 수집 동의**(US-D04) 등 | ✅ 29차 |
 | `Card` / `StatCard` | `title`,`actions` / `label`,`value`,`unit`,`tone?` | 카드 · 대시보드 지표(US-H01) | Card ✅ 29차 / StatCard ✅ 33차 |
 | `Badge` / `StatusBadge` | `tone` / `status`,`map` | 청구·매칭·출석 상태 (`BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BATCH_STATUS`·`INVITATION_STATUS`) | ✅ 29차 |
+| `LifecycleWorkflowPanel` | `title`,`description`,`steps[]`,`warning?` | 선임 업무수행일지·정기 욕구사정·급여계약 lifecycle 공통 패널(G34·US-T09·US-T10). 단계별 상태·기한·담당·서명·증빙 텍스트 노출 | ✅ 85차 |
 | `Alert` | `tone`, `title` | 안내·경고(예: 롱텀 Chrome/Edge 안내 US-G04) | ✅ 29차 |
 | `Modal` | `isOpen`,`onClose`,`title`,`size`,`footer`,`closeOnOverlay/Escape`,`showCloseButton` | 다이얼로그 — `useId()` 인스턴스별 고유 `aria-labelledby`, 포커스 트랩, ESC | ✅ 29차 |
 | `Spinner` / `EmptyState` | — | 로딩·빈 목록 | ✅ 29차 |
@@ -980,6 +992,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/meals` | `MealsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-N01** (식사 관리) |
 | `/programs` | `ProgramsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-N02** (프로그램 관리) |
 | `/staff` | `StaffPage` | branch_admin, hq_admin | **§3-8** (직원 관리, v3) |
+| `/staff/:id` | `StaffDetailPage` | branch_admin, hq_admin | **US-R03** (직원 lifecycle FAQ21825) |
 | `/login` | `LoginPage` | 공개 | US-B01 (`/`는 `RootRedirect`) |
 | `/forbidden` | `ForbiddenPage` | 공개 | — |
 
