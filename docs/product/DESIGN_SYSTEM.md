@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-13T21:10:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-13T23:45:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-13 (94차 — **StaffStatusReportPage lifecycle 헤딩 prop 회귀 + CopayTypeSelect 안내문 `aria-describedby` 연결** — 93차 이후 coder 신규 5커밋(`02cbd05`~`e77b7e4`: G-7x-1 선행입금 가드·FAQ21824 lifecycle·G9-COG 인지지원등급·G9-COPAY-NAMING) 미점검 갭 해소. ① **`StaffStatusReportPage` 헤딩 회귀(WCAG 1.3.1·2.4.6)** — 직원현황 lifecycle 패널에 `heading="직원현황 lifecycle (8-12)"`를 전달했으나 `LifecycleWorkflowPanel`은 `title` prop만 받아 **무시**돼, 패널이 기본 제목 「업무 lifecycle」로 렌더되고 `aria-labelledby`도 그 일반 제목을 가리키던 결함을 `title`로 정정(의도한 8-12 컨텍스트 헤딩 복원). ② **`CopayTypeSelect` 안내문 연결(WCAG 1.3.1)** — 선택 시 노출되는 본인부담률 안내(「100분의 40 감경 · 본인부담률 9% …」)가 `Field` 밖 분리된 `<p className="ds-field__help">` 자식으로 렌더돼 컨트롤과 `aria-describedby`로 **연결되지 않던** 갭을, `DurationBandSelect` 패턴대로 `Field`의 `help` prop으로 전달해 select↔안내문을 연결(스크린리더가 선택 시 본인부담률을 함께 안내). 순수 접근성 정합 리팩터로 시각·동작·옵션 라벨(G9-COPAY-NAMING 법령 용어 병기) 불변. 회귀 +2(`StaffStatusReportPage.test.jsx` lifecycle 헤딩·`CopayTypeSelect.test.jsx` help `aria-describedby`). `npm test` **1022/222 PASS**·build PASS.)
+> **최종 갱신**: 2026-06-13 (95차 — **US-T15 G30 모니터링 자가진단 접근성 + US-R02 8-12 출력물 busy 상태** — 94차 이후 coder 신규 4커밋(`6f6915f`~`07956f5`: G30 MonitoringSelfDiagnosisPage·FAQ21836 basis fallback·8-12 export 7종·referenceDate filter) 미점검 갭 해소. ① **`MonitoringSelfDiagnosisPage`(G30)** — 자가진단·유선상담 `Table` `captionVisuallyHidden`(WCAG 1.3.1)·행별 「수정」버튼 `${itemCode} ${inspectionDirection}` 컨텍스트 `aria-label`(WCAG 2.4.6·91차 ClientRiskAssessmentPanel 패턴)·양 폼 `aria-label`·제출 `aria-busy`·연도 필터 `.ds-input--year`(FE-16)·유선상담 일자 `<time dateTime>`·오류 `role=alert`. ② **`.ds-monitoring-compliance`** — G30 StatCard 섹션 margin·`forced-colors` 경계선. ③ **`StaffStatusReportPage` 8-12 출력** — 기준일 「조회」·출력물 7종 버튼 `aria-busy`(export/loading 진행 SR 안내). 순수 접근성·정합 리팩터로 시각·동작 불변. 회귀 +3(`MonitoringSelfDiagnosisPage.test.jsx` 2·`StaffStatusReportPage.test.jsx` 1). `npm test`·build 검증.)
+> **이전 갱신**: 2026-06-13 (94차 — **StaffStatusReportPage lifecycle 헤딩 prop 회귀 + CopayTypeSelect 안내문 `aria-describedby` 연결** — 93차 이후 coder 신규 5커밋(`02cbd05`~`e77b7e4`: G-7x-1 선행입금 가드·FAQ21824 lifecycle·G9-COG 인지지원등급·G9-COPAY-NAMING) 미점검 갭 해소. ① **`StaffStatusReportPage` 헤딩 회귀(WCAG 1.3.1·2.4.6)** — 직원현황 lifecycle 패널에 `heading="직원현황 lifecycle (8-12)"`를 전달했으나 `LifecycleWorkflowPanel`은 `title` prop만 받아 **무시**돼, 패널이 기본 제목 「업무 lifecycle」로 렌더되고 `aria-labelledby`도 그 일반 제목을 가리키던 결함을 `title`로 정정(의도한 8-12 컨텍스트 헤딩 복원). ② **`CopayTypeSelect` 안내문 연결(WCAG 1.3.1)** — 선택 시 노출되는 본인부담률 안내(「100분의 40 감경 · 본인부담률 9% …」)가 `Field` 밖 분리된 `<p className="ds-field__help">` 자식으로 렌더돼 컨트롤과 `aria-describedby`로 **연결되지 않던** 갭을, `DurationBandSelect` 패턴대로 `Field`의 `help` prop으로 전달해 select↔안내문을 연결(스크린리더가 선택 시 본인부담률을 함께 안내). 순수 접근성 정합 리팩터로 시각·동작·옵션 라벨(G9-COPAY-NAMING 법령 용어 병기) 불변. 회귀 +2(`StaffStatusReportPage.test.jsx` lifecycle 헤딩·`CopayTypeSelect.test.jsx` help `aria-describedby`). `npm test` **1022/222 PASS**·build PASS.)
 > **이전 갱신**: 2026-06-13 (93차 — **US-R02 8-12 StaffStatusReportPage 접근성 + US-T14 G42 익명함 마스킹 + `.ds-grid--stats` 승격** — 92차 이후 coder 신규 `StaffStatusReportPage` @ `02cbd05`·`GrievanceCounselingPage` API 연동 @ `b0a9e06` 미점검 갭 해소. ① **`StaffStatusReportPage`** — StatCard 요약 `role="group"`·표 `captionVisuallyHidden`(「직원별 compliance 현황」)·행 링크 `${displayName} 직원 상세` `aria-label`·하위 메뉴 cross-link `aria-label`·오류 `Alert.ds-page-alert`(WCAG 2.4.6·1.3.1). ② **`.ds-grid--stats`** — 5열 StatCard 그리드 `minmax(160px,1fr)` 유틸 승격(FE-16 — coder가 사용했으나 CSS 미정의 회귀 해소). ③ **`.ds-staff-status-report__summary`** — `forced-colors` StatCard 경계선. ④ **G42 익명함(FAQ21814)** — `complaintSubjectDisplay`·`complaintApprovalContextLabel`(`config/complaintConsultations.js`) — `ANONYMOUS_BOX` 목록 대상 「익명」·결재 `aria-label` 「익명함 …」·실명 비노출. 회귀 +2. `npm test`·build 검증.)
 > **이전 갱신**: 2026-06-13 (92차 — **US-T12 G40b·G38 ClientsContextNav + 회계연도 Field/TextInput 표준화 + US-T14 G42 고충상담 UI 골격 + US-R02 건강검진 패널 접근성** — 91차 이후 coder 신규 구현 `PeriodicRiskAssessmentStatusPage`·`CarePlanNotificationPage`·`StaffHealthCheckupRecordsPanel`(US-R02 8-10 HR 파일함 연동 @ `d41546f`) 및 USER_STORIES US-T14 G42(FE 0건) 갭 해소. ① **`ClientsContextNav`** — `/clients`↔`/clients/care-plan-notifications`(G38)↔`/clients/periodic-risk-assessments`(G40b) cross-page `nav`·`aria-current`(StaffContextNav 패턴). ② **회계연도·반기 필터 표준화(FE-16)** — `PeriodicRiskAssessmentStatusPage`·`ClientDetailPage` 반기 패널의 raw `<input className="ds-input">`/`<select className="ds-input">`·독립 `<label>`을 **`Field`+`TextInput`(`ds-input--year`)·`Select`(`ds-select--inline`)**로 전환(FunctionalRecoveryPage·CaseManagementPage 패턴 정합). ③ **표 행 링크 접근성(WCAG 2.4.6)** — G40b 「위험도평가」·G38 「등급 이력」 링크에 `${clientName} …` `aria-label`·G38 표 `captionVisuallyHidden`. ④ **`StaffHealthCheckupRecordsPanel`** — 파일함·기록 링크/버튼에 `${displayName}` 컨텍스트 `aria-label`. ⑤ **US-T14 `ComplaintConsultationForm`+`ComplaintConsultationPanel`** — FAQ21814 접수(서면·전화·문자·내방·익명함)·대상·`DateInput` 상담일·사후관리·`COMPLAINT_CONSULTATION_STATUS` Badge·행별 「결재 요청」`aria-label`(API·Route·`SignLeadCaregiverWorkLogModal` 재사용은 coder). ⑥ **CSS** — `.ds-fiscal-period-filters`·`.ds-staff-health-checkup-records`·`.ds-health-checkup-file-status`·`.ds-complaint-consultation*`. 회귀 +8. `npm test`·build 검증.)
 > **이전 갱신**: 2026-06-13 (91차 — **US-T11 G40·G40b 위험도평가 패널 반복 액션 버튼 `aria-label` 컨텍스트(WCAG 2.4.6·4.1.2)** — 90차 접근성 패스 이후 coder가 신규 구현한 신규입소 위험도평가(`ClientRiskAssessmentPanel` @ `328d697`)·반기 기초평가(`ClientPeriodicRiskAssessmentPanel` @ `22325f4`)가 미점검이던 갭 해소. 두 패널은 각각 낙상·욕창·인지기능 3종 섹션마다 「수정」/「평가 등록」 트리거 버튼을 렌더하고, `ClientDetailPage` 「위험도평가」 탭에 **두 패널이 같은 탭에 동시 노출**돼 동일 접근성 이름의 버튼이 **최대 6개** 생겨 스크린리더가 어느 평가 유형·시점을 편집하는지 식별 못 하던 결함(코드베이스 반복 행/섹션 액션 표준 — `GuardianInvitationList`·`StaffPage`·`LeadCaregiverWorkLogPage` 정합). ① **신규입소 패널** — 버튼 `aria-label`을 `${typeLabel} 평가 수정`/`${typeLabel} 평가 등록`(예: 「낙상 위험도 평가 등록」)으로 부여. ② **반기 패널** — `${typeLabel} 반기 평가 수정`/`등록`(예: 「낙상 위험도 반기 평가 등록」)으로 부여해 신규입소 패널과 **같은 탭에서 명확히 구분**(「반기」 토큰). 시각 텍스트(「수정」/「평가 등록」)·동작은 불변. 회귀 +2(`ClientRiskAssessmentPanel.test.jsx`·`ClientPeriodicRiskAssessmentPanel.test.jsx` — 유형별 컨텍스트 라벨·중복 무맥락 라벨 0건), `pilotPageFlows`(US-T11) 트리거 조회를 컨텍스트 라벨로 정합. `npm test` **948/210 PASS**·build PASS.)
@@ -1449,8 +1450,8 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 |------|------|
 | 역할 | hq_admin·branch_admin·social_worker (StaffContextNav 연동) |
 | 컴포넌트 | `StaffContextNav`, `StatCard` ×5, `LifecycleWorkflowPanel`, `Table`, `Badge`, `Alert`, `Spinner` |
-| A11y | 요약 `role="group"` · 표 `captionVisuallyHidden` · 직원 링크 `${displayName} 직원 상세` · cross-link `aria-label` |
-| CSS | `.ds-grid--stats`(5열 StatCard) · `.ds-staff-status-report__summary` · `forced-colors` StatCard 경계 |
+| A11y | 요약 `role="group"` · 표 `captionVisuallyHidden` · 직원 링크 `${displayName} 직원 상세` · cross-link `aria-label` · 기준일 「조회」·출력물 7종 `aria-busy` (95차) |
+| CSS | `.ds-grid--stats`(5열 StatCard) · `.ds-staff-status-report__summary` · `forced-colors` StatCard 경계 · `@media print` 7종 출력 zone |
 
 ### 17-2. G42 익명함 마스킹 (FAQ21814)
 
@@ -1459,5 +1460,26 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | 헬퍼 | `complaintSubjectDisplay` · `complaintApprovalContextLabel` (`config/complaintConsultations.js`) |
 | 규칙 | `ANONYMOUS_BOX` — 목록 대상 「익명」·결재 버튼 「익명함 …」·실명(`targetName`) 미노출 |
 | 폼 | `ComplaintConsultationForm` — 익명함 선택 시 대상 유형 자동 `OTHER` + 안내 `Alert` (92차 유지) |
+
+---
+
+## 18. 모니터링 자가진단·유선상담 (US-T15 G30, 95차) [UXD]
+
+> **95차 UXD (2026-06-13)** — coder `MonitoringSelfDiagnosisPage` @ `6f6915f`·FAQ21836 basis fallback @ `0da41c6` 접근성 재점검.
+
+### 18-1. MonitoringSelfDiagnosisPage (`/compliance/monitoring`)
+
+| 항목 | 상세 |
+|------|------|
+| 역할 | hq_admin·branch_admin·social_worker |
+| 컴포넌트 | `StatCard`(6개월 자가진단·유선상담 준수) · 5-field `Field`+`Select`/`TextInput`/`Textarea`/`DateInput` · `Table` ×2 · `Alert` |
+| 준수 위젯 | 6개월 rolling 자가진단(`rollingComplete`) · 월 5명 유선상담(`REQUIRED_PHONE_CONSULTATIONS=5`) · FAQ21841 추천 대상 목록 |
+| A11y | compliance `section`+sr-only `h2` · `StatCard role="group"` · 표 `captionVisuallyHidden` · 행 「수정」 `${itemCode} ${inspectionDirection}` `aria-label` · 폼 `aria-label` · 제출 `aria-busy` · 연도 `.ds-input--year` · 유선상담 일자 `<time dateTime>` |
+| CSS | `.ds-monitoring-compliance` · `forced-colors` StatCard 경계 |
+
+### 18-2. coder 전달 메모
+
+- G30 live E2E verify는 tester(TSR) — fetch-mock 회귀는 `MonitoringSelfDiagnosisPage.test.jsx` 8건.
+- FAQ21812~13(모니터링 checklist v2 Epic)은 별도 Route·`RecordsContextNav` 확장 검토 — 본 95차 범위 외.
 
 *이 문서는 ux_designer 에이전트(UXD)가 관리합니다. 토큰·컴포넌트 변경 시 본 문서와 `memory/decisions.md`를 동기화하세요.*

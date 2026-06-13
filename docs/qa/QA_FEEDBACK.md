@@ -1,4 +1,37 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-13T10:38:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-13T18:18:05+00:00 -->
+<!-- tester-sync: TSR 579차 2026-06-13T18:18 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.84s)·build **781 modules**(6.74s)·audit **0**·develop `@ff173af`(+1 vs `5bba7a2`: US-R02 staff profile pagination for 8-12 outputs)·WT **CLEAN**·HEAD **1072/1072 PASS**(179.63s)·**247 ahead**·origin/develop **동기화 @ `ff173af`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@d4acab7` WT **DIRTY 2M**·Open 1 BLOCK **QA-B73(backend)**·⚠ **cross-stream merge BLOCK**·merge pending **449**(247+202). -->
+<!-- tester-sync: TSR 578차 2026-06-13T18:08 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~26s)·npm N/A(no `package.json`)·develop `@d4acab7` HEAD **불변**(576차 대비)·WT **DIRTY 2M**(`VisitService.java`·`VisitServiceTest.java` — G21 assigned caregiver check-in guard follow-up WIP, **576차 CLEAN→재오염**, 2 files +25/-1, +1 @Test)·`test..develop` **202 ahead**·origin/develop **동기화 @ `d4acab7`**·**신규 Open 1 BLOCK QA-20260613-B73(backend)**·PASS(v1 @ test)·⚠ backend merge gate **BLOCK**(WT dirty)·merge **미실행**(202 ahead)·교차 FE `@5bba7a2` WT **CLEAN**·**246 ahead**·Open 0(frontend)·⚠ **cross-stream merge BLOCK**·merge pending **448**(202+246). -->
+<!-- tester-sync: TSR 577차 2026-06-13T17:57 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 50.36s) · `npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.70s) · `npm audit --omit=dev --audit-level=high` **0 vulnerabilities** · develop `@5bba7a2`(+1 vs `488f547`: `fix(v1.2.1/US-R02): stabilize staff status print rows before print`) WT **CLEAN** · HEAD **1071/1071 PASS**(227 files, 179.03s) · build multi-chunk(index **577.50 kB** >500 kB vite warn, 6.16s) · `test..develop` **246 ahead** · origin/develop **동기화 @ `5bba7a2`** · origin/test **동기화 @ `c7c8f07`** · **Open 0(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ frontend merge gate **FULLY UNBLOCKED** · merge **미실행**(246 ahead) · 교차 BE `@d4acab7` WT **CLEAN** · **202 ahead** · Open 0(backend) · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **448**(246+202). -->
+<!-- tester-sync: TSR 575차 2026-06-13T17:33 UTC (frontend) — superseded by 577차 — develop `@488f547` · 245 ahead · merge pending 446. -->
+<!-- tester-sync: TSR 573차 2026-06-13T16:52 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 78.04s) · `npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 4.84s) · `npm audit --omit=dev --audit-level=high` **0 vulnerabilities** · develop `@a7a6004`(+1 vs `892450a`: `fix(v1.2.1/G42): stabilize grievance approval E2E (QA-B72)`) WT **CLEAN** · HEAD **1067/1067 PASS**(227 files, 207.24s) · **243 ahead** · origin/develop **동기화 @ `a7a6004`** · origin/test **동기화 @ `c7c8f07`** · **QA-B72 Fixed @ `a7a6004`** · **Open 0(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ frontend merge gate **FULLY UNBLOCKED** · merge **미실행**(243 ahead) · 교차 BE `@39ee679` WT **CLEAN** · **200 ahead** · Open 0(backend) · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **443**(243+200). -->
+<!-- tester-sync: TSR 572차 2026-06-13T16:36 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.257s) · develop `@39ee679`(+1 vs `bc927f7`: `fix(v2/G16): correct RU-3/RU-4 transport service fee seeds`) WT **CLEAN** · `test..develop` **200 ahead** · origin/develop **동기화 @ `39ee679`** · origin/test **동기화 @ `598d108`** · **Open 0(backend)** · ★ backend merge gate **FULLY UNBLOCKED** · merge **미실행** · 교차 FE `@892450a` WT **CLEAN** · **242 ahead** · Open 1 BLOCK **QA-B72** · HEAD **1066/1067 FAIL**(571차 기준) · ⚠ **cross-stream merge BLOCK** · merge pending **442**(200+242). -->
+<!-- tester-sync: TSR 570차 2026-06-13T16:16 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15s) · develop `@bc927f7`(+1 vs `bcb1d9f`: US-R02 staff status report CSV export endpoint) WT **CLEAN** · `test..develop` **199 ahead** · origin/develop **동기화 @ `bc927f7`** · **Open 0(backend)** · ★ backend merge gate **FULLY UNBLOCKED** · merge **미실행** · 교차 FE `@14124d6` WT **CLEAN** · **241 ahead** · Open 1 BLOCK **QA-B72** · HEAD **1065/1066 FAIL** · ⚠ **cross-stream merge BLOCK** · merge pending **440**(199+241). -->
+<!-- sec-sync: SEC 13차 2026-06-13T09:00 KST — develop `@bcb1d9f`/`14124d6` WT CLEAN(+198/+241 vs test); origin/test P0 유지(SEC-D14); 신규 G40/G40b·G42·G30·HR·G21 guard RBAC Pass(V92~V101); **신규 audit Open SEC-D26**(dev esbuild 3 HIGH)·SEC-D25 표면 확대·SEC-D27(NHIS xls MIME Low); **QA Open [SEC] 0건**(BLOCK 없음). -->
+<!-- tester-sync: TSR 569차 2026-06-13T16:02 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, 51.11s) · `npm run build` **781 modules SUCCESS**(max 367.09 kB, ~7s) · `npm audit --omit=dev --audit-level=high` **0 vulnerabilities** · develop `@14124d6`(+1 vs `47a4928`: `feat(v1.2.1/G42): add grievance follow-up checklist and approval queue UI`) WT **CLEAN** · HEAD **1065/1066 FAIL**(`pilotPageFlows.test.jsx:3908` — duplicate `getByRole("button",{name:"수급자 홍길동 고충상담 결재 승인"}` — approval queue + main list) · **227 files** · `test..develop` **241 ahead** · origin/develop **동기화 @ `14124d6`** · origin/test **동기화 @ `c7c8f07`** · **신규 Open 1 BLOCK QA-20260613-B72(frontend)** · PASS(v1.2+v1.3-A @ test) · ⚠ frontend merge gate **BLOCK**(HEAD test FAIL) · merge **미실행**(241 ahead) · 교차 BE `@bcb1d9f` WT **CLEAN** · **198 ahead** · Open 0(backend) · ⚠ **cross-stream merge BLOCK** · merge pending **439**(241+198). -->
+<!-- tester-sync: TSR 568차 2026-06-13T15:48 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15s) · develop `@bcb1d9f`(+1 vs `9fef436`: G42 pending follow-up checklist API·anonymous box pilot E2E BNK-161 P2) WT **CLEAN** · `test..develop` **198 ahead** · origin/develop **동기화 @ `bcb1d9f`** · origin/test **동기화 @ `598d108`** · **Open 0(backend)** · ★ backend merge gate **FULLY UNBLOCKED** · merge **미실행** · 교차 FE `@47a4928` WT **CLEAN** · **240 ahead** · Open 0(frontend) · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **438**(198+240). -->
+<!-- tester-sync: TSR 567차 2026-06-13T15:40 UTC (frontend) — superseded by 569차 — develop `@47a4928` · Open 0 · merge pending 438. -->
+<!-- tester-sync: TSR 566차 2026-06-13T15:34 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15s)·npm N/A(no `package.json`)·develop `@9fef436`(+1 vs `2ebca70`: G42 grievance compliance dashboard snapshot counts) WT **CLEAN**·`test..develop` **197 ahead**·origin/develop **동기화 @ `9fef436`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(197 ahead)·교차 FE `@ccc4d75` WT **CLEAN**·**239 ahead**·Open 0(frontend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **436**(197+239). -->
+<!-- tester-sync: TSR 565차 2026-06-13T15:24 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, 53.67s) · `npm run build` **781 modules SUCCESS**(max 367.09 kB, 4.99s) · `npm audit --omit=dev --audit-level=high` **0 vulnerabilities** · develop `@ccc4d75` WT **CLEAN** · `test..develop` **239 ahead** · **Open 0(frontend)** · ★ frontend merge gate **FULLY UNBLOCKED** · 교차 BE develop `@2ebca70` WT **CLEAN** · `test..develop` **196 ahead** · Open 0(backend) · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **435**(239+196). -->
+<!-- tester-sync: TSR 564차 2026-06-13T15:18 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.006s)·npm N/A(no `package.json`)·develop `@2ebca70` WT **CLEAN**·`test..develop` **196 ahead**·origin/develop **동기화 @ `2ebca70`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(196 ahead)·교차 FE `@772e96f` WT **CLEAN**·**238 ahead**·Open 0(frontend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **434**(196+238). -->
+<!-- tester-sync: TSR 563차 2026-06-13T15:08 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, 51.57s) · `npm run build` **781 modules SUCCESS**(max 367.09 kB, 4.93s) · `npm audit --omit=dev --audit-level=high` **0 vulnerabilities** · develop `@772e96f` WT **CLEAN** · `test..develop` **238 ahead** · **Open 0(frontend)** · ★ frontend merge gate **FULLY UNBLOCKED** · 교차 BE develop `@f4c8558` WT **CLEAN** · `test..develop` **195 ahead** · Open 0(backend) · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **433**(238+195). -->
+<!-- tester-sync: TSR 562차 2026-06-13T14:57 UTC (backend) — test `@598d108` **246/246 PASS**(64 suites, ~38s) · develop `@f4c8558`(+1 vs `5692662`: G30 monitoring integrity migration V101) WT **CLEAN** · HEAD **935/935 PASS**(170 suites, ~64s, +4 @Test vs 931) · `test..develop` **195 ahead** · **Open 0(backend)** · ★ backend merge **FULLY UNBLOCKED** · merge **미실행**(195 ahead) · 교차 FE `@851b45d` WT **CLEAN** · **237 ahead** · Open 0(frontend, 561차) · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **432**(195+237). -->
+<!-- planner-sync: PLN 125차 2026-06-13T23:30 KST — BNK-168~171·TSR 550~562 · G30 ✅ partial+ · 8-12 aggregated API ✅ partial+ · QA Open 0건 · Open→Planned 이동 없음 · merge 432 FULLY UNBLOCKED · FE `851b45d`/BE `f4c8558` -->
+<!-- tester-sync: TSR 561차 2026-06-13T14:24 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.36s) · develop `@07956f5`(+1 US-R02 8-12 staff status report exports·reference date filter) WT **CLEAN** · HEAD **1048/1048 PASS** · **67 route** · `test..develop` **236 ahead** · ★ frontend merge **FULLY UNBLOCKED** · backend Open **0** · develop `@5692662` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **430**(236 FE + 194 BE). -->
+<!-- tester-sync: TSR 559차 2026-06-13T14:07 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.52s)·build **781 modules**(9.69s)·audit **0**·develop `@bf6dd25`(+1 vs `0da41c6`: US-R02 8-12 staff status report aggregated API)·WT **CLEAN**·HEAD **1039/1039 PASS**(225 files, 209.12s)·**67 route**·`test..develop` **235 ahead**·origin/develop **동기화 @ `bf6dd25`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(235 ahead)·교차 BE `@b8e92bf` WT **CLEAN**·HEAD **931/931 PASS**·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **428**(235+193). -->
+<!-- tester-sync: TSR 558차 2026-06-13T13:55 UTC (backend) — test `@598d108` **246/246 PASS**(13.929s)·develop `@b8e92bf` WT **CLEAN**·HEAD **931/931 PASS**(31.169s)·`test..develop` **193 ahead**·origin/develop **동기화 @ `b8e92bf`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(193 ahead)·교차 FE `@0da41c6` WT **CLEAN**·`test..develop` **234 ahead**·Open 0(frontend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **427**(193+234). -->
+<!-- tester-sync: TSR 557차 2026-06-13T13:46 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.43s)·build **781 modules**(6.97s)·audit **0**·develop `@0da41c6`(+1 vs `6f6915f`: FAQ21836 basis fallback for monitoring templates)·WT **CLEAN**·HEAD **1036/1036 PASS**(224 files, 179.34s, +1 @Test vs 1035)·build multi-chunk(index 576.59 kB >500 kB vite warn, 6.24s)·**67 route**·`test..develop` **234 ahead**·origin/develop **동기화 @ `0da41c6`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(234 ahead)·교차 BE `@5501745` WT **CLEAN**·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **426**(234+192). -->
+<!-- tester-sync: TSR 555차 2026-06-13T13:22 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.73s)·build **781 modules**(6.25s)·audit **0**·develop `@6f6915f`(+1 vs `b47e85c`: `feat(v2/G30): add monitoring self-diagnosis and phone consultation UI (BNK-169)`)·WT **CLEAN**·HEAD **1035/1035 PASS**(224 files, 205.37s, +12 @Test vs 1023)·build multi-chunk(index 576.45 kB >500 kB vite warn, 7.74s)·**67 route**·`test..develop` **233 ahead**·origin/develop **동기화 @ `6f6915f`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(233 ahead)·교차 BE `@6a72b70` WT **CLEAN**·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **424**(233+191). -->
+<!-- tester-sync: TSR 554차 2026-06-13T13:13 UTC (backend) — test `@598d108` **246/246 PASS**(64 suites, ~14s)·develop `@6a72b70`(+1 vs `aaa16f8`: `feat(v2/G30): add monitoring self-diagnosis and phone consultation API (BNK-169)`)·WT **CLEAN**·HEAD **920/920 PASS**(~30s, +11 @Test vs 909)·`test..develop` **191 ahead**·origin/develop **동기화 @ `6a72b70`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(191 ahead)·교차 FE `@b47e85c` WT **CLEAN**·Open 0(frontend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **423**(191+232). -->
+<!-- tester-sync: TSR 553차 2026-06-13T12:58 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.47s)·build **781 modules**(7.24s)·audit **0**·develop `@b47e85c`(+1 vs `a5c2736`: `fix(v1.2.1/G27): skip monthly benefit cap API when no active branch` — **QA-B71 Fixed**)·WT **CLEAN**·HEAD **1023/1023 PASS**(222 files, 174.89s)·build multi-chunk(index 559.65 kB >500 kB vite warn, 6.23s)·**66 route**·`test..develop` **232 ahead**·origin/develop **동기화 @ `b47e85c`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(232 ahead)·교차 BE `@aaa16f8` WT **CLEAN**·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **422**(232+190). -->
+<!-- tester-sync: TSR 552차 2026-06-13T12:53 UTC (backend) — test `@598d108` **246/246 PASS**·develop `@aaa16f8`(+1 US-R02/8-12 staff status report API) WT **CLEAN**·HEAD **909/909 PASS**·**190 ahead**·**Open 0(backend)**·★ backend merge **FULLY UNBLOCKED**·교차 FE `@a5c2736` WT **DIRTY 2M**·Open 1 BLOCK **QA-B71**·⚠ **cross-stream merge BLOCK**·merge pending **421**(190+231). -->
+<!-- tester-sync: TSR 551차 2026-06-13T12:32 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.95s)·build **781 modules**(6.75s)·audit **0**·develop `@a5c2736`(+1 vs `e77b7e4`: `fix(UXD-94): restore lifecycle heading and link copay help via aria-describedby`)·WT **DIRTY 2M**(`MonthlyBenefitCapGuardPanel.jsx`·`MonthlyBenefitCapGuardPanel.test.jsx` — G27 no-branch guard WIP, **550차 CLEAN→재오염**, 2 files +26/-3, +1 @Test)·HEAD **1022/1022 PASS**·WT **1023/1023 PASS**(172.87s)·**66 route**·`test..develop` **231 ahead**·origin/develop **동기화 @ `a5c2736`**·**신규 Open 1 BLOCK QA-20260613-B71(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **미실행**(231 ahead)·교차 BE `@8bb6583` WT **CLEAN**·Open 0(backend)·⚠ **cross-stream merge BLOCK**·merge pending **420**(231+189). -->
+<!-- tester-sync: TSR 550차 2026-06-13T12:20 UTC (backend) — test `@598d108` **246/246 PASS**·develop `@8bb6583`(+1 G9-COG NHIS import gate on cognitive support fee grid BNK-166) WT **CLEAN**·HEAD **902/902 PASS**·**189 ahead**·**Open 0(backend)**·★ backend merge **FULLY UNBLOCKED**·교차 FE `@a5c2736` WT **CLEAN**·Open 0(frontend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **420**(189+231). -->
+<!-- tester-sync: TSR 549차 2026-06-13T11:47 UTC (frontend) — test `@c7c8f07` **217/217 PASS**·develop `@e77b7e4`(+1 G9-COPAY-NAMING statutory wording) WT **CLEAN**·HEAD **1020/1020 PASS**·**230 ahead**·**Open 0(frontend)**·★ frontend merge **FULLY UNBLOCKED**·교차 BE `@edd2771` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **418**(230+188). -->
+<!-- tester-sync: TSR 548차 2026-06-13T11:35 UTC (backend) — test `@598d108` **246/246 PASS**·develop `@edd2771`(+1 G9-COG cognitive support grade + bulk NHIS seed apply) WT **CLEAN**·HEAD **897/897 PASS**·**188 ahead**·**Open 0(backend)**·★ backend merge **FULLY UNBLOCKED**·교차 FE `@6ef671b` WT **CLEAN**·Open 0(frontend)·HEAD **1017/1017 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **417**(188+229). -->
+<!-- tester-sync: TSR 547차 2026-06-13T11:25 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(80.49s)·build **781 modules**(6.97s)·audit **0**·develop `@6ef671b`(+1 vs `58256c6`: `feat(v1.2.1/G9-COG): add cognitive support grade daily rate catalog on FE`)·WT **CLEAN**·HEAD **1017/1017 PASS**(222 files, 204.17s, +2 @Test vs 1015)·build multi-chunk(index 559.29 kB >500 kB vite warn, 8.37s)·**66 route**·`test..develop` **229 ahead**·origin/develop **동기화 @ `6ef671b`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(229 ahead)·교차 BE `@2efc557` WT **CLEAN**·Open 0(backend)·HEAD **894/894 PASS**(546차)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **416**(229+187). -->
+<!-- tester-sync: TSR 546차 2026-06-13T11:15 UTC (backend) — test `@598d108` **246/246 PASS**·develop `@2efc557`(+1 G9-COG cognitive support grade daily rate catalog) WT **CLEAN**·HEAD **894/894 PASS**·**187 ahead**·**Open 0(backend)**·★ backend merge **FULLY UNBLOCKED**·교차 FE `@58256c6` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **415**(187+228). -->
+<!-- tester-sync: TSR 545차 2026-06-13T11:02 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(81.02s)·develop `@58256c6`(+1 FAQ21824 billing lifecycle checklist)·WT **CLEAN**·HEAD **1015/1015 PASS**·**228 ahead**·**Open 0(frontend)**·★ frontend merge **FULLY UNBLOCKED**·교차 BE `@21eb0af` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **414**. -->
+<!-- tester-sync: TSR 544차 2026-06-13T10:53 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15s)·npm N/A(no package.json)·develop `@21eb0af`(+1 vs `6f6094d`: `fix(v1.2.1/G-7x-1): refine prior-deposit guard YearMonth comparison` — **QA-B70 Fixed**)·WT **CLEAN**·HEAD **886/886 PASS**(159 suites, ~28s, +1 @Test vs 885)·`test..develop` **186 ahead**·origin/develop **동기화 @ `21eb0af`**·**Open 0(backend)**·**QA-B70 Fixed @ `21eb0af` 재확인**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(186 ahead)·교차 FE `@7668459` WT **CLEAN**·Open 0(frontend)·HEAD **1009/1009 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **413**(186+227). -->
 <!-- tester-sync: TSR 543차 2026-06-13T10:38 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(81.48s)·build **781 modules**(10.27s)·audit **0**·develop `@7668459`(+1 vs `338c014`: QA-B69 Fixed BillingPage guard title test)·WT **CLEAN**·HEAD **1009/1009 PASS**(221 files, 204.35s)·build multi-chunk(index 551.66 kB >500 kB vite warn, 6.12s)·**66 route**·`test..develop` **227 ahead**·origin/develop **동기화 @ `7668459`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(227 ahead)·교차 BE `@6f6094d` WT **DIRTY 2M**·Open 1 BLOCK **QA-B70(backend)**·⚠ **cross-stream merge BLOCK**·merge pending **412**(227+185). -->
 <!-- tester-sync: TSR 542차 2026-06-13T10:22 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~27s)·npm N/A(no package.json)·develop `@6f6094d` HEAD **불변**(540차 대비)·WT **DIRTY 2M**(`BillingService.java`·`BillingServiceTest.java` — G-7x-1 prior-deposit guard `YearMonth` comparison WIP, **540차 CLEAN→재오염**, 2 files +59/-5, +1 @Test)·HEAD **885/885 PASS**·WT **886/886 PASS**·`test..develop` **185 ahead**·origin/develop **동기화 @ `6f6094d`**·**신규 Open 1 BLOCK QA-20260613-B70(backend)**·PASS(v1 @ test)·⚠ backend merge gate **BLOCK**(WT dirty)·merge **미실행**(185 ahead)·교차 FE `@338c014` WT **DIRTY 1M**·Open 1 BLOCK **QA-B69(frontend)**·HEAD **1008/1009 FAIL**·WT **1009/1009 PASS**·⚠ **양 스트림 merge BLOCK**·merge pending **411**(185+226). -->
 <!-- tester-sync: TSR 540차 2026-06-13T09:55 UTC (backend) — **542차 superseded — develop WT DIRTY 2M 누락(B70)** · test `@598d108` **246/246 PASS** · develop `@6f6094d` · **540차 WT CLEAN 기록 오류** · Open 0(backend) **→ B70 Open**. -->
@@ -617,10 +650,67 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(현재 Open 항목 없음 — TSR 543차 backend QA-B70 COD Fixed @ `21eb0af` 대기 검증)_
+_(Open **0건(active)** — QA-20260613-B73 **Fixed @ `c16f4fe`**; COD 2026-06-13T18:26 UTC)_
 
-<!-- QA-20260613-B70 Fixed @ 21eb0af — see Fixed section -->
+_(TSR 579차 2026-06-13T18:18 UTC — frontend Open **0** · test `@c7c8f07` **217/217 PASS** · develop `@ff173af` WT **CLEAN** · HEAD **1072/1072 PASS** · `test..develop` **247 ahead** · ★ frontend merge **FULLY UNBLOCKED** · 교차 BE Open **1 BLOCK QA-B73** @ `d4acab7` WT **DIRTY 2M** · ⚠ **cross-stream merge BLOCK** · merge pending **449**.)_
+
+_(TSR 578차 2026-06-13T18:08 UTC — backend Open **1 BLOCK QA-B73** · test `@598d108` `mvn test` **246/246 PASS** · develop `@d4acab7` WT **DIRTY 2M** · `test..develop` **202 ahead** · ⚠ backend merge **BLOCK** · 교차 FE `@5bba7a2` WT **CLEAN** · **246 ahead** · Open **0** · ⚠ **cross-stream merge BLOCK** · merge pending **448**.)_
+
+_(TSR 577차 2026-06-13T17:57 UTC — superseded by 578차 — 교차 BE `@d4acab7` WT **CLEAN** 기록 오류(B73 누락) · frontend Open **0** · merge pending **448**.)_
+
+_(TSR 576차 2026-06-13T17:44 UTC — superseded by 578차 — develop `@d4acab7` WT **CLEAN** 기록 오류(B73 누락) · merge pending 447.)_
+
+_(TSR 574차 2026-06-13T17:13 UTC — superseded by 576차 — develop `@c4dbe43` · 201 ahead · merge pending 445.)_
+
+_(TSR 573차 2026-06-13T16:52 UTC — frontend Open **0건** · **QA-B72 Fixed @ `a7a6004`** · develop `@a7a6004` WT **CLEAN** · HEAD **1067/1067 PASS** · test `@c7c8f07` **217/217 PASS** · `test..develop` **243 ahead** · ★ frontend merge **FULLY UNBLOCKED** · 교차 BE Open **0** @ `39ee679` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **443**.)_
+
+_(PLN 126차 2026-06-14T01:00 KST — planner-sync: BNK-172~175·TSR 562~573 반영 완료 · **QA Open 0건** · **QA-B72 Fixed @ `a7a6004`** · #44 P0 ✅ @ `39ee679` · merge **443** FULLY UNBLOCKED.)_
+
+_(TSR 571차 2026-06-13T16:28 UTC — superseded by 573차 — QA-B72 Open→Fixed @ `a7a6004` · HEAD **1066/1067 FAIL** → **1067/1067 PASS**.)_
+
+_(TSR 570차 2026-06-13T16:16 UTC — backend Open **0** · test `@598d108` `mvn test` **246/246 PASS** · develop `@bc927f7` WT **CLEAN** · ★ backend merge **FULLY UNBLOCKED** · `test..develop` **199 ahead** · 교차 FE Open **1 BLOCK QA-B72** @ `14124d6` · merge pending **440**.)_
+
+_(TSR 569차 2026-06-13T16:02 UTC — frontend Open **1 BLOCK QA-B72** 신규 등록 · develop `@14124d6` · HEAD **1065/1066 FAIL**(duplicate button) · merge pending **439**.)_
+
+_(PLN 125차 2026-06-13T23:30 KST — planner-sync: BNK-168~171·TSR 550~562 반영 완료 · **569차 superseded — QA Open 1 BLOCK QA-B72** · G30 ✅ partial+ · 8-12 aggregated API ✅ partial+ · merge **439** BLOCK(FE HEAD test FAIL).)_
+
+_(TSR 568차 2026-06-13T15:48 UTC — backend Open **0** · test `@598d108` `mvn test` **246/246 PASS**(64 suites, ~15s) · develop `@bcb1d9f`(+1 vs `9fef436`: G42 pending follow-up checklist API·anonymous box pilot E2E BNK-161 P2) WT **CLEAN** · ★ backend merge **FULLY UNBLOCKED** · `test..develop` **198 ahead** · merge **미실행** · 교차 FE `@47a4928` WT **CLEAN** · **240 ahead** · Open 0(frontend) · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **438**(198 BE + 240 FE).)_
+
+_(TSR 566차 2026-06-13T15:34 UTC — superseded by 568차 — backend develop `@9fef436` · merge pending 436.)_
+
+_(TSR 561차 2026-06-13T14:24 UTC — superseded by 562차 — backend develop `@5692662` · merge pending 430.)_
+
+_(TSR 560차 2026-06-13T14:15 UTC — superseded by 561차 — backend Open **0** · develop `@5692662` · merge pending 429.)_
+
+_(TSR 559차 2026-06-13T14:07 UTC — frontend Open **0** · develop `@bf6dd25`(+1 US-R02 8-12 staff status report aggregated API wiring) WT **CLEAN** · HEAD **1039/1039 PASS** · ★ frontend merge **FULLY UNBLOCKED** · backend Open **0** · develop `@b8e92bf` WT **CLEAN** · HEAD **931/931 PASS** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **428**(235 FE + 193 BE).)_
+
+_(TSR 557차 2026-06-13T13:46 UTC — superseded by 559차 — frontend Open **0** · develop `@0da41c6` · merge pending 426.)_
+
+_(TSR 556차 2026-06-13T13:40 UTC — superseded by 557차 — backend Open **0** · develop `@5501745` · merge pending 425.)_
+
+_(TSR 555차 2026-06-13T13:22 UTC — superseded by 556차 — frontend Open **0** · develop `@6f6915f` · merge pending 424.)_
+
+<!-- QA-20260613-B71 Fixed @ b47e85c — see Fixed section -->
+<!-- QA-20260613-B70 Fixed @ 21eb0af — TSR 544차 verified -->
 <!-- QA-20260613-B69 Fixed @ 7668459 — see Fixed section -->
+
+_(TSR 552차 2026-06-13T12:53 UTC — backend Open **0** · develop `@aaa16f8`(+1 US-R02/8-12 staff status report API) WT **CLEAN** · HEAD **909/909 PASS** · ★ backend merge **FULLY UNBLOCKED** · frontend Open **1 BLOCK QA-B71** · develop `@a5c2736` WT **DIRTY 2M** · ⚠ frontend merge **BLOCK** · ⚠ **cross-stream merge BLOCK** · merge pending **421**(190 BE + 231 FE).)_
+
+_(TSR 551차 2026-06-13T12:32 UTC — frontend Open **1 BLOCK QA-B71** · develop `@a5c2736` WT **DIRTY 2M** · HEAD **1022/1022 PASS** · WT **1023/1023 PASS** · ⚠ frontend merge **BLOCK** · backend Open **0** · develop `@8bb6583` WT **CLEAN** · ★ backend merge **FULLY UNBLOCKED** · ⚠ **cross-stream merge BLOCK** · merge pending **420**(231 FE + 189 BE).)_
+
+_(TSR 550차 2026-06-13T12:20 UTC — backend Open **0** · develop `@8bb6583`(+1 G9-COG NHIS import gate on cognitive support fee grid BNK-166) WT **CLEAN** · HEAD **902/902 PASS** · ★ backend merge **FULLY UNBLOCKED** · frontend Open **0** · develop `@a5c2736` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **420**(231 FE + 189 BE).)_
+
+_(TSR 549차 2026-06-13T11:47 UTC — frontend Open **0** · develop `@e77b7e4`(+1 G9-COPAY-NAMING copay reduction tier statutory wording) WT **CLEAN** · HEAD **1020/1020 PASS** · ★ frontend merge **FULLY UNBLOCKED** · backend Open **0** · develop `@edd2771` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **418**(230 FE + 188 BE).)_
+
+_(TSR 548차 2026-06-13T11:35 UTC — backend Open **0** · develop `@edd2771`(+1 G9-COG cognitive support grade + bulk NHIS seed apply BNK-166) WT **CLEAN** · HEAD **897/897 PASS** · ★ backend merge **FULLY UNBLOCKED** · frontend Open **0** · develop `@6ef671b` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **417**(188 BE + 229 FE).)_
+
+_(TSR 547차 2026-06-13T11:25 UTC — frontend Open **0** · develop `@6ef671b`(+1 G9-COG cognitive support grade daily rate catalog FE) WT **CLEAN** · HEAD **1017/1017 PASS** · ★ frontend merge **FULLY UNBLOCKED** · backend Open **0** · develop `@2efc557` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **416**(229 FE + 187 BE).)_
+
+_(TSR 546차 2026-06-13T11:15 UTC — backend Open **0** · develop `@2efc557`(+1 G9-COG cognitive support grade daily rate catalog) WT **CLEAN** · HEAD **894/894 PASS** · ★ backend merge **FULLY UNBLOCKED** · frontend Open **0** · develop `@58256c6` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **415**(187 BE + 228 FE).)_
+
+_(TSR 545차 2026-06-13T11:02 UTC — frontend Open **0** · develop `@58256c6`(+1 FAQ21824 billing lifecycle checklist) WT **CLEAN** · HEAD **1015/1015 PASS** · ★ frontend merge **FULLY UNBLOCKED** · 교차 BE `@21eb0af` WT **CLEAN** · Open 0 · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **414**(228 FE + 186 BE).)_
+
+_(TSR 544차 2026-06-13T10:53 UTC — backend Open **0** · develop `@21eb0af` WT **CLEAN** · HEAD **886/886 PASS** · **QA-B70 Fixed @ `21eb0af` 재확인** · ★ backend merge **FULLY UNBLOCKED** · frontend Open **0** · develop `@7668459` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **413**(186 BE + 227 FE).)_
 
 _(TSR 543차 2026-06-13T10:38 UTC — frontend Open **0** · develop `@7668459` WT **CLEAN** · HEAD **1009/1009 PASS** · ★ frontend merge **FULLY UNBLOCKED** · backend Open **1 BLOCK QA-B70** · develop `@6f6094d` WT **DIRTY 2M** · ⚠ **cross-stream merge BLOCK** · merge pending **412**(227 FE + 185 BE).)_
 
@@ -631,6 +721,8 @@ _(TSR 540차 2026-06-13T09:55 UTC — **542차 superseded — develop WT DIRTY 2
 _(TSR 538차 2026-06-13T09:30 UTC — backend Open **0건**. develop `@6f6094d` WT **CLEAN** · HEAD **885/885 PASS**.)_
 
 _(TSR 537차 2026-06-13T09:00 UTC — frontend Open **0건**. develop `@02cbd05` · HEAD **1001/1001 PASS** — superseded by B69.)_
+
+_(planner 124차 2026-06-13T21:00 KST — QA Open **0건** · BNK-164~167 반영 완료 · **Open→Planned 이동 없음** · SEC-D22 Planned 유지 · merge pending **418**(230 FE + 188 BE).)_
 
 _(planner 123차 2026-06-13T18:00 KST — QA Open **0건** · BNK-160~163 반영 완료 · **Open→Planned 이동 없음** · QA-B68 Fixed @ `db21e85` · SEC-D22 Planned 유지.)_
 
@@ -1724,6 +1816,45 @@ _(Planned **0건(active)** — QA-20260613-B62 **Fixed @ `e89175e`**; 이하 항
 
 _(coder가 develop에서 수정 완료 — develop HEAD 검증 통과 항목만)_
 
+### [COD] v2/G21 — VisitService assigned-user check-in guard committed (QA-20260613-B73) — **Fixed @ `c16f4fe`**
+
+- **id**: QA-20260613-B73
+- **severity**: BLOCK
+- **stream**: backend
+- **version**: v2/G21 (assigned caregiver check-in guard · non-supervisory role 확대)
+- **found_at**: 2026-06-13T18:08:13+00:00
+- **fixed_at**: 2026-06-13T18:26:15+00:00 (COD — commit `@c16f4fe`, `fix(v2/G21): enforce assigned-user check-in guard for non-supervisory roles (QA-B73)`)
+- **verified_at**: 2026-06-13T18:26:15+00:00 (COD — `VisitServiceTest` PASS · develop WT **CLEAN**)
+- **summary**: TSR 578차 WT **DIRTY 2M**(`VisitService.java`·`VisitServiceTest.java` G21 check-in guard WIP) → `@c16f4fe` 커밋. `validateAssignedUserForCheckIn`이 `ROLE_CAREGIVER` 한정이 아닌 **모든 비감독 역할**에 배정자 불일치 차단 적용. +1 @Test `checkInShouldRejectUnassignedActorWhenRoleIsNotSupervisory`.
+- **verify**: `mvn test -Dtest=VisitServiceTest` → **PASS** · `git -C src/backend status --porcelain` → **0줄** · WT **CLEAN**
+- **impact 해소**: backend merge gate **FULLY UNBLOCKED** · cross-stream merge **FULLY UNBLOCKED** (FE Open 0 @ `ff173af`) · merge pending **449**
+
+### [COD] v1.2.1/G42 — `pilotPageFlows` G42 grievance approval E2E stabilized (QA-20260613-B72) — **Fixed @ `a7a6004`**
+
+- **id**: QA-20260613-B72
+- **severity**: BLOCK
+- **stream**: frontend
+- **version**: v1.2.1/US-T14 (G42 · FAQ21814 · grievance follow-up checklist·approval queue UI)
+- **found_at**: 2026-06-13T16:02:21+00:00
+- **fixed_at**: 2026-06-13T16:45:00+00:00 (COD — commit `@a7a6004`, `fix(v1.2.1/G42): stabilize grievance approval E2E (QA-B72)`)
+- **verified_at**: 2026-06-13T16:52:24+00:00 (TSR 573차 — `git -C src/frontend status --porcelain` **0줄** · HEAD `@a7a6004` · develop HEAD `npm test` **1067/1067 PASS**)
+- **summary**: ① `@14124d6` duplicate approval button → `@892450a` partial fix(queue-only 가드). ② 잔여 FAIL — approve API 미호출 @3911 → `@a7a6004`에서 `handleApprove`→`approveGrievanceCounselingApi` E2E·`pilotPageFlows` mock 분기 보강으로 **1067/1067 PASS** 회복.
+- **verify**: `npm test -- src/pages/pilotPageFlows.test.jsx -t "creates counseling and completes electronic approval workflow"` → **PASS** · develop HEAD `npm test` → **1067/1067 PASS** (227 files, 207.24s) · WT **CLEAN**
+- **impact 해소**: frontend v1.2.1 merge gate **FULLY UNBLOCKED** · cross-stream merge **FULLY UNBLOCKED** (BE Open 0 @ `39ee679`) · merge pending **443**
+
+### [COD] v1.2.1/G27 — `MonthlyBenefitCapGuardPanel` no-branch guard committed (QA-20260613-B71) — **Fixed @ `b47e85c`**
+
+- **id**: QA-20260613-B71
+- **severity**: BLOCK
+- **stream**: frontend
+- **version**: v1.2.1/US-M04 (G27 · `MonthlyBenefitCapGuardPanel` 활성 지점 없음 가드)
+- **found_at**: 2026-06-13T12:32:00+00:00
+- **fixed_at**: 2026-06-13T12:55:00+00:00 (COD — commit `@b47e85c`, `fix(v1.2.1/G27): skip monthly benefit cap API when no active branch`)
+- **verified_at**: 2026-06-13T12:58:00+00:00 (TSR 553차 — `git -C src/frontend status --porcelain` **0줄** · HEAD `@b47e85c` · `git cat-file -e HEAD:src/components/ui/MonthlyBenefitCapGuardPanel.jsx` **PRESENT** · develop HEAD `npm test` **1023/1023 PASS**)
+- **summary**: TSR 551차 WT **DIRTY 2M**(`MonthlyBenefitCapGuardPanel*` G27 no-branch guard WIP) → `@b47e85c` 커밋으로 WT **CLEAN** 회복. `!branchId` 시 API skip·"활성 지점이 없습니다…" 안내·`useAuthMock` hoisted 테스트 포함.
+- **verify**: `npm test` → **1023/1023 PASS** (222 files, 174.89s) · WT **CLEAN**
+- **impact 해소**: frontend v1.2.1 merge gate **FULLY UNBLOCKED** · cross-stream merge **FULLY UNBLOCKED** (BE Open 0 @ `aaa16f8`) · merge pending **422**
+
 ### [COD] v1.2.1/G-7x-1 — BillingService prior-deposit guard YearMonth comparison (QA-20260613-B70) — **Fixed @ `21eb0af`**
 
 - **id**: QA-20260613-B70
@@ -1732,9 +1863,10 @@ _(coder가 develop에서 수정 완료 — develop HEAD 검증 통과 항목만)
 - **version**: v1.2.1/US-M03 (7-1 선행입금 가드 · `hasUnsettledUnpaidOpeningBalance`)
 - **found_at**: 2026-06-13T10:22:00+00:00
 - **fixed_at**: 2026-06-13T10:48:00+00:00 (COD — commit `@21eb0af`, `fix(v1.2.1/G-7x-1): refine prior-deposit guard YearMonth comparison`)
+- **verified_at**: 2026-06-13T10:53:00+00:00 (TSR 544차 — `git -C src/backend status --porcelain` **0줄** · HEAD `@21eb0af` · `git cat-file -e HEAD:src/main/java/com/ogada/backend/billing/domain/BillingService.java` **PRESENT** · develop HEAD `mvn test` **886/886 PASS**)
 - **summary**: `hasUnsettledUnpaidOpeningBalance`가 전월 문자열(`priorYearMonthText`)과 비교해 도입월=청구월(예: 2026-06) 케이스를 누락 → `YearMonth` 기준으로 `effectiveMonth <= targetMonth` 판정으로 정교화. 회귀 테스트 `getClaimGenerationGuardShouldBlockWhenOpeningBalanceStartsInTargetMonth` 추가.
-- **verify**: `mvn test -Dtest=BillingServiceTest` → **PASS** · develop HEAD `mvn test` → **886/886 PASS** · WT **CLEAN**
-- **impact 해소**: backend v1.2.1 merge gate **FULLY UNBLOCKED** · cross-stream merge BLOCK 원인(BE) 해소
+- **verify**: `mvn test -Dtest=BillingServiceTest` → **PASS** · develop HEAD `mvn test` → **886/886 PASS** (159 suites, ~28s) · WT **CLEAN**
+- **impact 해소**: backend v1.2.1 merge gate **FULLY UNBLOCKED** · cross-stream merge **FULLY UNBLOCKED** (FE QA-B69 Fixed @ `7668459`) · merge pending **413**
 
 ### [COD] v1.2.1/G-7x-1 — `BillingPage` guard banner label test drift (QA-20260613-B69) — **Fixed @ `7668459`**
 
@@ -1746,7 +1878,7 @@ _(coder가 develop에서 수정 완료 — develop HEAD 검증 통과 항목만)
 - **fixed_at**: 2026-06-13T10:28:00+00:00 (COD — commit `@7668459`, `fix(v1.2.1/G-7x-1): align BillingPage guard banner test with updated title`)
 - **summary**: `@338c014` 배너 title `"청구 생성 제한 (7-1 선행입금 가드)"` 변경 후 `BillingPage.test.jsx` assertion 미갱신으로 HEAD **1008/1009 FAIL** → assertion 1줄 수정·커밋으로 **1009/1009 PASS** 회복.
 - **verify**: `npm test -- src/pages/BillingPage.test.jsx` → **PASS** · develop HEAD `npm test` → **1009/1009 PASS** (221 files, 171.40s)
-- **impact 해소**: frontend v1.2.1 merge gate **FULLY UNBLOCKED** · cross-stream merge BLOCK 원인(FE) 해소 · backend QA-B70 잔여
+- **impact 해소**: frontend v1.2.1 merge gate **FULLY UNBLOCKED** · cross-stream merge BLOCK 원인(FE) 해소 · backend QA-B70 **Fixed @ `21eb0af`** (TSR 544차)
 
 ### [COD] v1.2.1/G38 — `CarePlanNotificationPage` test link aria-label mismatch (UXD-92, QA-20260613-B68) — **Fixed @ `db21e85`**
 
