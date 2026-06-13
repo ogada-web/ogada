@@ -1,9 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-12T22:30:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-13T23:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-12 (87차 — **US-R03 직원 lifecycle FAQ21825 + StaffDetailPage + 접근성 재점검** — USER_STORIES 115차 신규 P2 Epic G-Staff-LC(이지케어 FAQ21825 입사~퇴사)가 frontend 0건이던 갭을 client lifecycle(G24/G14)과 대칭 surface로 해소. ① **`staffLifecycleCompliance.js`** — FAQ 21825 4단계(입사·신고·근로·퇴사)·서류 체크리스트·`buildStaffLifecycleSteps`. ② **`StaffLifecyclePanel`** — `LifecycleWorkflowPanel`+단계별 `region` 체크리스트·보수교육 `/staff/training` 링크(US-S02 후속)·입사/퇴사 `role=alert` 경고. ③ **`StaffDetailPage`** `/staff/:id` — 기본정보·입사~퇴사 `Tabs`·`StaffContextNav`·breadcrumb. ④ **`StaffPage`** — 이름·상세 링크 `aria-label`에 직원명 포함(WCAG 2.4.6). ⑤ **`.ds-staff-lifecycle-panel*`** CSS·`forced-colors`는 client 패널 선택자 공유. 회귀 +7. `npm test`·build·audit 검증.)
+> **최종 갱신**: 2026-06-13 (90차 — **US-L03 CMS 자동이체 해지 모달 파괴적 액션 정합 + 모달 내 오류 노출 + 미정의 클래스 제거** — 119차 coder 신규 구현 CMS 해지 UI(`9a6fdb6`)가 마지막 UXD 접근성 패스(89차) 이후 추가돼 미점검이던 갭 3종 해소. ① **파괴적 확인 버튼 정합** — `CmsPage` 해지 확인 모달의 「해지 확인」버튼이 `variant="primary"`였으나, 코드베이스 파괴적 확인 표준(`TransportUnconfirmModal`「확정 취소」)과 정합되게 **`variant="danger"`**로 전환(색+의미 일치, 비가역 동작 시각 신호). ② **모달 내 오류 노출(WCAG 4.1.3·focus 맥락)** — 해지 실패 오류가 페이지 상단(`error`)에 렌더돼 **열린 모달 뒤**에 표시되던 갭을, `cancelError` 분리 state로 **모달 본문 안 `Alert tone=danger`**에 노출(focus가 갇힌 dialog 안에서 즉시 인지·assertive 안내) — 모달은 열린 채 유지, 닫기/취소·해지 진행 중에는 닫힘 차단. ③ **미정의 클래스 제거(FE-16·§1 단일 원천)** — 해지 안내 문구가 CSS에 **정의되지 않은** `.ds-help-text`(소비자 `CmsPage` 단 1곳)로 스타일 토큰을 못 받던 80차 `.ds-text-input` 패턴 회귀를, 상단 문구는 `.ds-modal-intro`·제약 안내는 **`Alert tone=warning`**(색+텍스트 병행, `TransportUnconfirmModal` 정합)으로 전환해 정의 클래스만 사용. 순수 정합·접근성 리팩터로 성공 동작 불변. 회귀 +1(`CmsPage.test.jsx` — 해지 실패 시 dialog 내 오류·모달 잔존). `npm test` **901/203 PASS**·build PASS(audit: esbuild GHSA-gv7w-rqvm-qjhr 신규 권고 — vite 메이저 필요·범위 외).)
+> **이전 갱신**: 2026-06-13 (89차 — **US-R02 건강검진·US-S02 보수교육 화면 접근성 재점검 + 첨부 목록 CSS 공유 유틸 승격** — coder 신규 구현 `/staff/health-checkups`(US-R02 8-10)·`/staff/training` 이수증 관리(US-S02 8-7-1)를 접근성 패스. ① **`.ds-attachment-list*`** — `StaffRefresherTrainingPage`·`ClientBenefitContractAttachmentPanel`이 모듈 경계를 넘어 차용하던 grade-history 전용 `.ds-grade-history-attachments__{list,item,meta,filename,detail,preview-image}`를 도메인 중립 공유 유틸로 승격(FE-16·§1 단일 원천), 소비자 3종 전환·`forced-colors` 셀렉터 이동·grade-history 컨테이너(`__summary/__count/__body/__empty/__upload`)만 잔존. ② **날짜 의미론 회귀 해소** — 두 페이지 목록·이력 날짜(검진일·다음 기준·입사일)를 88차 `StaffDetailPage` 패턴과 정합되게 `<time dateTime>` 래핑. ③ 접근성 확인 — StatCard `role="group"`·표 `caption`·행 액션 직원명/파일명 `aria-label`·`fieldset/legend`·`aria-busy`·이수증 PDF 새 탭/이미지 Modal `alt`. 순수 정합 리팩터로 동작 불변. §9 유틸 표·§15 신규 절 추가. `npm test`·build·audit 검증.)
+> **이전 갱신**: 2026-06-13 (88차 — **US-R03 직원 lifecycle 목록·상세 상태 Badge + 근로계약서 서명일 DateInput + 접근성 재점검** — USER_STORIES 116차 US-R03 core partial 인수 조건 중 목록·상세에서 lifecycle 상태를 한눈에 식별하지 못하던 갭 해소. ① **`STAFF_LIFECYCLE_STATUS`**(`Badge.jsx`) — `ONBOARDING`/`ACTIVE`/`OFFBOARDING`/`TERMINATED` 4상태 tone+한국어 라벨(색+텍스트 병행). ② **`StaffPage`** — 「입사~퇴사」열 `StatusBadge`·`resolveStaffLifecycleStatus`·상세 링크 `aria-label` 유지(WCAG 2.4.6). ③ **`StaffDetailPage`** 기본정보 탭 — lifecycle `StatusBadge`·입사일·퇴사일 `<time dateTime>`. ④ **`StaffLifecyclePanel`** — 근로계약서 서명일 `DateInput`·제출 `aria-busy`. ⑤ **`staffLifecycleCompliance.resolveStaffLifecycleStatus`** — 목록 배지 단일 원천. 회귀 +4. `npm test`·build·audit 검증.)
+> **이전 갱신**: 2026-06-12 (87차 — **US-R03 직원 lifecycle FAQ21825 + StaffDetailPage + 접근성 재점검** — USER_STORIES 115차 신규 P2 Epic G-Staff-LC(이지케어 FAQ21825 입사~퇴사)가 frontend 0건이던 갭을 client lifecycle(G24/G14)과 대칭 surface로 해소. ① **`staffLifecycleCompliance.js`** — FAQ 21825 4단계(입사·신고·근로·퇴사)·서류 체크리스트·`buildStaffLifecycleSteps`. ② **`StaffLifecyclePanel`** — `LifecycleWorkflowPanel`+단계별 `region` 체크리스트·보수교육 `/staff/training` 링크(US-S02 후속)·입사/퇴사 `role=alert` 경고. ③ **`StaffDetailPage`** `/staff/:id` — 기본정보·입사~퇴사 `Tabs`·`StaffContextNav`·breadcrumb. ④ **`StaffPage`** — 이름·상세 링크 `aria-label`에 직원명 포함(WCAG 2.4.6). ⑤ **`.ds-staff-lifecycle-panel*`** CSS·`forced-colors`는 client 패널 선택자 공유. 회귀 +7. `npm test`·build·audit 검증.)
 > **이전 갱신**: 2026-06-12 (86차 — **US-T09·US-T10 ClientDetail 탭 + US-S01 StaffContextNav + G34 행 액션 접근성** — USER_STORIES 111~112차 P2 갭(정기 욕구사정 FAQ21800·급여계약 lifecycle FAQ21805)이 `ClientDetailPage` 탭 surface 없이 `LifecycleWorkflowPanel`만 존재하던 잔여를 해소. ① **`ClientNeedsAssessmentPanel`** — 기초평가 탭: 8항목 FAQ21800 필드 안내·이전 기록 비교 region·`buildNeedsAssessmentLifecycleSteps`. ② **`ClientBenefitContractPanel`** — 급여계약 탭: 등급이력과 분리·계약 타임라인·`buildBenefitContractLifecycleSteps`. ③ **`StaffContextNav`** — `/staff`↔`/staff/lead-caregiver-log` cross-page `nav`·`aria-current`(US-S01·G34). ④ **`LeadCaregiverWorkLogPage`** — 행별 수정·전자서명 `aria-label`에 이용자명 포함(WCAG 2.4.6). ⑤ **`navConfig`** — SideNav 기록 그룹에 선임 업무수행일지·`EXACT_MATCH_PATHS` 등록. ⑥ **`.ds-client-lifecycle-panel*`** CSS·`forced-colors` 경계선. 회귀 +7. `npm test`·build·audit 검증.)
 > **이전 갱신**: 2026-06-12 (85차 — **G34·US-T09·US-T10 lifecycle 공통 UX 보강** — USER_STORIES 111차 신규 갭인 선임 요양보호사 업무수행일지(G34), 정기 욕구사정(FAQ21800), 수급자 급여계약 lifecycle(FAQ21805)은 모두 연/비정기 업무·기한·증빙·서명 상태를 동시에 보여줘야 하므로, API 확정 전 공통 presentational 컴포넌트 **`LifecycleWorkflowPanel`**을 신설. ① 단계별 상태 `LIFECYCLE_STATUS`(`DRAFT/SCHEDULED/IN_PROGRESS/DUE_SOON/OVERDUE/COMPLETED/SIGNED/RENEWED/TERMINATED`)를 `StatusBadge` 텍스트+색상 라벨로 표준화. ② 각 단계는 기한·완료일·담당·서명 필요/완료·증빙 목록을 텍스트로 노출하고, `OVERDUE`는 좌측 보더+danger soft+「기한 초과」Badge로 색상 의존을 피함. ③ `.ds-lifecycle*` CSS와 `forced-colors` 경계선·outline 보강. ④ barrel export + 회귀 3건(`LifecycleWorkflowPanel.test.jsx`). coder 메모: 실제 `/staff/lead-caregiver-log`, `ClientDetailPage` 기초평가/계약 탭은 이 패널을 붙이고 API·권한만 연결.)
 > **이전 갱신**: 2026-06-12 (84차 — **G11·G15 폼 날짜 입력 `DateInput` 표준화 회귀 해소(FE-16·§1 단일 원천)** — 64차에서 확립한 「Must·도메인 폼 `type=date` raw input **0건** — `DateInput`/`MonthInput` 컴포넌트만 허용」 규율이, 이후 신설된 두 패널에서 회귀해 적용일 필드가 raw `<TextInput type="date">`로 남아 공유 날짜 입력 토큰(`.ds-date-input` 폭 캡)을 적용받지 못하던 갭을 해소(다른 날짜 폼 — `ClientFormPage` 생년월일·`PaymentRecordModal` 입금일·`VisitScheduleForm` 방문일 등과 시각·동작 불일치). ① **`FeeSurchargeGuidePanel`(G11 가산율 미리보기)** 「제공일」 필드를 `DateInput`으로 전환(시각/시간 필드는 `type=time`로 유지). ② **`TransportCompliancePanel`(G15 이동서비스 계약)** 「수급자(보호자) 서명일」·「기관 담당자 서명일」 2개 필드를 `DateInput`으로 전환 — `max={todayIsoDate()}` 미래 일자 차단·`disabled`·`Field` `error`(`aria-invalid`) 바인딩 보존. ③ raw `type=date` 잔존 컴포넌트 **0건** 재확인(스캔: `DateInput`/`MonthInput` 내부만 잔존). 순수 표준화 리팩터로 동작 불변. 회귀 +2(`FeeSurchargeGuidePanel.test.jsx`·`TransportCompliancePanel.test.jsx` — `.ds-date-input` 클래스·`type=date` 검증). `npm test` **772/176 PASS**·build PASS·audit 0.)
@@ -178,6 +181,10 @@
 | 알림 상태 (US-J03) | `SENT` | success | 발송완료 |
 | | `FAILED` | danger | 실패 |
 | | `PENDING` | neutral | 대기 |
+| 직원 lifecycle (US-R03) | `ONBOARDING` | info | 입사 진행 |
+| | `ACTIVE` | success | 재직 |
+| | `OFFBOARDING` | warning | 퇴사 진행 |
+| | `TERMINATED` | neutral | 퇴사 완료 |
 | lifecycle 상태 (G34·US-T09·US-T10) | `DRAFT` | neutral | 작성중 |
 | | `SCHEDULED` / `IN_PROGRESS` | info | 예정 / 진행중 |
 | | `DUE_SOON` | warning | 기한 임박 |
@@ -196,7 +203,7 @@
 | 차량 상태 (G16) | `active` (isActive=true) | success | 운행 |
 | | `inactive` (isActive=false) | neutral | 비활성 |
 
-> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`LIFECYCLE_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의.
+> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`STAFF_LIFECYCLE_STATUS`**(US-R03)·**`LIFECYCLE_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의.
 
 ### 2-4. 다크 모드 토큰 (11차, 운영자 야간 근무) [UXD]
 
@@ -1166,8 +1173,12 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `.ds-transport-compliance__rules`/`__progress`/`__template` | 이동서비스 수칙 체크리스트·진행·서식 (77차, G15) |
 | `.ds-medical-expense-panel`/`__summary`/`__filters`/`__total` | 의료비공제 납입 집계 패널 (77차, US-L04 G26) |
 | `.ds-billing-report-print-zone` | 청구·의료비공제 인쇄 영역 격리 스코프 (77차, US-L04·US-M03) |
-| `.ds-functional-recovery-compliance` / `.ds-stat-grid` | 기능회복훈련 지표25·26·27 준수 현황 StatCard 그리드 (78차, US-T06 G17) |
-| `.ds-case-management-compliance` / `.ds-stat-grid` | 사례관리 회의록 지표43 준수 현황 StatCard 그리드 (78차, US-T07 G32) |
+| `.ds-stat-grid` | **전역** 준수 현황·요약 StatCard 그리드 (`auto-fit minmax(200px,1fr)`). 80차에 스코프별 중복 정의 통합 — `role="group"` 카드 그리드 표준 |
+| `.ds-functional-recovery-compliance` | 기능회복훈련 지표25·26·27 준수 섹션 여백 (78차, US-T06 G17) |
+| `.ds-case-management-compliance` | 사례관리 회의록 지표43 준수 섹션 여백 (78차, US-T07 G32) |
+| `.ds-care-plan-notification-compliance` | 급여계획 통보 G38 준수 섹션 여백 (80차) |
+| `.ds-attachment-list` / `__item`·`__meta`·`__filename`·`__detail`·`__preview-image` | **공유** 첨부 파일 목록 — 업로드 파일명·형식·크기·미리보기 행(`forced-colors` 경계선). 89차에 `.ds-grade-history-attachments__*`(grade-history 전용 네이밍)에서 분리·승격 — `GradeHistoryAttachmentPanel`(US-M01-g)·`StaffRefresherTrainingPage`(US-S02 이수증)·`ClientBenefitContractAttachmentPanel`(US-T10) 공통 사용 |
+| `.ds-grade-history-attachments` / `__summary`·`__count`·`__body`·`__empty`·`__upload` | 등급 이력 첨부 `<details>` 컨테이너·요약·업로드 (82차, US-M01-g G37 — 목록 행은 공유 `.ds-attachment-list*`) |
 
 ---
 
@@ -1310,5 +1321,116 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | 테스트 | `dashboardSummary.test.js` — 30일 반영 갭 카운트 로직 커버 |
 
 ---
+
+## 14. `.ds-stat-grid` 전역 통합 & 준수 카드 고대비 (80차) [UXD]
+
+> **80차 UXD (2026-06-12)** — 준수 현황 StatCard 그리드 회귀 수정 + 접근성 재점검.
+
+### 14-1. 배경 (회귀)
+
+`.ds-stat-grid`(준수 현황 `role="group"` StatCard 그리드)는 78·79차에 **컴포넌트/페이지별로 스코프된 중복 규칙**으로만 정의되어 있었다(`.ds-functional-recovery-compliance .ds-stat-grid`, `.ds-case-management-compliance .ds-stat-grid`, `.ds-provision-result-compliance .ds-stat-grid`, `.ds-billing-nhis-comparison .ds-stat-grid`).
+
+그 결과 **래퍼 없이 `.ds-stat-grid` 만 사용**하던 4개 화면의 StatCard가 그리드 레이아웃을 적용받지 못하고 세로로 쌓였다.
+
+| 화면/컴포넌트 | 위치 | 래퍼 |
+|--------------|------|------|
+| `StaffRefresherTrainingPage` (보수교육 8-7-1) | `/staff/training` | 없음 → 미적용 |
+| `LeadCaregiverWorkLogPage` (선임 업무수행일지 G34) | `/staff/lead-caregiver-log` | 없음 → 미적용 |
+| `CarePlanNotificationPage` (급여계획 통보 G38) | `/programs/care-plan-notification` | `.ds-care-plan-notification-compliance`(규칙 부재) → 미적용 |
+| `CareProvisionRecordPanel` (재가급여 기록 월간 요약) | `ClientDetailPage` | 없음 → 미적용 |
+
+### 14-2. 조치
+
+- `.ds-stat-grid` 를 **단일 전역 유틸리티**(`display:grid; auto-fit minmax(200px,1fr); gap var(--space-3)`)로 승격 — 위 4개 화면 그리드 회귀 즉시 해소.
+- 동일했던 스코프 규칙 3종(기능회복·사례관리·급여제공결과) 제거, 컨테이너 클래스는 **섹션 여백**(`margin-block-end`)만 유지.
+- `.ds-billing-nhis-comparison .ds-stat-grid` 의 `minmax(160px,1fr)` 만 **의도적 override**로 보존.
+- `.ds-care-plan-notification-compliance` 섹션 여백 규칙 추가.
+
+### 14-3. 접근성 (WCAG 1.4.11)
+
+- `forced-colors: active`에서 `.ds-provision-result-compliance .ds-stat-grid .ds-stat` 에만 있던 고대비 윤곽선을 **`.ds-stat-grid .ds-stat` 전역**으로 확대 — 모든 준수 현황 카드가 고대비 모드에서 경계선으로 구분된다(색만으로 의미 전달 금지).
+- 변경은 **CSS 전용** — 페이지/컴포넌트 JSX·`role="group"`·`aria-label` 구조 변경 없음. 빌드(897 modules)·`npm test`(866/195) PASS.
+
+---
+
+## 15. 직원 건강검진·보수교육 화면 + 첨부 목록 공유 유틸 (US-R02 · US-S02, 89차) [UXD]
+
+> **89차 UXD (2026-06-13)** — coder가 새로 구현한 `/staff/health-checkups`(US-R02 8-10)·`/staff/training` 이수증 관리(US-S02 8-7-1)를 접근성 패스하고, 세 모듈에서 중복되던 첨부 목록 CSS를 단일 유틸리티로 승격.
+
+### 15-1. 첨부 목록 CSS 공유 유틸 승격 (FE-16·§1 단일 원천)
+
+- **배경**: `StaffRefresherTrainingPage`(이수증)·`ClientBenefitContractAttachmentPanel`(급여계약서)가 등급 이력 전용으로 명명된 `.ds-grade-history-attachments__list/__item/__meta/__filename/__detail/__preview-image`를 **모듈 경계를 넘어 차용**하고 있었다(82차 grade-history 네이밍에 결합).
+- **조치**: 행 레이아웃(목록·항목·메타·파일명·상세·미리보기 이미지)을 도메인 중립 **`.ds-attachment-list*`** 로 승격. grade-history 전용(`__summary`·`__count`·`__body`·`__empty`·`__upload` = `<details>` 컨테이너)만 `.ds-grade-history-attachments*`에 잔존. `forced-colors` 경계선 셀렉터도 `.ds-attachment-list__item`으로 이동.
+- **소비자 3종** 모두 공유 클래스로 전환 — `GradeHistoryAttachmentPanel`(US-M01-g)·`StaffRefresherTrainingPage`(US-S02)·`ClientBenefitContractAttachmentPanel`(US-T10). 순수 스타일 정합 리팩터로 시각·동작 불변(클래스 단언 테스트 0건 확인).
+
+### 15-2. 접근성 재점검 — `StaffHealthCheckupsPage`·`StaffRefresherTrainingPage`
+
+| 점검 | 결과 |
+|------|------|
+| 준수 현황 StatCard | `section[aria-labelledby]` + `.ds-stat-grid role="group"` — 색만 의존 금지(라벨 텍스트 상주), 완료/필요 tone success/warning ✅ |
+| 표 접근성 이름 | `Table caption captionVisuallyHidden`(`scope="col"`) ✅ |
+| 행 액션 라벨 | 이력·검진 기록·이수증·삭제·미리보기 버튼에 **직원명/파일명 포함 `aria-label`**(WCAG 2.4.6·4.1.2) ✅ |
+| 폼 필드 오류 | `Field error`(`aria-invalid`+`role="alert"`)·검진 영역 `fieldset/legend`·제출 `aria-busy` ✅ |
+| 날짜 의미론 | **회귀 해소** — 목록·이력 날짜(최근 검진일·다음 기준·입사일)를 88차 `StaffDetailPage` 패턴과 정합되도록 `<time dateTime>`로 래핑(머신 판독 가능, 값 없으면 `-`) |
+| 이수증 미리보기 | PDF는 새 탭(`noopener`), PNG/JPEG는 `Modal`+`<img alt>`·미지원 형식 `role="status"` 안내 ✅ |
+
+### 15-3. coder 전달 메모
+
+- 향후 신규 첨부 업로드 UI는 `.ds-grade-history-attachments*`를 재사용하지 말고 **`.ds-attachment-list*`** 만 사용(목록 행) — `<details>` 토글이 필요하면 grade-history 컨테이너 패턴을 참고하되 별도 컨테이너 클래스를 두기.
+- 직원 모듈 신규 화면은 `StaffContextNav`(직원/보수교육/건강검진/선임 업무수행일지) 상단 연동 유지.
+
+---
+
+## 16. G40 신규입소 위험도평가 패널 (US-T11, 90차) [UXD]
+
+> **90차 UXD (2026-06-13)** — silverangel 지표21 급여개시 전 3종 위험도 스크리닝(낙상·욕창·인지기능) 패널 신규 구현.
+
+### 16-1. 신규 컴포넌트 — `ClientRiskAssessmentPanel`
+
+| 항목 | 상세 |
+|------|------|
+| 파일 | `src/frontend/src/components/ui/ClientRiskAssessmentPanel.jsx` |
+| 위치 | `ClientDetailPage` — "위험도평가" 탭 |
+| 연결 API | `fetchClientRiskAssessmentsApi` · `upsertClientRiskAssessmentApi` · `fetchAdmissionRiskAssessmentComplianceApi` |
+| 상태 | `saving` → 저장 중 (`aria-busy`) / `error` → `Alert(tone=danger)` / 미완료 → `Alert(tone=warning)` 배너 |
+| 준수 StatCard | `role="group"` `.ds-stat-grid` — tone success(완료) / warning(미완료) |
+| 입력 폼 | `Field` render-prop — 평가일(`DateInput`) + 위험도 등급(`RiskLevelSelect`) + 메모(`Textarea`) |
+| 평가 등급 | `RISK_LEVEL_STATUS` (Badge) — LOW success/MODERATE warning/HIGH danger |
+
+### 16-2. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|----------|
+| `Badge.jsx` | `RISK_LEVEL_STATUS` 상수 추가 (LOW/MODERATE/HIGH → tone·label) |
+| `clientLifecycleCompliance.js` | `RISK_ASSESSMENT_TYPES`, `RISK_ASSESSMENT_TYPE_LABELS`, `buildRiskAssessmentLifecycleSteps` 추가 |
+| `services.js` | `fetchClientRiskAssessmentsApi`, `upsertClientRiskAssessmentApi`, `fetchAdmissionRiskAssessmentComplianceApi` 추가 |
+| `components/ui/index.js` | `ClientRiskAssessmentPanel` export 추가 |
+| `ClientDetailPage.jsx` | "위험도평가" 탭 + 상태(`riskAssessments`, `riskAssessmentAdmissionComplete`) + `useEffect` 추가 |
+| `styles/components.css` | `.ds-risk-assessment-panel*` 스코핑 CSS + `forced-colors` 추가 |
+
+### 16-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 섹션 이름 | `<section aria-labelledby="risk-assessment-heading">` ✅ |
+| 평가 유형 패널 | `<section aria-labelledby="ra-{type}-heading">` — 각 유형별 독립 랜드마크 ✅ |
+| 폼 이름 | `<form aria-label="{typeLabel} 위험도평가 등록">` — `getByRole("form", { name })` 식별 가능 ✅ |
+| 필드 오류 | `Field error`(`aria-invalid` + `role="alert"`) — 평가일·위험도 등급 필수 검증 ✅ |
+| 저장 중 | 저장 버튼 `aria-busy="true"` — 스크린리더 "저장 중" 안내 ✅ |
+| 색상만 의존 금지 | 등급 Badge — 라벨 텍스트(낮음/중간/높음) + tone 색상 병행 ✅ |
+| `forced-colors` | `.ds-risk-assessment-panel__type-section` 고대비 윤곽선 ✅ |
+| 기록 미존재 | "기록 없음" 텍스트 표시(색만으로 상태 전달하지 않음) ✅ |
+
+### 16-4. `RiskLevelSelect` 내부 컴포넌트
+
+`Select` 컴포넌트는 `children` 기반 `<option>` 렌더링만 지원한다. `options` 배열 prop 패턴은 `Select`에 없으므로, `RiskLevelSelect` 래퍼를 `ClientRiskAssessmentPanel.jsx` 내부에 두어 `<option>` children으로 변환한다. 향후 동일 패턴 재사용 시 이 컴포넌트를 별도 파일로 분리 가능.
+
+### 16-5. coder 전달 메모
+
+- 백엔드 API `/api/v1/clients/{id}/risk-assessments` (GET·PUT) · `/api/v1/clients/admission-risk-assessments/compliance` (GET) 구현 필요 (P2).
+- PUT 페이로드: `{ assessmentType: "FALL_RISK"|"PRESSURE_ULCER"|"COGNITIVE_FUNCTION", assessedOn: "YYYY-MM-DD", riskLevel: "LOW"|"MODERATE"|"HIGH", notes?: string }`.
+- GET 응답: 배열 `[{ assessmentType, assessedOn, riskLevel, notes }]` — `normalizeList` 처리됨.
+- compliance GET 응답: `{ allCompleted: boolean, completedCount: number, totalCount: number }`.
+- `buildRiskAssessmentLifecycleSteps` 는 API 연동 전 presentational scaffolding — API 완성 시 실제 완료 날짜로 `completedAt` 갱신 가능.
 
 *이 문서는 ux_designer 에이전트(UXD)가 관리합니다. 토큰·컴포넌트 변경 시 본 문서와 `memory/decisions.md`를 동기화하세요.*
