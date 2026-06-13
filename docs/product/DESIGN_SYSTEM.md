@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T05:10:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T22:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-14 (97차 — **US-J03 G/BNK-177 알림 채널 readiness 패널 — 미정의 클래스 제거 + 표 가시 헤딩 보강** — 96차 이후 coder 신규 3커밋(`6b1258c`·`d695923` `NotificationChannelReadinessPanel`(BNK-177)·`443efca` refresher compliance API·G34-QUAL gate) 미점검 갭 해소. 신규 패널이 `DashboardPage`·`OrganizationSettingsPage` 두 곳에 `Card`(h2) 하위로 임베드되나 두 가지 결함을 가지고 있었다. ① **미정의 클래스(FE-16·§1 단일 원천)** — 패널 컨테이너/제공자 요약이 CSS에 **정의되지 않은** `.ds-kv-list`·`.ds-kv-list__row`(소비자 이 패널 단 1곳)를 사용해 공유 토큰(grid 정렬·`dt`/`dd` 시맨틱 색·간격)을 못 받던 80차 `.ds-text-input`·90차 `.ds-help-text` 패턴 회귀를, 코드베이스 표준 정의 클래스 **`.ds-dl-grid`**(BillingDetailPage·ClientDetailPage 등 광범위 사용)로 전환하고 `__row` div 래퍼를 제거(grid 직계 `dt`/`dd`). ② **시각적으로 구분되지 않는 3연속 표(WCAG 1.3.1·2.4.6)** — `Solapi 연동 설정`·`이메일(SMTP) 연동 설정`·`필수 알림톡 템플릿` 3개 `Table`이 모두 `captionVisuallyHidden`(SR 전용 caption)에 **동일한 「항목 \| 상태」 컬럼**이라, 가시 헤딩이 없어 sighted 사용자가 어느 표가 무엇인지 식별할 수 없고(readiness Alert의 「아래 Solapi·템플릿 항목 확인」 지시 대상 모호), 44차/89차에서 확립한 「가시 `h3` + `captionVisuallyHidden`」 표 라벨 패턴과 불일치했다. 각 표 앞에 가시 `h3.ds-notification-channel-panel__subheading`(h1 페이지→h2 Card→h3 섹션 계층)을 추가해 시각·SR 모두 표를 식별. ③ **CSS 신규** — `.ds-notification-channel-panel__note`(정의 추가)·`.ds-notification-channel-panel__subheading`(secondary 색·md 굵게·`ds-section-gap` 상단 여백 정합). 순수 정합·접근성 리팩터로 동작·데이터 불변. 회귀 +1(`NotificationChannelReadinessPanel.test.jsx` — 3개 가시 `h3` level-3 헤딩 검증). **coder 인계**: `pilotPageFlows.test.jsx` US-S02 refresher(8-7-1) 1건이 **96차 이전부터 실패**(stash 검증) — `/staff/training` 초기 로드가 `443efca`에서 `fetchStaffRefresherTrainingComplianceApi`로 재배선되며 테스트가 기대하는 `/api/v1/users` 초기 fetch가 더는 호출되지 않음(`updateUserApi`는 「이수 완료」클릭 시에만 호출). API 와이어링·해당 테스트는 coder 영역이라 미수정. `npm test` 1081/228 PASS(1 pre-existing 실패)·build PASS.)
+> **최종 갱신**: 2026-06-14 (98차 — **US-S04 G41 기관 교육일지 화면 신규 와이어 (`StaffTrainingLogPage`)** — G41 `FE wire ❌` 갭 해소. §19 신규 절·CSS 7개 클래스·API 4개·라우트 등록.)
+> **이전 갱신**: 2026-06-14 (97차 — **US-J03 G/BNK-177 알림 채널 readiness 패널 — 미정의 클래스 제거 + 표 가시 헤딩 보강** — 96차 이후 coder 신규 3커밋(`6b1258c`·`d695923` `NotificationChannelReadinessPanel`(BNK-177)·`443efca` refresher compliance API·G34-QUAL gate) 미점검 갭 해소. 신규 패널이 `DashboardPage`·`OrganizationSettingsPage` 두 곳에 `Card`(h2) 하위로 임베드되나 두 가지 결함을 가지고 있었다. ① **미정의 클래스(FE-16·§1 단일 원천)** — 패널 컨테이너/제공자 요약이 CSS에 **정의되지 않은** `.ds-kv-list`·`.ds-kv-list__row`(소비자 이 패널 단 1곳)를 사용해 공유 토큰(grid 정렬·`dt`/`dd` 시맨틱 색·간격)을 못 받던 80차 `.ds-text-input`·90차 `.ds-help-text` 패턴 회귀를, 코드베이스 표준 정의 클래스 **`.ds-dl-grid`**(BillingDetailPage·ClientDetailPage 등 광범위 사용)로 전환하고 `__row` div 래퍼를 제거(grid 직계 `dt`/`dd`). ② **시각적으로 구분되지 않는 3연속 표(WCAG 1.3.1·2.4.6)** — `Solapi 연동 설정`·`이메일(SMTP) 연동 설정`·`필수 알림톡 템플릿` 3개 `Table`이 모두 `captionVisuallyHidden`(SR 전용 caption)에 **동일한 「항목 \| 상태」 컬럼**이라, 가시 헤딩이 없어 sighted 사용자가 어느 표가 무엇인지 식별할 수 없고(readiness Alert의 「아래 Solapi·템플릿 항목 확인」 지시 대상 모호), 44차/89차에서 확립한 「가시 `h3` + `captionVisuallyHidden`」 표 라벨 패턴과 불일치했다. 각 표 앞에 가시 `h3.ds-notification-channel-panel__subheading`(h1 페이지→h2 Card→h3 섹션 계층)을 추가해 시각·SR 모두 표를 식별. ③ **CSS 신규** — `.ds-notification-channel-panel__note`(정의 추가)·`.ds-notification-channel-panel__subheading`(secondary 색·md 굵게·`ds-section-gap` 상단 여백 정합). 순수 정합·접근성 리팩터로 동작·데이터 불변. 회귀 +1(`NotificationChannelReadinessPanel.test.jsx` — 3개 가시 `h3` level-3 헤딩 검증). **coder 인계**: `pilotPageFlows.test.jsx` US-S02 refresher(8-7-1) 1건이 **96차 이전부터 실패**(stash 검증) — `/staff/training` 초기 로드가 `443efca`에서 `fetchStaffRefresherTrainingComplianceApi`로 재배선되며 테스트가 기대하는 `/api/v1/users` 초기 fetch가 더는 호출되지 않음(`updateUserApi`는 「이수 완료」클릭 시에만 호출). API 와이어링·해당 테스트는 coder 영역이라 미수정. `npm test` 1081/228 PASS(1 pre-existing 실패)·build PASS.)
 > **이전 갱신**: 2026-06-14 (96차 — **US-T14 G42 사후관리 모달·결재 대기함 접근성 + 8-12 사진게시 forced-colors** — 95차 이후 coder 신규 4커밋(`14124d6`~`a7a6004`: G42 `GrievanceFollowUpModal`·결재 대기함·사후관리 checklist·`StaffStatusReportPage` HR 사진게시) 미점검 갭 해소. ① **`GrievanceFollowUpModal`** — 필수값 검증을 폼 상단 `Alert`에서 **`Field error`+`aria-invalid`**(WCAG 3.3.1·`IncidentRecordForm` 패턴)로 전환·입력 시 오류 자동 해제·API 실패 `submitError`를 **모달 본문 `Alert`**에 노출(열린 dialog 뒤 페이지 오류 노출 방지, UXD-90 `CmsPage` 정합)·제출 중 overlay/Escape 닫기 차단. ② **`GrievanceCounselingPage`** — follow-up API 실패 시 페이지 `error` state 대신 모달에 위임. ③ **`ComplaintConsultationPanel`** — StatCard 요약 `role="group"`·사후관리 완료 Badge에 sr-only 「사후관리 완료」접두(색+텍스트)·`.ds-complaint-consultation-panel__queue` 경계선·`forced-colors`. ④ **`StaffStatusReportPage` 사진게시** — 사진 없음 placeholder sr-only 「{이름} 직원 사진 없음」·photo card `forced-colors` 경계선. ⑤ barrel `GrievanceFollowUpModal` export. 회귀 +3. `npm test`·build 검증.)
 > **이전 갱신**: 2026-06-13 (95차 — **US-T15 G30 모니터링 자가진단 접근성 + US-R02 8-12 출력물 busy 상태** — 94차 이후 coder 신규 4커밋(`6f6915f`~`07956f5`: G30 MonitoringSelfDiagnosisPage·FAQ21836 basis fallback·8-12 export 7종·referenceDate filter) 미점검 갭 해소. ① **`MonitoringSelfDiagnosisPage`(G30)** — 자가진단·유선상담 `Table` `captionVisuallyHidden`(WCAG 1.3.1)·행별 「수정」버튼 `${itemCode} ${inspectionDirection}` 컨텍스트 `aria-label`(WCAG 2.4.6·91차 ClientRiskAssessmentPanel 패턴)·양 폼 `aria-label`·제출 `aria-busy`·연도 필터 `.ds-input--year`(FE-16)·유선상담 일자 `<time dateTime>`·오류 `role=alert`. ② **`.ds-monitoring-compliance`** — G30 StatCard 섹션 margin·`forced-colors` 경계선. ③ **`StaffStatusReportPage` 8-12 출력** — 기준일 「조회」·출력물 7종 버튼 `aria-busy`(export/loading 진행 SR 안내). 순수 접근성·정합 리팩터로 시각·동작 불변. 회귀 +3(`MonitoringSelfDiagnosisPage.test.jsx` 2·`StaffStatusReportPage.test.jsx` 1). `npm test`·build 검증.)
 > **이전 갱신**: 2026-06-13 (94차 — **StaffStatusReportPage lifecycle 헤딩 prop 회귀 + CopayTypeSelect 안내문 `aria-describedby` 연결** — 93차 이후 coder 신규 5커밋(`02cbd05`~`e77b7e4`: G-7x-1 선행입금 가드·FAQ21824 lifecycle·G9-COG 인지지원등급·G9-COPAY-NAMING) 미점검 갭 해소. ① **`StaffStatusReportPage` 헤딩 회귀(WCAG 1.3.1·2.4.6)** — 직원현황 lifecycle 패널에 `heading="직원현황 lifecycle (8-12)"`를 전달했으나 `LifecycleWorkflowPanel`은 `title` prop만 받아 **무시**돼, 패널이 기본 제목 「업무 lifecycle」로 렌더되고 `aria-labelledby`도 그 일반 제목을 가리키던 결함을 `title`로 정정(의도한 8-12 컨텍스트 헤딩 복원). ② **`CopayTypeSelect` 안내문 연결(WCAG 1.3.1)** — 선택 시 노출되는 본인부담률 안내(「100분의 40 감경 · 본인부담률 9% …」)가 `Field` 밖 분리된 `<p className="ds-field__help">` 자식으로 렌더돼 컨트롤과 `aria-describedby`로 **연결되지 않던** 갭을, `DurationBandSelect` 패턴대로 `Field`의 `help` prop으로 전달해 select↔안내문을 연결(스크린리더가 선택 시 본인부담률을 함께 안내). 순수 접근성 정합 리팩터로 시각·동작·옵션 라벨(G9-COPAY-NAMING 법령 용어 병기) 불변. 회귀 +2(`StaffStatusReportPage.test.jsx` lifecycle 헤딩·`CopayTypeSelect.test.jsx` help `aria-describedby`). `npm test` **1022/222 PASS**·build PASS.)
@@ -1462,6 +1463,34 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | 헬퍼 | `complaintSubjectDisplay` · `complaintApprovalContextLabel` (`config/complaintConsultations.js`) |
 | 규칙 | `ANONYMOUS_BOX` — 목록 대상 「익명」·결재 버튼 「익명함 …」·실명(`targetName`) 미노출 |
 | 폼 | `ComplaintConsultationForm` — 익명함 선택 시 대상 유형 자동 `OTHER` + 안내 `Alert` (92차 유지) |
+
+---
+
+## 19. 기관 교육일지 (US-S04 G41 · func.php 8-7 · FAQ21807/21828, 98차) [UXD]
+
+> **98차 UXD (2026-06-14)** — G41 FE 와이어 신규 구현. 노인인권교육(지표14)·운영규정 교육일지(지표5) + 신규직원 7일 이내 이수 집계.
+
+### 19-1. StaffTrainingLogPage (`/staff/training-logs`)
+
+| 항목 | 상세 |
+|------|------|
+| 역할 | hq_admin·branch_admin·social_worker (StaffContextNav 「교육일지 (8-7)」 링크) |
+| 컴포넌트 | `StaffContextNav` · `StatCard` ×4(상반기·하반기·연간·신규직원 compliance) · `Select`(연도·교육유형 필터) · `Table`(교육일·유형·방법·참석자·교재·강사·신규직원 여부) · `Modal`(등록/수정) · `Field`+`DateInput`/`Select`/`TextInput`/`Textarea` · `Badge`(신규직원) · `Alert` · `Spinner` · `EmptyState` |
+| 신규직원 | `isNewHireTraining` 체크박스 — 체크 시 `.ds-staff-training-log__newhire-section` 펼침 (신규직원명 `TextInput`, 입사일 `DateInput`, 7일 이내 이수 자동 계산) |
+| Compliance 집계 | `GET /api/v1/staff/training-logs/compliance` → `halfYearlyCompliance[1/2]`·`annualCompliance`·`newHireCompliance` 4개 StatCard |
+| A11y | compliance `section` + sr-only `h2` · StatCard `role="group"` · 표 `captionVisuallyHidden`(「교육일지 목록」) · 행 「수정」 `${logType} ${date}` `aria-label` · 신규직원 badge sr-only 접두 · 폼 `aria-busy` 제출 중 · 연도 `.ds-input--year` · 교육일 `<time dateTime>` |
+| CSS 신규 | `.ds-staff-training-log__header` · `__subheading` · `__newhire-badge` · `__attendees`(20ch ellipsis) · `__content-field`(full-width grid) · `__newhire-check` · `__newhire-section`(상단 border + `forced-colors`) |
+| 상수 모듈 | `src/frontend/src/config/staffTrainingLogs.js` — `TRAINING_LOG_TYPE`·`TRAINING_LOG_TYPE_LABELS`·`TRAINING_METHODS`·`HALF_LABELS`·`NEW_HIRE_WINDOW_DAYS=7` |
+| API 서비스 | `services.js` — `fetchStaffTrainingLogsApi`·`createStaffTrainingLogApi`·`updateStaffTrainingLogApi`·`fetchStaffTrainingLogComplianceApi` |
+
+### 19-2. coder 전달 메모
+
+- 백엔드 `StaffTrainingLogController`(G41 `△ BE partial`) 이미 구현 — `GET /api/v1/staff/training-logs`·`POST`·`PATCH /{logId}`·`GET /compliance` 4개 엔드포인트 사용.
+- `StaffTrainingLogResponse` 필드: `logId`·`branchId`·`trainingType`·`trainingDate`·`trainingMethod`·`contentSummary`·`materialTitle`·`instructorName`·`attendeeNames`(List)·`isNewHireTraining`·`newHireName`·`newHireJoinDate`·`referenceYear`·`halfYear`.
+- `StaffTrainingLogComplianceResponse` 필드: `halfYearlyCompliance`(Map 1/2 → count/required/met)·`annualCompliance`·`newHireCompliance`.
+- 테스트 `StaffTrainingLogPage.test.jsx` 추가됨 — `npm test` PASS 확인 필요.
+- 라우트: `App.jsx` `/staff/training-logs` → lazy `StaffTrainingLogPage`.
+- `navConfig.js` `EXACT_MATCH_PATHS`에 `/staff/training-logs` 추가.
 
 ---
 
