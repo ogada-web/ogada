@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T23:30:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T23:45:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-14 (104차 — **L03_M14 체중 기록 폼 `aria-describedby` 덮어쓰기 회귀 해소(WCAG 3.3.1·1.3.1·FE-16)** — 103차 이후 coder 신규 커밋(`a7f97a6`·`962858b`·`c60d7e5`·`8a8fe98` L03_M14 `NursingWeightRecordPage`·`8570fa2` 통합 바이탈·`bb3dee8` 구강상태·`97108f2` 응급상황 FE wire) 미점검 갭 해소. 신규 4개 간호 기록 폼 중 **`NursingWeightRecordForm`** 「체중 (kg)」 필드만 결함을 가지고 있었다 — 유효 범위 안내문을 `Field` 밖 분리된 `<p id="nwr-weight-hint" className="ds-field__hint">`로 렌더하고 `TextInput`에 **`aria-describedby="nwr-weight-hint"`를 `{...p}` 뒤에 직접 지정**해, `Field`가 계산한 `aria-describedby`(오류·경고 id 포함)를 **덮어써** ① 체중 범위 오류(`체중은 20~200 kg 사이로…`)·② 비정상 범위 경고를 스크린리더가 안내하지 못하던 갭(코드베이스 표준 — 80·90·94차에서 확립한 「안내문은 `Field` `help` prop → `.ds-field__help` 전역 클래스로 전달, describedby에 오류·경고와 함께 병합」과 불일치, 일회성 `.ds-nursing-weight-form .ds-field__hint` 선택자 사용). ① **안내문을 `Field` `help` prop으로 전환** — 분리 `<p>`·수기 `aria-describedby` 제거, `Field`가 help·error·warning id를 모두 `aria-describedby`로 병합(SR이 범위 안내와 오류를 함께 안내). ② **일회성 CSS 제거(FE-16·§1 단일 원천)** — 미정의에 가까운 폼 전용 `.ds-nursing-weight-form .ds-field__hint` 삭제, 전역 `.ds-field__help` 사용. 다른 3개 폼(`NursingVitalCheckForm`·`NursingOralCareCheckForm`·`NursingEmergencyRecordForm`)·`NursingContextNav`는 표준 `Field`·`ds-context-nav` 패턴 준수 확인(변경 없음). 순수 접근성 정합 리팩터로 안내문 텍스트·동작 불변. 회귀 +1(`NursingWeightRecordForm.test.jsx` — 체중 입력 `aria-describedby`에 help id 포함·범위 오류 시 help+error id 동시 유지·`aria-invalid`). `npm test` 1267중 1265 PASS(2 pre-existing 실패 — `PressureUlcerPage.test.jsx`, 전체 실행 시에만 발생하는 테스트 오염, 단독 실행 5/5 PASS·본 변경 무관)·build PASS.)
+> **최종 갱신**: 2026-06-14 (105차 — **US-O04 L03_M01·L03_M06 간호급여 제공기록·배설/경관 UI 신설 + §25·§26 신규** — planner 138차 P1 갭(L03_M01/M06 FE wire ❌) 해소. ① **L03_M01** — `NursingServiceRecordForm`(3-flag `fieldset`+`legend`·최소 1개 제공 검증)·`NursingServiceRecordPage`·`/nursing/service`·`services.js` CRUD. ② **L03_M06** — `NursingExcretionTubeRecordForm`·`NursingExcretionTubeReportPanel`(StatCard×4)·`NursingExcretionTubeRecordPage`·`/nursing/excretion-tubes`·report API. ③ **`NursingContextNav`** — 제공기록·배설·경관 2링크 추가(10 route). ④ **CSS** — `.ds-nursing-service-form__provision*`·`.ds-nursing-excretion-*`·`forced-colors`. ⑤ **§25 L03_M01**·**§26 L03_M06** 신규. 회귀 +18. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-14 (104차 — **L03_M14 체중 기록 폼 `aria-describedby` 덮어쓰기 회귀 해소(WCAG 3.3.1·1.3.1·FE-16)** — 103차 이후 coder 신규 커밋(`a7f97a6`·`962858b`·`c60d7e5`·`8a8fe98` L03_M14 `NursingWeightRecordPage`·`8570fa2` 통합 바이탈·`bb3dee8` 구강상태·`97108f2` 응급상황 FE wire) 미점검 갭 해소. 신규 4개 간호 기록 폼 중 **`NursingWeightRecordForm`** 「체중 (kg)」 필드만 결함을 가지고 있었다 — 유효 범위 안내문을 `Field` 밖 분리된 `<p id="nwr-weight-hint" className="ds-field__hint">`로 렌더하고 `TextInput`에 **`aria-describedby="nwr-weight-hint"`를 `{...p}` 뒤에 직접 지정**해, `Field`가 계산한 `aria-describedby`(오류·경고 id 포함)를 **덮어써** ① 체중 범위 오류(`체중은 20~200 kg 사이로…`)·② 비정상 범위 경고를 스크린리더가 안내하지 못하던 갭(코드베이스 표준 — 80·90·94차에서 확립한 「안내문은 `Field` `help` prop → `.ds-field__help` 전역 클래스로 전달, describedby에 오류·경고와 함께 병합」과 불일치, 일회성 `.ds-nursing-weight-form .ds-field__hint` 선택자 사용). ① **안내문을 `Field` `help` prop으로 전환** — 분리 `<p>`·수기 `aria-describedby` 제거, `Field`가 help·error·warning id를 모두 `aria-describedby`로 병합(SR이 범위 안내와 오류를 함께 안내). ② **일회성 CSS 제거(FE-16·§1 단일 원천)** — 미정의에 가까운 폼 전용 `.ds-nursing-weight-form .ds-field__hint` 삭제, 전역 `.ds-field__help` 사용. 다른 3개 폼(`NursingVitalCheckForm`·`NursingOralCareCheckForm`·`NursingEmergencyRecordForm`)·`NursingContextNav`는 표준 `Field`·`ds-context-nav` 패턴 준수 확인(변경 없음). 순수 접근성 정합 리팩터로 안내문 텍스트·동작 불변. 회귀 +1(`NursingWeightRecordForm.test.jsx` — 체중 입력 `aria-describedby`에 help id 포함·범위 오류 시 help+error id 동시 유지·`aria-invalid`). `npm test` 1267중 1265 PASS(2 pre-existing 실패 — `PressureUlcerPage.test.jsx`, 전체 실행 시에만 발생하는 테스트 오염, 단독 실행 5/5 PASS·본 변경 무관)·build PASS.)
 > **이전 갱신**: 2026-06-14 (103차 — **US-O03 G-NURSING-PRESSURE-ULCER 욕창 케어 UI 골격 + G17b Field help `aria-describedby` 재점검 + §22·§23 신규** — 102차 이후 planner 135차 신규 P1 갭(US-O03 BE/FE 0건)·G17b ✅ full coder 산출물 미문서화 갭 해소. ① **US-O03 presentational UI** — `NursingContextNav`(4 route)·`PressureUlcerAssessmentForm`·`PressureUlcerPlanForm`(6대 수칙 fieldset)·`PressureUlcerCareRecordForm`(부위·NPUAP 단계·처치)·`PressureUlcerCohortReportPanel`(분기 StatCard+표)·`config/pressureUlcer.js`·`pressureUlcerCompliance.js`·`PRESSURE_ULCER_STAGE` Badge. ② **G17b a11y** — `ProgramParticipationForm`·`FunctionalRecoveryPage` 미제공 사유 `Field help`→`aria-describedby` 연결(MOHW 제32조). ③ **CSS** — `.ds-pressure-ulcer-form*`·`.ds-pressure-ulcer-report*`·`forced-colors`. ④ **§22 G17b**·**§23 US-O03** 신규. 회귀 +11. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (101차 — **US-J03 7-5 조용한 시간대(quiet-hours) 알림 발송 가드 접근성 재점검 — `title` 툴팁 → `aria-describedby` 가드 배너 연결** — 100차 이후 coder 신규 커밋(`111f056` fix(v2/J03): block billing notify UI during quiet hours 22:00~08:00 KST) 미점검 갭 해소. 새 가드는 `BillingDetailPage`(보호자 발송·납부확인서 발송)·`OverduePage`(행별 「미납 안내 발송」) 버튼을 조용한 시간대(Asia/Seoul 22:00~08:00)에 `disabled` 처리하고 그 사유를 **`title` 툴팁**으로만 노출했으나, ① **`title`은 `disabled` 버튼에서 키보드·스크린리더 사용자에게 노출되지 않음**(WCAG 1.4.13·4.1.2 — disabled 버튼은 hover/포커스 불가, `title`은 마우스 hover에만 의존)이고, ② 페이지 상단 quiet-hours 경고 `Alert`에 **`id`가 없어** 버튼과 프로그램적으로 연결되지 않아, 코드베이스 표준(73·78차 `ClaimGenerationPanel`·`FeeScheduleYearGuardBanner` — 가드 `Alert`에 `id` 부여 + 가드된 버튼 `aria-describedby`→배너 `id`)과 불일치했다. ① **quiet-hours 경고 `Alert`에 안정적 `id` 부여** — `billing-notify-quiet-hours-warning`(BillingDetailPage)·`overdue-reminder-quiet-hours-warning`(OverduePage). ② **가드된 발송 버튼 `aria-describedby`** — 조용한 시간대일 때 버튼을 경고 배너에 연결(SR이 비활성 사유를 함께 안내). ③ **`title` 툴팁 제거** — 키보드·SR 비노출 단서 의존 배제(`ClaimGenerationPanel` 정합). 순수 접근성 정합 리팩터로 disabled 동작·시각·메시지 불변. 회귀 +2(`BillingDetailPage.test.jsx`·`OverduePage.test.jsx` — `aria-describedby`=배너 id·`title` 부재·배너 id 텍스트 검증). `npm test` 1145중 1143 PASS(2 pre-existing 실패 — 아래 coder 인계)·build PASS. **coder 인계**: `pilotPageFlows.test.jsx` US-L02 미납 안내 2건이 **111f056 커밋부터 실패**(stash 검증으로 본 변경과 무관 확인). 원인 — `111f056`이 `OverduePage` 발송 성공 메시지를 `interpretBillingNotifyResult`(「보호자 N건에게 명세 안내를 발송했습니다.」)로 교체했으나 `pilotPageFlows` E2E는 이전 문구(「보호자에게 명세 안내가 발송되었습니다.」)를 여전히 단언. 메시지 계약·E2E 와이어링은 coder 영역이라 미수정.)
 > **이전 갱신**: 2026-06-14 (100차 — **US-L06 7-5 간편결제 EasyPayPanel 접근성 재점검 + §20 신규 + §8-1 라우트 보강** — coder 신규 4커밋(`c9baca2`·`bebd874`·`3848af6`·`easyPay.js`: `/billing/easy-pay`·`EasyPayPanel`·prior-month guard·provider normalization) 미점검 갭 해소. ① **필드 단위 검증(WCAG 3.3.1)** — 청구서·결제 수단 미선택 시 폼 상단 `Alert` 대신 `Field error`+`aria-invalid`로 전환·입력 시 오류 자동 해제(`ComplaintConsultationForm` 패턴). ② **요청 버튼 `aria-describedby`** — 스텁 PG 안내(`#easy-pay-stub-note`)·선행입금 가드 배너(`#easy-pay-prior-month-guard-warning`)를 결합해 SR이 제약 맥락을 함께 안내. ③ **결제 상태 섹션** — `.ds-cms-debit-status` 재사용 대신 `.ds-easy-pay-status`+`section`+`aria-labelledby` h3·요청/완료일시 `<time dateTime>`·실패 사유 `role=alert`. ④ **CSS** — `.ds-easy-pay-status`·`__heading`·`forced-colors` 경계선(`.ds-cms-debit-status`와 공유 선택자). ⑤ **§2-3 `EASY_PAY_STATUS`**·**§8-1 `/billing/easy-pay`**·**§20** 신규. US-L03→US-L06 스토리 ID 오기 수정. 회귀 +3. `npm test`·build PASS.)
@@ -1739,6 +1740,123 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - `bmi`·`weightChangeKg` — 서버 계산값, FE 연산 불필요.
 - `measureDate` — 미래 날짜 차단 로직은 서버 단에서 처리 (L03_M11 `validateCheckDateNotFuture` 패턴 불필요).
 - 테스트: `npm test -- NursingWeightRecord` 로 실행 확인.
+
+---
+
+## 25. 간호급여 제공기록 (L03_M01 · BNK-215, 105차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14 -->
+
+> **105차 UXD (2026-06-14)** — US-O04 L03_M01 `FE wire ❌` 갭 해소. `GET/POST/PATCH /api/v1/nursing/service-records` (V123) 완전 연결.
+
+### 25-1. 라우트·컨텍스트 네비
+
+| Route | UI | 역할 |
+|-------|-----|------|
+| `/nursing/service` | `NursingServiceRecordPage` | branch_admin·social_worker·caregiver·hq_admin |
+
+`NursingContextNav` — "제공기록" 링크 추가 (응급상황 기록 다음). `navConfig.js` `EXACT_MATCH_PATHS` + `RECORD_ITEMS`에 `/nursing/service` 등록.
+
+### 25-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `pages/NursingServiceRecordPage.jsx` | 제공기록 목록+폼 통합 화면 |
+| `components/ui/NursingServiceRecordForm.jsx` | 3-flag 제공기록 등록·수정 폼 |
+| `config/nursingServiceRecord.js` | `NURSING_SERVICE_RECORD_ROUTES`·`NURSING_SERVICE_PROVISION_LABELS` |
+| `api/services.js` | `fetchNursingServiceRecordsApi` · `create` · `update` |
+
+### 25-3. 폼 필드 스펙 (V123 DTO 기준)
+
+| 필드 | 타입 | 필수 | 표시 |
+|------|------|------|------|
+| `clientId` | Select | ✅ | 이용자 (수정 시 비활성) |
+| `serviceDate` | DateInput | ✅ | 제공일 (미래 차단) |
+| `nursingProvided` | Checkbox | △ | 간호 제공 (3중 최소 1) |
+| `nursingNotes` | Textarea | ✗ | 간호 내용 (체크 시 노출) |
+| `medicationProvided` | Checkbox | △ | 투약 제공 |
+| `medicationNotes` | Textarea | ✗ | 투약 내용 |
+| `medicalVisit` | Checkbox | △ | 병의원 진료 |
+| `medicalInstitution` | TextInput | ✗ | 의료기관명 |
+| `medicalNotes` | Textarea | ✗ | 진료 내용 |
+| `notes` | Textarea | ✗ | 메모 |
+
+### 25-4. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 제공 항목 그룹 | `fieldset`/`legend` 「제공 항목」 — SR 그룹 식별 ✅ |
+| 최소 1개 검증 | `role="alert"` provision 오류 + `aria-describedby` on fieldset ✅ |
+| 조건부 필드 | 체크 시에만 notes/institution 노출 — DOM 변화 SR 인지 ✅ |
+| 필드 검증 | `Field error`+`aria-invalid` per-field ✅ |
+| 목록 Badge | 제공 항목 「간호·투약·진료」텍스트+색 병행 ✅ |
+| 수정 버튼 | `aria-label="${clientName} ${date} 제공기록 수정"` ✅ |
+| `forced-colors` | `.ds-nursing-service-form__provision` 경계선 ✅ |
+
+### 25-5. coder 전달 메모
+
+- BE `validateNoProvisionSelected` — FE도 동일 검증(3-flag 모두 false 차단).
+- `updateNursingServiceRecordApi` — `clientId` 제외 payload (`PATCH` DTO).
+- UK `(org, client, service_date)` — 동일 일자 중복 시 서버 오류 → `applyApiErrorToForm` 처리.
+- L03_M07·M09·M10 reports — 본 §25 범위 외(P2).
+
+---
+
+## 26. 배설·경관·유치도뇨 관리 (L03_M06 · BNK-216, 105차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14 -->
+
+> **105차 UXD (2026-06-14)** — US-O04 L03_M06 `FE wire ❌` 갭 해소. `GET/POST/PATCH /api/v1/nursing/excretion-tube-records` + `/reports` (V124).
+
+### 26-1. 라우트·컨텍스트 네비
+
+| Route | UI | 역할 |
+|-------|-----|------|
+| `/nursing/excretion-tubes` | `NursingExcretionTubeRecordPage` | branch_admin·social_worker·caregiver·hq_admin |
+
+`NursingContextNav` — "배설·경관" 링크 추가. `navConfig.js` 등록.
+
+### 26-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `pages/NursingExcretionTubeRecordPage.jsx` | 리포트+목록+폼 통합 화면 |
+| `components/ui/NursingExcretionTubeRecordForm.jsx` | 관리 기록 등록·수정 폼 |
+| `components/ui/NursingExcretionTubeReportPanel.jsx` | 종류별 StatCard×4 + 표 |
+| `config/nursingExcretionTubeRecord.js` | `EXCRETION_TUBE_TYPE_LABELS`·routes |
+| `api/services.js` | list·report·create·update API 4종 |
+
+### 26-3. 폼 필드 스펙 (V124 DTO 기준)
+
+| 필드 | 타입 | 필수 | 표시 |
+|------|------|------|------|
+| `clientId` | Select | ✅ | 이용자 |
+| `recordDate` | DateInput | ✅ | 기록일 |
+| `tubeType` | Select | ✅ | EXCRETION·NG_TUBE·URINARY_CATHETER |
+| `tubeSize` | TextInput | ✗ | 관 크기 (예: 14Fr) |
+| `insertionDate` | DateInput | ✗ | 삽입일 |
+| `replacementDueDate` | DateInput | ✗ | 교체 예정일 |
+| `managementDetail` | Textarea | ✅ | 관리 내용 |
+| `notes` | Textarea | ✗ | 메모 |
+
+### 26-4. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 관리 종류 help | `Field help` → `aria-describedby` (UK 안내) ✅ |
+| 필수 검증 | `Field error`+`aria-invalid` — managementDetail 필수 ✅ |
+| 리포트 StatCard | `role="group"` 「관리 종류별 건수」 — 색+텍스트 ✅ |
+| 표 날짜 | `<time dateTime>` 의미론 ✅ |
+| 종류 Badge | `EXCRETION_TUBE_TYPE_LABELS` 텍스트 라벨 ✅ |
+| 수정 버튼 | `aria-label`에 이용자명·날짜·종류 포함 ✅ |
+| `forced-colors` | report StatCard 경계선 ✅ |
+
+### 26-5. coder 전달 메모
+
+- UK `(org, client, record_date, tube_type)` — 동일 일자·종류 중복 시 서버 오류.
+- `fetchNursingExcretionTubeReportApi` — `totalRecords`·`excretionCount`·`ngTubeCount`·`urinaryCatheterCount` 집계.
+- 기간 필터 UI — 본 105차는 기본 30일 윈도우(서버 default) 사용, 날짜 필터는 P2.
+- `pilotPageFlows` L03_M01/M06 E2E harness 연동 검토.
 
 ---
 
