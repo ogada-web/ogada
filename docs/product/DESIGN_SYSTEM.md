@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T23:59:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15T01:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-14 (100차 — **US-L06 7-5 간편결제 EasyPayPanel 접근성 재점검 + §20 신규 + §8-1 라우트 보강** — coder 신규 4커밋(`c9baca2`·`bebd874`·`3848af6`·`easyPay.js`: `/billing/easy-pay`·`EasyPayPanel`·prior-month guard·provider normalization) 미점검 갭 해소. ① **필드 단위 검증(WCAG 3.3.1)** — 청구서·결제 수단 미선택 시 폼 상단 `Alert` 대신 `Field error`+`aria-invalid`로 전환·입력 시 오류 자동 해제(`ComplaintConsultationForm` 패턴). ② **요청 버튼 `aria-describedby`** — 스텁 PG 안내(`#easy-pay-stub-note`)·선행입금 가드 배너(`#easy-pay-prior-month-guard-warning`)를 결합해 SR이 제약 맥락을 함께 안내. ③ **결제 상태 섹션** — `.ds-cms-debit-status` 재사용 대신 `.ds-easy-pay-status`+`section`+`aria-labelledby` h3·요청/완료일시 `<time dateTime>`·실패 사유 `role=alert`. ④ **CSS** — `.ds-easy-pay-status`·`__heading`·`forced-colors` 경계선(`.ds-cms-debit-status`와 공유 선택자). ⑤ **§2-3 `EASY_PAY_STATUS`**·**§8-1 `/billing/easy-pay`**·**§20** 신규. US-L03→US-L06 스토리 ID 오기 수정. 회귀 +3. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-14 (102차 — **G21 방문일정 일괄확정 `VisitBatchConfirmPanel` 접근성 재점검 + US-UX-05 SideNav §8-2 정합 + §21 신규** — 101차 이후 coder 신규 3커밋(`1e111be`·`8a8b930`·`13e691e`: US-UX-05 default collapsed·G21 batch-confirm UI) 미점검 갭 해소. ① **`VisitBatchConfirmPanel`(G21/BNK-198)** — 사전 점검 요약·차단 사유 `Alert`에 안정적 `id` 부여(`visit-batch-confirm-readiness-status`·`visit-batch-confirm-blockers-warning`)·확인 체크리스트 안내 `role=note`(`visit-batch-confirm-ack-requirement`)·비활성 「일괄확정 실행」버튼 `aria-describedby`→요약/차단/ack 노트 연결(WCAG 1.4.13·4.1.2, `ClaimGenerationPanel`·`FeeScheduleYearGuardBanner` 패턴)·차단 시 ack `Checkbox`도 `aria-describedby`→차단 배너·제출 오류 `id` 분리. ② **CSS** — `.ds-visit-batch-confirm` 섹션 구분선·`forced-colors` 경계선. ③ **§8-2 US-UX-05 ✅** — 초기 전 그룹 펼침→**전 그룹 접힘 + 활성 route 부모만 auto-expand**·모바일·데스크톱 동일·`aria-expanded`/`aria-hidden` 유지. ④ **§21** 신규. 회귀 +2(`VisitBatchConfirmPanel.test.jsx` — disabled submit `aria-describedby`·ack 요구 노트). `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-14 (101차 — **US-J03 7-5 조용한 시간대(quiet-hours) 알림 발송 가드 접근성 재점검 — `title` 툴팁 → `aria-describedby` 가드 배너 연결** — 100차 이후 coder 신규 커밋(`111f056` fix(v2/J03): block billing notify UI during quiet hours 22:00~08:00 KST) 미점검 갭 해소. 새 가드는 `BillingDetailPage`(보호자 발송·납부확인서 발송)·`OverduePage`(행별 「미납 안내 발송」) 버튼을 조용한 시간대(Asia/Seoul 22:00~08:00)에 `disabled` 처리하고 그 사유를 **`title` 툴팁**으로만 노출했으나, ① **`title`은 `disabled` 버튼에서 키보드·스크린리더 사용자에게 노출되지 않음**(WCAG 1.4.13·4.1.2 — disabled 버튼은 hover/포커스 불가, `title`은 마우스 hover에만 의존)이고, ② 페이지 상단 quiet-hours 경고 `Alert`에 **`id`가 없어** 버튼과 프로그램적으로 연결되지 않아, 코드베이스 표준(73·78차 `ClaimGenerationPanel`·`FeeScheduleYearGuardBanner` — 가드 `Alert`에 `id` 부여 + 가드된 버튼 `aria-describedby`→배너 `id`)과 불일치했다. ① **quiet-hours 경고 `Alert`에 안정적 `id` 부여** — `billing-notify-quiet-hours-warning`(BillingDetailPage)·`overdue-reminder-quiet-hours-warning`(OverduePage). ② **가드된 발송 버튼 `aria-describedby`** — 조용한 시간대일 때 버튼을 경고 배너에 연결(SR이 비활성 사유를 함께 안내). ③ **`title` 툴팁 제거** — 키보드·SR 비노출 단서 의존 배제(`ClaimGenerationPanel` 정합). 순수 접근성 정합 리팩터로 disabled 동작·시각·메시지 불변. 회귀 +2(`BillingDetailPage.test.jsx`·`OverduePage.test.jsx` — `aria-describedby`=배너 id·`title` 부재·배너 id 텍스트 검증). `npm test` 1145중 1143 PASS(2 pre-existing 실패 — 아래 coder 인계)·build PASS. **coder 인계**: `pilotPageFlows.test.jsx` US-L02 미납 안내 2건이 **111f056 커밋부터 실패**(stash 검증으로 본 변경과 무관 확인). 원인 — `111f056`이 `OverduePage` 발송 성공 메시지를 `interpretBillingNotifyResult`(「보호자 N건에게 명세 안내를 발송했습니다.」)로 교체했으나 `pilotPageFlows` E2E는 이전 문구(「보호자에게 명세 안내가 발송되었습니다.」)를 여전히 단언. 메시지 계약·E2E 와이어링은 coder 영역이라 미수정.)
+> **이전 갱신**: 2026-06-14 (100차 — **US-L06 7-5 간편결제 EasyPayPanel 접근성 재점검 + §20 신규 + §8-1 라우트 보강** — coder 신규 4커밋(`c9baca2`·`bebd874`·`3848af6`·`easyPay.js`: `/billing/easy-pay`·`EasyPayPanel`·prior-month guard·provider normalization) 미점검 갭 해소. ① **필드 단위 검증(WCAG 3.3.1)** — 청구서·결제 수단 미선택 시 폼 상단 `Alert` 대신 `Field error`+`aria-invalid`로 전환·입력 시 오류 자동 해제(`ComplaintConsultationForm` 패턴). ② **요청 버튼 `aria-describedby`** — 스텁 PG 안내(`#easy-pay-stub-note`)·선행입금 가드 배너(`#easy-pay-prior-month-guard-warning`)를 결합해 SR이 제약 맥락을 함께 안내. ③ **결제 상태 섹션** — `.ds-cms-debit-status` 재사용 대신 `.ds-easy-pay-status`+`section`+`aria-labelledby` h3·요청/완료일시 `<time dateTime>`·실패 사유 `role=alert`. ④ **CSS** — `.ds-easy-pay-status`·`__heading`·`forced-colors` 경계선(`.ds-cms-debit-status`와 공유 선택자). ⑤ **§2-3 `EASY_PAY_STATUS`**·**§8-1 `/billing/easy-pay`**·**§20** 신규. US-L03→US-L06 스토리 ID 오기 수정. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (99차 — **G41b 교육일지 4분류 compliance StatCard 접근성 재점검 + §19 정확화 + `ds-grid` 누락 수정** — coder 신규 4커밋(`38d24b6`·`a4ab0c2`·`76fe2fb`·`e14ba10`: G41b 재난·소화·직원권익 3종 연간 compliance BE wiring · live E2E harness · QA-B77 fix · 신규직원 window 하드코딩 제거) 미점검 갭 해소. ① **`StaffTrainingLogPage` `ds-grid` 누락 수정(FE-16)** — compliance StatCard 그리드가 `className="ds-grid--stats"`만 있고 기본 `ds-grid`(`display:grid`·`gap`)가 없어 카드들이 세로 블록 나열되던 결함을 `ds-grid ds-grid--stats` 조합으로 정정(`StaffStatusReportPage`·`ComplaintConsultationPanel` 정합). ② **§19-1 `StatCard` 수 정정** — G41b 3종 추가로 최대 7개(기존 표기 `×4` → `×4~7`). ③ **§19-1 A11y `Card h2` 패턴 명확화** — `compliance section+sr-only h2` 오기 → `Card ds-card__title h2` 가시 헤딩. ④ **§19-1 상수 모듈 G41b 항목 보강** — `G41B_ANNUAL_TYPES`·`mapG41bComplianceCards`·`isG41bAnnualTrainingType`·`countTrainingLogsByType` 추가. ⑤ **§19-1 coder 메모 G41b 필드 보강** — 6필드 명세. ⑥ **`newHireOrientation` 필드명 오기 수정** — DESIGN_SYSTEM 문서 `isNewHireTraining`→`newHireOrientation`. 회귀 없음(`ds-grid` 클래스 추가는 동작 불변·기존 테스트 PASS). `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (98차 — **US-S04 G41 기관 교육일지 화면 신규 와이어 (`StaffTrainingLogPage`)** — G41 `FE wire ❌` 갭 해소. §19 신규 절·CSS 7개 클래스·API 4개·라우트 등록.)
 > **이전 갱신**: 2026-06-14 (97차 — **US-J03 G/BNK-177 알림 채널 readiness 패널 — 미정의 클래스 제거 + 표 가시 헤딩 보강** — 96차 이후 coder 신규 3커밋(`6b1258c`·`d695923` `NotificationChannelReadinessPanel`(BNK-177)·`443efca` refresher compliance API·G34-QUAL gate) 미점검 갭 해소. 신규 패널이 `DashboardPage`·`OrganizationSettingsPage` 두 곳에 `Card`(h2) 하위로 임베드되나 두 가지 결함을 가지고 있었다. ① **미정의 클래스(FE-16·§1 단일 원천)** — 패널 컨테이너/제공자 요약이 CSS에 **정의되지 않은** `.ds-kv-list`·`.ds-kv-list__row`(소비자 이 패널 단 1곳)를 사용해 공유 토큰(grid 정렬·`dt`/`dd` 시맨틱 색·간격)을 못 받던 80차 `.ds-text-input`·90차 `.ds-help-text` 패턴 회귀를, 코드베이스 표준 정의 클래스 **`.ds-dl-grid`**(BillingDetailPage·ClientDetailPage 등 광범위 사용)로 전환하고 `__row` div 래퍼를 제거(grid 직계 `dt`/`dd`). ② **시각적으로 구분되지 않는 3연속 표(WCAG 1.3.1·2.4.6)** — `Solapi 연동 설정`·`이메일(SMTP) 연동 설정`·`필수 알림톡 템플릿` 3개 `Table`이 모두 `captionVisuallyHidden`(SR 전용 caption)에 **동일한 「항목 \| 상태」 컬럼**이라, 가시 헤딩이 없어 sighted 사용자가 어느 표가 무엇인지 식별할 수 없고(readiness Alert의 「아래 Solapi·템플릿 항목 확인」 지시 대상 모호), 44차/89차에서 확립한 「가시 `h3` + `captionVisuallyHidden`」 표 라벨 패턴과 불일치했다. 각 표 앞에 가시 `h3.ds-notification-channel-panel__subheading`(h1 페이지→h2 Card→h3 섹션 계층)을 추가해 시각·SR 모두 표를 식별. ③ **CSS 신규** — `.ds-notification-channel-panel__note`(정의 추가)·`.ds-notification-channel-panel__subheading`(secondary 색·md 굵게·`ds-section-gap` 상단 여백 정합). 순수 정합·접근성 리팩터로 동작·데이터 불변. 회귀 +1(`NotificationChannelReadinessPanel.test.jsx` — 3개 가시 `h3` level-3 헤딩 검증). **coder 인계**: `pilotPageFlows.test.jsx` US-S02 refresher(8-7-1) 1건이 **96차 이전부터 실패**(stash 검증) — `/staff/training` 초기 로드가 `443efca`에서 `fetchStaffRefresherTrainingComplianceApi`로 재배선되며 테스트가 기대하는 `/api/v1/users` 초기 fetch가 더는 호출되지 않음(`updateUserApi`는 「이수 완료」클릭 시에만 호출). API 와이어링·해당 테스트는 coder 영역이라 미수정. `npm test` 1081/228 PASS(1 pre-existing 실패)·build PASS.)
@@ -1032,7 +1034,9 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 > 실제 정의는 `src/frontend/src/layout/navConfig.js` `NAV_GROUPS`(운영·이동·출석·기록·청구 5그룹). 본 표는 요약이며, 라우트 전수는 §8-1을 단일 원천으로 본다.
 
-> **모바일**: 그룹별 접힘/펼침(`aria-expanded`). **데스크톱**: 항상 펼침(769px+).
+> **그룹 토글 (US-UX-05 ✅, 2026-06-14)**: 각 그룹 헤더(`button.ds-sidenav__toggle`) 클릭 시 하위 메뉴 접힘/펼침. **초기: 전 그룹 접힘 + 현재 route 부모 그룹만 auto-expand**(`buildNavGroupExpandedState`·`findNavGroupIdForPath`). **모바일·데스크톱 동일 규칙**. 접근성: `aria-expanded`·`aria-controls`·접힌 `ul`에 `aria-hidden={!isOpen}`. 상세: `USER_STORIES US-UX-05` · `REQUIREMENTS §3-0` · `SideNav.test.jsx`.
+
+> **구현 (US-UX-02 + US-UX-05)**: 5그룹(운영·이동·출석·기록·청구)·역할별 `navGroupsForRole` 필터·`EXACT_MATCH_PATHS` 활성 매칭(§8-2 하단).
 
 > **active 매칭**: 동일 prefix의 하위 메뉴가 있는 경로(`/dashboard`, `/guardian`, `/attendance`, `/billing`)는 `EXACT_MATCH_PATHS`에 등록해 `NavLink end`로 **정확히 일치할 때만** 활성 처리한다(예: `/attendance/stats` 진입 시 「출석 관리」가 동시 활성화되지 않음).
 
@@ -1093,6 +1097,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `.ds-dashboard-widgets` | 대시보드 위젯 그리드 (US-M02) |
 | `.ds-masked-phone` | 마스킹 연락처 + `tel:` 링크 (30차 — `MaskedPhone`) |
 | `.ds-sidenav__sublist` | 2단 SideNav 하위 메뉴 (US-UX-02) |
+| `.ds-visit-batch-confirm` | 방문일정 일괄확정 패널 구분선 (G21, §21) |
 | `.ds-grid--2` | 2열 폼 그리드 (초대 모달 등) |
 | `.ds-photo-field` | 이용자 사진 업로드+미리보기 (US-D01) |
 | `.ds-select--inline` | 표 내 인라인 select — 44px 터치 타깃 |
@@ -1548,6 +1553,31 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - `priorMonthGuard`는 `ClaimGenerationPanel`·`EasyPayPage`가 동일 `fetchClaimGenerationGuardApi` 사용 — BE enforce와 FE surface 정합 유지.
 - QA-B78/B79 provider normalization — `normalizeEasyPayProvider` 단일 원천(`easyPay.js`). payload는 항상 `CARD`/`KAKAO_PAY` enum.
 - 테스트 — `EasyPayPanel.test.jsx` 5건·`easyPay.test.js`·`EasyPayPage.test.jsx`·`easyPayPilot.e2e.test.js`·`pilotPageFlows` US-L06.
+
+---
+
+## 21. 방문일정 일괄확정 (G21 · US-V04 deepen · FAQ 21782, 102차) [UXD]
+
+> **102차 UXD (2026-06-14)** — coder `VisitBatchConfirmPanel` @ `13e691e`·`VisitsPage` 연동·`fetchVisitConfirmReadinessApi`/`batchConfirmVisitsApi` 접근성 재점검.
+
+### 21-1. VisitBatchConfirmPanel (`VisitsPage` — PLAN/BILLING 탭)
+
+| 항목 | 상세 |
+|------|------|
+| 역할 | branch_admin·social_worker (`canSchedule` — 일정 등록·확정과 동일 RBAC) |
+| 위치 | `VisitScheduleForm`·`NhisScheduleConfirmLockGuide` 아래 · `VisitNhisImportPanel` 위 |
+| 워크플로 | 「일괄확정 시작」→ Modal → `GET /visits/confirm-readiness` → ack 2종 체크 → `POST /visits/batch-confirm` |
+| Ack 체크리스트 | ① 공단 청구명세서 비교 ② 공단조회 변경이력 확인 — 이지케어 「4.일정확정」6단 |
+| 사전 점검 | `draftCount`·`confirmedCount`·`unassignedDraftCount`·`pairedDivergedCount`·`blockers[]`·`ready` |
+| A11y | 사전 점검 `Alert` `id=visit-batch-confirm-readiness-status`·차단 `id=visit-batch-confirm-blockers-warning`·ack 요구 `role=note` `id=visit-batch-confirm-ack-requirement`·비활성 submit `aria-describedby` 결합·ack `Checkbox` 차단 시 `aria-describedby`→차단 배너·제출 `aria-busy`·오류 `id=visit-batch-confirm-submit-error`·Modal 제출 중 닫기 차단 |
+| CSS | `.ds-visit-batch-confirm` — import 패널과 시각 구분·`forced-colors` 상단 경계선 |
+| API 서비스 | `services.js` — `fetchVisitConfirmReadinessApi` · `batchConfirmVisitsApi` |
+
+### 21-2. coder 전달 메모
+
+- `NhisScheduleConfirmLockGuide`(주간 청구 확정 잠금)와 `VisitNhisImportPanel`(확정 시 import 차단)은 G21 일괄확정과 **동일 월·동일 scheduleKind** 맥락 — `confirmedVisitCount`·`confirmedClaimCount` prop 정합 유지.
+- live E2E P1 — `pilotPageFlows` 「batch-confirms draft visit schedules after NHIS ack gates」·`VisitBatchConfirmPanel.test.jsx` 2건.
+- RFID split-view·확정 lock deepen은 ROADMAP P2 — 본 패널은 DRAFT→CONFIRMED 일괄 전환 surface만 담당.
 
 ---
 
