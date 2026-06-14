@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T23:45:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T12:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-14 (105차 — **US-O04 L03_M01·L03_M06 간호급여 제공기록·배설/경관 UI 신설 + §25·§26 신규** — planner 138차 P1 갭(L03_M01/M06 FE wire ❌) 해소. ① **L03_M01** — `NursingServiceRecordForm`(3-flag `fieldset`+`legend`·최소 1개 제공 검증)·`NursingServiceRecordPage`·`/nursing/service`·`services.js` CRUD. ② **L03_M06** — `NursingExcretionTubeRecordForm`·`NursingExcretionTubeReportPanel`(StatCard×4)·`NursingExcretionTubeRecordPage`·`/nursing/excretion-tubes`·report API. ③ **`NursingContextNav`** — 제공기록·배설·경관 2링크 추가(10 route). ④ **CSS** — `.ds-nursing-service-form__provision*`·`.ds-nursing-excretion-*`·`forced-colors`. ⑤ **§25 L03_M01**·**§26 L03_M06** 신규. 회귀 +18. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-14 (106차 — **L03_M07/M09/M10·L03_M15 리포트 UI 접근성 재점검 + §27·§28 신규 + §8-1 간호 라우트 보강** — 105차 이후 coder 신규 커밋(`2a05271`·`75bddee`·`efa4472`·`89dc52d` L03_M07/M09/M10 `NursingServiceReportsPage`·L03_M15 `PressureUlcerProvisionReportPanel`·`NursingContextNav` 12링크) 미점검 갭 해소. ① **`PressureUlcerProvisionReportPanel`** — `aria-labelledby` 대상 **`h3` 누락** 회귀 해소·`aria-busy`·로딩 중 EmptyState 미노출·`<time dateTime>`·NPUAP 단계 `StatusBadge`(숫자·코드 정규화)·`ds-grid ds-grid--stats`+`role=group`. ② **`NursingServiceReportPanel`/`Nav`** — forced-colors StatCard 경계선·서브 네비 landmark 회귀. ③ **CSS** — `.ds-nursing-service-report*`·`.ds-pressure-ulcer-provision-report*`. ④ **§8-1** — `/nursing/*` 14경로 추가. ⑤ **§27 L03_M07/M09/M10**·**§28 L03_M15** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-14 (105차 — **US-O04 L03_M01·L03_M06 간호급여 제공기록·배설/경관 UI 신설 + §25·§26 신규** — planner 138차 P1 갭(L03_M01/M06 FE wire ❌) 해소. ① **L03_M01** — `NursingServiceRecordForm`(3-flag `fieldset`+`legend`·최소 1개 제공 검증)·`NursingServiceRecordPage`·`/nursing/service`·`services.js` CRUD. ② **L03_M06** — `NursingExcretionTubeRecordForm`·`NursingExcretionTubeReportPanel`(StatCard×4)·`NursingExcretionTubeRecordPage`·`/nursing/excretion-tubes`·report API. ③ **`NursingContextNav`** — 제공기록·배설·경관 2링크 추가(10 route). ④ **CSS** — `.ds-nursing-service-form__provision*`·`.ds-nursing-excretion-*`·`forced-colors`. ⑤ **§25 L03_M01**·**§26 L03_M06** 신규. 회귀 +18. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (104차 — **L03_M14 체중 기록 폼 `aria-describedby` 덮어쓰기 회귀 해소(WCAG 3.3.1·1.3.1·FE-16)** — 103차 이후 coder 신규 커밋(`a7f97a6`·`962858b`·`c60d7e5`·`8a8fe98` L03_M14 `NursingWeightRecordPage`·`8570fa2` 통합 바이탈·`bb3dee8` 구강상태·`97108f2` 응급상황 FE wire) 미점검 갭 해소. 신규 4개 간호 기록 폼 중 **`NursingWeightRecordForm`** 「체중 (kg)」 필드만 결함을 가지고 있었다 — 유효 범위 안내문을 `Field` 밖 분리된 `<p id="nwr-weight-hint" className="ds-field__hint">`로 렌더하고 `TextInput`에 **`aria-describedby="nwr-weight-hint"`를 `{...p}` 뒤에 직접 지정**해, `Field`가 계산한 `aria-describedby`(오류·경고 id 포함)를 **덮어써** ① 체중 범위 오류(`체중은 20~200 kg 사이로…`)·② 비정상 범위 경고를 스크린리더가 안내하지 못하던 갭(코드베이스 표준 — 80·90·94차에서 확립한 「안내문은 `Field` `help` prop → `.ds-field__help` 전역 클래스로 전달, describedby에 오류·경고와 함께 병합」과 불일치, 일회성 `.ds-nursing-weight-form .ds-field__hint` 선택자 사용). ① **안내문을 `Field` `help` prop으로 전환** — 분리 `<p>`·수기 `aria-describedby` 제거, `Field`가 help·error·warning id를 모두 `aria-describedby`로 병합(SR이 범위 안내와 오류를 함께 안내). ② **일회성 CSS 제거(FE-16·§1 단일 원천)** — 미정의에 가까운 폼 전용 `.ds-nursing-weight-form .ds-field__hint` 삭제, 전역 `.ds-field__help` 사용. 다른 3개 폼(`NursingVitalCheckForm`·`NursingOralCareCheckForm`·`NursingEmergencyRecordForm`)·`NursingContextNav`는 표준 `Field`·`ds-context-nav` 패턴 준수 확인(변경 없음). 순수 접근성 정합 리팩터로 안내문 텍스트·동작 불변. 회귀 +1(`NursingWeightRecordForm.test.jsx` — 체중 입력 `aria-describedby`에 help id 포함·범위 오류 시 help+error id 동시 유지·`aria-invalid`). `npm test` 1267중 1265 PASS(2 pre-existing 실패 — `PressureUlcerPage.test.jsx`, 전체 실행 시에만 발생하는 테스트 오염, 단독 실행 5/5 PASS·본 변경 무관)·build PASS.)
 > **이전 갱신**: 2026-06-14 (103차 — **US-O03 G-NURSING-PRESSURE-ULCER 욕창 케어 UI 골격 + G17b Field help `aria-describedby` 재점검 + §22·§23 신규** — 102차 이후 planner 135차 신규 P1 갭(US-O03 BE/FE 0건)·G17b ✅ full coder 산출물 미문서화 갭 해소. ① **US-O03 presentational UI** — `NursingContextNav`(4 route)·`PressureUlcerAssessmentForm`·`PressureUlcerPlanForm`(6대 수칙 fieldset)·`PressureUlcerCareRecordForm`(부위·NPUAP 단계·처치)·`PressureUlcerCohortReportPanel`(분기 StatCard+표)·`config/pressureUlcer.js`·`pressureUlcerCompliance.js`·`PRESSURE_ULCER_STAGE` Badge. ② **G17b a11y** — `ProgramParticipationForm`·`FunctionalRecoveryPage` 미제공 사유 `Field help`→`aria-describedby` 연결(MOHW 제32조). ③ **CSS** — `.ds-pressure-ulcer-form*`·`.ds-pressure-ulcer-report*`·`forced-colors`. ④ **§22 G17b**·**§23 US-O03** 신규. 회귀 +11. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (101차 — **US-J03 7-5 조용한 시간대(quiet-hours) 알림 발송 가드 접근성 재점검 — `title` 툴팁 → `aria-describedby` 가드 배너 연결** — 100차 이후 coder 신규 커밋(`111f056` fix(v2/J03): block billing notify UI during quiet hours 22:00~08:00 KST) 미점검 갭 해소. 새 가드는 `BillingDetailPage`(보호자 발송·납부확인서 발송)·`OverduePage`(행별 「미납 안내 발송」) 버튼을 조용한 시간대(Asia/Seoul 22:00~08:00)에 `disabled` 처리하고 그 사유를 **`title` 툴팁**으로만 노출했으나, ① **`title`은 `disabled` 버튼에서 키보드·스크린리더 사용자에게 노출되지 않음**(WCAG 1.4.13·4.1.2 — disabled 버튼은 hover/포커스 불가, `title`은 마우스 hover에만 의존)이고, ② 페이지 상단 quiet-hours 경고 `Alert`에 **`id`가 없어** 버튼과 프로그램적으로 연결되지 않아, 코드베이스 표준(73·78차 `ClaimGenerationPanel`·`FeeScheduleYearGuardBanner` — 가드 `Alert`에 `id` 부여 + 가드된 버튼 `aria-describedby`→배너 `id`)과 불일치했다. ① **quiet-hours 경고 `Alert`에 안정적 `id` 부여** — `billing-notify-quiet-hours-warning`(BillingDetailPage)·`overdue-reminder-quiet-hours-warning`(OverduePage). ② **가드된 발송 버튼 `aria-describedby`** — 조용한 시간대일 때 버튼을 경고 배너에 연결(SR이 비활성 사유를 함께 안내). ③ **`title` 툴팁 제거** — 키보드·SR 비노출 단서 의존 배제(`ClaimGenerationPanel` 정합). 순수 접근성 정합 리팩터로 disabled 동작·시각·메시지 불변. 회귀 +2(`BillingDetailPage.test.jsx`·`OverduePage.test.jsx` — `aria-describedby`=배너 id·`title` 부재·배너 id 텍스트 검증). `npm test` 1145중 1143 PASS(2 pre-existing 실패 — 아래 coder 인계)·build PASS. **coder 인계**: `pilotPageFlows.test.jsx` US-L02 미납 안내 2건이 **111f056 커밋부터 실패**(stash 검증으로 본 변경과 무관 확인). 원인 — `111f056`이 `OverduePage` 발송 성공 메시지를 `interpretBillingNotifyResult`(「보호자 N건에게 명세 안내를 발송했습니다.」)로 교체했으나 `pilotPageFlows` E2E는 이전 문구(「보호자에게 명세 안내가 발송되었습니다.」)를 여전히 단언. 메시지 계약·E2E 와이어링은 coder 영역이라 미수정.)
@@ -1024,6 +1025,20 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/reports/client-outings` | `ClientOutingReportPage` | branch_admin, social_worker, hq_admin | **US-T05** (외출 리포트·BNK-63, 케어포 2-9) |
 | `/meals` | `MealsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-N01** (식사 관리) |
 | `/programs` | `ProgramsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-N02** (프로그램 관리) |
+| `/nursing/vital-checks` | `NursingVitalCheckPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M11** |
+| `/nursing/weight-records` | `NursingWeightRecordPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M14** |
+| `/nursing/oral-care-checks` | `NursingOralCareCheckPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M13** |
+| `/nursing/emergency-records` | `NursingEmergencyRecordPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M04** |
+| `/nursing/service` | `NursingServiceRecordPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M01** |
+| `/nursing/service/reports/total` | `NursingServiceReportsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M07** |
+| `/nursing/service/reports/hospital-visits` | `NursingServiceReportsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M09** |
+| `/nursing/service/reports/medication-delivery` | `NursingServiceReportsPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M10** |
+| `/nursing/excretion-tubes` | `NursingExcretionTubeRecordPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O04 L03_M06** |
+| `/nursing/pressure-ulcer/assessment` | `PressureUlcerPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O03** |
+| `/nursing/pressure-ulcer/plan` | `PressureUlcerPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O03** |
+| `/nursing/pressure-ulcer/records` | `PressureUlcerPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O03** |
+| `/nursing/pressure-ulcer/reports` | `PressureUlcerPage` | branch_admin, hq_admin | **US-O03 L03_M05** |
+| `/nursing/pressure-ulcer/reports/provision` | `PressureUlcerPage` | branch_admin, hq_admin | **US-O03 L03_M15** |
 | `/staff` | `StaffPage` | branch_admin, hq_admin | **§3-8** (직원 관리, v3) |
 | `/staff/:id` | `StaffDetailPage` | branch_admin, hq_admin | **US-R03** (직원 lifecycle FAQ21825) |
 | `/login` | `LoginPage` | 공개 | US-B01 (`/`는 `RootRedirect`) |
@@ -1798,7 +1813,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - BE `validateNoProvisionSelected` — FE도 동일 검증(3-flag 모두 false 차단).
 - `updateNursingServiceRecordApi` — `clientId` 제외 payload (`PATCH` DTO).
 - UK `(org, client, service_date)` — 동일 일자 중복 시 서버 오류 → `applyApiErrorToForm` 처리.
-- L03_M07·M09·M10 reports — 본 §25 범위 외(P2).
+- L03_M07·M09·M10 reports — **§27** 참조.
 
 ---
 
@@ -1857,6 +1872,95 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - `fetchNursingExcretionTubeReportApi` — `totalRecords`·`excretionCount`·`ngTubeCount`·`urinaryCatheterCount` 집계.
 - 기간 필터 UI — 본 105차는 기본 30일 윈도우(서버 default) 사용, 날짜 필터는 P2.
 - `pilotPageFlows` L03_M01/M06 E2E harness 연동 검토.
+
+---
+
+## 27. 간호급여 제공 리포트 (L03_M07/M09/M10 · BNK-217~218, 106차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14 -->
+
+> **106차 UXD (2026-06-14)** — US-O04 L03_M07/M09/M10 `FE wire ❌` 갭 해소. `GET /api/v1/nursing/service-records/reports/{total,hospital-visits,medication-delivery}` (V123) 연결.
+
+### 27-1. 라우트·컨텍스트 네비
+
+| Route | UI | pamcode |
+|-------|-----|---------|
+| `/nursing/service/reports/total` | `NursingServiceReportsPage` | L03_M07 |
+| `/nursing/service/reports/hospital-visits` | `NursingServiceReportsPage` | L03_M09 |
+| `/nursing/service/reports/medication-delivery` | `NursingServiceReportsPage` | L03_M10 |
+
+`NursingContextNav` — 「제공 리포트」→ total 경로. `NursingServiceReportNav` — 3종 서브 `nav`·`aria-current`. `navConfig.js` `EXACT_MATCH_PATHS` 4경로 등록.
+
+### 27-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `pages/NursingServiceReportsPage.jsx` | 기간·이용자 필터 + 리포트 패널 |
+| `components/ui/NursingServiceReportPanel.jsx` | variant별 StatCard·표 |
+| `components/ui/NursingServiceReportNav.jsx` | 리포트 종류 cross-page nav |
+| `config/nursingServiceRecord.js` | `NURSING_SERVICE_REPORT_*` 상수 |
+| `api/services.js` | `fetchNursingServiceTotalReportApi` 등 3종 |
+
+### 27-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 섹션 헤딩 | `section`+`h3`+`aria-labelledby` ✅ |
+| StatCard 요약 | `ds-grid ds-grid--stats`+`role=group`+variant별 `aria-label` ✅ |
+| 표 | `captionVisuallyHidden`·`<time dateTime>` ✅ |
+| 제공 항목 Badge | `NURSING_SERVICE_PROVISION_LABELS` 텍스트+색 ✅ |
+| 로딩 | `aria-busy` on section ✅ |
+| 오류 재시도 | `Alert`+「다시 시도」버튼(stale 데이터 클리어 @ `89dc52d`) ✅ |
+| `forced-colors` | `.ds-nursing-service-report .ds-stat` 경계선 ✅ |
+
+### 27-4. coder 전달 메모
+
+- 필터 폼 `aria-label="리포트 조회 조건"`·조회 `aria-busy`.
+- variant 전환 시 `useEffect` 재조회 — 이전 variant 행 잔존 방지는 페이지 state 관리 유지.
+- live E2E harness @ `2966447`·`75c6c76` — UI 계약 본 §27-3과 정합.
+
+---
+
+## 28. 욕창간호 제공 리포트 (L03_M15 · BNK-218, 106차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14 -->
+
+> **106차 UXD (2026-06-14)** — US-O03 L03_M15 `FE wire ❌` 갭 해소 + **106차 a11y 회귀 해소**. `GET /api/v1/nursing/pressure-ulcer/reports/provision` (V125) 연결.
+
+### 28-1. 라우트·컨텍스트 네비
+
+| Route | UI | 역할 |
+|-------|-----|------|
+| `/nursing/pressure-ulcer/reports/provision` | `PressureUlcerPage`(mode=provision) | branch_admin·hq_admin |
+
+`PressureUlcerReportNav` — 「분기 코호트」↔「제공 리포트」 서브 nav. `NursingContextNav` — 「욕창 제공 리포트」12번째 링크.
+
+### 28-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `components/ui/PressureUlcerProvisionReportPanel.jsx` | StatCard + 제공 기록 표 |
+| `components/ui/PressureUlcerReportNav.jsx` | 코호트·제공 리포트 전환 |
+| `pages/PressureUlcerPage.jsx` | provision mode 필터·API 연동 |
+| `api/services.js` | `fetchPressureUlcerProvisionReportApi` |
+
+### 28-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 섹션 헤딩 | **`h3#pu-provision-report-heading`** — 106차 이전 `aria-labelledby` orphan 회귀 해소 ✅ |
+| StatCard | `ds-grid ds-grid--stats`+`role=group` 「제공 기록 건수」 ✅ |
+| NPUAP 단계 | API 숫자(2)↔`STAGE_2` 정규화 + `StatusBadge`/`PRESSURE_ULCER_STAGE` (색+텍스트) ✅ |
+| 부위 | `PRESSURE_ULCER_BODY_SITE_LABELS` 한국어 ✅ |
+| 날짜 | `<time dateTime>` ✅ |
+| 로딩 | `aria-busy`·로딩 중 EmptyState/표 숨김 ✅ |
+| `forced-colors` | `.ds-pressure-ulcer-provision-report`·`.ds-stat` 경계선 ✅ |
+
+### 28-4. coder 전달 메모
+
+- BE `ulcerStage` — 정수(1~4) 또는 `STAGE_*` 코드 혼재 가능 → FE `normalizeUlcerStageCode` 단일 원천.
+- provision 필터 — cohort와 동일 `DateInput`+`Select` 패턴(`Field` render-prop).
+- live E2E @ `pressureUlcerLiveApi.e2e.test.js` — 본 §28-3 필드명 정합 유지.
 
 ---
 
