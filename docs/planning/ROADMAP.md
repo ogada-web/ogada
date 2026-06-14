@@ -1033,6 +1033,7 @@
 - [x] **(v2/G21 backend @ `d768820`)** **방문 체크인 API** — `POST /visits/{id}/check-in`·`check-out` (MOBILE|MANUAL)
 - [x] **(v2/G21 frontend @ `311c7c0`, BNK-28)** **`/visits` UI** — `VisitScheduleForm`·PLAN/BILLING Tabs·`VisitNhisImportPanel`·모바일 체크인(US-V01~V04 **partial**) — **US-V04 E2E 잔여**
 - [x] **(v2/G21 billing confirm-lock @ `c4fb7ff`/`02cd2b2`, BNK-38)** **billing 확정 잠금 가이드** + cross-page E2E — **live run 잔여**
+- [x] **(v2/G21 backend @ `0b807d8`, BNK-197)** **방문일정 일괄확정 API** — `GET /visits/confirm-readiness`·`POST /visits/batch-confirm`·NHIS 비교·변경이력 ack·페어 divergence guard · `VisitServiceTest`·`MustApiEndpointRoutingTest` — **FE batch confirm UI 잔여 P1**
 - [ ] `pilotPageFlows` 방문요양 E2E (US-V01~V04 live post-merge)
 - [x] **(v2/G17 BE @ `73e169a`, BNK-85)** **기능회복훈련 계획 API** — `FunctionalRecoveryController`·V72·`FUNCTIONAL_RECOVERY` program_type · 지표25~27 compliance — **FE Route·폼 잔여 P1**
 - [x] **(v2/G32 BE @ `55fae99`, BNK-86)** **사례관리 회의 API** — `CaseManagementController`·V73·지표43 6필드·분기 UNIQUE·30일 윈도우 — **FE Route·폼·widget 잔여 P1**
