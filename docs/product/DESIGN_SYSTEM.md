@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T22:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T23:59:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-14 (98차 — **US-S04 G41 기관 교육일지 화면 신규 와이어 (`StaffTrainingLogPage`)** — G41 `FE wire ❌` 갭 해소. §19 신규 절·CSS 7개 클래스·API 4개·라우트 등록.)
+> **최종 갱신**: 2026-06-14 (99차 — **G41b 교육일지 4분류 compliance StatCard 접근성 재점검 + §19 정확화 + `ds-grid` 누락 수정** — coder 신규 4커밋(`38d24b6`·`a4ab0c2`·`76fe2fb`·`e14ba10`: G41b 재난·소화·직원권익 3종 연간 compliance BE wiring · live E2E harness · QA-B77 fix · 신규직원 window 하드코딩 제거) 미점검 갭 해소. ① **`StaffTrainingLogPage` `ds-grid` 누락 수정(FE-16)** — compliance StatCard 그리드가 `className="ds-grid--stats"`만 있고 기본 `ds-grid`(`display:grid`·`gap`)가 없어 카드들이 세로 블록 나열되던 결함을 `ds-grid ds-grid--stats` 조합으로 정정(`StaffStatusReportPage`·`ComplaintConsultationPanel` 정합). ② **§19-1 `StatCard` 수 정정** — G41b 3종 추가로 최대 7개(기존 표기 `×4` → `×4~7`). ③ **§19-1 A11y `Card h2` 패턴 명확화** — `compliance section+sr-only h2` 오기 → `Card ds-card__title h2` 가시 헤딩. ④ **§19-1 상수 모듈 G41b 항목 보강** — `G41B_ANNUAL_TYPES`·`mapG41bComplianceCards`·`isG41bAnnualTrainingType`·`countTrainingLogsByType` 추가. ⑤ **§19-1 coder 메모 G41b 필드 보강** — 6필드 명세. ⑥ **`newHireOrientation` 필드명 오기 수정** — DESIGN_SYSTEM 문서 `isNewHireTraining`→`newHireOrientation`. 회귀 없음(`ds-grid` 클래스 추가는 동작 불변·기존 테스트 PASS). `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-14 (98차 — **US-S04 G41 기관 교육일지 화면 신규 와이어 (`StaffTrainingLogPage`)** — G41 `FE wire ❌` 갭 해소. §19 신규 절·CSS 7개 클래스·API 4개·라우트 등록.)
 > **이전 갱신**: 2026-06-14 (97차 — **US-J03 G/BNK-177 알림 채널 readiness 패널 — 미정의 클래스 제거 + 표 가시 헤딩 보강** — 96차 이후 coder 신규 3커밋(`6b1258c`·`d695923` `NotificationChannelReadinessPanel`(BNK-177)·`443efca` refresher compliance API·G34-QUAL gate) 미점검 갭 해소. 신규 패널이 `DashboardPage`·`OrganizationSettingsPage` 두 곳에 `Card`(h2) 하위로 임베드되나 두 가지 결함을 가지고 있었다. ① **미정의 클래스(FE-16·§1 단일 원천)** — 패널 컨테이너/제공자 요약이 CSS에 **정의되지 않은** `.ds-kv-list`·`.ds-kv-list__row`(소비자 이 패널 단 1곳)를 사용해 공유 토큰(grid 정렬·`dt`/`dd` 시맨틱 색·간격)을 못 받던 80차 `.ds-text-input`·90차 `.ds-help-text` 패턴 회귀를, 코드베이스 표준 정의 클래스 **`.ds-dl-grid`**(BillingDetailPage·ClientDetailPage 등 광범위 사용)로 전환하고 `__row` div 래퍼를 제거(grid 직계 `dt`/`dd`). ② **시각적으로 구분되지 않는 3연속 표(WCAG 1.3.1·2.4.6)** — `Solapi 연동 설정`·`이메일(SMTP) 연동 설정`·`필수 알림톡 템플릿` 3개 `Table`이 모두 `captionVisuallyHidden`(SR 전용 caption)에 **동일한 「항목 \| 상태」 컬럼**이라, 가시 헤딩이 없어 sighted 사용자가 어느 표가 무엇인지 식별할 수 없고(readiness Alert의 「아래 Solapi·템플릿 항목 확인」 지시 대상 모호), 44차/89차에서 확립한 「가시 `h3` + `captionVisuallyHidden`」 표 라벨 패턴과 불일치했다. 각 표 앞에 가시 `h3.ds-notification-channel-panel__subheading`(h1 페이지→h2 Card→h3 섹션 계층)을 추가해 시각·SR 모두 표를 식별. ③ **CSS 신규** — `.ds-notification-channel-panel__note`(정의 추가)·`.ds-notification-channel-panel__subheading`(secondary 색·md 굵게·`ds-section-gap` 상단 여백 정합). 순수 정합·접근성 리팩터로 동작·데이터 불변. 회귀 +1(`NotificationChannelReadinessPanel.test.jsx` — 3개 가시 `h3` level-3 헤딩 검증). **coder 인계**: `pilotPageFlows.test.jsx` US-S02 refresher(8-7-1) 1건이 **96차 이전부터 실패**(stash 검증) — `/staff/training` 초기 로드가 `443efca`에서 `fetchStaffRefresherTrainingComplianceApi`로 재배선되며 테스트가 기대하는 `/api/v1/users` 초기 fetch가 더는 호출되지 않음(`updateUserApi`는 「이수 완료」클릭 시에만 호출). API 와이어링·해당 테스트는 coder 영역이라 미수정. `npm test` 1081/228 PASS(1 pre-existing 실패)·build PASS.)
 > **이전 갱신**: 2026-06-14 (96차 — **US-T14 G42 사후관리 모달·결재 대기함 접근성 + 8-12 사진게시 forced-colors** — 95차 이후 coder 신규 4커밋(`14124d6`~`a7a6004`: G42 `GrievanceFollowUpModal`·결재 대기함·사후관리 checklist·`StaffStatusReportPage` HR 사진게시) 미점검 갭 해소. ① **`GrievanceFollowUpModal`** — 필수값 검증을 폼 상단 `Alert`에서 **`Field error`+`aria-invalid`**(WCAG 3.3.1·`IncidentRecordForm` 패턴)로 전환·입력 시 오류 자동 해제·API 실패 `submitError`를 **모달 본문 `Alert`**에 노출(열린 dialog 뒤 페이지 오류 노출 방지, UXD-90 `CmsPage` 정합)·제출 중 overlay/Escape 닫기 차단. ② **`GrievanceCounselingPage`** — follow-up API 실패 시 페이지 `error` state 대신 모달에 위임. ③ **`ComplaintConsultationPanel`** — StatCard 요약 `role="group"`·사후관리 완료 Badge에 sr-only 「사후관리 완료」접두(색+텍스트)·`.ds-complaint-consultation-panel__queue` 경계선·`forced-colors`. ④ **`StaffStatusReportPage` 사진게시** — 사진 없음 placeholder sr-only 「{이름} 직원 사진 없음」·photo card `forced-colors` 경계선. ⑤ barrel `GrievanceFollowUpModal` export. 회귀 +3. `npm test`·build 검증.)
 > **이전 갱신**: 2026-06-13 (95차 — **US-T15 G30 모니터링 자가진단 접근성 + US-R02 8-12 출력물 busy 상태** — 94차 이후 coder 신규 4커밋(`6f6915f`~`07956f5`: G30 MonitoringSelfDiagnosisPage·FAQ21836 basis fallback·8-12 export 7종·referenceDate filter) 미점검 갭 해소. ① **`MonitoringSelfDiagnosisPage`(G30)** — 자가진단·유선상담 `Table` `captionVisuallyHidden`(WCAG 1.3.1)·행별 「수정」버튼 `${itemCode} ${inspectionDirection}` 컨텍스트 `aria-label`(WCAG 2.4.6·91차 ClientRiskAssessmentPanel 패턴)·양 폼 `aria-label`·제출 `aria-busy`·연도 필터 `.ds-input--year`(FE-16)·유선상담 일자 `<time dateTime>`·오류 `role=alert`. ② **`.ds-monitoring-compliance`** — G30 StatCard 섹션 margin·`forced-colors` 경계선. ③ **`StaffStatusReportPage` 8-12 출력** — 기준일 「조회」·출력물 7종 버튼 `aria-busy`(export/loading 진행 SR 안내). 순수 접근성·정합 리팩터로 시각·동작 불변. 회귀 +3(`MonitoringSelfDiagnosisPage.test.jsx` 2·`StaffStatusReportPage.test.jsx` 1). `npm test`·build 검증.)
@@ -1466,31 +1467,34 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 ---
 
-## 19. 기관 교육일지 (US-S04 G41 · func.php 8-7 · FAQ21807/21828, 98차) [UXD]
+## 19. 기관 교육일지 (US-S04 G41/G41b · func.php 8-7 · FAQ21807/21828, 98~99차) [UXD]
 
-> **98차 UXD (2026-06-14)** — G41 FE 와이어 신규 구현. 노인인권교육(지표14)·운영규정 교육일지(지표5) + 신규직원 7일 이내 이수 집계.
+> **98차 UXD (2026-06-14)** — G41 FE 와이어 신규 구현. 노인인권교육(지표14)·운영규정 교육일지(지표5) + 신규직원 7일 이내 이수 집계.  
+> **99차 UXD (2026-06-14)** — G41b 3종(재난·소화·직원권익) compliance BE wiring 접근성 재점검·§19 정확화.
 
 ### 19-1. StaffTrainingLogPage (`/staff/training-logs`)
 
 | 항목 | 상세 |
 |------|------|
 | 역할 | hq_admin·branch_admin·social_worker (StaffContextNav 「교육일지 (8-7)」 링크) |
-| 컴포넌트 | `StaffContextNav` · `StatCard` ×4(상반기·하반기·연간·신규직원 compliance) · `Select`(연도·교육유형 필터) · `Table`(교육일·유형·방법·참석자·교재·강사·신규직원 여부) · `Modal`(등록/수정) · `Field`+`DateInput`/`Select`/`TextInput`/`Textarea` · `Badge`(신규직원) · `Alert` · `Spinner` · `EmptyState` |
-| 신규직원 | `isNewHireTraining` 체크박스 — 체크 시 `.ds-staff-training-log__newhire-section` 펼침 (신규직원명 `TextInput`, 입사일 `DateInput`, 7일 이내 이수 자동 계산) |
-| Compliance 집계 | `GET /api/v1/staff/training-logs/compliance` → `halfYearlyCompliance[1/2]`·`annualCompliance`·`newHireCompliance` 4개 StatCard |
-| A11y | compliance `section` + sr-only `h2` · StatCard `role="group"` · 표 `captionVisuallyHidden`(「교육일지 목록」) · 행 「수정」 `${logType} ${date}` `aria-label` · 신규직원 badge sr-only 접두 · 폼 `aria-busy` 제출 중 · 연도 `.ds-input--year` · 교육일 `<time dateTime>` |
-| CSS 신규 | `.ds-staff-training-log__header` · `__subheading` · `__newhire-badge` · `__attendees`(20ch ellipsis) · `__content-field`(full-width grid) · `__newhire-check` · `__newhire-section`(상단 border + `forced-colors`) |
-| 상수 모듈 | `src/frontend/src/config/staffTrainingLogs.js` — `TRAINING_LOG_TYPE`·`TRAINING_LOG_TYPE_LABELS`·`TRAINING_METHODS`·`HALF_LABELS`·`NEW_HIRE_WINDOW_DAYS=7` |
+| 컴포넌트 | `StaffContextNav` · `StatCard` ×**4~7**(상반기·하반기·운영규정 연간·신규직원 + G41b 3종 조건부) · `Select`(연도·교육유형 필터) · `Table`(교육일·유형·방법·강사·참석자·신규직원 여부·관리) · `Modal`(등록/수정) · `Field`+`DateInput`/`Select`/`TextInput`/`Textarea` · `Badge tone=neutral`(유형) · `Badge tone=info`(신규직원) · `Alert` · `Spinner` · `EmptyState` |
+| **G41 교육 유형** | 노인인권교육(`ELDERLY_HUMAN_RIGHTS` — 반기 1회·상/하반기 구분) · 운영규정(`OPERATING_REGULATION` — 연 1회·신규직원 7일 이내) |
+| **G41b 교육 유형** | 재난상황대응(`DISASTER_RESPONSE`) · 소화·경보설비(`FIRE_SAFETY_EQUIPMENT`) · 직원권익(`STAFF_RIGHTS`) — 모두 **연 1회** 집계 (`G41B_ANNUAL_TYPES`) |
+| 신규직원 | `newHireOrientation` 체크박스 — 운영규정 유형 선택 시 노출. 체크 시 `.ds-staff-training-log__newhire-section` 신규직원 `Select` 펼침(직원 목록 `GET /users`) |
+| Compliance 집계 | `GET /api/v1/staff/training-logs/compliance` → 4개 핵심 StatCard + G41b 3개 조건부 StatCard. BE 응답 없으면 목록 기반 fallback(`countTrainingLogsByType`) |
+| A11y | compliance `Card`+`ds-card__title h2`(가시 헤딩, AppShell h1→Card h2→신규직원현황 h3 계층) · `ds-grid--stats role="group" aria-label="교육 준수 현황 요약"` · 신규직원현황 표 `captionVisuallyHidden`(「신규직원 오리엔테이션 현황」) · 목록 표 `captionVisuallyHidden`(「기관 교육일지 목록」) · 행 「수정」 `${trainedAt} ${typeShortLabel} 교육일지 수정` `aria-label` · 폼 `aria-label`(「교육일지 등록/수정」) · 제출 `aria-busy` · 연도 `.ds-input--year` · 교육일 `<time dateTime>` |
+| CSS 신규 | `.ds-staff-training-log__header`(제목+버튼 행 `flex` `space-between`) · `__subheading`(secondary color · md bold · section-gap 상단) · `__newhire-badge`(목록 유형 배지 inline 여백) · `__attendees`(20ch ellipsis) · `__content-field`(grid full-width) · `__newhire-check`(checkbox+label inline `flex`) · `__newhire-section`(상단 border + `forced-colors`) |
+| 상수 모듈 | `src/frontend/src/config/staffTrainingLogs.js` — `TRAINING_LOG_TYPE`(5종) · `G41B_ANNUAL_TYPES`(3종 배열) · `TRAINING_LOG_TYPE_LABELS`/`SHORT` · `isSemiAnnualTrainingType` · `isOperatingRegulationType` · `isG41bAnnualTrainingType` · `mapG41bComplianceCards` · `countTrainingLogsByType`(fallback) · `TRAINING_METHODS`(5종) · `HALF_LABELS` · `REQUIRED_SEMI_ANNUAL=1` · `REQUIRED_ANNUAL=1` · `NEW_HIRE_WINDOW_DAYS=7` |
 | API 서비스 | `services.js` — `fetchStaffTrainingLogsApi`·`createStaffTrainingLogApi`·`updateStaffTrainingLogApi`·`fetchStaffTrainingLogComplianceApi` |
 
 ### 19-2. coder 전달 메모
 
-- 백엔드 `StaffTrainingLogController`(G41 `△ BE partial`) 이미 구현 — `GET /api/v1/staff/training-logs`·`POST`·`PATCH /{logId}`·`GET /compliance` 4개 엔드포인트 사용.
-- `StaffTrainingLogResponse` 필드: `logId`·`branchId`·`trainingType`·`trainingDate`·`trainingMethod`·`contentSummary`·`materialTitle`·`instructorName`·`attendeeNames`(List)·`isNewHireTraining`·`newHireName`·`newHireJoinDate`·`referenceYear`·`halfYear`.
-- `StaffTrainingLogComplianceResponse` 필드: `halfYearlyCompliance`(Map 1/2 → count/required/met)·`annualCompliance`·`newHireCompliance`.
-- 테스트 `StaffTrainingLogPage.test.jsx` 추가됨 — `npm test` PASS 확인 필요.
-- 라우트: `App.jsx` `/staff/training-logs` → lazy `StaffTrainingLogPage`.
-- `navConfig.js` `EXACT_MATCH_PATHS`에 `/staff/training-logs` 추가.
+- 백엔드 `StaffTrainingLogController`(G41/G41b ✅ partial+) — `GET /api/v1/staff/training-logs`·`POST`·`PATCH /{logId}`·`GET /compliance` 4개 엔드포인트.
+- FE `StaffTrainingLogResponse` 매핑 필드: `id`·`branchId`·`trainingType`·`trainedAt`·`trainingMethod`·`trainingContent`·`instructorName`·`attendeeNames`·`newHireOrientation`·`newHireUserId`·`referenceYear`·`referenceHalf`.
+- `StaffTrainingLogComplianceResponse` 핵심 필드: `elderlyHumanRightsFirstHalfCount`/`…Met`·`…SecondHalf…`·`operatingRegulationAnnualCount`/`…Met`·`newHireStaffCount`/`newHireOrientationMetCount`/`allNewHiresOriented`·`newHireItems[]`(userId·displayName·daysSinceHire·orientationMet).
+- **G41b compliance 필드**: `disasterResponseAnnualCount`/`disasterResponseRequiredPerYear`/`disasterResponseAnnualMet`·`fireSafetyEquipmentAnnualCount`/`…RequiredPerYear`/`…Met`·`staffRightsAnnualCount`/`…RequiredPerYear`/`…Met`. 없으면 FE 목록 fallback.
+- 테스트 `StaffTrainingLogPage.test.jsx`·`staffTrainingLogs.test.js`·`pilotPageFlows.test.jsx` US-S04·`staffTrainingLogLiveApi.e2e.test.js` — `npm test` PASS.
+- 라우트: `App.jsx` `/staff/training-logs` → lazy `StaffTrainingLogPage`. `navConfig.js` `EXACT_MATCH_PATHS` 등록.
 
 ---
 
