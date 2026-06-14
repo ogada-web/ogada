@@ -3,7 +3,8 @@
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-14 (99차 — **G41b 교육일지 4분류 compliance StatCard 접근성 재점검 + §19 정확화 + `ds-grid` 누락 수정** — coder 신규 4커밋(`38d24b6`·`a4ab0c2`·`76fe2fb`·`e14ba10`: G41b 재난·소화·직원권익 3종 연간 compliance BE wiring · live E2E harness · QA-B77 fix · 신규직원 window 하드코딩 제거) 미점검 갭 해소. ① **`StaffTrainingLogPage` `ds-grid` 누락 수정(FE-16)** — compliance StatCard 그리드가 `className="ds-grid--stats"`만 있고 기본 `ds-grid`(`display:grid`·`gap`)가 없어 카드들이 세로 블록 나열되던 결함을 `ds-grid ds-grid--stats` 조합으로 정정(`StaffStatusReportPage`·`ComplaintConsultationPanel` 정합). ② **§19-1 `StatCard` 수 정정** — G41b 3종 추가로 최대 7개(기존 표기 `×4` → `×4~7`). ③ **§19-1 A11y `Card h2` 패턴 명확화** — `compliance section+sr-only h2` 오기 → `Card ds-card__title h2` 가시 헤딩. ④ **§19-1 상수 모듈 G41b 항목 보강** — `G41B_ANNUAL_TYPES`·`mapG41bComplianceCards`·`isG41bAnnualTrainingType`·`countTrainingLogsByType` 추가. ⑤ **§19-1 coder 메모 G41b 필드 보강** — 6필드 명세. ⑥ **`newHireOrientation` 필드명 오기 수정** — DESIGN_SYSTEM 문서 `isNewHireTraining`→`newHireOrientation`. 회귀 없음(`ds-grid` 클래스 추가는 동작 불변·기존 테스트 PASS). `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-14 (100차 — **US-L06 7-5 간편결제 EasyPayPanel 접근성 재점검 + §20 신규 + §8-1 라우트 보강** — coder 신규 4커밋(`c9baca2`·`bebd874`·`3848af6`·`easyPay.js`: `/billing/easy-pay`·`EasyPayPanel`·prior-month guard·provider normalization) 미점검 갭 해소. ① **필드 단위 검증(WCAG 3.3.1)** — 청구서·결제 수단 미선택 시 폼 상단 `Alert` 대신 `Field error`+`aria-invalid`로 전환·입력 시 오류 자동 해제(`ComplaintConsultationForm` 패턴). ② **요청 버튼 `aria-describedby`** — 스텁 PG 안내(`#easy-pay-stub-note`)·선행입금 가드 배너(`#easy-pay-prior-month-guard-warning`)를 결합해 SR이 제약 맥락을 함께 안내. ③ **결제 상태 섹션** — `.ds-cms-debit-status` 재사용 대신 `.ds-easy-pay-status`+`section`+`aria-labelledby` h3·요청/완료일시 `<time dateTime>`·실패 사유 `role=alert`. ④ **CSS** — `.ds-easy-pay-status`·`__heading`·`forced-colors` 경계선(`.ds-cms-debit-status`와 공유 선택자). ⑤ **§2-3 `EASY_PAY_STATUS`**·**§8-1 `/billing/easy-pay`**·**§20** 신규. US-L03→US-L06 스토리 ID 오기 수정. 회귀 +3. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-14 (99차 — **G41b 교육일지 4분류 compliance StatCard 접근성 재점검 + §19 정확화 + `ds-grid` 누락 수정** — coder 신규 4커밋(`38d24b6`·`a4ab0c2`·`76fe2fb`·`e14ba10`: G41b 재난·소화·직원권익 3종 연간 compliance BE wiring · live E2E harness · QA-B77 fix · 신규직원 window 하드코딩 제거) 미점검 갭 해소. ① **`StaffTrainingLogPage` `ds-grid` 누락 수정(FE-16)** — compliance StatCard 그리드가 `className="ds-grid--stats"`만 있고 기본 `ds-grid`(`display:grid`·`gap`)가 없어 카드들이 세로 블록 나열되던 결함을 `ds-grid ds-grid--stats` 조합으로 정정(`StaffStatusReportPage`·`ComplaintConsultationPanel` 정합). ② **§19-1 `StatCard` 수 정정** — G41b 3종 추가로 최대 7개(기존 표기 `×4` → `×4~7`). ③ **§19-1 A11y `Card h2` 패턴 명확화** — `compliance section+sr-only h2` 오기 → `Card ds-card__title h2` 가시 헤딩. ④ **§19-1 상수 모듈 G41b 항목 보강** — `G41B_ANNUAL_TYPES`·`mapG41bComplianceCards`·`isG41bAnnualTrainingType`·`countTrainingLogsByType` 추가. ⑤ **§19-1 coder 메모 G41b 필드 보강** — 6필드 명세. ⑥ **`newHireOrientation` 필드명 오기 수정** — DESIGN_SYSTEM 문서 `isNewHireTraining`→`newHireOrientation`. 회귀 없음(`ds-grid` 클래스 추가는 동작 불변·기존 테스트 PASS). `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (98차 — **US-S04 G41 기관 교육일지 화면 신규 와이어 (`StaffTrainingLogPage`)** — G41 `FE wire ❌` 갭 해소. §19 신규 절·CSS 7개 클래스·API 4개·라우트 등록.)
 > **이전 갱신**: 2026-06-14 (97차 — **US-J03 G/BNK-177 알림 채널 readiness 패널 — 미정의 클래스 제거 + 표 가시 헤딩 보강** — 96차 이후 coder 신규 3커밋(`6b1258c`·`d695923` `NotificationChannelReadinessPanel`(BNK-177)·`443efca` refresher compliance API·G34-QUAL gate) 미점검 갭 해소. 신규 패널이 `DashboardPage`·`OrganizationSettingsPage` 두 곳에 `Card`(h2) 하위로 임베드되나 두 가지 결함을 가지고 있었다. ① **미정의 클래스(FE-16·§1 단일 원천)** — 패널 컨테이너/제공자 요약이 CSS에 **정의되지 않은** `.ds-kv-list`·`.ds-kv-list__row`(소비자 이 패널 단 1곳)를 사용해 공유 토큰(grid 정렬·`dt`/`dd` 시맨틱 색·간격)을 못 받던 80차 `.ds-text-input`·90차 `.ds-help-text` 패턴 회귀를, 코드베이스 표준 정의 클래스 **`.ds-dl-grid`**(BillingDetailPage·ClientDetailPage 등 광범위 사용)로 전환하고 `__row` div 래퍼를 제거(grid 직계 `dt`/`dd`). ② **시각적으로 구분되지 않는 3연속 표(WCAG 1.3.1·2.4.6)** — `Solapi 연동 설정`·`이메일(SMTP) 연동 설정`·`필수 알림톡 템플릿` 3개 `Table`이 모두 `captionVisuallyHidden`(SR 전용 caption)에 **동일한 「항목 \| 상태」 컬럼**이라, 가시 헤딩이 없어 sighted 사용자가 어느 표가 무엇인지 식별할 수 없고(readiness Alert의 「아래 Solapi·템플릿 항목 확인」 지시 대상 모호), 44차/89차에서 확립한 「가시 `h3` + `captionVisuallyHidden`」 표 라벨 패턴과 불일치했다. 각 표 앞에 가시 `h3.ds-notification-channel-panel__subheading`(h1 페이지→h2 Card→h3 섹션 계층)을 추가해 시각·SR 모두 표를 식별. ③ **CSS 신규** — `.ds-notification-channel-panel__note`(정의 추가)·`.ds-notification-channel-panel__subheading`(secondary 색·md 굵게·`ds-section-gap` 상단 여백 정합). 순수 정합·접근성 리팩터로 동작·데이터 불변. 회귀 +1(`NotificationChannelReadinessPanel.test.jsx` — 3개 가시 `h3` level-3 헤딩 검증). **coder 인계**: `pilotPageFlows.test.jsx` US-S02 refresher(8-7-1) 1건이 **96차 이전부터 실패**(stash 검증) — `/staff/training` 초기 로드가 `443efca`에서 `fetchStaffRefresherTrainingComplianceApi`로 재배선되며 테스트가 기대하는 `/api/v1/users` 초기 fetch가 더는 호출되지 않음(`updateUserApi`는 「이수 완료」클릭 시에만 호출). API 와이어링·해당 테스트는 coder 영역이라 미수정. `npm test` 1081/228 PASS(1 pre-existing 실패)·build PASS.)
 > **이전 갱신**: 2026-06-14 (96차 — **US-T14 G42 사후관리 모달·결재 대기함 접근성 + 8-12 사진게시 forced-colors** — 95차 이후 coder 신규 4커밋(`14124d6`~`a7a6004`: G42 `GrievanceFollowUpModal`·결재 대기함·사후관리 checklist·`StaffStatusReportPage` HR 사진게시) 미점검 갭 해소. ① **`GrievanceFollowUpModal`** — 필수값 검증을 폼 상단 `Alert`에서 **`Field error`+`aria-invalid`**(WCAG 3.3.1·`IncidentRecordForm` 패턴)로 전환·입력 시 오류 자동 해제·API 실패 `submitError`를 **모달 본문 `Alert`**에 노출(열린 dialog 뒤 페이지 오류 노출 방지, UXD-90 `CmsPage` 정합)·제출 중 overlay/Escape 닫기 차단. ② **`GrievanceCounselingPage`** — follow-up API 실패 시 페이지 `error` state 대신 모달에 위임. ③ **`ComplaintConsultationPanel`** — StatCard 요약 `role="group"`·사후관리 완료 Badge에 sr-only 「사후관리 완료」접두(색+텍스트)·`.ds-complaint-consultation-panel__queue` 경계선·`forced-colors`. ④ **`StaffStatusReportPage` 사진게시** — 사진 없음 placeholder sr-only 「{이름} 직원 사진 없음」·photo card `forced-colors` 경계선. ⑤ barrel `GrievanceFollowUpModal` export. 회귀 +3. `npm test`·build 검증.)
@@ -211,8 +212,12 @@
 | | `CANCELLED` | neutral | 취소 |
 | 차량 상태 (G16) | `active` (isActive=true) | success | 운행 |
 | | `inactive` (isActive=false) | neutral | 비활성 |
+| 간편결제 (US-L06 7-5) | `REQUESTED` | info | 요청됨 |
+| | `PENDING` | info | 결제진행중 |
+| | `SUCCEEDED` | success | 결제성공 |
+| | `FAILED` | danger | 결제실패 |
 
-> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`STAFF_LIFECYCLE_STATUS`**(US-R03)·**`LIFECYCLE_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의.
+> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`STAFF_LIFECYCLE_STATUS`**(US-R03)·**`LIFECYCLE_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의. **`EASY_PAY_STATUS`**(US-L06 7-5)는 `config/easyPay.js`에 정의(100차).
 
 ### 2-4. 다크 모드 토큰 (11차, 운영자 야간 근무) [UXD]
 
@@ -987,6 +992,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/billing/fee-schedules` | `FeeSchedulePage` | hq_admin | US-G00a (G9 duration_band·G11 가산율 가이드) |
 | `/billing/copay-rates` | `CopayRatePage` | hq_admin | US-G00b |
 | `/billing/cms` | `CmsPage` | branch_admin, hq_admin | **US-L03** (CMS 자동이체) |
+| `/billing/easy-pay` | `EasyPayPage` | branch_admin, hq_admin | **US-L06** (7-5 간편결제) |
 | `/billing/reports/charges` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (청구대장 7-6) |
 | `/billing/reports/deposits` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (입금대장 7-7) |
 | `/billing/reports/receipts` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (수납대장 7-8) |
@@ -1022,7 +1028,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | 이동 | 배차·이동경로(US-T01~T03) |
 | 출석 | 현황, 수기 체크인, 통계, QR |
 | 기록 | 건강, 식사, 프로그램, **방문 일정**(US-V01) |
-| 청구 | 청구·정산, **공단 엑셀 import**, **입금**, **미납**, **CMS 자동이체**, 수가표·본인부담 비율(hq), **청구·입금·수납 대장**, **간편계산기** |
+| 청구 | 청구·정산, **공단 엑셀 import**, **입금**, **미납**, **CMS 자동이체**, **간편결제(7-5)**, 수가표·본인부담 비율(hq), **청구·입금·수납 대장**, **간편계산기** |
 
 > 실제 정의는 `src/frontend/src/layout/navConfig.js` `NAV_GROUPS`(운영·이동·출석·기록·청구 5그룹). 본 표는 요약이며, 라우트 전수는 §8-1을 단일 원천으로 본다.
 
@@ -1516,5 +1522,33 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 - G30 live E2E verify는 tester(TSR) — fetch-mock 회귀는 `MonitoringSelfDiagnosisPage.test.jsx` 8건.
 - FAQ21812~13(모니터링 checklist v2 Epic)은 별도 Route·`RecordsContextNav` 확장 검토 — 본 95차 범위 외.
+
+---
+
+## 20. 본인부담 간편결제 (US-L06 7-5 · 케어포 npay_manage, 100차) [UXD]
+
+> **100차 UXD (2026-06-14)** — coder `EasyPayPage`·`EasyPayPanel` @ `c9baca2`/`bebd874`·prior-month guard·`config/easyPay.js` provider normalization 접근성 재점검.
+
+### 20-1. EasyPayPage (`/billing/easy-pay`)
+
+| 항목 | 상세 |
+|------|------|
+| 역할 | branch_admin·hq_admin (`BillingContextNav` 4항목: 입금·미납·CMS·**간편결제**) |
+| 컴포넌트 | `BillingContextNav` · `EasyPayPanel` · `ClaimGenerationGuardBanner`(선행입금 가드 재사용) · `Alert` · `Spinner` |
+| 결제 수단 | `EASY_PAY_PROVIDERS` — `CARD`(카드결제)·`KAKAO_PAY`(카카오페이). `normalizeEasyPayProvider()` — 공백/하이픈 정규화·`KAKAOPAY`→`KAKAO_PAY` |
+| 선행입금 가드 | 청구서 선택 시 `fetchClaimGenerationGuardApi({ branchId, yearMonth })` → `priorMonthGuard` prop. 차단 시 `ClaimGenerationGuardBanner`(`title`·`fallbackAction`·`footerHint` 7-5 맥락) + 요청 버튼 `disabled` |
+| A11y | 청구서·결제 수단 `Field error`+`aria-invalid`(필수 미선택) · 스텁 PG 안내 `#easy-pay-stub-note`+가드 배너 `aria-describedby` 결합 · 요청 `aria-busy`·`${clientName} 청구서 간편결제 요청` `aria-label` · 결제 상태 `section`+`h3#easy-pay-status-heading`+`aria-live=polite` · `StatusBadge map={EASY_PAY_STATUS}`(색+텍스트) · 요청/완료일시 `<time dateTime>` · API 실패는 폼 상단 `Alert`+상태 패널 텍스트 병행(중복 `role=alert` 금지) |
+| CSS | `.ds-easy-pay-status` · `__heading` · `.ds-cms-debit-status`와 공유 패널 스타일·`forced-colors` 경계선 |
+| 상수 모듈 | `src/frontend/src/config/easyPay.js` — `EASY_PAY_PROVIDERS` · `EASY_PAY_STATUS` · `normalizeEasyPayProvider` · `easyPayProviderLabel` |
+| API 서비스 | `services.js` — `requestEasyPayPaymentApi`(`POST /billing/easy-pay/claims/{claimId}/payment`) · `fetchEasyPayStatusApi`(`GET` 동일 경로) |
+
+### 20-2. coder 전달 메모
+
+- v2 P2 **Stub PG** — 실연동 전까지 `role=note` 스텁 안내 유지. live PG(BNK-190 P2) 시 `#easy-pay-stub-note` 문구만 교체.
+- `priorMonthGuard`는 `ClaimGenerationPanel`·`EasyPayPage`가 동일 `fetchClaimGenerationGuardApi` 사용 — BE enforce와 FE surface 정합 유지.
+- QA-B78/B79 provider normalization — `normalizeEasyPayProvider` 단일 원천(`easyPay.js`). payload는 항상 `CARD`/`KAKAO_PAY` enum.
+- 테스트 — `EasyPayPanel.test.jsx` 5건·`easyPay.test.js`·`EasyPayPage.test.jsx`·`easyPayPilot.e2e.test.js`·`pilotPageFlows` US-L06.
+
+---
 
 *이 문서는 ux_designer 에이전트(UXD)가 관리합니다. 토큰·컴포넌트 변경 시 본 문서와 `memory/decisions.md`를 동기화하세요.*
