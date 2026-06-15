@@ -1,9 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-14T12:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15T15:45:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-14 (106차 — **L03_M07/M09/M10·L03_M15 리포트 UI 접근성 재점검 + §27·§28 신규 + §8-1 간호 라우트 보강** — 105차 이후 coder 신규 커밋(`2a05271`·`75bddee`·`efa4472`·`89dc52d` L03_M07/M09/M10 `NursingServiceReportsPage`·L03_M15 `PressureUlcerProvisionReportPanel`·`NursingContextNav` 12링크) 미점검 갭 해소. ① **`PressureUlcerProvisionReportPanel`** — `aria-labelledby` 대상 **`h3` 누락** 회귀 해소·`aria-busy`·로딩 중 EmptyState 미노출·`<time dateTime>`·NPUAP 단계 `StatusBadge`(숫자·코드 정규화)·`ds-grid ds-grid--stats`+`role=group`. ② **`NursingServiceReportPanel`/`Nav`** — forced-colors StatCard 경계선·서브 네비 landmark 회귀. ③ **CSS** — `.ds-nursing-service-report*`·`.ds-pressure-ulcer-provision-report*`. ④ **§8-1** — `/nursing/*` 14경로 추가. ⑤ **§27 L03_M07/M09/M10**·**§28 L03_M15** 신규. 회귀 +4. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-15 (109차 — **US-T09 G24b 연간 욕구사정 현황 페이지 신설(`NeedsAssessmentStatusPage`) + 대시보드 위젯 목적지 연결 + §31 신규** — 108차 이후 coder 신규 커밋(`ca0b627` G24b compliance 대시보드 위젯 wire) 미점검 갭 해소. 신규 위젯 「연간 욕구사정 미완료」·「등급변경 재사정 필요」가 ① **`href="/clients"`(일반 이용자 목록)** 로 연결돼 클릭 시 **어느 이용자가 대상인지 식별 불가**(다른 compliance 위젯은 `/clients/periodic-risk-assessments` 등 전용 현황 페이지로 연결되는 코드베이스 표준과 불일치)하고, ② `mapNeedsAssessmentComplianceView`·`findNeedsAssessmentComplianceForClient` util이 **production 소비자 0건**(테스트만)인 갭이 있었다. ① **`NeedsAssessmentStatusPage`(`/clients/needs-assessments`)** 신설 — `PeriodicRiskAssessmentStatusPage`(G40b) 패턴 정합: `ClientsContextNav`·`ds-page-lede`·회계연도 `Field`+`TextInput`(`ds-input--year`)·StatCard 4종(전체·연간 완료·연간 미완료(danger)·등급변경 재사정(warning)) `role=group`+sr-only `h2`·조치 필요/전체 필터(`Select`)·`Table`(`caption`)·행별 「욕구사정」링크 `aria-label`에 이용자명 포함(WCAG 2.4.6)·연간 사정·재사정 `Badge`(색+텍스트). ② **`formatMissingG24bFields`**(`needsAssessmentCompliance.js`) — 미기록 G24b 항목 코드를 `NEEDS_ASSESSMENT_G24B_FIELDS` 한국어 라벨(질병상태·의사소통·영양상태·환경상태·자원이용 욕구)로 변환(단일 원천). ③ **대시보드 위젯 2종** href `/clients`→`/clients/needs-assessments`. ④ **`ClientsContextNav`·`navConfig`(EXACT_MATCH + 운영 그룹)** 라우트 등록. ⑤ **§31** 신규. forced-colors는 전역 `.ds-stat-grid .ds-stat` 윤곽선 재사용(신규 CSS 0). 회귀 +2(`NeedsAssessmentStatusPage.test.jsx` — StatCard·조치 필요 행·미기록 라벨·링크 href·전체 필터). `npm test` **282 파일 1349 PASS**·build PASS.)
+> **이전 갱신**: 2026-06-15 (108차 — **US-T09 G24b 욕구사정 8+5항목 폼 접근성 재점검 + §30 신규** — 107차 이후 coder 신규 커밋(`49fbf67` G24b 5필드 FE wire) 미점검 갭 해소. ① **`ClientNeedsAssessmentForm`** — FAQ 21800·G24b FAQ 21810 **`fieldset`/`legend` 2그룹 분리**(WCAG 1.3.1)·`Field help`→`aria-describedby`·제출 `aria-busy`·폼 `h3` `aria-labelledby`. ② **`ClientNeedsAssessmentPanel`** — outer `section` `aria-label` 정합(`ClientBenefitContractPanel` 패턴)·필드 안내 `role=region`. ③ **`ClientNeedsAssessmentCompare`** — 변경 행 **`Badge`「변경」**(색+텍스트)·`.ds-table__row--changed` 좌측 보더·`forced-colors` outline. ④ **CSS** — `.ds-needs-assessment-form*`·`.ds-needs-assessment-compare*`. ⑤ **§30** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-15 (107차 — **US-O05 G-ONBOARD-SUPPORT 지점 도입 체크list UI 신설 + §29 신규 + §2-3 `ONBOARDING_SESSION_STATUS`** — planner 140차 P2 갭(US-O05 BE @ `735dd53`·FE wire ❌) 해소. ① **`BranchOnboardingSupportPanel`** — silverangel businessSupport 1~4회차 checklist·오픈일 `DateInput`+`Field`·역할별 `fieldset`/`legend`·`Checkbox`·회차별 `PATCH`·`ONBOARDING_SESSION_STATUS` Badge(색+텍스트)·기한 초과 좌측 보더·`ds-grid ds-grid--stats` 요약. ② **`BranchesPage`** — 행별 「도입 체크list」`Modal`(hq_admin·branch_admin·social_worker)·`aria-label`에 지점명. ③ **API** — `fetchBranchOnboardingSupportApi`·`upsertBranchOnboardingSupportApi`·`updateBranchOnboardingSupportSessionApi`. ④ **CSS** — `.ds-branch-onboarding-support*`. ⑤ **§29** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-14 (106차 — **L03_M07/M09/M10·L03_M15 리포트 UI 접근성 재점검 + §27·§28 신규 + §8-1 간호 라우트 보강** — 105차 이후 coder 신규 커밋(`2a05271`·`75bddee`·`efa4472`·`89dc52d` L03_M07/M09/M10 `NursingServiceReportsPage`·L03_M15 `PressureUlcerProvisionReportPanel`·`NursingContextNav` 12링크) 미점검 갭 해소. ① **`PressureUlcerProvisionReportPanel`** — `aria-labelledby` 대상 **`h3` 누락** 회귀 해소·`aria-busy`·로딩 중 EmptyState 미노출·`<time dateTime>`·NPUAP 단계 `StatusBadge`(숫자·코드 정규화)·`ds-grid ds-grid--stats`+`role=group`. ② **`NursingServiceReportPanel`/`Nav`** — forced-colors StatCard 경계선·서브 네비 landmark 회귀. ③ **CSS** — `.ds-nursing-service-report*`·`.ds-pressure-ulcer-provision-report*`. ④ **§8-1** — `/nursing/*` 14경로 추가. ⑤ **§27 L03_M07/M09/M10**·**§28 L03_M15** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (105차 — **US-O04 L03_M01·L03_M06 간호급여 제공기록·배설/경관 UI 신설 + §25·§26 신규** — planner 138차 P1 갭(L03_M01/M06 FE wire ❌) 해소. ① **L03_M01** — `NursingServiceRecordForm`(3-flag `fieldset`+`legend`·최소 1개 제공 검증)·`NursingServiceRecordPage`·`/nursing/service`·`services.js` CRUD. ② **L03_M06** — `NursingExcretionTubeRecordForm`·`NursingExcretionTubeReportPanel`(StatCard×4)·`NursingExcretionTubeRecordPage`·`/nursing/excretion-tubes`·report API. ③ **`NursingContextNav`** — 제공기록·배설·경관 2링크 추가(10 route). ④ **CSS** — `.ds-nursing-service-form__provision*`·`.ds-nursing-excretion-*`·`forced-colors`. ⑤ **§25 L03_M01**·**§26 L03_M06** 신규. 회귀 +18. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (104차 — **L03_M14 체중 기록 폼 `aria-describedby` 덮어쓰기 회귀 해소(WCAG 3.3.1·1.3.1·FE-16)** — 103차 이후 coder 신규 커밋(`a7f97a6`·`962858b`·`c60d7e5`·`8a8fe98` L03_M14 `NursingWeightRecordPage`·`8570fa2` 통합 바이탈·`bb3dee8` 구강상태·`97108f2` 응급상황 FE wire) 미점검 갭 해소. 신규 4개 간호 기록 폼 중 **`NursingWeightRecordForm`** 「체중 (kg)」 필드만 결함을 가지고 있었다 — 유효 범위 안내문을 `Field` 밖 분리된 `<p id="nwr-weight-hint" className="ds-field__hint">`로 렌더하고 `TextInput`에 **`aria-describedby="nwr-weight-hint"`를 `{...p}` 뒤에 직접 지정**해, `Field`가 계산한 `aria-describedby`(오류·경고 id 포함)를 **덮어써** ① 체중 범위 오류(`체중은 20~200 kg 사이로…`)·② 비정상 범위 경고를 스크린리더가 안내하지 못하던 갭(코드베이스 표준 — 80·90·94차에서 확립한 「안내문은 `Field` `help` prop → `.ds-field__help` 전역 클래스로 전달, describedby에 오류·경고와 함께 병합」과 불일치, 일회성 `.ds-nursing-weight-form .ds-field__hint` 선택자 사용). ① **안내문을 `Field` `help` prop으로 전환** — 분리 `<p>`·수기 `aria-describedby` 제거, `Field`가 help·error·warning id를 모두 `aria-describedby`로 병합(SR이 범위 안내와 오류를 함께 안내). ② **일회성 CSS 제거(FE-16·§1 단일 원천)** — 미정의에 가까운 폼 전용 `.ds-nursing-weight-form .ds-field__hint` 삭제, 전역 `.ds-field__help` 사용. 다른 3개 폼(`NursingVitalCheckForm`·`NursingOralCareCheckForm`·`NursingEmergencyRecordForm`)·`NursingContextNav`는 표준 `Field`·`ds-context-nav` 패턴 준수 확인(변경 없음). 순수 접근성 정합 리팩터로 안내문 텍스트·동작 불변. 회귀 +1(`NursingWeightRecordForm.test.jsx` — 체중 입력 `aria-describedby`에 help id 포함·범위 오류 시 help+error id 동시 유지·`aria-invalid`). `npm test` 1267중 1265 PASS(2 pre-existing 실패 — `PressureUlcerPage.test.jsx`, 전체 실행 시에만 발생하는 테스트 오염, 단독 실행 5/5 PASS·본 변경 무관)·build PASS.)
 > **이전 갱신**: 2026-06-14 (103차 — **US-O03 G-NURSING-PRESSURE-ULCER 욕창 케어 UI 골격 + G17b Field help `aria-describedby` 재점검 + §22·§23 신규** — 102차 이후 planner 135차 신규 P1 갭(US-O03 BE/FE 0건)·G17b ✅ full coder 산출물 미문서화 갭 해소. ① **US-O03 presentational UI** — `NursingContextNav`(4 route)·`PressureUlcerAssessmentForm`·`PressureUlcerPlanForm`(6대 수칙 fieldset)·`PressureUlcerCareRecordForm`(부위·NPUAP 단계·처치)·`PressureUlcerCohortReportPanel`(분기 StatCard+표)·`config/pressureUlcer.js`·`pressureUlcerCompliance.js`·`PRESSURE_ULCER_STAGE` Badge. ② **G17b a11y** — `ProgramParticipationForm`·`FunctionalRecoveryPage` 미제공 사유 `Field help`→`aria-describedby` 연결(MOHW 제32조). ③ **CSS** — `.ds-pressure-ulcer-form*`·`.ds-pressure-ulcer-report*`·`forced-colors`. ④ **§22 G17b**·**§23 US-O03** 신규. 회귀 +11. `npm test`·build PASS.)
@@ -228,8 +231,12 @@
 | | `PENDING` | info | 결제진행중 |
 | | `SUCCEEDED` | success | 결제성공 |
 | | `FAILED` | danger | 결제실패 |
+| 도입 후 관리 회차 (US-O05) | `PENDING` | neutral | 대기 |
+| | `IN_PROGRESS` | info | 진행중 |
+| | `OVERDUE` | danger | 기한 초과 |
+| | `COMPLETED` | success | 완료 |
 
-> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`STAFF_LIFECYCLE_STATUS`**(US-R03)·**`LIFECYCLE_STATUS`**로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의. **`EASY_PAY_STATUS`**(US-L06 7-5)는 `config/easyPay.js`에 정의(100차).
+> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`STAFF_LIFECYCLE_STATUS`**(US-R03)·**`LIFECYCLE_STATUS`**·**`ONBOARDING_SESSION_STATUS`**(US-O05)로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의. **`EASY_PAY_STATUS`**(US-L06 7-5)는 `config/easyPay.js`에 정의(100차).
 
 ### 2-4. 다크 모드 토큰 (11차, 운영자 야간 근무) [UXD]
 
@@ -1961,6 +1968,142 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - BE `ulcerStage` — 정수(1~4) 또는 `STAGE_*` 코드 혼재 가능 → FE `normalizeUlcerStageCode` 단일 원천.
 - provision 필터 — cohort와 동일 `DateInput`+`Select` 패턴(`Field` render-prop).
 - live E2E @ `pressureUlcerLiveApi.e2e.test.js` — 본 §28-3 필드명 정합 유지.
+
+---
+
+## 29. 지점 도입 후 관리 체크list (US-O05 · G-ONBOARD-SUPPORT · BNK-223, 107차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15 -->
+
+> **107차 UXD (2026-06-15)** — US-O05 `FE wire ❌` 갭 해소. BE `GET/PUT/PATCH /api/v1/branches/{branchId}/onboarding-support` @ `735dd53` 연결.
+
+### 29-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/branches` 행 「도입 체크list」 | `BranchesPage` → `Modal` → `BranchOnboardingSupportPanel` | hq_admin·branch_admin·social_worker (조회·회차 저장) |
+
+- 오픈일 설정/변경 — hq_admin·branch_admin (`PUT`)
+- 회차 항목·메모 저장 — hq_admin·branch_admin·social_worker (`PATCH /sessions/{roundNumber}`)
+- SLA due-date — BE `BranchOnboardingSupportCatalog` (오픈+10일·1회차+10일·+6주·직무교육+10일)
+
+### 29-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `components/ui/BranchOnboardingSupportPanel.jsx` | 1~4회차 checklist·오픈일·요약 StatCard |
+| `config/branchOnboardingSupport.js` | 역할 카테고리 라벨·항목 그룹핑 |
+| `components/ui/Badge.jsx` | `ONBOARDING_SESSION_STATUS` |
+| `pages/BranchesPage.jsx` | 행 액션·Modal 연동 |
+| `api/services.js` | onboarding-support API 3종 |
+
+### 29-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 오픈일 | `Field` render-prop + `DateInput`·필수 오류 `aria-invalid` ✅ |
+| 회차 헤딩 | `h3` + `aria-labelledby` section ✅ |
+| 상태 | `ONBOARDING_SESSION_STATUS` Badge (색+텍스트)·`OVERDUE` 좌측 보더 ✅ |
+| 체크list | 역할별 `fieldset`/`legend`·`Checkbox` 라벨 연결 ✅ |
+| 행 액션 | `${지점명} 도입 체크list`·`${지점명} N회차 저장` `aria-label` ✅ |
+| 날짜 | 오픈일·기한·완료일 `<time dateTime>` ✅ |
+| 저장 | `aria-busy`·회차별 오류 `role=alert` ✅ |
+| `forced-colors` | `.ds-branch-onboarding-support__session*` 경계선 ✅ |
+
+### 29-4. coder 전달 메모
+
+- `platform_admin` — BE `@PreAuthorize`에 미포함(HQ/BRANCH/SOCIAL_WORKER만). `/platform` 조직 상세에서 동 패널 임베드는 후속 검토.
+- checklist 항목 정의는 BE catalog 단일 원천 — FE는 API `items[]`만 렌더(중복 상수 금지).
+- pilot/live E2E harness — post-merge `BranchesPage` modal flow 권장.
+
+---
+
+## 30. 정기 욕구사정 G24b 확장 (US-T09 · G24/G24b · BNK-226, 108차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15 -->
+
+> **108차 UXD (2026-06-15)** — US-T09 G24b `FE wire` @ `49fbf67` 접근성 재점검. BE V128 5컬럼 + FAQ 21810 1:1.
+
+### 30-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/clients/:id` → 「기초평가」탭 | `ClientNeedsAssessmentPanel` → `ClientNeedsAssessmentForm` | branch_admin·social_worker (작성) · caregiver (조회) |
+
+- FAQ 21800 8항목 + FAQ 21810 G24b 5항목(질병·의사소통·영양·거주환경·자원이용)
+- 가정방문 대면 일자 필수 · G24b 5항목은 선택(경제·사회와 동일)
+
+### 30-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `components/ui/ClientNeedsAssessmentPanel.jsx` | lifecycle + 필드 안내 + 폼 임베드 |
+| `components/clients/ClientNeedsAssessmentForm.jsx` | 작성·저장·`upsertClientNeedsAssessmentApi` |
+| `components/clients/ClientNeedsAssessmentCompare.jsx` | 전년 대비 diff 표 |
+| `utils/needsAssessmentForm.js` | 필드 맵·검증·diff 빌더 |
+| `utils/clientLifecycleCompliance.js` | `NEEDS_ASSESSMENT_FIELDS`·`NEEDS_ASSESSMENT_G24B_FIELDS` |
+
+### 30-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 필드 그룹 | FAQ 21800 / G24b **`fieldset`+`legend`** 2분리 ✅ |
+| 라벨·힌트 | `Field` render-prop → `aria-describedby` help·error 병합 ✅ |
+| 필수값 | `required` + `aria-required` + 필드 단위 `Field error` ✅ |
+| 저장 | 제출 `aria-busy`·API 오류 `Alert role=alert` ✅ |
+| 비교 표 | `caption` sr-only·`scope=col/row`·변경 행 **`Badge`「변경」**+`.ds-table__row--changed` ✅ |
+| 패널 landmark | outer `aria-label`·필드 안내 `role=region`+`h3` ✅ |
+| `forced-colors` | fieldset·compare changed row outline ✅ |
+
+### 30-4. coder 전달 메모
+
+- G24b 필드 BE snake_case ↔ FE camelCase — `NEEDS_ASSESSMENT_FIELD_MAP` 단일 원천 유지.
+- live API E2E run(결정 96) — `ClientNeedsAssessmentForm` 가정방문+8항목+G24b payload 검증 권장.
+- `LeadCaregiverWorkLogPage` needs-assessment import(BNK-157) — 저장된 G24b 필드 노출 여부 후속 확인.
+
+---
+
+## 31. 연간 욕구사정 현황 페이지 (US-T09 · G24b · BNK-228, 109차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15 -->
+
+> **109차 UXD (2026-06-15)** — coder `ca0b627`(G24b compliance 대시보드 위젯)이 `href="/clients"`(일반 목록)로 연결돼 대상 이용자 식별 불가 + `mapNeedsAssessmentComplianceView` util production 소비자 0건 갭 해소. `PeriodicRiskAssessmentStatusPage`(§·G40b) 패턴 정합 전용 현황 페이지 신설.
+
+### 31-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| SideNav 운영 그룹 「연간 욕구사정 현황 (G24b)」 / `ClientsContextNav` / 대시보드 위젯 클릭 | `NeedsAssessmentStatusPage` (`/clients/needs-assessments`) | hq_admin · branch_admin · social_worker |
+
+- 대시보드 위젯 「연간 욕구사정 미완료」·「등급변경 재사정 필요」 → 본 페이지로 연결(이전 `/clients` 일반 목록 대체).
+- 비-HQ는 `activeBranchId` 스코프, HQ는 전 지점 조회.
+
+### 31-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `pages/NeedsAssessmentStatusPage.jsx` | 회계연도 필터·StatCard 4종·수급자별 현황 표 |
+| `utils/needsAssessmentCompliance.js` | `mapNeedsAssessmentComplianceView`·`formatMissingG24bFields`(신규)·`count*` |
+| `components/ui/ClientsContextNav.jsx` | 이용자 모듈 4링크(목록·G38·G40b·G24b) |
+| `layout/navConfig.js` | `/clients/needs-assessments` EXACT_MATCH + 운영 그룹 항목 |
+
+### 31-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| StatCard 요약 | `role=group`+sr-only `h2`·tone(danger/warning) **+ 텍스트 라벨 병행** ✅ |
+| 표 | `Table caption`·`scope=col`·연간 사정/재사정 `Badge`(색+텍스트) ✅ |
+| 행 액션 | 「욕구사정」링크 `aria-label`에 **이용자명 포함**(WCAG 2.4.6) ✅ |
+| 미기록 항목 | `formatMissingG24bFields` 한국어 라벨(코드 비노출) ✅ |
+| 필터 | `Select` 시각 라벨 연결(`label htmlFor`) ✅ |
+| 권한 | 미허용 역할 `Alert tone=warning` 안내 ✅ |
+| `forced-colors` | 전역 `.ds-stat-grid .ds-stat` 윤곽선 재사용(신규 CSS 0) ✅ |
+
+### 31-4. coder 전달 메모
+
+- 표 컬럼: 이용자·가정방문 일자·연간 사정·등급변경 재사정·미기록 항목·조치. BE `NeedsAssessmentComplianceResponse` snake/camel 모두 `normalizeNeedsAssessmentComplianceItem`로 흡수.
+- live API E2E(결정 96) — `GET /clients/needs-assessments/compliance?fiscalYear=&branchId=` 응답으로 본 페이지 행/StatCard 검증 권장(`e2e/needsAssessmentComplianceLiveApi.e2e.test.js` 연계).
+- `findNeedsAssessmentComplianceForClient`는 ClientDetailPage 기초평가 탭 배지화 시 소비 가능(후속 P3).
 
 ---
 
