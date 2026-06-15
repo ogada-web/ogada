@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15T11:17:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16T18:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-15 (111차 — **L02_M02 집중배설관찰 UI 접근성 재점검 + 기록 화면 공통 레이아웃 CSS 승격 + §35 신규** — 110차 이후 coder 신규 커밋(`1264c16` L02_M02 집중배설관찰 wire) 미점검 갭 해소. ① **`IntensiveExcretionObservationPage`** — 수정 행 raw `<button className="ds-table__action-btn">` → **`Button variant=tertiary size=sm`** 전환(110차 `CareProvisionRecordPanel` 패턴 정합·WCAG 4.1.2). ② **기록 화면 공통 레이아웃 CSS 승격(FE-16·§1 단일 원천)** — `ds-page-stack`·`ds-page-grid`·`ds-page-grid--sidebar`·`ds-page-loading`·`ds-table__row--highlighted`가 L02_M02·L03_M01·L03_M06·L03_M08·L03_M09·L03_M10·L03_M14 등 다수 기록 페이지에서 사용됐으나 `components.css` 미정의(`forced-colors` `outline` 포함). ③ **§35** 신규. 회귀 +1(`IntensiveExcretionObservationPage.test.jsx` — 수정 버튼 `ds-btn` 클래스·`aria-label` 검증). `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-16 (113차 — **L02_M01·L02_M03·G-7-1-4CHANNEL UI 접근성 재점검 + 미정의 디자인 토큰 클래스 보강 + §37~§39 신규** — 112차 이후 coder 신규 커밋(`41b2123` L02_M01 주간 제공기록·`950415d` L02_M03 목욕 일정·`1fd1434` G-7-1-4CHANNEL 명세 발송) 미점검 갭 해소. ① **`.ds-care-weekly-form__intro`**·**`.ds-bathing-schedule-form__intro`** — §36 `.ds-body-restraint-form__intro`와 동일 전폭 스팬 정의. ② **`CareServiceWeeklyRecordForm`·`BathingScheduleForm`** — 제출 `aria-busy` 보강(§35·§36 패턴). ③ **`BillingStatementDispatchPanel`** — quiet-hours 가드 `aria-describedby`를 비활성 발송 버튼에 연결(101차 `BillingDetailPage` 패턴)·페이지 가드 `id` 전달 시 중복 Alert 제거·행별 「발송일 수정/저장/취소」`aria-label`에 이용자명 포함·발송일 `<time dateTime>`·우편 발송일 `DateInput max=오늘`·`applyApiErrorToForm` 객체 시그니처 정합. ④ **`.ds-billing-statement-dispatch*`** CSS·`forced-colors` Badge 경계선. ⑤ **§37~§39** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-16 (112차 — **L02_M07 신체제재 기록 UI 접근성 재점검 + 미정의 디자인 토큰 클래스 보강 + §36 신규** — 111차 이후 coder 신규 커밋(`14a2bb9` L02_M07 신체제재 wire) 미점검 갭 해소. ① **`.ds-body-restraint-form__intro`** — `BodyRestraintRecordForm`이 참조하나 `components.css` **미정의** → L02_M02 `.ds-nursing-excretion-form__intro`와 동일하게 `grid-column: 1 / -1` 전폭 스팬 정의(인트로 안내 배너가 `ds-form-grid` 단일 컬럼에 갇히던 시각 회귀 해소). ② **`BodyRestraintRecordForm`** 제한일 `DateInput max=오늘`(미래 일자 차단·L02_M02 패턴 정합·인권 기록 정합성). ③ **§36** 신규. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-15 (111차 — **L02_M02 집중배설관찰 UI 접근성 재점검 + 기록 화면 공통 레이아웃 CSS 승격 + §35 신규** — 110차 이후 coder 신규 커밋(`1264c16` L02_M02 집중배설관찰 wire) 미점검 갭 해소. ① **`IntensiveExcretionObservationPage`** — 수정 행 raw `<button className="ds-table__action-btn">` → **`Button variant=tertiary size=sm`** 전환(110차 `CareProvisionRecordPanel` 패턴 정합·WCAG 4.1.2). ② **기록 화면 공통 레이아웃 CSS 승격(FE-16·§1 단일 원천)** — `ds-page-stack`·`ds-page-grid`·`ds-page-grid--sidebar`·`ds-page-loading`·`ds-table__row--highlighted`가 L02_M02·L03_M01·L03_M06·L03_M08·L03_M09·L03_M10·L03_M14 등 다수 기록 페이지에서 사용됐으나 `components.css` 미정의(`forced-colors` `outline` 포함). ③ **§35** 신규. 회귀 +1(`IntensiveExcretionObservationPage.test.jsx` — 수정 버튼 `ds-btn` 클래스·`aria-label` 검증). `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-15 (110차 — **G19 통합재가 기관 검색 패널 + G39 기록지 발송 + G30 증빙 기간 접근성 재점검 + §32~§34 신규** — 109차 이후 coder 신규 커밋(`9afa30e` G19·`4d1a4f2`/`73094f9` G39 dispatch·`73094f9` G30 evidence window) 미점검 갭 해소. ① **`IntegratedHomeProviderDiscoveryPanel`** — 미정의 `__meta` div 래퍼 제거 → **`.ds-dl-grid`**(FE-16)·`code.ds-mono`·외부 링크 `aria-label`+sr-only 「(새 탭)」·`.ds-integrated-home-discovery` CSS·`forced-colors` 경계선. ② **`ProvisionResultDispatchPanel`** — 행별 발송 `Button` **`aria-label`에 이용자명·연월 포함**(WCAG 2.4.6)·상태 열 **`Badge tone=warning`「미제공」**(색+텍스트). ③ **`CareProvisionRecordPanel`** — raw `<button>` → **`Button`**·조회 `aria-busy`·일자 `<time dateTime>`. ④ **`MonitoringIntegratedChecklistPanel`** — 증빙 수집 기간 `id`+`role=status`·`.ds-monitoring-checklist__evidence-window`. ⑤ **§32~§34** 신규. 회귀 +5. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-15 (109차 — **US-T09 G24b 연간 욕구사정 현황 페이지 신설(`NeedsAssessmentStatusPage`) + 대시보드 위젯 목적지 연결 + §31 신규**
 > **이전 갱신**: 2026-06-15 (108차 — **US-T09 G24b 욕구사정 8+5항목 폼 접근성 재점검 + §30 신규** — 107차 이후 coder 신규 커밋(`49fbf67` G24b 5필드 FE wire) 미점검 갭 해소. ① **`ClientNeedsAssessmentForm`** — FAQ 21800·G24b FAQ 21810 **`fieldset`/`legend` 2그룹 분리**(WCAG 1.3.1)·`Field help`→`aria-describedby`·제출 `aria-busy`·폼 `h3` `aria-labelledby`. ② **`ClientNeedsAssessmentPanel`** — outer `section` `aria-label` 정합(`ClientBenefitContractPanel` 패턴)·필드 안내 `role=region`. ③ **`ClientNeedsAssessmentCompare`** — 변경 행 **`Badge`「변경」**(색+텍스트)·`.ds-table__row--changed` 좌측 보더·`forced-colors` outline. ④ **CSS** — `.ds-needs-assessment-form*`·`.ds-needs-assessment-compare*`. ⑤ **§30** 신규. 회귀 +4. `npm test`·build PASS.)
@@ -2263,8 +2265,177 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 ### 35-4. coder 전달 메모
 
 - `excretionType === "URINATION"` → `stoolConsistency`는 API 페이로드에서 `null`로 명시 전달(BE V130 제약 정합).
-- **L02_M07 신체제재 (G-BODY-RESTRAINT, P2 △ BE WIP)** — BE `body_restraint_records` V131 커밋 완료 후 본 폼 패턴 재사용해 FE wire 예정. 6 enum(`restraint_method`)·`reason` NOT NULL·`alternative_attempted`·`guardian_notified`·`release_reason` 필수 필드(인권 기록 요건). 필드 단위 `Field error` + 필수표시 + `aria-required` 동일 패턴 적용 필요.
+- **L02_M07 신체제재 (G-BODY-RESTRAINT)** — `14a2bb9`에서 본 폼 패턴 재사용해 FE wire 완료. 접근성 재점검은 **§36** 참조.
 - `ds-page-stack`·`ds-page-grid--sidebar` CSS는 §35에서 단일 원천 승격 — L03_M01·L03_M06·L03_M08·L03_M09·L03_M10·L03_M14 등 기존 간호 기록 페이지도 동일 클래스 사용 중(이미 정상 동작, CSS 정의만 부재였음).
+
+---
+
+## 36. 신체제재 기록 (US-O06 · L02_M07 · BNK-239, 112차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **112차 UXD (2026-06-16)** — coder `14a2bb9`(L02_M07 신체제재 wire) 접근성 재점검 + 미정의 디자인 토큰 클래스 보강. §35(L02_M02) 폼 패턴을 그대로 계승한 **인권 기록** 화면이라 동일 a11y 기준 적용.
+
+### 36-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/care/body-restraint` | `BodyRestraintRecordPage` | hq_admin · branch_admin · social_worker · caregiver |
+
+- API: `GET/POST /api/v1/care/body-restraint-records` · `PATCH /api/v1/care/body-restraint-records/{id}` (V131)
+- 조회는 전 역할, 등록·수정은 `MANAGE_ROLES`(caregiver 포함)만.
+
+### 36-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `pages/BodyRestraintRecordPage.jsx` | 목록 조회·등록·수정 화면 |
+| `components/ui/BodyRestraintRecordForm.jsx` | 신체제재 입력 폼 |
+| `config/bodyRestraintRecord.js` | `BODY_RESTRAINT_METHOD_LABELS`(6 enum) 상수 |
+| `api/services.js` | `fetchBodyRestraintRecordsApi`·`createBodyRestraintRecordApi`·`updateBodyRestraintRecordApi` |
+
+**디자인 토큰 클래스** (112차 보강):
+
+| 클래스 | 용도 |
+|--------|------|
+| `.ds-body-restraint-form__intro` | 인트로 안내 `Alert`를 `ds-form-grid` **전폭(`grid-column: 1 / -1`)** 스팬 — §35 `.ds-nursing-excretion-form__intro` 패턴 정합. **이전 미정의로 단일 컬럼에 갇히던 시각 회귀 해소.** |
+
+### 36-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 폼 레이블 | `Field` render-prop — `label`·`id` 자동 연결 ✅ |
+| 필수값 | `required` + `aria-required` + `Field error` 필드 단위 차단(이용자·제한일·시작시각·제한방법·제한사유) ✅ |
+| 제한일 미래 차단 | `DateInput max=오늘` — 미래 일자 입력 방지(L02_M02 정합·인권 기록 정합성) ✅ |
+| 보호자 통보 토글 | `Field`+`Checkbox`(label `for`/`id` 연결) — §35 nursing 폼 동일 패턴 ✅ |
+| 저장 | 제출 `aria-busy` · API 오류 `Alert ds-page-alert` · 필드 오류 `applyApiErrorToForm` ✅ |
+| 인트로 안내 | `Alert tone=info role=note` **전폭 스팬**(`.ds-body-restraint-form__intro`) ✅ |
+| 목록 표 | `Table captionVisuallyHidden`·`scope=col`·제한일 `<time dateTime>`·방법 `Badge`(색+텍스트) ✅ |
+| 수정 버튼 | `Button variant=tertiary size=sm` + `aria-label` 이용자명·날짜 포함(WCAG 2.4.6) ✅ |
+| 수정 중 행 강조 | `.ds-table__row--highlighted`(색+outline 병행, `forced-colors` 대응) ✅ |
+| 재시도 버튼 | 오류 Alert 내 `Button tertiary sm` ✅ |
+
+### 36-4. coder 전달 메모
+
+- 인트로/오류 `Alert`처럼 `ds-form-grid` 전폭으로 보여야 하는 요소는 **반드시 전폭 스팬 클래스**(`.ds-body-restraint-form__intro` 등)를 부여한다 — 신규 폼에서 `ds-*` 클래스를 참조할 때 `components.css` 정의 동반 여부를 확인할 것(미정의 시 단일 컬럼 회귀).
+- `restraintMethod`는 `BODY_RESTRAINT_METHOD_LABELS` 6 enum 기반 `Select` — BE V131 enum과 키 일치 유지.
+- 선택 필드(`endedAt`·`bodyPart`·`alternativeAttempted`·`releaseReason`·`notes`)는 빈 값일 때 페이로드에서 `null` 전달(§35 패턴 정합).
+
+---
+
+## 37. 요양급여 주간 제공기록 (US-O06 · L02_M01 · BNK-240, 113차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **113차 UXD (2026-06-16)** — coder `41b2123`(L02_M01 주간 제공기록 wire) 접근성 재점검. §35~§36 기록 폼 패턴 계승.
+
+### 37-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/care/weekly-service-records` | `CareServiceWeeklyRecordPage` | hq_admin · branch_admin · social_worker · caregiver |
+
+- API: `GET/POST /api/v1/care/weekly-service-records` · `PATCH /api/v1/care/weekly-service-records/{id}` (V134)
+
+### 37-2. 컴포넌트·디자인 토큰
+
+| 파일 | 용도 |
+|------|------|
+| `pages/CareServiceWeeklyRecordPage.jsx` | 목록·등록·수정(사이드바 레이아웃) |
+| `components/ui/CareServiceWeeklyRecordForm.jsx` | 7개 주간 항목 + 비고 폼 |
+| `config/careServiceWeeklyRecord.js` | `WEEKLY_NOTE_FIELD_KEYS`·`WEEKLY_NOTE_FIELD_LABELS` |
+
+| 클래스 | 용도 |
+|--------|------|
+| `.ds-care-weekly-form__intro` | 인트로 `Alert` 전폭 스팬(`grid-column: 1 / -1`) |
+
+### 37-3. 접근성
+
+| 점검 | 결과 |
+|------|------|
+| 주간 시작일 | `DateInput max=오늘` · 월요일 검증 · `Field help`에 이번 주 월요일 안내 ✅ |
+| 필수 항목 | 이용자·주간 시작일·7개 항목 중 1개 이상 — `Field error` 필드 단위 ✅ |
+| 제출 | `aria-busy` · API 오류 `applyApiErrorToForm` ✅ |
+| 목록 | `Table captionVisuallyHidden` · 주간 `<time dateTime>` · 수정 `aria-label` 이용자명·주간 포함 ✅ |
+
+---
+
+## 38. 목욕 일정·제공현황 (US-O06 · L02_M03 · BNK-241, 113차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **113차 UXD (2026-06-16)** — coder `950415d`(L02_M03 목욕 일정 wire) 접근성 재점검.
+
+### 38-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/care/bathing-schedules` | `BathingSchedulePage` | hq_admin · branch_admin · social_worker · caregiver |
+
+- API: `GET/POST /api/v1/care/bathing-schedules` · `PATCH /api/v1/care/bathing-schedules/{id}` (V136)
+
+### 38-2. 컴포넌트·디자인 토큰
+
+| 파일 | 용도 |
+|------|------|
+| `pages/BathingSchedulePage.jsx` | 목록·등록·수정 |
+| `components/ui/BathingScheduleForm.jsx` | 일정·유형·상태·제공내용 폼 |
+| `config/bathingSchedule.js` | `BATH_TYPE_*`·`BATH_SCHEDULE_STATUS_*` |
+
+| 클래스 | 용도 |
+|--------|------|
+| `.ds-bathing-schedule-form__intro` | 인트로 `Alert` 전폭 스팬 |
+
+### 38-3. 접근성
+
+| 점검 | 결과 |
+|------|------|
+| 상태별 조건부 필드 | `COMPLETED` → 제공 내용 필수 · `CANCELLED`/`SKIPPED` → 사유 필수 — `Field error` ✅ |
+| 예정일 | `COMPLETED` 시 `DateInput max=오늘` ✅ |
+| 상태 Badge | 목록 `Badge` tone+텍스트(완료/취소/미제공/예정) — 색만 의존 금지 ✅ |
+| 제출 | `aria-busy` ✅ |
+| 수정 버튼 | `aria-label` 이용자명·예정일 포함 ✅ |
+
+---
+
+## 39. 청구 명세 4채널 발송 (US-G02 · G-7-1-4CHANNEL · BNK-242, 113차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **113차 UXD (2026-06-16)** — coder `1fd1434`(G-7-1-4CHANNEL 명세 발송 wire) 접근성 재점검. 101차 quiet-hours·110차 `ProvisionResultDispatchPanel` 행 액션 패턴 정합.
+
+### 39-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/billing/claims/:id` (확정·수납완료) | `BillingStatementDispatchPanel` | hq_admin · branch_admin |
+
+- API: `GET/POST /billing/claims/{id}/statement-dispatches` · `PATCH .../statement-dispatches/{dispatchId}`
+
+### 39-2. 채널·UI
+
+| 채널 | UI 동작 |
+|------|---------|
+| `POSTAL` | 우편 발송일 `DateInput` 필수 · 발송 후 행별 발송일 수정 가능 |
+| `SMS` · `EMAIL` | 발송일 서버 자동 · 조용한 시간대(22:00~08:00 KST) 발송 버튼 `disabled` |
+| `KAKAO_ALIMTALK` | 동일 quiet-hours 가드 |
+
+### 39-3. 접근성
+
+| 점검 | 결과 |
+|------|------|
+| quiet-hours | `BillingDetailPage` 상단 `Alert id` → 발송 버튼 `aria-describedby`(패널 단독 사용 시 `statement-dispatch-quiet-hours-warning`) ✅ |
+| 발송 대상 | `Checkbox` `role=group` + `aria-label` ✅ |
+| 발송 내역 표 | `Table captionVisuallyHidden` · 채널 `Badge`(색+텍스트) · 발송일 `<time dateTime>` ✅ |
+| 행 액션 | 「발송일 수정/저장/취소」`aria-label`에 **이용자명** 포함(WCAG 2.4.6) ✅ |
+| 우편 발송일 수정 | `DateInput max=오늘` ✅ |
+| `forced-colors` | `.ds-billing-statement-dispatch .ds-badge` outline ✅ |
+
+### 39-4. coder 전달 메모
+
+- `quietHoursGuardId`는 `BillingDetailPage`의 `billing-notify-quiet-hours-warning`을 그대로 전달 — 패널 내 중복 Alert 금지.
+- `applyApiErrorToForm`은 **객체 시그니처**(`{ setFormError, setFieldErrors, fieldMap }`)만 사용.
+- 우편(`POSTAL`)만 `dispatchedAtEditable` — 전자 채널 행은 발송일 수정 UI 미노출.
 
 ---
 
