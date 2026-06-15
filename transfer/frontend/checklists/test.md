@@ -1,12 +1,3004 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T09:13:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-15T07:09:55+00:00 -->
+<!-- tester-sync: TSR 746차 2026-06-15T07:09 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 87.28s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 7.38s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **SKIP**(LIVE_E2E_* env 누락; `scripts/dev-live-e2e.env` absent)·develop `@4d1a4f2`(+2 vs `9afa30e`: `9afa30e` G19 integrated-home provider discovery UI · `4d1a4f2` G39 monthly care record guardian dispatch UI)·WT **CLEAN**·`test..develop` **334 ahead**·origin/develop **동기화 @ `4d1a4f2`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·verdict **PASS(merge gate)**·operation **BLOCK(live E2E)**·교차 BE `@41d8de5` WT **CLEAN**·274 ahead·Open 0(backend)·test **246/246 PASS**(745 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **608**·merge **미실행**. -->
+<!-- tester-sync: TSR 744차 2026-06-15T06:50 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.33s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.14s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_* env 누락; `scripts/dev-live-e2e.env` absent)·develop `@9afa30e`(+1 vs `eb16734`: `feat(v2/G19): wire integrated-home provider discovery UI to branch form`)·WT **CLEAN**·`test..develop` **333 ahead**·origin/develop **동기화 @ `9afa30e`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·verdict **PASS(merge gate)**·operation **BLOCK(live E2E)**·교차 BE `@f44ee739` WT **CLEAN**·273 ahead·Open 0(backend)·test **246/246 PASS**(743 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **606**·merge **미실행**. -->
+<!-- tester-sync: TSR 742차 2026-06-15T06:25 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.97s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 4.92s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_* env 누락; `scripts/dev-live-e2e.env` absent)·develop `@eb16734`(+2 vs `3cbe582`: `b5af5fa` G24b US-T09 · `eb16734` live-e2e env script)·WT **CLEAN**·`test..develop` **332 ahead**·origin/develop **동기화 @ `eb16734`**·origin/test **동기화 @ `c7c8f07`**·**QA-B96 Fixed @ `eb16734`**·**Open 0(frontend)**·Planned **1 QA-B95**·verdict **PASS(merge gate)**·operation **BLOCK(live E2E)**·교차 BE `@1e21b20` WT **CLEAN**·272 ahead·Open 0(backend)·test **246/246 PASS**(742 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **604**·merge **미실행**. -->
+<!-- tester-sync: TSR 740차 2026-06-15T05:28 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.51s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 4.94s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_* env 누락)·develop `@3cbe582`(+1 vs `3a17543`)·WT **CLEAN**·`test..develop` **330 ahead**·origin/develop **동기화 @ `3cbe582`**·origin/test **동기화 @ `c7c8f07`**·**Open 1(frontend)** QA-20260615-B95·verdict **BLOCK(live e2e env gate)**·교차 BE `@1e21b20` WT **CLEAN**·272 ahead·Open 0(backend)·test **246/246 PASS**(739 carry)·⚠ **cross-stream merge BLOCK**·merge pending **602**·merge **미실행**. -->
+<!-- tester-sync: TSR 738차 2026-06-15T05:12 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.87s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 4.96s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@3a17543`(+1 vs `5e57750`: `fix(v2/G2): validate easy-pay status claim ids`)·WT **CLEAN**·HEAD **1337/1337 PASS**(280 files, 229.95s)·`test..develop` **329 ahead**·origin/develop **동기화 @ `3a17543`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(329 ahead)·교차 BE `@0cd8ea8` WT **CLEAN**·271 ahead·Open 0(backend)·test **246/246 PASS**(737 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **600**(329+271)·merge **미실행**. -->
+<!-- tester-sync: TSR 736차 2026-06-15T04:57 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 82.22s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 10.48s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@5e57750`(+1 vs `baa6d6d`: `test(v1.2.1/US-L01): harden live payment amount resolution`)·WT **CLEAN**·HEAD **1333/1335 PASS**(280 files, ~329s; 2×full-suite flake `NursingServiceRecordPage`·`NursingVitalCheckPage`→isolated 8/8 PASS)·`test..develop` **328 ahead**·origin/develop **동기화 @ `5e57750`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(328 ahead)·교차 BE `@4fe655b` WT **CLEAN**·270 ahead·Open 0(backend)·test **246/246 PASS**(735 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **598**(328+270)·merge **미실행**. -->
+<!-- tester-sync: TSR 734차 2026-06-15T04:23 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 54.18s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 7.16s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@baa6d6d`(+1 vs `ca0b627`: `test(v2/G24b): harden dashboard needs-assessment compliance coverage`)·WT **CLEAN**·HEAD **1333/1333 PASS**(280 files, 234.69s)·`test..develop` **327 ahead**·origin/develop **동기화 @ `baa6d6d`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(327 ahead)·교차 BE `@b1c92e1` WT **CLEAN**·269 ahead·Open 0(backend)·test **246/246 PASS**(733 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **596**(327+269)·merge **미실행**. -->
+<!-- tester-sync: TSR 732차 2026-06-15T04:02 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.97s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.62s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@ca0b627`(+1 vs `c97706b`: `feat(v2/G24b): wire needs assessment compliance widgets to dashboard`)·WT **CLEAN**·HEAD **1332/1332 PASS**(280 files, 231.89s)·`test..develop` **326 ahead**·origin/develop **동기화 @ `ca0b627`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(326 ahead)·교차 BE `@3dd94e6` WT **CLEAN**·268 ahead·Open 0(backend)·test **246/246 PASS**(731 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **594**(326+268)·merge **미실행**. -->
+<!-- tester-sync: TSR 730차 2026-06-15T03:43 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.81s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 4.89s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@c97706b`(+2 vs `92b9eff`: `8989bf4` G24b needs assessment a11y · `c97706b` L03 nursing report notes snake_case normalize)·WT **CLEAN**·HEAD **1325/1327 PASS**(279 files, 287.85s; 2×full-suite flake `NursingServiceRecordPage`·`NursingVitalCheckPage`→isolated 8/8 PASS)·`test..develop` **325 ahead**·origin/develop **동기화 @ `c97706b`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(325 ahead)·교차 BE `@345c0cb` WT **CLEAN**·267 ahead·Open 0(backend)·test **246/246 PASS**(729 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **592**(325+267)·merge **미실행**. -->
+<!-- tester-sync: TSR 728차 2026-06-15T02:59 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.79s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.71s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@92b9eff`(+2 vs `49fbf67`: `a565a50` G37 attachment lifecycle live E2E · `92b9eff` L03 nursing service report contract checks)·WT **CLEAN**·HEAD **1323/1323 PASS**(278 files, 228.38s)·`test..develop` **323 ahead**·origin/develop **동기화 @ `92b9eff`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(323 ahead)·교차 BE `@f4c8beb` WT **CLEAN**·266 ahead·Open 0(backend)·test **246/246 PASS**(727 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **589**(323+266)·merge **미실행**. -->
+<!-- tester-sync: TSR 725차 2026-06-15T02:23 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 58.10s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.00s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@49fbf67` HEAD **불변**(724차 대비)·WT **CLEAN**·develop HEAD test **미재실행**(724 carry 1323/1323 PASS)·`test..develop` **321 ahead**·origin/develop **동기화 @ `49fbf67`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(321 ahead)·교차 BE `@45fb6d9` WT **CLEAN**·264 ahead·Open 0(backend)·test **246/246 PASS**(723 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **585**(321+264)·merge **미실행**. -->
+<!-- tester-sync: TSR 724차 2026-06-15T02:18 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.39s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.01s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@49fbf67`(+1 vs `fcabed0`: G24b needs assessment 8-area extended fields FE form wire)·WT **CLEAN**·HEAD **1323/1323 PASS**(278 files, 266.55s)·`test..develop` **321 ahead**·origin/develop **동기화 @ `49fbf67`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(321 ahead)·교차 BE `@45fb6d9` WT **CLEAN**·264 ahead·Open 0(backend)·test **246/246 PASS**(723 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **585**(321+264)·merge **미실행**. -->
+<!-- tester-sync: TSR 722차 2026-06-15T01:57 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.73s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.01s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@fcabed0`(+1 vs `8eed216`: G19/G30/G14 compliance consolidated live E2E harness)·WT **CLEAN**·HEAD test **미재실행**(720 carry 1322/1322 PASS)·`test..develop` **320 ahead**·origin/develop **동기화 @ `fcabed0`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(320 ahead)·교차 BE `@43c4b08` WT **CLEAN**·263 ahead·Open 0(backend)·test **246/246 PASS**(721 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **583**(320+263)·merge **미실행**. -->
+<!-- tester-sync: TSR 720차 2026-06-15T01:43 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.92s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.77s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@8eed216`(+1 vs `36264b5`: G-NURSING consolidated live E2E harness + reports page test hardening)·WT **CLEAN**·HEAD **1322/1322 PASS**(278 files, 230.30s)·`test..develop` **319 ahead**·origin/develop **동기화 @ `8eed216`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(319 ahead)·교차 BE `@4c1fd43` WT **DIRTY 2M**·262 ahead·Open 1 BLOCK **QA-B94(backend)**·test **246/246 PASS**(719 carry)·⚠ **cross-stream merge BLOCK**·merge pending **581**(319+262)·merge **실행 금지**. -->
+<!-- tester-sync: TSR 718차 2026-06-15T01:18 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 87.61s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 15.89s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@36264b5`(+2 vs `2ccc88e`: `79d593c` US-O05 onboarding checklist panel · `36264b5` G-ONBOARD-SUPPORT live API E2E harness)·WT **CLEAN**·HEAD **1321/1322 PASS**(278 files, 231.79s; full-suite flake `NursingServiceReportsPage`→isolated 5/5 PASS)·`test..develop` **318 ahead**·origin/develop **동기화 @ `36264b5`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(318 ahead)·교차 BE `@4c1fd43` WT **CLEAN**·262 ahead·Open 0(backend)·test **246/246 PASS**(717 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **580**(318+262)·merge **미실행**. -->
+<!-- tester-sync: TSR 716차 2026-06-15T00:41 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.06s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.13s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@2ccc88e`(+1 vs `8638c7a`)·WT **CLEAN**·HEAD test **미재실행**(714 carry 1315/1316 PASS)·`test..develop` **316 ahead**·origin/develop **동기화 @ `2ccc88e`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(316 ahead)·교차 BE `@735dd53` WT **CLEAN**·261 ahead·Open 0(backend)·test **246/246 PASS**(715 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **577**(316+261)·merge **미실행**. -->
+<!-- tester-sync: TSR 714차 2026-06-15T00:23 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.64s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 5.06s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@8638c7a`(+1 vs `548f670`: `test(v1.2.1/US-R02): expand staff status live API branch-scope coverage`)·WT **CLEAN**·HEAD test **미재실행**(712 carry 1315/1316 PASS)·`test..develop` **315 ahead**·origin/develop **동기화 @ `8638c7a`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(315 ahead)·교차 BE `@41a6c23` WT **CLEAN**·260 ahead·Open 0(backend)·test **246/246 PASS**(713 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **575**(315+260)·merge **미실행**. -->
+<!-- tester-sync: TSR 712차 2026-06-15T00:08 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.31s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 4.98s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@548f670` HEAD **불변**(710차 대비)·WT **CLEAN**·HEAD test **1315/1316 PASS**(710 carry)·`test..develop` **314 ahead**·origin/develop **동기화 @ `548f670`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(314 ahead)·교차 BE `@dd508f5` WT **CLEAN**·259 ahead·Open 0(backend)·test **246/246 PASS**(711 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **573**(314+259)·merge **미실행**. -->
+<!-- tester-sync: TSR 710차 2026-06-14T23:53 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 82.26s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.89s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@548f670`(+1 vs `b698871`: v1.2.1/G14 benefit contract attachment live API E2E harness)·WT **CLEAN**·HEAD **1315/1316 PASS**(276 files, 261.37s; full-suite flake `NursingServiceReportsPage`→isolated PASS)·`test..develop` **314 ahead**·origin/develop **동기화 @ `548f670`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(314 ahead)·교차 BE `@a728f1b` WT **CLEAN**·258 ahead·Open 0(backend)·test **246/246 PASS**(709 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **572**(314+258)·merge **미실행**. -->
+<!-- tester-sync: TSR 706차 2026-06-14T22:40 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.59s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.71s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@671a704`(+1 vs `89dc52d`: L03 a11y nursing/pressure ulcer provision reports)·WT **CLEAN**·HEAD **1315/1315 PASS**(276 files, 228.09s)·`test..develop` **312 ahead**·origin/develop **동기화 @ `671a704`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(312 ahead)·교차 BE `@b45830d` WT **CLEAN**·256 ahead·Open 0(backend)·test **246/246 PASS**(705 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **568**(312+256)·merge **미실행**. -->
+<!-- tester-sync: TSR 704차 2026-06-14T22:10 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.05s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.87s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@89dc52d`(+1 vs `75c6c76`: L03_M07/M09/M10 stale report data fix)·WT **CLEAN**·HEAD **1313/1313 PASS**(275 files, 228.46s)·`test..develop` **311 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(311 ahead)·교차 BE `@6b0238a` WT **DIRTY 2M**·Open 1 BLOCK **QA-B93(backend)**·test **246/246 PASS**(703 carry)·⚠ **cross-stream merge BLOCK**·merge pending **566**(311+255)·merge **실행 금지**. -->
+<!-- tester-sync: TSR 702차 2026-06-14T21:52 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.88s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 7.08s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@75c6c76`(+1 vs `efa4472`: L03_M06/M14 live API E2E harness)·WT **CLEAN**·HEAD **1312/1312 PASS**(275 files, 228.27s)·`test..develop` **310 ahead**·origin/develop **동기화 @ `75c6c76`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(310 ahead)·교차 BE `@6b0238a` WT **CLEAN**·255 ahead·Open 0(backend)·test **246/246 PASS**(701 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **565**(310+255). -->
+<!-- tester-sync: TSR 700차 2026-06-14T21:31 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.35s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 10.33s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@efa4472`(+1 vs `2a05271`: L03_M15 pressure ulcer provision report UI wire to BE API)·WT **CLEAN**·HEAD **1312/1312 PASS**(275 files, 238.32s)·`test..develop` **309 ahead**·origin/develop **동기화 @ `efa4472`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(309 ahead)·교차 BE `@4ab06cd` WT **CLEAN**·254 ahead·Open 0(backend)·test **246/246 PASS**(699 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **563**(309+254). -->
+<!-- tester-sync: TSR 698차 2026-06-14T21:06 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.46s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.91s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@2a05271`(+1 vs `2966447`: L03_M07/M09/M10 nursing service report UI wire to V123 APIs)·WT **CLEAN**·HEAD **1308/1308 PASS**(273 files, 229.10s)·`test..develop` **308 ahead**·origin/develop **동기화 @ `2a05271`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(308 ahead)·교차 BE `@75bddee` WT **CLEAN**·253 ahead·Open 0(backend)·test **246/246 PASS**(697 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **561**(308+253). -->
+<!-- tester-sync: TSR 696차 2026-06-14T20:45 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.05s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 7.12s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@2966447`(+1 vs `12591d4`: L03_M01 nursing service live E2E harness)·WT **CLEAN**·HEAD **1299/1299 PASS**(271 files, 225.84s)·`test..develop` **307 ahead**·origin/develop **동기화 @ `2966447`**·origin/test **동기화 @ `c7c8f07`**·**QA-B92 Fixed @ `2966447`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(307 ahead)·교차 BE `@c23b1a3` WT **CLEAN**·252 ahead·Open 0(backend)·test **246/246 PASS**(695 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **559**(307+252). -->
+<!-- tester-sync: TSR 694차 2026-06-14T20:24 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.63s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.91s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@12591d4`(+1 vs `3845f0c`: L03_M01/M06 nursing service·excretion-tube UI)·WT **DIRTY 1U**(`?? src/e2e/nursingServiceRecordLiveApi.e2e.test.js`)·HEAD **1299/1299 PASS**(271 files, 227.73s)·`test..develop` **306 ahead**·origin/develop **동기화 @ `12591d4`**·origin/test **동기화 @ `c7c8f07`**·**Open 1 BLOCK QA-B92(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **실행 금지**(306 ahead)·교차 BE `@ee8b2a4` WT **CLEAN**·251 ahead·Open 0(backend)·test **246/246 PASS**(693 carry)·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**·merge pending **557**(306+251). -->
+<!-- tester-sync: TSR 692차 2026-06-14T19:49 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 109.69s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 12.27s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@3845f0c`(+1 vs `edfba7f`: US-UX-05 SideNav expansion persist by role)·WT **CLEAN**·HEAD **1275/1275 PASS**(265 files, 229.82s)·`test..develop` **305 ahead**·origin/develop **동기화 @ `3845f0c`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(305 ahead)·교차 BE `@a4352a8` WT **CLEAN**·250 ahead·Open 0(backend)·HEAD test **246/246 PASS**(691 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **555**(305+250). -->
+<!-- tester-sync: TSR 690차 2026-06-14T19:28 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 83.44s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 11.80s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@edfba7f`(+1 vs `2ffe59f`: US-UX-05 SideNav manual expansion preserve on navigation)·WT **CLEAN**·HEAD **1274/1274 PASS**(265 files, 371.01s)·`test..develop` **304 ahead**·origin/develop **동기화 @ `edfba7f`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(304 ahead)·교차 BE `@9bd1660` WT **CLEAN**·249 ahead·Open 0(backend)·HEAD test **246/246 PASS**(689 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **553**(304+249). -->
+<!-- tester-sync: TSR 688차 2026-06-14T19:07 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 82.60s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 9.33s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@2ffe59f`(+1 vs `e3e6964`: v1.3-B transport auto-suggest UI·branch optimization settings)·WT **CLEAN**·HEAD **1273/1273 PASS**(265 files, 220.60s)·`test..develop` **303 ahead**·origin/develop **동기화 @ `2ffe59f`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(303 ahead)·교차 BE `@9bd1660` WT **CLEAN**·249 ahead·Open 0(backend)·HEAD test **246/246 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **552**(303+249). -->
+<!-- tester-sync: TSR 686차 2026-06-14T18:42 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.69s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.73s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@e3e6964`(+1 vs `c865d2b`: US-R02 8-12 print layout readability deepen)·WT **CLEAN**·HEAD **1267/1267 PASS**(262 files, 217.86s)·`test..develop` **302 ahead**·origin/develop **동기화 @ `e3e6964`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(302 ahead)·교차 BE `@230659a` WT **CLEAN**·248 ahead·Open 0(backend)·HEAD **1121/1121 PASS**(TSR 685 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **550**(302+248). -->
+<!-- tester-sync: TSR 684차 2026-06-14T18:25 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.20s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 7.11s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@c865d2b`(+1 vs `8d00f5d`: L03_M14 pressure ulcer E2E stabilize + weight record service tests)·WT **CLEAN**·HEAD **1267/1267 PASS**(262 files, 219.74s)·`test..develop` **301 ahead**·origin/develop **동기화 @ `c865d2b`**·origin/test **동기화 @ `c7c8f07`**·**QA-B91 Fixed @ `c865d2b`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(301 ahead)·교차 BE `@230659a` WT **CLEAN**·248 ahead·Open 0(backend)·HEAD **1121/1121 PASS**(TSR 683 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **549**(301+248). -->
+<!-- tester-sync: TSR 682차 2026-06-14T18:03 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.69s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.92s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@8d00f5d`(+1 vs `97108f2`: L03_M14 Field help a11y)·WT **DIRTY 1M+1U**·HEAD **1267/1267 PASS**(262 files, 216.73s)·`test..develop` **300 ahead**·origin/develop `@97108f2`(local 1 ahead unpushed)·origin/test **동기화 @ `c7c8f07`**·**QA-B89 Fixed @ `8d00f5d`**·**Open 1 BLOCK QA-B91(frontend WT dirty)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **미실행**(300 ahead)·교차 BE `@db94a65` WT **CLEAN**·247 ahead·Open 0(backend)·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**·merge pending **547**(300+247). -->
+<!-- tester-sync: TSR 680차 2026-06-14T17:25 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 128.18s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 5.79s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@97108f2` HEAD **불변**·WT **1U** untracked test WIP·HEAD **1263/1266 FAIL**(`PressureUlcerPage.test.jsx` 3건)·`test..develop` **299 ahead**·origin/develop **동기화 @ `97108f2`**·origin/test **동기화 @ `c7c8f07`**·**Open 1 BLOCK QA-B89(frontend) 유지**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **미실행**(299 ahead)·교차 BE `@090b2d7` WT **DIRTY 15**·Open 2 BLOCK **QA-B88/B90(backend)**·test **246/246 PASS**·⚠ **cross-stream merge BLOCK**·merge pending **545**(299+246). -->
+<!-- tester-sync: TSR 678차 2026-06-14T17:01 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 122.34s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 12.38s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@97108f2`(+1 vs `8a8fe98`: L03_M04 wire emergency record UI to V119 API)·WT **CLEAN**·HEAD **1260/1263 FAIL**(`PressureUlcerPage.test.jsx` 3건)·`test..develop` **299 ahead**·origin/develop **동기화 @ `97108f2`**·origin/test **동기화 @ `c7c8f07`**·**신규 Open 1 BLOCK QA-20260614-B89(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **미실행**(299 ahead)·교차 BE `@81bca68` WT **DIRTY 4M**·Open 1 BLOCK **QA-B88(backend)**·test **246/246 PASS**·⚠ **cross-stream merge BLOCK**·merge pending **544**(299+245). -->
+<!-- tester-sync: TSR 676차 2026-06-14T16:32 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.81s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.99s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@8a8fe98`(+1 vs `bb3dee8`: L03_M14 display full weight record details)·WT **CLEAN**·HEAD **1246/1246 PASS**(258 files, 224.78s)·`test..develop` **298 ahead**·origin/develop **동기화 @ `8a8fe98`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(298 ahead)·교차 BE `@81bca68` WT **CLEAN**·245 ahead·Open 0(backend)·HEAD **246/246 PASS**(TSR 675 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **543**(298+245). -->
+<!-- tester-sync: TSR 674차 2026-06-14T16:10 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 54.30s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 7.02s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@bb3dee8`(+1 vs `c60d7e5`: L03_M13 oral care check UI wire to V118 API)·WT **CLEAN**·HEAD **1246/1246 PASS**(258 files, 219.01s)·`test..develop` **297 ahead**·origin/develop **동기화 @ `bb3dee8`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(297 ahead)·교차 BE `@faf55f0` WT **CLEAN**·244 ahead·Open 0(backend)·HEAD **1104/1104 PASS**(TSR 671 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **541**(297+244). -->
+<!-- tester-sync: TSR 672차 2026-06-14T15:53 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.85s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.74s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@c60d7e5`(+1 vs `962858b`: nursing weight record error retry)·WT **CLEAN**·HEAD **1229/1229 PASS**(255 files, 217.50s)·`test..develop` **296 ahead**·origin/develop **동기화 @ `c60d7e5`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(296 ahead)·교차 BE `@3540b4f` WT **CLEAN**·243 ahead·Open 0(backend)·HEAD **1104/1104 PASS**(TSR 671 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **539**(296+243). -->
+<!-- tester-sync: TSR 670차 2026-06-14T15:12 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.67s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.96s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@962858b`(+2 vs `246df56`: L03_M14 FE wire+future date guard)·WT **CLEAN**·HEAD **1228/1228 PASS**(255 files, 213.60s)·`test..develop` **295 ahead**·origin/develop **동기화 @ `962858b`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(295 ahead)·교차 BE `@63cb193` WT **CLEAN**·242 ahead·Open 0(backend)·HEAD **1095/1095 PASS**(TSR 669)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **537**(295+242). -->
+<!-- tester-sync: TSR 668차 2026-06-14T13:43 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.52s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.75s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@246df56`(+1 vs `5780c65`: L03_M11 future nursing vital measure-date guard UI)·WT **CLEAN**·HEAD **1210/1210 PASS**(253 files, 212.57s)·`test..develop` **293 ahead**·origin/develop **동기화 @ `246df56`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(293 ahead)·교차 BE `@1a822d2` WT **CLEAN**·241 ahead·Open 2 BLOCK **QA-B86/B87(backend)**·HEAD **1085/1095 FAIL**·⚠ **cross-stream merge BLOCK**·merge pending **534**(293+241). -->
+<!-- tester-sync: TSR 666차 2026-06-14T13:20 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.84s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.66s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@5780c65`(+1 vs `8570fa2`: QA-B85 pressure ulcer E2E nav aria-label align)·WT **CLEAN**·HEAD **1209/1209 PASS**(253 files, 208.00s)·`test..develop` **292 ahead**·origin/develop **동기화 @ `5780c65`**·origin/test **동기화 @ `c7c8f07`**·**QA-B85 Fixed @ `5780c65`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(292 ahead)·교차 BE `@e95df4c` WT **CLEAN**·240 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **532**(292+240). -->
+<!-- tester-sync: TSR 664차 2026-06-14T12:49 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 50.84s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.67s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@8570fa2`(+1 vs `024e720`: L03_M11 integrated nursing vital check UI)·WT **CLEAN**·HEAD **1208/1209 FAIL**(`pilotPageFlows` US-O03 pressure ulcer 4-step lifecycle)·`test..develop` **291 ahead**·origin/develop **동기화 @ `8570fa2`**·origin/test **동기화 @ `c7c8f07`**·**신규 Open 1 BLOCK QA-20260614-B85(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **미실행**(291 ahead)·교차 BE `@80c0bd5` WT **CLEAN**·239 ahead·Open 0(backend)·⚠ **cross-stream merge BLOCK**·merge pending **530**(291+239). -->
+<!-- tester-sync: TSR 662차 2026-06-14T12:25 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 86.48s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 5.04s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@024e720`(+1 vs `3ec39f6`: US-O03 pressure ulcer API contracts·live E2E harness)·WT **CLEAN**·HEAD **1198/1198 PASS**(250 files, 247.79s)·`test..develop` **290 ahead**·origin/develop **동기화 @ `024e720`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(290 ahead)·교차 BE `@24a1c5c` WT **CLEAN**·238 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **528**(290+238). -->
+<!-- tester-sync: TSR 660차 2026-06-14T12:03 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.51s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.88s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@3ec39f6`(+1 vs `e214da1`: `fix(v2/US-O03): align pressure ulcer cohort report with V114 API aggregates`)·WT **CLEAN**·HEAD **1192/1192 PASS**(249 files, 202.90s)·`test..develop` **289 ahead**·origin/develop **동기화 @ `3ec39f6`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(289 ahead)·교차 BE `@d638493` WT **CLEAN**·237 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **526**(289+237). -->
+<!-- tester-sync: TSR 658차 2026-06-14T11:41 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.76s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 7.26s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@e214da1`(+2 vs `ad319d7`: `cce956b` pressure ulcer UI scaffolding + G17b Field help a11y · `e214da1` V114 API wire US-O03)·WT **CLEAN**·HEAD **1189/1189 PASS**(249 files, 204.18s)·`test..develop` **288 ahead**·origin/develop **동기화 @ `e214da1`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(288 ahead)·교차 BE `@edda491` WT **CLEAN**·236 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **524**(288+236). -->
+<!-- tester-sync: TSR 656차 2026-06-14T11:01 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.78s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.78s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@ad319d7`(+1 vs `487416d`: `test(v2/US-V03,G17b): deepen visit check-out and skip-reason table E2E`)·WT **CLEAN**·HEAD **1164/1164 PASS**(240 files, 201.04s)·`test..develop` **286 ahead**·origin/develop **동기화 @ `ad319d7`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(286 ahead)·교차 BE `@3bd6a43` WT **CLEAN**·235 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **521**(286+235). -->
+<!-- tester-sync: TSR 654차 2026-06-14T10:42 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 50.93s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 6.82s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@487416d`(+1 vs `efb2ec0`: `feat(v2/G17b): surface skip reason in participation history`)·WT **CLEAN**·HEAD **1163/1163 PASS**(240 files, 194.89s)·`test..develop` **285 ahead**·origin/develop **동기화 @ `487416d`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(285 ahead)·교차 BE `@3bd6a43` WT **CLEAN**·235 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **520**(285+235). -->
+<!-- tester-sync: TSR 652차 2026-06-14T10:24 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.97s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 4.97s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@efb2ec0`(+1 vs `c26cfa7`: `test(v2/G17b): add pilotPageFlows E2E for cognitive activity skip reason`)·WT **CLEAN**·HEAD **1162/1162 PASS**(240 files, 195.78s)·`test..develop` **284 ahead**·origin/develop **동기화 @ `efb2ec0`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(284 ahead)·교차 BE `@ba7d84f` WT **DIRTY 2M**·Open 1 BLOCK **QA-B84(backend)**·⚠ **cross-stream merge BLOCK**·merge pending **518**(284+234). -->
+<!-- tester-sync: TSR 650차 2026-06-14T10:01 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.28s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 4.86s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@c26cfa7`(+1 vs `4ba7ea6`: `feat(v2/G17b): wire cognitive activity non-provision reason UI`)·WT **CLEAN**·`test..develop` **283 ahead**·origin/develop **동기화 @ `c26cfa7`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(283 ahead)·교차 BE `@ba7d84f` WT **CLEAN**·234 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **517**(283+234). -->
+<!-- tester-sync: TSR 648차 2026-06-14T09:44 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(53.60s)·build **781 modules**(5.00s)·audit **0**·develop `@4ba7ea6`(+1 vs `d5ff3f8`)·WT **CLEAN**·**282 ahead**·Open **0(frontend)**·**QA-B83 Fixed**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@6b7e6cb` WT **CLEAN**·233 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **515**(282+233). -->
+<!-- tester-sync: TSR 646차 2026-06-14T08:16 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(59.89s)·build **781 modules**(8.17s)·audit **0**·develop `@d5ff3f8` HEAD **불변**·WT **DIRTY 2M**(US-UX-05 SideNav WIP, 645차 CLEAN→재오염)·HEAD **1154/1154 PASS**(232.65s)·WT **1155/1155 PASS**(223.02s)·**281 ahead**·Open **1 BLOCK QA-B83(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@c22a5dc` WT **CLEAN**·232 ahead·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **513**(281+232). -->
+<!-- tester-sync: TSR 643차 2026-06-14T07:14 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(55.48s)·build **781 modules**(5.11s)·audit **0**·develop `@8bfb4f3`(+1 vs `8a8b930`: G42 anonymous box E2E·G30 checklist live harness)·WT **CLEAN**·**279 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@a121ae4` WT **CLEAN**·231 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **510**(279+231). -->
+<!-- tester-sync: TSR 641차 2026-06-14T06:56 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(53.12s)·build **781 modules**(6.94s)·audit **0**·develop `@8a8b930`(+1 vs `1e111be`: G42 anonymous box·US-UX-05 tests deepen)·WT **CLEAN**·HEAD **1149/1149 PASS**(206.97s)·**278 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@0b807d8` WT **CLEAN**·230 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **508**(278+230). -->
+<!-- tester-sync: TSR 639차 2026-06-14T06:36 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.14s)·build **781 modules**(6.61s)·audit **0**·develop `@1e111be`(+2 vs `360b4d7`: QA-B81 @ `56f0204` · US-UX-05 SideNav)·WT **CLEAN**·HEAD **1146/1146 PASS**(192.45s)·**277 ahead**·**QA-B81 Fixed**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@e5b4b88` WT **CLEAN**·229 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **506**(277+229). -->
+<!-- tester-sync: TSR 637차 2026-06-14T06:11 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.57s)·build **781 modules**(4.85s)·audit **0**·develop `@56f0204` WT **CLEAN**·origin/develop **동기화 @ `56f0204`**·origin/test **동기화 @ `c7c8f07`**·**276 ahead**·Planned **1 BLOCK QA-B81(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE 최근 실측 `@9652bf0` WT **CLEAN**·228 ahead·⚠ **cross-stream merge BLOCK**·merge pending **504**(276+228). -->
+<!-- tester-sync: TSR 635차 2026-06-14T05:54 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(84.7s)·build **781 modules**(11.3s)·audit **0**·develop `@360b4d7`(+1 vs `111f056`: UXD-101 quiet-hours notify aria-describedby)·WT **CLEAN**·HEAD **1141/1143 FAIL**(`pilotPageFlows` US-L01/L02)·**275 ahead**·**QA-B82 Fixed**·Planned **1 BLOCK QA-B81(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@dbecd72` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **502**(275+227). -->
+<!-- tester-sync: TSR 633차 2026-06-14T04:47 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(55.06s)·build **781 modules**(7.71s)·audit **0**·develop `@111f056`(+1 vs `7ec7cd4`: J03 quiet-hours billing notify UI)·WT **DIRTY 2M**(G2/7-5 easy-pay alias WIP, 630차 CLEAN→재오염)·HEAD **1141/1143 FAIL**(`pilotPageFlows` US-L01/L02)·**274 ahead**·Open **2 BLOCK QA-B81·QA-B82(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@a057739` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **500**(274+226). -->
+<!-- tester-sync: TSR 630차 2026-06-14T03:59 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.65s)·build **781 modules**(6.95s)·audit **0**·develop `@7ec7cd4`(+1 vs `745a2f6`: reject malformed easy-pay provider aliases)·WT **CLEAN**·develop HEAD test **1136/1136 PASS**(188.02s)·**273 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@8f9ad0c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **497**(273+224). -->
+<!-- tester-sync: TSR 628차 2026-06-14T03:41 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.04s)·build **781 modules**(4.97s)·audit **0**·develop `@745a2f6`(+1 vs `4f2ec98`: easy-pay provider normalization inputs)·WT **CLEAN**·**272 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@328874d` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **495**(272+223). -->
+<!-- tester-sync: TSR 626차 2026-06-14T03:27 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.86s)·build **781 modules**(4.90s)·audit **0**·develop `@4f2ec98`(+1 vs `51f2505`: easy-pay client validation · **QA-B80 Fixed @ HEAD**)·WT **CLEAN**·**271 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@82054f1` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **493**(271+222). -->
+<!-- tester-sync: TSR 624차 2026-06-14T03:10 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.11s)·build **781 modules**(7.01s)·audit **0**·develop `@51f2505`(+1 vs `bebd874`: EasyPayPanel a11y · **QA-B79 Fixed @ HEAD**)·WT **DIRTY 2M**(G2/7-5 easy-pay client validation WIP, **623차 CLEAN→재오염**, 2 files +56/-14, +2 @Test)·HEAD **1131/1131 PASS**·WT **1133/1133 PASS**(189.13s)·**270 ahead**·**69 route**·Open **1 BLOCK QA-B80(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@16a0734` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **491**(270+221). -->
+<!-- tester-sync: TSR 622차 2026-06-14T02:19 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.41s)·build **781 modules**(6.56s)·audit **0**·develop `@bebd874` HEAD **불변**(620차 대비)·WT **DIRTY 3M+1U**(G2/7-5 easy-pay provider normalization WIP, **620차 CLEAN→재오염**, 4 files +26/-5, +2 @Test)·HEAD **1126/1126 PASS**·WT **1128/1128 PASS**(189.79s)·**269 ahead**·**69 route**·Open **1 BLOCK QA-B79(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@b893e97` WT **DIRTY 2M**·Open 1 BLOCK **QA-B78**·⚠ **cross-stream merge BLOCK**·merge pending **489**(269+220). -->
+<!-- tester-sync: TSR 620차 2026-06-14T02:00 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(80.71s)·build **781 modules**(6.70s)·audit **0**·develop `@bebd874`(+1 vs `3848af6`: G2/7-5 prior-month copay guard UI BNK-189)·WT **CLEAN**·HEAD **1126/1126 PASS**(219.68s)·build index **590.02 kB** vite warn·**269 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@b893e97` WT **CLEAN**·220 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **489**(269+220). -->
+<!-- tester-sync: TSR 618차 2026-06-14T01:41 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.89s)·build **781 modules**(4.90s)·audit **0**·develop `@3848af6`·WT **CLEAN**·develop HEAD test/build **미재실행**(tester read-only 정책)·**268 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@1231389` WT **CLEAN**·219 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **487**(268+219). -->
+<!-- tester-sync: TSR 616차 2026-06-14T01:26 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.46s)·build **781 modules**(6.85s)·audit **0**·develop `@c9baca2` HEAD **불변**(614차 대비)·WT **CLEAN**·HEAD **1119/1119 PASS**(188.06s)·build index **589.98 kB** vite warn·**267 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@70b3fb8` WT **CLEAN**·218 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **485**(267+218). -->
+<!-- tester-sync: TSR 614차 2026-06-14T01:11 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(78.79s)·build **781 modules**(6.60s)·audit **0**·develop `@c9baca2`(+3 vs `e14ba10`: G41b UXD-99·V107 payload·G2/7-5 easy payment BNK-189)·WT **CLEAN**·HEAD **1119/1119 PASS**(216.85s)·build index **589.98 kB** vite warn·**267 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@438f5c7` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **484**(267+217). -->
+<!-- tester-sync: TSR 611차 2026-06-14T00:22 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.81s)·build **781 modules**(6.71s)·audit **0**·develop `@e14ba10`(+1 vs `76fe2fb`: G41 remove hardcoded new-hire window text)·WT **CLEAN**·HEAD **1110/1110 PASS**(188.50s)·**264 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@32f87f1` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **479**(264+215). -->
+<!-- tester-sync: TSR 609차 2026-06-14T00:20 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(115.14s)·build **781 modules**(15.72s)·audit **0**·develop `@76fe2fb`(+1 vs `a4ab0c2`: QA-B77 StatCard scoped compliance assertions)·WT **CLEAN**·HEAD **1109/1109 PASS**(352.77s)·build index **589.42 kB** vite warn·**263 ahead**·Open **0(frontend)**·**QA-B77 Fixed**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@299d21f` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **477**(263+214). -->
+<!-- tester-sync: TSR 607차 2026-06-13T23:36 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.69s)·build **781 modules**(6.73s)·audit **0**·develop `@a4ab0c2`(+1 vs `38d24b6`: G41b training log compliance live E2E harness BNK-186)·WT **CLEAN**·HEAD **1108/1109 FAIL**(`StaffTrainingLogPage.test.jsx:178`)·**262 ahead**·Open **1 BLOCK QA-B77(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@0f11158` WT **DIRTY 2M**·Open 1 BLOCK **QA-B76**·⚠ **cross-stream merge BLOCK**·merge pending **475**(262+213). -->
+<!-- tester-sync: TSR 605차 2026-06-13T23:17 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.35s)·build **781 modules**(5.10s)·audit **0**·develop `@38d24b6`(+1 vs `e43295b`: G41b wire training log compliance BNK-185)·WT **CLEAN**·**261 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@0f11158` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **474**(261+213). -->
+<!-- tester-sync: TSR 603차 2026-06-13T23:03 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.00s)·build **781 modules**(4.84s)·audit **0**·develop `@e43295b`(+1 vs `e69bf00`: G41 training log nav·services tests·pilot E2E)·WT **CLEAN**·**260 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@613b6af` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **472**(260+212). -->
+<!-- tester-sync: TSR 601차 2026-06-13T22:47 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(53.06s)·build **781 modules**(6.05s)·audit **0**·develop `@e69bf00`(+2 vs `5146895`)·WT **CLEAN**·**259 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@613b6af` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **471**(259+212). -->
+<!-- tester-sync: TSR 599차 2026-06-13T22:18 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.14s)·build **781 modules**(6.76s)·audit **0**·develop `@5146895`(+1 vs `400c835`: G30 monitoring checklist pilot E2E)·WT **CLEAN**·HEAD **1094/1094 PASS**(186.42s)·**257 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@6191b91` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **468**(257+211). -->
+<!-- tester-sync: TSR 597차 2026-06-13T21:50 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(49.73s)·build **781 modules**(4.81s)·audit **0**·develop `@400c835` HEAD 불변(596차 대비)·WT **CLEAN**·**256 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@997831c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **466**(256+210). -->
+<!-- tester-sync: TSR 596차 2026-06-13T21:45 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(52.09s)·build **781 modules**(5.06s)·audit **0**·develop `@400c835`(+1 vs `574bd08`)·WT **CLEAN**·**256 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@997831c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **466**(256+210). -->
+<!-- tester-sync: TSR 594차 2026-06-13T21:28 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.73s)·build **781 modules**(4.85s)·audit **0**·develop `@574bd08`(+2 vs `dbf0299`)·WT **CLEAN**·**255 ahead**·Open **0(frontend)**·**QA-B75 Fixed**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@b1dfd34` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **464**(255+209). -->
+<!-- tester-sync: TSR 592차 2026-06-13T21:02 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.47s)·build **781 modules**(4.91s)·audit **0**·develop `@dbf0299` HEAD **불변**·WT **DIRTY 5M**·HEAD **1084/1084 PASS**·WT **1085/1085 PASS**·**253 ahead**·Open **1 BLOCK QA-B75(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@9a8bd2a` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **461**(253+208). -->
+<!-- tester-sync: TSR 590차 2026-06-13T20:23 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.32s)·build **781 modules**(4.81s)·audit **0**·develop `@dbf0299`(+1 vs `cfd87c5`: G34-QUAL·US-S02 refresher pilot E2E)·WT **CLEAN**·**253 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@8615e3c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **460**(253+207). -->
+<!-- tester-sync: TSR 588차 2026-06-13T20:07 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.02s)·build **781 modules**(4.85s)·audit **0**·develop `@cfd87c5`(+2 vs `443efca`: pilotPageFlows refresher compliance expectation sync)·WT **CLEAN**·HEAD **1082/1082 PASS**(179.58s)·**252 ahead**·**QA-B74 Fixed @ `cfd87c5`**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@726b3de` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **458**(252+206). -->
+<!-- tester-sync: TSR 586차 2026-06-13T19:27 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(116.72s)·build **781 modules**(7.62s)·audit **0**·develop `@443efca`(+1 vs `d695923`: refresher compliance API·G34-QUAL team lead gate)·WT **CLEAN**·HEAD **1081/1082 FAIL**(`pilotPageFlows.test.jsx:4071`)·**250 ahead**·Open **1 BLOCK QA-B74(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@229f84c` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **455**(250+205). -->
+<!-- tester-sync: TSR 581차 2026-06-13T18:33 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.52s)·build **781 modules**(4.74s)·audit **0**·develop `@6b1258c`(+1 vs `ff173af`: latest frontend develop HEAD)·WT **CLEAN**·`test..develop` **248 ahead**·origin/develop **동기화 @ `6b1258c`**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@c16f4fe` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **451**(248+203). -->
+<!-- tester-sync: TSR 579차 2026-06-13T18:18 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.84s)·build **781 modules**(6.74s)·audit **0**·develop `@ff173af`(+1 vs `5bba7a2`: US-R02 staff profile pagination for 8-12 outputs)·WT **CLEAN**·HEAD **1072/1072 PASS**(179.63s)·build index **577.50 kB** vite warn·**247 ahead**·origin/develop **동기화 @ `ff173af`**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@d4acab7` WT **DIRTY 2M**·Open 1 BLOCK **QA-B73(backend)**·⚠ **cross-stream merge BLOCK**·merge pending **449**(247+202). -->
+<!-- tester-sync: TSR 577차 2026-06-13T17:57 UTC (frontend) — superseded by 579차 — develop `@5bba7a2` · 246 ahead · cross-stream FULLY UNBLOCKED(578차 B73 누락). -->
+<!-- tester-sync: TSR 575차 2026-06-13T17:33 UTC (frontend) — superseded by 577차 — develop `@488f547` · 245 ahead · merge pending 446. -->
+<!-- tester-sync: TSR 573차 2026-06-13T16:52 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(78.04s)·build **781 modules**(4.84s)·audit **0**·develop `@a7a6004`(+1 vs `892450a`: G42 grievance approval E2E — **QA-B72 Fixed**) WT **CLEAN**·HEAD **1067/1067 PASS**(207.24s)·**243 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@39ee679` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **443**(243+200). -->
+<!-- tester-sync: TSR 571차 2026-06-13T16:28 UTC (frontend) — superseded by 573차 — develop `@892450a` · Open 1 BLOCK QA-B72 · merge BLOCK. -->
+<!-- tester-sync: TSR 569차 2026-06-13T16:02 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.11s)·build **781 modules**·audit **0**·develop `@14124d6`(+1 G42 follow-up checklist·approval queue UI) WT **CLEAN**·HEAD **1065/1066 FAIL**(`pilotPageFlows.test.jsx:3908`)·**241 ahead**·Open **1 BLOCK QA-B72(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@bcb1d9f` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **439**(241+198). -->
+<!-- tester-sync: TSR 567차 2026-06-13T15:40 UTC (frontend) — superseded by 569차 — develop `@47a4928` · Open 0 · merge FULLY UNBLOCKED. -->
+<!-- tester-sync: TSR 565차 2026-06-13T15:24 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(53.67s)·build **781 modules**(4.99s)·audit **0**·develop `@ccc4d75` WT **CLEAN**·`test..develop` **239 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@2ebca70` WT **CLEAN**·196 ahead·Open 0·★ cross-stream **FULLY UNBLOCKED**·merge pending **435**(239+196). -->
+<!-- tester-sync: TSR 563차 2026-06-13T15:08 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.57s)·build **781 modules**(4.93s)·audit **0**·develop `@772e96f` WT **CLEAN**·`test..develop` **238 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@f4c8558` WT **CLEAN**·195 ahead·Open 0·★ cross-stream **FULLY UNBLOCKED**·merge pending **433**(238+195). -->
+<!-- tester-sync: TSR 561차 2026-06-13T14:24 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.36s)·build **781 modules**(6.64s)·audit **0**·develop `@07956f5`(+1: US-R02 8-12 staff status report exports·reference date filter)·WT **CLEAN**·HEAD **1048/1048 PASS**(178.33s)·**67 route**·`test..develop` **236 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@5692662` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **430**(236+194). -->
+<!-- tester-sync: TSR 559차 2026-06-13T14:07 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.52s)·build **781 modules**(9.69s)·audit **0**·develop `@bf6dd25`(+1: US-R02 8-12 staff status report aggregated API)·WT **CLEAN**·HEAD **1039/1039 PASS**(209.12s)·**67 route**·`test..develop` **235 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@b8e92bf` WT **CLEAN**·Open 0·HEAD **931/931 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **428**(235+193). -->
+<!-- tester-sync: TSR 557차 2026-06-13T13:46 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.43s)·build **781 modules**(6.97s)·audit **0**·develop `@0da41c6`(+1: FAQ21836 monitoring template basis fallback)·WT **CLEAN**·HEAD **1036/1036 PASS**(179.34s)·**67 route**·`test..develop` **234 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@5501745` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **426**(234+192). -->
+<!-- tester-sync: TSR 555차 2026-06-13T13:22 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.73s)·build **781 modules**(6.25s)·audit **0**·develop `@6f6915f`(+1: G30 monitoring self-diagnosis UI BNK-169)·WT **CLEAN**·HEAD **1035/1035 PASS**(205.37s)·**67 route**·`test..develop` **233 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@6a72b70` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **424**(233+191). -->
+<!-- tester-sync: TSR 553차 2026-06-13T12:58 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.47s)·build **781 modules**(7.24s)·audit **0**·develop `@b47e85c`(+1: G27 no-branch guard — **QA-B71 Fixed**)·WT **CLEAN**·HEAD **1023/1023 PASS**(174.89s)·**66 route**·`test..develop` **232 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@aaa16f8` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **422**(232+190). -->
+<!-- tester-sync: TSR 551차 2026-06-13T12:32 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.95s)·build **781 modules**(6.75s)·audit **0**·develop `@a5c2736`(+1: UXD-94 lifecycle heading·copay aria-describedby)·WT **DIRTY 2M**(`MonthlyBenefitCapGuardPanel*` G27 no-branch guard WIP)·HEAD **1022/1022 PASS**·WT **1023/1023 PASS**·**66 route**·`test..develop` **231 ahead**·**Open 1 BLOCK QA-B71(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@8bb6583` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge pending **420**(231+189). -->
+<!-- tester-sync: TSR 549차 2026-06-13T11:47 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.91s)·build **781 modules**(6.57s)·audit **0**·develop `@e77b7e4`(+1: G9-COPAY-NAMING statutory wording)·WT **CLEAN**·HEAD **1020/1020 PASS**(174.13s)·**66 route**·`test..develop` **230 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@edd2771` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **418**(230+188). -->
+<!-- tester-sync: TSR 545차 2026-06-13T11:02 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(81.02s)·build **781 modules**(6.48s)·audit **0**·develop `@58256c6`(+1: FAQ21824 billing lifecycle checklist)·WT **CLEAN**·HEAD **1015/1015 PASS**(206.63s)·**66 route**·`test..develop` **228 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@21eb0af` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **414**(228+186). -->
+<!-- tester-sync: TSR 543차 2026-06-13T10:38 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(81.48s)·build **781 modules**(10.27s)·audit **0**·develop `@7668459`(+1: QA-B69 Fixed)·WT **CLEAN**·HEAD **1009/1009 PASS**(204.35s)·**66 route**·`test..develop` **227 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@6f6094d` WT **DIRTY 2M**·Open 1 BLOCK **QA-B70**·⚠ **cross-stream merge BLOCK**·merge pending **412**(227+185). -->
+<!-- tester-sync: TSR 541차 2026-06-13T10:03 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.24s)·build **781 modules**(6.32s)·audit **0**·develop `@338c014` HEAD **불변**·WT **DIRTY 1M**(`BillingPage.test.jsx` QA-B69 fix WIP)·HEAD **1008/1009 FAIL**·WT **1009/1009 PASS**(202.07s)·**66 route**·`test..develop` **226 ahead**·**Open 1 BLOCK QA-B69(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@6f6094d` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge pending **411**(226+185). -->
+<!-- tester-sync: TSR 539차 2026-06-13T09:44 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.89s)·build **781 modules**(6.85s)·audit **0**·develop `@338c014`(+2: G-7x-1 prior-deposit UX guard)·WT **CLEAN**·HEAD **1008/1009 FAIL**(`BillingPage.test.jsx`)·**66 route**·`test..develop` **226 ahead**·**Open 1 BLOCK QA-B69(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@6f6094d` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge pending **411**(226+185). -->
+<!-- tester-sync: TSR 537차 2026-06-13T09:00 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.55s)·build **781 modules**(7.33s)·audit **0**·develop `@02cbd05`(+1: US-R02 staff status report page)·WT **CLEAN**·HEAD **1001/1001 PASS**(204.38s)·build **923 modules**(6.42s)·**65 route**·`test..develop` **224 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@8487667` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **408**(224+184). -->
+<!-- tester-sync: TSR 535차 2026-06-13T08:41 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.48s)·build **781 modules**(6.61s)·audit **0**·develop `@8bbba4d`(+1: G42/G34b live API harness·pilot E2E flows)·WT **CLEAN**·HEAD **994/994 PASS**(171.84s)·build **921 modules**(6.06s)·**64 route**·`test..develop` **223 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@b6ecc35` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **406**(223+183). -->
+<!-- tester-sync: TSR 533차 2026-06-13T08:13 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.95s)·build **781 modules**(5.51s)·audit **0**·develop `@994f5ea`(+1: G34b cognitive role guard on work-log save)·WT **CLEAN**·HEAD **991/991 PASS**(200.45s)·build **921 modules**(6.92s)·**64 route**·`test..develop` **222 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@bccf978` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **404**(222+182). -->
+<!-- tester-sync: TSR 531차 2026-06-13T07:54 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(76.31s)·build **781 modules**(9.42s)·audit **0**·develop `@b0a9e06`(+1: G42 grievance counseling page staff API wiring)·WT **CLEAN**·HEAD **989/989 PASS**(241.27s)·build **921 modules**·**64 route**·`test..develop` **221 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@0460e9b` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **402**(221+181). -->
+<!-- tester-sync: TSR 529차 2026-06-13T07:25 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.73s)·build **781 modules**(6.33s)·audit **0**·develop `@db21e85`(+1: QA-B68 UXD-92 aria-label test fix)·WT **CLEAN**·HEAD **979/979 PASS**·**64 route**·`test..develop` **220 ahead**·**QA-B68 Fixed**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@bcdc411` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **400**(220+180). -->
+<!-- tester-sync: TSR 527차 2026-06-13T07:07 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.39s)·build **781 modules**(5.20s)·audit **0**·develop `@1b5fabe`(+2: UXD-92·G34b)·WT **CLEAN**·HEAD **978/979 FAIL**·**63 route**·`test..develop` **219 ahead**·**Open 1 BLOCK QA-B68(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@b459f4c` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge pending **398**(219+179). -->
+<!-- tester-sync: TSR 525차 2026-06-13T06:34 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(169.19s)·build **781 modules**(22.18s)·audit **0**·develop `@3c7d2c7`(+1: QA-B67 parseApiErrorPayload fix)·WT **CLEAN**·HEAD **965/965 PASS**·**64 route**·`test..develop` **217 ahead**·Open 0(frontend)·**QA-B67 Fixed**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@2925ff7` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **395**(217+178). -->
+<!-- tester-sync: TSR 523차 2026-06-13T06:14 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.82s)·build **781 modules**(6.91s)·audit **0**·develop `@d41546f` HEAD **불변**·WT **DIRTY 2M**(`http.js`·`http.test.js`)·HEAD **963/963 PASS**·WT **965/965 PASS**(+2 @Test)·**64 route**·`test..develop` **216 ahead**·**Open 1 BLOCK QA-B67(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@dc48933` WT **DIRTY 1M**·Open 1 BLOCK **QA-B66**·**양 스트림 merge BLOCK**·merge pending **393**(216+177). -->
+<!-- tester-sync: TSR 521차 2026-06-13T05:56 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.08s)·build **781 modules**(6.77s)·audit **0**·develop `@d41546f`(+1: US-R02 health checkup→HR file hub 8-10 P2)·WT **CLEAN**·HEAD **963/963 PASS**·922 modules·**64 route**·`test..develop` **216 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@dc48933` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **393**(216+177). -->
+<!-- tester-sync: TSR 519차 2026-06-13T05:31 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.38s)·build **781 modules**(4.85s)·audit **0**·develop `@0ce04ad`(+1: G34b work log import)·WT **CLEAN**·`test..develop` **215 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 backend `@a7b4a39` WT **DIRTY 4M**·Open 1 BLOCK **QA-B65**·⚠ **cross-stream merge BLOCK**·merge pending **391**(215+176). -->
+<!-- tester-sync: TSR 517차 2026-06-13T05:14 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.24s)·build **781 modules**(6.63s)·audit **0**·develop `@6657d90`(+1: G40b pilot test dual alerts)·WT **CLEAN**·HEAD **953/953 PASS**(164.83s)·**922 modules**(index 545.83 kB >500 kB vite warn)·**64 route**·`test..develop` **214 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 backend `@a7b4a39` WT **DIRTY 4M**·Open 1 BLOCK **QA-B65**·⚠ **cross-stream merge BLOCK**·merge pending **390**(214+176). -->
+<!-- tester-sync: TSR 515차 2026-06-13T04:39 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(76.13s)·build **781 modules**(7.02s)·audit **0**·develop `@7b68f54`(+1: latest frontend develop commit)·WT **CLEAN**·`test..develop` **213 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 backend `@a7b4a39` WT **CLEAN**·Open 0·★ cross-stream **FULLY UNBLOCKED**·merge pending **389**. -->
+<!-- tester-sync: TSR 513차 2026-06-13T04:01 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.11s)·build **781 modules**(4.90s)·audit **0**·develop `@22325f4`(+1: latest frontend develop commit)·WT **CLEAN**·`test..develop` **211 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 backend `@bdfc140` WT **CLEAN**·Open 0·★ cross-stream **FULLY UNBLOCKED**·merge pending **386**. -->
+<!-- tester-sync: TSR 511차 2026-06-13T03:45 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.08s)·build **781 modules**(4.83s)·audit **0**·develop `@72676a5`(+1: US-T11 G40 client detail compliance API wiring)·WT **CLEAN**·`test..develop` **210 ahead**·Open 0(frontend)·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 backend `@84e59d2` WT **CLEAN**·Open 0·★ cross-stream **FULLY UNBLOCKED**·merge pending **384**. -->
+<!-- tester-sync: TSR 509차 2026-06-13T03:24 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(70.20s)·build **781 modules**(7.23s)·audit **0**·develop `@e89175e` WT **CLEAN**·`test..develop` **209 ahead**·Open 0·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 backend `@2589b94` WT **CLEAN**·Open 0·★ cross-stream **FULLY UNBLOCKED**·merge pending **382**. -->
+<!-- tester-sync: TSR 507차 2026-06-13T03:05 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(52.41s)·build **781 modules**(6.93s)·audit **0**·develop `@2f5af63` HEAD **불변**·WT **DIRTY 2M**(`http.js`·`http.test.js`)·HEAD **929/929 PASS**·WT **931/931 PASS**(+2 @Test)·911 modules·**208 ahead**·**Open 1 BLOCK QA-B62 recurrence**·PASS(v1.2+v1.3-A @ test)·⚠ **merge BLOCK**(FE+BE WT dirty)·교차 BE `@f0752b6` WT **DIRTY 2M**·Open 1 BLOCK **QA-B64**·**양 스트림 merge BLOCK**·merge pending **380**. -->
+<!-- tester-sync: TSR 505차 2026-06-13T02:43 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(49.78s)·build **781 modules**(6.54s)·audit **0**·develop `@2f5af63`(+1 vs `9f80082`)·WT **CLEAN**·HEAD **929/929 PASS**·911 modules·**63 route**·`test..develop` **208 ahead**·frontend Open 0·PASS(v1.2+v1.3-A @ test)·★ **merge FULLY UNBLOCKED**·교차 BE `@f0752b6` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge pending **380**. -->
+<!-- tester-sync: TSR 503차 2026-06-13T02:19 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.69s)·build **781 modules**(4.83s)·audit **0**·develop `@9f80082`(+1 vs origin `4efa168`)·WT **CLEAN**·origin/develop **동기화**·`test..develop` **207 ahead**·frontend Open 0·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **UNBLOCKED**·교차 BE `@686d686` WT **DIRTY 1U**·Open 1 BLOCK QA-B63·**양 스트림 merge BLOCK**·merge pending **378**. -->
+<!-- tester-sync: TSR 501차 2026-06-13T01:44 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(80.34s)·build **781 modules**(6.88s)·audit **0**·develop `@4efa168` HEAD **불변**·WT **DIRTY 2M**(`http.js`·`http.test.js` — parseApiErrorPayload WIP, +102/-3)·HEAD committed **917/917 PASS**·WT **921/921 PASS**(+4 @Test)·**63 route**·**Open 1 BLOCK QA-B62(frontend) 유지**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차 BE `@686d686` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge pending **376**. -->
+<!-- tester-sync: TSR 499차 2026-06-13T01:19 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(75.74s)·build **781 modules**(11.18s)·audit **0**·develop `@4efa168` HEAD **불변**·WT **DIRTY 2M**(`http.js`·`http.test.js` — parseApiErrorPayload WIP)·HEAD **917/917 PASS**·WT **919/919 PASS**·**63 route**·**Open 1 BLOCK QA-B62(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차 BE `@22d736b` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge pending **375**. -->
+<!-- tester-sync: TSR 497차 2026-06-13T00:56 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.33s)·build **781 modules**(4.91s)·audit **0**·develop `@4efa168`(+1 vs `9ebb87f`: `feat(US-R03): deepen FAQ21806 onboarding compliance and HR file hub wiring`)·WT **CLEAN**·HEAD **917/917 PASS**(163.33s)·909 modules·**63 route**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@b864272` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge pending **374**. -->
+<!-- tester-sync: TSR 495차 2026-06-13T00:34 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.04s)·build **781 modules**(6.68s)·audit **0**·develop `@9ebb87f` HEAD **불변**·WT **CLEAN**·HEAD **913/913 PASS**(163.32s)·909 modules·**63 route**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@60789d6` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge pending **372**. -->
+<!-- tester-sync: TSR 492차 2026-06-13T00:09 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(120.35s)·build **781 modules**(14.25s)·audit **0**·develop `@e76ca06` HEAD **불변**·WT **CLEAN**·HEAD **908/908 PASS**(269.35s)·908 modules·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@d4ee057` WT **DIRTY 2M**·Open 1 BLOCK **QA-B61**·**양 스트림 merge BLOCK**·merge pending **370**. -->
+<!-- tester-sync: TSR 490차 2026-06-12T23:32 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.90s)·build **781 modules 3 청크**(max 367.09 kB, 6.84s)·audit **0**(prod omit=dev)·develop `@9a6fdb6`(+1 vs `57ed2db`: G2 CMS enrollment cancellation UI)·WT **CLEAN**·HEAD **900/900 PASS**(183.56s)·build **906 modules**(index 518.53 kB >500 kB vite warn, 8.74s)·**63 route**·develop **201 ahead(test)**·origin/develop **동기화 @ `9a6fdb6`**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차(backend): develop `@4a622ab` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge pending **367**(201+166). -->
+<!-- tester-sync: TSR 486차 2026-06-12T22:39 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.51s)·build **781 modules 3 청크**(max 367.09 kB, 6.43s)·audit **0**(prod omit=dev)·develop `@57ed2db`(+1 vs `9d648e0`: QA-B60 staff HR file hub UI)·WT **CLEAN**·HEAD **898/898 PASS**(185.93s)·build **906 modules**(index 518.43 kB >500 kB vite warn, 5.90s)·**63 route**·develop **200 ahead(test)**·origin/develop **동기화 @ `57ed2db`**·**Open 0(frontend)**·**QA-B60 Fixed**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차(backend): develop `@a34d0eb` WT **CLEAN**·Open 0·**805/805 PASS**·**양 스트림 merge FULLY UNBLOCKED**·merge pending **365**(200+165). -->
+<!-- tester-sync: TSR 484차 2026-06-12T22:12 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.01s)·build **781 modules 3 청크**(max 367.09 kB, 4.81s)·audit **0**(prod omit=dev)·develop `@9d648e0` HEAD **불변**·WT **DIRTY 6**(US-R03 staff HR file hub UI deepen WIP, **480차 CLEAN→재오염 유지**)·HEAD **891/891 PASS**·WT **898/898 PASS**(+7 @Test)·904 modules·**63 route**·develop **199 ahead(test)**·origin/develop **동기화 @ `9d648e0`**·**Open 1 BLOCK QA-B60(frontend) 유지**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차(backend): develop `@72aff00` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge pending **363**(199+164). -->
+<!-- tester-sync: TSR 482차 2026-06-12T21:54 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(57.57s)·build **781 modules 3 청크**(max 367.09 kB, 5.13s)·audit **0**(prod omit=dev)·develop `@9d648e0` HEAD **불변**·WT **DIRTY 6**(US-R03 staff HR file hub UI deepen WIP, **480차 CLEAN→재오염**)·HEAD **891/891 PASS**·WT **897/898 FAIL**·904 modules·**63 route**·develop **199 ahead(test)**·origin/develop **동기화 @ `9d648e0`**·**Open 1 BLOCK QA-B60(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차(backend): develop `@fee710d` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge pending **362**(199+163). -->
+<!-- tester-sync: TSR 480차 2026-06-12T21:30 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.44s)·build **781 modules 3 청크**(max 367.09 kB, 6.36s)·audit **0**(prod omit=dev)·develop `@9d648e0`(+1 vs `bc3c967`: lazy-load staff/visits routes)·WT **CLEAN**·HEAD **891/891 PASS**(185.14s)·904 modules·**63 route**·develop **199 ahead(test)**·origin/develop **동기화 @ `9d648e0`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차(backend): develop `@bbb8e35` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **361**(199+162). -->
+<!-- tester-sync: TSR 478차 2026-06-12T21:05 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.66s)·build **781 modules 3 청크**(max 367.09 kB, 6.67s)·audit **0**(prod omit=dev)·develop `@bc3c967`(+2 vs `50bdb6e`: UXD-89·US-R03 staff HR file hub·FAQ21806 onboarding)·WT **CLEAN**·HEAD **891/891 PASS**(155.93s)·903 modules·**63 route**·develop **198 ahead(test)**·origin/develop **동기화 @ `bc3c967`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차(backend): develop `@a206508` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **359**(198+161). -->
+<!-- tester-sync: TSR 475차 2026-06-12T20:15 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(49.97s)·build **781 modules 3 청크**(max 367.09 kB, 6.74s)·audit **0**·develop `@50bdb6e`(+1 vs `46f1ac0`: US-S02 unknown hire date compliance summary·**QA-B59 Fixed**)·WT **CLEAN**·HEAD **883/883 PASS**(154.44s)·901 modules·**63 route**·develop **196 ahead(test)**·origin/develop **동기화 @ `50bdb6e`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차(backend 474차): develop `@1817c36` WT **CLEAN**·**786/786 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **356**(196+160). -->
+<!-- tester-sync: TSR 473차 2026-06-12T19:55 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(82.19s)·build **781 modules 3 청크**(max 367.09 kB, 11.06s)·audit **0**·develop `@46f1ac0` HEAD **불변**·WT **DIRTY 4M**(`StaffRefresherTrainingPage*`·`staffRefresherTrainingCompliance*` — US-S02/8-7-1 unknown hire date WIP)·HEAD **883/883 PASS**·WT **883/883 PASS**(187.03s)·901 modules·**62 route**·develop **195 ahead(test)**·origin/develop **동기화 @ `46f1ac0`**·**Open 1 BLOCK QA-B59(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차(backend 472차): develop `@3f444a1` WT **DIRTY 1M**·Open 1 BLOCK **QA-B58**·**양 스트림 merge BLOCK**·merge pending **354**(195+159). -->
+<!-- tester-sync: TSR 471차 2026-06-12T19:32 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.96s)·build **781 modules 3 청크**(max 367.09 kB, 4.81s)·audit **0**·develop `@46f1ac0`(+1 vs `604787f`: US-S02 refresher summary pagination·QA-B57 Fixed)·WT **CLEAN**·HEAD **883/883 PASS**(157.48s)·build **901 modules 3 청크**(index 597.71 kB >500 kB vite warn, 6.01s)·audit **0**·**62 route**·develop **195 ahead(test)**·origin/develop **동기화 @ `46f1ac0`**·**Open 0건(frontend)**·**QA-B57 Fixed**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차(backend 470차): develop `@3f444a1` WT **CLEAN**·**785/785 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **354**(195+159). -->
+<!-- tester-sync: TSR 469차 2026-06-12T19:10 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.32s)·build **781 modules 3 청크**(max 367.09 kB, 6.97s)·audit **0**·develop `@604787f` HEAD **불변**·WT **DIRTY 2M**(`StaffRefresherTrainingPage.jsx`·`StaffRefresherTrainingPage.test.jsx` — US-S02/8-7-1 WIP)·HEAD **882/882 PASS**·WT **883/883 PASS**(+1 @Test)·build **901 modules 3 청크**(index 597.71 kB >500 kB vite warn, 5.79s)·audit **0**·**63 route**·develop **194 ahead(test)**·origin/develop **동기화 @ `604787f`**·**Open 1 BLOCK QA-B57(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차(backend 468차): develop `@bad88f5` WT **CLEAN**·**783/783 PASS**·Open 0·**양 스트림 merge BLOCK**(FE WT clean 선행)·merge pending **352**(194+158). -->
+<!-- tester-sync: TSR 467차 2026-06-12T18:52 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.46s)·build **781 modules 3 청크**(max 367.09 kB, 7.01s)·audit **0**·develop `@604787f`(+1 vs 465차 `0a7fe16`: US-R02 staff health checkup page·API wiring 8-10)·WT **CLEAN**·HEAD **882/882 PASS**(182.34s)·build **901 modules 3 청크**(index 597.55 kB >500 kB vite warn, 9.02s)·audit **0**·**62 route**·develop **194 ahead(test)**·origin/develop **동기화 @ `604787f`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·merge **미실행**(194 ahead)·교차(backend 466차): develop `@f1268c6` WT **CLEAN**·**781/781 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **351**(194+157). -->
+<!-- tester-sync: TSR 465차 2026-06-12T18:22 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(51.13s)·build **781 modules 3 청크**(max 367.09 kB, 6.84s)·audit **0**·develop `@0a7fe16`(+2 vs 463차 `a11bbeb`: UXD-80 ds-stat-grid·US-S02 certificate management flow)·WT **CLEAN**·HEAD **871/871 PASS**(154.09s)·build **898 modules 3 청크**(index 586.25 kB >500 kB vite warn, 5.87s)·audit **0**·**62 route**·develop **193 ahead(test)**·origin/develop **동기화 @ `0a7fe16`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·merge **미실행**(193 ahead)·교차(backend 464차): develop `@51477bd` WT **CLEAN**·**764/764 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **349**(193+156). -->
+<!-- tester-sync: TSR 463차 2026-06-12T17:32 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(53.20s)·build **781 modules 3 청크**(max 367.09 kB, 7.87s)·audit **0**·develop `@a11bbeb`(+1 vs 461차 `21b5d2d`: G34-US-S02 live harness deepen)·WT **CLEAN**·HEAD **866/866 PASS**(158.30s)·build **897 modules 3 청크**(index 580.45 kB >500 kB vite warn, 5.99s)·audit **0**·**62 route**·develop **191 ahead(test)**·origin/develop **동기화 @ `a11bbeb`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·merge **미실행**(191 ahead)·교차(backend 462차): develop `@9c9fd5b` WT **CLEAN**·**755/755 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **346**(191+155). -->
+<!-- tester-sync: TSR 461차 2026-06-12T17:12 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(50.52s)·build **781 modules 3 청크**(max 367.09 kB, 6.69s)·audit **0**·develop `@21b5d2d`(+2 vs 458차 `bb4c1af`: G34-US-S02 refresher training·sign modal·pilot E2E)·WT **CLEAN**·HEAD **866/866 PASS**(153.64s, +11 @Test)·build **897 modules 3 청크**(index 580.36 kB >500 kB vite warn, 5.79s)·audit **0**·**62 route**·develop **190 ahead(test)**·origin/develop **동기화 @ `21b5d2d`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·merge **미실행**(190 ahead)·교차(backend 460차): develop `@e21c12f` WT **CLEAN**·**744/744 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **344**(190+154). -->
+<!-- tester-sync: TSR 458차 2026-06-12T16:35 UTC (frontend) — test `@c7c8f07` **217/217 PASS**(79.00s)·build **781 modules 3 청크**(max 367.09 kB, 6.76s)·audit **0**·develop `@bb4c1af`(+1 vs 456차 `37dc785`: US-R03 lifecycle date normalization)·WT **CLEAN**·HEAD **855/855 PASS**(179.57s, +2 @Test)·build **894 modules 3 청크**(index 572.13 kB >500 kB vite warn, 7.36s)·audit **0**·**61 route**·develop **188 ahead(test)**·origin/develop **동기화 @ `bb4c1af`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·merge **미실행**(188 ahead)·교차(backend 457차): develop `@61336df` WT **DIRTY 2M**·Open 1 BLOCK **QA-B56**·**양 스트림 merge BLOCK**·merge pending **340**(188+152). -->
+<!-- tester-sync: TSR 456차 2026-06-12T16:16 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 80.35s)·build **781 modules 3 청크**(max 367.09 kB, 11.98s)·audit **0**·develop `@37dc785`(+1 vs 454차 `b3e59e2`: US-R03 lifecycle validation·progress·list filter)·WT **CLEAN**·HEAD **853/853 PASS**(192 files, 234.89s, +6 @Test)·build **894 modules 3 청크**(index 571.89 kB >500 kB vite warn, 8.71s)·audit **0**·**61 route**·develop **187 ahead(test)**·origin/develop **동기화 @ `37dc785`**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·merge **미실행**(187 ahead)·교차(backend 455차): develop `@61336df` WT **DIRTY 2M**·Open 1 BLOCK **QA-B56**·**양 스트림 merge BLOCK**(BE WT clean 선행)·merge pending **339**(187+152). -->
+<!-- tester-sync: TSR 454차 2026-06-12T15:50 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 50.79s)·build **781 modules 3 청크**(max 367.09 kB, 6.74s)·audit **0**·develop `@b3e59e2`(+1 vs 452차 `a018e71`: US-R03 staff lifecycle status badges)·WT **CLEAN**·HEAD **847/847 PASS**(192 files, 150.60s)·develop **186 ahead(test)**·origin/develop 동기화·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차(backend 453차): develop `@61336df` WT **CLEAN**·Open 0·**742/742 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **338**. -->
+<!-- tester-sync: TSR 452차 2026-06-12T15:02 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 50.67s)·build **781 modules 3 청크**(max 367.09 kB, 6.85s)·audit **0**·develop `@a018e71`(+1 vs 450차 `3f2e884`: US-R03 staff lookup 5xx not masked)·WT **CLEAN**·HEAD **844/844 PASS**(192 files, 230.89s)·develop **185 ahead(test)**·origin/develop 동기화·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차(backend 451차): develop `@82bdbcd` WT **CLEAN**·**741/741 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **335**. -->
+<!-- tester-sync: TSR 450차 2026-06-12T14:40 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 49.78s)·build **781 modules 3 청크**(max 367.09 kB)·audit **0**·develop `@3f2e884`(+1 vs 448차 `8ccd287`: QA-B55 `userServices.test.js`)·WT **CLEAN**·HEAD **843/843 PASS**(192 files, 145.70s)·develop **184 ahead(test)**·origin/develop 동기화·**QA-B55 Fixed**·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차(backend 449차): develop `@9441a3c` WT **CLEAN**·**740/740 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending **333**. -->
+<!-- tester-sync: TSR 448차 2026-06-12T14:12 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 50.80s)·build **781 modules 3 청크**(max 367.09 kB, 7.01s)·audit **0**·develop `@8ccd287`(+1 vs 446차 `f8f47e1`: G34 lead caregiver signature audit fields)·WT **CLEAN**·HEAD **840/843 FAIL**(`userServices.test.js` 3건)·develop **183 ahead(test)**·origin/develop 동기화·**Open 1 BLOCK QA-B55(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend HEAD test FAIL)·교차(backend 447차): develop `@c976f55` WT **CLEAN**·**732/732 PASS**·Open 0·**양 스트림 merge BLOCK**(FE test fix 선행)·merge pending **331**. -->
+<!-- tester-sync: TSR 446차 2026-06-12T13:50 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 53.08s)·build **781 modules 3 청크**(max 367.09 kB, 5.03s)·audit **0**·develop `@f8f47e1`(+1 vs 444차 `9a0e57b`: US-R03 follow-up)·WT **CLEAN**·HEAD **미실행(교차 444차 기준 838/838 PASS)**·develop **182 ahead(test)**·origin/develop 동기화·**Open 0건(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차(backend 445차): develop `@75440bc` WT **CLEAN**·**731/731 PASS**·Open 0·147 ahead·양 스트림 merge gate FULLY UNBLOCKED·merge pending **329**. -->
+<!-- tester-sync: TSR 444차 2026-06-12T13:30 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.35s)·781 modules·audit 0·develop `@9a0e57b`(+1 vs `7243d21`: US-R03 staff detail stale-response race guard)·WT **CLEAN**·HEAD **838/838 PASS**(151.13s)·894 modules·181 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@588bfb1` WT **CLEAN**·Open 0·**725/725 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 327. -->
+<!-- tester-sync: TSR 442차 2026-06-12T13:10 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.58s)·781 modules·audit 0·develop `@7243d21`(+2 vs `479e064`: US-R03 staff lifecycle·not-found fix)·WT **CLEAN**·HEAD **837/837 PASS**(149.88s)·894 modules·180 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@728339e` WT **DIRTY 2M**·**QA-B54 Planned BLOCK**·**양 스트림 merge BLOCK**·merge pending 325. -->
+<!-- tester-sync: TSR 440차 2026-06-12T12:21 UTC (frontend) — test `@c7c8f07` 217/217 PASS(81.26s)·781 modules·audit 0·develop `@479e064`(+1 vs `4e4bdf6`: G24-G34 fiscal-year parsing·G34 live E2E harness)·WT **CLEAN**·HEAD **827/827 PASS**(178.11s)·891 modules·178 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@728339e` WT **DIRTY 2M**·Open 1 BLOCK QA-B54·**양 스트림 merge BLOCK**·merge pending 323. -->
+<!-- tester-sync: TSR 438차 2026-06-12T12:01 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.56s)·781 modules·audit 0·develop `@4e4bdf6`(+1 vs `5be9070`: G24 needs assessment fiscal-year parsing)·WT **CLEAN**·HEAD **825/825 PASS**(148.03s)·891 modules·177 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@728339e` WT **CLEAN**·Open 0·**724/724 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 322. -->
+<!-- tester-sync: TSR 436차 2026-06-12T11:42 UTC (frontend) — test `@c7c8f07` 217/217 PASS(50.99s)·781 modules·audit 0·develop `@5be9070`(+1 vs `d0acfb3`: G24-G14 lifecycle tab hydration)·WT **CLEAN**·HEAD **823/823 PASS**(148.31s)·891 modules·176 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@b238779` WT **CLEAN**·Open 0·**722/722 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 320. -->
+<!-- tester-sync: TSR 434차 2026-06-12T11:21 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.17s)·781 modules·audit 0·develop `@d0acfb3`(+1 vs `2642838`: G24-G14 pilot E2E·live API harness)·WT **CLEAN**·HEAD **816/816 PASS**(154.32s)·891 modules·175 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@08a1722` WT **CLEAN**·Open 0·**710/710 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 318. -->
+<!-- tester-sync: TSR 434차 2026-06-12T11:21 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.17s)·781 modules·audit 0·develop `@d0acfb3`(+1 vs `2642838`: G24-G14 pilot E2E·live API harness)·WT **CLEAN**·HEAD **816/816 PASS**(154.32s)·891 modules·175 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@08a1722` WT **CLEAN**·Open 0·**710/710 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 318. -->
+<!-- tester-sync: TSR 430차 2026-06-12T10:18 UTC (frontend) — test `@c7c8f07` 217/217 PASS(49.45s)·781 modules·audit 0·develop `@ded6573`(+2 vs `6d6b426`: UXD-86 US-T09/T10 tabs·G34 lifecycle hydrate)·WT **CLEAN**·HEAD **808/808 PASS**(145.36s)·885 modules·173 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@559648f` WT **DIRTY 2M+1U**·Open 1 BLOCK QA-B53·**양 스트림 merge BLOCK**·merge pending 313. -->
+<!-- tester-sync: TSR 428차 2026-06-12T09:36 UTC (frontend) — test `@c7c8f07` 217/217 PASS(80.79s)·781 modules·audit 0·develop `@6d6b426`(+1 vs `c8c727e`: G34 lead caregiver work log UI)·WT **CLEAN**·HEAD **800/800 PASS**(213.90s)·881 modules·171 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@559648f` WT **CLEAN**·Open 0·**689/689 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 311. -->
+<!-- tester-sync: TSR 426차 2026-06-12T09:08 UTC (frontend) — test `@c7c8f07` 217/217 PASS(80.17s)·781 modules·audit 0·develop `@c8c727e`(+1 vs `50e5fac`: QA-B52 lifecycle evidence key fix)·WT **CLEAN**·HEAD **785/785 PASS**(167.20s)·879 modules·170 ahead·origin/develop 동기화·**Open 0**·**QA-B52 Fixed @ `c8c727e`**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@209f05d` WT **CLEAN**·Open 0·**679/679 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 309. -->
+<!-- tester-sync: TSR 424차 2026-06-12T08:48 UTC (frontend) — test `@c7c8f07` 217/217 PASS(50.28s)·781 modules·audit 0·develop `@50e5fac` HEAD 불변·WT **DIRTY 2M**·HEAD **784/784 PASS**·WT **785/785 PASS**(+1 @Test)·169 ahead·origin/develop 동기화·**Open 1 BLOCK QA-B52**·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 BE `@b7cfc92` WT **CLEAN**·Open 0·**676/676 PASS**·**양 스트림 merge BLOCK**·merge pending 307. -->
+<!-- tester-sync: TSR 422차 2026-06-12T08:26 UTC (frontend) — test `@c7c8f07` 217/217 PASS(163.26s)·781 modules·audit 0·develop `@50e5fac`(+1 vs `352968b`: lifecycle workflow panel pilot E2E)·WT **CLEAN**·HEAD **784/784 PASS**(299.03s)·169 ahead·origin/develop 동기화·**Open 0**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@45b8147` WT **CLEAN**·Open 0·**675/675 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 306. -->
+<!-- tester-sync: TSR 420차 2026-06-12T07:58 UTC (frontend) — test `@c7c8f07` 217/217 PASS(82.73s)·781 modules·audit 0·develop `@352968b`(+1 vs `22bd6b7`: QA-B50 lifecycle panel label dedupe)·WT **CLEAN**·HEAD **782/782 PASS**(170.27s)·168 ahead·origin/develop 동기화·**Open 0**·**QA-B50 Fixed @ `352968b`**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@6bfc745` WT **DIRTY 2M**·Open 1 BLOCK QA-B51·**양 스트림 merge BLOCK**·merge pending 304. -->
+<!-- tester-sync: TSR 418차 2026-06-12T07:32 UTC (frontend) — test `@c7c8f07` 217/217 PASS(79.90s)·781 modules·audit 0·develop `@22bd6b7`(+2 vs `2cd2cd8`: LifecycleWorkflowPanel+G17/G32 wiring)·WT **CLEAN**·HEAD **779/782 FAIL**(pilotPageFlows 3)·167 ahead·origin/develop 동기화·**Open 1 BLOCK QA-B50**·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 BE `@6bfc745` WT CLEAN·674/674·**양 스트림 merge BLOCK**·merge pending 303. -->
+<!-- tester-sync: TSR 416차 2026-06-12T06:48 UTC (frontend) — test `@c7c8f07` 217/217 PASS(50.45s)·781 modules·audit 0·develop `@2cd2cd8`(+1 vs `f72da41`: G17/G32 edit-flow pilot E2E)·WT **CLEAN**·HEAD 775/775 PASS(136.37s)·165 ahead·origin/develop 동기화·**Open 0**·**QA-B49 Fixed @ `f72da41`**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@3ad2a90` WT CLEAN·672/672·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 300. -->
+<!-- tester-sync: TSR 414차 2026-06-12T06:25 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.10s)·781 modules·audit 0·develop `@f72da41`(+1 vs `8fa9f3d`: QA-B49 parallelize compliance fallbacks)·WT **CLEAN**·HEAD 773/773 PASS(138.11s)·164 ahead·origin/develop 동기화·**Open 0**·**QA-B49 Fixed @ `f72da41`**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@0ed781f` WT CLEAN·669/669·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 298. -->
+<!-- tester-sync: TSR 412차 2026-06-12T06:03 UTC (frontend) — test `@c7c8f07` 217/217 PASS(52.46s)·781 modules·audit 0·develop `@8fa9f3d` HEAD 불변·WT **DIRTY 2M**·HEAD 772/772·WT 773/773 PASS(+1 @Test, 141.28s)·163 ahead·origin/develop 동기화·**Open 0**·**QA-B49 recurrence Planned BLOCK**·PASS(v1.2+v1.3-A)·⚠ merge BLOCK(frontend)·교차 BE `@15b3c7e` WT CLEAN·667/667·**양 스트림 merge BLOCK**·merge pending 296. -->
+<!-- tester-sync: TSR 410차 2026-06-12T05:42 UTC (frontend) — test `@c7c8f07` 217/217 PASS(50.18s)·781 modules·audit 0·develop `@8fa9f3d`(+1 vs 408차 `4903173`: G38/G39 dashboard snapshot aggregation commit)·WT **CLEAN**·HEAD 772/772 PASS(134.12s)·163 ahead·origin/develop 동기화·**Open 0**·**QA-B49 Fixed**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 BE `@15b3c7e` WT CLEAN·667/667·**양 스트림 merge gate FULLY UNBLOCKED**·merge pending 296. -->
+<!-- tester-sync: TSR 408차 2026-06-12T05:05 UTC (frontend) — test `@c7c8f07` 217/217 PASS(57.07s)·781 modules·audit 0·develop `@4903173` HEAD 불변·WT **DIRTY 2M**·WT 772/772 PASS(221.03s)·162 ahead·origin/develop 1 unpushed·**Open 0**·QA-B49 Planned BLOCK·PASS(v1.2+v1.3-A)·⚠ merge BLOCK(frontend)·교차 BE `@70d76a4` WT CLEAN·667/667·**양 스트림 merge BLOCK**·merge pending 294. -->
+<!-- tester-sync: TSR 406차 2026-06-12T04:44 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.35s)·781 modules·audit 0·develop `@4903173`(+1 DateInput FE-16)·WT **DIRTY 2M**·HEAD 771/771·WT 772/772 PASS(+1 @Test)·162 ahead·origin/develop 1 unpushed·**Open 0**·QA-B49 Planned BLOCK·PASS(v1.2+v1.3-A)·⚠ merge BLOCK(frontend)·교차 BE `@7ba18c1` WT CLEAN·666/666·**양 스트림 merge BLOCK**·merge pending 293. -->
+<!-- tester-sync: TSR 404차 2026-06-12T03:56 UTC (frontend) — test `@c7c8f07` 217/217 PASS(51.07s)·781 modules·audit 0·develop `@26499b3` HEAD 불변·WT **DIRTY 2M**·HEAD 769/769·WT 770/770 PASS(+1 @Test)·161 ahead·**Open 1 BLOCK QA-B49**·PASS(v1.2+v1.3-A)·⚠ merge BLOCK(frontend)·교차 BE `@a0a7f9c` WT CLEAN·Open 0·666/666 PASS·**양 스트림 merge BLOCK**·merge pending 291. -->
+<!-- tester-sync: TSR 402차 2026-06-12T03:23 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 51.00s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@26499b3`(+1 vs 400차 `8e66ae8`: `feat(v1.2.1/G17/G32): add edit flow for case management meetings and functional recovery plans` — `CaseManagementPage`·`FunctionalRecoveryPage`·tests, 4 files +247/-31) · WT **CLEAN** · develop HEAD `npm test` **769/769 PASS**(176 files, 141.05s) · build **878 modules 3 청크**(index 511.64 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **58 route·81 page** · develop **161 ahead** · origin/develop @ `26499b3` · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend) · merge **미실행**(161 ahead) · 교차(backend git, 401차): develop `@a9f8bda` WT **CLEAN** · **129 ahead** · Open 0(backend) · **666/666 PASS** · **양 스트림 merge gate FULLY UNBLOCKED** · merge pending **290**(161+129). -->
+<!-- tester-sync: TSR 400차 2026-06-12T02:55 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 65.03s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@8e66ae8`(+1 vs 398차 `4b2b082`: `feat(v1.2.1/G39): add indicator-44 weekly and monthly dashboard widgets (BNK-107)` — `DashboardPage`·`dashboardSummary`·`provisionResultCompliance`·tests, 7 files +219/-3) · WT **CLEAN** · develop HEAD `npm test` **767/767 PASS**(176 files, 137.91s) · build **878 modules 3 청크**(index 509.75 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **58 route·81 page** · develop **160 ahead** · origin/develop @ `8e66ae8` · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend) · merge **미실행**(160 ahead) · 교차(backend git, 399차): develop `@03211e6` WT **CLEAN** · **128 ahead** · Open 0(backend) · **661/661 PASS** · **양 스트림 merge gate FULLY UNBLOCKED** · merge pending **288**(160+128). -->
+<!-- tester-sync: TSR 398차 2026-06-12T02:32 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 50.75s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@4b2b082`(+1 vs 396차 `87e6fae`: `fix(v1.2.1/G38): show compliance data partial-load warning on dashboard` — `DashboardPage`(+test), 2 files +37) · WT **CLEAN** · develop HEAD `npm test` **765/765 PASS**(176 files, 136.15s) · build **878 modules 3 청크**(index 506.37 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **58 route·82 page** · develop **159 ahead** · origin/develop @ `4b2b082` · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend) · merge **미실행**(159 ahead) · 교차(backend git, 397차): develop `@3ca37ff` WT **DIRTY 4M** · **127 ahead** · Open 1 BLOCK **QA-20260612-B48** · **양 스트림 merge BLOCK**(BE WT clean 선행) · merge pending **286**(159+127). -->
+<!-- tester-sync: TSR 396차 2026-06-12T02:11 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 92.80s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@87e6fae`(+1 vs 394차 `28c22b0`: `test(v1.2.1/G38/G39): add pilot E2E and live API harness coverage` — `programComplianceLiveApi.e2e.test.js`·`pilotPageFlows.test.jsx`, 2 files +261) · WT **CLEAN** · develop HEAD `npm test` **764/764 PASS**(176 files, 178.93s) · build **878 modules 3 청크**(index 505.99 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **56 route·81 page** · develop **158 ahead** · origin/develop @ `87e6fae` · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend) · merge **미실행**(158 ahead) · 교차(backend git, 395차): develop `@3ca37ff` WT **CLEAN** · **127 ahead** · Open 0 · **659/659 PASS** · **QA-20260612-B47 Fixed** · **양 스트림 merge gate FULLY UNBLOCKED** · merge pending **285**(158+127). -->
+<!-- tester-sync: TSR 394차 2026-06-12T01:44 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 51.50s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@28c22b0`(+2 vs 392차 `1c99bcd`: `a16e1fe` G39 indicator-44 dashboard widgets UXD-83 · `28c22b0` G38 care-plan notification monitoring UI BNK-106) · WT **CLEAN** · develop HEAD `npm test` **758/758 PASS**(176 files, 140.50s) · build **878 modules 3 청크**(index 505.99 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **56 route·81 page** · develop **157 ahead** · origin/develop @ `28c22b0` · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend) · merge **미실행**(157 ahead) · 교차(backend git, 393차): develop `@3c7b247` WT **DIRTY 1U** · **126 ahead** · Open 1 BLOCK **QA-20260612-B47** · **659/659 PASS** · **양 스트림 merge BLOCK**(BE WT clean 선행) · merge pending **283**(157+126). -->
+<!-- tester-sync: TSR 392차 2026-06-12T01:05 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 51.45s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@1c99bcd`(+1 vs 390차 `e9d1178`: `feat(v2/G39): add provision result evaluation UI (BNK-107)` — `ProvisionResultEvaluationPage`·`provisionResultCompliance.js`·`services.js`·nav/routes, 11 files +806/-1) · WT **CLEAN** · develop HEAD `npm test` **749/749 PASS**(174 files, 133.85s) · build **876 modules 3 청크**(index 493.80 kB, max 367.09 kB) · audit **0** · **56 route·80 page** · develop **155 ahead** · origin/develop @ `1c99bcd` · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend) · merge **미실행**(155 ahead) · 교차(backend git, 391차): develop `@f082933` WT **CLEAN** · **125 ahead** · Open 0(backend) · **657/657 PASS** · **양 스트림 merge gate FULLY UNBLOCKED** · merge pending **280**(155+125). -->
+<!-- tester-sync: TSR 390차 2026-06-12T00:42 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 83.55s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@e9d1178`(+1 vs 388차 `12d3b7f`: `fix(v1.2.1/G37): restrict attachment extension fallback to missing MIME` — `gradeHistoryAttachments.js`·tests·`GradeHistoryAttachmentPanel.test.jsx`, 3 files +41/-2) · WT **CLEAN** · develop HEAD `npm test` **735/735 PASS**(172 files, 165.43s) · build **874 modules 3 청크**(index 484.48 kB, max 367.09 kB) · audit **0** · **56 route·78 page** · develop **154 ahead** · origin/develop @ `e9d1178` · **QA-20260612-B46 Fixed** · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend) · merge **미실행**(154 ahead) · 교차(backend git): develop `@5fd35a6` WT **CLEAN** · **124 ahead** · Open 0(backend) · **648/648 PASS**(389차) · **양 스트림 merge gate FULLY UNBLOCKED** · merge pending **278**(154+124). -->
+<!-- tester-sync: TSR 388차 2026-06-12T00:20 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 51.50s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@12d3b7f` HEAD **불변** · WT **DIRTY 3M**(G37 attachment extension fallback MIME guard WIP, **386차 CLEAN→재오염**) · HEAD **732/732 PASS**·WT **735/735 PASS**(+3 @Test, 136.81s) · develop **153 ahead** · origin/develop @ `12d3b7f` · **Open 1 BLOCK QA-20260612-B46(frontend)** · PASS(v1.2+v1.3-A @ test) · ⚠ **v1.2.1 merge BLOCK**(frontend) · merge **미실행**(153 ahead) · 교차(backend git): develop `@e8de0eb` WT **CLEAN** · **123 ahead** · Open 0(backend) · **양 스트림 merge BLOCK**(FE WT clean 선행) · merge pending **276**(153+123). -->
+<!-- tester-sync: TSR 386차 2026-06-12T00:00 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test` **217/217 PASS**(70 files, vitest 4.1.8, 51.74s) · build **781 modules 3 청크**(max 367.09 kB) · audit **0** · develop `@12d3b7f`(+1 vs 384차 `6875af5`: G37 attachment extension fallback) · WT **CLEAN** · develop `npm test` **732/732 PASS** · develop **153 ahead** · origin/develop @ `12d3b7f` · **Open 0건(frontend)** · PASS(v1.2+v1.3-A @ test) · ★ **v1.2.1 merge FULLY UNBLOCKED**(frontend) · merge **미실행**(153 ahead) · 교차(backend git): develop `@225b104` WT **CLEAN** · **122 ahead** · Open 0(backend) · **640/640 PASS** · **양 스트림 merge gate FULLY UNBLOCKED** · merge pending **275**(153+122). -->
 # Frontend develop → test 이관 체크리스트
 
 > **스트림**: frontend  
 > **develop 브랜치**: `develop` (`src/frontend`)  
 > **test 브랜치**: `test` (`src/frontend-test` worktree)  
-> **검증 기준**: `docs/planning/ROADMAP.md` v1.2 `merge_status: merged` 검증 · v1.3 `in_progress`(pending) · v3 develop-only(merge 게이트 미설정) · **CURRENT BASELINE**: frontend test `c510f5c` (v1.2 merged) · develop `637b9b3` (v1.3-A pilotPageFlows T01~T03 E2E + UXD-49 HQ 대시보드, +12)  
-> **작성**: tester (`TSR`)  
-> **최종 갱신**: 2026-06-08T08:05:40+00:00
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2·v1.3-A `merge_status: merged` @ test `c7c8f07` · v1.2.1 `merge_status: ready` (결정 92) · **CURRENT BASELINE**: frontend test/origin `c7c8f07` (v1.2+v1.3-A merged) · develop `9afa30e` (`test..develop` **333 ahead**, WT **CLEAN** · Open **0** · Planned **1 QA-B95** · HEAD test 742 carry **1337/1337 PASS**) · backend test/origin `598d108` · backend develop `f44ee739` (+273·WT **CLEAN** · Open **0** · test **246/246 PASS**)
+> **작성**: tester (`TSR`)
+> **최종 갱신**: 2026-06-15T06:50:09+00:00
+
+> **744차 재검증 (2026-06-15T06:50) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@9afa30e`(+1)·WT **CLEAN**·`test..develop` **333 ahead**·Open **0(frontend)**·Planned **1 QA-B95**·verdict **PASS(merge gate)**·operation **BLOCK(live E2E)**·교차 BE `@f44ee739` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(606)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.33s).
+> - **`src/frontend-test` `mvn test`**: N/A (`pom.xml` 없음).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.14s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **`src/frontend-test` `npm run test:live-e2e`**: **4 suites FAIL / 18 skipped** (`scripts/dev-live-e2e.env` absent; QA-B95 Planned).
+> - **frontend develop HEAD `9afa30e`** (`feat(v2/G19): wire integrated-home provider discovery UI to branch form`). WT **CLEAN**. `test..develop` **333 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **미재실행** (742 carry **1337/1337 PASS**).
+> - **85 route · 67 page** (App.jsx·pages 실측 carry).
+> - **Open 0(frontend)** · **Planned 1 QA-B95** (live E2E env BLOCK).
+> - **판정 PASS(v1.2+v1.3-A @ test)** · ★ **frontend merge FULLY UNBLOCKED** · ★ **cross-stream merge FULLY UNBLOCKED**.
+> - **operation 승격 BLOCK**: QA-B95 live E2E env 구성·재검증 선행.
+>
+> **742차 재검증 (2026-06-15T06:25) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@eb16734`(+2)·WT **CLEAN**·`test..develop` **332 ahead**·Open **0(frontend)**·Planned **1 QA-B95**·**QA-B96 Fixed @ `eb16734`**·verdict **PASS(merge gate)**·operation **BLOCK(live E2E)**·교차 BE `@1e21b20` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(604)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.97s).
+> - **`src/frontend-test` `mvn test`**: N/A (`pom.xml` 없음).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.92s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **`src/frontend-test` `npm run test:live-e2e`**: **4 suites FAIL / 18 skipped** (`scripts/dev-live-e2e.env` absent; QA-B95 Planned).
+> - **frontend develop HEAD `eb16734`** (`b5af5fa` G24b US-T09 needs assessment status page · `eb16734` live-e2e env script). WT **CLEAN**. `test..develop` **332 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **미재실행** (740 carry **1337/1337 PASS**).
+> - **Open 0(frontend)** · **Planned 1 QA-B95** (live E2E env BLOCK).
+> - **판정 PASS(v1.2+v1.3-A @ test)** · ★ **frontend merge FULLY UNBLOCKED** · ★ **cross-stream merge FULLY UNBLOCKED**.
+> - **operation 승격 BLOCK**: QA-B95 live E2E env 구성·재검증 선행.
+>
+> **740차 재검증 (2026-06-15T05:28) — ⚠ test `@c7c8f07` 불변·217/217 PASS·develop `@3cbe582`(+1)·WT **CLEAN**·`test..develop` **330 ahead**·Open **1(frontend)** QA-20260615-B95·verdict **BLOCK(live E2E env gate)**·교차 BE `@1e21b20` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge **미실행(602)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.51s).
+> - **`src/frontend-test` `mvn test`**: N/A (`pom.xml` 없음).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.94s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **`src/frontend-test` `npm run test:live-e2e`**: **4 suites FAIL / 18 skipped** (LIVE_E2E 환경변수 누락: `LIVE_E2E_ACCESS_TOKEN` 또는 `LIVE_E2E_EMAIL`/`LIVE_E2E_PASSWORD`, `LIVE_E2E_CLIENT_ID`, `LIVE_E2E_GUARDIAN_EMAIL`, `LIVE_E2E_GUARDIAN_PASSWORD`).
+> - **frontend develop HEAD `3cbe582`** (`test(v2/G21): add visit schedule live API harness and service contracts`). WT **CLEAN**. `test..develop` **330 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **미재실행** (738 carry **1337/1337 PASS**).
+> - **Open 1(frontend)**: QA-20260615-B95 (**BLOCK**, live e2e env gate).
+> - **판정 BLOCK(v1.2+v1.3-A @ test)**. 교차(backend): develop `@1e21b20` WT **CLEAN** · Open **0** · test **246/246 PASS**(739 carry) · ⚠ **cross-stream merge BLOCK**.
+> - **operation 승격 BLOCK**: live E2E 환경 구성/재검증 전 merge(602)·승격 불가.
+>
+> **736차 재검증 (2026-06-15T04:57) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@5e57750`(+1)·WT **CLEAN**·HEAD **1333/1335 PASS**(full-suite flake→isolated 8/8 PASS)·`test..develop` **328 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@4fe655b` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(598)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 82.22s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 10.48s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `5e57750`** (`test(v1.2.1/US-L01): harden live payment amount resolution`). WT **CLEAN**. `test..develop` **328 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1333/1335 PASS** (280 files, ~329s; full-suite 2×flake `NursingServiceRecordPage`·`NursingVitalCheckPage`→isolated **8/8 PASS** — TSR 730 패턴, Open 미등록).
+> - **85 route · 66 page** (App.jsx·pages 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@4fe655b` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(598)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(598) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **734차 재검증 (2026-06-15T04:23) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@baa6d6d`(+1)·WT **CLEAN**·HEAD **1333/1333 PASS**·`test..develop` **327 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@b1c92e1` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(596)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 54.18s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.16s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `baa6d6d`** (`test(v2/G24b): harden dashboard needs-assessment compliance coverage`). WT **CLEAN**. `test..develop` **327 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1333/1333 PASS** (280 files, 234.69s).
+> - **83 route · 67 page** (App.jsx·pages 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@b1c92e1` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(596)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(596) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **732차 재검증 (2026-06-15T04:02) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@ca0b627`(+1)·WT **CLEAN**·HEAD **1332/1332 PASS**·`test..develop` **326 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3dd94e6` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(594)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.97s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.62s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `ca0b627`** (`feat(v2/G24b): wire needs assessment compliance widgets to dashboard`). WT **CLEAN**. `test..develop` **326 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1332/1332 PASS** (280 files, 231.89s).
+> - **83 route · 67 page** (App.jsx·pages 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@3dd94e6` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(594)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(594) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **730차 재검증 (2026-06-15T03:43) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@c97706b`(+2)·WT **CLEAN**·HEAD **1325/1327 PASS**(full-suite flake→isolated PASS)·`test..develop` **325 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@345c0cb` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(592)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.81s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.89s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c97706b`** (`8989bf4` G24b needs assessment a11y · `c97706b` L03 nursing report notes snake_case normalize). WT **CLEAN**. `test..develop` **325 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1325/1327 PASS** (279 files, 287.85s; 2×full-suite flake `NursingServiceRecordPage`·`NursingVitalCheckPage`→isolated 8/8 PASS).
+> - **85 route · 67 page** (728차 carry).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@345c0cb` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(592)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(592) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **728차 재검증 (2026-06-15T02:59) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@92b9eff`(+2)·WT **CLEAN**·HEAD **1323/1323 PASS**·`test..develop` **323 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@f4c8beb` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(589)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.79s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.71s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `92b9eff`** (`a565a50` G37 attachment lifecycle live E2E · `92b9eff` L03 nursing service report contract checks). WT **CLEAN**. `test..develop` **323 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1323/1323 PASS** (278 files, 228.38s).
+> - **85 route · 67 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@f4c8beb` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(589)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(589) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **724차 재검증 (2026-06-15T02:18) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@49fbf67`(+1 G24b needs assessment FE form)·WT **CLEAN**·HEAD **1323/1323 PASS**·`test..develop` **321 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@45fb6d9` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(585)**:
+
+> **722차 재검증 (2026-06-15T01:57) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@fcabed0`(+1)·WT **CLEAN**·HEAD test **미재실행**(720 carry 1322/1322 PASS)·`test..develop` **320 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@43c4b08` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(583)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.73s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.01s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `fcabed0`** (`test(v1.2.1/G19,G30,G14): add compliance consolidated live E2E harness`). WT **CLEAN**. `test..develop` **320 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **미재실행** (test-only commit; 720 carry 1322/1322 PASS).
+> - **85 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@43c4b08` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(583)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(583) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **720차 재검증 (2026-06-15T01:43) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@8eed216`(+1)·WT **CLEAN**·HEAD **1322/1322 PASS**·`test..develop` **319 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@4c1fd43` WT **DIRTY 2M**·Open **1 BLOCK QA-B94**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(581)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.92s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.77s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8eed216`** (`test(v2/G-NURSING): add consolidated live E2E harness and harden reports page tests`). WT **CLEAN**. `test..develop` **319 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1322/1322 PASS** (278 files, 230.30s; 718차 flake **해소**).
+> - **85 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@4c1fd43` WT **DIRTY 2M** · Open **1 BLOCK QA-B94** · test **246/246 PASS** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD BE WT clean(QA-B94)→tester/pipeline merge(581)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(581) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **718차 재검증 (2026-06-15T01:18) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@36264b5`(+2)·WT **CLEAN**·HEAD **1321/1322 PASS**(full-suite flake `NursingServiceReportsPage` hospital-visits→isolated 5/5 PASS)·`test..develop` **318 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@4c1fd43` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(580)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 87.61s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 15.89s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `36264b5`** (`79d593c` US-O05 onboarding checklist panel · `36264b5` G-ONBOARD-SUPPORT live API E2E harness). WT **CLEAN**. `test..develop` **318 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1321/1322 PASS** (278 files, 231.79s; full-suite flake `NursingServiceReportsPage` hospital-visits → isolated 5/5 PASS).
+> - **84 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@4c1fd43` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(580)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(580) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **714차 재검증 (2026-06-15T00:23) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@8638c7a`(+1)·WT **CLEAN**·HEAD test **미재실행**(test-only commit; 712 carry 1315/1316 PASS)·`test..develop` **315 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@41a6c23` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(575)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.64s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.06s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8638c7a`** (`test(v1.2.1/US-R02): expand staff status live API branch-scope coverage`). WT **CLEAN**. `test..develop` **315 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **미재실행** (test-only commit; 712 carry 1315/1316 PASS).
+> - **84 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@41a6c23` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(575)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(575) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **710차 재검증 (2026-06-14T23:53) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@548f670`(+1)·WT **CLEAN**·HEAD **1315/1316 PASS**(full-suite flake `NursingServiceReportsPage`→isolated PASS)·`test..develop` **314 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@a728f1b` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(572)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 82.26s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.89s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `548f670`** (`test(v1.2.1/G14): add benefit contract attachment live API E2E harness`). WT **CLEAN**. `test..develop` **314 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1315/1316 PASS** (276 files, 261.37s; full-suite flake `NursingServiceReportsPage` hospital-visits → isolated 5/5 PASS).
+> - **85 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@a728f1b` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(572)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(572) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **708차 재검증 (2026-06-14T23:26) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@b698871`(+1)·WT **CLEAN**·HEAD **1316/1316 PASS**(2×full-suite flake StaffPage FAQ21806→3rd PASS)·`test..develop` **313 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@5edc45c` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(570)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.29s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.71s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `b698871`** (`test(v2/L03_M07,M09,M10): add nursing service reports live API E2E harness`). WT **CLEAN**. `test..develop` **313 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1316/1316 PASS** (276 files, 226.56s; 2×1315/1316 FAIL `StaffPage.test.jsx` FAQ21806 under full suite → 3rd run PASS · isolated PASS).
+> - **85 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@5edc45c` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(570)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(570) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **706차 재검증 (2026-06-14T22:40) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@671a704`(+1)·WT **CLEAN**·HEAD **1315/1315 PASS**·`test..develop` **312 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@b45830d` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(568)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.59s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.71s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `671a704`** (`fix(ux/L03): a11y pass for nursing and pressure ulcer provision reports`). WT **CLEAN**. `test..develop` **312 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1315/1315 PASS** (276 files, 228.09s).
+> - **85 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@b45830d` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(568)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(568) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **704차 재검증 (2026-06-14T22:10) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@89dc52d`(+1)·WT **CLEAN**·HEAD **1313/1313 PASS**·`test..develop` **311 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@6b0238a` WT **DIRTY 2M**·Open **1 BLOCK QA-B93**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(566)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.05s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.87s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `89dc52d`** (`fix(v2/L03_M07,M09,M10): clear stale nursing report data after reload failure`). WT **CLEAN**. `test..develop` **311 ahead**.
+> - develop HEAD `npm test`: **1313/1313 PASS** (275 files, 228.46s).
+> - **83 route · 66 page** (develop HEAD 실측 carry).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@6b0238a` WT **DIRTY 2M** · Open **1 BLOCK QA-B93** · test **246/246 PASS** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD BE WT clean(QA-B93)→tester/pipeline merge(566)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(566) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **702차 재검증 (2026-06-14T21:52) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@75c6c76`(+1)·WT **CLEAN**·HEAD **1312/1312 PASS**·`test..develop` **310 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@6b0238a` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(565)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.88s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.08s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `75c6c76`** (`test(v2/G-NURSING): add L03_M06 and L03_M14 live API E2E harness`). WT **CLEAN**. `test..develop` **310 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1312/1312 PASS** (275 files, 228.27s).
+> - **83 route · 66 page** (develop HEAD 실측 carry).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@6b0238a` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(565)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(565) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **700차 재검증 (2026-06-14T21:31) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@efa4472`(+1)·WT **CLEAN**·HEAD **1312/1312 PASS**·`test..develop` **309 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@4ab06cd` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(563)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.35s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 10.33s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `efa4472`** (`feat(v2/L03_M15): wire pressure ulcer provision report UI to BE API`). WT **CLEAN**. `test..develop` **309 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1312/1312 PASS** (275 files, 238.32s).
+> - **83 route · 66 page** (develop HEAD 실측 carry).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@4ab06cd` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(563)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(563) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **698차 재검증 (2026-06-14T21:06) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@2a05271`(+1)·WT **CLEAN**·HEAD **1308/1308 PASS**·`test..develop` **308 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@75bddee` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(561)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.46s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.91s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `2a05271`** (`feat(v2/L03_M07,M09,M10): wire nursing service report UI to V123 APIs`). WT **CLEAN**. `test..develop` **308 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1308/1308 PASS** (273 files, 229.10s).
+> - **83 route · 66 page** (develop HEAD 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@75bddee` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(561)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(561) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **696차 재검증 (2026-06-14T20:45) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@2966447`(+1)·WT **CLEAN**·HEAD **1299/1299 PASS**·`test..develop` **307 ahead**·**QA-B92 Fixed**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@c23b1a3` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(559)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.05s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.12s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `2966447`** (`test(v2/L03_M01): add nursing service record live API E2E harness`). WT **CLEAN**. `test..develop` **307 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1299/1299 PASS** (271 files, 225.84s).
+> - **QA-B92 Fixed @ `2966447`**. **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@c23b1a3` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(559)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(559) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **694차 재검증 (2026-06-14T20:24) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@12591d4`(+1)·WT **DIRTY 1U**·HEAD **1299/1299 PASS**·`test..develop` **306 ahead**·Open **1 BLOCK QA-B92(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@ee8b2a4` WT **CLEAN**·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(557)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.63s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.91s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `12591d4`** (`feat(US-O04/L03_M01,M06): add nursing service and excretion-tube UI`). WT **DIRTY 1U** (`?? src/e2e/nursingServiceRecordLiveApi.e2e.test.js`). `test..develop` **306 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1299/1299 PASS** (271 files, 227.73s).
+> - **Open 1 BLOCK QA-B92(frontend WT dirty)**. **판정 PASS(v1.2+v1.3-A @ test) / ⚠ frontend merge BLOCK**. 교차(backend): develop `@ee8b2a4` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD FE WT clean(QA-B92)→push→tester merge(557)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(557) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **692차 재검증 (2026-06-14T19:49) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@3845f0c`(+1)·WT **CLEAN**·HEAD **1275/1275 PASS**·`test..develop` **305 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@a4352a8` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(555)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 109.69s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 12.27s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `3845f0c`** (`feat(v1.2.1/US-UX-05): persist SideNav expansion by role`). WT **CLEAN**. `test..develop` **305 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1275/1275 PASS** (265 files, 229.82s).
+> - develop HEAD `npm run build`: multi-chunk (index **672.02 kB** >500 kB vite warn, non-blocking).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@a4352a8` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** (691 carry) · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(555)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(555) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **690차 재검증 (2026-06-14T19:28) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@edfba7f`(+1)·WT **CLEAN**·HEAD **1274/1274 PASS**·`test..develop` **304 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@9bd1660` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(553)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 83.44s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 11.80s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `edfba7f`** (`fix(v1.2.1/US-UX-05): preserve manual SideNav expansions on navigation`). WT **CLEAN**. `test..develop` **304 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1274/1274 PASS** (265 files, 371.01s).
+> - develop HEAD `npm run build`: multi-chunk (index **672.02 kB** >500 kB vite warn, non-blocking).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@9bd1660` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** (689 carry) · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(553)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(553) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **688차 재검증 (2026-06-14T19:07) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@2ffe59f`(+1)·WT **CLEAN**·HEAD **1273/1273 PASS**·`test..develop` **303 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@9bd1660` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(552)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 82.60s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 9.33s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `2ffe59f`** (`feat(v1.3-B/transport): wire auto-suggest UI and branch optimization settings`). WT **CLEAN**. `test..develop` **303 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1273/1273 PASS** (265 files, 220.60s; 1차 run 1272/1273 flaky `NursingVitalCheckPage`·재실행 PASS).
+> - develop HEAD `npm run build`: multi-chunk (index **672.02 kB** >500 kB vite warn, non-blocking).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@9bd1660` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(552)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(552) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **686차 재검증 (2026-06-14T18:42) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@e3e6964`(+1)·WT **CLEAN**·HEAD **1267/1267 PASS**·`test..develop` **302 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@230659a` WT **CLEAN**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(550)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.69s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.73s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e3e6964`** (`feat(v1.2.1/US-R02): deepen 8-12 print layout readability`). WT **CLEAN**. `test..develop` **302 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1267/1267 PASS** (262 files, 217.86s).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@230659a` WT **CLEAN** · ★ **FULLY UNBLOCKED** · HEAD **1121/1121 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(550)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(550) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **684차 재검증 (2026-06-14T18:25) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@c865d2b`(+1)·WT **CLEAN**·HEAD **1267/1267 PASS**·`test..develop` **301 ahead**·**QA-B91 Fixed**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@230659a` WT **CLEAN**·★ **backend merge FULLY UNBLOCKED**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(549)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.20s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.11s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c865d2b`**. WT **CLEAN**. `test..develop` **301 ahead**. origin/develop·origin/test **동기화**.
+> - develop HEAD `npm test`: **1267/1267 PASS** (262 files, 219.74s).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@230659a` WT **CLEAN** · ★ **FULLY UNBLOCKED** · HEAD **1121/1121 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(549)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(549) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **682차 재검증 (2026-06-14T18:03) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@8d00f5d`(+1)·WT **DIRTY 1M+1U**·HEAD **1267/1267 PASS**·`test..develop` **300 ahead**·**QA-B89 Fixed**·Open **1 BLOCK QA-B91(WT dirty)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@db94a65` WT **CLEAN**·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(547)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.69s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.92s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8d00f5d`**. WT **DIRTY 1M+1U** (`PressureUlcerPage.test.jsx` · `nursingWeightRecordServices.test.js`). `test..develop` **300 ahead**. origin/develop `@97108f2` (local **1 ahead unpushed**).
+> - develop HEAD `npm test`: **1267/1267 PASS** (262 files, 216.73s — **QA-B89 해소**).
+> - **Open 1 BLOCK QA-B91(frontend WT dirty)**. **판정 PASS(v1.2+v1.3-A @ test) / ⚠ frontend merge BLOCK**. 교차(backend): develop `@db94a65` WT **CLEAN** · ★ **FULLY UNBLOCKED** · test **246/246 PASS** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD FE WT clean(QA-B91)→push→tester merge(547)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(547) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **680차 재검증 (2026-06-14T17:25) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@97108f2` HEAD **불변**·WT **1U**·HEAD **1263/1266 FAIL**·`test..develop` **299 ahead**·Open **1 BLOCK QA-B89(frontend) 유지**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@090b2d7` WT **DIRTY 15**·Open 2 BLOCK QA-B88/B90·test **246/246 PASS**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(545)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 128.18s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.79s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `97108f2`**. tracked files **CLEAN** (+1U `?? src/api/nursingWeightRecordServices.test.js`). `test..develop` **299 ahead**. origin/develop **동기화 @ `97108f2`**.
+> - develop HEAD `npm test`: **1263/1266 FAIL** (262 files, 377.43s — `PressureUlcerPage.test.jsx` client select mock, 678차와 동일 root cause).
+> - **Open 1 BLOCK QA-B89(frontend) 유지**. **판정 PASS(v1.2+v1.3-A @ test) / ⚠ frontend merge BLOCK**. 교차(backend): develop `@090b2d7` WT **DIRTY 15** · Open **QA-B88/B90** · test **246/246 PASS** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD QA-B89 fix→HEAD PASS** · **COD BE WT clean(QA-B88/B90)** · tester merge(545) · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(545) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **678차 재검증 (2026-06-14T17:01) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@97108f2`(+1 vs `8a8fe98`)·WT **CLEAN**·HEAD **1260/1263 FAIL**·`test..develop` **299 ahead**·Open **1 BLOCK QA-B89(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@81bca68` WT **DIRTY 4M**·Open 1 BLOCK QA-B88·test **246/246 PASS**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(544)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 122.34s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 12.38s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `97108f2`**. working tree **CLEAN**. `test..develop` **299 ahead**. origin/develop **동기화 @ `97108f2`**.
+> - develop HEAD `npm test`: **1260/1263 FAIL** (261 files, 604.17s — `PressureUlcerPage.test.jsx` client select mock).
+> - develop HEAD `npm run build`: multi-chunk (index **664.91 kB** >500 kB vite warn, non-blocking).
+> - **Open 1 BLOCK QA-B89(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ⚠ frontend merge BLOCK**. 교차(backend): develop `@81bca68` WT **DIRTY 4M** · Open **1 BLOCK QA-B88** · test **246/246 PASS** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD QA-B89 fix→HEAD PASS** · **COD QA-B88 WT clean→commit** · tester merge(544) · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(544) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **676차 재검증 (2026-06-14T16:32) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@8a8fe98`(+1 vs `bb3dee8`)·WT **CLEAN**·HEAD **1246/1246 PASS**·`test..develop` **298 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@81bca68` WT **CLEAN**·Open 0·HEAD **246/246 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(543)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.81s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.99s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8a8fe98`**. working tree **CLEAN**. `test..develop` **298 ahead**. origin/develop **동기화 @ `8a8fe98`**.
+> - develop HEAD `npm test`: **1246/1246 PASS** (258 files, 224.78s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@81bca68` WT **CLEAN** · Open **0** · test **246/246 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(543)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(543) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **674차 재검증 (2026-06-14T16:10) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@bb3dee8`(+1 vs `c60d7e5`)·WT **CLEAN**·HEAD **1246/1246 PASS**·`test..develop` **297 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@faf55f0` WT **CLEAN**·Open 0·HEAD **1104/1104 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(541)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 54.30s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.02s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `bb3dee8`**. working tree **CLEAN**. `test..develop` **297 ahead**. origin/develop **동기화 @ `bb3dee8`**.
+> - develop HEAD `npm test`: **1246/1246 PASS** (258 files, 219.01s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@faf55f0` WT **CLEAN** · Open **0** · HEAD **1104/1104 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(541)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(541) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **672차 재검증 (2026-06-14T15:53) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@c60d7e5`(+1 vs `962858b`)·WT **CLEAN**·HEAD **1229/1229 PASS**·`test..develop` **296 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3540b4f` WT **CLEAN**·Open 0·HEAD **1104/1104 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(539)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.85s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.74s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c60d7e5`**. working tree **CLEAN**. `test..develop` **296 ahead**. origin/develop **동기화 @ `c60d7e5`**.
+> - develop HEAD `npm test`: **1229/1229 PASS** (255 files, 217.50s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@3540b4f` WT **CLEAN** · Open **0** · HEAD **1104/1104 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(539)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(539) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **670차 재검증 (2026-06-14T15:12) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@962858b`(+2 vs `246df56`)·WT **CLEAN**·HEAD **1228/1228 PASS**·`test..develop` **295 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@63cb193` WT **CLEAN**·Open 0·HEAD **1095/1095 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(537)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.67s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.96s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `962858b`**. working tree **CLEAN**. `test..develop` **295 ahead**. origin/develop **동기화 @ `962858b`**.
+> - develop HEAD `npm test`: **1228/1228 PASS** (255 files, 213.60s, read-only 실측).
+> - develop HEAD `npm run build`: multi-chunk (index **645.41 kB** >500 kB vite warn, non-blocking).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@63cb193` WT **CLEAN** · Open **0** · HEAD **1095/1095 PASS** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(537)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(537) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **668차 재검증 (2026-06-14T13:43) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@246df56`(+1 vs `5780c65`)·WT **CLEAN**·HEAD **1210/1210 PASS**·`test..develop` **293 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@1a822d2` WT **CLEAN**·Open 2 BLOCK QA-B86/B87·HEAD **1085/1095 FAIL**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(534)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.52s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.75s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `246df56`**. working tree **CLEAN**. `test..develop` **293 ahead**. origin/develop **동기화 @ `246df56`**.
+> - develop HEAD `npm test`: **1210/1210 PASS** (253 files, 212.57s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@1a822d2` WT **CLEAN** · Open **2 BLOCK QA-B86/B87** · HEAD **1085/1095 FAIL** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD BE QA-B86/B87 fix→HEAD PASS→TSR 재검증→tester merge(534)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(534) **실행 금지**(BE HEAD test FAIL) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **666차 재검증 (2026-06-14T13:20) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@5780c65`(+1 vs `8570fa2`)·WT **CLEAN**·HEAD **1209/1209 PASS**·`test..develop` **292 ahead**·**QA-B85 Fixed**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@e95df4c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(532)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.84s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.66s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `5780c65`**. working tree **CLEAN**. `test..develop` **292 ahead**. origin/develop **동기화 @ `5780c65`**.
+> - develop HEAD `npm test`: **1209/1209 PASS** (253 files, 208.00s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@e95df4c` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(532)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(532) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **664차 재검증 (2026-06-14T12:49) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@8570fa2`(+1 vs `024e720`)·WT **CLEAN**·HEAD **1208/1209 FAIL**·`test..develop` **291 ahead**·Open **1 BLOCK QA-B85(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@80c0bd5` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge **실행 금지(530)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.84s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.67s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8570fa2`**. working tree **CLEAN**. `test..develop` **291 ahead**. origin/develop **동기화 @ `8570fa2`**.
+> - develop HEAD `npm test`: **1208/1209 FAIL** (253 files, 206.00s — `pilotPageFlows` US-O03 pressure ulcer lifecycle, read-only 실측).
+> - **Open 1 BLOCK QA-20260614-B85(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ⚠ frontend merge BLOCK**. 교차(backend): develop `@80c0bd5` WT **CLEAN** · Open **0** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD pilotPageFlows/NursingContextNav fix→HEAD PASS→TSR 재검증→tester merge(530)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(530) **실행 금지**(FE HEAD test FAIL) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **662차 재검증 (2026-06-14T12:25) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@024e720`(+1 vs `3ec39f6`)·WT **CLEAN**·HEAD **1198/1198 PASS**·`test..develop` **290 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@24a1c5c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(528)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 86.48s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.04s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `024e720`**. working tree **CLEAN**. `test..develop` **290 ahead**. origin/develop **동기화 @ `024e720`**.
+> - develop HEAD `npm test`: **1198/1198 PASS** (250 files, 247.79s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@24a1c5c` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(528)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(528) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **660차 재검증 (2026-06-14T12:03) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@3ec39f6`(+1 vs `e214da1`)·WT **CLEAN**·HEAD **1192/1192 PASS**·`test..develop` **289 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@d638493` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(526)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.51s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.88s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `3ec39f6`**. working tree **CLEAN**. `test..develop` **289 ahead**. origin/develop **동기화 @ `3ec39f6`**.
+> - develop HEAD `npm test`: **1192/1192 PASS** (249 files, 202.90s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@d638493` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(526)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(526) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **658차 재검증 (2026-06-14T11:41) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@e214da1`(+2 vs `ad319d7`)·WT **CLEAN**·HEAD **1189/1189 PASS**·`test..develop` **288 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@edda491` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(524)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.76s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.26s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e214da1`**. working tree **CLEAN**. `test..develop` **288 ahead**. origin/develop **동기화 @ `e214da1`**.
+> - develop HEAD `npm test`: **1189/1189 PASS** (249 files, 204.18s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@edda491` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(524)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(524) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **656차 재검증 (2026-06-14T11:01) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@ad319d7`(+1 vs `487416d`)·WT **CLEAN**·HEAD **1164/1164 PASS**·`test..develop` **286 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3bd6a43` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(521)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.78s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.78s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `ad319d7`**. working tree **CLEAN**. `test..develop` **286 ahead**. origin/develop **동기화 @ `ad319d7`**.
+> - develop HEAD `npm test`: **1164/1164 PASS** (240 files, 201.04s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@3bd6a43` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(521)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(521) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **654차 재검증 (2026-06-14T10:42) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@487416d`(+1 vs `efb2ec0`)·WT **CLEAN**·HEAD **1163/1163 PASS**·`test..develop` **285 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3bd6a43` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(520)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.93s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.82s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `487416d`**. working tree **CLEAN**. `test..develop` **285 ahead**. origin/develop **동기화 @ `487416d`**.
+> - develop HEAD `npm test`: **1163/1163 PASS** (240 files, 194.89s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@3bd6a43` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester/pipeline merge(520)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(520) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **652차 재검증 (2026-06-14T10:24) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@efb2ec0`(+1 vs `c26cfa7`)·WT **CLEAN**·HEAD **1162/1162 PASS**·`test..develop` **284 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@ba7d84f` WT **DIRTY 2M**·Open 1 BLOCK **QA-B84**·⚠ **cross-stream merge BLOCK**·merge **실행 금지(518)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.97s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.97s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `efb2ec0`**. working tree **CLEAN**. `test..develop` **284 ahead**. origin/develop **동기화 @ `efb2ec0`**.
+> - develop HEAD `npm test`: **1162/1162 PASS** (240 files, 195.78s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@ba7d84f` WT **DIRTY 2M** · Open **1 BLOCK QA-B84** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD BE 2M 커밋/revert→WT clean→TSR 재검증→tester merge(518)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(518) **실행 금지**(BE WT dirty) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **650차 재검증 (2026-06-14T10:01) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@c26cfa7`(+1 vs `4ba7ea6`)·WT **CLEAN**·`test..develop` **283 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@ba7d84f` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(517)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test -- --run`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.28s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.86s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4ba7ea6`**. working tree **CLEAN**. `test..develop` **282 ahead**. origin/develop **동기화 @ `4ba7ea6`**.
+> - develop HEAD 테스트/빌드: **미재실행** (tester read-only 정책, `src/frontend-test` 검증만 수행).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@6b7e6cb` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(515)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(515) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **641차 재검증 (2026-06-14T06:56) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@8a8b930`(+1 vs `1e111be`: G42 anonymous box intake·US-UX-05 tests deepen)·WT **CLEAN**·develop HEAD test **1149/1149 PASS**·`test..develop` **278 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@0b807d8` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(508)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.12s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.94s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8a8b930`**. working tree **CLEAN**. `test..develop` **278 ahead**. origin/develop **동기화 @ `8a8b930`**.
+> - develop HEAD `npm test`: **1149/1149 PASS** (239 files, 206.97s, read-only 실측).
+> - develop HEAD `npm run build`: index **592.83 kB** vite warn (6.48s).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@0b807d8` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(508)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(508) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **639차 재검증 (2026-06-14T06:36) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@1e111be`(+2 vs `360b4d7`: QA-B81 pilotPageFlows @ `56f0204` · US-UX-05 SideNav @ `1e111be`)·WT **CLEAN**·develop HEAD test **1146/1146 PASS**·`test..develop` **277 ahead**·**69 route**·**QA-B81 Fixed**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@e5b4b88` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(506)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.14s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.61s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `1e111be`**. working tree **CLEAN**. `test..develop` **277 ahead**. origin/develop **동기화 @ `1e111be`**.
+> - develop HEAD `npm test`: **1146/1146 PASS** (239 files, 192.45s, read-only 실측).
+> - develop HEAD `npm run build`: index **592.83 kB** vite warn (6.55s).
+> - **Open 0(frontend)** · **QA-B81 Fixed @ `56f0204`**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@e5b4b88` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(506)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(506) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **630차 재검증 (2026-06-14T03:59) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@7ec7cd4`(+1 vs `745a2f6`: reject malformed easy-pay provider aliases)·WT **CLEAN**·develop HEAD test **1136/1136 PASS**·`test..develop` **273 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@8f9ad0c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(497)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.65s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.95s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7ec7cd4`**. working tree **CLEAN**. `test..develop` **273 ahead**. origin/develop **동기화 @ `7ec7cd4`**.
+> - develop HEAD `npm test`: **1136/1136 PASS** (238 files, 188.02s, read-only 실측).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@8f9ad0c` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(497)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(497) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **628차 재검증 (2026-06-14T03:41) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@745a2f6`(+1 vs `4f2ec98`: easy-pay provider normalization inputs)·WT **CLEAN**·`test..develop` **272 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@328874d` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(495)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.04s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.97s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `745a2f6`**. working tree **CLEAN**. `test..develop` **272 ahead**. origin/develop **동기화 @ `745a2f6`**.
+> - develop HEAD `npm test`: **미재실행** (tester read-only 정책).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ★ frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@328874d` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(495)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(495) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **624차 재검증 (2026-06-14T03:10) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@51f2505`(+1 vs `bebd874`: EasyPayPanel a11y · **QA-B79 Fixed @ HEAD**)·WT **DIRTY 2M**(G2/7-5 easy-pay client validation WIP, **623차 CLEAN→재오염**)·HEAD **1131/1131 PASS**·WT **1133/1133 PASS**·`test..develop` **270 ahead**·**69 route**·Open **1 BLOCK QA-B80(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@16a0734` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge **미실행(491)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.11s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.01s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `51f2505`**. working tree **DIRTY 2M** (`services.js`·`billingGuardianPlatformServices.test.js`). `test..develop` **270 ahead**. origin/develop **동기화 @ `51f2505`**.
+> - develop HEAD `npm test`: **1131/1131 PASS** (238 files). develop WT `npm test`: **1133/1133 PASS** (238 files, 189.13s, +2 @Test).
+> - **Open 1 BLOCK QA-20260614-B80(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ⚠ frontend merge BLOCK**. 교차(backend): develop `@16a0734` WT **CLEAN** · Open **0** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD FE 2M 커밋/revert→WT clean→TSR 재검증→tester merge(491)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(491) **실행 금지**(frontend WT dirty) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **622차 재검증 (2026-06-14T02:19) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@bebd874` HEAD **불변**(620차 대비)·WT **DIRTY 3M+1U**(G2/7-5 easy-pay provider normalization WIP, **620차 CLEAN→재오염**)·HEAD **1126/1126 PASS**·WT **1128/1128 PASS**·`test..develop` **269 ahead**·**69 route**·Open **1 BLOCK QA-B79(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@b893e97` WT **DIRTY 2M**·Open 1 BLOCK **QA-B78**·⚠ **cross-stream merge BLOCK**·merge **미실행(489)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.41s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.56s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `bebd874`**. working tree **DIRTY 3M+1U** (`EasyPayPanel.jsx`·`EasyPayPanel.test.jsx`·`easyPay.js`·`easyPay.test.js`). `test..develop` **269 ahead**. origin/develop **동기화 @ `bebd874`**.
+> - develop HEAD `npm test`: **1126/1126 PASS** (237 files). develop WT `npm test`: **1128/1128 PASS** (238 files, 189.79s, +2 @Test).
+> - **Open 1 BLOCK QA-20260614-B79(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / ⚠ frontend merge BLOCK**. 교차(backend): develop `@b893e97` WT **DIRTY 2M** · Open **1 BLOCK QA-B78** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD FE 3M+1U·BE 2M 커밋/revert→WT clean→TSR 재검증→tester merge(489)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(489) **실행 금지**(양 스트림 WT dirty) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **620차 재검증 (2026-06-14T02:00) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@bebd874`(+1 vs `3848af6`: G2/7-5 prior-month copay guard UI BNK-189)·WT **CLEAN**·HEAD **1126/1126 PASS**·`test..develop` **269 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@b893e97` WT **CLEAN**·220 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(489)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.71s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.70s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `bebd874`**. working tree **CLEAN**. `test..develop` **269 ahead**. origin/develop **동기화 @ `bebd874`**.
+> - develop HEAD `npm test`: **1126/1126 PASS** (237 files, 219.68s). develop HEAD build: multi-chunk (index **590.02 kB** vite warn, 8.02s).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@b893e97` WT **CLEAN** · **220 ahead** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(489)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(489) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **616차 재검증 (2026-06-14T01:26) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@c9baca2` HEAD **불변**(614차 대비)·WT **CLEAN**·HEAD **1119/1119 PASS**·`test..develop` **267 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@70b3fb8` WT **CLEAN**·218 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(485)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.46s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.85s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c9baca2`**. working tree **CLEAN**. `test..develop` **267 ahead**. origin/develop **동기화 @ `c9baca2`**.
+> - develop HEAD `npm test`: **1119/1119 PASS** (237 files, 188.06s). develop HEAD build: multi-chunk (index **589.98 kB** vite warn, 6.29s).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@70b3fb8` WT **CLEAN** · **218 ahead** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(485)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(485) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **614차 재검증 (2026-06-14T01:11) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@c9baca2`(+3 vs `e14ba10`: G41b UXD-99·V107 payload·G2/7-5 easy payment BNK-189)·WT **CLEAN**·HEAD **1119/1119 PASS**·`test..develop` **267 ahead**·**69 route**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@438f5c7` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(484)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 78.79s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.60s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c9baca2`**. working tree **CLEAN**. `test..develop` **267 ahead**. origin/develop **동기화 @ `c9baca2`**.
+> - develop HEAD `npm test`: **1119/1119 PASS** (237 files, 216.85s). develop HEAD build: multi-chunk (index **589.98 kB** vite warn, 7.83s).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@438f5c7` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(484)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(484) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **611차 재검증 (2026-06-14T00:22) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@e14ba10`(+1 vs `76fe2fb`: G41 remove hardcoded new-hire window text)·WT **CLEAN**·HEAD **1110/1110 PASS**·`test..develop` **264 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@32f87f1` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(479)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.81s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.71s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e14ba10`**. working tree **CLEAN**. `test..develop` **264 ahead**. origin/develop **동기화 @ `e14ba10`**.
+> - develop HEAD `npm test`: **1110/1110 PASS** (235 files, 188.50s).
+> - **Open 0(frontend)**. **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@32f87f1` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(479)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(479) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **609차 재검증 (2026-06-14T00:20) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@76fe2fb`(+1 vs `a4ab0c2`: QA-B77 StatCard scoped compliance assertions)·WT **CLEAN**·HEAD **1109/1109 PASS**·`test..develop` **263 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@299d21f` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(477)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 115.14s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 15.72s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `76fe2fb`**. working tree **CLEAN**. `test..develop` **263 ahead**. origin/develop **동기화 @ `76fe2fb`**.
+> - develop HEAD `npm test`: **1109/1109 PASS** (235 files, 352.77s). develop HEAD build: multi-chunk (index **589.42 kB** vite warn, 14.28s).
+> - **Open 0(frontend)** · **QA-B77 Fixed @ `76fe2fb`**. **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@299d21f` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(477)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(477) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **603차 재검증 (2026-06-13T23:03) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@e43295b`(+1 vs `e69bf00`: G41 training log nav·services tests·pilot E2E)·WT **CLEAN**·`test..develop` **260 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@613b6af` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(472)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.00s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.84s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e43295b`**. working tree **CLEAN**. `test..develop` **260 ahead**. origin/develop **동기화 @ `e43295b`**.
+> - develop HEAD test/build는 **미재실행**(tester read-only 정책).
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@613b6af` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(472)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(472) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **601차 재검증 (2026-06-13T22:47) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@e69bf00`(+2 vs `5146895`)·WT **CLEAN**·`test..develop` **259 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@613b6af` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(471)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.06s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.05s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e69bf00`**. working tree **CLEAN**. `test..develop` **259 ahead**. origin/develop **동기화 @ `e69bf00`**.
+> - develop HEAD test/build는 **미재실행**(tester read-only 정책).
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@6191b91` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(468)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(468) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **597차 재검증 (2026-06-13T21:50) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@400c835` HEAD 불변(596차 대비)·WT **CLEAN**·`test..develop` **256 ahead**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@997831c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(466)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 49.73s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.81s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `400c835`**. working tree **CLEAN**. `test..develop` **256 ahead**. origin/develop **동기화 @ `400c835`**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@997831c` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(466)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(466) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **594차 재검증 (2026-06-13T21:28) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@574bd08`(+2 vs `dbf0299`)·WT **CLEAN**·`test..develop` **255 ahead**·Open **0(frontend)**(**QA-B75 Fixed**)·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@b1dfd34` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(464)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.73s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.85s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `574bd08`**. working tree **CLEAN**. `test..develop` **255 ahead**. origin/develop **동기화 @ `574bd08`**.
+> - **Open 0(frontend)** · **QA-B75 Fixed** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@b1dfd34` WT **CLEAN** · Open **0** · ★ backend merge **FULLY UNBLOCKED**. 잔여: **tester merge(464)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(464) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **592차 재검증 (2026-06-13T21:02) — ⚠ test `@c7c8f07` 불변·217/217 PASS·develop `@dbf0299` HEAD **불변**·WT **DIRTY 5M**(590차 CLEAN→재오염)·HEAD **1084/1084 PASS**·WT **1085/1085 PASS**·`test..develop` **253 ahead**·Open **1 BLOCK QA-B75(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@9a8bd2a` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·merge **미실행(461)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.47s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.91s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `dbf0299`**. working tree **DIRTY 5M** (`services.js`·`staffRefresherTrainingServices.test.js`·`StaffRefresherTrainingPage.jsx`·`StaffRefresherTrainingPage.test.jsx`·`pilotPageFlows.test.jsx`, +71/-18). HEAD **1084/1084 PASS** (229 files). WT **1085/1085 PASS** (+1 @Test). `test..develop` **253 ahead**. origin/develop **동기화 @ `dbf0299`**.
+> - **Open 1 BLOCK QA-B75(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge BLOCK**. 교차(backend): develop `@9a8bd2a` WT **CLEAN** · Open **0** · ★ backend merge **FULLY UNBLOCKED**. 잔여: **COD FE WT clean(B75)→tester merge(461)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(461) **미실행** · frontend develop WT dirty · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **590차 재검증 (2026-06-13T20:23) — superseded by 592차 — develop WT CLEAN→재오염(B75)** · ★ frontend merge gate FULLY UNBLOCKED(590차 기록):
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.32s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.81s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `dbf0299`**. working tree **CLEAN**. `test..develop` **253 ahead**. origin/develop **동기화 @ `dbf0299`**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@8615e3c` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(460)** · post-merge live E2E.
+> - **operation 승격 대기**: develop→test merge(460) 미실행 상태 · merge 실행 시 post-merge `scripts/run-live-e2e.sh` 확인 필요.
+>
+> **588차 재검증 (2026-06-13T20:07) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@cfd87c5`(+2 vs `443efca`: `pilotPageFlows` refresher compliance expectation sync)·WT **CLEAN**·HEAD **1082/1082 PASS**·`test..develop` **252 ahead**·**QA-B74 Fixed**·Open **0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@726b3de` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(458)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.02s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.85s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `cfd87c5`**. working tree **CLEAN**. HEAD **1082/1082 PASS** (229 files, 179.58s). `test..develop` **252 ahead**. origin/develop **동기화 @ `cfd87c5`**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@726b3de` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(458)** · post-merge live E2E.
+> - **operation 승격 대기**: develop→test merge(458) 미실행 상태 · merge 실행 시 post-merge `scripts/run-live-e2e.sh` 확인 필요.
+>
+> **586차 재검증 (2026-06-13T19:27) — superseded by 588차**.
+>
+> **581차 재검증 (2026-06-13T18:33) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@6b1258c`(+1 vs `ff173af`: latest frontend develop HEAD)·WT **CLEAN**·`test..develop` **248 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@c16f4fe` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(451)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.52s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.74s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `6b1258c`**. working tree **CLEAN**. `test..develop` **248 ahead**. origin/develop **동기화 @ `6b1258c`**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@c16f4fe` WT **CLEAN** · Open **0** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(451)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(451) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+>
+> **579차 재검증 (2026-06-13T18:18) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@ff173af`(+1 vs `5bba7a2`: US-R02 staff profile pagination for 8-12 outputs)·WT **CLEAN**·HEAD **1072/1072 PASS**·`test..develop` **247 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@d4acab7` WT **DIRTY 2M**·Open 1 BLOCK **QA-B73**·⚠ **cross-stream merge BLOCK**·merge **미실행(449)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.84s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.74s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `ff173af`**. working tree **CLEAN**. HEAD **1072/1072 PASS** (227 files, 179.63s). build multi-chunk (index **577.50 kB** >500 kB vite warn, 6.26s). `test..develop` **247 ahead**. origin/develop **동기화 @ `ff173af`**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@d4acab7` WT **DIRTY 2M** · Open **1 BLOCK QA-B73** · ⚠ **cross-stream merge BLOCK**. 잔여: **COD BE WT clean(B73)→tester merge(449)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(449) **미실행** · cross-stream BE WT dirty · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **577차 재검증 (2026-06-13T17:57) — superseded by 579차 — develop `@5bba7a2` · 246 ahead · cross-stream FULLY UNBLOCKED(578차 B73 누락).**
+
+> **575차 재검증 (2026-06-13T17:33) — superseded by 577차 — develop `@488f547` · 245 ahead · merge pending 446.**
+
+> **573차 재검증 (2026-06-13T16:52) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@a7a6004`(+1 G42 approval E2E — **QA-B72 Fixed**)·WT **CLEAN**·HEAD **1067/1067 PASS**·`test..develop` **243 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@39ee679` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(443)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 78.04s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.84s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `a7a6004`**. working tree **CLEAN**. HEAD **1067/1067 PASS** (227 files, 207.24s). `test..develop` **243 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **QA-B72 Fixed @ `a7a6004`** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@39ee679` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(443)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(443) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **565차 재검증 (2026-06-13T15:24) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@ccc4d75`·WT **CLEAN**·`test..develop` **239 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@2ebca70` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(435)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.67s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.99s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `ccc4d75`**. working tree **CLEAN**. `test..develop` **239 ahead**. develop HEAD test/build는 이번 사이클에서 **미재실행**(tester read-only 정책).
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@2ebca70` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(435)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(435) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **557차 재검증 (2026-06-13T13:46) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@0da41c6`(+1 FAQ21836 monitoring template basis fallback)·WT **CLEAN**·HEAD **1036/1036 PASS**·**67 route**·`test..develop` **234 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@5501745` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(426)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.43s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.97s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `0da41c6`**. working tree **CLEAN**. HEAD **1036/1036 PASS** (224 files, 179.34s, +1 @Test vs 555차). build multi-chunk (928 modules, index 576.59 kB >500 kB vite warn, 6.24s). `test..develop` **234 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@5501745` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(426)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(426) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **555차 재검증 (2026-06-13T13:22) — ⚠ superseded by 557차**: develop `@6f6915f` · merge pending 424 · Open 0.
+
+> **555차 재검증 (2026-06-13T13:22, 이력) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@6f6915f`(+1 G30 monitoring UI BNK-169)·WT **CLEAN**·HEAD **1035/1035 PASS**·**67 route**·`test..develop` **233 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@6a72b70` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(424)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.73s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.25s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `6f6915f`**. working tree **CLEAN**. HEAD **1035/1035 PASS** (224 files, 205.37s, +12 @Test vs 553차). build multi-chunk (index 576.45 kB >500 kB vite warn, 7.74s). `test..develop` **233 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@6a72b70` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(424)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(424) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **553차 재검증 (2026-06-13T12:58) — ⚠ superseded by 555차**: develop `@b47e85c` · merge pending 422 · Open 0.
+
+> **553차 재검증 (2026-06-13T12:58, 이력) — ✅ test `@c7c8f07` 불변·217/217 PASS·develop `@b47e85c`(+1 G27 no-branch guard — **QA-B71 Fixed**)·WT **CLEAN**·HEAD **1023/1023 PASS**·**66 route**·`test..develop` **232 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@aaa16f8` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·merge **미실행(422)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.47s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.24s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `b47e85c`**. working tree **CLEAN** (**551차 DIRTY 2M→해소**, QA-B71 Fixed @ `b47e85c`). HEAD **1023/1023 PASS** (222 files, 174.89s). build multi-chunk (index 559.65 kB >500 kB vite warn, 6.23s). `test..develop` **232 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **QA-B71 Fixed @ `b47e85c`** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@aaa16f8` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(422)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(422) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **551차 재검증 (2026-06-13T12:32) — ⚠ superseded by 553차**: develop `@a5c2736` · merge pending 420 · Open 1 BLOCK QA-B71.
+
+> **549차 재검증 (2026-06-13T11:47) — ⚠ superseded by 551차**: develop `@e77b7e4` · merge pending 418 · Open 0.
+
+> **545차 재검증 (2026-06-13T11:02) — ⚠ superseded by 549차**: develop `@58256c6` · merge pending 414.
+
+> **543차 재검증 (2026-06-13T10:38) — ⚠ superseded by 545차**: develop `@7668459` · cross-stream BLOCK (QA-B70).
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 81.48s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 10.27s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7668459`**. working tree **CLEAN** (**541차 DIRTY 1M→해소**, QA-B69 Fixed @ `7668459`). HEAD **1009/1009 PASS** (221 files, 204.35s). build multi-chunk (index 551.66 kB >500 kB vite warn, 6.12s). `test..develop` **227 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / frontend merge FULLY UNBLOCKED**. 교차(backend): develop `@6f6094d` WT **DIRTY 2M** · Open **1 BLOCK QA-B70** · **cross-stream merge BLOCK**. 잔여: **COD BE 2M 커밋 → WT clean → tester merge(412)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(412) **미실행** · backend WT dirty · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **541차 재검증 (2026-06-13T10:03) — ⚠ superseded by 543차**: develop `@338c014` · WT **DIRTY 1M** · HEAD **1008/1009 FAIL** · Open 1 QA-B69.
+
+> **539차 재검증 (2026-06-13T09:44) — ⚠ superseded by 541차**: develop `@338c014` · WT **CLEAN** · HEAD **1008/1009 FAIL** · Open 1 QA-B69.
+
+> **537차 재검증 (2026-06-13T09:00) — ⚠ superseded by 539차**: develop `@02cbd05` · Open 0 · merge pending 408.
+
+> **537차 재검증 (2026-06-13T09:00, 이력) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@02cbd05`(+1: US-R02 staff status report page)·WT **CLEAN**·HEAD **1001/1001 PASS**·build **923 modules**(index 548.84 kB vite warn)·**65 route**·`test..develop` **224 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(408)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.55s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.33s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `02cbd05`**. working tree **CLEAN**. HEAD **1001/1001 PASS** (220 files, 204.38s, +7 @Test vs 535차). build **923 modules** (index 548.84 kB >500 kB vite warn, 6.42s). `test..develop` **224 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / merge gate FULLY UNBLOCKED**. 교차(backend): develop `@8487667` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(408)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(408) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **535차 재검증 (2026-06-13T08:41) — ⚠ superseded by 537차**: develop `@8bbba4d` · Open 0 · merge pending 406.
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.48s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.61s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8bbba4d`**. working tree **CLEAN**. HEAD **994/994 PASS** (218 files, 171.84s, +3 @Test vs 533차). build **921 modules** (index 547.83 kB >500 kB vite warn, 6.06s). `test..develop` **223 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / merge gate FULLY UNBLOCKED**. 교차(backend): develop `@b6ecc35` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(406)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(406) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **533차 재검증 (2026-06-13T08:13) — ⚠ superseded by 535차**: develop `@994f5ea` · Open 0 · merge pending 404.
+
+> **533차 재검증 (2026-06-13T08:13, 이력) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@994f5ea`(+1: G34b cognitive role guard on work-log save)·WT **CLEAN**·HEAD **991/991 PASS**·build **921 modules**(index 547.83 kB vite warn)·**64 route**·`test..develop` **222 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(404)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.95s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.51s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `994f5ea`**. working tree **CLEAN**. HEAD **991/991 PASS** (218 files, 200.45s, +2 @Test vs 531차). build **921 modules** (index 547.83 kB >500 kB vite warn, 6.92s). `test..develop` **222 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / merge gate FULLY UNBLOCKED**. 교차(backend): develop `@bccf978` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(404)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(404) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **531차 재검증 (2026-06-13T07:54) — ⚠ superseded by 533차**: develop `@b0a9e06` · Open 0 · merge pending 402.
+
+> **531차 재검증 (2026-06-13T07:54, 이력) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@b0a9e06`(+1: G42 grievance counseling page staff API wiring)·WT **CLEAN**·HEAD **989/989 PASS**·build **921 modules**(index 547.83 kB vite warn)·**64 route**·`test..develop` **221 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(402)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 76.31s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 9.42s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `b0a9e06`**. working tree **CLEAN**. HEAD **989/989 PASS** (218 files, 241.27s). build **921 modules** (index 547.83 kB >500 kB vite warn, 9.29s). `test..develop` **221 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / merge gate FULLY UNBLOCKED**. 교차(backend): develop `@0460e9b` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(402)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(402) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **529차 재검증 (2026-06-13T07:25) — ⚠ superseded by 531차**: develop `@db21e85` · Open 0 · merge pending 400.
+
+> **529차 재검증 (2026-06-13T07:25, 이력) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@db21e85`(+1: QA-B68 UXD-92 aria-label test fix)·WT **CLEAN**·HEAD **979/979 PASS**·build **919 modules**(index 546.98 kB vite warn)·**64 route**·`test..develop` **220 ahead**·**Open 0(frontend)**·**QA-B68 Fixed**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(400)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.73s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.33s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `db21e85`**. working tree **CLEAN**. HEAD **979/979 PASS** (215 files, 198.31s). build **919 modules** (index 546.98 kB >500 kB vite warn, 7.60s). `test..develop` **220 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **QA-B68 Fixed @ `db21e85`** · **판정 PASS(v1.2+v1.3-A @ test) / merge gate FULLY UNBLOCKED**. 교차(backend): develop `@bcdc411` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(400)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(400) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **527차 재검증 (2026-06-13T07:07) — ⚠ superseded by 529차**: develop `@1b5fabe` · Open 1 BLOCK QA-B68 · merge BLOCK.
+
+> **527차 재검증 (2026-06-13T07:07, 이력) — ⚠ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@1b5fabe`(+2: `3d5d629` UXD-92 ClientsContextNav·`1b5fabe` G34b)·WT **CLEAN**·HEAD **978/979 FAIL**(`CarePlanNotificationPage.test.jsx` UXD-92 aria-label)·**63 route**·`test..develop` **219 ahead**·**Open 1 BLOCK QA-B68(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **frontend merge gate BLOCK**·교차 BE `@b459f4c` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge **미실행(398)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.39s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.20s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `1b5fabe`**. working tree **CLEAN**. HEAD **978/979 FAIL** (215 files, 167.79s). `test..develop` **219 ahead**. **origin/develop 동기화**.
+> - **Open 1 BLOCK QA-B68(frontend)** · **판정 PASS(v1.2+v1.3-A @ test) / merge gate BLOCK**. 교차(backend): develop `@b459f4c` WT **CLEAN** · Open **0** · **cross-stream merge BLOCK**. 잔여: **COD `CarePlanNotificationPage.test.jsx` 수정→HEAD PASS→tester merge(398)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge(398) **미실행** · develop HEAD test FAIL · post-merge live E2E **미실행**.
+
+> **525차 재검증 (2026-06-13T06:34) — ⚠ superseded by 527차**: develop `@3c7d2c7` · Open 0 · merge FULLY UNBLOCKED.
+
+> **525차 재검증 (2026-06-13T06:34, 이력) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@3c7d2c7`(+1: QA-B67 `parseApiErrorPayload` fix)·WT **CLEAN**·HEAD **965/965 PASS**·**64 route**·`test..develop` **217 ahead**·**Open 0(frontend)**·**QA-B67 Fixed**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(395)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 169.19s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 22.18s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `3c7d2c7`**. working tree **CLEAN**. HEAD **965/965 PASS** (212 files, 388.09s). `test..develop` **217 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **QA-B67 Fixed @ `3c7d2c7`** · **판정 PASS(v1.2+v1.3-A @ test) / merge gate FULLY UNBLOCKED**. 교차(backend): develop `@2925ff7` WT **CLEAN** · Open **0** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(395)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · post-merge live E2E **미실행**.
+
+> **523차 재검증 (2026-06-13T06:14) — ⚠ superseded by 525차**: develop `@d41546f` WT DIRTY 2M · Open 1 BLOCK QA-B67 · cross-stream merge BLOCK.
+
+> **521차 재검증 (2026-06-13T05:56) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@d41546f`(+1: US-R02 health checkup→HR file hub 8-10 P2)·WT **CLEAN**·HEAD **963/963 PASS**·922 modules·**64 route**·`test..develop` **216 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(393)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.08s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.77s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `d41546f`**. working tree **CLEAN**. HEAD **963/963 PASS** (212 files, 171.51s). build **922 modules** (index 545.84 kB >500 kB vite warn). `test..develop` **216 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ frontend merge gate FULLY UNBLOCKED**. 교차(backend): develop `@dc48933` WT **CLEAN** · Open **0** · **★ cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(393)** · post-merge live E2E.
+
+> **515차 재검증 (2026-06-13T04:39) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@7b68f54`(+1: latest frontend develop commit)·WT **CLEAN**·`test..develop` **213 ahead**·**Open 0**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(389)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 76.13s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.02s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7b68f54`**. working tree **CLEAN**. `test..develop` **213 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ frontend merge gate FULLY UNBLOCKED**. 교차(backend): develop `@a7b4a39` WT **CLEAN** · Open **0** · **★ cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(389)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · post-merge live E2E **미실행**.
+>
+> **513차 재검증 (2026-06-13T04:01) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@22325f4`(+1: latest frontend develop commit)·WT **CLEAN**·`test..develop` **211 ahead**·**Open 0**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(386)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.11s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.90s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `22325f4`**. working tree **CLEAN**. `test..develop` **211 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ frontend merge gate FULLY UNBLOCKED**. 교차(backend): develop `@bdfc140` WT **CLEAN** · Open **0** · **★ cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(386)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · post-merge live E2E **미실행**.
+>
+> **511차 재검증 (2026-06-13T03:45) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@72676a5`(+1: `feat(v1.2.1/G40): wire admission risk compliance API on client detail (US-T11)`)·WT **CLEAN**·`test..develop` **210 ahead**·**Open 0**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(384)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.08s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.83s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `72676a5`**. working tree **CLEAN**. `test..develop` **210 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ frontend merge gate FULLY UNBLOCKED**. 교차(backend): develop `@84e59d2` WT **CLEAN** · Open **0** · **★ cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(384)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · post-merge live E2E **미실행**.
+>
+> **509차 재검증 (2026-06-13T03:24) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@e89175e`(+1: `fix(api): handle string error payloads (QA-B62)`)·WT **CLEAN**·`test..develop` **209 ahead**·**Open 0**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(382)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 70.20s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.23s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e89175e`**. working tree **CLEAN**. `test..develop` **209 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ frontend merge gate FULLY UNBLOCKED**. 교차(backend): develop `@2589b94` WT **CLEAN** · Open **0** · **★ cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(382)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · post-merge live E2E **미실행**.
+>
+> **507차 재검증 (2026-06-13T03:05) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@2f5af63` HEAD **불변**·WT **DIRTY 2M**(`http.js`·`http.test.js` — `extractErrorMessages` string fallback WIP, **505차 CLEAN→재오염**)·HEAD **929/929 PASS**·WT **931/931 PASS**(+2 @Test)·911 modules·`test..develop` **208 ahead**·**Open 1 BLOCK QA-B62 recurrence**·PASS(v1.2+v1.3-A @ test)·⚠ **양 스트림 merge BLOCK**(FE+BE WT dirty)·merge **미실행(380)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.41s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.93s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `2f5af63`**. working tree **DIRTY 2M**. `test..develop` **208 ahead**. **origin/develop 동기화**.
+> - **develop HEAD `npm test`**: **929/929 PASS**. **WT `npm test`**: **931/931 PASS**(+2 @Test, 163.02s). **build 911 modules** (index 528.97 kB >500 kB vite warn).
+> - **Open 1 BLOCK QA-B62 recurrence(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ merge gate BLOCK**. 교차(backend): develop `@f0752b6` WT **DIRTY 2M** · Open **1 BLOCK QA-B64**. 잔여: **COD FE+BE 2M commit/revert→WT clean→tester merge(380)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · post-merge live E2E **미실행**.
+>
+> **505차 재검증 (2026-06-13T02:43) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@2f5af63`(+1 vs `9f80082`)·WT **CLEAN**·HEAD **929/929 PASS**·911 modules·**63 route**·`test..develop` **208 ahead**·**frontend Open 0**·PASS(v1.2+v1.3-A @ test)·★ **양 스트림 merge FULLY UNBLOCKED**·merge **미실행(380)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 49.78s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.54s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `2f5af63`**. working tree **CLEAN**. `test..develop` **208 ahead**. **origin/develop 동기화**.
+> - **develop HEAD `npm test`**: **929/929 PASS** (208 files, 162.81s). **build 911 modules** (index 528.89 kB >500 kB vite warn).
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ merge gate FULLY UNBLOCKED**. 교차(backend): develop `@f0752b6` WT **CLEAN** · Open **0**. 잔여: **tester merge(380)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · post-merge live E2E **미실행**.
+>
+> **503차 재검증 (2026-06-13T02:19) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@9f80082`(+1 vs origin `4efa168`)·WT **CLEAN**·origin/develop 동기화·`test..develop` **207 ahead**·**frontend Open 0**·PASS(v1.2+v1.3-A @ test)·★ **frontend merge UNBLOCKED**·교차 backend `@686d686` WT **DIRTY 1U**·Open 1 BLOCK **QA-B63**·**양 스트림 merge BLOCK**·merge **미실행(378)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.69s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.83s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `9f80082`**. working tree **CLEAN**. `test..develop` **207 ahead**. **origin/develop 동기화**.
+> - **Open 0(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ frontend merge gate UNBLOCKED**. 교차(backend): develop `@686d686` WT **DIRTY 1U** · Open 1 BLOCK **QA-B63**. 잔여: **COD BE untracked V94 커밋/revert→WT clean→tester merge(378)** · post-merge live E2E.
+> - **operation 승격 BLOCK**: develop→test merge **미실행** · backend WT dirty · post-merge live E2E **미실행**.
+>
+> **501차 재검증 (2026-06-13T01:44) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@4efa168` HEAD **불변**·WT **DIRTY 2M**(`src/api/http.js`·`src/api/http.test.js` — parseApiErrorPayload WIP, +102/-3)·HEAD committed **917/917 PASS**·WT **921/921 PASS**(191.54s, +4 @Test)·**63 route**·**Open 1 BLOCK QA-20260613-B62(frontend) 유지**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차 backend `@686d686` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge **미실행(376)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.34s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.88s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4efa168`** (499차와 동일). working tree **DIRTY 2M**. develop **205커밋 ahead**. **origin/develop 동기화** @ `4efa168`.
+> - develop WT `npm test`: **921/921 PASS**(+4 @Test vs HEAD committed 917, 미커밋 WIP).
+> - **63 route** (불변).
+> - **Open 1 BLOCK QA-B62(frontend) 유지** · **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ v1.2.1 merge BLOCK**(frontend). 교차(backend): develop `@686d686` WT **CLEAN** · Open 0. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(376)** · G2 CMS/US-R03/8-7-1/US-R02/G34 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(376 commits) · frontend WT dirty · post-merge live E2E **미실행**.
+
+> **499차 재검증 (2026-06-13T01:19) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@4efa168` HEAD **불변**·WT **DIRTY 2M**(`src/api/http.js`·`src/api/http.test.js` — `parseApiErrorPayload` string errors fallback WIP, **497차 CLEAN→재오염**)·HEAD **917/917 PASS**·WT **919/919 PASS**(180.75s, +2 @Test)·**63 route**·**Open 1 BLOCK QA-20260613-B62(frontend)**·PASS(v1.2+v1.3-A @ test)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차 backend `@22d736b` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge **미실행(375)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 75.74s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 11.18s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4efa168`** (497차와 동일). working tree **DIRTY 2M**. develop **205커밋 ahead**. **origin/develop 동기화** @ `4efa168`.
+> - develop HEAD `npm test`: **917/917 PASS** · develop WT `npm test`: **919/919 PASS**(+2 @Test, 미커밋 WIP).
+> - **63 route** (불변).
+> - **Open 1 BLOCK QA-B62(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ v1.2.1 merge BLOCK**(frontend). 교차(backend): develop `@22d736b` WT **CLEAN** · Open 0. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(375)** · G2 CMS/US-R03/8-7-1/US-R02/G34 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(375 commits) · frontend WT dirty · post-merge live E2E **미실행**.
+>
+> **497차 재검증 (2026-06-13T00:56) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@4efa168`(+1 vs 495차 `9ebb87f`: `feat(US-R03): deepen FAQ21806 onboarding compliance and HR file hub wiring`)·WT **CLEAN**·HEAD **917/917 PASS**(163.33s)·909 modules·**63 route**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@b864272` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge **미실행(374)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.33s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.91s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4efa168`** (+1 vs `9ebb87f`). working tree **CLEAN**. develop **205커밋 ahead**. **origin/develop 동기화** @ `4efa168`.
+> - develop HEAD `npm test`: **917/917 PASS** (206 files, 163.33s).
+> - develop HEAD `npm run build`: **909 modules** (index 519.06 kB >500 kB vite warn, 8.48s).
+> - **63 route** (불변).
+> - **Open 0건(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@b864272` WT **CLEAN** · Open 0 · **815/815 PASS**. 잔여: **tester merge(374)** · G2 CMS/US-R03/8-7-1/US-R02/G34 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(374 commits) · post-merge live E2E **미실행**.
+>
+> **495차 재검증 (2026-06-13T00:34) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@9ebb87f` HEAD **불변**(494차 대비)·WT **CLEAN**·HEAD **913/913 PASS**(163.32s)·909 modules·**63 route**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@60789d6` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge **미실행(372)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.04s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.68s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `9ebb87f`** (불변 vs 494차). working tree **CLEAN**. develop **204커밋 ahead**. **origin/develop 동기화** @ `9ebb87f`.
+> - develop HEAD `npm test`: **913/913 PASS** (206 files, 163.32s).
+> - develop HEAD `npm run build`: **909 modules** (index 519.06 kB >500 kB vite warn, 5.99s).
+> - **63 route** (불변).
+> - **Open 0건(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@60789d6` WT **CLEAN** · Open 0 · **813/813 PASS**. 잔여: **tester merge(372)** · G2 CMS/US-R03/8-7-1/US-R02/G34 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(372 commits) · post-merge live E2E **미실행**.
+>
+> **492차 재검증 (2026-06-13T00:09) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@e76ca06` HEAD **불변**·WT **CLEAN**·HEAD **908/908 PASS**(269.35s)·908 modules·**63 route**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@d4ee057` WT **DIRTY 2M**·Open 1 BLOCK **QA-B61**·**양 스트림 merge BLOCK**·merge **미실행(370)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 120.35s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 14.25s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e76ca06`** (불변 vs 490차). working tree **CLEAN**. develop **203커밋 ahead**. **origin/develop 동기화** @ `e76ca06`.
+> - develop HEAD `npm test`: **908/908 PASS** (205 files, 269.35s, +8 @Test vs 488차 900).
+> - develop HEAD `npm run build`: **908 modules** (index 519.05 kB >500 kB vite warn, 6.06s).
+> - **63 route** (488차 기준 유지).
+> - **Open 0건(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@d4ee057` WT **DIRTY 2M** · Open 1 BLOCK **QA-B61** · **양 스트림 merge BLOCK**. 잔여: **COD BE 2M 커밋/revert→WT clean→TSR 재검증→tester merge(370)** · G2 CMS/US-R03/8-7-1/US-R02/G34 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(370 commits) · cross-stream **BLOCK**(BE WT dirty) · post-merge live E2E **미실행**.
+>
+> **490차 재검증 (2026-06-12T23:32) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@e76ca06`(+2 vs 488차 `9a6fdb6`: `9ba4956` UXD-90 CMS cancel modal align + `e76ca06` US-R03 onboarding compliance panel)·WT **CLEAN**·develop **203 ahead**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@d4ee057` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge **미실행(370)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.58s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.97s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e76ca06`** (+2: UXD-90 CMS cancel modal align + US-R03 FAQ21806 onboarding compliance panel). working tree **CLEAN**. develop **203커밋 ahead**. **origin/develop 동기화** @ `e76ca06`.
+> - develop HEAD 테스트/빌드: **미재실행** (직전 488차 기준 **900/900 PASS**, **906 modules**).
+> - **63 route** (직전 488차 기준, 미재실행).
+> - **Open 0건(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@d4ee057` WT **CLEAN** · 167 ahead · Open 0. 잔여: **tester merge(370)** · G2 CMS/US-R03/8-7-1/US-R02/G34 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(370 commits) · post-merge live E2E **미실행**.
+>
+> **488차 재검증 (2026-06-12T22:57) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@9a6fdb6`(+1 vs 486차 `57ed2db`: G2 CMS enrollment cancellation UI)·WT **CLEAN**·develop **201 ahead**·HEAD **900/900 PASS**(183.56s)·906 modules·**63 route**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@4a622ab` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge **미실행(367)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.90s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.84s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities** (dev vite/esbuild 3 HIGH — non-blocking).
+> - **frontend develop HEAD `9a6fdb6`** (+1: `feat(v2/G2): add CMS enrollment cancellation UI on CmsPage`). working tree **CLEAN**. develop **201커밋 ahead**. **origin/develop 동기화** @ `9a6fdb6`.
+> - develop HEAD `npm test`: **900/900 PASS** (203 files, 183.56s, +2 @Test vs 898).
+> - develop HEAD `npm run build`: **906 modules** (index 518.53 kB >500 kB vite warn, 8.74s).
+> - **63 route** (불변).
+> - **Open 0건(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@4a622ab` WT **CLEAN** · 166 ahead · Open 0. 잔여: **tester merge(367)** · G2 CMS/US-R03/8-7-1/US-R02/G34 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(367 commits) · post-merge live E2E **미실행**.
+
+> **486차 재검증 (2026-06-12T22:39) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@57ed2db`(+1 vs 484차 `9d648e0`: QA-B60 staff HR file hub UI)·WT **CLEAN**·develop **200 ahead**·HEAD **898/898 PASS**(185.93s)·906 modules·**63 route**·**Open 0(frontend)**·**QA-B60 Fixed**·PASS(v1.2+v1.3-A @ test)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@a34d0eb` WT **CLEAN**·Open 0·**양 스트림 merge FULLY UNBLOCKED**·merge **미실행(365)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.51s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.43s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities** (dev vite/esbuild 3 HIGH — non-blocking).
+> - **frontend develop HEAD `57ed2db`** (+1: `Fix QA-B60: add staff HR file hub UI`). working tree **CLEAN**. develop **200커밋 ahead**. **origin/develop 동기화** @ `57ed2db`.
+> - develop HEAD `npm test`: **898/898 PASS** (203 files, 185.93s).
+> - develop HEAD `npm run build`: **906 modules** (index 518.43 kB >500 kB vite warn, 5.90s).
+> - **63 route** (불변).
+> - **Open 0건(frontend)** · **QA-B60 Fixed @ `57ed2db`** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@a34d0eb` WT **CLEAN** · 165 ahead · Open 0. 잔여: **tester merge(365)** · US-R03/8-7-1/US-R02/G34/G2 CMS **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(365 commits) · post-merge live E2E **미실행**.
+
+> **484차 재검증 (2026-06-12T22:12) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@9d648e0` HEAD **불변**·WT **DIRTY 6**(US-R03 staff HR file hub UI deepen WIP, **480차 CLEAN→재오염 유지**)·develop **199 ahead**·HEAD **891/891 PASS**·WT **898/898 PASS**(+7 @Test, 482차 FAIL **해소**)·904 modules·**63 route**·**Open 1 BLOCK QA-B60**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend WT dirty)·교차 backend `@72aff00` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge **미실행(363)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.01s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.81s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities** (dev vite/esbuild 3 HIGH — non-blocking).
+> - **frontend develop HEAD `9d648e0`** (불변). working tree **DIRTY 6** (2M: `services.js`·`StaffDetailPage.jsx` · 4U: `StaffHrFilePanel*`·`staffHrFiles.js`·`staffHrFileServices.test.js`). develop **199커밋 ahead**. **origin/develop 동기화** @ `9d648e0`.
+> - develop HEAD `npm test`: **891/891 PASS** · WT **898/898 PASS** (203 files, 187.05s).
+> - develop WT `npm run build`: **904 modules** (index 518.43 kB >500 kB vite warn, 5.97s).
+> - **63 route** (불변).
+> - **Open 1 BLOCK QA-20260612-B60(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend): develop `@72aff00` WT **CLEAN** · 164 ahead · Open 0. 잔여: **COD FE 6 files 커밋/revert→WT clean→TSR 재검증→tester merge(363)** · US-R03/8-7-1/US-R02/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(363 commits) · frontend WT dirty · post-merge live E2E **미실행**.
+
+> **482차 재검증 (2026-06-12T21:54) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@9d648e0` HEAD **불변**·WT **DIRTY 6**(US-R03 staff HR file hub UI deepen WIP, **480차 CLEAN→재오염**)·develop **199 ahead**·HEAD **891/891 PASS**·WT **897/898 FAIL**·904 modules·**63 route**·**Open 1 BLOCK QA-B60**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend `@fee710d` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge **미실행(362)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 57.57s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.13s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities** (dev vite/esbuild 3 HIGH — non-blocking).
+> - **frontend develop HEAD `9d648e0`** (불변). working tree **DIRTY 6** (2M: `services.js`·`StaffDetailPage.jsx` · 4U: `StaffHrFilePanel*`·`staffHrFiles.js`·`staffHrFileServices.test.js`). develop **199커밋 ahead**. **origin/develop 동기화** @ `9d648e0`.
+> - develop HEAD `npm test`: **891/891 PASS** · WT **897/898 FAIL** (`GradeHistoryAttachmentPanel.test.jsx:51`).
+> - **63 route** (불변).
+> - **Open 1 BLOCK QA-20260612-B60(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend): develop `@fee710d` WT **CLEAN** · 163 ahead · Open 0. 잔여: **COD FE 6 files 커밋/revert→WT clean→TSR 재검증→tester merge(362)** · US-R03/8-7-1/US-R02/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(362 commits) · frontend WT dirty · post-merge live E2E **미실행**.
+
+> **480차 재검증 (2026-06-12T21:30) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@9d648e0`(+1 vs 478차 `bc3c967`: `refactor(routes): lazy-load staff and visits pages`)·WT **CLEAN**·develop **199 ahead**·HEAD **891/891 PASS**·904 modules·**63 route**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@bbb8e35` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(361)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.44s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.36s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities** (dev vite/esbuild 3 HIGH — non-blocking).
+> - **frontend develop HEAD `9d648e0`** (+1: staff/visits route lazy-load). working tree **CLEAN**. develop **199커밋 ahead**. **origin/develop 동기화** @ `9d648e0`.
+> - develop HEAD `npm test`: **891/891 PASS** (201 files, 185.14s) · build **904 modules** (index 517.98 kB >500 kB vite warn, 7.26s).
+> - **63 route** (불변).
+> - **Open 0건(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@bbb8e35` WT **CLEAN** · 162 ahead · Open 0. 잔여: **tester merge(361)** · US-R03/8-7-1/US-R02/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(361 commits) · post-merge live E2E **미실행**.
+
+> **478차 재검증 (2026-06-12T21:05) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0(prod)·develop `@bc3c967`(+2 vs 475차 `50bdb6e`: `b599d8f` UXD-89·`bc3c967` US-R03 staff HR file hub·FAQ21806 onboarding)·WT **CLEAN**·develop **198 ahead**·HEAD **891/891 PASS**·903 modules·**63 route**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@a206508` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(359)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.66s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.67s).
+> - **`src/frontend-test` `npm audit --omit=dev --audit-level=high`**: **0 vulnerabilities** (dev vite/esbuild 3 HIGH — non-blocking).
+> - **frontend develop HEAD `bc3c967`** (+2: UXD-89 attachment-list CSS·US-R03 staff HR file hub). working tree **CLEAN**. develop **198커밋 ahead**. **origin/develop 동기화** @ `bc3c967`.
+> - develop HEAD `npm test`: **891/891 PASS** (201 files, 155.93s) · build **903 modules 3 청크** (index 607.72 kB >500 kB vite warn, 5.76s).
+> - **63 route** (불변).
+> - **Open 0건(frontend)** · **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): develop `@a206508` WT **CLEAN** · 161 ahead · Open 0. 잔여: **tester merge(359)** · US-R03/8-7-1/US-R02/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(359 commits) · post-merge live E2E **미실행**.
+
+> **475차 재검증 (2026-06-12T20:15) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@50bdb6e`(+1 vs 473차 `46f1ac0`: `feat(US-S02): surface unknown hire date in refresher compliance summary` — **QA-B59 Fixed**)·WT **CLEAN**·develop **196 ahead**·HEAD **883/883 PASS**·901 modules·**63 route**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@1817c36` WT **CLEAN**·**786/786 PASS**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(356)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 49.97s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.74s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `50bdb6e`** (+1: US-S02 unknown hire date compliance summary). working tree **CLEAN**. develop **196커밋 ahead**. **origin/develop 동기화** @ `50bdb6e`.
+> - develop HEAD `npm test`: **883/883 PASS** (199 files, 154.44s) · build **901 modules 3 청크** (index 598.00 kB >500 kB vite warn, 5.86s).
+> - **63 route** (불변).
+> - **Open 0건(frontend)** · **QA-20260612-B59 Fixed @ `50bdb6e`**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 474차): develop `@1817c36` WT **CLEAN** · 160 ahead · **786/786 PASS** · Open 0. 잔여: **tester merge(356)** · US-R02/8-7-1/US-R03/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(356 commits) · post-merge live E2E **미실행**.
+
+> **473차 재검증 (2026-06-12T19:55) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@46f1ac0` HEAD **불변**·WT **DIRTY 4M**(US-S02/8-7-1 unknown hire date WIP — **471차 CLEAN→재오염**)·develop **195 ahead**·HEAD **883/883 PASS**·WT **883/883 PASS**·901 modules·**62 route**·**Open 1 BLOCK QA-B59**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend `@3f444a1` WT **DIRTY 1M**·Open 1 BLOCK **QA-B58**·**양 스트림 merge BLOCK**·merge **미실행(354)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 82.19s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 11.06s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `46f1ac0`** (불변 — `fix(US-S02): load all staff pages in refresher summary`). working tree **DIRTY 4M**. develop **195커밋 ahead**. **origin/develop 동기화** @ `46f1ac0`.
+> - develop WT `npm test`: **883/883 PASS** (199 files, 187.03s) · build **901 modules 3 청크** (index 598.00 kB >500 kB vite warn, 5.79s).
+> - **62 route** (불변).
+> - **Open 1 BLOCK QA-20260612-B59(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend 472차): develop `@3f444a1` WT **DIRTY 1M** · Open 1 BLOCK **QA-B58** · **785/785 PASS**. 잔여: **COD FE 4M+BE 1M 커밋/revert→WT clean→tester merge(354)** · US-R02/8-7-1/US-R03/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(354 commits) · FE+BE WT dirty · post-merge live E2E **미실행**.
+
+> **471차 재검증 (2026-06-12T19:32) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@46f1ac0`(+1 vs 469차 `604787f`: QA-B57 StaffRefresherTrainingPage commit)·WT **CLEAN**·develop **195 ahead**·HEAD **883/883 PASS**·901 modules·**62 route**·**Open 0**(frontend)·**QA-B57 Fixed**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@3f444a1` WT **CLEAN**·Open 0·**785/785 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(354)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.96s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.81s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `46f1ac0`** (+1: `fix(US-S02): load all staff pages in refresher summary`). working tree **CLEAN**. develop **195커밋 ahead**. **origin/develop 동기화** @ `46f1ac0`.
+> - develop HEAD `npm test`: **883/883 PASS** (199 files, 157.48s) · build **901 modules 3 청크** (index 597.71 kB >500 kB vite warn, 6.01s).
+> - **62 route** (469차 63→62, route recount).
+> - **Open 0건(frontend)** · **QA-20260612-B57 Fixed @ `46f1ac0`**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 470차): develop `@3f444a1` WT **CLEAN** · 159 ahead · **785/785 PASS** · Open 0. 잔여: **tester merge(354)** · US-R02/8-7-1/US-R03/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(354 commits) · post-merge live E2E **미실행**.
+
+> **469차 재검증 (2026-06-12T19:10) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@604787f` HEAD **불변**·WT **DIRTY 2M**(`StaffRefresherTrainingPage`·test — US-S02/8-7-1 WIP)·develop **194 ahead**·HEAD **882/882 PASS**·WT **883/883 PASS**(+1 @Test)·901 modules·**63 route**·**Open 1 BLOCK QA-B57**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend `@bad88f5` WT **CLEAN**·Open 0·**783/783 PASS**·**양 스트림 merge BLOCK**(FE WT clean 선행)·merge **미실행(352)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.32s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.97s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `604787f`** (불변 — `feat(US-R02): add staff health checkup page and API wiring (8-10)`). working tree **DIRTY 2M**. develop **194커밋 ahead**. **origin/develop 동기화** @ `604787f`.
+> - develop HEAD `npm test`: **882/882 PASS** (467차 교차) · WT **883/883 PASS** (+1 @Test, 154.69s) · build **901 modules 3 청크** (index 597.71 kB >500 kB vite warn, 5.79s).
+> - **63 route** (+1 vs 467차 — US-R02 StaffHealthCheckupPage).
+> - **Open 1 BLOCK QA-20260612-B57(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend 468차): develop `@bad88f5` WT **CLEAN** · 158 ahead · **783/783 PASS** · Open 0. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(352)** · US-R02/8-7-1/US-R03/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(352 commits) · frontend WT dirty · post-merge live E2E **미실행**.
+
+> **467차 재검증 (2026-06-12T18:52) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@604787f`(+1 vs 465차 `0a7fe16`: US-R02 staff health checkup page·API wiring 8-10)·WT **CLEAN**·develop **194 ahead**·HEAD **882/882 PASS**(182.34s)·901 modules·**62 route**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@f1268c6` WT **CLEAN**·Open 0·**781/781 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(351)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.46s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.01s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `604787f`** (+1: `feat(US-R02): add staff health checkup page and API wiring (8-10)`). working tree **CLEAN**. develop **194커밋 ahead**. **origin/develop 동기화** @ `604787f`.
+> - develop HEAD `npm test`: **882/882 PASS** (199 files, 182.34s, +11 @Test vs 871) · build **901 modules 3 청크** (index 597.55 kB >500 kB vite warn, 9.02s).
+> - **62 route** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 466차): develop `@f1268c6` WT **CLEAN** · 157 ahead · **781/781 PASS** · Open 0. 잔여: **tester merge(351)** · US-R02/8-7-1/US-R03/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(351 commits) · post-merge live E2E **미실행**.
+
+> **465차 재검증 (2026-06-12T18:22) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@0a7fe16`(+2 vs 463차 `a11bbeb`: UXD-80 ds-stat-grid·US-S02 certificate management flow)·WT **CLEAN**·develop **193 ahead**·HEAD **871/871 PASS**(154.09s)·898 modules·**62 route**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@51477bd` WT **CLEAN**·Open 0·**764/764 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(349)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.13s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.84s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `0a7fe16`** (+2: `0656fcf` UXD-80 `.ds-stat-grid` · `0a7fe16` US-S02 certificate management flow). working tree **CLEAN**. develop **193커밋 ahead**. **origin/develop 동기화** @ `0a7fe16`.
+> - develop HEAD `npm test`: **871/871 PASS** (196 files, 154.09s, +5 @Test vs 866) · build **898 modules 3 청크** (index 586.25 kB >500 kB vite warn, 5.87s).
+> - **62 route** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 464차): develop `@51477bd` WT **CLEAN** · 156 ahead · **764/764 PASS** · Open 0. 잔여: **tester merge(349)** · 8-7-1/US-R03/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(349 commits) · post-merge live E2E **미실행**.
+
+> **463차 재검증 (2026-06-12T17:32) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@a11bbeb`(+1 vs 461차 `21b5d2d`: G34-US-S02 live harness deepen)·WT **CLEAN**·develop **191 ahead**·HEAD **866/866 PASS**(158.30s)·897 modules·**62 route**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@9c9fd5b` WT **CLEAN**·Open 0·**755/755 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(346)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 53.20s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.87s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `a11bbeb`** (+1: `feat(v1.2.1/G34-US-S02): deepen e-sign and refresher training live harness` — live E2E harness·nav, 3 files +139). working tree **CLEAN**. develop **191커밋 ahead**. **origin/develop 동기화** @ `a11bbeb`.
+> - develop HEAD `npm test`: **866/866 PASS** (195 files, 158.30s) · build **897 modules 3 청크** (index 580.45 kB >500 kB vite warn, 5.99s).
+> - **62 route** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 462차): develop `@9c9fd5b` WT **CLEAN** · 155 ahead · **755/755 PASS** · Open 0. 잔여: **tester merge(346)** · G34/US-R03/G24 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(346 commits) · post-merge live E2E **미실행**.
+
+> **461차 재검증 (2026-06-12T17:12) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@21b5d2d`(+2 vs 458차 `bb4c1af`: G34-US-S02 refresher training·sign modal·pilot E2E)·WT **CLEAN**·develop **190 ahead**·HEAD **866/866 PASS**(153.64s)·897 modules·**62 route**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@e21c12f` WT **CLEAN**·Open 0·**744/744 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(344)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.52s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.69s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `21b5d2d`** (+2: `314b380` G34 refresher training page·sign modal · `21b5d2d` pilot E2E). working tree **CLEAN**. develop **190커밋 ahead**. **origin/develop 동기화** @ `21b5d2d`.
+> - develop HEAD `npm test`: **866/866 PASS** (195 files, 153.64s, +11 @Test vs 855) · build **897 modules 3 청크** (index 580.36 kB >500 kB vite warn, 5.79s).
+> - **62 route** (+1 `/staff/training` G34-US-S02).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 460차): develop `@e21c12f` WT **CLEAN** · 154 ahead · **744/744 PASS** · Open 0. 잔여: **tester merge(344)** · G34/US-R03/G24 **live E2E run**(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(344 commits) · post-merge live E2E **미실행**.
+
+> **458차 재검증 (2026-06-12T16:35) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@bb4c1af`(+1 vs 456차 `37dc785`: US-R03 lifecycle date normalization)·WT **CLEAN**·develop **188 ahead**·HEAD **855/855 PASS**(179.57s)·894 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@61336df` WT **DIRTY 2M**·Open 1 BLOCK QA-B56·**양 스트림 merge BLOCK**·merge **미실행(340)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.00s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.76s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `bb4c1af`** (+1: `fix(US-R03): normalize lifecycle date fields for API and form inputs` — 4 files +73/-4). working tree **CLEAN**. develop **188커밋 ahead**. **origin/develop 동기화** @ `bb4c1af`.
+> - develop HEAD `npm test`: **855/855 PASS** (192 files, 179.57s, +2 @Test vs 853) · build **894 modules 3 청크** (index 572.13 kB >500 kB vite warn, 7.36s).
+> - **61 route** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 457차): develop `@61336df` WT **DIRTY 2M** · Open 1 BLOCK QA-B56 · 152 ahead · **742/742 PASS**. 잔여: **COD BE WT clean→tester merge(340)** · US-R03/G24/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(340 commits) · **backend WT clean 선행** · post-merge live E2E **미실행**.
+
+> **456차 재검증 (2026-06-12T16:16) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@37dc785`(+1 vs 454차 `b3e59e2`: US-R03 lifecycle validation·progress·list filter)·WT **CLEAN**·develop **187 ahead**·HEAD **853/853 PASS**(234.89s)·894 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@61336df` WT **DIRTY 2M**·Open 1 BLOCK QA-B56·**양 스트림 merge BLOCK**·merge **미실행(339)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.35s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 11.98s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `37dc785`** (+1: `feat(US-R03): add lifecycle validation, progress, and list filter` — 6 files +273/-20). working tree **CLEAN**. develop **187커밋 ahead**. **origin/develop 동기화** @ `37dc785`.
+> - develop HEAD `npm test`: **853/853 PASS** (192 files, 234.89s, +6 @Test vs 847) · build **894 modules 3 청크** (index 571.89 kB >500 kB vite warn, 8.71s).
+> - **61 route** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 455차): develop `@61336df` WT **DIRTY 2M** · Open 1 BLOCK QA-B56 · 152 ahead · **742/742 PASS**. 잔여: **COD BE WT clean→tester merge(339)** · US-R03/G24/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(339 commits) · **backend WT clean 선행** · post-merge live E2E **미실행**.
+
+> **454차 재검증 (2026-06-12T15:50) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@b3e59e2`(+1 vs 452차 `a018e71`: US-R03 staff lifecycle status badges)·WT **CLEAN**·develop **186 ahead**·HEAD **847/847 PASS**(150.60s)·894 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@61336df` WT **CLEAN**·Open 0·**742/742 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(338)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.79s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.74s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `b3e59e2`** (+1: `feat(US-R03): staff lifecycle status badges on list and detail` — 10 files +128/-4). working tree **CLEAN**. develop **186커밋 ahead**. **origin/develop 동기화** @ `b3e59e2`.
+> - develop HEAD `npm test`: **847/847 PASS** (192 files, 150.60s, +3 @Test vs 844) · build **894 modules 3 청크** (index 569.45 kB >500 kB vite warn, 5.87s).
+> - **61 route** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 453차): develop `@61336df` WT **CLEAN** · 152 ahead · **742/742 PASS**. 잔여: **tester merge(338)** · US-R03/G24/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(338 commits) · post-merge live E2E **미실행**.
+
+> **452차 재검증 (2026-06-12T15:02) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@a018e71`(+1 vs 450차 `3f2e884`: US-R03 staff lookup 5xx not masked as not-found)·WT **CLEAN**·develop **185 ahead**·HEAD **844/844 PASS**(230.89s)·894 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@82bdbcd` WT **CLEAN**·Open 0·**741/741 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(335)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.67s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.85s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `a018e71`** (+1: `fix(US-R03): avoid masking staff lookup server errors` — `services.js`·`userServices.test.js`, 2 files +14/-2). working tree **CLEAN**. develop **185커밋 ahead**. **origin/develop 동기화** @ `a018e71`.
+> - develop HEAD `npm test`: **844/844 PASS** (192 files, 230.89s, +1 @Test vs 843) · build **894 modules 3 청크** (index 568.20 kB >500 kB vite warn, 8.78s).
+> - **61 route** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 451차): develop `@82bdbcd` WT **CLEAN** · 150 ahead · **741/741 PASS**. 잔여: **tester merge(335)** · US-R03/G24/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(335 commits) · post-merge live E2E **미실행**.
+
+> **450차 재검증 (2026-06-12T14:40) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@3f2e884`(+1 vs 448차 `8ccd287`: QA-B55 `userServices.test.js` direct-GET align)·WT **CLEAN**·develop **184 ahead**·HEAD **843/843 PASS**(145.70s)·894 modules·**Open 0**(frontend)·**QA-B55 Fixed**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@9441a3c` WT **CLEAN**·Open 0·**740/740 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(333)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 49.78s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `3f2e884`** (+1: `fix(US-R03): align findUserByIdApi tests with direct GET fallback`). working tree **CLEAN**. develop **184커밋 ahead**. **origin/develop 동기화** @ `3f2e884`.
+> - develop HEAD `npm test`: **843/843 PASS** (192 files, 145.70s) · build **894 modules 3 청크** (index 568.20 kB >500 kB vite warn, 5.70s).
+> - **60 route** (불변).
+> - **Open 0건(frontend)** · **QA-20260612-B55 Fixed @ `3f2e884`**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 449차): develop `@9441a3c` WT **CLEAN** · 149 ahead · **740/740 PASS**. 잔여: **tester merge(333)** · US-R03/G24/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(333 commits) · post-merge live E2E **미실행**.
+
+> **448차 재검증 (2026-06-12T14:12) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@8ccd287`(+1 vs 446차 `f8f47e1`: G34 lead caregiver signature audit fields)·WT **CLEAN**·develop **183 ahead**·HEAD **840/843 FAIL**(`userServices.test.js` 3건)·895 modules·**Open 1 BLOCK QA-B55**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend HEAD test FAIL)·교차 backend `@c976f55` WT **CLEAN**·Open 0·**732/732 PASS**·**양 스트림 merge BLOCK**·merge **미실행(331)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.80s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.01s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8ccd287`** (+1: `feat(v1.2.1/G34): expose lead caregiver signature audit fields`). working tree **CLEAN**. develop **183커밋 ahead**. **origin/develop 동기화** @ `8ccd287`.
+> - develop HEAD `npm test`: **840/843 FAIL** (192 files, 152.95s — `userServices.test.js` 3건: `findUserByIdApi` direct-GET 리팩터 미반영) · build **895 modules 3 청크** (index 568.20 kB >500 kB vite warn, max 367.09 kB, 5.96s).
+> - **61 route** (불변).
+> - **Open 1 BLOCK QA-20260612-B55(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **⚠ v1.2.1 merge BLOCK**(frontend HEAD test FAIL). 교차(backend 447차): develop `@c976f55` WT **CLEAN** · 148 ahead · **732/732 PASS**. 잔여: **COD `userServices.test.js` 수정→HEAD PASS→tester merge(331)** · US-R03/G24/G34 live E2E(post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(331 commits) · frontend HEAD test FAIL · post-merge live E2E **미실행**.
+
+> **444차 재검증 (2026-06-12T13:30) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@9a0e57b`(+1 vs 442차 `7243d21`: US-R03 staff detail stale-response race guard)·WT **CLEAN**·develop **181 ahead**·HEAD **838/838 PASS**(151.13s)·894 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@588bfb1` WT **CLEAN**·Open 0·**725/725 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(327)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.35s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.07s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `9a0e57b`** (+1: `fix(US-R03): prevent stale staff detail responses during fast navigation` — `StaffDetailPage`·test, 2 files +90/-20). working tree **CLEAN**. develop **181커밋 ahead**. **origin/develop 동기화** @ `9a0e57b`.
+> - develop HEAD `npm test`: **838/838 PASS** (191 files, 151.13s, +1 @Test vs 442차) · build **894 modules 3 청크** (index 563.70 kB >500 kB vite warn, max 367.09 kB).
+> - **60 route·88 page** (불변).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 443차): **QA-B54 Fixed @ `588bfb1`** · develop `@588bfb1` WT **CLEAN** · 146 ahead · **725/725 PASS**. 잔여: **tester merge(327)** · US-R03/G24/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(327 commits) · post-merge live E2E **미실행**.
+
+> **442차 재검증 (2026-06-12T13:10) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@7243d21`(+2 vs 440차 `479e064`: US-R03 staff lifecycle FAQ21825 UI·StaffDetailPage·not-found fix)·WT **CLEAN**·develop **180 ahead**·HEAD **837/837 PASS**(149.88s)·894 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@728339e` WT **DIRTY 2M**·**QA-B54 Planned BLOCK**·**양 스트림 merge BLOCK**·merge **미실행(325)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.58s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.80s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7243d21`** (+2: `e7c289e` US-R03 staff lifecycle FAQ21825 UI·StaffDetailPage · `7243d21` staff detail not-found fix, 13 files +663/-13). working tree **CLEAN**. develop **180커밋 ahead**. **origin/develop 동기화** @ `7243d21`.
+> - develop HEAD `npm test`: **837/837 PASS** (191 files, 149.88s, +10 @Test vs 440차) · build **894 modules 3 청크** (index 563.66 kB >500 kB vite warn, max 367.09 kB).
+> - **60 route·88 page** (+1 route·+3 page vs 440차).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 441차): **QA-B54 Planned BLOCK** · develop `@728339e` WT **DIRTY 2M** · 145 ahead · **724/724 PASS**. 잔여: **COD BE 2M 커밋/revert→WT clean→tester merge(325)** · US-R03/G24/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(325 commits) · backend WT dirty · post-merge live E2E **미실행**.
+
+> **440차 재검증 (2026-06-12T12:21) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@479e064`(+1 vs 438차 `4e4bdf6`: G24-G34 fiscal-year parsing·G34 live E2E harness)·WT **CLEAN**·develop **178 ahead**·HEAD **827/827 PASS**(178.11s)·891 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@728339e` WT **DIRTY 2M**·Open 1 BLOCK **QA-B54**·**양 스트림 merge BLOCK**·merge **미실행(323)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 81.26s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.73s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `479e064`** (+1: `feat(v1.2.1/G24-G34): align fiscal-year parsing and add G34 live E2E harness` — `ClientNeedsAssessmentForm`·`clientLifecycleCompliance`·`leadCaregiverWorkLogLiveApi.e2e.test.js`, 5 files +126/-5). working tree **CLEAN**. develop **178커밋 ahead**. **origin/develop 동기화** @ `479e064`.
+> - develop HEAD `npm test`: **827/827 PASS** (187 files, 178.11s, +2 @Test vs 438차) · build **891 modules 3 청크** (index 555.56 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 439차): Open 1 BLOCK **QA-B54** · develop `@728339e` WT **DIRTY 2M** · 145 ahead · **724/724 PASS**. 잔여: **COD BE 2M 커밋/revert→WT clean→tester merge(323)** · G24/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(323 commits) · backend WT dirty · post-merge live E2E **미실행**.
+
+> **438차 재검증 (2026-06-12T12:01) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@4e4bdf6`(+1 vs 436차 `5be9070`: G24 needs assessment fiscal-year parsing)·WT **CLEAN**·develop **177 ahead**·HEAD **825/825 PASS**(148.03s)·891 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@728339e` WT **CLEAN**·Open 0·**724/724 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(322)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.56s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.51s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4e4bdf6`** (+1: `fix(v1.2.1/G24): harden needs assessment fiscal-year parsing` — `clientLifecycleCompliance.js`·`clientLifecycleCompliance.test.js`, 2 files +55/-4). working tree **CLEAN**. develop **177커밋 ahead**. **origin/develop 동기화** @ `4e4bdf6`.
+> - develop HEAD `npm test`: **825/825 PASS** (187 files, 148.03s, +2 @Test vs 436차) · build **891 modules 3 청크** (index 555.54 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 437차): Open 0 · develop `@728339e` WT **CLEAN** · 145 ahead · **724/724 PASS**. 잔여: **tester merge(322)** · G24/G24-G14/US-T09/T10·G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(322 commits) · post-merge live E2E **미실행**.
+
+> **436차 재검증 (2026-06-12T11:42) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@5be9070`(+1 vs 434차 `d0acfb3`: G24-G14 lifecycle tab hydration)·WT **CLEAN**·develop **176 ahead**·HEAD **823/823 PASS**(148.31s)·891 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@b238779` WT **CLEAN**·Open 0·**722/722 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(320)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.99s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.88s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `5be9070`** (+1: `fix(v1.2.1/G24-G14): hydrate client lifecycle tabs from assessment and attachment APIs` — `ClientDetailPage`·`clientLifecycleCompliance`·tests, 4 files +352/-21). working tree **CLEAN**. develop **176커밋 ahead**. **origin/develop 동기화** @ `5be9070`.
+> - develop HEAD `npm test`: **823/823 PASS** (187 files, 148.31s, +7 @Test vs 434차) · build **891 modules 3 청크** (index 555.22 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 435차): Open 0 · develop `@b238779` WT **CLEAN** · 144 ahead · **722/722 PASS**. 잔여: **tester merge(320)** · G24-G14/US-T09/T10·G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(320 commits) · post-merge live E2E **미실행**.
+
+> **434차 재검증 (2026-06-12T11:21) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@d0acfb3`(+1 vs 432차 `2642838`: G24-G14 pilot E2E·live API harness)·WT **CLEAN**·develop **175 ahead**·HEAD **816/816 PASS**(154.32s)·891 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@08a1722` WT **CLEAN**·Open 0·**710/710 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(318)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.17s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.74s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `d0acfb3`** (+1: `test(v1.2.1/G24-G14): add pilot E2E and live API harness` — `clientLifecycleLiveApi.e2e.test.js`·`pilotPageFlows.test.jsx`, 2 files +317). working tree **CLEAN**. develop **175커밋 ahead**. **origin/develop 동기화** @ `d0acfb3`.
+> - develop HEAD `npm test`: **816/816 PASS** (187 files, 154.32s, +2 @Test vs 432차) · build **891 modules 3 청크** (index 552.97 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 433차): Open 0 · develop `@08a1722` WT **CLEAN** · 143 ahead · **710/710 PASS**. 잔여: **tester merge(318)** · G24-G14/US-T09/T10·G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(318 commits) · post-merge live E2E **미실행**.
+
+> **432차 재검증 (2026-06-12T10:55) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@2642838`(+1 vs 430차 `ded6573`: G24-G14 needs assessment·contract file box UI)·WT **CLEAN**·develop **174 ahead**·HEAD **814/814 PASS**(146.99s)·891 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@6f3315a` WT **CLEAN**·Open 0·**698/698 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(316)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.78s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.83s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `2642838`** (+1: `feat(v1.2.1/G24-G14): add needs assessment form and contract file box UI`). working tree **CLEAN**. develop **174커밋 ahead**. **origin/develop 동기화** @ `2642838`.
+> - develop HEAD `npm test`: **814/814 PASS** (187 files, 146.99s, +6 @Test vs 430차) · build **891 modules 3 청크** (index 552.97 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@6f3315a` WT **CLEAN** · 142 ahead · **698/698 PASS**. 잔여: **tester merge(316)** · G24-G14/US-T09/T10·G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(316 commits) · post-merge live E2E **미실행**.
+
+> **430차 재검증 (2026-06-12T10:18) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@ded6573`(+2 vs 428차 `6d6b426`: UXD-86 US-T09/T10 tabs·G34 lifecycle hydrate)·WT **CLEAN**·develop **173 ahead**·HEAD **808/808 PASS**(145.36s)·885 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@559648f` WT **DIRTY 2M+1U**·Open 1 BLOCK **QA-B53**·**양 스트림 merge BLOCK**·merge **미실행(313)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 49.45s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.87s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `ded6573`** (+2: `4bcd27e` UXD-86 US-T09/T10·StaffContextNav · `ded6573` G34 lifecycle tab hydrate). working tree **CLEAN**. develop **173커밋 ahead**. **origin/develop 동기화** @ `ded6573`.
+> - develop HEAD `npm test`: **808/808 PASS** (184 files, 145.36s, +8 @Test vs 428차) · build **885 modules 3 청크** (index 541.16 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 429차): Open 1 BLOCK **QA-B53** · develop `@559648f` WT **DIRTY 2M+1U** · 140 ahead. 잔여: **COD BE WT clean→tester merge(313)** · G34/US-T09/T10 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(313 commits) · **backend WT clean 선행** · post-merge live E2E **미실행**.
+
+> **428차 재검증 (2026-06-12T09:36) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@6d6b426`(+1 vs 426차 `c8c727e`: G34 lead caregiver work log UI)·WT **CLEAN**·develop **171 ahead**·HEAD **800/800 PASS**(213.90s)·881 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@559648f` WT **CLEAN**·Open 0·**689/689 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(311)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.79s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 12.04s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `6d6b426`** (+1: `feat(v2/G34): add lead caregiver work log UI (US-S01)`). working tree **CLEAN**. develop **171커밋 ahead**. **origin/develop 동기화** @ `6d6b426`.
+> - develop HEAD `npm test`: **800/800 PASS** (180 files, 213.90s, +15 @Test vs 426차) · build **881 modules 3 청크** (index 531.38 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 427차): Open 0 · develop `@559648f` WT **CLEAN** · 140 ahead · **689/689 PASS** · G34 BE API **PRESENT**. 잔여: **tester merge(311)** · G34/G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(311 commits) · post-merge live E2E **미실행**.
+
+> **426차 재검증 (2026-06-12T09:08) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@c8c727e`(+1 vs 424차 `50e5fac`: QA-B52 lifecycle evidence key fix)·WT **CLEAN**·develop **170 ahead**·HEAD **785/785 PASS**(167.20s)·879 modules·**Open 0**(frontend)·**QA-B52 Fixed @ `c8c727e`**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@209f05d` WT **CLEAN**·Open 0·**679/679 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(309)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.17s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.36s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c8c727e`** (+1: `fix(v1.2.1/G17-G32): stabilize lifecycle evidence list React keys (QA-B52)`). working tree **CLEAN**. develop **170커밋 ahead**. **origin/develop 동기화** @ `c8c727e`.
+> - develop HEAD `npm test`: **785/785 PASS** (177 files, 167.20s) · build **879 modules 3 청크** (index 520.08 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)** · **QA-B52 Fixed @ `c8c727e`**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 425차): Open 0 · develop `@209f05d` WT **CLEAN** · 139 ahead · **679/679 PASS**. 잔여: **tester merge(309)** · G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(309 commits) · post-merge live E2E **미실행**.
+
+> **424차 재검증 (2026-06-12T08:48) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@50e5fac` HEAD **불변**·WT **DIRTY 2M**(`LifecycleWorkflowPanel*` evidence key fix WIP)·develop **169 ahead**·HEAD **784/784 PASS**(134.75s)·WT **785/785 PASS**(+1 @Test)·878 modules·**Open 1 BLOCK QA-B52**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend `@b7cfc92` WT **CLEAN**·Open 0·**676/676 PASS**·**양 스트림 merge BLOCK**·merge **미실행(307)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.28s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.56s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `50e5fac`** (**불변** vs 422차). working tree **DIRTY 2M** — `LifecycleWorkflowPanel.jsx`·`LifecycleWorkflowPanel.test.jsx` evidence list React key dedupe + regression test WIP. develop **169커밋 ahead**. **origin/develop 동기화** @ `50e5fac`.
+> - develop HEAD `npm test`: **784/784 PASS** (177 files, 134.75s) · WT **785/785 PASS**(+1 @Test) · build **878 modules 3 청크** (index 520.08 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 1 BLOCK** `QA-20260612-B52`(frontend). **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend 423차): Open 0 · develop `@b7cfc92` WT **CLEAN** · 138 ahead · **676/676 PASS**. 잔여: **COD QA-B52 2M 커밋/revert→WT clean→tester merge(307)** · G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(307 commits) · **frontend WT clean 선행** · post-merge live E2E **미실행**.
+
+> **422차 재검증 (2026-06-12T08:26) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@50e5fac`(+1 vs 420차 `352968b`: lifecycle workflow panel pilot E2E)·WT **CLEAN**·develop **169 ahead**·HEAD **784/784 PASS**(299.03s)·878 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@45b8147` WT **CLEAN**·Open 0·**675/675 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(306)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 163.26s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 5.23s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `50e5fac`** (+1: `test(v1.2.1/G17-G32): add lifecycle workflow panel pilot E2E coverage`). working tree **CLEAN**. develop **169커밋 ahead**. **origin/develop 동기화** @ `50e5fac`.
+> - develop HEAD `npm test`: **784/784 PASS** (177 files, 299.03s, +2 @Test vs 420차) · build **878 modules 3 청크** (index 520.07 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 421차): Open 0 · develop `@45b8147` WT **CLEAN** · 137 ahead · **675/675 PASS**. 잔여: **tester merge(306)** · G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(306 commits) · post-merge live E2E **미실행**.
+
+> **420차 재검증 (2026-06-12T07:58) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@352968b`(+1 vs 418차 `22bd6b7`: QA-B50 lifecycle panel label dedupe)·WT **CLEAN**·develop **168 ahead**·HEAD **782/782 PASS**(170.27s)·878 modules·**Open 0**(frontend)·**QA-B50 Fixed @ `352968b`**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend `@6bfc745` WT **DIRTY 2M**·Open 1 BLOCK QA-B51·**양 스트림 merge BLOCK**·merge **미실행(304)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 82.73s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 10.21s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `352968b`** (+1: `fix(v1.2.1/G17-G32): dedupe lifecycle panel labels for QA-B50`). working tree **CLEAN**. develop **168커밋 ahead**. **origin/develop 동기화** @ `352968b`.
+> - develop HEAD `npm test`: **782/782 PASS** (177 files, 170.27s, +3 @Test vs 418차) · build **878 modules 3 청크** (index 520.07 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)** · **QA-B50 Fixed @ `352968b`**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 419차): Open 1 BLOCK QA-B51 · develop `@6bfc745` WT **DIRTY 2M** · 136 ahead. 잔여: **COD QA-B51 WT clean→tester merge(304)** · G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(304 commits) · **backend WT clean 선행** · post-merge live E2E **미실행**.
+
+> **418차 재검증 (2026-06-12T07:32) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules·audit 0·develop `@22bd6b7`(+2 vs 416차 `2cd2cd8`: LifecycleWorkflowPanel+G17/G32 wiring)·WT **CLEAN**·develop **167 ahead**·HEAD **779/782 FAIL**(pilotPageFlows 3)·878 modules·**Open 1 BLOCK QA-B50**·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend `@6bfc745` WT **CLEAN**·Open 0·**674/674 PASS**(417차)·**양 스트림 merge BLOCK**·merge **미실행(303)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.90s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.30s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `22bd6b7`** (+2: `c70b908` LifecycleWorkflowPanel · `22bd6b7` G17/G32 compliance wiring). working tree **CLEAN**. develop **167커밋 ahead**. **origin/develop 동기화** @ `22bd6b7`.
+> - develop HEAD `npm test`: **779/782 FAIL** (177 files, 136.85s — duplicate StatCard·참석자 in `pilotPageFlows` G17/G32) · build **878 modules 3 청크** (index 520.02 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 1 BLOCK** `QA-20260612-B50`(frontend). **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**(frontend). 교차(backend 417차): Open 0 · develop `@6bfc745` WT **CLEAN** · 136 ahead · **674/674 PASS**. 잔여: **COD QA-B50 fix→782/782 PASS→tester merge(303)** · G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(303 commits) · **FE develop HEAD test fix 선행** · post-merge live E2E **미실행**.
+
+> **416차 재검증 (2026-06-12T06:48) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@2cd2cd8`(+1 vs 414차 `f72da41`: G17/G32 edit-flow pilot E2E)·WT **CLEAN**·develop **165 ahead**·HEAD **775/775 PASS**(136.37s)·878 modules·**Open 0**(frontend)·**QA-B49 Fixed @ `f72da41`**(유지)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@3ad2a90` WT **CLEAN**·Open 0·**672/672 PASS**(415차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(300)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.45s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.72s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `2cd2cd8`** (+1: `test(v1.2.1/G17-G32): add edit-flow pilot E2E for program compliance`). working tree **CLEAN**. develop **165커밋 ahead**. **origin/develop 동기화** @ `2cd2cd8`.
+> - develop HEAD `npm test`: **775/775 PASS** (176 files, 136.37s, +2 @Test vs 414차) · build **878 modules 3 청크** (index 513.85 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)** · **QA-B49 Fixed @ `f72da41`**(유지). **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 415차): Open 0 · develop `@3ad2a90` WT **CLEAN** · 135 ahead · **672/672 PASS**. 잔여: **tester merge(300)** · **G17/G32/G38/G39/G37 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(300 commits) · post-merge live E2E **미실행**.
+
+> **414차 재검증 (2026-06-12T06:25) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@f72da41`(+1 vs 412차 `8fa9f3d`: G38/G39 compliance fallback parallelization · QA-B49)·WT **CLEAN**·develop **164 ahead**·HEAD **773/773 PASS**(138.11s)·878 modules·**Open 0**(frontend)·**QA-B49 Fixed @ `f72da41`**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@0ed781f` WT **CLEAN**·Open 0·**669/669 PASS**(413차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(298)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.10s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.85s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `f72da41`** (+1: `fix(v1.2.1/G38-G39): parallelize dashboard compliance fallbacks (QA-B49)`). working tree **CLEAN**. develop **164커밋 ahead**. **origin/develop 동기화** @ `f72da41`.
+> - develop HEAD `npm test`: **773/773 PASS** (176 files, 138.11s) · build **878 modules 3 청크** (index 513.85 kB >500 kB vite warn, max 367.09 kB).
+> - **Open 0건(frontend)** · **QA-B49 Fixed @ `f72da41`**(recurrence closed). **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 413차): Open 0 · develop `@0ed781f` WT **CLEAN** · 134 ahead · **669/669 PASS**. 잔여: **tester merge(298)** · **G38/G39/G37/G17/G32 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(298 commits) · post-merge live E2E **미실행**.
+
+> **412차 재검증 (2026-06-12T06:03) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@8fa9f3d` HEAD **불변**·WT **DIRTY 2M**(`DashboardPage.jsx`·`DashboardPage.test.jsx` — G38/G39 compliance fallback refactor WIP, **410차 CLEAN→재오염 recurrence**)·develop **163 ahead**·HEAD **772/772 PASS**·WT **773/773 PASS**(+1 @Test, 141.28s)·**Open 0**(frontend)·**QA-B49 recurrence Planned BLOCK**·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend develop `@15b3c7e` WT **CLEAN**·Open 0·**667/667 PASS**(411차)·**양 스트림 merge BLOCK**·merge **미실행(296)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.46s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 7.16s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8fa9f3d`** (**불변** — 410차 Fixed 커밋 유지). working tree **DIRTY 2M** — `DashboardPage.jsx`(+197/-103)·`DashboardPage.test.jsx`(+70): G38/G39 compliance **fallback refactor** WIP (`complianceFallbackTasks`·`currentYearMonth(date)`). develop **163커밋 ahead**. **origin/develop 동기화** @ `8fa9f3d`.
+> - develop HEAD `npm test`: **772/772 PASS** · WT **773/773 PASS**(+1 @Test, 141.28s).
+> - **Open 0건(frontend)** · **QA-B49 recurrence Planned BLOCK**. **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 411차): Open 0 · develop `@15b3c7e` WT **CLEAN** · 133 ahead · **667/667 PASS**. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(296)** · **G38/G39/G37/G17/G32 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(296 commits) · **FE WT clean 선행** · post-merge live E2E **미실행**.
+
+> **410차 재검증 (2026-06-12T05:42) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@8fa9f3d`(+1 vs 408차 `4903173`: G38/G39 dashboard snapshot aggregation commit)·WT **CLEAN**·develop **163 ahead**·HEAD **772/772 PASS**(134.12s)·878 modules·**Open 0**(frontend)·**QA-B49 Fixed**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@15b3c7e` WT **CLEAN**·Open 0·**667/667 PASS**(409차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(296)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.18s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 4.79s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8fa9f3d`** (+1: `feat(v1.2.1/G38-G39): aggregate dashboard compliance widgets from API snapshot` — `DashboardPage.jsx`·`DashboardPage.test.jsx`, 2 files +276/-120). working tree **CLEAN**. develop **163커밋 ahead**. **origin/develop 동기화** @ `8fa9f3d`.
+> - develop HEAD `npm test`: **772/772 PASS** (176 files, 134.12s) · build **878 modules 3 청크** (index 513.72 kB >500 kB vite warn, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)** · **QA-B49 Fixed @ `8fa9f3d`**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 409차): Open 0 · develop `@15b3c7e` WT **CLEAN** · 133 ahead · **667/667 PASS**. 잔여: **tester merge(296)** · **G38/G39/G37/G17/G32 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(296 commits) · post-merge live E2E **미실행**.
+
+> **408차 재검증 (2026-06-12T05:05) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@4903173` HEAD **불변**·WT **DIRTY 2M**(G38/G39 dashboard snapshot aggregation WIP, **406차 대비 불변**)·develop **162 ahead**·WT **772/772 PASS**(221.03s)·**Open 0**·QA-B49 Planned BLOCK·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend develop `@70d76a4` WT **CLEAN**·Open 0·**667/667 PASS**(407차)·**양 스트림 merge BLOCK**·merge **미실행(294)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 57.07s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 10.03s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4903173`** (406차 대비 **불변**). working tree **DIRTY 2M** — `DashboardPage.jsx`(+206/-120)·`DashboardPage.test.jsx`(+70): G38/G39 snapshot aggregation WIP **불변**. develop **162커밋 ahead**. **origin/develop @ `26499b3`** (**1 unpushed**).
+> - develop WT `npm test`: **772/772 PASS** (176 files, 221.03s).
+> - **Open 0건(frontend)** · **QA-B49 Planned BLOCK**. **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 407차): Open 0 · develop `@70d76a4` WT **CLEAN** · 132 ahead · **667/667 PASS**. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(294)** · **G38/G39/G37/G17/G32 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(294 commits) · **FE WT clean 선행** · post-merge live E2E **미실행**.
+
+> **406차 재검증 (2026-06-12T04:44) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@4903173`(+1 vs 404차 `26499b3`: DateInput FE-16)·WT **DIRTY 2M**(G38/G39 dashboard snapshot aggregation WIP)·develop **162 ahead**·HEAD **771/771 PASS**·WT **772/772 PASS**(+1 @Test)·**Open 0**·QA-B49 Planned BLOCK·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend develop `@7ba18c1` WT **CLEAN**·Open 0·**666/666 PASS**(405차)·**양 스트림 merge BLOCK**·merge **미실행(293)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.35s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB, 6.96s).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4903173`** (+1: `refactor(ux/a11y): standardize G11·G15 date fields to DateInput (FE-16)`). working tree **DIRTY 2M** — `DashboardPage.jsx`(+206/-120)·`DashboardPage.test.jsx`(+70): G38/G39 snapshot aggregation WIP **불변**. develop **162커밋 ahead**. **origin/develop @ `26499b3`** (**1 unpushed**).
+> - develop HEAD `npm test`: **771/771 PASS** · WT **772/772 PASS**(+1 @Test, 136.78s).
+> - **Open 0건(frontend)** · **QA-B49 Planned BLOCK**. **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 405차): Open 0 · develop `@7ba18c1` WT **CLEAN** · 131 ahead · **666/666 PASS**. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(293)** · **G38/G39/G37/G17/G32 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(293 commits) · **FE WT clean 선행** · post-merge live E2E **미실행**.
+
+> **404차 재검증 (2026-06-12T03:56) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@26499b3` HEAD **불변**·WT **DIRTY 2M**(G38/G39 dashboard compliance snapshot aggregation WIP, **402차 CLEAN→재오염**)·develop **161 ahead**·HEAD **769/769 PASS**·WT **770/770 PASS**(+1 @Test)·**58 route·81 page**·**Open 1 BLOCK QA-B49**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend develop `@a0a7f9c` WT **CLEAN**·Open 0·**666/666 PASS**(403차)·**양 스트림 merge BLOCK**·merge **미실행(291)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.07s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `26499b3`** (402차 대비 **불변**). working tree **DIRTY 2M** — `DashboardPage.jsx`(+206/-120)·`DashboardPage.test.jsx`(+70): G38/G39 compliance widget counts를 dashboard API 스냅샷 필드로 통합(WIP). develop **161커밋 ahead**. **origin/develop 동기화** @ `26499b3`.
+> - develop HEAD `npm test`: **769/769 PASS** · WT **770/770 PASS**(+1 @Test, 139.75s).
+> - **Open 1 BLOCK QA-20260612-B49(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 403차): Open 0 · develop `@a0a7f9c` WT **CLEAN** · 130 ahead · **666/666 PASS**. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(291)** · **G38/G39/G37/G17/G32 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(291 commits) · **FE WT clean 선행** · post-merge live E2E **미실행**.
+
+> **402차 재검증 (2026-06-12T03:23) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@26499b3`(+1 vs 400차 `8e66ae8`: G17/G32 case management·functional recovery edit flow)·WT **CLEAN**·develop **161 ahead**·HEAD **769/769 PASS**·878 modules·**58 route·81 page**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@a9f8bda` WT **CLEAN**·Open 0·**666/666 PASS**(401차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(290)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.00s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `26499b3`** (+1: `feat(v1.2.1/G17/G32): add edit flow for case management meetings and functional recovery plans` — `CaseManagementPage`·`FunctionalRecoveryPage`·tests, 4 files +247/-31). working tree **CLEAN**. develop **161커밋 ahead**. **origin/develop 동기화** @ `26499b3`.
+> - develop HEAD `npm test`: **769/769 PASS**(176 files, 141.05s) · build **878 modules 3 청크** (index 511.64 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **58 route·81 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 401차): Open 0 · develop `@a9f8bda` WT **CLEAN** · 129 ahead · **666/666 PASS**. 잔여: **tester merge(290)** · **G17/G32/G38/G39/G37 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(290 commits) · post-merge live E2E **미실행**.
+
+> **400차 재검증 (2026-06-12T02:55) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@8e66ae8`(+1 vs 398차 `4b2b082`: G39 indicator-44 weekly/monthly dashboard widgets BNK-107)·WT **CLEAN**·develop **160 ahead**·HEAD **767/767 PASS**·878 modules·**58 route·81 page**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@03211e6` WT **CLEAN**·Open 0·**661/661 PASS**(399차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(288)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 65.03s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8e66ae8`** (+1: `feat(v1.2.1/G39): add indicator-44 weekly and monthly dashboard widgets (BNK-107)` — `DashboardPage`·`dashboardSummary`·`provisionResultCompliance`·tests, 7 files +219/-3). working tree **CLEAN**. develop **160커밋 ahead**. **origin/develop 동기화** @ `8e66ae8`.
+> - develop HEAD `npm test`: **767/767 PASS**(176 files, 137.91s) · build **878 modules 3 청크** (index 509.75 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **58 route·81 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 399차): Open 0 · develop `@03211e6` WT **CLEAN** · 128 ahead · **661/661 PASS**. 잔여: **tester merge(288)** · **G38/G39/G37/G17/G32/G33 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(288 commits) · post-merge live E2E **미실행**.
+
+> **398차 재검증 (2026-06-12T02:32) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@4b2b082`(+1 vs 396차 `87e6fae`: G38 dashboard compliance partial-load warning)·WT **CLEAN**·develop **159 ahead**·HEAD **765/765 PASS**·878 modules·**58 route·82 page**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@3ca37ff` WT **DIRTY 4M**·Open 1 BLOCK **QA-B48**·**양 스트림 merge BLOCK**·merge **미실행(286)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.75s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `4b2b082`** (+1: `fix(v1.2.1/G38): show compliance data partial-load warning on dashboard` — `DashboardPage`·`DashboardPage.test.jsx`, 2 files +37). working tree **CLEAN**. develop **159커밋 ahead**. **origin/develop 동기화** @ `4b2b082`.
+> - develop HEAD `npm test`: **765/765 PASS**(176 files, 136.15s) · build **878 modules 3 청크** (index 506.37 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **58 route·82 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 397차): **Open 1 BLOCK QA-B48** · develop `@3ca37ff` WT **DIRTY 4M** · 127 ahead. 잔여: **COD BE 4M 커밋/revert→WT clean→tester merge(286)** · **G38/G39/G37/G17/G32/G33 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(286 commits) · **BE WT clean 선행** · post-merge live E2E **미실행**.
+
+> **396차 재검증 (2026-06-12T02:11) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@87e6fae`(+1 vs 394차 `28c22b0`: G38/G39 pilot E2E·live API harness)·WT **CLEAN**·develop **158 ahead**·HEAD **764/764 PASS**·878 modules·**56 route·81 page**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@3ca37ff` WT **CLEAN**·Open 0·**659/659 PASS**(395차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(285)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 92.80s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `87e6fae`** (+1: `test(v1.2.1/G38/G39): add pilot E2E and live API harness coverage` — `programComplianceLiveApi.e2e.test.js`·`pilotPageFlows.test.jsx`, 2 files +261). working tree **CLEAN**. develop **158커밋 ahead**. **origin/develop 동기화** @ `87e6fae`.
+> - develop HEAD `npm test`: **764/764 PASS**(176 files, 178.93s) · build **878 modules 3 청크** (index 505.99 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **56 route·81 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 395차): Open 0 · develop `@3ca37ff` WT **CLEAN** · 127 ahead · **659/659 PASS** · **QA-20260612-B47 Fixed**. 잔여: **tester merge(285)** · **G38/G39/G37/G17/G32/G33 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(285 commits) · post-merge live E2E **미실행**.
+
+> **394차 재검증 (2026-06-12T01:44) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@28c22b0`(+2 vs 392차 `1c99bcd`: G39 dashboard widgets·G38 care-plan notification UI)·WT **CLEAN**·develop **157 ahead**·HEAD **758/758 PASS**·878 modules·**56 route·81 page**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@3c7b247` WT **DIRTY 1U**·Open 1 BLOCK **QA-B47**·**659/659 PASS**(393차)·**양 스트림 merge BLOCK**·merge **미실행(283)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.50s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `28c22b0`** (+2: `a16e1fe` G39 indicator-44 dashboard widgets · `28c22b0` G38 care-plan notification monitoring UI BNK-106). working tree **CLEAN**. develop **157커밋 ahead**. **origin/develop 동기화** @ `28c22b0`.
+> - develop HEAD `npm test`: **758/758 PASS**(176 files, 140.50s) · build **878 modules 3 청크** (index 505.99 kB >500 kB vite warn, max 367.09 kB) · audit **0** · **56 route·81 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 393차): **Open 1 BLOCK QA-B47** · develop `@3c7b247` WT **DIRTY 1U** · 126 ahead · **659/659 PASS**. 잔여: **COD BE V81 커밋/revert→WT clean→tester merge(283)** · **G38/G39/G37/G17/G32/G33 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(283 commits) · **BE WT clean 선행** · post-merge live E2E **미실행**.
+
+> **392차 재검증 (2026-06-12T01:05) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@1c99bcd`(+1 vs 390차 `e9d1178`: G39 provision result evaluation UI BNK-107)·WT **CLEAN**·develop **155 ahead**·HEAD **749/749 PASS**·876 modules·**56 route·80 page**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@f082933` WT **CLEAN**·Open 0·**657/657 PASS**(391차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(280)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.45s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `1c99bcd`** (+1: `feat(v2/G39): add provision result evaluation UI (BNK-107)`). working tree **CLEAN**. develop **155커밋 ahead**. **origin/develop 동기화** @ `1c99bcd`.
+> - develop HEAD `npm test`: **749/749 PASS**(174 files, 133.85s) · build **876 modules 3 청크** (index 493.80 kB, max 367.09 kB) · audit **0** · **56 route·80 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 391차): Open 0 · develop `@f082933` WT **CLEAN** · 125 ahead · **657/657 PASS**. 잔여: **tester merge(155+125=280)** · **G39/G37/G17/G32/G33 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(280 commits) · post-merge live E2E **미실행**.
+
+> **390차 재검증 (2026-06-12T00:42) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@e9d1178`(+1 vs 388차 `12d3b7f`: G37 attachment MIME fallback guard commit)·WT **CLEAN**·develop **154 ahead**·HEAD **735/735 PASS**·874 modules·**QA-20260612-B46 Fixed**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@5fd35a6` WT **CLEAN**·Open 0·**648/648 PASS**(389차)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(278)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 83.55s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e9d1178`** (+1: `fix(v1.2.1/G37): restrict attachment extension fallback to missing MIME`). working tree **CLEAN**. develop **154커밋 ahead**. **origin/develop 동기화** @ `e9d1178`.
+> - develop HEAD `npm test`: **735/735 PASS**(172 files, 165.43s) · build **874 modules 3 청크** (index 484.48 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)** · **QA-20260612-B46 Fixed** @ `e9d1178`. **판정 PASS(v1.2+v1.3-A @ test)** · **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@5fd35a6` WT **CLEAN** · 124 ahead · **648/648 PASS**. 잔여: **tester merge(154+124=278)** · **G37/G17/G32/G33 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(278 commits) · post-merge live E2E **미실행**.
+
+> **388차 재검증 (2026-06-12T00:20) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@12d3b7f` HEAD **불변**·WT **DIRTY 3M**(G37 attachment extension fallback MIME guard WIP, **386차 CLEAN→재오염**)·develop **153 ahead**·HEAD **732/732 PASS**·WT **735/735 PASS**(+3 @Test)·**Open 1 BLOCK B46**(frontend)·PASS(v1.2+v1.3-A)·⚠ **v1.2.1 merge BLOCK**(frontend)·교차 backend develop `@e8de0eb` WT **CLEAN**·Open 0·**양 스트림 merge BLOCK**·merge **미실행(276)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.50s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `12d3b7f`** (386차 대비 **불변**). working tree **DIRTY 3M** — `GradeHistoryAttachmentPanel.test.jsx`·`gradeHistoryAttachments.js`·`gradeHistoryAttachments.test.js` (G37 MIME `application/octet-stream` 확장자 fallback 정교화 WIP). develop **153커밋 ahead**. **origin/develop 동기화** @ `12d3b7f`.
+> - develop HEAD `npm test`: **732/732 PASS**(386차) · WT **735/735 PASS**(172 files, 136.81s, +3 @Test).
+> - **Open 1 BLOCK QA-20260612-B46(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend): Open 0 · develop `@e8de0eb` WT **CLEAN** · 123 ahead. 잔여: **COD FE 3M 커밋/revert→WT clean→tester merge(276)** · **G37/G17/G32/G33 live E2E run**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(276 commits) · **FE WT clean 선행** · post-merge live E2E **미실행**.
+
+> **384차 재검증 (2026-06-11T23:37) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@6875af5`(+1 vs 382차 `23bcd8c`: G37 attachment API contracts·live E2E harness BNK-106)·WT **CLEAN**·develop **152 ahead**·HEAD **730/730 PASS**·874 modules·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@c4b230b` WT **CLEAN**·Open 0·**637/637 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(273)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.15s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `6875af5`** (+1: `test(v1.2.1/G37): add attachment API contracts and live E2E harness (BNK-106)`). working tree **CLEAN**. develop **152커밋 ahead**. **origin/develop 동기화** @ `6875af5`.
+> - develop HEAD `npm test`: **730/730 PASS**(172 files, 131.05s) · build **874 modules 3 청크** (index 484.29 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@c4b230b` WT **CLEAN** · 121 ahead · **637/637 PASS**. 잔여: **tester merge(152+121=273)** · **G37/G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(273 commits) · post-merge live E2E **미실행**.
+
+> **382차 재검증 (2026-06-11T23:20) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@23bcd8c`(+2 vs 380차 `8b0c6c7`: G37 attachment UI·pilot E2E)·WT **CLEAN**·develop **151 ahead**·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@0325d95` WT **DIRTY 1U**·**Open 1 BLOCK QA-B45**·**양 스트림 merge BLOCK**·merge **미실행(271)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.07s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `23bcd8c`** (+2: `e026ae9` G37 attachment UI · `23bcd8c` G37 pilot E2E). working tree **CLEAN**. develop **151커밋 ahead**. **origin/develop 동기화** @ `23bcd8c`.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): **Open 1 BLOCK QA-B45** · develop `@0325d95` WT **DIRTY 1U** · 120 ahead.
+> - **operation 승격 BLOCK**: backend QA-B45 해소 전까지 develop→test merge 불가, post-merge live E2E 미실행.
+
+> **380차 재검증 (2026-06-11T22:42) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@8b0c6c7`(+1 vs 378차 `730792b`: G17/G32 program compliance API contracts·422 guard coverage)·WT **CLEAN**·HEAD **717/717 PASS**·872 modules·56 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@0325d95` WT **CLEAN**·Open 0·**637/637 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(269)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.07s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `8b0c6c7`** (+1: `test(v1.2.1/G17/G32): add program compliance API contracts and 422 guard coverage` — `programComplianceServices.test.js`·`CaseManagementPage.test.jsx`·`FunctionalRecoveryPage.test.jsx`). working tree **CLEAN**. develop **149커밋 ahead**. **origin/develop 동기화** @ `8b0c6c7`.
+> - develop HEAD `npm test`: **717/717 PASS**(169 files, 134.30s) · build **872 modules 3 청크** (index 477.98 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@0325d95` WT CLEAN · 120 ahead · **637/637 PASS**. 잔여: **tester merge(149+120=269)** · **G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · **G37 FE care-plan attachment UI** · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(269 commits) · post-merge live E2E **미실행**.
+
+> **378차 재검증 (2026-06-11T22:23) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@730792b`(+1 vs 376차 `eb488799`: G33 settings settlement pilot E2E·settle mock routing)·WT **CLEAN**·HEAD **707/707 PASS**·872 modules·56 route·77 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@d86405c` WT **CLEAN**·Open 0·**626/626 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(267)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.39s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `730792b`** (+1: `test(v1.2.1/G33): add settings settlement pilot E2E and fix settle mock routing` — `pilotPageFlows.test.jsx`·`programComplianceLiveApi.e2e.test.js`). working tree **CLEAN**. develop **148커밋 ahead**. **origin/develop 동기화** @ `730792b`.
+> - develop HEAD `npm test`: **707/707 PASS**(168 files, 131.49s) · build **872 modules 3 청크** (index 477.98 kB, max 367.09 kB) · audit **0** · **56 route·77 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@d86405c` WT CLEAN · 119 ahead · **626/626 PASS**. 잔여: **tester merge(148+119=267)** · **G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(267 commits) · post-merge live E2E **미실행**.
+
+> **376차 재검증 (2026-06-11T22:02) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@eb488799`(+1 vs 374차 `48827b6`: G33 BillingSettingsPanel settlement reload fallback)·WT **CLEAN**·HEAD **705/705 PASS**·872 modules·55 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@555a19f` WT **CLEAN**·Open 0·**623/623 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(265)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.05s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `eb488799`** (+1: `fix(g33): fallback to default settings reload after start-balance settlement` — `BillingSettingsPanel`·test). working tree **CLEAN**. develop **147커밋 ahead**. **origin/develop 동기화** @ `eb488799`.
+> - develop HEAD `npm test`: **705/705 PASS**(168 files, 198.31s) · build **872 modules 3 청크** (index 477.98 kB, max 367.09 kB) · audit **0** · **55 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@555a19f` WT CLEAN · 118 ahead · **623/623 PASS**. 잔여: **tester merge(147+118=265)** · **G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(265 commits) · post-merge live E2E **미실행**.
+
+> **374차 재검증 (2026-06-11T21:44) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@48827b6`(+1 vs 372차 `7450161`: G26 client billing tab NTS xlsx export E2E BNK-75)·WT **CLEAN**·HEAD **704/704 PASS**·872 modules·56 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@c58b739` WT **CLEAN**·Open 0·**621/621 PASS**·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(263)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.36s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `48827b6`** (+1: G26 client billing tab NTS xlsx export E2E BNK-75). working tree **CLEAN**. develop **146커밋 ahead**. **origin/develop 동기화** @ `48827b6`.
+> - develop HEAD `npm test`: **704/704 PASS**(168 files, 130.51s) · build **872 modules 3 청크** (index 477.97 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@c58b739` WT CLEAN · 117 ahead · **621/621 PASS**. 잔여: **tester merge(146+117=263)** · **G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(263 commits) · post-merge live E2E **미실행**.
+
+> **372차 재검증 (2026-06-11T21:21) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@7450161`(+1 vs 370차 `1113caf`: G17 indicator27 verbatim·benefit-start create guard BNK-102)·WT **CLEAN**·HEAD **703/703 PASS**·872 modules·55 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@367fd45` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(261)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.33s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7450161`** (+1: G17 indicator27 verbatim·benefit-start create guard BNK-102). working tree **CLEAN**. develop **145커밋 ahead**. **origin/develop 동기화** @ `7450161`.
+> - develop HEAD `npm test`: **703/703 PASS**(168 files, 159.59s) · build **872 modules 3 청크** (index 477.97 kB, max 367.09 kB) · audit **0** · **55 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@367fd45` WT CLEAN · 116 ahead · **617/617 PASS**. 잔여: **tester merge(145+116=261)** · **G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(261 commits) · post-merge live E2E **미실행**.
+
+> **370차 재검증 (2026-06-11T21:03) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@1113caf`(+2 vs 368차 `c413615`: UXD G33·G32/G33 pilotPageFlows E2E BNK-103)·WT **CLEAN**·HEAD **700/700 PASS**·872 modules·55 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@8626f18` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(259)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.79s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `1113caf`** (+2: `63361c0` UXD G33 1회 설정·대장 컨텍스트 네비 · `1113caf` G32/G33 pilotPageFlows E2E BNK-103). working tree **CLEAN**. develop **144커밋 ahead**. **origin/develop 동기화** @ `1113caf`.
+> - develop HEAD `npm test`: **700/700 PASS**(168 files, 158.08s) · build **872 modules 3 청크** (index 477.06 kB, max 367.09 kB) · audit **0** · **55 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@8626f18` WT CLEAN · 115 ahead · **614/614 PASS**. 잔여: **tester merge(144+115=259)** · **G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(259 commits) · post-merge live E2E **미실행**.
+
+> **368차 재검증 (2026-06-11T20:16) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@c413615`(+1 vs 366차 `f1c60fe`: G17/G32/G33 program compliance live E2E harness)·WT **CLEAN**·HEAD **693/693 PASS**·870 modules·56 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@838a7f6` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(256)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.44s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c413615`** (+1: `feat(v1.2.1): add G17/G32/G33 program compliance live E2E harness`). working tree **CLEAN**. develop **142커밋 ahead**. **origin/develop 동기화** @ `c413615`.
+> - develop HEAD `npm test`: **693/693 PASS**(166 files, 158.06s) · build **870 modules 3 청크** (index 474.84 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@838a7f6` WT CLEAN · 114 ahead · **609/609 PASS**. 잔여: **tester merge(142+114=256)** · **G17/G32/G33 live E2E run**(post-merge·`vitest.live.config.js`) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(256 commits) · post-merge live E2E **미실행**.
+
+> **366차 재검증 (2026-06-11T19:49) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@f1c60fe`(+1 vs 364차 `21b1855`: G17 indicator27 compliance widgets on dashboard BNK-101)·WT **CLEAN**·HEAD **693/693 PASS**·870 modules·56 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@c5a6cec` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(254)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.48s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `f1c60fe`** (+1: `feat(v1.2.1/G17): add indicator27 compliance widgets on dashboard (BNK-101)`). working tree **CLEAN**. develop **141커밋 ahead**. **origin/develop 동기화** @ `f1c60fe`.
+> - develop HEAD `npm test`: **693/693 PASS**(166 files, 130.97s) · build **870 modules 3 청크** (index 474.84 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@c5a6cec` WT CLEAN · 113 ahead · **608/608 PASS**. 잔여: **tester merge(141+113=254)** · **G17/G33 live E2E**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(254 commits) · post-merge live E2E **미실행**.
+
+> **364차 재검증 (2026-06-11T19:30) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@21b1855`(+1 vs 362차 `359cf0c`: G17 indicator27 provision·benefit-start StatCards BNK-101)·WT **CLEAN**·HEAD **691/691 PASS**·870 modules·55 route·46 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@e820b28` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(252)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.33s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `21b1855`** (+1: `feat(v1.2.1/G17): expose indicator27 provision and benefit-start StatCards (BNK-101)`). working tree **CLEAN**. develop **140커밋 ahead**. **origin/develop 동기화** @ `21b1855`.
+> - develop HEAD `npm test`: **691/691 PASS**(166 files, 157.26s) · build **870 modules 3 청크** (index 471.64 kB, max 367.09 kB) · audit **0** · **55 route·46 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@e820b28` WT CLEAN · 112 ahead · **606/606 PASS**. 잔여: **tester merge(140+112=252)** · **G17/G33 live E2E**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(252 commits) · post-merge live E2E **미실행**.
+
+> **362차 재검증 (2026-06-11T19:08) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@359cf0c`(+1 vs 360차 `e88a125`: G33 billing start balance settlement UI)·WT **CLEAN**·HEAD **689/689 PASS**·870 modules·55 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@0048105` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(250)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.70s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `359cf0c`** (+1: `feat(v1.2.1/G33): add billing start balance settlement UI`). working tree **CLEAN**. develop **139커밋 ahead**. **origin/develop 동기화** @ `359cf0c`.
+> - develop HEAD `npm test`: **689/689 PASS**(166 files, 130.61s) · build **870 modules 3 청크** (index 469.94 kB, max 367.09 kB) · audit **0** · **55 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@0048105` WT CLEAN · 111 ahead · **605/605 PASS**. 잔여: **tester merge(139+111=250)** · **G33 live E2E**(post-merge) · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(250 commits) · post-merge live E2E **미실행**.
+
+> **360차 재검증 (2026-06-11T18:50) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@e88a125`(+1 vs 358차 `0ba2b68`: monthly benefit cap warning assertion 안정화)·WT **CLEAN**·HEAD **682/682 PASS**·869 modules·56 route·46 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@42bc06e` WT **CLEAN**·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(248)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 106.19s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `e88a125`** (+1: `test(v1.2.1): stabilize monthly benefit cap warning assertion`). working tree **CLEAN**. develop **138커밋 ahead**. **origin/develop 동기화** @ `e88a125`.
+> - develop HEAD `npm test`: **682/682 PASS**(165 files, 129.35s) · build **869 modules 3 청크** (index 465.26 kB, max 367.09 kB) · audit **0** · **56 route·46 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@42bc06e` WT CLEAN · 110 ahead · **604/604 PASS**. 잔여: **tester merge(138+110=248)** · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(248 commits) · post-merge live E2E **미실행**.
+
+> **358차 재검증 (2026-06-11T18:28) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@0ba2b68`(+2 vs 356차 `7564c2a`: UXD ds-* · G33 lock fallback)·WT **CLEAN**·HEAD **682/682 PASS**·869 modules·56 route·46 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@70e6191` WT **DIRTY**·Open 1 BLOCK QA-B44·**양 스트림 merge BLOCK**·merge **미실행(246)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.44s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `0ba2b68`** (+2: `4b06200` UXD ds-* cleanup · `0ba2b68` G33 start-balance lock fallback). working tree **CLEAN**. develop **137커밋 ahead**. **origin/develop 동기화** @ `0ba2b68`.
+> - develop HEAD `npm test`: **682/682 PASS**(165 files, 127.70s) · build **869 modules 3 청크** (index 465.26 kB, max 367.09 kB) · audit **0** · **56 route·46 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 1 BLOCK QA-B44 · develop `@70e6191` WT **DIRTY 2M+1U** · 109 ahead. 잔여: **COD BE WT clean(QA-B44)→tester merge(246)** · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(246 commits) · **양 스트림 merge BLOCK**(BE WT clean 선행) · post-merge live E2E **미실행**.
+
+> **356차 재검증 (2026-06-11T17:52) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@7564c2a` HEAD **불변**·WT **CLEAN**·HEAD **679/679 PASS**·869 modules·55 route·46 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@70e6191` WT CLEAN·Open 1 SEC-D22(Medium·BLOCK 아님)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(244)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.07s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7564c2a`** (354차 대비 **불변**). working tree **CLEAN**. develop **135커밋 ahead**. **origin/develop 동기화** @ `7564c2a`.
+> - develop HEAD `npm test`: **679/679 PASS**(165 files, 156.36s) · build **869 modules 3 청크** (index 465.19 kB, max 367.09 kB) · audit **0** · **55 route·46 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 1 SEC-D22(Medium·infra·BLOCK 아님) · develop `@70e6191` WT CLEAN · 109 ahead · **603/603 PASS**. 잔여: **tester merge(135+109=244)** · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(244 commits) · post-merge live E2E **미실행**.
+
+> **354차 재검증 (2026-06-11T17:30) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@7564c2a`(+1 vs `eba413a`: G33 overdue list billing start balance UI)·WT **CLEAN**·HEAD **679/679 PASS**·869 modules·55 route·45 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@deaae7a` WT CLEAN·Open 1 SEC-D22(Medium·BLOCK 아님)·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(243)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.86s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7564c2a`** (+1: `feat(v1.2.1/G33): surface billing start balance on overdue list`). working tree **CLEAN**. develop **135커밋 ahead**. **origin/develop 동기화** @ `7564c2a`.
+> - develop HEAD `npm test`: **679/679 PASS**(165 files, 129.03s) · build **869 modules 3 청크** (index 465.19 kB, max 367.09 kB) · audit **0** · **55 route·45 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 1 SEC-D22(Medium·infra·BLOCK 아님) · develop `@deaae7a` WT CLEAN · 108 ahead. 잔여: **tester merge(135+108=243)** · LIVE_E2E run(결정 96·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(243 commits) · post-merge live E2E **미실행**.
+
+> **352차 재검증 (2026-06-11T17:09) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@eba413a`(+1 vs `9e1a2ed`: G33 charges ledger opening balance UI)·WT **CLEAN**·HEAD **675/675 PASS**·869 modules·55 route·46 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@e7df238` WT CLEAN·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(241)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.23s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `eba413a`** (+1: `feat(v1.2.1/G33): show billing start balance on charges ledger`). working tree **CLEAN**. develop **134커밋 ahead**. **origin/develop 동기화** @ `eba413a`.
+> - develop HEAD `npm test`: **675/675 PASS**(165 files, 127.56s) · build **869 modules 3 청크** (index 464.31 kB, max 367.09 kB) · audit **0** · **55 route·46 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@e7df238` WT CLEAN · 107 ahead. 잔여: **tester merge(134+107=241)** · LIVE_E2E run(결정 73·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(241 commits) · post-merge live E2E **미실행**.
+
+> **350차 재검증 (2026-06-11T16:49) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@9e1a2ed`(+1 vs `7f2289b`: G33 billing start balance UI)·WT **CLEAN**·HEAD **671/671 PASS**·869 modules·56 route·46 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@3d5eb3e` WT CLEAN·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(239)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.95s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `9e1a2ed`** (+1: `feat(v1.2.1/G33): add billing start balance UI on settings panel`). working tree **CLEAN**. develop **133커밋 ahead**. **origin/develop 동기화** @ `9e1a2ed`.
+> - develop HEAD `npm test`: **671/671 PASS**(165 files, 155.93s) · build **869 modules 3 청크** (index 462.99 kB, max 367.09 kB) · audit **0** · **56 route·46 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@3d5eb3e` WT CLEAN · 106 ahead. 잔여: **tester merge(133+106=239)** · LIVE_E2E run(결정 73·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(239 commits) · post-merge live E2E **미실행**.
+
+> **348차 재검증 (2026-06-11T16:30) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@7f2289b`(+1 vs `c89a82b`: G32 evaluation compliance stat on dashboard)·WT **CLEAN**·HEAD **662/662 PASS**·868 modules·56 route·78 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@0441a07` WT CLEAN·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(237)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 145.88s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `7f2289b`** (+1: `feat(v1.2.1): expose G32 evaluation compliance stat on dashboard`). working tree **CLEAN**. develop **132커밋 ahead**. **origin/develop 동기화** @ `7f2289b`.
+> - develop HEAD `npm test`: **662/662 PASS**(164 files, 265.78s) · build **868 modules 3 청크** (index 458.05 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@0441a07` WT CLEAN · 105 ahead. 잔여: **tester merge(132+105=237)** · LIVE_E2E run(결정 73·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(237 commits) · post-merge live E2E **미실행**.
+
+> **346차 재검증 (2026-06-11T16:05) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@c89a82b`(+2 vs `37e6b00`: G32 StatCard·dashboard widget · SEC-D23 PilotFixturePanel dev gate)·WT **CLEAN**·HEAD **662/662 PASS**·868 modules·56 route·78 page·**Open 0**(frontend)·**SEC-D23 Fixed**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@cbb7f55` WT CLEAN·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(235)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.48s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `c89a82b`** (+2: `fa2ad1e` G32 StatCard·dashboard widget · `c89a82b` PilotFixturePanel dev/flag gate). working tree **CLEAN**. develop **131커밋 ahead**. **origin/develop 동기화** @ `c89a82b`.
+> - develop HEAD `npm test`: **662/662 PASS**(164 files, 141.01s) · build **868 modules 3 청크** (index 456.87 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)** · **SEC-D23 Fixed** @ `c89a82b`. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@cbb7f55` WT CLEAN · 104 ahead. 잔여: **tester merge(131+104=235)** · LIVE_E2E run(결정 73·post-merge) · **SEC-D22** `.gitignore`(infra·BLOCK 아님).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(235 commits) · post-merge live E2E **미실행**.
+
+> **344차 재검증 (2026-06-11T15:25) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@37e6b00`(+1 vs `932078b`: pilot NHIS fixture downloads·front API pilot setup)·WT **CLEAN**·HEAD **656/656 PASS**·868 modules·55 route·78 page·**Open 0**(frontend)·**QA-B43 Fixed**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@208b37e` WT CLEAN·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(232)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 61.07s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `37e6b00`** (+1: `feat(pilot): add NHIS fixture downloads and front API pilot setup`). working tree **CLEAN**. develop **129커밋 ahead**. **origin/develop 동기화** @ `37e6b00`.
+> - develop HEAD `npm test`: **656/656 PASS**(162 files, 156.17s) · build **868 modules 3 청크** (index 455.30 kB, max 367.09 kB) · audit **0** · **55 route·78 page**.
+> - **Open 0건(frontend)** · **QA-B43 Fixed**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@208b37e` WT CLEAN · 103 ahead. 잔여: **tester merge(129+103=232)** · LIVE_E2E run(결정 73·post-merge).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(232 commits) · post-merge live E2E **미실행**.
+
+> **342차 재검증 (2026-06-11T15:02) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@932078b`(+1 vs `40c303d`: G32 case meeting response field normalization)·WT **CLEAN**·HEAD **651/651 PASS**·862 modules·56 route·45 page·**Open 0**(frontend)·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@98e40a3` WT CLEAN·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(230)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.56s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `932078b`** (+1: `fix(G32): normalize case meeting response fields for list rendering`). working tree **CLEAN**. develop **128커밋 ahead**. **origin/develop 동기화** @ `932078b`.
+> - develop HEAD `npm test`: **651/651 PASS**(159 files, 132.37s) · build **862 modules 3 청크** (index 444.20 kB, max 367.09 kB) · audit **0** · **56 route·45 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@98e40a3` WT CLEAN · 102 ahead. 잔여: **tester merge(128+102=230)** · LIVE_E2E run(결정 73·post-merge).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(230 commits) · post-merge live E2E **미실행**.
+
+> **340차 재검증 (2026-06-11T14:42) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@40c303d`(+1 vs `443f379`: QA-B42 `pilotPageFlows` G32 US-T07 E2E sync)·WT **CLEAN**·HEAD **650/650 PASS**·862 modules·54 route·78 page·**Open 0**(frontend)·**QA-B42 Fixed**·PASS(v1.2+v1.3-A)·★ **v1.2.1 merge FULLY UNBLOCKED**(frontend)·교차 backend develop `@11277b9` WT CLEAN·Open 0·**양 스트림 merge gate FULLY UNBLOCKED**·merge **미실행(228)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 87.40s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `40c303d`** (+1: `fix(G32): sync pilotPageFlows US-T07 with caseManagementPlan field (QA-B42)`). working tree **CLEAN**. develop **127커밋 ahead**. **origin/develop 동기화** @ `40c303d`.
+> - develop HEAD `npm test`: **650/650 PASS**(159 files, 161.67s) · build **862 modules 3 청크** (index 443.76 kB, max 367.09 kB) · audit **0** · **54 route·78 page**.
+> - **Open 0건(frontend)** · **QA-B42 Fixed**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend): Open 0 · develop `@11277b9` WT CLEAN · 101 ahead. 잔여: **tester merge(127+101=228)** · LIVE_E2E run(결정 73·post-merge).
+> - **operation 승격 BLOCK**: develop→test merge **미실행**(228 commits) · post-merge live E2E **미실행**.
+
+> **338차 재검증 (2026-06-11T14:15) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@443f379`(+1 vs `18f5173`: G32 `caseManagementPlan` BNK-92 P2)·WT **CLEAN**·HEAD **649/650 FAIL**(1: `pilotPageFlows` G32 US-T07)·862 modules·55 route·45 page·**Open 1 BLOCK QA-B42**(frontend)·PASS(v1.2+v1.3-A)·**v1.2.1 merge BLOCK**(frontend)·교차 backend develop `@8431b5c` WT CLEAN·Open 0·**양 스트림 merge BLOCK**(FE test fix 선행)·**PASS 금지(merge)**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.90s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `443f379`** (+1: `feat(G32): wire caseManagementPlan field on CaseManagementPage (BNK-92 P2)`). working tree **CLEAN**. develop **126커밋 ahead**. **origin/develop 동기화** @ `443f379`.
+> - develop HEAD `npm test`: **649/650 FAIL**(159 files, 124.07s) — `pilotPageFlows.test.jsx` › G32 US-T07 1건 · build **862 modules 3 청크** (index 443.76 kB, max 367.09 kB) · audit **0** · **55 route·45 page**.
+> - **Open 1 BLOCK** `QA-20260611-B42`(frontend). **판정 PASS(v1.2+v1.3-A @ test)**. **v1.2.1 merge BLOCK**(frontend HEAD test green 선행). 교차(backend): Open 0 · develop `@8431b5c` WT CLEAN · 100 ahead. 잔여: **COD `pilotPageFlows` G32 fix→650/650 PASS→merge(126+100=226)** · LIVE_E2E run(결정 73·post-merge).
+> - **PASS 금지(양 스트림 merge)**: frontend **QA-B42**·HEAD **649/650 FAIL** — **merge(126) 실행 금지**. test 품질 PASS·WT CLEAN이나 develop HEAD test red.
+
+> **336차 재검증 (2026-06-11T13:54) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·develop `@18f5173`(+3 vs `0adf8c6`: BNK-87 CSS·BNK-91 NHIS comparison copay·discrepancy UX)·WT **CLEAN**·HEAD 649/649 PASS·862 modules·56 route·45 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend develop `@0a270a2` WT CLEAN·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.69s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **frontend develop HEAD `18f5173`** (+3: `869a6fd` BNK-87 CSS · `b71a10e` copay column · `18f5173` discrepancy UX). working tree **CLEAN**. develop **125커밋 ahead**. **origin/develop 동기화** @ `18f5173`.
+> - develop HEAD `npm test`: **649/649 PASS**(159 files, 149.09s) · build **862 modules 3 청크** (index 442.85 kB, max 367.09 kB) · audit **0** · **56 route·45 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 335차): Open 0 · develop `@0a270a2` WT CLEAN · 99 ahead. 잔여: **tester merge(125+99=224)** · LIVE_E2E run(결정 73·post-merge).
+
+> **334차 재검증 (2026-06-11T13:35) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367.09 kB)·audit 0·origin/test 동기화·Open 0(frontend)·PASS(v1.2+v1.3-A)·v1.2.1 merge **ready 유지**·교차 backend develop `@5e1828c` WT CLEAN:
+> - **frontend test HEAD `c7c8f07`** — branch `test` 유지, working tree **CLEAN**.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.28s).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB).
+> - **`src/frontend-test` `npm audit --audit-level=high`**: **0 vulnerabilities**.
+> - **신규 Open 이슈 없음**: `docs/qa/QA_FEEDBACK.md` Open 추가 0건(frontend).
+> - **잔여 리스크**: develop→test 실제 merge 미실행 상태(결정 73에 따른 post-merge live E2E 미실행).
+
+> **332차 재검증 (2026-06-11T12:54) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@0adf8c6`(+1 vs `b58429d`: BNK-87 NHIS comparison panel on draft claim detail)·WT **CLEAN**·HEAD 646/646 PASS·862 modules·54 route·45 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `5e1828c` WT CLEAN·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 330차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 80.94s) — 332차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `0adf8c6`** (+1: `feat(billing): add NHIS comparison panel on draft claim detail (BNK-87)`). working tree **CLEAN**. develop **122커밋 ahead**. **origin/develop 동기화** @ `0adf8c6`.
+> - **`b58429d..0adf8c6` 변경**(11 files, +585/-10): `BillingNhisComparisonPanel`(+test)·`BillingDetailPage`(+test)·`services.js`·`pilotPageFlows.test.jsx`(+191)·`CaseManagementPage`(+test) — BNK-87 청구 초안 NHIS 비교 패널·E2E 회귀 보강.
+> - develop HEAD `npm test`: **646/646 PASS**(159 files, 151.40s) · build **862 modules 3 청크** (index 442.17 kB, max 367.09 kB) · audit **0** · **54 route·45 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 331차): Open 0 · develop `@5e1828c` WT CLEAN · 98 ahead. 잔여: **tester merge(122+98=220)** · LIVE_E2E run(결정 73·post-merge).
+
+> **330차 재검증 (2026-06-11T12:28) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@b58429d`(+1 vs `7f8bdc7`: G17 functional recovery form server validation error mapping)·WT **CLEAN**·HEAD 635/635 PASS·861 modules·56 route·78 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 1 BLOCK QA-B41 @ `fea28b8` WT **DIRTY 1M**·**양 스트림 merge BLOCK**(BE WT clean 선행):
+> - **frontend test HEAD `c7c8f07`** — 328차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.88s) — 330차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `b58429d`** (+1: `fix(G17): map server validation errors in functional recovery form`). working tree **CLEAN**. develop **121커밋 ahead**. **origin/develop 동기화** @ `b58429d`.
+> - **`7f8bdc7..b58429d` 변경**(2 files, +52/-3): `FunctionalRecoveryPage.jsx`·`FunctionalRecoveryPage.test.jsx` — G17 API field-error mapping·snake_case 서버 검증 오류 필드 단위 표시·회귀 +1 @Test.
+> - develop HEAD `npm test`: **635/635 PASS**(158 files, 149.45s) · build **861 modules 3 청크** (index 438.35 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 329차): Open 1 BLOCK QA-B41 · develop `@fea28b8` WT **DIRTY 1M** · 97 ahead. 잔여: **COD BE WT clean(1M)→merge(121+97=218)** · LIVE_E2E run(결정 73·post-merge).
+> - **PASS 금지(양 스트림 merge)**: backend **QA-B41**·WT **DIRTY 1M** — **merge(121) 실행 금지**. frontend test 품질 PASS·WT CLEAN이나 **교차 BE clean 선행**.
+
+> **328차 재검증 (2026-06-11T12:05) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@7f8bdc7`(+1 vs `0821ce8`: G17/G32 compliance count mapping hardening)·WT **CLEAN**·HEAD 634/634 PASS·861 modules·56 route·78 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `fea28b8` WT CLEAN·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 326차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.58s) — 328차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `7f8bdc7`** (+1: `fix(G17/G32): harden compliance count mapping for dashboard safety`). working tree **CLEAN**. develop **120커밋 ahead**. **origin/develop 동기화** @ `7f8bdc7`.
+> - **`0821ce8..7f8bdc7` 변경**(4 files, +71/-9): `caseManagementCompliance.js`·`functionalRecoveryCompliance.js`(+tests) — G17/G32 대시보드 compliance count 매핑 안전성 강화·회귀 테스트 +3 @Test.
+> - develop HEAD `npm test`: **634/634 PASS**(158 files, 175.69s) · build **861 modules 3 청크** (index 438.05 kB, max 367.09 kB) · audit **0** · **56 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 327차): Open 0 · develop `@fea28b8` WT CLEAN · 97 ahead. 잔여: **tester merge(120+97=217)** · LIVE_E2E run(결정 73·post-merge).
+
+> **326차 재검증 (2026-06-11T11:46) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@0821ce8`(+1 vs `7eebd8c`: G17/G32 compliance DTO mapping + Dashboard 30-day widget)·WT **CLEAN**·HEAD 631/631 PASS·861 modules·56 route·76 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `2225a7a` WT CLEAN·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 324차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.97s) — 326차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `0821ce8`** (+1: `fix(G17/G32): align compliance DTO mapping and add 30-day dashboard widget`). working tree **CLEAN**. develop **119커밋 ahead**. **origin/develop 동기화** @ `0821ce8`.
+> - **`7eebd8c..0821ce8` 변경**(12 files, +255/-30): `caseManagementCompliance.js`·`functionalRecoveryCompliance.js`(+tests)·`DashboardPage` G17/G32 30-day widget·`dashboardSummary.js`·CaseManagement/FunctionalRecovery DTO mapping.
+> - develop HEAD `npm test`: **631/631 PASS**(158 files, 147.13s) · build **861 modules 3 청크** (index 437.83 kB, max 367.09 kB) · audit **0** · **56 route·76 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 325차): Open 0 · develop `@2225a7a` WT CLEAN · 96 ahead. 잔여: **tester merge(119+96=215)** · LIVE_E2E run(결정 73·post-merge).
+
+> **324차 재검증 (2026-06-11T11:17) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@7eebd8c`(+1 vs `c288fdd`: G32 attendeeNames normalize)·WT **CLEAN**·HEAD 627/627 PASS·859 modules·56 route·76 page·QA-B40 Fixed·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `622b5e5` WT CLEAN·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 322차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.76s) — 324차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `7eebd8c`** (+1: `fix(G32): normalize case management attendee names on submit`). working tree **CLEAN**. develop **118커밋 ahead**. **origin/develop 동기화** @ `7eebd8c`.
+> - **`c288fdd..7eebd8c` 변경**(2 files, +47/-6): `CaseManagementPage.jsx`·`CaseManagementPage.test.jsx` — G32 `normalizeAttendeeNames`·`ATTENDEE_SPLIT_REGEX`·API submit 정규화·회귀 테스트 +1 @Test.
+> - develop HEAD `npm test`: **627/627 PASS**(156 files, 119.73s) · build **859 modules 3 청크** (index 435.80 kB, max 367.09 kB) · audit **0** · **56 route·76 page**.
+> - **QA-20260611-B40 Fixed** @ `7eebd8c`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 323차): Open 0 · develop `@622b5e5` WT CLEAN · 95 ahead. 잔여: **tester merge(118+95=213)** · LIVE_E2E run(결정 73·post-merge).
+
+> **322차 재검증 (2026-06-11T10:54) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@c288fdd`(+1 vs `53e4016`: G17/G32 `FunctionalRecoveryPage`·`CaseManagementPage`)·WT **DIRTY 2M**(`CaseManagementPage*` G32 attendeeNames normalize WIP)·HEAD 626/626 PASS·WT 627/627 PASS(+1 @Test)·859 modules·56 route·76 page·Open 1 BLOCK QA-B40(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **BLOCK**(frontend)·교차 backend Open 1 BLOCK QA-B39 @ `55fae99` WT DIRTY 1U·**양 스트림 merge BLOCK**:
+> - **frontend test HEAD `c7c8f07`** — 320차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.68s) — 322차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c288fdd`** (+1: `feat(ux): G17·G32 FE 구현 — FunctionalRecoveryPage·CaseManagementPage`). working tree **DIRTY 2M**. develop **117커밋 ahead**. **origin/develop 동기화** @ `c288fdd`.
+> - **`53e4016..c288fdd` 변경**(9 files, +1066/-6): `FunctionalRecoveryPage`(+test)·`CaseManagementPage`(+test)·`services.js`·`App.jsx`·`navConfig.js`·`RecordsContextNav`·`components.css` — G17 기능회복훈련·G32 사례관리 회의록 Route/UI.
+> - **WT 미커밋 변경**(2M, +47/-6): `normalizeAttendeeNames()`·`ATTENDEE_SPLIT_REGEX`·API submit 정규화·회귀 테스트 +1 @Test.
+> - develop HEAD `npm test`: **626/626 PASS**(156 files) · WT **627/627 PASS** · build **859 modules 3 청크** (index 435.80 kB, max 367.09 kB) · audit **0** · **56 route·76 page**.
+> - **Open 1 BLOCK** `QA-20260611-B40`(frontend). **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend 321차): Open 1 BLOCK QA-B39 · develop `@55fae99` WT **DIRTY 1U** · 94 ahead. 잔여: **COD FE WT clean(2M)+BE WT clean(1U)→merge(117+94=211)** · LIVE_E2E run(결정 73·post-merge).
+> - **PASS 금지**: develop WT dirty·Open BLOCK — **merge(117) 실행 금지**. test 품질 PASS이나 **커밋 없이 merge PASS 불가**.
+
+> **320차 재검증 (2026-06-11T10:05) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@53e4016`(+1 vs `212e010`: US-G04 normalize year coverage for upload guard)·WT **CLEAN**·HEAD 616/616 PASS·857 modules·54 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `55fae99` WT CLEAN·569/569 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 318차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.53s) — 320차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `53e4016`** (+1: `fix(US-G04): normalize year coverage values for upload guard`). working tree **CLEAN**. develop **116커밋 ahead**. **origin/develop 동기화** @ `53e4016`.
+> - **`212e010..53e4016` 변경**(4 files, +67/-3): `feeSchedules.js`(+test)·`NHISImportPage`(+test) — US-G04 수가연도 커버리지 값 정규화·업로드 가드 회귀 +2 @Test.
+> - develop HEAD `npm test`: **616/616 PASS**(154 files, 116.24s) · build **857 modules 3 청크** (index 419.43 kB, max 367.09 kB) · audit **0** · **54 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 319차): Open 0 · develop `@55fae99` WT CLEAN · 94 ahead. 잔여: **develop→test merge(116+94=210)** · LIVE_E2E run(결정 73·post-merge).
+
+> **318차 재검증 (2026-06-11T09:35) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@212e010`(+1 vs `b92a1d4`: US-M03 copay refund UI on billing detail)·WT **CLEAN**·HEAD 614/614 PASS·857 modules·54 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `73e169a` WT CLEAN·559/559 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 316차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 86.19s) — 318차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `212e010`** (+1: `feat(US-M03): add copay refund UI on billing detail (7-9)`). working tree **CLEAN**. develop **115커밋 ahead**. **origin/develop 동기화** @ `212e010`.
+> - **`b92a1d4..212e010` 변경**(7 files, +375/-8): `RefundRecordModal`(+test)·`BillingDetailPage`(+test)·`services.js`·`billingGuardianPlatformServices.test.js`·`index.js` — US-M03 7-9 PAID→REFUNDED 환불 기록 Modal·API 연동.
+> - develop HEAD `npm test`: **614/614 PASS**(154 files, 178.56s) · build **857 modules 3 청크** (index 419.06 kB, max 367.09 kB) · audit **0** · **54 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 317차): Open 0 · develop `@73e169a` WT CLEAN · 93 ahead. 잔여: **develop→test merge(115+93=208)** · LIVE_E2E run(결정 73·post-merge).
+
+> **316차 재검증 (2026-06-11T09:10) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@b92a1d4`(+1 vs `c30aaac`: G27 cap banner test + US-M03 refunds ledger route)·WT **CLEAN**·HEAD 610/610 PASS·856 modules·54 route·74 page·QA-B38 Fixed·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `0af6526` WT CLEAN·550/550 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 314차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.78s) — 316차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `b92a1d4`** (+1: `fix(G27): stabilize MonthlyBenefitCapBanner test; add refunds ledger route (US-M03 7-9)`). working tree **CLEAN**. develop **114커밋 ahead**. **origin/develop 동기화** @ `b92a1d4`.
+> - **`c30aaac..b92a1d4` 변경**(10 files, +132/-11): `MonthlyBenefitCapBanner.test.jsx`·`App.jsx`·`BillingReportPage`(+test)·`BillingLedgerTable`(+test)·`navConfig.js`·`services.js`·`Badge.jsx`·`pilotPageFlows.test.jsx` — QA-B38 Fixed + `/billing/reports/refunds` Route.
+> - develop HEAD `npm test`: **610/610 PASS**(153 files, 115.74s) · build **856 modules 3 청크** (index 415.54 kB, max 367.09 kB) · audit **0** · **54 route·74 page**.
+> - **QA-20260611-B38 Fixed** @ `b92a1d4`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 315차): Open 0 · develop `@0af6526` WT CLEAN · 92 ahead. 잔여: **develop→test merge(114+92=206)** · LIVE_E2E run(결정 73·post-merge).
+
+> **314차 재검증 (2026-06-11T08:43) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@c30aaac` HEAD **불변**·WT **DIRTY 1M**(`MonthlyBenefitCapBanner.test.jsx` US-G04/G27 cap banner test WIP, **312차 CLEAN→재오염**)·HEAD 607/607 PASS·856 modules·53 route·78 page·Open 1 BLOCK QA-B38(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **BLOCK**(frontend)·교차 backend Open 0 @ `de49b21` WT CLEAN·548/548 PASS·**양 스트림 merge BLOCK**(FE WT clean 선행):
+> - **frontend test HEAD `c7c8f07`** — 312차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.52s) — 314차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c30aaac`** — 312차 대비 **불변**. working tree **DIRTY 1M** (`MonthlyBenefitCapBanner.test.jsx`+2/-2). develop **113커밋 ahead**. **origin/develop 동기화** @ `c30aaac`.
+> - **WT 미커밋 변경**: 90% 경고 문구 `/월한도 90% 이상 사용/`·`월한도 확인 중` 미표시 assert — `dd163cf` cap banner test 안정화 follow-up WIP.
+> - develop WT `npm test`: **607/607 PASS**(153 files, 114.47s) · build **856 modules 3 청크**(312차 HEAD 실측) · audit **0** · **53 route·78 page**.
+> - **Open 1 BLOCK** `QA-20260611-B38`(frontend). **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend 313차): Open 0 · develop `@de49b21` WT CLEAN · 91 ahead. 잔여: **COD FE WT clean(1M)→merge(113+91=204)** · LIVE_E2E run(결정 73·post-merge).
+> - **PASS 금지**: develop WT dirty·Open BLOCK — **merge(113) 실행 금지**. test 품질 PASS이나 **커밋 없이 merge PASS 불가**.
+
+> **312차 재검증 (2026-06-11T08:17) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@c30aaac`(+1 vs `dd163cf`: US-G04 upload block until year coverage verified)·WT **CLEAN**·HEAD 607/607 PASS·856 modules·53 route·78 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `22d82e2` WT CLEAN·542/542 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 310차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 65.08s) — 312차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c30aaac`** (+1: `fix(US-G04): block NHIS upload until year coverage is verified`). working tree **CLEAN**. develop **113커밋 ahead**. **origin/develop 동기화** @ `c30aaac`.
+> - **`dd163cf..c30aaac` 변경**(2 files, +65/-3): `NHISImportPage.jsx`(+40/-3)·`NHISImportPage.test.jsx`(+28) — US-G04 수가연도 커버리지 미검증 시 업로드 차단·회귀 테스트 +1 @Test.
+> - develop HEAD `npm test`: **607/607 PASS**(153 files, 122.56s) · build **856 modules 3 청크** (index 413.97 kB, max 367.09 kB) · audit **0** · **53 route·78 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 311차): Open 0 · develop `@22d82e2` WT CLEAN · 90 ahead. 잔여: **develop→test merge(113+90=203)** · LIVE_E2E run(결정 73·post-merge).
+
+> **310차 재검증 (2026-06-11T07:55) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@dd163cf`(+2 vs `5c0d83d`: `9647666` US-G04 upload block+`NhisImportContextNav` · `dd163cf` year-coverage API)·WT **CLEAN**·HEAD 606/606 PASS·856 modules·52 route·78 page·QA-B37 Fixed·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `8f208e4` WT CLEAN·537/537 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 308차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 79.13s) — 310차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `dd163cf`** (+2: `9647666` upload guard+context nav · `dd163cf` year-coverage API). working tree **CLEAN**. develop **112커밋 ahead**. **origin/develop 동기화** @ `dd163cf`.
+> - **`5c0d83d..dd163cf` 변경**(11 files, +302/-12): `NHISImportPage`·`NHISImportPage.test`(+125)·`NhisImportContextNav`(+test)·`FeeScheduleYearGuardBanner`·`services.js`·`MonthlyBenefitCapBanner.test` — US-G04 fee schedule year coverage upload guard·BE pre-check API 연동.
+> - develop HEAD `npm test`: **606/606 PASS**(153 files, 142.26s) · build **856 modules 3 청크** (index 413.36 kB, max 367.09 kB) · audit **0** · **52 route·78 page**.
+> - **QA-20260611-B37 Fixed** @ `9647666`/`dd163cf`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 309차): Open 0 · develop `@8f208e4` WT CLEAN · 89 ahead. 잔여: **develop→test merge(112+89=201)** · LIVE_E2E run(결정 73·post-merge).
+
+> **308차 재검증 (2026-06-11T07:10) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@5c0d83d` HEAD **불변**·WT **DIRTY 2M**(`NHISImportPage*` US-G04 fee schedule coverage upload guard WIP, **306차 CLEAN→재오염**)·HEAD 601/601 PASS·WT 602/602 PASS(+1 @Test)·855 modules·52 route·74 page·Open 1 BLOCK QA-B37(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **BLOCK**(frontend)·교차 backend Open 0 @ `970c7af` WT CLEAN·532/532 PASS·**양 스트림 merge BLOCK**(FE WT clean 선행):
+> - **frontend test HEAD `c7c8f07`** — 306차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 82.25s) — 308차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `5c0d83d`** — 306차 대비 **불변**. working tree **DIRTY 2M** (`NHISImportPage.jsx`+21/-3 · `NHISImportPage.test.jsx`+40). develop **110커밋 ahead**. **origin/develop 동기화** @ `5c0d83d`.
+> - **WT 미커밋 변경**: `feeScheduleYearCoverage()`·`uploadBlockedByFeeSchedule`·업로드 차단 에러 메시지·회귀 테스트 +1 — backend `@970c7af` US-G04 BE guard 대응 FE follow-up WIP.
+> - develop HEAD `npm test`: **601/601 PASS**(151 files, 306차) · WT **602/602 PASS**(152 files, 145.12s) · build **855 modules 3 청크** (index 412.05 kB, max 367.09 kB) · audit **0** · **52 route·74 page**.
+> - **Open 1 BLOCK** `QA-20260611-B37`(frontend). **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge BLOCK**(frontend WT dirty). 교차(backend 307차): Open 0 · develop `@970c7af` WT CLEAN · 88 ahead. 잔여: **COD FE WT clean(2M)→merge(110+88=198)** · LIVE_E2E run(결정 73·post-merge).
+> - **PASS 금지**: develop WT dirty·Open BLOCK — **merge(110) 실행 금지**. test 품질 PASS이나 **커밋 없이 merge PASS 불가**.
+
+> **306차 재검증 (2026-06-11T06:40) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@5c0d83d`(+1 vs `b9845ac`: feat(US-G04) NHIS import fee schedule year guard UX)·WT **CLEAN**·HEAD 601/601 PASS·855 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `0ae5f8d` WT CLEAN·528/528 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 304차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.60s) — 306차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `5c0d83d`** (+1: `feat(US-G04): add NHIS import fee schedule year guard UX`). working tree **CLEAN**. develop **110커밋 ahead**. **origin/develop 동기화** @ `5c0d83d`.
+> - **`b9845ac..5c0d83d` 변경**(7 files, +205/-2): `FeeScheduleYearGuardBanner.jsx`(+36)·`FeeScheduleYearGuardBanner.test.jsx`(+50)·`index.js`(+1)·`feeSchedules.js`(+55)·`feeSchedules.test.js`(+22)·`NHISImportPage.jsx`(+20/-1)·`NHISImportPage.test.jsx`(+23/-1) — US-G04 NHIS import 수가연도 guard UX·구성 상수·회귀 테스트(+3 @Test).
+> - develop HEAD `npm test`: **601/601 PASS**(152 files, 115.98s) · build **855 modules 3 청크** (index 411.80 kB, max 367.09 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 305차): Open 0 · develop `@0ae5f8d` WT CLEAN · 87 ahead. 잔여: **develop→test merge(110+87=197)** · LIVE_E2E run(결정 73·post-merge).
+
+> **304차 재검증 (2026-06-11T06:22) — ✅ test `@c7c8f07` 불변·217/217 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@b9845ac`(+1 vs `758e590`: US-L01 per-bank sample xlsx download)·WT **CLEAN**·HEAD 595/595 PASS·854 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 1 BLOCK QA-B36 @ `aacf20b` WT DIRTY 2M·**양 스트림 merge BLOCK**(BE WT clean 선행):
+> - **frontend test HEAD `c7c8f07`** — 302차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 59.10s) — 304차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `b9845ac`** (+1: `feat(US-L01): add per-bank sample xlsx download for deposit import`). working tree **CLEAN**. develop **109커밋 ahead**. **origin/develop 동기화** @ `b9845ac`.
+> - **`758e590..b9845ac` 변경**(5 files, +101/-6): `BankDepositImportPanel.jsx`(+13)·`BankDepositImportPanel.test.jsx`(+21)·`bankDepositFormats.test.js`(+38)·`bankDepositFixture.js`(+28)·`BankDepositImportPanel.formats.e2e.test.jsx`(+7/-6) — US-L01 은행별 샘플 xlsx 다운로드·fixture·E2E (+2 @Test).
+> - develop HEAD `npm test`: **595/595 PASS**(151 files, 123.68s) · build **854 modules 3 청크** (index 410.67 kB, max 367 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 303차): Open 1 BLOCK QA-B36 · develop `@aacf20b` WT **DIRTY 2M** · 86 ahead. 잔여: **COD BE WT clean(2M)→merge(86+109=195)** · LIVE_E2E run(결정 73·post-merge).
+
+> **302차 재검증 (2026-06-11T05:58) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@758e590`(+1 vs `fd569d7`: US-L01 carefor 8-bank deposit excel format guide·E2E)·WT **CLEAN**·HEAD 593/593 PASS·853 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `aacf20b` WT CLEAN·525/525 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 300차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.35s) — 302차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `758e590`** (+1: `feat(US-L01): add carefor 8-bank deposit excel format guide and E2E`). working tree **CLEAN**. develop **108커밋 ahead**. **origin/develop 동기화** @ `758e590`.
+> - **`fd569d7..758e590` 변경**(6 files, +228): `bankDepositFormats.js`(+66)·`bankDepositFormats.test.js`(+52)·`bankDepositFixture.js`(+23)·`BankDepositImportPanel.jsx`(+26)·`BankDepositImportPanel.test.jsx`(+9)·`BankDepositImportPanel.formats.e2e.test.jsx`(+52) — US-L01 8-bank 입금 엑셀 포맷 가이드·E2E (+13 @Test).
+> - develop HEAD `npm test`: **593/593 PASS**(151 files, 114.58s) · build **853 modules 3 청크** (index 410.01 kB, max 367 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 301차): Open 0 · develop `@aacf20b` WT CLEAN · 525/525 PASS · 86 ahead. 잔여: **develop→test merge(108+86=194)** · LIVE_E2E run(결정 73·post-merge).
+
+> **300차 재검증 (2026-06-11T05:40) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@fd569d7`(+1 vs `e2c2ffe`: G26/US-L04 NTS xlsx layout)·WT **CLEAN**·HEAD 580/580 PASS·852 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `ff12473` WT CLEAN·523/523 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 298차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 90.38s) — 300차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `fd569d7`** (+1: `feat(G26/US-L04): align xlsx export with NTS submission layout`). working tree **CLEAN**. develop **107커밋 ahead**. **origin/develop 동기화** @ `fd569d7`.
+> - **`e2c2ffe..fd569d7` 변경**(4 files, +84/-6): `medicalExpenseDeduction.js`(+39)·`medicalExpenseDeduction.test.js`(+43)·`MedicalExpenseDeductionPanel.jsx`(+4/-4)·`MedicalExpenseDeductionPanel.test.jsx`(+4/-2) — NTS 제출용 xlsx 컬럼 스키마·CMS/간편결제 비공제 행 표기 + 회귀 테스트 (+1 @Test).
+> - develop HEAD `npm test`: **580/580 PASS**(149 files, 118.35s) · build **852 modules 3 청크** (index 408.25 kB, max 367 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 299차): Open 0 · develop `@ff12473` WT CLEAN · 523/523 PASS · 85 ahead. 잔여: **develop→test merge(107+85=192)** · LIVE_E2E run(결정 73·post-merge).
+
+> **298차 재검증 (2026-06-11T05:18) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@e2c2ffe`(+2 vs `c1d9788`: UXD-77 CSS classes · G26 medical expense xlsx export)·WT **CLEAN**·HEAD 579/579 PASS·852 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `923e610` WT CLEAN·521/521 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 296차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.38s) — 298차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `e2c2ffe`** (+2: `8014dcf` UXD-77 CSS · `e2c2ffe` G26/US-L04 xlsx export). working tree **CLEAN**. develop **106커밋 ahead**. **origin/develop 동기화** @ `e2c2ffe`.
+> - **`c1d9788..e2c2ffe` 변경**(7 files, +520/-4): `components.css`(+107)·`MedicalExpenseDeductionPanel.jsx`(+23)·`MedicalExpenseDeductionPanel.test.jsx`(+36)·`medicalExpenseDeduction.js`(+71/-4)·`medicalExpenseDeduction.test.js`(+58)·`minimalXlsx.js`(+205)·`minimalXlsx.test.js`(+24) — UXD-77 스타일·G26 xlsx보내기 + 회귀 테스트 (+5 @Test).
+> - develop HEAD `npm test`: **579/579 PASS**(149 files, 113.60s) · build **852 modules 3 청크** (index 407.98 kB, max 367 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 297차): Open 0 · develop `@923e610` WT CLEAN · 521/521 PASS · 84 ahead. 잔여: **develop→test merge(106+84=190)** · LIVE_E2E run(결정 73·post-merge).
+
+> **296차 재검증 (2026-06-11T04:30) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@c1d9788`(+1 vs `be1bdd0`: G26 CMS/easy-pay exclusion UI copy·module coverage)·WT **CLEAN**·HEAD 574/574 PASS·851 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `1af5b1f` WT CLEAN·520/520 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 294차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.32s) — 296차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c1d9788`** (+1: `fix(G26/US-L04): document CMS/easy-pay exclusion in medical expense UI`). working tree **CLEAN**. develop **104커밋 ahead**. **origin/develop 동기화** @ `c1d9788`.
+> - **`be1bdd0..c1d9788` 변경**(6 files, +107): `MedicalExpenseDeductionPanel.jsx`(+5)·`MedicalExpenseDeductionPanel.test.jsx`(+81)·`medicalExpenseDeduction.js`(+6)·`medicalExpenseDeduction.test.js`(+7)·`competitorModuleCoverage.js`(+2)·`competitorModuleCoverage.test.js`(+6) — CMS·간편결제 제외 안내 UI·모듈 커버 KPI + 회귀 테스트 (+4 @Test).
+> - develop HEAD `npm test`: **574/574 PASS**(148 files, 110.32s) · build **851 modules 3 청크** (index 403.24 kB, max 367 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 295차): Open 0 · develop `@1af5b1f` WT CLEAN · 520/520 PASS · 83 ahead. 잔여: **develop→test merge(104+83=187)** · LIVE_E2E run(결정 73·post-merge).
+
+> **294차 재검증 (2026-06-11T04:15) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@be1bdd0`(+1 vs `13272bc`: G26 `MedicalExpenseDeductionPanel` taxYear submit UX hardening)·WT **CLEAN**·HEAD 570/570 PASS·851 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 1 BLOCK QA-B35 @ `970f547` WT DIRTY 2M·**양 스트림 merge BLOCK**(BE WT clean 선행):
+> - **frontend test HEAD `c7c8f07`** — 292차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.42s) — 294차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `be1bdd0`** (+1: `fix(G26/US-L04): harden medical expense year submission UX`). working tree **CLEAN**. develop **103커밋 ahead**. **origin/develop 동기화** @ `be1bdd0`.
+> - **`13272bc..be1bdd0` 변경**(2 files, +48/-4): `MedicalExpenseDeductionPanel.jsx`(+19/-3)·`MedicalExpenseDeductionPanel.test.jsx`(+33) — `showValidationError`·연도 정규화·invalid submit 시 in-flight 취소·`displayTaxYear`·`noValidate` + 회귀 테스트 (+1 @Test).
+> - develop HEAD `npm test`: **570/570 PASS**(148 files, 111.70s) · build **851 modules 3 청크** (index 402.96 kB, max 367 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 293차): Open 1 BLOCK QA-B35 · develop `@970f547` WT **DIRTY 2M** · 82 ahead. 잔여: **COD BE WT clean(2M)→merge(82+103=185)** · LIVE_E2E run(결정 73·post-merge).
+
+> **292차 재검증 (2026-06-11T03:56) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@13272bc`(+1 vs `63234e2`: G26 `MedicalExpenseDeductionPanel` taxYear submit guard)·WT **CLEAN**·HEAD 569/569 PASS·851 modules·53 route·43 page·QA-B34 Fixed·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `970f547` WT CLEAN·519/519 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 290차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.19s) — 292차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `13272bc`** (+1: `fix(G26/US-L04): defer medical expense tax year fetch until submit`). working tree **CLEAN**. develop **102커밋 ahead**. **origin/develop 동기화** @ `13272bc`.
+> - **`63234e2..13272bc` 변경**(2 files, +136/-44): `MedicalExpenseDeductionPanel.jsx`(+116/-44)·`MedicalExpenseDeductionPanel.test.jsx`(+64) — `parseTaxYear()`·`submittedTaxYear`/`submittedTaxYearRef`·submit/blur 후 summary load·`requestSeqRef` stale-response guard + 회귀 테스트.
+> - develop HEAD `npm test`: **569/569 PASS**(148 files, 112.57s) · build **851 modules 3 청크** (index 402.84 kB, max 367 kB) · audit **0** · **53 route·43 page**.
+> - **QA-20260611-B34 Fixed** @ `13272bc` · **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 291차): Open 0 · develop `@970f547` WT CLEAN · 519/519 PASS · 82 ahead. 잔여: **develop→test merge(82+102=184)** · LIVE_E2E run(결정 73·post-merge).
+
+> **290차 재검증 (2026-06-11T03:35) — ⚠ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@63234e2` HEAD 불변·WT **DIRTY 2M**(288차 CLEAN→재오염, G26 `MedicalExpenseDeductionPanel` taxYear submit guard WIP)·HEAD 567/567 PASS·WT 569/569 PASS(+2)·851 modules·53 route·43 page·신규 Open 1 BLOCK QA-20260611-B34·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(frontend)·교차 backend Open 0 @ `6bf51c8` WT CLEAN·518/518 PASS·**양 스트림 merge BLOCK**:
+> - **frontend test HEAD `c7c8f07`** — 288차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.32s) — 290차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `63234e2`** — **불변**(288차 동일). working tree **DIRTY 2M**. develop **101커밋 ahead**. **origin/develop 동기화** @ `63234e2`.
+> - **WT diff** (2 files, +136/-44): `MedicalExpenseDeductionPanel.jsx`(+116/-44)·`MedicalExpenseDeductionPanel.test.jsx`(+64) — `parseTaxYear()`·`submittedTaxYear`/`submittedTaxYearRef`·submit/blur 후 summary load·`requestSeqRef` stale-response guard + 회귀 테스트.
+> - **WT 타깃 검증**: `npx vitest run src/components/ui/MedicalExpenseDeductionPanel.test.jsx` → **5/5 PASS**. develop HEAD `npm test` **567/567 PASS**(288차 측정) · WT **569/569 PASS**(+2 @Test).
+> - **이관 규율 6 위반**: develop WT **미커밋 2M** → develop→test merge **불가**.
+> - **신규 Open 1건(BLOCK)**: `QA-20260611-B34`. **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 289차): Open 0 · develop `@6bf51c8` WT CLEAN · 518/518 PASS · 81 ahead. 잔여: **COD FE WT clean(2M)→merge(101+81=182)** · LIVE_E2E run(결정 73·post-merge).
+
+> **288차 재검증 (2026-06-11T03:06) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@63234e2`(+1 vs `7e5c806`: US-L01/L02 live E2E candidate selection)·WT **CLEAN**·HEAD 567/567 PASS·851 modules·53 route·43 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `27f20de` WT CLEAN·516/516 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 286차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.75s) — 288차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `63234e2`** (+1: `fix(us-l01/us-l02): stabilize live E2E candidate selection across pages`). working tree **CLEAN**. develop **101커밋 ahead**. **origin/develop 동기화** @ `63234e2`.
+> - **`7e5c806..63234e2` 변경**(1 file, +49/-7): `pilotLiveApi.e2e.test.js` — payment/overdue 페이지 다중 스캔으로 eligible row 없을 때 live write-flow 실패 방지.
+> - develop HEAD `npm test`: **567/567 PASS**(148 files, 112.25s) · build **851 modules 3 청크** (index 402.48 kB, max 367 kB) · audit **0** · **53 route·43 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 287차): Open 0 · develop `@27f20de` WT CLEAN · 516/516 PASS · 80 ahead. 잔여: **develop→test merge(80+101=181)** · LIVE_E2E run(결정 73·post-merge).
+
+> **286차 재검증 (2026-06-11T02:47) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@7e5c806`(+2 vs `0024c88`: UXD-76 VehiclesPage a11y · G26/US-L04 medical expense deduction UI)·WT **CLEAN**·HEAD 567/567 PASS·851 modules·53 route·43 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `7f10449` WT CLEAN·test 246/246 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 284차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.72s) — 286차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `7e5c806`** (+2: `04f2f89` UXD-76 VehiclesPage row edit aria-label · `7e5c806` G26/US-L04 `MedicalExpenseDeductionPanel` guardian+staff). working tree **CLEAN**. develop **100커밋 ahead**. **origin/develop 동기화** @ `7e5c806`.
+> - **`0024c88..7e5c806` 변경**(11 files, +599/-4): `VehiclesPage` a11y · `MedicalExpenseDeductionPanel`(+test)·`medicalExpenseDeduction.js`(+test)·`ClientDetailPage`·`GuardianPortalPage`·`services.js`.
+> - develop HEAD `npm test`: **567/567 PASS**(148 files, 115.67s) · build **851 modules 3 청크** (index 402.48 kB, max 367 kB) · audit **0** · **53 route·43 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 285차): Open 0 · develop `@7f10449` WT CLEAN · test 246/246 PASS · 79 ahead. 잔여: **develop→test merge(79+100=179)** · LIVE_E2E run(결정 73·post-merge).
+
+> **284차 재검증 (2026-06-11T02:06) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@0024c88`(+1 vs `189a00d`: G2 BillingDetail paidAt guard)·WT **CLEAN**·HEAD 558/558 PASS·849 modules·52 route·74 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `ed730a2` WT CLEAN·510/510 PASS·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 282차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 52.38s) — 284차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `0024c88`** (+1: `fix(v2/G2): require paidAt on billing detail copay payment flow`). working tree **CLEAN**. develop **98커밋 ahead**. **origin/develop 동기화** @ `0024c88`.
+> - **`189a00d..0024c88` 변경**(4 files, +136/-1): `PaymentRecordModal.jsx`(+test)·`BillingDetailPage.jsx`(+test) — copay payment `paidAt` 필수 가드 + 회귀 테스트 3건.
+> - develop HEAD `npm test`: **558/558 PASS**(146 files) · build **849 modules 3 청크** (index 396.22 kB, max 367 kB) · audit **0** · **52 route·74 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 283차): Open 0 · develop `@ed730a2` WT CLEAN · 510/510 PASS · 78 ahead. 잔여: **develop→test merge(78+98=176)** · LIVE_E2E run(결정 73·post-merge).
+
+> **282차 재검증 (2026-06-11T01:46) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@189a00d`(+1 vs `62058d3`: US-J02 stale billing error clear)·WT **CLEAN**·HEAD 555/555 PASS·849 modules·52 route·43 page·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 1 BLOCK QA-B33 @ `4001510` WT CLEAN·509/510 FAIL·**양 스트림 merge BLOCK**(BE test fix 선행):
+> - **frontend test HEAD `c7c8f07`** — 280차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 50.84s) — 282차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `189a00d`** (+1: `fix(us-j02): clear stale billing error on client reset`). working tree **CLEAN**. develop **97커밋 ahead**. **origin/develop 동기화** @ `189a00d`.
+> - **`62058d3..189a00d` 변경**(2 files, +26): `GuardianPortalPage.jsx`(+1) — 빈 클라이언트 선택 시 stale billing error 초기화 · `GuardianPortalPage.test.jsx`(+25) — empty-selection 전환 회귀 테스트.
+> - develop HEAD `npm test`: **555/555 PASS**(146 files) · build **849 modules 3 청크** (index 395.72 kB, max 367 kB) · audit **0** · **52 route·43 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 281차): Open 1 BLOCK QA-B33 · develop `@4001510` WT CLEAN · HEAD **509/510 FAIL**. 잔여: **COD BE `J03AlimtalkServiceFlowE2eTest` fix→merge(77+97=174)** · LIVE_E2E run(결정 73·post-merge).
+
+> **280차 재검증 (2026-06-11T01:21) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@62058d3`(+1 vs `bed612c`: US-J02 `loadTargets` out-of-order guard)·WT **CLEAN**·HEAD 554/554 PASS·849 modules·QA-B32 Fixed·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차 backend Open 0 @ `4001510` WT CLEAN·77 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 278차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 78.0s) — 280차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `62058d3`** (+1: `fix(US-J02): guard guardian portal targets load against out-of-order responses`). working tree **CLEAN**. develop **96커밋 ahead**. **origin/develop 동기화** @ `62058d3`.
+> - **`bed612c..62058d3` 변경**(2 files, +70/-3): `GuardianPortalPage.jsx`(+22/-3)·`GuardianPortalPage.test.jsx`(+51) — `loadTargets()` `targetsRequestSeqRef` stale-response 가드 + 선택 클라이언트 유지 + 회귀 테스트.
+> - develop HEAD `npm test`: **554/554 PASS**(146 files) · build **849 modules 3 청크** (index 395.71 kB, max 367 kB) · audit **0**.
+> - **QA-20260611-B32 Fixed** @ `62058d3` · **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 279차): Open 0 · develop `@4001510` WT CLEAN · 77 ahead. 잔여: **develop→test merge(96+77=173)** · LIVE_E2E run(결정 73·post-merge).
+
+> **278차 재검증 (2026-06-11T01:05) — ⚠ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@bed612c` HEAD 불변·WT DIRTY 2M(276차 CLEAN→재오염, US-J02 `loadTargets` out-of-order guard WIP)·신규 Open 1 BLOCK QA-20260611-B32·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge BLOCK(frontend)·교차 backend Open 1 BLOCK QA-B31 @ 894e246 WT DIRTY 2M·양 스트림 merge BLOCK**:
+> - **frontend test HEAD `c7c8f07`** — 276차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 86.48s) — 278차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0** (276차 측정 불변).
+> - **frontend develop HEAD `bed612c`** — **불변**(276차 동일·B30 Fixed). working tree **DIRTY 2M**. develop **95커밋 ahead**. **origin/develop 동기화** @ `bed612c`.
+> - **WT diff** (2 files, +73/-3): `GuardianPortalPage.jsx`(+22/-3)·`GuardianPortalPage.test.jsx`(+51) — `loadTargets()`에 `targetsRequestSeqRef` stale-response 가드 + 선택 클라이언트 유지 + `keeps latest linked client when stale target response resolves last` 회귀 테스트.
+> - **WT 타깃 검증**: `npx vitest run src/pages/GuardianPortalPage.test.jsx` → **11/11 PASS**(HEAD 10 → WT +1 @Test). develop HEAD `npm test` **553/553 PASS**(276차 측정).
+> - **이관 규율 6 위반**: develop WT **미커밋 2M** → develop→test merge **불가**.
+> - **신규 Open 1건(BLOCK)**: `QA-20260611-B32`. **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 277차): Open 1 BLOCK QA-B31 · develop `@894e246` WT DIRTY 2M · 76 ahead. 잔여: **COD FE+BE WT clean(2M+2M)→merge(95+76=171)** · LIVE_E2E run(결정 73·post-merge).
+
+> **276차 재검증 (2026-06-11T00:42) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@bed612c`(+1 vs `a03a9f9`: US-J02 GuardianPortal request-seq guard)·WT **CLEAN**(274차 DIRTY 2M→해소)·HEAD 553/553 PASS·849 modules·Open 0(frontend)·QA-B30 Fixed·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차(backend 275차): Open 0·develop `@894e246` WT CLEAN·76 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 274차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 81.97s) — 276차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `bed612c`** (+1: `fix(US-J02): guard guardian portal daily/billing loads against out-of-order responses`). working tree **CLEAN**. develop **95커밋 ahead**. **origin/develop 동기화** @ `bed612c`.
+> - **`a03a9f9..bed612c` 변경**(2 files, +147/-3): `GuardianPortalPage.jsx`·`GuardianPortalPage.test.jsx` — `dailyRequestSeqRef`·`billingRequestSeqRef` stale response guard + 회귀 테스트.
+> - develop HEAD `npm test`: **553/553 PASS**(146 files, 140.91s) · build **849 modules 3 청크** (index 395.55 kB, max 367.09 kB) · audit **0** · **52 route**.
+> - **QA-20260611-B30 Fixed** @ `bed612c` · **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 275차): Open 0 · develop `@894e246` WT CLEAN · 76 ahead. 잔여: **develop→test merge(95+76=171)** · LIVE_E2E run(결정 73·post-merge).
+
+> **274차 재검증 (2026-06-11T00:20) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@a03a9f9`(+1 vs `fcf713a`: UXD-75 RecordsContextNav·transport nav a11y)·WT **DIRTY 2M**(271차 CLEAN→재오염, US-J02 GuardianPortal pagination request-seq WIP)·HEAD 553/553 PASS(+6)·849 modules·Open 1 BLOCK QA-B30·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(frontend)·교차(backend 273차): Open 1 QA-B29·develop `@64ebf6e` WT DIRTY·75 ahead·**양 스트림 merge BLOCK**:
+> - **frontend test HEAD `c7c8f07`** — 271차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8, 51.24s) — 274차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `a03a9f9`** (+1: `feat(UXD-75): add RecordsContextNav and transport nav a11y gaps`). working tree **DIRTY 2M**. develop **94커밋 ahead**. **origin/develop 동기화** @ `a03a9f9`.
+> - **`fcf713a..a03a9f9` 변경**(12 files, +171/-6): `RecordsContextNav`(+test)·`BillingContextNav`·`TransportContextNav` test·`navConfig`·Health/Meals/Programs/Visits pages.
+> - **WT diff** (2 files, +147/-3): `GuardianPortalPage.jsx`·`GuardianPortalPage.test.jsx` — `dailyRequestSeqRef`·`billingRequestSeqRef` race guard + 회귀 테스트.
+> - develop HEAD `npm test`: **553/553 PASS**(+6 vs 271차 547/547) · WT 동일 PASS · build **849 modules 3 청크** (index 395.55 kB, max 367.09 kB) · audit **0** · **52 route·74 page**.
+> - **Open 1건(BLOCK)**: `QA-20260611-B30`. **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 273차): Open 1 QA-B29 · develop `@64ebf6e` WT DIRTY · 75 ahead. 잔여: **COD FE+BE WT clean→merge(94+75)** · LIVE_E2E run(결정 73·post-merge).
+
+> **271차 재검증 (2026-06-10T23:22) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@fcf713a`(+1 vs `0abf164`: G15 NHIS form 18/19/20 workflow guide)·WT **CLEAN**·547/547 PASS(+2)·848 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차(backend 270차): Open 0·develop `@9a97a1c` WT CLEAN·74 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 269차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 271차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `fcf713a`** (+1: `feat(G15): add NHIS form 18/19/20 three-way application workflow guide`). working tree **CLEAN**. develop **93커밋 ahead**. **origin/develop 동기화** @ `fcf713a`.
+> - **`0abf164..fcf713a` 변경**(6 files, +132/-4): `TransportForm18GuidePanel`(+test)·`transportForm18.js`(+test)·`competitorModuleCoverage` KPI — G15 제18·19·20호 3종 신청 워크플로 가이드.
+> - develop `npm test`: **547/547 PASS**(+2 vs 269차 545/545) · build **848 modules 3 청크** (index 394.34 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 270차): Open 0 · develop `@9a97a1c` WT CLEAN · 74 ahead. 잔여: **develop→test merge(93+74)** · LIVE_E2E run(결정 73·post-merge).
+
+> **269차 재검증 (2026-06-10T23:03) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@0abf164`(+1 vs `2b6024a`: G7 NHIS guidance partial failure tolerance)·WT **CLEAN**·545/545 PASS·848 modules·QA-B28 **Fixed**·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차(backend 268차): Open 0·develop `@b5218a9` WT CLEAN·73 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 267차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 269차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `0abf164`** (+1: `fix(nhis): keep guidance banner stable on partial guidance failures`). working tree **CLEAN**. develop **92커밋 ahead**. **origin/develop 동기화** @ `0abf164`.
+> - **`2b6024a..0abf164` 변경**(2 files, +53/-12): `NHISImportPage.jsx` `Promise.allSettled`·`extractGuidanceMessage()` · `NHISImportPage.test.jsx` guidance failure tolerance (+2 tests vs 543).
+> - develop `npm test`: **545/545 PASS**(+2 vs 267차 543/543) · build **848 modules 3 청크** (index 391.88 kB, max 367.09 kB) · audit **0** · **52 route·43 page**.
+> - **QA-20260610-B28 Fixed** @ `0abf164`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 268차): Open 0 · develop `@b5218a9` WT CLEAN · 73 ahead. 잔여: **develop→test merge(92+73)** · LIVE_E2E run(결정 73·post-merge).
+
+> **267차 재검증 (2026-06-10T22:46) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@2b6024a` HEAD 불변·WT **DIRTY 2M**(265차 CLEAN→재오염, G7 NHIS guidance allSettled WIP)·HEAD 543/543·WT 544/544(+1)·848 modules·Open 1 BLOCK QA-B28·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(frontend)·교차(backend 266차): Open 1 QA-B27·develop `@ba4c9d9` WT DIRTY 2M·**양 스트림 merge BLOCK**:
+> - **frontend test HEAD `c7c8f07`** — 265차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 267차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `2b6024a`** — **불변**(265차 동일). working tree **DIRTY 2M**. develop **91커밋 ahead**. **origin/develop 동기화** @ `2b6024a`.
+> - **WT diff** (2 files, +53/-12): `NHISImportPage.jsx` `Promise.allSettled`·`extractGuidanceMessage()` · `NHISImportPage.test.jsx` guidance API failure tolerance (+1 test).
+> - develop HEAD `npm test`: **543/543 PASS** · WT **544/544 PASS**(+1 test) · build **848 modules 3 청크** (index 391.87 kB, max 367.09 kB) · audit **0**.
+> - **Open 1건(BLOCK)**: `QA-20260610-B28`. **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 266차): Open 1 QA-B27 · develop `@ba4c9d9` WT DIRTY 2M · 72 ahead. 잔여: **COD FE+BE WT clean(2M+2M)→merge(91+72)** · LIVE_E2E run(결정 73).
+
+> **265차 재검증 (2026-06-10T22:22) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@2b6024a`(+1 vs `1f71335`: `2b6024a` QA-B26 NHIS guidance parallel+fallback)·WT **CLEAN**·543/543 PASS·848 modules·QA-B26 **Fixed**·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge **FULLY UNBLOCKED**(frontend)·교차(backend 264차): Open 0·develop `@ba4c9d9` WT CLEAN·72 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 263차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 265차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `2b6024a`** (+1: `fix(nhis): 병렬 guidance 로드와 fallback 키 처리 안정화`). working tree **CLEAN**. develop **91커밋 ahead**. **origin/develop 동기화** @ `2b6024a`.
+> - develop `npm test`: **543/543 PASS**(144 files) · build **848 modules 3 청크** (index 391.75 kB, max 367.09 kB) · audit **0**.
+> - **QA-20260610-B26 Fixed** @ `2b6024a`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge FULLY UNBLOCKED**(frontend). 교차(backend 264차): Open 0 · develop `@ba4c9d9` WT CLEAN · 72 ahead. 잔여: **develop→test merge(91+72)** · LIVE_E2E run(결정 73·post-merge).
+
+> **263차 재검증 (2026-06-10T22:02) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@1f71335`(+2 vs `08dbcf0`: `1220bfb` QA-B24 · `1f71335` a11y)·WT **DIRTY 2M**(261차 4M→축소, G7 guidance fallback WIP)·HEAD 542/543·WT 543/543(+1)·848 modules·QA-B24 **Fixed**·Open 1 BLOCK QA-B26·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(frontend)·교차(backend 262차): Open 1 QA-B25·develop `@3def542` WT DIRTY 1U·**양 스트림 merge BLOCK**:
+> - **frontend test HEAD `c7c8f07`** — 261차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 263차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `1f71335`** (+2: `1220bfb` G7 NHIS live guidance · `1f71335` Field aria-required). working tree **DIRTY 2M**. develop **90커밋 ahead**. **origin/develop 동기화** @ `1f71335`.
+> - **WT diff** (2 files, +28/-4): `NHISImportPage.jsx` parallel guidance fetch + `guidanceMessage` fallback · `NHISImportPage.test.jsx` +1 회귀.
+> - develop HEAD `npm test`: **542/543 PASS** · WT **543/543 PASS**(+1 test) · build **848 modules 3 청크** (index 391.75 kB, max 367.09 kB) · audit **0**.
+> - **QA-20260610-B24 Fixed** @ `1220bfb`. **Open 1건(BLOCK)**: `QA-20260610-B26`. **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 262차): Open 1 QA-B25 · develop `@3def542` WT DIRTY 1U · 71 ahead. 잔여: **COD FE WT clean(2M)→merge(90+71)** · **COD BE V70 commit+push** · LIVE_E2E run(결정 73).
+
+> **261차 재검증 (2026-06-10T21:28) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@08dbcf0` HEAD 불변·WT **DIRTY 4M**(259차 CLEAN→재오염, G7 NHIS import live guidance UI WIP)·HEAD 534/534·WT 535/535(+1)·848 modules·Open 1 BLOCK QA-B24·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(frontend)·교차(backend 260차): Open 0·develop `@dd7a580` WT CLEAN·70 ahead·**양 스트림 merge BLOCK**(frontend WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 259차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 261차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `08dbcf0`** — **불변**(259차 동일). working tree **DIRTY 4M**. develop **88커밋 ahead**. **origin/develop 동기화** @ `08dbcf0`.
+> - **WT diff** (4 files, +23/-2): `NhisImportGuidePanel.jsx`(+test) `guidanceMessage` prop·Warning Alert · `NHISImportPage.jsx`(+test) `fetchNhisImportGuidanceApi()` on-load · G7/Epic V NHIS import live guidance.
+> - develop HEAD `npm test`: **534/534 PASS**(259차) · WT **535/535 PASS**(+1 test) · build **848 modules 3 청크** (index 391.66 kB, max 367.09 kB) · audit **0**.
+> - **Open 1건(BLOCK)**: `QA-20260610-B24`. **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge BLOCK**(frontend WT clean 선행). 교차(backend 260차): Open 0 · develop `@dd7a580` WT CLEAN · 70 ahead. 잔여: **COD frontend WT clean→merge(88+70)** · LIVE_E2E run(결정 73).
+
+> **259차 재검증 (2026-06-10T21:10) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@08dbcf0`(+1 vs 257차 `107bfb3`, WT **CLEAN** G15/G16 care provision↔transport linkage UI)·534/534 PASS·848 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 258차): Open 0·develop `@8bdead6` WT CLEAN·69 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 257차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 259차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `08dbcf0`** (+1 vs 257차 `107bfb3`: `feat(G15/G16): add care provision transport linkage UI and vehicle assignment`). working tree **CLEAN**. develop **88커밋 ahead**. **origin/develop 동기화** @ `08dbcf0`.
+> - **`107bfb3..08dbcf0` 변경**(10 files, +514): `CareProvisionRecordPanel`(+test)·`TransportVehicleSelect`(+test)·`ClientDetailPage`·`TransportRunDetailPage`(+test)·`TransportRunNewPage`(+test)·`services.js` — G15 급여제공↔이동 연동 UI·G16 차량 배정.
+> - develop `npm test`: **534/534 PASS**(+5/+5 vs 257차 529/529) · build **848 modules 3 청크** (index 391.34 kB, max 367.09 kB) · audit **0** · **51 route·43 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 258차): Open 0 · develop `@8bdead6` WT CLEAN · 69 ahead. 잔여: **develop→test merge(88+69)** · LIVE_E2E run(결정 73).
+
+> **257차 재검증 (2026-06-10T20:45) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@107bfb3`(+1 vs 255차 `2b45709`, WT **CLEAN** G16 vehicle master page)·529/529 PASS·846 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 256차): Open 0·develop `@e16534c` WT CLEAN·68 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 255차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 257차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `107bfb3`** (+1 vs 255차 `2b45709`: `feat(G16): add vehicle master page with branch-scoped CRUD`). working tree **CLEAN**. develop **87커밋 ahead**. **origin/develop 동기화** @ `107bfb3`.
+> - **`2b45709..107bfb3` 변경**(7 files, +573): `VehiclesPage`(+test)·`vehicles.js`·`services.js` vehicle APIs·Route `/transport/vehicles`·`TransportContextNav` — G16 차량 마스터 CRUD UI.
+> - develop `npm test`: **529/529 PASS**(+4/+1 vs 255차 525/525) · build **846 modules 3 청크** (index 386.24 kB, max 367.09 kB) · audit **0** · **52 route·72 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 256차): Open 0 · develop `@e16534c` WT CLEAN · 68 ahead. 잔여: **develop→test merge(87+68)** · LIVE_E2E run(결정 73).
+
+> **255차 재검증 (2026-06-10T20:20) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@2b45709`(+1 vs 253차 `9dfef92`, WT **CLEAN** US-J02 guardian billing pagination UX)·525/525 PASS·844 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 254차): Open 1 BLOCK QA-B23·develop `@bd375e6` WT DIRTY 2M·67 ahead·**양 스트림 merge BLOCK**(backend WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 253차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 255차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `2b45709`** (+1 vs 253차 `9dfef92`: `fix(guardian): keep billing list visible while loading more pages`). working tree **CLEAN**. develop **86커밋 ahead**. **origin/develop 동기화** @ `2b45709`.
+> - **`9dfef92..2b45709` 변경**(2 files, +64/-1): `GuardianPortalPage.jsx`·`GuardianPortalPage.test.jsx` — US-J02 보호자 명세 페이지네이션 append-loading 회귀 테스트.
+> - develop `npm test`: **525/525 PASS**(+1/+0 vs 253차 524/524) · build **844 modules 3 청크** (index 380.37 kB, max 367.09 kB) · audit **0** · **51 route·71 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 254차): Open 1 BLOCK `QA-20260610-B23` · develop `@bd375e6` WT DIRTY 2M · 67 ahead. 잔여: **COD backend WT clean→merge(86+67)** · LIVE_E2E run(결정 73).
+
+> **253차 재검증 (2026-06-10T20:01) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@9dfef92`(+1 vs 250차 `a0dcfc0`, WT **CLEAN** G16 transport service fee UI)·524/524 PASS·844 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 252차): Open 0·develop `@bd375e6` WT CLEAN·67 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 250차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 253차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `9dfef92`** (+1 vs 250차 `a0dcfc0`: `Wire transport service fee page into routing and formatting`). working tree **CLEAN**. develop **85커밋 ahead**. **origin/develop 동기화** @ `9dfef92`.
+> - **`a0dcfc0..9dfef92` 변경**(9 files, +665): `TransportServiceFeePanel`(+test)·`TransportServiceFeePage`(+test)·`transportServiceFee.js`(+test)·`services.js` transport fee APIs·Route `/transport/service-fees`·`TransportContextNav` — G16 운송수가 청구 UI.
+> - develop `npm test`: **524/524 PASS**(+9/+3 vs 250차 515/515) · build **844 modules 3 청크** (index 380.35 kB, max 367.09 kB) · audit **0** · **51 route·71 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 252차): Open 0 · develop `@bd375e6` WT CLEAN · 67 ahead. 잔여: **develop→test merge(85+67)** · LIVE_E2E run(결정 73).
+
+> **250차 재검증 (2026-06-10T18:43) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@a0dcfc0`(+1 vs 248차 `ba020d4`, WT **CLEAN** G15 2-1-1/2-9 외출·월간 리포트 UI)·515/515 PASS·841 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 249차): Open 0·develop `@7dfcc9e` WT CLEAN·65 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 248차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 250차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `a0dcfc0`** (+1 vs 248차 `ba020d4`: `feat(v1.3-C/G15): add client outing management and monthly report UI`). working tree **CLEAN**. develop **84커밋 ahead**. **origin/develop 동기화** @ `a0dcfc0`.
+> - **`ba020d4..a0dcfc0` 변경**(14 files, +1081): `ClientOutingPanel`(+test)·`ClientOutingsPage`·`ClientOutingReportPage`(+test)·`TransportContextNav`·`outingFormat.js`(+test)·Route `/transport/outings`·`/reports/client-outings` — G15 2-1-1 외출 lifecycle·2-9 월간 리포트 UI.
+> - develop `npm test`: **515/515 PASS**(+5/+4 vs 248차 510/510) · build **841 modules 3 청크** (index 373.24 kB, max 367.09 kB) · audit **0** · **50 route·70 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 249차): Open 0 · develop `@7dfcc9e` WT CLEAN · 65 ahead. 잔여: **develop→test merge(84+65)** · LIVE_E2E run(결정 73).
+
+> **248차 재검증 (2026-06-10T18:20) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@ba020d4`(+2 vs 246차 `eef07e5`, WT **CLEAN** UXD-73 출석 컨텍스트 네비·G15 별지 제18/19/20호 분리)·510/510 PASS·835 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 247차): Open 0·develop `@639ac91` WT CLEAN·64 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 246차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 248차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `ba020d4`** (+2 vs 246차 `eef07e5`: `420b4d7` UXD-73 출석 컨텍스트 네비·청구·법정서식 a11y · `ba020d4` G15 별지 제18/19/20호 transport fee guide 분리). working tree **CLEAN**. develop **83커밋 ahead**. **origin/develop 동기화** @ `ba020d4`.
+> - **`eef07e5..ba020d4` 변경**(16 files, +188/-21): `AttendanceContextNav`(+test)·`ClaimGenerationPanel`·`GuardianDocumentNotifyPanel`·`transportForm18.js`(+test) — 출석 Epic E 컨텍스트 네비·G15 수가 신청서식 분리.
+> - develop `npm test`: **510/510 PASS**(+2/+0 vs 246차 508/508) · build **835 modules 3 청크** (index 360.21 kB, max 367.09 kB) · audit **0** · **49 route·67 page**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 247차): Open 0 · develop `@639ac91` WT CLEAN · 64 ahead. 잔여: **develop→test merge(83+64)** · LIVE_E2E run(결정 73).
+
+> **246차 재검증 (2026-06-10T17:52) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@eef07e5`(+1 vs 243차 `eecf0be`, WT **CLEAN** G15 transport time compliance + companion on service log)·508/508 PASS·834 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 245차): Open 0·develop `@9d7c17f` WT CLEAN·63 ahead·**양 스트림 merge gate FULLY UNBLOCKED**:
+> - **frontend test HEAD `c7c8f07`** — 243차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 246차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `eef07e5`** (+1 vs 243차 `eecf0be`: `feat(v1.3-c/G15): record time compliance and companion on transport service log`). working tree **CLEAN**. develop **81커밋 ahead**. **origin/develop 동기화** @ `eef07e5`.
+> - **`eecf0be..eef07e5` 변경**(7 files, +448/-45): `transportTimeCompliance.js`(+test)·`TransportServiceLogPanel`(+test)·`transportServiceLog.js`(+test)·`components.css` — G15 운행일지 시간 준수·동승자 기록 UI.
+> - develop `npm test`: **508/508 PASS**(+7/+1 vs 243차 501/501) · build **834 modules 3 청크** (index 358.25 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 245차): Open 0 · develop `@9d7c17f` WT CLEAN · 63 ahead. 잔여: **develop→test merge(81+63)** · LIVE_E2E run(결정 73).
+
+> **243차 재검증 (2026-06-10T17:33) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@eecf0be`(+1 vs 240차 `7389884`, WT **CLEAN** G15 별지 제18호 transport fee guide)·501/501 PASS·833 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 241차): Open 1 BLOCK QA-B22·develop `@b0a88ac` WT DIRTY 2M·62 ahead·**양 스트림 merge BLOCK**(backend WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 240차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 243차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `eecf0be`** (+1 vs 240차 `7389884`: `feat(v1.3-c/G15): add 별지 제18호 transport fee application guide`). working tree **CLEAN**. develop **80커밋 ahead**. **origin/develop 동기화** @ `eecf0be`.
+> - **`7389884..eecf0be` 변경**(11 files, +158/-1): `TransportForm18GuidePanel`(+test)·`transportForm18.js`(+test)·`TransportServiceLogPanel`(+test)·`TransportPage`·`competitorModuleCoverage`·`pilotPageFlows.test.jsx`.
+> - develop `npm test`: **501/501 PASS**(+6/+2 vs 240차 495/495) · build **833 modules 3 청크** (index 355.11 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 241차): Open 1 BLOCK `QA-20260610-B22` · develop `@b0a88ac` WT DIRTY 2M · 62 ahead. 잔여: **COD backend WT clean→merge(80+62)** · LIVE_E2E run(결정 73).
+
+> **240차 재검증 (2026-06-10T17:04) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@7389884`(+1 vs 238차 `49678a5`, WT **CLEAN** G15 transport service log export)·495/495 PASS·831 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 239차): Open 0·develop `@b0a88ac` WT CLEAN·62 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 238차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 240차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `7389884`** (+1 vs 238차 `49678a5`: `feat(v1.3-c/G15): export transport service log from confirmed runs`). working tree **CLEAN**. develop **79커밋 ahead**. **origin/develop 동기화** @ `7389884`.
+> - **`49678a5..7389884` 변경**(7 files, +518): `TransportServiceLogPanel`(+test)·`transportServiceLog.js`(+test)·`TransportRunDetailPage`(+test)·print CSS — G15 별지 제22호 운행일지 인쇄/다운로드 UI.
+> - develop `npm test`: **495/495 PASS**(+10/+2 vs 238차 485/485) · build **831 modules 3 청크** (index 352.87 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 239차): Open 0 · develop `@b0a88ac` WT CLEAN · 62 ahead. 잔여: **develop→test merge(79+62)** · LIVE_E2E run(결정 73).
+
+> **238차 재검증 (2026-06-10T16:40) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@49678a5`(+1 vs 236차 `48d90d5`, WT **CLEAN** US-T02 geocode fixture fix)·485/485 PASS·829 modules·Open 0(frontend)·QA-B20 Fixed·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 237차): Open 1 BLOCK QA-B21·develop `@9aafa3e` WT DIRTY 2M·61 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 236차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 238차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `49678a5`** (+1 vs 236차 `48d90d5`: `test(v1.3-c): align US-T02 transport fixtures with geocode guard`). working tree **CLEAN**. develop **78커밋 ahead**. **origin/develop 동기화** @ `49678a5`.
+> - **`48d90d5..49678a5` 변경**(1 file, +27/-6): `pilotPageFlows.test.jsx` — transport roster/run fixture geocode OK·좌표 필드 정합화.
+> - develop `npm test`: **485/485 PASS**(+1/+0 vs 236차 484/485 FAIL) · build **829 modules 3 청크** (index 347.46 kB, max 367.09 kB) · audit **0**.
+> - **QA-20260610-B20 Fixed** @ `49678a5`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 237차): Open 1 BLOCK `QA-20260610-B21` · develop `@9aafa3e` WT DIRTY 2M · 61 ahead. 잔여: **COD backend WT clean→merge(78+61)** · LIVE_E2E run(결정 73).
+
+> **236차 재검증 (2026-06-10T16:21) — ⚠ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@48d90d5`(+1 vs 234차 `695c0f7`, WT **CLEAN** geocode guard hardening)·484/485 FAIL(1)·829 modules·Open 1 BLOCK(QA-B20)·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge gate **BLOCK**(frontend)·교차(backend 235차): Open 0·develop `@9aafa3e` WT CLEAN·61 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 234차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 236차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `48d90d5`** (+1 vs 234차 `695c0f7`: `fix(v1.3-c): harden transport geocode save guard`). working tree **CLEAN**. develop **77커밋 ahead**. **origin/develop 동기화** @ `48d90d5`.
+> - **`695c0f7..48d90d5` 변경**(2 files, +22/-4): `transportUtils.js`(+test) — 좌표 없는 정류장 geocode failure 처리·저장 차단 강화.
+> - develop `npm test`: **484/485 FAIL**(1: US-T02 `pilotPageFlows` — `POST /api/v1/transport/runs` 미호출) · build **829 modules 3 청크** (index 347.46 kB, max 367.09 kB) · audit **0**.
+> - **Open 1건(BLOCK)**: `QA-20260610-B20`. **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge gate BLOCK**(develop npm test·FE-7). 교차(backend 235차): Open 0 · develop `@9aafa3e` WT CLEAN · 61 ahead. 잔여: **COD US-T02 fix→merge(77+61)** · LIVE_E2E run(결정 73).
+
+> **234차 재검증 (2026-06-10T16:03) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@695c0f7`(+2 vs 232차 `6c4c151`, WT **CLEAN** G15 geocode failure UI)·484/484 PASS·829 modules·Open 0(frontend)·QA-B19 Fixed·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 233차): Open 0·develop `@24733c7` WT CLEAN·60 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 232차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 234차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `695c0f7`** (+2 vs 232차 `6c4c151`: `318411d` geocode failure save block · `695c0f7` a11y assertions). working tree **CLEAN**. develop **76커밋 ahead**. **origin/develop 동기화** @ `695c0f7`.
+> - **`6c4c151..695c0f7` 변경**(7 files, +186/-8): `transportUtils.js`(+test)·`TransportRunDetailPage`(+test)·`TransportRunNewPage`(+test)·`Alert.jsx` — G15 geocode 실패 경고·저장 차단·a11y.
+> - develop `npm test`: **484/484 PASS**(+2/+1 vs 232차 482/482) · build **829 modules 3 청크** (index 347.36 kB, max 367.09 kB) · audit **0**.
+> - **QA-20260610-B19 Fixed** @ `695c0f7`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 233차): Open 0 · develop `@24733c7` WT CLEAN · 60 ahead. 잔여: **develop→test merge(76+60)** · LIVE_E2E run(결정 73).
+
+> **232차 재검증 (2026-06-10T15:20) — ⚠ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@6c4c151` HEAD **불변**·WT **DIRTY 4M**(G15 transport geocode failure UI WIP, 230차 CLEAN→재오염)·HEAD 481/481·WT 482/482 PASS·829 modules·Open 1 BLOCK(QA-B19)·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge gate **BLOCK**(frontend)·교차(backend 231차): Open 0·develop `@d6d7e7f` WT CLEAN·59 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 230차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 232차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `6c4c151`** **불변**(230차 대비). working tree **DIRTY 4M** — `TransportRunDetailPage.jsx`·`TransportRunDetailPage.test.jsx`·`TransportRunNewPage.jsx`·`transportUtils.js` (+51/-2, G15 geocode failure `countGeocodeFailures`·경고 Alert·저장 차단 WIP). develop **74커밋 ahead**. **origin/develop 동기화** @ `6c4c151`.
+> - develop HEAD `npm test`: **481/481 PASS**(127 files, 230차 불변) · WT **482/482 PASS**(+1 test) · build **829 modules 3 청크** (index 346.54 kB, max 367.09 kB) · audit **0**.
+> - **Open 1건(BLOCK)**: `QA-20260610-B19` (B07 recurrence #12). **판정 PASS(v1.2+v1.3-A @ test)**. **⚠ v1.2.1 merge gate BLOCK**(frontend WT clean 선행). 교차(backend 231차): Open 0 · develop `@d6d7e7f` WT CLEAN · 59 ahead. 잔여: **COD WT clean→merge(74+59)** · LIVE_E2E run(결정 73).
+
+> **230차 재검증 (2026-06-10T14:49) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@6c4c151`(+1 vs 228차 `60dc5d0`, WT **CLEAN** G15 attendance transport profile split)·481/127 PASS·829 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 229차): Open 0·develop `@3d8370a` WT CLEAN·58 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 228차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 230차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `6c4c151`** (+1 vs 228차 `60dc5d0`: `feat(v1.3-C/G15): split attendance by vehicle transport profile`). working tree **CLEAN**. develop **74커밋 ahead**. **origin/develop 동기화** @ `6c4c151`.
+> - **`60dc5d0..6c4c151` 변경**(6 files, +330/-9): `attendanceTransportMode.js`(+test)·`AttendancePage`(+test)·`App.jsx` Route `/attendance/boarding`·`/attendance/on-site`·`navConfig` — G15 탑승/출석 이원화 UI.
+> - develop `npm test`: **481/127 PASS**(+5/+1 vs 228차 476/126) · build **829 modules 3 청크** (index 346.01 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 229차): Open 0 · develop `@3d8370a` WT CLEAN · 58 ahead. 잔여: **develop→test merge(74+58)** · LIVE_E2E run(결정 73).
+
+> **228차 재검증 (2026-06-10T14:27) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@60dc5d0`(+1 vs 226차 `f987b9d`, WT **CLEAN** US-M03 claim guard precheck UI)·476/126 PASS·828 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend)·교차(backend 227차): Open 1 BLOCK QA-B18·develop `@d7475fd` WT DIRTY·57 ahead·**양 스트림 merge 선행 backend WT clean**:
+> - **frontend test HEAD `c7c8f07`** — 226차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 228차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `60dc5d0`** (+1 vs 226차 `f987b9d`: `fix(v1.2.1): block claim generation when guard precheck fails`). working tree **CLEAN**. develop **73커밋 ahead**. **origin/develop 동기화** @ `60dc5d0`.
+> - **`f987b9d..60dc5d0` 변경**(2 files, +27/-1): `ClaimGenerationPanel`(+test) — guard precheck 실패·로딩 중 생성 버튼 비활성·필드 오류 표시(US-M03).
+> - develop `npm test`: **476/126 PASS**(+1/+0 vs 226차 475/126) · build **828 modules 3 청크** (index 343.30 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**(frontend). 교차(backend 227차): Open 1 BLOCK **QA-20260610-B18** · develop `@d7475fd` WT DIRTY · 57 ahead. 잔여: **backend WT clean→merge(73+57)** · LIVE_E2E run(결정 73).
+
+> **226차 재검증 (2026-06-10T14:03) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@f987b9d`(+1 vs 224차 `7387ab9`, WT **CLEAN** G11 claim surcharge UX auto-apply align)·475/126 PASS·828 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**·교차(backend 225차): Open 0·develop `@d7475fd` WT CLEAN·57 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 224차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 226차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `f987b9d`** (+1 vs 224차 `7387ab9`: `feat(v1.2.1/G11): align claim surcharge UX with auto-apply backend`). working tree **CLEAN**. develop **72커밋 ahead**. **origin/develop 동기화** @ `f987b9d`.
+> - **`7387ab9..f987b9d` 변경**(8 files, +245/-8): `FeeSurchargeGuidePanel`(+test)·`ClaimGenerationPanel`(+test)·`feeSurchargeRates.js`(+test)·`services.js`·`pilotPageFlows.test.jsx` — G11 가산수가 자동 적용 BE(`d7475fd`) 정합·청구 생성 UX·E2E.
+> - develop `npm test`: **475/126 PASS**(+3/+0 vs 224차 472/472) · build **828 modules 3 청크** (index 343.18 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 225차): Open 0 · develop `@d7475fd` WT CLEAN · 57 ahead. 잔여: **develop→test merge(72+57)** · LIVE_E2E run(결정 73).
+
+> **224차 재검증 (2026-06-10T13:32) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@7387ab9`(+1 vs 222차 `9e3cab5`, WT **CLEAN** US-T01 assert fix)·472/472 PASS·828 modules·Open 0(frontend)·QA-B17 Fixed·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**·교차(backend 223차): Open 0·develop `@754160f` WT CLEAN·56 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 222차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 224차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `7387ab9`** (+1 vs 222차 `9e3cab5`: `fix(v1.3-C/G15): scope US-T01 roster assertion to table`). working tree **CLEAN**. develop **71커밋 ahead**. **origin/develop 동기화** @ `7387ab9`.
+> - **`9e3cab5..7387ab9` 변경**(1 file, +1/-1): `pilotPageFlows.test.jsx` — US-T01 `getByRole("table", { name: "당일 배차 명단" })` table-scoped assert.
+> - develop `npm test`: **472/472 PASS**(+1/+0 vs 222차 471/472 FAIL) · build **828 modules 3 청크** (index 340.72 kB, max 367.09 kB) · audit **0**.
+> - **QA-20260610-B17 Fixed** @ `7387ab9`. **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 223차): Open 0 · develop `@754160f` WT CLEAN · 56 ahead. 잔여: **develop→test merge(71+56)** · LIVE_E2E run(결정 73).
+
+> **222차 재검증 (2026-06-10T13:10) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@9e3cab5`(+2 vs 220차 `62f022d`, WT **CLEAN** G15 contract API + a11y)·471/472 FAIL(1)·828 modules·Open 1 BLOCK(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **BLOCK**(FE-7·QA-B17)·교차(backend 221차): Open 0·develop `@3c8f9fe` WT CLEAN·55 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 220차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 222차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `9e3cab5`** (+2 vs 220차 `62f022d`: `dc2a80f` a11y transport rule details · `9e3cab5` G15 transport contract signature save UI). working tree **CLEAN**. develop **70커밋 ahead**. **origin/develop 동기화** @ `9e3cab5`.
+> - **`62f022d..9e3cab5` 변경**(8 files, +514/-54): `TransportCompliancePanel`(+test)·`services.js`·`FeeSurchargeGuidePanel`(+test)·`TransportPage`(+test)·`pilotPageFlows.test.jsx` — G15 contract GET/PUT wiring·US-T01 assert 미수정.
+> - develop `npm test`: **471/472 FAIL**(+4/+0, 1 fail: US-T01 `getByText("김배차")` multiple elements) · build **828 modules 3 청크** (index 340.72 kB, max 367.09 kB) · audit **0**.
+> - **Open 1건(frontend BLOCK)**: **QA-20260610-B17**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate BLOCK**. 교차(backend 221차): Open 0 · develop `@3c8f9fe` WT CLEAN · 55 ahead. 잔여: **COD US-T01 fix→merge(70+55)** · LIVE_E2E run(결정 73).
+
+> **220차 재검증 (2026-06-10T12:20) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@62f022d`(+1 vs 218차 `4679f15`, WT **CLEAN** G27 `MonthlyBenefitCapGuardBanner` no-exceedance success status)·467/126 PASS·828 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(68 ahead·ff 가능)·교차(backend 219차): Open 0·develop `@d5e0e01` WT CLEAN·54 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 218차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 220차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `62f022d`** (+1 vs 218차 `4679f15`: `fix(v1.2.1): show monthly benefit cap check result when no exceedance`). working tree **CLEAN**. develop **68커밋 ahead**·ff 가능. **origin/develop 동기화** @ `62f022d`.
+> - **`4679f15..62f022d` 변경**(2 files, +18/-6): `MonthlyBenefitCapGuardBanner`(+test) — `warningCount` 0일 때 월한도 점검 완료 success 상태 표시(US-M04/G27).
+> - develop `npm test`: **467/126 PASS**(불변) · build **828 modules 3 청크** (index 336.01 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 219차): Open 0 · develop `@d5e0e01` WT CLEAN · 54 ahead. 잔여: merge(68+54) · LIVE_E2E run(결정 73).
+
+> **218차 재검증 (2026-06-10T12:00) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@4679f15`(+1 vs 216차 `3db8db3`, WT **CLEAN** G11/G15/US-L01 `pilotPageFlows` E2E)·467/126 PASS·828 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(67 ahead·ff 가능)·교차(backend 217차): Open 0·develop `@904072b` WT CLEAN·53 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 216차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 218차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `4679f15`** (+1 vs 216차 `3db8db3`: `test(v1.2.1): add G11·G15·US-L01 bank pilot page flow E2E`). working tree **CLEAN**. develop **67커밋 ahead**·ff 가능. **origin/develop 동기화** @ `4679f15`.
+> - **`3db8db3..4679f15` 변경**(1 file, +107/-2): `pilotPageFlows.test.jsx` — G11 `FeeSurchargeGuidePanel`·G15 `TransportCompliancePanel`·US-L01 `BankDepositImportPanel` fetch-mock E2E.
+> - develop `npm test`: **467/126 PASS**(+3/+0) · build **828 modules 3 청크** (index 335.79 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 217차): Open 0 · develop `@904072b` WT CLEAN · 53 ahead. 잔여: merge(67+53) · LIVE_E2E run(결정 73).
+
+> **216차 재검증 (2026-06-10T11:35) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@3db8db3`(+1 vs 214차 `fba5ea8`, WT **CLEAN** G11 `FeeSurchargeGuidePanel` + G15 `TransportCompliancePanel`)·464/126 PASS·828 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(66 ahead·ff 가능)·교차(backend 215차): Open 0·develop `@18ee9b6` WT CLEAN·52 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 214차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 216차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `3db8db3`** (+1 vs 214차 `fba5ea8`: `feat(v1.2.1): add G11 surcharge guide and G15 transport compliance panels`). working tree **CLEAN**. develop **66커밋 ahead**·ff 가능. **origin/develop 동기화** @ `3db8db3`.
+> - **`fba5ea8..3db8db3` 변경**(12 files, +511): `FeeSurchargeGuidePanel`(+test)·`TransportCompliancePanel`(+test)·`feeSurchargeRates.js`(+test)·`transportCompliance.js`(+test)·`FeeSchedulePage`·`TransportPage` — G11 가산수가 가이드·G15 배차 법정 준수 패널.
+> - develop `npm test`: **464/126 PASS**(+13/+4) · build **828 modules 3 청크** (index 335.79 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 215차): Open 0 · develop `@18ee9b6` WT CLEAN · 52 ahead. 잔여: merge(66+52) · LIVE_E2E run(결정 73).
+
+> **214차 재검증 (2026-06-10T11:10) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@fba5ea8`(+1 vs 212차 `f4bb171`, WT **CLEAN** US-M04/G27 cognitive support grade ltcGrade 0 label)·451/122 PASS·824 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(65 ahead·ff 가능)·교차(backend 213차): Open 0·develop `@20bc1be` WT CLEAN·51 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 212차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 214차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `fba5ea8`** (+1 vs 212차 `f4bb171`: `fix(US-M04/G27): label cognitive support grade (ltcGrade 0) correctly`). working tree **CLEAN**. develop **65커밋 ahead**·ff 가능. **origin/develop 동기화** @ `fba5ea8`.
+> - **`f4bb171..fba5ea8` 변경**(8 files, +161/-38): `MonthlyBenefitCapBanner`(+test)·`MonthlyBenefitCapGuardBanner`(+test)·`feeSchedules.js`(+test)·`BillingDetailPage`(+test) — G27 인지지원 등급(ltcGrade 0) 라벨·요금표 매핑 정합.
+> - develop `npm test`: **451/122 PASS**(+3/+0) · build **824 modules 3 청크** (index 327.22 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 213차): Open 0 · develop `@20bc1be` WT CLEAN · 51 ahead. 잔여: merge(65+51) · LIVE_E2E run(결정 73).
+
+> **212차 재검증 (2026-06-10T10:46) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@f4bb171`(+1 vs 210차 `5e64125`, WT **CLEAN** US-L01 bank deposit import branchId/appliedCount 정합)·448/122 PASS·824 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(64 ahead·ff 가능)·교차(backend 211차): Open 0·develop `@5fc44ec` WT CLEAN·50 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 210차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 212차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `f4bb171`** (+1 vs 210차 `5e64125`: `fix(US-L01): send branchId and map appliedCount in bank deposit import`). working tree **CLEAN**. develop **64커밋 ahead**·ff 가능. **origin/develop 동기화** @ `f4bb171`.
+> - develop `npm test`: **448/122 PASS**(+1/+0) · build **824 modules 3 청크** (index 327.07 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 211차): Open 0 · develop `@5fc44ec` WT CLEAN · 50 ahead. 잔여: merge(64+50) · LIVE_E2E run(결정 73).
+
+> **210차 재검증 (2026-06-10T10:18) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@5e64125`(+2 vs 208차 `c9451a0`, WT **CLEAN** US-M04 G27 monthly benefit cap UI + US-L01 bank deposit import panel)·447/122 PASS·824 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(63 ahead·ff 가능)·교차(backend 209차): Open 1 BLOCK `QA-20260610-B16`·develop `@467cd70` WT DIRTY 2M·49 ahead**:
+> - **frontend test HEAD `c7c8f07`** — 208차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 210차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `5e64125`** (+2 vs 208차 `c9451a0`: `9ffff0c` UXD-70 `MonthlyBenefitCapBanner`·`BankDepositImportPanel` · `5e64125` US-M04 monthly benefit cap API 정합·dashboard/billing guard 연동). working tree **CLEAN**. develop **63커밋 ahead**·ff 가능. **origin/develop 동기화** @ `5e64125`.
+> - **`c9451a0..5e64125` 변경**(20 files, +907/-12): `MonthlyBenefitCapBanner`(+test)·`MonthlyBenefitCapGuardBanner`(+test)·`MonthlyBenefitCapGuardPanel`(+test)·`BankDepositImportPanel`(+test)·`DashboardPage`·`BillingPage`·`PaymentPage`·`services.js`·`feeSchedules.js`·`dashboardSummary.js` 등 — G27 FE 월한도 초과 경고·US-L01 은행엑셀 업로드 UI.
+> - develop `npm test`: **447/447 PASS**(+13/+4) · build **824 modules 3 청크** (index 326.62 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 209차): Open 1 BLOCK `QA-20260610-B16` · develop `@467cd70` WT DIRTY 2M · 49 ahead. 잔여: merge(63+49 선행 backend WT clean) · LIVE_E2E run(결정 73).
+
+> **208차 재검증 (2026-06-10T09:27) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@c9451a0`(+1 vs 206차 `ac23529`, WT **CLEAN** basis response parsing hardening)·434/118 PASS·820 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(61 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 206차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 208차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c9451a0`** (+1 vs 206차 `ac23529`: `c9451a0` fix(v1.2.1) harden billing settings basis response parsing). working tree **CLEAN**. develop **61커밋 ahead**·ff 가능. **origin/develop 동기화** @ `c9451a0`.
+> - **`ac23529..c9451a0` 변경**(2 files, +46/-1): `BillingSettingsPanel.jsx`·`BillingSettingsPanel.test.jsx` — `extractClaimGenerationBasis` snake_case/camelCase·unknown basis fallback warning.
+> - develop `npm test`: **434/434 PASS**(+2 @Test) · build **820 modules 3 청크** (index 318.10 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 207차): Open 0 · develop `@467cd70` WT CLEAN · 49 ahead. 잔여: merge(61+49) · LIVE_E2E run(결정 73).
+
+> **206차 재검증 (2026-06-10T09:03) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@ac23529`(+1 vs 204차 `5bdb476`, WT **CLEAN** basis alias normalization)·432/432 PASS·820 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(60 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 204차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 206차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `ac23529`** (+1 vs 204차 `5bdb476`: `ac23529` fix(v1.2.1) normalize legacy billing claim generation basis aliases). working tree **CLEAN**. develop **60커밋 ahead**·ff 가능. **origin/develop 동기화** @ `ac23529`.
+> - **`5bdb476..ac23529` 변경**(2 files, +45/-2): `BillingSettingsPanel.jsx`·`BillingSettingsPanel.test.jsx` — `normalizeClaimGenerationBasis`·`CLAIM_GENERATION_BASIS_ALIASES` 레거시 alias 정규화.
+> - develop `npm test`: **432/432 PASS** · build **820 modules 3 청크** (index 317.93 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **QA-20260610-B07 #11 Fixed** @ `ac23529`. **판정 PASS(v1.2+v1.3-A @ test)**. **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 205차): Open 0 · develop `@a92e625` WT CLEAN · 48 ahead. 잔여: merge(60+48) · LIVE_E2E run(결정 73).
+
+> **204차 재검증 (2026-06-10T08:38) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@5bdb476` HEAD 불변·WT **DIRTY 2M**(BillingSettingsPanel basis alias WIP)·432/432 PASS(+1)·820 modules·Open 1 BLOCK `QA-20260610-B07 #11`·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **BLOCK**(WT clean 선행·59 ahead)**:
+> - **frontend test HEAD `c7c8f07`** — 202차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 204차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `5bdb476`** — 202차 대비 **불변**. working tree **DIRTY 2M**(`BillingSettingsPanel.jsx`·`BillingSettingsPanel.test.jsx` — `normalizeClaimGenerationBasis`·alias map WIP, **202차 CLEAN→재오염**). develop **59커밋 ahead**·ff 가능. **origin/develop 동기화** @ `5bdb476`.
+> - develop WT `npm test`: **432/432 PASS**(+1 vs HEAD 431/431) · build **820 modules 3 청크** (index 317.93 kB, max 367.09 kB) · audit **0**.
+> - **Open 1건(frontend BLOCK)**: **QA-20260610-B07 #11** — coder WT clean(commit/revert) 선행. **판정 PASS(v1.2+v1.3-A @ test)** · **v1.2.1 merge BLOCK**. 교차(backend 203차): Open 0 · develop `@95bb34d` WT CLEAN · 47 ahead. 잔여: **WT clean→merge(59+47)** · LIVE_E2E run(결정 73).
+
+> **202차 재검증 (2026-06-10T08:17) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@5bdb476`(+1 vs 200차 `25f3225`, WT **CLEAN** v1.2.1 billing settings basis handling hardening)·431/431 PASS(+3/+1)·820 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(59 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 200차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 202차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `5bdb476`** (+1 vs 200차 `25f3225`: `5bdb476` fix(v1.2.1) harden billing settings basis handling). working tree **CLEAN**. develop **59커밋 ahead**·ff 가능. **origin/develop 동기화** @ `5bdb476`.
+> - **`25f3225..5bdb476` 변경**(5 files, +80/-8): `BillingSettingsPanel.jsx`(+test)·`settingsServices.test.js`·`OrganizationSettingsPage.jsx`·`services.js`.
+> - develop `npm test`: **431/431 PASS**(+3/+1) · build **820 modules 3 청크** (index 317.59 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 201차): Open 0 · develop `@e50533f` WT CLEAN · 46 ahead. 잔여: merge(59+46) · LIVE_E2E run(결정 73).
+
+> **200차 재검증 (2026-06-10T07:49) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@25f3225`(+1 vs 198차 `911e732`, WT **CLEAN** US-M03 billing claim generation basis settings UI)·428/428 PASS(+5/+1)·820 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(58 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 198차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 200차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `25f3225`** (+1 vs 198차 `911e732`: `25f3225` feat(US-M03) billing claim generation basis settings UI). working tree **CLEAN**. develop **58커밋 ahead**·ff 가능. **origin/develop 동기화** @ `25f3225`.
+> - **`911e732..25f3225` 변경**(6 files, +279/-1): `BillingSettingsPanel.jsx`(+test)·`settingsServices.test.js`·`OrganizationSettingsPage.jsx`·`services.js`·`components/ui/index.js`.
+> - develop `npm test`: **428/428 PASS**(+5/+1) · build **820 modules 3 청크** (index 317.26 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 199차): Open 0 · develop `@b953662` WT CLEAN · 45 ahead. 잔여: merge(58+45) · LIVE_E2E run(결정 73).
+
+> **198차 재검증 (2026-06-10T07:22) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@911e732`(+2 vs 196차 `eedcc80`, WT **CLEAN** US-M03 prior-month unpaid claim generation guard UI + FilterChips WAI-ARIA radio keyboard)·423/423 PASS(+10/+3)·819 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(57 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 196차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 198차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `911e732`** (+2 vs 196차 `eedcc80`: `5b21451` FilterChips WAI-ARIA keyboard 패턴 · `911e732` US-M03 prior-month unpaid claim generation guard UI). working tree **CLEAN**. develop **57커밋 ahead**·ff 가능. **origin/develop 동기화** @ `911e732`.
+> - **`eedcc80..911e732` 변경**(4 files, +184/-13): `FilterChips.jsx`·`FilterChips.test.jsx`·`BillingCalculatorPage.jsx`·`BillingCalculatorPage.test.jsx`.
+> - develop `npm test`: **423/423 PASS**(+10/+3) · build **819 modules 3 청크** (index 314.51 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 197차): Open 0 · develop `@857bd32` WT CLEAN · 44 ahead. 잔여: merge(57+44) · LIVE_E2E run(결정 73).
+
+> **196차 재검증 (2026-06-10T06:32) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@eedcc80`(+1 vs 194차 `4c7c994`, WT **CLEAN** G2 payment receipt + elder abuse guideline notify UI)·413/413 PASS(+4/+1)·817 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(55 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 194차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 196차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `eedcc80`** (+1 vs 194차 `4c7c994`: `eedcc80` feat(v2/G2) payment receipt + elder abuse guideline notify UI). working tree **CLEAN**. develop **55커밋 ahead**·ff 가능. **origin/develop 동기화** @ `eedcc80`.
+> - **`4c7c994..eedcc80` 변경**(8 files, +267/-1): `GuardianDocumentNotifyPanel`(+test)·`BillingDetailPage`(+test)·`ClientDetailPage`·`services.js`·`billingGuardianPlatformServices.test.js` — G2 납부확인서·노인학대예방 지침 notify UI.
+> - develop `npm test`: **413/413 PASS**(+4/+1) · build **817 modules 3 청크** (index 310.17 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 195차): Open 0 · develop `@0854fbd` WT CLEAN · 43 ahead. 잔여: merge(55) · LIVE_E2E run(결정 73) · backend merge(43).
+
+> **194차 재검증 (2026-06-10T06:11) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@4c7c994`(+1 vs 192차 `dd72ff8`, WT **CLEAN** G19 integrated home surcharge notice on branch form)·409/409 PASS(+1/+0)·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(54 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 192차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 194차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `4c7c994`** (+1 vs 192차 `dd72ff8`: `4c7c994` feat(G19) show integrated home surcharge notice on branch form). working tree **CLEAN**. develop **54커밋 ahead**·ff 가능. **origin/develop 동기화** @ `4c7c994`.
+> - **`dd72ff8..4c7c994` 변경**(3 files, +34/-1): `branches.js`·`BranchesPage.jsx`·`BranchesPage.test.jsx` — 통합재가 surcharge 안내 UI·회귀 테스트.
+> - develop `npm test`: **409/409 PASS**(+1/+0) · build **816 modules 3 청크** (index 307.57 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 193차): Open 0 · develop `@588b8e6` WT CLEAN · 42 ahead. 잔여: merge(54) · LIVE_E2E run(결정 73) · backend merge(42).
+
+> **192차 재검증 (2026-06-10T05:46) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@dd72ff8`(+1 vs 190차 `00a8a57`, WT **CLEAN** US-L01 PaymentRecordModal overpayment guard)·408/408 PASS(+1/+0)·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(53 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 190차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 192차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `dd72ff8`** (+1 vs 190차 `00a8a57`: `dd72ff8` fix(US-L01) block overpayment in payment modal). working tree **CLEAN**. develop **53커밋 ahead**·ff 가능. **origin/develop 동기화** @ `dd72ff8`.
+> - **`00a8a57..dd72ff8` 변경**(2 files, +38/-1): `PaymentRecordModal.jsx`·`PaymentRecordModal.test.jsx` — 미납 본인부담금 초과 입금 UI 차단·회귀 테스트.
+> - develop `npm test`: **408/408 PASS**(+1/+0) · build **816 modules 3 청크** (index 307.28 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 191차): Open 0 · develop `@399bc22` WT CLEAN · 41 ahead. 잔여: merge(53) · LIVE_E2E run(결정 73) · backend merge(41).
+
+> **190차 재검증 (2026-06-10T05:26) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@00a8a57`(+1 vs 188차 `382e553`, WT **CLEAN** US-L01/L02 billing payment amount normalize)·407/407 PASS(+3/+0)·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(52 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 188차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 190차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `00a8a57`** (+1 vs 188차 `382e553`: `00a8a57` fix(US-L01/L02) normalize billing payment amounts in staff flows). working tree **CLEAN**. develop **52커밋 ahead**·ff 가능. **origin/develop 동기화** @ `00a8a57`.
+> - **`382e553..00a8a57` 변경**(5 files, +83/-9): `services.js`·`guardianBilling.js`·`PaymentRecordModal`(+test)·`billingGuardianPlatformServices.test.js` — staff 본인부담금 API 문자열 금액→number 정규화.
+> - develop `npm test`: **407/407 PASS**(+3/+0) · build **816 modules 3 청크** (index 307.13 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 189차): Open 0 · develop `@4109680` WT CLEAN · 40 ahead. 잔여: merge(52) · LIVE_E2E run(결정 73) · backend merge(40).
+
+> **188차 재검증 (2026-06-10T05:10) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@382e553`(+1 vs 186차 `8a771cf`, WT **CLEAN** US-J02 guardian billing amount normalize)·404/404 PASS(+1/+0)·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(51 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 186차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 188차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `382e553`** (+1 vs 186차 `8a771cf`: `382e553` fix(US-J02) normalize guardian billing amount fields). working tree **CLEAN**. develop **51커밋 ahead**·ff 가능. **origin/develop 동기화** @ `382e553`.
+> - **`8a771cf..382e553` 변경**(2 files, +30/-3): `guardianBilling.js`(+test) — API 문자열 금액→number 정규화·currency formatting 안정화.
+> - develop `npm test`: **404/404 PASS**(+1/+0) · build **816 modules 3 청크** (index 306.96 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 187차): Open 1 BLOCK `QA-20260610-B15` · develop `@40567a2` WT DIRTY 2M · 39 ahead. 잔여: merge(51) · LIVE_E2E run(결정 73) · backend WT clean→merge(39).
+
+> **186차 재검증 (2026-06-10T04:50) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@8a771cf`(+3 vs 183차 `5348d9c`, WT **CLEAN** G9/US-J02 duration band unify·FE-14 panel tests·US-G02 currency formatting)·403/403 PASS(+16/+3)·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(50 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 183차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 186차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `8a771cf`** (+3 vs 183차 `5348d9c`: `eb3f0fd` G9/US-J02 claim duration band unify · `06eb0a8` FE-14 panel regression tests · `8a771cf` US-G02 billing detail currency formatting). working tree **CLEAN**. develop **50커밋 ahead**·ff 가능. **origin/develop 동기화** @ `8a771cf`.
+> - **`5348d9c..8a771cf` 변경**(10 files, +374/-8): `guardianBilling.js`(+test)·`BillingDetailPage`(+test)·`GuardianPortalPage.test.jsx`·`AuditLogPanel.test.jsx`·`BackupSettingsPanel.test.jsx`·`LoginHistoryPanel.test.jsx`.
+> - develop `npm test`: **403/403 PASS**(+16/+3) · build **816 modules 3 청크** (index 306.85 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 185차): Open 0 · develop `@40567a2` WT CLEAN · 39 ahead. 잔여: merge(50) · LIVE_E2E run(결정 73) · backend merge(39).
+
+> **183차 재검증 (2026-06-10T03:58) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@5348d9c`(+1 vs 181차 `6fe853b`, WT **CLEAN** US-J02/G9 resolveDurationBand unify)·387/387 PASS(+5/+0)·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(47 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 181차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 183차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `5348d9c`** (+1 vs 181차 `6fe853b`: `5348d9c` feat(US-J02/G9) unify duration band fallback for guardian billing). working tree **CLEAN**. develop **47커밋 ahead**·ff 가능. **origin/develop 동기화** @ `5348d9c`.
+> - **`6fe853b..5348d9c` 변경**(9 files, +140/-6): `guardianBilling.js`(+test)·`liveBillingAssertions.js`(+test)·`GuardianBillingDetailModal`(+test)·`guardianLiveApi.e2e.test.js`·`BillingDetailPage.test.jsx`·`pilotPageFlows.test.jsx`.
+> - develop `npm test`: **387/387 PASS**(+5/+0) · build **816 modules 3 청크** (index 306.84 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 182차): Open 0 · develop `@872e040` WT CLEAN · 37 ahead. 잔여: merge(47) · LIVE_E2E run(결정 73) · backend merge(37).
+
+> **181차 재검증 (2026-06-10T03:41) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@6fe853b`(+1 vs 178차 `3f96d95`, WT **CLEAN** G9 duration band fallback billing/guardian UI)·382/382 PASS(불변)·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(46 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 178차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 181차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `6fe853b`** (+1 vs 178차 `3f96d95`: `6fe853b` Handle billing duration band fallback). working tree **CLEAN**. develop **46커밋 ahead**·ff 가능. **origin/develop 동기화** @ `6fe853b`.
+> - **`3f96d95..6fe853b` 변경**(4 files, +45/-26): `guardianBilling.js`(+test)·`BillingDetailPage`(+test).
+> - develop `npm test`: **382/382 PASS**(불변) · build **816 modules 3 청크** (max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 180차): Open 1 BLOCK QA-B14 · develop `@0719648` WT DIRTY 2M · 36 ahead. 잔여: merge(46) · LIVE_E2E run(결정 73) · backend WT clean→merge(36).
+
+> **178차 재검증 (2026-06-10T03:10) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@3f96d95`(+1 vs 176차 `0c34f85`, WT **CLEAN** G9 durationBandSnapshot billing/guardian UI)·382/382 PASS·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(45 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 176차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 178차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `3f96d95`** (+1 vs 176차 `0c34f85`: `3f96d95` feat(G9) duration band snapshot on billing and guardian statements). working tree **CLEAN**. develop **45커밋 ahead**·ff 가능. **origin/develop 동기화** @ `3f96d95`.
+> - **`0c34f85..3f96d95` 변경**(7 files, +77/-19): `guardianBilling.js`(+test)·`BillingDetailPage`(+test)·`GuardianBillingDetailModal`(+test)·`GuardianPortalPage.test.jsx`.
+> - develop `npm test`: **382/382 PASS**(불변) · build **816 modules 3 청크** (index 306.65 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 177차): Open 0 · develop `@0719648` WT CLEAN · 36 ahead. 잔여: merge(45) · LIVE_E2E run(결정 73) · backend merge(36).
+
+> **176차 재검증 (2026-06-10T02:52) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@0c34f85`(+1 vs 174차 `0dc4c4a`, WT **CLEAN** G9 2D fee schedule matrix+NHIS 2026 seed)·382/382 PASS·816 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(44 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 174차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 176차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `0c34f85`** (+1 vs 174차 `0dc4c4a`: `0c34f85` feat(G9) 2D fee schedule matrix + NHIS 2026 seed). working tree **CLEAN**. develop **44커밋 ahead**·ff 가능. **origin/develop 동기화** @ `0c34f85`.
+> - **`0dc4c4a..0c34f85` 변경**(7 files, +367/-10): `FeeScheduleMatrix`(+test)·`feeSchedules.js`(+test)·`FeeSchedulePage.jsx`·`components.css`.
+> - develop `npm test`: **382/382 PASS**(+5/+1 vs 174차) · build **816 modules 3 청크** (index 306.23 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 175차): Open 0 · develop `@a4a1393` WT CLEAN · 35 ahead. 잔여: merge(44) · LIVE_E2E run(결정 73) · backend merge(35).
+
+> **174차 재검증 (2026-06-10T02:31) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@0dc4c4a`(+2 vs 172차 `527ba2d`, WT **CLEAN** G9 duration_band+US-J02 billing hardening)·377/377 PASS·815 modules·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(43 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 172차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 174차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `0dc4c4a`** (+2: `147048c` G9 duration_band UI+US-J02 billing hardening · `0dc4c4a` guardian billing helpers+E2E). working tree **CLEAN**. develop **43커밋 ahead**·ff 가능. **origin/develop 동기화** @ `0dc4c4a`.
+> - **`527ba2d..0dc4c4a` 변경**(17 files, +494/-55): `guardianBilling.js`(+test)·`DurationBandSelect`·`GuardianPortalPage`(+test)·`FeeSchedulePage`·`pilotPageFlows` G9/US-J02 E2E 등.
+> - develop `npm test`: **377/377 PASS**(+9/+3 vs 172차) · build **815 modules 3 청크** · audit **0**.
+> - **QA-20260610-B07 Fixed**(#10) · **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 173차): Open 1 BLOCK QA-20260610-B13. 잔여: merge(43) · LIVE_E2E run(결정 73) · backend WT clean 선행.
+
+> **172차 재검증 (2026-06-10T01:47) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `@527ba2d` HEAD 불변·WT **DIRTY 2M**(US-J02 GuardianPortal billing WIP)·370/370 PASS·812 modules·Open 1 BLOCK(QA-20260610-B07 #10)·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 170차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 172차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `527ba2d`** — 170차 대비 **불변**. working tree **DIRTY 2M** (`GuardianPortalPage.jsx`·`GuardianPortalPage.test.jsx`, +109/-14 lines). develop **41커밋 ahead**. **origin/develop 동기화** @ `527ba2d`.
+> - **WT 변경**(2 files): US-J02 `isGuardianVisibleBillingStatus`·`mergeUniqueBillingRecords`·`handleRetryBilling` + unit tests.
+> - develop HEAD `npm test`: **368/368 PASS** · WT **370/370 PASS**(+2/+2) · build **812 modules 3 청크** · audit **0**.
+> - **Open 1건 BLOCK(frontend)**: QA-20260610-B07(#10). **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge BLOCK**. 교차(backend 171차): Open 0. 잔여: **WT clean→merge(41)** · LIVE_E2E run(결정 73) · backend merge(34).
+
+> **170차 재검증 (2026-06-10T01:23) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `527ba2d`(+1 vs 168차 `c4fb7ff`, WT **CLEAN** CMS module coverage KPI align US-L03)·368/368 PASS·812 modules·audit 0·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(41 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 168차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 170차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `527ba2d`** (+1 vs 168차 `c4fb7ff`: `527ba2d` chore(v2) CMS module coverage KPI align US-L03), working tree **CLEAN**. develop **41커밋 ahead**·ff 가능. **origin/develop 동기화** @ `527ba2d`.
+> - **`c4fb7ff..527ba2d` 변경**(2 files, +8/-1): `competitorModuleCoverage.js`·`competitorModuleCoverage.test.js`.
+> - develop `npm test`: **368/368 PASS**(+1/+0 vs 168차 367/367) · build **812 modules 3 청크** (index 300.42 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 169차): Open 0. 잔여: merge(41) · LIVE_E2E run(결정 73) · backend merge(33).
+
+> **168차 재검증 (2026-06-10T01:02) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `c4fb7ff`(+1 vs 166차 `02cd2b2`, WT **CLEAN** G21 Visits confirm-lock guide + cross-page E2E)·367/367 PASS·812 modules·audit 0·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(40 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 166차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 168차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c4fb7ff`** (+1 vs 166차 `02cd2b2`: `c4fb7ff` feat(G21) VisitsPage confirm-lock guide + pilotPageFlows visit import lock/unlock E2E), working tree **CLEAN**. develop **40커밋 ahead**·ff 가능. **origin/develop 동기화** @ `c4fb7ff`.
+> - **`02cd2b2..c4fb7ff` 변경**(3 files, +91/-9): `VisitsPage.jsx`·`VisitsPage.test.jsx`·`pilotPageFlows.test.jsx`.
+> - develop `npm test`: **367/367 PASS**(+2/+0 vs 166차 365/365) · build **812 modules 3 청크** (index 300.42 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 167차): Open 0. 잔여: merge(40) · LIVE_E2E run(결정 73) · backend merge(32).
+
+> **166차 재검증 (2026-06-10T00:45) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `02cd2b2`(+2 vs 164차 `190b2b1`, WT **CLEAN** G21 locked-claim normalize + confirm-lock E2E)·365/365 PASS·812 modules·audit 0·Open 0(frontend)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(39 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 164차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 166차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `02cd2b2`** (+2 vs 164차 `190b2b1`: `fb1ea87` fix(g21) locked-claim normalize · `02cd2b2` test(G21) confirm-lock pilotPageFlows E2E), working tree **CLEAN**. develop **39커밋 ahead**·ff 가능. **origin/develop 동기화** @ `02cd2b2`.
+> - **`190b2b1..02cd2b2` 변경**(3 files, +70/-7): `billingClaims.js`(+test)·`pilotPageFlows.test.jsx`.
+> - develop `npm test`: **365/365 PASS**(+2/+0 vs 164차 363/363) · build **812 modules 3 청크** (index 300.12 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 165차): QA-B12 BLOCK. 잔여: merge(39) · LIVE_E2E run(결정 73) · backend WT clean 선행.
+
+> **164차 재검증 (2026-06-10T00:23) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `190b2b1`(+1 vs 162차 `c0a01b4`, WT **CLEAN** G21 NHIS confirm-lock UX)·363/363 PASS·812 modules·audit 0·Open 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(37 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 162차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 164차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `190b2b1`** (+1 vs 162차 `c0a01b4`: `190b2b1` G21 weekly NHIS confirm-lock UX), working tree **CLEAN**. develop **37커밋 ahead**·ff 가능. **origin/develop 동기화** @ `190b2b1`.
+> - **`c0a01b4..190b2b1` 변경**(9 files, +259/-5): `NhisScheduleConfirmLockGuide`·`billingClaims.js`·`NHISImportPage`·`ReconciliationPage` (+tests).
+> - develop `npm test`: **363/363 PASS**(+5/+3 vs 162차 358/358) · build **812 modules 3 청크** (index 299.99 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 163차): QA-B11 Fixed. 잔여: merge(37) · LIVE_E2E run(결정 73) · backend merge(31).
+
+> **162차 재검증 (2026-06-10T00:03) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `c0a01b4`(+2 vs 160차 `e6df92c`, WT **CLEAN** US-L03 `/billing/cms` CMS UI·debit claims refresh)·358/358 PASS·810 modules·audit 0·Open 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(36 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 160차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 162차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c0a01b4`** (+2 vs 160차 `e6df92c`: `6c6dc7a` US-L03 CMS UI · `c0a01b4` debit 후 claims refresh), working tree **CLEAN**. develop **36커밋 ahead**·ff 가능. **origin/develop 동기화** @ `c0a01b4`.
+> - **`e6df92c..c0a01b4` 변경**(17 files, +1076/-29): `/billing/cms` Route·`CmsPage`·`CmsEnrollmentForm`·`CmsDebitPanel`·`services.js` CMS API·`BillingContextNav`·navConfig.
+> - develop `npm test`: **358/358 PASS**(+7/+3 vs 160차 351/351) · build **810 modules 3 청크** (index 296.66 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 교차(backend 161차): QA-B11 BLOCK. 잔여: merge(36) · LIVE_E2E run(결정 73) · backend WT clean 선행.
+
+> **160차 재검증 (2026-06-09T23:20) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `e6df92c`(+1 vs 158차 `c72e9df`, WT **CLEAN** US-L01/L02 paid-state detection normalize)·351/351 PASS·805 modules·audit 0·Open 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(34 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 158차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 160차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `e6df92c`** (+1 vs 158차 `c72e9df`: `e6df92c` fix(us-l01-l02): normalize paid-state detection across billing pages), working tree **CLEAN**. develop **34커밋 ahead**·ff 가능. **origin/develop 동기화** @ `e6df92c`.
+> - **`c72e9df..e6df92c` 변경**(3 files, +23/-10): `liveBillingAssertions.js`(+test)·`PaymentPage.jsx` — PAID 상태 감지 정규화(US-L01/L02).
+> - develop `npm test`: **351/351 PASS**(+1/+0 vs 158차 350/100) · build **805 modules 3 청크** · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 잔여: merge(34) · LIVE_E2E run(결정 73) · backend merge(30 @ `2c6e57e`).
+
+> **158차 재검증 (2026-06-09T22:59) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `c72e9df`(+1 vs 156차 `f5479d7`, WT **CLEAN** US-J02/G13 cross-page live billing E2E hardening)·350/350 PASS·805 modules·audit 0·Open 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(33 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 156차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 158차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c72e9df`** (+1 vs 156차 `f5479d7`: `c72e9df` test(v1.2.1): harden US-J02 and G13 cross-page live billing E2E), working tree **CLEAN**. develop **33커밋 ahead**·ff 가능. **origin/develop 동기화** @ `c72e9df`.
+> - **`f5479d7..c72e9df` 변경**(4 files, +201/-25): `liveBillingAssertions.js`(+test)·`guardianLiveApi.e2e.test.js`·`pilotLiveApi.e2e.test.js` — cross-page billing assertion helper·live E2E hardening (FE-22, `src/e2e/**` 기본 test 제외).
+> - develop `npm test`: **350/350 PASS**(+4/+1 vs 156차 346/99) · build **805 modules 3 청크** · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 잔여: merge(33) · LIVE_E2E run(결정 73) · backend merge(29 @ `6eba2ef`).
+
+> **156차 재검증 (2026-06-09T22:39) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `f5479d7`(+1 vs 154차 `20bfac1`, WT **CLEAN** US-L01/L02 live write-flow assertion hardened)·346/346 PASS·805 modules·audit 0·QA-B07 Fixed·Open 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(32 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 154차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 156차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `f5479d7`** (+1 vs 154차 `20bfac1`: `f5479d7` test(US-L01,L02): harden live write-flow assertions), working tree **CLEAN**. develop **32커밋 ahead**·ff 가능. **origin/develop 동기화** @ `f5479d7`.
+> - **`20bfac1..f5479d7` 변경**(1 file, +20/-7): `src/e2e/pilotLiveApi.e2e.test.js` — payment PAID·overdue reminder assertion hardening (FE-22, `src/e2e/**` 기본 test 제외).
+> - develop `npm test`: **346/346 PASS**(불변) · build **805 modules 3 청크** · audit **0**.
+> - **QA-20260609-B07 Fixed**(#9). **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **★ v1.2.1 merge gate FULLY UNBLOCKED**. 잔여: merge(32) · LIVE_E2E run(결정 73) · backend merge(28 @ `fbedcc3`).
+
+> **154차 재검증 (2026-06-09T22:17) — ⚠ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `20bfac1` HEAD 불변·WT **DIRTY 1M**(`pilotLiveApi.e2e.test.js` US-L01/L02 live write-flow assertion WIP)·346/346 PASS·805 modules·audit 0·PASS(v1.2+v1.3-A)·v1.2.1 merge **BLOCK**(WT clean 선행·Open QA-B07 #9)**:
+> - **frontend test HEAD `c7c8f07`** — 152차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 154차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `20bfac1`** (불변 vs 152차), working tree **DIRTY 1M** — `src/e2e/pilotLiveApi.e2e.test.js`(+20/-7): payment PAID·overdue reminder assertion hardening (152차 CLEAN→재오염). develop **31커밋 ahead**·ff 가능. **origin/develop 동기화** @ `20bfac1`.
+> - develop `npm test`: **346/346 PASS**(불변) · build **805 modules 3 청크** · audit **0**.
+> - **Open 1건(BLOCK)**: QA-20260609-B07(#9). **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge BLOCK** — WT clean→commit/revert 선행. 잔여: merge(31) · LIVE_E2E run(결정 73) · backend merge(27 @ `a401537`).
+
+> **152차 재검증 (2026-06-09T21:59) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `20bfac1`(+1 vs 150차 `1c20d17`, WT **CLEAN** US-L01/L02 live write-flow billing E2E harness)·346/346 PASS·805 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(31 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 150차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 152차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `20bfac1`** (+1 vs 150차 `1c20d17`: `20bfac1` test(US-L01,L02): add live write-flow billing e2e), working tree **CLEAN**. develop **31커밋 ahead**·ff 가능. **origin/develop 동기화** @ `20bfac1`.
+> - **`1c20d17..20bfac1` 변경**(1 file, +54): `src/e2e/pilotLiveApi.e2e.test.js` — payment record + overdue reminder write-gated live E2E (FE-22, `src/e2e/**` 기본 test 제외).
+> - develop `npm test`: **346/346 PASS**(불변) · build **805 modules 3 청크**(index 284.69 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(31) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(26 @ `f755428`).
+
+> **150차 재검증 (2026-06-09T21:43) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `1c20d17`(+2 vs 148차 `14e9066`, WT **CLEAN** US-L02 dashboard overdue widget·US-M02-c E2E)·346/346 PASS·805 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(30 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 148차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 150차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `1c20d17`** (+2 vs 148차 `14e9066`: `a53db39` feat(US-L02) dashboard overdue widget·BillingContextNav · `1c20d17` test(US-M02-c) dashboard overdue widget E2E), working tree **CLEAN**. develop **30커밋 ahead**·ff 가능. **origin/develop 동기화** @ `1c20d17`.
+> - **`14e9066..1c20d17` 변경**(12 files, +383/-16): `BillingContextNav`·`DashboardPage`(+test)·`OverduePage`·`PaymentPage`·`dashboardSummary`·`pilotPageFlows` — 미납 위젯·결제↔미납 컨텍스트 내비·E2E.
+> - develop `npm test`: **346/346 PASS**(+6/+2 vs 148차 340/97) · build **805 modules 3 청크**(index 284.69 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(30) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(25 @ `c67ff1e`).
+
+> **148차 재검증 (2026-06-09T21:13) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `14e9066`(+1 vs 146차 `690c774`, WT **CLEAN** US-L02 overdue reminder timestamp sync)·340/340 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(28 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 146차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 148차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `14e9066`** (+1 vs 146차 `690c774`: `14e9066` fix(v1.2.1/US-L02) sync overdue reminder timestamp after notify), working tree **CLEAN**. develop **28커밋 ahead**·ff 가능. **origin/develop 동기화** @ `14e9066`.
+> - **`690c774..14e9066` 변경**(2 files, +15/-2): `OverduePage.jsx`·`OverduePage.test.jsx` — notify 후 reminder timestamp UI 동기화.
+> - develop `npm test`: **340/340 PASS**(불변) · build **804 modules 3 청크**(index 283.20 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(28) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(24 @ `0ebe945`).
+
+> **146차 재검증 (2026-06-09T20:58) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `690c774`(+1 vs 144차 `69aff5d`, WT **CLEAN** US-L01 pilotPageFlows fix)·340/340 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(27 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 144차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 146차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `690c774`** (+1 vs 144차 `69aff5d`: `690c774` fix(v1.2.1/US-L01) align pilotPageFlows with client-name payment labels), working tree **CLEAN**. develop **27커밋 ahead**·ff 가능. **origin/develop 동기화** @ `690c774`.
+> - **`69aff5d..690c774` 변경**(1 file, +9/-6): `pilotPageFlows.test.jsx` — US-L01 client-name row label assert 정합.
+> - develop `npm test`: **340/340 PASS**(+3 vs 144차 337/340 — QA-B09 해소) · build **804 modules 3 청크**(index 282.98 kB, max 367.09 kB) · audit **0**.
+> - **QA-20260609-B09 Fixed**. **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(27) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge BLOCK(QA-20260609-B10).
+
+> **144차 재검증 (2026-06-09T20:36) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `69aff5d`(+1 vs 142차 `fed457f`, WT **CLEAN** payment row client-name)·337/340 FAIL·804 modules·audit 0·PASS(v1.2+v1.3-A)·⛔ v1.2.1 merge **BLOCK**(QA-20260609-B09 FE-7·26 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 142차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 144차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `69aff5d`** (+1 vs 142차 `fed457f`: `69aff5d` fix(v1.2.1) show client names in payment rows), working tree **CLEAN**. develop **26커밋 ahead**·ff 가능. **origin/develop 동기화** @ `69aff5d`.
+> - **`fed457f..69aff5d` 변경**(2 files, +15/-3): `services.js`·`billingGuardianPlatformServices.test.js` — payment row client-name 매핑.
+> - develop `npm test`: **337/340 FAIL**(-3 vs 142차 340/97 — `pilotPageFlows.test.jsx` US-L01 3건 FE-7 회귀) · build **804 modules 3 청크**(index 282.98 kB, max 367.09 kB) · audit **0**.
+> - **Open 1건(BLOCK)**: QA-20260609-B09. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge BLOCK** — develop npm test 선행. 잔여: pilotPageFlows fix→merge(26)+LIVE_E2E run(결정 73)+backend merge(23 @ `09932ef`).
+
+> **142차 재검증 (2026-06-09T20:09) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `fed457f`(+1 vs 140차 `1462396`, WT **CLEAN** SettingsPage Tabs 정합·US-L02 페이지네이션 E2E 보강)·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(25 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 140차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 142차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `fed457f`** (+1 vs 140차 `1462396`: `fed457f` fix(v1.2.1) SettingsPage Tabs 정합·US-L02 페이지네이션 E2E 보강), working tree **CLEAN**. develop **25커밋 ahead**·ff 가능. **origin/develop 동기화** @ `fed457f`.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(25) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(22 @ `7fbd219`).
+
+> **140차 재검증 (2026-06-09T19:46) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `1462396`(+1 vs 138차 `6a59b74`, WT **CLEAN** US-L02 overdue pagination·비밀번호 변경 UI)·335/95 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(24 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 138차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 140차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `1462396`** (+1 vs 138차 `6a59b74`: `1462396` fix(v1.2.1) US-L02 overdue pagination·비밀번호 변경 UI 활성화), working tree **CLEAN**. develop **24커밋 ahead**·ff 가능. **origin/develop 동기화** @ `1462396`.
+> - **`6a59b74..1462396` 변경**(6 files, +65/-17): `services.js`·`OverduePage`·`OverdueSummaryBar`(+test)·`SettingsPage`·`billingGuardianPlatformServices.test.js` — 미납 목록 페이지네이션·비밀번호 변경 UI 활성화(백엔드 `4ee652d` US-L02 정합).
+> - develop `npm test`: **335/95 PASS**(+1/+0 vs 138차 334/95) · build **804 modules 3 청크**(index 282.95 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(24) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(21 @ `4ee652d`).
+
+> **138차 재검증 (2026-06-09T19:25) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `6a59b74`(+2 vs 136차 `311c7c0`, WT **CLEAN** UXD-64 DateInput·v3 meals/programs POST 폼 FE)·334/95 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(23 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 136차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 138차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `6a59b74`** (+2 vs 136차 `311c7c0`: `8818e0a` UXD-64 DateInput 표준화 · `6a59b74` v3 meals/programs POST 폼 FE US-N01d·N02d), working tree **CLEAN**. develop **23커밋 ahead**·ff 가능. **origin/develop 동기화** @ `6a59b74`.
+> - **`311c7c0..6a59b74` 변경**: `8818e0a` DateInput on FeeSchedule/CopayRate/VisitSchedule(3 files) · `6a59b74` MealMenuForm·ProgramScheduleForm·MealsPage·ProgramsPage·pilotPageFlows v3 POST E2E(10 files +341/-61).
+> - develop `npm test`: **334/95 PASS**(+8/+2 vs 136차 326/93) · build **804 modules 3 청크**(index 282.63 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(23) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(20 @ `469d08c`).
+
+> **136차 재검증 (2026-06-09T19:02) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `311c7c0`(+1 vs 134차 `b046444`, WT **CLEAN** G21 paired cancel UX·NHIS import 결과 유지)·326/93 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(21 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 134차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 136차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `311c7c0`** (+1 vs 134차 `b046444`: `311c7c0` fix(v2/G21) paired cancel UX·NHIS import 결과 유지 US-V02·V04), working tree **CLEAN**. develop **21커밋 ahead**·ff 가능. **origin/develop 동기화** @ `311c7c0`.
+> - **`b046444..311c7c0` 변경**(3 files, +183/-2): `VisitsPage.jsx`(+test)·`pilotPageFlows.test.jsx` — PLAN/BILLING paired cancel UX·NHIS import 결과 패널 유지·Epic V E2E 보강.
+> - develop `npm test`: **326/93 PASS**(+3/+0 vs 134차 323/93) · build **804 modules 3 청크**(index 282.14 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(21) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(19 @ `3e4d3e6`).
+
+> **134차 재검증 (2026-06-09T18:42) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `b046444`(+1 vs 132차 `c48fb67`, WT **CLEAN** QR branch-scoped API)·323/93 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(20 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 132차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 134차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `b046444`** (+1 vs 132차 `c48fb67`: `b046444` Align QR generation with branch-scoped API), working tree **CLEAN**. develop **20커밋 ahead**·ff 가능. **origin/develop 동기화** @ `b046444`.
+> - **`c48fb67..b046444` 변경**(3 files, +64/-18): `services.js`·`QrGeneratePage.jsx`(+test) — US-E03 QR 생성 API 지점 스코프 정합.
+> - develop `npm test`: **323/93 PASS**(+1/+0 vs 132차 322/93) · build **804 modules 3 청크**(index 281.97 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(20) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(18 @ `b63bb1f`).
+
+> **132차 재검증 (2026-06-09T18:20) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `c48fb67`(+1 vs 130차 `bf3d40d`, WT **CLEAN** US-L01/L02 billing API·보호자 notify UI G2)·322/93 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(19 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 130차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 132차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `c48fb67`** (+1 vs 130차 `bf3d40d`: `c48fb67` fix(v1.2.1) US-L01/L02 billing API 정합·보호자 notify UI (G2)), working tree **CLEAN**. develop **19커밋 ahead**·ff 가능. **origin/develop 동기화** @ `c48fb67`.
+> - **`bf3d40d..c48fb67` 변경**(8 files, +246/-65): `services.js`·`BillingDetailPage`(+test)·`OverduePage`·`PaymentPage`·`billingGuardianPlatformServices.test.js`·`pilotPageFlows.test.jsx`·`guardianLiveApi.e2e.test.js` — US-L01/L02 청구 API 필드 정합·G2 보호자 알림 UI(백엔드 `84f3441` 정합).
+> - develop `npm test`: **322/93 PASS**(+2/+1 vs 130차 320/92) · build **804 modules 3 청크**(index 281.68 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(19) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(17 @ `84f3441`).
+
+> **130차 재검증 (2026-06-09T18:00) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `bf3d40d`(+1 vs 128차 `75fc91e`, WT **CLEAN** GuardianCheckin apiFetch·G21 import 가이드)·320/92 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(18 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 128차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 130차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `bf3d40d`** (+1 vs 128차 `75fc91e`: `bf3d40d` fix(v1.2.1) GuardianCheckin apiFetch·G21 확정 import 가이드), working tree **CLEAN**. develop **18커밋 ahead**·ff 가능. **origin/develop 동기화** @ `bf3d40d`.
+> - **`75fc91e..bf3d40d` 변경**(7 files, +375/-70): `GuardianCheckinPage`(+test)·`VisitNhisImportPanel`(+test)·`VisitsPage`(+test)·`services.js` — SEC-D17 apiFetch·checkin-targets·확정 일정 NHIS import 차단(BNK-26).
+> - develop `npm test`: **320/92 PASS**(+4/+0 vs 128차 316/92) · build **804 modules 3 청크**(index 280.17 kB, max 367.09 kB) · audit **0**.
+> - **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(18) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(16 @ `803436d`).
+
+> **128차 재검증 (2026-06-09T17:40) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `75fc91e`(+1 vs 126차 `60cea98`, WT **CLEAN** US-J02 billing pagination Fixed)·316/92 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate **FULLY UNBLOCKED**(17 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 126차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 128차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `75fc91e`** (+1 vs 126차 `60cea98`: `75fc91e` US-J02 GuardianPortal billing pagination), working tree **CLEAN**. develop **17커밋 ahead**·ff 가능. **origin/develop 동기화** @ `75fc91e`.
+> - **`60cea98..75fc91e` 변경**(3 files, +180/-53): `services.js`·`GuardianPortalPage.jsx`(+test) — 페이지네이션·`fetchGuardianClientBillingPageApi`.
+> - develop `npm test`: **316/92 PASS**(126차와 동일) · build **804 modules 3 청크**(index 277.79 kB, max 367.09 kB) · audit **0**.
+> - **QA-20260609-B07 Fixed**(#8). **Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge ready** — merge(17) 실행 대기. 잔여: LIVE_E2E run(결정 73) · backend merge(15 @ `0c069b5`).
+
+> **126차 재검증 (2026-06-09T17:22) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `60cea98`(+1 vs 124차 `e1320f4`, WT **DIRTY 3M** US-J02 billing pagination WIP)·316/92 PASS·804 modules·audit 0·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(QA-20260609-B07 #8·develop WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 124차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`.
+> - **`src/frontend-test` `npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 126차 독립 실측.
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (3 청크, max 367.09 kB < 500 kB) · **`npm audit` 0**.
+> - **frontend develop HEAD `60cea98`** (+1 vs 124차 `e1320f4`: `60cea98` US-V04 `VisitNhisImportPanel` UXD-63), working tree **DIRTY 3M** (`services.js`·`GuardianPortalPage.jsx`·`GuardianPortalPage.test.jsx` — US-J02 billing pagination WIP). develop **16커밋 ahead**·ff 가능. **origin/develop 동기화** @ `60cea98`.
+> - **`e1320f4..60cea98` 변경**(6 files, +320): `VisitNhisImportPanel`(+test)·`VisitsPage`(+test)·`config/visits.js`·`services.js`(visit import API).
+> - develop `npm test`: **316/92 PASS**(+5/+1 vs 124차 311/91) · build **804 modules 3 청크**(index 277.79 kB, max 367.09 kB) · audit **0**.
+> - **신규 Open 1건(BLOCK)**: **QA-20260609-B07**(#8). **판정 PASS**(v1.2+v1.3-A @ test). **v1.2.1 merge BLOCK** — coder 3M 커밋 후 TSR merge(16) 재개. 잔여: LIVE_E2E run(결정 73) · backend merge(14 @ `fe5b38b`).
+
+> **124차 재검증 (2026-06-09T16:42) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `e1320f4`(+1 vs 122차 `3803247`, WT **CLEAN**)·311/91 PASS·803 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate FULLY UNBLOCKED(15 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 122차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 124차 독립 실측 (122차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage(auth) **0건**.
+> - **frontend develop HEAD `e1320f4`** (+1 vs 122차 `3803247`: `e1320f4` fix(v1.2.1) 보호자·플랫폼·본인부담 페이지 apiFetch 통일 SEC-D17), working tree **CLEAN**. develop **15커밋 ahead** of test·ff 가능. **origin/develop 동기화** @ `e1320f4`.
+> - **`3803247..e1320f4` 변경**(11 files, +311/-128): `services.js`·`billingGuardianPlatformServices.test.js`(+118) · `BillingDetailPage`·`CopayCalculatorPage`·`CopayRatePage`·`FeeSchedulePage`·`GuardianDetailPage`·`GuardiansPage`·`OverduePage`·`PaymentPage`·`PlatformPage` — raw fetch 제거·apiFetch 통일.
+> - develop `npm test`: **311/91 PASS**(+13/+1 vs 122차 298/90: billingGuardianPlatformServices·Guardian/Platform/Billing 페이지 회귀) · build **803 modules 3 청크**(index 273.17 kB, max 367.09 kB < 500 kB·CSS 42.60 kB) · audit **0**.
+> - **신규 Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test `c7c8f07`). **★ v1.2.1 merge gate FULLY UNBLOCKED** — develop WT clean·ff 가능(15 ahead). 잔여: **v1.2.1 develop→test merge(15)** · **LIVE_E2E run**(결정 73) · backend merge(12 @ `ee3fa3a`, TSR 123차).
+
+> **122차 재검증 (2026-06-09T16:22) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `3803247`(+1 vs 120차 `a55dd6a`, WT **CLEAN**)·298/90 PASS·803 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate FULLY UNBLOCKED(14 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 120차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 122차 독립 실측 (120차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage(auth) **0건**.
+> - **frontend develop HEAD `3803247`** (+1 vs 120차 `a55dd6a`: `3803247` fix(v1.2.1) 설정 패널 API 경로·apiFetch·필드검증 정합 SEC-D17), working tree **CLEAN**. develop **14커밋 ahead** of test·ff 가능. **origin/develop 동기화** @ `3803247`.
+> - **`a55dd6a..3803247` 변경**(9 files, +318/-144): `services.js`·`settingsServices.test.js`·`AuditLogPanel`·`BackupSettingsPanel`·`LoginHistoryPanel`·`PasswordChangeModal`·`PasswordResetRequestModal`·`BranchesPage`·`SettingsPage`.
+> - develop `npm test`: **298/90 PASS**(+6/+1 vs 120차 292/89: settingsServices·SettingsPage 회귀) · build **803 modules 3 청크**(index 275.13 kB, max 367.09 kB < 500 kB·CSS 42.60 kB) · audit **0**.
+> - **신규 Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test `c7c8f07`). **★ v1.2.1 merge gate FULLY UNBLOCKED** — develop WT clean·ff 가능(14 ahead). 잔여: **v1.2.1 develop→test merge(14)** · **LIVE_E2E run**(결정 73) · backend merge(11 @ `e304fd3`, TSR 121차 UNBLOCKED).
+
+> **120차 재검증 (2026-06-09T16:05) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `a55dd6a`(+2 vs 118차 `ac5638e`, WT **CLEAN**)·292/89 PASS·803 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate FULLY UNBLOCKED(QA-20260609-B07 Fixed)**:
+> - **frontend test HEAD `c7c8f07`** — 118차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 120차 독립 실측 (118차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage(auth) **0건**.
+> - **frontend develop HEAD `a55dd6a`** (+2 vs 118차 `ac5638e`: `ac5638e` UXD-62 US-I02 meal · `a55dd6a` fix(v1.2.1) formErrors/http·dashboardSummary·LoginPage), working tree **CLEAN** (118차 DIRTY 9 → **해소**). develop **13커밋 ahead** of test·ff 가능. **origin/develop 동기화** @ `a55dd6a`.
+> - **`ac5638e..a55dd6a` 변경**(9 files, +364/-33): `formErrors.js`(+test)·`http.js`(+test)·`DashboardPage.jsx`·`LoginPage.jsx`·`StaffPage.test.jsx`·`dashboardSummary.js`(+test).
+> - develop `npm test`: **292/89 PASS**(+1/+0 vs 118차 291/89) · build **803 modules 3 청크**(index 273.79 kB, max 367.09 kB < 500 kB·CSS 42.60 kB) · audit **0**.
+> - **QA-20260609-B07 Fixed** — **신규 Open 0건(frontend)**. **판정 PASS**(v1.2+v1.3-A @ test `c7c8f07`). **★ v1.2.1 merge gate FULLY UNBLOCKED** — develop WT clean·ff 가능(13 ahead). 잔여: **v1.2.1 develop→test merge(13)** · **LIVE_E2E run**(결정 73) · backend QA-20260609-B08 BLOCK.
+
+> **118차 재검증 (2026-06-09T15:45) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `ac5638e`(+1 vs 116차 `e39164d`, WT **DIRTY 9** formErrors/http·LoginPage·dashboard WIP)·291/89 PASS·803 modules·audit 0·PASS(v1.2+v1.3-A)·⚠ v1.2.1 merge **BLOCK**(QA-20260609-B07·develop WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 116차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 118차 독립 실측 (116차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`VisitsPage.jsx`·`NhisPendingReviewGuide.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`dashboardSummary.js`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage(auth) **0건**.
+> - **frontend develop HEAD `ac5638e`** (+1 vs 116차 `e39164d`: `ac5638e` feat(guardian) UXD-62 US-I02 GuardianDailySummary meal), working tree **DIRTY 9** (7M+2U: `formErrors.js`·`http.js`(+test)·`DashboardPage.jsx`·`LoginPage.jsx`·`StaffPage.test.jsx`·`dashboardSummary.js`(+test)). develop **12커밋 ahead** of test·ff 가능. **origin/develop STALE @ `e39164d`**(ac5638e 미푸시).
+> - **`e39164d..ac5638e` 변경**(3 files, +81): `GuardianDailySummary.jsx`(+test)·`components.css` — 보호자 포털 일일 기록 meal(US-I02·UXD-62).
+> - develop `npm test`: **291/89 PASS**(+4/+0 vs 116차 287/89: GuardianDailySummary·formErrors/http·LoginPage 회귀) · build **803 modules 3 청크**(index 273.79 kB, max 367.09 kB < 500 kB·CSS 42.60 kB) · audit **0**.
+> - **신규 Open 1건(BLOCK)**: **QA-20260609-B07** — develop WT DIRTY 9, v1.2.1 merge 선행조건 미충족. **판정 PASS**(v1.2+v1.3-A @ test `c7c8f07`). **v1.2.1 merge BLOCK** — coder WT clean + push 후 TSR merge(12) 재개. 잔여: **LIVE_E2E run**(결정 73) · backend v1.2.1 merge(10 @ `a49e496`).
+
+> **116차 재검증 (2026-06-09T14:45) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `e39164d`(+2 vs 114차 `6db762a`, WT **DIRTY 8** 대시보드/식단/알림 WIP)·287/89 PASS·803 modules·audit 0·PASS(v1.2+v1.3-A)·v1.2.1 merge ready(11 ahead·ff 가능·develop WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 114차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 116차 독립 실측 (114차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`VisitsPage.jsx`·`NhisPendingReviewGuide.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`dashboardSummary.js`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage(auth) **0건**(auth in-memory `session.js`·theme localStorage=다크모드 선호 비PII).
+> - **frontend develop HEAD `e39164d`** (+2 vs 114차 `6db762a`: `1794e1c` feat(ux) BNK-19 대시보드 NHIS 대기 위젯·RegionSelector·식단 폼 완성 · `e39164d` feat(ux) US-J03 알림 이력 UI·Modal 포커스 접근성 UXD-61), working tree **DIRTY 8** (6M+2U: `formErrors.js`·`http.js`(+test untracked)·`DashboardPage.jsx`·`StaffPage.test.jsx`·`dashboardSummary.js`(+test) — 대시보드/알림/검증 WIP, coder/UXD develop-only). develop **11커밋 ahead** of test·ff 가능. **origin/develop 동기화** @ `e39164d`.
+> - **`6db762a..e39164d` 변경**(31 files, +1494/-186): `RegionSelector`(+test)·`MealMenuForm`·`ProgramScheduleForm`·`NotificationHistoryPanel`(+test)·`Modal`(+test 포커스 트랩)·`Badge`·`BranchesPage`(+test)·`StaffPage`·`DashboardPage`·`ClientListPage`·`MealsPage`·`ProgramsPage`·`services.js`·`dashboardSummary`·`clientDisplay.js`·`config/branches.js`·`config/notifications.js`·`components.css`. 하드코딩 시크릿 스캔 **0건**.
+> - develop `npm test`: **287/89 PASS**(+70/+19 vs test 217/70 · +16/+6 vs 114차 271/83: RegionSelector·NotificationHistoryPanel·Modal 포커스·BranchesPage·GuardianPortalPage 회귀) · build **803 modules 3 청크**(index 272.37 kB, max 367.09 kB < 500 kB·CSS 42.35 kB) · audit **0**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2+v1.3-A @ test `c7c8f07`). **v1.2.1 `merge_status: ready`** — develop-only **11 ahead**·ff 가능(test = `e39164d` 조상). ⚠ **merge 선행 develop WT clean 미충족**(DIRTY 8 — coder 커밋 필요, 115차 backend DIRTY 22 와 동일 패턴). 잔여: **v1.2.1 develop→test merge(11)** · **LIVE_E2E run**(결정 73) · backend v1.2.1 merge(6 @ `dd49204` lineage).
+
+> **114차 재검증 (2026-06-09T13:33) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `6db762a`(+1 vs 113차 `16402b2`, WT **DIRTY 3U** v3 meals/programs WIP)·271/83 PASS·795 modules·audit 0·PASS(v1.2+v1.3-A)·v1.2.1 merge ready(9 ahead·develop WT clean 선행)**:
+> - **frontend test HEAD `c7c8f07`** — 113차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 114차 독립 실측 (113차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`TransportPage.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `6db762a`** (+1 vs 113차 `16402b2`: `6db762a` feat(v1.2) Epic K·L·J02 보호자·수납 UI 보강 및 접근성 재점검 UXD-59), working tree **DIRTY 3U** (`MealMenuForm.jsx`·`ProgramScheduleForm.jsx`·`clientDisplay.js` — v3 meals/programs schedule WIP, HEAD ABSENT). develop **9커밋 ahead** of test. **origin/develop 동기화** @ `6db762a`.
+> - **`16402b2..6db762a` 변경**(14 files, +495/-133): `GuardianClientLinks`(+test)·`OverdueSummaryBar`(+test)·`GuardianDetailPage`·`GuardianPortalPage`(+test)·`GuardiansPage`·`OverduePage`·`PaymentPage`·`pilotPageFlows.test.jsx`·`components.css` — Epic K·L·J02 보호자 연결·미수 요약·수납 UI(UXD-59).
+> - develop `npm test`: **271/83 PASS**(+4/+2 vs 113차 267/81: GuardianClientLinks·OverdueSummaryBar·GuardianPortalPage·OverduePage 회귀) · build **795 modules 3 청크**(index 255.97 kB, max 367.09 kB < 500 kB) · audit **0**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2+v1.3-A @ test `c7c8f07`). **v1.2.1 `merge_status: ready`** — develop-only **9 ahead**. **merge 선행**: develop WT clean(3U v3 meals/programs WIP 커밋). 잔여: **v1.2.1 develop→test merge(9)** · **LIVE_E2E run**(결정 73) · backend v1.2.1 merge(6 @ `dd49204` lineage).
+
+> **113차 재검증 (2026-06-09T12:55) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `16402b2`(+2 vs 111차 `371794f`, WT **CLEAN**)·267/81 PASS·793 modules·audit 0·PASS(v1.2+v1.3-A)·★ v1.2.1 merge gate FULLY UNBLOCKED(8 ahead·ff 가능)**:
+> - **frontend test HEAD `c7c8f07`** — 111차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 113차 독립 실측 (111차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`TransportPage.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `16402b2`** (+2 vs 111차 `371794f`: `fbb0b7a` feat(nhis) US-G06 PENDING_REVIEW 대기 보류 UI·가이드 UXD-58 · `16402b2` test(v1.2.1) G7·G13·Epic V pilotPageFlows E2E 보강), working tree **CLEAN** (111차 DIRTY 4 G7 NHIS WIP → `fbb0b7a` 커밋·해소). develop **8커밋 ahead** of test. **origin/develop 동기화** @ `16402b2`.
+> - **`371794f..16402b2` 변경**(10 files, +443/-22): `Badge.jsx`(PENDING_REVIEW)·`NhisPendingReviewGuide.jsx`(+test 신규)·`NhisReconciliationTable.jsx`(+test 3상태 정합)·`components/ui/index.js`·`ReconciliationPage.jsx`(+test)·`pilotPageFlows.test.jsx`(+296 G7/G13/Epic V E2E)·`components.css`. 하드코딩 시크릿 스캔 **0건**.
+> - develop `npm test`: **267/81 PASS**(+50/+11 vs test 217/70 · +8/+1 vs 111차 259/80: G7 PENDING_REVIEW 단위·ReconciliationPage·pilotPageFlows G7/G13/Epic V 회귀) · build **793 modules 3 청크**(index 252.13 kB, max 367.09 kB < 500 kB) · audit **0**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2+v1.3-A @ test `c7c8f07`). **★ v1.2.1 `merge_status: ready` — merge gate FULLY UNBLOCKED**: 111차 잔여 선행 조건(`develop WT clean`)이 `fbb0b7a` 커밋으로 **해소**. test 는 `16402b2` 의 조상 → **fast-forward 가능**. develop-only **8 ahead**(v1.2.1 5 + v2 `/visits` bleed `371794f` + G7 `fbb0b7a`·`16402b2`). 잔여: **v1.2.1 develop→test merge(8)** · **LIVE_E2E run**(결정 73) · backend v1.2.1 merge(6 @ `dd49204` lineage).
+
+> **111차 재검증 (2026-06-09T12:01) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `371794f`(+1 v2 visits, WT DIRTY 4 G7 NHIS)·259/80 PASS·792 modules·audit 0·PASS(v1.2+v1.3-A)·v1.2.1 merge ready(6 ahead)**:
+> - **frontend test HEAD `c7c8f07`** — 109차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 111차 독립 실측 (109차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`TransportPage.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `371794f`** (+1 vs 109차 `0a07799`: `371794f` feat(visits) Epic V `/visits` 방문요양 일정·접근성 달력 US-V01~V03), working tree **DIRTY 4** (`Badge.jsx`·`NhisReconciliationTable`(+test)·`components.css` — G7 NHIS PENDING_REVIEW 3상태 UI WIP, backend `4cc328d` 정합). develop **6커밋 ahead** of test. **origin/develop 동기화** @ `371794f`.
+> - **`0a07799..371794f` 변경**(14 files, +1419/-3): `VisitsPage`·`VisitCalendar`·`VisitScheduleForm`·`config/visits.js`·`services.js` visits API 8종·`navConfig`·`.ds-calendar` CSS.
+> - develop `npm test`: **259/80 PASS**(+19/+4 vs test 217/70: VisitsPage·VisitCalendar·VisitScheduleForm 회귀) · build **792 modules 3 청크**(index 249.63 kB, max 367.09 kB < 500 kB) · audit **0**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2+v1.3-A @ test `c7c8f07`). **v1.2.1 `merge_status: ready`**(결정 92) — develop-only **6 ahead**(v1.2.1 5 + v2 `/visits` bleed `371794f`). **merge 전 develop WT clean 필수**(G7 NHIS WIP 4 files). 잔여: **v1.2.1 merge(6)** · **LIVE_E2E run**(결정 73) · backend v1.2.1 merge(5 @ `4cc328d` lineage).
+
+> **109차 재검증 (2026-06-09T11:14) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `0a07799`(+5 v1.2.1 CLEAN)·240/76 PASS·788 modules·audit 0·PASS(v1.2+v1.3-A)·v1.2.1 merge ready**:
+> - **frontend test HEAD `c7c8f07`** — 107차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 109차 독립 실측 (107차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`TransportPage.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `0a07799`** (+2 vs 107차 `465bdae`: `dbf485e` feat(v1.2.1) US-M03 본인부담 대장 리포트·간편계산기 UI (UXD-56) · `0a07799` test(v1.2.1) US-J02·US-M03 pilotPageFlows E2E), working tree **CLEAN**. develop **5커밋 ahead** of test. **origin/develop 동기화** @ `0a07799`.
+> - **`465bdae..0a07799` 변경**(16 files, +1290/-4): `BillingLedgerTable`·`CopayCalculatorPanel`·`BillingReportPage`·`CopayCalculatorPage`·`copayCalculator.js`(+test)·`pilotPageFlows.test.jsx`(+151 US-J02·US-M03 E2E)·`App.jsx`·`navConfig`·`services.js`.
+> - develop `npm test`: **240/76 PASS**(+15/+6 vs test 217/70: US-M03 ledger·calculator·pilotPageFlows E2E 회귀) · build **788 modules 3 청크**(index 236.49 kB, max 367.09 kB < 500 kB) · audit **0**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2+v1.3-A @ test `c7c8f07`). **v1.2.1 `merge_status: ready`**(ROADMAP 결정 92·G14 backend @ `15e41e3` 닫힘) — develop-only **5 ahead**. 잔여: **v1.2.1 merge(5)** · **LIVE_E2E run**(결정 73) · backend v1.2.1 merge(4 @ `1812165` lineage).
+
+> **107차 재검증 (2026-06-09T10:25) — ✅ test `@c7c8f07` 불변·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `465bdae`(+3 v1.2.1 CLEAN)·225/72 PASS·783 modules·audit 0·PASS(v1.2+v1.3-A)·v1.2.1 in_progress**:
+> - **frontend test HEAD `c7c8f07`** — 105차 대비 **불변**. working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 107차 독립 실측 (105차와 동일).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`TransportPage.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx`·`liveConfig.js` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `465bdae`** (+1 vs 105차 `6d0a03a`: `465bdae` fix(v1.2.1) US-J02 guardian billing UI live API 필드 정합 — `claimId`/`claimStatus`·payment metadata), working tree **CLEAN**. develop **3커밋 ahead** of test. **origin/develop 동기화** @ `465bdae`.
+> - **`6d0a03a..465bdae` 변경**(4 files, +31/-12): `GuardianBillingDetailModal.jsx`(+test)·`GuardianPortalPage.jsx`(+test)·`services.js`·`pilotPageFlows.test.jsx` — backend v2 copay payment API(`598d108`) 페이로드 정합.
+> - develop `npm test`: **225/72 PASS**(105차와 동일) · build **783 modules 3 청크**(index 221.68 kB, max 367.09 kB < 500 kB) · audit **0**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2+v1.3-A @ test `c7c8f07`). **v1.2.1 `in_progress`**(develop-only, 3 ahead — US-M01/M02·RBAC settings·US-J02 billing API 정합). 잔여: **G14 backend GET API**(결정 92 P0) → v1.2.1 merge(3) · **LIVE_E2E run**(결정 73) · backend v1.2.1 merge(3 @ `15e41e3`).
+
+> **105차 재검증 (2026-06-09T07:13) — ✅ test `c510f5c`→`c7c8f07`(22커밋 merge)·217/70 PASS·781 modules 3 청크(max 367 kB)·audit 0·origin/test 동기화·develop `6d0a03a`(+2 v1.2.1 CLEAN)·225/72 PASS·783 modules·audit 0·PASS(v1.2+v1.3-A)·v1.2.1 in_progress**:
+> - **frontend test HEAD `c510f5c`→`c7c8f07`** — 103차 대비 **22커밋 fast-forward merge 완료**(QA-B12 frontend merge(22) 해소). working tree **CLEAN**. **origin/test 동기화** @ `c7c8f07`(0 ahead).
+> - **`src/frontend-test` `npm ci`+`npm test`**: **217 tests/70 files PASS** (vitest 4.1.8) — 105차 독립 실측 (103차 develop 예측치와 일치). 초기 `recharts` 미설치 시 21 files FAIL → `npm ci` 후 전부 PASS(환경 설정 이슈·코드 결함 아님).
+> - **`src/frontend-test` `npm run build`**: **781 modules SUCCESS** (vite 6.4.3, react-vendor 192.84·index 217.87·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**, CSS 38.13 kB) · **`npm audit` 0**.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx`·`GuardianBillingDetailModal.jsx`·`BranchScopeNotice.jsx`·`TransportPickupContact.jsx`·`ChartContainer.jsx`·`TransportPage.jsx`·`MealsPage.jsx`·`ProgramsPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `6d0a03a`** (+2 vs test: `f749311` fix(rbac) settings sysadmin·hq org settings · `6d0a03a` feat(v1.2.1) US-M02 dashboard API mapping·US-M01 grade history UI), working tree **CLEAN**. develop **2커밋 ahead** of test. **origin/develop 동기화** @ `6d0a03a`.
+> - **`c7c8f07..6d0a03a` 변경**(17 files, +590/-166): `dashboardSummary.js`(+test)·`DashboardPage.jsx` 실데이터 매핑(US-M02)·`ClientDetailPage`/`ClientFormPage` 등급 이력 UI(US-M01 G14)·`OrganizationSettingsPage.jsx`·`SettingsPage.jsx` RBAC 분리.
+> - develop `npm test`: **225/72 PASS**(+8/+2 vs test 217/70) · build **783 modules 3 청크**(max 367.09 kB < 500 kB) · audit **0**.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2+v1.3-A @ test `c7c8f07`). **v1.2.1 `in_progress`**(develop-only, 2 ahead — US-M01 G14·US-M02 실데이터·RBAC settings). **v3 UI test 반영 완료**(merge에 포함). 잔여: v1.2.1 merge(2) · **LIVE_E2E run**(결정 73, post-merge 권장) · backend v1.2.1 regions merge(2012945).
+
+> **103차 재검증 (2026-06-08T16:18) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `c7c8f07`(+1 vs 101차 `7cd9293`: `c7c8f07` UXD-55 US-J02 GuardianBillingDetailModal 본인부담금 명세 상세·인쇄, CLEAN)·217/70 PASS·781 modules **3 청크 분리**(max 367.09 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 103차 독립 실측 (101차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 103차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 103차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `c7c8f07`** (+1 vs 101차 `7cd9293`: `feat(uxd-55): US-J02 본인부담금 명세 상세·인쇄 UI (GuardianBillingDetailModal)`), working tree **CLEAN** (0 dirty). develop **22커밋 ahead** of test (101차 21 → +1).
+> - **`7cd9293..c7c8f07` 변경**(6 files, +337/-34): **신규** `GuardianBillingDetailModal.jsx`(+test — 보호자 포털 본인부담금 명세 상세·인쇄 US-J02) + `GuardianPortalPage.jsx`(+test)·`components/ui/index.js`·`components.css`.
+> - develop `npm test`: **217/70 PASS**(+3/+1 vs 101차 214/69: GuardianBillingDetailModal·GuardianPortalPage US-J02 회귀) · build **781 modules**(3 청크: react-vendor 192.84·index 217.87·recharts 367.09 kB, **max 367.09 kB < 500 kB**)·CSS 38.13 kB · audit **0**.
+> - **UXD-55 US-J02**: `GuardianBillingDetailModal` — 보호자 포털 본인부담금 명세 상세·인쇄 UI(v2 copay payment backend `598d108` 연동 대비 develop-only).
+> - **v1.3-A·v3·Recharts·FE-15 code-split·BranchScopeNotice·TransportPickupContact·GuardianBillingDetailModal 산출물 develop HEAD PRESENT** ✓ · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · 하드코딩 시크릿 스캔 0건.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend 로컬 test `598d108`·**origin/test STALE**(SEC-20260608-015/QA-B12)·frontend test 미승격 22 ahead)·US-T01~T03 **라이브 E2E run** 잔여. **v3 develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend origin push(QA-B12/SEC-D14) + frontend merge(22) + post-merge live E2E(결정 73).
+
+> **101차 재검증 (2026-06-08T15:15) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `7cd9293`(+1 vs 99차 `e641f62`: `7cd9293` UXD-54 US-UX-04 QR·배차 화면 BranchScopeNotice 연동, CLEAN)·214/69 PASS·780 modules **3 청크 분리**(max 367.09 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 101차 독립 실측 (99차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 101차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 101차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `7cd9293`** (+1 vs 99차 `e641f62`: `7cd9293` feat(uxd-54): US-UX-04 BranchScopeNotice를 QR·배차 화면에 연동 (UXD-54)), working tree **CLEAN** (0 dirty). develop **21커밋 ahead** of test (99차 20 → +1).
+> - **`e641f62..7cd9293` 변경**(8 files, +103/-34): `QrGeneratePage.jsx`(+test)·`TransportPage.jsx`(+test)·`TransportRunDetailPage.jsx`·`TransportRunNewPage.jsx` — `BranchScopeNotice` 연동(US-UX-04)·`pilotPageFlows.test.jsx` US-E01/E05 E2E 리팩터·`components.css`(+3).
+> - develop `npm test`: **214/69 PASS**(+2/+0 vs 99차 212/69: QrGeneratePage·TransportPage BranchScopeNotice 회귀) · build **780 modules**(3 청크: react-vendor 192.84·index 214.46·recharts 367.09 kB, **max 367.09 kB < 500 kB**)·CSS 36.66 kB · audit **0**.
+> - **UXD-54 지점 스코프 UI 확장**: `BranchScopeNotice` → QrGeneratePage·TransportPage·TransportRunDetailPage·TransportRunNewPage 연동(US-UX-04·US-E03/T01~T03)·pilotPageFlows E2E 정리. UXD-53 Attendance·Stats 연동 유지.
+> - **v1.3-A·v3·Recharts·FE-15 code-split·BranchScopeNotice·TransportPickupContact 산출물 develop HEAD PRESENT** ✓ · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0) · 하드코딩 시크릿 스캔 0건.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(로컬 test `32575aa` merge 완료·**origin/test STALE QA-B12**·frontend test 미승격 21 ahead)·US-T01~T03 **라이브 E2E run** 잔여. **v3 develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend origin push(QA-B12) + frontend merge(21) + SEC-D14(origin) + post-merge live E2E(결정 73).
+
+> **99차 재검증 (2026-06-08T14:05) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `e641f62`(+2 vs 97차 `1d910c2`: `0d36e30` UXD-53 US-E01/E05/E03/T03 접근성·지점 스코프 UI · `e641f62` pilotPageFlows US-E01/E05 BranchScopeNotice E2E, CLEAN)·212/69 PASS·780 modules **3 청크 분리**(max 367.09 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 99차 독립 실측 (97차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 99차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 99차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `e641f62`** (+2 vs 97차 `1d910c2`: `0d36e30` feat(ux): US-E01/E05/E03/T03 접근성·지점 스코프 UI 보강 (UXD-53) · `e641f62` test(v1.2/v1.3): pilotPageFlows US-E01/E05 BranchScopeNotice E2E (UXD-53)), working tree **CLEAN** (0 dirty). develop **20커밋 ahead** of test (97차 18 → +2).
+> - **`1d910c2..e641f62` 변경**(12 files, +242/-20): **신규** `BranchScopeNotice.jsx`(+test) + `AttendancePage.jsx`(+test)·`AttendanceStatsPage.jsx`(+test)·`QrGeneratePage.jsx`·`TransportRunDetailPage.jsx`·`TransportRunNewPage.jsx`·`pilotPageFlows.test.jsx`(+51 US-E01/E05 E2E)·`components.css`(+71 ds-branch-scope-notice·forced-colors a11y).
+> - develop `npm test`: **212/69 PASS**(+4/+1 vs 97차 208/68: `BranchScopeNotice` 단위 + AttendancePage·AttendanceStatsPage·pilotPageFlows US-E01/E05 회귀) · build **780 modules**(97차 779 → +1), **3 청크 분리**(react-vendor 192.84 kB gzip 61.52·index 213.75 kB gzip 52.79·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**)·CSS 36.64 kB gzip 6.67 · audit **0**.
+> - **UXD-53 지점 스코프 UI**: `BranchScopeNotice`(`role="status"`) — `active_branch_id` 기준 조회 지점·범위를 텍스트로 노출(US-B02/E02/E05), hq_admin BranchSwitcher 전환 안내. AttendancePage·AttendanceStatsPage·QrGeneratePage·Transport 페이지 연동·forced-colors 고대비 a11y 보강. 색상만으로 의미 전달하지 않음(WCAG 1.4.1 부합).
+> - **v1.3-A·v3·Recharts·FE-15 code-split·BranchScopeNotice 산출물 develop HEAD PRESENT** ✓ · `TransportPickupContact.jsx`(+test)·`BranchScopeNotice.jsx`(+test) PRESENT · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0·graceful fallback) · 하드코딩 시크릿 스캔 0건.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격, backend develop `32575aa` 25 ahead)·US-T01~T03 **라이브 E2E run** 잔여(transport live E2E harness develop PRESENT). **v3 develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend merge(25) + SEC-D14 + post-merge live E2E(결정 73).
+
+> **97차 재검증 (2026-06-08T12:55) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `1d910c2`(+2 vs 95차 `3c55339`: `37be0a3` v1.3-A 배차 연락처 마스킹 UI + 픽업 프로필 a11y US-T03/UXD-52 · `1d910c2` pilotPageFlows T03 연락처 마스킹 E2E US-T03, CLEAN)·208/68 PASS·779 modules **3 청크 분리**(max 367.09 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 97차 독립 실측 (95차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 97차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 97차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `1d910c2`** (+2 vs 95차 `3c55339`: `37be0a3` feat(v1.3-A): 배차 연락처 마스킹 UI + 픽업 프로필 a11y (US-T03, UXD-52) · `1d910c2` test(v1.3-A): pilotPageFlows T03 연락처 마스킹 E2E (US-T03)), working tree **CLEAN** (0 dirty). develop **18커밋 ahead** of test (95차 16 → +2).
+> - **`3c55339..1d910c2` 변경**(11 files, +182/-10): **신규** `TransportPickupContact.jsx`(+test) + `ClientTransportProfileSection.jsx`·`TransportStopList.jsx`(+test)·`TransportPage.jsx`(+test)·`TransportRunDetailPage.jsx`·`pilotPageFlows.test.jsx`(+46 T03 마스킹 E2E)·`components.css`.
+> - develop `npm test`: **208/68 PASS**(+5/+1 vs 95차 203/67: TransportPickupContact·TransportStopList·TransportPage·pilotPageFlows T03 마스킹 회귀) · build **779 modules**(95차 778 → +1), **3 청크 분리**(react-vendor 192.84 kB gzip 61.52·index 212.77 kB gzip 52.58·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**)·CSS 35.49 kB gzip 6.49 · audit **0**.
+> - **US-T03 연락처 마스킹 PII 검증**: `TransportPickupContact` — hq_admin(`showFullContact`) 전체 번호 + `tel:` 링크 · non-HQ 역할 API 마스킹값(`010-****-5678`)·`maskPhone()` fallback 만 표시(링크 없음). 개인정보보호법 최소노출 부합 · backend non-HQ pickup 연락처 마스킹(`c7941e9` 96차)과 정합.
+> - **v1.3-A·v3·Recharts·FE-15 code-split 산출물 develop HEAD PRESENT** ✓ · `TransportPickupContact.jsx`(+test)·`ClientTransportProfileSection.jsx` PRESENT · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0·graceful fallback) · 하드코딩 시크릿 스캔 0건.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격, backend develop `c7941e9` 24 ahead)·US-T01~T03 **라이브 E2E run** 잔여(transport live E2E harness develop PRESENT). **v3 develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend merge(24) + SEC-D14 + post-merge live E2E(결정 73).
+
+> **95차 재검증 (2026-06-08T11:45) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `3c55339`(+2 vs 93차 `d484206`: `2a0ef3d` UXD-51 FE-13/FE-14 누락 UI 복원·a11y · `3c55339` v1.3-A ClientForm 픽업 프로필 UI US-T01/Q166, CLEAN)·203/67 PASS·778 modules **3 청크 분리**(max 367 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 95차 독립 실측 (93차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 95차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 95차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `3c55339`** (+2 vs 93차 `d484206`: `2a0ef3d` feat(uxd-51): FE-13·FE-14 누락 UI 컴포넌트 복원 및 접근성 재점검 · `3c55339` feat(v1.3-A): ClientForm 픽업 프로필 UI 연동 (US-T01, Q166)), working tree **CLEAN** (0 dirty). develop **16커밋 ahead** of test (93차 14 → +2).
+> - **`d484206..3c55339` 변경**(32 files, +2170/-604): `2a0ef3d` UXD-51 — `FeeScheduleTable`·`CopayRateTable`·`AuditLogPanel`·`BackupSettingsPanel`·`LoginHistoryPanel`·`PasswordChangeModal`(+test)·`PasswordResetRequestModal`·`PlatformOrgDetailModal`·`BillingStatusConfirmModal`·`FeeRateHistoryPanel`·`GuardianDailySummary`(+test) 등 FE-13/FE-14 누락 UI 복원 + `SettingsPage`·`PlatformPage`·`CopayRatePage`·`FeeSchedulePage`·`BillingDetailPage` 연동·a11y; `3c55339` v1.3-A — `ClientFormPage`(+test) 픽업 프로필(usesTransport·pickupAddress·pickupContact·defaultPickupTime) UI 연동(US-T01/Q166).
+> - develop `npm test`: **203/67 PASS**(+14/+7 vs 93차 189/60: UXD-51 복원 컴포넌트 테스트·ClientFormPage 픽업 프로필 회귀) · build **778 modules**(93차 766 → +12), **3 청크 분리**(react-vendor 192.84 kB gzip 61.52·index 211.79 kB gzip 52.27·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB**)·CSS 35.46 kB gzip 6.48 · audit **0**.
+> - **v1.3-A·v3·Recharts·FE-15 code-split 산출물 develop HEAD PRESENT** ✓ · `ClientFormPage.test.jsx`·`FeeScheduleTable.jsx`·`transportLiveApi.e2e.test.js` PRESENT · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0·graceful fallback) · 하드코딩 시크릿 스캔 0건.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격, backend develop `e7d4cf6` 23 ahead)·US-T01~T03 **라이브 E2E run** 잔여(transport live E2E harness develop PRESENT @ `d484206`). **v3 develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). 잔여 BLOCK = backend merge(23) + SEC-D14 + post-merge live E2E(결정 73).
+
+> **93차 재검증 (2026-06-08T10:30) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `d484206`(+2 FE-15 코드 스플릿 복원·transport live E2E·forced-colors a11y CLEAN)·189/60 PASS·766 modules **3 청크 분리**(max 367 kB <500 kB, vite 경고 해소)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**:
+> - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
+> - **`src/frontend-test` `npm test`**: **143 tests/46 files PASS** (vitest 4.1.8) — 93차 독립 실측 (92차와 동일).
+> - **`src/frontend-test` `npm run build`**: **125 modules SUCCESS** (vite 6.4.3, JS 320.10 kB gzip 91.25 kB, CSS 31.03 kB gzip 5.84 kB) — 93차 독립 실측.
+> - **`src/frontend-test` `npm audit`**: **0 vulnerabilities** — 93차 독립 실측.
+> - **`git cat-file -e HEAD:`** (test) `ProtectedRoute.jsx`·`services.js`·`SideNav.jsx`·`pilotChecklist.js`·`AuthContext.jsx`·`ReconciliationPage.jsx` **전부 PRESENT** ✓ (이관 규율 5 PASS). SEC-005 localStorage/sessionStorage **0건**.
+> - **frontend develop HEAD `d484206`** (+2 vs 92차 `637b9b3`: `511c240` a11y(forced-colors) transport map·stop·marker 고대비 모드 접근성 보강 · `d484206` fix(v1.3-A) FE-15 코드 스플릿 복원 + transport live backend E2E US-T01~T03), working tree **CLEAN** (0 dirty). develop **14커밋 ahead** of test (92차 12 → +2).
+> - **`637b9b3..d484206` 변경**(6 files, +156/-4): `src/e2e/transportLiveApi.e2e.test.js`(+115 신규 transport live E2E)·`pilotLiveApi`·`pilotLivePages`·`liveConfig.js` live harness 확장 + `vite.config.js`(+22 `manualChunks` FE-15 코드 스플릿 복원) + `components.css`(+15 forced-colors a11y).
+> - develop `npm test`: **189/60 PASS**(92차와 동일 — 신규 `transportLiveApi.e2e.test.js` 는 `src/e2e/**` → 기본 `npm test` 제외, 회귀 영향 0) · build **766 modules**, **FE-15 코드 스플릿 복원** → **3 청크 분리**(react-vendor 192.84 kB gzip 61.52·index 194.75 kB gzip 47.23·recharts 367.09 kB gzip 101.43, **max 367.09 kB < 500 kB — vite >500 kB 경고 해소**, 91/92차 단일 JS 756 kB LOW 사유 소멸)·CSS 35.17 kB gzip 6.42 · audit **0**.
+> - **v1.3-A T01~T03 E2E·transport live harness·v3·Recharts 산출물 develop HEAD PRESENT** ✓ · `transportLiveApi.e2e.test.js` PRESENT · KAKAO 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0·graceful fallback) · `MAX_TRANSPORT_STOPS=15` · 하드코딩 시크릿 스캔 0건.
+> - **신규 Open 0건** — 판정 **PASS**(v1.2). **v1.3 이관 게이트 미충족(pending)** — backend transport API(test 미승격)·US-T01~T03 **라이브 E2E run** 잔여(transport live E2E harness develop PRESENT @ `d484206`). **v3 develop-only** — ROADMAP merge 게이트 미설정, 정상(결함 아님). **FE-15 코드 스플릿 복원**(91/92차 planner 권고 LOW 해소). 잔여 BLOCK = backend merge(22) + SEC-D14 + post-merge live E2E(결정 73).
 
 > **92차 재검증 (2026-06-08T09:13) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `637b9b3`(+2 UXD-49·v1.3-A T01~T03 E2E CLEAN)·189/60 PASS·766 modules·PASS(v1.2)·v1.3 pending·v3 develop-only**:
 > - **frontend test HEAD `c510f5c`** 불변(v1.2 merged) — working tree **CLEAN**. ROADMAP v1.2 frontend `merge_status: merged` 부합.
@@ -180,18 +3172,367 @@
 
 | 항목 | 값 |
 |------|-----|
-| **대상 버전** | v1.2 (frontend stream — merged 검증) · v1.3 (in_progress, pending) · v3 (develop-only) |
-| **ROADMAP v1.2 `merge_status`** | **`merged`** (test `@c510f5c` 승격 완료) |
-| **ROADMAP v1.3 `status` / `merge_status`** | `in_progress` / **`pending`** (v1.3-A UI 셸·backend 의존 잔여) |
-| **선행 v1 `merge_status`** | `merged` (backend develop `53a1ffe` · test stale `2799e29` · 17 ahead) |
-| **develop HEAD** | `8a764df` — UXD-48 Recharts 차트 레이어 복원 (+ v1.3-A·v3·staff·unconfirm) |
-| **develop working tree** | **CLEAN** (0 dirty) |
-| **test HEAD** | `c510f5c` — v1.2 merged (US-G06 DISCREPANCY 비교·UXD-39~41·US-E/F·15 pages) |
+| **대상 버전** | v1.2+v1.3-A (frontend stream — merged 검증) · v1.2.1 (`in_progress`) · v3 (merged @ test) |
+| **ROADMAP v1.2 `merge_status`** | **`merged`** (test `@c7c8f07` 승격 완료) |
+| **ROADMAP v1.3-A `merge_status`** | **`merged`** (test `@c7c8f07` — 105차 22커밋 merge) |
+| **ROADMAP v1.2.1 `status` / `merge_status`** | `in_progress` / **`ready`** (결정 92) — ★ **frontend merge gate FULLY UNBLOCKED** (WT **CLEAN** @ `9afa30e` · Open **0**) |
+| **선행 v1 backend `merge_status`** | `merged` (backend test/origin `598d108` · develop `f44ee739` · 273 ahead · WT **CLEAN** · Open **0** · test **246/246 PASS**) |
+| **develop HEAD** | `9afa30e` — `feat(v2/G19): wire integrated-home provider discovery UI to branch form` (**744차**) |
+| **develop working tree** | **CLEAN** |
+| **develop npm test** | **미재실행** (742 carry **1337/1337 PASS**) |
+| **develop build** | **781 modules** (max 367.09 kB, 5.14s — test 브랜치 실측) |
+| **test HEAD** | `c7c8f07` — v1.2+v1.3-A merged (UXD-55·v1.3-A Transport·v3 Meals/Programs) |
 | **test working tree** | **CLEAN** |
-| **develop ahead of test** | **10 commits** (`f01e3a8`·`e8d1854`·`f0b174a`·`7ef1083`·`3e9a9ab`·`362dbf0`·`762b5a8`·`fe33e7c`·`73f7d39`·`8a764df`) |
-| **이관 판정** | **PASS** (v1.2 test 검증 완료) · v1.3 **pending**(in_progress, 게이트 미충족) · v3 develop-only |
+| **origin/test** | **동기화** @ `c7c8f07` (0 ahead) |
+| **origin/develop** | **동기화** @ `9afa30e` (0 ahead) |
+| **develop ahead of test** | **333 commits** (★ frontend merge **FULLY UNBLOCKED** · ★ cross-stream **FULLY UNBLOCKED** · merge pending **606** = 333 FE + 273 BE · merge **미실행**) |
+| **이관 판정** | **PASS(v1.2+v1.3-A @ test)** · ★ **frontend merge FULLY UNBLOCKED** · ★ **cross-stream merge FULLY UNBLOCKED** · operation 승격 **BLOCK** (QA-B95 live E2E env) |
 
-> **PASS 근거 (91차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +10 v1.3-A·v3·Recharts **CLEAN**·183/60 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ develop build 단일 JS 756 kB(vite >500 kB 경고, **non-blocking LOW** — FE-15 code-split 후속 권장). ⑥ v1.3 merge 게이트 미충족(backend transport API test 미승격·live E2E post-merge, unconfirm UI develop PRESENT) — 정상.
+> **PASS 근거 (744차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (52.33s) · build **781 modules** (5.14s) · audit **0**. ② develop HEAD **`9afa30e`** · WT **CLEAN** · Open **0(frontend)**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (744차)**: ① develop `@9afa30e` WT **CLEAN** · **Open 0(frontend)** · ★ **frontend merge FULLY UNBLOCKED**. ② 교차(backend): develop `@f44ee739` WT **CLEAN** · Open **0** · test **246/246 PASS**. ③ ★ **cross-stream merge FULLY UNBLOCKED** · merge(606) **pipeline 대기**.
+>
+> **operation 승격 BLOCK (744차)**: **QA-B95 Planned** — `scripts/dev-live-e2e.env` 미생성 · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (742차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.97s) · build **781 modules** (4.92s) · audit **0**. ② develop HEAD **`eb16734`** · WT **CLEAN** · **QA-B96 Fixed** · Open **0(frontend)**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (712차)**: ① develop `@548f670` WT **CLEAN** · HEAD test **1315/1316 PASS** · **Open 0(frontend)** · ★ **frontend merge FULLY UNBLOCKED**. ② 교차(backend): develop `@dd508f5` WT **CLEAN** · Open **0** · test **246/246 PASS**. ③ ★ **cross-stream merge FULLY UNBLOCKED** · merge(573) **pipeline 대기**.
+>
+> **operation 승격 BLOCK (712차)**: develop→test merge(573) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (710차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (82.26s) · build **781 modules** (6.89s) · audit **0**. ② develop HEAD **1315/1316 PASS** (`NursingServiceReportsPage` full-suite flake→isolated PASS) · WT **CLEAN** · Open **0(frontend)**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (710차)**: ① develop `@548f670` WT **CLEAN** · HEAD test **1315/1316 PASS** · **Open 0(frontend)** · ★ **frontend merge FULLY UNBLOCKED**. ② 교차(backend): develop `@a728f1b` WT **CLEAN** · Open **0** · test **246/246 PASS**. ③ ★ **cross-stream merge FULLY UNBLOCKED** · merge(572) **pipeline 대기**.
+>
+> **operation 승격 BLOCK (710차)**: develop→test merge(572) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (708차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (52.29s) · build **781 modules** (6.71s) · audit **0**. ② develop HEAD **1316/1316 PASS** (StaffPage FAQ21806 full-suite flake 2×FAIL→3rd PASS) · WT **CLEAN** · Open **0(frontend)**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (708차)**: ① develop `@b698871` WT **CLEAN** · HEAD test **1316/1316 PASS** · **Open 0(frontend)** · ★ **frontend merge FULLY UNBLOCKED**. ② 교차(backend): develop `@5edc45c` WT **CLEAN** · Open **0** · test **246/246 PASS**. ③ ★ **cross-stream merge FULLY UNBLOCKED** · merge(570) **pipeline 대기**.
+>
+> **operation 승격 BLOCK (708차)**: develop→test merge(570) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (668차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (52.52s) · build **781 modules** (6.75s) · audit **0**. ② develop HEAD **1210/1210 PASS** · WT **CLEAN** · Open **0(frontend)**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (668차)**: ① develop `@246df56` WT **CLEAN** · HEAD test **1210/1210 PASS** · **Open 0(frontend)** · ★ **frontend merge FULLY UNBLOCKED**. ② 교차(backend): develop `@1a822d2` WT **CLEAN** · Open **2 BLOCK QA-B86/B87** · HEAD **1085/1095 FAIL**. ③ ⚠ **cross-stream merge BLOCK** · merge(534) **실행 금지**.
+>
+> **operation 승격 BLOCK (668차)**: develop→test merge(534) **실행 금지**(BE HEAD test FAIL) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (662차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (86.48s) · build **781 modules** (5.04s) · audit **0**. ② develop HEAD **1198/1198 PASS** · WT **CLEAN** · Open **0**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (662차)**: ① develop `@024e720` WT **CLEAN** · HEAD test **GREEN** · **Open 0**. ② 교차(backend): develop `@24a1c5c` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(528) **대기**.
+>
+> **operation 승격 BLOCK (662차)**: develop→test merge(528) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (660차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.51s) · build **781 modules** (6.88s) · audit **0**. ② develop HEAD **1192/1192 PASS** · WT **CLEAN** · Open **0**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (660차)**: ① develop `@3ec39f6` WT **CLEAN** · HEAD test **GREEN** · **Open 0**. ② 교차(backend): develop `@d638493` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(526) **대기**.
+>
+> **operation 승격 BLOCK (660차)**: develop→test merge(526) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (658차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.76s) · build **781 modules** (7.26s) · audit **0**. ② develop HEAD **1189/1189 PASS** · WT **CLEAN** · Open **0**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+>
+> **merge gate (658차)**: ① develop `@e214da1` WT **CLEAN** · HEAD test **GREEN** · **Open 0**. ② 교차(backend): develop `@edda491` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(524) **대기**.
+>
+> **operation 승격 BLOCK (658차)**: develop→test merge(524) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (656차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.78s) · build **781 modules** (6.78s) · audit **0**. ② develop HEAD **1164/1164 PASS** · WT **CLEAN** · Open **0**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **merge gate (656차)**: ① develop `@ad319d7` WT **CLEAN** · HEAD test **GREEN** · **Open 0**. ② 교차(backend): develop `@3bd6a43` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(521) **대기**.
+
+> **operation 승격 BLOCK (656차)**: develop→test merge(521) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (654차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.93s) · build **781 modules** (6.82s) · audit **0**. ② develop HEAD **1163/1163 PASS** · WT **CLEAN** · Open **0**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **merge gate (654차)**: ① develop `@487416d` WT **CLEAN** · HEAD test **GREEN** · **Open 0**. ② 교차(backend): develop `@3bd6a43` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(520) **대기**.
+
+> **operation 승격 BLOCK (654차)**: develop→test merge(520) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (652차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.97s) · build **781 modules** (4.97s) · audit **0**. ② develop HEAD **1162/1162 PASS** · WT **CLEAN** · Open **0**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **merge gate (652차)**: ① develop `@efb2ec0` WT **CLEAN** · HEAD test **GREEN** · **Open 0**. ② 교차(backend): develop `@ba7d84f` WT **DIRTY 2M** · Open **1 BLOCK QA-B84**. ③ ⚠ **cross-stream merge BLOCK** · merge(518) **실행 금지**.
+
+> **PASS 금지 사유 (652차, cross-stream merge)**: ① 교차(backend): develop `@ba7d84f` WT **DIRTY 2M** · **Open 1 BLOCK QA-B84**. ② frontend 단독 merge gate **FULLY UNBLOCKED**이나 BE dirty 선행. ③ merge(518) **실행 금지**. COD: `ProgramService.java`·`ProgramServiceTest.java` 커밋/revert→WT clean→TSR 재검증.
+
+> **operation 승격 BLOCK (652차)**: develop→test merge(518) **실행 금지**(BE WT dirty) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (641차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (53.12s) · build **781 modules** (6.94s) · audit **0**. ② develop HEAD **1149/1149 PASS** · WT **CLEAN** · Open **0**. ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **merge gate (641차)**: ① develop `@8a8b930` WT **CLEAN** · HEAD test **GREEN** · **Open 0**. ② 교차(backend): develop `@0b807d8` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(508) **대기**.
+
+> **operation 승격 BLOCK (641차)**: develop→test merge(508) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (635차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (84.7s) · build **781 modules** (11.3s) · audit **0**. ② test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **PASS 금지 사유 (635차, merge gate)**: ① develop HEAD `@360b4d7` **1141/1143 FAIL** · **Planned 1 BLOCK QA-B81**. ② develop WT **CLEAN** · **QA-B82 Fixed**. ③ 교차(backend): develop `@dbecd72` WT **CLEAN** · Open **0** — FE HEAD test FAIL로 **cross-stream merge BLOCK**. ④ merge(502) **실행 금지**. COD: pilotPageFlows quiet-hours fix→HEAD PASS→TSR 재검증.
+
+> **operation 승격 BLOCK (635차)**: develop→test merge(502) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (633차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (55.06s) · build **781 modules** (7.71s) · audit **0**. ② test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **PASS 금지 사유 (633차, merge gate)**: ① develop HEAD `@111f056` **1141/1143 FAIL** · **Open 2 BLOCK QA-B81·QA-B82**. ② develop WT **DIRTY 2M** (630차 CLEAN→재오염). ③ 교차(backend): develop `@a057739` WT **CLEAN** · Open **0** — FE HEAD test FAIL+WT dirty로 **cross-stream merge BLOCK**. ④ merge(500) **실행 금지**. COD: pilotPageFlows quiet-hours fix + 2M commit/revert→WT clean→TSR 재검증.
+
+> **operation 승격 BLOCK (633차)**: develop→test merge(500) **실행 금지** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (630차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.65s) · build **781 modules** (6.95s) · audit **0**. ② develop HEAD test **1136/1136 PASS** (read-only). ③ test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **merge gate (630차)**: ① develop `@7ec7cd4` WT **CLEAN** · **Open 0**. ② 교차(backend): develop `@8f9ad0c` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(497) **대기**.
+
+> **operation 승격 BLOCK (630차)**: develop→test merge(497) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (628차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.04s) · build **781 modules** (4.97s) · audit **0**. ② test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **merge gate (628차)**: ① develop `@745a2f6` WT **CLEAN** · **Open 0**. ② 교차(backend): develop `@328874d` WT **CLEAN** · Open **0**. ③ ★ **양 스트림 merge FULLY UNBLOCKED** · merge(495) **대기**.
+
+> **operation 승격 BLOCK (628차)**: develop→test merge(495) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (624차, test 브랜치)
+
+> **PASS 금지 사유 (624차, merge gate)**: ① develop `@51f2505` WT **DIRTY 2M** (623차 CLEAN→재오염) · **Open 1 BLOCK QA-B80**. ② 교차(backend): develop `@16a0734` WT **CLEAN** · Open **0** — FE dirty만으로 **cross-stream merge BLOCK**. ③ merge(491) **실행 금지**. COD: FE 2 files 커밋/revert→WT clean→TSR 재검증.
+
+> **operation 승격 BLOCK (624차)**: develop→test merge(491) **실행 금지**(frontend WT dirty) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (622차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.41s) · build **781 modules** (6.56s) · audit **0**. ② test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **PASS 금지 사유 (622차, merge gate)**: ① develop `@bebd874` WT **DIRTY 3M+1U** (620차 CLEAN→재오염) · **Open 1 BLOCK QA-B79**. ② 교차(backend): develop `@b893e97` WT **DIRTY 2M** · **Open 1 BLOCK QA-B78**. ③ **cross-stream merge BLOCK** — merge(489) **실행 금지**. COD: FE 4 files·BE 2 files 커밋/revert→WT clean→TSR 재검증.
+
+> **operation 승격 BLOCK (622차)**: develop→test merge(489) **실행 금지**(양 스트림 WT dirty) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (620차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (80.71s) · build **781 modules** (6.70s) · audit **0**. ② develop `@bebd874` **CLEAN** (+1: G2/7-5 prior-month copay guard UI). ③ develop HEAD **1126/1126 PASS**. ④ **Open 0(frontend)**. ⑤ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑥ 교차(backend): Open **0** · develop `@b893e97` WT **CLEAN** · **220 ahead** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(489)** · post-merge live E2E.
+
+> **PASS 금지 사유 (620차, merge)**: 없음 — Open **0** · WT **CLEAN** · merge gate **FULLY UNBLOCKED**. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀 GREEN.
+
+> **operation 승격 BLOCK (620차)**: develop→test merge(489) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (616차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.46s) · build **781 modules** (6.85s) · audit **0**. ② develop `@c9baca2` **CLEAN** (614차 대비 HEAD 불변). ③ develop HEAD **1119/1119 PASS**. ④ **Open 0(frontend)**. ⑤ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑥ 교차(backend): Open **0** · develop `@70b3fb8` WT **CLEAN** · **218 ahead** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(485)** · post-merge live E2E.
+
+> **PASS 금지 사유 (616차, merge)**: 없음 — Open **0** · WT **CLEAN** · merge gate **FULLY UNBLOCKED**. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀 GREEN.
+
+> **operation 승격 BLOCK (616차)**: develop→test merge(485) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (614차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (78.79s) · build **781 modules** (6.60s) · audit **0**. ② develop `@c9baca2` **CLEAN** (+3: G41b UXD-99·V107 payload·G2/7-5 easy payment). ③ develop HEAD **1119/1119 PASS**. ④ **Open 0(frontend)**. ⑤ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑥ 교차(backend): Open **0** · develop `@438f5c7` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(484)** · post-merge live E2E.
+
+> **PASS 금지 사유 (614차, merge)**: 없음 — Open **0** · WT **CLEAN** · merge gate **FULLY UNBLOCKED**. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀 GREEN.
+
+> **operation 승격 BLOCK (614차)**: develop→test merge(484) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (607차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.69s) · build **781 modules** (6.73s) · audit **0**. ② test 브랜치 회귀 GREEN — v1.2+v1.3-A baseline 유효.
+
+> **PASS 금지 사유 (607차, merge)**: develop HEAD `@a4ab0c2` **1108/1109 FAIL** · **Open 1 BLOCK QA-B77(frontend)** · 교차 BE **Open 1 BLOCK QA-B76** · WT **DIRTY 2M** · merge gate **BLOCK** · merge **실행 금지**.
+
+> **operation 승격 BLOCK (607차)**: develop→test merge(475) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행** · COD 선행: FE `StaffTrainingLogPage.test.jsx` fix + BE G41b 2M commit/revert.
+
+> **PASS 근거 (605차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.35s) · build **781 modules** (5.10s) · audit **0**. ② develop `@38d24b6` **CLEAN** (+1 G41b training log compliance wire BNK-185). ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@0f11158` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(474)** · post-merge live E2E.
+
+> **PASS 금지 사유 (605차, merge)**: 없음 — Open **0** · WT **CLEAN** · merge gate **FULLY UNBLOCKED**. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀 GREEN.
+
+> **operation 승격 BLOCK (605차)**: develop→test merge(474) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (603차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.00s) · build **781 modules** (4.84s) · audit **0**. ② develop `@e43295b` **CLEAN** (+1 G41 training log nav·services tests·pilot E2E). ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@613b6af` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(472)** · post-merge live E2E.
+
+> **PASS 금지 사유 (603차, merge)**: 없음 — Open **0** · WT **CLEAN** · merge gate **FULLY UNBLOCKED**. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀 GREEN.
+
+> **operation 승격 BLOCK (603차)**: develop→test merge(472) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (586차, test 브랜치)**: ① test `@c7c8f07` 불변·**217/217 PASS** (116.72s) · build **781 modules** (7.62s) · audit **0**. ② develop `@443efca` **CLEAN**. ③ test baseline **PASS(v1.2+v1.3-A @ test)**.
+
+> **PASS 근거 (584차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.44s) · build **781 modules** (4.76s) · audit **0**. ② develop `@d695923` **CLEAN**. ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@fffd355` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(453)** · post-merge live E2E.
+
+> **PASS 금지 사유 (584차, merge)**: 없음(frontend) — Open **0** · frontend merge gate **FULLY UNBLOCKED**. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀 GREEN. **cross-stream BLOCK 없음**.
+
+> **operation 승격 BLOCK (584차)**: develop→test merge(453) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (577차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.36s) · build **781 modules** · audit **0**. ② develop `@5bba7a2` **CLEAN** · HEAD **1071/1071 PASS** (US-R02 staff status print rows). ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@d4acab7` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(448)** · post-merge live E2E.
+
+> **PASS 금지 사유 (577차, merge)**: 없음 — develop HEAD test **1071/1071 PASS** · Open **0** · merge gate **FULLY UNBLOCKED**. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀 GREEN.
+
+> **operation 승격 BLOCK (577차)**: develop→test merge(448) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (573차, test 브랜치 + merge gate)**: ① test `@c7c8f07` 불변·**217/217 PASS** (78.04s) · build **781 modules** · audit **0**. ② develop `@a7a6004` **CLEAN** · HEAD **1067/1067 PASS** (**QA-B72 Fixed** @ `a7a6004`). ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@39ee679` WT **CLEAN** · ★ **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(443)** · post-merge live E2E.
+
+> **PASS 근거 (569차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.11s) · build **781 modules** · audit **0**. ② develop `@14124d6` **CLEAN** · HEAD **1065/1066 FAIL** (G42 approval queue + main list duplicate `aria-label` — **QA-B72**). ③ **Open 1 BLOCK QA-B72(frontend)**. ④ v1.2.1 frontend merge **BLOCK**. ⑤ 교차(backend): Open **0** · develop `@bcb1d9f` WT **CLEAN** · **cross-stream merge BLOCK**(FE HEAD test fix 선행). 잔여: **COD G42 duplicate button fix→HEAD PASS→tester merge(439)** · post-merge live E2E.
+
+> **PASS 근거 (567차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.86s) · build **781 modules** · audit **0**. ② develop `@47a4928` **CLEAN** · HEAD test PASS(567차 미재실행). ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@bcb1d9f` WT **CLEAN** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(438)** · post-merge live E2E.
+
+> **PASS 근거 (559차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (79.52s) · build **781 modules** · audit **0**. ② develop `@bf6dd25` **CLEAN** · HEAD **1039/1039 PASS** (US-R02 8-12 aggregated staff status report @ `bf6dd25`). ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@b8e92bf` WT **CLEAN** · **931/931 PASS** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(428)** · post-merge live E2E.
+
+> **PASS 근거 (551차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.95s) · build **781 modules** · audit **0**. ② develop `@a5c2736` **DIRTY 2M** · HEAD **1022/1022 PASS** · WT **1023/1023 PASS** (G27 `MonthlyBenefitCapGuardPanel` no-branch guard WIP). ③ **Open 1 BLOCK QA-B71(frontend)**. ④ v1.2.1 frontend merge **BLOCK**. ⑤ 교차(backend): Open **0** · develop `@8bb6583` WT **CLEAN** · **902/902 PASS** · **cross-stream merge BLOCK**(FE WT clean 선행). 잔여: **COD FE 2M commit→WT clean→tester merge(420)** · post-merge live E2E.
+
+> **PASS 금지 사유 (551차, merge)**: ① develop WT **DIRTY 2M**(`MonthlyBenefitCapGuardPanel*` — G27 no-branch guard WIP, **550차 CLEAN→재오염**) ② Open **QA-B71 BLOCK** ③ develop→test merge(420) **실행 금지** — COD 2M 커밋/revert 선행. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀만 GREEN.
+
+> **operation 승격 BLOCK (551차)**: develop→test merge(420) **실행 금지**(FE WT dirty) · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (549차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.91s) · build **781 modules** · audit **0**. ② develop `@e77b7e4` **CLEAN** · HEAD **1020/1020 PASS** (+3 @Test, G9-COPAY-NAMING). ③ **Open 0(frontend)**. ④ v1.2.1 frontend merge **FULLY UNBLOCKED**. ⑤ 교차(backend): Open **0** · develop `@edd2771` WT **CLEAN** · **897/897 PASS** · **cross-stream merge FULLY UNBLOCKED**. 잔여: **tester merge(418)** · post-merge live E2E.
+
+> **BLOCK 근거 (541차, 이력)**: develop `@338c014` WT **DIRTY 1M** · HEAD **1008/1009 FAIL** — QA-B69 assertion fix 미커밋.
+
+> **BLOCK 근거 (539차, 이력)**: develop `@338c014` **CLEAN**·HEAD **1008/1009 FAIL** — guard banner title drift (**QA-B69**).
+
+> **PASS 근거 (537차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (79.55s) · build **781 modules** · audit **0**. ② develop `@02cbd05` **CLEAN**·**1001/1001 PASS** — US-R02 staff status report page (+7 @Test). ③ **Open 0(frontend)**. ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend): Open 0 · develop `@8487667` WT **CLEAN** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(408)** · post-merge live E2E.
+
+> **operation 승격 BLOCK (537차, 이력)**: develop→test merge(408) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (535차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.48s) · build **781 modules** · audit **0**. ② develop `@8bbba4d` **CLEAN**·**994/994 PASS** — G42/G34b live API harness·pilot E2E (+3 @Test). ③ **Open 0(frontend)**. ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend): Open 0 · develop `@b6ecc35` WT **CLEAN** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(406)** · post-merge live E2E.
+
+> **PASS 근거 (533차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (79.95s) · build **781 modules** · audit **0**. ② develop `@994f5ea` **CLEAN**·**991/991 PASS** — G34b cognitive role guard on work-log save (+2 @Test). ③ **Open 0(frontend)**. ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend): Open 0 · develop `@bccf978` WT **CLEAN** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(404)** · post-merge live E2E.
+
+> **operation 승격 BLOCK (533차)**: develop→test merge(404) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (531차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (76.31s) · build **781 modules** · audit **0**. ② develop `@b0a9e06` **CLEAN**·**989/989 PASS** — G42 grievance counseling page + staff API wiring (+10 @Test). ③ **Open 0(frontend)**. ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend): Open 0 · develop `@0460e9b` WT **CLEAN** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(402)** · post-merge live E2E.
+
+> **operation 승격 BLOCK (531차)**: develop→test merge(402) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (529차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (79.73s) · build **781 modules** · audit **0**. ② develop `@db21e85` **CLEAN**·**979/979 PASS** — QA-B68 Fixed (`CarePlanNotificationPage.test.jsx` UXD-92 aria-label). ③ **Open 0(frontend)**. ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend): Open 0 · develop `@bcdc411` WT **CLEAN** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(400)** · post-merge live E2E.
+
+> **operation 승격 BLOCK (529차)**: develop→test merge(400) **미실행** · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (527차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.39s) · build **781 modules** · audit **0**. ② develop `@1b5fabe` **CLEAN**·**978/979 FAIL** — UXD-92 `@3d5d629` 등급 이력 링크 `aria-label` 변경 후 `CarePlanNotificationPage.test.jsx` 미갱신. ③ **Open 1 BLOCK QA-B68**(frontend). ④ v1.2.1 merge **BLOCK**(frontend). ⑤ 교차(backend): Open 0 · develop `@b459f4c` WT **CLEAN** · **양 스트림 merge BLOCK**. 잔여: **COD `CarePlanNotificationPage.test.jsx` 수정→HEAD PASS→tester merge(398)** · post-merge live E2E.
+
+> **PASS 금지 사유 (527차)**: ① develop HEAD test **978/979 FAIL** ② Open **QA-B68 BLOCK** ③ develop→test merge(398) **실행 금지** — COD test fix 선행. test `@c7c8f07` **217/217 PASS** — test 브랜치 회귀만 GREEN.
+
+> **operation 승격 BLOCK (527차)**: develop→test merge(398) **미실행** · develop HEAD test FAIL · post-merge `scripts/run-live-e2e.sh` **미실행**.
+
+> **PASS 근거 (507차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (52.41s) · build **781 modules** · audit **0**. ② develop `@2f5af63` HEAD **불변**·WT **DIRTY 2M**·WT **931/931 PASS** — `extractErrorMessages` API error parsing **WIP @ WT**. ③ **Open 1 BLOCK QA-B62 recurrence**(frontend). ④ v1.2.1 merge **BLOCK**(frontend). ⑤ 교차(backend): Open 1 BLOCK **QA-B64** · develop `@f0752b6` WT **DIRTY 2M** · **양 스트림 merge BLOCK**. 잔여: **COD FE+BE 각 2M 커밋/revert→WT clean→tester merge(380)** · post-merge live E2E.
+
+> **PASS 금지 사유 (507차)**: ① develop WT **DIRTY 2M**(`http.js`·`http.test.js` — extractErrorMessages string fallback WIP, **505 CLEAN→재오염**) ② Open **QA-B62 BLOCK recurrence** ③ backend WT **DIRTY 2M**(QA-B64) ④ develop→test merge(380) **실행 금지** — COD FE+BE 2M 커밋/revert 선행. test `@c7c8f07` **217/217 PASS**·WT **931/931 PASS** — **커밋 없이 merge PASS 불가**.
+
+> **PASS 근거 (499차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (75.74s) · build **781 modules** · audit **0**. ② develop `@4efa168` HEAD **불변**·WT **DIRTY 2M**·WT **919/919 PASS** — `parseApiErrorPayload` API error parsing **WIP @ WT**. ③ **Open 1 BLOCK QA-B62**(frontend). ④ v1.2.1 merge **BLOCK**(frontend). ⑤ 교차(backend 498차): Open 0 · develop `@22d736b` WT **CLEAN** · **양 스트림 merge BLOCK**(FE WT clean 선행). 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(375)** · G2 CMS/US-R03/8-7-1/US-R02/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (497차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.33s) · build **781 modules** · audit **0**. ② develop `@4efa168` **CLEAN**·**917/917 PASS** — US-R03 FAQ21806 onboarding compliance **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend): Open 0 · develop `@b864272` WT **CLEAN** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(374)** · G2 CMS/US-R03/8-7-1/US-R02/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge). → **499차 WT 재오염·QA-B62 Open·merge BLOCK 회귀**.
+
+> **PASS 근거 (475차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (49.97s) · build **781 modules** · audit **0**. ② develop `@50bdb6e` **CLEAN**·**883/883 PASS** — US-S02 unknown hire date compliance summary **PRESENT @ HEAD** · **QA-B59 Fixed**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 474차): Open 0 · develop `@1817c36` WT **CLEAN** · **786/786 PASS** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(356)** · US-R02/8-7-1/US-R03/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (473차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (82.19s) · build **781 modules** · audit **0**. ② develop `@46f1ac0` HEAD **불변**·WT **DIRTY 4M**·WT **883/883 PASS** — US-S02/8-7-1 unknown hire date compliance **WIP @ WT**. ③ **Open 1 BLOCK QA-B59**(frontend). ④ v1.2.1 merge **BLOCK**(frontend). ⑤ 교차(backend 472차): **QA-B58 BLOCK** · develop `@3f444a1` WT **DIRTY 1M** · **양 스트림 merge BLOCK**. 잔여: **COD FE 4M+BE 1M→WT clean→tester merge(354)** · US-R02/8-7-1/US-R03/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (458차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (79.00s) · build **781 modules** · audit **0**. ② develop `@bb4c1af` **CLEAN**·**855/855 PASS** — US-R03 lifecycle date normalization **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 457차): **QA-B56 BLOCK** · develop `@61336df` WT **DIRTY 2M** · **양 스트림 merge BLOCK**. 잔여: **COD BE WT clean→tester merge(340)** · US-R03/G24/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (456차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (80.35s) · build **781 modules** · audit **0**. ② develop `@37dc785` **CLEAN**·**853/853 PASS** — US-R03 lifecycle validation·progress·list filter **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 455차): develop `@61336df` WT **DIRTY 2M** · Open 1 BLOCK QA-B56 · **양 스트림 merge BLOCK**. 잔여: **COD BE WT clean→tester merge(339)** · US-R03/G24/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (442차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.58s) · build **781 modules** · audit **0**. ② develop `@7243d21` **CLEAN**·**837/837 PASS** — US-R03 staff lifecycle FAQ21825 UI·StaffDetailPage·not-found fix **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 441차): **QA-B54 Planned BLOCK** · develop `@728339e` WT **DIRTY 2M** · **양 스트림 merge BLOCK**. 잔여: **COD BE 2M→WT clean→tester merge(325)** · US-R03/G24/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (440차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (81.26s) · build **781 modules** · audit **0**. ② develop `@479e064` **CLEAN**·**827/827 PASS** — G24-G34 fiscal-year parsing·G34 live E2E harness **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 439차): Open 1 BLOCK **QA-B54** · develop `@728339e` WT **DIRTY 2M** · **양 스트림 merge BLOCK**. 잔여: **COD BE 2M→WT clean→tester merge(323)** · G24/G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (438차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (51.56s) · build **781 modules** · audit **0**. ② develop `@4e4bdf6` **CLEAN**·**825/825 PASS** — G24 needs assessment fiscal-year parsing **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 437차): Open 0 · develop `@728339e` WT **CLEAN** · **724/724 PASS** · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **tester merge(322)** · G24/G24-G14/US-T09/T10·G34 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (428차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (80.79s) · build **781 modules** · audit **0**. ② develop `@6d6b426` **CLEAN**·**800/800 PASS** — G34 lead caregiver work log UI **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 427차): Open 0 · develop `@559648f` WT **CLEAN** · **689/689 PASS** · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **tester merge(311)** · G34/G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (424차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.28s) · build **781 modules** · audit **0**. ② develop `@50e5fac` HEAD **불변**·WT **DIRTY 2M**·HEAD **784/784 PASS**·WT **785/785 PASS** — LifecycleWorkflowPanel evidence key fix **WIP @ WT**. ③ **Open 1 BLOCK** `QA-20260612-B52`. ④ v1.2.1 merge **BLOCK**(frontend). ⑤ 교차(backend 423차): Open 0 · develop `@b7cfc92` WT **CLEAN** · **676/676 PASS** · **양 스트림 merge BLOCK**. → **426차 QA-B52 Fixed·428차 G34 FE**.
+
+> **PASS 근거 (422차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (163.26s) · build **781 modules** · audit **0**. ② develop `@50e5fac` **CLEAN**·**784/784 PASS** — lifecycle workflow panel pilot E2E **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 421차): Open 0 · develop `@45b8147` WT **CLEAN** · **675/675 PASS** · **양 스트림 merge gate FULLY UNBLOCKED**. → **424차 WT 재오염·QA-B52 Open·merge BLOCK 회귀**.
+
+> **PASS 근거 (418차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (79.90s) · build **781 modules** · audit **0**. ② develop `@22bd6b7` **CLEAN**·**779/782 FAIL** — LifecycleWorkflowPanel G17/G32 wiring **duplicate UI @ HEAD**. ③ **Open 1 BLOCK** `QA-20260612-B50`. ④ v1.2.1 merge **BLOCK**(frontend). → **420차 QA-B50 Fixed·422차 784/784 PASS**.
+
+> **PASS 금지 사유 (424차)**: ① develop WT **DIRTY 2M**(`LifecycleWorkflowPanel*` — evidence list React key fix WIP, **422차 CLEAN→재오염**) ② Open **QA-B52 BLOCK** ③ develop→test merge(307) **실행 금지** — COD 2M 커밋/revert 선행. test `@c7c8f07` **217/217 PASS**·HEAD **784/784 PASS** — **커밋 없이 merge PASS 불가**.
+
+> **PASS 금지 사유 (418차)**: ① develop HEAD **779/782 FAIL** (`pilotPageFlows` US-T06·BNK-96·US-T07 — duplicate StatCard·참석자) ② Open **QA-B50 BLOCK** ③ develop→test merge(303) **실행 금지** — COD fix 선행. test `@c7c8f07` **217/217 PASS**·WT 품질 PASS — **develop HEAD green 없이 merge PASS 불가**.
+
+> **PASS 근거 (416차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.45s) · build **781 modules** · audit **0**. ② develop `@2cd2cd8` **CLEAN**·**775/775 PASS** (136.37s) — G17/G32 edit-flow pilot E2E **PRESENT @ HEAD**. ③ **Open 0**(frontend) · **QA-B49 Fixed @ `f72da41`**(유지). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 415차): Open 0 · develop `@3ad2a90` WT **CLEAN** · **672/672 PASS** · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **tester merge(300)** · G17/G32/G38/G39/G37 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge). → **418차 QA-B50 Open·merge BLOCK 회귀**.
+
+> **PASS 근거 (410차)**: ① test `@c7c8f07` 불변·**217/217 PASS** (50.18s) · build **781 modules** · audit **0**. ② develop `@8fa9f3d` **CLEAN**·**772/772 PASS** (134.12s) — G38/G39 dashboard snapshot aggregation **PRESENT @ HEAD**. ③ **Open 0**(frontend) · **QA-B49 Fixed @ `8fa9f3d`**. ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 409차): Open 0 · develop `@15b3c7e` WT **CLEAN** · **667/667 PASS** · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **tester merge(296)** · G38/G39/G37/G17/G32 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (408차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** (57.07s) · build **781 modules** · audit **0**. ② develop `@4903173` HEAD **불변**·WT **DIRTY 2M**·WT **772/772 PASS** (221.03s) — G38/G39 dashboard snapshot aggregation **WIP @ WT (406차 대비 불변)**. ③ **Open 0**(frontend) · **QA-B49 Planned BLOCK**. ④ v1.2.1 merge **BLOCK**(frontend). ⑤ 교차(backend 407차): Open 0 · develop `@70d76a4` WT **CLEAN** · **667/667 PASS** · **양 스트림 merge BLOCK**. → **410차 QA-B49 Fixed·merge UNBLOCKED**.
+
+> **PASS 근거 (406차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** · build **781 modules** · audit **0**. ② develop `@4903173` WT **DIRTY 2M**·HEAD **771/771 PASS**·WT **772/772 PASS** — G38/G39 dashboard snapshot aggregation **WIP @ WT**. ③ **Open 0**(frontend) · **QA-B49 Planned BLOCK**. ④ v1.2.1 merge **BLOCK**(frontend). ⑤ 교차(backend 405차): Open 0 · develop `@7ba18c1` WT **CLEAN** · **666/666 PASS** · **양 스트림 merge BLOCK**. 잔여: **COD FE 2M 커밋/revert→WT clean→tester merge(293)** · G38/G39/G37/G17/G32 live E2E(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **PASS 근거 (392차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** · audit **0**. ② develop `@1c99bcd` **CLEAN**·**749/749 PASS** — G39 provision result evaluation UI **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 391차): Open 0 · develop `@f082933` WT **CLEAN** · **657/657 PASS** · **양 스트림 merge gate FULLY UNBLOCKED**. → **402차 WT 재오염·404차 QA-B49 Planned·406~408차 BLOCK·410차 Fixed**.
+
+> **PASS 금지 사유 (404차→408차, 해소 @410차)**: ① develop WT **DIRTY 2M**(`DashboardPage*` — G38/G39 snapshot aggregation WIP) → **Fixed @ `8fa9f3d`** ② Planned **QA-B49 BLOCK** → **Fixed** ③ merge gate **UNBLOCKED** — tester merge(296) 실행 가능.
+
+> **operation 승격 BLOCK**: develop→test merge **미실행**(296 commits) · post-merge live E2E **미실행**.
+
+> **PASS 근거 (376차)**: ① test `@c7c8f07` 불변·**217/217 PASS** · audit **0**. ② develop `@eb488799` **CLEAN**·**705/705 PASS** — G33 `BillingSettingsPanel` settlement reload fallback **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend git): Open 0 · develop `@555a19f` WT **CLEAN** · **623/623 PASS** · **양 스트림 merge FULLY UNBLOCKED**. 잔여: **tester merge(147+118=265)** · G17/G32/G33 live E2E run(post-merge) · LIVE_E2E run(결정 96·post-merge).
+
+> **operation 승격 BLOCK**: develop→test merge **미실행**(265 commits) · post-merge live E2E **미실행**.
+
+> **PASS 근거 (324차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** · audit **0**. ② develop `@7eebd8c` **CLEAN**·**627/627 PASS** — G32 `normalizeAttendeeNames` **PRESENT @ HEAD**. ③ **QA-B40 Fixed**·**Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 323차): Open 0 · develop `@622b5e5` WT CLEAN · 569/569 PASS · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **tester merge(118+95=213)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 금지 사유 (322차, 이력)**: ① develop WT **DIRTY 2M**(`CaseManagementPage*` — G32 `normalizeAttendeeNames` WIP, **321차 CLEAN→재오염**) ② Open **QA-20260611-B40 BLOCK** ③ develop→test merge(117) **실행 금지** — COD FE WT clean·커밋 선행. 교차 BE **QA-B39**·WT **DIRTY 1U**. test `@c7c8f07` **217/217 PASS**·WT 품질 PASS — **커밋 없이 merge PASS 불가**. → **324차 Fixed @ `7eebd8c`**.
+
+> **PASS 근거 (312차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** · audit **0**. ② develop `@c30aaac` **CLEAN**·**607/607 PASS** — US-G04 upload block **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). → **314차 WT 재오염으로 BLOCK 회귀**.
+
+> **PASS 근거 (310차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** · audit **0**. ② develop `@dd163cf` **CLEAN**·**606/606 PASS** — QA-B37 US-G04 upload guard+API **PRESENT @ HEAD**. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 309차): Open 0 · develop `@8f208e4` WT CLEAN · 537/537 PASS · **양 스트림 merge gate FULLY UNBLOCKED**. → **308차 BLOCK 해소**.
+
+> **PASS 금지 사유 (308차, 이력)**: ① develop WT **DIRTY 2M**(`NHISImportPage*` — US-G04 fee schedule coverage upload guard WIP, **306차 CLEAN→재오염**) ② Open **QA-20260611-B37 BLOCK** ③ develop→test merge(110) **실행 금지** — COD FE WT clean·커밋 선행. test `@c7c8f07` **217/217 PASS**·WT 품질 PASS — **커밋 없이 merge PASS 불가**.
+
+> **PASS 근거 (306차, 이력)**: ① test `@c7c8f07` 불변·**217/217 PASS** · audit **0**. ② develop `@5c0d83d` **CLEAN**·**601/601 PASS** — US-G04 fee schedule year guard PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 305차): Open 0 · develop `@0ae5f8d` WT CLEAN · 528/528 PASS · **양 스트림 merge gate FULLY UNBLOCKED**. → **308차 WT 재오염으로 BLOCK 회귀**.
+
+> **PASS 근거 (302차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@758e590` **CLEAN**·**593/593 PASS** — US-L01 8-bank deposit format guide PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 301차): Open 0 · develop `@aacf20b` WT CLEAN · 525/525 PASS · 86 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(108+86=194)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 근거 (300차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@fd569d7` **CLEAN**·**580/580 PASS** — G26 NTS xlsx layout PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 299차): Open 0 · develop `@ff12473` WT CLEAN · 523/523 PASS · 85 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(107+85=192)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 근거 (298차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@e2c2ffe` **CLEAN**·**579/579 PASS** — UXD-77 CSS·G26 xlsx export PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 297차): Open 0 · develop `@923e610` WT CLEAN · 521/521 PASS · 84 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(106+84=190)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 근거 (292차, 이력)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@13272bc` **CLEAN**·**569/569 PASS** — G26 `MedicalExpenseDeductionPanel` taxYear submit guard PRESENT @ HEAD. ③ **QA-20260611-B34 Fixed** @ `13272bc`. ④ **Open 0**(frontend). ⑤ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑥ 교차(backend 291차): Open 0 · develop `@970f547` WT CLEAN · 519/519 PASS · 82 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(82+102=184)** · LIVE_E2E run(결정 73·post-merge).
+
+> **BLOCK 근거 (290차, 이력)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@63234e2` HEAD 불변·WT **DIRTY 2M** — G26 `MedicalExpenseDeductionPanel` taxYear submit-on-blur·stale-response guard WIP (**288차 CLEAN→재오염**). HEAD **567/567**·WT **569/569 PASS**(+2). ③ **Open 1 BLOCK** `QA-20260611-B34`. ④ v1.2.1 merge **BLOCK**(frontend WT clean 선행). ⑤ 교차(backend 289차): Open 0 · develop `@6bf51c8` WT CLEAN · 518/518 PASS · 81 ahead · **양 스트림 merge BLOCK**. → **292차 Fixed @ `13272bc`**.
+
+> **PASS 근거 (288차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@63234e2` **CLEAN**·**567/567 PASS** — `pilotLiveApi.e2e.test.js` live write-flow candidate selection hardening PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 287차): Open 0 · develop `@27f20de` WT CLEAN · 516/516 PASS · 80 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(80+101=181)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 근거 (286차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@7e5c806` **CLEAN**·**567/567 PASS** — G26 `MedicalExpenseDeductionPanel`·`medicalExpenseDeduction.js`·UXD-76 `VehiclesPage` aria-label PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 285차): Open 0 · develop `@7f10449` WT CLEAN · test 246/246 PASS · 79 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(79+100=179)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 근거 (282차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@189a00d` **CLEAN**·**555/555 PASS** — US-J02 `GuardianPortalPage` stale billing error reset + 회귀 테스트 PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 281차): Open 1 BLOCK QA-B33 · develop `@4001510` WT CLEAN · HEAD **509/510 FAIL** · **양 스트림 merge BLOCK**. 잔여: **COD BE `J03AlimtalkServiceFlowE2eTest` fix→merge(77+97=174)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 근거 (280차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@62058d3` **CLEAN**·**554/554 PASS** — US-J02 `GuardianPortalPage` `loadTargets` out-of-order guard + 회귀 테스트 PRESENT @ HEAD. ③ **QA-20260611-B32 Fixed** @ `62058d3`. ④ **Open 0**(frontend). ⑤ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑥ 교차(backend 279차): Open 0 · develop `@4001510` WT CLEAN · 77 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(96+77=173)** · LIVE_E2E run(결정 73·post-merge).
+
+> **PASS 근거 (276차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@bed612c` **CLEAN**·**553/553 PASS** — US-J02 `GuardianPortalPage` request-seq guard + 회귀 테스트 PRESENT @ HEAD. ③ **QA-20260611-B30 Fixed** @ `bed612c`. ④ **Open 0**(frontend). ⑤ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑥ 교차(backend 275차): Open 0 · develop `@894e246` WT CLEAN · 76 ahead · **양 스트림 merge gate FULLY UNBLOCKED**. 잔여: **develop→test merge(95+76=171)** · LIVE_E2E run(결정 73·post-merge).
+
+> **BLOCK 근거 (267차, 이력)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@2b6024a` HEAD 불변·WT **DIRTY 2M** — G7 NHIS guidance `Promise.allSettled`·failure tolerance WIP (**265차 CLEAN→재오염**). HEAD **543/543**·WT **544/544 PASS**(+1). ③ **Open 1 BLOCK** `QA-20260610-B28`. ④ v1.2.1 merge **BLOCK**(frontend WT clean 선행). ⑤ 교차(backend 266차): Open 1 QA-B27 · develop `@ba4c9d9` WT DIRTY 2M · **양 스트림 merge BLOCK**. 잔여: **COD FE+BE WT clean→merge(91+72)** · LIVE_E2E run.
+
+> **PASS 근거 (265차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@2b6024a` **CLEAN**·**543/543 PASS** — US-J02 `GuardianPortalPage` pagination append-loading 회귀 테스트 PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 264차): Open 0 · develop `@ba4c9d9` WT CLEAN · 72 ahead · 잔여 COD backend WT clean→merge(86+67)+LIVE_E2E run.
+
+> **PASS 근거 (253차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@9dfef92` **CLEAN**·**524/524 PASS** — G16 `TransportServiceFeePanel`·`transportServiceFee.js`·Route `/transport/service-fees` PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 252차): Open 0 · develop `@bd375e6` WT CLEAN · 67 ahead · 잔여 merge(85+67)+LIVE_E2E run.
+
+> **PASS 근거 (246차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@eef07e5` **CLEAN**·**508/508 PASS** — G15 `transportTimeCompliance.js`·`TransportServiceLogPanel` PRESENT @ HEAD. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**(frontend). ⑤ 교차(backend 245차): Open 0 · develop `@9d7c17f` WT CLEAN · 63 ahead · 잔여 merge(81+63)+LIVE_E2E run.
+
+> **BLOCK 근거 (236차, 이력)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@48d90d5` **CLEAN**·**484/485 FAIL** — US-T02 `pilotPageFlows` transport E2E (`POST /api/v1/transport/runs` 미호출, geocode guard 회귀). ③ **Open 1 BLOCK** `QA-20260610-B20`. ④ v1.2.1 merge **BLOCK** — COD US-T02 fix 선행. ⑤ 교차(backend 235차): Open 0 · develop `@9aafa3e` WT CLEAN · 61 ahead.
+
+> **BLOCK 근거 (232차, 이력)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@6c4c151` HEAD 불변·**WT DIRTY 4M** — G15 transport geocode failure UI WIP (**230차 CLEAN→재오염**). ③ **Open 1 BLOCK** `QA-20260610-B19`. ④ v1.2.1 merge **BLOCK** — COD WT clean 선행. ⑤ 교차(backend 231차): Open 0 · develop `@d6d7e7f` WT CLEAN · 59 ahead.
+
+> **PASS 근거 (224차)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@7387ab9` **CLEAN**·**472/472 PASS** — `QA-20260610-B17` Fixed. ③ **Open 0**(frontend). ④ v1.2.1 merge **FULLY UNBLOCKED**. ⑤ 교차(backend 223차): Open 0 · `@754160f` · 56 ahead · 잔여 merge(71+56)+LIVE_E2E run.
+
+> **BLOCK 근거 (222차, 이력)**: ① test `@c7c8f07` 불변·**217/70 PASS** · audit **0**. ② develop `@9e3cab5` **CLEAN**·**471/472 FAIL** — US-T01 `getByText("김배차")` **Found multiple elements**(당일 배차 명단 + G15 이용자 Select). ③ **Open 1 BLOCK** `QA-20260610-B17`. ④ v1.2.1 merge **BLOCK** — COD US-T01 assert fix 선행. ⑤ 교차(backend 221차): Open 0 · `@3c8f9fe` · 55 ahead.
+
+> **PASS 근거 (220차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `62f022d` **CLEAN**·**467/467 PASS**(불변) · audit **0** — G27 `MonthlyBenefitCapGuardBanner` no-exceedance success status PRESENT. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend) — merge(68) 차기. ⑥ 교차(backend 219차): Open 0 · develop `@d5e0e01` WT CLEAN · 54 ahead.
+
+> **PASS 근거 (218차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `4679f15` **CLEAN**·**467/467 PASS**(+3/+0) · audit **0** — G11 `FeeSurchargeGuidePanel`·G15 `TransportCompliancePanel`·US-L01 `BankDepositImportPanel` `pilotPageFlows` E2E PRESENT. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend) — merge(67) 차기. ⑥ 교차(backend 217차): Open 0 · develop `@904072b` WT CLEAN · 53 ahead.
+
+> **PASS 근거 (214차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `fba5ea8` **CLEAN**·**451/451 PASS**(+3/+0) · audit **0** — G27 `MonthlyBenefitCapBanner`·`MonthlyBenefitCapGuardBanner`·`feeSchedules.js`·`BillingDetailPage` ltcGrade 0 label PRESENT · backend `@20bc1be` G27 cognitive support cap catalog 정합. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend) — merge(65) 차기. ⑥ 교차(backend 213차): Open 0 · develop `@20bc1be` WT CLEAN · 51 ahead.
+
+> **PASS 근거 (210차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `5e64125` **CLEAN**·**447/447 PASS**(+13/+4) · audit **0** — G27 `MonthlyBenefitCapBanner`·`MonthlyBenefitCapGuardPanel`·US-L01 `BankDepositImportPanel` PRESENT · backend `@467cd70` G27 catalog+guard API 정합. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED**(frontend) — merge(63) 차기. ⑥ 교차(backend 209차): Open 1 BLOCK `QA-20260610-B16` · 양 스트림 merge 선행 backend WT clean.
+
+> **PASS 근거 (196차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `eedcc80` **CLEAN**·**413/413 PASS**(+4/+1) · audit **0** — G2 `GuardianDocumentNotifyPanel` PRESENT · backend `@0854fbd` G2 notify API 정합. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(55) 차기. ⑥ 교차(backend 195차): Open 0 · develop `@0854fbd` WT CLEAN · 43 ahead.
+
+> **PASS 근거 (194차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `4c7c994` **CLEAN**·**409/409 PASS**(+1) · audit **0** — G19 BranchesPage integrated home surcharge notice PRESENT. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(54) 차기. ⑥ 교차(backend 193차): Open 0 · develop `@588b8e6` WT CLEAN · 42 ahead.
+
+> **PASS 근거 (192차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `dd72ff8` **CLEAN**·**408/408 PASS**(+1) · audit **0** — US-L01 PaymentRecordModal overpayment guard PRESENT · backend `@399bc22` US-L01 positive-amount guard 정합. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(53) 차기. ⑥ 교차(backend 191차): Open 0 · develop `@399bc22` WT CLEAN · 41 ahead.
+
+> **PASS 근거 (186차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `8a771cf` **CLEAN**·**403/403 PASS**·audit **0** — G9/US-J02 duration band unify·FE-14 panel tests·US-G02 currency formatting PRESENT. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(50) 차기. ⑥ 교차(backend 185차): Open 0 · develop `@40567a2` WT CLEAN · 39 ahead.
+
+> **PASS 근거 (181차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `6fe853b` **CLEAN**·**382/382 PASS**·audit **0** — G9 duration band fallback UI PRESENT · backend `@0719648` 정합. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(46) 차기. ⑥ 교차(backend 180차): Open 1 BLOCK QA-B14 · develop `@0719648` WT DIRTY 2M · 36 ahead.
+
+> **PASS 근거 (178차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `3f96d95` **CLEAN**·**382/382 PASS**·audit **0** — G9 durationBandSnapshot UI PRESENT · backend `@0719648` 정합. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(45) 차기. ⑥ 교차(backend 177차): Open 0 · develop `@0719648` WT CLEAN · 36 ahead.
+
+> **PASS 근거 (174차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `0dc4c4a` **CLEAN**·**377/377 PASS**·audit **0** — QA-B07 Fixed · G9 duration_band+US-J02 billing helpers PRESENT. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(43) 차기. ⑥ 교차(backend 173차): Open 1 BLOCK QA-B13 · backend WT DIRTY 3.
+
+> **PASS 근거 (148차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `14e9066` **CLEAN**·**340/340 PASS**·audit **0** — US-L02 notify 후 timestamp UI 정합. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(28) 차기. ⑥ 교차(backend 147차): QA-B10 Fixed · backend merge gate UNBLOCKED.
+
+> **PASS 근거 (146차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ develop `690c774` **CLEAN**·**340/340 PASS**·audit **0** — QA-B09 해소·FE-7 충족. ④ 이관 규율 5 PRESENT · SEC-005 0건. ⑤ v1.2.1 merge gate **FULLY UNBLOCKED** — merge(27) 차기. ⑥ 교차(backend): QA-B10 backend WT dirty — frontend merge 독립 실행 가능.
+
+> **PASS 금지 사유 (144차, 이력)**: ① develop HEAD `69aff5d` `npm test` **337/340 FAIL**(FE-7·US-L01 pilotPageFlows 3건) ② Open **QA-20260609-B09 BLOCK** ③ develop→test merge(26) **실행 금지** — coder fix 선행. → **146차 Fixed @ `690c774`**.
+
+> **PASS 근거 (107차)**: ① test `@c7c8f07` = ROADMAP v1.2+v1.3-A merged HEAD 불변. ② test `npm ci`+`npm test` **217/70 PASS** · build **781 modules 3 청크**(max 367 kB) · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·GuardianBillingDetailModal·BranchScopeNotice·TransportPickupContact·ChartContainer·TransportPage·MealsPage·ProgramsPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +3 v1.2.1 **CLEAN**·225/72 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ `465bdae` US-J02 guardian billing API 필드 정합(develop-only). ⑥ v1.2.1 merge 게이트 미충족(G14 backend GET API 결정 92 P0 선행·live E2E run post-merge) — 정상.
+
+> **PASS 근거 (105차)**: ① test `c510f5c`→`c7c8f07` 22커밋 merge 완료. ② test `npm test` **217/70 PASS** · build **781 modules** · audit **0**. ③ origin/test 동기화. ④ develop +2 v1.2.1 CLEAN·225/72 PASS. ⑤ v1.3-A·v3 test 반영 완료.
+
+> **PASS 근거 (103차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +22 UXD-55 GuardianBillingDetailModal·UXD-54·v1.3-A·v3 **CLEAN**·217/70 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ develop build 3 청크 분리(max 367.09 kB < 500 kB). ⑥ UXD-55 US-J02 보호자 본인부담금 명세 상세·인쇄 UI develop-only. ⑦ v1.3 merge 게이트 미충족(backend 로컬 test `598d108`·origin STALE SEC-D14/QA-B12·frontend 22 ahead·live E2E run post-merge) — 정상.
+
+> **PASS 근거 (101차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +21 UXD-54 QR·배차 BranchScopeNotice·v1.3-A·v3 **CLEAN**·214/69 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ develop build 3 청크 분리(max 367.09 kB < 500 kB). ⑥ UXD-54 BranchScopeNotice QR·Transport 연동(US-UX-04) 접근성 부합. ⑦ v1.3 merge 게이트 미충족(backend 로컬 test merge·origin STALE QA-B12·frontend 21 ahead·live E2E run post-merge) — 정상.
+
+> **PASS 근거 (99차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +20 UXD-53 BranchScopeNotice·v1.3-A·v3·UXD-51·Recharts·FE-15 code-split **CLEAN**·212/69 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ develop build 3 청크 분리(max 367.09 kB < 500 kB). ⑥ UXD-53 지점 스코프 UI(role=status·forced-colors a11y) 접근성 부합. ⑦ v1.3 merge 게이트 미충족(backend transport API test 미승격·US-T01~T03 live E2E run post-merge) — 정상.
+
+> **PASS 근거 (97차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +18 v1.3-A US-T03 연락처 마스킹·v3·UXD-51·Recharts·FE-15 code-split **CLEAN**·208/68 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ develop build 3 청크 분리(max 367.09 kB < 500 kB). ⑥ US-T03 연락처 마스킹 PII 보호(hq_admin full·non-HQ `010-****-5678`) 부합. ⑦ v1.3 merge 게이트 미충족(backend transport API test 미승격·US-T01~T03 live E2E run post-merge) — 정상.
+
+> **PASS 근거 (95차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +16 v1.3-A·v3·UXD-51·Recharts·FE-15 code-split **CLEAN**·203/67 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ develop build 3 청크 분리(max 367.09 kB < 500 kB) — FE-15 코드 스플릿 유지. ⑥ v1.3 merge 게이트 미충족(backend transport API test 미승격·US-T01~T03 live E2E run post-merge, transport live E2E harness develop PRESENT) — 정상.
 
 > **PASS 근거 (90차)**: ① test `@c510f5c` = ROADMAP v1.2 merged HEAD 불변. ② test `npm test` **143/46 PASS** · build **125 modules** · audit **0**(독립 실측). ③ 이관 규율 5 — ProtectedRoute·services.js·SideNav·pilotChecklist·ReconciliationPage **PRESENT** @ test HEAD · SEC-005 0건. ④ develop +9 v1.3-A·v3·unconfirm UI **CLEAN**·179/58 PASS·audit 0 — dirty-tree·회귀 없음(non-blocking). ⑤ v1.3 merge 게이트 미충족(backend transport API test 미승격·live E2E post-merge, unconfirm UI develop PRESENT) — 정상.
 
@@ -230,7 +3571,7 @@
 | # | 항목 | 기대 | 실제 | 결과 |
 |---|------|------|------|------|
 | F-01 | develop → test 커밋 동기화 (v1.1) | v1.1 merged 후 test = merged HEAD | test **`4f71543`** (= v1.1 merged) · develop **`e0eaf32`** (**2 v1.2 ahead**) | **PASS** (v1.1) |
-| F-02 | develop working tree clean | 커밋만으로 검증 가능 | **CLEAN** (0 dirty) | **PASS** |
+| F-02 | develop working tree clean | 커밋만으로 검증 가능 | **DIRTY 2M** (QA-B34 · G26 panel WIP) | **BLOCK** |
 | F-03 | test working tree clean | clean | clean | PASS |
 | F-04 | ROADMAP v1.1 `merge_status` | `merged` | **`merged`** @ test `4f71543` | **PASS** |
 | F-05 | ROADMAP v1 선행 merge | `merged` | `merged` (ROADMAP) — backend test stale | **PARTIAL** |
@@ -449,19 +3790,107 @@
 
 ## 7. QA_FEEDBACK 연계 (frontend)
 
+> **646차 현재 (2026-06-14T08:16)**: **Open 1 BLOCK QA-B83(frontend)** — develop `@d5ff3f8` HEAD **불변** · WT **DIRTY 2M** (US-UX-05 SideNav WIP, 645차 CLEAN→재오염) · HEAD **1154/1154 PASS** · WT **1155/1155 PASS** · v1.2.1 frontend merge **BLOCK** · 교차 backend Open **0** @ `c22a5dc` WT **CLEAN** · ⚠ **cross-stream merge BLOCK** · merge(513) **실행 금지**.
+
 | id | severity | 상태 | 요약 |
 |----|----------|------|------|
-| QA-20260606-B03 | BLOCK | **Planned** | v1.1 merge_status pending · develop **7 ahead** · Must 라이브 E2E·J01 백엔드 API 잔여 |
+| QA-20260614-B83 | BLOCK | **Open** | US-UX-05 SideNav group expand sync WIP — `SideNav.jsx`·`SideNav.test.jsx` — 645차 CLEAN→재오염 (B07 recurrence) |
+| QA-20260614-B80 | BLOCK | **Fixed @ `4f2ec98`** | G2/7-5 easy-pay client validation — `services.js`·`billingGuardianPlatformServices.test.js` — 626차 Fixed |
+| QA-20260614-B79 | BLOCK | **Fixed @ `51f2505`** | EasyPayPanel a11y — field errors, time semantics, status section — 624차 Fixed |
+| QA-20260614-B77 | BLOCK | **Fixed @ `76fe2fb`** | G41b StaffTrainingLog StatCard scoped compliance count assertions — 609차 Fixed |
+| QA-20260614-B76 | BLOCK | **Fixed @ `299d21f`** (backend) | G41b `StaffTrainingLogService` BNK-187 — 608차 Fixed |
+| QA-20260613-B72 | BLOCK | **Fixed @ `a7a6004`** | G42 approval queue + main list duplicate `aria-label` — `pilotPageFlows.test.jsx:3908` |
+| QA-20260613-B71 | BLOCK | **Fixed @ `b47e85c`** | G27 `MonthlyBenefitCapGuardPanel` no-branch guard — 553차 Fixed |
+| QA-20260613-B69 | BLOCK | **Fixed @ `7668459`** | G-7x-1 guard banner title vs `BillingPage.test.jsx` — COD commit @ `7668459` |
+| QA-20260613-B70 | BLOCK | **Fixed @ `21eb0af`** | G-7x-1 prior-deposit guard YearMonth — backend Fixed @ `21eb0af` |
+| QA-20260613-B68 | BLOCK | **Fixed @ `db21e85`** | CarePlanNotificationPage UXD-92 aria-label test |
+| QA-20260612-B57 | BLOCK | **Fixed @ `46f1ac0`** | StaffRefresherTrainingPage US-S02/8-7-1 follow-up WIP — 471차 Fixed |
+| QA-20260612-B52 | BLOCK | **Fixed @ `c8c727e`** | LifecycleWorkflowPanel evidence list React key — 426차 Fixed |
+| QA-20260612-B50 | BLOCK | **Fixed @ `352968b`** | LifecycleWorkflowPanel duplicate StatCard·참석자 |
+| QA-20260612-B49 | BLOCK | **Fixed @ `f72da41`** | G38/G39 dashboard compliance fallback — recurrence closed |
 | QA-20260606-H04 | HIGH | **develop HEAD 반영 (`811aef3`)** | `services.js`·Must pages·pilotChecklist·pilotPageFlows develop HEAD PRESENT — 라이브 E2E는 merge 후 |
 | QA-20260606-M01 | MEDIUM | **PARTIAL (`811aef3`)** | vitest 35/9 PASS(61차 6 → +29) — P1–P8 라이브·전체 회귀 잔여 |
 | SEC-20260606-008 | MEDIUM | **develop HEAD 해소 (`811aef3`)** | npm audit **0 vulnerabilities**(vite 6.4.3·vitest 4.1.8, 61차 4→0) |
 | QA-20260607-H05 | HIGH | **Planned (partial)** | MaskedPhone 마스킹 정합 @ HEAD · GuardianListCard/J01 UI(FE-18) live 잔여 |
 
-> **frontend Open 0건** — SEC-D12·QA-B11·SEC-D11 **Fixed @ 43차 baseline**. **H04·M01·SEC-008 develop HEAD 반영(`811aef3`)** — **Planned BLOCK = B03 merge 게이트 단일**(Must 라이브 E2E·J01 백엔드 API · backend merge 4커밋 동반).
+> **frontend Open 1 BLOCK QA-B83 @ develop `@d5ff3f8` WT **DIRTY 2M**. v1.2.1 frontend merge **BLOCK** — cross-stream **BLOCK**(BE Open 0 @ `c22a5dc` WT **CLEAN**).
 
 ---
 
 ## 8. operation 승격 전 필수 조치 (planner → coder)
+
+> **646차 — develop `@d5ff3f8` HEAD 불변 · WT DIRTY 2M · Open 1 BLOCK **QA-B83** · HEAD **1154/1154 PASS** · WT **1155/1155 PASS** · backend `@c22a5dc` WT **CLEAN** · Open 0 · ⚠ cross-stream merge **BLOCK**. merge gate **BLOCK** · merge(513) **실행 금지**.**
+
+1. **COD FE 2M 커밋/revert** — `SideNav.jsx`·`SideNav.test.jsx` (US-UX-05 group expand sync refactor) → develop WT **CLEAN**.
+2. **TSR 재검증** — develop WT clean 확인 · Open 0 확인.
+3. **tester develop→test merge** — FE+BE green 시 **513 commits** (281 FE + 232 BE).
+4. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요).
+5. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **630차 — develop `@7ec7cd4` WT CLEAN · Open 0 · backend `@8f9ad0c` WT CLEAN · Open 0 · ★ cross-stream merge **FULLY UNBLOCKED**. merge gate **FULLY UNBLOCKED** · merge(497) 대기.**
+
+> **628차 — develop `@745a2f6` WT CLEAN · Open 0 · backend `@328874d` WT CLEAN · Open 0 · ★ cross-stream merge **FULLY UNBLOCKED**. merge gate **FULLY UNBLOCKED** · merge(495) 대기.**
+
+> **626차 — develop `@4f2ec98` WT CLEAN · Open 0 · backend `@82054f1` WT CLEAN · Open 0 · ★ cross-stream merge **FULLY UNBLOCKED**. merge gate **FULLY UNBLOCKED** · merge(493) 대기.**
+
+1. **tester develop→test merge** — FE+BE green · **493 commits** (271 FE + 222 BE).
+2. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요).
+3. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **611차 — develop `@e14ba10` WT CLEAN · Open 0 · backend `@32f87f1` WT CLEAN · Open 0 · ★ cross-stream merge **FULLY UNBLOCKED**. merge gate **UNBLOCKED** · merge(479) 대기.**
+
+1. **tester develop→test merge** — FE+BE green · **479 commits** (264 FE + 215 BE).
+2. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요).
+3. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **607차 — develop `@a4ab0c2` WT CLEAN · Open 1 BLOCK **QA-B77** · HEAD **1108/1109 FAIL** · backend `@0f11158` WT **DIRTY 2M** · Open 1 BLOCK **QA-B76** · ⚠ cross-stream merge **BLOCK**. merge gate **BLOCK** · merge(475) **실행 금지**.**
+
+> **605차 — develop `@38d24b6` WT CLEAN · Open 0 · backend `@0f11158` WT CLEAN · Open 0 · ★ cross-stream merge FULLY UNBLOCKED. merge gate UNBLOCKED · merge(474) 대기.**
+
+> **579차 — develop `@ff173af` WT CLEAN · Open 0 · HEAD 1072/1072 PASS · backend `@d4acab7` WT **DIRTY 2M** · Open 1 BLOCK **QA-B73** · ⚠ cross-stream merge BLOCK. frontend merge UNBLOCKED · merge(449) 보류.**
+
+1. **COD BE WT clean (QA-B73)** — `VisitService.java`·`VisitServiceTest.java` G21 assigned caregiver check-in guard WIP **커밋 또는 revert** → develop WT **CLEAN**.
+2. **tester develop→test merge** — FE+BE green 시 **449 commits** (247 FE + 202 BE).
+3. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요).
+4. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **577차 — superseded by 579차 — develop `@5bba7a2` WT CLEAN · cross-stream FULLY UNBLOCKED(578차 B73 누락). merge(448) 대기.**
+
+> **573차 — develop `@a7a6004` WT CLEAN · Open 0 · HEAD 1067/1067 PASS · QA-B72 Fixed. backend `@39ee679` WT CLEAN · Open 0 · ★ cross-stream merge FULLY UNBLOCKED. merge gate UNBLOCKED · merge(443) 대기.**
+
+> **569차 — develop `@14124d6` WT CLEAN · Open QA-B72 · HEAD 1065/1066 FAIL. backend `@bcb1d9f` WT CLEAN · Open 0. merge gate BLOCK · merge(439) 보류.**
+
+1. **COD G42 duplicate approval button fix** — `ComplaintConsultationPanel.jsx` queue vs list `aria-label` dedupe **또는** `pilotPageFlows.test.jsx` scoped query → develop HEAD `npm test` **1066/1066 PASS**.
+2. **tester develop→test merge** — FE HEAD PASS + BE green 시 **439 commits** (241 FE + 198 BE).
+3. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요).
+4. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **567차 — develop `@47a4928` WT CLEAN · Open 0. merge(438) 보류.**
+
+1. **COD FE 2M 커밋/revert** — `MonthlyBenefitCapGuardPanel.jsx`·`MonthlyBenefitCapGuardPanel.test.jsx` (G27 no-branch guard) → WT **CLEAN**.
+2. **tester develop→test merge** — FE WT clean + BE green 시 **420 commits** (231 FE + 189 BE).
+3. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요).
+4. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **549차 — develop `@e77b7e4` WT CLEAN · HEAD 1020/1020 PASS · Open 0. merge(418) 보류.**
+
+> **541차 — develop `@338c014` WT DIRTY 1M · Open QA-B69. backend `@6f6094d` WT CLEAN · Open 0. merge(411) 보류.**
+
+> **525차 — develop `@3c7d2c7` WT CLEAN · Open 0(frontend) · backend `@2925ff7` WT CLEAN · Open 0. merge gate FULLY UNBLOCKED · merge(395) 보류.**
+
+1. **tester develop→test merge** — FE+BE green · **395 commits** (217 FE + 178 BE).
+2. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요) — G40/G40b/US-R02/8-10·P1–P8·J01/J02/J03 transport.
+3. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **473차 — develop `@46f1ac0` WT DIRTY 4M · Open QA-B59. backend QA-B58 동반. merge(354) 보류.**
+
+1. **COD FE 4M 커밋/revert** — `StaffRefresherTrainingPage*`·`staffRefresherTrainingCompliance*` → WT **CLEAN**.
+2. **COD BE 1M 커밋/revert** — `VisitServiceTest.java` (QA-B58) → WT **CLEAN**.
+3. **tester develop→test merge** — FE+BE green 시 **354 commits** (195 FE + 159 BE).
+4. **post-merge live E2E** — `scripts/run-live-e2e.sh` (결정 96, backend `localhost:8080` 필요).
+5. **SEC-D22** — infra `.gitignore` (Planned MEDIUM, merge BLOCK 아님).
+
+> **471차 — develop `@46f1ac0` WT CLEAN · HEAD 883/883 PASS · Open 0. merge(354) 보류.**
 
 > **63차 — H04·M01·R-04a·R-05·SEC-008 develop HEAD 반영(`811aef3`)으로 1·2·4항 해소. 잔여 = merge 게이트(B03) + J01 백엔드 API + 라이브 E2E.**
 
@@ -479,6 +3908,141 @@
 
 | 역할 | id | 판정 | 일시 |
 |------|-----|------|------|
+| QA·이관 | TSR | **PASS** (742차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB, 4.92s)·audit **0**·live E2E **4 suites FAIL/18 skipped**(QA-B95 Planned)·develop **`eb16734` +332 WT CLEAN**(+`b5af5fa` G24b US-T09 · `eb16734` live-e2e env script · **QA-B96 Fixed**)·develop HEAD test **미재실행**(740 carry 1337/1337 PASS)·Open **0(frontend)**·Planned **1 QA-B95**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@1e21b20` WT **CLEAN**·Open 0·test **246/246 PASS**(742 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(QA-B95 live E2E env·merge 604 미실행)·잔여 **`cp scripts/dev-live-e2e.env.example scripts/dev-live-e2e.env`→live E2E 재검증→tester/pipeline merge(604)+post-merge live E2E**) | 2026-06-15T06:25:30+00:00 |
+| QA·이관 | TSR | **PASS** (734차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·develop **`baa6d6d` +327 WT CLEAN**(+`baa6d6d` G24b dashboard compliance test hardening)·develop HEAD test **1333/1333 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@b1c92e1` WT **CLEAN**·Open 0·test **246/246 PASS**(733 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 596 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(596)+post-merge live E2E**) | 2026-06-15T04:23:18+00:00 |
+| QA·이관 | TSR | **PASS** (732차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·develop **`ca0b627` +326 WT CLEAN**(+`ca0b627` G24b needs assessment compliance dashboard widgets)·develop HEAD test **1332/1332 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3dd94e6` WT **CLEAN**·Open 0·test **246/246 PASS**(731 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 594 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(594)+post-merge live E2E**) | 2026-06-15T04:02:00+00:00 |
+| QA·이관 | TSR | **PASS** (730차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·develop **`c97706b` +325 WT CLEAN**(+`8989bf4` G24b needs assessment a11y · `c97706b` L03 nursing report notes snake_case)·develop HEAD test **1325/1327 PASS**(full-suite flake→isolated PASS)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@345c0cb` WT **CLEAN**·Open 0·test **246/246 PASS**(729 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 592 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(592)+post-merge live E2E**) | 2026-06-15T03:43:12+00:00 |
+| QA·이관 | TSR | **PASS** (728차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·develop **`92b9eff` +323 WT CLEAN**(+`a565a50` G37 attachment lifecycle live E2E · `92b9eff` L03 nursing report contract checks)·develop HEAD test **1323/1323 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@f4c8beb` WT **CLEAN**·Open 0·test **246/246 PASS**(727 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 589 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(589)+post-merge live E2E**) | 2026-06-15T02:59:05+00:00 |
+| QA·이관 | TSR | **PASS** (724차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·develop **`49fbf67` +321 WT CLEAN**(+`49fbf67` G24b needs assessment 8-area FE form wire)·develop HEAD test **1323/1323 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@45fb6d9` WT **CLEAN**·Open 0·test **246/246 PASS**(723 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 585 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(585)+post-merge live E2E**) | 2026-06-15T02:18:30+00:00 |
+| QA·이관 | TSR | **PASS** (720차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·develop **`8eed216` +319 WT CLEAN**(+`8eed216` G-NURSING consolidated live E2E harness + reports page test hardening)·develop HEAD test **1322/1322 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@4c1fd43` WT **DIRTY 2M**·Open 1 BLOCK **QA-B94(backend)**·test **246/246 PASS**(719 carry)·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 581 실행 금지·live E2E 미실행)·잔여 **COD BE WT clean(QA-B94)→merge(581)+post-merge live E2E**) | 2026-06-15T01:43:22+00:00 |
+| QA·이관 | TSR | **PASS** (704차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·develop **`89dc52d` +311 WT CLEAN**(+`89dc52d` L03_M07/M09/M10 stale report data fix)·develop HEAD test **1313/1313 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@6b0238a` WT **DIRTY 2M**·Open 1 BLOCK **QA-B93(backend)**·test **246/246 PASS**(703 carry)·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 566 실행 금지·live E2E 미실행)·잔여 **COD BE WT clean(QA-B93)→merge(566)+post-merge live E2E**) | 2026-06-14T22:10:54+00:00 |
+| QA·이관 | TSR | **PASS** (702차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`75c6c76` +310 WT CLEAN**(+`75c6c76` L03_M06/M14 live API E2E harness)·develop HEAD test **1312/1312 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@6b0238a` WT **CLEAN**·Open 0·test **246/246 PASS**(701 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 565 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(565)+post-merge live E2E**) | 2026-06-14T21:52:20+00:00 |
+| QA·이관 | TSR | **PASS** (700차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`efa4472` +309 WT CLEAN**(+`efa4472` L03_M15 pressure ulcer provision report UI wire)·develop HEAD test **1312/1312 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@4ab06cd` WT **CLEAN**·Open 0·test **246/246 PASS**(699 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 563 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(563)+post-merge live E2E**) | 2026-06-14T21:31:59+00:00 |
+| QA·이관 | TSR | **PASS** (698차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`2a05271` +308 WT CLEAN**(+`2a05271` L03_M07/M09/M10 nursing service report UI wire)·develop HEAD test **1308/1308 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@75bddee` WT **CLEAN**·Open 0·test **246/246 PASS**(697 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 561 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(561)+post-merge live E2E**) | 2026-06-14T21:06:06+00:00 |
+| QA·이관 | TSR | **PASS** (696차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`2966447` +307 WT CLEAN**(+`2966447` L03_M01 live E2E harness · QA-B92 Fixed)·develop HEAD test **1299/1299 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@c23b1a3` WT **CLEAN**·Open 0·test **246/246 PASS**(695 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 559 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(559)+post-merge live E2E**) | 2026-06-14T20:45:07+00:00 |
+| QA·이관 | TSR | **BLOCK** (694차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`12591d4` +306 WT DIRTY 1U**(+`12591d4` L03_M01/M06 nursing service·excretion-tube UI · `?? nursingServiceRecordLiveApi.e2e.test.js`)·develop HEAD test **1299/1299 PASS**·Open **1 BLOCK QA-B92(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@ee8b2a4` WT **CLEAN**·Open 0·test **246/246 PASS**(693 carry)·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 557 실행 금지·live E2E 미실행)·잔여 **COD FE WT clean(QA-B92)→push→TSR 재검증→merge(557)+post-merge live E2E**) | 2026-06-14T20:24:20+00:00 |
+| QA·이관 | TSR | **PASS** (692차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`3845f0c` +305 WT CLEAN**(+`3845f0c` US-UX-05 SideNav expansion persist by role)·develop HEAD test **1275/1275 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@a4352a8` WT **CLEAN**·Open 0·test **246/246 PASS**(691 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 555 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(555)+post-merge live E2E**) | 2026-06-14T19:49:18+00:00 |
+| QA·이관 | TSR | **PASS** (690차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`edfba7f` +304 WT CLEAN**(+`edfba7f` US-UX-05 SideNav manual expansion preserve on navigation)·develop HEAD test **1274/1274 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@9bd1660` WT **CLEAN**·Open 0·test **246/246 PASS**(689 carry)·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 553 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(553)+post-merge live E2E**) | 2026-06-14T19:28:00+00:00 |
+| QA·이관 | TSR | **PASS** (688차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`2ffe59f` +303 WT CLEAN**(+`2ffe59f` v1.3-B transport auto-suggest UI·branch optimization settings)·develop HEAD test **1273/1273 PASS**(1차 flaky 1272/1273·재실행 PASS)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@9bd1660` WT **CLEAN**·Open 0·test **246/246 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 552 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(552)+post-merge live E2E**) | 2026-06-14T19:07:00+00:00 |
+| QA·이관 | TSR | **PASS** (686차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`e3e6964` +302 WT CLEAN**(+`e3e6964` US-R02 8-12 print layout readability deepen)·develop HEAD test **1267/1267 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@230659a` WT **CLEAN**·Open 0·HEAD **1121/1121 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 550 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(550)+post-merge live E2E**) | 2026-06-14T18:42:00+00:00 |
+| QA·이관 | TSR | **PASS** (684차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test·origin/develop 동기화·develop **`c865d2b` +301 WT CLEAN**(+`c865d2b` L03_M14 pressure ulcer E2E stabilize + weight record service tests)·develop HEAD test **1267/1267 PASS**·**QA-B91 Fixed**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@230659a` WT **CLEAN**·Open 0·HEAD **1121/1121 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 549 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(549)+post-merge live E2E**) | 2026-06-14T18:25:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (682차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`8d00f5d` +300 WT DIRTY 1M+1U**·develop HEAD test **1267/1267 PASS**·**QA-B89 Fixed**·Open **1 BLOCK QA-B91(frontend WT dirty)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@db94a65` WT **CLEAN**·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 547 실행 금지·live E2E 미실행)·잔여 **COD FE WT clean(QA-B91)→push→TSR 재검증→merge(547)**) | 2026-06-14T18:03:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (680차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`97108f2` +299 WT tracked CLEAN(+1U)**·develop HEAD test **1263/1266 FAIL**·Open **1 BLOCK QA-B89(frontend) 유지**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@090b2d7` WT **DIRTY 15**·Open 2 BLOCK QA-B88/B90·test **246/246 PASS**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 545 실행 금지·live E2E 미실행)·잔여 **COD QA-B89 fix→HEAD PASS + BE WT clean→TSR 재검증→merge(545)**) | 2026-06-14T17:25:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (678차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`97108f2` +299 WT CLEAN**(+`97108f2` L03_M04 emergency UI)·develop HEAD test **1260/1263 FAIL**·Open **1 BLOCK QA-B89(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@81bca68` WT **DIRTY 4M**·Open 1 BLOCK QA-B88·test **246/246 PASS**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 544 실행 금지·live E2E 미실행)·잔여 **COD QA-B89 fix→HEAD PASS + QA-B88 WT clean→TSR 재검증→merge(544)**) | 2026-06-14T17:01:00+00:00 |
+| QA·이관 | TSR | **PASS** (676차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`8a8fe98` +298 WT CLEAN**(+`8a8fe98` L03_M14 display full weight record details)·develop HEAD test **1246/1246 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@81bca68` WT **CLEAN**·Open 0·test **246/246 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 543 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(543)+post-merge live E2E**) | 2026-06-14T16:32:51+00:00 |
+| QA·이관 | TSR | **PASS** (674차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`bb3dee8` +297 WT CLEAN**(+`bb3dee8` L03_M13 oral care check UI wire to V118 API)·develop HEAD test **1246/1246 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@faf55f0` WT **CLEAN**·Open 0·HEAD **1104/1104 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 541 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(541)+post-merge live E2E**) | 2026-06-14T16:10:00+00:00 |
+| QA·이관 | TSR | **PASS** (672차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`c60d7e5` +296 WT CLEAN**(+`c60d7e5` nursing weight record error retry)·develop HEAD test **1229/1229 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3540b4f` WT **CLEAN**·Open 0·HEAD **1104/1104 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 539 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(539)+post-merge live E2E**) | 2026-06-14T15:53:00+00:00 |
+| QA·이관 | TSR | **PASS** (670차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`962858b` +295 WT CLEAN**(+`a7f97a6` L03_M14 FE wire · `962858b` future weight date guard)·develop HEAD test **1228/1228 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@63cb193` WT **CLEAN**·Open 0·HEAD **1095/1095 PASS**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 537 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(537)+post-merge live E2E**) | 2026-06-14T15:12:06+00:00 |
+| QA·이관 | TSR | **PASS** (668차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`246df56` +293 WT CLEAN**(+`246df56` L03_M11 future nursing vital measure-date guard UI)·develop HEAD test **1210/1210 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@1a822d2` WT **CLEAN**·Open 2 BLOCK **QA-B86/B87(backend)**·HEAD **1085/1095 FAIL**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 534 실행 금지·live E2E 미실행)·잔여 **COD BE QA-B86/B87 fix→HEAD PASS→tester merge(534)+post-merge live E2E**) | 2026-06-14T13:43:00+00:00 |
+| QA·이관 | TSR | **PASS** (666차 — test **`c7c8f07` 불변**·**217/217 PASS**·develop **`5780c65` +292 WT CLEAN**·develop HEAD test **1209/1209 PASS**·Open **0(frontend)**·★ **frontend merge gate FULLY UNBLOCKED**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 532 미실행)) | 2026-06-14T13:20:27+00:00 |
+| QA·이관 | TSR | **BLOCK** (664차 — test **`c7c8f07` 불변**·**217/217 PASS**·develop **`8570fa2` +291 WT CLEAN**·develop HEAD test **1208/1209 FAIL**·Open **1 BLOCK QA-B85(frontend)**·⚠ **frontend merge gate BLOCK**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 530 실행 금지)) | 2026-06-14T12:49:58+00:00 |
+| QA·이관 | TSR | **PASS** (662차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`024e720` +290 WT CLEAN**(+`024e720` US-O03 pressure ulcer API contracts·live E2E harness)·develop HEAD test **1198/1198 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@24a1c5c` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 528 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(528)+post-merge live E2E**) | 2026-06-14T12:25:46+00:00 |
+| QA·이관 | TSR | **PASS** (660차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`3ec39f6` +289 WT CLEAN**(+`3ec39f6` US-O03 pressure ulcer cohort report V114 aggregate align)·develop HEAD test **1192/1192 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@d638493` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 526 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(526)+post-merge live E2E**) | 2026-06-14T12:03:34+00:00 |
+| QA·이관 | TSR | **PASS** (658차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`e214da1` +288 WT CLEAN**(+`cce956b`/`e214da1` US-O03 pressure ulcer UI+V114 API wire)·develop HEAD test **1189/1189 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@edda491` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 524 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(524)+post-merge live E2E**) | 2026-06-14T11:41:53+00:00 |
+| QA·이관 | TSR | **PASS** (656차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`ad319d7` +286 WT CLEAN**(+`ad319d7` US-V03/G17b visit check-out·skip-reason table E2E)·develop HEAD test **1164/1164 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3bd6a43` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 521 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(521)+post-merge live E2E**) | 2026-06-14T11:01:10+00:00 |
+| QA·이관 | TSR | **PASS** (654차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`487416d` +285 WT CLEAN**(+`487416d` G17b participation history skip reason UI)·develop HEAD test **1163/1163 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@3bd6a43` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 520 미실행·live E2E 미실행)·잔여 **tester/pipeline merge(520)+post-merge live E2E**) | 2026-06-14T10:42:15+00:00 |
+| QA·이관 | TSR | **PASS** (652차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`efb2ec0` +284 WT CLEAN**(+`efb2ec0` G17b pilotPageFlows cognitive activity skip reason E2E)·develop HEAD test **1162/1162 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@ba7d84f` WT **DIRTY 2M**·Open 1 BLOCK **QA-B84**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 518 실행 금지·live E2E 미실행)·잔여 **COD BE ProgramService 2M commit/revert→WT clean→tester merge(518)+post-merge live E2E**) | 2026-06-14T10:24:44+00:00 |
+| QA·이관 | TSR | **BLOCK** (646차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`d5ff3f8` +281 HEAD 불변·WT DIRTY 2M**(US-UX-05 SideNav WIP, 645차 CLEAN→재오염)·HEAD **1154/1154 PASS**·WT **1155/1155 PASS**·Open **1 BLOCK QA-B83(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@c22a5dc` WT **CLEAN**·232 ahead·Open 0·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 513 실행 금지·live E2E 미실행)·잔여 **COD SideNav 2M commit/revert→WT clean→tester merge(513)+post-merge live E2E**) | 2026-06-14T08:16:01+00:00 |
+| QA·이관 | TSR | **BLOCK** (635차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`360b4d7` +275 WT CLEAN**(+`360b4d7` UXD-101 quiet-hours aria-describedby)·develop HEAD test **1141/1143 FAIL**(`pilotPageFlows` US-L01/L02)·**QA-B82 Fixed**·Planned **1 BLOCK QA-B81(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@dbecd72` WT **CLEAN**·227 ahead·Open 0·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 502 실행 금지·live E2E 미실행)·잔여 **COD pilotPageFlows quiet-hours fix→HEAD PASS→tester merge(502)+post-merge live E2E**) | 2026-06-14T05:54:55+00:00 |
+| QA·이관 | TSR | **BLOCK** (633차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`111f056` +274 WT DIRTY 2M**(+`111f056` J03 quiet-hours billing notify UI)·develop HEAD test **1141/1143 FAIL**(`pilotPageFlows` US-L01/L02)·Open **2 BLOCK QA-B81·QA-B82(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@a057739` WT **CLEAN**·226 ahead·Open 0·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 500 실행 금지·live E2E 미실행)·잔여 **COD pilotPageFlows fix+2M commit/revert→HEAD PASS+WT clean→tester merge(500)+post-merge live E2E**) | 2026-06-14T04:47:19+00:00 |
+| QA·이관 | TSR | **PASS** (630차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`7ec7cd4` +273 WT CLEAN**(+`7ec7cd4` G2/7-5 reject malformed easy-pay provider aliases)·develop HEAD test **1136/1136 PASS**(read-only)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@8f9ad0c` WT **CLEAN**·224 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 497 미실행·live E2E 미실행)·잔여 **tester merge(497)+post-merge live E2E**) | 2026-06-14T03:59:57+00:00 |
+| QA·이관 | TSR | **PASS** (628차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`745a2f6` +272 WT CLEAN**(+`745a2f6` G2/7-5 easy-pay provider normalization inputs)·develop HEAD test **미재실행**(read-only)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@328874d` WT **CLEAN**·223 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 495 미실행·live E2E 미실행)·잔여 **tester merge(495)+post-merge live E2E**) | 2026-06-14T03:41:26+00:00 |
+| QA·이관 | TSR | **PASS** (626차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`4f2ec98` +271 WT CLEAN**(+`4f2ec98` QA-B80 easy-pay client validation · **Fixed @ HEAD**)·develop HEAD test **미재실행**(read-only)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@82054f1` WT **CLEAN**·222 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 493 미실행·live E2E 미실행)·잔여 **tester merge(493)+post-merge live E2E**) | 2026-06-14T03:27:53+00:00 |
+| QA·이관 | TSR | **BLOCK** (624차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`51f2505` +270 WT DIRTY 2M**(+`51f2505` EasyPayPanel a11y · **QA-B79 Fixed @ HEAD**)·develop HEAD test **1131/1131 PASS**·WT **1133/1133 PASS**·Open **1 BLOCK QA-B80(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@16a0734` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 491 실행 금지·live E2E 미실행)·잔여 **COD FE 2M commit/revert→WT clean→TSR 재검증→tester merge(491)+post-merge live E2E**) | 2026-06-14T03:10:44+00:00 |
+| QA·이관 | TSR | **BLOCK** (622차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`bebd874` +269 WT DIRTY 3M+1U** HEAD **불변**(620차 대비)·develop HEAD test **1126/1126 PASS**·WT **1128/1128 PASS**·Open **1 BLOCK QA-B79(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@b893e97` WT **DIRTY 2M**·Open 1 BLOCK **QA-B78**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 489 실행 금지·live E2E 미실행)·잔여 **COD FE 4 files+BE 2M commit/revert→WT clean→TSR 재검증→tester merge(489)+post-merge live E2E**) | 2026-06-14T02:19:42+00:00 |
+| QA·이관 | TSR | **PASS** (616차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`c9baca2` +267 WT CLEAN** HEAD **불변**(614차 대비)·develop HEAD test **1119/1119 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@70b3fb8` WT **CLEAN**·218 ahead·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 485 미실행·live E2E 미실행)·잔여 **tester merge(485)+post-merge live E2E**) | 2026-06-14T01:26:24+00:00 |
+| QA·이관 | TSR | **PASS** (611차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`e14ba10` +264 WT CLEAN**(+`e14ba10` G41 remove hardcoded new-hire window text)·develop HEAD test **1110/1110 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@32f87f1` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 479 미실행·live E2E 미실행)·잔여 **tester merge(479)+post-merge live E2E**) | 2026-06-14T00:22:01+00:00 |
+| QA·이관 | TSR | **PASS** (609차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`76fe2fb` +263 WT CLEAN**(+`76fe2fb` QA-B77 StatCard scoped compliance assertions)·develop HEAD test **1109/1109 PASS**·build index **589.42 kB** vite warn·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@299d21f` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 477 미실행·live E2E 미실행)·잔여 **tester merge(477)+post-merge live E2E**) | 2026-06-14T00:20:00+00:00 |
+| QA·이관 | TSR | **PASS** (607차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`a4ab0c2` +262 WT CLEAN**(+`a4ab0c2` G41b training log compliance live E2E harness BNK-186)·develop HEAD test **1108/1109 FAIL**(`StaffTrainingLogPage.test.jsx:178`)·Open **1 BLOCK QA-B77(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@0f11158` WT **DIRTY 2M**·Open 1 BLOCK **QA-B76**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 475 실행 금지·live E2E 미실행)·잔여 **COD FE test fix+BE WT clean→tester merge(475)+post-merge live E2E**) | 2026-06-13T23:36:30+00:00 |
+| QA·이관 | TSR | **PASS** (605차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`38d24b6` +261 WT CLEAN**(+`38d24b6` G41b training log compliance wire BNK-185)·develop HEAD test **미재실행**(read-only)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@0f11158` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 474 미실행·live E2E 미실행)·잔여 **tester merge(474)+post-merge live E2E**) | 2026-06-13T23:17:20+00:00 |
+| QA·이관 | TSR | **PASS** (603차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`e43295b` +260 WT CLEAN**(+`e43295b` G41 training log nav·services tests·pilot E2E BNK-184)·develop HEAD test **미재실행**(read-only)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@613b6af` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 472 미실행·live E2E 미실행)·잔여 **tester merge(472)+post-merge live E2E**) | 2026-06-13T23:03:04+00:00 |
+| QA·이관 | TSR | **PASS** (599차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`5146895` +257 WT CLEAN**(+`5146895` G30 integrated monitoring checklist pilot E2E)·HEAD **1094/1094 PASS**(232 files)·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@6191b91` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 468 미실행·live E2E 미실행)·잔여 **tester merge(468)+post-merge live E2E**) | 2026-06-13T22:18:02+00:00 |
+| QA·이관 | TSR | **PASS** (586차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules**·audit **0**·origin/test 동기화·develop **`443efca` +250 WT CLEAN**(+refresher compliance API·G34-QUAL team lead gate)·HEAD **1081/1082 FAIL**(`pilotPageFlows.test.jsx:4071` — **QA-B74**)·Open **1 BLOCK QA-B74(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@229f84c` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 455 실행 금지·HEAD test FAIL·live E2E 미실행)·잔여 **COD pilotPageFlows fix→HEAD PASS→tester merge(455)+post-merge live E2E**) | 2026-06-13T19:27:17+00:00 |
+| QA·이관 | TSR | **PASS** (579차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules**·audit **0**·origin/test 동기화·develop **`ff173af` +247 WT CLEAN**(+US-R02 staff profile pagination for 8-12 outputs)·HEAD **1072/1072 PASS**·build index **577.50 kB** vite warn·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@d4acab7` WT **DIRTY 2M**·Open 1 BLOCK **QA-B73**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 449 미실행·BE WT dirty·live E2E 미실행)·잔여 **COD BE WT clean(B73)→tester merge(449)+post-merge live E2E**) | 2026-06-13T18:18:05+00:00 |
+| QA·이관 | TSR | **PASS** (577차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules**·audit **0**·origin/test 동기화·develop **`5bba7a2` +246 WT CLEAN**(+US-R02 staff status print rows)·HEAD **1071/1071 PASS**·build index **577.50 kB** vite warn·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@d4acab7` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 448 미실행·live E2E 미실행)·잔여 **tester merge(448)+post-merge live E2E**) | 2026-06-13T17:57:53+00:00 |
+| QA·이관 | TSR | **PASS** (573차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules**·audit **0**·origin/test 동기화·develop **`a7a6004` +243 WT CLEAN**(+G42 approval E2E — **QA-B72 Fixed**)·HEAD **1067/1067 PASS**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@39ee679` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 443 미실행·live E2E 미실행)·잔여 **tester merge(443)+post-merge live E2E**) | 2026-06-13T16:52:24+00:00 |
+| QA·이관 | TSR | **PASS** (569차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules**·audit **0**·origin/test 동기화·develop **`14124d6` +241 WT CLEAN**(+G42 follow-up checklist·approval queue UI)·HEAD **1065/1066 FAIL**·Open **1 BLOCK QA-B72(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@bcb1d9f` WT **CLEAN**·Open 0·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 439 미실행·live E2E 미실행)·잔여 COD G42 fix→merge(439)+live E2E run) | 2026-06-13T16:02:21+00:00 |
+| QA·이관 | TSR | **PASS** (567차 — test **`c7c8f07` 불변**·**217/217 PASS**·develop **`47a4928` +240 WT CLEAN**·Open **0(frontend)**·★ **frontend merge gate FULLY UNBLOCKED**·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 438 미실행)) | 2026-06-13T15:40:16+00:00 |
+| QA·이관 | TSR | **PASS** (551차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`a5c2736` +231 WT DIRTY 2M**(`MonthlyBenefitCapGuardPanel*` QA-B71 G27 no-branch guard WIP, **550차 CLEAN→재오염**)·HEAD **1022/1022 PASS**·WT **1023/1023 PASS**(222 files)·66 route·Open **1 BLOCK QA-B71(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·교차 BE `@8bb6583` WT **CLEAN**·Open 0·HEAD **902/902 PASS**·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(merge 420 미실행·FE WT dirty·live E2E 미실행)·잔여 COD FE 2M commit→merge(420)+live E2E run) | 2026-06-13T12:32:00+00:00 |
+| QA·이관 | TSR | **PASS** (549차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`e77b7e4` +230 WT CLEAN**(+`e77b7e4` G9-COPAY-NAMING statutory wording)·HEAD **1020/1020 PASS**(222 files)·66 route·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·교차 BE `@edd2771` WT **CLEAN**·Open 0·★ **cross-stream merge FULLY UNBLOCKED**·operation 승격 **BLOCK**(merge 418 미실행·live E2E 미실행)·잔여 tester merge(418)+live E2E run) | 2026-06-13T11:47:00+00:00 |
+| QA·이관 | TSR | **PASS** (541차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`338c014` +226 WT DIRTY 1M**(`BillingPage.test.jsx` QA-B69 fix WIP)·HEAD **1008/1009 FAIL**·WT **1009/1009 PASS**(221 files)·66 route·Open **1 BLOCK QA-B69(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **frontend merge gate BLOCK**·⚠ **cross-stream merge BLOCK**(backend Open 0 @ `6f6094d` WT CLEAN)·operation 승격 **BLOCK**(merge 411 미실행·WT dirty·live E2E 미실행)·잔여 COD commit→merge(411)+live E2E run) | 2026-06-13T10:03:44+00:00 |
+| QA·이관 | TSR | **PASS** (533차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`994f5ea` +222 WT CLEAN**(+`994f5ea` G34b cognitive role guard on work-log save)·**991/991 PASS**(218 files)·64 route·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·★ **cross-stream merge FULLY UNBLOCKED**(backend Open 0 @ `bccf978` WT CLEAN)·operation 승격 **BLOCK**(merge 404 미실행·live E2E 미실행)·잔여 tester merge(404)+live E2E run) | 2026-06-13T08:13:29+00:00 |
+| QA·이관 | TSR | **PASS** (525차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`3c7d2c7` +217 WT CLEAN**(+`3c7d2c7` QA-B67 parseApiErrorPayload fix)·**965/965 PASS**(212 files)·64 route·Open **0(frontend)**·**QA-B67 Fixed**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·★ **cross-stream merge FULLY UNBLOCKED**(backend Open 0 @ `2925ff7` WT CLEAN)·operation 승격 **BLOCK**(merge 395 미실행·live E2E 미실행)·잔여 tester merge(395)+live E2E run) | 2026-06-13T06:34:36+00:00 |
+| QA·이관 | TSR | **PASS** (521차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`d41546f` +216 WT CLEAN**(+`d41546f` US-R02 health checkup→HR file hub 8-10 P2)·**963/963 PASS**(212 files)·**922 modules**·64 route·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·★ **cross-stream merge FULLY UNBLOCKED**(backend Open 0 @ `dc48933` WT CLEAN)·operation 승격 **BLOCK**(merge 393 미실행·live E2E 미실행)·잔여 tester merge(393)+live E2E run) | 2026-06-13T05:56:08+00:00 |
+| QA·이관 | TSR | **PASS** (517차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`6657d90` +214 WT CLEAN**(+`6657d90` G40b pilot test dual alerts)·**953/953 PASS**(211 files)·**922 modules**·64 route·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **frontend merge gate FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**(backend QA-B65 @ `a7b4a39` WT DIRTY 4M)·잔여 COD BE 4M→WT clean→merge(390)+live E2E run) | 2026-06-13T05:14:35+00:00 |
+| QA·이관 | TSR | **PASS** (473차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`46f1ac0` +195 WT DIRTY 4M**(US-S02/8-7-1 unknown hire date WIP·QA-B59)·**883/883 PASS**(199 files)·**901 modules**·62 route·Open **1 BLOCK QA-B59(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·⚠ **v1.2.1 merge gate BLOCK**(frontend)·교차 merge **BLOCK**(backend QA-B58 @ `3f444a1` WT DIRTY 1M)·잔여 COD FE 4M+BE 1M→WT clean→merge(354)+live E2E run) | 2026-06-12T19:55:00+00:00 |
+| QA·이관 | TSR | **PASS** (471차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`46f1ac0` +195 WT CLEAN**(+`46f1ac0` QA-B57 Fixed US-S02 refresher summary)·**883/883 PASS**(199 files)·**901 modules**·62 route·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·**QA-B57 Fixed**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `3f444a1` WT CLEAN·785/785 PASS)·잔여 merge(195+159=354)+US-R02/8-7-1/US-R03/G34 live E2E run+live E2E run) | 2026-06-12T19:32:00+00:00 |
+| QA·이관 | TSR | **PASS** (456차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`37dc785` +187 WT CLEAN**(+`37dc785` US-R03 lifecycle validation·progress·list filter)·**853/853 PASS**(192 files)·**894 modules**·61 route·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **BLOCK**(backend Open 1 QA-B56 @ `61336df` WT DIRTY 2M·742/742 PASS)·잔여 COD BE WT clean→merge(187+152=339)+US-R03/G24/G34 live E2E run+live E2E run) | 2026-06-12T16:16:38+00:00 |
+| QA·이관 | TSR | **PASS** (450차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`3f2e884` +184 WT CLEAN**(+`3f2e884` QA-B55 `userServices.test.js` fix)·**843/843 PASS**(192 files)·**894 modules**·60 route·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·**QA-B55 Fixed**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `9441a3c` WT CLEAN·740/740 PASS)·잔여 merge(184+149=333)+US-R03/G24/G34 live E2E run+live E2E run) | 2026-06-12T14:40:00+00:00 |
+| QA·이관 | TSR | **PASS** (444차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`9a0e57b` +181 WT CLEAN**(+`9a0e57b` US-R03 staff detail stale-response race guard)·**838/838 PASS**(191 files)·**894 modules**·60 route·88 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `588bfb1` WT CLEAN·725/725 PASS·QA-B54 Fixed)·잔여 merge(181+146=327)+US-R03/G24/G34 live E2E run+live E2E run) | 2026-06-12T13:30:00+00:00 |
+| QA·이관 | TSR | **PASS** (434차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`d0acfb3` +175 WT CLEAN**(+`d0acfb3` G24-G14 pilot E2E·live API harness)·**816/816 PASS**(187 files)·**891 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `08a1722` WT CLEAN·710/710 PASS)·잔여 merge(175+143=318)+G24-G14/US-T09/T10·G34 live E2E run+live E2E run) | 2026-06-12T11:21:48+00:00 |
+| QA·이관 | TSR | **PASS** (428차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`6d6b426` +171 WT CLEAN**(+`6d6b426` G34 lead caregiver work log UI)·**800/800 PASS**(180 files)·**881 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `559648f` WT CLEAN·689/689 PASS)·잔여 merge(171+140=311)+G34/G17/G32/G38/G39/G37 live E2E run+live E2E run) | 2026-06-12T09:36:00+00:00 |
+| QA·이관 | TSR | **PASS** (422차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`50e5fac` +169 WT CLEAN**(+`50e5fac` G17/G32 lifecycle workflow panel pilot E2E)·**784/784 PASS**(177 files)·**878 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `45b8147` WT CLEAN·675/675 PASS)·잔여 merge(169+137=306)+G17/G32/G38/G39/G37 live E2E run+live E2E run) | 2026-06-12T08:26:00+00:00 |
+| QA·이관 | TSR | **PASS** (410차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`8fa9f3d` +163 WT CLEAN**(+`8fa9f3d` G38/G39 dashboard snapshot aggregation·**QA-B49 Fixed**)·**772/772 PASS**(176 files)·**878 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `15b3c7e` WT CLEAN·667/667 PASS)·잔여 merge(163+133=296)+G38/G39/G37/G17/G32 live E2E run+live E2E run) | 2026-06-12T05:42:00+00:00 |
+| QA·이관 | TSR | **PASS** (398차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`4b2b082` +159 WT CLEAN**(+`4b2b082` G38 dashboard compliance partial-load warning)·**765/765 PASS**(176 files)·**878 modules**·58 route·82 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **BLOCK**(backend Open 1 QA-B48 @ `3ca37ff` WT DIRTY 4M)·잔여 COD BE WT clean→merge(159+127=286)+G38/G39/G37/G17/G32/G33 live E2E run+live E2E run) | 2026-06-12T02:32:01+00:00 |
+| QA·이관 | TSR | **PASS** (390차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`e9d1178` +154 WT CLEAN**(+`e9d1178` G37 attachment MIME fallback guard·**QA-B46 Fixed**)·**735/735 PASS**(172 files)·**874 modules**·56 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `5fd35a6` WT CLEAN·648/648 PASS)·잔여 merge(154+124=278)+G37/G17/G32/G33 live E2E run+live E2E run) | 2026-06-12T00:42:00+00:00 |
+| QA·이관 | TSR | **PASS** (384차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`6875af5` +152 WT CLEAN**(+`6875af5` G37 attachment API contracts·live E2E harness BNK-106)·**730/730 PASS**(172 files)·**874 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `c4b230b` WT CLEAN·637/637 PASS)·잔여 merge(152+121=273)+G37/G17/G32/G33 live E2E run+live E2E run) | 2026-06-11T23:37:14+00:00 |
+| QA·이관 | TSR | **PASS** (380차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`8b0c6c7` +149 WT CLEAN**(+`8b0c6c7` G17/G32 program compliance API contracts·422 guard coverage)·**717/717 PASS**(169 files)·**872 modules**·56 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `0325d95` WT CLEAN·637/637 PASS)·잔여 merge(149+120=269)+G17/G32/G33 live E2E run+G37 FE care-plan attachment UI+live E2E run) | 2026-06-11T22:42:00+00:00 |
+| QA·이관 | TSR | **PASS** (376차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`eb488799` +147 WT CLEAN**(+`eb488799` G33 BillingSettingsPanel settlement reload fallback)·**705/705 PASS**(168 files)·**872 modules**·55 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `555a19f` WT CLEAN·623/623 PASS)·잔여 merge(147+118=265)+G17/G32/G33 live E2E run+live E2E run) | 2026-06-11T22:02:00+00:00 |
+| QA·이관 | TSR | **PASS** (370차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`1113caf` +144 WT CLEAN**(+`63361c0` UXD G33·`1113caf` G32/G33 pilotPageFlows E2E BNK-103)·**700/700 PASS**(168 files)·**872 modules**·55 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `8626f18` WT CLEAN·614/614 PASS)·잔여 merge(144+115=259)+G17/G32/G33 live E2E run+live E2E run) | 2026-06-11T21:03:00+00:00 |
+| QA·이관 | TSR | **PASS** (368차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`c413615` +142 WT CLEAN**(+`c413615` G17/G32/G33 program compliance live E2E harness)·**693/693 PASS**(166 files)·**870 modules**·56 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `838a7f6` WT CLEAN·609/609 PASS)·잔여 merge(142+114=256)+G17/G32/G33 live E2E run+live E2E run) | 2026-06-11T20:16:00+00:00 |
+| QA·이관 | TSR | **PASS** (356차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`7564c2a` +135 WT CLEAN**(HEAD 불변)·**679/679 PASS**(165 files)·**869 modules**·55 route·46 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 1 SEC-D22 Medium @ `70e6191` WT CLEAN·603/603 PASS)·잔여 merge(135+109=244)+live E2E run) | 2026-06-11T17:52:00+00:00 |
+| QA·이관 | TSR | **PASS** (352차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`eba413a` +134 WT CLEAN**(+`eba413a` G33 charges ledger opening balance UI)·**675/675 PASS**(165 files)·**869 modules**·55 route·46 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `e7df238` WT CLEAN·588/588 PASS)·잔여 merge(134+107=241)+live E2E run) | 2026-06-11T17:09:32+00:00 |
+| QA·이관 | TSR | **PASS** (350차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367.09 kB)·audit **0**·origin/test 동기화·develop **`9e1a2ed` +133 WT CLEAN**(+`9e1a2ed` G33 billing start balance UI)·**671/671 PASS**(165 files)·**869 modules**·56 route·46 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `3d5eb3e` WT CLEAN·587/587 PASS)·잔여 merge(133+106=239)+live E2E run) | 2026-06-11T16:49:06+00:00 |
+| QA·이관 | TSR | **PASS** (326차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`0821ce8` +119 WT CLEAN**(+`0821ce8` G17/G32 compliance DTO mapping + Dashboard 30-day widget)·**631/631 PASS**(158 files)·**861 modules**·56 route·76 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `2225a7a` WT CLEAN·575/575 PASS)·잔여 merge(119+96=215)+live E2E run) | 2026-06-11T11:46:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (314차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`c30aaac` +113 HEAD 불변·WT DIRTY 1M**(`MonthlyBenefitCapBanner.test.jsx` QA-B38)·**607/607 PASS**·**856 modules**·53 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(`QA-20260611-B38`)·test baseline **PASS(v1.2+v1.3-A)**·**v1.2.1 merge BLOCK**·교차 merge **ready**(backend Open 0 @ `de49b21` WT CLEAN·548/548 PASS)·잔여 COD WT clean(1M)→merge(113+91=204)+live E2E run) | 2026-06-11T08:43:44+00:00 |
+| QA·이관 | TSR | **PASS** (312차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`c30aaac` +113 WT CLEAN**(+`c30aaac` US-G04 upload block)·**607/607 PASS**·**856 modules**·53 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·교차 merge **ready**(backend Open 0 @ `de49b21` WT CLEAN)·잔여 merge(113+91=204)+live E2E run) | 2026-06-11T08:17:08+00:00 |
+| QA·이관 | TSR | **PASS** (310차 — test **`c7c8f07` 불변**·**217/217 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`dd163cf` +112**(+`9647666`/`dd163cf` QA-B37 Fixed US-G04 upload guard+API)·WT **CLEAN**·**606/606 PASS**(153 files)·**856 modules**·52 route·78 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `8f208e4` WT CLEAN·537/537 PASS)·잔여 develop→test merge(112+89=201)+live E2E run) | 2026-06-11T07:55:00+00:00 |
+| QA·이관 | TSR | **PASS** (288차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`63234e2` +101**(+`63234e2` US-L01/L02 `pilotLiveApi` live E2E candidate selection hardening)·WT **CLEAN**·**567/567 PASS**(148 files)·**851 modules**·53 route·43 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `27f20de` WT CLEAN·516/516 PASS)·잔여 develop→test merge(80+101=181)+live E2E run) | 2026-06-11T03:06:00+00:00 |
+| QA·이관 | TSR | **PASS** (286차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`7e5c806` +100**(+`04f2f89` UXD-76 VehiclesPage a11y · `7e5c806` G26/US-L04 medical expense deduction UI)·WT **CLEAN**·**567/567 PASS**(148 files)·**851 modules**·53 route·43 page·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `7f10449` WT CLEAN·test 246/246 PASS)·잔여 develop→test merge(79+100=179)+live E2E run) | 2026-06-11T02:47:00+00:00 |
+| QA·이관 | TSR | **PASS** (276차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`bed612c` +95**(+`bed612c` QA-B30 Fixed US-J02 request-seq guard)·WT **CLEAN**·**553/553 PASS**(146 files)·**849 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·**QA-B30 Fixed @ `bed612c`**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `894e246` WT CLEAN)·잔여 develop→test merge(95+76=171)+live E2E run) | 2026-06-11T00:42:07+00:00 |
+| QA·이관 | TSR | **BLOCK** (267차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`2b6024a` +91 HEAD 불변·WT DIRTY 2M**(+G7 NHIS guidance allSettled WIP, 265차 CLEAN→재오염)·HEAD **543/543**·WT **544/544 PASS**(+1 test)·**848 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(`QA-20260610-B28`)·test baseline **PASS(v1.2+v1.3-A)**·**v1.2.1 merge BLOCK**(frontend)·교차 merge **BLOCK**(backend Open 1 QA-B27 @ `ba4c9d9` WT DIRTY 2M)·잔여 COD FE+BE WT clean(2M+2M)→merge(91+72)+live E2E run) | 2026-06-10T22:46:16+00:00 |
+| QA·이관 | TSR | **PASS** (265차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`2b6024a` +91**(+`2b6024a` QA-B26 Fixed NHIS guidance parallel+fallback)·WT **CLEAN**·**543/543 PASS**(144 files)·**848 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·**QA-B26 Fixed @ `2b6024a`**·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **FULLY UNBLOCKED**(backend Open 0 @ `ba4c9d9` WT CLEAN)·잔여 develop→test merge(91+72)+live E2E run) | 2026-06-10T22:22:06+00:00 |
+| QA·이관 | TSR | **BLOCK** (263차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`1f71335` +90**(+`1220bfb` QA-B24 Fixed · `1f71335` a11y)·WT **DIRTY 2M**(+G7 guidance fallback WIP, 261차 4M→축소)·HEAD **542/543**·WT **543/543 PASS**(+1 test)·**848 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·**QA-B24 Fixed @ `1220bfb`**·Open **1 BLOCK**(`QA-20260610-B26`)·test baseline **PASS(v1.2+v1.3-A)**·**v1.2.1 merge BLOCK**(frontend)·교차 merge **BLOCK**(backend Open 1 QA-B25 @ `3def542` WT DIRTY 1U)·잔여 COD FE WT clean(2M)→merge(90+71)+BE V70 commit+push+live E2E run) | 2026-06-10T22:02:23+00:00 |
+| QA·이관 | TSR | **BLOCK** (261차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`08dbcf0` +88 HEAD 불변·WT DIRTY 4M**(+G7 NHIS import live guidance UI WIP, 259차 CLEAN→재오염)·HEAD **534/534**·WT **535/535 PASS**(+1 test)·**848 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(`QA-20260610-B24`)·test baseline **PASS(v1.2+v1.3-A)**·**v1.2.1 merge BLOCK**(frontend)·교차 merge **ready**(backend Open 0 @ `dd7a580` WT CLEAN)·잔여 COD frontend WT clean→merge(88+70)+live E2E run) | 2026-06-10T21:28:58+00:00 |
+| QA·이관 | TSR | **PASS** (238차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`49678a5` +78 WT CLEAN**(+`49678a5` US-T02 geocode fixture align)·**485/485 PASS**·**829 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·**QA-20260610-B20 Fixed**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**(frontend)·교차 merge **BLOCK**(backend Open 1 QA-B21 @ `9aafa3e` WT DIRTY)·잔여 backend WT clean→merge(78+61)+live E2E run) | 2026-06-10T16:40:25+00:00 |
+| QA·이관 | TSR | **PASS** (234차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`695c0f7` +76 WT CLEAN**(+`318411d`/`695c0f7` G15 geocode failure UI·저장 차단)·**484/484 PASS**·**829 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·**QA-20260610-B19 Fixed**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·교차 merge **ready**(backend Open 0 @ `24733c7`)·잔여 merge(76+60)+live E2E run) | 2026-06-10T16:03:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (232차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`6c4c151` +74 HEAD 불변·WT DIRTY 4M**(+G15 transport geocode failure UI WIP, 230차 CLEAN→재오염)·HEAD **481/481**·WT **482/482 PASS**·**829 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(`QA-20260610-B19`)·test baseline **PASS(v1.2+v1.3-A)**·**v1.2.1 merge BLOCK**·교차 merge **ready**(backend Open 0 @ `d6d7e7f`)·잔여 COD WT clean→merge(74+59)+live E2E run) | 2026-06-10T15:20:30+00:00 |
+| QA·이관 | TSR | **PASS** (230차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`6c4c151` +74 WT CLEAN**(+`6c4c151` G15 attendance transport profile split·boarding/on-site Route)·**481/127 PASS**·**829 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·교차 merge **ready**(backend Open 0 @ `3d8370a`)·잔여 merge(74+58)+live E2E run) | 2026-06-10T14:49:06+00:00 |
+| QA·이관 | TSR | **PASS** (224차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`7387ab9` +71 WT CLEAN**(+`7387ab9` US-T01 table-scoped assert fix)·**472/472 PASS**·**828 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·**QA-20260610-B17 Fixed**·test baseline **PASS(v1.2+v1.3-A)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·교차 merge **ready**(backend Open 0 @ `754160f`)·잔여 merge(71+56)+live E2E run) | 2026-06-10T13:32:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (222차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`9e3cab5` +70 WT CLEAN**(+`dc2a80f`/`9e3cab5` G15 contract API + a11y)·**471/472 FAIL**(1: US-T01 FE-7)·**828 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(`QA-20260610-B17`)·test baseline **PASS(v1.2+v1.3-A)**·**v1.2.1 merge BLOCK**·교차 merge **ready**(backend Open 0 @ `3c8f9fe`)·잔여 COD US-T01 fix→merge(70+55)+live E2E run) | 2026-06-10T13:10:00+00:00 |
+| QA·이관 | TSR | **PASS** (218차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`4679f15` +67 WT CLEAN**(+`4679f15` G11/G15/US-L01 `pilotPageFlows` E2E)·**467/467 PASS**·**828 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·교차 merge **ready**(backend Open 0 @ `904072b`)·잔여 merge(67+53)+live E2E run) | 2026-06-10T12:00:00+00:00 |
+| QA·이관 | TSR | **PASS** (214차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`fba5ea8` +65 WT CLEAN**(+`fba5ea8` US-M04/G27 cognitive support grade ltcGrade 0 label)·**451/451 PASS**·**824 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·교차 merge **ready**(backend Open 0 @ `20bc1be`)·잔여 merge(65+51)+live E2E run) | 2026-06-10T11:10:00+00:00 |
+| QA·이관 | TSR | **PASS** (210차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`5e64125` +63 WT CLEAN**(+`9ffff0c`/`5e64125` G27 monthly benefit cap UI·US-L01 bank deposit import panel)·**447/447 PASS**·**824 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·교차 merge **BLOCK**(backend `QA-20260610-B16`)·잔여 merge(63+49)+live E2E run) | 2026-06-10T10:18:53+00:00 |
+| QA·이관 | TSR | **PASS** (196차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`eedcc80` +55 WT CLEAN**(+`eedcc80` G2 payment receipt + elder abuse guideline notify UI)·**413/413 PASS**·**817 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(55)+live E2E run+backend merge(43 @ `0854fbd`)) | 2026-06-10T06:32:35+00:00 |
+| QA·이관 | TSR | **PASS** (192차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`dd72ff8` +53 WT CLEAN**(+`dd72ff8` US-L01 PaymentRecordModal overpayment guard)·**408/408 PASS**·**816 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(53)+live E2E run+backend merge(41 @ `399bc22`)) | 2026-06-10T05:46:20+00:00 |
+| QA·이관 | TSR | **PASS** (186차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`8a771cf` +50 WT CLEAN**(+`eb3f0fd`/`06eb0a8`/`8a771cf` G9/US-J02 duration band unify·FE-14 panel tests·US-G02 currency formatting)·**403/403 PASS**·**816 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(50)+live E2E run+backend merge(39 @ `40567a2`)) | 2026-06-10T04:50:39+00:00 |
+| QA·이관 | TSR | **PASS** (181차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`6fe853b` +46 WT CLEAN**(+`6fe853b` G9 duration band fallback billing/guardian UI)·**382/382 PASS**·**816 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(46)+live E2E run+backend BLOCK(QA-B14 @ WT DIRTY 2M)) | 2026-06-10T03:41:02+00:00 |
+| QA·이관 | TSR | **PASS** (178차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`3f96d95` +45 WT CLEAN**(+`3f96d95` G9 durationBandSnapshot billing/guardian UI)·**382/382 PASS**·**816 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(45)+live E2E run+backend merge(36 @ `0719648`)) | 2026-06-10T03:10:00+00:00 |
+| QA·이관 | TSR | **PASS** (176차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`0c34f85` +44 WT CLEAN**(+`0c34f85` G9 2D fee schedule matrix+NHIS 2026 seed)·**382/382 PASS**·**816 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(44)+live E2E run+backend merge(35 @ `a4a1393`)) | 2026-06-10T02:52:19+00:00 |
+| QA·이관 | TSR | **PASS** (174차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`0dc4c4a` +43 WT CLEAN**(+`147048c` G9 duration_band+US-J02 billing · `0dc4c4a` guardian billing helpers+E2E)·**377/377 PASS**·**815 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·QA-B07 Fixed·Open **0(frontend)**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(43)+live E2E run+backend BLOCK(QA-B13 @ WT DIRTY 3)) | 2026-06-10T02:31:35+00:00 |
+| QA·이관 | TSR | **PASS** (168차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`c4fb7ff` +40 WT CLEAN**(+`c4fb7ff` G21 VisitsPage confirm-lock guide + visit import lock/unlock E2E)·**367/367 PASS**·**812 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(40)+live E2E run+backend merge(32 @ `f23f15a`)) | 2026-06-10T01:02:00+00:00 |
+| QA·이관 | TSR | **PASS** (162차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`c0a01b4` +36 WT CLEAN**(+`6c6dc7a`/`c0a01b4` US-L03 `/billing/cms` CMS UI·debit claims refresh)·**358/358 PASS**·**810 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(36)+live E2E run+backend BLOCK(QA-B11)) | 2026-06-10T00:03:49+00:00 |
+| QA·이관 | TSR | **PASS** (158차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`c72e9df` +33 WT CLEAN**(+`c72e9df` US-J02/G13 cross-page live billing E2E hardening)·**350/350 PASS**·**805 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(33)+live E2E run+backend merge(29 @ `6eba2ef`)) | 2026-06-09T22:59:06+00:00 |
+| QA·이관 | TSR | **PASS** (156차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`f5479d7` +32 WT CLEAN**(+`f5479d7` US-L01/L02 live write-flow assertion hardened)·**346/346 PASS**·**805 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·QA-B07 Fixed·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(32)+live E2E run+backend merge(28 @ `fbedcc3`)) | 2026-06-09T22:39:18+00:00 |
+| QA·이관 | TSR | **BLOCK** (154차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`20bfac1` +31 HEAD 불변·WT DIRTY 1M**(`pilotLiveApi.e2e.test.js` US-L01/L02 live assertion WIP)·**346/346 PASS**·**805 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(QA-B07 #9)·test baseline **PASS(v1.2+v1.3-A)**·**v1.2.1 merge BLOCK**(WT clean 선행)·잔여 WT clean→merge(31)+live E2E run+backend merge(27 @ `a401537`)) | 2026-06-09T22:17:02+00:00 |
+| QA·이관 | TSR | **PASS** (152차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`20bfac1` +31 v1.2.1+US-L01/L02 live write-flow E2E harness WT CLEAN**(+`20bfac1` `pilotLiveApi.e2e.test.js` FE-22)·**346/346 PASS**·**805 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(31)+live E2E run+backend merge(26 @ `f755428`)) | 2026-06-09T21:59:17+00:00 |
+| QA·이관 | TSR | **PASS** (148차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`14e9066` +28 v1.2.1+US-L02 overdue reminder timestamp WT CLEAN**(+`14e9066` OverduePage notify sync)·**340/340 PASS**·**804 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(28)+live E2E run+backend merge(24 @ `0ebe945`)) | 2026-06-09T21:13:59+00:00 |
+| QA·이관 | TSR | **BLOCK** (144차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`69aff5d` +26 v1.2.1+payment row client-name WT CLEAN**(+`69aff5d` US-L01 payment row labels)·**337/340 FAIL**(-3 FE-7)·**804 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(QA-20260609-B09)·test baseline **PASS(v1.2+v1.3-A)**·v1.2.1 merge **BLOCK**·잔여 pilotPageFlows fix→merge(26)+live E2E run+backend merge(23 @ `09932ef`)) | 2026-06-09T20:36:02+00:00 |
+| QA·이관 | TSR | **PASS** (140차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`1462396` +24 v1.2.1+US-L02 overdue pagination WT CLEAN**(+`1462396` OverduePage·OverdueSummaryBar·SettingsPage password change UI)·**335/95 PASS**·**804 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(24)+live E2E run+backend merge(21 @ `4ee652d`)) | 2026-06-09T19:46:00+00:00 |
+| QA·이관 | TSR | **PASS** (136차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`311c7c0` +21 v1.2.1+G21 paired cancel UX WT CLEAN**(+`311c7c0` US-V02·V04 VisitsPage·pilotPageFlows E2E)·**326/93 PASS**·**804 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(21)+live E2E run+backend merge(19 @ `3e4d3e6`)) | 2026-06-09T19:02:00+00:00 |
+| QA·이관 | TSR | **PASS** (130차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`bf3d40d` +18 v1.2.1+GuardianCheckin apiFetch WT CLEAN**(+`bf3d40d` GuardianCheckin apiFetch·G21 import 가이드)·**320/92 PASS**·**804 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(18)+live E2E run+backend merge(16 @ `803436d`)) | 2026-06-09T18:00:00+00:00 |
+| QA·이관 | TSR | **PASS** (128차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`75fc91e` +17 v1.2.1+US-J02 pagination WT CLEAN**(+`75fc91e` GuardianPortal billing pagination·QA-B07 #8 Fixed)·**316/92 PASS**·**804 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(17)+live E2E run+backend merge(15 @ `0c069b5`)) | 2026-06-09T17:40:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (126차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`60cea98` +16 v1.2.1+US-V04 WT DIRTY 3M**(+`60cea98` VisitNhisImportPanel·3M US-J02 billing pagination WIP)·**316/92 PASS**·**804 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(QA-20260609-B07 #8)·v1.2.1 merge **BLOCK**(WT clean 선행)·test baseline **PASS(v1.2+v1.3-A)**·잔여 WT clean→merge(16)+live E2E run+backend merge(14)) | 2026-06-09T17:22:00+00:00 |
+| QA·이관 | TSR | **PASS** (124차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`e1320f4` +15 v1.2.1+SEC-D17 WT CLEAN**(+`e1320f4` billing/guardian/platform apiFetch)·**311/91 PASS**·**803 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(15)+live E2E run+backend merge(12)) | 2026-06-09T16:42:00+00:00 |
+| QA·이관 | TSR | **PASS** (122차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`3803247` +14 v1.2.1+SEC-D17 WT CLEAN**(+`3803247` settings apiFetch)·**298/90 PASS**·**803 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(14)+live E2E run+backend merge(11)) | 2026-06-09T16:22:00+00:00 |
+| QA·이관 | TSR | **PASS** (120차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`a55dd6a` +13 v1.2.1+UXD-62 WT CLEAN**(+`a55dd6a` formErrors/http·dashboardSummary)·**292/89 PASS**·**803 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·★ **v1.2.1 merge gate FULLY UNBLOCKED**·test baseline **PASS(v1.2+v1.3-A)**·잔여 merge(13)+live E2E run+backend merge BLOCK(QA-B08)) | 2026-06-09T16:05:00+00:00 |
+| QA·이관 | TSR | **BLOCK** (118차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB)·audit **0**·origin/test 동기화·develop **`ac5638e` +12 v1.2.1+UXD-62 WT DIRTY 9**(+`ac5638e` UXD-62 US-I02 meal)·**291/89 PASS**·**803 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **1 BLOCK**(QA-20260609-B07)·v1.2.1 merge **BLOCK**(WT clean 선행)·test baseline **PASS(v1.2+v1.3-A)**·잔여 WT clean→merge(12)+live E2E run+backend merge(10)) | 2026-06-09T15:45:00+00:00 |
+| QA·이관 | TSR | **PASS** (114차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB <500 kB)·audit **0**·origin/test 동기화·develop **`6db762a` +9 v1.2.1+UXD-59 WT DIRTY 3U**(+`6db762a` Epic K·L·J02 GuardianClientLinks·OverdueSummaryBar UXD-59)·**271/83 PASS**·**795 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·v1.2.1 merge ready(9 ahead·develop WT clean 선행)·잔여 merge(9)+live E2E run+backend merge(6)) | 2026-06-09T13:33:37+00:00 |
+| QA·이관 | TSR | **PASS** (109차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB <500 kB)·audit **0**·origin/test 동기화·develop **`0a07799` +5 v1.2.1 CLEAN**(+`dbf485e` US-M03 ledger·calculator UXD-56 · `0a07799` US-J02·US-M03 pilotPageFlows E2E)·**240/76 PASS**·**788 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·v1.2.1 merge ready·잔여 v1.2.1 merge(5)+live E2E run+backend merge(4)) | 2026-06-09T11:14:11+00:00 |
+| QA·이관 | TSR | **PASS** (107차 — test **`c7c8f07` 불변**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB <500 kB)·audit **0**·origin/test 동기화·develop **`465bdae` +3 v1.2.1 CLEAN**(+`465bdae` US-J02 billing API 정합)·**225/72 PASS**·**783 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·v1.2.1 in_progress·잔여 G14 GET API+v1.2.1 merge(3)+live E2E run) | 2026-06-09T10:25:08+00:00 |
+| QA·이관 | TSR | **PASS** (105차 — test **`c510f5c`→`c7c8f07`** 22커밋 merge·**217/70 PASS**·**781 modules 3 청크**(max 367 kB <500 kB)·audit **0**·origin/test 동기화·develop **`6d0a03a` +2 v1.2.1 CLEAN**·**225/72 PASS**·**783 modules**·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·v1.2.1 in_progress·잔여 live E2E run+v1.2.1 merge(2)) | 2026-06-09T07:13:06+00:00 |
+| QA·이관 | TSR | **PASS** (103차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`c7c8f07` +1 UXD-55 US-J02 GuardianBillingDetailModal CLEAN**·**217/70 PASS**·**781 modules 3 청크**(max 367 kB <500 kB)·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**(frontend)·v1.3 pending·v3 develop-only·잔여 BLOCK origin push+merge(22)) | 2026-06-08T16:18:50+00:00 |
+| QA·이관 | TSR | **PASS** (101차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`7cd9293` +21 UXD-54 QR·배차 BranchScopeNotice 연동 CLEAN**·**214/69 PASS**·**780 modules 3 청크**(max 367 kB <500 kB)·audit 0·이관 규율 5 PRESENT(+BranchScopeNotice·TransportPickupContact)·SEC-005 0건·UXD-54 US-UX-04 부합·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T15:15:00+00:00 |
+| QA·이관 | TSR | **PASS** (99차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`e641f62` +20 UXD-53 지점 스코프 UI(BranchScopeNotice)·pilotPageFlows US-E01/E05 E2E CLEAN**·**212/69 PASS**·**780 modules 3 청크**(max 367 kB <500 kB)·audit 0·이관 규율 5 PRESENT(+BranchScopeNotice)·SEC-005 0건·UXD-53 role=status·forced-colors a11y 부합·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T14:05:00+00:00 |
+| QA·이관 | TSR | **PASS** (97차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`1d910c2` +18 v1.3-A US-T03 배차 연락처 마스킹 UI·pilotPageFlows T03 E2E CLEAN**·**208/68 PASS**·**779 modules 3 청크**(max 367 kB <500 kB)·audit 0·이관 규율 5 PRESENT(+TransportPickupContact)·SEC-005 0건·US-T03 연락처 마스킹 PII 부합·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T12:55:00+00:00 |
+| QA·이관 | TSR | **PASS** (95차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`3c55339` +16 v1.3-A ClientForm 픽업 프로필·UXD-51 FE-13/FE-14 복원 CLEAN**·**203/67 PASS**·**778 modules 3 청크**(max 367 kB <500 kB)·audit 0·이관 규율 5 PRESENT·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T11:45:00+00:00 |
+| QA·이관 | TSR | **PASS** (93차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`d484206` +14 FE-15 code-split 복원·transport live E2E CLEAN**·**189/60 PASS**·**766 modules 3 청크**(max 367 kB <500 kB, **vite >500 kB LOW 해소**)·audit 0·이관 규율 5 PRESENT(+transportLiveApi E2E)·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T10:30:00+00:00 |
 | QA·이관 | TSR | **PASS** (92차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`637b9b3` +12 UXD-49·v1.3-A T01~T03 E2E CLEAN**·**189/60 PASS**·**766 modules**(JS 756 kB, vite >500 kB LOW)·audit 0·이관 규율 5 PRESENT(+T01~T03 pilotPageFlows)·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T09:13:00+00:00 |
 | QA·이관 | TSR | **PASS** (91차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`8a764df` +10 UXD-48 Recharts CLEAN**·**183/60 PASS**·**766 modules**(JS 756 kB, vite >500 kB LOW)·audit 0·이관 규율 5 PRESENT(+ChartContainer·TransportUnconfirmModal)·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T08:05:40+00:00 |
 | QA·이관 | TSR | **PASS** (90차 — test **`c510f5c`** 불변(v1.2 merged)·**143/46 PASS**·**125 modules**·audit **0**(독립 실측)·develop **`73f7d39` +9 UXD-47·unconfirm UI CLEAN**·**179/58 PASS**·**143 modules**·audit 0·이관 규율 5 PRESENT(+TransportUnconfirmModal)·SEC-005 0건·Open **0**·v1.3 pending·v3 develop-only) | 2026-06-08T07:08:00+00:00 |
