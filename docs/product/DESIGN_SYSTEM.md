@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15T15:45:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15T11:17:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-15 (109차 — **US-T09 G24b 연간 욕구사정 현황 페이지 신설(`NeedsAssessmentStatusPage`) + 대시보드 위젯 목적지 연결 + §31 신규** — 108차 이후 coder 신규 커밋(`ca0b627` G24b compliance 대시보드 위젯 wire) 미점검 갭 해소. 신규 위젯 「연간 욕구사정 미완료」·「등급변경 재사정 필요」가 ① **`href="/clients"`(일반 이용자 목록)** 로 연결돼 클릭 시 **어느 이용자가 대상인지 식별 불가**(다른 compliance 위젯은 `/clients/periodic-risk-assessments` 등 전용 현황 페이지로 연결되는 코드베이스 표준과 불일치)하고, ② `mapNeedsAssessmentComplianceView`·`findNeedsAssessmentComplianceForClient` util이 **production 소비자 0건**(테스트만)인 갭이 있었다. ① **`NeedsAssessmentStatusPage`(`/clients/needs-assessments`)** 신설 — `PeriodicRiskAssessmentStatusPage`(G40b) 패턴 정합: `ClientsContextNav`·`ds-page-lede`·회계연도 `Field`+`TextInput`(`ds-input--year`)·StatCard 4종(전체·연간 완료·연간 미완료(danger)·등급변경 재사정(warning)) `role=group`+sr-only `h2`·조치 필요/전체 필터(`Select`)·`Table`(`caption`)·행별 「욕구사정」링크 `aria-label`에 이용자명 포함(WCAG 2.4.6)·연간 사정·재사정 `Badge`(색+텍스트). ② **`formatMissingG24bFields`**(`needsAssessmentCompliance.js`) — 미기록 G24b 항목 코드를 `NEEDS_ASSESSMENT_G24B_FIELDS` 한국어 라벨(질병상태·의사소통·영양상태·환경상태·자원이용 욕구)로 변환(단일 원천). ③ **대시보드 위젯 2종** href `/clients`→`/clients/needs-assessments`. ④ **`ClientsContextNav`·`navConfig`(EXACT_MATCH + 운영 그룹)** 라우트 등록. ⑤ **§31** 신규. forced-colors는 전역 `.ds-stat-grid .ds-stat` 윤곽선 재사용(신규 CSS 0). 회귀 +2(`NeedsAssessmentStatusPage.test.jsx` — StatCard·조치 필요 행·미기록 라벨·링크 href·전체 필터). `npm test` **282 파일 1349 PASS**·build PASS.)
+> **최종 갱신**: 2026-06-15 (111차 — **L02_M02 집중배설관찰 UI 접근성 재점검 + 기록 화면 공통 레이아웃 CSS 승격 + §35 신규** — 110차 이후 coder 신규 커밋(`1264c16` L02_M02 집중배설관찰 wire) 미점검 갭 해소. ① **`IntensiveExcretionObservationPage`** — 수정 행 raw `<button className="ds-table__action-btn">` → **`Button variant=tertiary size=sm`** 전환(110차 `CareProvisionRecordPanel` 패턴 정합·WCAG 4.1.2). ② **기록 화면 공통 레이아웃 CSS 승격(FE-16·§1 단일 원천)** — `ds-page-stack`·`ds-page-grid`·`ds-page-grid--sidebar`·`ds-page-loading`·`ds-table__row--highlighted`가 L02_M02·L03_M01·L03_M06·L03_M08·L03_M09·L03_M10·L03_M14 등 다수 기록 페이지에서 사용됐으나 `components.css` 미정의(`forced-colors` `outline` 포함). ③ **§35** 신규. 회귀 +1(`IntensiveExcretionObservationPage.test.jsx` — 수정 버튼 `ds-btn` 클래스·`aria-label` 검증). `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-15 (110차 — **G19 통합재가 기관 검색 패널 + G39 기록지 발송 + G30 증빙 기간 접근성 재점검 + §32~§34 신규** — 109차 이후 coder 신규 커밋(`9afa30e` G19·`4d1a4f2`/`73094f9` G39 dispatch·`73094f9` G30 evidence window) 미점검 갭 해소. ① **`IntegratedHomeProviderDiscoveryPanel`** — 미정의 `__meta` div 래퍼 제거 → **`.ds-dl-grid`**(FE-16)·`code.ds-mono`·외부 링크 `aria-label`+sr-only 「(새 탭)」·`.ds-integrated-home-discovery` CSS·`forced-colors` 경계선. ② **`ProvisionResultDispatchPanel`** — 행별 발송 `Button` **`aria-label`에 이용자명·연월 포함**(WCAG 2.4.6)·상태 열 **`Badge tone=warning`「미제공」**(색+텍스트). ③ **`CareProvisionRecordPanel`** — raw `<button>` → **`Button`**·조회 `aria-busy`·일자 `<time dateTime>`. ④ **`MonitoringIntegratedChecklistPanel`** — 증빙 수집 기간 `id`+`role=status`·`.ds-monitoring-checklist__evidence-window`. ⑤ **§32~§34** 신규. 회귀 +5. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-15 (109차 — **US-T09 G24b 연간 욕구사정 현황 페이지 신설(`NeedsAssessmentStatusPage`) + 대시보드 위젯 목적지 연결 + §31 신규**
 > **이전 갱신**: 2026-06-15 (108차 — **US-T09 G24b 욕구사정 8+5항목 폼 접근성 재점검 + §30 신규** — 107차 이후 coder 신규 커밋(`49fbf67` G24b 5필드 FE wire) 미점검 갭 해소. ① **`ClientNeedsAssessmentForm`** — FAQ 21800·G24b FAQ 21810 **`fieldset`/`legend` 2그룹 분리**(WCAG 1.3.1)·`Field help`→`aria-describedby`·제출 `aria-busy`·폼 `h3` `aria-labelledby`. ② **`ClientNeedsAssessmentPanel`** — outer `section` `aria-label` 정합(`ClientBenefitContractPanel` 패턴)·필드 안내 `role=region`. ③ **`ClientNeedsAssessmentCompare`** — 변경 행 **`Badge`「변경」**(색+텍스트)·`.ds-table__row--changed` 좌측 보더·`forced-colors` outline. ④ **CSS** — `.ds-needs-assessment-form*`·`.ds-needs-assessment-compare*`. ⑤ **§30** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-15 (107차 — **US-O05 G-ONBOARD-SUPPORT 지점 도입 체크list UI 신설 + §29 신규 + §2-3 `ONBOARDING_SESSION_STATUS`** — planner 140차 P2 갭(US-O05 BE @ `735dd53`·FE wire ❌) 해소. ① **`BranchOnboardingSupportPanel`** — silverangel businessSupport 1~4회차 checklist·오픈일 `DateInput`+`Field`·역할별 `fieldset`/`legend`·`Checkbox`·회차별 `PATCH`·`ONBOARDING_SESSION_STATUS` Badge(색+텍스트)·기한 초과 좌측 보더·`ds-grid ds-grid--stats` 요약. ② **`BranchesPage`** — 행별 「도입 체크list」`Modal`(hq_admin·branch_admin·social_worker)·`aria-label`에 지점명. ③ **API** — `fetchBranchOnboardingSupportApi`·`upsertBranchOnboardingSupportApi`·`updateBranchOnboardingSupportSessionApi`. ④ **CSS** — `.ds-branch-onboarding-support*`. ⑤ **§29** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-14 (106차 — **L03_M07/M09/M10·L03_M15 리포트 UI 접근성 재점검 + §27·§28 신규 + §8-1 간호 라우트 보강** — 105차 이후 coder 신규 커밋(`2a05271`·`75bddee`·`efa4472`·`89dc52d` L03_M07/M09/M10 `NursingServiceReportsPage`·L03_M15 `PressureUlcerProvisionReportPanel`·`NursingContextNav` 12링크) 미점검 갭 해소. ① **`PressureUlcerProvisionReportPanel`** — `aria-labelledby` 대상 **`h3` 누락** 회귀 해소·`aria-busy`·로딩 중 EmptyState 미노출·`<time dateTime>`·NPUAP 단계 `StatusBadge`(숫자·코드 정규화)·`ds-grid ds-grid--stats`+`role=group`. ② **`NursingServiceReportPanel`/`Nav`** — forced-colors StatCard 경계선·서브 네비 landmark 회귀. ③ **CSS** — `.ds-nursing-service-report*`·`.ds-pressure-ulcer-provision-report*`. ④ **§8-1** — `/nursing/*` 14경로 추가. ⑤ **§27 L03_M07/M09/M10**·**§28 L03_M15** 신규. 회귀 +4. `npm test`·build PASS.)
@@ -2104,6 +2106,165 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - 표 컬럼: 이용자·가정방문 일자·연간 사정·등급변경 재사정·미기록 항목·조치. BE `NeedsAssessmentComplianceResponse` snake/camel 모두 `normalizeNeedsAssessmentComplianceItem`로 흡수.
 - live API E2E(결정 96) — `GET /clients/needs-assessments/compliance?fiscalYear=&branchId=` 응답으로 본 페이지 행/StatCard 검증 권장(`e2e/needsAssessmentComplianceLiveApi.e2e.test.js` 연계).
 - `findNeedsAssessmentComplianceForClient`는 ClientDetailPage 기초평가 탭 배지화 시 소비 가능(후속 P3).
+
+---
+
+## 32. 통합재가 기관 검색 안내 (G19 · MOHW 제55조의2 · BNK-44, 110차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15 -->
+
+> **110차 UXD (2026-06-15)** — coder `9afa30e`(G19 integrated-home provider discovery UI) 미점검 갭 해소. v1 Won't: 자동 청구·정산 미지원, 롱텀 포털 검색 안내만.
+
+### 32-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/branches` 지점 등록·수정 모달 → 서비스 유형 `INTEGRATED_HOME` | `IntegratedHomeProviderDiscoveryPanel` | hq_admin |
+
+- `INTEGRATED_HOME_SURCHARGE_NOTICE` Alert와 함께 노출.
+- API: `GET /api/v1/branches/integrated-home/provider-discovery`
+
+### 32-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `components/branches/IntegratedHomeProviderDiscoveryPanel.jsx` | 필터 파라미터·외부 검색 링크 |
+| `config/branches.js` | `BRANCH_SERVICE_TYPES`·`INTEGRATED_HOME_SURCHARGE_NOTICE` |
+| `pages/BranchesPage.jsx` | 조건부 패널 임베드 |
+
+### 32-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| landmark | `aside` `aria-label`·`aria-busy` 로딩 ✅ |
+| 메타데이터 | **`.ds-dl-grid`** `dt`/`dd` 시맨틱(미정의 `__meta` div 래퍼 제거) ✅ |
+| 외부 링크 | `target=_blank`·`rel=noopener`·`aria-label` 「(새 탭)」 ✅ |
+| `forced-colors` | `.ds-integrated-home-discovery` 경계선 ✅ |
+
+### 32-4. coder 전달 메모
+
+- 롱텀 포털 URL·필터 파라미터는 BE discovery 응답 단일 원천 — FE 하드코딩 금지.
+- `platform_admin` 지점 등록 UI는 후속 검토(현재 hq_admin 전용).
+
+---
+
+## 33. 월간 급여제공기록지 보호자 발송 (G39 · 지표44 pillar 2 · BNK-235, 110차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15 -->
+
+> **110차 UXD (2026-06-15)** — coder `4d1a4f2`/`73094f9`(G39 monthly care record guardian dispatch) 접근성 재점검.
+
+### 33-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/programs/provision-result-evaluations` | `ProvisionResultDispatchPanel` | hq_admin · branch_admin · social_worker |
+
+- `monthlyProvisionRecordProvidedMet === false` 이용자만 표·발송 버튼 노출.
+- API: `POST /clients/{id}/notifications/care-provision-record`
+
+### 33-2. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 표 | `captionVisuallyHidden`·`scope=col` ✅ |
+| 상태 | **`Badge tone=warning`「미제공」**(색+텍스트) ✅ |
+| 행 액션 | 발송 `Button` **`aria-label`=`${이용자명} ${연월} 급여제공기록지 발송`**(WCAG 2.4.6) ✅ |
+| 필드 | `MonthInput`+`Field error`·제출 `aria-busy` ✅ |
+| 결과 | 성공/실패 `Alert role=status|alert` ✅ |
+
+### 33-3. coder 전달 메모
+
+- J03 quiet-hours 가드 적용 시 `BillingDetailPage` 패턴(`aria-describedby`→배너 id) 재사용 권장.
+- live API E2E — `careProvisionRecordDispatchLiveApi.e2e.test.js` 연계.
+
+---
+
+## 34. 모니터링 증빙 수집 기간 (G30 · FAQ21838 evidence window · BNK-235, 110차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15 -->
+
+> **110차 UXD (2026-06-15)** — coder `73094f9`(monitoring evidence window) UI 노출 접근성 재점검.
+
+### 34-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/compliance/monitoring` | `MonitoringIntegratedChecklistPanel` | hq_admin · branch_admin · social_worker |
+
+- `resolveMonitoringEvidenceWindow(referenceYear, referenceMonth)` — 실시 월 전전월 anchor ±2개월.
+- checklist API 응답 `evidenceWindowStart`/`evidenceWindowEnd`와 동기.
+
+### 34-2. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 헤딩 | `section`+`h2` `aria-labelledby` ✅ |
+| 증빙 기간 | `id=monitoring-evidence-window`·**`role=status`**·`.ds-monitoring-checklist__evidence-window` ✅ |
+| StatCard | `role=group`·tone+텍스트 라벨 ✅ |
+| 표 | `captionVisuallyHidden`·상태 `Badge`(색+텍스트) ✅ |
+
+### 34-3. coder 전달 메모
+
+- evidence window 계산은 `utils/monitoringCompliance.js` 단일 원천 — UI·live E2E 공유.
+- RFID(문항10) `MANUAL` 상태는 v2 범위 — 패널 안내 문구 유지.
+
+---
+
+## 35. 집중배설관찰 (US-O06 · L02_M02 · BNK-238, 111차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-15 -->
+
+> **111차 UXD (2026-06-15)** — coder `1264c16`(L02_M02 집중배설관찰 wire) 접근성 재점검 + 기록 화면 공통 레이아웃 CSS 승격. 선행: US-O06 인수조건(L02_M02 ✅ · L02_M07 △ BE WIP).
+
+### 35-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/care/intensive-excretion` | `IntensiveExcretionObservationPage` | hq_admin · branch_admin · social_worker · caregiver |
+
+- API: `GET/POST /api/v1/care/intensive-excretion-observations` · `PATCH /api/v1/care/intensive-excretion-observations/{id}` (V130, BE `fd42b7e`)
+- 조회는 전 역할, 등록·수정은 `MANAGE_ROLES`(caregiver 포함)만.
+
+### 35-2. 컴포넌트·파일 목록
+
+| 파일 | 용도 |
+|------|------|
+| `pages/IntensiveExcretionObservationPage.jsx` | 목록 조회·등록·수정 화면 |
+| `components/ui/IntensiveExcretionObservationForm.jsx` | 집중배설관찰 입력 폼 |
+| `config/intensiveExcretionObservation.js` | `EXCRETION_TYPE_LABELS`·`STOOL_CONSISTENCY_LABELS` 상수 |
+| `api/services.js` | `fetchIntensiveExcretionObservationsApi`·`createIntensiveExcretionObservationApi`·`updateIntensiveExcretionObservationApi` |
+
+**공통 레이아웃 CSS 클래스** (기록 화면 공통 — `components.css` §35 승격):
+
+| 클래스 | 용도 |
+|--------|------|
+| `.ds-page-stack` | 기록 페이지 수직 섹션 스택(flex column gap-6) |
+| `.ds-page-loading` | 초기 로딩 중앙 정렬 영역 |
+| `.ds-page-grid` | 기록 페이지 그리드 컨테이너 |
+| `.ds-page-grid--sidebar` | 모바일 단열 → 태블릿+ 폼(좌)·목록(우) 2열 |
+| `.ds-table__row--highlighted` | 수정 중인 행 배경+테두리 강조 |
+
+### 35-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 폼 레이블 | `Field` render-prop — `label`·`id` 자동 연결 ✅ |
+| 필수값 | `required` + `aria-required` + `Field error` 필드 단위 차단 ✅ |
+| 관찰내용/조치내용 상호의존 | `Field help` 안내·필드 단위 오류 동시 노출 ✅ |
+| 배변 상태 조건 노출 | `URINATION` 선택 시 stool 필드 숨김(SR도 미노출) ✅ |
+| 저장 | 제출 `aria-busy` · API 오류 `Alert ds-page-alert` ✅ |
+| 목록 표 | `Table captionVisuallyHidden`·`scope=col`·관찰일 `<time dateTime>` ✅ |
+| 수정 버튼 | **`Button variant=tertiary size=sm`** + `aria-label` 이용자명·날짜 포함(WCAG 2.4.6) ✅ |
+| 수정 중 행 강조 | `.ds-table__row--highlighted` 배경+테두리(색+outline 병행) ✅ |
+| `forced-colors` | `.ds-table__row--highlighted td` outline `Highlight` ✅ |
+| 재시도 버튼 | 오류 Alert 내 `Button tertiary sm` ✅ |
+
+### 35-4. coder 전달 메모
+
+- `excretionType === "URINATION"` → `stoolConsistency`는 API 페이로드에서 `null`로 명시 전달(BE V130 제약 정합).
+- **L02_M07 신체제재 (G-BODY-RESTRAINT, P2 △ BE WIP)** — BE `body_restraint_records` V131 커밋 완료 후 본 폼 패턴 재사용해 FE wire 예정. 6 enum(`restraint_method`)·`reason` NOT NULL·`alternative_attempted`·`guardian_notified`·`release_reason` 필수 필드(인권 기록 요건). 필드 단위 `Field error` + 필수표시 + `aria-required` 동일 패턴 적용 필요.
+- `ds-page-stack`·`ds-page-grid--sidebar` CSS는 §35에서 단일 원천 승격 — L03_M01·L03_M06·L03_M08·L03_M09·L03_M10·L03_M14 등 기존 간호 기록 페이지도 동일 클래스 사용 중(이미 정상 동작, CSS 정의만 부재였음).
 
 ---
 
