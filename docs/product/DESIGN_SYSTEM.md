@@ -1,9 +1,13 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16T18:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16T14:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-16 (113차 — **L02_M01·L02_M03·G-7-1-4CHANNEL UI 접근성 재점검 + 미정의 디자인 토큰 클래스 보강 + §37~§39 신규** — 112차 이후 coder 신규 커밋(`41b2123` L02_M01 주간 제공기록·`950415d` L02_M03 목욕 일정·`1fd1434` G-7-1-4CHANNEL 명세 발송) 미점검 갭 해소. ① **`.ds-care-weekly-form__intro`**·**`.ds-bathing-schedule-form__intro`** — §36 `.ds-body-restraint-form__intro`와 동일 전폭 스팬 정의. ② **`CareServiceWeeklyRecordForm`·`BathingScheduleForm`** — 제출 `aria-busy` 보강(§35·§36 패턴). ③ **`BillingStatementDispatchPanel`** — quiet-hours 가드 `aria-describedby`를 비활성 발송 버튼에 연결(101차 `BillingDetailPage` 패턴)·페이지 가드 `id` 전달 시 중복 Alert 제거·행별 「발송일 수정/저장/취소」`aria-label`에 이용자명 포함·발송일 `<time dateTime>`·우편 발송일 `DateInput max=오늘`·`applyApiErrorToForm` 객체 시그니처 정합. ④ **`.ds-billing-statement-dispatch*`** CSS·`forced-colors` Badge 경계선. ⑤ **§37~§39** 신규. 회귀 +4. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-16 (117차 — **G26 본인부담 통계 UI 접근성 재점검 + G21 RFID split-view 색 의존 회귀 해소 + §43 신규** — 116차(§42) 이후 coder 신규 커밋(`d8f1fdf` G26 `BillingStatisticsReportPage`·`55fdbd0` G21 RFID split-view·`6759bf6` L03_M09/M10 care nav cross-links) 미점검 갭 해소. ① **`BillingStatisticsReportPage`** — 조회 연도 검증을 페이지 `Alert`에서 **`Field error`+`aria-invalid`**(WCAG 3.3.1·`BillingReportPage` 패턴)로 전환·입력 시 오류 자동 해제·조회 `Button aria-busy`·2축 StatCard `role="group"`·표 `captionVisuallyHidden` 확인(변경 불요). ② **`VisitsPage` RFID split-view** — 116차에서 단일 탭 모드만 수정했던 청구반영 안내가 split-view `Alert`에 **「검은/빨간 배지」 색 명칭**으로 잔존하던 회귀를 텍스트 라벨(「청구반영」·「미반영」·「페어 없음」)로 통일(§1-2·WCAG 1.4.1). ③ **split-view landmark** — 계획/청구 열을 `<section aria-labelledby>`+`h4 id`로 래핑·`.ds-visits-split-compare` `h4`·`forced-colors` 경계선 정의. ④ **`.ds-billing-report__summary .ds-stat` `forced-colors` 경계선** — G26 StatCard 그룹 고대비 식별성. ⑤ **§8-1** — `/billing/reports/statistics`(G26) 추가. ⑥ **§43** 신규. 회귀 +3. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-16 (116차 — **L02_M11/M12/M06/M17/M16·G21 리포트 접근성 재점검 + §42 신규** — 115차(§41) 이후 coder 신규 커밋(`ff9c8c5` L02_M11/M12·`fa20943` L02_M06/M17·`8b804fc` L02_M16·`25ca88e` G21 청구반영 배지) 미점검 갭 해소. ① **신규 리포트 4종 `Table` caption 보강(WCAG 1.3.1)** — `PatientServiceReportPage`(5표)·`IntensiveExcretionReportPage`(1표)·`PositionChangeReportPage`(2표)·`ServiceSummaryReportPage`(1표) 각 `<Table>` 컴포넌트가 `caption` 없이 렌더돼 스크린리더 표 탐색 시 이름이 없던 갭을, 각 카드 제목과 대응하는 `captionVisuallyHidden caption` 부여로 해소(`NursingServiceReportPanel`·`MonitoringSelfDiagnosisPage` 패턴). ② **StatCard 요약 그룹 `role="group"`** — 4개 리포트 페이지의 StatCard 래퍼 `div`가 그룹 시맨틱 없이 독립 카드들을 나열해 SR이 집계 목적을 식별 못 하던 갭을, `role="group" aria-label="{리포트명} 요약"`으로 보강(93차 `StaffStatusReportPage`·`ComplaintConsultationPanel` 패턴). ③ **`VisitsPage` 청구반영 상태 Alert 색 의존 제거(§1-2)** — G21 청구반영 배지 안내 `Alert`가 「검은 배지」·「빨간 배지」라는 **색상 명칭**으로 상태를 설명해 색 의존 금지 원칙(WCAG 1.4.1) 위반이던 갭을, 색 언급을 제거하고 배지 텍스트 라벨(「청구반영」·「미반영」·「페어 없음」)만으로 안내하도록 수정(배지 자체는 이미 텍스트+색 병행 `BILLING_CLAIM_REFLECTION_STATUS`). ④ **`ds-badge--dark` `forced-colors` 경계선** — 새 `tone="dark"` 배지가 `forced-colors` 모드에서 배경 소거 시 텍스트와 구분이 안 되던 갭을, `outline: 1px solid ButtonText` + `forced-color-adjust: none`으로 다른 Badge 토큰과 정합. ⑤ **`VisitsPage.test.jsx` 회귀** — G21 테스트가 이전 색 명칭을 단언하던 1건을 새 텍스트 라벨(`/청구반영 상태 안내:/`·`getAllByText`)로 갱신. ⑥ **§42** 신규. 회귀 — `VisitsPage` 10/10 PASS·보고서 4종 8/8 PASS·전체 `npm test` 1490/1490 PASS·build PASS.
+> **이전 갱신**: 2026-06-16 (115차 — **v1.3-A 배차 Kakao 경로 미리보기 지도 + L02_M04/M05 리포트 인쇄 a11y 재점검 + §41 신규** — 114차(§40) 이후 coder 신규 커밋(`0c523cd`/`15e9b64`/`d46688d` 배차 Kakao route-preview 지도·`d2145b0` L02_M04/M05 리포트 인쇄) 미점검 갭 해소. ① **`.ds-transport-map__summary` 신규 정의(FE-16·§1 단일 원천)** — `KakaoTransportMap`이 도로 경로 거리·소요시간 요약을 이 클래스로 렌더하나 `components.css` **미정의** → `ds-text-secondary`로 색만 받고 상단 여백·글자크기 토큰을 못 받던 80차 `.ds-text-input` 패턴 회귀를, `margin`·`--font-size-sm` 정의 + `:empty{display:none}`로 해소. ② **경로 요약 라이브 영역(WCAG 4.1.3)** — 지도 캔버스는 `role="img" aria-label="배차 경로 지도"`라 비시각 사용자에게 도로 거리·소요시간을 전달하지 못했고, 요약 `<p>`가 **조건부 마운트**라 비동기 경로 계산 완료 시 안내되지 않던 갭을, 71차 `FeeSurchargeGuidePanel` 패턴대로 **상시 상주 `role="status" aria-live="polite"`** 컨테이너로 전환(`:empty` 숨김으로 빈 상태 시각 회귀 방지). ③ **L02_M04/M05 인쇄 출력(`d2145b0`) 점검** — 인쇄 전용 헤더 `aria-hidden="true"`·`.ds-care-report-print-only`/`__filters`/`-print-root` 정의·필터 폼 `aria-label`·`Button aria-busy`·StatCard·Table `scope=col` 정합 확인(변경 불요). ④ **§41** 신규. 회귀 — transport 13파일 40 PASS. `npm test` 1457/1460 PASS(3 pre-existing 전체실행 jsdom 오염 — 단독 PASS·본 변경 무관)·build PASS.)
+> **이전 갱신**: 2026-06-16 (114차 — **통합식사도움·특이사항·요양 리포트 a11y 재점검(§40)** — coder `9ad8346`(L02_M13)·`3549896`(L02_M15)·`c5f82a6`(L02_M04/M05) wire 직후 `MealAssistanceRecordForm` `applyApiErrorToForm` 객체 시그니처 교정·`<form aria-label>`·`.ds-care-special-notes-form__intro` 신규 정의·`.ds-muted`→`.ds-text-muted` 정합.)
+> **이전 갱신**: 2026-06-16 (113차 — **L02_M01·L02_M03·G-7-1-4CHANNEL UI 접근성 재점검 + 미정의 디자인 토큰 클래스 보강 + §37~§39 신규** — 112차 이후 coder 신규 커밋(`41b2123` L02_M01 주간 제공기록·`950415d` L02_M03 목욕 일정·`1fd1434` G-7-1-4CHANNEL 명세 발송) 미점검 갭 해소. ① **`.ds-care-weekly-form__intro`**·**`.ds-bathing-schedule-form__intro`** — §36 `.ds-body-restraint-form__intro`와 동일 전폭 스팬 정의. ② **`CareServiceWeeklyRecordForm`·`BathingScheduleForm`** — 제출 `aria-busy` 보강(§35·§36 패턴). ③ **`BillingStatementDispatchPanel`** — quiet-hours 가드 `aria-describedby`를 비활성 발송 버튼에 연결(101차 `BillingDetailPage` 패턴)·페이지 가드 `id` 전달 시 중복 Alert 제거·행별 「발송일 수정/저장/취소」`aria-label`에 이용자명 포함·발송일 `<time dateTime>`·우편 발송일 `DateInput max=오늘`·`applyApiErrorToForm` 객체 시그니처 정합. ④ **`.ds-billing-statement-dispatch*`** CSS·`forced-colors` Badge 경계선. ⑤ **§37~§39** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-16 (112차 — **L02_M07 신체제재 기록 UI 접근성 재점검 + 미정의 디자인 토큰 클래스 보강 + §36 신규** — 111차 이후 coder 신규 커밋(`14a2bb9` L02_M07 신체제재 wire) 미점검 갭 해소. ① **`.ds-body-restraint-form__intro`** — `BodyRestraintRecordForm`이 참조하나 `components.css` **미정의** → L02_M02 `.ds-nursing-excretion-form__intro`와 동일하게 `grid-column: 1 / -1` 전폭 스팬 정의(인트로 안내 배너가 `ds-form-grid` 단일 컬럼에 갇히던 시각 회귀 해소). ② **`BodyRestraintRecordForm`** 제한일 `DateInput max=오늘`(미래 일자 차단·L02_M02 패턴 정합·인권 기록 정합성). ③ **§36** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-15 (111차 — **L02_M02 집중배설관찰 UI 접근성 재점검 + 기록 화면 공통 레이아웃 CSS 승격 + §35 신규** — 110차 이후 coder 신규 커밋(`1264c16` L02_M02 집중배설관찰 wire) 미점검 갭 해소. ① **`IntensiveExcretionObservationPage`** — 수정 행 raw `<button className="ds-table__action-btn">` → **`Button variant=tertiary size=sm`** 전환(110차 `CareProvisionRecordPanel` 패턴 정합·WCAG 4.1.2). ② **기록 화면 공통 레이아웃 CSS 승격(FE-16·§1 단일 원천)** — `ds-page-stack`·`ds-page-grid`·`ds-page-grid--sidebar`·`ds-page-loading`·`ds-table__row--highlighted`가 L02_M02·L03_M01·L03_M06·L03_M08·L03_M09·L03_M10·L03_M14 등 다수 기록 페이지에서 사용됐으나 `components.css` 미정의(`forced-colors` `outline` 포함). ③ **§35** 신규. 회귀 +1(`IntensiveExcretionObservationPage.test.jsx` — 수정 버튼 `ds-btn` 클래스·`aria-label` 검증). `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-15 (110차 — **G19 통합재가 기관 검색 패널 + G39 기록지 발송 + G30 증빙 기간 접근성 재점검 + §32~§34 신규** — 109차 이후 coder 신규 커밋(`9afa30e` G19·`4d1a4f2`/`73094f9` G39 dispatch·`73094f9` G30 evidence window) 미점검 갭 해소. ① **`IntegratedHomeProviderDiscoveryPanel`** — 미정의 `__meta` div 래퍼 제거 → **`.ds-dl-grid`**(FE-16)·`code.ds-mono`·외부 링크 `aria-label`+sr-only 「(새 탭)」·`.ds-integrated-home-discovery` CSS·`forced-colors` 경계선. ② **`ProvisionResultDispatchPanel`** — 행별 발송 `Button` **`aria-label`에 이용자명·연월 포함**(WCAG 2.4.6)·상태 열 **`Badge tone=warning`「미제공」**(색+텍스트). ③ **`CareProvisionRecordPanel`** — raw `<button>` → **`Button`**·조회 `aria-busy`·일자 `<time dateTime>`. ④ **`MonitoringIntegratedChecklistPanel`** — 증빙 수집 기간 `id`+`role=status`·`.ds-monitoring-checklist__evidence-window`. ⑤ **§32~§34** 신규. 회귀 +5. `npm test`·build PASS.)
@@ -1019,6 +1023,7 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/billing/reports/charges` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (청구대장 7-6) |
 | `/billing/reports/deposits` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (입금대장 7-7) |
 | `/billing/reports/receipts` | `BillingReportPage` | branch_admin, hq_admin | **US-M03** (수납대장 7-8) |
+| `/billing/reports/statistics` | `BillingStatisticsReportPage` | branch_admin, hq_admin | **G26** (의료비공제·본인부담 통계 7-8) |
 | `/billing/calculator` | `CopayCalculatorPage` | branch_admin, hq_admin | **US-M03** (간편계산기 7-10) |
 | `/platform` | `PlatformPage` | platform_admin | US-A01, US-A02 |
 | `/guardian` | `GuardianPortalPage` | guardian, client_user | US-I02, US-J02 |
@@ -2436,6 +2441,227 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 - `quietHoursGuardId`는 `BillingDetailPage`의 `billing-notify-quiet-hours-warning`을 그대로 전달 — 패널 내 중복 Alert 금지.
 - `applyApiErrorToForm`은 **객체 시그니처**(`{ setFormError, setFieldErrors, fieldMap }`)만 사용.
 - 우편(`POSTAL`)만 `dispatchedAtEditable` — 전자 채널 행은 발송일 수정 UI 미노출.
+
+---
+
+## 40. 통합식사도움·특이사항·요양 리포트 a11y 재점검 (US-O06 · L02_M13/M15/M04/M05, 114차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **114차 UXD (2026-06-16)** — coder `9ad8346`(L02_M13 식사도움)·`3549896`(L02_M15 특이사항)·`c5f82a6`(L02_M04/M05 요양 리포트) wire 직후 접근성·일관성 재점검. §37(주간기록)·§38(목욕) 폼 패턴 정합.
+
+### 40-1. 진입·역할
+
+| 진입 | UI | 역할 |
+|------|-----|------|
+| `/care/meal-assistance-records` | `MealAssistanceRecordPage` + `MealAssistanceRecordForm` | caregiver 이상 |
+| `/care/service-special-notes` | `CareServiceSpecialNotesPage` + `CareServiceSpecialNotesForm` | caregiver 이상 |
+| `/care/reports/meal-excretion` | `CareMealExcretionReportPage` | hq_admin · branch_admin · social_worker · caregiver |
+| `/care/reports/bath-help` | `BathHelpReportPage` | hq_admin · branch_admin · social_worker · caregiver |
+
+- API: `GET/POST/PATCH /api/v1/care/meal-assistance-records` · 특이사항은 V134 `weekly-service-records` `special_notes` · 리포트는 `care_meal_excretion`·`bath_help` 뷰.
+
+### 40-2. 재점검·보강 항목
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `components/ui/MealAssistanceRecordForm.jsx` | **`applyApiErrorToForm` 객체 시그니처로 교정** (기존 위치 인자 `(err, FIELD_MAP)` + `mapped.message`/`mapped.fieldErrors` 참조 → 런타임 throw로 `Alert role="alert"` 미표시) | §39-4 객체 시그니처 단일 원칙 · 38개 호출부 중 유일한 위반 |
+| `components/ui/MealAssistanceRecordForm.jsx` | `<form aria-label>` 추가(등록/수정) | §37·§38 폼과 동일 SR 컨텍스트 |
+| `styles/components.css` | **`.ds-care-special-notes-form__intro` 신규 정의**(미정의 클래스 — 인트로 `Alert` 전폭 스팬 누락) | `.ds-bathing-schedule-form__intro`·`.ds-care-weekly-form__intro` 패턴 |
+| `pages/CareMealExcretionReportPage.jsx` | 미정의 `.ds-muted` → 정의된 `.ds-text-muted`(§21) | 단일 원천 토큰 유틸 |
+
+### 40-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 폼 라벨 | 모든 입력 `Field` render-prop label·id 연결(`htmlFor`/`error`/`required`) ✅ |
+| 오류 피드백 | `MealAssistanceRecordForm` 저장 실패 → `Alert tone="danger" role="alert"` 정상 노출(교정 후) ✅ |
+| 필드 단위 오류 | API `fieldErrors` → `FIELD_MAP` snake→camel 매핑 후 `Field error` ✅ |
+| 특이사항 폼 | 주간 시작일 월요일 검증·`max=오늘`·`help` 이번 주 월요일 안내 ✅ |
+| 리포트 표 | `<th scope="col">` · 상태 `Badge`(색+텍스트) · 빈 상태 `EmptyState`/`.ds-text-muted` ✅ |
+| 리포트 네비 | `nav aria-label` + `aria-current="page"` 컨텍스트 링크 ✅ |
+| 조회 폼 | `form aria-label` + `Button aria-busy` ✅ |
+| 제출 | 폼 `aria-busy={submitting}` ✅ |
+
+### 40-4. coder 전달 메모
+
+- 폼 오류 처리는 **반드시** `applyApiErrorToForm(err, { setFormError, setFieldErrors, fieldMap, fallbackMessage })` 객체 시그니처만 사용 — 위치 인자·반환값 참조 금지(함수는 `void`).
+- 신규 케어 폼은 `<form>`에 `aria-label`(등록/수정)·`aria-busy`를 항상 지정한다.
+- 보조 텍스트는 `.ds-text-muted`(정의됨)만 사용 — `.ds-muted`는 미정의.
+
+### 40-5. 검증
+
+- `npm test` 대상: `MealAssistanceRecordPage`·`CareServiceSpecialNotesPage`·`CareMealExcretionReportPage`·`BathHelpReportPage` 단위 PASS · ESLint 0.
+- 전체 스위트의 일부 "create" 테스트는 병렬 jsdom 고부하 시 `waitFor`(기본 1000ms) 타임아웃으로 **간헐 실패** — 본 변경과 무관(미변경 `CareServiceWeeklyRecordPage`에서도 동일 재현). tester 소유 테스트이므로 본 패스에서 미수정.
+
+---
+
+## 41. 배차 Kakao 경로 미리보기 지도 + 요양 리포트 인쇄 a11y 재점검 (v1.3-A 배차 · L02_M04/M05, 115차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **115차 UXD (2026-06-16)** — coder `0c523cd`/`15e9b64`/`d46688d`(배차 Kakao route-preview 지도·`POST /api/v1/transport/route-preview`·geocoder 폴백, QA-B102)·`d2145b0`(L02_M04/M05 요양 리포트 인쇄) wire 직후 접근성·미정의 토큰 클래스 재점검.
+
+### 41-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `components/transport/KakaoTransportMap.jsx` | `TransportRunNewPage`·`TransportRunDetailPage`·`TransportPage` 배차 지도 | 번호 마커 + 도로 경로 폴리라인 + 거리·소요시간 요약 |
+| `pages/CareMealExcretionReportPage.jsx` | `/care/reports/meal-excretion` | 인쇄 버튼·인쇄 전용 헤더 |
+| `pages/BathHelpReportPage.jsx` | `/care/reports/bath-help` | 인쇄 버튼·인쇄 전용 헤더 |
+
+### 41-2. 재점검·보강 항목
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `styles/components.css` | **`.ds-transport-map__summary` 신규 정의** — `margin: 0 0 var(--space-2)`·`font-size: var(--font-size-sm)`·`:empty{display:none}` | FE-16·§1 단일 원천 — `KakaoTransportMap`이 참조하나 미정의(`ds-text-secondary`로 색만 적용·간격/글자크기 토큰 누락). 80차 `.ds-text-input` 회귀 패턴 |
+| `components/transport/KakaoTransportMap.jsx` | 경로 요약 `<p>`를 **조건부 마운트 → 상시 상주 `role="status" aria-live="polite"`** 라이브 영역으로 전환 | WCAG 4.1.3 — 지도는 `role="img"`라 비시각 사용자에게 도로 거리·소요시간 미전달. 71차 `FeeSurchargeGuidePanel` 패턴 |
+
+### 41-3. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 지도 대체 텍스트 | 캔버스 `role="img" aria-label="배차 경로 지도"` ✅ |
+| 도로 경로 요약 | 상시 `role="status"` 라이브 영역 — 비동기 계산 완료 시 「자동차 경로 약 N km · N분」 SR 안내, `:empty` 시각 숨김 ✅ |
+| 마커 | DOM `<button type="button">` + `aria-label="정차 {라벨}"`·활성 마커 색+위치 ✅ |
+| 지도 로드 실패 | `Alert tone="warning"` + 「정차 목록은 계속 확인」 폴백 안내 ✅ |
+| 인쇄 전용 헤더 | `.ds-care-report-print-only` + `aria-hidden="true"`(화면 중복 방지) ✅ |
+| 리포트 인쇄 버튼 | `Button aria-label`(변형별 인쇄 라벨)·`disabled={loading}` ✅ |
+| 인쇄 영역 격리 | `@media print` — `.ds-care-report-print-root` 내 네비·필터·Alert·로딩 숨김, 표만 출력 ✅ |
+
+### 41-4. coder 전달 메모
+
+- 지도 보조 정보(거리·소요시간 등)는 **상시 상주 `role="status"` 라이브 영역**에 렌더하고, 빈 상태는 `:empty{display:none}`로 숨긴다(조건부 마운트 라이브 영역 금지 — 71차 결정).
+- 지도 컴포넌트에서 사용하는 CSS 클래스는 **반드시 `components.css`에 정의**한다(FE-16·§1) — `ds-text-secondary`/`ds-text-muted`만으로 색을 받고 간격·크기 토큰을 누락하지 않는다.
+- 인쇄 출력은 `.ds-care-report-print-root`(루트)·`.ds-care-report-print-only`(인쇄 전용·`aria-hidden`)·`@media print` 숨김 셀렉터 3종 패턴을 따른다(billing report print zone과 동일 원칙).
+
+### 41-5. 검증
+
+- `npx vitest run` transport 관련 13파일 **40 PASS** · `KakaoTransportMap` 단위 테스트 없음(Kakao SDK 의존 — jsdom 미지원).
+- `npm test` **1457/1460 PASS** — 3 pre-existing 실패(`NursingServiceRecordPage` 등)는 전체 스위트 병렬 jsdom 고부하 `waitFor` 타임아웃 오염으로, 단독 실행 시 PASS·본 변경과 무관(§40-5와 동일 현상).
+- `npm run build` PASS · ESLint 0.
+
+---
+
+## 42. 요양 리포트 4종 + G21 청구반영 배지 접근성 재점검 (L02_M11/M12/M06/M17/M16 · G21, 116차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **116차 UXD (2026-06-16)** — coder `ff9c8c5`(L02_M11 수급자별 급여제공·L02_M12 급여제공 집계)·`fa20943`(L02_M06 체위변경·L02_M17 집중배설)·`8b804fc`(L02_M16 식사 선호도 조사)·`25ca88e`(G21 청구반영 배지) wire 직후 접근성 재점검.
+
+### 42-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `pages/PatientServiceReportPage.jsx` | `/care/reports/patient-service` (L02_M11) | 수급자별 급여제공 리포트 — 5종 표 |
+| `pages/ServiceSummaryReportPage.jsx` | `/care/reports/service-summary` (L02_M12) | 급여제공 집계 리포트 — 이용자별 집계 표 |
+| `pages/PositionChangeReportPage.jsx` | `/care/reports/position-change` (L02_M06) | 체위변경·욕창 리포트 — 2종 표 |
+| `pages/IntensiveExcretionReportPage.jsx` | `/care/reports/intensive-excretion` (L02_M17) | 집중배설 관찰 리포트 — 1종 표 |
+| `pages/MealPreferenceSurveyPage.jsx` | `/care/meal-preference-surveys` (L02_M16) | 식사 선호도 조사 — caption 이미 정합 ✅ |
+| `pages/VisitsPage.jsx` | `/visits` | G21 청구반영 상태 배지 안내 |
+| `components/ui/CareReportContextNav.jsx` | 위 리포트 모든 페이지 상단 | 요양 리포트 cross-nav |
+| `styles/components.css` | `.ds-badge--dark` | G21 신규 `tone="dark"` 배지 |
+
+### 42-2. 재점검·보강 항목
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `PatientServiceReportPage.jsx` | **5종 `<Table>` → `captionVisuallyHidden caption`** 부여 (요양급여 주간 제공기록·통합식사도움·목욕 일정·집중배설 관찰·신체제재 기록) | WCAG 1.3.1 — 시각 Card 제목이 있어도 SR 표 탐색(`T`)에 caption 필요 |
+| `PatientServiceReportPage.jsx` | StatCard 래퍼 **`role="group" aria-label="수급자별 급여제공 요약"`** | WCAG 1.3.1 — SR이 집계 목적을 그룹으로 식별 (93차 패턴) |
+| `ServiceSummaryReportPage.jsx` | `<Table>` → `captionVisuallyHidden caption="이용자별 급여제공 집계 목록"` | 위 동일 |
+| `ServiceSummaryReportPage.jsx` | StatCard **`role="group" aria-label="급여제공 집계 요약"`** | 위 동일 |
+| `PositionChangeReportPage.jsx` | **2종 `<Table>`** → caption 부여 (욕창 위험도 평가·체위변경·욕창 간호 기록) | 위 동일 |
+| `PositionChangeReportPage.jsx` | StatCard **`role="group" aria-label="체위변경 대상자 요약"`** | 위 동일 |
+| `IntensiveExcretionReportPage.jsx` | `<Table>` → `captionVisuallyHidden caption="집중배설 관찰 상세 목록"` | 위 동일 |
+| `IntensiveExcretionReportPage.jsx` | StatCard **`role="group" aria-label="집중배설 관찰 요약"`** | 위 동일 |
+| `VisitsPage.jsx` | 청구반영 상태 `Alert` — **「검은 배지」·「빨간 배지」 색 명칭 제거**, 텍스트 라벨(「청구반영」·「미반영」·「페어 없음」)만 사용 | §1-2 색상만으로 의미 전달 금지(WCAG 1.4.1) — 배지 자체는 이미 텍스트+색 병행 `BILLING_CLAIM_REFLECTION_STATUS` |
+| `styles/components.css` | **`.ds-badge--dark` `forced-colors` 경계선** — `outline: 1px solid ButtonText; forced-color-adjust: none` | WCAG 1.4.11 — 고대비 모드에서 배경 소거 시 badge 경계 유지 |
+| `pages/VisitsPage.test.jsx` | G21 테스트 — 이전 색 명칭(`/검은 배지/`) 단언 → 새 문구(`/청구반영 상태 안내:/`·`getAllByText`) | 회귀 갱신 |
+
+### 42-3. `CareReportContextNav` 패턴
+
+새 `CareReportContextNav`는 기존 `AttendanceContextNav`·`NursingContextNav` 패턴을 따른다:
+- `<nav className="ds-context-nav" aria-label="요양 리포트">` landmark
+- `Link aria-current="page"` 활성 표시
+- 정의 클래스 `.ds-context-nav__link--active`(§0 단일 원천)
+
+### 42-4. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| 리포트 표 caption | 9종 표 모두 `captionVisuallyHidden caption` ✅ (MealPreferenceSurveyPage는 기존 정합) |
+| StatCard 그룹 의미론 | 4 리포트 × `role="group" aria-label` ✅ |
+| 청구반영 상태 안내 색 의존 | 제거 — 텍스트 라벨만 사용 ✅ |
+| `ds-badge--dark` forced-colors | `outline` 경계선 보강 ✅ |
+| `CareReportContextNav` landmark | `nav` + `aria-label` + `aria-current` ✅ |
+| `MealPreferenceSurveyForm` | `Field`·`DateInput`·`Checkbox`·`aria-busy`·`aria-invalid`·필드 단위 오류 ✅(기존 정합) |
+
+### 42-5. coder 전달 메모
+
+- 새 리포트 페이지에 `<Table>` 추가 시 항상 `captionVisuallyHidden caption="{카드 제목} 목록"` 부여할 것 — 시각 h2/h3가 있어도 SR 표 탐색에 별도 caption 필요.
+- StatCard 집계 그룹은 **`role="group" aria-label="{화면명} 요약"`** 래퍼가 필수(93차 패턴).
+- 새 `tone="dark"` Badge: `forced-colors` 경계선이 `components.css`에 정의됨 — 다른 `dark` 배지 추가 시 별도 CSS 불요.
+- `BILLING_CLAIM_REFLECTION_STATUS` 설명 Alert에서 색 명칭(검은/빨간 등) 사용 금지 — 배지 텍스트 라벨을 그대로 인용할 것.
+
+### 42-6. 검증
+
+- `VisitsPage.test.jsx` **10/10 PASS** · 보고서 4종 **8/8 PASS**.
+- `npm test` **1490/1490 PASS** · `npm run build` PASS.
+
+---
+
+## 43. G26 본인부담 통계 + G21 RFID split-view 접근성 재점검 (117차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16 -->
+
+> **117차 UXD (2026-06-16)** — coder `d8f1fdf`(G26 `BillingStatisticsReportPage`·`BillingReportsContextNav` statistics 링크)·`55fdbd0`(G21 RFID split-view)·`6759bf6`(L03_M09/M10 care nav cross-links) wire 직후 접근성 재점검.
+
+### 43-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `pages/BillingStatisticsReportPage.jsx` | `/billing/reports/statistics` (G26) | 케어포 PDF p.92 7-8 2축 통계 |
+| `components/ui/BillingReportsContextNav.jsx` | 대장·계산기 cross-nav | 「본인부담 통계」6번째 항목 |
+| `pages/VisitsPage.jsx` | `/visits` | G21 RFID split-view 모드 |
+| `styles/components.css` | `.ds-billing-report__summary`·`.ds-visits-split-compare` | forced-colors 보강 |
+
+### 43-2. 재점검·보강 항목
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `BillingStatisticsReportPage.jsx` | 조회 연도 검증 — 페이지 `Alert` → **`Field error`+`aria-invalid`**·입력 시 오류 자동 해제 | WCAG 3.3.1 — 어느 필드가 잘못됐는지 SR 식별 (`BillingReportPage`·`EasyPayPanel` 패턴) |
+| `BillingStatisticsReportPage.jsx` | 조회 `Button` **`aria-busy={loading}`** | WCAG 4.1.3 — 비동기 조회 진행 SR 안내 |
+| `BillingStatisticsReportPage.jsx` | ①·② 섹션 StatCard **`role="group" aria-label`**·`<Table captionVisuallyHidden>` | 116차·81차 패턴 정합 — coder wire 시 이미 부분 구현, 연도 검증만 보강 |
+| `VisitsPage.jsx` | RFID split-view `Alert` — **「검은/빨간 배지」 색 명칭 제거** → 텍스트 라벨만 사용 | §1-2·WCAG 1.4.1 — 116차 단일 탭 모드 수정 후 split-view **회귀** 해소 |
+| `VisitsPage.jsx` | split-view 열 — **`<section aria-labelledby>`+`h4 id`** (계획/청구) | WCAG 1.3.1 — 2열 비교 landmark 식별 |
+| `styles/components.css` | **`.ds-billing-report__summary .ds-stat` `forced-colors` 경계선** | WCAG 1.4.11 — G26 StatCard 고대비 식별 |
+| `styles/components.css` | **`.ds-visits-split-compare`** — `h4` 타이포·열 `section` `forced-colors` 경계선 | split-view 시각·고대비 정합 |
+
+### 43-3. `BillingReportsContextNav` 확장
+
+G26 추가로 `REPORTS_LINKS` 6항목 — 청구·입금·수납·환불·**본인부담 통계**·간편계산기. 기존 `.ds-context-nav`·`NavLink`·`aria-current="page"` 패턴 유지(81차).
+
+### 43-4. 접근성 (WCAG 2.1 AA)
+
+| 점검 | 결과 |
+|------|------|
+| G26 연도 필드 검증 | `Field error`+`aria-invalid` ✅ |
+| G26 조회 busy | `aria-busy` ✅ |
+| G26 StatCard·표 | `role="group"`·`captionVisuallyHidden` ✅ |
+| split-view 색 의존 | 제거 — 텍스트 라벨만 ✅ |
+| split-view landmark | `section`+`aria-labelledby` ✅ |
+| forced-colors StatCard·split 열 | 경계선 보강 ✅ |
+
+### 43-5. coder 전달 메모
+
+- G26·대장류 신규 리포트 페이지는 **`BillingReportsContextNav`** 상단 연동 + `.ds-billing-report-print-zone` 인쇄 스코프 재사용.
+- `VisitsPage` 청구반영 안내는 **모든 모드**(단일 탭·RFID split-view)에서 색 명칭 금지 — `BILLING_CLAIM_REFLECTION_STATUS` 텍스트 라벨만 인용.
+- RFID split-view 열 추가 시 `<section aria-labelledby>`+고유 `h4 id` 필수.
+
+### 43-6. 검증
+
+- `BillingStatisticsReportPage.test.jsx` **4/4 PASS** · `VisitsPage.test.jsx` **11/11 PASS**.
+- `npm test`·`npm run build` PASS.
 
 ---
 
