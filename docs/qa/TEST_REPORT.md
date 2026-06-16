@@ -1,4 +1,163 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-15T07:09:55+00:00 -->
+<!-- tester-sync: TSR 882차 2026-06-16T18:18 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **2 FAIL/1507 PASS**(317 files, 345.65s)·`npm run build` **SUCCESS**(1020 modules, 13.42s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` SKIP(QA-B95)·FAIL: `BodyRestraintRecordPage > creates a new restraint record`·`MealAssistanceRecordPage > creates a new meal assistance record`(isolated 1 fail—MealAssistanceRecord waitFor timeout)·develop `@d3bef42`(+15)·WT **DIRTY 5M**(transport.js·TransportPage.jsx·TransportRunNewPage.jsx·transportUtils.js·ClientTransportProfileSection.jsx)·test `@7106106`·WT **CLEAN**·origin/develop `@d3bef42`·origin/test `@7106106`·`test..develop` **15 ahead**·100 route·81 page(@ test)·105 route·83 page(@ develop)·★ **NEW QA-B116 BLOCK**(test regression)·Open **2 BLOCK QA-B115+QA-B116**·Planned **1 QA-B95**·verdict **BLOCK(@test 2 FAIL + develop dirty)**·교차 BE `@f5b2b42` WT **CLEAN**·`test..develop` **335 ahead**·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**(FE)·merge pending **350**(335 BE + 15 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B115+QA-B116+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T18:35:00+00:00 -->
+<!-- tester-sync: TSR 881차 2026-06-16T17:55 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 16.866s)·`npm test` N/A(no `package.json`)·develop `@f5b2b42`(+1 vs `35e03ef`: v1.3-A fee ceiling fallback)·WT **CLEAN**·test `@598d108`·WT **CLEAN**·origin/develop `@f5b2b42`·origin/test `@598d108`·`test..develop` **335 ahead**·Open **0(active backend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@84e75ec` WT **DIRTY 10M+2U**·Open **1 BLOCK QA-B115**·`test..develop` **14 ahead**·⚠ **cross-stream merge BLOCK**(FE only)·merge pending **349**(335 BE + 14 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B115+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T17:55:29+00:00 -->
+<!-- tester-sync: TSR 880차 2026-06-16T17:39 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 338.11s)·`npm run build` **1020 modules SUCCESS**(12.58s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **3 suites FAIL/43 passed/1 skipped · 4 tests FAIL/108 passed/25 skipped**(guardian missing; FAIL P5b·transport timeout·Blob×2; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@84e75ec`(+14)·**QA-B115 partial @ `84e75ec`**·WT **DIRTY 6M+2U**(Kakao map/split-view WIP recurrence)·test `@7106106`·WT **CLEAN**·origin/develop `@84e75ec`·origin/test `@7106106`·`test..develop` **14 ahead**·**100 route**·**81 page**(@ test)·**105 route**·**83 page**(@ develop)·Open **1 BLOCK QA-B115**·Planned **1 QA-B95**·verdict **PASS(@test) + merge BLOCK(develop dirty)**·교차 BE `@35e03ef` WT **CLEAN**·Open **0(backend)**·`test..develop` **334 ahead**·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**(FE only)·merge pending **348**(334 BE + 14 FE)·merge **실행 금지**·operation **BLOCK**(QA-B115+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T17:39:00+00:00 -->
+<!-- tester-sync: TSR 879차 2026-06-16T17:20 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.6s)·`npm test` N/A(no `package.json`)·develop `@35e03ef`(+1 vs `c1f1428`: transport roster guardian mapping)·WT **CLEAN**·test `@598d108`·WT **CLEAN**·`test..develop` **334 ahead**·origin/develop **@ `35e03ef`**·origin/test **@ `598d108`**·Open **0(active backend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@8763b54` WT **DIRTY 10M+4U**·Open **1 BLOCK QA-B115**·`test..develop` **12 ahead**·backend@8080 **UP/200**·⚠ **cross-stream merge BLOCK**(FE only)·merge pending **346**(334 BE + 12 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B115+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T17:20:00+00:00 -->
+<!-- tester-sync: TSR 878차 2026-06-16T17:10 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 287.07s)·`npm run build` **1020 modules SUCCESS**(7.64s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **3 suites FAIL/43 passed/1 skipped · 4 tests FAIL/108 passed/25 skipped**(guardian missing; FAIL P5b·transport timeout·Blob×2; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@8763b54`(+12)·**QA-B115 partial @ `8763b54`**·WT **DIRTY 2M**(TransportPage recurrence)·test `@7106106`·WT **CLEAN**·origin/develop `@8763b54`·origin/test `@7106106`·`test..develop` **12 ahead**·**100 route**·**81 page**(@ test)·**105 route**·**83 page**(@ develop)·Open **1 BLOCK QA-B115**·Planned **1 QA-B95**·verdict **PASS(@test) + merge BLOCK(develop dirty)**·교차 BE `@c1f1428` WT **CLEAN**·Open **0(backend)**·`test..develop` **333 ahead**·★ **backend merge FULLY UNBLOCKED**·⚠ **cross-stream merge BLOCK**(FE only)·merge pending **345**(333 BE + 12 FE)·merge **실행 금지**·operation **BLOCK**(QA-B115+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T17:10:00+00:00 -->
+<!-- tester-sync: TSR 877차 2026-06-16T16:52 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.7s)·`npm test` N/A(no `package.json`)·develop `@c1f1428`(+2 vs `7ac0a46`: QA-B112)·WT **CLEAN**·test `@598d108`·WT **CLEAN**·`test..develop` **333 ahead**·origin/develop **@ `c1f1428`**·origin/test **@ `598d108`**·Open **0(active backend)**·Planned **1 QA-B95**·**QA-B112 Fixed @ `c1f1428`**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@5ebaade` WT **DIRTY 15M+6U**·Open **1 BLOCK QA-B115**·`test..develop` **11 ahead**·backend@8080 **UP/200**·⚠ **cross-stream merge BLOCK**(FE only)·merge pending **344**(333 BE + 11 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B115+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T16:52:00+00:00 -->
+<!-- tester-sync: TSR 876차 2026-06-16T16:42 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 304.32s)·`npm run build` **1020 modules SUCCESS**(7.18s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **3 suites FAIL/43 passed/1 skipped · 4 tests FAIL/108 passed/25 skipped**(guardian missing; FAIL P5b·transport timeout·Blob×2; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@5ebaade`(+11)·**QA-B114 Fixed @ `5ebaade`**·WT **DIRTY 13M+4U**(QA-B115)·test `@7106106`·WT **CLEAN**·origin/develop `@5ebaade`·origin/test `@7106106`·`test..develop` **11 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop HEAD)·Open **1 BLOCK QA-B115**·Planned **2 QA-B112+QA-B95**·verdict **PASS(@test) + merge BLOCK(develop dirty + cross-stream)**·교차 BE `@7ac0a46` WT **DIRTY 6M+3U**·Planned **1 QA-B112**·`test..develop` **331 ahead**·⚠ **cross-stream merge BLOCK**·merge pending **342**(331 BE + 11 FE)·merge **실행 금지**·operation **BLOCK**(QA-B112+QA-B115+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T16:42:00+00:00 -->
+<!-- tester-sync: TSR 875차 2026-06-16T16:28 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.8s)·`npm test` N/A(no `package.json`)·develop `@7ac0a46` HEAD **불변**·WT **DIRTY 6M+3U**(QA-B112 scope expanded)·test `@598d108`·WT **CLEAN**·`test..develop` **331 ahead**·origin/develop **@ `7ac0a46`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **2 QA-B112+QA-B95**·**QA-B114 Fixed @ `5ebaade`**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·⚠ **backend merge gate BLOCK(dirty expanded)**·교차 FE develop `@5ebaade` WT **CLEAN**·`test..develop` **11 ahead**·★ **frontend merge gate FULLY UNBLOCKED**·backend@8080 **UP/200**·⚠ **cross-stream merge BLOCK**(BE only)·merge pending **342**(331 BE + 11 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B112+QA-B95). -->
+<!-- tester-sync: TSR 874차 2026-06-16T15:59 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1506/1509 FAIL**(1st, 317 files, 310.23s; 3 full-suite flakes)·**1508/1509 FAIL**(2nd, 296.12s; `MealAssistanceRecordPage` flake→isolated **3/3 PASS**)·`npm run build` **1020 modules SUCCESS**(11.41s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/42 passed/1 skipped · 5 tests FAIL/107 passed/25 skipped**(guardian missing; FAIL US-O05·P5b·transport timeout·Blob×2; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@b000d92`(+10)·**QA-B113 Fixed @ `b000d92`**·WT **DIRTY 5M+2U+??scripts/**(QA-B114)·develop HEAD **미재실행**(873차 1531/1533 PASS)·test `@7106106`·WT **CLEAN**·origin/develop `@b000d92`·origin/test `@7106106`·`test..develop` **10 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop)·Open **2 BLOCK QA-B112(backend)+QA-B114(frontend)**·Planned **1 QA-B95**·verdict **PASS(@test flakes) + merge BLOCK(QA-B114 dirty + cross-stream QA-B112)**·교차 BE `@7ac0a46` WT **DIRTY 2M**·Open **1 BLOCK QA-B112**·`test..develop` **331 ahead**·⚠ **cross-stream merge BLOCK**·merge pending **341**(331 BE + 10 FE)·merge **실행 금지**·operation **BLOCK**(QA-B112+QA-B114+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T15:59:41+00:00 -->
+<!-- tester-sync: TSR 873차 2026-06-16T15:44 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 301.07s)·`npm run build` **1020 modules SUCCESS**(7.44s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **871차 carry**(4 suites FAIL/42 passed/1 skipped · 5 tests FAIL/107 passed/25 skipped; guardian missing; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@b000d92`(+10)·**QA-B113 Fixed @ `b000d92`**·WT **DIRTY 5M+2U**(QA-B114)·develop HEAD **1531/1533 PASS**(871차; 2 flakes→isolated **7/7 PASS**)·test `@7106106`·WT **CLEAN**·origin/develop `@b000d92`·origin/test `@7106106`·`test..develop` **10 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop)·Open **2 BLOCK QA-B112(backend)+QA-B114(frontend)**·Planned **1 QA-B95**·verdict **PASS(@test) + merge BLOCK(develop dirty recurrence)**·교차 BE `@7ac0a46` WT **DIRTY 2M**·Open **1 BLOCK QA-B112**·`test..develop` **331 ahead**·⚠ **cross-stream merge BLOCK**·merge pending **341**(331 BE + 10 FE)·merge **실행 금지**·operation **BLOCK**(QA-B112+QA-B114+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T15:44:00+00:00 -->
+<!-- tester-sync: TSR 872차 2026-06-16T15:15 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.197s)·`npm test` N/A(no `package.json`)·develop `@7ac0a46` HEAD **불변**·WT **DIRTY 2M**(QA-B112)·test `@598d108`·WT **CLEAN**·`test..develop` **331 ahead**·origin/develop **@ `7ac0a46`**·origin/test **@ `598d108`**·Open **2 BLOCK QA-B112+QA-B113**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·⚠ **backend merge gate BLOCK(dirty)**·교차 FE develop `@27a3996` WT **DIRTY 5M+4U**·`test..develop` **9 ahead**·backend@8080 **UP/200**·⚠ **cross-stream merge BLOCK**·merge pending **340**(331 BE + 9 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B112+QA-B113+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T15:15:09+00:00 -->
+<!-- tester-sync: TSR 871차 2026-06-16T15:01 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 303.91s)·`npm run build` **1020 modules SUCCESS**(7.24s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/42 passed/1 skipped · 5 tests FAIL/107 passed/25 skipped**(guardian missing; FAIL US-O05·P5b·transport timeout·Blob×2; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@27a3996`(+9)·develop HEAD **1533/1533 PASS**(322 files, 289.66s)·**QA-B111 Fixed @ `27a3996`**·WT **CLEAN**·test `@7106106`·WT **CLEAN**·origin/develop `@27a3996`·origin/test `@7106106`·`test..develop` **9 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop)·Open **0(active)**·Planned **1 QA-B95**·verdict **PASS(@test) + frontend merge gate FULLY UNBLOCKED(9 commits pending)**·교차 BE `@7ac0a46` WT **CLEAN**·Open **0(backend)**·`test..develop` **331 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **340**(331 BE + 9 FE)·merge **미실행**·operation **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T15:01:44+00:00 -->
+<!-- tester-sync: TSR 870차 2026-06-16T14:44 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 19.515s)·`npm test` N/A(no `package.json`)·develop `@7ac0a46`(+1 vs `ec142db`: `fix(v2/live-e2e): avoid role-mismatched seed account reuse for QA-B95`)·test `@598d108`·WT **CLEAN**·`test..develop` **331 ahead**·origin/develop **@ `7ac0a46`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**(bootstrap role-collision guard @develop·merge+live E2E verify pending)·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@b3bd0cc` test `@7106106`·WT **DIRTY 6M+2U**(QA-B111 expanded)·Open **1 BLOCK QA-B111**·`test..develop` **8 ahead**·backend@8080 **UP/500**(health degraded)·⚠ **cross-stream merge BLOCK**·merge pending **339**(331 BE + 8 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B111+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T14:44:48+00:00 -->
+<!-- tester-sync: TSR 869차 2026-06-16T14:30 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1508/1509 PASS**(1st, 317 files, 299.84s)·**1507/1509 PASS**(2nd, 308.64s; flakes `IntensiveExcretionObservationPage`→isolated **4/4 PASS**·`liveE2eHarness` post-live-e2e)·`npm run build` **1020 modules SUCCESS**(8.71s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/42 passed/1 skipped · 5 tests FAIL/107 passed/25 skipped**(guardian missing; FAIL US-O05·P5b·transport timeout·Blob×2; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@b3bd0cc`(+8)·WT **DIRTY 2M**·test `@7106106`·WT **CLEAN**·`test..develop` **8 ahead**·origin/develop `@b3bd0cc`·origin/test `@7106106`·**100 route**·**81 page**(@ test)·Open **1 BLOCK QA-B111**·Planned **1 QA-B95**·PASS(@test flakes)·⚠ **frontend merge gate BLOCK(develop dirty)**·교차 BE `@ec142db` WT **CLEAN**·Open **0(backend)**·`test..develop` **330 ahead**·⚠ **cross-stream merge BLOCK**·merge pending **338**(330 BE + 8 FE)·merge **실행 금지**·operation **BLOCK**(QA-B111+QA-B95). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T14:30:00+00:00 -->
+<!-- tester-sync: TSR 868차 2026-06-16T14:08 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.892s)·`npm test` N/A(no `package.json`)·develop `@ec142db`(+1 vs `f5205e3`: `feat(v2/live-e2e,L02): seed onboarding support and add live API routing E2E`)·test `@598d108`·WT **CLEAN**·`test..develop` **330 ahead**·origin/develop **@ `ec142db`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**(onboarding seed+routing harness @develop·merge+live E2E verify pending)·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@b3bd0cc` test `@7106106`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **8 ahead**·backend@8080 **UP/200**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **338**(330 BE + 8 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T14:08:21+00:00 -->
+<!-- tester-sync: TSR 867차 2026-06-16T13:53 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 262.65s)·`npm run build` **1020 modules SUCCESS**(10.11s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/42 passed/1 skipped · 5 tests FAIL/107 passed/25 skipped**(guardian missing; FAIL US-O05·P5b·transport timeout·Blob×2; env PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@b3bd0cc`(+8) **1528/1528 PASS**(270.99s)·test `@7106106`·WT **CLEAN**·origin/develop `@b3bd0cc`·origin/test `@7106106`·`test..develop` **8 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop)·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ frontend-test)·★ **frontend merge gate FULLY UNBLOCKED**(8 commits)·교차 BE `@f5205e3` WT **CLEAN**·329 ahead·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **337**(329 BE + 8 FE)·operation **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T13:53:00+00:00 -->
+<!-- tester-sync: TSR 866차 2026-06-16T13:36 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.452s)·`npm test` N/A(no `package.json`)·develop `@f5205e3`(+1 vs `2ba2761`: `feat(v2/live-e2e): add guardian bootstrap endpoint for QA-B95`)·test `@598d108`·WT **CLEAN**·`test..develop` **329 ahead**·origin/develop **@ `f5205e3`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@d499130` test `@7106106`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **7 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **336**(329 BE + 7 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T13:36:34+00:00 -->
+<!-- tester-sync: TSR 865차 2026-06-16T12:58 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 15.841s)·`npm test` N/A(no `package.json`)·develop `@2ba2761`(+1 vs `304bb2a`: `test(v2/L02_M09_M10_M14): add care-scoped nursing report pilot E2E (BNK-280)`)·test `@598d108`·WT **CLEAN**·`test..develop` **328 ahead**·origin/develop **@ `2ba2761`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@57114b8` test `@7106106`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **6 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **334**(328 BE + 6 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T12:58:25+00:00 -->
+<!-- tester-sync: TSR 864차 2026-06-16T12:45 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 265.68s)·`npm run build` **1020 modules SUCCESS**(9.97s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/42 passed/1 skipped · 5 tests FAIL/107 passed/25 skipped**(guardian credentials missing; staff bootstrap partial unblock vs 862 all-skip; FAIL: branchOnboarding US-O05·pilotLiveApi P5b·pilotLivePages transport timeout·staffStatusReport Blob×2; `scripts/dev-live-e2e.env` PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@57114b8`(+6)·develop HEAD **1526/1526 PASS**(319 files, 270.80s)·test `@7106106`·develop/test WT **CLEAN**·origin/develop `@57114b8`·origin/test `@7106106`·`test..develop` **6 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop)·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ frontend-test)·★ **frontend merge gate FULLY UNBLOCKED**(6 commits pending)·교차 BE `@304bb2a` WT **CLEAN**·Open **0(backend)**·`test..develop` **327 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **333**(327 BE + 6 FE)·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T12:45:00+00:00 -->
+<!-- tester-sync: TSR 863차 2026-06-16T12:26 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 15.150s)·`npm test` N/A(no `package.json`)·develop `@304bb2a`(+1 vs `f6f1756`: QA-B95 bootstrap fix)·test `@598d108`·WT **CLEAN**·`test..develop` **327 ahead**·origin/develop **@ `304bb2a`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@8ed937c` test `@7106106`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **5 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **332**(327 BE + 5 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T12:26:33+00:00 -->
+<!-- tester-sync: TSR 862차 2026-06-16T11:41 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 264.59s)·`npm run build` **1020 modules SUCCESS**(9.93s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff bootstrap HTTP 500; guardian credentials missing; `scripts/dev-live-e2e.env` PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@6b34d31`(+4)·develop HEAD **1526/1526 PASS**(319 files, 269.40s)·test `@7106106`·develop/test WT **CLEAN**·origin/develop `@6b34d31`·origin/test `@7106106`·`test..develop` **4 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop)·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ frontend-test)·★ **frontend merge gate FULLY UNBLOCKED**(4 commits pending)·교차 BE `@f6f1756` WT **CLEAN**·Open **0(backend)**·`test..develop` **326 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **330**(326 BE + 4 FE)·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T11:41:14+00:00 -->
+<!-- tester-sync: TSR 861차 2026-06-16T11:20 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 15.321s)·`npm test` N/A(no `package.json`)·develop `@f6f1756`(+1 vs `002e3eb`: `fix(v2/live-e2e): harden bootstrap error fallback paths`)·test `@598d108`·WT **CLEAN**·`test..develop` **326 ahead**·origin/develop **@ `f6f1756`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@58ee122` test `@7106106`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **3 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **329**(326 BE + 3 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T11:20:11+00:00 -->
+<!-- tester-sync: TSR 860차 2026-06-16T11:09 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 263.22s)·`npm run build` **1020 modules SUCCESS**(9.86s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff bootstrap HTTP 500; guardian credentials missing; `scripts/dev-live-e2e.env` PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@58ee122`(+3)·develop HEAD **1519/1519 PASS**(319 files, 271.88s)·test `@7106106`·develop/test WT **CLEAN**·origin/develop `@58ee122`·origin/test `@7106106`·`test..develop` **3 ahead**·**100 route**·**81 page**(@ test)·**103 route**·**82 page**(@ develop)·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ frontend-test)·★ **frontend merge gate FULLY UNBLOCKED**(3 commits pending)·교차 BE `@002e3eb` WT **CLEAN**·Open **0(backend)**·`test..develop` **325 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **328**(325 BE + 3 FE)·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T11:09:06+00:00 -->
+<!-- tester-sync: TSR 859차 2026-06-16T10:51 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 13.877s)·`npm test` N/A(no `package.json`)·develop `@002e3eb`(+1 vs `8a92179`: `feat(v2/L02): add care-scoped nursing service report proxy APIs`)·test `@598d108`·WT **CLEAN**·`test..develop` **325 ahead**·origin/develop **@ `002e3eb`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@cb457b7` test `@7106106`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **2 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **327**(325 BE + 2 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T10:51:13+00:00 -->
+<!-- tester-sync: TSR 858차 2026-06-16T10:36 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 262.29s)·`npm run build` **1020 modules SUCCESS**(15.86s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff bootstrap HTTP 500; guardian credentials missing; `scripts/dev-live-e2e.env` PRESENT; backend@8080 UP/200)·`mvn test` N/A(no `pom.xml`)·develop `@cb457b7`(+2)·develop HEAD **1511/1511 PASS**(2nd run 266.91s; 1st run 1510/1511 flake `BodyRestraintRecordPage`→isolated **3/3 PASS**)·test `@7106106`·develop/test WT **CLEAN**·origin/develop `@cb457b7`·origin/test `@7106106`·`test..develop` **2 ahead**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ frontend-test)·★ **frontend merge gate FULLY UNBLOCKED**(2 commits pending)·교차 BE `@8a92179` WT **CLEAN**·Open **0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **326**(324 BE + 2 FE)·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T10:36:01+00:00 -->
+<!-- tester-sync: TSR 857차 2026-06-16T09:59 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.784s)·`npm test` N/A(no `package.json`)·develop `@8a92179`(+1 vs `39f5f4e`: `fix(v2/live-e2e): harden bootstrap controller failure handling`)·test `@598d108`·WT **CLEAN**·`test..develop` **324 ahead**·origin/develop **@ `8a92179`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@4c9103d` test `@7106106`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **1 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **325**(324 BE + 1 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- tester-sync: TSR 856차 2026-06-16T09:51 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 265.54s)·`npm run build` **1020 modules SUCCESS**(7.12s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff bootstrap HTTP 500; guardian credentials missing; `scripts/dev-live-e2e.env` PRESENT)·`mvn test` N/A(no `pom.xml`)·develop `@4c9103d`·test `@7106106`·origin/develop `@4c9103d`·origin/test `@7106106`·develop/test WT **CLEAN**·`test..develop` **1 ahead**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ frontend-test)·★ **frontend merge gate FULLY UNBLOCKED**(1 commit pending)·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T09:51:29+00:00 -->
+<!-- tester-sync: TSR 855차 2026-06-16T09:40 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.034s)·`npm test` N/A(no `package.json`)·develop `@39f5f4e`·test `@598d108`·WT **CLEAN**·`test..develop` **323 ahead**·origin/develop **@ `39f5f4e`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- tester-sync: TSR 854차 2026-06-16T09:30 UTC (frontend) — test `@7106106` (`src/frontend-test`) `npm test -- --run` **1509/1509 PASS**(317 files, 264.03s)·`npm run build` **1020 modules SUCCESS**(7.01s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`mvn test` N/A(no `pom.xml`)·develop `@4c9103d`·test `@7106106`·develop/test WT **CLEAN**·`test..develop` **1 ahead**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ frontend-test)·★ **frontend merge gate FULLY UNBLOCKED**(1 commit pending)·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-16T09:40:08+00:00 -->
+<!-- tester-sync: TSR 853차 2026-06-16T09:19 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.082s)·`npm test` N/A(no `package.json`)·develop `@98ef09b`·test `@598d108`·WT **CLEAN**·`test..develop` **322 ahead**·origin/develop **@ `98ef09b`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ backend-test)·★ **backend merge gate FULLY UNBLOCKED**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- tester-sync: TSR 851차 2026-06-16T08:43 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.788s)·`npm test` N/A(no `package.json`)·develop `@e54a699`(HEAD unchanged)·WT **CLEAN**·`test..develop` **321 ahead**·origin/develop **@ `e54a699`**·origin/test **@ `598d108`**·Open **0(backend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@67653a4` test `@68da0aa`·WT **CLEAN**·Open **0(frontend)**·`test..develop` **1 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **322**(321 BE + 1 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 only). -->
+<!-- tester-sync: TSR 850차 2026-06-16T08:41 UTC (backend) — superseded by 851차. -->
+<!-- tester-sync: TSR 849차 2026-06-16T08:12 UTC (frontend) — ★★ **MERGE EXECUTED** `09e4ec1`→`68da0aa`(5 commits·FF)·**origin/test PUSH 완료**·post-merge `npm test -- --run` **1509/1509 PASS**(317 files, 266.68s)·`npm run build` **1020 modules SUCCESS**(index 869.96 kB vite warn, 11.01s)·`npm audit --omit=dev --audit-level=high` **0**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff login failed; guardian credentials missing; `scripts/dev-live-e2e.env` PRESENT; backend@8080 UP/200; QA-B95 Planned; 1st partial run 1 FAIL `branchOnboardingSupportLiveApi` US-O05)·develop `@68da0aa`·test `@68da0aa`·WT **CLEAN**·`test..develop` **0 ahead**·origin/test **@ `68da0aa`**·origin/develop **@ `68da0aa`**·**100 route**·**81 page**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test post-merge)·★ **frontend develop→test merge+push COMPLETE**·교차 BE develop `@c5f1325` test `@598d108`·**320 ahead·WT DIRTY 2M·Open 1 BLOCK QA-B110**·⚠ **cross-stream merge BLOCK**·merge pending **320**(BE only)·operation 승격 **BLOCK**(QA-B110+QA-B95). -->
+<!-- tester-sync: TSR 848차 2026-06-16T07:50 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 13.955s)·`npm test` N/A(no `package.json`)·develop `@c5f1325`(HEAD 불변)·WT **DIRTY 2M**(`VisitService.java`·`VisitServiceTest.java`)·`test..develop` **320 ahead**·origin/develop **@ `c5f1325`**·origin/test **@ `598d108`**·신규 Open **1 BLOCK QA-B110(backend dirty recurrence)**·Open(active) **1**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test)·⚠ **backend merge gate BLOCK**(dirty recurrence)·교차 FE develop `@b23f5bf` test `@09e4ec1`·WT **CLEAN**·Open **0(frontend)**·merge pending **324**(320 BE + 4 FE)·⚠ **cross-stream merge BLOCK**·operation 승격 **BLOCK**(QA-B110+QA-B95). -->
+<!-- tester-sync: TSR 847차 2026-06-16T07:42 UTC (frontend) — test `@09e4ec1` (`src/frontend-test`) `npm test -- --run` **1507/1507 PASS**(317 files, 265.04s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **1020 modules SUCCESS**(index 869.96 kB vite warn, 7.13s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` PRESENT; backend@8080 probe not executable without creds; QA-B95 Planned)·develop `@b23f5bf`(+4 vs test)·test `@09e4ec1`·develop/test WT **CLEAN**·`test..develop` **4 ahead**·origin/test **@ `09e4ec1`**·origin/develop **@ `b23f5bf`**·**100 route**·**81 page**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test)·★ **frontend merge gate FULLY UNBLOCKED**(4 commits)·교차 BE develop `@c5f1325` test `@598d108`·**320 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **324**(320 BE + 4 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 846차 2026-06-16T07:29 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 13.897s)·`npm test` N/A(no `package.json`)·develop `@c5f1325`(+1 vs `aa6816a`)·WT **CLEAN**·`test..develop` **320 ahead**·origin/develop **@ `c5f1325`**·origin/test **@ `598d108`**·Open **0(backend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test)·★ **backend merge gate FULLY UNBLOCKED**·교차 FE develop `@14d210c` test `@09e4ec1`·WT **CLEAN**·Open **0(active)**·`test..develop` **3 ahead**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **323**(320 BE + 3 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 845차 2026-06-16T07:16 UTC (frontend) — test `@09e4ec1` (`src/frontend-test`) `npm test -- --run` **1507/1507 PASS**(317 files, 267.13s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **1020 modules SUCCESS**(index 869.96 kB vite warn, 10.53s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@14d210c`(+3 vs test) `npm test -- --run` **1507/1507 PASS**(268.03s)·MealPreferenceSurveyPage isolated **3/3 PASS**·**QA-B109 Fixed @ `14d210c`**·develop/test WT **CLEAN**·`test..develop` **3 ahead**·origin/test **@ `09e4ec1`**·origin/develop **@ `14d210c`**·**100 route**·**81 page**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test)·★ **frontend merge gate FULLY UNBLOCKED**(3 commits)·교차 BE develop `@aa6816a` test `@598d108`·**319 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **322**(319 BE + 3 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 844차 2026-06-16T07:01 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 13.778s)·`npm test` N/A(no `package.json`)·develop `@aa6816a`(+1 vs `30f03e8`: `fix(v2/security): harden live-e2e bootstrap exposure in prod`)·WT **CLEAN**·`test..develop` **319 ahead**·origin/develop **@ `aa6816a`**·origin/test **@ `598d108`**·Open **0(backend)**·Planned **1 QA-B95**·verdict **PASS(@backend-test) / backend merge UNBLOCKED**·교차 FE develop `@43d308a` test `@09e4ec1` WT **CLEAN**·Open **1 BLOCK QA-B109(frontend)**·`test..develop` **2 ahead**·⚠ **cross-stream merge BLOCK**·merge pending **321**(319 BE + 2 FE)·operation 승격 **BLOCK**(QA-B109+QA-B95). -->
+<!-- tester-sync: TSR 843차 2026-06-16T06:49 UTC (frontend) — test `@09e4ec1` (`src/frontend-test`) `npm test -- --run` **1504/1507 FAIL**(317 files, 487.56s; 1st 1505/1507·2nd 1504/1507)·`mvn test` N/A(no `pom.xml`)·`npm run build` **1020 modules transformed**(18.61s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@43d308a`(+1 vs test) `npm test -- --run` **1506/1507 FAIL**(`MealPreferenceSurveyPage.test.jsx`; `NursingServiceRecordPage` isolated **4/4 PASS**·**QA-B108 Fixed**)·develop build/audit **PASS**·develop/test WT **CLEAN**·`test..develop` **1 ahead**·origin/test **@ `09e4ec1`**·origin/develop **@ `43d308a`**·**QA-B108 Fixed @ `43d308a`**·신규 Open **1 BLOCK QA-B109(frontend)**·Planned **1 QA-B95**·verdict **BLOCK(frontend merge gate @ develop fail + test regression flakes)**·교차 BE develop `@30f03e8` test `@598d108`·**318 ahead·WT CLEAN·Open 0(backend)**·⚠ **cross-stream merge BLOCK**·merge pending **319**(318 BE + 1 FE)·operation 승격 **BLOCK**(QA-B109+QA-B95). -->
+<!-- tester-sync: TSR 842차 2026-06-16T06:22 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.193s)·`npm test` N/A(`package.json` 없음)·develop `@30f03e8`(+1 vs `2495753`: `test(v2/G26): extend statistics pilot flow for transport fee aggregates`)·WT **CLEAN**·`test..develop` **318 ahead**·origin/develop **@ `30f03e8`**·origin/test **@ `598d108`**·Open **1(active, frontend QA-B108)**·Planned **1 QA-B95**·verdict **PASS(@backend-test) / backend merge UNBLOCKED**·교차 FE develop `@64f6753` test `@09e4ec1` WT **CLEAN**·⚠ **cross-stream merge BLOCK**·merge pending **319**(318 BE + 1 FE)·operation 승격 **BLOCK**(QA-B108+QA-B95). -->
+<!-- tester-sync: TSR 841차 2026-06-16T06:11 UTC (frontend) — test `@09e4ec1` (`src/frontend-test`) `npm test -- --run` **1507/1507 PASS**(317 files, 275.32s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **1020 modules transformed**(7.29s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@64f6753`(+1 vs test) `npm test -- --run` **1506/1507 FAIL**(`NursingServiceRecordPage.test.jsx`)·develop build/audit **PASS**·develop/test WT **CLEAN**·`test..develop` **1 ahead**·origin/test **@ `09e4ec1`**·신규 Open **1 BLOCK QA-B108(frontend)**·Planned **1 QA-B95**·verdict **BLOCK(frontend merge gate @ develop fail)**·교차 BE develop `@2495753` test `@598d108`·**317 ahead·WT CLEAN·Open 0(backend)**·⚠ **cross-stream merge BLOCK**·merge pending **318**(317 BE + 1 FE)·operation 승격 **BLOCK**(QA-B108+QA-B95). -->
+<!-- tester-sync: TSR 840차 2026-06-16T05:53 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 13.900s)·`npm test` N/A(`package.json` 없음)·develop `@2495753`(+1 vs `3672bbe`: `fix(v2/L02): align care report RBAC with API spec`)·WT **CLEAN**·`test..develop` **317 ahead**·origin/develop **@ `2495753`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·verdict **PASS(@backend-test)**·★ backend merge gate **FULLY UNBLOCKED**·교차 FE develop/test `@09e4ec1` WT **CLEAN**·Open **0(frontend)**·backend@8080 **UP/200**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **317**(BE only)·merge **미실행**·operation **BLOCK**(QA-B95 only). -->
+<!-- tester-sync: TSR 839차 2026-06-16T05:42 UTC (frontend) — ★★ **MERGE EXECUTED** `d8f1fdf`→`09e4ec1`(2 commits·FF)·**origin/test PUSH 완료**·post-merge `npm test -- --run` **1507/1507 PASS**(317 files, 267.56s; pre-merge 1st/2nd runs flakes `NursingServiceRecordPage`→3rd run PASS)·develop HEAD **1507/1507 PASS**(3rd run 266.07s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 866.96 kB vite warn, 10.19s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@09e4ec1`·test `@09e4ec1`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop·origin/test **@ `09e4ec1`**·**100 route**·**81 page**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test post-merge)·★ **frontend develop→test merge+push COMPLETE**·교차 BE develop `@3672bbe` test `@598d108`·**316 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **316**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 838차 2026-06-16T05:05 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.139s)·`npm test` N/A(`package.json` 없음)·develop `@3672bbe`(+1 vs `3481eb8`: `feat(v2/G26): add transport service fee monthly statistics API`)·WT **CLEAN**·`test..develop` **316 ahead**·origin/develop **@ `3672bbe`**·origin/test **@ `598d108`**·Open **0(active)**·Planned **1 QA-B95**·verdict **PASS(@backend-test)**·★ backend merge gate **FULLY UNBLOCKED**·교차 FE develop/test `@d8f1fdf` WT **CLEAN**·Open **0(frontend)**·backend@8080 **UP/200**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **316**(BE only)·merge **미실행**·operation **BLOCK**(QA-B95 only). -->
+<!-- tester-sync: TSR 837차 2026-06-16T04:38 UTC (frontend) — ★★ **MERGE EXECUTED** `e10113f`→`d8f1fdf`(1 commit·FF)·**origin/test PUSH 완료**·post-merge `npm test -- --run` **1504/1504 PASS**(317 files, 267.78s; 1st run 1503/1504 flake→2nd run PASS)·develop HEAD **1504/1504 PASS**(2nd run 267.35s; 1st run 1502/1504·2 flakes)→`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 866.96 kB vite warn, 10.14s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@d8f1fdf`·test `@d8f1fdf`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop·origin/test **@ `d8f1fdf`**·**100 route**·**150 page**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21+G26 @ test post-merge)·★ **frontend develop→test merge+push COMPLETE**·교차 BE develop `@3481eb8` test `@598d108`·**315 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **315**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 836차 2026-06-16T04:04 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.5s)·npm N/A(no `package.json`)·develop `@3481eb8`(+1 vs `92ae60b`: `test(v2/G26): add dual-function statistics pilot service flow E2E`)·WT **CLEAN**·`test..develop` **315 ahead**·origin/develop **@ `3481eb8`**·origin/test **@ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(315 ahead)·교차 FE develop/test `@e10113f`·WT **CLEAN**·Open **0(frontend)**·Planned **1 QA-B95**·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **315**(BE only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 835차 2026-06-16T03:54 UTC (frontend) — ★★ **MERGE EXECUTED** `9006a53`→`e10113f`(1 commit·FF)·**origin/test PUSH 완료**·post-merge `npm test -- --run` **1496/1496 PASS**(315 files, 267.84s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 858.53 kB vite warn, 10.07s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@e10113f`·test `@e10113f`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop·origin/test **@ `e10113f`**·**99 route**·**80 page**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21 @ test post-merge)·★ **frontend develop→test merge+push COMPLETE**·교차 BE develop `@92ae60b` test `@598d108`·**314 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **314**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 834차 2026-06-16T03:32 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.9s)·npm N/A(no `package.json`)·develop `@92ae60b`(+1 vs `472cb1d`: `test(v2/G26): add dual-function statistics live API routing harness`)·WT **CLEAN**·`test..develop` **314 ahead**·origin/develop **@ `92ae60b`**·origin/test **@ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(314 ahead)·교차 FE develop/test `@9006a53`·WT **CLEAN**·Open **0(frontend)**·Planned **1 QA-B95**·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **314**(BE only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 833차 2026-06-16T03:22 UTC (frontend) — ★★ **MERGE EXECUTED** `6759bf6`→`9006a53`(1 commit·FF)·**origin/test PUSH 완료**·post-merge `npm test -- --run` **1495/1495 PASS**(315 files, 265.33s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 858.53 kB vite warn, 7.99s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@9006a53`·test `@9006a53`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop·origin/test **@ `9006a53`**·**99 route**·**80 page**·**QA-B107 Fixed @ `9006a53`**·Open **0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21 @ test post-merge)·★ **frontend develop→test merge+push COMPLETE**·교차 BE develop `@472cb1d` test `@598d108`·**313 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **313**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 832차 2026-06-16T02:44 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 13.920s)·npm N/A(no `package.json`)·develop `@472cb1d`(+1 vs `6d10e0d`: `fix(v2/live-e2e): keep bootstrap user tenant-scoped`)·WT **CLEAN**·`test..develop` **313 ahead**·origin/develop **@ `472cb1d`**·origin/test **@ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(313 ahead)·교차 FE develop/test `@6759bf6`·WT **DIRTY 3M**·Open **1 BLOCK QA-B107(frontend)**·Planned **1 QA-B95**·backend@8080 **UP/200**(`/api/v1/health`)·⚠ **cross-stream merge BLOCK**·merge pending **313**(BE only)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B107+QA-B95). -->
+<!-- tester-sync: TSR 831차 2026-06-16T02:36 UTC (frontend) — test `@6759bf6` (`src/frontend-test`) `npm test -- --run` **1494/1494 PASS**(315 files, 265.38s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 858.53 kB vite warn, 7.35s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@6759bf6` HEAD **불변**·WT **DIRTY 3M**(`liveConfig.js`·`liveGlobalSetup.js`·`liveE2eHarness.test.js` +39/-2)·test `@6759bf6`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop·origin/test **@ `6759bf6`**·**99 route**·**80 page**·**Open 1 BLOCK QA-B107(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21 @ test post-merge)·⚠ **frontend merge gate BLOCK**(develop dirty)·교차 BE develop `@6d10e0d` test `@598d108`·**312 ahead·WT CLEAN·Open 0(backend)**·⚠ **cross-stream merge BLOCK**·merge pending **312**(backend only)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B107+QA-B95). -->
+<!-- tester-sync: TSR 830차 2026-06-16T02:22 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.499s)·npm N/A(no `package.json`)·develop `@6d10e0d`(+1 vs `1840640`: `feat(v2/G26): add copay monthly statistics report API`)·WT **CLEAN**·`test..develop` **312 ahead**·origin/develop **@ `6d10e0d`**·origin/test **@ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(312 ahead)·교차 FE develop/test `@6759bf6`·WT **CLEAN**·Open **0(frontend)**·Planned **1 QA-B95**·backend@8080 probe **미실행(backend-test 사이클)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **312**(BE only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 829차 2026-06-16T02:10 UTC (frontend) — ★★ **MERGE EXECUTED** `55fdbd0`→`6759bf6`(1 commit·FF)·**origin/test PUSH 완료**(`55fdbd0..6759bf6`)·post-merge `npm test`(vitest run) **1494/1494 PASS**(315 files, 264.58s; 1st run 1493/1494 FAIL·full-suite 4 flakes→isolated PASS→2nd run PASS)·develop HEAD **1494/1494 PASS**(270.93s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 858.15 kB vite warn, 10.50s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@6759bf6`·test `@6759bf6`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop **@ `6759bf6`**·origin/test **@ `6759bf6`**·**99 route**·**80 page**·**Open 0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21 @ test post-merge)·★ **frontend develop→test merge+push COMPLETE**·교차 BE develop `@1840640` test `@598d108`·**311 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **311**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 828차 2026-06-16T01:38 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 15.21s)·npm N/A(no `package.json`)·develop `@1840640`(+1 vs `903f462`: `test(v2/G26): add medical deduction report live API pilot E2E`)·WT **CLEAN**·`test..develop` **311 ahead**·origin/develop **@ `1840640`**·origin/test **@ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(311 ahead)·교차 FE develop/test `@55fdbd0`·WT **CLEAN**·Open **0(frontend)**·Planned **1 QA-B95**·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **311**(BE only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 827차 2026-06-16T01:29 UTC (frontend) — ★★ **MERGE EXECUTED** develop→test `25ca88e`→`55fdbd0`(2 commits·FF·`git_merge_to_test.sh frontend TSR827`)·**origin/test PUSH 완료**(`4299914..55fdbd0`)·post-merge `npm test`(vitest run) **1491/1491 PASS**(314 files, 265.81s; 1st run 1490/1491 flake→2nd run PASS)·develop HEAD **1491/1491 PASS**(267.92s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 857.18 kB vite warn, 9.94s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@55fdbd0`·test `@55fdbd0`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop **@ `55fdbd0`**·origin/test **@ `55fdbd0`**·**QA-B106 Fixed**·**99 route**·**80 page**·**Open 0(active)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21 @ test post-merge)·★ **frontend develop→test merge+push COMPLETE**·교차 BE develop `@903f462` test `@598d108`·**310 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **310**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 826차 2026-06-16T00:59 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.050s)·npm N/A(no `package.json`)·develop `@903f462`(+1 vs `b38c6f7`: `feat(v2/G26): add branch medical expense deduction statistics report API`)·WT **CLEAN**·`test..develop` **310 ahead**·origin/develop **@ `903f462`**·origin/test **@ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(310 ahead)·교차 FE develop `@25ca88e`·test `@25ca88e`·WT **CLEAN**·Open **1 BLOCK QA-B106(frontend)**·Planned **1 QA-B95**·backend@8080 probe **미실행(backend-test 사이클)**·⚠ operation 승격 **BLOCK**(QA-B106+QA-B95). -->
+<!-- tester-sync: TSR 825차 2026-06-16T00:23 UTC (frontend) — test `@25ca88e` (`src/frontend-test`) `npm test -- --run` **1490/1490 PASS**(314 files, 268.58s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 857.18 kB vite warn, 7.24s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200** `/api/v1/health`; QA-B95 Planned)·develop `@25ca88e`·test `@25ca88e`·WT **CLEAN**·`test..develop` **0 ahead**·origin/develop **@ `25ca88e`**·origin/test **@ `4299914`**(**16 unpushed**·QA-B106)·**99 route**·**147 page**·**Open 1 BLOCK QA-B106(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21 @ test post-merge)·★ **frontend local merge COMPLETE**·⚠ **origin/test push 누락**·교차 BE develop `@b38c6f7` test `@598d108`·**309 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **309**(backend only)·operation 승격 **BLOCK**(QA-B106+QA-B95). -->
+<!-- tester-sync: TSR 824차 2026-06-16T00:16 UTC (frontend) — ★★ **MERGE EXECUTED** develop→test `ff9c8c5`→`25ca88e`(2 commits·FF clean·0 conflicts·`git_merge_to_test.sh frontend TSR824`)·post-merge `npm test`(vitest run) **1490/1490 PASS**(314 files, 263.55s; 1st run 1489/1490 FAIL flake `liveE2eHarness.test.js:84`→isolated **21/21 PASS**)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 847.46 kB vite warn, 9.94s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **47 suites SKIP/137 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200** `/api/v1/health`; QA-B95 Planned)·develop `@25ca88e`·test `@25ca88e`·WT **CLEAN**·`test..develop` **0 ahead**(merge 완료)·**99 route**·**80 page**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A+G21 @ test post-merge)·★ **frontend develop→test merge COMPLETE**·교차 BE develop `@b38c6f7` test `@598d108`·**309 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **309**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 823차 2026-06-15T23:54 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.3s)·npm N/A(no `pom.xml`)·develop `@b38c6f7`(+1 vs `6da49aa`: `test(v2/G21): add billing claim reflection pilot E2E coverage` — `VisitPilotServiceFlowE2eTest`·`VisitLiveApiRoutingE2eTest`, 2 files +74)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **309 ahead**·origin/develop **동기화 @ `b38c6f7`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(309 ahead)·교차 FE develop `@8b804fc`·test `@ff9c8c5`·WT **CLEAN**·**1 ahead**·Open **0(frontend)**·Planned **1 QA-B95**·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **310**(309 BE + 1 FE)·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 822차 2026-06-15T23:47 UTC (frontend) — test `@ff9c8c5` (`src/frontend-test`) `npm test -- --run` **1480/1480 PASS**(311 files, 267.21s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 847.46 kB vite warn, 9.79s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **46 suites SKIP/136 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200** `/api/v1/health`; QA-B95 Planned)·develop `@8b804fc`(+1 vs `ff9c8c5`: `feat(v2/L02_M16): wire meal preference survey UI to V142 API`)·WT **CLEAN**·develop HEAD `npm test -- --run` **1488/1488 PASS**(314 files, 270.43s)·`test..develop` **1 ahead**·**99 route**·**148 page**(@ develop) · **98 route**·**146 page**(@ test)·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test post-merge)·★ **frontend merge gate FULLY UNBLOCKED**(1 commit)·교차 BE develop `@6da49aa` test `@598d108`·**308 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **309**(308 BE + 1 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 821차 2026-06-15T23:29 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.7s)·npm N/A(no `pom.xml`)·develop `@6da49aa`(+1 vs `f33252a`: `feat(v2/G21): expose billing claim reflection status on visit schedules` — `VisitBillingClaimReflectionStatus`·`VisitService`·`VisitServiceTest`·pilot/routing/RBAC, 11 files +235/-29)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **308 ahead**·origin/develop **동기화 @ `6da49aa`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(308 ahead)·교차 FE develop `@ff9c8c5`·test `@ff9c8c5`·WT **CLEAN**·**0 ahead**·Open **0(frontend)**·Planned **1 QA-B95**·★ **frontend merge COMPLETE**(820 carry)·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **308**(backend only)·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 820차 2026-06-15T23:17 UTC (frontend) — ★★ **MERGE EXECUTED** develop→test `4299914`→`ff9c8c5`(14 commits·FF clean·0 conflicts·`git_merge_to_test.sh frontend TSR820`)·post-merge `npm test`(vitest run) **1479/1480 PASS**(311 files, 261.38s; flake `liveE2eHarness.test.js:84`→isolated **21/21 PASS**)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 9.58s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **46 suites SKIP/136 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@ff9c8c5`·test `@ff9c8c5`·WT **CLEAN**·`test..develop` **0 ahead**(merge 완료)·**98 route**·**146 page**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test post-merge)·★ **frontend develop→test merge COMPLETE**·교차 BE `@f33252a` test `@598d108`·**307 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **307**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E credentials+run). -->
+<!-- tester-sync: TSR 819차 2026-06-15T22:59 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~16.0s)·npm N/A(no `package.json`)·develop `@f33252a`(+1 vs `2cf0908`: `feat(v2/L02_M16): add meal preference survey API (G-MEAL-PREFERENCE)` — `MealPreferenceSurveyController`·`MealPreferenceSurveyService`·V142 migration·pilot E2E/RBAC, 13 files +1198)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **307 ahead**·origin/develop **동기화 @ `f33252a`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(307 ahead)·교차 FE develop `@49eb944`·WT **CLEAN**·**13 ahead**·Open **0(frontend)**·Planned **1 QA-B95**·test `@4299914` **1444/1444 PASS**(818 carry)·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **320**(307 BE + 13 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 818차 2026-06-15T22:50 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 261.54s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 7.10s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@49eb944`(+13 vs `4299914`: `@49eb944` client payload address fixtures · `@40684a9` stabilize care/nursing page tests · prior 11 L02_M06/M17·transport·v1.3-A·L02)·WT **CLEAN**·develop HEAD `npm test -- --run` **1470/1470 PASS**(309 files, 263.60s)·**QA-B105 Fixed @ `49eb944`**·`test..develop` **13 ahead**·**96 route**·**77 page**·**Open 0(frontend)**·Planned **1 QA-B95**·verdict **PASS(post-merge @ test + merge gate)**·★ **frontend merge FULLY UNBLOCKED**(13 commits)·교차 BE `@2cf0908` WT **CLEAN**·Open **0(backend)**·test `@598d108` **246/246 PASS**(817 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **319**(306 BE + 13 FE)·merge **미실행**·operation **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 817차 2026-06-15T22:36 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.6s)·npm N/A(no `package.json`)·develop `@2cf0908`(+1 vs `a25c9de`: `feat(v2/L02_M11,M12): add patient service and service summary care report APIs` — `CareReportController`·`CareReportService`·pilot E2E/RBAC, 9 files +743)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **306 ahead**·origin/develop **동기화 @ `2cf0908`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(306 ahead)·교차 FE develop `@40684a9`·WT **CLEAN**·**12 ahead**·Open **1 BLOCK QA-B105(frontend)**·Planned **1 QA-B95**·test `@4299914` **1444/1444 PASS**(816 carry)·backend@8080 **UP/200**(`/api/v1/health`)·⚠ **cross-stream merge BLOCK**·merge pending **318**(306 BE + 12 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B105+QA-B95). -->
+<!-- tester-sync: TSR 816차 2026-06-15T22:27 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 257.25s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 10.22s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@40684a9`(+12 vs `4299914`: `@40684a9` stabilize care/nursing page tests · prior 11 L02_M06/M17·transport·v1.3-A·L02)·WT **CLEAN**·develop HEAD `npm test -- --run` **1468/1470 FAIL**(309 files, 269.91s; isolated **2/2 FAIL** `clientPayload`·`pilotChecklist` address guard; page tests **Fixed @ `40684a9`**)·`test..develop` **12 ahead**·**96 route**·**77 page**·**Open 1 BLOCK QA-B105(frontend)**·Planned **1 QA-B95**·verdict **PASS(post-merge @ test)**·⚠ **frontend merge gate BLOCK**(develop HEAD unit FAIL)·교차 BE `@a25c9de` WT **CLEAN**·Open **0(backend)**·test `@598d108` **246/246 PASS**(815 carry)·⚠ **cross-stream merge BLOCK**·merge pending **317**(305 BE + 12 FE)·merge **실행 금지**·operation **BLOCK**(QA-B105+QA-B95). -->
+<!-- tester-sync: TSR 815차 2026-06-15T22:07 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.6s)·npm N/A(no `package.json`)·develop `@a25c9de`(+1 vs `9cc0c1d`: `feat(v2/live-e2e): expose structured bootstrap readiness states` — `LiveE2eBootstrapService`·`LiveE2eController`·`HealthController`·tests, 5 files +80/-12)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **305 ahead**·origin/develop **동기화 @ `a25c9de`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(305 ahead)·교차 FE develop `@fa20943`·WT **CLEAN**·**11 ahead**·Open **1 BLOCK QA-B105(frontend)**·Planned **1 QA-B95**·test `@4299914` **1444/1444 PASS**(814 carry)·backend@8080 **UP/200**(`/api/v1/health`)·⚠ **cross-stream merge BLOCK**·merge pending **316**(305 BE + 11 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B105+QA-B95). -->
+<!-- tester-sync: TSR 814차 2026-06-15T22:00 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 256.71s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 10.51s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@fa20943`(+11 vs `4299914`: L02_M06/M17 rpt UI · transport a11y · live-e2e env · v1.3-A transport x3 · L02_M15/M04/M05 · a11y · print · pilot E2E)·WT **CLEAN**·develop HEAD `npm test -- --run` **1465/1470 FAIL**(309 files, 269.84s; isolated **3/3 FAIL** `CareServiceWeeklyRecordPage`·`NursingExcretionTubeRecordPage`·`NursingVitalCheckPage` API mock timeout; full-suite-only flakes `clientPayload`·`pilotChecklist`)·`test..develop` **11 ahead**·**96 route**·**77 page**·**Open 1 BLOCK QA-B105(frontend)**·Planned **1 QA-B95**·verdict **PASS(post-merge @ test)**·⚠ **frontend merge gate BLOCK**(develop HEAD unit FAIL)·교차 BE `@9cc0c1d` WT **CLEAN**·Open **0(backend)**·test `@598d108` **246/246 PASS**(813 carry)·⚠ **cross-stream merge BLOCK**·merge pending **315**(304 BE + 11 FE)·merge **실행 금지**·operation **BLOCK**(QA-B105+QA-B95). -->
+<!-- tester-sync: TSR 813차 2026-06-15T21:34 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~17.0s)·npm N/A(no `package.json`)·develop `@9cc0c1d`(+1 vs `ae7e744`: `feat(v2/L02_M06): add position change care report endpoint` — `CareReportController`·`CareReportService`·routing/RBAC tests, 8 files +402/-1)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **304 ahead**·origin/develop **동기화 @ `9cc0c1d`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(304 ahead)·교차 FE develop `@1daeda7`·WT **CLEAN**·**10 ahead**·Open **0(frontend)**·Planned **1 QA-B95**·test `@4299914` **1442/1444 PASS**(812 carry)·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **314**(304 BE + 10 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 812차 2026-06-15T21:08 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1442/1444 PASS**(303 files, 315.84s; full-suite flakes `CareServiceWeeklyRecordPage.test.jsx:82`·`NursingVitalCheckPage` `createVitalCheckApi` timeout→isolated **7/7 PASS**; 2nd full run 1443/1444)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 10.59s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@388e1da`(+9 vs `4299914`: `388e1da` live-e2e env discovery · v1.3-A transport x3 · L02_M15/M04/M05 · a11y · print · pilot E2E)·WT **CLEAN**·`test..develop` **9 ahead**·**94 route**·**138 page**·**Open 0(frontend)**·Planned **1 QA-B95**·verdict **PASS(post-merge regression @ test, 2 flakes)**·★ **frontend merge FULLY UNBLOCKED**(9 commits)·교차 BE `@ae7e744` WT **CLEAN**·Open 0(backend)·test `@598d108` **246/246 PASS**(811 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **312**(303 BE + 9 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 811차 2026-06-15T20:51 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 20.7s)·npm N/A(no `package.json`)·develop `@ae7e744`(+1 vs `3eeac92`: `feat(v2/L02_M17): add intensive excretion care report endpoint` — `CareReportController`·routing/RBAC tests, 7 files +265)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **303 ahead**·origin/develop **동기화 @ `ae7e744`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(303 ahead)·교차 FE develop `@d46688d`·WT **CLEAN**·**8 ahead**·Open **0(frontend)**·Planned **1 QA-B95**·test `@4299914` **1444/1444 PASS**(810 carry)·backend@8080 **UP/200**(`/api/v1/health`)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **311**(303 BE + 8 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 810차 2026-06-15T20:40 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 332.67s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 8.71s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/200**; QA-B95 Planned)·develop `@d46688d`(+8 vs `4299914`: v1.3-A transport x3·L02_M15/M04/M05·a11y·print·pilot E2E)·WT **CLEAN**·`test..develop` **8 ahead**·**94 route**·**138 page**·**QA-B102 Fixed @ `d46688d`**·**QA-B104 Fixed**(flake)·**Open 0(frontend)**·Planned **1 QA-B95**·verdict **PASS(post-merge regression @ test)**·★ **frontend merge FULLY UNBLOCKED**(8 commits)·교차 BE `@3eeac92` WT **CLEAN**·Open 0(backend)·test `@598d108` **246/246 PASS**(809 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **310**(302 BE + 8 FE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 809차 2026-06-15T20:28 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 19.3s)·npm N/A(no `package.json`)·develop `@3eeac92`(+1 vs `e8b8398`: `fix(v1.3-A/transport): clean QA-B103 backend dirty tree` — transport geocode refactor·client address guard·22 files +209/-443)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선·COD commit 본문 full regression 명시)·`test..develop` **302 ahead**·origin/develop **동기화 @ `3eeac92`**·origin/test **동기화 @ `598d108`**·**QA-B103 Fixed @ `3eeac92`**·**Open 0(backend)**·PASS(v1 @ test)·★ **backend merge gate FULLY UNBLOCKED**·merge **미실행**(302 ahead)·교차 FE develop `@15e9b64`·WT **DIRTY 10M+1U**·**7 ahead**·Open **1 BLOCK QA-B102**·**1 HIGH QA-B104**·test `@4299914` **1443/1444 FAIL**(808 carry)·backend@8080 **UP/200**(`/api/v1/health`)·⚠ **cross-stream merge BLOCK**·merge pending **309**(302 BE + 7 FE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B102+QA-B104+QA-B95). -->
+<!-- tester-sync: TSR 808차 2026-06-15T20:16 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1443/1444 FAIL**(303 files, 293.68s; `NursingServiceRecordPage.test.jsx:74` `createNursingServiceRecordApi` timeout; isolated **3/4 FAIL** 8.22s; develop `@15e9b64` **4/4 PASS**)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 10.71s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend@8080 **UP/401**; QA-B95 Planned)·develop `@15e9b64`(+7 vs `4299914`)·WT **DIRTY 2M+1U**·`test..develop` **7 ahead**·**93 route**·**75 page**·**Open 2 BLOCK QA-B102+QA-B104(HIGH)**·Planned **1 QA-B95**·verdict **BLOCK(@test 1443/1444 FAIL + merge gate dirty)**·교차 BE `@e8b8398` WT **DIRTY 14M+3D+1U**·Open **QA-B103**·test `@598d108` **246/246 PASS**(807 carry)·⚠ **cross-stream merge BLOCK**·merge pending **308**·merge **실행 금지**·operation **BLOCK**(QA-B102+QA-B103+QA-B104+QA-B95). -->
+<!-- tester-sync: TSR 807차 2026-06-15T20:05 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 16.2s)·npm N/A(no `package.json`)·develop `@e8b8398`(805차 대비 **불변**)·WT **DIRTY 8M**(care report·client/guardian·live-e2e bootstrap·Kakao clients·tests, +88/-9)·develop HEAD `mvn test` **미재실행**(WT dirty·tester read-only)·`test..develop` **301 ahead**·origin/develop **동기화 @ `e8b8398`**·origin/test **동기화 @ `598d108`**·**Open 1 BLOCK QA-B103(backend)** 범위 **2M→8M 확대**·PASS(v1 @ test)·⚠ backend merge gate **BLOCK**·merge **실행 금지**(301 ahead)·교차 FE develop `@0c523cd`·WT **DIRTY 5M**·**6 ahead**·Open **QA-B102** 범위 **1M→5M 확대**·Planned **1 QA-B95**·test `@4299914` **1444/1444 PASS**(806 carry)·backend@8080 **500**·⚠ **cross-stream merge BLOCK**·merge pending **307**(301 BE + 6 FE)·operation 승격 **BLOCK**(QA-B102+QA-B103+QA-B95). -->
+<!-- tester-sync: TSR 806차 2026-06-15T19:56 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 287.96s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **1003 modules SUCCESS**(index 789.52 kB vite warn, 10.36s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(staff/guardian credentials missing; `scripts/dev-live-e2e.env` PRESENT; backend probe skip)·develop `@0c523cd`(+6 vs `4299914`)·WT **DIRTY 1M**(`vite.config.js`)·`test..develop` **6 ahead**·origin/test **@ `4299914`**·**Open 1 BLOCK QA-B102(frontend)** 유지·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**(develop dirty). 교차 BE develop `@e8b8398` WT **DIRTY 2M**(`KakaoDirectionsClient.java`·`KakaoGeocodeClient.java`)·test `@598d108` **246/246 PASS**(805 carry)·`test..develop` **301 ahead**·⚠ **cross-stream merge BLOCK**·merge pending **307**(301 BE + 6 FE)·operation 승격 **BLOCK**(QA-B102+QA-B103+QA-B95). -->
+<!-- tester-sync: TSR 805차 2026-06-15T19:46 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 22.2s)·npm N/A(no `package.json`)·develop `@e8b8398`(+1 vs `27b40cd`: `fix(v2/QA-B101): commit V141 integrity + transport route preview` — V141 migration·entity guards·`KakaoDirectionsClient`·`TransportRoutePreviewService`·pilot/routing tests, 24 files +647/-16)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **301 ahead**·origin/develop **동기화 @ `e8b8398`**·origin/test **동기화 @ `598d108`**·**QA-B101 Fixed @ `e8b8398`**·**Open 0(backend)**·**신규 Open 1 BLOCK QA-B102(frontend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(301 ahead)·교차 FE develop `@46971e1`·WT **DIRTY 2M**·**5 ahead**·Planned **1 QA-B95**·test `@4299914` **1443/1444 PASS**(804 carry)·backend@8080 **DOWN**·⚠ **cross-stream merge BLOCK**·merge pending **306**·operation 승격 **BLOCK**(QA-B102+QA-B95). -->
+<!-- tester-sync: TSR 804차 2026-06-15T19:35 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1443/1444 PASS**(303 files, 279.61s; full-suite flake `BodyRestraintRecordPage.test.jsx:88` `createBodyRestraintRecordApi` timeout→isolated **3/3 PASS** 5.22s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 8.29s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **미실행**(backend@8080 **UP/200**·`scripts/dev-live-e2e.env` **PRESENT**·QA-B95 Planned)·develop `@46971e1`(+5 vs `4299914`: `3549896` L02_M15 · `c5f82a6` L02_M04/M05 UI · `07f6afa` a11y · `d2145b0` print · `46971e1` L02_M04/M05 pilot E2E)·WT **CLEAN**·`test..develop` **5 ahead**·origin/develop **@ `46971e1`**·origin/test **@ `4299914`**·**93 route**·**138 page**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test post-merge)·★ **frontend merge FULLY UNBLOCKED**(5 commits)·교차 BE `@27b40cd` **300 ahead·WT DIRTY 9M+1U·Open 1 BLOCK QA-B101**·test `@598d108` **246/246 PASS**(803 carry)·⚠ **cross-stream merge BLOCK**·merge pending **305**·merge **실행 금지**·operation 승격 **BLOCK**(QA-B101+QA-B95). -->
+<!-- tester-sync: TSR 803차 2026-06-15T19:24 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 18.952s)·npm N/A(no `package.json`)·develop `@27b40cd`(801차 대비 **불변** — `Handle default window for care reports`)·WT **DIRTY 9M+1U**(V141 migration·entity integrity guards)·develop HEAD `mvn test` **미재실행**(WT dirty·tester read-only)·`test..develop` **300 ahead**·origin/develop **@ `c655743`**(HEAD unpushed +1)·origin/test **동기화 @ `598d108`**·**Open 1 BLOCK QA-B101(backend)**·PASS(v1 @ test)·⚠ backend merge gate **BLOCK**·merge **실행 금지**(300 ahead)·교차 FE develop `@d2145b0`·**4 ahead**·WT **CLEAN**·Planned **1 QA-B95**·test `@4299914` **1444/1444 PASS**(802 carry)·backend@8080 **UP/401**·⚠ **cross-stream merge BLOCK**·merge pending **304**·operation 승격 **BLOCK**(QA-B101+QA-B95). -->
+<!-- tester-sync: TSR 802차 2026-06-15T19:17 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 266.92s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 7.19s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **미실행**(backend@8080 **UP/401**·`scripts/dev-live-e2e.env` **PRESENT**·QA-B95 Planned carry)·develop `@d2145b0`(+4 vs `4299914`: `3549896` L02_M15 · `c5f82a6` L02_M04/M05 UI · `07f6afa` a11y · `d2145b0` print output)·WT **CLEAN**·`test..develop` **4 ahead**·**94 route**·**138 page**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test post-merge)·★ **frontend merge FULLY UNBLOCKED**(4 commits)·교차 BE `@27b40cd` **300 ahead·WT DIRTY 9M+1U·Open 1 BLOCK QA-B101**·test `@598d108` **246/246 PASS**(801 carry)·⚠ **cross-stream merge BLOCK**·merge pending **304**(4 FE+300 BE)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B101+QA-B95). -->
+<!-- tester-sync: TSR 801차 2026-06-15T19:07 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 15.536s)·npm N/A(no `package.json`)·develop `@27b40cd`(+1 vs `c655743`: `fix(v2/L02_M04,M05): handle default window for care reports` — `CareReportService`·`CareReportServiceTest`, 2 files +120/-9)·WT **DIRTY 9M+1U**(V141 migration·entity integrity guards)·develop HEAD `mvn test` **미재실행**(tester read-only·WT dirty)·`test..develop` **300 ahead**·origin/develop **@ `c655743`**(HEAD unpushed +1)·origin/test **동기화 @ `598d108`**·**Open 1 BLOCK QA-B101(backend)**·PASS(v1 @ test)·⚠ backend merge gate **BLOCK**·merge **실행 금지**(300 ahead)·교차 FE develop `@07f6afa`·**3 ahead**·WT **CLEAN**·Planned **1 QA-B95**·test `@4299914` **1444/1444 PASS**(800 carry)·⚠ **cross-stream merge BLOCK**·merge pending **303**·operation 승격 **BLOCK**(QA-B101+QA-B95). -->
+<!-- tester-sync: TSR 800차 2026-06-15T18:28 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 252.93s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(index 789.52 kB vite warn, 6.91s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(backend@8080 **DOWN**·API unreachable probe·`scripts/dev-live-e2e.env` **PRESENT**·QA-B95 Planned)·develop `@c5f82a6`(+2 vs `4299914`: `3549896` L02_M15 special notes UI · `c5f82a6` L02_M04/M05 meal-excretion·bath-help report UI)·WT **CLEAN**·`test..develop` **2 ahead**·**93 route**·**138 page**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test post-merge)·★ **frontend merge FULLY UNBLOCKED**(2 commits)·교차 BE develop `@c655743` test `@598d108` **299 ahead·WT CLEAN·Open 0(backend)**·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **301**(2 FE + 299 BE)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 799차 2026-06-15T18:17 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~28s)·npm N/A(no `package.json`)·develop `@c655743`(+1 vs `221bde7`: `feat(v2/L02_M04,L02_M05): add care meal-excretion and bath-help report APIs` — `CareReportController`·`CareReportService`·pilot E2E/RBAC, 9 files +794)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **299 ahead**·origin/develop **동기화 @ `c655743`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(299 ahead)·교차 FE test `@4299914`·develop `@3549896`·**1 ahead**·WT **CLEAN**·Planned **1 QA-B95**·merge pending **300**(1 FE + 299 BE)·operation 승격 **BLOCK**(QA-B95: live E2E env+credentials+backend@8080 DOWN). -->
+<!-- tester-sync: TSR 798차 2026-06-15T18:05 UTC (frontend) — test `@4299914` (`src/frontend-test`) `npm test -- --run` **1444/1444 PASS**(303 files, 250.38s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 10.07s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **39 suites SKIP/129 skipped**(backend@8080 **DOWN**·`scripts/dev-live-e2e.env` **PRESENT**·QA-B95 Planned)·develop `@3549896`(+1 vs `4299914`: L02_M15 care service special notes UI)·WT **CLEAN**·`test..develop` **1 ahead**·**91 route**·**136 page**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test post-merge)·★ **frontend merge FULLY UNBLOCKED**(1 commit)·교차 BE `@221bde7` **298 ahead·WT CLEAN**·merge pending **299**·operation **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 797차 2026-06-15T17:54 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.0s)·npm N/A(no `package.json`)·develop `@221bde7`(+1 vs `a06a29a`: `feat(v2/live-e2e): add anonymous backend probe endpoint` — `LiveE2eController`·`LiveE2eProbeResponse`·`SecurityConfig`·`LiveE2eControllerTest`, 4 files +62/-1)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **298 ahead**·origin/develop **동기화 @ `221bde7`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(298 ahead)·교차 FE merge **COMPLETE** @ `4299914`(796차 · 0 ahead · post-merge **1444/1444 PASS**)·Planned **1 QA-B95**·merge pending **298**(backend only)·operation 승격 **BLOCK**(QA-B95: live E2E env+credentials+backend@8080 DOWN). -->
+<!-- tester-sync: TSR 796차 2026-06-15T17:48 UTC (frontend) — ★★ **MERGE EXECUTED** develop→test `c7c8f07`→`4299914`(**360 commits**·fast-forward clean·**0 conflicts**·`git_merge_to_test.sh frontend`)·**origin/test PUSH 완료 @ `4299914`**(`c7c8f07..4299914`)·test=develop 동기화·post-merge `npm test`(vitest run) **1444/1444 PASS**(303 files, 248.02s @ `src/frontend-test` HEAD `4299914`)·`mvn test` N/A(no `pom.xml`)·`npm run test:live-e2e` **자동실행 skip**(수동 merge·run_agent 미경유)+**불가**(backend@8080 **DOWN**·`scripts/dev-live-e2e.env` PRESENT·credentials missing → QA-B95 Planned carry)·develop `@4299914`(+1 vs `3a14caf`: `fix(v2/live-e2e): harden auth probe failure handling`)·WT **CLEAN**·`test..develop` **0 ahead**(merge 완료)·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2.1+v2+L02+v1.3-A @ test)·★ **frontend develop→test merge COMPLETE**(planner 146차 "tester merge" P0 해소)·교차 BE develop `@a06a29a` test `@598d108`·**297 ahead·BE merge 미실행**(별도 사이클 대기)·operation 승격 **BLOCK**(QA-B95: live E2E env+credentials+backend@8080). -->
+<!-- tester-sync: TSR 795차 2026-06-15T17:32 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.0s)·npm N/A(no `package.json`)·develop `@a06a29a`(+1 vs `59c5d16`: `fix(v2/live-e2e): surface disabled bootstrap readiness state` — `HealthController`·`LiveE2eController`·`HealthControllerTest`·`LiveE2eControllerTest`, 4 files +116/-5)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **297 ahead**·origin/develop **동기화 @ `a06a29a`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(297 ahead)·교차 FE `@3a14caf` WT **CLEAN**·359 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(794 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **656**·merge **미실행**·operation 승격 **BLOCK**(QA-B95: `dev-live-e2e.env` PRESENT·credentials missing·backend@8080 DOWN). -->
+<!-- tester-sync: TSR 794차 2026-06-15T17:23 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.26s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.01s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@3a14caf`(+1 vs `9ad8346`: `fix(v2/live-e2e): auto-load env files from workspace scripts`)·WT **CLEAN**·develop HEAD test **미재실행**(792 carry 1424/1424 PASS)·`test..develop` **359 ahead**·origin/develop **동기화 @ `3a14caf`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(359 ahead)·교차 BE `@59c5d16` WT **CLEAN**·296 ahead·Open 0(backend)·test **246/246 PASS**(793 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **655**·merge **미실행**·operation **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 793차 2026-06-15T17:17 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.2s)·npm N/A(no `package.json`)·develop `@59c5d16`(+1 vs `81a2223`: `fix(v2/live-e2e): prefer eligible seeded account in status probe` — `LiveE2eBootstrapService`·`LiveE2eBootstrapServiceTest`, 2 files +66/-3)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **296 ahead**·origin/develop **동기화 @ `59c5d16`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(296 ahead)·교차 FE `@9ad8346` WT **CLEAN**·358 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(792 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **654**·merge **미실행**·operation **BLOCK**(QA-B95: `dev-live-e2e.env` PRESENT·credentials missing·backend@8080 DOWN). -->
+<!-- tester-sync: TSR 792차 2026-06-15T17:07 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 56.79s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.11s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E configuration incomplete: ACCESS_TOKEN(or EMAIL/PASSWORD); `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@9ad8346`(+1 vs `15b09df`: `feat(v2/L02_M13,G30): wire meal assistance UI and phone satisfaction panel` — L02_M13·G30 StatCard·live E2E suite guard)·WT **CLEAN**·develop HEAD test **미재실행**(790 carry 1424/1424 PASS)·`test..develop` **358 ahead**·origin/develop **동기화 @ `9ad8346`**·origin/test **동기화 @ `c7c8f07`**·**QA-B100 Fixed @ `9ad8346`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(358 ahead)·교차 BE `@81a2223` WT **CLEAN**·295 ahead·Open 0(backend)·test **246/246 PASS**(791 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **653**·merge **미실행**·operation **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 791차 2026-06-15T16:49 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~27s)·npm N/A(no `package.json`)·develop `@81a2223`(+1 vs `e4c240f`: `feat(v2/L02_M13): add integrated meal assistance record API` — 14 files +1362)·WT **CLEAN**·`test..develop` **295 ahead**·**Open 0(backend)**·★ backend merge gate **FULLY UNBLOCKED**·교차 FE `@15b09df` WT **DIRTY 1M**·Open **QA-B100**·Planned **QA-B95**·⚠ **cross-stream merge BLOCK**·merge pending **652**·merge **실행 금지**·operation **BLOCK**(QA-B100+QA-B95). -->
+<!-- tester-sync: TSR 790차 2026-06-15T16:36 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.11s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.52s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E configuration incomplete: ACCESS_TOKEN(or EMAIL/PASSWORD); `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@15b09df`(+1 vs `61141a6`: `fix(ux/L02_M01,M03,G-7-1): a11y pass for weekly care, bathing, statement dispatch`)·WT **DIRTY 1M**(`src/test/liveE2eSuiteGuard.test.js` — **신규 Open QA-B100**)·develop HEAD test **미재실행**(788 carry 1424/1424 PASS)·`test..develop` **357 ahead**·origin/develop **동기화 @ `15b09df`**·origin/test **동기화 @ `c7c8f07`**·**Open 1 BLOCK QA-B100(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **실행 금지**(357 ahead)·교차 BE `@e4c240f` WT **CLEAN**·294 ahead·Open 0(backend)·test **246/246 PASS**(789 carry)·⚠ **cross-stream merge BLOCK**·merge pending **651**·merge **실행 금지**·operation **BLOCK**(QA-B100+QA-B95). -->
+<!-- tester-sync: TSR 789차 2026-06-15T16:29 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.7s)·npm N/A(no `package.json`)·develop `@e4c240f`(+1 vs `de25b3e`: `fix(v2/health): harden readiness probe and add V139 integrity guards` — LiveReadinessProbe·V139 migration·LiveReadinessProbeTest, 3 files +104/-1)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **294 ahead**·origin/develop **동기화 @ `e4c240f`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(294 ahead)·교차 FE `@15b09df` WT **CLEAN**·357 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(788 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **651**·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 788차 2026-06-15T15:58 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 50.99s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.17s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E configuration incomplete: ACCESS_TOKEN(or EMAIL/PASSWORD); `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@61141a6`(+1 vs `1fd1434`: `fix(v2/live-e2e): resolve env sourcing from any checkout root`)·WT **CLEAN**·develop HEAD test **미재실행**(786 carry 1424/1424 PASS)·`test..develop` **356 ahead**·origin/develop **동기화 @ `61141a6`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(356 ahead)·교차 BE `@de25b3e` WT **CLEAN**·293 ahead·Open 0(backend)·test **246/246 PASS**(787 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **649**·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 787차 2026-06-15T15:51 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.2s)·npm N/A(no `package.json`)·develop `@de25b3e`(+1 vs `344a28b`: `feat(v2/J03): expose notification readiness blockers` — structured blocker fields for Solapi/SMTP readiness, 5 files +61/-6)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **293 ahead**·origin/develop **동기화 @ `de25b3e`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(293 ahead)·교차 FE `@1fd1434` WT **CLEAN**·355 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(786 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **648**·merge **미실행**·operation 승격 **BLOCK**(QA-B95: `dev-live-e2e.env` PRESENT·backend@8080 DOWN). --> — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 115.31s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 7.89s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E configuration incomplete: ACCESS_TOKEN(or EMAIL/PASSWORD); `scripts/dev-live-e2e.env` **PRESENT**(repo root, not sourced by vitest @ test HEAD); backend **DOWN**; QA-B95 Planned)·develop `@1fd1434`(+1 vs `950415d`: G-7-1-4CHANNEL billing statement 4-channel dispatch UI wire)·WT **CLEAN**·develop HEAD test **미재실행**(784 carry 1424/1424 PASS)·`test..develop` **355 ahead**·origin/develop **동기화 @ `1fd1434`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(355 ahead)·교차 BE `@344a28b` WT **CLEAN**·292 ahead·Open 0(backend)·test **246/246 PASS**(785 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **647**·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 785차 2026-06-15T15:28 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.9s)·npm N/A(no `package.json`)·develop `@344a28b`(+1 vs `47a4e25`: `feat(v2/G30): add phone consultation satisfaction for FAQ21841 compliance` — monitoring phone consultation `satisfied`·FAQ21841 60% compliance·V136 migration·pilot/routing/RBAC tests, 15 files +254/-26)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **292 ahead**·origin/develop **동기화 @ `344a28b`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(292 ahead)·교차 FE `@950415d` WT **CLEAN**·354 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(784 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **646**(292+354)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 784차 2026-06-15T15:14 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 50.70s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 10.34s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E configuration incomplete: ACCESS_TOKEN(or EMAIL/PASSWORD); `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned)·develop `@950415d`(+1 vs `41b2123`: L02_M03 bathing schedule UI wire)·WT **CLEAN**·develop HEAD **1424/1424 PASS**(299 files, 248.30s)·`test..develop` **354 ahead**·origin/develop **동기화 @ `950415d`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(354 ahead)·교차 BE `@47a4e25` WT **CLEAN**·291 ahead·Open 0(backend)·test **246/246 PASS**(783 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **645**·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 783차 2026-06-15T15:01 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.8s)·npm N/A(no `package.json`)·develop `@47a4e25`(+1 vs `e703252`: `fix(v2/L02_M03): require reasons for skipped bathing schedules` — 2 files +30/-6)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **291 ahead**·origin/develop **동기화 @ `47a4e25`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(291 ahead)·교차 FE `@41b2123` WT **CLEAN**·353 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(782 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **644**(291+353)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 782차 2026-06-15T14:51 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.42s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 4.88s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E configuration incomplete: ACCESS_TOKEN(or EMAIL/PASSWORD), CLIENT_ID, GUARDIAN_EMAIL, GUARDIAN_PASSWORD; `scripts/dev-live-e2e.env` **PRESENT**; QA-B95 Planned)·develop `@41b2123`(+1 vs `7faccbd`: latest develop HEAD)·WT **CLEAN**·`test..develop` **353 ahead**·origin/develop **동기화 @ `41b2123`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(353 ahead)·교차 BE `@e703252` WT **CLEAN**·290 ahead·Open 0(backend)·test **246/246 PASS**(781 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **643**(353+290)·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 781차 2026-06-15T14:43 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 13.961s)·npm N/A(no `package.json`)·develop `@e703252`(+1 vs `13b8a37`: latest develop HEAD)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **290 ahead**·origin/develop **동기화 @ `e703252`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(290 ahead)·교차 FE `@7faccbd` WT **CLEAN**·352 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(780 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **642**(290+352)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 780차 2026-06-15T14:27 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.52s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.24s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**(not sourced by vitest); backend **DOWN**; QA-B95 Planned)·develop `@7faccbd`(+1 vs `e6944f1`: `test(v2/live-e2e): enforce live suite gating imports`)·WT **CLEAN**·`test..develop` **352 ahead**·origin/develop **동기화 @ `7faccbd`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(352 ahead)·교차 BE `@13b8a37` WT **CLEAN**·289 ahead·Open 0(backend)·test **246/246 PASS**(779 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **641**(352+289)·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 779차 2026-06-15T14:19 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.0s)·npm N/A(no `package.json`)·develop `@13b8a37`(+1 vs `3a2e82e`: `feat(v2/L02_M01): add weekly care service provision record API` — controller/service/entity/V134-V135 migration/pilot E2E/RBAC, 15 files +1538)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **289 ahead**·origin/develop **동기화 @ `13b8a37`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(289 ahead)·교차 FE `@e6944f1` WT **CLEAN**·351 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(778 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **640**(289+351)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 778차 2026-06-15T14:06 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.09s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.08s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned)·develop `@e6944f1`(+2 vs `6f53978`: `09db65e` L02_M07 a11y · `e6944f1` live-e2e auth probe)·WT **CLEAN**·`test..develop` **351 ahead**·origin/develop **동기화 @ `e6944f1`**·origin/test **동기화 @ `c7c8f07`**·**QA-B99 Fixed @ `e6944f1`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(351 ahead)·교차 BE `@3a2e82e` WT **CLEAN**·288 ahead·Open 0(backend)·test **246/246 PASS**(777 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **639**(351+288)·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 777차 2026-06-15T14:00 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~14.7s)·npm N/A(no `package.json`)·develop `@3a2e82e`(+1 vs `18ff83e`: `feat(v2/G-7-1-4CHANNEL): add billing statement 4-channel batch dispatch API` — 17 files +1301/-5)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **288 ahead**·origin/develop **동기화 @ `3a2e82e`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(288 ahead)·교차 FE `@09db65e`(+1 vs `6f53978`) WT **DIRTY 3M**·350 ahead·Planned **2 QA-B99+QA-B95**·test `@c7c8f07` **217/217 PASS**(776 carry)·⚠ **cross-stream merge BLOCK**·merge pending **638**(288+350)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B99+QA-B95). -->
+<!-- tester-sync: TSR 776차 2026-06-15T13:27 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.65s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.29s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@6f53978` HEAD **불변**·WT **DIRTY 3M**(`liveConfig.js`·`liveDescribe.js`·`liveGlobalSetup.js`)·`test..develop` **349 ahead**·origin/develop **동기화 @ `6f53978`**·origin/test **동기화 @ `c7c8f07`**·**신규 Open 1 BLOCK QA-B99(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·merge **실행 금지**(349 ahead)·교차 BE `@18ff83e` WT **CLEAN**·287 ahead·Open 0(backend)·test **246/246 PASS**(775 carry)·⚠ **cross-stream merge BLOCK**·merge pending **636**(349+287)·operation 승격 **BLOCK**(QA-B99+QA-B95). -->
+<!-- tester-sync: TSR 775차 2026-06-15T13:17 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 15.4s)·npm N/A(no `package.json`)·develop `@18ff83e`(+1 vs `1f77324`: `fix(v2/live-e2e): resolve status fallback for seeded user lookup` — `LiveE2eBootstrapService`·`LiveE2eBootstrapServiceTest`, 2 files +57/-2)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **287 ahead**·origin/develop **동기화 @ `18ff83e`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(287 ahead)·교차 FE `@6f53978` WT **CLEAN**·349 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(774 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **636**(287+349)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 774차 2026-06-15T13:08 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.07s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.29s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned)·develop `@6f53978`(+1 vs `07dd49b`: `test(v2/L02): add pilotPageFlows E2E for care L02_M02 and L02_M07`)·WT **CLEAN**·`test..develop` **349 ahead**·origin/develop **동기화 @ `6f53978`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(349 ahead)·교차 BE `@1f77324` WT **CLEAN**·286 ahead·Open 0(backend)·test **246/246 PASS**(773 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **635**(349+286)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 773차 2026-06-15T12:55 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 15.5s)·npm N/A(no `package.json`)·develop `@1f77324`(+1 vs `8b7e476`: `fix(v2/live-e2e): add bootstrap seeding and status` — 9 files +514/-13)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **286 ahead**·origin/develop **동기화 @ `1f77324`**·origin/test **동기화 @ `598d108`**·**QA-B98 Fixed @ `1f77324`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(286 ahead)·교차 FE `@07dd49b` WT **CLEAN**·348 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(772 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **634**(286+348)·merge **미실행**·operation 승격 **BLOCK**(QA-B95). -->
+<!-- tester-sync: TSR 772차 2026-06-15T12:40 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.40s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 4.97s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned)·develop `@07dd49b`(+1 vs `10f32c4`: `fix(live-e2e): guard against stale backend probe state`)·WT **CLEAN**·`test..develop` **348 ahead**·origin/develop **동기화 @ `07dd49b`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(348 ahead)·교차 BE `@8b7e476` HEAD **불변**·WT **DIRTY 9**·Open 1 BLOCK **QA-B98(backend)**·test **246/246 PASS**(771 carry)·⚠ **cross-stream merge BLOCK**·merge pending **633**(348+285)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B98+QA-B95). -->
+<!-- tester-sync: TSR 771차 2026-06-15T12:33 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.6s)·npm N/A(no `package.json`)·develop `@8b7e476` HEAD **불변**(769차 대비)·WT **DIRTY 9**(5M+4U: LiveE2e bootstrap WIP — `AuthService`·`SecurityConfig`·`HealthController`·`application.yml`·`HealthControllerTest` + `LiveE2eBootstrap*`·`LiveE2eController`)·develop HEAD `mvn test` **미재실행**(WT dirty)·`test..develop` **285 ahead**·origin/develop **동기화 @ `8b7e476`**·origin/test **동기화 @ `598d108`**·**신규 Open 1 BLOCK QA-B98(backend)**·PASS(v1 @ test)·⚠ backend merge gate **BLOCK**·merge **실행 금지**(285 ahead)·교차 FE `@10f32c4` WT **CLEAN**·347 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(770 carry)·⚠ **cross-stream merge BLOCK**·merge pending **632**(285+347)·operation 승격 **BLOCK**(QA-B98+QA-B95). -->
+<!-- tester-sync: TSR 770차 2026-06-15T12:16 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.75s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.12s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned)·develop `@10f32c4`(+1 vs `5c24e4e`: `fix(v2/live-e2e): prefer local env over example placeholders`)·WT **CLEAN**·`test..develop` **347 ahead**·origin/develop **동기화 @ `10f32c4`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(347 ahead)·교차 BE `@8b7e476` WT **CLEAN**·285 ahead·Open 0(backend)·test **246/246 PASS**(769 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **632**(347+285)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 769차 2026-06-15T12:08 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.0s)·npm N/A(no `package.json`)·develop `@8b7e476`(+1 vs `ec5f11c`: `fix(v2/live-e2e): add sanitized DB probe failure detail` — `LiveReadinessProbe`·`LiveReadinessProbeTest`, 2 files +67/-1)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **285 ahead**·origin/develop **동기화 @ `8b7e476`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(285 ahead)·교차 FE `@5c24e4e` WT **CLEAN**·346 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(768 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **631**(285+346)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 768차 2026-06-15T11:58 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.24s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.36s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@5c24e4e`(+1 vs `14a2bb9`: `fix(v2/live-e2e): ignore placeholder guardian credentials in suite gate`)·WT **CLEAN**·`test..develop` **346 ahead**·origin/develop **동기화 @ `5c24e4e`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(346 ahead)·교차 BE `@ec5f11c` WT **CLEAN**·284 ahead·Open 0(backend)·test **246/246 PASS**(767 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **630**(346+284)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 767차 2026-06-15T11:50 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.3s)·npm N/A(no `package.json`)·develop `@ec5f11c`(+1 vs `d862a82`: `fix(v2/live-e2e): expose database probe detail in health response` — `HealthController`·`LiveReadinessProbe`·`HealthControllerTest`·`OgadaBackendApplicationTests`, 4 files +46/-13)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **284 ahead**·origin/develop **동기화 @ `ec5f11c`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(284 ahead)·교차 FE `@14a2bb9` WT **CLEAN**·345 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(766 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **629**(284+345)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 766차 2026-06-15T11:39 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.85s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 4.93s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@14a2bb9`(+2 vs `95e7e96`: `e6ddceb` L02_M02 a11y · `14a2bb9` L02_M07 body restraint care UI wire)·WT **CLEAN**·`test..develop` **345 ahead**·origin/develop **동기화 @ `14a2bb9`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(345 ahead)·교차 BE `@d862a82` WT **CLEAN**·283 ahead·Open 0(backend)·test **246/246 PASS**(765 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **628**(345+283)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 765차 2026-06-15T11:34 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.0s)·npm N/A(no `package.json`)·develop `@d862a82`(+1 vs `df14e15`: `feat(v2/L02_M07): add L02 care V130-V131 integrity triggers` — V132 migration, 1 file +178)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **283 ahead**·origin/develop **동기화 @ `d862a82`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(283 ahead)·교차 FE `@e6ddceb` WT **CLEAN**·344 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(764 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **627**(283+344)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 764차 2026-06-15T10:58 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.68s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.06s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_ACCESS_TOKEN or EMAIL/PASSWORD missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@95e7e96`(+1 vs `a5e7722`: `fix(v2/G19): guard malformed provider discovery URLs`)·WT **CLEAN**·`test..develop` **343 ahead**·origin/develop **동기화 @ `95e7e96`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(343 ahead)·교차 BE `@df14e15` WT **CLEAN**·282 ahead·Open 0(backend)·test **246/246 PASS**(763 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **625**(343+282)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 763차 2026-06-15T10:51 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.1s)·npm N/A(no `package.json`)·develop `@df14e15`(+1 vs `ea6092a`: `feat(v2/live-e2e): add backend ping health endpoint`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **282 ahead**·origin/develop **동기화 @ `df14e15`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(282 ahead)·교차 FE `@a5e7722` WT **CLEAN**·342 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(762 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **624**(282+342)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 762차 2026-06-15T10:38 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.39s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.27s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_ACCESS_TOKEN or EMAIL/PASSWORD missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@a5e7722`(+1 vs `1264c16`: `fix(v2/live-e2e): tighten credential and client-id suite gating`)·WT **CLEAN**·`test..develop` **342 ahead**·origin/develop **동기화 @ `a5e7722`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(342 ahead)·교차 BE `@ea6092a` WT **CLEAN**·281 ahead·Open 0(backend)·test **246/246 PASS**(761 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **623**(342+281)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 761차 2026-06-15T10:30 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.3s)·npm N/A(no `package.json`)·develop `@ea6092a`(+1 vs `9c6970c`: `feat(v2/L02_M07): add body restraint care API`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **281 ahead**·origin/develop **동기화 @ `ea6092a`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(281 ahead)·교차 FE `@1264c16` WT **CLEAN**·341 ahead·Open **0(frontend)**·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(760 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **622**(281+341)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 760차 2026-06-15T10:17 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.84s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 7.08s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_ACCESS_TOKEN or EMAIL/PASSWORD missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@1264c16`(+1 vs `8ae34f5`: `feat(v2/L02_M02): wire intensive excretion observation care UI`)·WT **CLEAN**·`test..develop` **341 ahead**·origin/develop **동기화 @ `1264c16`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(341 ahead)·교차 BE `@9c6970c` WT **CLEAN**·280 ahead·Open 0(backend)·test **246/246 PASS**(759 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **621**(341+280)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 759차 2026-06-15T10:09 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.072s)·npm N/A(no `package.json`)·develop `@9c6970c`(+1 vs `fd42b7e`: `test(v2/L02_M02): add intensive excretion observation live API routing harness`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **280 ahead**·origin/develop **동기화 @ `9c6970c`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(280 ahead)·교차 FE `@8ae34f5` WT **CLEAN**·340 ahead·Open **0(frontend)**·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(758 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **620**(280+340)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 758차 2026-06-15T09:55 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 84.47s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 7.60s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_ACCESS_TOKEN or EMAIL/PASSWORD missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)·develop `@8ae34f5`(+1 vs `5f17beb`: `fix(live-e2e): skip authenticated suites without credentials`)·WT **CLEAN**·`test..develop` **340 ahead**·origin/develop **동기화 @ `8ae34f5`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·merge **미실행**(340 ahead)·교차 BE `@fd42b7e` WT **CLEAN**·279 ahead·Open 0(backend)·test **246/246 PASS**(757 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **619**(340+279)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 757차 2026-06-15T09:47 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.0s)·npm N/A(no `package.json`)·develop `@fd42b7e`(+1 vs `6bd16b9`: `feat(v2/L02_M02): add intensive excretion observation care API`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **279 ahead**·origin/develop **동기화 @ `fd42b7e`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(279 ahead)·교차 FE `@5f17beb` WT **CLEAN**·339 ahead·Open **0(frontend)**·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(756 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **618**(279+339)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 756차 2026-06-15T09:34 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.57s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 7.33s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_ACCESS_TOKEN or LIVE_E2E_EMAIL/PASSWORD missing; `scripts/dev-live-e2e.env` **PRESENT**·backend **DOWN**; QA-B95 Planned)·develop `@5f17beb`(+1 vs `98102c3`: `fix(v2/live-e2e): skip suites when backend health probe fails`)·WT **CLEAN**·`test..develop` **339 ahead**·origin/develop **동기화 @ `5f17beb`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@6bd16b9` WT **CLEAN**·278 ahead·Open 0(backend)·test **246/246 PASS**(755 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **617**(339+278)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E credentials+backend @ localhost:8080). -->
+<!-- tester-sync: TSR 755차 2026-06-15T09:21 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.4s)·npm N/A(no `package.json`)·develop `@6bd16b9`(+1 vs `4aac676`: `fix(v2/live-e2e): expose backend readiness on health endpoint`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **278 ahead**·origin/develop **동기화 @ `6bd16b9`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(278 ahead)·교차 FE `@98102c3` WT **CLEAN**·338 ahead·Open **0(frontend)**·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(754 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **616**(278+338)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E backend). -->
+<!-- tester-sync: TSR 754차 2026-06-15T09:07 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 54.20s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.92s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **33 suites FAIL/124 skipped**(backend `localhost:8080` ECONNREFUSED; `scripts/dev-live-e2e.env` **PRESENT**; QA-B95 Planned)·develop `@98102c3`(+2 vs `73094f9`: `85bfb4a` a11y · `98102c3` G19 provider discovery pilot live E2E harness)·WT **CLEAN**·`test..develop` **338 ahead**·origin/develop **동기화 @ `98102c3`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@4aac676` WT **CLEAN**·277 ahead·Open 0(backend)·test **246/246 PASS**(753 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **615**(338+277)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E backend). -->
+<!-- tester-sync: TSR 753차 2026-06-15T08:54 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.0s)·npm N/A(no `package.json`)·develop `@4aac676`(+1 vs `73df04d`: `test(v2/G19): deepen integrated-home provider discovery pilot E2E`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **277 ahead**·origin/develop **동기화 @ `4aac676`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(277 ahead)·교차 FE `@85bfb4a` WT **CLEAN**·337 ahead·Open **0(frontend)**·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(752 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **614**(277+337)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
+<!-- tester-sync: TSR 752차 2026-06-15T08:20 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 51.55s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 6.15s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_* env 누락; `scripts/dev-live-e2e.env` absent; QA-B95 Planned)·develop `@73094f9`(+1 vs `0122bfe`: `feat(v2/G30,G39): wire monitoring evidence window and care-provision dispatch live E2E`)·WT **CLEAN**·`test..develop` **336 ahead**·origin/develop **동기화 @ `73094f9`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@73df04d` WT **CLEAN**·276 ahead·Open 0(backend)·test **246/246 PASS**(751 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **612**(336+276)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
+<!-- tester-sync: TSR 751차 2026-06-15T08:10 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.3s)·npm N/A(no `package.json`)·develop `@73df04d`(+1 vs `8cb8789`: `feat(v2/G30,G39): monitoring evidence window and care-provision dispatch pilot E2E`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **276 ahead**·origin/develop **동기화 @ `73df04d`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(276 ahead)·교차 FE `@0122bfe` WT **CLEAN**·335 ahead·Open **0(frontend)**·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(750 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **611**(276+335)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
+<!-- tester-sync: TSR 750차 2026-06-15T07:55 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.4s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.1s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_* env 누락; `scripts/dev-live-e2e.env` absent; QA-B95 Planned)·develop `@0122bfe`(+1 vs `4d1a4f2`: live E2E harness defaults commit)·WT **CLEAN**·`test..develop` **335 ahead**·**QA-B97 Fixed @ `0122bfe`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@8cb8789` WT **CLEAN**·275 ahead·Open 0(backend)·test **246/246 PASS**(749 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **610**·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
+<!-- tester-sync: TSR 749차 2026-06-15T07:44 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.2s)·npm N/A(no `package.json`)·develop `@8cb8789` HEAD **불변**(747차 대비: `chore(g19): centralize provider discovery filter value`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **275 ahead**·origin/develop **동기화 @ `8cb8789`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(275 ahead)·교차 FE `@4d1a4f2` WT **DIRTY 2M**·334 ahead·Open 1 BLOCK **QA-B97(frontend)**·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(748 carry)·⚠ **cross-stream merge BLOCK**·merge pending **609**(275+334)·merge **실행 금지**·operation 승격 **BLOCK**(QA-B97+QA-B95). -->
+<!-- tester-sync: TSR 748차 2026-06-15T07:32 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.5s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.26s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·live E2E **SKIP**(LIVE_E2E_* env 누락; QA-B95 Planned)·develop `@4d1a4f2` HEAD **불변**·WT **DIRTY 2M**·`test..develop` **334 ahead**·**Open 1 BLOCK QA-B97(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·⚠ frontend merge gate **BLOCK**·교차 BE `@8cb8789` WT **CLEAN**·275 ahead·Open 0(backend)·test **246/246 PASS**(747 carry)·⚠ **cross-stream merge BLOCK**·merge pending **609**·merge **실행 금지**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
+<!-- tester-sync: TSR 747차 2026-06-15T07:25 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~27.3s)·npm N/A(no `package.json`)·develop `@8cb8789`(+1 vs `41d8de5`: `chore(g19): centralize provider discovery filter value`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **275 ahead**·origin/develop **동기화 @ `8cb8789`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(275 ahead)·교차 FE `@4d1a4f2` WT **CLEAN**·334 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(746 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **609**(275+334)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
 <!-- tester-sync: TSR 746차 2026-06-15T07:09 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 87.28s)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 7.38s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·live E2E **SKIP**(LIVE_E2E_* env 누락; QA-B95 Planned)·develop `@4d1a4f2`(+2 vs `9afa30e`: G19 integrated-home provider discovery UI · G39 monthly care record guardian dispatch UI)·WT **CLEAN**·`test..develop` **334 ahead**·origin/develop **동기화 @ `4d1a4f2`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@41d8de5`(TSR 745 carry)·274 ahead·Open 0(backend)·test **246/246 PASS**(745 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **608**(334+274)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
 <!-- tester-sync: TSR 745차 2026-06-15T07:02 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, ~15.9s)·npm N/A(no `package.json`)·develop `@41d8de5`(+1 vs `f44ee739`: `test(v2/G19): add integrated-home provider discovery live API harness`)·WT **CLEAN**·develop HEAD `mvn test` **미재실행**(tester read-only·src/backend-test 우선)·`test..develop` **274 ahead**·origin/develop **동기화 @ `41d8de5`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(274 ahead)·교차 FE `@9afa30e` WT **CLEAN**·333 ahead·Open 0(frontend)·Planned **1 QA-B95**·test `@c7c8f07` **217/217 PASS**(744 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **607**(274+333)·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
 <!-- tester-sync: TSR 744차 2026-06-15T06:50 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 52.33s)·`mvn test` N/A(no `pom.xml`)·`npm run build` **781 modules SUCCESS**(3 chunks, max 367.09 kB, 5.14s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·`npm run test:live-e2e` **4 suites FAIL/18 skipped**(LIVE_E2E_* env 누락; `scripts/dev-live-e2e.env` absent)·develop `@9afa30e`(+1 vs `eb16734`: `feat(v2/G19): wire integrated-home provider discovery UI to branch form`)·WT **CLEAN**·HEAD test **미재실행**(742 carry 1337/1337 PASS)·`test..develop` **333 ahead**·origin/develop **동기화 @ `9afa30e`**·origin/test **동기화 @ `c7c8f07`**·**Open 0(frontend)**·Planned **1 QA-B95**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@f44ee739` WT **CLEAN**·273 ahead·Open 0(backend)·test **246/246 PASS**(743 carry)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **606**·merge **미실행**·operation 승격 **BLOCK**(QA-B95 live E2E env). -->
@@ -98,6 +257,1367 @@
 <!-- tester-sync: TSR 648차 2026-06-14T09:44 UTC (frontend) — test `@c7c8f07` (`src/frontend-test`) `npm test -- --run` **217/217 PASS**(70 files, 53.60s)·`npm run build` **781 modules SUCCESS**(3 청크, max 367.09 kB, 5.00s)·`npm audit --omit=dev --audit-level=high` **0 vulnerabilities**·develop `@4ba7ea6`(+1 vs `d5ff3f8`)·WT **CLEAN**·`test..develop` **282 ahead**·origin/develop **동기화 @ `4ba7ea6`**·origin/test **동기화 @ `c7c8f07`**·**QA-B83 Fixed**·**Open 0(frontend)**·PASS(v1.2+v1.3-A @ test)·★ frontend merge gate **FULLY UNBLOCKED**·교차 BE `@6b7e6cb` WT **CLEAN**·233 ahead·Open 0(backend)·★ **cross-stream merge FULLY UNBLOCKED**·merge pending **515**(282+233). -->
 <!-- tester-sync: TSR 647차 2026-06-14T09:35 UTC (backend) — test `@598d108` (`src/backend-test`) `mvn test` **246/246 PASS**(64 suites, 14.674s)·npm N/A(no `package.json`)·develop `@6b7e6cb`(+1 vs `c22a5dc`: `feat(v2/G17b): enforce cognitive activity non-provision reason on functional recovery plans`)·WT **CLEAN**·`test..develop` **233 ahead**·origin/develop **동기화 @ `6b7e6cb`**·origin/test **동기화 @ `598d108`**·**Open 0(backend)**·PASS(v1 @ test)·★ backend merge gate **FULLY UNBLOCKED**·merge **미실행**(233 ahead)·교차 FE `@d5ff3f8` WT **DIRTY 2M**·Open 1 BLOCK **QA-B83(frontend)**·⚠ **cross-stream merge BLOCK**·merge pending **514**(233+281). -->
 
+# develop ↔ test diff 메타 — backend (2026-06-16 866차)
+
+> test `@598d108` 불변 · develop `@f5205e3`(+1 vs `2ba2761`) · WT **CLEAN** · test **246/246 PASS**(14.452s) · ★ **backend merge FULLY UNBLOCKED** · ★ **cross-stream FULLY UNBLOCKED** · merge pending **336** (329 BE + 7 FE) · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `f5205e3` |
+| delta | +1 commit (`feat(v2/live-e2e): add guardian bootstrap endpoint for QA-B95`, 9 files +582/-5) |
+| ahead | 329 |
+| regression | `mvn test` 246/246 PASS (64 suites) |
+| cross-stream FE | develop `@d499130` · test `@7106106` · 7 ahead · WT CLEAN |
+| Open | 0(active) |
+| Planned | QA-B95 (merge + live E2E full verify) |
+
+# develop ↔ test diff 메타 — backend (2026-06-16 861차)
+
+> test `@598d108` 불변 · develop `@f6f1756`(+1 vs `002e3eb`) · WT **CLEAN** · test **246/246 PASS** · ★ **backend merge FULLY UNBLOCKED** · ★ **cross-stream FULLY UNBLOCKED** · merge pending **329** (326 BE + 3 FE) · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `f6f1756` |
+| ahead (`test..develop`) | **326** |
+| test `mvn test` | **246/246 PASS** (64 suites, 15.321s) |
+| develop HEAD `mvn test` | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| test WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | FE develop `@58ee122` / test `@7106106` WT **CLEAN** · Open **0** · **3 ahead** |
+| merge pending (total) | **329** (326 BE + 3 FE) |
+| verdict | **PASS(@backend-test) / backend merge UNBLOCKED** |
+
+## 880차 delta (878→880)
+
+- test HEAD: **`7106106` 불변** — regression `npm test` **1509/1509 PASS** (338.11s) · build **1020 modules** (12.58s) · audit **0**
+- live E2E @ test: **3 suites FAIL / 43 pass / 1 skip · 4 tests FAIL / 108 pass / 25 skip** (878과 동일 — FAIL P5b·transport timeout·Blob×2; QA-B95 Planned)
+- develop HEAD: **`8763b54`→`84e75ec`**(+2 since 878; **+14** vs test)
+  - `b002bb4` — `fix(v2/transport): session restore on reload and roster contact columns (QA-B115)`
+  - `84e75ec` — `feat(v2/transport): split-view route editor with branch stops (QA-B115)` (**partial**)
+- develop WT: **DIRTY 6M+2U** (`components/transport/KakaoTransportMap*`·`TransportRouteSplitView*`·`lib/kakaoMapGeocoder.js`·`pages/transportUtils.js`·`styles/components.css` + untracked `lib/koreanGeocode*`) — **QA-B115 recurrence** (878의 2M TransportPage→6M+2U Kakao map/split-view cluster)
+- cross-stream: BE develop `@35e03ef` (**334 ahead**) · WT **CLEAN** · Open **0** · **backend merge FULLY UNBLOCKED**
+- merge pending: **348** (334 BE + 14 FE)
+- verdict: **PASS(@test)** · frontend merge **BLOCK(develop dirty)** · operation **BLOCK(QA-B115+QA-B95)**
+
+## 879차 delta (877→879)
+
+- test HEAD: **`598d108` 불변** — regression `mvn test` **246/246 PASS** (64 suites, ~15.6s)
+- develop HEAD: **`c1f1428`→`35e03ef`**(+1 since 877)
+  - `35e03ef` — `feat(v1.3-A/transport): extend roster contacts with guardian mapping` (5 files +181/-4)
+- develop WT: **CLEAN** · origin/develop **@ `35e03ef`**
+- `test..develop`: **333→334 ahead**
+- cross-stream: FE develop `@8763b54` · test `@7106106` · WT **DIRTY 10M+4U** · Open **1 BLOCK QA-B115** · **12 ahead**
+- merge pending: **346** (334 BE + 12 FE)
+- verdict: **PASS(@backend-test)** · backend merge **FULLY UNBLOCKED** · cross-stream **BLOCK(FE QA-B115)** · operation **BLOCK(QA-B115+QA-B95)**
+
+## 878차 delta (876→878)
+
+- test HEAD: **`7106106` 불변** — regression `npm test` **1509/1509 PASS** (287.07s) · build **1020 modules** (7.64s) · audit **0**
+- live E2E @ test: **3 suites FAIL / 43 pass / 1 skip · 4 tests FAIL / 108 pass / 25 skip** (876과 동일 — FAIL P5b·transport timeout·Blob×2; QA-B95 Planned)
+- develop HEAD: **`5ebaade`→`8763b54`**(+1 since 876; **+12** vs test)
+  - `8763b54` — `feat(v2/transport): split compliance page and close dirty-tree (QA-B115)` (**partial**)
+- develop WT: **DIRTY 2M** (`TransportPage.jsx`·`TransportPage.test.jsx`) — **QA-B115 recurrence**
+- cross-stream: BE develop `@c1f1428` (**333 ahead**) · WT **CLEAN** · Open **0** · **backend merge FULLY UNBLOCKED**
+- merge pending: **345** (333 BE + 12 FE)
+- verdict: **PASS(@test)** · frontend merge **BLOCK(develop dirty)** · operation **BLOCK(QA-B115+QA-B95)**
+
+## 867차 delta (864→867)
+
+- test HEAD: **`7106106` 불변** — regression `npm test` **1509/1509 PASS** (262.65s) · build **1020 modules** (10.11s) · audit **0**
+- live E2E @ test: **4 suites FAIL / 42 pass / 1 skip · 5 tests FAIL / 107 pass / 25 skip** (864와 동일 — QA-B95 fix는 develop only)
+- develop HEAD: **`57114b8`→`b3bd0cc`**(+2 since 864; **+8** vs test)
+  - `d499130` — `feat(v1.2.1/G26,G24b): unify monitoring basis labels (BNK-273)`
+  - `b3bd0cc` — `fix(v2/live-e2e): wire guardian bootstrap fallback for QA-B95`
+- develop HEAD test: **1528/1528 PASS** (319 files, 270.99s; +2 tests vs 864)
+- develop/test WT: **CLEAN**
+- cross-stream: BE develop `@f5205e3` (+329 ahead) · WT **CLEAN** · Open **0**
+- merge pending: **337** (329 BE + 8 FE)
+- verdict: **PASS(@test)** · frontend merge **FULLY UNBLOCKED(8 commits)** · operation **BLOCK(QA-B95)**
+
+## 861차 delta (859→861)
+
+- develop HEAD: **`002e3eb`→`f6f1756`**(+1 committed; `origin/develop` 동기화)
+  - commit: `fix(v2/live-e2e): harden bootstrap error fallback paths`
+  - files: `LiveE2eController.java`·`LiveE2eControllerTest.java` (2 files +32/-3)
+- develop WT: **CLEAN 유지**
+- test HEAD: `598d108` (변경 없음)
+- `test..develop`: **325→326 ahead**
+- regression: `mvn test` **246/246 PASS** (15.321s)
+- cross-stream: FE develop `@58ee122` / test `@7106106` · WT **CLEAN** · **3 ahead**
+- verdict: **PASS** · backend merge **FULLY UNBLOCKED**
+
+# develop ↔ test diff 메타 — backend (2026-06-16 859차)
+
+> test `@598d108` 불변 · develop `@002e3eb`(+1 vs `8a92179`) · WT **CLEAN** · test **246/246 PASS** · ★ **backend merge FULLY UNBLOCKED** · ★ **cross-stream FULLY UNBLOCKED** · merge pending **327** (325 BE + 2 FE) · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `002e3eb` |
+| ahead (`test..develop`) | **325** |
+| test `mvn test` | **246/246 PASS** (64 suites, 13.877s) |
+| develop HEAD `mvn test` | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| test WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | FE develop `@cb457b7` / test `@7106106` WT **CLEAN** · Open **0** · **2 ahead** |
+| merge pending (total) | **327** (325 BE + 2 FE) |
+| verdict | **PASS(@backend-test) / backend merge UNBLOCKED** |
+
+## 859차 delta (857→859)
+
+- develop HEAD: **`8a92179`→`002e3eb`**(+1 committed; `origin/develop` 동기화)
+  - commit: `feat(v2/L02): add care-scoped nursing service report proxy APIs`
+  - files: `CareReportController.java`·`CareReportService.java`·`CareReportServiceTest.java`·`CareReportLiveApiRoutingE2eTest.java`·`MustApiEndpointRoutingTest.java`·`RoleBasedControllerAccessTest.java` (6 files +265/-1)
+- develop WT: **CLEAN 유지**
+- test HEAD: `598d108` (변경 없음)
+- `test..develop`: **324→325 ahead**
+- regression: `mvn test` **246/246 PASS** (13.877s)
+- cross-stream: FE develop `@cb457b7` / test `@7106106` · WT **CLEAN** · **2 ahead**
+- verdict: **PASS** · backend merge **FULLY UNBLOCKED**
+
+# develop ↔ test diff 메타 — backend (2026-06-16 857차)
+
+> test `@598d108` 불변 · develop `@8a92179`(+1 vs `39f5f4e`) · WT **CLEAN** · test **246/246 PASS** · ★ **backend merge FULLY UNBLOCKED** · ★ **cross-stream FULLY UNBLOCKED** · merge pending **325** (324 BE + 1 FE) · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `8a92179` |
+| ahead (`test..develop`) | **324** |
+| test `mvn test` | **246/246 PASS** (64 suites, 14.784s) |
+| develop HEAD `mvn test` | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| test WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | FE develop `@4c9103d` / test `@7106106` WT **CLEAN** · Open **0** · **1 ahead** |
+| merge pending (total) | **325** (324 BE + 1 FE) |
+| verdict | **PASS(@backend-test) / backend merge UNBLOCKED** |
+
+## 857차 delta (855→857)
+
+- develop HEAD: **`39f5f4e`→`8a92179`**(+1 committed; `origin/develop` 동기화)
+  - commit: `fix(v2/live-e2e): harden bootstrap controller failure handling`
+  - files: `LiveE2eController.java`·`LiveE2eControllerTest.java` (2 files +80/-4)
+- develop WT: **CLEAN 유지**
+- test HEAD: `598d108` (변경 없음)
+- `test..develop`: **323→324 ahead**
+- regression: `mvn test` **246/246 PASS** (14.784s)
+- cross-stream: FE develop `@4c9103d` / test `@7106106` · WT **CLEAN** · **1 ahead**
+- verdict: **PASS** · backend merge **FULLY UNBLOCKED**
+
+# develop ↔ test diff 메타 — backend (2026-06-16 850차)
+
+> test `@598d108` 불변 · develop `@e54a699`(+1 vs `c5f1325`) · WT **CLEAN** · test **246/246 PASS** · **QA-B110 Fixed** · ★ **backend merge FULLY UNBLOCKED** · ★ **cross-stream FULLY UNBLOCKED** · merge pending **322** (321 BE + 1 FE) · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `e54a699` |
+| ahead (`test..develop`) | **321** |
+| test `mvn test` | **246/246 PASS** (64 suites, 13.608s) |
+| develop HEAD `mvn test` | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| test WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | FE develop `@67653a4` / test `@68da0aa` WT **CLEAN** · Open **0** · **1 ahead** |
+| merge pending (total) | **322** (321 BE + 1 FE) |
+| verdict | **PASS(@backend-test) / backend merge UNBLOCKED** |
+
+## 850차 delta (848→850)
+
+- develop HEAD: **`c5f1325`→`e54a699`**(+1 committed; `origin/develop` 동기화)
+  - commit: `fix(v2/visits): return unpaired status for missing paired schedule`
+  - files: `VisitService.java`·`VisitServiceTest.java` (2 files +12/-1)
+- develop WT: **DIRTY 2M → CLEAN** (**QA-B110 Fixed**)
+- test HEAD: `598d108` (변경 없음)
+- `test..develop`: **320→321 ahead**
+- regression: `mvn test` **246/246 PASS** (13.608s)
+- cross-stream: FE develop `@67653a4` / test `@68da0aa` · WT **CLEAN** · **1 ahead**
+- verdict: **PASS** · backend merge **FULLY UNBLOCKED**
+
+# develop ↔ test diff 메타 — frontend (2026-06-16 849차)
+
+> ★★ **MERGE EXECUTED** `09e4ec1`→`68da0aa`(5 commits·FF)·**origin/test PUSH 완료** · test `@68da0aa` (= develop) · WT **CLEAN** · post-merge **1509/1509 PASS** · build 1020 modules (11.01s) · live E2E **47 suites SKIP/137 skipped** (staff login failed; guardian credentials missing; QA-B95) · Open **0(active)** · **frontend merge COMPLETE** · ⚠ **cross-stream BLOCK**(QA-B110) · merge pending **320** (BE only) · operation **BLOCK**(QA-B110+QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `68da0aa` (849차 merge+push) |
+| develop HEAD | `68da0aa` |
+| ahead (`test..develop`) | **0** |
+| origin/test | `@68da0aa` (동기화) |
+| origin/develop | `@68da0aa` (동기화) |
+| test npm test | **1509/1509 PASS** (317 files, 266.68s) |
+| test build | **1020 modules SUCCESS** (index 869.96 kB vite warn, 11.01s) |
+| test audit | **0 vulnerabilities** |
+| test live E2E | **47 suites SKIP / 137 skipped** (staff login failed; guardian missing; env PRESENT; backend@8080 UP/200) |
+| develop WT | **CLEAN** |
+| routes / pages | **100 / 81** |
+| Open (frontend) | **0(active)** |
+| Planned (frontend) | **1** (`QA-B95`) |
+| merge gate (frontend) | **MERGED + origin/test push COMPLETE** |
+| cross-stream merge | BE `@c5f1325` WT **DIRTY 2M** · Open **1 BLOCK QA-B110** · 320 ahead |
+| merge pending (total) | **320** (backend only) |
+| verdict | **PASS(frontend 이관 COMPLETE @ test 68da0aa)** |
+
+### 849차 merge 커밋 (5)
+
+1. `64f6753` — `fix(v2/live-e2e): allow configured default credentials in auth probes`
+2. `43d308a` — `fix(v2/L03): stabilize NursingServiceRecordPage save tests (QA-B108)`
+3. `14d210c` — `fix(v2/L02): stabilize meal preference create test timing (QA-B109)`
+4. `b23f5bf` — `fix(v2/live-e2e): bootstrap staff auth fallback in harness`
+5. `68da0aa` — `chore(live-e2e): surface env context for diagnostics`
+
+---
+
+# develop ↔ test diff 메타 — frontend (2026-06-16 845차)
+
+> test `@09e4ec1` 불변 · develop `@14d210c`(+3) · WT **CLEAN** · test **1507/1507 PASS** · develop **1507/1507 PASS** · **QA-B109 Fixed @ `14d210c`** · Open **0(active)** · merge gate **FULLY UNBLOCKED** · cross-stream **FULLY UNBLOCKED** · merge pending **322** (319 BE + 3 FE) · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `09e4ec1` |
+| develop HEAD | `14d210c` |
+| ahead (`test..develop`) | **3** |
+| test npm test | **1507/1507 PASS** (317 files, 267.13s) |
+| develop npm test | **1507/1507 PASS** (317 files, 268.03s) |
+| test/develop build | **PASS / PASS** (1020 modules / 10.53s) |
+| test/develop audit | **0 / 0 vulnerabilities** |
+| routes / pages | **100 / 81** |
+| Open (frontend) | **0(active)** |
+| Planned (frontend) | **1** (`QA-B95`) |
+| merge gate (frontend) | **FULLY UNBLOCKED** (3 commits pending · merge **미실행**) |
+| cross-stream merge | BE `@aa6816a` WT **CLEAN** · Open 0 · 319 ahead |
+| merge pending (total) | **322** (319 BE + 3 FE) |
+| verdict | **PASS(@test) + frontend merge FULLY UNBLOCKED** |
+
+## 845차 delta (843→845)
+
+- develop HEAD: **`43d308a`→`14d210c`**(+2 committed since 843차; **origin/develop 동기화 @ `14d210c`**)
+  - `64f6753` — `fix(v2/live-e2e): allow configured default credentials in auth probes`
+  - `43d308a` — `fix(v2/L03): stabilize NursingServiceRecordPage save tests (QA-B108)` (**QA-B108 Fixed**)
+  - `14d210c` — `fix(v2/L02): stabilize meal preference create test timing (QA-B109)` (**QA-B109 Fixed**)
+- develop WT: **CLEAN**
+- test HEAD: `09e4ec1` (변경 없음 · merge **미실행**)
+- `test..develop`: **1→3 ahead**
+- test `npm test -- --run`: **1507/1507 PASS** (267.13s; 843차 1504/1507 FAIL 회복)
+- develop `npm test -- --run`: **1507/1507 PASS** (268.03s)
+- `MealPreferenceSurveyPage.test.jsx` isolated: **3/3 PASS** @ develop `@14d210c`
+- **QA-B109 Fixed @ `14d210c`**
+- frontend merge gate **FULLY UNBLOCKED** · develop→test merge **미실행**(3 commits)
+- 교차(backend): develop `@aa6816a` · test `@598d108` · **319 ahead** · Open **0**
+- ★ **cross-stream merge FULLY UNBLOCKED** · operation **BLOCK**(QA-B95 only)
+
+---
+
+## 844차 delta (842→844)
+
+- develop HEAD: **`30f03e8`→`aa6816a`**(+1 committed; `origin/develop` 동기화)
+  - commit: `fix(v2/security): harden live-e2e bootstrap exposure in prod`
+  - files: `ProductionSecretValidator.java`·`LiveE2eBootstrapResponse.java`·`LiveE2eBootstrapService.java`·`ProductionSecretValidatorTest.java`·`LiveE2eBootstrapServiceTest.java`·`LiveE2eControllerTest.java` (6 files +78/-10)
+- develop WT: **CLEAN 유지**
+- test HEAD: `598d108` (변경 없음)
+- `test..develop`: **318→319 ahead**
+- regression: `mvn test` **246/246 PASS** (13.778s)
+- npm: **N/A** (`src/backend-test`에 `package.json` 없음)
+- cross-stream: FE develop `@43d308a` / test `@09e4ec1` CLEAN · **BLOCK(QA-B109)**
+
+---
+
+# develop ↔ test diff 메타 — frontend (2026-06-16 843차)
+
+> test `@09e4ec1` 불변 · develop `@43d308a`(+1) · WT **CLEAN** · test **1504/1507 FAIL** · develop **1506/1507 FAIL** · **QA-B108 Fixed @ `43d308a`** · Open **1 BLOCK QA-B109** · merge gate **BLOCK** · cross-stream **BLOCK** · merge pending **319** (318 BE + 1 FE) · operation **BLOCK**(QA-B109+QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `09e4ec1` |
+| develop HEAD | `43d308a` |
+| ahead (`test..develop`) | **1** |
+| test npm test | **1504/1507 FAIL** (317 files, 487.56s; 1st 1505/1507 · 2nd 1504/1507) |
+| develop npm test | **1506/1507 FAIL** (`MealPreferenceSurveyPage.test.jsx`; NursingServiceRecordPage isolated **4/4 PASS**) |
+| test/develop build | **PASS / PASS** (1020 modules / 7.33s) |
+| test/develop audit | **0 / 0 vulnerabilities** |
+| routes / pages | **100 / 81** |
+| Open (frontend) | **1 BLOCK** (`QA-B109`) |
+| Planned (frontend) | **1** (`QA-B95`) |
+| merge gate (frontend) | **BLOCK** (develop fail · merge **미실행**) |
+| cross-stream merge | BE `@30f03e8` WT **CLEAN** · Open 0 · 318 ahead |
+| merge pending (total) | **319** (318 BE + 1 FE) |
+| verdict | **BLOCK(frontend merge gate + test regression flakes)** |
+
+## 843차 delta (841→843)
+
+- develop HEAD: **`64f6753`→`43d308a`**(+1 committed; **origin/develop 동기화 @ `43d308a`**)
+  - commit: `fix(v2/L03): stabilize NursingServiceRecordPage save tests (QA-B108)`
+  - **QA-B108 Fixed** — `NursingServiceRecordPage.test.jsx` isolated **4/4 PASS** @ develop
+- develop WT: **CLEAN**
+- test HEAD: `09e4ec1` (변경 없음 · merge **미실행**)
+- `test..develop`: **1 ahead** (불변)
+- test `npm test -- --run`: **1504/1507 FAIL** (487.56s; full-suite flakes + MealPreference isolated FAIL)
+- develop `npm test -- --run`: **1506/1507 FAIL** (`MealPreferenceSurveyPage.test.jsx` · `createMealPreferenceSurveyApi` waitFor timeout)
+- **신규 Open 1 BLOCK QA-B109** (MealPreferenceSurveyPage create-flow test)
+- **QA-B108 Fixed @ `43d308a`**
+- frontend merge gate **BLOCK** · develop→test merge **미실행**
+- 교차(backend): develop `@30f03e8` · test `@598d108` · **318 ahead** · Open **0**
+- ⚠ **cross-stream merge BLOCK** · operation **BLOCK**(QA-B109+QA-B95)
+
+---
+
+# develop ↔ test diff 메타 — backend (2026-06-16 840차)
+
+> test `@598d108` 불변 · develop `@2495753`(+1) · WT **CLEAN** · merge pending **317** (BE only) · ★ **backend merge UNBLOCKED** · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `2495753` |
+| ahead (`test..develop`) | 317 |
+| test `mvn test` | **246/246 PASS** (64 suites, 13.900s) |
+| develop HEAD `mvn test` | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| test WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | FE `@09e4ec1` WT **CLEAN** · Open 0 |
+| merge pending (total) | **317** (backend only) |
+
+## 840차 delta (838→840)
+
+- develop HEAD: **`3672bbe`→`2495753`**(+1 committed; **origin/develop 동기화 @ `2495753`**)
+  - commit: `fix(v2/L02): align care report RBAC with API spec`
+  - files: `CareReportController.java`·`RoleBasedControllerAccessTest.java` (2 files +47/-18)
+- develop WT: **CLEAN** (불변)
+- test HEAD: `598d108` (변경 없음)
+- `test..develop`: **316→317 ahead**
+- test `mvn test`: **246/246 PASS** (13.900s)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop/test `@09e4ec1` · WT **CLEAN** · Open **0**
+- ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **317**(BE only) · operation **BLOCK**(QA-B95 only)
+
+## 835차 delta (833→835)
+
+- develop HEAD: **`9006a53`→`e10113f`**(+1 committed; **origin/develop·origin/test 동기화 @ `e10113f`**)
+  - commit: `fix(v2/live-e2e): parse exported env defaults in global setup`
+  - files: `liveGlobalSetup.js`·`liveE2eHarness.test.js` (2 files +40/-2)
+- ★★ **MERGE EXECUTED** develop→test `9006a53`→`e10113f`(FF·0 conflicts·`git_merge_to_test.sh frontend TSR835`)·**origin/test PUSH 완료**
+- develop WT: **CLEAN**
+- `test..develop` **0 ahead** (merge 완료)
+- test `npm test -- --run` **1496/1496 PASS**(315 files, 267.84s)
+- pre-merge regression @ `9006a53`: **1495/1495 PASS**(265.13s)
+- live E2E: **47 suites SKIP/137 skipped**(credentials missing)
+- Open **0(active)** · Planned **1 QA-B95**
+- frontend merge gate **MERGED+push COMPLETE**
+- 교차(backend): develop `@92ae60b` · test `@598d108` · **314 ahead** · cross-stream **FULLY UNBLOCKED**
+- merge pending **314**(backend only) · operation **BLOCK**(QA-B95 only)
+
+## 834차 delta (832→834)
+
+- develop HEAD: **`472cb1d`→`92ae60b`**(+1 committed; **origin/develop 동기화 @ `92ae60b`**)
+  - commit: `test(v2/G26): add dual-function statistics live API routing harness`
+  - files: `G26StatisticsReportsLiveApiRoutingE2eTest.java`·`BillingServiceTest.java` (2 files +219)
+- develop WT: **CLEAN** (불변)
+- test HEAD: `598d108` (변경 없음)
+- `test..develop`: **313→314 ahead**
+- test `mvn test`: **246/246 PASS** (~14.9s)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop/test `@9006a53` · WT **CLEAN** · Open **0** · **QA-B107 Fixed**
+- ★ **cross-stream merge FULLY UNBLOCKED** · merge pending **314**(BE only) · operation **BLOCK**(QA-B95 only)
+
+## 833차 delta (831→833)
+
+- develop HEAD: **`6759bf6`→`9006a53`**(+1 committed; **origin/develop·origin/test 동기화 @ `9006a53`**)
+  - commit: `fix(v2/live-e2e): persist skip state for harness gating`
+  - files: `liveConfig.js`·`liveGlobalSetup.js`·`liveE2eHarness.test.js` (3 files +39/-2)
+- ★★ **MERGE EXECUTED** develop→test `6759bf6`→`9006a53`(FF·0 conflicts·`git_merge_to_test.sh frontend TSR833`)·**origin/test PUSH 완료**
+- develop WT: **CLEAN** · **QA-B107 Fixed**
+- `test..develop` **0 ahead** (merge 완료)
+- test `npm test -- --run` **1495/1495 PASS**(315 files, 265.33s)
+- pre-merge regression @ `6759bf6`: **1493/1494 FAIL**(full-suite flakes `MealPreferenceSurveyPage`·`liveE2eHarness`→isolated PASS)
+- live E2E: **47 suites SKIP/137 skipped**(credentials missing)
+- Open **0(active)** · Planned **1 QA-B95**
+- frontend merge gate **MERGED+push COMPLETE**
+- 교차(backend): develop `@472cb1d` · test `@598d108` · **313 ahead** · cross-stream **FULLY UNBLOCKED**
+- merge pending **313**(backend only) · operation **BLOCK**(QA-B95 only)
+
+## 823차 delta (821→823)
+
+- develop HEAD: **`6da49aa`→`b38c6f7`**(+1 committed; **origin/develop 동기화 @ `b38c6f7`**)
+  - commit: `test(v2/G21): add billing claim reflection pilot E2E coverage`
+  - files: `VisitPilotServiceFlowE2eTest`·`VisitLiveApiRoutingE2eTest` (2 files +74)
+- develop WT: **CLEAN** (불변)
+- `test..develop` **308→309 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~14.7s → **~15.3s**)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop `@8b804fc` · test `@ff9c8c5` · **1 ahead** · cross-stream **FULLY UNBLOCKED**
+
+## 821차 delta (819→821)
+
+- develop HEAD: **`f33252a`→`6da49aa`**(+1 committed; **origin/develop 동기화 @ `6da49aa`**)
+  - commit: `feat(v2/G21): expose billing claim reflection status on visit schedules`
+  - files: `VisitBillingClaimReflectionStatus`·`VisitService`·`VisitServiceTest`·pilot/routing/RBAC (11 files +235/-29)
+- develop WT: **CLEAN** (불변)
+- `test..develop` **307→308 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~16.0s → **~14.7s**)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop `@ff9c8c5` · test `@ff9c8c5` · **0 ahead** · ★ **frontend merge COMPLETE**(820차) · cross-stream **FULLY UNBLOCKED**
+
+## 819차 delta (817→819)
+
+- develop HEAD: **`2cf0908`→`f33252a`**(+1 committed; **origin/develop 동기화 @ `f33252a`**)
+  - commit: `feat(v2/L02_M16): add meal preference survey API (G-MEAL-PREFERENCE)`
+  - files: `MealPreferenceSurveyController`·`MealPreferenceSurveyService`·V142 migration·pilot E2E/RBAC (13 files +1198)
+- develop WT: **CLEAN** (불변)
+- `test..develop` **306→307 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~14.6s → **~16.0s**)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop `@49eb944` · **13 ahead** · WT **CLEAN** · Open **0** · cross-stream **FULLY UNBLOCKED**
+
+---
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 820차)
+
+> ★★ **MERGE EXECUTED** `4299914`→`ff9c8c5` (14 commits · FF clean) · test=develop `@ff9c8c5` · WT **CLEAN** · post-merge **1479/1480 PASS** (1 flake isolated PASS) · merge pending **307** (BE only) · ★ **frontend merge COMPLETE** · ★ **cross-stream FULLY UNBLOCKED** · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `ff9c8c5` (820차 merge 완료) |
+| develop HEAD | `ff9c8c5` |
+| ahead (`test..develop`) | **0** |
+| test npm test | **1479/1480 PASS** (311 files, 261.38s; flake `liveE2eHarness`→isolated 21/21 PASS) |
+| develop HEAD npm test | **동일** (merged) |
+| test build | 781 modules (index 789.52 kB vite warn, 9.58s) |
+| test live E2E | **46 suites SKIP/136 skipped** (credentials missing; env PRESENT; backend@8080 UP/200) |
+| develop WT | **CLEAN** |
+| routes / pages | **98** / **146** |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-B95) |
+| merge gate (frontend) | **MERGED** |
+| cross-stream merge | BE `@f33252a` WT **CLEAN** · Open 0 · 307 ahead |
+| merge pending (total) | **307** (backend only) |
+
+## 820차 delta (818→820)
+
+- **MERGE EXECUTED**: `4299914`→`ff9c8c5` (14 commits · fast-forward · 57 files +5018/-239)
+  - scope: L02_M11/M12 patient service·service summary report UI · v1.3-A transport map · L02_M04/M05/M06/M15/M17 reports · a11y · print · pilot E2E
+- post-merge `npm test`: **1479/1480 PASS** (1 full-suite flake `liveE2eHarness` — backend@8080 UP causes probe state; isolated **21/21 PASS**)
+- `test..develop`: **13→0 ahead** (merge complete)
+- routes/pages: **96/77→98/146**
+- merge gate: **FULLY UNBLOCKED→MERGED**
+- cross-stream: **FULLY UNBLOCKED** (BE 307 ahead pending)
+
+---
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 818차)
+
+> test `@4299914` 불변 (796차 merge 유지) · develop `@49eb944`(+13) · WT **CLEAN** · merge pending **320** (307 BE + 13 FE) · ★ **frontend merge FULLY UNBLOCKED** · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `4299914` |
+| develop HEAD | `49eb944` |
+| ahead (`test..develop`) | 13 |
+| test npm test | **1444/1444 PASS** (303 files, 261.54s) |
+| develop HEAD npm test | **1470/1470 PASS** (309 files, 263.60s) |
+| test build | 781 modules (index 789.52 kB vite warn, 7.10s) |
+| test live E2E | **39 suites SKIP/129 skipped** (credentials missing; env PRESENT; backend@8080 UP/200) |
+| develop WT | **CLEAN** |
+| routes / pages | **96** / **77** |
+| Open (frontend) | **0** (QA-B105 Fixed @ `49eb944`) |
+| Planned (frontend) | **1** (QA-B95) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | BE `@f33252a` WT **CLEAN** · Open 0 · 307 ahead |
+| merge pending (total) | **320** (13 FE + 307 BE) |
+
+## 818차 delta (816→818)
+
+- develop HEAD: **`40684a9`→`49eb944`**(+1 committed; **origin/develop 미동기화 @ `49eb944`**)
+  - commit: `Fix client payload fixtures with required address`
+  - fix: `clientPayload.test.js`·`pilotChecklist.test.js` address fixture align (QA-B105 closure)
+- develop WT: **CLEAN** (불변)
+- `test..develop` **12→13 ahead**
+- test `npm test` **1444/1444 PASS** 재실행 (257.25s → **261.54s**)
+- develop HEAD `npm test` **1468/1470 FAIL→1470/1470 PASS**
+- **QA-B105 Fixed @ `49eb944`** · Open **0(frontend)**
+- merge gate **BLOCK→FULLY UNBLOCKED** · cross-stream **BLOCK→FULLY UNBLOCKED**
+
+---
+
+# develop ↔ test diff 메타 — backend (2026-06-15 815차)
+
+> test `@598d108` 불변 · develop `@a25c9de`(+1) · WT **CLEAN** · merge pending **316** (305 BE + 11 FE) · ★ **backend merge UNBLOCKED** · ⚠ **cross-stream BLOCK**(QA-B105) · merge **실행 금지** · operation **BLOCK**(QA-B105+QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `a25c9de` |
+| ahead (`test..develop`) | 305 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.6s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only · src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | FE `@fa20943` WT **CLEAN** · **11 ahead** · Open **1 BLOCK QA-B105** · backend@8080 **UP/200** |
+| merge pending (total) | **316** (305 BE + 11 FE) |
+
+## 815차 delta (813→815)
+
+- develop HEAD: **`9cc0c1d`→`a25c9de`**(+1 committed; **origin/develop 동기화 @ `a25c9de`**)
+  - commit: `feat(v2/live-e2e): expose structured bootstrap readiness states`
+  - files: `LiveE2eBootstrapService`·`LiveE2eController`·`HealthController`·`HealthControllerTest`·`LiveE2eControllerTest` (5 files +80/-12)
+- develop WT: **CLEAN** (불변)
+- `test..develop` **304→305 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~17.0s → **~15.6s**)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop `@fa20943` · **11 ahead** · WT **CLEAN** · Open **1 BLOCK QA-B105** · develop HEAD **1465/1470 FAIL** · cross-stream **BLOCK**
+
+## 813차 delta (811→813)
+
+- develop HEAD: **`ae7e744`→`9cc0c1d`**(+1 committed; **origin/develop 동기화 @ `9cc0c1d`**)
+  - commit: `feat(v2/L02_M06): add position change care report endpoint`
+  - files: `CareReportController`·`PositionChangeReportResponse`·`CareReportService`·`PressureUlcerService`·pilot/routing/RBAC tests (8 files +402/-1)
+- develop WT: **CLEAN** (불변)
+- `test..develop` **303→304 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (20.7s → **~17.0s**)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop `@1daeda7` · **10 ahead** · WT **CLEAN** · Open **0** · cross-stream **FULLY UNBLOCKED**
+
+## 811차 delta (809→811)
+
+- develop HEAD: **`3eeac92`→`ae7e744`**(+1 committed; **origin/develop 동기화 @ `ae7e744`**)
+  - commit: `feat(v2/L02_M17): add intensive excretion care report endpoint`
+  - files: `CareReportController`·`CareReportService`·routing/RBAC tests (7 files +265)
+- develop WT: **CLEAN** (불변)
+- `test..develop` **302→303 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (19.3s → **20.7s**)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED** 유지
+- 교차(frontend): develop `@d46688d` · **8 ahead** · WT **CLEAN** · Open **0** · QA-B102/B104 Fixed(810차) · cross-stream **FULLY UNBLOCKED**
+
+## 809차 delta (807→809)
+
+- develop HEAD: **`e8b8398`→`3eeac92`**(+1 committed; **origin/develop 동기화 @ `3eeac92`**)
+  - commit: `fix(v1.3-A/transport): clean QA-B103 backend dirty tree`
+  - files: transport geocode refactor(`TransportAddressService`·`KakaoGeocodeClient`/`TransportGeocodeService` 제거)·client address guard·pilot/routing tests (22 files +209/-443)
+- develop WT: **DIRTY 8M~14M+3D+1U → CLEAN**
+  - **QA-B103 Fixed @ `3eeac92`**
+- `test..develop` **301→302 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (16.2s → **19.3s**)
+- Open **QA-B103 Fixed** · Open **0(backend)**
+- backend merge gate: **BLOCK → FULLY UNBLOCKED**
+- 교차(frontend): develop `@15e9b64` · **7 ahead** · WT **DIRTY 10M+1U** · QA-B102 recurrence · QA-B104 test FAIL · backend@8080 **UP/200** · cross-stream **BLOCK**
+
+## 807차 delta (805→807)
+
+- develop HEAD: **`e8b8398` 불변** (805차 대비 신규 커밋 없음)
+- develop WT: **CLEAN → DIRTY 8M** (806차 2M → 807차 8M 확대)
+  - `CareReportService` · `CreateClientRequest` · `ClientService` · `LiveE2eBootstrapService` · `KakaoDirectionsClient` · `KakaoGeocodeClient` · `ClientServiceTest` · `RoleBasedControllerAccessTest`
+- `test..develop` **301 ahead** (불변)
+- test `mvn test` **246/246 PASS** 재실행 (22.2s → **16.2s**)
+- Open **QA-B103** 범위 확대 (2M→8M) · backend merge gate **UNBLOCKED → BLOCK**
+- 교차(frontend): develop `@0c523cd` · **6 ahead** · WT **DIRTY 5M** · QA-B102 범위 **1M→5M** · backend@8080 **500**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 797차)
+
+> test `@598d108` 불변 · develop `@221bde7`(+1) · WT **CLEAN** · merge pending **298** (backend only — FE merge COMPLETE @4299914) · ★ **backend merge UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `221bde7` |
+| ahead (`test..develop`) | 298 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.0s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | FE merge **COMPLETE** @ `4299914` (796차 · 0 ahead · post-merge **1444/1444 PASS**) |
+| merge pending (total) | **298** (backend only) |
+
+## 797차 delta (795→797)
+
+- develop HEAD: **`a06a29a`→`221bde7`**(+1) — `feat(v2/live-e2e): add anonymous backend probe endpoint` (`LiveE2eController`·`LiveE2eProbeResponse`·`SecurityConfig`·`LiveE2eControllerTest`, 4 files +62/-1)
+- `test..develop` **297→298 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~15.0s)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): FE merge **COMPLETE** @ `4299914` (796차) · Planned **QA-B95** · merge pending **298** · operation **BLOCK**(QA-B95 only)
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 798차)
+
+> test `@4299914` (796차 merge 유지) · develop `@3549896`(+1 L02_M15) · WT **CLEAN** · **1 ahead** · ★ **frontend merge FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `4299914` |
+| develop HEAD | `3549896` |
+| ahead (`test..develop`) | 1 |
+| test npm test | **1444/1444 PASS** (303 files, 250.38s) |
+| test build | 781 modules (max 367.09 kB, 10.07s) |
+| test live E2E | **39 suites SKIP / 129 skipped** (backend@8080 DOWN; env PRESENT; QA-B95) |
+| routes / pages | **91** / **136** |
+| develop WT | **CLEAN** |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-B95) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (BE `@221bde7` WT **CLEAN** · 298 ahead · Open 0) |
+| merge pending (total) | **299** (1 FE + 298 BE) |
+
+## 798차 delta (796→798)
+
+- develop HEAD: **`4299914`→`3549896`**(+1) — `feat(v2/L02_M15): wire care service special notes UI to V134 weekly API`
+- `test..develop` **0→1 ahead** (796차 merge 이후 신규 develop 커밋)
+- test `npm test` **1444/1444 PASS** 재실행 (250.38s) · build **781 modules** · audit **0**
+- live E2E: backend probe unreachable → **39 suites SKIP** (QA-B95 Planned carry)
+- Open **0(frontend)** · merge gate **FULLY UNBLOCKED** · operation **BLOCK**(QA-B95 only)
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 792차)
+
+> test `@c7c8f07` 불변 · develop `@9ad8346`(+1) · WT **CLEAN** · merge pending **653** (358 FE + 295 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `c7c8f07` |
+| develop HEAD | `9ad8346` |
+| ahead (`test..develop`) | 358 |
+| test npm test | **217/217 PASS** (70 files, 56.79s) |
+| test mvn test | N/A (`pom.xml` 없음) |
+| test build | 781 modules (max 367.09 kB, 5.11s) |
+| test live E2E | **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; env PRESENT; backend DOWN; QA-B95 Planned) |
+| develop HEAD test | **미재실행** (790 carry **1424/1424 PASS**) |
+| develop WT | **CLEAN** |
+| audit | 0 (prod omit=dev) |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-20260615-B95 live E2E env+credentials+backend) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (BE `@81a2223` WT **CLEAN** · Open 0 · test 246/246 PASS · 295 ahead) |
+| merge pending (total) | **653** (358 FE + 295 BE) |
+
+## 792차 delta (790→792)
+
+- develop HEAD: **`15b09df`→`9ad8346`**(+1) — `feat(v2/L02_M13,G30): wire meal assistance UI and phone satisfaction panel` (L02_M13·G30·live E2E suite guard)
+- `test..develop` **357→358 ahead**
+- test `npm test` **217/217 PASS** 재실행 (56.79s) · build **781 modules** · audit **0**
+- **QA-B100 Fixed @ `9ad8346`** · Open **0(frontend)** · frontend merge gate **FULLY UNBLOCKED**
+- 교차(backend): `@81a2223` WT **CLEAN** · Open **0** · cross-stream **FULLY UNBLOCKED** · merge pending **653** · operation **BLOCK**(QA-B95 only)
+
+# develop ↔ test diff 메타 — backend (2026-06-15 791차)
+
+> test `@598d108` 불변 · develop `@81a2223`(+1) · WT **CLEAN** · merge pending **652** (357 FE + 295 BE) · ⚠ **cross-stream BLOCK** (QA-B100) · merge **실행 금지** · operation **BLOCK**(QA-B100+QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `81a2223` |
+| ahead (`test..develop`) | 295 |
+| test mvn test | **246/246 PASS** (64 suites, ~27s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **BLOCK** (FE `@15b09df` WT **DIRTY 1M** · Open **QA-B100** · Planned **QA-B95** · 357 ahead) |
+| merge pending (total) | **652** (295 BE + 357 FE) |
+
+## 791차 delta (789→791)
+
+- develop HEAD: **`e4c240f`→`81a2223`**(+1) — `feat(v2/L02_M13): add integrated meal assistance record API` (14 files +1362)
+- `test..develop` **294→295 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~27s)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@15b09df` WT **DIRTY 1M** · Open **QA-B100** · Planned **QA-B95** · cross-stream **BLOCK** · merge pending **652** · merge **실행 금지**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 789차)
+
+> test `@598d108` 불변 · develop `@e4c240f`(+1) · WT **CLEAN** · merge pending **651** (357 FE + 294 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `e4c240f` |
+| ahead (`test..develop`) | 294 |
+| test mvn test | **246/246 PASS** (64 suites, ~14.7s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@15b09df` WT **CLEAN** · Open 0 · Planned QA-B95 · 357 ahead) |
+| merge pending (total) | **651** (294 BE + 357 FE) |
+
+## 789차 delta (787→789)
+
+- develop HEAD: **`de25b3e`→`e4c240f`**(+1) — `fix(v2/health): harden readiness probe and add V139 integrity guards` (3 files +104/-1)
+- `test..develop` **293→294 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~14.7s)
+- Open **0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@15b09df` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **651**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 787차)
+
+> test `@598d108` 불변 · develop `@de25b3e`(+1) · WT **CLEAN** · merge pending **648** (355 FE + 293 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `de25b3e` |
+| ahead (`test..develop`) | 293 |
+| test mvn test | **246/246 PASS** (64 suites, ~14.2s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@1fd1434` WT **CLEAN** · Open 0 · Planned QA-B95 · 355 ahead) |
+| merge pending (total) | **648** (293 BE + 355 FE) |
+
+## 787차 delta (785→787)
+
+- develop HEAD: **`344a28b`→`de25b3e`**(+1) — `feat(v2/J03): expose notification readiness blockers` (5 files +61/-6)
+- `test..develop` **292→293 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~14.2s)
+- Open **0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@1fd1434` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **648**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 785차)
+
+> test `@598d108` 불변 · develop `@344a28b`(+1) · WT **CLEAN** · merge pending **646** (354 FE + 292 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `344a28b` |
+| ahead (`test..develop`) | 292 |
+| test mvn test | **246/246 PASS** (64 suites, ~14.9s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@950415d` WT **CLEAN** · Open 0 · Planned QA-B95 · 354 ahead) |
+| merge pending (total) | **646** (292 BE + 354 FE) |
+
+## 785차 delta (783→785)
+
+- develop HEAD: **`47a4e25`→`344a28b`**(+1) — `feat(v2/G30): add phone consultation satisfaction for FAQ21841 compliance` (15 files +254/-26)
+- `test..develop` **291→292 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~14.9s)
+- Open **0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@950415d` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **646**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 783차)
+
+> test `@598d108` 불변 · develop `@47a4e25`(+1) · WT **CLEAN** · merge pending **644** (353 FE + 291 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `47a4e25` |
+| ahead (`test..develop`) | 291 |
+| test mvn test | **246/246 PASS** (64 suites, ~14.8s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@41b2123` WT **CLEAN** · Open 0 · Planned QA-B95 · 353 ahead) |
+| merge pending (total) | **644** (291 BE + 353 FE) |
+
+## 783차 delta (781→783)
+
+- develop HEAD: **`e703252`→`47a4e25`**(+1) — `fix(v2/L02_M03): require reasons for skipped bathing schedules` (2 files +30/-6)
+- `test..develop` **290→291 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~14.8s)
+- Open **0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@41b2123` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **644**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 779차)
+
+> test `@598d108` 불변 · develop `@13b8a37`(+1) · WT **CLEAN** · merge pending **640** (351 FE + 289 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `13b8a37` |
+| ahead (`test..develop`) | 289 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.0s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@e6944f1` WT **CLEAN** · Open 0 · Planned QA-B95 · 351 ahead) |
+| merge pending (total) | **640** (289 BE + 351 FE) |
+
+### TSR 779차 vs 777차
+
+| 항목 | 777차 | 779차 |
+|------|-------|-------|
+| develop HEAD | `3a2e82e` | **`13b8a37`**(+1) |
+| develop WT | CLEAN | **CLEAN** |
+| test mvn test | 246/246 (~14.7s) | **246/246 (~15.0s)** |
+| Open (backend) | 0 | **0** |
+| merge gate (backend) | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| cross-stream merge | BLOCK(QA-B99) | **FULLY UNBLOCKED** |
+| merge pending | 638 | **640** |
+
+## 779차 delta (777→779)
+
+- develop HEAD: **`3a2e82e`→`13b8a37`**(+1) — `feat(v2/L02_M01): add weekly care service provision record API` (15 files +1538)
+- `test..develop` **288→289 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~15.0s)
+- Open **0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@e6944f1` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **640**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 777차)
+
+> test `@598d108` 불변 · develop `@3a2e82e`(+1) · WT **CLEAN** · merge pending **638** (350 FE + 288 BE) · ⚠ **cross-stream BLOCK** · merge **실행 금지** · operation **BLOCK**(QA-B99+QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `3a2e82e` |
+| ahead (`test..develop`) | 288 |
+| test mvn test | **246/246 PASS** (64 suites, ~14.7s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **BLOCK** (FE `@09db65e` WT **DIRTY 3M** · Planned QA-B99+QA-B95 · 350 ahead) |
+| merge pending (total) | **638** (288 BE + 350 FE) |
+
+### TSR 777차 vs 775차
+
+| 항목 | 775차 | 777차 |
+|------|-------|-------|
+| develop HEAD | `18ff83e` | **`3a2e82e`**(+1) |
+| develop WT | CLEAN | **CLEAN** |
+| test mvn test | 246/246 (15.4s) | **246/246 (~14.7s)** |
+| Open (backend) | 0 | **0** |
+| merge gate (backend) | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| cross-stream merge | FULLY UNBLOCKED | **BLOCK**(QA-B99) |
+| merge pending | 636 | **638** |
+
+## 777차 delta (775→777)
+
+- develop HEAD: **`18ff83e`→`3a2e82e`**(+1) — `feat(v2/G-7-1-4CHANNEL): add billing statement 4-channel batch dispatch API` (17 files +1301/-5)
+- `test..develop` **287→288 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~14.7s)
+- Open **0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@09db65e`(+1) WT **DIRTY 3M** · Planned **QA-B99+QA-B95** · cross-stream **BLOCK** · merge pending **638**
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 778차)
+
+> test `@c7c8f07` 불변 · develop `@e6944f1`(+2) · WT **CLEAN** · merge pending **639** (351 FE + 288 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `c7c8f07` |
+| develop HEAD | `e6944f1` |
+| ahead (`test..develop`) | 351 |
+| test npm test | **217/217 PASS** (70 files, 51.09s) |
+| test build | 781 modules (max 367.09 kB, 6.08s) |
+| test live E2E | **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned) |
+| develop HEAD test | **미재실행** (778차 test 실측 217/217 PASS @ test WT) |
+| develop WT | **CLEAN** |
+| audit | 0 (prod omit=dev) |
+| routes / pages | **86** / **68** (ROADMAP 144차 baseline carry) |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-20260615-B95 live E2E env+credentials+backend) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (BE `@3a2e82e` WT **CLEAN** · Open 0 · test 246/246 PASS) |
+| merge pending (total) | **639** (351 FE + 288 BE) |
+
+### TSR 778차 vs 776차
+
+| 항목 | 776차 | 778차 |
+|------|-------|-------|
+| develop HEAD | `6f53978` (불변) | **`e6944f1`**(+2) |
+| develop WT | DIRTY 3M (QA-B99) | **CLEAN** (QA-B99 Fixed) |
+| ahead | 349 | **351** |
+| test npm test | 217/217 (51.65s) | **217/217 (51.09s)** |
+| test live E2E | env PRESENT · credentials missing | **env ABSENT** · credentials missing |
+| Open (frontend) | 1 BLOCK QA-B99 | **0** |
+| merge gate (frontend) | BLOCK | **FULLY UNBLOCKED** |
+| cross-stream merge | BLOCK | **FULLY UNBLOCKED** |
+
+## 778차 delta (776→778)
+
+- develop HEAD: **`6f53978`→`e6944f1`**(+2) — `09db65e` L02_M07 a11y · `e6944f1` live-e2e staff/guardian auth probe (QA-B99 Fixed)
+- develop WT **DIRTY 3M→CLEAN** — live E2E harness WIP 커밋 완료
+- `test..develop` **349→351 ahead**
+- test `npm test` **217/217 PASS** 재실행 (51.09s) · build·audit 동일
+- live E2E: `scripts/dev-live-e2e.env` **ABSENT** · LIVE_E2E credentials **미설정** · backend **DOWN**
+- Open **1 BLOCK QA-B99→0** · frontend merge gate **FULLY UNBLOCKED**
+- 교차(backend): `@3a2e82e` WT **CLEAN** · Open **0** · cross-stream **FULLY UNBLOCKED** · merge pending **639**
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 776차)
+
+> test `@c7c8f07` 불변 · develop `@6f53978` HEAD 불변 · WT **DIRTY 3M** · merge pending **636** (349 FE + 287 BE) · ⚠ **cross-stream BLOCK** · merge **실행 금지** · operation **BLOCK**(QA-B99+QA-B95)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `c7c8f07` |
+| develop HEAD | `6f53978` |
+| ahead (`test..develop`) | 349 |
+| test npm test | **217/217 PASS** (70 files, 51.65s) |
+| test build | 781 modules (max 367.09 kB, 6.29s) |
+| test live E2E | **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned) |
+| develop HEAD test | **미재실행** (776차 test 실측 217/217 PASS @ test WT) |
+| develop WT | **DIRTY 3M** (`liveConfig.js`·`liveDescribe.js`·`liveGlobalSetup.js`) |
+| audit | 0 (prod omit=dev) |
+| routes / pages | **86** / **68** (ROADMAP 144차 baseline carry) |
+| Open (frontend) | **1 BLOCK QA-B99** |
+| Planned (frontend) | **1** (QA-20260615-B95 live E2E env+credentials+backend) |
+| merge gate (frontend) | **BLOCK** |
+| cross-stream merge | **BLOCK** (BE `@18ff83e` WT **CLEAN** · Open 0 · test 246/246 PASS) |
+| merge pending (total) | **636** (349 FE + 287 BE) |
+
+### TSR 776차 vs 774차
+
+| 항목 | 774차 | 776차 |
+|------|-------|-------|
+| develop HEAD | `6f53978` | **`6f53978`** (불변) |
+| develop WT | CLEAN | **DIRTY 3M** (QA-B99) |
+| ahead | 349 | **349** |
+| test npm test | 217/217 (52.07s) | **217/217 (51.65s)** |
+| test live E2E | env ABSENT | **env PRESENT** · credentials missing |
+| Open (frontend) | 0 | **1 BLOCK QA-B99** |
+| merge gate (frontend) | FULLY UNBLOCKED | **BLOCK** |
+| cross-stream merge | FULLY UNBLOCKED | **BLOCK** |
+
+## 776차 delta (774→776)
+
+- develop HEAD **불변** `@6f53978` — WT **CLEAN→DIRTY 3M** (`liveConfig.js`·`liveDescribe.js`·`liveGlobalSetup.js` live E2E harness WIP)
+- **신규 Open 1 BLOCK QA-B99(frontend)** · frontend merge gate **BLOCK**
+- test `npm test` **217/217 PASS** 재실행 (51.65s) · build·audit 동일
+- live E2E: `scripts/dev-live-e2e.env` **PRESENT** · LIVE_E2E credentials **미설정** · backend **DOWN**
+- 교차(backend): `@18ff83e` WT **CLEAN** · Open **0** · cross-stream **BLOCK**(QA-B99)
+
+# develop ↔ test diff 메타 — backend (2026-06-15 775차)
+
+> test `@598d108` 불변 · develop `@18ff83e`(+1) · WT **CLEAN** · merge pending **636** (349 FE + 287 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `18ff83e` |
+| ahead (`test..develop`) | 287 |
+| test mvn test | **246/246 PASS** (64 suites, 15.4s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@6f53978` WT **CLEAN** · Open 0 · Planned QA-B95) |
+| merge pending (total) | **636** (287 BE + 349 FE) |
+
+### TSR 775차 vs 773차
+
+| 항목 | 773차 | 775차 |
+|------|-------|-------|
+| develop HEAD | `1f77324` | **`18ff83e`**(+1) |
+| develop WT | CLEAN | **CLEAN** |
+| test mvn test | 246/246 (15.5s) | **246/246 (15.4s)** |
+| Open (backend) | 0 | **0** |
+| merge gate (backend) | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| cross-stream merge | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| merge pending | 634 | **636** |
+
+## 775차 delta (773→775)
+
+- develop HEAD: **`1f77324`→`18ff83e`**(+1) — `fix(v2/live-e2e): resolve status fallback for seeded user lookup` (2 files +57/-2)
+- `test..develop` **286→287 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (15.4s)
+- Open **0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@6f53978` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **636**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 773차)
+
+> test `@598d108` 불변 · develop `@1f77324`(+1) · WT **CLEAN** · merge pending **634** (348 FE + 286 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 only)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `1f77324` |
+| ahead (`test..develop`) | 286 |
+| test mvn test | **246/246 PASS** (64 suites, 15.5s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@07dd49b` WT **CLEAN** · Open 0 · Planned QA-B95) |
+| merge pending (total) | **634** (286 BE + 348 FE) |
+
+### TSR 773차 vs 771차
+
+| 항목 | 771차 | 773차 |
+|------|-------|-------|
+| develop HEAD | `8b7e476` 불변 | **`1f77324`**(+1) |
+| develop WT | DIRTY 9 | **CLEAN** |
+| test mvn test | 246/246 (14.6s) | **246/246 (15.5s)** |
+| Open (backend) | 1 BLOCK QA-B98 | **0** (QA-B98 Fixed) |
+| merge gate (backend) | BLOCK | **FULLY UNBLOCKED** |
+| cross-stream merge | BLOCK | **FULLY UNBLOCKED** |
+
+## 773차 delta (771→773)
+
+- develop HEAD: **`8b7e476`→`1f77324`**(+1) — `fix(v2/live-e2e): add bootstrap seeding and status` (9 files +514/-13)
+- develop WT **DIRTY 9→CLEAN** — **QA-B98 Fixed @ `1f77324`**
+- `test..develop` **285→286 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (15.5s)
+- Open **1 BLOCK QA-B98→0** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@07dd49b` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **634**
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 774차)
+
+> test `@c7c8f07` 불변 · develop `@6f53978`(+1 vs `07dd49b`) · WT **CLEAN** · merge pending **635** (349 FE + 286 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E credentials+backend)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `c7c8f07` |
+| develop HEAD | `6f53978` |
+| ahead (`test..develop`) | 349 |
+| test npm test | **217/217 PASS** (70 files, 52.07s) |
+| test build | 781 modules (max 367.09 kB, 6.29s) |
+| test live E2E | **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned) |
+| develop HEAD test | **미재실행** (774차 test 실측 217/217 PASS @ test WT) |
+| develop WT | **CLEAN** |
+| audit | 0 (prod omit=dev) |
+| routes / pages | **86** / **68** (ROADMAP 144차 baseline carry) |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-20260615-B95 live E2E env+credentials+backend) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (BE `@1f77324` WT **CLEAN** · Open 0 · test 246/246 PASS) |
+| merge pending (total) | **635** (349 FE + 286 BE) |
+
+### TSR 774차 vs 772차
+
+| 항목 | 772차 | 774차 |
+|------|-------|-------|
+| develop HEAD | `07dd49b` | **`6f53978`** (+1 L02 pilotPageFlows E2E) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 348 | **349** |
+| test npm test | 217/217 (51.40s) | **217/217 (52.07s)** |
+| test build | 781 modules (4.97s) | **781 modules (6.29s)** |
+| live E2E | 4 suites FAIL / 18 skipped | **동일** (credentials missing; env **ABSENT**; backend DOWN) |
+| cross-stream BE | `@8b7e476` DIRTY 9 · BLOCK | **`@1f77324` CLEAN · FULLY UNBLOCKED** |
+| merge pending | 633 (BLOCK) | **635** (UNBLOCKED) |
+
+## 770차 delta (768→770)
+
+- develop HEAD: **`5c24e4e`→`10f32c4`**(+1)
+  - commit: `fix(v2/live-e2e): prefer local env over example placeholders`
+- develop WT **CLEAN** 유지
+- `test..develop` **346→347 ahead**
+- test `npm test -- --run` **217/217 PASS** 재실행 (51.75s)
+- test `npm run build` **781 modules SUCCESS** (5.12s)
+- test `npm run test:live-e2e` **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **ABSENT**; backend **DOWN**; QA-B95 Planned)
+- Open **0(frontend)** · frontend merge gate **FULLY UNBLOCKED**
+- 교차(backend): `@8b7e476` WT **CLEAN** · Open **0** · test **246/246 PASS**(769 carry) · cross-stream **FULLY UNBLOCKED** · merge pending **630→632**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 767차)
+
+> test `@598d108` 불변 · develop `@ec5f11c`(+1 vs `d862a82`) · WT **CLEAN** · merge pending **629** (345 FE + 284 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E credentials+backend)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `ec5f11c` |
+| ahead (`test..develop`) | 284 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.3s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@14a2bb9` WT **CLEAN** · Open 0 · 345 ahead · test 217/217 PASS) |
+| merge pending (total) | **629** (284 BE + 345 FE) |
+
+### TSR 767차 vs 765차
+
+| 항목 | 765차 | 767차 |
+|------|-------|-------|
+| develop HEAD | `d862a82` | **`ec5f11c`** (+1 live-e2e DB probe detail) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 283 | **284** |
+| test mvn test | 246/246 (~15.0s) | **246/246 (~15.3s)** |
+| merge pending | 627 | **629** |
+
+## 767차 delta (765→767)
+
+- develop HEAD: **`d862a82`→`ec5f11c`**(+1)
+  - commit: `fix(v2/live-e2e): expose database probe detail in health response`
+  - files: `HealthController`·`LiveReadinessProbe`·`HealthControllerTest`·`OgadaBackendApplicationTests` (4 files +46/-13)
+- develop WT **CLEAN** 유지
+- `test..develop` **283→284 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~15.3s)
+- `npm` in `src/backend-test`: **N/A** (`package.json` 없음)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@14a2bb9` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **627→629**
+
+## 766차 delta (764→766)
+
+- develop HEAD: **`95e7e96`→`14a2bb9`**(+2)
+  - `e6ddceb` `fix(ux/L02_M02): a11y pass — Button component and layout CSS`
+  - `14a2bb9` `feat(v2/L02_M07): wire body restraint care UI to V131 API`
+- develop WT **CLEAN** 유지
+- `test..develop` **343→345 ahead**
+- test `npm test -- --run` **217/217 PASS** 재실행 (51.85s)
+- test `npm run build` **781 modules SUCCESS** (4.93s)
+- test `npm run test:live-e2e` **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned)
+- Open **0(frontend)** · frontend merge gate **FULLY UNBLOCKED**
+- 교차(backend): `@d862a82` WT **CLEAN** · Open **0** · test **246/246 PASS**(765 carry) · cross-stream **FULLY UNBLOCKED** · merge pending **625→628**
+
+## 764차 delta (762→764)
+
+- develop HEAD: **`a5e7722`→`95e7e96`**(+1)
+  - commit: `fix(v2/G19): guard malformed provider discovery URLs`
+  - files: `IntegratedHomeProviderDiscoveryPanel`·`integratedHomeProviderDiscovery` util+tests (4 files +61/-17)
+- develop WT **CLEAN** 유지
+- `test..develop` **342→343 ahead**
+- test `npm test -- --run` **217/217 PASS** 재실행 (51.68s)
+- test `npm run build` **781 modules SUCCESS** (6.06s)
+- test `npm run test:live-e2e` **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; env **PRESENT**; backend **DOWN**; QA-B95 Planned)
+- Open **0(frontend)** · frontend merge gate **FULLY UNBLOCKED**
+- 교차(backend): `@df14e15` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **623→625**
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 764차)
+
+> test `@c7c8f07` 불변 · develop `@95e7e96`(+1 vs `a5e7722`) · WT **CLEAN** · merge pending **625** (343 FE + 282 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E credentials+backend)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `c7c8f07` |
+| develop HEAD | `95e7e96` |
+| ahead (`test..develop`) | 343 |
+| test npm test | **217/217 PASS** (70 files, 51.68s) |
+| test build | 781 modules (max 367.09 kB, 6.06s) |
+| test live E2E | **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned) |
+| develop HEAD test | **미재실행** (762 carry: 1337/1337 PASS) |
+| develop WT | **CLEAN** |
+| audit | 0 (prod omit=dev) |
+| routes / pages | **85** / **67** (ROADMAP 143차 baseline carry) |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-20260615-B95 live E2E env+credentials+backend) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (BE `@df14e15` WT **CLEAN** · Open 0 · test 246/246 PASS) |
+| merge pending (total) | **625** (343 FE + 282 BE) |
+
+### TSR 764차 vs 762차
+
+| 항목 | 762차 | 764차 |
+|------|-------|-------|
+| develop HEAD | `a5e7722` | **`95e7e96`** (+1 G19 URL guard) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 342 | **343** |
+| test npm test | 217/217 (52.39s) | **217/217 (51.68s)** |
+| merge pending | 623 | **625** |
+
+## 763차 delta (761→763)
+
+- develop HEAD: **`ea6092a`→`df14e15`**(+1)
+  - commit: `feat(v2/live-e2e): add backend ping health endpoint`
+  - files: `HealthController`·`SecurityConfig`·`HealthControllerTest` (3 files +82/-1)
+- develop WT **CLEAN** 유지
+- `test..develop` **281→282 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~15.1s)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@a5e7722` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **622→624**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 761차)
+
+> test `@598d108` 불변 · develop `@ea6092a`(+1 vs `9c6970c`) · WT **CLEAN** · merge pending **622** (341 FE + 281 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E credentials+backend)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `ea6092a` |
+| ahead (`test..develop`) | 281 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.3s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop HEAD mvn test | **미재실행** (tester read-only·src/backend-test 우선) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@1264c16` WT **CLEAN** · Open 0 · 341 ahead · test 217/217 PASS) |
+| merge pending (total) | **622** (281 BE + 341 FE) |
+
+### TSR 761차 vs 759차
+
+| 항목 | 759차 | 761차 |
+|------|-------|-------|
+| develop HEAD | `9c6970c` | **`ea6092a`** (+1 L02_M07 API) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 280 | **281** |
+| test mvn test | 246/246 (14.072s) | **246/246 (~15.3s)** |
+| merge pending | 620 | **622** |
+
+## 761차 delta (759→761)
+
+- develop HEAD: **`9c6970c`→`ea6092a`**(+1)
+  - commit: `feat(v2/L02_M07): add body restraint care API`
+  - files: controller/service/entity/V131 migration/pilot E2E/RBAC (15 files +1440)
+- develop WT **CLEAN** 유지
+- `test..develop` **280→281 ahead**
+- test `mvn test` **246/246 PASS** 재실행 (~15.3s)
+- Open **0(backend)** · backend merge gate **FULLY UNBLOCKED**
+- 교차(frontend): `@1264c16` WT **CLEAN** · Open **0** · Planned **QA-B95** · cross-stream **FULLY UNBLOCKED** · merge pending **620→622**
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 762차)
+
+> test `@c7c8f07` 불변 · develop `@a5e7722`(+1 vs `1264c16`) · WT **CLEAN** · merge pending **623** (342 FE + 281 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E credentials+backend)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `c7c8f07` |
+| develop HEAD | `a5e7722` |
+| ahead (`test..develop`) | 342 |
+| test npm test | **217/217 PASS** (70 files, 52.39s) |
+| test build | 781 modules (max 367.09 kB, 6.27s) |
+| test live E2E | **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned) |
+| develop HEAD test | **미재실행** (760 carry: 1337/1337 PASS) |
+| develop WT | **CLEAN** |
+| audit | 0 (prod omit=dev) |
+| routes / pages | **85** / **67** (ROADMAP 143차 baseline carry) |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-20260615-B95 live E2E env+credentials+backend) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (BE `@ea6092a` WT **CLEAN** · Open 0 · test 246/246 PASS) |
+| merge pending (total) | **623** (342 FE + 281 BE) |
+
+### TSR 762차 vs 760차
+
+| 항목 | 760차 | 762차 |
+|------|-------|-------|
+| develop HEAD | `1264c16` | **`a5e7722`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 341 | **342** |
+| test npm test | 217/217 (53.84s) | **217/217 (52.39s)** |
+| live E2E | 4 suites FAIL / 18 skipped | **동일** (credentials missing; backend DOWN) |
+| cross-stream BE | `@9c6970c` 280 ahead | **`@ea6092a` 281 ahead** |
+| merge pending | 621 | **623** |
+
+### TSR 762차 delta (760→762)
+
+- develop HEAD: **`1264c16`→`a5e7722`**(+1)
+  - commit: `fix(v2/live-e2e): tighten credential and client-id suite gating`
+- develop WT **CLEAN** 유지
+- `test..develop` **341→342 ahead**
+- test `npm test` **217/217 PASS** 재실행 (52.39s)
+- test `npm run build` **781 modules** (6.27s)
+- live E2E **4 suites FAIL / 18 skipped** — credentials missing + backend DOWN (QA-B95 Planned)
+- Open **0(frontend)** · merge gate **FULLY UNBLOCKED**
+- 교차(backend): `@ea6092a` WT **CLEAN** · Open **0** · cross-stream **FULLY UNBLOCKED** · merge pending **621→623**
+
+# develop ↔ test diff 메타 — frontend (2026-06-15 760차)
+
+> test `@c7c8f07` 불변 · develop `@1264c16`(+1 vs `8ae34f5`) · WT **CLEAN** · merge pending **622** (341 FE + 281 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E credentials+backend)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `c7c8f07` |
+| develop HEAD | `1264c16` |
+| ahead (`test..develop`) | 341 |
+| test npm test | **217/217 PASS** (70 files, 53.84s) |
+| test build | 781 modules (max 367.09 kB, 7.08s) |
+| test live E2E | **4 suites FAIL / 18 skipped** (LIVE_E2E credentials missing; `scripts/dev-live-e2e.env` **PRESENT**; backend **DOWN**; QA-B95 Planned) |
+| develop HEAD test | **미재실행** (758 carry: 1337/1337 PASS) |
+| develop WT | **CLEAN** |
+| audit | 0 (prod omit=dev) |
+| routes / pages | **85** / **67** (ROADMAP 143차 baseline carry) |
+| Open (frontend) | **0** |
+| Planned (frontend) | **1** (QA-20260615-B95 live E2E env+credentials+backend) |
+| merge gate (frontend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (BE `@9c6970c` WT **CLEAN** · Open 0 · test 246/246 PASS) |
+| merge pending (total) | **621** (341 FE + 280 BE) |
+
+### TSR 760차 vs 758차
+
+| 항목 | 758차 | 760차 |
+|------|-------|-------|
+| develop HEAD | `8ae34f5` | **`1264c16`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 340 | **341** |
+| test npm test | 217/217 (84.47s) | **217/217 (53.84s)** |
+| live E2E | 4 suites FAIL / 18 skipped | **동일** (credentials missing; backend DOWN) |
+| cross-stream BE | `@fd42b7e` 279 ahead | **`@9c6970c` 280 ahead** |
+| merge pending | 619 | **621** |
+
+### TSR 758차 vs 756차
+
+| 항목 | 756차 | 758차 |
+|------|-------|-------|
+| develop HEAD | `5f17beb` | **`8ae34f5`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 339 | **340** |
+| test npm test | 217/217 (53.57s) | **217/217 (84.47s)** |
+| live E2E | 4 suites FAIL / 18 skipped | **동일** (credentials missing; backend DOWN) |
+| cross-stream BE | `@6bd16b9` 278 ahead | **`@fd42b7e` 279 ahead** |
+| merge pending | 617 | **619** |
+
+### TSR 756차 vs 754차
+
+| 항목 | 754차 | 756차 |
+|------|-------|-------|
+| develop HEAD | `98102c3` | **`5f17beb`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 338 | **339** |
+| live E2E | 33 suites FAIL / 124 skipped (ECONNREFUSED) | **4 suites FAIL / 18 skipped** (credentials missing; test `@c7c8f07` harness) |
+| cross-stream BE | `@4aac676` 277 ahead | **`@6bd16b9` 278 ahead** |
+| merge pending | 615 | **617** |
+
+### TSR 754차 vs 752차
+
+| 항목 | 752차 | 754차 |
+|------|-------|-------|
+| develop HEAD | `73094f9` | **`98102c3`** (+2) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 336 | **338** |
+| live E2E | 4 suites FAIL / 18 skipped (env absent) | **33 suites FAIL / 124 skipped** (backend ECONNREFUSED) |
+| Open | 0 | **0** |
+| merge gate | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| cross-stream | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| merge pending | 612 | **615** |
+
+### TSR 752차 vs 750차
+
+| 항목 | 750차 | 752차 |
+|------|-------|-------|
+| develop HEAD | `0122bfe` | **`73094f9`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 335 | **336** |
+| Open | 0 | **0** |
+| merge gate | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| cross-stream | FULLY UNBLOCKED | **FULLY UNBLOCKED** |
+| merge pending | 610 | **612** |
+
+### TSR 750차 vs 748차
+
+| 항목 | 748차 | 750차 |
+|------|-------|-------|
+| develop HEAD | `4d1a4f2` | **`0122bfe`** (+1) |
+| develop WT | DIRTY 2M | **CLEAN** |
+| ahead | 334 | **335** |
+| Open | 1 BLOCK QA-B97 | **0** |
+| merge gate | BLOCK | **FULLY UNBLOCKED** |
+| cross-stream | BLOCK | **FULLY UNBLOCKED** |
+| merge pending | 609 | **610** |
+
+### QA-B97 Fixed @ `0122bfe`
+
+- COD commit: `fix(v2/live-e2e): commit harness defaults and guardian credential guard`
+- `package.json` — `test:live-e2e` auto-defaults committed
+- `src/e2e/guardianLiveApi.e2e.test.js` — `hasGuardianCredentials()` skip guard committed
+
 # develop ↔ test diff 메타 — frontend (2026-06-15 744차)
 
 > test `@c7c8f07` 불변 · develop `@9afa30e`(+1 vs 742차 `eb16734`) · WT **CLEAN** · merge pending **606** (333 FE + 273 BE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행**
@@ -173,6 +1693,132 @@
 
 - `b5af5fa` — `feat(ux/US-T09): add annual needs assessment status page (G24b)`
 - `eb16734` — `fix(v2/live-e2e): source env files from workspace scripts path` (**QA-B96 Fixed**)
+
+# develop ↔ test diff 메타 — backend (2026-06-15 755차)
+
+> test `@598d108` 불변 · develop `@6bd16b9`(+1 vs 753차 `4aac676`) · WT **CLEAN** · merge pending **616** (278 BE + 338 FE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E backend)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `6bd16b9` |
+| ahead (`test..develop`) | 278 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.4s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| Planned (cross-stream) | **1** (QA-20260615-B95 live E2E backend) |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@98102c3` WT **CLEAN** · Open 0 · 338 ahead) |
+| merge pending (total) | **616** (278 BE + 338 FE) |
+
+### TSR 755차 vs 753차
+
+| 항목 | 753차 | 755차 |
+|------|-------|-------|
+| develop HEAD | `4aac676` | **`6bd16b9`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 277 | **278** |
+| Open (backend) | 0 | **0** |
+| cross-stream FE | `@98102c3` · 338 ahead | **불변** |
+| merge pending | 615 | **616** |
+
+### develop 신규 커밋 (753→755)
+
+- `6bd16b9` — `fix(v2/live-e2e): expose backend readiness on health endpoint` (`HealthController`·`LiveReadinessProbe`·`OgadaBackendApplicationTests` readiness probe, 3 files +96/-6) — QA-B95 live E2E 선행 개선(coder), **backend 기동·live E2E run 잔여**
+
+# develop ↔ test diff 메타 — backend (2026-06-15 753차)
+
+> test `@598d108` 불변 · develop `@4aac676`(+1 vs 751차 `73df04d`) · WT **CLEAN** · merge pending **614** (277 BE + 337 FE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E env)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `4aac676` |
+| ahead (`test..develop`) | 277 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.0s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| Planned (cross-stream) | **1** (QA-20260615-B95 live E2E env) |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@85bfb4a` WT **CLEAN** · Open 0 · 337 ahead) |
+| merge pending (total) | **614** (277 BE + 337 FE) |
+
+### TSR 753차 vs 751차
+
+| 항목 | 751차 | 753차 |
+|------|-------|-------|
+| develop HEAD | `73df04d` | **`4aac676`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 276 | **277** |
+| Open (backend) | 0 | **0** |
+| cross-stream FE | `@0122bfe` · 335 ahead | **`@85bfb4a` · 337 ahead** |
+| merge pending | 611 | **614** |
+
+### develop 신규 커밋 (751→753)
+
+- `4aac676` — `test(v2/G19): deepen integrated-home provider discovery pilot E2E` (IntegratedHomeProviderDiscoveryPilotServiceFlowE2eTest · MustApiEndpointRoutingTest provider-discovery routing · 2 files +133)
+
+# develop ↔ test diff 메타 — backend (2026-06-15 751차)
+
+> test `@598d108` 불변 · develop `@73df04d`(+1 vs 749차 `8cb8789`) · WT **CLEAN** · merge pending **611** (276 BE + 335 FE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행** · operation **BLOCK**(QA-B95 live E2E env)
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `73df04d` |
+| ahead (`test..develop`) | 276 |
+| test mvn test | **246/246 PASS** (64 suites, ~15.3s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| Planned (cross-stream) | **1** (QA-20260615-B95 live E2E env) |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@0122bfe` WT **CLEAN** · Open 0 · QA-B97 Fixed · 335 ahead) |
+| merge pending (total) | **611** (276 BE + 335 FE) |
+
+### TSR 751차 vs 749차
+
+| 항목 | 749차 | 751차 |
+|------|-------|-------|
+| develop HEAD | `8cb8789` (불변) | **`73df04d`** (+1) |
+| develop WT | CLEAN | **CLEAN** |
+| ahead | 275 | **276** |
+| Open (backend) | 0 | **0** |
+| cross-stream FE | `@4d1a4f2` DIRTY · QA-B97 Open | **`@0122bfe` CLEAN · QA-B97 Fixed** |
+| merge pending | 609 | **611** |
+
+### develop 신규 커밋 (749→751)
+
+- `73df04d` — `feat(v2/G30,G39): monitoring evidence window and care-provision dispatch pilot E2E` (FAQ21838 ±2-month evidence window · `MonitoringEvidenceWindow` · care-provision guardian dispatch pilot E2E · 11 files +210/-24)
+
+# develop ↔ test diff 메타 — backend (2026-06-15 747차)
+
+> test `@598d108` 불변 · develop `@8cb8789`(+1 vs 745차 `41d8de5`) · WT **CLEAN** · merge pending **609** (275 BE + 334 FE) · ★ **cross-stream FULLY UNBLOCKED** · merge **미실행**
+
+| 항목 | 값 |
+|------|-----|
+| test HEAD | `598d108` |
+| develop HEAD | `8cb8789` |
+| ahead (`test..develop`) | 275 |
+| test mvn test | **246/246 PASS** (64 suites, ~27.3s) |
+| npm (backend-test) | N/A (no `package.json`) |
+| develop WT | **CLEAN** |
+| Open (backend) | **0** |
+| merge gate (backend) | **FULLY UNBLOCKED** |
+| cross-stream merge | **FULLY UNBLOCKED** (FE `@4d1a4f2` WT **CLEAN** · Open 0 · Planned QA-B95 · 334 ahead) |
+| merge pending (total) | **609** (275 BE + 334 FE) |
+
+### TSR 747차 vs 745차
+
+- develop HEAD: **`41d8de5`→`8cb8789`**(+1)
+  - commit: `chore(g19): centralize provider discovery filter value`
+  - files: `BranchService.java` (1 file +2/-1)
+- develop WT: **CLEAN** 유지
+- `test..develop`: **274→275 ahead**
+- test `@598d108`: **246/246 PASS** 재실행 (~27.3s)
+- backend Open **0** · backend merge **FULLY UNBLOCKED** · cross-stream **FULLY UNBLOCKED** · merge pending **607→609**
 
 # develop ↔ test diff 메타 — backend (2026-06-15 745차)
 
