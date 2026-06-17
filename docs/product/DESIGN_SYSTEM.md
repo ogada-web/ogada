@@ -1,9 +1,14 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17T18:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17T23:10:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-17 (123차 — **US-T05 G15 TransportServiceLogPanel PUT wire 접근성 재점검 + `TRANSPORT_TIME_COMPLIANCE_STATUS` Badge + §48 신규** — 122차(§47) 이후 coder `7a4b310` G15 별지 제22호 일지④ `PUT /transport/runs/{runId}/service-log` FE wire 미점검 갭(QA-B116) 해소. ① **정차별 필드 `aria-label` 컨텍스트(WCAG 2.4.6)** — 복수 `fieldset`에서 「실제 픽업」·「동승 여부」 라벨이 중복돼 SR이 대상 수급자를 식별 못 하던 결함을 `${clientName} 실제 픽업` 등 이용자명 포함 라벨로 보강. ② **시간 준수 열 색 의존 제거(§1-2)** — `td` 색상 클래스(`ds-transport-log__compliance--*`) → **`StatusBadge`+`TRANSPORT_TIME_COMPLIANCE_STATUS`**(준수/지연/미기록/계획없음, 색+텍스트·`forced-colors` 경계선). ③ **미확정 배차 가드 `aria-describedby`** — 인쇄·텍스트 저장 버튼을 `#transport-log-unconfirmed-warning`에 연결. ④ **기록 섹션 시맨틱** — `section`+sr-only `h3`「정차별 실제 기록」·요약 `role=status`·표 `captionVisuallyHidden`. ⑤ **CSS** — `legend` `font-weight: 600` → `var(--font-weight-semibold)`·`forced-colors` fieldset 경계선·미사용 compliance 색 클래스 제거. ⑥ **§48** 신규. 회귀 +1. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-17 (128차 — **`DatePickerCalendar` 달력 그리드 키보드 방향키 내비게이션 + roving tabindex + §52 신규** — 127차(§51)에서 도입한 커스텀 `DateInput` 달력 팝오버가 WAI-ARIA date picker dialog 패턴 중 **그리드 키보드 이동**을 미구현해, 키보드 사용자가 날짜를 고르려면 최대 42개 날짜 버튼을 일일이 `Tab` 해야 하던 갭을 해소. ① **`DatePickerCalendar` 방향키 이동(WCAG 2.1.1)** — 달력 `<table>` `onKeyDown`에서 `←/→`(±1일)·`↑/↓`(±1주)·`Home/End`(주 시작·끝 토요일)·`PageUp/PageDown`(±1개월, 말일 보정)을 처리하고 `min/max` 경계를 넘는 이동은 차단. ② **roving tabindex(WCAG 2.4.3)** — 그리드에서 포커스 대상 날짜 1개만 `tabindex=0`, 나머지는 `-1` → `Tab` 1회로 달력을 빠져나가고 방향키로 날짜 탐색(기존 42-버튼 `Tab` 순회 제거). 포커스 대상은 `focusDate`→선택일→오늘→첫 활성일 순. ③ **`DateInput` `focusDate` 상태** — 방향키 이동 시 표시 월을 자동 전환(`moveFocusTo`)하고 이전/다음 달 버튼도 같은 일자를 유지(`addMonthsToIso`). 선택은 날짜 버튼 기본 `Enter/Space/클릭` 유지(중복 핸들러 없음). ④ **`lib/pickerDate.js`** 순수 헬퍼 `addDaysToIso`·`addMonthsToIso`·`startOfWeekIso`·`endOfWeekIso` 신규(테스트 가능). ⑤ **§52** 신규. 회귀 +4(`DateInput.test.jsx` — roving 단일 tabindex·방향키 이동+Enter 선택·PageUp 월 점프·`max` 경계 차단). `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-17 (127차 — **커스텀 DateInput/TimeInput 피커 + G15 경유지·ETA 칩 접근성 재점검 + §51 신규** — 126차(§50) 이후 coder 신규 커밋(`ea5d896` 커스텀 date/time picker·`bf73c4c` 경유지 모달·ETA 칩·`96db8bf` 배차 레이아웃) 미점검 갭 해소. ① **`DateInput`/`DatePickerCalendar`** — 팝오버 열림 시 선택일(또는 오늘) 포커스·닫힘 시 트리거 복귀·`Field` `labelId`→dialog `aria-labelledby`·이전/다음 달 **비표시 일자 `disabled`**(혼동 방지). ② **`TimeInput`** — `role="group" aria-labelledby` 복합 필드·시/분 `Select`에 개별 `id`·`aria-describedby`는 그룹 단위. ③ **`Field`** — `<label id>`·`labelId` controlProps·단일 React 자식 `cloneElement`로 `aria-*` 자동 전달(render-prop 미사용 페이지 정합). ④ **`TransportAddWaypointModal`** — 주소 미입력 시 폼 상단 `Alert`→**`Field error`**+`aria-invalid`(WCAG 3.3.1). ⑤ **`TransportStopList`** — 지연 ETA 칩에 가시 **「지연」** 텍스트 라벨 추가(색+텍스트·WCAG 1.4.1). ⑥ **CSS** — `.ds-transport-stop__time-chip-status`·`forced-colors` date/time picker·지연 칩 경계선. 회귀 +5. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-17 (126차 — **`MaskedPhone` 비대화형 span `aria-label` 안티패턴 제거 (WCAG 4.1.2·1.3.1·결정 96 회귀)** — 125차(§50) 이후 coder 신규 커밋 `0baabe9`(결정 96 — 이용자 목록·상세에 본인 연락처 `phoneMasked`·대표 보호자 연락처 컬럼 노출) 미점검 갭 해소. 신규로 `ClientListPage` 표(컬럼 헤더 「연락처」·「보호자 연락처」)와 `ClientDetailPage` `<dl>`(`<dt>연락처</dt>`·`<dt>보호자 연락처</dt>`)에서 `MaskedPhone withLink={false}`가 다수 사용됐는데, 이 분기는 **비대화형 `<span>`(role=generic)에 `aria-label="연락처 {번호}"`를 하드코딩**하고 있었다. ① **ARIA 안티패턴(WCAG 4.1.2)** — `aria-label`은 role 없는 generic `<span>`에서 스크린리더 노출이 보장되지 않아(ARIA 1.1 — 대화형/role 보유 요소에서만 신뢰) 의도한 라벨이 전달되지 않을 수 있고, ② **중복·불일치(WCAG 1.3.1)** — 라벨 컨텍스트는 이미 표 `scope="col"` 헤더(「연락처」·「보호자 연락처」)·`<dt>`(「전화번호」 등)가 제공하므로 「연락처 …」 하드코딩 라벨은 **본인 연락처에선 중복**, **보호자 연락처 열·`GuardianDetailPage` 「전화번호」 `<dt>`에선 불일치**(span은 일괄 「연락처」만 노출). 가시 마스킹 텍스트(`010-****-1234`)가 이미 접근 가능한 콘텐츠이므로, no-link span 분기의 `aria-label`을 제거해 주변 시맨틱 라벨이 컨텍스트를 제공하도록 정합(`tel:` 링크 분기의 「전화 걸기 …」 dialing 라벨은 `<a>`에서 유효 — 유지). 컴포넌트 단일 원천 수정이라 6개 소비처(`ClientListPage`·`ClientDetailPage`·`GuardiansPage`·`GuardianDetailPage`·`TransportPickupContact` 등) 전체에 일관 적용. 순수 접근성 정합 리팩터로 가시 텍스트·마스킹·동작·`tel:` 링크 불변. 회귀 +1(`MaskedPhone.test.jsx` — no-link span `aria-label` 부재 단언). `npm test` 1612/1612 PASS·build PASS.)
+> **이전 갱신**: 2026-06-17 (125차 — **G15 이동서비스일지 감사추적 + 모니터링/간호 연계 패널 토큰 정합 + §50 신규** — 124차(§49) 이후 coder 신규 커밋(`3cc5a08` G15 일지 감사추적 read API·`8b68fdb` `MonitoringEvidenceContextPanel`(BNK-273)·`140bf92` `CareNursingParityPanel`) 미점검 갭 해소. 신규 패널 2종은 `aside`/`nav` landmark·`aria-label`·`role="status"`·`ul/li`를 이미 갖춰 접근성 결함 없음 — 잔여는 **토큰 단일 원천(§1-4·FE-16) 회귀 2건**. ① **`TransportServiceLogPanel` 미정의 클래스 제거** — 감사·본문 빈 상태 안내 `<p>`가 `components.css` **미정의 `ds-empty-hint`**(소비자 이 컴포넌트 단 1곳)로 색·`forced-colors` 토큰을 못 받던 80·90·97차 패턴 회귀를, 정의된 **`ds-text-muted`**(`--color-text-muted` 4.76:1 + `forced-colors`에서 `--color-text-secondary` 승격)로 교체(2곳). ② **신규 패널 CSS raw rem → `--space-*` 토큰** — `.ds-monitoring-evidence-context*`·`.ds-care-nursing-parity*`의 `gap: 0.5rem`·`0.75rem 1rem`을 `var(--space-2)`·`var(--space-3) var(--space-4)`로 교체(118·120차 토큰화 패턴 정합). 순수 정합 리팩터로 동작·데이터 불변. `npm test` 1605/1605 PASS·build PASS.)
+> **이전 갱신**: 2026-06-17 (124차 — **US-T05 G15 이동서비스 월간 리포트(2-7/2-8) `TransportMonthlyReportsPage` 접근성 재점검 + §49 신규** — 123차(§48) 이후 coder `6a18dfd`(G15 2-7/2-8 월간 변동·입소자 현황 신규 페이지) 미점검 갭 해소. 같은 시기 신설 `BillingStatisticsReportPage`(G26)와 구조가 동일한 리포트 페이지인데 그 페이지가 확립한 표준을 따르지 않아 발생한 회귀 3건 정합. ① **섹션 헤딩 레벨(WCAG 1.3.1·2.4.6)** — 두 섹션 제목이 `Card` `h2` 내부에서 `h2`로 중복돼(§44/116차 패턴 회귀) AppShell `h1` → Card `h2` → 섹션 **`h3`**로 정정. ② **StatCard 요약 그룹 시맨틱(WCAG 1.3.1)** — 변동현황·입소자현황 StatCard 래퍼 `div` 2건에 `role="group" aria-label="…요약"` 부여(§42·93차 패턴). ③ **조회 버튼 `aria-busy`(WCAG 4.1.3)** — `disabled`만 있고 진행 상태를 SR에 전달하지 못하던 갭을 `aria-busy={loading}`로 보강(`BillingStatisticsReportPage` 정합). ④ **그리드 정합** — StatCard 그리드 `ds-grid--stats`(160px·5칸 입소자 요약 정렬) + `.ds-transport-monthly-report__summary` `forced-colors` 경계선 신규. ⑤ **§49** 신규. 순수 접근성 정합 리팩터로 데이터·API·동작 불변. 회귀 — `TransportMonthlyReportsPage.test.jsx` heading level 3·StatCard group 단언 추가. `npm test` 1596/1596 PASS·build PASS.)
+> **이전 갱신**: 2026-06-17 (123차 — **US-T05 G15 TransportServiceLogPanel PUT wire 접근성 재점검 + `TRANSPORT_TIME_COMPLIANCE_STATUS` Badge + §48 신규** — 122차(§47) 이후 coder `7a4b310` G15 별지 제22호 일지④ `PUT /transport/runs/{runId}/service-log` FE wire 미점검 갭(QA-B116) 해소. ① **정차별 필드 `aria-label` 컨텍스트(WCAG 2.4.6)** — 복수 `fieldset`에서 「실제 픽업」·「동승 여부」 라벨이 중복돼 SR이 대상 수급자를 식별 못 하던 결함을 `${clientName} 실제 픽업` 등 이용자명 포함 라벨로 보강. ② **시간 준수 열 색 의존 제거(§1-2)** — `td` 색상 클래스(`ds-transport-log__compliance--*`) → **`StatusBadge`+`TRANSPORT_TIME_COMPLIANCE_STATUS`**(준수/지연/미기록/계획없음, 색+텍스트·`forced-colors` 경계선). ③ **미확정 배차 가드 `aria-describedby`** — 인쇄·텍스트 저장 버튼을 `#transport-log-unconfirmed-warning`에 연결. ④ **기록 섹션 시맨틱** — `section`+sr-only `h3`「정차별 실제 기록」·요약 `role=status`·표 `captionVisuallyHidden`. ⑤ **CSS** — `legend` `font-weight: 600` → `var(--font-weight-semibold)`·`forced-colors` fieldset 경계선·미사용 compliance 색 클래스 제거. ⑥ **§48** 신규. 회귀 +1. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-17 (122차 — **US-E04 QrCheckinTargetsPanel + §44 공통 클래스 페이지 연동 + `--color-accent` 토큰 + US-T02 split-view·정차 목록 a11y 재점검 + §47 신규** — QA-B115 transport split-view(`d3bef42` map pins/Korean geocode) 이후 미점검 갭 해소. ① **지점(센터) 핀 스크린리더 라벨 결함(WCAG 1.1.1·4.1.2)** — 마커 핀 `aria-label`이 `${pinLabel}번 정차`로 일괄 생성돼, `orderNumber`가 없는 **지점 핀**(`markerPinLabel`이 배지 텍스트 「센」 반환)이 SR에 「**센번 정차**」라는 무의미한 이름으로 읽히던 결함을, `markerPinAriaLabel(point)`로 분리해 지점 핀은 「지점(센터) 정차」·번호 정차는 「N번 정차」로 노출. ② **배지 텍스트 SR 중복 제거** — 핀 내부 시각 배지(`__badge` 「센」/숫자)에 `aria-hidden="true"`를 부여해 버튼 `aria-label`만 읽히도록 정합(시각 표기 불변). ③ **범례 색·기호 의미 정합(§1-2·WCAG 1.4.1)** — 정적 범례가 「파란 선 = 도로 경로」로 고정돼 도로 경로 미리보기가 없을 때 실제 표시되는 **회색 점선 정차 안내선**(`paintStopGuideLine`)과 불일치하고, 지도에 등장하는 「센」 지점 핀을 설명하지 못하던 갭을, `roadPath` 유무에 따라 「파란 선 = 도로 경로」/「회색 점선 = 정차 안내선」을 분기하고 「숫자 핀 = 정차 순서 · "센" 핀 = 지점(센터)」를 명시해 시각·SR 모두 기호 의미를 식별하도록 보강. 순수 접근성 정합 리팩터로 지도 동작·마커 위치·시각 배지 불변. 회귀 +1(`KakaoTransportMap.test.jsx` — 지점/번호 핀 `aria-label`·「센번 정차」 부재·범례 텍스트 검증). 단독 `KakaoTransportMap.test.jsx` 4/4 PASS·build PASS. **주의**: 본 변경은 committed `d3bef42`(WT clean 파일)만 수정 — coder QA-B115 transport WT dirty(14M+1untracked: `TransportRouteSplitView`·`TransportStopList`·`components.css` 등)는 coder commit→push 영역이라 미수정.)
 > **이전 갱신**: 2026-06-16 (120차 — **US-T02 Kakao map instance 중앙화 + 비교 레이아웃 CSS + 토큰 위반 해소 + §46 신규** — QA-B114 WIP(coder `b000d92` 이후 dirty tree) 맥락에서 미점검 갭 해소. ① **`ds-transport-map__canvas` `background: #f2f2f2` raw hex → `var(--color-surface-muted)` 교체(FE-16·§1 단일 원천 복구)**. ② **`.ds-transport-map-compare__label` `font-weight: 600` → `var(--font-weight-semibold)` 토큰화**. ③ **신규 CSS 4클래스** — `ds-transport-map__canvas-wrap`·`ds-transport-map-compare`·`ds-transport-map-compare__pane`·`ds-transport-map-compare__label`·`ds-transport-map-compare__status`. ④ **`KakaoTransportMapView.mapEnabled` prop** — SDK ready 이전 렌더링 방지·`seedMarkers` 좌표 기반 선행 마커 표시 패턴 문서화. ⑤ **`KakaoBareMap`·`kakaoMapInstance.js`·`useKakaoMap`** 신규 컴포넌트·훅 패턴. ⑥ **§46** 신규. 회귀 — 1537/1538 PASS(1 pre-existing jsdom 오염 — 단독 PASS·본 변경 무관)·build PASS.)
 > **이전 갱신**: 2026-06-16 (119차 — **L03 care-scoped 간호 리포트 서브 네비 + G21 split-view 후속 UI 접근성 재점검 + §45 신규** — 118차(§44) 이후 coder 신규 커밋(`58ee122` L03_M09/M10/M14 `CareNursingServiceReportPage`·`CareNursingServiceReportNav`·`4c9103d` G21 청구반영 요약 칩·`cb457b7` G21 미반영 후속 확인 목록) 미점검 갭 해소. ① **`.ds-context-nav--sub` 미정의 클래스 해소(FE-16·§1 단일 원천)** — `CareNursingServiceReportNav`가 `ds-context-nav--sub` 클래스를 사용했으나 `components.css` 미정의였던 갭을, 서브 링크 `xs` 글자크기·`control-height-sm` 최소 높이·`surface-muted` 기본 배경으로 정의해 상위 컨텍스트 네비 대비 시각 계층 분리(80차 `.ds-text-input` 패턴 회귀 해소). ② **`CareNursingServiceReportPage`** — 필터 폼 `aria-label`·조회 `aria-busy`·`NursingServiceReportPanel`(`role=group` StatCard·`captionVisuallyHidden` 3표·`scope=col`) 정합 확인(변경 불요). ③ **`VisitsPage` G21 split-view** — 청구반영 요약 `role=group aria-label` + 후속 확인 `section aria-label`+`ul/li`+상태 텍스트 라벨 병행(색만 의존 금지) 정합 확인(변경 불요). ④ **§45** 신규. 회귀 — `npm test` 1526/1526 PASS·build PASS.)
@@ -2949,6 +2954,168 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 
 - `TransportServiceLogPanel.test.jsx` **8/8 PASS** (+1 contextual label·badge·guard).
 - `npm test` · `npm run build` PASS.
+
+---
+
+## 49. US-T05 G15 이동서비스 월간 리포트(2-7/2-8) 접근성 재점검 (124차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17 -->
+
+> **124차 UXD (2026-06-17)** — 123차(§48) 이후 coder 신규 커밋 `6a18dfd`(G15 2-7/2-8 월간 이동서비스 변동·입소자 현황 리포트 신규 페이지 `TransportMonthlyReportsPage`) 미점검 갭 해소. 같은 시기 신설된 `BillingStatisticsReportPage`(G26)와 구조가 거의 동일한 리포트 페이지인데, 그 페이지에서 이미 확립한 ① 섹션 헤딩 레벨, ② StatCard 요약 그룹 시맨틱, ③ 조회 버튼 `aria-busy` 표준을 따르지 않아 발생한 회귀 3건을 정합.
+
+### 49-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `pages/TransportMonthlyReportsPage.jsx` | `/transport/monthly-reports` | G15 2-7·2-8 · 케어포 func.php 2-7/2-8 |
+| `styles/components.css` | `.ds-transport-monthly-report__summary` | StatCard `forced-colors` 경계선 |
+
+### 49-2. 접근성 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `TransportMonthlyReportsPage` | 섹션 제목 `h2`→**`h3`**(AppShell `h1` → Card `h2` → 섹션 `h3`) | WCAG 1.3.1·2.4.6 — Card `h2` 내부 섹션이 동일 레벨로 중복(§44/116차 패턴 회귀) |
+| `TransportMonthlyReportsPage` | StatCard 래퍼 `div`에 **`role="group" aria-label="…요약"`** 2건 | WCAG 1.3.1 — 집계 카드 묶음 SR 식별(§42·93차 패턴) |
+| `TransportMonthlyReportsPage` | 「조회」버튼 **`aria-busy={loading}`** | WCAG 4.1.3 — 조회 진행 SR 안내(`BillingStatisticsReportPage` 정합) |
+| `TransportMonthlyReportsPage` | StatCard 그리드 `ds-grid--stats`(160px) 정렬 + `.ds-transport-monthly-report__summary` | 5칸 입소자 요약 컬럼 정합·`forced-colors` 경계선 |
+
+### 49-3. coder 전달 메모
+
+- 본 변경은 committed `6a18dfd` 파일만 수정(순수 접근성 정합 — 데이터·API·동작 불변).
+- 신규 리포트 페이지는 `BillingStatisticsReportPage`(G26) 골격을 **단일 원천 패턴**으로 따를 것 — 섹션 `h3.ds-card__title`, StatCard 그리드 `ds-grid ds-grid--stats … __summary role=group`, 조회 버튼 `aria-busy`.
+- 변동 유형 Badge는 `transportMonthlyReports.js`의 `TRANSPORT_VARIATION_TYPE` 라벨과 키 일치 유지(색+텍스트 병행).
+
+### 49-4. 검증
+
+- `TransportMonthlyReportsPage.test.jsx` **1/1 PASS** (+heading level 3·StatCard group 단언 추가).
+- `npm test` **1596/1596 PASS** · `npm run build` PASS.
+
+---
+
+## 50. G15 이동서비스일지 감사추적 + 모니터링/간호 연계 패널 토큰 정합 (125차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17 -->
+
+> **125차 UXD (2026-06-17)** — 124차(§49) 이후 coder 신규 커밋(`3cc5a08` G15 이동서비스일지 감사추적 read API wire·`8b68fdb` G30/G24b/G21/G26 모니터링 근거 일관 패널 `MonitoringEvidenceContextPanel`·`140bf92` L02·L03 간호 리포트 연계 패널 `CareNursingParityPanel`) 미점검 갭 해소. 신규 패널 2종(`8b68fdb`·`140bf92`)은 `aside`/`nav` landmark·`aria-label`·`role="status"`·`ul/li` 시맨틱을 이미 갖춰 접근성 결함은 없었고, 잔여는 **토큰 단일 원천(§1-4·FE-16) 회귀 2건**.
+
+### 50-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `components/transport/TransportServiceLogPanel.jsx` | `/transport/runs/:id` 탭 | G15 별지 제22호 일지 + 감사추적 표(`3cc5a08`) |
+| `components/monitoring/MonitoringEvidenceContextPanel.jsx` | G30·G24b·G21·G26 페이지 | BNK-273 모니터링 근거 연계 `aside`(`8b68fdb`) |
+| `components/ui/CareNursingParityPanel.jsx` | L02·L03 간호 리포트 페이지 | 제공기록 연계 `aside`(`140bf92`) |
+| `styles/components.css` | `.ds-monitoring-evidence-context*`·`.ds-care-nursing-parity*` | 간격 토큰 정합 |
+
+### 50-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `TransportServiceLogPanel` | 감사·본문 빈 상태 안내 `className`을 **미정의 `ds-empty-hint` → 정의된 `ds-text-muted`**로 교체(2곳) | FE-16·§1 단일 원천 — `ds-empty-hint`는 `components.css` 미정의로 색·`forced-colors` 토큰을 못 받던 80·90·97차 패턴 회귀. `ds-text-muted`는 `--color-text-muted`(4.76:1) + `forced-colors`에서 `--color-text-secondary`로 승격(line 2400) |
+| `MonitoringEvidenceContextPanel`·`CareNursingParityPanel` CSS | `gap: 0.5rem`·`0.75rem 1rem` 등 raw rem → **`var(--space-2)`·`var(--space-3) var(--space-4)`** | §1-4·§4 — 컴포넌트 간격은 토큰만 사용(118·120차 raw 값 → 토큰 패턴) |
+| `MonitoringEvidenceContextPanel` | `aside aria-label`·`nav aria-label`·증빙기간 `role="status"`·`ul/li` — 정합 확인(변경 불요) | WCAG 1.3.1·4.1.3 |
+| `CareNursingParityPanel` | `aside aria-label`·`nav aria-label`·`ul/li` — 정합 확인(변경 불요) | WCAG 1.3.1 |
+| `TransportServiceLogPanel` 감사추적 | `section aria-labelledby` + 가시 `h3`·이력 `Table` `captionVisuallyHidden`·`<time dateTime>`·미저장 상태 텍스트+색 병행 — 정합 확인(변경 불요) | WCAG 1.3.1·1.4.1 |
+
+### 50-3. coder 전달 메모
+
+- 빈 상태/도움말 muted 안내문은 일회성 클래스 신설 대신 **`ds-text-muted`**(또는 표 안이면 `ds-table-empty`)를 사용할 것 — 색·`forced-colors` 대비가 단일 원천에서 일관 적용됨.
+- 신규 패널 CSS는 `--space-*` 토큰만 사용(raw rem 금지) — `MonitoringEvidenceContextPanel`·`CareNursingParityPanel`이 기준 패턴.
+- `MonitoringEvidenceContextPanel`/`CareNursingParityPanel`은 배경·테두리가 없는 텍스트+링크 `aside`라 `forced-colors` 경계선이 불필요(링크 색은 시스템 색으로 유지).
+
+### 50-4. 검증
+
+- `TransportServiceLogPanel.test.jsx`·`MonitoringEvidenceContextPanel.test.jsx`·`CareNursingParityPanel.test.jsx` **14/14 PASS**.
+- `npm test` **1605/1605 PASS** · `npm run build` PASS.
+
+---
+
+## 51. 커스텀 DateInput/TimeInput 피커 + G15 경유지·ETA 칩 접근성 (127차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17 -->
+
+> **127차 UXD (2026-06-17)** — 126차(§50) 이후 coder 신규 커밋(`ea5d896` native `type=date|time` 대체 커스텀 피커·`bf73c4c` `TransportAddWaypointModal`·`TransportStopList` ETA 칩·`96db8bf` 배차 compact layout) 미점검 갭 해소.
+
+### 51-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `components/ui/DateInput.jsx` | 전역 폼 | `DatePickerCalendar` 팝오버 |
+| `components/ui/DatePickerCalendar.jsx` | DateInput 내부 | `ds-calendar` 토큰 재사용 |
+| `components/ui/TimeInput.jsx` | `TransportRunNewPage` 등 | 시·분 `Select` 복합 필드 |
+| `components/ui/Field.jsx` | 전역 | `labelId`·단일 자식 `cloneElement` |
+| `components/transport/TransportAddWaypointModal.jsx` | 배차 편집 | 경유지 주소 입력 |
+| `components/transport/TransportStopList.jsx` | 배차 split-view | ETA·지연 칩 |
+| `styles/components.css` | `.ds-date-picker*`·`.ds-time-picker*`·`.ds-transport-stop__time-chip-status` | `forced-colors` |
+
+### 51-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `DateInput` | 팝오버 열림 시 선택일/오늘 버튼 포커스·닫힘 시 트리거 복귀 | WCAG 2.4.3 — 키보드 포커스 맥락 유지 |
+| `DateInput` | `labelId`→dialog `aria-labelledby` (없으면 `aria-label="날짜 선택"`) | WCAG 1.3.1·4.1.2 — 필드 라벨과 달력 대화상자 연결 |
+| `DatePickerCalendar` | 이전/다음 달 **비표시 일자 `disabled`** | WCAG 3.3.2 — 잘못된 월 선택 방지 |
+| `TimeInput` | 시 `Select`에 `Field` `htmlFor` `id`·분 `Select` `aria-label="분"`·`aria-describedby`는 시 선택에 연결 | WCAG 1.3.1 — `role=group`+`htmlFor` 이중 라벨 회귀 방지 |
+| `Field` | `<label id={fieldId-label}>`·`labelId` controlProps·단일 React 자식 `cloneElement` | render-prop 미사용 `TransportRunNewPage` 등 정합 |
+| `TransportAddWaypointModal` | 주소 미입력 **`Field error`**+`aria-invalid` (폼 상단 `Alert` 제거) | WCAG 3.3.1 — 필드 단위 오류 식별 |
+| `TransportStopList` | 지연 ETA 칩 가시 **「지연」** 텍스트 + 기존 `aria-label` | WCAG 1.4.1 — 색만 의존 금지 |
+| `components.css` | date/time picker·지연 칩 `forced-colors` 경계선 | WCAG 1.4.11 |
+
+### 51-3. coder 전달 메모
+
+- 신규 날짜·시간 입력은 **native `type=date|time` 금지** — `DateInput`/`TimeInput`+`Field`만 사용(28·64차 규율 유지).
+- `Field`에 단일 UI 자식을 직접 넣어도 `cloneElement`로 `id`·`labelId`·`aria-describedby`가 전달됨 — render-prop과 동등.
+- `TimeInput`은 첫 `Select`(시)에 `Field` `htmlFor` `id`를 부여 — `role=group`+`aria-labelledby`와 `htmlFor`를 동시에 쓰지 말 것(중복 accessible name).
+- ETA 지연 표시는 **`.ds-transport-stop__time-chip-status`「지연」** 텍스트 필수 — danger 색 클래스만으로 상태 전달 금지.
+
+### 51-4. 검증
+
+- `DateInput.test.jsx` **5/5** · `TransportAddWaypointModal.test.jsx` **2/2** · `TransportStopList.test.jsx` 갱신.
+- `npm test` · `npm run build` PASS.
+
+---
+
+## 52. DatePickerCalendar 키보드 방향키 내비게이션 + roving tabindex (128차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17 -->
+
+> **128차 UXD (2026-06-17)** — §51(127차)에서 도입한 커스텀 `DateInput` 달력 팝오버는 포커스 진입·복귀·`aria-labelledby`는 갖췄으나, WAI-ARIA *date picker dialog* 패턴의 핵심인 **그리드 키보드 이동**이 없어 키보드 사용자가 날짜를 고르려면 최대 42개 날짜 버튼을 일일이 `Tab` 해야 했다. 이 갭을 roving tabindex + 방향키 내비게이션으로 해소.
+
+### 52-1. 키보드 인터랙션 (달력 그리드)
+
+| 키 | 동작 | 헬퍼 |
+|----|------|------|
+| `←` / `→` | 1일 이전/다음 | `addDaysToIso(iso, ∓1)` |
+| `↑` / `↓` | 1주 이전/다음 | `addDaysToIso(iso, ∓7)` |
+| `Home` / `End` | 현재 주의 일요일 / 토요일 | `startOfWeekIso` / `endOfWeekIso` |
+| `PageUp` / `PageDown` | 1개월 이전/다음(말일 보정) | `addMonthsToIso(iso, ∓1)` |
+| `Enter` / `Space` / 클릭 | 포커스한 날짜 선택 | 날짜 버튼 기본 동작(중복 핸들러 없음) |
+| `Esc` | 팝오버 닫고 트리거 복귀 | §51 기존 동작 |
+
+- 이동 결과가 `min`/`max` 경계를 벗어나면 포커스를 옮기지 않는다(스크롤 방지 `preventDefault`는 적용).
+- 월 경계를 넘는 이동은 `DateInput.moveFocusTo`가 표시 월을 자동 전환하고, 새 월의 해당 날짜 버튼으로 포커스를 옮긴다.
+
+### 52-2. roving tabindex (포커스 단일화)
+
+| 항목 | 조치 | 근거 |
+|------|------|------|
+| `DatePickerCalendar` | 그리드에서 `tabindex=0` 날짜 **1개**, 나머지 `-1` | WCAG 2.4.3 — composite widget 단일 탭 스톱 |
+| 포커스 대상(`rovingIso`) | `focusDate` → 선택일 → 오늘 → 첫 활성일(현재 월에 보이는 날짜만) | 빈 값·경계에서도 항상 1개 보장 |
+| `DateInput` | `focusDate` 상태 + `moveFocusTo`(표시 월 동기화) · 이전/다음 달 버튼도 `addMonthsToIso`로 같은 일자 유지 | 방향키·버튼 내비게이션 일관 |
+| 그리드 `<table>` `onKeyDown` | 방향키만 가로채고 선택은 버튼 기본 동작 위임 | 중복 키 핸들러·이중 이벤트 방지 |
+| `<caption>`(sr-only) | "…날짜 선택 — 방향키로 이동, Enter로 선택" | WCAG 1.3.1 — 조작 방법 사전 안내 |
+
+### 52-3. coder 전달 메모
+
+- 신규 순수 헬퍼는 **`lib/pickerDate.js`** 에 위치(`addDaysToIso`·`addMonthsToIso`·`startOfWeekIso`·`endOfWeekIso`) — 날짜 산술이 필요하면 `new Date` 직접 사용 대신 재사용할 것(로컬 기준·월/연 경계 자동 처리).
+- `DatePickerCalendar`는 `focusDate`·`onFocusDate` props를 받는 **제어 컴포넌트** — 단독 사용 시 부모가 `focusDate`와 표시 월(`year`/`monthIndex`)을 함께 갱신해야 roving 포커스가 정상 동작한다.
+- 날짜 선택 로직은 기존대로 버튼 `onClick`(=`onSelectDate`)에 유지 — 그리드 `onKeyDown`에 `Enter`/`Space` 처리를 추가하지 말 것(버튼 기본 동작과 충돌).
+
+### 52-4. 검증
+
+- `DateInput.test.jsx` **9/9**(+4: roving 단일 `tabindex`·방향키 이동+Enter 선택(2026-06-25)·`PageUp` 월 점프(2026-05-17)·`max` 경계 차단).
+- 소비처 회귀 — `FeeSurchargeGuidePanel`·`ComplaintConsultationForm`·`TransportCompliancePanel`·`StaffLifecyclePanel` PASS.
+- `npm test`(locked) · `npm run build` PASS.
 
 ---
 
