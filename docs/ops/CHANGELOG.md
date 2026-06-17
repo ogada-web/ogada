@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-15T14:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-18T05:00:00+09:00 -->
 # ogada 변경 이력 (ops/CHANGELOG.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-15 (TWR 138차 자동 동기화 — **v1.3-B ✅ full · L03_M01/M06 △ BE · merge 555 FULLY UNBLOCKED** · BNK-213~216 · BE `a4352a8`/FE `3845f0c` · Vitest 1275/1275 · `mvn test` 246/246 PASS)  
+> **최종 갱신**: 2026-06-18 (208차 — **G15 일지 감사·보관 UX · 월간 리포트 2-7/2-8 · probe seed guard · ops 문서 208차**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 개발·운영·기획 담당자, 고객 센터 IT (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `src/backend/`, `src/frontend/`  
@@ -14,11 +14,496 @@
 
 ---
 
-## [Unreleased] — MVP v1 개발 중 (2026-06-15 138차, BE `a4352a8`·FE `3845f0c`·develop, **merge gate 555 FULLY UNBLOCKED**)
+## [Unreleased] — MVP v1 개발 중 (2026-06-17 208차, BE `aa42b9c`·FE `6a18dfd`·develop, **merge gate ~377 · FE ahead 31 · BE ahead 346 · BE WT CLEAN · FE WT CLEAN**)
 
-> **구현 상태**: Flyway **V1–V124** · **77 라우트·64 페이지** · merge gate **555**(FE305+BE250) · BE·FE **FULLY UNBLOCKED**
+> **구현 상태**: Flyway **V1–V148** · **106 route** · merge gate **~377 pending** (346 BE + 31 FE) · BE **ready @ `aa42b9c`** (G15 **`TRANSPORT_SERVICE_LOG_UPSERT` audit** · monthly reports 2-7/2-8 · QA-B95 probe seed guard · G15 carry) · FE **ready @ `6a18dfd`** (G15 **service log archive UX** · **TransportMonthlyReportsPage** 2-7/2-8 · QA-B116 service log a11y · G15 carry)
 > 
-> **최근 개선 (138차 — v1.3-B ✅ full · L03_M01/M06 BE · merge 555 준비 완료)**:
+> **최근 개선 (208차 — ops 문서 208차 · G15 일지 감사·보관 UX · 월간 리포트 2-7/2-8 · probe seed guard):**
+> - **ops 문서 208차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8·§5-8-0-1·**§5-8-0-2** · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§11-3 · `FAQ.md` **Q236·Q407·Q409 갱신 · Q410·Q411 신규**
+> 
+> **최근 개선 (208차 — G15 service log audit·archive UX · monthly reports 2-7/2-8 · QA-B95 probe guard):**
+> - **Transport service log upsert audit (BE `aa42b9c`, G15 v1.3-C, Q411)** — **`PUT /transport/runs/{runId}/service-log`** 성공 시 **`TRANSPORT_SERVICE_LOG_UPSERT`** 감사 로그 — `runDate`·`stopUpdateCount`·`summary` · **`TransportServiceTest`**
+> - **Transport monthly service variation report (BE `5d27ad3`, G15 2-7, Q410)** — **`GET /api/v1/transport/reports/monthly-service-variation?yearMonth=`** — 신규·퇴소·계약 변동 집계 · **`TransportMonthlyReportService`** · **`TransportMonthlyReportServiceTest`** · **`TransportMonthlyReportsPilotServiceFlowE2eTest`**
+> - **Transport monthly resident status report (BE `5d27ad3`, G15 2-8, Q410)** — **`GET /api/v1/transport/reports/monthly-resident-status?yearMonth=`** — 이동 대상·확정 배차·탑승 정차·계약 서명 집계 · **`RoleBasedControllerAccessTest`**
+> - **Live E2E probe seed-client guard (BE `0b5657a`, QA-B95, Q409)** — **`GET /system/live-e2e/probe`** — **`resolveSeedClientId`** 예외 시 **500 방지** · `clientReady=false` · **`LiveE2eControllerTest`**
+> - **Transport service log archive UX (FE `088e906`, G15 v1.3-C, Q411)** — **`TransportServiceLogPanel`** — **「일지 보관·감사 추적」** · 법정 보관 안내 · **미저장 시 인쇄·텍스트 저장 차단** · **`transportServiceLog.js`** · **`TransportServiceLogPanel.test`**
+> - **Transport service log panel a11y (FE `dff2f32`, QA-B116, Q411)** — **`TransportServiceLogPanel`** — 정차별 **Field 라벨** · **`StatusBadge`** 준수 토큰(색상만 의존 제거) · export guard **`aria-labelledby`**
+> - **Transport monthly reports page (FE `6a18dfd`, G15 2-7/2-8, Q410)** — **`TransportMonthlyReportsPage`** **`/reports/transport-monthly`** — **`fetchTransportMonthlyServiceVariationApi`/`fetchTransportMonthlyResidentStatusApi`** · **`TransportContextNav`** **「월간 리포트」** · **`TransportMonthlyReportsPage.test`**
+> 
+> **최근 개선 (207차 — ops 문서 207차 · QA-B95 bootstrap client fallback · guardian token reuse):**
+> - **ops 문서 207차 (TWR)** — `USER_MANUAL.md` §1-3 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-6·§11-3 · `FAQ.md` **Q360 갱신 · Q409 신규**
+> 
+> **최근 개선 (207차 — QA-B95 bootstrap client fallback · guardian token reuse):**
+> - **Live E2E client seed conflict fallback (BE `c13800c`, QA-B95, Q409)** — **`LiveE2eBootstrapService.ensureClientWithFallback`** — **`DataIntegrityViolationException`** 시 동일 tenant·지점 **기존 시드 이용자**(`clientId`·`LIVE-E2E-0001`) 재사용 · bootstrap **HTTP 500** 회귀 방지 · **`LiveE2eBootstrapServiceTest`**
+> - **Live E2E guardian token reuse from staff bootstrap (FE `af4d7f8`, QA-B95, Q409)** — **`liveGlobalSetup.applyBootstrapTokens`** — staff bootstrap 응답 **`guardianAccessToken`/`guardianRefreshToken`/`guardianEmail`** embedded 시 **`bootstrap-guardian` 2차 호출 생략** · **`liveE2eHarness.test`**
+> 
+> **최근 개선 (206차 — ops 문서 206차 · G15 service log API full stack · QA-B119 harness):**
+> - **ops 문서 206차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8·§5-8-0 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-6·§11-3 · `FAQ.md` **Q236·Q402·Q360 갱신 · Q407·Q408 신규**
+> 
+> **최근 개선 (206차 — G15 v1.3-C service log API full stack · QA-B119 live E2E harness):**
+> - **Transport service log compliance PUT (BE `aaaeb10`, G15 v1.3-C, Q407)** — **`PUT /api/v1/transport/runs/{runId}/service-log`** — **CONFIRMED only** · **`UpsertTransportServiceLogRequest`** — companion name·per-stop **`actualPickupTime`/`companionAccompanied`/`dropoffTime`** · **V148** `service_log_companion_name`·stop compliance columns · **`TransportServiceTest.upsertServiceLog*`** · **`TransportControllerRoutingTest`**
+> - **Transport service log export GET (BE `0cfa970`, G15 v1.3-C, Q407)** — **`GET /api/v1/transport/runs/{runId}/service-log`** — **`TransportServiceLogResponse`** — rows·**`TransportTimeCompliance`**(15분 tolerance)·summary · **`TransportTimeComplianceTest`** · **`TransportServiceTest.getServiceLog*`**
+> - **Transport service log panel API wire (FE `7a4b310`, G15 v1.3-C, Q407)** — **`TransportServiceLogPanel`** — **`fetchTransportServiceLogApi`/`upsertTransportServiceLogApi`** · CONFIRMED run **「일지 기록 저장」** · vehicle/driver **read-only from API** · **`TransportServiceLogPanel.test`** · **`transportServiceLog.test`**
+> - **Live E2E harness env isolation (FE `b69c8ae`, QA-B119, Q408)** — **`liveE2eHarness.test`** — stale shell **`LIVE_E2E_*`**·refresh token **stub/clear** — prior run env pollution regression 해소
+> 
+> **최근 개선 (205차 — ops 문서 205차 · QA-B95 health seed metadata · US-E04 QR targets · EzLink FAQ):**
+> - **ops 문서 205차 (TWR)** — `USER_MANUAL.md` §1-3·§8-4 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§9-1·§11-3 · `FAQ.md` **Q360·Q393·Q109·Q405·Q406**
+> 
+> **최근 개선 (205차 — QA-B95 health seed metadata · US-E04 QrCheckinTargetsPanel · QA-B116 test stabilize):**
+> - **Health live E2E seed metadata (BE `2926287`, QA-B95)** — **`GET /api/v1/health`** — **`liveE2eClientReady`·`liveE2eSeedClientId`** — bootstrap disabled·오류 시 false/null · **`HealthControllerTest`**
+> - **Probe seed client before guardian (BE `8a1f342`, QA-B95)** — **`LiveE2eProbeResponse`** — guardian bootstrap 전 **seeded client** 노출 · **`LiveE2eBootstrapLiveApiRoutingE2eTest`**
+> - **Staff bootstrap clientId before guardian auth (FE `825c6b0`, QA-B95)** — **`liveGlobalSetup.js`** — staff bootstrap **`clientId`** 를 guardian auth 전에 persist · **`liveE2eHarness.test`**
+> - **QrCheckinTargetsPanel a11y (FE `99f2f3e`, US-E04, Q406)** — **`QrCheckinTargetsPanel`** — **`role="radiogroup"`**·화살표/Home/End 키보드·**「대표」** Badge · **`GuardianCheckinPage`** 연동 · **`QrCheckinTargetsPanel.test`**
+> - **BodyRestraint·QR test stabilize (FE `0ebd0f8`, QA-B116)** — **`BodyRestraintRecordPage.test`** flake 해소 · QR target a11y regression carry
+> 
+> **최근 개선 (204차 — ops 문서 204차 · QA-B95 staff clientId·probe·login fallback · pilot E2E stabilize):**
+> - **ops 문서 204차 (TWR)** — `USER_MANUAL.md` §1-3 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-6·§11-3 · `FAQ.md` **Q360·Q393 갱신**
+> 
+> **최근 개선 (204차 — QA-B95 staff clientId·probe·login fallback · pilot E2E stabilize):**
+> - **Staff bootstrap clientId response (BE `440ed84`, QA-B95)** — **`LiveE2eBootstrapResponse.clientId`** — staff bootstrap이 시드된 이용자 UUID 반환 · **`LiveE2eBootstrapLiveApiRoutingE2eTest`** probe/bootstrap contract harness
+> - **Staff bootstrap client seed + probe fields (BE `d8d51a7`, QA-B95)** — **`LiveE2eBootstrapService.ensureClient`** — staff bootstrap 시 live-e2e 이용자 **항상 시드** · **`LiveE2eProbeResponse`** — **`clientReady`·`seedClientId`** preflight · **`LiveE2eBootstrapServiceTest`**·**`LiveE2eControllerTest`**
+> - **Bootstrap failure login fallback (FE `ddd4489`, QA-B95)** — **`liveGlobalSetup.js`** — bootstrap HTTP 오류 시 **env creds로 `POST /auth/login` 재시도** · **`login-fallback-ok`/`guardian-login-fallback-ok`** reason persist · **`liveE2eHarness.test`** regression
+> - **Pilot live page E2E stabilize (FE `6f2a4eb`, QA-B95)** — **`pilotLivePages.e2e.test.jsx`** — **`AuthProvider` passthrough mock** — `restoreSession` jsdom race 제거 · **`npm run test:live-e2e`** **118 passed / 0 unhandled errors**
+> 
+> **최근 개선 (203차 — ops 문서 203차 · QA-B95 live E2E deepen · V147 guardian trigger):**
+> - **ops 문서 203차 (TWR)** — `USER_MANUAL.md` §1-3 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-6·§11-3 · `FAQ.md` **Q360·Q393 갱신**
+> 
+> **최근 개선 (203차 — QA-B95 live E2E deepen, QA-B116 carry):**
+> - **Live E2E legacy onboarding reuse (BE `b1a6aff`, QA-B95)** — **`LiveE2eBootstrapService`** — branch onboarding support **legacy row reuse** · **`organizationId` backfill** · **`LiveE2eBootstrapServiceTest`**
+> - **Guardian bootstrap consent trigger fix (BE `22396e0`, QA-B95)** — **V147** `guardian_link_status_trigger_updated_at_fix` — **`updated_at ≥ created_at`** trigger 정합 · **`ClientEntityTest`**
+> - **Guardian live E2E client resolution (FE `4e99ae1`, QA-B95)** — **`liveConfig.js`** **`resolveGuardianClientId`** — stale **`LIVE_E2E_CLIENT_ID`** vs guardian-linked client 우선 · **`pilotLivePages.e2e.test.jsx`**·**`guardianLiveApi.e2e.test.js`**·**`liveE2eHarness.test`**
+> - **Transport test payload align (FE `cf6cd70`)** — **`VehiclesPage.test`**·**`pilotPageFlows.test`** — latest vehicle·route payload 회귀
+> 
+> **최근 개선 (202차 — ops 문서 202차 · QA-B116 direction-aware runs · TransportDeleteRunModal FE closure):**
+> - **ops 문서 202차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§11-3 · `FAQ.md` **Q399·Q403 갱신**
+> 
+> **최근 개선 (202차 — QA-B116 direction-aware runs · TransportDeleteRunModal FE closure, QA-B117 carry):**
+> - **Transport direction-aware runs FE full (FE `45bd923`, QA-B116, Q399)** — **`TransportPage`**·**`TransportRunNewPage`**·**`TransportRunDetailPage`** — **승차/하차** 방향별 운행 루트·명단·수동 배차 라벨 · **`transportDirectionLabel`** · **`TransportPage.test`**·**`TransportRunNewPage.test`**·**`TransportRunDetailPage.test`**
+> - **Transport DRAFT delete UI (FE `45bd923`, QA-B117, Q403)** — **`TransportDeleteRunModal`** · **`TransportRunDetailPage`** **「삭제」** · **`deleteTransportRunApi`** — **BE·FE Fixed** · **`TransportRunDetailPage.test`**
+> - **Korean geocode FE deepen (FE `45bd923`, Q401)** — **`koreanGeocode.js`**·**`kakaoMapGeocoder.js`** region fallback · **`koreanGeocode.test`**
+> - **Client transport profile a11y (FE `45bd923`)** — **`ClientTransportProfileSection`** — **`role="group"`**·**`aria-labelledby`** 픽업 필드 그룹
+> - **MealAssistanceRecordPage test stabilize (FE `45bd923`, QA-B116)** — **`MealAssistanceRecordPage.test`** — loading **`waitForElementToBeRemoved`** · **`userEvent.selectOptions`** — full-suite flake 해소
+> 
+> **최근 개선 (201차 — ops 문서 201차 · QA-B117 transport hardening · US-T02 map a11y):**
+> - **ops 문서 201차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§11-3 · `FAQ.md` **Q403~Q404 신규·Q401 갱신**
+> 
+> **최근 개선 (201차 — QA-B117 draft run delete·geocode scoring·roster dispatch, US-T02 map a11y):**
+> - **Transport DRAFT run delete (BE `1d1a71f`, QA-B117, Q403)** — **`DELETE /api/v1/transport/runs/{runId}`** — **`hq_admin` only** · **DRAFT only** · **204 NO_CONTENT** · **`TransportServiceTest.deleteRun*`** · **`TransportControllerRoutingTest`**
+> - **Kakao geocode document scoring (BE `1d1a71f`, Q401)** — **`KoreanGeocodeUtil.scoreDocument`** — 건물번호 일치 가산·불일치 감점 · **`KakaoGeocodeClientTest`** · route-preview **`regionPath`** 전달
+> - **Roster confirmed-dispatch null stopKind (BE `1d1a71f`)** — 레거시 정차 **`stopKind=null`** 도 **CLIENT** 로 간주해 **`confirmedDispatched`** 정합 · **`TransportServiceTest`**
+> - **Transport map pin a11y·legend (FE `10489a7`, US-T02, Q404)** — **`KakaoTransportMapView`** — 지점 핀 SR **「지점(센터) 정차」** · badge **`aria-hidden`** · 범례 **파란 선=도로·회색 점선=안내선·「센」=지점** · **`KakaoTransportMap.test.jsx`**
+> - **Transport delete UI (FE dirty WIP, QA-B117)** — **`TransportDeleteRunModal`** · **`TransportRunDetailPage`** **삭제** 버튼 · **`deleteTransportRunApi`** — **미커밋** (API는 BE `@1d1a71f` 준비)
+> 
+> **최근 개선 (200차 — ops 문서 200차 · US-T02 transport deepen):**
+> - **ops 문서 200차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§4-3·§5-8·§5-8-3 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§11-3 · `FAQ.md` **Q399~Q402 신규**
+> 
+> **최근 개선 (200차 — US-T02 branch waypoints·DROPOFF·desired times·driver name, QA-B115):**
+> - **Transport branch waypoints (US-T02, BE `f5b2b42`)** — **V143** `stop_kind` **CLIENT/BRANCH** · 지점(depot) 경유 정차 · 정차 상한 **17**(이용자 최대 15 + 지점) · **`KoreanGeocodeUtil`**·**`BranchLocationResolver`** region-aware geocode · **`TransportRoutePreviewServiceTest`**
+> - **Transport DROPOFF·desired times (BE `114411f`)** — **V146** `desired_boarding_time`·`desired_dropoff_time` · **`direction=DROPOFF`** roster·runs · 확정 하차 배차 **중복 가드** · roster **`desiredBoardingTime`/`desiredDropoffTime`**
+> - **Vehicle default driver name (BE `114411f`·FE `d3bef42`)** — **V144/V145** `default_driver_name` 자유 입력 · **`VehiclesPage`** · **`TransportVehicleSelect`** 라벨
+> - **Transport split-view·map pins (FE `d3bef42`/`84e75ec`, QA-B115)** — **`TransportRouteSplitView`** — 정차 목록·지도 동시 편집 · **번호 마커·하이라이트 동기화** · **`koreanGeocode.js`**·**`kakaoMapGeocoder.js`** region fallback · **`TransportPage`** **승차/하차** segmented control
+> 
+> **최근 개선 (199차 — ops 문서 199차 · BNK-288 transport compliance·session·roster deepen):**
+> - **ops 문서 199차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§3-1·§5-8·**§5-8-0** · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§11-3 · `FAQ.md` **Q82 갱신·Q396~Q398 신규**
+> 
+> **최근 개선 (199차 — 사용자 요청 plan 변경 154차 · 배차 IA·명단 연락처·SideNav·세션 persist):**
+> - **배차 `/transport` IA (154차, 결정 96, BNK-288, QA-B115)** — FE `84e75ec`/`8763b54` — 수동·자동 배차 **동일 페이지** · **운행 루트** 카드 최상단 · 「운행 조건」카드 제거 · 명단 **`contact`/`guardianContact`** · G15 **`TransportCompliancePage`** **`/transport/compliance`** 분리 · **`TransportContextNav`** 2단(배차·수칙 / 운영)
+> - **배차 roster 보호자 연락처 (BNK-288, BE `35e03ef`)** — **`GET /transport/roster`** 응답 **`guardianContact`** — 주 보호자 매핑 · **`hq_admin`** 전체·그 외 마스킹 · **`TransportServiceTest`**
+> - **Kakao geocode centralize (BNK-287/288, BE `35e03ef`)** — **`KakaoGeocodeClient`**·**`BranchLocationResolver`** — 주소→좌표 단일 경로 · route-preview·suggest-run 연동 · **`KakaoGeocodeClientTest`**
+> - **로그인 세션 탭 유지 (154차, SEC-005 예외, 결정 96, BNK-288)** — FE `84e75ec` — refresh token **`sessionStorage`**(`ogada.refreshToken`) · **`restoreSession()`** · access token **메모리 전용** · **`session.test.js`**·**`AuthContext.test.jsx`**
+> - **SideNav 비주얼 deepen (154차, US-UX-05 초과)** — 브랜드·아이콘·액센트·무한 스크롤 수정
+> 
+> **최근 개선 (198차 — QA-B114 Kakao map instance refactor a11y·SideNav duplicate removal · ops 문서 198차):**
+> - **ops 문서 198차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§3-1·§5-8 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-6·§4-7·§11-3 · `FAQ.md` **Q370·Q378·Q394 갱신·Q395 신규**
+> - **v1.3-A Kakao map instance refactor a11y (Fixed, QA-B114, Q370·Q394·Q395, BNK-285)** — FE `5ebaade` — **`kakaoMapInstance.js`**·**`useKakaoMap`**·**`KakaoBareMap`** — 지도 인스턴스 중앙화 · **`KakaoTransportMap`** — bootstrap/sdk-ready 분리·좌표 기반 **seed markers**·SDK 미설정 **Alert**(Spinner 제거) · **`KakaoTransportMapView`** — **`mapEnabled`** overlay guard·canvas **`role="application"`**·경로 요약 **`aria-live`** · **`kakaoMapInstance.test`** · CSS **`ds-transport-map__canvas-wrap`**·**`ds-transport-map-compare*`**·디자인 토큰 정합
+> - **SideNav L02_M14 duplicate removal (Fixed, QA-B114, Q395)** — FE `5ebaade` — **`navConfig.js`** — **`/nursing/service`** 중복 항목 제거 · **입력** = **간호급여 제공기록 (L03_M01)** · **집계** = **통합 간호제공 리포트 (L02_M14)** `/care/reports/nursing-service`
+> 
+> **최근 개선 (197차 — QA-B113 Kakao Maps JS SDK preview·QA-B95 role-mismatch seed guard · ops 문서 197차):**
+> - **ops 문서 197차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §3-6·§4-7·§11-3 · `FAQ.md` **Q370·Q393 갱신·Q394 신규**
+> - **v1.3-A Kakao Maps JS SDK preview (Fixed, QA-B113, Q370·Q394, BNK-285)** — FE `b000d92` — **`loadKakaoMapSdk.js`** — Kakao Maps JS SDK 동적 로드(`libraries=services`) · **`KakaoTransportMapView.jsx`** — Marker·Polyline·CustomOverlay 렌더 분리 · **`KakaoTransportMap.jsx`** — SVG fallback 제거 · **`pickupLat`/`pickupLng`** 정차 좌표 지원 · **`KakaoTransportMap.test.jsx`** · **`TransportRouteSvgFallback`** 삭제
+> - **Live E2E bootstrap role-mismatch seed guard (Fixed, QA-B95 deepen, Q393·Q394, BNK-285)** — BE `7ac0a46` — **`LiveE2eBootstrapService.resolveScopedEmailMatch`** — bootstrap email fallback **expected role code** 한정 — 동일 tenant **다른 역할** 계정 재사용·덮어쓰기 방지 · **`LiveE2eBootstrapServiceTest`** role-collision regression (+130 lines)
+> - **Frontend dirty-tree closure (Fixed, QA-B111, BNK-285)** — FE `27a3996` — transport map preview hardening + **`liveGlobalSetup`** bundle — develop WT clean
+> 
+> **최근 개선 (196차 — QA-B95 guardian bootstrap·live API routing E2E·onboarding support seed · ops 문서 196차):**
+> - **ops 문서 196차 (TWR)** — `USER_MANUAL.md` §1-3 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-6·§11-3 · `FAQ.md` **Q360·Q389 갱신·Q393 신규**
+> - **Live E2E guardian bootstrap endpoint (Fixed, BNK-283, Q393, QA-B95 deepen)** — BE `f5205e3` — **`POST /api/v1/system/live-e2e/bootstrap-guardian`** — guardian user·linked client·primary mapping seed · **`LiveE2eGuardianBootstrapResponse`** — access/refresh token·`clientId` · probe **`guardianReady`·`guardianBootstrapEndpoint`** · **`LiveE2eBootstrapServiceTest`** · **`LiveE2eControllerTest`** · **`LiveE2eControllerRoutingTest`**
+> - **Live E2E guardian bootstrap FE fallback (Fixed, BNK-283, Q393, QA-B95 deepen)** — FE `b3bd0cc` — **`liveGlobalSetup.js`** — guardian creds absent 시 **`POST /bootstrap-guardian`** → **`LIVE_E2E_GUARDIAN_*`·`LIVE_E2E_CLIENT_ID`** auto-fill · **`/auth/me` probe** · **`liveE2eHarness.test`**
+> - **Live E2E onboarding support seed + routing harness (Fixed, BNK-283, Q393)** — BE `ec142db` — staff bootstrap에 **branch onboarding `openedOn`** (US-O05) seed · **`BranchOnboardingSupportLiveApiRoutingE2eTest`** · **`StaffStatusReportLiveApiRoutingE2eTest`** · **`CareNursingReportsLiveApiRoutingE2eTest`** · **`LiveE2eBootstrapServiceTest`**
+> 
+> **최근 개선 (195차 — L02 care-scoped nursing BE pilot E2E·G26/G24b 모니터링 근거 라벨·G7 year-coverage message · ops 문서 195차):**
+> - **ops 문서 195차 (TWR)** — `USER_MANUAL.md` §1-3·§4-2·§4-6-1·§5-10·§5-36 · `ADMIN_GUIDE.md` §1-4·§6-2-26 · `DEPLOYMENT_GUIDE.md` §1-3·§3-6 · `FAQ.md` **Q389 갱신·Q391~Q392 신규**
+> - **L02 care-scoped nursing report BE pilot E2E (Fixed, BNK-280, Q389)** — BE `2ba2761` — **`CareNursingReportsPilotServiceFlowE2eTest`** — 5 pilot tests — **`/care/reports/nursing-service`** · **`…/hospital-visits`** · **`…/medication-delivery`** — CareReportController → CareReportService → NursingServiceRecordService delegation·aggregate field contracts · **mvn test 1374/1374 PASS**
+> - **G26/G24b monitoring basis labels unify (Fixed, BNK-273, Q391)** — FE `d499130` — **`NeedsAssessmentStatusPage`** StatCard **FAQ 21800/21810** suffix (G30 FAQ21841 패턴) · **`BillingStatisticsReportPage`** ②③ section lede — G30 FAQ21836/21842·G24b FAQ 21800/21810 cross-reference · **`NeedsAssessmentStatusPage.test`**
+> - **G7 year-coverage API message surface (Fixed, G7, Q392)** — FE `57114b8` — **`FeeScheduleYearGuardBanner`**·**`NHISImportPage`** — backend **`year-coverage.message`** 우선 표시·업로드 차단 오류 동일 문구
+> 
+> **최근 개선 (194차 — live E2E bootstrap HTTP 500 fix·L02/G21 pilot E2E·CareNursingServiceReportNav a11y · ops 문서 194차):**
+> - **ops 문서 194차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-36 baseline·sub-nav a11y · `ADMIN_GUIDE.md` §1-4 live E2E bootstrap fix · `DEPLOYMENT_GUIDE.md` §1-3·§3-7·§11-3 bootstrap 500·pilot E2E · `FAQ.md` **Q360 갱신·Q389~Q390 신규**
+> - **Live E2E bootstrap HTTP 500 restore (Fixed, QA-B95, Q360·Q389)** — BE `304bb2a`/`f6f1756` — **`GlobalExceptionHandler`** — `ResponseStatusException` → 선언 status(500 방지) · **`LiveE2eBootstrapService`** — `LIVE_E2E=1` env 조건 정렬 · **`LiveE2eControllerRoutingTest`** · **`GlobalExceptionHandlerTest`**
+> - **L02/G21 pilot page flow E2E (Fixed, BNK-279, Q389)** — FE `6b34d31` — **`pilotPageFlows.test`** — L02_M09/M10/M14 **care-scoped nursing reports** · G21 **RFID split-view reflection summary** flow mocks
+> - **CareNursingServiceReportNav sub-nav a11y (Fixed, UXD, Q390)** — FE `8ed937c` — **`.ds-context-nav--sub`** CSS 정의 — **`CareNursingServiceReportNav`** xs font·muted surface · forced-colors 상속
+> 
+> **최근 개선 (193차 — L02 care-scoped 간호 리포트 FE·G21 split-view 후속 확인·live E2E 진단 보강 · ops 문서 193차):**
+> - **ops 문서 193차 (TWR)** — `USER_MANUAL.md` §5-36 L02 care-scoped 간호 리포트 3종·§5-11 G21 split-view 요약·후속 목록 · `ADMIN_GUIDE.md` §6-2-26·§10-12 G21 deepen · `DEPLOYMENT_GUIDE.md` §11-3 스모크 3건(care nursing reports·G21 UNPAIRED) · `FAQ.md` **Q378 갱신·Q386~Q388 신규·Q360·Q376 갱신**
+> - **L02 care-scoped nursing report proxy APIs (✅ full, BNK-273, Q386)** — BE `002e3eb` — **`GET /api/v1/care/reports/nursing-service`** · **`…/hospital-visits`** · **`…/medication-delivery`** — L02 RBAC·L03 aggregate proxy · **`CareReportServiceTest`** · **`CareReportLiveApiRoutingE2eTest`** · **`RoleBasedControllerAccessTest$CareReportAccess`**
+> - **L02 care-scoped nursing report FE wire (✅ full, BNK-273, Q386)** — FE `58ee122` — **`CareNursingServiceReportPage`** **`/care/reports/nursing-service`** · **`/hospital-visits`** · **`/medication-delivery`** · **`CareNursingServiceReportNav`** 3탭 · **`careReports.js`** · SideNav **기록 → L02_M14/M09/M10 리포트** · **`CareNursingServiceReportPage.test`** · **`careReportServices.test`**
+> - **G21 split-view reflection summary (Fixed, BNK-273, Q387)** — FE `4c9103d` — **`VisitsPage`** split-view **청구반영 현황** chip 3종(REFLECTED/NOT_REFLECTED/UNPAIRED 건수) · **`VisitsPage.test`**
+> - **G21 split-view unresolved follow-up (Fixed, BNK-273, Q387)** — FE `cb457b7` — **`VisitsPage`** **「청구반영 후속 확인」** 목록 — NOT_REFLECTED·UNPAIRED 당일 청구 일정 · **`VisitsPage.test`**
+> - **G21 UNPAIRED null-pair alignment (Fixed, QA-B110, Q388)** — BE `e54a699` — **`VisitService.resolveBillingClaimReflectionStatus`** — 페어 엔티티 누락 시 **`UNPAIRED`** 반환 · **`VisitServiceTest`**
+> - **Live E2E credential readiness probe (Fixed, QA-B96, Q360)** — BE `c5f1325` — **`LiveE2eProbeResponse.credentialsConfigured`** · **`HealthController`** · **`LiveE2eBootstrapService.hasConfiguredCredentials`** · **`LiveE2eControllerTest`**
+> - **Live E2E bootstrap failure hardening (Fixed, QA-B96, Q360)** — BE `8a92179` — **`LiveE2eController`** — bootstrap/status/probe **runtime exception → stable 503/error** (500 방지) · **`LiveE2eControllerTest`**
+> - **Live E2E placeholder credential guard (Fixed, QA-B96, Q360)** — FE `7106106` — **`liveConfig.js`**·**`liveGlobalSetup.js`** — example placeholder creds **configured=false** · **`liveE2eHarness.test`**
+> 
+> **최근 개선 (191차 — Must 문서 보강: G41·7-5 신속 점검 경로 추가 · ops 문서 191차):**
+> - **ops 문서 191차 (TWR)** — `USER_MANUAL.md` **Must API·화면 빠른 점검표** 추가 · `ADMIN_GUIDE.md` **관리자 일일 Must 점검 우선순위** 추가 · `DEPLOYMENT_GUIDE.md` **Must API 스모크 범위 확장(G41/7-5)** · `FAQ.md` **Q357-1 추가 점검 API** 보강
+>
+> **최근 개선 (192차 — L02_M16 리포트 API·J03 quiet-hours 서버 차단 규칙 반영 · ops 문서 192차):**
+> - **ops 문서 192차 (TWR)** — `USER_MANUAL.md` L02_M16 **`GET /care/reports/meal-preference`** API 안내 + quiet-hours **서버 `422` 차단** 명시 · `ADMIN_GUIDE.md` §6-2-25 리포트 API·G2 수동 발송 차단 규칙 반영 · `DEPLOYMENT_GUIDE.md` §11-3 스모크 항목 2건(L02_M16 report·quiet-hours guard) 추가 · `FAQ.md` **Q385**(L02_M16 리포트 API) 신규
+> 
+> **최근 개선 (190차 — Must 문서 보강: G24b 연간 준수 점검 + G19 통합재가 탐색 운영 절차 · ops 문서 190차):**
+> - **ops 문서 190차 (TWR)** — `USER_MANUAL.md` **[TWR] G24b/G19 Must 운영 체크** 추가 · `ADMIN_GUIDE.md` **6-2-6b 운영 점검 루틴** 추가 · `DEPLOYMENT_GUIDE.md` **Must API 스모크(G24b/G19)** 추가 · `FAQ.md` **Q357-1 신속 검증 절차** 추가
+> 
+> **최근 개선 (189차 — live E2E prod security · G26 3-function pilot E2E · QA-B108/B109 · ops 문서 189차):**
+> - **ops 문서 189차 (TWR)** — FAQ **Q360 갱신·Q384 신규** · ADMIN_GUIDE §1-4·§2-3 live E2E prod guard · DEPLOYMENT §1-3·§3-6·§4-7·live E2E · USER_MANUAL §1-3 · **188차 CHANGELOG baseline sync**
+> - **Live E2E bootstrap prod security (Fixed, SEC, BNK-272, Q384)** — BE `aa6816a` — **`ProductionSecretValidator`** — `prod` 에서 **`LIVE_E2E`·`LIVE_E2E_BOOTSTRAP_ENABLED`·`ogada.live-e2e.bootstrap-enabled=true`** 시 **기동 실패** · **`LiveE2eBootstrapResponse`** — **평문 `password` 필드 제거** · **`ProductionSecretValidatorTest`** · **`LiveE2eBootstrapServiceTest`** · **`LiveE2eControllerTest`**
+> - **G26 3-function statistics pilot E2E (Fixed, BNK-272, Q379·Q380·Q382)** — BE `30f03e8` — **`G26StatisticsReportsPilotServiceFlowE2eTest`** — medical-deduction·copay-monthly·**transport-service-fee** **3 endpoint 동시** service flow
+> - **Live E2E credential gating (Fixed, QA-B96 deepen, Q360)** — FE `64f6753` — **`liveConfig.js`**·**`liveGlobalSetup.js`** — **non-empty creds = configured** · login probe로 유효성 검증 · **`liveE2eHarness.test`**
+> - **L03 nursing service save test stabilize (Fixed, QA-B108)** — FE `43d308a` — **`NursingServiceRecordPage.test`** — client option load **waitFor** · full-suite flake 해소
+> - **L02 meal preference create test stabilize (Fixed, QA-B109)** — FE `14d210c` — **`MealPreferenceSurveyPage.test`** — loaded client option 대기 후 submit · create assertion race 해소
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`aa6816a` WT CLEAN)
+> - **FE**: ✅ ready (`14d210c` WT CLEAN · develop ahead test `09e4ec1` **+2**)
+> - **pending commits**: ~321 (319 BE + 2 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (188차 — G26 ③ transport service fee statistics · L02 care report RBAC · ops 문서 188차):**
+> - **ops 문서 188차 (TWR)** — USER_MANUAL §1-3·§2-2·§5-10·§5-29~§5-34 · FAQ **Q379 갱신·Q382·Q383 신규** · ADMIN_GUIDE §1-4·§6-2 G26·§6-2-20~24 · DEPLOYMENT §1-3·§3-6 · **187차 CHANGELOG baseline sync**
+> - **G26 ③ transport service fee monthly statistics (✅ full, BNK-269, Q382)** — BE `3672bbe` — **`GET /api/v1/billing/reports/transport-service-fee-statistics`** — **`TransportServiceFeeStatisticsListResponse`** — 월별 건수·합계·확정·임시 금액·전월 대비 증감 (케어포 func module 2) · **`TransportServiceFeeServiceTest`** · **`G26StatisticsReportsLiveApiRoutingE2eTest`** 3-endpoint harness
+> - **G26 ③ transport service fee statistics FE wire (✅ full, BNK-269, Q382)** — FE `09e4ec1` — **`BillingStatisticsReportPage`** **③ 이동서비스비 월별 통계** 섹션 · **`fetchTransportServiceFeeStatisticsApi`** · **`normalizeTransportServiceFeeStatistics`** · **`BillingStatisticsReportPage.test`** · **`g26StatisticsReports.test`**
+> - **L02 care report RBAC align (Fixed, BNK-270, Q383)** — BE `2495753` — **`CareReportController`** — **`GET /api/v1/care/reports/*`** — **`hq_admin`·`branch_admin`·`social_worker` only** · **`caregiver` 403** · **`RoleBasedControllerAccessTest$CareReportAccess`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`2495753` WT CLEAN)
+> - **FE**: ✅ ready (`09e4ec1` WT CLEAN · develop ahead test `d8f1fdf` **+2**)
+> - **pending commits**: ~318 (316 BE + 2 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (187차 — G26 statistics dashboard FE full stack · G26/G21 a11y · ops 문서 187차):**
+> - **ops 문서 187차 (TWR)** — USER_MANUAL §1-3·§2-2·§3-1·§5-10 · FAQ **Q379·Q380 갱신·Q381 신규** · ADMIN_GUIDE §1-4·§6-2 G26 · DEPLOYMENT §1-3·§3-6 · **186차 CHANGELOG baseline sync**
+> - **G26 statistics dashboard FE wire (✅ full, BNK-268, Q379·Q380)** — FE `d8f1fdf` — **`BillingStatisticsReportPage`** **`/billing/reports/statistics`** — **`fetchMedicalExpenseDeductionReportApi`**·**`fetchCopayMonthlyStatisticsApi`** dual 2-axis · **`BillingReportsContextNav`** · SideNav **청구 → 본인부담 통계** · **`BillingStatisticsReportPage.test`** · **`g26StatisticsReports.test`**
+> - **G26/G21 a11y deepen (Fixed, UXD, BNK-268, Q381)** — FE `31544cf` — G26 **조회 연도 `Field error`+`aria-invalid`** · StatCard **`role="group"`** · split-view **`<section aria-labelledby>`** · G21 Badge **텍스트 라벨 전용** · **`ds-badge--dark` forced-colors**
+> - **G26 dual-function statistics pilot E2E (Fixed, BNK-268)** — BE `3481eb8` — **`G26StatisticsReportsPilotServiceFlowE2eTest`** — medical-deduction·copay-monthly **동시 service flow** · FE **`BillingStatisticsReportPage`** parity
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`3481eb8` WT CLEAN)
+> - **FE**: ✅ ready (`31544cf` WT CLEAN · develop ahead test `e10113f` **+2**)
+> - **pending commits**: ~316 (315 BE + 1 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (186차 — G26 dual statistics E2E harness · live E2E env parse · ops 문서 186차):**
+> - **ops 문서 186차 (TWR)** — USER_MANUAL §1-3·§5-10 · FAQ **Q360·Q379·Q380 갱신** · ADMIN_GUIDE §1-4·§6-2 G26 · DEPLOYMENT §1-3·§3-6·live E2E · **185차 CHANGELOG baseline sync**
+> - **G26 dual statistics live API routing harness (Fixed, BNK-263, Q379·Q380)** — BE `92ae60b` — **`G26StatisticsReportsLiveApiRoutingE2eTest`** — medical-deduction·copay-monthly **2 endpoint 동시** routing · invalid **`taxYear`/`year`** **`422`** guard · **`BillingServiceTest.listCopayMonthlyStatisticsShouldRejectInvalidYear`** · **P1**: FE wire `/billing/reports/*` dashboard
+> - **Live E2E env file parse deepen (Fixed, QA-B96 deepen, Q360)** — FE `e10113f` — **`liveGlobalSetup`**·**`loadLiveE2eEnvFiles`** — `export KEY=...` · **`${VAR:-default}`** shell default 구문 파싱 · **`liveE2eHarness.test`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`92ae60b` WT CLEAN)
+> - **FE**: ✅ ready (`e10113f` WT CLEAN · develop = test)
+> - **pending commits**: ~314 (314 BE + 0 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (185차 — G26 branch billing reports · live E2E harness harden · ops 문서 185차):**
+> - **ops 문서 185차 (TWR)** — USER_MANUAL §1-3·§5-10 · FAQ **Q379·Q380 신규·Q360 갱신** · ADMIN_GUIDE §1-4·§6-2·G26 · DEPLOYMENT §1-3·§3-6·live E2E · **184차 CHANGELOG baseline sync**
+> - **G26 branch medical expense deduction report (△ BE-only, BNK-263, Q380)** — BE `903f462` — **`GET /api/v1/billing/reports/medical-deduction`** — **`MedicalExpenseDeductionReportListResponse`** — 지점·귀속연도별 이용자 **PAID** copay 집계 · **`BillingServiceTest`** · **`MedicalExpenseDeductionReportLiveApiRoutingE2eTest`** · **P1**: FE wire `/billing/reports/medical-deduction`
+> - **G26 copay monthly statistics report (△ BE-only, BNK-263, Q379)** — BE `6d10e0d` — **`GET /api/v1/billing/reports/copay-monthly-statistics`** — **`CopayMonthlyStatisticsListResponse`** — 월별 청구·입금·미수 집계·전월 대비 증감 (케어포 PDF p.92 7-8 ②) · **`BillingServiceTest`** · **`CopayMonthlyStatisticsReportLiveApiRoutingE2eTest`** · **P1**: FE wire `/billing/reports/copay-monthly-statistics`
+> - **G26 medical deduction report pilot E2E (Fixed, BNK-263)** — BE `1840640` — **`MedicalExpenseDeductionReportLiveApiRoutingE2eTest`** · **`CopayMonthlyStatisticsReportLiveApiRoutingE2eTest`** routing harness
+> - **Live E2E bootstrap tenant scope (Fixed, QA-B96 deepen)** — BE `472cb1d` — **`LiveE2eBootstrapService`** — 시드 이메일 **cross-tenant collision** 시 org 재할당 방지 · **`LiveE2eBootstrapServiceTest`**
+> - **Live E2E skip-state gating (Fixed, QA-B96 deepen)** — FE `9006a53` — **`liveGlobalSetup`**·**`liveConfig.js`** — probe **`skipped`** 플래그 persist · authenticated suite **skip-path gate** · **`liveE2eHarness.test`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`472cb1d` WT CLEAN)
+> - **FE**: ✅ ready (`9006a53` WT CLEAN · develop ahead test `25ca88e` **+4**)
+> - **pending commits**: ~317 (313 BE + 4 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (184차 — G21 RFID split-view · L02 care nav cross-links · L02/G21 a11y · ops 문서 184차):**
+> - **ops 문서 184차 (TWR)** — USER_MANUAL §1-3·§3-1·§3-2·§5-11 · FAQ **Q376 갱신·Q377·Q378 신규** · ADMIN_GUIDE §1-4·§10-12 · DEPLOYMENT §1-3 · **183차 CHANGELOG baseline sync**
+> - **G21 RFID split-view (✅ full, BNK-262, Q377)** — FE `55fdbd0` — **`VisitsPage`** **`/visits`** — **`Switch`「계획·청구 분할 비교 (RFID split-view)」** — PLAN/BILLING **나란히 비교** · **`ds-visits-split-compare`** · **`VisitsPage.test`** split-view · 이지케어 **change_work** 패턴 parity
+> - **L02_M14 care nav link (✅ full, BNK-262, Q378)** — FE `55fdbd0` — SideNav **기록 → 간호급여 제공기록 (L02_M14)** → **`/nursing/service`** — 케어포 demo **2-x ↔ 3-x** parity
+> - **L03_M09/M10 care nav cross-links (✅ full, BNK-262, Q378)** — FE `6759bf6` — **`careLeafParity.js`** — SideNav **기록 → 병의원 진료내역 리포트 (L03_M09)** · **투약제공 리포트 (L03_M10)** · **`careLeafParity.test`** · **`SideNav.test`**
+> - **L02/G21 a11y deepen (Fixed, UXD, BNK-262)** — FE `25291b3` — L02 report 4페이지 **table `captionVisuallyHidden`** · **StatCard `role="group"`** · **`VisitsPage`** 청구반영 Alert **텍스트 라벨 전용**(색상 설명 제거) · **`ds-badge--dark` forced-colors outline**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`b38c6f7` WT CLEAN)
+> - **FE**: ✅ ready (`6759bf6` WT CLEAN · develop ahead test `25ca88e` **+3**)
+> - **pending commits**: ~312 (309 BE + 3 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (183차 — G21 claim reflection FE full · pilot E2E · ops 문서 183차):**
+> - **ops 문서 183차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-11·§6-3-1 · FAQ **Q376 갱신** · ADMIN_GUIDE §1-4·§10-12 · DEPLOYMENT §1-3 · **182차 CHANGELOG baseline sync**
+> - **G21 billing claim reflection status FE wire (✅ full, BNK-258)** — FE `25ca88e` — **`VisitsPage`** **`/visits`** — **`BILLING_CLAIM_REFLECTION_STATUS`** Badge · **「청구반영」** 열 · BILLING 탭 안내 Alert · **`VisitsPage.test`** · 이지케어 Channel.io **검은=반영·빨간=미반영** parity
+> - **G21 billing claim reflection pilot E2E (Fixed, BNK-258)** — BE `b38c6f7` — **`VisitPilotServiceFlowE2eTest`** · **`VisitLiveApiRoutingE2eTest`** — `REFLECTED`·`NOT_REFLECTED`·`UNPAIRED` paired PLAN/BILLING assertions
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`b38c6f7` WT CLEAN)
+> - **FE**: ✅ ready (`25ca88e` = test HEAD)
+> - **pending commits**: ~309 (309 BE + 0 FE)
+> - **결론**: **tester merge BE FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (182차 — L02_M11/M12 report FE full · L02_M16 meal preference full stack · G21 claim reflection BE · ops 문서 182차):**
+> - **ops 문서 182차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-11·§5-33~§5-35 · FAQ **Q373·Q374·Q375·Q376 갱신** · ADMIN_GUIDE §1-4·§6-2-23~25·§10-12 · DEPLOYMENT §1-3·§3-6 · **181차 CHANGELOG baseline sync**
+> - **L02_M11/M12 care report FE wire (✅ full, BNK-258)** — FE `ff9c8c5` — **`PatientServiceReportPage`** **`/care/reports/patient-service`** · **`ServiceSummaryReportPage`** **`/care/reports/service-summary`** · **`CareReportContextNav`** 6탭 · **`careReports.js`** patientService/serviceSummary variants · SideNav **기록 → L02_M11/M12** · **`PatientServiceReportPage.test`** · **`ServiceSummaryReportPage.test`** · **`patientServiceReportLiveApi.e2e.test.js`** · **`serviceSummaryReportLiveApi.e2e.test.js`** · **`pilotPageFlows`**
+> - **L02_M16 meal preference survey API (✅ full, G-MEAL-PREFERENCE, BNK-258)** — BE `f33252a` — **`GET/POST/PATCH /api/v1/care/meal-preference-surveys`** — **V142** `meal_preference_surveys` · **`MealPreferenceSurveyServiceTest`** · **`MealPreferenceSurveyLiveApiRoutingE2eTest`**
+> - **L02_M16 meal preference survey FE wire (✅ full, BNK-258)** — FE `8b804fc` — **`MealPreferenceSurveyPage`** **`/care/meal-preference-surveys`** · **`MealPreferenceSurveyForm`** Field render-prop · **`mealPreferenceSurveyServices`** · SideNav **기록 → L02_M16** · **`MealPreferenceSurveyPage.test`** · **`mealPreferenceSurveyLiveApi.e2e.test.js`**
+> - **G21 billing claim reflection status (△ BE-only, BNK-258)** — BE `6da49aa` — **`VisitScheduleListItemResponse.billingClaimReflectionStatus`** — `REFLECTED`·`NOT_REFLECTED`·`UNPAIRED` · **`VisitService.resolveBillingClaimReflectionStatus`** · **`VisitServiceTest`** · **`VisitLiveApiRoutingE2eTest`** · **P2**: FE `/visits` 검은/빨간 표시
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`6da49aa` WT CLEAN)
+> - **FE**: ✅ ready (`8b804fc` WT CLEAN)
+> - **pending commits**: ~324 (314 BE + 10 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (181차 — L02_M17/M06 report FE full · L02_M11/M12 report BE · live E2E probe flags · ops 문서 181차):**
+> - **ops 문서 181차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-29~§5-34 · FAQ **Q371·Q372·Q373·Q374·Q360·Q369 갱신** · ADMIN_GUIDE §1-4·§6-2-20~24 · DEPLOYMENT §1-3·§3-6·§4-7 · **180차 CHANGELOG baseline sync**
+> - **L02_M17/M06 care report FE wire (✅ full, BNK-256)** — FE `fa20943` — **`IntensiveExcretionReportPage`** **`/care/reports/intensive-excretion`** · **`PositionChangeReportPage`** **`/care/reports/position-change`** · **`CareReportContextNav`** 4탭 · **`careReports.js`** · SideNav **기록 → L02_M17/M06** · **`IntensiveExcretionReportPage.test`** · **`PositionChangeReportPage.test`** · **`intensiveExcretionReportLiveApi.e2e.test.js`** · **`positionChangeReportLiveApi.e2e.test.js`** · **`pilotPageFlows`**
+> - **L02_M11 patient service report API (△ BE-only, BNK-257)** — BE `2cf0908` — **`GET /api/v1/care/reports/patient-service`** · **`PatientServiceReportResponse`** — L02_M01/M13/M03/M02/M07 cross-source · **`CareReportServiceTest`** · **`CareReportLiveApiRoutingE2eTest`** · **P1**: FE wire `/care/reports/patient-service`
+> - **L02_M12 service summary report API (△ BE-only, BNK-257)** — BE `2cf0908` — **`GET /api/v1/care/reports/service-summary`** · **`ServiceSummaryReportResponse`** — 지점별 이용자 집계 · **`CareReportServiceTest`** · **P1**: FE wire `/care/reports/service-summary`
+> - **Live E2E bootstrap probe flags (Fixed, QA-B96 deepen)** — BE `a25c9de` — **`GET /api/v1/system/live-e2e/probe`** — `organizationReady`·`branchReady`·`userReady`·`mappingReady` 구조화 플래그 · **`LiveE2eControllerTest`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`2cf0908` WT CLEAN)
+> - **FE**: ✅ ready (`40684a9` WT CLEAN)
+> - **pending commits**: ~318 (308 BE + 10 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (180차 — L02_M17/M06 care report BE · transport map a11y · ops 문서 180차):**
+> - **ops 문서 180차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-8·§5-31·§5-32 · FAQ **Q371·Q372·Q369·Q370 갱신** · ADMIN_GUIDE §1-4·§6-2-21~22·§10-10 · DEPLOYMENT §1-3·§3-6·§4-7 · **179차 CHANGELOG baseline sync**
+> - **L02_M17 intensive excretion report API (△ BE-only, BNK-256)** — BE `ae7e744` — **`GET /api/v1/care/reports/intensive-excretion`** · **`IntensiveExcretionReportResponse`** 5필드 집계 · V130 read-only · **`CareReportServiceTest`** · **`CareReportLiveApiRoutingE2eTest`** · **P1**: FE wire `/care/reports/intensive-excretion`
+> - **L02_M06 position change report API (△ BE-only, BNK-256)** — BE `9cc0c1d` — **`GET /api/v1/care/reports/position-change`** · **`PositionChangeReportResponse`** 욕창 위험·체위변경 집계 · US-O03 V114 backing · **`CareReportServiceTest`** · **P1**: FE wire `/care/reports/position-change`
+> - **v1.3-A transport map a11y (Fixed, UXD)** — FE `1daeda7` — **`KakaoTransportMap`** `.ds-transport-map__summary` · **`role="status" aria-live="polite"`** 경로 요약 라이브 영역
+> - **V141 L02 integrity (Fixed, QA-B101)** — BE `e8b8398` — **`V141__l02_care_v140_integrity.sql`** develop 커밋
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`9cc0c1d` WT CLEAN)
+> - **FE**: ✅ ready (`1daeda7` WT CLEAN)
+> - **pending commits**: ~314 (304 BE + 10 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (179차 — L02_M04/M05 report FE full · print · default window · v1.3-A Kakao route preview · ops 문서 179차):**
+> - **ops 문서 179차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-8·§5-29·§5-30 · FAQ **Q369·Q370·Q159 갱신** · ADMIN_GUIDE §1-4·§6-2-20·§10-10 · DEPLOYMENT §1-3·§3-6·§4-7 · **178차 CHANGELOG baseline sync**
+> - **L02_M04/M05 care report FE wire (✅ full, BNK-252)** — FE `c5f82a6` — **`CareMealExcretionReportPage`** **`/care/reports/meal-excretion`** · **`BathHelpReportPage`** **`/care/reports/bath-help`** · **`careReports.js`** · SideNav **기록 → L02_M04/M05** · **`CareMealExcretionReportPage.test`** · **`BathHelpReportPage.test`**
+> - **L02_M04/M05 print output (✅ full, BNK-253)** — FE `d2145b0` — **`window.print()`** · **`ds-care-report-print-root`** CSS · **`careReports.js` printLabel** · unit test print spy
+> - **L02_M04/M05 default evidence window (Fixed, BNK-252)** — BE `27b40cd` — **`CareReportService`** — `fromDate`/`toDate` 생략 시 데이터 기준 자동 · **`CareReportServiceTest`**
+> - **L02 care report a11y (Fixed, UXD)** — FE `07f6afa` — L02_M13/M04/M05/M15 care screens **`aria-busy`·filter labels**
+> - **L02_M04/M05 pilot E2E (Fixed, BNK-252)** — FE `46971e1` — **`pilotPageFlows`** care report pages · **`careMealExcretionReportLiveApi.e2e.test.js`** · **`bathHelpReportLiveApi.e2e.test.js`**
+> - **v1.3-A Kakao route preview map (✅ full, BNK-253)** — BE `e8b8398`/`3eeac92` — **`POST /api/v1/transport/route-preview`** · **`KakaoDirectionsClient`** · **`TransportRoutePreviewService`** · FE `0c523cd`/`15e9b64` — **`KakaoTransportMap`** road polyline · **`fetchTransportRoutePreviewApi`** · **`VITE_KAKAO_MAP_JS_KEY`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`3eeac92` WT CLEAN)
+> - **FE**: ✅ ready (`46971e1` WT CLEAN for L02 reports; transport map deepen @ `15e9b64`)
+> - **pending commits**: ~304 (300 BE + 4 FE)
+> - **결론**: **tester merge FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` credentials
+> 
+> **최근 개선 (178차 — L02_M13·L02_M15·G30 phone satisfaction FE · L02_M04/M05 report BE · ops 문서 178차 + **API_SPEC L02/L03 문서화**):**
+> - **API_SPEC.md 문서화 (TWR, Q366·Q365·Q368)** — **§10 요양급여 제공기록 (L02)** — 6 subsections: L02_M01 weekly service, L02_M03 bathing, L02_M13 meal assistance, L02_M02 intensive excretion, L02_M07 body restraint, L02_M15 special notes, L02_M04/M05 reports · **§15 간호급여 (L03)** — 8 subsections: L03_M11 vital checks, L03_M14 weight, L03_M13 oral care, L03_M04 emergency, L03_M01/M06 service, L03_M06 excretion tubes, US-O03 pressure ulcer, L03_M08 quarterly report
+> - **USER_MANUAL.md 확장 (TWR, Q367·Q368)** — **§5-29/30 케어 리포트** — L02_M04 월간 요양·식사·배설 통계 · L02_M05 목욕 리포트 · 월별·지점별·개별 이용자 필터 · CSV 출력 P2
+> - **ops 문서 178차 (TWR)** — USER_MANUAL §1-3·§3-1·§4-3·§5-27·§5-28·§5-29·§5-30·§6-1 · FAQ **Q366·Q365·Q368·Q369·Q360 갱신** · ADMIN_GUIDE §1-4·§6-2-18~20 · DEPLOYMENT §1-3·§3-6·§3-7 · **177차 CHANGELOG baseline sync**
+> - **L02_M13 integrated meal assistance FE wire (✅ full, BNK-248)** — FE `9ad8346` — **`MealAssistanceRecordPage`** **`/care/meal-assistance-records`** · **`MealAssistanceRecordForm`** Field render-prop · **`mealAssistanceRecordServices`** · SideNav **기록 → 통합식사도움기록 (L02_M13)** · **`MealAssistanceRecordPage.test`** · **`mealAssistanceRecordLiveApi.e2e.test.js`**
+> - **G30 phone consultation satisfaction FE panel (✅ full, FAQ21841, BNK-247)** — FE `9ad8346` — **`MonitoringSelfDiagnosisPage`** **`satisfiedCount`/`satisfactionMet` StatCard** · **`monitoringCompliance.js`** · **`MonitoringSelfDiagnosisPage.test`**
+> - **L02_M15 care service special notes FE wire (✅ full, BNK-248)** — FE `3549896` — **`CareServiceSpecialNotesPage`** **`/care/service-special-notes`** · **`CareServiceSpecialNotesForm`** · V134 **`special_notes`** via weekly-service-records API · **`CareServiceSpecialNotesPage.test`** · **`careServiceSpecialNotesLiveApi.e2e.test.js`**
+> - **L02_M04/M05 care report APIs (△ BE-only, BNK-248)** — BE `c655743` — **`GET /api/v1/care/reports/care-meal-excretion`** · **`GET …/bath-help`** · **`CareReportService`** aggregates L02_M13/M02/M01·L02_M03 · **`CareReportServiceTest`** · **`CareReportLiveApiRoutingE2eTest`** · **P2**: FE wire `/care/reports/*` (dirty tree)
+> - **Live E2E anonymous probe (Fixed, QA-B96/SEC-D29)** — BE `221bde7`/`a06a29a`/`59c5d16` — **`GET /api/v1/system/live-e2e/probe`** · disabled bootstrap **`ready=false`** · eligible seeded account status · **`LiveE2eControllerTest`** · FE `4299914`/`3a14caf` auth probe harden·env auto-load
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`c655743` WT CLEAN)
+> - **FE**: ⚠️ HEAD `@3549896` CLEAN · **L02_M04/M05 report WIP dirty** (11 files)
+> - **pending commits**: ~300 (299 BE + 1 FE)
+> - **결론**: **tester merge BE FULLY UNBLOCKED** · **operation 승격 BLOCK** = QA-B95 `dev-live-e2e.env` 미생성
+> 
+> **최근 개선 (177차 — L02_M13 BE API·V139/V140·J03 readinessBlockers·health probe harden·L02 a11y·live E2E env root · ops 문서 177차)**:
+> - **ops 문서 177차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-27·§6-1 · FAQ **Q366·Q367·Q360 갱신** · ADMIN_GUIDE §1-4·§6-2-16~18·§10-14(V139~V140) · DEPLOYMENT §1-3·§3-6·§4-3·§9-1 · **176차 CHANGELOG baseline sync**
+> - **L02_M13 integrated meal assistance API (△ BE-only, BNK-248)** — BE `81a2223` — **`GET/POST/PATCH /api/v1/care/meal-assistance-records`** — **V140** `meal_assistance_records` · **`MealAssistanceRecordServiceTest`** · **`MealAssistanceRecordPilotServiceFlowE2eTest`** · **P2**: FE wire `/care/meal-assistance-records` (dirty tree)
+> - **V139 billing/bathing integrity (Fixed, BNK-248)** — BE `e4c240f` — `dispatched_by` actor backstop · bathing **CANCELLED/SKIPPED notes CHECK** · purge/actor indexes
+> - **J03 notification readiness blockers (Fixed, BNK-248)** — BE `de25b3e` — **`GET /notifications/channel-status`** `readinessBlockers[]` — Solapi/SMTP 누락 원인 코드 · **`NotificationChannelReadinessServiceTest`**
+> - **Health readiness probe harden (Fixed, QA-B96)** — BE `e4c240f` — null profile·non-DataAccess runtime 오류 시 **503 안전 폴백** · **`LiveReadinessProbeTest`**
+> - **L02_M01/M03·G-7-1 a11y pass (Fixed, UXD)** — FE `15b09df` — **`CareServiceWeeklyRecordForm`**·**`BathingScheduleForm`**·**`BillingStatementDispatchPanel`** `aria-busy`·quiet-hours `describedby`·row action labels
+> - **Live E2E env root resolve (Fixed, QA-B96)** — FE `61141a6` — **`npm run test:live-e2e`** git root·`frontend-test` checkout에서 `scripts/` 자동 탐색
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1284/1284)
+> - **FE**: ⚠️ 1437/1441 (L02_M13 WIP dirty tree — coder commit 선행)
+> - **pending commits**: 649+ (FE 355+ + BE 292+)
+> - **결론**: **tester merge BLOCK(FE)** · **operation 승격 BLOCK** = QA-B95 live E2E env 파일 미생성
+> 
+> **최근 개선 (176차 — L02_M01·L02_M03 FE wire·G-7-1-4CHANNEL·G30 phone satisfaction·live E2E harness · ops 문서 176차)**:
+> - **ops 문서 176차 (TWR)** — USER_MANUAL §1-3·§3-1·§4-6·§5-25·§5-26·§6-1 · FAQ **Q362·Q363·Q364·Q365·Q320 갱신** · ADMIN_GUIDE §1-4·§6-2-15~17·§10-14(V133~V138) · DEPLOYMENT §1-3·§3-6·§9-1 · **175차 CHANGELOG baseline sync**
+> - **L02_M01 weekly care service provision FE wire (✅ full, BNK-244)** — FE `41b2123`/`1fd1434` — **`CareServiceWeeklyRecordPage`** **`/care/weekly-service-records`** · **`CareServiceWeeklyRecordForm`** Field render-prop · **`careServiceWeeklyRecordServices`** · SideNav **기록 → 요양급여 제공기록 (L02_M01)** · **`CareServiceWeeklyRecordPage.test`** · **`careServiceWeeklyRecordLiveApi.e2e.test.js`** · **`pilotPageFlows`** L02_M01
+> - **L02_M03 bathing schedule FE wire (✅ full, BNK-245)** — FE `950415d`/`1fd1434` — **`BathingSchedulePage`** **`/care/bathing-schedules`** · **`BathingScheduleForm`** · **`bathingScheduleServices`** · SideNav **기록 → 목욕 일정·제공현황 (L02_M03)** · **`BathingSchedulePage.test`** · **`bathingScheduleLiveApi.e2e.test.js`**
+> - **G-7-1-4CHANNEL billing statement dispatch UI (✅ full, BNK-241)** — FE `1fd1434` — **`BillingStatementDispatchPanel`** on **`BillingDetailPage`** — **`batchBillingStatementDispatchesApi`** · 4채널(우편·문자·이메일·직접수령) · J03 quiet-hours guard · **`BillingStatementDispatchPanel.test`**
+> - **L02_M01 weekly care API (✅ full, BNK-244)** — BE `13b8a37`/`344a28b` — **`GET/POST/PATCH /api/v1/care/weekly-service-records`** — **V134** `care_service_weekly_records` · **V135** integrity · **`CareServiceWeeklyRecordServiceTest`**
+> - **L02_M03 bathing schedule API (✅ full, BNK-245)** — BE `e703252`/`47a4e25`/`344a28b` — **`GET/POST/PATCH /api/v1/care/bathing-schedules`** — **V136** `bathing_schedules` · **V137** integrity · **SKIPPED/CANCELLED 사유 필수** (`47a4e25`)
+> - **G-7-1-4CHANNEL billing statement dispatch API (✅ full, BNK-241)** — BE `3a2e82e`/`344a28b` — **`GET/POST /billing/claims/{id}/statement-dispatches`** · **`PATCH …/{dispatchId}`** — **V133** `billing_statement_dispatches` · **`BillingStatementDispatchServiceTest`**
+> - **G30 phone consultation satisfaction (Fixed, FAQ21841)** — BE `344a28b` — **V138** `monitoring_phone_consultations.satisfied` — **5명·60% 만족** compliance · **`MonitoringServiceTest`**
+> - **Live E2E harness deepen (Fixed, BNK-244)** — BE `18ff83e` — seeded user status fallback · FE `6f53978`/`e6944f1`/`7faccbd` — **`pilotPageFlows`** L02_M02/M07 · staff/guardian auth probe · live suite gating imports
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1272/1272)
+> - **FE**: ✅ ready (Vitest 1432/1432)
+> - **pending commits**: 647 (FE 355 + BE 292)
+> - **결론**: **tester merge 준비 완료** · **operation 승격 BLOCK** = QA-B95 live E2E env 파일 미생성
+> 
+> **최근 개선 (175차 — L02_M07 FE wire·V132 integrity·health databaseStatusDetail·live E2E placeholder guard · ops 문서 175차)**:
+> - **ops 문서 175차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-24·§6-1 · FAQ **Q361·Q360 갱신** · ADMIN_GUIDE §1-4·§6-2-14·§10-14(V132) · DEPLOYMENT §1-3·§3-6·§9-1 · **174차 CHANGELOG baseline sync**
+> - **L02_M07 body restraint care FE wire (✅ full, BNK-241)** — FE `14a2bb9`/`10f32c4` — **`BodyRestraintRecordPage`** **`/care/body-restraint`** · **`BodyRestraintRecordForm`** Field render-prop · **`bodyRestraintRecordServices`** · SideNav **기록 → 신체제재 기록 (L02_M07)** · **`BodyRestraintRecordPage.test`** · **`bodyRestraintRecordLiveApi.e2e.test.js`**
+> - **L02 care V130–V131 integrity (Fixed, BNK-241)** — BE `d862a82`/`8b7e476` — **V132** `l02_care_v130_v131_integrity` — org/branch sync·inactive client guard·`recorded_by` backstop
+> - **Health readiness databaseStatusDetail (Fixed, QA-B96 deepen)** — BE `ec5f11c`/`8b7e476` — **`GET /api/v1/health`** `databaseStatusDetail` (`SELECT_1_OK`/`SELECT_1_FAILED`) · **`HealthControllerTest`**
+> - **Live E2E placeholder credential guard (Fixed, QA-B96)** — FE `5c24e4e`/`10f32c4` — example placeholder guardian·`LIVE_E2E_*` 값 **SKIP** (FAIL 방지) · local env 우선 (`10f32c4`)
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1231/1231)
+> - **FE**: ✅ ready (Vitest 1393/1393)
+> - **pending commits**: 625+ (FE 342+ + BE 283+)
+> - **결론**: **tester merge 준비 완료** · **operation 승격 BLOCK** = QA-B95 live E2E env 파일 미생성
+> 
+> **최근 개선 (174차 — L02_M02 FE wire·L02_M07 BE API·health ping·G19 guard·live E2E gating · ops 문서 174차)**:
+> - **ops 문서 174차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-23·§5-24 · FAQ **Q359·Q360 갱신·Q361** · ADMIN_GUIDE §1-4·§6-2-13·§6-2-14·§10-14(V131) · DEPLOYMENT §1-3·§3-6·§9-1 · **173차 CHANGELOG baseline sync**
+> - **L02_M02 intensive excretion observation FE wire (✅ full, BNK-239)** — FE `1264c16`/`95e7e96` — **`IntensiveExcretionObservationPage`** **`/care/intensive-excretion`** · **`IntensiveExcretionObservationForm`** Field render-prop · **`intensiveExcretionObservationServices`** · SideNav **기록 → 집중배설관찰 (L02_M02)** · **`IntensiveExcretionObservationPage.test`** · **`intensiveExcretionObservationLiveApi.e2e.test.js`**
+> - **L02_M07 body restraint care API (△ BE-only, BNK-239)** — BE `ea6092a`/`df14e15` — **`GET/POST/PATCH /api/v1/care/body-restraint-records`** — **V131** `body_restraint_records` · `BodyRestraintRecordService` · **`BodyRestraintMethod`** 6종 · **`MustApiEndpointRoutingTest$BodyRestraintRecordRouting`** · **P2**: FE wire `/care/body-restraint`
+> - **Health liveness ping (Fixed, QA-B96 deepen)** — BE `df14e15` — **`GET /api/v1/health/ping`** — DB probe 없이 **liveness** (`status: UP`) · **`HealthControllerTest`** · SecurityConfig permit
+> - **G19 malformed provider discovery URL guard (Fixed, BNK-239)** — FE `95e7e96` — **`IntegratedHomeProviderDiscoveryPanel`** — invalid `providerSearchUrl` 시 **외부 링크 대신 경고** · **`integratedHomeProviderDiscovery.test.js`**
+> - **Live E2E credential gating deepen (Fixed, QA-B96)** — FE `a5e7722`/`8ae34f5` — guardian·`LIVE_E2E_CLIENT_ID` 미설정 시 authenticated suite **SKIP** (FAIL 방지)
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1228/1228)
+> - **FE**: ✅ ready (Vitest 1381/1381)
+> - **pending commits**: 625 (FE 342 + BE 283)
+> - **결론**: **tester merge 준비 완료** · **operation 승격 BLOCK** = QA-B95 live E2E env 파일 미생성
+> 
+> **최근 개선 (173차 — L02_M02 BE API·health readiness·G19 harness·a11y · ops 문서 173차)**:
+> - **ops 문서 173차 (TWR)** — USER_MANUAL §1-3·§5-23 · FAQ **Q359**·**Q360**·**Q357·Q320·Q358 a11y 갱신** · ADMIN_GUIDE §1-4·§6-2-13·§9-1 · DEPLOYMENT §1-3·§3-6·§3-7·§9-1 · **172차 CHANGELOG baseline sync**
+> - **L02_M02 intensive excretion observation API (△ BE-only, BNK-238)** — BE `fd42b7e` — **`GET/POST/PATCH /api/v1/care/intensive-excretion-observations`** — **V130** `intensive_excretion_observation_records` · `IntensiveExcretionObservationService` · **`IntensiveExcretionObservationPilotServiceFlowE2eTest`** · **P2**: FE wire
+> - **Health readiness probe (Fixed, QA-B96 deepen)** — BE `6bd16b9` — **`GET /api/v1/health`** `ready`·`databaseStatus` · DB down 시 **503 DEGRADED** · FE `5f17beb` — **`liveGlobalSetup`** health probe · live E2E **SKIP** (ECONNREFUSED FAIL 방지)
+> - **G19 provider discovery pilot E2E deepen (Fixed, BNK-236)** — BE `4aac676` — **`IntegratedHomeProviderDiscoveryPilotServiceFlowE2eTest`** · FE `98102c3` — **`integratedHomeProviderDiscoveryLiveApi.e2e.test.js`** · **`integratedHomeProviderDiscovery.js`**
+> - **G19/G30/G39 a11y pass (Fixed, UXD)** — FE `85bfb4a` — **`IntegratedHomeProviderDiscoveryPanel`** `ds-dl-grid` · **`ProvisionResultDispatchPanel`** row `aria-label`·status Badge · **`MonitoringIntegratedChecklistPanel`** evidence window SR exposure
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1214/1214)
+> - **FE**: ✅ ready (Vitest 1367/1367)
+> - **pending commits**: 618 (FE 339 + BE 279)
+> - **결론**: **tester merge 준비 완료** · **operation 승격 BLOCK** = QA-B95 live E2E env 파일 미생성
+> 
+> **최근 개선 (172차 — G39 dispatch UI·G30 evidence window·live E2E harness · ops 문서 172차)**:
+> - **ops 문서 172차 (TWR)** — USER_MANUAL §4-3·§5-9 · FAQ **Q358**·**Q276·Q320 갱신** · ADMIN_GUIDE §1-4·§6-2-11·§10-11-3 · DEPLOYMENT §1-3·§3-6·live E2E harness · **171차 CHANGELOG baseline sync**
+> - **G39 monthly care provision record guardian dispatch UI (✅ full, BNK-234, US-T08)** — FE `4d1a4f2`/`73094f9` — **`ProvisionResultDispatchPanel`** on **`ProvisionResultEvaluationPage`** — **`notifyCareProvisionRecordApi`** · **`MonthInput`** · gap 이용자 **「기록지 발송」** · **`ProvisionResultDispatchPanel.test`** · **`careProvisionRecordDispatchLiveApi.e2e.test.js`**
+> - **G30 monitoring evidence window (△ deepen, BNK-234)** — BE `73df04d` — **`MonitoringEvidenceWindow`** FAQ21838 **전전월 ±2개월** · **`MonitoringEvidenceWindowTest`** · **`MonitoringService`** checklist 응답 · FE `73094f9` — **`resolveMonitoringEvidenceWindow`** · **`MonitoringIntegratedChecklistPanel`** 증빙 기간 표시 · **`monitoringLiveApi.e2e.test.js`**
+> - **G30/G39 pilot E2E deepen (Fixed, BNK-234)** — BE `73df04d` — **`CareProvisionRecordDispatchPilotServiceFlowE2eTest`** · FE `73094f9` — monitoring evidence window live contract
+> - **G19 provider discovery filter centralize (Fixed, BNK-235)** — BE `8cb8789` — **`BranchService`** discovery filter value 상수화 · **`IntegratedHomeProviderDiscoveryLiveApiRoutingE2eTest`**
+> - **live E2E harness defaults (Fixed, QA-B96)** — FE `0122bfe` — **`npm run test:live-e2e`** guardian credential guard · harness defaults commit · **QA-B95 Planned** — `cp scripts/dev-live-e2e.env.example scripts/dev-live-e2e.env` 후 1회 실행 필요
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1201/1201)
+> - **FE**: ✅ ready (Vitest 1357/1357)
+> - **pending commits**: 612 (FE 336 + BE 276)
+> - **결론**: **tester merge 준비 완료** · **operation 승격 BLOCK** = QA-B95 live E2E env 파일 미생성
+> 
+> **최근 개선 (171차 — G24b status page·G19 provider discovery·live E2E env · ops 문서 171차)**:
+> - **ops 문서 171차 (TWR)** — USER_MANUAL §1-3·§4-2·§4-3·§5-3 · FAQ **Q357**·**Q223·Q355·Q356 갱신** · ADMIN_GUIDE §1-4·§6-2-6a·G19 · DEPLOYMENT §1-3·§3-6·live E2E env (QA-B95) · **170차 CHANGELOG baseline sync**
+> - **G24b needs-assessment status page (✅ full, US-T09, BNK-231)** — FE `b5af5fa` — **`NeedsAssessmentStatusPage`** **`/clients/needs-assessments`** — 회계연도·**「조치 필요만」** 필터·이용자별 gap 표 · **`ClientsContextNav`** · **`NeedsAssessmentStatusPage.test`** · 대시보드 StatCard 클릭 **`/clients/needs-assessments`** (`ca0b627` carry)
+> - **G19 integrated-home provider discovery (✅ full, BNK-231)** — BE `f44ee73`/`41d8de5` — **`GET /branches/integrated-home/provider-discovery`** — 롱텀 포털 `selectLtcoSrch` URL·`ltcAdminKindChoiceYn8=Y`·주야간(`06`)·단기(`07`) 코드 · **`BranchServiceTest`**·**`IntegratedHomeProviderDiscoveryLiveApiRoutingE2eTest`** · FE `9afa30e` — **`IntegratedHomeProviderDiscoveryPanel`** on **`BranchesPage`** `INTEGRATED_HOME` · prefilled search 링크 · **`branchLiveApi.e2e.test.js`**
+> - **live E2E env auto-source (Fixed, QA-B96)** — FE `eb16734` — **`npm run test:live-e2e`** 가 `scripts/dev-live-e2e.env`·`.example` 자동 source · **QA-B95 Planned** — `cp scripts/dev-live-e2e.env.example scripts/dev-live-e2e.env` 후 1회 실행 필요
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1197/1197)
+> - **FE**: ✅ ready (Vitest 1355/1355)
+> - **pending commits**: 607 (FE 333 + BE 274)
+> - **결론**: **tester merge 준비 완료** · **operation 승격 BLOCK** = QA-B95 live E2E env 파일 미생성
+> 
+> **최근 개선 (170차 — G24b dashboard·G41 V129·7-5 alias·G21 live harness · ops 문서 170차)**:
+> - **ops 문서 170차 (TWR)** — USER_MANUAL §1-3·§4-2·§4-3·§5-3 · FAQ **Q356**·**Q355·Q328·Q286 갱신** · ADMIN_GUIDE §1-4·§6-2-6a·§6-2-12·§10-14(V129) · DEPLOYMENT §1-3·§3-6 · **169차 CHANGELOG baseline sync**
+> - **G24b needs-assessment dashboard widget (✅ full, BNK-227~229)** — FE `ca0b627`/`baa6d6d` — **`DashboardPage`** **「연간 욕구사정 미완료」**·**「등급변경 재사정 필요」** StatCard · **`fetchNeedsAssessmentComplianceApi`** 병렬 폴백 · **`needsAssessmentCompliance.js`** · **`DashboardPage.test`** · **`needsAssessmentComplianceLiveApi.e2e.test.js`**
+> - **G41 FAQ21808 training type enum 23+ (△ BE Fixed, BNK-229)** — BE `b1c92e1` — **V129** `staff_training_logs` CHECK **28종**(`OP_REG_*` 11·`GUIDELINE_*` 12) · **`StaffTrainingLogServiceTest`** · **P2**: FE `staffTrainingLogs.js` dropdown wire
+> - **7-5 easy-pay kakao alias deepen (Fixed, BNK-230)** — BE `0cd8ea8`/`3dd94e6` — **`kakao-pay`·`KAKAOPAY`** alias · **SUCCEEDED 재조회 self-heal** · **`EasyPayLiveApiRoutingE2eTest`** (`1e21b20`) · FE `3a17543` claimId validation
+> - **G21 visit schedule live API harness (Fixed, BNK-231)** — FE `3cbe582` — **`visitScheduleLiveApi.e2e.test.js`** deepen
+> - **FE regression closure (Fixed)** — Vitest **1325/1327 → 1347/1347 PASS** — merge gate **589 → 602 UNBLOCKED**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1192/1192)
+> - **FE**: ✅ ready (Vitest 1347/1347)
+> - **pending commits**: 602 (FE 320 + BE 282)
+> - **결론**: **tester merge 준비 완료**
+> 
+> **최근 개선 (169차 — G24b compliance API·G24b a11y·G41 Locale.ROOT·L03 report notes · ops 문서 169차)**:
+> - **ops 문서 169차 (TWR)** — USER_MANUAL §1-3·§4-3·§5-22 · FAQ **Q355**·**Q354·Q286·Q350·Q321 갱신** · ADMIN_GUIDE §1-4·§6-2-6a·§6-2-9h·§6-2-12 · DEPLOYMENT §1-3·§3-6 · **168차 CHANGELOG baseline sync**
+> - **G24b annual needs assessment compliance API (△ BE-only→Partial+ Fixed, BNK-226)** — BE `98002d4`/`f4c8beb` — **`GET /clients/needs-assessments/compliance`** — `annualComplete`·`missingG24bFields[]`·`gradeChangeReassessmentDue` · fiscal-year 2000~2100 guard · **`ClientNeedsAssessmentServiceTest`**·**`RoleBasedControllerAccessTest$ClientAccess`**
+> - **G24b FE a11y (Fixed, US-T09)** — FE `8989bf4` — **`ClientNeedsAssessmentForm`** `role="group"` G24b 5항목 · **`ClientNeedsAssessmentCompare`** `aria-labelledby`·`caption`·변경 **Badge**
+> - **G41 training type Locale.ROOT (Fixed)** — BE `345c0cb` — **`StaffTrainingLogService`** `toUpperCase(Locale.ROOT)` — Turkish locale regression · **`StaffTrainingLogServiceTest`**
+> - **L03 nursing report notes snake_case (Fixed)** — FE `c97706b` — **`NursingServiceReportsPage.normalizeRecord`** — `nursing_notes`/`medication_notes`/`medical_notes` fallback · **`NursingServiceReportsPage.test`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1182/1182)
+> - **FE**: ⚠️ 1325/1327 (2 regression — coder fix 선행)
+> - **pending commits**: 589 (FE 320 + BE 269)
+> 
+> **최근 개선 (168차 — G24b 8-area·QA-B94 openedOn·live E2E harness · ops 문서 168차)**:
+> - **ops 문서 168차 (TWR)** — USER_MANUAL §1-3·§3-3·§4-3 · FAQ **Q286 갱신·Q353 갱신·Q354** · ADMIN_GUIDE §1-4·§6-2-10·§10-14(V128) · DEPLOYMENT §1-3·§3-6 · DATA_RETENTION V128 · **167차 CHANGELOG baseline sync**
+> - **G24b needs assessment 8-area extended fields (✅ full, BNK-225)** — BE `45fb6d9` — **V128** `client_needs_assessments` 5 columns · **`UpsertClientNeedsAssessmentRequest`** disease·communication·nutrition·livingEnvironment·resourceUtilization · **G34b import-draft** format deepen · **`ClientNeedsAssessmentServiceTest`**
+> - **G24b FE wire (✅ full, BNK-225)** — FE `49fbf67` — **`ClientNeedsAssessmentForm`**·**`needsAssessmentForm.js`** G24b fields · **`clientLifecycleLiveApi.e2e.test.js`** write flow deepen
+> - **QA-B94 openedOn date guard (Fixed, BNK-223)** — BE `43c4b08` — **`BranchOnboardingSupportService.validateOpenedOn`** — 미래일·2000~2099 범위 밖 거부 · **`BranchOnboardingSupportServiceTest`**
+> - **G-ONBOARD live E2E harness (Fixed, BNK-224)** — FE `36264b5` — **`branchOnboardingSupportLiveApi.e2e.test.js`** · **`branchOnboardingSupport.test.js`**
+> - **G-NURSING consolidated live E2E (Fixed, BNK-225)** — FE `8eed216` — consolidated harness · **`NursingServiceReportsPage`** full-suite flake harden
+> - **G19/G30/G14 compliance consolidated live E2E (Fixed, BNK-225)** — FE `fcabed0` — **`complianceConsolidatedLiveApi.e2e.test.js`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1173/1173)
+> - **FE**: ✅ ready (Vitest 1323/1323)
+> - **pending commits**: 584 (FE 320 + BE 264)
+> - **결론**: **tester merge 준비 완료**
+> 
+> **최근 개선 (167차 — G-ONBOARD-SUPPORT FE wire·V126/V127·L03 live E2E deepen · ops 문서 167차)**:
+> - **ops 문서 167차 (TWR)** — USER_MANUAL §1-3·§4-3·§2-2 · FAQ **Q353** · ADMIN_GUIDE §1-4·§6-2-10·§10-14(V126/V127) · DEPLOYMENT §1-3·§3-6 · **166차 CHANGELOG baseline sync**
+> - **G-ONBOARD-SUPPORT branch onboarding checklist FE wire (✅ full, BNK-223)** — FE `79d593c` — **`BranchOnboardingSupportPanel`** on **`BranchesPage`** Modal · **`fetchBranchOnboardingSupportApi`**·**`upsertBranchOnboardingSupportApi`**·**`updateBranchOnboardingSupportSessionApi`** · **`BranchOnboardingSupportPanel.test`** · **`BranchesPage.test`**
+> - **G-ONBOARD-SUPPORT BE API (✅ full, BNK-223)** — BE `735dd53` — **`GET/PUT /branches/{branchId}/onboarding-support`** · **`PATCH …/sessions/{roundNumber}`** · **`BranchOnboardingSupportCatalog`** 1~4회차 SLA · **`BranchOnboardingSupportServiceTest`**
+> - **V127 onboarding integrity (✅ full, BNK-223)** — BE `4c1fd43` — **`V127__branch_onboarding_support_integrity_g_onboard.sql`** — Tenant 앵커 UK·`(org, branch_id)`·`(org, updated_by)` 복합 FK·`updated_by` backstop trigger
+> - **V126 branch_onboarding_support (✅ full, BNK-223)** — BE `735dd53` — **`V126__branch_onboarding_support_g_onboard.sql`** — `branch_onboarding_support` · `session_state` JSONB
+> - **L03/grade live E2E harness deepen (Fixed, BNK-219~221)** — FE `2ccc88e` — grade history + nursing service live API E2E coverage
+> - **8-12 staff status live E2E (Fixed, BNK-222)** — FE `8638c7a` — branch-scope staff status report live API coverage
+> - **QA-B93 easy-pay provider normalize deepen (Fixed, BNK-222)** — BE `41a6c23` — status response stored provider canonicalize
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1171/1171)
+> - **FE**: ✅ ready (Vitest 1320/1320)
+> - **pending commits**: 577 (FE 315 + BE 262)
+> - **결론**: **tester merge 준비 완료**
+> 
+> **최근 개선 (166차 — US-UX-05 sessionStorage·QA-B93·L03 date window·pilot E2E · ops 문서 166차)**:
+> - **ops 문서 166차 (TWR)** — USER_MANUAL §1-3·§3-1·§5-20 · FAQ **Q331 갱신·Q328 갱신·Q352** · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-3·§3-6 · **165차 CHANGELOG baseline sync**
+> - **US-UX-05 SideNav sessionStorage (Fixed, BNK-218)** — FE `3845f0c` — **`ogada:sidenav-expanded:{role}`** sessionStorage — remount 후 **수동 펼침 유지** · 활성 route 부모 그룹 자동 펼침 유지 · **`SideNav.test`**
+> - **QA-B93 easy-pay provider normalize (Fixed)** — BE `b45830d` — **SUCCEEDED** 재조회 시 DB **비정규 provider 자동 canonicalize** · **`EasyPayServiceTest`**
+> - **L03 nursing date window (Fixed, BNK-218)** — BE `6b0238a` — **`toDate`만 지정** 시 `fromDate = toDate - 90일` — 과거 월 조회 정합 · **`NursingServiceRecordServiceTest`**
+> - **G21 batch-confirm pilot E2E (Fixed)** — BE `5edc45c` — **`VisitPilotServiceFlowE2eTest`** batch-confirm flow coverage
+> - **L03 reports pilot E2E (Fixed)** — BE `a728f1b` — **`NursingServiceReportsPilotServiceFlowE2eTest`** · FE `b698871` — **`nursingServiceReportsLiveApi.e2e.test.js`**
+> - **G14 benefit contract live E2E harness (Fixed)** — FE `548f670` — **`benefitContractAttachmentLiveApi.e2e.test.js`**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 1162/1162)
+> - **FE**: ⚠️ 1315/1316 (1 regression — coder fix 선행)
+> - **pending commits**: 566 (FE 311 + BE 255)
+> 
+> **최근 개선 (165차 — L03_M01/M06/M07/M09/M10/M15 FE ✅ full · ops 문서 165차)**:
+> - **ops 문서 165차 (TWR)** — USER_MANUAL §1-3·§5-15·§5-20~§5-22·§6-1 · FAQ **Q348 갱신·Q349~Q351** · ADMIN_GUIDE §1-4·§6-2-9f~i·§10-14(V124/V125) · DEPLOYMENT §1-3·§3-6 · **164차 CHANGELOG 「L03_M01 BE-only」 closure**
+> - **L03_M01/M06 nursing service·excretion-tube FE wire (✅ full, BNK-217)** — FE `12591d4` — **`NursingServiceRecordPage`**(`/nursing/service`) · **`NursingExcretionTubeRecordPage`**(`/nursing/excretion-tubes`) · **`NursingServiceRecordForm`**·**`NursingExcretionTubeRecordForm`** · **`NursingContextNav`** 12탭 · Vitest **1299/1299 PASS**
+> - **L03_M07/M09/M10 service report FE wire (✅ full, BNK-217)** — FE `2a05271` — **`NursingServiceReportsPage`** 3 routes · **`NursingServiceReportNav`** · report API on V123 · stale data clear (`89dc52d`)
+> - **L03_M15 pressure ulcer provision report (✅ full, BNK-217)** — BE `75bddee` — **`GET /nursing/pressure-ulcer/reports/provision`** · FE `efa4472` — **`PressureUlcerProvisionReportPanel`** · a11y (`671a704`)
+> - **V125 nursing integrity (✅ full, BNK-217)** — BE `ee8b2a4` — **`V125__nursing_v123_v124_integrity.sql`** — org/branch sync·inactive client guard·`recorded_by` backstop
+> - **QA-B93 easy-pay provider normalize (Fixed)** — BE `b45830d` — persisted provider canonical 저장
+> - **G21 batch-confirm pilot deepen** — BE `5edc45c` — **`VisitService` batch confirm pilot flow coverage**
+> 
+> **merge gate status**: 
+> - **BE**: ✅ ready (`mvn test` 246/246)
+> - **FE**: ✅ ready (Vitest 1315/1315)
+> - **pending commits**: 565 (FE 310 + BE 255)
+> - **결론**: **tester merge 준비 완료**
+> 
+> **이전 개선 (138차 — v1.3-B ✅ full · L03_M01/M06 BE · merge 555 준비 완료)**:
 > - **ops 문서 138차 (TWR)** — CHANGELOG 138차 동기화 · USER_MANUAL §1-3(구현 상태) · FAQ 업데이트 예정 · ADMIN_GUIDE §10-14 V123/V124 추가 · DEPLOYMENT §3-6 · **137차 CHANGELOG 「L03_M14 full」 closure**
 > - **v1.3-B transport suggest FE wire (✅ full, BNK-214)** — FE `2ffe59f` — **`TransportSuggestPanel`**·**`BranchTransportSettingsPanel`** on **`TransportPage`** · **V120–V122** 완성 · `suggestTransportRunsApi`·`fetchBranchTransportSettingsApi`·`updateBranchTransportSettingsApi`
 > - **L03_M01 nursing service provision API (△ BE, BNK-215)** — BE `9bd1660` — **`GET/POST/PATCH /api/v1/nursing/service-records`** · **V123** `nursing_service_records` table · `NursingServiceRecordService`·`NursingServiceRecordController` 3 endpoints · **`mvn test` 1131/1131 PASS** · **P2**: FE wire (Q348)
@@ -158,6 +643,8 @@
 
 ### Changed
 
+- **ops 문서 166차 — US-UX-05 sessionStorage·QA-B93·L03 date window·pilot E2E 문서화 (TWR 166차, `3845f0c`·`b45830d`·`6b0238a`·`5edc45c`·`a728f1b`·`548f670`)** — **165차 baseline sync** — USER_MANUAL §1-3·§3-1·§5-20 · FAQ **Q331·Q328 갱신·Q352** · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-3·§3-6 · Vitest **1315/1316** · `mvn test` **1162/1162**
+- **ops 문서 165차 — L03_M01/M06/M07/M09/M10/M15 FE wire 문서화 (TWR 165차, `12591d4`·`2a05271`·`efa4472`·`ee8b2a4`·`75bddee`·`671a704`)** — **164차 「L03_M01 BE-only」 closure** — USER_MANUAL §1-3·§5-15·§5-20~§5-22·§6-1 · FAQ **Q348 갱신·Q349~Q351** · ADMIN_GUIDE §1-4·§6-2-9f~i·§10-14(V124/V125) · DEPLOYMENT §1-3·§3-6 · Vitest **1315/1315** · `mvn test` **246/246**
 - **ops 문서 163차 — G21 기간 가드·v1.3-B suggest API·L03_M14 UX 문서화 (TWR 163차, `230659a`·`db94a65`·`8d00f5d`·`c865d2b`)** — **162차 「L03_M13/M04」 closure** — USER_MANUAL §1-3·§5-8·§5-11·§5-17 · FAQ **Q330 갱신·Q347** 신규 · ADMIN_GUIDE §1-4·§10-10·§10-14(V120~V122) · DEPLOYMENT §1-3·§3-6 · **`mvn test` 1121/1121** · Vitest **1267/1267 PASS**
 - **ops 문서 162차 — L03_M13 구강상태·L03_M04 응급상황 FE wire 문서화 (TWR 162차, `3540b4f`·`81bca68`·`bb3dee8`·`97108f2`)** — **161차 「L03_M14 only」 closure** — USER_MANUAL §1-3·§3-1·§5-18·§5-19·§6-1 · FAQ **Q344 갱신·Q345~Q346** 신규 · ADMIN_GUIDE §1-4·§6-2-9c·§6-2-9d·§10-14(V118/V119) · DEPLOYMENT §1-3·§3-6 · **`mvn test` 1115/1115** · Vitest **1261/1263** (`PressureUlcerPage` 2건 회귀 잔여)
 - **ops 문서 159차 — G-NURSING-PRESSURE-ULCER 욕창 케어 lifecycle 문서화 (TWR 159차, `24a1c5c`·`024e720`)** — **158차 「G-NURSING 문서화 잔여」 closure** — USER_MANUAL §1-3·§3-1·§5-15(4단 lifecycle·NursingContextNav) · FAQ **Q336~Q339** 신규 · ADMIN_GUIDE §1-4·§6-2-9·§10-14(V114) · DEPLOYMENT §1-3·§3-6 · **`mvn test` 1073/1073** · Vitest **1192/1192 PASS**
