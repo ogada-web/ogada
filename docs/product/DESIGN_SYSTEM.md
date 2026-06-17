@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-16T16:30:00+00:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17T18:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-16 (120차 — **US-T02 Kakao map instance 중앙화 + 비교 레이아웃 CSS + 토큰 위반 해소 + §46 신규** — QA-B114 WIP(coder `b000d92` 이후 dirty tree) 맥락에서 미점검 갭 해소. ① **`ds-transport-map__canvas` `background: #f2f2f2` raw hex → `var(--color-surface-muted)` 교체(FE-16·§1 단일 원천 복구)**. ② **`.ds-transport-map-compare__label` `font-weight: 600` → `var(--font-weight-semibold)` 토큰화**. ③ **신규 CSS 4클래스** — `ds-transport-map__canvas-wrap`·`ds-transport-map-compare`·`ds-transport-map-compare__pane`·`ds-transport-map-compare__label`·`ds-transport-map-compare__status`. ④ **`KakaoTransportMapView.mapEnabled` prop** — SDK ready 이전 렌더링 방지·`seedMarkers` 좌표 기반 선행 마커 표시 패턴 문서화. ⑤ **`KakaoBareMap`·`kakaoMapInstance.js`·`useKakaoMap`** 신규 컴포넌트·훅 패턴. ⑥ **§46** 신규. 회귀 — 1537/1538 PASS(1 pre-existing jsdom 오염 — 단독 PASS·본 변경 무관)·build PASS.)
+> **최종 갱신**: 2026-06-17 (123차 — **US-T05 G15 TransportServiceLogPanel PUT wire 접근성 재점검 + `TRANSPORT_TIME_COMPLIANCE_STATUS` Badge + §48 신규** — 122차(§47) 이후 coder `7a4b310` G15 별지 제22호 일지④ `PUT /transport/runs/{runId}/service-log` FE wire 미점검 갭(QA-B116) 해소. ① **정차별 필드 `aria-label` 컨텍스트(WCAG 2.4.6)** — 복수 `fieldset`에서 「실제 픽업」·「동승 여부」 라벨이 중복돼 SR이 대상 수급자를 식별 못 하던 결함을 `${clientName} 실제 픽업` 등 이용자명 포함 라벨로 보강. ② **시간 준수 열 색 의존 제거(§1-2)** — `td` 색상 클래스(`ds-transport-log__compliance--*`) → **`StatusBadge`+`TRANSPORT_TIME_COMPLIANCE_STATUS`**(준수/지연/미기록/계획없음, 색+텍스트·`forced-colors` 경계선). ③ **미확정 배차 가드 `aria-describedby`** — 인쇄·텍스트 저장 버튼을 `#transport-log-unconfirmed-warning`에 연결. ④ **기록 섹션 시맨틱** — `section`+sr-only `h3`「정차별 실제 기록」·요약 `role=status`·표 `captionVisuallyHidden`. ⑤ **CSS** — `legend` `font-weight: 600` → `var(--font-weight-semibold)`·`forced-colors` fieldset 경계선·미사용 compliance 색 클래스 제거. ⑥ **§48** 신규. 회귀 +1. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-17 (122차 — **US-E04 QrCheckinTargetsPanel + §44 공통 클래스 페이지 연동 + `--color-accent` 토큰 + US-T02 split-view·정차 목록 a11y 재점검 + §47 신규** — QA-B115 transport split-view(`d3bef42` map pins/Korean geocode) 이후 미점검 갭 해소. ① **지점(센터) 핀 스크린리더 라벨 결함(WCAG 1.1.1·4.1.2)** — 마커 핀 `aria-label`이 `${pinLabel}번 정차`로 일괄 생성돼, `orderNumber`가 없는 **지점 핀**(`markerPinLabel`이 배지 텍스트 「센」 반환)이 SR에 「**센번 정차**」라는 무의미한 이름으로 읽히던 결함을, `markerPinAriaLabel(point)`로 분리해 지점 핀은 「지점(센터) 정차」·번호 정차는 「N번 정차」로 노출. ② **배지 텍스트 SR 중복 제거** — 핀 내부 시각 배지(`__badge` 「센」/숫자)에 `aria-hidden="true"`를 부여해 버튼 `aria-label`만 읽히도록 정합(시각 표기 불변). ③ **범례 색·기호 의미 정합(§1-2·WCAG 1.4.1)** — 정적 범례가 「파란 선 = 도로 경로」로 고정돼 도로 경로 미리보기가 없을 때 실제 표시되는 **회색 점선 정차 안내선**(`paintStopGuideLine`)과 불일치하고, 지도에 등장하는 「센」 지점 핀을 설명하지 못하던 갭을, `roadPath` 유무에 따라 「파란 선 = 도로 경로」/「회색 점선 = 정차 안내선」을 분기하고 「숫자 핀 = 정차 순서 · "센" 핀 = 지점(센터)」를 명시해 시각·SR 모두 기호 의미를 식별하도록 보강. 순수 접근성 정합 리팩터로 지도 동작·마커 위치·시각 배지 불변. 회귀 +1(`KakaoTransportMap.test.jsx` — 지점/번호 핀 `aria-label`·「센번 정차」 부재·범례 텍스트 검증). 단독 `KakaoTransportMap.test.jsx` 4/4 PASS·build PASS. **주의**: 본 변경은 committed `d3bef42`(WT clean 파일)만 수정 — coder QA-B115 transport WT dirty(14M+1untracked: `TransportRouteSplitView`·`TransportStopList`·`components.css` 등)는 coder commit→push 영역이라 미수정.)
+> **이전 갱신**: 2026-06-16 (120차 — **US-T02 Kakao map instance 중앙화 + 비교 레이아웃 CSS + 토큰 위반 해소 + §46 신규** — QA-B114 WIP(coder `b000d92` 이후 dirty tree) 맥락에서 미점검 갭 해소. ① **`ds-transport-map__canvas` `background: #f2f2f2` raw hex → `var(--color-surface-muted)` 교체(FE-16·§1 단일 원천 복구)**. ② **`.ds-transport-map-compare__label` `font-weight: 600` → `var(--font-weight-semibold)` 토큰화**. ③ **신규 CSS 4클래스** — `ds-transport-map__canvas-wrap`·`ds-transport-map-compare`·`ds-transport-map-compare__pane`·`ds-transport-map-compare__label`·`ds-transport-map-compare__status`. ④ **`KakaoTransportMapView.mapEnabled` prop** — SDK ready 이전 렌더링 방지·`seedMarkers` 좌표 기반 선행 마커 표시 패턴 문서화. ⑤ **`KakaoBareMap`·`kakaoMapInstance.js`·`useKakaoMap`** 신규 컴포넌트·훅 패턴. ⑥ **§46** 신규. 회귀 — 1537/1538 PASS(1 pre-existing jsdom 오염 — 단독 PASS·본 변경 무관)·build PASS.)
 > **이전 갱신**: 2026-06-16 (119차 — **L03 care-scoped 간호 리포트 서브 네비 + G21 split-view 후속 UI 접근성 재점검 + §45 신규** — 118차(§44) 이후 coder 신규 커밋(`58ee122` L03_M09/M10/M14 `CareNursingServiceReportPage`·`CareNursingServiceReportNav`·`4c9103d` G21 청구반영 요약 칩·`cb457b7` G21 미반영 후속 확인 목록) 미점검 갭 해소. ① **`.ds-context-nav--sub` 미정의 클래스 해소(FE-16·§1 단일 원천)** — `CareNursingServiceReportNav`가 `ds-context-nav--sub` 클래스를 사용했으나 `components.css` 미정의였던 갭을, 서브 링크 `xs` 글자크기·`control-height-sm` 최소 높이·`surface-muted` 기본 배경으로 정의해 상위 컨텍스트 네비 대비 시각 계층 분리(80차 `.ds-text-input` 패턴 회귀 해소). ② **`CareNursingServiceReportPage`** — 필터 폼 `aria-label`·조회 `aria-busy`·`NursingServiceReportPanel`(`role=group` StatCard·`captionVisuallyHidden` 3표·`scope=col`) 정합 확인(변경 불요). ③ **`VisitsPage` G21 split-view** — 청구반영 요약 `role=group aria-label` + 후속 확인 `section aria-label`+`ul/li`+상태 텍스트 라벨 병행(색만 의존 금지) 정합 확인(변경 불요). ④ **§45** 신규. 회귀 — `npm test` 1526/1526 PASS·build PASS.)
 > **이전 갱신**: 2026-06-16 (118차 — **USER_STORIES 미완료 화면군 공통 스타일 보강 + 토큰 변수 불일치 회귀 해소 + §44 신규** — 117차(§43) 이후 USER_STORIES 미완료 항목(US-A01 `/platform`, US-H01 `/dashboard`, US-E01 `/attendance/checkin`, US-E04 `/guardian/checkin`) 대비 공통 스타일 보강. ① **토큰 변수 정합** — `.ds-transport-log__*`에 남아 있던 비표준 `--ds-*` 변수 11건을 `--space-*`·`--font-size-*`·`--color-*`·`--radius-*`로 교체(단일 토큰 원천 복구). ② **누락 화면군용 공통 레이어** — `.ds-role-home-grid`·`.ds-role-home-card*`(역할별 대시보드 카드), `.ds-attendance-actions`(수기 출석 액션), `.ds-qr-checkin-targets*`(보호자 QR 대상 선택), `.ds-platform-org-form__group`(플랫폼 온보딩 폼 그룹) 추가. ③ **문서 동기화** — §44에 적용 범위·접근성 기준·coder 전달 메모 반영.)
 > **이전 갱신**: 2026-06-16 (116차 — **L02_M11/M12/M06/M17/M16·G21 리포트 접근성 재점검 + §42 신규** — 115차(§41) 이후 coder 신규 커밋(`ff9c8c5` L02_M11/M12·`fa20943` L02_M06/M17·`8b804fc` L02_M16·`25ca88e` G21 청구반영 배지) 미점검 갭 해소. ① **신규 리포트 4종 `Table` caption 보강(WCAG 1.3.1)** — `PatientServiceReportPage`(5표)·`IntensiveExcretionReportPage`(1표)·`PositionChangeReportPage`(2표)·`ServiceSummaryReportPage`(1표) 각 `<Table>` 컴포넌트가 `caption` 없이 렌더돼 스크린리더 표 탐색 시 이름이 없던 갭을, 각 카드 제목과 대응하는 `captionVisuallyHidden caption` 부여로 해소(`NursingServiceReportPanel`·`MonitoringSelfDiagnosisPage` 패턴). ② **StatCard 요약 그룹 `role="group"`** — 4개 리포트 페이지의 StatCard 래퍼 `div`가 그룹 시맨틱 없이 독립 카드들을 나열해 SR이 집계 목적을 식별 못 하던 갭을, `role="group" aria-label="{리포트명} 요약"`으로 보강(93차 `StaffStatusReportPage`·`ComplaintConsultationPanel` 패턴). ③ **`VisitsPage` 청구반영 상태 Alert 색 의존 제거(§1-2)** — G21 청구반영 배지 안내 `Alert`가 「검은 배지」·「빨간 배지」라는 **색상 명칭**으로 상태를 설명해 색 의존 금지 원칙(WCAG 1.4.1) 위반이던 갭을, 색 언급을 제거하고 배지 텍스트 라벨(「청구반영」·「미반영」·「페어 없음」)만으로 안내하도록 수정(배지 자체는 이미 텍스트+색 병행 `BILLING_CLAIM_REFLECTION_STATUS`). ④ **`ds-badge--dark` `forced-colors` 경계선** — 새 `tone="dark"` 배지가 `forced-colors` 모드에서 배경 소거 시 텍스트와 구분이 안 되던 갭을, `outline: 1px solid ButtonText` + `forced-color-adjust: none`으로 다른 Badge 토큰과 정합. ⑤ **`VisitsPage.test.jsx` 회귀** — G21 테스트가 이전 색 명칭을 단언하던 1건을 새 텍스트 라벨(`/청구반영 상태 안내:/`·`getAllByText`)로 갱신. ⑥ **§42** 신규. 회귀 — `VisitsPage` 10/10 PASS·보고서 4종 8/8 PASS·전체 `npm test` 1490/1490 PASS·build PASS.
@@ -152,6 +154,7 @@
 | `--color-primary` | blue-600 | 기본 액션 (on white 5.17:1) |
 | `--color-primary-hover` | blue-700 | hover |
 | `--color-focus-ring` | blue-600 | 키보드 포커스 링 |
+| `--color-accent` / `-text` | cyan-600 / 700 | 지점(센터) 정차·분기 UI (122차) |
 | `--color-success` / `-text` | green-600 / 700 | 수납완료·일치 |
 | `--color-warning` / `-text` | amber-600 / 700 | 차이(DISCREPANCY) |
 | `--color-danger` / `-text` | red-600 / 700 | 미매칭·삭제·오류 |
@@ -195,6 +198,10 @@
 | | `ABSENT` | warning | 결석 |
 | Tenant 상태 | `active` | success | 활성 |
 | | `inactive` | neutral | 비활성 |
+| 이동시간 준수 (G15, US-T05) | `준수` | success | 준수 |
+| | `지연` | danger | 지연 |
+| | `미기록` | neutral | 미기록 |
+| | `계획없음` | neutral | 계획없음 |
 | NHIS 배치 (US-G04) | `PENDING` | neutral | 대기 |
 | | `PROCESSING` | info | 처리중 |
 | | `COMPLETED` | success | 완료 |
@@ -2862,6 +2869,86 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 
 - `npm test` **1537/1538 PASS**(1 pre-existing jsdom 오염 — `BodyRestraintRecordPage.test.jsx` 단독 PASS·본 변경 무관) · `npm run build` PASS.
 - CSS 토큰 위반 0건(raw hex · 하드코딩 font-weight 모두 제거).
+
+---
+
+## 47. US-E04 QR 대상 선택 + §44 공통 클래스 연동 + `--color-accent` + US-T02 split-view a11y (122차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17 -->
+
+> **122차 UXD (2026-06-17)** — 118차(§44)에서 추가한 공통 CSS가 페이지에 연결되지 않았고, `--color-accent` 미정의·US-T02 split-view 정차 목록 SR 중복 라벨 잔여를 해소.
+
+### 47-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `components/ui/QrCheckinTargetsPanel.jsx` | 보호자 QR 체크인 | US-E04 복수 이용자 선택 |
+| `pages/GuardianCheckinPage.jsx` | `/guardian/checkin` | 1명 자동 선택 · 2명+ 패널 |
+| `pages/AttendancePage.jsx` | `/attendance/checkin` | `.ds-attendance-actions` |
+| `pages/PlatformPage.jsx` | `/platform` | `.ds-platform-org-form__group` |
+| `components/transport/TransportRouteSplitView.jsx` | 배차 편집 | landmark `section` + `h4` |
+| `components/transport/TransportStopList.jsx` | 정차 목록 | SR 중복 라벨 제거 |
+| `styles/tokens.css` | `--color-accent*` | branch pin · stop 라벨 |
+| `styles/components.css` | `.ds-qr-checkin-targets*` · `.ds-transport-route-split` | 선택 상태 · 2열 그리드 |
+
+### 47-2. 접근성 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `QrCheckinTargetsPanel` | `role="radiogroup"` + `role="radio"` + `aria-checked` + `Field error`/`role=alert` | WCAG 4.1.2 · 3.3.1 — FLOWCHART §5-2 복수 이용자 대상 선택 |
+| `GuardianCheckinPage` | 1명 연결 시 `role=status` 단일 표시(자동 선택) · 2명+ 패널 | US-E04 인수 조건 |
+| `TransportStopList` | `<li aria-label>` 제거 — 내부 `button aria-label`만 유지 | WCAG 4.1.2 — SR 중복 낭독 방지 |
+| `TransportRouteSplitView` | `section aria-labelledby` + `h4` 「경로 지도」/「정차 목록」 | WCAG 1.3.1 — Card `h2` → section `h3` → split `h4` 계층 |
+| `tokens.css` | `--color-accent` 시맨틱 토큰(l/d) | FE-16 — `.ds-transport-map-pin--branch` raw hex fallback 제거 |
+| `components.css` | `.ds-qr-checkin-targets__item[aria-checked=true]` · `forced-colors` Highlight | WCAG 1.4.1 — 선택 상태 색+경계선 병행 |
+
+### 47-3. coder 전달 메모
+
+- 보호자 QR 대상 선택은 **Select 대신 `QrCheckinTargetsPanel`**(2명+)을 사용 — 모바일 44px 터치·radiogroup 키보드 탐색 일관.
+- `--color-accent`는 **지점(센터) 정차** 전용 — 일반 info tone과 구분해 branch pin·branch stop name에만 사용.
+- `.ds-role-home-grid` / `.ds-role-home-card*`는 대시보드 역할별 홈 카드 레이아웃용 — `DashboardPage`·`HqDashboardPage` 신규 위젯 추가 시 재사용.
+
+### 47-4. 검증
+
+- `QrCheckinTargetsPanel.test.jsx` 3 · `TransportRouteSplitView.test.jsx` 1 · `GuardianCheckinPage.test.jsx` 갱신.
+- `npm test` · `npm run build` PASS.
+
+---
+
+## 48. US-T05 G15 TransportServiceLogPanel 일지④ 접근성 (123차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17 -->
+
+> **123차 UXD (2026-06-17)** — coder `7a4b310` G15 별지 제22호 이동서비스일지④ `PUT` persistence wire 직후 `TransportServiceLogPanel` 미점검 갭(QA-B116) 해소.
+
+### 48-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `components/transport/TransportServiceLogPanel.jsx` | `TransportRunDetailPage` 탭 | G15 별지 제22호 · `upsertTransportServiceLogApi` |
+| `components/ui/Badge.jsx` | `TRANSPORT_TIME_COMPLIANCE_STATUS` | 준수/지연/미기록/계획없음 tone |
+| `styles/components.css` | `.ds-transport-log__record` | `forced-colors`·토큰화 legend |
+
+### 48-2. 접근성 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `TransportServiceLogPanel` | 정차별 `Field` 라벨에 **이용자명 컨텍스트**(`${name} 실제 픽업` 등) | WCAG 2.4.6 — 복수 fieldset 동일 라벨 SR 식별 불가 |
+| `TransportServiceLogPanel` | 시간 준수 열 **`StatusBadge`**(`TRANSPORT_TIME_COMPLIANCE_STATUS`) | WCAG 1.4.1 — 색상 클래스만으로 상태 구분 금지 |
+| `TransportServiceLogPanel` | 미확정 경고 `id` + 인쇄·다운로드 `aria-describedby` | WCAG 1.3.1 — 미리보기 맥락 SR 전달 |
+| `TransportServiceLogPanel` | 기록 `section`+sr-only `h3`·요약 `role=status`·표 `captionVisuallyHidden` | WCAG 1.3.1·4.1.3 |
+| `components.css` | `legend` semibold 토큰·`forced-colors` fieldset 경계선 | FE-16·WCAG 1.4.11 |
+
+### 48-3. coder 전달 메모
+
+- 일지④ 저장은 **확정(CONFIRMED) 배차 + `runId`** 일 때만 `upsertTransportServiceLogApi` 호출 — DRAFT는 로컬 미리보기·인쇄만.
+- 시간 준수 Badge는 `transportTimeCompliance.js`의 한국어 라벨(`준수`/`지연`/`미기록`/`계획없음`)과 **키 일치** 유지.
+- 인쇄 스코프는 기존 `body.ds-transport-log-printing` + `.ds-transport-log__document` 패턴 재사용.
+
+### 48-4. 검증
+
+- `TransportServiceLogPanel.test.jsx` **8/8 PASS** (+1 contextual label·badge·guard).
+- `npm test` · `npm run build` PASS.
 
 ---
 
