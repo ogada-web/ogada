@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18T18:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18T23:30:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-18 (131차 — **G41 PDF 8-7 필수 교육 알림·8-7-1 리포트·대시보드 위젯 + G21 RFID unknown diff code 라벨 접근성 재점검 + §55 신규** — 130차(§54) 이후 coder 신규 커밋(`9e91e6a` G41 교육 준수 gap 대시보드 위젯·`caa215f` PDF 8-7 필수 미작성 Alert·8-7-1 CSV export·`4a112fe`/`27c9de3` G21 RFID diff compare) 미점검 갭 해소. ① **`StaffTrainingLogPage`** — 미정의 `ds-field-help` 제거→`Field help` prop(연 1회 안내 `aria-describedby` 연결)·신규직원 raw checkbox→`Checkbox`·필수 미작성 Alert `id`+등록 버튼 `aria-describedby`(WCAG 1.3.1). ② **`StaffRefresherTrainingPage`** — 8-7-1 export `aria-busy`·이수증 업로드 `aria-busy`·경고/오류 Alert `role` 명시. ③ **G21 `resolveVisitRfidDiffCode`** — 미등록 code(COMP_11 등) fallback `차이 {code}` 한국어 라벨·집계 칩 `aria-label`·`forced-colors` 경계선. ④ **§55** 신규. 회귀 +3. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-18 (133차 — **G-7-1 명세 인쇄 패널·G21 VisitsContextNav·일괄확정 PLAN/BILLING 분할·RFID no-diff 알림 접근성 재점검 + 기록 페이지 `ds-sr-only` 정합 + §57 신규** — 132차(§56) 이후 coder 신규 커밋(`50d330d`·`f5639df` G-7-1 `BillingStatementPrintPanel`·`f9ed97d`·`3a27303` G21 batch confirm PLAN/BILLING split·`VisitsContextNav`·`f232285`·`570912e` RFID no-diff·diff code normalize) 미점검 갭 해소. ① **`BillingStatementPrintPanel`** — 미수납 영수증 인쇄 `disabled` 시 `title` 없이 `id`+`Alert role=status` 가드 배너·버튼 `aria-describedby` 연결(73·101차 quiet-hours/`FeeScheduleYearGuardBanner` 패턴)·로딩 중 인쇄 버튼 `aria-busy`·인쇄 표 본인부담금·수납 금액 행 `ds-sr-only` 강조 라벨(`GuardianBillingDetailModal` 정합). ② **`.ds-billing-claim-print*`** — raw `font-weight:600`/`700`·`rem` → `--font-weight-*`·`--font-size-*` 토큰·`forced-colors` 경계선. ③ **`VisitBatchConfirmPanel`** — PLAN/BILLING per-kind StatCard `role=group`·submit `aria-describedby`는 coder 구현 확인(변경 불요)·`.ds-visit-batch-confirm__kind-stats .ds-stat` `forced-colors` 경계선 신규. ④ **`VisitsContextNav`** — `AttendanceContextNav` 패턴·`aria-current`·4테스트 확인(변경 불요). ⑤ **`VisitRfidDiffComparePanel`** — no-diff `Alert tone=success`·unknown code normalize는 §55 fallback 유지·테스트 확인. ⑥ **기록 페이지 11종** — 미정의 `ds-visually-hidden` → 정의된 `ds-sr-only`(§53 `MealAssistanceRecordPage` 패턴). ⑦ **§57** 신규. 회귀 +1. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-18 (132차 — **G15 별지 제22호 branch contact·입력 폼 compliance Badge + SideNav §8-2 비주얼 deepen 문서화 + §56 신규**
 > **이전 갱신**: 2026-06-18 (130차 — **G15 이동서비스일지 운전자 서명 fieldset 그룹화 + 미정의 `ds-transport-log__*` CSS 클래스 해소 + §54 신규** — 129차(§53) 이후 coder 신규 커밋(`b6ce301` 건강검진 HR파일허브 연결·`b4644e8` 법정 서류 필드 검증·`0df6902` 이동서비스일지 법정 가이드·`f51e365` 운전자 서명 persist·`1c8f236` 식사기록 클라이언트 정규화) 미점검 갭 해소. ① **`TransportServiceLogPanel` 운전자 서명 `fieldset`/`legend`(WCAG 1.3.1)** — 「서명 성명」·「서명일」두 필드가 서로 의존하는 쌍이지만 그룹 시맨틱 없이 독립 `Field`로 나열돼 SR이 어떤 서명인지 맥락 없이 식별해야 했던 갭을, `fieldset.ds-transport-log__signature-group`+`legend="운전자 서명"`으로 그룹화(Field 라벨은 「서명 성명」·「서명일」로 단축·중복 제거). ② **`components.css` 미정의 클래스 해소(FE-16)** — `TransportServiceLogPanel`이 사용하나 CSS에 없던 `ds-transport-log__document`(본문 래퍼 패딩·보더·배경)·`ds-transport-log__heading`(별지 제22호 제목)·`ds-transport-log__summary`(운행 메타 dl 그리드)·`ds-transport-log__footnote`(보관 각주)·`ds-transport-log__no-print`(인쇄 숨김 유틸)·`ds-transport-log__actions`(액션 바 상단 여백)·`ds-transport-log__meta`(메타 폼 row)·`ds-transport-log__signature-group`(서명 fieldset 리셋) 8종 정의. ③ `forced-colors` — `ds-transport-log__document`에 `ButtonText` 경계선 추가. ④ **§54** 신규. 회귀 +2(`TransportServiceLogPanel.test.jsx` 서명 fieldset 라벨 갱신). `npm test` **1677/344** PASS · build PASS.)
 > **이전 갱신**: 2026-06-18 (129차 — **US-T05 배차 명단 계획 픽업·US-R02 FAQ21799 신규 서류·L02_M13 malformed 응답 접근성 재점검 + §53 신규** — 128차(§52) 이후 coder 신규 커밋(`e35efb2` 배차 명단 확정 루트·계획 픽업·지연 Badge·`8e6310a` FAQ21799 신규직원 건강검진 1년 서류·`38642e2` L02_M13 malformed API 응답) 미점검 갭 해소. ① **`TransportPage` 명단 표** — 배차 루트 `Link`에 `${이용자명} N번 정차` `aria-label`(WCAG 2.4.6·다중 행 동일 링크 텍스트 구분)·계획 픽업 지연 시 `title` 툴팁 제거→가시 **「지연」** Badge+`aria-label` 병행(§51 `TransportStopList` 패턴)·`.ds-inline-cluster` 신규 정의(FE-16). ② **`StaffHealthCheckupsPage`** — `NEW_HIRE_DOCUMENT_STATUS.NA` 분기가 `aria-hidden`으로 SR에서 숨기던 결함을 `ds-text-muted` 「—」로 정합(WCAG 4.1.2). ③ **`MealAssistanceRecordPage`** — 미정의 `ds-help-text`→`ds-text-muted`·`ds-visually-hidden`→`ds-sr-only`(표 작업 열 헤더). ④ **§53** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-17 (127차 — **커스텀 DateInput/TimeInput 피커 + G15 경유지·ETA 칩 접근성 재점검 + §51 신규** — 126차(§50) 이후 coder 신규 커밋(`ea5d896` 커스텀 date/time picker·`bf73c4c` 경유지 모달·ETA 칩·`96db8bf` 배차 레이아웃) 미점검 갭 해소. ① **`DateInput`/`DatePickerCalendar`** — 팝오버 열림 시 선택일(또는 오늘) 포커스·닫힘 시 트리거 복귀·`Field` `labelId`→dialog `aria-labelledby`·이전/다음 달 **비표시 일자 `disabled`**(혼동 방지). ② **`TimeInput`** — `role="group" aria-labelledby` 복합 필드·시/분 `Select`에 개별 `id`·`aria-describedby`는 그룹 단위. ③ **`Field`** — `<label id>`·`labelId` controlProps·단일 React 자식 `cloneElement`로 `aria-*` 자동 전달(render-prop 미사용 페이지 정합). ④ **`TransportAddWaypointModal`** — 주소 미입력 시 폼 상단 `Alert`→**`Field error`**+`aria-invalid`(WCAG 3.3.1). ⑤ **`TransportStopList`** — 지연 ETA 칩에 가시 **「지연」** 텍스트 라벨 추가(색+텍스트·WCAG 1.4.1). ⑥ **CSS** — `.ds-transport-stop__time-chip-status`·`forced-colors` date/time picker·지연 칩 경계선. 회귀 +5. `npm test`·build PASS.)
@@ -1090,7 +1091,9 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 
 > 실제 정의는 `src/frontend/src/layout/navConfig.js` `NAV_GROUPS`(운영·이동·출석·기록·청구 5그룹). 본 표는 요약이며, 라우트 전수는 §8-1을 단일 원천으로 본다.
 
-> **그룹 토글 (US-UX-05 ✅, 2026-06-14)**: 각 그룹 헤더(`button.ds-sidenav__toggle`) 클릭 시 하위 메뉴 접힘/펼침. **초기: 전 그룹 접힘 + 현재 route 부모 그룹만 auto-expand**(`buildNavGroupExpandedState`·`findNavGroupIdForPath`). **모바일·데스크톱 동일 규칙**. 접근성: `aria-expanded`·`aria-controls`·접힌 `ul`에 `aria-hidden={!isOpen}`. 상세: `USER_STORIES US-UX-05` · `REQUIREMENTS §3-0` · `SideNav.test.jsx`.
+> **그룹 토글 (US-UX-05 ✅, 2026-06-14)**: 각 그룹 헤더(`button.ds-sidenav__toggle`) 클릭 시 하위 메뉴 접힘/펼침. **초기: 전 그룹 접힘 + 현재 route 부모 그룹만 auto-expand**(`buildNavGroupExpandedState`·`findNavGroupIdForPath`). **모바일·데스크톱 동일 규칙**. 접근성: `aria-expanded`·`aria-controls`·`aria-label="{그룹} 메뉴 그룹, {N}개 항목"`·접힌 `ul`에 `aria-hidden={!isOpen}`. 상세: `USER_STORIES US-UX-05` · `REQUIREMENTS §3-0` · `SideNav.test.jsx`.
+
+> **비주얼 deepen (154차 PLAN_NOTES #5 ✅, 132차 문서화)**: Linear/Stripe 스타일 — ① **브랜드 블록** `.ds-sidenav__brand`(모노그램 `O`·`ogada`·`주간보호 운영` tagline). ② **그룹 아이콘** `layout/sideNavIcons.jsx` 20×20 stroke SVG(`aria-hidden`). ③ **활성 그룹 좌측 액센트** `.ds-sidenav__toggle--active` 3px primary border + nested `.ds-nav-item--active` border-left. ④ **무한 스크롤 방지** — `html/body/#root { overflow: hidden }` · 본문 `.ds-main` · SideNav `.ds-sidenav__scroll` 각 `overflow-y: auto` + `overscroll-behavior: contain`. ⑤ **그룹 카드** `.ds-sidenav__group--open` surface-muted 배경·item count pill.
 
 > **구현 (US-UX-02 + US-UX-05)**: 5그룹(운영·이동·출석·기록·청구)·역할별 `navGroupsForRole` 필터·`EXACT_MATCH_PATHS` 활성 매칭(§8-2 하단).
 
@@ -3250,6 +3253,88 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 - `StaffTrainingLogPage.test.jsx` — mandatory Alert `aria-describedby` 단언 +1.
 - `VisitRfidDiffComparePanel.test.jsx` — unknown code `차이 COMP_11` 라벨 갱신.
 - `visits.test.js` — `resolveVisitRfidDiffCode` +1.
+- `npm test`·build PASS.
+
+---
+
+## 56. G15 별지 제22호 branch contact·입력 compliance Badge + SideNav §8-2 비주얼 (132차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18 -->
+
+> **132차 UXD (2026-06-18)** — §55(131차) 이후 coder 신규 커밋(`a1d6e32`·`7de5a6f`·`07be394`·`b1a16ff`·`b1a16ff` G15 별지 제22호 print/input/export·branch contact) 미점검 갭 해소.
+
+### 56-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `TransportServiceLogPanel` | `components/transport/` | branch contact dl·탑승/하차 direction 라벨·정차 입력 폼 |
+| `SideNav` | `layout/SideNav.jsx` | US-UX-05 visual deepen (154차 #5) |
+| `sideNavIcons.jsx` | `layout/` | 6그룹 stroke SVG |
+| `.ds-sidenav__*` | `components.css` | 브랜드·스크롤·액센트·nested active |
+
+### 56-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `TransportServiceLogPanel` 정차 「시간 준수」 | read-only `TextInput` → `StatusBadge` in `role=status` div + `Field` label | §48 표준과 정합·색+텍스트(WCAG 1.4.1) |
+| 감사추적 「미저장 변경 있음」·「미완료」 | `.ds-transport-log__audit-warning` span → `Badge tone=warning` | 색+텍스트 병행 |
+| 기관 `tel:` 링크 | `aria-label="대표 연락처 {번호} 전화 걸기"` | WCAG 2.4.6 |
+| 인쇄 본문 래퍼 | `div aria-label` → `section`+sr-only `h3`「이동서비스일지 본문」 | WCAG 1.3.1 landmark |
+| `SideNav` 그룹 토글 | `aria-label`「{그룹} 메뉴 그룹, {N}개 항목」 | WCAG 2.4.6·그룹 크기 SR 안내 |
+| `.ds-sidenav__toggle--active` | 좌측 3px primary accent border | 154차 비주얼·활성 그룹 식별 |
+
+### 56-3. coder 전달 메모
+
+- **별지 제22호 API** — `branchAddress`·`branchRegionPath`·`branchPhone`·`direction`(PICKUP/DROPOFF) 필드명·`transportServiceLogFieldLabels()` 라벨 분기는 coder 커밋 유지.
+- **입력 폼 vs 인쇄 표** — compliance는 입력·표 모두 `StatusBadge`+`TRANSPORT_TIME_COMPLIANCE_STATUS` 단일 원천.
+- **SideNav** — `navConfig.js` 그룹 id ↔ `SIDE_NAV_GROUP_ICONS` key 일치 필수(`clientOps`·`staffOps`·`transport`·`attendance`·`records`·`billing`).
+
+### 56-4. 검증
+
+- `TransportServiceLogPanel.test.jsx` — compliance Badge·tel `aria-label` 갱신.
+- `SideNav.test.jsx` — brand block·group icon·항목 수 `aria-label` +1.
+- `npm test`·build PASS.
+
+---
+
+## 57. G-7-1 명세 인쇄·G21 Visits 네비·일괄확정 분할·RFID no-diff + 기록 페이지 sr-only 정합 (133차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18 -->
+
+> **133차 UXD (2026-06-18)** — §56(132차) 이후 coder 신규 커밋(`50d330d`·`f5639df`·`f9ed97d`·`3a27303`·`f232285`·`570912e`) 미점검 갭 해소.
+
+### 57-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `BillingStatementPrintPanel` | `components/ui/` | G-7-1 주소라벨·명세서·영수증·청구리스트 인쇄 (`50d330d`) |
+| `VisitsContextNav` | `components/visits/` | 계획·청구·분할 비교 cross-link (`3a27303`) |
+| `VisitBatchConfirmPanel` | `components/visits/` | PLAN/BILLING per-kind readiness StatCard (`f9ed97d`) |
+| `VisitRfidDiffComparePanel` | `components/visits/` | no-diff success Alert·diff code normalize (`f232285`·`570912e`) |
+| L02/L03 기록 페이지 11종 | `pages/` | 표 작업 열 sr-only 헤더 |
+
+### 57-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `BillingStatementPrintPanel` 영수증 가드 | `id="billing-statement-print-receipt-unavailable"` `Alert` + disabled 버튼 `aria-describedby` | WCAG 1.3.1 — `disabled` 버튼 `title` 비노출(101차 패턴) |
+| `BillingStatementPrintPanel` 인쇄 로딩 | 개별 인쇄 버튼 `aria-busy={loadingClients}` | WCAG 4.1.3 |
+| `BillingStatementPrintPanel` 인쇄 표 합계 행 | 본인부담금·수납 금액 `th`에 `ds-sr-only` 강조 접두 | WCAG 1.4.1 — `GuardianBillingDetailModal` 정합 |
+| `.ds-billing-claim-print*` | `font-weight`·`font-size` 토큰화 + `forced-colors` 경계선 | FE-16·§1 단일 원천 |
+| `.ds-visit-batch-confirm__kind-stats .ds-stat` | `forced-colors` `ButtonText` 경계선 | WCAG 1.4.11 |
+| 기록 페이지 11종 표 작업 열 | `ds-visually-hidden`(미정의) → `ds-sr-only` | FE-16·§53 패턴 회귀 해소 |
+| `VisitsContextNav`·`VisitBatchConfirmPanel`·`VisitRfidDiffComparePanel` | coder 구현(landmark·`aria-current`·`role=group`·Field error·no-diff Alert) 확인 — 추가 변경 불요 | — |
+
+### 57-3. coder 전달 메모
+
+- **G-7-1 인쇄** — `BILLING_CLAIM_PRINT_BODY_CLASS`=`ds-billing-claim-printing`·`buildClaimPrintRows`·`canPrintBillingReceipt` 로직 유지. 영수증은 `PAID` 상태에서만 활성.
+- **VisitsContextNav** — `visitScheduleNavLinks()`·URL `kind`/`split` query sync는 `VisitsPage` `updateScheduleView`와 단일 원천 유지.
+- **일괄확정** — BE `draftPlanCount`·`readyBilling` 등 per-kind 필드명 변경 시 `buildKindReadinessStats`만 동기화.
+- **RFID compare** — `normalizeVisitRfidDiffCode` 신규 variant는 `config/visits.js` `VISIT_RFID_DIFF_CODES`에 등록. no-diff 시 success Alert + 표 「일치」 텍스트 병행 유지.
+
+### 57-4. 검증
+
+- `BillingStatementPrintPanel.test.jsx` — receipt `aria-describedby`·가드 배너 id +1.
 - `npm test`·build PASS.
 
 ---
