@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18T23:30:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19T00:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-18 (133차 — **G-7-1 명세 인쇄 패널·G21 VisitsContextNav·일괄확정 PLAN/BILLING 분할·RFID no-diff 알림 접근성 재점검 + 기록 페이지 `ds-sr-only` 정합 + §57 신규** — 132차(§56) 이후 coder 신규 커밋(`50d330d`·`f5639df` G-7-1 `BillingStatementPrintPanel`·`f9ed97d`·`3a27303` G21 batch confirm PLAN/BILLING split·`VisitsContextNav`·`f232285`·`570912e` RFID no-diff·diff code normalize) 미점검 갭 해소. ① **`BillingStatementPrintPanel`** — 미수납 영수증 인쇄 `disabled` 시 `title` 없이 `id`+`Alert role=status` 가드 배너·버튼 `aria-describedby` 연결(73·101차 quiet-hours/`FeeScheduleYearGuardBanner` 패턴)·로딩 중 인쇄 버튼 `aria-busy`·인쇄 표 본인부담금·수납 금액 행 `ds-sr-only` 강조 라벨(`GuardianBillingDetailModal` 정합). ② **`.ds-billing-claim-print*`** — raw `font-weight:600`/`700`·`rem` → `--font-weight-*`·`--font-size-*` 토큰·`forced-colors` 경계선. ③ **`VisitBatchConfirmPanel`** — PLAN/BILLING per-kind StatCard `role=group`·submit `aria-describedby`는 coder 구현 확인(변경 불요)·`.ds-visit-batch-confirm__kind-stats .ds-stat` `forced-colors` 경계선 신규. ④ **`VisitsContextNav`** — `AttendanceContextNav` 패턴·`aria-current`·4테스트 확인(변경 불요). ⑤ **`VisitRfidDiffComparePanel`** — no-diff `Alert tone=success`·unknown code normalize는 §55 fallback 유지·테스트 확인. ⑥ **기록 페이지 11종** — 미정의 `ds-visually-hidden` → 정의된 `ds-sr-only`(§53 `MealAssistanceRecordPage` 패턴). ⑦ **§57** 신규. 회귀 +1. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-19 (134차 — **G21 standalone NHIS comparison panel·G41 filter-year 접근성 재점검 + 미정의 CSS 승격 + §58 신규** — 133차(§57) 이후 coder 신규 커밋(`797c529`·`ad18606`·`68a4e35` G21 `VisitNhisComparisonPanel`·`VisitNhisComparisonDetail`·`f26e075`·`28e5525` G41 filter-year validation) 미점검 갭 해소. ① **`VisitNhisComparisonPanel`** — 초기 로드·새로고침 이중 Spinner SR 중복 제거(초기 `!data`만 전체 Spinner·버튼 `aria-busy`)·불일치 Alert `id=visit-nhis-comparison-gap-alert`+「수급자별 상세」`aria-describedby` 연결(101차 quiet-hours 패턴). ② **`VisitNhisComparisonDetail`** — `role=region`에 가시 `h4.ds-subheading`「수급자별 공단 명세 비교 상세」+`aria-labelledby`(WCAG 1.3.1·2.4.6). ③ **`.ds-form-actions--between`**·**`.ds-subheading`**·**`.ds-visit-nhis-comparison-*`** CSS 신규(FE-16·`forced-colors` StatCard·warning row outline). ④ **`StaffTrainingLogPage`** — 기준 연도 필터 `Field help`→`aria-describedby`(유효 범위·준수 현황 숨김 안내). ⑤ **§58** 신규. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-18 (133차 — **G-7-1 명세 인쇄 패널·G21 VisitsContextNav·일괄확정 PLAN/BILLING 분할·RFID no-diff 알림 접근성 재점검 + 기록 페이지 `ds-sr-only` 정합 + §57 신규**
 > **이전 갱신**: 2026-06-18 (132차 — **G15 별지 제22호 branch contact·입력 폼 compliance Badge + SideNav §8-2 비주얼 deepen 문서화 + §56 신규**
 > **이전 갱신**: 2026-06-18 (130차 — **G15 이동서비스일지 운전자 서명 fieldset 그룹화 + 미정의 `ds-transport-log__*` CSS 클래스 해소 + §54 신규** — 129차(§53) 이후 coder 신규 커밋(`b6ce301` 건강검진 HR파일허브 연결·`b4644e8` 법정 서류 필드 검증·`0df6902` 이동서비스일지 법정 가이드·`f51e365` 운전자 서명 persist·`1c8f236` 식사기록 클라이언트 정규화) 미점검 갭 해소. ① **`TransportServiceLogPanel` 운전자 서명 `fieldset`/`legend`(WCAG 1.3.1)** — 「서명 성명」·「서명일」두 필드가 서로 의존하는 쌍이지만 그룹 시맨틱 없이 독립 `Field`로 나열돼 SR이 어떤 서명인지 맥락 없이 식별해야 했던 갭을, `fieldset.ds-transport-log__signature-group`+`legend="운전자 서명"`으로 그룹화(Field 라벨은 「서명 성명」·「서명일」로 단축·중복 제거). ② **`components.css` 미정의 클래스 해소(FE-16)** — `TransportServiceLogPanel`이 사용하나 CSS에 없던 `ds-transport-log__document`(본문 래퍼 패딩·보더·배경)·`ds-transport-log__heading`(별지 제22호 제목)·`ds-transport-log__summary`(운행 메타 dl 그리드)·`ds-transport-log__footnote`(보관 각주)·`ds-transport-log__no-print`(인쇄 숨김 유틸)·`ds-transport-log__actions`(액션 바 상단 여백)·`ds-transport-log__meta`(메타 폼 row)·`ds-transport-log__signature-group`(서명 fieldset 리셋) 8종 정의. ③ `forced-colors` — `ds-transport-log__document`에 `ButtonText` 경계선 추가. ④ **§54** 신규. 회귀 +2(`TransportServiceLogPanel.test.jsx` 서명 fieldset 라벨 갱신). `npm test` **1677/344** PASS · build PASS.)
 > **이전 갱신**: 2026-06-18 (129차 — **US-T05 배차 명단 계획 픽업·US-R02 FAQ21799 신규 서류·L02_M13 malformed 응답 접근성 재점검 + §53 신규** — 128차(§52) 이후 coder 신규 커밋(`e35efb2` 배차 명단 확정 루트·계획 픽업·지연 Badge·`8e6310a` FAQ21799 신규직원 건강검진 1년 서류·`38642e2` L02_M13 malformed API 응답) 미점검 갭 해소. ① **`TransportPage` 명단 표** — 배차 루트 `Link`에 `${이용자명} N번 정차` `aria-label`(WCAG 2.4.6·다중 행 동일 링크 텍스트 구분)·계획 픽업 지연 시 `title` 툴팁 제거→가시 **「지연」** Badge+`aria-label` 병행(§51 `TransportStopList` 패턴)·`.ds-inline-cluster` 신규 정의(FE-16). ② **`StaffHealthCheckupsPage`** — `NEW_HIRE_DOCUMENT_STATUS.NA` 분기가 `aria-hidden`으로 SR에서 숨기던 결함을 `ds-text-muted` 「—」로 정합(WCAG 4.1.2). ③ **`MealAssistanceRecordPage`** — 미정의 `ds-help-text`→`ds-text-muted`·`ds-visually-hidden`→`ds-sr-only`(표 작업 열 헤더). ④ **§53** 신규. 회귀 +2. `npm test`·build PASS.)
@@ -3335,6 +3336,46 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 ### 57-4. 검증
 
 - `BillingStatementPrintPanel.test.jsx` — receipt `aria-describedby`·가드 배너 id +1.
+- `npm test`·build PASS.
+
+---
+
+## 58. G21 standalone NHIS comparison·G41 filter-year + 공통 CSS 승격 (134차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19 -->
+
+> **134차 UXD (2026-06-19)** — §57(133차) 이후 coder 신규 커밋(`797c529`·`ad18606`·`68a4e35`·`f26e075`·`28e5525`) 미점검 갭 해소.
+
+### 58-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `VisitNhisComparisonPanel` | `components/visits/` | VisitsPage 월간 사전 비교 standalone (`797c529`) |
+| `VisitNhisComparisonDetail` | `components/visits/` | per-client drill-down·batch confirm embed (`ad18606`) |
+| `StaffTrainingLogPage` | `pages/` | G41 filter-year validation UI (`f26e075`·`28e5525`) |
+| `.ds-form-actions--between`·`.ds-subheading` | `components.css` | FE-16 미정의 클래스 승격 |
+
+### 58-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `VisitNhisComparisonPanel` 이중 Spinner | 초기 로드(`!data`)만 섹션 Spinner·새로고침은 버튼 `aria-busy`만 | WCAG 4.1.3 — 동일 라벨 SR 중복 방지 |
+| `VisitNhisComparisonPanel` 상세 토글 | 불일치 Alert `id` + expand `aria-describedby` | WCAG 1.3.1 — 101차 quiet-hours 패턴 |
+| `VisitNhisComparisonDetail` | 가시 `h4.ds-subheading` + `aria-labelledby` on `role=region` | WCAG 1.3.1·2.4.6 |
+| `.ds-visit-nhis-comparison-*` | panel border·StatCard·warning row `forced-colors` | WCAG 1.4.11 |
+| `.ds-subheading` | `font-size`·`font-weight` 토큰화 — `VisitBatchConfirmPanel` h4 등 기존 소비자 정합 | FE-16 |
+| `StaffTrainingLogPage` filter year | `Field help` 유효 범위·준수 현황 숨김 안내 | WCAG 3.3.2·1.3.1 |
+
+### 58-3. coder 전달 메모
+
+- **standalone vs batch embed** — `VisitNhisComparisonPanel`은 `fetchVisitNhisComparisonApi` 직접 호출·`VisitNhisComparisonDetail`에 `data` prop으로 재사용(중복 fetch 방지). batch confirm 모달은 `expanded`만 true·`data` 미전달 시 자체 fetch.
+- **Alert id** — `visit-nhis-comparison-gap-alert`는 panel standalone 전용. batch confirm 모달 NHIS 섹션 id는 기존 `visit-batch-confirm-nhis-comparison` 유지.
+- **G41 filter year** — `parseStaffTrainingReferenceYear`·`staffTrainingReferenceYearFieldError` 단일 원천 유지. invalid year 시 compliance Card 미노출·API `referenceYear` omit은 coder 로직 불변.
+
+### 58-4. 검증
+
+- `VisitNhisComparisonPanel.test.jsx` — expand `aria-describedby` +1.
+- `VisitNhisComparisonDetail.test.jsx` — h4 heading level 4 +1.
 - `npm test`·build PASS.
 
 ---
