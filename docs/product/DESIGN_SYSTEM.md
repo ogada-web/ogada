@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-17T23:10:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18T18:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-17 (128차 — **`DatePickerCalendar` 달력 그리드 키보드 방향키 내비게이션 + roving tabindex + §52 신규** — 127차(§51)에서 도입한 커스텀 `DateInput` 달력 팝오버가 WAI-ARIA date picker dialog 패턴 중 **그리드 키보드 이동**을 미구현해, 키보드 사용자가 날짜를 고르려면 최대 42개 날짜 버튼을 일일이 `Tab` 해야 하던 갭을 해소. ① **`DatePickerCalendar` 방향키 이동(WCAG 2.1.1)** — 달력 `<table>` `onKeyDown`에서 `←/→`(±1일)·`↑/↓`(±1주)·`Home/End`(주 시작·끝 토요일)·`PageUp/PageDown`(±1개월, 말일 보정)을 처리하고 `min/max` 경계를 넘는 이동은 차단. ② **roving tabindex(WCAG 2.4.3)** — 그리드에서 포커스 대상 날짜 1개만 `tabindex=0`, 나머지는 `-1` → `Tab` 1회로 달력을 빠져나가고 방향키로 날짜 탐색(기존 42-버튼 `Tab` 순회 제거). 포커스 대상은 `focusDate`→선택일→오늘→첫 활성일 순. ③ **`DateInput` `focusDate` 상태** — 방향키 이동 시 표시 월을 자동 전환(`moveFocusTo`)하고 이전/다음 달 버튼도 같은 일자를 유지(`addMonthsToIso`). 선택은 날짜 버튼 기본 `Enter/Space/클릭` 유지(중복 핸들러 없음). ④ **`lib/pickerDate.js`** 순수 헬퍼 `addDaysToIso`·`addMonthsToIso`·`startOfWeekIso`·`endOfWeekIso` 신규(테스트 가능). ⑤ **§52** 신규. 회귀 +4(`DateInput.test.jsx` — roving 단일 tabindex·방향키 이동+Enter 선택·PageUp 월 점프·`max` 경계 차단). `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-18 (131차 — **G41 PDF 8-7 필수 교육 알림·8-7-1 리포트·대시보드 위젯 + G21 RFID unknown diff code 라벨 접근성 재점검 + §55 신규** — 130차(§54) 이후 coder 신규 커밋(`9e91e6a` G41 교육 준수 gap 대시보드 위젯·`caa215f` PDF 8-7 필수 미작성 Alert·8-7-1 CSV export·`4a112fe`/`27c9de3` G21 RFID diff compare) 미점검 갭 해소. ① **`StaffTrainingLogPage`** — 미정의 `ds-field-help` 제거→`Field help` prop(연 1회 안내 `aria-describedby` 연결)·신규직원 raw checkbox→`Checkbox`·필수 미작성 Alert `id`+등록 버튼 `aria-describedby`(WCAG 1.3.1). ② **`StaffRefresherTrainingPage`** — 8-7-1 export `aria-busy`·이수증 업로드 `aria-busy`·경고/오류 Alert `role` 명시. ③ **G21 `resolveVisitRfidDiffCode`** — 미등록 code(COMP_11 등) fallback `차이 {code}` 한국어 라벨·집계 칩 `aria-label`·`forced-colors` 경계선. ④ **§55** 신규. 회귀 +3. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-18 (130차 — **G15 이동서비스일지 운전자 서명 fieldset 그룹화 + 미정의 `ds-transport-log__*` CSS 클래스 해소 + §54 신규** — 129차(§53) 이후 coder 신규 커밋(`b6ce301` 건강검진 HR파일허브 연결·`b4644e8` 법정 서류 필드 검증·`0df6902` 이동서비스일지 법정 가이드·`f51e365` 운전자 서명 persist·`1c8f236` 식사기록 클라이언트 정규화) 미점검 갭 해소. ① **`TransportServiceLogPanel` 운전자 서명 `fieldset`/`legend`(WCAG 1.3.1)** — 「서명 성명」·「서명일」두 필드가 서로 의존하는 쌍이지만 그룹 시맨틱 없이 독립 `Field`로 나열돼 SR이 어떤 서명인지 맥락 없이 식별해야 했던 갭을, `fieldset.ds-transport-log__signature-group`+`legend="운전자 서명"`으로 그룹화(Field 라벨은 「서명 성명」·「서명일」로 단축·중복 제거). ② **`components.css` 미정의 클래스 해소(FE-16)** — `TransportServiceLogPanel`이 사용하나 CSS에 없던 `ds-transport-log__document`(본문 래퍼 패딩·보더·배경)·`ds-transport-log__heading`(별지 제22호 제목)·`ds-transport-log__summary`(운행 메타 dl 그리드)·`ds-transport-log__footnote`(보관 각주)·`ds-transport-log__no-print`(인쇄 숨김 유틸)·`ds-transport-log__actions`(액션 바 상단 여백)·`ds-transport-log__meta`(메타 폼 row)·`ds-transport-log__signature-group`(서명 fieldset 리셋) 8종 정의. ③ `forced-colors` — `ds-transport-log__document`에 `ButtonText` 경계선 추가. ④ **§54** 신규. 회귀 +2(`TransportServiceLogPanel.test.jsx` 서명 fieldset 라벨 갱신). `npm test` **1677/344** PASS · build PASS.)
+> **이전 갱신**: 2026-06-18 (129차 — **US-T05 배차 명단 계획 픽업·US-R02 FAQ21799 신규 서류·L02_M13 malformed 응답 접근성 재점검 + §53 신규** — 128차(§52) 이후 coder 신규 커밋(`e35efb2` 배차 명단 확정 루트·계획 픽업·지연 Badge·`8e6310a` FAQ21799 신규직원 건강검진 1년 서류·`38642e2` L02_M13 malformed API 응답) 미점검 갭 해소. ① **`TransportPage` 명단 표** — 배차 루트 `Link`에 `${이용자명} N번 정차` `aria-label`(WCAG 2.4.6·다중 행 동일 링크 텍스트 구분)·계획 픽업 지연 시 `title` 툴팁 제거→가시 **「지연」** Badge+`aria-label` 병행(§51 `TransportStopList` 패턴)·`.ds-inline-cluster` 신규 정의(FE-16). ② **`StaffHealthCheckupsPage`** — `NEW_HIRE_DOCUMENT_STATUS.NA` 분기가 `aria-hidden`으로 SR에서 숨기던 결함을 `ds-text-muted` 「—」로 정합(WCAG 4.1.2). ③ **`MealAssistanceRecordPage`** — 미정의 `ds-help-text`→`ds-text-muted`·`ds-visually-hidden`→`ds-sr-only`(표 작업 열 헤더). ④ **§53** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-17 (127차 — **커스텀 DateInput/TimeInput 피커 + G15 경유지·ETA 칩 접근성 재점검 + §51 신규** — 126차(§50) 이후 coder 신규 커밋(`ea5d896` 커스텀 date/time picker·`bf73c4c` 경유지 모달·ETA 칩·`96db8bf` 배차 레이아웃) 미점검 갭 해소. ① **`DateInput`/`DatePickerCalendar`** — 팝오버 열림 시 선택일(또는 오늘) 포커스·닫힘 시 트리거 복귀·`Field` `labelId`→dialog `aria-labelledby`·이전/다음 달 **비표시 일자 `disabled`**(혼동 방지). ② **`TimeInput`** — `role="group" aria-labelledby` 복합 필드·시/분 `Select`에 개별 `id`·`aria-describedby`는 그룹 단위. ③ **`Field`** — `<label id>`·`labelId` controlProps·단일 React 자식 `cloneElement`로 `aria-*` 자동 전달(render-prop 미사용 페이지 정합). ④ **`TransportAddWaypointModal`** — 주소 미입력 시 폼 상단 `Alert`→**`Field error`**+`aria-invalid`(WCAG 3.3.1). ⑤ **`TransportStopList`** — 지연 ETA 칩에 가시 **「지연」** 텍스트 라벨 추가(색+텍스트·WCAG 1.4.1). ⑥ **CSS** — `.ds-transport-stop__time-chip-status`·`forced-colors` date/time picker·지연 칩 경계선. 회귀 +5. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-17 (126차 — **`MaskedPhone` 비대화형 span `aria-label` 안티패턴 제거 (WCAG 4.1.2·1.3.1·결정 96 회귀)** — 125차(§50) 이후 coder 신규 커밋 `0baabe9`(결정 96 — 이용자 목록·상세에 본인 연락처 `phoneMasked`·대표 보호자 연락처 컬럼 노출) 미점검 갭 해소. 신규로 `ClientListPage` 표(컬럼 헤더 「연락처」·「보호자 연락처」)와 `ClientDetailPage` `<dl>`(`<dt>연락처</dt>`·`<dt>보호자 연락처</dt>`)에서 `MaskedPhone withLink={false}`가 다수 사용됐는데, 이 분기는 **비대화형 `<span>`(role=generic)에 `aria-label="연락처 {번호}"`를 하드코딩**하고 있었다. ① **ARIA 안티패턴(WCAG 4.1.2)** — `aria-label`은 role 없는 generic `<span>`에서 스크린리더 노출이 보장되지 않아(ARIA 1.1 — 대화형/role 보유 요소에서만 신뢰) 의도한 라벨이 전달되지 않을 수 있고, ② **중복·불일치(WCAG 1.3.1)** — 라벨 컨텍스트는 이미 표 `scope="col"` 헤더(「연락처」·「보호자 연락처」)·`<dt>`(「전화번호」 등)가 제공하므로 「연락처 …」 하드코딩 라벨은 **본인 연락처에선 중복**, **보호자 연락처 열·`GuardianDetailPage` 「전화번호」 `<dt>`에선 불일치**(span은 일괄 「연락처」만 노출). 가시 마스킹 텍스트(`010-****-1234`)가 이미 접근 가능한 콘텐츠이므로, no-link span 분기의 `aria-label`을 제거해 주변 시맨틱 라벨이 컨텍스트를 제공하도록 정합(`tel:` 링크 분기의 「전화 걸기 …」 dialing 라벨은 `<a>`에서 유효 — 유지). 컴포넌트 단일 원천 수정이라 6개 소비처(`ClientListPage`·`ClientDetailPage`·`GuardiansPage`·`GuardianDetailPage`·`TransportPickupContact` 등) 전체에 일관 적용. 순수 접근성 정합 리팩터로 가시 텍스트·마스킹·동작·`tel:` 링크 불변. 회귀 +1(`MaskedPhone.test.jsx` — no-link span `aria-label` 부재 단언). `npm test` 1612/1612 PASS·build PASS.)
 > **이전 갱신**: 2026-06-17 (125차 — **G15 이동서비스일지 감사추적 + 모니터링/간호 연계 패널 토큰 정합 + §50 신규** — 124차(§49) 이후 coder 신규 커밋(`3cc5a08` G15 일지 감사추적 read API·`8b68fdb` `MonitoringEvidenceContextPanel`(BNK-273)·`140bf92` `CareNursingParityPanel`) 미점검 갭 해소. 신규 패널 2종은 `aside`/`nav` landmark·`aria-label`·`role="status"`·`ul/li`를 이미 갖춰 접근성 결함 없음 — 잔여는 **토큰 단일 원천(§1-4·FE-16) 회귀 2건**. ① **`TransportServiceLogPanel` 미정의 클래스 제거** — 감사·본문 빈 상태 안내 `<p>`가 `components.css` **미정의 `ds-empty-hint`**(소비자 이 컴포넌트 단 1곳)로 색·`forced-colors` 토큰을 못 받던 80·90·97차 패턴 회귀를, 정의된 **`ds-text-muted`**(`--color-text-muted` 4.76:1 + `forced-colors`에서 `--color-text-secondary` 승격)로 교체(2곳). ② **신규 패널 CSS raw rem → `--space-*` 토큰** — `.ds-monitoring-evidence-context*`·`.ds-care-nursing-parity*`의 `gap: 0.5rem`·`0.75rem 1rem`을 `var(--space-2)`·`var(--space-3) var(--space-4)`로 교체(118·120차 토큰화 패턴 정합). 순수 정합 리팩터로 동작·데이터 불변. `npm test` 1605/1605 PASS·build PASS.)
@@ -3116,6 +3118,139 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 - `DateInput.test.jsx` **9/9**(+4: roving 단일 `tabindex`·방향키 이동+Enter 선택(2026-06-25)·`PageUp` 월 점프(2026-05-17)·`max` 경계 차단).
 - 소비처 회귀 — `FeeSurchargeGuidePanel`·`ComplaintConsultationForm`·`TransportCompliancePanel`·`StaffLifecyclePanel` PASS.
 - `npm test`(locked) · `npm run build` PASS.
+
+---
+
+## 53. 배차 명단 계획 픽업·직원 건강검진 신규 서류·식사기록 오류 접근성 (129차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18 -->
+
+> **129차 UXD (2026-06-18)** — §52(128차) 이후 coder 신규 커밋(`e35efb2`·`8e6310a`·`38642e2`) 미점검 갭 해소.
+
+### 53-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `pages/TransportPage.jsx` | `/transport` 명단 표 | 확정 루트·계획 픽업·지연 Badge (`e35efb2`) |
+| `pages/StaffHealthCheckupsPage.jsx` | `/staff/health-checkups` | FAQ 21799 신규 서류 열·StatCard (`8e6310a`) |
+| `pages/MealAssistanceRecordPage.jsx` | L02_M13 | malformed API 응답 오류 (`38642e2`) |
+| `styles/components.css` | `.ds-inline-cluster` | 인라인 시각·텍스트 클러스터 유틸 |
+
+### 53-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `TransportPage` 배차 루트 `Link` | `aria-label={`${item.name} ${dispatch.stopOrder}번 정차`}` | WCAG 2.4.6 — 동일 「N번 정차」 링크 텍스트 다중 행 구분 |
+| `TransportPage` 계획 픽업 지연 | `title` 툴팁 제거 · 가시 「지연」`Badge` + 지연 시 `aria-label` | WCAG 1.4.1·1.4.13 — 색+텍스트·`title`만 의존 금지(§51 `TransportStopList` 정합) |
+| `.ds-inline-cluster` | `inline-flex`·`gap: var(--space-2)`·`forced-colors` Badge 경계선 | FE-16 — 클래스 미정의 회귀(80차 `.ds-text-input` 패턴) |
+| `StaffHealthCheckupsPage` `newHireDocumentBadge(NA)` | `aria-hidden` 「—」→`ds-text-muted` 가시 대시 | WCAG 4.1.2 — 비대화형 generic에 SR 콘텐츠 숨김 금지 |
+| `MealAssistanceRecordPage` 오류 빈 목록 | `ds-help-text`(미정의)→`ds-text-muted`+`role=status` | FE-16·WCAG 4.1.3 |
+| `MealAssistanceRecordPage` 표 작업 열 | `ds-visually-hidden`→`ds-sr-only` | 단일 sr-only 유틸(§0·`.ds-sr-only`) |
+
+### 53-3. coder 전달 메모
+
+- 배차 명단 표 **반복 링크·버튼**은 이용자명을 `aria-label`에 포함할 것(`TransportPage`·`GuardianInvitationList` 패턴).
+- 상태·지연 표시는 **`title` 툴팁 단독 금지** — 가시 텍스트 Badge 또는 `aria-label` 병행.
+- 신규 서류·상태 열에서 **해당 없음(—)** 은 `aria-hidden`으로 숨기지 말고 `ds-text-muted` 텍스트로 노출.
+- 인라인 시각 클러스터(시각+Badge)는 **`.ds-inline-cluster`** 사용.
+
+### 53-4. 검증
+
+- `TransportPage.test.jsx`·`StaffHealthCheckupsPage.test.jsx`·`MealAssistanceRecordPage.test.jsx` 회귀.
+- `npm test`(locked) · `npm run build` PASS.
+
+---
+
+---
+
+## 54. G15 이동서비스일지 운전자 서명 fieldset + 미정의 transport-log CSS 해소 (130차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18 -->
+
+> **130차 UXD (2026-06-18)** — §53(129차) 이후 coder 신규 커밋(`b6ce301`·`b4644e8`·`0df6902`·`f51e365`·`1c8f236`) 미점검 갭 해소.
+
+### 54-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `TransportServiceLogPanel` | `components/transport/` | 운전자 서명 쌍 `fieldset` + CSS 정의 (`f51e365`) |
+| `TransportServiceLogLegalGuide` | `components/transport/` | 신규 법정 가이드 카드 (`0df6902`) |
+| `StaffHealthCheckupsPage` | `pages/` | HR 파일허브 연결 (`b6ce301`) |
+| `TransportCompliancePage` | `pages/` | 법정 가이드 연동 (`0df6902`) |
+| `styles/components.css` | `styles/` | `ds-transport-log__*` 8클래스 신규 정의 |
+
+### 54-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `TransportServiceLogPanel` 운전자 서명 | `fieldset.ds-transport-log__signature-group` + `legend="운전자 서명"` — 「서명 성명」·「서명일」두 필드 그룹화 | WCAG 1.3.1 — 의존 쌍 필드는 그룹 시맨틱으로 관계 명시 |
+| `ds-transport-log__document` | 본문 래퍼 standalone 정의: 패딩·보더·`border-radius`·`surface-muted` 배경 | FE-16 — `@media print`에만 참조돼 일반 뷰에서 토큰 미수신 |
+| `ds-transport-log__heading` | `font-size-lg`·`font-weight-semibold`·하단 여백 | FE-16 — 별지 제22호 제목 스타일 미정의 |
+| `ds-transport-log__summary` | dl 그리드(`minmax(7rem,auto) 1fr`)·dt `text-muted`·dd `sm` | FE-16 — 운행 메타 요약 레이아웃 미정의 |
+| `ds-transport-log__footnote` | `font-size-xs`·`color-text-muted`·상단 여백 | FE-16 — 보관 각주 스타일 미정의 |
+| `ds-transport-log__no-print` | 정상 표시·`@media print` 숨김 규칙 추가 | FE-16 — 입력 전용 영역 인쇄 제어 누락 |
+| `ds-transport-log__actions` | standalone `margin-top` 정의 | FE-16 — 인쇄 zone 컨텍스트에만 참조돼 독립 레이아웃 미수신 |
+| `ds-transport-log__meta` | standalone meta container 정의 | FE-16 |
+| `ds-transport-log__signature-group` | `fieldset` 리셋(margin·padding·border 제거)·`legend` sm 스타일 | 기존 `ds-form-row` 레이아웃 보존 |
+| `ds-transport-log__document` `forced-colors` | `ButtonText` 경계선 | WCAG 1.4.11 |
+| `TransportServiceLogLegalGuide` | `ds-list-compact`·`ds-text-secondary`·`ds-btn--outline-primary` — 기정의 클래스 확인(변경 불요) | FE-16 확인 PASS |
+| `StaffHealthCheckupsPage` | `ds-stat-grid`·`ds-inline-actions--start`·`ds-fieldset` — 기정의 클래스 확인(변경 불요) | FE-16 확인 PASS |
+
+### 54-3. coder 전달 메모
+
+- **운전자 서명 쌍** — `fieldset.ds-transport-log__signature-group`+`legend="운전자 서명"` 안에 `Field label="서명 성명"`·`Field label="서명일"` 배치(이전 독립 라벨 「운전자 서명 성명」·「운전자 서명일」에서 단축). 테스트에서 `getByLabelText` 쿼리를 「서명 성명」·「서명일」로 갱신했으니 맞춰 유지.
+- **`ds-transport-log__document`** — 일반 뷰에서 `surface-muted` 배경·보더로 서식지 본문임을 시각적으로 구분. 인쇄 시 기존 `@media print` 규칙 그대로.
+- 신규 `ds-transport-log__*` 8종은 기존 transport log CSS 블록(§48·§50·§51) 직후에 위치.
+
+### 54-4. 검증
+
+- `TransportServiceLogPanel.test.jsx` 회귀 갱신(`getByLabelText` 서명 필드 라벨).
+- `npm test` **1677/344 PASS** · `npm run build` PASS.
+
+---
+
+## 55. G41 PDF 8-7 필수 교육 알림·8-7-1 리포트·대시보드 위젯 + G21 RFID diff fallback 라벨 (131차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-18 -->
+
+> **131차 UXD (2026-06-18)** — §54(130차) 이후 coder 신규 커밋(`9e91e6a`·`caa215f`·`4a112fe`·`27c9de3`) 미점검 갭 해소.
+
+### 55-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `StaffTrainingLogPage` | `pages/` | PDF 8-7 필수 미작성 Alert·`formatMandatoryTrainingWriteStatus` StatCard unit (`caa215f`) |
+| `StaffRefresherTrainingPage` | `pages/` | 8-7-1 CSV export 버튼 (`caa215f`) |
+| `DashboardPage` | `pages/` | `staffTrainingComplianceGapCount` 위젯 (`9e91e6a`) |
+| `VisitRfidDiffComparePanel` | `components/visits/` | RFID 7-code diff compare·unknown code fallback (`4a112fe`) |
+| `config/visits.js` | `config/` | `resolveVisitRfidDiffCode` 단일 원천 |
+
+### 55-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `StaffTrainingLogPage` 연 1회 안내 | 미정의 `ds-field-help` 분리 `<p>` 제거 → `Field help` prop(교육 유형·연 1회 선택 시) | FE-16·WCAG 1.3.1 — `aria-describedby` 자동 연결 |
+| `StaffTrainingLogPage` 신규직원 체크 | raw `<input type=checkbox>` → `Checkbox` 컴포넌트 | DS 표준·키보드·라벨 연결 일관 |
+| `StaffTrainingLogPage` 필수 미작성 Alert | `id="staff-training-mandatory-alert"` + 등록 버튼 `aria-describedby` | WCAG 1.3.1 — 비활성 아닌 등록 버튼이 경고 맥락을 SR에 전달 |
+| `StaffRefresherTrainingPage` export | `aria-busy`·`disabled` during download · `role="status"`/`role="alert"` on Alerts | WCAG 4.1.3 |
+| `StaffRefresherTrainingPage` 이수증 업로드 | 제출 `aria-busy={certificateUploading}` | WCAG 4.1.3 |
+| `resolveVisitRfidDiffCode` | 미등록 code → `{ tone: neutral, label: "차이 {code}" }` | WCAG 1.4.1 — raw code만 노출 금지 |
+| `VisitRfidDiffComparePanel` 집계 칩 | `aria-label="{label} {count}건"` · count `aria-hidden` | SR 중복 읽기 방지 |
+| `.ds-visits-reflection-chip` | `forced-colors` `ButtonText` 경계선 | WCAG 1.4.11 |
+
+### 55-3. coder 전달 메모
+
+- **PDF 8-7 필수 유형** — `PDF_MANDATORY_TRAINING_TYPES`(재난·소방만) 미작성 Alert·StatCard unit 「미작성」은 coder `caa215f` 로직 유지. 직원권익은 Alert 대상 아님.
+- **대시보드 위젯** — `STAFF_TRAINING_COMPLIANCE_GAP_WIDGET_LABEL`·`/staff/training-logs` 링크·`countStaffTrainingComplianceGaps` 집계는 변경 불요.
+- **RFID unknown code** — BE가 `COMP_11` 등 신규 code를 추가하면 `VISIT_RFID_DIFF_CODES`에 한국어 라벨 등록. 그 전까지 fallback `차이 {code}` 유지.
+- **8-7-1 CSV** — `buildRefresherTrainingReportCsv`·`downloadRefresherTrainingReportCsv`는 utils 레이어 — UI는 export 버튼만 `aria-busy` 보강.
+
+### 55-4. 검증
+
+- `StaffTrainingLogPage.test.jsx` — mandatory Alert `aria-describedby` 단언 +1.
+- `VisitRfidDiffComparePanel.test.jsx` — unknown code `차이 COMP_11` 라벨 갱신.
+- `visits.test.js` — `resolveVisitRfidDiffCode` +1.
+- `npm test`·build PASS.
 
 ---
 
