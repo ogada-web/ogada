@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19T18:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19T23:30:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-19 (137차 — **G21 split-view NHIS comparison·G32 FAQ21797·G2 법정서식·케어포 3-1 nav + 미정의 CSS 승격 + §61 신규** — 136차(§60) 이후 coder 신규 커밋(`9b80505` G21 split-view NHIS comparison·`1d5747d` CareProvisionSegmentNav·`b272a7b` G32 attendee opinions·`d1149a5` G2 home newsletter/care record·`b881883` G39 SLA alerts) 미점검 a11y·FE-16 갭 해소. ① **`VisitNhisComparisonPanel`** — split-view PLAN/BILLING 2패널 동시 노출 시 h3「공단 명세 사전 비교」중복 → `{kindLabel} 공단 명세 사전 비교`(WCAG 2.4.6). ② **`VisitsPage`** — 분할 비교 래퍼 `role=group`+`aria-label`. ③ **`CaseManagementPage`** — 미정의 `ds-field__hint`→`ds-field__help`·폼 `aria-describedby`·참석자 fieldset hint 연결·행 수정 `aria-label`에 이용자명. ④ **`GuardianDocumentNotifyPanel`** — 서식 설명 `id`+submit `aria-describedby`·form `aria-label`. ⑤ **`DurationBandSelect`** — `ds-field__hint`→`ds-field__help`. ⑥ **`.ds-form-grid__full`** — FE-16 grid-column 전폭 span 승격. ⑦ **§61** 신규. 회귀 +4. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-19 (138차 — **G-CASH-RECEIPT-LOG 4-계층 UI 접근성 재점검 + §62 신규** — 137차(§61) 이후 coder 신규 커밋(`cfc4b04`·`a17f148`·`221458e`·`8aebe55`) 미점검 a11y·FE-16 갭 해소. ① **`CashReceiptRegisterModal`** — 폼 Alert 검증→`Field error`+`aria-invalid`·form `aria-label`·작년분 경고 `id`+submit `aria-describedby`. ② **`CashReceiptIssuancePage`** — `StatusBadge`+`CASH_RECEIPT_IMMEDIATE_STATUS`·조회 `aria-busy`·`<time dateTime>`·`Select`·`ds-grid--stats`. ③ **`PaymentRecordModal`** — 현금 FAQ 21716 경고 `id`+submit `aria-describedby`. ④ **`CashReceiptLegalAlerts`** — FAQ 안내 `id`·`.ds-cash-receipt-legal-alerts`. ⑤ **§62** 신규. 회귀 +5. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-19 (137차 — **G21 split-view NHIS comparison·G32 FAQ21797·G2 법정서식·케어포 3-1 nav + 미정의 CSS 승격 + §61 신규** — 136차(§60) 이후 coder 신규 커밋(`9b80505` G21 split-view NHIS comparison·`1d5747d` CareProvisionSegmentNav·`b272a7b` G32 attendee opinions·`d1149a5` G2 home newsletter/care record·`b881883` G39 SLA alerts) 미점검 a11y·FE-16 갭 해소. ① **`VisitNhisComparisonPanel`** — split-view PLAN/BILLING 2패널 동시 노출 시 h3「공단 명세 사전 비교」중복 → `{kindLabel} 공단 명세 사전 비교`(WCAG 2.4.6). ② **`VisitsPage`** — 분할 비교 래퍼 `role=group`+`aria-label`. ③ **`CaseManagementPage`** — 미정의 `ds-field__hint`→`ds-field__help`·폼 `aria-describedby`·참석자 fieldset hint 연결·행 수정 `aria-label`에 이용자명. ④ **`GuardianDocumentNotifyPanel`** — 서식 설명 `id`+submit `aria-describedby`·form `aria-label`. ⑤ **`DurationBandSelect`** — `ds-field__hint`→`ds-field__help`. ⑥ **`.ds-form-grid__full`** — FE-16 grid-column 전폭 span 승격. ⑦ **§61** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-19 (136차 — **L03 간호기록 5종 행 수정 버튼 `Button` 컴포넌트 정합 + §60 신규** — 135차(§59) 이후 전수 점검에서 발견한 **미정의 `ds-table__action-btn` 잔여 5종** 해소. `NursingServiceRecordPage`·`NursingEmergencyRecordPage`·`NursingExcretionTubeRecordPage`·`NursingOralCareCheckPage`·`NursingWeightRecordPage`의 행 수정 버튼이 §35(110차)이 확립한 raw `ds-table__action-btn`→`Button variant=tertiary size=sm` 패턴을 따르지 않아 미정의 클래스로 포커스 링·`forced-colors`·hover 토큰을 못 받던 회귀를 해소(FE-16·WCAG 4.1.2). `aria-label`·동작 불변. 회귀 +5(`ds-btn` 클래스 단언). 5파일 32 tests PASS. **§60** 신규.)
 > **이전 갱신**: 2026-06-19 (135차 — **G41 filter-year Field controlProps 전달 + RFID no-diff SR 중복 제거 + G-7-1 인쇄 패널 CSS + §59 신규** — 134차(§58) 이후 잔여 a11y·FE-16 갭 해소. ① **`StaffTrainingLogPage`** — invalid filter year 시 `Field help`(준수 현황 숨김 안내)를 error와 **동시 노출**·`aria-describedby` 병합(134차 help 조건부 제거 회귀 해소·WCAG 3.3.2). ② **`VisitRfidDiffComparePanel`** — no-diff 시 info+success 이중 `role=status` 제거→단일 success Alert(`id=visit-rfid-diff-no-diff-alert`·행 수+no-diff 병합). ③ **`.ds-billing-statement-print`** — 미정의 베이스 클래스 승격(상단 구분선·`forced-colors`). ④ **`BillingStatementPrintPanel`** PDF 버튼 `aria-label`. ⑤ **§59** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-19 (134차 — **G21 standalone NHIS comparison panel·G41 filter-year 접근성 재점검 + 미정의 CSS 승격 + §58 신규**
@@ -3499,6 +3500,47 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 - `VisitNhisComparisonPanel.test.jsx` — PLAN heading level 3 +1.
 - `CaseManagementPage.test.jsx` — edit button context aria-label +1.
 - `GuardianDocumentNotifyPanel.test.jsx` — submit `aria-describedby` +1.
+- `npm test`·build PASS.
+
+---
+
+## §62. G-CASH-RECEIPT-LOG 발급목록·수납 prompt·대시보드 due-gate 접근성 (138차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19 -->
+
+> **138차 UXD (2026-06-19)** — §61(137차) 이후 coder G-CASH-RECEIPT-LOG 4-계층 커밋(`cfc4b04`·`a17f148`·`221458e`·`8aebe55`) 미점검 a11y·FE-16 갭 해소.
+
+### 62-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `CashReceiptIssuancePage` | `/billing/cash-receipts` | FAQ 21701 발급목록·수급자별 발급정보 (`cfc4b04`) |
+| `CashReceiptRegisterModal` | `components/ui/` | NTS 발급 등록 모달 |
+| `CashReceiptLegalAlerts` | `components/ui/` | FAQ 21716/21717 법정 안내 |
+| `PaymentRecordModal` | `components/ui/` | 현금 수납 후 발급 prompt (`a17f148`) |
+| `CASH_RECEIPT_IMMEDIATE_STATUS` | `Badge.jsx` | 즉시발급 준수 MET/DELAYED |
+| `.ds-cash-receipt-legal-alerts` · `.ds-cash-receipt-issuance__summary` | `components.css` | gap·StatCard forced-colors |
+
+### 62-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `CashReceiptRegisterModal` | 필수값 검증 → `Field error`+`aria-invalid`·API 실패만 Alert·form `aria-label`·작년분 `id`+submit `aria-describedby` | WCAG 3.3.1·1.3.1 (IncidentRecordForm 패턴) |
+| `CashReceiptIssuancePage` | 즉시발급 `StatusBadge`·조회 `aria-busy`·발급일 `<time>`·`Select` 컴포넌트·`ds-grid--stats` | WCAG 1.4.1·4.1.3·FE-16 |
+| `PaymentRecordModal` | 현금 FAQ 21716 경고 `#payment-cash-receipt-warning`·submit `aria-describedby` | WCAG 1.3.1 (ClaimGenerationPanel 패턴) |
+| `CashReceiptLegalAlerts` | FAQ 21716/21717 Alert `id`·`.ds-cash-receipt-legal-alerts` gap 토큰 | FE-16·cross-link 준비 |
+
+### 62-3. coder 전달 메모
+
+- **발급 등록** — `createCashReceiptIssuanceApi` payload 필드명(`billingClaimId`·`ntsReceiptNo`·`identifierType`·`identifierValue`·`issuedAt`·`amount`) 유지. `priorYearIssuanceEligible` claim 시 modal 경고+submit `aria-describedby` 동기화.
+- **즉시발급 열** — backend `immediateIssuanceMet` boolean → `CASH_RECEIPT_IMMEDIATE_STATUS` MET/DELAYED. 색+텍스트 Badge 필수.
+- **수납대장 vs 발급목록** — `/billing/reports/receipts`(수납 ledger)와 `/billing/cash-receipts`(NTS 발급 이력) UI·nav 라벨 혼동 금지(`BillingReportsContextNav` 7항목 유지).
+
+### 62-4. 검증
+
+- `CashReceiptRegisterModal.test.jsx` 3 — field `aria-invalid`·prior-year `aria-describedby`·submit payload.
+- `CashReceiptIssuancePage.test.jsx` — Badge 「충족」 +1.
+- `PaymentRecordModal.test.jsx` — CASH `aria-describedby` +1.
 - `npm test`·build PASS.
 
 ---
