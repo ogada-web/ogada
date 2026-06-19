@@ -1,10 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19T00:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19T18:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-19 (134차 — **G21 standalone NHIS comparison panel·G41 filter-year 접근성 재점검 + 미정의 CSS 승격 + §58 신규** — 133차(§57) 이후 coder 신규 커밋(`797c529`·`ad18606`·`68a4e35` G21 `VisitNhisComparisonPanel`·`VisitNhisComparisonDetail`·`f26e075`·`28e5525` G41 filter-year validation) 미점검 갭 해소. ① **`VisitNhisComparisonPanel`** — 초기 로드·새로고침 이중 Spinner SR 중복 제거(초기 `!data`만 전체 Spinner·버튼 `aria-busy`)·불일치 Alert `id=visit-nhis-comparison-gap-alert`+「수급자별 상세」`aria-describedby` 연결(101차 quiet-hours 패턴). ② **`VisitNhisComparisonDetail`** — `role=region`에 가시 `h4.ds-subheading`「수급자별 공단 명세 비교 상세」+`aria-labelledby`(WCAG 1.3.1·2.4.6). ③ **`.ds-form-actions--between`**·**`.ds-subheading`**·**`.ds-visit-nhis-comparison-*`** CSS 신규(FE-16·`forced-colors` StatCard·warning row outline). ④ **`StaffTrainingLogPage`** — 기준 연도 필터 `Field help`→`aria-describedby`(유효 범위·준수 현황 숨김 안내). ⑤ **§58** 신규. 회귀 +2. `npm test`·build PASS.)
-> **이전 갱신**: 2026-06-18 (133차 — **G-7-1 명세 인쇄 패널·G21 VisitsContextNav·일괄확정 PLAN/BILLING 분할·RFID no-diff 알림 접근성 재점검 + 기록 페이지 `ds-sr-only` 정합 + §57 신규**
+> **최종 갱신**: 2026-06-19 (137차 — **G21 split-view NHIS comparison·G32 FAQ21797·G2 법정서식·케어포 3-1 nav + 미정의 CSS 승격 + §61 신규** — 136차(§60) 이후 coder 신규 커밋(`9b80505` G21 split-view NHIS comparison·`1d5747d` CareProvisionSegmentNav·`b272a7b` G32 attendee opinions·`d1149a5` G2 home newsletter/care record·`b881883` G39 SLA alerts) 미점검 a11y·FE-16 갭 해소. ① **`VisitNhisComparisonPanel`** — split-view PLAN/BILLING 2패널 동시 노출 시 h3「공단 명세 사전 비교」중복 → `{kindLabel} 공단 명세 사전 비교`(WCAG 2.4.6). ② **`VisitsPage`** — 분할 비교 래퍼 `role=group`+`aria-label`. ③ **`CaseManagementPage`** — 미정의 `ds-field__hint`→`ds-field__help`·폼 `aria-describedby`·참석자 fieldset hint 연결·행 수정 `aria-label`에 이용자명. ④ **`GuardianDocumentNotifyPanel`** — 서식 설명 `id`+submit `aria-describedby`·form `aria-label`. ⑤ **`DurationBandSelect`** — `ds-field__hint`→`ds-field__help`. ⑥ **`.ds-form-grid__full`** — FE-16 grid-column 전폭 span 승격. ⑦ **§61** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-19 (136차 — **L03 간호기록 5종 행 수정 버튼 `Button` 컴포넌트 정합 + §60 신규** — 135차(§59) 이후 전수 점검에서 발견한 **미정의 `ds-table__action-btn` 잔여 5종** 해소. `NursingServiceRecordPage`·`NursingEmergencyRecordPage`·`NursingExcretionTubeRecordPage`·`NursingOralCareCheckPage`·`NursingWeightRecordPage`의 행 수정 버튼이 §35(110차)이 확립한 raw `ds-table__action-btn`→`Button variant=tertiary size=sm` 패턴을 따르지 않아 미정의 클래스로 포커스 링·`forced-colors`·hover 토큰을 못 받던 회귀를 해소(FE-16·WCAG 4.1.2). `aria-label`·동작 불변. 회귀 +5(`ds-btn` 클래스 단언). 5파일 32 tests PASS. **§60** 신규.)
+> **이전 갱신**: 2026-06-19 (135차 — **G41 filter-year Field controlProps 전달 + RFID no-diff SR 중복 제거 + G-7-1 인쇄 패널 CSS + §59 신규** — 134차(§58) 이후 잔여 a11y·FE-16 갭 해소. ① **`StaffTrainingLogPage`** — invalid filter year 시 `Field help`(준수 현황 숨김 안내)를 error와 **동시 노출**·`aria-describedby` 병합(134차 help 조건부 제거 회귀 해소·WCAG 3.3.2). ② **`VisitRfidDiffComparePanel`** — no-diff 시 info+success 이중 `role=status` 제거→단일 success Alert(`id=visit-rfid-diff-no-diff-alert`·행 수+no-diff 병합). ③ **`.ds-billing-statement-print`** — 미정의 베이스 클래스 승격(상단 구분선·`forced-colors`). ④ **`BillingStatementPrintPanel`** PDF 버튼 `aria-label`. ⑤ **§59** 신규. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-19 (134차 — **G21 standalone NHIS comparison panel·G41 filter-year 접근성 재점검 + 미정의 CSS 승격 + §58 신규**
 > **이전 갱신**: 2026-06-18 (132차 — **G15 별지 제22호 branch contact·입력 폼 compliance Badge + SideNav §8-2 비주얼 deepen 문서화 + §56 신규**
 > **이전 갱신**: 2026-06-18 (130차 — **G15 이동서비스일지 운전자 서명 fieldset 그룹화 + 미정의 `ds-transport-log__*` CSS 클래스 해소 + §54 신규** — 129차(§53) 이후 coder 신규 커밋(`b6ce301` 건강검진 HR파일허브 연결·`b4644e8` 법정 서류 필드 검증·`0df6902` 이동서비스일지 법정 가이드·`f51e365` 운전자 서명 persist·`1c8f236` 식사기록 클라이언트 정규화) 미점검 갭 해소. ① **`TransportServiceLogPanel` 운전자 서명 `fieldset`/`legend`(WCAG 1.3.1)** — 「서명 성명」·「서명일」두 필드가 서로 의존하는 쌍이지만 그룹 시맨틱 없이 독립 `Field`로 나열돼 SR이 어떤 서명인지 맥락 없이 식별해야 했던 갭을, `fieldset.ds-transport-log__signature-group`+`legend="운전자 서명"`으로 그룹화(Field 라벨은 「서명 성명」·「서명일」로 단축·중복 제거). ② **`components.css` 미정의 클래스 해소(FE-16)** — `TransportServiceLogPanel`이 사용하나 CSS에 없던 `ds-transport-log__document`(본문 래퍼 패딩·보더·배경)·`ds-transport-log__heading`(별지 제22호 제목)·`ds-transport-log__summary`(운행 메타 dl 그리드)·`ds-transport-log__footnote`(보관 각주)·`ds-transport-log__no-print`(인쇄 숨김 유틸)·`ds-transport-log__actions`(액션 바 상단 여백)·`ds-transport-log__meta`(메타 폼 row)·`ds-transport-log__signature-group`(서명 fieldset 리셋) 8종 정의. ③ `forced-colors` — `ds-transport-log__document`에 `ButtonText` 경계선 추가. ④ **§54** 신규. 회귀 +2(`TransportServiceLogPanel.test.jsx` 서명 fieldset 라벨 갱신). `npm test` **1677/344** PASS · build PASS.)
 > **이전 갱신**: 2026-06-18 (129차 — **US-T05 배차 명단 계획 픽업·US-R02 FAQ21799 신규 서류·L02_M13 malformed 응답 접근성 재점검 + §53 신규** — 128차(§52) 이후 coder 신규 커밋(`e35efb2` 배차 명단 확정 루트·계획 픽업·지연 Badge·`8e6310a` FAQ21799 신규직원 건강검진 1년 서류·`38642e2` L02_M13 malformed API 응답) 미점검 갭 해소. ① **`TransportPage` 명단 표** — 배차 루트 `Link`에 `${이용자명} N번 정차` `aria-label`(WCAG 2.4.6·다중 행 동일 링크 텍스트 구분)·계획 픽업 지연 시 `title` 툴팁 제거→가시 **「지연」** Badge+`aria-label` 병행(§51 `TransportStopList` 패턴)·`.ds-inline-cluster` 신규 정의(FE-16). ② **`StaffHealthCheckupsPage`** — `NEW_HIRE_DOCUMENT_STATUS.NA` 분기가 `aria-hidden`으로 SR에서 숨기던 결함을 `ds-text-muted` 「—」로 정합(WCAG 4.1.2). ③ **`MealAssistanceRecordPage`** — 미정의 `ds-help-text`→`ds-text-muted`·`ds-visually-hidden`→`ds-sr-only`(표 작업 열 헤더). ④ **§53** 신규. 회귀 +2. `npm test`·build PASS.)
@@ -3376,6 +3378,127 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 
 - `VisitNhisComparisonPanel.test.jsx` — expand `aria-describedby` +1.
 - `VisitNhisComparisonDetail.test.jsx` — h4 heading level 4 +1.
+- `npm test`·build PASS.
+
+---
+
+## 59. G41 filter-year help·error 병행 + G21 RFID no-diff SR + G-7-1 print CSS (135차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19 -->
+
+> **135차 UXD (2026-06-19)** — §58(134차) 이후 134차 `Field help` 조건부 제거·RFID no-diff 이중 Alert·`.ds-billing-statement-print` 미정의 잔여 갭 해소.
+
+### 59-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `StaffTrainingLogPage` | `pages/` | G41 filter-year invalid 시 compliance 숨김 안내 |
+| `VisitRfidDiffComparePanel` | `components/visits/` | no-diff success Alert 단일화 |
+| `BillingStatementPrintPanel` | `components/ui/` | `.ds-billing-statement-print` CSS |
+| `.ds-billing-statement-print` | `components.css` | FE-16 베이스 클래스 승격 |
+
+### 59-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `StaffTrainingLogPage` filter year | `{...controlProps}` spread로 help·error `aria-describedby` 전달 + invalid year에서도 help 유지 | WCAG 3.3.2·1.3.1 — 134차 render-prop 누락 회귀 해소 |
+| `VisitRfidDiffComparePanel` no-diff | info(0건)+success 이중 `role=status` → 단일 success Alert(`visit-rfid-diff-no-diff-alert`) | WCAG 4.1.3 — 중복 live region 방지 |
+| `.ds-billing-statement-print` | border-top·padding·`forced-colors` ButtonText | FE-16 — 발송 패널과 인쇄 패널 시각·고대비 구분 |
+
+### 59-3. coder 전달 메모
+
+- **G41 filter year** — `staffTrainingReferenceYearFieldError`·compliance Card 조건부 렌더 로직 불변. help 문구 변경 시 Field `help` prop만 수정.
+- **RFID no-diff** — diff 있을 때만 info Alert(건수 포함). no-diff는 success Alert 단일 원천.
+- **G-7-1 print** — `.ds-billing-statement-print`는 `BillingDetailPage` 발송 패널 하단 구분선용. 인쇄 zone(`.ds-billing-claim-print-zone`)과 분리 유지.
+
+### 59-4. 검증
+
+- `StaffTrainingLogPage.test.jsx` — invalid filter year help `aria-describedby` +1.
+- `VisitRfidDiffComparePanel.test.jsx` — no-diff alert id·0건 info 부재 +1.
+- `npm test`·build PASS.
+
+---
+
+## §60. L03 간호기록 5종 행 수정 버튼 `Button` 컴포넌트 정합 (136차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19 -->
+
+> **136차 UXD (2026-06-19)** — §59(135차) 이후 전수 점검에서 발견한 **미정의 `ds-table__action-btn` 잔여 5종** 해소. §35(110차)이 `IntensiveExcretionObservationPage`에서 확립한 「raw `ds-table__action-btn` → `Button variant=tertiary size=sm`」 패턴이 동시기 신설된 L03 간호기록 페이지 5종에는 적용되지 않아 회귀로 남아 있었다.
+
+### 60-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `NursingServiceRecordPage` | `pages/` | L03 간호급여 제공기록 행 수정 |
+| `NursingEmergencyRecordPage` | `pages/` | L03_M04 응급상황 기록 행 수정 |
+| `NursingExcretionTubeRecordPage` | `pages/` | 유치도뇨관 관리 기록 행 수정 |
+| `NursingOralCareCheckPage` | `pages/` | L03_M13 구강상태 점검 행 수정 |
+| `NursingWeightRecordPage` | `pages/` | 체중 기록 행 수정 |
+
+### 60-2. 접근성·정합 재점검 결과
+
+| 문제 | 조치 | 근거 |
+|------|------|------|
+| 행 수정 버튼이 raw `<button className="ds-table__action-btn">` — 해당 클래스는 `components.css`에 **미정의**(전수 grep 결과 위 5개 파일에서만 사용) | `Button variant="tertiary" size="sm"`로 교체(§35 패턴 정합) | FE-16 단일 토큰 원천 — 미정의 클래스라 포커스 링·`forced-colors` outline·hover 토큰 미적용, 브라우저 기본 스타일로 렌더 |
+| 동일 액션이 다른 행과 컴포넌트 일관성 없이 raw `<button>` | 디자인 시스템 `ds-btn` 단일 컴포넌트 사용 | WCAG 4.1.2 — 동일 역할 컨트롤의 일관된 시맨틱·시각 |
+
+> `aria-label`(이용자명·일자·기록 유형 포함)·`onClick`·`type="button"`은 기존과 동일하게 유지. 데이터·API·동작 불변, 순수 접근성·정합 리팩터.
+
+### 60-3. coder 전달 메모
+
+- 신설 기록 페이지에서 행 액션 버튼은 **반드시 `Button` 컴포넌트**(`variant="tertiary" size="sm"`)를 사용한다 — `ds-table__action-btn` 등 미정의 클래스로 raw `<button>`을 만들지 않는다.
+- 표 행 수정/삭제 등 행 단위 액션 `aria-label`에는 대상 이용자명·일자를 포함해 다중 행에서 동일 라벨 중복(WCAG 2.4.6)을 방지한다(기존 라벨 유지).
+
+### 60-4. 검증
+
+- `NursingServiceRecordPage.test.jsx`·`NursingEmergencyRecordPage.test.jsx`·`NursingExcretionTubeRecordPage.test.jsx`·`NursingOralCareCheckPage.test.jsx`·`NursingWeightRecordPage.test.jsx` — 수정 버튼 `ds-btn` 클래스 단언 +5(기존 edit-mode 테스트 보강).
+- 5개 파일 32 tests PASS(locked `npm test`).
+
+---
+
+## §61. G21 split-view NHIS·G32 FAQ21797·G2 법정서식·케어포 3-1 nav + 미정의 CSS 승격 (137차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19 -->
+
+> **137차 UXD (2026-06-19)** — §60(136차) 이후 coder 신규 커밋(`9b80505`·`1d5747d`·`b272a7b`·`d1149a5`·`b881883`) 미점검 a11y·FE-16 갭 해소.
+
+### 61-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `VisitNhisComparisonPanel` | `components/visits/` | G21 split-view PLAN/BILLING 2패널 (`9b80505`) |
+| `VisitsPage` | `pages/` | 분할 비교 래퍼 |
+| `CareProvisionSegmentNav` | `components/ui/` | 케어포 3-1 급여제공 세분화 nav (`1d5747d`) |
+| `CaseManagementPage` | `pages/` | G32 FAQ21797 참석자별 의견 (`b272a7b`) |
+| `GuardianDocumentNotifyPanel` | `components/ui/` | G2 가정통신문·급여제공기록지 (`d1149a5`) |
+| `CareServiceWeeklyRecordPage` | `pages/` | G39 FAQ21817 7일 SLA Alert (`b881883`) — 점검 확인(변경 불요) |
+| `.ds-form-grid__full` | `components.css` | FE-16 미정의 클래스 승격 |
+
+### 61-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `VisitNhisComparisonPanel` h3 | `{kindLabel} 공단 명세 사전 비교`(예: 「계획 일정 공단 명세 사전 비교」) — split-view 2패널 동시 노출 시 제목 구분 | WCAG 2.4.6 — 동일 h3 중복 |
+| `VisitsPage` 분할 비교 래퍼 | `role="group" aria-label="계획·청구 공단 명세 분할 비교"` | WCAG 1.3.1 — generic div `aria-label` 단독 불충분 |
+| `CaseManagementPage` | `ds-field__hint`(미정의)→`ds-field__help`·폼 `aria-describedby=cm-form-hint`·fieldset `aria-describedby`·행 수정 `aria-label`에 이용자명 | FE-16·WCAG 3.3.2·2.4.6 |
+| `GuardianDocumentNotifyPanel` | 서식 설명 `#guardian-document-notify-description`·submit `aria-describedby`·form `aria-label` | WCAG 1.3.1 — 서식 유형별 설명 SR 전달 |
+| `DurationBandSelect` | `ds-field__hint`→`ds-field__help` | FE-16 단일 원천 |
+| `.ds-form-grid__full` | `grid-column: 1 / -1` 정의 | FE-16 — `CaseManagementPage`·`ProvisionResultEvaluationPage` 소비 |
+| `CareProvisionSegmentNav` | `nav`·`aria-current`·`ds-context-nav--sub` — 119차 패턴 확인(변경 불요) | — |
+| `CareServiceWeeklyRecordPage` SLA Alert | `aria-labelledby`+`ul/li` — 113차 패턴 확인(변경 불요) | — |
+
+### 61-3. coder 전달 메모
+
+- **G21 split-view NHIS** — PLAN/BILLING 2패널 동시 마운트 시 각 패널 h3에 `{SCHEDULE_KIND_LABELS[kind]}` 접두 유지. 단일 패널 모드는 기존과 동일.
+- **G32 attendee opinions** — fieldset legend「참석자별 의견 (FAQ21797)」+ hint id `cm-attendee-opinions-hint` 패턴 유지. 행 수정 버튼은 `${clientName} 사례관리 회의록 수정` aria-label 필수.
+- **G2 guardian documents** — `GUARDIAN_DOCUMENT_NOTIFY_TYPES` 추가 시 description id·submit `aria-describedby` 동기화.
+- **케어포 3-1 nav** — `CARE_PROVISION_SEGMENT_LINKS`·`/health` 상단 `CareProvisionSegmentNav` 배치 유지. 신규 segment route 추가 시 nav config·test 동반.
+
+### 61-4. 검증
+
+- `VisitNhisComparisonPanel.test.jsx` — PLAN heading level 3 +1.
+- `CaseManagementPage.test.jsx` — edit button context aria-label +1.
+- `GuardianDocumentNotifyPanel.test.jsx` — submit `aria-describedby` +1.
 - `npm test`·build PASS.
 
 ---
