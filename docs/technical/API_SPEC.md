@@ -1,12 +1,13 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-14T07:00:00+09:00 -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-19T16:00:00+09:00 -->
+<!-- tech_writer-sync: TWR 248차 2026-06-19T16:00:00 UTC — API_SPEC resync (246차→248차) — **G17 기능회복훈련, G32 케이스관리, G42 민원상담 3개 섹션 추가** · BE `429661e` / FE `40d0ca3` · §9-16/9-17/9-18 MUST docs 신규 추가 · next: FAQ G17/G32/G42 온보딩 가이드 → FAQ Q500+ · docs/ops/README 동기화 -->
 # 주간보호센터 웹 시스템 — REST API 명세 (technical/API_SPEC.md)
 
 > **작성**: planner, tech_writer 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-14 (PLN 130차 — §9-15 7-5 easy-pay ✅ partial+ · MOHW 2025-247 · QA-B78/B79 Planned · BE `b893e97`/FE `bebd874` · **merge gate BLOCK(489)**)
+> **최종 갱신**: 2026-06-19 (TWR 248차 — **API_SPEC 신규 섹션 추가** — §9-16 케이스관리/G32, §9-17 기능회복훈련/G17, §9-18 민원상담/G42 · 구현 완료 기능 문서화 · BE `429661e` / FE `40d0ca3`)
 > **상태**: 초안 (Draft) — 사용자 승인 전
-> **범위**: MVP v1 (Must) — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, 대시보드, 선임보호사 일지, 욕구사정, 급여계약 첨부
-> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md`
+> **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, 대시보드, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, **케이스관리·기능회복훈련·민원상담**, 시스템 헬스체크
+> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `429661e` / **frontend** `40d0ca3`
 
 ---
 
@@ -143,6 +144,7 @@
 | GET | `/branches` | 지점 목록 | hq_admin(전체), 그 외(소속) |
 | POST | `/branches` | 지점 등록 | hq_admin |
 | GET | `/branches/{branchId}` | 지점 상세 | 스코프 내 |
+| GET | `/branches/integrated-home/provider-discovery` | 통합재가 제공기관 검색 가이드(롱텀 portal) | hq_admin, branch_admin |
 | PATCH | `/branches/{branchId}` | 지점 수정·비활성 | hq_admin |
 | GET | `/users` | 직원 계정 목록(지점 필터) | hq_admin, branch_admin |
 | POST | `/users` | 직원 계정 생성·역할·지점 배정 | hq_admin, branch_admin |
@@ -152,6 +154,37 @@
 
 ```json
 { "allowClientSelfCheckin": true }
+```
+
+### 3-1. 통합재가 제공기관 탐색 (G19) — v2
+
+> **목적**: 통합재가 제공기관 검색 시 롱텀케어 포털의 필터 파라미터·코드를 FE에 전달한다.  
+> **참고**: FAQ 610(통합재가 안내)·longterm provider search `menuId=npe0000002783` (`ltcAdminKindChoiceYn8=Y`, `searchAdminKindCd=06|07`, 월 10만원 가산 공지).
+
+**GET `/branches/integrated-home/provider-discovery`**
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `providerSearchUrl` | string | 롱텀케어 제공기관 검색 URL(`selectLtcoSrch.web?menuId=npe0000002783`) |
+| `integratedHomeFilterParam` | string | 통합재가 필터 파라미터 키(`ltcAdminKindChoiceYn8`) |
+| `integratedHomeFilterValue` | string | 통합재가 필터 값(`Y`) |
+| `daytimeAndShortTermServiceCodeParam` | string | 서비스 유형 코드 파라미터(`searchAdminKindCd`) |
+| `daytimeCareServiceCode` | string | 주야간보호 코드(`06`) |
+| `shortTermCareServiceCode` | string | 단기보호 코드(`07`) |
+| `monthlyAddonNotice` | string | 「주·야간보호형: 수급자 1인당 월 10만원 지급」 안내 문구 |
+
+**예시 응답**
+
+```json
+{
+  "providerSearchUrl": "https://www.longtermcare.or.kr/npbs/r/a/201/selectLtcoSrch.web?menuId=npe0000002783",
+  "integratedHomeFilterParam": "ltcAdminKindChoiceYn8",
+  "integratedHomeFilterValue": "Y",
+  "daytimeAndShortTermServiceCodeParam": "searchAdminKindCd",
+  "daytimeCareServiceCode": "06",
+  "shortTermCareServiceCode": "07",
+  "monthlyAddonNotice": "주·야간보호형: 수급자 1인당 월 10만원 지급"
+}
 ```
 
 ---
@@ -672,7 +705,7 @@
 | 메서드 | 경로 | 설명 |
 |--------|------|------|
 | POST | `/billing/claims/generate` | 월별 청구 자동 계산·생성(지점·월 기준) |
-| GET | `/billing/claims` | 청구 내역 목록 — `?branchId=&status=DRAFT\|CONFIRMED\|PAID` (V31 인덱스) |
+| GET | `/billing/claims` | 청구 내역 목록 — `?branchId=&status=DRAFT\|CONFIRMED\|PAID` (V31·V149 인덱스) |
 | GET | `/billing/claims/{id}` | 청구서 상세(이용자별 명세) |
 | PATCH | `/billing/claims/{id}/status` | 상태 변경(작성중→확정→수납완료) — 확정 후 금액 불변(V8) |
 | POST | `/billing/claims/{id}/notify` | 보호자 명세·청구 **알림 요청** (staff-initiated, G2-n) — `notifyBilling` consent 확인 | `branch_admin`, `hq_admin` |
@@ -684,7 +717,7 @@
 **GET `/billing/claims` 쿼리**
 
 - `branchId` (optional): 토큰 스코프 내 지점 필터
-- `status` (optional): `DRAFT` | `CONFIRMED` | `PAID` — US-G07, `idx_billing_claims_org_branch_status_generated`
+- `status` (optional): `DRAFT` | `CONFIRMED` | `PAID` — US-G07, `idx_billing_claims_org_branch_status_generated`(V31)·`idx_billing_claims_org_branch_month_status_generated`(V149, 월+상태 복합)
 
 **POST `/billing/claims/generate`**
 
@@ -742,6 +775,28 @@
 > UI 안내: 「공단 [longtermcare.or.kr](https://www.longtermcare.or.kr/)에서 청구 전송 후 청구내역상세 엑셀을 다운로드하세요」— 공단 직접 전송 API는 MVP 제외.  
 > **롱텀 2026**: IE 접속 불가 — 엑셀 export 전 **Chrome/Edge** 사용 안내(온보딩·import 화면).
 
+### 7-5. 본인부담/의료비공제 통계 리포트 (G26 7-8) — US-L07, BNK-263~268 @ `903f462`/`6d10e0d`/`3481eb8`
+
+케어포 PDF p.92 7-8 dual-function 통계. FE `/billing/reports/statistics` @ `d8f1fdf`.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/billing/reports/medical-expense-deduction-statistics` | **① 의료비공제 통계** — `?branchId=&yearMonth=` (지점·월별 집계) | `branch_admin`, `hq_admin` |
+| GET | `/billing/reports/copay-monthly-statistics` | **② 본인부담 월별 통계** — `?branchId=&yearMonth=` · 6필드(청구건수·전월대비증감·청구총액·증감·입금총액·미수금) PDF p.92 verbatim | `branch_admin`, `hq_admin` |
+
+**GET `/billing/reports/copay-monthly-statistics` 응답 필드** (케어포 PDF p.92 7-8 1:1):
+
+| 필드 | 설명 |
+|------|------|
+| `claimCount` | 청구건수 |
+| `claimCountChangeFromPriorMonth` | 전월대비증감 |
+| `claimTotalAmount` | 청구총액 |
+| `claimTotalAmountChange` | 증감(원) |
+| `depositTotalAmount` | 입금총액 |
+| `outstandingTotalAmount` | 미수금총액 |
+
+> CMS·간편결제 제외 규칙은 G26 7-2-1(US-L04)과 동일. **이동서비스비 통계 leaf**는 별도 P1 검토(BNK-268).
+
 ---
 
 ## 8. 대시보드 (Dashboard) — §3-11
@@ -772,6 +827,203 @@
 | PATCH | `/settings/system` | 기술 설정 변경 |
 | GET | `/settings/audit-logs` | 감사 로그 조회(전 지점, 자기 Tenant) |
 | GET | `/settings/backups` | 백업 상태·이력 |
+
+---
+
+## 10. 요양급여 제공기록 (Care Services) — L02 · §3-7
+
+> **상태**: backend **`c655743`** — V130–V141 제공기록 4종 테이블·6 API endpoint **✅ PRESENT**. frontend **`3549896`/`9ad8346`** — `/care/weekly-service-records`·`/care/bathing-schedules`·`/care/meal-assistance-records`·`/care/service-special-notes` ✅ **완전 구현**. L02_M04/M05 **케어 리포트** — backend `c655743` ✅ · **FE P2 dirty tree**. REQUIREMENTS §3-7·USER_STORIES US-O01.
+
+### 10-1. 요양급여 제공기록 (Weekly Service Records) — L02_M01
+
+> **DB**: Flyway **V130–V132** `weekly_service_records`·`weekly_service_record_details` · 주간 일차별 서비스 유형·시간·비고.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/care/weekly-service-records` | 수급자별 주간 제공기록 목록 (`clientId`, `weekStartDate` query) | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/weekly-service-records` | 주간 제공기록 생성·저장 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/care/weekly-service-records/{recordId}` | 주간 기록 수정 | branch_admin, social_worker, caregiver |
+| DELETE | `/api/v1/care/weekly-service-records/{recordId}` | 주간 기록 삭제 | branch_admin, social_worker |
+
+**POST 요청 (CreateWeeklyServiceRecordRequest)**:
+
+```json
+{
+  "clientId": "uuid",
+  "weekStartDate": "2026-06-08",
+  "details": [
+    {
+      "dayOfWeek": 1,
+      "serviceType": "PERSONAL_HYGIENE",
+      "startTime": "09:00",
+      "endTime": "10:30",
+      "minutes": 90,
+      "notes": "목욕 도움"
+    }
+  ]
+}
+```
+
+**응답 (WeeklyServiceRecordResponse)**:
+
+```json
+{
+  "id": "uuid",
+  "clientId": "uuid",
+  "weekStartDate": "2026-06-08",
+  "weekEndDate": "2026-06-14",
+  "details": [],
+  "recordedAt": "2026-06-08T10:00:00+09:00",
+  "recordedBy": { "userId": "uuid", "displayName": "김요양" }
+}
+```
+
+### 10-2. 목욕 일정·제공현황 (Bathing Schedules & Service Records) — L02_M03
+
+> **DB**: Flyway **V133** `bathing_schedules`·`bathing_service_records` · 월간 목욕 일정 + 실제 서비스 제공 기록.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/care/bathing-schedules` | 지점 목욕 일정 월간 조회 (`yearMonth` query) | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/bathing-schedules` | 월간 목욕 일정 등록·수정 (bulk upsert) | branch_admin, social_worker |
+| GET | `/api/v1/care/bathing-schedules/{clientId}/monthly` | 수급자별 월간 목욕 일정·서비스 현황 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/bathing-service-records` | 목욕 서비스 제공 기록 | branch_admin, social_worker, caregiver |
+
+**POST 요청 (CreateBathingScheduleRequest, bulk)**:
+
+```json
+{
+  "yearMonth": "2026-06",
+  "schedules": [
+    {
+      "clientId": "uuid",
+      "scheduledDate": "2026-06-10",
+      "plannedMinutes": 30,
+      "notes": "월요일 오후"
+    }
+  ]
+}
+```
+
+### 10-3. 통합 식사도움 기록 (Meal Assistance Records) — L02_M13
+
+> **DB**: Flyway **V134–V135** `meal_assistance_records`·지원 유형(전체·부분·감시) · 식이제한 · 불편 사항.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/care/meal-assistance-records` | 수급자별 식사도움 기록 (`clientId`, `from`, `to` query) | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/meal-assistance-records` | 식사도움 기록 등록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/care/meal-assistance-records/{recordId}` | 식사도움 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "recordedDate": "2026-06-10",
+  "assistanceType": "FULL_ASSISTANCE",
+  "dietaryRestrictions": "저염식",
+  "notes": "쉽게 씹히는 음식 선호"
+}
+```
+
+### 10-4. 집중배설관찰 (Intensive Excretion Observations) — L02_M02
+
+> **DB**: Flyway **V136** `intensive_excretion_observations` · 배뇨·배변 상태·양 · 비정상 증상.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/care/intensive-excretion` | 수급자별 관찰 기록 목록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/intensive-excretion` | 배설 관찰 기록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/care/intensive-excretion/{recordId}` | 관찰 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "observedDate": "2026-06-10",
+  "urineStatus": "NORMAL",
+  "urineVolume": "적정",
+  "fecesStatus": "NORMAL",
+  "abnormalSymptoms": "특이사항 없음"
+}
+```
+
+### 10-5. 신체제재 기록 (Body Restraint Records) — L02_M07
+
+> **DB**: Flyway **V137** `body_restraint_records` · 제재 방법·시간·사유·감시 내용.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/care/body-restraint` | 수급자별 신체제재 기록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/body-restraint` | 신체제재 기록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/care/body-restraint/{recordId}` | 신체제재 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "recordedDate": "2026-06-10",
+  "restraintMethod": "벨트 보안",
+  "startTime": "14:00",
+  "endTime": "15:00",
+  "reason": "안전 위험 회피",
+  "monitoringNotes": "분 5분 확인"
+}
+```
+
+### 10-6. 요양급여 특이사항 (Service Special Notes) — L02_M15
+
+> **DB**: Flyway **V138–V141** `service_special_notes` · 일일 특이사항·사건·수정/취소 기록.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/care/service-special-notes` | 수급자별 특이사항 기록 (`clientId`, `from`, `to`) | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/service-special-notes` | 특이사항 기록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/care/service-special-notes/{noteId}` | 특이사항 수정 (수정 이력 자동 기록) | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "recordedDate": "2026-06-10",
+  "noteType": "INCIDENT",
+  "content": "오후 2시 경 넘어짐. 의사 진단 결과 이상 무.",
+  "severity": "LOW"
+}
+```
+
+### 10-7. 케어 리포트 (Care Reports) — L02_M04·M05
+
+> **상태**: backend **`c655743`** — 2 엔드포인트 ✅ · **`GET /care/reports/care-meal-excretion`** · **`GET /care/reports/bath-help`**. frontend **P2 dirty tree** — `/care/reports/meal-excretion`·`/care/reports/bath-help` FE UI 미구현.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/care/reports/care-meal-excretion` | L02_M04 — 요양·식사·배설 월간 통합 리포트 (`branchId?`, `yearMonth`, `clientId?` query) | hq_admin, branch_admin, social_worker |
+| GET | `/api/v1/care/reports/bath-help` | L02_M05 — 목욕도움 월간 리포트 (`branchId?`, `yearMonth`, `clientId?`) | hq_admin, branch_admin, social_worker |
+
+**응답** (L02_M04 `CareReportResponse`):
+
+```json
+{
+  "reportType": "CARE_MEAL_EXCRETION",
+  "yearMonth": "2026-06",
+  "generatedAt": "2026-06-30T18:00:00+09:00",
+  "items": [
+    {
+      "clientId": "uuid",
+      "clientName": "홍길동",
+      "totalCareMinutes": 450,
+      "mealAssistanceDays": 28,
+      "excretionObservationDays": 20,
+      "notes": "월간 통계"
+    }
+  ]
+}
+```
 
 ---
 
@@ -945,7 +1197,7 @@
 
 ## 12. 배차·이동경로 (Transport) — v1.3-A implemented
 
-> **상태**: backend **`c7941e9`** — V47·`/api/v1/transport/*`·geocode proxy·**unconfirm PATCH+POST alias**·**non-HQ pickup address·contact masking** **PRESENT**. frontend transport UI @ `1d910c2` — **`TransportUnconfirmModal`**·**`ClientFormPage` 픽업 프로필**·**`TransportPickupContact`** **PRESENT**. REQUIREMENTS §3-13·USER_STORIES US-T01~T03.
+> **상태**: backend **`5994d15`** — V47·`/api/v1/transport/*`·geocode proxy·**unconfirm PATCH+POST alias**·**non-HQ pickup address·contact masking**·**★ G15 service-log GET+PUT** @ `0cfa970`/`aaaeb10` · **★ G15 service-log audit trail read** @ `5994d15` · **★ monthly reports read** @ `5d27ad3`. frontend transport UI @ `6a18dfd` — **`TransportUnconfirmModal`**·**`ClientFormPage` 픽업 프로필**·**`TransportPickupContact`**·**`TransportServiceLogPanel` 편집**·**`TransportMonthlyReportsPage`** **PRESENT**. REQUIREMENTS §3-13·USER_STORIES US-T01~T05.
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
@@ -958,10 +1210,32 @@
 | PATCH | `/transport/runs/{id}/unconfirm` | CONFIRMED→DRAFT (재편집 허용) | `hq_admin` |
 | POST | `/transport/runs/{id}/unconfirm` | 위와 동일 (**레거시 alias**) | `hq_admin` |
 | POST | `/transport/geocode` | 주소→좌표 프록시 (Kakao Local, 서버 캐시) | `hq_admin` |
+| GET | `/transport/runs/{runId}/service-log` | **별지 제22호 이동서비스일지** export (CONFIRMED run) | `hq_admin`, `branch_admin`, `social_worker`, `caregiver` |
+| PUT | `/transport/runs/{runId}/service-log` | **별지 제22호 일지④** 입력·저장 (upsert) | `hq_admin`, `branch_admin`, `social_worker`, `caregiver` |
+| GET | `/transport/runs/{runId}/service-log/audit-trail` | **일지④ 감사 trail** read-only (수정 이력) | `hq_admin`, `branch_admin`, `social_worker` |
+| GET | `/transport/reports/monthly-service-variation` | **케어포 2-7** 월간 서비스 변동현황 (`yearMonth=YYYY-MM`) | `hq_admin`, `branch_admin`, `social_worker` |
+| GET | `/transport/reports/monthly-resident-status` | **케어포 2-8** 월간 입소자/일정/서비스 현황 (`yearMonth=YYYY-MM`) | `hq_admin`, `branch_admin`, `social_worker` |
 
-**제약**: 정차 **최대 15명** · `CONFIRMED` 후 수정 불가 · v1.3-A는 **운영 시각화 한정**(G15·G16 제외, BNK-7·BNK-8).
+**G15 service-log (157차 @ `0cfa970`/`aaaeb10`/`7a4b310`, BNK-300~302)**: CONFIRMED run에 대해 GET은 run/stop·시간 준수 데이터를 **별지 제22호** 형식으로 반환(인쇄/export). PUT은 일지④ 필드(운행·탑승·시간 등)를 **upsert** — FE `TransportServiceLogPanel`·`upsertTransportServiceLogApi`·`TransportTimeCompliance` 15분 tolerance. **잔여 P2**: 인쇄·보관 UX·**FE audit UI**.
+- `GET /transport/runs/{runId}/service-log` 응답은 기관 정보(센터 주소·지역 경로·대표 연락처), 차량/기사·동승자, 운전자 서명 여부, 정차별 시간 준수 요약을 포함한다 — 별지 제22호 인쇄 시 그대로 노출된다.
 
-**PII·마스킹 (70차 @ `e7d4cf6`/`c7941e9`)**: `GET /transport/roster`·`GET /transport/runs`·`GET /transport/runs/{id}` 응답의 `pickupAddress`·정차 주소·`pickupContact` 필드는 **`hq_admin`·`platform_admin`·`sysadmin`만 전체 노출**. `branch_admin`·`social_worker`·`caregiver` 역할에는 **마스킹**(SEC-D9·`010-****-5678` 패턴). frontend **`TransportPickupContact`** @ `1d910c2` — non-HQ 역할 tel 링크 없음·`pilotPageFlows` T03 E2E 검증.
+**G15 monthly reports (158차 @ `5d27ad3`/`6a18dfd`, BNK-304~306)**: `yearMonth=YYYY-MM` query · Asia/Seoul TZ · **schema migration 0**(기존 transport roster·runs·contract 데이터 재활용). 2-7 `variationType` enum: `NEW_TRANSPORT`·`DISCHARGED`·`CONTRACT_CREATED`·`CONTRACT_UPDATED`. FE `TransportMonthlyReportsPage` route `/reports/transport-monthly` — StatCard `newTransportClients`·`dischargedTransportClients`·`contractChanges` + 변동·현황 테이블 · `apiFetch` `Promise.all`.
+
+**G15 audit trail read (158차 @ `5994d15`, BNK-306)**: 일지④ 수정 이력 read-only API — **FE wire 미완(P2)**.
+
+**제약**: 정차 **최대 15명** · `CONFIRMED` 후 수정 불가 · v1.3-A는 **운영 시각화 한정**(G15·G16 제외, BNK-7·BNK-8 — **★ G15 service-log는 v1.3-C closure 후보**).
+
+**PII·마스킹 (70차 @ `e7d4cf6`/`c7941e9`, **154차 roster 컬럼 확장**)**: `GET /transport/roster`·`GET /transport/runs`·`GET /transport/runs/{id}` 응답의 `pickupAddress`·정차 주소·`pickupContact` 필드는 **`hq_admin`·`platform_admin`·`sysadmin`만 전체 노출**. `branch_admin`·`social_worker`·`caregiver` 역할에는 **마스킹**(SEC-D9·`010-****-5678` 패턴). frontend **`TransportPickupContact`** @ `1d910c2` — non-HQ 역할 tel 링크 없음·`pilotPageFlows` T03 E2E 검증.
+
+**Roster 항목 (`GET /transport/roster` → `items[]`, 154차)** — PLAN_NOTES 결정 96:
+
+| 필드 | 설명 | UI(명단 테이블) |
+|------|------|----------------|
+| `contact` | 이용자 본인 전화(`clients.phone` 복호화) | 「연락처」 |
+| `guardianContact` | 대표 보호자(`primaryGuardian`) 전화 | 「보호자 연락처」 |
+| `pickupContact` | 픽업 연락처(미입력 시 이용자 연락처) | **명단 미표시**(호환 유지) · 정차 `stops[]`는 계속 노출 |
+
+`contact`·`guardianContact`도 non-HQ 역할에 **동일 `maskPhone` 규칙** 적용.
 
 ---
 
@@ -984,7 +1258,7 @@
 
 ## 14. 방문요양 일정 (Visits) — v2/G21 implemented (backend)
 
-> **상태**: backend **`0b807d8`** + **V53** — `/api/v1/visits/*`·PLAN/BILLING 이중 일정·체크인/아웃·**NHIS import**·**확정차단**(`hasBlockingConfirmedPlan`)·**paired cancel/sync**·**일괄확정 게이트**(`confirm-readiness`/`batch-confirm`) **PRESENT** (`VisitServiceTest`·`MustApiEndpointRoutingTest`). frontend `/visits` UI **partial** @ `311c7c0` — `VisitNhisImportPanel`·paired cancel UX · **batch confirm UI·US-V04 live E2E 잔여**. REQUIREMENTS G21·USER_STORIES US-V01~V04.
+> **상태**: backend **`8a8c5b3`** + frontend **`f232285`**(167차) — `/api/v1/visits/*`·PLAN/BILLING 이중 일정·체크인/아웃·**NHIS import**·**확정차단**(`hasBlockingConfirmedPlan`)·**paired cancel/sync**·**일괄확정 게이트**(`confirm-readiness`/`batch-confirm`)·**readiness PLAN/BILLING split + per-kind ready**(BNK-365 @ `f26abb0`/`5f710e3`)·**NHIS 명세 사전비교**(`nhis-comparison` + `nhisComparisonSummary` embed·G-SCHEDULE-FIX-LTM-COMPARE BE ✅ @ `03a052a`/`8a8c5b3`·BNK-366~367)·**RFID 7-code diff compare**(`imports/rfid/compare`·normalize @ `570912e`) **PRESENT** (`VisitServiceTest`·`MustApiEndpointRoutingTest`). frontend `/visits` UI **partial+** @ `f232285` — `VisitNhisImportPanel`·paired cancel UX · **`VisitBatchConfirmPanel` PLAN/BILLING split wire ✅** @ `f9ed97d` · **`VisitRfidDiffComparePanel` ✅** · **NHIS comparison summary StatCard wire 잔여 △ P2** · **US-V04/V05 live E2E 잔여**. REQUIREMENTS G21·USER_STORIES US-V01~V05.
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
@@ -994,11 +1268,13 @@
 | PATCH | `/visits/{visitId}` | DRAFT 일정 수정 | `branch_admin`, `social_worker` |
 | POST | `/visits/{visitId}/confirm` | DRAFT→CONFIRMED | `branch_admin`, `social_worker` |
 | GET | `/visits/confirm-readiness` | 일괄확정 사전 점검 (`from`, `to`, `scheduleKind`, `branchId`) | `branch_admin`, `social_worker` |
+| GET | `/visits/nhis-comparison` | 일정 수량 vs 최신 NHIS import 명세 사전 비교 (`from`, `to`, `branchId`) | `branch_admin`, `social_worker` |
 | POST | `/visits/batch-confirm` | NHIS 비교·변경이력 확인 후 DRAFT 일괄확정 | `branch_admin`, `social_worker` |
 | POST | `/visits/{visitId}/cancel` | 일정 취소 | `branch_admin`, `social_worker` |
 | POST | `/visits/{visitId}/check-in` | 체크인 (`method`: `MOBILE` \| `MANUAL`) | `social_worker`, `caregiver` |
 | POST | `/visits/{visitId}/check-out` | 체크아웃·방문 완료 | `social_worker`, `caregiver` |
 | POST | `/visits/imports/nhis` | NHIS 방문일정 엑셀 import (`multipart/form-data`) | `branch_admin`, `social_worker` |
+| POST | `/visits/imports/rfid/compare` | NHIS 계획일정 vs RFID 전송 엑셀 7-code diff 비교 (`multipart/form-data`) | `branch_admin`, `social_worker` |
 
 **NHIS import (`POST /visits/imports/nhis`)**: `branchId`(UUID), `scheduleKind`(기본 `PLAN`), `createPairedBillingSchedule`(기본 `false`), `file`(엑셀). 응답 `NhisVisitScheduleImportResponse` — 생성·스킵·오류 건수. **`HOME_VISIT` 지점만** 허용 @ `ee3fa3a`. **확정 PLAN 존재 시 import 차단** @ `84f3441` — FE `VisitNhisImportPanel`·확정↔import 가이드 @ `bf3d40d`/`311c7c0`.
 
@@ -1008,11 +1284,24 @@
 
 **일괄확정 (`GET /visits/confirm-readiness` + `POST /visits/batch-confirm`)** @ `0b807d8` — 이지케어 FAQ 21782 「4.일정확정」6단 게이트 패리티:
 
-- **`GET /visits/confirm-readiness`**: `from`·`to`(필수), `scheduleKind`(선택), `branchId`(선택). 응답 `VisitConfirmReadinessResponse` — `draftCount`, `pairedDivergedCount`, `unassignedDraftCount`, `confirmedCount`, `ready`, `blockers[]`.
+- **`GET /visits/confirm-readiness`**: `from`·`to`(필수), `scheduleKind`(선택), `branchId`(선택). 응답 `VisitConfirmReadinessResponse` — `draftCount`, `pairedDivergedCount`, `unassignedDraftCount`, `confirmedCount`, `ready`, `blockers[]`. **PLAN/BILLING split**(BNK-365 @ `f26abb0`/`5f710e3`): `draftPlanCount`/`draftBillingCount`, `pairedDivergedPlanCount`/`...BillingCount`, `unassignedDraftPlanCount`/`...BillingCount`, `confirmedPlanCount`/`...BillingCount`, **`readyPlan`/`readyBilling`** per-kind 플래그(미배정 draft = not ready). **`nhisComparisonSummary`**(BNK-367 @ `8a8c5b3`): 동일 월 범위면 `matchedLineCount`/`discrepancyLineCount`/`missingNhisLineCount`/`extraNhisLineCount` embed(별도 `/visits/nhis-comparison` round-trip 불필요)·cross-month `null`.
+- **`GET /visits/nhis-comparison`**(BNK-366~367 @ `03a052a` — G-SCHEDULE-FIX-LTM-COMPARE·이지케어 `schedule-fix` `chk-ltm-fix` parity): `from`·`to`(필수·**동일 월**), `branchId`(선택). 일정 서비스 일수를 **최신 `NhisImportBatch`+`NhisImportRow`** client별로 대조. 응답 `VisitNhisComparisonResponse` — `items[]`(`VisitNhisComparisonItemResponse`: client별 `visitDayCount`↔`nhisServiceDays`·`serviceDaysMatch`·`nhisMatchStatus`)·집계 `matchedLineCount`/`discrepancyLineCount`/`missingNhisLineCount`/`extraNhisLineCount`·`overallMatch`. 비동일 월 → `400` `NHIS_COMPARISON_SAME_MONTH_MESSAGE` 「공단 명세서 비교는 동일 월 범위에서만 가능합니다.」. **FE `VisitBatchConfirmPanel` summary StatCard wire 잔여 △ P2**(BNK-367).
 - **`POST /visits/batch-confirm`**: 본문 `BatchConfirmVisitSchedulesRequest` — `fromDate`, `toDate`, `scheduleKind`(선택), `branchId`(선택), **`nhisComparisonAcknowledged`**(필수 `true`), **`changeHistoryChecked`**(필수 `true`). 응답 `BatchConfirmVisitSchedulesResponse` — `confirmedCount`, `confirmedVisitIds[]`.
-- **게이트**: `nhisComparisonAcknowledged=false` → `400` 「공단 청구명세서 비교 확인 후…」 · `changeHistoryChecked=false` → `400` 「공단조회 변경이력 확인 후…」 · 페어 PLAN/BILLING 상태 불일치 → `400` · DRAFT 0건 → `400`.
+- **게이트**: `nhisComparisonAcknowledged=false` → `400` 「공단 청구명세서 비교 확인 후…」 · `changeHistoryChecked=false` → `400` 「공단조회 변경이력 확인 후…」 · 페어 PLAN/BILLING 상태 불일치 → `400` · **미배정 draft**(직원 미배정) → not ready·거부 @ `5f710e3` · DRAFT 0건 → `400`.
 
-**제약**: `HOME_CARE` 지점(`branches.service_types`)만 허용(가정). RFID 태그 연동은 **v2 후속**(이지케어 FAQ 21647 — QR/수기 우선).
+**체크인/체크아웃 가드 (`POST /visits/{visitId}/check-in` · `check-out`)** @ `0db1e68`/`78cfb8a`:
+
+- 배정 직원(`assignedUserId`)이 있으면 **활성·지점 소속** 여부를 검증한다. 비활성/퇴사·타 지점 배정 시 `400` — `ASSIGNED_USER_INACTIVE_MESSAGE` / `ASSIGNED_USER_BRANCH_GUARD_MESSAGE`.
+- `caregiver` 역할은 **본인 배정 일정만** 체크인/아웃 가능 (`ASSIGNED_USER_CHECK_IN_GUARD_MESSAGE`). `hq_admin`·`branch_admin`·`social_worker`는 감독 역할로 우회(역할 코드는 대소문자·공백 무시).
+
+**RFID diff compare (`POST /visits/imports/rfid/compare`)** @ `eeac205` — ezCare `schedule-rfid` 7-code matrix (BNK-346 · G21 P1):
+
+- **요청** (`multipart/form-data`): `branchId`(UUID), `planFile`(NHIS 계획일정 엑셀), `rfidFile`(RFID 전송 엑셀).
+- **응답** (`VisitRfidDiffCompareResponse`): `branchId`, `planFileName`, `rfidFileName`, `planRowCount`, `tagRowCount`, `comparedRowCount`, `diffCodeCounts`(Map), `rows[]`(`VisitRfidDiffRowResponse`).
+- **diff 코드** (`COMP_01`~`COMP_09`, `COMP_02` 없음): `COMP_01` 태그없음 · `COMP_03` 종료태그없음 · `COMP_04`/`COMP_05` 시작/종료 60분 초과 · `COMP_06` 인정시간 30분 초과 · `COMP_07` 제공자불일치 · `COMP_08` 직접입력 · `COMP_09` 계획없음.
+- **제약**: `HOME_VISIT` 지점만 허용. 하드웨어 RFID 실시간 연동은 범위 외(엑셀 2-file 비교).
+
+**제약**: `HOME_CARE` 지점(`branches.service_types`)만 허용(가정). RFID 태그 실시간 연동은 **v2 후속**(이지케어 FAQ 21647 — QR/수기 우선).
 
 ---
 
@@ -1072,17 +1361,55 @@
 
 ---
 
-## 9-2. 정기 욕구사정 (Needs Assessment) — US-T09 / G24
+## 9-2. 정기 욕구사정 (Needs Assessment) — US-T09 / G24 / G24b
 
-> **상태**: backend **`6f3315a`·`b238779`** — GET 목록·상세, PUT upsert **PRESENT** — 가정방문 일자 회계연도 범위 검증. frontend **`ClientNeedsAssessmentForm` ✅** @ `2642838`·`5be9070` — 8항목 저장·이전 연도 비교 **PRESENT**. REQUIREMENTS §3-2-1·USER_STORIES US-T09.
+> **상태**: backend **`6f3315a`·`b238779`·`45fb6d9`·`98002d4`·`f4c8beb`** — GET 목록·상세, PUT upsert, **GET compliance ✅** — 가정방문 일자 회계연도 범위 검증·G24b 5필드(V128)·fiscal-year compliance 집계. frontend **`ClientNeedsAssessmentForm` ✅** @ `2642838`/`5be9070`/`49fbf67` — 8항목 저장·이전 연도 비교 **PRESENT** · **`DashboardPage` compliance StatCard ✅** @ `ca0b627`/`baa6d6d`. REQUIREMENTS §3-2-1·USER_STORIES US-T09·US-H01.
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/clients/{clientId}/needs-assessments` | 이용자별 정기 욕구사정 목록 (회계연도 내림차순) | hq_admin, branch_admin, social_worker, caregiver |
 | GET | `/clients/{clientId}/needs-assessments/{fiscalYear}` | 특정 회계연도 욕구사정 상세 | 동일 |
 | PUT | `/clients/{clientId}/needs-assessments` | 회계연도별 욕구사정 생성 또는 갱신 | branch_admin, social_worker |
+| GET | `/clients/needs-assessments/compliance` | **지점 활성 이용자** 연간 욕구사정 준수 집계 (G24b·등급변경 재사정 due) | hq_admin, branch_admin, social_worker |
 
-**PUT 요청**:
+**GET `/clients/needs-assessments/compliance` 쿼리 파라미터**:
+
+| 파라미터 | 타입 | 필수 | 설명 |
+|----------|------|------|------|
+| `fiscalYear` | int | 선택 | 회계연도 (기본=KST 오늘 연도) |
+| `branchId` | UUID | 선택 | 지점 스코프 (hq_admin만 지정 가능; 미지정 시 active branch) |
+
+**응답** (`NeedsAssessmentComplianceResponse`):
+
+```json
+{
+  "fiscalYear": 2026,
+  "totalClients": 42,
+  "compliantCount": 36,
+  "gapCount": 6,
+  "items": [
+    {
+      "clientId": "uuid",
+      "clientName": "홍길동",
+      "fiscalYear": 2026,
+      "hasRecord": true,
+      "homeVisitDate": "2026-03-15",
+      "homeVisitComplete": true,
+      "gradeChangeReassessmentDue": false,
+      "missingG24bFields": [],
+      "annualComplete": true
+    }
+  ]
+}
+```
+
+**compliance semantics**:
+
+- `annualComplete`: 회계연도 기록 존재 + `homeVisitDate` 존재 + `missingG24bFields` 비어 있음
+- `gradeChangeReassessmentDue`: 회계연도 내 등급변경이 `recordedAt` 이후 발생 (시행령 제13조제5항)
+- `missingG24bFields`: `disease`·`communication`·`nutrition`·`livingEnvironment`·`resourceUtilization` 중 미입력 키 목록
+
+**PUT 요청** (G24 + G24b 확장 필드):
 
 ```json
 {
@@ -1095,7 +1422,12 @@
   "social": "사회적 역할",
   "serviceNeeds": "필요 서비스",
   "homeVisitNotes": "방문 기록 및 의견",
-  "satisfaction": "서비스 만족도"
+  "satisfaction": "서비스 만족도",
+  "disease": "G24b 질병상태",
+  "communication": "G24b 의사소통",
+  "nutrition": "G24b 영양상태",
+  "livingEnvironment": "G24b 환경상태",
+  "resourceUtilization": "G24b 자원이용 욕구"
 }
 ```
 
@@ -1115,9 +1447,16 @@
   "serviceNeeds": "...",
   "homeVisitNotes": "...",
   "satisfaction": "...",
+  "disease": "...",
+  "communication": "...",
+  "nutrition": "...",
+  "livingEnvironment": "...",
+  "resourceUtilization": "...",
   "recordedAt": "2026-06-12T10:30:00+09:00"
 }
 ```
+
+**대시보드 FE 연동 (§9-4)**: `DashboardPage`는 `GET /clients/needs-assessments/compliance` 응답에서 `gapCount`·`gradeChangeReassessmentDue` 건수를 계산해 StatCard `needsAssessmentGapCount`·`gradeChangeReassessmentDueCount`에 표시한다 (backend `BranchDashboardResponse` 필드 아님).
 
 ---
 
@@ -1158,9 +1497,9 @@ form-data:
 
 ---
 
-## 9-4. 대시보드 확장 필드 — G17 / G32 / G38 / G39 compliance snapshot
+## 9-4. 대시보드 확장 필드 — G17 / G32 / G38 / G39 / G24b compliance snapshot
 
-> **상태**: backend **`559648f`** — `BranchDashboardResponse`·`HqDashboardResponse`에 G17/G32/G38/G39 규정준수 필드 **PRESENT**. frontend dashboard StatCard·panel `ded6573` — **FE P2 일부 미구현**. REQUIREMENTS §3-11·USER_STORIES US-M02·US-T06·US-T07·US-T08.
+> **상태**: backend **`559648f`** — `BranchDashboardResponse`·`HqDashboardResponse`에 G17/G32/G38/G39 규정준수 필드 **PRESENT**. frontend dashboard StatCard·panel `ded6573`·**G24b compliance widget ✅** @ `ca0b627`/`baa6d6d` — `needsAssessmentGapCount`·`gradeChangeReassessmentDueCount`는 **FE가 `GET /clients/needs-assessments/compliance`에서 계산**. REQUIREMENTS §3-11·USER_STORIES US-M02·US-T06·US-T07·US-T08·US-H01·US-T09.
 
 **`GET /dashboard/branch` 응답 추가 필드 (v1.2.1)**:
 
@@ -1187,6 +1526,13 @@ form-data:
 | `provisionResultMonthlyRecordMet` | boolean\|null | 월간 기록 제공 준수율 = 100% (null if totalClients=0) | G39 |
 | `provisionResultAnnualEvaluationMet` | boolean\|null | 연간 평가 준수율 = 100% (null if totalClients=0) | G39 |
 | `provisionResultReflectionMet` | boolean\|null | 반영 준수율 = 100% (30일 내 반영 기준) | G39 |
+
+**FE 전용 StatCard (G24b — backend dashboard JSON 필드 아님)**:
+
+| StatCard 키 | 소스 API | 설명 | Epic |
+|-------------|----------|------|------|
+| `needsAssessmentGapCount` | `GET /clients/needs-assessments/compliance` → `gapCount` | 연간 욕구사정 미준수 이용자 수 | G24b |
+| `gradeChangeReassessmentDueCount` | 동일 API → `items[].gradeChangeReassessmentDue` 집계 | 등급변경 후 재사정 필요 건수 | G24b |
 
 **`GET /dashboard/hq` 응답**:
 
@@ -1501,7 +1847,439 @@ form-data:
 
 ---
 
-## 10. 미확정 (구현 전 확정 필요)
+## 15. 간호급여 (Nursing Services) — L03 · §3-8
+
+> **상태**: backend **`c655743`** — V114–V140 간호 데이터 모델·8 엔드포인트 **✅ PRESENT**. frontend **`3549896`** — `/nursing/*` 8개 화면 **✅ 완전 구현** · **분기 리포트 P2**. REQUIREMENTS §3-8·USER_STORIES US-O02.
+
+### 15-1. 통합 바이탈 체크 (Integrated Vital Checks) — L03_M11
+
+> **DB**: Flyway **V114** `nursing_vital_checks` · 혈압·체온·맥박·혈당·SpO2·호흡수 일일 기록.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/vital-checks` | 수급자별 바이탈 기록 (`clientId`, `from`, `to` query) | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/vital-checks` | 바이탈 기록 등록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/nursing/vital-checks/{recordId}` | 바이탈 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "recordedDate": "2026-06-10",
+  "systolicBp": 130,
+  "diastolicBp": 80,
+  "temperature": 36.5,
+  "bloodGlucose": 105,
+  "spo2": 98,
+  "respiratoryRate": 18,
+  "notes": "정상 범위"
+}
+```
+
+### 15-2. 체중 기록 (Weight Records) — L03_M14
+
+> **DB**: Flyway **V115** `weight_records` · 주간·월간 체중 추이·변화 감지.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/weight-records` | 수급자별 체중 기록 목록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/weight-records` | 체중 기록 등록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/nursing/weight-records/{recordId}` | 체중 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "recordedDate": "2026-06-10",
+  "weightKg": 65.2,
+  "notes": "최근 감소 추세 주목"
+}
+```
+
+### 15-3. 구강상태 점검 (Oral Care Checks) — L03_M13
+
+> **DB**: Flyway **V116** `oral_care_checks` · 점검 항목(충치·잇몸·유연·의치 상태) · 조치 기록.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/oral-care-checks` | 수급자별 구강 점검 기록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/oral-care-checks` | 구강 점검 기록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/nursing/oral-care-checks/{recordId}` | 구강 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "checkedDate": "2026-06-10",
+  "cavitiesPresent": false,
+  "gumStatus": "NORMAL",
+  "dentureStatus": "FITTED",
+  "actionTaken": "칫솔질 도움",
+  "notes": "잇몸 부기 주의"
+}
+```
+
+### 15-4. 응급상황 기록 (Emergency Records) — L03_M04
+
+> **DB**: Flyway **V117** `emergency_records` · 응급 사건·증상·대응·의료 조치 기록.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/emergency-records` | 수급자별 응급 기록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/emergency-records` | 응급 상황 기록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/nursing/emergency-records/{recordId}` | 응급 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "incidentDate": "2026-06-10",
+  "incidentType": "FALL",
+  "symptoms": "좌측 무릎 통증",
+  "actionTaken": "의료 센터 내원 의뢰",
+  "medicalResponse": "X-ray 촬영, 골절 없음 확인",
+  "notes": "보호자 연락 완료"
+}
+```
+
+### 15-5. 간호 서비스 기록 (Nursing Service Records) — L03_M01·M06
+
+> **DB**: Flyway **V118–V119** `nursing_service_records`·`nursing_service_items` · 간호 서비스 유형·시간·내용.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/service-records` | 수급자별 간호 서비스 기록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/service-records` | 간호 서비스 기록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/nursing/service-records/{recordId}` | 서비스 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "serviceDate": "2026-06-10",
+  "serviceType": "CATHETER_CARE",
+  "duration": 30,
+  "notes": "카테터 교체 완료"
+}
+```
+
+### 15-6. 배설관 기록 (Excretion Tube Records) — L03_M06
+
+> **DB**: Flyway **V120** `excretion_tube_records` · 위관·유루관·장루 관리·교체 기록.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/excretion-tube-records` | 수급자별 배설관 기록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/excretion-tube-records` | 배설관 기록 | branch_admin, social_worker, caregiver |
+| PATCH | `/api/v1/nursing/excretion-tube-records/{recordId}` | 배설관 기록 수정 | branch_admin, social_worker, caregiver |
+
+**POST 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "recordedDate": "2026-06-10",
+  "tubeType": "URINARY_CATHETER",
+  "action": "REPLACEMENT",
+  "notes": "교체 후 정상 배뇨 확인"
+}
+```
+
+### 15-7. 욕창 평가·예방·기록 (Pressure Ulcer Management) — US-O03 / G43
+
+> **DB**: Flyway **V121–V127** pressure ulcer assessment·prevention plan·care records · lifecycle 추적.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/pressure-ulcer/assessments` | 수급자별 욕창 위험도 평가 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/pressure-ulcer/assessments` | 욕창 위험도 평가 (BRADEN scale) | branch_admin, social_worker, caregiver |
+| GET | `/api/v1/nursing/pressure-ulcer/prevention-plans` | 예방 계획 조회 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/pressure-ulcer/prevention-plans` | 예방 계획 생성 | branch_admin, social_worker, caregiver |
+| GET | `/api/v1/nursing/pressure-ulcer/care-records` | 욕창 케어 기록 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/nursing/pressure-ulcer/care-records` | 욕창 케어 기록 | branch_admin, social_worker, caregiver |
+
+**POST 요청 (Assessment)**:
+
+```json
+{
+  "clientId": "uuid",
+  "assessedDate": "2026-06-10",
+  "bradenScore": 18,
+  "riskLevel": "MODERATE",
+  "assessmentNotes": "회음부 피부 발적 주의"
+}
+```
+
+### 15-8. 분기별 간호 리포트 (Quarterly Nursing Report) — L03_M08
+
+> **상태**: backend **`c655743`** API 미구현 (P2). frontend **`3549896`** 화면 미구현 (P2).
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/nursing/reports/quarterly` | 분기별 간호 통합 리포트 (`branchId?`, `year`, `quarter` query) | hq_admin, branch_admin, social_worker |
+
+**의도**: 바이탈·체중·응급·욕창 등 분기 통계 집계·출력.
+
+---
+
+## 9-16. 케이스관리 회의·평가 (Case Management) — US-T07 / G32
+
+> **상태**: backend **`98e40a3`** — V95/V96 `case_management_meetings`·`case_management_evaluations`·기록·compliance·평가 5영역(G32b) **✅ full**. frontend **`e89175e`/`26499b3`** — `CaseManagementPage`·meetings/evaluations·compliance dashboard widget **✅ full** · REQUIREMENTS §3-8·USER_STORIES US-T07 · **live E2E run 잔여**.
+
+|| 메서드 | 경로 | 설명 | 권한 |
+||--------|------|------|------|
+|| GET | `/api/v1/staff/case-management/meetings` | 이용자별 사례관리 회의 기록 목록 (`from`, `to`, `clientId` query) | hq_admin, branch_admin, social_worker |
+|| POST | `/api/v1/staff/case-management/meetings` | 사례관리 회의 기록 등록 | branch_admin, social_worker |
+|| PATCH | `/api/v1/staff/case-management/meetings/{meetingId}` | 회의 기록 수정 | branch_admin, social_worker |
+|| GET | `/api/v1/staff/case-management/evaluations` | 이용자별 사례관리 평가 목록 (`from`, `to`, `clientId` query) | hq_admin, branch_admin, social_worker |
+|| POST | `/api/v1/staff/case-management/evaluations` | 사례관리 평가 등록 (G32b 5영역) | branch_admin, social_worker |
+|| PATCH | `/api/v1/staff/case-management/evaluations/{evaluationId}` | 평가 수정 | branch_admin, social_worker |
+|| GET | `/api/v1/staff/case-management/compliance` | 사례관리 회의·평가 준수 집계 (`branchId?`, `referenceDate?`) | hq_admin, branch_admin, social_worker |
+
+**POST `/api/v1/staff/case-management/meetings` 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "meetingDate": "2026-06-10",
+  "participantsNames": "김사회, 이센터장",
+  "caseManagementPlan": "케어플랜 요약",
+  "reflectionNotes": "회의 결과 및 반영 사항"
+}
+```
+
+**응답** (`CaseManagementMeetingResponse`):
+
+```json
+{
+  "id": "uuid",
+  "clientId": "uuid",
+  "meetingDate": "2026-06-10",
+  "participantsNames": "...",
+  "caseManagementPlan": "...",
+  "reflectionNotes": "...",
+  "recordedAt": "2026-06-10T14:00:00+09:00"
+}
+```
+
+**POST `/api/v1/staff/case-management/evaluations` 요청** (G32b 5영역):
+
+```json
+{
+  "clientId": "uuid",
+  "evaluationDate": "2026-06-10",
+  "physicalFunctioning": "신체 기능 평가",
+  "psychologicalState": "심리 상태 평가",
+  "socialSupport": "사회적 지원 체계",
+  "serviceeffectiveness": "서비스 효과",
+  "clientSatisfaction": "클라이언트 만족도"
+}
+```
+
+**응답** (`CaseManagementEvaluationResponse`):
+
+```json
+{
+  "id": "uuid",
+  "clientId": "uuid",
+  "evaluationDate": "2026-06-10",
+  "physicalFunctioning": "...",
+  "psychologicalState": "...",
+  "socialSupport": "...",
+  "serviceEffectiveness": "...",
+  "clientSatisfaction": "...",
+  "recordedAt": "2026-06-10T14:00:00+09:00"
+}
+```
+
+**GET `/api/v1/staff/case-management/compliance` 응답** (`CaseManagementComplianceResponse`):
+
+```json
+{
+  "totalClients": 40,
+  "meetingsRecordedCount": 35,
+  "evaluationsRecordedCount": 32,
+  "meetingsConducted": true,
+  "evaluationsMet": true,
+  "reflectionGapCount": 3
+}
+```
+
+**semantics**:
+
+- `meetingsConducted`: 지점 활성 이용자 중 월 회의 기록 비율 ≥ 80%
+- `evaluationsMet`: 분기/연간 평가 완료 비율 ≥ 100% (G32 지표28)
+- `reflectionGapCount`: 회의 결과 미반영 이용자 수
+
+---
+
+## 9-17. 기능회복훈련 계획·급여제공 (Functional Recovery) — US-T06 / G17
+
+> **상태**: backend **`98e40a3`** — V97/V98 `functional_recovery_plans`·`functional_recovery_records`·compliance (3개 지표) **✅ full**. frontend **`e89175e`/`26499b3`** — `FunctionalRecoveryPage`·계획·기록·compliance dashboard widget **✅ full** · REQUIREMENTS §3-8·USER_STORIES US-T06 · **live E2E run 잔여**.
+
+|| 메서드 | 경로 | 설명 | 권한 |
+||--------|------|------|------|
+|| GET | `/api/v1/programs/functional-recovery/plans` | 이용자별 기능회복훈련 계획 목록 (`clientId`, `from`, `to` query) | hq_admin, branch_admin, social_worker, caregiver |
+|| POST | `/api/v1/programs/functional-recovery/plans` | 기능회복훈련 계획 등록 | branch_admin, social_worker |
+|| PATCH | `/api/v1/programs/functional-recovery/plans/{planId}` | 계획 수정 | branch_admin, social_worker |
+|| GET | `/api/v1/programs/functional-recovery/records` | 기능회복훈련 급여제공 기록 목록 | hq_admin, branch_admin, social_worker, caregiver |
+|| POST | `/api/v1/programs/functional-recovery/records` | 급여제공 기록 등록 | branch_admin, social_worker, caregiver |
+|| PATCH | `/api/v1/programs/functional-recovery/records/{recordId}` | 기록 수정 | branch_admin, social_worker, caregiver |
+|| GET | `/api/v1/programs/functional-recovery/compliance` | 기능회복훈련 준수 집계 (G17 3개 지표) | hq_admin, branch_admin, social_worker |
+
+**POST `/api/v1/programs/functional-recovery/plans` 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "planStartDate": "2026-06-01",
+  "planContent": "관절 가동범위 훈련, 낙상예방 운동",
+  "targetGoal": "일상생활 동작 개선"
+}
+```
+
+**응답** (`FunctionalRecoveryPlanResponse`):
+
+```json
+{
+  "id": "uuid",
+  "clientId": "uuid",
+  "planStartDate": "2026-06-01",
+  "planContent": "...",
+  "targetGoal": "...",
+  "createdAt": "2026-06-01T09:00:00+09:00"
+}
+```
+
+**POST `/api/v1/programs/functional-recovery/records` 요청**:
+
+```json
+{
+  "clientId": "uuid",
+  "recordedDate": "2026-06-05",
+  "serviceMinutes": 60,
+  "programContent": "관절 가동범위 훈련",
+  "progressNotes": "좌측 팔 가동범위 증가 관찰"
+}
+```
+
+**응답** (`FunctionalRecoveryRecordResponse`):
+
+```json
+{
+  "id": "uuid",
+  "clientId": "uuid",
+  "recordedDate": "2026-06-05",
+  "serviceMinutes": 60,
+  "programContent": "...",
+  "progressNotes": "...",
+  "recordedAt": "2026-06-05T10:00:00+09:00"
+}
+```
+
+**GET `/api/v1/programs/functional-recovery/compliance` 응답** (`FunctionalRecoveryComplianceResponse`):
+
+```json
+{
+  "totalClients": 40,
+  "plansRecordedCount": 38,
+  "provisionsRecordedCount": 35,
+  "benefitStartCount": 35,
+  "provisionsCompletionRate": 0.875,
+  "benefitStartConducted": true,
+  "provisionsProvided": true,
+  "gapCount": 3
+}
+```
+
+**semantics** (G17 3개 지표):
+
+- **Indicator 22**: 계획 수립률 ≥ 95% (`plansRecordedCount` / `totalClients`)
+- **Indicator 23**: 급여제공 기록 ≥ 월 1회 이상
+- **Indicator 24**: 생성 30일 내 시작 여부 (`benefitStartConducted` = 급여개시일 이후 30일 내 기록 여부)
+
+---
+
+## 9-18. 민원상담·사후관리 (Grievance Counseling) — US-S03 / G42
+
+> **상태**: backend **`bcb1d9f`** — V99/V100 `grievance_counselings`·`grievance_follow_ups`·전자결재·사후관리 checklist·익명 상자 pilot E2E **✅ partial+**. frontend **`8a8b930`** — `GrievanceCounselingPage`·익명 상자·pending 결재함·팔로우업·compliance dashboard widget **✅ partial+** · REQUIREMENTS G42 (신규 Epic) · USER_STORIES US-S03 · **live E2E run 잔여**.
+
+|| 메서드 | 경로 | 설명 | 권한 |
+||--------|------|------|------|
+|| GET | `/api/v1/staff/grievance-counselings` | 민원상담 기록 목록 (`from`, `to`, `targetType` query) | hq_admin, branch_admin, social_worker |
+|| POST | `/api/v1/staff/grievance-counselings` | 민원상담 기록 등록 (DRAFT) | hq_admin, branch_admin, social_worker |
+|| PATCH | `/api/v1/staff/grievance-counselings/{counselingId}` | 초안 수정 | hq_admin, branch_admin, social_worker |
+|| POST | `/api/v1/staff/grievance-counselings/{counselingId}/submit` | 결재 요청 (DRAFT→PENDING) | hq_admin, branch_admin, social_worker |
+|| POST | `/api/v1/staff/grievance-counselings/{counselingId}/approve` | 결재 승인 (PENDING→APPROVED) | hq_admin, branch_admin |
+|| POST | `/api/v1/staff/grievance-counselings/{counselingId}/follow-up` | 사후관리 기록 (재발 확인) | hq_admin, branch_admin, social_worker |
+|| GET | `/api/v1/staff/grievance-counselings/pending-approval` | 미승인 결재 목록 | hq_admin, branch_admin |
+|| GET | `/api/v1/staff/grievance-counselings/follow-up/pending` | 사후관리 대기 기록 (승인됨 + 팔로우업 미실시) | hq_admin, branch_admin, social_worker |
+|| GET | `/api/v1/staff/grievance-counselings/follow-up/compliance` | 사후관리 준수율 집계 (G42 지표52) | hq_admin, branch_admin, social_worker |
+
+**POST `/api/v1/staff/grievance-counselings` 요청**:
+
+```json
+{
+  "targetType": "CLIENT | STAFF | OTHER",
+  "targetName": "홍길동 (대상자 이름 또는 익명)",
+  "incidentDate": "2026-06-10",
+  "grievanceContent": "민원 내용 상세 기록",
+  "resolution": "해결 조치 내용"
+}
+```
+
+**응답** (`GrievanceCounselingResponse`):
+
+```json
+{
+  "id": "uuid",
+  "targetType": "CLIENT",
+  "targetName": "홍길동",
+  "incidentDate": "2026-06-10",
+  "grievanceContent": "...",
+  "resolution": "...",
+  "status": "DRAFT | PENDING | APPROVED",
+  "submittedAt": "2026-06-11T09:00:00+09:00 (null if DRAFT)",
+  "approvedAt": "2026-06-12T14:00:00+09:00 (null if not APPROVED)",
+  "createdAt": "2026-06-10T15:00:00+09:00"
+}
+```
+
+**POST `/api/v1/staff/grievance-counselings/{counselingId}/follow-up` 요청**:
+
+```json
+{
+  "followUpDate": "2026-08-10",
+  "followUpContent": "재발 여부 확인 기록"
+}
+```
+
+**GET `/api/v1/staff/grievance-counselings/follow-up/compliance` 응답** (`GrievanceFollowUpComplianceResponse`):
+
+```json
+{
+  "totalApprovedCount": 25,
+  "followUpCompletedCount": 22,
+  "pendingFollowUpCount": 3,
+  "followUpCompletionRate": 0.88,
+  "complianceMet": true
+}
+```
+
+**semantics**:
+
+- **G42 지표52**: 사후관리 준수율 ≥ 100% (60일 내 팔로우업 실시 비율)
+- **상태 전환**: DRAFT → PENDING(제출) → APPROVED(승인) → FOLLOW_UP_RECORDED(사후관리)
+- **익명 상자**: `targetName`이 익명 또는 비공개로 처리 가능 (PII 보호)
+
+---
+
+## 16. 미확정 (구현 전 확정 필요)
 
 - ~~주민등록번호 수집·암호화~~ → **확정** (REQUIREMENTS §3-2-1)
 - 공단 청구내역상세 **엑셀 컬럼 스펙**(샘플) — 파일럿 센터 확보 전 가정 컬럼 + **`처리상태` 스킵** 구현 (PLAN_NOTES #27, BENCHMARK G7)
