@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-19T23:30:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20T12:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-19 (138차 — **G-CASH-RECEIPT-LOG 4-계층 UI 접근성 재점검 + §62 신규** — 137차(§61) 이후 coder 신규 커밋(`cfc4b04`·`a17f148`·`221458e`·`8aebe55`) 미점검 a11y·FE-16 갭 해소. ① **`CashReceiptRegisterModal`** — 폼 Alert 검증→`Field error`+`aria-invalid`·form `aria-label`·작년분 경고 `id`+submit `aria-describedby`. ② **`CashReceiptIssuancePage`** — `StatusBadge`+`CASH_RECEIPT_IMMEDIATE_STATUS`·조회 `aria-busy`·`<time dateTime>`·`Select`·`ds-grid--stats`. ③ **`PaymentRecordModal`** — 현금 FAQ 21716 경고 `id`+submit `aria-describedby`. ④ **`CashReceiptLegalAlerts`** — FAQ 안내 `id`·`.ds-cash-receipt-legal-alerts`. ⑤ **§62** 신규. 회귀 +5. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-20 (140차 — **US-R03 FAQ21823 근로재계약 UI·현금영수증 identifier 검증 접근성 재점검 + §64 신규** — 139차(§63)·UXD-140(`501fedc`) 이후 coder 신규 커밋(`f62402f`·`10585b9`·`f31c346` FAQ21823 renewal panel/summary/dashboard widget·`76a462d` identifier digit validation) 미점검 a11y·FE-16 갭 해소. ① **`StaffEmploymentContractRenewalPanel`** — 기한 초과 Alert `id`+파일함 버튼 `aria-describedby`·`${직원명} 근로계약서 파일함` `aria-label`. ② **`StaffEmploymentContractRenewalSummaryPanel`** — 확인 필요 목록 링크 `${이름} 직원 상세` `aria-label`(StaffPage 패턴). ③ **`CashReceiptRegisterModal`** — 프로필 로드 중 발급 식별자 `aria-busy`. ④ **§64** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-20 (139차 — **G26 yearBasis·G-7-1 Excel·현금영수증 pending guard 접근성 재점검 + §63 신규** — 138차(§62)·UXD-139(`17374f1`) 이후 coder 신규 커밋(`19ed7f3` G26 yearBasis+NTS CSV·`58d6694` G-7-1 Excel export·`99b795a`/`a2ef127` pending load guard) 미점검 a11y·FE-16 갭 해소. ① **`CashReceiptIssuancePage`** — pending load 실패 Alert `id`+「발급 등록」`aria-describedby`·수급자 탭 검색 `aria-busy`. ② **`BillingStatisticsReportPage`** — 의료비공제 StatCard `ds-grid--stats`·`.ds-segmented` `forced-colors`. ③ **`BillingStatementPrintPanel`** — PDF 버튼 `aria-label` 정합. ④ **`MedicalExpenseDeductionPanel`** — 조회 `aria-busy`. ⑤ **§63** 신규. 회귀 +3. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-19 (138차 — **G-CASH-RECEIPT-LOG 4-계층 UI 접근성 재점검 + §62 신규** — 137차(§61) 이후 coder 신규 커밋(`cfc4b04`·`a17f148`·`221458e`·`8aebe55`) 미점검 a11y·FE-16 갭 해소. ① **`CashReceiptRegisterModal`** — 폼 Alert 검증→`Field error`+`aria-invalid`·form `aria-label`·작년분 경고 `id`+submit `aria-describedby`. ② **`CashReceiptIssuancePage`** — `StatusBadge`+`CASH_RECEIPT_IMMEDIATE_STATUS`·조회 `aria-busy`·`<time dateTime>`·`Select`·`ds-grid--stats`. ③ **`PaymentRecordModal`** — 현금 FAQ 21716 경고 `id`+submit `aria-describedby`. ④ **`CashReceiptLegalAlerts`** — FAQ 안내 `id`·`.ds-cash-receipt-legal-alerts`. ⑤ **§62** 신규. 회귀 +5. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-19 (137차 — **G21 split-view NHIS comparison·G32 FAQ21797·G2 법정서식·케어포 3-1 nav + 미정의 CSS 승격 + §61 신규** — 136차(§60) 이후 coder 신규 커밋(`9b80505` G21 split-view NHIS comparison·`1d5747d` CareProvisionSegmentNav·`b272a7b` G32 attendee opinions·`d1149a5` G2 home newsletter/care record·`b881883` G39 SLA alerts) 미점검 a11y·FE-16 갭 해소. ① **`VisitNhisComparisonPanel`** — split-view PLAN/BILLING 2패널 동시 노출 시 h3「공단 명세 사전 비교」중복 → `{kindLabel} 공단 명세 사전 비교`(WCAG 2.4.6). ② **`VisitsPage`** — 분할 비교 래퍼 `role=group`+`aria-label`. ③ **`CaseManagementPage`** — 미정의 `ds-field__hint`→`ds-field__help`·폼 `aria-describedby`·참석자 fieldset hint 연결·행 수정 `aria-label`에 이용자명. ④ **`GuardianDocumentNotifyPanel`** — 서식 설명 `id`+submit `aria-describedby`·form `aria-label`. ⑤ **`DurationBandSelect`** — `ds-field__hint`→`ds-field__help`. ⑥ **`.ds-form-grid__full`** — FE-16 grid-column 전폭 span 승격. ⑦ **§61** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-19 (136차 — **L03 간호기록 5종 행 수정 버튼 `Button` 컴포넌트 정합 + §60 신규** — 135차(§59) 이후 전수 점검에서 발견한 **미정의 `ds-table__action-btn` 잔여 5종** 해소. `NursingServiceRecordPage`·`NursingEmergencyRecordPage`·`NursingExcretionTubeRecordPage`·`NursingOralCareCheckPage`·`NursingWeightRecordPage`의 행 수정 버튼이 §35(110차)이 확립한 raw `ds-table__action-btn`→`Button variant=tertiary size=sm` 패턴을 따르지 않아 미정의 클래스로 포커스 링·`forced-colors`·hover 토큰을 못 받던 회귀를 해소(FE-16·WCAG 4.1.2). `aria-label`·동작 불변. 회귀 +5(`ds-btn` 클래스 단언). 5파일 32 tests PASS. **§60** 신규.)
 > **이전 갱신**: 2026-06-19 (135차 — **G41 filter-year Field controlProps 전달 + RFID no-diff SR 중복 제거 + G-7-1 인쇄 패널 CSS + §59 신규** — 134차(§58) 이후 잔여 a11y·FE-16 갭 해소. ① **`StaffTrainingLogPage`** — invalid filter year 시 `Field help`(준수 현황 숨김 안내)를 error와 **동시 노출**·`aria-describedby` 병합(134차 help 조건부 제거 회귀 해소·WCAG 3.3.2). ② **`VisitRfidDiffComparePanel`** — no-diff 시 info+success 이중 `role=status` 제거→단일 success Alert(`id=visit-rfid-diff-no-diff-alert`·행 수+no-diff 병합). ③ **`.ds-billing-statement-print`** — 미정의 베이스 클래스 승격(상단 구분선·`forced-colors`). ④ **`BillingStatementPrintPanel`** PDF 버튼 `aria-label`. ⑤ **§59** 신규. 회귀 +2. `npm test`·build PASS.)
@@ -3541,6 +3543,86 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 - `CashReceiptRegisterModal.test.jsx` 3 — field `aria-invalid`·prior-year `aria-describedby`·submit payload.
 - `CashReceiptIssuancePage.test.jsx` — Badge 「충족」 +1.
 - `PaymentRecordModal.test.jsx` — CASH `aria-describedby` +1.
+- `npm test`·build PASS.
+
+---
+
+## §63. G26 yearBasis·G-7-1 Excel·현금영수증 pending guard 접근성 (139차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20 -->
+
+> **139차 UXD (2026-06-20)** — §62(138차)·UXD-139(`17374f1`) 이후 coder 신규 커밋(`19ed7f3`·`58d6694`·`99b795a`·`a2ef127`) 미점검 a11y·FE-16 갭 해소.
+
+### 63-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `BillingStatisticsReportPage` | `/billing/reports/statistics` | G26 ① yearBasis 수납/청구년도 토글·NTS CSV (`19ed7f3`) |
+| `BillingStatementPrintPanel` | `BillingDetailPage` | G-7-1 Excel export 5종 (`58d6694`) |
+| `CashReceiptIssuancePage` | `/billing/cash-receipts` | pending load guard·empty list modal (`99b795a`/`a2ef127`) |
+| `MedicalExpenseDeductionPanel` | `ClientDetailPage`·`GuardianPortalPage` | US-L04 조회 busy |
+| `.ds-segmented` | `components.css` | TransportPage·G26 공유 segmented toggle |
+
+### 63-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `BillingStatisticsReportPage` | yearBasis `role=tablist`+`aria-labelledby`·CSV `aria-busy`+`aria-label`·StatCard `ds-grid--stats` | WCAG 4.1.3·FE-16 (TransportPage·StaffTrainingLogPage 패턴) |
+| `BillingStatementPrintPanel` | Excel 5종 `aria-busy`·`aria-describedby`(영수증 가드)·PDF `aria-label` | WCAG 1.3.1·2.4.6 (§59 인쇄 패널 패턴) |
+| `CashReceiptIssuancePage` | `CASH_RECEIPT_PENDING_ERROR_ID`+「발급 등록」`aria-describedby`·수급자 검색 `aria-busy` | WCAG 1.3.1 (ClaimGenerationPanel·FeeScheduleYearGuardBanner 패턴) |
+| `MedicalExpenseDeductionPanel` | 조회 `aria-busy={loading}` | WCAG 4.1.3 |
+| `.ds-segmented` | `forced-colors` 경계선·선택 탭 outline | WCAG 1.4.11 (FilterChips·Badge 패턴) |
+
+### 63-3. coder 전달 메모
+
+- **G26 yearBasis** — `MEDICAL_EXPENSE_YEAR_BASIS.PAID_YEAR`/`CLAIM_YEAR` API query param 유지. 탭 전환 시 `page=1` 리셋·`fetchMedicalExpenseDeductionReportApi`만 재조회(②③ 월별 통계는 연도만 의존).
+- **G-7-1 Excel** — `GET /billing/claims/{id}/statement-export?kind=` (`address-label`·`statement`·`receipt`·`claim-list`·`all`). 미수납 시 receipt/all에서 영수증 제외 — `#billing-statement-print-receipt-unavailable` `aria-describedby` 유지.
+- **현금영수증 pending guard** — `fetchPendingCashReceiptIssuancesApi` 실패 시 목록 Alert+등록 버튼 `aria-describedby`. 모달 빈 claims 시 submit `disabled`+`role=status` 안내(UXD-139).
+- **BNK-412 identifier 검증** — BE `@35d1560` 서버 검증. FE는 `Field error`+`aria-invalid`로 API 400 메시지 표면화만(coder).
+
+### 63-4. 검증
+
+- `CashReceiptIssuancePage.test.jsx` — pending error `id`+register `aria-describedby` +1.
+- `BillingStatementPrintPanel.test.jsx` — PDF `aria-label` 갱신 +1.
+- `npm test`·build PASS.
+
+---
+
+## §64. US-R03 FAQ21823 근로재계약 UI·현금영수증 identifier 검증 접근성 (140차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20 -->
+
+> **140차 UXD (2026-06-20)** — §63(139차)·UXD-140(`501fedc`) 이후 coder 신규 커밋(`f62402f`·`10585b9`·`f31c346` FAQ21823 renewal panel/summary/dashboard widget·`76a462d` identifier digit validation) 미점검 a11y·FE-16 갭 해소.
+
+### 64-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `StaffEmploymentContractRenewalPanel` | `StaffDetailPage` lifecycle 탭 | FAQ21823 개별 직원 재계약 안내 (`f62402f`) |
+| `StaffEmploymentContractRenewalSummaryPanel` | `StaffPage` | FAQ21823 목록 요약·확인 필요 표 (`10585b9`) |
+| `DashboardPage` | `/dashboard` | 「근로재계약 미충족」위젯 (`f31c346`) |
+| `CashReceiptRegisterModal` | `CashReceiptIssuancePage` | BNK-412 identifier digit/length FE 검증 (`76a462d`) |
+
+### 64-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `StaffEmploymentContractRenewalPanel` | 기한 초과 Alert `STAFF_EMPLOYMENT_CONTRACT_RENEWAL_OVERDUE_ALERT_ID`·파일함 버튼 `aria-describedby`+`${직원명} 근로계약서 파일함` `aria-label` | WCAG 1.3.1·2.4.6 (ClaimGenerationPanel·StaffPage 패턴) |
+| `StaffEmploymentContractRenewalSummaryPanel` | 확인 필요 표 링크 `${이름} 직원 상세` `aria-label` | WCAG 2.4.6 (StaffPage 목록 링크 패턴) |
+| `CashReceiptRegisterModal` | 프로필 hint 로드 중 발급 식별자 `aria-busy={profileLoading}` | WCAG 4.1.3 (MedicalExpenseDeductionPanel·CashReceiptIssuancePage 패턴) |
+| `DashboardPage` | 위젯 StatCard — 기존 `DashboardWidgetGrid` loading·tone 패턴 준수 | 변경 불요 |
+
+### 64-3. coder 전달 메모
+
+- **FAQ21823 partial** — 갱신 CRUD·급여대장 연동·due-date 알림은 module 11 payroll out-of-scope(USER_STORIES P2 잔여). 현 UI는 read-only guidance+HR 파일함 deep-link.
+- **대시보드 위젯** — `countEmploymentContractRenewalGaps(staffMembers)` = overdue+missing 합산. `/staff` 링크로 summary panel 유도.
+- **현금영수증 identifier** — FE는 digit normalize+length guard만. BE `@35d1560` 서버 검증 400 → `Field error` 표면화 유지.
+
+### 64-4. 검증
+
+- `StaffEmploymentContractRenewalPanel.test.jsx` — overdue Alert `id`·파일함 `aria-describedby`·직원명 `aria-label` +2.
+- `StaffEmploymentContractRenewalSummaryPanel.test.jsx` — 링크 `aria-label` 갱신 +1.
+- `CashReceiptRegisterModal.test.jsx` — profile load `aria-busy` +1.
 - `npm test`·build PASS.
 
 ---
