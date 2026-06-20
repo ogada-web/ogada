@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-18T05:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-21T01:30:00+09:00 -->
 # ogada 변경 이력 (ops/CHANGELOG.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-18 (208차 — **G15 일지 감사·보관 UX · 월간 리포트 2-7/2-8 · probe seed guard · ops 문서 208차**)  
+> **최종 갱신**: 2026-06-21 (274차 — **BE `3023c9e`/FE `380be3c` · V160 ogada_platform_admin · Kakao per-API quota · staff account request workflow · platform hq_admin issuance validation · UXD-143 a11y · docs 274차 동기화**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 개발·운영·기획 담당자, 고객 센터 IT (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `src/backend/`, `src/frontend/`  
@@ -14,9 +14,552 @@
 
 ---
 
-## [Unreleased] — MVP v1 개발 중 (2026-06-17 208차, BE `aa42b9c`·FE `6a18dfd`·develop, **merge gate ~377 · FE ahead 31 · BE ahead 346 · BE WT CLEAN · FE WT CLEAN**)
+## [Unreleased] — MVP v1 개발 중 (2026-06-21 274차, BE `3023c9e`·FE `380be3c`·develop baseline BNK-429+, **merge gate ~555 · FE WT CLEAN · BE WT CLEAN**)
 
-> **구현 상태**: Flyway **V1–V148** · **106 route** · merge gate **~377 pending** (346 BE + 31 FE) · BE **ready @ `aa42b9c`** (G15 **`TRANSPORT_SERVICE_LOG_UPSERT` audit** · monthly reports 2-7/2-8 · QA-B95 probe seed guard · G15 carry) · FE **ready @ `6a18dfd`** (G15 **service log archive UX** · **TransportMonthlyReportsPage** 2-7/2-8 · QA-B116 service log a11y · G15 carry)
+> **구현 상태**: Flyway **V1–V160** · **107 route** · **86 page** · merge gate **~555** · BE **@ `3023c9e`** (auth **`ogada_platform_admin` rename + V160** @ `3023c9e` · v1.3-A **Kakao per-API daily usage tracker** @ `138ac26` · v1.3-A **Kakao API status+usage probe** @ `e2b764b` · …) · FE **@ `380be3c`** (platform **hq_admin issuance name+password required** @ `380be3c` · **staff account request workflow** @ `22718d0` · **UXD-143 transport a11y** @ `4d87e19` · v1.3-A **TransportKakaoApiStatusPanel** @ `ba74bb5` · …)
+>
+> **최근 개선 (274차 — ops 문서 275차 · FAQ 21개 신규·갱신 · V160 ogada_platform_admin · Kakao per-API quota · staff account request · platform admin issuance · BranchServiceType 5-type · P3 candidates):**
+> - **ops 문서 275차 (TWR)** — `FAQ.md` **§21 v1.3-A 배차·Kakao (Q425~430)** · **§22 v2 roadmap·P3 candidates (Q431~433)** · `USER_MANUAL.md` (준비 중) · `ADMIN_GUIDE.md` (준비 중) · `DEPLOYMENT_GUIDE.md` (준비 중)
+> - **FAQ 신규 21개** — **Q425** Kakao API 상태 모니터링 · **Q426** API 사용량 확인 · **Q427** 통합재가 기관 지원 · **Q428** 반영도착 시간 오류 · **Q429** 방문요양 지원 · **Q430** V160 role_code 변경 · **Q431** 현금영수증 자동 발급 완료 · **Q432** 출석 QR 체크인 정합 · **Q433** L03 간호급여 필드
+>
+> **최근 개선 (274차 — V160 ogada_platform_admin · Kakao per-API quota · staff account request · platform hq_admin issuance · UXD-143):**
+> - **Auth ogada_platform_admin rename (BE `3023c9e`, V160, Q556)** — **V160** `rename_platform_admin_to_ogada_platform_admin` — **`role_code` CHECK·UK 인덱스** 재생성 순서 정정 · **`AuthService`·`PlatformOrganizationController`·`UserService`** — **`@PreAuthorize("hasRole('OGADA_PLATFORM_ADMIN')")`** · **`SevenRoleJwtLoginE2eTest`**
+> - **v1.3-A Kakao per-API daily usage tracker (BE `138ac26`, v1.3-A, Q554)** — **`KakaoRestApiUsageTracker`** — **`KakaoRestApiKind`** 3종(Geocode·Directions 단일·다중경유) · **`TransportKakaoQuotaUsageResponse`** — **`quotaUsage[]`** on **`GET /transport/kakao-api-status`** · **`KakaoDirectionsClient`/`KakaoGeocodeClient.record`** · **`TransportProperties`** daily limit defaults · **`KakaoRestApiUsageTrackerTest`**
+> - **Staff account request workflow (FE `22718d0`, Must onboarding, Q555)** — **`StaffPage`** — **`submitUserAccountRequestApi`** (`displayName`·`roleCode`) · **`PlatformPage`** — **「계정 생성 요청 (승인 대기)」** · **`approvePlatformUserAccountRequestApi`/`rejectPlatformUserAccountRequestApi`** · **`services.js`** API paths · tests
+> - **Platform hq_admin issuance validation (FE `380be3c`, US-A01/A02, Q555)** — **`PlatformOrgDetailModal`** — **이름·임시 비밀번호(8자+) 필수** · **`issuePlatformOrgAdminApi`** `{ email, displayName, password }`
+> - **UXD-143 transport external link·duplicate link a11y (FE `4d87e19`, UXD-143, Q554)** — **`TransportKakaoApiStatusPanel`** — Kakao Developers **(새 탭) `ds-sr-only`** · **`TransportSuggestPanel`** — DRAFT 검토 링크 **차량번호 `aria-label`**
+>
+> **최근 개선 (273차 — ops 문서 273차 · v1.3-A Kakao API status+usage probe · suggest route-preview embed · TransportKakaoApiStatusPanel · FAQ Q554 신규):**
+> - **ops 문서 273차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-5·§5-8** · `ADMIN_GUIDE.md` **§1-4·§10-10** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§4-7·§11-3** · `FAQ.md` **Q554 신규**
+>
+> **최근 개선 (273차 — v1.3-A Kakao API status+usage probe · suggest route-preview embed · TransportKakaoApiStatusPanel):**
+> - **v1.3-A Kakao transport API status and usage probe (BE `e2b764b`, v1.3-A, Q554)** — **`GET /transport/kakao-api-status`** — **`TransportKakaoApiStatusService`** — **`KakaoGeocodeClient`/`KakaoDirectionsClient.probeConnectivity`** — **`KakaoRestApiUsageTracker`** — **`SuggestTransportRunItemResponse`** — **`legDurationsSeconds`·`routePath`·`routeDistanceMeters`·`routeDurationSeconds`** · **`TransportSuggestService.previewRouteLegs`** · **`TransportKakaoApiStatusServiceTest`** · **`TransportSuggestServiceTest`** · **`RoleBasedControllerAccessTest$TransportAccess`**
+> - **v1.3-A TransportKakaoApiStatusPanel and Kakao map layer fix (FE `ba74bb5`, v1.3-A, Q554)** — **`TransportKakaoApiStatusPanel`** — **`/settings`「카카오 API」탭** · **`/organization/settings`「배차·카카오 API」** · **`fetchTransportKakaoApiStatusApi`** · **`KakaoTransportMapView`** — marker/route **layer split** · **`pinsOnly`** · **`hasRouteLegDurations`** guard — suggest **「경로 미확인」** · roster ETA **skip when legs missing** · **`TransportKakaoApiStatusPanel.test`** · **`transportRosterDispatch.test`** · QA-B167/B170 regression closure
+>
+> **최근 개선 (272차 — ops 문서 272차 · v1.3-A transport preview cache+roster ETA merge · G30/G39 nav label disambiguation · FAQ Q553 신규):**
+> - **ops 문서 272차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§3-1·§5-8** · `ADMIN_GUIDE.md` **§1-4·§10-10** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q553 신규**
+>
+> **최근 개선 (272차 — v1.3-A transport preview cache+roster ETA merge · G30/G39 nav label disambiguation):**
+> - **v1.3-A transport preview cache and roster ETA merge (FE `acc5933`, v1.3-A, Q553)** — **`transportRunPreviewCache.js`** — suggest·DRAFT **route-preview 재사용** · **`kakaoMapGeocoder.js`** — **geocode in-memory cache** · **`buildSuggestRunDispatchIndex`** — **자동 배차 제안 ETA → 명단「계획 픽업」** · **`TransportSuggestPanel`** — **「반영도착」** 열 · **「자동 배차·경로 계산 중…」** · **`TransportRouteSplitView`** leg time hydrate · **`navConfig.js`** — **「모니터링 자가진단 (G30)」·「급여제공결과 평가 (G39)」** · tests
+>
+> **최근 개선 (271차 — ops 문서 271차 · v1.3-A transport roster tools+ETA guardrails · guardian credential blocker separation · UXD-142 renewal a11y · FAQ Q550~Q552 신규):**
+> - **ops 문서 271차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-2·§5-3·§5-8** · `ADMIN_GUIDE.md` **§1-4·§10-10** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q550~Q552 신규**
+>
+> **최근 개선 (271차 — v1.3-A transport roster tools+ETA guardrails · guardian credential blocker separation · UXD-142 renewal a11y):**
+> - **v1.3-A transport roster tools and ETA guardrails (FE `4681b5a`/`863b135`, v1.3-A, Q550)** — **`TransportLoadPreviousRunModal`** — **`/transport/runs/new`** **「이전 배차 불러오기」** · **`TransportAddRosterModal`** — **`TransportRouteSplitView`** **「명단에서 추가」** · **`TransportConfirmWarningModal`** — **`findDesiredBoardingViolations`** — **희망 탑승 지연·순서 역전** 경고 · **`pickupToleranceMinutes`** (지점 설정) · **`transportMapEtas.js`** · **`buildStopsFromPreviousRun`** · tests
+> - **v1.3-A PATCH planned departure and pickup sequence validation (BE `48eea95`, v1.3-A, Q550)** — **`UpdateTransportRunRequest.plannedDepartureTime`** — DRAFT **`PATCH /transport/runs/{id}`** · **`validateClientPickupTimeSequence`** — **422 BUSINESS_RULE** · **`TransportServiceTest`**
+> - **Live E2E guardian credential blocker separation (BE `520f10a`, QA-B95, Q551)** — **`LiveE2eOperationReadinessSupport`** — **`guardian-credentials-missing`** vs **`guardian-credentials-default`** 분리 · **`LiveE2eOperationReadinessSupportTest`** · **`LiveE2eControllerTest`**
+> - **UXD-142 FAQ21823 renewal alerts a11y (FE `bd6e1c2`, UXD-142, Q552)** — **`EmploymentContractRenewalAlertsPanel`** — **`<time dateTime>`** · **`aria-busy`** · **`ds-section-title`·checklist CSS** 승격 · **`StaffEmploymentContractRenewalPanel`** · tests
+>
+> **최근 개선 (270차 — ops 문서 270차 · US-R03 FAQ21823 renewal record+due alerts · live E2E operation readiness centralization · FAQ Q540·Q544 갱신·Q547~Q549 신규):**
+> - **ops 문서 270차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-2·§5-3** · `ADMIN_GUIDE.md` **§1-4·§6-2-6b** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q540·Q544 갱신·Q547~Q549 신규**
+>
+> **최근 개선 (270차 — US-R03 FAQ21823 renewal record+due alerts · live E2E operation readiness centralization):**
+> - **US-R03 FAQ21823 contract renewal record and due alerts (FE `033b319`, US-R03, Q547)** — **`StaffEmploymentContractRenewalPanel`** — **「재계약 완료 기록」** Modal — **`updateUserApi`** — **`contractSignedAt`** + **`lifecycleChecklist["employment-contract"]=true`** · **`EmploymentContractRenewalAlertsPanel`** — **`/dashboard`·`/dashboard/hq`** — **기한 초과·기한 임박(30일)·서명일 미등록** Alert 목록 · **`computeEmploymentContractRenewalDueAlerts`** · **`staffEmploymentContractCompliance.js`** · tests
+> - **Live E2E operation readiness centralization (BE `bfad37d`/`4d4457f`, QA-B95, Q548)** — **`LiveE2eOperationReadinessSupport`** — **`HealthController`**·**`LiveE2eController`** 공유 — **`cashReceiptIdentifierValueCheckReady`** · blocker **`cash-receipt-identifier-check-missing`** — **health·probe 동기화** · **`LiveE2eOperationReadinessSupportTest`** · **`LiveE2eControllerTest`**
+> - **UXD-141 staff detail unique aria-labels (FE `debe6dd`, UXD-141, Q544)** — **`StaffPage`**·**`StaffStatusReportPage`** — 직원 링크 **`aria-label`** 에 **stable staff ID** append — full-suite 중복 accessible name 방지
+> - **Live E2E legacy G21 seed readiness fields (FE `16afd4c`, QA-B95, Q549)** — **`liveConfig.js`** — legacy health payload에 **applicability 필드 없이 seed flags만** 있을 때 **G21 applicable** 로 해석 · **`liveE2eHarness.test`** regression
+>
+> **최근 개선 (269차 — ops 문서 269차 · US-R03 FAQ21823 clauses checklist+template modal · G21 not-applicable live E2E · FAQ Q540·Q541 갱신·Q546 신규):**
+> - **ops 문서 269차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-3** · `ADMIN_GUIDE.md` **§1-4·§6-2-6b** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q540·Q541 갱신·Q546 신규**
+>
+> **최근 개선 (269차 — US-R03 FAQ21823 clauses checklist+template modal · G21 not-applicable live E2E):**
+> - **US-R03 FAQ21823 contract clauses checklist and template modal (FE `1b6d2b1`, US-R03, Q546)** — **`StaffEmploymentContractRenewalPanel`** — **`EMPLOYMENT_CONTRACT_REQUIRED_CLAUSES`** 5항 checklist · **`EMPLOYMENT_CONTRACT_RENEWAL_WORKFLOW`** 3단계 · **「근로계약서 서식 보기」** Modal — **`EMPLOYMENT_CONTRACT_RENEWAL_TEMPLATE`** · **`staffEmploymentContract.js`** · **`StaffEmploymentContractRenewalPanel.test`**
+> - **Live E2E G21 not-applicable for unsupported branch serviceType (BE `091c372`, QA-B95, Q541)** — **`LiveE2eBootstrapService.g21SeedStatus`** — non-`HOME_VISIT`/legacy `DAY_CARE` → **`notApplicable()`** (이전 **`unsupportedServiceType()`**) · **`liveE2eOperationReady=true`** 유지 · health **`g21-seed=not-applicable`** · **`HealthControllerTest.healthShouldNotBlockWhenG21SeedIsNotApplicable`** · **`LiveE2eBootstrapServiceTest`** ready flags **true**
+>
+> **최근 개선 (268차 — ops 문서 268차 · V159 cash receipt identifier CHECK · health V159 probe · UXD-141 a11y · nested health readiness · FAQ Q537·Q540 갱신·Q543~Q545 신규):**
+> - **ops 문서 268차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-2·§5-3·§5-10-1** · `ADMIN_GUIDE.md` **§1-4·§6-2-6b·§10-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q537·Q540 갱신·Q543~Q545 신규**
+>
+> **최근 개선 (268차 — V159 cash receipt identifier CHECK · health V159 probe · UXD-141 a11y · nested health readiness):**
+> - **G-CASH-RECEIPT-LOG V159 identifier format CHECK (BE `15061a9`, G-CASH-RECEIPT-LOG, Q543)** — **V159** **`chk_cash_receipt_issuances_identifier_value_format`** — **`identifier_value ~ '^[0-9]+$'`** · **PHONE 10~11·BIZ 10자리** — V158 nonempty CHECK **유지** · defense-in-depth (V155/V157 패턴) · **`CashReceiptIssuanceService`** digit-only 계약과 **DB 동기화**
+> - **G-CASH-RECEIPT-LOG V159 schema readiness health probe (BE `1139e79`, QA-B95, Q543)** — **`CashReceiptSchemaReadinessProbe`** — **`HealthController`** — **`cashReceiptIdentifierValueCheckReady`** · **`liveE2eOperationBlockers[]`** **`cash-receipt-identifier-check-missing`** — G32 V157 probe 패턴 동일 · **`CashReceiptSchemaReadinessProbeTest`** · **`HealthControllerTest`**
+> - **Live E2E nested health readiness parse (FE `682d647`, QA-B95, Q545)** — **`liveBackendProbe.extractLiveE2eHealthFields`** — **`liveE2e` nested object** · **snake_case** (`live_e2e_operation_ready`·`operation_blockers` 등) · stale/mixed backend runtime **false skip 방지** · **`liveE2eHarness.test`**
+> - **UXD-141 FAQ21823·현금영수증 identifier a11y (FE `965e569`/`202c1fe`, UXD-141, Q544)** — **`StaffEmploymentContractRenewalPanel`** — overdue Alert **`id`**·**「근로계약서 파일함」`aria-describedby`**·**`aria-label`** · **`StaffEmploymentContractRenewalSummaryPanel`** — 링크 **`aria-label`「{이름} 근로(재)계약 lifecycle 보기」** (QA-B161 `202c1fe`) · **`CashReceiptRegisterModal`** — 식별자 **`aria-busy`** on profile load · tests
+>
+> **최근 개선 (267차 — ops 문서 267차 · US-R03 FAQ21823 list+dashboard widgets · live E2E allow-default-credentials · FAQ Q540 갱신·Q542 신규):**
+> - **ops 문서 267차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-2·§5-3** · `ADMIN_GUIDE.md` **§1-4·§6-2-6b** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q540 갱신·Q542 신규**
+>
+> **최근 개선 (267차 — US-R03 FAQ21823 list+dashboard widgets · live E2E allow-default-credentials):**
+> - **US-R03 FAQ21823 employment contract renewal summary on StaffPage (FE `10585b9`, US-R03, Q540)** — **`StaffEmploymentContractRenewalSummaryPanel`** — **`/staff`** 목록 상단 — **재직·입사 대상 StatCard** · **기한 초과·서명일 미등록** 표 · **`staffEmploymentContractCompliance.js`** · **`StaffEmploymentContractRenewalSummaryPanel.test`** · **`StaffPage.test`**
+> - **US-R03 FAQ21823 employment contract renewal dashboard widget (FE `f31c346`, US-R03, Q540)** — **`DashboardPage`** — **`/dashboard`·`/dashboard/hq`** — **「근로재계약 미충족」** StatCard · **`countEmploymentContractRenewalGaps`** · **`fetchUsersApi` 폴백** · **`/staff` 링크** · **`DashboardPage.test`** · **`dashboardSummary.test`**
+> - **Live E2E allow-default-credentials (BE `beef81e`, QA-B95, Q542)** — **`ogada.live-e2e.allow-default-credentials`** (기본 **`true`**) — default staff/guardian creds 시 **`staff-credentials-default`/`guardian-credentials-default` blocker 생략** · health **`liveE2eAllowDefaultCredentials`** · **`false` 시 Q490 blocker 동작 유지** · **`HealthControllerTest`** · **`LiveE2eControllerTest.probeShouldAllowDefaultCredentialsWhenFlagEnabled`**
+>
+> **최근 개선 (266차 — ops 문서 266차 · US-R03 FAQ21823 employment contract renewal · live E2E unsupported branch seed · FAQ Q540·Q541 신규):**
+> - **ops 문서 266차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-3** · `ADMIN_GUIDE.md` **§1-4·§6-2-6** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q540·Q541 신규**
+>
+> **최근 개선 (266차 — US-R03 FAQ21823 employment contract renewal · live E2E unsupported branch seed):**
+> - **US-R03 FAQ21823 employment contract renewal panel (FE `f62402f`, US-R03, Q540)** — **`StaffEmploymentContractRenewalPanel`** — **`/staff/{userId}` → 「입사~퇴사」** — **서명일+1년 재계약·임금협의 기한** · **3년 보관 기한** · **2026 최저임금 10,320원/시간** 참고 · **기한 초과 warning Alert** · **「근로계약서 파일함」** shortcut · **`staffEmploymentContract.js`** · **`StaffEmploymentContractRenewalPanel.test`** · **`StaffDetailPage.test`**
+> - **Live E2E unsupported branch service type guard (BE `7a9d7a5`, QA-B95, Q541)** — **`LiveE2eBootstrapService.g21SeedStatus`** — **`isG21SeedApplicableBranch`** — **`HOME_VISIT`(및 home-visit-like)·legacy `DAY_CARE` 외 serviceType** → **`unsupportedServiceType()`** · **`applicable=false`·`operationReady=false`** · **`LiveE2eBootstrapServiceTest.g21SeedStatusShouldBlockWhenBranchUsesUnsupportedServiceType`**
+>
+> **최근 개선 (265차 — ops 문서 265차 · J03 guardian document quiet-hours · G-CASH-RECEIPT-LOG FE identifier validation · FAQ Q537 갱신·Q539 신규):**
+> - **ops 문서 265차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-7-3·§5-10-1** · `ADMIN_GUIDE.md` **§1-4·§10-4·§10-8** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7** · `FAQ.md` **Q537 갱신·Q539 신규**
+>
+> **최근 개선 (265차 — J03 guardian document quiet-hours · G-CASH-RECEIPT-LOG FE identifier validation):**
+> - **J03 guardian document manual quiet-hours reject (BE `71b2d32`/`7e4c07e`, J03, Q539)** — **`GuardianDocumentNotificationService`** — **`dispatchManualClientEvent`** — **22:00~08:00 KST** 수동 발송 **`422 BUSINESS_RULE`** · **「현재 22:00~08:00 (Asia/Seoul) 조용한 시간대입니다…」** · 자동 이벤트 **`dispatchClientEvent` skip** 동작 **불변** · **`J03GuardianDocumentManualNotifyQuietHoursE2eTest`** · **`NotificationServiceTest.dispatchManualClientEventShouldRejectDuringQuietHours`**
+> - **G-CASH-RECEIPT-LOG FE identifier pre-submit validation (FE `76a462d`, G-CASH-RECEIPT-LOG, Q537)** — **`CashReceiptRegisterModal`** — **`normalizeIdentifierValue`** · submit 전 **PHONE 10~11·BIZ 10자리·빈 식별자** **`fieldErrors`** · API payload **digit-only** · **`CashReceiptRegisterModal.test`**
+>
+> **최근 개선 (264차 — ops 문서 264차 · G-CASH-RECEIPT-LOG numeric-only identifier · UXD-140 a11y · FAQ Q537 갱신·Q538 신규):**
+> - **ops 문서 264차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-6-0-1·§5-10-1·§5-10-2** · `ADMIN_GUIDE.md` **§1-4·§10-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7** · `FAQ.md` **Q537 갱신·Q538 신규**
+>
+> **최근 개선 (264차 — G-CASH-RECEIPT-LOG numeric-only identifier · UXD-140 a11y):**
+> - **G-CASH-RECEIPT-LOG numeric-only identifier validation (BE `4da0ca8`, G-CASH-RECEIPT-LOG, Q537)** — **`normalizeIdentifierValue`** — 숫자 추출 후 **빈 문자열이면 거부** · **「발급 식별자(휴대폰/사업자번호)는 숫자만 입력해 주세요.」** · **`CashReceiptIssuanceServiceTest.createIssuanceShouldRejectPhoneIdentifierWithoutDigits`** · **`createIssuanceShouldRejectBizIdentifierWithoutDigits`**
+> - **UXD-140 G26·G-7-1·현금영수증 pending a11y (FE `501fedc`, UXD-140, Q538)** — **`CashReceiptIssuancePage`** — **`CASH_RECEIPT_PENDING_ERROR_ID`**·**`aria-describedby`** on **「발급 등록」**·**`aria-busy`** on 조회·검색 · **`BillingStatementPrintPanel`** — PDF **`aria-label`「급여비용명세서 PDF 다운로드」** · **`MedicalExpenseDeductionPanel`** — 조회 **`aria-busy`** · **`BillingStatisticsReportPage`** — **`ds-segmented` forced-colors** (G26 yearBasis) · **`CashReceiptIssuancePage.test`** · **`BillingStatementPrintPanel.test`**
+>
+> **최근 개선 (263차 — ops 문서 263차 · G-CASH-RECEIPT-LOG identifier normalize+validation · pending load error guard · FAQ Q537):**
+> - **ops 문서 263차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-10-1** · `ADMIN_GUIDE.md` **§1-4·§10-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7** · `FAQ.md` **Q537 신규**
+>
+> **최근 개선 (263차 — G-CASH-RECEIPT-LOG identifier normalize+validation · pending load error guard):**
+> - **G-CASH-RECEIPT-LOG identifier digit search normalize (BE `298bcdf`, G-CASH-RECEIPT-LOG, Q537)** — **`CashReceiptIssuanceService.listIssuances`** — **`q` digit-only 매칭** — `010-1234`·`0101234` **동일 검색** · **`normalizeIdentifierSearchValue`** · **`CashReceiptIssuanceServiceTest.listIssuancesShouldFilterByIdentifierDigitsQuery`** · **`CashReceiptIssuanceLiveApiRoutingE2eTest`**
+> - **G-CASH-RECEIPT-LOG PHONE/BIZ digit validation (BE `35d1560`, G-CASH-RECEIPT-LOG, Q537)** — **`normalizeIdentifierValue`** — 하이픈·공백 제거 후 저장 · **`validateIdentifierValue`** — PHONE **10~11자리**·BIZ **10자리** · **`CashReceiptIssuanceServiceTest`** · **`CashReceiptIssuanceLiveApiRoutingE2eTest`**
+> - **G-CASH-RECEIPT-LOG pending load error guard (FE `99b795a`, G-CASH-RECEIPT-LOG, Q537)** — **`CashReceiptIssuancePage`** — pending API 실패 시 **warning Alert**·**`pendingError`** · **`CashReceiptRegisterModal`** — **`priorYearIssuanceEligible` 「· 작년분」** option suffix · **`CashReceiptIssuancePage.test`** · **`CashReceiptRegisterModal.test`**
+>
+> **최근 개선 (262차 — ops 문서 262차 · G26 yearBasis+NTS CSV · G-7-1 Excel export · UXD-139 a11y · FAQ Q534~Q536):**
+> - **ops 문서 262차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-6-0-1·§5-10-1·§5-10-2** · `ADMIN_GUIDE.md` **§1-4·§6-2-17·§10-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7** · `FAQ.md` **Q534~Q536 신규**
+>
+> **최근 개선 (262차 — G26 yearBasis+NTS CSV · G-7-1 Excel export · UXD-139 a11y):**
+> - **G26 medical deduction yearBasis+NTS batch CSV (BE `ceeaeb9`/`43ef73b`·FE `19ed7f3`, G26, Q534)** — **`MedicalExpenseDeductionYearBasis`** — **`PAID_YEAR`/`CLAIM_YEAR`** · **`GET /billing/reports/medical-deduction?yearBasis=`** · **`GET …/medical-deduction/export`** — **`BillingStatisticsReportPage`** — **「수납년도/청구년도」** segmented control · **「국세청 CSV」** · **`BillingStatisticsReportPage.test`** · **`MedicalExpenseDeductionYearBasisTest`**
+> - **G-7-1 billing statement Excel export (BE `e454d3b`·FE `58d6694`, G-7-1, Q535)** — **`GET /billing/claims/{claimId}/statement-export?kind=`** — **`BillingStatementExportKind`** — address-label·statement·receipt·claim-list·all · **`BillingStatementPrintPanel`** Excel 버튼 row · **`BillingStatementExportServiceTest`** · **`BillingStatementPrintPanel.test`**
+> - **UXD-139 G-CASH-RECEIPT-LOG a11y deepen (FE `17374f1`, UXD-139, Q536)** — **`CashReceiptRegisterModal`** — **`Field`·`aria-describedby`·`CASH_RECEIPT_PRIOR_YEAR_WARNING_ID`** · **`CASH_RECEIPT_IMMEDIATE_STATUS` Badge** · **`CashReceiptLegalAlerts`** region id · **`CashReceiptRegisterModal.test`**
+> - **G-CASH-RECEIPT-LOG empty pending guard (FE `a2ef127`, G-CASH-RECEIPT-LOG, Q536)** — **`CashReceiptRegisterModal`** — pending 0건 **warning Alert**·submit **disabled** · **`CashReceiptRegisterModal.test`**
+>
+> **최근 개선 (261차 — ops 문서 261차 · G-CASH-RECEIPT-LOG 4-계층 closure · HQ pending · prior-year advisory · FAQ Q533):**
+> - **ops 문서 261차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-10-1** · `ADMIN_GUIDE.md` **§1-4·§10-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7** · `FAQ.md` **Q530·Q532 갱신·Q533 신규**
+>
+> **최근 개선 (261차 — G-CASH-RECEIPT-LOG 4-계층 closure · HQ pending · prior-year advisory):**
+> - **G-CASH-RECEIPT-LOG prior-year receipt advisory flow (FE `8aebe55`, G-CASH-RECEIPT-LOG, Q533)** — **`CashReceiptRegisterModal`** — **`priorYearIssuanceEligible`** warning Alert (FAQ 21717) · **`PaymentPage`** — **`isPriorYearClaim`** · **`CashReceiptIssuancePage`** pending API wire · **`PaymentPage.test`** · **`CashReceiptIssuancePage.test`**
+> - **G-CASH-RECEIPT-LOG HQ multi-branch pending list + prior-year flag (BE `58ff35e`, G-CASH-RECEIPT-LOG, Q533)** — **`listPendingIssuances(branchId=null)`** — **다지점 `hq_admin` 전 지점 집계** · **`PendingCashReceiptIssuanceResponse.priorYearIssuanceEligible`** — 청구연도 < 올해 · **`CashReceiptIssuanceServiceTest`** · **`CashReceiptIssuanceLiveApiRoutingE2eTest`**
+>
+> **최근 개선 (260차 — ops 문서 260차 · G-CASH-RECEIPT-LOG dashboard due-gate · pending issuance API · FAQ Q532):**
+> - **ops 문서 260차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-2·§5-10-1** · `ADMIN_GUIDE.md` **§1-4·§10-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7** · `FAQ.md` **Q530 갱신·Q532 신규**
+>
+> **최근 개선 (260차 — G-CASH-RECEIPT-LOG dashboard due-gate · pending issuance API):**
+> - **G-CASH-RECEIPT-LOG dashboard due-gate widgets (FE `221458e`·BE `fe54af8`, G-CASH-RECEIPT-LOG, Q532)** — **`BranchDashboardResponse`·`HqDashboardResponse`** — **`cashReceiptPendingCount`·`cashReceiptOverdueCount`** — **`DashboardPage`** — **「현금영수증 미발급」**·**「현금영수증 발급 지연」** StatCard · **`/billing/cash-receipts`** 링크 · **`dashboardSummary.js`** · **`DashboardServiceTest`** · **`DashboardPage.test`** · **`dashboardSummary.test`**
+> - **G-CASH-RECEIPT-LOG pending issuance list API (BE `ab5708b`, G-CASH-RECEIPT-LOG, Q532)** — **`GET /billing/cash-receipt-issuances/pending`** — **`PendingCashReceiptIssuanceListResponse`** — PAID+CASH 미발급·**`issuanceDueAt`**·**`overdue`** 7일 SLA · **`CashReceiptIssuanceLiveApiRoutingE2eTest`** · **`RoleBasedControllerAccessTest`** · **`MustApiEndpointRoutingTest`**
+>
+> **최근 개선 (259차 — ops 문서 259차 · G-CASH-RECEIPT-LOG payment bridge · live API harness · FAQ Q531 partial closure):**
+> - **ops 문서 259차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-10·§5-10-1** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7** · `FAQ.md` **Q530·Q531 갱신**
+>
+> **최근 개선 (259차 — G-CASH-RECEIPT-LOG payment bridge · live API harness):**
+> - **G-CASH-RECEIPT-LOG post-cash payment issuance bridge (FE `a17f148`, G-CASH-RECEIPT-LOG, Q531)** — **`PaymentPage`** — **`PaymentRecordModal`** CASH warning(FAQ 21716)·**수납 저장 후 `CashReceiptRegisterModal` 자동 표시** · **`onPaymentSuccess`** · **`clientId` 보존** · **`PaymentPage.test`** · **`PaymentRecordModal.test`** · **`cashReceiptIssuanceLiveApi.e2e.test.js`**
+> - **G-CASH-RECEIPT-LOG live API routing harness (BE `8e6e0c6`, G-CASH-RECEIPT-LOG, Q530)** — **`CashReceiptIssuanceLiveApiRoutingE2eTest`** — FE `fetchCashReceiptIssuancesApi`·`fetchClientCashReceiptProfileApi`·`createCashReceiptIssuanceApi` contract mirror · **`CashReceiptIssuanceServiceTest`** profile phone decrypt · **`PilotChecklistJwtE2eTest`** checklist wire
+>
+> **최근 개선 (258차 — ops 문서 258차 · G-CASH-RECEIPT-LOG full-stack · V158 · FAQ Q530 closure·Q531 NTS API gap):**
+> - **ops 문서 258차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§3-1·§5-10-1** · `ADMIN_GUIDE.md` **§1-4·§10-4** · `DEPLOYMENT_GUIDE.md` **§1-3** · `FAQ.md` **Q530 갱신·Q531 신규**
+>
+> **최근 개선 (258차 — G-CASH-RECEIPT-LOG full-stack · V158 · test deepen):**
+> - **G-CASH-RECEIPT-LOG cash receipt issuance full-stack (BE `4432558`·FE `cfc4b04`, G-CASH-RECEIPT-LOG, Q530)** — **`/billing/cash-receipts`** · **`CashReceiptIssuancePage`** — 발급목록·수급자별 발급정보 탭 · **`CashReceiptRegisterModal`** · **`CashReceiptLegalAlerts`** (FAQ 21716/21717) · **`GET/POST /billing/cash-receipt-issuances`** · **`GET /billing/clients/{id}/cash-receipt-profile`** · **`immediateIssuanceMet`** 7일 SLA · **`pendingCashPaymentCount`** · **V158** `cash_receipt_issuances` · **`CashReceiptIssuanceServiceTest`** · **`CashReceiptIssuancePage.test`**
+> - **G-CASH-RECEIPT-LOG RBAC·routing·7-day SLA test deepen (BE `f79a19e`, G-CASH-RECEIPT-LOG, Q530)** — **`RoleBasedControllerAccessTest`** cash-receipt RBAC · **`MustApiEndpointRoutingTest`** route wiring · **`CashReceiptIssuanceServiceTest`** month filter·pending count·7-day immediate flag
+>
+> **최근 개선 (257차 — ops 문서 257차 · G21 split-view dual NHIS·health G32 alignment·credential trim·UXD-138 a11y·G-CASH-RECEIPT gap FAQ):**
+> - **ops 문서 257차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11** · `ADMIN_GUIDE.md` **§1-4·§10-11-2** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§9-1** · `FAQ.md` **Q525 갱신·Q526~Q530 신규**
+>
+> **최근 개선 (257차 — G21 split-view dual NHIS·health G32 alignment·credential trim·UXD-138 a11y):**
+> - **G21 split-view dual NHIS comparison panels (FE `9b80505`, G21, Q526)** — **`VisitsPage`** — split-view ON 시 **`VisitNhisComparisonPanel`** **PLAN·BILLING 각 1개** — **`role="group" aria-label="계획·청구 공단 명세 분할 비교"`** · **`scheduleKind` prop** · **`VisitNhisComparisonPanel.test`** · **`VisitsPage.test`**
+> - **UXD-138 G21 split-view NHIS·G32·G2 a11y (FE `d354a0e`, UXD-138, Q527)** — **`VisitNhisComparisonPanel`** — **`{kindLabel} 공단 명세 사전 비교`** 제목 · **`CaseManagementPage`** 수정 **`aria-label`** · **`GuardianDocumentNotifyPanel`** submit **`aria-describedby`** · **`ds-form-grid__full`·`ds-field__hint`** CSS · tests
+> - **Health endpoint G32 schema readiness alignment (BE `caeac0d`, G32, Q528)** — **`HealthController`** — **`liveE2eG32ComplianceAttendeeOpinionsFieldReady`·`liveE2eG32DashboardAttendeeOpinionGapFieldReady`·`liveE2eG32AttendeeOpinionsArrayCheckReady`** · **`liveE2eOperationBlockers[]`** G32 3축 — **probe와 동일** preflight · **`HealthControllerTest`**
+> - **Live E2E bootstrap credential trim (BE `7848b0f`, QA-B95, Q529)** — **`LiveE2eBootstrapService.normalizeCredential`** — staff/guardian email·password **trim** — whitespace-only·padded env **false-green 방지** · **`LiveE2eBootstrapServiceTest`**
+>
+> **최근 개선 (256차 — ops 문서 256차 · G32 probe schema readiness·stale runtime guard·케어포 3-1 health segment nav):**
+> - **ops 문서 256차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-5·§6-4** · `ADMIN_GUIDE.md` **§1-4·§10-11-2** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§9-1** · `FAQ.md` **Q523 갱신·Q524~Q525 신규**
+>
+> **최근 개선 (256차 — G32 probe schema readiness·stale runtime guard·케어포 3-1 health segment nav):**
+> - **G32 probe V157 attendee_opinions array CHECK readiness (BE `45d95ea`, G32, Q525)** — **`G32SchemaReadinessProbe`** — **`pg_catalog`** 로 **`chk_case_management_meetings_attendee_opinions_array`** 존재 검증 · **`LiveE2eController`** — **`g32AttendeeOpinionsArrayCheckReady`** · blocker **`g32-v157-constraint-missing`** · **`G32SchemaReadinessProbeTest`** · **`LiveE2eControllerTest`**
+> - **G32 probe compliance/dashboard field readiness (BE `c0a59aa`, G32, Q525)** — **`LiveE2eController`** — **`CaseManagementComplianceResponse.attendeeOpinionsMetCount`**·**`BranchDashboardResponse.caseManagementAttendeeOpinionGapCount`** record component reflection · blockers **`g32-compliance-field-missing`·`g32-dashboard-field-missing`** · **`operationReady`** G32 3축 포함
+> - **Live E2E G32 stale runtime graceful skip (FE `09912ba`, QA-B152, Q525)** — **`programComplianceLiveApi.e2e.test.js`** — **`getLiveE2eOperationBlockers()`** · **`hasG32SchemaBlocker()`** · **`shouldSkipForMissingG32Field()`** — legacy runtime **false FAIL 방지** · **`liveE2eHarness.test`**
+> - **케어포 3-1 급여제공 세분화 nav on health (FE `1d5747d`, v1.2.1 P1, Q524)** — **`CareProvisionSegmentNav`** — **`/health`** — 식사·식사도움·간호·목욕·프로그램·특이사항 cross-link · **`careProvisionSegments.js`** · **`HealthPage.test`** · **`CareProvisionSegmentNav.test`**
+>
+> **최근 개선 (255차 — ops 문서 255차 · G32 FAQ21797 live E2E harness deepen·pilot E2E extend):**
+> - **ops 문서 255차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-9** · `ADMIN_GUIDE.md` **§1-4·§10-11-2** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§9-1** · `FAQ.md` **Q516·Q520·Q521 갱신·Q522~Q523 신규**
+>
+> **최근 개선 (255차 — G32 FAQ21797 live E2E harness deepen·pilot E2E extend):**
+> - **G32 FAQ21797 live E2E harness deepen (FE `3f871d7`, G32, Q522)** — **`programComplianceLiveApi.e2e.test.js`** — create/update **`attendeeOpinions[]`** · compliance **`attendeeOpinionsMetCount`** · branch dashboard **`caseManagementAttendeeOpinionGapCount`** · **`programComplianceServices.test`** — **`createCaseManagementMeetingApi`** forwards **`attendeeOpinions`** · **`pilotPageFlows`** — duplicate attendee name blocking (BNK-394)
+> - **G32 pilot E2E + service test extend (BE `510d2f3`, G32, Q522)** — **`ProgramCompliancePilotServiceFlowE2eTest`** — per-attendee opinions through G32 flows · **`CaseManagementServiceTest`** — **`updateMeetingShouldPersistAttendeeOpinionsWhenProvided`** · **`updateMeetingShouldRejectDuplicateAttendeeOpinionAuthor`**
+> - **Live E2E G32 fields on stale backend (QA-B152, Q523)** — **`localhost:8080` runtime stale** vs develop `@510d2f3` → **`attendeeOpinionsMetCount`·`caseManagementAttendeeOpinionGapCount` undefined** — backend **재기동·재빌드** 필요 (TSR 1079차)
+>
+> **최근 개선 (254차 — ops 문서 254차 · G32 V157·중복 참석자 차단·live E2E skip diagnostics):**
+> - **ops 문서 254차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-9** · `ADMIN_GUIDE.md` **§1-4·§10-11-2** · `DEPLOYMENT_GUIDE.md` **§1-3·§9-1·§11-3** · `FAQ.md` **Q516·Q518 갱신·Q519~Q521 신규**
+>
+> **최근 개선 (254차 — G32 V157·중복 참석자 차단·live E2E skip diagnostics):**
+> - **G32 V157 attendee_opinions JSONB array CHECK (BE `8835aa2`, G32, Q519)** — **`chk_case_management_meetings_attendee_opinions_array`** — **`jsonb_typeof(attendee_opinions) = 'array'`** — malformed object/scalar DB insert 차단 · **`AttendeeOpinionsCodec`** defense-in-depth · V155 WAYPOINT·V154 서명 pair-CHECK 패턴
+> - **G32 unique per-attendee opinions enforcement (BE `eed39ab`·FE `c7fb69a`, FAQ21797, Q520)** — **`CaseManagementService.validateAttendeeCount`/`validateAttendeeOpinions`** — 참석자·의견 작성자 **대소문자 무시 중복 거부** · FE **`buildDuplicateAttendeeNamesError`**·**`mapCaseManagementMeetingApiErrorField`** · **`CaseManagementServiceTest`** · **`CaseManagementPage.test`** · **`caseManagementCompliance.test`**
+> - **AttendeeOpinionsCodec malformed JSON compliance tests (BE `9ecd019`, G32, Q519)** — **`AttendeeOpinionsCodecTest`** — null/blank/malformed JSON → empty list · round-trip preserve
+> - **Live E2E actionable skip diagnostics (FE `9969746`, QA-B95, Q521)** — **`liveConfig.getLiveE2eSkipReasons`** — operation blocker·G21 seed·auth·clientId·write flag **human-readable reasons** · **`liveE2eHarness.test`** · gated suite skip 시 **원인 문자열 노출**
+>
+> **최근 개선 (253차 — ops 문서 253차 · G32 FAQ21797 dashboard attendee-opinion gap widget):**
+> - **ops 문서 253차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-2·§5-9** · `ADMIN_GUIDE.md` **§1-4·§10-11-2** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q263·Q516 갱신·Q518 신규**
+>
+> **최근 개선 (253차 — G32 FAQ21797 dashboard attendee-opinion gap widget):**
+> - **G32 dashboard attendee-opinion gap count (BE `b9e0947`·FE `e55ae96`, FAQ21797, Q518)** — **`BranchDashboardResponse`·`HqDashboardResponse`** — **`caseManagementAttendeeOpinionGapCount`** — **`meetingsRecorded − attendeeOpinionsMetCount`** · HQ **`attendeeOpinionsMetCount` 합산 정정** · FE **`DashboardPage`** — **「참석자별 의견 미기록」** warning StatCard · 스냅샷 누락 시 **`countCaseManagementAttendeeOpinionGaps(compliance)`** 폴백 · **`dashboardSummary.js`** · **`DashboardServiceTest`** · **`DashboardPage.test`** · **`dashboardSummary.test`**
+>
+> **최근 개선 (252차 — ops 문서 252차 · G32 FAQ21797 attendee opinions · G2 guardian document 3-type panel · live E2E health diagnostics deepen):**
+> - **ops 문서 252차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-7-3·§5-9** · `ADMIN_GUIDE.md` **§1-4·§10-9·§10-11-2** · `DEPLOYMENT_GUIDE.md` **§1-3·§9-1·§11-3** · `FAQ.md` **Q217·Q222·Q263 갱신·Q515~Q517 신규**
+>
+> **최근 개선 (252차 — G32 FAQ21797 attendee opinions · G2 guardian document 3-type panel · live E2E health diagnostics deepen):**
+> - **G32 per-attendee meeting opinions (BE `5222a8f`·FE `b272a7b`, FAQ21797, Q516)** — **`attendeeOpinions[]`** JSONB (**V156**) · **`attendeeOpinionsMet`/`attendeeOpinionsMetCount`** compliance · **`CaseManagementPage`** — 참석자 2인 이상 시 **`fieldset`「참석자별 의견」** 필수 · **`caseManagementCompliance.js`** · **`CaseManagementServiceTest`** · **`CaseManagementPage.test`** · **`pilotPageFlows`**
+> - **G2 guardian document 3-type notify panel (FE `d1149a5`, G2, Q517)** — **`GuardianDocumentNotifyPanel`** — **`GUARDIAN_DOCUMENT_NOTIFY_TYPES`** — 노인학대예방·**가정통신문**·**급여제공기록지** **`Select`** · **`notifyHomeNewsletterApi`·`notifyCareProvisionRecordApi`** · **`ClientDetailPage`** 기본정보 탭 · **`GuardianDocumentNotifyPanel.test`** · **`billingGuardianPlatformServices.test`**
+> - **Live E2E health diagnostics deepen (BE `12d1a7b`, QA-B95, Q515)** — **`HealthController`** — **`liveE2eGuardianStatusDetail`·`liveE2eG21SeedStatusDetail`** — guardian bootstrap·G21 seed **human-readable status** — QA-B95 blocker 진단 보강 · **`HealthControllerTest`**
+>
+> **최근 개선 (251차 — ops 문서 251차 · G39 FAQ21817 7-day SLA · RFID special-notes equivalence · health G21 branch blocker · FE G21 billing readiness gate):**
+> - **ops 문서 251차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11·§5-25·§5-28** · `ADMIN_GUIDE.md` **§1-4·§6-2-15** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§9-1·§11-3** · `FAQ.md` **Q505·Q497 갱신·Q511~Q514 신규**
+>
+> **최근 개선 (251차 — G39 FAQ21817 7-day SLA alerts · RFID special-notes equivalence · health G21 branch blocker · FE G21 billing readiness gate):**
+> - **G39 FAQ21817 state-change 7-day SLA alerts (FE `b881883`, G39, Q513)** — **`computeStateChangeDueAlerts`** — **`CareServiceWeeklyRecordPage`** — **`missing`/`due`/`overdue`** warning Alert · **`STATE_CHANGE_DUE_MAX_DAYS=7`** · **`CareServiceWeeklyRecordPage.test`** · **`careServiceStateChangeDue.test`**
+> - **G39 RFID special-notes equivalence labeling (FE `b881883`, G39, Q514)** — **`SPECIAL_NOTES_RFID_EQUIVALENCE_HELP`** · **`CareServiceWeeklyRecordForm`**·**`CareServiceSpecialNotesForm`** Field help · **`VisitRfidDiffComparePanel`** info Alert **`RFID_SPECIAL_NOTES_GUIDE`** · **`VisitRfidDiffComparePanel.test`**
+> - **G21 health branch-missing blocker alignment (BE `bc754a0`, QA-B95, Q511)** — **`HealthController`** — **`!g21SeedApplicable && !g21SeedOperationReady`** → **`g21-branch-missing-or-inactive`** in **`liveE2eOperationBlockers[]`** — health·probe **동일 blocker 노출** (Q505 확장) · **`HealthControllerTest.healthShouldExposeG21BranchBlockerWhenSeedBranchIsMissingOrInactive`**
+> - **G21 billing schedule readiness FE gate (FE `c3b6a5c`, QA-B95, Q512)** — **`liveBackendProbe.extractLiveE2eHealthFields`** — **`liveE2eBillingVisitScheduleReady`** 파싱 · **`isLiveG21SeedReady`** — PLAN + **paired BILLING** + NHIS 모두 ready · **`liveGlobalSetup`** warn 메시지 갱신 · **`liveE2eHarness.test`**
+>
+> **최근 개선 (250차 — ops 문서 250차 · G21 cross-branch seed scope · guardian bootstrap enrichment guard · QA-B147 batch-confirm loading · UXD-136/137 L03 edit a11y):**
+> - **ops 문서 250차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11·§5-16** · `ADMIN_GUIDE.md` **§1-4·§6-2-9a** · `DEPLOYMENT_GUIDE.md` **§1-3·§9-1·§11-3** · `FAQ.md` **Q507~Q510 신규**
+>
+> **최근 개선 (250차 — G21 cross-branch seed scope · guardian bootstrap enrichment guard · QA-B147 batch-confirm loading · UXD-136/137 L03 edit a11y):**
+> - **G21 cross-branch seed scope (BE `02cf036`, QA-B148, Q507)** — **`LiveE2eBootstrapService.g21SeedStatus`** — resolved PLAN/BILLING visit schedule·NHIS import batch가 **configured `branchId`와 불일치**하면 **`visitScheduleReady`/`billingVisitScheduleReady`/`nhisImportReady=false`** — cross-branch seed로 인한 **false-green operationReady** 방지 · **`LiveE2eBootstrapServiceTest.g21SeedStatusShouldRejectVisitSchedulesFromAnotherBranch`** · **`g21SeedStatusShouldRejectNhisImportBatchFromAnotherBranch`**
+> - **Live E2E guardian bootstrap enrichment guard (BE `02a2eb8`, QA-B95, Q510)** — **`LiveE2eBootstrapService`** — **`isUsableGuardianCredentialsConfigured()`** — **default guardian creds만** 설정된 경우 staff bootstrap 응답에 **guardian token 미첨부** — probe readiness·bootstrap payload **일치** · **`LiveE2eBootstrapServiceTest.bootstrapShouldSkipGuardianTokensWhenDefaultGuardianCredentialsAreUsed`**
+> - **G21 batch-confirm loading clear on missing branch (FE `5743333`, QA-B147, Q508)** — **`VisitBatchConfirmPanel`** — **`branchId` 없을 때 `setLoading(false)`** — Modal **「사전 점검 중」** stuck 방지 · **`VisitBatchConfirmPanel.test`**
+> - **UXD-136 L03 nursing record edit Button tertiary (FE `6f07803`, UXD-136, Q509)** — **5종 L03 간호기록 페이지**(제공기록·응급상황·유치도뇨관·구강상태·체중) — raw **`ds-table__action-btn`** → **`Button variant=tertiary size=sm`** · **`ds-btn`** 포커스·forced-colors 토큰 · **행별 `aria-label` 유지** · 각 page **edit-mode test `ds-btn` 회귀 단언**
+> - **UXD-137 L03 vital check edit Button tertiary (FE `f86c76c`, UXD-137, Q509)** — **`NursingVitalCheckPage`** — 행 **수정** 버튼 **`variant=tertiary`** · **`aria-label`「{이용자} {점검일} 통합 바이탈 수정」** — UXD-136 5종과 **동일 패턴** · **`NursingVitalCheckPage.test`**
+>
+> **최근 개선 (249차 — ops 문서 249차 · G21 probe branch-missing blocker · UXD-147 batch-confirm NHIS ack a11y):**
+> - **ops 문서 249차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§9-1·§11-3** · `FAQ.md` **Q502 갱신·Q505~Q506 신규**
+>
+> **최근 개선 (249차 — G21 probe branch-missing blocker · UXD-147 batch-confirm NHIS ack a11y):**
+> - **G21 probe branch-missing blocker exposure (BE `7898aa5`, QA-B95, Q505)** — **`LiveE2eController`** — **`!g21SeedStatus.applicable() && !g21SeedStatus.operationReady()`** 시 **`operationBlockers[]`** 에 **`g21-branch-missing-or-inactive`** 추가 — probe preflight **`blocker=none`** false-green 방지 · **`LiveE2eControllerTest.probeShouldExposeG21BranchBlockerWhenSeedBranchIsMissingOrInactive`**
+> - **UXD-147 G21 batch-confirm NHIS ack aria-describedby (FE `0002943`, QA-B147, Q506)** — **`VisitBatchConfirmPanel`** — **「공단 청구명세서와 비교했습니다.」** Checkbox — **`visit-batch-confirm-nhis-comparison`** region과 **`aria-describedby`** 연결 — 스크린리더가 StatCard 집계·help를 함께 읽음 · **`VisitBatchConfirmPanel.test`**
+>
+> **최근 개선 (248차 — ops 문서 248차 · G21 paired PLAN/BILLING seed · billing visit schedule readiness · legacy DAY_CARE guard · missing branch block · G41 filter-year load guard · UXD-135 modal a11y):**
+> - **ops 문서 248차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-3** · `ADMIN_GUIDE.md` **§1-4·§6-2-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§9-1·§11-3** · `FAQ.md` **Q495·Q457 갱신·Q500~Q504 신규**
+>
+> **최근 개선 (248차 — G21 paired PLAN/BILLING seed · billing visit schedule readiness · legacy DAY_CARE guard · missing branch block · G41 filter-year load guard · UXD-135 modal a11y):**
+> - **G21 missing branch/inactive seed guard (BE `191703f`, QA-B95, Q502)** — **`LiveE2eBootstrapService.g21SeedStatus`** — branch **`null`/`!active`/cross-org `organizationId` mismatch** → **`applicable=false`** · **`operationReady=false`** · false-green G21 gate 방지 · **`LiveE2eBootstrapServiceTest.g21SeedStatusShouldReportNotReadyWhenBranchIsMissingOrInactive`**
+> - **Legacy DAY_CARE G21 seed applicable (BE `cc295ec`, QA-B95, Q501)** — **`isG21SeedApplicableBranch`** — legacy **`DAY_CARE`** seed → **G21 seed applicable** until bootstrap **`HOME_VISIT` 승격** · false-green operation gate 방지 · **`LiveE2eBootstrapServiceTest.g21SeedStatusShouldTreatLegacyDayCareBranchAsApplicableUntilUpgraded`**
+> - **G21 paired BILLING schedule readiness in probe (BE `429661e`, QA-B95, Q500)** — **`HealthController`**·**`LiveE2eController`** — **`liveE2eBillingVisitScheduleReady`·`liveE2eBillingVisitScheduleId`** · blocker **`billing-visit-schedule-missing`** · **`operationReady`** = PLAN + **paired BILLING** + NHIS · **`HealthControllerTest`** · **`LiveE2eBootstrapServiceTest`**
+> - **G21 paired PLAN/BILLING bootstrap seed (BE `fd275f4`, QA-B95, Q500)** — **`LiveE2eBootstrapService.ensureSampleVisitSchedules`** — linked **DRAFT PLAN+BILLING** upsert · **`LiveE2eBootstrapResponse.billingVisitScheduleId`** · **`LiveE2eBootstrapServiceTest`**
+> - **G41 filter-year invalid load guard (FE `cefb7c7`, QA-B146, Q503)** — **`StaffTrainingLogPage.load`** — **`filterYearError` 설정 시 API 호출 skip** · stale compliance 데이터 clear · **`StaffTrainingLogPage.test`**
+> - **UXD-135 G41 modal Field controlProps (FE `40d0ca3`/`974b018`, UXD-135, Q504)** — **`StaffTrainingLogPage`** — filter·**등록/수정 Modal** **`Field controlProps`** → help·error **`aria-describedby`** · **`VisitRfidDiffComparePanel`** no-diff **단일 Alert** consolidate · **`StaffTrainingLogPage.test`** · **`BillingStatementPrintPanel.test`**
+>
+> **최근 개선 (247차 — ops 문서 247차 · G21 seed readiness · per-tenant scoped fallback IDs · NHIS row-batch linkage · liveG21Describe operation+seed gate):**
+> - **ops 문서 247차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11** · `ADMIN_GUIDE.md` **§1-4·§6-2-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§9-1·§11-3** · `FAQ.md` **Q492 갱신·Q495~Q499 신규**
+>
+> **최근 개선 (247차 — G21 seed readiness · per-tenant scoped fallback IDs · NHIS row-batch linkage · liveG21Describe operation+seed gate):**
+> - **G21 NHIS row-batch linkage seed readiness (BE `c0403b0`, G21, Q499)** — **`LiveE2eBootstrapService.g21SeedStatus`** — NHIS import **row `batchId` = batch `id`** 검증 — orphan row만 존재 시 **`nhisImportReady=false`** · false-positive **`operationReady`** 방지 · **`LiveE2eBootstrapServiceTest.g21SeedStatusShouldReportNhisImportNotReadyWhenRowBatchMappingMismatches`**
+> - **Live E2E per-tenant scoped fallback seed IDs (BE `c651b30`, QA-B95, Q498)** — **`scopedFallbackId(kind, organizationId)`** — foreign-tenant configured UUID → **`UUID.nameUUIDFromBytes(kind + ":" + orgId)`** — 재부트스트랩 시 **동일 tenant에 결정적 ID** · **`LiveE2eBootstrapServiceTest.g21SeedStatusShouldStayReadyAfterBootstrapWhenDefaultSeedIdsAreForeignTenantOwned`**
+> - **G21 seed readiness in health/probe/bootstrap (BE `14582bf`, QA-B95, Q495)** — **`HealthController`**·**`LiveE2eController`** — **`liveE2eG21SeedApplicable`·`liveE2eVisitScheduleReady`·`liveE2eNhisImportReady`·`liveE2eVisitScheduleId`·`liveE2eNhisImportBatchId`·`liveE2eNhisImportRowId`** — **`operationReady`** = staff + guardian + **G21 seed** · blockers **`visit-schedule-missing`·`nhis-import-missing`** · **`LiveE2eBootstrapResponse`** resolved seed IDs 반환 · **`HealthControllerTest`** · **`LiveE2eBootstrapServiceTest`**
+> - **Live E2E health/G21 seed probe wire (FE `689f377`, QA-B95, Q496)** — **`liveBackendProbe.extractLiveE2eHealthFields`** — health **`liveE2eOperationReady`·G21 seed flags** 파싱 · **`liveConfig.isLiveOperationReady`·`isLiveG21SeedReady`** · **`liveGlobalSetup`** — **`LIVE_E2E_CLIENT_ID` 미설정 시 `liveE2eSeedClientId` 자동 주입** · **`liveG21Describe`** gate 도입 · **`liveE2eHarness.test`**
+> - **Live E2E G21 operation+seed combined gate (FE `d61ab5e`/`0915f80`, QA-B95, Q497)** — **`liveConfig.isLiveG21ReadyForRun`** — **`isLiveOperationReady() && isLiveG21SeedReady()`** — **`liveG21Describe`** 가 **operation 미준비 시에도 skip** · **`liveE2eSuiteGuard.test`** — **`liveG21Describe`** 허용 목록 · **`liveE2eHarness.test`** regression
+>
+> **최근 개선 (246차 — ops 문서 246차 · health/probe credential alignment · org-scoped bootstrap IDs · UXD-134 a11y · LIVE_E2E_CLIENT_ID whitespace guard):**
+> - **ops 문서 246차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11·§5-14** · `ADMIN_GUIDE.md` **§1-4·§6-2-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q437·Q490 갱신·Q491~Q494 신규**
+>
+> **최근 개선 (246차 — health/probe credential alignment · org-scoped bootstrap IDs · UXD-134 a11y · LIVE_E2E_CLIENT_ID whitespace guard):**
+> - **Live E2E health/probe credential guard alignment (BE `8fe1ccd`, QA-B95, Q491)** — **`HealthController`** — **`defaultCredentials`/`defaultGuardianCredentials`** 시 **`staff-credentials-default`/`guardian-credentials-default`** · **`operationReady=false`** — **probe(Q490)와 health 동작 일치** · Q437 health 예외 **해소** · **`HealthControllerTest.healthShouldBlockOperationReadinessWhenStaffCredentialsAreDefault`** · **`healthShouldBlockOperationReadinessWhenGuardianCredentialsAreDefault`**
+> - **Live E2E org-scoped bootstrap IDs (BE `54d7f36`, QA-B95, Q492)** — **`LiveE2eBootstrapService`** — **`resolveVisitScheduleId`·`resolveNhisImportBatchId`·`resolveNhisImportRowId`** — configured ID가 **다른 org** 소속이면 **새 UUID** 생성 — cross-tenant seed 충돌 방지 · **`LiveE2eBootstrapServiceTest.bootstrapShouldFallbackWhenVisitScheduleIdBelongsToForeignTenant`** · **`bootstrapShouldGenerateNewNhisSeedIdsWhenConfiguredIdsExistForForeignTenant`**
+> - **UXD-134 G21 NHIS compare panel+G41 filter-year a11y (FE `5c4e241`, UXD-134, Q493)** — **`VisitNhisComparisonPanel`** — expand **`aria-describedby`**·**단일 로딩 Spinner** · **`VisitNhisComparisonDetail`** — **`h4` region heading**·**`aria-labelledby`** · **`StaffTrainingLogPage`** — filter **기준 연도 `Field help`→`aria-describedby`** · **`components.css`** **`ds-*` utilities** · **`VisitNhisComparisonPanel.test`** · **`VisitNhisComparisonDetail.test`**
+> - **Live E2E whitespace clientId guard (FE `cf85003`, QA-B95, Q494)** — **`liveConfig.assertLiveE2eConfig`** — **`LIVE_E2E_CLIENT_ID` 공백-only** → missing · **`hasLiveClientId()`** trim 검증 · **`liveE2eHarness.test`**
+>
+> **최근 개선 (245차 — ops 문서 245차 · live E2E probe default-credentials blocker · G41 filter-year inline error):**
+> - **ops 문서 245차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-3·§5-14** · `ADMIN_GUIDE.md` **§1-4·§6-2-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q489 갱신·Q490 신규**
+>
+> **최근 개선 (245차 — live E2E probe default-credentials blocker · G41 filter-year inline error):**
+> - **Live E2E probe default-credentials blocker (BE `f932fd3`, QA-B95, Q490)** — **`LiveE2eController`** — **`defaultCredentials`/`defaultGuardianCredentials`** 시 **`operationReady=false`** · **`operationBlockers[]`** — **`staff-credentials-default`** · **`guardian-credentials-default`** — env 미설정 시 **preflight 통과 불가** · **`LiveE2eControllerTest`** · **`LiveE2eBootstrapLiveApiRoutingE2eTest`** — **`HealthController`** Q437 동작과 **probe 분리** 유지
+> - **G41 filter-year inline error (FE `28e5525`, G41, Q489)** — **`staffTrainingLogs.js`** — **`parseStaffTrainingReferenceYear`** · **`staffTrainingReferenceYearFieldError`** · **`STAFF_TRAINING_REFERENCE_YEAR_*`** 상수 공유 · **`StaffTrainingLogPage`** — 필터 **`Field error`** · invalid filter 시 **compliance 요약 숨김** · **`staffTrainingLogs.test`** · **`StaffTrainingLogPage.test`**
+>
+> **최근 개선 (244차 — ops 문서 244차 · G41 reference-year input guard):**
+> - **ops 문서 244차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-3·§5-14** · `ADMIN_GUIDE.md` **§1-4·§6-2-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6** · `FAQ.md` **Q489 신규**
+>
+> **최근 개선 (244차 — G41 reference-year input guard):**
+> - **G41 reference-year input guard (FE `f26e075`, G41, Q489)** — **`StaffTrainingLogPage`** — **`parseReferenceYear`** — **4자리·2000~2100** — 필터·등록/수정 Modal 선검증 · invalid filter → API **`referenceYear` 생략** · invalid submit → **「기준 연도는 2000~2100 사이 4자리 숫자여야 합니다.」** · **`StaffTrainingLogPage.test`**
+>
+> **최근 개선 (243차 — ops 문서 243차 · G21 NHIS comparison panel+drill-down FE closure · live E2E NHIS seed):**
+> - **ops 문서 243차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11** · `ADMIN_GUIDE.md` **§1-4·§10-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q479·Q484 갱신·Q486~Q488 신규**
+>
+> **최근 개선 (243차 — G21 NHIS comparison panel+drill-down FE closure · live E2E NHIS seed):**
+> - **G21 standalone NHIS comparison panel (FE `797c529`, G21, Q486)** — **`VisitNhisComparisonPanel`** — **`/visits`** — **`GET /visits/nhis-comparison`** StatCard 4종·**수급자별 상세** drill-down · **`visitNhisComparison.js` `buildNhisComparisonView`** 공유 · **`VisitNhisComparisonPanel.test`** · **`visitNhisComparison.test`** · **`VisitsPage.test`**
+> - **G21 per-client NHIS comparison detail in batch confirm (FE `ad18606`, G21, Q487)** — **`VisitNhisComparisonDetail`** — **`VisitBatchConfirmPanel`** — 불일치 시 **「수급자별 상세 보기」** expand · **`fetchVisitNhisComparisonApi`** · **`VisitNhisComparisonDetail.test`** · **`VisitBatchConfirmPanel.test`**
+> - **G21 live E2E NHIS import batch seed (BE `b73e5f4`, G21, Q488)** — **`LiveE2eBootstrapService.ensureSampleNhisImportBatch`** — 당월 NHIS import batch/row upsert(**`serviceDays=1`**) — confirm-readiness·**`GET /visits/nhis-comparison`** batch-present data · **`VisitLiveApiRoutingE2eTest`** · **`LiveE2eBootstrapServiceTest`**
+>
+> **최근 개선 (242차 — ops 문서 242차 · G21 NHIS summary deepen+Modal StatCard FE wire · UXD-133 print a11y):**
+> - **ops 문서 242차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-6-0-1·§5-11** · `ADMIN_GUIDE.md` **§1-4·§10-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6** · `FAQ.md` **Q479·Q481 갱신·Q483~Q485 신규**
+>
+> **최근 개선 (242차 — G21 NHIS summary deepen+Modal StatCard FE wire · UXD-133 print a11y):**
+> - **G21 NHIS comparison summary deepen (BE `4046046`, G21, Q483)** — **`VisitNhisComparisonSummary`** — **`yearMonth`·`overallMatch`** 추가 · **`appendNhisComparisonBlockers`** — import 배치 없음·불일치 건수 **정보성 `blockers[]`** — **`ready=true`와 공존 가능** · **`VisitServiceTest`** · **`VisitControllerRoutingTest.confirmReadinessRouteShouldSerializeNhisComparisonSummary`**
+> - **G21 NHIS comparison Modal StatCard wire (FE `68a4e35`, G21, Q484)** — **`VisitBatchConfirmPanel`** — **`buildNhisComparisonView`** — **`readiness.nhisComparisonSummary`** embed → **일치·불일치·NHIS 누락·일정 외 NHIS StatCard** · import 배치 없음 info Alert · **`overallMatch` success/warning Alert** · **`VisitBatchConfirmPanel.test`**
+> - **UXD-133 G-7-1 print receipt guard and record page a11y (FE `265fc42`, UXD-133, Q485)** — **`BillingStatementPrintPanel`** — 미수납 **영수증·전체 일괄 인쇄 `aria-describedby`** → **`billing-statement-print-receipt-unavailable`** · **`BILLING_CLAIM_PRINT_BODY_CLASS`** CSS 토큰화 · **L02/L03 기록 화면 `ds-visually-hidden` 정의 누락 수정** · **`BillingStatementPrintPanel.test`**
+> - **G21 batch-confirm pilot E2E NHIS blocker align (BE `39fa41a`, G21, Q483)** — **`VisitPilotServiceFlowE2eTest`** — informational NHIS **`blockers[]`** 와 **`ready=true`** 계약 정합
+>
+> **최근 개선 (241차 — ops 문서 241차 · G21 confirm-readiness NHIS summary embed · RFID no-diff success alert):**
+> - **ops 문서 241차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11** · `ADMIN_GUIDE.md` **§1-4·§10-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6** · `FAQ.md` **Q479 갱신·Q481~Q482 신규**
+>
+> **최근 개선 (241차 — G21 confirm-readiness NHIS summary embed · RFID no-diff success alert):**
+> - **G21 confirm-readiness NHIS summary embed (BE `8a8c5b3`, G21, Q481)** — **`VisitConfirmReadinessResponse.nhisComparisonSummary`** — **`VisitNhisComparisonSummary`** — **`matchedLineCount`·`discrepancyLineCount`·`missingNhisLineCount`·`extraNhisLineCount`·`nhisBatchPresent`·`nhisBatchId`** — **동일 월** `from`/`to` 시 **`GET /visits/nhis-comparison` 별도 호출 없이** 일괄확정 사전 점검에 포함 · **월 교차 시 `null`** · **`VisitServiceTest.getConfirmReadinessShouldExposeNhisComparisonSummaryForSameMonth`** · **`MustApiEndpointRoutingTest`** · **`RoleBasedControllerAccessTest`**
+> - **G21 RFID no-diff success alert (FE `f232285`, G21, Q482)** — **`VisitRfidDiffComparePanel`** — 비교 결과 **차이 0건** 시 **success Alert** 「업로드한 급여계획과 RFID 전송 내역 사이에 차이가 없습니다.」 · **`VisitRfidDiffComparePanel.test`**
+>
+> **최근 개선 (240차 — ops 문서 240차 · G21 NHIS comparison·unassigned gate·context nav·RFID normalize):**
+> - **ops 문서 240차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11** · `ADMIN_GUIDE.md` **§1-4·§10-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6** · `FAQ.md` **Q477·Q456 갱신·Q479~Q480 신규**
+>
+> **최근 개선 (240차 — G21 visit NHIS comparison API·unassigned batch-confirm gate·VisitsContextNav·RFID diff normalize):**
+> - **G21 visit NHIS comparison API (BE `03a052a`, G21, Q479)** — **`GET /api/v1/visits/nhis-comparison`** — **`VisitNhisComparisonResponse`** — 이용자별 **방문일 수(`visitDayCount`)** vs 최신 NHIS import **`serviceDays`** · **`matchedLineCount`·`discrepancyLineCount`·`missingNhisLineCount`·`extraNhisLineCount`** · **동일 월 범위 필수** · **`VisitServiceTest`** · **`MustApiEndpointRoutingTest`** · **`RoleBasedControllerAccessTest`**
+> - **G21 unassigned draft batch-confirm gate (BE `5f710e3`, G21, Q477)** — **`VisitConfirmReadinessResponse`** — **`ready`·`readyPlan`·`readyBilling`** 가 **담당 미배정 DRAFT 0건**일 때만 true · **`POST /visits/batch-confirm`** — 미배정 DRAFT **`422`** 「담당자가 미배정된 방문일정이 있어 일괄확정할 수 없습니다.」 · **`VisitServiceTest`**
+> - **G21 VisitsContextNav URL sync (FE `3a27303`, G21, Q480)** — **`VisitsContextNav`** · **`visitScheduleNav.js`** — **`?kind=PLAN|BILLING`** · **`?split=1`** — 계획·청구·분할 비교 **북마크 가능** · **`VisitsContextNav.test`** · **`VisitsPage.test`**
+> - **G21 RFID diff code normalize deepen (FE `570912e`, G21, Q456)** — **`visits.js` `normalizeVisitRfidDiffCode`** · **`VisitRfidDiffComparePanel`** — **소문자·공백·`COMP_4`/`comp-4` 변형** → 표준 **`COMP_04`** · 집계 chip·행 badge **일관** · **`visits.test`** · **`VisitRfidDiffComparePanel.test`**
+>
+> **최근 개선 (239차 — ops 문서 239차 · G21 per-kind readiness deepen+FE wire · G-7-1 unpaid print label):**
+> - **ops 문서 239차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-6-0-1·§5-11** · `ADMIN_GUIDE.md` **§1-4·§10-12** · `DEPLOYMENT_GUIDE.md` **§1-3** · `FAQ.md` **Q474·Q475 갱신·Q477~Q478 신규**
+>
+> **최근 개선 (239차 — G21 per-kind readiness deepen+FE wire · G-7-1 unpaid all-print label):**
+> - **G21 per-kind ready flags and blocker messages (BE `f26abb0`, G21, Q477)** — **`VisitConfirmReadinessResponse`** — **`readyPlan`·`readyBilling`** — PLAN/BILLING **track별 확정 가능 여부** · **`blockers[]`** per-kind 메시지(페어 불일치·담당 미배정) · **`VisitServiceTest`**
+> - **G21 plan-billing readiness split deepen (BE `28860ae`, G21, Q477)** — **`pairedDivergedPlanCount`·`pairedDivergedBillingCount`·`unassignedDraftPlanCount`·`unassignedDraftBillingCount`** · **`BatchConfirmVisitSchedulesResponse.confirmedPlanCount`·`confirmedBillingCount`**
+> - **G21 batch-confirm split StatCard wire (FE `f9ed97d`, G21, Q477)** — **`VisitBatchConfirmPanel`** — **`buildKindReadinessStats`** — DRAFT·확정·**확정 가능**·페어 불일치·담당 미배정 **StatCard 행** · **`VisitBatchConfirmPanel.test`**
+> - **G-7-1 unpaid all-print label clarify (FE `f5639df`, G-7-1, Q478)** — **`BillingStatementPrintPanel`** — 미수납 청구 **「전체 일괄 인쇄 (영수증 제외)」** · **`aria-label`** 동기화 · **`BillingStatementPrintPanel.test`**
+>
+> **최근 개선 (238차 — ops 문서 238차 · G21 readiness split·G-7-1 print bundle·UXD-132 a11y):**
+> - **ops 문서 238차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§3-1·§4-6·§5-8-0-1·§5-11** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3** · `FAQ.md` **Q474~Q476 신규**
+>
+> **최근 개선 (238차 — G21 plan-billing readiness split·G-7-1 billing print bundle·UXD-132 G15/SideNav a11y):**
+> - **G21 plan-billing readiness split counts (BE `6aeafe7`, G21, Q474)** — **`VisitConfirmReadinessResponse`** — **`draftPlanCount`·`draftBillingCount`·`confirmedPlanCount`·`confirmedBillingCount`** — PLAN/BILLING **2-track split-view** 가 **추가 API 호출 없이** 지점 준비도 집계 · **`VisitServiceTest`** · **`VisitControllerRoutingTest`**
+> - **G-7-1 billing statement print bundle panel (FE `50d330d`, G-7-1, Q475)** — **`BillingStatementPrintPanel`** — **`BillingDetailPage`** — 케어포 PDF p.87 **② 인쇄 산출물**(주소라벨·급여비용명세서·영수증·청구리스트) — **4채널 발송과 분리** · **전체 일괄 인쇄** · **명세서 PDF 다운로드** · **`billingStatementPrint.js`** · **`BillingStatementPrintPanel.test`**
+> - **UXD-132 G15 service log compliance badges and SideNav a11y (FE `f8321c7`, UXD-132, Q476)** — **`TransportServiceLogPanel`** — 입력 폼 **「시간 준수」** `StatusBadge` — 인쇄 표와 **동일 패턴** · **감사 경고·지점 `tel:` 링크 a11y** · **`SideNav`** — **`aria-label`「N개 항목」**·**`ds-sidenav__group--active` accent** · **`TransportServiceLogPanel.test`** · **`SideNav.test`**
+>
+> **최근 개선 (237차 — ops 문서 237차 · G15 service log direction·live E2E probe·guardian FE align):**
+> - **ops 문서 237차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-8-0-1** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§9-1·§11-3** · `FAQ.md` **Q419·Q470 갱신·Q471~Q473 신규**
+>
+> **최근 개선 (237차 — G15 service log direction·live E2E probe bootstrap-disabled·guardian credential FE align):**
+> - **G15 service log direction on export (BE `72124f7`, G15 v1.3-C, Q471)** — **`TransportServiceLogResponse.direction`** — **`PICKUP`/`DROPOFF`** — 별지 제22호 export가 **별도 run fetch 없이** 방향별 라벨·note prefix 정합 · legacy **`note`** prefix **PICKUP=`픽업:`** · **DROPOFF=`하차:`** · **`TransportServiceTest`** · **`TransportServiceLogLiveApiRoutingE2eTest`**
+> - **Live E2E probe bootstrap-disabled semantics (BE `8cf09d8`, QA-B95, Q472)** — **`GET /api/v1/system/live-e2e/probe`** — bootstrap disabled 시 **`operationBlocker`·`operationBlockers` = `bootstrap-disabled` 단일** — credential 누락 **오탐 noise 제거** · health endpoint와 **동일 gating** · **`LiveE2eControllerTest`**
+> - **Live E2E guardian credential FE fallback align (FE `94c65e2`, QA-B138, Q473)** — **`liveGlobalSetup.js`** — default guardian login **`live-e2e-guardian@ogada.test`/`ogada-guardian-e2e`** — **`LiveE2eBootstrapService`**·**`dev-live-e2e.env.example`** 와 **일치** · **`liveE2eHarness.test`**
+>
+> **최근 개선 (236차 — ops 문서 236차 · G15 별지 제22호 form completion·branch contact·pickupAddress API):**
+> - **ops 문서 236차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-8-0-1** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q466 갱신·Q468~Q470 신규**
+>
+> **최근 개선 (236차 — G15 별지 제22호 form completion·branch contact export·pickupAddress API):**
+> - **G15 service log pickupAddress API field (BE `e358f2d`, G15 v1.3-C, Q470)** — **`TransportServiceLogRowResponse.pickupAddress`** — 별지 제22호 export가 **note `픽업:` prefix 파싱만** 의존하지 않음 · legacy note prefix **하위 호환 유지** · **PII 마스킹** coverage · **`TransportServiceTest`** · **`TransportServiceLogLiveApiRoutingE2eTest`**
+> - **G15 service log branch contact on API (BE `a8e2bb2`, G15 v1.3-C, Q469)** — **`TransportServiceLogResponse`** — **`branchAddress`·`branchRegionPath`·`branchPhone`** — 지점 **`addressLine1`·`regionDongCode`·`phoneEncrypted`** resolve · 인쇄·compliance payload용 · **`TransportServiceTest`** · **`TransportControllerRoutingTest`**
+> - **G15 branch contact on 별지 제22호 export (FE `b1a16ff`, G15 v1.3-C, Q469)** — **`TransportServiceLogPanel`** — 인쇄·텍스트 다운로드 **기관명·주소·지역·대표 연락처** 헤더 · **`normalizeServiceLogBranchContact`** · **`transportServiceLog.js`** · **`TransportServiceLogPanel.test`**
+> - **G15 별지 제22호 form completion (FE `07be394`, G15 v1.3-C, Q468)** — **`transportServiceLogFieldLabels`** — **PICKUP/DROPOFF** 방향별 **탑승/하차 장소·계획/실제 시각** 라벨 · 정차별 read-only **「비고」** — **`formatServiceLogRemark`** 픽업 주소 중복 제거 · **`TransportServiceLogPanel.test`** · **`transportServiceLog.test`**
+>
+> **최근 개선 (235차 — ops 문서 235차 · G15 per-stop form parity · V155 waypoint test deepen):**
+> - **ops 문서 235차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-8-0-1** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q458 갱신·Q466~Q467 신규**
+>
+> **최근 개선 (235차 — G15 per-stop form·print column parity · V155 waypoint validation test deepen):**
+> - **G15 per-stop service log form·print column parity (FE `7de5a6f`, G15 v1.3-C, Q466)** — **`TransportServiceLogPanel`** — 정차별 `fieldset`에 **읽기 전용「탑승 장소」·「시간 준수」** `Field` 추가 — 인쇄·텍스트 다운로드 표와 **동일 열 구성** · **`TRANSPORT_TIME_COMPLIANCE_TOLERANCE_MINUTES`(15분)** help · **`TransportServiceLogPanel.test`**
+> - **V155 waypoint address validation test deepen (BE `a179256`, US-T02, Q467)** — **`TransportServiceTest.updateRunShouldRejectBlankWaypointAddress`** · **`createRunShouldTrimWaypointAddressBeforePersist`** · **`TransportPilotServiceFlowE2eTest.usT02UpdateRunShouldRejectBlankWaypointAddress`** · **`LiveE2eBootstrapServiceTest`** pickup address **PII encrypt** assert — V155·서비스 레이어 regression coverage
+>
+> **최근 개선 (234차 — ops 문서 234차 · V155 waypoint · G41 PDF 8-7·dashboard widget · G15 print pickup · live E2E seed deepen):**
+> - **ops 문서 234차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-2·§5-3·§5-8·§5-8-0-1·§5-14** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q321·Q421·Q457 갱신·Q458~Q465 신규**
+>
+> **최근 개선 (234차 — V155 waypoint integrity · G41 PDF 8-7 alerts·8-7-1 export · G15 print pickup · live E2E seed deepen):**
+> - **Transport waypoint address non-empty guard (BE `64c4c80`, US-T02, Q458)** — **V155** `chk_transport_run_stops_waypoint_address_nonempty` — **`btrim(waypoint_address) <> ''`** — 공백-only 경유지 DB 거부 · V151·서비스 레이어 defense-in-depth · CLIENT/BRANCH 영향 0
+> - **G41 PDF 8-7 mandatory training alerts (FE `caa215f`, G41, Q459)** — **`StaffTrainingLogPage`** — **`buildMandatoryTrainingUnwrittenAlerts`** — **재난·소화** 미작성 warning Alert · StatCard **「미작성」** unit · **`StaffTrainingLogPage.test`**
+> - **G41 staff refresher 8-7-1 report export (FE `caa215f`, US-S02, Q460)** — **`StaffRefresherTrainingPage`** — **`staffRefresherTrainingReport.js`** — **「엑셀 다운로드 (8-7-1)」** CSV · **`StaffRefresherTrainingPage.test`**
+> - **G41 training compliance dashboard widget (FE `9e91e6a`, G41, Q461)** — **`DashboardPage`** — **「직원교육 미충족」** StatCard — **`countStaffTrainingComplianceGaps`** · 스냅샷 누락 시 **`fetchStaffTrainingLogComplianceApi`** 폴백 · **`DashboardPage.test`**
+> - **UXD-131 G41·G21 a11y labels (FE `7f94654`, UXD-131, Q462)** — **`StaffTrainingLogPage`** mandatory alert **`id`/`aria-describedby`** · **`VisitRfidDiffComparePanel`** **`aria-label`**·diff code **`Field` label** · **`StaffTrainingLogPage.test`** · **`VisitRfidDiffComparePanel.test`**
+> - **G15 service log print pickup address column (FE `a1d6e32`, G15 v1.3-C, Q463)** — **`TransportServiceLogPanel`** 인쇄·텍스트 다운로드 — **픽업 주소** 열 · **`transportServiceLog.js`** **`pickupAddress`** merge · **`TransportServiceLogPanel.test`**
+> - **Live E2E DRAFT PLAN visit seed (BE `dac19d3`, QA-B95, Q464)** — **`LiveE2eBootstrapService`** — HOME_VISIT branch **당월 DRAFT PLAN visit upsert** — visit list/detail harness seed · **`LiveE2eBootstrapServiceTest`**
+> - **Live E2E transport roster profile seed (BE `2d98040`, QA-B95, Q465)** — **`LiveE2eBootstrapService`** — bootstrap client **`usesTransport`·pickup address/coordinates·default pickup time** — US-T01/T02 roster seed · **`LiveE2eBootstrapServiceTest`**
+>
+> **최근 개선 (232차 — ops 문서 232차 · G21 RFID diff rendering · visit supervisory role · live E2E HOME_VISIT seed):**
+> - **ops 문서 232차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11·§6-3-1** · `ADMIN_GUIDE.md` **§1-4·§10-12** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q307·Q452 갱신·Q455~Q457 신규**
+>
+> **최근 개선 (232차 — G21 RFID diff code rendering · visit check-in supervisory role normalize · live E2E HOME_VISIT seed):**
+> - **G21 RFID diff code rendering hardening (FE `4a112fe`, G21 P1, Q456)** — **`VisitRfidDiffComparePanel`** — **`normalizeDiffCodes`** — 배열·쉼표 구분 문자열·**알 수 없는 코드** badge 표시 · 행별 집계와 **`diffCodeCounts` 병합** · **`VisitRfidDiffComparePanel.test`**
+> - **Visit check-in supervisory role normalize (BE `78cfb8a`, G21, Q455)** — **`VisitService.validateAssignedUserForCheckIn`** — JWT **`roleCode` trim+lowercase** — **` SOCIAL_WORKER `** 등 **감독 역할 회귀 방지** · **`VisitServiceTest.checkInShouldAllowSocialWorkerWithUppercaseRoleCode`**
+> - **Live E2E HOME_VISIT branch seed (BE `9e050b1`, QA-B95, Q457)** — **`LiveE2eBootstrapService.activateBranch`** — 레거시 **`DAY_CARE` seed → `HOME_VISIT` 승격** — G21 visit list/import·RFID compare live routing · **`VisitLiveApiRoutingE2eTest`** · **`LiveE2eBootstrapServiceTest`**
+>
+> **최근 개선 (231차 — ops 문서 231차 · G21 RFID compare UI · visit check-in guard · L02_M07 normalization):**
+> - **ops 문서 231차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-11·§5-24** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q307·Q452 갱신·Q453·Q454 신규**
+>
+> **최근 개선 (231차 — G21 RFID compare UI · visit check-in assigned-user guard · L02_M07 body restraint normalization):**
+> - **G21 RFID plan-vs-tag compare UI (FE `27c9de3`, G21 P1, Q452)** — **`VisitRfidDiffComparePanel`** — **`/visits`** — multipart **`planFile`·`rfidFile`** · **7-code COMP 집계 chip** · **행별 diff 표** · **`compareVisitsRfidApi`** · **`VisitRfidDiffComparePanel.test`**
+> - **Visit check-in assigned user active·branch guard (BE `0db1e68`, G21, Q453)** — **`VisitService.validateAssignedUserForCheckIn`** — 배정 직원 **비활성·퇴사·지점 미소속** 시 check-in/out **`422`** — **`ASSIGNED_USER_INACTIVE_MESSAGE`·`ASSIGNED_USER_BRANCH_GUARD_MESSAGE`** · **`VisitServiceTest.checkInShouldRejectWhenAssignedUserIsInactive`** · **`checkInShouldRejectWhenAssignedUserIsNotInBranch`**
+> - **Body restraint record payload normalization (FE `4a47675`, L02_M07, Q454)** — **`BodyRestraintRecordPage`** — **`normalizeClientList`/`normalizeRecordList`** — snake_case·`items[]` 래핑 수용 · malformed payload **명확한 Alert** · **`BodyRestraintRecordPage.test`**
+
+> **구현 상태 (230차, BE `eeac205`·FE `7424c30`)**: Flyway **V1–V154** · **106 route** · merge gate **~403 pending** · BE **@ `eeac205`** (G21 **RFID 7-code plan-vs-tag compare** @ `eeac205` · live E2E **bootstrap error blockers** @ `d7f1a9a` · G15 **driver signature persist** @ `bc3a35c` · live E2E **operationBlockers list** @ `c5dd4f2` · G15 **server service log legal field guard** @ `ac1d43f` · G15 **duplicate service log row rejection** @ `52e3340` · live E2E **probe operation readiness fields** @ `40ef105` · live E2E **default guardian readiness gate** @ `2e6c35f` · **bootstrap token retry** @ `a6dfaad` · **guardian token routing harness** @ `d02f78a` · G15 **service log live API routing harness** @ `4c5d3bc` · **V153 PAID paid_at index** @ `c8ee85c` · live E2E **guardian default credentials** @ `92be918`/`09df8c7` · **probe credential isolation** @ `844227a` · **bootstrap branch active** @ `d68c4bf` · actuator **`/actuator/healthz`** @ `2157df5` · transport **settings validation** · **V152** @ `dd2fa2c` · staff bootstrap guardian tokens @ `73cffc5`) · FE **@ `7424c30`** (live E2E **guardian-only suite gate** @ `7424c30` · UXD-130 **driver signature fieldset·transport-log CSS** @ `bfe0283` · L02_M13 **meal assistance create client normalization** @ `1c8f236` · G15 **driver signature UI/export** @ `f51e365` · G15 **service-log legal guide** @ `0df6902` · staff **health checkup roster→HR file hub** @ `b6ce301` · G15 **service log legal field guard** @ `b4644e8` · UXD-129 **roster·health·meal a11y** @ `e9d39a9` · L02_M13 **malformed API error** @ `38642e2` · staff **new-hire health checkup document window** @ `8e6310a` · QA-B133 **DateInput today-label test** @ `40d4284` · transport **roster planned pickup hub** @ `e35efb2` · QA-B132 **StaffLifecyclePanel test stabilize** @ `101aaee` · QA-B131 **live E2E script path** @ `8882d9f` · **DatePicker keyboard arrow navigation** @ `7b8c7b9` · G30 **monitoring evidence context panel** @ `7d2cb4a` · G15 **compliance→일지 hub** @ `b93e098` · live E2E **bootstrap credential refresh** @ `b2c09e1` · **nested bootstrap payload** @ `fc916db` · DateInput/TimeInput **QA-B127** @ `ab4de83` · compact dispatch @ `96db8bf` · 경유지 @ `bf73c4c`)
+> 
+> **최근 개선 (230차 — ops 문서 230차 · UXD-130 driver signature a11y · live E2E guardian suite gate · G21 RFID compare API):**
+> - **ops 문서 230차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-8-0-1·§5-11** · `ADMIN_GUIDE.md` **§1-4·§6-2-6c** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q445 갱신·Q450~Q452 신규**
+> 
+> **최근 개선 (230차 — UXD-130 driver signature a11y · live E2E guardian suite gate · G21 RFID compare API):**
+> - **Transport service log driver signature a11y (FE `bfe0283`, UXD-130, Q450)** — **`TransportServiceLogPanel`** — **`fieldset`/`legend`「운전자 서명」** — **「서명 성명」·「서명일」** `Field` 쌍 그룹 · **8종 `ds-transport-log__*` CSS** 정의(FE-16) · **`TransportServiceLogPanel.test`** label query 갱신
+> - **Live E2E guardian-only suite gate (FE `7424c30`, QA-B95, Q451)** — **`liveGlobalSetup.js`** — global **`skipped`** = backend **`reachable`·`ready`만** — staff auth 미준비여도 **guardian-only suite 실행 가능** · **`liveE2eHarness.test`** regression
+> - **G21 RFID 7-code plan-vs-tag compare API (BE `eeac205`, G21 P1, Q452)** — **`POST /api/v1/visits/imports/rfid/compare`** — NHIS **planFile**·**rfidFile** multipart — **`VisitRfidDiffCompareResponse`** — **`diffCodeCounts`** COMP_01~09 · **`VisitRfidDiffMatcher`** · **`VisitServiceTest.compareRfidTransmissionShouldReturnSevenCodeDiffMatrix`** · **FE UI △ Planned**
+> 
+> **최근 개선 (229차 — ops 문서 229차 · live E2E bootstrap error blockers · L02_M13 meal assistance client normalization):**
+> - **ops 문서 229차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-27** · `ADMIN_GUIDE.md` **§1-4·§6-2-18** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q441·Q442 갱신·Q448·Q449 신규**
+> 
+> **최근 개선 (229차 — live E2E bootstrap error blockers · L02_M13 meal assistance client normalization):**
+> - **Live E2E bootstrap error blockers (BE `d7f1a9a`, QA-B135, Q448)** — **`HealthController`**·**`LiveE2eController`** — status detail **`bootstrap=error`**·**`guardian-bootstrap=error`** 시 **`operationBlockers`** 에 **`staff-bootstrap-error`**·**`guardian-bootstrap-error`** 추가 — credential 누락과 **내부 bootstrap 실패** 구분 · **`HealthControllerTest.healthShouldSurfaceLiveE2eBootstrapErrorsWhenStatusProbesFail`** · **`LiveE2eControllerTest.probeShouldSurfaceBootstrapErrorsInOperationBlockers`**
+> - **Meal assistance create client normalization (FE `1c8f236`, L02_M13, Q449)** — **`MealAssistanceRecordPage`** — **`normalizeClient`** — 이용자 목록 **`client_id`/`client_name` snake_case**·**`items[]` 래핑** 수용 · 등록 시 **`clientId`** 정상 전달 · **`MealAssistanceRecordPage.test`** — **`creates a record when client payload uses snake_case fields`**
+> 
+> **최근 개선 (228차 — ops 문서 228차 · G15 driver signature · service-log legal guide · live E2E operationBlockers list):**
+> - **ops 문서 228차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-8-0·§5-8-0-1** · `ADMIN_GUIDE.md` **§1-4·§6-2-6c** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q407·Q441 갱신·Q445~Q447 신규**
+> 
+> **최근 개선 (228차 — G15 driver signature · service-log legal guide · live E2E operationBlockers list):**
+> - **Transport service log driver signature persist (BE `bc3a35c`, G15 v1.3-C, Q445)** — **V154** `service_log_driver_signatory_name`·`service_log_driver_signed_on` · **`UpsertTransportServiceLogRequest.driverSignatoryName`/`driverSignedOn`** · **`TransportService.validateDriverSignature`** — 성명·서명일 **쌍 입력** · **서명일 ≤ 오늘** · **서명일 ≥ 운행일** · **`driverSignatureComplete`** · **`TransportServiceTest.upsertServiceLogShouldPersistDriverSignature`**
+> - **Transport service log driver signature UI (FE `f51e365`, G15 v1.3-C, Q445)** — **`TransportServiceLogPanel`** — **「운전자 서명 성명」·「운전자 서명일」** `Field` · 저장·인쇄·텍스트 다운로드 전 **서명 완료 필수** · **`driverSignatureComplete`** 감사 표시 · **`transportServiceLog.js`** export · **`TransportServiceLogPanel.test`**
+> - **Transport service-log legal guide on compliance page (FE `0df6902`, G15 v1.3-C, Q446)** — **`TransportServiceLogLegalGuide`** — **`/transport/compliance`** — NHIS **별지 제22호** 필수 입력 안내 · **「확정 배차 선택」** anchor · **`TransportServiceLogLegalGuide.test`**
+> - **Live E2E operation blockers list (BE `c5dd4f2`, QA-B95, Q447)** — **`LiveE2eProbeResponse.operationBlockers`** · **`GET /api/v1/health` `liveE2eOperationBlockers`** — **복수 blocker** 동시 노출 · **`operationBlocker`** = 첫 항목 · **`HealthControllerTest`** · **`LiveE2eControllerTest`**
+> 
+> **최근 개선 (227차 — ops 문서 227차 · G15 server legal field guard · staff health checkup HR file hub wire):**
+> - **ops 문서 227차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-3·§5-8-0-1** · `ADMIN_GUIDE.md` **§1-4·§6-2-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q439·Q435 갱신·Q443·Q444 신규**
+> 
+> **최근 개선 (227차 — G15 server legal field guard · staff health checkup HR file hub wire):**
+> - **Transport service log server legal field guard (BE `ac1d43f`, G15 v1.3-C, Q443)** — **`TransportService.validateServiceLogStopRecords`** — 정차별 **실제 픽업·동승 여부·하차 시각** 미입력 시 **`422`** · **하차 < 픽업** 거부 — FE `b4644e8`와 **동일 메시지** · **`TransportServiceTest.upsertServiceLogShouldRejectIncompleteLegalFields`**
+> - **Staff health checkup roster→HR file hub wire (FE `b6ce301`, US-R02, FAQ21799, Q444)** — **`StaffHealthCheckupsPage`** — **`StaffHealthCheckupRecordsPanel`** 이력 Modal 재사용 · **신규 서류 필요** 행 **「서류 업로드」** → **`/staff/{userId}?tab=files&doc=health-check`** · **`fetchStaffHrFilesApi`** **`health-check`** 등록 여부 표시 · **`StaffHealthCheckupsPage.test`**
+> 
+> **최근 개선 (226차 — ops 문서 226차 · G15 service log legal field guard · duplicate row rejection · probe operation readiness · L02_M13 malformed API · UXD-129 a11y):**
+> - **ops 문서 226차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-3·§5-8-0-1·§5-27** · `ADMIN_GUIDE.md` **§1-4·§6-2-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q407·Q433·Q435·Q366 갱신·Q439~Q442 신규**
+> 
+> **최근 개선 (226차 — G15 service log legal field guard · duplicate row rejection · probe operation readiness · L02_M13 malformed API · UXD-129 a11y):**
+> - **Transport service log legal field guard (FE `b4644e8`, G15 v1.3-C, Q439)** — **`TransportServiceLogPanel`** — **`validateServiceLogRecords`** — 정차별 **실제 픽업·동승 여부·하차 시각** 필수 · 하차 < 픽업 검증 · **저장·인쇄·텍스트 다운로드** 전 클라이언트 검증 · **`TransportServiceLogPanel.test`**
+> - **Transport service log duplicate client rejection (BE `52e3340`, G15 v1.3-C, Q440)** — **`TransportService.validateServiceLogStopRecords`** — 동일 `clientId` 중복 시 **`422`** 「일지 대상 이용자가 중복되었습니다.」 · **`TransportServiceTest.upsertServiceLogShouldRejectDuplicateClientRows`**
+> - **Live E2E probe operation readiness fields (BE `40ef105`, QA-B95, Q441)** — **`LiveE2eProbeResponse`** — **`staffBootstrapReady`·`guardianBootstrapReady`·`operationReady`·`operationBlocker`** — blocker: `none`·`staff-bootstrap-not-ready`·`staff-credentials-missing`·`guardian-credentials-missing`·`seed-client-missing`·`guardian-bootstrap-not-ready` · **`LiveE2eControllerTest`** · **`LiveE2eBootstrapLiveApiRoutingE2eTest`**
+> - **Meal assistance malformed API error (FE `38642e2`, L02_M13, Q442)** — **`MealAssistanceRecordPage`** — **`normalizeRecordList`/`normalizeClientList`** — malformed payload 시 **빈 목록 대신 명확한 Alert** · **`MealAssistanceRecordPage.test`**
+> - **UXD-129 a11y polish (FE `e9d39a9`, Q442)** — **`TransportPage`** — 배차 루트 링크 **`aria-label`** · 지연 **`aria-label`**(title-only 제거) · **`StaffHealthCheckupsPage`** — 신규 서류 **NA → 「—」** · **`MealAssistanceRecordPage`** — CSS class 정합 · **`components.css`** **`ds-inline-cluster`**
+
+> **구현 상태 (225차, BE `2e6c35f`·FE `8e6310a`)**: Flyway **V1–V153** · **106 route** · merge gate **~11 pending** · BE **@ `2e6c35f`** (live E2E **default guardian readiness gate** @ `2e6c35f` · **bootstrap token retry** @ `a6dfaad` · **guardian token routing harness** @ `d02f78a` · G15 **service log live API routing harness** @ `4c5d3bc` · **V153 PAID paid_at index** @ `c8ee85c` · live E2E **guardian default credentials** @ `92be918`/`09df8c7` · **probe credential isolation** @ `844227a` · **bootstrap branch active** @ `d68c4bf` · actuator **`/actuator/healthz`** @ `2157df5` · transport **settings validation** · **V152** @ `dd2fa2c` · staff bootstrap guardian tokens @ `73cffc5`) · FE **@ `8e6310a`** (staff **new-hire health checkup document window** @ `8e6310a` · QA-B133 **DateInput today-label test** @ `40d4284` · transport **roster planned pickup hub** @ `e35efb2` · QA-B132 **StaffLifecyclePanel test stabilize** @ `101aaee` · QA-B131 **live E2E script path** @ `8882d9f` · **DatePicker keyboard arrow navigation** @ `7b8c7b9` · G30 **monitoring evidence context panel** @ `7d2cb4a` · G15 **compliance→일지 hub** @ `b93e098` · live E2E **bootstrap credential refresh** @ `b2c09e1` · **nested bootstrap payload** @ `fc916db` · DateInput/TimeInput **QA-B127** @ `ab4de83` · compact dispatch @ `96db8bf` · 경유지 @ `bf73c4c`)
+> 
+> **최근 개선 (225차 — ops 문서 225차 · staff health checkup new-hire document window · live E2E readiness/retry deepen · QA-B133 DateInput test):**
+> - **ops 문서 225차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-3** · `ADMIN_GUIDE.md` **§1-4·§6-2-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q296 갱신·Q428 갱신·Q435~Q438 신규**
+> 
+> **최근 개선 (225차 — staff health checkup new-hire document window · live E2E readiness/retry deepen · QA-B133 DateInput test):**
+> - **Staff new-hire health checkup document window (FE `8e6310a`, US-R02, FAQ21799, Q435)** — **`StaffHealthCheckupsPage`** — **`staffHealthCheckupCompliance.js`** — **`hiredAt` from users API** · StatCard **「신규 서류 미확인」** · 목록 **「입사일」·「신규 서류」** Badge (**1년 이내 확인**·**서류 필요**·**입사일 미등록**) · 첫 검진 **실시일 1년 이내** 클라이언트 검증 · **`StaffHealthCheckupsPage.test`** · **`staffHealthCheckupCompliance.test`**
+> - **Live E2E default guardian readiness gate (BE `2e6c35f`, QA-B95, Q437)** — **`HealthController`** — **`guardianCredentialsUsable = configured \|\| defaultGuardianCredentials`** — env blank 시 **`liveE2eGuardianBootstrapReady`·`liveE2eOperationReady` true** · **`HealthControllerTest.healthShouldTreatDefaultGuardianCredentialsAsUsableForOperationReadiness`**
+> - **Live E2E bootstrap token retry for stale seed (BE `a6dfaad`, QA-B95, Q438)** — **`LiveE2eBootstrapService.issueSeedTokensWithRetry`** — token 발급 실패 시 scope 재설정 후 **1회 재시도** · **`LiveE2eBootstrapServiceTest`**
+> - **Live E2E guardian token routing harness deepen (BE `d02f78a`, QA-B95, Q438)** — **`LiveE2eBootstrapLiveApiRoutingE2eTest`** — staff bootstrap 응답 **embedded guardian token fields** HTTP 계약 검증
+> - **DateInput today-label test stabilize (FE `40d4284`, QA-B133, Q436)** — **`DateInput.test`** — 달력 **「오늘」** 버튼 selector **`( 오늘)?` optional** — locale·날짜 경계 flake 해소
+> 
+> **최근 개선 (224차 — ops 문서 224차 · transport roster planned pickup hub · QA-B132 StaffLifecyclePanel test stabilize):**
+> - **ops 문서 224차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-8** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q433·Q434 신규**
+> 
+> **최근 개선 (224차 — transport roster planned pickup hub · QA-B132 StaffLifecyclePanel test stabilize):**
+> - **Transport roster planned pickup hub (FE `e35efb2`, US-T02, Q433)** — **`TransportPage`** — **`loadConfirmedRunDispatchIndex`** — 확정 루트 상세에서 이용자별 **정차 순서·계획 픽업/하차 시각** 조회 · 명단 **「배차 루트」** 링크(**「N번 정차」** → **`/transport/runs/:runId`**) · **「계획 픽업」/「계획 하차」** 열 · 희망 시각 대비 **「지연」** Badge · **`transportRosterDispatch.js`** · **`TransportPage.test`** · **`transportRosterDispatch.test`**
+> - **StaffLifecyclePanel FAQ21806 deadline test stabilize (FE `101aaee`, QA-B132, Q434)** — **`StaffLifecyclePanel.test`** — **`NEW_HIRE_TRAINING_DEADLINE_DAYS`** helper mock — wall-clock 경과 시 **hiredAt+7일** flake 해소
+> 
+> **최근 개선 (223차 — ops 문서 223차 · QA-B131 · DatePicker keyboard a11y · V153 · G15 service log live API harness):**
+> - **ops 문서 223차 (TWR)** — `USER_MANUAL.md` **§1-3·§3-2** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q422 갱신·Q429~Q432 신규**
+> 
+> **최근 개선 (223차 — QA-B131 live E2E script path · DatePicker keyboard a11y · V153 · G15 service log live API harness):**
+> - **Live E2E npm script path fix (FE `8882d9f`, QA-B131, Q429)** — **`package.json` `test:live-e2e`** — repo root **`scripts/run-frontend-live-e2e.sh`** 위임 — monorepo `scripts/` 경로 해석 · **`liveE2eHarness.test`** regression
+> - **DatePicker keyboard arrow navigation (FE `7b8c7b9`, UXD, Q430)** — **`DatePickerCalendar`** — WAI-ARIA date grid — **화살표(±1일/±1주)·Home/End·PageUp/PageDown(±1월)** · **roving tabindex** · **`pickerDate.js`** helpers · **`DateInput.test`** (+4)
+> - **PAID claim paid_at report index (BE `c8ee85c`, G26, Q431)** — **V153** `idx_billing_claims_org_branch_status_paid_at` — 입금·수납 대장·G26 ① 의료비공제 **`paid_at DESC`** 조회 가속 (V71 REFUNDED partial 대칭)
+> - **Transport service log live API routing harness (BE `4c5d3bc`, G15 v1.3-C, Q432)** — **`TransportServiceLogLiveApiRoutingE2eTest`** — **`GET/PUT …/service-log`**·**`GET …/audit-trail`** FE `transportServiceLogServices` contract mirror
+> 
+> **최근 개선 (222차 — ops 문서 222차 · G30 monitoring evidence panel · live E2E guardian default credentials):**
+> - **ops 문서 222차 (TWR)** — `USER_MANUAL.md` **§1-3·§4-3** · `ADMIN_GUIDE.md` **§1-4·§6-2-11** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q391 갱신·Q428 신규**
+> 
+> **최근 개선 (222차 — G30 monitoring evidence panel · live E2E guardian default credentials):**
+> - **G30 monitoring evidence context panel (FE `7d2cb4a`, BNK-273, Q391)** — **`MonitoringSelfDiagnosisPage`** — **`MonitoringEvidenceContextPanel` `variant="g30"`** — FAQ21838 증빙 기간·G24b/G21/G26 **cross-link nav** · **`MonitoringSelfDiagnosisPage.test`** · BNK-273 **4화면 parity closure**
+> - **Live E2E guardian default credentials fallback (BE `92be918`, QA-B95, Q428)** — **`LiveE2eBootstrapService`** — guardian env blank 시 **`live-e2e-guardian@ogada.test`/`ogada-guardian-e2e`** 안전 fallback · **`LiveE2eBootstrapServiceTest`**
+> - **Live E2E guardian status·token enrichment default align (BE `09df8c7`, QA-B95, Q428)** — **`guardianStatus`**·staff bootstrap **`guardianEmail`** enrichment — resolved default email 사용 · probe **`defaultGuardianCredentials`** · health **`liveE2eDefaultGuardianCredentials`** · **`LiveE2eBootstrapServiceTest`** (+108 lines)
+> 
+> **최근 개선 (221차 — ops 문서 221차 · G15 compliance→일지 hub · live E2E bootstrap/probe harden):**
+> - **ops 문서 221차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-8-0·§5-8-0-1** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q230·Q409 갱신·Q426·Q427 신규**
+> 
+> **최근 개선 (221차 — G15 compliance→일지 hub · live E2E bootstrap/probe harden):**
+> - **Transport compliance→service log hub (FE `b93e098`, G15 v1.3-C, Q426)** — **`TransportServiceLogRunsPanel`** — **`/transport/compliance`** 확정 배차 목록·**「일지 작성·보관」** → **`/transport/runs/:runId`** · **`TransportServiceLogRunsPanel.test`** · **`TransportCompliancePage.test`**
+> - **Live E2E bootstrap credential refresh (FE `b2c09e1`, QA-B95, Q427)** — **`liveGlobalSetup.applyBootstrapTokens`** — bootstrap **refresh token authoritative replace** · placeholder **`guardian@ogada.test`** email **hydration** · **`liveE2eHarness.test`** stale token·guardian email regression
+> - **Live E2E bootstrap branch active (BE `d68c4bf`, QA-B95, Q409)** — **`LiveE2eBootstrapService`** — seed **branch `setActive(true)`** · **`LiveE2eBootstrapServiceTest`** active·`serviceType`·`regionDongCode` assert
+> - **Live E2E probe credential isolation (BE `844227a`, QA-B95, Q427)** — **`LiveE2eController.probe`** — **`safeBoolean`** per-field credential check · one check throw 시 **probe 전체 500 방지** · **`LiveE2eControllerTest`** regression
+> 
+> **최근 개선 (220차 — ops 문서 220차 · live E2E nested bootstrap payload · QA-B95 harness deepen):**
+> - **ops 문서 220차 (TWR)** — `USER_MANUAL.md` **§1-3** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-6·§11-3** · `FAQ.md` **Q409 갱신·Q425 신규**
+> 
+> **최근 개선 (220차 — live E2E nested bootstrap auth payload parsing · QA-B95 harness deepen):**
+> - **Live E2E nested bootstrap auth payload parsing (FE `fc916db`, QA-B95, Q425)** — **`liveGlobalSetup.js`** — **`pickBootstrapAccessToken`/`pickBootstrapRefreshToken`/`pickBootstrapEmail`/`pickBootstrapClientId`** — flat·**nested `staff`/`guardian`**·**snake_case**(`access_token`·`client_id`·`guardian_access_token` 등) 응답 모두 수용 · embedded guardian token 경로 확장 · **`liveE2eHarness.test`** regression (+74 lines)
+> 
+> **최근 개선 (219차 — ops 문서 219차 · actuator healthz · DateInput/TimeInput QA-B127 · FE WT CLEAN):**
+> - **ops 문서 219차 (TWR)** — `USER_MANUAL.md` **§1-3·§3-2** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§2-2·§9-1·§11-3** · `FAQ.md` **Q413·Q422 갱신**
+> 
+> **최근 개선 (219차 — actuator healthz readiness alias · DateInput/TimeInput QA-B127 closure):**
+> - **Actuator healthz readiness alias (BE `2157df5`, QA-B95, Q413)** — **`ActuatorHealthController`** — **`GET /actuator/healthz`** — **`/actuator/health`·`/readyz`와 동일 DB readiness** · **`SecurityConfig` permit** · **`OgadaBackendApplicationTests`** UP·DB-down MVC coverage
+> - **DateInput/TimeInput picker test stabilize (FE `ab4de83`/`188ce71`, QA-B127, Q422)** — **`pickerTestUtils.js`** — calendar popover·month-only·time select helpers · **`DateInput` `viewAnchor`** — 이용자 **생년월일** 달력 **1945년대 근처** 오픈 (`ClientFormPage`) · **`MonthInput`** month-only · **78 Vitest suites** migrate · **`SideNav`/`navConfig`** label collision fix · **`TransportPage`**·**`TransportStopList`** ETA chip wire deepen
+> 
+> **최근 개선 (218차 — ops 문서 218차 · transport settings validation · compact dispatch · V152 committed):**
+> - **ops 문서 218차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-8** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q347·Q423 갱신·Q424 신규**
+> 
+> **최근 개선 (218차 — transport settings validation · compact dispatch layout · V152 committed):**
+> - **Transport settings validation (BE `dd2fa2c`, US-T02, Q424)** — **`BranchTransportSettingsService`** — 가중치 **null·0~1·합>0** 검증 · **`BusinessRuleException`** 명확 메시지 · **`GlobalExceptionHandler`** constraint 메시지 개선
+> - **Transport suggest branch stops (BE `dd2fa2c`, US-T02, Q424)** — **`TransportSuggestService`** — 자동 제안 DRAFT에 **출발·복귀 BRANCH 정차** 포함 · **`TransportSuggestServiceTest`**
+> - **Transport run stops guard V152 (BE `dd2fa2c`, Q423)** — **`V152__transport_run_stops_guard_client_is_active_fix.sql`** — **`trg_transport_run_stops_guard_client`** — `clients.is_active` 정합 (V143 regression fix) — **committed**
+> - **Compact dispatch layout (FE `96db8bf`, US-T02, Q424)** — **`TransportPage`** — **자동·수동 배차** `ds-transport-dispatch-grid` **나란히 배치** · **`BranchTransportSettingsPanel`** **`TransportSuggestPanel` 내부 embedded** · **`Field` tooltip** · 가중치 **0.1 step** · **`transportSettingsForm.js`** 빈 값 **클라이언트 검증** · **`BranchTransportSettingsPanel.test`** · **`transportSettingsForm.test`**
+> 
+> **최근 개선 (217차 — ops 문서 217차 · staff bootstrap guardian tokens · V152 transport guard):**
+> - **ops 문서 217차 (TWR)** — `USER_MANUAL.md` **§1-3·§5-8** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§11-3** · `FAQ.md` **Q409·Q393 갱신·Q423 신규**
+> 
+> **최근 개선 (217차 — live E2E staff bootstrap guardian token enrichment · transport inactive client guard):**
+> - **Staff bootstrap guardian token enrichment (BE `73cffc5`, QA-B95, Q409)** — **`LiveE2eBootstrapResponse`** — optional **`guardianAccessToken`/`guardianRefreshToken`/`guardianEmail`/`guardianUserId`** when existing guardian-client seed ready · **`tryIssueExistingGuardianTokens`** best-effort · staff bootstrap resilient on guardian token failure · **`LiveE2eBootstrapServiceTest`**
+> - **Transport run stops guard fix (BE develop WT, V152 △, Q423)** — **`V152__transport_run_stops_guard_client_is_active_fix.sql`** — **`trg_transport_run_stops_guard_client`** — `clients.is_active` 컬럼 정합 (V143 regression) — **untracked·commit 대기**
+> 
+> **최근 개선 (216차 — ops 문서 216차 · 배차 경유지 FE closure · 디자인시스템 date/time picker · ETA 칩):**
+> - **ops 문서 216차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§3-2·§5-8** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§11-3** · `FAQ.md` **Q418·Q421 갱신·Q422 신규·Q367 갱신**
+> 
+> **최근 개선 (216차 — transport waypoint FE closure · design-system pickers · ETA chips · SMTP readiness):**
+> - **Transport waypoint add UI FE closure (FE `bf73c4c`, US-T02, Q421)** — **`TransportAddWaypointModal`** · **`TransportRouteSplitView`「경유지 추가」** · **`waypointToStop`** · **`transportMapEtas.js`** · **`TransportAddWaypointModal.test`** · **`transportUtils.test`**
+> - **Design-system date/time pickers (FE `ea5d896`, UXD, Q422)** — **`DatePickerCalendar`** · **`DateInput`** 달력 팝오버 · **`TimeInput`** 시·분 드롭다운 · **`pickerDate.js`** · **`TransportRunNewPage`** 출발 시각·운행일 · **`DateInput.test`** · **`pickerDate.test`**
+> - **Transport stop ETA time chips (FE `bf73c4c` + develop WT, US-T02, Q418)** — **`TransportStopList`** — **희망 탑승/하차**·**예상 도착**·**희망 반영** chip · **`--eta-late`** 지연 강조 · **`isEstimatedArrivalLate`** · **`transportMapEtas.test`**
+> - **SMTP host readiness gap test (BE `704478f`, QA-B125, Q367)** — **`NotificationChannelReadinessServiceTest.smtpModeWithoutHostShouldReportMissingSmtpConfigOnly`** — **`SMTP_HOST` 누락 시 `MISSING_SMTP_CONFIG`만** · 알림톡 readiness **유지**
+> - **Transport run stops guard fix (BE develop WT, V152 △)** — **`trg_transport_run_stops_guard_client`** — `clients.is_active` 컬럼 정합 (V143/V151 regression fix) — **untracked·commit 대기**
+> 
+> **최근 개선 (215차 — ops 문서 215차 · 배차 임의 주소 경유지 WAYPOINT):**
+> - **ops 문서 215차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-8** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§9-1·§11-3** · `FAQ.md` **Q421 신규**
+> 
+> **최근 개선 (215차 — transport arbitrary address waypoints · V151):**
+> - **Transport waypoint persist (BE `de3474d`, US-T02, Q421)** — **V151** `waypoint_address`·`waypoint_label` · **`stopKind=WAYPOINT`** · **`TransportStopInput.waypointAddress`/`waypointLabel`** · geocode on create · **`TransportServiceTest.createRunShouldPersistWaypointStopWithGeocode`**
+> - **Transport waypoint add UI (FE develop WT, US-T02, Q421)** — **`TransportAddWaypointModal`** — **「경유지 추가」** · **`TransportRouteSplitView`** · **`TransportRunNewPage`/`TransportRunDetailPage`** · **`waypointToStop`** · **`transportUtils.test`** — **△ commit 대기**
+> 
+> **최근 개선 (214차 — ops 문서 214차 · 배차 계획 출발·ETA · live E2E operation readiness · split-view UX):**
+> - **ops 문서 214차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§4-3·§5-8** · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§9-1·§11-3** · `FAQ.md` **Q409 갱신·Q418·Q419·Q420 신규**
+> 
+> **최근 개선 (214차 — transport planned departure·ETA · live E2E operation readiness · split-view stack):**
+> - **Transport planned departure + leg durations (BE `0e46b37`, US-T02, Q418)** — **V150** `planned_departure_time` · **`POST /transport/runs`** · **`TransportRunResponse.plannedDepartureTime`** · **`TransportRoutePreviewResponse.legDurationsSeconds`** · **`TransportServiceTest`** · **`TransportRoutePreviewServiceTest`**
+> - **Transport departure time + stop ETA UI (FE `0baabe9`/`fde098f`, US-T02, Q418)** — **`TransportRunNewPage`** **「출발 시각」** `Field` · **`TransportRouteSplitView`** **`computeStopEtas`** · **`TransportStopList`** **「예상 도착 HH:mm」** · **`transportMapEtas.js`** · **`TransportRouteSplitView.test`**
+> - **Live E2E operation readiness in health (BE `3908044`, QA-B95, Q419)** — **`GET /api/v1/health`** — **`liveE2eOperationReady`** · **`liveE2eStaffBootstrapReady`** · **`liveE2eGuardianBootstrapReady`** · **`liveE2eOperationBlocker`** · **`HealthControllerTest`**
+> - **Transport split-view vertical stack + stale load guard (FE `fde098f`, US-T02, Q420)** — **`TransportRouteSplitView`** — 지도 **상단**·정차 목록 **하단** 세로 배치(모바일·PC 공통) · **`TransportPage`** **`AbortController`** — StrictMode 이중 마운트 시 로딩 stuck 방지 · **`TransportPage.test`**
+> - **MaskedPhone non-interactive a11y (FE `05535a4`, Q417 carry, Q420)** — **`MaskedPhone`** — 비링크 `span`에 **중복 `aria-label` 제거** · **`MaskedPhone.test`**
+> 
+> **최근 개선 (213차 — ops 문서 213차 · 이용자 연락처·actuator readyz/livez · live E2E harden):**
+> - **ops 문서 213차 (TWR)** — `USER_MANUAL.md` **§1-3·§4-3**(이용자 목록·상세 **연락처** `phoneMasked`) · `ADMIN_GUIDE.md` **§1-4** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-4·§9-1·§11-3** · `FAQ.md` **Q413 갱신·Q417 신규**
+> 
+> **최근 개선 (213차 — 이용자 연락처 목록·상세 · actuator readyz/livez · live E2E harden):**
+> - **Client phone column on list and detail (FE `0baabe9`, 결정 96, Q417)** — **`ClientListPage`** — **「연락처」** 열 **`phoneMasked`** · **`MaskedPhone`** · 검색 **`phoneMasked`** 포함 · **`ClientDetailPage`** 기본 정보 **연락처** · **`ClientListPage.test`**
+> - **Actuator readyz/livez compatibility aliases (BE `c19206a`, QA-B95, Q413)** — **`ActuatorHealthController`** — **`GET /actuator/readyz`** · **`GET /actuator/livez`** · **`/actuator/health/ready`** · **`/actuator/health/live`** — **`SecurityConfig` permit** · **`OgadaBackendApplicationTests`**
+> - **Actuator liveness/readiness semantics split (BE `911a1b9`, QA-B95, Q413)** — **`ActuatorHealthController`** — liveness **항상 `UP`**(프로세스 도달성) · readiness **DB probe** — **`/actuator/health/liveness`** ≠ **`/actuator/health/readiness`**
+> - **Live E2E bootstrap failure codes preserve (BE `4f974fd`, QA-B95)** — **`LiveE2eController`** — bootstrap 실패 시 **구조화 status code** 유지 · **Must query indexes** 추가
+> - **Live E2E seed client cross-branch recovery (BE `3f816fa`, QA-B95, Q409)** — **`LiveE2eBootstrapService`** — 지점 간 시드 이용자 충돌 **복구** · **`LiveE2eBootstrapServiceTest`**
+> - **Live E2E token retry after seed scope refresh (BE `f0e52b8`, QA-B122, Q409)** — **`LiveE2eBootstrapService`** — seed scope 갱신 후 **토큰 재발급** · **`LiveE2eBootstrapServiceTest`**
+> - **QA-B121 fee-schedule seed and CSV blob checks (FE `0695244`, QA-B121)** — live E2E **fee-schedule**·**staff export CSV Blob** assertion closure · **`pilotLiveApi.e2e.test.js`**·**`staffStatusReportLiveApi.e2e.test.js`**
+> - **G15 service log empty hints UX (FE `24472fc`, US-T05/G15)** — **`TransportServiceLogPanel`** — 빈 상태 힌트·패널 spacing 토큰 정합 · **`TransportServiceLogPanel.test`**
+> 
+> **최근 개선 (212차 — ops 문서 212차 · G15 감사이력 RBAC 가시화):**
+> - **ops 문서 212차 (TWR)** — `USER_MANUAL.md` **§5-8-0-4**(일지 감사 이력 권한/저장 분리 점검) · `ADMIN_GUIDE.md` **§6-2-6d**(service-log/audit-trail RBAC 표) · `DEPLOYMENT_GUIDE.md` **§11-3**(audit-trail RBAC 스모크 추가) · `FAQ.md` **Q416 신규**
+> 
+> **최근 개선 (211차 — ops 문서 211차 · actuator liveness/readiness · health probe harden · G15 outing live E2E):**
+> - **ops 문서 211차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8-3 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-4·§9-1·§11-3 · `FAQ.md` **Q240·Q413 갱신**
+> - **ops 문서 보강 (TWR, Must 운용 안정화)** — `USER_MANUAL.md` **§5-8-0-3 월간 리포트 수치 점검** · `ADMIN_GUIDE.md` **§6-2-6c G15 월 마감 루틴** · `DEPLOYMENT_GUIDE.md` **§11-3 월간 수치/일지 저장률 대조 항목** · `FAQ.md` **Q414·Q415 신규**
+> 
+> **최근 개선 (211차 — actuator liveness/readiness aliases · health probe graceful degradation · G15 outing report live E2E):**
+> - **Actuator liveness/readiness aliases (BE `30243f7`, QA-B95, Q413)** — **`ActuatorHealthController`** — **`GET /actuator/health/liveness`** · **`GET /actuator/health/readiness`** — **`SecurityConfig` permit** · **`OgadaBackendApplicationTests`** MVC alias coverage
+> - **Health probe graceful degradation (BE `3f32ae5`, QA-B95, Q413)** — **`ActuatorHealthController`**·**`HealthController`** — probe runtime exception 시 **HTTP 500 방지** · **`503` + `DOWN`/`ready=false`** · `databaseStatusDetail: SELECT_1_FAILED_PROBE_EXCEPTION` · **`ActuatorHealthControllerTest`**·**`HealthControllerTest`**
+> - **Client outing report live E2E harness (FE `3a0110f`, G15 2-9, Q240)** — **`clientOutingReportLiveApi.e2e.test.js`** — **`GET /reports/client-outings`** live API routing · **`pilotPageFlows.test`** G15 flow · **`ClientOutingReportPage.test`** empty-state
+> - **Care form·live E2E test stabilize (FE `b48252a`, QA-B116)** — **`BodyRestraintRecordPage.test`**·**`MealAssistanceRecordPage.test`** flake 해소 · **`pilotLivePages.e2e.test.jsx`**·**`staffStatusReportLiveApi.e2e.test.js`** brittle assertion 완화
+> 
+> **최근 개선 (210차 — ops 문서 210차 · L02/L03 parity cross-links · live E2E deepen · actuator health):**
+> - **ops 문서 210차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8-3·§5-36 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§3-4·§11-3 · `FAQ.md` **Q240·Q409 갱신 · Q412·Q413 신규**
+> 
+> **최근 개선 (210차 — L02/L03 nursing parity cross-links · live E2E safe client id · actuator health alias):**
+> - **L02/L03 nursing report parity cross-links (FE `140bf92`, BNK-308, Q412)** — **`CareNursingParityPanel`** — **`resolveCareNursingParityLinks`** — care-scoped **`/care/reports/*`** ↔ L03 **`/nursing/service/reports/*`** · **「간호급여 제공기록 (L03_M01)」** 링크 · **`CareNursingServiceReportPage`**·**`NursingServiceReportsPage`** wire · **`CareNursingParityPanel.test`** · **`careLeafParity.test`**
+> - **Care-scoped nursing report live E2E harness (FE `5533ef5`, BNK-308, Q412)** — **`careNursingReportsLiveApi.e2e.test.js`** — L02_M14/M09/M10 **`GET /care/reports/*`** live API routing · **`CareNursingServiceReportPage.test`** parity link assertions
+> - **Live E2E safe foreign-tenant client id (BE `87f901d`, QA-B95, Q409)** — **`LiveE2eBootstrapService`** — configured seed UUID가 **다른 tenant** 소유·LTC 인증번호 fallback 없을 때 **generated id** 로 scoped client 생성 · **`LIVE_E2E_SEED_CLIENT_CONFLICT` 방지** · probe·guardian status **configured id 또는 LTC cert** 로 해석 · **`LiveE2eBootstrapServiceTest`**
+> - **Actuator health alias for ops probes (BE `5d7be9f`, QA-B95, Q413)** — **`ActuatorHealthController`** — **`GET /actuator/health`** — **`LiveReadinessProbe`** 기반 **`{"status":"UP"|"DOWN"}`** · actuator starter 미포함 환경 **HTTP 500 회귀 방지** · **`ActuatorHealthControllerTest`** · **`OgadaBackendApplicationTests`**
+> - **Client outing report a11y (FE `9641ab1`, G15 2-9, QA-B116, Q240)** — **`ClientOutingReportPage`** — 조회 form **`aria-label`** · StatCard **`role="group"`** · **`aria-busy`** · **`ClientOutingReportPage.test`**
+> 
+> **최근 개선 (209차 — ops 문서 209차 · G15 audit trail read API full stack · live E2E cross-tenant bootstrap):**
+> - **ops 문서 209차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8·§5-8-0-1 · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§11-3 · `FAQ.md` **Q411·Q409 갱신**
+> 
+> **최근 개선 (209차 — G15 audit trail read API full stack · live E2E cross-tenant bootstrap · monthly reports a11y):**
+> - **Transport service log audit trail read API (BE `5994d15`, G15 v1.3-C, Q411)** — **`GET /api/v1/transport/runs/{runId}/service-log/audit-trail`** — **`TRANSPORT_SERVICE_LOG_UPSERT`** 최근 **50건** · `runDate`·`stopUpdateCount`·`recorded`/`onTime`/`total` · **`TransportServiceTest.getServiceLogAuditTrail*`** · **`TransportControllerRoutingTest`**
+> - **Transport service log audit trail panel wire (FE `3cc5a08`, G15 v1.3-C, Q411)** — **`TransportServiceLogPanel`** — **「일지 저장 이력」** 표 · **`fetchTransportServiceLogAuditTrailApi`** · 저장 후 자동 갱신 · **`TransportServiceLogPanel.test`** · **`transportServiceLogServices.test`**
+> - **Live E2E cross-tenant bootstrap guard (BE `6eb9cc0`/`fc280cf`/`2d6c063`, QA-B95, Q409)** — **`LiveE2eBootstrapService`** — 시드 email·ID **다른 tenant** 충돌 시 **덮어쓰기 방지** · 안전한 대체 ID 생성 · **`LiveE2eBootstrapServiceTest`** regression
+> - **Transport monthly reports page a11y (FE `c02112b`, G15 2-7/2-8, Q410)** — **`TransportMonthlyReportsPage`** — 리포트 섹션 **`aria-labelledby`** · StatCard **`role="group"`** · **`TransportMonthlyReportsPage.test`**
+> - **G26 monitoring evidence labels unify (FE `8b68fdb`, BNK-273, Q391 carry)** — **`NeedsAssessmentStatusPage`**·**`BillingStatisticsReportPage`** FAQ 근거 라벨 통일
 > 
 > **최근 개선 (208차 — ops 문서 208차 · G15 일지 감사·보관 UX · 월간 리포트 2-7/2-8 · probe seed guard):**
 > - **ops 문서 208차 (TWR)** — `USER_MANUAL.md` §1-3·§2-2·§5-8·§5-8-0-1·**§5-8-0-2** · `ADMIN_GUIDE.md` §1-4 · `DEPLOYMENT_GUIDE.md` §1-3·§11-3 · `FAQ.md` **Q236·Q407·Q409 갱신 · Q410·Q411 신규**
