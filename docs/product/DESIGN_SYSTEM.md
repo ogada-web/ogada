@@ -1,9 +1,14 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20T12:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20T23:45:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-20 (140차 — **US-R03 FAQ21823 근로재계약 UI·현금영수증 identifier 검증 접근성 재점검 + §64 신규** — 139차(§63)·UXD-140(`501fedc`) 이후 coder 신규 커밋(`f62402f`·`10585b9`·`f31c346` FAQ21823 renewal panel/summary/dashboard widget·`76a462d` identifier digit validation) 미점검 a11y·FE-16 갭 해소. ① **`StaffEmploymentContractRenewalPanel`** — 기한 초과 Alert `id`+파일함 버튼 `aria-describedby`·`${직원명} 근로계약서 파일함` `aria-label`. ② **`StaffEmploymentContractRenewalSummaryPanel`** — 확인 필요 목록 링크 `${이름} 직원 상세` `aria-label`(StaffPage 패턴). ③ **`CashReceiptRegisterModal`** — 프로필 로드 중 발급 식별자 `aria-busy`. ④ **§64** 신규. 회귀 +4. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-20 (146차 — **G-BANK-EXCEL-8·G-STAFF-NHIS-EXCEL-IMPORT preview·행 선택 UI 접근성 재점검 + §69 신규** — 145차(§68)·UXD-145(`a2f599c`) 이후 coder 신규 커밋(`a18b30e` 은행 입금 preview·행 선택·`4315ee2` 공단 요양보호사 import panel) 미점검 a11y·FE-16 갭 해소. ① **`BankDepositImportPanel`** — 폼 `aria-label`·미리보기 `role=group`·요약 `role=status aria-live=polite`·행 Checkbox `${예금주명} N행 선택`·입금일 `<time dateTime>`. ② **`StaffNhisCaregiverImportPanel`** — 동일 preview 패턴·`${성명} N행 선택`·생년월일 `<time dateTime>`. ③ **`.ds-bank-deposit-formats`** 미정의 클래스 승격(FE-16)·**`.ds-import-preview*`** 공통 레이어. ④ **§69** 신규·§68-4 잔여 FE wire 해소 표기. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-20 (145차 — **G-BILLING-PRIOR-DEPOSIT-GUARD·US-H01 HQ 듀얼 대시보드 접근성 재점검 + §68 신규** — 144차(§67)·UXD-144(`08a8b9f`) 이후 coder 신규 커밋(`0d233b9` 청구 생성 선행입금 가드 StatCard·`c1ebaaf` HQ 듀얼 대시보드 nav·지점 요약 표·드릴다운·`a0f051d` L02_M15 테스트 안정화) 미점검 a11y·FE-16 갭 해소. ① **`HqBranchSummaryTable`** — 드릴다운 진행 중 조치 버튼 3종 `aria-busy={drilling}`(WCAG 4.1.3·`AttendancePage` 조회 패턴). ② **`HealthAlertList`** — HQ 지점 보기 버튼 `aria-busy={branchActionDisabled}`. ③ **`.ds-health-alert-list__action`** — 미정의 클래스 승격(FE-16)·`forced-colors` 목록 항목 경계선. ④ **`BranchCompareChart`** — 클릭 드릴다운 시 키보드 대안 안내(위 지점 요약 표 「지점 보기」·WCAG 2.1.1). ⑤ **`DashboardContextNav`**·**`CLAIM_GENERATION_GUARD_WIDGET_LABEL` StatCard** — `ds-context-nav`·`DashboardWidgetGrid` 표준 패턴 준수 확인(변경 불요). ⑥ **§68** 신규. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-20 (144차 — **G14 급여제공계획서·직원 계정 요청 UI 접근성 재점검 + §67 신규** — 143차(§66)·UXD-143(`4e7d01d`) 이후 coder 신규 커밋(`22718d0` 직원 계정 생성 요청 흐름·`380be3c` 플랫폼 관리자 발급 폼 강화·`8ac0d01` 지역 선택기 검색 UX·`c37228d` 지점 주소 검증·`ce422e3` G14 급여제공계획서 10항목 폼·`d723d5a` 브랜치 스위처 인증 + 타이포그래피 토큰 조정) 미점검 a11y·FE-16 갭 해소. ① **`StaffPage` 계정 생성 요청 표** — `REQUEST_STATUS_LABELS` 평문 → **`StatusBadge`+`ACCOUNT_REQUEST_STATUS`**(승인 대기/승인됨/반려됨, 색+텍스트 병행·WCAG 1.4.1). ② **`StaffPage` 요청일 날짜 의미론** — `new Date().toLocaleString()` 평문 → **`<time dateTime>`**(88·89차 `StaffDetailPage` 패턴 정합·WCAG 1.3.1). ③ **`ClientCarePlanForm` 미정의 CSS 승격(FE-16)** — `.ds-care-plan-form`(최대 폭 래퍼)·`.ds-care-plan-form__heading`(lg 세미볼드 제목)·`.ds-care-plan-form__year-row`(연도 행 정렬)·`forced-colors` 경계선. ④ **`ds-form-grid--2` 신규** — 2열 고정 그리드 변형(`ClientCarePlanForm` 횟수·시간 2-필드 쌍 등). ⑤ **`ACCOUNT_REQUEST_STATUS`** — `Badge.jsx` + barrel `index.js` 추가. ⑥ **§3 타이포 토큰 실측 갱신** — `d723d5a`에서 `--font-size-*` 전체 소폭 상향(xs 0.75→0.8125 rem 등). ⑦ **§2-3 `ACCOUNT_REQUEST_STATUS` 매핑 추가**. ⑧ **§67** 신규. 회귀 없음(1866/369 PASS). `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-20 (143차 — **v1.3-A 이동서비스 배차 도구 접근성 재점검 + §66 신규** — 141차(§65)·UXD-142(`bd6e1c2`) 이후 coder 신규 커밋(`4681b5a` roster tools·ETA guardrails·`acc5933` route preview cache·compliance labels·`ba74bb5` Kakao map WIP·QA-B167/B170) 미점검 a11y·FE-16 갭 해소. ① **`TransportKakaoApiStatusPanel`** — Kakao Developers 콘솔 외부 링크 `target=_blank` 새 탭 안내 `ds-sr-only`(WCAG 3.2.5·G201·IntegratedHomeProviderDiscoveryPanel 패턴). ② **`TransportSuggestPanel`** — 동일 텍스트 「DRAFT 검토」행 링크에 차량번호 `aria-label` 부여(WCAG 2.4.4·StaffPage 목록 패턴). ③ 신규 모달(`TransportAddRosterModal`·`TransportConfirmWarningModal`·`TransportLoadPreviousRunModal`)·`KakaoTransportMapView`(marker `aria-label`·`role=application`·live summary) a11y 점검 — 변경 불요. ④ **§66** 신규. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-20 (141차 — **FAQ21823 갱신 알림·CRUD·미정의 CSS 승격 + §65 신규** — 140차(§64)·UXD-141(`965e569`/`debe6dd`) 이후 coder 신규 커밋(`033b319` EmploymentContractRenewalAlertsPanel·재계약 CRUD·대시보드 due alerts·`1b6d2b1` 필수항목/서식 modal) 미점검 a11y·FE-16 갭 해소. ① **`EmploymentContractRenewalAlertsPanel`** — due-date `<time dateTime>`·알림 목록 `role=group`. ② **`StaffEmploymentContractRenewalPanel`** — 재계약 modal 저장 `aria-busy`·form `aria-label`. ③ **`.ds-section-title`·`.ds-subsection-title`·`.ds-checklist*`·`.ds-staff-employment-contract__template`** — StaffHrFilePanel·FAQ21823 미정의 클래스 승격. ④ **§65** 신규. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-20 (140차 — **US-R03 FAQ21823 근로재계약 UI·현금영수증 identifier 검증 접근성 재점검 + §64 신규** — 139차(§63)·UXD-140(`501fedc`) 이후 coder 신규 커밋(`f62402f`·`10585b9`·`f31c346` FAQ21823 renewal panel/summary/dashboard widget·`76a462d` identifier digit validation) 미점검 a11y·FE-16 갭 해소. ① **`StaffEmploymentContractRenewalPanel`** — 기한 초과 Alert `id`+파일함 버튼 `aria-describedby`·`${직원명} 근로계약서 파일함` `aria-label`. ② **`StaffEmploymentContractRenewalSummaryPanel`** — 확인 필요 목록 링크 `${이름} 직원 상세` `aria-label`(StaffPage 패턴). ③ **`CashReceiptRegisterModal`** — 프로필 로드 중 발급 식별자 `aria-busy`. ④ **§64** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-20 (139차 — **G26 yearBasis·G-7-1 Excel·현금영수증 pending guard 접근성 재점검 + §63 신규** — 138차(§62)·UXD-139(`17374f1`) 이후 coder 신규 커밋(`19ed7f3` G26 yearBasis+NTS CSV·`58d6694` G-7-1 Excel export·`99b795a`/`a2ef127` pending load guard) 미점검 a11y·FE-16 갭 해소. ① **`CashReceiptIssuancePage`** — pending load 실패 Alert `id`+「발급 등록」`aria-describedby`·수급자 탭 검색 `aria-busy`. ② **`BillingStatisticsReportPage`** — 의료비공제 StatCard `ds-grid--stats`·`.ds-segmented` `forced-colors`. ③ **`BillingStatementPrintPanel`** — PDF 버튼 `aria-label` 정합. ④ **`MedicalExpenseDeductionPanel`** — 조회 `aria-busy`. ⑤ **§63** 신규. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-19 (138차 — **G-CASH-RECEIPT-LOG 4-계층 UI 접근성 재점검 + §62 신규** — 137차(§61) 이후 coder 신규 커밋(`cfc4b04`·`a17f148`·`221458e`·`8aebe55`) 미점검 a11y·FE-16 갭 해소. ① **`CashReceiptRegisterModal`** — 폼 Alert 검증→`Field error`+`aria-invalid`·form `aria-label`·작년분 경고 `id`+submit `aria-describedby`. ② **`CashReceiptIssuancePage`** — `StatusBadge`+`CASH_RECEIPT_IMMEDIATE_STATUS`·조회 `aria-busy`·`<time dateTime>`·`Select`·`ds-grid--stats`. ③ **`PaymentRecordModal`** — 현금 FAQ 21716 경고 `id`+submit `aria-describedby`. ④ **`CashReceiptLegalAlerts`** — FAQ 안내 `id`·`.ds-cash-receipt-legal-alerts`. ⑤ **§62** 신규. 회귀 +5. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-19 (137차 — **G21 split-view NHIS comparison·G32 FAQ21797·G2 법정서식·케어포 3-1 nav + 미정의 CSS 승격 + §61 신규** — 136차(§60) 이후 coder 신규 커밋(`9b80505` G21 split-view NHIS comparison·`1d5747d` CareProvisionSegmentNav·`b272a7b` G32 attendee opinions·`d1149a5` G2 home newsletter/care record·`b881883` G39 SLA alerts) 미점검 a11y·FE-16 갭 해소. ① **`VisitNhisComparisonPanel`** — split-view PLAN/BILLING 2패널 동시 노출 시 h3「공단 명세 사전 비교」중복 → `{kindLabel} 공단 명세 사전 비교`(WCAG 2.4.6). ② **`VisitsPage`** — 분할 비교 래퍼 `role=group`+`aria-label`. ③ **`CaseManagementPage`** — 미정의 `ds-field__hint`→`ds-field__help`·폼 `aria-describedby`·참석자 fieldset hint 연결·행 수정 `aria-label`에 이용자명. ④ **`GuardianDocumentNotifyPanel`** — 서식 설명 `id`+submit `aria-describedby`·form `aria-label`. ⑤ **`DurationBandSelect`** — `ds-field__hint`→`ds-field__help`. ⑥ **`.ds-form-grid__full`** — FE-16 grid-column 전폭 span 승격. ⑦ **§61** 신규. 회귀 +4. `npm test`·build PASS.)
@@ -266,8 +271,11 @@
 | | `IN_PROGRESS` | info | 진행중 |
 | | `OVERDUE` | danger | 기한 초과 |
 | | `COMPLETED` | success | 완료 |
+| 계정 생성 요청 (StaffPage) | `PENDING` | neutral | 승인 대기 |
+| | `APPROVED` | success | 승인됨 |
+| | `REJECTED` | danger | 반려됨 |
 
-> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`STAFF_LIFECYCLE_STATUS`**(US-R03)·**`LIFECYCLE_STATUS`**·**`ONBOARDING_SESSION_STATUS`**(US-O05)로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의. **`EASY_PAY_STATUS`**(US-L06 7-5)는 `config/easyPay.js`에 정의(100차).
+> 매핑 객체는 `components/ui/Badge.jsx`의 `BILLING_STATUS`·`MATCH_STATUS`·`ATTENDANCE_STATUS`·`BRANCH_STATUS`·`BATCH_STATUS`·**`INVITATION_STATUS`**·**`STAFF_LIFECYCLE_STATUS`**(US-R03)·**`LIFECYCLE_STATUS`**·**`ONBOARDING_SESSION_STATUS`**(US-O05)·**`ACCOUNT_REQUEST_STATUS`**(StaffPage 계정 요청·144차)로 코드화 → `<StatusBadge status map>` 사용. `BATCH_STATUS`는 14차에 NHISImportPage 로컬 정의 → Badge 모듈로 승격. **`VISIT_STATUS`**(방문 일정, US-V01)는 도메인 상수와 함께 `config/visits.js`에 정의해 `<StatusBadge map={VISIT_STATUS}>`로 사용(57차). **`OUTING_STATUS`**·**`VEHICLE_STATUS`**(77차)는 `config/outingStatus.js`에 정의. **`EASY_PAY_STATUS`**(US-L06 7-5)는 `config/easyPay.js`에 정의(100차).
 
 ### 2-4. 다크 모드 토큰 (11차, 운영자 야간 근무) [UXD]
 
@@ -294,15 +302,17 @@
 
 ## 3. 타이포그래피 [UXD]
 
-| 토큰 | 크기 | 용도 |
+| 토큰 | 크기(실측 · 144차) | 용도 |
 |------|------|------|
-| `--font-size-xs` | 12px | 캡션·뱃지·도움말 |
-| `--font-size-sm` | 14px | 보조 본문·표 |
-| `--font-size-md` | 16px | **기본 본문·입력(모바일 최소)** |
-| `--font-size-lg` | 18px | 카드 부제 |
-| `--font-size-xl` | 20px | 섹션/카드 제목 |
-| `--font-size-2xl` | 24px | 페이지 제목 `h1` |
-| `--font-size-3xl` | 30px | 대시보드 지표 숫자 |
+| `--font-size-xs` | 13px (0.8125rem) | 캡션·뱃지·도움말 |
+| `--font-size-sm` | 15px (0.9375rem) | 보조 본문·표 |
+| `--font-size-md` | 17px (1.0625rem) | **기본 본문·입력(모바일 16px+ 충족)** |
+| `--font-size-lg` | 19px (1.1875rem) | 카드 부제 |
+| `--font-size-xl` | 21px (1.3125rem) | 섹션/카드 제목 |
+| `--font-size-2xl` | 26px (1.625rem) | 페이지 제목 `h1` |
+| `--font-size-3xl` | 32px (2rem) | 대시보드 지표 숫자 |
+
+> **144차 실측**: `d723d5a`에서 전 토큰 소폭 상향. 모바일 자동 줌 방지(≥16px)는 md(17px)에서 충족. 대비비 변화 없음.
 
 - Weight: `regular 400 / medium 500 / semibold 600 / bold 700`
 - Line-height: `tight 1.25 / normal 1.5 / relaxed 1.7`
@@ -3624,6 +3634,244 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 - `StaffEmploymentContractRenewalSummaryPanel.test.jsx` — 링크 `aria-label` 갱신 +1.
 - `CashReceiptRegisterModal.test.jsx` — profile load `aria-busy` +1.
 - `npm test`·build PASS.
+
+---
+
+## §65. FAQ21823 갱신 알림·CRUD·checklist CSS 승격 접근성 (141차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20 -->
+
+> **141차 UXD (2026-06-20)** — §64(140차)·UXD-141(`965e569`/`debe6dd`) 이후 coder 신규 커밋(`033b319`·`1b6d2b1`) 미점검 a11y·FE-16 갭 해소.
+
+### 65-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `EmploymentContractRenewalAlertsPanel` | `DashboardPage` | due/overdue/missing 알림 목록 (`033b319`) |
+| `StaffEmploymentContractRenewalPanel` | `StaffDetailPage` lifecycle | 재계약 CRUD modal·필수항목/절차 checklist·서식 modal (`033b319`/`1b6d2b1`) |
+| `.ds-section-title`·`.ds-subsection-title` | `components.css` | StaffPage·Dashboard alerts·Card 내부 h3 |
+| `.ds-checklist*` | `components.css` | `StaffHrFilePanel`·FAQ21823 ordered checklist |
+| `.ds-staff-employment-contract__template` | `components.css` | 근로계약서 `<pre>` 서식 미리보기 |
+
+### 65-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `EmploymentContractRenewalAlertsPanel` | due-date `<time dateTime>`·알림 `ul` `role=group aria-label` | WCAG 1.3.1 (StaffEmploymentContractRenewalPanel·Billing 패턴) |
+| `StaffEmploymentContractRenewalPanel` | 재계약 modal 저장 `aria-busy`·form `aria-label` | WCAG 4.1.3 (IncidentRecordForm·Modal 패턴) |
+| `.ds-checklist*` | FE-16 미정의 클래스 승격·`forced-colors` item 경계선 | StaffHrFilePanel·FAQ21823 checklist 시각·SR 정합 |
+| `.ds-staff-employment-contract__template` | mono·scroll·`forced-colors` 경계선 | `ds-transport-compliance__template` 패턴 |
+
+### 65-3. coder 전달 메모
+
+- **FAQ21823 P2** — `updateUserApi` 재계약 서명일 CRUD·`computeEmploymentContractRenewalDueAlerts` 대시보드 알림 **HEAD PRESENT**. 급여대장 연동·module 11 payroll은 USER_STORIES P2 잔여(out-of-scope).
+- **대시보드 이중 surface** — StatCard 위젯(`employmentContractRenewalGapCount`) + `EmploymentContractRenewalAlertsPanel`(상세 알림). 위젯은 `/staff` 링크, 알림은 lifecycle deep-link.
+- **`.ds-checklist`** — HR 입사서류 7종(`StaffHrFilePanel`)과 FAQ21823 필수항목/절차가 **동일 유틸** 공유. ordered variant는 `ol.ds-checklist--ordered`.
+
+### 65-4. 검증
+
+- `EmploymentContractRenewalAlertsPanel.test.jsx` — `time datetime`·`role=group` +1.
+- `StaffEmploymentContractRenewalPanel.test.jsx` — 저장 `aria-busy` +1.
+- `npm test`·build PASS.
+
+---
+
+## §66. v1.3-A 이동서비스 배차 도구 접근성 재점검 (142차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20 -->
+
+> **142차 UXD (2026-06-20)** — §65(141차)·UXD-142(`bd6e1c2`) 이후 coder 신규 커밋(`4681b5a` roster tools·ETA guardrails·`863b135` run spies·`acc5933` route preview cache·compliance labels·`ba74bb5` Kakao map WIP·QA-B167/B170) 미점검 a11y·FE-16 갭 해소.
+
+### 66-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 비고 |
+|----------|------|------|
+| `TransportKakaoApiStatusPanel` | `SettingsPage`·`OrganizationSettingsPage` | Kakao REST API 상태·사용량(`acc5933`) |
+| `TransportSuggestPanel` | `TransportPage` | 자동 배차 제안 DRAFT 루트 표 |
+| `TransportAddRosterModal` | `TransportRouteSplitView` | 명단에서 인원 추가(`4681b5a`) |
+| `TransportConfirmWarningModal` | `TransportRunDetailPage` | 희망 탑승 시각 위반 경고(`4681b5a`) |
+| `TransportLoadPreviousRunModal` | `TransportRunNewPage` | 이전 배차 불러오기(`4681b5a`) |
+| `KakaoTransportMapView`·`KakaoTransportMap` | 배차 경로 미리보기 | 마커·경로·요약(`ba74bb5`) |
+
+### 66-2. 접근성·정합 재점검 결과
+
+| 파일 | 조치 | 근거 |
+|------|------|------|
+| `TransportKakaoApiStatusPanel` | Kakao Developers 콘솔 외부 링크(`target=_blank`)에 `<span class="ds-sr-only"> (새 탭)</span>` 추가 — 새 창 열림 사전 안내 | WCAG 3.2.5·G201 (`IntegratedHomeProviderDiscoveryPanel` 패턴) |
+| `TransportSuggestPanel` | 표 행마다 동일한 「DRAFT 검토」링크 → `${차량번호} DRAFT 검토` `aria-label` 부여 (목적 구분) | WCAG 2.4.4 (StaffPage·UXD-140 목록 링크 패턴) |
+| `TransportConfirmWarningModal` | Alert `tone=warning`/`info` 기본 live-region·`aria-busy`·`<ul>` 목록 — 변경 불요 | Alert §6 패턴 준수 |
+| `TransportAddRosterModal`·`TransportLoadPreviousRunModal` | `Field htmlFor`·`PageLoading label`·Alert `tone=danger`(role=alert) `actionError`·submit `aria-busy` — 변경 불요 | Field render-prop·Modal 패턴 준수 |
+| `KakaoTransportMapView` | marker `<button aria-label>`·`role=application aria-label`·요약 `role=status aria-live` — 변경 불요 | WCAG 1.1.1·4.1.3 |
+
+### 66-3. coder 전달 메모
+
+- **외부 링크 새 탭 안내** — 신규 외부 `target=_blank` 링크는 `ds-sr-only`「(새 탭)」 또는 `aria-label` 후행으로 통일한다(IntegratedHomeProviderDiscoveryPanel·본 패널 동일). raw `window.open` 금지.
+- **반복 행 링크** — 같은 텍스트(「DRAFT 검토」·「상세」 등)가 표/목록 여러 행에 반복되면 행 식별자(차량번호·이름)를 `aria-label` 접두로 부여한다. SuggestPanel·StaffPage·StaffEmploymentContractRenewalSummaryPanel 동일.
+- **지도 a11y** — `KakaoTransportMapView`는 marker `aria-label`·`role=application`·`role=status` 요약을 이미 갖춘다. 핀 텍스트(순번/「센」)는 `aria-hidden`, 의미는 `aria-label`로 전달하므로 색·번호만으로 의미를 싣지 말 것.
+- **v1.3-A 잔여** — roster CRUD·ETA guardrail 토스트는 현재 Alert 인라인으로 충분. 토스트 도입 시 `--z-toast`·`role=status` 토큰 사용.
+
+### 66-4. 검증
+
+- `TransportSuggestPanel.test.jsx` — 「DRAFT 검토」링크 name `12가3456 DRAFT 검토` 갱신.
+- `TransportKakaoApiStatusPanel.test.jsx` — 콘솔 링크 name `Kakao Developers 콘솔 (새 탭)`·`target=_blank` +1.
+- `npm test`(2 files·5 tests PASS)·lint PASS.
+
+---
+
+## §67. G14 급여제공계획서·직원 계정 요청 UI 접근성 재점검 (144차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20 -->
+
+> **144차 UXD (2026-06-20)** — 143차(§66)·UXD-143(`4e7d01d`) 이후 coder 신규 커밋 6건 미점검 갭 해소.
+
+### 67-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 |
+|----------|------|------|
+| `StaffPage` 계정 생성 요청 표 | `pages/StaffPage.jsx` | `22718d0` |
+| `PlatformOrgDetailModal` 관리자 발급 폼 | `components/ui/PlatformOrgDetailModal.jsx` | `380be3c` |
+| `RegionSelector` 시·군·구/읍·면·동 검색 | `components/branches/RegionSelector.jsx` | `8ac0d01` |
+| `ClientCarePlanForm` G14 10항목 폼 | `components/clients/ClientCarePlanForm.jsx` | `ce422e3` |
+| `tokens.css` 타이포 토큰 조정 | `styles/tokens.css` | `d723d5a` |
+
+### 67-2. 접근성·정합 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `StaffPage` 계정 요청 상태 열 | `REQUEST_STATUS_LABELS` 평문 → 색만 의존 가능성 | **`StatusBadge`+`ACCOUNT_REQUEST_STATUS`** (색+텍스트 병행) | WCAG 1.4.1 |
+| `StaffPage` 요청일 열 | `new Date().toLocaleString()` 평문 | **`<time dateTime>`** 래핑 | WCAG 1.3.1 (88차 패턴) |
+| `ClientCarePlanForm` CSS | `.ds-care-plan-form`·`__heading`·`__year-row` 미정의(FE-16) | `components.css` **승격** | FE-16·§1 단일 원천 |
+| `ds-form-grid--2` | `ds-form-grid` 2열 고정 변형 미정의(FE-16) | `components.css` **신규** | FE-16 |
+| `PlatformOrgDetailModal` 발급 폼 | 이름·이메일·비밀번호 3 `Field` + `aria-busy` 제출 — 변경 불요 | Field render-prop·Modal 패턴 준수 | ✅ |
+| `RegionSelector` 검색 입력 | `SearchInput hideLabel` + `label` prop — 시각적 레이블 숨김·SR 전달 — 변경 불요 | SearchInput 컴포넌트 표준 패턴 준수 | ✅ |
+| `ClientCarePlanForm` 폼 구조 | `form aria-labelledby` h3·`Field` render-prop·`DateInput`·`aria-busy` — 변경 불요 | 표준 패턴 준수 | ✅ |
+| `tokens.css` font-size 상향 | xs 0.75→0.8125rem 등 소폭 상향 — 접근성 개선(큰 글자) | §3 표 실측값 갱신 | WCAG 1.4.4 |
+
+### 67-3. 신규 상수
+
+| 상수 | 위치 | 값 |
+|------|------|-----|
+| `ACCOUNT_REQUEST_STATUS` | `components/ui/Badge.jsx` + barrel `index.js` | `PENDING`(neutral·승인 대기)·`APPROVED`(success·승인됨)·`REJECTED`(danger·반려됨) |
+
+### 67-4. CSS 신규 클래스
+
+| 클래스 | 스타일 | 용도 |
+|--------|--------|------|
+| `.ds-form-grid--2` | `grid-template-columns: repeat(2, 1fr)` | 2열 고정 폼 그리드 변형 |
+| `.ds-care-plan-form` | `max-width: 720px` | G14 계획서 폼 래퍼 |
+| `.ds-care-plan-form__heading` | `font-size-lg`·`font-weight-semibold` | 폼 내부 h3 제목 |
+| `.ds-care-plan-form__year-row` | `align-items: flex-end`·`gap: space-4` | 연도 선택 + 저장 이력 행 |
+
+### 67-5. coder 전달 메모
+
+- **계정 요청 상태**: `ACCOUNT_REQUEST_STATUS` Badge 사용 — `StaffPage` 이미 적용. 추후 `PlatformPage` 관리자 검토 화면에서도 같은 상수를 재사용할 것.
+- **반복 날짜**: 목록 표의 날짜 셀은 반드시 `<time dateTime={ISO8601}>` 래핑한다(88·89차 공통 패턴).
+- **2열 폼**: `ds-form-grid ds-form-grid--2` 조합 사용. `ds-form-grid--2` 단독 사용 불가(`ds-form-grid`가 `display:grid` 선언).
+
+### 67-6. 검증
+
+- `StaffPage.test.jsx` — `ACCOUNT_REQUEST_STATUS` Badge 단언·`<time dateTime>` 존재 — 기존 1866/369 전체 PASS.
+- `npm test` 1866/369 PASS · build PASS.
+
+---
+
+## §68. G-BILLING-PRIOR-DEPOSIT-GUARD·US-H01 HQ 듀얼 대시보드 접근성 재점검 (145차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20 -->
+
+> **145차 UXD (2026-06-20)** — 144차(§67)·UXD-144(`08a8b9f`) 이후 coder 신규 커밋 3건 미점검 갭 해소.
+
+### 68-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `claimGenerationGuard` StatCard 위젯 | `pages/DashboardPage.jsx` | `0d233b9` | G-BILLING-PRIOR-DEPOSIT-GUARD |
+| `DashboardContextNav` | `components/dashboard/DashboardContextNav.jsx` | `c1ebaaf` | US-H01 |
+| `HqBranchSummaryTable` | `components/dashboard/HqBranchSummaryTable.jsx` | `c1ebaaf` | US-H01 |
+| `useBranchDrilldown` | `hooks/useBranchDrilldown.js` | `c1ebaaf` | US-H01 |
+| `HealthAlertList` HQ 드릴다운 | `components/ui/HealthAlertList.jsx` | `c1ebaaf` | US-H02 |
+| `BranchCompareChart` 클릭 드릴다운 | `components/ui/BranchCompareChart.jsx` | `c1ebaaf` | US-H02 |
+
+### 68-2. 접근성·정합 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `HqBranchSummaryTable` 조치 버튼 | `disabled={drilling}`만 있고 진행 상태 SR 미전달 | **`aria-busy={drilling}`** 3버튼 | WCAG 4.1.3 |
+| `HealthAlertList` 지점 보기 | `branchActionDisabled` 시 SR 진행 상태 미전달 | **`aria-busy={branchActionDisabled}`** | WCAG 4.1.3 |
+| `.ds-health-alert-list__action` | `HealthAlertList`가 참조하나 CSS 미정의(FE-16) | `components.css` **승격** + `forced-colors` 항목 경계선 | FE-16·§1 |
+| `BranchCompareChart` 클릭 드릴다운 | 막대 클릭만 가능·키보드 대안 없음 | `ChartContainer` **description**에 표 「지점 보기」 대안 안내 | WCAG 2.1.1 |
+| `DashboardContextNav` | `nav`·`aria-label`·`NavLink` `aria-current` | 변경 불요 — `ds-context-nav` 표준 | ✅ |
+| `CLAIM_GENERATION_GUARD_WIDGET_LABEL` StatCard | `tone=danger`·링크 `/billing/payments` | 변경 불요 — `DashboardWidgetGrid` 표준 | ✅ |
+
+### 68-3. CSS 신규·보강 클래스
+
+| 클래스 | 스타일 | 용도 |
+|--------|--------|------|
+| `.ds-health-alert-list__action` | `margin-left: auto`·`flex-shrink: 0` | HQ 건강 알림 행 지점 드릴다운 버튼 정렬 |
+| `.ds-health-alert-list__item` (`forced-colors`) | `border: 1px solid ButtonText` | 고대비 모드 목록 항목 식별 |
+
+### 68-4. coder 전달 메모
+
+- **HQ 드릴다운**: `useBranchDrilldown` → `switchActiveBranch` + `navigate`. 새 지점 액션 UI는 반드시 **`${지점명} …` `aria-label`** + 진행 중 **`aria-busy`**.
+- **청구 선행입금 가드 위젯**: `CLAIM_GENERATION_GUARD_WIDGET_LABEL`·`analyzeClaimGenerationGuard` 단일 원천 — 대시보드·`ClaimGenerationPanel` 라벨 불일치 금지.
+- **차트 드릴다운**: Recharts 막대는 포인터 전용 — 키보드·SR 대안은 **`HqBranchSummaryTable`** 조치 열 또는 별도 `Button` 목록으로 제공.
+- **잔여 P2 FE wire**(coder): ~~G-BANK-EXCEL-8·G-STAFF-NHIS-EXCEL-IMPORT~~ → **146차 UXD wire+a11y 완료** (`a18b30e`·`4315ee2`·§69).
+
+### 68-5. 검증
+
+- `HqBranchSummaryTable.test.jsx` — `drilling` 시 `aria-busy`·`disabled` 단언 +1.
+- `HealthAlertList.test.jsx` — `branchActionDisabled` 시 `aria-busy` 단언 +1.
+- `npm test` · build PASS.
+
+---
+
+## §69. G-BANK-EXCEL-8·G-STAFF-NHIS-EXCEL-IMPORT preview·행 선택 접근성 재점검 (146차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20 -->
+
+> **146차 UXD (2026-06-20)** — 145차(§68)·UXD-145(`a2f599c`) 이후 coder 신규 커밋 2건 미점검 갭 해소.
+
+### 69-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `BankDepositImportPanel` preview·행 선택 | `components/ui/BankDepositImportPanel.jsx` | `a18b30e` | G-BANK-EXCEL-8 · US-L01 |
+| `StaffNhisCaregiverImportPanel` | `components/staff/StaffNhisCaregiverImportPanel.jsx` | `4315ee2` | G-STAFF-NHIS-EXCEL-IMPORT |
+| `StaffPage` 연동 | `pages/StaffPage.jsx` | `4315ee2` | G-STAFF-NHIS-EXCEL-IMPORT |
+
+### 69-2. 접근성·정합 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| 두 import 패널 미리보기 폼 | `form` 접근성 이름 없음 | **`aria-label`**(은행/요양보호사 구분) | WCAG 1.3.1 |
+| 미리보기 결과 영역 | 그룹 시맨틱 없음 | **`role=group` + `aria-label`** | WCAG 1.3.1 |
+| 미리보기 요약 `<p>` | 비동기 로드 후 SR 무음 | **`role=status` + `aria-live=polite`** | WCAG 4.1.3 |
+| 행 선택 `Checkbox` | 「N행 선택」만 — 다중 행 SR 식별 불가 | **`${예금주명\|성명} N행 선택`** | WCAG 2.4.6 |
+| 입금일·생년월일 | 날짜 의미론 없음 | **`<time dateTime>`** | WCAG 1.3.1 |
+| `.ds-bank-deposit-formats` | `details` 래퍼 CSS 미정의(FE-16) | **`components.css` 승격** + `forced-colors` | FE-16·§1 |
+| `Badge`+`ROW_STATUS_MAP` | 색+텍스트 라벨 병행 | 변경 불요 | §1-2 ✅ |
+| `FileUpload`·`aria-busy`·성공 `Alert role=status` | 기존 import 패턴 준수 | 변경 불요 | ✅ |
+
+### 69-3. CSS 신규·보강 클래스
+
+| 클래스 | 스타일 | 용도 |
+|--------|--------|------|
+| `.ds-bank-deposit-formats` | muted 배경·border·`summary` semibold | 은행 8종 형식 `<details>` |
+| `.ds-import-preview` | 상단 구분선·`padding-top` | Excel import 미리보기 공통 래퍼 |
+| `.ds-import-preview__summary` | 하단 여백 | 요약 status 문구 |
+
+### 69-4. coder 전달 메모
+
+- **Preview→Import 2단계**: `preview*Api` → APPLIED 행 기본 선택 → `import*Api({ rowNumbers })`. 새 import UI는 **동일 2단계·행 Checkbox·전체 선택** 패턴 재사용.
+- **행 Checkbox `aria-label`**: 반드시 **도메인 식별자(예금주명·성명·인정번호 등) + 행 번호** 포함 — 「N행 선택」 단독 금지.
+- **은행 8종 샘플**: `downloadBankDepositSampleXlsx(format)` — 버튼 `${은행명} … 샘플 엑셀 다운로드` `aria-label` 유지.
+- **Staff import 성공**: `onImported(result)` → `StaffPage` 계정 요청 목록 재조회 — API 필드 `appliedCount`·`pendingCount` StatCard/Badge 연동 시 §67 `ACCOUNT_REQUEST_STATUS` 재사용.
+
+### 69-5. 검증
+
+- `BankDepositImportPanel.test.jsx` — contextual checkbox·`<time dateTime>` +1.
+- `StaffNhisCaregiverImportPanel.test.jsx` — contextual checkbox·`<time dateTime>` +1.
+- `npm test` · build PASS.
 
 ---
 
