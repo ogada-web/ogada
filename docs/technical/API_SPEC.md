@@ -1,13 +1,14 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-21T08:48:00+09:00 -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-21T23:54:00Z -->
+<!-- tech_writer-sync: TWR 302차 2026-06-21T23:54:00Z — **baseline 확정·docs ops 자동 갱신·미해결 Must 갭 4건 재정리** · **BE `a6eb8b7`·FE `5fd468b`·V1–V169·109 route·87 page·merge gate 657** · **301차 완반영**(Q612 직원출퇴근·Q614 선행입금) · **다음 TWR 신호**: coder 1건 이상 구현(출석통계/QR/결석/필터) → Q631~Q634 기록 · next: live E2E G21/G32/G42 하위 scoped blocker 문서화 -->
 <!-- tech_writer-sync: TWR 291차 2026-06-21T08:48:00 UTC — API_SPEC resync (248차→291차) — **G21 대시보드 `nhisComparisonGapCount`·G15 Kakao `transportKakaoQuotaSummary`·G-BATHING `copy-from-previous-month`** 신규 추가 · **Q594/Q595/Q598** FAQ 링크 · BE `0c9518a` / FE `580a86b` · V1–V166 · next: live E2E G21/G32/G42 하위 scoped blocker 문서화 -->
 # 주간보호센터 웹 시스템 — REST API 명세 (technical/API_SPEC.md)
 
 > **작성**: planner, tech_writer 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-21 (TWR 291차 — **API_SPEC 대시보드·배차 API 갱신** — G21 `nhisComparisonGapCount` 필드 · G15 Kakao `transportKakaoQuotaSummary` widget · G-BATHING `copy-from-previous-month` 엔드포인트 · 구현 완료 기능 문서화 · BE `0c9518a` / FE `580a86b`)
+> **최종 갱신**: 2026-06-21 (TWR 302차 — **자동 갱신·미해결 Must 갭 4건 재정리** — BE `a6eb8b7` / FE `5fd468b` · V1–V169 · **baseline 확정** · **다음 우선순위**: coder 1~4번 구현 완료 시 Q631~Q634 추가)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, **대시보드(G21 NHIS·G15 Kakao)**, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, 케이스관리·기능회복훈련·민원상담, **목욕 자동 복사**, 시스템 헬스체크
-> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `0c9518a` / **frontend** `580a86b`
+> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `a6eb8b7` / **frontend** `5fd468b`
 
 ---
 

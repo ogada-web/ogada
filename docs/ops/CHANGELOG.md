@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-21T01:30:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-21T23:54:00Z -->
 # ogada 변경 이력 (ops/CHANGELOG.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-21 (274차 — **BE `3023c9e`/FE `380be3c` · V160 ogada_platform_admin · Kakao per-API quota · staff account request workflow · platform hq_admin issuance validation · UXD-143 a11y · docs 274차 동기화**)  
+> **최종 갱신**: 2026-06-21 (302차 TWR 자동 동기화 — **BE `a6eb8b7`/FE `5fd468b` 확정·V1–V169·109 route·87 page·모듈 KPI 78.62%·merge gate 657** · 301차 완반영 · 미해결 Must 갭 4건 재정리 · coder 액션 지시)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 개발·운영·기획 담당자, 고객 센터 IT (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `src/backend/`, `src/frontend/`  
@@ -14,20 +14,249 @@
 
 ---
 
-## [Unreleased] — MVP v1 개발 중 (2026-06-21 274차, BE `3023c9e`·FE `380be3c`·develop baseline BNK-429+, **merge gate ~555 · FE WT CLEAN · BE WT CLEAN**)
+## [Unreleased] — MVP v1 개발 중 (2026-06-21 302차, BE `a6eb8b7`·FE `5fd468b`·develop baseline 302차 carry, **merge gate 657 · 302차 TWR docs 동기화 완료·미해결 Must 4건 재정리**)
 
-> **구현 상태**: Flyway **V1–V160** · **107 route** · **86 page** · merge gate **~555** · BE **@ `3023c9e`** (auth **`ogada_platform_admin` rename + V160** @ `3023c9e` · v1.3-A **Kakao per-API daily usage tracker** @ `138ac26` · v1.3-A **Kakao API status+usage probe** @ `e2b764b` · …) · FE **@ `380be3c`** (platform **hq_admin issuance name+password required** @ `380be3c` · **staff account request workflow** @ `22718d0` · **UXD-143 transport a11y** @ `4d87e19` · v1.3-A **TransportKakaoApiStatusPanel** @ `ba74bb5` · …)
+> **구현 상태**: Flyway **V1–V169** · **109 route** · **87 page(+RootRedirect=88)** · merge gate **657** · BE **@ `a6eb8b7`** (G-BILLING-DEPOSIT-ORDER-GUARD · attendance check-in method validation · **BE Test 240**) · FE **@ `5fd468b`** (**G-STAFF 출근방식 MANUAL/MOBILE/NFC FE wire** · QA-B222 vitest teardown · **FE test 434** · 모듈 KPI **78.62%**)
 >
-> **최근 개선 (274차 — ops 문서 275차 · FAQ 21개 신규·갱신 · V160 ogada_platform_admin · Kakao per-API quota · staff account request · platform admin issuance · BranchServiceType 5-type · P3 candidates):**
-> - **ops 문서 275차 (TWR)** — `FAQ.md` **§21 v1.3-A 배차·Kakao (Q425~430)** · **§22 v2 roadmap·P3 candidates (Q431~433)** · `USER_MANUAL.md` (준비 중) · `ADMIN_GUIDE.md` (준비 중) · `DEPLOYMENT_GUIDE.md` (준비 중)
-> - **FAQ 신규 21개** — **Q425** Kakao API 상태 모니터링 · **Q426** API 사용량 확인 · **Q427** 통합재가 기관 지원 · **Q428** 반영도착 시간 오류 · **Q429** 방문요양 지원 · **Q430** V160 role_code 변경 · **Q431** 현금영수증 자동 발급 완료 · **Q432** 출석 QR 체크인 정합 · **Q433** L03 간호급여 필드
+> **301차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§1-5·§4-6·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-20·§6-2-22 · `FAQ` **Q612 갱신**·**Q614 신규** · `DEPLOYMENT_GUIDE` §1-3
+> - **Must 문서 공백 보강** — **G-BILLING-DEPOSIT-ORDER-GUARD full-stack closure** (`a6eb8b7`, Q614) — 케어포 PDF p.85 **7-1 선행입금** · 수동 수납·은행 엑셀 import · **G-STAFF-WORK-ATTENDANCE 출근 방식 FE wire** (`5fd468b`/`10c0daf`, Q612 deepen)
+> - **KPI 정정** — 모듈 **78.62%** 정본·`competitorModuleCoverage.js` 22.80/29
+> - **baseline 확정** — BE `a6eb8b7`(2 commits since `560057f`)/FE `5fd468b`(3 commits since `53d65a0`)
+> - **다음 우선순위** — **출석 통계 API FE wire**(coder, Q106/Q613) · **QR 생성 payload·이미지 갭**(coder, Q590) · **직원 출퇴근 NFC 단말 연동** P3 · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
 >
-> **최근 개선 (274차 — V160 ogada_platform_admin · Kakao per-API quota · staff account request · platform hq_admin issuance · UXD-143):**
-> - **Auth ogada_platform_admin rename (BE `3023c9e`, V160, Q556)** — **V160** `rename_platform_admin_to_ogada_platform_admin` — **`role_code` CHECK·UK 인덱스** 재생성 순서 정정 · **`AuthService`·`PlatformOrganizationController`·`UserService`** — **`@PreAuthorize("hasRole('OGADA_PLATFORM_ADMIN')")`** · **`SevenRoleJwtLoginE2eTest`**
-> - **v1.3-A Kakao per-API daily usage tracker (BE `138ac26`, v1.3-A, Q554)** — **`KakaoRestApiUsageTracker`** — **`KakaoRestApiKind`** 3종(Geocode·Directions 단일·다중경유) · **`TransportKakaoQuotaUsageResponse`** — **`quotaUsage[]`** on **`GET /transport/kakao-api-status`** · **`KakaoDirectionsClient`/`KakaoGeocodeClient.record`** · **`TransportProperties`** daily limit defaults · **`KakaoRestApiUsageTrackerTest`**
-> - **Staff account request workflow (FE `22718d0`, Must onboarding, Q555)** — **`StaffPage`** — **`submitUserAccountRequestApi`** (`displayName`·`roleCode`) · **`PlatformPage`** — **「계정 생성 요청 (승인 대기)」** · **`approvePlatformUserAccountRequestApi`/`rejectPlatformUserAccountRequestApi`** · **`services.js`** API paths · tests
-> - **Platform hq_admin issuance validation (FE `380be3c`, US-A01/A02, Q555)** — **`PlatformOrgDetailModal`** — **이름·임시 비밀번호(8자+) 필수** · **`issuePlatformOrgAdminApi`** `{ email, displayName, password }`
-> - **UXD-143 transport external link·duplicate link a11y (FE `4d87e19`, UXD-143, Q554)** — **`TransportKakaoApiStatusPanel`** — Kakao Developers **(새 탭) `ds-sr-only`** · **`TransportSuggestPanel`** — DRAFT 검토 링크 **차량번호 `aria-label`**
+> **최근 개선 (301차):**
+> - **G-BILLING-DEPOSIT-ORDER-GUARD 선행입금 입금 순서 가드 (BE `a6eb8b7`, US-M03·케어포 7-1/7-2, Q614)** — **`BillingService.assertPriorDepositOrderForClients()`** — 동일 이용자에 **더 이른 `CONFIRMED` 미납 청구**가 있으면 **`422`「이전 미납 청구(YYYY-MM) 입금 선행이 필요합니다.」** · **`POST /claims/{id}/payments`** · **`BankDepositImportService`** — 동일 이용자·금액 매칭 시 **가장 이른 청구월 우선** · **`BillingServiceTest`** +106 · **`BankDepositImportServiceTest`**
+> - **G-STAFF-WORK-ATTENDANCE 출근 방식 FE wire (FE `5fd468b`, US-R03·케어포 8-4, Q612 deepen)** — **`StaffWorkAttendancePage`** — **「출근 방식」** select **`MANUAL`/`MOBILE`/`NFC`** · 테이블 **출근 방식** 열 · **`staffWorkAttendanceCheckInApi({ checkInMethod })`** · **`staffWorkAttendance.js`** · **`StaffWorkAttendancePage.test`**
+> - **G-STAFF-WORK-ATTENDANCE check-in method validation tests (BE `10c0daf`, Q612 deepen)** — **`StaffWorkAttendanceServiceTest`** — **`normalizeCheckInMethod()`** — 지원 값 정규화·미지원 값 **`422`** 거부
+>
+> **300차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-4 · `ADMIN_GUIDE` §1-4·§6-2-21 · `FAQ` **Q609 정정**·**Q612 정정**·**Q613 갱신** · `DEPLOYMENT_GUIDE` §1-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-ATTENDANCE-STATS FE/BE contract mismatch** (Q613) · **`/attendance/stats`** · 월별 통계 **API 정합 체크리스트** 포함 · Swagger 우회·coder 정합 매트릭스 제공
+> - **KPI 정정** — 모듈 **78.45%** 정본·`competitorModuleCoverage.js` 22.75/29
+> - **baseline carry** — BE `560057f`/FE `53d65a0`·V1–V169·109 route·88 page·HEAD zero advance
+> - **다음 우선순위** — **출석 통계 API FE wire**(coder, Q106/Q613) · **QR 생성 payload·이미지 갭**(coder, Q590) · **직원 출퇴근 MOBILE/NFC wire** P3 · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (300차 정정 사항):**
+> - **G-ATTENDANCE-STATS 출석 통계 Must API** — **`GET /api/v1/attendance/stats/monthly?from=YYYY-MM-DD&to=YYYY-MM-DD&branchId=<uuid>`** · **응답** `branches[].months[]` + `activeClientCount`·`attendedDays`·`attendanceRate` · FE **`/attendance/stats`** 화면 **wire 미완** (Q613) — **프론트 필드명·구조 불일치** · coder 정합 체크리스트 제공 (차트/테이블 전환 옵션)
+> - **G-STAFF-WORK-ATTENDANCE 직원 출퇴근 roster API** — **`GET /staff/work-attendance`** — **`userName`·`roleCode`·`status`·`checkInAt`·`checkOutAt`** · **`POST …/check-in`** · **`POST …/check-out`** — 당일(Asia/Seoul) 수동 처리 · RBAC **`hq_admin`·`branch_admin`·`social_worker`**
+> - **G-ATTENDANCE-ROSTER-STATUS 이용자 출석 roster API 확장** — **`GET /attendance?includes=clientName,status,usesTransport`** — **`clientName`**·**`status`**·**`usesTransport`** 필드 추가 · FE **`/attendance`** 화면 **wire 완료** (Q609)
+> - **Vitest serial pool** — **`vite.config.js`** — **`fileParallelism: false`·`maxWorkers: 2`** · **`scripts/npm-test-locked.sh`** flock · 문서 **`docs/qa/VITEST_CONCURRENCY.md`** 공개
+>
+> **298차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `560057f`(1 commit since `61e1970`)/FE `53d65a0`(1 commit since `9812ac4`)·V1–V169·109 route·88 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-20 · `FAQ` **Q589 정정**·**Q612 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-WORK-ATTENDANCE full-stack closure** (`560057f`/`53d65a0`, Q612) — 케어포 PDF p.100 **8-4 출퇴근·근무일지** · **`/staff/attendance`** · **`GET/POST /staff/work-attendance*`** · **V169** `staff_work_attendance`
+> - **다음 우선순위** — **QR 생성 payload·이미지 갭**(coder) · **출석 통계 API 정합**(Q106) · **직원 출퇴근 MOBILE/NFC wire** P3 · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **G-MENU-PERMISSION-MATRIX** P3
+>
+> **최근 개선 (298차 — G-STAFF-WORK-ATTENDANCE full-stack):**
+> - **G-STAFF-WORK-ATTENDANCE staff daily check-in/out roster API (BE `560057f`, US-R03·케어포 8-4, Q612)** — **`GET /staff/work-attendance`** — 지점 **활성 직원 전원** + **`userName`·`roleCode`·`status`·`checkInAt`·`checkOutAt`** · **`StaffWorkAttendanceStatusSupport.deriveStatus()`** — `CHECKED_IN`/`CHECKED_OUT`/`null`(미출근) · **`POST …/check-in`** · **`POST …/check-out`** — **당일(Asia/Seoul) 수동 처리** · **V169** `staff_work_attendance` · **`StaffWorkAttendanceServiceTest`** · **`StaffWorkAttendanceLiveApiRoutingE2eTest`** · RBAC **`hq_admin`·`branch_admin`·`social_worker`**
+> - **G-STAFF-WORK-ATTENDANCE StaffWorkAttendancePage FE wire (FE `53d65a0`, US-R03·케어포 8-4, Q612)** — **`/staff/attendance`** — **`StaffContextNav`「출퇴근 (8-4)」** · **`fetchStaffWorkAttendanceApi`** 단일 호출 · **근무일 DateInput** · StatCard **출근/퇴근/미출근** · 행별 **「출근」/「퇴근」** · **`StaffWorkAttendancePage.test`**
+>
+> **297차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `61e1970`(carry)/FE `9812ac4`(1 commit since `8383f8d`)·V1–V168·107 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-19 · `FAQ` **Q608 UXD-151 deepen**·**Q611 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3
+> - **Must 문서 공백 보강** — **G-STAFF-DOCUMENT-REPOSITORY mobile capture mobile full-width CSS** (`9812ac4`, Q611) — `.ds-button`→**`.ds-btn`** selector 정합 · **FE-16 회귀 해소**
+> - **다음 우선순위** — **QR 생성 payload·이미지 갭**(coder) · **출석 통계 API 정합**(Q106) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **G-MENU-PERMISSION-MATRIX** P3
+>
+> **최근 개선 (297차 — UXD-151 mobile capture CSS):**
+> - **UXD-151 G-STAFF-DOCUMENT-REPOSITORY mobile capture button full-width CSS (FE `9812ac4`, US-R03, Q611)** — **`components.css`** — **`.ds-staff-document-repository .ds-inline-actions .ds-btn { width: 100%; }`** — **`6bde24a`** 모바일 전폭 규칙이 미정의 **`.ds-button`** 셀렉터를 타깃하던 **FE-16 회귀** 해소 · **Button** 컴포넌트는 **`.ds-btn`** 렌더 · **순수 CSS**(시각·동작·DOM 불변)
+>
+> **296차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `61e1970`(carry)/FE `8383f8d`(1 commit since `3bffb17`)·V1–V168·107 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§4-4 · `ADMIN_GUIDE` §1-4 · `FAQ` **Q609 full-stack 갱신**·**Q610 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3
+> - **Must 문서 공백 보강** — **G-ATTENDANCE-ROSTER-STATUS FE wire full-stack closure** (`8383f8d`, Q609) — `fetchClientsApi` 병합 제거 · **Vitest serial fork pool** (`8383f8d`, Q610)
+> - **다음 우선순위** — **QR 생성 payload·이미지 갭**(coder) · **출석 통계 API 정합**(Q106) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **G-MENU-PERMISSION-MATRIX** P3
+>
+> **최근 개선 (296차 — G-ATTENDANCE-ROSTER-STATUS FE wire · Vitest serial pool):**
+> - **G-ATTENDANCE-ROSTER-STATUS AttendancePage roster API FE wire full-stack closure (FE `8383f8d`, QA-B222, Q609)** — **`AttendancePage`** — redundant **`fetchClientsApi`** merge **제거** · **`fetchAttendanceApi`** 단일 호출로 **`clientName`·`status`·`usesTransport`** 표시 · **`AttendancePage.test`** roster pending·checked-in cases
+> - **QA-B222 serial vitest pool stabilize (FE `8383f8d`, QA-B222, Q610)** — **`vite.config.js`** — **`pool: forks`·`maxWorkers: 2`·`fileParallelism: false`·`reporters: ["dot"]`·30s timeouts** — OOM/no-output hang 완화 · **`vitestConfig.test.js`** regression · **`scripts/npm-test-locked.sh` flock** 유지
+>
+> **295차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `61e1970`(2 commits since `56cb5d9`)/FE `3bffb17`(1 commit since `6bde24a`)·V1–V168·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§4-4 · `ADMIN_GUIDE` §1-4·§10-5 · `FAQ` Q94 갱신·**Q609 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **G-ATTENDANCE-ROSTER-STATUS daily list roster** (`0c69060`/`61e1970`, Q609) · **Q94 closure** — `clientName`·`status`·활성 이용자 전원·pending row
+> - **다음 우선순위** — **QR 생성 payload·이미지 갭**(coder) · **출석 통계 API 정합**(Q106) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **G-MENU-PERMISSION-MATRIX** P3
+>
+> **최근 개선 (295차 — G-ATTENDANCE-ROSTER-STATUS · attendance roster live API tests):**
+> - **G-ATTENDANCE-ROSTER-STATUS daily list branch roster API (BE `0c69060`, US-E01, Q609)** — **`GET /attendance`** — 활성 지점 **전체 이용자** + **`clientName`·`status`·`usesTransport`** · **`AttendanceStatusSupport.deriveStatus()`** — `CHECKED_IN`/`CHECKED_OUT`/`ABSENT`/`null`(미처리) · pending row **`id=null`** · **`AttendanceServiceTest`** · **`AttendanceStatusSupportTest`**
+> - **G-ATTENDANCE-ROSTER-STATUS roster live API routing and RBAC (BE `61e1970`, QA-B223, Q609)** — **`AttendanceRosterLiveApiRoutingE2eTest`** — JSON contract `clientName`·`status`·`usesTransport` · **`RoleBasedControllerAccessTest$AttendanceAccess`** — `caregiver` list/check-in **200** · `guardian` **403**
+> - **US-R03 vitest pool stabilize (FE `3bffb17`, BNK-477)** — module 8 coverage carry · vitest pool 안정화 (기능 변경 없음)
+>
+> **294차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `56cb5d9`(3 commits since `20485f1`)/FE `6bde24a`(3 commits since `751c593`)·V1–V168·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§2-2·§4-2·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-4·§6-2-18·§6-2-19 · `FAQ` Q596·Q604·Q315 갱신·**Q607–Q608 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3
+> - **Must 문서 공백 보강** — **G-STAFF-DOCUMENT-REPOSITORY mobile camera capture** (`6bde24a`, Q608) · **G-BILLING-OVERDUE-ADJUSTMENT duplicate auto SMS guard** (`a45c040`, Q607) · **live E2E hard operation blocker priority** (`018a781`/`56cb5d9`, Q596 deepen) · **US-R02 staff status print cleanup** (`a4ea2d5`, Q315 deepen)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **G-MENU-PERMISSION-MATRIX** P3
+>
+> **최근 개선 (294차 — mobile HR capture · duplicate SMS guard · live E2E blocker priority · 8-12 print cleanup):**
+> - **G-STAFF-DOCUMENT-REPOSITORY mobile camera capture for HR uploads (FE `6bde24a`, US-R03 P2, Q608)** — **`StaffDocumentRepositoryPanel`** — **`capture="environment"`** · 슬롯별 **「모바일 촬영」** · **`uploadStaffHrFileApi`** · **`StaffHrFilePanel`**·**`StaffRefresherCertificatePanel`** **`FileUpload enableMobileCapture`** · **`StaffDocumentRepositoryPanel.test`** · **`FileUpload.test`**
+> - **G-BILLING-OVERDUE-ADJUSTMENT duplicate auto SMS management record guard (BE `a45c040`, G-BILLING, Q607)** — **`OverdueManagementService.recordAutomaticSmsRemindersForClaim`** — **`existsByOrganizationIdAndClaimIdAndClientIdAndContactMethodAndAutoGeneratedIsTrue`** — claim·client·SMS **자동기록 1회** · **`OverdueManagementServiceTest`** +1 case
+> - **Live E2E hard operation blocker priority (BE `018a781`/`56cb5d9`, QA-B95, Q596 deepen)** — **`LiveE2eOperationReadinessSupport.resolveOperationBlocker`** — **`staff-bootstrap-error`/`guardian-bootstrap-error` priority 1** · bootstrap failure 시 **`operationBlocker` primary = `-error`** · **`LiveE2eOperationReadinessSupportTest`** · **`LiveE2eControllerTest`** · **`HealthControllerTest`**
+> - **US-R02 staff status report print cleanup (FE `a4ea2d5`, US-R02, Q315 deepen)** — **`StaffStatusReportPage`** — **`afterprint`+`setTimeout` fallback** · **`URL.revokeObjectURL`** · **`ds-staff-status-report-printing` body class** · multi-page print layout · **`StaffStatusReportPage.test`**
+>
+> **293차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `20485f1`(2 commits since `b583c11`)/FE `751c593`(2 commits since `03d0d43`)·V1–V168·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§2-2·§4-2·§5-3·§5-26 · `ADMIN_GUIDE` §1-4·§6-2-18·§6-2-19 · `FAQ` Q596 갱신·**Q605–Q606 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3
+> - **Must 문서 공백 보강** — **G-BILLING-OVERDUE-ADJUSTMENT V168 defense-in-depth** (`399c698`, Q605) · **UXD-150 overdue·repository·bathing a11y** (`751c593`, Q606) · **live E2E bootstrap error suffix match** (`20485f1`, Q596 deepen) · **G-STAFF-DOCUMENT-REPOSITORY API-authoritative FE wire** (`fd15a2f`, Q604 deepen)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-STAFF-DOCUMENT-REPOSITORY 모바일 업로드** P3 · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **G-MENU-PERMISSION-MATRIX** P3
+>
+> **최근 개선 (293차 — V168 overdue integrity · UXD-150 a11y · bootstrap suffix · repository API wire):**
+> - **G-BILLING-OVERDUE-ADJUSTMENT V168 overdue tables defense-in-depth (BE `399c698`, G-BILLING, Q605)** — **`V168__billing_overdue_management_and_adjustments_integrity.sql`** — **`chk_*_note_nonempty`·`chk_*_reason_nonempty`** · **`chk_*_recorded_at_after_created`** · **Tenant FK 8쌍** · **purge·recorded_by indexes** · **`OverdueManagementServiceTest`** · **`OverdueManagementLiveApiRoutingE2eTest`**
+> - **UXD-150 G-BILLING·G-STAFF-DOCUMENT-REPOSITORY·G-BATHING a11y (FE `751c593`, UXD-150, Q606)** — **`OverdueManagementModal`** — **`<time dateTime>`**·Field label·**`aria-busy`** · **`StaffDocumentRepositoryPanel`** — phase **`aria-label`**·CSS · **`BathingSchedulePage`** — **「전월 일정 복사」`aria-busy`** · **`components.css`** · tests
+> - **Live E2E bootstrap error detail suffix match (BE `20485f1`, QA-B95, Q596 deepen)** — **`LiveE2eOperationReadinessSupport.hasBootstrapErrorDetail`** — **`bootstrap=error: …`**·**`guardian-bootstrap=error: …`** suffix → derived seed/schema blocker **억제** · **`LiveE2eOperationReadinessSupportTest`** +2 cases
+> - **G-STAFF-DOCUMENT-REPOSITORY repository-progress API authoritative FE wire (FE `fd15a2f`, US-R03, Q604 deepen)** — **`fetchStaffDocumentRepositoryProgressApi`** — client-side merge **제거** · **`StaffDocumentRepositoryPanel`** · **`staffHrFileServices.test`**
+>
+> **292차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `b583c11`(2 commits since `c17097d`)/FE `03d0d43`(1 commit since `d2815d2`)·V1–V167·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-18·§6-2-19 · `FAQ` Q602 갱신·**Q604 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **G-STAFF-DOCUMENT-REPOSITORY full-stack** (`b583c11`/`03d0d43`, Q604) · **G-BILLING-OVERDUE-ADJUSTMENT SMS auto-record scope guard** (`f6266ec`, Q602 deepen)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-STAFF-DOCUMENT-REPOSITORY 모바일 업로드** P3 · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (292차 — G-STAFF-DOCUMENT-REPOSITORY · overdue SMS guard):**
+> - **G-STAFF-DOCUMENT-REPOSITORY 21-slot repository progress API (BE `b583c11`, US-R03 P3, Q604)** — **`GET /staff/hr-files/users/{userId}/repository-progress`** — **`StaffDocumentRepositoryCompliance`** — FAQ21825 **21 lifecycle slots** · checklist+HR upload parity · **`StaffDocumentRepositoryComplianceTest`** · RBAC **`hq_admin`·`branch_admin`·`social_worker`**
+> - **G-STAFF-DOCUMENT-REPOSITORY StaffDocumentRepositoryPanel FE wire (FE `03d0d43`, US-R03 P3, Q604)** — **`StaffDetailPage`** **「HR 파일함」** tab — phase별 21-slot progress · **`fetchStaffDocumentRepositoryProgressApi`** · **`StaffDocumentRepositoryPanel.test`** · **`staffDocumentRepository.test`**
+> - **G-BILLING-OVERDUE-ADJUSTMENT overdue SMS auto-record scope guard (BE `f6266ec`, G-BILLING, Q602 deepen)** — **`OverdueManagementService.recordAutomaticSmsRemindersForClaim`** — **`CONFIRMED`+과거월+지점 스코프+양수 copay** 만 자동 독려기록 · **`OverdueManagementServiceTest`** +3 cases
+>
+> **291차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `c17097d`(4 commits since `0c9518a`)/FE `d2815d2`(6 commits since `580a86b`)·V1–V167·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§5-26·§4-2 · `ADMIN_GUIDE` §1-4·§6-2-16·§6-2-18 · `FAQ` Q598 갱신·**Q602–Q603 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **G-BATHING copy-from-previous-month full-stack** (`49a1721`/`9a957fb`, Q598 closure) · **G-BILLING-OVERDUE-ADJUSTMENT full-stack** (`4d92844`/`0420e6b`, Q602) · **UXD-149 dashboard forced-colors** (`b969570`, Q603)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (291차 — G-BATHING 전월복사 · G-BILLING-OVERDUE-ADJUSTMENT · UXD-149):**
+> - **G-BATHING copy-from-previous-month bathing schedule API (BE `49a1721`/`a426663`, L02_M03, Q598)** — **`POST /care/bathing-schedules/copy-from-previous-month`** — **`SCHEDULED`/`COMPLETED`만 복사** · **`createdCount`/`skippedCount`** · **`BathingScheduleServiceTest`** · RBAC **`hq_admin`·`branch_admin`·`social_worker`**
+> - **G-BATHING copy-from-previous-month FE wire (FE `9a957fb`, L02_M03, Q598)** — **`BathingSchedulePage`** — **「전월 일정 복사」** · 확인 모달 · **`copyBathingSchedulesFromPreviousMonthApi`** · **`BathingSchedulePage.test`** · **`bathingScheduleServices.test`**
+> - **G-BILLING-OVERDUE-ADJUSTMENT overdue CRM+adjustment APIs (BE `4d92844`/`c17097d`, G-BILLING, Q602)** — **`OverdueManagementService`** — **`GET/POST /billing/overdue/claims/{claimId}/management-records`** · **`GET/POST …/adjustments`** — **`PARTIAL`/`FULL_WRITE_OFF`** · **V167** `billing_overdue_management_records`·`billing_overdue_adjustments` · **`OverdueManagementServiceTest`** · **`OverdueManagementLiveApiRoutingE2eTest`**
+> - **G-BILLING-OVERDUE-ADJUSTMENT OverdueManagementModal FE wire (FE `0420e6b`, G-BILLING, Q602)** — **`OverduePage`** **「관리」** — tab **독려기록**·**조정처리** · **`fetchOverdueManagementRecordsApi`/`createOverdueAdjustmentApi`** · **`OverdueManagementModal.test`**
+> - **UXD-149 G21·G15 dashboard widget forced-colors (FE `b969570`, UXD-149, Q603)** — **`components.css`** — **`.ds-dashboard-widgets__item .ds-stat`** forced-colors 경계선 · WCAG 1.4.11 · **`DashboardPage.test`**
+>
+> **290차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `0c9518a`(3 commits since `7b99313`)/FE `580a86b`(5 commits since `e2f1246`)·V1–V166·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§2-2·§4-2·§5-2 · `ADMIN_GUIDE` §1-4 · `FAQ` Q448·Q591 갱신·**Q594–Q597 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **G21 dashboard `nhisComparisonGapCount` full-stack** (`0796821`/`fe7df60`, Q594) · **G15 Kakao API quota HQ dashboard widget** (`580a86b`, Q595) · **live E2E bootstrap-error derived blocker suppression** (`0c9518a`, Q596) · **`liveCashReceiptDescribe` suite guard** (`cd6891f`, Q597)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (290차 — G21 dashboard gap · G15 Kakao quota widget · live E2E bootstrap·cash-receipt guard):**
+> - **G21 dashboard nhisComparisonGapCount embed (BE `0796821`/`0c9518a`, G21, Q594)** — **`BranchDashboardResponse`·`HqDashboardResponse`** — **`nhisComparisonGapCount`** — **`VisitService.countNhisComparisonGapLines`** — PLAN-month NHIS comparison gap 합계 · **`DashboardServiceTest`**
+> - **G21 NHIS comparison gap StatCard (FE `fe7df60`/`c01b880`/`ebc9f28`, G21, Q594)** — **`DashboardPage`** — **「공단 일정 불일치」** StatCard · dashboard API **`nhisComparisonGapCount` 우선** · **home-visit-like 지점만** · **`/visits` 링크** · **`DashboardPage.test`**
+> - **G15-KAKAO-QUOTA-DASH HQ dashboard widget (FE `580a86b`, v1.3-A, Q595)** — **`buildTransportKakaoQuotaDashboardWidget`** — **`fetchTransportKakaoApiStatusApi`** — **「카카오 API 잔여」** StatCard · **`hq_admin`·`sysadmin`** · **`/settings` 링크** · **`transportKakaoQuotaSummary.test`**
+> - **Live E2E bootstrap-error derived blocker suppression (BE `0c9518a`, QA-B95, Q596)** — **`LiveE2eOperationReadinessSupport`** — **`bootstrap=error`/`guardian-bootstrap=error`** 시 **derived seed/schema blocker 생략** · **`LiveE2eOperationReadinessSupportTest`**
+> - **Live E2E liveCashReceiptDescribe suite guard (FE `cd6891f`, QA-B195, Q597)** — **`liveE2eSuiteGuard.test`** — **`liveCashReceiptDescribe`** regex gate · cash-receipt routing harness **liveDescribe 뒤** 실행
+>
+> **289차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `7b99313`(1 commit since `14935a3`)/FE `e2f1246`(3 commits since `33e9e1a`)·V1–V166·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§2-2·§5-10 · `ADMIN_GUIDE` §1-4·§6-2-6e · `FAQ` Q580·Q587 갱신·**Q588 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+>
+> **288차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `7b99313`(1 commit since `14935a3`)/FE `e2f1246`(3 commits since `33e9e1a`)·V1–V166·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§2-2·§5-10 · `ADMIN_GUIDE` §1-4·§6-2-6e · `FAQ` Q580·Q587 갱신·**Q588 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **billing report `appliedFilters` FE wire full-stack** (`c6a412f`/`e2f1246`, Q587 closure) · **UXD-148 billing report filter a11y** (`e2f1246`, Q588) · **live E2E feature-scoped operation blockers** (`cb3fe3d`, Q580 deepen)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (288차 — G-BILLING appliedFilters FE wire · UXD-148 a11y · live E2E feature-scoped blockers):**
+> - **G-BILLING appliedFilters FE wire full-stack closure (FE `c6a412f`/`e2f1246`, G-BILLING, Q587 closure)** — **`BillingReportPage`** — **`resolveBillingReportScopeLabel`** (`billingReportFilters.js`) — 서버 **`appliedFilters.depositPeriodLabel`/`receiptBasisLabel`** 우선 · 화면 **「적용 조건:」** summary · 인쇄 헤더 **`ds-care-report-print-only`** · **`BillingReportPage.test`** · **`billingReportFilters.test`**
+> - **UXD-148 G-BILLING billing report filter a11y (FE `e2f1246`, UXD-148, Q588)** — **`BillingReportPage`** — **「조회」`aria-busy`** · **`ds-billing-report__applied-filters`** **`aria-live="polite"`** · **`<time dateTime>`** · **`components.css`** applied-filters 스타일 · **`BillingReportPage.test`**
+> - **Live E2E feature-scoped operation blockers (FE `cb3fe3d`, QA-B95, Q580 deepen)** — **`liveConfig.getEffectiveOperationBlockers`** — **`requireG21Ready`/`requireG32Ready`/`requireCashReceiptReady`/`requireStaffNhisImportReady`** — staff suite가 **무관한 G21·G32·cash-receipt·V165 blocker** 로 false SKIP 되지 않음 · **`liveG21Describe`**·**`liveCashReceiptDescribe`** 는 각자 scope 유지 · **`liveE2eHarness.test`**
+> - **G-BILLING receipt claim-basis appliedFilters regression test (BE `7b99313`, QA-B193, Q587)** — **`BillingServiceTest`** — **`receipts?basis=CLAIM`** → **`appliedFilters.receiptBasis=CLAIM`** · **`receiptBasisLabel=청구기준`**
+>
+> **287차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `14935a3`(1 commit since `375fb9d`)/FE `33e9e1a`(1 commit since `e38ccfd`)·V1–V166·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§5-10 · `ADMIN_GUIDE` §1-4·§6-2-6e · `FAQ` Q580·Q585 갱신·**Q587 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **billing report `appliedFilters` echo** (`14935a3`, Q587) · **live E2E snake_case operation blocker recovery** (`33e9e1a`, Q580 deepen)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (287차 — G-BILLING appliedFilters echo · live E2E snake_case blocker recovery):**
+> - **G-BILLING billing ledger appliedFilters echo (BE `14935a3`, G-BILLING, Q587)** — **`BillingReportListResponse.appliedFilters`** — **`variant`·`month`·`depositPeriod`·`depositPeriodLabel`·`receiptBasis`·`receiptBasisLabel`** — variant별 관련 필드만 채움 · **`BillingReportAppliedFilters.forReport`** · **`BillingServiceTest`**·**`MustApiEndpointRoutingTest`**·**`BillingReportAppliedFiltersTest`**
+> - **Live E2E snake_case operation blocker recovery (FE `33e9e1a`, QA-B95, Q580 deepen)** — **`liveConfig.normalizeOperationBlocker`** — kebab·snake·colon suffix → space normalize · **`staff_auth_not_ready: fallback`** 등 recovered auth blocker **일관 무시** · **`liveE2eHarness.test`**
+>
+> **286차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `375fb9d`(1 commit since `b96d038`)/FE `e38ccfd`(2 commits since `1a614c9`)·V1–V166·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§2-2·§5-10 · `ADMIN_GUIDE` §1-4·§6-2-6e · `FAQ` Q580·Q585 갱신·**Q586 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **입금·수납 대장 FE period/basis wire** (`e38ccfd`, Q585 closure) · **billing report invalid month guard** (`375fb9d`, Q586) · **live E2E unrelated auth blocker filter** (`5f1815f`, Q580 deepen)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (286차 — G-BILLING report FE wire · invalid month guard · live E2E blocker filter):**
+> - **G-BILLING deposit half-month and receipt dual-basis FE wire (FE `e38ccfd`, G-BILLING-DEPOSIT-HALFMONTH-REPORT·G-BILLING-RECEIPT-DUAL-BASIS, Q585 closure)** — **`BillingReportPage`** — **`/billing/reports/deposits`** **「입금 구간」** segmented control (**월간/1~15일/16~말일**) · **`/billing/reports/receipts`** **「집계 기준」** (**수납기준/청구기준**) · **`billingReportFilters.js`** — **`buildBillingReportQueryParams`** · **`fetchBillingReportApi`** (`services.js`) · **`BillingReportPage.test`**
+> - **G-BILLING invalid calendar month guard (BE `375fb9d`, G-BILLING, Q586)** — **`BillingService.normalizeYearMonth`** — regex 통과 후 **`YearMonth.parse`** — `month=2026-99` 등 → **`422`「대상 월 형식이 올바르지 않습니다.」** · **`BillingServiceTest`**
+> - **Live E2E ignore unrelated auth blockers in suite gates (FE `5f1815f`, QA-B95, Q580 deepen)** — **`liveConfig.getEffectiveOperationBlockers`** — **`requireStaffAuth=false`** 시 staff auth blocker **제외** · **`requireGuardianAuth=false`** 시 guardian auth blocker **제외** — G21 staff suite가 guardian blocker만으로 false SKIP 되지 않음 · **`liveE2eHarness.test`**
+>
+> **285차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `b96d038`(2 commits since `68d4457`)/FE `1a614c9`(3 commits since `82a542c`)·V1–V166·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§1-5·§2-2·§5-3·§5-10 · `ADMIN_GUIDE` §1-4·§6-2-6c · `FAQ` Q290·Q584 갱신·**Q585 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3
+> - **Must 문서 공백 보강** — **직원 휴직 lifecycle full-stack** (`2581347`/`1d7cee2`, Q584 closure) · **입금대장 반월·수납대장 이중기준 API** (`b96d038`, Q585)
+> - **다음 우선순위** — **입금·수납 대장 FE period/basis wire**(coder) · **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (285차 — G-STAFF-LEAVE-STATUS full-stack · G-BILLING deposit half-month·receipt dual-basis):**
+> - **G-STAFF-LEAVE-STATUS ON_LEAVE full-stack closure (FE `2581347`/`1a614c9`·BE `1d7cee2`/`68d4457`, US-R03b·FAQ21720, Q584)** — **`StaffLifecyclePanel`** 「휴직」 combobox·warning Alert · **`StaffLifecycleSummaryPanel`** + **`GET /api/v1/staff/lifecycle-summary`** `onLeaveCount` · **`StaffPage`** lifecycle 필터·Badge **5-state** · **`fetchStaffLifecycleSummaryApi`** (`services.js`) · **UXD-147** ON_LEAVE a11y (`1a614c9`) · **`StaffLifecyclePanel.test`**·**`StaffLifecycleSummaryPanel.test`**
+> - **G-BILLING deposit half-month and receipt dual-basis report filters (BE `b96d038`, G-BILLING-DEPOSIT-HALFMONTH-REPORT·G-BILLING-RECEIPT-DUAL-BASIS, Q585)** — **`GET /api/v1/billing/reports/deposits?period=`** — **`FULL`/`FIRST_HALF`/`SECOND_HALF`** (케어포 PDF p.91 ② 1~15일·16~말일) · **`GET …/receipts?basis=`** — **`PAYMENT`/`CLAIM`** (수납기준·청구기준) · **`BillingReportDepositPeriod`**·**`BillingReportReceiptBasis`** · **`BillingServiceTest`**·**`MustApiEndpointRoutingTest`**
+>
+> **284차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `68d4457`(1 commit since `2edbdc4`)/FE `82a542c`(1 commit since `b60c622`)·V1–V166·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-6c · `FAQ` Q290·Q578 갱신·**Q584 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3
+> - **Must 문서 공백 보강** — **직원 휴직 lifecycle `ON_LEAVE`** API+DB (`68d4457`, Q584) · **live E2E placeholder access token bootstrap** (`82a542c`, Q578 deepen)
+> - **다음 우선순위** — **G-STAFF-LEAVE-STATUS FE wire**(coder) · **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (284차 — G-STAFF-LEAVE-STATUS ON_LEAVE · live E2E placeholder token bootstrap probing):**
+> - **G-STAFF-LEAVE-STATUS ON_LEAVE staff lifecycle (BE `68d4457`, US-R03·FAQ21720, Q584)** — **`StaffLifecycleStatus.ON_LEAVE`** · **V166** `chk_users_lifecycle_status` 5-state · **`chk_users_on_leave_requires_hired_at`** · **`chk_users_on_leave_no_termination_date`** · **`UserService.validateLifecycleState`** — 휴직 시 **`hiredAt` 필수**·**`terminatedAt` 금지**·**`active=false`** · **`ACTIVE` 복귀 시 `active=true`** · **`StaffTrainingLogService`** — 신규교육 compliance에서 **ON_LEAVE 제외** · **`UserServiceTest`**·**`StaffLifecyclePilotServiceFlowE2eTest`**
+> - **Live E2E placeholder auth token bootstrap probing (FE `82a542c`, QA-B95, Q578 deepen)** — **`liveGlobalSetup.probeStaffAuth`/`probeGuardianAuth`** — placeholder **`LIVE_E2E_ACCESS_TOKEN`/`LIVE_E2E_GUARDIAN_ACCESS_TOKEN`** → **missing 취급** · bootstrap·credential login fallback 경로 **유지** · false SKIP 축소 · **`liveE2eHarness.test`**
+>
+> **283차 TWR 자율 동기화 (완료):**
+> - **baseline 확정** — BE `2edbdc4`(1 commit since `6ed7cd4`)/FE `b60c622`(2 commits since `9105332`)·V1–V165·108 route·87 page
+> - **ops 문서 갱신** — `CHANGELOG`·`USER_MANUAL` §1-3·§4-6-1 · `ADMIN_GUIDE` §1-4·§10-5 · `FAQ` Q111·Q580 갱신·**Q582–Q583 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3
+> - **Must 문서 공백 보강** — **NHIS import 처리상태 헤더** BOM·공백·alias normalize (`2edbdc4`, Q582) · **live E2E stale token recovery** (`b60c622`, Q583) · **auth blocker label normalize** (`06c6bb5`, Q580 deepen)
+> - **다음 우선순위** — **출석 roster API 확장**(coder) · **QR 생성 payload·이미지 갭**(coder) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **G-STAFF-LEAVE-STATUS** P3
+>
+> **최근 개선 (283차 — NHIS header normalize · live E2E stale token recovery · auth blocker label normalize):**
+> - **NHIS import processing-status header normalize (BE `2edbdc4`, G7, Q582)** — **`NhisExcelParser.normalizeHeader`** — UTF-8 **BOM(`\uFEFF`)** 제거 · trim · lowercase · **모든 공백 제거** — `\uFEFFprocessing_status\t`·`LTC_CERT_NO`·`SERVICE_DAYS\n` 등 export variant alias 매핑 · **`processingStatus`** 값 **`정상`/`대기`/`오류`** capture · **`NhisExcelParserTest`**
+> - **Live E2E stale auth token recovery (FE `b60c622`, QA-B95, Q583)** — **`liveGlobalSetup.probeStaffAuth`/`probeGuardianAuth`** — access token **invalid** 시 **credential login fallback** · env token 교체 · false SKIP 축소 · **`liveE2eHarness.test`**
+> - **Live E2E auth blocker label normalize (FE `06c6bb5`, QA-B95, Q580 deepen)** — **`liveConfig.normalizeOperationBlocker`** — legacy/case-variant **`Staff Auth Not Ready`** 등 → auth-recovery filter 정합 · **`liveE2eHarness.test`**
+>
+> **최근 개선 (282차 — G-BANK invalid rowNumbers guard · live E2E auth blocker recovery · UXD-146 import a11y):**
+> - **G-BANK-EXCEL-8 invalid rowNumbers spreadsheet guard (BE `6ed7cd4`, G-BANK-EXCEL-8, Q579)** — **`BankDepositImportService.validateSelectedRowNumbers`** — 미리보기에 없는 `rowNumbers` → **`422`「선택한 행 번호를 엑셀에서 찾을 수 없습니다: …」** · silent skip 방지 · **`BankDepositImportServiceTest`**
+> - **Live E2E auth blocker recovery (FE `9105332`, QA-B95, Q580)** — **`liveConfig.js`** — **`getEffectiveOperationBlockers`** — `staffAuthReady`/`guardianAuthReady` 시 **`staff-*-not-ready`/`guardian-*-not-ready` blocker 제거** · false SKIP 감소 · **`liveE2eHarness.test`**
+> - **UXD-146 G-BANK·G-STAFF-NHIS import preview a11y (FE `a7d9a2f`, UXD-146, Q581)** — **`BankDepositImportPanel`**·**`StaffNhisCaregiverImportPanel`** — contextual **`aria-label`**·**`aria-live="polite"`** summary·**`aria-busy`** · **`ds-import-preview`·`ds-bank-deposit-formats`** CSS · tests
+>
+> **최근 개선 (281차 — G-BANK-EXCEL-8 FE closure · non-positive rowNumbers test · live E2E placeholder guard):**
+> - **G-BANK-EXCEL-8 BankDepositImportPanel preview+row selection full-stack wire (FE `a18b30e`, G-BANK-EXCEL-8, Q572·Q576)** — **`BankDepositImportPanel.jsx`** — **`fetchBankDepositFormatsApi`/`previewBankDepositsApi`/`importBankDepositsApi`** (`services.js`) · **「미리보기」→ `APPLIED` 자동 체크→「선택 행 등록」** · **`rowNumbers` 선택 전송** · **`BankDepositImportPanel.test`** · **`BankDepositImportPanel.formats.e2e.test`** · **`PaymentPage.test`** · **`pilotPageFlows`**
+> - **G-BANK-EXCEL-8 non-positive rowNumbers unit test (BE `7d29a38`, G-BANK-EXCEL-8, Q576)** — **`BankDepositImportServiceTest`** — `null`·`0`·음수 필터 후 빈 목록 → **`422`「선택된 행이 없습니다.」** (`normalizeSelectedRowNumbers`)
+> - **Live E2E placeholder credential guard (FE `fffc2c1`, QA-B95, Q578)** — **`liveConfig.js`** — **`isUsableAccessToken`/`isUsableCredential`** — `test@test.com`·`ogada1234`·`********` 등 placeholder → authenticated suite **SKIP** (FAIL 방지) · **`liveE2eHarness.test`**
+>
+> **최근 개선 (280차 — G-STAFF-NHIS-EXCEL-IMPORT FE closure · bulk import rowNumbers validation · live E2E G21 normalize):**
+> - **G-STAFF-NHIS-EXCEL-IMPORT StaffNhisCaregiverImportPanel full-stack wire (FE `4315ee2`, G-STAFF-NHIS-EXCEL-IMPORT, Q573·Q577)** — **`StaffNhisCaregiverImportPanel.jsx`** + **`.test.jsx`** — **`/staff` 상단 카드** — 미리보기·`APPLIED` 행 체크박스·**「선택 행 등록」** · **`importStaffNhisCaregiverApi`/`previewStaffNhisCaregiverImportApi`** (`services.js`) · **`onImported` 계정 요청 목록 refresh** · **`StaffPage.test`**
+> - **G-STAFF-NHIS-EXCEL-IMPORT empty rowNumbers validation (BE `2f6f3bc`, G-STAFF-NHIS-EXCEL-IMPORT, Q576)** — **`StaffNhisCaregiverImportService.normalizeSelectedRowNumbers`** — `rowNumbers` 생략 시 전체 `APPLIED` · **빈 배열·유효 행 0건 → `422`「선택된 행이 없습니다.」** · **`StaffNhisCaregiverImportServiceTest`**
+> - **G-BANK-EXCEL-8 bank deposit rowNumbers validation (BE `e3b74a0`, G-BANK-EXCEL-8, Q576)** — **`BankDepositImportService.normalizeSelectedRowNumbers`** — 동일 계약 · **`BankDepositImportServiceTest`** · **`BankDepositCopayLifecycleE2eTest`**
+> - **Live E2E G21 branch serviceType normalization (BE `b11e29a`, QA-B95, Q577)** — **`LiveE2eBootstrapService.isG21SeedApplicableBranch`** — `serviceType.trim()` · **`DAY_CARE` 우선 판정** · **`LiveE2eBootstrapServiceTest`**
+>
+> **최근 개선 (279차 — ops 문서 279차 · G-BANK-EXCEL-8 · G-STAFF-NHIS-EXCEL-IMPORT · US-H01 · V165):**
+> - **G-BANK-EXCEL-8 bank deposit format catalog and preview API (BE `07a85a3`, G-BANK-EXCEL-8, Q572)** — **`GET /billing/imports/bank-deposits/formats`** — **`BankDepositFormatCatalog`** 8종(KB·우리·NH·신한·하나·부산·대구·광주) · **`POST …/bank-deposits/preview`** dry-run · **`BankDepositImportServiceTest`**
+> - **G-STAFF-NHIS-EXCEL-IMPORT NHIS caregiver excel preview and import API (BE `6f7f145`, G-STAFF-NHIS-EXCEL-IMPORT, Q573)** — **`POST /staff/imports/nhis-caregivers/preview`** · **`POST /staff/imports/nhis-caregivers`** — **`StaffNhisCaregiverImportService`** — 행별 `APPLIED`/`MATCHED`/`PENDING`/`SKIPPED`/`INVALID`/`DUPLICATE` · **`user_account_requests` PENDING 적재** · **`StaffNhisCaregiverImportServiceTest`**
+> - **V165 user_account_requests defense-in-depth integrity (BE `05ca0a8`, V165, Q575)** — 8 CHECK·Tenant FK 3쌍·대량 NHIS import 전제 정합 · **`UserAccountRequestServiceTest`**
+> - **G-STAFF-NHIS-EXCEL-IMPORT live-e2e V165 gate (BE `3bbfc00`, QA-B95, Q575)** — **`LiveE2eOperationReadinessSupport`** — **`user-account-request-integrity-check-missing`** blocker
+> - **StaffNhisCaregiverImportPanel (FE `6f7f145` wire carry, G-STAFF-NHIS-EXCEL-IMPORT, Q573)** — **`/staff`** 상단 **「공단 요양보호사 엑셀 업로드」** — 미리보기·선택 행 등록 · **`StaffNhisCaregiverImportPanel.test`**
+> - **US-H01 HQ branch drill-down and dual dashboard nav (FE `c1ebaaf`, US-H01, Q574)** — **`DashboardContextNav`** — **`/dashboard`↔`/dashboard/hq`** · **`HqBranchSummaryTable` drill-down** · **`useBranchDrilldown`** · **`DashboardContextNav.test`**
+> - **UXD-145 billing guard and HQ dual dashboard a11y (FE `a2f599c`, UXD-145, Q571)** — **`ClaimGenerationGuardBanner`**·**StatCard** `aria-label`·**`DashboardContextNav`** focus ring
+> - **UXD-144 G14 care plan and staff account request a11y (FE `08a8b9f`, UXD-144, Q557·Q555)** — **`ClientCarePlanForm`**·**account request Modal** Field·`aria-busy` deepen
+>
+> **최근 개선 (178차/277차 정정 — ops 문서 277차 · G14 NHIS 10-field care plan form ✅ closure):**
+> - **G14 NHIS 10-field care plan form API+DB+FE (BE `80b9619` V164, FE `d723d5a`, Q557)** — **`ClientCarePlanFormService`** — **`GET/PUT /clients/{id}/care-plan-forms*`** — 10 필드(주요진단·부진단·기능상태·장애등급·요양인정·특이사항·식별·주보호자·주요 치료계획·월간관찰) · **`ClientCarePlanForm`** · **`/clients/{id}/care-plan-form` 「급여계획서」** 수정 화면 · **V164** `client_care_plan_forms` 테이블 · **`ClientCarePlanFormService.test`** · **`ClientCarePlanFormPage.test`**
+> - **Dashboard claim generation prior-deposit guard API (BE `80b9619`, G-BILLING-PRIOR-DEPOSIT-GUARD)** — **`BranchDashboardResponse`·`HqDashboardResponse`** — **`claimGenerationGuardBlocked`**·**`unpaidPriorMonthClaimCount`** — 전월 미납 청구 존재 시 신규 청구 생성 차단 API · FE **`DashboardPage`** StatCard **「청구 생성 제한 (7-1 선행입금 가드)」** wire (`d723d5a`, Q571)
+> - **V162 `user_account_requests` table (BE `80b9619`, V162)** — **`platform hq_admin` 계정 발급 workflow** · **`staff_id`·`status`·`created_by`** — 계정 요청 추적
+> - **Staff account request workflow (FE `d723d5a`, 274~275차)** — **`/staff?tab=account-requests`** — 직원 계정 요청 목록 · **`/platform`** 승인 flow —  **`ogada_platform_admin` 전담**
+
+> **최근 개선 (277차 — ops 문서 277차 갱신 · G14 USER_MANUAL 추가 · FAQ Q557 신규 · FAQ 번호 정정):**
+> - **ops 문서 277차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§3-3** G14 NHIS 10-field care plan form · `ADMIN_GUIDE.md` **§1-4·§6-2-2a** · `FAQ.md` **Q557 신규** · **§22 Q558–Q566** (Q431–Q439 중복 해소) · `DEPLOYMENT_GUIDE.md` baseline **`07a03c0`/`08a8b9f`**
+>
+> **최근 개선 (276차 — ops 문서 276차 · FAQ 6개 신규 · Q434-Q439 출석·간호·보안·데이터):**
+> - **ops 문서 276차 (TWR)** — `FAQ.md` **§22 v2 roadmap·P3 candidates (Q558~Q566, 구 Q431–Q439)** · 출석 roster·QR Must 갭 · L03_M15 말기 돌봄 · 데이터 보관·파기 정책 · PII 마스킹·보안 조치 · 방문요양 필드 차이 · 데이터 이관·Export 가능성
+> - **FAQ 신규 6개** — **Q561** 출석 현황 필드·마스킹 · **Q562** 간호급여 L03_M15 호스피스 · **Q563** 데이터 보관·삭제 정책 · **Q564** PII 보호·마스킹 조치 · **Q565** 방문요양 필드 차이 · **Q566** 데이터 Export·이관 *(277차에서 Q558–Q566으로 번호 정정)*
+
+> **최근 개선 (275차 — ops 문서 275차 · FAQ 9개 신규 · v1.3-A Kakao · BranchServiceType 5-type · G-CASH-RECEIPT-LOG closure):**
+> - **ops 문서 275차 (TWR)** — `FAQ.md` **§21 v1.3-A 배차·Kakao (Q425~430)** · `DEPLOYMENT_GUIDE.md` **baseline `3023c9e`/`380be3c`**
+> - **FAQ 신규 9개** — **Q425** Kakao API 상태 모니터링 · **Q426** API 사용량 확인 · **Q427** 통합재가 기관 지원 · **Q428** 반영도착 시간 오류 · **Q429** 방문요양 지원 · **Q430** V160 role_code 변경 · **Q431** 현금영수증 자동 발급 완료 · **Q432** 출석 QR 체크인 정합 · **Q433** L03 간호급여 필드 (**Q434-Q439** 처리 중)
+
+> **최근 개선 (274차 — ops 문서 274차 · FAQ 신규·갱신 · V160 ogada_platform_admin · Kakao per-API quota · staff account request · platform hq_admin issuance · UXD-143 a11y):**
+> - **ops 문서 274차 (TWR)** — `FAQ.md` **§21 v1.3-A 배차·Kakao (Q425~430)** · **§22 v2 roadmap·P3 candidates (Q431~433)**
 >
 > **최근 개선 (273차 — ops 문서 273차 · v1.3-A Kakao API status+usage probe · suggest route-preview embed · TransportKakaoApiStatusPanel · FAQ Q554 신규):**
 > - **ops 문서 273차 (TWR)** — `USER_MANUAL.md` **§1-3·§2-2·§5-5·§5-8** · `ADMIN_GUIDE.md` **§1-4·§10-10** · `DEPLOYMENT_GUIDE.md` **§1-3·§3-7·§4-7·§11-3** · `FAQ.md` **Q554 신규**

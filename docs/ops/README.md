@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-21T08:48:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-21T19:30:00+09:00 -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **290차 자동 동기화 완료** (BE `0c9518a`·FE `580a86b`·V1–V166·108 route·87 page·G21 dashboard NHIS gap ✅·G15 Kakao quota widget ✅·merge gate 614)  
-> **최종 갱신**: 2026-06-21 (291차 TWR — README §6-§7 동기화, 스테이 사항 최신화)
+> **상태**: MVP v1 개발 중 — **299차 자동 동기화 완료** (BE `560057f`·FE `53d65a0`·V1–V169·109 route·87 page·G-STAFF-WORK-ATTENDANCE ✅·G-ATTENDANCE-STATS △·merge gate 651)  
+> **최종 갱신**: 2026-06-21 (299차 TWR — G-ATTENDANCE-STATS contract·Q613)
 
 ---
 
@@ -117,15 +117,23 @@
 - **§11–§20**: 청구·정산, 공단·NHIS, 보호자, 배차, 청구 리포트 등
 - **§21+**: 최신 기능 (인지지원·CMS·고충상담·HR lifecycle·G21 NHIS·G15 배차·G32 사례관리·G42 민원상담 등)
 
-**최신 엔트리** (2026-06-21, 290차):
-- **Q594**: **G21 NHIS 비교 갭** — 대시보드 StatCard · `nhisComparisonGapCount` widget
-- **Q595**: **G15 카카오 API 잔여** — HQ dashboard · `transportKakaoQuotaSummary` widget
-- **Q596**: **live E2E bootstrap-error** — 파생 seed/schema blocker 생략
-- **Q597**: **live E2E cash-receipt** — `liveCashReceiptDescribe` suite guard
-- **Q589**: **Must 갭: 출석 roster API** — 확정 필요 (coder 백로그)
-- **Q590**: **Must 갭: QR 생성 payload·이미지** — 확정 필요 (coder 백로그)
-- **Q587**: **G-BILLING appliedFilters** — 필터 현황 echo (closure)
-- **Q588**: **UXD-148 billing report a11y** — aria-live·aria-busy (closure)
+**최신 엔트리** (2026-06-21, 299차):
+- **Q613**: **G-ATTENDANCE-STATS contract** — `/attendance/stats` · `GET /attendance/stats/monthly?from=&to=` vs FE `yearMonth`/`dailyRates` 갭
+- **Q612**: **G-STAFF-WORK-ATTENDANCE full-stack** — `/staff/attendance` · `GET/POST /staff/work-attendance*` (케어포 8-4)
+- **Q589**: **정정** — 직원 출퇴근 vs 이용자 출석 API 분리·실측 API 경로 반영
+
+**이전 엔트리** (2026-06-21, 297차):
+- **Q611**: **UXD-151 mobile capture CSS** — `.ds-btn` 전폭 버튼·FE-16 회귀 해소
+- **Q608**: **모바일 HR 촬영** — `StaffDocumentRepositoryPanel` mobile capture (UXD-151 deepen)
+
+**이전 엔트리** (2026-06-21, 296차):
+- **Q610**: **Vitest serial pool** — OOM/hang 완화·flock·`vitestConfig.test.js` (QA-B222)
+- **Q609**: **G-ATTENDANCE-ROSTER-STATUS full-stack** — `GET /attendance` + **`AttendancePage` FE wire** (closure)
+- **Q94**: **출석 roster closure** — 미처리 행·입소·결석 버튼 (갱신)
+- **Q590**: **Must 갭: QR 생성 payload·이미지** — coder 백로그
+
+**이전 엔트리** (2026-06-21, 295차):
+- **Q607**: **중복 SMS 자동 독려기록 guard**
 
 **사용 팁**:
 - 현금영수증 관련 → Q530–Q535 참고
