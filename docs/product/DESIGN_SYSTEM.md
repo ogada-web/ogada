@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21T03:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21T09:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-21 (148차 — **G-BILLING 입금·수납 대장 필터 UI 접근성 재점검 + §71 신규** — 147차(§70)·UXD-147(`1a614c9`) 이후 coder 신규 커밋(`e38ccfd` 입금 구간·수납 집계 기준 필터·`c6a412f` appliedFilters echo) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — 조회 `aria-busy={loading}`(WCAG 4.1.3·`BillingStatisticsReportPage` 패턴). ② **적용 조건 요약** — `role=status aria-live=polite`·대상월 `<time dateTime>`. ③ **`.ds-billing-report__applied-filters`** — 미정의 클래스 승격(FE-16)·`forced-colors`. ④ **§71** 신규. 회귀 +1. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-21 (149차 — **G21 공단 일정 불일치·G15 카카오 API 잔여 대시보드 위젯 접근성 재점검 + §72 신규** — 148차(§71)·UXD-148(`e2f1246`) 이후 coder 신규 기능 커밋(`fe7df60`/`c01b880`/`ebc9f28` G21 nhisComparisonGap StatCard·`580a86b` G15 카카오 API 잔여 StatCard) 미점검 a11y·대비 갭 해소. ① **두 신규 위젯** — `StatCard` 값 텍스트(건수·「미설정」/「정상」/「확인」)+tone 병행으로 색 의존 없음·링크 sr-only·로딩 `role=status`·비표시 분기 모두 기존 `DashboardWidgetGrid` 패턴 준수(변경 불요). ② **강제 색상 모드 대비(WCAG 1.4.11)** — 앱 내 모든 `.ds-stat` 클러스터가 `forced-colors` 경계선을 명시하나 **주 US-M02 위젯 그리드만 누락** → `.ds-dashboard-widgets__item .ds-stat` `ButtonText` 경계선 신규(G21·카카오 위젯으로 그리드 조밀해져 효과 ↑). ③ **§72** 신규. CSS-only 대비 보강(JS 회귀 불요). build PASS.)
+> **이전 갱신**: 2026-06-21 (148차 — **G-BILLING 입금·수납 대장 필터 UI 접근성 재점검 + §71 신규** — 147차(§70)·UXD-147(`1a614c9`) 이후 coder 신규 커밋(`e38ccfd` 입금 구간·수납 집계 기준 필터·`c6a412f` appliedFilters echo) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — 조회 `aria-busy={loading}`(WCAG 4.1.3·`BillingStatisticsReportPage` 패턴). ② **적용 조건 요약** — `role=status aria-live=polite`·대상월 `<time dateTime>`. ③ **`.ds-billing-report__applied-filters`** — 미정의 클래스 승격(FE-16)·`forced-colors`. ④ **§71** 신규. 회귀 +1. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-21 (147차 — **G-STAFF-LEAVE-STATUS 휴직 상태 UI 접근성 재점검 + §70 신규** — 146차(§69)·UXD-146(`a7d9a2f`) 이후 coder 신규 커밋(`2581347` ON_LEAVE Badge·`StaffLifecycleSummaryPanel`·`StaffLifecyclePanel` 분기) 미점검 a11y 갭 해소. ① **`StaffLifecyclePanel`** ON_LEAVE `warning` Alert — "퇴사일 입력란은 비활성화됩니다." 문구 추가(disabled 입력 SR 미도달 보완·WCAG 4.1.2·1.3.1). ② **`StaffLifecycleSummaryPanel`** 신규 패널 — `section aria-labelledby`+`h2.ds-section-title`+`ds-stat-grid role=group`+`Alert role=status` 패턴 준수 확인(변경 불요). ③ **`Badge ON_LEAVE`** — tone=warning+"휴직" 텍스트 병행(WCAG 1.4.1). ④ **§70** 신규. `StaffLifecyclePanel.test.jsx` 11/11 PASS. `npm test` PASS.)
 > **이전 갱신**: 2026-06-20 (146차 — **G-BANK-EXCEL-8·G-STAFF-NHIS-EXCEL-IMPORT preview·행 선택 UI 접근성 재점검 + §69 신규** — 145차(§68)·UXD-145(`a2f599c`) 이후 coder 신규 커밋(`a18b30e` 은행 입금 preview·행 선택·`4315ee2` 공단 요양보호사 import panel) 미점검 a11y·FE-16 갭 해소. ① **`BankDepositImportPanel`** — 폼 `aria-label`·미리보기 `role=group`·요약 `role=status aria-live=polite`·행 Checkbox `${예금주명} N행 선택`·입금일 `<time dateTime>`. ② **`StaffNhisCaregiverImportPanel`** — 동일 preview 패턴·`${성명} N행 선택`·생년월일 `<time dateTime>`. ③ **`.ds-bank-deposit-formats`** 미정의 클래스 승격(FE-16)·**`.ds-import-preview*`** 공통 레이어. ④ **§69** 신규·§68-4 잔여 FE wire 해소 표기. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-20 (145차 — **G-BILLING-PRIOR-DEPOSIT-GUARD·US-H01 HQ 듀얼 대시보드 접근성 재점검 + §68 신규** — 144차(§67)·UXD-144(`08a8b9f`) 이후 coder 신규 커밋(`0d233b9` 청구 생성 선행입금 가드 StatCard·`c1ebaaf` HQ 듀얼 대시보드 nav·지점 요약 표·드릴다운·`a0f051d` L02_M15 테스트 안정화) 미점검 a11y·FE-16 갭 해소. ① **`HqBranchSummaryTable`** — 드릴다운 진행 중 조치 버튼 3종 `aria-busy={drilling}`(WCAG 4.1.3·`AttendancePage` 조회 패턴). ② **`HealthAlertList`** — HQ 지점 보기 버튼 `aria-busy={branchActionDisabled}`. ③ **`.ds-health-alert-list__action`** — 미정의 클래스 승격(FE-16)·`forced-colors` 목록 항목 경계선. ④ **`BranchCompareChart`** — 클릭 드릴다운 시 키보드 대안 안내(위 지점 요약 표 「지점 보기」·WCAG 2.1.1). ⑤ **`DashboardContextNav`**·**`CLAIM_GENERATION_GUARD_WIDGET_LABEL` StatCard** — `ds-context-nav`·`DashboardWidgetGrid` 표준 패턴 준수 확인(변경 불요). ⑥ **§68** 신규. 회귀 +2. `npm test`·build PASS.)
@@ -3968,6 +3969,54 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 
 - `BillingReportPage.test.jsx` — appliedFilters echo · `aria-busy` +1.
 - `npm test BillingReportPage` · build PASS.
+
+---
+
+## §72. G21 공단 일정 불일치·G15 카카오 API 잔여 대시보드 위젯 접근성 재점검 (149차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21 -->
+
+> **149차 UXD (2026-06-21)** — 148차(§71)·UXD-148(`e2f1246`) 이후 coder 신규 기능 커밋(live-e2e·test 수정 제외) 미점검 a11y·대비(contrast) 갭 해소.
+> ① **G21 `nhisComparisonGap` StatCard**(`fe7df60`·`c01b880`·`ebc9f28`) — 공단 일정 비교 불일치 건수 위젯·방문요양형 지점만 노출.
+> ② **G15 `kakaoApiQuota` StatCard**(`580a86b`) — HQ 대시보드 카카오 API 잔여 위젯(hq_admin·sysadmin).
+
+### 72-1. 대상 화면·컴포넌트
+
+| 위젯 | 위치 | 커밋 | 스토리 |
+|------|------|------|--------|
+| `nhisComparisonGap`「공단 일정 불일치」 | `pages/DashboardPage.jsx` | `fe7df60`/`c01b880`/`ebc9f28` | v2 G21 · BNK-14 |
+| `kakaoApiQuota`「카카오 API 잔여」 | `pages/DashboardPage.jsx` | `580a86b` | v1.3-A G15 |
+| `buildTransportKakaoQuotaDashboardWidget` | `utils/transportKakaoQuotaSummary.js` | `580a86b` | — |
+| `countNhisComparisonGapLines`·`NHIS_COMPARISON_GAP_WIDGET_LABEL` | `utils/visitNhisComparison.js` | `fe7df60` | — |
+
+### 72-2. 접근성·대비 재점검 결과
+
+| 항목 | 점검 | 결과 |
+|------|------|------|
+| 색만 의존 금지(§1-2 · WCAG 1.4.1) | 두 위젯 모두 `StatCard` 값이 **텍스트**(건수·「미설정」/「정상」/「확인」)로 의미를 전달, tone(`danger`/`warning`/`success`/`default`)은 보조 강조 | ✅ 변경 불요 |
+| 위젯 링크 SR 보조 텍스트(WCAG 2.4.4) | `DashboardWidgetGrid` Link `ds-sr-only "{label} 상세 보기"`·HQ 집계는 `nhisComparisonGap` href 억제(드릴다운=표) | ✅ 변경 불요 |
+| 로딩 상태(WCAG 4.1.3) | 위젯 로딩 시 `role="status"`+`Spinner`(`kakaoApiQuota`는 로드 완료 후 append) | ✅ 변경 불요 |
+| 비표시 분기(WCAG 1.3.1) | `nhisComparisonGap`은 비-방문요양 지점에서 위젯 자체 제외(`includeNhisComparisonGap`)·`kakaoApiQuota`는 role 게이트 | ✅ 변경 불요 |
+| **강제 색상 모드 대비(WCAG 1.4.11)** | **`.ds-dashboard-widgets__item .ds-stat` 에 `forced-colors` 경계선 미정의** — 앱 내 다른 모든 `.ds-stat` 클러스터(billing report·monitoring·staff status·nursing report 등)는 `ButtonText` 경계선을 명시하나 **주(主) US-M02 위젯 그리드만 누락** | **보강(아래 72-3)** |
+
+### 72-3. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/styles/components.css` | `@media (forced-colors: active) .ds-dashboard-widgets__item .ds-stat { border: 1px solid ButtonText }` 신규 — 강제 색상 모드에서 인접 위젯 카드 구분 보장. G21·카카오 위젯 추가로 hq_admin·sysadmin 그리드가 조밀해져 효과 ↑ |
+
+> 순수 대비(contrast) 보강 — JSX·동작·데이터·시각(일반 모드) 불변. 모든 `.ds-stat` 클러스터의 `forced-colors` 경계선 컨벤션과 정합(§71 이전 ~10개 절 동일 패턴).
+
+### 72-4. coder 전달 메모
+
+- **카카오 위젯 값 의미**: `buildTransportKakaoQuotaDashboardWidget` — `restKeyConfigured=false`→「미설정」(warning)·`quotaExceeded`→`0`건(danger)·usage rows 0건+probe OK→「정상」(success)·그 외→최소 `remainingToday`(≤500 warning). 모두 **텍스트 + tone** 병행이라 색 의존 없음.
+- **G21 위젯 노출 조건**: `isHomeVisitLikeServiceType(activeBranchServiceType)` 또는 HQ 집계·serviceType 미상일 때만. 비-방문요양 지점에서 **위젯 자체 미렌더**(빈 0 위젯 노출 안 함) — `buildWidgets({ includeNhisComparisonGap })`·`HQ_BRANCH_SCOPED_WIDGET_IDS` 단일 원천.
+- 신규 위젯에 **별도 라벨/링크 변경 불요** — 기존 `DashboardWidgetGrid`·`StatCard` 패턴 그대로 a11y 충족.
+
+### 72-5. 검증
+
+- `npm test`(DashboardPage·transportKakaoQuotaSummary·visitNhisComparison 포함) — coder 기존 회귀 유지(본 변경은 CSS-only `forced-colors`로 JS 회귀 추가 불요).
+- build PASS.
 
 ---
 
