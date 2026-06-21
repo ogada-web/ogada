@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-20T23:45:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21T03:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-20 (146차 — **G-BANK-EXCEL-8·G-STAFF-NHIS-EXCEL-IMPORT preview·행 선택 UI 접근성 재점검 + §69 신규** — 145차(§68)·UXD-145(`a2f599c`) 이후 coder 신규 커밋(`a18b30e` 은행 입금 preview·행 선택·`4315ee2` 공단 요양보호사 import panel) 미점검 a11y·FE-16 갭 해소. ① **`BankDepositImportPanel`** — 폼 `aria-label`·미리보기 `role=group`·요약 `role=status aria-live=polite`·행 Checkbox `${예금주명} N행 선택`·입금일 `<time dateTime>`. ② **`StaffNhisCaregiverImportPanel`** — 동일 preview 패턴·`${성명} N행 선택`·생년월일 `<time dateTime>`. ③ **`.ds-bank-deposit-formats`** 미정의 클래스 승격(FE-16)·**`.ds-import-preview*`** 공통 레이어. ④ **§69** 신규·§68-4 잔여 FE wire 해소 표기. 회귀 +2. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-21 (148차 — **G-BILLING 입금·수납 대장 필터 UI 접근성 재점검 + §71 신규** — 147차(§70)·UXD-147(`1a614c9`) 이후 coder 신규 커밋(`e38ccfd` 입금 구간·수납 집계 기준 필터·`c6a412f` appliedFilters echo) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — 조회 `aria-busy={loading}`(WCAG 4.1.3·`BillingStatisticsReportPage` 패턴). ② **적용 조건 요약** — `role=status aria-live=polite`·대상월 `<time dateTime>`. ③ **`.ds-billing-report__applied-filters`** — 미정의 클래스 승격(FE-16)·`forced-colors`. ④ **§71** 신규. 회귀 +1. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-21 (147차 — **G-STAFF-LEAVE-STATUS 휴직 상태 UI 접근성 재점검 + §70 신규** — 146차(§69)·UXD-146(`a7d9a2f`) 이후 coder 신규 커밋(`2581347` ON_LEAVE Badge·`StaffLifecycleSummaryPanel`·`StaffLifecyclePanel` 분기) 미점검 a11y 갭 해소. ① **`StaffLifecyclePanel`** ON_LEAVE `warning` Alert — "퇴사일 입력란은 비활성화됩니다." 문구 추가(disabled 입력 SR 미도달 보완·WCAG 4.1.2·1.3.1). ② **`StaffLifecycleSummaryPanel`** 신규 패널 — `section aria-labelledby`+`h2.ds-section-title`+`ds-stat-grid role=group`+`Alert role=status` 패턴 준수 확인(변경 불요). ③ **`Badge ON_LEAVE`** — tone=warning+"휴직" 텍스트 병행(WCAG 1.4.1). ④ **§70** 신규. `StaffLifecyclePanel.test.jsx` 11/11 PASS. `npm test` PASS.)
+> **이전 갱신**: 2026-06-20 (146차 — **G-BANK-EXCEL-8·G-STAFF-NHIS-EXCEL-IMPORT preview·행 선택 UI 접근성 재점검 + §69 신규** — 145차(§68)·UXD-145(`a2f599c`) 이후 coder 신규 커밋(`a18b30e` 은행 입금 preview·행 선택·`4315ee2` 공단 요양보호사 import panel) 미점검 a11y·FE-16 갭 해소. ① **`BankDepositImportPanel`** — 폼 `aria-label`·미리보기 `role=group`·요약 `role=status aria-live=polite`·행 Checkbox `${예금주명} N행 선택`·입금일 `<time dateTime>`. ② **`StaffNhisCaregiverImportPanel`** — 동일 preview 패턴·`${성명} N행 선택`·생년월일 `<time dateTime>`. ③ **`.ds-bank-deposit-formats`** 미정의 클래스 승격(FE-16)·**`.ds-import-preview*`** 공통 레이어. ④ **§69** 신규·§68-4 잔여 FE wire 해소 표기. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-20 (145차 — **G-BILLING-PRIOR-DEPOSIT-GUARD·US-H01 HQ 듀얼 대시보드 접근성 재점검 + §68 신규** — 144차(§67)·UXD-144(`08a8b9f`) 이후 coder 신규 커밋(`0d233b9` 청구 생성 선행입금 가드 StatCard·`c1ebaaf` HQ 듀얼 대시보드 nav·지점 요약 표·드릴다운·`a0f051d` L02_M15 테스트 안정화) 미점검 a11y·FE-16 갭 해소. ① **`HqBranchSummaryTable`** — 드릴다운 진행 중 조치 버튼 3종 `aria-busy={drilling}`(WCAG 4.1.3·`AttendancePage` 조회 패턴). ② **`HealthAlertList`** — HQ 지점 보기 버튼 `aria-busy={branchActionDisabled}`. ③ **`.ds-health-alert-list__action`** — 미정의 클래스 승격(FE-16)·`forced-colors` 목록 항목 경계선. ④ **`BranchCompareChart`** — 클릭 드릴다운 시 키보드 대안 안내(위 지점 요약 표 「지점 보기」·WCAG 2.1.1). ⑤ **`DashboardContextNav`**·**`CLAIM_GENERATION_GUARD_WIDGET_LABEL` StatCard** — `ds-context-nav`·`DashboardWidgetGrid` 표준 패턴 준수 확인(변경 불요). ⑥ **§68** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-20 (144차 — **G14 급여제공계획서·직원 계정 요청 UI 접근성 재점검 + §67 신규** — 143차(§66)·UXD-143(`4e7d01d`) 이후 coder 신규 커밋(`22718d0` 직원 계정 생성 요청 흐름·`380be3c` 플랫폼 관리자 발급 폼 강화·`8ac0d01` 지역 선택기 검색 UX·`c37228d` 지점 주소 검증·`ce422e3` G14 급여제공계획서 10항목 폼·`d723d5a` 브랜치 스위처 인증 + 타이포그래피 토큰 조정) 미점검 a11y·FE-16 갭 해소. ① **`StaffPage` 계정 생성 요청 표** — `REQUEST_STATUS_LABELS` 평문 → **`StatusBadge`+`ACCOUNT_REQUEST_STATUS`**(승인 대기/승인됨/반려됨, 색+텍스트 병행·WCAG 1.4.1). ② **`StaffPage` 요청일 날짜 의미론** — `new Date().toLocaleString()` 평문 → **`<time dateTime>`**(88·89차 `StaffDetailPage` 패턴 정합·WCAG 1.3.1). ③ **`ClientCarePlanForm` 미정의 CSS 승격(FE-16)** — `.ds-care-plan-form`(최대 폭 래퍼)·`.ds-care-plan-form__heading`(lg 세미볼드 제목)·`.ds-care-plan-form__year-row`(연도 행 정렬)·`forced-colors` 경계선. ④ **`ds-form-grid--2` 신규** — 2열 고정 그리드 변형(`ClientCarePlanForm` 횟수·시간 2-필드 쌍 등). ⑤ **`ACCOUNT_REQUEST_STATUS`** — `Badge.jsx` + barrel `index.js` 추가. ⑥ **§3 타이포 토큰 실측 갱신** — `d723d5a`에서 `--font-size-*` 전체 소폭 상향(xs 0.75→0.8125 rem 등). ⑦ **§2-3 `ACCOUNT_REQUEST_STATUS` 매핑 추가**. ⑧ **§67** 신규. 회귀 없음(1866/369 PASS). `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-20 (143차 — **v1.3-A 이동서비스 배차 도구 접근성 재점검 + §66 신규** — 141차(§65)·UXD-142(`bd6e1c2`) 이후 coder 신규 커밋(`4681b5a` roster tools·ETA guardrails·`acc5933` route preview cache·compliance labels·`ba74bb5` Kakao map WIP·QA-B167/B170) 미점검 a11y·FE-16 갭 해소. ① **`TransportKakaoApiStatusPanel`** — Kakao Developers 콘솔 외부 링크 `target=_blank` 새 탭 안내 `ds-sr-only`(WCAG 3.2.5·G201·IntegratedHomeProviderDiscoveryPanel 패턴). ② **`TransportSuggestPanel`** — 동일 텍스트 「DRAFT 검토」행 링크에 차량번호 `aria-label` 부여(WCAG 2.4.4·StaffPage 목록 패턴). ③ 신규 모달(`TransportAddRosterModal`·`TransportConfirmWarningModal`·`TransportLoadPreviousRunModal`)·`KakaoTransportMapView`(marker `aria-label`·`role=application`·live summary) a11y 점검 — 변경 불요. ④ **§66** 신규. 회귀 +2. `npm test`·build PASS.)
@@ -3872,6 +3874,100 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 - `BankDepositImportPanel.test.jsx` — contextual checkbox·`<time dateTime>` +1.
 - `StaffNhisCaregiverImportPanel.test.jsx` — contextual checkbox·`<time dateTime>` +1.
 - `npm test` · build PASS.
+
+---
+
+## §70. G-STAFF-LEAVE-STATUS 휴직 상태 UI 접근성 재점검 (147차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21 -->
+
+> **147차 UXD (2026-06-21)** — 146차(§69)·UXD-146(`a7d9a2f`) 이후 coder 신규 커밋 1건(live-e2e 수정 5건 제외) 미점검 a11y 갭 해소.
+
+### 70-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `StaffLifecycleSummaryPanel` (신규) | `components/staff/StaffLifecycleSummaryPanel.jsx` | `2581347` | G-STAFF-LEAVE-STATUS · FAQ 21720 |
+| `StaffLifecyclePanel` ON_LEAVE 분기 | `components/ui/StaffLifecyclePanel.jsx` | `2581347` | US-R03b |
+| `Badge.jsx` `STAFF_LIFECYCLE_STATUS` | `components/ui/Badge.jsx` | `2581347` | — |
+| `StaffPage` lifecycle 필터 | `pages/StaffPage.jsx` | `2581347` | — |
+
+### 70-2. 접근성·정합 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `StaffLifecyclePanel` `terminatedAt` disabled | `Field help` "퇴사일 설정 불가" 안내가 `disabled` 입력 → focus 제거 → SR 미도달 | `LifecycleWorkflowPanel` `warning` Alert에 **"퇴사일 입력란은 비활성화됩니다."** 문구 병합 — SR이 form-level Alert에서 제약 인지 | WCAG 4.1.2·1.3.1 |
+| `StaffLifecycleSummaryPanel` section 구조 | `section aria-labelledby` + `h2.ds-section-title` + `div.ds-stat-grid role=group aria-label` + `Alert role=status` — 변경 불요 | `StaffOnboardingCompliancePanel` 동일 구조 준수 ✅ | ✅ |
+| `StaffLifecycleSummaryPanel` StatCard 라벨 | "전체·입사 진행·재직·휴직·퇴사 진행·퇴사 완료" 한국어 — 변경 불요 | WCAG 1.3.1 ✅ | ✅ |
+| `StaffLifecycleSummaryPanel` `onLeaveCount Alert` | `role="status"` polite·SR 안내 — 변경 불요 | WCAG 4.1.3 ✅ | ✅ |
+| `Badge ON_LEAVE` | `{ tone: "warning", label: "휴직" }` — 색(amber)+텍스트 병행 | 변경 불요 | WCAG 1.4.1 ✅ |
+| `StaffPage` lifecycle 필터 `Select` | "휴직" `option` 추가 — `Field htmlFor`·SR 접근 정상 | 변경 불요 | ✅ |
+| `StaffPage` 목록 `StatusBadge` | `map={STAFF_LIFECYCLE_STATUS}` → "ON_LEAVE" 키 조회 → "휴직" 텍스트+amber tone | 변경 불요 | ✅ |
+
+### 70-3. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/components/ui/StaffLifecyclePanel.jsx` | ON_LEAVE `warning` 문자열에 "퇴사일 입력란은 비활성화됩니다." 문구 추가 |
+
+### 70-4. coder 전달 메모
+
+- **휴직 상태 `disabled` 필드**: 비활성화 사유·제약은 **form-level Alert(warning)** 에 명시한다. `Field help` 만으로는 `disabled` 입력 Tab 탐색 제외 시 SR이 읽지 못할 수 있다.
+- **ON_LEAVE 복직 흐름**: 복직 시 `lifecycleStatus` 를 `ACTIVE` 로 전환 — `terminatedAt` 은 유지·갱신 불필요. UI는 `warning` Alert 안내 참조.
+- **`StaffLifecycleSummaryPanel` StatCard 0건 분기**: `totalCount === 0` 시 `null` 반환 → 직원 없는 지점에서 패널 미표시 — 의도 동작이므로 유지.
+- **`STAFF_LIFECYCLE_STATUS_OPTIONS` value 타입**: 현재 `value: STAFF_LIFECYCLE_STATUS.ON_LEAVE` (object)가 `<option value>` 에 직렬화되어 `event.target.value` = `"[object Object]"` 가 될 수 있음 — lifecycle 필터·폼 Select가 예상대로 동작하지 않을 수 있다. 수정 시 `value: "ON_LEAVE"` 문자열 키로 통일 권고(coder 영역).
+
+### 70-5. 검증
+
+- `StaffLifecyclePanel.test.jsx` `shows ON_LEAVE warning and saves with cleared terminatedAt` — warning 문구 갱신 반영, **11/11 PASS**.
+- `npm test StaffLifecyclePanel` · build 이상 없음.
+
+---
+
+## §71. G-BILLING 입금·수납 대장 필터 UI 접근성 재점검 (148차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21 -->
+
+> **148차 UXD (2026-06-21)** — 147차(§70)·UXD-147(`1a614c9`) 이후 coder 신규 커밋 2건(live-e2e 수정 5건 제외) 미점검 a11y·FE-16 갭 해소.
+
+### 71-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `BillingReportPage` 입금 구간 필터 | `pages/BillingReportPage.jsx` | `e38ccfd` | US-M03 · G-BILLING · 케어포 PDF p.91 ② |
+| `BillingReportPage` 수납 집계 기준 필터 | `pages/BillingReportPage.jsx` | `e38ccfd` | US-M03 · 케어포 PDF p.91 ③ |
+| `appliedFilters` echo 요약 | `pages/BillingReportPage.jsx` | `c6a412f` | G-BILLING |
+| `billingReportFilters.js` | `api/billingReportFilters.js` | `e38ccfd`/`c6a412f` | — |
+
+### 71-2. 접근성·정합 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `BillingReportPage` 「조회」 | `disabled={loading}` 만 있고 진행 상태 SR 미전달 | `aria-busy={loading}` 추가 | WCAG 4.1.3 · `BillingStatisticsReportPage` 정합 |
+| `BillingReportPage` 적용 조건 요약 | `role=status` 만 — 구간·기준 탭 전환 후 SR 갱신 불확실 | `aria-live="polite"` 추가 | WCAG 4.1.3 · `BankDepositImportPanel` preview 패턴 |
+| `BillingReportPage` 대상월 | 평문 `2026-05` | `<time dateTime={printMonthLabel}>` 래핑 | WCAG 1.3.1 · 날짜 의미론 |
+| `.ds-billing-report__applied-filters` | `components.css` **미정의**(FE-16) | secondary 색·sm 글자·상단 여백·`forced-colors` 정의 | FE-16 · §1 단일 원천 |
+| 입금·수납 `ds-segmented` tablist | `role=tablist`·`aria-labelledby`·`aria-selected`·로딩 중 `disabled` — 변경 불요 | `TransportPage`·`BillingStatisticsReportPage` 동일 패턴 ✅ | ✅ |
+| `BillingReportsContextNav`·`StatCard role=group`·`BillingLedgerTable` | 기존 56·81·139차 패턴 준수 — 변경 불요 | ✅ | ✅ |
+
+### 71-3. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/pages/BillingReportPage.jsx` | 조회 `aria-busy` · 적용 조건 `aria-live` · `<time dateTime>` |
+| `src/styles/components.css` | `.ds-billing-report__applied-filters` 신규 정의 |
+| `src/pages/BillingReportPage.test.jsx` | `aria-busy` 회귀 · appliedFilters `<time>` 단언 갱신 |
+
+### 71-4. coder 전달 메모
+
+- **입금 구간·수납 집계 탭**: 탭 클릭 시 즉시 `fetchReport` — 「조회」 버튼 없이도 필터가 적용된다. SR 사용자는 **적용 조건** `role=status aria-live=polite` 영역에서 서버 `appliedFilters` echo(또는 클라이언트 fallback 라벨)를 확인한다.
+- **인쇄 헤더**: `.ds-care-report-print-only` 블록은 `aria-hidden="true"` — 화면 요약(`적용 조건`)과 인쇄 전용 헤더를 분리 유지.
+- **API query param**: deposits → `period`(FULL/FIRST_HALF/SECOND_HALF), receipts → `basis`(PAYMENT/CLAIM) — `buildBillingReportQueryParams` 단일 원천.
+
+### 71-5. 검증
+
+- `BillingReportPage.test.jsx` — appliedFilters echo · `aria-busy` +1.
+- `npm test BillingReportPage` · build PASS.
 
 ---
 
