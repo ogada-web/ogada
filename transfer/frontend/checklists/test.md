@@ -1,3 +1,23 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T22:10:30+00:00 -->
+<!-- tester-sync: TSR 1250차 2026-06-21T22:10 UTC (frontend) — test baseline 1969/1969 PASS(668.34s) · develop @5fd468b pre-merge clean · merge SKIP(0/10) · build 1086 PASS(8.13s) · audit 0 · live E2E 126/19 PASS(35.54s) · QA-B227 Fixed @50548ff · QA-B226 Open(update) · transfer BLOCK -->
+# updated: 2026-06-21T22:10:30+00:00
+# revalidation_1250th: baseline 1969/1969 PASS; develop WT CLEAN with test..develop 0/10 pending; build/audit/live-e2e PASS; QA-B227 Fixed and QA-B226 updated(BLOCK); transfer BLOCK; operation BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T22:44:00+00:00 -->
+<!-- tester-sync: TSR 1251차 2026-06-21T22:44 UTC (frontend) — pre-merge `@a4ea2d5` **1969/1969 PASS**(663.17s) · develop `@5fd468b` WT **CLEAN** · ★ merge EXECUTED FF `a4ea2d5`→`5fd468b` (10 commits) · post-merge **1969/1969 PASS**(701.90s) · build **1088 modules PASS**(7.84s) · audit **0** · live E2E **126 PASS/19 SKIP**(35.41s) · **★ QA-B226 Fixed** · **★ QA-B227 Fixed** · Open **0(active frontend)** · transfer **PASS** · cross-stream SYNCED -->
+# updated: 2026-06-21T22:44:00+00:00
+# revalidation_1251st: merge EXECUTED FF a4ea2d5→5fd468b (10 commits: US-R03+G-STAFF-WORK-ATTENDANCE+QA-B222 fixes); pre-merge 1969/1969 PASS(663.17s); post-merge 1969/1969 PASS(701.90s); build 1088; live E2E 126/19 PASS; QA-B226+B227 Fixed; Open 0; transfer PASS.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T21:11:26+00:00 -->
+<!-- tester-sync: TSR 1248차 2026-06-21T21:11 UTC (frontend) — test baseline 1966/1966 PASS(664.49s) · develop pre-merge 1966/1966 PASS(666.74s) · develop @ebdf737 DIRTY 1M · merge SKIP(0/8+dirty) · build 1086 PASS(11.62s) · audit 0 · live E2E 126/19 PASS(38.21s) · QA-B227+B226 Open · transfer BLOCK -->
+# updated: 2026-06-21T21:11:26+00:00
+# revalidation_1248th: baseline+pre-merge 1966/1966 PASS; WT DIRTY 1M(pilotPageFlows WIP); merge SKIP; QA-B227+B226 Open; transfer BLOCK; operation BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T20:20:39+00:00 -->
+<!-- tester-sync: TSR 1246차 2026-06-21T20:20 UTC (frontend) — test `@a4ea2d5` baseline `npm test` 1966/1966 PASS(668.39s) · develop `@ebdf737` pending 8 · build 1086 PASS(7.89s) · audit 0 · live E2E 126 PASS/19 SKIP(34.90s) · merge SKIP · QA-B226 Open(BLOCK) · transfer BLOCK -->
+# updated: 2026-06-21T20:20:39+00:00
+# revalidation_1246th: baseline 1966/1966 PASS(668.39s); develop @ebdf737 with test..develop 0/8 pending; build/audit/live-e2e PASS; QA-B226 Open(BLOCK); transfer BLOCK.
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T18:48:00+00:00 -->
 <!-- tester-sync: TSR 1244차 2026-06-21T18:48 UTC (frontend) — pre-merge `npx vitest run` HANG @pilotPageFlows.test.jsx(7min+ no-output 60524→60525 bytes) · `d6f0157`+`53d65a0` fix INSUFFICIENT · develop `@53d65a0` pending 6 · build PASS(1086m/8.24s) · audit 0 · merge SKIP · QA-B222 Planned(update) · transfer BLOCK -->
 # updated: 2026-06-21T18:48:00+00:00
@@ -5609,6 +5629,7 @@
 
 | 역할 | id | 판정 | 일시 |
 |------|-----|------|------|
+| QA·이관 | TSR | **BLOCK(develop WT DIRTY 1M)+PASS(develop pre-merge)** (1248차 — test `@a4ea2d5` baseline carry **1956/1956 PASS**(1232차)·develop `@ebdf737` WT **DIRTY 1M**(`pilotPageFlows.test.jsx` vi cleanup WIP +11L)·develop pre-merge **1966/1966 PASS**(666.74s; **★ QA-B222 hang 해소**·WIP 포함)·merge **SKIP**(`test..develop` **0/8**+dirty)·build **1086 modules**(7.98s)·audit **0**·live E2E **126 PASS/19 SKIP**(35.09s)·Open **2(active frontend)** QA-B227+QA-B226 · cross-stream **BLOCK(FE dirty/pending 8 · BE SYNCED@10c0daf)** · operation **BLOCK**(origin/test push 502 BE+144 FE+QA-B95)·잔여 **COD: pilotPageFlows WIP commit→WT clean→tester FE merge(8)→origin/test push→QA-B116→QA-B95**) | 2026-06-21T20:50:51+00:00 |
 | QA·이관 | TSR | **PASS(@test post-merge SYNCED)+merge EXECUTED** (1195차 — pre-merge test `@5f1815f` develop `@e38ccfd` WT **CLEAN**·develop `npm test` **1908/1908 PASS**(353.65s)·★ merge FF `5f1815f`→`e38ccfd` (1 commit: G-BILLING deposit half-month + receipt dual-basis FE wire)·post-merge **1908/1908 PASS**(353.81s)·build **1081 modules**(11.17s)·audit **0**·live E2E **126 PASS/19 SKIP**(33.44s; QA-B95 partial)·develop/test `@e38ccfd` SYNCED·Open **0(active frontend)**·**★ QA-B189 Fixed @ `e38ccfd`**·cross-stream **SYNCED(FE@e38ccfd + BE@b96d038)**·operation **BLOCK**(origin/test push 481 BE+125 FE+QA-B95)·잔여 **origin/test push(481 BE+125 FE)→QA-B116 post-merge→QA-B95 operation 승격**) | 2026-06-21T01:13:28+00:00 |
 | QA·이관 | TSR | **BLOCK(develop WT DIRTY 2M recurrence)** (1163차 — test `@c1ebaaf` develop `@c1ebaaf` SYNCED·develop WT **DIRTY 2M**(`liveConfig.js`·`liveE2eHarness.test.js`)·test WT **CLEAN**·`npm test` **1878/1878 PASS**(361.48s; WIP included)·merge **SKIP**·build **1075 modules**(7.91s)·audit **0**·live E2E **126 PASS/19 SKIP**(31.27s)·Open **1(active frontend QA-B176)**·cross-stream **SYNCED(FE@c1ebaaf + BE@1283153)**·operation **BLOCK**(QA-B176+origin/test push 468 BE+109 FE+QA-B95)·잔여 **COD QA-B176 commit→WT clean→tester 재검증→origin/test push→QA-B116→QA-B95**) | 2026-06-20T15:18:00+00:00 |
 | QA·이관 | TSR | **PASS(@test post-merge SYNCED)+merge EXECUTED** (1161차 — pre-merge test `@0d233b9` develop `@c1ebaaf` WT **CLEAN**·develop `npm test` **1876/1876 PASS**(368.67s)·★ merge FF `0d233b9`→`c1ebaaf` (2 commits: QA-B175 live-e2e gate + US-H01 HQ branch drill-down)·post-merge **1876/1876 PASS**(367.60s)·build **1075 modules**(7.88s)·audit **0**·live E2E **126 PASS/19 SKIP**(31.42s; QA-B95 partial)·develop/test `@c1ebaaf` SYNCED·Open **0(active frontend)**·**★ QA-B175 Fixed @ `c93e673`**·cross-stream **SYNCED(FE@c1ebaaf + BE@8b3f66d)**·operation **BLOCK**(origin/test push 469 BE+109 FE+QA-B95)·잔여 **origin/test push(469 BE+109 FE)→QA-B116 post-merge→QA-B95 operation 승격**) | 2026-06-20T14:51:16+00:00 |

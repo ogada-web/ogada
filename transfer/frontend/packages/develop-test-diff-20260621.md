@@ -1,3 +1,146 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T22:44:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-21 1251차)
+
+> **1251차 PASS(merge EXECUTED)** — test/develop `@5fd468b` **SYNCED** · merge **EXECUTED** FF `a4ea2d5`→`5fd468b` (10 commits) · pre-merge `npm test` **1969/1969 PASS**(384 files, 663.17s) · post-merge `npm test` **1969/1969 PASS**(384 files, 701.90s) · `npm run build` **1088 modules PASS**(7.84s) · `npm audit` **0 vulnerabilities** · `npm run test:live-e2e` **126 PASS/19 SKIP**(35.41s) · develop WT **CLEAN** · transfer **PASS** · Open **0(active frontend)** · cross-stream **SYNCED** · operation **BLOCK**
+
+## 1251차 검증 요약 (merge EXECUTED — 10 commits)
+
+| 항목 | 결과 |
+|---|---|
+| test worktree HEAD | `5fd468b` |
+| develop HEAD | `5fd468b` |
+| ahead (`test..develop`) | **0/0 (SYNCED)** |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9` 1개, 무해한 빈 파일) |
+| pre-merge npm test | **1969/1969 PASS** (384 files, 663.17s) |
+| post-merge npm test | **1969/1969 PASS** (384 files, 701.90s) |
+| build | **1088 modules SUCCESS** (7.84s) |
+| npm audit (critical+) | **0 vulnerabilities** |
+| live E2E | **126 PASS/19 SKIP** (35.41s, 50 files) |
+| backend@8080 | **UP/200** |
+| transfer verdict | **PASS** |
+| cross-stream | **SYNCED (FE@5fd468b · BE@a6eb8b7)** |
+| operation | **BLOCK** (origin/test push pending) |
+
+### Merged commits (1251차, 10 commits)
+
+- `6bde24a` — `feat(v1.2.1/US-R03): add mobile camera capture for staff HR uploads`
+- `3bffb17` — `chore(v1.2.1/US-R03): raise module 8 coverage and stabilize vitest pool`
+- `8383f8d` — `fix(v1.2.1/QA-B222): serial vitest pool and wire attendance roster API`
+- `9812ac4` — `ux(a11y): US-R03 모바일 서류 촬영 a11y 재점검 + .ds-button 미정의 셀렉터 회귀 해소 (UXD-151)`
+- `d6f0157` — `fix(test): run vitest single-thread to avoid hang (QA-B222)`
+- `53d65a0` — `feat(v1.2.1/G-STAFF-WORK-ATTENDANCE): wire staff daily check-in/out page`
+- `eff8505` — `fix(v1.2.1/QA-B222): enable per-file vitest isolation to stop full-suite hang`
+- `ebdf737` — `fix(v1.2.1/QA-B222): global test teardown and module 8 coverage 0.85`
+- `50548ff` — `fix(v1.2.1/QA-B222): add pilotPageFlows vi mock teardown`
+- `5fd468b` — `feat(v1.2.1/G-STAFF-WORK-ATTENDANCE): wire check-in method on staff roster`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T22:10:30+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-21 1250차)
+
+> **1250차 BLOCK(merge pending 10)** — test `@a4ea2d5` · develop `@5fd468b` · merge **SKIP**(`test..develop` **0/10**) · test baseline `npm test` **1969/1969 PASS**(384 files, 668.34s) · develop pre-merge `npm test` **1969/1969 PASS**(384 files, 668.34s) · `npm run build` **1086 modules PASS**(8.13s) · `npm audit` **0 vulnerabilities** · `npm run test:live-e2e` **126 PASS/19 SKIP**(35.54s) · develop WT **CLEAN**(**QA-B227 Fixed @ `50548ff`**) · transfer **BLOCK** · Open **1(active frontend)**(QA-B226 update) · operation **BLOCK**
+
+## 1250차 검증 요약 (merge SKIP — pending 10)
+
+| 항목 | 결과 |
+|---|---|
+| test worktree HEAD | `a4ea2d5` |
+| develop HEAD | `5fd468b` |
+| ahead (`test..develop`) | **0/10** |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9` 1개) |
+| test baseline npm test | **1969/1969 PASS** (384 files, 668.34s) |
+| develop pre-merge npm test | **1969/1969 PASS** (384 files, 668.34s) |
+| build | **1086 modules SUCCESS** (8.13s) |
+| npm audit (critical+) | **0 vulnerabilities** |
+| live E2E | **126 PASS/19 SKIP** (35.54s, 50 files) |
+| backend@8080 | **UP/200** |
+| transfer verdict | **BLOCK** |
+| operation | **BLOCK** |
+
+### Pending commits (1250차)
+
+- `5fd468b` — `feat(v1.2.1/G-STAFF-WORK-ATTENDANCE): wire check-in method on staff roster`
+- `50548ff` — `fix(v1.2.1/QA-B222): add pilotPageFlows vi mock teardown`
+- `ebdf737` — `fix(v1.2.1/QA-B222): global test teardown and module 8 coverage 0.85`
+- `eff8505` — `fix(v1.2.1/QA-B222): enable per-file vitest isolation to stop full-suite hang`
+- `53d65a0` — `feat(v1.2.1/G-STAFF-WORK-ATTENDANCE): wire staff daily check-in/out page`
+- `d6f0157` — `fix(test): run vitest single-thread to avoid hang (QA-B222)`
+- `9812ac4` — `ux(a11y): US-R03 모바일 서류 촬영 a11y 재점검 + .ds-button 미정의 셀렉터 회귀 해소 (UXD-151)`
+- `8383f8d` — `fix(v1.2.1/QA-B222): serial vitest pool and wire attendance roster API`
+- `3bffb17` — `chore(v1.2.1/US-R03): raise module 8 coverage and stabilize vitest pool`
+- `6bde24a` — `feat(v1.2.1/US-R03): add mobile camera capture for staff HR uploads`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T21:11:26+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-21 1248차)
+
+> **1248차 BLOCK(develop WT DIRTY 1M + merge pending 8; baseline+pre-merge PASS)** — test `@a4ea2d5` · develop `@ebdf737` · merge **SKIP**(`test..develop` **0/8** + dirty) · test baseline `npm test` **1966/1966 PASS**(383 files, 664.49s) · develop pre-merge `npm test` **1966/1966 PASS**(383 files, 666.74s) · `npm run build` **1086 modules PASS**(11.62s) · `npm audit` **0 vulnerabilities** · `npm run test:live-e2e` **126 PASS/19 SKIP**(38.21s) · test worktree untracked `1`(`?? 9`) · transfer **BLOCK** · Open **2(active frontend)**(QA-B227+QA-B226) · operation **BLOCK**
+
+## 1248차 검증 요약 (merge SKIP — develop dirty 1M + pending 8)
+
+| 항목 | 결과 |
+|---|---|
+| test worktree HEAD | `a4ea2d5` |
+| develop HEAD | `ebdf737` |
+| ahead (`test..develop`) | **0/8** |
+| develop working tree | **DIRTY 1M** (`pilotPageFlows.test.jsx` vi cleanup WIP) |
+| test working tree | **DIRTY** (`?? 9` 1개) |
+| test baseline npm test | **1966/1966 PASS** (383 files, 664.49s) |
+| develop pre-merge npm test | **1966/1966 PASS** (383 files, 666.74s) |
+| build | **1086 modules SUCCESS** (11.62s) |
+| npm audit (critical+) | **0 vulnerabilities** |
+| live E2E | **126 PASS/19 SKIP** (38.21s, 50 files) |
+| transfer verdict | **BLOCK** |
+| operation | **BLOCK** |
+
+### Pending commits (1248차)
+
+- `6bde24a` — `feat(v1.2.1/US-R03): add mobile camera capture for staff HR uploads`
+- `3bffb17` — `chore(v1.2.1/US-R03): raise module 8 coverage and stabilize vitest pool`
+- `8383f8d` — `fix(v1.2.1/QA-B222): serial vitest pool and wire attendance roster API`
+- `9812ac4` — `ux(a11y): US-R03 모바일 서류 촬영 a11y 재점검 + .ds-button 미정의 셀렉터 회귀 해소 (UXD-151)`
+- `d6f0157` — `fix(test): run vitest single-thread to avoid hang (QA-B222)`
+- `53d65a0` — `feat(v1.2.1/G-STAFF-WORK-ATTENDANCE): wire staff daily check-in/out page`
+- `eff8505` — `fix(v1.2.1/QA-B222): enable per-file vitest isolation to stop full-suite hang`
+- `ebdf737` — `fix(v1.2.1/QA-B222): global test teardown and module 8 coverage 0.85`
+
+### Uncommitted WIP (1248차 — QA-B227)
+
+- `src/pages/pilotPageFlows.test.jsx` (+11/-1) — `afterEach`/`afterAll` `vi.restoreAllMocks()`·`vi.unstubAllGlobals()` (QA-B222 hang fix 잔여)
+
+## 1246차 검증 요약 (merge SKIP — develop pending 8)
+
+| 항목 | 결과 |
+|---|---|
+| test worktree HEAD | `a4ea2d5` |
+| develop HEAD | `ebdf737` |
+| ahead (`test..develop`) | **0/8** |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9` 1개) |
+| npm test | **1966/1966 PASS** (383 files, 668.39s) |
+| build | **1086 modules SUCCESS** (7.89s) |
+| npm audit (critical+) | **0 vulnerabilities** |
+| live E2E | **126 PASS/19 SKIP** (34.90s, 50 files) |
+| transfer verdict | **BLOCK** |
+| operation | **BLOCK** |
+
+### Pending commits (1246차)
+
+- `6bde24a` — `feat(v1.2.1/US-R03): add mobile camera capture for staff HR uploads`
+- `3bffb17` — `chore(v1.2.1/US-R03): raise module 8 coverage and stabilize vitest pool`
+- `8383f8d` — `fix(v1.2.1/QA-B222): serial vitest pool and wire attendance roster API`
+- `9812ac4` — `ux(a11y): US-R03 모바일 서류 촬영 a11y 재점검 + .ds-button 미정의 셀렉터 회귀 해소 (UXD-151)`
+- `d6f0157` — `fix(test): run vitest single-thread to avoid hang (QA-B222)`
+- `53d65a0` — `feat(v1.2.1/G-STAFF-WORK-ATTENDANCE): wire staff daily check-in/out page`
+- `eff8505` — `fix(v1.2.1/QA-B222): enable per-file vitest isolation to stop full-suite hang`
+- `ebdf737` — `fix(v1.2.1/QA-B222): global test teardown and module 8 coverage 0.85`
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T18:34:30+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-21 1243차)
 

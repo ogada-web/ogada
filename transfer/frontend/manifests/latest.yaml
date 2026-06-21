@@ -1,3 +1,41 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T22:44:00+00:00 -->
+<!-- tester-sync: TSR 1251차 2026-06-21T22:44 UTC (frontend) — test `@5fd468b` post-merge 1969/1969 PASS(701.90s) · develop/test SYNCED @5fd468b · build 1088 PASS(7.84s) · audit 0 · live E2E 126/19 PASS(35.41s) · QA-B226+B227 Fixed · verdict PASS(cross-stream SYNCED) · operation BLOCK -->
+# updated: 2026-06-21T22:44:00+00:00
+# revalidation_1251st: frontend manifest => PASS (merge EXECUTED FF a4ea2d5→5fd468b 10 commits; post-merge 1969/1969 PASS; build 1088; live E2E 126/19; QA-B226+B227 Fixed; cross-stream SYNCED).
+
+stream: frontend
+test_branch_head: 5fd468b
+develop_head: 5fd468b
+merge_status: merged
+merge_executed_at: 2026-06-21T22:44:00+00:00
+merge_commits: 10
+merge_range: a4ea2d5..5fd468b
+npm_test_pre_merge: "1969/1969 PASS (663.17s, 384 files)"
+npm_test_post_merge: "1969/1969 PASS (701.90s, 384 files)"
+build_modules: 1088
+build_exit: 0
+audit_vulnerabilities: 0
+live_e2e: "126 PASS / 19 SKIP (35.41s, 50 files)"
+open_issues: 0
+verdict: PASS
+cross_stream: SYNCED (FE@5fd468b · BE@a6eb8b7)
+operation: BLOCK (origin/test push pending)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T22:10:30+00:00 -->
+<!-- tester-sync: TSR 1250차 2026-06-21T22:10 UTC (frontend) — test `@a4ea2d5` baseline 1969 PASS(668.34s) · develop `@5fd468b` WT CLEAN · merge SKIP 0/10 · build 1086 PASS(8.13s) · audit 0 · live E2E 126/19 PASS(35.54s) · QA-B227 Fixed @50548ff · QA-B226 Open(update) · verdict BLOCK -->
+# updated: 2026-06-21T22:10:30+00:00
+# revalidation_1250th: frontend manifest => BLOCK (merge pending 10; baseline npm/build/audit/live-e2e PASS; QA-B227 fixed; QA-B226 open update).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T21:11:26+00:00 -->
+<!-- tester-sync: TSR 1248차 2026-06-21T21:11 UTC (frontend) — test `@a4ea2d5` baseline 1966 PASS(664.49s) · develop `@ebdf737` pre-merge 1966 PASS(666.74s) · develop DIRTY 1M · merge SKIP 0/8+dirty · build 1086 PASS(11.62s) · audit 0 · live E2E 126/19 PASS(38.21s) · QA-B227+B226 Open · verdict BLOCK -->
+# updated: 2026-06-21T21:11:26+00:00
+# revalidation_1248th: frontend manifest => BLOCK (develop dirty 1M + merge pending 8; baseline+pre-merge 1966 PASS; QA-B227+B226 Open).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T20:20:39+00:00 -->
+<!-- tester-sync: TSR 1246차 2026-06-21T20:20 UTC (frontend) — test `@a4ea2d5` / develop `@ebdf737` / `test..develop` 0/8 / npm test 1966 PASS / build 1086 PASS / audit 0 / live E2E 126 PASS 19 SKIP / verdict BLOCK -->
+# updated: 2026-06-21T20:20:39+00:00
+# revalidation_1246th: frontend manifest snapshot => BLOCK (merge pending 8; baseline npm/build/audit/live-e2e PASS; QA-B226 Open).
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T18:48:00+00:00 -->
 <!-- tester-sync: TSR 1244차 2026-06-21T18:48 UTC (frontend) — test `@a4ea2d5` / develop `@53d65a0` / `test..develop` 0/6 / pre-merge hang @pilotPageFlows.test.jsx(7min+ no-output) / build 1086 PASS / audit 0 / verdict BLOCK -->
 # updated: 2026-06-21T18:48:00+00:00
@@ -2846,23 +2884,23 @@ next_version:
   version: v1.2.1
   status: in_progress
   merge_status: pending
-  note: "v1.2.1 US-R03 @ develop `8383f8d` (1240차) — test `@a4ea2d5` · `test..develop` **0/3** pending · develop pre-merge npm test **hang**(exit 143, ~872 tests) · QA-B222 fix @8383f8d **불충분** · baseline 1956/1956 PASS(443.52s) · build 1086 · audit 0 · live E2E SKIP. BE SYNCED @61e1970. operation BLOCK."
+  note: "v1.2.1 US-R03+G-STAFF-WORK-ATTENDANCE+QA-B222 @ develop `ebdf737` (1248차) — test `@a4ea2d5` · `test..develop` **0/8** pending · develop pre-merge **1966/1966 PASS**(666.74s) · develop WT **DIRTY 1M** (QA-B227) · QA-B222 hang resolved pending commit · BE SYNCED @10c0daf. operation BLOCK."
 prerequisite:
   version: v1
   merge_status: merged
-  note: "v1 backend ROADMAP merged — backend develop/test `@61e1970` SYNCED · 500 commits unpushed to origin/test"
+  note: "v1 backend ROADMAP merged — backend develop/test `@10c0daf` SYNCED · 502 commits unpushed to origin/test"
 
 baseline:
   workspace_yaml: .agents/workspace_baseline.yaml
-  frontend_develop_actual: 8383f8d
+  frontend_develop_actual: ebdf737
   frontend_test_actual: a4ea2d5
-  note: "frontend test `@a4ea2d5` baseline 1956/1956 PASS · develop `@8383f8d` pre-merge hang · BE test `@61e1970` SYNCED · cross-stream BLOCK(FE pending 3/hang) · operation BLOCK(origin/test push 500 BE+144 FE+QA-B95 partial)."
+  note: "frontend test `@a4ea2d5` baseline 1966/1966 PASS(664.49s) · develop `@ebdf737` pre-merge 1966/1966 PASS(666.74s) · develop WT DIRTY 1M(QA-B227) · BE test `@10c0daf` SYNCED · cross-stream BLOCK(FE dirty/pending 8) · operation BLOCK(origin/test push 502 BE+144 FE+QA-B95 partial)."
 
 transfer_verdict: BLOCK
 merge_gate_verdict: BLOCK
 cross_stream_merge_gate: BLOCK
 operation_promotion_gate: BLOCK
-verdict_reason: "1240차 BLOCK — test `@a4ea2d5` baseline 1956/1956 PASS(443.52s) · develop `@8383f8d` pre-merge npm test Terminated(634–658s, exit 143; ~872 tests then hang near EasyPayPanel) · QA-B222 fix @8383f8d insufficient · merge SKIP(0/3 pending) · Open 1(active frontend) QA-B222 · cross-stream BLOCK(FE pending 3/hang · BE SYNCED@61e1970) · operation BLOCK(origin/test push 500 BE+144 FE+QA-B95 partial)."
+verdict_reason: "1248차 BLOCK — test `@a4ea2d5` baseline carry 1956/1956 PASS · develop `@ebdf737` pre-merge **1966/1966 PASS**(666.74s; QA-B222 hang resolved) · develop WT **DIRTY 1M**(`pilotPageFlows.test.jsx` WIP — QA-B227) · merge SKIP(0/8 pending+dirty) · Open 2(active frontend) QA-B227+QA-B226 · cross-stream BLOCK(FE dirty/pending 8 · BE SYNCED@10c0daf) · operation BLOCK(origin/test push 502 BE+144 FE+QA-B95 partial)."
 
 repository:
   submodule_path: src/frontend
@@ -2872,18 +2910,18 @@ repository:
 branches:
   develop:
     name: develop
-    head: 8383f8d
-    head_short: 8383f8d
-    message: "fix(v1.2.1/QA-B222): serial vitest pool and wire attendance roster API"
+    head: ebdf737
+    head_short: ebdf737
+    message: "fix(v1.2.1/QA-B222): global test teardown and module 8 coverage 0.85"
     v1_2_merge_commit: c510f5c
     v1_3_merge_commit: 4299914
-    ahead_of_test: 3
-    working_tree_clean: true
+    ahead_of_test: 8
+    working_tree_clean: false
     working_tree:
-      modified: 0
+      modified: 1
       untracked: 0
-      total_dirty: 0
-      note: "1240차 — WT **CLEAN** · 3 commits ahead of test @a4ea2d5"
+      total_dirty: 1
+      note: "1248차 — WT **DIRTY 1M** `pilotPageFlows.test.jsx` vi cleanup WIP (+11L) · pre-merge 1966/1966 PASS"
   test:
     name: test
     head: a4ea2d5
@@ -2899,12 +2937,22 @@ branches:
 
 develop_test_diff:
   test_behind_develop: true
-  commits_ahead: 3
+  commits_ahead: 8
   pending_commits:
     - 6bde24a  # feat(v1.2.1/US-R03): add mobile camera capture for staff HR uploads
     - 3bffb17  # chore(v1.2.1/US-R03): raise module 8 coverage and stabilize vitest pool
     - 8383f8d  # fix(v1.2.1/QA-B222): serial vitest pool and wire attendance roster API
-  merge_blocked_by: QA-20260621-B222
+    - 9812ac4  # ux(a11y): US-R03 모바일 서류 촬영 a11y 재점검 + .ds-button 미정의 셀렉터 회귀 해소 (UXD-151)
+    - d6f0157  # fix(test): run vitest single-thread to avoid hang (QA-B222)
+    - 53d65a0  # feat(v1.2.1/G-STAFF-WORK-ATTENDANCE): wire staff daily check-in/out page
+    - eff8505  # fix(v1.2.1/QA-B222): enable per-file vitest isolation to stop full-suite hang
+    - ebdf737  # fix(v1.2.1/QA-B222): global test teardown and module 8 coverage 0.85
+  merge_blocked_by: QA-20260621-B227
+  pre_merge_validation:
+    status: PASS
+    npm_test: "1966/1966 PASS"
+    duration_s: 666.74
+    note: "1248차 — hang resolved; blocked by dirty WT 1M (pilotPageFlows WIP uncommitted)"
   merged_at_1228th:
     from: fd15a2f
     to: 751c593
