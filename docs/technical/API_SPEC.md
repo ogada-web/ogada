@@ -1,13 +1,13 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-19T16:00:00+09:00 -->
-<!-- tech_writer-sync: TWR 248차 2026-06-19T16:00:00 UTC — API_SPEC resync (246차→248차) — **G17 기능회복훈련, G32 케이스관리, G42 민원상담 3개 섹션 추가** · BE `429661e` / FE `40d0ca3` · §9-16/9-17/9-18 MUST docs 신규 추가 · next: FAQ G17/G32/G42 온보딩 가이드 → FAQ Q500+ · docs/ops/README 동기화 -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-21T08:48:00+09:00 -->
+<!-- tech_writer-sync: TWR 291차 2026-06-21T08:48:00 UTC — API_SPEC resync (248차→291차) — **G21 대시보드 `nhisComparisonGapCount`·G15 Kakao `transportKakaoQuotaSummary`·G-BATHING `copy-from-previous-month`** 신규 추가 · **Q594/Q595/Q598** FAQ 링크 · BE `0c9518a` / FE `580a86b` · V1–V166 · next: live E2E G21/G32/G42 하위 scoped blocker 문서화 -->
 # 주간보호센터 웹 시스템 — REST API 명세 (technical/API_SPEC.md)
 
 > **작성**: planner, tech_writer 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-19 (TWR 248차 — **API_SPEC 신규 섹션 추가** — §9-16 케이스관리/G32, §9-17 기능회복훈련/G17, §9-18 민원상담/G42 · 구현 완료 기능 문서화 · BE `429661e` / FE `40d0ca3`)
+> **최종 갱신**: 2026-06-21 (TWR 291차 — **API_SPEC 대시보드·배차 API 갱신** — G21 `nhisComparisonGapCount` 필드 · G15 Kakao `transportKakaoQuotaSummary` widget · G-BATHING `copy-from-previous-month` 엔드포인트 · 구현 완료 기능 문서화 · BE `0c9518a` / FE `580a86b`)
 > **상태**: 초안 (Draft) — 사용자 승인 전
-> **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, 대시보드, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, **케이스관리·기능회복훈련·민원상담**, 시스템 헬스체크
-> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `429661e` / **frontend** `40d0ca3`
+> **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, **대시보드(G21 NHIS·G15 Kakao)**, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, 케이스관리·기능회복훈련·민원상담, **목욕 자동 복사**, 시스템 헬스체크
+> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `0c9518a` / **frontend** `580a86b`
 
 ---
 
@@ -887,7 +887,28 @@
 | GET | `/api/v1/care/bathing-schedules` | 지점 목욕 일정 월간 조회 (`yearMonth` query) | hq_admin, branch_admin, social_worker, caregiver |
 | POST | `/api/v1/care/bathing-schedules` | 월간 목욕 일정 등록·수정 (bulk upsert) | branch_admin, social_worker |
 | GET | `/api/v1/care/bathing-schedules/{clientId}/monthly` | 수급자별 월간 목욕 일정·서비스 현황 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/api/v1/care/bathing-schedules/copy-from-previous-month` | 전월 `SCHEDULED`/`COMPLETED` 일정을 대상 월로 일(day) 매핑 복사 (`skippedCount` = 취소·점유·말일 초과) | hq_admin, branch_admin, social_worker |
 | POST | `/api/v1/care/bathing-service-records` | 목욕 서비스 제공 기록 | branch_admin, social_worker, caregiver |
+
+**POST `/copy-from-previous-month` 요청 (CopyBathingSchedulesFromPreviousMonthRequest)**:
+
+```json
+{
+  "targetYearMonth": "2026-06"
+}
+```
+
+**응답 (CopyBathingSchedulesFromPreviousMonthResponse)**:
+
+```json
+{
+  "targetYearMonth": "2026-06",
+  "sourceYearMonth": "2026-05",
+  "createdCount": 3,
+  "skippedCount": 1,
+  "created": [ { "...": "BathingScheduleResponse 필드 동일" } ]
+}
+```
 
 **POST 요청 (CreateBathingScheduleRequest, bulk)**:
 
