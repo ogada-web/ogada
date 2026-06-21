@@ -1,9 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-13T23:50:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-21T08:48:00+09:00 -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **merge gate FULLY UNBLOCKED** (BE `8bb6583`·FE `a5c2736`·V99)
+> **상태**: MVP v1 개발 중 — **290차 자동 동기화 완료** (BE `0c9518a`·FE `580a86b`·V1–V166·108 route·87 page·G21 dashboard NHIS gap ✅·G15 Kakao quota widget ✅·merge gate 614)  
+> **최종 갱신**: 2026-06-21 (291차 TWR — README §6-§7 동기화, 스테이 사항 최신화)
 
 ---
 
@@ -22,18 +23,19 @@
 
 **포함 내용**:
 - 클라우드 배포 환경 설정 (Docker, PostgreSQL, Spring Boot 실행)
-- 데이터베이스 마이그레이션 (Flyway V1–V99, G9-COG 인지지원 스키마)
-- 환경 변수·시크릿 관리 (API 키, JWT 시크릿, CMS 연동)
+- 데이터베이스 마이그레이션 (Flyway V1–V166, G21 NHIS 비교·G32 케이스관리·G42 민원상담 스키마)
+- 환경 변수·시크릿 관리 (API 키, JWT 시크릿, Kakao 배차 API, CMS 연동)
 - SSL/HTTPS 설정
 - 모니터링·로그 수집
 - 백업·복구
 
-**최신 항목** (2026-06-13):
-- V99 마이그레이션 — G9-COG `ltc_grade` 0–5 인지지원등급
-- 효성 FCMS 연동 엔드포인트 설정 (v2)
-- LCMS(엔젤) CMS 3-method 옵션 (선택)
+**최신 항목** (2026-06-21, 290차):
+- **Q594** — **G21 NHIS 비교 갭** — 대시보드 StatCard — `nhisComparisonGapCount` 위젯
+- **Q595** — **G15 카카오 API 잔여** — HQ 통합 관리자 대시보드 — `transportKakaoQuotaSummary` widget
+- **Q596** — **live E2E bootstrap-error blocker** — 파생 seed/schema blocker 생략
+- **Q597** — **live E2E cash-receipt guard** — 현금영수증 suite 게이트
 
-**관련 링크**: FAQ §11–§13 · API_SPEC G9·G2 · REQUIREMENTS §3-9-1
+**관련 링크**: FAQ §Q594–Q597 · API_SPEC §9-16/9-17/9-18 · REQUIREMENTS §7-2·§7-8·§3-13
 
 ---
 
@@ -52,22 +54,20 @@
 - **청구·정산**: 수가표 관리, 월별 청구서 생성, 본인부담금 계산, **NHIS 엑셀 import**
 - **대시보드**: 지점별·통합 현황·통계
 
-**최신 항목** (2026-06-13):
-- **Q309–Q313 최신화**:
-  - Q309: G42 고충상담 결재 대기 API
-  - Q310: 청구 생성 **선행입금 workflow** (`ClaimGenerationGuardBanner`)
-  - Q311: **인지지원등급(ltcGrade 0)** 수가표 5칸 import gate
-  - Q312: **FAQ21824 계약→청구 lifecycle** 체크리스트
-  - Q313: **본인부담 정식 용어** (`statutoryLabel` — 「감경 40%」vs 「100분의 40 감경」)
-- **65 라우트**: `/clients/:id`·`/billing/fee-schedules`·`/staff/grievance-counselings` 등
+**최신 항목** (2026-06-21, 290차):
+- **Q594** — **G21 NHIS 비교 갭** — 지점 대시보드 통계 위젯 — 공단 일정 미등록/불일치 통계
+- **Q595** — **G15 카카오 API 잔여** — HQ 관리자 대시보드 — 배차 API 호출량 모니터링
+- **Q551** — **보호자 인증 blocker 분리** — guardian-credentials-missing vs default
+- **Q550** — **수동 배차 개선** — 이전 배차 불러오기 · 희망 시각 경고
 
 **사용 시나리오**:
-1. 새로 입사한 요양보호사 온보딩 → §2–§4 읽기
-2. 이용자 등록부터 월말 청구까지 → §3–§8 따라하기
-3. QR 체크인 설정 및 사용 → §4-5, FAQ Q109
-4. 청구 블로킹 해결 → FAQ Q310 참고
+1. 현금 수납 입력 → 자동 표시 **발급 Modal**에서 NTS 발급번호 입력 (Q531)
+2. 아침 대시보드에서 **「발급 지연」** 1건 이상 → **우선 처리** (Q532)
+3. 작년분 청구 발급 시 **warning Alert** 확인 (Q533)
+4. HQ 관리자 → **`/billing/cash-receipts`** 전 지점 미발급·지연 한눈에 확인 (Q533)
+5. **G21 지점** → 대시보드 **「공단 일정 불일치」** StatCard로 미등록 방문 확인 (Q594)
 
-**관련 링크**: FAQ.md · API_SPEC · FLOWCHART.md
+**관련 링크**: FAQ.md Q530–Q535·Q594–Q597 · API_SPEC G-CASH-RECEIPT-LOG·G21 dashboard · ADMIN_GUIDE §1-4·§10-4
 
 ---
 
@@ -87,45 +87,55 @@
   - NHIS 엑셀 import & reconciliation
 - **기술 설정**: 백업, 감사 로그, API 키, LDAP 연동
 - **보안 정책**: 세션 타임아웃, IP 화이트리스트, 로그인 이력
-- **V99 DB 스키마**: `ltc_grade`, `grievance_counseling_records` 등
+- **V166 DB 스키마**: `ltc_grade`, `grievance_counseling_records`, `case_management_records` 등
 
-**최신 항목** (2026-06-13):
-- **V99 마이그레이션** — 인지지원등급 `ltcGrade=0` 추가
-- **G42 고충상담** — pending-approval queue 관리
-- **US-R03 HR lifecycle** — 직원 입사·퇴사·파일함 관리
-- **G2 CMS 해지** — 본인부담 자동이체 취소 workflow
-- **FAQ21806** — 직원 onboarding 6단계 compliance
+**최신 항목** (2026-06-21, 290차):
+- **G21 NHIS 비교** — 대시보드 widget · 공단 일정 미등록/불일치 통계 (Q594)
+- **G15 Kakao quota** — HQ 대시보드 widget · API 호출량 모니터링 (Q595)
+- **G32 사례관리** — 보호자별 의견 기록 · 다중 선택 · V165 (Q520)
+- **live E2E bootstrap blocker** — 파생 blocker 생략 · 신뢰성 향상 (Q596)
 
 **운영 체크리스트**:
 1. 신규 Tenant 개통 → `platform_admin` 역할 필요 (별도)
 2. 첫 `hq_admin` 계정 발급 후 지점·수가표 설정 → ADMIN_GUIDE §1–§3
 3. 월말 청구 전 NHIS import & reconciliation → ADMIN_GUIDE §6-3·FAQ Q264
+4. 현금 수납 입력 후 **현금영수증 발급 이력 등록** → `/billing/cash-receipts` (Q530·Q531)
+5. 아침 대시보드 **「발급 지연」** 확인 (Q532)
 
-**관련 링크**: REQUIREMENTS §1-3 · FAQ §3–§8 · API_SPEC · FLOWCHART
+**관련 링크**: FAQ Q530–Q533 · API_SPEC G-CASH-RECEIPT-LOG·G32 · DEPLOYMENT_GUIDE §1-3
 
 ---
 
 ## 4. 자주 묻는 질문 & 빠른 답변
 
-### ❓ **FAQ.md** — Q&A 색인 (315+ 항목)
+### ❓ **FAQ.md** — Q&A 색인 (590+ 항목)
 
 **대상**: 모든 사용자 (현장·운영·기술·플랫폼)
 
 **구성**:
 - **§1–§10**: 서비스 개요, 계정, 역할, 기능별 FAQ
 - **§11–§20**: 청구·정산, 공단·NHIS, 보호자, 배차, 청구 리포트 등
-- **§21+**: 최신 기능 (인지지원·CMS·고충상담·HR lifecycle 등)
+- **§21+**: 최신 기능 (인지지원·CMS·고충상담·HR lifecycle·G21 NHIS·G15 배차·G32 사례관리·G42 민원상담 등)
 
-**최신 엔트리** (2026-06-13):
-- **Q260**: NHIS import **수가표 25칸 미등록** 차단
-- **Q288**: G34 SMS **live OTP** 미구현 (P2)
-- **Q291**: LCMS **CMS 3-method** 대안 (P2)
-- **Q296**: 건강검진 **결과통보서 파일함** 미구현 (P2)
-- **Q309–Q313**: 위 참고
+**최신 엔트리** (2026-06-21, 290차):
+- **Q594**: **G21 NHIS 비교 갭** — 대시보드 StatCard · `nhisComparisonGapCount` widget
+- **Q595**: **G15 카카오 API 잔여** — HQ dashboard · `transportKakaoQuotaSummary` widget
+- **Q596**: **live E2E bootstrap-error** — 파생 seed/schema blocker 생략
+- **Q597**: **live E2E cash-receipt** — `liveCashReceiptDescribe` suite guard
+- **Q589**: **Must 갭: 출석 roster API** — 확정 필요 (coder 백로그)
+- **Q590**: **Must 갭: QR 생성 payload·이미지** — 확정 필요 (coder 백로그)
+- **Q587**: **G-BILLING appliedFilters** — 필터 현황 echo (closure)
+- **Q588**: **UXD-148 billing report a11y** — aria-live·aria-busy (closure)
 
 **사용 팁**:
-- 특정 기능 찾기 → Ctrl+F로 기능명 검색 (예: "QR", "NHIS", "고충상담")
-- "P2 Planned" 표시 = 아직 구현되지 않은 예정 기능 → ROADMAP.md 참고
+- 현금영수증 관련 → Q530–Q535 참고
+- G32 사례관리 관련 → Q516–Q523 참고
+- G21 NHIS 비교 → Q594 참고
+- G15 배차 및 Kakao → Q595 참고
+- 기능 찾기 → Ctrl+F로 검색 (예: "CASH", "attendee", "대시보드", "NHIS", "Kakao")
+- "P2 Planned" / "P3 out-of-scope" = ROADMAP.md 참고
+
+**최근 엔트리 (2026-06-21, 290차)** — Q594–Q597 신규 추가·Q587–Q590 갱신·"Must 갭" 명시
 
 ---
 
@@ -165,7 +175,7 @@
 
 ## 6. 문서 상태 & 구현 진행도
 
-### 현재 상태 (2026-06-13, develop HEAD `8bb6583`/`a5c2736`)
+### 현재 상태 (2026-06-21, 290차, develop HEAD `0c9518a`/`580a86b`, V1–V166)
 
 | 문서 | 상태 | 마지막 갱신 | 커버리지 |
 |------|------|-----------|---------|

@@ -1,11 +1,11 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,UXD,DBA updated=2026-06-19T14:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,UXD,DBA updated=2026-06-21T08:48:00+09:00 -->
 
 # ogada 문서 계층 (docs/)
 
-> **최종 갱신**: 2026-06-19 (246차 — TWR 동기화 · BE `14582bf` / FE `0915f80`)  
+> **최종 갱신**: 2026-06-21 (290차 — TWR 동기화 · BE `0c9518a` / FE `580a86b` · V1–V166·108 route·87 page·merge gate 614)  
 > **작성**: tech_writer  
 > **대상**: 기획자, 개발자, UX 설계자, 운영자  
-> **주요 업데이트**: ops 문서(USER_MANUAL/ADMIN_GUIDE/DEPLOYMENT_GUIDE/FAQ/CHANGELOG) 모두 246차 동기화·API_SPEC resync(142차→246차) 진행 중·REQUIREMENTS baseline 조율
+> **주요 업데이트**: ops 문서 모두 290차 동기화·G21 NHIS dashboard·G15 Kakao quota·G32 사례관리·G42 민원상담 반영·API_SPEC resync 진행 중
 
 ---
 
@@ -35,6 +35,7 @@ docs/
 │   ├── USER_MANUAL.md             ← ⭐ 현장 사용 가이드 (필수 읽을거리)
 │   ├── ADMIN_GUIDE.md             ← 시스템·플랫폼 관리자 가이드
 │   ├── DEPLOYMENT_GUIDE.md        ← ⭐ 배포·마이그레이션 가이드
+│   ├── DEV_ACCOUNTS.md            ← 로컬·스테이징 테스트 계정 (역할별)
 │   ├── FAQ.md                     ← 자주 묻는 질문 (149개, 기술·운영 혼합)
 │   ├── CHANGELOG.md               ← 버전별 변경 이력 (Keep a Changelog 형식)
 │   ├── DATA_RETENTION_POLICY.md   ← 데이터 보관·파기 정책
@@ -76,9 +77,10 @@ docs/
 ### 👨‍💻 **개발자 (backend/frontend/devops)**
 1. **`technical/API_SPEC.md`** — REST API 명세 (`/api/v1/*` 전체) **필독**
 2. **`ops/DEPLOYMENT_GUIDE.md`** — 로컬 환경 구성, 환경변수, DB 마이그레이션 **필독**
-3. **`qa/VITEST_CONCURRENCY.md`** — `npm test` 동시 실행 금지·정리 방법 **필독** (에이전트 환경)
-4. **`planning/REQUIREMENTS.md`** (선택) — 비기능 요구사항 (보안, 성능)
-5. **`ops/FAQ.md`** (선택) — API 경로 불일치, 구현 상태 관련 Q&A
+3. **`ops/DEV_ACCOUNTS.md`** — 로컬·스테이징 테스트 계정 (역할별 이메일·비밀번호)
+4. **`qa/VITEST_CONCURRENCY.md`** — `npm test` 동시 실행 금지·정리 방법 **필독** (에이전트 환경)
+5. **`planning/REQUIREMENTS.md`** (선택) — 비기능 요구사항 (보안, 성능)
+6. **`ops/FAQ.md`** (선택) — API 경로 불일치, 구현 상태 관련 Q&A
 
 ### 🎨 **UX/UI 설계자 (ux_designer)**
 1. **`product/DESIGN_SYSTEM.md`** — 디자인 시스템, 컴포넌트 **필독**
@@ -107,7 +109,7 @@ docs/
 | **USER_MANUAL.md** | 사용자/개발 | 로그인~월말 청구, 역할별 업무 절차 | ✅ 완료 (30차 갱신) |
 | **DEPLOYMENT_GUIDE.md** | 개발/운영 | 로컬 환경, 배포, 환경변수, **V43–V44** | ✅ 완료 (31차 갱신) |
 | **ADMIN_GUIDE.md** | 운영 | Tenant 관리, 지점 설정, 백업, 감사 | ✅ 완료 (30차 갱신) |
-| **FAQ.md** | 전역 | 149개 기술·운영 Q&A | ✅ 완료 (30차 갱신, Q147–Q149 포함) |
+| **FAQ.md** | 전역 | 590+ 기술·운영 Q&A · Q594–Q597 신규 · Must 갭 명시 (Q589–Q590) | ✅ 완료 (290차 갱신, Q594–Q597 포함) |
 | **ROADMAP.md** | 기획/개발 | v1/v1.1/v1.2 릴리스 계획, 우선순위 | ✅ 완료 |
 | **PLAN_NOTES.md** | 기획 | 의사결정, Q&A, 미확정 사항 | ✅ 관리 중 |
 | **DESIGN_SYSTEM.md** | UX/개발 | 디자인 토큰, 컴포넌트, 접근성 | ✅ 완료 |
