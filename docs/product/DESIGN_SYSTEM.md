@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-22T01:27:00+00:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-22T10:15:00+00:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-22 (152차 — **G-STAFF-WORK-ATTENDANCE·G-BILLING-DEPOSIT-ORDER-GUARD·US-E05 출석 통계 접근성 재점검 + §75 신규** — 151차(§74)·UXD-151(`9812ac4`) 이후 coder 신규 커밋 3종(`StaffWorkAttendancePage`·`CmsDebitPanel`·`AttendanceStatsPage`) 미점검 a11y 갭 해소. ① **`StaffWorkAttendancePage`** — 조회 `aria-busy`·StatCard `role=group aria-label`·출근·퇴근 반복 행 버튼 `aria-label`에 직원명·`aria-busy`·출퇴근 시각 `<time dateTime>`. ② **`AttendanceStatsPage`** — 조회 `aria-busy`·StatCard `role=group aria-label`. ③ **`CmsDebitPanel`** — 요청·완료 일시 `<time dateTime>`·상태 컨테이너 `<div>`→`<section aria-labelledby>` + `h3 id`. ④ **§75** 신규. 회귀 +4. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-22 (153차 — **US-D03 이용자 출석 탭·G-BILLING-REPORT-FILTER-PERSISTENCE·US-E03 QR 이미지 접근성 재점검 + §76 신규** — 152차(§75)·UXD-152(`df7f308`) 이후 coder 신규 기능 커밋 5건(`d058e43` US-D03 출석 이력 탭·`250619e` US-E03 QR 이미지·`8aabeae` chore·`daaba4b` QA-B233·`77b1ea8` G-BILLING-REPORT-FILTER-PERSISTENCE) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — `hydrateFiltersAndFetch` 필터 복원 비동기 구간(loadSavedFilters 호출~fetchReport 시작)에서 `loading=false` 상태로 버튼 `aria-busy` 미전달 갭 → `setLoading(true)` 선행 추가(WCAG 4.1.3). ② **`QrGeneratePage`** — `validUntil` 표시 시각 `toLocaleTimeString` 평문 → `<time dateTime={qrData.validUntil}>` 래핑(WCAG 1.3.1·88차 `StaffDetailPage` 날짜 의미론 패턴). ③ **US-D03 `ClientDetailPage` 출석 탭** — `Table` caption·`<time dateTime>`·`StatusBadge ATTENDANCE_STATUS`·`EmptyState`·`Spinner role=status` 모두 표준 준수(변경 불요). ④ **§76** 신규. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-22 (152차 — **G-STAFF-WORK-ATTENDANCE·G-BILLING-DEPOSIT-ORDER-GUARD·US-E05 출석 통계 접근성 재점검 + §75 신규** — 151차(§74)·UXD-151(`9812ac4`) 이후 coder 신규 커밋 3종(`StaffWorkAttendancePage`·`CmsDebitPanel`·`AttendanceStatsPage`) 미점검 a11y 갭 해소. ① **`StaffWorkAttendancePage`** — 조회 `aria-busy`·StatCard `role=group aria-label`·출근·퇴근 반복 행 버튼 `aria-label`에 직원명·`aria-busy`·출퇴근 시각 `<time dateTime>`. ② **`AttendanceStatsPage`** — 조회 `aria-busy`·StatCard `role=group aria-label`. ③ **`CmsDebitPanel`** — 요청·완료 일시 `<time dateTime>`·상태 컨테이너 `<div>`→`<section aria-labelledby>` + `h3 id`. ④ **§75** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-21 (151차 — **US-R03 모바일 서류 촬영 업로드 접근성 재점검 + `.ds-button` 미정의 셀렉터 회귀 해소 + §74 신규** — 150차(§73)·UXD-150(`751c593`) 이후 coder 신규 기능 커밋 `6bde24a`(feat US-R03 — 케어포 p.96 모바일 서류 촬영: `FileUpload.enableMobileCapture`·`StaffDocumentRepositoryPanel` 슬롯별 「모바일 촬영」·`StaffHrFilePanel`·`StaffRefresherCertificatePanel`) 미점검 a11y·FE-16 갭 해소. ① **모바일 촬영 a11y 확인** — 숨김 카메라 input(`capture="environment"`)은 `aria-hidden`·`tabIndex={-1}`로 트리거 버튼만 활성화·슬롯별 「모바일 촬영」 버튼 `${slot.label} 모바일 촬영 업로드` `aria-label`·`aria-busy`·「업로드 중…」 텍스트 상태(색 비의존)·실패 `Alert role=alert`·`section aria-busy` 모두 표준 준수(변경 불요). ② **`.ds-button` 미정의 셀렉터 회귀 해소(FE-16)** — `6bde24a`의 모바일 전폭 규칙 `@media(max-width:640px) .ds-staff-document-repository .ds-inline-actions .ds-button`이 본 코드베이스 `Button`(`.ds-btn` 렌더)과 불일치하는 **미정의 `.ds-button`**(전 CSS 유일 사용)을 타깃해 적용되지 않던 80·90·119차 패턴 회귀를 `.ds-btn`으로 정합(모바일 버튼 전폭 스택 복구·시각/동작 불변). ③ **§74** 신규. `StaffDocumentRepositoryPanel.test.jsx`·`FileUpload.test.jsx` 8/8 PASS·build PASS.)
 > **이전 갱신**: 2026-06-21 (150차 — **G-BILLING-OVERDUE-ADJUSTMENT·G-STAFF-DOCUMENT-REPOSITORY·G-BATHING 전월 복사 접근성 재점검 + §73 신규** — 149차(§72)·UXD-149(`b969570`) 이후 coder 신규 커밋(`0420e6b` `OverdueManagementModal`·`03d0d43`/`fd15a2f` `StaffDocumentRepositoryPanel`·`9a957fb` `BathingSchedulePage` 전월 복사) 미점검 a11y·FE-16 갭 해소. ① **`OverdueManagementModal`** — 일시 `<time dateTime>`·폼 `aria-label` 2종. ② **`StaffDocumentRepositoryPanel`** — 업로드·lifecycle 링크 `${슬롯명}` `aria-label`·`aria-busy`·로딩 `role=status`·**`.ds-staff-document-repository*`** CSS 승격·`forced-colors` 요약 경계선. ③ **`BathingSchedulePage`** — 조회·전월 복사 `aria-busy`. ④ **§73** 신규. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-21 (149차 — **G21 공단 일정 불일치·G15 카카오 API 잔여 대시보드 위젯 접근성 재점검 + §72 신규** — 148차(§71)·UXD-148(`e2f1246`) 이후 coder 신규 기능 커밋(`fe7df60`/`c01b880`/`ebc9f28` G21 nhisComparisonGap StatCard·`580a86b` G15 카카오 API 잔여 StatCard) 미점검 a11y·대비 갭 해소. ① **두 신규 위젯** — `StatCard` 값 텍스트(건수·「미설정」/「정상」/「확인」)+tone 병행으로 색 의존 없음·링크 sr-only·로딩 `role=status`·비표시 분기 모두 기존 `DashboardWidgetGrid` 패턴 준수(변경 불요). ② **강제 색상 모드 대비(WCAG 1.4.11)** — 앱 내 모든 `.ds-stat` 클러스터가 `forced-colors` 경계선을 명시하나 **주 US-M02 위젯 그리드만 누락** → `.ds-dashboard-widgets__item .ds-stat` `ButtonText` 경계선 신규(G21·카카오 위젯으로 그리드 조밀해져 효과 ↑). ③ **§72** 신규. CSS-only 대비 보강(JS 회귀 불요). build PASS.)
@@ -4174,6 +4175,63 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 - `StaffWorkAttendancePage.test.jsx` — `aria-busy` · `role=group` · 출근 버튼 `aria-label` 직원명 포함 · `<time dateTime>` 단언 +4.
 - `AttendanceStatsPage.test.jsx` — `aria-busy` · `role=group aria-label` +2.
 - `CmsDebitPanel.test.jsx` (기존 없음) — `section[aria-labelledby]` · `time[dateTime]` 확인.
+- `npm test` · build PASS.
+
+---
+
+---
+
+## §76. US-D03 이용자 출석 탭·G-BILLING-REPORT-FILTER-PERSISTENCE·US-E03 QR 이미지 접근성 재점검 (153차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-22 -->
+
+> **153차 UXD (2026-06-22)** — 152차(§75)·UXD-152(`df7f308`) 이후 coder 신규 기능 커밋 미점검 a11y·FE-16 갭 해소.
+> ① **US-D03 `ClientDetailPage` 출석 탭**(`d058e43`) — 이용자 상세 출석 이력 탭 API 연동.
+> ② **G-BILLING-REPORT-FILTER-PERSISTENCE** `BillingReportPage`(`77b1ea8`) — 청구 대장 필터 복원 API 연동.
+> ③ **US-E03 QR 이미지** `QrGeneratePage`(`250619e`) — 지점 QR 코드 PNG 데이터 URL 렌더.
+
+### 76-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `ClientDetailPage` 출석 탭 | `pages/ClientDetailPage.jsx` | `d058e43` | US-D03 |
+| `BillingReportPage` 필터 복원 | `pages/BillingReportPage.jsx` | `77b1ea8` | G-BILLING-REPORT-FILTER-PERSISTENCE |
+| `QrGeneratePage` QR PNG | `pages/QrGeneratePage.jsx` | `250619e` | US-E03 |
+| `branchQrCode.js` | `utils/branchQrCode.js` | `250619e` | — |
+
+### 76-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `BillingReportPage` 필터 복원 | `hydrateFiltersAndFetch` — `loadSavedFilters` 호출 중 `loading=false` 상태라 버튼 `aria-busy` 미전달 | `setLoading(true)` 를 `loadSavedFilters` 호출 **앞에** 선행 추가 | WCAG 4.1.3 · §71 패턴 정합 |
+| `QrGeneratePage` 유효 시간 | `qrData.validUntil` → `new Date(...).toLocaleTimeString()` 평문 | `<time dateTime={qrData.validUntil}>` 래핑 | WCAG 1.3.1 · §88 날짜 의미론 |
+| `ClientDetailPage` 출석 탭 — 로딩 | `attendanceHistoryLoading ? <Spinner label="출석 이력 불러오는 중" />` | `Spinner role="status" aria-label` — 탭 자동 로드 패턴·변경 불요 | ✅ |
+| `ClientDetailPage` 출석 탭 — 날짜 | `entry.attendanceDate` / `entry.checkInAt` / `entry.checkOutAt` | `<time dateTime>` 래핑 구현됨·변경 불요 | ✅ |
+| `ClientDetailPage` 출석 탭 — 상태 | `StatusBadge` `ATTENDANCE_STATUS` — 색+텍스트 병행 | 표준 패턴 준수·변경 불요 | ✅ |
+| `ClientDetailPage` 출석 탭 — 표 | `Table caption={이용자명 출석 이력}`·`th scope="col"` | 표준 패턴 준수·변경 불요 | ✅ |
+| `ClientDetailPage` 출석 탭 — 빈 상태 | `EmptyState title="출석 기록 없음"` | 빈 table tbody 대신 EmptyState — 표준 패턴 준수 | ✅ |
+| `QrGeneratePage` `alt` | `alt={지점 ${directionLabel} QR 코드}` — `branchQrDirectionLabel` 동적 변환 | 변경 불요 | ✅ |
+| `QrGeneratePage` `figure aria-labelledby` | `<figure aria-labelledby="qr-preview-caption">` + `<figcaption id="qr-preview-caption">` | 표준 패턴 준수·변경 불요 | ✅ |
+| `BillingReportPage` 필터 탭 `role=tablist` | `aria-labelledby`·`aria-selected`·로딩 중 `disabled` — §71 검토 기준 | 변경 불요 | ✅ |
+
+### 76-3. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/pages/BillingReportPage.jsx` | `hydrateFiltersAndFetch` 내 `setLoading(true)` 선행 추가 — 필터 복원 구간 `aria-busy` 커버 |
+| `src/pages/QrGeneratePage.jsx` | `validUntil` `toLocaleTimeString` → `<time dateTime={qrData.validUntil}>` 래핑 |
+
+### 76-4. coder 전달 메모
+
+- **`BillingReportPage` 로딩 흐름**: 이제 `hydrateFiltersAndFetch` 진입 즉시 `loading=true` → 버튼 `aria-busy`·`disabled` 활성 → 필터 복원 완료 후 `fetchReport` 호출 → 보고서 응답 후 `loading=false`. 중간에 `fetchReport`도 `setLoading(true)`를 호출하므로 중복 없음.
+- **`QrGeneratePage` `validUntil`**: ISO 8601 타임스탬프(`expiresAt`)를 `dateTime` 속성으로 전달. `toLocaleTimeString("ko-KR")` 표시 텍스트는 그대로 유지.
+- **`branchQrCode.js`**: `buildBranchQrGenerateRequest`·`mapBranchQrGenerateResponse`·`qrTokenToDataUrl` — `QrGeneratePage`·`services.js`와 결합 단일 원천. 신규 유틸이라 별도 a11y 적용 대상 없음.
+- **`ClientDetailPage` 출석 탭 접근성 흐름**: 탭 전환 → `useEffect` 발화 → `Spinner role="status"` 안내 → API 응답 → `EmptyState` 또는 `Table caption`. 모두 코드베이스 표준 패턴 준수.
+
+### 76-5. 검증
+
+- `BillingReportPage.test.jsx` — 필터 복원 구간 `aria-busy` 상태 확인(기존 회귀 유지).
+- `QrGeneratePage.test.jsx` — `<time dateTime>` 속성 단언 +1.
 - `npm test` · build PASS.
 
 ---
