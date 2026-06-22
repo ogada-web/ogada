@@ -1,11 +1,11 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,UXD,DBA updated=2026-06-21T08:48:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,UXD,DBA updated=2026-06-22T23:55:00Z -->
 
 # ogada 문서 계층 (docs/)
 
-> **최종 갱신**: 2026-06-21 (290차 — TWR 동기화 · BE `0c9518a` / FE `580a86b` · V1–V166·108 route·87 page·merge gate 614)  
+> **최종 갱신**: 2026-06-22 (313차 TWR — **documentation baseline 1차 확정** · BE `d0c0d12` / FE `df9ec6c` · V1–V171·110 route·89 page·merge gate 681·**Must 갭 0**)  
 > **작성**: tech_writer  
 > **대상**: 기획자, 개발자, UX 설계자, 운영자  
-> **주요 업데이트**: ops 문서 모두 290차 동기화·G21 NHIS dashboard·G15 Kakao quota·G32 사례관리·G42 민원상담 반영·API_SPEC resync 진행 중
+> **주요 업데이트**: ops 문서 전수 동기화·G34-WORKFLOW-CATALOG·G30-LEGEND·G2 CMS roster·UXD-153 a11y·bootstrap blocker normalize 완전 반영
 
 ---
 
@@ -137,14 +137,14 @@ docs/
 
 ---
 
-## 📌 현재 구현 상태 스냅샷 (2026-06-08 develop HEAD `c7941e9` / frontend `1d910c2`)
+## 📌 현재 구현 상태 스냅샷 (2026-06-22 develop HEAD `d0c0d12` / frontend `df9ec6c` — 313차 baseline)
 
 | 영역 | 상태 | 상세 |
 |------|------|------|
-| **백엔드** | ✅ Must + v1.1 | REST API Must + **V41–V44** (보호자 초대, 알림, 휴대폰 암호화). **`mvn test` 152/152 PASS**. J03 Solapi 옵션. |
-| **프론트엔드** | ✅ Must API baseline | `App.jsx` **14 라우트**, JWT 메모리 전용. Vitest **11파일/40건**. P1–P8·J01·J02 연동. **`/platform`·`/settings`만 `ModulePage`**. |
-| **DB** | ✅ V1–V44 | Flyway 자동 마이그레이션. V43 보호자 초대, V44 휴대폰 암호화. |
-| **문서** | ✅ 동기화 완료 | REQUIREMENTS·API_SPEC·USER_MANUAL·DEPLOYMENT·ADMIN_GUIDE·FAQ·CHANGELOG 모두 최신화. |
+| **백엔드** | ✅ Must + v1.1 + V171 | REST API Must ✅ + **V171 integrity** (110 route·Must 갭 0·bootstrap blocker normalize). **`mvn test` 245+ PASS**. |
+| **프론트엔드** | ✅ Must + G34·G30·UXD-153 | **110 route·89 page** (G34-WORKFLOW-CATALOG `/compliance/workflow-catalog` ✅·G30-LEGEND cross-walk ✅·UXD-153 a11y ✅). Vitest **453+ test**. |
+| **DB** | ✅ V1–V171 | Flyway 자동 마이그레이션. V170·V171 billing/checkout integrity. |
+| **문서** | ✅ **baseline 1차 확정** | **REQUIREMENTS·API_SPEC·USER_MANUAL·DEPLOYMENT·ADMIN_GUIDE·FAQ·CHANGELOG 모두 313차 동기화** (Must 갭 0·Q624~Q637 complete). |
 
 ---
 
