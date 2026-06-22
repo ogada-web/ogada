@@ -3,8 +3,8 @@
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **299차 자동 동기화 완료** (BE `560057f`·FE `53d65a0`·V1–V169·109 route·87 page·G-STAFF-WORK-ATTENDANCE ✅·G-ATTENDANCE-STATS △·merge gate 651)  
-> **최종 갱신**: 2026-06-21 (299차 TWR — G-ATTENDANCE-STATS contract·Q613)
+> **상태**: MVP v1 개발 중 — **302차 자동 동기화 완료** (BE `a6eb8b7`·FE `5fd468b`·V1–V169·109 route·87 page·**G-BILLING-DEPOSIT-ORDER-GUARD ✅**·**G-STAFF-WORK-ATTENDANCE ✅**·**G-ATTENDANCE-ROSTER-STATUS ✅**·merge gate 657·**미해결 Must 4건 재정리**)  
+> **최종 갱신**: 2026-06-22 (302차 TWR — **FAQ Q615–Q620 신규 추가**·선행입금 가드·직원출퇴근·출석통계·QR·결석·청구필터)
 
 ---
 
@@ -225,6 +225,29 @@
 - G-Payroll 직원 급여 관리 (v3)
 
 **자세히**: [ROADMAP.md](../planning/ROADMAP.md) 참고
+
+---
+
+## [TWR] 302차 — 미해결 Must API 갭 정리 & FAQ Q615–Q620 신규 추가 (2026-06-22)
+
+**배경**: develop HEAD baseline (`a6eb8b7`/`5fd468b`) 단계에서 **4개 Must 기능**이 **API 또는 FE 구현 갭** 상태입니다. 현장 인수 전 **우선순위·상태·우회 방법**을 명시하여 **운영 중단 위험** 최소화.
+
+**신규 FAQ 추가** — Q615–Q620:
+
+| Q번 | 기능 | 상태 | 문서 이슈 | 현장 우회 |
+|-----|------|------|----------|---------|
+| **Q615** | **출석 통계** (`/attendance/stats`) | **API ✅** · **FE contract 갭** | `yearMonth` ↔ `from/to` 필드 정합 필요 · coder 체크리스트 | 대시보드·당일 roster로 현황 확인 (낮음) |
+| **Q616** | **QR 생성·다운로드** | **API ✅** · **FE 갭** | `qrcode.js` 렌더·다운로드 미구현 | 수기 체크인·B방식 QR 스캔 (낮음) |
+| **Q617** | **결석 처리 버튼** | **API ✅** · **FE 갭** | `/attendance` 모달·버튼 미구현 · UXD-152 미확정 | check-out 후 사유 기록 (낮음) |
+| **Q618** | **청구 필터 저장 API** | **FE ✅** · **BE 갭** | 저장 API 미구현 · Swagger 우회 가능 | 매월 수동 재입력 (중간) |
+| **Q619** | **직원 출퇴근 (8-4)** | **✅ 완료** | Q612 반영 완료 · **V169** · **`/staff/attendance`** 정상 | 정상 동작 |
+| **Q620** | **당일 출석 roster (Q609)** | **✅ 완료** | **`/attendance`** · **`fetchAttendanceApi` 단일 호출** | 정상 동작 |
+
+**coder 다음 액션** (우선순위순):
+1. **출석 통계 FE wire** — `GET /api/v1/attendance/stats/monthly` 응답 필드 정합 · 차트/테이블 렌더
+2. **QR 이미지 생성** — base64 PNG 렌더 · 다운로드 · 모바일 스캔 테스트
+3. **결석 버튼 UX** — UXD-152 명세 후 모달 구현
+4. **청구 필터 저장 API** — `BillingReportFilterService` 구현 · `GET /billing/reports/filters?month=YYYY-MM`
 
 ---
 

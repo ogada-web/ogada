@@ -11052,4 +11052,136 @@ Content-Type: application/json
 
 ---
 
+### Q615. 출석 통계 (`/attendance/stats`) 화면이 비어있거나 FE wire가 안 되어요. (G-ATTENDANCE-STATS contract)
+
+**A.** **△ BE ✅ · FE contract 갭** (`a6eb8b7`·`5fd468b`) — 백엔드 API `GET /api/v1/attendance/stats/monthly`는 완성되었으나, 프론트엔드 **`AttendanceStatsPage`·`AttendanceRateChart`**와 API 응답 필드 **구조 정합**이 필요합니다.
+
+| 항목 | 현황 | 다음 액션 |
+|------|------|---------|
+| **BE API** | **✅ `monthlyStats(branchId, from, to)`** 완성 @ `560057f` | 상태 = 완료 |
+| **FE route** | **△ `/attendance/stats` 부분 구현** @ `53d65a0` | **FE wire 필요** (coder) |
+| **API contract** | **❌ `yearMonth` ↔ `from/to` 미정합** | **`YearMonth.parse` → 월 1일~말일** 변환 |
+| **응답 필드 매핑** | **△ `stats.dailyRates`, `stats.clientStats`** (없음) | **API 확장 P3** 또는 차트만 표시 |
+
+**현장 우회**:
+- **`/dashboard`** StatCard·**`/attendance`** 당일 roster(Q609) 로 현황 확인 후, **월간 집계**는 **Swagger**에서 `GET /api/v1/attendance/stats/monthly?from=2026-06-01&to=2026-06-30&branchId=` 호출
+
+> 관련: Q613 · USER_MANUAL §4-4 · **Swagger** · **`MonthlyAttendanceStatsListResponse`**
+
+---
+
+### Q616. QR 생성·다운로드 기능이 안 되는데요. (QR 이미지 렌더링, Q590·Must)
+
+**A.** **△ BE ✅ · FE 갭** (`a6eb8b7`·`5fd468b`) — QR 생성 API `POST /api/v1/attendance/qr/generate`는 base64 payload를 반환하지만, **프론트엔드 이미지 렌더·다운로드 UI**가 아직 구현되지 않았습니다 (Q590, Must 기능).
+
+| API | 상태 | 용도 |
+|-----|------|------|
+| `POST /api/v1/attendance/qr/generate` | **✅ BE** | base64 PNG 생성 (`/api/v1/branches/{id}/qr`) |
+| `GET /api/v1/branches/{id}/qr` | **✅ BE** | 현재 유효 QR 메타 조회 |
+
+**FE 구현 필요사항** (coder):
+1. **`qrcode.js` 라이브러리** 추가
+2. **QR 이미지 렌더** — base64 → `<img src="data:image/png;base64,...">` 또는 canvas
+3. **다운로드 버튼** — **`.png` 파일**로 저장
+4. **모바일 웹뷰 QR 인식 테스트** — 스마트폰 카메라에서 정상 스캔 여부
+
+**현장 상황**:
+- **수기 체크인** (`POST /attendance/check-in`) 또는 **QR 셀프 스캔** (`POST /attendance/qr/scan`, B방식)로 진행 가능 — Q590은 **표시/다운로드만** 미구현
+
+> 관련: Q590 · USER_MANUAL §4-2 · REQUIREMENTS §Must QR · Swagger `/attendance/qr-scan`
+
+---
+
+### Q617. 결석 처리 버튼이 안 보여요 (`/attendance` 화면, Must)
+
+**A.** **△ BE ✅ · FE 갭** (`a6eb8b7`·`5fd468b`) — API `POST /api/v1/attendance/absence`는 완성되었으나, **프론트엔드 `/attendance` 화면**에 **결석 모달·버튼**이 아직 구현되지 않았습니다 (Q94, Must 기능).
+
+| 항목 | 상태 | 내용 |
+|------|------|------|
+| **BE API** | **✅** | `POST /api/v1/attendance/absence` (clientId, date, reason) |
+| **FE 화면** | **❌** | `/attendance` 결석 버튼·모달 미구현 |
+| **RBAC** | **✅** | `caregiver`·`social_worker` 실행 권한 |
+
+**FE 구현 필요사항** (UXD + coder):
+1. **UXD-152** — 결석 모달·버튼 명세 (미확정)
+2. **결석 버튼** — `/attendance` 테이블 각 행 우측
+3. **결석 사유 모달** — `required` 텍스트 필드
+4. **API 연동** — `POST /api/v1/attendance/absence` 호출
+
+**현장 상황**:
+- **수기 체크인** (`POST /attendance/check-in`) 또는 **수기 체크아웃** (`POST /attendance/check-out`)에서 **진행 → 사유 기록** (result=absence)로 우회 가능
+
+> 관련: Q94 · USER_MANUAL §4-2 · REQUIREMENTS §Must 출석 · Swagger `/attendance/absence`
+
+---
+
+### Q618. 청구 보고서 필터 (월별·기간) 저장 API가 안 되는데요. (G-BILLING-FILTERS, Must)
+
+**A.** **△ FE ✅ · BE 갭** (`5fd468b`·`a6eb8b7`) — 프론트엔드 **`BillingReportPage`**의 필터 UI(`appliedFilters` echo)는 완성되었으나, **백엔드 저장 API**가 아직 구현되지 않았습니다.
+
+| 항목 | 상태 | 내용 |
+|------|------|------|
+| **FE 필터 UI** | **✅** | `/billing/reports/deposits` · `/billing/reports/receipts` — 월별·기간·조건 필터 반영 |
+| **FE echo** | **✅** | 응답 `appliedFilters` 필드 표시 (Q601·`a6eb8b7`) |
+| **BE save API** | **❌** | `GET /api/v1/billing/reports/filters?month=...` 미구현 |
+
+**BE 구현 필요사항** (coder):
+1. **`BillingReportFilterService`** — 월별 필터 저장·조회 로직
+2. **API**: `GET /api/v1/billing/reports/filters?month=YYYY-MM&branchId=` → 저장된 필터 반환
+3. **저장소**: `billing_report_filter_preferences` 또는 user 설정에 내장
+4. **RBAC**: `branch_admin`·`hq_admin` 만 허용
+
+**현장 상황**:
+- **매월 반복 필터** 없이 매번 수동 입력하고, **Swagger** 또는 **브라우저 개발자 도구** `Network` 탭에서 `appliedFilters` JSON 확인 후 매번 같은 조건 재입력
+
+> 관련: Q601 · Q585·Q587·Q588 · USER_MANUAL §4-6 · Swagger `/billing/reports/deposits`
+
+---
+
+### Q619. 직원 출퇴근 (8-4)에서 출근 방식 선택이 안 보여요. (G-STAFF-WORK-ATTENDANCE, Q612)
+
+**A.** **✅ FE + BE Fixed** (`5fd468b`·`a6eb8b7`, V169) — **`/staff/attendance`** 화면에 **출근 방식 select** (`MANUAL`/`MOBILE`/`NFC`)와 **직원 roster 테이블**이 정상 구현되었습니다. (Q612 반영 완료)
+
+| 항목 | 상태 | 확인 포인트 |
+|------|------|-----------|
+| **API** | **✅** | `GET /api/v1/staff/work-attendance` · `POST …/check-in` · `POST …/check-out` |
+| **FE 라우트** | **✅** | **`/staff/attendance`** — 출근 방식 select · 테이블 |
+| **DB** | **✅** | **V169** `staff_work_attendance` 테이블 · `checkInMethod` column |
+| **RBAC** | **✅** | `branch_admin`·`social_worker` |
+
+**기능**:
+1. **아침** `/staff/attendance` 진입 → **「출근 방식」** (MANUAL/MOBILE/NFC) 선택 → **「출근」** 버튼
+2. **저녁** → **「퇴근」** 버튼
+3. **당일만** 조회 가능 (과거 기록 **`/staff/{userId}?tab=...`** 참고)
+
+> 관련: Q612 · PLAN_NOTES 301차 · USER_MANUAL §4-7-3 · ADMIN_GUIDE §4-4 · `StaffWorkAttendancePanel`
+
+---
+
+### Q620. `G-ATTENDANCE-ROSTER-STATUS`가 뭐고 어디서 확인하나요? (Q609·당일 출석 roster)
+
+**A.** **✅ BE + FE Full-stack** (`a6eb8b7`·`8383f8d`·Q609) — 지점 당일 **활성 이용자 전원**의 출석 상태(`PENDING`/`CHECKED_IN`/`CHECKED_OUT`)를 한눈에 보는 화면입니다.
+
+| 항목 | 상태 | 내용 |
+|------|------|------|
+| **FE 라우트** | **✅** | `/attendance` · `/attendance/boarding` · `/attendance/on-site` |
+| **BE API** | **✅** | `GET /api/v1/attendance?date=&branchId=&transportMode=` — 이용자 roster |
+| **응답 필드** | **✅** | `id`, `clientId`, `clientName`, `status`, `usesTransport`, `transportMode` |
+| **pending 처리** | **✅** | `id=null` 행은 **체크인 가능** (미등록 이용자) |
+| **FE 최적화** | **✅** | **`fetchAttendanceApi` 단일 호출** — 진입 시 1회만 조회 (`8383f8d`) |
+
+**사용 시나리오**:
+1. 아침 **`/attendance`** 진입 → 이용자 roster 로드
+2. **「출석」** / **「결석」** 버튼으로 상태 전환
+3. **이용자 사진·이름·출석 상태** 확인 → **핵심 사용 흐름** (Q609)
+
+**지점별 탭** (UXD-132):
+- **「전체」** — 모든 활성 이용자
+- **「탑승대기」** — `usesTransport=true` & `transportMode` 필터
+- **「시설내」** — `usesTransport=false`
+
+> 관련: Q609 · USER_MANUAL §4-2 · PLAN_NOTES 300차 · **`AttendancePage`** · **`fetchAttendanceApi`**
+
+---
+
 *이 문서는 tech_writer 에이전트가 관리합니다. 요구사항·구현 변경 시 `REQUIREMENTS.md`·`CHANGELOG.md`와 동기화하세요.*
