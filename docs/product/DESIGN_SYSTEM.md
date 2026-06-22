@@ -1,9 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21T09:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-22T01:27:00+00:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-21 (149차 — **G21 공단 일정 불일치·G15 카카오 API 잔여 대시보드 위젯 접근성 재점검 + §72 신규** — 148차(§71)·UXD-148(`e2f1246`) 이후 coder 신규 기능 커밋(`fe7df60`/`c01b880`/`ebc9f28` G21 nhisComparisonGap StatCard·`580a86b` G15 카카오 API 잔여 StatCard) 미점검 a11y·대비 갭 해소. ① **두 신규 위젯** — `StatCard` 값 텍스트(건수·「미설정」/「정상」/「확인」)+tone 병행으로 색 의존 없음·링크 sr-only·로딩 `role=status`·비표시 분기 모두 기존 `DashboardWidgetGrid` 패턴 준수(변경 불요). ② **강제 색상 모드 대비(WCAG 1.4.11)** — 앱 내 모든 `.ds-stat` 클러스터가 `forced-colors` 경계선을 명시하나 **주 US-M02 위젯 그리드만 누락** → `.ds-dashboard-widgets__item .ds-stat` `ButtonText` 경계선 신규(G21·카카오 위젯으로 그리드 조밀해져 효과 ↑). ③ **§72** 신규. CSS-only 대비 보강(JS 회귀 불요). build PASS.)
+> **최종 갱신**: 2026-06-22 (152차 — **G-STAFF-WORK-ATTENDANCE·G-BILLING-DEPOSIT-ORDER-GUARD·US-E05 출석 통계 접근성 재점검 + §75 신규** — 151차(§74)·UXD-151(`9812ac4`) 이후 coder 신규 커밋 3종(`StaffWorkAttendancePage`·`CmsDebitPanel`·`AttendanceStatsPage`) 미점검 a11y 갭 해소. ① **`StaffWorkAttendancePage`** — 조회 `aria-busy`·StatCard `role=group aria-label`·출근·퇴근 반복 행 버튼 `aria-label`에 직원명·`aria-busy`·출퇴근 시각 `<time dateTime>`. ② **`AttendanceStatsPage`** — 조회 `aria-busy`·StatCard `role=group aria-label`. ③ **`CmsDebitPanel`** — 요청·완료 일시 `<time dateTime>`·상태 컨테이너 `<div>`→`<section aria-labelledby>` + `h3 id`. ④ **§75** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-21 (151차 — **US-R03 모바일 서류 촬영 업로드 접근성 재점검 + `.ds-button` 미정의 셀렉터 회귀 해소 + §74 신규** — 150차(§73)·UXD-150(`751c593`) 이후 coder 신규 기능 커밋 `6bde24a`(feat US-R03 — 케어포 p.96 모바일 서류 촬영: `FileUpload.enableMobileCapture`·`StaffDocumentRepositoryPanel` 슬롯별 「모바일 촬영」·`StaffHrFilePanel`·`StaffRefresherCertificatePanel`) 미점검 a11y·FE-16 갭 해소. ① **모바일 촬영 a11y 확인** — 숨김 카메라 input(`capture="environment"`)은 `aria-hidden`·`tabIndex={-1}`로 트리거 버튼만 활성화·슬롯별 「모바일 촬영」 버튼 `${slot.label} 모바일 촬영 업로드` `aria-label`·`aria-busy`·「업로드 중…」 텍스트 상태(색 비의존)·실패 `Alert role=alert`·`section aria-busy` 모두 표준 준수(변경 불요). ② **`.ds-button` 미정의 셀렉터 회귀 해소(FE-16)** — `6bde24a`의 모바일 전폭 규칙 `@media(max-width:640px) .ds-staff-document-repository .ds-inline-actions .ds-button`이 본 코드베이스 `Button`(`.ds-btn` 렌더)과 불일치하는 **미정의 `.ds-button`**(전 CSS 유일 사용)을 타깃해 적용되지 않던 80·90·119차 패턴 회귀를 `.ds-btn`으로 정합(모바일 버튼 전폭 스택 복구·시각/동작 불변). ③ **§74** 신규. `StaffDocumentRepositoryPanel.test.jsx`·`FileUpload.test.jsx` 8/8 PASS·build PASS.)
+> **이전 갱신**: 2026-06-21 (150차 — **G-BILLING-OVERDUE-ADJUSTMENT·G-STAFF-DOCUMENT-REPOSITORY·G-BATHING 전월 복사 접근성 재점검 + §73 신규** — 149차(§72)·UXD-149(`b969570`) 이후 coder 신규 커밋(`0420e6b` `OverdueManagementModal`·`03d0d43`/`fd15a2f` `StaffDocumentRepositoryPanel`·`9a957fb` `BathingSchedulePage` 전월 복사) 미점검 a11y·FE-16 갭 해소. ① **`OverdueManagementModal`** — 일시 `<time dateTime>`·폼 `aria-label` 2종. ② **`StaffDocumentRepositoryPanel`** — 업로드·lifecycle 링크 `${슬롯명}` `aria-label`·`aria-busy`·로딩 `role=status`·**`.ds-staff-document-repository*`** CSS 승격·`forced-colors` 요약 경계선. ③ **`BathingSchedulePage`** — 조회·전월 복사 `aria-busy`. ④ **§73** 신규. 회귀 +3. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-21 (149차 — **G21 공단 일정 불일치·G15 카카오 API 잔여 대시보드 위젯 접근성 재점검 + §72 신규** — 148차(§71)·UXD-148(`e2f1246`) 이후 coder 신규 기능 커밋(`fe7df60`/`c01b880`/`ebc9f28` G21 nhisComparisonGap StatCard·`580a86b` G15 카카오 API 잔여 StatCard) 미점검 a11y·대비 갭 해소. ① **두 신규 위젯** — `StatCard` 값 텍스트(건수·「미설정」/「정상」/「확인」)+tone 병행으로 색 의존 없음·링크 sr-only·로딩 `role=status`·비표시 분기 모두 기존 `DashboardWidgetGrid` 패턴 준수(변경 불요). ② **강제 색상 모드 대비(WCAG 1.4.11)** — 앱 내 모든 `.ds-stat` 클러스터가 `forced-colors` 경계선을 명시하나 **주 US-M02 위젯 그리드만 누락** → `.ds-dashboard-widgets__item .ds-stat` `ButtonText` 경계선 신규(G21·카카오 위젯으로 그리드 조밀해져 효과 ↑). ③ **§72** 신규. CSS-only 대비 보강(JS 회귀 불요). build PASS.)
 > **이전 갱신**: 2026-06-21 (148차 — **G-BILLING 입금·수납 대장 필터 UI 접근성 재점검 + §71 신규** — 147차(§70)·UXD-147(`1a614c9`) 이후 coder 신규 커밋(`e38ccfd` 입금 구간·수납 집계 기준 필터·`c6a412f` appliedFilters echo) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — 조회 `aria-busy={loading}`(WCAG 4.1.3·`BillingStatisticsReportPage` 패턴). ② **적용 조건 요약** — `role=status aria-live=polite`·대상월 `<time dateTime>`. ③ **`.ds-billing-report__applied-filters`** — 미정의 클래스 승격(FE-16)·`forced-colors`. ④ **§71** 신규. 회귀 +1. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-21 (147차 — **G-STAFF-LEAVE-STATUS 휴직 상태 UI 접근성 재점검 + §70 신규** — 146차(§69)·UXD-146(`a7d9a2f`) 이후 coder 신규 커밋(`2581347` ON_LEAVE Badge·`StaffLifecycleSummaryPanel`·`StaffLifecyclePanel` 분기) 미점검 a11y 갭 해소. ① **`StaffLifecyclePanel`** ON_LEAVE `warning` Alert — "퇴사일 입력란은 비활성화됩니다." 문구 추가(disabled 입력 SR 미도달 보완·WCAG 4.1.2·1.3.1). ② **`StaffLifecycleSummaryPanel`** 신규 패널 — `section aria-labelledby`+`h2.ds-section-title`+`ds-stat-grid role=group`+`Alert role=status` 패턴 준수 확인(변경 불요). ③ **`Badge ON_LEAVE`** — tone=warning+"휴직" 텍스트 병행(WCAG 1.4.1). ④ **§70** 신규. `StaffLifecyclePanel.test.jsx` 11/11 PASS. `npm test` PASS.)
 > **이전 갱신**: 2026-06-20 (146차 — **G-BANK-EXCEL-8·G-STAFF-NHIS-EXCEL-IMPORT preview·행 선택 UI 접근성 재점검 + §69 신규** — 145차(§68)·UXD-145(`a2f599c`) 이후 coder 신규 커밋(`a18b30e` 은행 입금 preview·행 선택·`4315ee2` 공단 요양보호사 import panel) 미점검 a11y·FE-16 갭 해소. ① **`BankDepositImportPanel`** — 폼 `aria-label`·미리보기 `role=group`·요약 `role=status aria-live=polite`·행 Checkbox `${예금주명} N행 선택`·입금일 `<time dateTime>`. ② **`StaffNhisCaregiverImportPanel`** — 동일 preview 패턴·`${성명} N행 선택`·생년월일 `<time dateTime>`. ③ **`.ds-bank-deposit-formats`** 미정의 클래스 승격(FE-16)·**`.ds-import-preview*`** 공통 레이어. ④ **§69** 신규·§68-4 잔여 FE wire 해소 표기. 회귀 +2. `npm test`·build PASS.)
@@ -4017,6 +4020,161 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 
 - `npm test`(DashboardPage·transportKakaoQuotaSummary·visitNhisComparison 포함) — coder 기존 회귀 유지(본 변경은 CSS-only `forced-colors`로 JS 회귀 추가 불요).
 - build PASS.
+
+---
+
+## §73. G-BILLING-OVERDUE-ADJUSTMENT·G-STAFF-DOCUMENT-REPOSITORY·G-BATHING 전월 복사 접근성 재점검 (150차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21 -->
+
+> **150차 UXD (2026-06-21)** — 149차(§72)·UXD-149(`b969570`) 이후 coder 신규 기능 커밋 미점검 a11y·FE-16 갭 해소.
+> ① **G-BILLING-OVERDUE-ADJUSTMENT** `OverdueManagementModal`(`0420e6b`).
+> ② **G-STAFF-DOCUMENT-REPOSITORY** `StaffDocumentRepositoryPanel`(`03d0d43`/`fd15a2f`).
+> ③ **G-BATHING** `BathingSchedulePage` 전월 복사(`9a957fb`).
+
+### 73-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `OverdueManagementModal` | `components/ui/` | `0420e6b` | US-L02 · G-BILLING-OVERDUE-ADJUSTMENT |
+| `StaffDocumentRepositoryPanel` | `components/staff/` | `03d0d43`/`fd15a2f` | US-R03c · G-STAFF-DOCUMENT-REPOSITORY |
+| `BathingSchedulePage` 전월 복사 | `pages/` | `9a957fb` | US-O01 · G-BATHING |
+
+### 73-2. 접근성·FE-16 재점검 결과
+
+| 항목 | 대상 | 결과 |
+|------|------|------|
+| 날짜 의미론(WCAG 1.3.1) | `OverdueManagementModal` 독려·조정 일시 | `toLocaleString` 평문 → `<time dateTime>` |
+| 폼 식별(WCAG 1.3.1) | 독려기록·조정 폼 | `aria-label="미납 독려기록 추가"`·`aria-label="미납 조정"` |
+| 반복 행 액션(WCAG 2.4.6) | 서류 슬롯 업로드·lifecycle 링크 | `${slot.label} 파일 업로드 선택`·`${slot.label} lifecycle 체크` |
+| 로딩 상태(WCAG 4.1.3) | repository 패널 | `section aria-busy`·`role=status` Spinner 래퍼 |
+| 진행 버튼(WCAG 4.1.3) | 목욕 일정 조회·전월 복사 | `aria-busy={loading}`·`aria-busy={copying}` |
+| 미정의 CSS(FE-16) | `.ds-staff-document-repository*` | 베이스·phase·summary·`forced-colors` 경계선 승격 |
+
+### 73-3. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `OverdueManagementModal.jsx` | `RecordedAtCell`·폼 `aria-label` |
+| `StaffDocumentRepositoryPanel.jsx` | `aria-busy`·`aria-label`·로딩 `role=status` |
+| `BathingSchedulePage.jsx` | 조회·전월 복사 `aria-busy` |
+| `components.css` | `.ds-staff-document-repository*`·`forced-colors` |
+
+### 73-4. coder 전달 메모
+
+- **`OverdueManagementModal`** — 탭·표·`Field error`·제출 `aria-busy`는 coder 구현 시 이미 표준 패턴 준수. `OverduePage` 행 「관리」버튼 `${이용자명} 미납 관리` `aria-label` 유지.
+- **`StaffDocumentRepositoryPanel`** — 21슬롯 Badge(「첨부됨」/「체크됨」/「미비」)는 텍스트+색 병행. `onSelectUploadType(slot.id)` wire는 `StaffDetailPage` HR 파일함과 연동(coder 영역).
+- **`BathingSchedulePage`** — 전월 복사 성공 메시지는 기존 `Alert role=status`·`aria-label="전월 목욕 일정 복사"` 패턴 유지.
+
+### 73-5. 검증
+
+- `OverdueManagementModal.test.jsx` — `<time dateTime>` 단언 +1.
+- `StaffDocumentRepositoryPanel.test.jsx` — 컨텍스트 `aria-label` 단언 갱신.
+- `npm test`(해당 3종 + `BathingSchedulePage`)·build PASS.
+
+---
+
+## §74. US-R03 모바일 서류 촬영 업로드 접근성 재점검 + `.ds-button` 미정의 셀렉터 회귀 해소 (151차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-21 -->
+
+> **151차 UXD (2026-06-21)** — 150차(§73)·UXD-150(`751c593`) 이후 coder 신규 기능 커밋 `6bde24a`(feat US-R03 — 케어포 p.96 모바일 서류 촬영 업로드: `FileUpload` `enableMobileCapture`·`StaffDocumentRepositoryPanel` 슬롯별 「모바일 촬영」·`StaffHrFilePanel`·`StaffRefresherCertificatePanel`) 미점검 a11y·FE-16 갭 해소.
+
+### 74-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `FileUpload` `enableMobileCapture` | `components/ui/` | `6bde24a` | US-R03 P2 모바일 촬영 |
+| `StaffDocumentRepositoryPanel` 슬롯 「모바일 촬영」 | `components/staff/` | `6bde24a` | US-R03c · G-STAFF-DOCUMENT-REPOSITORY |
+| `StaffHrFilePanel` · `StaffRefresherCertificatePanel` | `components/staff/` | `6bde24a` | US-R03 · US-S02 |
+
+### 74-2. 접근성 재점검 결과 (변경 불요로 확인된 항목)
+
+| 항목 | 대상 | 결과 |
+|------|------|------|
+| 숨김 카메라 input | `FileUpload`·`StaffDocumentRepositoryPanel` | `capture="environment"` input에 `aria-hidden="true"`·`tabIndex={-1}` — 트리거 버튼으로만 활성화(중복 탭 정지점 없음·WCAG 4.1.2) |
+| 반복 행 액션 라벨(WCAG 2.4.6) | 슬롯별 「모바일 촬영」 | `${slot.label} 모바일 촬영 업로드` `aria-label`·진행 중 `aria-busy` |
+| 진행/오류 상태(WCAG 4.1.3) | repository 패널 | 업로드 중 `section aria-busy`·실패 `Alert role=alert`·버튼 `aria-busy` |
+| 색 비의존(WCAG 1.4.1) | 「모바일 촬영」 버튼 | 「업로드 중…」 텍스트 라벨 전환으로 상태 노출 |
+
+### 74-3. 회귀 수정 — `.ds-button` 미정의 셀렉터 (FE-16·§1 단일 토큰 원천)
+
+- **결함**: `6bde24a`가 추가한 `@media (max-width: 640px)` 규칙이 서류함 슬롯 액션 버튼(「업로드 선택」·「모바일 촬영」)을 모바일에서 전폭(`width: 100%`)으로 스택하려고 `.ds-staff-document-repository .ds-inline-actions .ds-button` 셀렉터를 사용했으나, 본 코드베이스의 `Button` 컴포넌트는 **`.ds-btn`** 클래스를 렌더한다(`.ds-button`은 전 CSS에서 이 한 곳만 사용된 **미정의 클래스**). 따라서 의도한 모바일 전폭 규칙이 적용되지 않던 80·90·119차에서 반복 추적한 「미정의 클래스」 회귀와 동일 패턴.
+- **수정**: 셀렉터 `.ds-button` → **`.ds-btn`**(`components.css`). 컨테이너 `flex-direction: column; align-items: stretch`와 함께 버튼이 모바일에서 일관되게 전폭 스택되도록 복구. 시각·동작·DOM 불변(순수 CSS 정합).
+
+### 74-4. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `components.css` | `.ds-staff-document-repository .ds-inline-actions .ds-button` → `.ds-btn`(모바일 전폭 규칙 복구) |
+
+### 74-5. coder 전달 메모
+
+- **`FileUpload.enableMobileCapture`** — 카메라 input은 `accept="image/*" capture="environment"`로 모바일에서 후면 카메라를 연다. 데스크톱은 `capture` 무시·파일 선택기로 폴백되므로 별도 분기 불요.
+- **포커스 관리(잔여 관찰)** — 「모바일 촬영」 업로드 성공 시 해당 슬롯이 `slot.uploaded=true`가 되어 버튼 블록이 사라지며 포커스가 `body`로 유실될 수 있다. 성공은 하단 요약 `Alert role=status`(미비 건수→충족 전환)로 안내되나, 추후 업로드 성공 시 슬롯 행/상태로 포커스 이동을 고려할 수 있음(coder 영역·동작 변경 수반).
+
+### 74-6. 검증
+
+- `StaffDocumentRepositoryPanel.test.jsx`(4)·`FileUpload.test.jsx`(4) — 8/8 PASS.
+- `npm run build` PASS(CSS 컴파일 오류 없음).
+
+---
+
+---
+
+## §75. G-STAFF-WORK-ATTENDANCE·G-BILLING-DEPOSIT-ORDER-GUARD·US-E05 출석 통계 접근성 재점검 (152차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-22 -->
+
+> **152차 UXD (2026-06-22)** — 151차(§74)·UXD-151(`9812ac4`) 이후 coder 신규 기능 커밋 미점검 a11y·FE-16 갭 해소.
+> ① **G-STAFF-WORK-ATTENDANCE** `StaffWorkAttendancePage`(`53d65a0`/`5fd468b`) — 직원 출퇴근 (8-4) 신규 페이지.
+> ② **G-BILLING-DEPOSIT-ORDER-GUARD** `CmsDebitPanel`(`dfa981c`) — 선행입금 가드 CMS 출금 패널 업데이트.
+> ③ **US-E05** `AttendanceStatsPage`(`dffd726`) — 출석 통계 API 정렬 및 결석 체크아웃 와이어.
+
+### 75-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `StaffWorkAttendancePage` | `pages/` | `53d65a0`/`5fd468b` | G-STAFF-WORK-ATTENDANCE · 케어포 8-4 |
+| `CmsDebitPanel` | `components/ui/` | `dfa981c` | US-L03 · G-BILLING-DEPOSIT-ORDER-GUARD |
+| `AttendanceStatsPage` | `pages/` | `dffd726` | US-E05 · 월별 출석 통계 |
+| `StaffContextNav` | `components/ui/` | `5fd468b` | US-S01 · `/staff/attendance` 링크 추가 |
+
+### 75-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `StaffWorkAttendancePage` 「조회」 | `disabled={loading}` 만 있고 진행 상태 SR 미전달 | `aria-busy={loading}` 추가 | WCAG 4.1.3 · `BillingReportPage` 정합 |
+| `StaffWorkAttendancePage` StatCard 그룹 | `section.ds-stat-grid`에 시맨틱 그룹 없음 | `role="group" aria-label="직원 출퇴근 현황 요약"` | WCAG 1.3.1 · §93 `StaffStatusReportPage` 패턴 |
+| `StaffWorkAttendancePage` 출근·퇴근 버튼 | 다중 행에서 동일 「출근」/「퇴근」 텍스트 — SR이 대상 직원 식별 불가 | `aria-label="${row.userName} 출근"` / `"퇴근"` + `aria-busy={busy}` | WCAG 2.4.6 · §91 `ClientRiskAssessmentPanel` 패턴 |
+| `StaffWorkAttendancePage` 출근·퇴근 시각 | `formatTimestamp()` 평문 | `<time dateTime={row.checkInAt}>` / `<time dateTime={row.checkOutAt}>` (값 있을 때만) | WCAG 1.3.1 · §88 `StaffDetailPage` 날짜 의미론 패턴 |
+| `AttendanceStatsPage` 「조회」 | `disabled={loading}` 만 있고 진행 상태 SR 미전달 | `aria-busy={loading}` 추가 | WCAG 4.1.3 |
+| `AttendanceStatsPage` StatCard 그룹 | `div.ds-grid.ds-grid--gap-bottom`에 시맨틱 그룹 없음 | `role="group" aria-label="출석 통계 요약"` | WCAG 1.3.1 · §116 `TransportMonthlyReportsPage` 패턴 |
+| `CmsDebitPanel` 요청·완료 일시 | `formatDateTime()` 평문 | `<time dateTime={debit.requestedAt}>` / `<time dateTime={debit.completedAt}>` (값 있을 때만) | WCAG 1.3.1 · 날짜 의미론 |
+| `CmsDebitPanel` 출금 상태 컨테이너 | `<div role="status">` — `h3` 제목과 프로그램적 연결 없음 | `<section aria-labelledby="cms-debit-status-heading">` + `h3 id="cms-debit-status-heading"` | WCAG 1.3.1 · §100 `EasyPayPanel.ds-easy-pay-status` 패턴 |
+| `StaffContextNav` `/staff/attendance` 링크 | NavLink `aria-current="page"` — NavLink 자동 적용 · 변경 불요 | ✅ | ✅ |
+
+### 75-3. 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/pages/StaffWorkAttendancePage.jsx` | 조회 `aria-busy` · StatCard `role=group` · 출근·퇴근 버튼 `aria-label`+`aria-busy` · 시각 `<time dateTime>` |
+| `src/pages/AttendanceStatsPage.jsx` | 조회 `aria-busy` · StatCard 그룹 `role=group aria-label` |
+| `src/components/ui/CmsDebitPanel.jsx` | 일시 `<time dateTime>` · 상태 컨테이너 `<section aria-labelledby>` + `h3 id` |
+
+### 75-4. coder 전달 메모
+
+- **`StaffWorkAttendancePage` 출근·퇴근 버튼 `aria-busy`** — `actionUserId === row.userId` 조건 활용. Spinner는 시각 사용자에게 진행 상태를 보여주나 `aria-busy`로 SR에도 전달.
+- **`StaffWorkAttendancePage` `<time dateTime>`** — `row.checkInAt`/`row.checkOutAt`은 ISO 8601 타임스탬프(`2026-06-22T08:30:00Z` 형태). 값이 falsy이면 「—」 평문으로 폴백 유지.
+- **`CmsDebitPanel` `<section role="status">`** — `role="status"` + `aria-live="polite"` 유지. 상태 갱신(출금 요청 후 `setDebit`) 시 `aria-live` 영역이 SR에 상태 변화를 안내. `h3 id`는 섹션 `aria-labelledby`만 위해 추가 — 외부 영역에서 참조 불요.
+- **`StaffContextNav`** — `/staff/attendance` 링크 추가로 8-4 페이지가 직원 컨텍스트 네비에 등재됨. `aria-current` NavLink 자동 처리 확인.
+
+### 75-5. 검증
+
+- `StaffWorkAttendancePage.test.jsx` — `aria-busy` · `role=group` · 출근 버튼 `aria-label` 직원명 포함 · `<time dateTime>` 단언 +4.
+- `AttendanceStatsPage.test.jsx` — `aria-busy` · `role=group aria-label` +2.
+- `CmsDebitPanel.test.jsx` (기존 없음) — `section[aria-labelledby]` · `time[dateTime]` 확인.
+- `npm test` · build PASS.
 
 ---
 
