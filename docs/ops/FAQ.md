@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T19:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T21:00:00+09:00 -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-23 (336차 TWR 자동 동기화 — **BE `c4e6bcb`/FE `426d63a`·V1–V175·111 route·90 page·모듈 KPI 78.79%·merge gate 719 carry·V175 leave-ledger integrity ✅**)  
+> **최종 갱신**: 2026-06-23 (338차 TWR 자동 동기화 — **BE `01edba7`/FE `1193761`·V1–V175·111 route·90 page·모듈 KPI 78.79%·US-D01/D02 ✅·client RBAC hierarchy ✅·addressSearch/detail read ✅**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -16,14 +16,14 @@
 ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능별**로 정리했습니다.  
 상세 조작 절차는 [`USER_MANUAL.md`](ops/USER_MANUAL.md), 플랫폼·기술 관리는 [`ADMIN_GUIDE.md`](ops/ADMIN_GUIDE.md), 배포·인프라는 [`DEPLOYMENT_GUIDE.md`](ops/DEPLOYMENT_GUIDE.md)를 참고하세요.
 
-### 구현 상태 안내 (2026-06-23 develop HEAD `c4e6bcb` / frontend `426d63a` 기준 — 336차 baseline)
+### 구현 상태 안내 (2026-06-23 develop HEAD `01edba7` / frontend `1193761` 기준 — 338차 baseline)
 
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
-| 백엔드 API | **Must + … + V175 ✅** @ `c4e6bcb` **SYNCED** · **V175 leave-ledger integrity ✅** · **SOCIAL_WORKER users read RBAC ✅** · **client address road-level masking ✅** · … | BE Test **1846** (Q668) |
-| 데이터베이스 | Flyway **V1–V175** | **V175** `staff_leave_ledger_entries` memo·user_branch FK (Q668) · **V174** per-event ledger (Q663) · **V173** annual-leave integrity (Q645) |
-| 프론트엔드 | **111 route · 90 page** @ `426d63a` **SYNCED** | **`/staff/leave-ledger` ✅ full-stack + UXD-157 a11y** (Q667) · **cross-stream BLOCK(BE pending 1 · FE pending 3 · FE WT DIRTY)** |
-| 본 FAQ | **Q668·Q669·Q670 신규** (336차) · **Q667·Q663 갱신** | **Must 갭 0** carry · **V175 closure ✅** (`c4e6bcb`) |
+| 백엔드 API | **Must + … + V175 ✅** @ `01edba7` **SYNCED** · **`RoleHierarchy` client RBAC ✅** (Q675) · **`addressSearch`·`addressDetail` read ✅** (Q676) · **거주지 전체·픽업 마스킹 유지** · … | BE Test **1837+** (Q675) |
+| 데이터베이스 | Flyway **V1–V175** | **V175** memo·user_branch FK (Q668) · **V174** per-event ledger (Q663) · **V173** annual-leave integrity (Q645) |
+| 프론트엔드 | **111 route · 90 page** @ `1193761` **SYNCED** | **`clientPermissions.js` RBAC ✅** (Q675) · **`KoreanAddressFields` ✅** (Q671) · **`/clients` column filters ✅** (Q672) · **HR `branchName` scope ✅** (Q674) |
+| 본 FAQ | **Q675·Q676 신규** (338차) · **Q671~Q674 carry** | **Must 갭 0** carry · **US-D01/D02 closure ✅** · **caregiver client edit ✅** (`01edba7`/`1193761`) |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
@@ -8442,7 +8442,7 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 | 1 | **`rows[].pickupAddress`** (API 전용 필드, `e358f2d`) |
 | 2 | **`rows[].note`** 의 **`픽업:`** 또는 **`하차:`** prefix 파싱 (legacy, 방향은 **`direction`** 필드 참조, Q471) |
 
-| PII | **`hq_admin`·`platform_admin`·`sysadmin`** 만 전체 주소 · 그 외 역할은 **road-level 마스킹** (`서울특별시 중구 세종대로 ***` 패턴 — 이용자 list/detail·배차 roster 동일, Q669·SEC-D9) |
+| PII | **거주지(`address`)** — list/detail **전체 표시** (Q673) · **픽업·배차 roster** — **`hq_admin`만 전체** · 그 외 **road-level `***`** (Q169·Q673) |
 | FE merge | **`mergeApiServiceLogRows`** — API `pickupAddress` > note prefix |
 | 테스트 | **`TransportServiceTest`** masking·plain assert · **`TransportServiceLogLiveApiRoutingE2eTest`** contract |
 
@@ -10036,6 +10036,8 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-23 | **338차** — **client RBAC hierarchy (Q675)**·**addressSearch/detail read (Q676)**·baseline **`01edba7`/`1193761`** |
+| 2026-06-23 | **337차** — **US-D01/D02 Korean address**·**Q671~Q674 신규**·**Q669 갱신**·baseline **`642ea11`/`0606a3b`** |
 | 2026-06-23 | **336차** — **V175 leave-ledger integrity**·**Q668·Q669·Q670 신규**·baseline **`c4e6bcb`/`426d63a`** |
 | 2026-06-23 | **335차** — **US-R01-c leave-ledger UXD-157 a11y**·**Q667 신규**·**BNK-551 AVAILABLE sync**·baseline **`5fd12dd`/`426d63a`** |
 | 2026-06-23 | **334차** — **US-R01-c leave-ledger FE full-stack**·**Q666 신규**·**Q650~Q659·Q663·Q655 갱신**·baseline **`5fd12dd`/`8057c1e`** |
@@ -12186,9 +12188,9 @@ PUT /api/v1/billing/reports/filters
 
 ---
 
-### Q669. **사회복지사**가 직원 목록을 볼 수 있나요? 이용자 **주소 마스킹**은 어떻게 되나요? (BE `c4e6bcb`)
+### Q669. **사회복지사**가 직원 목록을 볼 수 있나요? 이용자 **주소**는 어떻게 표시되나요? (BE `c4e6bcb`·`642ea11`)
 
-**A.** **✅ BE Fixed (`c4e6bcb`, Q669)** — 대장·연차 업무를 위해 **`social_worker`** 에게 **직원 조회 API read-only** 가 열렸고, 이용자 **주소 표시**가 배차 roster와 **동일 정책**으로 정렬되었습니다.
+**A.** **✅ BE Fixed (`c4e6bcb`, Q669)** — 대장·연차 업무를 위해 **`social_worker`** 에게 **직원 조회 API read-only** 가 열렸습니다. **337차(`642ea11`)** 에서 **거주지·픽업 주소 표시 정책이 분리**되었습니다 — **Q673** 참고.
 
 **`SOCIAL_WORKER` users RBAC**
 
@@ -12201,16 +12203,16 @@ PUT /api/v1/billing/reports/filters
 
 > **용도**: **`/staff/leave-ledger`** **「항목 등록」** Modal에서 **직원 선택**·대장 조회 시 사회복지사가 **직원명·역할**을 확인할 수 있습니다. **계정 생성·수정**은 센터장·통합 관리자만 가능합니다.
 
-**이용자 주소 road-level 마스킹 (`ClientService.maskAddressPlain`)**
+**이용자 주소 (337차 정책 — Q673 상세)**
 
-| 역할 | `address`·`pickupAddress` 표시 |
-|------|-------------------------------|
-| **`hq_admin`·`platform_admin`·`sysadmin`** | **전체 주소** (기존) |
-| **`branch_admin`·`social_worker`·`caregiver`·`guardian`** | **시·구·도로명(동)까지** — 상세 번호 **`***`** (예: `서울특별시 중구 세종대로 ***`) |
+| 필드 | `GET /clients*` 표시 | 비고 |
+|------|---------------------|------|
+| **`address`·`addressMasked`(거주지)** | **전체 주소** (역할 무관) | `addressSearch`+`addressDetail` 결합 (`642ea11`) |
+| **`pickupAddress`/`pickupAddressMasked`(픽업)** | **`hq_admin`만 전체** · 그 외 **road-level `***`** | 배차 roster(Q169)와 동일 |
 
-> 배차 roster **픽업 주소 마스킹**(Q169)과 **동일 계층**입니다 — 이용자 목록·상세·픽업 주소 필드에 **일관 적용** (`c4e6bcb`).
+> **336차 이전**: 거주지도 non-HQ **road-level 마스킹**이었으나, **현장 배차·등록 업무**를 위해 **거주지만 전체 표시**로 변경되었습니다. **픽업·배차 roster** 마스킹은 **유지**합니다.
 
-> 관련: Q666 · Q663 · Q169 · SEC-D9 · USER_MANUAL §5-3 · ADMIN_GUIDE §6-2-24
+> 관련: Q671 · Q673 · Q666 · Q663 · Q169 · SEC-D9 · USER_MANUAL §4-3 · ADMIN_GUIDE §5-1
 
 ---
 
@@ -12231,5 +12233,154 @@ PUT /api/v1/billing/reports/filters
 3. **`LIVE_E2E_ORGANIZATION_ID`** 등 env override는 **여전히 지원** — 단, dev seed `00000001` 계열과 **겹치지 않게** 설정하세요.
 
 > 관련: Q578 · Q580 · DEPLOYMENT §3-7·§4-3 · `docs/qa/VITEST_CONCURRENCY.md`
+
+---
+
+### Q671. 이용자 **주소 검색(카카오 우편번호)** 은 어떻게 쓰나요? API 필드는? (US-D01/D02, BE `642ea11`·FE `7e048c0`/`0606a3b`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`642ea11`·`7e048c0`·`0606a3b`, US-D01/D02, Q671)** — 이용자·지점 등록/수정에서 **카카오(Daum) 우편번호 검색**으로 **도로명 주소**를 선택하고 **상세주소**를 별도 입력합니다. 이지케어·LCMS **searchPost + 상세주소** 패턴과 동일합니다.
+
+| 화면 | 컴포넌트 | 경로 |
+|------|----------|------|
+| 이용자 등록·수정 | **`KoreanAddressFields`** | **`/clients/new`** · **`/clients/:id/edit`** |
+| 지점 등록 | **`KoreanAddressFields`** | **`/branches`** |
+| 배차 픽업(별도 주소) | **`KoreanAddressFields`** | **`ClientTransportProfileSection`** — **「거주지와 동일」** 체크 시 거주지 재사용 |
+
+**조작 절차**
+
+1. **「주소 검색」** — Kakao **`postcode.v2.js`** 팝업 (`kakaoPostcode.js`) · **`aria-busy`** 로딩 표시 (UXD-158)
+2. **우편번호·도로명 주소** — read-only 자동 입력 (`zonecode`·`addressSearch`)
+3. **상세주소** — 동·호·층 등 직접 입력 (`addressDetail`) — **건물명**은 검색 결과에 있으면 **기본값 제안**
+4. **저장** — BE **`applyClientAddress(addressSearch, addressDetail)`** — search·detail **별도 암호화** · **`address` 응답 = search + detail 결합**
+
+| API 필드 | Create/Update | 설명 |
+|----------|---------------|------|
+| **`address`** | **필수** | 도로명 주소(search 결과) — FE `clientPayload.js`가 `addressSearch` 매핑 |
+| **`addressDetail`** | 선택 | 상세주소 — **337차 신규** (`642ea11`) |
+| **`pickupAddress`** | 선택 | 별도 픽업 주소 — 미입력·**「거주지와 동일」** 시 거주지 결합값 사용 |
+
+> **네트워크**: 주소 검색은 **브라우저 → `t1.kakaocdn.net`** 스크립트 로드가 필요합니다. 방화벽·오프라인 환경에서는 **「주소 검색을 불러오지 못했습니다.」** Alert가 표시됩니다.
+
+> 관련: Q673 · Q672 · USER_MANUAL §4-3 · ADMIN_GUIDE §5-1 · SEC-D9
+
+---
+
+### Q672. 이용자 목록 **열 필터(등급·성별·배차)** 는 어디서 쓰나요? (FE `7e048c0`/`0606a3b`)
+
+**A.** **✅ FE Fixed (`7e048c0`·`0606a3b`, US-D01, Q672)** — **`/clients`** 목록 Table 헤더의 **`TableColumnFilter`** 로 **클라이언트 측 필터**를 적용합니다. 서버 재조회 없이 **현재 페이지 데이터**를 좁힙니다.
+
+| 열 | 필터 옵션 | 구현 |
+|----|----------|------|
+| **등급** | 목록에 존재하는 **1~5등급** 동적 생성 | `buildGradeFilterOptions` |
+| **성별** | 전체 · 남 · 여 | `CLIENT_GENDER_FILTER_OPTIONS` |
+| **배차 이용** | 전체 · 배차 이용 · 배차 미이용 | `CLIENT_TRANSPORT_FILTER_OPTIONS` |
+| **지점** | **`hq_admin` 다지점** 시만 | `buildBranchFilterOptions` |
+
+| UX | 내용 |
+|----|------|
+| **건수 Badge** | 각 옵션별 **현재 목록 내 건수** |
+| **빈 결과** | **「선택한 필터에 맞는 수급자가 없습니다.」** |
+| **접근성** | **`forced-colors`** 고대비 모드 지원 (UXD-158) |
+| **검색** | 상단 **이름·인정번호 등 텍스트 검색**과 **AND** 조합 (`clientListFilters.js`) |
+
+> **337차 열 변경**: **「지역」→「거주지」** — **`formatClientHomeAddress`** 로 **전체 거주지 주소** 표시 (Q673).
+
+> 관련: Q671 · USER_MANUAL §4-3 · UXD-158
+
+---
+
+### Q673. **거주지**와 **픽업 주소** 마스킹 정책이 다른가요? (BE `642ea11`)
+
+**A.** **✅ BE Fixed (`642ea11`, Q673)** — **336차 Q669** 와 달리 **거주지·픽업 주소 정책이 분리**되었습니다.
+
+| 구분 | API 필드 | list/detail 표시 | 배차 roster(Q169) |
+|------|----------|------------------|-------------------|
+| **거주지** | **`address`·`addressMasked`** | **전체 주소** — **모든 staff 역할** | roster **픽업 override 아님** — transport API 별도 |
+| **픽업(별도)** | **`pickupAddress`/`pickupAddressMasked`** | **`hq_admin` 전체** · 그 외 **road-level `***`** | **`hq_admin`만 전체** · 그 외 **road-level** |
+
+**저장 구조 (BE)**
+
+| DB 컬럼 | 내용 |
+|---------|------|
+| **`address_search_encrypted`** | 카카오 검색 **도로명** |
+| **`address_detail_encrypted`** | **상세주소** (337차) |
+| **`address_encrypted`** | search + detail **결합 캐시** (legacy 호환) |
+
+> **현장**: 목록 **「거주지」** 열·상세 **「거주지 주소」** — **마스킹 없음**. 상세 **「픽업 주소」** — **`pickupAddressMasked`** 우선 표시.
+
+> 관련: Q669 · Q671 · Q169 · USER_MANUAL §4-3 · ADMIN_GUIDE §5-1
+
+---
+
+### Q674. 연차·대장 화면 **지점 안내(`BranchScopeNotice`)** 가 API 지점명과 다를 수 있나요? (FE `64584f4`)
+
+**A.** **✅ FE Fixed (`64584f4`, US-R01-c, Q674)** — **`/staff/annual-leaves`**·**`/staff/leave-ledger`** 에서 **`branchId` 생략**·활성 지점 컨텍스트 없음 시 **`BranchScopeNotice`** 가 **빈 지점명**으로 표시되던 문제를 수정했습니다.
+
+| 항목 | 수정 |
+|------|------|
+| **원인** | FE가 JWT **`activeBranchId`만** 참조 · API **`resolvedBranchId`·`branchName`** 미반영 |
+| **수정** | **`normalizeStaffAnnualLeaveRosterResponse`·`normalizeStaffLeaveLedgerListResponse`** — **`branchName` 전달** · Page state에 **`resolvedBranchName`** 유지 |
+| **검증** | **`StaffAnnualLeavePage.test`** · **`StaffLeaveLedgerPage.test`** — API branchName assert |
+
+> **운영**: 다지점 **`hq_admin`** 이 **지점 선택기 없이** HR 화면에 진입해도, API가 resolve한 **지점명**이 **「조회 지점: ○○점」** 에 표시됩니다.
+
+> 관련: Q656 · Q657 · Q663 · USER_MANUAL §4-7-0a·§4-7-0d · ADMIN_GUIDE §1-4
+
+---
+
+### Q675. **요양보호사**가 이용자 정보를 **수정**할 수 있나요? **신규 등록**은요? (BE `01edba7`·FE `77584a0`/`2e7374b`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`01edba7`·`77584a0`·`2e7374b`, Q675)** — **`RoleHierarchy`** / **`clientPermissions.js`** 로 **등록·수정 최소 역할이 분리**되었습니다. **현장 직원(caregiver) 이상**은 **수정**, **사회복지사(social_worker) 이상**은 **신규 등록**입니다.
+
+| 작업 | API·화면 | `hq_admin` | `branch_admin` | `social_worker` | `caregiver` | `guardian` |
+|------|----------|------------|----------------|-----------------|-------------|------------|
+| **조회** | `GET /clients*` · `/clients/:id` | ✅ | ✅ | ✅ | ✅ | 제한 |
+| **신규 등록** | `POST /clients` · **`/clients/new`** | ✅ | ✅ | ✅ | **403** · **route guard** | ❌ |
+| **수정** | `PATCH /clients/{id}` · **`/clients/:id/edit`** | ✅ | ✅ | ✅ | **✅** | ❌ |
+| **퇴소** | `POST /clients/{id}/discharge` | ❌ | ✅ | ❌ | ❌ | ❌ |
+| **사진 업로드** | `POST /clients/{id}/photo` | ❌ | ✅ | ✅ | ❌ | ❌ |
+
+**역할 계층 (BE·FE 동일)**
+
+| rank | 역할 | 이용자 권한 요약 |
+|------|------|------------------|
+| 100 | `hq_admin` | 등록·수정·조회 — **활성 지점 필수**(등록 시, Q267) |
+| 80 | `branch_admin` | 등록·수정·퇴소 |
+| 60 | `social_worker` | 등록·수정 |
+| 40 | `caregiver` | **수정만** — 배차·연락처·주소 등 일상 업데이트 |
+
+**FE route guard** — **`roleNav.js`** · **`sevenRoleRouteGuard`**
+
+| 경로 | 허용 역할 |
+|------|----------|
+| **`/clients/new`** | `CLIENT_CREATE_ROLES` — **`hq_admin`·`branch_admin`·`social_worker`** |
+| **`/clients/:id/edit`** | `CLIENT_EDIT_ROLES` — 위 3종 + **`caregiver`** |
+
+> **현장**: 요양보호사는 **「수정」** 으로 주소·배차·연락처를 고칠 수 있으나 **「신규 등록」** 버튼은 **보이지 않습니다**. 등록·퇴소는 **센터장·사회복지사**가 담당하세요.
+
+> 관련: Q671 · Q267 · USER_MANUAL §4-3 · ADMIN_GUIDE §5-1 · API_SPEC §4
+
+---
+
+### Q676. 이용자 조회 API에서 **`addressSearch`·`addressDetail`** 이 분리되어 오나요? (BE `deda5b4`)
+
+**A.** **✅ BE Fixed (`deda5b4`, Q676)** — **`GET /clients`**·**`GET /clients/{id}`** 응답 **`ClientResponse`** 에 **`addressSearch`(도로명)** · **`addressDetail`(상세주소)** 가 **별도 필드**로 포함됩니다. **`address`·`addressMasked`** 는 **search + detail 결합 전체**입니다.
+
+| 응답 필드 | 내용 | UI 용도 |
+|-----------|------|---------|
+| **`addressSearch`** | 카카오 우편번호 **도로명** | **`KoreanAddressFields`** search read-only prefill |
+| **`addressDetail`** | 동·호·층 **상세주소** | detail 입력란 prefill |
+| **`address`** | search + detail **결합** | 목록 **「거주지」**·상세 **「거주지 주소」** (Q673) |
+
+**저장·조회 대칭**
+
+| 방향 | 필드 |
+|------|------|
+| **Create/Update body** | **`address`**(도로명) + **`addressDetail`**(선택) — Q671 |
+| **Read response** | **`addressSearch`** + **`addressDetail`** + 결합 **`address`** — Q676 |
+
+> **337차 이전**: read API는 **`address` 결합값만** 제공 — 수정 화면에서 search/detail **prefill 불가**였습니다.
+
+> 관련: Q671 · Q673 · USER_MANUAL §4-3 · ADMIN_GUIDE §5-1
 
 ---

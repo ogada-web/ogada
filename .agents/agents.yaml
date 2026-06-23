@@ -496,7 +496,7 @@ agents:
       - API 참조 문서 작성 (OpenAPI/Swagger 기반)
       - 시스템 설치·배포 가이드 작성
       - 데이터 백업·복구 절차서 작성
-      - 변경 이력(CHANGELOG) 관리
+      - 변경 이력(CHANGELOG) 관리 — 사람이 읽는 날짜별 카드 형식 (에이전트 축약명·내 화면/업무 영향 필수)
       - 자주 묻는 질문(FAQ) 작성
     inputs:
       - docs/technical/API_SPEC.md
@@ -506,7 +506,7 @@ agents:
       - docs/ops/USER_MANUAL.md          # 역할별 사용자 매뉴얼
       - docs/ops/ADMIN_GUIDE.md          # 시스템 관리자 가이드
       - docs/ops/DEPLOYMENT_GUIDE.md     # 설치·배포 가이드
-      - docs/ops/CHANGELOG.md            # 버전별 변경 이력
+      - docs/ops/CHANGELOG.md            # 날짜별 작업 카드 (사람용 변경 기록)
       - docs/ops/FAQ.md                  # 자주 묻는 질문
 
 # =============================================================================

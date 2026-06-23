@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T19:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T21:00:00+09:00 -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-23 (336차 TWR 자동 동기화 — **BE `c4e6bcb`/FE `426d63a`·V1–V175·111 route·90 page·모듈 KPI 78.79%·merge gate 719 carry·V175 leave-ledger integrity ✅**)  
+> **최종 갱신**: 2026-06-23 (338차 TWR 자동 동기화 — **BE `01edba7`/FE `1193761`·V1–V175·111 route·90 page·US-D01/D02 ✅·client RBAC hierarchy ✅·addressSearch/detail read ✅**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -57,10 +57,10 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | 인증 | JWT (RS256) + RBAC | access 30분, refresh 7일 |
 | 멀티테넌트 | Organization → Branch | `organization_id` 강제 격리 |
 
-> **구현 상태 (2026-06-23 develop HEAD `c4e6bcb` / frontend `426d63a` 기준 — 336차 baseline)**:
-> - **백엔드**: Must API + **V1–V175** · **SYNCED @ `c4e6bcb`**. **V175 leave-ledger integrity ✅** (Q668) · **SOCIAL_WORKER users read RBAC ✅** (Q669) · **client address road-level masking ✅** (Q669) · **live-e2e `e2e*` tenant isolation ✅** (Q670) · …
-> - **프론트엔드**: **111 route · 90 page** @ **`426d63a`** **SYNCED**. **`/staff/leave-ledger` ✅ full-stack + UXD-157 a11y** (Q667) · develop `npm test` **~2064 PASS** · **FE WT DIRTY** (uncommitted WIP)
-> - **merge gate**: **719 carry** (FE **187** + BE **532** unpushed) · **cross-stream BLOCK(BE pending 1 · FE pending 3)** · **BE Test 1846** · **FE test ~2064 PASS**
+> **구현 상태 (2026-06-23 develop HEAD `01edba7` / frontend `1193761` 기준 — 338차 baseline)**:
+> - **백엔드**: Must API + **V1–V175** · **SYNCED @ `01edba7`**. **`RoleHierarchy` client RBAC ✅** (Q675) · **`addressSearch`·`addressDetail` read ✅** (Q676) · **거주지 전체·픽업 마스킹 유지** · **V175 leave-ledger integrity ✅** (Q668) · …
+> - **프론트엔드**: **111 route · 90 page** @ **`1193761`** **SYNCED**. **`clientPermissions.js` ✅** (Q675) · **`KoreanAddressFields` ✅** (Q671) · **`/clients` column filters ✅** (Q672) · **HR `branchName` scope ✅** (Q674) · develop `npm test` **~2169 PASS**
+> - **merge gate**: **723 carry** · **cross-stream SYNCED WT CLEAN** · **BE Test 1837+** · **FE test ~2169 PASS**
 > - **마이그레이션**: V43 … **V175** `staff_leave_ledger_entries` integrity (Q668) · **V174** per-event ledger (Q663) · **V173** `staff_annual_leave_yearly` integrity. Flyway 자동 실행. **V173 미적용 시 health `v173StaffAnnualLeaveYearlyIntegrityCheckReady=false`** · blocker **`v173-staff-annual-leave-yearly-constraint-missing`** (Q645). **V171 미적용 시 `v171-defense-in-depth-constraint-missing`** (Q625).
 > - **프로덕션 주의**: Solapi·FCMS·SMTP·**PG(stub)** 미사용 시 **`NOTIFICATION_PROVIDER=stub`** · **`NOTIFICATION_EMAIL_PROVIDER=stub`** · **`FCMS_PROVIDER=stub`** 기본값 유지. §4-3·§4-6·§4-6-1·§4-8 참고.
 
@@ -81,6 +81,8 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | V171 integrity readiness (Q625) | `GET /api/v1/system/health` | **`v171DefenseInDepthIntegrityCheckReady=true`** · blocker **`v171-defense-in-depth-constraint-missing`** 없음 |
 | US-E03 QR (Q624) | `POST /api/v1/branches/{branchId}/qr` `{ "direction":"in", "expiresInMinutes":480 }` | 200, **`qrToken`** — FE **`/attendance/qr/generate`** PNG preview ✅ (`250619e`) |
 | US-D03 client attendance (Q628) | `GET /api/v1/clients/{clientId}/attendance?from=2026-06-01&to=2026-06-30` | 200, **`clientId`·`items[]`** with `attendanceDate`·`status`·`checkInAt`·`checkOutAt` — FE **`/clients/:id` 출석 탭 ✅** (`d058e43`) |
+| US-D01 client RBAC (Q675) | `PATCH /api/v1/clients/{id}` (`caregiver` JWT) · `POST /api/v1/clients` (`caregiver` JWT) | **200** 수정 · **403** 등록 — FE **`/clients/new` guard** · **`/clients/:id/edit` ✅** (`01edba7`/`77584a0`) |
+| US-D01 address read split (Q676) | `GET /api/v1/clients/{id}` | 200, **`addressSearch`·`addressDetail`·`address`** — 수정 prefill (`deda5b4`) |
 | G30 monitoring items + legend (Q629) | `GET /api/v1/compliance/monitoring/items` | 200, **15 templates** with `itemCode`·`inspectionDirection` — FE **`/compliance/monitoring` G30-LEGEND legend ✅** (`fdc135b`, client-side cross-walk) |
 | G34 workflow catalog (Q635) | UI **`/compliance/workflow-catalog`** | **200** SPA · **`EzcareWorkflowCatalogPanel`** 28-row table · **16 verbatim** StatCard (`9f110a5`, FE-only) |
 | G2 CMS branch roster (Q637·Q638·Q662) | `GET /api/v1/billing/cms/enrollments?branchId=&status=ACTIVE` (no `clientId`) | 200, `[]` or items with **`clientName`**·`payerName`·`status` (`d361833`/`d0c0d12`) |
@@ -1661,6 +1663,11 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 - [ ] Flyway **V175** applied — **`chk_staff_leave_ledger_entries_memo_nonempty`** · **`fk_staff_leave_ledger_entries_user_branch_assignment`** (`c4e6bcb`, Q668)
 - [ ] **`GET /api/v1/users`** — **`social_worker` JWT → 200** · **`PATCH /users/{id}` → 403** (Q669)
 - [ ] **live-e2e defaults** — **`LIVE_E2E_ORGANIZATION_ID`** 등이 dev seed **`00000001-*`** 와 **겹치지 않음** — 기본 **`e2e00001-*`** (`c4e6bcb`, Q670)
+- [ ] **US-D01/D02 client address (Q671·Q673·Q676)** — **`POST /api/v1/clients`** body **`address`+`addressDetail`** · **`GET /clients`** list **`address` 전체** + **`addressSearch`·`addressDetail` 분리** · **`pickupAddress` road-level** (non-`hq_admin`) · **`ClientServiceTest`** (`01edba7`/`deda5b4`)
+- [ ] **Client RBAC hierarchy (Q675)** — **`caregiver` `PATCH /clients/{id}` → 200** · **`POST /clients` → 403** · FE **`/clients/new` route guard** · **`RoleBasedControllerAccessTest.ClientAccess`** · **`roleHierarchy.test.js`** (`01edba7`/`77584a0`)
+- [ ] **`/clients/new`** — **`KoreanAddressFields`** **「주소 검색」** — **`t1.kakaocdn.net`** 스크립트 로드 · **`ClientFormPage.test`** · **`KoreanAddressFields.test`** (`7e048c0`/`1193761`)
+- [ ] **`/clients`** — **`TableColumnFilter`** 등급·성별·배차 · **「거주지」열** · **`ClientListPage.test`** (`7e048c0`)
+- [ ] **HR scope (Q674)** — **`GET /staff/annual-leaves/roster`** · **`GET /staff/leave-ledger`** — 응답 **`branchName`** → FE **`BranchScopeNotice`** · **`StaffAnnualLeavePage.test`** · **`StaffLeaveLedgerPage.test`** (`64584f4`)
 - [ ] **`liveE2eSuiteGuard.test.js`** — **`liveCashReceiptDescribe`** import·호출 guard (`b7101d5`, Q664)
 - [ ] **`/staff/attendance`** — **근무일 조회** · **출근 방식 select** · StatCard **출근/퇴근/미출근** · **「출근」/「퇴근」** 버튼 · **API 기반「연차휴가 현황」·「연차·유급휴일 대장」cross-link panel** (`5fd468b`/`95f55aa`/`8057c1e`, Q612·Q651·Q653·Q666)
 - [ ] **HR nav 삼방향 smoke (Q652·Q653·Q657·Q663·Q666·Q667)** — **`/staff/annual-leaves`** 패널 **「출퇴근 기록」** → `/staff/attendance` · **`/staff/attendance`** 패널 **「연차휴가 현황」** → `/staff/annual-leaves` · **`/staff/leave-ledger`** 패널 **연차·출퇴근 링크** · **`GET /staff/leave-ledger`** **`surfaceKind=CANONICAL_LEAVE_LEDGER`** · **`BranchScopeNotice`** 지점 일치 · **대장 삭제 Modal** 키보드 포커스
@@ -1952,6 +1959,8 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-23 | **338차** — §1-3·§11-3 **client RBAC hierarchy (Q675)**·**addressSearch/detail read (Q676)**·baseline **`01edba7`/`1193761`** |
+| 2026-06-23 | **337차** — §1-3·§11-3 **US-D01/D02 Korean address (Q671·Q673)**·**client list filters (Q672)**·**HR branchName scope (Q674)**·baseline **`642ea11`/`0606a3b`** |
 | 2026-06-23 | **336차** — §1-3·§11-3 **V175 leave-ledger integrity (Q668)**·**SOCIAL_WORKER users RBAC (Q669)**·**live-e2e tenant isolation (Q670)**·baseline **`c4e6bcb`/`426d63a`** |
 | 2026-06-23 | **335차** — §1-3·§11-3 **US-R01-c leave-ledger UXD-157 a11y (Q667)**·**BNK-551 AVAILABLE sync**·baseline **`5fd12dd`/`426d63a`** |
 | 2026-06-23 | **334차** — §1-3·§1-4·§11-3 **US-R01-c leave-ledger FE full-stack (Q666)**·**live routing harness**·baseline **`5fd12dd`/`8057c1e`** |

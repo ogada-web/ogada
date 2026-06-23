@@ -1,3 +1,47 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T19:36:00+00:00 -->
+# develop ↔ test diff 메타 (2026-06-23, 1334차 — test @62fce23 · develop @01edba7 pending 5 · merge SKIP)
+
+> **1334차 재검증 (19:36 UTC) — test `@62fce23` **1843/1843 PASS**(56.522s, 347 suites) · develop `@01edba7` WT **CLEAN** · merge **SKIP**(`test..develop` **0/5** pending `5fd12dd`+`c4e6bcb`+`642ea11`+`deda5b4`+`01edba7`) · **QA-20260623-B272 Planned(update,BLOCK)** · cross-stream **BLOCK(BE pending 5 · FE pending 7 + pre-merge FAIL)** · backend@8080 **UP/200** · disk **34%** avail · operation **BLOCK**.**
+
+## test delta (1334차)
+
+| stage | SHA | suites | tests | result |
+|-------|-----|--------|-------|--------|
+| test regression | `62fce23` | 347 | 1843 | PASS (56.522s) |
+| develop HEAD | `01edba7` | — | — | CLEAN |
+| merge decision | **SKIP** | — | — | `test..develop` 0/5 pending |
+
+## pending commits (1334차)
+
+| SHA | message |
+|-----|---------|
+| `5fd12dd` | test(v3/US-R01-c): add leave ledger live API routing harness |
+| `c4e6bcb` | feat(v3/US-R01-c): add V175 leave ledger integrity and harden dev isolation |
+| `642ea11` | feat(clients): split home address fields and return full address on read |
+| `deda5b4` | feat(clients): expose split home address fields on client read API |
+| `01edba7` | feat(clients): extend client PATCH RBAC to caregivers and HQ admins |
+
+# develop ↔ test diff 메타 (2026-06-23, 1332차 — test @62fce23 · develop @deda5b4 pending 4 · merge SKIP)
+
+> **1332차 재검증 (19:00 UTC) — test `@62fce23` **1843/1843 PASS**(~93s, 347 suites) · develop `@deda5b4` WT **CLEAN** · develop pre-merge **1850/1850 PASS**(~94s, 348 suites, +7 tests) · merge **SKIP**(`test..develop` **0/4** pending) · **QA-20260623-B272 Planned(update,BLOCK)** · cross-stream **BLOCK(BE pending 4 · FE dirty@0606a3b pending 6)** · backend@8080 **UP/200** · disk **34%** avail · operation **BLOCK**.**
+
+## test delta (1332차)
+
+| stage | SHA | suites | tests | result |
+|-------|-----|--------|-------|--------|
+| test regression | `62fce23` | 347 | 1843 | PASS (~93s) |
+| develop pre-merge | `deda5b4` | 348 | 1850 | PASS (~94s, +7 tests) |
+| merge decision | **SKIP** | — | — | `test..develop` 0/4 pending |
+
+## pending commits (1332차)
+
+| SHA | message |
+|-----|---------|
+| `5fd12dd` | test(v3/US-R01-c): add leave ledger live API routing harness |
+| `c4e6bcb` | feat(v3/US-R01-c): add V175 leave ledger integrity and harden dev isolation |
+| `642ea11` | feat(clients): split home address fields and return full address on read |
+| `deda5b4` | feat(clients): expose split home address fields on client read API |
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T17:59:15+00:00 -->
 # develop ↔ test diff 메타 (2026-06-23, 1330차 — test @62fce23 · develop @c4e6bcb pending 2 + DIRTY 4M · merge SKIP)
 

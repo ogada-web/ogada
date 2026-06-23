@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T19:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T21:00:00+09:00 -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-23 (336차 TWR 자동 동기화 — **BE `c4e6bcb`/FE `426d63a`·V1–V175·111 route·90 page·모듈 KPI 78.79%·merge gate 719 carry·V175 leave-ledger integrity ✅**)  
+> **최종 갱신**: 2026-06-23 (338차 TWR 자동 동기화 — **BE `01edba7`/FE `1193761`·V1–V175·111 route·90 page·US-D01/D02 ✅·client RBAC hierarchy ✅·addressSearch/detail read ✅**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,11 +50,11 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-06-23 develop HEAD `c4e6bcb` / frontend `426d63a`, 336차 baseline)
+### 1-4. 구현 상태 안내 (2026-06-23 develop HEAD `01edba7` / frontend `1193761`, 338차 baseline)
 
-> **이관·QA (TSR 1324~1328차)**: BE develop **@ `c4e6bcb`** · **V175 leave-ledger integrity ✅** · **SOCIAL_WORKER users read RBAC ✅** · FE develop/test **SYNCED @ `426d63a`** · **UXD-157 a11y ✅** (Q667) · merge gate **719 carry** · **cross-stream BLOCK(BE pending 1 · FE pending 3 · FE WT DIRTY)** · operation **BLOCK** (origin/test push 532 BE + 187 FE unpushed).
+> **이관·QA (TSR 1332~1334차)**: BE develop **@ `01edba7`** · **`RoleHierarchy` client RBAC ✅** · **`addressSearch`/`addressDetail` read ✅** · FE develop/test **SYNCED @ `1193761`** · **clientPermissions route guard ✅** (Q675) · merge gate **723 carry** · **cross-stream SYNCED WT CLEAN** · operation **BLOCK** (origin/test push unpushed).
 
-#### [TWR] HR 직원 관리 화면 역할 분리·양방향 nav (Q648·Q650·Q651·Q652·Q653·Q656·Q657·Q659·Q663·Q665·Q666·Q667·Q668)
+#### [TWR] HR 직원 관리 화면 역할 분리·양방향 nav (Q648·Q650·Q651·Q652·Q653·Q656·Q657·Q659·Q663·Q665·Q666·Q667·Q668·Q674)
 
 출퇴근(8-4)·연차휴가(US-R03e)·연차·유급휴일 대장(US-R01-c)은 **데이터를 중복 저장하지 않도록** 역할이 분리되어 있습니다. 현장·인수 시 아래 표로 혼동을 줄이세요.
 
@@ -72,8 +72,35 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 | FE 대장 | **`StaffLeaveLedgerPage`**(`/staff/leave-ledger`) — CRUD·**`StaffLeaveLedgerTable`**·**`StaffLeaveLedgerDeleteModal`** (UXD-157) · **`StaffLeaveLedgerRelatedSurfacesPanel`** · **`fetchStaffLeaveLedgerApi`** · **`pilotChecklist` R01c-a/b/c/d** (`8057c1e`/`bd1d0ad`, Q666·Q667) |
 | FE 연차 | **`StaffAnnualLeaveRelatedSurfacesPanel`** → **`RelatedSurfacesPanel`** (`0b0d7ba`/`c183ebd`, Q650·Q657) · API 메타 우선 · **leave-ledger AVAILABLE default** (`426d63a`, BNK-551) |
 | FE 출퇴근 | **`normalizeStaffWorkAttendanceResponse`** (`95f55aa`, Q653) · **`BranchScopeNotice`** (`949e9bf`, Q657) · **leave-ledger link AVAILABLE** |
+| FE scope | **`StaffAnnualLeavePage`·`StaffLeaveLedgerPage`** — API **`branchName`/`resolvedBranchId`** → **`BranchScopeNotice`** (`64584f4`, Q674) |
 
-> **운영 점검**: `/staff/annual-leaves` ↔ `/staff/attendance` ↔ **`/staff/leave-ledger`** **삼방향 링크** smoke (DEPLOYMENT_GUIDE §11-3, Q652·Q653·Q666). **건별 대장** — 화면 **「항목 등록」** CRUD · 삭제 **`StaffLeaveLedgerDeleteModal`** (Q667) · **`GET /staff/leave-ledger`** **`surfaceKind=CANONICAL_LEAVE_LEDGER`** (Q663).
+> **운영 점검**: `/staff/annual-leaves` ↔ `/staff/attendance` ↔ **`/staff/leave-ledger`** **삼방향 링크** smoke (DEPLOYMENT_GUIDE §11-3, Q652·Q653·Q666). **지점 안내** — API **`branchName`** 과 **BranchScopeNotice** 일치 확인 (Q674).
+
+#### [TWR] 이용자 등록·수정 RBAC 계층 (Q675·Q676, BE `01edba7`·FE `77584a0`)
+
+338차에서 **`RoleHierarchy`** / **`clientPermissions.js`** 로 **등록·수정 최소 역할**이 BE·FE에 **동일하게** 적용되었습니다.
+
+| 작업 | API | 최소 rank | 허용 역할 |
+|------|-----|-----------|----------|
+| **신규 등록** | `POST /clients` | 60 (`social_worker`) | `hq_admin` · `branch_admin` · `social_worker` |
+| **수정** | `PATCH /clients/{id}` | 40 (`caregiver`) | 위 3종 + **`caregiver`** |
+| **퇴소** | `POST /clients/{id}/discharge` | 80 (`branch_admin`) | `branch_admin` only |
+| **사진** | `POST /clients/{id}/photo` | 80 | `branch_admin` · `social_worker` |
+
+| FE route | guard | 비고 |
+|----------|-------|------|
+| **`/clients/new`** | `CLIENT_CREATE_ROLES` | **`caregiver` 403** — SideNav **신규 등록** 버튼 숨김 |
+| **`/clients/:id/edit`** | `CLIENT_EDIT_ROLES` | **`caregiver` ✅** — **`ClientDetailPage`** **`canEditClient`** |
+
+**Read API 주소 분리 (Q676, `deda5b4`)**
+
+| `ClientResponse` 필드 | 용도 |
+|-----------------------|------|
+| **`addressSearch`** | 도로명 — 수정 화면 **`KoreanAddressFields`** prefill |
+| **`addressDetail`** | 상세주소 prefill |
+| **`address`** | search+detail **결합** — list/detail 표시 (Q673) |
+
+> **sysadmin 체크**: **`caregiver` test 계정**으로 **`PATCH /clients/{id}`** smoke · **`POST /clients`** **403** · **`/clients/new`** route **403** (DEPLOYMENT §11-3, Q675).
 
 #### [TWR] Solapi 발신번호 본인인증 — ogada 범위 밖 (G-COMM-CALLER-AUTH, Q654)
 
@@ -893,9 +920,20 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | 데이터 | 분류 | 저장 처리 | 화면·로그 |
 |--------|------|----------|----------|
 | 주민등록번호 | 고유식별정보 | **AES-GCM 암호화** (`*_encrypted`) | 마스킹 `******-*******` |
-| 연락처·주소 | 준식별정보 | **암호화 권장** | 부분 마스킹 |
+| 연락처·주소 | 준식별정보 | **암호화 권장** | **338차(`01edba7`) 정책** — 아래 표 |
 | 장기요양인정번호 | 운영 식별자 | 평문 | 표시 가능 |
 | 건강·투약 기록 | 민감정보 | TLS + RBAC | 접근 시 audit |
+
+**이용자 주소 표시·조회 (338차, Q671·Q673·Q676)**
+
+| 필드 | 저장 | list/detail API | 수정 prefill |
+|------|------|-----------------|--------------|
+| **거주지 search** | `address_search_encrypted` | **`addressSearch`** (Q676) | **`KoreanAddressFields`** 도로명 |
+| **거주지 detail** | `address_detail_encrypted` | **`addressDetail`** (Q676) | 상세주소 입력란 |
+| **거주지 결합** | legacy `address_encrypted` 캐시 | **`address` 전체** — staff 전 역할 | — |
+| **픽업** | `pickup_address_encrypted` | **`hq_admin` 전체** · 그 외 **road-level `***`** | Q169·Q673 |
+
+> **Kakao postcode**: FE **`KoreanAddressFields`** — **`t1.kakaocdn.net`** 스크립트 로드 필요. 방화벽 allowlist에 포함하세요 (DEPLOYMENT §3).
 
 **구현**: `PiiCryptoService` — `ogada.security.pii-encryption-key` 환경변수(Base64, 32바이트) 필수.
 
@@ -1313,12 +1351,12 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | RBAC | list GET — **`hq_admin`·`branch_admin`·`social_worker`** · CUD — **`branch_admin`·`social_worker`** · **`hq_admin` CUD → 403** · **`caregiver` → 403** (`62fce23`, Q665) |
 | DB | **Flyway V174** — `staff_leave_ledger_entries` — org/branch/user FK · `leave_type` CHECK · `days_used` CHECK · `end_date >= leave_date` · **V175** — **`chk_staff_leave_ledger_entries_memo_nonempty`** · **`fk_staff_leave_ledger_entries_user_branch_assignment`** (`c4e6bcb`, Q668) |
 | users RBAC | **`GET /api/v1/users`·`GET /users/{id}`** — **`social_worker` read-only 허용** · **POST/PATCH** — **`hq_admin`/`branch_admin` only** (`c4e6bcb`, Q669) |
-| PII | **이용자 list/detail `address`·`pickupAddress`** — non-HQ **road-level masking** — transport roster 정책 정합 (`ClientService.maskAddressPlain`, Q669) |
+| PII | **거주지 `address`** — list/detail **전체 표시** (all staff, `642ea11`, Q673) · **픽업 `pickupAddress`** — non-`hq_admin` **road-level masking** · **배차 roster** — Q169·Q673 |
 | cross-link | **`StaffLeaveLedgerSupport.relatedSurfaces()`** — annual-leaves·attendance **AVAILABLE** · annual-leaves·work-attendance roster **`relatedSurfaces[1].availability=AVAILABLE`** 승격 |
-| FE | **`StaffLeaveLedgerPage`**(`/staff/leave-ledger`) — **`StaffContextNav`「연차·유급휴일 대장」** · **`fetchStaffLeaveLedgerApi`/`createStaffLeaveLedgerEntryApi`/`updateStaffLeaveLedgerEntryApi`/`deleteStaffLeaveLedgerEntryApi`** · **`StaffLeaveLedgerRelatedSurfacesPanel`** · **`normalizeStaffLeaveLedgerListResponse`** · **`validateStaffLeaveLedgerForm`** · **`branch_admin`/`social_worker` CUD** · **`hq_admin` read-only** (`8057c1e`, Q666) |
-| 테스트 | **`StaffLeaveLedgerServiceTest`** · **`StaffLeaveLedgerSupportTest`** · **`MustApiEndpointRoutingTest.StaffLeaveLedgerRouting`** · **`StaffLeaveLedgerPilotServiceFlowE2eTest`** · **`StaffLeaveLedgerLiveApiRoutingE2eTest`** (`5fd12dd`) · **`RoleBasedControllerAccessTest.StaffLeaveLedgerAccess`** · **`RoleBasedControllerAccessTest` SOCIAL_WORKER users read** (`c4e6bcb`) · **`StaffLeaveLedgerPage.test`** · **`staffLeaveLedgerServices.test`** · **`pilotChecklist.test`** R01c · **`ClientServiceTest` address masking** |
+| FE | **`StaffLeaveLedgerPage`**(`/staff/leave-ledger`) — **`StaffContextNav`「연차·유급휴일 대장」** · CRUD·**`StaffLeaveLedgerDeleteModal`** (UXD-157) · **`branchName` scope wire** (`64584f4`, Q674) |
+| 테스트 | **`StaffLeaveLedgerServiceTest`** · **`StaffLeaveLedgerPilotServiceFlowE2eTest`** · **`RoleBasedControllerAccessTest.StaffLeaveLedgerAccess`** · **`StaffLeaveLedgerPage.test`** · **`ClientServiceTest.listShouldExposeFullHomeAddressWithoutMasking`** · **`ClientServiceTest.maskAddressPlainShouldExposeRoadLevelDetail`** (Q671·Q673) |
 
-> 현장: USER_MANUAL §4-7-0c·§4-7-0d · FAQ **Q666·Q663·Q665·Q668·Q669·Q655·Q659** · DEPLOYMENT §1-4·§11-3
+> 현장: USER_MANUAL §4-7-0c·§4-7-0d · FAQ **Q666·Q663·Q665·Q668·Q669·Q671·Q673·Q674** · DEPLOYMENT §1-4·§11-3
 
 ### 6-2-22. G-BILLING-DEPOSIT-ORDER-GUARD 선행입금 입금 순서 (케어포 7-1/7-2, BNK-489, BE Fixed)
 
@@ -2081,7 +2119,7 @@ silverangel [**businessSupportService.do**](https://www.silverangel.kr/newSilver
 | 순서 | API | 담당 |
 |------|-----|------|
 | 1 | `POST /users` — `roleCode: "guardian"` (보호자 계정 **선행** 생성) | `hq_admin`, `branch_admin` |
-| 2 | `POST /clients` — `consentToCollectResidentRegistrationNo: true` + **`primaryGuardian` 필수**(`@NotNull`, `0441a07`, Q268) → `guardian_link_status=LINKED` (V39) | `hq_admin`, `branch_admin`, `social_worker` — **`hq_admin`은 활성 지점 필수** (`208b37e`, Q267) |
+| 2 | `POST /clients` — `consentToCollectResidentRegistrationNo: true` + **`primaryGuardian` 필수**(`@NotNull`, `0441a07`, Q268) → `guardian_link_status=LINKED` (V39) | `hq_admin`, `branch_admin`, `social_worker` — **`hq_admin`은 활성 지점 필수** (`208b37e`, Q267) · **`caregiver` 403** (Q675) |
 | 3 | (선택) `POST /clients/{id}/guardians` — 추가 보호자·대표(`is_primary`) 지정 | 동일 |
 
 V39 DB 트리거: `guardian_clients` INSERT 시 **`LINKED`**, 마지막 연결 DELETE 시 **`PENDING`**. 미연결 활성 이용자는 partial 인덱스 `idx_clients_guardian_link_pending`로 온보딩 감사에 활용합니다.

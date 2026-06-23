@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T19:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T21:00:00+09:00 -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-23 (336차 TWR 자동 동기화 — **BE `c4e6bcb`/FE `426d63a`·V1–V175·111 route·90 page·모듈 KPI 78.79%·merge gate 719 carry·V175 leave-ledger integrity ✅**)  
+> **최종 갱신**: 2026-06-23 (338차 TWR 자동 동기화 — **BE `01edba7`/FE `1193761`·V1–V175·111 route·90 page·US-D01/D02 ✅·client RBAC hierarchy ✅·addressSearch/detail read ✅**)  
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -25,13 +25,13 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 역할별 메뉴·권한·업무 절차 | `sysadmin` 기술 설정 상세 (→ `ADMIN_GUIDE.md`) |
 | 보호자 QR 셀프 체크인 (B방식) | `caregiver`·`social_worker` 전용 **식단·일정 등록** (관리자만, §5-9) |
 
-### 1-3. 구현 상태 안내 (2026-06-23 develop HEAD `c4e6bcb` / frontend `426d63a` 기준 — 336차 baseline)
+### 1-3. 구현 상태 안내 (2026-06-23 develop HEAD `01edba7` / frontend `1193761` 기준 — 338차 baseline)
 
 | 영역 | 상태 | 비고 |
 |------|------|------|
-| 백엔드 API | **Must + … + V175 ✅** @ `c4e6bcb` **SYNCED** · **V175 leave-ledger integrity ✅** · **SOCIAL_WORKER users read RBAC ✅** · **client address road-level masking ✅** · … | BE Test **1846** (Q668) |
+| 백엔드 API | **Must + … + V175 ✅** @ `01edba7` **SYNCED** · **`RoleHierarchy` client RBAC ✅** (Q675) · **`addressSearch`·`addressDetail` read ✅** (Q676) · **거주지 전체·픽업 마스킹 유지** · … | BE Test **1837+** (Q675) |
 | 데이터베이스 | Flyway **V1–V175** | **V175** leave-ledger memo·user_branch FK · **V174** `staff_leave_ledger_entries` · **V173** annual-leave integrity · **V172** roster table |
-| 프론트엔드 | **111 route · 90 page** @ `426d63a` **SYNCED** | **`/staff/leave-ledger` ✅ full-stack + UXD-157 a11y** (Q667) · **QA-B268 Fixed** (Q664) · **FE WT DIRTY** |
+| 프론트엔드 | **111 route · 90 page** @ `1193761` **SYNCED** | **`clientPermissions.js` RBAC ✅** (Q675) · **`KoreanAddressFields` ✅** (Q671) · **`/clients` column filters ✅** (Q672) · **HR `branchName` scope ✅** (Q674) |
 | UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·직원 출퇴근·연차 roster·**연차·유급휴일 대장**·HR cross-link 등 | **M6 6-1 `/meals` LIVE** (Q660) |
 | UI API 갭 | **Must 갭 0** (기존 Must) | **P3**: **G-COMM-CALLER-AUTH** · 카메라 QR · NFC · **7-5 live PG** · **M6 6-2~6-4 `/safety/*`** |
 | **P2 Planned** | **L03 간호급여 잔여 5 leaf·7-5 live PG·J03 Solapi live dispatch·LCMS CMS 3-method·G34 SMS live·G-Payroll·G30 live E2E** | **G-STAFF-WELFARE P3**(FAQ21796) · **8-12 PDF 공식 서식**(Q315) · **선임 업무수행일지 템플릿 카탈로그** P3 (Q635 잔여) |
@@ -82,7 +82,10 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **운영주기별 워크플로 카탈로그 (G34-WORKFLOW-CATALOG, Q635)** | `/compliance/workflow-catalog` | *(FE 정적 cross-walk)* | **`EzcareWorkflowCatalogPanel`** — ezCare FAQ **21795–21828** 28건 · **16/28 ogada 인용** · 주기·인용 **FilterChips** (`9f110a5`, Q635) |
 | **CMS 지점 등록 roster (G2, Q637·Q638·Q662)** | `/billing/cms` **등록 관리** · `/billing/payments` | `GET /api/v1/billing/cms/enrollments?branchId=&status=` | **이용자 미선택** 시 활성 지점 roster · **FilterChips**·**이용자 deep link** · **입금 화면 CMS 등록 열** · **`status` trim·uppercase API 방어** (`f1225b0`, Q662) |
 | **직원 연차휴가 (G-STAFF-ANNUAL-LEAVE, US-R03e, Q639)** | `/staff/annual-leaves` | `GET /api/v1/staff/annual-leaves/roster?year=&branchId=` · `PUT …/users/{userId}` | **지점 roster** · **`BranchScopeNotice`**·**관련 화면 패널** — 출퇴근 링크·대장 cross-link **API AVAILABLE** (Q650·Q657·Q663) · **multi-branch activeBranch fallback** (Q656) · **정수·0~31·비고 30자 `422`** (Q641·Q642) · **V173 DB CHECK/FK** (Q645) |
-| **연차·유급휴일 대장 (US-R01-c, Q663·Q665·Q666·Q667·Q668)** | `/staff/leave-ledger` | `GET /api/v1/staff/leave-ledger?year=&branchId=` · `POST …/users/{userId}` · `PUT …/entries/{entryId}` · `DELETE …/entries/{entryId}` | **건별 canonical ledger** · **V175 DB integrity** (Q668) · **`StaffLeaveLedgerPage`** CRUD · **`social_worker` 등록** · **`hq_admin` 조회만** (`426d63a`/`c4e6bcb`) |
+| **연차·유급휴일 대장 (US-R01-c, Q663·Q665·Q666·Q667·Q668·Q674)** | `/staff/leave-ledger` | `GET /api/v1/staff/leave-ledger?year=&branchId=` · `POST …/users/{userId}` · `PUT …/entries/{entryId}` · `DELETE …/entries/{entryId}` | **건별 canonical ledger** · **V175 DB integrity** (Q668) · **`StaffLeaveLedgerPage`** CRUD · **`social_worker` 등록** · **`hq_admin` 조회만** · **API `branchName` scope** (Q674) |
+| **이용자 주소 검색·등록 (US-D01/D02, Q671·Q676)** | `/clients/new` · `/clients/:id/edit` | `POST/PATCH /api/v1/clients` — **`address`·`addressDetail`** · read **`addressSearch`·`addressDetail`** | **`KoreanAddressFields`** Kakao postcode · **수정 prefill ✅** (Q676) · **거주지 전체 표시** · **픽업 「거주지와 동일」** · **caregiver 수정 ✅** (Q675) |
+| **이용자 등록·수정 RBAC (Q675)** | `/clients/new` · `/clients/:id/edit` | `POST` social_worker+ · `PATCH` caregiver+ | **`clientPermissions.js`** · **요양보호사 수정만** · **등록은 사회복지사 이상** |
+| **이용자 목록 열 필터 (US-D01, Q672)** | `/clients` | `GET /api/v1/clients` (클라이언트 필터) | **`TableColumnFilter`** — 등급·성별·배차·지점 · **「거주지」열** (`7e048c0`) |
 
 ---
 
@@ -515,13 +518,15 @@ Must 운영에서 누락이 잦은 두 화면은 아래 순서로 점검하면 �
 
 ### 4-3. 이용자 관리 (`/clients`)
 
-#### 이용자 목록·상세 (BNK-19 + BE `a49e496` + FE `0baabe9`)
+#### 이용자 목록·상세 (BNK-19 + BE `01edba7` + FE `1193761`)
 
-1. **이용자** 메뉴 → 목록(`/clients`) — `GET /api/v1/clients` — **10열 Table**: 이름·나이·성별·지역·등급·**배차 이용**·인정번호·**연락처**·보호자·**보호자 연락처** (Q191·**Q417**, 결정 96).
-2. 상단 **검색** — 이용자명·**지역**·**보호자명**·**연락처(`phoneMasked`)**·인정번호·성별 필터.
-3. **연락처**·**보호자 연락처** 열은 **`MaskedPhone`** 컴포넌트로 **마스킹 표시**만 합니다 — 전체 번호·통화 링크는 **노출하지 않습니다** (PII 보호). 목록·상세의 비링크 `span`은 **화면에 보이는 마스킹 문자열**이 스크린리더 접근 이름이며, **중복 `aria-label`은 사용하지 않습니다** (`05535a4`, Q420).
-4. 이름 링크 → **이용자 상세**(`/clients/:id`) — 기본 정보 **연락처(`phoneMasked`)**·**보호자 초대**(§3-3).
-5. **거주지·픽업 주소** — **`hq_admin`·`platform_admin`·`sysadmin`** 만 **전체 주소**를 봅니다. **센터장·사회복지사·요양보호사** 등은 **시·구·도로명(동)까지** 표시되고 **상세 번호는 `***`** 로 마스킹됩니다 — 배차 roster와 **동일 정책** (`c4e6bcb`, Q669·SEC-D9).
+1. **이용자** 메뉴 → 목록(`/clients`) — `GET /api/v1/clients` — Table: 이름·(다지점 시 **지점**)·나이·성별·**거주지**·등급·**배차 이용**·인정번호·**연락처**·보호자·**보호자 연락처** (Q672).
+2. 상단 **검색** — 이용자명·인정번호·주소·보호자명·연락처 등 텍스트 검색.
+3. **열 필터** — Table 헤더 **`TableColumnFilter`** 로 **등급**·**성별**·**배차 이용**·(**`hq_admin` 다지점**) **지점** 을 좁힙니다. 옵션별 **건수 Badge** 표시 (Q672).
+4. **연락처**·**보호자 연락처** 열은 **`MaskedPhone`** 컴포넌트로 **마스킹 표시**만 합니다 — 전체 번호·통화 링크는 **노출하지 않습니다** (PII 보호).
+5. 이름 링크 → **이용자 상세**(`/clients/:id`) — **`caregiver` 포함** **`canEditClient` 역할**이면 상단·기본정보 카드 **「수정」**·**「기본정보 수정」** → **`/clients/:id/edit`** (Q671·Q675).
+6. **거주지 주소** — list·detail **`address`** 필드에 **전체 주소**(도로명+상세)가 표시됩니다 — **역할별 마스킹 없음** (Q673). API **`addressSearch`·`addressDetail`** 분리 필드는 **수정 화면 prefill**용 (Q676).
+7. **픽업 주소** — 별도 등록 시 **`pickupAddressMasked`** 로 **road-level 마스킹** — **`hq_admin`만** 배차 roster에서 전체 확인 (Q169·Q673).
 
 #### 연간 욕구사정 현황 (G24b, US-T09 · Q357)
 
@@ -552,32 +557,35 @@ SideNav **운영 → 「정기욕구평가 현황 (G40b)」** 또는 대시보�
 | 목록 열 | API 필드 |
 |--------|---------|
 | 나이 | `ageYears` 또는 `birthDate` 폴백 |
-| 지역 | `regionLabel` |
+| 거주지 | `address` (전체 — Q673) · prefill용 `addressSearch`·`addressDetail` (Q676) |
 | 보호자 | `primaryGuardianName` |
 
 #### 신규 이용자 등록
 
-**FE `42f48e1`** — SideNav **이용자** 또는 목록 **신규 등록** → **`ClientFormPage`**(`/clients/new`). **`hq_admin`·`branch_admin`·`social_worker`** 가 등록할 수 있습니다 (BE `208b37e`, Q267).
+**FE `1193761`** — SideNav **이용자** 또는 목록 **신규 등록** → **`ClientFormPage`**(`/clients/new`). **`hq_admin`·`branch_admin`·`social_worker`** 만 등록할 수 있습니다 — **`caregiver`는 `/clients/new` route guard로 차단** (BE `01edba7`·FE `77584a0`, Q675). 이전 문서의 Q267 **`hq_admin` 활성 지점 필수** 규칙은 동일합니다.
 
 | 단계 | 화면·API |
 |------|----------|
 | 1 | **`hq_admin`** — 먼저 **지점 선택기**로 작업 지점을 선택합니다 (활성 지점 미선택 시 저장 **403**) |
-| 2 | 이름·생년월일·등급·본인부담·주민번호 동의·**대표 보호자(`primaryGuardian`)** 입력 후 **저장** → `POST /api/v1/clients` — **서버 필수** (`0441a07`, Q268) |
-| 3 | **API 갭** — `birthdate`·`ssn` 등 필드명 불일치 시 저장 실패 — FAQ **Q151**·Swagger |
-| 4 | (선택) Swagger `POST /clients/{id}/client-user`·`POST …/photo` |
+| 2 | **기본 정보** — 이름·생년월일·등급·본인부담·연락처·**주민번호 동의**·**대표 보호자(`primaryGuardian`)** |
+| 3 | **주소** — **`KoreanAddressFields`**: **「주소 검색」**(Kakao 우편번호) → **우편번호·도로명** 자동 입력 → **상세주소** 직접 입력 (Q671). **수정 모드** — API **`addressSearch`·`addressDetail`** 로 prefill (Q676) |
+| 4 | **저장** → `POST /api/v1/clients` — body **`address`**(도로명) + **`addressDetail`**(선택) — BE **`applyClientAddress`** 로 **별도 암호화** |
+| 5 | (선택) **배차·픽업 정보** — §4-3 배차 프로필 · Swagger `POST /clients/{id}/photo` |
 
 #### 배차(픽업) 프로필 설정 (US-T01, UI 연동 Fixed)
 
 이동 서비스를 이용하는 이용자는 **배차 명단**에 포함되도록 픽업 정보를 등록해야 합니다 (FE `3c55339`, FAQ **Q166**).
 
-1. **`ClientFormPage`**(`/clients/new` 또는 `/clients/:id/edit`) 하단 **「배차·픽업 정보」** 카드로 이동합니다.
+1. **`ClientFormPage`**(`/clients/new` 또는 **`/clients/:id/edit`**) 하단 **「배차·픽업 정보」** 카드로 이동합니다.
 2. **이동서비스(픽업 배차) 이용** 을 체크합니다.
-3. 아래 필드를 입력하고 **저장**합니다.
+3. **「거주지 주소와 동일하게 픽업」** — 체크 시 **저장된 거주지**를 픽업 주소로 사용합니다 (Q671).
+4. 별도 픽업 주소가 필요하면 체크를 해제하고 **`KoreanAddressFields`** 로 **픽업 주소 검색**을 수행합니다.
+5. 아래 필드를 입력하고 **저장**합니다.
 
 | 화면 필드 | API 필드 | 설명 |
 |----------|---------|------|
 | 이동서비스 이용 | `usesTransport` | `true` — **`GET /transport/roster`** 명단 포함 |
-| 픽업 주소 | `pickupAddress` | 미입력 시 **거주지 주소** 사용 · 저장 시 암호화 |
+| 픽업 주소 | `pickupAddress` | **「거주지와 동일」** 또는 별도 검색 · 응답은 **road-level 마스킹**(Q673) |
 | 픽업 연락처 | `pickupContact` | 미입력 시 **이용자 연락처** 사용 |
 | 희망 탑승 시각 | `desiredBoardingTime` | `type="time"` — **승차(PICKUP)** 명단·정차 기본 시각 (Q400). 미입력 시 기존 `defaultPickupTime`과 동기화 |
 | 희망 하차 시각 | `desiredDropoffTime` | `type="time"` — **하차(DROPOFF)** 명단·정차 기본 시각 (Q400) |
@@ -590,7 +598,7 @@ SideNav **운영 → 「정기욕구평가 현황 (G40b)」** 또는 대시보�
 >
 > **API 갭** — 등록·수정 **기본 정보** 본문(`birthdate`·`primaryGuardian` 등) 불일치 시 저장 실패 — FAQ **Q151**·Swagger 우회.
 
-> **수정** — 상세 **「수정」** → `/clients/:id/edit`. 보호자 변경은 상세·`POST /clients/{id}/guardians`.
+> **수정** — 상세 **「수정」**·**「기본정보 수정」** → **`/clients/:id/edit`**. **`caregiver`** 도 **기본정보·주소·배차** 수정 가능 (Q675). 보호자 변경은 상세·`POST /clients/{id}/guardians`. **주소**는 **`KoreanAddressFields`** 로 재검색·상세주소 수정 — **`addressSearch`·`addressDetail` prefill** (Q671·Q676).
 
 #### 급여계획 통보 모니터링 (`/clients/care-plan-notifications`, G38, BNK-106)
 

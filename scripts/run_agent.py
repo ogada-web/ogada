@@ -1714,7 +1714,7 @@ def _tech_writer_progress_hint() -> str:
         "USER_MANUAL.md": "역할별 사용자 매뉴얼 (센터장·사회복지사·보호자)",
         "ADMIN_GUIDE.md": "시스템 관리자·sysadmin 가이드",
         "DEPLOYMENT_GUIDE.md": "Spring Boot + React + PostgreSQL 배포 가이드",
-        "CHANGELOG.md": "버전별 변경 이력",
+        "CHANGELOG.md": "날짜별 작업 카드 (사람이 읽는 변경 기록)",
         "FAQ.md": "자주 묻는 질문",
     }
     missing = [name for name in outputs if not (OPS_DIR / name).exists()]
@@ -1728,8 +1728,8 @@ def _tech_writer_progress_hint() -> str:
         )
     return (
         "현재 진행: **기본 문서 세트 있음**\n"
-        "→ 최근 `src/`·`docs/ops/CHANGELOG.md` 변경 반영, FAQ/매뉴얼 보강.\n"
-        "→ 아직 문서화 안 된 Must 기능(API·화면) 우선."
+        "→ 최근 `src/` 변경을 `docs/ops/CHANGELOG.md` 카드 형식으로 추가·갱신.\n"
+        "→ FAQ/매뉴얼 보강. 아직 문서화 안 된 Must 기능(API·화면) 우선."
     )
 
 
@@ -1794,6 +1794,25 @@ def _build_tech_writer_prompt(task: str | None = None) -> str:
         "## 3. 출력 위치\n"
         "- docs/ops/USER_MANUAL.md, docs/ops/ADMIN_GUIDE.md, docs/ops/DEPLOYMENT_GUIDE.md\n"
         "- docs/ops/CHANGELOG.md, docs/ops/FAQ.md\n\n"
+        "## 3-1. CHANGELOG.md 작성 규칙 (필수)\n"
+        "사람(운영·기획 담당자)이 읽는 **작업 일지**다. Keep a Changelog·회차 번호(337차 TWR)·merge gate·"
+        "BE/FE 커밋 해시 나열·Q번호·BNK 번호를 본문에 쓰지 말 것.\n\n"
+        "**구조**\n"
+        "1. 파일 상단: 읽는 법 + 「최근 7일 요약」(날짜별 한 줄)\n"
+        "2. `## YYYY-MM-DD` 날짜 제목 아래 **카드** 여러 개\n"
+        "3. **3개월 지난 날짜 섹션은 삭제** (보관·아카이브 없음)\n\n"
+        "**카드 양식 (B 방식)**\n"
+        "```\n"
+        "### ✅ (또는 📝 문서만) 제목\n"
+        "- **에이전트**: COD | TWR | PLN | TSR | UXD | DBA | BNK | SEC (축약만)\n"
+        "- **한 일**: 무엇을 했는지 평문 한국어 1~2문장\n"
+        "- **내 화면/업무에 영향**: 사용자·센터 직원이 체감하는 변화. 없으면 「없음 — …」\n"
+        "- **상태**: 완료 | 진행 중 | 보류\n"
+        "<details><summary>자세히</summary> 파일명·API 등 (선택)</details>\n"
+        "```\n\n"
+        "- 시각은 **날짜만** (오전/오후·회차 번호 금지).\n"
+        "- 사용자 화면 변경 없으면 카드 1개: 「내 화면/업무에 영향: 없음」.\n"
+        "- 같은 날짜에 카드 추가 시 기존 날짜 섹션에 이어 쓰고, 「최근 7일 요약」 갱신.\n\n"
         "## 4. 최종 응답 포맷\n"
         "  ## 문서 작업 요약\n"
         "  - 생성/수정한 문서\n"

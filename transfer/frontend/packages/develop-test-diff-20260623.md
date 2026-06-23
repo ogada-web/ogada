@@ -1,3 +1,65 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T20:35:08+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-23 1335차)
+
+> **1335차 BLOCK(test regression PASS · pre-merge 미재검증 · merge pending 10)** — `src/frontend-test` `@b7101d5` `npm test` **2111/2111 PASS**(413 files, 720.23s) · `src/frontend` develop `@170ce56` WT **CLEAN** · pre-merge `npm test` **SKIP**(vitest concurrency lock: PID 730962 active) · merge **SKIP**(`test..develop` **0/10** pending) · build **1149 modules PASS**(8.26s) · audit **1 high**(form-data) · live E2E **SKIP**(merge 없음 · 1320차 **127 PASS/19 SKIP** carry) · **QA-B274 Open(carry)** · **QA-B273 Planned(update)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 5 @01edba7 · FE pending 10 @170ce56 + QA-B274 carry)** · operation **BLOCK**
+
+## 1335차 검증 요약 (test PASS · pre-merge SKIP)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | test `b7101d5` · develop `170ce56` |
+| ahead (`test..develop`) | **0/10** pending (`8057c1e` · `bd1d0ad` · `426d63a` · `64584f4` · `7e048c0` · `0606a3b` · `77584a0` · `cb84b79` · `4f7f0e0` · `170ce56`) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 무해한 빈 파일 carry) |
+| npm test baseline (@b7101d5) | **2111/2111 PASS** (720.23s, 413 files) |
+| npm test pre-merge (@170ce56) | **SKIP** (vitest concurrency lock active PID 730962) |
+| merge | **SKIP** (0/10 pending + pre-merge 미재검증) |
+| build | **1149 modules PASS** (8.26s @ test) |
+| npm audit (high+) | **1 high** (form-data CRLF) |
+| live E2E | **SKIP** (merge 없음 · 1320차 **127 PASS / 19 SKIP** carry) |
+| open issue (frontend) | **QA-20260623-B274** (carry · pre-merge regression lineage) |
+| planned issue (frontend) | **QA-20260623-B273** (update · pending 7→10, head `77584a0`→`170ce56`) |
+| transfer verdict | **BLOCK** |
+| cross-stream | **BLOCK** (BE pending 5 @`01edba7` QA-B272 · FE pending 10 @`170ce56` + QA-B274 carry) |
+| operation | **BLOCK** (QA-B274 + QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP) |
+
+---
+
+# develop ↔ test diff 메타 — frontend (2026-06-23 1333차)
+
+> **1333차 BLOCK(develop CLEAN · pre-merge 7 FAIL · merge pending 7)** — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · npm re-run **Terminated exit 143**(~371.9s partial) · develop `@77584a0` WT **CLEAN** · pre-merge **2103/2110 FAIL**(736.79s) · test `@b7101d5` · merge **SKIP**(`test..develop` **0/7** · pre-merge FAIL) · build **1149/1165 modules PASS** · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B274 Open(BLOCK)** · **QA-B273 Planned(update)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 4 @deda5b4 · FE pending 7 + pre-merge FAIL)** · operation **BLOCK**
+
+## 1333차 검증 요약 (develop CLEAN · pre-merge 7 FAIL)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | test `b7101d5` · develop `77584a0` |
+| ahead (`test..develop`) | **0/7** pending (`8057c1e` · `bd1d0ad` · `426d63a` · `64584f4` · `7e048c0` · `0606a3b` · `77584a0`) |
+| develop working tree | **CLEAN** (1331차 dirty 48M+18U **해소**) |
+| test working tree | **DIRTY** (`?? 9`, 무해한 빈 파일 carry) |
+| npm test baseline (@b7101d5) | **2049/2049 PASS** (1320차 carry · 1333차 re-run Terminated ~371.9s) |
+| npm test pre-merge (@77584a0) | **2103/2110 FAIL** (736.79s, 413 files · 7 FAIL in 3 files) |
+| merge | **SKIP** (0/7 pending + pre-merge FAIL) |
+| pending diff (committed) | leave-ledger wire · UXD-157/158 a11y · relatedSurfaces test · HR branch scope · Korean address/client edit · client list filters · client RBAC route guard |
+| build | **1149 modules PASS** @ test (12.53s) · **1165 modules PASS** @ develop (10.67s) |
+| npm audit (high+) | **1 high** (form-data) |
+| live E2E | **SKIP** (merge 없음 · 1320차 **127 PASS / 19 SKIP** carry) |
+| transfer verdict | **BLOCK** |
+| open issue (frontend) | **QA-20260623-B274** (pre-merge 7 FAIL regression) |
+| planned issue (frontend) | **QA-20260623-B273** (update · dirty resolved · pending 7 · blocked by B274) |
+| cross-stream | **BLOCK** (BE pending 4 @deda5b4 QA-B272 · FE pending 7 + pre-merge FAIL QA-B274) |
+| operation | **BLOCK** (QA-B274 + QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP) |
+
+### pre-merge FAIL 상세 (7건)
+
+| 파일 | FAIL | 요약 |
+|---|---|---|
+| `SideNav.test.jsx` | 2 | grouped nav IA 변경 후 `link` role `"이용자"` 미발견 (UXD-158) |
+| `StaffWorkAttendancePage.test.jsx` | 1 | `"연차·유급휴일 대장"` 링크 중복 (leave-ledger wire) |
+| `pilotPageFlows.test.jsx` | 4 | G38/G39 dashboard·transport E2E `"확정"` 텍스트 미발견 |
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T18:23:23+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-23 1331차)
 

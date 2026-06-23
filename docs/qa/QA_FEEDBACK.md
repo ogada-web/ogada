@@ -1,4 +1,17 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T18:23:23+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T20:35:08+00:00 -->
+<!-- tester-sync: TSR 1335차 2026-06-23T20:35 UTC (frontend) — ROADMAP merged regression test `@b7101d5` (`src/frontend-test`) `npm test` **2111/2111 PASS**(413 files, 720.23s) · develop HEAD `@170ce56` WT **CLEAN** · pre-merge (`src/frontend`) `npm test` **SKIP**(vitest concurrency lock: active PID 730962) · merge **SKIP**(`test..develop` **0/10** pending · pre-merge 미재검증) · `npm run build` **1149 modules PASS**(8.26s) · `npm audit` **1 high**(form-data) · live E2E **SKIP**(merge 없음 · 1320차 **127 PASS/19 SKIP** carry) · **QA-20260623-B274 Open(carry)**(severity **BLOCK**, pre-merge 7 FAIL lineage 미재검증) · **QA-20260623-B273 Planned(update)**(severity **BLOCK**, pending 7→10 · HEAD `77584a0`→`170ce56`) · Open **1(active frontend)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 5 @01edba7 · FE pending 10 @170ce56 + QA-B274 carry)** · operation **BLOCK** -->
+# revalidation_1335th: frontend test @b7101d5 npm 2111/2111 PASS(413 files,720.23s); develop @170ce56 WT CLEAN; pre-merge npm SKIP(concurrency lock PID 730962); merge SKIP(0/10 pending+미재검증); build 1149 PASS(8.26s); audit 1 high; live E2E SKIP(127/19 carry); QA-B274 Open(carry,BLOCK); QA-B273 Planned(update,pending 7→10); Open 1(active frontend); transfer BLOCK; cross-stream BLOCK(BE pending 5 + FE pending 10 + QA-B274 carry); operation BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T19:36:00+00:00 -->
+<!-- tester-sync: TSR 1334차 2026-06-23T19:36 UTC (backend) — ROADMAP merged regression test `@62fce23` (`src/backend-test`) `mvn test` **1843/1843 PASS**(347 suites, 56.522s, BUILD SUCCESS) · develop HEAD `@01edba7` WT **CLEAN** · merge **SKIP**(`test..develop` **0/5** pending `5fd12dd`+`c4e6bcb`+`642ea11`+`deda5b4`+`01edba7`) · `npm test` N/A(no `package.json`) · origin/test (**530 unpushed BE** · **187 unpushed FE**) · **QA-20260623-B272 Planned(update)**(severity **BLOCK**, merge pending 4→5 · HEAD `deda5b4`→`01edba7`) · Open **1(active frontend)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 5 @01edba7 · FE pending 7 + pre-merge FAIL)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1334th: backend test @62fce23 mvn 1843/1843 PASS(56.522s,347 suites); develop @01edba7 WT CLEAN; merge SKIP(0/5 pending); QA-B272 Planned(update,BLOCK pending 4→5); Open 1(active frontend); transfer BLOCK; cross-stream BLOCK(BE pending 5 + FE pending 7+pre-merge FAIL); backend@8080 200; operation BLOCK.
+
+<!-- tester-sync: TSR 1333차 2026-06-23T19:25 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **Terminated exit 143**(~371.9s partial) · develop `@77584a0` WT **CLEAN** · pre-merge **2103/2110 FAIL**(7 FAIL · SideNav×2 · StaffWorkAttendancePage×1 · pilotPageFlows×4) · merge **SKIP**(`test..develop` **0/7** · pre-merge FAIL) · **QA-B274 Open**(BLOCK · pre-merge regression) · **QA-B273 Planned(update)**(dirty resolved · pending 7) · Open **1(active)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 4 @deda5b4 · FE pending 7 + pre-merge FAIL)** · operation **BLOCK** -->
+# revalidation_1333rd: frontend baseline carry 2049/2049 @b7101d5(1320차); npm re-run Terminated exit 143(~371.9s); develop @77584a0 WT CLEAN; pre-merge 2103/2110 FAIL(7 FAIL); merge SKIP(0/7+pre-merge FAIL); QA-B274 Open(BLOCK); QA-B273 Planned(update); Open 1; transfer BLOCK; cross-stream BLOCK; operation BLOCK.
+
+<!-- tester-sync: TSR 1332차 2026-06-23T19:00 UTC (backend) — ROADMAP merged regression test `@62fce23` (`src/backend-test`) `mvn test` **1843/1843 PASS**(347 suites, ~93s, BUILD SUCCESS) · develop HEAD `@deda5b4` WT **CLEAN** · develop pre-merge (`src/backend`) `mvn test` **1850/1850 PASS**(348 suites, ~94s, +7 tests) · merge **SKIP**(`test..develop` **0/4** pending `5fd12dd`+`c4e6bcb`+`642ea11`+`deda5b4`) · `npm test` N/A(no `package.json`) · origin/test (**530 unpushed BE** · **187 unpushed FE**) · **QA-20260623-B272 Planned(update)**(severity **BLOCK**, dirty resolved 1330 4M→1332 CLEAN · merge pending 2→4 · HEAD `c4e6bcb`→`deda5b4`) · Open **0(active)** · Planned **QA-B272+QA-B273+QA-B116(origin/test push 530 BE+187 FE)+QA-B95 partial(19 SKIP carry)** · verdict **BLOCK(@backend-test regression PASS but backend merge pending 4)** · cross_stream **BLOCK(BE pending 4 @deda5b4 · FE dirty@0606a3b pending 6)** · backend@8080 **UP/200** · operation **BLOCK** · disk **34%**(97G avail). -->
+# revalidation_1332nd: backend test @62fce23 mvn 1843/1843 PASS(~93s,347 suites); develop @deda5b4 pre-merge 1850/1850 PASS(~94s,+7 tests,348 suites) WT CLEAN; merge SKIP(0/4 pending); QA-B272 Planned(update,BLOCK dirty resolved pending 2→4); Open 0; transfer BLOCK; cross-stream BLOCK(BE pending 4+FE dirty/pending 6); backend@8080 200; operation BLOCK; disk 34% avail.
+
 <!-- tester-sync: TSR 1331차 2026-06-23T18:23 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **SKIP**(vitest concurrency · `src/frontend` develop PID 657264) · develop `@64584f4` WT **DIRTY 48M+18U** · merge **SKIP**(`test..develop` **0/4** pending+dirty) · **QA-B273 Planned(update)** · Open **0(active)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 @c4e6bcb · FE dirty pending 4)** · operation **BLOCK** -->
 # revalidation_1331st: frontend baseline carry 2049/2049 @b7101d5(1320차); npm re-run SKIP(vitest concurrency PID 657264); develop @64584f4 WT DIRTY 48M+18U; merge SKIP(0/4+dirty); QA-B273 Planned(update,BLOCK dirty 44M+12U→48M+18U pending 3→4); Open 0; transfer BLOCK; cross-stream BLOCK; operation BLOCK.
 
@@ -2101,37 +2114,52 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0(active)** — TSR 1331차 FE baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · develop `@64584f4` WT **DIRTY 48M+18U** · `test..develop` **0/4** pending · **★ QA-B273 Planned(update)**(BLOCK · dirty 44M+12U→48M+18U · pending 3→4 · HEAD `64584f4`) · **★ QA-B272 Planned(carry)**(BE dirty+pending 2) · Planned **QA-B272+QA-B273+QA-B116(origin/test push 530 BE+187 FE)+QA-B95 partial(19 SKIP carry)** · cross-stream **BLOCK(BE dirty pending 2 · FE dirty pending 4)** · operation **BLOCK** · disk **34%** avail · 최종 갱신: TSR 1331차 2026-06-23T18:23 UTC)_
+_(Open **1(active)** — TSR 1334차 BE `@62fce23` regression **1843/1843 PASS**(56.522s) · develop `@01edba7` WT **CLEAN** · `test..develop` **0/5** pending · FE develop `@77584a0` pre-merge **2103/2110 FAIL**(7) · **★ QA-B274 Open**(BLOCK · SideNav·leave-ledger cross-links·pilotPageFlows transport/G38) · **★ QA-B273 Planned(update)**(dirty resolved · pending 4→7 · merge blocked by B274) · **★ QA-B272 Planned(update)**(BE pending 4→5 @01edba7) · Planned **QA-B274+QA-B273+QA-B272+QA-B116(origin/test push 530 BE+187 FE)+QA-B95 partial(19 SKIP carry)** · cross-stream **BLOCK(BE pending 5 · FE pending 7 + pre-merge FAIL)** · operation **BLOCK** · disk **34%** avail · 최종 갱신: TSR 1334차 2026-06-23T19:36 UTC)_
+
+### [TSR] v3/US-R01-c — frontend develop pre-merge npm 7 FAIL + merge pending 7 (`77584a0`, QA-20260623-B274)
+
+- **id**: QA-20260623-B274
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open
+- **found_at**: 2026-06-23T19:25:00+00:00 (TSR 1333차 — develop `@77584a0` · test `@b7101d5` · `test..develop` **0/7** pending)
+- **version**: v3/US-R01-c leave-ledger wire + client address/nav UX + transport pickup (`develop @77584a0` · `test @b7101d5`)
+- **summary**: develop HEAD `@77584a0` WT **CLEAN**(1331차 dirty 48M+18U **해소**). pre-merge `npm test` **2103/2110 FAIL**(736.79s, 413 files, +61 tests vs test). **7 FAIL** — ① `SideNav.test.jsx`×2: grouped nav에서 `link` role `"이용자"` 미발견(UXD-158 nav IA 변경) ② `StaffWorkAttendancePage.test.jsx`×1: `"연차·유급휴일 대장"` 링크 중복(leave-ledger wire) ③ `pilotPageFlows.test.jsx`×4: G38/G39 dashboard·transport E2E `"확정"` 미발견. test baseline **2049/2049 PASS**(1320차 carry · 1333차 re-run Terminated ~371.9s). **merge gate 미충족** — pre-merge 0 FAIL 선행 필요(이관 규율 14).
+- **reproduce**: `cd src/frontend && git status --short` → empty · `git rev-list --count test..develop` → 7 · `npm test` → **2103/2110 FAIL** (7 in 3 files) · `cd src/frontend-test && npm test` → baseline carry (1333차 Terminated partial)
+- **expected**: develop pre-merge `npm test` **0 FAIL** → TSR develop→test merge(7) · post-merge 재검증
+- **actual**: merge **SKIP**(pre-merge FAIL) · transfer **BLOCK**
+- **assignee**: COD(SideNav·StaffWorkAttendancePage·pilotPageFlows 테스트/구현 정합) · TSR(0 FAIL 확인 후 merge 7)
+- **roadmap_ref**: ROADMAP 192차 · US-R01-c · UXD-157/158 · client address · transport pickup · 이관 규율 6·7·14
 
 ### [TSR] v3/US-R01-c — frontend develop WT DIRTY 48M+18U + merge pending 4 (`64584f4`, QA-20260623-B273)
 
 - **id**: QA-20260623-B273
 - **severity**: BLOCK
 - **stream**: frontend
-- **status**: Planned (planner 191차 — Open→Planned · TSR 1331차 **update**: dirty recurrence 44M+12U→48M+18U · pending 3→4 · HEAD `426d63a`→`64584f4`)
-- **found_at**: 2026-06-23T15:02:51+00:00 (TSR 1322차 — develop `@8057c1e` · WT **DIRTY 5M**) · **recurrence**: 2026-06-23T16:46:22+00:00 (TSR 1325차 — develop `@426d63a` · WT **DIRTY 38M+11U** · pending **3**) · **revalidated**: 2026-06-23T18:23:23+00:00 (TSR 1331차 — develop `@64584f4` · WT **DIRTY 48M+18U** · pending **4** · npm re-run **SKIP** vitest concurrency PID 657264)
-- **version**: v3/US-R01-c leave-ledger wire + dashboard/client-list/transport/address WIP (`develop @64584f4` · `test @b7101d5`)
-- **summary**: test `@b7101d5` baseline **2049/2049 PASS**(1320차 carry). develop HEAD `@64584f4` **4 commits ahead**(`8057c1e` leave-ledger wire · `bd1d0ad` UXD-157 a11y · `426d63a` relatedSurfaces test · `64584f4` HR leave branch scope metadata) + **미커밋 66 status lines**(48M+18U: `DashboardBranchFilter*` · `ClientListPage*` · `ClientFormPage*` · `TransportPage*` · `transportRosterDispatch*` · `KoreanAddressFields*` · `userFacingNav*` · `TableColumnFilter*` 등). `npm test` re-run **SKIP**(vitest concurrency — `src/frontend` develop PID 657264 active · `docs/qa/VITEST_CONCURRENCY.md`). `npm run build` **1149 modules PASS**(10.25s @ test). **기능 갭 아님** — 이관 규율 1·5·7(dirty-tree·완료 단위 develop 커밋) 위반 + merge gate 미충족.
-- **reproduce**: `cd src/frontend && git status --short | wc -l` → 66 · `git log --oneline test..develop` → 4 commits · `ps aux | grep '[v]itest run'` → active in `src/frontend` · `cd src/frontend-test && npm test` → SKIP (concurrency)
-- **expected**: develop WT **CLEAN** · 48M+18U commit 또는 discard 단위 정리 후 push develop · merge gate 재검증
-- **actual**: merge **SKIP**(pending 4 + dirty) · transfer **BLOCK**
-- **assignee**: COD(48M+18U commit/discard + push develop) · TSR(merge + post-merge 재검증)
+- **status**: Planned (planner 191차 — Open→Planned · TSR 1333차 **update**: dirty **resolved** 1331 48M+18U→1333 **CLEAN** · pending **4→7** · HEAD `64584f4`→`77584a0` · merge blocked by **QA-B274** pre-merge 7 FAIL)
+- **found_at**: 2026-06-23T15:02:51+00:00 (TSR 1322차 — develop `@8057c1e` · WT **DIRTY 5M**) · **recurrence**: 2026-06-23T16:46:22+00:00 (TSR 1325차 — develop `@426d63a` · WT **DIRTY 38M+11U** · pending **3**) · **revalidated**: 2026-06-23T19:25:00+00:00 (TSR 1333차 — develop `@77584a0` WT **CLEAN** · pending **7** · pre-merge **2103/2110 FAIL**)
+- **version**: v3/US-R01-c leave-ledger + client address/nav + transport pickup (`develop @77584a0` · `test @b7101d5`)
+- **summary**: dirty-tree **해소**(7 commits committed: `8057c1e`→`77584a0`). test `@b7101d5` baseline **2049/2049 PASS**(1320차 carry). develop **7 commits ahead** · pre-merge **2103/2110 FAIL**(7 · **QA-B274**). `npm run build` **1165 modules PASS**(10.67s @ develop). **기능 갭 아님** — merge gate: pre-merge FAIL 선행(이관 규율 14).
+- **reproduce**: `cd src/frontend && git status --short` → empty · `git rev-list --count test..develop` → 7 · `npm test` → **2103/2110 FAIL**
+- **expected**: **QA-B274** 해소(pre-merge 0 FAIL) → TSR merge(7) · post-merge 재검증
+- **actual**: merge **SKIP**(pending 7 + pre-merge FAIL) · transfer **BLOCK**
+- **assignee**: COD(**QA-B274** test/nav 정합) · TSR(B274 해소 후 merge + post-merge 재검증)
 - **roadmap_ref**: ROADMAP 191차 · v3 `/staff/leave-ledger` P1 in_progress · US-R01-c · 이관 규율 1·5·7 · `docs/qa/VITEST_CONCURRENCY.md`
 
-### [TSR] v3/US-R01-c — backend develop→test merge pending 2 (`c4e6bcb`, QA-20260623-B272)
+### [TSR] v3/US-R01-c — backend develop→test merge pending 5 (`01edba7`, QA-20260623-B272)
 
 - **id**: QA-20260623-B272
 - **severity**: BLOCK
 - **stream**: backend
-- **status**: Planned (planner 191차 — Open→Planned · TSR 1330차 **update**: dirty recurrence 1327 CLEAN→1330 **DIRTY 4M** · pending **2**)
-- **found_at**: 2026-06-23T14:37:04+00:00 (TSR 1321차 merge pending) · **recurrence**: 2026-06-23T15:41:15+00:00 (TSR 1323차 — develop WT **DIRTY 6M+1U**) · **revalidated**: 2026-06-23T17:59:15+00:00 (TSR 1330차 — develop `@c4e6bcb` WT **DIRTY 4M** · pending **2** · merge **SKIP**)
-- **version**: v3/US-R01-c leave ledger V175 integrity + live API routing harness (`develop @c4e6bcb` · `test @62fce23`)
-- **summary**: `src/backend-test` regression `mvn test` **1843/1843 PASS**(~80s, 347 suites). develop HEAD `@c4e6bcb` WT **DIRTY 4M**(`ClientService*`·`CreateClientRequest`·`UpdateClientRequest`·`ClientServiceTest` — client address/PII masking WIP). `test..develop` **0/2** pending (`5fd12dd`+`c4e6bcb`). **기능 갭 아님** — 이관 규율 1·5·7(dirty-tree) + merge gate 미충족(이관 규율 6·7).
-- **reproduce**: `cd src/backend && git status --short` → 4 modified · `git rev-list --count test..develop` → 2 · `cd src/backend-test && mvn test` → **1843/1843 PASS**
-- **expected**: develop WT **CLEAN** · 4M commit/discard → TSR develop→test merge(2) · post-merge `mvn test` **0 FAIL**
-- **actual**: merge **SKIP**(pending 2 + dirty) · transfer **BLOCK**
-- **assignee**: COD(4M commit/discard + push develop) · TSR(merge 2 commits 후 post-merge 재검증)
-- **roadmap_ref**: ROADMAP 191차 · v3 `/staff/leave-ledger` P1 in_progress · US-R01-c · 이관 규율 6·7·14
+- **status**: Planned (planner 191차 — Open→Planned · TSR 1334차 **update**: develop WT **CLEAN** 유지 · pending **4→5** · HEAD `deda5b4`→`01edba7`)
+- **found_at**: 2026-06-23T14:37:04+00:00 (TSR 1321차 merge pending) · **recurrence**: 2026-06-23T15:41:15+00:00 (TSR 1323차 — develop WT **DIRTY 6M+1U**) · **revalidated**: 2026-06-23T19:36:00+00:00 (TSR 1334차 — develop `@01edba7` WT **CLEAN** · pending **5** · regression **1843/1843 PASS** · merge **SKIP**)
+- **version**: v3/US-R01-c leave ledger V175 + client split home address + PATCH RBAC 확장 (`develop @01edba7` · `test @62fce23`)
+- **summary**: `src/backend-test` regression `mvn test` **1843/1843 PASS**(56.522s, 347 suites). develop HEAD `@01edba7` WT **CLEAN**. `test..develop` **0/5** pending (`5fd12dd`+`c4e6bcb`+`642ea11`+`deda5b4`+`01edba7`). **기능 갭 아님** — merge gate 미충족(이관 규율 6·7).
+- **reproduce**: `cd src/backend && git status --short` → empty · `cd src/backend-test && git rev-list --count HEAD..origin/develop` → 5 · `cd src/backend-test && mvn test` → **1843/1843 PASS**
+- **expected**: TSR develop→test merge(5) · post-merge `mvn test` **0 FAIL**
+- **actual**: merge **SKIP**(pending 5) · transfer **BLOCK**
+- **assignee**: TSR(merge 5 commits 후 post-merge 재검증)
+- **roadmap_ref**: ROADMAP 192차 · v3 `/staff/leave-ledger` P1 in_progress · US-R01-c · client address split · 이관 규율 6·7·14
 
 ### [TSR] v1.2.1/live-e2e — frontend develop pre-merge npm 1 FAIL + merge pending 1 (`b7101d5`, QA-20260623-B270)
 

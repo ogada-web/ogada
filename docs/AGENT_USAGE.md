@@ -31,12 +31,7 @@ ogada/
 │   ├── agent_stop.sh             # 전체 세션·프로세스 정리
 │   ├── agent_status.sh           # 전체 상태 한눈에 보기
 │   ├── agent_team_start.sh       # pipeline + 보조 역할 일괄 기동
-│   ├── agent_team_stop.sh        # (agent_stop.sh 와 동일)
-│   ├── agent_team_status.sh      # (agent_status.sh 와 동일)
-│   ├── agent_pipeline.sh         # PLN→DBA→UXD→COD→TSR 순차 파이프라인
-│   ├── agent_planning_start.sh   # benchmark 만 (하위 호환)
-│   ├── agent_planning_status.sh
-│   └── agent_planning_stop.sh
+│   └── agent_pipeline.sh         # PLN→DBA→UXD→COD→TSR 순차 파이프라인
 ├── .env                    # CURSOR_API_KEY 등 (gitignore)
 └── .venv/                  # Python 가상환경
 ```
@@ -296,10 +291,10 @@ tmux 세션, run_agent 프로세스, 승인 여부를 한 번에 보여줍니다
 # pipeline 1사이클만 (테스트)
 ./scripts/agent_team_start.sh --no-loop
 
-# 상태 (agent_team_status.sh 도 동일)
+# 상태
 ./scripts/agent_status.sh
 
-# 전체 중지 (agent_team_stop.sh 도 동일)
+# 전체 중지
 ./scripts/agent_stop.sh
 ```
 
@@ -321,8 +316,6 @@ tmux 세션, run_agent 프로세스, 승인 여부를 한 번에 보여줍니다
 | `AGENT_SECURITY_INTERVAL_SECONDS` | `86400` | security_auditor loop 간격 |
 | `AGENT_BENCHMARK_INTERVAL_SECONDS` | `1800` | benchmark_researcher loop 간격 (30분·역공학) |
 | `AGENT_PIPELINE_SESSION` | `ogada-pipeline` | pipeline tmux 세션 이름 |
-
-> benchmark 만 단독 기동: `./scripts/agent_planning_start.sh` (하위 호환)
 
 ### post-merge live E2E (결정 73·96)
 

@@ -100,7 +100,7 @@
 | **BNK-555** | **★ PDF p.90 청구시작 기준금액 「7-3」 locked** ↔ ogada G33 `billingStartBalance` embed(standalone Route 0) · **★ 리포트 밀도 demo 29.8% vs ogada 20.7%(−9.1%p)** | **신규 candidate G-BILLING-START-STANDALONE P3** · **G-REPORT-DENSITY P2 carry** |
 | **BNK-554** | **★ G-STAFF-ANNUAL-LEAVE full-stack ✅ CLOSURE 재확인** — V173/V174+V175 integrity(untracked→committed)·`/staff/leave-ledger` Route/page/UXD-157·per-event ledger superset · **★ V175 defense-in-depth** — `chk_..._memo_nonempty` CHECK + `fk_..._user_branch_assignment` FK(경쟁 4종 DB-level 보호 노출 0) · **★ KPI 정정 Route 111→112·FE test 457→455(이후 463)** | ROADMAP baseline KPI 정정 · 차별화 우위 carry |
 
-
+### [PLN] QA 피드백 반영 (2026-06-23, 191차 — BNK-551~552 · TSR 1321~1322차 · ★ QA-B272/B273 Open→Planned · QA Open 0 · ★ US-R01-c leave-ledger BE ✅ FE wire △ · ★ v1.3-C M2 차별화 · merge gate 718 · cross-stream BLOCK · disk ENOSPC)
 
 | 항목 | 내용 | 반영 문서 |
 |------|------|-----------|

@@ -4,6 +4,78 @@
 
 ---
 
+## 2026-06-23 — benchmark_researcher(BNK): 560차 벤치마크 (BNK-560 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 340차 zero drift ↔ ogada `TransportServiceFeeService` full-stack ✅ parity/우위(PLAN_NOTES #44)** · ★★★ **longterm 502 canonical 본문 live 직접 수신(var s16 oscillation·단기보호 74,060 verbatim)** · ★★ **longterm 610 통합재가 가산 월 10만원 재실측** · ogada `@170ce56`/`@01edba7` WT CLEAN·HEAD zero advance·merge gate **732** carry)
+
+**근거**: live HTTP 200 = on-disk md5 대조 — [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f`(7,572B·340차 IDENTICAL)·[silverangel essential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3`·[extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) `f9c5d877`·main `bcf6df41`·fee `eab352a8`·[lcms](https://www.lcms.or.kr/) `c0c66076`(type1)·[longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) `72148cfe`(105,561B)·[longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) `8d53dcc1`(91,430B)·[law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) `4339da94`·[MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) `3f2fc5ac`. ogada: FE `170ce56`·BE `01edba7` 양쪽 WT CLEAN·HEAD zero advance(=BNK-559).
+
+### 결정
+
+1. **★★★ #44 이동서비스비 러-1~4 340차 ↔ ogada full-stack ✅ parity/우위 재입증 (확인)** — `c886ff1f`(러-1~4 거리 4구간·편도 50%·1일 1회·③수급자 부담X·④별지 제22호 일지) ↔ ogada `TransportServiceFeeService`(`RU_1~RU_4`·`ONE_WAY_RATIO=0.5`·1일1회 중복 guard) + `TransportServiceLog`(V148/V154/V155 DB-level CHECK). **planner: PLAN_NOTES #44 1차 확인 closure carry**.
+
+2. **★★★ longterm 502 canonical 본문 live 직접 수신 (확인)** — BNK-542~552 시기 partial shell/refreshedException gate로만 수신되던 502 본문이 canonical 본문(**월 한도액 및 급여비용 2026.1.1.기준·단기보호 1등급 74,060**)으로 수신. live `72148cfe`(105,561B)는 canonical `b5aee8c1`(105,552B)와 `var s16;` 1줄(+9B)만 차이 → strip-s16 IDENTICAL. **canonical `longterm_502.html`(no-s16) 보존 · var s16 oscillation 패턴 carry**.
+
+3. **★★ 통합재가서비스(longterm 610) 가산 모델 재확인 (확인)** — 「2종 이상의 급여 제공·통합재가 서비스 가산 지급 **월 10만원**·주야간보호형」. ogada는 주야간 단일 서비스 포지셔닝 → 통합재가 결합 모델 MVP out-of-scope carry. **planner: 시장 요구 시 v3+ 후보로 기록**.
+
+4. **★ CMS 5-method·규제 고시 (확인)** — 엔젤 extraService CMS 자동이체(250원)·가상계좌(300원)·카드·계좌분리·현금영수증 → ogada 자동이체/현금영수증/의료비공제 ✅(자체 CMS DB·외부 효성CMS 미의존), 가상계좌/계좌분리 ❌(외부 PG out-of-scope 후보). law247 `4339da94`(제2025-247호·시행 2026.1.1 verbatim)·MOHW126 `3f2fc5ac`(본인부담상한액·조회수 2,510→2,512) = cachebuster/counter DRIFT·본문 verbatim 불변.
+
+**가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 0(HEAD zero advance·양쪽 WT CLEAN) · 미확인 0 · 신규 snapshot 2건(`angel_longterm_regulatory_crossverify_bnk560.txt`·`longterm_610_live_partial_shell_bnk560.html`) · 덮어쓰기 2건(law247·mohw126) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족** · **즉시(tester)**: merge **732**(FE197+BE535·양쪽 WT CLEAN·선행 commit 불필요) carry · **planner**: baseline FE `@170ce56`·BE `@01edba7` carry(HEAD zero advance)·#44 340차 closure·longterm 502 canonical 본문 수신·△4 잔여 우선순위 불변.
+
+---
+
+## 2026-06-23 — benchmark_researcher(BNK): 559차 벤치마크 (BNK-559 이지케어 역공학 2–4h · ★★★ **FAQ 21450 RFID↔공단계획 엑셀 tri-source named snapshot** · ★★ **FAQ 21800 오표기 정정(정기 욕구사정)** · ★★ **가격·도입 fnc 9,346/home 9,274(+1)·charge 40% 프로모** · ★★ **ogada RBAC roleHierarchy BNK-558 closure** · ogada `@170ce56`/`@01edba7` WT CLEAN·merge gate **732**)
+
+**근거**: 이지케어 live+데모 `./scripts/ezcare-demo-fetch.sh` — [FAQ 21450](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21450&type=web) `e1eb78e1`·[FAQ 21800](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21800&type=web) `156d08d1`(정기 욕구사정·BNK-540 excel 오표기 정정)·[fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) 9,346(+1)·[home](https://ezcare.easyms.co.kr/) 9,274(+1)·[charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) 40% 프로모. ogada: FE `2e7374b` roleHierarchy committed·`170ce56` caregiver edit test · BE `01edba7` PATCH RBAC.
+
+### 결정
+
+1. **★★★ FAQ 21450 = RFID 엑셀 워크플로 정본 (확인)** — 「공단 계획일정+RFID 전송내역 엑셀 선행 업로드→비실시간 comp 탭 비교」. PGID `schedule-rfid` `comp_01~09`·Channel.io 01805b93과 tri-source. ogada `visits.js` COMP_01~09 **8/8 parity+** carry. **재가 G21 lifecycle P3 out-of-scope 유지**.
+
+2. **★★ FAQ rowid 21800 오표기 정정 (가정 정밀화)** — faq.ez rowid 21800 = 「[연간] 정기 욕구사정」(평가지표 15)·`patient-b100` 3-tab cross-ref. BNK-540 `ezcare_faq_excel_guide_21800`은 Channel.io error page였음. **planner: 과거 BNK 행 주석 정정 권장 (P2)**.
+
+3. **★★ ogada RBAC roleHierarchy closure (확인)** — BNK-558 in-flight(FE DIRTY 6/BE DIRTY 4) → `2e7374b`/`01edba7` commit·WT CLEAN. `ROLE_RANK` 100/80/60/40·CAREGIVER `updateClient`·`ClientDetailPage` edit link test. **planner P1: REQUIREMENTS RBAC RANK 표 정본화 + SEC CAREGIVER 수정 의도 검증 carry**.
+
+4. **★ 가격·도입 +1 복귀 (확인)** — fnc 9,346·home 9,274(+1 each vs BNK-553). charge 33,000/25,850/55,000 verbatim + 40%할인(~2026-06-30) 마케팅. 3-source figure coexistence carry.
+
+**가정 번복 0 · 가정 정밀화 1 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 4 · 신규 snapshot 10건 · 덮어쓰기 14건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족**.
+
+---
+
+## 2026-06-23 — benchmark_researcher(BNK): 558차 벤치마크 (BNK-558 교차검증·갭 우선순위 8h+ · ★★★ **ogada RBAC 숫자형 역할 계층(`roleHierarchy`/`RoleHierarchy`) in-flight 신규 — 「ogada=numeric level 미사용」 누적 가정 정밀화** · ★★ **수급자 수정 권한 CAREGIVER 확대(`updateClient` `@PreAuthorize` +HQ_ADMIN+CAREGIVER)** · ogada `@77584a0`(FE WT DIRTY 6) / `@deda5b4`(BE WT DIRTY 4)·merge gate **728**(+2))
+
+**근거**: FE `@77584a0`(BNK-557 `@0606a3b` **HEAD +1** `fix(clients): centralize create/edit RBAC and guard client routes`·8-file +66/-32)·BE `@deda5b4`(BNK-557 `@642ea11` **HEAD +1** split home address read). in-flight working tree(HEAD 위): FE `?? roleHierarchy.js`/`.test.js`·`M clientPermissions.js`·`M roleNav.js`·`M sevenRoleRouteGuard.test.jsx`·`D clientPermissions.test.js` / BE `?? RoleHierarchy.java`/`RoleHierarchyTest.java`·`M ClientController.java`·`M RoleBasedControllerAccessTest.java`. 코드 실측: `ROLE_RANK {hq_admin:100, branch_admin:80, social_worker:60, caregiver:40}`·`CLIENT_EDIT_MIN_RANK=caregiver`·`CLIENT_CREATE_MIN_RANK=social_worker`(FE/BE 동일). 경쟁사: [ezcare user-a100](https://ezcare.easyms.co.kr/new.ez?PGID=user-a100) `5c00aa89` numeric level `0/1/4/5/6`. live: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 339차 IDENTICAL · carefor func.php LIVE HTTP 000(미확인·on-disk `6226e6eb` carry).
+
+### 결정
+
+1. **★★★ RBAC 숫자형 역할 계층 정본화 (확인·in-flight)** — ogada가 명시 역할 배열(`CLIENT_EDIT_ROLES` 등)을 **숫자 RANK 계층**(`ROLE_RANK`·`hasMinRank`·`rolesWithMinRank`)으로 추상화, FE(`roleHierarchy.js`)·BE(`RoleHierarchy.java`)가 동일 RANK(HQ 100>지점장 80>사회복지사 60>요양보호사 40·상위⊇하위)를 공유. **planner: REQUIREMENTS RBAC 명세에 RANK 표와 「상위 역할은 하위 권한 포함」 invariant·FE/BE RANK 동기화 규칙 정본 등재 권장 (P1)**.
+
+2. **★★ 수급자 수정 권한 CAREGIVER 확대 — 의도 검증 필요 (확인)** — `ClientController.updateClient` `@PreAuthorize`가 `BRANCH_ADMIN,SOCIAL_WORKER` → `HQ_ADMIN,BRANCH_ADMIN,SOCIAL_WORKER,CAREGIVER`로 확대(현장 직원 입력 현실 반영), 신규 등록은 SOCIAL_WORKER 이상 유지(요양보호사 제외). **planner/SEC: REQUIREMENTS 역할별 데이터 권한 표와 일치 여부·요양보호사 수정 허용 의도 확인 권장 (P1 보안검증)**.
+
+3. **★★ 「ogada=numeric level 미사용」 가정 정밀화 (번복 아님)** — 누적 BNK 매트릭스는 「ogada는 numeric level 대신 role invariant 유지」로 기록했으나, in-flight `ROLE_RANK`는 *계정별 메뉴 차폐 level*이 아니라 **역할의 계층적 포함관계를 표현하는 내부 비교값**. 따라서 「per-account menu level 미사용·계정×메뉴 deny-list 갭 carry」는 유지하되 표현을 「역할 *계층* numeric rank는 사용·per-menu level은 미사용」으로 정밀화. 이지케어 `user-a100` numeric level 0/1/4/5/6 대비 ogada는 부분 parity. **fine-grained `G-MENU-PERMISSION-MATRIX` P3 carry(MVP out-of-scope)**.
+
+4. **★ baseline KPI·backbone (확인)** — Route 112·page 90(+RootRedirect=91)·V1–V175·BE Test 251(@Test 1,834·+1)·FE test 464(191+273·+1: `77584a0`가 `clientPermissions.test.js` 신규)·모듈 78.79% carry. FE/BE ahead +1/+1 → merge gate 726→**728**. NHIS #44 339차 IDENTICAL·4축(G14·대시보드/G26·v1.3-C·v2 CMS) P0/P1 재오픈 0·신규 경쟁사 공지/엑셀 포맷 변경 0.
+
+**가정 번복 0 · 가정 정밀화 1 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 2(FE +1·BE +1, in-flight WT DIRTY FE6/BE4) · 미확인 1(carefor func.php LIVE 000 carry) · 신규 snapshot 0건 · 덮어쓰기 0건 · per-cycle minimum 4종 충족** · **즉시(coder)**: in-flight RBAC 역할 계층(`roleHierarchy`/`RoleHierarchy` + 테스트) commit closure 권장(FE/BE RANK 동기화 검증 포함).
+
+---
+
+## 2026-06-23 — benchmark_researcher(BNK): 557차 벤치마크 (BNK-557 ogada git 실측 6–8h · ★★★ **한국형 주소검색(카카오/다음 우편번호)+분할 주소 필드 full-stack 신규 — 이지케어 `btn-searchAddress` parity 달성** · ★★ **PII 주소 마스킹(`addressMasked`/`pickupAddressMasked`) ↔ 이지케어 「시/구까지만 노출」 동일 패턴** · ogada `@0606a3b`(FE WT CLEAN) / `@642ea11`(BE WT CLEAN)·merge gate **726**(+3))
+
+**근거**: FE `@0606a3b`(BNK-556 `@64584f4` **HEAD +2**: `7e048c0` Korean address search·`0606a3b` UXD-158 a11y)·BE `@642ea11`(BNK-556 `@c4e6bcb` **HEAD +1** split home address)·양쪽 **WT CLEAN**(BNK-556 in-flight DIRTY 66/6 → commit closure). 신규 코드: `kakaoPostcode.js`(87L)·`koreanAddress.js`·`clientListFilters.js`(183L)·`ClientFormPage.jsx`(+615L)·BE `CreateClientRequest`/`UpdateClientRequest` `+addressDetail`·`ClientResponse` `addressMasked`/`pickupAddressMasked`. 경쟁사: [ezcare patient-b100](https://ezcare.easyms.co.kr/new.ez?PGID=patient-b100) snapshot `btn-searchAddress 주소검색`+「공고에는 시/구까지만 노출」. live: [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` 338차 IDENTICAL.
+
+### 결정
+
+1. **★★★ 주소검색 갭 closure (확인)** — BNK-556까지 ogada는 우편번호 주소검색 팝업 미보유 = 이지케어 `btn-searchAddress` 대비 갭이었으나, BNK-557에서 `kakaoPostcode.openKakaoPostcodeSearch()`(다음 `postcode.v2.js` 단일 로드·도로명/지번 분기)+`combineKoreanAddress`+`ClientFormPage` 통합으로 **full-stack parity 달성**. **planner: REQUIREMENTS/USER_STORIES 이용자관리에 「우편번호 주소검색 + 분할 주소(`address`+`addressDetail`)」를 정본으로 등재 권장**.
+
+2. **★★ PII 주소 마스킹 parity/우위 (확인)** — 이지케어는 「공고에는 시/구까지만 노출」수준 마스킹. ogada는 `ClientResponse` `addressMasked`·`pickupAddressMasked`로 **응답 레벨** 마스킹 → 개인정보보호법 정합 parity/우위. **planner: 마스킹 정책을 보호자 포털·송영 화면까지 일관 적용 확인 권장**.
+
+3. **★★ 외부 의존 명시 (가정)** — 주소검색은 다음 우편번호 외부 CDN(`t1.kakaocdn.net/.../postcode.v2.js`)에 의존. 망 분리/오프라인 환경에서는 로드 실패 → **수기 입력 fallback 정책 검토 P2 권장**(현재 `script.onerror` reject 처리만 확인).
+
+4. **★ baseline KPI carry (확인)** — Route 112·page 90(+RootRedirect=91)·V1–V175·BE Test 251·FE test 463(190+273)·모듈 78.79% 모두 carry. FE/BE ahead +2/+1 → merge gate 723→**726**. BNK-556 in-flight DIRTY가 commit으로 편입되어 KPI 총계는 불변(신규 test가 working tree → committed 이동).
+
+**가정 번복 0 · 신규 core 갭 0(주소검색 갭 closure) · candidate 변동 0 · 상태 변경 2(FE +2·BE +1) · 신규 snapshot 0건 · 덮어쓰기 0건 · per-cycle minimum 4종 충족**.
+
+---
+
 ## 2026-06-23 — benchmark_researcher(BNK): 556차 벤치마크 (BNK-556 엔젤·롱텀·규제 4–6h · ★★★ **longterm 502 canonical live 회복 — 2026 수가·단기보호 1등급 74,060 직접 확인** · ★★★ **longterm 610 통합재가 partial shell 신규 확보 — 2종 이상 급여·주야간보호형 월 10만원** · ★★ **silverangel CMS 5-method·평가 #27 가족소통 zero drift** · ★★ **NHIS #44 이동서비스비 러-1~4 IDENTICAL** · ogada `@64584f4`(FE WT DIRTY 66) / `@c4e6bcb`(BE WT DIRTY 6)·merge gate **723**(+1))
 
 **근거**: [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) HTTP 200·105,552B·`b5aee8c1` · [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) HTTP 200·91,421B·`0ea575be` · [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f` IDENTICAL · silverangel `daycareEssentialWork` `c79c1be3`·`extraService` `f9c5d877` IDENTICAL · extract `angel_longterm_regulatory_crossverify_bnk556.txt`(`9f20b24d`).

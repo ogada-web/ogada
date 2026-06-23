@@ -1,4 +1,4 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T17:59:15+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T19:36:00+00:00 -->
 # Backend develop → test 이관 체크리스트
 
 > **스트림**: backend  
@@ -6,7 +6,15 @@
 > **test 브랜치**: `test` (`src/backend-test` worktree)  
 > **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`)  
 > **작성**: tester (`TSR`)  
-> **최종 갱신**: 2026-06-23T17:59:15+00:00
+> **최종 갱신**: 2026-06-23T19:36:00+00:00
+
+> **1334차 재검증 (2026-06-23T19:36 UTC) — ROADMAP merged regression test `@62fce23` (`src/backend-test`) `mvn test` **1843/1843 PASS**(347 suites, 56.522s, BUILD SUCCESS) · develop HEAD `@01edba7` WT **CLEAN** · merge **SKIP**(`test..develop` **0/5** pending `5fd12dd`+`c4e6bcb`+`642ea11`+`deda5b4`+`01edba7`) · `npm test` N/A(no `package.json`) · origin/test (**530 unpushed BE** · **187 unpushed FE**) · **QA-20260623-B272 Planned(update)**(BLOCK · pending 4→5 · HEAD `deda5b4`→`01edba7`) · Open **1(active frontend)** · Planned **QA-B274+QA-B273+QA-B272+QA-B116+QA-B95** · 판정 **BLOCK(v1.2.1 regression PASS · develop merge pending 5)** · **transfer BLOCK**. 교차(frontend git): FE develop `@77584a0` WT **CLEAN** · FE test `@b7101d5` · `test..develop` **0/7** pending + pre-merge FAIL(7) · ★ **cross-stream BLOCK(BE pending 5 @01edba7 · FE pending 7 + pre-merge FAIL)** · backend@8080 **UP/200** · operation **BLOCK** · disk **34%**(97G avail).**
+
+> **1332차 재검증 (2026-06-23T19:00 UTC) — ROADMAP merged regression test `@62fce23` (`src/backend-test`) `mvn test` **1843/1843 PASS**(347 suites, ~93s, BUILD SUCCESS) · develop HEAD `@deda5b4` WT **CLEAN** · develop pre-merge **1850/1850 PASS**(348 suites, ~94s, +7 tests) · merge **SKIP**(`test..develop` **0/4** pending `5fd12dd`+`c4e6bcb`+`642ea11`+`deda5b4`) · `npm test` N/A(no `package.json`) · origin/test (**530 unpushed BE** · **187 unpushed FE**) · **QA-20260623-B272 Planned(update)**(BLOCK · dirty resolved · merge pending 2→4) · Open **0(active)** · Planned **QA-B272+QA-B273+QA-B116+QA-B95** · 판정 **BLOCK(v1.2.1 regression PASS · develop merge pending 4)** · **transfer BLOCK**. 교차(frontend git): FE develop `@0606a3b` WT **DIRTY 6M+2U** · FE test `@b7101d5` · `test..develop` **0/6** pending · ★ **cross-stream BLOCK(BE pending 4 @deda5b4 · FE dirty@0606a3b pending 6)** · backend@8080 **UP/200** · operation **BLOCK** · disk **34%**(97G avail).**
+
+> **PASS 금지 사유 (1334차)**: **QA-B272 Planned(update, BLOCK)** — develop WT **CLEAN**이지만 `test..develop` **0/5** pending(`@5fd12dd`, `@c4e6bcb`, `@642ea11`, `@deda5b4`, `@01edba7`)으로 merge 게이트 미충족. ✅ test `mvn test` **1843/1843 PASS**. **테스트 PASS ≠ develop 이관 가능** — TSR merge(5) 선행.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T17:59:15+00:00 -->
 
 > **1330차 재검증 (2026-06-23T17:59 UTC) — ROADMAP merged regression test `@62fce23` (`src/backend-test`) `mvn test` **1843/1843 PASS**(347 suites, ~80s, BUILD SUCCESS) · develop HEAD `@c4e6bcb` WT **DIRTY 4M**(`ClientService*`·`CreateClientRequest`·`UpdateClientRequest`·`ClientServiceTest`) · merge **SKIP**(`test..develop` **0/2** pending `5fd12dd`+`c4e6bcb` · develop dirty) · `npm test` N/A(no `package.json`) · origin/test (**530 unpushed BE** · **187 unpushed FE**) · **QA-20260623-B272 Planned(update)**(BLOCK · dirty recurrence · merge pending 2) · Open **0(active)** · Planned **QA-B272+QA-B273+QA-B116+QA-B95** · 판정 **BLOCK(v1.2.1 regression PASS · develop dirty+pending 2)** · **transfer BLOCK**. 교차(frontend git): FE develop `@426d63a` WT **DIRTY 44M+12U** · FE test `@b7101d5` · `test..develop` **0/3** pending · ★ **cross-stream BLOCK(BE dirty pending 2 @c4e6bcb · FE dirty@426d63a pending 3)** · backend@8080 **UP/200** · operation **BLOCK** · disk **34%**(97G avail).**
 

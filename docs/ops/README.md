@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-23T19:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-23T21:00:00+09:00 -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **336차 자동 동기화 완료** (BE `c4e6bcb`·FE `426d63a`·V1–V175·111 route·90 page·**V175 leave-ledger integrity**·merge gate 719 carry)  
-> **최종 갱신**: 2026-06-23 (336차 TWR — **V175 leave-ledger integrity Q668**)
+> **상태**: MVP v1 개발 중 — **338차 자동 동기화 완료** (BE `01edba7`·FE `1193761`·V1–V175·111 route·90 page·**US-D01/D02**·**client RBAC hierarchy**·merge gate 723 carry)  
+> **최종 갱신**: 2026-06-23 (338차 TWR — **client RBAC Q675**·**addressSearch/detail Q676**)
 
 ---
 
@@ -28,6 +28,16 @@
 - SSL/HTTPS 설정
 - 모니터링·로그 수집
 - 백업·복구
+
+**최신 항목** (2026-06-23, 338차):
+- **Q675** — **client RBAC hierarchy** — **`caregiver` PATCH ✅** · **create social_worker+** · **`clientPermissions.js`** (`01edba7`/`77584a0`)
+- **Q676** — **`addressSearch`·`addressDetail` read API** — 수정 화면 prefill (`deda5b4`)
+
+**최신 항목** (2026-06-23, 337차):
+- **Q671** — **US-D01/D02 Korean address** — **`addressSearch`+`addressDetail`** · **`KoreanAddressFields` Kakao postcode** · **거주지 전체 표시** (`642ea11`/`0606a3b`)
+- **Q672** — **`/clients` column filters** — **`TableColumnFilter`** 등급·성별·배차·지점 (`7e048c0`)
+- **Q673** — **거주지 vs 픽업 마스킹 분리** — list/detail **전체 거주지** · **픽업 road-level** (`642ea11`)
+- **Q674** — **HR `branchName` → `BranchScopeNotice`** — annual-leaves·leave-ledger (`64584f4`)
 
 **최신 항목** (2026-06-23, 336차):
 - **Q668** — **V175 leave-ledger DB integrity** — memo nonempty CHECK · **user_branches FK** (`c4e6bcb`)
@@ -231,20 +241,14 @@
 
 ---
 
-### 🏗️ **CHANGELOG.md** — 버전 변경 이력
+### 🏗️ **CHANGELOG.md** — 변경 기록 (사람용)
 
-**대상**: 개발자, QA, 기획자 (구현 진전 추적)
+**대상**: 운영·기획 담당자 — 에이전트가 무엇을 했는지, 화면에 무엇이 바뀌었는지
 
 **구성**:
-- `[Unreleased]`: 현재 개발 중 (v1 Must 기능 + P2 Planned)
-- `[0.0.1]`: v1 RC (마지막 테스트)
-- `[0.0.0]`: 초기 설계
-
-**최신** (2026-06-13):
-- BE `8bb6583` · FE `a5c2736` · V99 DB
-- **902/902 `mvn test` PASS** · **1022/1022 Vitest PASS**
-- **merge gate FULLY UNBLOCKED**
-- **14개 P2 Planned** 항목 (FAQ21824 wizard·G34 SMS·건강검진 파일함 등)
+- **최근 7일 요약** + **날짜별 카드** (에이전트 축약명 · 한 일 · 내 화면/업무에 영향 · 상태)
+- 3개월 지난 날짜는 삭제 (아카이브 없음)
+- 기술 상세는 각 카드의 「자세히」만
 
 ---
 
@@ -258,7 +262,7 @@
 | **FAQ.md** | ✅ 현행 | 2026-06-13 (143차) | 315+ Q&A · Q309-Q313 Fixed · **P2 Planned 14개 명시** |
 | **ADMIN_GUIDE.md** | ✅ 현행 | 2026-06-13 (최근) | V99 마이그레이션 · G42 pending-approval · US-R03 lifecycle · G2 CMS · **14개 P2 갭 명시** |
 | **DEPLOYMENT_GUIDE.md** | ✅ 현행 | 2026-06-13 (최근) | V99 마이그레이션 · ENV 설정 · LCMS/CMS 연동 · 모니터링 |
-| **CHANGELOG.md** | ✅ 현행 | 2026-06-13 (143차) | BE `8bb6583`·FE `a5c2736` · V99 · **902/1022 PASS** · merge gate FULLY UNBLOCKED |
+| **CHANGELOG.md** | ✅ 현행 | 2026-06-23 | 날짜별 카드 형식 (에이전트 작업 일지) |
 | **README.md** (본 문서) | 🆕 신규 | 2026-06-13 | 문서 네비게이션 · 역할별 가이드 · 최신 진행도 |
 
 ---
@@ -429,7 +433,7 @@
 
 **Q. 최신 정보는 어디서 확인하나요?**
 
-- **구현 진전**: CHANGELOG.md `[Unreleased]` 섹션
+- **구현 진전**: CHANGELOG.md 「최근 7일 요약」
 - **개발 상태**: 각 문서 최상단 메타 (`updated=` 날짜 확인)
 - **의사결정 이력**: PLAN_NOTES.md
 

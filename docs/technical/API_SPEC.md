@@ -197,7 +197,7 @@
 | GET | `/clients` | 이용자 목록(지점 필터·검색·페이지) | 스코프 내 조회 |
 | POST | `/clients` | 이용자 등록(소속 `branchId` 필수) | branch_admin, social_worker |
 | GET | `/clients/{clientId}` | 이용자 상세 | 스코프 내 |
-| PATCH | `/clients/{clientId}` | 이용자 수정 | branch_admin, social_worker |
+| PATCH | `/clients/{clientId}` | 이용자 수정 | hq_admin, branch_admin, social_worker, caregiver |
 | POST | `/clients/{clientId}/discharge` | 퇴소 처리 | branch_admin |
 | POST | `/clients/{clientId}/photo` | 사진 업로드(검증·용량 제한) | branch_admin, social_worker |
 | GET | `/clients/{clientId}/guardians` | 연결 보호자 목록 | 스코프 내 |

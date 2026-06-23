@@ -1,3 +1,13 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T20:35:08+00:00 -->
+<!-- tester-sync: TSR 1335차 2026-06-23T20:35 UTC (frontend) — ROADMAP merged regression test `@b7101d5` **2111/2111 PASS**(413 files, 720.23s) · develop `@170ce56` WT **CLEAN** · pre-merge **SKIP**(vitest concurrency lock PID 730962) · merge **SKIP**(`test..develop` **0/10** pending · pre-merge 미재검증) · build **1149 PASS**(8.26s) · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B274 Open(carry,BLOCK)** · **QA-B273 Planned(update)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 5 @01edba7 · FE pending 10 @170ce56 + QA-B274 carry)** · operation **BLOCK** -->
+# updated: 2026-06-23T20:35:08+00:00
+# revalidation_1335th: frontend test @b7101d5 npm 2111/2111 PASS(413 files,720.23s); develop @170ce56 WT CLEAN; pre-merge SKIP(concurrency PID 730962); merge SKIP(0/10 pending+미재검증); build 1149 PASS(8.26s); audit 1 high; live E2E SKIP(127/19 carry); QA-B274 Open(carry); QA-B273 Planned(update pending 7→10); transfer BLOCK; cross-stream BLOCK; operation BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T19:25:00+00:00 -->
+<!-- tester-sync: TSR 1333차 2026-06-23T19:25 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **Terminated exit 143**(~371.9s partial) · develop `@77584a0` WT **CLEAN** · pre-merge **2103/2110 FAIL**(7 FAIL) · merge **SKIP**(`test..develop` **0/7** · pre-merge FAIL) · build **1149/1165 PASS** · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B274 Open(BLOCK)** · **QA-B273 Planned(update)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 4 @deda5b4 · FE pending 7 + pre-merge FAIL)** · operation **BLOCK** -->
+# updated: 2026-06-23T19:25:00+00:00
+# revalidation_1333rd: frontend baseline carry 2049/2049 @b7101d5(1320차); npm re-run Terminated exit 143(~371.9s); develop @77584a0 WT CLEAN; pre-merge 2103/2110 FAIL(7); merge SKIP(0/7+pre-merge FAIL); build 1149/1165 PASS; audit 1 high; live E2E SKIP(127/19 carry); QA-B274 Open; QA-B273 Planned(update); transfer BLOCK; cross-stream BLOCK; operation BLOCK.
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T18:23:23+00:00 -->
 <!-- tester-sync: TSR 1331차 2026-06-23T18:23 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **SKIP**(vitest concurrency · `src/frontend` develop PID 657264 · `docs/qa/VITEST_CONCURRENCY.md`) · develop `@64584f4` WT **DIRTY 48M+18U** · merge **SKIP**(`test..develop` **0/4** pending+dirty) · build **1149 PASS**(10.25s @ test) · audit **0** · live E2E **SKIP**(127/19 carry) · **QA-B273 Planned(update,BLOCK)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 @c4e6bcb · FE dirty pending 4)** · operation **BLOCK** -->
 # updated: 2026-06-23T18:23:23+00:00

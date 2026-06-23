@@ -1,3 +1,57 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T20:35:08+00:00 -->
+<!-- tester-sync: TSR 1335차 2026-06-23T20:35 UTC (frontend) — ROADMAP merged regression test `@b7101d5` **2111/2111 PASS**(413 files, 720.23s) · develop `@170ce56` WT **CLEAN** · pre-merge **SKIP**(vitest concurrency lock PID 730962) · merge **SKIP**(`test..develop` **0/10** pending · pre-merge 미재검증) · build **1149 PASS**(8.26s) · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B274 Open(carry,BLOCK)** · **QA-B273 Planned(update)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 5 @01edba7 · FE pending 10 @170ce56 + QA-B274 carry)** · operation **BLOCK** -->
+# updated: 2026-06-23T20:35:08+00:00
+# revalidation_1335th: frontend manifest => BLOCK (test @b7101d5 npm 2111/2111 PASS; develop @170ce56 CLEAN; pre-merge SKIP concurrency PID 730962; merge SKIP 0/10+미재검증; QA-B274 Open carry; QA-B273 Planned update pending 7→10; cross-stream BLOCK; operation BLOCK).
+
+stream: frontend
+test_branch_head: b7101d5
+develop_head: 170ce56
+merge_status: pending
+merge_pending_commits: 10
+merge_range: b7101d5..170ce56
+npm_test_baseline: "2111/2111 PASS @ test b7101d5 (1335차, 720.23s, 413 files)"
+npm_test_pre_merge: "SKIP @ develop 170ce56 (vitest concurrency lock; active PID 730962)"
+npm_test_post_merge: "SKIP (merge blocked by pending 10 + pre-merge 미재검증)"
+build_modules: "1149 modules PASS @ test (8.26s)"
+build_exit: "0"
+audit_vulnerabilities: "1 high (form-data)"
+live_e2e: "SKIP (merge 없음 · 1320차 carry 127 PASS / 19 SKIP)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260623-B274]
+planned_issues: [QA-20260623-B273, QA-20260623-B272]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 5 @01edba7 QA-B272 · FE pending 10 @170ce56 + QA-B274 carry)
+operation: BLOCK (QA-B274 + QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T19:25:00+00:00 -->
+<!-- tester-sync: TSR 1333차 2026-06-23T19:25 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **Terminated exit 143**(~371.9s) · develop `@77584a0` WT **CLEAN** · pre-merge **2103/2110 FAIL**(7 FAIL) · merge **SKIP**(`test..develop` **0/7** · pre-merge FAIL) · build **1149/1165 PASS** · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B274 Open(BLOCK)** · **QA-B273 Planned(update)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 4 @deda5b4 · FE pending 7 + pre-merge FAIL)** · operation **BLOCK** -->
+# updated: 2026-06-23T19:25:00+00:00
+# revalidation_1333rd: frontend manifest => BLOCK (baseline carry 2049/2049 @b7101d5; develop @77584a0 CLEAN; pre-merge 2103/2110 FAIL 7; merge SKIP 0/7+pre-merge FAIL; QA-B274 Open; QA-B273 Planned update dirty resolved; cross-stream BLOCK; operation BLOCK origin/test push 530 BE+187 FE).
+
+stream: frontend
+test_branch_head: b7101d5
+develop_head: 77584a0
+merge_status: pending
+merge_pending_commits: 7
+merge_range: b7101d5..77584a0
+npm_test_baseline: "2049/2049 PASS @ test b7101d5 (1320차 carry · 1333차 re-run Terminated ~371.9s partial)"
+npm_test_pre_merge: "2103/2110 FAIL @ develop 77584a0 (736.79s, 413 files, 7 FAIL: SideNav×2 StaffWorkAttendancePage×1 pilotPageFlows×4)"
+npm_test_post_merge: "SKIP (merge blocked by pre-merge FAIL + pending 7)"
+build_modules: "1149 modules PASS @ test (12.53s) · 1165 modules PASS @ develop (10.67s)"
+build_exit: "0"
+audit_vulnerabilities: "1 high (form-data)"
+live_e2e: "SKIP (merge 없음 · 1320차 carry 127 PASS / 19 SKIP)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260623-B274]
+planned_issues: [QA-20260623-B273, QA-20260623-B272]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 4 @deda5b4 QA-B272 · FE pending 7 @77584a0 + pre-merge FAIL QA-B274)
+operation: BLOCK (QA-B274 + QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP)
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T18:23:23+00:00 -->
 <!-- tester-sync: TSR 1331차 2026-06-23T18:23 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **SKIP**(vitest concurrency · `src/frontend` develop PID 657264) · develop `@64584f4` WT **DIRTY 48M+18U** · merge **SKIP**(`test..develop` **0/4** pending+dirty) · build **1149 PASS**(10.25s @ test) · audit **0** · live E2E **SKIP**(127/19 carry) · **QA-B273 Planned(update,BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 2 @c4e6bcb · FE dirty pending 4)** · operation **BLOCK** -->
 # updated: 2026-06-23T18:23:23+00:00
