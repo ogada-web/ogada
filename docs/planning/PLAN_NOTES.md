@@ -76,7 +76,7 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-06-23 (191차 PLN — **자동 기획 동기화** BNK-551~552·TSR 1321~1322차·★ US-R01-c leave-ledger BE ✅ FE wire △·★ v1.3-C M2 차별화·★ QA-B272/B273 Planned·merge gate 718·cross-stream BLOCK·disk ENOSPC·QA Open 0) | **313차 TWR** — 문서 baseline 1차 확정 carry  
+> **최종 갱신**: 2026-06-23 (192차 PLN — **자동 기획 동기화** BNK-553~556·TSR 1323~1331차·★★★ longterm 502 canonical(단기보호 74,060)·610 통합재가(월 10만원)·★★ NHIS #44 이동서비스비 IDENTICAL→P2 문구 고정·★ 신규 candidate G-BILLING-START-STANDALONE·G-GUARDIAN-MEETING P3·★ G-STAFF-ANNUAL-LEAVE ✅ CLOSURE 재확인·V175 integrity·KPI 정정 Route 112·FE test 463·merge gate 723·cross-stream BLOCK·disk 34% 회복·QA Open 0) | **313차 TWR** — 문서 baseline 1차 확정 carry  
 
 ### [PLN] QA 피드백 반영 (2026-06-23, 191차 — BNK-551~552 · TSR 1321~1322차 · ★ QA-B272/B273 Open→Planned · QA Open 0 · ★ US-R01-c leave-ledger BE ✅ FE wire △ · ★ v1.3-C M2 차별화 · merge gate 718 · cross-stream BLOCK · disk ENOSPC)
 
