@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-22T10:15:00+00:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23T09:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-22 (153차 — **US-D03 이용자 출석 탭·G-BILLING-REPORT-FILTER-PERSISTENCE·US-E03 QR 이미지 접근성 재점검 + §76 신규** — 152차(§75)·UXD-152(`df7f308`) 이후 coder 신규 기능 커밋 5건(`d058e43` US-D03 출석 이력 탭·`250619e` US-E03 QR 이미지·`8aabeae` chore·`daaba4b` QA-B233·`77b1ea8` G-BILLING-REPORT-FILTER-PERSISTENCE) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — `hydrateFiltersAndFetch` 필터 복원 비동기 구간(loadSavedFilters 호출~fetchReport 시작)에서 `loading=false` 상태로 버튼 `aria-busy` 미전달 갭 → `setLoading(true)` 선행 추가(WCAG 4.1.3). ② **`QrGeneratePage`** — `validUntil` 표시 시각 `toLocaleTimeString` 평문 → `<time dateTime={qrData.validUntil}>` 래핑(WCAG 1.3.1·88차 `StaffDetailPage` 날짜 의미론 패턴). ③ **US-D03 `ClientDetailPage` 출석 탭** — `Table` caption·`<time dateTime>`·`StatusBadge ATTENDANCE_STATUS`·`EmptyState`·`Spinner role=status` 모두 표준 준수(변경 불요). ④ **§76** 신규. 회귀 +2. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-23 (155차 — **G-STAFF-ANNUAL-LEAVE Page wire-up 접근성 재점검 + `.ds-help-text`·`.ds-fieldset` FE-16 승격 + §78** — 154차(§77)·UXD-154(`5353991`) 이후 coder 신규 커밋 6건(`3902dba` Page·API wire·`80613c3`/`8434435`/`971c7f1` validation·title) 미점검 a11y·FE-16 갭 해소. ① **`StaffAnnualLeavePage`** — 저장 성공 `Alert role=status`·수정 modal `form aria-label`·표 섹션 `aria-busy`. ② **`.ds-help-text`·`.ds-fieldset`** — coder가 사용했으나 미정의였던 2 클래스 승격(`StaffWorkAttendancePage`·`StaffHealthCheckupsPage` 공유). ③ **§78** 신규. 회귀 +2. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-22 (154차 — **G2-CMS-ROSTER·G34-WORKFLOW-CATALOG·G30-LEGEND 접근성 재점검 + G-STAFF-ANNUAL-LEAVE UI 셸 신규 + §77** — 153차(§76)·UXD-153(`da34daf`) 이후 coder 신규 커밋 6건(`77cfc38`/`9f110a5` G34·`fdc135b` G30-LEGEND·`df9ec6c`→`3ece965` G2 CMS roster) 미점검 a11y·US-R03e 컴포넌트 갭 해소. ① **`CmsEnrollmentTable`** — `enrolledAt` `<time dateTime>`·이용자 링크 `aria-label`. ② **`EzcareWorkflowCatalogPanel`·`MonitoringOfficialIndicatorLegendPanel`** — `Table caption` 추가. ③ **`StaffAnnualLeaveTable`** — ezCare worker-b100 tab01 14-field parity UI 셸·`staffAnnualLeave.js` 유틸·`.ds-staff-annual-leave*` CSS. ④ **§77** 신규. 회귀 +6. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-22 (153차 — **US-D03 이용자 출석 탭·G-BILLING-REPORT-FILTER-PERSISTENCE·US-E03 QR 이미지 접근성 재점검 + §76 신규** — 152차(§75)·UXD-152(`df7f308`) 이후 coder 신규 기능 커밋 5건(`d058e43` US-D03 출석 이력 탭·`250619e` US-E03 QR 이미지·`8aabeae` chore·`daaba4b` QA-B233·`77b1ea8` G-BILLING-REPORT-FILTER-PERSISTENCE) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — `hydrateFiltersAndFetch` 필터 복원 비동기 구간(loadSavedFilters 호출~fetchReport 시작)에서 `loading=false` 상태로 버튼 `aria-busy` 미전달 갭 → `setLoading(true)` 선행 추가(WCAG 4.1.3). ② **`QrGeneratePage`** — `validUntil` 표시 시각 `toLocaleTimeString` 평문 → `<time dateTime={qrData.validUntil}>` 래핑(WCAG 1.3.1·88차 `StaffDetailPage` 날짜 의미론 패턴). ③ **US-D03 `ClientDetailPage` 출석 탭** — `Table` caption·`<time dateTime>`·`StatusBadge ATTENDANCE_STATUS`·`EmptyState`·`Spinner role=status` 모두 표준 준수(변경 불요). ④ **§76** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-22 (152차 — **G-STAFF-WORK-ATTENDANCE·G-BILLING-DEPOSIT-ORDER-GUARD·US-E05 출석 통계 접근성 재점검 + §75 신규** — 151차(§74)·UXD-151(`9812ac4`) 이후 coder 신규 커밋 3종(`StaffWorkAttendancePage`·`CmsDebitPanel`·`AttendanceStatsPage`) 미점검 a11y 갭 해소. ① **`StaffWorkAttendancePage`** — 조회 `aria-busy`·StatCard `role=group aria-label`·출근·퇴근 반복 행 버튼 `aria-label`에 직원명·`aria-busy`·출퇴근 시각 `<time dateTime>`. ② **`AttendanceStatsPage`** — 조회 `aria-busy`·StatCard `role=group aria-label`. ③ **`CmsDebitPanel`** — 요청·완료 일시 `<time dateTime>`·상태 컨테이너 `<div>`→`<section aria-labelledby>` + `h3 id`. ④ **§75** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-21 (151차 — **US-R03 모바일 서류 촬영 업로드 접근성 재점검 + `.ds-button` 미정의 셀렉터 회귀 해소 + §74 신규** — 150차(§73)·UXD-150(`751c593`) 이후 coder 신규 기능 커밋 `6bde24a`(feat US-R03 — 케어포 p.96 모바일 서류 촬영: `FileUpload.enableMobileCapture`·`StaffDocumentRepositoryPanel` 슬롯별 「모바일 촬영」·`StaffHrFilePanel`·`StaffRefresherCertificatePanel`) 미점검 a11y·FE-16 갭 해소. ① **모바일 촬영 a11y 확인** — 숨김 카메라 input(`capture="environment"`)은 `aria-hidden`·`tabIndex={-1}`로 트리거 버튼만 활성화·슬롯별 「모바일 촬영」 버튼 `${slot.label} 모바일 촬영 업로드` `aria-label`·`aria-busy`·「업로드 중…」 텍스트 상태(색 비의존)·실패 `Alert role=alert`·`section aria-busy` 모두 표준 준수(변경 불요). ② **`.ds-button` 미정의 셀렉터 회귀 해소(FE-16)** — `6bde24a`의 모바일 전폭 규칙 `@media(max-width:640px) .ds-staff-document-repository .ds-inline-actions .ds-button`이 본 코드베이스 `Button`(`.ds-btn` 렌더)과 불일치하는 **미정의 `.ds-button`**(전 CSS 유일 사용)을 타깃해 적용되지 않던 80·90·119차 패턴 회귀를 `.ds-btn`으로 정합(모바일 버튼 전폭 스택 복구·시각/동작 불변). ③ **§74** 신규. `StaffDocumentRepositoryPanel.test.jsx`·`FileUpload.test.jsx` 8/8 PASS·build PASS.)
 > **이전 갱신**: 2026-06-21 (150차 — **G-BILLING-OVERDUE-ADJUSTMENT·G-STAFF-DOCUMENT-REPOSITORY·G-BATHING 전월 복사 접근성 재점검 + §73 신규** — 149차(§72)·UXD-149(`b969570`) 이후 coder 신규 커밋(`0420e6b` `OverdueManagementModal`·`03d0d43`/`fd15a2f` `StaffDocumentRepositoryPanel`·`9a957fb` `BathingSchedulePage` 전월 복사) 미점검 a11y·FE-16 갭 해소. ① **`OverdueManagementModal`** — 일시 `<time dateTime>`·폼 `aria-label` 2종. ② **`StaffDocumentRepositoryPanel`** — 업로드·lifecycle 링크 `${슬롯명}` `aria-label`·`aria-busy`·로딩 `role=status`·**`.ds-staff-document-repository*`** CSS 승격·`forced-colors` 요약 경계선. ③ **`BathingSchedulePage`** — 조회·전월 복사 `aria-busy`. ④ **§73** 신규. 회귀 +3. `npm test`·build PASS.)
@@ -4232,6 +4234,135 @@ const { ready } = useKakaoMap(containerRef, { center, level });
 
 - `BillingReportPage.test.jsx` — 필터 복원 구간 `aria-busy` 상태 확인(기존 회귀 유지).
 - `QrGeneratePage.test.jsx` — `<time dateTime>` 속성 단언 +1.
+- `npm test` · build PASS.
+
+---
+
+## §77. G2-CMS-ROSTER·G34·G30-LEGEND 접근성 재점검 + G-STAFF-ANNUAL-LEAVE UI 셸 (154차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-22 -->
+
+> **154차 UXD (2026-06-22)** — 153차(§76)·UXD-153(`da34daf`) 이후 coder 신규 기능 커밋 미점검 a11y·US-R03e 컴포넌트 갭 해소.
+> ① **G2-CMS-ENROLLMENT-ROSTER** `CmsEnrollmentTable`(`df9ec6c`→`3ece965`).
+> ② **G34-WORKFLOW-CATALOG** `EzcareWorkflowCatalogPanel`(`77cfc38`/`9f110a5`).
+> ③ **G30-LEGEND** `MonitoringOfficialIndicatorLegendPanel`(`fdc135b`).
+> ④ **G-STAFF-ANNUAL-LEAVE P3** `StaffAnnualLeaveTable` UI 셸 신규(BNK-516 · US-R03e).
+
+### 77-1. 대상 화면·컴포넌트
+
+| 컴포넌트 | 위치 | 커밋 | 스토리 |
+|----------|------|------|--------|
+| `CmsEnrollmentTable` | `components/ui/` | `df9ec6c`→`3ece965` | G2-CMS-ENROLLMENT-ROSTER · US-L03 |
+| `EzcareWorkflowCatalogPanel` | `components/compliance/` | `77cfc38`/`9f110a5` | G34-WORKFLOW-CATALOG · US-T16 |
+| `MonitoringOfficialIndicatorLegendPanel` | `components/monitoring/` | `fdc135b` | G30-LEGEND |
+| `StaffAnnualLeaveTable` | `components/ui/` | **신규** | G-STAFF-ANNUAL-LEAVE · US-R03e |
+
+### 77-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `CmsEnrollmentTable` 등록일시 | `formatDateTime()` 평문 | `<time dateTime={row.enrolledAt}>` (`DateTimeCell`) | WCAG 1.3.1 · §88 날짜 의미론 |
+| `CmsEnrollmentTable` 이용자 링크 | roster 모드에서 링크 텍스트만으로 대상 식별 | `aria-label="${clientName} CMS 등록 관리"` | WCAG 2.4.4 |
+| `EzcareWorkflowCatalogPanel` 표 | `Table` caption 누락 | `caption="운영주기별 워크플로 카탈로그" captionVisuallyHidden` (h2와 중복 방지) | WCAG 1.3.1 · §76 `ClientDetailPage` 패턴 |
+| `MonitoringOfficialIndicatorLegendPanel` 표 | `Table` caption 누락 | `caption="공단 평가지표 ogada 문항 매핑" captionVisuallyHidden` | WCAG 1.3.1 |
+| `EzcareWorkflowCatalogPanel` 외부 FAQ 링크 | `aria-label`에 「새 창」 포함 | 변경 불요 | ✅ |
+| `EzcareWorkflowCatalogPanel` FilterChips·StatCard | radiogroup·`role=group`·`aria-live` | 변경 불요 | ✅ |
+
+### 77-3. G-STAFF-ANNUAL-LEAVE UI 셸 (US-R03e · P3 candidate)
+
+ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100) tab01 「연차휴가 현황」 jqGrid 14-field parity를 위한 **presentational 컴포넌트**. API·Route는 coder 영역.
+
+| ezCare 필드 | ogada prop | 비고 |
+|-------------|-----------|------|
+| wCode | `staffCode` | 직원코드 |
+| wName | `staffName` + `staffId` | `staffId` 있으면 `/staff/:id` 링크 |
+| wGroup | `staffGroup` | 소속·직군 |
+| date_enter | `hiredAt` | `<time dateTime>` |
+| month_1~12 | `monthlyUsed` | 배열 또는 `{1:…,12:…}` |
+| annual_vacation | `annualEntitlement` | 연차 부여일 |
+| vacation_total | `usedTotal` | 미제공 시 월별 합산 |
+| (잔여) | `remainingTotal` | 미제공 시 `entitlement - used` |
+| memo | `memo` | 비고 |
+
+**권장 Route**: `/staff/annual-leaves` · **권장 Page**: `StaffAnnualLeavePage` + `StaffContextNav` 「연차휴가 (8-13)」 링크 추가 · **연계**: US-R01 `/staff/leave-ledger` cross-link.
+
+### 77-4. CSS·토큰
+
+| 클래스 | 용도 |
+|--------|------|
+| `.ds-staff-annual-leave` | 섹션 그리드·`gap: var(--space-3)` |
+| `.ds-staff-annual-leave__table` | 12개월 열 포함 wide table (`ds-table-wrap` 가로 스크롤) |
+| `.ds-staff-annual-leave__month-col` | 월별 열 중앙 정렬·`min-width: 2.75rem`·`forced-colors` 경계선 |
+
+### 77-5. 수정·신규 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `CmsEnrollmentTable.jsx` | `DateTimeCell`·이용자 링크 `aria-label` |
+| `EzcareWorkflowCatalogPanel.jsx` | `Table caption` |
+| `MonitoringOfficialIndicatorLegendPanel.jsx` | `Table caption` |
+| `StaffAnnualLeaveTable.jsx` | **신규** — 연차 현황 표·요약 StatCard |
+| `staffAnnualLeave.js` | **신규** — 월별 정규화·요약 유틸 |
+| `components.css` | `.ds-staff-annual-leave*` |
+| `index.js` | `StaffAnnualLeaveTable` export |
+
+### 77-6. coder 전달 메모
+
+- **`StaffAnnualLeaveTable`** — `rows` prop만 연결하면 표시 가능. `year`·`loading`·`showSummary`·`staffDetailBasePath` 지원.
+- **API 후보** — `GET /api/v1/staff/annual-leaves?branchId=&year=` branch-scoped roster (BNK-516 · backend 미구현 P3).
+- **`StaffContextNav`** — Route·RBAC 확정 후 `{ to: "/staff/annual-leaves", label: "연차휴가 (8-13)" }` 추가(현재 링크 없음·404 방지).
+- **US-R01 연계** — 페이지 하단에 `/staff/leave-ledger` 안내 링크 권장(연차 대장과 역할 분리: 현황 조회 vs 대장 CRUD).
+
+### 77-7. 검증
+
+- `CmsEnrollmentTable.test.jsx` — `time[dateTime]`·링크 `aria-label` +2.
+- `StaffAnnualLeaveTable.test.jsx` — 요약·월별 열·직원 링크 3건.
+- `staffAnnualLeave.test.js` — 정규화·요약 2건.
+- `npm test` · build PASS.
+
+---
+
+## §78. G-STAFF-ANNUAL-LEAVE Page wire-up 접근성 재점검 + 공통 form CSS (155차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23 -->
+
+> **155차 UXD (2026-06-23)** — 154차(§77)·UXD-154(`5353991`) 이후 coder가 `StaffAnnualLeavePage`·API·validation·pilot title을 wire(`3902dba`→`971c7f1`)한 뒤 미점검 a11y·FE-16 갭 해소.
+
+### 78-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `StaffAnnualLeavePage` | `3902dba`→`971c7f1` | G-STAFF-ANNUAL-LEAVE · US-R03e |
+| `StaffContextNav` annual-leaves 링크 | `3902dba` | US-S01 · Staff HR cluster |
+| `staffAnnualLeave.js` validation | `80613c3` | BNK-525/526 BE 정합 |
+
+### 78-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `StaffAnnualLeavePage` 저장 성공 | `Alert` tone만, SR live 미전달 | `role="status"` + `ds-page-alert` | WCAG 4.1.3 · §75 `StaffWorkAttendancePage` 패턴 |
+| `StaffAnnualLeavePage` 수정 modal | `<form>` 이름 없음 | `aria-label="${직원명} 연차휴가 수정"` | WCAG 4.1.2 · `StaffTrainingLogPage` 패턴 |
+| `StaffAnnualLeavePage` 표 영역 | 로딩 중 busy 미표시 | `<section aria-busy={loading}>` | WCAG 4.1.3 |
+| `StaffAnnualLeavePage`·`StaffWorkAttendancePage` | `.ds-help-text` 미정의 | **신규 CSS** — muted 안내 문구 | FE-16 |
+| `StaffAnnualLeavePage`·`StaffHealthCheckupsPage` | `.ds-fieldset` 미정의 | **신규 CSS** — 그룹 fieldset·legend·`forced-colors` | FE-16 |
+| `StaffAnnualLeaveTable`·`StaffContextNav`·조회 버튼 | caption·nav·`aria-busy` | 변경 불요 | ✅ (154차·coder wire 준수) |
+
+### 78-3. CSS·토큰 (신규)
+
+| 클래스 | 용도 |
+|--------|------|
+| `.ds-help-text` | 카드 상단 안내 — `font-size-sm`·`color-text-muted`·하단 `space-4` |
+| `.ds-fieldset` | modal/폼 fieldset — `surface-muted` 배경·`radius-md`·legend semibold |
+
+### 78-4. coder 전달 메모
+
+- **US-R01 leave-ledger cross-link** — `/staff/leave-ledger` Route 미구현 → 링크 추가 보류(USER_STORIES US-R03e 잔여 항목).
+- **pilot Must-page title** — `STAFF_ANNUAL_LEAVE_PAGE_TITLE = "직원 연차휴가"` story-id suffix 금지 유지(BNK-527).
+- **`StaffAnnualLeaveTable`** — Page에서 `PageLoading` + 표 컴포넌트 분리 패턴 유지(coder wire 그대로).
+
+### 78-5. 검증
+
+- `StaffAnnualLeavePage.test.jsx` — `form` `aria-label`·성공 `role=status` +2.
 - `npm test` · build PASS.
 
 ---
