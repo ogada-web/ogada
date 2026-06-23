@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23T18:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23T19:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-23 (156차 — **US-R01 relatedSurfaces cross-link 접근성 재점검 + `RelatedSurfacesPanel` UI 승격 + §79** — 155차(§78)·UXD-155(`085a85a`) 이후 coder 신규 커밋 4건(`0b0d7ba`/`2040571`/`95f55aa` US-R01 양방향 cross-link·API metadata wire) 미점검 a11y·FE-16 갭 해소. ① **`RelatedSurfacesPanel`** — 공통 cross-link 패널 신규(`components/ui/`)·`StaffAnnualLeaveRelatedSurfacesPanel` thin wrapper. ② **landmark 정합** — `StaffWorkAttendancePage`에서 `surfaceKind` 미전달로 aside `aria-label`이 「연차휴가 관련 화면」으로 잘못 노출되던 결함 → `DAILY_WORK_ATTENDANCE_ROSTER`별 「출퇴근 관련 화면」·nav 「직원 HR 관련 화면」. ③ **PLANNED surface** — 평문 「(준비 중)」→`Badge tone=neutral`+`aria-label="${label}, 준비 중"`(WCAG 1.4.1). ④ **`StaffWorkAttendancePage`** — 직원 링크 `${이름} 직원 상세` `aria-label`·목록 `section aria-busy`. ⑤ **`.ds-monitoring-evidence-context__planned`** — inline-flex·`forced-colors` 경계선. ⑥ **§79** 신규. 회귀 +4. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-23 (157차 — **US-R01-c leave-ledger Page 접근성 재점검 + `StaffLeaveLedgerTable`·`StaffLeaveLedgerDeleteModal` + `.ds-form-grid--compact` FE-16 승격 + §80** — 156차(§79)·UXD-156(`c183ebd`) 이후 coder 신규 커밋 1건(`8057c1e` US-R01-c leave-ledger Page·API wire) 미점검 a11y·FE-16 갭 해소. ① **`StaffLeaveLedgerTable`** — 표 `caption`·시작/종료일 `<time dateTime>`·행 수정/삭제 `${직원명} 휴가 대장 …` `aria-label`(WCAG 2.4.6·§77 `StaffAnnualLeaveTable` 패턴). ② **`StaffLeaveLedgerDeleteModal`** — `window.confirm` 대체·`variant=danger`·삭제 중 `aria-busy`·모달 내 오류 `Alert`(WCAG 4.1.2·`TransportDeleteRunModal` 패턴). ③ **`StaffLeaveLedgerPage`** — 시작/종료일 `DateInput` 표준화(FE-16·64차)·조회 `aria-busy`·목록 `section aria-busy`·성공 `role=status` 유지. ④ **`.ds-form-grid--compact`** — `StaffLeaveLedgerPage`·`StaffAnnualLeavePage`·`StaffWorkAttendancePage`·`MonitoringSelfDiagnosisPage` 4곳 미정의 클래스 승격. ⑤ **§80** 신규·§79-4 leave-ledger AVAILABLE closure 반영. 회귀 +6. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-23 (156차 — **US-R01 relatedSurfaces cross-link 접근성 재점검 + `RelatedSurfacesPanel` UI 승격 + §79** — 155차(§78)·UXD-155(`085a85a`) 이후 coder 신규 커밋 4건(`0b0d7ba`/`2040571`/`95f55aa` US-R01 양방향 cross-link·API metadata wire) 미점검 a11y·FE-16 갭 해소. ① **`RelatedSurfacesPanel`** — 공통 cross-link 패널 신규(`components/ui/`)·`StaffAnnualLeaveRelatedSurfacesPanel` thin wrapper. ② **landmark 정합** — `StaffWorkAttendancePage`에서 `surfaceKind` 미전달로 aside `aria-label`이 「연차휴가 관련 화면」으로 잘못 노출되던 결함 → `DAILY_WORK_ATTENDANCE_ROSTER`별 「출퇴근 관련 화면」·nav 「직원 HR 관련 화면」. ③ **PLANNED surface** — 평문 「(준비 중)」→`Badge tone=neutral`+`aria-label="${label}, 준비 중"`(WCAG 1.4.1). ④ **`StaffWorkAttendancePage`** — 직원 링크 `${이름} 직원 상세` `aria-label`·목록 `section aria-busy`. ⑤ **`.ds-monitoring-evidence-context__planned`** — inline-flex·`forced-colors` 경계선. ⑥ **§79** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-23 (155차 — **G-STAFF-ANNUAL-LEAVE Page wire-up 접근성 재점검 + `.ds-help-text`·`.ds-fieldset` FE-16 승격 + §78** — 154차(§77)·UXD-154(`5353991`) 이후 coder 신규 커밋 6건(`3902dba` Page·API wire·`80613c3`/`8434435`/`971c7f1` validation·title) 미점검 a11y·FE-16 갭 해소. ① **`StaffAnnualLeavePage`** — 저장 성공 `Alert role=status`·수정 modal `form aria-label`·표 섹션 `aria-busy`. ② **`.ds-help-text`·`.ds-fieldset`** — coder가 사용했으나 미정의였던 2 클래스 승격(`StaffWorkAttendancePage`·`StaffHealthCheckupsPage` 공유). ③ **§78** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-22 (154차 — **G2-CMS-ROSTER·G34-WORKFLOW-CATALOG·G30-LEGEND 접근성 재점검 + G-STAFF-ANNUAL-LEAVE UI 셸 신규 + §77** — 153차(§76)·UXD-153(`da34daf`) 이후 coder 신규 커밋 6건(`77cfc38`/`9f110a5` G34·`fdc135b` G30-LEGEND·`df9ec6c`→`3ece965` G2 CMS roster) 미점검 a11y·US-R03e 컴포넌트 갭 해소. ① **`CmsEnrollmentTable`** — `enrolledAt` `<time dateTime>`·이용자 링크 `aria-label`. ② **`EzcareWorkflowCatalogPanel`·`MonitoringOfficialIndicatorLegendPanel`** — `Table caption` 추가. ③ **`StaffAnnualLeaveTable`** — ezCare worker-b100 tab01 14-field parity UI 셸·`staffAnnualLeave.js` 유틸·`.ds-staff-annual-leave*` CSS. ④ **§77** 신규. 회귀 +6. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-22 (153차 — **US-D03 이용자 출석 탭·G-BILLING-REPORT-FILTER-PERSISTENCE·US-E03 QR 이미지 접근성 재점검 + §76 신규** — 152차(§75)·UXD-152(`df7f308`) 이후 coder 신규 기능 커밋 5건(`d058e43` US-D03 출석 이력 탭·`250619e` US-E03 QR 이미지·`8aabeae` chore·`daaba4b` QA-B233·`77b1ea8` G-BILLING-REPORT-FILTER-PERSISTENCE) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — `hydrateFiltersAndFetch` 필터 복원 비동기 구간(loadSavedFilters 호출~fetchReport 시작)에서 `loading=false` 상태로 버튼 `aria-busy` 미전달 갭 → `setLoading(true)` 선행 추가(WCAG 4.1.3). ② **`QrGeneratePage`** — `validUntil` 표시 시각 `toLocaleTimeString` 평문 → `<time dateTime={qrData.validUntil}>` 래핑(WCAG 1.3.1·88차 `StaffDetailPage` 날짜 의미론 패턴). ③ **US-D03 `ClientDetailPage` 출석 탭** — `Table` caption·`<time dateTime>`·`StatusBadge ATTENDANCE_STATUS`·`EmptyState`·`Spinner role=status` 모두 표준 준수(변경 불요). ④ **§76** 신규. 회귀 +2. `npm test`·build PASS.)
@@ -4357,7 +4358,7 @@ ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100
 
 ### 78-4. coder 전달 메모
 
-- **US-R01 leave-ledger cross-link** — `/staff/leave-ledger` Route 미구현 → 링크 추가 보류(USER_STORIES US-R03e 잔여 항목). **156차 갱신**: `RelatedSurfacesPanel` `PLANNED` Badge 패턴으로 전환(§79).
+- **US-R01 leave-ledger cross-link** — `/staff/leave-ledger` Route·API **✅ wire LIVE** @ `8057c1e` · `RelatedSurfacesPanel` `AVAILABLE` 링크 정본(§80).
 - **pilot Must-page title** — `STAFF_ANNUAL_LEAVE_PAGE_TITLE = "직원 연차휴가"` story-id suffix 금지 유지(BNK-527).
 - **`StaffAnnualLeaveTable`** — Page에서 `PageLoading` + 표 컴포넌트 분리 패턴 유지(coder wire 그대로).
 
@@ -4404,7 +4405,7 @@ ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100
 
 ### 79-4. coder 전달 메모
 
-- **`/staff/leave-ledger`** — Route·API 미구현(US-R01-c P1). 현재 `PLANNED` Badge 비링크가 정본 UX. 구현 시 `relatedSurfaces[].availability: "AVAILABLE"`만 반환하면 `RelatedSurfacesPanel`이 자동 링크화.
+- **`/staff/leave-ledger`** — **✅ Route·API wire LIVE** @ `8057c1e`(US-R01-c). `relatedSurfaces[].availability: "AVAILABLE"` 반환 시 `RelatedSurfacesPanel` 자동 링크화 — **157차 UXD 표·삭제 Modal·DateInput 정합 완료(§80)**.
 - **양방향 cross-link** — `ANNUAL_LEAVE_USAGE_SNAPSHOT`↔`DAILY_WORK_ATTENDANCE_ROSTER` 각 Page에서 `surfaceKind` prop 전달 필수(landmark 라벨 분기).
 - **재사용** — 모니터링·청구 등 다른 `relatedSurfaces[]` 소비 화면은 `RelatedSurfacesPanel` 직접 import 권장.
 
@@ -4412,6 +4413,54 @@ ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100
 
 - `RelatedSurfacesPanel.test.jsx` — landmark·PLANNED Badge·link 2건.
 - `StaffAnnualLeaveRelatedSurfacesPanel.test.jsx`·`StaffWorkAttendancePage.test.jsx`·`StaffAnnualLeavePage.test.jsx` — PLANNED assertion 갱신.
+- `npm test` · build PASS.
+
+---
+
+## §80. US-R01-c leave-ledger Page 접근성 재점검 + `StaffLeaveLedgerTable` (157차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23 -->
+
+> **157차 UXD (2026-06-23)** — 156차(§79)·UXD-156(`c183ebd`) 이후 coder가 US-R01-c canonical leave ledger Page·API client를 wire(`8057c1e`)한 뒤 미점검 a11y·FE-16 갭 해소.
+
+### 80-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `StaffLeaveLedgerPage` | `8057c1e` | US-R01-c · 케어포 8-13 canonical leave ledger |
+| `StaffLeaveLedgerRelatedSurfacesPanel` | `8057c1e` | US-R01 cross-link · monthly snapshot↔대장 |
+| `staffLeaveLedger.js` | `8057c1e` | validation·normalize·page title |
+
+### 80-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `StaffLeaveLedgerPage` 표 행 액션 | 「수정」/「삭제」 동일 접근성 이름 | **`StaffLeaveLedgerTable`** — `${displayName} 휴가 대장 수정/삭제` `aria-label` | WCAG 2.4.6 · §77 `StaffAnnualLeaveTable` |
+| 표 날짜 열 | ISO 문자열 평문 | `<time dateTime={leaveDate\|endDate}>` | WCAG 1.3.1 · §77 |
+| 삭제 확인 | `window.confirm` — SR·키보드 비노출 | **`StaffLeaveLedgerDeleteModal`**(`variant=danger`·모달 내 오류) | WCAG 4.1.2 · `TransportDeleteRunModal` |
+| 등록/수정 modal 날짜 | raw `TextInput type=date` | **`DateInput`** 2필드 | FE-16 · 64차 Must 화면 date 표준 |
+| 필터 그리드 | `.ds-form-grid--compact` 미정의(4 Page 공유) | **`.ds-form-grid--compact`** CSS 승격 | FE-16 |
+
+### 80-3. 컴포넌트·토큰
+
+| 항목 | 설명 |
+|------|------|
+| `StaffLeaveLedgerTable` | `components/ui/` — 연차·유급휴일 대장 표(semantic date·row action labels) |
+| `StaffLeaveLedgerDeleteModal` | 파괴적 삭제 확인 Modal |
+| `StaffLeaveLedgerRelatedSurfacesPanel` | `RelatedSurfacesPanel` thin wrapper — aside 「휴가 대장 관련 화면」 |
+| `.ds-form-grid--compact` | 필터·조회 행 — `minmax(160px,1fr)`·`align-items:end`·`.ds-form-actions` flex |
+
+### 80-4. coder 전달 메모
+
+- **정보 모델 분리** — `/staff/annual-leaves`(월별 snapshot 집계) vs `/staff/leave-ledger`(건별 canonical ledger) UI 역할은 `STAFF_LEAVE_LEDGER_HELP`·cross-link로 유지.
+- **삭제 API 실패** — Modal `error` prop으로 본문 `Alert` 노출(페이지 상단 오류와 분리).
+- **pilot Must-page title** — `STAFF_LEAVE_LEDGER_PAGE_TITLE = "연차·유급휴일 대장"` story-id suffix 금지.
+
+### 80-5. 검증
+
+- `StaffLeaveLedgerTable.test.jsx` — `<time dateTime>`·row action labels 2건.
+- `StaffLeaveLedgerDeleteModal.test.jsx` — 확인 문구·`onConfirm` 2건.
+- `StaffLeaveLedgerPage.test.jsx` — modal delete flow·contextual edit label 갱신.
 - `npm test` · build PASS.
 
 ---
