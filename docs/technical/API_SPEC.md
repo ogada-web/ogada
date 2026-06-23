@@ -1,11 +1,11 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-22T06:30:00Z -->
-<!-- tech_writer-sync: TWR 305차 2026-06-22T06:30:00Z — **baseline documentation closure** · **BE `fd0a3b3`·FE `77b1ea8`·V1–V170·109 route·87 page·merge gate 665** · **305차 갱신**: Q624 QR 이미지 갭 명시·API_SPEC 메타 업데이트·미해결 Must 1건 정정 · **다음 TWR 신호**: coder Q624 implementation start → Q625~Q627 신규 FAQ · next: live E2E G21/G32/G42·L03_M15·P3 features -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-23T23:30:00Z -->
+<!-- tech_writer-sync: TWR 340차 2026-06-23T23:30:00Z — **client address + RBAC documentation update** · **BE `f600fd6`·FE `a531ed6`·V1–V175·111 route·90 page·merge gate 735** · **새 섹션 4-0/4-1**: addressSearch·addressDetail 분리 저장 명세 · caregiver PATCH 제한 권한 · **Q675/Q676/Q677** FAQ 링크 추가 · **다음 TWR 신호**: coder Q624 QR implementation → Q625~Q627 신규 FAQ -->
 <!-- tech_writer-sync: TWR 291차 2026-06-21T08:48:00 UTC — API_SPEC resync (248차→291차) — **G21 대시보드 `nhisComparisonGapCount`·G15 Kakao `transportKakaoQuotaSummary`·G-BATHING `copy-from-previous-month`** 신규 추가 · **Q594/Q595/Q598** FAQ 링크 · BE `0c9518a` / FE `580a86b` · V1–V166 · next: live E2E G21/G32/G42 하위 scoped blocker 문서화 -->
 # 주간보호센터 웹 시스템 — REST API 명세 (technical/API_SPEC.md)
 
 > **작성**: planner, tech_writer 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-21 (TWR 302차 — **자동 갱신·미해결 Must 갭 4건 재정리** — BE `a6eb8b7` / FE `5fd468b` · V1–V169 · **baseline 확정** · **다음 우선순위**: coder 1~4번 구현 완료 시 Q631~Q634 추가)
+> **최종 갱신**: 2026-06-23 (TWR 340차 — **client address·RBAC documentation** · **BE `f600fd6` / FE `a531ed6`** · V1–V175 · **새 섹션 4-0/4-1** addressSearch/addressDetail 분리·caregiver PATCH 제한 · **Q675/Q676/Q677** 기준 · **다음**: coder Q624~Q627 QR 구현)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, **대시보드(G21 NHIS·G15 Kakao)**, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, 케이스관리·기능회복훈련·민원상담, **목욕 자동 복사**, 시스템 헬스체크
 > **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `a6eb8b7` / **frontend** `5fd468b`
@@ -195,9 +195,9 @@
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/clients` | 이용자 목록(지점 필터·검색·페이지) | 스코프 내 조회 |
-| POST | `/clients` | 이용자 등록(소속 `branchId` 필수) | branch_admin, social_worker |
-| GET | `/clients/{clientId}` | 이용자 상세 | 스코프 내 |
-| PATCH | `/clients/{clientId}` | 이용자 수정 | hq_admin, branch_admin, social_worker, caregiver |
+| POST | `/clients` | 이용자 등록 (주소 분리: `addressSearch`·`addressDetail`) | branch_admin, social_worker |
+| GET | `/clients/{clientId}` | 이용자 상세 (주소 분리 필드 포함) | 스코프 내 |
+| PATCH | `/clients/{clientId}` | 이용자 수정 (주소, 상세주소 분리 저장·선택 필드만 가능) | branch_admin, social_worker, caregiver |
 | POST | `/clients/{clientId}/discharge` | 퇴소 처리 | branch_admin |
 | POST | `/clients/{clientId}/photo` | 사진 업로드(검증·용량 제한) | branch_admin, social_worker |
 | GET | `/clients/{clientId}/guardians` | 연결 보호자 목록 | 스코프 내 |
@@ -555,7 +555,8 @@
   "name": "홍길동",
   "birthDate": "1945-03-02",
   "gender": "M",
-  "address": "서울시 ...",
+  "addressSearch": "서울시 강남구 테헤란로 123",
+  "addressDetail": "201호",
   "phone": "010-0000-0000",
   "residentRegistrationNo": "암호화 저장 대상(수집 시)",
   "ltcGrade": 3,
@@ -573,6 +574,49 @@
 > **보안**: `residentRegistrationNo`(주민등록번호)는 고유식별정보 → **저장 시 암호화**, 응답·로그·목록에는 **마스킹**(`******-*******`)만 노출. 수집 여부는 §보안 미확정(아래 메모) 확정 후 반영.
 > **`copayType`**: `GENERAL`(일반) | `REDUCED_40`(감경) | `REDUCED_60`(감경) | `MEDICAID`(기초·의료급여) — 실제 비율은 `copay_rates` 테이블 참조(§7).
 > **`primaryGuardian` (필수 — 결정 19·US-D01, 2026-06-06 7차 명세화)**: 활성 이용자는 **보호자 1명 이상 연결이 필수**다. 등록 요청에 **기존 `guardian` 계정의 `guardianUserId`**(+ 관계)를 포함하면 `clients` INSERT와 동시에 `guardian_clients` 연결·대표(primary) 지정이 **단일 트랜잭션**으로 처리되고, `clients.guardian_link_status`가 `LINKED`로 설정된다(V39). 누락 시 `400`(`guardian_link_status=PENDING` 잔존 금지). 등록 후 추가 보호자는 `POST /clients/{clientId}/guardians`로 연결. *(구현: `CreateClientRequest.primaryGuardian`·`PrimaryGuardianLinkRequest` — develop `4d476c6` HEAD 정합.)*
+
+---
+
+### 4-0. 이용자 주소 필드 분리 (US-D01/D02, 2026-06-23 BNK-561/562)
+
+**배경**: 도로명주소(`addressSearch`, Kakao 우편번호 검색 결과)와 상세주소(`addressDetail`, 호수 등)를 **분리 저장·조회**하여 **수정 시 상세 주소만 변경 가능** 및 **prefill 정확성 향상**.
+
+| 필드 | 설명 | 저장 방식 | 예시 |
+|------|------|---------|------|
+| `addressSearch` | Kakao 우편번호 검색 결과 (도로명) | POST/PATCH 공통 | `"서울시 강남구 테헤란로 123"` |
+| `addressDetail` | 상세주소 (호수·층·동 등) | POST/PATCH 공통 | `"201호"` |
+| `address` (조회용) | 표시용 전체 주소 (둘의 연결) | GET 응답 · 내부 계산 | `"서울시 강남구 테헤란로 123 201호"` |
+
+**PATCH 유연성**: **`addressDetail`만** 변경 가능 — `addressSearch` 없이 `{"addressDetail": "202호"}` 전송 시 **도로명은 유지**, 상세주소만 업데이트 (Q677, BE `2cae74c`).
+
+**`PATCH /clients/{clientId}` 요청 (주소만 수정)**
+
+```json
+{
+  "addressDetail": "202호"
+}
+```
+
+> 응답: 도로명(`addressSearch`)·상세(`addressDetail`) 유지, 전체 주소(`address`) 갱신.
+
+---
+
+### 4-1. 이용자 등록·수정 역할별 권한 (Q675, 2026-06-23 BNK-561)
+
+| 역할 | POST `/clients` (신규) | PATCH `/clients/{id}` (수정) | 비고 |
+|------|----------------------|---------------------------|------|
+| `hq_admin` | ❌ | ❌ | `active_branch_id` 미설정 시 불가 |
+| `branch_admin` | ✅ | ✅ | 모든 필드 수정 가능 |
+| `social_worker` | ✅ | ✅ | 모든 필드 수정 가능 |
+| `caregiver` | ❌ | ✅ 제한 | **기본정보·주소·배차만** — 등급·보호자 수정 불가 |
+| `guardian` | ❌ | ❌ | - |
+
+**`PATCH` 권한 (caregiver Q675, BE `01edba7`)**: 요양보호사는 **다음만 수정 가능**:
+- 기본정보: 이름, 생년월일, 성별, 연락처
+- 주소: `addressSearch`, `addressDetail`
+- 배차: `usesTransport`, 픽업 주소 및 연락처
+
+**FE 가드 (Q675, FE `77584a0`)**: 요양보호사 계정은 `/clients/new` 라우트 **차단** — 신규 등록 불가. 관리자만 가능.
 
 ---
 
