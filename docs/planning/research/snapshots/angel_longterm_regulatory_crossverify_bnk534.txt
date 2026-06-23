@@ -1,0 +1,128 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-23T03:30:00Z -->
+# BNK-534 엔젤·롱텀·규제 4–6h 역공학 extract (326차 backbone + ogada US-R01 FE wire closure)
+
+**조사일**: 2026-06-23T03:30Z | **rotation**: 엔젤·롱텀·규제 4–6h — silverangel/lcms·NHIS#44·2026 수가·평가#27·단기보호·통합재가
+
+## ogada git 실측 (@develop)
+
+| 항목 | BNK-533 | BNK-534 | delta |
+|------|---------|---------|-------|
+| FE develop | `@e296387` WT CLEAN | `@0b0d7ba` WT CLEAN | **HEAD +1** `feat(v1.2.1/G-STAFF-ANNUAL-LEAVE): wire US-R01 related surface cross-links` |
+| BE develop | `@bbf333c` WT DIRTY 5M | `@6ab3760` WT CLEAN | **HEAD +1** `feat(v2/US-R03e): expose leave-ledger cross-links in yearly responses` |
+| merge gate | 705 | **707** | +2 (FE182+BE525) |
+| Route | 111 | 111 | carry |
+| *Page.jsx | 89 | 89 | carry |
+| BE Test | 246 | 246 | carry |
+| FE test | 448 | **449** | +1 (`StaffAnnualLeaveRelatedSurfacesPanel.test.jsx`) |
+| 모듈 KPI | 78.79% | 78.79% | carry |
+
+### FE `@0b0d7ba` — US-R01 related surface **UI wire closure** (확인)
+
+- 신규 `StaffAnnualLeaveRelatedSurfacesPanel.jsx`(61L) + `.test.jsx`(40L)
+- `StaffAnnualLeavePage.jsx` roster 응답 `surfaceKind`/`relatedSurfaces[]` 렌더
+- `staffAnnualLeave.js` +69L — `mapRelatedSurfaces()`·`SURFACE_PLANNED` Badge·`/staff/leave-ledger` 링크(disabled when PLANNED)
+- `services.js` yearly API 응답 shape 정합
+- `pilotPageFlows.test.jsx` +15L — related surfaces panel 회귀
+- **BNK-532 BE metadata only → BNK-534 FE wire = G-STAFF-ANNUAL-LEAVE 18-cycle lifecycle**
+
+### BE `@6ab3760` — yearly 응답 cross-link parity (확인)
+
+- `StaffAnnualLeaveYearlyResponse` + `surfaceKind`/`relatedSurfaces[]` (roster와 동일 contract)
+- `MustApiEndpointRoutingTest` jsonPath 2-assertion 확장
+- commit msg: 「annual leave detail contract aligned with roster metadata」
+
+---
+
+## ★★★ NHIS #44 이동서비스비 326차 zero drift (PLAN_NOTES #44 1차 확인 재입증)
+
+**URL**: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769  
+**HTTP 200** · **7,572B** · md5 `c886ff1f` · on-disk `nhis_jo44.html` **IDENTICAL**
+
+| 조항 | 인용 (확인) |
+|------|------------|
+| ① | 이동서비스비 = 실거주지↔기관 최단거리(편도)·러-1~4 표 (lawImg SEQ_HISTORY=611677) |
+| ② | **1일 1회**만 산정·**편도만 이용 시 러-1~4 비용의 50%** |
+| ③ | 수급자 부담 없음 |
+| ④ | **이동서비스 일지 작성·보관 의무** |
+| ⑤ | 세부사항 공단 이사장 규정 → 별지 제22호 |
+
+**ogada parity**: `TransportServiceFeeService` 5/5 ✅ — `RU_1~RU_4`·`ONE_WAY_RATIO=0.5`·1일1회 dedup·`TransportServiceLog`+V148/V154/V155
+
+---
+
+## ★★ 엔젤 backbone 6-URL 326차 zero drift IDENTICAL
+
+| URL | md5 | SIZE | 핵심 |
+|-----|-----|------|------|
+| daycareEssentialWork.do | `c79c1be3` | 131,664B | 이동서비스 **정적 수칙 점검표**(운전자·동승자·차량안전·차량운행표) |
+| extraService.do | `f9c5d877` | 81,637B | CMS **5-method**(자동이체·가상계좌·카드·전자결재·가정통신문) |
+| mainService.do | `bcf6df41` | 59,002B | CMS 본인부담금 자동이체 |
+| feeService.do | `eab352a8` | 44,513B | 요금 안내 |
+| system_feature.do | `c9507190` | 45,601B | 평가 **지표#27 보호자회의** |
+| daycareProgramProvided.do | `f18e1c7a` | 67,987B | 차량운행일지 |
+
+### extraService CMS 5-method workflow (확인)
+
+1. **자동이체(CMS)** — 효성CMS 연동·250원/건·계좌분리 정산
+2. **가상계좌** — 대표 1인 부여·가족 입금 가능
+3. **카드결제**
+4. **전자결재** (serv_btn tab)
+5. **가정통신문·법정서식** (1385L carry)
+
+↔ ogada G2b CMS `/billing/cms` + PaymentPage CMS 컬럼 ✅ parity carry · 효성CMS 외부 SaaS = ogada 자체 CMS enrollment 모델 차별화(가정)
+
+### daycareEssential 이동서비스 vs ogada G15 (확인)
+
+- 엔젤: **평가지표 수칙 점검**(계약서 포함·일지 예시) — 정적 compliance checklist
+- ogada: **별지 제22호 실데이터 일지** input+print+export 3축 full-stack ✅ **운영 데이터 우위**
+
+### system_feature 지표#27 (확인)
+
+> 「반기별 1회 보호자회의 실시, 교육자료 및 사진등록, 참석자 전자서명」
+
+↔ ogada G30-LEGEND ✅ + dedicated workflow → **G-GUARDIAN-MEETING P3** carry
+
+---
+
+## ★★ LCMS root type rotation DRIFT (type3 → type2)
+
+**URL**: https://www.lcms.or.kr/  
+**HTTP 200** · **50,554B** · md5 `6c0d22b4` (type2 CMS cross-promo 정본)
+
+| cycle | md5 | type | content |
+|-------|-----|------|---------|
+| BNK-526 on-disk | `6b750291` | type3 | CJ프레시웨이 MOU 식단 |
+| **BNK-534 live** | `6c0d22b4` | **type2** | `ad_cont type2`·`img_banner2.png`·extraService CTA·1600-6859 |
+
+3-type oscillation 재입증: type1 디자인 / **type2 CMS** / type3 CJ MOU — ogada 단일 ERP 차별화 carry
+
+---
+
+## 2026 수가·단기보호·통합재가 (확인·canonical on-disk 우선)
+
+| URL | live | on-disk canonical | 판정 |
+|-----|------|-------------------|------|
+| longterm 502 | 71,008B `5619900c` partial shell·**74,060 grep=0** | `b5aee8c1` 105,552B·**단기보호 74,060** | live 게이트·canonical 보존 |
+| longterm 503 | 70,225B `68dca5ac` partial shell | `8ca7d1fa` 104,652B·경감 **50%/60%** | 동일 |
+| longterm 610 | 70,237B `f61d2742` partial shell | `d3c90b33` 422B `refreshedException` gate | **Mode B** (BNK-518 패턴 재입증) |
+
+**law247** strip-md5 `0e07cef1` IDENTICAL — **제2025-247호·시행 2026.1.1** verbatim 불변  
+**MOHW 2026-126** counter-only DRIFT — 본인부담상한액 본문 verbatim 불변
+
+---
+
+## silverangel weekly notice 0 (확인)
+
+221623~221627 5-probe HTTP 200·51,765B·`8437f255` 미게시 shell IDENTICAL · next Wed ~6/25
+
+---
+
+## planner 액션
+
+1. NHIS #44 326차 carry — ogada 영향 없음·`TransportServiceFeeService` 5/5 ✅
+2. G-GUARDIAN-MEETING P3 — system_feature #27 cross-verify carry
+3. G-STAFF-ANNUAL-LEAVE 18-cycle — FE `@0b0d7ba` UI wire + BE `@6ab3760` yearly parity = v3 `/staff/leave-ledger` surface 노출 완료(PLANNED Badge)
+4. longterm 수가 — canonical on-disk 우선·live partial shell 참고용만
+5. merge gate **707** — tester FF merge 대기
+
+**가정 번복 0·신규 core 갭 0·candidate 변동 0·상태 변경 2(FE+1·BE+1·WT DIRTY→CLEAN)·미확인 1 carry(longterm live no-session)·덮어쓰기 4건(lcms·law247·mohw126·longterm shells)**

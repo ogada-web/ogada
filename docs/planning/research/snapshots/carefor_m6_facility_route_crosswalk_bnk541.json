@@ -1,0 +1,79 @@
+{
+  "cycle": "BNK-541",
+  "rotation": "케어포 역공학 0-2h",
+  "date": "2026-06-23",
+  "source": "carefor daycare/func.php Wayback id_ 6226e6eb (98,328B·zero drift IDENTICAL) + ROADMAP v3.1 §범위 + ogada FE @95f55aa App.jsx grep + competitorModuleCoverage.js",
+  "func_module6_leaf_count": 5,
+  "func_module6_verbatim": [
+    "6-1.주간식단표",
+    "6-2.일일점검",
+    "6-3.정기점검",
+    "6-3-1.감염병 관리",
+    "6-4.시설운영일지"
+  ],
+  "summary": "✅1 LIVE(6-1) · 📋4 v3.1 P1 PLANNED(6-2~6-4) · 신규 core 갭 0 (ROADMAP v3.1 §범위 + 결정 94 등재 재확인) · competitorModuleCoverage.js {id:'6', label:'위생·안전 점검', coverage:0} cross-confirm",
+  "leaves": [
+    {
+      "carefor": "6-1",
+      "title": "주간식단표",
+      "ogada_route": "/meals",
+      "ogada_page": "MealsPage (MealMenuForm + MealRecordForm · fetchMealMenusApi/createMealRecordApi · mealType별 식단 등록)",
+      "status": "✅ LIVE",
+      "note": "주간/일자별 식단 등록·기록 full-stack 동작 (live today)"
+    },
+    {
+      "carefor": "6-2",
+      "title": "일일점검",
+      "ogada_route": "/safety/daily-checks",
+      "ogada_page": "(route 부재 today)",
+      "status": "📋 v3.1 P1 PLANNED",
+      "note": "ROADMAP v3.1 §범위 '일일·정기 점검·감염·시설운영일지 (6-2~6-4)' P1 · 신규 DB safety_checks"
+    },
+    {
+      "carefor": "6-3",
+      "title": "정기점검",
+      "ogada_route": "/safety/periodic-checks",
+      "ogada_page": "(route 부재 today)",
+      "status": "📋 v3.1 P1 PLANNED",
+      "note": "ROADMAP v3.1 P1 · safety_checks"
+    },
+    {
+      "carefor": "6-3-1",
+      "title": "감염병 관리",
+      "ogada_route": "/safety/infection-control",
+      "ogada_page": "(route 부재 today)",
+      "status": "📋 v3.1 P1 PLANNED",
+      "note": "ROADMAP v3.1 P1 · 감염병 대응 점검 (코로나/독감 등)"
+    },
+    {
+      "carefor": "6-4",
+      "title": "시설운영일지",
+      "ogada_route": "/safety/operation-log",
+      "ogada_page": "(route 부재 today)",
+      "status": "📋 v3.1 P1 PLANNED",
+      "note": "ROADMAP v3.1 P1 · 신규 DB operation_logs"
+    }
+  ],
+  "ogada_adjacent_evidence": {
+    "fire_safety_training": "src/config/staffTrainingLogs.js G41b 소화설비/경보설비 사용방법 (M8 8-7 교육일지 영역·시설점검 아님)",
+    "transport_safety": "src/config/transportCompliance.js '정기 점검·소독·안전장비' (M2 차량 안전·시설점검 아님)",
+    "monitoring": "/compliance/monitoring MonitoringSelfDiagnosisPage = 2025/2026 공단 평가 지표 자가진단 (일일/정기 운영 점검 로그 아님)"
+  },
+  "verdict": "M6 위생·안전·시설점검은 ogada가 ROADMAP v3.1 P1(결정 94·사용자 확정·Won't 철회)로 이미 등재 — 6-1 식단표만 live. 신규 core 갭 0. planner 액션: v3.1 P1 우선순위 유지 (식단 위 운영·점검 레이어).",
+  "live_remeasure": {
+    "carefor_func_direct": "HTTP 000 (LIVE DOWN·timeout 25s·BNK-527/536 패턴 재발)",
+    "carefor_func_wayback": "HTTP 200 · 98,328B · md5 6226e6eb · zero drift IDENTICAL (323차)",
+    "demo_work": "HTTP 000 (LIVE DOWN·timeout 20s·on-disk ebee4d47 71,742B carry·BNK-528 이후 지속)"
+  },
+  "ogada_baseline_kpi": {
+    "fe_head": "95f55aa (WT CLEAN · HEAD zero advance · ahead 184)",
+    "be_head": "83a26e7 (WT CLEAN · HEAD zero advance · ahead 526)",
+    "merge_gate": 710,
+    "routes": 111,
+    "pages": "89 (+RootRedirect=90)",
+    "migrations": "V1-V173",
+    "be_test": "247 (@Test 1,812)",
+    "fe_test": "449 (183 .test.js + 266 .test.jsx)",
+    "module_coverage": "78.79%"
+  }
+}

@@ -1,0 +1,272 @@
+BNK-529 — 이지케어 데모 신규 PGID 2건 (mobile-returnNumber · patient-icon) ↔ ogada 차별화 cross-walk
+========================================================================================================
+
+조사일: 2026-06-23T00:17Z (KST 09:17)
+rotation: 2–4h 이지케어 역공학
+로그인: oCode=DEMO·User_ID=admin·User_PW=g8317 (scripts/ezcare-demo-fetch.sh) → code=0000
+ogada @HEAD: FE `61f670f` / BE `19ffa84` (BE WT DIRTY 1A V173__staff_annual_leave_yearly_integrity_us_r03e.sql)
+직전 cycle: BNK-528 (carefor 0–2h · FE `971c7f1` carry)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+0. live HTTP fetch artifacts (BNK-529 신규/재실측)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+┌────────────────────────────────────────────────────────────────────┬──────┬─────────┬──────────────────────────────────┬─────────────────┐
+│ URL                                                                │ HTTP │ SIZE    │ md5                              │ 판정             │
+├────────────────────────────────────────────────────────────────────┼──────┼─────────┼──────────────────────────────────┼─────────────────┤
+│ /new.ez?PGID=mobile-returnNumber (oCode=DEMO 세션)                 │ 200  │ 120,863 │ eebfd246dbfadbffc1fa03a70f44fa93 │ 신규 evidence   │
+│ /new.ez?PGID=patient-icon       (oCode=DEMO 세션)                  │ 200  │  95,256 │ 7760732dfb9f3289652cd3bbf9612d82 │ 신규 evidence   │
+│ NHIS #44 joHistory (UA Mozilla/5.0)                                │ 200  │   7,572 │ c886ff1fd1d5ca2cb5dc76d30adde8ba │ 323차 IDENTICAL │
+│ ezCare top-nav-V2 (cookie 세션)                                    │ 200  │  25,470 │ 95286775000f06c8ad13688fcb0d6dbb │ 323차 IDENTICAL │
+│ ezCare /new.ez 데모 셸                                              │ 200  │ 143,448 │ 2b03d9e4c3c6706226c057504b72cf89 │ session DRIFT   │
+│ ezCare /new.ez redirect stub (비로그인)                             │ 200  │      70 │ e1d52bd5ab9bf2c3db53ab50a0eaae2f │ IDENTICAL       │
+│ ezCare home (https://ezcare.easyms.co.kr/)                         │ 200  │ 106,119 │ 1aac61f016ab3c0979b5e8fe479e8a06 │ 18th rotation   │
+│ ezCare_fnc.html                                                    │ 200  │  17,870 │ d31b0a4bc838d8136ba8753ffb800ad2 │ DRIFT (-2 도입) │
+│ ezCare_charge.html                                                 │ 200  │  22,979 │ a5491fa1fed49441f37df6b1d0245600 │ DRIFT cachebust │
+│ ezCare_change_work.html                                            │ 200  │  26,157 │ 2f0c476ee11bf9ddb4f64446458820e4 │ DRIFT cachebust │
+└────────────────────────────────────────────────────────────────────┴──────┴─────────┴──────────────────────────────────┴─────────────────┘
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+1. PGID=mobile-returnNumber — 「문자 발신번호 관리」 (전기통신사업법 §84의2 compliance)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+위치: 메뉴 9 「기관관리」 > 「문자 발신번호 관리」 (action=popup)
+가시 화면 헤딩:
+  · 등록된 문자 발신번호 (jqGrid 1종)
+  · 발신번호 요청이력 (jqGrid `grid-returnNumberLog`)
+  · 🔔 구인구직(케어매치) 알림  ← `goyong24` cross-promo
+  · Fax: 0505-877-0933
+
+법령 인용 verbatim (해당 화면 본문 그대로):
+  「(과학기술정보통신부 고시 제2022-7호 2022.03.02) 안에 따라 <b>발신번호 사전등록 절차가 강화</b> 되었습니다.」
+  「발신번호 서류인증을 받으시려면 <u>통신사를 통해 가입 증명서를 발급받아 제출</u>해주시기 바랍니다.」
+
+jqGrid: 1종 `grid-returnNumberLog`
+
+Dialog 7종 (id 정본):
+  · dialog-returnNumberConfirm  ← 문자 발신번호 등록요청 및 요청자 본인확인
+  · dialog-returnNumberdone     ← 등록 완료
+  · dialog-returnNumbernotice   ← 안내
+  · dialog-call-detail          ← 발신번호 상세
+  · dialog-goyong24-post        ← 케어매치 구인공고 등록
+  · dialog-post-insert          ← 공고 추가 입력
+  · dialog-success              ← 공통 성공 토스트
+
+Form input names (verbatim):
+  · telNumber               ← 등록할 발신번호
+  · numberSw                ← 번호 스위치/유형
+  · reg_cert_key            ← 등록 인증키
+  · wanted_auth_no          ← 본인확인 인증번호
+  · pCode                   ← 사업자/기관 코드
+  · kcp_page_submit_yn      ← KCP 본인인증 submit flag
+  · call_url                ← 케어매치 공고 URL
+  · job_address / job_location / job_location_code / search_address_string
+  · job_days · job_pay · job_time_start · job_time_end · job_time_min · job_type
+  · subject                 ← 공고 제목
+  · rcp_sex · rcp_age       ← 수급자 성별/연령
+
+제출 채널 verbatim (PDF 자동 다운로드 링크):
+  /page/mobile/문자발신번호등록 위임장.pdf → "위임장 내려받기"
+  Fax: 0505-877-0933 (수기 위임장 팩스 제출)
+
+워크플로 (역공학 추정):
+  ① 발신번호 입력(`telNumber`)
+  ② 본인확인(KCP) → `kcp_page_submit_yn=Y`, `wanted_auth_no`, `reg_cert_key`
+  ③ 통신사 가입 증명서 제출 (서류 인증 분기) ↔ 위임장 팩스 제출 분기
+  ④ 요청이력 → `grid-returnNumberLog`에 row 적재 (상태 = 요청·승인·반려·취소)
+  ⑤ 등록 완료 → `dialog-returnNumberdone`
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+2. PGID=patient-icon — ezCare **디자인 시스템 SVG sprite 카탈로그** (95 KB icon bank)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+성격: 비즈니스 화면이 아님. <svg><symbol id="icon-*"> 내부 SVG sprite catalog (~95 entries).
+명명 규칙: `icon-<noun>(-fill|-circle|...)` · viewBox 4-pack (16×16 기본·24×24 모바일·32×16 동영상·36×36 별점)
+
+대표 96 icon 명 (verbatim id, 그루핑):
+  · 액션 22: trash · trash-fill · search · telephone · gear · window · help · info · info-fill ·
+             alert · geo · send · download · zoom-in · zoom-out · printer · printer-fill · save ·
+             eraser · power · reload · more
+  · 메시지 6: message · message-open · message-fill · chat · chat-right-dots-fill · chat-left-dots-fill
+  · 화살표 14: caret-left/right/down/down-fill/down-square/down-square-fill ·
+              arrow-up-right · arrow-up-right-square · arrow-right · arrow-down ·
+              box-in-arrow-down · box-arrow-right · arrow-down-square
+  · 파일 9: file-folder · file-folder-open · file-folder-tray · file-pdf · file-png · file-jpg ·
+            file-jpeg · file-tif · file-hwp · file-hml · file-xlsx · filelayout · filelclip ·
+            file-arrow-up · file-arrow-up-fill · file-arrow-down · file-arrow-down-fill
+  · 콘텐츠 12: pencil · pencil-fill · upload · cloud-up · calendar · memo-fill · payment · video ·
+              star · smile · thumbsup · won
+  · 상태 8: lock · unlock · close · close-circle · close-circle-fill · check-after · check-circle ·
+            people · plus · minus · dash-circle · dialog · popup · move · delete · exclamation
+  · 모바일 3: m-save · m-cancel · m-eyedone (24×24)
+  · 기타 2: clickhand-fill · msg-down · msg-up
+
+해석: 이지케어 ERP 디자인 시스템의 모든 SVG icon 을 한 화면에 모아둔 **개발자/디자이너용 디버그 페이지**.
+        PGID 명에 `patient-` prefix 가 붙어 있으나 실제 콘텐츠는 환자/수급자와 무관 — 내부 디자인 도구.
+        Bootstrap-Icons 와 유사한 viewBox 16×16 기반·CSS class `icon` + `xlink:href="#icon-<id>"` 패턴.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+3. ogada cross-walk (BNK-529 가정·확인 구분)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+[A] mobile-returnNumber — 문자 발신번호 등록 워크플로
+────────────────────────────────────────────────────
+ogada `src/backend/src/main/java/com/ogada/backend/notification` (BNK-527 SOLAPI placeholder readiness):
+  · `NotificationConfig.java` — SOLAPI provider (`ogada.notification.solapi.api-key/api-secret/sender-id/kakao-pf-id`)
+  · `NotificationChannelReadinessService.java` — 6-marker placeholder 가드 + 4-cred isLiveConfigured
+  · SOLAPI 발신번호(`sender-id`)는 **SOLAPI 콘솔에서 사전등록**된 번호를 환경변수로만 주입
+  · ogada in-app UI: `/admin/notifications/readiness` (BNK-527) — 발신번호 등록 화면 ❌ 없음 (의도적)
+
+비교 (확인):
+  · 이지케어   : ERP **내부에서 발신번호 등록·KCP 본인확인·위임장 팩스 제출** 직접 처리 (in-app compliance UI)
+  · ogada     : SOLAPI 콘솔로 분리·환경변수 주입 (`sender-id`·`api-key`) — **SaaS 추상화**·앱 코드 0
+  · 차별화    : ogada = 외부 SaaS 통합 + 환경변수만 → 발신번호 변경 시 콘솔 1회 등록·`solapi-sender-id` env 갱신만으로 운영 (재배포 불요)
+              · 이지케어 = 발신번호 변경 시 인앱에서 KCP 본인확인 + 위임장 팩스 → **운영 부담 더 큼·법령 compliance 자체는 동등**
+
+candidate 판정:
+  · ❌ 신규 갭 없음 (MVP out-of-scope·SaaS 분리 정책)
+  · 마케팅 카피 후보 (planner): 「ogada는 SOLAPI 외부 발신번호 등록을 SaaS 분리해 인앱 KCP·팩스 절차 없이 .env 1줄로 발신번호 갱신」
+  · 「추가검증 시 가정」: BNK 가설 — 외부 통합형 발신번호 등록은 v1 MVP 우선순위 P0/P1 진입 불가 (현재 P3 candidate 0건 신규)
+
+[B] mobile-returnNumber 부속 「구인구직(케어매치) 알림」 = goyong24 cross-promo
+─────────────────────────────────────────────────────────────────────────
+이지케어   : SMS 발신번호 등록 페이지 안에 **케어매치 구인공고 6-필드 dialog (`dialog-goyong24-post`) cross-promo**
+            · job_address / job_days / job_pay / job_time_*/job_type / rcp_age/sex
+ogada     : 인사관리·채용 모듈 ❌ 없음 (의도적 MVP out-of-scope)
+차별화    : 이지케어 = ERP 내부에서 채용 cross-promo·이지케어 자매 도메인 funnel (LCMS type2 CMS·LCMS type3 CJ MOU·이번 carematch·gohung24와 동일 multi-domain cross-promo 패턴 BNK-515/526 carry)
+            ogada = 단일 도메인·재가 운영 본질에 집중 → **단일 ERP 차별화** carry (BNK-515 LCMS carry 재입증·새 cross-promo 사례 +1)
+
+candidate 판정:
+  · ❌ 신규 갭 없음 (BNK-515/526 LCMS cross-promo 차별화 분석 carry)
+
+[C] patient-icon — 디자인 시스템 SVG sprite vs ogada React 아이콘
+──────────────────────────────────────────────────────────────
+이지케어   : `<svg><symbol id="icon-*">` 단일 sprite + `xlink:href="#icon-*"` 인라인 use 패턴 (~95 icon)
+            · 디자이너용 디버그 PGID (`patient-icon`) 로 인앱 노출 — 명명 일관성 검수용
+ogada     : (확인) `src/frontend/package.json` 의존성 — `lucide-react` (BNK 별도 확인 필요·본 사이클 git grep 미수행)
+            · BNK 가정: React 컴포넌트 import 기반 (`<TrashIcon />` 등 tree-shakable) → sprite 카탈로그 화면 불필요
+차별화    : 이지케어 = 단일 sprite 파일·디버그 페이지로 가시 검수
+            ogada = 컴포넌트 단위 import·tree-shake 빌드 (sprite catalog 화면 ❌)
+candidate 판정:
+  · ❌ 신규 갭 없음 (MVP out-of-scope·디자이너 디버그용·고객 노출 0)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+4. 백본 zero drift 재실측 (BNK-529)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+┌──────────────────────────────┬───────────────┬──────────┬─────────────────┐
+│ URL                          │ on-disk md5   │ live md5 │ 판정             │
+├──────────────────────────────┼───────────────┼──────────┼─────────────────┤
+│ NHIS #44 joHistory           │ c886ff1f      │ c886ff1f │ 323차 IDENTICAL │
+│ ezCare top-nav-V2 (with auth)│ 95286775      │ 95286775 │ 323차 IDENTICAL │
+│ ezCare redirect stub 70B     │ e1d52bd5      │ e1d52bd5 │ IDENTICAL       │
+└──────────────────────────────┴───────────────┴──────────┴─────────────────┘
+
+NHIS #44 ↔ ogada `TransportServiceFeeService` 5/5 ✅ parity/우위 재입증 carry (PLAN_NOTES #44 1차 확인).
+top-nav-V2 25,470B = 10-module·51-PGID 정본 carry — 본 사이클에서도 신규 PGID 발견은 없으나 본문 verbatim
+`mobile-returnNumber`(메뉴 9)·`patient-icon`(메뉴 내 비공식·디버그) 2건 추가 fetch 시도 모두 성공.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+5. ezCare cachebuster/counter DRIFT (BNK-529·verbatim 핵심 불변)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+[home]   `0767d991`(BNK-525 17th)→`1aac61f0`(18th rotation·106,119B 동일)
+          · banner verbatim `[추천 이벤트] cafe.naver.com/egcare/24211` 불변 (15th carry)
+          · main-selcet-tit `9,271`개 재가기관 verbatim 불변
+          · `mCnt = {1:9271, 2:4594, 3:2353, 4:1820}` verbatim 불변
+          · KST 「2026년 06월 23일 현재」 carry (BNK-516 KST UTC+9 rollover marker 유지)
+          · `home.js?<cachebuster>` 만 변동
+          → 덮어쓰기 1건
+
+[fnc]    `5aeedca0`(BNK-514/525 carry)→`d31b0a4b`(17,870B 동일)
+          · **도입 9,348→9,346(−2)** ★ 사용자/기관 카운터 첫 감소 since BNK-487(9,344)→509(9,348) +4
+          · 7-dt 메뉴 verbatim 불변 (검색·관리·등록·1수급자~7재무회계 메뉴 라벨)
+          → 덮어쓰기 1건 (signal: 이지케어 도입 카운터 첫 net negative DRIFT)
+
+[charge] `17f127df`(BNK-514 carry)→`a5491fa1`(22,979B 동일)
+          · 셋팅 33,000원 · 37명 25,850원 · 구독 55,000원 verbatim 불변
+          · 「셋팅비는 최초 1회만 납부하며 이용해지시 반환되지 않습니다.」 verbatim 불변
+          → 덮어쓰기 1건 (cachebuster only)
+
+[change_work] `7c12418e`(BNK-514 carry)→`2f0c476e`(26,157B 동일)
+          · RFID · 듀얼 · 트리플 · 중복일정 verbatim 불변
+          → 덮어쓰기 1건 (cachebuster only)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+6. ogada git 실측 KPI (BNK-528 carry vs BNK-529 실측)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+$ git -C src/frontend rev-parse develop      → 61f670f
+$ git -C src/frontend log --oneline 971c7f1..develop
+    61f670f fix(v1.2.1/G-STAFF-ANNUAL-LEAVE): show modal field errors and guard QA-B255 title
+    085a85a ux(a11y): G-STAFF-ANNUAL-LEAVE Page wire-up 접근성 + ds-help-text/ds-fieldset (UXD-155)
+$ git -C src/frontend status -sb              → ## develop...origin/develop (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop  → 178   (BNK-528 176 → +2)
+
+$ git -C src/backend rev-parse develop        → 19ffa84 (carry)
+$ git -C src/backend status -s                → ?? src/main/resources/db/migration/V173__staff_annual_leave_yearly_integrity_us_r03e.sql
+                                                 (WT DIRTY 1A 신규 untracked·DBA 산출물)
+$ git -C src/backend rev-list --count origin/test..develop  → 522 (carry·V173 미커밋 advance 0)
+
+merge gate: 178 + 522 = **700** (BNK-528 698 → **+2** FE·BE V173 미커밋이라 advance 0)
+
+KPI 정본:
+  · 110 `<Route\b` + 1 `<Routes>` wrapper = 111 total Route 매치 (carry)
+  · 89 *Page.jsx (+ RootRedirect = 90) (carry)
+  · V1–V172 tracked + **V173 untracked** (V172→V173 ALTER TABLE CHECK 5종 신설·BNK-516 candidate `G-STAFF-ANNUAL-LEAVE` defense-in-depth)
+  · BE Test 244 (carry·V173 미커밋·기존 244·신규 미반영)
+  · FE test 447 (182 `.test.js` + 265 `.test.jsx`·carry·085a85a/61f670f 모두 기존 test 파일 deepen)
+  · 모듈 78.79% (22.85/29·`competitorModuleCoverage.js` 미변경·carry)
+
+V173 미커밋 cross-walk (DBA 산출물·BNK 0-touch):
+  · `chk_staff_annual_leave_yearly_month_max`  month_01~12 <= 99.9
+  · `chk_staff_annual_leave_yearly_total_max`  total_entitlement <= 999.9
+  · `chk_staff_annual_leave_yearly_sum_le_total`  sum(month_*) <= total_entitlement
+  · `chk_staff_annual_leave_yearly_memo_nonempty`  memo='   ' 우회 차단
+  · `fk_staff_annual_leave_yearly_user_branch`  user_branches `(org,user,branch)` cross-tenant 차단
+  → ezCare worker-b100 tab01 「연차휴가」 공개 자료 DB-level CHECK/FK 노출 0 (경쟁사 공개 한도)·ogada DB-level 우위 재입증
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+7. 본 사이클 결과 요약
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+신규 evidence URL    : 2건 (mobile-returnNumber 120,863B·patient-icon 95,256B — 처음 fetch)
+재실측 URL           : 백본 3-URL 323차 IDENTICAL (NHIS#44·top-nav-V2·redirect stub) + home/fnc/charge/change_work 4-URL DRIFT
+메뉴/필드/워크플로     : 1블록+ (mobile-returnNumber 7 dialog + 1 jqGrid + 21 input field + 5-step workflow / patient-icon 95 SVG icon)
+신규 candidate       : 0건 (mobile-returnNumber·patient-icon 모두 SaaS 분리·디버그 → MVP out-of-scope)
+가정 번복            : 0건
+신규 core 갭         : 0건
+상태 변경            : FE +2 commit (`085a85a` UXD-155 a11y·`61f670f` modal field errors)·BE WT 0→1A 신규(V173 미커밋·DBA 산출물·BNK 0-touch)
+                       merge gate 698→**700** (+2)
+미확인               : 1건 carry (carefor func.php·demo-work LIVE DOWN BNK-527/528 패턴 carry·본 사이클 미실측)
+신규 snapshot        : 3건 (`ezcare_new_ez_pgid_mobile-returnNumber.html`·`ezcare_new_ez_pgid_patient-icon.html`·본 extract)
+덮어쓰기             : 5건 (home·fnc·charge·change_work·new_ez_demo)
+엑셀 포맷 변경        : 0건
+per-cycle minimum    : 4종 충족 (신규 URL 2 + 메뉴/필드 1블록+ + COMPETITOR_MATRIX `@61f670f`/`@19ffa84` 행 갱신 + BENCHMARK_REPORT §529)
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+8. planner 액션 제안 (BNK→PLN)
+────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+★★★ 마케팅 카피 신규 후보 1건 (BNK-515 LCMS·BNK-526 cross-promo carry 강화)
+   「ogada는 SMS 발신번호 등록을 SOLAPI 외부 SaaS 로 분리해, 발신번호 변경 시 KCP 본인확인·위임장 팩스
+   없이 환경변수 1줄로 갱신 가능 (이지케어는 ERP 내부에서 직접 처리·운영 부담 큼)」
+   · 근거 URL: ezCare `/new.ez?PGID=mobile-returnNumber` (oCode=DEMO 세션·120,863B)
+   · 근거 verbatim: 「(과학기술정보통신부 고시 제2022-7호 2022.03.02) 안에 따라 발신번호 사전등록 절차가 강화 되었습니다.」
+   · ogada 근거: BNK-527 `NotificationChannelReadinessService.SOLAPI_PLACEHOLDER_MARKERS` 6-marker 가드
+                + `ogada.notification.solapi.sender-id` env 주입 (인앱 UI ❌)
+
+★★ 경쟁사 multi-domain cross-promo 사례 +1 (BNK-515/526 patterns 재입증)
+   이지케어 `mobile-returnNumber` 페이지 안에 케어매치 구인공고 6-필드 dialog cross-promo
+   (job_address/job_days/job_pay/job_time_*/rcp_age,sex·`dialog-goyong24-post`)
+   → goyong24·carematch·LCMS·CJ MOU 4-axis funnel 패턴 시리즈에 추가
+   → ogada 단일 ERP 차별화 carry (BNK-515/526 LCMS carry 강화)
+
+★ DRIFT signal — fnc 도입 카운터 첫 net negative DRIFT
+   9,348(BNK-509)→9,346(BNK-529·−2) ★ since BNK-487(9,344)→BNK-509(9,348) +4 단조 증가 후 첫 감소
+   → 도입 기관 이탈 시그널 또는 단순 데이터 변동 「가정」·다음 1-2 cycle 모니터링 권장
+
+★ V173 untracked DBA 산출물 (BNK 0-touch)
+   DBA가 BNK-516 candidate G-STAFF-ANNUAL-LEAVE defense-in-depth integrity 추가
+   → coder 즉시 commit 권장 (미커밋 시 `run_agent.py build` push 누락 위험·BE Test 244 미반영)
+   → BNK 영향 0 (도구·DB-level CHECK/FK 5종 신설·ezCare worker-b100 tab01 DB-level 우위 강화)

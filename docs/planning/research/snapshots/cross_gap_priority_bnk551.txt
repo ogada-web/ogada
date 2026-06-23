@@ -1,0 +1,79 @@
+BNK-551 — 교차검증·갭 우선순위 8h+ (2026-06-23T14:05Z)
+=====================================================================
+rotation: 교차검증·갭 우선순위 — 이전 BNK 가정 번복·미확인 축소·G14·대시보드·v1.3-C·v2 CMS 4축 P0/P1 재정렬·엑셀 포맷/공지 스캔.
+
+[1] ogada git 실측 (BNK-551)
+---------------------------------------------------------------------
+$ git -C src/frontend rev-parse --short develop  → b7101d5 (BNK-550 carry · HEAD zero advance 1-cycle)
+$ git -C src/backend  rev-parse --short develop  → bb9df48 (BNK-550 carry · HEAD zero advance 1-cycle)
+$ git -C src/frontend status -sb                 → ## develop...origin/develop  (WT CLEAN)
+$ git -C src/backend  status -sb                 → ## develop...origin/develop  (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop → 187 (carry)
+$ git -C src/backend  rev-list --count origin/test..develop → 529 (carry)
+merge gate = FE187 + BE529 = 716 (carry vs BNK-550)
+
+Flyway V1–V174 contiguous (174 *.sql) · V174__staff_leave_ledger_us_r01c.sql
+BE @Test = 1,821 (carry·확인)
+
+[2] ★★ BE Test 파일 수 정정 (cross-validation correction)
+---------------------------------------------------------------------
+$ git -C src/backend ls-files '*Test.java' | wc -l                       → 249
+$ git -C src/backend ls-files | grep -E '(Test|Tests|IT)\.java$' | wc -l → 250 (+1 *IT/*Tests)
+- BNK-550 §550-1 "BE Test files 252 (+5)" = OVER-COUNT. 실측 *Test.java = 249.
+- leave-ledger(bb9df48) 신규 test FILE = 2 (StaffLeaveLedgerServiceTest·StaffLeaveLedgerSupportTest);
+  MustApiEndpointRoutingTest 는 modified(+52L)·신규 아님 → BNK-548 247 +2 = 249 정합.
+- @Test 메서드 수 1,821 은 BNK-550 과 일치(확인). 파일 수만 정정.
+
+[3] ★★★ leave-ledger relatedSurfaces BE/FE availability DIVERGENCE (가정 번복)
+---------------------------------------------------------------------
+BE  src/main/java/.../staffannualleave/domain/StaffAnnualLeaveSupport.java:96-99
+    new StaffAnnualLeaveRelatedSurfaceResponse("US-R01","연차·유급휴일 대장","/staff/leave-ledger", SURFACE_AVAILABLE)
+    → BE relatedSurfaces[1].availability = SURFACE_AVAILABLE (bb9df48 promote 확인)
+
+FE  src/utils/staffAnnualLeave.js:29-30, 48-49
+    { route: "/staff/leave-ledger", availability: STAFF_ANNUAL_LEAVE_SURFACE_PLANNED }  ×2
+    → FE 양쪽 relatedSurfaces 여전히 PLANNED (미승격)
+    (constants 정의: line10 SURFACE_AVAILABLE="AVAILABLE", line11 SURFACE_PLANNED="PLANNED")
+
+FE Route 검증: git -C src/frontend grep "leave-ledger" develop -- src/App.jsx → NO Route (BE-only)
+
+⇒ BNK-550 §550-2/decisions "relatedSurfaces PLANNED→AVAILABLE 승격" 은 **BE-only**.
+  FE staffAnnualLeave.js 는 PLANNED 유지 + FE 페이지/Route 0건.
+  현재는 FE 가 자체 PLANNED 상수를 사용하므로 사용자 노출 모순 없음(safe),
+  그러나 BE API 응답(AVAILABLE) vs FE 상수(PLANNED) = latent inconsistency.
+  planner P1: FE /staff/leave-ledger 페이지 wire + FE 상수 AVAILABLE 동기화(BE 정합).
+
+[4] ★★ 백본 4-URL zero drift live=on-disk IDENTICAL (확인)
+---------------------------------------------------------------------
+URL                                                        HTTP  SIZE      live md5    on-disk        Δ
+carefor func.php Wayback (id_/20260519072235)              200   98,328B   6226e6eb    carefor_func_wayback_live_bnk541.html 6226e6eb  IDENTICAL
+ezCare top-nav-item-V2.js?20260428                         200   25,470B   95286775    ezcare_top_nav_v2.js 95286775                   IDENTICAL
+silverangel daycareEssentialWork.do                        200  131,664B   c79c1be3    silverangel_daycareEssentialWork.html c79c1be3  IDENTICAL
+NHIS joHistory #44 (SEQ=1637)                              200    7,572B   c886ff1f    nhis_jo44.html c886ff1f                         IDENTICAL
+
+[5] ★★ 4축(G14·대시보드·v1.3-C·v2 CMS) P0/P1 재오픈 0 (확인)
+---------------------------------------------------------------------
+git -C src/frontend grep path App.jsx develop:
+  G14         /clients/:clientId/care-plan-form          ✅ LIVE
+  대시보드     /dashboard · /dashboard/hq                  ✅ LIVE
+  v1.3-C      /transport · /transport/auto-dispatch · /transport/compliance · /transport/outings ·
+              /transport/runs/:runId · /transport/runs/new · /transport/service-fees · /transport/vehicles ·
+              /reports/transport-monthly                  ✅ LIVE (9-route)
+  v2 CMS      /billing/cms                                ✅ LIVE
+→ 4축 P0/P1 backlog 비움 유지·재오픈 0.
+
+[6] ★ NHIS#44 구 URL 404 21-cycle carry (미확인)
+---------------------------------------------------------------------
+https://www.longtermcare.or.kr/npbs/cms/board/board/Reference/jongHistoryView.web?communityKey=B0017&boardId=44
+  HTTP 404 · 861B · fcadfbfe (BNK-530 첫 발견 → BNK-551 21-cycle carry)
+  canonical nhis_jo44.html c886ff1f(7,572B) 보존 → ogada TransportServiceFeeService 5/5 ✅ 영향 없음.
+
+[7] per-cycle minimum
+---------------------------------------------------------------------
+✅ 신규 증거 URL 1건+: 백본 4-URL 재실측 + NHIS#44 구 URL 404 재확인
+✅ 메뉴/필드/워크플로 1블록+: [3] leave-ledger BE/FE relatedSurfaces availability divergence
+✅ COMPETITOR_MATRIX 1행+ @HEAD: @b7101d5/@bb9df48 leave-ledger divergence·baseline 행
+✅ BENCHMARK_REPORT §소절: §551 본 차수
+가정 번복 1(leave-ledger relatedSurfaces 승격 = BE-only 정정) · 신규 core 갭 0 ·
+candidate 변동 0 · 상태 변경 0(HEAD zero advance 1-cycle) · 미확인 1 carry(NHIS#44 21-cycle) ·
+신규 snapshot 1건(본 extract) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · 데이터 정정 1건(BE Test 252→249)

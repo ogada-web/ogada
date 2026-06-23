@@ -1,0 +1,2254 @@
+
+<!-- dtd -->
+<!doctype html>
+<html lang="ko">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>이지케어 재가장기요양기관 업무관리 프로그램</title>
+<link rel="Shortcut Icon" href="/favicon.ico"><!-- 파비콘 -->
+<link rel="apple-touch-icon-precomposed" href="/homepage/favicon.png"><!-- 파비콘 -->
+<meta name="Title" content="">
+<meta name="Subject" content="">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="방문일정관리, 수급자관리, 요양보호사급여관리, 재가센터 업무서식제공, 가산수가계산, 재가기관 업무관리프로그램">
+<meta name="reply-to" content="">
+<meta name="Robots" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="이지케어">
+<meta property="og:description" content="">
+<meta property="og:image" content="">
+<meta property="og:url" content="https://ezcare.easyms.co.kr/">
+<meta name="twitter:card" content="">
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="">
+<meta name="twitter:domain" content="">
+<meta name="google-site-verification" content="">
+<meta name="naver-site-verification" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1"><!-- 모바일사이트, 반응형사이트 제작시 사용 -->
+<meta name="format-detection" content="telephone=no"/><!-- ios 자동전화걸기 방지 -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/reset.css?2021-04-16">
+<link rel="stylesheet" type="text/css" href="/homepage/css/common.css?2021-12-27"><!-- 공통 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/layout.css?2021-07-20"><!-- 레이아웃 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/main.css?2023-01-30" /><!-- 메인 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/content.css?2021-07-121"><!-- 컨텐츠 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/layout_responsive.css"><!-- 레이아웃 반응형 css -->
+<!-- 플러그인 -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/slick.css">
+<link rel="stylesheet" type="text/css" href="/homepage/css/jquery.mCustomScrollbar.css">
+<link rel="stylesheet" type="text/css" href="/homepage/css/aos.css" />
+<!-- 아이콘폰트 -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/xeicon.min.css"><!-- naver -->
+
+
+<script src="/homepage/js/vendor/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/homepage/js/vendor/jquery.easing.1.3.js"></script>
+
+
+<script type="text/javascript" src="/homepage/js/home.js?1782227914"></script>
+<link rel="stylesheet" type="text/css" href="/homepage/css/home.css?2021-04-16" />
+<script type="text/javascript" src="/assets/jquery/plugin/jquery.number.js"></script>
+<script type="text/javascript" src="/assets/jquery/plugin/jquery.cookie.js"></script>
+<link rel="stylesheet" type="text/css" href="/homepage/css/story.css" />
+
+<script>
+
+	//2022.08.26 주팀장추가  accessClick
+	var PGID = "main";
+
+
+	$(function  () {
+		dep1 = 0,
+		dep2 = 0;
+	});
+	var chk = 0;
+
+	var mov_data = JSON.parse('[{"seq":"37","title":"\ud1b5\uc7a5\uac70\ub798\ub0b4\uc5ed \uac04\ud3b8\uc870\ud68c \uc11c\ube44\uc2a4 \uc548\ub0b4","url":"https:\/\/youtu.be\/UouweNn8NGY","img":"\/homepage\/file\/youtube\/sub_video_img-1716856769.png","no":null,"states":"Y","regist_date":"2024-05-28 09:39:29","update_date":"2024-05-28 09:39:29"},{"seq":"36","title":"\ubcf8\uc778\ubd80\ub2f4\uae08 \ud604\uae08\uc601\uc218\uc99d \ubc1c\uc0dd \uc11c\ube44\uc2a4 \uc548","url":"https:\/\/youtu.be\/DsyEa08AyoY","img":"\/homepage\/file\/youtube\/sub_video_img-1716856738.png","no":null,"states":"Y","regist_date":"2024-05-28 09:38:58","update_date":"2024-05-28 09:38:58"},{"seq":"35","title":"\ubcf8\uc778\ubd80\ub2f4\uae08 \uad00\ub9ac \uae30\ub2a5 \uc548\ub0b4","url":"https:\/\/youtu.be\/z5gokWXIWqA","img":"\/homepage\/file\/youtube\/sub_video_img-1716856654.png","no":null,"states":"Y","regist_date":"2024-05-28 09:37:34","update_date":"2024-05-28 09:37:34"},{"seq":"34","title":"\uc7ac\uac00\uae30\uad00 \ud544\uc218\uc5c5\ubb34_\uacb0\uc0b0\ubcf4\uace0","url":"https:\/\/youtu.be\/CVOvPYdaYGo","img":"\/homepage\/file\/youtube\/sub_video_img-1710141595.png","no":null,"states":"Y","regist_date":"2024-03-11 16:19:55","update_date":"2024-03-11 16:19:55"},{"seq":"31","title":"\uc694\uc591\uae30\uad00 \uc5f0\ub9d0\uc815\uc0b0 \ud575\uc2ec Q&A","url":"https:\/\/youtu.be\/AZsC2VF9vtQ","img":"\/homepage\/file\/youtube\/sub_video_img-1707885371.png","no":null,"states":"Y","regist_date":"2024-02-14 13:36:11","update_date":"2024-02-14 13:36:11"},{"seq":"30","title":"\ub514\uc9c0\ud138 \uc0ac\uc778 \uae30\ub2a5 \uc548\ub0b4","url":"https:\/\/youtu.be\/ZHM3NFhrTuc","img":"\/homepage\/file\/youtube\/sub_video_img-1707971601.png","no":null,"states":"Y","regist_date":"2024-02-14 13:33:48","update_date":"2024-02-15 13:33:21"},{"seq":"29","title":"\uad00\ub9ac\uc790 \uc77c\uc815 \uc5f0\ub3d9 \uae30\ub2a5 \uc548\ub0b4","url":"https:\/\/youtu.be\/ITkGQeVgZIA","img":"\/homepage\/file\/youtube\/sub_video_img-1707971587.png","no":null,"states":"Y","regist_date":"2024-02-14 13:32:43","update_date":"2024-02-15 13:33:07"},{"seq":"28","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uc774\ub2e4\uc601\uac15\uc0ac)_1\/4","url":"yG67bQXQXIw","img":"\/homepage\/file\/youtube\/sub_video_img-1659947107.jpg","no":null,"states":"Y","regist_date":"2022-08-08 17:25:07","update_date":"2022-08-08 17:25:07"},{"seq":"27","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uc774\ub2e4\uc601\uac15\uc0ac)_2\/4","url":"au8ehWLPePU","img":"\/homepage\/file\/youtube\/sub_video_img-1659946991.jpg","no":null,"states":"Y","regist_date":"2022-08-08 17:23:11","update_date":"2022-08-08 17:23:11"},{"seq":"25","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_1\/4","url":"tuR8f2hC0iw","img":"\/homepage\/file\/youtube\/sub_video_img-1655810094.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:14:54","update_date":"2022-07-11 07:38:13"},{"seq":"24","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_2\/4","url":"GqNTfaKym7Y","img":"\/homepage\/file\/youtube\/sub_video_img-1655810068.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:14:28","update_date":"2022-07-11 07:38:02"},{"seq":"23","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_3\/4","url":"5wtUfNCakN0","img":"\/homepage\/file\/youtube\/sub_video_img-1655810039.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:13:59","update_date":"2022-07-11 07:37:49"},{"seq":"22","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_4\/4","url":"ktg-vnwOUqs","img":"\/homepage\/file\/youtube\/sub_video_img-1655858332.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:13:12","update_date":"2022-07-11 07:37:35"},{"seq":"15","title":"\uc7a5\uae30\uc694\uc591\uae30\uad00 \uc7ac\ubb34\ud68c\uacc4 Q&A","url":"bb8m8ptO0ms","img":"\/homepage\/file\/youtube\/sub_video_img-11.jpg","no":null,"states":"Y","regist_date":"2022-06-03 13:06:48","update_date":"2022-06-03 13:07:30"},{"seq":"11","title":"\uc7a5\uae30\uc694\uc591\uae30\uad00 \uc7ac\ubb34\ud68c\uacc4 Q&A","url":"FVC4O0e_59Q","img":"\/homepage\/file\/youtube\/sub_video_img-10.png","no":null,"states":"Y","regist_date":"2021-07-19 13:07:08","update_date":"2022-06-08 17:28:48"},{"seq":"10","title":"\uc7a5\uae30\uc694\uc591\uae30\uad00 \uc7ac\ubb34\ud68c\uacc4 Q&A","url":"XExk0aPDOdQ","img":"\/homepage\/file\/youtube\/sub_video_img-09.png","no":null,"states":"Y","regist_date":"2021-07-19 13:07:08","update_date":"2022-06-08 17:28:57"},{"seq":"9","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\uc5c5\ubb34\ud604\ud669\u201d \ud654\uba74 \uc548\ub0b4","url":"1zPnOHBAfKg","img":"\/homepage\/file\/youtube\/main_video_img-01.png","no":null,"states":"Y","regist_date":"2021-07-19 13:07:08","update_date":"0000-00-00 00:00:00"},{"seq":"8","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\ud68c\uacc4\uad00\ub9ac\u201d \ud654\uba74 \uc548\ub0b4","url":"D9m5WsNrbiE","img":"\/homepage\/file\/youtube\/sub_video_img-02.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"7","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\uc138\ubb34\uc2e0\uace0\u201d \ud654\uba74 \uc548\ub0b4","url":"l63PfJvCT64","img":"\/homepage\/file\/youtube\/sub_video_img-03.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"6","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\uace0\uac1d\uc13c\ud130\u201d \ud654\uba74 \uc548\ub0b4","url":"xmGi5STiBzQ","img":"\/homepage\/file\/youtube\/sub_video_img-04.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"5","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uc218\uae09\uc790 \ub4f1\ub85d\u201d \uae30\ub2a5 \uc548\ub0b4","url":"Gi-2ac4dbXs","img":"\/homepage\/file\/youtube\/sub_video_img-05.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"4","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uc9c1\uc6d0 \ub4f1\ub85d\u201d \uae30\ub2a5 \uc548\ub0b4","url":"8ViUORNGT88","img":"\/homepage\/file\/youtube\/sub_video_img-06.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"3","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uacf5\ub2e8\uc77c\uc815 \uc5f0\ub3d9\u201d \uae30\ub2a5 \uc548\ub0b4","url":"dnNAsuJZTRw","img":"\/homepage\/file\/youtube\/sub_video_img-07.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"2","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uc77c\uc815 \uad00\ub9ac\u201d \uae30\ub2a5 \uc548\ub0b4","url":"9ggKh6b9L5Y","img":"\/homepage\/file\/youtube\/sub_video_img-08.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"}]');
+	var ez_intro_mov = [];
+	
+	mov_data.forEach(function(el) {
+		var tmp = {
+			title : el.title
+			, bgImg : el.img
+			, url : 'https://www.youtube.com/embed/' + el.url
+		}
+		ez_intro_mov.push(tmp);
+	});
+	
+	// var ez_intro_mov = [
+	// 	{
+	// 		title:"이지케어 공단평가 교육_02",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-1654673814.jpg",
+	// 		url:"https://www.youtube.com/embed/GqNTfaKym7Y"
+	// 	},
+	// 	{
+	// 		title:"이지케어 공단평가 교육_01",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-1654229208.jpg",
+	// 		url:"https://www.youtube.com/embed/tuR8f2hC0iw"
+	// 	},
+	// 	{
+	// 		title:"장기요양기관 재무회계 Q&A",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-11.jpg",
+	// 		url:"https://www.youtube.com/embed/bb8m8ptO0ms"
+	// 	},
+	// 	{
+	// 		title:"장기요양기관 재무회계 Q&A",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-10.png",
+	// 		url:"https://www.youtube.com/embed/FVC4O0e_59Q"
+	// 	},
+	// 	{
+	// 		title:"장기요양기관 재무회계 Q&A",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-09.png",
+	// 		url:"https://www.youtube.com/embed/XExk0aPDOdQ"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “업무현황” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/main_video_img-01.png",
+	// 		url:"https://www.youtube.com/embed/1zPnOHBAfKg"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “회계관리” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-02.png",
+	// 		url:"https://www.youtube.com/embed/D9m5WsNrbiE"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “세무신고” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-03.png",
+	// 		url:"https://www.youtube.com/embed/l63PfJvCT64"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “고객센터” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-04.png",
+	// 		url:"https://www.youtube.com/embed/xmGi5STiBzQ"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “수급자 등록” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-05.png",
+	// 		url:"https://www.youtube.com/embed/Gi-2ac4dbXs"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “직원 등록” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-06.png",
+	// 		url:"https://www.youtube.com/embed/8ViUORNGT88"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “공단일정 연동” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-07.png",
+	// 		url:"https://www.youtube.com/embed/dnNAsuJZTRw"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “일정 관리” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-08.png",
+	// 		url:"https://www.youtube.com/embed/9ggKh6b9L5Y"
+	// 	}
+			
+	// ]
+
+	
+	var _NGUL = "wcs.naver.net/wcslog.js";
+	if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+	document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+</script>
+<!-- //dtd -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src=https://www.googletagmanager.com/gtag/js?id=UA-178661915-1></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-178661915-1');
+</script>
+</head> 
+
+<body>
+<!--[if lt IE 7]>
+<p class="cm-alert-ie">현재 웹브라우저에서는 사이트가 정상적으로 표시되지 않을 수 있습니다. <strong><a href="http://browsehappy.com/" target="_blank">여기를 클릭</a></strong>하여 웹브라우저를 업그레이드 하세요.</p>
+<![endif]-->
+	
+	<!-- 뷰저블 js 코드 -->
+	<script type="text/javascript">
+	(function(w, d, a){
+	    w.__beusablerumclient__ = {
+	        load : function(src){
+	            var b = d.createElement("script");
+	            b.src = src; b.async=true; b.type = "text/javascript";
+	            d.getElementsByTagName("head")[0].appendChild(b);
+	        }
+	    };w.__beusablerumclient__.load(a);
+	})(window, document, "//rum.beusable.net/script/b210907e091924u984/d9eda54976");
+	</script>
+
+	<!-- accessibility -->
+	<div class="cm-accessibility">
+		<a href="#mainContainer">본문바로가기</a>
+	</div>
+	<!-- //accessibility -->
+
+	<!-- top banner -->
+	
+	<style>
+		.header-up-con {height:auto;}
+		.header-up-con-txt p {line-height:25px;animation:blink 3s infinite linear;margin-top:10px;}
+		.header-up-con-tit .pc-tit {line-height:70px;}
+		.header-up-con-tit .pc-tit:before {height:70px;background-size:100%;width:140px;left:-140px;}
+		.header-up-con-tit .pc-tit:after {height:70px;background-size:100%;width:56px;right:-56px;}
+		.slide-close-con {top:10px;}
+
+		@keyframes blink {
+			0% {opacity:1;}
+			25% {opacity:1;}
+			50% {opacity:.3;}
+			75% {opacity:1;}
+			100% {opacity:1;}
+		}
+
+		@media (max-width: 800px) {
+			.header-up-con-txt p {line-height:24px;}
+			.header-up-con-tit .m-tit {
+				/* line-height:48px; */
+				line-height:58px;
+			}
+			.header-up-con-tit .m-tit:after {
+				height:58px;
+				right:-40px;
+				width:40px;
+			}
+		}
+	</style>
+	<div class="header-up-con" style="">
+		<div class="header-up-con-inner">
+			<div class="area clearfix">
+				<div class="header-up-con-tit"><h5 class="pc-tit">NOTICE & NEWS</h5><h5 class="m-tit">N</h5></div>
+				<div class="header-up-con-txt">
+					<!-- 25.04.01 부터 주야간 50% 할인 이벤트 제외 -->
+											<a href="/?PG=b01&rowid=434" target="_blank"><p class="text-ellipsis"><span>[공지]</span><br/>이지케어 재무회계 서비스 개인정보 처리방침 변경안내 </p></a>
+									</div>
+			</div>
+		</div>
+	   
+		<div class="header-up-con-area area">
+			<div class="slide-close-con">
+				<fieldset class="close-checkbox">
+					<span class="checkbox-item">
+						<input type="checkbox" id="chk-top-notice-today-close" name="" class="checkbox-check">
+						<label for="chk-top-notice-today-close"><span>오늘하루열지않기</span><i class="xi-check"></i></label>   
+					</span>
+				</fieldset>
+				<a href="javascript:;" class="close-btn bnr-close-btn"><span><i class="xi-close-thin"></i></span></a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- //top banner -->
+
+	<div id="wrap" class="main-wrap">
+		<!-- header -->
+		<header id="header" class="">
+			<div class="gnb-overlay-bg"></div>
+			<div id="headerInnerWrap">
+				<!-- ****************** 헤더상단 ********************** -->
+				<div id="headerInner" class="clearfix">
+					<h1 class="logo"><a href="/"><em class="blind">메인으로</em><img src="/homepage/images/common/logo.png" alt="" /></a></h1>
+					<div class="header-util-box">
+						<!-- 사이트맵 버튼 ( 기본 ) -->
+						<a href="javascript:;" class="sitemap-line-btn" title="사이트맵 열기" onclick="modalPopupOpen('#popupSitemap')">
+							<span class="line line1"></span><span class="line line2"></span><span class="line line3"></span><span class="line line4"></span>
+						</a>
+					</div>
+				</div>
+				<!-- ****************** GNB ********************** -->
+				<!-- GNB PC  -->
+				<nav id="gnb" class="total-menu">
+					<h2 class="blind">주메뉴</h2>
+					<div id="gnbBg"></div>
+					<ul class="clearfix menu6 area">
+						<li class="gnb1">
+							<a href="javascript:;">이지케어 소개</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?PG=e01#fixedIntroCon02"><span>이용현황 & 특징</span></a></li>
+									<!-- <li><a href="?PG=e01&anchor=fixedIntroCon02"><span>이지케어 이용 현황</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon03"><span>이지케어 특징</span></a></li> -->
+									<li><a href="?PG=f01"><span>주요 기능</span></a></li><!-- gnb2메뉴 축소->이동 -->
+									<li><a href="javascript:demoAction('gnb_pc')"  hit-id="3002"><span>데모 체험하기</span></a></li>
+									<li><a href="javascript:;" hit-id="1311" onclick="popup_charge()"><span>★ 이용 요금표</span></a></li>
+								</ul>
+							</div>
+						</li>
+						<!-- <li class="gnb2">
+							<a href="javascript:;">주요 기능</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?PG=f01"><span>주요 기능</span></a></li>
+									<li><a href="?anchor=mainVideoCon"><span>주요 기능 동영상으로 보기</span></a></li>
+								</ul>
+							</div>
+						</li> -->
+						<li class="gnb4">
+							<a href="javascript:;">재무회계 대행</a>
+							<div class="gnb-2dep">
+								<ul>
+									<!-- <li><a href="?PG=a01"><span>서비스소개(제공내용&특징)</span></a></li> -->
+									<li><a href="javascript:;" onclick="popup_w4c_intro()" hit-id="1331"><span>방문요양<br/>서비스 특징</span></a></li>
+									<li><a href="javascript:;" onclick="popup_daycare_intro()"><span>주간보호<br/>서비스 특징</span></a></li>
+									<li><a href="javascript:w4cAction('w4c_side')"  hit-id="1332"><span>서비스 체험하기</span></a></li>
+									<li><a href="javascript:;" hit-id="1311" onclick="pop_calc()"><span>★ 이용 요금표</span></a></li>
+									<!-- <li><a href="javascript:;" hit-id="1311" onclick="popup_charge('w4c')"><span>★ 이용 요금표</span></a></li> -->
+									<!-- <li><a href="?PG=a01&anchor=fixedServiceCon01"><span>서비스 소개</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon02"><span>서비스 주요 기능</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon03"><span>제공 서비스</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon04"><span>서비스 특징</span></a></li> -->
+								</ul>
+							</div>
+						</li>
+						<li class="gnb3">
+							<a href="javascript:;">도입 효과</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?dataTab=tabCon01#tabCon01"><span>사용기관 인터뷰</span></a></li>
+									<li><a href="javascript:;" onclick="popup_review()" hit-id="1321"><span>사용후기  </span></a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="gnb5">
+							<a href="?PG=j01">이용신청</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?PG=j01"><span>이용 신청하기 </span></a></li>
+									<!-- <li><a href="javascript:popup_counsel('homepage');" hit-id="1337" ><span>상담 신청하기</span></a></li> -->
+								</ul>
+							</div>
+						</li>
+						<li class="gnb6">
+							<a href="javascript:;">이지케어 소식</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?dataTab=tabCon03"><span>고객 이용 현황</span></a></li>
+									<li><a href="?dataTab=tabCon04"><span>이지케어 게시판</span></a></li>
+									<li><a href="?PG=easyms"><span>이지엠소프트 소개</span></a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<!-- GNB Mobile -->
+			<button class="nav-open-btn" title="네비게이션 열기">
+				<span class="line line1"></span><span class="line line2"></span><span class="line line3"></span><span class="line line4"></span>
+			</button>
+			<div class="gnb-overlay-bg-m"></div>
+			<nav id="gnbM" class="gnb-style-basic">
+				<!-- 
+					기본스타일 : .gnb-style-basic
+					Full 스타일 : .gnb-style-full
+				-->
+				<h2 class="blind">주메뉴</h2>
+				<div class="gnb-navigation-wrapper">
+					<div class="gnb-navigation-inner">
+						<ul id="navigation">
+							<li>
+								<a href="javascript:;">이지케어 소개</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=e01"><span>이지케어<br>주요기능&특징</span></a></li>
+									<!-- <li><a href="?PG=e01&anchor=fixedIntroCon02"><span>이지케어 이용 현황</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon03"><span>이지케어 특징</span></a></li> -->
+									<li><a href="javascript:;" hit-id="1311" onclick="popup_charge()"><span>★ 이용 요금표</span></a></li>
+									<!-- <li><a href="?PG=e01"><span>이지케어 소개 영상</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon02"><span>이지케어 이용 현황</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon03"><span>이지케어 특징</span></a></li>
+									<li><a href="javascript:;" hit-id="1313" onclick="popup_charge()"><span>★ 이용 요금표</span></a></li> -->
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">주요 기능</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=f01"><span>주요 기능</span></a></li>
+									<li><a href="?anchor=mainVideoCon"><span>주요 기능 동영상으로 보기</span></a></li>
+									<li><a href="javascript:demoAction('gnb_pc')"  hit-id="3002"><span>데모 체험하기</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">도입 효과</a>
+								<ul class="gnb-2dep">
+									<li><a href="?dataTab=tabCon01"><span>사용기관 인터뷰</span></a></li>
+									<li><a href="javascript:;" onclick="popup_review()" hit-id="1321"><span>★ 사용후기 </span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">재무회계 대행</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=a01&anchor=fixedServiceCon01"><span>소개&제공 서비스</span></a></li>
+									<!-- <li><a href="?PG=a01&anchor=fixedServiceCon02"><span>제공 서비스</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon03"><span>서비스 특징</span></a></li> -->
+									<li><a href="javascript:;" onclick="popup_w4c_intro()" hit-id="1331"><span>★ 웹 카달로그 보기</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">가입하기</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=j01"><span>★ 이용 신청하기</span></a></li>
+									<li><a href="?PG=j03"><span>가입 상담 신청하기</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">이지케어 소식</a>
+								<ul class="gnb-2dep">
+									<li><a href="?dataTab=tabCon03"><span>고객 가입 현황</span></a></li>
+									<li><a href="?dataTab=tabCon04"><span>이지케어 게시판</span></a></li>
+									<li><a href="?PG=easyms"><span>이지엠소프트 소개</span></a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<!-- 팝업내용 :: 사이트맵 -->
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupSitemap">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section id="siteMapCon" class="footer-modal-content">
+							<a href="javascript:;" class="close-icon-style modal-close-btn" onclick="modalPopupClose('#popupSitemap')" title="팝업 닫기"><i class="xi-close"></i></a>
+							<h1>사이트맵</h1>
+							<article class="sitemap-wrapper"></article>
+						</section>
+
+						<script type="text/javascript">
+							// 대메뉴복사 후 사이트맵 삽입
+							var $sitemapGnbList = $("#gnb > ul > li");
+							var gnbLength = $sitemapGnbList.length;
+							$(".sitemap-wrapper").append("<ul></ul>");
+							
+							for(var i=0; i < gnbLength; i++){
+								var $gnb1depItem = $sitemapGnbList.eq(i).children("a");
+								var $gnb2depList = $sitemapGnbList.eq(i).find(".gnb-2dep > ul").html() ? $sitemapGnbList.eq(i).find(".gnb-2dep > ul").html() :	'<a href="'+$gnb1depItem.attr("href")+'">'+$gnb1depItem.text()+'</a>';
+								$(".sitemap-wrapper > ul").append('<li><h2>'+$gnb1depItem.text()+'</h2><ul class="sitemap-2dep">'+$gnb2depList+'</ul></li>');
+							}
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+<!-- 내용 끼워넣기 시작 ######################################################  -->
+
+
+	
+	<div id="mainContainer">
+
+			<!-- ****************** 메인 비주얼 ********************** -->
+			<section id="mainVisual" class="">
+				<div class="main-visual-con">
+					<div class="main-visual-item">
+						<!-- pc 이미지 사이즈 1920x570 / 모바일 이미지 사이즈 800x890 -->
+						<div class="main-visual-pc-img" style="background:#fff url(./homepage/images/main/main_visual_01.jpg) no-repeat 50% 50%;"></div>
+						<div class="main-visual-m-img"><img src="./homepage/images/main/main_visual_01_m.jpg" alt="메인비주얼 모바일 이미지 1" /></div>	<!-- 모바일이미지 -->
+						<div class="main-visual-txt-con">
+							<div class="main-visual-txt-inner area">
+								<p class="main-visual-txt1 cm-word-split-JS" data-splitting data-css-property="animation" data-speed="0.03" data-speed-delay="0.1">재가기관 업무관리프로그램 분야 업계1위! 점유율1위!</p>
+								<p class="main-visual-txt2">9,000여 장기요양기관이 <br>선택한 이지케어</p>
+							</div>
+						</div>
+					</div>
+					<div class="main-visual-item">
+						<div class="main-visual-pc-img" style="background:#fff url(./homepage/images/main/main_visual_03.jpg) no-repeat 50% 50%;"></div>
+						<div class="main-visual-m-img"><img src="./homepage/images/main/main_visual_03_m.jpg" alt="메인비주얼 모바일 이미지 2" /></div>	<!-- 모바일이미지 -->
+						<div class="main-visual-txt-con">
+							<div class="main-visual-txt-inner area">
+								<p class="main-visual-txt1 cm-word-split-JS" data-splitting data-css-property="animation" data-speed="0.03" data-speed-delay="0.1">국내 1위 방문요양·주간보호 재무회계 서비스</p>
+								<p class="main-visual-txt2">재무회계·세무·4대보험<br>이지케어 하나로 해결하세요!</p>
+							</div>
+						</div>
+					</div>
+					<!--
+					<div class="main-visual-item">
+						<div class="main-visual-pc-img" style="background:#fff url(./homepage/images/main/main_visual_02.jpg) no-repeat 50% 50%;"></div>
+						<div class="main-visual-m-img"><img src="./homepage/images/main/main_visual_02_m.jpg" alt="메인비주얼 모바일 이미지 2" /></div>
+						<div class="main-visual-txt-con">
+							<div class="main-visual-txt-inner area">
+								<p class="main-visual-txt1 cm-word-split-JS" data-splitting data-css-property="animation" data-speed="0.03" data-speed-delay="0.1">장기요양기관의 필수 업무  [세무·재무회계·4대보험]</p>
+								<p class="main-visual-txt2">복잡한 세무·재무회계·4대보험도 <br>이제 이지케어에 맡기세요!</p>
+							</div>
+						</div>
+					</div>
+					-->
+				</div>
+				<aside class="main-visual-arrow">
+					<div class="area">
+						<button class="main-visual-prev"><i class="xi-angle-left-thin"></i></button>
+						<button class="main-visual-next"><i class="xi-angle-right-thin"></i></button>
+					</div>
+				</aside>  
+
+				<!-- 로그인 창 -->
+				<div id="box-login" class="main-login-con">
+					<div class="area clearfix">
+						<div class="main-login-wrapper">
+							<!-- <a href="javascript:;" class="main-login-btn close" title="로그인창 닫기"><i class="xi-arrow-right"></i></a>
+							<a href="javascript:;" class="main-login-btn open" title="로그인창 열기"><em class="tit">로그인</em><span></span><span></span><span></span><span></span><i class="xi-user-o"></i></a> -->
+						<!-- 공지 -->
+									<!-- 로그인 되어있는 화면(로그아웃버튼) -->
+									<ul class="main-login-box">
+
+										<li class="login off" style="height:15%;">
+											<p>실행하기를 클릭하여 <b>로그인<i class="circle"></i></b> 하세요</p>
+										</li>
+										<li class="login off" style="height:45%;">
+											<a class="main-start-btn" href="javascript:openEzMain('/login.html');">
+											<i></i><p>이지케어실행하기</p></a>
+										</li>
+
+										<li class="login on" style="height:20%; display:none">
+											<p>
+												<span id="oInfo-name"></span>
+												<span style="color:#000;margin-left:5px;font-weight:bold;" id="login_User_Name">님</span> 
+												<b>로그인<i class="circle"></i></b> 되어 있습니다.
+											</p>
+										</li>
+										<li class="login on" style="height:45%; display:none">
+											<a class="main-login-start-btn" href="javascript:openEzMain('/login.html');">이지케어 실행하기</a>
+											<a class="main-login-start-btn logout" href="javascript:logout();">로그아웃</a>
+										</li>
+
+										<li style="height:35%;">
+											<table style="text-align:left;">
+												<tr>
+													<th width="80" height="40">고객센터</th>
+													<td>1644-0340</td>
+												</tr>
+												<tr>
+													<th height="50">상담시간</th>
+													<td>09:30 ~ 17:30 <span style="color:#999">(평일)<br>주말·공휴일 휴무</span></td>
+												</tr>
+												<tr>
+													<th height="30" height="30">FAX</th>
+													<td>0505-877-0933</td>
+												</tr>
+											</table>
+										</li>
+									</ul>
+
+
+								<!-- <div style="padding:0;text-align:center; z-index:10; width:100%; background:rgba(255,255,255,.8) !important; height:100%; border-radius:1.5em;">
+
+								</div> -->
+
+								<!-- <div class="main-login-top">
+									<h5>이지케어 로그인</h5>
+									<form id="form-login" method="post" action="" onSubmit="return false;">
+										<ul>
+											<li class="clearfix">
+												<span class="tit">시설코드</span>
+												<input type="text" name="oCode" class="cm-input h-40" required maxlength="4" value="" style="ime-mode:disabled; text-transform:uppercase;">
+											</li>
+											<li class="clearfix">
+												<span class="tit">아이디</span>
+												<input type="text" name="User_ID" class="cm-input h-40" required maxlength="15" value="" style="ime-mode:disabled;">
+											</li>
+											<li class="clearfix">
+												<span class="tit">패스워드</span>
+												<input type="password" name="User_PW" class="cm-input h-40" required maxlength="15">
+											</li>
+										</ul>
+									
+										<div class="login-check">
+											<fieldset class="cm-custom-checkbox">
+												<span class="checkbox-item">
+													<input type="checkbox" id="login_saveIDC" name="sID" >
+													<label for="login_saveIDC"> 접속정보저장</label>
+												</span>
+											</fieldset>
+										</div>
+										<button id="btn-hone-login" class="login-btn">로그인</button>
+									</form>
+								</div>
+								<div class="main-login-bottom clearfix">
+									<a href="javascript:;" onclick="modalPopupOpen('#popupSearchCode');">시설코드찾기</a>
+									<a href="javascript:;" onclick="modalPopupOpen('#popupSearchMyinfo');">ID / PW 찾기</a>
+								</div> -->
+															</div>
+						</div>	
+					</div>
+				</div>
+
+				<!-- <div id="box-login-success" class="main-login-con" style="display:none;">
+					<div class="area clearfix">
+						<div class="main-login-wrapper">
+							<a href="javascript:;" class="main-login-btn close" title="로그인창 닫기"><i class="xi-arrow-right"></i></a>
+							<a href="javascript:;" class="main-login-btn open" title="로그인창 열기"><em class="tit">로그아웃</em><span></span><span></span><span></span><span></span><i class="xi-user-o"></i></a>
+							<div class="main-login-inner open">
+								<div class="main-login-top" style="text-align:center; line-height:2.5">
+									<p>반갑습니다.</p>
+									<p name="oName"></p>
+									<p><span name="User_Name"></span>님으로 로그인 되어있습니다.</p>
+								</div>
+
+								<div class="main-login-bottom clearfix">
+									<a href="javascript:;" onclick="openEzMain(); if(open && ezWin) ezWin.location.href = '/new.ez';">이지케어실행</a>
+									<a href="javascript:;" onclick="logout();">로그아웃</a>
+								</div>
+							</div>
+						</div>	
+					</div>
+				</div> -->
+
+				<script>
+				/*
+					if(0){
+						var winID = ""; //이지케어 실행창 ID
+						login_success({
+							User_Name:"",
+							oName:""
+						});
+					}else{
+						$("[name='oCode']").focus();
+					}
+					
+					$("#btn-hone-login", "#box-login").on("click", login);
+					*/
+				</script>
+
+
+				<!-- // -->
+			</section>
+			<!-- ****************** 메인컨텐츠 ********************** -->
+			<section id="mainContent">
+				<!-- ****************** 메인컨텐츠 1 (퀵메뉴) ********************** -->
+				<!-- ****************** 220829 수정 ********************** -->
+				<article id="mainQuickCon">
+					<div class="area">
+						<ul class="main-quick-list clearfix">
+							<li class="main-quick-item">
+								<a href="javascript:demoAction('quickmenu')" hit-id="3004">
+									<span class="icon icon01 trans300"></span>
+									<p>이지케어 체험하기</p>
+								</a>
+							</li>
+							<li class="main-quick-item">
+								<a href="#" onclick="w4cAction('w4c_quick')">
+									<span class="icon icon02 trans300"></span>
+									<p>재무회계 체험하기</p>
+								</a>
+							</li>
+							<li class="main-quick-item">
+								<a href="/?PG=e01">
+									<span class="icon icon03 trans300"></span>
+									<p>이지케어 소개</p>
+								</a>
+							</li>
+							<li class="main-quick-item cm-ac">
+								<a href="/?PG=j01">
+									<span class="icon icon04 trans300"></span>
+									<p>이용요금안내 및 <br/>이용신청</p>
+								</a>
+							</li>
+
+							<li class="main-quick-item">
+								<a href="https://cafe.naver.com/egcare" target="_blank">
+									<span class="icon icon05 trans300"></span>
+									<p>이지케어 네이버카페</p>
+								</a>
+							</li>
+							<li class="main-quick-item">
+								<a href="https://939.co.kr/downloadsupport.php?userid=easyms">
+									<span class="icon icon06 trans300"></span>
+									<p>원격지원 서비스</p>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</article>
+				<!-- ****************** 메인컨텐츠 2 (공지사항 & 업데이트) ********************** -->
+				<article id="mainNoticeCon">
+					<div class="area main-notice-con clearfix" data-aos="fade-up">
+						<div class="main-notice-tit">공지사항 & 업데이트</div>
+						<div class="main-notice-board">
+							<ul class="main-notice-list clearfix">
+
+								<li><a href="?PG=b01&rowid=446" class="clearfix"><p class="text-ellipsis">2026년4월 이지케어 업데이트 안내</p><span>2026-06-11</span></a></li>
+								<li><a href="?PG=b01&rowid=445" class="clearfix"><p class="text-ellipsis"> 2026년3월 이지케어 업데이트 안내</p><span>2026-06-11</span></a></li>
+								<li><a href="?PG=b01&rowid=444" class="clearfix"><p class="text-ellipsis">2026년2월 이지케어 업데이트 안내</p><span>2026-03-23</span></a></li>
+
+							</ul>
+						</div>
+						<div class="main-notice-arrow">
+							<button class="main-notice-prev"><i class="xi-angle-left-thin"></i></button>
+							<button class="main-notice-next"><i class="xi-angle-right-thin"></i></button>
+						</div>
+					</div>
+				</article>
+
+				<!-- ****************** 오른쪽 사이드 퀵메뉴 ********************** -->				
+				<article class="quickMenu_wrap">
+					<div class="quickMenu">
+                        <div class="quickMenu-pc-title">
+							<span>바로가기</span>
+                        </div>
+                        <ul class="qm-list">
+							<li class="side-quick-item sq-list">
+								<a href="javascript:demoAction('quickmenu')" hit-id="3001">
+									<div class="sq-icon sq-icon01 trans300"></div>
+                                    <p>이지케어 체험하기</p>
+								</a>
+							</li>
+							<li class="side-quick-item sq-list">
+								<a href="#" onclick="w4cAction('w4c_side')">
+									<div class="sq-icon sq-icon02 trans300"></div>
+                                    <p>재무회계 체험하기</p>
+								</a>
+							</li>
+							<li class="side-quick-item sq-list">
+                            	<a href="/?PG=j01">
+									<div class="sq-icon sq-icon03 trans300"></div>
+									<p>요금안내 및 신청</p>
+								</a>
+                            </li>
+							<li class="side-quick-item sq-list">
+                            	<a style="cursor:pointer;" onclick="modalPopupOpen('#popupUserService')">
+									<div class="sq-icon sq-icon04 trans300"></div>
+									<p>가입상담</p>
+								</a>
+                            </li> 
+                            </li>
+						</ul>
+						<div class="go-to-top">
+							<p>top <i class="xi-caret-up-circle-o"></i></p>
+                        </div> 
+					</div>
+				</article>
+
+				<!-- ****************** 메인컨텐츠 3 (이지케어를 선택한 이유) ********************** -->
+				<article id="mainSelcetCon">
+					<div class="area" data-aos="fade-up">
+						<h5 class="main-selcet-tit"><span>9,273</span>개 재가기관이 <br class="m-br">이지케어를 선택한 이유!</h5>
+						<div class="main-selcet-con num-count-con">
+							<ul class="main-selcet-list clearfix">
+								<li class="main-selcet-item clearfix">
+									<div class="top-group">
+										<i class="xi-city"></i>
+										<p class="tit"><strong class="count-num" id="counter1">0</strong> 개</p>
+									</div>
+									<p class="txt">이지케어 도입 기관</p>
+								</li>
+								<li class="main-selcet-item clearfix">
+									<div class="top-group">
+										<i class="xi-file-text-o"></i>
+										<p class="tit"><strong class="count-num" id="counter2">0</strong> 개</p>
+									</div>
+									<p class="txt">이지케어 재무회계 도입기관</p>
+								</li>
+								<li class="main-selcet-item clearfix">
+									<div class="top-group">
+										<i class="xi-percent"></i>
+										<p class="tit"><strong class="count-num" id="counter3">0</strong> 억원</p>
+									</div>
+									<p class="txt">공단 급여청구 금액</p>
+								</li>
+								<li class="main-selcet-item clearfix">
+									<div class="top-group">
+										<i class="xi-calculator"></i>
+										<p class="tit"><strong class="count-num" id="counter4">0</strong> 억원</p>
+									</div>
+									<p class="txt">종사자 급여처리 금액</p>
+								</li>
+							</ul>
+						</div>
+						<p class="main-selcet-txt">이지케어를 이용하는 기관에서 월간 처리하고 있는 현금 흐름 및 인원입니다.<br>(2026년 06월 24일 현재)</p>
+					</div>
+				</article>
+				<script type="text/javascript">
+				<!--
+				var mCnt = {
+					1: 9273,
+					2: 4595,
+					3: 2353,
+					4: 1820,
+				};
+				//-->
+				</script>
+
+
+				<!-- ****************** 메인컨텐츠 4 (탭 컨텐츠) ********************** -->
+				<article id="mainTabCon">
+					<section class="cm-tab-container-JS cm-main-tab-container-JS">
+						<aside class="main-tab-wrapper-style">
+							<div class="main-tab-list-style cm-tab-list-JS">
+								<ul class="area clearfix">
+									<li id="tabCon01Tab" class="selected"><a href="#tabCon01"><em>사용기관 인터뷰</em></a></li>
+									<li id="tabCon02Tab"><a href="#tabCon02"><em>고객 사용 후기</em></a></li>
+									<li id="tabCon03Tab"><a href="#tabCon03"><em>고객 가입 현황</em></a></li>
+									<li id="tabCon04Tab"><a href="#tabCon04"><em>이지케어 게시판</em></a></li>
+								</ul>
+							</div>
+						</aside>
+						<article class="area main-tab-content-style cm-tab-content-wrapper-JS" data-aos="fade-up">
+							<div class="main-tab-con" id="tabCon01">
+								<h5 class="cm-main-tit">이지케어를 사용하고 있는 기관의 <span>솔직하고 생생한 이야기</span>를 들려드립니다.</h5>
+								<div class="main-story-wrapper">
+									<ul id="box-ezc_interview" class="main-story-list clearfix">
+										<!-- ajax 로딩 -->
+									</ul>
+								</div>
+								<div class="paging" id="pager-ezc_interview">
+									<!-- ajax 로딩 -->
+								</div>
+								<script type="text/javascript">
+									
+								</script>
+							</div>
+							<div class="main-tab-con" id="tabCon02">
+								<h5 class="cm-main-tit">수백여개의 <span>기관이 직접 작성하고, 보내주신</span> 솔직한 사용후기를 직접 확인해보세요.</h5>
+								<div class="bbs-list-tbl" id="ezc_review">
+									<!-- ajax 로딩 -->
+								</div>
+								<div class="paging" id="pager-ezc_review">
+									<!-- ajax 로딩 -->
+								</div>
+							</div>
+							<div class="main-tab-con" id="tabCon03">
+								<h5 class="cm-main-tit">이지케어는 <span>2008년 7월</span>「노인장기요양보험」사업개시와 동시에 <span>국내 최초로 개발/보급</span> 되었습니다.</h5>
+								<div class="bbs-list-tbl">
+									<p class="bbs-list-head">
+										<span style="width:10%;">번호</span>
+										<span style="width:30%;">기관명</span>
+										<span style="width:45%;">주소지</span>
+										<span style="width:15%;">가입일</span>
+									</p>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9273</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">늘봄○○재가복지센터</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">인천광역시</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-23</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9272</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">케어○○119재가장기요양기관</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">경기도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-23</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9271</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">운재○○활주간보호센터</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">전북특별자치도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-23</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9270</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">현대○○재가복지센터</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">경상남도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-22</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9269</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">인청○○춘재활주간보호.방문요양고읍점(임의가입</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">경기도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-22</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9268</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">케어○○ 재가복지센터 </p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">서울특별시</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-22</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9267</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">재가○○복지센터</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">전라남도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-22</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9266</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">재가○○방문요양센터</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">경상북도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-22</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9265</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">케어○○노인복지센터</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">충청북도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-19</div>
+									    </div>
+																			<div class="bbs-list-row">
+											<div class="column" data-label="번호">9264</div>
+											<div class="column bbs-title">
+												<div class="bbs-subject-con">
+													<p class="bbs-subject-txt">방문○○요양센터</p>
+												</div>
+											</div>
+											<div class="column bbs-inline ta-left" data-label="주소지">충청북도</div>
+											<div class="column bbs-inline" data-label="가입일">2026-06-19</div>
+									    </div>
+																	</div>
+							</div>
+							<div class="main-tab-con" id="tabCon04">
+								<!-- 
+									* 게시판 카테고리 리스트 입니다.
+									* 해당 카테고리에 selected 클래스 붙혀주세요.
+								-->
+								<ul class="main-tab-category clearfix">
+									<li class="selected"><a href="">공지사항</a></li>
+									<li class="selected"><a href="">업데이트</a></li>
+									<li class="selected"><a href="">이지케어 소식</a></li>
+								</ul>
+								<!-- // -->
+								<div class="bbs-list-tbl" id="ezc_board">
+									<!-- ajax 로딩 -->
+								</div>
+								<div class="paging" id="pager-ezc_board">
+									<!-- ajax 로딩 -->
+								</div>
+							</div>
+						</article>
+					</section>
+				</article>
+				<script type="text/javascript">
+					$(document).on("click", "li.main-story-item", function(){
+						ezAjax({
+							url:"/homepage/json.php?data=interview-detail",
+							data: {rowid: $(this).attr("rowid")},
+							dataType: "json",
+							success: function(data){
+								console.log(data);
+								$("#popupMainStory .org_name").html(data.org_name);
+								$("#popupMainStory .content").html(data.content);
+
+								
+								modalPopupOpen('#popupMainStory');
+							}
+						});
+					});
+
+					getItvList('');
+					getReviewList('');
+					getBoardList('');
+
+					function getItvList(page) {
+						let dataUrl = '/homepage/ajax/ajax_get_itv.php';
+
+						if (page) {
+							dataUrl += '?itvpage=' + page;
+						}
+
+						$.ajax({
+							url: dataUrl,
+							type: 'GET',
+							dataType: 'json'
+						})
+						.done(function(r) {
+							console.log(r);
+							let listHtml = '';
+							let pagerHtml = '';
+
+							$.each(r.list, function(idx, el) {
+								listHtml += getItemHtml(el);
+							});
+
+							pagerHtml += getPagerHtml(r, 'getItvList');
+
+							$('#box-ezc_interview').html(listHtml);
+							$('#pager-ezc_interview').html(pagerHtml);
+						})
+						.fail(function(r) {
+							console.log("error");
+							console.log(r);
+						});
+					}
+					
+					function getItemHtml(obj) {
+						// console.log(obj);
+						let html = '';
+						html += '<li class="main-story-item" rowid="' + obj.rowid + '">';
+						html += '	<a href="javascript:;">';
+						html += '	<!-- 이미지 권장사이즈 380x240 -->'
+						html += '	<div class="main-story-img">';
+						html += '		<span class="bg" style="background:url(\'/homepage/file/interview/' + obj.thumbnail_image + '\') center/cover no-repeat"></span>';
+						html += '		<span class="category sKind">' + obj.sKind + '</span>';
+						if (obj.is_new == 'Y') html += '		<span class="new"><span>NEW</span></span>';
+						html += '	</div>';
+						html += '	<div class="main-story-txt">';
+						html += '		<div class="tit clearfix">';
+						html += '			<h5 class="text-ellipsis org_name">' + obj.org_name + '</h5>';
+						html += '			<span class="text-ellipsis org_status">' + obj.org_status + '</span>';
+						html += '		</div>';
+						html += '		<p class="txt line-clamp2 summarize">' + nl2br(obj.summarize) + '</p>';
+						html += '	</div>';
+						html += '	</a>';
+						html += '</li>';
+						return html;
+					}
+					
+					function getReviewList(page) {
+						let dataUrl = '/homepage/ajax/ajax_get_review.php';
+
+						if (page) {
+							dataUrl += '?rpage=' + page;
+						}
+
+						$.ajax({
+							url: dataUrl,
+							type: 'GET',
+							dataType: 'json'
+						})
+						.done(function(r) {
+							// console.log(r);
+							let listHtml = '';
+							let pagerHtml = '';
+
+							listHtml += '<p class="bbs-list-head">';
+							listHtml += '	<span style="width:8%;">번호</span>';
+							listHtml += '	<span style="width:12%;">사용후기 접수</span>';
+							listHtml += '	<span style="width:30%;">기관명</span>';
+							listHtml += '	<span style="width:50%;">사용후기</span>';
+							listHtml += '</p>';
+
+							$.each(r.list, function(idx, el) {
+								listHtml += getReviewHtml(el);
+							});
+
+							pagerHtml += getPagerHtml(r, 'getReviewList');
+
+							$('#ezc_review').html(listHtml);
+							$('#pager-ezc_review').html(pagerHtml);
+						})
+						.fail(function(r) {
+							console.log("error");
+							console.log(r);
+						});
+					}
+
+					function getReviewHtml(obj) {
+						let html = '';
+			    		html += '<div class="bbs-list-row" onclick="toggleCont(\'' + obj.rowid + '\');">';
+			    		html += '	<div class="column">' + obj.no + '</div>';
+			    		html += '	<div class="column" data-label="사용후기 접수">' + obj.wdate_format + '</div>';
+			    		html += '	<div class="column bbs-inline" data-label="기관명" style="text-align:left">[' + obj.area + '] ' + obj.orgName + '</div>';
+			    		html += '	<!-- <div class="column bbs-inline" data-label="수급자수">-</div>';
+			    		html += '	<div class="column bbs-inline" data-label="이지케어 도입전">-</div> -->';
+			    		html += '	<div class="column bbs-title">';
+			    		html += '		<!-- <a href="?PG=r01&rowid=' + obj.rowid + '"> -->';
+			    		html += '		<a style="cursor:pointer;">';
+			    		html += '			<div class="bbs-subject-con">';
+			    		html += '				<p class="bbs-subject-txt row-2">' + obj.data_4 + '</p>';
+			    		html += '			</div>';
+			    		html += '		</a>';
+			    		html += '	</div>';
+			    	    html += '</div>';
+			    		html += '<div class="bbs-list-row cont-row">';
+			    		html += '	<div class="column">';
+				    	html += '		<div class="bbs-list-row-cont cont-' + obj.rowid + '">';
+						html += '    		<p>' + obj.data_3 + '</p>';
+						html += '    		<p>' + obj.data_4 + '</p>';
+						html += '    		<p>' + obj.data_5 + '</p>';
+						html += '    		<p>' + obj.data_6 + '</p>';
+						html += '    		<img src="/homepage/images/main/board_logo.png" class="cont_logo">';
+						html += '    		<div class="cont_txt">';
+						html += '    			<span>[' + obj.area + '] ' + obj.orgName + '</span>에서<br>';
+						html += '    			올려주신 이지케어 사용후기입니다.';
+						html += '    		</div>';
+				    	html += '		</div>';
+			    		html += '	</div>';
+			    		html += '	<div class="column"></div>';
+			    		html += '	<div class="column"></div>';
+			    		html += '	<div class="column"></div>';
+			    		html += '</div>';
+						return html;
+					}
+
+					function getBoardList(page) {
+						let dataUrl = '/homepage/ajax/ajax_get_notice.php';
+
+						if (page) {
+							dataUrl += '?rpage=' + page;
+						}
+
+						$.ajax({
+							url: dataUrl,
+							type: 'GET',
+							dataType: 'json'
+						})
+						.done(function(r) {
+							// console.log(r);
+							let listHtml = '';
+							let pagerHtml = '';
+
+							listHtml += '<p class="bbs-list-head">';
+							listHtml += '	<span style="width:10%;">번호</span>';
+							listHtml += '	<span style="width:60%;">제목</span>';
+							listHtml += '	<span style="width:15%;">등록일</span>';
+							listHtml += '	<span style="width:5%;">조회</span>';
+							listHtml += '</p>';
+
+							$.each(r.list, function(idx, el) {
+								listHtml += getBoardHtml(el);
+							});
+
+							pagerHtml += getPagerHtml(r, 'getBoardList');
+
+							$('#ezc_board').html(listHtml);
+							$('#pager-ezc_board').html(pagerHtml);
+						})
+						.fail(function(r) {
+							console.log("error");
+							console.log(r);
+						});
+					}
+
+					function getBoardHtml(obj) {
+						let html = '';
+						// html += '<div class="bbs-list-row" onclick="toggleCont(\'b' + obj.rowid + '\');">';
+						html += '<div class="bbs-list-row" onclick="location.href=\'?PG=b01&rowid='+obj.rowid+'\'">';
+						html += '	<div class="column" data-label="번호">' + obj.no + '</div>';
+						html += '	<div class="column bbs-title">';
+						html += '		<div class="bbs-subject-con">';
+						html += '			<p class="bbs-subject-txt">' + obj.Subject + '</p>';
+						html += '		</div>';
+						html += '	</div>';
+						html += '	<div class="column bbs-inline" data-label="등록일">' + obj.wdate_format + '</div>';
+						html += '	<div class="column bbs-inline" data-label="조회">' + obj.Hit + '</div>';
+					    html += '</div>';
+					    html += '<div class="bbs-list-row cont-row">';
+			    		html += '	<div class="column">';
+				    	html += '		<div class="bbs-list-row-cont bd cont-b' + obj.rowid + '">';
+						html += '    		<p>' + obj.Contents + '</p>';
+				    	html += '		</div>';
+			    		html += '	</div>';
+			    		html += '	<div class="column"></div>';
+			    		html += '	<div class="column"></div>';
+			    		html += '</div>';
+					    return html;
+					}
+
+					function getPagerHtml(obj, funcName) {
+						let pagerHtml = '';
+						if (obj.page == 1) {
+							pagerHtml += '<a class="arrow prev"><img src="/homepage/images/icon/icon_prev_last.png" alt="화살표" title="이전"></a>';
+							pagerHtml += '<a class="arrow prev"><img src="/homepage/images/icon/icon_prev.png" alt="화살표" title="이전"></a>';
+						} else {
+							pagerHtml += '<a href="javascript:' + funcName + '(1);" class="arrow prev"><img src="/homepage/images/icon/icon_next_last.png" alt="화살표" title="이전" style="transform:rotate(180deg);"></a>';
+							pagerHtml += '<a href="javascript:' + funcName + '(' + (Number(obj.page) - 1) + ');" class="arrow prev"><img src="/homepage/images/icon/icon_next.png" alt="화살표" title="이전" style="transform:rotate(180deg);"></a>';
+						}
+						for (let i = obj.section_start;i < obj.section_end;i++) {
+							if (obj.page == i + 1) {
+								pagerHtml += '<a href="javascript:' + funcName + '(' + (i + 1) + ');" class="cur">' + (i + 1) + '</a>';
+							} else {
+								pagerHtml += '<a href="javascript:' + funcName + '(' + (i + 1) + ');">' + (i + 1) + '</a>';
+							}
+						}
+						if (obj.page == obj.page_count) {
+							pagerHtml += '<a class="arrow next"><img src="/homepage/images/icon/icon_prev.png" alt="화살표" title="다음" style="transform:rotate(180deg);"></a>';
+							pagerHtml += '<a class="arrow next"><img src="/homepage/images/icon/icon_prev_last.png" alt="화살표" title="다음" style="transform:rotate(180deg);"></a>';
+						} else {
+							pagerHtml += '<a href="javascript:' + funcName + '(' + (Number(obj.page) + 1) + ');" class="arrow next"><img src="/homepage/images/icon/icon_next.png" alt="화살표" title="다음"></a>';
+							pagerHtml += '<a href="javascript:' + funcName + '(' + obj.page_count + ');" class="arrow next"><img src="/homepage/images/icon/icon_next_last.png" alt="화살표" title="다음"></a>';
+						}
+						return pagerHtml;
+					}
+
+	    			function toggleCont(id) {
+	    				if (id == 'b359') {
+	    					let href = '?PG=event_result';
+	    					location.href = href;
+	    					return false;
+	    				} else if (id == 'b362') {
+	    					let href = '?PG=b01&rowid=362';
+	    					location.href = href;
+	    					return false;
+	    				} else if (id == 'b363') {
+	    					let href = '?PG=b01&rowid=363';
+	    					location.href = href;
+	    					return false;
+	    				}
+
+	    				if ($('.bbs-list-row-cont.cont-' + id).is(':visible')) {
+	    					$('.bbs-list-row-cont.cont-' + id).slideUp();
+	    				} else {
+		    				$('.bbs-list-row-cont').each(function() {
+		    					if ($(this).is(':visible')) {
+		    						$(this).slideUp();
+		    					}
+		    				});
+		    				$('.bbs-list-row-cont.cont-' + id).slideDown();
+	    				}
+	    			}
+
+	    			function nl2br(str) {
+	    				return str.replace(/\n/g, "<br />");
+	    			}
+				</script>
+				<!-- ****************** 메인컨텐츠 5 (홍보영상) ********************** -->
+				<article id="mainVideoCon">
+					<div class="area">
+						<h5 class="cm-main-tit">기관 업무를 확 줄여주는 <br class="m-br"><span>이지케어의 편리한 기능</span>을 영상으로 확인하세요</h5>
+						<div class="main-video-wrapper">
+							<ul id="box-ez_intro_mov" class="main-video-list clearfix">
+
+								<li class="main-video-item">
+									<a href="javascript:;">
+										<!-- 이미지 권장사이즈 380x240 -->
+										<div class="main-video-img"><span class="bg"></span></div>
+										<div class="main-video-txt">
+											<h5 class="tit text-ellipsis"><h5 class="text-ellipsis">동영상 타이틀(카피라이트)</h5></h5>
+										</div>
+									</a>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+					<script type="text/javascript">
+					<!--
+						$.each(ez_intro_mov, function(key, val){
+							var li = $("#box-ez_intro_mov li:first-child").clone();
+							$(li).attr("url", val.url);
+							$(li).find(".main-video-img .bg").attr("style", "background: url('"+val.bgImg+"') center/cover no-repeat;");
+							$(li).find("h5.text-ellipsis").html(val.title);
+							$("#box-ez_intro_mov").append($(li));
+						});
+						$("#box-ez_intro_mov li:first-child").remove();
+						$(document).on("click", "li.main-video-item", function(){
+							var movUrl = $(this).attr('url');
+							var tmp = movUrl.split('/');
+							var youtubeUrl = 'https://www.youtube.com/watch?v=' + tmp[tmp.length - 1];
+							
+							window.open(youtubeUrl, '');
+							// $("#popupMainVideo iframe").attr("src", $(this).attr("url"));
+							// $("#popupMainVideo h1").html($(this).find("h5.text-ellipsis").html());
+							// modalPopupOpen('#popupMainVideo');
+						});
+					//-->
+					</script>
+				</article>
+				<!-- ****************** 메인컨텐츠 6 (가입 상담 신청) ********************** -->
+				<article id="mainMemberCon">
+					<div class="area">
+						<div class="main-member-wrapper">
+							<ul class="main-member-list clearfix">
+								<li class="main-member-item join font-xi">
+									<div class="a-tag-style">
+										<h5 class="tit">가입 상담 신청</h5>
+										<p class="txt">이지케어 컨설턴트가 <br class="pc-br">고객 맞춤형 컨설팅을 제공합니다.</p>
+										<div class="button-box">
+											<a style="cursor:pointer;" onclick="modalPopupOpen('#popupUserService')">상담신청</a>
+										</div>
+									</div>
+								</li>
+								<li class="main-member-item font-xi">
+									<a href="?PG=j01" class="a-tag-style">
+										<h5 class="tit">바로 가입하기</h5>
+										<p class="txt">지금 바로 가입하시고, 기관의 업무를 <br class="pc-br">확 줄여주는 놀라움을 만나보세요.</p>
+										<div class="num-txt-box">
+											<p><span>01 .</span>인터넷을 이용하여 이메일을 확인하듯 <br class="pc-br">간편하게 이용할 수 있습니다.</p>
+											<p><span>02 .</span>초보자도 쉽게 사용할 수 있습니다.</p>
+											<p><span>03 .</span>매월 100여 이상 기관이 가입하고 있습니다.</p>
+										</div>
+									</a>
+								</li>
+								<li class="main-member-item font-xi">
+									<a href="javascript:demoAction('main2')" class="a-tag-style" hit-id="3003">
+										<h5 class="tit">직접 체험하기</h5>
+										<p class="txt">기관에 필요한 기능이 반영되어 있는<br class="pc-br">이지케어를 지금 바로 체험해 보세요.</p>
+										<div class="only-txt-box">
+											<p>가입 후 실제로 사용하는 프로그램과 <br class="pc-br">동일한 정말 쉬운 사용법</p>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</article>
+			</section>
+
+			
+
+</div>
+
+		<!-- 팝업내용 :: 홍보동영상 -->
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupMainVideo">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section class="video-modal-content">
+							<h1>동영상 제목</h1>
+							<a href='javascript:$("#popupMainVideo iframe").attr("src", "");' class="close-icon-style modal-close-btn" onclick="modalPopupClose('#popupMainVideo')" title="팝업 닫기"><i class="xi-close"></i></a>
+							<div class="video-modal-inner">
+								<div class="video-container">
+									<iframe width="100%" height="100%" src="https://www.youtube.com/embed/yNngWhGiM94" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen=""></iframe>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 팝업내용 :: 고객 탐방 이야기 -->
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupMainStory">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section class="story-modal-content">
+							<div class="story-modal-top">
+								<span class="category">이지케어 인터뷰</span>
+								<h5 class="tit org_name">시설명</h5>
+								<a href="javascript:;" class="close-icon-style close-btn" onclick="modalPopupClose('#popupMainStory')" title="팝업 닫기"><i class="xi-close"></i></a>
+							</div>
+							<div class="story-modal-bottom content">
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupLoginFail">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section class="footer-modal-content searchcode">
+							<div class="user-service-popbox">
+								<div class="user-service-top">
+									<h5>로그인 실패</h5>
+									<a href="javascript:;" onclick="modalPopupClose('#popupLoginFail')" title="팝업 닫기" class="close-btn"><i class="xi-close-thin"></i></a>
+								</div>
+								<div class="search-code-bottom">
+									<p class="search-code-txt">
+										error text
+									</p>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 내용이 있는 팝업 :: 시설코드 찾기 -->
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupSearchCode">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section class="footer-modal-content searchcode">
+							<div class="user-service-popbox">
+								<div class="user-service-top">
+									<h5>시설코드 찾기</h5>
+									<a href="javascript:;" onclick="modalPopupClose('#popupSearchCode')" title="팝업 닫기" class="close-btn"><i class="xi-close-thin"></i></a>
+								</div>
+								<div class="search-code-bottom">
+									<p class="search-code-txt"><span>이용 신청 시 입력하셨던 담당자 확인 정보를 입력</span>해주세요.<br>일치할 경우 선택한 방법으로 시설 코드가 발송됩니다.</p>
+									<table class="join-info-tbl">
+										<colgroup>
+											<col style="width: 19.5%;">
+											<col style="width: *;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<th>장기요양기관기호</th>
+												<td><input type="text" placeholder="장기요양기관번호입력, 예시)3-12345-00000" name="reg_no" class="cm-input h-30" required></td>
+											</tr>
+											<tr>
+												<th>찾기방법</th>
+												<td>
+													<fieldset class="cm-radiobox">
+														<span class="radio-item"><input type="radio" name="search_type" value="phone" checked id="radio1-1"><label for="radio1-1">휴대폰문자</label></span>
+														<span class="radio-item"><input type="radio" name="search_type" value="email" id="radio1-2"><label for="radio1-2">이메일</label></span>
+													</fieldset>
+												</td>
+											</tr>
+											<tr>
+												<th id="send-type">담당자 휴대폰번호</th>
+												<td><input type="text" name="find_value" class="cm-input h-30" required></td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="search-code-btn">
+										<a href="javascript:;" class="cm-custom-button w-215 h-50" id="btn-home-find-oCode">시설코드 안내 받기</a>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			/* 시설코드 찾기 이벤트 [*/
+			$("input[name=search_type]", "#popupSearchCode").on("change", function(){
+				var kind = $("input[name=search_type]:checked", "#popupSearchCode").val(),
+					send_type = (kind == "phone") ? "담당자 휴대폰번호" : "이메일";
+
+				$("input[name=find_value]", "#popupSearchCode").val("");
+				$("#send-type", "#popupSearchCode").text(send_type);
+			}).trigger("change");
+
+			$("#btn-home-find-oCode").on("click", function(){
+				var postData = mk_postData("#popupSearchCode", "name");
+
+				if(!postData) return false;
+
+				postData.reg_no = postData.reg_no.replace(/[^0-9]/g, "");
+				if(postData.kind == "phone") postData.find_value = postData.find_value.replace(/[^0-9]/g, "");
+				
+				ezAjax({
+					data:postData,
+					url:"/homepage/find-info.php?mode="+postData.search_type,
+					success:function(data){
+						if(data == "0000"){
+							alert("시설코드 발송이 완료되었습니다.");
+						}else{
+							alert("입력하신 정보와 일치하는 시설코드가 없습니다.\n\n'이지케어에 등록된 담당자 전화번호', '이메일'을 입력해 주세요");
+						}
+						//modalPopupClose('#popupSearchCode');
+					}
+				});
+			});
+			/*] 시설코드 찾기 이벤트 */
+		</script>
+
+
+		<!-- 내용이 있는 팝업 :: ID/PW 찾기 -->
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupSearchMyinfo">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section class="footer-modal-content searchcode">
+							<div class="user-service-popbox">
+								<div class="user-service-top">
+									<h5>ID/PW 찾기</h5>
+									<a href="javascript:;" onclick="modalPopupClose('#popupSearchMyinfo')" title="팝업 닫기" class="close-btn"><i class="xi-close-thin"></i></a>
+								</div>
+								<div class="search-code-bottom">
+									<section class="cm-tab-container-JS">
+										<aside class="search-tab-wrapper-style">
+											<div class="search-tab-list-style cm-tab-list-JS">
+												<ul class="clearfix">
+													<li class="selected"><a href="#tabSearchCon01"><em>아이디 찾기</em></a></li>
+													<li><a href="#tabSearchCon02"><em>패스워드 찾기</em></a></li>
+												</ul>
+											</div>
+										</aside>
+
+										<article class="search-tab-content-style cm-tab-content-wrapper-JS">
+											<div class="search-tab-con" id="tabSearchCon01" style="min-height:320px; height:auto; padding-bottom: 20px;">
+												<p class="search-code-txt"><span>시설코드와 이용 신청 시 입력하셨던 담당자 휴대폰번호를 입력</span>해주세요.<br>인증번호를 확인하면 아이디를 확인할 수 있습니다.</p>
+												<table class="join-info-tbl">
+													<colgroup>
+														<col style="width: 19.5%;">
+														<col style="width: *;">
+													</colgroup>
+													<tbody>
+														<tr>
+															<th>시설코드</th>
+															<td><input type="text" name="oCode" class="cm-input h-30"></td>
+														</tr>
+														<tr>
+															<th>담당자 휴대폰번호</th>
+															<td>
+																<div class="input-btn-group">
+																	<input type="text" placeholder="담당자 휴대폰번호 입력 (’-’포함)" name="phone" class="cm-input h-30">
+																	<button id="btn-home-auth-number-id">인증번호 발송</button>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<th>인증번호</th>
+															<td>
+																<div class="input-btn-group">
+																	<input type="text" placeholder="인증번호입력" name="auth_number" class="cm-input h-30">
+																	<span id="auth-time-id" style="position:absolute; width:40px; right:125px; height:30px; font-size:14px; font-weight:500; text_align:center;">00:00</span>
+																	<button id="btn-home-find-id">인증번호 확인</button>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+
+												<table class="join-info-tbl" id="find-id-list" style="display:nonea;">
+													<colgroup>
+														<col style="width: 19.5%;">
+														<col style="width: *;">
+													</colgroup>
+													<tbody>
+														<tr>
+															<th>결과(아이디)</th>
+															<td>
+																<ul></ul>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+
+
+											<div class="search-tab-con" id="tabSearchCon02" style="min-height:320px; height:auto; padding-bottom: 20px;">
+												<p class="search-code-txt"><span>시설코드, 아이디 및 이용 신청 시 입력하셨던 담당자 휴대폰번호를 입력</span>해주세요.<br>인증번호를 확인하면 새로운 패스워드로 변경할 수 있습니다.</p>
+												<table class="join-info-tbl" id="find-password">
+													<colgroup>
+														<col style="width: 19.5%;">
+														<col style="width: *;">
+													</colgroup>
+													<tbody>
+														<tr>
+															<th>시설코드</th>
+															<td><input type="text" name="oCode" class="cm-input h-30" maxlength="4" required></td>
+														</tr>
+														<tr>
+															<th>아이디</th>
+															<td><input type="text" placeholder="아이디 입력" name="id" class="cm-input h-30" required></td>
+														</tr>
+														<tr>
+															<th>담당자 휴대폰번호</th>
+															<td>
+																<div class="input-btn-group">
+																	<input type="text"  placeholder="담당자 휴대폰번호 입력 (’-’포함)" name="phone" class="cm-input h-30" required>
+																	<button id="btn-auth-number-password">인증번호 발송</button>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<th>인증번호</th>
+															<td>
+																<div class="input-btn-group">
+																	<input type="text" name="auth_number" placeholder="인증번호입력" class="cm-input h-30">
+																	<span id="auth-time-password" style="position:absolute; width:40px; right:125px; height:30px; font-size:14px; font-weight:500; text_align:center;" maxlength="4">00:00</span>
+																	<button id="btn-home-find-password">인증번호 확인</button>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+
+												<table class="join-info-tbl" id="change-password" style="display:none; margin-top:25px;">
+													<colgroup>
+														<col style="width: 19.5%;">
+														<col style="width: *;">
+													</colgroup>
+													<tbody>
+														<tr>
+															<th>새 패스워드 입력</th>
+															<td>
+																<input type="hidden" name="id" />
+																<input type="hidden" name="oCode" />
+																<input type="hidden" name="auth_number" />
+																<input type="hidden" name="phone" />
+																<input type="password" name="org_pass" class="cm-input h-30">
+															</td>
+														</tr>
+														<tr>
+															<th>새 패스워드 확인</th>
+															<td>
+																<div class="input-btn-group">
+																	<input type="password" name="confirm_pass" class="cm-input h-30">
+																	<button id="btn-home-change-password">변경하기</button>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</article>
+									</section>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 내용이 있는 팝업 :: 전화상담 신청하기 -->
+				<div class="layer-fixed-pop-wrapper layer-popup" id="popupUserService">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section class="footer-modal-content userservice">
+							<div class="user-service-popbox">
+								<div class="user-service-top">
+									<h5>가입상담 신청하기<span> 이지케어 가입 상담센터에서 고객님께 전화를 드리겠습니다.</span></h5>
+									<a href="javascript:;" onclick="modalPopupClose('#popupUserService')" title="팝업 닫기" class="close-btn"><i class="xi-close-thin"></i></a>
+								</div>
+								<div class="user-service-bottom" id="frm-counseling-requestA">
+									<h5 class="user-service-tb-tit clearfix">운영시간 : 월~금 09:30 ~17:30 / 주말, 공휴일 휴무 <span><em>*</em>는 필수항목입니다.</span></h5>
+									<table class="join-info-tbl">
+										<colgroup>
+											<col style="width: 11.9%;">
+											<col style="width: 36.36%;">
+											<col style="width: 14.3%;">
+											<col style="width: *;">
+										</colgroup>
+										<tbody>
+											<tr>
+												<th>상담 신청 서비스</th>
+												<td>
+													<fieldset class="cm-radiobox">
+														<span class="radio-item"><input type="radio" name="data_01a" value="재무회계서비스" id="data_01a_1" required><label for="data_01a_1"  style="font-size:13px;">재무회계서비스</label></span>
+														<span class="radio-item"><input type="radio" name="data_01a" value="업무관리프로그램" id="data_01a_2" required><label for="data_01a_2"  style="font-size:13px;">업무관리프로그램</label></span>
+														<span class="radio-item"><input type="radio" name="data_01a" value="재무 + 업무" id="data_01a_3" required checked><label for="data_01a_3"  style="font-size:13px;">재무 + 업무</label></span>
+													</fieldset>
+												</td>
+												<th class="add-pl">상담 신청 경로 <span class="important">*</span></th>
+												<td>
+													<div class="cm-selectboxs w-230s h-30s">
+														<select name="data_01b" class="no-fake" required autocomplete="off" fname="상담 신청 경로">
+															<option value="">이지케어 상담 경로 선택</option>
+																															<option value="인터넷 검색을 통해">인터넷 검색을 통해</option>
+																															<option value="광고(리플렛, 전단지)를 통해">광고(리플렛, 전단지)를 통해</option>
+																															<option value="집체교육 참석을 통해">집체교육 참석을 통해</option>
+																															<option value="주변 센터(지인) 소개">주변 센터(지인) 소개</option>
+																															<option value="인터넷 카페를 통해">인터넷 카페를 통해</option>
+																													</select>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th>기관명 <span class="important">*</span></th>
+												<td><input type="text" name="data_02" placeholder="기관명 입력" class="cm-input h-30" required  fname="기관명"></td>
+												<th class="add-pl">이름 <span class="important">*</span></th>
+												<td><input type="text" name="data_04" placeholder="상담신청자이름입력" class="cm-input h-30" required  fname="신청자 이름"></td>
+											</tr>
+		                                    <tr>
+												<th>기관의 소재지<span class="important">*</span></th>
+												<td>
+		                                            <span class="cm-selectbox w-170 h-30 popup">
+		                                                <select name="sido" id ="sido" onchange = "fnChange(this.value,'gugun')" fname="소재지">
+															<option>시/도 선택</option>
+															<option value ="서울">서울</option>	  
+															<option value ="부산">부산</option>	  
+															<option value ="대구">대구</option>	  
+															<option value ="인천">인천</option>	  
+															<option value ="광주">광주</option>	  
+															<option value ="대전">대전</option>	  
+															<option value ="울산">울산</option>	  
+															<option value ="세종">세종</option>	  
+															<option value ="경기">경기</option>	  
+															<option value ="강원">강원</option>	  
+															<option value ="충북">충북</option>	  
+															<option value ="충남">충남</option>	  
+															<option value ="전북">전북</option>	  
+															<option value ="전남">전남</option>	  
+															<option value ="경북">경북</option>	  
+															<option value ="경남">경남</option>
+															<option value ="제주">제주</option>
+														</select>
+		                                            </span>
+		                                            <span class="cm-selectbox w-170 h-30 popup">
+		                                                <select name="gugun" id = "gugun">
+															<option value="구/군 선택">구/군 선택</option>			 																						
+														</select>
+		                                            </span>
+		                                        </td>
+		                                        <th class="add-pl">연락처 <span class="important">*</span></th>
+		                                        <td><input type="text" name="data_05" placeholder="연락처입력" class="cm-input h-30" required fname="연락처"></td>
+											</tr>
+											<tr>
+												<th>기관유형 <span class="important">*</span></th>
+												<td>
+													<fieldset class="cm-radiobox">
+														<span class="radio-item"><input type="radio" id="radio-data_03_1" name="data_03" onclick="data08Display('none');" value="방문요양(목욕,간호)" required fname="기관유형" checked><label for="radio-data_03_1"  style="font-size:13px;">방문요양(목욕,간호)</label></span>
+														<span class="radio-item"><input type="radio" id="radio-data_03_2" name="data_03" onclick="data08Display('table-row');" value="주간보호" required fname="기관유형"><label for="radio-data_03_2"  style="font-size:13px;">주간보호</label></span>
+														<span class="radio-item"><input type="radio" id="radio-data_03_3" name="data_03" onclick="data08Display('table-row');" value="방문+주간보호" required fname="기관유형"><label for="radio-data_03_3"  style="font-size:13px;">방문+주간보호</label></span>
+													</fieldset>
+												</td>
+
+												<!--
+												<th>기관번호</th>
+												<td><input type="text" name="data_03" placeholder="기관번호입력(‘-’제외)" class="cm-input h-30"></td>
+												-->
+
+		                                        <th class="add-pl">이메일<span class="important">*</span></th>
+												<td><input type="text" name="data_09" placeholder="ex) easycare@naver.com" class="cm-input h-30" required fname="이메일"></td>
+											</tr>
+
+											<tr id="data08row" style="display:none;">
+												<th>
+													<div >
+														상담 방법<span class="important">*</span>
+													</div>
+												</th>
+												<td>
+													<fieldset class="cm-radiobox">
+														<span class="radio-item"><input type="radio" id="radio-data_08_1" name="data_08" value="전화상담" required fname="상담방법" checked><label for="radio-data_08_1"  style="font-size:13px;">전화 상담</label></span>
+														<span class="radio-item"><input type="radio" id="radio-data_08_2" name="data_08" value="방문상담" required fname="상담방법"><label for="radio-data_08_2"  style="font-size:13px;">방문 상담</label></span>
+													</fieldset>
+												</td>
+											</tr>
+
+											<tr>
+												<th>이지케어 가입여부<span class="important">*</span></th>
+												<td>
+													<fieldset class="cm-radiobox">
+														<span class="radio-item"><input type="radio" name="data_ezyn1" value="예" id="radio-ezyn1_1" required fname="이지케어 가입여부/코드"><label for="radio-ezyn1_1"  style="font-size:13px;">예</label></span>
+														<span class="radio-item"><input type="radio" name="data_ezyn1" value="아니오" id="radio-ezyn1_2" required fname="이지케어 가입여부/코드"><label for="radio-ezyn1_2"  style="font-size:13px;">아니오</label></span>
+													</fieldset>
+												</td>
+											</tr>
+											<tr>
+												<td></td>
+												<td>
+													<input type="text" name="data_ezcode" id="data_ezcode1" placeholder="이지케어 코드 입력" class="cm-input h-30" required disabled fname="이지케어 가입여부/코드" style="display:none;">
+												</td>
+											</tr>
+											<script type="text/javascript">
+												document.querySelectorAll('input[name=data_ezyn1]').forEach(function(el) {
+													el.addEventListener('change', function() {
+														if (document.querySelector('input[name=data_ezyn1]:checked').value == '예') {
+															document.getElementById('data_ezcode1').style.display = 'block';
+															document.getElementById('data_ezcode1').required = true;
+															document.getElementById('data_ezcode1').disabled = false;
+														} else if (document.querySelector('input[name=data_ezyn1]:checked').value == '아니오') {
+															document.getElementById('data_ezcode1').style.display = 'none';
+															document.getElementById('data_ezcode1').value = '';
+															document.getElementById('data_ezcode1').required = false;
+															document.getElementById('data_ezcode1').disabled = true;
+														}
+													});
+												});
+											</script>
+											<tr>
+												<th>비고(상담 요청시간 등)</th>
+												<td colspan="3"><input type="text" name="data_07" placeholder="희망하시는 상담시간이 있으면 적어주세요." class="cm-input h-30"></td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="user-service-info">
+										<h5 class="tit">개인정보 수집 및 이용에 대한 동의</h5>
+										<div class="user-service-info-box">
+											<div class="scroll-object-box-outside">
+												<table class="user-service-tbl">
+													<tbody>
+														<tr>
+															<th>이용목적</th>
+															<th>수집항목</th>
+															<th>개인정보 취급 위탁기관</th>
+															<th>보유기간</th>
+														</tr>
+														<tr>
+															<td>이지케어 상담, 컨설팅 및 <br>마케팅 활용</td>
+															<td>기관명,기관번호,이름, <br>휴대폰번호, 메일 등</td>
+															<td>㈜이지엠소프트 및 <br>고객 컨설팅 수행 담당자</td>
+															<td>회원 탈퇴 또는 이용 목적 종료시</td>
+														</tr>
+													</tbody>
+												</table>
+												<p class="user-service-tbl-txt">※ 자세한 내용은 이지케어 홈페이지 내 ‘개인정보취급방침’에서 확인하실 수 있습니다.</p>
+											</div>
+										</div>
+									</div>
+									<div class="user-service-agree">
+										<fieldset class="cm-custom-checkbox popup">
+											<span class="checkbox-item">
+												<input type="checkbox" name="agree" value="동의" id="checkbox-agree">
+												<label for="checkbox-agree"> 개인정보 수집 및 이용에 대하여 동의합니다.</label>        
+											</span>
+										</fieldset>
+									</div>
+									<div class="user-service-btn">
+										<a href="javascript:;" id="btn-counseling-requestA">상담 신청</a>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 팝업내용 :: 전화 상담신청 완료 -->
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupCallConsultingFinish">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section class="join-finish-modal-content">
+							<a href="javascript:;" class="close-icon" onclick="modalPopupClose('#popupCallConsultingFinish')" title="팝업 닫기"><i class="xi-close-thin"></i></a>
+							<div class="join-finish-inner-box">
+								<h5 class="tit">상담신청이 완료되었습니다.</h5>
+								<p class="txt">빠른 시간안에 전문 상담원이 확인 후 연락 드리겠습니다.<br>(영업일 기준 최대 2일 이내)</p>
+								<a href="javascript:;" class="close-btn" onclick="modalPopupClose('#popupCallConsultingFinish')" title="팝업 닫기">확인</a>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- // -->
+
+		<script>
+			function data08Display(display) {
+				document.getElementById('data08row').style.display = display;
+			}
+
+			$("#btn-counseling-requestA").click(function(){
+
+				var postData = mk_postData("#frm-counseling-requestA", "name");
+				if(!postData) {
+					console.log(postData);
+					//alert("입력/체크 되지 않은 문항이 있습니다.");
+					return false;
+				}
+
+				if(postData.data_09 == ""){
+		            alert("이메일을 입력해주세요.");
+					return false;
+		        }
+
+		        if(postData.data_03 == ""){
+		            alert("기관유형을 입력해주세요.");
+					return false;
+		        }
+
+		        if(postData.sido == "시/도 선택"){
+		            alert("기관의 소재지(시/도)를 입력해주세요.");
+							return;
+		        }
+
+		        if(postData.gugun == "구/군 선택"){
+							if(postData.sido != "세종"){
+		                        alert("기관의 소재지(구/군)를 입력해주세요.");
+							return;
+		                    }
+						}
+
+
+				if( !$("#checkbox-agree").is(":checked") ) {
+					alert("개인정보 수집 및 이용에 대한 동의를 하셔야합니다.");
+					return false;
+				}
+
+				if ($('#btn-counseling-requestA').hasClass('clicked')) {
+					return false;
+				} else {
+					$('#btn-counseling-requestA').addClass('clicked');
+				}
+
+				ezAjax({
+					url: "/page/home/run-request.php?mode=counseling-requestA",
+					data: postData,
+					success: function(result){
+						if(result=="0000") {
+							modalPopupClose('#popupUserService');
+							modalPopupOpen('#popupCallConsultingFinish');
+						}else{
+							alert("전화상담 신청 오류발생\r이용에 불편을 드려 죄송합니다.\r\r계속된 장애 발생시 이지케어 고객센터로 문의 주시기 바랍니다.\r" + result);
+						}
+						$('#btn-counseling-requestA').removeClass('clicked');
+					}
+				});
+			});
+
+			function fnChange(sido,obj){ 
+				$("#"+obj).val('구/군 선택').fakeselect('show'); 
+
+				var gu01 = ["구/군 선택","강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구"];
+				var gu02 = ["구/군 선택","강서구","금정구","기장군","남구","동구","동래구","부산진구","북구","사상구","사하구","서구","수영구","연제구","영도구","중구","해운대구"];
+				var gu03 = ["구/군 선택","남구","달서구","달성군","동구","북구","서구","수성구","중구"];
+				var gu04 = ["구/군 선택","강화군","계양구","남동구","동구","미추홀구","부평구","서구","연수구","옹진군","중구"];
+				var gu05 = ["구/군 선택","광산구","남구","동구","북구","서구"];
+				var gu06 = ["구/군 선택","대덕구","동구","서구","유성구","중구"];
+				var gu07 = ["구/군 선택","남구","동구","북구","울주군","중구"];
+				var gu08 = ["구/군 선택"];
+				var gu09 = ["구/군 선택","가평","고양","과천","광명","광주","구리","군포","김포","남양주","동두천","부천","성남","수원","시흥","안산","안성","안양","양주","양평","여주","연천","오산","용인","의왕","의정부","이천","파주","평택","포천","하남","화성"];
+				var gu10 = ["구/군 선택","강릉","고성","동해","삼척","속초","양구","양양","영월","원주","인제","정선","철원","춘천","태백","평창","홍천","화천","횡성"];
+				var gu11 = ["구/군 선택","괴산","단양","보은","영동","옥천","음성","제천","증평","진천","청주","충주"];
+				var gu12 = ["구/군 선택","계룡","공주","금산","논산","당진","보령","부여","서산","서천","아산","예산","천안","청양","태안","홍성"];
+				var gu13 = ["구/군 선택","고창","군산","김제","남원","무주","부안","순창","완주","익산","임실","장수","전주","정읍","진안"];
+				var gu14 = ["구/군 선택","강진","고흥","곡성","광양","구례","나주","담양","목포","무안","보성","순천","신안","여수","영광","영암","완도","장성","장흥","진도","함평","해남","화순"];
+				var gu15 = ["구/군 선택","경산","경주","고령","구미","군위","김천","문경","봉화","상주","성주","안동","영덕","영양","영주","영천","예천","울릉","울진","의성","청도","청송","칠곡","포항"];
+				var gu16 = ["구/군 선택","거제","거창","고성","김해","남해","밀양","사천","산청","양산","의령","진주","창녕","창원","통영","하동","함안","함양","합천"];
+				var gu17 = ["구/군 선택","서귀포","제주"];										
+
+				var target = document.getElementById(obj);
+
+				if(sido == "서울")      var gugun1 = gu01;
+				else if(sido == "부산") var gugun1 = gu02; 
+				else if(sido == "대구") var gugun1 = gu03; 
+				else if(sido == "인천") var gugun1 = gu04; 
+				else if(sido == "광주") var gugun1 = gu05; 
+				else if(sido == "대전") var gugun1 = gu06; 
+				else if(sido == "울산") var gugun1 = gu07; 
+				else if(sido == "세종") {var gugun1 = gu08;   $("#"+obj).val('구/군 선택').fakeselect('hide'); }
+				else if(sido == "경기") var gugun1 = gu09; 
+				else if(sido == "강원") var gugun1 = gu10; 
+				else if(sido == "충북") var gugun1 = gu11; 
+				else if(sido == "충남") var gugun1 = gu12; 
+				else if(sido == "전북") var gugun1 = gu13; 
+				else if(sido == "전남") var gugun1 = gu14; 
+				else if(sido == "경북") var gugun1 = gu15; 
+				else if(sido == "경남") var gugun1 = gu16; 
+				else if(sido == "제주") var gugun1 = gu17; 
+
+				target.options.length = 0 ;	
+
+				for(var x in gugun1){
+				   var add = document.createElement("option");
+				   add.value =gugun1[x];
+				   add.innerHTML = gugun1[x];
+				   target.appendChild(add);
+				   
+				}
+
+				$("#"+obj).val('구/군 선택').fakeselect();
+			}
+		</script>
+
+<style type="text/css">
+	#find-id-list li { border-radius:.5em; padding:.4em; background:#efefef !important; color:red; margin:.2em; display:inline-block;}
+</style>
+		<script>
+
+			/* 아이디 찾기 이벤트 [*/
+			$("#btn-home-find-id").on("click", function(){
+				var postData = mk_postData("#tabSearchCon01", "name");
+				if(!postData) return false;
+
+				postData.phone = postData.phone.replace(/[^0-9]/g, "");
+
+				ezAjax({
+					data:postData,
+					url:"/homepage/find-info.php?mode=id",
+					dataType:"json",
+					success:function(data){
+						$("#find-id-list ul").empty();
+						if(data.code == "0000"){
+							clearInterval(timmer);
+							$("#auth-time-id").text("00:00");
+
+							$.each(data.id_list, function(idx, val){
+								var p_ids = $("<li>").text( val );
+								$("#find-id-list ul").append( p_ids );
+							});
+							$("#find-id-list").slideDown();
+						}else{
+							alert(data.message);
+						}
+					}
+				});
+			});
+			
+			/* 인증번호 발송(아이디) */
+			$("#btn-home-auth-number-id").on("click", function(){
+				var postData = mk_postData("#tabSearchCon01", "name");
+				if(!postData) return false;
+
+				postData.phone = postData.phone.replace(/[^0-9]/g, "");
+				postData.sw = "아이디";
+
+				ezAjax({
+					type:"POST",
+					url:"/homepage/find-info.php?mode=auth_number",
+					data:postData,
+					success:function(data){
+						if(data == "0000"){
+							alert("인증번호가 발송되었습니다. 확인 후 입력해주세요");
+							timer_setting("#auth-time-id", 180);
+						}else{
+							alert(data);
+							clearInterval(timmer);
+						}
+					}
+				});
+			});
+			/* 아이디 찾기 이벤트 [*/
+
+			var timmer, timmer_time=180;
+			function timer_setting(id, time){
+				timmer_time = time;
+				clearInterval(timmer);
+				timmer = setInterval(function(){
+					timmer_time--;
+					var minute = Math.floor(timmer_time / 60),
+						sec = timmer_time - minute * 60;
+					$(id).text(pad(minute, 2)+":"+pad(sec, 2));
+					if(minute == 0 && sec == 0) clearInterval(timmer);
+				}, 1000);
+			}
+
+			/* 패스워드 찾기 이벤트 [*/
+			/* 인증번호 발송(패스워드) */
+			$("#btn-auth-number-password").on("click", function(){
+				var postData = mk_postData("#find-password", "name");
+				if(!postData) return false;
+				postData.sw = "패스워드";
+
+				ezAjax({
+					type:"POST",
+					url:"/homepage/find-info.php?mode=auth_number",
+					data:postData,
+					success:function(data){
+						if(data == "0000"){
+							alert("인증번호가 발송되었습니다. 확인 후 입력해주세요");
+							timer_setting("#auth-time-password", 180);
+						}else{
+							alert(data);
+							clearInterval(timmer);
+						}
+					}
+				});
+			});
+
+			$("#btn-home-find-password").on("click", function(){
+				var postData = mk_postData("#find-password", "name");
+				if(!postData) return false;
+
+				ezAjax({
+					type:"POST",
+					url:"/homepage/find-info.php?mode=password",
+					data:postData,
+					dataType:"json",
+					success:function(data){
+						if(data.code == "0000"){
+							$("#change-password").slideDown();
+							setNameCol("#change-password", data, "name");
+						}else{
+							alert(data.message);
+						}
+					}
+				})
+			});
+
+			$("#btn-home-change-password").on("click", function(){
+				var postData = mk_postData("#change-password", "name");
+				if(!postData) return false;
+
+				if(postData.org_pass != postData.confirm_pass){
+					alert("확인 비밀번호가 일치하지 않습니다.");
+					return false;
+				}
+
+				ezAjax({
+					type:"POST",
+					url:"/homepage/find-info.php?mode=change_pass",
+					data:postData,
+					dataType:"json",
+					success:function(data){
+						if(data.code == "0000"){
+							alert("비밀번호가 변경되었습니다");
+							setNameCol("#tabSearchCon02", {}, "name");
+							modalPopupClose('#popupSearchMyinfo');
+						}else{
+							alert(data.message);
+						}
+					}
+				});
+			});
+			/*] 패스워드 찾기 이벤트 */
+		</script>
+
+<!-- 내용 끼워넣기 끝 ######################################################  -->
+
+
+
+		<!-- footer -->
+		<footer id="footer">
+			<a href="#wrap" class="to-top-btn"><em class="blind">TOP</em><i class="xi-arrow-up"></i></a>
+			<!-- 푸터 하단 :: 정보 -->
+			<div id="footerMiddleCon">
+				<div class="area clearfix">
+					<!-- 푸터 왼쪽 -->
+					<article class="footer-left-con">
+						<div class="foot-left-box">
+							<p class="foot-middle-info"><strong>이지케어 프로그램</strong><em class="white-space">1644-0340</em></p>
+							<p class="foot-middle-info"><strong class="small-txt">재무회계 서비스</strong><em>1644-0340(내선)</em></p>
+						</div>
+					</article>
+					<!-- 푸터 오른쪽 -->
+					<article class="footer-right-con">
+						<div class="foot-right-box">
+							<p class="foot-middle-info"><strong class="small-txt">상담시간</strong><em class="small-txt white-space">평일  09:30 ~ 17:30</em><em class="small-txt">주말·공휴일 휴무</em></p>
+						</div>
+					</article>
+				</div>
+			</div>
+			<div id="footerBottomCon" class="area clearfix">
+				<div class="footer-left-con">
+					<div class="foot-adress-box">
+						<dl>
+							<dt class="black-txt">법인명</dt>
+							<dd class="black-txt">주식회사 이지엠소프트</dd>
+						</dl>
+						<dl>
+							<dt>대표자</dt>
+							<dd>최병인</dd>
+						</dl>
+						<dl>
+							<dt>주소</dt>
+							<dd>대구광역시 수성구 알파시티2로 18, 4층(시지동 583-2, 에이스빌딩)</dd>
+						</dl>
+						<dl>
+							<dt>사업자등록번호</dt>
+							<dd>502-86-19289</dd>
+						</dl>
+						<dl>
+							<dt>통신판매업신고번호</dt>
+							<dd>2012-대구수성구-0396</dd>
+						</dl>
+						<dl>
+							<dt>개인정보관리책임자</dt>
+							<dd>최병인</dd>
+						</dl>
+					</div>
+				</div>
+				<div class="footer-right-con">
+					<div class="foot-logo-box"><img src="/homepage/images/common/footer_logo.png" alt="로고이미지"></div>
+					<div class="foot-info-box">
+						<ul class="foot-menu">
+							<li class="selected"><a href="?PG=ag-02">개인정보처리방침</a></li>
+							<li><a href="?PG=ag-01">이용약관</a></li>
+							<li><a href="?PG=w01">제휴문의</a></li>
+						</ul>
+						<p class="foot-copyright">© <span class="blue-txt">이지케어 & 이지엠소프트</span> Corporation</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- //footer -->
+
+
+		
+
+	</div>
+	<!-- // #wrap -->
+
+	<!-- scripts -->
+	<script type="text/javascript" src="/homepage/js/jquery-fakeform-0.5.js"></script>
+	<script type="text/javascript" src="/homepage/js/slick.js"></script>
+	<script type="text/javascript" src="/homepage/js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script type="text/javascript" src="/homepage/js/aos.js"></script>
+	<script type="text/javascript" src="/homepage/js/splitting.min.js"></script>
+	<script type="text/javascript" src="/homepage/js/functions.js"></script>
+	<script type="text/javascript" src="/homepage/js/common.js?2025-10-22"></script>
+	<script type="text/javascript" src="/homepage/js/nav.js"></script>
+		<script type="text/javascript" src="/homepage/js/main.js?2024-04-25"></script>
+	
+	<!--[if lt IE 9]>
+		<script src="/homepage/js/vendor/html5shiv.js"></script>
+		<script src="/homepage/js/vendor/respond.min.js"></script>
+		<link rel="stylesheet" href="/homepage/css/ie8.css">
+	<![endif]-->
+	<!-- //scripts -->
+
+<script>
+	function pop_calc() {
+	    var cw = screen.availWidth;
+	    var ch = screen.availHeight;
+	        sw = 800;
+	        sh = 760;
+	        mw = (cw-sw) / 2;
+	        mh = (ch-sh) / 2;
+	        window.open('/page/landing/daycare.t1.202404/chargecalc.html', 'popup', 'width=' + sw + ', height=' + sh + ',left=' + mw + ',top='+mh+',toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no');
+	}
+
+	function popup_daycare_intro(){
+		var url = "/landing.ez?type=daycare.t1.202404&route=47540";
+		var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+		window.open(url, "daycare.t1.202404", opt);
+	}
+
+	function popup_event(){
+		var url = "/landing.ez?type=event.202307&route=2954";
+		var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+		window.open(url, "daycare.t1.202404", opt);
+	}
+
+	setInterval(function(){
+		if(!chk && $.cookie("login_uid")){
+			ezAjax({
+				type:"POST",
+				async: false,
+				url:"/?mode=login_check", dataType:"json",
+				success:function(data){
+					chk = 1;
+					$("#oInfo-name").text(data.organ);
+					$("#login_User_Name").text(data.User_Name);
+					$(".login.on").show();
+					$(".login.off").hide();
+				}
+			});
+		}else if(chk && !$.cookie("login_uid")){
+			chk = 0;
+			$(".login.on").hide();
+			$(".login.off").show();
+		}
+	}, 1000);
+
+	if(chk){
+		$(".login.on").show();
+		$(".login.off").hide();
+	}else{
+		$(".login.on").hide();
+		$(".login.off").show();
+	}
+</script>
+
+<!-- 이지케어 분석 2022.08.26 추가 -->
+<script src="/assets/accessClick.log.js?20230308" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+	var _route = "";
+	if(_route && _route!="2100") accessClick.hit(_route, "_route");
+	accessClick.hit(1100);
+//-->
+</script>
+
+
+	<script type="text/javascript">
+		var _NGUL = "wcs.naver.net/wcslog.js";
+		if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+		document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+		</script>
+		<script type="text/javascript">
+		if (!wcs_add) var wcs_add={};
+		wcs_add["wa"] = "s_5a2a6c280b8b";
+		if (!_nasa) var _nasa={};
+		wcs.inflow("easyms.co.kr");
+		wcs_do(_nasa);
+		</script>
+
+
+
+</body>
+</html>

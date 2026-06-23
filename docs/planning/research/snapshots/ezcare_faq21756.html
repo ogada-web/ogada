@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="kr">
+<head>
+	<meta charset="UTF-8">
+	<title>이지케어 FAQ</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<!-- css -->
+	<link href="/assets/_reboot_layout.css" rel="stylesheet" type="text/css" />
+	<link href="/help/ckeditor.custom.help.css?2" rel="stylesheet" type="text/css" />
+	<!-- jquery -->
+	<script src="/assets/jquery/jquery-3.5.1.min.js" type="text/javascript"></script>
+	<script src="faq.js?1123123" type="text/javascript"></script>
+	<style>
+	/* faq ************************************************************************************************************************************************/
+	ul,li{list-style:none;margin:0;padding:0;}
+	a{color:#333; }
+	a:hover{text-decoration:none;color:#333;}
+	button{border:0; outline:none; background:transparent;}
+	input{padding: calc(.4em - 1px);vertical-align:middle;}
+	body{overflow-y:scroll;overflow-x:hidden;}
+
+	#wrap{position:relative; margin:0 auto; font-size:16px; margin-bottom:50px;}
+	#header{z-index:99; width:100%;margin:0 auto;}
+	#header .header-wrap{/* position:relative; */position:fixed; top:0; width:100%; z-index:99;background:#4187d6;}
+
+	/* 상단바 높이 */
+	#faq-wrap{max-width:1100px; margin:0 auto;}
+	.header-content{position:relative; max-width:1100px; height:70px; margin:0 auto;  padding:20px 10px; overflow:hidden;}
+
+	.search-bar{position:relative; float:right; position:relative;}
+	.search-bar input{border:0; width:100%; height:40px; border-radius:5px; padding-left:10px; padding-right:30px; background:#fff;}
+	.search-bar input:focus{outline:0; background:#eee;}
+	.search-bar button{width:40px;height:100%; position:absolute; right:0;}
+
+	.header-logo{display:inline-block;position:relative;font-size:25px;margin-bottom:0;cursor:pointer;color:#fff;}
+	.header-logo:after{content:'';position:absolute;width:28px;height:25px;background:url('../page/img/intro_tit_icon.png') 100% no-repeat; background-size:contain; width:25px; height:28px; top:-10px; right:-15px;}
+
+	.faq-category-wrap{position:fixed; top:70px; width:100%; border-bottom:1px solid #ddd }
+	.faq-category{overflow:hidden; width:100%; max-width:1100px; margin:0 auto;background:#fff; padding:0 10px;}
+	.faq-category li{float:left;margin-right:14px;border-bottom:3px solid transparent; font-size:14px;}
+	.faq-category li a{line-height:50px; display:inline-block; width:100%; height:100%; text-align:center;}
+	.faq-category li.active {border-bottom:3px solid #007fff}
+	.faq-category li.active a{color:#007fff !important; font-weight:bold;}
+	
+	#faq-list{margin-top:120px;}
+	#faq-list li:first-child{border-top:0;}
+	#faq-list li{border-top:1px solid #e5e5e5;}
+	#faq-list li:hover{background:aliceblue;}
+	#faq-list li b{padding-right:10px; font-weight:bold; font-size:22px; color:#007fff}
+	#faq-list li a{display:inline-block; width:100%;}
+	#faq-list li a:before{content:'';z-index:-1;font-size:12px;position:absolute;width:12px;height:12px;border-radius:50px;margin-top:5px;margin-left:-5px;background:white;}
+	#faq-list li a:visited{color:#aaa;font-weight:bold;}
+	#faq-list li a:visited:before {background-color:#c1dcef;}
+	#faq-list li .q{display:table;table-layout:fixed; padding:15px; cursor:pointer; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+	#faq-list li .q span{display:table-cell;width:200px;color:#4187d6;text-align:right;font-size:12px;letter-spacing:-1px;white-space:break-spaces;word-break:keep-all;vertical-align:middle;}
+	#faq-list li .q a{display:table-cell;}
+
+	/* #wrap.mode-view faq내용 */
+	.mode-view #faq-wrap{max-width:none;margin-top:0px;}
+	.mode-view #wrap-content{max-width:1100px; min-height:30em; margin:0 auto;}
+	.mode-view .faq-category-wrap{display:none;}
+
+	.mode-view .search-bar{display:none;}
+	.mode-view #header.fixed{display:none;}
+
+
+	.wrap-footer button{display:inline-block;min-width:96px; height:40px; text-align:center;}
+	#wrap-content{width:100%;margin-bottom:10px;background:#fff;}
+	.wrap-footer{text-align:center;}
+	.wrap-footer button{ font-size:14px; border-radius:5px; background:#007fff; color:#fff;}
+	.wrap-footer button:before{
+	content: '';
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+	border-color:#fff;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+	margin-right:5px;}
+
+	.wrap-footer button:hover{background:#092d8b;}
+	
+	#faq-wrap > .q{display:table;table-layout:fixed; z-index:9; background:#fff;display:inline-block; cursor:pointer; width:100%; padding:10px; font-size:25px;  text-overflow:ellipsis; white-space:nowrap;}
+	#faq-wrap > .q b{display:table-cell; padding-right:10px; font-weight:bold;color:#007fff}
+	#faq-wrap > .q a{display:table-cell; width:100%; font-weight:bold;white-space:normal}
+	#faq-wrap > .q span{display:table-cell; width:200px;color:#666;text-align:right;font-size:12px;letter-spacing:-1px;white-space:break-spaces;word-break:keep-all;vertical-align:middle;}
+
+	#faq-wrap > .q.fixed{
+	position:fixed; /* top:50px; */
+	box-shadow:0 2px 15px 0 rgb(0 0 0 / 10%);
+	-webkit-box-shadow:0 2px 15px 0 rgb(0 0 0 / 10%);}
+	#faq-wrap > .q.fixed + #wrap-content{padding-top:50px;}
+
+	/* scroll css */
+	#header.fixed{position:fixed;top:0;}
+	#header.fixed .header-wrap .header-content, .mode-view .header-content{height:50px; line-height:50px;padding:0 10px;transition:all .2s}
+	#header.fixed .header-wrap .header-logo, .mode-view .header-logo{font-size:18px;line-height:50px;}
+	#header.fixed .header-wrap .header-logo:after, .mode-view .header-logo:after{width:25px;height:22px;top:0px;}
+	#header.fixed .header-wrap .search-bar input{height:35px;}
+
+
+
+	.faq-category-wrap.fixed{position:fixed;top:50px;z-index:9;-webkit-box-shadow: 0 2px 15px 0 rgba(0,0,0,.1);box-shadow: 0 2px 15px 0 rgba(0,0,0,.1);}
+	
+	#faq-list li .q span.faq-hit{width:50px;color:#999;}
+	
+	/* mediaquery */
+	@media all and (max-width:800px){
+	#wrap{width:100%;}
+	.faq-category{padding:0;}
+	.faq-category li{width:calc(100% / 3);padding:.2em;margin-right:0;}
+	.faq-category li a{font-size:14px;line-height:30px;}
+	#faq-list li{padding:0 10px;}
+	#faq-list li .q{display:inline-block; padding:5px 15px; white-space: normal;}
+	#faq-list li .q a{display:inline-block;}
+	#faq-list li .q span{width:100%;display:inline-block;float:right;padding-left:40px;}
+	#faq-wrap > .q{font-size:18px;}
+	#faq-wrap > .q b{font-size:25px;}
+	#faq-list li .q span.faq-hit{display:none;}
+	}
+
+	/* 상단노출 */
+	#faq-list li.fix-top{background:rgba(243,255,197,0.27);}
+	#faq-list li.fix-top .q a{font-weight: bold;}
+	#faq-list li.fix-top .q b{/* color:red; */}
+	#faq-list li.fix-top.new .q b:before{content:'new';font-size:16px;position:absolute;height:18px; line-height:18px; padding:0em 0.3em;
+	    border-radius: 0.3em; margin-top:-12px;margin-left:35px;background:#ffe500; color:#ff7448;}
+
+	
+
+	/* 신규안내자 유튜브 팝업영상 css */
+	#youtube-bg {position:fixed; z-index:1002; top : 0px ; left:0px;  width:100%; height:100% ; background-color:#000000; filter:Alpha(opacity=90); opacity:0.9; -moz-opacity:0.9 ; overflow:hidden;}
+	#youtube-wrap{overflow:hidden;}
+	#youtube-block{z-index:1003; position:absolute;top:50%; left:50%; transform:translate(-50%, -50%);}
+	#youtube-block iframe {border:10px solid #666}
+	#youtube-btn-wrap {position:absolute; top:-15px; right:-40px; display:inline-block; cursor:pointer;}
+	[youtube]:hover{cursor:pointer; opacity:.7; font-weight: bold;}
+
+	#content_body{padding:0 2em;}
+
+	@media all and (max-width:640px){
+		.header-content{height:auto;}
+		.header-logo{font-size:18px;margin-bottom:10px;}
+		.search-bar{width:100%;}
+		.faq-category-wrap{top:120px;}
+		#faq-list{margin-top:320px;}
+
+		#content_body{padding:0 1em;}
+		#youtube-btn-wrap{display:None; }
+		#youtube-block iframe{width:100vw !important; height:100vw !important; border:none;}
+		
+	}
+
+	</style>
+</head>
+<body>
+<div id="wrap" class="mode-view">
+
+<!-- faq header -->
+		<div id="header">
+		<div class="header-wrap">
+			<div class="header-content">
+				<a href="https://ezcare.easyms.co.kr/help/faq.ez"><h1 class="header-logo" >자주 하는 질문(FAQ)</h1></a>
+				<form class="search-bar" mxethod="get">
+					<button>
+						<svg width="20" height="20" viewBox="0 0 20 20">
+						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+					</button>
+					<input type="text" name="keyword" placeholder="궁금한 단어 검색" value="">
+				</form>
+			</div>
+		</div>
+	</div>
+		<div class="faq-category-wrap">
+		<ul class="faq-category">
+			<li class='active'><a href="?ct=">전체</a></li>
+					<li ><a href="?ct=K001&?keyword=K001">이용료/요금</a></li>
+					<li ><a href="?ct=K002&?keyword=K002">직원관리</a></li>
+					<li ><a href="?ct=K003&?keyword=K003">수급자관리</a></li>
+					<li ><a href="?ct=K004&?keyword=K004">일정관리</a></li>
+					<li ><a href="?ct=K005&?keyword=K005">서식출력/설정</a></li>
+					<li ><a href="?ct=K006&?keyword=K006">본인부담금</a></li>
+					<li ><a href="?ct=K007&?keyword=K007">공단연동</a></li>
+					<li ><a href="?ct=K008&?keyword=K008">수당/급여관리</a></li>
+					<li ><a href="?ct=K009&?keyword=K009">모바일앱</a></li>
+					<li ><a href="?ct=K010&?keyword=K010">문자발송</a></li>
+					<li ><a href="?ct=K012&?keyword=K012">재무회계</a></li>
+					<li ><a href="?ct=K013&?keyword=K013">세무</a></li>
+					<li ><a href="?ct=K014&?keyword=K014">4대보험</a></li>
+					<li ><a href="?ct=K011&?keyword=K011">기타</a></li>
+			
+		</ul>
+	</div>
+	<!-- faq content-->
+	<div id="faq-wrap">
+	
+				<div class="q">
+			<div style="max-width:1100px; margin:0 auto;position:relative;">
+				<b>Q.</b>
+				<a href="javascript:;">
+					[2025 모니터링] 문항 6-10번				</a>
+			</div>
+		</div>
+				<!-- faq 답변내용 -->
+		<div id="wrap-content" style="position:relative;">
+			 <div id="content_body" class="cke_editable">
+				<div class="monitoring">
+<table>
+	<tbody>
+		<tr>
+			<td valign="middle">
+			<p style="text-align: center;">점검방향</p>
+			</td>
+			<td valign="middle">
+			<p><strong><span class="marker yellow">가산 받는 사회복지사 등이 수급자 욕구사정, 급여제공계획수립 및 방문상담 등 해당업무를 수행하고 업무수행일지(별지 제24호 서식)을 작성&bull;보관</span></strong><span style="background-color: rgb(255, 255, 0);"><strong>하는지 점검</strong></span><strong>한다.</strong></p>
+			</td>
+		</tr>
+		<tr>
+			<td valign="middle">
+			<p style="text-align: center;">관련근거</p>
+			</td>
+			<td valign="middle">
+			<ul>
+				<li>(고시) 제17조, 19조, 제57조, 제58조, 제69조의2</li>
+				<li>(세부사항) 제17조</li>
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<td valign="middle">
+			<p style="text-align: center;">점검기준</p>
+			</td>
+			<td valign="middle">
+			<ul>
+				<li>급여관리업무를 수행한<strong> 모든 수급자에 대하여 업무수행일지를 작성함</strong></li>
+				<li>사회복지사 등이 <strong>모든 수급자 가정을 월 1회 이상 급여제공 시간 중 방문하여 급여관리업무를 수행함</strong></li>
+				<li>매월 방문상담에서 <strong>누락된 수급자 가정을</strong> <strong>최소 3개월 이내에 1회 이상 방문하여 급여관리업무를 수행함</strong></li>
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: center;" valign="middle">점검결과</td>
+			<td valign="middle">
+			<p>【Y】&nbsp; &nbsp; &nbsp; 점검항목과 일치함</p>
+
+			<hr />
+			<p>【N】&nbsp; &nbsp; &nbsp; 점검항목과 일치하지 않음</p>
+			</td>
+		</tr>
+		<tr>
+			<td valign="middle">
+			<p style="text-align: center;">점검방법</p>
+			</td>
+			<td valign="middle">
+			<p><strong>방문일정표, 사회복지사 등 업무수행일지, RFID 전송내역 점검 및 수급자 (또는 보호자) 상담 등으로 &#39;모든&#39; 수급자에 대한 사회복지사 등의 업무 수행여부를 확인</strong></p>
+			</td>
+		</tr>
+		<tr>
+			<td valign="middle">
+			<p style="text-align: center;">점검대상</p>
+			</td>
+			<td valign="middle">
+			<p>대상기간 내의 &#39;모든&#39; 수급자</p>
+			</td>
+		</tr>
+		<tr>
+			<td valign="middle">
+			<p style="text-align: center;">대상기간</p>
+			</td>
+			<td valign="middle">
+			<p>모니터링 실시 월의&nbsp;전전월 &plusmn;2개월</p>
+			</td>
+		</tr>
+		<tr>
+			<td valign="middle">
+			<p><!--[if !supportEmptyParas]-->&nbsp;<!--[endif]--></p>
+
+			<p><!--[if !supportEmptyParas]-->&nbsp;<!--[endif]--></p>
+
+			<p><!--[if !supportEmptyParas]-->&nbsp;<!--[endif]--></p>
+
+			<p><!--[if !supportEmptyParas]-->&nbsp;<!--[endif]--></p>
+
+			<p style="text-align: center;">적용방법</p>
+
+			<p><!--[if !supportEmptyParas]-->&nbsp;<!--[endif]--></p>
+			</td>
+			<td valign="middle">
+			<ul>
+				<li>점검항목 6~7번&nbsp;【N】 적용사례<br />
+				-&nbsp;&nbsp;모든 수급자에 대하여 업무수행일지를 작성하였으나 ①일부 항목을 누락한 경우, ②수급자 욕구 및 신체상태 등 고려하지 않고 동일한 내용으로 반복 작성한 경우 등<br />
+				- 해당 월에 수급자 1명의 업무수행일지를 작성,보관하지 않음</li>
+				<li>점검항목 8번 적용사례<br />
+				- 【Y】: &lsquo;모든&rsquo; 수급자의 가정을 월 1회 이상 방문하였을 경우 적용한다.<br />
+				※ &lsquo;모든&rsquo; 수급자는 요양보호사의 가족관계의 수급자 포함한다.<br />
+				- 【N】: 수급자 30인 이상인 기관이 의무 사회복지사 1명만 배치하여 월 1회 이상 급여제공시간에 방문한 경우 포함 &hellip; 점검항목 9번에서 재점검</li>
+				<li>점검항목 9번 적용사례<br />
+				- 【Y】: ①점검항목 8번이 【Y】인 경우, 9번 점검결과는 【Y】로 적용 ②점검항목 8번이 【N】인 경우, 매월&nbsp;방문하지 못한 모든 수급자를 3개월 이내에 1회 이상 방문<br />
+				- 【N】: 점검항목 8번이 【N】인 경우, 3개월 동안 연속하여 방문하지 않은 수급자가 1명 이상<br />
+				<br />
+				<img alt="" height="218" src="//ezcare.easyms.co.kr/help/file/image_15.png" width="470" /></li>
+				<li>방문요양을&nbsp;포함한 2개 이상 가정방문급여를 제공하는 기관의 경우, 선택한 급여유형의 수급자와 방문요양 수급자를 대상으로 적용한다.<br />
+				(예시1) 요양 + 목욕 + 간호 제공: 요양만 선택 &rarr; 요양 수급자만 적용<br />
+				(예시2) 요양 + 목욕 제공: 요양 + 목욕 선택 &rarr; 요양과 목욕 수급자 적용</li>
+				<li>방문갈음: 방문요양의 프로그램 관리자(프로그램 관리자인 시설장 포함)가 인지활동형 방문요양을 이용 하는 수급자 가정을 월 1회 이상 급여제공 시간 중에 방문하여 고시 제57조 제1항 및 제2항에 따라 적정서비스 제공여부를 확인&middot;기록하고 욕구사정 및 급여제공계획을 수립&middot;기록하면 사회복지사 등이 수행한 것으로 인정한다. &hellip; 고시 제17조(방문요양급여 제공기준) 제5~6항</li>
+				<li>급여제공이 18시 이후 06시 이전에만 이루어져 급여제공 이외의 시간에 방문하여 매월 1회 이상 수급자 및 급여제공자를 모두 면담한 경우 방문한 것으로 인정한다. 다만, 유선상담이 아닌 대면 상담이어야&nbsp;하며, 면담장소는 무관하다.</li>
+				<li>수급자가 1개 기관에서 2종류 이상 가정방문급여 이용: 사회복지사 등이 급여제공시간 중에 가정을 방문하여 수급자가 이용하는 모든 가정방문급여에 대해 상담한 후 사회복지사 업무수행일지에 급여유형별 각각 기록하면 해당 급여를 모두 방문한 것으로 인정한다.</li>
+				<li>방문인정(예외) 적용: 사망, 입원 및 월 중 급여제공 종료 등의 사유로 사회복지사 등의 방문상담이 불가능한 경우에는 수행한 것으로 한다.</li>
+				<li>매월 요양보호사가 가족관계인 수급자 수의 50% 이상 가정을 방문하고, 3개월 이내 미방문 가정 없이&nbsp;방문한다.<br />
+				※ 고시 제69조의2(방문요양 급여관리 의무) 위반 시 요양보호사가 가족 관계인 수급자가 제공한 전체&nbsp;방문요양 급여비용의 90% 산정 감액</li>
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<td valign="middle">
+			<p style="text-align: center;">참고사항</p>
+			</td>
+			<td valign="middle">
+			<ul>
+				<li>점검결과 【N】에 해당하면 급여비용 가산지급기준 미준수 기관 &hellip; 자진신고 안내<br />
+				<!--[endif]--></li>
+				<li>(청구 건) 급여비용을 이미 청구한 경우, 자진신고 대상임<br />
+				<!--[endif]--></li>
+				<li>(미청구 건) 직종에 맞지 않는 업무를 전담한 종사자를 제외한 종사자를 기준으로 청구하여야 함</li>
+				<li>향후 현지확인심사 또는 현지조사 등 과정에서 점검결과 【N】에 해당하는 내용이 확인되면 그에 대한 조치를 따라야 한다.</li>
+			</ul>
+			</td>
+		</tr>
+		<tr class="m-qna">
+		</tr>
+	</tbody>
+</table>
+</div>			</div>
+		</div>
+				<hr>
+		<div class="wrap-footer py-3" >
+			<button type="button" onclick="history.back(-1)">뒤로가기</button>
+			<span style="display:block;font-size:14px;margin-top:10px;">도움이 되셨나요? 도움이 더 필요하시다면 <b>1644-0340</b></span><!-- 1644-0340 -->
+		</div>
+			
+	<!-- faq 질문 -->
+	</div>
+</div>
+
+</body>
+<!-- 이지케어 분석 -->
+<script src="/assets/jquery/jquery-3.5.1.min.js"></script>
+<script src="/assets/accessClick.log.js" type="text/javascript"></script>
+<script src="/assets/jquery/plugin/iframeTracker.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+	var _route = "";
+	if(_route) accessClick.hit(_route, "_route");
+
+	$(document).on("click", "[youtube]", function(){
+		var youtube = $(this).attr("youtube");
+		var new_win = $(this).attr("youtube-win");
+		if(new_win) return window.open("https://www.youtube.com/watch?v="+youtube, "ezcHelp-youtube"+youtube);
+
+		var youtube_width = $(this).attr("youtube-width") ? $(this).attr("youtube-width") : 980,
+			youtube_height = $(this).attr("youtube-height") ? $(this).attr("youtube-height") : 580,
+			setTop = $(window).scrollTop() + $(window).height()/2 - youtube_height/2;
+			setTop = setTop > 0 ? setTop : 20,
+			setLft = $(window).width()/2 - youtube_width/2,
+			outHtml = '';
+
+		var tmp_wrap = $("<div>", {id:"youtube-dsp"}),
+			tmp_bg = $("<div>", {id:"youtube-bg"}),
+			tmp_pop_wrap = $("<div>", {id:"youtube-wrap"}),
+			tmp_youtube_block = $("<div>", {id:"youtube-block"}),
+			//tmp_youtube_block = $("<div>", {id:"youtube-block"}).css({
+			//	"top":setTop+"px", "left":setLft+"px", height:youtube_height+"px"
+			//}),
+			tmp_youtube_close = $("<div>", {id:"youtube-btn-wrap"}).append( $("<img>", {src:"/new/img/btn_close.png"}) ),
+			tmp_youtube_iframe = $("<iframe>", {
+				width:youtube_width,
+				height:youtube_height,
+				src:"https://www.youtube.com/embed/"+youtube+"?autoplay=1&loop=1;playlist="+youtube+"&vq=hd1080",
+				"frameborder":"0",
+				"allow":"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+				"allowfullscreen":""
+			});
+
+		tmp_wrap.append(tmp_bg, tmp_pop_wrap);
+		tmp_pop_wrap.append(tmp_youtube_block);
+		tmp_youtube_block.append(tmp_youtube_close);
+		tmp_youtube_block.append(tmp_youtube_iframe);
+
+		$(tmp_bg).on("click", function(){
+			$("#youtube-dsp").remove();
+		});
+
+		$(tmp_youtube_close).on("click", function(){
+			$("#youtube-dsp").remove();
+		});
+
+		if($("#wrap").length > 0) $("#wrap").append(tmp_wrap);
+		else  $("body").append(tmp_wrap);
+	});
+	
+	$(window).on("resize", function(){
+		$("#faq-list").css("margin-top", ( $(".faq-category-wrap").height() + $(".header-wrap").height() + 5 )+"px");
+	});
+
+	$(window).trigger("resize");
+
+
+	
+	$.each( $("iframe[hit-id]"), function(idx, val){
+		let hit_id = $(val).attr("hit-id");
+		$(val).iframeTracker({
+			blurCallback: e => {
+				accessClick.hit(hit_id);
+			}
+		});
+	});
+</script>
+
+
+</html>

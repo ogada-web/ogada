@@ -1,0 +1,99 @@
+BNK-501 — ogada V171 defense-in-depth integrity migration cross-walk
+======================================================================
+조사일: 2026-06-22T05:30Z
+rotation: ogada git 실측 6–8h
+source(@HEAD): BE `99d03fa68b` (develop) — file `src/main/resources/db/migration/V171__staff_work_attendance_and_billing_report_filters_integrity.sql` (72L, commit `6be0c79`).
+anchors:
+  - V169 (BNK-493 base · coder commit `560057f` `feat(v2/G-STAFF-WORK-ATTENDANCE): add staff daily check-in/out roster API`) → `staff_work_attendance` (케어포 8-4 출퇴근·근무일지)
+  - V170 (BNK-493 base · coder commit `479995e` `feat(v2/G-BILLING): persist billing report filters per month and branch`) → `billing_report_filters` (케어포 7-x lifecycle UI 상태)
+  - V171 (BNK-495 base · dba commit `6be0c79` `feat(db): add V169/V170 defense-in-depth integrity (V171)`) → +5 CHECK·FK 무결성
+
+----------------------------------------------------------------------
+1. V169 staff_work_attendance — 무결성 비대칭 → V171 보강
+----------------------------------------------------------------------
+[V169 기존 보호 — 양호]
+  * Tenant FK pair × 3
+      - fk_..._user_org           (organization_id, user_id)   → users (organization_id, id)
+      - fk_..._branch_org         (organization_id, branch_id) → branches (organization_id, id)
+      - fk_..._user_branch_assignment (org+user+branch)        → user_branches (3-way assignment 강제)
+  * uq_staff_work_attendance_org_branch_user_date — 일자별 1행 (org+branch+user+work_date)
+  * chk_staff_work_attendance_method — {MANUAL, MOBILE, NFC}
+  * chk_staff_work_attendance_updated_after_created — temporal
+  * chk_staff_work_attendance_checkout_after_checkin — ★ pairing only (NULL OR check_in_at IS NOT NULL)
+
+[V169 누락 — V171 보강 항목 ①]
+  CONSTRAINT chk_staff_work_attendance_checkout_not_before_checkin
+      CHECK (check_out_at IS NULL OR check_out_at >= check_in_at);
+  ── 의미: 기존 CHECK 는 "퇴근 기록 시 출근 기록 존재" 만 강제했고
+           실제 시각 순서(`퇴근 >= 출근`)는 미강제. raw SQL / 모바일·NFC 일괄
+           동기화 경로로 퇴근시각<출근시각 행이 적재되면 근무시간 음수가
+           나와 케어포 PDF p.99 8-4 일근태 집계와 mismatch 발생.
+
+----------------------------------------------------------------------
+2. V170 billing_report_filters — 무결성 비대칭 → V171 보강
+----------------------------------------------------------------------
+[V170 기존 보호 — 부분]
+  * uq_billing_report_filters_scope — (org, branch, user, year_month, variant) UK
+  * chk_..._variant         — {charges, deposits, receipts, refunds}
+  * chk_..._year_month      — '^\d{4}-\d{2}$'
+  * chk_..._deposit_period  — {FULL, FIRST_HALF, SECOND_HALF}
+  * chk_..._receipt_basis   — {PAYMENT, CLAIM}
+
+[V170 누락 — V171 보강 항목 ②~⑤]
+  ② chk_billing_report_filters_updated_after_created  (temporal)
+  ③ chk_billing_report_filters_search_query_nonempty  (length(btrim(search_query)) > 0)
+  ④ fk_billing_report_filters_branch_org  (org, branch) → branches(org, id)
+  ⑤ fk_billing_report_filters_user_org    (org, user)   → users(org, id)
+  ── 의미: 스키마 내 거의 모든 운영 테이블이 갖는 복합 Tenant FK pair 가
+           본 테이블에만 부재했음. `BillingReportFilterService.recordFromReportQuery()`
+           가 `normalizeSearchQuery`(공백→NULL, trim, 255 절단)로 app-level
+           invariant 강제하나, raw SQL 로 cross-tenant `branch_id`/`user_id`,
+           미래 `created_at`, 빈 `search_query` 적재 가능. V170 NOT NULL
+           컬럼이므로 MATCH SIMPLE skip 분기 없이 완전 강제됨.
+
+[의도적 제외 — V171 doc 명시]
+  * (org, user, branch) → user_branches 3-way assignment FK 미추가
+      이유: hq_admin 은 명시적 user_branches 배정 없이도 전 지점 리포트 열람 가능
+            (ERD §2 RBAC) — 3-way FK 는 정당한 조회 흐름 차단 우려. V168 동일 정책.
+  * user purge backing index 미추가
+      이유: 본 테이블은 "마지막 사용 필터" UI 상태(ephemeral preference)로
+            보존 cohort 삭제 대상 아님 + 사용자 soft-delete(is_active=false) 모델.
+            scope UK 의 (org, branch, user, year_month, variant) prefix 가 backing.
+
+----------------------------------------------------------------------
+3. 경쟁사 대비 cross-walk (확인·역공학 한도 내)
+----------------------------------------------------------------------
+
+| 보호 항목                         | ogada V171+V169+V170 | 케어포(func/PDF/demo) | 이지케어(/new.ez)   | 엔젤(silverangel/lcms) | 롱텀(공단)        |
+|---|---|---|---|---|---|
+| 직원 일근태 1행/일(UK)              | ✅ uq (org+branch+user+date) | △ func 8-4 정적 메뉴(`6226e6eb` 296차 zero drift)·UI 만·DB-level UK 「미확인」 | △ /new.ez M1 직원 25 leaf·jqGrid·UK 「미확인」 | △ daycareEssential `c79c1be3` 평가지표만·UK 「미확인」 | N/A |
+| 출퇴근 시각 순서 (check_out >= check_in) | ✅ chk_..._checkout_not_before_checkin (V171) | △ PDF p.99 8-4 양식·DB CHECK 「미확인」 | △ 「미확인」 | △ 「미확인」 | N/A |
+| 본인부담 필터 자동저장 per-user/month | ✅ V170+V171 5-key UK + Tenant FK pair + temporal + non-empty | △ PDF p.91 반월 UI 「미확인」 server 저장 「가정 ❌」 | △ PGID jqGrid 세션만 「가정 ❌」 | △ 정적 IA `c9507190` 「가정 ❌」 | N/A |
+| filter Tenant FK pair (org+branch / org+user) | ✅ V171 (refs branches/users via composite UK uq_branches_org_id / uq_users_org_id) | △ 「미확인」 | △ 「미확인」 | △ 「미확인」 | N/A |
+| 빈 검색어 거부 (DB CHECK) | ✅ chk_..._search_query_nonempty (length(btrim) > 0) | △ 「미확인」 | △ 「미확인」 | △ 「미확인」 | N/A |
+| temporal updated >= created | ✅ chk_..._updated_after_created (V171) | △ 「미확인」 | △ 「미확인」 | △ 「미확인」 | N/A |
+
+→ 경쟁사 4종은 모두 공개 자료(정적 메뉴·PDF·jqGrid·FAQ)에서 DB-level CHECK/FK
+   보호를 노출하지 않음(공개 한도). ogada V171 defense-in-depth 는 **표층(API
+   validator) + 심층(DB CHECK/FK pair)의 2중 게이트**로, raw SQL·일괄 sync 경로
+   도 cross-tenant·temporal inversion·빈 검색어·미커밋 row 적재를 차단.
+
+----------------------------------------------------------------------
+4. KPI 영향·candidate 변동
+----------------------------------------------------------------------
+* 모듈 8 직원·근태 coverage 0.85 carry — V171 은 무결성 강화·기능 추가 0 → KPI 변동 0.
+* 모듈 7 본인부담 coverage 1.0 carry — V170+V171 은 필터 자동저장 UX 정제·기능 0 → KPI 변동 0.
+* 신규 candidate 없음 — V171 은 BNK-493 P3「가정」(G-BILLING-REPORT-FILTER-PERSISTENCE)
+  및 BNK-483 G-STAFF-WORK-ATTENDANCE ✅ closure 의 DB-level defense-in-depth.
+* 신규 core 갭 0 · 가정 번복 0 · candidate 변동 0.
+
+----------------------------------------------------------------------
+5. 안전성 노트 (V171 doc 인용 verbatim)
+----------------------------------------------------------------------
+"V169·V170 모두 round 직전 도입된 신규 테이블로 본 시점 ogada 운영 인스턴스
+ 적재 행 0건이다. 모든 CHECK 는 immutable·NULL 분기를 명시해 backfill 불요·
+ 즉시 검증 PASS 한다. Tenant FK pair 는 V164/V165/V168 과 동일 anchor UK 조합
+ 위에서 동작한다: users(uq_users_org_id V5), branches(uq_branches_org_id V4)."
+
+검증: PG14 scratch DB · V1–V171 contiguous apply · 5개 CHECK·FK 모두 존재 ·
+      3 negative + positive + cross-tenant FK isolation tests PASS (commit msg).

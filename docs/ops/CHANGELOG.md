@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-21T23:54:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T19:00:00Z -->
 # ogada 변경 이력 (ops/CHANGELOG.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-21 (302차 TWR 자동 동기화 — **BE `a6eb8b7`/FE `5fd468b` 확정·V1–V169·109 route·87 page·모듈 KPI 78.62%·merge gate 657** · 301차 완반영 · 미해결 Must 갭 4건 재정리 · coder 액션 지시)  
+> **최종 갱신**: 2026-06-23 (336차 TWR 자동 동기화 — **BE `c4e6bcb`/FE `426d63a`·V1–V175·111 route·90 page·모듈 KPI 78.79%·merge gate 719 carry·V175 leave-ledger integrity ✅·SOCIAL_WORKER users read RBAC ✅**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 개발·운영·기획 담당자, 고객 센터 IT (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `src/backend/`, `src/frontend/`  
@@ -14,11 +14,335 @@
 
 ---
 
-## [Unreleased] — MVP v1 개발 중 (2026-06-21 302차, BE `a6eb8b7`·FE `5fd468b`·develop baseline 302차 carry, **merge gate 657 · 302차 TWR docs 동기화 완료·미해결 Must 4건 재정리**)
+## [Unreleased] — MVP v1 개발 중 (2026-06-23 336차, BE `c4e6bcb`·FE `426d63a`·develop 335차 carry, **merge gate 719 carry · V175 leave-ledger integrity ✅ · SOCIAL_WORKER users read RBAC ✅ · cross-stream BLOCK(BE pending 1 · FE pending 3 · FE WT DIRTY)**)
 
-> **구현 상태**: Flyway **V1–V169** · **109 route** · **87 page(+RootRedirect=88)** · merge gate **657** · BE **@ `a6eb8b7`** (G-BILLING-DEPOSIT-ORDER-GUARD · attendance check-in method validation · **BE Test 240**) · FE **@ `5fd468b`** (**G-STAFF 출근방식 MANUAL/MOBILE/NFC FE wire** · QA-B222 vitest teardown · **FE test 434** · 모듈 KPI **78.62%**)
+> **구현 상태**: Flyway **V1–V175** · **111 route** · **90 page(+RootRedirect=91)** · merge gate **719 carry** (FE 187 + BE 532 unpushed) · BE **@ `c4e6bcb`** SYNCED · FE **@ `426d63a`** SYNCED · BE Test **1846** · FE test **~2064 PASS** · 모듈 KPI **78.79%**
 >
-> **301차 TWR 자율 동기화 (완료):**
+> **336차 TWR 자율 동기화 (완료):**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q668·Q669·Q670 신규**·**Q663·Q667 갱신** · `USER_MANUAL` §1-3·§4-7-0d·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-24 · `DEPLOYMENT_GUIDE` §1-3·§4-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **V175 leave-ledger DB integrity** (`c4e6bcb`, Q668) — **`chk_staff_leave_ledger_entries_memo_nonempty`** · **`fk_staff_leave_ledger_entries_user_branch_assignment`**
+> - **RBAC·PII 보강** — **`SOCIAL_WORKER` `GET /users`·`GET /users/{id}` read-only** (Q669) · **이용자 목록·상세 주소 도로명 수준 마스킹** — 배차 roster와 동일 (`ClientService.maskAddressPlain`, Q669)
+> - **운영 격리** — **live-e2e `e2e*` tenant UUID** — dev seed `00000001` 계열과 **분리** (`application.yml`, Q670)
+> - **baseline 확정** — BE `5fd12dd`→**`c4e6bcb`**(+1 commit) · FE **`426d63a`** carry
+> - **다음 우선순위** — **FE WT CLEAN** (dirty 44M+) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **origin/test push**
+>
+> **최근 개선 (336차):**
+> - **V175 leave-ledger integrity (BE `c4e6bcb`, US-R01-c, Q668)** — **`V175__staff_leave_ledger_entries_integrity_us_r01c.sql`** — memo 비공백 CHECK · **`user_branches` 3-way FK** — V173/V169 staff 도메인 패턴 정합 · **`RoleBasedControllerAccessTest`** +3
+> - **SOCIAL_WORKER users read RBAC (BE `c4e6bcb`, Q669)** — **`UserController`** — class-level `@PreAuthorize` 제거 · **`GET /users`·`GET /users/{id}`** — **`SOCIAL_WORKER` 허용** · **POST/PATCH** — **`HQ_ADMIN`/`BRANCH_ADMIN` only**
+> - **Client address road-level masking (BE `c4e6bcb`, Q669)** — **`ClientService.maskAddressPlain`** — list/detail **`address`·`pickupAddress`** — 시·구·도로명(동)까지 노출·상세 번호 **`***`** — transport roster 정책 정합 · **`ClientServiceTest`**
+> - **Live-e2e tenant isolation (BE `c4e6bcb`, Q670)** — default UUID **`e2e00001-*`** prefix — **`scripts/seed-dev-fixtures.sql`** `00000001` 계열과 **충돌 방지** · live-e2e harness tests 갱신
+>
+> **335차 TWR 자율 동기화 (완료):**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q667 신규**·**Q666·Q650·Q663 갱신** · `USER_MANUAL` §1-3·§4-7-0c · `ADMIN_GUIDE` §1-4·§6-2-24 · `DEPLOYMENT_GUIDE` §1-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **US-R01-c leave-ledger UXD-157 a11y** (`bd1d0ad`, Q667) — **`StaffLeaveLedgerTable`** semantic dates·caption · **`StaffLeaveLedgerDeleteModal`** (`window.confirm` 대체) · **`DateInput`** 등록 Modal · compact grid CSS
+> - **BNK-551 closure** — **`staffAnnualLeaveServices.test.js`** leave-ledger **`relatedSurfaces` AVAILABLE** expectation (`426d63a`, Q667) — BE contract ↔ FE default **동기화 완료**
+> - **baseline 확정** — BE **`5fd12dd`** carry · FE `8057c1e`→**`426d63a`**(+2 commits)
+> - **다음 우선순위** — **V175 leave-ledger integrity** (DBA dirty) · **FE WT CLEAN** (dirty 40M+) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **origin/test push**
+>
+> **최근 개선 (335차):**
+> - **US-R01-c leave-ledger UXD-157 a11y (FE `bd1d0ad`, US-R01-c, Q667)** — **`StaffLeaveLedgerTable`** — `<time dateTime>` · `caption`·`scope="col"` · 직원명 **`aria-label`** · 행 **「수정」/「삭제」** contextual label · **`StaffLeaveLedgerDeleteModal`** — WCAG 4.1.2 **`window.confirm` 대체** · **`DateInput`** 등록·수정 Modal · **`StaffLeaveLedgerTable.test`** · **`StaffLeaveLedgerDeleteModal.test`**
+> - **US-R01-c relatedSurfaces AVAILABLE contract sync (FE `426d63a`, BNK-551, Q667)** — **`staffAnnualLeaveServices.test.js`** — leave-ledger **`availability: AVAILABLE`** — **`STAFF_ANNUAL_LEAVE_DEFAULT_RELATED_SURFACES`**·BE `bb9df48` contract 정합
+>
+> **334차 TWR 자율 동기화 (완료):**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q666 신규**·**Q663·Q655·Q665 갱신** · `USER_MANUAL` §1-3·§4-7-0b·§4-7-0c · `ADMIN_GUIDE` §1-4·§6-2-24 · `DEPLOYMENT_GUIDE` §1-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **US-R01-c `/staff/leave-ledger` FE full-stack wire** (`8057c1e`, Q666) — **`StaffLeaveLedgerPage`** CRUD · **`StaffContextNav`「연차·유급휴일 대장」** · **`fetchStaffLeaveLedgerApi`** · **`pilotChecklist` R01c-a/b/c/d** · HR cross-link **PLANNED→AVAILABLE** default 승격
+> - **BE live routing harness** — **`StaffLeaveLedgerLiveApiRoutingE2eTest`** list·create contract (`5fd12dd`, Q666)
+> - **baseline 확정** — BE `62fce23`→**`5fd12dd`**(+1 commit) · FE `b7101d5`→**`8057c1e`**(+1 commit)
+> - **다음 우선순위** — **V175 leave-ledger integrity** (DBA dirty) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **origin/test push**
+>
+> **최근 개선 (334차):**
+> - **US-R01-c leave-ledger FE full-stack wire (FE `8057c1e`, US-R01-c, Q666)** — **`StaffLeaveLedgerPage`**(`/staff/leave-ledger`) — 연도 조회·건별 Table·**「항목 등록」** Modal · **`branch_admin`/`social_worker` CUD** · **`hq_admin` 조회만** · **`StaffLeaveLedgerRelatedSurfacesPanel`** · **`normalizeStaffLeaveLedgerListResponse`** · **`staffLeaveLedger.js` form validation** · **`StaffLeaveLedgerPage.test`** · **`pilotPageFlows.test`** Must title
+> - **US-R01-c leave-ledger live API routing harness (BE `5fd12dd`, US-R01-c, Q666)** — **`StaffLeaveLedgerLiveApiRoutingE2eTest`** — list **`surfaceKind`·`relatedSurfaces`** · create **`PAID_HOLIDAY`** contract — attendance live routing 패턴 미러
+>
+> **333차 TWR 자율 동기화 (완료):**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q665 신규**·**Q663 deepen** · `USER_MANUAL` §1-3·§4-7-0d · `ADMIN_GUIDE` §1-4·§6-2-24 · `DEPLOYMENT_GUIDE` §1-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **US-R01-c leave-ledger RBAC·pilot flow test deepen** (`62fce23`, Q665) — **`RoleBasedControllerAccessTest.StaffLeaveLedgerAccess`** 5건 · **`StaffLeaveLedgerPilotServiceFlowE2eTest`** CRUD·cross-link · **`hq_admin` CUD 403** · **`caregiver` list 403**
+> - **baseline 확정** — BE `bb9df48`→**`62fce23`**(+1 commit) · FE **`b7101d5`** carry (SYNCED)
+> - **다음 우선순위** — **US-R01-c `/staff/leave-ledger` FE wire** · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **origin/test push**
+>
+> **최근 개선 (333차):**
+> - **US-R01-c leave-ledger RBAC·pilot flow test deepen (BE `62fce23`, US-R01-c, Q665)** — **`StaffLeaveLedgerPilotServiceFlowE2eTest`** — list→create→update→delete·**`relatedSurfaces`** assert · **`RoleBasedControllerAccessTest.StaffLeaveLedgerAccess`** — **`branch_admin`/`hq_admin`/`social_worker`/`caregiver`** list·CUD matrix · annual-leave·work-attendance 패턴 정합
+>
+> **332차 TWR 자율 동기화 (완료):**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q663·Q664 신규**·**Q655·Q659·Q653 갱신** · `USER_MANUAL` §1-3·§4-7-0c·§4-7-0d · `ADMIN_GUIDE` §1-4·§6-2-24 · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **US-R01-c canonical leave-ledger BE API** (`bb9df48`, Q663) — **`GET/POST/PUT/DELETE /staff/leave-ledger*`** · **V174** `staff_leave_ledger_entries` · **`surfaceKind=CANONICAL_LEAVE_LEDGER`** · annual-leaves·work-attendance **`relatedSurfaces[1].availability=AVAILABLE`** 승격
+> - **QA·이관 상태** — **QA-B268 Fixed** @ `b7101d5` (live E2E suite guard `liveCashReceiptDescribe`, Q664) · **cross-stream SYNCED**
+> - **baseline 확정** — BE `f1225b0`→**`bb9df48`**(+1 commit) · FE `949e9bf`→**`b7101d5`**(+1 commit)
+> - **다음 우선순위** — **US-R01-c `/staff/leave-ledger` FE wire** · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **origin/test push**
+>
+> **최근 개선 (332차):**
+> - **US-R01-c canonical staff leave-ledger API (BE `bb9df48`, US-R01-c, Q663)** — **`StaffLeaveLedgerController`** — **`GET /staff/leave-ledger?year=&branchId=`** · **`GET …/users/{userId}`** · **`POST …/users/{userId}`** · **`PUT …/entries/{entryId}`** · **`DELETE …/entries/{entryId}`** — **`leaveType` ANNUAL_LEAVE/PAID_HOLIDAY** · **`daysUsed` 0<≤99.9 소수 1자리** · **Flyway V174** · **`StaffAnnualLeaveSupport`·`StaffWorkAttendanceSupport` relatedSurfaces PLANNED→AVAILABLE** · **`StaffLeaveLedgerServiceTest`** · **`StaffLeaveLedgerSupportTest`** · **`MustApiEndpointRoutingTest.StaffLeaveLedgerRouting`**
+> - **live E2E suite guard regex deepen (FE `b7101d5`, QA-B268, Q664)** — **`liveE2eSuiteGuard.test.js`** — **`LIVE_GUARD_FUNCTIONS`** 목록·single/double-quote import 허용 · **`liveCashReceiptDescribe`** gating 회귀 방지
+>
+> **331차 TWR 자율 동기화 (완료):**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q662 신규**·**Q658·Q661 갱신** · `USER_MANUAL` §1-3 · `ADMIN_GUIDE` §1-4 · `DEPLOYMENT_GUIDE` §1-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G2 CMS branch roster status filter normalization** (`f1225b0`, Q662) — **`normalizeEnrollmentStatusFilter()`** trim·uppercase · **`ACTIVE`/`CANCELLED`/`PENDING`** · unsupported → **`422`** · **`CmsServiceTest.listBranchEnrollmentsShouldNormalizeStatusFilterAndReturnPendingRoster`**
+> - **QA·이관 상태 정정** — **QA-B266 Fixed** @ `949e9bf` (TSR 1311, non-repro flake) · **QA-B267 Fixed** @ `f1225b0` (dirty-tree carry) · **cross-stream SYNCED**
+> - **baseline 확정** — BE `40ab9e7`→**`f1225b0`**(+1 commit) · FE **`949e9bf`** carry (SYNCED)
+> - **다음 우선순위** — **US-R01 `/staff/leave-ledger` v3 surface** · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **origin/test push** (QA-B116)
+>
+> **최근 개선 (331차):**
+> - **G2 CMS branch roster status filter normalization test (BE `f1225b0`, G2, Q662)** — **`CmsService.normalizeEnrollmentStatusFilter()`** — **`status` trim·uppercase** · **`" pending "` → `PENDING` roster** · **`EXPIRED` 등 미지원 → `422`「CMS 등록 상태 필터는 ACTIVE, CANCELLED, PENDING만 허용됩니다.」** · **`jwtScopeResolver.validateBranchReadScope`** · **`CmsServiceTest.listBranchEnrollmentsShouldNormalizeStatusFilterAndReturnPendingRoster`** · **`listBranchEnrollmentsShouldRejectUnsupportedStatusFilter`**
+>
+> **330차 TWR 자율 동기화 (완료):**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q661 신규** · `DEPLOYMENT_GUIDE` §1-3·§11-3 · `USER_MANUAL` §1-3 · `ADMIN_GUIDE` §1-4 · `README.md`
+> - **운영 문서 공백 보강** — **Vitest 동시 실행·full-suite pollution 운영 대응** (Q661) — **`npm-test-locked.sh`** · **`vitest-stop.sh`** · **QA-B266 merge gate 절차** · **UI 무관·COD fix 대기** 명시
+> - **문서 정합성** — `DEPLOYMENT_GUIDE` §1-3 stale **327차 baseline** → **330차 `40ab9e7`/`949e9bf`** · `README.md` Flyway **V166→V173** 정정
+> - **baseline carry** — BE **`40ab9e7`** · FE **`949e9bf`** (신규 커밋 없음)
+> - **다음 우선순위** — **QA-B266 closure** (COD) · **US-R01 `/staff/leave-ledger` v3 surface** · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **329차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q658·Q659·Q660 신규** · `USER_MANUAL` §1-3·§4-7-0c·§5-9 · `ADMIN_GUIDE` §1-4 · `DEPLOYMENT_GUIDE` §11-3 · `README.md`
+> - **QA·이관 상태 문서화** — **QA-B266 Open(BLOCK)** — develop `npm test` **2048/2049 FAIL** (`StaffAnnualLeavePage` branch scope · isolated **8/8 PASS** · pollution suspect, Q658) · **QA-B265 Fixed** @ `40ab9e7` (Q659 deepen carry)
+> - **Must 후속 P1 문서 공백 보강** — **US-R01-c `/staff/leave-ledger` P1 candidate** (Q659) — monthly snapshot vs canonical ledger **정보 모델 분리** · **M6 v3.1** `/meals` LIVE · `/safety/*` PLANNED (Q660)
+> - **KPI·이관 정정** — merge gate **691→713 carry** · cross-stream **BLOCK(FE pending 2+regression · BE SYNCED)** · BE Test **1829** · FE **+3 @Test** at develop
+> - **baseline 확정** — BE **`40ab9e7`** carry · FE **`949e9bf`** carry (신규 커밋 없음)
+> - **다음 우선순위** — **QA-B266 closure** (COD) · **US-R01 `/staff/leave-ledger` v3 surface** · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **328차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q656·Q657 신규** · `USER_MANUAL` §1-3·§4-7-0a·§5-3 · `ADMIN_GUIDE` §1-4 · `DEPLOYMENT_GUIDE` §11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-ANNUAL-LEAVE multi-branch activeBranch fallback** (`40ab9e7`, Q656) — **`branchId` 생략** 시 **`TenantContext.activeBranchId`** roster · **`getRosterShouldUseTenantActiveBranchForMultiBranchScope`** 회귀 테스트
+> - **US-R01 HR roster UX closure** (`c183ebd`/`949e9bf`, Q657) — **`RelatedSurfacesPanel`** 공통 추출 · **UXD-156** aside landmark·**PLANNED `Badge`** · **`BranchScopeNotice`** on **`/staff/annual-leaves`·`/staff/attendance`**
+> - **KPI 정정** — BE Test **272→273**(+1 `@Test`) · FE test **~2047→~2052**(+5 @Test) · merge gate **691** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE `83a26e7`→**`40ab9e7`**(+1 commit) · FE `95f55aa`→**`949e9bf`**(+2 commits)
+> - **다음 우선순위** — **US-R01 `/staff/leave-ledger` v3 surface 구현** · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3
+>
+> **최근 개선 (328차):**
+> - **G-STAFF-ANNUAL-LEAVE multi-branch activeBranch roster fallback (BE `40ab9e7`, US-R01, Q656)** — **`StaffAnnualLeaveService.resolveBranchId()`** — **`branch_admin`·다지점 scope·`branchId` 생략** 시 **`TenantContext.activeBranchId()`** fallback · false **「지점을 선택해 주세요.」** 방지 · **`StaffAnnualLeaveServiceTest.getRosterShouldUseTenantActiveBranchForMultiBranchScope`**
+> - **G-STAFF-ANNUAL-LEAVE·WORK-ATTENDANCE RelatedSurfacesPanel + UXD-156 (FE `c183ebd`, US-R01, Q657)** — **`RelatedSurfacesPanel`** — **`aside`·`aria-label`** surface별 분리 · **`STAFF_*_RELATED_ASIDE_LABEL`** · **PLANNED → neutral `Badge`「준비 중」** · **`StaffAnnualLeaveRelatedSurfacesPanel`** thin wrapper · **`RelatedSurfacesPanel.test`**
+> - **G-STAFF HR roster BranchScopeNotice wire (FE `949e9bf`, US-R01, Q657)** — **`StaffAnnualLeavePage`·`StaffWorkAttendancePage`** — API **`resolvedBranchId`** 기반 **`BranchScopeNotice`** · multi-branch **`hq_admin`** 지점 정렬 · **`StaffAnnualLeavePage.test`** · **`StaffWorkAttendancePage.test`**
+>
+> **327차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q654·Q655 신규** · `USER_MANUAL` §1-3·§4-7-0c · `ADMIN_GUIDE` §1-4·§10-8 · `DEPLOYMENT_GUIDE` §4-3 · `README.md`
+> - **P3 문서 공백 보강** — **G-COMM-CALLER-AUTH** (`Q654`) — Solapi **발신번호 본인인증은 ogada 범위 밖** · **`SOLAPI_SENDER_ID` 외부 인증** · silverangel notice 221562 참고
+> - **US-R01 leave-ledger PLANNED** (`Q655`) — **`/staff/leave-ledger` v3 Must** · **`relatedSurfaces`·`PLANNED` contract** · 대장 출시 전 **중복 입력 금지** 운영 가이드
+> - **baseline carry** — BE **`83a26e7`** · FE **`95f55aa`** (신규 커밋 없음)
+> - **다음 우선순위** — **US-R01 `/staff/leave-ledger` v3 surface 구현** · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3
+>
+> **326차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q653 신규**·**Q651·Q652 deepen** · `USER_MANUAL` §1-3·§4-7-0b·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-20 · `DEPLOYMENT_GUIDE` §11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-WORK-ATTENDANCE US-R01 API cross-link metadata** (`83a26e7`/`95f55aa`, Q653) — **`GET /staff/work-attendance`** — **`surfaceKind=DAILY_WORK_ATTENDANCE_ROSTER`** · **`relatedSurfaces[]`** — **US-R03e `/staff/annual-leaves` AVAILABLE** · **US-R01 `/staff/leave-ledger` PLANNED** · **`normalizeStaffWorkAttendanceResponse`** FE wire
+> - **양방향 HR nav API closure** — 연차 roster (`bbf333c`/`6ab3760`, Q648·Q650) ↔ 출퇴근 roster (`83a26e7`, Q653) — **FE-only default에서 BE contract 기반으로 전환** (`95f55aa`)
+> - **KPI 정정** — BE Test **271→272**(+1 `@Test`) · FE test **~2044→~2047**(+3 @Test) · merge gate **691** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE `6ab3760`→**`83a26e7`**(+1 commit) · FE `2040571`→**`95f55aa`**(+1 commit)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3 · **US-R01 `/staff/leave-ledger` v3 surface** P3
+>
+> **최근 개선 (326차):**
+> - **G-STAFF-WORK-ATTENDANCE US-R01 API cross-link metadata (BE `83a26e7`, US-R01, Q653)** — **`StaffWorkAttendanceListResponse`** — **`surfaceKind`** · **`relatedSurfaces[]`** — **`StaffWorkAttendanceSupport.relatedSurfaces()`** — US-R03e reverse nav · **`MustApiEndpointRoutingTest`** · **`RoleBasedControllerAccessTest`** · **`StaffWorkAttendanceServiceTest`** · **`StaffWorkAttendanceSupportTest`** · **`StaffWorkAttendanceLiveApiRoutingE2eTest`**
+> - **G-STAFF-WORK-ATTENDANCE API metadata FE wire (FE `95f55aa`, US-R01, Q653)** — **`normalizeStaffWorkAttendanceResponse`** · **`normalizeStaffWorkAttendanceRelatedSurfaces`** — **`StaffWorkAttendancePage`** roster load 시 API **`relatedSurfaces`** 우선 · fallback **`STAFF_WORK_ATTENDANCE_DEFAULT_RELATED_SURFACES`** · **`StaffWorkAttendancePage.test`** · **`staffAnnualLeave.test`**
+>
+> **325차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q652 신규** · `USER_MANUAL` §4-7-0b · `ADMIN_GUIDE` §1-4 baseline 정정·HR nav 표 · `DEPLOYMENT_GUIDE` §11-3 · `README.md`
+> - **Must 문서 공백 보강** — **HR 직원 관리 화면 역할 분리·양방향 nav 통합 참조표** (Q652) — 출퇴근(8-4)·연차(US-R03e)·대장(US-R01) **데이터 중복 금지** · Q648·Q650·Q651 **단일 운영 표**로 통합
+> - **문서 정합성** — `ADMIN_GUIDE` §1-4 stale baseline **`bbf333c`/`e296387`(322차)** → **`6ab3760`/`2040571`(324차)** 정정
+> - **baseline 확정** — BE **`6ab3760`** carry · FE **`2040571`** carry (신규 커밋 없음)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3 · **US-R01 `/staff/leave-ledger` v3 surface** P3
+>
+> **324차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q651 신규**·**Q648·Q650 deepen** · `USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-20 · `DEPLOYMENT_GUIDE` §1-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-WORK-ATTENDANCE US-R01 reverse cross-links** (`2040571`, Q651) — **`/staff/attendance`** — **`StaffAnnualLeaveRelatedSurfacesPanel`** — **「연차휴가 현황」→ `/staff/annual-leaves`** · **「연차·유급휴일 대장 (준비 중)」** · **`STAFF_WORK_ATTENDANCE_CROSS_LINK_HELP`**
+> - **양방향 HR nav closure** — 연차 roster → 출퇴근 (`0b0d7ba`, Q650) · 출퇴근 → 연차 (`2040571`, Q651) — **leave-ledger 데이터 8-4 roster에 중복하지 않음**을 FE 안내
+> - **KPI 정정** — FE test **2040→~2044**(+3 @Test) · merge gate **691** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE **`6ab3760`** carry · FE `0b0d7ba`→**`2040571`**(+1 commit)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3 · **US-R01 `/staff/leave-ledger` v3 surface** P3
+>
+> **최근 개선 (324차):**
+> - **G-STAFF-WORK-ATTENDANCE US-R01 reverse cross-links (FE `2040571`, US-R01, Q651)** — **`StaffWorkAttendancePage`** — **`StaffAnnualLeaveRelatedSurfacesPanel`** embed · **`STAFF_WORK_ATTENDANCE_DEFAULT_RELATED_SURFACES`** — **US-R03e `/staff/annual-leaves` AVAILABLE** · **US-R01 `/staff/leave-ledger` PLANNED** · **`STAFF_WORK_ATTENDANCE_CROSS_LINK_HELP`** · **`StaffAnnualLeaveRelatedSurfacesPanel` `helpText` prop** · **`StaffWorkAttendancePage.test`** · **`StaffAnnualLeaveRelatedSurfacesPanel.test`** · **`staffAnnualLeave.test`**
+>
+> **323차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q648 deepen·Q650 신규** · `USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23 · `DEPLOYMENT_GUIDE` §1-3·§4-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-ANNUAL-LEAVE yearly cross-link metadata** (`6ab3760`, Q650) — **`GET/PUT /staff/annual-leaves/users/{userId}`** — **`StaffAnnualLeaveYearlyResponse.surfaceKind`·`relatedSurfaces[]`** roster와 동일 contract
+> - **G-STAFF-ANNUAL-LEAVE FE related surfaces panel** (`0b0d7ba`, Q650) — **`StaffAnnualLeaveRelatedSurfacesPanel`** — 스냅샷 안내·**`/staff/attendance` 링크**·**`/staff/leave-ledger` (준비 중)** · **`normalizeStaffAnnualLeaveRosterResponse`**
+> - **KPI 정정** — FE test **478→~482** · merge gate **691** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE `bbf333c`→**`6ab3760`**(+1 commit) · FE `e296387`→**`0b0d7ba`**(+1 commit)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3 · **US-R01 `/staff/leave-ledger` v3 surface** P3
+>
+> **최근 개선 (323차):**
+> - **G-STAFF-ANNUAL-LEAVE yearly cross-link metadata (BE `6ab3760`, US-R03e, Q650)** — **`StaffAnnualLeaveYearlyResponse`** — **`surfaceKind=ANNUAL_LEAVE_USAGE_SNAPSHOT`** · **`relatedSurfaces[]`** — roster와 **동일 US-R01 cross-link** · **`StaffAnnualLeaveService.getYearlyRecord()`·`saveYearlyRecord()`** · **`MustApiEndpointRoutingTest`** · **`RoleBasedControllerAccessTest`** · **`StaffAnnualLeaveServiceTest`**
+> - **G-STAFF-ANNUAL-LEAVE related surfaces FE wire (FE `0b0d7ba`, US-R03e, Q650)** — **`StaffAnnualLeaveRelatedSurfacesPanel`** — **`STAFF_ANNUAL_LEAVE_SNAPSHOT_HELP`** · **AVAILABLE → `<Link>`** · **PLANNED → 「(준비 중)」** · **`StaffAnnualLeavePage`** embed · **`normalizeStaffAnnualLeaveRosterResponse`** · **`fetchStaffAnnualLeaveRosterApi`** · **`StaffAnnualLeaveRelatedSurfacesPanel.test`** · **`staffAnnualLeave.test`** · **`StaffAnnualLeavePage.test`**
+>
+> **322차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q648·Q649 신규**·**Q647 deepen** · `USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23 · `DEPLOYMENT_GUIDE` §1-3·§4-3·§11-3
+> - **Must 문서 공백 보강** — **G-STAFF-ANNUAL-LEAVE US-R01 cross-link metadata** (`bbf333c`, Q648) — roster **`surfaceKind=ANNUAL_LEAVE_USAGE_SNAPSHOT`** · **`relatedSurfaces[]`** — **`/staff/attendance`(AVAILABLE)** · **`/staff/leave-ledger`(PLANNED)** · **`StaffAnnualLeaveSupportTest`**
+> - **live E2E·pilot contract deepen** — **`staffAnnualLeaveLiveApi.e2e.test.js`** (`96e9d25`, Q649) · **memo field error clear on edit** (`96e9d25`, Q647 deepen) · **`pilotChecklist` R03e-a/b/c + E05** (`e296387`, Q649)
+> - **KPI 정정** — BE Test **270→271** · FE test **475→478** · merge gate **688→691** · **Must 갭 0** carry
+> - **baseline 확정** — BE `8c5dd65`→**`bbf333c`**(+1 commit) · FE `31ab1aa`→**`e296387`**(+2 commits)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3 · **US-R01 leave-ledger v3 surface** P3
+>
+> **최근 개선 (322차):**
+> - **G-STAFF-ANNUAL-LEAVE US-R01 leave-ledger cross-link metadata (BE `bbf333c`, US-R03e, Q648)** — **`GET /staff/annual-leaves/roster`** — **`StaffAnnualLeaveRosterResponse.surfaceKind`** = **`ANNUAL_LEAVE_USAGE_SNAPSHOT`** · **`relatedSurfaces[]`** — **US-R01「출퇴근 기록」`/staff/attendance`·AVAILABLE** · **US-R01「연차·유급휴일 대장」`/staff/leave-ledger`·PLANNED** — 월별 사용 스냅샷이 canonical leave-ledger를 **중복하지 않음**을 API 메타로 명시 · **`StaffAnnualLeaveSupport.relatedSurfaces()`** · **`MustApiEndpointRoutingTest`** · **`RoleBasedControllerAccessTest`** · **`StaffAnnualLeaveSupportTest`**
+> - **G-STAFF-ANNUAL-LEAVE live API harness + memo field error UX (FE `96e9d25`, US-R03e, Q649·Q647 deepen)** — **`staffAnnualLeaveLiveApi.e2e.test.js`** — roster·yearly shape live contract · **`StaffAnnualLeavePage`** — **`handleMemoChange` → `clearEditFieldError("memo")`** · **마지막 field error 제거 시 form Alert clear** · **`StaffAnnualLeavePage.test`** +2
+> - **G-STAFF-ANNUAL-LEAVE PILOT_CHECKLIST contract (FE `e296387`, US-R03e·E05, Q649)** — **`pilotChecklist.js`** — **R03e-a roster GET** · **R03e-b yearly GET** · **R03e-c yearly PUT** · **E05 monthly attendance stats GET** · **`pilotChecklist.test.js`** service mock 분기 확장
+>
+> **321차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q645·Q646·Q647 신규** · `USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23 · `DEPLOYMENT_GUIDE` §1-3·§4-3·§11-3
+> - **Must 문서 공백 보강** — **V173 staff_annual_leave_yearly defense-in-depth** (`8c5dd65`, Q645) — **4 CHECK + 1 user_branch_assignment FK** · **`V173StaffAnnualLeaveYearlyIntegrityReadinessProbe`** · health **`v173StaffAnnualLeaveYearlyIntegrityCheckReady`** · live-e2e blocker **`v173-staff-annual-leave-yearly-constraint-missing`**
+> - **G-STAFF-ANNUAL-LEAVE FE UX deepen** — **UXD-155 a11y** (`085a85a`, Q646) · **Modal `noValidate` + field errors** (`61f670f`, Q647) · **save API failure surfacing + field error clear on edit** (`31ab1aa`, Q647)
+> - **KPI 정정** — BE Test **264→270** · FE test **472→475** · merge gate **688** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE `19ffa84`→**`8c5dd65`**(+1 commit) · FE `971c7f1`→**`31ab1aa`**(+3 commits)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3 · **QA-B255 FE develop→test merge revalidation**
+>
+> **최근 개선 (321차):**
+> - **V173 staff_annual_leave_yearly integrity migration (BE `8c5dd65`, US-R03e, Q645)** — **`V173__staff_annual_leave_yearly_integrity_us_r03e.sql`** — **`chk_*_month_max`(≤99.9)** · **`chk_*_entitlement_max`(≤999.9)** · **`chk_*_used_within_entitlement`** · **`chk_*_memo_nonempty`** · **`fk_*_user_branch_assignment`** · **`V173StaffAnnualLeaveYearlyIntegrityReadinessProbe.integrityCheckReady()`** · **`HealthController`**·**`LiveE2eController`** — **`v173StaffAnnualLeaveYearlyIntegrityCheckReady`** · blocker **`v173-staff-annual-leave-yearly-constraint-missing`** · **`V173StaffAnnualLeaveYearlyIntegrityReadinessProbeTest`** · **`HealthControllerTest`** · **`LiveE2eOperationReadinessSupportTest`**
+> - **G-STAFF-ANNUAL-LEAVE UXD-155 a11y (FE `085a85a`, UXD-155, Q646)** — **`StaffAnnualLeavePage`** — **`ds-help-text`** 안내 · **`ds-fieldset`/`legend`** 월별 사용 그룹 · roster **`aria-busy`** · **`components.css`** fieldset/help styles · **`StaffAnnualLeavePage.test`**
+> - **G-STAFF-ANNUAL-LEAVE modal validation UX (FE `61f670f`/`31ab1aa`, QA-B255 deepen, Q647)** — **편집 form `noValidate`** — 앱 **`validateStaffAnnualLeaveForm`** 우선 · **`Field error={editFieldErrors.*}`** — **`monthlyUsed.N`·`totalEntitlement`·`memo`** · **`applyApiErrorToForm`** — 서버 **`422` 필드 오류 Modal 표시** · **편집 재개 시 field error clear** · **`StaffAnnualLeavePage.test`** +3
+>
+> **320차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q643 정정·Q644 신규** · `USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23·§10-8 · `DEPLOYMENT_GUIDE` §1-3·§4-3·§11-3
+> - **Must 문서 공백 보강** — **J03 Solapi placeholder credential/template readiness guard** (`19ffa84`, Q644) — **`stub`·`default`·`placeholder`·`change-me`·`changeme`·`replace-me`** 포함 값은 **live-alimtalk ready 거부** · **`NotificationConfig.validateSolapiConfiguration()`** 동일 guard · **`NotificationChannelReadinessServiceTest.placeholderSolapiCredentialsShouldRemainNotReady`**
+> - **QA-B255 page title drift guard** (`971c7f1`, Q643 deepen) — **`STAFF_ANNUAL_LEAVE_PAGE_TITLE`** = **「직원 연차휴가」** — **`StaffAnnualLeavePage`·`pilotPageFlows`·`StaffAnnualLeavePage.test`** 단일 상수 공유
+> - **KPI 정정** — BE Test **262→264** · FE test **471→472** · merge gate **688** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE `6b35fb5`→**`19ffa84`**(+1 commit) · FE `8434435`→**`971c7f1`**(+1 commit)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3
+>
+> **최근 개선 (320차):**
+> - **J03 Solapi placeholder credential readiness guard (BE `19ffa84`, J03, Q644)** — **`NotificationChannelReadinessService.isLiveConfigured()`** — **`SOLAPI_*`·`KAKAO_PF_ID`·`KAKAO_TPL_*` mapped ID** 에 **`stub`·`default`·`placeholder`·`change-me`·`changeme`·`replace-me`** 포함 시 **미설정 처리** · **`liveAlimtalkDispatchReady=false`** · blocker **`MISSING_SOLAPI_CONFIG`/`MISSING_TEMPLATE_MAPPING`** · **`NotificationConfig.validateSolapiConfiguration()`** — solapi provider bootstrap **동일 guard** · **`NotificationChannelReadinessServiceTest.placeholderSolapiCredentialsShouldRemainNotReady`** · **`NotificationConfigTest`** deepen
+> - **G-STAFF-ANNUAL-LEAVE page title constant centralization (FE `971c7f1`, QA-B255, Q643 deepen)** — **`staffAnnualLeave.js`** — **`STAFF_ANNUAL_LEAVE_PAGE_TITLE = "직원 연차휴가"`** · **`StaffAnnualLeavePage`** AppShell title · **`pilotPageFlows.test`** Must route heading · **`StaffAnnualLeavePage.test`** · **`staffAnnualLeave.test.js`** stable title assert
+>
+> **319차 TWR 자율 동기화 (완료):**
+> - **G-STAFF-ANNUAL-LEAVE validation deepen** (`f88e8b1`/`6b35fb5`, Q641/Q642 신규) — **precision validation** (월별 사용일수 소수점 거부) · **range validation** (월별 사용일수 범위 체크) · **overlong payload reject** (31자 이상 사유 문자열 거부)
+> - **G-STAFF-ANNUAL-LEAVE FE validation alignment** (`80613c3`/`8434435`, Q641/Q642 deepen) — **backend validation rules 동기화** · **page title pilot Must-page check** · **`StaffAnnualLeaveTable` test deepen**
+> - **ops 문서 갱신** — `CHANGELOG`(현재)·`FAQ` **Q641·Q642 신규** · `USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23 · `DEPLOYMENT_GUIDE` §1-3
+> - **baseline carry** — BE `a45745c`→**`6b35fb5`**(+2 commits) · FE `a170f9c`→**`8434435`**(+2 commits)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3
+>
+> **최근 개선 (319차 — 318차 누락분 반영):**
+> - **G-STAFF-ANNUAL-LEAVE monthly usage precision validation (BE `f88e8b1`, US-R03e, Q641)** — **`StaffAnnualLeaveService.validateMonthlyUsage()`** — **monthly usage `> 0 && <= MAX_DAYS` 범위** · **정수 값만 허용**(소수점 거부) · **`422`「월별 사용일수는 정수여야 합니다.」** · **`StaffAnnualLeaveServiceTest.validateMonthlyUsageShouldRejectDecimal`**
+> - **G-STAFF-ANNUAL-LEAVE leave memo overlong payload reject (BE `6b35fb5`, US-R03e, Q642)** — **`StaffAnnualLeaveService.saveYearlyRecord()`** — **`memo` max length 30 characters** · **31자 이상 입력 시 `422`「비고는 30자 이하여야 합니다.」** · **`StaffAnnualLeaveServiceTest.saveYearlyRecordShouldRejectOlongMemo`**
+> - **G-STAFF-ANNUAL-LEAVE FE form validation alignment (FE `80613c3`, US-R03e, Q641 deepen)** — **`StaffAnnualLeaveForm`** — **`monthlyUsage` input **`type="number" min="0" max="31"` pattern** · **정수만 입력 가능** · **backend 검증과 일치**
+> - **G-STAFF-ANNUAL-LEAVE page title pilot check (FE `8434435`, UXD-154, Q643)** — **`StaffAnnualLeavePage`** — **page title `<h1>」연차휴가(US-R03e)」</h1>`** · **pilot Must-page check** · **`StaffAnnualLeavePage.test`** +1 case
+
+> **317차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23 · `FAQ` **Q639·Q640 deepen**·**Q580 갱신** · `DEPLOYMENT_GUIDE` §1-3·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-ANNUAL-LEAVE negative monthly usage guard** (`a45745c`, Q639 deepen) — **`422`「월별 사용일수는 0 이상이어야 합니다.」** · **`StaffAnnualLeaveServiceTest.saveYearlyRecordShouldRejectNegativeMonthlyUsage`**
+> - **live E2E harness deepen** — **default-credential blocker wording variants** (`a170f9c`, Q640 deepen) — **`default-staff-credentials`·`staff default credentials`·`* placeholder credentials`** — **`liveE2eHarness.test`** +2
+> - **KPI 정정** — BE Test **261→262** · FE test **469→471** · merge gate **688** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE `6b84bcd`→**`a45745c`**(+1 commit) · FE `6fcd750`→**`a170f9c`**(+1 commit)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3
+>
+> **최근 개선 (317차):**
+> - **G-STAFF-ANNUAL-LEAVE negative monthly usage business rule guard (BE `a45745c`, US-R03e, Q639 deepen)** — **`StaffAnnualLeaveService.saveYearlyRecord()`** — **`normalizeMonthlyUsage()` `IllegalArgumentException` → `BusinessRuleException`** — **`422`「월별 사용일수는 0 이상이어야 합니다.」** · **`StaffAnnualLeaveServiceTest.saveYearlyRecordShouldRejectNegativeMonthlyUsage`**
+> - **live E2E default-credential blocker variant normalization (FE `a170f9c`, QA-B95, Q640 deepen)** — **`liveConfig.isStaffAuthBlocker`/`isGuardianAuthBlocker`** — **`default staff credentials`·`staff credentials placeholder`·`default-guardian-credentials`** 등 **wording variant** recoverable · **`liveE2eHarness.test`** +2
+>
+> **316차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23 · `FAQ` **Q640 신규**·**Q580·Q639 갱신** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-ANNUAL-LEAVE test deepen** (`6b84bcd`, Q639 deepen) — **`branchId` 생략 시 activeBranchId fallback** · **RBAC `RoleBasedControllerAccessTest`** · **`StaffAnnualLeavePilotServiceFlowE2eTest`**
+> - **live E2E harness deepen** — **default credential blocker auth recovery** (`6fcd750`, Q640) — **`isStaffAuthBlocker`/`isGuardianAuthBlocker`** — **`*-credentials-default` recovered when auth ready**
+> - **KPI 정정** — BE Test **254→261** · FE test **467→469** · merge gate **688** carry · **Must 갭 0** carry
+> - **baseline 확정** — BE `41fb84f`→**`6b84bcd`**(+1 commit) · FE `3902dba`→**`6fcd750`**(+1 commit)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3
+>
+> **최근 개선 (316차):**
+> - **G-STAFF-ANNUAL-LEAVE roster RBAC·pilot test deepen (BE `6b84bcd`, US-R03e, Q639 deepen)** — **`StaffAnnualLeaveServiceTest.getRosterShouldUseActiveBranchWhenBranchIdMissing`** — **`branchId` 생략 → TenantContext.activeBranchId** · **`RoleBasedControllerAccessTest.StaffAnnualLeaveAccess`** — roster GET·yearly GET·PUT RBAC 5건 · **`StaffAnnualLeavePilotServiceFlowE2eTest`** — upsert pilot flow
+> - **live E2E default credential blocker recovery (FE `6fcd750`, QA-B95, Q640)** — **`liveConfig.isStaffAuthBlocker`/`isGuardianAuthBlocker`** — **`staff-credentials-default`·`guardian-credentials-default`** — **auth recovered 시 staff-only suite skip 제외** · **`liveE2eHarness.test`** +2
+>
+> **315차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-7-0a · `ADMIN_GUIDE` §1-4·§6-2-23 · `FAQ` **Q639 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§4-6·§11-3 · `README.md`
+> - **Must 문서 공백 보강** — **G-STAFF-ANNUAL-LEAVE full-stack closure** (`5353991`/`3902dba`/`41fb84f`, Q639) — **`/staff/annual-leaves`** · **`GET/PUT /staff/annual-leaves/*`** · **V172** `staff_annual_leave_yearly` · **ezCare worker-b100 tab01 parity**
+> - **UXD-154 a11y carry** — **`CmsEnrollmentTable`·`EzcareWorkflowCatalogPanel`·`MonitoringOfficialIndicatorLegendPanel`·`StaffAnnualLeaveTable`** (`5353991`, Q639)
+> - **KPI 정정** — route **109→110** · page **88→89** · BE Test **248→254** · FE test **460→467** · merge gate **693→688** · **Must 갭 0** carry
+> - **baseline 확정** — BE `d3d4d2d`→**`41fb84f`**(+1 commit) · FE `3ece965`→**`3902dba`**(+2 commits)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3
+>
+> **최근 개선 (315차):**
+> - **G-STAFF-ANNUAL-LEAVE branch annual leave roster API (BE `41fb84f`, US-R03e, Q639)** — **`StaffAnnualLeaveController`** — **`GET /staff/annual-leaves/roster?year=&branchId=`** · **`GET/PUT /staff/annual-leaves/users/{userId}`** — **`StaffAnnualLeaveService`** — 지점 **활성 직원 전원** + **`monthlyUsage[]`·`totalEntitlement`·`totalUsed`·`remaining`·`memo`** · **월별 사용 합계 > 부여일 → `422`** · **Flyway V172** · **`StaffAnnualLeaveServiceTest`**
+> - **G-STAFF-ANNUAL-LEAVE StaffAnnualLeavePage FE wire (FE `3902dba`, US-R03e, Q639)** — **`/staff/annual-leaves`** · **`StaffContextNav`「연차휴가 (US-R03e)」** · **`fetchStaffAnnualLeaveRosterApi`/`saveStaffAnnualLeaveYearlyApi`** · **`StaffAnnualLeaveTable`** — 1~12월·부여·사용·**잔여 derived** · **편집 Modal** (`branch_admin`·`social_worker`) · **`StaffAnnualLeavePage.test`**
+> - **UXD-154 G2 CMS·G34·G30·연차 a11y (FE `5353991`, UXD-154, Q639)** — **`CmsEnrollmentTable`**·**`EzcareWorkflowCatalogPanel`**·**`MonitoringOfficialIndicatorLegendPanel`**·**`StaffAnnualLeaveTable`** — **`aria-busy`·Field label·`<time>`·table caption** · tests
+>
+> **314차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-6 · `ADMIN_GUIDE` §1-4·§10-13 · `FAQ` **Q637 deepen**·**Q638 신규** · `DEPLOYMENT_GUIDE` §1-3·§4-6
+> - **Must 문서 공백 보강** — **G2-CMS-ENROLLMENT-ROSTER full-stack deepen** (`df9ec6c`/`947312c`/`3ece965`/`d0c0d12`/`d3d4d2d`, Q638) — **`CmsPage` FilterChips·`BranchScopeNotice`·`?clientId=` preselect** · **`CmsEnrollmentTable` 이용자 링크** · **`PaymentPage` CMS 등록 열·미등록 deep link** · **BE `branchId` 생략 시 TenantContext fallback**
+> - **KPI 정정** — BE Test **245→248** · FE test **453→460** · **Must 갭 0** carry
+> - **baseline 확정** — BE `d0c0d12`→**`d3d4d2d`**(+1 commit) · FE `df9ec6c`→**`3ece965`**(+2 commits)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3
+>
+> **최근 개선 (314차):**
+> - **G2-CMS-ENROLLMENT-ROSTER CMS roster UX·payment cross-link full-stack deepen (FE `df9ec6c`/`947312c`/`3ece965`, G2, Q638)** — **`fetchCmsEnrollmentsApi({ branchId, status })`** · **`CmsPage`** — **`BranchScopeNotice`** · **등록 상태 FilterChips** · **`?clientId=` URL preselect** · **`CmsEnrollmentTable`** — roster **이용자명 → `/billing/cms?clientId=`** · **`PaymentPage`** — **CMS 등록** 열 · **미등록 → CMS 등록 deep link** · **`CmsPage.test`** · **`CmsEnrollmentTable.test`** · **`PaymentPage.test`**
+> - **G2-CMS-ENROLLMENT-ROSTER branch roster scope test deepen (BE `d0c0d12`/`d3d4d2d`, G2, Q638)** — **`CmsServiceTest.listBranchEnrollments*`** — **`branchId` 생략 시 TenantContext.activeBranchId fallback** · **비활성 지점 거부 guard** · **`CmsPilotServiceFlowE2eTest`** — roster e2e without explicit `branchId`
+>
+> **312차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§3-5·§4-6 · `ADMIN_GUIDE` §1-4·§10-13 · `FAQ` **Q635 closure**·**Q637 신규** · `DEPLOYMENT_GUIDE` §1-3·§4-6
+> - **Must 문서 공백 보강** — **G34-WORKFLOW-CATALOG full-stack closure** (`77cfc38`/`9f110a5`, Q635) — `/compliance/workflow-catalog` · **G2 CMS branch roster API** (`d361833`, Q637) — **`GET /billing/cms/enrollments`** without `clientId`
+> - **KPI 정정** — page **87→88** · merge gate **677→693** · **Must 갭 0** carry
+> - **baseline 확정** — BE `24d25f1`→**`d361833`**(+1 commit) · FE `fdc135b`→**`9f110a5`**(+2 commits)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **선임 업무수행일지 템플릿 카탈로그** P3
+>
+> **최근 개선 (312차):**
+> - **G34-WORKFLOW-CATALOG ezCare 운영주기별 cross-walk full-stack closure (FE `77cfc38`/`9f110a5`, G34, Q635)** — **`WorkflowCatalogPage`** — **`/compliance/workflow-catalog`** · **`EzcareWorkflowCatalogPanel`** — FAQ **21795–21828** 28건 · **16/28 verbatim(57.1%)** · **운영 주기·인용 FilterChips** · **ezCare FAQ 외부 링크** · **`ezcareWorkflowCatalog.js`** · SideNav **「운영주기별 워크플로 (G34)」** · **`EzcareWorkflowCatalogPanel.test`** · **`WorkflowCatalogPage.test`** · **`pilotPageFlows`**
+> - **G2 CMS branch-scoped enrollment roster API (BE `d361833`, G2, Q637)** — **`GET /api/v1/billing/cms/enrollments?branchId=&status=`** — **`clientId` 생략 시 지점 roster** · **`clientName` enrichment** · **`CmsEnrollmentResponse.clientName`** · **`CmsPage`** — 이용자 미선택 시 **ACTIVE roster**·**상태 필터**·**이용자 열** (`showClientColumn`) · **`CmsServiceTest.listBranchEnrollments*`** · **`MustApiEndpointRoutingTest`**
+>
+> **310차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`FAQ` **Q631 신규**·**Q596·Q448 갱신** · `ADMIN_GUIDE` §1-4 live E2E harness · `DEPLOYMENT_GUIDE` §1-3·§11-3 checklist
+> - **Must 문서 공백 보강** — **live E2E bootstrap blocker normalize** (`24d25f1`, Q631) — **`operationBlockers`** 에 **`-not-ready`만** 노출 · **`bootstrap=error`/`guardian-bootstrap=error`는 status detail**로 구분 · health·probe **동일 blocker 집합**
+> - **KPI 정정** — merge gate **676→677** · **Must 갭 0** carry
+> - **baseline 확정** — BE `9db0bbb`→**`24d25f1`**(+1 commit) · FE `fdc135b`(carry)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **G34-WORKFLOW-CATALOG** P3
+>
+> **최근 개선 (310차):**
+> - **live E2E bootstrap blocker reporting normalize (BE `24d25f1`, QA-B95, Q631)** — **`LiveE2eOperationReadinessSupport`** — **`staff-bootstrap-error`/`guardian-bootstrap-error`/`bootstrap-error` blocker 제거** · bootstrap 실패 시 **`staff-bootstrap-not-ready`·`guardian-bootstrap-not-ready`만** · **`resolveOperationBlocker` priority** — `-not-ready` 단일 계층 · derived seed/schema blocker **억제 유지** (Q596 carry) · **`HealthController`** — bootstrap exception 시 **`bootstrap-error` 대신 `-not-ready` 쌍** · **`HealthControllerTest`** · **`LiveE2eControllerTest`** · **`LiveE2eOperationReadinessSupportTest`**
+>
+> **309차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-3·§5-12 · `ADMIN_GUIDE` §1-4 · `FAQ` **Q629 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4
+> - **Must 문서 공백 보강** — **G30-LEGEND full-stack closure** (`fdc135b`, Q629) — `MonitoringOfficialIndicatorLegendPanel` · `monitoringOfficialIndicatorCrosswalk.js` · **`/compliance/monitoring`** 15-row cross-walk · direct **#6↔15** · **#15↔12-14** · **UXD-153 a11y closure** (`da34daf`, Q630)
+> - **KPI 정정** — FE test **438→440** · merge gate **674→676** · **Must 갭 0** carry
+> - **baseline 확정** — BE `9db0bbb`(carry)/FE `d058e43`→**`fdc135b`**(+2 commits)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3 · **G34-WORKFLOW-CATALOG** P3
+>
+> **최근 개선 (309차):**
+> - **G30-LEGEND 공단 평가지표 cross-walk legend full-stack closure (FE `fdc135b`, G30, Q629)** — **`MonitoringOfficialIndicatorLegendPanel`** — **`monitoringOfficialIndicatorCrosswalk.js`** — FAQ21836~21842 **15문항 ↔ 공단 평가지표 1~15** 매핑 표 · Badge **직접/부분/없음** · **`MonitoringSelfDiagnosisPage`** embed · **`MonitoringOfficialIndicatorLegendPanel.test`** · **`monitoringOfficialIndicatorCrosswalk.test.js`**
+> - **UXD-153 a11y 재점검 closure (FE `da34daf`, UXD-153, Q630)** — **`BillingReportPage`** — hydrate **`setLoading(true)` 선행** → 필터 복원 **`aria-busy`** · **`QrGeneratePage`** — **`validUntil` `<time dateTime>`** · **`ClientDetailPage`** 출석 탭 표준 패턴 확인(변경 불요)
+>
+> **308차 TWR UXD-153 반영 (완료 → 309차 Q630 closure):**
+> - **UXD-153 a11y 재점검** — 309차 **`da34daf`** commit closure
+>
+> **307차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-3 출석 탭 · `ADMIN_GUIDE` §1-4 · `FAQ` **Q102 closure**·**Q628 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4 · `README.md`
+> - **Must 문서 공백 보강** — **US-D03 client detail attendance tab FE wire full-stack closure** (`d058e43`, Q628) — `fetchClientAttendanceHistoryApi` · **`GET /clients/{id}/attendance`** · **`ClientDetailPage`** 출석 탭 테이블(날짜·상태·입소·귀가·결석 사유) · **`clientAttendanceServices.test.js`** · **`ClientDetailPage.test`**
+> - **KPI 정정** — FE test **437→438** · merge gate **672→674** · **Must 갭 0** carry
+> - **baseline 확정** — BE `9db0bbb`(carry)/FE `d058e43`(1 commit since `8aabeae`)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3
+>
+> **최근 개선 (307차):**
+> - **US-D03 client detail attendance tab API wire full-stack closure (FE `d058e43`, US-D03, Q628)** — **`fetchClientAttendanceHistoryApi`** (`services.js`) · **`GET /api/v1/clients/{clientId}/attendance?from=&to=`** · **`ClientDetailPage`** — **`client.attendanceRecords` 비존재 필드 제거** · 출석 탭 lazy load · **`StatusBadge`**·**`<time dateTime>`** · **`clientAttendanceServices.test.js`** · **`ClientDetailPage.test`**
+>
+> **306차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-4·§5-7 · `ADMIN_GUIDE` §1-4·§6-2-24 · `FAQ` **Q624 closure**·**Q625·Q626·Q627 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4·§11-3
+> - **Must 문서 공백 보강** — **US-E03 QR full-stack closure** (`250619e`, Q624) — `branchQrCode.js`·`qrcode`·`QrGeneratePage` PNG preview·**「이미지 저장」**·인쇄 · **V171 schema readiness probe** (`dce9bf1`/`175d9cb`, Q625) · **G-BILLING-REPORT-FILTER-PERSISTENCE safe autosave** (`99d03fa`, Q626) · **G2 CMS enrollment normalize** (`9db0bbb`, Q627)
+> - **KPI 정정** — BE Test **242** · FE test **437** · merge gate **672** · **Must 갭 1→0**(QR 이미지 closure)
+> - **baseline 확정** — BE `9db0bbb`(4 commits since `fd0a3b3`)/FE `8aabeae`(3 commits since `77b1ea8`)
+> - **다음 우선순위** — **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **직원 출퇴근 NFC 단말** P3 · **보호자 QR 카메라 스캔 UI** P3
+>
+> **최근 개선 (306차):**
+> - **US-E03 지점 QR 이미지 full-stack closure (FE `250619e`, US-E03, Q624)** — **`branchQrCode.js`** — **`qrTokenToDataUrl()`** · **`mapBranchQrGenerateResponse()`** · **`QrGeneratePage`** — `<img>` preview · **「이미지 저장」**(`downloadDataUrl`) · 인쇄 · **`generateBranchQrApi`** · **`QrGeneratePage.test`** · **`branchQrCode.test.js`** · **`qrcode` ^1.5.4**
+> - **V171 defense-in-depth schema readiness probe (BE `dce9bf1`/`175d9cb`, system, Q625)** — **`V171DefenseInDepthSchemaReadinessProbe`** — 5 CHECK/FK · **`HealthController`**·**`LiveE2eController`** — **`v171DefenseInDepthIntegrityCheckReady`** · blocker **`v171-defense-in-depth-constraint-missing`** · **`V171DefenseInDepthSchemaReadinessProbeTest`**
+> - **G-BILLING-REPORT-FILTER-PERSISTENCE safe autosave on read path (BE `99d03fa`, G-BILLING, Q626)** — **`recordFromReportQuerySafely()`** — ledger GET autosave **non-blocking** · persistence/validation failure **swallow** · **`BillingReportFilterServiceTest`** +2
+> - **G2 CMS enrollment input normalization (BE `9db0bbb`, G2, Q627)** — **`CmsService.normalizePayerName()`** · **`normalizeBankCode()`** · **`normalizeAccountLast4()`** — trim·pattern validate · **`CmsServiceTest`**
+>
+> **304차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-6·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-20·§6-2-23 · `FAQ` **Q618·Q621 closure**·**Q622·Q623 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4 · `README.md`
+> - **Must 문서 공백 보강** — **G-BILLING-REPORT-FILTER-PERSISTENCE full-stack closure** (`77b1ea8`/`fd0a3b3`, Q621) — `fetchBillingReportFiltersApi`/`saveBillingReportFilterApi` · **`BillingReportPage` hydrate on mount** · autosave **read-scope** (HQ 타 지점 조회 403 방지) · **G-STAFF-WORK-ATTENDANCE checkout guard** (`35e6c52`, Q622) · **UXD-152 a11y** (`df7f308`, Q623)
+> - **KPI 정정** — 모듈 **78.79%** carry · **Must 갭 2→1**(QR 이미지만 잔존, Q616)
+> - **baseline 확정** — BE `fd0a3b3`(2 commits since `6be0c79`)/FE `77b1ea8`(2 commits since `dffd726`)
+> - **다음 우선순위** — **QR 생성 payload·이미지 갭**(coder, Q590/Q616) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG** · **직원 출퇴근 NFC 단말** P3
+>
+> **최근 개선 (304차):**
+> - **G-BILLING-REPORT-FILTER-PERSISTENCE 청구 대장 필터 FE wire full-stack closure (FE `77b1ea8`, G-BILLING, Q621)** — **`fetchBillingReportFiltersApi`** · **`saveBillingReportFilterApi`** (`services.js`) · **`BillingReportPage`** — 마운트 시 **`GET /billing/reports/filters`** hydrate · **「조회」** 시 **`PUT`** persist · **`normalizeSavedFilters`** · **`BillingReportPage.test`** +3 cases
+> - **G-BILLING-REPORT-FILTER-PERSISTENCE autosave read-scope fix (BE `fd0a3b3`, G-BILLING, Q623)** — **`BillingReportFilterService.saveFilterInternal(..., requireWriteScope)`** — **`recordFromReportQuery()`** 는 **read scope** · **`PUT /reports/filters`** 는 **write scope** 유지 · HQ admin **비활성 지점 대장 조회** 시 autosave **403 side-effect 제거** · **`BillingReportFilterServiceTest`** +1
+> - **G-STAFF-WORK-ATTENDANCE checkout-before-checkin guard (BE `35e6c52`, US-R03, Q622)** — **`StaffWorkAttendanceService.assertCheckoutAtNotBeforeCheckIn()`** — **V171** `chk_staff_work_attendance_checkout_not_before_checkin` mirror · **`422`「퇴근 시각은 출근 시각보다 빠를 수 없습니다.」** · **`StaffWorkAttendanceServiceTest`** +1
+> - **UXD-152 G-STAFF-WORK-ATTENDANCE·US-E05·CmsDebitPanel a11y (FE `df7f308`, UXD-152, Q623)** — **`StaffWorkAttendancePage`** — **`aria-busy`·StatCard `role=group`·출근/퇴근 버튼 직원명 `aria-label`·`<time dateTime>`** · **`AttendanceStatsPage`** · **`CmsDebitPanel`** · **`StaffWorkAttendancePage.test`**
+>
+> **303차 TWR 자율 동기화 (완료):**
+> - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§4-2·§4-4 · `ADMIN_GUIDE` §1-4·§6-2-21·§6-2-23 · `FAQ` **Q106·Q613·Q615 정정**·**Q618 정정**·**Q621 신규** · `DEPLOYMENT_GUIDE` §1-3·§1-4 · `README.md`
+> - **Must 문서 공백 보강** — **G-ATTENDANCE-STATS full-stack closure** (`dffd726`, Q615) — `monthlyAttendanceStats.js` · `fetchMonthlyAttendanceStatsApi` `from`/`to`/`branchId` · **`/attendance/stats`** StatCard·6개월 추이·다지점 표 · **G-BILLING-REPORT-FILTER-PERSISTENCE BE partial** (`479995e`/`6be0c79`, Q621) — V170 `billing_report_filters` · `GET/PUT /billing/reports/filters` · auto-save on ledger GET
+> - **KPI 정정** — 모듈 **78.79%** 정본·`competitorModuleCoverage.js` 22.85/29
+> - **baseline 확정** — BE `6be0c79`(2 commits since `a6eb8b7`)/FE `dffd726`(1 commit since `5fd468b`)
+> - **다음 우선순위** — **QR 생성 payload·이미지 갭**(coder, Q590/Q616) · **G-BILLING-REPORT-FILTER-PERSISTENCE FE wire**(coder, Q621) · **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+>
+> **최근 개선 (303차):**
+> - **G-ATTENDANCE-STATS 출석 통계 API 정합 full-stack closure (FE `dffd726`, US-E05, Q615)** — **`fetchMonthlyAttendanceStatsApi`** — **`yearMonth` → `from`/`to` 변환** (`monthlyAttendanceStats.js`) · **`GET /attendance/stats/monthly?from=&to=&branchId=`** · **`AttendanceStatsPage`** — StatCard **활성 이용자·출석 일수·출석률** · **6개월 추이 차트** · **다지점 표** · **`markAbsentApi`** — **`POST /attendance/absence`** + **`absenceReason`** · **`checkOutApi`** — **`transportMethod` → `transportType`** · **`monthlyAttendanceStats.test.js`** · **`AttendanceStatsPage.test`**
+> - **G-BILLING-REPORT-FILTER-PERSISTENCE 청구 대장 필터 자동저장 BE (BE `479995e`/`6be0c79`, G-BILLING, Q621)** — **V170** `billing_report_filters` · **`GET/PUT /api/v1/billing/reports/filters`** — **`BillingReportFilterService.recordFromReportQuery()`** — charges/deposits/receipts/refunds 4-ledger uniform · **`UNIQUE(org,branch,user,year_month,variant)`** · RBAC **`hq_admin`·`branch_admin`** · **V171** integrity CHECK · **`BillingReportFilterServiceTest`** · **FE wire ❌**
+>
+> **302차 TWR 자율 동기화 (완료):**
 > - **ops 문서 최종 갱신** — `CHANGELOG`(현재)·`USER_MANUAL` §1-3·§1-5·§4-6·§5-3 · `ADMIN_GUIDE` §1-4·§6-2-20·§6-2-22 · `FAQ` **Q612 갱신**·**Q614 신규** · `DEPLOYMENT_GUIDE` §1-3
 > - **Must 문서 공백 보강** — **G-BILLING-DEPOSIT-ORDER-GUARD full-stack closure** (`a6eb8b7`, Q614) — 케어포 PDF p.85 **7-1 선행입금** · 수동 수납·은행 엑셀 import · **G-STAFF-WORK-ATTENDANCE 출근 방식 FE wire** (`5fd468b`/`10c0daf`, Q612 deepen)
 > - **KPI 정정** — 모듈 **78.62%** 정본·`competitorModuleCoverage.js` 22.80/29

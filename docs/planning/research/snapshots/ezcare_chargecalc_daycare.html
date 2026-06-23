@@ -1,0 +1,635 @@
+<!doctype html>
+ <html class="no-js" lang="Ko"> 
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이지케어 재무회계</title>
+<link rel="stylesheet" href="/page/landing/daycare.t1.202603/css/main.css?1">
+<link rel="stylesheet" href="/page/landing/daycare.t1.202603/css/responsive.css?1">
+<!-- 아이콘폰트 -->
+<link rel="stylesheet" type="text/css" href="/page/landing/daycare.t1.202603/css/xeicon.min.css?1">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<!-- AOS -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css?1"> 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
+
+</head>
+<body>
+
+<style>
+	/* 공통 */
+	* {padding: 0;margin: 0;font-family:'Pretendard';}
+	.tYellow {color: #FECF57;}
+	.tBlue {color: #0067DB;}
+	.tRed {color: rgb(189, 25, 25);}
+	.mgb12 {margin-bottom: 12px;}
+	.mgt20 {margin-top: 16px;}
+	.mgt32 {margin-top: 32px;}
+	.pd0 {padding: 0 !important;}
+	.pd16 {padding: 16px;}
+	.tc {text-align: center;}
+	.fs14 {font-size: 14px;}
+	svg {width: 20px;height: 20px;vertical-align: bottom;}
+	svg .cls-1{fill: #0067db;}
+
+	#wrap .container {width:660px;margin:0 auto;}
+	#wrap .header {text-align: center;font-size: 23px;letter-spacing: 0px;background: #07263d url(images/chargecalc_bg.png);background-repeat: no-repeat;color: #fff;font-weight: 700;padding: 33px 0;}
+
+	/* 탭 */
+	.innerBox .boxtab {padding: 24px;}
+	.innerBox .boxtab {display:flex;justify-content:space-between;gap: 20px;}
+	.innerBox .boxtab .bx {flex: 1;padding: 20px 16px;border-radius: 8px;background-color: #E9F2FE;color: #131313;cursor:pointer;display: flex;align-items: center;justify-content: center;}
+	.innerBox .boxtab .bx .bxinner {display: flex;align-items: center;justify-content: center;flex-direction: column;	}
+	.innerBox .boxtab .bx .bxinner .text1 {font-size:16px;margin-bottom: 8px;}
+	.innerBox .boxtab .bx .bxinner .text2 {font-size: 15px;text-align: center;}
+	.innerBox .boxtab .bx .bxinner b {font-size: 20px;}
+	.innerBox .boxtab .bx.on {background-color: #0067DB;color: #fff;}
+
+
+	/* 월이용료 */
+	.calc_wrap .box {padding: 0 24px 32px 24px;}
+	.calc_wrap .t1 {font-size: 20px;font-weight:bold;margin-bottom:16px;color:#131313;
+	cursor: pointer;}
+	.calc_wrap .t1.pay {display: flex;align-items: center;justify-content: space-between;background: #e9f2fe;padding: 12px 16px;border-radius: 8px;margin: 0;}
+	.calc_wrap .t1.pay .subtit {font-size: 14px;font-weight: 400;}
+	.calc_wrap .t1.pay span {color:#0067DB;font-size: 20px;}
+
+	.badgeBox {background: #f5f5f5;padding: 12px 16px;border-radius: 8px;font-size: 14px;display: flex;align-items: center;gap: 4px;border: 1px solid #eaeaea;}
+	.badgeBox span {font-weight: 600;color: #0067DB;}
+
+	/* 인풋 */
+	input[type="text"] {max-width:264px;height:50px;box-sizing:border-box;border-radius: 6px;border: 1px solid #B3C7E3;text-align:right;padding-right: 30px;font-size:28px;}
+	input[type="text"]:focus,
+	input[type="text"]:active
+	input[type="text"]:hover {border: 1px solid #0067DB;outline: 0;}
+	.calc_input input[type="button"] {width: 100%;height:50px;box-sizing:border-box;border-radius:6px;color:white;background-color: #07263D;font-size:17px;font-weight:bold;cursor:pointer;}
+
+	.inputBox {border: 1px solid #f1f1f1;border-radius: 8px;margin-top: 16px;padding: 16px;height: auto;}
+	.inputBox .calc_input {height:50px;display:flex;align-items:center;font-size: 16px;gap: 8px;margin: 12px 0;}
+	.inputBox .calc_input > div.tit {flex: none; width: 140px;font-weight: 600;}
+	.inputBox .calc_input > div.input {position: relative;}
+	.inputBox .calc_input > div.input span {position: absolute;right: 10px;bottom: 13px;font-size: 14px;color: #888;}
+	.inputBox .calc_input > div.btn {width: 100%;}
+	
+	/* 수급자 월 이용료 */
+	#wrap .calc_wrap .calc_result {padding:20px 34px;position:relative;background: #f5f5f5;}
+	#wrap .calc_wrap .calc_result .row1 {display:flex;justify-content:space-between;align-items:center;margin-bottom: 16px;}
+	#wrap .calc_wrap .calc_result .row1 div:first-child {font-weight:normal;font-size:15px;	}
+	#wrap .calc_wrap .calc_result .row1 div:last-child {font-weight:normal;font-size: 18px;letter-spacing:-1px;}
+	#wrap .calc_wrap .calc_result .row1 .label {color:#ed145b;border:1px solid #ed145b;border-radius:10px;font-size:14px;margin-right:10px;padding:0 8px;}
+
+	#wrap .calc_wrap .calc_result .row2 {height:60px;display:flex;justify-content:space-between;align-items:center;background: #fff;border-radius: 8px;padding: 0 20px;}
+	#wrap .calc_wrap .calc_result .row2 div:first-child {font-weight:normal;font-size:16px;font-weight:bold;color:#4b4b4b;padding-left:5px;}
+	#wrap .calc_wrap .calc_result .row2 div:last-child {font-weight:normal;font-size:22px;font-weight:bold;letter-spacing:-1px;color:#4b4b4b;}
+
+	/* 테이블 */
+	#wrap .calc_wrap .table_wrap {display:flex;}
+	#wrap .calc_wrap .table_wrap table {width: 100%;border-collapse:collapse;	}
+	#wrap .calc_wrap .table_wrap table th {font-size:11px;padding: 6px 4px;border-bottom:1px solid #eee;background-color: #0067db;color:#fff;}
+	#wrap .calc_wrap .table_wrap table th:first-child {width: 42px;}
+	#wrap .calc_wrap .table_wrap table td {padding: 6px 2px;border-bottom:1px solid #eee;border-left:1px solid #eee;font-size:12px; color:#222;}
+	#wrap .calc_wrap .table_wrap table td:first-child {text-align:center;}
+	#wrap .calc_wrap .table_wrap table td:last-child {text-align:right;font-weight:bold;}
+	#wrap .calc_wrap .table_wrap table td span {font-size: 14px;font-weight:normal;color:#555;letter-spacing:-0.5px;}
+	#wrap .calc_wrap .table_wrap table:last-child td:last-child {border-right: 1px solid #eee;}
+	
+	.footer_btn {text-align: center;border-top: 1px solid #eaeaea;padding: 16px 0;}
+	.footer_btn a {background-color: #07263d;color: #fff;padding: 12px 32px;text-align: center;display: block;border-radius: 4px;text-decoration: none;font-weight: 600;font-size: 16px;width: calc(100% - 66px);}
+
+	.box {animation: none;}
+</style>
+<div class="wrap" id="wrap">
+	<div class="container">
+		<div class="header">
+			이지케어 재무회계 <span class="tYellow">서비스 이용료 안내</span>
+		</div>
+		<div class="innerBox">
+			<div class="boxtab">
+				<div class="bx" data-target="type2">
+					<div class="bxinner">
+						<div class="text1">
+							<b>방문요양</b> <span>(목욕+간호)</span>
+						</div>
+						<div class="text2">
+							기본료 50,000 +<br/>
+							수급자수x2,000원
+						</div>
+					</div>
+				</div>
+				<div class="bx" data-target="type3">
+					<div class="bxinner">
+						<div>
+							<b>주간보호</b>
+						</div>
+					</div>
+				</div>
+				<div class="bx on" data-target="type1">
+					<div class="bxinner">
+						<div>
+							<b>방문+주간</b>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- ********** start type1 ********** -->
+			<div class="calc_wrap type1">
+				<div class="box">
+					<div class="t1">월 이용료 확인하기</div>				
+					<!-- start content  -->
+					<div class="badgeBox"  id="text_desc">
+						<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 10.01 10">
+								<g>
+									<g id="_레이어_1" data-name="레이어_1">
+									<path class="cls-1" d="M5,.2c.66,0,1.28.13,1.87.38.58.25,1.09.59,1.53,1.03s.78.94,1.03,1.52.38,1.2.38,1.86-.13,1.29-.38,1.87c-.25.58-.59,1.09-1.03,1.52s-.94.78-1.53,1.03c-.58.25-1.21.38-1.87.38s-1.28-.13-1.87-.38-1.09-.59-1.53-1.03-.78-.94-1.03-1.52c-.25-.58-.38-1.2-.38-1.87s.13-1.28.38-1.86.59-1.09,1.03-1.52.94-.78,1.53-1.03,1.21-.38,1.87-.38ZM5.49,4.04h-1.44v.48h.47v2.88h.97v-3.35h0ZM5.35,3.41c.09-.09.14-.2.14-.33,0-.13-.05-.25-.14-.34s-.21-.14-.34-.14-.25.05-.34.14-.14.21-.14.34c0,.13.05.24.14.33s.21.14.34.14.25-.05.34-.14Z"/>
+									</g>
+								</g>
+						</svg>
+						주간보호 기관은 <span>수급자 수 입력</span> 후, <span>"맞춤 제안받기"</span>를 클릭해주세요.
+					</div>
+					<!-- input box -->
+					<div class="inputBox">
+						<div class="calc_input">
+							<div class="tit">방문요양 수급자수</div>
+							<div class="input">
+								<input type="text" value="0" id="request_input1"> <span>명</span>
+							</div>
+							<div class="btn"></div>
+						</div>
+						<div class="calc_input">
+							<div class="tit">주간보호 정원</div>
+							<div class="input">
+								<input type="text" value="0" id="request_input2"> <span>명</span>
+							</div>
+						</div>
+						<div class="calc_input">
+							<div class="tit">주간보호 현원</div>
+							<div class="input">
+								<input type="text" value="0" id="request_input3"> <span>명</span>
+							</div>
+							<div class="btn">
+								<input type="button" value="맞춤 제안받기" onclick="openRequestPage();">
+							</div>
+						</div>
+					</div>
+					<div class="tc mgt20">* 현재 주간보호 기관을 이용하는 <strong class="tBlue">수급자 수</strong>를 기재해주세요.</div>
+				</div>
+			</div>
+
+
+
+			<!-- ********** start type2 ********** -->
+			<div class="calc_wrap type2" style="display:none;">
+				<div class="box">
+					<div class="t1 pay hasline" onclick="$('#table01').slideToggle();changeArrow(this);">
+						<div>
+							월 이용료 표
+							<p class="subtit">클릭하시면 확인하실 수 있습니다.</p>
+						</div>
+						<span>▼</span>
+					</div>
+					<div class="table_wrap" id="table01" style="display:none;">
+						<table>
+							<tr>
+								<th>수급자수</th>
+								<th>재무회계 대행 시</th>
+							</tr>
+															<tr>
+									<td>1</td>
+									<td><span>50,000 + 2,000 = </span>52,000</td>
+								</tr>
+															<tr>
+									<td>2</td>
+									<td><span>50,000 + 4,000 = </span>54,000</td>
+								</tr>
+															<tr>
+									<td>3</td>
+									<td><span>50,000 + 6,000 = </span>56,000</td>
+								</tr>
+															<tr>
+									<td>4</td>
+									<td><span>50,000 + 8,000 = </span>58,000</td>
+								</tr>
+															<tr>
+									<td>5</td>
+									<td><span>50,000 + 10,000 = </span>60,000</td>
+								</tr>
+															<tr>
+									<td>6</td>
+									<td><span>50,000 + 12,000 = </span>62,000</td>
+								</tr>
+															<tr>
+									<td>7</td>
+									<td><span>50,000 + 14,000 = </span>64,000</td>
+								</tr>
+															<tr>
+									<td>8</td>
+									<td><span>50,000 + 16,000 = </span>66,000</td>
+								</tr>
+															<tr>
+									<td>9</td>
+									<td><span>50,000 + 18,000 = </span>68,000</td>
+								</tr>
+															<tr>
+									<td>10</td>
+									<td><span>50,000 + 20,000 = </span>70,000</td>
+								</tr>
+															<tr>
+									<td>11</td>
+									<td><span>50,000 + 22,000 = </span>72,000</td>
+								</tr>
+															<tr>
+									<td>12</td>
+									<td><span>50,000 + 24,000 = </span>74,000</td>
+								</tr>
+															<tr>
+									<td>13</td>
+									<td><span>50,000 + 26,000 = </span>76,000</td>
+								</tr>
+															<tr>
+									<td>14</td>
+									<td><span>50,000 + 28,000 = </span>78,000</td>
+								</tr>
+															<tr>
+									<td>15</td>
+									<td><span>50,000 + 30,000 = </span>80,000</td>
+								</tr>
+															<tr>
+									<td>16</td>
+									<td><span>50,000 + 32,000 = </span>82,000</td>
+								</tr>
+															<tr>
+									<td>17</td>
+									<td><span>50,000 + 34,000 = </span>84,000</td>
+								</tr>
+															<tr>
+									<td>18</td>
+									<td><span>50,000 + 36,000 = </span>86,000</td>
+								</tr>
+															<tr>
+									<td>19</td>
+									<td><span>50,000 + 38,000 = </span>88,000</td>
+								</tr>
+															<tr>
+									<td>20</td>
+									<td><span>50,000 + 40,000 = </span>90,000</td>
+								</tr>
+													</table>
+						<table>
+							<tr>
+								<th>수급자수</th>
+								<th>재무회계 대행 시</th>
+							</tr>
+															<tr>
+									<td>21</td>
+									<td><span>50,000 + 42,000 = </span>92,000</td>
+								</tr>
+															<tr>
+									<td>22</td>
+									<td><span>50,000 + 44,000 = </span>94,000</td>
+								</tr>
+															<tr>
+									<td>23</td>
+									<td><span>50,000 + 46,000 = </span>96,000</td>
+								</tr>
+															<tr>
+									<td>24</td>
+									<td><span>50,000 + 48,000 = </span>98,000</td>
+								</tr>
+															<tr>
+									<td>25</td>
+									<td><span>50,000 + 50,000 = </span>100,000</td>
+								</tr>
+															<tr>
+									<td>26</td>
+									<td><span>50,000 + 52,000 = </span>102,000</td>
+								</tr>
+															<tr>
+									<td>27</td>
+									<td><span>50,000 + 54,000 = </span>104,000</td>
+								</tr>
+															<tr>
+									<td>28</td>
+									<td><span>50,000 + 56,000 = </span>106,000</td>
+								</tr>
+															<tr>
+									<td>29</td>
+									<td><span>50,000 + 58,000 = </span>108,000</td>
+								</tr>
+															<tr>
+									<td>30</td>
+									<td><span>50,000 + 60,000 = </span>110,000</td>
+								</tr>
+															<tr>
+									<td>31</td>
+									<td><span>50,000 + 62,000 = </span>112,000</td>
+								</tr>
+															<tr>
+									<td>32</td>
+									<td><span>50,000 + 64,000 = </span>114,000</td>
+								</tr>
+															<tr>
+									<td>33</td>
+									<td><span>50,000 + 66,000 = </span>116,000</td>
+								</tr>
+															<tr>
+									<td>34</td>
+									<td><span>50,000 + 68,000 = </span>118,000</td>
+								</tr>
+															<tr>
+									<td>35</td>
+									<td><span>50,000 + 70,000 = </span>120,000</td>
+								</tr>
+															<tr>
+									<td>36</td>
+									<td><span>50,000 + 72,000 = </span>122,000</td>
+								</tr>
+															<tr>
+									<td>37</td>
+									<td><span>50,000 + 74,000 = </span>124,000</td>
+								</tr>
+															<tr>
+									<td>38</td>
+									<td><span>50,000 + 76,000 = </span>126,000</td>
+								</tr>
+															<tr>
+									<td>39</td>
+									<td><span>50,000 + 78,000 = </span>128,000</td>
+								</tr>
+															<tr>
+									<td>40</td>
+									<td><span>50,000 + 80,000 = </span>130,000</td>
+								</tr>
+													</table>
+						<table>
+							<tr>
+								<th>수급자수</th>
+								<th>재무회계 대행 시</th>
+							</tr>
+															<tr>
+									<td>41</td>
+									<td><span>50,000 + 82,000 = </span>132,000</td>
+								</tr>
+															<tr>
+									<td>42</td>
+									<td><span>50,000 + 84,000 = </span>134,000</td>
+								</tr>
+															<tr>
+									<td>43</td>
+									<td><span>50,000 + 86,000 = </span>136,000</td>
+								</tr>
+															<tr>
+									<td>44</td>
+									<td><span>50,000 + 88,000 = </span>138,000</td>
+								</tr>
+															<tr>
+									<td>45</td>
+									<td><span>50,000 + 90,000 = </span>140,000</td>
+								</tr>
+															<tr>
+									<td>46</td>
+									<td><span>50,000 + 92,000 = </span>142,000</td>
+								</tr>
+															<tr>
+									<td>47</td>
+									<td><span>50,000 + 94,000 = </span>144,000</td>
+								</tr>
+															<tr>
+									<td>48</td>
+									<td><span>50,000 + 96,000 = </span>146,000</td>
+								</tr>
+															<tr>
+									<td>49</td>
+									<td><span>50,000 + 98,000 = </span>148,000</td>
+								</tr>
+															<tr>
+									<td>50</td>
+									<td><span>50,000 + 100,000 = </span>150,000</td>
+								</tr>
+															<tr>
+									<td>51</td>
+									<td><span>50,000 + 102,000 = </span>152,000</td>
+								</tr>
+															<tr>
+									<td>52</td>
+									<td><span>50,000 + 104,000 = </span>154,000</td>
+								</tr>
+															<tr>
+									<td>53</td>
+									<td><span>50,000 + 106,000 = </span>156,000</td>
+								</tr>
+															<tr>
+									<td>54</td>
+									<td><span>50,000 + 108,000 = </span>158,000</td>
+								</tr>
+															<tr>
+									<td>55</td>
+									<td><span>50,000 + 110,000 = </span>160,000</td>
+								</tr>
+															<tr>
+									<td>56</td>
+									<td><span>50,000 + 112,000 = </span>162,000</td>
+								</tr>
+															<tr>
+									<td>57</td>
+									<td><span>50,000 + 114,000 = </span>164,000</td>
+								</tr>
+															<tr>
+									<td>58</td>
+									<td><span>50,000 + 116,000 = </span>166,000</td>
+								</tr>
+															<tr>
+									<td>59</td>
+									<td><span>50,000 + 118,000 = </span>168,000</td>
+								</tr>
+															<tr>
+									<td>60</td>
+									<td><span>50,000 + 120,000 = </span>170,000</td>
+								</tr>
+													</table>
+					</div>
+
+					<div class="t1 mgt32">월 이용료 계산기</div>				
+					<!-- start content  -->
+					<div class="badgeBox" id="text_desc">
+						<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 10.01 10">
+							<g>
+								<g id="_레이어_1" data-name="레이어_1">
+								<path class="cls-1" d="M5,.2c.66,0,1.28.13,1.87.38.58.25,1.09.59,1.53,1.03s.78.94,1.03,1.52.38,1.2.38,1.86-.13,1.29-.38,1.87c-.25.58-.59,1.09-1.03,1.52s-.94.78-1.53,1.03c-.58.25-1.21.38-1.87.38s-1.28-.13-1.87-.38-1.09-.59-1.53-1.03-.78-.94-1.03-1.52c-.25-.58-.38-1.2-.38-1.87s.13-1.28.38-1.86.59-1.09,1.03-1.52.94-.78,1.53-1.03,1.21-.38,1.87-.38ZM5.49,4.04h-1.44v.48h.47v2.88h.97v-3.35h0ZM5.35,3.41c.09-.09.14-.2.14-.33,0-.13-.05-.25-.14-.34s-.21-.14-.34-.14-.25.05-.34.14-.14.21-.14.34c0,.13.05.24.14.33s.21.14.34.14.25-.05.34-.14Z"/>
+								</g>
+							</g>
+						</svg>
+						<span>기본료</span>와 청구 월의 일정관리 <span>수급자 1인</span> 당 2,000원의 이용료를 합산해 부과합니다. (VAT 별도)
+					</div>
+
+					<div class="inputBox pd0">
+						<div class="calc_input pd16">
+							<div class="tit">수급자수</div>
+							<div class="input">
+								<input type="text" value="0" id="b_ezcnt_input"> <span>명</span>
+							</div>
+							<div class="btn"><input type="button" value="계산하기" onclick="calcCharge02();"></div>
+						</div>
+						<div class="calc_result">
+							<div class="row1">
+								<div>방문요양 (목욕/간호)</div>
+								<div>기본료 50,000원&nbsp;&nbsp;+&nbsp;&nbsp;<span id="b_ezcnt_show" class="tBlue">0</span>명 x 2,000원</div>
+							</div>
+							<div class="row2">
+								<div>월 이용료 계</div>
+								<div><span id="b_total">50,000</span> 원 <!-- <span class="sub" id="b_sub">칠백사십사만원</span> --></div>
+							</div>
+						</div>
+					</div>
+					<div class="footer_btn">
+						<a href="#" onclick="openRequestPage()" style="cursor:pointer;">상담 신청하기</a>
+					</div>
+				</div>
+			</div>
+			<script>
+				function calcCharge02() {
+					let ezCnt = Number(document.getElementById('b_ezcnt_input').value);
+					if (Number.isNaN(ezCnt)) {
+						alert('숫자만 입력 가능합니다.');
+						return false;
+					}
+
+					let charge = ((ezCnt * 2000) + 50000);
+					document.getElementById('b_ezcnt_show').innerHTML = numberFormat(ezCnt);
+					document.getElementById('b_total').innerHTML = numberFormat(charge);
+					// document.getElementById('b_sub').innerHTML = intToKor(charge) + '원';
+				}
+			</script>
+
+			<div class="calc_wrap type3" style="display:none;">
+				<div class="box">					
+					<div class="t1">월 이용료 확인하기</div>				
+					<!-- start content  -->
+					<div class="badgeBox"  id="text_desc">
+						<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 10.01 10">
+							<g>
+								<g id="_레이어_1" data-name="레이어_1">
+								<path class="cls-1" d="M5,.2c.66,0,1.28.13,1.87.38.58.25,1.09.59,1.53,1.03s.78.94,1.03,1.52.38,1.2.38,1.86-.13,1.29-.38,1.87c-.25.58-.59,1.09-1.03,1.52s-.94.78-1.53,1.03c-.58.25-1.21.38-1.87.38s-1.28-.13-1.87-.38-1.09-.59-1.53-1.03-.78-.94-1.03-1.52c-.25-.58-.38-1.2-.38-1.87s.13-1.28.38-1.86.59-1.09,1.03-1.52.94-.78,1.53-1.03,1.21-.38,1.87-.38ZM5.49,4.04h-1.44v.48h.47v2.88h.97v-3.35h0ZM5.35,3.41c.09-.09.14-.2.14-.33,0-.13-.05-.25-.14-.34s-.21-.14-.34-.14-.25.05-.34.14-.14.21-.14.34c0,.13.05.24.14.33s.21.14.34.14.25-.05.34-.14Z"/>
+								</g>
+							</g>
+						</svg>
+						주간보호 기관은 <span>수급자 수 입력</span> 후, <span>"맞춤 제안받기"</span>를 클릭해주세요.
+					</div>
+					
+					<div class="inputBox">
+						<div class="calc_input">
+							<div class="tit">주간보호 정원</div>
+							<div class="input"><input type="text" value="0" id="request_input4"><span>명</span></div>
+						</div>
+						<div class="calc_input">
+							<div class="tit">주간보호 현원</div>
+							<div class="input"><input type="text" value="0" id="request_input5"><span>명</span></div>
+							<div class="btn"><input type="button" value="맞춤 제안받기" onclick="openRequestPage();"></div>
+						</div>
+					</div>
+					<div class="tc mgt20">* 현재 주간보호 기관을 이용하는 <strong class="tBlue">수급자 수</strong>를 기재해주세요.</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function openRequestPage() {
+		let currentType = $('.bx.on').data('target');
+		let requestValue1 = document.getElementById('request_input1').value;
+		let requestValue2 = document.getElementById('request_input2').value;
+		let requestValue3 = document.getElementById('request_input3').value;
+		let requestValue4 = document.getElementById('request_input4').value;
+		let requestValue5 = document.getElementById('request_input5').value;
+		let requestValue6 = document.getElementById('b_ezcnt_input').value;
+		let qString = '';
+
+		if (currentType == 'type1') {
+			qString += 'rvalue1=' + requestValue1;
+			qString += '&rvalue2=' + requestValue2;
+			qString += '&rvalue3=' + requestValue3;
+			qString += '&rtype=daycare';
+		} else if (currentType == 'type3') {
+			qString += 'rvalue1=0';
+			qString += '&rvalue2=' + requestValue4;
+			qString += '&rvalue3=' + requestValue5;
+			qString += '&rtype=daycare';
+		} else if (currentType == 'type2') {
+			qString = 'rvalue1=' + requestValue6;
+			qString += '&rtype=visit';
+		}
+
+		window.open('https://ezcare.easyms.co.kr/page/landing/common/request.counsel.daycare.html?' + qString,'_blank','width=800, height=760, top=100')
+	}
+
+	function numberFormat(num) {
+		return num.toLocaleString('ko-KR');
+	}
+
+	function changeArrow(obj) {
+		text = obj.innerHTML;
+		if (text.indexOf('▼') > -1) {
+			text = text.replaceAll('▼', '▲');
+		} else if (text.indexOf('▲') > -1) {
+			text = text.replaceAll('▲', '▼');
+		}
+		obj.innerHTML = text;
+	}
+
+	function intToKor(num) {
+		const units = ['', '십', '백', '천'];
+		const nums = ['일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+		const bigUnits = ['', '만', '억', '조', '경'];
+
+		let result = '';
+		let bigUnitIndex = 0;
+
+		while (num > 0) {
+			let smallResult = '';
+			for (let i = 0; i < 4; i++) {
+				if (num === 0) break;
+				const digit = num % 10;
+				if (digit > 0) {
+					smallResult = nums[digit - 1] + units[i] + smallResult;
+				}
+				num = Math.floor(num / 10);
+			}
+			result = smallResult + bigUnits[bigUnitIndex] + result;
+			bigUnitIndex++;
+		}
+
+		return result;
+	}
+</script>
+
+<!-- Include JS files -->
+<script> 
+	AOS.init();
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script src="/page/landing/daycare.t1.202603/js/jquery.contact.js"></script> 
+<script>
+	$(document).ready(function() {
+		$('.boxtab .bx').click(function() {
+			let target = $(this).data('target');
+			if (target == 'type2') {
+				document.getElementById('text_desc').innerHTML = '<span>기본료</span>와 청구 월의 일정관리 <span>수급자 1인</span> 당 2,000원의 이용료를 합산해 부과합니다. (VAT 별도)';
+			} else {
+				document.getElementById('text_desc').innerHTML = '주간보호 기관은 <span>수급자 수 입력</span> 후, <span>"맞춤 제안받기"</span>를 클릭해주세요';
+			}
+
+			$(this).siblings('.bx').removeClass('on');
+			$(this).addClass('on');
+			$('.calc_wrap').hide();
+			$('.calc_wrap.' + target).show();
+		});
+		
+	});
+</script>
+
+</body>
+</html>

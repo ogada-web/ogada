@@ -1,0 +1,108 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-23T08:05:00Z -->
+# BNK-542 엔젤·롱텀·규제 4–6h 역공학 extract (백본 6-URL zero drift + extraService CMS field-level + ogada CMS parity crosswalk)
+
+**조사일**: 2026-06-23T08:05Z | **rotation**: 엔젤·롱텀·규제 4–6h — silverangel/lcms·NHIS#44·2026 수가·평가#27·단기보호·통합재가
+
+## ogada git 실측 (@develop)
+
+| 항목 | BNK-541 | BNK-542 | delta |
+|------|---------|---------|-------|
+| FE develop | `@95f55aa` WT CLEAN | `@c183ebd` WT CLEAN | **HEAD +1** `ux(a11y): US-R01 relatedSurfaces cross-link panel + landmark fixes (UXD-156)` |
+| BE develop | `@83a26e7` WT CLEAN | `@40ab9e7` WT CLEAN | **HEAD +1** `fix(v2/us-r01): honor active branch context in annual leave roster` |
+| merge gate | 710 | **712** | +2 (FE185+BE527) |
+| Route | 111 | 111 | carry |
+| *Page.jsx | 89 | 89 | carry |
+| BE Test 파일 | 247 | 247 | carry (@Test 1,812→**1,813** +1) |
+| FE test | 449 | **450** | +1 (183 `.test.js` + 266→**267** `.test.jsx`) |
+| 모듈 KPI | 78.79% | 78.79% | carry |
+
+merge gate 712 = FE185 + BE527 (tester FF merge 대기 carry).
+
+---
+
+## ★★★ NHIS #44 이동서비스비 328차 zero drift (PLAN_NOTES #44 1차 확인 재입증)
+
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f · on-disk nhis_jo44.html IDENTICAL
+
+| 조항 | 인용 (확인) |
+|------|------------|
+| ① | 이동서비스비 = 실거주지↔기관 최단거리(편도)·러-1~4 등급별 단가 |
+| ② | 1일 1회만 산정 · 편도만 이용 시 러-1~4 비용의 50% |
+| ③ | 수급자 부담 없음 |
+| ④ | 이동서비스 일지 작성·보관 의무 |
+| ⑤ | 세부사항 공단 이사장 규정 → 별지 제22호 |
+
+ogada parity: TransportServiceFeeService 5/5 — RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 dedup · TransportServiceLog + V148/V154/V155
+
+---
+
+## ★★ 엔젤(silverangel) backbone 6-URL zero drift IDENTICAL (live HTTP 200 = on-disk md5)
+
+| URL | live md5 | SIZE | on-disk | 판정 |
+|-----|----------|------|---------|------|
+| /newSilverangel/daycare/daycareEssentialWork.do | c79c1be3 | 131,664B | silverangel_essential.html | IDENTICAL |
+| /newSilverangel/service/extraService.do | f9c5d877 | 81,637B | (carry) | IDENTICAL |
+| /newSilverangel/service/mainService.do | bcf6df41 | 59,002B | (carry) | IDENTICAL |
+| /newSilverangel/service/feeService.do | eab352a8 | 44,513B | (carry) | IDENTICAL |
+| /silverangel/angelsystem/system_feature.do | c9507190 | 45,601B | (carry) | IDENTICAL |
+
+**경로 정정(혼동 방지)**: essential=`/newSilverangel/daycare/`, extra/main/fee=`/newSilverangel/service/`, system_feature=`/silverangel/angelsystem/`. `/newSilverangel/daycare/extraService.do`·`/newSilverangel/daycare/system_feature.do`는 HTTP 404(`3c93af54`·1,028B) — 경로 미스이지 outage 아님.
+
+---
+
+## ★★★ extraService.do CMS 5-method — field/fee verbatim (확인·신규 상세 블록)
+
+본문(태그 제거 verbatim) 핵심 추출:
+
+> 본인부담금 자동이체(CMS) 서비스 — 매월 발생하는 본인부담금을 보호자계좌에서 자동출금, 카드 자동결제, 가상계좌 입금 등의 방법으로 편리하게 납부
+> 본인부담금, 식사재료비, 의료비(진료약제비) 등 장기요양기관 이용료를 자동이체·가상계좌·카드결제로 제공, 정산된 이용료는 기관 계좌로 자동 입금
+
+| # | 방법 | verbatim 상세 | 요금(효성CMS) |
+|---|------|---------------|---------------|
+| 1 | **자동이체(CMS)** | 보호자 통장에서 매달 자동이체 수납·매달 체크 불필요 | **250원/1건** |
+| 2 | **가상계좌** | 가족 중 대표 1인 부여·다른 가족 입금해도 대표명 입금 처리·은행 선택으로 송금수수료 절감 | **300원/1건** |
+| 3 | **카드결제** | 신용카드 매달 자동납부 설정 | 별도문의 |
+| 4 | **항목별 계좌분리 정산** | 본인부담금·식재료비·의료비 항목별 분리 통장 자동입금·계좌별 정산관리 | 효성 CMS 별도문의 |
+| 5 | **현금영수증 자동발행** | 출금 금액 현금영수증 자동 발행·**수급자별 발행 여부 설정** 가능 | (CMS 이용료 수납금액과 별도 정산) |
+
+부가: 「전자결재·가정통신문·법정서식 적용 — 보호자동의 전자서명·서명&결재일시 자동연계·작성자 전자서명·모든 서류 전자결재」 / 「가정통신문·급여비용 명세서·급여제공 기록지(법정서식)·납부확인서 이메일 발송 = LCMS-엔젤시스템 연동」
+이용안내: 「이용요금은 효성CMS에 납부됩니다 / 서비스이용 시 효성 CMS 연동정보 입력 필수 / 계좌분리 정산 서비스는 효성 CMS 별도문의」
+
+### ↔ ogada CMS/billing parity crosswalk (git 실측 @c183ebd/@40ab9e7)
+
+| 엔젤 extraService 방법 | ogada 구현 | 판정 |
+|------------------------|-----------|------|
+| 1 자동이체(CMS) | `/billing/cms` CmsPage·CmsEnrollmentForm/Table·CmsDebitPanel·`fetchCmsEnrollmentsApi`/`/api/v1/billing/cms/enrollments` (US-L03/v2 G2) | ✅ parity(자체 모델) |
+| 5 현금영수증 자동발행 | G-CASH-RECEIPT-LOG — CashReceiptRegisterModal·CashReceiptLegalAlerts·`/billing/cash-receipt-issuances`·clientCashReceiptProfile(수급자별) | ✅ parity |
+| (의료비 공제) | MedicalExpenseDeductionPanel | ✅ parity |
+| 2 가상계좌 | grep `가상계좌`/`virtualAccount` = **0건** | ❌ **미구현** — 효성CMS 외부 PG 의존 |
+| 4 항목별 계좌분리 정산 | grep `계좌분리`/`accountSeparation` = **0건** | ❌ **미구현** — 효성CMS 외부 정산 |
+| 3 카드결제 자동납부 | `/billing/easy-pay` 일부 carry | △ 외부 PG |
+
+**해석(planner)**: 엔젤은 가상계좌·다계좌 분리정산·현금영수증을 **효성CMS 외부 SaaS(건당 250/300원)** 에 위탁. ogada는 CMS 자동이체·현금영수증(수급자별)·의료비공제를 **자체 ERP 내 구현**(per-tx 수수료 0). 미구현 갭은 **가상계좌·항목별 계좌분리 정산** 2건 — 둘 다 효성CMS형 외부 PG/은행 가상계좌 연동 의존 = 단일 ERP MVP out-of-scope 후보. core 신규 갭 아님(외부 PG 의존 부가기능).
+
+---
+
+## ★★ LCMS root type2 CMS cross-promo zero drift
+
+URL: https://www.lcms.or.kr/
+HTTP 200 · 50,554B · md5 6c0d22b4 · on-disk lcms_root.html IDENTICAL
+type2(`ad_cont type2`·`img_banner2.png`·extraService CTA·1600-6859) — BNK-534 live type2와 동일(zero drift). 3-type oscillation(type1 디자인/type2 CMS/type3 CJ MOU) carry. ogada 단일 ERP 차별화 carry.
+
+## 2026 수가·단기보호·통합재가 (확인·canonical on-disk 우선)
+
+| URL | live | on-disk canonical | 판정 |
+|-----|------|-------------------|------|
+| longterm 502 | 200·89,170B·`0374e2a6` partial shell(74,060 grep 미확인) | `b5aee8c1` 105,552B·단기보호 74,060 | live shell DRIFT(신규 변형)·canonical 보존 |
+| longterm 503 | 302→200·422B·`d3c90b33` refreshedException gate | `8ca7d1fa` 104,652B·경감 50%/60% | **Mode B** session gate(BNK-448/518 패턴 재입증) |
+| longterm 610 | 302→200·422B·`d3c90b33` refreshedException gate | `d3c90b33` 422B | Mode B IDENTICAL |
+
+longterm 502 live 89,170B `0374e2a6` = BNK-534 71,008B `5619900c`와 다른 신규 partial shell 변형(공단 server-side 렌더 변동·canonical 수가 본문 미노출) — 미확인 carry, on-disk canonical 우선.
+
+---
+
+## 사이클 요약
+
+- per-cycle minimum 4종 충족: ① 재실측 URL(NHIS#44 328차 + 엔젤 5-URL + lcms + longterm 502/503/610 변동) ② 워크플로 1블록(extraService CMS 5-method field/fee verbatim + ogada parity crosswalk) ③ COMPETITOR_MATRIX 행 @HEAD 갱신 ④ BENCHMARK_REPORT §542
+- 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(가상계좌/계좌분리는 외부 PG 의존 out-of-scope 후보) · 상태 변경 2(FE+1·BE+1) · 미확인 1 carry(longterm live session gate) · 덮어쓰기 0건 · 엑셀 포맷 변경 0건

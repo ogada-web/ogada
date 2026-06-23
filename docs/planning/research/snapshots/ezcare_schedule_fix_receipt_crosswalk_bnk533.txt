@@ -1,0 +1,51 @@
+# BNK-533 ezCare schedule-fix + receipt-list + fnc/home 가격·도입 재실측
+# fetched: 2026-06-23T02:42Z | ogada @e296387(FE WT CLEAN) / @bbf333c(BE WT DIRTY 5M uncommitted)
+
+## 1. fnc URL 복구 + 도입 카운터 DRIFT (BNK-530 404 → BNK-533 200)
+URL: https://ezcare.easyms.co.kr/new/ezCare_fnc.html
+HTTP 200 | 17,870B → live 17,870B | md5 d31b0a4b → 83d180b2 (326차 DRIFT·SIZE IDENTICAL)
+인용: 「전국 9,345개 기관 사용중」 (BNK-529 9,346 → BNK-533 9,345 · −1 연속 감소 carry)
+가격 페이지 charge verbatim 불변: 셋팅 33,000 / 37명 25,850 / 구독 55,000
+
+## 2. home 20th rotation — 재가기관 mCnt DRIFT
+URL: https://ezcare.easyms.co.kr/
+md5 a4b0a152 → 3c832408 | SIZE 106,119B → 106,106B
+mCnt: {1:9271,2:4594,3:2353,4:1820} → {1:9270,2:4594,3:2353,4:1820} (재가 −1)
+KST: 「2026년 06월 23일 현재」 carry
+
+## 3. ★★★ 신규 PGID schedule-fix (일정확정)
+URL: /new.ez?PGID=schedule-fix | 149,576B | md5 dd54b420
+화면: 「4. 일정확정」·grid `#grid-schedule-p500`
+Ajax: /page/schedule/json-schedule.php?data=schedule_fix
+colModel 17-field:
+  sName | pRate_type | name | pInfo | dLevel(hidden) | pRate(본인부담률·dialog) |
+  tAmount_noExt(순수급여계) | rAmount(공단부담) | pAmt(본인부담) | pAmt_ext(비급여+초과) |
+  pAmount(본인부담총액) | tAmount(급여총액·fixed row class) | inji_cnt | inji_amount |
+  severe_amount(중증수당) | sch(일정 calendar btn)
+필터: Ym·fixed(radio: 전체/확정/미확정)
+워크플로:
+  - btn-fix-all 「일정 일괄확정하기」
+  - btn-fix-reset-all 「일괄 확정취소」+ 확인번호 dialog
+  - comp_ltm_fix_data() RFID 공단계획 비교 연동
+  - fixed row CSS #FFCC00 「확정」마크·bill_log 연동
+  - dialog-patient-pRate 본인부담률 변경(확정 시 적용 불가 경고)
+Channel.io cross-link: 01805b93 일정확정 가이드·bc7f4cd9 검은/빨간 처리상태
+
+## 4. ★★★ 신규 PGID receipt-list (현금영수증)
+URL: /new.ez?PGID=receipt-list | 108,590B | md5 aa06db7b
+3-tab: 발행내역(01)·발행 정보관리(02)·발행내역 per-patient(03)
+Ajax:
+  json-receipt.php?data=receipt-list-GET
+  json-receipt.php?data=receipt-patient-list-GET
+  run-receipt.php?mode=receipt-REGISSUE / receipt cancel
+colModel tab01: EdiDate | ReceiptTypeNo | amount_total | ReceiptSupplyAmt | ReceiptVAT | cancel_EdiDate | pName | memo
+colModel tab02: name | birthdate | state(01~07) | receipt_telNum
+dialog: receipt-regissue(발급)·receipt-cancel(취소)
+↔ ogada `/billing/cash-receipts` CashReceiptIssuancePage ✅ parity carry (G-CASH-RECEIPT-LOG)
+
+## 5. negative PGID 2건 (404 shell)
+billing-list · patient-schedule — 93,393B/93,397B 「페이지를 찾을 수 없습니다」
+
+## 6. Channel.io FAQ 01805b93 재실측
+URL: .../일정확정-가이드-01805b93
+243,635B | md5 eb5ac2b2(BNK-354)→91934244 (327차 DRIFT·SIZE IDENTICAL)

@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # 개발 팀 에이전트 tmux 기동 (pipeline 중심):
-#   - pipeline: planner → db → ux → coder → tester (backend → frontend), 15분 주기
+#   - pipeline: 구현 우선(coder→tester), 기획은 6사이클마다 1회, 3분 주기
 #   - tech_writer: 보조 loop (1h)
-#   - security_auditor / benchmark_researcher: 1일 1회
+#   - benchmark_researcher: 30분 주기 (역공학 벤치마크)
+#   - security_auditor: 1일 1회
 #
 # 사용:
 #   ./scripts/agent_team_start.sh
@@ -15,10 +16,11 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/_agent_common.sh"
 _agent_common_init
 
-INTERVAL="${AGENT_INTERVAL_SECONDS:-900}"
+INTERVAL="${AGENT_INTERVAL_SECONDS:-180}"
+FULL_EVERY="${AGENT_PIPELINE_FULL_EVERY:-6}"
 WRITER_INTERVAL="${AGENT_WRITER_INTERVAL_SECONDS:-3600}"
 SECURITY_INTERVAL="${AGENT_SECURITY_INTERVAL_SECONDS:-86400}"
-BENCHMARK_INTERVAL="${AGENT_BENCHMARK_INTERVAL_SECONDS:-86400}"
+BENCHMARK_INTERVAL="${AGENT_BENCHMARK_INTERVAL_SECONDS:-1800}"
 
 PIPELINE_LOOP=()
 if [[ "${1:-}" == "--no-loop" ]]; then
@@ -40,7 +42,7 @@ fi
 chmod +x "$_AGENT_ROOT/scripts/agent_pipeline.sh"
 
 agent_start_tmux_session "$_AGENT_PIPELINE_SESSION" \
-  "AGENT_INTERVAL_SECONDS=$INTERVAL ./scripts/agent_pipeline.sh ${PIPELINE_LOOP[*]:-}"
+  "AGENT_INTERVAL_SECONDS=$INTERVAL AGENT_PIPELINE_FULL_EVERY=$FULL_EVERY ./scripts/agent_pipeline.sh ${PIPELINE_LOOP[*]:-}"
 
 agent_start_tmux_session "$_AGENT_SECURITY_SESSION" \
   "python scripts/run_agent.py build --role security_auditor --interval $SECURITY_INTERVAL --loop"
@@ -53,9 +55,9 @@ agent_start_tmux_session "$_AGENT_WRITER_SESSION" \
 
 echo ""
 echo "[ok] 팀 에이전트 tmux 세션"
-echo "  pipeline (PLN→DBA→UXD→COD→TSR ×2) : tmux attach -t $_AGENT_PIPELINE_SESSION  (interval ${INTERVAL}s)"
+echo "  pipeline (구현 우선 COD→TSR ×2, full ${FULL_EVERY}주기) : tmux attach -t $_AGENT_PIPELINE_SESSION  (interval ${INTERVAL}s)"
 echo "  security_auditor                     : tmux attach -t $_AGENT_SECURITY_SESSION  (interval ${SECURITY_INTERVAL}s = 24h)"
-echo "  benchmark_researcher                 : tmux attach -t $_AGENT_BENCHMARK_SESSION  (interval ${BENCHMARK_INTERVAL}s = 24h)"
+echo "  benchmark_researcher                 : tmux attach -t $_AGENT_BENCHMARK_SESSION  (interval ${BENCHMARK_INTERVAL}s = 30min)"
 echo "  tech_writer                          : tmux attach -t $_AGENT_WRITER_SESSION   (interval ${WRITER_INTERVAL}s)"
 echo ""
 echo "  전체 상태: ./scripts/agent_status.sh"

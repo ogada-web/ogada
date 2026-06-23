@@ -1,0 +1,22 @@
+BNK-518 longterm 610 session gate state change (2026-06-22)
+URL: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web
+
+=== State transition (확인) ===
+BNK-448~515 canonical on-disk: 422B, md5 d3c90b33, literal body "refreshedException"
+BNK-518 live fetch: 70,237B, md5 f61d2742, HTML partial shell (login form shell)
+
+Live grep: login×13, 통합재가×1, refreshedException×0
+Canonical 422B gate body: literal "refreshedException" only
+
+=== Interpretation ===
+공단 anti-bot/session gate 응답 형태가 cycle별 oscillation:
+- Mode A: 422B literal refreshedException (BNK-448 확인 lock)
+- Mode B: ~70KB partial HTML shell (502/503/501/610 동일 size class, BNK-504 pattern)
+
+수가표 verbatim(단기보호 74,060·경감 50/60%)은 on-disk canonical 보존.
+Live partial shell에서 grep 74060=0 (session 미인증).
+
+=== ogada ===
+IntegratedHomeProviderDiscoveryPanel 통합재가 discovery unique 우위 carry.
+MVP out-of-scope: longterm 610 authenticated 수가 조회.
+

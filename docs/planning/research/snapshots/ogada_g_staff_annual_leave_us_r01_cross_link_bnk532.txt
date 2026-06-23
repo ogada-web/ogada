@@ -1,0 +1,206 @@
+BNK-532 (rotation 8h+·교차검증·갭 우선순위) 신규 evidence extract
+=====================================================================
+
+작성: 2026-06-23T01:56Z
+작성자: benchmark_researcher (BNK)
+
+────────────────────────────────────────────────────────────────────
+1. ogada git 실측 (FE +2 / BE +1 since BNK-531 @31ab1aa / @8c5dd65)
+────────────────────────────────────────────────────────────────────
+
+$ git -C src/frontend rev-parse develop          → e296387
+$ git -C src/frontend log --oneline 31ab1aa..develop
+    e296387 feat(v1.2.1/G-STAFF-ANNUAL-LEAVE): register US-R03e and E05 in pilot checklist
+    96e9d25 feat(v1.2.1/G-STAFF-ANNUAL-LEAVE): add live API harness and memo field error UX
+$ git -C src/frontend status -sb                 → ## develop...origin/develop  (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop → 181  (BNK-531 179 → +2)
+
+$ git -C src/backend  rev-parse develop          → bbf333c
+$ git -C src/backend  log --oneline 8c5dd65..develop
+    bbf333c feat(v2/US-R03e): add US-R01 leave-ledger cross-link metadata on annual leave roster
+$ git -C src/backend  status -sb                 → ## develop...origin/develop  (WT CLEAN)
+$ git -C src/backend  rev-list --count origin/test..develop → 524  (BNK-531 523 → +1)
+
+merge gate: 181 + 524 = 705  (BNK-531 702 → +3)
+
+KPI (BNK-532 정본):
+  · 111 Route        (110 `<Route\b` + 1 `<Routes>` wrapper · App.jsx · carry)
+  · 89 *Page.jsx     (+ RootRedirect = 90 · carry)
+  · V1–V173          (contiguous · carry · 신규 V 없음)
+  · BE Test 246      (BNK-531 245 → +1 `StaffAnnualLeaveSupportTest.java` 신규 `Test.java` 파일)
+  · FE test 448      (183 `.test.js` + 265 `.test.jsx` · BNK-531 447 → +1 `staffAnnualLeaveLiveApi.e2e.test.js` 신규 파일)
+  · 모듈 78.79%      (22.85/29 · `src/config/competitorModuleCoverage.js` 미변경)
+
+────────────────────────────────────────────────────────────────────
+2. BE @bbf333c — US-R03e ↔ US-R01 leave-ledger cross-link metadata
+   (★★★ "monthly usage snapshot defers canonical leave-ledger to v3" 설계 의도 reveal)
+────────────────────────────────────────────────────────────────────
+
+commit bbf333c "feat(v2/US-R03e): add US-R01 leave-ledger cross-link metadata on annual leave roster"
+- 8-file +83/-4L
+- 신규 파일:
+  · src/main/java/com/ogada/backend/staffannualleave/api/StaffAnnualLeaveRelatedSurfaceResponse.java (12L · record)
+  · src/test/java/com/ogada/backend/staffannualleave/domain/StaffAnnualLeaveSupportTest.java        (21L · 신규 *Test.java +1)
+- Modified:
+  · StaffAnnualLeaveRosterResponse.java   (+2L · `surfaceKind`·`relatedSurfaces` 2-field 추가)
+  · StaffAnnualLeaveService.java          (+4L · 응답에 surfaceKind + relatedSurfaces() 전달)
+  · StaffAnnualLeaveSupport.java          (+24L · 신규 상수 3종 + relatedSurfaces() 정적 메서드)
+  · routing/MustApiEndpointRoutingTest.java (+8L · jsonPath surfaceKind·relatedSurfaces 검증 2-assertion)
+  · security/RoleBasedControllerAccessTest.java (+10L · 새 응답 shape 정합)
+  · StaffAnnualLeaveServiceTest.java      (+4L · 응답 mocking 정합)
+
+신규 상수 (StaffAnnualLeaveSupport.java):
+  SURFACE_KIND        = "ANNUAL_LEAVE_USAGE_SNAPSHOT"
+  SURFACE_AVAILABLE   = "AVAILABLE"
+  SURFACE_PLANNED     = "PLANNED"
+
+정적 메서드 relatedSurfaces():
+  return List.of(
+    new StaffAnnualLeaveRelatedSurfaceResponse(
+        "US-R01", "출퇴근 기록",       "/staff/attendance",   AVAILABLE   // 기존 Route ✅
+    ),
+    new StaffAnnualLeaveRelatedSurfaceResponse(
+        "US-R01", "연차·유급휴일 대장", "/staff/leave-ledger", PLANNED      // 신규 v3 후보 surface
+    )
+  );
+
+★ commit msg verbatim: "monthly usage snapshot defers canonical leave-ledger data to the planned v3 surface without duplicating it."
+
+→ GET /staff/annual-leaves/roster 응답 shape (BNK-532):
+   { year, branchId, items[], staffCount, surfaceKind, relatedSurfaces[] }
+
+→ 설계 의미 (planner cross-walk):
+   · `/staff/annual-leaves` (US-R03e·BNK-521 ✅·V172/V173) = **MONTHLY USAGE SNAPSHOT** (월별 사용일수 derived ledger)
+   · `/staff/attendance`    (US-R01·기존 Route)            = 출퇴근 raw event log (AVAILABLE)
+   · `/staff/leave-ledger`  (US-R01·v3 PLANNED)            = 연차/유급휴일 per-event canonical ledger (PLANNED)
+   · 데이터 중복 회피 명시 — annual-leave roster 는 ledger 가 아닌 snapshot 만 보유
+
+→ ezCare 비교: worker-b100 tab01 「연차휴가」 grid 는 monthly 12-month 합계만 노출 (per-event ledger 공개 0)
+   → ogada 는 명시적으로 "이 surface 는 snapshot, canonical 은 별도" API 메타 노출 = 정보 모델 투명성 우위 (경쟁사 공개 0).
+
+────────────────────────────────────────────────────────────────────
+3. FE @96e9d25 — Live E2E harness + memo field error UX deepen
+────────────────────────────────────────────────────────────────────
+
+commit 96e9d25 "feat(v1.2.1/G-STAFF-ANNUAL-LEAVE): add live API harness and memo field error UX"
+- 3-file +96/-3L
+- 신규: src/e2e/staffAnnualLeaveLiveApi.e2e.test.js (+52L · `.test.js` 파일 수 +1 → FE test 447→448)
+  · `liveDescribe` "staffAnnualLeaveLiveApi (G-STAFF-ANNUAL-LEAVE live backend)" 1 suite
+  · `it("US-R03e loads branch annual leave roster and yearly record shape")`:
+    - `fetchStaffAnnualLeaveRosterApi({ year })` → items[].monthlyUsed shape 검증
+    - `mapStaffAnnualLeaveRosterRow(item)` → row.userId string + row.monthlyUsed array|null
+    - 첫 row 발견 시 `fetchStaffAnnualLeaveYearlyApi(userId, { year })` → monthlyUsage[].length=12
+    - ApiError 401 → 명시적 expect(...).not.toBe(401) (스킵·인증 실패 분리)
+- Modified: StaffAnnualLeavePage.jsx (+12/-3L)
+  · `clearEditFieldError(fieldKey)`: 마지막 오류 제거 시 `setEditFormError("")` 자동 clear
+  · 신규 `handleMemoChange(value)` 도입 — memo textarea 편집 시 `memo` 필드 오류 clear
+  · 「마지막 invalid 필드를 수정하면 폼 전체 error message 도 사라진다」 UX 정합
+- Modified: StaffAnnualLeavePage.test.jsx (+35L · 신규 `.test.jsx` 0)
+  · memo field error clear regression test 추가
+
+★ rules.md §6 "폼은 Field render-prop 으로 label·id 연결, 필수값·서버 검증 오류를 필드 단위로 표시" deepen (마지막 필드 수정 → 폼 전체 error clear UX).
+
+★ Live API harness = 운영 환경 backend 정합 회귀 방지 = 결정 23-A (운영 readiness 우위) 강화.
+
+────────────────────────────────────────────────────────────────────
+4. FE @e296387 — pilot checklist US-R03e + E05 등록
+────────────────────────────────────────────────────────────────────
+
+commit e296387 "feat(v1.2.1/G-STAFF-ANNUAL-LEAVE): register US-R03e and E05 in pilot checklist"
+- 2-file +43/-1L (신규 test 파일 0 · 기존 file deepen)
+- pilotChecklist.js +28L : 신규 4-row 추가
+  | id      | label                  | method | path                                      | service                          |
+  |---------|------------------------|--------|-------------------------------------------|----------------------------------|
+  | E05     | 월별 출석 통계         | GET    | /api/v1/attendance/stats/monthly          | fetchMonthlyAttendanceStatsApi    |
+  | R03e-a  | 직원 연차휴가 로스터    | GET    | /api/v1/staff/annual-leaves/roster        | fetchStaffAnnualLeaveRosterApi    |
+  | R03e-b  | 직원 연차휴가 연간 기록 | GET    | /api/v1/staff/annual-leaves/users/{userId}| fetchStaffAnnualLeaveYearlyApi    |
+  | R03e-c  | 직원 연차휴가 저장      | PUT    | /api/v1/staff/annual-leaves/users/{userId}| saveStaffAnnualLeaveYearlyApi     |
+- pilotChecklist.test.js +16L : R03e-a/b/c·E05 4-row 등록 contract 회귀 방지
+
+→ E05 「월별 출석 통계」 = BNK-493 (`monthlyAttendanceStats.js` 신규) 의 pilot 체크리스트 등록 1-cycle closure.
+→ R03e-a/b/c = G-STAFF-ANNUAL-LEAVE Must API contract coverage 명시화 (3 endpoint).
+
+────────────────────────────────────────────────────────────────────
+5. 백본 3-URL 325차 재실측 (zero drift IDENTICAL)
+────────────────────────────────────────────────────────────────────
+
+$ curl -sS -L --max-time 25 -w "HTTP=%{http_code} SIZE=%{size_download}\n" "$URL"
+
+| URL                                                                                                                                                  | HTTP | SIZE   | md5(live)  | md5(on-disk) | 판정                       |
+|------------------------------------------------------------------------------------------------------------------------------------------------------|------|--------|------------|--------------|----------------------------|
+| https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769                          | 200  |  7,572 | c886ff1f   | c886ff1f     | **325차 IDENTICAL** (zero) |
+| https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428                                                                                       | 200  | 25,470 | 95286775   | 95286775     | **325차 IDENTICAL** (zero) |
+| https://ezcare.easyms.co.kr/new.ez (비로그인 redirect stub)                                                                                            | 200  |     70 | e1d52bd5   | e1d52bd5     | IDENTICAL                  |
+
+→ NHIS#44 joHistory(법령 canonical)는 BNK-530 §530-1 의 구 minwon URL 이전 DRIFT 와 무관하게 `c886ff1f` zero drift carry — 수가(러-1~4·편도50%·1일1회·④별지 제22호 일지) 불변·ogada `TransportServiceFeeService` 5/5 ✅ parity/우위 carry.
+→ 덮어쓰기 0건·엑셀 포맷 변경 0건.
+
+────────────────────────────────────────────────────────────────────
+6. 4축 교차검증 (8h+ rotation 정합)
+────────────────────────────────────────────────────────────────────
+
+| 축                                                          | BNK-531 가정/상태                                                                                  | BNK-532 검증                                                                                                                       | 가정 번복 |
+|-------------------------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| G14 live upload E2E                                         | P1 carry · candidate 변동 0                                                                       | carry · 신규 evidence 0                                                                                                            | 0         |
+| 대시보드 KPI / G26                                          | P1 carry · ezCare worker-g01 대시보드 candidate △P3 가정 (BNK-530)                                | carry · `worker-g01` 4대보험·12개월 chart vs ogada `/dashboard` 미확인 carry                                                       | 0         |
+| v1.3-C (이동서비스 deepen)                                  | carry · BNK-514 deepen carry                                                                       | carry                                                                                                                              | 0         |
+| v2 CMS (G2 CMS roster)                                      | ✅ FULL-STACK closure (BNK-515 carry · BE roster +54L test deepen BNK-518)                        | carry · `CmsService.listEnrollments` 3-param 정합 carry                                                                            | 0         |
+| **G-STAFF-ANNUAL-LEAVE (US-R03e)**                          | ✅ FULL-STACK closure (BNK-521) + V173 DB integrity probe (BNK-531) carry                          | **deepen +3 commit** — US-R01 cross-link metadata(BE @bbf333c) + Live E2E harness(FE @96e9d25) + pilot checklist 등록(FE @e296387) | 0         |
+| `/staff/leave-ledger` v3 surface (US-R01 canonical ledger)  | 미확인 (carry: BNK-516 candidate `G-STAFF-ANNUAL-LEAVE` 단독)                                      | **신규 PLANNED surface 명시 노출** (relatedSurfaces[1].availability = PLANNED) → planner ROADMAP v3 후보 등록 권장                  | 0 (신규)  |
+| NHIS #44 신규 정식 URL                                       | 미확인 carry                                                                                       | 미확인 carry (다음 4-6h 엔젤·롱텀 rotation 때 longtermcare.or.kr probe)                                                            | 0         |
+| ezCare fnc 도입 9,346 net negative signal                    | 미확인 carry                                                                                       | 미확인 carry (다음 2-4h 이지케어 rotation 때 fnc URL 변형 재시도)                                                                  | 0         |
+
+★ 4축 가정 번복 0 carry · P0/P1 비움 유지.
+★ G-STAFF-ANNUAL-LEAVE = BNK-516 candidate → BNK-520 △ FE shell → BNK-521 ✅ FULL-STACK → BNK-522~528 검증/UX 강화 → BNK-529 V173 untracked DBA 산출 → BNK-531 V173 commit + readiness probe → **BNK-532 US-R01 cross-link metadata + Live E2E + pilot checklist** = **17-cycle deepen lifecycle 도달**(역대 candidate→풀스택→통합 보강 최장 lifecycle).
+
+────────────────────────────────────────────────────────────────────
+7. 갭/candidate 우선순위 재정렬 (8h+)
+────────────────────────────────────────────────────────────────────
+
+| 우선        | 항목                                            | 액션 / 메모                                                                                                                 |
+|-------------|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| **P0 tester** | merge gate **705** FF merge                     | FE@e296387 + BE@bbf333c 양쪽 WT CLEAN · `develop→test` FF merge 705 진행 · QA-B116 origin/test push pending carry            |
+| **P0 planner**| `workspace_baseline.yaml` 정합                   | baseline `backend.develop=d361833` / `frontend.develop=df9ec6c` (BNK-516) → 16+ cycle stale · 실측 `@e296387`/`@bbf333c` 갱신 권장 |
+| **P1 planner**| ROADMAP **v3 `/staff/leave-ledger` (US-R01)** 등재 후보 | BE `relatedSurfaces[1].availability=PLANNED` 명시 → planner 가 v3 leave-ledger Page/Route/API/V174 후보를 ROADMAP·USER_STORIES 에 「가정」 등록 권장 (현재 ROADMAP 미존재) |
+| **P1 planner**| 마케팅 카피 후보 (surfaceKind 메타)              | 「ogada API 응답은 `surfaceKind` 메타로 'snapshot vs canonical ledger' 를 명시 — 경쟁사 (ezCare worker-b100·func.php) 정보 모델 투명성 0」 |
+| **P1 tester** | Live E2E `staffAnnualLeaveLiveApi.e2e.test.js` GREEN 확인 | `npm run test:live-e2e` 통과 시 결정 23-A (운영 readiness 우위) 회귀 방지 영구화 (rules.md §5 vitest concurrency 준수)        |
+| **P2**       | patient-b100 tri-tab 집계 UI (P2 dashboard)     | BNK-530 candidate carry — planner 결정 보류 carry                                                                            |
+| **P2**       | change-list 변경사유 조회 UI (P3 가정)           | BNK-530 candidate carry — planner 결정 보류 carry                                                                            |
+| **P2**       | worker-g01 직원 통계 대시보드 (P3 가정)          | BNK-530 candidate carry — `/dashboard/staff` 미확인 carry · 다음 rotation 때 ogada `/dashboard*` grep 확인 필요              |
+| **P3 carry** | G-VOLUNTEER-MGMT · G18-SHORT-PILOT · G-GUARDIAN-MEETING · G-LCMS-NEWSLETTER · worker-g03 직원 메모 | 모두 candidate △P3 「가정」 carry · planner 결정 보류                                                                          |
+| **#44**     | 이동서비스비 러-1~4                              | 325차 zero drift carry · **P0 ✅** parity/우위 carry                                                                          |
+
+────────────────────────────────────────────────────────────────────
+8. per-cycle minimum (BNK-532)
+────────────────────────────────────────────────────────────────────
+
+[충족] 신규 evidence/재실측 URL 1+
+       · 백본 3-URL 325차 재실측 zero drift IDENTICAL (re-measure + 변동 0 기록)
+
+[충족] 메뉴/필드/워크플로 1블록+
+       · §2 BE `bbf333c` US-R01 cross-link metadata · `surfaceKind` + `relatedSurfaces[]` 응답 shape + `SURFACE_KIND/AVAILABLE/PLANNED` 3 상수
+       · §3 FE `96e9d25` Live E2E harness API shape (roster items + yearly monthlyUsage[12])
+       · §4 FE `e296387` pilot checklist 4-row 등록 매트릭스 (E05·R03e-a/b/c)
+
+[충족] COMPETITOR_MATRIX 1행+ `@HEAD` 갱신
+       · BNK-532 4-row 블록 prepend (US-R01 cross-link metadata · Live E2E harness · pilot checklist · KPI baseline)
+
+[충족] BENCHMARK_REPORT 신규 소절 1건+
+       · §532-1~7 신규 작성 + 결과 요약 + planner 액션 표
+
+────────────────────────────────────────────────────────────────────
+9. 가정 번복 / 상태 변경 / 미확인 / 신규 candidate 통계 (BNK-532)
+────────────────────────────────────────────────────────────────────
+
+· 가정 번복: 0건 (4축 + #44 carry · G-STAFF-ANNUAL-LEAVE lifecycle 17-cycle 무중단)
+· 신규 core 갭: 0건
+· 신규 candidate: 1건 「가정」 P1 — **v3 `/staff/leave-ledger` (US-R01 canonical leave ledger)**
+                  (근거: BE `bbf333c` `relatedSurfaces[1].availability=PLANNED` 명시 노출)
+· 상태 변경: 2건 (FE +2 commit · BE +1 commit · merge 702→**705**)
+· 미확인: 2 carry (NHIS#44 신규 정식 URL · ezCare fnc URL 변형) · 신규 0
+· 신규 snapshot: 1건 (본 extract `ogada_g_staff_annual_leave_us_r01_cross_link_bnk532.txt`)
+· 덮어쓰기: 0건 (HTML snapshot 갱신 0 · live md5 = on-disk md5 모두 IDENTICAL)
+· 엑셀 포맷 변경: 0건
+
+────────────────────────────────────────────────────────────────────
+끝

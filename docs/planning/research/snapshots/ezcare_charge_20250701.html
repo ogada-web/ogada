@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=430, user-scalable=yes, minimum-scale=0, maximum-scale=2">
+<meta charset="UTF-8">
+<title>이지케어 이용요금</title>
+
+<!-- jquery -->
+<script src="/assets/jquery/jquery-3.5.1.min.js" type="text/javascript"></script>
+
+<!-- jquery UI Script & CSS -->
+<link rel="stylesheet" href="/assets/jqueryui/jquery-ui.min.css">
+<script src="/assets/jqueryui/jquery-ui.min.js"></script>
+
+<!-- jquery plugin & tools -->
+<script src="/assets/jquery/plugin/jquery.cookie.js"></script>
+
+<!-- asset ui-custom css -->
+<link href="/assets/_reboot_layout.css?2303099" rel="stylesheet" type="text/css" />
+<script src="/assets/ui-custom.js?20220906" type="text/javascript"></script>
+
+<link href="./charge.20250701.css?" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+<!--
+	$(function(){
+		$("#charge-grp .box").click(function(){
+			$(".box").removeClass("on");
+			$("#daycare-btn").removeClass("on");
+			$("#charge-table .daycare-charge").hide();
+			$("#charge-table .day-none").show();
+			$(this).addClass("on");
+			
+			if($(this).hasClass("w4c")){
+				$(".program-charge .amt.w4c").show();
+				$(".program-charge .amt.ezc").hide();
+			}else{
+				$(".program-charge .amt.w4c").hide();
+				$(".program-charge .amt.ezc").show();
+			}
+		});
+
+		$("#daycare-btn").click(function(){
+			
+			$(this).addClass("on");
+			$("#charge-grp .box").removeClass("on");
+			$("#charge-table .day-none").hide();
+			$("#charge-table .daycare-charge").show();
+		});
+
+		var day = "";
+
+		if(day=="1") $("#daycare-btn").trigger("click");
+		else $(".box.ezc").trigger("click");
+
+
+		var sw = "";
+
+		if(sw=="w4c") $(".box.w4c").trigger("click");
+		else $(".box.ezc").trigger("click");
+	})
+//-->
+</script>
+</head>
+<body>
+
+<header>
+	<h1>이지케어 이용요금 안내</h1>
+	<h4 class="event-title mt-3"> 지금 바로 가입시, <b> 프로그램 30일 무료이용</b> + <b style="background:orange; color:#333;">문자 2000p 혜택</b></h4>
+</header>
+<main>
+	<div id="charge-set" class="box">
+		<h2 style="font-size:1.4rem;font-weight:700;">최초 셋팅비 
+				<span style="color:#3269C8;letter-spacing:1px;margin-left:10px;">~06월 30일까지 </span></h2>
+		<div class="box-contents">
+			<p class="mb-0 d-flex align-items-center">
+				<span style="text-decoration:line-through; font-size:15px; color:#666;">55,000원</span>
+				<span style='margin:0 .5rem; font-size:15px; font-weight:bold; color:#fff; background:red; padding:2px 4px; border-radius:5px; '>40% 할인</span>
+				→ <b style="font-size:28px; color:red;margin-left:.5rem;">33,000원</b>
+			</p>
+			<span class="sub-txt">＊최초 1회만 납부하며 이용해지시 반환되지 않습니다.</span>
+		</div>
+	</div>
+
+	<div id="charge-grp">
+		<div class="mb-5 text-center">
+			<h2>프로그램만 <b class="bluetxt">단독 이용가능</b>하며 이용료는 후불청구/납부입니다.
+				<a class="ml-2" href="#" onclick="window.open('https://ezcare.easyms.co.kr/page/landing/daycare.t1.202404/chargecalc.html','_blank','width=800, height=760')">서비스 이용료 계산하기 ></a>
+			</h2>
+		</div>
+		<div class="box-wrap d-flex">
+			<div class="box ezc">
+				<h2><span class="icon_chk">&#10004;</span>프로그램</h2>
+				<div class="box-contents">
+					<p class="main-txt mb-0">기본료 <b>10,000원</b><small>(10인)</small> + <b>500원</b><small>*1인</small></p>
+					<p class="sub-txt">프로그램기본료(10,000원) + {(수급자 수-10) × 500원}</p>
+					<div class="btn-form" style="margin-top:3.1rem;">
+						<a href="https://ezcare.easyms.co.kr/?PG=j01" target="_blank">이용신청</a>
+					</div>
+					<ul class="service">
+						<li>공단 평가 전반적 업무</li>
+						<li>직원 급여관리</li>
+						<li>인지활동</li>
+						<li class="plus">자동이체 CMS</li>
+						<li class="plus">부가서비스-문자이용료<br/>
+							<small>단문(SMS) : 20P (90byte 이내)</small><br/>
+							<small>장문(LMS) : 50P (2000byte 이내)</small>
+						</li>
+					</ul>
+					<ul class="comment mt-3">
+						<li>기본료와 청구 월의 일정관리 수급자 <br/>10인 초과 1인당 500원의 이용료를 합산해 부과합니다.</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="box w4c">
+				<h2><span class="icon_chk">&#10004;</span>+ 재무회계 대행서비스 <button type="button" class="btn-landing " onclick="window.open('/landing.ez?type=w4c.t3.202303')" hit-id="2912">더 알아보기</button></h2>
+				<div class="box-contents" >
+					<p class="main-txt mb-0">대행 기본료 <b>50,000원</b> + <b>2,000원</b><small>*1인</small></p>
+					<p class="sub-txt">프로그램이용료<br> <span style="display:inline-block; width:40px;"></span>+ 대행기본료 (50,000원) + (수급자수 × 2,000원)</p>
+					<div class="btn-form">
+						<a href="https://ezcare.easyms.co.kr/?PG=j01" target="_blank">이용신청</a>
+					</div>
+					<ul class="service">
+						<li>희망이음 대행</li>
+						<li>4대보험취득/상실신고</li>
+						<li>원천세신고</li>
+					</ul>
+					<ul class="comment mt-3">
+						<li>기본료와 청구 월의 일정관리 수급자 1인당 2,000원의<br/>이용료</i>를 합산해 부과합니다.(프로그램 이용료 별도) </li>
+						
+						<!-- 2025.07.08 -->
+						<li>주간보호 기관의 이용료는 상담 후 안내드립니다.</li>
+
+						<!-- <li>연말정산 이용료가 년 1회 추가 발생합니다.</li> -->
+						<!-- <li>50인 초과시 당사에 문의 해주십시오.</li> -->
+					</ul>
+				</div>
+			</div>
+			<div id="daycare-btn" style="display:none;">
+				<h2><span class="icon_chk">&#10004;</span><b class="txt-yellow">주야간보호</b> 대행서비스 이용료 확인 ▶</h2>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="charge-table" class="mt-5">
+		<h2 class=" mt-2 day-none">
+			<span class="amt ezc">이지케어 프로그램</span> 
+			<span class="amt w4c">프로그램 + 재무회계 대행 서비스</span>
+			<small style="font-weight:normal; margin-left:1rem;"> 상세 이용 요금표</small>
+		</h2>
+		<div class="program-charge day-none">
+			<table class="tbl-charge"> 
+				<thead>
+					<tr>
+						<th style="width:60px">수급자 수</th>
+						<th class="amt ezc">프로그램만 이용시</th>
+						<th class="amt w4c">재무회계 대행시</th>
+					</tr>
+				</thead>
+				<tbody>
+										<tr>
+						<th>1</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+52,000 = </span>
+							<strong>62,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>2</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+54,000 = </span>
+							<strong>64,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>3</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+56,000 = </span>
+							<strong>66,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>4</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+58,000 = </span>
+							<strong>68,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>5</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+60,000 = </span>
+							<strong>70,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>6</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+62,000 = </span>
+							<strong>72,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>7</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+64,000 = </span>
+							<strong>74,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>8</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+66,000 = </span>
+							<strong>76,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>9</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+68,000 = </span>
+							<strong>78,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>10</th>
+
+						<td class="amt ezc"><strong>10,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,000+70,000 = </span>
+							<strong>80,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>11</th>
+
+						<td class="amt ezc"><strong>10,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">10,500+72,000 = </span>
+							<strong>82,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>12</th>
+
+						<td class="amt ezc"><strong>11,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">11,000+74,000 = </span>
+							<strong>85,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>13</th>
+
+						<td class="amt ezc"><strong>11,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">11,500+76,000 = </span>
+							<strong>87,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>14</th>
+
+						<td class="amt ezc"><strong>12,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">12,000+78,000 = </span>
+							<strong>90,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>15</th>
+
+						<td class="amt ezc"><strong>12,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">12,500+80,000 = </span>
+							<strong>92,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>16</th>
+
+						<td class="amt ezc"><strong>13,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">13,000+82,000 = </span>
+							<strong>95,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>17</th>
+
+						<td class="amt ezc"><strong>13,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">13,500+84,000 = </span>
+							<strong>97,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>18</th>
+
+						<td class="amt ezc"><strong>14,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">14,000+86,000 = </span>
+							<strong>100,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>19</th>
+
+						<td class="amt ezc"><strong>14,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">14,500+88,000 = </span>
+							<strong>102,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>20</th>
+
+						<td class="amt ezc"><strong>15,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">15,000+90,000 = </span>
+							<strong>105,000</strong>
+						</td>
+					</tr>
+									</tbody>
+			</table>
+			<table class="tbl-charge"> 
+				<thead>
+					<tr>
+						<th style="width:60px">수급자 수</th>
+						<th class="amt ezc">프로그램만 이용시</th>
+						<th class="amt w4c">재무회계 대행시</th>
+					</tr>
+				</thead>
+				<tbody>
+										<tr>
+						<th>21</th>
+
+						<td class="amt ezc"><strong>15,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">15,500+92,000 = </span>
+							<strong>107,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>22</th>
+
+						<td class="amt ezc"><strong>16,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">16,000+94,000 = </span>
+							<strong>110,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>23</th>
+
+						<td class="amt ezc"><strong>16,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">16,500+96,000 = </span>
+							<strong>112,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>24</th>
+
+						<td class="amt ezc"><strong>17,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">17,000+98,000 = </span>
+							<strong>115,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>25</th>
+
+						<td class="amt ezc"><strong>17,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">17,500+100,000 = </span>
+							<strong>117,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>26</th>
+
+						<td class="amt ezc"><strong>18,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">18,000+102,000 = </span>
+							<strong>120,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>27</th>
+
+						<td class="amt ezc"><strong>18,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">18,500+104,000 = </span>
+							<strong>122,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>28</th>
+
+						<td class="amt ezc"><strong>19,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">19,000+106,000 = </span>
+							<strong>125,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>29</th>
+
+						<td class="amt ezc"><strong>19,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">19,500+108,000 = </span>
+							<strong>127,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>30</th>
+
+						<td class="amt ezc"><strong>20,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">20,000+110,000 = </span>
+							<strong>130,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>31</th>
+
+						<td class="amt ezc"><strong>20,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">20,500+112,000 = </span>
+							<strong>132,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>32</th>
+
+						<td class="amt ezc"><strong>21,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">21,000+114,000 = </span>
+							<strong>135,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>33</th>
+
+						<td class="amt ezc"><strong>21,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">21,500+116,000 = </span>
+							<strong>137,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>34</th>
+
+						<td class="amt ezc"><strong>22,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">22,000+118,000 = </span>
+							<strong>140,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>35</th>
+
+						<td class="amt ezc"><strong>22,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">22,500+120,000 = </span>
+							<strong>142,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>36</th>
+
+						<td class="amt ezc"><strong>23,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">23,000+122,000 = </span>
+							<strong>145,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>37</th>
+
+						<td class="amt ezc"><strong>23,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">23,500+124,000 = </span>
+							<strong>147,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>38</th>
+
+						<td class="amt ezc"><strong>24,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">24,000+126,000 = </span>
+							<strong>150,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>39</th>
+
+						<td class="amt ezc"><strong>24,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">24,500+128,000 = </span>
+							<strong>152,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>40</th>
+
+						<td class="amt ezc"><strong>25,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">25,000+130,000 = </span>
+							<strong>155,000</strong>
+						</td>
+					</tr>
+									</tbody>
+			</table>
+			<table class="tbl-charge"> 
+				<thead>
+					<tr>
+						<th style="width:60px">수급자 수</th>
+						<th class="amt ezc">프로그램만 이용시</th>
+						<th class="amt w4c">재무회계 대행시</th>
+					</tr>
+				</thead>
+				<tbody>
+										<tr>
+						<th>41</th>
+
+						<td class="amt ezc"><strong>25,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">25,500+132,000 = </span>
+							<strong>157,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>42</th>
+
+						<td class="amt ezc"><strong>26,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">26,000+134,000 = </span>
+							<strong>160,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>43</th>
+
+						<td class="amt ezc"><strong>26,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">26,500+136,000 = </span>
+							<strong>162,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>44</th>
+
+						<td class="amt ezc"><strong>27,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">27,000+138,000 = </span>
+							<strong>165,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>45</th>
+
+						<td class="amt ezc"><strong>27,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">27,500+140,000 = </span>
+							<strong>167,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>46</th>
+
+						<td class="amt ezc"><strong>28,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">28,000+142,000 = </span>
+							<strong>170,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>47</th>
+
+						<td class="amt ezc"><strong>28,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">28,500+144,000 = </span>
+							<strong>172,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>48</th>
+
+						<td class="amt ezc"><strong>29,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">29,000+146,000 = </span>
+							<strong>175,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>49</th>
+
+						<td class="amt ezc"><strong>29,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">29,500+148,000 = </span>
+							<strong>177,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>50</th>
+
+						<td class="amt ezc"><strong>30,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">30,000+150,000 = </span>
+							<strong>180,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>51</th>
+
+						<td class="amt ezc"><strong>30,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">30,500+152,000 = </span>
+							<strong>182,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>52</th>
+
+						<td class="amt ezc"><strong>31,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">31,000+154,000 = </span>
+							<strong>185,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>53</th>
+
+						<td class="amt ezc"><strong>31,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">31,500+156,000 = </span>
+							<strong>187,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>54</th>
+
+						<td class="amt ezc"><strong>32,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">32,000+158,000 = </span>
+							<strong>190,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>55</th>
+
+						<td class="amt ezc"><strong>32,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">32,500+160,000 = </span>
+							<strong>192,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>56</th>
+
+						<td class="amt ezc"><strong>33,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">33,000+162,000 = </span>
+							<strong>195,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>57</th>
+
+						<td class="amt ezc"><strong>33,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">33,500+164,000 = </span>
+							<strong>197,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>58</th>
+
+						<td class="amt ezc"><strong>34,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">34,000+166,000 = </span>
+							<strong>200,000</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>59</th>
+
+						<td class="amt ezc"><strong>34,500</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">34,500+168,000 = </span>
+							<strong>202,500</strong>
+						</td>
+					</tr>
+										<tr>
+						<th>60</th>
+
+						<td class="amt ezc"><strong>35,000</strong></td>
+						<td class="amt w4c">
+							<span class="txt-gray">35,000+170,000 = </span>
+							<strong>205,000</strong>
+						</td>
+					</tr>
+									</tbody>
+			</table>
+		</div>
+
+		<div class="daycare-charge mt-3">
+			<div class="box">
+				<h2><b class="txt-yellow">주야간보호 재무회계</b> 이용료 (주야간 대행서비스 이용 시, 추가 요금)</h2>
+				<div class="box-contents">
+					<p class="main-txt mb-0">대행 기본료 <b>90,000원</b> + <b>2,000원</b><small>*1인</small></p>
+					<p class="sub-txt">대행기본료 (90,000원) + (수급자수 × 2,000원)</p>
+					<!--
+					<div class="daycare-event">
+						<span style='font-size:18px; font-weight:bold; margin-left:5px;'>2년간 최대 50% 할인 혜택</span>
+						<span style="font-size:15px;">( 23년 12월까지 가입 시 ) </span><br/>
+					</div>
+					-->
+					<ul class="comment" style="margin-top:1rem;">
+						<li>기본료와 청구 월의 일정관리 수급자 1인당 2,000원의<br/>이용료</i>를 합산해 부과합니다.(프로그램 이용료 별도) </li>
+						<li>희망이음 대행 및 4대보험취득/상실신고, 원천세신고 포함 </li>
+					</ul>
+				</div>
+			</div>
+			<h2 class=" mt-2">
+				<span class="amt ezc">주야간 재무회계 프로그램</span>
+				<small style="font-weight:normal; margin-left:1rem;""> 상세 이용 요금표</small>
+			</h2>
+			<div class="d-flex justify-content-between">
+				<table class="tbl-charge"> 
+					<thead>
+						<tr>
+							<th style="width:60px">수급자 수</th>
+							<th class="amt">주야간 대행서비스 이용시</th>
+						</tr>
+					</thead>
+					<tbody>
+												<tr>
+							<th>1</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">92,000 + 2,000  = </span>
+								<strong>92,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>2</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">94,000 + 4,000  = </span>
+								<strong>94,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>3</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">96,000 + 6,000  = </span>
+								<strong>96,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>4</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">98,000 + 8,000  = </span>
+								<strong>98,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>5</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">100,000 + 10,000  = </span>
+								<strong>100,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>6</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">102,000 + 12,000  = </span>
+								<strong>102,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>7</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">104,000 + 14,000  = </span>
+								<strong>104,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>8</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">106,000 + 16,000  = </span>
+								<strong>106,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>9</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">108,000 + 18,000  = </span>
+								<strong>108,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>10</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">110,000 + 20,000  = </span>
+								<strong>110,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>11</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">112,000 + 22,000  = </span>
+								<strong>112,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>12</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">114,000 + 24,000  = </span>
+								<strong>114,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>13</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">116,000 + 26,000  = </span>
+								<strong>116,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>14</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">118,000 + 28,000  = </span>
+								<strong>118,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>15</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">120,000 + 30,000  = </span>
+								<strong>120,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>16</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">122,000 + 32,000  = </span>
+								<strong>122,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>17</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">124,000 + 34,000  = </span>
+								<strong>124,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>18</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">126,000 + 36,000  = </span>
+								<strong>126,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>19</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">128,000 + 38,000  = </span>
+								<strong>128,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>20</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">130,000 + 40,000  = </span>
+								<strong>130,000</strong>
+							</td>
+						</tr>
+											</tbody>
+				</table>
+				<table class="tbl-charge"> 
+					<thead>
+						<tr>
+							<th style="width:60px">수급자 수</th>
+							<th class="amt">주야간 대행서비스 이용시</th>
+						</tr>
+					</thead>
+					<tbody>
+												<tr>
+							<th>21</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">132,000 + 42,000  = </span>
+								<strong>132,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>22</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">134,000 + 44,000  = </span>
+								<strong>134,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>23</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">136,000 + 46,000  = </span>
+								<strong>136,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>24</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">138,000 + 48,000  = </span>
+								<strong>138,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>25</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">140,000 + 50,000  = </span>
+								<strong>140,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>26</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">142,000 + 52,000  = </span>
+								<strong>142,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>27</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">144,000 + 54,000  = </span>
+								<strong>144,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>28</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">146,000 + 56,000  = </span>
+								<strong>146,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>29</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">148,000 + 58,000  = </span>
+								<strong>148,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>30</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">150,000 + 60,000  = </span>
+								<strong>150,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>31</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">152,000 + 62,000  = </span>
+								<strong>152,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>32</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">154,000 + 64,000  = </span>
+								<strong>154,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>33</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">156,000 + 66,000  = </span>
+								<strong>156,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>34</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">158,000 + 68,000  = </span>
+								<strong>158,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>35</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">160,000 + 70,000  = </span>
+								<strong>160,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>36</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">162,000 + 72,000  = </span>
+								<strong>162,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>37</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">164,000 + 74,000  = </span>
+								<strong>164,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>38</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">166,000 + 76,000  = </span>
+								<strong>166,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>39</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">168,000 + 78,000  = </span>
+								<strong>168,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>40</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">170,000 + 80,000  = </span>
+								<strong>170,000</strong>
+							</td>
+						</tr>
+											</tbody>
+				</table>
+				<table class="tbl-charge"> 
+					<thead>
+						<tr>
+							<th style="width:60px">수급자 수</th>
+							<th class="amt">주야간 대행서비스 이용시</th>
+						</tr>
+					</thead>
+					<tbody>
+												<tr>
+							<th>41</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">172,000 + 82,000  = </span>
+								<strong>172,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>42</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">174,000 + 84,000  = </span>
+								<strong>174,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>43</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">176,000 + 86,000  = </span>
+								<strong>176,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>44</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">178,000 + 88,000  = </span>
+								<strong>178,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>45</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">180,000 + 90,000  = </span>
+								<strong>180,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>46</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">182,000 + 92,000  = </span>
+								<strong>182,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>47</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">184,000 + 94,000  = </span>
+								<strong>184,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>48</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">186,000 + 96,000  = </span>
+								<strong>186,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>49</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">188,000 + 98,000  = </span>
+								<strong>188,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>50</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">190,000 + 100,000  = </span>
+								<strong>190,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>51</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">192,000 + 102,000  = </span>
+								<strong>192,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>52</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">194,000 + 104,000  = </span>
+								<strong>194,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>53</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">196,000 + 106,000  = </span>
+								<strong>196,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>54</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">198,000 + 108,000  = </span>
+								<strong>198,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>55</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">200,000 + 110,000  = </span>
+								<strong>200,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>56</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">202,000 + 112,000  = </span>
+								<strong>202,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>57</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">204,000 + 114,000  = </span>
+								<strong>204,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>58</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">206,000 + 116,000  = </span>
+								<strong>206,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>59</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">208,000 + 118,000  = </span>
+								<strong>208,000</strong>
+							</td>
+						</tr>
+												<tr>
+							<th>60</th>
+							<td class="amt ezc">
+								<span class="txt-gray mr-2">210,000 + 120,000  = </span>
+								<strong>210,000</strong>
+							</td>
+						</tr>
+											</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div style="font-weight:normal; font-size:11px; text-align:right; font-family:맑은고딕"> 부가가치세 별도 / 단위: 명,원  </div>
+	<div style="height:80px"></div>
+</main>
+
+<!-- 이지케어 분석 -->
+<script src="/assets/accessClick.log.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+	accessClick.hit(2911);
+//-->
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+# carefor manual PDF p.106 extract — 8-12 현황 리포트 (BNK-469)
+# source: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=106
+# fetched: 2026-06-21 | pypdf page 106 | md5 source PDF full file on prior cycles
+
+현황 리포트
+메뉴위치 : 8-10.현황 리포트  (func.php 정적 메뉴는 8-12.직원 현황 리포트 — 번호 drift「가정」)
+
+직원 관련 현황을 일자별로 조회 출력 할 수 있는 서비스입니다.
+
+① 해당 기준일의 직원현황과 기본 정보 조회 영역
+② 평가나 업무 게시에 필요한 정보들을 출력 할 수 있는 기능 버튼
+   - 직원현황(기준일)
+   - 직원명부(기준일)
+   - 직원현황(사진게시)
+   - 직원연락처(기준일)
+   - 월간 직원명부
+   - 월간 입/퇴사 직원명부
+   - 엑셀 다운로드
+
+# ogada cross-walk @860afa8 StaffStatusReportPage STAFF_STATUS_REPORT_OUTPUTS (7종):
+# status, roster, photo_board, contacts, monthly_roster, hire_leave, excel — 1:1 parity
+# BNK-469 deepen: empty-row print guard (exportRows.length===0 → error, window.print skip)

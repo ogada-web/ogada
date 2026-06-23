@@ -1,0 +1,41 @@
+# ogada G-BILLING-REPORT-FILTER-PERSISTENCE full-stack workflow (BNK-497 git 실측)
+# source: src/frontend @77b1ea8 · src/backend @fd0a3b3 · cross-walk [케어포 PDF p.91](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=91)
+# 조사일: 2026-06-22T03:00Z
+
+## 케어포 p.91 (확인·Wayback) — 입금대장 반월 필터 UI only
+- 「입금대장(1일~15일)」「입금대장(16일~말일)」탭 분리·월별 조회
+- 서버 per-user/per-month 필터 저장 ❌「가정」— session-only jqGrid 콤보 carry
+
+## ogada 4-ledger per-user 자동저장 (확인·git @77b1ea8/@fd0a3b3)
+
+### DB (V170 + V171 integrity)
+- table `billing_report_filters`
+- UNIQUE(org_id, branch_id, user_id, year_month, variant)
+- variants: charges | deposits | receipts | refunds
+
+### BE API
+- GET  /api/v1/billing/reports/filters?month=YYYY-MM&branchId=
+- PUT  /api/v1/billing/reports/filters  { month, variant, q, depositPeriod, receiptBasis, branchId? }
+- GET  /api/v1/billing/reports/{variant} → BillingReportFilterService.recordFromReportQuery() silent upsert (requireWriteScope=false @fd0a3b3)
+- PUT explicit save → validateBranchWriteScope (HQ_ADMIN/BRANCH_ADMIN)
+
+### FE wire (@77b1ea8 BillingReportPage.jsx + services.js)
+- mount: fetchBillingReportFiltersApi({ month }) → hydrate search + depositPeriod + receiptBasis
+- search submit / deposit tab / receipt tab → saveBillingReportFilterApi(payload) + fetchReport
+- variants:
+  · deposits: depositPeriod FULL | FIRST_HALF | SECOND_HALF
+  · receipts: receiptBasis PAYMENT | CLAIM
+  · charges/refunds: q search only
+
+### FE tests (+3 cases BillingReportPage.test.jsx)
+- persist depositPeriod on tab change → saveBillingReportFilterApi FIRST_HALF
+- persist receiptBasis on tab change → saveBillingReportFilterApi CLAIM
+- hydrate from saved filters → fetchBillingReportFiltersApi + fetchReport q/period
+
+### BE tests (+1 @fd0a3b3)
+- recordFromReportQueryShouldNotRequireWriteScope — autosave on GET report must not call validateBranchWriteScope
+
+## 판정
+- BNK-493 P3 candidate G-BILLING-REPORT-FILTER-PERSISTENCE △(BE only) → **✅ FULL-STACK CLOSURE**
+- module 7-6 수납대장 coverage 1.0 carry · KPI 78.79% 불변
+- ogada **✅ superset** vs 케어포 p.91(반월 UI)·이지케어 demo(session-only「가정」)

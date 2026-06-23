@@ -1,0 +1,44 @@
+# BNK-555 케어포 M7 본인부담 7-x lifecycle tri-source cross-walk
+# 조사일: 2026-06-23T17:25Z | ogada FE @426d63a / BE @c4e6bcb
+
+## 신규 evidence ★★★
+- [PDF p.90 청구시작](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=90) HTTP 200 · md5 `96f7d45e` · 「7-3.청구시작 금액설정」·1회 생성 후 locked
+- [func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) HTTP 200 · `6226e6eb` · 337차 IDENTICAL
+- [demo-work Wayback id_](https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/) HTTP 200 · `ebee4d47` 71,742B (on-disk `b2e8e5c8` 75,587B dual-snapshot·M7 10-leaf verbatim 동일)
+
+## M7 leaf 전수 (func 11 · demo 10 · PDF 워크플로 8블록)
+
+| func | demo L07 | PDF | ogada Route | 판정 |
+|---|---|---|---|---|
+| 7-1 청구관리 | view.cost_master | p.86-87 청구·발송 | /billing · /billing/claims/:id + StatementDispatchPanel | ✅ |
+| 7-2 입금관리 | view.cost_receipt | p.88 입금·은행엑셀 8행 | /billing/payments + BankDepositImportPanel | ✅ |
+| 7-2-1 의료비공제 | view.cost_master_statistic | p.92 ① 국세청 엑셀 | /billing/reports/statistics | ✅ |
+| 7-3 미납관리 | view.cost_nopay | p.89 ①~⑤ 미납·조정·문자 | /billing/overdue | ✅ |
+| **7-3(PDF)** 청구시작 | **(leaf 0)** | **p.90 온보딩·locked** | G33 `/settings/billing/start-balance` embed | △ UX |
+| 7-4 CMS | view.cms_manage | — | /billing/cms | ✅ |
+| 7-5 간편결제 | view.npay_manage | — | /billing/easy-pay | ✅ |
+| 7-6 청구대장 | view.cost_master_report | p.91 ① (PDF는 7-5) | /billing/reports/charges | ✅ |
+| 7-7 입금대장 | view.cost_deposit_report | p.91 ② half-month | /billing/reports/deposits | ✅ |
+| 7-8 수납대장 | view.cost_receipt_report | p.91 ③ 청구/수납기준 | /billing/reports/receipts | ✅ |
+| 7-9 수납·환불 | view.cost_receipt_apply_yearly | — | /billing/reports/refunds | ✅ |
+| 7-10 계산기 | **demo hidden** | — | /billing/calculator | ✅ superset |
+
+ogada superset +5: /billing/cash-receipts · /copay-rates · /fee-schedules · /imports/nhis · /imports/nhis/:batchId
+
+## 워크플로 가드 3건 (PDF 확인)
+1. **7-1→7-2 선행입금** (p.85): 8월 청구 전 7월 입금 미처리 → 이전미납금 잔존(자동 삭제 없음).
+2. **생성기준 분기** (p.86): 9-1 시설설정 「청구명세서생성기준」= 청구내역상세(엑셀) vs 일정(2-1).
+3. **청구시작 locked** (p.90): 본인부담금 1회 생성 후 청구시작 설정 변경 불가·초기화=청구내역 전체 삭제.
+
+## 번호 drift (확인)
+- PDF p.91 리포트 = 7-5/7-6/7-7 · func/demo = 7-6/7-7/7-8 → **7-4·7-5 CMS·간편결제 삽입 +1 시프트**.
+- PDF p.90 「7-3 청구시작」 vs func 「7-3 미납」= **동일 번호 이중 의미**(온보딩 vs 운영).
+
+## 리포트 밀도·시설 셸
+- ogada 23/111 = **20.7%** · demo 34/114 loadPage = **29.8%** · 갭 **−9.1%p** carry
+- demo transport/송영/이동서비스 grep **0** · loadPage 114 · view unique 134
+
+## planner 액션
+- P2 G-REPORT-DENSITY carry (−9.1%p)
+- P3 G-BILLING-START-STANDALONE 「가정」: 케어포 p.90 전용 화면 vs ogada G33 embed — MVP 기능 parity ✅·UX 분리 검토
+- module 7 coverage 1.0 유지(11/11 + superset)

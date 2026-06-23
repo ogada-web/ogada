@@ -1,0 +1,48 @@
+BNK-544 — 교차검증·갭 우선순위 8h+ (2026-06-23T09:20Z)
+=========================================================
+
+[ogada git 실측 @HEAD]
+FE develop = 949e9bf  feat(v1.2.1/US-R01): show branch scope on staff HR roster pages  (WT CLEAN · ahead 186 vs origin/test · BNK-543 carry · HEAD zero advance)
+BE develop = 40ab9e7  fix(v2/us-r01): honor active branch context in annual leave roster  (WT CLEAN · ahead 527 vs origin/test · BNK-543 carry · HEAD zero advance)
+merge gate = 186 + 527 = 713  (carry vs BNK-543 · tester FF merge 적체)
+
+KPI (git ls-tree develop 정본 · 전부 carry):
+  111 Route (110 path= App.jsx + 1 <Routes> wrapper)
+  89 *Page.jsx (+ RootRedirect = 90)
+  V1–V173
+  BE Test 247 파일 (@Test 1,813)
+  FE test 450 (183 *.test.js + 267 *.test.jsx)
+  모듈 78.79% (22.85/29)
+
+[모듈 커버리지 29-feature 정본 재검증 — competitorModuleCoverage.js @949e9bf]
+sum = 22.85 / 29 = 78.79%  (zero drift · ✅완전 20·△부분 4·❌갭 5)
+  △부분 4: 2 이동서비스 0.85 · 7-4 CMS·간편결제 0.65 · 8 직원·근태 0.85 · 10 부가서비스(SMS·알림) 0.5
+  ❌갭   5: 1-5 가정통신문 · 1-10 연계기록지 · 6 위생·안전 점검 · 11 직원 급여 · 12 수입지출·회계
+           (전부 의도적 MVP out-of-scope — 재무/HR/시설인증 클러스터)
+  주의: `coverage:` grep 시 line5 주석 `coverage: 1 =` 1건이 +1.00/+1 과집계 →
+        23.85/30 으로 보일 수 있음. 정본은 엔트리 29건 합 22.85 = 78.79%.
+
+[4축 P0/P1 교차검증 — 재오픈 0]
+  G14 케어플랜(care-plan-form)   : ✅ App.jsx path 존재 (LIVE)
+  대시보드(/dashboard)           : ✅ App.jsx path 존재 (LIVE·module 1-7 coverage 1)
+  v1.3-C(이동서비스/Kakao quota) : ✅ module 2 0.85·G15 carry
+  v2 CMS(/billing/cms)           : ✅ App.jsx path 존재 (module 7-4 0.65 carry)
+  → P0/P1 backlog 비움 유지·신규 core 갭 0.
+
+[경쟁사 backbone 재실측 — live HTTP/SIZE/md5 vs on-disk]
+  NHIS #44 joHistory : 200 · 7,572B · c886ff1f  ↔ nhis_jo44.html c886ff1f   → 330차 IDENTICAL (zero drift)
+  ezCare top-nav-V2  : 200 · 25,470B · 95286775  ↔ ezcare_top_nav_v2.js 95286775 → IDENTICAL (zero drift)
+  silverangel notice : 200 · 3,594,181B · 52c9457f ↔ silverangel_notice_list_bnk540.html 52c9457f → IDENTICAL (weekly notice 0·최신 게시 Tmp_idx≤221551)
+
+[ezCare home DRIFT — banner 회전 + 재가기관 counter +2 (덮어쓰기 1건)]
+  on-disk a38a53b3 (106,086B) → live edcaf21d (106,147B · +61B)
+  home.js?1782197288 → ?1782206515 (cachebuster)
+  banner [공지] → [추천 이벤트]            (compliance→marketing referral 회전)
+  mCnt {1:9271,2:4595,3:2353,4:1820} → {1:9273,2:4595,3:2353,4:1820}  (재가기관 +2)
+  strip-cachebuster diff = DIFF (counter/banner) → 단순 cachebuster 아님·실 counter drift
+  엑셀 포맷 변경 0.
+
+[판정]
+  가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 0(HEAD zero advance·양쪽 WT CLEAN)
+  미확인 0 신규(longterm live session gate carry) · 신규 snapshot 1건(본 extract)
+  덮어쓰기 1건(ezcare_home) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.

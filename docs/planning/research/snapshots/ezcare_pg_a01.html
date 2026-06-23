@@ -1,0 +1,825 @@
+
+<!-- dtd -->
+<!doctype html>
+<html lang="ko">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>이지케어 재가장기요양기관 업무관리 프로그램</title>
+<link rel="Shortcut Icon" href="/favicon.ico"><!-- 파비콘 -->
+<link rel="apple-touch-icon-precomposed" href="/homepage/favicon.png"><!-- 파비콘 -->
+<meta name="Title" content="">
+<meta name="Subject" content="">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="방문일정관리, 수급자관리, 요양보호사급여관리, 재가센터 업무서식제공, 가산수가계산, 재가기관 업무관리프로그램">
+<meta name="reply-to" content="">
+<meta name="Robots" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="이지케어">
+<meta property="og:description" content="">
+<meta property="og:image" content="">
+<meta property="og:url" content="https://ezcare.easyms.co.kr/">
+<meta name="twitter:card" content="">
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="">
+<meta name="twitter:domain" content="">
+<meta name="google-site-verification" content="">
+<meta name="naver-site-verification" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1"><!-- 모바일사이트, 반응형사이트 제작시 사용 -->
+<meta name="format-detection" content="telephone=no"/><!-- ios 자동전화걸기 방지 -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/reset.css?2021-04-16">
+<link rel="stylesheet" type="text/css" href="/homepage/css/common.css?2021-12-27"><!-- 공통 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/layout.css?2021-07-20"><!-- 레이아웃 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/main.css?2023-01-30" /><!-- 메인 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/content.css?2021-07-121"><!-- 컨텐츠 css -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/layout_responsive.css"><!-- 레이아웃 반응형 css -->
+<!-- 플러그인 -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/slick.css">
+<link rel="stylesheet" type="text/css" href="/homepage/css/jquery.mCustomScrollbar.css">
+<link rel="stylesheet" type="text/css" href="/homepage/css/aos.css" />
+<!-- 아이콘폰트 -->
+<link rel="stylesheet" type="text/css" href="/homepage/css/xeicon.min.css"><!-- naver -->
+
+
+<script src="/homepage/js/vendor/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/homepage/js/vendor/jquery.easing.1.3.js"></script>
+
+
+<script type="text/javascript" src="/homepage/js/home.js?1782227933"></script>
+<link rel="stylesheet" type="text/css" href="/homepage/css/home.css?2021-04-16" />
+<script type="text/javascript" src="/assets/jquery/plugin/jquery.number.js"></script>
+<script type="text/javascript" src="/assets/jquery/plugin/jquery.cookie.js"></script>
+<link rel="stylesheet" type="text/css" href="/homepage/css/story.css" />
+
+<script>
+
+	//2022.08.26 주팀장추가  accessClick
+	var PGID = "a01";
+
+
+	$(function  () {
+		dep1 = 0,
+		dep2 = 0;
+	});
+	var chk = 0;
+
+	var mov_data = JSON.parse('[{"seq":"37","title":"\ud1b5\uc7a5\uac70\ub798\ub0b4\uc5ed \uac04\ud3b8\uc870\ud68c \uc11c\ube44\uc2a4 \uc548\ub0b4","url":"https:\/\/youtu.be\/UouweNn8NGY","img":"\/homepage\/file\/youtube\/sub_video_img-1716856769.png","no":null,"states":"Y","regist_date":"2024-05-28 09:39:29","update_date":"2024-05-28 09:39:29"},{"seq":"36","title":"\ubcf8\uc778\ubd80\ub2f4\uae08 \ud604\uae08\uc601\uc218\uc99d \ubc1c\uc0dd \uc11c\ube44\uc2a4 \uc548","url":"https:\/\/youtu.be\/DsyEa08AyoY","img":"\/homepage\/file\/youtube\/sub_video_img-1716856738.png","no":null,"states":"Y","regist_date":"2024-05-28 09:38:58","update_date":"2024-05-28 09:38:58"},{"seq":"35","title":"\ubcf8\uc778\ubd80\ub2f4\uae08 \uad00\ub9ac \uae30\ub2a5 \uc548\ub0b4","url":"https:\/\/youtu.be\/z5gokWXIWqA","img":"\/homepage\/file\/youtube\/sub_video_img-1716856654.png","no":null,"states":"Y","regist_date":"2024-05-28 09:37:34","update_date":"2024-05-28 09:37:34"},{"seq":"34","title":"\uc7ac\uac00\uae30\uad00 \ud544\uc218\uc5c5\ubb34_\uacb0\uc0b0\ubcf4\uace0","url":"https:\/\/youtu.be\/CVOvPYdaYGo","img":"\/homepage\/file\/youtube\/sub_video_img-1710141595.png","no":null,"states":"Y","regist_date":"2024-03-11 16:19:55","update_date":"2024-03-11 16:19:55"},{"seq":"31","title":"\uc694\uc591\uae30\uad00 \uc5f0\ub9d0\uc815\uc0b0 \ud575\uc2ec Q&A","url":"https:\/\/youtu.be\/AZsC2VF9vtQ","img":"\/homepage\/file\/youtube\/sub_video_img-1707885371.png","no":null,"states":"Y","regist_date":"2024-02-14 13:36:11","update_date":"2024-02-14 13:36:11"},{"seq":"30","title":"\ub514\uc9c0\ud138 \uc0ac\uc778 \uae30\ub2a5 \uc548\ub0b4","url":"https:\/\/youtu.be\/ZHM3NFhrTuc","img":"\/homepage\/file\/youtube\/sub_video_img-1707971601.png","no":null,"states":"Y","regist_date":"2024-02-14 13:33:48","update_date":"2024-02-15 13:33:21"},{"seq":"29","title":"\uad00\ub9ac\uc790 \uc77c\uc815 \uc5f0\ub3d9 \uae30\ub2a5 \uc548\ub0b4","url":"https:\/\/youtu.be\/ITkGQeVgZIA","img":"\/homepage\/file\/youtube\/sub_video_img-1707971587.png","no":null,"states":"Y","regist_date":"2024-02-14 13:32:43","update_date":"2024-02-15 13:33:07"},{"seq":"28","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uc774\ub2e4\uc601\uac15\uc0ac)_1\/4","url":"yG67bQXQXIw","img":"\/homepage\/file\/youtube\/sub_video_img-1659947107.jpg","no":null,"states":"Y","regist_date":"2022-08-08 17:25:07","update_date":"2022-08-08 17:25:07"},{"seq":"27","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uc774\ub2e4\uc601\uac15\uc0ac)_2\/4","url":"au8ehWLPePU","img":"\/homepage\/file\/youtube\/sub_video_img-1659946991.jpg","no":null,"states":"Y","regist_date":"2022-08-08 17:23:11","update_date":"2022-08-08 17:23:11"},{"seq":"25","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_1\/4","url":"tuR8f2hC0iw","img":"\/homepage\/file\/youtube\/sub_video_img-1655810094.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:14:54","update_date":"2022-07-11 07:38:13"},{"seq":"24","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_2\/4","url":"GqNTfaKym7Y","img":"\/homepage\/file\/youtube\/sub_video_img-1655810068.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:14:28","update_date":"2022-07-11 07:38:02"},{"seq":"23","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_3\/4","url":"5wtUfNCakN0","img":"\/homepage\/file\/youtube\/sub_video_img-1655810039.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:13:59","update_date":"2022-07-11 07:37:49"},{"seq":"22","title":"\uc774\uc9c0\ucf00\uc5b4 \uacf5\ub2e8\ud3c9\uac00 \uad50\uc721(\uae40\ucd98\ucd94\uac15\uc0ac)_4\/4","url":"ktg-vnwOUqs","img":"\/homepage\/file\/youtube\/sub_video_img-1655858332.jpg","no":null,"states":"Y","regist_date":"2022-06-21 20:13:12","update_date":"2022-07-11 07:37:35"},{"seq":"15","title":"\uc7a5\uae30\uc694\uc591\uae30\uad00 \uc7ac\ubb34\ud68c\uacc4 Q&A","url":"bb8m8ptO0ms","img":"\/homepage\/file\/youtube\/sub_video_img-11.jpg","no":null,"states":"Y","regist_date":"2022-06-03 13:06:48","update_date":"2022-06-03 13:07:30"},{"seq":"11","title":"\uc7a5\uae30\uc694\uc591\uae30\uad00 \uc7ac\ubb34\ud68c\uacc4 Q&A","url":"FVC4O0e_59Q","img":"\/homepage\/file\/youtube\/sub_video_img-10.png","no":null,"states":"Y","regist_date":"2021-07-19 13:07:08","update_date":"2022-06-08 17:28:48"},{"seq":"10","title":"\uc7a5\uae30\uc694\uc591\uae30\uad00 \uc7ac\ubb34\ud68c\uacc4 Q&A","url":"XExk0aPDOdQ","img":"\/homepage\/file\/youtube\/sub_video_img-09.png","no":null,"states":"Y","regist_date":"2021-07-19 13:07:08","update_date":"2022-06-08 17:28:57"},{"seq":"9","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\uc5c5\ubb34\ud604\ud669\u201d \ud654\uba74 \uc548\ub0b4","url":"1zPnOHBAfKg","img":"\/homepage\/file\/youtube\/main_video_img-01.png","no":null,"states":"Y","regist_date":"2021-07-19 13:07:08","update_date":"0000-00-00 00:00:00"},{"seq":"8","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\ud68c\uacc4\uad00\ub9ac\u201d \ud654\uba74 \uc548\ub0b4","url":"D9m5WsNrbiE","img":"\/homepage\/file\/youtube\/sub_video_img-02.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"7","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\uc138\ubb34\uc2e0\uace0\u201d \ud654\uba74 \uc548\ub0b4","url":"l63PfJvCT64","img":"\/homepage\/file\/youtube\/sub_video_img-03.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"6","title":"\uc7ac\ubb34\ud68c\uacc4\uc11c\ube44\uc2a4 \u201c\uace0\uac1d\uc13c\ud130\u201d \ud654\uba74 \uc548\ub0b4","url":"xmGi5STiBzQ","img":"\/homepage\/file\/youtube\/sub_video_img-04.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"5","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uc218\uae09\uc790 \ub4f1\ub85d\u201d \uae30\ub2a5 \uc548\ub0b4","url":"Gi-2ac4dbXs","img":"\/homepage\/file\/youtube\/sub_video_img-05.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"4","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uc9c1\uc6d0 \ub4f1\ub85d\u201d \uae30\ub2a5 \uc548\ub0b4","url":"8ViUORNGT88","img":"\/homepage\/file\/youtube\/sub_video_img-06.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"3","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uacf5\ub2e8\uc77c\uc815 \uc5f0\ub3d9\u201d \uae30\ub2a5 \uc548\ub0b4","url":"dnNAsuJZTRw","img":"\/homepage\/file\/youtube\/sub_video_img-07.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"},{"seq":"2","title":"\uc774\uc9c0\ucf00\uc5b4 \u201c\uc77c\uc815 \uad00\ub9ac\u201d \uae30\ub2a5 \uc548\ub0b4","url":"9ggKh6b9L5Y","img":"\/homepage\/file\/youtube\/sub_video_img-08.png","no":null,"states":"Y","regist_date":"2021-07-19 11:52:49","update_date":"0000-00-00 00:00:00"}]');
+	var ez_intro_mov = [];
+	
+	mov_data.forEach(function(el) {
+		var tmp = {
+			title : el.title
+			, bgImg : el.img
+			, url : 'https://www.youtube.com/embed/' + el.url
+		}
+		ez_intro_mov.push(tmp);
+	});
+	
+	// var ez_intro_mov = [
+	// 	{
+	// 		title:"이지케어 공단평가 교육_02",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-1654673814.jpg",
+	// 		url:"https://www.youtube.com/embed/GqNTfaKym7Y"
+	// 	},
+	// 	{
+	// 		title:"이지케어 공단평가 교육_01",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-1654229208.jpg",
+	// 		url:"https://www.youtube.com/embed/tuR8f2hC0iw"
+	// 	},
+	// 	{
+	// 		title:"장기요양기관 재무회계 Q&A",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-11.jpg",
+	// 		url:"https://www.youtube.com/embed/bb8m8ptO0ms"
+	// 	},
+	// 	{
+	// 		title:"장기요양기관 재무회계 Q&A",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-10.png",
+	// 		url:"https://www.youtube.com/embed/FVC4O0e_59Q"
+	// 	},
+	// 	{
+	// 		title:"장기요양기관 재무회계 Q&A",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-09.png",
+	// 		url:"https://www.youtube.com/embed/XExk0aPDOdQ"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “업무현황” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/main_video_img-01.png",
+	// 		url:"https://www.youtube.com/embed/1zPnOHBAfKg"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “회계관리” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-02.png",
+	// 		url:"https://www.youtube.com/embed/D9m5WsNrbiE"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “세무신고” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-03.png",
+	// 		url:"https://www.youtube.com/embed/l63PfJvCT64"
+	// 	},
+	// 	{
+	// 		title:"재무회계서비스 “고객센터” 화면 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-04.png",
+	// 		url:"https://www.youtube.com/embed/xmGi5STiBzQ"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “수급자 등록” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-05.png",
+	// 		url:"https://www.youtube.com/embed/Gi-2ac4dbXs"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “직원 등록” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-06.png",
+	// 		url:"https://www.youtube.com/embed/8ViUORNGT88"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “공단일정 연동” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-07.png",
+	// 		url:"https://www.youtube.com/embed/dnNAsuJZTRw"
+	// 	},
+	// 	{
+	// 		title:"이지케어 “일정 관리” 기능 안내",
+	// 		bgImg:"/homepage/file/youtube/sub_video_img-08.png",
+	// 		url:"https://www.youtube.com/embed/9ggKh6b9L5Y"
+	// 	}
+			
+	// ]
+
+	
+	var _NGUL = "wcs.naver.net/wcslog.js";
+	if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+	document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+</script>
+<!-- //dtd -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src=https://www.googletagmanager.com/gtag/js?id=UA-178661915-1></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-178661915-1');
+</script>
+</head> 
+
+<body>
+<!--[if lt IE 7]>
+<p class="cm-alert-ie">현재 웹브라우저에서는 사이트가 정상적으로 표시되지 않을 수 있습니다. <strong><a href="http://browsehappy.com/" target="_blank">여기를 클릭</a></strong>하여 웹브라우저를 업그레이드 하세요.</p>
+<![endif]-->
+	
+	<!-- 뷰저블 js 코드 -->
+	<script type="text/javascript">
+	(function(w, d, a){
+	    w.__beusablerumclient__ = {
+	        load : function(src){
+	            var b = d.createElement("script");
+	            b.src = src; b.async=true; b.type = "text/javascript";
+	            d.getElementsByTagName("head")[0].appendChild(b);
+	        }
+	    };w.__beusablerumclient__.load(a);
+	})(window, document, "//rum.beusable.net/script/b210907e091924u984/d9eda54976");
+	</script>
+
+	<!-- accessibility -->
+	<div class="cm-accessibility">
+		<a href="#mainContainer">본문바로가기</a>
+	</div>
+	<!-- //accessibility -->
+
+	<!-- top banner -->
+	
+	<style>
+		.header-up-con {height:auto;}
+		.header-up-con-txt p {line-height:25px;animation:blink 3s infinite linear;margin-top:10px;}
+		.header-up-con-tit .pc-tit {line-height:70px;}
+		.header-up-con-tit .pc-tit:before {height:70px;background-size:100%;width:140px;left:-140px;}
+		.header-up-con-tit .pc-tit:after {height:70px;background-size:100%;width:56px;right:-56px;}
+		.slide-close-con {top:10px;}
+
+		@keyframes blink {
+			0% {opacity:1;}
+			25% {opacity:1;}
+			50% {opacity:.3;}
+			75% {opacity:1;}
+			100% {opacity:1;}
+		}
+
+		@media (max-width: 800px) {
+			.header-up-con-txt p {line-height:24px;}
+			.header-up-con-tit .m-tit {
+				/* line-height:48px; */
+				line-height:58px;
+			}
+			.header-up-con-tit .m-tit:after {
+				height:58px;
+				right:-40px;
+				width:40px;
+			}
+		}
+	</style>
+	<div class="header-up-con" style="">
+		<div class="header-up-con-inner">
+			<div class="area clearfix">
+				<div class="header-up-con-tit"><h5 class="pc-tit">NOTICE & NEWS</h5><h5 class="m-tit">N</h5></div>
+				<div class="header-up-con-txt">
+					<!-- 25.04.01 부터 주야간 50% 할인 이벤트 제외 -->
+											<a href="https://cafe.naver.com/egcare/24211" target="_blank"><p class="text-ellipsis"><span>[추천 이벤트]</span><br/>이지케어 · 이지케어 재무회계 추천하고 다양한 선물 받아가세요. </p></a>
+									</div>
+			</div>
+		</div>
+	   
+		<div class="header-up-con-area area">
+			<div class="slide-close-con">
+				<fieldset class="close-checkbox">
+					<span class="checkbox-item">
+						<input type="checkbox" id="chk-top-notice-today-close" name="" class="checkbox-check">
+						<label for="chk-top-notice-today-close"><span>오늘하루열지않기</span><i class="xi-check"></i></label>   
+					</span>
+				</fieldset>
+				<a href="javascript:;" class="close-btn bnr-close-btn"><span><i class="xi-close-thin"></i></span></a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- //top banner -->
+
+	<div id="wrap" class="main-wrap">
+		<!-- header -->
+		<header id="header" class="">
+			<div class="gnb-overlay-bg"></div>
+			<div id="headerInnerWrap">
+				<!-- ****************** 헤더상단 ********************** -->
+				<div id="headerInner" class="clearfix">
+					<h1 class="logo"><a href="/"><em class="blind">메인으로</em><img src="/homepage/images/common/logo.png" alt="" /></a></h1>
+					<div class="header-util-box">
+						<!-- 사이트맵 버튼 ( 기본 ) -->
+						<a href="javascript:;" class="sitemap-line-btn" title="사이트맵 열기" onclick="modalPopupOpen('#popupSitemap')">
+							<span class="line line1"></span><span class="line line2"></span><span class="line line3"></span><span class="line line4"></span>
+						</a>
+					</div>
+				</div>
+				<!-- ****************** GNB ********************** -->
+				<!-- GNB PC  -->
+				<nav id="gnb" class="total-menu">
+					<h2 class="blind">주메뉴</h2>
+					<div id="gnbBg"></div>
+					<ul class="clearfix menu6 area">
+						<li class="gnb1">
+							<a href="javascript:;">이지케어 소개</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?PG=e01#fixedIntroCon02"><span>이용현황 & 특징</span></a></li>
+									<!-- <li><a href="?PG=e01&anchor=fixedIntroCon02"><span>이지케어 이용 현황</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon03"><span>이지케어 특징</span></a></li> -->
+									<li><a href="?PG=f01"><span>주요 기능</span></a></li><!-- gnb2메뉴 축소->이동 -->
+									<li><a href="javascript:demoAction('gnb_pc')"  hit-id="3002"><span>데모 체험하기</span></a></li>
+									<li><a href="javascript:;" hit-id="1311" onclick="popup_charge()"><span>★ 이용 요금표</span></a></li>
+								</ul>
+							</div>
+						</li>
+						<!-- <li class="gnb2">
+							<a href="javascript:;">주요 기능</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?PG=f01"><span>주요 기능</span></a></li>
+									<li><a href="?anchor=mainVideoCon"><span>주요 기능 동영상으로 보기</span></a></li>
+								</ul>
+							</div>
+						</li> -->
+						<li class="gnb4">
+							<a href="javascript:;">재무회계 대행</a>
+							<div class="gnb-2dep">
+								<ul>
+									<!-- <li><a href="?PG=a01"><span>서비스소개(제공내용&특징)</span></a></li> -->
+									<li><a href="javascript:;" onclick="popup_w4c_intro()" hit-id="1331"><span>방문요양<br/>서비스 특징</span></a></li>
+									<li><a href="javascript:;" onclick="popup_daycare_intro()"><span>주간보호<br/>서비스 특징</span></a></li>
+									<li><a href="javascript:w4cAction('w4c_side')"  hit-id="1332"><span>서비스 체험하기</span></a></li>
+									<li><a href="javascript:;" hit-id="1311" onclick="pop_calc()"><span>★ 이용 요금표</span></a></li>
+									<!-- <li><a href="javascript:;" hit-id="1311" onclick="popup_charge('w4c')"><span>★ 이용 요금표</span></a></li> -->
+									<!-- <li><a href="?PG=a01&anchor=fixedServiceCon01"><span>서비스 소개</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon02"><span>서비스 주요 기능</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon03"><span>제공 서비스</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon04"><span>서비스 특징</span></a></li> -->
+								</ul>
+							</div>
+						</li>
+						<li class="gnb3">
+							<a href="javascript:;">도입 효과</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?dataTab=tabCon01#tabCon01"><span>사용기관 인터뷰</span></a></li>
+									<li><a href="javascript:;" onclick="popup_review()" hit-id="1321"><span>사용후기  </span></a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="gnb5">
+							<a href="?PG=j01">이용신청</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?PG=j01"><span>이용 신청하기 </span></a></li>
+									<!-- <li><a href="javascript:popup_counsel('homepage');" hit-id="1337" ><span>상담 신청하기</span></a></li> -->
+								</ul>
+							</div>
+						</li>
+						<li class="gnb6">
+							<a href="javascript:;">이지케어 소식</a>
+							<div class="gnb-2dep">
+								<ul>
+									<li><a href="?dataTab=tabCon03"><span>고객 이용 현황</span></a></li>
+									<li><a href="?dataTab=tabCon04"><span>이지케어 게시판</span></a></li>
+									<li><a href="?PG=easyms"><span>이지엠소프트 소개</span></a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<!-- GNB Mobile -->
+			<button class="nav-open-btn" title="네비게이션 열기">
+				<span class="line line1"></span><span class="line line2"></span><span class="line line3"></span><span class="line line4"></span>
+			</button>
+			<div class="gnb-overlay-bg-m"></div>
+			<nav id="gnbM" class="gnb-style-basic">
+				<!-- 
+					기본스타일 : .gnb-style-basic
+					Full 스타일 : .gnb-style-full
+				-->
+				<h2 class="blind">주메뉴</h2>
+				<div class="gnb-navigation-wrapper">
+					<div class="gnb-navigation-inner">
+						<ul id="navigation">
+							<li>
+								<a href="javascript:;">이지케어 소개</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=e01"><span>이지케어<br>주요기능&특징</span></a></li>
+									<!-- <li><a href="?PG=e01&anchor=fixedIntroCon02"><span>이지케어 이용 현황</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon03"><span>이지케어 특징</span></a></li> -->
+									<li><a href="javascript:;" hit-id="1311" onclick="popup_charge()"><span>★ 이용 요금표</span></a></li>
+									<!-- <li><a href="?PG=e01"><span>이지케어 소개 영상</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon02"><span>이지케어 이용 현황</span></a></li>
+									<li><a href="?PG=e01&anchor=fixedIntroCon03"><span>이지케어 특징</span></a></li>
+									<li><a href="javascript:;" hit-id="1313" onclick="popup_charge()"><span>★ 이용 요금표</span></a></li> -->
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">주요 기능</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=f01"><span>주요 기능</span></a></li>
+									<li><a href="?anchor=mainVideoCon"><span>주요 기능 동영상으로 보기</span></a></li>
+									<li><a href="javascript:demoAction('gnb_pc')"  hit-id="3002"><span>데모 체험하기</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">도입 효과</a>
+								<ul class="gnb-2dep">
+									<li><a href="?dataTab=tabCon01"><span>사용기관 인터뷰</span></a></li>
+									<li><a href="javascript:;" onclick="popup_review()" hit-id="1321"><span>★ 사용후기 </span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">재무회계 대행</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=a01&anchor=fixedServiceCon01"><span>소개&제공 서비스</span></a></li>
+									<!-- <li><a href="?PG=a01&anchor=fixedServiceCon02"><span>제공 서비스</span></a></li>
+									<li><a href="?PG=a01&anchor=fixedServiceCon03"><span>서비스 특징</span></a></li> -->
+									<li><a href="javascript:;" onclick="popup_w4c_intro()" hit-id="1331"><span>★ 웹 카달로그 보기</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">가입하기</a>
+								<ul class="gnb-2dep">
+									<li><a href="?PG=j01"><span>★ 이용 신청하기</span></a></li>
+									<li><a href="?PG=j03"><span>가입 상담 신청하기</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="javascript:;">이지케어 소식</a>
+								<ul class="gnb-2dep">
+									<li><a href="?dataTab=tabCon03"><span>고객 가입 현황</span></a></li>
+									<li><a href="?dataTab=tabCon04"><span>이지케어 게시판</span></a></li>
+									<li><a href="?PG=easyms"><span>이지엠소프트 소개</span></a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<!-- 팝업내용 :: 사이트맵 -->
+		<div class="layer-fixed-pop-wrapper layer-popup" id="popupSitemap">
+			<div class="modal-fixed-pop-inner">
+				<div class="modal-inner-box">
+					<div class="modal-inner-content">
+						<section id="siteMapCon" class="footer-modal-content">
+							<a href="javascript:;" class="close-icon-style modal-close-btn" onclick="modalPopupClose('#popupSitemap')" title="팝업 닫기"><i class="xi-close"></i></a>
+							<h1>사이트맵</h1>
+							<article class="sitemap-wrapper"></article>
+						</section>
+
+						<script type="text/javascript">
+							// 대메뉴복사 후 사이트맵 삽입
+							var $sitemapGnbList = $("#gnb > ul > li");
+							var gnbLength = $sitemapGnbList.length;
+							$(".sitemap-wrapper").append("<ul></ul>");
+							
+							for(var i=0; i < gnbLength; i++){
+								var $gnb1depItem = $sitemapGnbList.eq(i).children("a");
+								var $gnb2depList = $sitemapGnbList.eq(i).find(".gnb-2dep > ul").html() ? $sitemapGnbList.eq(i).find(".gnb-2dep > ul").html() :	'<a href="'+$gnb1depItem.attr("href")+'">'+$gnb1depItem.text()+'</a>';
+								$(".sitemap-wrapper > ul").append('<li><h2>'+$gnb1depItem.text()+'</h2><ul class="sitemap-2dep">'+$gnb2depList+'</ul></li>');
+							}
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+<!-- 내용 끼워넣기 시작 ######################################################  -->
+
+<script type="text/javascript">
+	$(function  () {
+		dep1 = 4,
+		dep2 = 1,
+		page_info = "재무회계 서비스";
+		sub_info = "재무회계 서비스";
+		page_section = "accounting";	
+		sub_section = "accounting";	
+
+		$(".visual-tit").html(page_info);
+		$(".page-info-tit").html(page_info);
+		$(".sub-info-tit").html(sub_info);
+	})
+</script>
+
+<!-- container -->
+<div id="container">
+	<!-- location -->
+	<div class="sub-location">
+		<div class="area">
+			<div class="location">
+				<ul>
+					<li><a href="/" title="HOME"><i class="xi-home-o"></i></a></li>
+					<li class="page-info-tit"></li>
+					<li class="sub-info-tit"></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //location -->
+	<!-- visual -->
+	<section id="visual" class="sub-visual">
+		<div class="visual-img-con" style="background:#eee url(./home/images/layout/sub_visual_03_bg.jpg) no-repeat 50% 0%"></div>
+		<div class="area visual-txt-con">
+			<div class="table-cell-layout">
+				<div class="visual-txt-container">
+					<h2 class="visual-tit trans400"></h2>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- //visual -->
+	<!-- middleArea -->
+	<div id="middleArea">
+
+		<!-- content -->
+		<!-- content -->
+		<section id="content" class="pt-0 wide">
+			<!-- 실제 페이지 컨텐츠 내용이 시작되는 곳입니다 -->
+			<article class="sub-page cm-fixed-tab-container-JS">
+				<aside class="intro-tab-wrapper-style">
+					<div class="intro-tab-list-style intro-drop-menu-style cm-fixed-tab-list-JS cm-drop-menu-box-JS" data-drop-width="800" data-drop-event="click">
+						<div class="area">
+							<a href="javascript:;" class="intro-drop-open-btn-style cm-drop-open-btn-JS"><span>서비스 소개</span><i class="xi-angle-down arrow"></i></a>
+							<ul class="clearfix cm-drop-list-JS">
+								<li class="item selected"><a href="#fixedServiceCon01"><em>서비스 소개</em></a></li>
+								<li class="item"><a href="#fixedServiceCon02"><em>서비스 주요 기능</em></a></li>
+								<li class="item"><a href="#fixedServiceCon03"><em>제공 서비스</em></a></li>
+								<li class="item"><a href="#fixedServiceCon04"><em>서비스 특징</em></a></li>
+							</ul>
+						</div>
+					</div>
+				</aside>
+				<div class="sub-tab-content-style">
+					<div class="sub-tab-con area" id="fixedServiceCon01">
+						<h4 class="intro-icon-with-tit"><span class="icon-tit">서비스 소개</span></h4>
+						<span class="service-gray-txt">장기요양기관의 필수 업무  『세무·재무회계』 더 이상 어려워하지 마시고</span>
+						<h5 class="intro-sub-title">이제 <span class="blue-color-txt">이지케어</span>에 맡기세요!</h5>
+						<!-- <div class="circle-icon-box"><span class="circle circle01"></span><span class="circle circle02"></span><span class="circle circle03"></span></div> -->
+						<p class="intro-sub-txt">이지케어 재무회계 서비스는 <span class="bold-txt">재무회계 전문 운영 </span>인력과 <span class="bold-txt">비영리 회계전문가</span> 그리고 <span class="bold-txt">프로그램이</span><br class="pc-br" /> <span class="bold-txt">이지케어에 입력된 정보(종사자, 급여대장, 본인부담금)</span>을 기반으로 <br class="pc-br" />쉽고, 편하게, 알아서 도와주는 서비스입니다.</p>
+					</div>
+					<div class="sub-tab-con" id="fixedServiceCon02">
+							<h4 class="intro-icon-with-tit area"><span class="icon-tit">서비스 주요 기능</span></h4>
+							<div class="service-info-wrap">
+								<div class="function-area">
+									<h5 class="service-info">서비스 주요 기능</h5>
+									<div class="function-img-pc"><img src="./home/images/content/function_img_pc.png" alt="주요기능 이미지"></div>
+									<div class="function-img-m"><img src="./home/images/content/function_img_m.png" alt="주요기능 이미지"></div>
+								</div>
+							</div>
+						</div>
+					<div class="sub-tab-con" id="fixedServiceCon03">
+						<h4 class="intro-icon-with-tit area"><span class="icon-tit">제공 서비스</span></h4>
+						<div class="service-info-wrap">
+							<div class="area">
+								<h5 class="service-info">서비스 제공범위</h5>
+								<ul class="service-info-list clearfix">
+									<li>
+										<div class="info-list-tit"><strong>W4C(사회복지시설정보시스템) 회계 업무</strong></div>
+										<div class="info-list-txt">
+											<p><span class="num">01</span><em>예산/결산서 작성 입력</em></p>
+											<p><span class="num">02</span><em>W4C 회계 입력</em></p>
+											<p><span class="num">03</span><em>추가경정(추경)</em></p>
+											<p><span class="num">04</span><em>수입/지출 결의서 입력</em></p>
+											<p><span class="num">05</span><em>급여대장 등록</em></p>
+											<p><span class="num">06</span><em>영수증 증빙 처리</em></p>
+											<p><span class="num">07</span><em>총계정원장, 계정별원장, 현금출납부 작성 <br />(매월 회계장부 PDF 전자 문서로 제공)</em></p>
+										</div>
+									</li>
+									<li>
+										<div class="info-list-tit"><strong>세무 업무</strong></div>
+										<div class="info-list-txt">
+											<p><span class="num">01</span><em>원천세 신고 (근로소득세, 지방소득세)</em></p>
+											<p><span class="num">02</span><em>퇴직금/퇴직세액 정산</em></p>
+											<p><span class="num">03</span><em>근로소득간이지급명세서</em></p>
+											<p><span class="num">04</span><em>연말정산</em></p>
+										</div>
+									</li>
+									<li>
+										<div class="info-list-tit"><strong>4대보험 업무</strong></div>
+										<div class="info-list-txt">
+											<p><span class="num">01</span><em>근로자 취득/상실</em></p>
+											<p><span class="num">02</span><em>일자리 안정자금</em></p>
+											<p><span class="num">03</span><em>보수월액 변경신청</em></p>
+											<p><span class="num">04</span><em>보수총액 신고</em></p>
+										</div>
+									</li>
+									<div class="w-txt">
+										<p class="gray-warning-txt">※ 세무 및 4대보험 업무는 비영리 전문 세무 전문기관이 직접 처리합니다.</p>
+									</div>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="sub-tab-con" id="fixedServiceCon04">
+						<div class="area">
+							<h4 class="intro-icon-with-tit"><span class="icon-tit">서비스 특징</span></h4>
+							<h5 class="intro-sub-title">이지케어 재무회계서비스가 <span class="blue-color-txt">특별한</span> 이유</h5>
+						</div>
+						<div class="char-list-wrap">
+							<div class="area">
+								<ul class="char-list">
+									<li>
+										<dl>
+											<dt class="icon-box"><img src="./home/images/content/accounting_icon01.png" alt="아이콘이미지" ></dt>
+											<dd>
+												<strong>모든 요양 업무이지케어 하나로</strong>
+												<p>일정/청구/급여 업무부터 세무·재무회계까지 <br class="pc-br" />이지케어 하나로 모든 업무가 처리 가능합니다.</p>
+											</dd>
+										</dl>
+									</li>
+										<li>
+										<dl>
+											<dt class="icon-box"><img src="./home/images/content/accounting_icon02.png" alt="아이콘이미지" ></dt>
+											<dd>
+												<strong>재무회계 서비스전용 페이지 제공</strong>
+												<p>세무·재무회계 전용 페이지를 통해 업무 처리 <br class="pc-br" />현황을 언제든지 확인 가능합니다.</p>
+											</dd>
+										</dl>
+									</li>
+										<li>
+										<dl>
+											<dt class="icon-box"><img src="./home/images/content/accounting_icon03.png" alt="아이콘이미지" ></dt>
+											<dd>
+												<strong>요양 본연의 업무만 제공</strong>
+												<p>이지케어는 재가장기요양기관 본연의 업무 외에는 <br class="pc-br" />추가로 상품 판매를 권유하지 않습니다.<br />(ex. 보험 판매)</p>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl>
+											<dt class="icon-box"><img src="./home/images/content/accounting_icon04.png" alt="아이콘이미지" ></dt>
+											<dd>
+												<strong>이중작업 불필요</strong>
+												<p>이지케어에 입력된 종사자, 급여대장, 본인부담금 <br class="pc-br" />정보를 기반으로 업무를 처리하기 때문에 센터장님이 <br class="pc-br" />이중으로 작업하실 필요가 없습니다.</p>
+											</dd>
+										</dl>
+									</li>
+										<li>
+										<dl>
+											<dt class="icon-box"><img src="./home/images/content/accounting_icon05.png" alt="아이콘이미지" ></dt>
+											<dd>
+												<strong>인증서 제공 불필요</strong>
+												<p>센터장님의 인증서 및 비밀번호를 제공할 필요가 없어 <br class="pc-br" />개인 정보 노출 위험으로부터 안전합니다.</p>
+											</dd>
+										</dl>
+									</li>
+										<li>
+										<dl>
+											<dt class="icon-box"><img src="./home/images/content/accounting_icon06.png" alt="아이콘이미지" ></dt>
+											<dd>
+												<strong>영수증 전달 불필요</strong>
+												<p>통장 입/출금 내역 및 체크카드 영수증을 따로 <br class="pc-br" />전달하지 않아도 결의서 입력 및 회계 처리가 <br class="pc-br" />가능합니다.</p>
+											</dd>
+										</dl>
+									</li>
+								</ul>
+								<style type="text/css">
+									.char-list-bottom {padding:30px 0 30px 20px;font-size:15px;position: relative;line-height: 20px;}
+									.char-list-bottom:before {content: '*';position: absolute;top: 32px;left: 2px;}
+								</style>
+								<div class="char-list-bottom">
+									이지케어는 비영리 전문 회계법인인 "선율회계법인"의 자문을 통해 원칙적인 회계처리를 하고 있으며
+									<br /> "노무법인 휴램프로"에서 4대보험, 노무 서비스를 제공 및 담당하고 있습니다.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- // 실제 페이지 컨텐츠 내용이 시작되는 곳입니다 -->
+		</section>
+		<!-- //content -->
+	</div>
+	<!-- //middleArea -->
+</div>
+<!-- // container -->
+
+<!-- 내용 끼워넣기 끝 ######################################################  -->
+
+
+
+		<!-- footer -->
+		<footer id="footer">
+			<a href="#wrap" class="to-top-btn"><em class="blind">TOP</em><i class="xi-arrow-up"></i></a>
+			<!-- 푸터 하단 :: 정보 -->
+			<div id="footerMiddleCon">
+				<div class="area clearfix">
+					<!-- 푸터 왼쪽 -->
+					<article class="footer-left-con">
+						<div class="foot-left-box">
+							<p class="foot-middle-info"><strong>이지케어 프로그램</strong><em class="white-space">1644-0340</em></p>
+							<p class="foot-middle-info"><strong class="small-txt">재무회계 서비스</strong><em>1644-0340(내선)</em></p>
+						</div>
+					</article>
+					<!-- 푸터 오른쪽 -->
+					<article class="footer-right-con">
+						<div class="foot-right-box">
+							<p class="foot-middle-info"><strong class="small-txt">상담시간</strong><em class="small-txt white-space">평일  09:30 ~ 17:30</em><em class="small-txt">주말·공휴일 휴무</em></p>
+						</div>
+					</article>
+				</div>
+			</div>
+			<div id="footerBottomCon" class="area clearfix">
+				<div class="footer-left-con">
+					<div class="foot-adress-box">
+						<dl>
+							<dt class="black-txt">법인명</dt>
+							<dd class="black-txt">주식회사 이지엠소프트</dd>
+						</dl>
+						<dl>
+							<dt>대표자</dt>
+							<dd>최병인</dd>
+						</dl>
+						<dl>
+							<dt>주소</dt>
+							<dd>대구광역시 수성구 알파시티2로 18, 4층(시지동 583-2, 에이스빌딩)</dd>
+						</dl>
+						<dl>
+							<dt>사업자등록번호</dt>
+							<dd>502-86-19289</dd>
+						</dl>
+						<dl>
+							<dt>통신판매업신고번호</dt>
+							<dd>2012-대구수성구-0396</dd>
+						</dl>
+						<dl>
+							<dt>개인정보관리책임자</dt>
+							<dd>최병인</dd>
+						</dl>
+					</div>
+				</div>
+				<div class="footer-right-con">
+					<div class="foot-logo-box"><img src="/homepage/images/common/footer_logo.png" alt="로고이미지"></div>
+					<div class="foot-info-box">
+						<ul class="foot-menu">
+							<li class="selected"><a href="?PG=ag-02">개인정보처리방침</a></li>
+							<li><a href="?PG=ag-01">이용약관</a></li>
+							<li><a href="?PG=w01">제휴문의</a></li>
+						</ul>
+						<p class="foot-copyright">© <span class="blue-txt">이지케어 & 이지엠소프트</span> Corporation</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- //footer -->
+
+
+		
+
+	</div>
+	<!-- // #wrap -->
+
+	<!-- scripts -->
+	<script type="text/javascript" src="/homepage/js/jquery-fakeform-0.5.js"></script>
+	<script type="text/javascript" src="/homepage/js/slick.js"></script>
+	<script type="text/javascript" src="/homepage/js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script type="text/javascript" src="/homepage/js/aos.js"></script>
+	<script type="text/javascript" src="/homepage/js/splitting.min.js"></script>
+	<script type="text/javascript" src="/homepage/js/functions.js"></script>
+	<script type="text/javascript" src="/homepage/js/common.js?2025-10-22"></script>
+	<script type="text/javascript" src="/homepage/js/nav.js"></script>
+		<script type="text/javascript" src="/homepage/js/sub.js"></script>
+	
+	<!--[if lt IE 9]>
+		<script src="/homepage/js/vendor/html5shiv.js"></script>
+		<script src="/homepage/js/vendor/respond.min.js"></script>
+		<link rel="stylesheet" href="/homepage/css/ie8.css">
+	<![endif]-->
+	<!-- //scripts -->
+
+<script>
+	function pop_calc() {
+	    var cw = screen.availWidth;
+	    var ch = screen.availHeight;
+	        sw = 800;
+	        sh = 760;
+	        mw = (cw-sw) / 2;
+	        mh = (ch-sh) / 2;
+	        window.open('/page/landing/daycare.t1.202404/chargecalc.html', 'popup', 'width=' + sw + ', height=' + sh + ',left=' + mw + ',top='+mh+',toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no');
+	}
+
+	function popup_daycare_intro(){
+		var url = "/landing.ez?type=daycare.t1.202404&route=47540";
+		var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+		window.open(url, "daycare.t1.202404", opt);
+	}
+
+	function popup_event(){
+		var url = "/landing.ez?type=event.202307&route=2954";
+		var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+		window.open(url, "daycare.t1.202404", opt);
+	}
+
+	setInterval(function(){
+		if(!chk && $.cookie("login_uid")){
+			ezAjax({
+				type:"POST",
+				async: false,
+				url:"/?mode=login_check", dataType:"json",
+				success:function(data){
+					chk = 1;
+					$("#oInfo-name").text(data.organ);
+					$("#login_User_Name").text(data.User_Name);
+					$(".login.on").show();
+					$(".login.off").hide();
+				}
+			});
+		}else if(chk && !$.cookie("login_uid")){
+			chk = 0;
+			$(".login.on").hide();
+			$(".login.off").show();
+		}
+	}, 1000);
+
+	if(chk){
+		$(".login.on").show();
+		$(".login.off").hide();
+	}else{
+		$(".login.on").hide();
+		$(".login.off").show();
+	}
+</script>
+
+<!-- 이지케어 분석 2022.08.26 추가 -->
+<script src="/assets/accessClick.log.js?20230308" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+	var _route = "";
+	if(_route && _route!="2100") accessClick.hit(_route, "_route");
+	accessClick.hit(1100);
+//-->
+</script>
+
+
+	<script type="text/javascript">
+		var _NGUL = "wcs.naver.net/wcslog.js";
+		if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+		document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+		</script>
+		<script type="text/javascript">
+		if (!wcs_add) var wcs_add={};
+		wcs_add["wa"] = "s_5a2a6c280b8b";
+		if (!_nasa) var _nasa={};
+		wcs.inflow("easyms.co.kr");
+		wcs_do(_nasa);
+		</script>
+
+
+
+</body>
+</html>

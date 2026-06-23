@@ -1,3 +1,61 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T23:55:17+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-21 1254차)
+
+> **1254차 PASS(merge EXECUTED)** — test/develop `@dfa981c` **SYNCED** · merge **EXECUTED** FF `5fd468b`→`dfa981c` (1 commit) · pre-merge `npm test` **1970/1970 PASS**(661.39s) · post-merge `npm test` **1970/1970 PASS**(663.11s) · `npm run build` **1088 modules PASS**(8.45s) · `npm audit` **0 vulnerabilities** · `npm run test:live-e2e` **126 PASS/19 SKIP**(41.63s) · develop WT **CLEAN** · transfer **PASS** · Open **0(active frontend)** · cross-stream **SYNCED** · operation **BLOCK**
+
+## 1254차 검증 요약 (merge EXECUTED — 1 commit)
+
+| 항목 | 결과 |
+|---|---|
+| test worktree HEAD | `dfa981c` |
+| develop HEAD | `dfa981c` |
+| ahead (`test..develop`) | **0/0 (SYNCED)** |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9` 1개, 무해한 빈 파일) |
+| pre-merge npm test | **1970/1970 PASS** (384 files, 661.39s @ develop) |
+| post-merge npm test | **1970/1970 PASS** (384 files, 663.11s) |
+| build | **1088 modules SUCCESS** (8.45s) |
+| npm audit (critical+) | **0 vulnerabilities** |
+| live E2E | **126 PASS/19 SKIP** (41.63s, 50 files) |
+| backend@8080 | **UP/200** |
+| transfer verdict | **PASS** |
+| cross-stream | **SYNCED (FE@dfa981c · BE@abddbee)** |
+| operation | **BLOCK** |
+
+### Merged commit (1254차)
+
+- `dfa981c` — `feat(v1.2.1/G-BILLING-DEPOSIT-ORDER-GUARD): wire prior-deposit guard on CMS debit`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T23:14:46+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-21 1253차)
+
+> **1253차 BLOCK(merge pending 1)** — test `@5fd468b` · develop `@dfa981c` · merge **SKIP**(`test..develop` **0/1**) · `npm test` **1970/1970 PASS**(384 files, 663.49s) · `npm run build` **1088 modules PASS**(7.94s) · `npm audit` **0 vulnerabilities** · `npm run test:live-e2e` **126 PASS/19 SKIP**(35.95s) · develop WT **CLEAN** · transfer **BLOCK** · Open **1(active frontend)**(QA-B230) · cross-stream **BLOCK** · operation **BLOCK**
+
+## 1253차 검증 요약 (merge SKIP — pending 1)
+
+| 항목 | 결과 |
+|---|---|
+| test worktree HEAD | `5fd468b` |
+| develop HEAD | `dfa981c` |
+| ahead (`test..develop`) | **0/1** |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9` 1개, 무해한 빈 파일) |
+| npm test | **1970/1970 PASS** (384 files, 663.49s) |
+| build | **1088 modules SUCCESS** (7.94s) |
+| npm audit (critical+) | **0 vulnerabilities** |
+| live E2E | **126 PASS/19 SKIP** (35.95s, 50 files) |
+| transfer verdict | **BLOCK** |
+| cross-stream | **BLOCK (FE pending 1 · BE SYNCED@abddbee)** |
+| operation | **BLOCK** |
+
+### Pending commit (1253차)
+
+- `dfa981c` — `feat(v1.2.1/G-BILLING-DEPOSIT-ORDER-GUARD): wire prior-deposit guard on CMS debit`
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-21T22:44:00+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-21 1251차)
 

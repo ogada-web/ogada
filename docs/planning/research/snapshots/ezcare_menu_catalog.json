@@ -1,0 +1,785 @@
+{
+  "source": "ezcare_top_nav_v2.js main_nav_item",
+  "fetched_at": "2026-06-23T15:18:20Z",
+  "module_count": 10,
+  "leaf_item_count": 148,
+  "unique_pgid_count": 59,
+  "modules": [
+    {
+      "no": "1",
+      "name": "직원",
+      "items": [
+        {
+          "name": "검색/관리/등록",
+          "url": "worker-list",
+          "action": "link"
+        },
+        {
+          "name": "문자 보내기 & 받은쪽지 <i id=\"newMsgCnt\" class=\"messageOn\"></i>",
+          "url": "mobile-sendW",
+          "action": "dialog"
+        },
+        {
+          "name": "연간 관리 현황",
+          "url": "worker-b100",
+          "action": "link"
+        },
+        {
+          "name": "연차휴가",
+          "url": "worker-b100#tab0",
+          "action": "link"
+        },
+        {
+          "name": "건강검진",
+          "url": "worker-b100#tab1",
+          "action": "link"
+        },
+        {
+          "name": "직무교육",
+          "url": "worker-b100#tab2",
+          "action": "link"
+        },
+        {
+          "name": "보수교육 현황",
+          "url": "worker-b100#tab3",
+          "action": "link"
+        },
+        {
+          "name": "교육이수 현황",
+          "url": "worker-b100#tab4",
+          "action": "link"
+        },
+        {
+          "name": "직원 서류작성 현황",
+          "url": "worker-workerDoc",
+          "action": "link"
+        },
+        {
+          "name": "요양보호사 상담일지",
+          "url": "worker-workerDoc#tab0",
+          "action": "link"
+        },
+        {
+          "name": "관리이력 검색 및 출력",
+          "url": "worker-g03",
+          "action": "dialog"
+        },
+        {
+          "name": "직원 집계 및 현황",
+          "url": "worker-g01",
+          "action": "dialog"
+        },
+        {
+          "name": "일일 방문일정",
+          "url": "worker-g02",
+          "action": "dialog"
+        },
+        {
+          "name": "배상책임보험 관리",
+          "url": "/baseData/liability_insurance.html",
+          "action": "link"
+        },
+        {
+          "name": "배상책임보험 관리",
+          "url": "worker-insurance",
+          "action": "link"
+        },
+        {
+          "name": "코로나19 예방접종 현황",
+          "url": "worker-g04",
+          "action": "dialog"
+        },
+        {
+          "name": "직원 출퇴근부/근무일지",
+          "url": "worker-timesheet3",
+          "action": "link"
+        },
+        {
+          "name": "급여기초자료 설정",
+          "url": "wAllowance-awData#tab0",
+          "action": "dialog"
+        },
+        {
+          "name": "앱 초대하기 (접속키 발송 →요보사)",
+          "url": "mobile-aKey#tabs-mobile-app_aKey-01",
+          "action": "dialog"
+        },
+        {
+          "name": "앱 공지사항 (→요보사)",
+          "url": "mobile-notice#tabs-mobile-app-notice-01",
+          "action": "dialog"
+        },
+        {
+          "name": "직원정보 검증 및 수정",
+          "url": "worker-check.data.w4c",
+          "action": "dialog"
+        },
+        {
+          "name": "모바일 요청 확인",
+          "url": "mobile-apply",
+          "action": "dialog"
+        },
+        {
+          "name": "앱 초대하기 (초대장 발송 →요보사)",
+          "url": "mobile-aKey2#tabs-mobile-app_aKey-01",
+          "action": "dialog"
+        },
+        {
+          "name": "상근직 출퇴근부-old",
+          "url": "worker-timesheet",
+          "action": "dialog"
+        },
+        {
+          "name": "배상책임보험-news",
+          "url": "worker-insurance",
+          "action": "link"
+        }
+      ]
+    },
+    {
+      "no": "2",
+      "name": "수급자",
+      "items": [
+        {
+          "name": "검색/관리/등록",
+          "url": "patient-list",
+          "action": "link"
+        },
+        {
+          "name": "문자 보내기",
+          "url": "mobile-sendP",
+          "action": "dialog"
+        },
+        {
+          "name": "정기욕구평가 현황",
+          "url": "patient-b100",
+          "action": "link"
+        },
+        {
+          "name": "항목별 현황",
+          "url": "patient-b100#tab0",
+          "action": "link"
+        },
+        {
+          "name": "월별 현황",
+          "url": "patient-b100#tab1",
+          "action": "link"
+        },
+        {
+          "name": "월-항목별-수급자",
+          "url": "patient-b100#tab2",
+          "action": "link"
+        },
+        {
+          "name": "수급자 서류작성 현황",
+          "url": "patient-patientDoc",
+          "action": "link"
+        },
+        {
+          "name": "상태변화기록지",
+          "url": "patient-patientDoc#tab0",
+          "action": "link"
+        },
+        {
+          "name": "상담일지",
+          "url": "patient-patientDoc#tab1",
+          "action": "link"
+        },
+        {
+          "name": "직원변경 상담일지",
+          "url": "patient-patientDoc#tab2",
+          "action": "link"
+        },
+        {
+          "name": "관리이력 검색 및 출력",
+          "url": "patient-g03",
+          "action": "dialog"
+        },
+        {
+          "name": "수급자 집계 및 현황",
+          "url": "patient-g01",
+          "action": "dialog"
+        },
+        {
+          "name": "일일 방문일정",
+          "url": "patient-g02",
+          "action": "dialog"
+        },
+        {
+          "name": "코로나19 예방접종 현황",
+          "url": "patient-g04",
+          "action": "dialog"
+        },
+        {
+          "name": "앱 초대하기 (접속키 발송 →수급자)",
+          "url": "mobile-aKey#tabs-mobile-app_aKey-02",
+          "action": "dialog"
+        },
+        {
+          "name": "앱 공지사항 (→수급자)",
+          "url": "mobile-notice#tabs-mobile-app-notice-02",
+          "action": "dialog"
+        },
+        {
+          "name": "본인부담금 현금영수증",
+          "url": "receipt-list",
+          "action": "link"
+        },
+        {
+          "name": "발행 내역",
+          "url": "receipt-list#tab0",
+          "action": "link"
+        },
+        {
+          "name": "발행 정보관리",
+          "url": "receipt-list#tab1",
+          "action": "link"
+        },
+        {
+          "name": "변경사유 조회",
+          "url": "change-list",
+          "action": "link"
+        }
+      ]
+    },
+    {
+      "no": "3",
+      "name": "방문일정",
+      "items": [
+        {
+          "name": "수급자-일정관리",
+          "url": "/schedule_plan/",
+          "action": "popup"
+        },
+        {
+          "name": "관리자-일정관리",
+          "url": "/social_worker/schedule.html",
+          "action": "popup"
+        },
+        {
+          "name": "일정표 출력 및 문자발송",
+          "url": "schedule-p100",
+          "action": "link"
+        },
+        {
+          "name": "수급자 일정표(제공기록지)",
+          "url": "schedule-p100#tab0",
+          "action": "link"
+        },
+        {
+          "name": "요양보호사 일정표(근무현황표)",
+          "url": "schedule-p100#tab1",
+          "action": "link"
+        },
+        {
+          "name": "연간 서비스제공 명단",
+          "url": "schedule-p300",
+          "action": "link"
+        },
+        {
+          "name": "수급자",
+          "url": "schedule-p300#tab0",
+          "action": "link"
+        },
+        {
+          "name": "요양보호사",
+          "url": "schedule-p300#tab1",
+          "action": "link"
+        },
+        {
+          "name": "방문현황(일일, 주간, 월간)",
+          "url": "schedule-p500",
+          "action": "link"
+        },
+        {
+          "name": "중증수당 일정 집계",
+          "url": "/PU.ez?PGID=schedule-s100",
+          "action": "popup"
+        },
+        {
+          "name": "요양보호사 기준",
+          "url": "/PU.ez?PGID=schedule-s100#tab0",
+          "action": "popup"
+        },
+        {
+          "name": "수급자 기준",
+          "url": "/PU.ez?PGID=schedule-s100#tab1",
+          "action": "popup"
+        },
+        {
+          "name": "방문현황(일일, 주간, 월간)",
+          "url": "/schedule_print/statusTable.html",
+          "action": "link"
+        }
+      ]
+    },
+    {
+      "no": "4",
+      "name": "RFID점검",
+      "items": [
+        {
+          "name": "RFID태그 내역 ↔ 공단계획 비교",
+          "url": "schedule-rfid",
+          "action": "link"
+        },
+        {
+          "name": "RFID태그 내역 ↔ 공단계획 비교",
+          "url": "/schedule_plan/rfid_compare.html",
+          "action": "popup"
+        },
+        {
+          "name": "일정확정",
+          "url": "schedule-fix",
+          "action": "link"
+        }
+      ]
+    },
+    {
+      "no": "5",
+      "name": "본인부담",
+      "items": [
+        {
+          "name": "청구내역 및 명세서",
+          "url": "pAmt-a100",
+          "action": "link"
+        },
+        {
+          "name": "전체(합산)",
+          "url": "pAmt-a100#tab0",
+          "action": "link"
+        },
+        {
+          "name": "방문요양",
+          "url": "pAmt-a100#tab1",
+          "action": "link"
+        },
+        {
+          "name": "방문목욕",
+          "url": "pAmt-a100#tab2",
+          "action": "link"
+        },
+        {
+          "name": "방문간호",
+          "url": "pAmt-a100#tab3",
+          "action": "link"
+        },
+        {
+          "name": "납부내역",
+          "url": "pAmt-a200",
+          "action": "link"
+        },
+        {
+          "name": "월간 수납내역",
+          "url": "pAmt-a200#tab0",
+          "action": "link"
+        },
+        {
+          "name": "연간 수납내역",
+          "url": "pAmt-a200#tab1",
+          "action": "link"
+        },
+        {
+          "name": "장기요양급여비 납부확인서",
+          "url": "pAmt-a200#tab2",
+          "action": "link"
+        },
+        {
+          "name": "미납내역",
+          "url": "pAmt-a400",
+          "action": "link"
+        },
+        {
+          "name": "청구월별 미납금",
+          "url": "pAmt-a400#tab0",
+          "action": "link"
+        },
+        {
+          "name": "수급자별 누적 미납금",
+          "url": "pAmt-a400#tab1",
+          "action": "link"
+        },
+        {
+          "name": "청구내역 및 명세서(w4c)",
+          "url": "pAmt-a100.w4c",
+          "action": "link"
+        }
+      ]
+    },
+    {
+      "no": "6",
+      "name": "직원급여",
+      "items": [
+        {
+          "name": "급여명세서 작성 및 관리",
+          "url": "/worker_allowance_V6/load.ez",
+          "action": "popup"
+        },
+        {
+          "name": "연간 급여 및 사회보험 누계",
+          "url": "wAllowance-a100",
+          "action": "link"
+        },
+        {
+          "name": "월별 합산",
+          "url": "wAllowance-a100#tab0",
+          "action": "link"
+        },
+        {
+          "name": "직원별 합산",
+          "url": "wAllowance-a100#tab1",
+          "action": "link"
+        },
+        {
+          "name": "퇴직금 적립",
+          "url": "wAllowance-severance",
+          "action": "link"
+        },
+        {
+          "name": "퇴직금 적립",
+          "url": "/worker_allowance_V5/severance_pay.html",
+          "action": "link"
+        },
+        {
+          "name": "퇴직금 적립",
+          "url": "",
+          "action": "popup"
+        },
+        {
+          "name": "인건비 지급 비율 참고자료",
+          "url": "wAllowance-payrollcost",
+          "action": "link"
+        },
+        {
+          "name": "인건비 지급 비율 참고자료",
+          "url": "/worker_allowance_V5/payroll_cost_rate.html",
+          "action": "link"
+        },
+        {
+          "name": "급여기초자료 설정",
+          "url": "wAllowance-awData",
+          "action": "dialog"
+        },
+        {
+          "name": "수당산정방식 및 분개값",
+          "url": "wAllowance-awData#tab0",
+          "action": "dialog"
+        },
+        {
+          "name": "사회보험 현황 관리",
+          "url": "wAllowance-awData#tab1",
+          "action": "dialog"
+        },
+        {
+          "name": "월급제 수당 관리",
+          "url": "wAllowance-awData#tab2",
+          "action": "dialog"
+        },
+        {
+          "name": "목욕/간호 건별수당 설정",
+          "url": "wAllowance-a200",
+          "action": "dialog"
+        },
+        {
+          "name": "인건비 지급비율 DEV-han",
+          "url": "wAllowance-payrollcost",
+          "action": "link"
+        }
+      ]
+    },
+    {
+      "no": "7",
+      "name": "재무회계",
+      "items": [
+        {
+          "name": "통장내역 조회/입력",
+          "url": "/PU.ez?PGID=w4c-bank.statement",
+          "action": "popup"
+        },
+        {
+          "name": "통장내역 조회/입력",
+          "action": "popup"
+        },
+        {
+          "name": "검토요청 답변 입력",
+          "action": "popup"
+        },
+        {
+          "name": "결의서 조회 및 수정",
+          "action": "popup"
+        },
+        {
+          "name": "회계장부 출력",
+          "action": "popup"
+        },
+        {
+          "name": "추경보고",
+          "action": "popup"
+        },
+        {
+          "name": "예산보고",
+          "action": "popup"
+        },
+        {
+          "name": "결산보고",
+          "action": "popup"
+        },
+        {
+          "name": "이전 회계",
+          "url": "/ABook/main.html",
+          "action": "popup"
+        },
+        {
+          "name": "인증서 재등록",
+          "action": "popup"
+        }
+      ]
+    },
+    {
+      "no": "8",
+      "name": "세무/사회보험",
+      "items": [
+        {
+          "name": "원천세 신고",
+          "action": "popup"
+        },
+        {
+          "name": "퇴직금 계산 및 퇴직소득세 신고",
+          "action": "popup"
+        },
+        {
+          "name": "근로소득원천징수부",
+          "action": "popup"
+        },
+        {
+          "name": "종사자 취득·상실 현황",
+          "action": "popup"
+        },
+        {
+          "name": "신고요청(취득·상실)",
+          "action": "popup"
+        },
+        {
+          "name": "정정신고(취득·상실)",
+          "action": "popup"
+        },
+        {
+          "name": "휴·복직 신고",
+          "action": "popup"
+        },
+        {
+          "name": "보수총액",
+          "action": "popup"
+        },
+        {
+          "name": "기타신고",
+          "action": "popup"
+        },
+        {
+          "name": "중도퇴직자 연말정산",
+          "action": "popup"
+        },
+        {
+          "name": "연말정산 신고",
+          "action": "popup"
+        },
+        {
+          "name": "신고자료 조회",
+          "action": "popup"
+        }
+      ]
+    },
+    {
+      "no": "9",
+      "name": "기관관리",
+      "items": [
+        {
+          "name": "스케쥴",
+          "url": "agency-schedule",
+          "action": "link"
+        },
+        {
+          "name": "서식자료실",
+          "url": "docAsm-d100",
+          "action": "link"
+        },
+        {
+          "name": "정보관리 및 설정",
+          "url": "setting-f01",
+          "action": "dialog"
+        },
+        {
+          "name": "재가기관 정보",
+          "url": "setting-f01#tab0",
+          "action": "dialog"
+        },
+        {
+          "name": "사업자 정보",
+          "url": "setting-f01#tab1",
+          "action": "dialog"
+        },
+        {
+          "name": "직인(도장)",
+          "url": "setting-f01#tab2",
+          "action": "dialog"
+        },
+        {
+          "name": "결재라인",
+          "url": "setting-f01#tab3",
+          "action": "dialog"
+        },
+        {
+          "name": "본인부담금 계좌",
+          "url": "setting-f01#tab4",
+          "action": "dialog"
+        },
+        {
+          "name": "이지케어 담당자",
+          "url": "setting-f01#tab5",
+          "action": "dialog"
+        },
+        {
+          "name": "이지케어이용료",
+          "url": "customer-ezc_bill_list",
+          "action": "link"
+        },
+        {
+          "name": "이지케어 사용자 관리",
+          "url": "user-a100",
+          "action": "dialog"
+        },
+        {
+          "name": "사용자 관리",
+          "url": "user-a100#tab0",
+          "action": "dialog"
+        },
+        {
+          "name": "로그인기록",
+          "url": "user-a100#tab1",
+          "action": "dialog"
+        },
+        {
+          "name": "내 정보관리/수정",
+          "url": "user-myInfo",
+          "action": "dialog"
+        },
+        {
+          "name": "문자 보내기→ 번호직접 입력",
+          "url": "mobile-sendO",
+          "action": "dialog"
+        },
+        {
+          "name": "문자 발신번호 관리",
+          "url": "/PU.ez?PGID=mobile-returnNumber",
+          "action": "popup"
+        },
+        {
+          "name": "자동이체 신청서",
+          "action": "popup"
+        },
+        {
+          "name": "자료보관 신청",
+          "action": "popup"
+        },
+        {
+          "name": "이용취소 신청",
+          "action": "popup"
+        },
+        {
+          "name": "이용취소 신청2",
+          "action": "popup"
+        }
+      ]
+    },
+    {
+      "no": "10",
+      "name": "기관평가",
+      "items": [
+        {
+          "name": "기관평가",
+          "url": "guide-E100",
+          "action": "link"
+        },
+        {
+          "name": "평가서류 작성현황",
+          "url": "guide-E100#tab0",
+          "action": "link"
+        },
+        {
+          "name": "서류함(평가서류 작성)",
+          "url": "guide-E100#tab1",
+          "action": "link"
+        },
+        {
+          "name": "의무교육 수료현황",
+          "url": "guide-E100#tab2",
+          "action": "link"
+        },
+        {
+          "name": "평가매뉴얼&자가진단",
+          "url": "guide-E100#tab3",
+          "action": "link"
+        },
+        {
+          "name": "운영 매뉴얼",
+          "url": "guide-E200",
+          "action": "link"
+        },
+        {
+          "name": "업무 운영가이드",
+          "url": "guide-E200#tab0",
+          "action": "link"
+        },
+        {
+          "name": "모니터링 매뉴얼",
+          "url": "guide-E200#tab1",
+          "action": "link"
+        },
+        {
+          "name": "지정갱신제",
+          "url": "guide-E200#tab2",
+          "action": "link"
+        },
+        {
+          "name": "주요법령 & 고시",
+          "url": "guide-E200#tab3",
+          "action": "link"
+        },
+        {
+          "name": "노무자문",
+          "url": "guide-E200#tab4",
+          "action": "link"
+        },
+        {
+          "name": "페이지 (파일)없음",
+          "url": "nopage",
+          "action": "DEV"
+        },
+        {
+          "name": "페이지 접근권한 없음",
+          "url": "denied",
+          "action": "DEV"
+        },
+        {
+          "name": "서명테스트",
+          "url": "sign-write",
+          "action": "DEV"
+        },
+        {
+          "name": "아이콘_test",
+          "url": "patient-icon",
+          "action": "link"
+        },
+        {
+          "name": "POPUP-test",
+          "url": "/PU.ez?PGID=patient-icon",
+          "action": "popup"
+        },
+        {
+          "name": "파일올리기",
+          "url": "customer-file",
+          "action": "link"
+        }
+      ]
+    }
+  ]
+}

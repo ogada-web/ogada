@@ -1,0 +1,25 @@
+<!-- BNK-492 extract: silverangel 주야간 vs 시설(요양원) Essential product line split -->
+<!-- source: daycare /newSilverangel/daycare/daycareEssentialWork.do c79c1be3 131,664B -->
+<!-- source: fclty  /newSilverangel/fcltySlry/essentialWork.do 80517b18 166,023B -->
+<!-- fetched: 2026-06-21 -->
+
+[daycare essential — 이동서비스 평가지표(확인)]
+- 「1. 이동서비스 수칙이 있음」운전자 자격요건·동승자 역할·차량안전수칙·차량운행표
+- 「2. 이동서비스 수칙을 수급자(보호자)에게 제공함」계약서·이동서비스일지 예시
+- grep 이동서비스: 6 hits
+
+[daycare essential — 목욕(확인)]
+- 목욕제공: 「필수사항 아니며 목욕서비스 제공시 청구 가능」
+
+[fclty essential — 이동서비스(확인)]
+- grep 이동서비스: 0 hits (시설 product line에서 이동서비스 마케팅 블록 없음)
+
+[fclty essential — 평가지표 27 목욕(확인·신규)]
+- 평가지표 27 목욕 서비스: 「월 5회 이상 목욕서비스 제공, 목욕 전.후 수급자의 상태 관찰 및 기록」
+- 목욕급여제공기록(건강관리기록 화면과 연계)
+- 「주 1회 이상 목욕급여를 제공하고, 목욕 전‧후 수급자의 상태를 관찰하고 기록한다.」
+
+[ogada cross-walk]
+- 이동서비스: ogada G15 full-stack ✅ parity/우위 (daycare only·시설 out-of-scope)
+- 목욕: ogada G-BATHING `/care/bathing-schedules` ✅ full-stack (BNK-466 closure)
+- 평가지표27 이중정의 carry: fclty=목욕(27) vs BNK-267 daycare carry=보호자회의 → product-line별 번호 매핑 상이

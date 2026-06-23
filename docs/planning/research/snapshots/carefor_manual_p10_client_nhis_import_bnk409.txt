@@ -1,0 +1,26 @@
+# 케어포 주야간보호 사용매뉴얼 PDF p.10 추출 (BNK-409 신규)
+# 원본: https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=10
+# Wayback: https://web.archive.org/web/20260528120000/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=10
+# md5 PDF: 96f7d45eaca91525068ec9bfb626fb18 (132p·9,992,772B·로컬 pypdf 재추출 2026-06-19)
+# 조사일: 2026-06-19 | HTTP: Wayback 200·live timeout·on-disk carry
+
+--- p.10 수급자신규등록(공단연동) (확인) ---
+
+메뉴위치: **1-2.수급자정보엑셀업로드(공단연동)**
+
+공단에 등록되어 있는 수급자 **급여계약통보서** 파일을 통해 케어포에 수급자를 등록시키는 방법입니다.
+
+① 공단 급여계약통보서 연동방법을 눌러 확인 후 공단에 있는 수급자 급여계약통보서 **엑셀 파일**을 다운로드
+② 다운받은 급여계약통보서 **엑셀 업로드** 파일을 선택하여 케어포에 반영함
+③ 반영 후 목록에 등록된 내용들을 확인하여 빠진 정보(**수급분류/급여개시일**)를 추가 입력 후 등록할 수급자를 선택한다.
+④ **수급자 일괄등록**을 누르면 **1-1.수급자 정보관리**에 수급자가 등록된 걸 확인할 수 있으며, 추가 정보 등을 수정
+
+--- [BNK-409 교차] func.php vs PDF vs demo 3원 drift ---
+
+| 출처 | 「1-2」 의미 | 비고 |
+|------|-------------|------|
+| **PDF p.10** | **1-2.수급자정보엑셀업로드(공단연동)** | 급여계약통보서 엑셀 일괄등록 workflow |
+| **func.php 정적** | **1-2.전체 기초평가 현황** | PDF와 **번호 충돌** |
+| **demo-work L01** | **1-2.전체 기초평가 현황** (`view.patient_case_total`) | func과 동치·PDF와 **충돌** |
+
+→ ogada: `/billing/imports/nhis` + client CRUD = 공단 연동·일괄등록 **범위 초과 우위 carry**(단, PDF 「1-2=엑셀업로드」 번호와 func/demo 「1-2=기초평가」 **3원 drift** — cross-walk 시 **제목·번호 분리** 필수)

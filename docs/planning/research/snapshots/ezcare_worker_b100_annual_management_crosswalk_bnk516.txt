@@ -1,0 +1,79 @@
+# BNK-516 evidence extract — ezCare `/new.ez?PGID=worker-b100` 직원 연간 관리 현황 ↔ ogada `/staff/*`
+# rotation: 교차검증·갭 우선순위 (8h+)
+# 작성: 2026-06-22 (BNK)
+# 입력: docs/planning/research/snapshots/ezcare_new_ez_pgid_worker-b100.html (md5 760b32b3 · 118,691B)
+#        + ogada FE `@df9ec6c` `App.jsx` `src/pages/Staff*.jsx` git grep + V169 staff_work_attendance
+
+## 1. ezCare worker-b100 5-tab 단일 화면 IA (직원 연간 관리 현황)
+
+| tab | 라벨            | 핵심 jqGrid               | 핵심 colModel field name                            | Ajax data param      |
+|-----|-----------------|---------------------------|----------------------------------------------------|----------------------|
+| 01  | 연차휴가 현황   | grid-worker-b100_annual_vacation, grid-worker-b100_annual_vacation_2 | wCode·wName·wGroup·date_enter·month_1..month_12·annual_vacation·annual_vacation_2·vacation_total·memo | (per-month Ajax `Ym=<year>-<MM>`) |
+| 02  | 건강검진 현황   | grid-worker-b100          | physical_examination                                | (worker year aggregator) |
+| 03  | 직무교육 현황   | grid-worker-b100          | job_training                                        | data=worker-edu-GET |
+| 04  | 보수교육 현황   | grid-worker-b100          | bosu_training·bosu_training_check                  | data=worker-edu-GET |
+| 05  | 교육이수 현황   | grid-worker-b101          | (training_log items)                                | data=worker-edu-GET |
+
+상위 메뉴(top-nav v2 `95286775` carry — zero drift): 1직원 > 「연간 관리 현황」 → 5 sub-tab(`worker-b100#tab0..#tab4`).
+엑셀 export · `dialog-post-insert`(연차/교육 입력) · 「연차 저장」·「연차 표기알림」 액션.
+
+## 2. ogada FE 매핑 (`@df9ec6c` `App.jsx` `/staff/*` 9-Route 전수)
+
+| ezCare tab            | ogada Route                | Page Component                  | 상태 |
+|-----------------------|----------------------------|--------------------------------|------|
+| 01 연차휴가 현황      | (❌ 없음)                  | (❌ 없음)                       | **❌ NEW gap** |
+| 02 건강검진 현황      | `/staff/health-checkups`   | `StaffHealthCheckupsPage.jsx` | ✅ parity |
+| 03 직무교육 현황      | `/staff/training-logs`     | `StaffTrainingLogPage.jsx` (8-7 기관 교육일지·통합 카탈로그) | △ 분리 surface |
+| 04 보수교육 현황      | `/staff/training`          | `StaffRefresherTrainingPage.jsx` | ✅ parity |
+| 05 교육이수 현황      | `/staff/training-logs`     | `StaffTrainingLogPage.jsx`     | △ 통합 surface |
+| (referent only)       | `/staff/attendance`        | `StaffWorkAttendancePage.jsx` (V169 staff_work_attendance·G-STAFF-WORK-ATTENDANCE) | ogada 우위(일일 근태·checkin/out) — ezcare worker-b100 에는 미수록 |
+| (referent only)       | `/staff/reports/status`    | `StaffStatusReportPage.jsx`    | ogada 우위(직원 상태 리포트) |
+| (referent only)       | `/staff/grievance-counselings` | `GrievanceCounselingPage.jsx` | ogada 우위(고충 상담) |
+| (referent only)       | `/staff/lead-caregiver-log`| `LeadCaregiverLogPage.jsx`     | ogada 우위(리드 요양사 일지) |
+
+## 3. 갭 분석 — **신규 candidate `G-STAFF-ANNUAL-LEAVE` P3「가정」**
+
+- **확인** (evidence): ezCare worker-b100 tab01 `연차휴가 현황` 의 jqGrid 정본 colModel 14-field(`wCode/wName/wGroup/date_enter/month_1..12/annual_vacation/annual_vacation_2/vacation_total/memo`) 가 onload 시 즉시 렌더링되며, 월별 Ajax `Ym=<year>-<MM>` 누적 모델로 연간 grid 단일 화면 surface.
+- **확인** (ogada 미존재): FE `@df9ec6c` `git grep -i "annual\|연차\|leave\|vacation" src/frontend/src/pages` 결과 **0건**. `/staff/*` 9-Route(staff·staff/:id·attendance·grievance-counselings·health-checkups·lead-caregiver-log·reports/status·training·training-logs) 어디에도 연차휴가 페이지 부재.
+- **가정** (MVP 적합성): 주야간 보호센터 SaaS에서 직원 연차휴가 관리는 노동법(근로기준법 60조) 의무 사항이며 케어포·이지케어 모두 sub-screen 으로 노출. ogada 모듈 8(직원근태) 잔여 우선순위 sub-task로 P3 후보 추가 가능. BUT MVP 첫 출시 범위에는 우선순위 낮음(외부 HR SaaS 통합 가능·V169 근태 기록만으로도 핵심 운영 가능).
+- **planner 결정 후보**:
+  - (a) **P3 candidate 추가** `G-STAFF-ANNUAL-LEAVE` (ezcare worker-b100 tab01 ↔ ogada 신규 `/staff/annual-leaves`·월별 사용/잔여 grid·DB level monthly snapshot 필요) — 모듈 8 직원근태 0.65 → 0.70 예상.
+  - (b) **MVP out-of-scope 유지** (외부 HR SaaS 통합 권장) — 모듈 8 직원근태 0.65 carry, planner 결정 보류.
+
+## 4. 이전 BNK 가정 번복 여부
+
+- BNK-514 patient-list 13-tab(수급자 IA) 차원에서 「ogada 11-tab IA 우위 — 신규 candidate 0」 결론 carry. worker-b100 5-tab 추출로 **직원 IA 차원에서는 신규 갭 1건(연차휴가) 발견**. 가정 번복 1건 = 「8 직원근태 sub-task 미세화 0건」 → 「+1 연차휴가 신규 sub-task 가정」.
+- BNK-515 G2-CMS-ENROLLMENT-ROSTER ✅ closure carry — ezcare ERP 화면(receipt-list/pAmt-a100/cms 메뉴) 와 무관·번복 0.
+- BNK-513~515 「△4 잔여 우선순위」(7-4 CMS→10 부가→2 이동→8 직원근태) → 직원근태 sub-task **+1 연차휴가**로 명확화.
+
+## 5. 미확인 항목 축소
+
+- **이전 미확인**: `master-user` 정본 PGID 「master-userauth」 carry(BNK-471 FAQ21695 추정·BNK-514 404 확인 carry) — 본 사이클 미해소.
+- **이전 미확인**: `finance-list` 정본 PGID prefix(`finance-`/`fin-`/`account-`) carry(BNK-514) — 본 사이클 미해소.
+- **신규 미확인 0** — 본 사이클 추가된 PGID worker-b100 은 200 OK 성공 화면(404 negative 0).
+
+## 6. 백본 5-URL 310차 zero drift IDENTICAL
+
+| URL | md5 | size | 310차 상태 |
+|-----|-----|------|------|
+| NHIS #44 joHistoryContent(SEQ=1637&SEQ_CONTENTS=3281769) | c886ff1fd1d5ca2cb5dc76d30adde8ba | 7,572B | live=on-disk IDENTICAL · 러-1~4·편도 50%·1일1회·④별지 제22호 일지 verbatim 불변 |
+| carefor func.php Wayback id_ 20260519 | 6226e6eb92fdd25ed3e50842a5e8a00b | 98,328B | live=on-disk IDENTICAL · M2 10-leaf·M7 11-leaf·M8 15-leaf verbatim |
+| silverangel daycareEssentialWork.do | c79c1be37f947aab04ab7ba35cc7814d | 131,664B | live=on-disk(silverangel_essential.html) IDENTICAL · 이동서비스 6 평가지표 verbatim |
+| LCMS root (https://www.lcms.or.kr/) | 6c0d22b48da8fb30a0c49f34ce8c6864 | 50,554B | live=on-disk IDENTICAL (BNK-515 type2 CMS cross-promo carry) |
+| ezCare top-nav-item-V2.js?20260428 | 95286775000f06c8ad13688fcb0d6dbb | 25,470B | live=on-disk IDENTICAL · 10-module·51-PGID nav verbatim |
+
+## 7. ezCare home DRIFT (cachebuster + counter rollover)
+
+- live `deb5d295` (106,119B) ↔ on-disk `8c36b63a` (106,119B·BNK-514) — **strip-cachebuster verbatim 변동 1건**:
+  - `home.js?1782137297` → `home.js?1782142752` (cachebuster only)
+  - 「2026년 06월 22일 현재」 → 「2026년 06월 23일 현재」 (KST 다음날 rollover marker)
+  - select option order swap: 「주변 센터(지인) 소개 ↔ 인터넷 카페를 통해」
+  - banner `[추천 이벤트] cafe.naver.com/egcare/24211` verbatim 불변 (14th carry)
+  - **mCnt 4-counter `{1:9271, 2:4594, 3:2353, 4:1820}` verbatim 불변** (9,271 재가기관 zero drift)
+  - main-visual-txt `[세무·재무회계·4대보험]` verbatim 불변
+  → 덮어쓰기 1건(`ezcare_home.html` md5 `deb5d295`).
+
+## 8. silverangel weekly notice 5-probe (221604~221608)
+
+- 모두 HTTP 200·51,765B·md5 `8437f255` 미게시 shell IDENTICAL.
+- 최신 real notice carry 221563(6/18) — 7일 경과·**weekly notice 0건**·next Wed ~6/25 carry.

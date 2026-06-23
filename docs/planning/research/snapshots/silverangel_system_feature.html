@@ -1,0 +1,1046 @@
+
+
+
+
+
+
+ 
+
+
+
+
+	
+	
+		
+	
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>엔젤 시스템</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="LCMS 엔젤시스템 - 회사소개 공지사항 고객센터 등">
+    <meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="msapplication-config" content="none"/>
+	<meta property="og:url" content="http://www.silverangel.kr/" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="LCMS 엔젤시스템" />
+	<meta property="og:description" content="LCMS 엔젤시스템 - 회사소개 공지사항 고객센터 등" />
+
+	<link type="image/png" rel="shortcut icon" href="/images/favicon.png">
+	<link type="text/css" rel="stylesheet" href="/css/layout.css" media="all">
+	<script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+	<!-- jQuery UI -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script type="text/javascript" src="/js/jquery.timepicker.min.js" ></script><!-- 타이머js -->
+<link type="text/css" rel="stylesheet" href="/css/jquery.timepicker.css" media=""/><!-- 타이머css -->
+<script type="text/javascript" src="/js/jquery.mtz.monthpicker.js"></script><!-- monthpicker js -->
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+
+
+	<!--[if lt IE 9]>
+		<script src="/js/jquery.pseudo.js"></script>
+	<![endif]-->
+	<script>
+		function formChk() {
+			if(!$("#f_code").val()) {
+				alert("시설코드를 입력하여 주십시오.");
+				$("#f_code").focus();
+				return false;
+			}
+			
+			if(!$("#user_id").val()) {
+				alert("아이디를 입력하여 주십시오.");
+				$("#user_id").focus();
+				return false;
+			}
+			
+			if(!$("#user_password").val()) {
+				alert("비밀번호를 입력하여 주십시오.");
+				$("#user_password").focus();
+				return false;
+			}
+			
+			$("#login_form").submit();
+		}
+		
+		function logout() {
+			location.href="/silverangel/login/logout.do";
+		}
+		
+		function chkExt(thumbext){
+			
+			thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+
+			var chk = "";
+			
+			if(thumbext != "pdf" && thumbext != "hwp" &&  thumbext != "xls" &&  thumbext != "zip" &&  thumbext != "xlsx" &&  thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp" &&  thumbext != "ppt" &&  thumbext != "pptx" &&  thumbext != "doc" &&  thumbext != "docx"){ //확장자를 확인합니다.
+
+				chk = 11;
+
+			}else{
+				chk = 22;
+			}
+			
+			return chk;
+		}
+		
+		function chkExt_img(thumbext){
+			
+			thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+
+			var chk = "";
+			
+			if(thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp"){ //확장자를 확인합니다.
+
+				chk = 11;
+
+			}else{
+				chk = 22;
+			}
+			
+			return chk;
+		}
+		
+		function click_mobile_menu(arg1) {
+			$("#mobile_menu_"+arg1).toggle();
+		}
+		
+		
+		
+		
+		 
+		
+		
+		 
+		
+	</script>
+</head>
+<body class="sub">
+	<div class="skipnav"><a href="#content">컨텐츠 바로가기</a></div>
+	<!-- s: #wrap -->
+	<div id="wrap">
+		<!-- s: #header -->
+		<header id="header">
+			<div class="container">
+				<!-- s: .header-top -->
+				<div class="header-top">
+					<h1 class="header-logo"><a href="/"><img src="/images/common/logo.png" alt="요양시설통합사례관리솔루션 엔젤시스템"></a></h1>
+					<!-- s: .top-menu -->
+					<div class="top-menu">
+						<form name="login_form" id="login_form" method="post" action="/silverangel/login/login.do" onSubmit="formChk();return false">
+							<fieldset>
+								<legend>메인 로그인 폼</legend>
+									
+										 
+											<ul class="top-form-ul">
+												<li><span><input type="text" name="f_code" id="f_code" placeholder="시설코드" title="시설코드 입력창" class="ip_txt_tp_01"></span></li>
+												<li class="c-form"><span><input type="text" name="user_id" id="user_id" placeholder="아이디" title="아이디 입력창" class="ip_txt_tp_01"></span></li>
+												<li><span><input type="password" name="user_password" id="user_password" placeholder="비밀번호" title="비밀번호 입력창" class="ip_txt_tp_01"></span></li>
+											</ul>
+											<div class="login-bt-area">
+												<button class="btn bt-t1" type="submit">로그인</button>
+											</div>
+											<button class="btn btn-mobile-login">로그인</button>
+										
+										
+									
+							</fieldset>
+						</form>
+					</div>
+					<!-- e: .top-menu -->
+					<button class="visible-mobile btn-nav">메뉴</button>
+				</div>
+				<!-- e: .header-top -->
+				<!-- s: .nav-wrap -->
+				<div class="nav-wrap">
+					<!-- s: .nav -->
+					<nav class="nav hidden-mobile">
+						<h2 class="blind">대메뉴</h2>
+						<ul class="gnb">
+							<li><a href="/silverangel/angelsystem/system_feature.do">엔젤시스템</a></li>
+							<li><a href="/silverangel/support/notice/list.do">고객지원</a></li>
+							<li><a href="/silverangel/publicize/partner.do">홍보관</a></li>
+							<li><a href="/silverangel/companyinfo/business_area.do">기업정보</a></li>
+							<li><a href="/silverangel/support/edu_apply/write.do">도입문의</a></li>
+							<!-- 로그인하는 ID에 따라 hide, show(조건) -->
+							 
+						</ul>
+					</nav>
+					<!-- e: .nav -->
+
+					<!-- s: .nav-side -->
+					<nav class="nav-side visible-mobile">
+						<h2 class="blind">좌측 모바일 대메뉴</h2>
+						<div class="nav-side-top">
+							<div class="top-logo"><a href="/"><img src="/images/common/top-logo.png" alt="요양시설통합사례관리솔루션 엔젤시스템"></a></div>
+							<div class="top-close"><a href=""><img src="/images/common/top-close.png" alt="닫기"></a></div>
+						</div>
+						<ul class="gnb-mobile">
+							<li>
+								<a href="JavaScript:click_mobile_menu('1');">엔젤시스템</a>
+								<!--ul class="depth2">
+									<li ><a href="">시스템특징</a></li>
+									<li class="on"><a href="">정보보호,시스템보안</a></li>
+									<li><a href="">판매 유형</a></li>
+								</ul-->
+								<ul class="depth2" id="mobile_menu_1" style="display:none;">
+									<li><a href="/silverangel/angelsystem/system_feature.do">시스템 특징</a></li>
+									<li><a href="/silverangel/angelsystem/security.do">정보보호ㆍ시스템보안</a></li>
+									<li><a href="/silverangel/angelsystem/sale.do">판매 유형</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="JavaScript:click_mobile_menu('2');">고객지원</a>
+								<ul class="depth2" id="mobile_menu_2" style="display:none;">
+									<li><a href="/silverangel/support/notice/list.do">공지사항</a></li>
+									<li><a href="/silverangel/support/download/list.do">자료실</a></li>
+									<li><a href="/silverangel/support/qna/list.do">묻고 답하기</a></li>
+									<li><a href="/silverangel/support/faq/list.do">자주묻는 질문</a></li>
+									<li><a href="/silverangel/support/edu_apply/write.do">도입문의</a></li>
+									
+									<li><a href="/silverangel/support/edu_apply/quarterList.do">직무교육신청</a></li>
+									
+								</ul>
+							</li>
+							<li>
+								<a href="JavaScript:click_mobile_menu('3');">홍보관</a>
+								<ul class="depth2" id="mobile_menu_3" style="display:none;">
+									<li><a href="/silverangel/publicize/partner.do">파트너</a></li>
+									<li><a href="/silverangel/publicize/visit_list.do">사용시설 직무교육</a></li>
+									<li><a href="/silverangel/publicize/license.do">사업면허/표창</a></li>
+									<li><a href="/silverangel/publicize/angel_news_list.do">LCMS-엔젤뉴스</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="JavaScript:click_mobile_menu('4');">기업정보</a>
+								<ul class="depth2" id="mobile_menu_4" style="display:none;">
+									<li><a href="/silverangel/companyinfo/business_area.do">사업분야</a></li>
+									<li><a href="/silverangel/companyinfo/vision.do">비전</a></li>
+									<li><a href="/silverangel/companyinfo/history.do">걸어온 길</a></li>
+									<li><a href="/silverangel/companyinfo/ceo.do">CEO 인사말</a></li>
+									<li><a href="/silverangel/companyinfo/organization_chart.do">조직도</a></li>
+									<li><a href="/silverangel/companyinfo/map.do">오시는 길</a></li>
+								</ul>
+							</li>
+							<li><a href="/silverangel/support/edu_apply/write.do">도입문의</a></li>
+						</ul>
+					</nav>
+					<!-- e: .nav-side -->
+				</div>
+				<!-- e: .nav-wrap -->
+			</div>
+		</header>
+		<!-- e: #header -->
+		<div class="container">
+			<!-- s: .sidebar -->
+			<aside class="sidebar">
+				<section class="sidebar-nav">
+					<div class="side-head side-ico1">
+						<h2 class="h2-title">엔젤시스템</h2>
+					</div>
+					<nav class="lnb">
+						<ul class="lnb-menu">
+							<li class="on"><a href="/silverangel/angelsystem/system_feature.do">시스템 특징</a></li>
+							<li><a href="/silverangel/angelsystem/security.do">정보보호ㆍ시스템보안</a></li>
+							<li><a href="/silverangel/angelsystem/sale.do">판매 유형</a></li>
+							<li><img src="/images/common/cs_info.jpg" alt="고객센터 운영시간"></li>
+						</ul>
+					</nav>
+				</section>
+			</aside>
+			<!-- e: .sidebar -->
+			<!-- s: #content -->
+			<section id="content" tabindex="-1">
+				<!-- s: .content-header -->
+				<div class="content-header">
+					<p class="menu-navi">HOME &gt; 엔젤시스템 &gt; <b>시스템 특징</b></p>
+					<h2 class="h2-title">시스템 특징</h2>
+				</div>
+				<!-- e: .content-header -->
+
+				<!-- s: .content-body -->
+				<div class="content-body">
+					<div class="common-wrap">
+						<section class="sy-section part1">
+							<h3 class="h3-title">개발 배경 및 목적</h3>
+							<p class="sector1">요양시설 고객관리 및 요양서비스 Up-Grade를 통한 장기요양 관리시스템 구축</p>
+							<dl class="sector2">
+								<dt class="value1">고객 욕구에 유연한 서비스제공</dt>
+								<dd class="value2">요양시설 고객관리, 요양서비스 Up-Grade</dd>
+								<dt class="value3">최상의 장기요양 서비스 관리 구현</dt>
+								<dd class="value4"><b>추진배경:</b>최상의 장기요양 서비스 관리를 지원할 안정적이고 유연한 인프라 구축</dd>
+							</dl>
+
+							<article class="sy-box-wrap">
+								<div class="sy-box box-bg1">
+									<ul>
+										<li>장기요양 서비스 환경의 Up-Grade</li>
+										<li>노인장기요양 제도의 변화에 빠른 대응</li>
+										<li>어르신의 상태변화에 대한 신속 대응</li>
+										<li>가족의 요구에 대한 반응</li>
+									</ul>
+								</div>
+								<div class="sy-box box-bg2">
+									<ul>
+										<li>업무처리에 필요한 시스템 구축 및 업무 자동화 요구</li>
+										<li>전문성 및 종합 요양서비스를 위한 시스템 확보 요구</li>
+										<li>업무 처리와 정보시스템간의 연계강화를 통해서 조직 운영상의 효율성 제고</li>
+									</ul>
+								</div>
+								<div class="sy-box box-bg3">
+									<ul>
+										<li>기술적, 인프라를 고려하여 대응</li>
+										<li>웹을 활용한 하드웨어 최소화</li>
+										<li>모바일 정보 제공에 대응</li>
+										<li>자동인식기술 도입 용이</li>
+									</ul>
+								</div>
+							</article>		
+						</section>
+
+						<section class="sy-section part2">
+							<h3 class="h3-title">시스템 특장점 01.</h3>
+							<p class="sub-title">다양한 시스템 구축</p>
+
+							<!-- s: .sy-table -->
+							<div class="sy-table">
+								<table class="table">
+									<caption class="blind">시스템 분류 사업명을 나열한 테이블</caption>
+									<colgroup>
+										<col style="width:30%;">
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th scope="col" class="th-left">시스템 분류</th>
+											<th scope="col" class="th-right">사업명</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="td-left">자동차 산업의 시스템 구축<br> 및 운전경험</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>쌍용자동차 포털시스템 개발</li>
+													<li>쌍용자동차 전국 A/S 시스템 운영</li>
+													<li>대우자동차 회계시스템 운영</li>
+													<li>GMDAEWOO 정비시스템 구축</li>
+													<li>쌍용자동차 정비 시스템 구축</li>
+													<li>현대, 기아, GMDAEWOO 자동차 부품수출 시스템 구축</li>
+													<li>GMDAEWOO 고객관리 프로젝트 컨설팅</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">해외자동차 부품시스템 구축경험</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>루마니아 대우공장 자동차부품 수출 시스템 구축</li>
+													<li>베트남 VIDAMCO 자동차부품 수출 시스템 구축 및 운영</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">학사행정시스템 구축</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>노동부 직업전문학교의 학사행정시스템 구축</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">유사사업 경험</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>노인요양시설 장기요양 관리시스템 구축</li>
+													<li>국민건강보험공단 서울요양원 케어메니지먼트시스템 구축</li>
+												</ul>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- e: .sy-table -->
+							<p class="sub-title">구축의 방향성</p>
+							
+							<ul class="sy-list-t1">
+								<li>
+									<div class="list-step">
+										<span>01</span>
+										<p>장기요양 관리를 지원할 유연하고 안정적인 시스템 구축</p>
+									</div>
+								</li>
+								<li>
+									<div class="list-step">
+										<span>02</span>
+										<p>건강보험공단의 기본Platform에 대한 전문성을 확보하여 효과적인 시스템 구축</p>
+									</div>
+								</li>
+								<li>
+									<div class="list-step">
+										<span>03</span>
+										<p>기준 Master Data를 확보하고 이를 효과적으로 활용할 수 있는 시스템 구축</p>
+									</div>
+								</li>
+							</ul>
+						</section>
+
+						<section class="sy-section part3">
+							<h3 class="h3-title">시스템 특장점 02.</h3>
+
+							<!-- s: .sy-table -->
+							<div class="sy-table">
+								<table class="table">
+									<caption class="blind">시스템 특장점을 유형, 타시스템 별로 나열한 테이블</caption>
+									<colgroup>
+										<col style="width:50%;">
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th scope="col" class="th-left">LCMS(Longterm Care Management System) 유형</th>
+											<th scope="col" class="th-right">타 시스템 (A Type, B Type)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="td-left">데이터의 코드화 및 수치화로 어르신의 상태를 <br>실시간 분석 (예 : 임상관찰, 투약내역 등)</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>A,B Type 모두 서비스 항목별 횟수와 텍스트로만 입력 가능 함</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">서비스항목별 합리적인 입력방법으로 어르신의 상태를 <br>실시간 분석 (예 : 소변량, 체위변경, 경관식, 수분공급 등)</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>A,B Type 모두 서비스 항목별 횟수와 텍스트로만 입력 가능 함</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">출력되는 모든 데이터는 엑셀파일, 한글파일, 텍스트 파일, pdf 파일, 이미지파일 등으로 변환</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>A Type은 가능하나 B Type은 불가능함</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">데이터의 변동사항을 여러가지의 그래프 유형<br>(막대그래프, 꺾은선그래프, 원형그래프 등)으로 표현</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>A,B Type 모두 그래프 분석은 없음</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">사용자의 접근성이 가장 용이</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>A Type은 비교적 접근성이 용이한 편이나 입력해야 하는 데이터가 많으므로 컴퓨터에 능숙한 사람만이 가능</li>
+													<li>B Type은 별도의 교육으로 사용 가능함</li>
+												</ul>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left">업무구분별(관리자, 요양보호사, 간호사, 물리치료사 등)로 분류가 명확 시스템의 기능 추가, 변경 및 업그레이드 서비스를 받을 수 있다.</td>
+											<td class="td-right">
+												<ul class="tb-list">
+													<li>A Type은 추가, 변경이 전혀 불가능 함</li>
+													<li>B Type은 추가, 변경이 제한적임</li>
+												</ul>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- e: .sy-table -->
+
+							<!-- s: .sy-table -->
+							<div class="sy-table">
+								<table class="table">
+									<caption class="blind">시스템 구분 내용 비고 테이블</caption>
+									<colgroup>
+										<col style="width:33.3%;">
+										<col style="width:33.3%;">
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th scope="col" class="th-left">구분</th>
+											<th scope="col" class="th-right">내용</th>
+											<th scope="col" class="th-right2">비고</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="td-left center">하드웨어</td>
+											<td class="td-right center">HP(휴렛팩커드)</td>
+											<td class="td-right2 center">KT IDC CENTER</td>
+										</tr>
+										<tr>
+											<td class="td-left center">운영체제(OS)</td>
+											<td class="td-right center">HP-UX(유닉스)</td>
+											<td class="td-right2 center">가장 안전한 OS</td>
+										</tr>
+										<tr>
+											<td class="td-left center">웹서버 소프트웨어</td>
+											<td class="td-right center">OHS</td>
+											<td class="td-right2 center">오라클웹서버</td>
+										</tr>
+										<tr>
+											<td class="td-left center">WAS 소프트웨어</td>
+											<td class="td-right center">WEBLOGIC</td>
+											<td class="td-right2 center">오라클WAS</td>
+										</tr>
+										<tr>
+											<td class="td-left center">데이터베이스</td>
+											<td class="td-right center">Oracle 11g</td>
+											<td class="td-right2 center">전세계적으로 가장 많이 사용<br>안전성,보안성 세계제일</td>
+										</tr>
+										<tr>
+											<td class="td-left center">레포트 툴 개발언어</td>
+											<td class="td-right center">Rexpert 3.0 JAVA</td>
+											<td class="td-right2 center">국가 행정망 시스템에서 사용<br>전자정부프레임웍</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- e: .sy-table -->
+						</section>
+
+						<section class="sy-section part4">
+							<h3 class="h3-title">시스템 특장점 03.</h3>
+
+							<!-- s: .sy-table -->
+							<div class="sy-table">
+								<table class="table">
+									<caption class="blind">시스템 화면구성 기능에 대한 내용 테이블</caption>
+									<colgroup>
+										<col style="width:20%;">
+										<col style="width:30%;">
+										<col>
+									</colgroup>
+									<thead>
+										<tr>
+											<th scope="col" class="th-left" colspan="2">화면구성</th>
+											<th scope="col" class="th-right">기능</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="td-left br-none">
+												입소자관리
+											</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>입소자현황</li>
+													<li>입소자상태</li>
+													<li>퇴소자현황</li>
+													<li>서비스현황</li>
+													<li>질환별현황</li>
+													<li>서비스현황(2)</li>
+													<li>등급조정내역</li>
+													<li>입소대기자명단</li>
+													<li>서비스현황(3)</li>
+													<li>가정통신문</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>입소자 관리카드, 기초정보, 초기상담 기록지, 가계도 자동작성</li>
+													<li>수급자 상태 및 욕구사정 기록지 (사정도구 10종) , 입소자(보호자) 욕구사항 기록</li>
+													<li>종합평가</li>
+													<li>퇴소자 관리 (입소자와 동일한 자료 유지)</li>
+													<li>주요질환 별 분석자료</li>
+													<li>서비스 세부향목 별 통계자료</li>
+													<li>요양등급 이력 관리 (상향 또는 하향)</li>
+													<li>입소대기자 관리, 입소 확정 후 입소자관리카드와 연계</li>
+													<li>각 파트별 서비스항목별 분석자료</li>
+													<li>매월 어르신별 가정통신문 자동 생성, 보호자 메일로 발송</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">급여제공계획</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>코드관리</li>
+													<li>급여제공계획</li>
+													<li>월별제공계획</li>
+													<li>급여제공평가</li>
+													<li>프로그램관리</li>
+													<li>프로그램계획</li>
+													<li>급여제공변경</li>
+													<li>집중배설관찰</li>
+													<li>노인학대예방 및 대응지침</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>LCMS에 활용중인 코드관리</li>
+													<li>욕구평가결과에 따라 구체적으로 급여계획을 세우고, 수급자 (보호자)의 동의를 받음</li>
+													<li>서비스항목별 또는 입소자별 월별 제공계획</li>
+													<li>급여제공계획의 평가 (계획대비 실적 비율분석, 평가 사례 관리)</li>
+													<li>여가프로그램, 치매예방프로그램, 지역사회연계 등 프로그램 실시 이력</li>
+													<li>연간 또는 월간 프로그램 계획 관리</li>
+													<li>급여제공 변경기록, 변경사항 기록지와 연계</li>
+													<li>입소후 14일 이내에 72시간 연속적으로 배변상태 파악</li>
+													<li>노인학대예방 및 대응지침 작성, 보호자 메일로 발송</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">기록지</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>기록지</li>
+													<li>기록지(2)</li>
+													<li>계획대비실적</li>
+													<li>사진자료</li>
+													<li>상담일지</li>
+													<li>외출외박면회</li>
+													<li>사례관리회의</li>
+													<li>터치스크린기록</li>
+													<li>수급자제재</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>급여제공계획에 의한 서비스 제공 및 기록 <br />'월1회 급여제공기록지 법정서식 보호자에게 메일로 발송’</li>
+													<li>노인장기요양보험법에 의한 기본 서비스 외 추가 서비스 제공 및 기록</li>
+													<li>급여제공계획 대비 급여제공실시 분석</li>
+													<li>입소자별 관련 사진 통합 관리</li>
+													<li>보호자 또는 입소자와의 상담내용 및 이력관리</li>
+													<li>외출/외박/면회 발생시 기록, 요양비 관리와 연계</li>
+													<li>월1회 사례관리회의 실시, 급여제공에 반영사항 기록</li>
+													<li>요양보호사 전용 화면 관리(배변배뇨, 체위변경, 기록지, 시간기록, 식사유형 및 식사량, 도뇨관 소변량, 경관식, 수분공급)</li>
+													<li>수급자제재에 관한 규정 (규정 및 제재부위), <br />수급자제재 동의서(제재내용, 보호자 확인 전자서명), <br />수급자제재 제재기록</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">보고서</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>배설관찰기록</li>
+													<li>음식제공현황</li>
+													<li>기저귀현황</li>
+													<li>도뇨관대상자</li>
+													<li>경관식수분공급</li>
+													<li>배변배뇨기록</li>
+													<li>체위변경기록</li>
+													<li>관찰일지</li>
+													<li>종합일지</li>
+													<li>운영일지</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>입소자의 월별 배변의 형태(양상) 분석</li>
+													<li>입소자의 일별 식사 및 간식 분석</li>
+													<li>입소자의 기저귀사용량 분석</li>
+													<li>도뇨관을 하시는 입소자의 소변량 분석, 그래프제공</li>
+													<li>경관식을 하시는 입소자의 시간대별 칼로리 분석, 입소자의 수분량을 분석, 그래프제공</li>
+													<li>입소자의 시간대별 배변/배뇨 분석</li>
+													<li>체위변경기록을 월단위로 관리(변경시간 및 변경체위)</li>
+													<li>입소자의 특이사항 관리</li>
+													<li>입소자의 간호일지. 관찰일지. 재활일지. 상담일지. 프로그램일지 등의 종합분석 자료</li>
+													<li>일단위 서비스기록 통계 및 어르신 동향 자료</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">간호</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>간호처치기록</li>
+													<li>간호일지</li>
+													<li>투약일지</li>
+													<li>건강관리기록부</li>
+													<li>응급상황기록</li>
+													<li>입원/외래</li>
+													<li>욕창관리기록</li>
+													<li>욕창변환관찰</li>
+													<li>낙상예방체크</li>
+													<li>간호기록지</li>
+													<li>건강수준평가</li>
+													<li>욕창예방척도</li>
+													<li>낙상위험예측</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>배설간호, 피부간호 등 처치 기록 및 이력관리</li>
+													<li>주요질환, 간호처치기록, 임상관찰내역, 투약내역, 입원/외래/응급/급여제공계획변경의 내용을 자동 통합</li>
+													<li>주요질환, 간호처치기록, 임상관찰내역, 투약내역, 입원/외래/응급/급여제공계획변경의 내용을 자동 통합</li>
+													<li>입소자별 투약이력관리, 일별 투약여부 분석</li>
+													<li>혈압, 맥박, 호흡, 체온, 몸무게, 혈당 관리, 그래프 제공</li>
+													<li>응급발생시 기록하고 입소자별로 이력관리</li>
+													<li>입퇴원발생, 병원외래진료 기록을 입소자별로 이력관리</li>
+													<li>욕창에 앓고 있는 입소자의 처치기록</li>
+													<li>욕창 발생 가능 입소자의 지속적인 관리</li>
+													<li>낙상 발생 가능 입소자의 지속적인 관리</li>
+													<li>입소시점 입소자의 의료 기초사정 기록, 현병력, 과거력, 의식상태, 정서상태, 식이상태 등 관리</li>
+													<li>정기적인 입소자의 건강상태 기록, 입소자의 시력, 청력, 구강, 동반질환관리, 피부, 수면, 부작용 등 관리</li>
+													<li>욕창척도 체크, 그래프 제공, 욕창고위험군과 자동 연계</li>
+													<li>낙상위험 예측, 그래프 제공, 낙상예방체크와 자동 연계</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">재활</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>운동치료일지</li>
+													<li>물리치료일지</li>
+													<li>작업치료일지</li>
+													<li>기능회복훈련</li>
+													<li>재활일지</li>
+													<li>치료일정</li>
+													<li>진행경과</li>
+													<li>수급자평가도구</li>
+													<li>초기사정</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>운동치료 일지 기록 및 이력관리</li>
+													<li>물리치료 일지 기록 및 이력관리</li>
+													<li>작업치료 일지 기록 및 이력관리</li>
+													<li>기본동작훈련, 일상생활동작훈련, 신체기능훈련 통계자료</li>
+													<li>운동치료일지와 물리치료일지 등 재활관련된 내용을 자동 통합</li>
+													<li>연간 치료일정 분석</li>
+													<li>정기적인 입소자의 재활상태 사정, 기능의 정도, 관절 및 수행능력, 통증, 운동기능 등 관리</li>
+													<li>ADL수행능력평가, 균형감 & 걸음걸이 사정, ROM-신체 관절가동범위 통증강도 & 위치사정 등 도구제공</li>
+													<li>입소시점 입소자의 재활 기초사정 기록, 외상여부, 안전문제, 보행여부, 통증여부, 운동마비 등 체크</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">요양비관리</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>요양비수가</li>
+													<li>요양비관리</li>
+													<li>명세서</li>
+													<li>수납대장</li>
+													<li>납부확인서</li>
+													<li>현금출납부</li>
+													<li>입출금내역</li>
+													<li>통장관리</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>연도별 1등급, 2등급, 3등급 요양비수가 관리</li>
+													<li>공담부담금, 본인부담금 자동계산, 식사재료비, 간식비, 상급병실료, 진료약제비 등 관리</li>
+													<li>급여비용명세서 법정서식으로 제공, 보호자에게 이메일 발송</li>
+													<li>시설 직인 연계하여 일괄출력</li>
+													<li>본인부담금 수납대장 법정서식으로 제공</li>
+													<li>납부확인서 법정서식으로 제공</li>
+													<li>어르신 개인별 수입.지출 관리</li>
+													<li>어르신 개인별 기간별 수입.지출.잔액 관리</li>
+													<li>어르신 개인별 통장관리</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">SMS관리</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>SMS관리</li>
+													<li>SMS발송요청현황</li>
+													<li>SMS발송현황</li>
+													<li>이메일발송현황</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>보호자연락처 자동관리, 시설의 자체적인 거래처 관리<br />개별발송 및 단체발송, 이모티콘 관리</li>
+													<li>각 파트별 일지와 SMS문자발송과 자동연계하여 발송</li>
+													<li>각 파트별 SMS발송 요청한 내역을 관리자가 확인후에 발송</li>
+													<li>급제공기록지, 급여비용명세서, 가정통신문, 노인학대예방 및 대응지침 이메일 발송한 내역</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">관리</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>공지사항</li>
+													<li>서식자료실</li>
+													<li>사용자관리</li>
+													<li>권한관리</li>
+													<li>접속현황</li>
+													<li>기관정보</li>
+													<li>월마감관리
+													<li>표준근로계약서</li>
+													<li>전자결재</li>
+													<li>일정관리</li>
+													<li>식단표</li>
+													<li>화면접속현황</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>요양시설 내 공지사항</li>
+													<li>요양시설 내 서식 자료실</li>
+													<li>시스템 사용자 관리</li>
+													<li>사용자별 프로그램 사용 권한 관리</li>
+													<li>시스템 로그인 정보 분석</li>
+													<li>요양시설 기관정보</li>
+													<li>자료의 보안을 위한 월단위로 마감기능
+													<li>직원의 계약서 관리</li>
+													<li>출력할 필요없이 각종 일지를 전자결재 제출</li>
+													<li>시설의 일정 및 어르신별 일정관리, 기본 일정 자동등록</li>
+													<li>식단, 간식, 식단이미지 등 관리, 주단위 출력</li>
+													<li>화면접속 이력관리</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-left br-none">기관운영</td>
+											<td class="td-left">
+												<ul class="tb-list tb-toggle">
+													<li>직원회의</li>
+													<li>운영위원회 회의록</li>
+													<li>보호자회의</li>
+													<li>자원봉사자 활동일지</li>
+													<li>위생점검일지</li>
+													<li>근골격계 증상 조사</li>
+													<li>신규직원교육</li>
+													<li>급여제공지침교육</li>
+													<li>운영규정교육</li>
+													<li>근골격계질환예방교육</li>
+													<li>개인정보보호교육</li>
+													<li>인권 및 노인학대 예방교육</li>
+													<li>소화설비 및 경보설비 <br />사용방법 교육</li>
+													<li>보호자용 만족도조사</li>
+													<li>수급자용 만족도조사</li>
+												</ul>
+											</td>
+											<td class="td-right td-rel">
+												<ul class="tb-list tb-toggle">
+													<li>분기별 1회 직원회의 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>반기별 1회 운영위원회 실시, 교육자료 및 사진등록, 외부인 등록 및 전자서명</li>
+													<li>반기별 1회 보호자회의 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>자원봉사자 활동일지 기록, 사진 앱으로 등록, 봉사자 전자서명</li>
+													<li>위생점검일지 기록</li>
+													<li>채용 후 14일이내에 신규직원교육 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>연1회 급여제공지침교육 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>연1회 운영규정교육 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>연1회 근골격계질환예방교육 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>연1회 개인정보보호교육 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>반기별 1회 인권 및 노인학대 예방교육 실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>반기별 1회 소화설비 및 경보설비 사용방법 교육실시, 교육자료 및 사진등록, 참석자 전자서명</li>
+													<li>연1회 보호자의 만족도 조사 실시, 통계자료 및 그래프 분석</li>
+													<li>연1회 수급자의 만족도 조사 실시, 통계자료 및 그래프 분석</li>
+												</ul>
+												<a href="" class="sldup sy-arrow">접기,펼치기 버튼</a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- e: .sy-table -->
+						</section>
+
+						<section class="sy-section part5">
+							<h3 class="h3-title">도입 후 기대효과</h3>
+							<ul class="sy-list-t2">
+								<li>
+									<div class="sy-list-title">
+										<p>사용성이 편리한 시스템 구축</p>
+									</div>
+									<ul class="sy-list-bottom">
+										<li>장기요양 관리 시스템을 언제, 어디서나 실시간으로 쉽게 접근하고, 편리하게 사용할 수 있는 시스템 구축</li>
+									</ul>
+								</li>
+								<li>
+									<div class="sy-list-title">
+										<p>단계적 구축을 통한 장기요양 관리 시스템 구축</p>
+									</div>
+									<ul class="sy-list-bottom">
+										<li>통합 어르신관리 장기요양 시스템을 운영함(대 고객서비스를 위한 장기요양 전문성 확보)</li>
+										<li>통합관리 시스템 구축</li>
+									</ul>
+								</li>
+								<li>
+									<div class="sy-list-title">
+										<p>체계화, 표준화된 시스템 구축</p>
+									</div>
+									<ul class="sy-list-bottom">
+										<li>체계적인 어르신관리(케어스케쥴) 시스템 기반 마련</li>
+										<li>장기요양 노하우를 체계화 및 표준화 함</li>
+									</ul>
+								</li>
+								<li>
+									<div class="sy-list-title">
+										<p>유연성, 확장성 있는 시스템 구축</p>
+									</div>
+									<ul class="sy-list-bottom">
+										<li>외부환경 변화와 사용자 요구사항을 능동적으로 반영할 수 있는 유연성과 확장성이 뛰어난 시스템 구축</li>
+									</ul>
+								</li>
+							</ul>
+						</section>
+					</div>
+				</div>
+				<!-- e: .content-body -->
+			</section>
+			<!-- e: #content -->
+		</div>
+
+<!-- s: #footer -->
+		<footer id="footer">
+			<div class="footer-top hidden-mobile">
+				<div class="container">
+					<div class="footer-agency">
+						<ul>
+							<li><a href="http://www.longtermcare.or.kr/npbs/" target="_new"><img src="/images/common/img_fbanner1.jpg" alt="국민건강보험 | 노인장기요양보험"></a></li>
+							<li><a href="http://www.mohw.go.kr/front_new/index.jsp" target="_new"><img src="/images/common/img_fbanner2.jpg" alt="힘이되는 평생친구 보건복지부"></a></li>
+							<li><a href="http://www.law.go.kr/main.html" target="_new"><img src="/images/common/img_fbanner3.jpg" alt="신뢰할 수 있는 법제처 국가법령정보센터"></a></li>
+							<li><a href="http://www.cdc.go.kr/CDC/main.jsp" target="_new"><img src="/images/common/img_fbanner4.jpg" alt="질병관리본부"></a></li>
+							<li><a href="http://www.privacy.go.kr/" target="_new"><img src="/images/common/img_fbanner5.jpg" alt="개인정보 종합포털"></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer-bottom">
+				<div class="container">
+					<h1 class="footer-logo hidden-mobile"><a href="/"><img src="/images/common/foot_logo.png" alt="요양시설통합사례관리솔루션 엔젤시스템"></a></h1>
+					<div class="footer-list">
+						<ul class="footer-menu hidden-mobile">
+							<li><a href="/silverangel/companyinfo/map.do">오시는 길</a></li>
+							<li><a href="https://helpu.kr/uniforce/" target="_new">원격지원</a></li>
+							<li>개인정보취급방침</li>
+							<li>유망중소기업</li>
+							<li>벤처기업</li>
+							<li>이노비즈기업</li>
+							<li>ISO인증</li>
+							<li>GS인증</li>
+							<li>특허등록</li>
+							<li>프로그램등록</li>
+						</ul>
+						<!-- s: .footer-address -->
+						<address class="footer-address">
+							<p> 인천광역시 부평구 부평대로 293, 712호 (청천동, 부평테크시티) 전화 : 032-277-9797 통신판매면허번호 : 제 2011-인천부평-00326호 </p>
+						</address>
+						<!-- e: .footer-address -->
+						<div class="footer-copy"> COPYRIGHTⓒ 2011 엔젤시스템(LCMS). ALL RIGHTS RESERVED.</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- e: #footer -->
+	</div>
+	<!-- e: #wrap -->
+	<script type="text/javascript" src="/js/slick.min.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/menu.js"></script>
+	<script type="text/javascript" src="/js/TweenMax.min.js"></script>
+	<script>
+		if(location.pathname.indexOf("/silverangel/angelsystem/") != -1) {
+			$("#mobile_menu_1").show();
+		} else if(location.pathname.indexOf("/silverangel/support/") != -1) {
+			$("#mobile_menu_2").show();
+		} else if(location.pathname.indexOf("/silverangel/publicize/") != -1) {
+			$("#mobile_menu_3").show();
+		} else if(location.pathname.indexOf("/silverangel/companyinfo/") != -1) {
+			$("#mobile_menu_4").show();
+		} else {
+			//alert('메인');
+		}
+	
+		$(function(){
+			$('.btn-mobile-login').on('click',function(e){
+				e.preventDefault();
+				var $topClass= $(this).closest('.top-menu');
+				if ($topClass.hasClass('__mopen')) {
+					$topClass.removeClass('__mopen');
+				} else {
+					$topClass.addClass('__mopen');
+				}
+			});
+			$('.main-banner').slick({
+				dots: true,
+				arrows:false,
+				mobileFirst:true,
+				infinite: true,
+				autoplay: false,
+				autoplaySpeed: 3000,
+				slidesToShow: 1,
+				responsive: [
+					{
+						breakpoint: 767,
+						settings: {
+							dots: true,
+							arrows:false,
+							variableWidth: true,
+							centerMode: true,
+						}
+					},
+	
+					{
+						breakpoint: 200,
+						settings: {
+							dots: false,
+							arrows:false,
+						}
+					}
+				]
+			});
+	
+			$('.sub-banner').slick({
+				arrows:true,
+				infinite: true,
+				autoplay: false,
+				autoplaySpeed: 3000,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+	
+				responsive: [
+					{
+						breakpoint: 767,
+						settings: {
+							dots: true,
+							arrows:false,
+						}
+					},
+					{
+						breakpoint: 200,
+						settings: {
+							dots: false,
+							arrows:true,
+						}
+					}
+				]
+			});
+		});
+
+		//if( /* 201905200900 > "" && */ getCookiee( "apPOP" ) != "done"){
+// 		    apPOP();
+	    //} 
+	</script>
+</body>
+</html>

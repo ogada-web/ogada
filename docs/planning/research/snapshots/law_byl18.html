@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+ <head>
+  <link rel="stylesheet" type="text/css" href="/LSW/js/jquery/jquery.fancybox-2.1.5.css" />
+  <style type="text/css">
+	div.form_cont{
+		height: calc(50vh - 10px);
+	}
+</style>
+ </head>
+ <body>
+  <input type="hidden" id="bylAdmRulId" name="bylAdmRulId" value="36934" />  
+  <script type="text/javascript" src="/LSW/js/jquery/jquery.fancybox-2.1.5.pack.js"></script>  
+  <!-- 컨텐츠 영역 --> 
+  <div class="wrap_type"> 
+   <div class="area_tit"> 
+    <p class="ast_tit">장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시<br />[시행 2026. 1. 1.] [보건복지부고시 제2025-247호, 2025. 12. 30., 일부개정]</p> 
+    <div class="ico_bx"> 
+     <a href="javascript:;" title="저장" onclick="javascrpt:setDownBtn('1');return false;"><img id="hanImg" src="/LSW/images/button/btn_han_w.gif" alt="저장" /></a> 
+     <a href="javascript:;" style="margin-left: 5px;" onclick="javascrpt:printlsByl();return false;" title="인쇄(팝업으로 이동)"><img src="/LSW/images/common/btn_v13fn7.gif" alt="인쇄" /></a> 
+    </div> 
+   </div> 
+   <div class="ast_cont" style="min-width: 950px;"> 
+    <div class="cn"> 
+     <span class="tmi"></span> 
+     <span class="tle"></span> 
+     <span class="tri"></span> 
+     <span class="bmi"></span> 
+     <span class="ble"></span> 
+     <span class="bri"></span> 
+    </div> 
+    <!-- 목록 선택 영역 --> 
+    <ul class="ast_sel_list"> 
+     <li id="prboxList"> <label for="bylList"><img src="/LSW/images/common/stit_stpo1.gif" alt="별표목록" /></label> <select id="bylList" style="width:70%">
+       <!-- 팝업 사이즈에 맞게 %, px로 사이즈 지정 --> <option value="3170407,0001,00,200201">[별표 1] 방문요양 및 방문간호 원거리교통비 점수산출 기준</option> <option value="3170409,0002,00,200201">[별표 2] 인력수급취약지역 52개 시군구</option> <option value="3170411,0001,00,200203">[별지 1] 요양제공자 변경 신청서</option> </select> <a href="javascript:;" class="btn type" onclick="javascript:fHstAdmRulBylList();return false;">선택</a> </li> 
+     <li id="bylListR"></li> 
+    </ul> 
+   </div> 
+   <div class="ast_cont02" style="height: auto; min-width: 922px;"> 
+    <div class="cn"> 
+     <span class="tmi"></span> 
+     <span class="tle"></span> 
+     <span class="tri"></span> 
+     <span class="ble"></span> 
+     <span class="bri"></span> 
+    </div> 
+    <!-- Content 영역 --> 
+    <div class="form_cont" id="bylContents" style="display: block; overflow: auto; width: 926px; height: 470px;"></div> 
+   </div> 
+  </div> 
+  <!-- container //--> 
+  <!-- 별표파일 TEXT 다운로드 ACTION --> 
+  <input type="hidden" id="bylTextDownAction" value="admRulBylTextDownLoad.do" /> 
+ </body>
+</html>

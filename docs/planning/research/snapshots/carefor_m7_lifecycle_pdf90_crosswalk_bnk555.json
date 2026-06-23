@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "cycle": "BNK-555",
+    "rotation": "케어포 역공학 0-2h",
+    "surveyed_at": "2026-06-23T17:25:00Z",
+    "ogada_fe": "426d63a",
+    "ogada_be": "c4e6bcb"
+  },
+  "evidence": [
+    {
+      "url": "https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=90",
+      "http": 200,
+      "md5": "96f7d45eaca91525068ec9bfb626fb18",
+      "note": "p.90 청구시작 기준금액 설정·1회 생성 후 locked"
+    },
+    {
+      "url": "https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php",
+      "http": 200,
+      "md5": "6226e6eb92fdd25ed3e50842a5e8a00b",
+      "note": "func M7 11-leaf 337차 zero drift"
+    },
+    {
+      "url": "https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/",
+      "http": 200,
+      "md5": "ebee4d4724cd5e633696268067a4d85f",
+      "note": "demo Wayback id_ 71,742B·on-disk carry b2e8e5c8 75,587B dual-snapshot"
+    }
+  ],
+  "func_m7_leaves": 11,
+  "demo_l07_visible": 10,
+  "demo_missing_vs_func": ["7-10 간편계산기"],
+  "pdf_numbering_drift": {
+    "cause": "7-4 CMS·7-5 간편결제 func 삽입으로 리포트 번호 +1 시프트",
+    "pdf_p91": ["7-5 청구대장", "7-6 입금대장", "7-7 수납대장"],
+    "func_demo": ["7-6 청구대장", "7-7 입금대장", "7-8 수납대장"]
+  },
+  "pdf_p90_numbering_conflict": {
+    "pdf_label": "7-3.청구시작 금액설정",
+    "func_7_3": "본인부담금 미납관리",
+    "ogada": "G33 billingStartBalance API·OverduePage embed·Route 0"
+  },
+  "workflow_guards": [
+    {"id": "7-1→7-2", "source": "PDF p.85", "rule": "이전 달 입금처리 선행 없으면 이전미납금 잔존"},
+    {"id": "calc-basis", "source": "PDF p.86", "rule": "청구명세서 생성기준=청구내역상세(엑셀) vs 일정(2-1)·9-1 설정"},
+    {"id": "start-balance-lock", "source": "PDF p.90", "rule": "본인부담금 1회 생성 후 청구시작 설정 변경 불가"}
+  ],
+  "crosswalk": [
+    {"func": "7-1", "demo_view": "view.cost_master", "ogada_route": "/billing·/billing/claims/:claimId", "status": "✅", "ogada_extra": "BillingStatementDispatchPanel"},
+    {"func": "7-2", "demo_view": "view.cost_receipt", "ogada_route": "/billing/payments", "status": "✅", "ogada_extra": "BankDepositImportPanel"},
+    {"func": "7-2-1", "demo_view": "view.cost_master_statistic", "ogada_route": "/billing/reports/statistics", "status": "✅"},
+    {"func": "7-3", "demo_view": "view.cost_nopay", "ogada_route": "/billing/overdue", "status": "✅"},
+    {"func": "7-3-pdf", "demo_view": "(none)", "ogada_route": "G33 /settings/billing/start-balance", "status": "△ embed"},
+    {"func": "7-4", "demo_view": "view.cms_manage", "ogada_route": "/billing/cms", "status": "✅"},
+    {"func": "7-5", "demo_view": "view.npay_manage", "ogada_route": "/billing/easy-pay", "status": "✅"},
+    {"func": "7-6", "demo_view": "view.cost_master_report", "ogada_route": "/billing/reports/charges", "status": "✅"},
+    {"func": "7-7", "demo_view": "view.cost_deposit_report", "ogada_route": "/billing/reports/deposits", "status": "✅"},
+    {"func": "7-8", "demo_view": "view.cost_receipt_report", "ogada_route": "/billing/reports/receipts", "status": "✅"},
+    {"func": "7-9", "demo_view": "view.cost_receipt_apply_yearly", "ogada_route": "/billing/reports/refunds", "status": "✅"},
+    {"func": "7-10", "demo_view": "(demo hidden)", "ogada_route": "/billing/calculator", "status": "✅", "note": "demo 시설 셸 미노출·ogada superset"}
+  ],
+  "ogada_superset_routes": [
+    "/billing/cash-receipts",
+    "/billing/copay-rates",
+    "/billing/fee-schedules",
+    "/billing/imports/nhis",
+    "/billing/imports/nhis/:batchId"
+  ],
+  "report_density": {
+    "ogada": "23/111 paths = 20.7%",
+    "carefor_demo": "34 rpt-class / 114 loadPage = 29.8%",
+    "gap_pp": -9.1
+  },
+  "facility_shell": {
+    "transport_nav_hits": 0,
+    "note": "시설 데모 셸 이동서비스 0 재확인"
+  }
+}

@@ -1,0 +1,84 @@
+# 케어포 M2 이동서비스 + L10 부가서비스 tri-source cross-walk (BNK-552)
+# 조사일: 2026-06-23T15:15Z | rotation: 케어포 역공학 0–2h
+# ogada @HEAD: FE `b7101d5` (WT CLEAN) / BE `5fd12dd` (WT CLEAN · HEAD +2 test)
+
+## 신규 증거 URL
+
+| # | URL | HTTP | SIZE | md5 | 비고 |
+|---|---|---|---|---|---|
+| 1 | [PDF p.33 이동서비스 흐름도](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=33) | 200 | 9,992,772B | `96f7d45e` | 9-1 시설설정↔탑승시간 반영 링크 신규 인용 |
+| 2 | [func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | 200 | 98,328B | `6226e6eb` | M2 10-leaf zero drift 335차 IDENTICAL |
+| 3 | [demo-work Wayback id_](https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/) | 200 | 71,742B | `ebee4d47` | on-disk `b2e8e5c8`(75,587B)와 **이중 스냅샷** — −3,845B 구버전 |
+| 4 | demo-work LIVE `https://demo-work.carefor.co.kr/` | 000 | 0 | — | **5연속 timeout 미확인** carry |
+
+## §1 demo 시설 셸 — 이동서비스 모듈 전체 제외 「확인」
+
+- `carefor_demo_work.html` `b2e8e5c8`: loadPage **111**·rpt **34**(30.6%)·transport 키워드 grep **0 hits**
+- IA remapping: func **M2=이동서비스(10-leaf)** → demo **L02=요양급여(14-leaf, func M3)**
+- 데모 체험자는 이동서비스·배차·송영 UI를 **볼 수 없음** — ogada v1.3-C `/transport/*` 9-route는 **경쟁사 데모 대비 차별화 우위**
+
+## §2 func M2 10-leaf ↔ ogada Route 1:1 (+3 superset)
+
+| func | 메뉴명 | PDF | ogada Route | 판정 |
+|---|---|---|---|---|
+| 2-1 | 일정관리(공단연동) | p.34–37 | `/transport` | ✅ |
+| 2-1-1 | 외출 관리 | — | `/transport/outings` | ✅ |
+| 2-2 | 탑승관리(차량 이용) | p.39 | `/transport/runs/:runId` | ✅ |
+| 2-3 | 출석관리(차량 미이용) | p.41 | `/visits/check-in` | △ |
+| 2-4 | 차량관리 | p.40 | `/transport/vehicles` | ✅ |
+| 2-5 | 청구내역상세(공단연동) | p.38 | `/billing/imports/nhis` | ✅ |
+| 2-6 | 공단 급여비용 청구 자료 | — | `/billing/imports/nhis/:batchId` | ✅ |
+| 2-7 | 월간 서비스 변동현황 | p.42 | `/reports/transport-monthly` | ✅ |
+| 2-8 | 월간 입소자 현황 | p.42 | `/reports/client-outings` | △ |
+| 2-9 | 수급자 외출 리포트 | — | `/reports/client-outings` | ✅ |
+
+**ogada superset (케어포 메뉴 0)**:
+- `/transport/auto-dispatch` — 자동배차
+- `/transport/compliance` — 법정 이동서비스비 러-1~4
+- `/transport/service-fees` — NHIS#44 수가
+
+**PDF p.33 워크플로 (확인)**:
+> 이동서비스를 기록하기 위해선 차량기본정보와 수급자의 일정이 생성되어야 하며, 탑승기록까지 완료하면 이동서비스 일지로 출력하여 평가가 가능합니다.
+> ※탑승기록은 **모바일 앱**에서 입력이 가능합니다.
+> ※9-1.시설정보설정 - **탑승/하차의 이동서비스 시간 반영 설정**에서 일정과 급여기록지 반영에 선택 후 저장
+
+→ ogada: TenantSystemSettings transport-time-sync Route **0** · **planner P3 G-TRANSPORT-TIME-SYNC**
+
+**PDF p.37 일정 색상 상태 (확인)** — 7-x billing lifecycle 연동:
+- 반쪽파란색 = 공단일정 동일
+- 주황색 = 본인부담금 청구완료(7-1 삭제 전 수정 불가)
+- 노란색 = 청구내역상세 반영(2-5)
+- 회색 = 급여이용계획/개별 생성
+
+## §3 L10 부가서비스 — func M10 vs demo L10 번호 drift
+
+| func M10 (9-leaf) | demo L10 (11-leaf) | view | ogada |
+|---|---|---|---|
+| 10-1 문자메시지 | 10-1 | view.send_sms | △ SOLAPI·전용 Route 0 |
+| 10-2 급여안내 | 10-2 | view.send_service_url | △ `/clients/care-plan-notifications` partial |
+| 10-2-1 수가변경안내 | 10-2-1 | view.send_sign_url | ❌ P3 |
+| 10-3 보호자 열람내역 | 10-3 | view.protector_service_reading | △ audit log 0 |
+| 10-4 공지/자료실 | 10-4 | view.form_storage | ❌ P3 |
+| 10-5 홈페이지 | 10-5 | view.hompy | ❌ MVP out-of-scope |
+| 10-6 보호자앱 | 10-6 | view.family_app | ✅ `/guardian`·`/guardians` |
+| — | **10-7 면회예약** | view.meet_reservation | ❌ **demo-only +2** |
+| — | **10-8 야간점검 NFC** | view.nfc_tag | ❌ **demo-only +2** |
+| 10-7 안내발송내역 | 10-9 | view.center_send_history2 | △ |
+| 10-8 평가출력 | 10-10 | view.print_all | △ |
+
+## §4 리포트 밀도 갭 carry
+
+| 지표 | 케어포 demo | ogada `@b7101d5` |
+|---|---|---|
+| 전체 메뉴/Route | 111 loadPage | 111 Route |
+| 리포트 수 | 34 (30.6%) | 23 report-path (20.7%) |
+| 갭 | — | **−9.9%p** (P2 G-REPORT-DENSITY) |
+
+## planner 액션
+
+| # | 우선순위 | 액션 |
+|---|---|---|
+| 1 | **P2** | v1.3-C 이동서비스 마케팅 — 데모 셸 0 vs ogada 9-route **차별화 강조** |
+| 2 | **P3** | G-TRANSPORT-TIME-SYNC — PDF p.33 9-1 탑승시간→일정 반영 설정 |
+| 3 | **P3** | G-GUARDIAN-MEETING·G-VISIT-RESERVATION — demo L10 10-7 면회예약 |
+| 4 | **P3** | G-NFC-NIGHT-PATROL — demo L10 10-8 야간점검 태그 |

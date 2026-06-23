@@ -1,0 +1,27 @@
+# 케어포 주야간보호 사용매뉴얼 PDF p.100 추출 (BNK-536 신규)
+# 원본: https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=100
+# Wayback: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=100
+# md5 PDF: 96f7d45eaca91525068ec9bfb626fb18 (132p·9,992,772B·pypdf 재추출 2026-06-23)
+# 조사일: 2026-06-23 | HTTP: 200 (Wayback id_ fetch)
+
+--- p.100 8-4.출퇴근 및 근무일지 관리 ---
+메뉴위치: 8-4.출퇴근 및 근무일지 관리
+직원의 월간 출퇴근 시간 기록과 근무일지를 관리할 수 있는 서비스입니다.
+
+① 전체 직원의 출퇴근 시간을 일자별로 한꺼번에 입력할 수 있는 기능
+② 이 영역을 클릭 시 근무일지를 작성할 수 있는 입력창이 제공되며, 해당일자의 출퇴근 시간을 수정할 수 있음
+   (출퇴근 시간이 표기되며 체크 이용방법도 표시: PC, NFC, 모바일 등으로 구분 표시됨)
+③ 해당 직원의 출퇴근 근무현황, 근무일지를 출력할 수 있는 기능
+
+※ 각 직원들의 근태시간과 근무일지 수정은 프로그램권한에서 처리권한
+   - 근태 관리[근무일지]가 있는 직원의 계정만 할 수 있습니다.
+
+[BNK-536 tri-source cross-walk]
+- func.php `8-4.출퇴근 및 근무관리` (module 8 leaf) ↔ demo-work `L08_M03` `view.staff_work_manage`
+- ogada `@2040571` `/staff/attendance` (`StaffWorkAttendancePage`) + G-STAFF-WORK-ATTENDANCE API
+  + V171 `chk_staff_work_attendance_checkout_not_before_checkin` (시각 순서 defense-in-depth)
+  + **US-R01 bidirectional RelatedSurfacesPanel** (`STAFF_WORK_ATTENDANCE_DEFAULT_RELATED_SURFACES`
+    → `/staff/annual-leaves` AVAILABLE) = 케어포 PDF 「월간 출퇴근+근무일지」와 「8-13 연차대장」 분리 surface를
+    **네비게이션 cross-link로 연결**(데이터 중복 없이) — 경쟁사 func 8-13 정적 PDF only·API 메타 0
+- 잔여 갭: PDF ① 일괄 일자별 입력 UI·② 근무일지 본문 textarea·③ 인쇄 서식 = ogada △ deepen carry
+- 체크인 방법 PC/NFC/모바일 = ogada `STAFF_WORK_CHECK_IN_METHODS` + NFC/모바일 config carry ✅

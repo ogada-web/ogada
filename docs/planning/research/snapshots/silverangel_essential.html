@@ -1,0 +1,2391 @@
+
+<html lang="ko">
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엔젤시스템</title>
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="엔젤시스템 - 회사소개 공지사항 고객센터 등">
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="msapplication-config" content="none"/>
+<meta property="og:url" content="http://www.silverangel.kr/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="엔젤시스템" />
+<meta property="og:description" content="엔젤시스템 - 회사소개 공지사항 고객센터 등" />
+<meta property="og:image" content="/newSilverangel/images/metaImage.png">
+
+<link type="image/png" rel="shortcut icon" href="/images/favicon.png">    
+    
+<!-- jQuery UI -->
+<script src="/newSilverangel/js/jquery-3.4.1.min.js"></script>
+<script src="/newSilverangel/js/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/newSilverangel/css/style.css">
+<script type="text/javascript" src="/js/jquery.timepicker.min.js" ></script><!-- 타이머js -->
+<link type="text/css" rel="stylesheet" href="/css/jquery.timepicker.css" media=""/><!-- 타이머css -->
+<script type="text/javascript" src="/js/jquery.mtz.monthpicker.js"></script><!-- monthpicker js -->
+<!-- <script src="http://malsup.github.com/jquery.form.js"></script> -->
+	 
+<script type="text/javascript">
+
+new Promise(function() {
+	
+	//SSL 통신 START
+	var link = document.location.href;
+	var protocol = location.protocol;
+	if(link.indexOf("silverangel.kr") != -1){
+		if(protocol.indexOf("https") < 0){
+			location.href = link.replace("http","https");
+		}
+	}
+	//SSL 통신 END
+	
+});
+</script>
+		
+<script type="text/javascript">
+		
+	
+	
+	
+	
+	
+	
+		
+	//로그인
+	function loginChk(){
+		
+		if(!$("#f_code").val()) {
+			alert("시설코드를 입력하여 주십시오.");
+			$("#f_code").focus();
+			return false;
+		}
+		
+		if(!$("#user_id").val()) {
+			alert("아이디를 입력하여 주십시오.");
+			$("#user_id").focus();
+			return false;
+		}
+		
+		if(!$("#user_password").val()) {
+			alert("비밀번호를 입력하여 주십시오.");
+			$("#user_password").focus();
+			return false;
+		}
+		
+		$("#login_form").submit();
+	}
+		
+	//로그인 Enter
+	function goEnter() {
+		if(event.keyCode == 13) {
+			loginChk();
+		}
+	}
+		
+	//로그아웃
+	function logout() {
+		location.href = "/silverangel/login/logout.do";
+	}
+		
+	//PC화면 메뉴 이동
+	function goTopMenu(URL){
+		location.href = URL;
+	}
+		
+	//파일 확장자 체크
+	function chkExt(thumbext){
+		
+		thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+	
+		var chk = "";
+		
+		if(thumbext != "pdf" && thumbext != "hwp" &&  thumbext != "xls" &&  thumbext != "zip" &&  thumbext != "xlsx" &&  thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp" &&  thumbext != "ppt" &&  thumbext != "pptx" &&  thumbext != "doc" &&  thumbext != "docx"){ //확장자를 확인합니다.
+	
+			chk = 11;
+	
+		}else{
+			chk = 22;
+		}
+		
+		return chk;
+	}
+		
+	//파일 확장자 체크
+	function chkExt_img(thumbext){
+		
+		thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+	
+		var chk = "";
+		
+		if(thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp"){ //확장자를 확인합니다.
+			chk = 11;
+		}else{
+			chk = 22;
+		}
+		
+		return chk;
+	}
+
+	// 파일 확장자 가져오기
+	function getFileExtension(filename) {
+	    return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+	}
+		
+	//숫자만 입력 가능
+	function isNumOnly(arg) {
+		event.target.value = event.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
+		if(arg == 'c'){
+			var len, startStrLen, divideNum; 
+	        var tmpStr, remainStr, startStr;
+	        var resultStr;
+	        var valid = "0123456789";
+	        var num = "";
+	        var real = String(event.target.value);
+	        
+	        for(var i = 0 ; i< real.length ; i++){
+	            if(valid.indexOf(real.charAt(i)) != -1){
+	               num += real.charAt(i);
+	            }          
+	        }
+	        len = num.length;     
+	        divideNum = Math.floor(len / 3); 
+	        startStrLen = len % 3;
+	        resultStr = num.substr(0, startStrLen );  
+	       
+	        remainStr =  num.substr(startStrLen, len - startStrLen );
+	        
+	        tmpStr = "";
+	        if ( remainStr != "" ) {	     
+	        	for ( i = 0; i < divideNum ; i++ ){
+	         	tmpStr = tmpStr + "," + remainStr.substr(i*3, 3);
+	        	}
+	        }
+	        resultStr = resultStr + tmpStr;
+	        
+	        if ( startStrLen == 0 ) {
+	            resultStr = resultStr.substr(1, resultStr.length - 1);
+	        }
+	        event.target.value = resultStr;
+		}
+	}
+		
+	//홈페이지제작 메뉴 이동
+	function goWebsiteProvided(){
+		location.href="/newSilverangel/webSite/websiteProvided.do";
+	}
+
+	var resizeWidth = $(window).width();
+	//메인화면 이미지만 늘려서 보이도록 하기 위해 메인화면일때만 헤더에 "main"클래스를 추가함
+	$(document).ready(function(){
+		var href = window.location.href;
+		href = href.split('/');
+		
+		var hrefDo = href[href.length-1]; //href의 마지막값 가져오기
+		if (hrefDo == "main.do" || hrefDo == "login.do" || hrefDo == "logout.do" || hrefDo == ""){
+			$("header").addClass("main");
+		}
+		if(getCookiee( "layer_popUp" ) != "done"){
+			$('.layer_popUp').css("display", "block");
+		}
+		else {
+			$('.layer_popUp').css("display", "none");
+		}
+
+		//메뉴 이동 시 로딩창 띄우기(pc화면)
+	    $('.menu.pc a').on('click', function(e) {
+	    	showLoading();
+	    });
+		
+		//메뉴 이동 시 로딩창 띄우기(모바일 화면)
+	    $('.breadcrumb.mo .drop a').on('click', function(e) {
+	    	showLoading();
+	    });	
+	    
+		//뒤로가기로 페이지 진입 시 로딩창 감추기
+	    $(window).on('pageshow', function(event) {
+	    	if(event.originalEvent.persisted) {
+	    		hideLoading();
+	    	}
+	    });
+		
+		//TOP메뉴
+	    $('.depth1 a').on('click', function(e) {
+	    	//PC
+	    	if(resizeWidth > 850){
+		    	showLoading();
+	    	}
+	    });
+	    $('.depth2 a').on('click', function(e) {
+	    	//모바일
+	    	if(resizeWidth <= 850){
+	    		showLoading();
+	    	}
+	    });
+	    $(window).resize(resizeLoading);
+	    
+	});
+		
+	function closePop(){
+		$('.layer_popUp').css("display", "none");
+	}
+		
+	function goMove(){
+		var form = document.checkClose;
+		
+		var action = "https://cafe.naver.com/iangelsoftmax?iframe_url=/MyCafeIntro.nhn%3Fclubid=23609616";
+		form.action = action;
+		form.submit();
+	}
+
+	function close1Day(){ 
+		var expdate = new Date();
+		expdate.setDate(expdate.getDate() + 1); // 하루만 그만보기
+	 	expdate.setHours(0,0,0,0);
+	
+		setCookie("layer_popUp", "done" , expdate);
+	
+		$('.layer_popUp').css("display", "none");
+	}
+
+	function close7Day(){ 
+		var expdate = new Date();
+		expdate.setDate(expdate.getDate() + 1); // 일주일 그만보기
+	 	expdate.setHours(0,0,0,0);
+	
+		setCookie("layer_popUp", "done" , expdate);
+	
+		$('.layer_popUp').css("display", "none");
+	}
+
+	function setCookie(name, value, expires){ 
+		document.cookie = name + "=" + escape (value) + "; path=/; expires=" + expires.toGMTString();   
+	} 
+
+	function getCookiee(Name) {
+	    var search = Name + "=";
+	    if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+	        offset = document.cookie.indexOf(search)
+	        if (offset != -1) { // 쿠키가 존재하면
+	            offset += search.length
+	            // set index of beginning of value
+	            end = document.cookie.indexOf(";", offset)
+	            // 쿠키 값의 마지막 위치 인덱스 번호 설정
+	            if (end == -1)
+	                end = document.cookie.length
+	            return unescape(document.cookie.substring(offset, end))
+	        }
+	    }
+	    return "";
+	}
+
+	function openNewWindow() {
+	    var win = window.open('https://cafe.naver.com/iangelsoftmax?iframe_url=/MyCafeIntro.nhn%3Fclubid=23609616', '_blank');
+	    win.focus();
+	}
+	
+	//로딩창
+	function showLoading() {
+	    $('.loading').show();
+	}
+	function hideLoading() {
+	    $('.loading').hide();
+	}
+	function resizeLoading(){
+		resizeWidth = $(window).width();
+	}
+	
+	
+</script>
+</head>
+<style>
+	.layer_popUp{
+		position:absolute;
+		margin-left: 0px;
+		margin-top: 0px;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		text-align: left;
+		width: 661px;
+		height: 661px;
+		top: 6VW;
+		left: 12VW;
+	}
+    .topBanner {
+        background: url(/newSilverangel/images/topBanner.png) no-repeat left;
+        background-size: contain;
+        width: 190px;
+        height: 48px;
+        margin-right: 30px;
+    }
+@media screen and (min-width: 300px){
+	.layer_popUp{
+        width: 275px;
+        height: 275px;
+    }
+    .topBanner {
+        width: 107px;
+        height: 26.5px;
+        position: absolute;
+        left: 120px;
+        top: 27.5px;
+    }
+}
+	
+@media screen and (min-width: 450px){
+	.layer_popUp{
+        width: 325px;
+        height: 325px;
+    }
+}
+@media screen and (min-width: 600px){
+	.layer_popUp{
+        width: 475px;
+        height: 475px;
+    }
+}
+@media screen and (min-width: 851px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+    .topBanner {
+        width: 190px;
+        height: 48px;
+        position: absolute;
+        left: -1px;
+        top: 90px;
+    }
+}
+@media screen and (min-width: 1025px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}
+@media screen and (min-width: 1250px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}
+@media screen and (min-width: 1400px){
+    .topBanner {
+        width: 190px;
+        height: 48px;
+        position: unset;
+        left: unset;
+        top: unset;
+    }
+}
+@media screen and (min-width: 1500px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}	
+
+</style>
+<body>
+	<form id="login_form" name="login_form" method="post" action="/silverangel/login/login.do">
+   		<div class="loading" style="display: none;"> 
+	      	<img src="/newSilverangel/images/loading.png" alt="">
+	      	<p>Loading</p>
+	   	</div>	
+		<header class="header row_section">
+		    <div class="header_top">
+		        <div class="section_inner" id="top_section_inner">
+                    <div style="display: flex;">
+		            <h1 class="topBanner" onclick="window.open('https://www.silverangel.co.kr/shop/listtype.php?type=5', '_blank');" style="cursor: pointer;"></h1>
+                    <h1 class="logo" onclick="goTopMenu('/silverangel/main/main.do'); showLoading();" style="cursor: pointer;"><span class="blind">요양시설통합세례관리솔루션 엔젤시스템</span></h1>
+                    </div>
+		            <div class="menu">
+		                <nav class="gnb">
+		                    <ul class="depth1">
+		                        <li>
+		                            <a href="/newSilverangel/fcltySlry/essentialWork.do">입소시설</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/fcltySlry/essentialWork.do">필수업무</a></li>
+		                                <li><a href="/newSilverangel/fcltySlry/programProvided.do">제공 프로그램</a></li>
+		                                <li><a href="/newSilverangel/fcltySlry/angelSystemSummary.do">엔젤시스템 개요</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/daycare/daycareEssentialWork.do">주야간보호</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/daycare/daycareEssentialWork.do">필수업무</a></li>
+		                                <li><a href="/newSilverangel/daycare/daycareProgramProvided.do">제공 프로그램</a></li>
+		                                <li><a href="/newSilverangel/daycare/daycareAngelSystemSummary.do">엔젤시스템 개요</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/service/mainService.do">서비스</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/service/mainService.do">주요서비스</a></li>
+		                                <li><a href="/newSilverangel/service/extraService.do">부가서비스</a></li>
+		                                <li><a href="/newSilverangel/service/businessSupportService.do">업무지원 서비스</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/service/feeService.do">이용요금</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/service/feeService.do">이용요금</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <!-- <a href="#" onclick="goWebsiteProvided();">기관 홈페이지 제작</a> -->
+		                            <a href="/newSilverangel/webSite/websiteProvided.do">기관 홈페이지 제작</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/webSite/websiteProvided.do">기관 홈페이지 제작</a></li>
+		                                <li><a href="/newSilverangel/webSite/websiteProvidedList.do">홈페이지 제작 현황</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/support/notice/list.do">고객지원</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/support/notice/list.do">공지사항</a></li>
+		                                <li><a href="/silverangel/support/download/list.do">자료실</a></li>
+		                                <li><a href="/silverangel/support/qna/list.do">묻고 답하기</a></li>
+		                                <li><a href="/silverangel/support/faq/list.do">자주묻는 질문</a></li>
+		                                <li><a href="/silverangel/support/edu_apply/write.do">도입문의</a></li>
+		                                
+		                                
+		                                
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/publicize/partner.do">홍보관</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/publicize/partner.do">파트너</a></li>
+		                                <li><a href="/silverangel/publicize/visit_list.do">사용시설 직무교육</a></li>
+		                                <li><a href="/silverangel/publicize/license.do">사업면허/표창</a></li>
+		                                <li><a href="/silverangel/publicize/angel_news_list.do">엔젤뉴스</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/companyinfo/business_area.do">기업정보</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/companyinfo/business_area.do">사업분야</a></li>
+		                                <li><a href="/silverangel/companyinfo/vision.do">비전</a></li>
+		                                <li><a href="/silverangel/companyinfo/history.do">걸어온 길</a></li>
+		                                <li><a href="/silverangel/companyinfo/ceo.do">CEO 인사말</a></li>
+		                                <li><a href="/silverangel/companyinfo/organization_chart.do">조직도</a></li>
+		                                <li><a href="/silverangel/companyinfo/map.do">오시는 길</a></li>
+		                            </ul>
+		                        </li>
+								<!-- 로그인하는 ID에 따라 hide, show(조건) -->
+										                        
+		                    </ul>
+		                </nav>
+		                <div class="login_wrap">
+		                	
+		                		
+				                    <input type="text" id="f_code" name="f_code" onkeypress="JavaScript:goEnter();" placeholder="시설코드">
+				                    <input type="text" id="user_id" name="user_id" onkeypress="JavaScript:goEnter();" placeholder="아이디">
+				                    <input type="password" id="user_password" name="user_password" onkeypress="JavaScript:goEnter();" placeholder="비밀번호">
+				                    <button type="button" class="loginForm" onclick="loginChk();">로그인</button>
+				                    <button type="button" class="btn_close">닫기</button>											                		
+		                		
+		                		
+		                	
+		                </div>
+		                <button type="button" class="login"><span class="blind">로그인</span></button>
+		                <button type="button" class="menu" id="btnMenu"><span class="blind">메뉴열기</span></button>
+		            </div>
+		        </div>
+		    </div>
+		</form>
+			<!-- 메인 화면 -->		    
+		
+  		<div class="visual main_slide" id="mainView" style="display: none;">
+  		
+         	 <div class="layer_popUp" style="display: block; z-index:10;">
+        		<div>
+				    <form name="checkClose">
+						<img src="/images/sub/opneNaverCafe_popup_1.jpg" style="width: 100%; height: 100%;">
+						<!-- 오늘은 그만 보기 -->
+						<div class="close1Day" onclick="close1Day()" style="height: 6%;width: 26%;position: absolute;top: 94%;left: 3%;"></div>
+						<!-- 닫기 -->
+						<div class="closePop" onclick="closePop()" style="width: 19%;height: 7%;position: absolute;top: 93%;left: 81%;"></div>
+						<!-- 자세히 보기 -->
+						<div class="openNewWindow" onclick="openNewWindow()" style="width: 36%;height: 9%;position: absolute;top: 74%;left: 32%;"></div>
+						<!-- 일주일동안 그만 보기 -->
+						<div class="close7Day" onclick="close7Day()" style="height: 6%;width: 27%;position: absolute;top: 94%;left: 34%;"></div>
+					</form>
+				</div>
+			</div> 
+			
+ 			<div class="visual main_slide">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                    	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-06.jpg);">
+                            <div class="slide_inner_box type_c">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-06_add.png">
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">기관의 특성을 담은 홈페이지 제작</p>
+
+                                    <p class="d_text">계절별로 디자인이 자동 변경되는 홈페이지</p>
+
+                                    <p class="s_text">수급자 정보 자동연동으로 보호자와의 신뢰관계 유지, <br> 감각적인 디자인으로 기관 홍보 효과 또한 탁월합니다.</p>
+                                    <div class="ad_head">
+                						<a href="https://www.silverangel.kr/newSilverangel/webSite/websiteProvided.do" target="_self" class="exp_link">체험하기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                     	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-05.jpg);">
+                            <div class="slide_inner_box type_b">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-05_add.png">
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">본인부담금 자동이체(CMS) 서비스</p>
+
+                                    <p class="s_text">매월 발생하는 본인부담금을 보호자계좌에서 자동출금, 카드 자동결제, <br>
+                                        가상계좌 입금 등의 방법으로 편리하게 납부할 수 있는 기능을 제공합니다. </p>
+
+                                    <p class="m_text">가입문의 : <span>1600-6859</span></p>
+                                    <div class="ad_head">
+                						<a href="https://www.silverangel.kr/newSilverangel/service/extraService.do" target="_self" class="exp_link">자세히보기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                    	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-04.jpg);">
+                            <div class="slide_inner_box type_a">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-04_add.png">
+                                    <p class="">엔젤시스템 & CJ프레시웨이<br> 업무협약(MOU) 체결</p>
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">CJ프레시웨이와 MOU 체결을 통해 <br>노인식단 전문영양사가 작성한<br> 식단표 활용</p>
+
+                                    <p class="s_text">노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로<br> 식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다.</p>
+                                    <div class="ad_head">
+                						<a href="https://silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864&Tmp_thread=1&Tmp_depth=0" target="_self" class="exp_link">자세히보기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-01.jpg)">
+                            <p class="slogan">
+                                <strong>고객의 입장에 서서 <br>
+                                최고의 서비스를 제공합니다</strong>
+                                <span>장기요양 서비스 관리의 표준 엔젤시스템</span>
+                            </p>
+                            <div class="ad_head2">
+                         		<a href="https://youtu.be/vsPs1Xtvzh8" target="_blank" class="exp_link">홍보영상보기</a>
+                        	</div>
+                        </div>
+  
+                    </div>
+                    <div class="swiper-pagination"> </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+		</div>
+		
+            <!-- 입소시설 - 필수업무 -->
+            <div class="visual sub1_1" id="fcltySlry1" style="display: none;">
+                <p class="slogan">
+                    <strong>입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>                        		    
+			
+			<!-- 입소시설 - 제공프로그램 -->
+            <div class="visual sub1_2" id="fcltySlry2" style="display: none;">
+                <p class="slogan">
+                    <strong class="tit">입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            		    
+		    <!-- 입소시설 - 엔젤시스템 개요 -->
+            <div class="visual sub1_3" id="fcltySlry3" style="display: none;">
+                <p class="slogan">
+                    <strong>입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 주야간보호 - 필수업무 -->
+            <div class="visual sub2_1" id="daycare1" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>		    
+		    
+		    <!-- 주야간보호 - 제공프로그램 -->
+            <div class="visual sub2_2" id="daycare2" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>		    
+		    
+		    <!-- 주야간보호 - 엔젤시스템 개요 -->
+            <div class="visual sub2_3" id="daycare3" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 서비스 - 주요서비스 -->
+            <div class="visual sub3_1" id="serviceView1" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 서비스 - 부가서비스 -->
+            <div class="visual sub3_2" id="serviceView2" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 서비스 - 업무지원서비스 -->
+            <div class="visual sub3_3" id="serviceView3" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홈페이지제작 -->
+            <div class="visual sub4_1" id="webSite1" style="display: none;">
+                <p class="slogan">
+                    <strong>기관 홈페이지 제작</strong>
+                    <span>고객의 편의를 항상 최우선으로 생각하는 <br>
+                        엔젤 시스템만의 특화된 서비스를 만나보세요.</span>
+                </p>
+            </div>  
+            
+            <!-- 홈페이지제작 -->
+            <div class="visual sub4_1" id="fee1" style="display: none;">
+                <p class="slogan">
+                    <strong>이용요금</strong>
+                    <span>고객의 편의를 항상 최우선으로 생각하는 <br>
+                        엔젤 시스템만의 특화된 서비스를 만나보세요.</span>
+                </p>
+            </div>            
+
+			<!-- 고객지원 - 공지사항 -->
+            <div class="visual sub5_1" id="support1" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+
+			<!-- 고객지원 - 자료실 -->
+            <div class="visual sub5_2" id="support2" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 묻고 답하기 -->
+            <div class="visual sub5_3" id="support3" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 자주묻는 질문 -->
+            <div class="visual sub5_4" id="support4" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+			<!-- 고객지원 - 시연신청 -->
+            <div class="visual sub5_5" id="support5" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 시연신청현황 -->
+            <div class="visual sub5_6" id="support6" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 고객지원 - 직무교육신청 -->
+            <div class="visual sub5_7" id="support7" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 고객지원 - 직무교육 신청현황 -->
+            <div class="visual sub5_8" id="support8" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홍보관 - 파트너 -->
+            <div class="visual sub6_1" id="publicize1" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 홍보관 - 사용시설직무교육 -->
+            <div class="visual sub6_2" id="publicize2" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>			
+			
+			<!-- 홍보관 - 사업면허/표창 -->
+            <div class="visual sub6_3" id="publicize3" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홍보관 - 엔젤뉴스 -->
+            <div class="visual sub6_4" id="publicize4" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 기업정보 - 사업분야 -->
+            <div class="visual sub7_1" id="companyinfo1" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - 비전 -->
+            <div class="visual sub7_2" id="companyinfo2" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 기업정보 - 걸어온 길 -->
+            <div class="visual sub7_3" id="companyinfo3" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - CEO 인사말 -->
+            <div class="visual sub7_4" id="companyinfo4" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - 조직도 -->
+            <div class="visual sub7_5" id="companyinfo5" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+
+            <!-- 기업정보 - 오시는 길 -->
+            <div class="visual sub7_6" id="companyinfo6" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- Footer - 개인정보처리방침 -->
+            <div class="visual sub7_7" id="privacyPolicy" style="display: none;">
+                <p class="slogan">
+                    <strong>개인정보처리방침</strong>
+                </p>
+            </div>                                                            
+            
+            <!-- Footer - 이용약관 -->
+            <div class="visual sub7_7" id="termsUse" style="display: none;">
+                <p class="slogan">
+                    <strong>이용약관</strong>
+                </p>
+            </div>              
+
+            <!-- Footer - 문자서비스 이용약관-->
+            <div class="visual sub7_7" id="sms_service" style="display: none;">
+                <p class="slogan">
+                    <strong>문자서비스 이용약관</strong>
+                </p>
+            </div>                                                            
+		</header>
+</body>
+<script>
+
+
+</script>
+
+<style type="text/css">
+ 	.tableTd tbody td{
+		text-align: center !important;
+	}
+    
+    .manual_pop .table_wrap.type2.ta4 td:nth-child(4) { text-align: center !important; }
+	
+	@media screen and (max-width: 850px){
+		#col1{ width: 22% !important; }
+		#col2{ width: 20% !important; }
+		#col3{ width: 16% !important; }
+	}
+</style>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	$("#daycare1").css("display","block");
+	
+});
+
+//레이어 팝업 닫고 메뉴탭 on 초기화
+function resetPopTab(){
+	
+	$(".pop_tabs a").removeClass("on");
+	$(".pop_tabs a").eq(0).addClass("on");
+	
+	$(".tab_cont").css("display","none");
+	$(".tab_cont").eq(0).css("display","block");
+	$(".tab_cont3").css("display","block");
+	$(".tab_cont4").css("display","block");	
+	
+}
+
+</script>
+
+<body>
+    <div class="container">
+        <nav class="lnb">
+            <div class="inner">
+                <ul class="breadcrumb mo">
+                    <li>홈</li>
+                    <li>주야간보호</li>
+                    <li><a href="/newSilverangel/daycare/daycareEssentialWork.do">필수업무</a>
+                        <ul class="drop">
+                            <li><a href="/newSilverangel/daycare/daycareEssentialWork.do" class="on">필수업무</a></li>
+                            <li><a href="/newSilverangel/daycare/daycareProgramProvided.do">제공 프로그램</a></li>
+                            <li><a href="/newSilverangel/daycare/daycareAngelSystemSummary.do">엔젤시스템 개요</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="menu pc">
+                    <li style="width: 180px;"><a href="/newSilverangel/daycare/daycareEssentialWork.do" class="on">필수업무</a></li>
+                    <li><a href="/newSilverangel/daycare/daycareProgramProvided.do">제공 프로그램</a></li>
+                    <li><a href="/newSilverangel/daycare/daycareAngelSystemSummary.do">엔젤시스템 개요</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="main">
+            <section class="row_section">
+                <div class="section_inner">
+                    <h2 class="sec_tit">업무내용</h2>
+                    
+                    <ul class="business_list col2">
+                        <li>
+                            <div class="img_wrap"><img src="/newSilverangel/images/business01.jpg" alt=""></div>
+                            <a href="">업무달력</a>
+                        </li>
+                        <li>
+                            <div class="img_wrap"><img src="/newSilverangel/images/business03.jpg" alt=""></div>
+                            <a href="">주기별 업무</a>
+                        </li>
+                    </ul>
+                    
+                </div>
+            </section>
+            <section class="row_section sec_edu">
+                <div class="section_inner">
+                    <h2 class="sub_tit c_fff">필수교육</h2>
+
+                    <div class="edu_wrap">
+                        <div class="circle">
+                            <div>
+                                주야간보호 <br>
+                                <span>필수교육</span>은 <br>
+                                엔젤시스템과 함께
+                            </div>
+                        </div>
+
+                        <div class="manual">
+                            <h3>평가 매뉴얼</h3>
+                            <ul>
+                                <li>급여제공 지침 12개 항목 <font style="color: red;">[연1회 이상]</font>
+                                    <small>급여제공지침 10개, 기타지침 2개 (주야간보호 6)</small>
+                                </li>
+                                <li>운영규정 11개 항목 <font style="color: red;">[연 1회 이상]</font>
+                                    <small>이용정원 및 모집 방법 등에 관한 사항 외 10개 (주야간보호 1, 26)</small>
+                                </li>
+                                <li>재난대응훈련 <font style="color: red;">[반기별 1회]</font></li>
+                                <li>수급자 안전관리 <font style="color: red;">[연 1회 이상]</font></li>
+                                <li>노인인권교육 <font style="color: red;">[반기별 1회 이상]</font></li>
+                            </ul>
+                            <a href="" class="view_more"><span class="blind">더 보기</span></a>
+                        </div>
+
+                        <div class="edu">
+                            <h3>법정 의무교육</h3>
+                            <ul>
+                                <li>직장내 성희롱예방교육 <font style="color: red;">[연1회]</font></li>
+                                <li>개인정보 보호교육 <font style="color: red;">[연1회]</font></li>
+                                <li>퇴직연금교육 <font style="color: red;">[연1회]</font></li>
+                                <li>직장내 장애인인식 개선교육 <font style="color: red;">[ 50인이상 : 연1회, 50인 미만 : 교육자료]</font></li>
+                                <li>장애인학대예방 및 신고의무자교육 <font style="color: red;">[연1회]</font></li>
+                                <li>노인학대 신고의무자교육 <font style="color: red;">[연1회]</font></li>
+                                <li>노인 인권교육 <font style="color: red;">[연1회]</font></li>
+                                <li>아동학대 신고의무자 교육 <font style="color: red;">[연1회]</font></li>
+                                <li>긴급복지 신고의무자 교육 <font style="color: red;">[연1회]</font></li>
+                                <li>직장내 괴롭힘방지 교육 <font style="color: red;">[취업규칙 반영, 의무 없음]</font></li>
+                                <li>산업안전보건교육 <font style="color: red;">[사회복지서비스 업종 제외]</font></li>
+                                <li>자살예방교육 <font style="color: red;">[연1회]</font></li>
+                            </ul>
+                            <a href="" class="view_more"><span class="blind">더 보기</span></a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </section>
+            <section class="row_section liaison">
+                <div class="section_inner">
+                    <h2 class="sec_tit">공단평가 연계</h2>
+                    <p class="normal_p txtC c_6a6a6a">
+                        엔젤시스템에서는 장기요양 기관평가 항목에 필요한 기능을 제공하여 <br>
+                        시스템을 사용만 해도 평가준비가 됩니다.
+                    </p>
+                    <div class="img_wrap mb100 pc link_img">
+                        <img src="/newSilverangel/images/liaison_pc.jpg" alt="">
+                        <a href=""><span class="blind">더보기</span></a>
+                    </div>
+                    <div class="img_wrap mb100 mo">
+                        <img src="/newSilverangel/images/liaison01.jpg" alt="">
+                        <div class="link_img">
+                            <img src="/newSilverangel/images/liaison02_2.jpg" alt="">
+                            <a href=""><span class="blind">더보기</span></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- 업무달력 팝업 -->
+    <div class="pop_container business_pop" style="display: none;">
+        <div class="popup w1200">
+            <h3>
+            	업무달력
+            	<span style ="font-size: 12px;">이 달력의 디자인은 특허 등록된 것으로 당사의 허락없이 사용(복사, 도용 등)을 금지합니다.</span>
+            </h3>
+            <button type="button" class="btn_close"><span class="blind">팝업닫기</span></button>
+            <div class="calendar_wrap">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_01.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_02.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_03.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_04.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_05.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_06.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_07.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_08.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_09.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_10.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_11.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_12.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_13.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_14.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_15.jpg" alt="">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/newSilverangel/images/angel_day_care_16.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 주기별 업무 팝업 -->
+    <div class="pop_container business_pop" style="display: none;">
+        <div class="popup w1200">
+            <h3>주기별 업무</h3>
+            <button type="button" class="btn_close" onclick="resetPopTab();"><span class="blind">팝업닫기</span></button>
+            <div class="pop_tabs">
+                <a href="" class="on">연간</a>
+                <a href="">반기</a>
+                <a href="">분기</a>
+                <a href="">월간</a>
+                <a href="">주간</a>
+                <a href="">일일</a>
+                <a href="">발생시</a>
+                <a href="">신규입소시</a>
+            </div>
+            <div class="pop_tab_cont">
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <table class="tableTd">
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>1월</td>
+                                    <td>2월</td>
+                                    <td>3월</td>
+                                    <td>4월</td>
+                                    <td>5월</td>
+                                    <td>6월</td>
+                                    <td>7월</td>
+                                    <td>8월</td>
+                                    <td>9월</td>
+                                    <td>10월</td>
+                                    <td>11월</td>
+                                    <td>12월</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td colspan="12">연간(1월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">반기(상반기 1월 ~ 6월)</td>
+                                    <td colspan="6">반기(하반기 7월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">분기(1분기 1월 ~ 3월)</td>
+                                    <td colspan="3">분기(2분기 4월 ~ 6월)</td>
+                                    <td colspan="3">분기(3분기 7월 ~ 9월)</td>
+                                    <td colspan="3">분기(4분기 10월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="17" style="text-align: center;">연간</td>
+                                    <td>사업 계획 수립</td>
+                                    <td>주야간보호 2 사업계획<br><strong>- 기관운영, 서비스 제공, 직원 관리의 분야 포함 필수</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공지침 교육</td>
+                                    <td>주야간보호 6 직원교육</td>
+                                </tr>
+                                <tr>
+                                    <td>운영규정 교육</td>
+                                    <td>주야간보호 6 직원교육</td>
+                                </tr>
+                                <tr>
+                                    <td>모든 수급자(보호자)에게 폭언.폭행.성희롱 예방 및 직원과 수급자의 상호 존중을 포함하는 내용을 안내</td>
+                                    <td>주야간보호 7 직원인권보호</td>
+                                </tr>
+                                <tr>
+                                    <td>직원건강검진</td>
+                                    <td>주야간보호 15 건강검진<br><strong>- 결핵검진을 포함, 계측검사, 요검사, 혈액검사, 영상검사, 결과판정</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>수급자(보호자)의 상담결과를 연 1회 이상 급여에 반영</td>
+                                    <td>주야간보호 17 소통노력</td>
+                                </tr>
+                                <tr>
+                                    <td>수급자 안전관리설명</td>
+                                    <td>주야간보호 19 노인인권보호<br><strong>- 욕창예방, 낙상예방, 탈수예방, 배변도움, 관절구축예방, 치매예방, 감염예방, 노인인권보호</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>종합적인 욕구사정 (10개 항목)</td>
+                                    <td>주야간보호 20 욕구사정</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공계획 수립</td>
+                                    <td>주야간보호 22 급여제공계획 수립 및 제공</td>
+                                </tr>
+                                <tr>
+                                    <td>신체기능 프로그램 계획</td>
+                                    <td>주야간보호 24 신체기능 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>인지기능 프로그램 계획</td>
+                                    <td>주야간보호 25 인지기능 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>사회적응 프로그램 계획</td>
+                                    <td>주야간보호 26 사회적응 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>신체기능 프로그램에 대한 수급자(보호자) 의견 반영</td>
+                                    <td>주야간보호 24 신체기능 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>인지기능 프로그램에 대한 수급자(보호자) 의견 반영</td>
+                                    <td>주야간보호 25 인지기능 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>사회적응 프로그램에 대한 수급자(보호자) 의견 반영</td>
+                                    <td>주야간보호 26 사회적응 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>수급자의 잔존능력유지를 위한 개인별 기능회복훈련 계획</td>
+                                    <td>주야간보호 27 기능회복훈련</td>
+                                </tr>
+                                <tr>
+                                    <td>인플루엔자(독감) 예방접종</td>
+                                    <td>주야간보호 32 백신 접종률</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <table class="tableTd">
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>1월</td>
+                                    <td>2월</td>
+                                    <td>3월</td>
+                                    <td>4월</td>
+                                    <td>5월</td>
+                                    <td>6월</td>
+                                    <td>7월</td>
+                                    <td>8월</td>
+                                    <td>9월</td>
+                                    <td>10월</td>
+                                    <td>11월</td>
+                                    <td>12월</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12">연간(1월 ~ 12월)</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td colspan="6">반기(상반기 1월 ~ 6월)</td>
+                                    <td colspan="6">반기(하반기 7월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">분기(1분기 1월 ~ 3월)</td>
+                                    <td colspan="3">분기(2분기 4월 ~ 6월)</td>
+                                    <td colspan="3">분기(3분기 7월 ~ 9월)</td>
+                                    <td colspan="3">분기(4분기 10월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="12" style="text-align: center;">반기</td>
+                                    <td>재난대응훈련(화재발생 대응훈련 등)</td>
+                                    <td>주야간보호 11 재난상황대응</td>
+                                </tr>
+                                <tr>
+                                    <td>노인인권교육</td>
+                                    <td>주야간보호 19 노인인권보호</td>
+                                </tr>
+                                <tr>
+                                    <td>낙상위험도 평가</td>
+                                    <td>주야간보호 21 위험도 평가</td>
+                                </tr>
+                                <tr>
+                                    <td>욕창위험도 평가</td>
+                                    <td>주야간보호 21 위험도 평가</td>
+                                </tr>
+                                <tr>
+                                    <td>인지기능 평가</td>
+                                    <td>주야간보호 21 위험도 평가</td>
+                                </tr>
+                                <tr>
+                                    <td>신체기능 프로그램에 대한 수급자(보호자) 의견 수렴</td>
+                                    <td>주야간보호 24 신체기능 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>인지기능 프로그램에 대한 수급자(보호자) 의견 수렴</td>
+                                    <td>주야간보호 25 인지기능 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>사회적응 프로그램에 대한 수급자(보호자) 의견 수렴</td>
+                                    <td>주야간보호 26 사회적응 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>사례관리회의 실시</td>
+                                    <td>주야간보호 29 사례관리<br><strong>- 회의 결과를 30일 이내 급여에 반영하고, 평가를 실시</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>수급자의 식사 만족도 파악</td>
+                                    <td>주야간보호 33 식사(간식) 제공결과</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공평가 실시</td>
+                                    <td>주야간보호 34 급여제공 결과평가<strong>- 수급자별 평가결과에 따라 급여제공계획을 30일 이내에 재작성</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>가족참여 프로그램</td>
+                                    <td>장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시<strong>- 가족이 내방하여 직접 참여</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                  
+                </div>
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <table class="tableTd">
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>1월</td>
+                                    <td>2월</td>
+                                    <td>3월</td>
+                                    <td>4월</td>
+                                    <td>5월</td>
+                                    <td>6월</td>
+                                    <td>7월</td>
+                                    <td>8월</td>
+                                    <td>9월</td>
+                                    <td>10월</td>
+                                    <td>11월</td>
+                                    <td>12월</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12">연간(1월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">반기(상반기 1월 ~ 6월)</td>
+                                    <td colspan="6">반기(하반기 7월 ~ 12월)</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td colspan="3">분기(1분기 1월 ~ 3월)</td>
+                                    <td colspan="3">분기(2분기 4월 ~ 6월)</td>
+                                    <td colspan="3">분기(3분기 7월 ~ 9월)</td>
+                                    <td colspan="3">분기(4분기 10월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="4" style="text-align: center;">분기</td>
+                                    <td>복지(포상 등) 제공</td>
+                                    <td>주야간보호 8 직원권익향상</td>
+                                </tr>
+                                <tr>
+                                    <td>실내외 전문소독 실시</td>
+                                    <td>주야간보호 16 감염관리</td>
+                                </tr>
+                                <tr>
+                                    <td>수급자(보호자) 정기상담</td>
+                                    <td>주야간보호 17 소통노력</td>
+                                </tr>
+                                <tr>
+                                    <td>일반 의약품의 사용기한 및 보관상태 점검</td>
+                                    <td>주야간보호 23 투약 및 약품관리</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <table class="tableTd">
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>1월</td>
+                                    <td>2월</td>
+                                    <td>3월</td>
+                                    <td>4월</td>
+                                    <td>5월</td>
+                                    <td>6월</td>
+                                    <td>7월</td>
+                                    <td>8월</td>
+                                    <td>9월</td>
+                                    <td>10월</td>
+                                    <td>11월</td>
+                                    <td>12월</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12">연간(1월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">반기(상반기 1월 ~ 6월)</td>
+                                    <td colspan="6">반기(하반기 7월 ~ 12월)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">분기(1분기 1월 ~ 3월)</td>
+                                    <td colspan="3">분기(2분기 4월 ~ 6월)</td>
+                                    <td colspan="3">분기(3분기 7월 ~ 9월)</td>
+                                    <td colspan="3">분기(4분기 10월 ~ 12월)</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                    <td>월간</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="6" style="text-align: center;">월간</td>
+                                    <td>소화설비, 경보설비 점검</td>
+                                    <td>주야간보호 13 시설안전</td>
+                                </tr>
+                                <tr>
+                                    <td>월간 프로그램 계획표, 식단표, 소식지 발송</td>
+                                    <td>주야간보호 17 소통노력<br><strong>- 온라인 또는 오프라인으로 월 1회 이상 제공</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>사회적응 프로그램 실시</td>
+                                    <td>주야간보호 26 사회적응 프로그램</td>
+                                </tr>
+                                <tr>
+                                    <td>수급자의 욕구를 반영한 식사(간식) 제공</td>
+                                    <td>주야간보호 33 식사(간식) 제공결과</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공기록지 법정서식 발송</td>
+                                    <td>주야간보호 34 급여제공 결과평가</td>
+                                </tr>
+                                <tr>
+                                    <td>급여비용 명세서 발송</td>
+                                    <td>노인장기요양 보험법</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <div class="box">
+                            <ul>
+                                <li>상태변화기록(관찰일지) 작성시 <span>인지관리 지원 항목</span>에 해당되는 내용은 체크 후 기록</li>
+                                <li>인지관리지원 항목 선택은 <span>상태변화기기록 - 인지관리지원 설명</span> 버튼 참고</li>
+                                <li><span>보고서-상태변화기록</span> 메뉴에서 상태변화기록 일괄 조회 가능</li>
+                            </ul>
+                        </div>
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="6" style="text-align: center;">주간</td>
+                                    <td>주방 및 주방집기류 소독</td>
+                                    <td>주야간보호 16 감염관리</td>
+                                </tr>
+                                <tr>
+                                    <td>신체기능 프로그램</td>
+                                    <td>주야간보호 24 신체기능 프로그램<br><strong>- 프로그램 계획에 따라 주 3회 이상 실시</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>인지기능 프로그램</td>
+                                    <td>주야간보호 25 인지기능 프로그램<br><strong>- 프로그램 계획에 따라 주 3회 이상 실시</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>식단표 작성 후 게시</td>
+                                    <td>주야간보호 33 식사(간식) 제공결과<br><strong>- 영양사가 작성한 1식 4찬 이상의 식단표 게시</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>상태변화기록지</td>
+                                    <td>주야간보호 34 급여제공 결과평가<br><strong>- 주 1회 이상 수급자 상태변화를 기록</td>
+                                </tr>
+                                <tr>
+                                    <td>목욕제공</td>
+                                    <td>필수사항 아니며 목욕서비스 제공시 청구 가능</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="11" style="text-align: center;">일일</td>
+                                    <td>환기수칙에 따라 환기 실시(실내환기 일일 점검표 비치)</td>
+                                    <td>주야간보호 9 안전하고 쾌적한 환경조성<br><strong>- 환기수칙에 따라 매일 최소 3회 이상(회당 10분 이상) 실내 환기 실시</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>투약일지</td>
+                                    <td>주야간보호 23 투약 및 약품관리</td>
+                                </tr>
+                                <tr>
+                                    <td>기능회복훈련 제공하고 기록</td>
+                                    <td>주야간보호 27 기능회복훈련</td>
+                                </tr>
+                                <tr>
+                                    <td>프로그램 일지</td>
+                                    <td>프로그램계획에 따라 제공하고 기록</td>
+                                </tr>
+                                <tr>
+                                    <td>위생 점검 일지</td>
+                                    <td>기관에서 일상적으로 실시하므로 기록</td>
+                                </tr>
+                                <tr>
+                                    <td>식중독예방일일 점검표</td>
+                                    <td>지자체 점검 사례</td>
+                                </tr>
+                                <tr>
+                                    <td>건강관리 기록부 활력증후 기록</td>
+                                    <td>협약의료기관 및 계약의사 운영규정</td>
+                                </tr>
+                                <tr>
+                                    <td>기록지 작성</td>
+                                    <td>장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시</td>
+                                </tr>
+                                <tr>
+                                    <td>물리/작업치료 일지</td>
+                                    <td>물리/작업치료 제공 후 물리/작업치료 일지 작성</td>
+                                </tr>
+                                <tr>
+                                    <td>간호일지</td>
+                                    <td>간호팀에서 제공한 내용 취합</td>
+                                </tr>
+                                <tr>
+                                    <td>급식일지</td>
+                                    <td>엔젤 화면 참고</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <div class="box">
+                            <ul>
+                                <li>발생(필요)시 서비스를 제공하고 기록</li>
+                            </ul>
+                        </div>
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="11" style="text-align: center;">발생(필요)시</td>
+                                    <td>신규직원 급여제공 시작일로부터 7일 이내 운영규정교육</td>
+                                    <td>주야간보호 6 직원교육</td>
+                                </tr>
+                                <tr>
+                                    <td>신규직원 급여제공 시작일로부터 7일 이내 급여제공지침교육</td>
+                                    <td>주야간보호 6 직원교육</td>
+                                </tr>
+                                <tr>
+                                    <td>신규직원 근무시작일까지 건강검진 결과통보서 제출</td>
+                                    <td>주야간보호 15 건강검진<br><strong>- 5개 영역을 충족하는 입사 전 1년 이내의 결과만 인정</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>간호비품 소독대장</td>
+                                    <td>주야간보호 16 감염관리</td>
+                                </tr>
+                                <tr>
+                                    <td>일회용 간호비품 구입일자 및 사용여부 등 관리대장 기록</td>
+                                    <td>주야간보호 16 감염관리</td>
+                                </tr>
+                                <tr>
+                                    <td>감염병 유행 및 발생 시 대응체계를 수립하고 적절한 조치</td>
+                                    <td>주야간보호 16 감염관리</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공 변경</td>
+                                    <td>주야간보호 22 급여제공계획 수립 및 제공</td>
+                                </tr>
+                                <tr>
+                                    <td>응급상황 기록</td>
+                                    <td>주야간보호 30 외부기관연계</td>
+                                </tr>
+                                <tr>
+                                    <td>외래진료대장</td>
+                                    <td>주야간보호 30 외부기관연계</td>
+                                </tr>
+                                <tr>
+                                    <td>연계기록지 제공</td>
+                                    <td>주야간보호 30 외부기관연계<br><strong>- 종료상담 및 계약종료일까지 연계기록지 작성, 연계기록지 제공대장 작성</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>외출대장</td>
+                                    <td>외출 발생시 기록지-외출대장 메뉴에 기록</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab_cont">
+                    <div class="table_wrap type3">
+                        <div class="box">
+                            <ul>
+                                <li>급여제공 시작일까지 욕구사정 실시</li>
+                                <li>급여제공 시작일까지 공단에 급여<wbr>제공<wbr>계획을 수립</li>
+                                <li>욕구사정 메뉴 <br>
+                                - 공통 : 욕구사정 - 수급자 건강상태 및 욕구평가 기록지 <br>
+                                - 간호 : 건강수준 평가 및 간호기록, 욕창위험도평가, 낙상위험도평가 <br>
+                                - 재활 : 수급자평가도구, 초기사정 <span class="red">(재활파트 욕구사정은 평가지표 필수항목은 아님)</span></li>
+                            </ul>
+                        </div>
+                        <table>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 45%;">
+                                <col style="width: 45%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="9" style="text-align: center;">신규입소시</td>
+                                    <td>급여제공 시작일부터 14일 이내에 수급자교육<br><em>(욕창예방, 낙상예방, 탈수예방, 배변도움, 관절구축예방, 치매예방, 감염예방, 노인인권보호)</em></td>
+                                    <td>주야간보호 19 노인인권보호<br><strong>- 토요일, 공휴일 포함 14일 이내에 실시</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공 시작일까지 욕구사정 실시(10개 항목)</td>
+                                    <td>주야간보호 20 욕구사정</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공 시작일까지 낙상위험도 평가</td>
+                                    <td>주야간보호 21 위험도평가</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공 시작일까지 욕창위험도 평가</td>
+                                    <td>주야간보호 21 위험도평가</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공 시작일까지 인지기능평가</td>
+                                    <td>주야간보호 21 위험도평가</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공 시작일까지 롱텀케어에 급여제공 계획 수립</td>
+                                    <td>주야간보호 22 급여제공계획 수립 및 제공</td>
+                                </tr>
+                                <tr>
+                                    <td>급여제공 시작일까지 기능회복훈련 계획 수립</td>
+                                    <td>주야간보호 27 기능회복훈련</td>
+                                </tr>
+                                <tr>
+                                    <td>수급자 욕구사정을 통해 기피식품을 파악하고 대체식품을 제공하는지 확인</td>
+                                    <td>주야간보호 33 식사(간식) 제공결과</td>
+                                </tr>
+                                <tr>
+                                    <td>보호자(수급자)를 대상으로 연명의료결정 제도에 대해 안내</td>
+                                    <td>주야간보호 35 제도안내</td>
+                                </tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    <!-- 공단 평가 연계 팝업 -->
+    <div class="pop_container liaison_pop" style="display: none;">
+        <div class="popup w1200">
+            <h3>공단 평가 연계</h3>
+            <button type="button" class="btn_close"><span class="blind">팝업닫기</span></button>
+
+            <div class="table_wrap type1 ta2">
+                <table>
+                    <colgroup>
+                        <col style="width: 5%">
+                        <col style="width: 15%">
+                        <col style="width: 5%">
+                        <col style="width: 40%">
+                        <col style="width: 15%">
+                        <col style="width: 20%">
+                    </colgroup>
+                    <thead class="bdrn">
+                        <tr class="tit">
+                            <th colspan="4">공단평가메뉴얼</th>
+                            <th colspan="2">엔젤시스템 연계 메뉴</th>
+                        </tr>
+                        <tr>
+                            <th>평가<wbr>번호</th>
+                            <th>평가<wbr>항목</th>
+                            <th>구분</th>
+                            <th>평가<wbr>기준</th>
+                            <th>메뉴<wbr>분류</th>
+                            <th>메뉴<wbr>명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>운영규정</td>
+                            <td>기</td>
+                            <td>1. 기관운영에 필요한 운영규정을 마련하여 직원이 열람 가능한 장소에 비치하고 내용이 충실함<br>(내용 충실도는 각 항목에 맞는 내용이 있는지 확인함)</td>
+                            <td>기관<wbr>운영</td>
+                            <td>운영규정<wbr> 예시</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>운영계획 및 평가</td>
+                            <td>기</td>
+                            <td>1. 연도별 사업계획이 수립되어 있음 <br> • 필수사항 : 세부사업명, 사업목표, 사업내용, 사업대상, 추진일정</td>
+                            <td>기관<wbr>운영</td>
+                            <td>사업계획<wbr> 예시</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>지역사회자원 활용</td>
+                            <td>기</td>
+                            <td>기관에 자원봉사자가 정기적으로 활동함 <br> • 필수사항 : 소속명, 일자, 활동시간, 활동내용, 봉사자(서명)</td>
+                            <td>관리</td>
+                            <td>자원봉사자<wbr>활동<wbr>일지</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>건강검진</td>
+                            <td>기</td>
+                            <td>1. 직원은 결핵검진을 포함한 건강검진을 매년 실시함  <br>- 5개 영역 : 신체계측검사, 요검사, 혈액검사, 영상검사, 결과판정 <br> 2. 신규 직원은 급여개시일까지 결핵검진을 포함한 건강검진 결과를 제출함 </td>
+                            <td>기관<wbr>운영</td>
+                            <td>직원<wbr> 건강검진</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>보수</td>
+                            <td>종</td>
+                            <td>1. 기관과 근로계약을 체결함 <br> • 근로계약서 필수사항 : 보수(임금), 소정근로시간, 휴일, 연차 유급휴가</td>
+                            <td>기관<wbr>운영</td>
+                            <td>표준<wbr>근로<wbr>계약서</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>직원복지향상</td>
+                            <td>기</td>
+                            <td>1. 복지(포상 등)에 관한 규정에 따라 분기별 1회 이상 제공함 </td>
+                            <td>기관<wbr>운영</td>
+                            <td>직원복지<wbr> 및 <wbr>포상</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>(신설)<br>직원권익보호</td>
+                            <td>기,종</td>
+                            <td>1 직원의 의견 및 고충을 처리하기 위한 고충처리 절차를 마련하여 운영함<br> • 필수사항 : 고충처리지침, 고충처리대장, 고충처리함
+                            	<br>2. 직원의 인권침해 대응지침을 마련하고 모든 직원에 대해 연 1회 이상 교육을 실시함<br> • 필수사항 : 교육일시, 강사명, 교육방법, 참석자명(서명)</td>
+                            <td>기관<wbr>운영</td>
+                            <td>고충처리지침 예시<br>직원교육<br>※ 고충처리대장 추가 예정<br>※ 인권침해 대응지침 추가 예정</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>식품위생관리</td>
+                            <td>기</td>
+                            <td>1. 식품 유통기한을 준수함<br>3. 주방 및 주방집기류 소독을 주 1회 이상 실시함<br> • 필수사항 : 일자, 점검내용, 소독방법, 점검자명</td>
+                            <td>기관<wbr>운영</td>
+                            <td>위생점검일지<br>※ 식수인원 50인이상<br>  위생관리점검표</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>감염관리활동</td>
+                            <td>기,종</td>
+                            <td>2. 간호에 필요한 비품을 소독하고 청결하게 관리함<br>  • 필수사항 : 일자, 장소, 비품명, 소독방법, 점검자명<br>- 소독.멸균을 요하는 간호비품을 사용한 후 반드시 소독.멸균을 하여야함
+                            	<br>4. 분기별 1회 이상 실내·외 전문소독을 실시함<br>  • 전문업체소독 확인사항 : 계약서, 소독증명서, 지출내역<br>- 전문업체소독을 실시한 경우만 인정<br>5. 수급자 생활환경의 일상소독을 매일 실시함
+                            	<br>  • 확인사항 : 실시주기, 소독부위, 소독제</td>
+                            <td>기관<wbr>운영</td>
+                            <td>간호비품 소독대장<br>실내·외 소독대장(전문업체)<br>실내·외 소독대장(일상소독)</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>(신설)<br>감염병관리</td>
+                            <td>기,종</td>
+                            <td>2. 감염병 유행 및 발생 시 대응체계를 수립하여 운영함<br>  • 필수사항 : 감염병에 의한 국가 위기상황 발생 시 대응체계와 기관 내 감염병 환자 발생·확산 시 대응체계</td>
+                            <td>기관<wbr>운영</td>
+                            <td>감염병 대응체계 예시<br>감염예방일지</td>
+                        </tr>
+                      	<tr>
+                            <td>20</td>
+                            <td>위험도 평가</td>
+                            <td>기</td>
+                            <td>타당한 평가도구를 사용하여 수급자 상태를 파악함<br>  • 필수사항 : 수급자명, 평가일자, 작성자명<br>- 신규수급자는 급여개시일까지 실시하였는지 확인함<br>1. 낙상위험도를 연 1회 이상 실시함
+                            	<br>2. 욕창위험도를 연 1회 이상 실시함<br>3. 인지기능검사를 연 1회 이상 실시함</td>
+                            <td>간호<br>간호<br>수급자관리</td>
+                            <td>낙상위험도평가 <br>욕창위험도평가 <br>K-MMSE~2 또는 CIST</td>
+                        </tr>        
+                        <tr>
+                            <td>21</td>
+                            <td>응급체계</td>
+                            <td>기,종</td>
+                            <td>3. 응급상황이 발생한 경우 적절하게 대응함<br>  • 필수사항 : 수급자명, 발생일자, 조치내용, 작성자명</td>
+                            <td>간호</td>
+                            <td>응급상황기록</td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
+                            <td>소방<wbr>시설</td>
+                            <td>기,종</td>
+                            <td>1. 소화설비 및 경보설비를 갖추고 있으며 매월 점검함  <br>• 필수사항 : 일자, 점검내용, 점검자명 <br> 2. 반기별 1회 이상 소화 및 경보 설비 사용방법에 대해 직원 교육함  <br>• 필수사항 : 일자, 시간, 장소, 참가자명, 내용</td>
+                            <td>기관<wbr>운영</td>
+                            <td>소화<wbr>설비 및 경보<wbr>설비 점검표  <br>소화설비 및 경보설비 교육</td>
+                        </tr>
+                        <tr>
+                            <td>23</td>
+                            <td>재난상황 대응훈련</td>
+                            <td>기,종</td>
+                            <td>2. 직원 및 수급자를 포함한 재난대피훈련을 반기별 1회 이상 실시함  <br> • 필수사항 : 일자, 시간, 장소, 참가자명, 내용, 사진 </td>
+                            <td>기관<wbr>운영</td>
+                            <td>재난<wbr>상황<wbr>대응<wbr>훈련</td>
+                        </tr>
+                        <tr>
+                            <td>25</td>
+                            <td>수급자상담관리</td>
+                            <td>기</td>
+                            <td>1. 모든 수급자(보호자)와 상담을 분기별 1회 이상 실시함  <br>  • 필수사항 : 상담일자, 수급자명, 상담직원, 상담대상자, 상담내용<br>2. 수급자(보호자)의 상담결과를 연 1회 이상 급여에 반영하여 제공함</td>
+                            <td>기록지<br>급여제공계획</td>
+                            <td>상담일지<br>기록지<br>급여제공계획</td>
+                        </tr>
+                        <tr>
+                            <td>26</td>
+                            <td>급여제공역량관리</td>
+                            <td>기,종</td>
+                            <td>1. 급여제공지침 10개 항목을 마련하여 직원이 열람 가능한 장소에 비치하고 내용이 충실함  <br>  • 필수사항 : 상담일자, 수급자명, 상담직원, 상담대상자, 상담내용
+                            	<br>2. 신규직원은 급여개시 전까지 신규교육과 인계인수를 받고 그 내용을 숙지함<br>- 신규교육 내용: 노인인권보호지침, 응급상황대처법, 비상연락망<br>3. 모든 직원이 연 1회 이상 운영규정과 급여제공지침에 대해 교육을 받고, 그 내용을 숙지함</td>
+                            <td>기관<wbr>운영</td>
+                            <td>급여제공지침 예시<br>신규직원교육<br>급여제공지침교육<br>운영규정교육</td>
+                        </tr>
+                        <tr>
+                            <td>27</td>
+                            <td>가족과의 소통</td>
+                            <td>기</td>
+                            <td>1. 보호자 회의를 온라인 또는 오프라인으로 반기별 1회 이상 실시함  <br>  • 필수사항 : 일시, 장소, 회의방법, 회의내용, 회의결과, 참석자명(서명)
+                            	<br>2.  월간 프로그램 계획표, 식단표, 기관의 소식을 월 1회 이상 온라인 또는 오프라인으로 제공함<br>- 노인장기요양보험 또는 기관 자체 홈페이지(카페, 블로그 등), 소식지, 직접제공 등으로 매월 1회 이상 제공하였는지 확인함 </td>
+                            <td>기관운영<br>모바일 앱<br>수급자관리<br>급여제공계획<br>SMS<br>기관운영</td>
+                            <td>보호자회의<br>보호자용 앱(굽은나무)<br>가정통신문<br>프로그램계획<br>안내장관리<br>식단표</td>
+                        </tr>
+                        <tr>
+                            <td>29</td>
+                            <td>계약체결 및 통보</td>
+                            <td>기</td>
+                            <td>1. 급여계약 체결할 때 개인별장기요양이용계획서를 반영함</td>
+                            <td>수급자관리</td>
+                            <td>표준약관</td>
+                        </tr>
+                        <tr>
+                            <td>30</td>
+                            <td>욕구사정</td>
+                            <td>기</td>
+                            <td>1. 욕구사정을 연 1회 이상 실시함 <br>  • 필수사항 : 수급자명, 일자, 작성자명, 총평 <br>- 신규수급자는 급여개시일까지 실시하였는지 확인함<br>- 욕구사정을 해당급여 직원이 실시하였는지 확인함
+                            	<br>- 총평은 종합소견을 서술형으로 충실하게 작성하였는지 확인함<br>2. 욕구사정 8개 항목이 모두 확인됨<br>- 욕구사정이 단순 체크리스트로 작성된 경우 욕구사정 항목별 또는 총평에 판단 근거(수급자 기능 및 상태)가 확인되면 인정함 </td>
+                            <td>수급자관리</td>
+                            <td>욕구사정</td>
+                        </tr>
+                        <tr>
+                            <td>31</td>
+                            <td>급여제공계획</td>
+                            <td>기</td>
+                            <td>1. 수급자별 급여제공계획을 연 1회 이상 수립함 <br>  • 필수사항 : 급여종류, 수급자명, 작성일자, 작성자명, 장기요양 세부목표, 장기요양 필요내용, 세부제공내용, 횟수, 시간, 종합의견<br>- 신규수급자는 급여개시일까지 실시하였는지 확인함
+                            <br>2. 개인별장기요양이용계획서, 욕구사정, 낙상평가, 욕창평가, 인지기능 검사를 급여제공계획에 반영함<br>3. 급여제공계획에 대해 수급자 또는 보호자에게 설명하여 확인서명을 받고 공단에 통보함</td>
+                            <td>급여제공계획</td>
+                            <td>급여제공계획</td>
+                        </tr>
+                        <tr>
+                            <td>32</td>
+                            <td>급여제공 적절성</td>
+                            <td>기</td>
+                            <td>1. 급여제공계획에 따라 급여를 제공하고 기록함 <br>  • 필수사항 : 일자, 급여내용, 급여제공시간, 급여제공자 서명<br>2. 급여제공계획이 변경된 경우 그 사유를 기록하고, 변경된 급여제공계획에 따라 급여를 제공함 </td>
+                            <td>기록지<br>간호<br>재활<br>급여제공계획</td>
+                            <td>기록지<br>간호일지<br>물리(작업)치료일지<br>프로그램일지</td>
+                        </tr>
+                        <tr>
+                            <td>33</td>
+                            <td>욕구반영</td>
+                            <td>수</td>
+                            <td>1. 개별적인 욕구를 반영한 급여를 제공받음</td>
+                            <td>수급자관리<br>기록지<br>급여제공계획</td>
+                            <td>욕구사정<br>상담일지<br>급여제공계획</td>
+                        </tr>
+                        <tr>
+                            <td>34</td>
+                            <td>급식영양관리</td>
+                            <td>기,종</td>
+                            <td>1. 영양사가 작성한 1식 3찬 이상의 식단표를 게시하고, 식단표에 따라 보온상태로 음식을 제공함<br>2. 수급자의 씹는 기능 및 소화기능 등을 고려하여 적절한 식사를 제공하고, 음식 섭취에 현저한 변화를 보이거나 문제가 있는 수급자에게 적절한 조치를 취함
+                            	<br> • 확인사항 : 기능 상태별 식사제공, 매일 음식섭취량 파악, 적절한 조치</td>
+                            <td>기관운영<br>보고서<br>기록지</td>
+                            <td>식단표<br>식사제공현황<br>기록지</td>
+                        </tr>
+                        <tr>
+                            <td>35</td>
+                            <td>투약 및 약품관리</td>
+                            <td>기,종</td>
+                            <td>일반 의약품의 유효기한 및 보관상태를 분기별 1회 이상 점검함<br>  • 필수사항 : 점검일자, 의약품명, 효능, 유효기한, 점검자명</td>
+                            <td>기관운영</td>
+                            <td>약품점검대장</td>
+                        </tr>
+                        <tr>
+                            <td>36</td>
+                            <td>구강관리도움</td>
+                            <td>수</td>
+                            <td>1. 식사 후에 양치질 도움을 받음<br>2. 수급자의 구강상태를 확인함</td>
+                            <td>기록지</td>
+                            <td>기록지</td>
+                        </tr>
+                        <tr>
+                            <td>37</td>
+                            <td>수급자 안전관리</td>
+                            <td>기,수</td>
+                            <td>1.  모든 수급자(보호자)에게 6가지(욕창예방, 낙상예방, 탈수예방, 배변도움, 관절구축예방, 치매예방) 및 노인인권보호지침에 대해 연 1회 이상 설명함<br>- 신규수급자는 급여개시일부터 토요일, 공휴일 포함 14일 이내에 실시하였는지 확인함</td>
+                            <td>기관운영<br>기록지</td>
+                            <td>노인인권 및 학대예방<br>자료제공</td>
+                        </tr>
+                        <tr>
+                            <td>38</td>
+                            <td>프로그램</td>
+                            <td>기</td>
+                            <td>1. 모든 프로그램(신체기능,인지기능,사회적응 프로그램)에 대한 계획을 수립함 <br> • 필수사항 : 프로그램명, 목표, 대상자, 내용, 일정, 횟수, 진행자명 <br> 2. 신체기능 프로그램 계획에 따라 주 3회 이상 실시함  <br>• 필수사항 : 일자, 시간, 장소, 진행자명, 참석자명, 내용  <br>3. 인지기능 프로그램 계획에 따라 주3회 이상 실시함  <br>• 필수사항 : 일자, 시간, 장소, 진행자명, 참석자명, 내용 <br> 4. 사회적응 프로그램 계획에 따라 분기별 1회 이상 실시함  <br>• 필수사항 : 일자, 시간, 장소, 진행자, 참석자명, 내용 <br> 5. 모든 프로그램에 대하여 수급자(보호자) 의견을 반기별 1회 이상 수렴하고 그 내용을 차후 프로 그램에 연 1회 이상 반영함</td>
+                            <td>급여<wbr>제공<wbr>계획</td>
+                            <td>프로그램<wbr>계획 <br> 프로그램<wbr>일지</td>
+                        </tr>
+                        <tr>
+                            <td>39</td>
+                            <td>의료기관연계</td>
+                            <td>기</td>
+                            <td>2. 의료기관에서 진료받은 내용을 기록함 <br> - 수급자가 진료를 받는 있는 의료기관에서의 진료도 포함하여 확인함<br>- 수급자가 서비스 제공받는 시간 내에 의료기관에서 진료를 받은 내용을 급여제공기록지, 상담일지 등에 기록했는지 확인함</td>
+                            <td>간호<br>기록지</td>
+                            <td>외래<wbr>진료  <br>간호<wbr>처치기록</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>연계기록지 제공</td>
+                            <td>기</td>
+                            <td>1. 전원이나 퇴소할 때 수급자(보호자)와 급여제공 종료 상담을 실시하고 연계기록지를 작성함  <br>  • 필수사항 : 성명, 등급, 심신기능상태, 제공한 급여, 작성일자, 퇴소 후 이용계획(또는 수급자 희망급여)<br>- 확인사항: 연계기록지 부본이나 사본 보관 여부로 확인함
+                            	<br>2. 수급자(보호자)에게 연계기록지를 제공함<br>- 연계기록지제공대장: 수급자명, 제공일자, 제공방법, 수령자</td>
+                            <td>수급자<wbr>관리<br>기록지</td>
+                            <td>퇴소자현황<wbr>-연계기록지  <br>연계기록지 <wbr>제공대장<br>상담일지</td>
+                        </tr>
+                        <tr>
+                            <td>41</td>
+                            <td>이동<wbr>서비스<wbr>수칙</td>
+                            <td>기</td>
+                            <td>1. 이동서비스 수칙이 있음 <br> • 필수사항 : 운전자 자격요건, 동승자의 역할, 차량안전수칙, 사고 시 조치사항, 차량운행표 <br> 2. 이동서비스 수칙을 수급자(보호자)에게 제공함</td>
+                            <td>수급자<wbr>관리  <br>급여제공<wbr>계획</td>
+                            <td>수급자<wbr>현황<wbr>-계약서에 <wbr>이동서비스수칙<wbr> 포함  <br>이동서비스일지<wbr>-이동서비스수칙<wbr> 예시</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>이동<wbr>서비스</td>
+                            <td>수</td>
+                            <td>1. 운전자 외 기관의 직원이 동승함  <br>2 .이동서비스 시간을 준수함</td>
+                            <td>급여제공<wbr>계획</td>
+                            <td>이동<wbr>서비스</td>
+                        </tr>
+                        <tr>
+                            <td>43</td>
+                            <td>사례관리 회의</td>
+                            <td>기</td>
+                            <td>1. 사례관리 회의를 분기별 1회 이상 실시함  <br>  • 필수사항 : 일자, 수급자명, 선정사유, 회의내용, 회의결과, 참석자명 <br>- 직종 구분 없이 해당급여직원 2인 이상 참여시 인정<br>3. 회의결과를 30일 이내 급여 등에 반영함</td>
+                            <td>기록지<br>급여제공계획</td>
+                            <td>사례관리<wbr>회의, 기록지<br>급여제공계획</td>
+                        </tr> 
+                        <tr>
+                            <td>44</td>
+                            <td>(신설)<br>급여제공<wbr>결과평가</td>
+                            <td>기</td>
+                            <td>1. 급여제공직원은 주 1회 이상 수급자 상태변화를 충실하게 기록함<br>2. 장기요양급여제공기록지를 월 1회 이상 수급자(보호자)에게 제공함<br>3. 개별 급여제공계획에 따른 급여제공결과를 연 1회 이상 정기적으로 평가함
+                            	<br>  • 필수사항 : 일자, 총평 또는 종합소견, 작성자명<br>4. 급여제공 결과평가를 반영하여 개별 급여제공계획을 30일 이내에 재작성함</td>
+                            <td>기록지<br>보고서<br>급여제공계획<br>급여제공계획</td>
+                            <td>기록지<br>상태변화기록<br>급여제공평가<br>급여제공계획</td>
+                        </tr>
+                        <tr>
+                            <td>45</td>
+                            <td>노인인권보호</td>
+                            <td>기,종,수</td>
+                            <td>1. 모든 직원에게 노인인권 및 학대예방교육을 연 1회 이상 실시함<br>  • 필수사항 : 교육일시, 강사명, 교육내용, 교육방법, 참석자명(서명)<br>3. 수급자는 노인인권보호지침 내용에 대해 설명을 들음</td>
+                            <td>기관운영</td>
+                            <td>노인인권<wbr>및 학대예방<br>노인인권보호지침</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>등급현황</td>
+                            <td>기</td>
+                            <td>기관에서 급여제공 후 수급자 등급이 유지․호전됨</td>
+                            <td>수급자관리</td>
+                            <td>등급조정내역</td>
+                        </tr>
+                        <tr>
+                            <td>47</td>
+                            <td>서비스 만족도조사 (유선)</td>
+                            <td>수</td>
+                            <td>1. 기관이 장기요양제도나 서비스내용에 대해 안내를 잘 합니까? <br> 2. 기관이 귀하의 요구사항을 해결하기 위해 노력합니까? <br> 3. 직원이 예의를 갖추고 친절하게 서비스를 제공합니까? <br>4. 기관이 정확한 본인부담금액 및 납부방법을 안내합니까? <br> 5. 기관에서 제공하는 서비스 내용에 대하여 만족하십니까?</td>
+                            <td>기관<wbr>운영</td>
+                            <td>보호자 유선 <wbr>만족도조사</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>질향상 노력</td>
+                            <td>기</td>
+                            <td>1. 수급자의 서비스 만족도 향상을 위해 노력함<br>2. 직원의 직무 만족도 향상을 위해 노력함</td>
+                            <td>기관운영</td>
+                            <td>수급자 만족도 조사<br>직원 직무 만족도조사</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 평가매뉴얼-->
+    <div class="pop_container manual_pop"  style="display: none;">
+        <div class="popup w1200">
+            <h3>평가매뉴얼</h3>
+            <button type="button" class="btn_close"><span class="blind">팝업닫기</span></button>
+
+            <div class="tab_cont tab_cont3">
+                <!-- <h4>평가매뉴얼</h4> -->
+                <div class="table_wrap type2 ta4">
+                    <table>
+                        <colgroup>
+                            <col id="col1" style="width: 24%">
+                            <col id="col2" style="width: 20%">
+                            <col id="col3" style="width: 16%">
+                            <col style="width: 40%;">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>교육명</th>
+                                <th>대상자</th>
+                                <th>교육횟수</th>
+                                <th colspan="2">비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>종사자 윤리지침</td>
+                                <td rowspan="12">모든 직원</td>
+                                <td rowspan="12">연 1회 이상</td>
+                                <td rowspan="12">급여제공지침교육 12개 항목<br>(주야간보호 6)</td>
+                            </tr>
+                            <tr><td>성폭력 예방 및 대응지침</td></tr>
+                            <tr><td>응급상황 대응지침</td></tr>
+                            <tr><td>감염예방 및 관리지침</td></tr>
+                            <tr><td>치매예방 및 관리지침</td></tr>
+                            <tr><td>욕창예방 및 관리지침</td></tr>
+                            <tr><td>낙상예방 및 관리지침</td></tr>
+                            <tr><td>노인인권보호지침</td></tr>
+                            <tr><td>근골격계 질환 예방 지침</td></tr>
+                            <tr><td>개인정보보호 지침</td></tr>
+                            <tr><td>인원침해 대응지침</td></tr>
+                            <tr><td>고충처리지침</td></tr>
+                            <tr>
+                                <td>운영규정교육</td>
+                                <td>모든 직원</td>
+                                <td>연 1회 이상</td>
+                                <td>운영규정 11개 항목 (주야간보호 1, 6)</td>
+                            </tr>
+                            <tr>
+                                <td>요양보호사 보수교육</td>
+                                <td>요양보호사</td>
+                                <td>격년 1회 이상<br>(2년마다)</td>
+                                <td>주야간보호 5</td>
+                            </tr>
+                            <tr>
+                                <td>재난대응훈련</td>
+                                <td>수급자와 직원</td>
+                                <td>반기 1회 이상</td>
+                                <td>주야간보호 11</td>
+                            </tr>
+                            <tr>
+                                <td>수급자 안전관리</td>
+                                <td>모든 수급자(보호자)</td>
+                                <td>연 1회 이상</td>
+                                <td>욕창예방, 낙상예방, 탈수예방, 배변도움, 관절구축예방, 치매예방, 감염예방, 노인인권보호 (주야간보호 19)</td>
+                            </tr>
+                            <tr>
+                                <td>노인인권교육</td>
+                                <td>모든 직원</td>
+                                <td>반기 1회 이상</td>
+                                <td>주야간보호 19</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+                
+        </div>
+    </div>
+
+    <!-- 법정의무교육 -->
+    <div class="pop_container edu_pop" style="display: none;">
+        <div class="popup w1200">
+            <h3>법정 의무교육</h3>
+            <button type="button" class="btn_close"><span class="blind">팝업닫기</span></button>
+            <div class="tab_cont tab_cont4">
+                <!-- <h4>법정 의무교육</h4> -->
+                <div class="table_wrap type2 ta2">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>교육명</th>
+                                <th>대상자</th>
+                                <th>교육횟수</th>
+                                <th>근거 및 비고</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>직장내 성희롱예방교육</td>
+                                <td rowspan="12">모든 직원</td>
+                                <td>연 1회, 1시간 이상</td>
+                                <td>남녀고용평등과 일·가정 양립 지원에 관한 법률 제13조</td>
+                            </tr>
+                            <tr>
+                                <td>개인정보 보호교육</td>
+                                <td>연 1회</td>
+                                <td>개인정보 보호법 제28조</td>
+                            </tr>
+                            <tr>
+                                <td>퇴직연금교육</td>
+                                <td>연 1회</td>
+                                <td>근로자퇴직급여 보장법 제32조의2</td>
+                            </tr>
+                            <tr>
+                                <td>직장내 장애인인식 개선교육</td>
+                                <td>직원수 50인이상 : 연1회, 1시간이상<br>50인미만 : 고용노동부장관이 보급한 교육자료 배포 또는 게시</td>
+                                <td>장애인고용촉진 및 직업재활법<br> 제5조의2</td>
+                            </tr>
+                            <tr>
+                                <td>장애인학대예방 및 신고의무자교육</td>
+                                <td>연 1회, 1시간이상</td>
+                                <td>장애인복지법 제59조의4 및 동법 시행령 제36조의4</td>
+                            </tr>
+                            <tr>
+                                <td>노인학대 신고의무자교육</td>
+                                <td>연 1회, 1시간이상</td>
+                                <td>노인복지법 제39조의6 제5항</td>
+                            </tr>
+                            <tr>
+                                <td>노인 인권교육</td>
+                                <td>연 1회, 4시간이상</td>
+                                <td>노인복지법 시행규칙 제1조의3</td>
+                            </tr>
+                            <tr>
+                                <td>아동학대 신고의무자 교육</td>
+                                <td>연 1회, 1시간이상</td>
+                                <td>아동복지법 제26조</td>
+                            </tr>
+                            <tr>
+                                <td>긴급복지 신고의무자 교육</td>
+                                <td>연 1회, 1시간이상</td>
+                                <td>긴급복지지원법 시행규칙 제2조의3</td>
+                            </tr>
+                            <tr>
+                                <td>직장내 괴롭힘방지 교육</td>
+                                <td>취업규칙에 반영하고 실시의무 없음</td>
+                                <td>근로기준법 제93조</td>
+                            </tr>
+                            <tr>
+                                <td>산업안전보건교육</td>
+                                <td>사회복지서비스 업종 제외</td>
+                                <td>산업안전보건법 시행령 별표1</td>
+                            </tr>
+                            <tr>
+                                <td>자살예방교육</td>
+                                <td>연 1회, 1시간이상</td>
+                                <td>자살예방법률 제17조</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+	
+
+<script type="text/javascript">
+
+//엔젤아이
+function angelChatBot(){
+
+	var myWindow = window.open('','title', 'width=450, height=720, menubar=no, status=no, toolbar=no');
+	if("" != ""){
+		myWindow.location.href = 'http://gnew-office.tplinkdns.com:48081/chatbot/angel-system?login=y';
+	}else{
+		myWindow.location.href = 'http://gnew-office.tplinkdns.com:48081/chatbot/angel-system?login=n';
+	}
+}
+
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFHQQNPD3E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BFHQQNPD3E');
+</script>
+<footer class="footer">
+    <div class="link">
+        <div class="inner" style="max-width: 1330px;">
+            <a href="/download.do?dwnFile=20240822 엔젤시스템 e-카달로그.pdf" download>e-카달로그</a>
+            
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf" download>평가지표(주야간)</a>
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator.pdf" download>평가지표(시설)</a>
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator(gong).pdf" download>평가지표(9인)</a>
+            <a href="/silverangel/publicize/partner.do">파트너</a>
+            <a href="/silverangel/companyinfo/map.do">오시는 길</a>
+            <a href="https://helpu.kr/uniforce/" target="_new">원격지원</a>
+            <a href="https://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EA%B8%89%EC%97%AC%20%EC%A0%9C%EA%B3%B5%EA%B8%B0%EC%A4%80%20%EB%B0%8F%20%EA%B8%89%EC%97%AC%EB%B9%84%EC%9A%A9%20%EC%82%B0%EC%A0%95%EB%B0%A9%EB%B2%95%20%EB%93%B1%EC%97%90%20%EA%B4%80%ED%95%9C%20%EA%B3%A0%EC%8B%9C" target="_new">장기요양급여 고시</a>
+            <a href="/silverangel/companyinfo/termsUse.do">이용약관</a>
+            <a href="/silverangel/companyinfo/sms_service.do">문자서비스 이용약관</a>
+            <a href="/silverangel/companyinfo/privacyPolicy.do" class="privacy">개인정보처리방침</a>
+            
+	            
+	            
+	            	<a href="/silverangel/cprtvCmpny/cprtvCmpnyLogin.do" onclick="window.open(this.href, '_blank', 'width=480, height=300'); return false;">협력업체</a>
+	            
+            
+
+        </div>
+    </div>
+    <div class="copy">
+        <div class="inner">
+	        <!-- <img src="https://yeorcqadlpopsmgaoudu.supabase.co/storage/v1/object/public/certification/mark/7600bc36-d377-4a22-a581-a0f9e20a3a67/37986dad-1bfc-47fa-8d1b-ac8449f85505-2025-09-18T02:54:30.456Z" style="cursor: pointer; width: 85px; height: 75px; margin-right: 15px;" onclick="(function(){window.open('https://cleanspam.or.kr/ci/852','_blank','width=800, height=1151, toolbar=no, menubar=no, scrollbars=no, resizable=no')})()" /> -->
+            <a href=""><span class="blind">주식회사 엔젤시스템</span></a>
+            <address>인천광역시 부평구 부평대로 293, 717호 (청천동, 부평테크시티) 전화 : 032-277-9797 이메일 : angelpost@naver.com<br>
+            대표자 : 정성훈 사업자번호 : 122-86-14661 통신판매면허번호 : 제 2011-인천부평-00326호 <br>
+                COPYRIGHTⓒ 2011 엔젤시스템. ALL RIGHTS RESERVED.</address>
+        </div>
+    </div>
+
+	<div class="floating">
+		
+<!-- 		<a href="/silverangel/support/edu_apply/write.do">도입문의</a>
+		<a onclick="angelChatBot();" style = "cursor: pointer;">엔젤아이</a>
+		<a href="https://www.silverangel.co.kr/">엔젤<br>쇼핑몰</a> -->
+
+		<a href="https://www.lcms.or.kr/" target="_blank" style="background: #5896f0;"><img src="/newSilverangel/images/angel_introduction_lcms.png"></a>
+		<a href="/silverangel/support/edu_apply/write.do"><img src="/newSilverangel/images/angel_introduction.png"></a>
+
+		<a href="https://www.silverangel.co.kr/"><img src="/newSilverangel/images/angel_shop.png"></a>
+
+	</div>
+</footer>
+
+<script src="/newSilverangel/js/swiper.js"></script>
+<script src="/newSilverangel/js/common.js"></script>
+
+
+</html>

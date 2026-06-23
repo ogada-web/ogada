@@ -1,0 +1,105 @@
+{
+  "updated": "2026-06-22T08:45Z",
+  "source": "carefor_demo_work.html on-disk ebee4d47",
+  "loadPage_count": 111,
+  "unique_view_count": 110,
+  "rpt_count": 34,
+  "report_density_pct": 30.6,
+  "transport_nav_hits": 0,
+  "module_leaf_counts": {
+    "L01": 13,
+    "L02": 14,
+    "L03": 13,
+    "L04": 4,
+    "L05": 14,
+    "L06": 5,
+    "L07": 10,
+    "L08": 14,
+    "L09": 7,
+    "L10": 11,
+    "L11": 6
+  },
+  "func_leaf_count": 96,
+  "m7_demo_cost_crosswalk": [
+    {
+      "pamcode": "L07_M01",
+      "title": "7-1.본인부담금 청구관리",
+      "view": "/share/cost/view.cost_master",
+      "rpt": false,
+      "module": "L07",
+      "ogada_route": "/billing"
+    },
+    {
+      "pamcode": "L07_M02",
+      "title": "7-2.본인부담금 입금관리",
+      "view": "/share/cost/view.cost_receipt",
+      "rpt": false,
+      "module": "L07",
+      "ogada_route": "/billing/payments"
+    },
+    {
+      "pamcode": "L07_M09",
+      "title": "7-2-1.의료비공제(연말정산)",
+      "view": "/share/cost/view.cost_master_statistic",
+      "rpt": false,
+      "module": "L07",
+      "ogada_route": "/billing/reports/statistics"
+    },
+    {
+      "pamcode": "L07_M03",
+      "title": "7-3.본인부담금 미납관리",
+      "view": "/share/cost/view.cost_nopay",
+      "rpt": false,
+      "module": "L07",
+      "ogada_route": "/billing/overdue"
+    },
+    {
+      "pamcode": "L07_M11",
+      "title": "7-4.본인부담금 자동이체 (CMS)",
+      "view": "/share/cost/view.cms_manage",
+      "rpt": false,
+      "module": "L07",
+      "ogada_route": "/billing/cms"
+    },
+    {
+      "pamcode": "L07_M12",
+      "title": "7-5.본인부담금 간편결제",
+      "view": "/share/cost/view.npay_manage",
+      "rpt": false,
+      "module": "L07",
+      "ogada_route": "/billing/easy-pay"
+    },
+    {
+      "pamcode": "L07_M05",
+      "title": "7-6.본인부담금 청구대장 리포트",
+      "view": "/share/cost/view.cost_master_report",
+      "rpt": true,
+      "module": "L07",
+      "ogada_route": "/billing/reports/charges"
+    },
+    {
+      "pamcode": "L07_M06",
+      "title": "7-7.본인부담금 입금대장 리포트",
+      "view": "/share/cost/view.cost_deposit_report",
+      "rpt": true,
+      "module": "L07",
+      "ogada_route": "/billing/reports/deposits"
+    },
+    {
+      "pamcode": "L07_M07",
+      "title": "7-8.본인부담금 수납대장 리포트",
+      "view": "/share/cost/view.cost_receipt_report",
+      "rpt": true,
+      "module": "L07",
+      "ogada_route": "/billing/reports/receipts"
+    },
+    {
+      "pamcode": "L07_M10",
+      "title": "7-9.본인부담금 수납,환불내역",
+      "view": "/share/cost/view.cost_receipt_apply_yearly",
+      "rpt": true,
+      "module": "L07",
+      "ogada_route": "/billing/reports/refunds"
+    }
+  ]
+}

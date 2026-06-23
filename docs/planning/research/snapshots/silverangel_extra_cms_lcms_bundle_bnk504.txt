@@ -1,0 +1,46 @@
+# silverangel extraService.do — CMS 5-method + LCMS 번들 + 부가서비스 탭 cross-walk (BNK-504)
+# source: https://www.silverangel.kr/newSilverangel/service/extraService.do HTTP 200·81,637B·`f9c5d877` 298차 zero drift IDENTICAL
+# 조사일: 2026-06-22T07:30Z
+
+## tab5 본인부담금 자동관리(CMS) — 효성CMS 5-method (확인)
+
+| 방법 | 마케팅 설명 | 요금(확인) |
+|---|---|---|
+| 자동이체(CMS) | 보호자 통장 매달 자동이체·기관 입금내역 체크 감소 | **250원/1건** |
+| 가상계좌 | 대표 1인 부여·타 가족 입금도 대표명 처리·은행 선택 | **300원/1 건** |
+| 카드결제 | (아이콘·설명 블록) | (건당 미표기) |
+| 다계좌 정산 | CMS 이용료 수납금과 별도 정산·재무회계 자료 출력 | 계좌분리 정산 **효성 CMS 별도문의** |
+| 현금영수증 | (아이콘·설명 블록) | (건당 미표기) |
+
+- **월 이용료**: **30,000원** (효성CMS에 납부)
+- **가입**: 효성 CMS 담당자·**서비스이용=효성 CMS 연동정보 입력 필수**
+- **대상 비용**: 본인부담금·식사재료비·의료비(진료약제비) 등 → 기관 계좌 자동 입금
+
+## tab6 전자결재·가정통신문 — LCMS-엔젤 번들 (확인·신규 evidence)
+
+| 기능 블록 | verbatim 인용 |
+|---|---|
+| 전자결재 | 보호자동의 전자서명·서명&결재일시 자동연계·작성자 전자서명·모든 서류 전자결재 |
+| LCMS 번들 | **「LCMS-엔젤시스템에서만 가능한 가정통신문, 각종 안내장 만들기」** |
+| 이메일 발송 | 가정통신문·급여비용 명세서·급여제공 기록지(법정서식)·납부확인서 |
+| SMS 안내 | 매월 본인부담금 납부·프로그램 참여·바이탈/건강상태·물리치료 안내 등 |
+
+## tab7 고위험군 명찰 (확인)
+
+- 욕창·낙상 위험점수 연계 침상명찰 출력
+- 급여제공계획 체위변경 항목 → 체위변경표 목록 조회
+
+## tab8 IoT기술 (확인·마케팅)
+
+- 스마트 침상·낙상감지·체위변경 알림 등 IoT 연동 마케팅 블록
+
+## ogada cross-walk
+
+| 엔젤 extraService | ogada | 판정 |
+|---|---|---|
+| CMS 5-method 효성 연동 | `/billing/cms`·`/billing/easy-pay`·module 7-4 **0.65** | △ partial — 다계좌정산·효성 30,000/250/300 공개 요금표 only |
+| LCMS 가정통신문·안내장 번들 | module 1-5 가정통신문 **❌ 0** | ❌ gap — **의도적 MVP out-of-scope** |
+| 고위험군 명찰 | 욕창 G-NURSING-PRESSURE-ULCER ✅·낙상 기록 ✅·명찰 출력 **❌** | △ partial |
+| IoT 스마트침상 | **❌** | ❌ N/A |
+
+→ **신규 core 갭 0** · **candidate deepen** G-CMS-HYOSUNG-PRICING P3 carry · LCMS bundle = competitor 차별화(ogada 주야간 MVP 범위 외)

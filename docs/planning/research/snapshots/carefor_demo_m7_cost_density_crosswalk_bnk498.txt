@@ -1,0 +1,43 @@
+BNK-498 (케어포 역공학 0–2h) — demo-work 시설 셸 M7 본인부담(cost_*) 리포트 밀도 + ogada /billing/* 1:1 매핑
+출처: docs/planning/research/snapshots/carefor_demo_work.html (on-disk `ebee4d47` 시설 셸 carry)
+       + ogada FE develop @77b1ea8 Route grep
+조사일: 2026-06-22T03:30Z
+live demo-work HTTP 000(timeout 25s) · Wayback id_ demo HTTP 302(empty) → demo-work 「미확인」 carry (on-disk 정적 셸 파싱)
+
+== 셸 전체 메뉴 밀도 (on-disk 재파싱) ==
+- view.* 고유 타깃           : 119
+- loadPage( 호출            : 115
+- 리포트 계열 view(report|rpt|statistic|print|excel) : 20  (20/119 = 16.8%)
+  * 주의: BNK-494 「34 rpt(30.6%)」는 rpt+print+출력 버튼 포함 광의 집계.
+    본 사이클은 view.* 타깃명 기준 협의 집계(16.8%)로, 측정 방식 차이(가정 번복 아님).
+- transport / 송영 / 이동서비스 nav : 0  (시설 셸 = 이동서비스 없음 재확인)
+
+== M7 본인부담 cost_* 클러스터 9-view 전수 ↔ ogada /billing/* 매핑 ==
+| demo view (cost_*)                  | 추정 화면(본인부담 7-x)        | ogada Route               | 판정 |
+|-------------------------------------|------------------------------|---------------------------|------|
+| view.cost_master                    | 7-1 청구관리(마스터)          | /billing                  | ✅   |
+| view.cost_master_report             | 7-1 청구 리포트               | /billing/reports/charges  | ✅   |
+| view.cost_master_statistic          | 7-2-1 청구 통계               | /billing/reports/statistics | ✅ |
+| view.cost_master_patient_yearly     | 수급자 연도별 청구            | /billing/reports/statistics(연간) | ✅ |
+| view.cost_deposit_report            | 7-6 입금대장(반월)            | /billing/reports/deposits | ✅   |
+| view.cost_receipt                   | 7-2 수납                     | /billing/payments         | ✅   |
+| view.cost_receipt_report            | 7-7 수납대장                 | /billing/reports/receipts | ✅   |
+| view.cost_receipt_apply_yearly      | 수납 연도별 적용             | /billing/reports/receipts(연간) | ✅ |
+| view.cost_nopay                     | 7-3 미납관리                 | /billing/overdue          | ✅   |
+→ cost_* 9/9 ✅ 매핑 (demo 시설 셸 본인부담 클러스터 전수)
+
+== ogada /billing/* superset (demo cost_* 미노출 = ogada 우위) ==
+- /billing/calculator        본인부담 계산기
+- /billing/cash-receipts     현금영수증 발행/취소(2-tab·NTS)   ← BNK-495 ✅ closure
+- /billing/copay-rates       본인부담률 마스터
+- /billing/easy-pay          간편결제(PG)                      ← G-7-5
+- /billing/fee-schedules     수가 마스터(G33)
+- /billing/imports/nhis      공단 청구 자동 import
+- /billing/reports/refunds   환불대장 (demo cost_* 없음)
+- (V170 billing_report_filters per-user 자동저장)            ← BNK-497 ✅
+
+== 결론 ==
+- 케어포 demo M7 본인부담 9-view = ogada 9 Route로 100% 흡수 + 8 Route superset.
+- 본인부담 7-x 번호식 흐름(청구→수납→입금→미납→리포트)은 ogada 청구 도메인이 ✅ 완전 + 우위.
+- 시설 셸 = 이동서비스/송영 nav 0 재확인 → ogada 주야간(이동서비스 G15/G16 full-stack) 포지셔닝 차별화 carry.
+- 신규 core 갭 0 · candidate 변동 0 · KPI 영향 0(module 7 이미 ✅완전).

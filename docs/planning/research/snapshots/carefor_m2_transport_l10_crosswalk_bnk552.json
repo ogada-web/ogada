@@ -1,0 +1,218 @@
+{
+  "updated": "2026-06-23T15:15Z",
+  "bnk_cycle": "BNK-552",
+  "sources": [
+    {
+      "name": "func.php Wayback",
+      "url": "https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php",
+      "md5": "6226e6eb",
+      "size": 98328,
+      "http": 200
+    },
+    {
+      "name": "demo-work on-disk",
+      "file": "carefor_demo_work.html",
+      "md5": "b2e8e5c8",
+      "size": 75587
+    },
+    {
+      "name": "demo-work Wayback id_",
+      "url": "https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/",
+      "md5": "ebee4d47",
+      "size": 71742,
+      "http": 200,
+      "note": "older snapshot -3,845B vs on-disk b2e8e5c8"
+    },
+    {
+      "name": "PDF p.32-42 module2",
+      "url": "https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=33",
+      "md5": "96f7d45e",
+      "http": 200
+    }
+  ],
+  "demo_shell": {
+    "transport_nav_hits": 0,
+    "loadPage_count": 111,
+    "rpt_count": 34,
+    "report_density_pct": 30.6,
+    "ia_remap": "func M2(이동서비스 10-leaf) ABSENT in demo — L02=요양급여(func M3)"
+  },
+  "m2_transport_crosswalk": [
+    {
+      "func": "2-1",
+      "title": "일정관리(공단연동)",
+      "pdf_p": 34,
+      "pdf_fields": [
+        "일정계획 업로드",
+        "공단 일정계획 연동",
+        "차량일정 변경",
+        "일괄 일정 등록",
+        "월간 일정표 출력"
+      ],
+      "ogada": "/transport",
+      "status": "✅"
+    },
+    {
+      "func": "2-1-1",
+      "title": "외출 관리",
+      "pdf_p": null,
+      "ogada": "/transport/outings",
+      "status": "✅"
+    },
+    {
+      "func": "2-2",
+      "title": "탑승관리(차량 이용)",
+      "pdf_p": 39,
+      "pdf_fields": [
+        "운전자/동승자/확인자",
+        "탑승시간",
+        "이동서비스 일지",
+        "지도보기",
+        "모바일 앱 탑승"
+      ],
+      "ogada": "/transport/runs/:runId",
+      "status": "✅"
+    },
+    {
+      "func": "2-3",
+      "title": "출석관리(차량 미이용)",
+      "pdf_p": 41,
+      "pdf_fields": [
+        "출석 확인 즉시저장",
+        "차량탑승 시작/종료 수정",
+        "일정시간 수정"
+      ],
+      "ogada": "/visits/check-in",
+      "status": "△"
+    },
+    {
+      "func": "2-4",
+      "title": "차량관리",
+      "pdf_p": 40,
+      "pdf_fields": [
+        "차량정보",
+        "운전자/동승자 월별일정",
+        "수급자 탑승정보",
+        "정비기록",
+        "운행기록"
+      ],
+      "ogada": "/transport/vehicles",
+      "status": "✅"
+    },
+    {
+      "func": "2-5",
+      "title": "청구내역상세(공단연동)",
+      "pdf_p": 38,
+      "pdf_fields": [
+        "청구내역상세 업로드",
+        "주소라벨지 출력"
+      ],
+      "ogada": "/billing/imports/nhis",
+      "status": "✅"
+    },
+    {
+      "func": "2-6",
+      "title": "공단 급여비용 청구 자료",
+      "pdf_p": null,
+      "ogada": "/billing/imports/nhis/:batchId",
+      "status": "✅"
+    },
+    {
+      "func": "2-7",
+      "title": "월간 서비스 변동현황",
+      "pdf_p": 42,
+      "ogada": "/reports/transport-monthly",
+      "status": "✅"
+    },
+    {
+      "func": "2-8",
+      "title": "월간 입소자 현황",
+      "pdf_p": 42,
+      "ogada": "/reports/client-outings",
+      "status": "△"
+    },
+    {
+      "func": "2-9",
+      "title": "수급자 외출 리포트",
+      "pdf_p": null,
+      "ogada": "/reports/client-outings",
+      "status": "✅"
+    }
+  ],
+  "m2_ogada_superset": [
+    {
+      "route": "/transport/auto-dispatch",
+      "carefor_equiv": null,
+      "note": "ogada unique — 케어포 자동배차 메뉴 0"
+    },
+    {
+      "route": "/transport/compliance",
+      "carefor_equiv": null,
+      "note": "ogada unique — 법정 이동서비스비 러-1~4"
+    },
+    {
+      "route": "/transport/service-fees",
+      "carefor_equiv": null,
+      "note": "ogada unique — NHIS#44 수가 연동"
+    }
+  ],
+  "pdf_p33_setting_link": {
+    "text": "9-1.시설정보설정 - 탑승/하차의 이동서비스 시간 반영 설정",
+    "ogada_equiv": "미확인 — TenantSystemSettings 또는 transport config Route 0",
+    "planner": "P3 G-TRANSPORT-TIME-SYNC"
+  },
+  "l10_func_vs_demo_drift": {
+    "func_m10_leaf": 9,
+    "demo_l10_leaf": 11,
+    "demo_only": [
+      "10-7.면회예약 관리(view.meet_reservation)",
+      "10-8.야간점검 태그 관리(view.nfc_tag)"
+    ],
+    "numbering_drift": "func 10-7/10-8 → demo 10-9/10-10 (안내발송/평가출력 +2 삽입)"
+  },
+  "l10_ogada_crosswalk": [
+    {
+      "carefor": "10-1",
+      "title": "문자메시지 발송",
+      "ogada": "△ SOLAPI 연동·전용 Route 0",
+      "status": "△"
+    },
+    {
+      "carefor": "10-2",
+      "title": "급여제공내역 안내 발송",
+      "ogada": "△ CarePlanNotificationPage `/clients/care-plan-notifications` partial",
+      "status": "△"
+    },
+    {
+      "carefor": "10-3",
+      "title": "보호자 급여기록 열람내역",
+      "ogada": "△ GuardianPortal audit log 0",
+      "status": "△"
+    },
+    {
+      "carefor": "10-6",
+      "title": "보호자 앱 관리",
+      "ogada": "/guardian·/guardians·/guardian/checkin ✅",
+      "status": "✅"
+    },
+    {
+      "carefor": "10-7",
+      "title": "면회예약 관리",
+      "ogada": "❌ Route 0",
+      "status": "❌ P3"
+    },
+    {
+      "carefor": "10-8",
+      "title": "야간점검 태그 NFC",
+      "ogada": "❌ Route 0",
+      "status": "❌ P3"
+    }
+  ],
+  "ogada_report_density": {
+    "total_routes": 111,
+    "report_routes": 23,
+    "density_pct": 20.7,
+    "carefor_demo_pct": 30.6,
+    "gap_pp": -9.9
+  }
+}

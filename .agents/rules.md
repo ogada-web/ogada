@@ -50,6 +50,13 @@
 - 외부 의존(네트워크/시간/파일시스템)은 가능한 한 목(mock)/스텁 처리한다.
 - 테스트 실패 또는 린트 오류 상태로 완료 처리하지 않는다.
 
+### 프론트엔드 Vitest 동시 실행 금지 (CRITICAL)
+
+- **`npm test` / `npm run test:live-e2e`는 한 번에 하나만** 실행한다 (`docs/qa/VITEST_CONCURRENCY.md`).
+- `package.json`의 `test`는 `scripts/npm-test-locked.sh`(flock)를 경유한다 — **`npx vitest run` 직접 호출 금지**.
+- 새 테스트 전 `ps aux | grep -E '[v]itest run'`으로 기존 실행을 확인한다. 겹치면 대기하거나 `./scripts/vitest-stop.sh`로 정리한다.
+- hang(부분 5분·전체 15분 무출력) 시 새 실행을 시작하지 말고 정리 후 원인을 기록한다.
+
 ---
 
 ## 6. Git 워크플로우
@@ -71,6 +78,14 @@
 - **`.agents/workspace_baseline.yaml`** 과 `run_agent.py build` 시 출력되는 **실측 git HEAD**가 ROADMAP·QA_FEEDBACK·PLAN_NOTES의 **과거 SHA보다 우선**한다.
 - `d5654c0`, `e5fd48d`, `428ba7d` 등 **폐기 SHA** checkout·재현 **금지** — 현재 baseline 위에서만 구현한다.
 - 문서와 코드 HEAD가 불일치하면 **git 실측**을 따른다.
+
+### 구현 품질 (coder — CRITICAL)
+
+- 구현 전 **API_SPEC·백엔드 DTO·유사 화면**을 읽고 스펙과 필드명을 맞춘다 (추측·반쪽 UI 금지).
+- 프론트 API는 **`apiFetch` / `services.js`** 만 사용한다 (raw `fetch`·JWT 누락 금지).
+- 폼은 **`Field` render-prop**으로 label·id를 연결하고, 필수값·서버 오류를 필드 단위로 보여준다.
+- 저장·조회·권한이 **end-to-end**로 동작하는지 확인한 뒤 커밋한다.
+- 관련 **`mvn test` / `npm test`** 를 최소 1회 실행하고, 실패 시 수정 후 커밋한다.
 
 ---
 
@@ -259,5 +274,14 @@ query = "SELECT * FROM users WHERE id = ?"
 
 문제를 우회하기 위해 임의의 구현을 추가하지 않는다.
 
+---
 
-*마지막 업데이트: 2026-06-07 | 성격: 범용 규칙*
+## 19. Dev preview (Cloudflare + Vite)
+
+사용자가 **Cloudflare/클라우드페어로 프론트 프리뷰**를 요청하면:
+
+1. `./scripts/dev-frontend-tunnel.sh --status` 로 잔여 프로세스 확인
+2. `./scripts/dev-frontend-tunnel.sh` 로 **cleanup → 검증 → 기동** (직접 `nohup npm run dev` / `cloudflared` 금지)
+3. 중지: `./scripts/dev-frontend-tunnel-stop.sh`
+
+*마지막 업데이트: 2026-06-14 | 성격: 범용 규칙*

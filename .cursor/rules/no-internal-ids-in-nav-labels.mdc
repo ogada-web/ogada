@@ -1,0 +1,32 @@
+---
+description: 메뉴·탭·컨텍스트 네비 라벨에 내부 G/US/BNK 추적 id 금지
+globs: src/frontend/src/layout/**,src/frontend/src/components/**/*ContextNav*,src/frontend/src/pages/**/*Page.jsx
+alwaysApply: false
+---
+
+# 사용자 메뉴 라벨 — 내부 id 금지
+
+`G30`, `G34`, `US-R03e`, `BNK-519` 등은 **ROADMAP·에이전트·벤치마크 추적용**이다. 사용자가 보는 네비게이션에는 붙이지 않는다.
+
+## 금지 (사용자 노출 UI)
+
+- `navConfig.js` SideNav `label`
+- `*ContextNav.jsx` 링크 `label`
+- 페이지 상단 컨텍스트/교차 네비 링크 텍스트
+- `AppShell title` (페이지 제목)
+
+예: ~~`모니터링 자가진단 (G30)`~~ → **`모니터링 자가진단`**
+
+## 허용
+
+- 테스트 `describe` 이름, 코드 주석, JSDoc, 커밋 메시지
+- 개발자용 패널/카탈로그 제목 (예: `G30-LEGEND` cross-walk 테이블) — **메뉴가 아닐 때**
+- `userFacingNav.test.js`가 검사하는 라벨 배열
+
+## 테스트 충돌 시
+
+대시보드·메뉴 텍스트가 겹치면 **메뉴 라벨에 G id를 붙이지 말고** `getByRole`/`within`으로 범위를 좁혀 구분한다.
+
+## 검증
+
+`src/frontend/src/layout/userFacingNav.test.js` — 신규 네비 링크 추가 시 이 테스트가 통과해야 한다.

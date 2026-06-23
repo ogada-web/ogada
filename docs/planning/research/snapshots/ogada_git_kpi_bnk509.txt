@@ -1,0 +1,25 @@
+# BNK-509 ogada git KPI 실측 extract
+# 조사일: 2026-06-22T11:00Z | rotation: 교차검증·갭 우선순위 8h+
+
+FE develop: fdc135b feat(v1.2.1/G30-LEGEND): add official indicator cross-walk legend on monitoring page
+  WT CLEAN | +1 vs BNK-508 d058e43 | ahead 164 vs origin/test=ab4de83
+
+BE develop: 9db0bbb fix(v2/G2): harden CMS enrollment input normalization
+  WT DIRTY 5M (HealthController, LiveE2eOperationReadinessSupport + 3 tests) | HEAD zero advance vs BNK-508 | ahead 512
+
+KPI:
+  109 <Route (108 path= + RootRedirect + catch-all)
+  87 *Page.jsx (+RootRedirect=88)
+  V1–V171 contiguous
+  BE Test 242 (Test.java, IT 0)
+  FE test 440 = .test.js 179 + .test.jsx 261 (+2 vs BNK-508 438)
+  모듈 78.79% = 22.85/29 (✅20 · △4 · ❌5) — KPI 변동 0
+  merge gate 676 (FE164+BE512, +2 vs BNK-508 674)
+
+백본 3-URL 303차 live HTTP 200 = on-disk md5 IDENTICAL:
+  NHIS#44 c886ff1f (7,572B)
+  carefor func.php 6226e6eb (98,328B)
+  silverangel daycare essential c79c1be3 (131,664B)
+  덮어쓰기 0 · 엑셀 포맷 변경 0 (FAQ21802 c55f6d1d IDENTICAL)
+
+△4 잔여 우선순위 불변: 7-4 CMS(0.65) → 10 부가(0.5) → 2 이동(0.85) → 8 직원근태(0.85)

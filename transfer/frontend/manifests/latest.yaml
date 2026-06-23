@@ -1,28 +1,712 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T08:15:00+00:00 -->
-<!-- tester-sync: TSR 1268차 2026-06-22T08:15 UTC (frontend) — SYNCED revalidation `@8aabeae` **1984/1984 PASS**(carry 670.15s) · develop/test `@8aabeae` · build **1139 PASS**(carry 8.34s) · audit **0** · live E2E **126 PASS/19 SKIP**(carry 34.72s) · Open **0** · verdict PASS -->
-# updated: 2026-06-22T08:15:00+00:00
-# revalidation_1268th: frontend manifest => PASS (SYNCED @8aabeae; npm 1984/1984 PASS carry; build 1139 carry; live E2E 126/19 carry; Open 0; cross-stream SYNCED; operation BLOCK).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T18:23:23+00:00 -->
+<!-- tester-sync: TSR 1331차 2026-06-23T18:23 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **SKIP**(vitest concurrency · `src/frontend` develop PID 657264) · develop `@64584f4` WT **DIRTY 48M+18U** · merge **SKIP**(`test..develop` **0/4** pending+dirty) · build **1149 PASS**(10.25s @ test) · audit **0** · live E2E **SKIP**(127/19 carry) · **QA-B273 Planned(update,BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 2 @c4e6bcb · FE dirty pending 4)** · operation **BLOCK** -->
+# updated: 2026-06-23T18:23:23+00:00
+# revalidation_1331st: frontend manifest => BLOCK (baseline carry 2049/2049 @b7101d5; npm re-run SKIP concurrency PID 657264; develop @64584f4 WT DIRTY 48M+18U; merge SKIP 0/4+dirty; QA-B273 Planned(update); cross-stream BLOCK; operation BLOCK origin/test push 530 BE+187 FE).
 
 stream: frontend
-test_branch_head: 8aabeae
-develop_head: 8aabeae
-merge_status: synced
-merge_pending_commits: 0
-merge_range: daaba4b..8aabeae
-npm_test_baseline: "1984/1984 PASS (670.15s carry @ 8aabeae, 1267차)"
-npm_test_pre_merge: "1984/1984 PASS (669.42s carry @ develop 8aabeae, 387 files)"
-npm_test_post_merge: "1984/1984 PASS (670.15s @ test 8aabeae, 387 files, 1267차)"
-build_modules: "1139 modules PASS (8.34s, 1267차)"
+test_branch_head: b7101d5
+develop_head: 64584f4
+merge_status: pending
+merge_pending_commits: 4
+merge_range: b7101d5..64584f4
+npm_test_baseline: "2049/2049 PASS @ test b7101d5 (1320차 carry · 1331차 re-run SKIP vitest concurrency)"
+npm_test_pre_merge: "SKIP (develop WT DIRTY 48M+18U · pending 64584f4 not merged)"
+npm_test_post_merge: "SKIP (merge blocked by dirty-tree + pending 4)"
+build_modules: "1149 modules PASS (10.25s @ test)"
 build_exit: "0"
 audit_vulnerabilities: "0"
-live_e2e: "126 PASS / 19 SKIP (34.72s, 1267차)"
+live_e2e: "SKIP (merge 없음 · 1320차 carry 127 PASS / 19 SKIP)"
+develop_working_tree: "DIRTY 48M+18U (66 status lines · dashboard·client-list·transport·address·nav WIP)"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+planned_issues: [QA-20260623-B273, QA-20260623-B272]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 2 @c4e6bcb QA-B272 · FE dirty@64584f4 pending 4 QA-B273)
+operation: BLOCK (QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T17:44:14+00:00 -->
+<!-- tester-sync: TSR 1329차 2026-06-23T17:44 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **SKIP**(vitest concurrency · partial PID 633126) · develop `@426d63a` WT **DIRTY 44M+12U** · merge **SKIP**(`test..develop` **0/3** pending+dirty) · build **1149 PASS**(9.66s @ test) · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B273 Planned(carry,BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 2 @c4e6bcb · FE dirty pending 3)** · operation **BLOCK** -->
+# updated: 2026-06-23T17:44:14+00:00
+# revalidation_1329th: frontend manifest => BLOCK (baseline carry 2049/2049 @b7101d5; npm re-run SKIP concurrency; develop @426d63a WT DIRTY 44M+12U; merge SKIP 0/3+dirty; QA-B273 Planned(carry); cross-stream BLOCK; operation BLOCK origin/test push 530 BE+187 FE).
+
+stream: frontend
+test_branch_head: b7101d5
+develop_head: 426d63a
+merge_status: pending
+merge_pending_commits: 3
+merge_range: b7101d5..426d63a
+npm_test_baseline: "2049/2049 PASS @ test b7101d5 (1320차 carry · 1329차 re-run SKIP vitest concurrency)"
+npm_test_pre_merge: "SKIP (develop WT DIRTY 44M+12U · pending 426d63a not merged)"
+npm_test_post_merge: "SKIP (merge blocked by dirty-tree + pending 3)"
+build_modules: "1149 modules PASS (9.66s @ test)"
+build_exit: "0"
+audit_vulnerabilities: "1 high (form-data CRLF)"
+live_e2e: "SKIP (merge 없음 · 1320차 carry 127 PASS / 19 SKIP)"
+develop_working_tree: "DIRTY 44M+12U (56 status lines · dashboard·client-list·transport·nav WIP)"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+planned_issues: [QA-20260623-B273, QA-20260623-B272]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 2 @c4e6bcb QA-B272 · FE dirty@426d63a pending 3 QA-B273)
+operation: BLOCK (QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T17:32:00+00:00 -->
+<!-- tester-sync: TSR 1328차 2026-06-23T17:32 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **Terminated exit 143**(~625.2s · 3rd hang) · develop `@426d63a` WT **DIRTY 44M+12U** · merge **SKIP**(`test..develop` **0/3** pending+dirty) · build **1149 PASS**(9.75s @ test) · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B273 Planned(carry,BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 2 @c4e6bcb · FE dirty pending 3)** · operation **BLOCK** -->
+# updated: 2026-06-23T17:32:00+00:00
+# revalidation_1328th: frontend manifest => BLOCK (baseline carry 2049/2049 @b7101d5; npm re-run Terminated exit 143 ~625.2s 3rd hang; develop @426d63a WT DIRTY 44M+12U; merge SKIP 0/3+dirty; QA-B273 Planned(carry); cross-stream BLOCK; operation BLOCK origin/test push 530 BE+187 FE).
+
+stream: frontend
+test_branch_head: b7101d5
+develop_head: 426d63a
+merge_status: pending
+merge_pending_commits: 3
+merge_range: b7101d5..426d63a
+npm_test_baseline: "2049/2049 PASS @ test b7101d5 (1320차 carry · 1328차 re-run Terminated exit 143 ~625.2s 3rd hang)"
+npm_test_pre_merge: "SKIP (develop WT DIRTY 44M+12U · pending 426d63a not merged)"
+npm_test_post_merge: "SKIP (merge blocked by dirty-tree + pending 3)"
+build_modules: "1149 modules PASS (9.75s @ test)"
+build_exit: "0"
+audit_vulnerabilities: "1 high (form-data CRLF)"
+live_e2e: "SKIP (merge 없음 · 1320차 carry 127 PASS / 19 SKIP)"
+develop_working_tree: "DIRTY 44M+12U (56 status lines · dashboard·client-list·transport·nav WIP)"
+test_working_tree: "DIRTY ?? 1 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+planned_issues: [QA-20260623-B273, QA-20260623-B272]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 2 @c4e6bcb QA-B272 · FE dirty@426d63a pending 3 QA-B273)
+operation: BLOCK (QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T17:02:31+00:00 -->
+<!-- tester-sync: TSR 1326차 2026-06-23T17:02 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **SKIP**(vitest concurrency · develop PID 613172) · develop `@426d63a` WT **DIRTY 38M+11U** · merge **SKIP**(`test..develop` **0/3** pending+dirty) · build **1149 PASS**(10.57s @ test) · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B273 Planned(carry,BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(BE B272 dirty pending 1 · FE dirty pending 3)** · operation **BLOCK** -->
+# updated: 2026-06-23T17:02:31+00:00
+# revalidation_1326th: frontend manifest => BLOCK (baseline carry 2049/2049 @b7101d5; npm re-run SKIP concurrency; develop @426d63a WT DIRTY 38M+11U; merge SKIP 0/3+dirty; QA-B273 Planned(carry); cross-stream BLOCK; operation BLOCK origin/test push 530 BE+187 FE).
+
+stream: frontend
+test_branch_head: b7101d5
+develop_head: 426d63a
+merge_status: pending
+merge_pending_commits: 3
+merge_range: b7101d5..426d63a
+npm_test_baseline: "2049/2049 PASS @ test b7101d5 (1320차 carry · 1326차 re-run SKIP vitest concurrency)"
+npm_test_pre_merge: "SKIP (develop WT DIRTY 38M+11U · pending 426d63a not merged)"
+npm_test_post_merge: "SKIP (merge blocked by dirty-tree + pending 3)"
+build_modules: "1149 modules PASS (10.57s @ test)"
+build_exit: "0"
+audit_vulnerabilities: "1 high"
+live_e2e: "SKIP (merge 없음 · 1320차 carry 127 PASS / 19 SKIP)"
+develop_working_tree: "DIRTY 38M+11U (52 status lines · dashboard·client-list·transport·nav WIP)"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+planned_issues: [QA-20260623-B273, QA-20260623-B272]
+verdict: BLOCK
+cross_stream: BLOCK (BE dirty@5fd12dd pending 1 QA-B272 · FE dirty@426d63a pending 3 QA-B273)
+operation: BLOCK (QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T16:59:14+00:00 -->
+<!-- tester-sync: TSR 1325차 2026-06-23T16:59 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **Terminated exit 143**(~743.48s) · develop `@426d63a` WT **DIRTY 38M+11U** · merge **SKIP**(`test..develop` **0/3** pending+dirty) · build **1159 PASS**(9.61s · develop dirty) · audit **1 high** · live E2E **SKIP**(127/19 carry) · **QA-B273 Planned(update,BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(BE B272 dirty pending 1 · FE dirty pending 3)** · operation **BLOCK** -->
+# updated: 2026-06-23T16:59:14+00:00
+# revalidation_1325th: frontend manifest => BLOCK (baseline carry 2049/2049 @b7101d5; develop @426d63a WT DIRTY 38M+11U; merge SKIP 0/3+dirty; QA-B273 Planned(update); cross-stream BLOCK; operation BLOCK origin/test push 530 BE+187 FE).
+
+stream: frontend
+test_branch_head: b7101d5
+develop_head: 426d63a
+merge_status: pending
+merge_pending_commits: 3
+merge_range: b7101d5..426d63a
+npm_test_baseline: "2049/2049 PASS @ test b7101d5 (1320차 carry · 1325차 re-run Terminated exit 143 ~743.48s partial)"
+npm_test_pre_merge: "SKIP (develop WT DIRTY 38M+11U · pending 426d63a not merged)"
+npm_test_post_merge: "SKIP (merge blocked by dirty-tree + pending 3)"
+build_modules: "1159 modules PASS (9.61s · develop dirty WT)"
+build_exit: "0"
+audit_vulnerabilities: "1 high"
+live_e2e: "SKIP (merge 없음 · 1320차 carry 127 PASS / 19 SKIP)"
+develop_working_tree: "DIRTY 38M+11U (dashboard·client-list·transport·nav·compliance WIP)"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+planned_issues: [QA-20260623-B273, QA-20260623-B272]
+verdict: BLOCK
+cross_stream: BLOCK (BE dirty@5fd12dd pending 1 QA-B272 · FE dirty@426d63a pending 3 QA-B273)
+operation: BLOCK (QA-B273 + QA-B272 + origin/test push 530 BE+187 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T13:51:40+00:00 -->
+<!-- tester-sync: TSR 1318차 2026-06-23T13:51 UTC (frontend) — baseline `@949e9bf` **2049/2049 PASS**(705.68s) · develop `@b7101d5` WT **CLEAN** · develop pre-merge **2048/2049 FAIL** · merge **SKIP**(`test..develop` **0/1** · pre-merge FAIL) · **QA-B268 Fixed** · **QA-B270 Open(BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(FE pre-merge FAIL · BE SYNCED@bb9df48)** · operation **BLOCK** -->
+# updated: 2026-06-23T13:51:40+00:00
+# revalidation_1318th: frontend manifest => BLOCK (baseline 2049/2049 @949e9bf; develop pre-merge 2048/2049 FAIL; merge SKIP 0/1+pre-merge FAIL; QA-B268 Fixed; QA-B270 Open; cross-stream BLOCK; operation BLOCK origin/test push 529 BE+187 FE).
+
+stream: frontend
+test_branch_head: 949e9bf
+develop_head: b7101d5
+merge_status: pending
+merge_pending_commits: 1
+merge_range: 949e9bf..b7101d5
+npm_test_baseline: "2049/2049 PASS @ test 949e9bf (1318차, 705.68s, 399 files)"
+npm_test_pre_merge: "2048/2049 FAIL @ develop b7101d5 (748.62s, 399 files, 1 FAIL StaffAnnualLeavePage branch scope; isolated 8/8 PASS)"
+npm_test_post_merge: "SKIP (merge blocked by pre-merge FAIL)"
+build_modules: "1149 modules PASS (9.58s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (carry 1314차 · merge 없음)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260623-B270]
+verdict: BLOCK
+cross_stream: BLOCK (FE pending 1+pre-merge FAIL@b7101d5 · BE SYNCED@bb9df48)
+operation: BLOCK (QA-B270 + origin/test push 529 BE+187 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T12:22:30+00:00 -->
+<!-- tester-sync: TSR 1316차 2026-06-23T12:22 UTC (frontend) — ROADMAP merged SYNCED revalidation `@949e9bf` **2049/2049 PASS**(707.43s, 399 files) · develop/test `@949e9bf` SYNCED · develop WT **DIRTY 1M** · merge **SKIP**(`test..develop` **0/0** SYNCED+dirty) · build **1149 PASS**(10.20s) · audit **0** · live E2E **127 PASS/19 SKIP carry** · **QA-B268 Open(BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK(FE dirty@949e9bf · BE SYNCED@f1225b0)** · operation **BLOCK** -->
+# updated: 2026-06-23T12:22:30+00:00
+# revalidation_1316th: frontend manifest => BLOCK (SYNCED @949e9bf npm 2049/2049 PASS; develop WT DIRTY; merge SKIP 0/0+dirty; QA-B268 Open; cross-stream BLOCK; operation BLOCK origin/test push 528 BE+186 FE).
+
+stream: frontend
+test_branch_head: 949e9bf
+develop_head: 949e9bf
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 95f55aa..949e9bf
+npm_test_baseline: "2049/2049 PASS @ test 949e9bf (1316차, 707.43s, 399 files)"
+npm_test_pre_merge: "SKIP (SYNCED @949e9bf · develop WT DIRTY)"
+npm_test_post_merge: "SKIP (SYNCED @949e9bf · develop dirty blocks merge)"
+build_modules: "1149 modules PASS (10.20s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (carry 1314차 · re-run Terminated exit 143)"
+develop_working_tree: "DIRTY 1M (liveE2eSuiteGuard.test.js WIP)"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260623-B268]
+verdict: BLOCK
+cross_stream: BLOCK (FE develop dirty@949e9bf · BE SYNCED@f1225b0)
+operation: BLOCK (QA-B268 + origin/test push 528 BE+186 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T10:18:43+00:00 -->
+<!-- tester-sync: TSR 1311차 2026-06-23T10:18 UTC (frontend) — pre-merge `@95f55aa` carry **2049/2049 PASS**(696.89s, 399 files) · develop pre-merge `@949e9bf` **2049/2049 PASS**(687.36s, +3 tests) · ★ merge EXECUTED FF `95f55aa`→`949e9bf` (2 commits) · post-merge **2049/2049 PASS**(695.97s) · build **1149 PASS**(9.91s) · audit **0** · live E2E **127 PASS/19 SKIP**(37.03s) · **★ QA-B266 Fixed** · Open **0** · verdict **PASS** · cross-stream **SYNCED(FE@949e9bf + BE@40ab9e7)** · operation **BLOCK** -->
+# updated: 2026-06-23T10:18:43+00:00
+# revalidation_1311th: frontend manifest => PASS (pre-merge 2049/2049 @949e9bf; merge EXECUTED 2 commits; post-merge 2049/2049 PASS; build 1149 PASS; live E2E 127/19; QA-B266 Fixed; cross-stream SYNCED; operation BLOCK origin/test push 527 BE+186 FE).
+
+stream: frontend
+test_branch_head: 949e9bf
+develop_head: 949e9bf
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 95f55aa..949e9bf
+npm_test_baseline: "2049/2049 PASS @ test 95f55aa pre-merge carry (1311차, 696.89s, 399 files)"
+npm_test_pre_merge: "2049/2049 PASS @ develop 949e9bf (687.36s, 399 files, +3 tests)"
+npm_test_post_merge: "2049/2049 PASS @ test 949e9bf (695.97s, 399 files)"
+build_modules: "1149 modules PASS (9.91s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (37.03s)"
 develop_working_tree: "CLEAN"
 test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
 open_issues: 0
 open_issue_ids: []
 verdict: PASS
-cross_stream: SYNCED (FE@8aabeae + BE@175d9cb)
-operation: BLOCK (origin/test push 511 BE + 161 FE + QA-B95 partial 19 SKIP)
+cross_stream: SYNCED (FE@949e9bf + BE@40ab9e7)
+operation: BLOCK (origin/test push 527 BE+186 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T09:21:13+00:00 -->
+<!-- tester-sync: TSR 1310차 2026-06-23T09:21 UTC (frontend) — baseline `@95f55aa` **2046/2046 PASS**(783.20s, 398 files) · develop pre-merge `@949e9bf` **2048/2049 FAIL**(701.72s, 1 FAIL) · merge **SKIP**(`test..develop` **0/2** · pre-merge FAIL) · build **1149 PASS**(14.92s) · audit **0** · live E2E **127 PASS/19 SKIP carry** · **QA-B266 Open(BLOCK)** · Open **1** · verdict **BLOCK** · cross-stream **BLOCK(FE pending 2+regression · BE SYNCED@40ab9e7)** · operation **BLOCK** -->
+# updated: 2026-06-23T09:21:13+00:00
+# revalidation_1310th: frontend manifest => BLOCK (baseline 2046/2046 PASS @95f55aa; develop pre-merge 2048/2049 FAIL; merge SKIP 0/2; QA-B266 Open; cross-stream BLOCK; operation BLOCK origin/test push 527 BE+184 FE).
+
+stream: frontend
+test_branch_head: 95f55aa
+develop_head: 949e9bf
+merge_status: pending
+merge_pending_commits: 2
+merge_range: 95f55aa..949e9bf
+npm_test_baseline: "2046/2046 PASS @ test 95f55aa (1310차, 783.20s, 398 files)"
+npm_test_pre_merge: "2048/2049 PASS @ develop 949e9bf (701.72s, 399 files, +3 tests, 1 FAIL StaffAnnualLeavePage branch scope)"
+npm_test_post_merge: "SKIP (merge blocked by pre-merge FAIL)"
+build_modules: "1149 modules PASS (14.92s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (carry·1308차·test HEAD unchanged)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260623-B266]
+verdict: BLOCK
+cross_stream: BLOCK (FE pending 2 @949e9bf + pre-merge regression · BE SYNCED@40ab9e7)
+operation: BLOCK (QA-B266 + origin/test push 527 BE+184 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T07:25:04+00:00 -->
+<!-- tester-sync: TSR 1308차 2026-06-23T07:25 UTC (frontend) — ROADMAP merged SYNCED revalidation `@95f55aa` **2046/2046 PASS**(691.25s, 398 files) · develop/test `@95f55aa` SYNCED · merge **SKIP**(`test..develop` **0/0**) · build **1148 PASS**(11.53s) · audit **0** · live E2E **127 PASS/19 SKIP**(38.88s) · Open **0** · verdict **PASS** · cross-stream **SYNCED(FE@95f55aa + BE@83a26e7)** · operation **BLOCK** -->
+# updated: 2026-06-23T07:25:04+00:00
+# revalidation_1308th: frontend manifest => PASS (SYNCED @95f55aa npm 2046/2046 PASS 691.25s; merge SKIP 0/0; build 1148 PASS 11.53s; live E2E 127/19 38.88s; cross-stream SYNCED; operation BLOCK origin/test push 526 BE+184 FE).
+
+stream: frontend
+test_branch_head: 95f55aa
+develop_head: 95f55aa
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 2040571..95f55aa
+npm_test_baseline: "2046/2046 PASS @ test 95f55aa (1308차, 691.25s, 398 files)"
+npm_test_pre_merge: "SKIP (SYNCED @95f55aa)"
+npm_test_post_merge: "SKIP (SYNCED @95f55aa · 1308차 revalidation 2046/2046 PASS)"
+build_modules: "1148 modules PASS (11.53s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (38.88s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@95f55aa + BE@83a26e7)
+operation: BLOCK (origin/test push 526 BE+184 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T07:03:30+00:00 -->
+<!-- tester-sync: TSR 1307차 2026-06-23T07:03 UTC (frontend) — ROADMAP merged SYNCED revalidation `@95f55aa` **2046/2046 PASS**(694.54s, 398 files) · develop/test `@95f55aa` SYNCED · merge **SKIP**(`test..develop` **0/0**) · build **1148 PASS**(8.25s) · audit **0** · live E2E **127 PASS/19 SKIP**(36.42s) · Open **0** · verdict **PASS** · cross-stream **SYNCED(FE@95f55aa + BE@83a26e7)** · operation **BLOCK** -->
+# updated: 2026-06-23T07:03:30+00:00
+# revalidation_1307th: frontend manifest => PASS (SYNCED @95f55aa npm 2046/2046 PASS 694.54s; merge SKIP 0/0; build 1148 PASS 8.25s; live E2E 127/19 36.42s; cross-stream SYNCED; operation BLOCK origin/test push 526 BE+184 FE).
+
+stream: frontend
+test_branch_head: 95f55aa
+develop_head: 95f55aa
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 2040571..95f55aa
+npm_test_baseline: "2046/2046 PASS @ test 95f55aa (1307차, 694.54s, 398 files)"
+npm_test_pre_merge: "SKIP (SYNCED @95f55aa)"
+npm_test_post_merge: "SKIP (SYNCED @95f55aa · 1307차 revalidation 2046/2046 PASS)"
+build_modules: "1148 modules PASS (8.25s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (36.42s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@95f55aa + BE@83a26e7)
+operation: BLOCK (origin/test push 526 BE+184 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T06:48:39+00:00 -->
+<!-- tester-sync: TSR 1306차 2026-06-23T06:48 UTC (frontend) — pre-merge test `@2040571` carry **2043/2043 PASS**(1304차) · develop pre-merge `@95f55aa` **2046/2046 PASS**(731.51s, +3 tests) · ★ merge EXECUTED FF `2040571`→`95f55aa` (1 commit) · post-merge **2046/2046 PASS**(698.02s) · build **1148 PASS**(8.29s) · audit **0** · live E2E **127 PASS/19 SKIP**(37.14s) · **★ QA-B264 Fixed @ `95f55aa`** · Open **0** · verdict **PASS** · cross-stream **SYNCED(FE@95f55aa + BE@83a26e7)** · operation **BLOCK** -->
+# updated: 2026-06-23T06:48:39+00:00
+# revalidation_1306th: frontend manifest => PASS (merge EXECUTED FF 2040571→95f55aa; pre-merge 2046/2046; post-merge 2046/2046; build 1148 PASS 8.29s; live E2E 127/19 37.14s; QA-B264 Fixed; cross-stream SYNCED; operation BLOCK origin/test push 526 BE+184 FE).
+
+stream: frontend
+test_branch_head: 95f55aa
+develop_head: 95f55aa
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 2040571..95f55aa
+npm_test_baseline: "2043/2043 PASS @ test 2040571 (1304차 carry, 705.17s, 398 files)"
+npm_test_pre_merge: "2046/2046 PASS @ develop 95f55aa (731.51s, 398 files, +3 tests vs 1304)"
+npm_test_post_merge: "2046/2046 PASS @ test 95f55aa (698.02s, 398 files)"
+build_modules: "1148 modules PASS (8.29s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (37.14s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@95f55aa + BE@83a26e7)
+operation: BLOCK (origin/test push 526 BE+184 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T06:00:00+00:00 -->
+<!-- tester-sync: TSR 1304차 2026-06-23T06:00 UTC (frontend) — SYNCED revalidation `@2040571` **2043/2043 PASS**(705.17s, 398 files) · develop/test `@2040571` SYNCED · merge **SKIP**(`test..develop` **0/0**) · build **1148 PASS**(9.38s) · audit **0** · live E2E **127 PASS/19 SKIP**(43.38s carry·1303) · **★ QA-B262 Fixed @ `2040571`** · Open **0** · verdict **PASS** · cross-stream **SYNCED(FE@2040571 + BE@6ab3760)** · operation **BLOCK** -->
+# updated: 2026-06-23T06:00:00+00:00
+# revalidation_1304th: frontend manifest => PASS (SYNCED @2040571 npm 2043/2043 PASS 705.17s; merge SKIP 0/0; build 1148 PASS 9.38s; live E2E 127/19 carry; QA-B262 Fixed; cross-stream SYNCED; operation BLOCK origin/test push 525 BE+183 FE).
+
+stream: frontend
+test_branch_head: 2040571
+develop_head: 2040571
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 0b0d7ba..2040571
+npm_test_baseline: "2043/2043 PASS @ test 2040571 (1304차, 705.17s, 398 files, +3 tests vs 1300)"
+npm_test_pre_merge: "SKIP (SYNCED @2040571)"
+npm_test_post_merge: "SKIP (SYNCED @2040571)"
+build_modules: "1148 modules PASS (9.38s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (43.38s carry·1303차)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@2040571 + BE@6ab3760)
+operation: BLOCK (origin/test push 525 BE+183 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T05:43:13+00:00 -->
+<!-- tester-sync: TSR 1303차 2026-06-23T05:43 UTC (frontend) — ROADMAP merged revalidation `@2040571` **2042/2043 PASS**(699.21s, 398 files, **1 FAIL**) · develop/test `@2040571` SYNCED · merge **SKIP**(`test..develop` **0/0**) · build **1148 PASS**(8.31s) · audit **0** · live E2E **127 PASS/19 SKIP**(43.38s) · **QA-B261 Fixed** · **QA-B262 Open(BLOCK)** · Open **1** · verdict **BLOCK** · cross-stream **BLOCK(FE regression · BE SYNCED@6ab3760)** · operation **BLOCK** -->
+# updated: 2026-06-23T05:43:13+00:00
+# revalidation_1303rd: frontend manifest => BLOCK (SYNCED @2040571 npm 2042/2043 PASS 699.21s 1 FAIL CareServiceSpecialNotesPage; merge SKIP 0/0; build 1148 PASS 8.31s; live E2E 127/19 43.38s; QA-B262 Open; cross-stream BLOCK FE regression+BE SYNCED; operation BLOCK origin/test push 525 BE+183 FE).
+
+stream: frontend
+test_branch_head: 2040571
+develop_head: 2040571
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 0b0d7ba..2040571
+npm_test_baseline: "2042/2043 PASS @ test 2040571 (1303차, 699.21s, 398 files, 1 FAIL CareServiceSpecialNotesPage)"
+npm_test_pre_merge: "SKIP (SYNCED @2040571 · commit already on both)"
+npm_test_post_merge: "SKIP (SYNCED @2040571 · regression on HEAD)"
+build_modules: "1148 modules PASS (8.31s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (43.38s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260623-B262]
+verdict: BLOCK
+cross_stream: BLOCK (FE regression@2040571 · BE SYNCED@6ab3760)
+operation: BLOCK (origin/test push 525 BE+183 FE + QA-B95 partial 19 SKIP + QA-B262 fix)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T05:02:02+00:00 -->
+<!-- tester-sync: TSR 1302차 2026-06-23T05:02 UTC (frontend) — ROADMAP merged regression `@2040571` **2040/2043 PASS**(696.32s, 398 files, **3 FAIL**) · develop/test `@2040571` SYNCED · merge **SKIP**(`test..develop` **0/0**) · build **1148 PASS**(9.66s) · audit **0** · live E2E **127 PASS/19 SKIP**(43.95s) · **QA-B261 Open(BLOCK)** · Open **1** · verdict **BLOCK** · cross-stream **BLOCK(FE regression · BE SYNCED@6ab3760)** · operation **BLOCK** -->
+# updated: 2026-06-23T05:02:02+00:00
+# revalidation_1302nd: frontend manifest => BLOCK (SYNCED @2040571 npm 2040/2043 PASS 696.32s 3 FAIL; merge SKIP 0/0; build 1148 PASS 9.66s; live E2E 127/19 43.95s; QA-B261 Open; cross-stream BLOCK FE regression+BE SYNCED; operation BLOCK origin/test push 525 BE+183 FE).
+
+stream: frontend
+test_branch_head: 2040571
+develop_head: 2040571
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 0b0d7ba..2040571
+npm_test_baseline: "2040/2043 PASS @ test 2040571 (1302차, 696.32s, 398 files, 3 FAIL US-R01 cross-links)"
+npm_test_pre_merge: "SKIP (SYNCED @2040571 · commit already on both)"
+npm_test_post_merge: "SKIP (SYNCED @2040571 · regression on HEAD)"
+build_modules: "1148 modules PASS (9.66s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (43.95s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260623-B261]
+verdict: BLOCK
+cross_stream: BLOCK (FE regression@2040571 · BE SYNCED@6ab3760)
+operation: BLOCK (origin/test push 525 BE+183 FE + QA-B95 partial 19 SKIP + QA-B261 fix)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T03:44:22+00:00 -->
+<!-- tester-sync: TSR 1300차 2026-06-23T03:44 UTC (frontend) — SYNCED revalidation `@0b0d7ba` **2040/2040 PASS**(752.60s, 398 files, +4 tests) · develop/test `@0b0d7ba` SYNCED · merge **SKIP**(`test..develop` **0/0**) · build **1147 PASS**(15.13s) · audit **0** · live E2E **127 PASS/19 SKIP**(36.43s) · Open **0** · verdict **PASS** · cross-stream **SYNCED** · operation **BLOCK** -->
+# updated: 2026-06-23T03:44:22+00:00
+# revalidation_1300th: frontend manifest => PASS (SYNCED @0b0d7ba npm 2040/2040 PASS 752.60s; merge SKIP 0/0; build 1147 PASS 15.13s; live E2E 127/19 36.43s; cross-stream SYNCED FE@0b0d7ba+BE@6ab3760; operation BLOCK origin/test push 525 BE+182 FE).
+
+stream: frontend
+test_branch_head: 0b0d7ba
+develop_head: 0b0d7ba
+merge_status: synced
+merge_pending_commits: 0
+merge_range: e296387..0b0d7ba
+npm_test_baseline: "2040/2040 PASS @ test 0b0d7ba (1300차, 752.60s, 398 files, +4 tests vs 1298차)"
+npm_test_pre_merge: "SKIP (SYNCED @0b0d7ba)"
+npm_test_post_merge: "SKIP (SYNCED @0b0d7ba)"
+build_modules: "1147 modules PASS (15.13s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (36.43s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@0b0d7ba + BE@6ab3760)
+operation: BLOCK (origin/test push 525 BE+182 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T03:45:11+00:00 -->
+<!-- tester-sync: TSR 1300차 2026-06-23T03:45 UTC (frontend) — baseline `@e296387` **2036/2036 PASS**(796.27s) · develop pre-merge `@0b0d7ba` **2040/2040 PASS**(695.23s, +4 tests) · ★ merge EXECUTED FF `e296387`→`0b0d7ba` (1 commit) · post-merge **2040/2040 PASS**(752.60s) · build **1148 PASS**(11.96s) · audit **0** · live E2E **127 PASS/19 SKIP**(37.56s) · **★ QA-B260 Fixed @ `0b0d7ba`** · verdict **PASS** · cross-stream **SYNCED(FE@0b0d7ba + BE@6ab3760)** · operation **BLOCK** -->
+# updated: 2026-06-23T03:45:11+00:00
+# revalidation_1300th: frontend manifest => PASS (baseline 2036/2036 @e296387; develop pre-merge 2040/2040 @0b0d7ba +4 tests; merge EXECUTED FF e296387→0b0d7ba 1 commit; post-merge 2040/2040 PASS 752.60s; build 1148 PASS 11.96s; live E2E 127/19 37.56s; QA-B260 Fixed; cross-stream SYNCED; operation BLOCK origin/test push 525 BE+182 FE).
+
+stream: frontend
+test_branch_head: 0b0d7ba
+develop_head: 0b0d7ba
+merge_status: synced
+merge_pending_commits: 0
+merge_range: e296387..0b0d7ba
+npm_test_baseline: "2036/2036 PASS @ test e296387 (1300차, 796.27s, 397 files, npx vitest run)"
+npm_test_pre_merge: "2040/2040 PASS (695.23s @ develop 0b0d7ba, 398 files, +4 tests, 1300차)"
+npm_test_post_merge: "2040/2040 PASS (752.60s @ test 0b0d7ba, 398 files, 1300차)"
+build_modules: "1148 modules PASS (11.96s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "127 PASS / 19 SKIP (37.56s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@0b0d7ba + BE@6ab3760)
+operation: BLOCK (origin/test push 525 BE+182 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T01:15:40+00:00 -->
+<!-- tester-sync: TSR 1297차 2026-06-23T01:15 UTC (frontend) — baseline `@8434435` **2035/2035 PASS**(713.27s) · develop pre-merge `@31ab1aa` **2035/2035 PASS**(691.47s) · ★ merge EXECUTED FF `8434435`→`31ab1aa` (4 commits) · post-merge **2035/2035 PASS**(691.47s) · build **1147 PASS**(8.20s) · audit **0** · live E2E **126 PASS/19 SKIP**(38.99s) · **★ QA-B255 Fixed @ `8434435`** · Open **0** · verdict **PASS** · cross-stream **SYNCED** · operation **BLOCK** -->
+# updated: 2026-06-23T01:15:40+00:00
+# revalidation_1297th: frontend manifest => PASS (baseline 2035/2035 @8434435; merge EXECUTED FF 8434435→31ab1aa 4 commits; post-merge 2035/2035 PASS 691.47s; build 1147 PASS 8.20s; live E2E 126/19 38.99s; QA-B255 Fixed; cross-stream SYNCED FE@31ab1aa+BE@8c5dd65; operation BLOCK origin/test push 523 BE+179 FE).
+
+stream: frontend
+test_branch_head: 31ab1aa
+develop_head: 31ab1aa
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 8434435..31ab1aa
+npm_test_baseline: "2035/2035 PASS @ test 8434435 (1297차, 713.27s, 397 files)"
+npm_test_pre_merge: "2035/2035 PASS (691.47s @ develop 31ab1aa, 397 files, 1297차)"
+npm_test_post_merge: "2035/2035 PASS (691.47s @ test 31ab1aa, 397 files, 1297차)"
+build_modules: "1147 modules PASS (8.20s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (38.99s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@31ab1aa + BE@8c5dd65)
+operation: BLOCK (origin/test push 523 BE+179 FE + QA-B95 partial 19 SKIP)
+
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T22:03:57+00:00 -->
+<!-- tester-sync: TSR 1292차 2026-06-22T22:03 UTC (frontend) — ROADMAP merged regression `@a170f9c` npm **2030/2031 PASS**(689.73s, 1 FAIL) · failing case `pilotPageFlows /staff/annual-leaves` text mismatch · develop `@80613c3` WT CLEAN + pending 1 · build **1147 PASS**(9.45s) · audit **0** · live E2E lock incident resolved via `vitest-stop.sh` then **126 PASS/19 SKIP**(35.61s) · **QA-B255 Open(BLOCK)** + backend carry **QA-B254 Open(BLOCK)** · verdict **BLOCK** · cross-stream **BLOCK** · operation **BLOCK** -->
+# updated: 2026-06-22T22:03:57+00:00
+# revalidation_1292nd: frontend manifest => BLOCK (test@a170f9c npm 2030/2031 PASS with 1 FAIL in pilotPageFlows /staff/annual-leaves; develop@80613c3 pending 1; build 1147 PASS 9.45s; audit 0; live E2E lock->cleanup->126/19 PASS 35.61s; QA-B255 Open + QA-B254 carry; cross-stream BLOCK; operation BLOCK).
+
+stream: frontend
+test_branch_head: a170f9c
+develop_head: 80613c3
+merge_status: pending
+merge_pending_commits: 1
+merge_range: a170f9c..80613c3
+npm_test_baseline: "2025/2025 PASS carry @ test 6fcd750 (1289차)"
+npm_test_pre_merge: "SKIP (develop pending 1; test regression first)"
+npm_test_post_merge: "SKIP (merge not executed)"
+build_modules: "1147 modules PASS (9.45s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (35.61s; first attempt LOCKED -> vitest-stop cleanup -> rerun PASS)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 2
+open_issue_ids: [QA-20260622-B255, QA-20260622-B254]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 1 @f88e8b1 + FE pending 1 @80613c3 with regression fail)
+operation: BLOCK (origin/test push 519 BE+173 FE + QA-B255 + QA-B254 + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T20:20:00+00:00 -->
+<!-- tester-sync: TSR 1289차 2026-06-22T20:20 UTC (frontend) — merge EXECUTED FF `3902dba`→`6fcd750` (1 commit) · post-merge **2025/2025 PASS**(692.61s) · build **1147 PASS**(8.58s) · audit **0** · live E2E **126 PASS/19 SKIP**(36.32s) · **QA-B252 Fixed** · Open **0** · verdict **PASS** · cross-stream **SYNCED** · operation **BLOCK** -->
+# updated: 2026-06-22T20:20:00+00:00
+# revalidation_1289th: frontend manifest => PASS (merge EXECUTED FF 3902dba→6fcd750; post-merge 2025/2025 PASS 692.61s; build 1147 PASS 8.58s; live E2E 126/19 36.32s; QA-B252 Fixed; cross-stream SYNCED; operation BLOCK).
+
+stream: frontend
+test_branch_head: 6fcd750
+develop_head: 6fcd750
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 3902dba..6fcd750
+npm_test_baseline: "2023/2023 PASS carry @ test 3902dba (1287차)"
+npm_test_pre_merge: "2025/2025 PASS (692.61s @ develop 6fcd750, 397 files, 1289차)"
+npm_test_post_merge: "2025/2025 PASS (692.61s @ test 6fcd750, 397 files, 1289차)"
+build_modules: "1147 modules PASS (8.58s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (36.32s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@6fcd750 + BE@6b84bcd)
+operation: BLOCK (origin/test push 518 BE+172 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T17:48:37+00:00 -->
+<!-- tester-sync: TSR 1285차 2026-06-22T17:48 UTC (frontend) — SYNCED revalidation `@3ece965` **2010/2010 PASS**(671.86s) · build **1144 PASS**(8.05s) · audit **0** · live E2E **126 PASS/19 SKIP**(35.00s) · merge **SKIP**(`test..develop` **0/0**) · Open **0** · verdict **PASS** · cross-stream **BLOCK(BE pending 2)** · operation **BLOCK** -->
+# updated: 2026-06-22T17:48:37+00:00
+# revalidation_1285th: frontend manifest => PASS (SYNCED @3ece965 revalidation; npm 2010/2010 PASS 671.86s; build 1144 PASS 8.05s; live E2E 126/19 35.00s; merge SKIP; cross-stream BLOCK; operation BLOCK).
+
+stream: frontend
+test_branch_head: 3ece965
+develop_head: 3ece965
+merge_status: synced
+merge_pending_commits: 0
+merge_range: null
+npm_test_baseline: "2010/2010 PASS carry @ test 3ece965 (1284차)"
+npm_test_pre_merge: "N/A (SYNCED 0/0)"
+npm_test_post_merge: "2010/2010 PASS (671.86s @ test 3ece965, 393 files, 1285차)"
+build_modules: "1144 modules PASS (8.05s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (35.00s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: BLOCK (FE@3ece965 SYNCED + BE pending 2 @d3d4d2d QA-B248)
+operation: BLOCK (origin/test push 514 BE+169 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T16:41:32+00:00 -->
+<!-- tester-sync: TSR 1282차 2026-06-22T16:41 UTC (frontend) — merge EXECUTED FF `df9ec6c`→`947312c` (1 commit) · post-merge **2008/2008 PASS**(685.77s) · build **1144 PASS**(12.09s) · audit **0** · live E2E **126 PASS/19 SKIP**(39.13s) · develop/test `@947312c` SYNCED · **QA-B249 Fixed** · Open **0** · verdict **PASS** · cross-stream **BLOCK(BE pending 1)** · operation **BLOCK** -->
+# updated: 2026-06-22T16:41:32+00:00
+# revalidation_1282nd: frontend manifest => PASS (merge EXECUTED FF df9ec6c→947312c; post-merge 2008/2008 PASS 685.77s; build 1144 PASS 12.09s; live E2E 126/19 39.13s; QA-B249 Fixed; cross-stream BLOCK; operation BLOCK).
+
+stream: frontend
+test_branch_head: 947312c
+develop_head: 947312c
+merge_status: synced
+merge_pending_commits: 0
+merge_range: df9ec6c..947312c
+npm_test_baseline: "2005/2005 PASS carry @ test df9ec6c (1280차); baseline re-run Terminated exit 143 ~651s HEAD unchanged"
+npm_test_pre_merge: "2008/2008 PASS (683.98s @ develop 947312c, 393 files, 1282차)"
+npm_test_post_merge: "2008/2008 PASS (685.77s @ test 947312c, 393 files, 1282차)"
+build_modules: "1144 modules PASS (12.09s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (39.13s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: BLOCK (FE@947312c SYNCED + BE pending 1 @d0c0d12 QA-B248)
+operation: BLOCK (origin/test push 514 BE+168 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T15:29:00+00:00 -->
+<!-- tester-sync: TSR 1280차 2026-06-22T15:29 UTC (frontend) — merge EXECUTED FF `9f110a5`→`df9ec6c` (1 commit) · post-merge **2005/2005 PASS**(685.05s) · build **1144 PASS**(8.15s) · audit **0** · live E2E **126 PASS/19 SKIP**(41.10s) · develop/test `@df9ec6c` SYNCED · **QA-B247 Fixed** · Open **0** · verdict **PASS** · cross-stream **BLOCK(BE dirty)** · operation **BLOCK** -->
+# updated: 2026-06-22T15:29:00+00:00
+# revalidation_1280th: frontend manifest => PASS (merge EXECUTED FF 9f110a5→df9ec6c; post-merge 2005/2005 PASS 685.05s; build 1144 PASS 8.15s; live E2E 126/19 41.10s; QA-B247 Fixed; cross-stream BLOCK; operation BLOCK).
+
+stream: frontend
+test_branch_head: df9ec6c
+develop_head: df9ec6c
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 9f110a5..df9ec6c
+npm_test_baseline: "2004/2004 PASS carry @ test 9f110a5 (1278차); baseline re-run Terminated exit 143 ~672s HEAD unchanged"
+npm_test_pre_merge: "2005/2005 PASS (684.94s @ develop df9ec6c, 393 files, 1280차)"
+npm_test_post_merge: "2005/2005 PASS (685.05s @ test df9ec6c, 393 files, 1280차)"
+build_modules: "1144 modules PASS (8.15s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (41.10s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: BLOCK (FE@df9ec6c SYNCED + BE dirty@d361833 QA-B246)
+operation: BLOCK (origin/test push 514 BE+167 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T13:55:17+00:00 -->
+<!-- tester-sync: TSR 1278차 2026-06-22T13:55 UTC (frontend) — merge EXECUTED FF `77cfc38`→`9f110a5` (1 commit) · post-merge **2004/2004 PASS**(685.34s) · build **1144 PASS**(8.20s) · audit **0** · live E2E **126 PASS/19 SKIP**(35.89s) · develop/test `@9f110a5` SYNCED · **QA-B245 Fixed** · Open **0** · verdict **PASS** · cross-stream **SYNCED** · operation **BLOCK** -->
+# updated: 2026-06-22T13:55:17+00:00
+# revalidation_1278th: frontend manifest => PASS (merge EXECUTED FF 77cfc38→9f110a5; post-merge 2004/2004 PASS 685.34s; build 1144 PASS 8.20s; live E2E 126/19 35.89s; QA-B245 Fixed; cross-stream SYNCED; operation BLOCK).
+
+stream: frontend
+test_branch_head: 9f110a5
+develop_head: 9f110a5
+merge_status: synced
+merge_pending_commits: 0
+merge_range: 77cfc38..9f110a5
+npm_test_baseline: "1999/1999 PASS carry @ test 77cfc38 (1276차); develop pre-merge @9f110a5 2004/2004 PASS (683.88s, 393 files)"
+npm_test_pre_merge: "2004/2004 PASS (683.88s @ develop 9f110a5, 393 files, 1278차)"
+npm_test_post_merge: "2004/2004 PASS (685.34s @ test 9f110a5, 393 files, 1278차)"
+build_modules: "1144 modules PASS (8.20s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (35.89s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@9f110a5 + BE@d361833)
+operation: BLOCK (origin/test push 514 BE+166 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T12:50:09+00:00 -->
+<!-- tester-sync: TSR 1276차 2026-06-22T12:50 UTC (frontend) — merge EXECUTED FF `fdc135b`→`77cfc38` (1 commit) · post-merge **1999/1999 PASS**(688.19s) · build **1144 PASS**(8.53s) · audit **0** · live E2E **126 PASS/19 SKIP**(36.00s) · develop/test `@77cfc38` SYNCED · **QA-B243 Fixed** · Open **0** · verdict **PASS** · cross-stream **SYNCED** · operation **BLOCK** -->
+# updated: 2026-06-22T12:50:09+00:00
+# revalidation_1276th: frontend manifest => PASS (merge EXECUTED FF fdc135b→77cfc38; post-merge 1999/1999 PASS 688.19s; build 1144 PASS 8.53s; live E2E 126/19 36.00s; QA-B243 Fixed; cross-stream SYNCED; operation BLOCK).
+
+stream: frontend
+test_branch_head: 77cfc38
+develop_head: 77cfc38
+merge_status: synced
+merge_pending_commits: 0
+merge_range: fdc135b..77cfc38
+npm_test_baseline: "1993/1993 PASS carry @ test fdc135b (1274차); develop pre-merge @77cfc38 1999/1999 PASS (684.75s, 393 files)"
+npm_test_pre_merge: "1999/1999 PASS (684.75s @ develop 77cfc38, 393 files, 1276차)"
+npm_test_post_merge: "1999/1999 PASS (688.19s @ test 77cfc38, 393 files, 1276차)"
+build_modules: "1144 modules PASS (8.53s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (36.00s)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 0
+open_issue_ids: []
+verdict: PASS
+cross_stream: SYNCED (FE@77cfc38 + BE@24d25f1)
+operation: BLOCK (origin/test push 513 BE+165 FE + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T10:54:46+00:00 -->
+<!-- tester-sync: TSR 1273차 2026-06-22T10:54 UTC (frontend) — regression `@d058e43` **1993/1993 PASS**(681.70s) · build **1139 PASS**(10.07s) · audit **0** · develop `@fdc135b` pending 2 + WT CLEAN · merge SKIP · Open 1(QA-B242) + backend open 1(QA-B241) · verdict BLOCK -->
+# updated: 2026-06-22T10:54:46+00:00
+# revalidation_1273rd: frontend manifest => BLOCK (npm 1993/1993 PASS at test@d058e43, 390 files; build 1139 PASS; audit 0; test..develop 0/2 pending @fdc135b with da34daf+fdc135b; merge skipped; QA-B242 Open; cross-stream BLOCK).
+
+stream: frontend
+test_branch_head: d058e43
+develop_head: fdc135b
+merge_status: pending
+merge_pending_commits: 2
+merge_range: d058e43..fdc135b
+npm_test_baseline: "1993/1993 PASS (681.70s @ test d058e43, 390 files, 1273차 regression)"
+npm_test_pre_merge: "SKIP (develop pending 2)"
+npm_test_post_merge: "SKIP (merge not executed)"
+build_modules: "1139 modules PASS (10.07s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "SKIP this cycle (merge not executed; carry: 126 PASS / 19 SKIP @ 1271차)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260622-B242]
+verdict: BLOCK
+cross_stream: BLOCK (FE pending 2 @fdc135b + BE dirty @9db0bbb)
+operation: BLOCK (origin/test push pending + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T09:02:45+00:00 -->
+<!-- tester-sync: TSR 1271차 2026-06-22T09:02 UTC (frontend) — regression `@8aabeae` **1987/1987 PASS**(674.68s) · build **1139 PASS**(8.35s) · audit **0**(carry 1270차) · live E2E **126 PASS/19 SKIP**(36.31s, carry 1270차) · develop `@d058e43` pending 1 + WT CLEAN · merge SKIP · Open 1(QA-B240) · verdict BLOCK -->
+# updated: 2026-06-22T09:02:45+00:00
+# revalidation_1271th: frontend manifest => BLOCK (npm 1987/1987 PASS at test@8aabeae; build PASS; audit/live-e2e carry(1270차); test..develop 0/1 pending @d058e43 + develop WT CLEAN; merge skipped; QA-B240 Open; cross-stream BLOCK).
+
+stream: frontend
+test_branch_head: 8aabeae
+develop_head: d058e43
+merge_status: pending
+merge_pending_commits: 1
+merge_range: 8aabeae..d058e43
+npm_test_baseline: "1987/1987 PASS (674.68s @ test 8aabeae, 388 files, 1271차 regression)"
+npm_test_pre_merge: "SKIP (develop pending 1)"
+npm_test_post_merge: "SKIP (merge not executed)"
+build_modules: "1139 modules PASS (8.35s)"
+build_exit: "0"
+audit_vulnerabilities: "0"
+live_e2e: "126 PASS / 19 SKIP (36.31s, carry 1270차)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry)"
+open_issues: 1
+open_issue_ids: [QA-20260622-B240]
+verdict: BLOCK
+cross_stream: BLOCK (FE pending 1 @d058e43 + BE SYNCED @9db0bbb)
+operation: BLOCK (origin/test push pending + QA-B95 partial 19 SKIP)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T08:15:00+00:00 -->
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-22T07:53:00+00:00 -->
 <!-- tester-sync: TSR 1267차 2026-06-22T07:53 UTC (frontend) — baseline regression `@daaba4b` carry · develop pre-merge `@8aabeae` **1984/1984 PASS**(669.42s carry) · ★ merge EXECUTED FF `daaba4b`→`8aabeae` (2 commits) · post-merge **1984/1984 PASS**(670.15s, 387 files) · build **1139 PASS**(8.34s) · audit **0** · live E2E **126 PASS/19 SKIP**(34.72s) · Open **0** · **★ QA-B238 Fixed** · verdict PASS -->

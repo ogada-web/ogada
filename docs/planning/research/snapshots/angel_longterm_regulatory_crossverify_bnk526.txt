@@ -1,0 +1,96 @@
+BNK-526 — 엔젤·롱텀·규제 4–6h 교차검증 extract
+조사일: 2026-06-22T22:20Z
+rotation: 엔젤·롱텀·규제 (silverangel·lcms·longterm·law247·mohw126·NHIS#44 backbone 재실측 + 2026 수가·평가#27·단기보호·통합재가 고시 cross-verify)
+
+========================================================================
+[1] ogada git 실측 (FE +1 · BE +2 · 양쪽 WT CLEAN)
+========================================================================
+- FE develop @80613c3 (WT CLEAN · BNK-525 @a170f9c HEAD +1
+    `fix(v1.2.1/G-STAFF-ANNUAL-LEAVE): align FE validation with backend rules`
+    5-file +295/-20L: StaffAnnualLeavePage.jsx +29 · StaffAnnualLeavePage.test.jsx +33
+    · pilotPageFlows.test.jsx +128 · utils/staffAnnualLeave.js +104 · utils/staffAnnualLeave.test.js +21
+    · 신규 test 파일 0 · ahead 174 vs origin/test=ab4de83)
+- BE develop @6b35fb5 (WT CLEAN · BNK-525 @a45745c HEAD +2:
+    f88e8b1 `fix(v2/G-STAFF-ANNUAL-LEAVE): validate precision and range for leave inputs`
+    6b35fb5 `fix(v2/G-STAFF-ANNUAL-LEAVE): reject overlong monthly usage payload`(+7L service·+37L test)
+    · 신규 test 파일 0(StaffAnnualLeaveServiceTest deepen +106L·+4 @Test) · ahead 521 vs origin/test=598d108)
+- merge gate 695 (FE174 + BE521 · +3 vs BNK-525 692)
+- 111 Route(110 `<Route\b`+1 `<Routes>` wrapper) · 89 *Page.jsx(+RootRedirect=90)
+  · V1–V172 · BE Test 244(carry·신규 test 파일 0) · FE test 447(182 .test.js + 265 .test.jsx)
+  · 모듈 78.79%(22.85/29·competitorModuleCoverage.js 미변경)
+- 성격: G-STAFF-ANNUAL-LEAVE(BNK-521 ✅ closure) 검증 강화 deepen(월별 사용 12건 초과 거부·정밀도/범위 검증
+  ·FE↔BE 규칙 정합) → candidate 변동 0·신규 core 갭 0·KPI 0.
+
+========================================================================
+[2] NHIS #44 이동서비스비 러-1~4 (PLAN_NOTES #44 1차 확인 · 319차 zero drift)
+========================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f == on-disk nhis_jo44_joHistory.html c886ff1f → IDENTICAL(319차 zero drift)
+verbatim: 러-1~4 거리 4구간 · 편도 50% · 1일 1회만 산정 · ③수급자 부담X · ④이동서비스 일지 작성·보관 의무(별지 제22호)
+↔ ogada BE TransportServiceFeeService 5/5 ✅ parity/우위:
+  · TransportDistanceBand.RU_1~RU_4
+  · ONE_WAY_RATIO=0.5 (편도 50%)
+  · "수급자별 1일 1회에 한하여 산정" + 중복 청구 skip guard
+  · TransportServiceLog (별지 제22호 일지·운전자 서명 pair-CHECK)
+  · V148/V154/V155 DB-level CHECK (경쟁사 공개 노출 0 = ogada 차별화 우위)
+
+========================================================================
+[3] 엔젤(silverangel) backbone 7-URL 319차 zero drift IDENTICAL (live HTTP 200 = on-disk md5)
+========================================================================
+| URL | HTTP | SIZE | md5 | 판정 |
+| daycareEssentialWork.do | 200 | 131,664B | c79c1be3 | IDENTICAL — 이동서비스 6 평가지표 verbatim |
+| service/extraService.do | 200 |  81,637B | f9c5d877 | IDENTICAL — CMS 5-method(효성CMS·자동이체·가상계좌·카드·다계좌정산·현금영수증·월30,000·건당250/300)+LCMS 가정통신문 번들 |
+| service/feeService.do   | 200 |  44,513B | eab352a8 | IDENTICAL |
+| angelsystem/system_feature.do | 200 | 45,601B | c9507190 | IDENTICAL — 평가 지표 #27 보호자회의(반기별 1회·교육자료/사진등록·참석자 전자서명) verbatim |
+| daycare/daycareProgramProvided.do | 200 | 67,987B | f18e1c7a | IDENTICAL — 이동서비스 2-match·차량운행일지 정적 |
+| service/mainService.do  | 200 |  59,002B | bcf6df41 | IDENTICAL — CMS 본인부담금 자동이체 정본 |
+- 덮어쓰기 0 · 엑셀 포맷 변경 0 · 평가 지표 #27 ↔ ogada G-GUARDIAN-MEETING P3 carry(BNK-277)
+
+========================================================================
+[4] LCMS root type rotation DRIFT (3-type oscillation 재입증) → 덮어쓰기 1건
+========================================================================
+URL: https://www.lcms.or.kr/
+HTTP 200 · 50,498B · md5 6b750291 (on-disk c0c66076 type1 design sample → DRIFT)
+content grep: CJ x4 · 프레시웨이 x2 · websiteProvided x1 → **type3 = CJ프레시웨이 MOU 식단** 회전
+3-type rotation 정본화 carry:
+  · type1 = 디자인 샘플(bg_samp1~3·websiteProvided.do 「체험하기」·c0c66076·BNK-496/518)
+  · type2 = silverangel CMS extraService.do cross-promo(ad_conttype2·img_banner2.png·1600-6859·6c0d22b4·BNK-419/515)
+  · type3 = CJ프레시웨이 MOU 식단(6b750291·50,498B·BNK-419/492)
+인사이트: silverangel 자매 도메인(LCMS) 광고 슬롯 = SaaS 다중 도메인 cross-promo funnel.
+ogada = 단일 ERP(부가 CMS/식단/가정통신문 in-app) 차별화 유지·기능 자체 MVP out-of-scope.
+→ lcms_root.html 덮어쓰기(c0c66076→6b750291)
+
+========================================================================
+[5] 2026 수가·단기보호·통합재가 (longterm 502/503/610) — live no-session 게이트
+========================================================================
+- 502 live HTTP 200 · 88,530B · ec143881 — 로그인 게이트 shell(26 로그인·단기보호/74,060 grep=0)
+- 503 live HTTP 200 · 88,530B · 81c1ad42 — 동일 로그인 게이트 shell(경감 50/60% grep=0)
+- 610 live HTTP 302 (redirect·empty) — discovery gate
+- on-disk canonical 보존(덮어쓰기 0·「미확인」 carry):
+    longterm_502_short_term.html b5aee8c1(105,552B·단기보호 74,060·통합재가)
+    longterm_503_copay_reduction.html 8ca7d1fa(104,652B·경감 50%×4/60%×3)
+- ogada: 주야간 MVP·단기보호 G18-SHORT P3 carry·통합재가 IntegratedHomeProviderDiscoveryPanel 우위 carry
+
+========================================================================
+[6] 규제 고시 2종 DRIFT (verbatim 불변) → 덮어쓰기 2건
+========================================================================
+- law247  https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+    HTTP 200 · 78,450B · ea6bead8 (on-disk 21250df9 → cachebuster DRIFT)
+    strip-`?Time=` md5 = 0e07cef1 == on-disk strip 0e07cef1 → IDENTICAL(verbatim 불변)
+    verbatim: 제2025-247호 · [시행 2026. 1. 1.] → 덮어쓰기
+- mohw126 https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000
+    HTTP 200 · 109,510B · 2bf760ba (on-disk 3e0c9fa9 → counter-only DRIFT)
+    verbatim: 제2026-126호 x2 · 본인부담상한액 x13 불변 · 조회수 2,406 → 덮어쓰기
+
+========================================================================
+[7] silverangel weekly notice 0 (5-probe 미게시 shell IDENTICAL)
+========================================================================
+221618·221619·221620·221621·221622 — 모두 HTTP 200 · 51,765B · 8437f255 미게시 shell IDENTICAL
+최신 real 221563(6/18·8일 경과) · next Wed ~6/25 예상 · weekly notice 0
+
+========================================================================
+SUMMARY (BNK-526)
+========================================================================
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1(FE+1·BE+2·merge 692→695)
+미확인 1(longterm 502/503/610 live no-session 게이트) · 신규 snapshot 2건(본 extract·notice 221618 probe)
+덮어쓰기 3건(lcms_root·law247·mohw126) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족

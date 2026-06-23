@@ -1,0 +1,141 @@
+{
+  "updated": "2026-06-22T23:55Z (BNK-528)",
+  "source": "func.php 6226e6eb + demo-work ebee4d47 + PDF p.84-92 + ogada @971c7f1",
+  "func_total_leaf_count": 107,
+  "func_m7_leaf_count": 11,
+  "demo_m7_visible_count": 10,
+  "demo_m7_hidden": [
+    "7-10 간편계산기 (func 정본·demo nav 미노출)"
+  ],
+  "demo_shell_metrics": {
+    "loadPage": 114,
+    "unique_view_paths": 134,
+    "rpt_class_items": 34,
+    "report_density_pct": 29.8,
+    "transport_module_in_func": "module 2 = 이동서비스관리 (10 leaf)",
+    "demo_L02_label": "2.요양 급여제공 (이동서비스 모듈 absent·시설 셸 remapping)",
+    "transport_nav_hits_body": 0
+  },
+  "pdf_workflow_p86": "7-1 청구생성 → 7-2 입금처리(전월 선행) → 7-3 미납 · 9-1 청구명세서생성기준=G33",
+  "tri_source_rows": [
+    {
+      "func_id": "7-1",
+      "func_title": "본인부담금 청구관리",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-2",
+      "func_title": "본인부담금 입금관리",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/payments",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-2-1",
+      "func_title": "의료비공제(연말정산)",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/reports/statistics",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-3",
+      "func_title": "본인부담금 미납관리",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/overdue",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-4",
+      "func_title": "본인부담금 자동이체 (CMS)",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/cms",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-5",
+      "func_title": "본인부담금 간편결제",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/easy-pay",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-6",
+      "func_title": "본인부담금 청구대장 리포트",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/reports/charges",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-7",
+      "func_title": "본인부담금 입금대장 리포트",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/reports/deposits",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-8",
+      "func_title": "본인부담금 수납대장 리포트",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/reports/receipts",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-9",
+      "func_title": "본인부담금 수납,환불내역",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/reports/refunds",
+      "status": "✅"
+    },
+    {
+      "func_id": "7-10",
+      "func_title": "본인부담금 간편계산기",
+      "demo_visible": false,
+      "demo_pamcode": null,
+      "demo_view": null,
+      "demo_rpt": null,
+      "ogada_route": "/billing/calculator",
+      "status": "✅"
+    }
+  ],
+  "ogada_superset_routes": [
+    "/billing/cash-receipts",
+    "/billing/claims/:claimId",
+    "/billing/copay-rates",
+    "/billing/fee-schedules",
+    "/billing/imports/nhis",
+    "/billing/imports/nhis/:batchId"
+  ],
+  "parity_summary": "✅11/11 func M7 ↔ ogada Route · demo visible 10/11 · ogada superset +6"
+}

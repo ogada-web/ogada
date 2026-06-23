@@ -1,0 +1,58 @@
+# BNK-522 extract — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-22T20:10Z)
+# ogada @HEAD FE `3902dba` WT CLEAN / BE `6b84bcd` WT CLEAN (BNK-521 `41fb84f` HEAD +1 test deepen)
+# rotation: silverangel/lcms/CMS · law.go.kr NHIS#44 · 2026 수가·평가·단기보호·통합재가
+
+## ogada git KPI (@HEAD)
+- FE develop `@3902dba` WT CLEAN · ahead 171 vs origin/test=ab4de83 · HEAD zero advance vs BNK-521
+- BE develop `@6b84bcd` WT CLEAN · ahead 518 vs origin/test=598d108 · HEAD +1 vs BNK-521 `41fb84f`
+  - commit: `test(v2/G-STAFF-ANNUAL-LEAVE): deepen roster RBAC and pilot coverage` (+257L: StaffAnnualLeavePilotServiceFlowE2eTest 148L, RoleBasedControllerAccessTest 92L, StaffAnnualLeaveServiceTest +17L)
+- 111 Route (110 `<Route\b`+1 `<Routes>`) · 89 *Page.jsx (+RootRedirect=90) · V1–V172 · BE Test 244 (+1) · FE test 447 (182+265) · 모듈 78.79% · merge gate 689 (FE171+BE518)
+
+## NHIS #44 이동서비스비 러-1~4 — 315차 zero drift (PLAN_NOTES #44 1차 확인 carry)
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · 7,572B · md5 `c886ff1f` live=on-disk IDENTICAL (315차)
+- verbatim key phrases (grep live 2026-06-22): 러-1(1)·러-4(1)·1일 1회(1)·편도(2)·이동서비스 일지(1)
+- snippet: 「수급자가 이동서비스를 편도만 … 이용한 경우에는 … ‘러-1’부터 ‘러-4’까지 비용의 50%를 산정」
+- ogada parity: `TransportDistanceBand.RU_1~RU_4` · `TransportServiceFeeService.ONE_WAY_RATIO=0.5` · 1일 1회 dedup · `TransportServiceLog`(별지 제22호)+V148/V154/V155 5/5 CHECK
+
+## silverangel backbone 7-URL — 315차 zero drift IDENTICAL
+| URL | SIZE | md5 | 판정 |
+| daycareEssentialWork.do | 131,664B | c79c1be3 | IDENTICAL · 이동서비스 6 평가지표(운전자·동승자·차량안전·차량운행표) |
+| extraService.do | 81,637B | f9c5d877 | IDENTICAL · CMS 5-method(효성CMS·자동이체·다계좌·30,000/250/300)·LCMS 가정통신문 번들 |
+| feeService.do | 44,513B | eab352a8 | IDENTICAL |
+| system_feature.do (canonical /silverangel/angelsystem/) | 45,601B | c9507190 | IDENTICAL · 전자결재·보호자회의·반기별 1회 |
+| daycareProgramProvided.do | 67,987B | f18e1c7a | IDENTICAL · 차량운행일지 |
+| mainService.do | 59,002B | bcf6df41 | IDENTICAL · 입소+주야간 2-track |
+| NHIS#44 (above) | 7,572B | c886ff1f | IDENTICAL |
+
+## LCMS root — type1 rotation stable (315차)
+- URL: https://www.lcms.or.kr/ HTTP 200 · 50,740B · md5 `c0c66076` = on-disk IDENTICAL
+- type markers: `bg_samp1~3` · `websiteProvided.do` 「체험하기」 · title 「엔젤시스템」
+- oscillation carry: BNK-515 type2 CMS cross-promo(`6c0d22b4`) ↔ BNK-518 type1(`c0c66076`) ↔ BNK-522 stable type1
+
+## 2026 수가·단기보호·통합재가·경감 — longterm live partial shell vs canonical
+| URL | live | on-disk canonical | 판정 |
+| 502 단기보호 | 71,008B `5619900c` partial shell · 74,060 grep=0 · var s16=0 | 105,552B `b5aee8c1` · 74,060 verbatim | live=partial(무세션) · canonical 보존 |
+| 503 경감 | 70,225B `68dca5ac` partial · 50%/60% grep live=0 | 104,652B `8ca7d1fa` · 50%/60%×7 verbatim | live=partial · canonical 보존 |
+| 501 가족요양 | 70,223B `9742ce0d` partial | 88,025B `167d62cd` | live=partial · canonical 보존 |
+| 610 통합재가 gate | 422B `d3c90b33` `refreshedException` | 422B `d3c90b33` | **Mode A restored** (BNK-518 Mode B 70KB → BNK-522 422B 반전) |
+
+## 2026 규제 교차검증
+- law247 MOHW 2025-247: HTTP 200 · 78,450B · cachebuster DRIFT · strip-`?Time=` md5 `0e07cef1` IDENTICAL · 제2025-247호·시행 2026.1.1 verbatim(3-match)
+- MOHW 2026-126 본인부담상한액: HTTP 200 · 109,510B · counter DRIFT · 제2026-126호·본인부담상한액 verbatim(15-match) 불변
+
+## 평가 지표 #27 (보호자회의) — silverangel system_feature 역공학
+- source: system_feature.do `c9507190` zero drift
+- verbatim: 「보호자회의」·「반기별 1회 보호자회의 실시, 교육자료 및 사진등록, 참석자 전자서명」
+- ogada: `MonitoringItemCatalog` #6↔#15 cross-walk(G30-LEGEND ✅ closure) · dedicated 보호자회의 workflow △ → candidate G-GUARDIAN-MEETING P3 carry(BNK-277)
+- LCMS 평가 SLA: MVP out-of-scope carry (LCMS = 별도 SaaS·ogada 단일 ERP 차별화)
+
+## silverangel weekly notice 0
+- probe 221614~221617: HTTP 200 · 51,765B · md5 `8437f255` 미게시 shell IDENTICAL
+- 최신 real: 221563 (6/18) · next Wed ~6/25
+
+## 판정 요약
+- 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0
+- 상태 변경 1: BE +1 test deepen (G-STAFF-ANNUAL-LEAVE RBAC) · BE Test 243→244 · merge 688→689
+- 덮어쓰기 2건: law247 cachebuster · mohw126 counter
+- 신규 snapshot 1건: silverangel_notice_221617_probe_bnk522.html

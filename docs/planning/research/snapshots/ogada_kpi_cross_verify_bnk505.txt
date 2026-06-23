@@ -1,0 +1,40 @@
+# BNK-505 ogada KPI cross-verification (교차검증·갭 우선순위 8h+)
+# 조사일: 2026-06-22T08:05Z
+# git 실측 (@HEAD): FE develop=8aabeae (WT CLEAN, ahead 161 vs origin/test=ab4de83)
+#                   BE develop=175d9cb (WT CLEAN, ahead 511 vs origin/test=598d108)
+# HEAD zero advance vs BNK-504.
+
+## FE test count 정정 (BNK-504 441 → BNK-505 정본 437)
+git ls-tree -r develop --name-only | grep -cE '\.test\.js$'   => 177
+git ls-tree -r develop --name-only | grep -cE '\.test\.jsx$'  => 260
+git ls-tree -r develop --name-only | grep -cE '\.test\.ts$'   => 0
+git ls-tree -r develop --name-only | grep -cE '\.spec\.'      => 0
+TOTAL .test.(js|jsx) = 437   (BNK-504 claimed 441 = +4 over-count on .test.js; HEAD unchanged)
+
+## BE test count
+git ls-tree -r develop --name-only | grep -cE 'Test\.java$' => 242
+git ls-tree -r develop --name-only | grep -cE 'IT\.java$'   => 0
+
+## Route count (canonical)
+<Route\b non-test source = 108 ; +1 <Routes> wrapper (App.jsx) = 109 정본
+*Page.jsx = 87 (+RootRedirect=88)
+
+## migrations
+V1..V171 contiguous (max V171)
+
+## module coverage
+src/config/competitorModuleCoverage.js diff daaba4b..8aabeae = EMPTY (unchanged) => 78.79% carry
+
+## merge gate
+FE161 + BE511 = 672 (carry; BNK-504 = BNK-505)
+
+## backbone 299차 live md5 = on-disk IDENTICAL
+NHIS#44    200 7572B   c886ff1f  == nhis_jo44_joHistory.html
+carefor    200 98328B  6226e6eb  == carefor_func.php
+silverangel essential 200 131664B c79c1be3 == essential canonical
+
+## competitor probes
+silverangel notice 221589/221590 = 200 51765B 44223150 (unpublished shell) -> weekly notice 0, latest real 221563(6/18), next ~6/25
+mohw126 무세션 live = 200 102751B 451bbf5f vs on-disk canonical 109510B 53373d1b (조회수 2,353) -> partial size delta, verbatim 검증 보류, 「미확인」, no overwrite
+
+## 4축 가정 번복 0: G14 / 대시보드(G26) / v1.3-C / v2 CMS — P0/P1 backlog 비움 유지

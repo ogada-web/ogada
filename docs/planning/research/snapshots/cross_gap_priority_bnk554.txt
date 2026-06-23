@@ -1,0 +1,110 @@
+BNK-554 evidence extract — 교차검증·갭 우선순위 8h+ rotation (2026-06-23T15:40Z)
+================================================================================
+focus: 교차검증·갭 우선순위 — 이전 BNK 가정/KPI 번복 여부 · 미확인 축소 ·
+       G-STAFF-ANNUAL-LEAVE(BNK-516 originating) closure 재확인 · 4축 재정렬
+
+[1] ogada git 실측 @HEAD (develop)
+  FE rev-parse --short develop  → 426d63a  (BNK-553 8057c1e → HEAD +2:
+        bd1d0ad ux(a11y): US-R01-c leave-ledger table/delete modal/compact grid (UXD-157)
+        426d63a test(us-r01-c): align annual leave related surface availability expectation)
+  BE rev-parse --short develop  → 5fd12dd  (BNK-553 carry · HEAD zero advance 2-cycle)
+  FE status --porcelain | wc -l → 49  (WT DIRTY · in-flight · BNK-553 carry)
+  BE status --porcelain | wc -l → 10  (WT DIRTY · 9M + 1?? V175 untracked)
+  FE ahead origin/test..develop → 190  (+2 vs BNK-553 188)
+  BE ahead origin/test..develop → 531  (carry vs BNK-553 531)
+  merge gate = FE190 + BE531 = 721  (+2 vs BNK-553 719)
+
+  Route 112  (111 <Route\b + 1 <Routes> wrapper)
+       검증: git show develop:src/App.jsx | grep -cE "<Route\b" = 111
+             | grep -cE 'path=' = 111 | grep -cE "<Routes>" = 1
+       at b7101d5 (BNK-552) <Route\b = 110 → 신규 /staff/leave-ledger(App.jsx:1005) +1
+  *Page.jsx 90  (+RootRedirect=91)  carry
+  Flyway V1–V174 committed contiguous + V175 untracked (defense-in-depth integrity)
+  BE *Test.java 251  carry · @Test 1,829  carry
+  FE test 455  = 185 .test.js + 270 .test.jsx  (.test.ts/.spec = 0)
+  모듈 coverage 22.85/29 = 78.79%  (zero drift carry · line5 주석 과집계 주의)
+
+[2] ★★★ KPI 교차검증 — 데이터 정정 2건 (BNK-553 carry-error)
+  (2-1) Route: BNK-553 "111 Route" → 정본 112
+        BNK-553 §553-1 은 신규 /staff/leave-ledger 를 page(+1=90)에는 반영했으나
+        Route 총계는 111 carry (109 <Route\b + 1 + 1 분해 = 총 111 표기).
+        leave-ledger 도 <Route\b 이므로 정본 = 111 <Route\b + 1 <Routes> = 112.
+        → 후속 차수 Route 112 기준.
+  (2-2) FE test: BNK-553 "457 (188 .test.js + 269 .test.jsx)" → 정본 453 @8057c1e
+        실측 8057c1e: .test.js=185 · .test.jsx=268 = 453 (BNK-553 +4/.test.js·+1/.test.jsx 과집계).
+        현재 HEAD 426d63a: 185 + 270 = 455 (+2 = UXD-157 bd1d0ad:
+          StaffLeaveLedgerDeleteModal.test.jsx · StaffLeaveLedgerTable.test.jsx).
+        → 후속 차수 FE test 455 기준.
+
+[3] ★★★ G-STAFF-ANNUAL-LEAVE (BNK-516 originating P3「가정」) — FULL-STACK CLOSURE 재확인
+  origin: BNK-516 §516 "신규 candidate G-STAFF-ANNUAL-LEAVE P3「가정」"
+          (이지케어 worker-b100 tab01 연차휴가 ↔ ogada /staff/* annual-leave Route 0)
+  BE V173 staff_annual_leave_yearly (연 집계) + V174 staff_leave_ledger_entries (per-event)
+     · bb9df48 com.ogada.backend.staffleaveledger.* 18-file +1,081L
+     · StaffLeaveLedgerController @RequestMapping /api/v1/staff/leave-ledger
+         GET  /api/v1/staff/leave-ledger                (branch-scoped · year/branchId 필터)
+         GET  /api/v1/staff/leave-ledger/users/{userId} (직원별 연도 대장)
+         POST /api/v1/staff/leave-ledger/users/{userId} (per-event row 생성)
+         (PUT/DELETE per-entry CRUD)
+     · RBAC @PreAuthorize hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')
+     · 5fd12dd test(v3/US-R01-c): add leave ledger live API routing harness
+     · 62fce23 test(v3/US-R01-c): add leave ledger pilot flow and RBAC coverage
+  BE V175 (untracked) staff_leave_ledger_entries defense-in-depth integrity:
+     ① chk_staff_leave_ledger_entries_memo_nonempty
+        CHECK (memo IS NULL OR length(btrim(memo)) > 0)  — 앱 trimToNull(memo) DB 미러
+     ② fk_staff_leave_ledger_entries_user_branch_assignment
+        FK (organization_id, user_id, branch_id) → user_branches  — 교차지점 적재 차단
+        (V90 anchor UK · V169 staff_work_attendance · V173 동일 패턴)
+     의도적 제외(P3): recorded_by NOT NULL/트리거/purge index·days_used span CHECK (앱 책임)
+  FE Route /staff/leave-ledger (8057c1e) + StaffLeaveLedgerPage.jsx
+     + UXD-157(bd1d0ad) StaffLeaveLedgerTable.jsx · StaffLeaveLedgerDeleteModal.jsx + a11y
+     + staffAnnualLeave.js 4-entry(L24/L30/L43/L49) 모두 STAFF_ANNUAL_LEAVE_SURFACE_AVAILABLE
+  ↔ 케어포 func 8-13 연차/유급휴일 대장(정적 PDF) · 이지케어 worker-b100 tab01(grid 분리)
+  결론: ogada full-stack superset (per-event ledger + 연 집계 + DB-level 2중 게이트) ✅ CLOSURE.
+  단 module 8 직원근태 coverage = 0.85 carry (연차휴가는 sub-feature·8-4 근태 등 잔여).
+    → planner: leave-ledger closure 반영해 module 8 coverage 재평가 여부 결정(가정 보류).
+
+[4] 백본 cross-verification — live HTTP = on-disk md5 대조 (2026-06-23T15:35Z)
+  | URL                                       | HTTP | SIZE     | md5      | Δ |
+  | NHIS joHistory #44 (joHistoryContent)     | 200  | 7,572B   | c886ff1f | IDENTICAL (러-1~4·편도·1일1회·④일지) 336차 |
+  | carefor func.php (Wayback id_)            | 200  | 98,328B  | 6226e6eb | IDENTICAL (M2/M7/M8 leaf) 336차 |
+  | silverangel daycareEssentialWork          | 200  | 131,664B | c79c1be3 | IDENTICAL (평가지표#27) |
+  | silverangel extraService                  | 200  | 81,637B  | f9c5d877 | IDENTICAL (CMS 5-method·250원/건) |
+  | lcms root                                 | 200  | 50,740B  | c0c66076 | 3-type rotation (BNK-511 type variant·vs BNK-550 6c0d22b4 type2) |
+  | ezcare /new.ez (비로그인)                  | 200  | 70B      | e1d52bd5 | IDENTICAL redirect stub (역공학 금지 carry) |
+  → 백본 4-URL zero drift IDENTICAL · lcms 3-type rotation(드리프트 아님·known) · 덮어쓰기 0건.
+
+[5] 미확인 carry (재-probe 결과)
+  demo-work.carefor.co.kr/          → HTTP 000 (timeout 20s) · 「미확인」 carry
+       (on-disk carefor_demo_work.html b2e8e5c8 시설 셸·transport nav 0 보존)
+  NHIS#44 구 URL jongHistoryView.web → 404 carry (BNK-530 첫 발견·24-cycle)·canonical c886ff1f 보존
+
+[6] 4축 + candidate 우선순위 재정렬 (8h+)
+  G14 NHIS care-plan-form ✅ · 대시보드/G26 ✅+ · v1.3-C 이동서비스 ✅+ · v2 CMS ✅(BillingCmsEnrollment)
+  → P0/P1 backlog 비움 유지(재오픈 0).
+  △4 carry (값 오름차순): 10 부가서비스 0.5 → 7-4 CMS 0.65 → 2 이동 0.85 → 8 직원근태 0.85.
+  open P3 candidate「가정」(전부 MVP out-of-scope 검토 보류):
+    - G-AGENCY-APPRAISAL-DASH (BNK-553 guide-E100 평가 dashboard 3건)
+    - G-TRANSPORT-TIME-SYNC (BNK-552 PDF p.33 탑승시간→일정 동기화)
+    - G-PATIENT-ASSESSMENT-MONITORING (patient-b100 집계 dashboard)
+    - G-GUARDIAN-MEETING (BNK-546 평가지표#27 보호자회의)
+  closure: G-STAFF-ANNUAL-LEAVE (BNK-516 originating) → full-stack ✅ 재확인(§3).
+
+[7] 즉시 액션
+  coder: BE WT DIRTY 10 — V175 integrity(untracked) + 9M(ClientService·LiveE2eBootstrap·
+         application.yml·6 tests) commit/push (rules.md §6 미커밋 시 push 누락 risk).
+         FE WT DIRTY 49 commit window 권장.
+  tester: merge gate 721 (FE190+BE531).
+  planner: KPI 정정 carry — Route 111→112·FE test 457→455(정본 453@553) ·
+           G-STAFF-ANNUAL-LEAVE full-stack ✅ closure(ROADMAP candidate 제거 검토) ·
+           module 8 coverage 0.85 재평가 여부 결정.
+
+per-cycle minimum:
+  ✅ 신규 증거 URL 1건+ : 백본 6-URL 재실측(zero drift 4 + lcms rotation + demo 미확인) 336차
+  ✅ 메뉴/필드/워크플로 1블록 : G-STAFF-ANNUAL-LEAVE full-stack closure cross-walk + V175 integrity (§3)
+  ✅ COMPETITOR_MATRIX 1행+ @HEAD : @426d63a/@5fd12dd 갱신
+  ✅ BENCHMARK_REPORT §신규 : §554
+요약: 가정 번복 0 · KPI 데이터 정정 2(Route 111→112·FE test 457→455) · 신규 core 갭 0 ·
+      candidate closure 재확인 1(G-STAFF-ANNUAL-LEAVE) · candidate 변동 0 ·
+      상태 변경 1(FE +2) · 미확인 2 carry(demo-work·NHIS#44 구 URL) ·
+      신규 snapshot 1건(본 extract) · 덮어쓰기 0건 · 엑셀 포맷 변경 0.

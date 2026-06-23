@@ -1,0 +1,17 @@
+---
+description: Cloudflare/Vite 프론트 프리뷰 요청 시 cleanup 후 기동
+alwaysApply: true
+---
+
+# 프론트 Cloudflare 프리뷰
+
+사용자가 「클라우드페어/Cloudflare로 프론트 켜줘/띄워줘/열어줘」 등 **공개 프리뷰**를 요청하면:
+
+1. **직접 `nohup npm run dev` / `cloudflared` 를 쓰지 말 것**
+2. 먼저 상태 확인: `./scripts/dev-frontend-tunnel.sh --status`
+3. 기동: `./scripts/dev-frontend-tunnel.sh` (내부에서 이전 인스턴스 cleanup → 검증 → 새 기동)
+4. cleanup 실패 시 스크립트 출력을 보고 잔여 PID/포트를 수동 정리한 뒤 재시도
+5. 중지 요청 시: `./scripts/dev-frontend-tunnel-stop.sh`
+6. 응답에 **공개 URL**(`trycloudflare.com`)과 backend API 가동 여부를 포함
+
+백엔드(`:8080`)는 이 스크립트가 자동 기동하지 않는다. API 필요 시 별도 안내.

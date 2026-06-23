@@ -1,0 +1,87 @@
+BNK-520 — G-STAFF-ANNUAL-LEAVE FE component shell cross-walk (교차검증·갭 우선순위 8h+)
+조사일: 2026-06-22 | rotation: 교차검증·갭 우선순위 8h+
+========================================================================
+
+[1] ogada git 실측 (@HEAD) — FE HEAD +1 advance · BE carry
+------------------------------------------------------------------------
+FE develop @5353991  (WT CLEAN · BNK-519 @3ece965 HEAD +1 · ahead 170 vs origin/test=ab4de83)
+  last: ux(a11y/ui): G2 CMS roster·G34·G30 legend a11y + StaffAnnualLeaveTable shell (UXD-154)
+BE develop @d3d4d2d  (WT CLEAN · BNK-519 carry · HEAD zero advance · ahead 516 vs origin/test=598d108)
+
+KPI: 110 Route · 88 *Page.jsx(+RootRedirect=89) · V1–V171 · BE Test 242
+     FE test 445 (181 .test.js + 264 .test.jsx · BNK-519 443 → 445 +2)
+     모듈 78.79% (competitorModuleCoverage.js 미변경 · 22.85/29)
+     merge gate 686 (FE170 + BE516 · BNK-519 685 → 686 +1)
+
+[2] commit @5353991 diff (3ece965..5353991) = 10-file +384/-5L
+------------------------------------------------------------------------
+  src/components/ui/StaffAnnualLeaveTable.jsx          162 ++  (NEW)
+  src/components/ui/StaffAnnualLeaveTable.test.jsx      50 ++  (NEW)
+  src/utils/staffAnnualLeave.js                         98 ++  (NEW)
+  src/utils/staffAnnualLeave.test.js                   35 ++  (NEW)
+  src/components/ui/index.js                             1 +   (export)
+  src/styles/components.css                             19 +   (ds-staff-annual-leave__*)
+  src/components/ui/CmsEnrollmentTable.jsx             16        (G2 a11y)
+  src/components/ui/CmsEnrollmentTable.test.jsx         4        (G2 a11y)
+  .../compliance/EzcareWorkflowCatalogPanel.jsx         2        (G34 a11y)
+  .../MonitoringOfficialIndicatorLegendPanel.jsx        2        (G30 a11y)
+
+[3] StaffAnnualLeave FE shell ↔ ezCare worker-b100 tab01 colModel cross-walk
+------------------------------------------------------------------------
+staffAnnualLeave.js 헤더 verbatim:
+  "G-STAFF-ANNUAL-LEAVE — ezCare worker-b100 tab01 「연차휴가 현황」 필드 매핑 (BNK-516 · US-R03e)."
+
+| ogada FE shell (StaffAnnualLeaveTable th) | util field        | ezCare worker-b100 colModel | 판정 |
+|---|---|---|---|
+| 직원코드        | row.staffId                | wCode               | ✅ |
+| 성명            | row.staffName              | wName               | ✅ |
+| 소속            | row.group                  | wGroup              | ✅ |
+| 입사일          | formatStaffHireDate(hiredAt)| date_enter         | ✅ |
+| 1월~12월        | normalizeMonthlyUsedSeries  | month_1 ~ month_12 | ✅ |
+| 연차 부여       | row.annualEntitlement       | annual_vacation(_2)| ✅ |
+| 사용 합계       | row.usedTotal / Σmonthly    | vacation_total      | ✅ |
+| 잔여            | remainingTotal(=부여-사용)  | (derived)          | ✅+ (ezCare 미노출 우위) |
+| 비고            | row.memo                    | memo                | ✅ |
+
+요약 카드(StatCard): 대상 직원(staffCount)·사용 합계(usedTotal)·잔여 합계(remainingTotal)
+a11y: caption(staffAnnualLeaveTableCaption)·captionVisuallyHidden·aria-labelledby·StatList aria-label·
+      EmptyState·loading role="status"·StaffLink aria-label `${name} 직원 상세`
+
+[4] 상태 변경 — candidate G-STAFF-ANNUAL-LEAVE P3「가정」 → △ FE component shell
+------------------------------------------------------------------------
+✅ FE 컴포넌트 셸: StaffAnnualLeaveTable + staffAnnualLeave util + 2 tests (월별 사용/잔여/부여 grid 정본)
+❌ Route 미존재:  git grep -iE 'annual-leave|AnnualLeave' src/App.jsx src/config/navConfig.js = 0
+❌ Page 미존재:   StaffAnnualLeave*Page.jsx 없음 (page 88 carry · 컴포넌트만 +1)
+❌ BE API 미존재: BE @d3d4d2d carry · /staff/annual-leaves controller/service/V172 0
+판정: 셸 컴포넌트 선행(UXD render-prop 패턴) — coder/db_architect FE Page wire + BE API + V172
+      monthly snapshot 후 △→✅ full-stack closure 가능. planner 결정 보류 carry
+      (MVP 첫 출시 외부 HR SaaS 통합 가능·근로기준법 60조 휴가 산정/이월/소멸 복잡도).
+module 8 직원·근태 0.85 carry (competitorModuleCoverage.js 미변경 · KPI 0 영향).
+
+[5] 백본 4-URL 313차 zero drift IDENTICAL (live HTTP 200 = on-disk md5)
+------------------------------------------------------------------------
+  NHIS #44 joHistoryContent  200·7,572B·c886ff1f   (313차·러-1~4·편도50%·1일1회·④일지)
+  carefor func.php Wayback id_ 200·98,328B·6226e6eb (313차·M2 10/M5 13/M7 11/M8 15 leaf)
+  ezCare top-nav-item-V2.js  200·25,470B·95286775   (313차·10-module·51-PGID)
+  silverangel daycareEssential 200·131,664B·c79c1be3 (313차·이동서비스 6 평가지표)
+  덮어쓰기 0 · 엑셀 포맷 변경 0
+NHIS #44 ↔ ogada BE TransportServiceFeeService 5/5 ✅ parity/우위 carry (PLAN_NOTES #44 1차 확인).
+
+[6] silverangel weekly notice 0 (221610~221613 4-probe)
+------------------------------------------------------------------------
+  221610·221611·221612·221613 모두 HTTP 200·51,765B·44223150 미게시 shell IDENTICAL
+  (strip-pageNo IDENTICAL with 8437f255 — pageNo URL 파라미터 차이만)
+  최신 real 221563(6/18·8일 경과) · next Wed ~6/25 예상 · 신규 snapshot 0건(동일 stub).
+
+[7] 4축 교차검증 가정 번복 0 (8h+ rotation)
+------------------------------------------------------------------------
+  G14 plan-form ✅ · 대시보드/G26 ✅+ · v1.3-C ✅+ · v2 CMS ✅ (roster deepen) — P0/P1 backlog 비움 유지.
+  candidate carry: G-STAFF-ANNUAL-LEAVE(BNK-516, 본 사이클 △ FE shell advance)·
+                   G-VOLUNTEER-MGMT P3(M5 5-1-1)·/programs/{groups,catalog,feedback,plans} ROADMAP P0.
+  가정 번복 0 · 신규 core 갭 0 · candidate 상태 변경 1(G-STAFF-ANNUAL-LEAVE P3「가정」→△ FE shell).
+
+per-cycle minimum 4종 충족:
+  ① 신규/재실측 URL: 백본 4-URL 313차 + silverangel notice 221610~613 4-probe
+  ② 메뉴/필드/워크플로 1블록: StaffAnnualLeave FE shell ↔ worker-b100 tab01 colModel 9-field cross-walk
+  ③ COMPETITOR_MATRIX 1행+ @HEAD: BNK-520 rows @5353991/@d3d4d2d
+  ④ BENCHMARK_REPORT §소절: §520-1~3

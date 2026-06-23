@@ -1,0 +1,35 @@
+{
+  "source": "carefor_func.php Wayback id_ 6226e6eb (98,328B·311차 zero drift) + carefor_func_menu_catalog.json M5 13-leaf + ogada FE @947312c App.jsx grep",
+  "updated": "2026-06-22T16:30Z (BNK-517)",
+  "rotation": "케어포 역공학 0-2h — func.php M5 프로그램 급여 13-leaf ↔ ogada Route 1:1 매핑",
+  "ogada_head": {
+    "fe_develop": "947312c",
+    "be_develop": "d0c0d12",
+    "fe_ahead_origin_test": 168,
+    "be_ahead_origin_test": 515,
+    "merge_gate": 683
+  },
+  "module5_leaf_count": 13,
+  "demo_work_status": "LIVE DOWN — https://demo-work.carefor.co.kr/ HTTP 000 (curl --max-time 12 timeout) · on-disk carefor_demo_work.html ebee4d47 carry (BNK-486 lineage) · loadPage/view 재파싱 미확인",
+  "competitor_module_coverage_note": "competitorModuleCoverage.js id=5 '프로그램 급여' coverage=1 (coarse 대표 entry·핵심 5-1 급여제공 기준)·13-leaf 분해 시 보조 leaf gap은 별도 ROADMAP 등재(KPI 미포함)",
+  "crosswalk_rows": [
+    {"func_id": "5-1", "func_title": "프로그램 제공기록", "ogada_route": "/programs", "ogada_surface": "ProgramsPage · ProgramParticipationForm · createProgramParticipationApi(/api/v1/programs/participations)", "status": "✅"},
+    {"func_id": "5-1-1", "func_title": "외부강사/자원봉사자 관리", "ogada_route": null, "ogada_surface": "❌ 없음 (instructorName은 StaffTrainingLogPage 8-7 교육일지에만·프로그램 외부강사/자원봉사 전용 화면 부재)", "status": "❌", "roadmap": "G-VOLUNTEER-MGMT P3 · `/programs/instructors` external_instructors P1(ROADMAP L1342)"},
+    {"func_id": "5-2", "func_title": "프로그램 일정관리", "ogada_route": "/programs", "ogada_surface": "ProgramsPage · ProgramScheduleForm · fetchProgramScheduleApi(/api/v1/programs/schedule)", "status": "✅"},
+    {"func_id": "5-3", "func_title": "프로그램 수급자 그룹 설정(필요시)", "ogada_route": null, "ogada_surface": "❌ 없음", "status": "❌", "roadmap": "`/programs/groups` program_groups P0(ROADMAP L1339)"},
+    {"func_id": "5-3-1", "func_title": "프로그램 그룹 관리", "ogada_route": null, "ogada_surface": "❌ 없음", "status": "❌", "roadmap": "`/programs/groups` P0"},
+    {"func_id": "5-4", "func_title": "프로그램 정보관리", "ogada_route": "(config)", "ogada_surface": "△ PROGRAM_TYPES(config/programs.js) 상수 노출·전용 프로그램 마스터 CRUD 화면 ❌", "status": "△", "roadmap": "`/programs/catalog` program_catalog P0(ROADMAP L1339)"},
+    {"func_id": "5-5", "func_title": "프로그램평가(의견수렴)", "ogada_route": "/programs/provision-result-evaluations", "ogada_surface": "ProvisionResultEvaluationPage(지표44 월별/연간 compliance 연동) + ProgramsPage PROGRAM_SATISFACTION_LEVELS 만족도", "status": "✅"},
+    {"func_id": "5-5-1", "func_title": "프로그램관리자 업무수행일지", "ogada_route": "/staff/lead-caregiver-log", "ogada_surface": "△ LeadCaregiverLogPage(선임 요양보호사 업무일지 8-1-1)로 유사 surface·프로그램관리자 전용 일지 ❌", "status": "△"},
+    {"func_id": "5-6", "func_title": "프로그램 콘텐츠", "ogada_route": null, "ogada_surface": "❌ 콘텐츠 라이브러리 미존재", "status": "❌", "roadmap": "`/programs/feedback`·catalog cluster P0(ROADMAP L1339/L1361)"},
+    {"func_id": "5-7", "func_title": "수급자 참여프로그램 리포트", "ogada_route": "/programs", "ogada_surface": "△ ProgramsPage participation 조회·전용 리포트 화면 ❌", "status": "△"},
+    {"func_id": "5-8", "func_title": "프로그램 제공기록 리포트(운영기록지)", "ogada_route": "/programs", "ogada_surface": "△ 제공기록 ✅·운영기록지 전용 export 화면 ❌", "status": "△"},
+    {"func_id": "5-9", "func_title": "프로그램 수급자 그룹 설정 이력 리포트", "ogada_route": null, "ogada_surface": "❌ 그룹 미존재 → 이력 리포트도 부재", "status": "❌", "roadmap": "프로그램 그룹 P0 후속(ROADMAP L1361 리포트 4종)"},
+    {"func_id": "5-10", "func_title": "수급자 프로그램 일정 리포트", "ogada_route": "/programs", "ogada_surface": "△ ProgramScheduleForm 일정 조회 ✅·전용 리포트 ❌", "status": "△"}
+  ],
+  "tally": {"check": 3, "partial": 5, "gap": 5, "total": 13, "note": "핵심 급여제공(5-1)·일정(5-2)·평가(5-5) ✅ parity / 보조 leaf(외부강사·그룹·콘텐츠·리포트) gap은 ROADMAP 기등재"},
+  "ogada_superset_surfaces": [
+    "/programs/functional-recovery — FunctionalRecoveryPage(G17 기능회복훈련 계획·지표 준수 현황·fetchFunctionalRecoveryComplianceApi) — carefor module 26 별도 카운트·ogada는 programs 하위로 통합",
+    "/programs/provision-result-evaluations — ProvisionResultEvaluationPage 지표44(INDICATOR44 월별기록·30일내 반영·주간 상태변화·연간평가) compliance 연동 — carefor 5-5 의견수렴보다 평가지표 연동 깊이 우위"
+  ]
+}

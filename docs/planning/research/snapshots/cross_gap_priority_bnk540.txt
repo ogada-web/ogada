@@ -1,0 +1,87 @@
+BNK-540 — 교차검증·갭 우선순위 8h+ · US-R01 양방향 API 메타 git 실측 + 공지·엑셀 스캔
+================================================================================
+조사일: 2026-06-23T06:49Z | rotation: 교차검증·갭 우선순위 | owner: BNK | audience: PLN
+
+[1] ogada submodule develop HEAD (실측)
+--------------------------------------------------------------------------------
+$ git -C src/frontend rev-parse --short develop
+  -> 95f55aa (BNK-539 carry · HEAD zero advance)
+$ git -C src/frontend log -1 --oneline develop
+  -> 95f55aa fix(v1.2.1/US-R01): wire work-attendance API relatedSurfaces cross-links
+$ git -C src/frontend status -sb
+  -> ## develop...origin/develop (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop
+  -> 184
+
+$ git -C src/backend rev-parse --short develop
+  -> 83a26e7 (BNK-539 carry · HEAD zero advance)
+$ git -C src/backend log -1 --oneline develop
+  -> 83a26e7 feat(v2/US-R01): expose annual-leave cross-links on work-attendance roster
+$ git -C src/backend status -sb
+  -> ## develop...origin/develop (WT CLEAN)
+$ git -C src/backend rev-list --count origin/test..develop
+  -> 526
+
+merge gate = 184 (FE) + 526 (BE) = 710 (carry · 0 vs BNK-539 710)
+
+[2] ogada KPI 재산정 (git ls-tree develop 정본)
+--------------------------------------------------------------------------------
+Route        : 111 (110 path= + 1 <Routes> wrapper)
+*Page.jsx    : 89  (+ RootRedirect = 90)
+V migration  : V1–V173 (max V173 committed)
+BE Test.java : 247 files · @Test 1,812
+FE test      : 449 (183 *.test.js + 266 *.test.jsx)  ← BNK-539 「453(187+266)」 정정
+모듈 커버    : 78.79% (22.85/29 · competitorModuleCoverage.js)
+
+[3] ★★★ US-R01 bidirectional relatedSurfaces — git 실측 교차검증 (확인)
+--------------------------------------------------------------------------------
+BE StaffAnnualLeaveSupport (@83a26e7):
+  SURFACE_KIND = ANNUAL_LEAVE_USAGE_SNAPSHOT
+  relatedSurfaces[]:
+    (US-R01, "출퇴근 기록", /staff/attendance, AVAILABLE)
+    (US-R01, "연차·유급휴일 대장", /staff/leave-ledger, PLANNED)
+
+BE StaffWorkAttendanceSupport (@83a26e7):
+  SURFACE_KIND = DAILY_WORK_ATTENDANCE_ROSTER
+  relatedSurfaces[]:
+    (US-R03e, "연차휴가 현황", /staff/annual-leaves, AVAILABLE)
+    (US-R01, "연차·유급휴일 대장", /staff/leave-ledger, PLANNED)
+
+FE (@95f55aa):
+  StaffAnnualLeavePage → StaffAnnualLeaveRelatedSurfacesPanel
+  StaffWorkAttendancePage → normalizeStaffWorkAttendanceRelatedSurfaces + panel
+  StaffWorkAttendanceLiveApiRoutingE2eTest: surfaceKind + relatedSurfaces[0].route=/staff/annual-leaves
+
+판정: BNK-536~539 단방향→양방향 closure 재입증 · 신규 core gap 0 · v3 /staff/leave-ledger PLANNED carry
+
+[4] 4축 P0/P1 재정렬 (확인)
+--------------------------------------------------------------------------------
+G14 급여제공계획서     : closure carry · P0/P1 재오픈 0
+대시보드/G26           : /billing/reports/statistics carry · P0/P1 재오픈 0
+v1.3-C 이동서비스·일지 : TransportServiceFeeService 5/5 + NHIS#44 zero drift · P0/P1 재오픈 0
+v2 CMS                 : G2-CMS-ENROLLMENT-ROSTER carry · silverangel CMS shell only · P0/P1 재오픈 0
+
+[5] 신규/재실측 URL
+--------------------------------------------------------------------------------
+| URL | HTTP | SIZE | md5 | 확인 |
+|-----|------|------|-----|------|
+| silverangel notice list | 200 | 3,594,181B | (list) | 최신 게시 Tmp_idx≤221551 · 221626~221627 probe = 미게시 shell |
+| silverangel notice 221626 | 200 | 51,765B | 8437f255 | 미게시 shell IDENTICAL |
+| NHIS #44 joHistory | 200 | 7,572B | c886ff1f | zero drift · 러-1~4·편도50%·1일1회·④일지 |
+| ezCare top-nav-V2 | 200 | 25,470B | 95286775 | zero drift |
+| carefor func.php Wayback | 200 | 98,328B | 6226e6eb | 323차 IDENTICAL |
+| Channel.io 01805b93 | 200 | 243,635B | 27350a91 | SIZE=on-disk · md5 cachebuster DRIFT · 키워드 verbatim 불변 |
+| ezCare home | 200 | 106,086B | a38a53b3 | 9,271 재가기관 carry · cachebuster-only DRIFT |
+| ezCare fnc | 200 | 17,870B | c0924083 | 9,346 기관 carry · cachebuster-only DRIFT |
+
+엑셀 포맷 변경 스캔: Channel.io 엑셀변경 카테고리/21843/21800 slug → 404 shell · 01805b93 본문 엑셀 언급 1건(다운로드 트러블슈팅) · 2026 컬럼 변경 신호 0
+
+[6] 가정 번복
+--------------------------------------------------------------------------------
+1(부분): BNK-539 FE test 453 → git ls-tree 정본 449 (183+266, −4 과집계)
+
+[7] 사이클 요약
+--------------------------------------------------------------------------------
+가정 번복 1(부분) · 신규 core gap 0 · P0/P1 재정렬 0 · 상태 변경 0(HEAD zero advance)
+· 미확인 0 · 신규 snapshot 4건 · 덮어쓰기 3건(channelio_01805b93·ezcare_home·ezcare_fnc)
+· 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족

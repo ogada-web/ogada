@@ -1,0 +1,55 @@
+BNK-515 (2026-06-22T14:55Z) — LCMS root type2 = silverangel CMS extraService.do 크로스-프로모션 배너 (확인)
+=====================================================================================================
+rotation: 엔젤·롱텀·규제 4–6h | PLAN_NOTES #44 1차 확인 재입증 (309차)
+
+[근거 URL] (live 재실측 2026-06-22T14:55Z)
+- LCMS root: https://www.lcms.or.kr/
+  HTTP 200 · 50,554B · md5 6c0d22b4 (live · 덮어쓰기 ★type rotation reveal)
+  on-disk(BNK-496 carry) c0c66076 50,740B (type1 디자인 샘플 bg_samp1~3)
+- silverangel /service/extraService.do: https://www.silverangel.kr/newSilverangel/service/extraService.do
+  HTTP 200 · 81,637B · md5 f9c5d877 (309차 IDENTICAL)
+
+[LCMS root type rotation 정리]
+- type1 (c0c66076·50,740B): 「요양기관 홈페이지! 고민하지 마세요!」 + 디자인 샘플 bg_samp1~3 → /newSilverangel/webSite/websiteProvided.do 「체험하기」
+- type2 (6c0d22b4·50,554B·★ current live): 「본인부담금 자동이체(CMS) 서비스」 → /newSilverangel/service/extraService.do 「자세히 보기」 + 「가입문의: 1600-6859」
+- type3 (6b750291·50,498B): 「엔젤시스템 & CJ프레시웨이 MOU·식단표 무상제공」 (BNK-419 carry)
+
+[type2 verbatim 핵심] (`section.ad_conttype2` / `img_banner2.png`)
+- 제목: 본인부담금 자동이체(CMS) 서비스
+- 본문: 매월 발생하는 본인부담금을 보호자 계좌에서 자동출금, 카드 자동결제, 가상계좌 입금 등의 방법으로 편리하게 납부할 수 있는 기능을 제공합니다.
+- CTA: https://www.silverangel.kr/newSilverangel/service/extraService.do (자세히 보기)
+- 상담: 1600-6859 (silverangel 본사 콜센터·BNK-302/316/419 carry)
+
+[해석 (확인)]
+1. LCMS(요양시설통합사례관리솔루션) root 페이지 광고 슬롯 3-type 회전은 모두 silverangel(엔젤시스템) 자매 도메인 cross-promo로 기능 — 외부 광고가 아니라 silverangel 제품 라인 광고. SaaS 다중 도메인 전략 신호(LCMS=시설 사례관리·silverangel newSilverangel=주야간/시설 ERP·gallery websiteProvided=홈페이지 빌더·서비스 extraService=CMS 본인부담금).
+2. type2 광고 본문은 silverangel /service/extraService.do (CMS 자동이체 5-method: 자동이체·가상계좌·카드결제·다계좌 정산·현금영수증·효성CMS 250원·300원) 정본 페이지로 직결. 즉, LCMS 사용자(시설 사례관리 모듈만 도입한 기관)도 CMS 본인부담금 자동이체 도입 시 silverangel ERP 라인 추가 도입을 유도.
+3. **결론**: 엔젤(silverangel) CMS = LCMS root 광고 슬롯 3-type 중 1축으로 적극 cross-promo. ogada CMS 모듈도 동일 effi-CMS 효성CMS(`FcmsClient`·`CmsService`·`CmsEnrollment`·`CmsClaim`)로 BNK-419/513/515 cross-walk parity 유지(이번 BNK-515 closure로 화면 wire 완료).
+
+[교차검증: NHIS #44 이동서비스비 러-1~4 ↔ ogada (확인·309차)]
+- NHIS #44 joHistory: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f · 309차 zero drift IDENTICAL
+- ogada BE: src/main/java/com/ogada/backend/transport/domain/TransportDistanceBand.java + TransportServiceFeeService.java
+  RU_1 (5km 미만) · RU_2 (5~10km) · RU_3 (10~20km) · RU_4 (20km 이상) verbatim parity ↔ NHIS #44 러-1~4
+  ONE_WAY_RATIO = 0.5 (편도 50%) · roundTrip Map override · 1일 1회 dedup guard · TransportServiceLog (별지 제22호) V148/V154/V155 CHECK
+- 판정: G16 ✅ parity/우위 carry · 신규 갭 0 · candidate 신규 0
+
+[교차검증: 2026 수가·규제 backbone (live 재실측 2026-06-22T14:55Z)]
+- longterm 502 b5aee8c1 105,552B IDENTICAL — 단기보호 74,060 verbatim · var s16 grep=0 (oscillating "no s16" cycle carry)
+- longterm 503 8ca7d1fa 104,652B IDENTICAL — 경감 50%·60% 7-match verbatim · var s16 grep=0
+- longterm 501 167d62cd 88,025B IDENTICAL — 가족요양 carry
+- longterm 610 d3c90b33 422B IDENTICAL — 통합재가 server-side session gate `refreshedException` stub carry (BNK-448 확인 lock)
+- silverangel main_service bcf6df41 59,002B IDENTICAL — CMS 본인부담금 자동이체 정본 carry
+- silverangel daycareEssentialWork c79c1be3 131,664B IDENTICAL — 이동서비스 6 평가지표 verbatim
+- silverangel extraService f9c5d877 81,637B IDENTICAL — CMS 5-method 효성CMS carry
+- silverangel feeService eab352a8 44,513B IDENTICAL
+- silverangel system_feature c9507190 45,601B IDENTICAL
+- silverangel daycareProgramProvided f18e1c7a 67,987B IDENTICAL — 이동서비스 2-match · 차량운행일지 verbatim
+- law_mohw_2025_247 cachebuster DRIFT (c8f526e8→23fb8152) · strip-Time md5 0e07cef1 IDENTICAL · 제2025-247호·시행 2026.1.1 verbatim 불변 → 덮어쓰기
+- silverangel notice 221598–221603 6-probe 8437f255 51,765B 미게시 shell IDENTICAL — weekly notice 0 (최신 real 221563 6/18·next Wed ~6/25)
+
+[KPI 영향]
+- 신규 evidence URL 1건+ ✅ (LCMS root type2 verbatim cross-promo 정리)
+- 메뉴/필드/워크플로 1블록+ ✅ (LCMS root 3-type rotation 표 + silverangel cross-promo cross-walk)
+- COMPETITOR_MATRIX 1행+ `@HEAD` 갱신 ✅ (BNK-515 row·FE @df9ec6c·BE @d361833)
+- BENCHMARK_REPORT §소절 1건+ ✅ (§515 + 515-1/-2/-3/-4)
+- 가정 번복 0 · 신규 core 갭 0 · 미확인 0 · 덮어쓰기 2건 (lcms_root·law247)

@@ -25,6 +25,8 @@ export LIVE_E2E="${LIVE_E2E:-1}"
 export VITE_API_BASE="${VITE_API_BASE:-http://127.0.0.1:8080}"
 export LIVE_E2E_EMAIL="${LIVE_E2E_EMAIL:-test@test.com}"
 export LIVE_E2E_PASSWORD="${LIVE_E2E_PASSWORD:-ogada1234}"
+export LIVE_E2E_GUARDIAN_EMAIL="${LIVE_E2E_GUARDIAN_EMAIL:-${GUARDIAN_EMAIL:-}}"
+export LIVE_E2E_GUARDIAN_PASSWORD="${LIVE_E2E_GUARDIAN_PASSWORD:-${GUARDIAN_PASSWORD:-}}"
 
 if [[ -z "${LIVE_E2E_CLIENT_ID:-}" ]]; then
   if [[ -f "$SCRIPT_DIR/dev-backend.env" ]]; then
@@ -42,6 +44,16 @@ if ! curl -sf "${VITE_API_BASE}/api/v1/health" >/dev/null; then
   echo "[live-e2e] fatal: API가 응답하지 않습니다 — ${VITE_API_BASE}" >&2
   echo "[live-e2e] hint: backend 기동 후 다시 실행 (docs/ops/DEPLOYMENT_GUIDE.md §3-4)" >&2
   exit 2
+fi
+
+bootstrap_enabled="$(
+  curl -sf "${VITE_API_BASE}/api/v1/system/live-e2e/probe" 2>/dev/null \
+    | python3 -c "import json,sys; d=json.load(sys.stdin); print('true' if d.get('bootstrapEnabled') else 'false')" 2>/dev/null \
+    || echo "false"
+)"
+if [[ "$bootstrap_enabled" != "true" ]]; then
+  echo "[live-e2e] warn: backend live-e2e bootstrap 비활성 — POST /bootstrap 시드가 동작하지 않습니다" >&2
+  echo "[live-e2e] hint: 백엔드 재기동 시 export LIVE_E2E_BOOTSTRAP_ENABLED=1 (일반 dev UI에는 넣지 마세요)" >&2
 fi
 
 if [[ -z "${LIVE_E2E_CLIENT_ID:-}" ]]; then

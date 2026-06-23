@@ -1,0 +1,29 @@
+BNK-518 LCMS root type1 rotation reveal (2026-06-22)
+URL: https://www.lcms.or.kr/
+Live: HTTP 200, 50,740B, md5 c0c66076 (type1 design sample)
+Previous on-disk (BNK-515): 50,554B, md5 6c0d22b4 (type2 CMS cross-promo)
+
+=== LIVE type1 verbatim signals (확인) ===
+- bg_samp1: 1 match (design sample banner rotation)
+- websiteProvided.do: 2 matches
+- 「체험하기」 CTA: 1 match
+- ad_conttype2 / img_banner2 / 「본인부담금 자동이체(CMS)」: 0 matches (type2 absent)
+- CJ프레시웨이 / 프레시웨이: 0 matches (type3 absent)
+- title: 엔젤시스템
+
+=== BNK-515 type2 carry (on-disk before overwrite) ===
+- section.ad_conttype2 + img_banner2.png
+- 「본인부담금 자동이체(CMS) 서비스」
+- CTA → https://www.silverangel.kr/newSilverangel/service/extraService.do
+- 「가입문의: 1600-6859」
+
+=== 3-type rotation pattern (확인) ===
+type1: 디자인 샘플 (websiteProvided.do 체험하기) — LIVE current
+type2: silverangel CMS extraService cross-promo — BNK-515 previous
+type3: CJ프레시웨이 MOU 식단 — BNK-419 carry
+
+=== ogada implication ===
+LCMS root 광고 슬롯은 silverangel 자매 도메인 cross-promo rotation.
+ogada 단일 ERP 차별화: CMS·이동서비스·등급·계약 통합 내장 (cross-promo 분산 불필요).
+MVP out-of-scope: LCMS 가정통신문 번들 (G-LCMS-NEWSLETTER P3 carry).
+

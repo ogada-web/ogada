@@ -1,0 +1,88 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-22T21:45:00Z -->
+# BNK-525 extract — 이지케어 schedule-rfid `comp_01~09` 8-leaf ↔ ogada `visits.js` COMP_01~09 + FAQ21450 tri-source
+
+**조사일**: 2026-06-22T21:45Z | **rotation**: 이지케어 역공학 2–4h
+
+## 신규/재실측 증거 URL
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| [/new.ez?PGID=schedule-rfid](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-rfid) (데모·oCode=DEMO) | 200 | 150,290B | `19948db7` | **318차 session DRIFT** — SIZE IDENTICAL with BNK-483 `9d9a5f92`·colModel `comp_01~09` strip-md5 `73b08c81` verbatim |
+| [FAQ rowid=21450](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21450&type=web) | 200 | 17,278B | `e1eb78e1` | **318차 IDENTICAL** — on-disk `ezcare_faq21450.html` 동일 md5 |
+| [ezCare home](https://ezcare.easyms.co.kr/) | 200 | 106,119B | `0767d991` | **17th rotation DRIFT** — `deb5d295`(BNK-516)→`0767d991`·KST date **06-22→06-23**·banner `[추천 이벤트] cafe.naver.com/egcare/24211` carry·mCnt `{9271,4594,2353,1820}` verbatim |
+| [Channel.io bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) | 200 | 228,038B | `dbd710c8` | **318차 DRIFT** — `0b5f0241`(BNK-495 228,015B)→`dbd710c8`(+23B SSR)·「검은=반영·빨간=미반영」semantic verbatim carry |
+
+## schedule-rfid PGID — RFID점검 워크플로 (확인)
+
+**진입**: top-nav module 4 「RFID점검」·`PGID=schedule-rfid`·`rfid.js`/`rfid.css`·help `faq.ez?rowid=21450`
+
+**워크플로 4단** (FAQ21450 + PGID HTML tri-source):
+1. 공단 **계획일정** + **RFID 전송내역** 엑셀 2종 업로드 (`mode=rfid_upload`·`get_ltm_rfid`·`btn_rfid_upload`)
+2. 「공단계획 ↔ 태그 비교 결과」 grid `grid_match_list` — `comp_01~09` 8-leaf 검출
+3. 불일치 시 red formatter (`comp_04/05/06/07`)·footrow group headers 「태그안함」「태그(인정) 시간차」
+4. 「태그내역 비교는 실시간이 아님」— 재업로드 필수 (FAQ21450 step1 verbatim)
+
+### jqGrid `comp_01~09` colModel (ezCare terse label)
+
+| field | ezCare label | excel col | FAQ21450 검출 항목 |
+|---|---|---|---|
+| comp_01 | 모두 | 8 | 태그 없음 |
+| comp_03 | 종료 | 8 | 종료 태그 없음 |
+| comp_04 | 시작 | 8 | 시작 시각 차이 |
+| comp_05 | 종료 | 8 | 종료 시각 차이 |
+| comp_06 | 30분 | 8 | 인정시간(30분) 차이 |
+| comp_07 | 제공자<br>다름 | 10 | 제공자 불일치 |
+| comp_08 | 직접<br>입력 | 10 | 직접 입력 |
+| comp_09 | 계획<br>없음 | 10 | 계획 없음 |
+
+(comp_02 미사용 — ezCare·ogada 공통)
+
+### ogada `@a170f9c` cross-walk (`src/frontend/src/config/visits.js`)
+
+| ezCare | ogada COMP | tone | ogada label | 판정 |
+|---|---|---|---|---|
+| comp_01 | COMP_01 | danger | 태그 없음 | ✅ 1:1 |
+| comp_03 | COMP_03 | warning | 종료 태그 없음 | ✅ 1:1 |
+| comp_04 | COMP_04 | warning | 시작 시각 차이 | ✅ 1:1 |
+| comp_05 | COMP_05 | warning | 종료 시각 차이 | ✅ 1:1 |
+| comp_06 | COMP_06 | warning | 인정시간 차이 | ✅ 1:1 (ezCare 「30분」terse) |
+| comp_07 | COMP_07 | danger | 제공자 불일치 | ✅ 1:1 |
+| comp_08 | COMP_08 | info | 직접 입력 | ✅ 1:1 |
+| comp_09 | COMP_09 | neutral | 계획 없음 | ✅ 1:1 |
+
+**ogada 우위**: tone(danger/warning/info/neutral) + normalize(`comp-4`→`COMP_04`) + `visits.test.js` unit coverage. **주야간 MVP**: 재가 방문일정 G21 전용·ogada 이동서비스 일지(G16)와 분리 surface.
+
+## change-list 7-col excel (부차·확인)
+
+`PGID=change-list` jqGrid colModel: `sDate`·`pName`·`chg_what`·`memo`·`chg_before`·`chg_after`·`mName` (excel 15~30). 수급자 변경이력·ogada 주야간 MVP 직접 대응 ❌(재가 전용).
+
+## duplicate-schedule + change_work 이중일정 (확인)
+
+- `duplicate-schedule` PGID: `sKind:"방문요양,방문목욕"`·FAQ dialog `duplicate` guide
+- `ezCare_change_work.html`: 「중복일정체크」「듀얼 모니터 트리플 모니터」 testimonial verbatim carry
+- ogada: 주야간 MVP N/A(재가 일정 도메인)
+
+## 가격·도입 재실측 (318차)
+
+| 소스 | 지표 | 값 | BNK-514 대비 |
+|---|---|---|---|
+| ezCare_fnc.html strip-md5 `b7650efe` | 도입 기관 | **9,348개** | verbatim 불변 |
+| ezcare_home.html | 재가기관 | **9,271개** | verbatim 불변 |
+| mCnt JS | 4-counter | `{9271,4594,2353,1820}` | verbatim 불변 |
+| ezCare_charge.html | 셋팅/37명/구독 | **33,000 / 25,850 / 55,000** | verbatim 불변 |
+
+## FAQ rowid 10-probe (318차)
+
+| rowid | md5 | 판정 |
+|---|---|---|
+| 21450 | `e1eb78e1` | ✅ real RFID help |
+| 21795 | `eb06f95a` | ✅ real 운영주기 |
+| 21824 | `03038ccb` | ✅ real |
+| 21842 | `75cedf76` | ✅ real (최신 real carry) |
+| 21809·21834·21840·21906·21950·22000 | `e5762090` | stub 13,327B IDENTICAL |
+
+## ogada git `@HEAD` (BNK-524 carry·HEAD zero advance)
+
+FE `@a170f9c` WT CLEAN · BE `@a45745c` WT CLEAN · 111 Route · 90 page · V1–V172 · BE Test 244 · FE test 447 · 모듈 78.79% · merge gate **692**
+
+**신규 core 갭 0 · candidate 변동 0 · 가정 번복 0**

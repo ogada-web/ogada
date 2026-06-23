@@ -1,0 +1,18 @@
+BNK-518 NHIS #44 310차 zero drift + ogada parity (PLAN_NOTES #44 1차 확인)
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+Live: HTTP 200, 7,572B, md5 c886ff1f = on-disk IDENTICAL (310차)
+
+=== NHIS #44 key phrases (확인) ===
+- 러-1: 1, 러-4: 1 (러-2/3 in table cells)
+- 편도: 2, 1일 1회: 1, 이동서비스비: 9
+
+=== ogada BE @d3d4d2d cross-walk (5/5 parity/우위) ===
+| NHIS #44 | ogada |
+| 러-1~4 거리구간 | TransportDistanceBand.RU_1~RU_4 |
+| 편도 50% | ONE_WAY_RATIO=0.5 + roundTrip override |
+| 1일 1회 | dedup skip guard |
+| 별지 제22호 일지 | TransportServiceLog + V148/V154/V155 |
+| DB-level CHECK | V154/V155 (경쟁사 공개 노출 0) |
+
+신규 core gap 0. G16 ✅ carry.
+

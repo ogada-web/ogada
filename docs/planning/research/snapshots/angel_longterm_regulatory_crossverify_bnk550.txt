@@ -1,0 +1,67 @@
+BNK-550 evidence extract — 엔젤·롱텀·규제 4–6h rotation (2026-06-23T13:10Z)
+================================================================================
+
+[1] ogada git 실측 @HEAD (develop)
+  FE rev-parse --short develop  → b7101d5  (BNK-549 949e9bf → HEAD +1)
+  BE rev-parse --short develop  → bb9df48  (BNK-549 f1225b0 → HEAD +1)
+  FE status -sb → ## develop...origin/develop  (WT CLEAN)
+  BE status -sb → ## develop...origin/develop  (WT CLEAN)
+  FE ahead origin/test..develop → 187  (+1 vs BNK-549 186)
+  BE ahead origin/test..develop → 529  (+1 vs BNK-549 528)
+  merge gate = FE187 + BE529 = 716  (+2 vs BNK-549 714)
+  Route 111 (110 <Route + 1 <Routes>) · Page.jsx 89 (+RootRedirect=90)
+  Flyway V1–V174 contiguous (+1 vs BNK-549 V173) · 신규 V174 staff_leave_ledger
+  BE test files 252 (+5 vs BNK-549 247) · BE @Test 1,821 (+7 vs BNK-549 1,814)
+  FE test 450 = 183 .test.js + 267 .test.jsx (carry)
+  모듈 coverage 22.85/29 = 78.79% (zero drift carry)
+
+[2] ★★★ BE bb9df48 — v3 /staff/leave-ledger 풀스택 API (BNK-532 candidate 18-cycle closure)
+  commit: feat(v3/US-R01-c): add canonical staff leave ledger API
+  body  : "Per-event 연차·유급휴일 대장(케어포 8-13) REST API with V174 migration;
+           promote relatedSurfaces leave-ledger links from PLANNED to AVAILABLE."
+  18 files · +1,081/-6 · 신규 모듈 com.ogada.backend.staffleaveledger.*
+  엔드포인트 (StaffLeaveLedgerController @RequestMapping /api/v1/staff/leave-ledger):
+    GET  /api/v1/staff/leave-ledger                (branch-scoped list · year/branchId 필터)
+    GET  /api/v1/staff/leave-ledger/users/{userId} (직원별 연도 대장)
+    POST /api/v1/staff/leave-ledger/users/{userId} (per-event row 생성)
+    (PUT/DELETE per-entry CRUD 포함 추정 — Controller 85L)
+  RBAC @PreAuthorize hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')
+  V174__staff_leave_ledger_us_r01c.sql (40L) · StaffLeaveLedgerEntryEntity 146L
+  · StaffLeaveLedgerService 380L · 신규 test 5-file(Service 182L·Support 36L·routing +52L)
+  → BNK-532 §532 "신규 candidate v3 /staff/leave-ledger P1「가정」" = **BE FULL-STACK 확정**
+    (relatedSurfaces[1].availability PLANNED → AVAILABLE 승격)
+  → 잔여: FE /staff/leave-ledger 페이지 wire 미구현 (BE-only) → planner P1
+
+[3] ★★ 엔젤·롱텀·규제 backbone live=on-disk 대조 (2026-06-23T13:10Z)
+  | URL                                   | HTTP | SIZE     | md5      | Δ |
+  | NHIS joHistory #44 (joHistoryContent) | 200  | 7,572B   | c886ff1f | IDENTICAL (러-1~4·편도·1일1회 verbatim) |
+  | silverangel daycareEssentialWork      | 200  | 131,664B | c79c1be3 | IDENTICAL (평가#27 carry) |
+  | silverangel extraService              | 200  | 81,637B  | f9c5d877 | IDENTICAL (CMS 5-method) |
+  | silverangel mainService               | 200  | 59,002B  | bcf6df41 | IDENTICAL (2-track) |
+  | silverangel feeService                | 200  | 44,513B  | eab352a8 | IDENTICAL |
+  | lcms root                             | 200  | 50,554B  | 6c0d22b4 | IDENTICAL (type2 CMS cross-promo) |
+  → 6-URL zero drift IDENTICAL.
+
+[4] ★ 2026 수가·규제 고시 DRIFT (cosmetic·verbatim 불변 → 덮어쓰기 2건)
+  | law247 admRulInfoP   | 200 | 78,450B  | e12cbdcf→23e03f26 | DRIFT cachebuster-only (?Time=1782211181→1782221067 jquery/common.js) · 제2025-247호·시행 2026 verbatim 불변 |
+  | mohw126 gosi         | 200 | 109,510B | af6f8796→9acde7bd | DRIFT counter-only (조회수 2,499→2,503 +4·다운로드 459→460) · 제2026-126호·본인부담상한액 verbatim 불변 |
+
+[5] longterm 502/503 partial shell (무세션 Mode B gate carry)
+  | longterm 502 npeb502m01 | 200 | 71,008B | 5619900c | partial shell · 74,060 grep=0 (BNK-546 동일) |
+  | longterm 503 npeb503m01 | 200 | 70,225B | 68dca5ac | partial shell · 50%/60% gate (BNK-546 동일) |
+  canonical on-disk 보존: longterm_502.html b5aee8c1 (단기보호 74,060 grep=1) · longterm_503.html 8ca7d1fa (50/60%)
+
+[6] NHIS#44 구 URL 404 carry「미확인」
+  longtermcare.or.kr/.../Reference/jongHistoryView.web?communityKey=B0017&boardId=44
+  HTTP 404 · 861B · fcadfbfe — BNK-530 첫 발견 → BNK-550 20-cycle carry.
+  on-disk canonical nhis_jo44.html c886ff1f 보존 → ogada TransportServiceFeeService 5/5 ✅ 영향 없음.
+
+per-cycle minimum:
+  ✅ 신규 증거 URL 1건+: 엔젤·롱텀·규제 6-URL zero drift + law247/mohw126 DRIFT 2건
+  ✅ 메뉴/필드/워크플로 1블록+: [2] /staff/leave-ledger 3-endpoint + RBAC + V174 verbatim
+  ✅ COMPETITOR_MATRIX 1행+ @HEAD: @b7101d5/@bb9df48 + 직원 연차대장 행
+  ✅ BENCHMARK_REPORT §신규 소절: §550
+
+가정 번복 0 · 신규 core 갭 0 · candidate→구현 1 (v3 leave-ledger BNK-532→550 closure)
+· 상태 변경 2 (FE+1·BE+1·merge 714→716) · 미확인 1 carry (NHIS#44 구 URL)
+· 신규 snapshot 1건(본 extract) · 덮어쓰기 2건(law247·mohw126) · 엑셀 포맷 변경 0

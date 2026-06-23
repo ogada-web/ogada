@@ -1,0 +1,42 @@
+name: "CI Failure → Issue"
+on:
+  workflow_run:
+    types: [completed]
+
+jobs:
+  create_issue:
+    if: ${{ github.event.workflow_run.conclusion != 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      actions: read
+      checks: read
+    steps:
+      - name: Create GitHub Issue for failed workflow
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const run = context.payload.workflow_run;
+            const title = `CI Failure: ${run.name} — ${run.head_sha.substring(0,7)}`;
+            const body = [
+              `CI workflow failed.`,
+              ``,
+              `**Workflow:** ${run.name}`,
+              `**Repository:** ${context.repo.owner}/${context.repo.repo}`,
+              `**Branch:** ${run.head_branch}`,
+              `**Commit:** ${run.head_sha}`,
+              `**Run URL:** ${run.html_url}`,
+              `**Logs URL:** ${run.logs_url || (run.html_url + '/logs')}`,
+              ``,
+              `Please attach masked logs (CI artifact) and a short failure summary.`,
+              ``,
+              `*This issue was created automatically by ${context.workflow}.*`
+            ].join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['ci-failure']
+            });

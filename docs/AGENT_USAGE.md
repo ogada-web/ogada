@@ -15,17 +15,26 @@ ogada/
 │   ├── .planner_session.json   # planner 세션 ID (자동 생성, gitignore)
 │   └── .planner_history    # 입력 히스토리 (자동 생성, gitignore)
 ├── docs/
-│   ├── REQUIREMENTS.md     # 기획자가 갱신하는 요구사항 명세
-│   ├── PLAN_NOTES.md       # 미확정/추가 질문 누적
-│   ├── BENCHMARK_REPORT.md # benchmark_researcher 경쟁사 분석
-│   ├── COMPETITOR_MATRIX.md# 기능·서비스 비교 매트릭스
-│   └── AGENT_USAGE.md      # (이 문서)
+│   ├── README.md           # 문서 인덱스 (역할별 내비게이션)
+│   ├── AGENT_USAGE.md      # (이 문서)
+│   ├── planning/           # REQUIREMENTS, ROADMAP, PLAN_NOTES, USER_STORIES, FLOWCHART
+│   │   └── research/       # BENCHMARK_REPORT, COMPETITOR_MATRIX
+│   ├── product/            # DESIGN_SYSTEM
+│   ├── technical/          # API_SPEC, ERD
+│   ├── qa/                 # QA_FEEDBACK, TEST_REPORT
+│   ├── security/           # SECURITY_*, THREAT_MODEL
+│   └── ops/                # DEPLOYMENT, ADMIN, USER_MANUAL, FAQ, CHANGELOG
 ├── scripts/
-│   ├── run_agent.py        # 메인 실행기 (plan / build / status)
-│   ├── agent_start.sh      # tmux 시작 헬퍼
-│   ├── agent_stop.sh       # 프로세스/세션 정리
-│   ├── agent_status.sh     # 현재 상태 한눈에 보기
-│   ├── agent_planning_start.sh   # benchmark + planner 3시간 loop
+│   ├── run_agent.py              # 메인 실행기 (plan / build / status)
+│   ├── _agent_common.sh          # 셸 스크립트 공통 라이브러리
+│   ├── agent_start.sh            # 단일 tmux 세션 (ad-hoc build)
+│   ├── agent_stop.sh             # 전체 세션·프로세스 정리
+│   ├── agent_status.sh           # 전체 상태 한눈에 보기
+│   ├── agent_team_start.sh       # pipeline + 보조 역할 일괄 기동
+│   ├── agent_team_stop.sh        # (agent_stop.sh 와 동일)
+│   ├── agent_team_status.sh      # (agent_status.sh 와 동일)
+│   ├── agent_pipeline.sh         # PLN→DBA→UXD→COD→TSR 순차 파이프라인
+│   ├── agent_planning_start.sh   # benchmark 만 (하위 호환)
 │   ├── agent_planning_status.sh
 │   └── agent_planning_stop.sh
 ├── .env                    # CURSOR_API_KEY 등 (gitignore)
@@ -61,7 +70,7 @@ CURSOR_API_KEY=cursor_xxxxx
 | `build`  | 벤치마크·자동 기획 (benchmark/planner) | 없음 | ❌ (docs만) |
 | `status` | 현재 상태 표시 (승인/세션/프로세스)| 없음        | ❌       |
 
-`build`는 `docs/REQUIREMENTS.md` 끝에 다음 줄이 있어야만 실행됩니다.
+`build`는 `docs/planning/REQUIREMENTS.md` 끝에 다음 줄이 있어야만 실행됩니다.
 
 ```
 <!-- approved-by-user: true -->
@@ -73,8 +82,8 @@ CURSOR_API_KEY=cursor_xxxxx
 
 ### 4.1 plan — 기획자 모드 (멀티턴 대화)
 
-기획자가 사용자에게 질문하면서 `docs/REQUIREMENTS.md` 를 갱신합니다.
-미확정/추가 질문은 `docs/PLAN_NOTES.md` 의 `### 추가 질문` 섹션에 누적됩니다.
+기획자가 사용자에게 질문하면서 `docs/planning/REQUIREMENTS.md` 를 갱신합니다.
+미확정/추가 질문은 `docs/planning/PLAN_NOTES.md` 의 `### 추가 질문` 섹션에 누적됩니다.
 
 ```bash
 # 처음 시작
@@ -122,8 +131,8 @@ rm .agents/.planner_session.json
 |----------|------------------------------------------------------------|
 | `:q` / `:quit` / `:exit` / `:bye` | 대화 종료                                |
 | `:multi` | 여러 줄 입력 시작. 한 줄에 `:end` 만 입력하면 종료         |
-| `:show`  | 현재 `docs/REQUIREMENTS.md` 출력                          |
-| `:reload`| 현재 `docs/REQUIREMENTS.md` 내용을 기획자에게 다시 전달    |
+| `:show`  | 현재 `docs/planning/REQUIREMENTS.md` 출력                          |
+| `:reload`| 현재 `docs/planning/REQUIREMENTS.md` 내용을 기획자에게 다시 전달    |
 | `:help`  | 명령 도움말                                                |
 
 #### plan 모드 입력 팁
@@ -140,8 +149,8 @@ rm .agents/.planner_session.json
 
 ```
 변경된 파일
-- docs/REQUIREMENTS.md  (modified)
-- docs/PLAN_NOTES.md    (created)
+- docs/planning/REQUIREMENTS.md  (modified)
+- docs/planning/PLAN_NOTES.md    (created)
 ```
 
 상태 종류:
@@ -155,7 +164,7 @@ rm .agents/.planner_session.json
 
 ### 4.2 build — 구현/설계/문서 에이전트
 
-`docs/REQUIREMENTS.md` 에 사용자 승인 마커가 있어야만 동작합니다.
+`docs/planning/REQUIREMENTS.md` 에 사용자 승인 마커가 있어야만 동작합니다.
 
 ```bash
 # coder — Java/React 코드 (기본)
@@ -167,7 +176,7 @@ rm .agents/.planner_session.json
 # tech_writer — USER_MANUAL, DEPLOYMENT_GUIDE 등 문서
 .venv/bin/python scripts/run_agent.py build --role tech_writer
 
-# 반복 (coder/db 15분, tech_writer 기본 1시간)
+# 반복 (coder/db 30분, tech_writer 기본 1시간)
 .venv/bin/python scripts/run_agent.py build --role coder --loop
 .venv/bin/python scripts/run_agent.py build --role tech_writer --loop --interval 3600
 ```
@@ -177,29 +186,34 @@ rm .agents/.planner_session.json
 | `--role` | 담당 | 주요 출력 | 승인 마커 |
 |----------|------|-----------|-----------|
 | `coder` | Full-Stack | `src/backend/`, `src/frontend/` | 필요 |
-| `db_architect` | DB 설계 | `docs/ERD.md`, `src/backend/.../db/migration/` | 필요 |
-| `tech_writer` | 문서 | `docs/USER_MANUAL.md`, `CHANGELOG.md` 등 | 필요 |
-| `benchmark_researcher` | 경쟁사 벤치마크 | `docs/BENCHMARK_REPORT.md`, `docs/COMPETITOR_MATRIX.md`, `memory/decisions.md` | **불필요** |
-| `planner` | 자동 기획 동기화 | `docs/REQUIREMENTS.md`, `USER_STORIES.md`, `PLAN_NOTES.md` 등 | **불필요** |
+| `db_architect` | DB 설계 | `docs/technical/ERD.md`, `src/backend/.../db/migration/` | 필요 |
+| `tech_writer` | 문서 | `docs/ops/USER_MANUAL.md`, `CHANGELOG.md` 등 | 필요 |
+| `benchmark_researcher` | 경쟁사 벤치마크·역공학 (30분) | `docs/planning/research/BENCHMARK_REPORT.md`, `docs/planning/research/COMPETITOR_MATRIX.md`, `memory/decisions.md` | **불필요** |
+| `planner` | 자동 기획 동기화 | `docs/planning/REQUIREMENTS.md`, `USER_STORIES.md`, `PLAN_NOTES.md` 등 | **불필요** |
 
 ```bash
-# benchmark — 경쟁사 기능·서비스 조사 (1회)
+# benchmark — 경쟁사 기능·역공학 조사 (1회)
 .venv/bin/python scripts/run_agent.py build --role benchmark_researcher
+
+# 이지케어 ERP 배치 스냅샷 (권장)
+./scripts/ezcare-demo-fetch.sh --menu-catalog --batch \
+  patient-list,schedule-fix,schedule-rfid,pAmt-a100,pAmt-a400,receipt-list,worker-timesheet3,guide-E100
 
 # planner — 벤치마크 산출물을 읽고 기획 문서 갱신 (1회)
 .venv/bin/python scripts/run_agent.py build --role planner
 
-# 3시간마다 반복 (10800초)
-.venv/bin/python scripts/run_agent.py build --role benchmark_researcher --loop --interval 10800
-.venv/bin/python scripts/run_agent.py build --role planner --loop --interval 10800
+# 30분마다 반복 (기본값, 1800초)
+.venv/bin/python scripts/run_agent.py build --role benchmark_researcher --loop --interval 1800
 ```
+
+**역공학 범위** (agents.yaml `reverse_engineering`): 케어포 `func.php`·demo-work HTML 파싱, 이지케어 FAQ/Channel.io, 엔젤·롱텀 고시, ogada git HEAD 실측. 매 사이클 증거 URL·매트릭스 1행 이상 갱신.
 
 **협업 흐름**: `benchmark_researcher` 가 경쟁사 제공 항목·기능을 정리 → `planner`(build) 가 `BENCHMARK_REPORT`·`COMPETITOR_MATRIX`·`decisions.md` 를 읽고 REQUIREMENTS·USER_STORIES·PLAN_NOTES 를 추가·수정한다. 대화형 `plan` 모드도 동일 벤치마크 문서를 참고한다.
 
 공통 정책:
 
 - REQUIREMENTS §1-1 스택 우선 (Java Spring Boot + React + PostgreSQL)
-- 의문 시 `docs/PLAN_NOTES.md` 에 역할별 질문 섹션 기록 후 중단
+- 의문 시 `docs/planning/PLAN_NOTES.md` 에 역할별 질문 섹션 기록 후 중단
 - 비밀값 하드코딩 금지 (`.agents/rules.md` §3)
 
 ### 4.3 status — 상태 확인
@@ -271,37 +285,80 @@ tmux 세션, run_agent 프로세스, 승인 여부를 한 번에 보여줍니다
 - `run_agent.py` 파이썬 프로세스
 - `cursor-sdk-bridge` 보조 프로세스
 
-### 5.4 팀 에이전트 (coder + db + writer 동시 백그라운드)
+### 5.4 팀 에이전트 (pipeline + 보조 역할)
 
-3역할을 **별도 tmux 세션**에서 동시에 loop 실행합니다.
+순차 파이프라인과 보조 역할을 **별도 tmux 세션**에서 실행합니다.
 
 ```bash
-# 사전: coder 1회 수동 실행으로 Java 초기화 확인 후
+# pipeline + security + benchmark + tech_writer 일괄 기동
 ./scripts/agent_team_start.sh
 
-# 각 역할 1회만 (테스트)
+# pipeline 1사이클만 (테스트)
 ./scripts/agent_team_start.sh --no-loop
 
-# 상태
-./scripts/agent_team_status.sh
+# 상태 (agent_team_status.sh 도 동일)
+./scripts/agent_status.sh
 
-# 전체 중지
-./scripts/agent_team_stop.sh
+# 전체 중지 (agent_team_stop.sh 도 동일)
+./scripts/agent_stop.sh
 ```
 
 | tmux 세션 | 역할 | 기본 간격 |
 |-----------|------|-----------|
-| `ogada-coder` | coder | 900초 (15분) |
-| `ogada-db` | db_architect | 900초 |
-| `ogada-writer` | tech_writer | 3600초 (1시간) |
+| `ogada-pipeline` | 구현 우선 coder→tester (기획 6주기 1회) | 180초 (3분) |
+| `ogada-security` | security_auditor | 86400초 (24h) |
+| `ogada-benchmark` | benchmark_researcher | 1800초 (30min) |
+| `ogada-writer` | tech_writer | 3600초 (1h) |
 
 환경변수:
 
 | 변수 | 기본값 | 설명 |
 |------|--------|------|
-| `AGENT_INTERVAL_SECONDS` | `900` | coder·db_architect loop 간격 |
+| `AGENT_INTERVAL_SECONDS` | `180` | pipeline 사이클 간격 (3분) |
+| `AGENT_PIPELINE_FULL_EVERY` | `6` | planner·db·ux 포함 전체 사이클 주기 |
+| `AGENT_SKIP_LIVE_E2E` | — | `1`이면 merge 후 live E2E 스킵 |
 | `AGENT_WRITER_INTERVAL_SECONDS` | `3600` | tech_writer loop 간격 |
-| `AGENT_CODER_SESSION` | `ogada-coder` | coder tmux 세션 이름 |
+| `AGENT_SECURITY_INTERVAL_SECONDS` | `86400` | security_auditor loop 간격 |
+| `AGENT_BENCHMARK_INTERVAL_SECONDS` | `1800` | benchmark_researcher loop 간격 (30분·역공학) |
+| `AGENT_PIPELINE_SESSION` | `ogada-pipeline` | pipeline tmux 세션 이름 |
+
+> benchmark 만 단독 기동: `./scripts/agent_planning_start.sh` (하위 호환)
+
+### post-merge live E2E (결정 73·96)
+
+frontend **tester**가 `merge_status: ready` 버전을 develop→test로 merge한 **직후**,
+`scripts/run-live-e2e.sh`가 자동 실행됩니다.
+
+| 항목 | 내용 |
+|------|------|
+| 전제 | PostgreSQL + Spring Boot (`localhost:8080`) 기동 |
+| 설정 | `scripts/dev-live-e2e.env` (없으면 `.example` 사용) |
+| 스킵 | `AGENT_SKIP_LIVE_E2E=1` |
+| 실패 시 | `docs/qa/QA_FEEDBACK.md` Open에 HIGH 항목 자동 추가 |
+
+수동 실행:
+
+```bash
+./scripts/run-live-e2e.sh
+```
+
+### 5.5 프론트엔드 Vitest 동시 실행 방지
+
+여러 에이전트·터미널에서 `npm test`가 겹치면 RAM이 급증하고 테스트가 hang될 수 있습니다.
+**반드시** `docs/qa/VITEST_CONCURRENCY.md`를 따릅니다.
+
+| 규칙 | 내용 |
+|------|------|
+| 동시 실행 | `npm test` / `npm run test:live-e2e` **한 번에 1개만** |
+| 실행 경로 | `package.json` → `scripts/npm-test-locked.sh` (flock). `npx vitest` 직접 호출 금지 |
+| 시작 전 확인 | `ps aux \| grep -E '[v]itest run'` |
+| 정리 | `./scripts/vitest-stop.sh` |
+| 락 충돌 | exit 75 — 기존 실행 대기 또는 정리 후 재시도 |
+
+```bash
+cd src/frontend && npm test -- src/pages/Foo.test.jsx   # 부분 테스트 (1세션)
+./scripts/vitest-stop.sh                                 # 중복·hang 정리
+```
 
 ---
 
@@ -313,17 +370,17 @@ tmux 세션, run_agent 프로세스, 승인 여부를 한 번에 보여줍니다
    .venv/bin/python scripts/run_agent.py plan
    ```
 
-   기획자와 대화하며 `docs/REQUIREMENTS.md` 를 다듬는다.
+   기획자와 대화하며 `docs/planning/REQUIREMENTS.md` 를 다듬는다.
    필요하면 `:multi`, `:show`, `:reload` 사용.
 
 2. **검토/수정**
 
-   `docs/REQUIREMENTS.md` 를 직접 열어 확인한다.
-   추가 질문이 있다면 `docs/PLAN_NOTES.md` 도 확인.
+   `docs/planning/REQUIREMENTS.md` 를 직접 열어 확인한다.
+   추가 질문이 있다면 `docs/planning/PLAN_NOTES.md` 도 확인.
 
 3. **승인**
 
-   `docs/REQUIREMENTS.md` 파일 끝에 한 줄을 직접 추가한다.
+   `docs/planning/REQUIREMENTS.md` 파일 끝에 한 줄을 직접 추가한다.
 
    ```
    <!-- approved-by-user: true -->
@@ -358,7 +415,7 @@ tmux 세션, run_agent 프로세스, 승인 여부를 한 번에 보여줍니다
 |--------------------------|---------------|----------------------------------|
 | `CURSOR_API_KEY`         | (필수)        | Cursor SDK 인증 키                |
 | `AGENT_MODEL`            | (없음)        | 모든 모드의 모델을 강제 오버라이드 |
-| `AGENT_INTERVAL_SECONDS` | `900`         | `build --loop` 의 반복 간격(초)   |
+| `AGENT_INTERVAL_SECONDS` | `1800`         | `build --loop` 의 반복 간격(초)   |
 | `AGENT_TMUX_SESSION`     | `ogada-agent` | tmux 세션 이름                    |
 | `AGENT_RETRY_MAX`        | `3`           | 일시적 오류에 대한 최대 재시도 횟수 |
 | `AGENT_RETRY_BASE_DELAY` | `1.5`         | 재시도 기본 대기(초). 지수 백오프  |
@@ -399,20 +456,21 @@ tmux 세션, run_agent 프로세스, 승인 여부를 한 번에 보여줍니다
 | 코드 특화        | `gpt-5.3-codex`                       |
 | 일반 GPT-5       | `gpt-5.5`, `gpt-5.5-medium`, `gpt-5.4-medium` |
 | 기본/저비용      | `composer-2.5`, `composer-2.5-fast`, `default` |
+| 자동 라우팅      | `auto` (Cursor가 작업에 맞게 모델 선택)        |
 | 빌드용           | `grok-build-0.1`                      |
 
-코드 품질을 위해 `coder` 는 코드 특화 모델을 1순위로 두고, 점진적으로
-일반 GPT → Opus → composer 로 폴백하도록 기본 설정되어 있습니다.
+코드 품질을 위해 `coder` 는 **코드 특화 모델**(codex)을 1순위로 두고, 점진적으로
+GPT-5 → Opus → `auto`(자동 라우팅) → composer → default 로 폴백하도록 설정되어 있습니다.
 
 ```yaml
 - name: coder
   model: gpt-5.3-codex
   fallback_models:
+    - gpt-5.1-codex-max
+    - gpt-5.2-codex
     - gpt-5.5
-    - gpt-5.5-medium
-    - gpt-5.4-medium
-    - claude-opus-4-8-thinking-high
     - claude-opus-4-8
+    - auto
     - composer-2.5
     - default
 ```
@@ -440,6 +498,7 @@ default   : ['composer-2.5']
 ```
 
 특정 모델로 일괄 강제하고 싶으면 `.env` 에서 `AGENT_MODEL=composer-2.5`
+(또는 `AGENT_MODEL=auto` 로 자동 선택) 를 설정하세요.
 처럼 설정하면 됩니다.
 
 ---
@@ -447,7 +506,7 @@ default   : ['composer-2.5']
 ## 8. 자주 묻는 문제
 
 ### Q. build 가 즉시 `blocked` 종료된다
-`docs/REQUIREMENTS.md` 끝에 다음 줄이 있어야 합니다.
+`docs/planning/REQUIREMENTS.md` 끝에 다음 줄이 있어야 합니다.
 
 ```
 <!-- approved-by-user: true -->
@@ -490,7 +549,7 @@ SDK 가 내부에서 쓰는 브리지에 일시적인 네트워크 문제가 생
 `render_file_changes` 는 `docs/` 하위만 감시합니다.
 다른 폴더는 표시되지 않습니다. 그래도 너무 많이 뜬다면
 기획자가 의도와 다른 파일을 만든 것일 수 있으니
-`docs/PLAN_NOTES.md` 에 기록하고 기획자에게 확인해달라고 요청하세요.
+`docs/planning/PLAN_NOTES.md` 에 기록하고 기획자에게 확인해달라고 요청하세요.
 
 ### Q. 한국어 입력에서 백스페이스가 깨진다
 `prompt_toolkit` 미설치 환경입니다. 설치하세요.

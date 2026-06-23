@@ -1,0 +1,51 @@
+BNK-511 ogada git 실측 KPI extract (2026-06-22T12:08Z · 엔젤·롱텀·규제 4–6h)
+
+# git rev-parse / status — BNK-510 대비 BE +1 commit (live-e2e bootstrap blocker normalize) · FE HEAD zero advance
+
+[FE] develop = fdc135b (BNK-510 carry · HEAD zero advance)
+  - WT CLEAN
+  - ahead 164 vs origin/test (ab4de83)
+  - 109 <Route (108 <Route\b + 1 <Routes>)
+  - 87 *Page.jsx (+ RootRedirect.jsx = 88)
+  - FE test 440 = .test.js 179 + .test.jsx 261
+
+[BE] develop = 24d25f1  fix(v2/live-e2e): normalize bootstrap blocker reporting
+  - WT CLEAN (BNK-510 WT DIRTY 5M HealthController + LiveE2eOperationReadinessSupport + 3 tests → commit closure)
+  - ahead 513 vs origin/test (598d108) — BNK-510: 512 +1
+  - 5 file diff: HealthController.java +7-2 · LiveE2eOperationReadinessSupport.java +9-2 · HealthControllerTest.java +13-7 · LiveE2eControllerTest.java +6-3 · LiveE2eOperationReadinessSupportTest.java +28-19 = 합 +21-42 net
+  - BE Test = 242 (carry · 테스트 추가/삭제 0건 · refactor only)
+  - V1–V171 contiguous · 마지막 = V171__staff_work_attendance_and_billing_report_filters_integrity.sql
+
+[Merge gate] FE164 + BE513 = 677 (BNK-510: 676 · +1 from BE bootstrap blocker normalize commit closure)
+[Module coverage] 22.85/29 = 78.79% (carry · competitorModuleCoverage.js IDENTICAL)
+[Dirty] FE false · BE false (양쪽 WT CLEAN — 선행 commit 불필요)
+
+# 백본 305차 zero drift IDENTICAL (live HTTP 200 = on-disk md5)
+
+NHIS #44                   c886ff1f  7,572B    IDENTICAL (305차)
+silverangel daycare ess.   c79c1be3 131,664B   IDENTICAL (305차)
+silverangel extraService   f9c5d877  81,637B   IDENTICAL
+silverangel feeService     eab352a8  44,513B   IDENTICAL
+LCMS root                  c0c66076  50,740B   IDENTICAL
+
+# Server-gated / partial / probe (zero drift)
+
+longterm 502 (live)        d3c90b33    422B   securityException (BNK-448 carry · 확인 server gate)
+longterm 503 (live)        d3c90b33    422B   securityException (BNK-448 carry · 확인 server gate)
+longterm 502 (on-disk)     b5aee8c1 105,552B   canonical 단기보호 74,060 carry
+longterm 503 (on-disk)     8ca7d1fa 104,652B   canonical 경감 50%×4·60%×3 carry
+silverangel 221596         8437f255  51,765B   미게시 shell (next ~6/25)
+silverangel 221597         8437f255  51,765B   미게시 shell
+silverangel 221598         8437f255  51,765B   미게시 shell
+silverangel notice list    52c9457f 3,594,181B carry (최신 real 221563 6/18)
+
+# DRIFT (verbatim 검증 보류 · canonical 보존 · 덮어쓰기 0)
+
+MOHW 2026-126 (live)       f774ea81 102,751B   훈령/예규/고시/지침 list page (no session)
+  vs BNK-505 (live)        451bbf5f 102,751B   동일 partial size 다른 md5
+  vs on-disk canonical     53373d1b 109,510B   본인부담상한액 verbatim
+  → URL-param/session variance · 덮어쓰기 0건 · 「미확인」 carry
+
+LAW 2025-247 admrul        timeout HTTP 000   law.go.kr LSW path · 20s 무응답 「미확인」
+
+# 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1 (BE +1 commit closure · WT DIRTY 5M→CLEAN)

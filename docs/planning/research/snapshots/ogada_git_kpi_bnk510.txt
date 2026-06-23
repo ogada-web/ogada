@@ -1,0 +1,27 @@
+# BNK-510 (2026-06-22T11:30Z) — ogada git 실측 KPI + 백본 304차 zero drift
+# rotation: 케어포 역공학 0–2h
+#
+# ── ogada submodule HEAD (HEAD zero advance vs BNK-509) ──
+# FE develop @fdc135b  WT CLEAN  ahead 164 vs origin/test=ab4de83
+#   (feat(v1.2.1/G30-LEGEND): add official indicator cross-walk legend on monitoring page · BNK-509 carry)
+# BE develop @9db0bbb  WT DIRTY 5M  ahead 512 vs origin/test=598d108
+#   (BNK-509 carry · WT DIRTY 5M = HealthController.java + LiveE2eOperationReadinessSupport.java
+#    + HealthControllerTest + LiveE2eControllerTest + LiveE2eOperationReadinessSupportTest = live-e2e health WIP · 기능 갭 아님)
+#
+# ── KPI 실측 (git ls-tree -r develop) ──
+# Route          : 109 (`<Route` in App.jsx; 108 `<Route\b` path + 1 `<Routes>` wrapper)
+# Page           : 87 *Page.jsx (+RootRedirect.jsx = 88)
+# Migration      : V1–V171 contiguous (171 files)
+# BE Test        : 242 (*Test.java)
+# FE test        : 440 (179 .test.js + 261 .test.jsx)
+# 모듈 커버      : 22.85/29 = 78.79% (competitorModuleCoverage.js · ✅완전 20·△부분 4(2·7-4·8·10)·❌갭 5(1-5·1-10·6·11·12))
+# merge gate     : 676 (FE 164 + BE 512 · 양쪽 origin/test 대비 · HEAD zero advance vs BNK-509 676)
+#
+# ── 백본 304차 zero drift (live HTTP 200 = on-disk md5 IDENTICAL) ──
+# func.php (Wayback id_)         HTTP 200 · 98,328B · 6226e6eb · IDENTICAL
+# NHIS #44 joHistory             HTTP 200 ·  7,572B · c886ff1f · IDENTICAL
+# silverangel daycare essential  HTTP 200 · 131,664B · c79c1be3 · IDENTICAL (on-disk silverangel_essential.html)
+# demo-work.carefor.co.kr        HTTP 000 (timeout 20s) · 미확인 carry · on-disk ebee4d47 시설 셸·transport nav 0
+# silverangel notice 221595/221596  HTTP 200 · 51,765B · 44223150 · 미게시 shell · weekly notice 0 · 최신 real 221563(6/18) · next Wed ~6/25
+#
+# 덮어쓰기 0건 · 엑셀 포맷 변경 0 · 가정 번복 0

@@ -1,0 +1,42 @@
+# Carefor module 4(간호/물리) tri-source drift + ogada Route cross-walk (BNK-506)
+# 근거: func.php `6226e6eb` · demo-work on-disk `ebee4d47` · PDF p.55–60 Wayback
+# 조사일: 2026-06-22
+
+## func.php M4 = 간호급여 (10-leaf, PDF 정본 축)
+| id | title | ogada Route/API | 판정 |
+|---|---|---|---|
+| 4-1 | 간호급여 제공기록(간호,투약,진료) | `/nursing/service` | ✅ |
+| 4-1-1 | 통합 간호관리 기록(바이탈) | `/nursing/vitals` | ✅ |
+| 4-2 | 응급상황 기록 | `/nursing/emergency` | ✅ |
+| 4-3 | 통합 간호제공 리포트 | `/nursing/service/reports/total` | ✅ |
+| 4-4 | 병의원 진료내역 리포트 | `/nursing/service/reports/hospital-visits` | ✅ |
+| 4-5 | 투약제공 리포트 | `/nursing/service/reports/medication-delivery` | ✅ |
+| 4-6 | 물리/작업치료 제공기록 | — | ❌ out-of-scope |
+| 4-6-1 | 물리치료 일정 | — | ❌ |
+| 4-6-2 | 물리치료 제공 리포트 | — | ❌ |
+| 4-6-3 | 물리치료 일정 리포트 | — | ❌ |
+
+## demo-work L03 = 간호 (14-leaf) · L04 = 물리 (4-leaf) — **번호 축 drift**
+| demo | view | func/PDF 대응 | ogada |
+|---|---|---|---|
+| L03 3-1 | `/share/nursing/view.nursing_service` | 4-1 | ✅ `/nursing/service` |
+| L03 3-1-1 | `view.total_vital_check` | 4-1-1 | ✅ `/nursing/vitals` |
+| L03 3-1-4 | `view.emergency_history` | 4-2 | ✅ |
+| L03 3-6 | `view.total_nursing_service` | 4-3 | ✅ |
+| L04 4-1 | `/share/physical/view.physical_service` | func **4-6** | ❌ |
+| L04 4-2 | `view.functionEvaluating_servicePlan` | func **4-6-1** | ❌ |
+| L04 4-3 | `view.total_physical_service` | func **4-6-2** | ❌ |
+| L04 4-4 | `view.physical_service_manage` | func **4-6-3** | ❌ |
+
+## PDF p.55–60 인용 (확인)
+- p.55 `4-1.간호급여 제공기록` — 간호서류 최대 20건 등록
+- p.56 `4-1-1.통합 바이탈 기록` — 일자별 전수급자 일괄 입력·전일자료 불러오기·작성자 일괄 지정
+- p.57 `4-2.물리(작업)치료 제공기록` — **PDF는 4-2=물리**(func는 4-6) ← **번호 drift 2차**
+- p.58 `4-3.응급상황 기록` — 발생일시·사유·조치·보호자상담·사후관리·담당자의견
+- p.59 `4-4.통합 간호제공 리포트` — 5종 출력(간략/기본/8·7일/상세/바이탈제외)
+- p.60 `4-5.병의원 진료내역 리포트` — 진료기록리스트·수급자별·진료비 본인청구 집계
+
+## ogada 갭·우선순위
+- **간호 4-1~4-5**: ogada **✅ parity/superset**(5종 리포트 포맷은 △ deepen P3)
+- **물리 4-6~4-6-3**: ogada **❌ N/A** — 주야간 MVP out-of-scope(재활 전문 모듈·평가지표 선택청구와 분리)
+- **신규 core 갭 0** — 기존 module 4 nursing coverage carry·물리는 의도적 제외

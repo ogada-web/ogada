@@ -1,0 +1,29 @@
+# 케어포 PDF p.91 ↔ ogada G-BILLING BE closure cross-walk (BNK-453)
+# 원본: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=91
+# on-disk extract: carefor_manual_daycare_p91_reports.txt · carefor_manual_p91_deposit_halfmonth_bnk445.txt
+# 조사일: 2026-06-21 | PDF Wayback live: HTTP 000 (timeout 45s·on-disk carry) | ogada git 실측
+
+--- PDF p.91 verbatim (확인·on-disk) ---
+② 입금대장: … 본인부담금 입금대장(월간), **본인부담금 입금대장(1일~15일)**, **본인부담금 입금대장(16일~말일)** 출력 + 해당월 입금내역 엑셀
+③ 수납대장: … **월별 수납대장(청구기준)**, **월별 수납대장(수납기준)** 구별 조회·출력
+
+--- demo-work L07 `view.cost_*` (확인·on-disk `ebee4d47`·111 loadPage) ---
+| demo label | view | ogada Route @ `@1a614c9`/`@b96d038` |
+|---|---|---|
+| 7-7 입금대장 리포트 | `view.cost_deposit_report` | `/billing/reports/deposits` + **`?period=FULL\|FIRST_HALF\|SECOND_HALF`** (BE `@b96d038` ✅) |
+| 7-8 수납대장 리포트 | `view.cost_receipt_report` | `/billing/reports/receipts` + **`?basis=PAYMENT\|CLAIM`** (BE `@b96d038` ✅) |
+
+--- ogada BE `@b96d038` API (확인·git) ---
+- `BillingReportDepositPeriod`: FULL · FIRST_HALF(1~15일) · SECOND_HALF(16~말일)
+- `BillingReportReceiptBasis`: PAYMENT(수납기준) · CLAIM(청구기준)
+- `GET /api/v1/billing/reports/deposits?month=&period=` · `GET /api/v1/billing/reports/receipts?month=&basis=`
+- Tests: `listBillingReportDepositsShouldFilterByFirstHalfPeriod` · `listBillingReportReceiptsShouldFilterByClaimBasis` · `MustApiEndpointRoutingTest` routing
+
+--- ogada FE 잔여 (확인·grep `@1a614c9`) ---
+- `BillingReportPage.jsx`: month/search/page only — **period/basis UI ❌**
+- `fetchBillingReportApi`: generic query passthrough 가능하나 **wire 없음**
+
+--- 판정 (BNK-453) ---
+- **G-BILLING-DEPOSIT-HALFMONTH-REPORT**: P3「가정」→ **△ BE partial** (API+test ✅ · FE selector/label ❌)
+- **G-BILLING-RECEIPT-DUAL-BASIS**: P3 carry → **△ BE partial** (동일 commit)
+- full-stack ✅ = FE period/basis Field + print header `displayLabel()` 연동 후

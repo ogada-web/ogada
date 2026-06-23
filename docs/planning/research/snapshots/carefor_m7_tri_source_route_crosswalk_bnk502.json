@@ -1,0 +1,40 @@
+{
+  "source": "func.php 6226e6eb + demo-work ebee4d47 + PDF Dov8rzFqBv p.84-92",
+  "updated": "2026-06-22T06:15Z (BNK-502)",
+  "demo_shell_metrics": {
+    "loadPage": 114,
+    "view_names": 119,
+    "view_paths": 134,
+    "rpt_class_items": 34,
+    "rpt_density_pct": 29.8,
+    "transport_nav_hits": 0,
+    "pamcode_L07_leaves": 11
+  },
+  "numbering_drift_notes": [
+    "PDF p.89 7-3=미납관리 vs PDF p.90 7-3=청구시작금액설정 — 동일 번호 이중 정의(문서 drift)",
+    "PDF p.91 리포트=7-5/7-6/7-7 vs func/demo=7-6/7-7/7-8 — +1 offset",
+    "PDF p.92 7-8=의료비공제통계 vs func 7-2-1=의료비공제(연말정산)",
+    "demo L07_M09 title=7-2-1 but view=cost_master_statistic (statistics cluster)",
+    "func 7-10 간편계산기 = demo nav 미노출(시설 셸 10/11 visible)"
+  ],
+  "tri_source_rows": [
+    {"func_id": "7-1", "func_title": "본인부담금 청구관리", "demo_view": "view.cost_master", "demo_pamcode": "L07_M01", "pdf_ref": "p.86-87", "ogada_route": "/billing", "status": "✅"},
+    {"func_id": "7-2", "func_title": "본인부담금 입금관리", "demo_view": "view.cost_receipt", "demo_pamcode": "L07_M02", "pdf_ref": "p.88", "ogada_route": "/billing/payments", "status": "✅"},
+    {"func_id": "7-2-1", "func_title": "의료비공제(연말정산)", "demo_view": "view.cost_master_statistic", "demo_pamcode": "L07_M09", "pdf_ref": "p.92(7-8 drift)", "ogada_route": "/billing/reports/statistics", "status": "✅"},
+    {"func_id": "7-3", "func_title": "본인부담금 미납관리", "demo_view": "view.cost_nopay", "demo_pamcode": "L07_M03", "pdf_ref": "p.89", "ogada_route": "/billing/overdue", "status": "✅"},
+    {"func_id": "7-4", "func_title": "본인부담금 자동이체(CMS)", "demo_view": "view.cms_manage", "demo_pamcode": "L07_M11", "pdf_ref": "미확인", "ogada_route": "/billing/cms", "status": "✅"},
+    {"func_id": "7-5", "func_title": "본인부담금 간편결제", "demo_view": "view.npay_manage", "demo_pamcode": "L07_M12", "pdf_ref": "p.91(drift)", "ogada_route": "/billing/easy-pay", "status": "✅"},
+    {"func_id": "7-6", "func_title": "청구대장 리포트", "demo_view": "view.cost_master_report", "demo_pamcode": "L07_M05", "pdf_ref": "p.91(7-5 drift)", "ogada_route": "/billing/reports/charges", "status": "✅"},
+    {"func_id": "7-7", "func_title": "입금대장 리포트", "demo_view": "view.cost_deposit_report", "demo_pamcode": "L07_M06", "pdf_ref": "p.91(7-6 drift)·반월 1~15/16~말", "ogada_route": "/billing/reports/deposits", "status": "✅"},
+    {"func_id": "7-8", "func_title": "수납대장 리포트", "demo_view": "view.cost_receipt_report", "demo_pamcode": "L07_M07", "pdf_ref": "p.91(7-7 drift)", "ogada_route": "/billing/reports/receipts", "status": "✅"},
+    {"func_id": "7-9", "func_title": "수납,환불내역", "demo_view": "view.cost_receipt_apply_yearly", "demo_pamcode": "L07_M10", "pdf_ref": "p.91", "ogada_route": "/billing/reports/refunds", "status": "✅"},
+    {"func_id": "7-10", "func_title": "간편계산기", "demo_view": null, "demo_pamcode": null, "pdf_ref": "미확인", "ogada_route": "/billing/calculator", "status": "✅ superset"}
+  ],
+  "ogada_superset_routes": [
+    "/billing/imports/nhis",
+    "/billing/cash-receipts",
+    "/billing/copay-rates",
+    "/billing/fee-schedules",
+    "/billing/reports/filters (V170)"
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "source": "func.php Wayback 6226e6eb + demo-work on-disk ebee4d47 L08 + PDF p.94/p.100 + ogada FE @2040571",
+  "updated": "2026-06-23T04:50:00Z (BNK-536)",
+  "module": 8,
+  "title": "직원관리",
+  "func_leaf_count": 15,
+  "demo_l08_loadpage_visible": 13,
+  "demo_l08_rpt_count": 3,
+  "demo_l08_rpt_density_pct": 23.1,
+  "summary": { "parity": 10, "partial": 4, "gap": 1 },
+  "demo_ia_notes": [
+    "func 8-13 연차대장 → demo renumber 8-14; demo adds 8-13 as 급여제공 리포트 (view.staff_work_report)",
+    "8-9 고충처리: onclick alert → 9-5 운영관리 이동·2025 평가 비필수 verbatim",
+    "8-7-1 보수교육: demo M13 근골격계 검사 commented; merged into 8-10 연간관리현황 view"
+  ],
+  "leaves": [
+    {
+      "id": "8-1",
+      "title": "직원 정보관리",
+      "demo": { "pamcode": "L08_M01", "view": "/staff/view.staff_manage" },
+      "ogada": { "routes": ["/staff", "/staff/:id"], "status": "parity" }
+    },
+    {
+      "id": "8-1-1",
+      "title": "선임 요양보호사 업무수행일지",
+      "demo": { "pamcode": "L08_M18", "view": "/share/staff/view.senior_staff_work_report" },
+      "ogada": { "routes": ["/staff/lead-caregiver-log"], "status": "parity" }
+    },
+    {
+      "id": "8-2",
+      "title": "근무일정표",
+      "demo": { "pamcode": "L08_M02", "view": "/share/staff/view.work_plan" },
+      "ogada": { "routes": [], "status": "partial", "note": "G-STAFF-WORK-SCHEDULE-NHIS-EXCEL P3·PDF p.98 6-step NHIS excel 양방향 ❌" }
+    },
+    {
+      "id": "8-3",
+      "title": "연간 일정계획",
+      "demo": { "pamcode": "L08_M12", "view": "/share/staff/view.schedule_manage" },
+      "ogada": { "routes": [], "status": "partial", "note": "연간 일정계획 dedicated Route 0·P3 carry" }
+    },
+    {
+      "id": "8-4",
+      "title": "출퇴근 및 근무관리",
+      "demo": { "pamcode": "L08_M03", "view": "/share/staff/view.staff_work_manage" },
+      "ogada": {
+        "routes": ["/staff/attendance"],
+        "status": "parity",
+        "superset": [
+          "V171 checkout_not_before_checkin CHECK",
+          "@2040571 US-R01 reverse RelatedSurfacesPanel → /staff/annual-leaves",
+          "STAFF_WORK_CHECK_IN_METHODS PC/NFC/MOBILE"
+        ],
+        "pdf_p100": "월간 출퇴근+근무일지·권한 근태관리[근무일지]"
+      }
+    },
+    {
+      "id": "8-5",
+      "title": "사례관리 회의록",
+      "demo": { "pamcode": "L08_M04", "view": "/share/patient/view.patient_case_meeting" },
+      "ogada": { "routes": ["/case-management/meetings"], "status": "parity" }
+    },
+    {
+      "id": "8-6",
+      "title": "회의록(보호자,복지및포상)",
+      "demo": { "pamcode": "L08_M05", "view": "/share/staff/view.staff_meeting" },
+      "ogada": { "routes": [], "status": "partial", "note": "G-GUARDIAN-MEETING P3·엔젤 지표#27 carry" }
+    },
+    {
+      "id": "8-7",
+      "title": "교육일지",
+      "demo": { "pamcode": "L08_M06", "view": "/share/staff/view.staff_education" },
+      "ogada": { "routes": ["/staff/training-logs"], "status": "parity" }
+    },
+    {
+      "id": "8-7-1",
+      "title": "요양보호사 보수교육",
+      "demo": { "pamcode": "L08_M13", "view": "/staff/view.staff_musculoskeletal_test", "visible": false },
+      "ogada": { "routes": ["/staff/training"], "status": "parity" }
+    },
+    {
+      "id": "8-8",
+      "title": "자원봉사자 활동일지",
+      "demo": { "pamcode": "L08_M08", "view": "/share/staff/view.staff_daily_volunteer" },
+      "ogada": { "routes": [], "status": "gap", "note": "G-VOLUNTEER-MGMT P3 ROADMAP 기등재" }
+    },
+    {
+      "id": "8-9",
+      "title": "고충처리 관리",
+      "demo": { "pamcode": "L08_M11", "onclick_alert": "9-5.운영관리로 이동·2025 평가 비필수" },
+      "ogada": { "routes": ["/staff/grievance-counselings"], "status": "parity", "note": "ogada 유지·케어포 demo IA 이동" }
+    },
+    {
+      "id": "8-10",
+      "title": "건강검진관리",
+      "demo": { "pamcode": "L08_M16", "view": "/share/staff/view.staff_yearly_report", "title_demo": "8-10.연간관리현황(건강검진,근골격계)" },
+      "ogada": { "routes": ["/staff/health-checkups"], "status": "parity" }
+    },
+    {
+      "id": "8-11",
+      "title": "질향상노력",
+      "demo": { "pamcode": "L08_M17", "view": "/share/staff/view.center_quality" },
+      "ogada": { "routes": ["/compliance/monitoring"], "status": "partial", "note": "G30-LEGEND ✅·dedicated QI workflow △" }
+    },
+    {
+      "id": "8-12",
+      "title": "현황 리포트",
+      "demo": { "pamcode": "L08_M09", "view": "/share/staff/view.staff_report", "rpt": true },
+      "ogada": { "routes": ["/staff/reports/status"], "status": "parity" }
+    },
+    {
+      "id": "8-13",
+      "title": "연차,유급휴일 대장",
+      "demo": { "pamcode": "L08_M15", "view": "/share/staff/view.staff_vacation_report", "title_demo": "8-14.연차,유급휴일 대장", "rpt": true },
+      "ogada": {
+        "routes": ["/staff/annual-leaves"],
+        "status": "parity",
+        "superset": [
+          "surfaceKind ANNUAL_LEAVE_USAGE_SNAPSHOT",
+          "relatedSurfaces[] API metadata",
+          "@2040571 reverse link from /staff/attendance",
+          "V173 DB integrity 5 CHECK/FK",
+          "PLANNED /staff/leave-ledger v3 candidate"
+        ],
+        "carefor_note": "정적 PDF 리포트 only·API 메타 0"
+      }
+    }
+  ]
+}

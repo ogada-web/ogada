@@ -1,0 +1,128 @@
+BNK-537 ezCare agency/setting/user/insurance reverse-engineering extract
+fetched_at: 2026-06-23T05:29:51Z
+scope: authenticated /new.ez demo flow, PGID=agency-schedule,setting-f01,user-a100,worker-insurance
+
+Live artifacts
+- /new.ez?PGID=agency-schedule: HTTP 200 via demo session, 150,081B, md5 b5cc2c0e4fc765a18e3933c6aa7ab794
+- /new.ez?PGID=setting-f01: HTTP 200 via demo session, 107,187B, md5 d5a3f8cdb0823924790a00174b208713
+- /new.ez?PGID=user-a100: HTTP 200 via demo session, 112,085B, md5 5c00aa89aa20fdd6c941d26bd4e4a70b
+- /new.ez?PGID=worker-insurance: HTTP 200 via demo session, 108,568B, md5 137b7f6999e91c260ad64aae79213594
+- top-nav-item-V2.js: HTTP 200, 25,470B, md5 95286775000f06c8ad13688fcb0d6dbb
+
+agency-schedule: 기관관리-일정
+- Header: "9.기관관리-일정"
+- Calendar filters: "방문일정(관리자)", "관리일정"
+- Actions: "구분추가", "일정추가", "스케쥴화면 출력", "스케쥴목록 출력"
+- Schedule form fields:
+  - title
+  - wdate_s, wdate_e
+  - oneDay
+  - me ("나만보기")
+  - repeats = every_year, every_month, every_week, weekday, weekend, everyday, blank
+  - category
+  - post
+- Category fields:
+  - rowid, color, title, memo
+- Workflow/endpoints:
+  - read calendar/month data: /page/agency/json.php?data=p-schedule-GET (inferred from page pattern; exact line in script block)
+  - add/update schedule: /page/agency/run.php?mode=p-schedule-INSERT or p-schedule-UPDATE
+  - delete schedule: /page/agency/run.php?mode=p-schedule-DELETE
+  - delete a single occurrence from a repeated schedule: /page/agency/run.php?mode=p-schedule-this-UPDATE
+- Interpretation: this is an institution-level operational calendar with recurring rules and "skip one occurrence" handling, not a client visit billing calendar.
+
+setting-f01: 기관정보 및 설정
+- Header: "기관정보 및 설정"
+- Tabs:
+  - 재가기관 정보
+  - 사업자 정보
+  - 직인(도장)
+  - 결재라인
+  - 본인부담금 계좌
+  - 이지케어 담당자
+- Key fields:
+  - code, name, regNo, owner
+  - zipcode, address1, address2, telNo, faxNo, email, homepage
+  - companyName, companyNo, companyOwner, companyType, companyKind, companyAddr, companyAddr2
+  - dojang_kind=jikin, img
+  - approval_line
+  - b_name, b_account, b_owner
+  - charge, charge_ext, charge_handphone
+- Workflow/endpoints:
+  - /page/setting/json-setting.php?data=setting-oInfo-GET
+  - /page/setting/run-setting.php?mode=setting-organ-UPDATE
+  - /page/setting/run-setting.php?mode=setting-company-UPDATE
+  - /page/setting/run-setting.php?mode=setting-dojang-UPDATE
+  - /page/setting/run-setting.php?mode=setting-dojang-DELETE
+  - /page/setting/run-setting.php?mode=setting-approval-line-UPDATE
+  - /page/setting/run-setting.php?mode=setting-pAmtAccount-UPDATE
+  - /page/setting/run-setting.php?mode=setting-charge-UPDATE
+- Interpretation: settings are split into six operational tabs and include approval-line and copay deposit account, both useful for ogada platform/admin settings planning.
+
+user-a100: 사용자관리 and menu access policy
+- Header: "기타관리 - 사용자관리"
+- Tabs: 사용자관리, 로그인기록
+- User search/filter:
+  - level radio: all, 6 최고관리자, 4 승인(사용중), 0 중지(사용불가)
+- User fields:
+  - User_Name
+  - wCode (worker match)
+  - User_ID (English/number 4-15)
+  - User_PW, User_PW2
+  - level = 0 중지, 1 미승인, 4 승인, 5 관리자, 6 최고관리자
+  - duty, telephone, email
+- Grids/endpoints:
+  - grid-user-a100: /page/user/json-user.php?data=userList
+  - grid-user-a200: /page/user/json-user.php?data=join-log
+  - grid-worker: /page/user/json-user.php?data=workerList
+- Workflow/endpoints:
+  - admin password confirm: /page/user/run-user.php?mode=confirm-PW
+  - user insert/update/delete: /page/user/run-user.php?mode=user-INSERT, user-UPDATE, user-DELETE
+  - menu denied list: /page/user/json-user.php?data=user-access-denied
+  - menu denied save: /page/user/run-user.php?mode=access-denied-UPDATE
+- Interpretation: ezCare uses numeric login levels plus per-menu deny-list checkboxes. ogada RBAC has stronger role/tenant semantics, but a P3 menu-permission matrix remains useful for enterprise parity.
+
+worker-insurance: 배상책임보험 and social-insurance support
+- Header: "배상책임보험"
+- Insurance contract fields:
+  - mode, code
+  - insu_co_code
+  - insu_item
+  - insuBondRealNo
+  - date_st, date_ed
+  - pay_amount_unit
+  - pay_amount
+  - memo1, memo2
+- Subscriber fields:
+  - insu_code, wCode, date_st, date_ed, pay_amt, updateChk
+- Grids/endpoints:
+  - insuGrid: /page/worker/json-worker.php?data=insuList
+  - workerGrid: /page/worker/json-worker.php?data=addWorkerList
+  - addWorkerGrid: /page/worker/json-worker.php?data=addWorkerGrid
+- Workflow/endpoints:
+  - contract insert/update: /page/worker/run-worker.php?mode=insurance_INSERT or insurance_UPDATE
+  - contract delete: /page/worker/run-worker.php?mode=insurance_DELETE
+- Support taxonomy shown in call-detail:
+  - 4대보험: 취득 및 상실신고
+  - 취득 및 상실신고의 취소, 변경, 정정 문의
+  - 이직확인서, 보수월액변경, 피부양자 추가 등록 문의
+  - 기타 4대보험 관련문의(보수총액 신고 등)
+- Interpretation: this PGID is liability-insurance contract/subscriber management, while 4대보험 is exposed as support/consulting taxonomy rather than a full in-app social-insurance filing workflow.
+
+Public page remeasure
+- ezcare_home.html: HTTP 200, 106,086B, md5 2e3775b7535d17865e610fece941a678, "9,271개 재가기관", "2026년 06월 23일 현재"
+- ezcare_fnc.html: HTTP 200, 17,870B, md5 3736bf6a5260682c1b285215b9a4b8a1, "전국 9,346개 기관 사용중"
+- ezcare_charge.html: HTTP 200, 22,979B, md5 416d4f31da98e5ea1dde3eebacf19366, setup 33,000원, formula "기본료(10,000원) + ((일정관리 수급자 수-10) x 500원) + vat", 37명 example 25,850원, 100명 tier 55,000원
+- channelio_01805b93.html: HTTP 200, 243,635B, md5 589ea94d5cc3b8c83dbd41d45f867d6b, zero drift
+- channelio_bc7f4cd9.html: HTTP 200, 228,038B, md5 dbd710c84bbf829483cf68105125b426, zero drift
+
+ogada baseline
+- FE develop @2040571, WT clean, ahead origin/test by 183
+- BE develop @6ab3760, WT clean, ahead origin/test by 525
+- merge gate: 708
+- KPI carry from BNK-536: 111 Route, 89 page(+RootRedirect=90), V1-V173, BE Test 246, FE test 449, module coverage 78.79%
+
+Planner implications
+- New P3 candidate: G-AGENCY-OPERATIONS-CALENDAR for branch/institution-level internal calendar with recurrence, category color, privacy, occurrence deletion, and print.
+- P3 carry strengthened: G-MENU-PERMISSION-MATRIX. ezCare numeric level plus per-menu deny-list is concrete evidence, but ogada should keep RBAC/tenant model as the primary invariant.
+- P3 candidate: G-LIABILITY-INSURANCE-ROSTER. Useful for HR/compliance expansion, not MVP core.
+- No new P0/P1 core gap. Price/adoption drift is a marketing signal only.

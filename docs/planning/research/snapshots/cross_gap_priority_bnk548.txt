@@ -1,0 +1,66 @@
+# BNK-548 cross-gap-priority extract — 2026-06-23T12:00Z
+# rotation: 교차검증·갭 우선순위 8h+ (G14·대시보드·v1.3-C·v2 CMS 4축·가정 번복·엑셀 포맷 스캔)
+
+## ogada git 실측 @HEAD
+FE develop: 949e9bf (WT CLEAN · BNK-545=546=547=548 HEAD zero advance 4-cycle · ahead 186 vs origin/test)
+BE develop: f1225b0 (WT CLEAN · BNK-547→548 HEAD +1 · ahead 528 vs origin/test)
+merge gate: FE186 + BE528 = 714 (+1 vs BNK-547 713)
+
+BE +1 commit f1225b0:
+  test(v2/G2): verify CMS branch roster status filter normalization
+  Cover trim/uppercase handling for PENDING roster queries and branch read-scope validation
+  to close QA-B267 dirty-tree carry.
+  CmsServiceTest.java +23L / +1 @Test
+
+KPI:
+  Route 111 = rg '<Route\b' App.jsx 110 + <Routes> 1
+  Page 89 (*Page.jsx) + RootRedirect = 90
+  Flyway V1–V173 contiguous
+  BE Test files 247 · @Test 1,814 (+1 vs BNK-547 1,813)
+  FE test 450 = 183 .test.js + 267 .test.jsx (git ls-files tracked)
+  Module coverage 22.85/29 = 78.79% (competitorModuleCoverage.js Σcoverage; line5 주석 과집계 제외)
+
+## 4축 P0/P1 교차검증 (재오픈 0)
+| 축 | App.jsx path | BE/FE 구현 힌트 | 판정 |
+|----|--------------|-----------------|------|
+| G14 care-plan-form | /clients/:clientId/care-plan-form | ClientCarePlanForm.jsx | ✅ LIVE |
+| 대시보드 | /dashboard · /dashboard/hq | DashboardPage.jsx | ✅ LIVE |
+| v1.3-C 이동/Kakao | /transport/* (6 routes) | TransportServiceFeePanel · KakaoDirectionsClient | ✅ LIVE |
+| v2 CMS | /billing/cms | CmsService.normalizeEnrollmentStatusFilter trim+uppercase · f1225b0 @Test validateBranchReadScope | ✅ LIVE + test deepen |
+
+CmsService.normalizeEnrollmentStatusFilter (src/backend/.../CmsService.java:451-460):
+  rawStatus null/blank → null (all statuses)
+  else trim().toUpperCase(Locale.ROOT) → ACTIVE|CANCELLED|PENDING only
+  listBranchEnrollments → validateBranchReadScope via resolveBranchScope + jwtScopeResolver
+
+## 백본 4-URL 333차 live=on-disk IDENTICAL
+| URL | HTTP | SIZE | live md5 | on-disk | Δ |
+| carefor func.php Wayback id_ | 200 | 98,328B | 6226e6eb | 6226e6eb | IDENTICAL |
+| ezCare top-nav-V2.js | 200 | 25,470B | 95286775 | 95286775 | IDENTICAL |
+| NHIS joHistory #44 | 200 | 7,572B | c886ff1f | c886ff1f | IDENTICAL 333차 |
+| silverangel notice list | 200 | 3,594,181B | 52c9457f | 52c9457f | IDENTICAL · 최신 Tmp_idx≤221551 |
+| silverangel daycareEssential | 200 | 131,664B | c79c1be3 | c79c1be3 | IDENTICAL |
+
+## NHIS #44 구 URL 19-cycle 404 carry
+longtermcare.or.kr/.../jongHistoryView.web?communityKey=B0017&boardId=44 → HTTP 404 · 861B fcadfbfe
+on-disk canonical nhis_jo44.html c886ff1f 러-1~4 verbatim 보존
+ogada TransportServiceFeeService 5/5 ✅ parity/우위 carry
+
+## ezCare home banner A/B oscillation (신규 증거 패턴)
+동일 URL https://ezcare.easyms.co.kr/ 연속 fetch 2회:
+  Fetch A: SIZE 106,147B · banner [추천 이벤트] · md5 cc622bf8 (BNK-548 12:00Z 1차)
+  Fetch B: SIZE 106,134B · banner [무료 이벤트] · md5 2dfefe52 (BNK-548 12:00Z 2차·on-disk 덮어쓰기)
+→ server-side A/B rotation (marketing/compliance carousel) · counter 9,273 재가기관 carry · 실질 기능/엑셀 무관
+fnc 9,348개 verbatim 불변 · SIZE 17,870B 동일 · md5 cachebuster-only DRIFT (a58d12df vs 67da2f80)
+
+## 엑셀 포맷 2026 스캔
+Channel.io 01805b93: HTTP 200 · 243,635B · md5 91934244 IDENTICAL (on-disk)
+「원천세 신고」·「본인부담」·일정확정 verbatim 불변 · COMP_0x/xls_ 컬럼 변경 0
+
+## planner 액션
+P0 해소: BE CmsServiceTest f1225b0 committed · WT CLEAN
+P1 carry: tester FF merge gate 714 가속
+P2 carry: NHIS#44 신규 정식 URL 발견 (19-cycle 404)
+P3 carry: ezCare home banner oscillation = read-only noise · core 갭 0
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 2(BE HEAD+1 · BE WT DIRTY→CLEAN)

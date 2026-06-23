@@ -1,5 +1,51 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T09:00:00+00:00 -->
-# develop ↔ test diff 메타 (2026-06-08, 92차 재검증)
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T23:53:38+00:00 -->
+# develop ↔ test diff 메타 (2026-06-08, 104차 — origin 동기화 @598d108 · develop v1.2.1 @2012945)
+
+> **104차 재검증 (23:53 UTC) — test `@598d108` CLEAN·origin/test **동기화**·246/246 PASS·develop `2012945`(+1 v1.2.1) CLEAN·1 ahead·PASS(v1)·Open 0**:
+> test·origin/test **`598d108`** 동기화(QA-B12 Fixed). test `mvn test` **246/246 PASS**(64 suites)·JAR **76,675,999 B**·Boot **3.3.1**·Flyway **V50**. develop HEAD **`2012945`**(+1 vs test — `feat(v1.2.1): add region master, branch profile, and billing integrity`: `regions/api/RegionController`·`regions/domain/RegionLookupService`·`V51__admin_regions_and_branch_profile.sql`·`V52__billing_payment_recorded_by_actor_integrity.sql`·`organizations/domain/BranchService` profile·27 files +742), WT **CLEAN**. develop `mvn test` **246/246 PASS**. develop **1커밋 ahead** — v1.2.1 develop-only·차기 merge. **신규 Open 0건**. **판정 PASS(v1 merged baseline)**.
+
+> **102차 재검증 (16:13 UTC) — test `@598d108` CLEAN·develop HEAD `@598d108` DIRTY(13 WIP)·246/246 PASS·origin/test STALE 26 ahead·PASS(conditional)·Open 0**:
+> 로컬 **develop·test HEAD 동기화** @ `598d108` (`feat(v2): add copay payment recording, overdue list, and guardian billing API` — V50·BillingServiceTest +198). test `mvn test` **246/246 PASS**(64 suites)·JAR **76,675,999 B**·Boot 3.3.1. v1 baseline + v1.3-A + v3 + V50 **test HEAD PRESENT** ✓. develop WT **DIRTY 13**(regions/V51/V52 WIP). **origin/test STALE** `2799e29` — **26 ahead·미푸시**(QA-B12 Planned). 판정 **PASS(conditional)**.
+
+> **100차 재검증 (15:10 UTC) — ✅ develop→test MERGE 실행(로컬 worktree)·test `2799e29`→`32575aa`(25커밋 fast-forward)·test 243/243 PASS·develop `598d108`(+1 v2 copay payment)·246/246 PASS·신규 Open 1(QA-20260608-B12 HIGH)·판정 PASS(conditional)**:
+> **MERGE 실행** — test HEAD **`2799e29`(79 tests, 23 suites) → `32575aa`(25커밋 fast-forward 머지)**, working tree **CLEAN**. 98차까지 단일 BLOCK 이던 develop→test merge 게이트가 **로컬 worktree 에서 해소**.
+> 머지 후 test `mvn test` **243/243 PASS**(64 suites, surefire-reports 집계) — 98차 develop HEAD(`32575aa`) 243/243 과 **동일 산출물**(Flyway 49 migrations·V47/V48/V49 포함·Boot 3.3.1·JAR 76,466,058 B). `git cat-file -e test:` v1 baseline + BE-11 + V45/V46 + v2/J03 alimtalk + v1.3-A transport(API·V47·V48·geocode proxy·unconfirm·client profile·pilot service-flow E2E·pickup masking·masking 단위 테스트) + v3 meals/programs(V49) **전부 PRESENT** ✓.
+> develop HEAD **`32575aa`→`598d108`**(+1커밋, 머지 이후 신규 — `feat(v2): add copay payment recording, overdue list, and guardian billing API`: `billing/api/RecordCopayPaymentRequest.java`·`billing/api/OverdueClaimListResponse.java`·`billing/domain/BillingService.java`·`db/migration/V50__billing_copay_payment_metadata.sql`·`billing/domain/BillingServiceTest.java`(+198), 13 files +507/-3), working tree **CLEAN**. develop `mvn test` **246/246 PASS**(64 suites, 243 → +3 BillingServiceTest copay payment).
+> develop **1커밋 ahead** of test(`598d108`) — 차기 merge 사이클.
+> **⚠ 신규 Open 1건 QA-20260608-B12(HIGH)**: 머지가 **로컬 worktree 한정** — `origin/test` 여전히 **`2799e29`(STALE)**·`git rev-list --count origin/test..HEAD` = **25**(미푸시). operation 승격은 origin 기준 → `git_merge_to_test.sh` 로 **origin/test push 필수**(재clone 시 머지 유실 위험·SEC-D14 origin 미반영·`.agents/rules.md` §6 push 누락 금지).
+> **판정 PASS(conditional)** — merge(`32575aa`) 로컬 검증 완료·**merge 게이트 BLOCK 해소**. operation 승격 전 ① origin/test push(QA-B12) ② develop +1(`598d108`) 차기 merge 잔여. v1.3-A US-T02/T03 live E2E(post-merge)·v3 ROADMAP 버전 정의(planner) 잔여.
+
+> **98차 재검증 (13:55 UTC) — develop `32575aa` CLEAN·v1.3-A transport pickup contact masking 단위 테스트 보강(SEC-D9 PII)·merge 25커밋·develop 243/243·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`32575aa`**(+1커밋 vs 96차 `c7941e9` — `test(v1.3-A): add pickup contact masking unit tests for roster and run detail`: `transport/domain/TransportServiceTest.java`(+86 — hq_admin pickup 연락처 전체 노출 어서션·caregiver `getRun` 마스킹(`010-****-5678`) 어서션 추가·non-HQ PII 마스킹 회귀 안전망 강화, **test-only commit**), 1 file +86), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **243/243 PASS**(64 suites, 96차 241 → +2: `TransportServiceTest` 8→10 @Test, 신규 production 코드 없음).
+> develop **25커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm·client profile·pilot service-flow E2E·pickup address+contact masking + masking 단위 테스트 보강) + v3 meals/programs artifacts PRESENT @ 32575aa(TSR 98차 독립 검증 PASS)**.
+> **v1.3-A transport privacy 회귀 보강** — non-HQ pickup 연락처 마스킹·hq_admin 전체 가시성·caregiver `getRun` 마스킹 단위 테스트로 SEC-D9 PII 보호(개인정보보호법) 커버리지 강화(merge 직전 회귀 안전망). US-T02·T03 live E2E 잔여(test 승격 후).
+> **v3 develop-only** — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
+
+> **96차 재검증 (12:40 UTC) — develop `c7941e9` CLEAN·v1.3-A transport pickup contact masking(non-HQ)·merge 24커밋·develop 241/241·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`c7941e9`**(+1커밋 vs 94차 `e7d4cf6` — `feat(transport): mask pickup contact for non-hq views`: `transport/domain/TransportService.java`(+21 — `maskPhone` 헬퍼·non-HQ 역할 roster·run detail 응답 pickup 연락처 마스킹 `010-****-5678`·HQ 가시성 유지)·`transport/domain/TransportGeocodeService.java`(+4 — `resolvePickupContactPlain`)·`transport/api/TransportRosterItemResponse.java`(+1 — pickupContact 필드)·`transport/api/TransportStopResponse.java`(+1 — pickupContact 필드)·`transport/domain/TransportServiceTest.java`(+2 — pickup contact 마스킹 어서션)·`transport/domain/TransportPilotServiceFlowE2eTest.java`(+4 — roster·confirmed run detail privacy 회귀), 6 files, +33), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **241/241 PASS**(64 suites, 94차 241 불변 — 신규 @Test 없음·기존 테스트 마스킹 어서션 확장만).
+> develop **24커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm·client profile·pilot service-flow E2E·pickup address+contact masking) + v3 meals/programs artifacts PRESENT @ c7941e9(TSR 96차 독립 검증 PASS)**.
+> **v1.3-A transport privacy 완성** — non-HQ 역할 pickup **주소(e7d4cf6) + 연락처(c7941e9)** 마스킹 — PII 보호(개인정보보호법) 강화. API_SPEC·ROADMAP v1.3·DATA_RETENTION_POLICY 반영 planner 확인 권장. US-T02·T03 live E2E 잔여(test 승격 후).
+> **v3 develop-only** — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
+
+> **94차 재검증 (11:32 UTC) — develop `e7d4cf6` CLEAN·v1.3-A transport pickup address masking(non-HQ)·merge 23커밋·develop 241/241·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`e7d4cf6`**(+1커밋 vs 93차 `f8d1b02` — `feat(transport): mask pickup addresses for non-HQ transport views`: `TransportService.java`(+47/-10 — non-hq 역할 roster·run detail pickup 주소 마스킹·HQ 편집 흐름 유지)·`TransportPilotServiceFlowE2eTest.java`(+1 privacy 회귀)·`TransportServiceTest.java`(+38 pickup masking 단위 테스트), 3 files, +76/-10), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **241/241 PASS**(64 suites, 93차 240 → +1: `TransportServiceTest` pickup masking).
+> develop **23커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm·client profile·pilot service-flow E2E·pickup address masking) + v3 meals/programs artifacts PRESENT @ e7d4cf6(TSR 94차 독립 검증 PASS)**.
+> **v1.3-A transport privacy** — non-HQ 역할 pickup 주소 마스킹 @ `e7d4cf6` — API_SPEC·ROADMAP v1.3 반영 planner 확인 권장. US-T02·T03 live E2E 잔여(test 승격 후).
+> **v3 develop-only** — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
+
+> **93차 재검증 (10:20 UTC) — develop `f8d1b02` CLEAN·v1.3-A transport pilot service-flow E2E·RBAC coverage(US-T01~T03)·merge 22커밋·develop 240/240·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
+> develop HEAD **`f8d1b02`**(+1커밋 vs 92차 `1ec538b` — `test(v1.3-A): add transport pilot service-flow E2E and RBAC coverage (US-T01~T03)`: `transport/domain/TransportPilotServiceFlowE2eTest.java`(+183 new — US-T01~T03 배차 서비스 흐름 E2E)·`pilot/PilotChecklistJwtE2eTest.java`(+32 — transport pilot 체크리스트 흐름)·`security/RoleBasedControllerAccessTest.java`(+125 — transport RBAC 커버리지), 3 files, +340, **test-only commit**), working tree **CLEAN**.
+> test HEAD **`2799e29`**(v1 초기 구현 baseline) — ROADMAP v1 merged 기대 **`e8750d2`** 와 **불일치**.
+> test `mvn test` **79/79 PASS**(23 suites, Boot 3.3.1, JAR 76,466,058 B). develop HEAD `mvn test` **240/240 PASS**(64 suites, 92차 231 → +9: `TransportPilotServiceFlowE2eTest` new·`PilotChecklistJwtE2eTest` +·`RoleBasedControllerAccessTest` transport RBAC +).
+> develop **22커밋 ahead** — merge 미실행. **모든 v1 baseline + v1.3-A transport(unconfirm PATCH+POST·client transport profile US-T01·pilot service-flow E2E) + v3 meals/programs artifacts PRESENT @ f8d1b02(TSR 93차 독립 검증 PASS)**.
+> **US-T01 backend 완료·US-T01~T03 service-flow E2E 커버리지 추가** — frontend roster 구성 가능. US-T02·T03 live E2E 잔여(test 승격 후).
+> **v3 develop-only** — ROADMAP v3 버전·merge 게이트 미정의(planner 정의 대기).
 
 > **92차 재검증 (09:00 UTC) — develop `1ec538b` CLEAN·v1.3-A client transport profile(US-T01)·merge 21커밋·develop 231/231·test 79/79·Open 0·BLOCK(merge 게이트 단일)**:
 > develop HEAD **`1ec538b`**(+1커밋 vs 91차 `767d977` — `feat(v1.3-A): expose client transport profile on Clients API (US-T01)`: `ClientResponse.java`(+5 — usesTransport·pickup address/contact·defaultPickupTime 필드)·`CreateClientRequest.java`(+7 — transport profile 입력)·`UpdateClientRequest.java`(+7 — transport profile 수정)·`ClientService.java`(+52 — transport profile 처리·pickup geocode 캐시 무효화)·`ClientServiceTest.java`(+176 — transport profile 9 @Test·기존 7→9)·`PilotChecklistJwtE2eTest.java`(+45 — transport roster·run detail endpoint 라우팅 smoke test), 6 files, +286/-6), working tree **CLEAN**.

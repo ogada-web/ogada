@@ -1,0 +1,21 @@
+케어포 주야간 매뉴얼 PDF p.97 — 8-1.직원 정보관리 · 프로그램권한 변경
+출처: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=97
+조사일: 2026-06-21 | HTTP 200 (Wayback id_) | BNK-473 신규 evidence
+
+=== p.97 프로그램권한 변경하기 ===
+메뉴위치: 8-1.직원 정보관리 - 프로그램 권한변경 버튼
+직원의 프로그램 권한을 수정 처리할 수 있는 서비스입니다.
+
+- 직원의 프로그램 권한은 기본적으로 직종에 따라 분류가 되어있으며,
+  필요에 따라 권한분류선택에 있는 항목을 선택하여 권한변경이 가능
+  (직원과 권한을 연결하는 게 주목적)
+- 권한 상세 항목은 이곳에서는 수정이 불가능하며,
+  「9-1.시설정보설정 - 프로그램 권한 수정」에서 상세항목 수정이 가능함.
+  (권한의 세부세팅은 9-1.시설정보설정에서만 가능)
+※ 이 권한은 모바일앱에도 똑같이 적용됩니다.
+
+=== ogada cross-walk (BNK-473) ===
+- ogada: JWT RBAC **7-role** + `sevenRoleRouteMatrix` path-level guard ✅
+- 케어포: **직원×프로그램권한분류** 연결 + **9-1 시설설정**에서 권한 세부 항목 정의
+- 이지케어 FAQ21695: **계정×메뉴** fine-grained 차폐(예: 7.1 통장내역) ✅
+- ogada 갭: per-user/per-menu matrix ❌ → **G-MENU-PERMISSION-MATRIX P3「가정」** carry (MVP out-of-scope)

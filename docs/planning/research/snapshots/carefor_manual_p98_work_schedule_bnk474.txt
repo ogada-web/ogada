@@ -1,0 +1,23 @@
+# 케어포 주야간보호 사용매뉴얼 PDF p.98 추출 (BNK-474 신규)
+# 원본: https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=98
+# Wayback: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=98
+# md5 PDF: 96f7d45eaca91525068ec9bfb626fb18 (132p·9,992,772B·pypdf 재추출 2026-06-21)
+# 조사일: 2026-06-21 | HTTP: 200 (Wayback id_ fetch)
+
+--- p.98 8-2.근무일정표 (6-step workflow) ---
+메뉴위치: 8-2.근무일정표
+직원의 월별 근무일정을 작성하며 공단과 연동해서 관리할 수 있는 서비스입니다.
+
+① 직원명 옆 「작성」버튼 → 월간 근무일정 입력창
+② 근무일정 패턴 + 「일괄적용」→ 월간 일정 일괄 생성
+③ 오른쪽 달력: 근무시간 패턴 체크 후 날짜별 입력(체크 해제로 개별 수정)
+④ 체크된 근무시간을 날짜 클릭 또는 체크 해제로 조정
+⑤ 월간 근무일정 **5가지 형태** 출력
+⑥ **공단↔케어포 엑셀 양방향 연동**
+   - 공단 → 케어포: 공단 근무표 엑셀 다운로드 → 케어포 업로드 일괄 등록
+   - 케어포 → 공단: 케어포 해당월 근무일정표 엑셀 다운로드 → 공단 업무포털 업로드
+
+[BNK-474 cross-walk]
+- func.php `8-2.근무일정표` (module 8 leaf) ↔ demo-work `L08_M02` `view.staff_work_schedule` (loadPage obj-type)
+- ogada: staff work-schedule NHIS excel Route **0** → candidate `G-STAFF-WORK-SCHEDULE-NHIS-EXCEL` P3「가정」 deepen (BNK-473 carry)
+- ogada partial: `/staff` cluster(직원관리)·`/staff/training-logs`·출퇴근 NFC/모바일 = PDF p.100 8-4 cluster와 부분 대응·**월간 패턴 일괄적용·5종 출력·NHIS excel ❌**

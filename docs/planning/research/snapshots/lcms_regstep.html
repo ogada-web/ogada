@@ -1,0 +1,579 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko" class="sub">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>회원가입 - 엔젤시스템</title>
+    <link type="image/png" rel="shortcut icon" href="/css/egovframework/lcms_renew/images/favicon.png">
+    <meta name="Keywords" content="요양시설통합사례관리솔루션 엔젤시스템">
+    <meta name="subject" content="요양시설통합사례관리솔루션 엔젤시스템">
+    <meta name="description" content="요양시설통합사례관리솔루션 엔젤시스템">
+    <link rel="stylesheet" href="/css/egovframework/lcms_renew/css/board.css">
+    <link rel="stylesheet" href="/css/egovframework/lcms_renew/css/reg.css">
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery.inputmask.js"></script>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery.inputmask.date.extensions.js"></script>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery.inputmask.extensions.js"></script>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery.inputmask.numeric.extensions.js"></script>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery.inputmask.phone.extensions.js"></script>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery.inputmask.regex.extensions.js"></script>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery.mtz.monthpicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/egovframework/lcms/cmm/jquery-ui/10.3/redmond/jquery-ui-1.10.3.custom.css" media="all"/>
+    <script type="text/javascript" src="/js/egovframework/lcms/cmm/jquery-ui-1.10.3.js"></script>
+</head>
+
+
+<script type="text/javascript" src='/js/egovframework/lcms/cmm/warningLayer.js?version=20240813'></script>
+<style>.pop-layer { display: none }</style>
+
+<form name="kmcForm" method="post" id="kmcForm">
+  <!-- 예비 필드 -->
+  <input type="hidden" name="Var1"/>
+  <input type="hidden" name="Var2"/>
+  <input type="hidden" name="Var3"/>
+  <input type="hidden" name="Var4"/>
+</form>
+
+<form name="reqKMCISForm" method="post" id="reqKMCISForm" action="#">
+  <input type="hidden" name="tr_cert"/>
+  <input type="hidden" name="tr_url"/>
+  <input type="hidden" name="tr_ver"/>
+</form>
+
+
+<script>
+// 1. 유저가 이름or핸드폰 클릭 이벤트 / 한국모바일인증 KMC 호출
+function requsetKMC(){
+  //로딩창 호출
+  MsgLayerVisible();
+  setTimeout(function(){
+    MsgLayerHidden();
+}, 5000);
+
+requsetKMC2();
+}
+
+function requsetKMC2(){
+  //로딩창 호출
+  MsgLayerVisible();
+  setTimeout(function(){
+    MsgLayerHidden();
+}, 5000);
+
+  let kmcForm = document.kmcForm;
+  let reqKMCISForm = document.reqKMCISForm;
+  let params = { // 추가로 보내고 싶은 파라미터
+                  Var1: kmcForm.Var1.value,
+                  Var2: kmcForm.Var2.value,
+                  Var3: kmcForm.Var3.value,
+                  Var4: kmcForm.Var4.value
+               }
+               
+  $.ajax({
+    url: '/kmc/KMCStep1.json',
+    data: params,
+    dataType: 'json',
+    async: false,
+    success: function(result){
+      reqKMCISForm.tr_cert.value = result.tr_cert;
+      reqKMCISForm.tr_ver.value  = result.tr_ver;
+      reqKMCISForm.tr_url.value  = result.tr_url;
+
+      // 인증 팝업창 호출
+      openKMCISWindow();
+    },
+    error: function(error, xhr, status){
+      alert("인증번호 발송에 실패하였습니다.");
+      console.log(error);
+      console.log(xhr);
+      console.log(status);
+    }
+  });
+}
+
+
+// 2. 인증 팝업창 호출
+function openKMCISWindow() {
+  var UserAgent = navigator.userAgent;
+  // 모바일 접근 체크
+  // 모바일일 경우 (변동사항 있을경우 추가 필요)
+  if (UserAgent.match(/iPhone|iPad|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i) != null || UserAgent.match(/LG|SAMSUNG|Samsung/) != null) {
+      document.reqKMCISForm.target = '';
+  }
+
+  // 모바일이 아닐 경우
+  else {
+      KMCIS_window = window.open('', 'KMCISWindow', 'width=425, height=550, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250');
+
+      if (KMCIS_window == null) {
+          alert(" ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.");
+      }
+      document.reqKMCISForm.target = 'KMCISWindow';
+  }
+  document.reqKMCISForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp';
+  document.reqKMCISForm.submit();
+
+  // 팝업에서 인증이 끝나면 팝업에서 tr_url(/kmc/KMCStep2.do)로 이동
+}
+
+
+// jsp에서 인증해야 할 사람이 다수인 경우 인증 후 받을 사람 세팅(include 하고 있는 jsp에 추가)
+function setAfterKMC(name, phone){
+  document.getElementById("kmc_req_name").value    = name;
+  document.getElementById("kmc_req_phoneNo").value = phone;
+}
+
+// KMC 콜백 수신 - www 유무 관계없이 같은 도메인이면 허용
+window.addEventListener('message', function(e) {
+  var senderHost = e.origin.replace(/^https?:\/\/(www\.)?/, '');
+  var myHost     = location.host.replace(/^www\./, '');
+  if (senderHost !== myHost) return;
+  if (e.data && e.data.type === 'KMC_RESULT') {
+    if (typeof kcmResultSet === 'function') {
+      kcmResultSet(e.data.name, e.data.phoneNo, e.data.Var1, e.data.Var2, e.data.Var3, e.data.Var4);
+    }
+  }
+});
+</script>
+<form name="careFrm">
+
+<!-- KMC 인증 후 전달 받을 이름, 전화번호의 ID -->
+<input type="hidden" name="kmc_req_name" id="kmc_req_name">
+<input type="hidden" name="kmc_req_phoneNo" id="kmc_req_phoneNo">
+<input type="hidden" name="regResultMsg" id="regResultMsg">
+
+<body class="body">
+  <div class="wrap">
+    <div class="title-div">
+      <img class="title_img" src="/images/egovframework/lcms/login/ico_type2.png">
+      <h2 class="angelTitle">
+        엔젤시스템 회원가입
+      </h2>
+    </div>
+    <div class="container_header">
+      <div class="progress-container">
+        <div class="progress" id="progress"></div>
+        <div class="circle active"><span>1</span></div>
+        <div class="circle"><span>2</span></div>
+        <div class="circle"><span>3</span></div>
+    </div>
+    </div>
+    <div class="inner-wrap1">
+      <div class="container step_1">
+        <div class="content_body __1">
+          <div class="content_body_ch">
+            <div class="cb_ch1_left"><span class="block">기관기호</span><span class="must">*</span></div>
+            <div class="cb_ch1_right">
+              <input type="text" id="offiCareNo" class="input_text" value="" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" maxlength="13" style="width: 30%;">
+            </div>
+          </div>
+          <div class="content_body_ch">
+            <div class="cb_ch1_left"><span class="block">기관명</span><span class="must">*</span></div>
+            <div class="cb_ch1_right">
+              <input type="text" id="offiNm" class="input_text" value="" maxlength="100" style="width: 60%;">
+            </div>
+          </div>
+          <div class="content_body_ch">
+            <div class="cb_ch1_left"><span class="block">사업자번호</span><span class="must">*</span></div>
+            <div class="cb_ch1_right">
+              <input type="text" name="offiNo" id="offiNo" class="input_text" value="" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" maxlength="12" style="width: 30%;">
+            </div>
+          </div>          
+          <div class="content_body_ch">
+            <div class="cb_ch1_left"><span class="block">정원</span><span class="must">*</span></div>
+            <div class="cb_ch1_right flex">
+              <input type="number" name="jungwon" id="jungwon" class="input_text" value="" maxlength="3" oninput="checkMaxLength(this)" style="width: 30%; margin-right: 2%;">
+              <span class="text_blue">※ 월사용료는 정원을 기준으로 책정됩니다.</span>
+              <a href="https://silverangel.kr/newSilverangel/service/feeService.do" target="_blank" class="btn-skyblue" style="margin-left: 2%;">사용료 조견표 보기</a>
+            </div>
+          </div>          
+          <div class="content_body_ch" style="align-items: normal;">
+            <div class="cb_ch1_left" style="align-items: baseline;"><span class="block">급여종류</span><span class="must">*</span></div>
+            <div class="cb_ch1_right radio_box_wrap">
+              <div class="radio_box">
+                <input type="radio" name="facilitySize" id="facilitySize_4" checked class="radio_input" value="4">
+                <label for="facilitySize_4"><span>주야간시스템</span></label>
+              </div>
+              <div class="radio_box">
+                <input type="radio" name="facilitySize" id="facilitySize_3"  class="radio_input" value="3">
+                <label for="facilitySize_3"><span>노인요양시설(30인 이상)</span></label>
+              </div>
+              <div class="radio_box">
+                <input type="radio" name="facilitySize" id="facilitySize_2"  class="radio_input" value="2">
+                <label for="facilitySize_2"><span>소규모시설(10인 ~ 29인)</span></label>
+              </div>
+              <div class="radio_box">
+                <input type="radio" name="facilitySize" id="facilitySize_1"  class="radio_input" value="1">
+                <label for="facilitySize_1"><span>노인요양공동생활가정(9인 이하)</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content_body __2">
+          <div class="all_agreement">
+            <input type="checkbox" name="allCheckbox" value="Y"  class="checkbox" id="allCheckbox" onchange="allCheck()">
+            <label for="allCheckbox" class="cb_ch1_left"><span class="block">전체동의</span></label>
+          </div>
+          <div class="agreements">
+            <div class="agreements_l">
+              <input type="checkbox" class="checkbox agreementCheckbox" id="agreement_1"  onchange="chkCheck()">
+              <label for="agreement_1" class="cb_ch2_left"><span class="block">이용약관</span><span class="must">*</span></label>
+            </div>
+            <div class="agreements_r">
+              <a href="#" class="must trigger" iframe="termsUse"  target="_blank">[약관보기]</a>
+            </div>
+          </div>
+          <div class="agreements">
+            <div class="agreements_l">
+              <input type="checkbox" class="checkbox agreementCheckbox" id="agreement_2"  onchange="chkCheck()">
+              <label for="agreement_2" class="cb_ch2_left"><span class="block">개인정보처리방침</span><span class="must">*</span></label>
+            </div>
+            <div class="agreements_r">
+              <a href="#" class="must trigger" iframe="privacyPolicy"  target="_blank">[약관보기]</a>
+            </div>
+          </div>
+          <div class="agreements">
+            <div class="agreements_l">
+              <input type="checkbox" class="checkbox agreementCheckbox" id="agreement_3"  onchange="chkCheck()">
+              <label for="agreement_3" class="cb_ch2_left"><span class="block">문자서비스 이용약관</span><span class="must">*</span></label>
+            </div>
+            <div class="agreements_r">
+              <a href="#" class="must trigger" iframe="sms_service"  target="_blank">[약관보기]</a>
+            </div>
+          </div>
+          <div class="agreements">
+            <div class="agreements_l">
+              <input type="checkbox" class="checkbox agreementCheckbox" id="agreement_4"  onchange="chkCheck()">
+              <label for="agreement_4" class="cb_ch2_left"><span class="block">엔젤시스템 상품안내서</span><span class="must">*</span></label>
+            </div>
+            <div class="agreements_r">
+              <a href="#" class="must trigger" iframe="product_guide" onclick="show_productGuide()"  target="_blank">[내용보기]</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 다음 페이지 이동 시 화면 -->
+      <div class="container step_2" style="display: none;">
+        
+
+
+  <div class="content_body __1">
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">기관기호</span><span class="must">*</span></div>
+      <div class="cb_ch1_right">
+        <input type="text" name="offiCareNo" id="offiCareNo2" class="input_text" value=""  maxlength="13" style="width: 30%;">
+      </div>
+    </div>
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">기관명</span><span class="must">*</span></div>
+      <div class="cb_ch1_right">
+        <input type="text" name="offiNm" id="offiNm2" class="input_text" value="" maxlength="100" style="width: 60%;">
+      </div>
+    </div>
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">기관 연락처</span><span class="must">*</span></div>
+      <div class="cb_ch1_right">
+        <input type="hidden" name="offiTel" id="offiTel" value="">
+        
+        
+        <input type="text" name="offiTel_1" id="offiTel_1" maxlength="3" value="" class="input_text offiTel" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" style="width: 10%;">
+        <span> - </span>
+        <input type="text" name="offiTel_2" id="offiTel_2" maxlength="4" value="" class="input_text offiTel" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" style="width: 10%;">
+        <span> - </span>
+        <input type="text" name="offiTel_3" id="offiTel_3" maxlength="4" value="" class="input_text offiTel" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" style="width: 10%;">
+      </div>
+    </div>  
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">기관 FAX</span></div>
+      <div class="cb_ch1_right">
+        <input type="hidden" name="offiFax" id="offiFax" value="">
+        
+        
+        <input type="text" name="offiFax_1" id="offiFax_1" maxlength="3" value="" class="input_text offiTel" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" style="width: 10%;">
+        <span> - </span>
+        <input type="text" name="offiFax_2" id="offiFax_2" maxlength="4" value="" class="input_text offiTel" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" style="width: 10%;">
+        <span> - </span>
+        <input type="text" name="offiFax_3" id="offiFax_3" maxlength="4" value="" class="input_text offiTel" onkeyup="onlyNumber(this);" onchange="onlyNumber(this);" style="width: 10%;">
+      </div>
+    </div>          
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">기관 이메일 주소</span><span class="must">*</span></div>
+      <div class="cb_ch1_right flex">
+        <input type="email" name="offiEmail" id="offiEmail" value="" class="input_text" maxlength="66" style="width: 60%; margin-right: 2%;">
+      </div>
+    </div>        
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">주소</span></div>
+      <div class="cb_ch1_right flex">
+        <input type="text" name="offiAddr_1" id="offiAddr_1" value="" onclick="searchPost()" class="input_text" maxlength="66" style="width: 60%; margin-right: 2%;" readonly>
+        <input type="hidden" name="offiAddr" id="offiAddr" value="">
+        <input type="hidden" name="post_type" alt="DontUse_but_need">
+      </div>
+    </div>        
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block"></span></div>
+      <div class="cb_ch1_right flex">
+        <input type="text" name="offiAddr_2" id="offiAddr_2" value="" class="input_text" maxlength="66" style="width: 60%; margin-right: 2%;">
+      </div>
+    </div>          
+  </div>
+  <div class="content_body __2">
+    <div class="content_body_ch" style="margin-top: 30px;">
+      <div class="cb_serper" style="width: 24%; margin-right: 3%;">
+        <div class="cb_ch1_left2">
+          <span class="block">대표자</span><span class="must">*</span>
+        </div>
+        <div class="cb_ch1_right" style="width: 60%;">
+          <input type="text" name="ceoNm" id="ceoNm" data-target="ceoContactFlag" onclick="setAfterKMC('ceoNm', 'ceoPhone'); requsetKMC();" value="" class="input_text" style="width: 100%;" readonly>
+        </div>
+      </div>
+      <div class="cb_serper" style="width: 40%;">
+        <div class="cb_ch1_left2" style="width: 25%;"><span class="block">휴대폰</span><span class="must">*</span></div>
+        <div class="cb_ch1_right" style="width: 75%;">
+          <input type="hidden" name="ceoPhone" id="ceoPhone" value="">
+          <input type="text" id="ceoPhone_1" value="" onclick="setAfterKMC('ceoNm', 'ceoPhone'); requsetKMC();" class="input_text offiTel" style="width: 25%;" readonly>
+          <span> - </span>
+          <input type="text" id="ceoPhone_2" value="" onclick="setAfterKMC('ceoNm', 'ceoPhone'); requsetKMC();" class="input_text offiTel" style="width: 25%;" readonly>
+          <span> - </span>
+          <input type="text"  id="ceoPhone_3" value="" onclick="setAfterKMC('ceoNm', 'ceoPhone'); requsetKMC();" class="input_text offiTel" style="width: 25%;" readonly>
+        </div>
+      </div>
+      <input type="checkbox" name="ceoContactFlag" id="ceoContactFlag" value="Y"  disabled>
+      <label for="ceoContactFlag" class="text_blue ml_10" style="font-size: 13px;">연락 받을 번호 최소 1명을 선택합니다.</label>
+    </div>
+    <div class="content_body_ch">
+      <div class="cb_serper" style="width: 24%; margin-right: 3%;">
+        <div class="cb_ch1_left2">
+          <span class="block">원장</span>
+        </div>
+        <div class="cb_ch1_right" style="width: 60%;">
+          <input type="text" name="presiNm" id="presiNm" data-target="presiContactFlag" onclick="setAfterKMC('presiNm', 'presiPhone'); requsetKMC();" value="" class="input_text" style="width: 100%;" readonly>
+        </div>
+      </div>
+      <div class="cb_serper" style="width: 40%;">
+        <div class="cb_ch1_left2" style="width: 25%;"><span class="block">휴대폰</span></div>
+        <div class="cb_ch1_right" style="width: 75%;">
+          <input type="hidden" name="presiPhone" id="presiPhone" value="">
+          <input type="text" id="presiPhone_1" value="" onclick="setAfterKMC('presiNm', 'presiPhone'); requsetKMC();" class="input_text offiTel" style="width: 25%;" readonly>
+          <span> - </span>
+          <input type="text" id="presiPhone_2" value="" onclick="setAfterKMC('presiNm', 'presiPhone'); requsetKMC();" class="input_text offiTel" style="width: 25%;" readonly>
+          <span> - </span>
+          <input type="text" id="presiPhone_3" value="" onclick="setAfterKMC('presiNm', 'presiPhone'); requsetKMC();" class="input_text offiTel" style="width: 25%;" readonly>
+        </div>
+      </div>
+      <input type="checkbox" name="presiContactFlag" id="presiContactFlag" value="Y"  disabled>
+    </div>
+    <div class="content_body_ch">
+      <div class="cb_serper" style="width: 24%; margin-right: 3%;">
+        <div class="cb_ch1_left2">
+          <span class="block">국장(관리자)</span>
+        </div>
+        <div class="cb_ch1_right" style="width: 60%;">
+          <input type="text" name="directNm" id="directNm" data-target="" class="input_text" onclick="setAfterKMC('directNm', 'directPhone'); requsetKMC();" value="" style="width: 100%;" readonly>
+        </div>
+      </div>
+      <div class="cb_serper" style="width: 40%;">
+        <div class="cb_ch1_left2" style="width: 25%;"><span class="block">휴대폰</span></div>
+        <div class="cb_ch1_right" style="width: 75%;">
+          <input type="hidden" name="directPhone" id="directPhone" value="">
+          <input type="text" id="directPhone_1" value="" onclick="setAfterKMC('directNm', 'directPhone');"  class="input_text offiTel" style="width: 25%;" readonly>
+          <span> - </span>
+          <input type="text" id="directPhone_2" value="" onclick="setAfterKMC('directNm', 'directPhone');"  class="input_text offiTel" style="width: 25%;" readonly>
+          <span> - </span>
+          <input type="text" id="directPhone_3" value="" onclick="setAfterKMC('directNm', 'directPhone');"  class="input_text offiTel" style="width: 25%;" readonly>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  
+// step2 유효성 검사
+function step2_validation(){
+  const form = document.careFrm;
+  const offiCareNo = document.getElementById("offiCareNo2").value;
+  let   offiCareNo_reple = offiCareNo.replaceAll("-", "").trim();
+  const offiNm = document.getElementById("offiNm2").value;
+  const offiTel_1 = document.getElementById("offiTel_1").value;
+  const offiTel_2 = document.getElementById("offiTel_2").value;
+  const offiTel_3 = document.getElementById("offiTel_3").value;
+  const offiEmail = document.getElementById("offiEmail").value;
+  const fax1 = document.getElementById("offiFax_1");
+  const fax2 = document.getElementById("offiFax_2");
+  const fax3 = document.getElementById("offiFax_3");
+  const addr1 = document.getElementById("offiAddr_1");
+  const addr2 = document.getElementById("offiAddr_2");
+  const ceoNm = document.getElementById("ceoNm").value;
+  const ceoPhone_1 = document.getElementById("ceoPhone_1").value;
+  const ceoPhone_2 = document.getElementById("ceoPhone_2").value;
+  const ceoPhone_3 = document.getElementById("ceoPhone_3").value;
+
+  if(offiCareNo == ""){
+    alert("기관기호를 입력해주세요.");
+    return false;
+  }
+  if(offiCareNo_reple.length != 11){
+    alert("기관기호는 11자리로 입력해주세요.");
+    return false;
+  }
+  if(isValidInput(offiCareNo)){
+    alert("기관기호는 숫자와 하이픈(-)만 입력해주세요.");
+    return false;
+  }
+  if(offiNm == ""){
+    alert("기관명을 입력해주세요.");
+    return false;
+  }
+  if(offiTel_1 == "" || offiTel_2 == "" || offiTel_3 == ""){
+    alert("기관 연락처를 입력해주세요.");
+    return false;
+  }
+  const faxValues = [fax1.value.trim(), fax2.value.trim(), fax3.value.trim()];
+  const faxIsAnyFieldFilled = faxValues.some(v => v !== ""); // 하나라도 값이 있는지 확인
+  if (faxIsAnyFieldFilled) {
+    const areAllFieldsFilled = faxValues.every(v => v !== ""); // 모든 필드가 채워졌는지 확인
+    if (!areAllFieldsFilled) {
+      alert("팩스 번호를 모두 입력해야 합니다.");
+      return false;
+    }
+  }
+  const addrValues = [addr1.value.trim(), addr2.value.trim()];
+  const addrIsAnyFieldFilled = addrValues.some(v => v !== ""); // 하나라도 값이 있는지 확인
+  if (addrIsAnyFieldFilled) {
+    const areAllFieldsFilled = addrValues.every(v => v !== ""); // 모든 필드가 채워졌는지 확인
+    if (!areAllFieldsFilled) {
+      alert("주소를 모두 입력해야 합니다.");
+      return false;
+    }
+  }
+  if(offiEmail == ""){
+    alert("이메일을 입력해주세요.");
+    return false;
+  }
+  if(!emailValidChk(offiEmail)){
+    alert("이메일 형식이 올바르지 않습니다.");
+    return false;
+  }
+  if(ceoNm == ""){
+    alert("대표자를 입력해주세요.");
+    return false;
+  }
+  if(ceoPhone_1 == "" || ceoPhone_2 == "" || ceoPhone_3 == ""){
+    alert("대표자 휴대폰 번호를 입력해주세요.");
+    return false;
+  }
+  if(!validateContact(form)){
+    alert("국장(관리자)을 입력하거나 연락 받을 번호를 선택해주세요.");
+    return false;
+  }
+
+  return true;
+}
+
+
+// 이메일 형식 검사
+function emailValidChk(email) {
+  const regex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
+
+  return regex.test(email);
+}
+
+
+// 대표, 원장, 국장 이름 연락처 체크박스 체크 여부 확인
+const validateContact = (form) => {
+  const directPhoneValue = form.directPhone_1.value.trim() + form.directPhone_2.value.trim() + form.directPhone_3.value.trim();
+  // 체크박스 또는 radio라면 checked 속성 사용
+  const isCeoChecked = form.ceoContactFlag.checked;
+  const isPresiChecked = form.presiContactFlag.checked;
+  
+  // 일반 input(text)라면 value 사용
+  const isDirectorNameFilled = form.directNm && form.directNm.value.trim() !== "";
+  const isDirectorPhoneFilled = directPhoneValue !== "";
+  
+  return !(!isCeoChecked && !isPresiChecked && (!isDirectorNameFilled || !isDirectorPhoneFilled));
+}
+
+
+function possibleFlag(name){
+  // 연결된 체크박스 ID를 가져옴
+  const input  = document.getElementById(name);
+  const targetCheckboxId = input.getAttribute("data-target");
+  const checkbox = document.getElementById(targetCheckboxId);
+
+  if(!targetCheckboxId) return;
+  
+    checkbox.disabled = false;
+}
+
+
+// 주소 찾기
+function searchPost(IDX){
+    var postWin;
+    postWin = window.open('/cmm/selectPostList.do','postWin','left=100,top=50,width=570,height=420,status=yes,menubars=no,scrollbars=yes');
+    postWin.focus();
+}
+
+
+// /cmm/selectPostList.do에서 주소 받음
+function jusoCallBack(rtRoadFullAddr, rtAddrPart1, rtAddrDetail){
+  const form = document.careFrm;
+
+  form.offiAddr_1.value = rtAddrPart1;
+  form.offiAddr_2.value = rtAddrDetail;
+}
+
+
+function kcmResultSet(name, phoneNo){
+  let name_id = document.getElementById("kmc_req_name").value;
+
+  document.getElementById(name_id).value = name;
+  divide_3_PhoneNumber(phoneNo);
+  possibleFlag(name_id);
+}
+
+
+function divide_3_PhoneNumber(param_phoneNo) {
+  const phoneNo = param_phoneNo;
+  const phoneId = $("#kmc_req_phoneNo").val();
+  const first_phoneNo = phoneNo.substring(0, 3);
+  const second_phoneNo = phoneNo.substring(3, 7);
+  const third_phoneNo = phoneNo.substring(7, 11);
+  const addHiphenNo = first_phoneNo + "-" + second_phoneNo + "-" + third_phoneNo;
+
+  document.getElementById(phoneId+"_1").value = first_phoneNo;
+  document.getElementById(phoneId+"_2").value = second_phoneNo;
+  document.getElementById(phoneId+"_3").value = third_phoneNo;
+  document.getElementById(phoneId).value = addHiphenNo;
+}
+
+</script>
+      </div> 
+      <div class="container step_3" style="display: none;">
+        
+
+
+<input type="hidden" name="lunarYun"/>
+<input type="hidden" name="fCodeDupleCheck" id="fCodeDupleCheck" value="">
+
+  <div class="content_body __1">
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">시설코드</span><span class="must">*</span></div>
+      <div id="checkDufliColor" class="cb_ch1_right flex">
+        <input type="text" name="fCode" id="fCode" class="input_text"
+               value="" maxlength="8"
+               oninput="onlyEnglishAndNumber(event)"
+               onfocusout="checkDuplicate(event)"
+               style="width: 20%; margin-right: 2%;">
+        <span class="text_blue">※ 로그인 시 필요한 고유식별번호로, 영문(또는 영문+숫자 조합) 8자 이내 가능</span>
+        <span id="emoji" class="emoji"></span>
+      </div>
+    </div> 
+    <div class="content_body_ch">
+      <div class="cb_ch1_left"><span class="block">계약 시작일</span><span class="must">*</span></div>
+      <div class="cb_ch1_right flex">
+        <input type="text" name="dataStartDate" id="dataStartDate" value="

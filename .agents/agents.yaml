@@ -32,7 +32,7 @@ project:
 # 모델 ID 는 Cursor SDK 가 인식해야 한다 (예: composer-2.5, auto).
 models:
   # 서버가 공개한 모델 풀 (2026-06, 계정 권한별로 제공):
-  #   default, composer-2.5, composer-2,
+  #   default, auto, composer-2.5, composer-2,
   #   claude-opus-4-8, claude-opus-4-7, claude-opus-4-6, claude-opus-4-5,
   #   claude-sonnet-4-6, claude-sonnet-4-5, claude-sonnet-4, claude-haiku-4-5,
   #   gpt-5.5, gpt-5.4, gpt-5.4-mini, gpt-5.4-nano, gpt-5.2, gpt-5.1, gpt-5-mini,
@@ -46,15 +46,14 @@ models:
   default: composer-2.5
   recommended:
     # 기획 대화 — doctor RUN-OK 모델 우선 (Opus 는 ping 도 RUN-ERR 인 경우 많음)
-    planner: composer-2
-    benchmark_researcher: claude-opus-4-8
+    planner: claude-opus-4-8
+    benchmark_researcher: composer-2.5
     db_architect: claude-opus-4-8
-    security_auditor: claude-opus-4-8
+    security_auditor: composer-2.5
     ux_designer: claude-opus-4-8
-    tester: claude-opus-4-8
+    tester: composer-2.5
     # 코드 생성 → 코드 특화 모델 (한도 초과 시 GPT-5.5 → Opus 폴백)
     coder: gpt-5.3-codex
-    # 문서/가벼운 텍스트 → composer-2.5
     tech_writer: composer-2.5
 
 # =============================================================================
@@ -92,7 +91,7 @@ agents:
     # agents.yaml 에 정의된 체인만 사용 (models.default / composer-2.5 자동 추가 없음)
     model_chain_exclusive: true
     # doctor RUN-OK 기준 폴백 — 첫 연결 시 시도, 성공 모델은 세션 고정 (.planner_session.json)
-    model: composer-2
+    model: claude-opus-4-8
     fallback_models:
       - composer-2.5
       - default
@@ -156,31 +155,69 @@ agents:
       - default
     description: |
       국내외 주간보호·요양기관 관리 웹/앱의 기능·UX·가격·차별점을 조사한다.
-      경쟁사 서비스 제공 항목과 기능을 정리해 planner 가 기획에 반영할 수 있도록
+      공개 자료뿐 아니라 **역공학(HTML/JS·데모·FAQ·도움말·앱스토어·고시)** 으로
+      메뉴 트리·화면 흐름·필드·API 형태를 최대한 복원해 planner 가 기획에 반영할 수 있도록
       구조화된 벤치마크 산출물을 유지한다.
     responsibilities:
       - 경쟁·유사 서비스(케어포, 이지케어, 엔젤시스템, 롱텀 등) 기능·모듈 조사
-      - 서비스 제공 항목·메뉴·역할별 화면·청구·출석·보호자 포털 등 비교
-      - ogada 대비 갭·차별화 포인트·MVP 우선순위 제안
-      - 조사 근거(공식 사이트·매뉴얼·공지)와 조사일 기록
+      - "역공학: 공개 URL·데모·정적 메뉴(func.php)·Channel.io/FAQ·앱스토어·PDF 매뉴얼에서 메뉴·필드·워크플로 추출"
+      - 서비스 제공 항목·메뉴·역할별 화면·청구·출석·보호자 포털·배차·본인부담 lifecycle 비교
+      - "매 사이클 ogada src/backend·src/frontend git HEAD 실측(Route·page·테스트 수) 후 COMPETITOR_MATRIX baseline 갱신"
+      - ogada 대비 갭·차별화 포인트·MVP 우선순위 제안 (G코드·Epic 연결)
+      - 조사 근거(URL·스크린샷 대체=인용 문구·조사일·HTTP 상태) 기록 — 「가정」과 「확인」 구분
+      - 신규 인사이트는 `memory/decisions.md` 최상단 + BENCHMARK_REPORT §차수(BNK-N) 추가
     inputs:
       - docs/planning/REQUIREMENTS.md (§1-5 벤치마킹, 도메인·MVP 범위)
       - docs/planning/PLAN_NOTES.md
+      - docs/planning/ROADMAP.md (갭·우선순위 정합)
       - docs/planning/research/BENCHMARK_REPORT.md (기존 보고서 갱신)
       - docs/planning/research/COMPETITOR_MATRIX.md (기존 매트릭스 갱신)
+      - docs/planning/research/snapshots/README.md (오프라인 HTML 스냅샷 카탈로그)
+      - docs/planning/research/snapshots/*.html (live URL 오프라인 사본 — md5·grep·DRIFT carry)
+      - .agents/workspace_baseline.yaml (ogada HEAD baseline)
     outputs:
       - docs/planning/research/BENCHMARK_REPORT.md       # 경쟁사별 상세 분석 보고서
       - docs/planning/research/COMPETITOR_MATRIX.md      # 기능·서비스 항목 비교 매트릭스
+      - docs/planning/research/snapshots/                  # HTML 스냅샷 갱신·신규 추가·README 동기화
       - memory/decisions.md            # 벤치마킹에서 도출된 기획 결정
     research_focus:
       - 핵심 기능 커버리지 (이용자·출석·건강·청구·대시보드)
-      - 보호자 포털·모바일 UX
-      - 출석·건강 기록·알림 연동
-      - 청구·급여·공단 엑셀 import 흐름
-      - 다지점·SaaS·가격·온보딩
+      - 보호자 포털·모바일 UX·알림톡/SMS 채널
+      - 출석·건강 기록·알림 연동·RFID/QR/NFC 비교
+      - 청구·급여·공단 엑셀 import·본인부담 7-x lifecycle
+      - 배차·이동서비스·지도·이동서비스비(러-1~4)·법정 서식
+      - 다지점·SaaS·가격·온보딩·2026 평가·단기보호·통합재가
+    reverse_engineering:
+      priority_targets:
+        - 케어포 daycare/func.php (주야간 109항목 정본)
+        - 케어포 demo-work.carefor.co.kr (시설 셸 — 이동서비스 제외 명시)
+        - 이지케어 /new.ez(데모 체험 로그인) · Channel.io 도움말 · FAQ rowid 전수
+        - 엔젤 silverangel system_feature · lcms CMS
+        - 롱텀 수가·고시 law.go.kr (이동서비스비 #44 1차 확인)
+      methods:
+        - "로컬 스냅샷: `docs/planning/research/snapshots/` — live 재실측 후 md5/SIZE 비교·DRIFT 시 HTML 덮어쓰기·README 표 갱신 (레거시 bare 파일명 → snapshots/ 경로로 해석)"
+        - "이지케어 ERP 데모 진입(필수): `./scripts/ezcare-demo-fetch.sh` — 루트 「데모 체험하기」와 동일 흐름(`POST /page/login.php` oCode=DEMO → 세션 쿠키 → `/new.ez`). 비로그인 `/new.ez` 직접 fetch는 70B redirect stub만 반환 — 역공학 금지. 산출: `ezcare_new_ez_demo.html`·`ezcare_top_nav_v2.js`·`ezcare_new_ez_redirect.html`(비교용)"
+        - HTTP fetch + HTML 파싱 (loadPage·view·menu-id·href·form field name)
+        - 공개 JS 번들·search_menu.js·page-info 메타 추출
+        - PDF/동영상 매뉴얼 목차·장 번호 ↔ ogada Route 매핑
+        - FAQ·공지 역공학 (기능명·컬럼명·처리상태·엑셀 포맷 변경)
+        - 앱스토어 설명·스크린샷 텍스트 (직원/보호자 앱)
+        - ogada submodule `git log -1`·Route grep·`npm test`/`mvn test` 집계 실측
+      per_cycle_minimum:
+        - 신규 **증거 URL 1건 이상** (또는 기존 URL 재실측 + 변동 기록)
+        - 경쟁사 **메뉴/필드/워크플로 1블록** 상세 추가 (표 또는 목록)
+        - COMPETITOR_MATRIX **1행 이상** ogada `@HEAD` SHA로 갱신
+        - BENCHMARK_REPORT **§신규 소절 또는 차수 메모** 1건 이상
+      rotation_30min:
+        - "0-2h": 케어포 func.php·매뉴얼·demo-work UX 패턴
+        - "2-4h": 이지케어 ERP·FAQ·Channel.io·가격·온보딩
+        - "4-6h": 엔젤·롱텀·law.go.kr·이동서비스비·2026 수가
+        - "6-8h": ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정
+        - "8h+": 미확인(#44 등)·교차검증·이전 가정 번복 여부
     constraints:
       - src/ 코드 작성 금지 — docs/ 및 memory/ 만 수정
-      - 추측은 「가정」으로 명시, 출처 URL·조사일 기록
+      - 추측은 「가정」으로 명시, 확인은 「확인」+ 출처 URL·조사일·HTTP/파일 근거
+      - 로그인·인증서·유료 계정이 필요한 영역은 「미확인」으로 표시 — 추측을 확인으로 승격 금지
       - 사용자 승인 마커 추가 금지
 
   # ---------------------------------------------------------------------------
@@ -291,14 +328,14 @@ agents:
     doc_audience: [TSR, PLN, SEC]
     role: Full-Stack Developer
     # 코드 특화 모델 1순위 (doctor OK 확인됨).
-    # 한도 초과 시 다른 코덱스 변형 → 일반 GPT-5 → Opus → composer 순으로 폴백.
-    # codex-max / codex-mini / 5.2-codex 는 doctor 미검증이지만 서버 풀에 있다.
+    # 한도·거절 시 codex 변형 → GPT-5 → Opus → auto(자동 라우팅) → composer → default.
     model: gpt-5.3-codex
     fallback_models:
       - gpt-5.1-codex-max
       - gpt-5.2-codex
       - gpt-5.5
       - claude-opus-4-8
+      - auto
       - composer-2.5
       - default
     description: |
@@ -310,6 +347,7 @@ agents:
       - "작업 단위마다 develop 에 **커밋** — build 종료 시 `git push origin develop` 자동 실행 (미커밋 시 push 불가)"
       - Spring Boot REST API·서비스·JPA 레포지토리, React(Vite) SPA 화면
       - JWT 인증·인가·RBAC, application.yml + 환경변수 기반 설정 (하드코딩 금지)
+      - "**신중한 구현** — API_SPEC·기존 DTO/컨트롤러·프론트 `apiFetch` 패턴을 먼저 읽고, 반쪽 UI·잘못된 HTTP 메서드·필드명 불일치 금지"
     branch_policy:
       allowed_phases: [develop]
       submodule_checkout: true
@@ -333,6 +371,11 @@ agents:
       - 시크릿·비밀번호는 환경변수(.env)로만 관리
       - SQL은 JPA/JPQL 또는 PreparedStatement만 (문자열 concat 금지)
       - React: dangerouslySetInnerHTML 금지 → JSX 이스케이프 기본
+      - "구현 전 **반드시** 대상 API·엔티티·기존 페이지를 읽고 스펙과 필드명을 맞출 것 (추측 구현 금지)"
+      - "프론트 API 호출은 `apiFetch`(+ `services.js`)만 사용 — raw `fetch`·JWT 누락 금지"
+      - "폼은 `Field` render-prop으로 label·id 연결, 필수값·서버 검증 오류를 필드 단위로 표시"
+      - "기능을 '보이게만' 만들지 말 것 — 저장·조회·권한이 end-to-end로 동작하는지 확인 후 커밋"
+      - "변경 후 관련 단위 테스트·`mvn test`/`npm test` 최소 1회 실행 (실패 시 수정 후 재시도)"
 
   # ---------------------------------------------------------------------------
   # 5. 보안 감사관 (Security Auditor)
@@ -387,12 +430,12 @@ agents:
     doc_signature: "[TSR]"
     doc_audience: [PLN, COD]
     role: QA Engineer (Test / 이관)
-    # 이관 검증·체크리스트·매니페스트 → Opus 1순위
-    model: claude-opus-4-8
+    # 파이프라인 속도 우선 — 짧은 검증·BLOCK 보고 (장문 Opus 금지)
+    model: composer-2
     fallback_models:
+      - gpt-5.3-codex
       - claude-sonnet-4-6
-      - gpt-5.5
-      - composer-2.5
+      - claude-opus-4-8
       - default
     description: |
       develop → test 이관·검증 단계를 전담한다.
@@ -471,8 +514,8 @@ agents:
 # =============================================================================
 workflow:
   schedule:
-    pipeline: "900s (15min) — planner → db_architect → ux_designer → coder → tester (backend → frontend)"
-    benchmark_researcher: "86400s (24h) — 경쟁사 벤치마크 조사"
+    pipeline: "180s (3min) — implement-first: coder→tester ×2; full PLN·DBA·UXD every 6 cycles"
+    benchmark_researcher: "1800s (30min) — 경쟁사 벤치마크·역공학 조사"
     security_auditor: "86400s (24h) — 일일 보안 점검"
   phases:
     - phase: 1_planning
@@ -482,6 +525,7 @@ workflow:
       deliverables:
         - docs/planning/research/BENCHMARK_REPORT.md
         - docs/planning/research/COMPETITOR_MATRIX.md
+        - docs/planning/research/snapshots/
         - docs/planning/REQUIREMENTS.md
         - docs/planning/USER_STORIES.md
         - docs/planning/FLOWCHART.md

@@ -1,0 +1,1235 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ko">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="Expires" content="-1"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta property="og:image" content="/img/kakao_logo.gif">
+    <meta property="og:title" content="케어포">
+    <meta property="og:url" content="carefor.co.kr">
+    <meta name="naver-site-verification" content="3f1dcc77a5c855f50f0dc1f660ff66c1d04cc153" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>케어포-노인장기요양 관리프로그램</title>
+	<link rel="shortcut icon" href="/img/carefor.ico">
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css" >
+  <link rel='stylesheet' href='/css/web_style.css?date=v_20260427' type='text/css'>
+  <link rel='stylesheet' href='/css/frame.css' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="/css/content.css?date=v_20260427_1" />
+  <link rel="stylesheet" href="/js/jquery-ui-1.10.4.custom.min.css" type='text/css'/>
+<!--	<link rel='stylesheet' href='/css/web.css?date=--><!--' type='text/css'/>-->
+
+  <link rel="stylesheet" href="/css/aos.css" >
+  <script src="/js/aos.js"></script>
+
+  <script type="text/javascript" src="/js/jquery-1.12.4.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui-1.10.4.custom.min.js"></script>
+
+  <script type="text/javascript" src="/js/jquery/jquery.maskedinput-1.3.1.min.js"></script>
+  <script type="text/javascript" src="/js/jquery/jquery.alphanumeric.js"></script>
+  <script type="text/javascript" src="/js/jquery/jquery.blockUI.js"></script>
+
+  <script type="text/javascript" src="/js/common_web.js"></script>
+  <script type="text/javascript" src="/js/common_template.js"></script>
+
+  <script type="text/javascript" src="/js/window_size.js?date=v_20260427"></script>
+  <script type="text/javascript" src="/js/validation.js?date=v_20260427"></script>
+
+  <!-- 2023.10.18 added by thPark layer 띄우기 관련 css 및 js -->
+  <link rel="stylesheet" type="text/css" href="/css/layer.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style_common.css?date=v_20260427" /><!-- less compile file : lessc style_common.less > style_common.css  -->
+  <link rel="stylesheet" href="/js/jquery.scrollbar-gh-pages/jquery.scrollbar.css" /><!-- 2022.03.28 added by thPark jquery scrollbar -->
+  <link rel="stylesheet" href="/css/img_checkbox.css?date=v_20260427" type="text/css"><!-- ksyun 20180503 -->
+  <link rel="stylesheet" href="/css/img_radio.css?date=v_20260427" type="text/css"><!-- ksyun 20200107 -->
+
+  <script type="text/javascript" src="/js/ctlLayer.js?date=v_20260427"></script>
+  <script type="text/javascript" src="/js/jquery.scrollbar-gh-pages/jquery.scrollbar.js"></script>
+
+  <script src="https://t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+  <!-- plupload 사진업로드 for Tae-hyung -->
+	<script type="text/javascript" src="/js/plupload/js/moxie.js"></script>
+	<script type="text/javascript" src="/js/plupload/js/plupload.dev.js"></script>
+
+	<script type="text/javascript">
+
+		function desk_info() {
+			window.open('/cs/popup_desk_info.php', 'desk_info1', 'width=720,height=800,scrollbars=yes,resizable=no');
+		}
+
+		function ict_info() {
+			window.open('/popup/notice_ict.htm', 'notice_ict', 'width=700,height=730,scrollbars=no,resizable=no,top=0,left=0');
+		}
+
+    function openCareDesk()
+    {
+      window.open('/share/care_desk/index.php', 'notice_ict', 'width=1000,height=900,scrollbars=no,resizable=no,top=0,left=0');
+    }
+
+    function openRemote() {
+        window.open("https://939.co.kr/hang", "케어포원격서비스지원", "width=1180,height=700,resizable=yes,scrollbars=yes");
+    }
+
+    function linkInzi()
+    {
+        $.post("/share/exe/inzi/link.inzi.exe.php", {}, function(data1) {
+            $.post("/share/exe/inzi/login.inzi.exe.php", {}, function(data2) {
+                var param = $.parseJSON( data2 );
+                openInzi(param);
+            });
+        });
+    }
+
+    function openInzi(param)
+    {
+        var thisForm = $("#openInziFrm");
+        thisForm.find("input[name=center_mgno]").val( param['center_mgno'] );
+        thisForm.find("input[name=center_manager_yn]").val( param['center_manager_yn'] );
+        thisForm.find("input[name=auth_key]").val( param['auth_key'] );
+        thisForm.submit();
+    }
+
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+		ga('create', 'UA-17621124-12', 'auto');
+		ga('send', 'pageview');
+
+		function open_work(type) {
+
+      
+			var ctmgubn = '';
+      var g_isTest = '';
+      var g_isTestBed = '';
+      var url;
+
+    if(type=='mobile')
+    {
+
+        let userAgent = navigator.userAgent;
+        if(userAgent.match(/iPhone|iPad|iPod/))
+        {
+            location.href = "itms-apps://itunes.apple.com/kr/app/apple-store/id1220736809";
+        }
+        else if(userAgent.match(/Android/))
+        {
+            location.href = "market://details?id=kr.co.carefor";
+        }
+        else
+        {
+            url = g_isTest ? ( g_isTestBed ? "http://test-m.carefor.co.kr" : "http://dev-m.carefor.co.kr" ) : "https://m.carefor.co.kr";
+                          window.open(url);
+                    }
+
+    }
+    else
+    {
+        $.post("/exe/web/init_session.php", {type: type}, function (data) {
+            document.domain = "www.carefor.co.kr";
+
+            if (ctmgubn == "1" || ctmgubn == "2") {
+                url = g_isTest ? ( g_isTestBed ? "http://test-work.carefor.co.kr" : "http://dev-work.carefor.co.kr" ) : "https://work.carefor.co.kr";
+            }
+            else if (ctmgubn == "3") {
+                url = g_isTest ? ( g_isTestBed ? "http://test-vs.carefor.co.kr" : "http://dev-vs.carefor.co.kr" ) : "https://vs.carefor.co.kr";
+            }
+            else if (ctmgubn == "4") {
+                url = g_isTest ? ( g_isTestBed ? "http://test-dn.carefor.co.kr" : "http://dev-dn.carefor.co.kr" ) : "https://dn.carefor.co.kr";
+            }
+            else {
+                url = g_isTest ? ( g_isTestBed ? "http://test.carefor.co.kr/login.php" : "http://new.carefor.co.kr/login.php" ) : "https://www.carefor.co.kr/login.php";
+            }
+
+            window.open(url, '', 'width=' + g_window_width + ',height=' + g_window_height + ',scrollbars=yes,resizable=yes,location=no,status=no');
+        });
+    }
+
+		}
+
+    function fnCopyToClipboard(str) {
+        // str이 복사하고자 하는 문자열
+        var tempElement = document.createElement("textarea");
+        document.body.appendChild(tempElement);
+        tempElement.value = str;
+        tempElement.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempElement);
+        alert("복사되었습니다!");
+    }
+
+  </script>
+
+    <style>
+        :root {
+        --title-background-color: #f1f7f9;
+        --border-color: #bacfe7;
+        --tab-color: #4d85af;
+        --tab-back-color: #76b5e2;
+        --tab-font-color: #d2eafc;
+        --table-th-color:#e2f3fa;
+        --tb-outside-color:#3c78bc;
+        --bold-font-color: #003b9e;
+        --date-div-background: #c0deed;
+        --calendar-left-arrow: url("/img_work/d_arrow_left2.gif");
+        --calendar-right-arrow: url("/img_work/d_arrow_right2.gif");
+        --execute_button_background: #2574a3 url('/img_work/btn_bg1.gif') repeat-x;
+        --execute_button_top_border_color: #5699b9 1px solid;
+        --execute_button_bottom_border_color: #175a7a 1px solid;
+        --execute_button_side_border_color: #3b7c98 1px solid;
+        --delete_button_background: #5d7189 url('/img_work/btn_bg2.gif') repeat-x;
+        --delete_button_top_border_color: #7992ae 1px solid;
+        --delete_button_bottom_border_color: #4b5a6a 1px solid;
+        --delete_button_side_border_color: #5f758d 1px solid;
+        --open_button_background: #319ab2 url('/img_work/btn_bg4.gif') repeat-x;
+        --open_button_top_border_color: #55b9d2 1px solid;
+        --open_button_bottom_border_color: #267a8e 1px solid;
+        --open_button_side_border_color: #319db7 1px solid;
+        --exit_button_background: #626262 url('/img_work/btn_bg3_1.gif') repeat-x;
+        --exit_button_top_border_color: #878787 1px solid;
+        --exit_button_bottom_border_color: #484848 1px solid;
+        --exit_button_side_border_color: #515151 1px solid;
+        --show_button_background: #5d7189 url('/img_work/btn_bg2.gif') repeat-x;
+        --show_button_top_border_color: #7992ae 1px solid;
+        --show_button_bottom_border_color: #4b5a6a 1px solid;
+        --show_button_side_border_color: #5f758d 1px solid;
+        --print_button_background: #5d7189 url('/img_work/btn_bg2.gif') repeat-x;
+        --print_button_top_border_color: #7992ae 1px solid;
+        --print_button_bottom_border_color: #4b5a6a 1px solid;
+        --print_button_side_border_color: #5f758d 1px solid;
+        }
+
+        .block_title{position:relative;display:block;height:29px;line-height:29px;font-size:16px;color:var(--bold-font-color);font-weight:bold;background:url('/img_work/icon_blocktitle.png') no-repeat 1px 6px;padding:0 0 0 17px;}
+
+        /*팝업레이어관련*/
+        .layer_outside{position:relative;border:#b2b2b2 8px solid;background:#fff;padding:46px 30px 14px 30px;}
+        .layer_close{position:absolute;top:10px;right:10px;z-index:80;}
+        .layer_title{position:absolute;top:0;left:0;color:#000;font-size:22px;font-weight:bold;text-align:left;background:#e2f3fa;height:44px;width:100%;padding:0;overflow:hidden;border-bottom:#b6cbd5 1px solid;}
+        .layer_title .txt_pos{position:relative;display:block;padding:7px 0 0 30px !important;}
+        .layer_content{position:relative;display:block;padding:10px 0 0 0;}
+
+    </style>
+
+</head>
+
+<body>
+<script>
+    $(document).ready(function(){
+        $('#top_menu > li').mouseover(function(){
+            $('#submenu').stop().slideDown();
+        });
+        $('#top_menu > li').mouseleave(function(){
+            $('#submenu').stop().slideUp();
+        });
+
+        $('#submenu').mouseover(function(){
+            $('#submenu').stop().slideDown();
+        });
+        $('#submenu').mouseleave(function(){
+            $('#submenu').stop().slideUp();
+        });
+
+        $('.btn_wrap').click(function(){
+            $('.btn_wrap').hide().animate({
+                opacity:0
+            });
+            $('.top_close').show().animate({
+                opacity:1
+            });
+            $('#m_gnb').show();
+            $('#m_gnb').show().animate({
+                right:0,opacity:1
+            });
+        });
+        $('#close_mgnb').click(function(){
+            $('.btn_wrap').show().animate({
+                opacity:1
+            });
+            $('.top_close').hide().animate({
+                opacity:0
+            });
+            $('#m_gnb').animate({
+                right:0 , opacity:0
+            },function(){$('#m_gnb').hide();});
+        });
+    })
+
+    $(function() {
+        $(".leftm").attr('class','leftm sub_on');
+        $(".subm").css('display','none');
+        $(".leftm").click(function() {
+            if ($(this).next(".subm").css("display") == "none") {
+                $(this).attr('class','leftm');
+            } else {
+                $(this).attr('class','leftm sub_on');
+            }
+            $(this).next(".subm").slideToggle('fast');
+        });
+    });
+
+    AOS.init({
+        offset:0,
+        delay:0,
+        duration:1000,
+        once:false,
+        anchorPlacement: 'top-bottom',
+    })
+</script>
+
+<form id="openInziFrm" name="openInziFrm" action="https://inzi.carefor.co.kr/webapi/carefor_mamber_login" method="POST" target="_blank">
+  <input type="hidden" name="center_mgno">
+  <input type="hidden" name="center_manager_yn">
+  <input type="hidden" name="auth_key">
+</form>
+
+<div id="wrap">
+
+  <!--모바일메뉴-->
+  <div id="m_gnb" class="side_menu" style="display:none;">
+    <div class="menu_top">
+            <div class="top_logo">로그인 해주시기 바랍니다.</div>
+            <div class="top_close" id="close_mgnb"><img src="/img/side_close.svg" alt=""> </div>
+    </div>
+
+    <div id="lnb">
+              <div class="leftm">시설급여</div>
+        <ul class="subm" style="display:none;">
+                    <li onClick="location.href='/intro_si/flowchart.php'">프로그램 사용안내</li>
+                    <li onClick="location.href='/intro_si/func.php'">주요프로그램 구성</li>
+                    <li onClick="location.href='/intro_si/appraisal.php'">공단 평가항목 지원</li>
+                    <li onClick="location.href='/intro_si/composition.php'">시설급여 프로그램 소개</li>
+                  </ul>
+              <div class="leftm">주야간보호급여</div>
+        <ul class="subm" style="display:none;">
+                    <li onClick="location.href='/daycare/flowchart.php'">프로그램 사용안내</li>
+                    <li onClick="location.href='/daycare/func.php'">주요프로그램 구성</li>
+                    <li onClick="location.href='/daycare/appraisal.php'">공단 평가항목 지원</li>
+                    <li onClick="location.href='/daycare/composition.php'">주야간급여 프로그램 소개</li>
+                  </ul>
+              <div class="leftm">가정방문급여</div>
+        <ul class="subm" style="display:none;">
+                    <li onClick="location.href='/intro_visit/flowchart.php'">프로그램 사용안내</li>
+                    <li onClick="location.href='/intro_visit/func.php'">주요프로그램 구성</li>
+                    <li onClick="location.href='/intro_visit/appraisal_care.php'">공단 평가항목 지원(요양)</li>
+                    <li onClick="location.href='/intro_visit/appraisal_bath.php'">공단 평가항목 지원(목욕)</li>
+                    <li onClick="location.href='/intro_visit/appraisal_nurse.php'">공단 평가항목 지원(간호)</li>
+                    <li onClick="location.href='/intro_visit/composition.php'">가정방문급여 프로그램 소개</li>
+                  </ul>
+              <div class="leftm">부가서비스</div>
+        <ul class="subm" style="display:none;">
+                    <li onClick="location.href='/addservice/inzicare.php'">놀이마당</li>
+                    <li onClick="location.href='/addservice/recruit_inzicare.php'">놀이마당 강사모집</li>
+                    <li onClick="location.href='/addservice/smartcare.php'">스마트요양원</li>
+                    <li onClick="location.href='/addservice/sujifine.php'">재무회계</li>
+                    <li onClick="location.href='/addservice/family_app.php'">보호자용 가족돌봄앱</li>
+                    <li onclick="window.open('https://jetprice.cafe24.com/index.html');">쇼핑몰</li>
+                  </ul>
+              <div class="leftm">홈페이지 제작</div>
+        <ul class="subm" style="display:none;">
+                    <li onClick="location.href='/hpmake/intro.php'">홈페이지 제작소개</li>
+                    <li onClick="location.href='/hpmake/s1_apply.php'">홈페이지 체험신청</li>
+                    <li onClick="location.href='/hpmake/use_case.php'">이용중인 기관</li>
+                  </ul>
+              <div class="leftm">고객센터</div>
+        <ul class="subm" style="display:none;">
+                    <li onClick="location.href='/demo/demo.php'">체험하기</li>
+                    <li onClick="location.href='/cs/list_notice.php'">공지사항</li>
+                    <li onClick="location.href='/cs/list_faq.php'">자주묻는질문</li>
+                    <li onClick="location.href='/cs/list_pds.php'">자료실</li>
+                    <li onClick="location.href='/cs/edu_info.php'">프로그램교육</li>
+                    <li onClick="location.href='/price/cost.php'">이용요금</li>
+                    <li onClick="location.href='/cs/getting_started.php'">처음사용안내</li>
+                  </ul>
+            <div class="leftm_prm" data-bs-toggle="modal" data-bs-target="#prmstart" data-backdrop="static" data-keyboard="false">프로그램 실행</div>
+    </div>
+
+    <div class="leftm_btn">
+            <div class="btn_type2" onClick="location.href='/mypage/user_modify.php'">정보수정</div>
+      
+            <div class="btn_type1" onClick="location.href='/member/login.php'">로그인</div>
+          </div>
+
+  </div>
+  <!--모바일메뉴-->
+
+
+  <!-- Modal -->
+  <div class="modal fade web" id="prmstart" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-w_400 modal-dialog-centered">
+  <div class="modal-content">		
+      <div class="layertitle_div">실행 프로그램 선택
+        <div class="popup_close cr" type="button" data-bs-dismiss="modal"></div>
+      </div>
+      <div class="modal-body layer_prm_w">
+      
+     	<div class="layer_prm">
+      		<div class="box" onClick="open_work('mobile');">
+            	<div class="pic"><img src="/img/prm_start_m.png" /></div>
+                <div class="btn">케어포 직원앱 실행</div>
+            </div>  
+      		<div class="box" onClick="open_work('main')">
+            	<div class="pic"><img src="/img/prm_start_p.png" /></div>
+                <div class="btn">케어포 PC 프로그램 실행</div>
+            </div>  
+        </div>
+
+      
+      </div>
+      <div class="btn_area">
+        <button type="button" class="btn_gray w30p" data-bs-dismiss="modal">창닫기</button>
+      </div>
+
+  </div>
+</div>
+  </div>
+
+
+  <header class="header">
+    <div class="header_inner">
+      <div class="header_logo" onClick="location.href='/'">케어포</div>
+      <div class="header_menu" id="top_menu">
+        <li onClick="location.href='/intro_si/flowchart.php'">시설급여</li>
+        <li onClick="location.href='/daycare/flowchart.php'">주야간보호급여</li>
+        <li onClick="location.href='/intro_visit/flowchart.php'">가정방문급여</li>
+        <li onClick="location.href='/addservice/smartcare.php'">부가서비스</li>
+        <li onClick="location.href='/hpmake/intro.php'">홈페이지 제작</li>
+        <div class="prm_play" onClick="open_work('main')">프로그램 실행</div>
+        <div class="prm_play_mobile" data-bs-toggle="modal" data-bs-target="#prmstart" data-backdrop="static" data-keyboard="false">프로그램 실행</div>
+        <div class="mobile_gnb">
+          <div class="btn_wrap"><img src="/img/nav.svg" alt=""> </div>
+          <div class="top_close" id="close_mgnb"><img src="/img/side_close.svg" alt=""> </div>
+        </div>
+      </div>
+      <div class="header_other">
+
+        <li onClick="openRemote();">원격지원</li>
+        <li onClick="openCareDesk();">통합검색</li>
+                <li class="joinlink" onClick="location.href='/member/step1_join.php'">회원가입</li>
+        <li onClick="location.href='/member/login.php'">로그인</li>
+        
+      </div>
+    </div>
+    <div id="submenu" class="sub_drop">
+      <div class="sub_drop_w">
+        <div class="sub_div1">&nbsp;</div>
+        <div class="sub_div2">
+          <li>
+            <a href="/intro_si/flowchart.php">프로그램 사용안내</a><br>
+            <a href="/intro_si/func.php">주요프로그램 구성</a><br>
+            <a href="/intro_si/appraisal.php">공단 평가항목 지원</a><br>
+<!--            <a href="/intro_si/monitoring.php">모니터링 지원</a><br>-->
+            <a href="/intro_si/composition.php">시설급여 프로그램 소개</a>
+          </li>
+          <li>
+            <a href="/daycare/flowchart.php">프로그램 사용안내</a><br>
+            <a href="/daycare/func.php">주요프로그램 구성</a><br>
+            <a href="/daycare/appraisal.php">공단 평가항목 지원</a><br>
+<!--            <a href="/daycare/monitoring.php">모니터링 지원</a><br>-->
+            <a href="/daycare/composition.php">주야간급여 프로그램 소개</a>
+          </li>
+          <li>
+            <a href="/intro_visit/flowchart.php">프로그램 사용안내</a><br>
+            <a href="/intro_visit/func.php">주요프로그램 구성</a><br>
+            <a href="/intro_visit/appraisal_care.php">공단 평가항목 지원(요양)</a><br>
+            <a href="/intro_visit/appraisal_bath.php">공단 평가항목 지원(목욕)</a><br>
+            <a href="/intro_visit/appraisal_nurse.php">공단 평가항목 지원(간호)</a><br>
+<!--            <a href="/intro_visit/monitoring.php">모니터링 지원</a><br>-->
+            <a href="/intro_visit/composition.php">가정방문급여 프로그램 소개</a>
+          </li>
+          <li>
+          	<a href="/addservice/inzicare.php">놀이마당</a><br>
+            <a href="/addservice/smartcare.php">스마트요양원</a><br>
+            <a href="/addservice/sujifine.php">재무회계</a><br>
+<!--            <a href="/addservice/info_cms.php">본인부담금 자동이체(CMS)</a><br>-->
+<!--            <a href="/addservice/info_npay.php">본인부담금 간편결제</a><br>-->
+            <a href="/addservice/family_app.php">보호자용 가족돌봄앱</a><br>
+            <a href="https://jetprice.cafe24.com/index.html" target="_blank">쇼핑몰</a>
+          </li>
+          <li>
+            <a href="/hpmake/intro.php">홈페이지 제작소개</a><br>
+                              <a href="/hpmake/s1_apply.php">홈페이지 체험신청</a><br/>
+                          <a href="/hpmake/use_case.php">이용중인 기관</a>
+          </li>
+          <li class="last">
+            <a href="/demo/demo.php">체험하기</a><br>
+            <a href="/cs/list_notice.php">공지사항</a><br>
+            <a href="/cs/list_faq.php">자주묻는질문</a><br>
+            <a href="/cs/list_pds.php">자료실</a><br>
+            <a href="/cs/edu_info.php">프로그램교육</a><br>
+            <a href="/price/cost.php">이용요금</a><br>
+<!--            <a href="/advertise/join_list.php">회원가입 현황</a>-->
+          </li>
+        </div>
+        <div class="sub_div3">
+                  </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+              <div id="top_path">
+          <div class="path_w">
+            <div class="home" onClick="location.href='/'"></div>
+            <div class="p_name1">
+              <a class="dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false" href="#" role="button">주야간보호급여</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                  <li ><a class="dropdown-item" href="/intro_si/flowchart.php">시설급여</a></li>
+                                  <li class="over"><a class="dropdown-item" href="/daycare/flowchart.php">주야간보호급여</a></li>
+                                  <li ><a class="dropdown-item" href="/intro_visit/flowchart.php">가정방문급여</a></li>
+                                  <li ><a class="dropdown-item" href="/addservice/inzicare.php">부가서비스</a></li>
+                                  <li ><a class="dropdown-item" href="/hpmake/intro.php">홈페이지 제작</a></li>
+                                  <li ><a class="dropdown-item" href="/demo/demo.php">고객센터</a></li>
+                                  <li ><a class="dropdown-item" href="/mypage/user_modify.php">마이페이지</a></li>
+                              </ul>
+            </div>
+            <div class="p_name2">
+              <a class="dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false" href="#" role="button">공단 평가항목 지원</a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                  <li ><a class="dropdown-item" href="/daycare/flowchart.php">프로그램 사용안내</a></li>
+                                  <li ><a class="dropdown-item" href="/daycare/func.php">주요프로그램 구성</a></li>
+                                  <li class="over"><a class="dropdown-item" href="/daycare/appraisal.php">공단 평가항목 지원</a></li>
+                                  <li ><a class="dropdown-item" href="/daycare/composition.php">주야간급여 프로그램 소개</a></li>
+                              </ul>
+            </div>
+                      </div>
+        </div>
+      <div class="sub_title">공단 평가항목 지원(주야간보호급여)</div>
+<div class="sub_darkbrown_bg" data-aos="fade-up">
+  <div class="appraisal1">
+    <div class="pic"><img src="/img/appraisal_pic2.png"/></div>
+    <div class="rightarea" style="padding-top:40px;">
+      <div class="t1">공단평가 항목을 케어포에서 준비할 수 있도록<br/>프로그램을 최적화하여 제공해드리고 있습니다.</div>
+      <!--<div class="t2" onclick="window.open('https://image.carefor.co.kr/contents/daycare_hwp_2023.html');"><img src="/img/btn_hwpicon.png" /> 평가지표 및 준비사항 문서로 보기</div>-->
+      <div class="t3" style="padding:0px;">각 항목별로 동영상으로 확인하실 수 있도록 아래 목록 제공해 드리고 있습니다.</div>
+    </div>
+  </div>
+</div>
+
+<form id="listArticle" name="listArticle" method="get" action="/daycare/appraisal.php">
+  <div class="search_box_area">
+    <div class="search_box">
+      <div class="in">
+        <input name="search_val" type="text" placeholder="검색어를 입력해 주세요."
+               onkeydown="if(event.keyCode == 13) $('#listArticle').submit();"
+               value="" />
+      </div>
+      <button class="bt" onclick="$('#listArticle').submit();"></button>
+    </div>
+  </div>
+</form>
+
+<div class="sub_padding">
+  <div class="total_info">총 36건</div>
+  <div class="gridTable appraisal_tbl_col appraisal_tbl_w">
+    <div class="th">평가지표 번호</div>
+    <div class="th">평가요소</div>
+    <div class="th">항목</div>
+    <div class="th">보기</div>
+
+      
+    <!-- 관리자등록 목록 loop start -->
+              <div class="td num">36</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vQoaieaUylGnJMQbZf8MphMU5FkCSBi7MoN652B5dwmp1mgWY9OybdbPa77Ko6cgrEn9F6l6DU09VnS/pub" target="_blank">평가지표1 운영규정</a></div>
+        <div class="td bt"></div>
+              <div class="td num">35</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vQZC2GmPaADY-GL5yZebFAZkKF6zVZW_deK_bKz4KpR4zTFAgHbCl4qothdlfrsy7-O76Gxt10cVvn6/pub" target="_blank">평가지표2 사업계획</a></div>
+        <div class="td bt"></div>
+              <div class="td num">34</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vRLUeFRzdPPHSYGuKmwbl7stbQmI5pq4KqCdFIBFrsRxB3xsOpc6jRJISqr3MPielDB9kOxo4nOvUG6/pub" target="_blank">평가지표3 인력기준</a></div>
+        <div class="td bt"></div>
+              <div class="td num">33</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vQHXB9ERyL1nSwhq528c4zEL-sNIoaakDiOwyIiHHqys56qzJvJdaFOIOAz-dvyq6hK0bm9ViUoTL8I/pub" target="_blank">평가지표4 경력직</a></div>
+        <div class="td bt"></div>
+              <div class="td num">32</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vRIiQOt9s5NKim96ewecGdFwaaFC2qmyp0p2pj2Ncfw4LDxRpaGcCtrMYNHfmA6bn52Ao2bZcpJtAiY/pub" target="_blank">평가지표5 보수교육</a></div>
+        <div class="td bt"></div>
+              <div class="td num">31</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vToAC6HWWFLmLZxM2HLbeJuwUXprwmIZcv9NzE4d6HpDQAll7KvvDR_35yWx-H3qLVztgpom2MzzUpp/pub" target="_blank">평가지표6 직원교육</a></div>
+        <div class="td bt"></div>
+              <div class="td num">30</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vRiNLInxpx6-YUqqn-8Ub2EKAM93FVfHP1Xd4fXuSWO1MwTzA97syCBVSY9zY8Qak1nrU8bPFaX3ach/pub" target="_blank">평가지표7 직원인권보호</a></div>
+        <div class="td bt"></div>
+              <div class="td num">29</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vR-N-K4ADqlxbedBwsIitCWKDBR6EydYmgZXc6umf4H7hOxiGv_huSBFTSvHdxOgZ_alXXVpDuEJa_R/pub" target="_blank">평가지표8 직원권익향상</a></div>
+        <div class="td bt"></div>
+              <div class="td num">28</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vRkVKdi7QBdcj6WJW51Dwn-T_XpQKk0IT-SOmAJvWylnqJeFAyZpw4yzqtE6SWwplXz1i6cHZFnUsdq/pub" target="_blank">평가지표9 안전하고 쾌적한 환경조성</a></div>
+        <div class="td bt"></div>
+              <div class="td num">27</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vSRL7WFT9YCpV0GTm9_q-igF30AOTVULcnrpPDcbRvR-PvdaP35VlK-V0_QxbnV0i_i9n1MgVpfE-ng/pub" target="_blank">평가지표10 낙상예방 환경조성</a></div>
+        <div class="td bt"></div>
+              <div class="td num">26</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vSMLbf3PdJMmtRcnZbgz20n3t-NtBCSv7QMhnBgnnABRXHRueucPVPUuaov22sxDgAXnBotxiPLKBjl/pub" target="_blank">평가지표11 재난상황대응</a></div>
+        <div class="td bt"></div>
+              <div class="td num">25</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vTiWu_3EL8tZ354RD7AD2pWZqI_2WNIiSjzUo6hPwKJ9rkLNrmVQngBa9tVCtLbZ2rOxKaGEc8ordIC/pub" target="_blank">평가지표12 응급상황대응</a></div>
+        <div class="td bt"></div>
+              <div class="td num">24</div>
+        <div class="td el">급여제공</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vQmxdq6Z7xT90567i7wGGnobFQUFGNj920iQQ24XN2_yVHUX9IoblOOh8yipns59GyFtVQtxu12bV4H/pub" target="_blank">평가지표13 시설운영</a></div>
+        <div class="td bt"></div>
+              <div class="td num">23</div>
+        <div class="td el">기관운영</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vTSM24ePN1m6SPxwVGLAfcpF3PliZnA4vmT0lkt-fr2ECZIk3uqCG83JHrnEj1SrSmp6q9uxpR9apCP/pub" target="_blank">평가지표14 질향상 노력</a></div>
+        <div class="td bt"></div>
+              <div class="td num">22</div>
+        <div class="td el">수급자 존중</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vRQnM0Ep0o6x4WuM08LSxEpt4Rvej5tEmH8T62Jlwe8dlT_xRDcbAuhqQbhRvFtpQqm6F50wsthRB-c/pub" target="_blank">평가지표15 건강검진</a></div>
+        <div class="td bt"></div>
+              <div class="td num">21</div>
+        <div class="td el">수급자 존중</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vQzB4psomWQT1VUHKwjqxd2xmwwUabt790Rb6UklgJS0Dl4IklUZcCxMeKmlyVgt8FtAeio6_KY4mOY/pub" target="_blank">평가지표16 감염관리</a></div>
+        <div class="td bt"></div>
+              <div class="td num">20</div>
+        <div class="td el">급여제공</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vR6ykLKuHd8G38K1wUahb8wwmiSpc6SXXCzZXpC3l4r-qvI28sqa9BYFsKjaqkm0jmjV6aeSGTwIsUG/pub" target="_blank">평가지표17 소통노력</a></div>
+        <div class="td bt"></div>
+              <div class="td num">19</div>
+        <div class="td el">수급자 존중</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vRt9_4TFHS5QoW6v7NBeaAoTgTwmRIoUDssKZNy6GfylvQHByv6QcjmZYKVXymre2InYGKB089ZPX7o/pub" target="_blank">평가지표18 정보제공</a></div>
+        <div class="td bt"></div>
+              <div class="td num">18</div>
+        <div class="td el">수급자 존중</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vTV_fGY62Z8qFdxX5njqlTdxTipJ98uC6ORObQzyQvmh9_6-8FQc02uN-ugO_vtyAkQdiHSlQfI5K_d/pub" target="_blank">평가지표19 노인인권보호</a></div>
+        <div class="td bt"></div>
+              <div class="td num">17</div>
+        <div class="td el">서비스 제공</div>
+        <div class="td con left"><a href="https://docs.google.com/document/d/e/2PACX-1vQbBXejlR-e--ALwEZFC4dU8CT5csXi2jJYxG8STYWLFHr6sI1P0szb92ONuIJQ_Wv3oICwttUxf3Db/pub" target="_blank">평가지표20 욕구사정</a></div>
+        <div class="td bt"></div>
+          <!-- 관리자등록 목록 loop end -->
+
+  </div>
+
+</div>
+
+<script>
+function go_page(page_numb, url)
+{
+    var this_form = $("#pageFrm");
+    if( this_form.find("input[name=page]").length==0 )  $("<input>").attr("type","hidden").attr("name","page").attr("value",page_numb).appendTo(this_form);
+    else                                                this_form.find("input[name=page]").val(page_numb);
+
+    this_form.attr("action",url).submit();
+}
+</script>
+
+  <form id="pageFrm" name="pageFrm" method="get">
+          <input type="hidden" name="paging" value="1">
+          <input type="hidden" name="cotfumu" value="1">
+          <input type="hidden" name="cotcbn4" value="1">
+          <input type="hidden" name="cotstat" value="2">
+      </form>
+
+<div class="paging-wrap">
+
+    
+      
+      
+      
+                              <span class="ct over">1</span>
+                                        <span class="ct" style="cursor: pointer;" onclick='javascript:go_page(2,"/daycare/appraisal.php")'>2</span>
+                  
+      
+      
+              <span class="next_double" style="cursor: pointer;" onclick='javascript:go_page(2,"/daycare/appraisal.php")'></span>
+      
+    
+</div>
+
+        <div class="gen mg50b"></div>
+        </main>
+    
+
+<!-- Modal -->
+<div class="modal fade web" id="member_term" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-w_800">
+  <div class="modal-content">		
+      <div class="layertitle_div">약관
+        <div class="popup_close cr" type="button" data-bs-dismiss="modal"></div>
+      </div>
+      <div class="modal-body">
+        <div class="join_layer_w">
+          <ul class="nav term_tab_design" id="article" role="tablist">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#mem_article" type="button" id="ta1">회원약관</button>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#person_article" type="button" id="ta2">개인정보 처리방침</button>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#service_article" type="button" id="ta3">서비스약관</button>
+          </ul>
+                
+          <div class="tab-content">
+            <div class="tab-pane fade join_layer_term active show" id="mem_article" >
+            <b>1조 (목적)</b>
+            이 약관은 한강시스템(주) (이하 "회사" )와 회원 간의 제반사항을 규정하는 것을 목적으로 합니다.<br />
+            <b>제2조 (약관의 명시 등)</b><br />
+            ① 회사는 이 약관의 내용을 회원이 알 수 있도록 회원 등록신청서의 전면에 게시합니다.<br />
+            ② 회사는 약관의 규제 등에 관한 법률, 전자거래기본법, 정보통신망이용촉진 등에 관한 법률, 소비자 보호법 등 관련법을 위배하지 않는 범위에서 이 약관을 개정할 수 있습니다.<br />
+            ③ 회사가 약관을 개정할 경우에는 적용일자 및 개정사유 등을 명시하여 홈페이지에 공지합니다.<br />
+            ④ 회사가 약관을 개정한 경우 기존 회원에게도 개정 약관이 적용됩니다.<br />
+            <b>제3조 (용어의 정의)</b>
+
+            이 약관에서 사용하는 용어의 정의는 다음 각 호와 같습니다.<br />
+            1. "신청인"이라 함은 이 약관에 따라 회원 등록을 신청하는 자를 말합니다.<br />
+            2. "회원"이라 함은 이 약관에 따라 한강시스템을 통해 회원으로 등록한 자를 말합니다.<br />
+            <b>제4조 (회원 가입 및 자격)</b>
+
+            ① 신청인은 회사가 정한 양식에 따라 회원정보를 기입한 후 회원가입을 신청함으로써 회원으로 등록됩니다.<br />
+            ② 다음 각 호에 해당하는 경우, 회사는 회원등록을 처리하지 않거나 회원자격을 박탈할 수 있습니다.<br />
+            1. 다른 사람의 명의를 도용하여 신청한 경우.<br />
+            2. 본인의 이름을 실명으로 신청하지 않은 경우.<br />
+            3. 고객 정보를 허위로 기재하였거나 필수 입력 항목을 누락하여 신청한 경우.<br />
+            4. 사회의 안녕과 질서 또는 미풍양속을 저해할 목적으로 신청한 경우.<br />
+            5. 다른 사람의 서비스 이용을 방해하거나 그 정보를 도용하는 등 전자거래질서를 위협하는 경우.<br />
+            6. 서비스 이용요금을 체납하고 있는 경우<br />
+            ③ 회사는 회원의 자격을 박탈 시키는 경우에는 회원등록을 말소합니다. 이 경우 회원에게 이를 통지하고, 회원등록 말소 전에 소명할 기회를 부여합니다.<br />
+            <b>제5조 (회원정보 수집 및 개인정보 보호)</b>
+
+            1. 회사는 '정보통신망 이용촉진 및 정보보호 등에 관한 법률'에 따라 개인의 고유식별번호(주민등록번호, 운전면허번호, 여권번호, 외국인등록증번호)는 수집하지 않습니다.<br />
+            2. 회사는 회원의 개인정보를 수집하는 경우 당해 회원의 동의를 받습니다.<br />
+            3. 회사는 수집된 개인정보를 본 약관에 명시한 범위를 넘어 이용하거나 제3자에게 제공할 수 없습니다. 다만 당해 회원의 동의가 있거나 다음 각 호에 해당하는 경우에는 예외로 합니다.<br />
+            가. 서비스의 제공에 따른 대금 정산을 위하여 필요한 경우<br />
+            나. 회사와 회원간의 서비스 이용계약의 이행을 위하여 필요한 경우<br />
+            <b>제6조 (회원 탈퇴)</b>
+
+            ① 회원은 회사에 언제든지 탈퇴를 요청할 수 있으며 회사는 즉시 회원탈퇴를 처리합니다.<br />
+            ② 회원이 관리하던 자료는 회원탈퇴 후 자동삭제처리 됩니다.<br />
+
+
+            <b>제7조 (자동탈퇴 및 개인정보파기) 2015년 8월 18일 시행</b>
+
+            ① 회원가입일자부터 1년 동안 1회 이상 로그인 하지 않은 고객을 대상으로 자동탈퇴 처리합니다.<br />
+            관련근거 : 정보통신망 이용촉진 및 정보보호 등에 관한 법률 제29조(개인정보의 파기)와 동법 시행령 제16조(개인정보의 파기등)
+            ② 자동탈퇴된 회원은 회원가입을 다시 진행하셔야 합니다.<br />
+            ③ 자동탈퇴시 관리중인 자료는 자동 삭제됩니다.<br />
+            <b>제8조 (회원에 대한 통지)</b>
+
+            ① 회사가 회원에 대한 통지를 하는 경우, 회원이 회사에 제출한 전자우편 주소로 할 수 있습니다.<br />
+            ② 회사는 불특정다수 회원에 대한 통지의 경우 1주일이상 회사 게시판에 게시함으로써 개별 통지에 갈음할 수 있습니다.<br />
+            <b>제9조 (회원의 의무)</b>
+
+            ① ID와 비밀번호에 관한 모든 관리의 책임은 회원에게 있습니다.<br />
+            ② 회원은 ID와 비밀번호를 제3자가 알 수 있도록 해서는 안 됩니다.<br />
+            ③ 회원은 본 약관 및 관계법령에서 규정한 사항을 준수해야 합니다.<br />
+            ④ 다음 각 호의 1에 해당하는 행위를 할 경우 이용권리가 박탈됩니다.<br />
+            1.범죄와 결부된다고 객관적으로 판단되는 행위.<br />
+            2.기타 관계법령에 위배되는 행위.<br />
+            <b>제10조 (관할법원)</b>
+
+            ① 본 약관에 명시되지 않은 사항에 대해서는 국내 관계법에 준하여 해석합니다.<br />
+            ② 회원과 회사 사이에 분쟁이 발생할 경우 소송의 관할법원은 "회사" 본점 소재지 관할법원으로 합니다.<br />
+            <b>< 부 칙 ></b>
+            제 1 조 (시행일)<br />
+            본 약관은 2015년 3월 2일부터 시행합니다.<br /><br />
+            <button class="btn_grayoutline" onclick="window.open('/member/layer/member.pdf')">회원약관 PDF 다운받기</button>
+            </div>
+
+            <div class="tab-pane fade join_layer_term" id="person_article">
+              <div class="gbox">
+              한강시스템(주)는 (이하 "회사") 고객님의 개인정보를 중요시하며, "정보통신망 이용촉진 및 정보보호"에 관한 법률을 준수하고 있습니다.<br />
+              회사는 개인정보처리방침을 통하여 고객님께서 제공하시는 개인정보가 어떠한 용도와 방식으로 이용되고 있으며, 개인정보보호를 위해 어떠한 조치가 취해지고 있는지 알려드립니다.<br />
+              회사는 개인정보처리방침을 개정하는 경우 웹사이트 공지사항(또는 개별공지)을 통하여 공지할 것입니다.<br />
+              1. 수집하는 개인정보의 항목 및 수집방법<br />
+              2. 개인정보의 수집 및 이용목적<br />
+              3. 개인정보 수집, 이용, 제공에 대한 동의철회<br />
+              4. 개인정보의 보유기간 및 이용기간<br />
+              5. 개인정보의 파기절차 및 방법<br />
+              6. 정보주체의 권리·의무 및 그 행사방법<br />
+              7. 개인 정보의 제3자 제공<br />
+              8. 수집한 개인정보의 위탁<br />
+              9. 개인정보 자동수집 장치의 설치, 운영 및 그 거부에 관한 사항<br />
+              10. 개인정보보호를 위한 기술적/관리적 보호 대책<br />
+              11. 개인정보보호 책임자 지정<br />
+              12. 권익침해 구제방법<br />
+              13. 고지의 의무
+              </div>
+
+              <b>1. 처리하는 개인정보의 항목 및 수집방법</b>
+
+              가. 처리하는 개인정보의 항목 :<br />
+              성명, 로그인ID, 비밀번호, 전화번호, 주소, 휴대전화번호, 이메일, 생년월일, 사업자등록번호, 신용카드 정보, 서비스 이용기록, 접속 로그, 접속 IP 정보, 결제기록, 세금계산서 발급 및 발송에 필요한 공급받는자 관련 정보, 우편물 수신자 정보 수급자의 보호자 정보(이름, 전화번호, 휴대폰번호, 주소, 이메일주소 이외 기타정보),Youtube 콘텐츠 정보(ID,타이틀,설명, 재생시간,썸네일, 재생수, 좋아요 수 ,싫어요 수)<br /><br />
+
+              나. 개인정보 수집방법 :<br />
+              회사는 다음과 같은 방법으로 개인정보를 수집합니다<br />
+              홈페이지, 서면양식, 팩스, 전화, 이메일, 상담게시판, Youtube API<br /><br />
+
+              ※ 이용자는 당 사이트의 이용약관 및 개인정보처리방침에 동의를 거부할 권리가 있으며 동의거부 시 회원가입을 계속할 수 없습니다.
+              <b>2. 개인정보의 수집 및 처리목적</b>
+
+              회사가 수집한 개인정보는 다음의 목적을 위해 활용합니다.<br /><br />
+
+               가. 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산<br />
+              - 콘텐츠 제공, 물품배송 또는 청구서 등 발송, 금융거래 본인 인증 및 금융 서비스, 구매 및 요금 결제, 요금 추심<br />
+               나. 회원 관리<br />
+              - 회원제 서비스 이용 및 제한적 본인 확인제에 따른 본인확인, 개인 식별, 불량회원의 부정 이용 방지와 비인가 사용 방지, 가입 의사 확인, 불만처리 등 민원처리, 고지사항 전달<br />
+               다. 마케팅 및 광고에 활용<br />
+              - 신규 서비스(제품) 개발 및 특화, 인구통계학적 특성에 따른 서비스 제공 및 광고게재, 접속 빈도 파악, 회원의 서비스 이용에 대한 통계, 이벤트 등 광고성 정보 전달 (회원님의 개인정보는 광고를 의뢰한 개인이나 단체에는 제공되지 않습니다.)
+              <b>3. 개인정보 수집, 이용, 제공에 대한 동의철회</b>
+
+              회원 가입 등을 통해 이루어진 개인정보의 수집, 이용, 제공에 대해서 동의하신 내용을 회원은 언제든지 철회하실 수 있습니다. 동의철회는 홈페이지 고객센터 1:1문의에서 요청하여 탈퇴처리 가능합니다. 또한 개인정보관리 담당자부서로 전화, E-mail등으로 연락하시면 즉시 개인정보의삭제 등 필요한 조치를 취하겠습니다. 탈퇴된 회원정보는 고객DB에서 복원되지 않도록 완전삭제 처리 됩니다.
+
+              <b>4. 개인정보의 보유기간 및 이용기간</b>
+
+              원칙적으로, 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 아래와 같이 관계법령에서 정한 일정한 기간 동안 회원정보를 보관합니다.<br /><br />
+
+                      - 보존 항목 : 접속 로그 , 결제기록 <br />
+                      - 보존 근거 : 전자상거래등에서의 소비자보호에 관한 법률<br />
+                      - 보존 기간 : 3년<br /><br />
+
+                      - 계약 또는 청약철회 등에 관한 기록 : 5년 (전자상거래등에서의 소비자보호에 관한 법률)<br />
+                      - 대금결제 및 재화 등의 공급에 관한 기록 : 5년 (전자상거래등에서의 소비자보호에 관한 법률)<br />
+                      - 소비자의 불만 또는 분쟁처리에 관한 기록 : 3년 (전자상거래등에서의 소비자보호에 관한 법률)
+
+              <b>5. 개인정보의 파기절차 및 방법</b>
+
+              회사는 원칙적으로 개인정보의 보유기간이 경과했거나 처리목적이 달성된 경우에는 지체없이 해당 개인정보를 파기합니다. 다만, 다른 법률에 따라 보존하여야하는 경우에는 그러하지 않습니다. 파기의 절차, 기한 및 방법은 다음과 같습니다.<br /><br />
+
+              가. 파기절차<br />
+              이용자가 입력한 정보는 보유기간이 경과했거나 처리목적이 달성 후 내부 방침 및 관련 법령에 따라 파기합니다.<br /><br />
+
+              다. 파기기한<br />
+              이용자의 개인정보는 개인정보의 보유기간이 경과된 경우 보유기간의 종료일로부터 5일 이내에, 개인정보의 처리 목적 달성 등 그 개인정보가 불필요하게 되었을 때에는 개인정보의 처리가 불필요한 것으로 인정되는 날로부터 5일 이내에 그 개인정보를 파기합니다.<br /><br />
+
+              다. 파기방법<br />
+              회사에서 처리하는 개인정보를 파기할 때에는 다음의 방법으로 파기 합니다. 가. 전자적 파일 형태인 경우: 복원이 불가능한 방법으로 영구삭제 나. 전자적 파일의 형태 외의 기록물, 인쇄물, 서면, 그 밖의 기록매체인 경우: 파쇄 또는 소각
+              <b>6. 정보주체의 권리·의무 및 그 행사방법</b>
+
+              이용자는 정보주체로서 다음과 같은 권리를 행사할 수 있습니다.<br /><br />
+
+              가. 개인정보 열람 요구 : 회사에서 보유하고 있는 개인정보파일은 「개인정보보호법」 제35조(개인정보의 열람)에 따라 열람을 요구할 수 있습니다.<br />
+              다만 개인정보 열람 요구는 「개인정보보호법」 제35조제5항에 의하여 다음과 같이 제한될 수 있습니다.<br />
+              - 법률에 따라 열람이 금지되거나 제한되는 경우<br />
+              - 다른 사람의 생명·신체를 해할 우려가 있거나 다른 사람의 재산과 그 밖의 이익을 부당하게 침해할 우려가 있는 경우<br /><br />
+
+              나. 개인정보 정정·삭제 요구 :회사에서 보유하고 있는 개인정보파일에 대해서는 「개인정보보호법」 제36조(개인정보의 정정·삭제)에 따라 회사에 개인정보의 정정·삭제를 요구할 수 있습니다.<br />
+              다만, 다른 법령에서 그 개인정보가 수집 대상으로 명시되어 있는 경우에는 그 삭제를 요구할 수 없습니다.<br /><br />
+
+              다. 개인정보 처리정지 요구 : 회사에서 보유하고 있는 개인정보파일에 대해서는 「개인정보보호법」 제37조(개인정보의 처리정지 등)에 따라 회사에 개인정보의 처리정지를 요구할 수 있습니다.<br />
+              다만, 개인정보 처리정지 요구시 「개인정보보호법」 제37조제2항에 의하여 처리정지 요구가 거절될 수 있습니다.<br />
+              - 법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위하여 불가피한 경우<br />
+              - 다른 사람의 생명·신체를 해할 우려가 있거나 다른 사람의 재산과 그 밖의 이익을 부당하게 침해할 우려가 있는 경우<br />
+              - 공공기관이 개인정보를 처리하지 아니하면 다른 법률에서 정하는 소관 업무를 수행할 수 없는 경우<br />
+              - 개인정보를 처리하지 아니하면 정보주체와 약정한 서비스를 제공하지 못하는 등 계약의 이행이 곤란한 경우로서 정보주체가 그 계약의 해지 의사를 명확하게 밝히지 아니한 경우<br /><br />
+
+              라. 개인정보의 열람, 정정·삭제, 처리정지 요구에 대해서는 10일 이내에 해당 사항에 대한회사의 조치를 통지 합니다. 개인정보의 열람, 정정·삭제, 처리정지 요구는 해당 부서를 통해서 가능합니다.<br /><br />
+
+              마. 개인정보의 열람, 정정·삭제, 처리정지 요구 접수·처리 부서와 담당자는 아래와 같습니다.<br /><br />
+
+              담당부서 : 한강시스템(주)<br />
+              담당자 : 강승석 부장 TEL) 070-7163-0278, FAX) 02-6008-2514, Email) help@hangang.com<br />
+              주소 : 서울시 동작구 보라매로 5길 35 파크스퀘어 7층
+              <b>7. 개인정보의 제3자 제공</b>
+
+              회사는 수집·보유하고 있는 개인정보를 이용자의 동의 없이는 제3자에게 제공하지 않으며 다음의 경우에는 개인정보를 제3자에게 제공할 수 있습니다.<br /><br />
+
+              가. 정보주체로부터 별도의 동의를 받은 경우<br /><br />
+
+              나. 법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위하여 불가피한 경우<br /><br />
+
+              다. 정보주체 또는 그 법정대리인이 의사표시를 할 수 없는 상태에 있거나 주소불명 등으로 사전 동의를 받을 수 없는 경우로서 명백히 정보주체 또는 제3자의 급박한 생명, 신체, 재산의 이익을 위하여 필요하다고 인정되는 경우<br /><br />
+
+              라. 다음 각 호의 어느 하나에 해당하는 경우에는 정보주체 또는 제3자의 이익을 부당하게 침해할 우려가 있을 때를 제외하고는 이용자의 개인정보를 목적 외의 용도로 이용하거나 이를 제3자에게 제공할 수 있습니다.<br />
+              - 정보주체로부터 별도의 동의를 받은 경우<br />
+              - 다른 법률에 특별한 규정이 있는 경우<br />
+              - 정보주체 또는 그 법정대리인이 의사표시를 할 수 없는 상태에 있거나 주소불명 등으로 사전 동의를 받을 수 없는 경우로서 명백히 정보주체 또는 제3자의 급박한 생명, 신체, 재산의 이익을 위하여 필요하다고 인정되는 경우<br />
+              - 통계작성 및 학술연구 등의 목적을 위하여 필요한 경우로서 특정 개인을 알아볼 수 없는 형태로 개인정보를 제공하는 경우<br />
+              - 개인정보를 목적 외의 용도로 이용하거나 이를 제3자에게 제공하지 아니하면 다른 법률에서 정하는 소관 업무를 수행할 수 없는 경우로서 보호위원회의 심의·의결을 거친 경우<br />
+              - 조약, 그 밖의 국제협정의 이행을 위하여 외국정부 또는 국제기구에 제공하기 위하여 필요한 경우<br />
+              - 범죄의 수사와 공소의 제기 및 유지를 위하여 필요한 경우<br />
+              - 법원의 재판업무 수행을 위하여 필요한 경우<br />
+              - 형(刑) 및 감호, 보호처분의 집행을 위하여 필요한 경우
+              <b>8. 수집한 개인정보의 위탁</b>
+              회사는 원칙적으로 이용자의 동의없이 해당 개인정보의 처리를 타인에게 위탁하지 않습니다. 다만, 회사는 제3자에게 개인정보의 처리 업무를 위탁하는 경우에는 「개인정보보호법」제26조(업무위탁에 따른 개인정보의 처리 제한)에 따라 위탁하며 다음 각 호의 내용이 포함된 문서에 의하며 위탁 업무의 내용과 수탁자를 회사 홈페이지에 게시합니다.<br /><br />
+
+
+              가. 위탁업무 수행 목적 외 개인정보의 처리 금지에 관한 사항<br /><br />
+
+              나. 개인정보의 기술적·관리적 보호조치에 관한 사항<br /><br />
+
+              다. 그 밖에 개인정보의 안전한 관리를 위하여 다음과 같이 대통령령으로 정한 사항<br />
+              - 위탁업무의 목적 및 범위<br />
+              - 재위탁 제한에 관한 사항<br />
+              - 개인정보에 대한 접근 제한 등 안전성 확보 조치에 관한 사항<br />
+              - 위탁업무와 관련하여 보유하고 있는 개인정보의 관리 현황 점검 등 감독에 관한 사항<br />
+              - 법 제26조제2항에 따른 수탁자(이하 "수탁자"라 한다)가 준수하여야 할 의무를 위반한 경우의 손해배상 등 책임에 관한 사항<br /><br />
+
+              개인정보 위탁처리 기관 및 위탁업무는 다음과 같습니다.<br />
+
+              <table width="0" class="tbl_type1">
+                <tr>
+                  <th class="tl">수탁자</th>
+                  <th class="tl">위탁업무 내용</th>
+                </tr>
+                <tr>
+                  <td class="tl">
+                    NICE페이먼츠㈜<br />
+                    -홈페이지 : www.nicepay.co.kr<br />
+                    -전화번호 : 1661-0808/1661-7335<br />
+                    -주소 : 서울시 마포구 마포대로21
+                  </td>
+                  <td class="tl">신용카드, 실시간계좌이체, 가상계좌 등의 결제 대행 업무</td>
+                </tr>
+              </table>
+
+              <b>9. 개인정보 자동수집 장치의 설치, 운영 및 그 거부에 관한 사항</b>
+
+              회사는 귀하의 정보를 수시로 저장하고 찾아내는 ‘쿠키(cookie)’ 등을 운용합니다. 쿠키란 oo의 웹사이트를 운영하는데 이용되는 서버가 귀하의 브라우저에 보내는 아주 작은 텍스트 파일로서 귀하의 컴퓨터 하드디스크에 저장됩니다. 회사은(는) 다음과 같은 목적을 위해 쿠키를 사용합니다.<br /><br />
+
+              가. 쿠키 등 사용 목적<br />
+                   - 회원과 비회원의 접속 빈도나 방문 시간 등을 분석, 이용자의 취향과 관심분야를 파악 및 자취 추적, 각종 이벤트<br />
+                     참여 정도 및 방문 회수 파악 등을 통한 타겟 마케팅 및 개인 맞춤 서비스 제공<br />
+                   - 귀하는 쿠키 설치에 대한 선택권을 가지고 있습니다. 따라서, 귀하는 웹브라우저에서 옵션을 설정함으로써 모든<br />
+                     쿠키를 허용하거나, 쿠키가 저장될 때마다 확인을 거치거나, 아니면 모든 쿠키의 저장을 거부할 수도 있습니다.<br />
+              나. 쿠키 설정 거부 방법<br />
+              예: 쿠키 설정을 거부하는 방법으로는 회원님이 사용하시는 웹 브라우저의 옵션을 선택함으로써 모든 쿠키를 허용하거나 쿠키를 저장할 때마다 확인을 거치거나, 모든 쿠키의 저장을 거부할 수 있습니다.<br />
+              설정방법 예(인터넷 익스플로어의 경우):<br />
+              웹 브라우저 상단의 도구 > 인터넷 옵션 > 개인정보<br />
+              단, 귀하께서 쿠키 설치를 거부하였을 경우 서비스 제공에 어려움이 있을 수 있습니다.
+
+              <b>10. 개인정보보호를 위한 기술적/관리적 보호 대책</b>
+
+              회사는 이용자들의 개인정보를 처리함에 있어 개인정보가 분실, 도난, 누출, 변조 또는 훼손되지 않도록 안전성 확보를 위하여 다음과 같은 기술적/관리적 조치를 취하고 있습니다.<br /><br />
+
+              가. 개인정보 암호화<br />
+              이용자의 개인정보는 암호화 되어 저장 및 관리되고 있습니다. 또한 중요한 데이터는 저장 및 전송 시 암호화하여 사용하는 등의 별도 보안기능을 사용하고 있습니다.<br /><br />
+
+              나. 해킹 등에 대비한 대책<br />
+              회사는 해킹이나 컴퓨터 바이러스 등에 의해 회원의 개인정보가 유출되거나 훼손되는 것을 막기 위해 최선을 다하고 있습니다. 개인정보의 훼손에 대비해서 자료를 수시로 백업하고 있고, 최신 백신프로그램을 이용하여 이용자들의 개인정보나 자료가 누출되거나 손상되지 않도록 방지하고 있으며, 암호화통신 등을 통하여 네트워크상에서 개인정보를 안전하게 전송할 수 있도록 하고 있습니다. 그리고 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있으며, 기타 시스템적으로 보안성을 확보하기 위한 가능한 모든 기술적 장치를 갖추려 노력하고 있습니다.<br /><br />
+
+              다. 취급 직원의 최소화 및 교육<br />
+              회사의 개인정보관련 취급 직원은 담당자에 한정시키고 있고 이를 위한 별도의 비밀번호를 부여하여 정기적으로 갱신하고 있으며, 담당자에 대한 수시 교육을 통하여 한강시스템(주) 의 개인정보처리방침의 준수를 항상 강조하고 있습니다.<br /><br />
+
+              라. 개인정보보호전담기구의 운영<br />
+              그리고 사내 개인정보보호전담기구 등을 통하여 한강시스템(주) 의 개인정보처리방침의 이행사항 및 담당자의 준수여부를 확인하여 문제가 발견될 경우 즉시 수정하고 바로 잡을 수 있도록 노력하고 있습니다.<br />
+              단, 이용자 본인의 부주의나 인터넷상의 문제로 ID, 비밀번호, 생년월일 등 개인정보가 유출되어 발생한 문제에 대해 회사는 일체의 책임을 지지 않습니다.<br /><br />
+
+              마. 정기적인 자체 감사 실시<br />
+              개인정보 취급 관련 안정성 확보를 위해 정기적으로 자체 감사를 실시하고 있습니다.<br /><br />
+
+              바. 내부관리계획의 수립 및 시행<br />
+              개인정보의 안전한 처리를 위하여 내부관리계획을 수립하고 시행하고 있습니다.<br /><br />
+
+              사. 문서보안을 위한 잠금장치 사용<br />
+              개인정보가 포함된 서류, 보조저장매체 등을 잠금장치가 있는 안전한 장소에 보관하고 있습니다.
+
+              <b>11. 개인정보보호 책임자 지정</b>
+
+              회사는 고객의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기 위하여 아래와 같이 관련 부서 및 개인정보관리책임자를 지정하고 있습니다.
+
+              <table width="0" class="tbl_type1">
+                <tr>
+                  <th class="tl vtop">
+              개인정보보호 책임자<br />
+              - 성명 : 이문근<br />
+              - 직책 : 전무<br />
+              - 전화 : 1544-8691<br />
+              - 이메일 : admin@hangang.com
+                  </th>
+                  <th class="tl vtop">
+              - 고객서비스 담당부서 : 인터넷사업팀<br />
+              - 전화 : 1544-8691<br />
+              - 이메일 : help@hangang.com
+                  </th>
+                </tr>
+              </table>
+
+              <b>12. 권익침해 구제방법</b>
+              개인정보에 관한 권리 또는 이익을 침해받은 사람은 개인정보관리책임자 혹은 담당부서로 신고하실 수 있습니다. 회사는 이용자들의 신고사항에 대해 신속하게 충분한 답변을 드릴 것입니다.<br /><br />
+
+              기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.<br />
+              1.개인정보침해신고센터 (국번없이) 118 (내선2번)<br />
+              2.개인분쟁조정위원회 (www.1336.or.kr/1336)<br />
+              3.정보보호마크인증위원회 (www.eprivacy.or.kr/02-580-0533~4)<br />
+              4.대검찰청 인터넷범죄수사센터 (http://icic.sppo.go.kr/02-3480-3600)<br />
+              5.경찰청 사이버테러대응센터 (www.ctrc.go.kr/02-392-0330)
+              <b>13. 고지의 의무</b>
+
+              현 개인정보처리방침 내용 추가, 삭제 및 수정이 있을 시에는 개정 최소 7일전부터 홈페이지의 '공지사항'을 통해 고지할 것입니다
+
+              <b>부 칙</b>
+              제 1 조 (시행일) 본 약관은 2015년 3월 2일부터 시행합니다.<br /><br />
+
+              <button class="btn_grayoutline" onclick="window.open('/member/layer/person.pdf')">개인정보 처리방침 PDF 다운받기</button>
+
+            </div>
+
+            <div class="tab-pane fade join_layer_term" id="service_article">
+            <b>제 1 조 (목적)</b>
+
+            본 이용약관(이하 "약관"이라 합니다.)은 한강시스템(주) (이하 "회사")에서 제공하는 케어포 서비스(이하 "서비스")의 이용과 관련하여 회사와 고객간에 서비스 이용에 관한 권리와 의무 및 책임 기타 제반사항을 명시함을 목적으로 합니다.
+
+            <b>제 2 조 (용어의 정의)</b>
+
+            ① 이 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br />
+            1. 고객 : 회사와 서비스 이용계약을 체결하고 서비스를 받는 자를 말합니다.<br />
+            2. 이용계약 : 서비스 이용과 관련하여 회사와 고객간에 체결하는 계약을 말합니다.<br />
+            3. 아이디(ID) : 고객의 식별과 서비스 이용을 위하여 고객에게 제공되는 문자와 숫자의 조합을 말합니다.<br />
+            4. 비밀번호(PASSWORD) : 고객의 개인정보 및 권익 보호를 위하여 고객에게 제공되는 문자와 숫자의 조합으로 고객의 아이디(ID)와 함께 고객의 신원확인에 사용됩니다.<br />
+            ② 전 항에서 정한 것을 제외하고는 관계법령이나 기타 서비스별 안내에서 정하는 바에 따릅니다.<br />
+            <b>제 3 조 (약관의 명시 및 변경)</b>
+
+            ① 회사는 합리적인 사유가 발생할 경우 관련법령에 위배되지 않는 범위에서 이 약관을 개정할 수 있습니다.<br />
+            ② 회사가 약관을 개정할 경우에는 시행일자 및 개정사유를 명시하여 현행약관과 함께 회사의 서비스 홈페이지 초기화면에 시행일자 이전부터 7일 동안 게시합니다.<br />
+            ③ 고객은 변경된 약관에 동의하지 않을 경우 이용계약 해지를 요청할 수 있으며, 변경된 약관의 효력 발생일로 부터 7일 이후에도 거부의사를 표시하지 아니하고 서비스를 계속 사용할 경우 약관의 변경 사항에 동의한 것으로 간주됩니다.<br />
+
+            <b>제 4 조 (서비스 종류 및 변경)</b>
+
+            ① 회사는 서비스 종류, 서비스 내용, 가격 및 기타 서비스 관련사항을 회사의 서비스 홈페이지를 통하여 게시하며 고객은 회사의 홈페이지를 기준으로 서비스 이용신청을 해야 합니다.<br />
+            ② 또한 회사는 서비스 종류의 신설 또는 기타 변경사항에 대해서도 홈페이지를 통하여 게시하며 이미 서비스 이용 중인 고객에 대한 서비스의 변경사항은 홈페이지에 게시하거나 고객의 전자우편 주소를 통해서 통보하며 게시 또는 통보 후 7일 이내에 이의를 제기하지 않으면 고객이 변경사항에 대해서 동의한 것으로 간주합니다.
+
+            <b>제 5 조 (이용신청 및 약관동의)</b>
+
+            ① 이용신청은 고객이 이 약관에 동의하고 회사가 정한 신청양식을 인터넷에서 작성 후 신청하는 것으로 이루어지 며 필요한 경우에 고객에게 구비서류 제출을 요구할 수 있습니다. 이 이용약관에 대한 동의는 이용신청 당시 회사 홈페이지의 "서비스 이용약관을 읽고 동의합니다." 버튼을 누름으로써 의사표시를 합니다.<br />
+            ② 고객은 이용신청 시 실명, 실제정보를 입력하여야 하며, 이를 위반한 고객은 법적인 보호를 받을 수 없으며 또한 서비스 이용에 제한을 받을 수 있습니다.<br />
+            ③ 고객이 서비스 신청시 제공한 개인정보는 관계법령 및 회사의 개인정보보호정책에 따라 보호를 받습니다.
+
+            <b>제 6 조 (서비스 신청 안내)</b>
+
+            ① 회사는 고객의 서비스 신청이 완료되면 필요사항을 확인한 후 서비스 신청에 대한 승인 여부를 결정합니다.<br />
+            ② 회사는 서비스 신청 결과를 고객의 이메일(또는 문자)을 통해 통지합니다.<br />
+            ③ 회사는 서비스 신청이 다음 각 호에 해당하는 경우에는 승낙을 하지 아니 합니다.<br />
+            1. 타인 또는 타사의 정보로 신청한 경우<br />
+            2. 서비스 신청서 상의 입력 정보 내용이 허위인 경우
+
+            <b>제 7 조 (가입 및 자격)</b>
+
+            ① 회사가 정한 양식에 따라 가입정보를 기입한 후 가입을 신청하고 회사가 승낙함으로써 서비스 이용 고객으로 등록됩니다. 서비스의 특별한 이용에 관한 계약은 별도 계약에 의해 제공됩니다.<br />
+            ② 다음 각 호에 해당하는 경우에 회사는 고객가입을 인정하지 않거나 서비스 이용을 제한, 영구금지, 가입자격 박탈등의 조치를 취할 수 있습니다.<br />
+            1. 다른 고객의 명의를 사용하여 가입 신청한 경우<br />
+            2. 신청 시 필수 작성 사항을 기재하지 않거나 허위로 기재한 경우<br />
+            3. 관계법령의 위반을 목적으로 신청하거나 그러한 행위를 하는 경우<br />
+            4. 사회의 안녕질서 또는 미풍양속을 저해할 목적으로 신청하거나 그러한 행위를 하는 경우<br />
+            5. 다른 고객의 이용을 방해하거나 그 정보를<br /> 도용하는 등 전자거래질서를 위협하는 경우<br />
+            6. 제9조 고객의 의무를 지키지 않는 경우
+            ③회사가 가입자격을 박탈하는 경우에는 고객등록을 말소합니다. 이 경우 고객에게 사전 통지하여 소명할 기회를 부여합니다. 단, 고객의 귀책사유로 통지할 수 없는 경우 통지를 생략할 수 있습니다.
+
+            <b>제 8 조 (회사의 의무)</b>
+
+            ① 회사는 고객에게 본 약관에 명시된 서비스를 안정적이고 지속적으로 제공해야 합니다.<br />
+            ② 회사는 서비스 운영에 지장이 되는 장애가 발생했을 경우 이를 즉시 수리 또는 복구해야 하며, 안정적인 서비스 운영을 위해 최선을 다해야 합니다.<br />
+            ③ 회사는 고객이 정당하게 요구하는 의견이나 불만에 대해서 즉시 또는 회사가 정한 기간과 절차에 따라 처리해야 합니다.<br />
+            ④ 회사는 원활한 서비스 신청 및 운영을 위해 고객의 개인정보를 수집하여 보관하며 본인의 허락 없이는 제3자에게 이를 제공할 수 없습니다. 다만 관계법령에 의한 수사상의 목적으로 관계기관으로부터 요구 받은 경우나 정보통신 윤리위원회의 요청이 있는 경우, 회사의 이용요금을 체납하여 신용정보사업자 또는 신용정보집중기관에 제공하는 경우는 예외로 합니다.<br />
+            ⑤ 회사는 이용계약의 체결 및 해지 등 고객과의 계약관련 절차 및 내용 등에 있어 고객에게 편의를 제공하도록 노력합니다.
+
+            <b>제 9 조 (고객의 의무)</b>
+
+            ① 고객은 회사가 정한 서비스 이용요금을 지정된 일자에 납입할 의무가 있습니다.<br />
+            ② 고객은 회사의 동의 없이 회사가 제공하는 서비스를 제3자에게 제공하여서는 안 됩니다.<br />
+            ③ 고객은 회사와 타 고객의 서비스 운영에 방해가 되는 행위를 하지 않아야 합니다.<br />
+            ④ 고객은 자신이 운영 중인 서비스의 데이터 등에 대해 별도로 저장할 의무가 있으며 내부직원 실수나 외부 침입(계정정보 누출) 등으로 인한 정보의 유출, 누락 또는 자료의 손실에 대해 회사는 책임을 지지 않습니다.<br />
+            ⑤ 고객은 자신의 각종 아이디(ID)와 비밀번호를 제3자에게 누출할 수 없으며, 누출로 발생하는 손해에 대한 책임은 고객에게 있습니다.<br />
+            ⑥ 고객은 서비스 신청 시 회사에 제공한 정보에 변경내용이 발생했을 경우 해당 절차를 거쳐 빠른 시일 내에 수정, 보완해야 하며, 그로 인하여 발생하는 문제에 대한 책임은 고객에게 있습니다.<br />
+            ⑦ 고객은 회사의 명시적 동의가 없는 한 서비스의 이용권한, 기타 이용계약상의 지위를 타인에게 양도, 증여할 수 없으며 이를 담보로 제공할 수 없습니다.
+
+            <b>제 10 조 (서비스의 이용시간)</b>
+
+            서비스 이용은 회사의 업무상 또는 기술상 특별한 지장이 없는 한 연중무휴, 1일 24시간 서비스 제공을 원칙으로 하나 정기점검이나 시스템의 업그레이드가 필요한 날이나 시간에 서비스를 일시 중단할 수 있으며, 예정되어 있는 작업으로 인한 서비스 일시중단은 회사 홈페이지를 통해 사전에 공지합니다.
+
+            <b>제 11 조 (서비스 자료의 보관)</b>
+
+            ① 고객의 서비스 이용 자료는 서비스 유지기간까지 보존관리힌다.<br />
+            ② 고객의 서비스 탈퇴, 해지 시에는 고객의 정보 및 서비스 이용자료를 즉각 삭제조치한다.<br />
+            ③ 고객의 서비스 만료시에는 만료일 다음날부터 5년까지 보존관리한다.
+
+
+            <b>제 12 조 (서비스의 중단)</b>
+
+            ① 회사는 긴급한 시스템 점검, 증설 및 교체 등 부득이한 사유로 인하여 예고없이 일시적으로 서비스를 중단할 수 있으며, 새로운 서비스로의 교체 등 회사가 적절하다고 판단하는 사유에 의하여 현재 제공되는 서비스를 완전히 중단할 수 있습니다.<br />
+            ② 회사는 다음 각 호의 경우에 서비스 제공을 일시 중단할 수 있습니다. 서비스 중단이 발생할 경우 회사는 고객에게 이러한 사실을 전자우편 등의 방법으로 사전 또는 사후에 통보하여야 하며, 회사가 운영하는 홈페이지를 통하여 게시하는 것으로 대신할 수 있습니다.<br />
+            1. 서버 설비의 보수 혹은 공사상 불가피한 경우<br />
+            2. 전용회선 경로상의 장애가 발생한 경우<br />
+            3. 천재지변, 국가비상사태 등의 사유로 인하여 기계적인 작동불능이 발생한 경우
+
+
+            <b>제 13 조 (이용의 제한)</b>
+
+            ① 회사는 고객의 서비스 이용 내용이 다음 각호에 해당할 경우 서비스 이용을 일시적으로 제한할 수 있습니다.<br />
+            1. 제9조 규정에 의한 고객의 의무를 중대하게 위반한 경우<br />
+            2. 타인의 정보 유출, 비밀번호 도용 등의 부정한 행위를 한 경우<br />
+            3. 관련 법령에 위반되는 행위를 하는 경우<br />
+            4. 서비스를 범죄에 이용한다고 객관적으로 판단되는 경우<br />
+            5. 이 약관을 포함하여 기타 회사가 정한 제반 규정 또는 이용 조건을 위반하는 행위
+
+
+            <b>제 14 조 (이용제한 및 해제 절차)</b>
+
+            ① 회사는 제13조에 의거하여 이용제한을 할 경우에는 해당고객 또는 대리인에게 그 사유 및 기간 등을 고지한 후에 서비스 이용을 제한할 수 있으나 시스템 운영에 중대한 장애가 초래되거나 사안이 긴급한 경우에는 먼저 서비스를 정지한 후 이를 사후에 통보할 수 있습니다.<br />
+            ② 회사는 전항에 의하여 서비스가 제한된 고객이 그 위반행위를 해소할 경우에는 관련 절차에 따라 서비스 이용제한을 즉시 해제합니다.
+
+            <b>제 15 조 (이용요금 납부)</b>
+
+            ① 고객은 회사가 인지하기 어려운 이름으로 이용요금을 납부하는 경우, 이에 대해 회사에 통보할 의무가 있습니다. 회사가 인지하기 어려운 이름의 납부에 대한 통지를 하지 않음으로 인해 발생하는 서비스 중단 등의 불이익은 고객의 책임입니다.<br />
+            ② 고객은 납부일자에 이용요금을 납부해야 합니다. 이를 납부하지 못할 경우에는 제13조에 따른 서비스 이용제한 또는 제15조제2항에 의거 이용계약이 해지될 수 있습니다.
+
+            <b>제 16 조 (이용계약의 해지)</b>
+
+            ① 고객은 서비스의 계약 체결 후 회사의 절차에 따라 서비스의 이용 해지 신청을 할 수 있습니다.<br />
+            ② 회사는 고객이 다음 각호에 해당할 경우에 사전통지 없이 이용계약을 해지할 수 있습니다. 회사는 위와 같이 서비스 계약이 해지된 고객이 다시 이용신청을 하는 경우 이용 승낙을 거부할 수 있습니다.<br />
+            1. 이용신청서에 기재한 내용이 허위로 판명된 경우<br />
+            2. 서비스 운영을 고의로 방해하여 회사에 막대한 손해를 입힌 경우<br />
+            3. 제13조에 의하여 이용 제한된 후 그 이용제한 기간 내에 이용제한 사유를 해소하지 않는 경우
+
+            <b>제 17 조 (비용의 환불)</b>
+
+            ① 비용을 지불하여 구매한 모든 상품은 결제 후 7일 이내에 환불이 가능하며, 구매한 상품으로 서비스를 이용한 내역이 존재하는 경우 환불처리는 불가합니다.<br />
+            ② 고객의 결제 방법에 따라 환불에 대한 수수료는 아래 각호와 같습니다. 홈페이지에서 진행되는 모든 결제방식은 결제대행업체인 한국사이버페이먼트(KCP)를 통하여 진행되며, 환불시에는 결제대행업체, 은행사, 카드사의 수수료를 제외한 나머지 결제 비용만 환불 처리가 가능합니다.<br />
+            1. 카드결제에 대한 전액 환불 처리시 수수료는 없으며, 매입취소와 승인취소를 통하여 환불이 진행됩니다. 최종 환불은 카드사의 환급 절차에 따라 진행됩니다. 단,카드 금액의 전체 또는 부분 금액을 고객의 통장계좌로 환불 요청시에는 환불금액의 3.3% 수수료가 발생됩니다.<br />
+            2. 가상계좌 결제에 대한 환불 처리는 고객의 통장계좌로 환불이 되며, 이때 환불금액에서 500원의 수수료를 제외한 나머지 금액을 환불 해 드립니다.<br />
+            3. 실시간계좌이체 결제에 대한 환불 처리는 고객의 통장계좌로 환불이 되며, 이때 환불금액에서 3.3%의 수수료를 제외한 나머지 금액을 환불 해 드립니다.<br />
+            4. 고객의 통장계좌로 계좌이체에 따른 수수료 500원이 발생됩니다.
+
+            <b>제 18 조 (비용의 정산)</b>
+
+            ① 비용의 환불로 인한 정산은 서비스 해지일자 기준으로 잔여기간에 대하여 정산처리 한다.<br />
+            단, 6개월과 12개월 선납 결제시 제공된 추가 무료 개월은 정산에서 제외한다.<br />
+            ② 비용 결제시 지불되었던 수수료 및 부가가치세 세액 및 그 밖의 수수료는 정산에서 제외한다. 그 항목은 아래와 같다.<br />
+            1. 카드를 통한 결제시 PG사 수수료 3.3%는 정산비용에서 제외한다.<br />
+            2. 실시간계좌이체를 통한 결제시 수수료 PG사 2.2% 정산비용에서 제외한다.<br />
+            3. 전자세금계산서가 발행된 경우 세액은 정산비용에서 제외한다.
+
+            <b>제 19 조 (손해배상의 책임 및 범위)</b>
+
+            회사가 제공하는 서비스와 관련하여 고객에게 어떠한 손해가 발생한 경우 회사는 고의 또는 중과실이 없는 한 이에 대하여 책임지지 않습니다.
+
+            <b>제 20 조 (고객의 손해배상의 청구)</b>
+
+            고객의 손해배상의 청구는 회사에 청구사유, 청구금액 및 산출근거를 기재하여 서면으로 하여야 합니다.
+
+
+            <b>제 21 조 (고객에 대한 손해배상 청구)</b>
+
+            고객이 제8조 제1항에서 제7항까지 규정한 의무사항을 위반하여 회사에 손해를 끼친 경우에 회사는 해당 고객에 대해 손해배상을 청구할 수 있습니다.
+
+            <b>제 22 조 (면책)</b>
+            ① 회사는 고객이 게재한 정보, 자료 및 그에 대한 사실의 정확성, 신뢰성 등에 관하여는 어떠한 책임도지지 않으며, 서비스를 이용하여 게시 또는 전송한 자료, 자료의 취사선택, 기타 서비스 이용과 관련하여 고객에게 어떠한 손해 또는 불이익이 발생하더라도 이에 대한 모든 책임은 고객에게 있습니다.<br />
+            ② 회사는 고객과 제3자 상호 간에 서비스를 매개로 발생한 분쟁에 대해 개입할 의무가 없으며, 이로 인한 손해를 배상할 책임도 없습니다. 또한 고객이 이 규정을 위반함으로 인하여 회사가 다른 고객 또는 제3자에 대하여 책임을 부담하게 되고, 이로써 회사가 손해를 입게 되는 경우, 고객은 회사에게 대하여 모든 손해를 배상하여야 합니다.<br />
+            ③ 고객 아이디(ID)와 비밀번호의 관리 및 이용상의 부주의로 인하여 발생되는 손해 또는 제3자에 의한 부정사용 등에 대한 책임은 모두 고객에게 있습니다.<br />
+            ④ 불법적인 침입으로 인해 발생한 고객의 정보에 대한 손해는 배상하지 아니 합니다.<br />
+            ⑤ 회사에서 고객에게 무료로 제공하는 서비스의 이용과 관련해서는 어떠한 손해도 책임을 지지 않습니다.<br />
+            ⑥ 회사는 다음 각 호의에 의해 손해가 발생한 경우에는 책임을 지지 아니 합니다.<br />
+            1. 전시, 사변, 천재지변 또는 이에 준하는 국가비상사태 등 불가항력적인 경우<br />
+            2. 고객의 고의 또는 과실로 인하여 발생한 경우<br />
+            3. 전기통신사업법에 의한 회사 외 타 기간통신사업자가 제공하는 전기통신서비스 장애 및 설비부족으로 인한 경우<br />
+            4. 전기통신서비스의 특성상 불가피한 사유로 서비스 제공이 불가능한 경우
+
+            <b>제 23 조 (분쟁해결 및 관할법원)</b>
+
+            ① 본 약관과 관련하여 "회사"와 "고객" 간에 분쟁이 발생한 경우 기본적으로 상호 협의하여 해결함을 원칙으로 하며, 합의가 이루어지지 않을 경우 관련법규 및 상관습에 따릅니다.<br />
+            ② "서비스" 및 본 약관과 관련한 소송의 관할법원은 "회사"의 소재지 관할법원으로 합니다.
+
+            <b>< 부 칙 ></b>
+
+            <b>제 1 조 (시행일)</b>
+
+            본 약관은 2015년 3월 2일부터 시행합니다.<br /><br />
+            <button class="btn_grayoutline" onclick="window.open('/member/layer/service.pdf')">서비스약관 PDF 다운받기</button>
+
+            </div>
+
+
+          </div>
+        </div>                		
+      </div>
+
+      <div class="btn_area">
+        <button type="button" class="btn_gray w30p" data-bs-dismiss="modal">창닫기</button>
+      </div>
+
+  </div>
+</div>
+</div>
+
+<div class="modal fade web" id="email_refusal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-w_600">
+  <div class="modal-content">		
+      <div class="layertitle_div">이메일 무단수집 거부
+        <div class="popup_close cr" type="button" data-bs-dismiss="modal"></div>
+      </div>
+      <div class="modal-body">
+        <div class="email_refusal_layer_w">
+        	<div class="email_refusal_info">
+            본 웹사이트에 게시된 이메일 주소가 전자우편 수집 프로그램이나 그 밖의 기술적 장치를 이용하여 무단으로 수집되는 것을 거부하며, 이를 위반 시 정보 통신망법에 의해 형사 처벌됨을 유념하시기 바랍니다.<br /><br />
+            게시일 : 2015년 03월 02일
+          </div>
+        </div>                      		
+      </div>
+      <div class="btn_area">
+<!--      	<button type="button" class="btn_blue w30p" onclick="alert('취소처리 되었습니다.');">취소신청</button>-->
+        <button type="button" class="btn_gray w30p" data-bs-dismiss="modal">창닫기</button>
+      </div>
+
+  </div>
+</div>
+</div>
+
+<div class="modal fade web" id="protection_cert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-w_800 modal-dialog-centered">
+  <div class="modal-content">		
+      <div class="layertitle_div">정보보호 준비도 평가서
+        <div class="popup_close cr" type="button" data-bs-dismiss="modal"></div>
+      </div>
+      <div class="modal-body sujifine_picsize"> <img src="/img/info_protection_2026.jpg" /> </div>
+      <div class="btn_area">
+        <button type="button" class="btn_gray w30p" data-bs-dismiss="modal">창닫기</button>
+      </div>
+
+  </div>
+</div>
+</div>
+
+        <script>
+            function article_tab2() {
+				$('#article').find('button').eq(1).addClass('active').siblings().removeClass('active');
+				$('.tab-content').find('#person_article').addClass('active show').siblings().removeClass('active show');
+            }
+        </script>
+        
+
+<!-- Modal -->  
+
+    <footer>
+    	<div class="footer_link">        	
+            <li onclick="location.href='/advertise/carefor_info.php'">홍보센터</li>
+            <li onClick="window.open('http://hangang.com/company.php')">회사소개</li>
+            <li  data-bs-toggle="modal" data-bs-target="#member_term" data-backdrop="static" data-keyboard="false" onClick="article_tab2();">개인정보 처리방침</li>
+            <li  data-bs-toggle="modal" data-bs-target="#email_refusal" data-backdrop="static" data-keyboard="false">이메일주소 무단수집거부</li>
+            <li  data-bs-toggle="modal" data-bs-target="#protection_cert" data-backdrop="static" data-keyboard="false">정보보호 준비도 평가서</li>
+        </div>
+    	<div class="footer_inner">
+        <div class="c1">한강시스템주식회사</div>
+        <div class="c2 wordkeep">
+          <p class="inline" onclick="fnCopyToClipboard('서울시 동작구 보라매로 5길 35 파크스퀘어 7층')">우)07071 서울시 동작구 보라매로 5길 35 파크스퀘어 7층</p>
+          <p class="inline">고객센터. <a href="tel:1544-8691">1544-8691</a></p>
+          <p class="inline">팩스. 02-6008-2514</p>
+          <p class="inline">이메일. help@carefor.co.kr </p>
+          <p class="inline">대표자. 박 채 규</p>
+          <p class="inline">사업자등록번호.120-81-57465 </p>
+          <p class="inline">통신판매업 신고번호. 제02-680-327호</p>
+          <p class="inline">제휴협력. contract@hangang.com</p>
+        </div>
+      </div>
+    </footer>
+</div>
+</body>
+</html> 

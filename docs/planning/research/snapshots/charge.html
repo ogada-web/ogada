@@ -1,0 +1,748 @@
+<!doctype html>
+
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=960">
+<title> [이지케어]  재가장기요양기관 업무관리프로그램</title>
+<Meta name="Keywords" content="요양보호사,수급자,요양보호사급여,방문요양,방문간호, 노인장기요양보험 업무관리프로그램">
+<link type="text/css" rel="stylesheet" href="style.css?1781984408">
+<script language="JavaScript" type="text/javascript" src="/js2/jquery.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js2/trustlogo.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js2/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css2/smoothness/jquery-ui.min.css" />
+
+<script type="text/javascript">
+<!--
+	$(function(){
+		$(".topM").mouseover( function(){  
+			var str = $(this).attr("src").replace("off","on");
+			$(this).attr("src",str);
+		});
+		$(".topM").mouseout( function(){
+			var str = $(this).attr("src").replace("on","off");
+			$(this).attr("src",str);
+		});
+	});
+
+	function check_login() {
+		var form=document.login_frm;
+		if(!form.oCode.value) {
+			alert('시설코드를 입력하세요.')
+			form.oCode.focus()
+			return false
+		}
+		if(!form.User_ID.value) {
+			alert('아이디를 입력하세요.')
+			form.User_ID.focus()
+			return false
+		}
+		if(!form.User_PW.value) {
+			alert('비밀번호를 입력하세요.')
+			form.User_PW.focus()
+			return false
+		}
+		var winName = "ezCareMwin_" + form.oCode.value;
+		form.target = winName;
+		popup = window.open("/blank.html",winName,"width=1024, height=715,top=0,left=0,status=yes,resizable=yes");
+		if(!popup) {
+			alert("팝업 차단을 해제 해주세요.");
+			return false;
+		}
+	}
+  
+	function CreateBookmarkLink(url) {
+		title = "ezCare(이지케어)";
+		if (window.sidebar) { //FF
+			window.sidebar.addPanel(title, url,"");
+		}else if( window.external ) { //IE
+			window.external.AddFavorite( url, title);
+		}else if(window.opera && window.print) { //Opera
+			return true;
+		}
+	}
+  
+	function demoAction(){
+		if(document.login_frm){
+			document.login_frm.oCode.value = "DEMO";
+			document.login_frm.User_ID.value = "admin";
+			document.login_frm.User_PW.value = "g8317";
+			check_login();
+			document.login_frm.submit();
+		}
+	}
+
+	function alert_caution(obj){
+		if(obj.checked){
+			alert("주의!!\n\n불특정 다수의 이용자가 이용하는 PC에서의\n'시설코드, 아이디'저장하기는 권장하지 않습니다.");
+		}
+	}
+	
+	var _NGUL = "wcs.naver.net/wcslog.js";
+	if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+	document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+//-->
+</script>
+<style type="text/css">
+	ul#nav  { margin-left:20px; width:650px; border:1px solid #999; border-radius:10px; display:flex; justify-content:space-between; padding:7px 5px;align-items:center; margin-top:20px; box-shadow: 3px 3px 5px 2px gray; margin-right:1em;  }
+	ul#nav li { font-size:10pt; font-weight:bold; }
+	ul#nav a { text-decoration:none } 
+	ul#nav li:hover { background:#efefef; box-shadow: 1px 1px 5px 5px #efefef; } 
+	ul#nav li:hover a{ height:100%; display:block; color:blue }
+	#headstatus2 { text-align:right ; margin-right:1em  }
+	#headstatus2 .st2 { color:red !important; font-weight:bold !important }
+</style>
+</head>
+<body>
+<!-- 상단메뉴 시작 -->
+
+<!-- 바디 시작 -->
+
+<div id="wrap">
+<div style="display:flex; justify-content:space-between">
+	<ul>
+		<li><a href="/"><img src="/new/img/sub_top_Logo_new2.png" width=245 height=65 border=0></li>
+	</ul>
+	<div>
+		<!-- <div style="text-align:right; font-size:12px;"><a href="javascript:CreateBookmarkLink('http://ezcare.easyms.co.kr');">이지케어 즐겨찾기에 추가</a></div> -->
+		<ul id="nav">
+			<li><a href="/new/ezCare.html">이지케어소개</a></li>
+			<li><a href="/new/ezCare_fnc.html">주요기능</a></li>
+			<li><a href="/new/ezCare_change_work.html">도입효과</a></li>
+			<li><a href="/new/Use_letter.html">사용후기</a></li>
+			<li><a href="javascript:demoAction();">체험하기</a></li>
+			<li><a href="javascript:window.open('/help/manual.ez','ezFaq','width=1200,height=1000, top=50, left=50, scrollbars=yes,status=yes,resizable=yes')">메뉴얼</a></li>
+			<li><a href="/new/ezCare_charge.html">이용요금</a></li>
+			<li><a href="/new/application_form.html">이용신청</a></li>
+			<li><a onfocus="blur()" href="javascript:location.href='https://939.co.kr/downloadsupport.php?userid=easyms'"><img src="/new/img/btn_ezh.gif" border="0" height="22" width="60" alt="원격지원서비스"></a></li>
+		</ul>
+	</div>
+</div>
+<div id="headstatus2"><span class="st1">업계 1위!! 이지케어 이용현황:</span> 전국 <span class="st2">9,346개</span> 기관 사용중</div>
+
+
+  <div id="sidebar">
+      <div id="page_title">이지케어 이용요금</div>
+    
+<div id="login_frm_wrap" style="display:none;">
+<iframe name="act_frm" width=0 height=0 src="/blank.html" style="display:none;"></iframe>
+<form method=POST name="login_frm" action="https://ezcare.easyms.co.kr/login_act.php" style="margin:0;" onsubmit="return check_login();" target="ezCareMwin_DEMO">
+<input type="hidden" name="mode" value="User_login_Action">
+<input type="hidden" name="oCode" size=10 maxlength=4 value="" style="ime-mode:disabled; text-transform:uppercase;" onKeyUp="javascript:this.value=this.value.toUpperCase();" class="i_01"><input type="hidden" name="User_ID" size=15 maxlength=15 style="ime-mode:disabled;" class="i_01"><input type="hidden" name="User_PW" size=15 maxlength=15 class="i_01">
+</form>
+</div>
+
+<ul id="quick_menu" ondragstart="return false" onselectstart="return false">
+  <li class="link">
+    <a href="javascript:demoAction();">
+    <p style="float:right; margin-right:5px;"><img src="/new/img/icon01.png" width="32" height="33"></p>
+    <p class="st1">이지케어 프로그램</p>
+    <p class="st2">데모 체험하기</p></a>
+  <li class="link">
+    <a href="javascript:intro_viewMovie();">
+    <p style="float:right; margin-right:5px;"><img src="/new/img/icon01.png" width="32" height="33"></p>
+    <p class="st1">이지케어 소개</p>
+    <p class="st2">소개 동영상 보기</p></a>
+
+  <li class="link">
+    <a href="/new/application_form.html"><p class="st1">프로그램</p>
+    <p class="st2">가입&amp;이용신청</p></a>
+
+  <li class="link">
+    <a href="#" onclick="window.open('/help/manual.ez','ezFaq','width=1200,height=1000, top=50, left=50, scrollbars=yes,status=yes,resizable=yes')"><p class="st1">이지케어</p>
+    <p class="st2">메뉴얼 &amp; FAQ</p></a>
+
+  <li class="link">
+    <a href="http://cafe.naver.com/egcare" target="_blank"><p><img src="/new/img/navercafe.png"></p>
+    <p class="st3">이지케어 사용자 & 재가업무 커뮤니티</p></a>
+
+  <li>
+    <p style="float:right; margin:0px; margin-right:0px;"><img src="/new/img/icon02.png" width="50" height="85"></p>
+    <p class="st1">이용문의&amp;상담</p>
+    <p class="st2">070-8656-4100</p>
+    <p class="st3">상담시간 09:30~17:30<br>
+    토, 일, 공휴일 휴무</p>
+    <p class="st4">FAX 0505-877-0933</p>
+    
+</ul>
+
+    <div id="movieDsp"></div>
+
+<script type="text/javascript">
+<!--
+      function intro_viewMovie(){
+        var setTop = jQuery(window).scrollTop() + jQuery(window).height()/2 - 240;//this.layer.height()/2;
+        setTop = setTop > 0 ? setTop : 20;
+        var setLft = jQuery(window).width()/2 - 300;
+
+        var outHtml = '';
+        outHtml += '<div id="black_bg" style="position:fixed; z-index: 200; top:0px; left:0px; width:100%; height:100%; background-color:#000000; filter:Alpha(opacity=70); opacity:0.7; -moz-opacity:0.7;" onclick="intro_hideMovie()"></div>';
+        outHtml += '<div id="pop_wrap">';
+        outHtml += '  <div id="movieblock" style="z-index:201; position:absolute; top:'+setTop+'px; left:'+setLft+'px; border:20px solid #999999;">';
+        outHtml += '    <div style="position:absolute;text-align:right; width:100%;"><img src="/new/img/btn_close.png"  onclick="intro_hideMovie()" style="cursor:pointer"></div>';
+        outHtml += '    <iframe width="660" height="371" src="https://www.youtube.com/embed/yNngWhGiM94?autoplay=1&loop=1;playlist=yNngWhGiM94&vq=hd1080" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border:5px solid #ccc"></iframe>';
+        outHtml += '	</div>';
+        outHtml += '</div>';
+
+        $("#movieDsp").html(outHtml);
+      }
+	  
+      function intro_hideMovie(){
+        $("#movieDsp").html("");
+      }
+//-->
+</script>  </div>
+  <div id="content">
+
+
+      <h2 class="slogan"><!-- 한 사람의 몫을 감당하는  -->재가장기요양기관의 <span class="st2">듬직한 동반자 이지케어!</span></h3>
+
+      <h3 class="sub_slogan">합리적인 비용으로 <span class="st1">듬직한</span> <span class="st1">동반자</span>를 옆에 둔 것 같은 프로그램!!</span></h3>
+
+
+			<h3 class="sub_title">셋팅비(가입비)</h3>
+      <TABLE width=600 border=0 cellpadding=5 cellspacing=2>
+      <TR>
+        <TD style="font-size:12pt">
+            <span style="text-decoration:line-through; font-size:15px;">55,000원</span> <span style='font-size:15px; font-weight:bold; color:red;'>40%할인</span><span style="font-size:11px; letter-spacing:-1px;">(2026년 06월 30일까지)</span> → <B style="color:red;">33,000원</B>
+		   <!-- <span style="text-decoration:line-through; font-size:15px;">55,000원</span> <span style='font-size:15px; font-weight:bold; color:red;'>100%할인</span><span style="font-size:11px; ;">( 2020년 12월 31일까지 )</span> → <B style="color:red;">0원</B> -->
+        </TD>
+      </TR>
+      <tr>
+        <td style="color:#666;font-family:나눔고딕; line-height:160%; padding-left:10px;">
+          · 셋팅비는 최초 1회만 납부하며 이용해지시 반환되지 않습니다.<br>
+         · 지금 가입 시 <b>30일 무료이용</b> 혜택 + 무료 <b>문자 1000p</b> 충전
+        </td>
+      </tr>
+      </TABLE>
+
+      <a name="cTab"></a>
+			<h3 class="sub_title">월 이용료</h3>
+      <TABLE width=650 border=0 cellpadding=5 cellspacing=2>
+      <TR>
+        <TD style="font-size:12pt; font-weight:bold; font-family:나눔고딕;">기본료(10,000원) + ((일정관리 수급자 수-10) × 500원) + vat
+        </td>
+      </tr>
+      <tr>
+        <td style="color:#666;font-family:나눔고딕; line-height:160%; padding-left:10px;">
+          · 월 이용료는 기본료(10,000원)와, 청구 월의 일정관리 수급자 10인 초과 1인당 500원의 이용료를 합산해 부과합니다.<BR>
+          · 월 일정관리 수급자 수가 10명 미만일 경우는 기본료만 부과합니다.<BR>
+          · 이용료는 후불청구/납부입니다(해당 월 이용금액 익월 1일 청구).
+          <br><br>
+          
+          <b>&lt;요금계산 예&gt;</b><br>
+          · 일정관리 수급자 수 <b>37명</b>일 경우 ▶
+          기본료(10,000원) + ((37명-10) * 500원) + 2,350원(vat) = <b>25,850원</b></td>
+      </tr>
+      </TABLE>
+
+	<h3 class="sub_title">월 이용요금표</h3>
+	<div id="charge_table">
+				<table border=0 cellpadding=1 cellspacing=1 bgcolor=#333333>
+		<thead>
+		<tr>
+		<th scope="col">수급자수</th>
+		<th scope="col">이용요금</th>	
+		</tr>
+		</thead>
+				<tr>
+		<td class="pcntA">1</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">2</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">3</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">4</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">5</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">6</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">7</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">8</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">9</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">10</th>
+		<td class="amt">10,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">11</th>
+		<td class="amt">10,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">12</th>
+		<td class="amt">11,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">13</th>
+		<td class="amt">11,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">14</th>
+		<td class="amt">12,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">15</th>
+		<td class="amt">12,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">16</th>
+		<td class="amt">13,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">17</th>
+		<td class="amt">13,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">18</th>
+		<td class="amt">14,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">19</th>
+		<td class="amt">14,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">20</th>
+		<td class="amt">15,000</td>
+		</tr>
+						</table>
+				<table border=0 cellpadding=1 cellspacing=1 bgcolor=#333333>
+		<thead>
+		<tr>
+		<th scope="col">수급자수</th>
+		<th scope="col">이용요금</th>	
+		</tr>
+		</thead>
+				<tr>
+		<td class="pcntA">21</th>
+		<td class="amt">15,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">22</th>
+		<td class="amt">16,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">23</th>
+		<td class="amt">16,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">24</th>
+		<td class="amt">17,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">25</th>
+		<td class="amt">17,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">26</th>
+		<td class="amt">18,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">27</th>
+		<td class="amt">18,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">28</th>
+		<td class="amt">19,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">29</th>
+		<td class="amt">19,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">30</th>
+		<td class="amt">20,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">31</th>
+		<td class="amt">20,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">32</th>
+		<td class="amt">21,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">33</th>
+		<td class="amt">21,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">34</th>
+		<td class="amt">22,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">35</th>
+		<td class="amt">22,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">36</th>
+		<td class="amt">23,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">37</th>
+		<td class="amt">23,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">38</th>
+		<td class="amt">24,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">39</th>
+		<td class="amt">24,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">40</th>
+		<td class="amt">25,000</td>
+		</tr>
+						</table>
+				<table border=0 cellpadding=1 cellspacing=1 bgcolor=#333333>
+		<thead>
+		<tr>
+		<th scope="col">수급자수</th>
+		<th scope="col">이용요금</th>	
+		</tr>
+		</thead>
+				<tr>
+		<td class="pcntA">41</th>
+		<td class="amt">25,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">42</th>
+		<td class="amt">26,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">43</th>
+		<td class="amt">26,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">44</th>
+		<td class="amt">27,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">45</th>
+		<td class="amt">27,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">46</th>
+		<td class="amt">28,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">47</th>
+		<td class="amt">28,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">48</th>
+		<td class="amt">29,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">49</th>
+		<td class="amt">29,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">50</th>
+		<td class="amt">30,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">51</th>
+		<td class="amt">30,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">52</th>
+		<td class="amt">31,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">53</th>
+		<td class="amt">31,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">54</th>
+		<td class="amt">32,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">55</th>
+		<td class="amt">32,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">56</th>
+		<td class="amt">33,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">57</th>
+		<td class="amt">33,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">58</th>
+		<td class="amt">34,000</td>
+		</tr>
+				<tr>
+		<td class="pcntA">59</th>
+		<td class="amt">34,500</td>
+		</tr>
+				<tr>
+		<td class="pcntA">60</th>
+		<td class="amt">35,000</td>
+		</tr>
+						</table>
+				<table border=0 cellpadding=1 cellspacing=1 bgcolor=#333333>
+		<thead>
+		<tr>
+		<th scope="col">수급자수</th>
+		<th scope="col">이용요금</th>	
+		</tr>
+		</thead>
+				<tr>
+		<td class="pcntB">61</th>
+		<td class="amt">35,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">62</th>
+		<td class="amt">36,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">63</th>
+		<td class="amt">36,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">64</th>
+		<td class="amt">37,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">65</th>
+		<td class="amt">37,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">66</th>
+		<td class="amt">38,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">67</th>
+		<td class="amt">38,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">68</th>
+		<td class="amt">39,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">69</th>
+		<td class="amt">39,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">70</th>
+		<td class="amt">40,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">71</th>
+		<td class="amt">40,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">72</th>
+		<td class="amt">41,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">73</th>
+		<td class="amt">41,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">74</th>
+		<td class="amt">42,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">75</th>
+		<td class="amt">42,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">76</th>
+		<td class="amt">43,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">77</th>
+		<td class="amt">43,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">78</th>
+		<td class="amt">44,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">79</th>
+		<td class="amt">44,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">80</th>
+		<td class="amt">45,000</td>
+		</tr>
+						</table>
+				<table border=0 cellpadding=1 cellspacing=1 bgcolor=#333333>
+		<thead>
+		<tr>
+		<th scope="col">수급자수</th>
+		<th scope="col">이용요금</th>	
+		</tr>
+		</thead>
+				<tr>
+		<td class="pcntB">81</th>
+		<td class="amt">45,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">82</th>
+		<td class="amt">46,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">83</th>
+		<td class="amt">46,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">84</th>
+		<td class="amt">47,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">85</th>
+		<td class="amt">47,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">86</th>
+		<td class="amt">48,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">87</th>
+		<td class="amt">48,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">88</th>
+		<td class="amt">49,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">89</th>
+		<td class="amt">49,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">90</th>
+		<td class="amt">50,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">91</th>
+		<td class="amt">50,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">92</th>
+		<td class="amt">51,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">93</th>
+		<td class="amt">51,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">94</th>
+		<td class="amt">52,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">95</th>
+		<td class="amt">52,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">96</th>
+		<td class="amt">53,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">97</th>
+		<td class="amt">53,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">98</th>
+		<td class="amt">54,000</td>
+		</tr>
+				<tr>
+		<td class="pcntB">99</th>
+		<td class="amt">54,500</td>
+		</tr>
+				<tr>
+		<td class="pcntB">100</th>
+		<td class="amt">55,000</td>
+		</tr>
+						<tr>
+		<td class="pcntB">..</th>
+		<td class="amt">...</td>
+		</tr>
+				</table>
+				<div align=right style="padding-right:45px;">부가세별도/ 단위:원</div>
+	</div>
+
+
+<div style="clear:both"></div>
+
+
+
+			<h3 id="closing" style="text-align:center"><span class="st1">지금 바로</span> 이지케어의 <span class="st2">효율적인 업무</span>를 <span class="st2">경험</span> 해보세요.</h3>
+			<ul id="closing_btn" style="text-align:center">
+				<li><a href="ezCare_fnc.html"><img src="./img/btn01.png" width="115" height="115" border="0" alt="이지케어 주요기능보기"></a>
+				<li><a href="javascript:demoAction();"><img src="./img/btn02.png" width="115" height="115" border="0" alt="이지케어 데모체험하기"></a>
+				<li><a href="application_form.html"><img src="./img/btn03.png" width="115" height="115" border="0" alt="이지케어 이용신청하기"></a>
+			</ul>
+
+</div>
+
+
+
+<!-- 바디 끝 -->
+
+</div>
+<div style="height:50px;"></div>
+<!-- 카피라이트 시작 -->
+<TABLE width=100% height=200 border=0 cellpadding=0 cellspacing=0>
+<TR>
+  <TD bgcolor="#f2f1ed" valign=top align=center>
+    <table width=900 border=0 cellpadding=0 cellspacing=0>
+    <tr>
+      <td><img src="/new/img/btm_copyright.png" width=670 height=100 border=0 usemap="#Map"></td>
+      <td align=right><SCRIPT type=text/javascript>TrustLogo("/new/trustlogo/cornertrust.gif", "SC2", "none");</SCRIPT></td>
+    </tr>
+    </table>
+    <map name="Map" id="Map">
+      <area shape="rect" coords="402,9,471,27" href="/new/location.html" />
+      <area shape="rect" coords="344,9,391,27" href="/new/proposal.html" />
+      <area shape="rect" coords="248,9,334,27" href="/new/rules_privacy.html" />
+      <area shape="rect" coords="190,9,237,27" href="/new/rules_service.html" />
+      <area shape="rect" coords="133,9,180,27" href="/new/easyMS.html" />
+    </map>
+  </TD>
+</TR>
+</TABLE>
+<!-- 카피라이트 끝 -->
+
+
+<!-- 공통 적용 스크립트 , 모든 페이지에 노출되도록 설치. 단 전환페이지 설정값보다 항상 하단에 위치해야함 -->  
+
+<script type="text/javascript">
+var _NGUL = "wcs.naver.net/wcslog.js";
+if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+</script>
+<script type="text/javascript">
+if (!wcs_add) var wcs_add={};
+wcs_add["wa"] = "s_5a2a6c280b8b";
+if (!_nasa) var _nasa={};
+wcs.inflow("easyms.co.kr");
+wcs_do(_nasa);
+</script>
+
+
+</body>
+</html>

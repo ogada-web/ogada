@@ -1,0 +1,22 @@
+# 케어포 주야간보호 매뉴얼 PDF p.95 — 8-1-2 요양보호사 엑셀업로드 (공단연동)
+# source: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=95
+# extracted: 2026-06-20 (BNK-437) | PDF md5: 96f7d45eaca91525068ec9bfb626fb18 (9,992,772B)
+
+## p.95 직원 신규등록(공단연동)
+
+메뉴위치: 8-1-2.요양보호사 엑셀업로드 (공단연동)
+
+공단에 등록되어있는 기타 > 엑셀다운로드 > 요양보호사정보 파일을 통해
+케어포에 급여제공자(직원)를 등록시키는 방법입니다.
+
+① 공단요양보호사 정보 연동방법을 눌러 확인 후 공단에 있는 요양보호사정보 엑셀파일을 다운로드
+② 다운받은 요양보호사정보 엑셀업로드 파일을 선택하여 케어포에 반영함
+③ 반영 후 목록에 등록된 내용들을 확인하여 등록할 직원을 선택한다.
+④ 선택된 요양보호사 일괄등록를 누르면 8-1.직원 정보관리에 직원이 등록된 걸 확인할 수 있으며,
+   추가정보 등을 수정하여 관리
+
+## cross-walk hints (BNK-437)
+
+- func.php: 8-1-2 = 「선임 요양보호사 업무수행일지」(demo/PDF 번호 drift — view path 우선)
+- demo-work: 8-1-2 leaf = 공단연동 요양보호사 엑셀업로드 (PDF p.95 정본)
+- ogada: `/staff` CRUD + `/staff/import` NHIS caregiver excel (G-STAFF-NHIS-IMPORT carry)

@@ -1,0 +1,143 @@
+BNK-507 — ezCare 운영주기별 업무흐름 카탈로그 + 2026 모니터링 문항 1-15 ↔ ogada 코드 verbatim cross-walk
+조사일: 2026-06-22T09:20–09:30Z
+ogada baseline: FE @d058e43 (WT CLEAN·ahead 162) / BE @9db0bbb (WT CLEAN·ahead 512) — BNK-506 carry, HEAD zero advance.
+
+────────────────────────────────────────────────────────────────────────────
+A. ezCare 운영주기별 업무흐름 카탈로그 — FAQ rowid 21795–21828 (확인)
+   근거: docs/planning/research/snapshots/ezcare_faq2179[5-9].html · 218[0-9]+.html
+────────────────────────────────────────────────────────────────────────────
+주기     │ rowid  │ Q (제목)                                       │ ogada 인용 │ ezCare 메뉴 경로
+─────────┼────────┼──────────────────────────────────────────────┼────────────┼────────────────────────────────────────
+일일/수시│ 21812  │ 관리자 라운딩                                  │ —          │ MonitoringIntegratedChecklist(G30 ref)
+일일/수시│ 21813  │ 업무수행일지 작성                              │ ✅ verbatim │ 2.수급자관리 정보창 ▶ 탭:업무수행일지
+일일/수시│ 21814  │ 고충상담(수급자/요보사)                        │ ✅ verbatim │ ComplaintConsultationForm/Panel
+일일/수시│ 21815  │ 급여제공계획 변경                              │ —          │ 미인용
+주간     │ 21795  │ 상담일지 작성(직원변경 시)                     │ —          │ 미인용 — 직원변경 트리거 △
+주간     │ 21816  │ 급여제공기록지 제공                            │ —          │ 미인용
+주간     │ 21817  │ 상태변화기록지 작성 점검                       │ ✅ verbatim │ ClientPeriodicRiskAssessmentPanel
+월간     │ 21818  │ 급여제공기록지 제공                            │ —          │ 미인용
+월간     │ 21819  │ 급여명세서 작성/제공                           │ —          │ 미인용(7-1 4-channel은 G-7-1-4CHANNEL ✅)
+월간     │ 21820  │ 급여계약 통보                                  │ ✅ verbatim │ 9.기관관리 / 장기요양정보시스템 등록
+월간     │ 21821  │ 관리자 방문일정 수립                           │ —          │ 미인용 — 사회복지사 방문스케줄러 △
+월간     │ 21822  │ 직원회의 실시                                  │ —          │ 미인용·2026 평가지표에서는 [직원회의] 삭제
+분기     │ 21796  │ 직원복지(포상)                                 │ —          │ 미인용
+분기     │ 21804  │ 직원상담 관리                                  │ —          │ 미인용
+반기     │ 21801  │ 급여제공 결과평가(모니터링)                    │ —          │ 미인용 — 평가지표 24번 매핑 후보
+반기     │ 21803  │ 역량강화 교육                                  │ —          │ 미인용
+반기     │ 21807  │ 노인인권교육                                   │ ✅ verbatim │ StaffEducationLog cluster
+반기     │ 21810  │ 기초 평가                                       │ ✅ verbatim │ ClientPeriodicRiskAssessmentPanel
+반기     │ 21811  │ 기초 평가                                       │ ✅ verbatim │ ClientPeriodicRiskAssessmentPanel
+연간     │ 21800  │ 정기 욕구사정                                  │ ✅ verbatim │ ClientNeedsAssessmentEntity(G14)
+연간     │ 21802  │ 급여제공계획서 통보                            │ ✅ verbatim │ G14b plan dispatch
+연간     │ 21808  │ 직원교육                                       │ ✅ verbatim │ StaffTrainingLog
+연간     │ 21823  │ 임금협의 및 근로 재계약                        │ ✅ verbatim │ StaffEmploymentContractRenewalPanel
+연간     │ 21828  │ 운영규정 교육 실시                             │ ✅ verbatim │ StaffOnboardingCompliancePanel
+비정기   │ 21805  │ 수급자 계약                                     │ ✅ verbatim │ 수급자 onboarding
+비정기   │ 21806  │ 요양보호사 입사 처리                           │ ✅ verbatim │ StaffMemberOnboardingComplianceCard
+비정기   │ 21824  │ 수급자 계약부터 청구까지 업무 흐름             │ ✅ verbatim │ ClientFaq21824LifecyclePanel.jsx (전용 컴포넌트)
+비정기   │ 21825  │ 직원 입사.퇴사 업무흐름                        │ ✅ verbatim │ StaffLifecyclePanel.jsx
+
+요약(확인):
+- ezCare 28-건 카탈로그 중 ogada **15-건 verbatim 인용 ✅** (53.6%)·**13-건 미인용** (46.4%).
+- 미인용 13-건은 「[일일] 라운딩·[일일] 급여제공계획 변경·[주간] 직원변경 시 상담일지·[주간/월간] 급여제공기록지·[월간] 급여명세서·관리자 방문일정 수립·직원회의·분기 직원복지·분기 직원상담 관리·반기 결과평가 모니터링·반기 역량강화 교육」.
+- ogada가 갖고 있으나 verbatim 인용이 없는 항목(예: 라운딩 — `MonitoringIntegratedChecklist`)이 다수 — **인용 보강** 후보(KPI 영향 0·계획만).
+
+────────────────────────────────────────────────────────────────────────────
+B. ezCare 2026 모니터링 문항 1-15 (FAQ rowid 21836–21842) ↔ ogada `MonitoringItemCatalog` 15-템플릿 (확인)
+   근거: docs/planning/research/snapshots/ezcare_faq21836-21842.html · BE `MonitoringItemCatalog.java`
+────────────────────────────────────────────────────────────────────────────
+| 평가지표 # | ezCare 점검방향(인용) | rowid | ogada item #(catalog) | ogada title | 매핑 | 비고 |
+|---|---|---|---|---|---|---|
+| **1-3** | 직종별 종사자 업무 수행 (고시 6/50/51/57/66/69의2) | 21836 | — | (직접 매핑 없음) | △ | ogada item #8 인력기준이 부분 매핑 |
+| **4-5** | 팀장급 요양보호사 자격(실무경력 5년/60개월) | 21837 | — | (직접 매핑 없음) | △ | `TeamLeadQualificationCompliancePanel`(FE) 별도 |
+| **6-10** | 사회복지사 가산(욕구사정·급여계획·방문상담·업무수행일지 별지 24호) | 21838 | #3, #7 | 급여제공기록 작성·업무수행일지 | △ | 별지 제24호 verbatim BE L118 인용 ✅ |
+| **11** | 사회복지사 방문상담 20분 이상 | 21839 | — | (직접 매핑 없음) | △ | `MonitoringPhoneConsultation` 5명 60% 매핑 다름(문항 12-14) |
+| **12-14** | 수급자/보호자 만족도 5명 임의 선정·유선상담 | 21841 | #15 | 유선상담 실시 | ✅ | `REQUIRED_PHONE_CONSULTATIONS=5` + `REQUIRED_SATISFACTION_PERCENT=60` 상수 verbatim |
+| **15** | 매월 자가진단·신규기관 가산 적용월부터 매월 | 21842 | #6 | 모니터링 자가진단 | ✅ | `ROLLING_MONTH_WINDOW=6` 매핑·`MonitoringSelfDiagnosis*` 9-class |
+
+요약(확인):
+- ogada 15-템플릿은 ezCare/공단 평가지표 1-15 번호와 **순서 일치 ❌**(독자 재구성).
+- 직접 매핑되는 항목 2건만 ✅(12-14↔#15 유선상담·15↔#6 자가진단). 나머지 13항목은 △ 또는 미매핑.
+- ogada는 ezCare FAQ 21836/21841 「5-필드 폼」(점검방향·관련근거·점검기준·점검결과·점검방법)을 verbatim 채택(`MonitoringItemTemplateResponse`).
+- candidate **G30-LEGEND** `monitoring_official_indicator_crosswalk` (P3 가정·KPI 영향 0): ogada 15-item ↔ 공단 평가지표 번호 cross-walk 추가 — 사용자가 ezCare/공단 매뉴얼을 ogada에 매핑하기 쉬워짐.
+
+────────────────────────────────────────────────────────────────────────────
+C. guide-E200 「운영 매뉴얼」 신규 PGID 페이지 (확인·신규 evidence)
+   근거: ezCare_demo POST /page/login.php oCode=DEMO → /new.ez?PGID=guide-E200
+        HTTP 200·175,002B·`f00e403a39dd7fa0ee146a92ad770747`
+────────────────────────────────────────────────────────────────────────────
+h1 cycle blocks(2회 반복):
+  · 일일 / 수시 · 주간 · 월간 · 분기 · 반기 · 연간 · 비정기 업무 · 기관 업무 흐름도
+h2 섹션:
+  · 관련근거·관련 자료
+  · 서비스 모니터링이란?
+  · 지정갱신제 대상기관·갱신심사 대상군 분류·지정갱신제 절차
+  · 노인장기요양보험법·재무회계규칙·사회복지사업법·노인복지법 (관련 법령 4종 인용)
+  · 기관운영 컨설턴트 & 강사진
+  · 소규모 그룹(10인이하) 교육(컨설팅) 안내
+  · 1:1 밀착 컨설팅 서비스(유료) 안내
+  · 노무상담·기관운영 교육 및 아카데미
+h3:
+  · 지정갱신제 심사 제출서류
+  · 지정갱신제 심사 서식(이지케어 서식)
+  · 2019/2021/2022/2023/2024/2025/2026년 매뉴얼 archive
+h4:
+  · 서류심사·서류심사+대면심사(필요시)·서류심사+대면심사(필수)
+  · 장기요양 기관 대상 지원금 신청 지원 서비스
+  · 기관운영 - 서경춘·노무사 - 윤원기·기관운영 - 지니재가
+
+요약(확인): ezCare는 ERP 제품(이용료 33,000/55,000/25,850)뿐 아니라 **운영 컨설팅 (유료 1:1 밀착)·서식 (지정갱신제·평가매뉴얼)·교육 (강사진)** 을 번들로 제공. 차별화 모델: **SaaS + 운영 SaaS-Plus 컨설팅** 결합. ogada MVP 범위 밖(out-of-scope) 이지만 v2/v3 monetization 옵션으로 참고.
+
+────────────────────────────────────────────────────────────────────────────
+D. ezCare home (`/`) 12th rotation + 마케팅 카운터 verbatim 재실측 (확인)
+   근거: live curl https://ezcare.easyms.co.kr/ HTTP 200·106,116B·`6d6cbdad`
+        on-disk(BNK-503 carry) 106,048B·`eb489385` → 덮어쓰기 1건
+────────────────────────────────────────────────────────────────────────────
+- banner [공지] 「개인정보 처리방침 변경안내」(rowid=434·BNK-503 11th) → **[추천 이벤트] 「이지케어 · 이지케어 재무회계 추천하고 다양한 선물 받아가세요.」 = 12th rotation**.
+- counter1 (이지케어 도입 기관) = **9,270** (carry from on-disk·BNK-503=9,270)
+- counter2 (이지케어 재무회계 도입기관) = **4,594** (carry from on-disk·BNK-503 unknown)
+- counter3 (공단 급여청구 금액) = **2,353** 억원
+- counter4 (종사자 급여처리 금액) = **1,820** 억원
+- 「2026년 06월 22일 현재」 verbatim 업데이트 표기 (live·on-disk 동일)
+- main-visual 9,000여 장기요양기관·main-selcet-tit 9,270 재가기관 verbatim 불변
+- `home.js?1782120407→1782111030` cachebuster·`bbs-subject-txt` 리뷰 캐러셀 rotation·`데이터-라벨="주소지">울산광역시</div>` insert
+- 「[공지]」 → 「[추천 이벤트]」 marketing↔compliance oscillation 12-cycle
+
+요약: 도입 9,270 carry·재무회계 4,594 신규 식별(`mCnt` type)·banner rotation은 marketing↔compliance 12-cycle 누적.
+
+────────────────────────────────────────────────────────────────────────────
+E. ezCare_fnc.html 「도입 9,347」 verbatim carry — 301차 cachebuster DRIFT
+   근거: live https://ezcare.easyms.co.kr/new/ezCare_fnc.html HTTP 200·17,870B·`013aa748`
+        on-disk(BNK-503 carry) `6999ed89`
+────────────────────────────────────────────────────────────────────────────
+- live `013aa748` ≠ on-disk `6999ed89` — md5 차이는 cachebuster query 변동만(?123→다른 token).
+- python `re.sub('\?\d{6,}','')` strip 후 **양쪽 stripped_md5 = `51f1a4831b5a0a666e9829b60e0e8084` IDENTICAL**.
+- **도입 9,347 verbatim 불변**(BNK-503 carry·BNK-499→503 +1=9,347 carry).
+- charge.html 33,000/25,850/55,000·change_work.html RFID/중복일정/듀얼/트리플 verbatim 불변(BNK-506에선 미재실측·BNK-503 carry).
+
+────────────────────────────────────────────────────────────────────────────
+F. FAQ 21906–22100 stub probe (확인·미게시 carry)
+   근거: live https://ezcare.easyms.co.kr/help/faq.ez?rowid={21906,21907,21910,21915,21920,21930,21950,22000,22050,22100}&type=web
+────────────────────────────────────────────────────────────────────────────
+- 10 rowid 모두 HTTP **200**·13,327B·md5 `e5762090dafae4385da113934c1a50b5` 미게시 stub IDENTICAL.
+- 동일 stub md5는 BNK-503 21843–21856 14-probe와 **byte-identical** = 21843–22100 약 250개 rowid 모두 미게시 빈 shell·연속 carry.
+- FAQ 전체 index `/help/faq.ez` 233 rowid 노출(2026-06-09 baseline carry·BNK-X 22253) — **실제 published max = 21781**(index), but **21800–21842 분리 그룹**(2026 monitoring·운영주기별)은 categorical filter 가 다르거나 unlisted 공시.
+- → 카테고리 K001~K014 + 2026 모니터링·운영주기별은 별도 정원: `?ct=K00X` filter or unlisted 우회 노출 가설.
+
+────────────────────────────────────────────────────────────────────────────
+G. 인사이트 요약 → planner 액션 후보 (가정)
+────────────────────────────────────────────────────────────────────────────
+1. **G30-LEGEND**(P3 가정·KPI 영향 0): ogada `MonitoringItemCatalog` 15-item ↔ 공단 평가지표 1-15 번호 cross-walk MAP 도입. ezCare/공단 매뉴얼 → ogada 자가진단 매핑 UX 개선.
+2. **G34-WORKFLOW-CATALOG**(P3 가정·KPI 영향 0): ogada workflow citation을 21795–21828 28-건으로 확장 — 현재 15-건 verbatim 인용 + 13-건 미인용 분 추가. 「라운딩·급여계획 변경·직원변경 시 상담일지·급여명세서·관리자 방문일정·직원회의·역량강화·결과평가」 등 8-건 후보.
+3. **운영 SaaS-Plus 컨설팅 출시 검토**(v2/v3 가정): ezCare guide-E200 「1:1 밀착 컨설팅(유료)·강사진·평가지표 매뉴얼·지정갱신제」 → ogada 운영 add-on 모델. MVP out-of-scope·monetization 후보.
+4. **재무회계 도입기관 4,594 시장 신호**: ezCare ERP 9,270 vs 재무회계 4,594 → ERP 사용 기관의 49.5%만 회계 모듈 동시 도입. ogada 회계 모듈은 v2 후 separate paywall 패턴 검증 신호.
+5. **home banner 12-cycle marketing↔compliance oscillation**: BNK-491 [추천] → 495 [무료] → 503 [공지·rowid=434] → 507 [추천] · 「공지」 사이클은 GDPR/처리방침 alert 발생 시 30~60일 노출 가능성.
+
+────────────────────────────────────────────────────────────────────────────
+H. ogada git baseline 실측 (HEAD zero advance from BNK-506)
+────────────────────────────────────────────────────────────────────────────
+- FE develop `@d058e43`(WT CLEAN·BNK-506 carry·ahead **162** vs origin/test=ab4de83)
+- BE develop `@9db0bbb`(WT CLEAN·BNK-506 carry·ahead **512** vs origin/test=598d108)
+- App.jsx `<Route` 108 (+1 `<Routes>` wrapper = 109) · `*Page.jsx` 87 (+RootRedirect=88) · V1–V171 contiguous · BE Test 242 · FE test 438(`.test.js` 178 + `.test.jsx` 260) · 모듈 78.79% carry
+- merge gate **674**(FE162+BE512)
+- 신규 commit 0 · 양쪽 WT CLEAN · KPI 영향 0

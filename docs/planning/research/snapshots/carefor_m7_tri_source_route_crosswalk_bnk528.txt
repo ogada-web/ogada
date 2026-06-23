@@ -1,0 +1,24 @@
+# BNK-528 케어포 M7 tri-source
+✅11/11 func M7 ↔ ogada Route · demo visible 10/11 · ogada superset +6
+
+| func | title | demo | ogada | |
+|---|---|---|---|---|
+| 7-1 | 본인부담금 청구관리 | (hidden) | /billing | ✅ |
+| 7-2 | 본인부담금 입금관리 | (hidden) | /billing/payments | ✅ |
+| 7-2-1 | 의료비공제(연말정산) | (hidden) | /billing/reports/statistics | ✅ |
+| 7-3 | 본인부담금 미납관리 | (hidden) | /billing/overdue | ✅ |
+| 7-4 | 본인부담금 자동이체 (CMS) | (hidden) | /billing/cms | ✅ |
+| 7-5 | 본인부담금 간편결제 | (hidden) | /billing/easy-pay | ✅ |
+| 7-6 | 본인부담금 청구대장 리포트 | (hidden) | /billing/reports/charges | ✅ |
+| 7-7 | 본인부담금 입금대장 리포트 | (hidden) | /billing/reports/deposits | ✅ |
+| 7-8 | 본인부담금 수납대장 리포트 | (hidden) | /billing/reports/receipts | ✅ |
+| 7-9 | 본인부담금 수납,환불내역 | (hidden) | /billing/reports/refunds | ✅ |
+| 7-10 | 본인부담금 간편계산기 | (hidden) | /billing/calculator | ✅ |
+
+superset:
+/billing/cash-receipts
+/billing/claims/:claimId
+/billing/copay-rates
+/billing/fee-schedules
+/billing/imports/nhis
+/billing/imports/nhis/:batchId

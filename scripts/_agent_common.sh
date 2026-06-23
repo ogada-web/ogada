@@ -43,7 +43,7 @@ agent_show_all_sessions() {
   agent_check_session "$_AGENT_SESSION" "single (ad-hoc)"
   agent_check_session "$_AGENT_PIPELINE_SESSION" "pipeline (PLN→DBA→UXD→COD→TSR ×2)"
   agent_check_session "$_AGENT_SECURITY_SESSION" "security_auditor (daily)"
-  agent_check_session "$_AGENT_BENCHMARK_SESSION" "benchmark_researcher (daily)"
+  agent_check_session "$_AGENT_BENCHMARK_SESSION" "benchmark_researcher (30min)"
   agent_check_session "$_AGENT_WRITER_SESSION" "tech_writer"
 }
 
@@ -66,16 +66,31 @@ agent_show_processes() {
   _agent_common_init
   echo "[processes]"
   local found=0
+  local bridge_count=0
+  local agent_count=0
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
     echo "$line"
     found=1
+    if [[ "$line" == *cursor-sdk-bridge* ]]; then
+      bridge_count=$((bridge_count + 1))
+    elif [[ "$line" == *run_agent.py* ]]; then
+      agent_count=$((agent_count + 1))
+    fi
   done < <(
     ps -ef 2>/dev/null | grep -E "run_agent\.py|agent_pipeline\.sh|cursor-sdk-bridge" | grep -v grep || true
   )
   if [[ "$found" -eq 0 ]]; then
     echo "  none"
+  else
+    echo "  summary: run_agent=${agent_count} bridge=${bridge_count}"
   fi
+}
+
+agent_prune_orphan_bridges() {
+  _agent_common_init
+  echo "[bridge-prune] orphan cursor-sdk-bridge 정리"
+  "$_AGENT_PYTHON" "$_AGENT_ROOT/scripts/run_agent.py" prune-bridges "$@" || true
 }
 
 agent_show_approval() {
@@ -153,6 +168,8 @@ agent_stop_all() {
     agent_kill_pids "$pids"
     killed=1
   fi
+
+  agent_prune_orphan_bridges --quiet
 
   if [[ "$killed" -eq 0 ]]; then
     echo "[ok] 실행 중인 에이전트 없음"

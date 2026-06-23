@@ -1,0 +1,33 @@
+# 케어포 주야간보호 사용매뉴얼 PDF p.90 추출 (BNK-555 신규)
+# 원본: https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=90
+# Wayback id_: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+# PDF md5: 96f7d45eaca91525068ec9bfb626fb18 (132p·9,992,772B)
+# 조사일: 2026-06-23T17:22Z | HTTP: 200 (Wayback id_ fetch)
+
+--- p.90 청구시작 기준금액 설정 (확인) ---
+메뉴위치: 7-3.청구시작 금액설정
+케어포 시스템을 이용하기 이전에 미납금액이나 선납금액등을 입력하는 서비스입니다.
+※본인부담금이 1회 이상 생성이 되면, 이후에는 설정 변경이 되지 않습니다.
+  - 초기화를 원하는 경우 본인부담금 생성내역을 다 삭제처리 해야 함
+
+--- tri-source 번호 충돌 (확인) ---
+| 출처 | 7-3 의미 | 비고 |
+|---|---|---|
+| func.php / demo L07 nav | 본인부담금 미납관리 (`view.cost_nopay`) | 정적 메뉴 정본 109항목 |
+| PDF p.89 | 본인부담금 미납관리 | p.89 본문과 func 정합 |
+| PDF p.90 | **7-3.청구시작 금액설정** (온보딩 전용) | func·demo **별도 leaf 0** — PDF 번호 재사용 |
+
+→ 청구시작 화면은 func 정적 트리에 **독립 leaf 없음**(가정: 7-1 청구관리 또는 시설설정 9-1 하위 서브화면).
+
+--- ogada cross-walk (확인) ---
+| 케어포 p.90 규칙 | ogada | 판정 |
+|---|---|---|
+| 도입 이전 미납/선납 입력 | `PUT /api/v1/settings/billing/start-balance` · G33 | ✅ BE |
+| 1회 생성 후 변경 불가(locked) | `billingStartBalance.locked` · `BillingStartBalanceLockedNotice` | ✅ BE+FE embed |
+| 초기화=청구내역 전체 삭제 | 가정: ogada 별도 purge workflow 미확인 | △ |
+| 전용 메뉴 7-3 | Route 0 · `OverduePage`·charges ledger `OPENING_BALANCE` row embed | △ UX(기능 parity) |
+
+--- p.85·p.86 연동 워크플로 (carry·확인) ---
+p.85: 7-1 월별 청구서 발행 전 **이전 달 7-2 입금처리** 필수 — 미처리 시 이전미납금 잔존(자동 삭제 없음).
+p.86: 청구명세서 생성기준 = 급여기록(공단 청구내역상세 엑셀) vs 급여일정(2-1) — **9-1 시설정보설정**에서 선택.
+p.86 ④: 인정등급/수급분류 변경 시 1-1 인정기간 변경등록 선행 필수.

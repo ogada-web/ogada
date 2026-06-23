@@ -1,3 +1,109 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T16:18:50+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-08 103차 재검증)
+
+> **103차 재검증 (16:18) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `c7c8f07`(+1 vs 101차 `7cd9293`: `c7c8f07` feat(uxd-55) US-J02 GuardianBillingDetailModal 본인부담금 명세 상세·인쇄 UXD-55, CLEAN)·217/70 PASS·781 modules **3 청크 분리**(max 367 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**: 101차(test `c510f5c`·develop `7cd9293` +21) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`7cd9293`→`c7c8f07`**(+1). 양 worktree **CLEAN**. **신규 Open 0건(frontend)** — 판정 **PASS**(v1.2).
+>
+> **`7cd9293..c7c8f07` diff stat**: 6 files, +337/-34 — **신규** `GuardianBillingDetailModal.jsx`(+test — US-J02 본인부담금 명세 상세·인쇄) + `GuardianPortalPage.jsx`(+test)·`components/ui/index.js`·`components.css`. develop **22커밋 ahead** of test. UXD-55 US-J02 보호자 포털 본인부담금 UI(develop-only). v1.3 `pending`(backend 로컬 test 598d108·origin STALE SEC-D14/QA-B12·frontend 22 ahead·live E2E run 잔여)·v3 develop-only.
+
+> **101차 재검증 (15:15) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `7cd9293`(+1 vs 99차 `e641f62`: `7cd9293` feat(uxd-54) US-UX-04 BranchScopeNotice QR·배차 화면 연동 UXD-54, CLEAN)·214/69 PASS·780 modules **3 청크 분리**(max 367 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**: 99차(test `c510f5c`·develop `e641f62` +20) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`e641f62`→`7cd9293`**(+1). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2).
+>
+> **`e641f62..7cd9293` diff stat**: 8 files, +103/-34 — `QrGeneratePage`(+test)·`TransportPage`(+test)·`TransportRunDetailPage`·`TransportRunNewPage` — `BranchScopeNotice` 연동(US-UX-04) + `pilotPageFlows.test.jsx` E2E 정리 + `components.css`. develop **21커밋 ahead** of test. UXD-54 QR·배차 지점 스코프 UI(US-UX-04·US-E03/T01~T03). v1.3 `pending`(backend 로컬 test 32575aa·origin STALE QA-B12·frontend 21 ahead·live E2E run 잔여)·v3 develop-only.
+
+> **99차 재검증 (14:05) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `e641f62`(+2 vs 97차 `1d910c2`: `0d36e30` feat(ux) US-E01/E05/E03/T03 접근성·지점 스코프 UI 보강 UXD-53 · `e641f62` test(v1.2/v1.3) pilotPageFlows US-E01/E05 BranchScopeNotice E2E UXD-53, CLEAN)·212/69 PASS·780 modules **3 청크 분리**(max 367 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**: 97차(test `c510f5c`·develop `1d910c2` +18) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`1d910c2`→`e641f62`**(+2). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2).
+>
+> **`1d910c2..e641f62` diff stat**: 12 files, +242/-20 — **신규** `BranchScopeNotice.jsx`(+test, `role="status"` 활성 지점 조회 범위 노출) + `AttendancePage.jsx`(+test)·`AttendanceStatsPage.jsx`(+test)·`QrGeneratePage.jsx`·`TransportRunDetailPage.jsx`·`TransportRunNewPage.jsx`·`pilotPageFlows.test.jsx`(+51 US-E01/E05 E2E)·`components.css`(+71 ds-branch-scope-notice·forced-colors a11y)·`components/ui/index.js`. develop **20커밋 ahead** of test. UXD-53 지점 스코프 UI(US-B02/E02/E05) — `active_branch_id` 기준 조회 범위 텍스트 노출·hq_admin BranchSwitcher 안내·색상만으로 의미 전달하지 않음(WCAG 1.4.1). v1.3 `pending`(backend transport API test 미승격·US-T01~T03 live E2E run 잔여)·v3 develop-only.
+
+> **97차 재검증 (12:55) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `1d910c2`(+2 vs 95차 `3c55339`: `37be0a3` v1.3-A 배차 연락처 마스킹 UI + 픽업 프로필 a11y US-T03/UXD-52 · `1d910c2` pilotPageFlows T03 연락처 마스킹 E2E US-T03, CLEAN)·208/68 PASS·779 modules **3 청크 분리**(max 367 kB <500 kB)·audit 0·PASS(v1.2)·v1.3 pending·v3 develop-only**: 95차(test `c510f5c`·develop `3c55339` +16) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`3c55339`→`1d910c2`**(+2). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2).
+>
+> **`3c55339..1d910c2` diff stat**: 11 files, +182/-10 — **신규** `TransportPickupContact.jsx`(+test, hq_admin full+tel·non-HQ 마스킹값만) + `ClientTransportProfileSection`·`TransportStopList`(+test)·`TransportPage`(+test)·`TransportRunDetailPage`·`pilotPageFlows.test.jsx`(+46 T03 마스킹 E2E)·`components.css`. develop **18커밋 ahead** of test. US-T03 연락처 마스킹(`010-****-5678`·링크 없음) PII 보호(개인정보보호법) 부합·backend `c7941e9` 마스킹과 정합. v1.3 `pending`(backend transport API test 미승격·US-T01~T03 live E2E run 잔여)·v3 develop-only.
+
+> **95차 재검증 (11:45) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `3c55339`(+2 UXD-51 FE-13/FE-14 복원·v1.3-A ClientForm 픽업 프로필 CLEAN)·203/67 PASS·778 modules **3 청크 분리**(max 367 kB <500 kB)·PASS(v1.2)·v1.3 pending·v3 develop-only**: 93차(test `c510f5c`·develop `d484206` +14) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`d484206`→`3c55339`**(+2: `2a0ef3d` feat(uxd-51): FE-13·FE-14 누락 UI 컴포넌트 복원 및 접근성 재점검 · `3c55339` feat(v1.3-A): ClientForm 픽업 프로필 UI 연동 US-T01/Q166). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `pending`(backend transport API test 미승격·US-T01~T03 **live E2E run** 잔여, transport live E2E harness develop PRESENT) · v3 **develop-only**.
+
+## 커밋 수준 (95차)
+
+| 항목 | 93차 | 95차 |
+|------|------|------|
+| develop HEAD | `d484206` (+14) | **`3c55339`** (+16) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 14 ahead | **develop 16 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 189/60 PASS | **203/67 PASS** (+14/+7) |
+| develop build | 766 modules 3 청크 (max 367.09 kB) | **778 modules 3 청크** (max 367.09 kB <500 kB) |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 95차 — 93차 대비 +2)
+
+| SHA | Message |
+|-----|---------|
+| `2a0ef3d` | feat(uxd-51): FE-13·FE-14 누락 UI 컴포넌트 복원 및 접근성 재점검 |
+| `3c55339` | feat(v1.3-A): ClientForm 픽업 프로필 UI 연동 (US-T01, Q166) |
+
+> **`d484206..3c55339` diff stat**: 32 files, +2170/-604 — UXD-51 복원: `FeeScheduleTable`(+test)·`CopayRateTable`(+test)·`AuditLogPanel`·`BackupSettingsPanel`·`LoginHistoryPanel`·`PasswordChangeModal`(+test)·`PasswordResetRequestModal`·`PlatformOrgDetailModal`·`BillingStatusConfirmModal`(+test)·`FeeRateHistoryPanel`·`GuardianDailySummary`(+test)·`components/ui/index.js`·`Badge` + `SettingsPage`(-약190)·`PlatformPage`·`CopayRatePage`·`FeeSchedulePage`·`BillingDetailPage`·`GuardianPortalPage`·`LoginPage`·`components.css` 연동·a11y; v1.3-A: `ClientFormPage`(+492/-... 픽업 프로필 UI)·`ClientFormPage.test.jsx`(+104).
+
+## develop HEAD (`3c55339`, 95차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **203/67 PASS** (93차 189/60 → +14/+7) |
+| npm run build | **778 modules PASS** — **3 청크**: react-vendor 192.84 kB gzip 61.52·index 211.79 kB gzip 52.27·recharts 367.09 kB gzip 101.43, CSS 35.46 kB gzip 6.48 (**max 367.09 kB < 500 kB**) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | Transport(Page·RunNew·RunDetail·KakaoMap·Disclaimer·StopList·TransportUnconfirmModal)·**transportLiveApi.e2e.test.js**·**ClientFormPage 픽업 프로필(+test)**·transport.js·transportUtils **HEAD PRESENT** |
+| FE-13/14 복원 | FeeScheduleTable·CopayRateTable·AuditLogPanel·BackupSettingsPanel·LoginHistoryPanel·PasswordChangeModal·PlatformOrgDetailModal **HEAD PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0·graceful) · 하드코딩 시크릿 스캔 0건 |
+
+## 판정 (95차)
+
+- **test `@c510f5c` v1.2 PASS** — 143/46·125 modules·audit 0 (독립 실측, 93차와 동일).
+- **develop `3c55339` +16 CLEAN** — 203/67·778 modules·audit 0 (non-blocking, v1.3-A·v3·UXD-51 develop 선행).
+- **신규 Open 0건** · 잔여 BLOCK = backend merge(23) + SEC-D14 + v1.3 post-merge live E2E run(결정 73).
+
+---
+
+# (이력) develop ↔ test diff 메타 — frontend (2026-06-08 93차 재검증)
+
+> **93차 재검증 (10:30) — test `@c510f5c` 불변·143/46 PASS·125 modules·audit 0·develop `d484206`(+2 FE-15 code-split 복원·transport live E2E·forced-colors a11y CLEAN)·189/60 PASS·766 modules **3 청크 분리**(max 367 kB <500 kB, vite >500kB LOW 해소)·PASS(v1.2)·v1.3 pending·v3 develop-only**: 92차(test `c510f5c`·develop `637b9b3` +12) 대비 **test HEAD 불변** — v1.2 merged 유지. develop HEAD **`637b9b3`→`d484206`**(+2: `511c240` a11y(forced-colors): transport map·stop·marker 고대비 모드 접근성 보강 · `d484206` fix(v1.3-A): FE-15 코드 스플릿 복원 + transport live backend E2E US-T01~T03). 양 worktree **CLEAN**. **신규 Open 0건** — 판정 **PASS**(v1.2). v1.3 `pending`(backend transport API test 미승격·US-T01~T03 **live E2E run** 잔여, transport live E2E harness develop PRESENT) · v3 **develop-only**. **FE-15 코드 스플릿 복원** → develop build 91/92차 단일 JS 756 kB(vite >500kB LOW) → 3 청크(max 367.09 kB) 경고 해소.
+
+## 커밋 수준 (93차)
+
+| 항목 | 92차 | 93차 |
+|------|------|------|
+| develop HEAD | `637b9b3` (+12) | **`d484206`** (+14) |
+| test HEAD | `c510f5c` (v1.2 merged) | **`c510f5c`** (불변) |
+| commits gap | develop 12 ahead | **develop 14 ahead** |
+| develop WT | CLEAN | **CLEAN** |
+| develop tests | 189/60 PASS | **189/60 PASS** (불변 — 신규 live E2E src/e2e 제외) |
+| develop build | 766 modules (단일 JS 756 kB, vite >500kB LOW) | **766 modules 3 청크** (max 367.09 kB <500 kB — **LOW 해소**) |
+| test tests | 143/46 PASS | **143/46 PASS** (불변) |
+
+### develop 신규 커밋 (test `c510f5c` 이후, 93차 — 92차 대비 +2)
+
+| SHA | Message |
+|-----|---------|
+| `511c240` | a11y(forced-colors): transport map·stop·marker 고대비 모드 접근성 보강 (50차) |
+| `d484206` | fix(v1.3-A): FE-15 코드 스플릿 복원 + transport live backend E2E (US-T01~T03) |
+
+> **`637b9b3..d484206` diff stat**: 6 files, +156/-4 — `src/e2e/transportLiveApi.e2e.test.js`(+115 신규 transport live API E2E)·`src/e2e/pilotLiveApi.e2e.test.js`·`pilotLivePages.e2e.test.jsx`·`liveConfig.js` live harness 확장 + `vite.config.js`(+22 `manualChunks` FE-15 코드 스플릿 복원) + `src/styles/components.css`(+15 forced-colors transport a11y).
+
+## develop HEAD (`d484206`, 93차 TSR 실측)
+
+| 항목 | 결과 |
+|------|------|
+| working tree | **CLEAN** |
+| npm test | **189/60 PASS** (92차와 동일 — 신규 `transportLiveApi.e2e.test.js` 는 `src/e2e/**` 기본 test 제외) |
+| npm run build | **766 modules PASS** — **FE-15 코드 스플릿 복원 3 청크**: react-vendor 192.84 kB gzip 61.52·index 194.75 kB gzip 47.23·recharts 367.09 kB gzip 101.43, CSS 35.17 kB gzip 6.42 (**max 367.09 kB < 500 kB — vite >500kB 경고 해소**) |
+| npm audit | **0 vulnerabilities** |
+| v1.3-A 산출물 | Transport(Page·RunNew·RunDetail·KakaoMap·Disclaimer·StopList·TransportUnconfirmModal)·**transportLiveApi.e2e.test.js**·transport.js·transportUtils **HEAD PRESENT** |
+| v3 산출물 | MealsPage·ProgramsPage·StaffPage·MealRecordForm·ProgramParticipationForm + Recharts(ChartContainer 등) **HEAD PRESENT** |
+| 보안 | KAKAO 지도 키 `import.meta.env.VITE_KAKAO_MAP_JS_KEY`(하드코딩 0·graceful) · `MAX_TRANSPORT_STOPS=15` · 하드코딩 시크릿 스캔 0건 |
+
+## 판정 (93차)
+
+**PASS** (v1.2) — test `@c510f5c` v1.2 merged 검증 불변. develop +14 v1.3-A·v3·Recharts·FE-15 code-split **CLEAN** (non-blocking). **FE-15 코드 스플릿 복원**으로 91/92차 develop build LOW(단일 JS 756 kB) 사유 소멸.
+**v1.3 이관 게이트 미충족(pending)** — backend v1.3-A transport API(develop `f8d1b02` PRESENT, **test 미승격**)·US-T01~T03 **라이브 E2E run** 잔여. transport live E2E harness develop HEAD **PRESENT** @ `d484206`(실 run 은 backend test 승격 후). **v3 develop-only** — ROADMAP merge 게이트 미정의, 정상(결함 아님). 잔여 BLOCK: backend merge(22) + SEC-D14 + post-merge live E2E(결정 73).
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-08T09:13:00+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-08 92차 재검증)
 

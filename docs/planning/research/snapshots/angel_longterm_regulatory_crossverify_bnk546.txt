@@ -1,0 +1,99 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-23T11:00:00Z -->
+# BNK-546 엔젤·롱텀·규제 4–6h 역공학 extract (평가지표#27 보호자회의 cross-walk + 2026 수가·고시 3축 교차검증 + NHIS#44 331차)
+
+**조사일**: 2026-06-23T11:00Z | **rotation**: 엔젤·롱텀·규제 4–6h — silverangel/lcms·NHIS#44·MOHW 2026-126·law247·longterm 502/503/610·평가#27
+
+## ogada git 실측 (@develop)
+
+| 항목 | BNK-545 | BNK-546 | delta |
+|------|---------|---------|-------|
+| FE develop | `@949e9bf` WT CLEAN | `@949e9bf` WT CLEAN | **HEAD zero advance** |
+| BE develop | `@40ab9e7` WT CLEAN | `@40ab9e7` **WT DIRTY 1M** | **HEAD zero advance** · `CmsServiceTest.java` modified |
+| merge gate | 713 | **713** | carry (FE186+BE527) |
+| Route | 111 | 111 | carry |
+| *Page.jsx | 89 | 89 | carry |
+| BE Test 파일 | 247 | 247 | carry (@Test 1,813) |
+| FE test | 450 | **450** | carry (183 `.test.js` + 267 `.test.jsx`) |
+| 모듈 KPI | 78.79% | 78.79% | carry |
+
+---
+
+## ★★★ NHIS #44 이동서비스비 331차 zero drift (PLAN_NOTES #44 1차 확인 재입증)
+
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 `c886ff1f` · on-disk `nhis_jo44_joHistory.html` **IDENTICAL**
+
+| 조항 | 인용 (확인) |
+|------|------------|
+| ① | 이동서비스비 = 실거주지↔기관 최단거리(편도)·러-1~4 등급별 단가 |
+| ② | 1일 1회만 산정 · 편도만 이용 시 러-1~4 비용의 **50%** |
+| ③ | 수급자 부담 없음 |
+| ④ | 이동서비스 **일지** 작성·보관 의무 |
+| ⑤ | 세부사항 공단 이사장 규정 → 별지 제22호 |
+
+ogada parity: `TransportServiceFeeService` 5/5 — `RU_1~RU_4` · `ONE_WAY_RATIO=0.5` · 1일1회 dedup · `TransportServiceLog` + V148/V154/V155
+
+---
+
+## ★★★ silverangel 평가지표 #27 「가족과의 소통」 — field/workflow verbatim (신규 상세 블록)
+
+**출처**: [daycareEssentialWork.do](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) HTTP 200 · 131,664B · md5 `c79c1be3` · on-disk `silverangel_daycareEssentialWork.html` **IDENTICAL** (331차 backbone)
+
+| 필드 | verbatim (확인) |
+|------|----------------|
+| 지표번호 | **27** |
+| 지표명 | **가족과의 소통** |
+| 평가주기 | 기(기관평가) |
+| 필수기준 1 | **보호자 회의**를 온라인 또는 오프라인으로 **반기별 1회 이상** 실시 — 필수: 일시·장소·회의방법·회의내용·회의결과·**참석자명(서명)** |
+| 필수기준 2 | **월간 프로그램 계획표·식단표·기관 소식**을 월 1회 이상 온라인/오프라인 제공(홈페이지·카페·블로그·소식지·직접제공) |
+| 연계 모듈(엔젤) | 기관운영·모바일 앱·수급자관리·급여제공계획·SMS·기관운영 |
+| 연계 화면(엔젤) | **보호자회의**·보호자용 앱(굽은나무)·가정통신문·프로그램계획·안내장관리·**식단표** |
+
+**system_feature.do** 교차(확인): 「반기별 1회 보호자회의 실시, 교육자료 및 사진등록, 참석자 전자서명」 — md5 `c9507190` IDENTICAL
+
+### ↔ ogada parity crosswalk
+
+| 엔젤 #27 요건 | ogada | 판정 |
+|---------------|-------|------|
+| 보호자회의 반기 1회+서명·사진 | G-GUARDIAN-MEETING **P3 candidate** — dedicated Route 0 | △ partial (G32 가족회의·US-T07 일부 carry) |
+| 프로그램계획·식단표 월 1회 | `/meals` ✅ LIVE · care-plan/program carry | △ partial |
+| 가정통신문·SMS | notification/SOLAPI 분리 · 가정통신문 v3 out-of-scope | △ |
+| 보호자 앱(굽은나무) | guardian portal MVP out-of-scope | ❌ 의도적 |
+
+**planner**: 평가 #27 = **G-GUARDIAN-MEETING P3** 근거 강화(반기 SLA·참석자 서명·교육자료 첨부). core 신규 갭 0.
+
+---
+
+## ★★ 2026 수가·단기보호·통합재가 교차검증 (canonical on-disk 우선)
+
+| 소스 | live (BNK-546) | canonical on-disk | 판정 |
+|------|----------------|-------------------|------|
+| longterm **502** 단기보호 | 200·71,008B·`5619900c` partial shell · **74,060 grep=0** | `longterm_502.html` `b5aee8c1` 105,552B · **단기보호 74,060** verbatim | live partial DRIFT · **canonical 보존·복원** |
+| longterm **503** 경감 50/60% | 200·70,225B·`68dca5ac` partial shell | `longterm_503.html` `8ca7d1fa` 104,652B · **50%×4·60%×3** verbatim | live partial DRIFT · canonical 보존 |
+| longterm **610** 통합재가 | 200·422B·`d3c90b33` `refreshedException` | on-disk IDENTICAL | **Mode B session gate** carry |
+| law247 제2025-247호 | 200·78,450B·`e12cbdcf` DRIFT | strip `?Time=` 후 **제2025-247호·시행 2026.1.1** verbatim ✅ | cachebuster DRIFT · 수가 본문 canonical carry |
+| MOHW **2026-126** 본인부담상한 | 200·109,510B·`af6f8796` DRIFT | **제2026-126호·본인부담상한액** verbatim · 조회수 **2,499**(+carry) | counter DRIFT · 본문 불변 |
+
+**ogada 통합재가**: `BranchServiceType.INTEGRATED_HOME` + `IntegratedHomeProviderDiscoveryPanel`(G19) + 고시 제55조의2 월 10만원 가산 안내 = **통합재가 발견·연계 unique 우위 carry**
+
+---
+
+## ★★ 엔젤 backbone + LCMS zero drift (331차)
+
+| URL | md5 | SIZE | 판정 |
+|-----|-----|------|------|
+| daycareEssentialWork.do | c79c1be3 | 131,664B | IDENTICAL |
+| extraService.do | f9c5d877 | 81,637B | IDENTICAL |
+| mainService.do | bcf6df41 | 59,002B | IDENTICAL |
+| feeService.do | eab352a8 | 44,513B | IDENTICAL |
+| system_feature.do | c9507190 | 45,601B | IDENTICAL |
+| lcms.or.kr type2 CMS | 6c0d22b4 | 50,554B | IDENTICAL |
+
+extraService CMS 5-method(250/300원·가상계좌·계좌분리·현금영수증) — BNK-542 verbatim carry · ogada ✅3/❌2/△1 unchanged
+
+---
+
+## 사이클 요약
+
+- per-cycle minimum 4종 충족: ① 신규/재실측(mohw126·law247·longterm partial bnk546·#27 row extract) ② 워크플로 1블록(평가#27 보호자회의 field) ③ COMPETITOR_MATRIX @HEAD ④ BENCHMARK_REPORT §546
+- 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1(BE WT CLEAN→**DIRTY 1M**·HEAD zero advance) · 미확인 1 carry(longterm live session/partial shell) · 신규 snapshot 5건·덮어쓰기 4건(mohw126·law247·silverangel 4 named·partial shells)·canonical longterm 복원 2건·엑셀 포맷 변경 0

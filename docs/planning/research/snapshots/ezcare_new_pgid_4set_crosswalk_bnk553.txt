@@ -1,0 +1,203 @@
+BNK-553 — 이지케어 역공학 2–4h: 4 PGID re-fetch + CMS funnel metric + 도입 카운터 DRIFT
+====================================================================================
+
+rotation: 이지케어 역공학 2–4h (agents.yaml `reverse_engineering.rotation_30min`)
+조사일: 2026-06-23T15:20Z
+ogada baseline:
+  FE develop = 8057c1e (+1 vs BNK-552 `b7101d5` = `feat(v3/US-R01-c): wire staff leave ledger page and API client`)
+  BE develop = 5fd12dd (carry vs BNK-552)
+  WT: FE DIRTY 49 file (in-flight) / BE DIRTY 8 file (in-flight)
+  KPI: 111 Route · 90 *Page.jsx (+RootRedirect=91) · V1–V174 · BE *Test.java 251 · @Test 1,829 · FE test 457 (188 .test.js + 269 .test.jsx) · 모듈 78.79% · merge gate 719 (FE188+BE531·+1 vs BNK-552 718)
+
+
+1. BNK-551 §551-3 P1 (leave-ledger FE wire) CLOSURE 「확인」
+------------------------------------------------------------
+
+| 측 | 파일·라인 | leave-ledger surface |
+|---|---|---|
+| BE | `staffannualleave/domain/StaffAnnualLeaveSupport.java` `relatedSurfaces()` | `SURFACE_AVAILABLE` ✅ (carry @bb9df48) |
+| FE Route | `App.jsx:1005` `path="/staff/leave-ledger"` | ✅ wire LIVE (@8057c1e 신규 +1) |
+| FE 페이지 | `src/pages/StaffLeaveLedgerPage.jsx` + `.test.jsx` | ✅ wire LIVE |
+| FE 상수 | `src/utils/staffAnnualLeave.js:L24, L30, L43, L49` 4-entry all `STAFF_ANNUAL_LEAVE_SURFACE_AVAILABLE` | ✅ BNK-551 PLANNED → AVAILABLE 동기화 closure |
+
+* BNK-551 가정 번복 1 (leave-ledger 승격 BE-only) → BNK-553 P1 액션 **CLOSURE**
+* FE test 450 → **457** (+7 신규 leave-ledger 테스트 포함 추정)
+* 경쟁사 parity: 케어포 func 8-13 연차/유급휴일 대장 (정적 PDF) ↔ ogada full-stack(BE V174 + FE Route + relatedSurfaces 4-entry) **✅ superset**
+
+
+2. 신규 evidence URL 5건 — ezCare 공개 사이트 PG 페이지 IA
+---------------------------------------------------------
+
+> ezCare 공개 사이트는 더 이상 단순 `*.html` 라우팅이 아닌 `/?PG=<id>` 쿼리 패턴을 사용함을 재확인.
+> root 페이지(`/`)에 6-stage GNB가 있고, 사이트맵(`?PG=a01`)에서 사이트맵 전체 IA를 노출.
+
+| URL | HTTP | bytes | md5 | 비고 |
+|---|---|---|---|---|
+| https://ezcare.easyms.co.kr/?PG=a01 (사이트맵) | 200 | 42,717 | `12eff01f5ba361091b33ab8acc20c1dc` | 신규 snapshot · 사이트맵·`?PG=ag-01/02` 약관·`?PG=w01` 제휴 |
+| https://ezcare.easyms.co.kr/?PG=e01 (이지케어 소개) | 200 | 47,089 | `158a0d922dcc56d00339adf3e93a3a50` | 신규 snapshot · 도입 **9,342개** verbatim |
+| https://ezcare.easyms.co.kr/?PG=f01 (FAQ/문의 hub) | 200 | 39,200 | `6a09500a11ed5c71c60d926146de2b4b` | 신규 snapshot |
+| https://ezcare.easyms.co.kr/?PG=j01 (이용신청) | 200 | 40,477 | `8716a4c16bae92c9d23beacce0aee5f8` | 신규 snapshot |
+| https://ezcare.easyms.co.kr/ (root with PG nav) | 200 | 106,106 | `5e4a3f8d32743b9d9e76e2d385b7db0e` | DRIFT vs BNK-548 `2dfefe52`(106,134B) **−28B** · mCnt **9273/4595/2353/1820** carry |
+
+추정: BNK-530 「fnc `/new/ezCare_fnc.html` 404 ↔ URL 변경 가능성」을 갱신하면, 실측 결과 `/new/ezCare_*.html`(기능/요금/체험 마케팅 페이지)은 여전히 유효(아래 §4 참조). `/?PG=<id>` 는 신규 SPA-스타일 GNB + 사이트맵 패턴으로 fnc/charge/change_work 와는 **별개 채널**.
+
+
+3. 4 PGID re-fetch + DRIFT 비교 (이지케어 ERP 데모 셸)
+-----------------------------------------------------
+
+전부 `./scripts/ezcare-demo-fetch.sh` (POST oCode=DEMO 세션) 경유 fetch.
+
+| PGID | 최신 md5 / bytes | 이전 carry | DRIFT | 메뉴 |
+|---|---|---|---|---|
+| pAmt-a100 | `44dec417b40a5c4b45063277a2873a05` / 134,591B | BNK-545 `1db5ac12`(134,593B) | **−2B** 덮어쓰기 | 5. 본인부담 — 청구내역 및 명세서 |
+| guide-E100 | `9356f2d7e4d5a68fc85b8b49c2b1b666` / 202,986B | BNK-386 `1eff709b`(202,775B) | **+211B** 덮어쓰기 | 10. 기관평가 — 평가/서류/교육/매뉴얼 |
+| agency-schedule | `a48d47a57d486d5f9738157bde177514` / 150,081B | BNK-537 `b5cc2c0e`(150,081B) | **MD5 DIFF·SIZE 동일** 덮어쓰기 | 9. 기관관리 — 일정 (반복/제외/출력) |
+| patient-b100 | `f021bbd51ebdc7de582443157ef70b15` / 109,022B | BNK-530 `01ea5c24`(108,811B) | **+211B** 덮어쓰기 | 2. 수급자 — 정기욕구평가 현황 |
+
+
+4. ★★★ pAmt-a100 본인부담 4-tab — colModel + CMS funnel 메트릭 verbatim
+-------------------------------------------------------------------
+
+`<h4>5. 본인부담 - 청구내역 및 명세서</h4>` `<div id="tabs-pAmt-a100" class="tabs">`
+
+**Tab 4종** (data-tabid 0~3):
+- tab0 = `전체(합산)` (default·`grid-pAmt-a100`)
+- tab1 = `방문요양` (재가 서비스)
+- tab2 = `방문목욕` (재가 서비스)
+- tab3 = `방문간호` (재가 서비스)
+
+**grid-pAmt-a100 colModel (4-field)**:
+```js
+colModel:[
+  { label:"pCode", name:"pCode", index:"pCode", align:"center", width:40, hidden:true },
+  { label:"수급자", name:"name", index:"name", align:"center" },
+  { label:"급여총액", name:"sum_tAmount", index:"sum_tAmount", align:"right", width:80, formatter:"integer", sorttype:"number" },
+  { label:"일정", name:"calendar", index:"enterTime", align:"center", sortable:false, width:50,
+    formatter:function(val, opt, rows){
+      return "<button class='ui-button size-sm btn-sch' Ym='"+Ym+"' pCode='"+rows.pCode+"'>...</button>";
+    }
+  }
+],
+```
+
+**필터 5종 (form `#grid-pAmt-a100-search`)**:
+| name | type | option |
+|---|---|---|
+| Ym | hidden | 연월 (page-bar 연동) |
+| sKind | hidden | service kind |
+| pRate_type | radio | 전체 / 일반.감경(1) / 기초.의료(2) |
+| btn-group | button | 그룹 picker |
+| pRate | select | 7-option: 01 일반(15%) / 02 의료(7.5%) / 03 기초(0%) / 04 감경(7.5%) / 05 감경(6%) / 06 감경(9%) / 07 의료(6%) |
+| filter_chk_sms | radio | 전체 / 미발송(not_send) / 발송(send) |
+
+**Lifecycle gate (carry from BNK-545)**: `#grid-pAmt-a100-notYet` dialog → 빈 청구서 발견 시 「일정 확정하러 가기」 CTA → `https://ezcare.easyms.co.kr/new.ez?PGID=schedule-fix&Ym=` 이동 (lifecycle: 일정확정 → 청구).
+
+**★★★ CMS 자동이체 funnel 메트릭 (live verbatim·hit-id 47100/47110)**:
+```html
+<div class="banner-box">
+  <div class="cms_copyright" hit-id="47100">
+    😃 전기, 휴대폰 요금처럼 <span style="color:blue">본인부담금도 자동이체로 수납</span>할 수 있습니다.
+  </div>
+  <div class="cms_copyright" hit-id="47110">
+    😃 <span style="color:blue">936개(14.5%) 기관은</span> 이미 본인부담금을 <span style="color:blue">자동이체로 수납</span>하고 있습니다.
+  </div>
+</div>
+```
+
+→ ezCare 자체 운영 데이터 기반: 약 6,455개 기관 중 936개 = **CMS 자동이체 adoption 14.5%**. ogada 의 G2-CMS-ENROLLMENT-ROSTER (`BillingCmsEnrollmentService` BNK-513~516 closure carry) 와 cross-walk:
+- ogada parity ✅: branch-scoped enrollment list / status filter / 4-state(ACTIVE/CANCELLED/PENDING/ALL) / RBAC HQ_ADMIN·BRANCH_ADMIN
+- ogada 우위: enrollment **이력 + 로스터 분리 API**·**자체 CMS DB** vs 이지케어 외부 효성CMS 가산(BNK-511 carry 「250원/건·외부 PG」)
+- **planner 인용 가능 마케팅 카피**: 「14.5% 시장 adoption — ogada는 자체 enrollment + 지점 로스터 superset」
+
+
+5. ★★★ guide-E100 기관평가 4-tab + 신규 P3 갭 candidate
+----------------------------------------------------
+
+`<title>10.기관평가</title>` (확인) 4-tab anchors:
+
+| tabid | 메뉴명 | grid |
+|---|---|---|
+| 01 | 평가서류 작성 현황 | `grid-ASSM` |
+| 02 | 서류함(평가서류 작성) | `grid-xxx` (lazy load) |
+| 03 | 의무교육 수료 현황 | `grid-education-worker-list` |
+| 04 | 평가매뉴얼&자가진단 | `grid-year` |
+
+ogada cross-walk:
+- **03 의무교육** → ogada `/staff/training` · `/staff/training-logs` ✅ **parity**
+- **01 평가서류 작성** → ogada 0 Route (App.jsx grep `appraisal|evaluation|평가서류`=0) ❌ **신규 갭**
+- **02 서류함** → ogada `STAFF_ONBOARDING_DOCUMENTS` 7종 △ partial (직원만; 기관평가 전용 서류함 ❌)
+- **04 평가매뉴얼&자가진단** → ogada 0 Route ❌ **신규 갭**
+
+→ **신규 P3 candidate `G-AGENCY-APPRAISAL-DASH`「가정」**(2026 평가 carry):
+  - MVP out-of-scope 가능 (외부 평가센터 의존·1~2년 주기)
+  - 평가는 LCMS·엔젤 등 SaaS 전용 모듈인 경우 다수; ogada 단계 v3 후 검토 권장
+  - 결정 보류 — planner 판단
+
+
+6. ★★ patient-b100 정기욕구평가 3-tab
+-------------------------------------
+
+`<h4>2. 수급자 - 정기욕구평가 현황</h4>` (확인) 3-tab anchors:
+
+| tabid | 메뉴명 | grid |
+|---|---|---|
+| 01 | 수급자별 실시현황 | `grid-patient-b100-01` |
+| 02 | 수급자/월별 실시현황 | `grid-patient-b100-02` |
+| 03 | 월/항목별 실시현황 | `grid-patient-b100-03` |
+
+(BNK-530 에서 일부 carry — 본 차수 +211B DRIFT)
+
+ogada cross-walk:
+- ogada `ClientDetailPage` 11-tab 중 `/assessment`·`/care-plan-form`·`/risk-assessment`·`/grade` 4-tab ✅ **per-client level**
+- V96 `client_periodic_risk_assessments_integrity_g40b` ✅ DB 보장
+- **집계 dashboard** (수급자/월별·월/항목별 cross-tabulation) ❌ → P3 carry `G-PATIENT-ASSESSMENT-MONITORING` 가정 (BNK-530 carry)
+
+
+7. ★★ agency-schedule (9. 기관관리 — 일정) MD5 DRIFT
+----------------------------------------------------
+
+`<h4>9.기관관리-일정</h4>` (확인). 150,081B 동일 SIZE 이지만 MD5 변경.
+strip-cachebuster diff 시 ezAjax/jquery 시드만 변동 추정.
+ogada cross-walk: 기관 전체 일정(공휴일/이벤트·반복 every_year/month/week/weekday/weekend/everyday·단건 제외) → ogada 분산 surface(`/programs`·`/staff/training`·`/care/*`) 분리 — BNK-537 carry **G-AGENCY-CALENDAR P3** 「가정」 carry.
+
+
+8. ★ 가격·도입 재실측 (`/new/ezCare_*.html` 실측 — BNK-530 「URL 변경」 carry 보정)
+-----------------------------------------------------------------------------
+
+| URL | live md5 | size | 내용 verbatim |
+|---|---|---|---|
+| /new/ezCare_fnc.html | `02e1741c` (carry BNK-549 `a58d12df`) | 17,870B | 도입 **9,345개** (BNK-549 carry 9,348 **−3** 실 counter DRIFT) |
+| /new/ezCare_charge.html | `c3e1010d` (carry BNK-549 `5be29800`) | 22,979B | 33,000 / 25,850 / 55,000 / 9,000 / 9,500 verbatim 불변 |
+| /new/ezCare_change_work.html | `bc54d0a5` (carry BNK-549 `2f0c476e`) | 26,157B | RFID/중복일정/듀얼/트리플 carry 불변 추정 |
+| / (root) | `5e4a3f8d` | 106,106B | mCnt **{1:9273, 2:4595, 3:2353, 4:1820}** carry BNK-545·BNK-544 |
+| /?PG=e01 | `158a0d92` | 47,089B | 도입 **9,342개** (별도 카운터·동일 사이트 다른 figure) |
+
+* fnc 9,348 → **9,345 (−3)** 실 카운터 변동. carry 가설: 일부 기관 이용 종료/취소(평가 시즌 영향 가설)
+* charge 가격 verbatim 불변 (BNK-545·BNK-487·BNK-483 카운터 carry)
+* 9,342 vs 9,273 vs 9,345 = 동일 사이트 다른 지표 (도입 총 / 재가만 / 마케팅 카운터)
+
+
+9. 미확인·가정·확인 요약
+------------------------
+
+- **확인**:
+  - leave-ledger FE wire CLOSURE (FE Route + 4-entry SURFACE_AVAILABLE 정합)
+  - pAmt-a100 CMS funnel verbatim (936개·14.5%)
+  - guide-E100 4-tab + 3 신규 갭
+  - patient-b100 3-tab + 집계 dashboard 갭
+  - 9,348 → 9,345 (−3) 실 counter DRIFT
+- **가정**: G-AGENCY-APPRAISAL-DASH P3 (MVP out-of-scope 가능)
+- **미확인 carry**: NHIS#44 구 URL 404 23-cycle · demo-work LIVE timeout 6연속(carry from BNK-552)
+
+per-cycle minimum 충족:
+- ✅ 신규 evidence URL 1건+: `/?PG=a01·e01·f01·j01` 4건 신규 + 4 PGID re-fetch DRIFT
+- ✅ 메뉴/필드/워크플로 1블록+: pAmt-a100 colModel + 5-filter + CMS funnel
+- ✅ COMPETITOR_MATRIX 1행+ `@HEAD`: pAmt-a100 CMS funnel · guide-E100 4-tab · 도입 카운터 DRIFT · baseline KPI (`@8057c1e`/`@5fd12dd`)
+- ✅ BENCHMARK_REPORT §신규 소절: §553
+
+planner 우선순위:
+1. P0/P1: 없음 (BNK-551 P1 leave-ledger CLOSURE)
+2. P2: FE WT 49·BE WT 8 commit window 권장 (rules.md §6)
+3. P3: G-AGENCY-APPRAISAL-DASH 「가정」 신규 (MVP out-of-scope 결정 보류 가능)
+4. P3: G-PATIENT-ASSESSMENT-MONITORING 「가정」 carry (집계 dashboard)
+5. 마케팅 카피: pAmt-a100 「14.5% 시장 adoption」 ↔ ogada 자체 CMS enrollment + 지점 로스터 superset 활용

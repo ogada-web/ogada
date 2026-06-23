@@ -1,0 +1,22 @@
+<!-- BNK-433 신규 evidence: PDF p.86-88 Wayback extract (pypdf + p84 정본 교차) -->
+<!-- Source: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=86 -->
+<!-- md5 parent PDF: 96f7d45eaca91525068ec9bfb626fb18 (9,992,772B·132p) -->
+<!-- 조사일: 2026-06-20 | HTTP 200 -->
+<!-- pypdf raw extract = CMap 깨짐 → verbatim 인용은 BNK-292 carefor_manual_daycare_p84_module7_toc.txt·BNK-261 p91 cross-check -->
+
+--- page 86 (7-1 청구관리·명세서 발송 — 확인·p84 정본) ---
+메뉴위치: 7-1.본인부담금 청구관리 — 청구내역 생성하기
+① 청구서 발행일 ② 청구내역 생성(개별) ③ 청구내역 일괄 생성 ④ 명세서 수정
+명세서 발송: 우편·문자·이메일·직접수령 일괄발송·우편 발송일 수정 가능·문자/이메일 자동기록 수정 불가
+청구서 생성 시 계산기준: 급여기록(공단-청구내역상세 엑셀) vs 일정 — 9-1.시설정보설정 본인부담금정보 상세설정에서 청구명세서생성기준=청구내역상세 선택 후 7-1에서 청구서 생성
+
+--- page 87 (7-1 명세서 발송·수정 제약 — 확인·p84/p87 carry) ---
+발송구분: 우편·문자·이메일·직접수령 — 일괄발송·우편 발송일 수정 가능
+문자·이메일 자동기록은 수정 불가
+
+--- page 88 (7-2 입금관리·은행 엑셀 — 확인·p88 carry) ---
+메뉴위치: 7-2.본인부담금 입금관리(은행명세)
+① 입금처리 ② 청구이력·입금내역 ③ 연간 납부확인서 ④ 은행 거래내역 엑셀 일괄입금
+지원 은행(확인·PDF p88): 국민·우리·농협·신한·KEB하나·부산·대구·광주 (8종)
+
+[BNK-433 cross-walk] demo-work L07 view.cost_* 10-leaf ↔ func.php module7 11-leaf(7-10 간편계산기 demo nav 미노출) ↔ ogada @ce422e3/@34eb47a 18 /billing/* Route superset

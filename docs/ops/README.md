@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-21T19:30:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-23T19:00:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **302차 자동 동기화 완료** (BE `a6eb8b7`·FE `5fd468b`·V1–V169·109 route·87 page·**G-BILLING-DEPOSIT-ORDER-GUARD ✅**·**G-STAFF-WORK-ATTENDANCE ✅**·**G-ATTENDANCE-ROSTER-STATUS ✅**·merge gate 657·**미해결 Must 4건 재정리**)  
-> **최종 갱신**: 2026-06-22 (302차 TWR — **FAQ Q615–Q620 신규 추가**·선행입금 가드·직원출퇴근·출석통계·QR·결석·청구필터)
+> **상태**: MVP v1 개발 중 — **336차 자동 동기화 완료** (BE `c4e6bcb`·FE `426d63a`·V1–V175·111 route·90 page·**V175 leave-ledger integrity**·merge gate 719 carry)  
+> **최종 갱신**: 2026-06-23 (336차 TWR — **V175 leave-ledger integrity Q668**)
 
 ---
 
@@ -23,17 +23,84 @@
 
 **포함 내용**:
 - 클라우드 배포 환경 설정 (Docker, PostgreSQL, Spring Boot 실행)
-- 데이터베이스 마이그레이션 (Flyway V1–V166, G21 NHIS 비교·G32 케이스관리·G42 민원상담 스키마)
+- 데이터베이스 마이그레이션 (Flyway **V1–V175**, G21 NHIS 비교·G32 케이스관리·G42 민원상담·**V175 staff_leave_ledger integrity**·**V174 staff_leave_ledger_entries**·**V173 staff_annual_leave_yearly integrity**)
 - 환경 변수·시크릿 관리 (API 키, JWT 시크릿, Kakao 배차 API, CMS 연동)
 - SSL/HTTPS 설정
 - 모니터링·로그 수집
 - 백업·복구
 
-**최신 항목** (2026-06-21, 290차):
-- **Q594** — **G21 NHIS 비교 갭** — 대시보드 StatCard — `nhisComparisonGapCount` 위젯
-- **Q595** — **G15 카카오 API 잔여** — HQ 통합 관리자 대시보드 — `transportKakaoQuotaSummary` widget
-- **Q596** — **live E2E bootstrap-error blocker** — 파생 seed/schema blocker 생략
-- **Q597** — **live E2E cash-receipt guard** — 현금영수증 suite 게이트
+**최신 항목** (2026-06-23, 336차):
+- **Q668** — **V175 leave-ledger DB integrity** — memo nonempty CHECK · **user_branches FK** (`c4e6bcb`)
+- **Q669** — **`SOCIAL_WORKER` users read RBAC** · **client address road-level masking** — transport roster 정책 정합
+- **Q670** — **live-e2e `e2e*` tenant UUID** — dev seed `00000001` 계열과 **분리**
+
+**최신 항목** (2026-06-23, 335차):
+- **Q667** — **US-R01-c leave-ledger UXD-157 a11y** — **`StaffLeaveLedgerTable`**·**`StaffLeaveLedgerDeleteModal`**·**`DateInput`** · **BNK-551 AVAILABLE sync** (`bd1d0ad`/`426d63a`)
+- **Q666 deepen** — 대장 화면 조작·pilot checklist·live routing harness (`8057c1e`/`5fd12dd`)
+
+**최신 항목** (2026-06-23, 334차):
+- **Q666** — **US-R01-c leave-ledger FE full-stack** — **`StaffLeaveLedgerPage`**(`/staff/leave-ledger`) · **`pilotChecklist` R01c-a/b/c/d** · **`StaffLeaveLedgerLiveApiRoutingE2eTest`** (`8057c1e`/`5fd12dd`)
+- **Q665** — **US-R01-c leave-ledger RBAC+pilot test** — **`RoleBasedControllerAccessTest.StaffLeaveLedgerAccess`** · **`StaffLeaveLedgerPilotServiceFlowE2eTest`** · **`hq_admin` CUD 403** (`62fce23`)
+- **Q663 deepen** — 대장 API RBAC 표·역할별 운영 가이드
+
+**최신 항목** (2026-06-23, 332차):
+- **Q663** — **US-R01-c canonical leave-ledger BE API** — **`GET/POST/PUT/DELETE /staff/leave-ledger*`** · **V174** · **`relatedSurfaces` PLANNED→AVAILABLE** (`bb9df48`)
+- **Q664** — **live E2E suite guard `liveCashReceiptDescribe`** — **QA-B268 Fixed** (`b7101d5`)
+- **Q655·Q659 갱신** — 대장 **BE API ✅** · **FE Route 후속**
+
+**최신 항목** (2026-06-23, 331차):
+- **Q662** — **G2 CMS roster `status` filter normalization** — trim·uppercase · `ACTIVE`/`CANCELLED`/`PENDING` · unsupported → `422` (`f1225b0`)
+- **Q658·Q661 갱신** — **QA-B266 Fixed** @ `949e9bf` (2049/2049 PASS) · Vitest pollution 재발 방지 규칙 유지
+
+**최신 항목** (2026-06-23, 330차):
+- **Q661** — **Vitest 동시 실행·full-suite pollution 운영 대응** — `npm-test-locked.sh`·`vitest-stop.sh`·**QA-B266** merge gate 절차
+
+**최신 항목** (2026-06-23, 329차):
+- **Q658** — **QA-B266 Open** — develop `npm test` **2048/2049 FAIL** · `StaffAnnualLeavePage` branch scope · isolated **8/8 PASS** · merge **BLOCK**
+- **Q659** — **US-R01-c `/staff/leave-ledger` P1 candidate** — monthly snapshot vs canonical ledger 분리 · **PLANNED** cross-link contract
+- **Q660** — **M6 v3.1** — **`/meals` LIVE** · **`/safety/*` PLANNED** (6-2~6-4)
+
+**최신 항목** (2026-06-23, 328차):
+- **Q656** — **G-STAFF-ANNUAL-LEAVE multi-branch activeBranch fallback** — **`branchId` 생략** 시 **`TenantContext.activeBranchId`** roster (`40ab9e7`)
+- **Q657** — **US-R01 HR roster UX** — **`RelatedSurfacesPanel`·UXD-156** · **`BranchScopeNotice`** on **`/staff/annual-leaves`·`/staff/attendance`** (`c183ebd`/`949e9bf`)
+
+**최신 항목** (2026-06-23, 327차):
+- **Q654** — **G-COMM-CALLER-AUTH P3** — Solapi **발신번호 본인인증은 ogada 범위 밖** · `SOLAPI_SENDER_ID` **외부 인증** 필수
+- **Q655** — **US-R01 `/staff/leave-ledger` PLANNED** — v3 Must 대장 · **cross-link contract** · 대장 출시 전 **중복 입력 금지**
+
+**최신 항목** (2026-06-23, 326차):
+- **Q653** — **G-STAFF-WORK-ATTENDANCE API cross-link metadata** — **`GET /staff/work-attendance`** **`surfaceKind`·`relatedSurfaces[]`** · FE **`normalizeStaffWorkAttendanceResponse`** (`83a26e7`/`95f55aa`)
+- **Q651·Q652 deepen** — **양방향 HR nav API contract** — 연차 ↔ 출퇴근 roster **대칭 메타**
+
+**최신 항목** (2026-06-23, 325차):
+- **Q652** — **HR 화면 역할 분리 통합 참조** — 출퇴근(8-4)·연차(US-R03e)·대장(US-R01) **데이터 중복 금지** · Q648·Q650·Q651 단일 운영 표
+- **ADMIN_GUIDE §1-4** — baseline **`6ab3760`/`2040571`** 정정 · HR nav 양방향 smoke 안내
+
+**최신 항목** (2026-06-23, 324차):
+- **Q651** — **G-STAFF-WORK-ATTENDANCE reverse cross-links** — **`/staff/attendance`** → **「연차휴가 현황」** · **`StaffAnnualLeaveRelatedSurfacesPanel` `helpText`** (`2040571`)
+- **Q648·Q650 deepen** — **양방향 HR nav** — 연차 ↔ 출퇴근 cross-link closure
+
+**최신 항목** (2026-06-23, 323차):
+- **Q650** — **G-STAFF-ANNUAL-LEAVE related surfaces panel** — 출퇴근 링크·대장 (준비 중) · yearly GET/PUT cross-link (`6ab3760`/`0b0d7ba`)
+- **Q648 deepen** — yearly 응답에도 **`surfaceKind`·`relatedSurfaces`** 포함
+
+**최신 항목** (2026-06-23, 322차):
+- **Q648** — **G-STAFF-ANNUAL-LEAVE roster cross-link** — `surfaceKind`·`relatedSurfaces` US-R01 (`bbf333c`)
+- **Q649** — **live API harness·PILOT_CHECKLIST** — `staffAnnualLeaveLiveApi.e2e.test.js`·R03e/E05 (`96e9d25`/`e296387`)
+
+**최신 항목** (2026-06-22, 317차):
+- **Q639 deepen** — **G-STAFF-ANNUAL-LEAVE** — 음수 월별 사용 **`422`「월별 사용일수는 0 이상이어야 합니다.」** (`a45745c`)
+- **Q640 deepen** — **live E2E default-credential variant recovery** — `default-staff-credentials`·placeholder wording (`a170f9c`)
+
+**최신 항목** (2026-06-22, 316차):
+- **Q640** — **live E2E default-credential blocker recovery** — auth ready 시 `*-credentials-default` skip 제외 (`6fcd750`)
+- **Q639 deepen** — **G-STAFF-ANNUAL-LEAVE** — `branchId` 생략 activeBranch fallback · RBAC·pilot tests (`6b84bcd`)
+
+**최신 항목** (2026-06-22, 315차):
+- **Q639** — **G-STAFF-ANNUAL-LEAVE** — `/staff/annual-leaves` · V172 · ezCare worker-b100 tab01 parity
+- **Q638** — **G2-CMS-ENROLLMENT-ROSTER deepen** — FilterChips·`?clientId=` deep link·`/billing/payments` CMS 등록 열
+- **Q637** — **G2 CMS branch roster** — `GET /billing/cms/enrollments` without `clientId` (Q638에서 deepen)
+- **Q635** — **G34-WORKFLOW-CATALOG** — `/compliance/workflow-catalog` ezCare FAQ 21795–21828 cross-walk
 
 **관련 링크**: FAQ §Q594–Q597 · API_SPEC §9-16/9-17/9-18 · REQUIREMENTS §7-2·§7-8·§3-13
 
@@ -93,7 +160,7 @@
 - **G21 NHIS 비교** — 대시보드 widget · 공단 일정 미등록/불일치 통계 (Q594)
 - **G15 Kakao quota** — HQ 대시보드 widget · API 호출량 모니터링 (Q595)
 - **G32 사례관리** — 보호자별 의견 기록 · 다중 선택 · V165 (Q520)
-- **live E2E bootstrap blocker** — 파생 blocker 생략 · 신뢰성 향상 (Q596)
+- **live E2E bootstrap blocker** — `-not-ready` only · detail로 root cause · health·probe 동기화 (Q631, supersedes Q596 `-error` codes)
 
 **운영 체크리스트**:
 1. 신규 Tenant 개통 → `platform_admin` 역할 필요 (별도)
@@ -228,7 +295,82 @@
 
 ---
 
-## [TWR] 302차 — 미해결 Must API 갭 정리 & FAQ Q615–Q620 신규 추가 (2026-06-22)
+## [TWR] 310차 — live E2E bootstrap blocker normalize & FAQ Q631 (2026-06-22)
+
+**배경**: develop HEAD baseline (**BE `24d25f1`** / FE `fdc135b` carry) — BE **+1 commit** since 309차. **live E2E bootstrap blocker reporting normalize** (QA-B95).
+
+**310차 문서 갱신**:
+
+| Q번 | 기능 | 상태 | 변경 |
+|-----|------|------|------|
+| **Q631** | **bootstrap blocker normalize** | **✅ BE** | `-error`/`bootstrap-error` 제거 · `-not-ready` only · detail로 root cause (`24d25f1`) |
+| **Q596** | **derived blocker suppression** | **갱신** | Q631과 병기 — triage 표 정정 |
+| **Q448** | **bootstrap not-ready vs error** | **갱신** | blocker/error 구분 → **status detail** 기준 |
+
+**sysadmin·DevOps 다음 액션**:
+1. staging `./scripts/run-live-e2e.sh` — probe **`operationBlockers`** 에 `-error` 코드 **없음** 확인
+2. bootstrap 실패 triage — **`liveE2eStatusDetail`** · **`liveE2eGuardianStatusDetail`** 우선
+
+---
+
+## [TWR] 307차 — US-D03 이용자 상세 출석 탭 FE wire & FAQ Q628 (2026-06-22)
+
+**배경**: develop HEAD baseline (`9db0bbb`/`d058e43`) — FE **+1 commit** since 306차. **US-D03 client detail attendance tab** full-stack closure.
+
+**307차 문서 갱신**:
+
+| Q번 | 기능 | 상태 | 변경 |
+|-----|------|------|------|
+| **Q628** | **이용자 상세 출석 탭** (`/clients/:id`) | **✅ BE+FE** | `fetchClientAttendanceHistoryApi` · `GET /clients/{id}/attendance` (`d058e43`) |
+| **Q102** | **건강·출석·청구 탭** | **출석 ✅ closure** | 건강·청구 갭 잔존 |
+
+**coder 다음 액션** (우선순위순):
+1. **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+2. **보호자 QR 카메라 스캔 UI** P3 · **직원 NFC/MOBILE 단말** P3
+
+---
+
+## [TWR] 304차 — 청구 필터 full-stack·직원 퇴근 guard & FAQ Q622·Q623 (2026-06-22)
+
+**배경**: develop HEAD baseline (`fd0a3b3`/`77b1ea8`) — **BNK-493 후속** 반영. **G-BILLING-REPORT-FILTER-PERSISTENCE FE wire closure** 및 **Must 갭 1건**(QR 이미지)으로 축소.
+
+**304차 문서 갱신**:
+
+| Q번 | 기능 | 상태 | 변경 |
+|-----|------|------|------|
+| **Q618·Q621** | **청구 필터 저장** | **✅ BE+FE** | `BillingReportPage` hydrate·`saveBillingReportFilterApi` (`77b1ea8`) |
+| **Q623** | **필터 autosave read-scope·UXD-152** | **✅ BE+FE** | HQ 타 지점 대장 403 방지 (`fd0a3b3`) · a11y (`df7f308`) |
+| **Q622** | **직원 퇴근 guard** | **✅ BE** | checkout-before-checkin (`35e6c52`) |
+| **Q616** | **QR 생성·다운로드** | **API ✅ · FE 갭** | *(Must 유일 잔존)* |
+
+**coder 다음 액션** (우선순위순):
+1. **QR 이미지 생성** — base64 PNG 렌더 · 다운로드 · 모바일 스캔 테스트 (Q616)
+2. **G-CASH-RECEIPT-NTS-API** P3 · **L03_M15 말기 돌봄** · **7-5 live PG**
+
+---
+
+## [TWR] 303차 — 출석 통계 full-stack·청구 필터 BE & FAQ Q621 (2026-06-22) [이력]
+
+**배경**: develop HEAD baseline (`6be0c79`/`dffd726`) 단계에서 **BNK-493** 반영 — **출석 통계 contract 정합 full-stack closure** 및 **청구 대장 필터 BE auto-save** 추가. **미해결 Must 갭 2건**으로 축소.
+
+**303차 문서 갱신**:
+
+| Q번 | 기능 | 상태 | 변경 |
+|-----|------|------|------|
+| **Q615·Q613·Q106** | **출석 통계** (`/attendance/stats`) | **✅ BE+FE** | `monthlyAttendanceStats.js` · StatCard·6개월 추이 (`dffd726`) |
+| **Q618·Q621** | **청구 필터 저장** | **△ BE ✅ · FE bootstrap ❌** | V170 `billing_report_filters` · `GET/PUT /reports/filters` (`479995e`) |
+| **Q616** | **QR 생성·다운로드** | **API ✅ · FE 갭** | *(변경 없음)* |
+| **Q617** | **결석 처리** | **✅ FE+BE** | `AttendanceAbsentModal` · `markAbsentApi` contract 정정 (`dffd726`) |
+| **Q619·Q620** | **직원 출퇴근·당일 roster** | **✅ 완료** | *(carry)* |
+
+**coder 다음 액션** (우선순위순):
+1. **QR 이미지 생성** — base64 PNG 렌더 · 다운로드 · 모바일 스캔 테스트 (Q616)
+2. **청구 필터 FE bootstrap** — `BillingReportPage` 마운트 시 `GET /reports/filters` (Q621)
+3. **출석 통계 P3** — 일별·이용자별 breakdown API (선택)
+
+---
+
+## [TWR] 302차 — 미해결 Must API 갭 정리 & FAQ Q615–Q620 신규 추가 (2026-06-22) [이력]
 
 **배경**: develop HEAD baseline (`a6eb8b7`/`5fd468b`) 단계에서 **4개 Must 기능**이 **API 또는 FE 구현 갭** 상태입니다. 현장 인수 전 **우선순위·상태·우회 방법**을 명시하여 **운영 중단 위험** 최소화.
 

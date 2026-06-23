@@ -1,0 +1,153 @@
+# BNK-547 — ogada git 실측 baseline re-measurement (rotation 6–8h)
+
+조사일: 2026-06-23T11:14Z
+rotation: 6–8h "ogada git 실측" (agents.yaml reverse_engineering.rotation_30min)
+작성자: benchmark_researcher [BNK]
+
+## 1. develop HEAD 실측 (git -C src/<sub> rev-parse develop)
+
+| submodule | HEAD | 직전 cycle (BNK-546) | Δ | ahead vs origin/test | WT |
+|---|---|---|---|---|---|
+| src/frontend | `949e9bfec1a5d9538cf62ca591450dabe66948d0` (`949e9bf`) | `949e9bf` | **HEAD zero advance** (3-cycle carry: BNK-545=BNK-546=BNK-547) | **186** | **CLEAN** (M=0·A=0·??=0) |
+| src/backend  | `40ab9e77131aa62b24b70fd82937b4040386f1b5` (`40ab9e7`) | `40ab9e7` | **HEAD zero advance** (3-cycle carry: BNK-545=BNK-546=BNK-547) | **527** | **DIRTY 1M** `src/test/java/com/ogada/backend/billing/cms/domain/CmsServiceTest.java` (BNK-546 carry) |
+
+merge gate = FE186 + BE527 = **713** carry (tester FF merge 713 적체 carry; BNK-545=BNK-546=BNK-547 동일)
+
+## 2. develop tail (FE @949e9bf 최근 5 commit)
+
+```
+949e9bf feat(v1.2.1/US-R01): show branch scope on staff HR roster pages          ← @HEAD (BNK-543)
+c183ebd ux(a11y): US-R01 relatedSurfaces cross-link panel + landmark fixes (UXD-156)
+95f55aa fix(v1.2.1/US-R01): wire work-attendance API relatedSurfaces cross-links
+2040571 feat(v1.2.1/US-R01): add reverse HR cross-links on staff attendance page
+0b0d7ba feat(v1.2.1/G-STAFF-ANNUAL-LEAVE): wire US-R01 related surface cross-links
+```
+
+## 3. develop tail (BE @40ab9e7 최근 5 commit)
+
+```
+40ab9e7 fix(v2/us-r01): honor active branch context in annual leave roster        ← @HEAD (BNK-542)
+83a26e7 feat(v2/US-R01): expose annual-leave cross-links on work-attendance roster
+6ab3760 feat(v2/US-R03e): expose leave-ledger cross-links in yearly responses
+bbf333c feat(v2/US-R03e): add US-R01 leave-ledger cross-link metadata on annual leave roster
+8c5dd65 feat(v2/US-R03e): commit V173 annual leave yearly integrity checks
+```
+
+## 4. KPI 재산정 정본
+
+| KPI | 값 | 측정 명령 | Δ vs BNK-546 |
+|---|---|---|---|
+| Route | **111** | `rg -c '<Route\b' src/frontend/src/App.jsx`=110 + `<Routes>` wrapper 1 | **zero drift** (4-cycle carry) |
+| Page  | **89 `*Page.jsx`** (+`RootRedirect`=90) | `find src/frontend/src/pages -name '*Page.jsx' \| wc -l` | **zero drift** |
+| Flyway migration | **V1–V173 contiguous** | `ls src/backend/src/main/resources/db/migration/V*.sql \| wc -l`=173 | **zero drift** |
+| BE Test file | **247** | `find src/backend/src/test -name '*Test.java' \| wc -l`=247 | **zero drift** |
+| BE `@Test` | **1,813** | `rg -c '@Test\b' src/backend/src/test \| awk -F: '{s+=$2}END{print s}'`=1813 (커밋 기준; **WT DIRTY 1M +1 @Test 미커밋 carry**) | **zero drift** (커밋 기준) · WT 적용 시 1,814 |
+| FE test file | **450** = 183 `.test.js` + 267 `.test.jsx` | `find src/frontend/src -name '*.test.js' \| wc -l` / `*.test.jsx` | **zero drift** |
+| 모듈 coverage | **78.79%** = **22.85/29** | `src/frontend/src/config/competitorModuleCoverage.js` Σcoverage (line 5 주석 1건 과집계 제외 — `coverage:` grep 30 hit → 정본 29 entry) | **zero drift** (4-cycle carry) |
+
+> ⚠️ `coverage:` grep 시 line5 주석 `coverage: 1 = ✅ 완전, 0.6 = △ 부분, 0 = ❌ 갭` 1건 과집계 주의 — 정본 합산 **22.85/29 (78.79%)**, 23.85/30 아님.
+
+## 5. 모듈 coverage 분포 (29-feature 정본, zero drift carry)
+
+- ✅완전 (coverage=1) **20건**: 1-1·1-3·1-7·1-9·3-1·4·5·26·43·7-1·7-2·7-2-1·7-3·7-6·7-10·9·nhis·qr·hq + (별도 list 카운트)
+- △부분 4건: 2 이동(0.85)·7-4 CMS(0.65)·8 직원근태(0.85)·10 부가(0.5)
+- ❌갭 5건: 1-5 가정통신문·1-10 연계기록지·6 위생안전·11 직원급여·12 수입지출 (= 의도적 MVP out-of-scope)
+
+신규 core 갭 0건 carry (BNK-543 정본 재검증 이후 4-cycle).
+
+## 6. Backbone 2-URL live re-fetch (BNK-547 = 332차)
+
+| URL | HTTP | SIZE | live md5 | on-disk md5 | 비교 | Δ |
+|---|---|---|---|---|---|---|
+| [carefor func.php Wayback id_](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | 200 | 98,328B | `6226e6eb92fdd25ed3e50842a5e8a00b` | `6226e6eb92fdd25ed3e50842a5e8a00b` (`carefor_func_wayback_live_bnk541.html`) | **IDENTICAL** | **332차 zero drift** |
+| [ezCare top-nav-V2.js](https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428) | 200 | 25,470B | `95286775000f06c8ad13688fcb0d6dbb` | `95286775000f06c8ad13688fcb0d6dbb` (`ezcare_top_nav_v2.js`) | **IDENTICAL** | **332차 zero drift** |
+| [NHIS #44 joHistory (구 path)](https://www.longtermcare.or.kr/npbs/cms/board/board/Reference/jongHistoryView.web?communityKey=B0017&boardId=44) | **404** | 861B | `fcadfbfe3b101419c8b47a115d05c95b` | `c886ff1f` (`nhis_jo44.html` 7,572B canonical) | **구 URL HTTP 404** · canonical on-disk **보존** | **「미확인」 carry** (BNK-530 URL migration 패턴 carry — 신규 정식 URL 미발견) |
+
+→ Backbone 2/3 IDENTICAL · NHIS#44 1/3 구 URL 404 (BNK-530 첫 발견 이후 BNK-547 = **18-cycle carry**). on-disk `nhis_jo44.html` `c886ff1f`(7,572B) **러-1~4·편도50%·1일1회·④이동서비스 일지** verbatim 유효 — ogada `TransportServiceFeeService` 5/5 ✅ parity/우위 카리 (PLAN_NOTES #44 1차 확인).
+
+## 7. ★★★ BE WT DIRTY 1M carry (BNK-546→BNK-547 2-cycle 적체) — push 누락 risk 「확인」
+
+`CmsServiceTest.java` +23L (BNK-546 신규·BNK-547 carry) 패치 분석:
+
+```
++    @Test
++    void listBranchEnrollmentsShouldNormalizeStatusFilterAndReturnPendingRoster() {
++        ClientEntity client = activeClient();
++        CmsEnrollmentEntity pending = activeEnrollment();
++        pending.setBranchId(branchId);
++        pending.setStatus("PENDING");
++
++        when(enrollmentRepository.findByOrganizationIdAndBranchIdAndStatusOrderByEnrolledAtDesc(
++                organizationId, branchId, "PENDING"
++        )).thenReturn(List.of(pending));
++        when(clientRepository.findByOrganizationIdAndIdIn(organizationId, List.of(clientId)))
++                .thenReturn(List.of(client));
++
++        List<CmsEnrollmentResponse> responses = cmsService.listBranchEnrollments(branchId, " pending ");
++
++        assertEquals(1, responses.size());
++        assertEquals("PENDING", responses.get(0).status());
++        assertEquals("김영희", responses.get(0).clientName());
++        verify(jwtScopeResolver).validateBranchReadScope(branchId);
++    }
+```
+
+- 신규 @Test: `listBranchEnrollmentsShouldNormalizeStatusFilterAndReturnPendingRoster` (+1)
+- 의도: `cmsService.listBranchEnrollments(branchId, " pending ")` (소문자·앞뒤 공백) → 정규화 → repository `"PENDING"` 호출 + `validateBranchReadScope` 호출 검증
+- BE @Test 1,813(커밋) → WT 적용 시 **1,814** (커밋 시 +1 반영)
+- **rules.md §6 Submodule "작업 완료 시 반드시 커밋한다" + "push 누락 금지" 위배 후보** — `run_agent.py build` 종료 시 `git push origin develop` 자동 실행되지만, **미커밋 변경은 자동 push 안 됨** → submodule 재 clone 시 유실 위험. coder 다음 사이클에서 commit + push 권장 (planner P0 보고 후보).
+
+## 8. ★★★ HEAD zero advance 3-cycle carry (BNK-545·BNK-546·BNK-547 = 동일 SHA) — pipeline 정체 시그널 「확인」
+
+| cycle | 시각 (UTC) | FE HEAD | BE HEAD | FE WT | BE WT | Δ HEAD | merge gate |
+|---|---|---|---|---|---|---|---|
+| BNK-545 | 10:05Z | `949e9bf` | `40ab9e7` | CLEAN | CLEAN | — (BNK-544 carry) | 713 |
+| BNK-546 | 11:00Z | `949e9bf` | `40ab9e7` | CLEAN | DIRTY 1M | **zero** | 713 |
+| **BNK-547** | **11:14Z** | `949e9bf` | `40ab9e7` | CLEAN | DIRTY 1M (carry) | **zero (3-cycle)** | **713** |
+
+- **경과**: ~69분 (10:05Z → 11:14Z) 동안 양쪽 develop HEAD 정체 + BE WT DIRTY 1M carry
+- **원인 후보**:
+  1. coder pipeline 비활성/대기 중 (이미 in-progress 상태이지만 commit 도달 미흡)
+  2. tester FF merge 713 적체 (BNK-545부터 변함 없음) — develop→test 이관 backlog
+  3. BE WT DIRTY 1M 미커밋 = 다음 cycle 진입 차단
+- **차별화/리스크**:
+  - Cross-stream 정체: develop progress 0 → test/operation 미반영 → 운영 readiness blocker carry
+  - **planner P1 액션 후보**: coder에게 `CmsServiceTest.java` 즉시 커밋 + push 지시·tester에게 713 FF merge 가속 지시
+
+## 9. ★★ 4축 P0/P1 backlog (BNK-544 정본 carry, zero drift)
+
+- G14 care-plan-form: ✅ LIVE App.jsx path 존재
+- 대시보드 `/dashboard`: ✅ LIVE
+- v1.3-C 이동/Kakao: ✅ LIVE
+- v2 CMS `/billing/cms`: ✅ LIVE
+
+→ 신규 P0/P1 재오픈 0건 carry · 신규 core 갭 0건 carry (4-cycle).
+
+## 10. planner 액션 권장 (BNK-547 발신 → PLN 수신)
+
+| # | 우선순위 | 액션 | 근거 |
+|---|---|---|---|
+| 1 | **P0** | coder: BE `CmsServiceTest.java` WT DIRTY 1M 즉시 commit + `git push origin develop` (rules.md §6 submodule) | 2-cycle carry (BNK-546→BNK-547) · 미커밋 +1 @Test 유실 risk |
+| 2 | **P1** | tester: develop→test FF merge gate 713 (FE186+BE527) 가속 | BNK-545부터 zero drift 3-cycle · operation backlog |
+| 3 | P2 | benchmark_researcher: NHIS#44 신규 정식 URL 발견(현재 구 path 404·**18-cycle carry**) — 다음 4–6h rotation 우선 | BNK-530 첫 발견 → BNK-547 carry · canonical on-disk 보존 |
+| 4 | P3 | planner: pipeline 정체 root cause 분석 (HEAD zero advance 3-cycle·~69분 정지) → cycle cadence 모니터링 | BNK-545=BNK-546=BNK-547 동일 SHA |
+
+## 11. per-cycle minimum 충족 (agents.yaml reverse_engineering.per_cycle_minimum)
+
+- ✅ 신규 증거 URL 1건+ : 백본 2-URL 332차 재실측 (carefor func.php Wayback·ezCare top-nav-V2.js IDENTICAL) + NHIS#44 구 URL 404 carry 재기록
+- ✅ 메뉴/필드/워크플로 1블록+ : §7 `CmsServiceTest.java` 신규 @Test 정규화 워크플로 verbatim · §5 모듈 coverage 29-feature 분포
+- ✅ COMPETITOR_MATRIX 1행+ `@HEAD` 갱신 : ogada `@949e9bf`/`@40ab9e7` 332차 carry 행 추가
+- ✅ BENCHMARK_REPORT §신규 소절 1건+ : §547 추가
+
+## 12. 가정·확인·미확인 매트릭스
+
+- **확인** (live evidence + on-disk md5 일치):
+  - FE/BE @HEAD SHA (`git rev-parse develop`)
+  - KPI 정본 6종 (Route 111·Page 89·V173·BE Test 247·FE test 450·모듈 78.79%)
+  - Backbone 2-URL 332차 IDENTICAL (carefor func.php Wayback·ezCare top-nav-V2)
+  - BE WT DIRTY 1M `CmsServiceTest.java` +23L (`git diff` patch verbatim)
+  - HEAD zero advance 3-cycle (SHA 동일)
+- **가정**: pipeline 정체 root cause (coder backlog vs tester merge gate)
+- **미확인** carry: NHIS#44 신규 정식 URL (구 path 404 18-cycle)
+
+가정 번복 0·신규 core 갭 0·candidate 변동 0·상태 변경 0 (HEAD zero advance·WT carry)·미확인 1 carry·신규 snapshot 1건(extract)·덮어쓰기 0건·엑셀 포맷 변경 0·per-cycle minimum 4종 충족.

@@ -1,9 +1,10 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-06T19:00:00+09:00 -->
-# 주간보호센터 웹 시스템 — 화면 흐름도 (FLOWCHART.md)
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-15T18:00:00+09:00 -->
+<!-- planner-sync: PLN 142차 2026-06-15T18:00 KST — §8 G24b compliance StatCard · live E2E env gate · FE `ca0b627`/`baa6d6d` -->
+# 주간보호센터 웹 시스템 — 화면 흐름도 (planning/FLOWCHART.md)
 
 > **작성**: planner 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-06 (NHIS `처리상태` 정규화·v1.1 보호자 초대)
+> **최종 갱신**: 2026-06-15 (142차 — §8 G24b compliance StatCard · live E2E env verification gate · BNK-227~229 · QA-B95 Planned)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) — 7역할 + `client_user`
 > **기준 문서**: `REQUIREMENTS.md`(§2-4 역할별 홈, §5 화면 목록), `API_SPEC.md`
@@ -209,7 +210,8 @@ flowchart TD
   G --> K[센터장 검토·재계산 또는 공단 재확인]
 ```
 
-> 매칭 이용자는 배치와 **동일 지점**만 허용. `MATCHED`/`DISCREPANCY`는 `client_id` 필수(V19).
+> 매칭 이용자는 배치와 **동일 지점**만 허용. `MATCHED`/`DISCREPANCY`는 `client_id` 필수(V19).  
+> **구현 (59차)**: `DISCREPANCY` 노드 G — `DiscrepancyComparePanel`·`NhisReconciliationTable.onCompare` @ `fd4e8f3` · `pilotPageFlows` E2E @ `c510f5c`.
 
 ---
 
@@ -222,6 +224,10 @@ flowchart TD
     D2[이용자 통계: 입소/퇴소/이용]
     D3[건강 이상 알림 목록]
     D4[월별 출석률 차트]
+    D5[G24b 욕구사정 준수 StatCard - needsAssessmentGapCount]
+    D6[G24b 등급변경 재사정 due StatCard - gradeChangeReassessmentDueCount]
+    D5 --> API1[GET /clients/needs-assessments/compliance]
+    D6 --> API1
   end
   subgraph HQ[통합 대시보드 - hq scope]
     E1[전 지점 출석 한눈에 - 카드/표]
@@ -232,6 +238,20 @@ flowchart TD
     E5 -->|쓰기 필요| F[지점 선택기 → active_branch_id]
   end
 ```
+
+### 8-1. live E2E 검증 게이트 (v2 — QA-B95 Planned)
+
+```mermaid
+flowchart LR
+  A[develop HEAD test PASS] --> B{LIVE_E2E_* env 구성?}
+  B -- 아니오 --> C[test:live-e2e 4 suite FAIL - QA-B95 BLOCK]
+  B -- 예 --> D[npm run test:live-e2e]
+  D --> E{G-NURSING·G14·G19·G30 harness PASS?}
+  E -- 예 --> F[operation 승격 검토 가능]
+  E -- 아니오 --> G[결함 수정 후 재검증]
+```
+
+> env 예시: `scripts/dev-live-e2e.env.example` → `dev-live-e2e.env` · 실행: `./scripts/run-live-e2e.sh` · merge(602)와 병행 가능(결정 73).
 
 ---
 
@@ -255,11 +275,38 @@ flowchart TD
   P --> T1[일일 기록 탭 - MVP]
   P --> T2[명세·청구 탭 - v1.1]
   T2 --> B[월별 본인부담금 명세 조회]
+  B --> C[GuardianBillingDetailModal 상세·인쇄 UXD-55 develop-only]
 ```
 
-> v1.1: 이지케어 EZCARE·케어포 가족돌봄앱 **최소 패리티** — 알림·CMS는 v2.
+> v1.1: 이지케어 EZCARE·케어포 가족돌봄앱 **최소 패리티** — 알림·CMS는 v2.  
+> **BNK-10**: 이지케어는 **계획일정·청구일정 분리 import** — ogada 주간 출석 모델은 **NHIS import 1회** 유지(Won't v1).
 
 > MVP 보호자 포털은 **기록 열람 + QR 체크인** 중심. 알림(알림톡/SMS)은 v1 이후(§3-7).
+
+---
+
+## 9b. 방문요양 일정·체크인 (v2 G21) — §1-6 · BNK-14
+
+> **backend @ `d768820`**: V53·`/api/v1/visits` **PRESENT**. frontend `/visits` **잔여**. 이지케어 FAQ 21647 — 공단 RFID→관리자 일정 import → **ogada는 QR/수기 체크인 우선**.
+
+```mermaid
+flowchart TD
+  A[/visits 방문 일정 달력/] --> B{scheduleKind}
+  B -->|PLAN 계획| C[안내용 일정 등록 DRAFT]
+  B -->|BILLING 청구| D[정산용 일정 등록 DRAFT]
+  C --> E{createPairedBillingSchedule?}
+  E -- 예 --> F[BILLING 페어 자동 생성 pairedScheduleId]
+  E -- 아니오 --> G[단일 일정]
+  F --> H[확정 confirm]
+  G --> H
+  D --> H
+  H --> I{현장 방문}
+  I --> J[POST check-in MOBILE 또는 MANUAL]
+  J --> K[POST check-out 방문 완료]
+  K --> L[청구·본인부담 연계 v2 후속]
+```
+
+> **BNK-10·14**: 이지케어는 **계획일정·청구일정 2회 import** — ogada PLAN/BILLING **탭·필터 분리 UI** 잔여(US-V02). 주간 출석 NHIS import **1회** 모델과 **분리**(PLAN_NOTES #45).
 
 ---
 
@@ -276,6 +323,7 @@ flowchart TD
 | `/guardian*` | guardian·client_user | `/attendance/qr/scan`, `/guardian/checkin-targets` |
 | `/health*` | caregiver 이상 | `/clients/{id}/health*` |
 | `/billing*` | hq_admin·branch_admin | `/billing/*`, `/billing/imports/nhis*` |
+| `/visits*` (v2) | social_worker·caregiver 이상 | `/visits*` (§14 @ `d768820`) |
 | `/settings` | sysadmin | `/settings/*` |
 
 ---

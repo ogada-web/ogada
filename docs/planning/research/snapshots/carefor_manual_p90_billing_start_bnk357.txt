@@ -1,0 +1,15 @@
+# 케어포 주야간보호 사용매뉴얼 PDF p.90 추출 (BNK-357 신규 재실측)
+# 원본: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=90
+# full PDF md5: 96f7d45eaca91525068ec9bfb626fb18 (9,992,772B·132p)
+# 조사일: 2026-06-18 | HTTP: 200·pypdf page[89] extract
+
+--- p.90 청구시작 기준금액 설정 (PDF 번호 vs func.php/demo L07 번호 충돌 재확인) ---
+메뉴위치: 7-3.청구시작 금액설정
+케어포 시스템을 이용하기 이전에 미납금액이나 선납금액등을 입력하는 서비스입니다.
+※본인부담금이 1회 이상 생성이 되면, 이후에는 설정 변경이 되지 않습니다.
+- 초기화를 원하는 경우 본인부담금 생성내역을 다 삭제처리 해야 함
+
+[BNK-357 교차]
+- func.php 정적 leaf: **7-3 = 본인부담금 미납관리** (demo `view.cost_nopay` L07_M03) — PDF p.90 「7-3.청구시작」과 **번호 충돌**
+- func.php **7-10 = 본인부담금 간편계산기** — demo L07 nav **미노출**(10/11)
+- ogada G33: `/billing/fee-schedules` + `POST /settings/billing/start-balance` (1회 잠금 parity ✅)

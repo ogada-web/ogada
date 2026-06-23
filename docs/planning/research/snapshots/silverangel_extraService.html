@@ -1,0 +1,1591 @@
+
+<html lang="ko">
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엔젤시스템</title>
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="엔젤시스템 - 회사소개 공지사항 고객센터 등">
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="msapplication-config" content="none"/>
+<meta property="og:url" content="http://www.silverangel.kr/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="엔젤시스템" />
+<meta property="og:description" content="엔젤시스템 - 회사소개 공지사항 고객센터 등" />
+<meta property="og:image" content="/newSilverangel/images/metaImage.png">
+
+<link type="image/png" rel="shortcut icon" href="/images/favicon.png">    
+    
+<!-- jQuery UI -->
+<script src="/newSilverangel/js/jquery-3.4.1.min.js"></script>
+<script src="/newSilverangel/js/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/newSilverangel/css/style.css">
+<script type="text/javascript" src="/js/jquery.timepicker.min.js" ></script><!-- 타이머js -->
+<link type="text/css" rel="stylesheet" href="/css/jquery.timepicker.css" media=""/><!-- 타이머css -->
+<script type="text/javascript" src="/js/jquery.mtz.monthpicker.js"></script><!-- monthpicker js -->
+<!-- <script src="http://malsup.github.com/jquery.form.js"></script> -->
+	 
+<script type="text/javascript">
+
+new Promise(function() {
+	
+	//SSL 통신 START
+	var link = document.location.href;
+	var protocol = location.protocol;
+	if(link.indexOf("silverangel.kr") != -1){
+		if(protocol.indexOf("https") < 0){
+			location.href = link.replace("http","https");
+		}
+	}
+	//SSL 통신 END
+	
+});
+</script>
+		
+<script type="text/javascript">
+		
+	
+	
+	
+	
+	
+	
+		
+	//로그인
+	function loginChk(){
+		
+		if(!$("#f_code").val()) {
+			alert("시설코드를 입력하여 주십시오.");
+			$("#f_code").focus();
+			return false;
+		}
+		
+		if(!$("#user_id").val()) {
+			alert("아이디를 입력하여 주십시오.");
+			$("#user_id").focus();
+			return false;
+		}
+		
+		if(!$("#user_password").val()) {
+			alert("비밀번호를 입력하여 주십시오.");
+			$("#user_password").focus();
+			return false;
+		}
+		
+		$("#login_form").submit();
+	}
+		
+	//로그인 Enter
+	function goEnter() {
+		if(event.keyCode == 13) {
+			loginChk();
+		}
+	}
+		
+	//로그아웃
+	function logout() {
+		location.href = "/silverangel/login/logout.do";
+	}
+		
+	//PC화면 메뉴 이동
+	function goTopMenu(URL){
+		location.href = URL;
+	}
+		
+	//파일 확장자 체크
+	function chkExt(thumbext){
+		
+		thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+	
+		var chk = "";
+		
+		if(thumbext != "pdf" && thumbext != "hwp" &&  thumbext != "xls" &&  thumbext != "zip" &&  thumbext != "xlsx" &&  thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp" &&  thumbext != "ppt" &&  thumbext != "pptx" &&  thumbext != "doc" &&  thumbext != "docx"){ //확장자를 확인합니다.
+	
+			chk = 11;
+	
+		}else{
+			chk = 22;
+		}
+		
+		return chk;
+	}
+		
+	//파일 확장자 체크
+	function chkExt_img(thumbext){
+		
+		thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+	
+		var chk = "";
+		
+		if(thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp"){ //확장자를 확인합니다.
+			chk = 11;
+		}else{
+			chk = 22;
+		}
+		
+		return chk;
+	}
+
+	// 파일 확장자 가져오기
+	function getFileExtension(filename) {
+	    return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+	}
+		
+	//숫자만 입력 가능
+	function isNumOnly(arg) {
+		event.target.value = event.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
+		if(arg == 'c'){
+			var len, startStrLen, divideNum; 
+	        var tmpStr, remainStr, startStr;
+	        var resultStr;
+	        var valid = "0123456789";
+	        var num = "";
+	        var real = String(event.target.value);
+	        
+	        for(var i = 0 ; i< real.length ; i++){
+	            if(valid.indexOf(real.charAt(i)) != -1){
+	               num += real.charAt(i);
+	            }          
+	        }
+	        len = num.length;     
+	        divideNum = Math.floor(len / 3); 
+	        startStrLen = len % 3;
+	        resultStr = num.substr(0, startStrLen );  
+	       
+	        remainStr =  num.substr(startStrLen, len - startStrLen );
+	        
+	        tmpStr = "";
+	        if ( remainStr != "" ) {	     
+	        	for ( i = 0; i < divideNum ; i++ ){
+	         	tmpStr = tmpStr + "," + remainStr.substr(i*3, 3);
+	        	}
+	        }
+	        resultStr = resultStr + tmpStr;
+	        
+	        if ( startStrLen == 0 ) {
+	            resultStr = resultStr.substr(1, resultStr.length - 1);
+	        }
+	        event.target.value = resultStr;
+		}
+	}
+		
+	//홈페이지제작 메뉴 이동
+	function goWebsiteProvided(){
+		location.href="/newSilverangel/webSite/websiteProvided.do";
+	}
+
+	var resizeWidth = $(window).width();
+	//메인화면 이미지만 늘려서 보이도록 하기 위해 메인화면일때만 헤더에 "main"클래스를 추가함
+	$(document).ready(function(){
+		var href = window.location.href;
+		href = href.split('/');
+		
+		var hrefDo = href[href.length-1]; //href의 마지막값 가져오기
+		if (hrefDo == "main.do" || hrefDo == "login.do" || hrefDo == "logout.do" || hrefDo == ""){
+			$("header").addClass("main");
+		}
+		if(getCookiee( "layer_popUp" ) != "done"){
+			$('.layer_popUp').css("display", "block");
+		}
+		else {
+			$('.layer_popUp').css("display", "none");
+		}
+
+		//메뉴 이동 시 로딩창 띄우기(pc화면)
+	    $('.menu.pc a').on('click', function(e) {
+	    	showLoading();
+	    });
+		
+		//메뉴 이동 시 로딩창 띄우기(모바일 화면)
+	    $('.breadcrumb.mo .drop a').on('click', function(e) {
+	    	showLoading();
+	    });	
+	    
+		//뒤로가기로 페이지 진입 시 로딩창 감추기
+	    $(window).on('pageshow', function(event) {
+	    	if(event.originalEvent.persisted) {
+	    		hideLoading();
+	    	}
+	    });
+		
+		//TOP메뉴
+	    $('.depth1 a').on('click', function(e) {
+	    	//PC
+	    	if(resizeWidth > 850){
+		    	showLoading();
+	    	}
+	    });
+	    $('.depth2 a').on('click', function(e) {
+	    	//모바일
+	    	if(resizeWidth <= 850){
+	    		showLoading();
+	    	}
+	    });
+	    $(window).resize(resizeLoading);
+	    
+	});
+		
+	function closePop(){
+		$('.layer_popUp').css("display", "none");
+	}
+		
+	function goMove(){
+		var form = document.checkClose;
+		
+		var action = "https://cafe.naver.com/iangelsoftmax?iframe_url=/MyCafeIntro.nhn%3Fclubid=23609616";
+		form.action = action;
+		form.submit();
+	}
+
+	function close1Day(){ 
+		var expdate = new Date();
+		expdate.setDate(expdate.getDate() + 1); // 하루만 그만보기
+	 	expdate.setHours(0,0,0,0);
+	
+		setCookie("layer_popUp", "done" , expdate);
+	
+		$('.layer_popUp').css("display", "none");
+	}
+
+	function close7Day(){ 
+		var expdate = new Date();
+		expdate.setDate(expdate.getDate() + 1); // 일주일 그만보기
+	 	expdate.setHours(0,0,0,0);
+	
+		setCookie("layer_popUp", "done" , expdate);
+	
+		$('.layer_popUp').css("display", "none");
+	}
+
+	function setCookie(name, value, expires){ 
+		document.cookie = name + "=" + escape (value) + "; path=/; expires=" + expires.toGMTString();   
+	} 
+
+	function getCookiee(Name) {
+	    var search = Name + "=";
+	    if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+	        offset = document.cookie.indexOf(search)
+	        if (offset != -1) { // 쿠키가 존재하면
+	            offset += search.length
+	            // set index of beginning of value
+	            end = document.cookie.indexOf(";", offset)
+	            // 쿠키 값의 마지막 위치 인덱스 번호 설정
+	            if (end == -1)
+	                end = document.cookie.length
+	            return unescape(document.cookie.substring(offset, end))
+	        }
+	    }
+	    return "";
+	}
+
+	function openNewWindow() {
+	    var win = window.open('https://cafe.naver.com/iangelsoftmax?iframe_url=/MyCafeIntro.nhn%3Fclubid=23609616', '_blank');
+	    win.focus();
+	}
+	
+	//로딩창
+	function showLoading() {
+	    $('.loading').show();
+	}
+	function hideLoading() {
+	    $('.loading').hide();
+	}
+	function resizeLoading(){
+		resizeWidth = $(window).width();
+	}
+	
+	
+</script>
+</head>
+<style>
+	.layer_popUp{
+		position:absolute;
+		margin-left: 0px;
+		margin-top: 0px;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		text-align: left;
+		width: 661px;
+		height: 661px;
+		top: 6VW;
+		left: 12VW;
+	}
+    .topBanner {
+        background: url(/newSilverangel/images/topBanner.png) no-repeat left;
+        background-size: contain;
+        width: 190px;
+        height: 48px;
+        margin-right: 30px;
+    }
+@media screen and (min-width: 300px){
+	.layer_popUp{
+        width: 275px;
+        height: 275px;
+    }
+    .topBanner {
+        width: 107px;
+        height: 26.5px;
+        position: absolute;
+        left: 120px;
+        top: 27.5px;
+    }
+}
+	
+@media screen and (min-width: 450px){
+	.layer_popUp{
+        width: 325px;
+        height: 325px;
+    }
+}
+@media screen and (min-width: 600px){
+	.layer_popUp{
+        width: 475px;
+        height: 475px;
+    }
+}
+@media screen and (min-width: 851px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+    .topBanner {
+        width: 190px;
+        height: 48px;
+        position: absolute;
+        left: -1px;
+        top: 90px;
+    }
+}
+@media screen and (min-width: 1025px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}
+@media screen and (min-width: 1250px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}
+@media screen and (min-width: 1400px){
+    .topBanner {
+        width: 190px;
+        height: 48px;
+        position: unset;
+        left: unset;
+        top: unset;
+    }
+}
+@media screen and (min-width: 1500px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}	
+
+</style>
+<body>
+	<form id="login_form" name="login_form" method="post" action="/silverangel/login/login.do">
+   		<div class="loading" style="display: none;"> 
+	      	<img src="/newSilverangel/images/loading.png" alt="">
+	      	<p>Loading</p>
+	   	</div>	
+		<header class="header row_section">
+		    <div class="header_top">
+		        <div class="section_inner" id="top_section_inner">
+                    <div style="display: flex;">
+		            <h1 class="topBanner" onclick="window.open('https://www.silverangel.co.kr/shop/listtype.php?type=5', '_blank');" style="cursor: pointer;"></h1>
+                    <h1 class="logo" onclick="goTopMenu('/silverangel/main/main.do'); showLoading();" style="cursor: pointer;"><span class="blind">요양시설통합세례관리솔루션 엔젤시스템</span></h1>
+                    </div>
+		            <div class="menu">
+		                <nav class="gnb">
+		                    <ul class="depth1">
+		                        <li>
+		                            <a href="/newSilverangel/fcltySlry/essentialWork.do">입소시설</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/fcltySlry/essentialWork.do">필수업무</a></li>
+		                                <li><a href="/newSilverangel/fcltySlry/programProvided.do">제공 프로그램</a></li>
+		                                <li><a href="/newSilverangel/fcltySlry/angelSystemSummary.do">엔젤시스템 개요</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/daycare/daycareEssentialWork.do">주야간보호</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/daycare/daycareEssentialWork.do">필수업무</a></li>
+		                                <li><a href="/newSilverangel/daycare/daycareProgramProvided.do">제공 프로그램</a></li>
+		                                <li><a href="/newSilverangel/daycare/daycareAngelSystemSummary.do">엔젤시스템 개요</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/service/mainService.do">서비스</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/service/mainService.do">주요서비스</a></li>
+		                                <li><a href="/newSilverangel/service/extraService.do">부가서비스</a></li>
+		                                <li><a href="/newSilverangel/service/businessSupportService.do">업무지원 서비스</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/service/feeService.do">이용요금</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/service/feeService.do">이용요금</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <!-- <a href="#" onclick="goWebsiteProvided();">기관 홈페이지 제작</a> -->
+		                            <a href="/newSilverangel/webSite/websiteProvided.do">기관 홈페이지 제작</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/webSite/websiteProvided.do">기관 홈페이지 제작</a></li>
+		                                <li><a href="/newSilverangel/webSite/websiteProvidedList.do">홈페이지 제작 현황</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/support/notice/list.do">고객지원</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/support/notice/list.do">공지사항</a></li>
+		                                <li><a href="/silverangel/support/download/list.do">자료실</a></li>
+		                                <li><a href="/silverangel/support/qna/list.do">묻고 답하기</a></li>
+		                                <li><a href="/silverangel/support/faq/list.do">자주묻는 질문</a></li>
+		                                <li><a href="/silverangel/support/edu_apply/write.do">도입문의</a></li>
+		                                
+		                                
+		                                
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/publicize/partner.do">홍보관</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/publicize/partner.do">파트너</a></li>
+		                                <li><a href="/silverangel/publicize/visit_list.do">사용시설 직무교육</a></li>
+		                                <li><a href="/silverangel/publicize/license.do">사업면허/표창</a></li>
+		                                <li><a href="/silverangel/publicize/angel_news_list.do">엔젤뉴스</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/companyinfo/business_area.do">기업정보</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/companyinfo/business_area.do">사업분야</a></li>
+		                                <li><a href="/silverangel/companyinfo/vision.do">비전</a></li>
+		                                <li><a href="/silverangel/companyinfo/history.do">걸어온 길</a></li>
+		                                <li><a href="/silverangel/companyinfo/ceo.do">CEO 인사말</a></li>
+		                                <li><a href="/silverangel/companyinfo/organization_chart.do">조직도</a></li>
+		                                <li><a href="/silverangel/companyinfo/map.do">오시는 길</a></li>
+		                            </ul>
+		                        </li>
+								<!-- 로그인하는 ID에 따라 hide, show(조건) -->
+										                        
+		                    </ul>
+		                </nav>
+		                <div class="login_wrap">
+		                	
+		                		
+				                    <input type="text" id="f_code" name="f_code" onkeypress="JavaScript:goEnter();" placeholder="시설코드">
+				                    <input type="text" id="user_id" name="user_id" onkeypress="JavaScript:goEnter();" placeholder="아이디">
+				                    <input type="password" id="user_password" name="user_password" onkeypress="JavaScript:goEnter();" placeholder="비밀번호">
+				                    <button type="button" class="loginForm" onclick="loginChk();">로그인</button>
+				                    <button type="button" class="btn_close">닫기</button>											                		
+		                		
+		                		
+		                	
+		                </div>
+		                <button type="button" class="login"><span class="blind">로그인</span></button>
+		                <button type="button" class="menu" id="btnMenu"><span class="blind">메뉴열기</span></button>
+		            </div>
+		        </div>
+		    </div>
+		</form>
+			<!-- 메인 화면 -->		    
+		
+  		<div class="visual main_slide" id="mainView" style="display: none;">
+  		
+         	 <div class="layer_popUp" style="display: block; z-index:10;">
+        		<div>
+				    <form name="checkClose">
+						<img src="/images/sub/opneNaverCafe_popup_1.jpg" style="width: 100%; height: 100%;">
+						<!-- 오늘은 그만 보기 -->
+						<div class="close1Day" onclick="close1Day()" style="height: 6%;width: 26%;position: absolute;top: 94%;left: 3%;"></div>
+						<!-- 닫기 -->
+						<div class="closePop" onclick="closePop()" style="width: 19%;height: 7%;position: absolute;top: 93%;left: 81%;"></div>
+						<!-- 자세히 보기 -->
+						<div class="openNewWindow" onclick="openNewWindow()" style="width: 36%;height: 9%;position: absolute;top: 74%;left: 32%;"></div>
+						<!-- 일주일동안 그만 보기 -->
+						<div class="close7Day" onclick="close7Day()" style="height: 6%;width: 27%;position: absolute;top: 94%;left: 34%;"></div>
+					</form>
+				</div>
+			</div> 
+			
+ 			<div class="visual main_slide">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                    	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-06.jpg);">
+                            <div class="slide_inner_box type_c">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-06_add.png">
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">기관의 특성을 담은 홈페이지 제작</p>
+
+                                    <p class="d_text">계절별로 디자인이 자동 변경되는 홈페이지</p>
+
+                                    <p class="s_text">수급자 정보 자동연동으로 보호자와의 신뢰관계 유지, <br> 감각적인 디자인으로 기관 홍보 효과 또한 탁월합니다.</p>
+                                    <div class="ad_head">
+                						<a href="https://www.silverangel.kr/newSilverangel/webSite/websiteProvided.do" target="_self" class="exp_link">체험하기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                     	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-05.jpg);">
+                            <div class="slide_inner_box type_b">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-05_add.png">
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">본인부담금 자동이체(CMS) 서비스</p>
+
+                                    <p class="s_text">매월 발생하는 본인부담금을 보호자계좌에서 자동출금, 카드 자동결제, <br>
+                                        가상계좌 입금 등의 방법으로 편리하게 납부할 수 있는 기능을 제공합니다. </p>
+
+                                    <p class="m_text">가입문의 : <span>1600-6859</span></p>
+                                    <div class="ad_head">
+                						<a href="https://www.silverangel.kr/newSilverangel/service/extraService.do" target="_self" class="exp_link">자세히보기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                    	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-04.jpg);">
+                            <div class="slide_inner_box type_a">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-04_add.png">
+                                    <p class="">엔젤시스템 & CJ프레시웨이<br> 업무협약(MOU) 체결</p>
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">CJ프레시웨이와 MOU 체결을 통해 <br>노인식단 전문영양사가 작성한<br> 식단표 활용</p>
+
+                                    <p class="s_text">노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로<br> 식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다.</p>
+                                    <div class="ad_head">
+                						<a href="https://silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864&Tmp_thread=1&Tmp_depth=0" target="_self" class="exp_link">자세히보기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-01.jpg)">
+                            <p class="slogan">
+                                <strong>고객의 입장에 서서 <br>
+                                최고의 서비스를 제공합니다</strong>
+                                <span>장기요양 서비스 관리의 표준 엔젤시스템</span>
+                            </p>
+                            <div class="ad_head2">
+                         		<a href="https://youtu.be/vsPs1Xtvzh8" target="_blank" class="exp_link">홍보영상보기</a>
+                        	</div>
+                        </div>
+  
+                    </div>
+                    <div class="swiper-pagination"> </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+		</div>
+		
+            <!-- 입소시설 - 필수업무 -->
+            <div class="visual sub1_1" id="fcltySlry1" style="display: none;">
+                <p class="slogan">
+                    <strong>입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>                        		    
+			
+			<!-- 입소시설 - 제공프로그램 -->
+            <div class="visual sub1_2" id="fcltySlry2" style="display: none;">
+                <p class="slogan">
+                    <strong class="tit">입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            		    
+		    <!-- 입소시설 - 엔젤시스템 개요 -->
+            <div class="visual sub1_3" id="fcltySlry3" style="display: none;">
+                <p class="slogan">
+                    <strong>입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 주야간보호 - 필수업무 -->
+            <div class="visual sub2_1" id="daycare1" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>		    
+		    
+		    <!-- 주야간보호 - 제공프로그램 -->
+            <div class="visual sub2_2" id="daycare2" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>		    
+		    
+		    <!-- 주야간보호 - 엔젤시스템 개요 -->
+            <div class="visual sub2_3" id="daycare3" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 서비스 - 주요서비스 -->
+            <div class="visual sub3_1" id="serviceView1" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 서비스 - 부가서비스 -->
+            <div class="visual sub3_2" id="serviceView2" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 서비스 - 업무지원서비스 -->
+            <div class="visual sub3_3" id="serviceView3" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홈페이지제작 -->
+            <div class="visual sub4_1" id="webSite1" style="display: none;">
+                <p class="slogan">
+                    <strong>기관 홈페이지 제작</strong>
+                    <span>고객의 편의를 항상 최우선으로 생각하는 <br>
+                        엔젤 시스템만의 특화된 서비스를 만나보세요.</span>
+                </p>
+            </div>  
+            
+            <!-- 홈페이지제작 -->
+            <div class="visual sub4_1" id="fee1" style="display: none;">
+                <p class="slogan">
+                    <strong>이용요금</strong>
+                    <span>고객의 편의를 항상 최우선으로 생각하는 <br>
+                        엔젤 시스템만의 특화된 서비스를 만나보세요.</span>
+                </p>
+            </div>            
+
+			<!-- 고객지원 - 공지사항 -->
+            <div class="visual sub5_1" id="support1" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+
+			<!-- 고객지원 - 자료실 -->
+            <div class="visual sub5_2" id="support2" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 묻고 답하기 -->
+            <div class="visual sub5_3" id="support3" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 자주묻는 질문 -->
+            <div class="visual sub5_4" id="support4" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+			<!-- 고객지원 - 시연신청 -->
+            <div class="visual sub5_5" id="support5" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 시연신청현황 -->
+            <div class="visual sub5_6" id="support6" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 고객지원 - 직무교육신청 -->
+            <div class="visual sub5_7" id="support7" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 고객지원 - 직무교육 신청현황 -->
+            <div class="visual sub5_8" id="support8" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홍보관 - 파트너 -->
+            <div class="visual sub6_1" id="publicize1" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 홍보관 - 사용시설직무교육 -->
+            <div class="visual sub6_2" id="publicize2" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>			
+			
+			<!-- 홍보관 - 사업면허/표창 -->
+            <div class="visual sub6_3" id="publicize3" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홍보관 - 엔젤뉴스 -->
+            <div class="visual sub6_4" id="publicize4" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 기업정보 - 사업분야 -->
+            <div class="visual sub7_1" id="companyinfo1" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - 비전 -->
+            <div class="visual sub7_2" id="companyinfo2" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 기업정보 - 걸어온 길 -->
+            <div class="visual sub7_3" id="companyinfo3" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - CEO 인사말 -->
+            <div class="visual sub7_4" id="companyinfo4" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - 조직도 -->
+            <div class="visual sub7_5" id="companyinfo5" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+
+            <!-- 기업정보 - 오시는 길 -->
+            <div class="visual sub7_6" id="companyinfo6" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- Footer - 개인정보처리방침 -->
+            <div class="visual sub7_7" id="privacyPolicy" style="display: none;">
+                <p class="slogan">
+                    <strong>개인정보처리방침</strong>
+                </p>
+            </div>                                                            
+            
+            <!-- Footer - 이용약관 -->
+            <div class="visual sub7_7" id="termsUse" style="display: none;">
+                <p class="slogan">
+                    <strong>이용약관</strong>
+                </p>
+            </div>              
+
+            <!-- Footer - 문자서비스 이용약관-->
+            <div class="visual sub7_7" id="sms_service" style="display: none;">
+                <p class="slogan">
+                    <strong>문자서비스 이용약관</strong>
+                </p>
+            </div>                                                            
+		</header>
+</body>
+<script>
+
+
+</script>
+
+<style>
+	.swiper-slide{
+		text-underline-position: under !important;
+		padding-bottom: 2px !important;
+	}
+	@media screen and (max-width: 850px) {
+		.qrcode{
+			display : none;
+			margin-top: 20px !important;
+		}
+	}
+	@media screen and (min-width: 851px) {
+		.qrcode{
+			display : block;
+			margin-top: 20px !important;
+		}
+	}
+	.store{width: 250px !important;}
+	
+</style>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	$("#serviceView2").css("display","block");
+
+	//메인화면 자세히보기로 진입
+	if("" == "gbTree"){ //보호자 정보 제공 앱
+		$(".swiper-slide").removeClass("active");
+		$(".toggleMenu").removeClass("active");
+		$(".tab1").css("display","none");
+		$(".gbTree").addClass("active");
+		$(".tab4").css("display","block");
+		
+	}else if("" == "VR"){ //국내 최초 엔젤 VR 컨텐츠 론칭
+		$(".swiper-slide").removeClass("active");
+		$(".toggleMenu").removeClass("active");
+		$(".tab1").css("display","none");
+		$(".VR").addClass("active");
+		$(".tab2").css("display","block");
+		
+	}else if("" == "Mobile"){ //모바일 앱으로도 제공되는 서비스
+		$(".swiper-slide").removeClass("active");
+		$(".toggleMenu").removeClass("active");
+		$(".tab1").css("display","none");
+		$(".Mobile").addClass("active");
+		$(".tab3").css("display","block");
+		
+	}else if("" == "AI"){ //엔젤아이
+		$(".swiper-slide").removeClass("active");
+		$(".toggleMenu").removeClass("active");
+		$(".tab1").css("display","none");
+		$(".AI").addClass("active");
+		$(".tab10").css("display","block");
+		//slideTabSwiper.slideTo(1,500,false);
+	}
+		
+	// 부가서비스 클릭
+	$('.serv_btns .serv_btn').on('click', function(e) {
+	    e.preventDefault()
+	    var index = $(this).parent().index()
+	    $(this).addClass('active').parent().siblings().children(".serv_btn").removeClass('active')
+	    $('.slide_conts > div').eq(index).show()
+	    $('.slide_conts > div').eq(index).siblings().hide()
+	})
+	
+	//엔젤시스템 메인화면 재무회계 팝업레이어에서 문의하기 클릭시
+	if("" == "AT"){
+		window.scrollTo({left:0, top:600, behavior:'smooth'})
+		loginChkAjax('AT');
+	}
+	
+});
+
+//로그인 체크 ajax
+function loginChkAjax(FLAG){
+	$.ajax({
+		url: "/silverangel/support/loginChkAjax.do",
+		dataType: "TEXT",
+		type: "POST",
+		success: function(data){
+			if(data == "error"){
+				alert("로그인 후 이용이 가능합니다.");
+				return;
+			}
+			foodConsultApplyLayer(FLAG); //로그인 확인 후 다음 함수 호출
+		},
+		error: function(e){
+			alert(e);
+		}
+	});
+}
+
+//문의하기
+function foodConsultApplyLayer(FLAG){
+	
+	$.ajax({
+		url: "/silverangel/cprtvCmpny/foodConsultApplyLayer.do",
+        data: {flag : FLAG},
+        type: 'POST',
+        dataType: 'html',
+        success: function(data){
+        	$('#applyerListPop').html(data);
+        },
+        error:function(request,status,error){
+            alert("실패!! 다시한번 시도 해주세요.");
+            return;
+        },
+        complete:function(){
+        	$('.loading').hide();
+        },
+        beforeSend:function(){
+			$('.loading').show();
+        }	        
+	});
+}
+
+</script>
+
+<body>
+    <div class="container">
+        <nav class="lnb">
+            <div class="inner">
+                <ul class="breadcrumb mo">
+                    <li>홈</li>
+                    <li>서비스</li>
+                    <li><a href="/newSilverangel/service/extraService.do">부가서비스</a>
+                        <ul class="drop">
+                            <li><a href="/newSilverangel/service/mainService.do">주요서비스</a></li>
+                            <li><a href="/newSilverangel/service/extraService.do" class="on">부가서비스</a></li>
+                            <li><a href="/newSilverangel/service/businessSupportService.do">업무지원서비스</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="menu pc">
+                    <li style="width: 180px;"><a href="/newSilverangel/service/mainService.do">주요서비스</a></li>
+                    <li style="width: 180px;"><a href="/newSilverangel/service/extraService.do" class="on">부가서비스</a></li>
+                    <li><a href="/newSilverangel/service/businessSupportService.do">업무지원서비스</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="main">
+            <section class="row_section">
+                <div class="section_inner">
+                    <h2 class="sec_tit">부가서비스</h2>
+                    
+                    <div class="btn_tab_wrap">
+                        <ul class="serv_btns">
+                            <li>
+                                <button type="button" class="serv_btn active">편리한 본인부담금 납부(CMS)</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">엔젤 인공지능(AI) 챗봇</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">엔젤 가상현실(VR)</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">모바일(앱) 기록</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">보호자용 앱(굽은나무)</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">태블릿 기록</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">전자결재</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">고위험군 명찰</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">IOT와의 연계</button>
+                            </li>
+                            <li>
+                                <button type="button" class="serv_btn">쇼핑몰</button>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    
+                    <div class="slide_conts">
+
+                        <!-- 편리한 본인부담금 납부(CMS) -->
+                        <div class="tab1">
+                            <h3 class="seperate_tit">본인부담금 자동관리(CMS)</h3>
+                            <p class="exp">
+                                편리한 본인부담금 납부
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                본인부담금, 식사재료비, 의료비(진료약제비) 등 장기요양기관의 이용료를 자동이체, 가상계좌, 카드결제 등 다양한 결제 방법으로 제공하여 <br>수급자 또는 보호자의 선호에 따라 편리하게 납부할 수 있으며 정산된 이용료는 기관 계좌로 자동 입금되는 서비스입니다.
+                            </p>
+
+                            <div class="cms_svc">
+                                <div class="box">
+                                    <h4 class="box_tit"><span>편리한</span> 본인부담금 수납!</h4>
+
+                                    <dl class="info_area type1">
+                                        <dt>
+                                            <p class="info_area_tit">자동이체<br>(CMS)</p>
+                                        </dt>
+                                        <dd>
+                                            <p>보호자의 통장에서 매달 자동이체(CMS)로 수납이 되어 보호자의 경우 본인부담금 납부 여부를 매달 체크할 필요가 없으며 기관의 경우 입금내역에 대해 체크해야하는 번거로움을 덜어줍니다.</p>
+                                        </dd>
+                                    </dl>
+                                    <dl class="info_area type2">
+                                        <dt>
+                                            <p class="info_area_tit">가상계좌</p>
+                                        </dt>
+                                        <dd>
+                                            <p>가상계좌는 가족 중 대표 1인이 부여받고 다른 가족이 입금해도 대표의 이름으로 입금 처리됩니다. </p>
+                                            <p>동명이인 등의 사유로 인해 발생하는 보호자와 입금자의 불일치로 인한 오류를 방지 할 수 있습니다.</p>
+                                            <p>본인이 원하는 은행을 선택하여 가상계좌를 만들기때문에 송금수수료를 줄일수 있습니다.</p>
+                                            <p>통지받은 정확한 금액을 입금해야 입금처리가 되기 때문에 입금오류가 없습니다.</p>
+                                        </dd>
+                                    </dl>
+                                    <dl class="info_area type3">
+                                        <dt>
+                                            <p class="info_area_tit">카드결제</p>
+                                        </dt>
+                                        <dd>
+                                            <p>신용카드에서 매달 자동납부를 설정하여 납부의 번거로움을 줄일 수 있으며 현금이 부담될 때 사용하여  현금 부담감을 줄일 수있습니다.</p>
+                                        </dd>
+                                    </dl>
+
+                                    <div class="img_wrap">
+                                        <img src="../images/img_cms1.png" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="box">
+                                    <h4 class="box_tit">항목별 <span>계좌분리</span> 정산</h4>
+                                    <p class="normal_p txtC c_6a6a6a">
+                                        서비스 이용료에 대해 본인부담금, 식재료비, 의료비 등 항목별로 나누어 <br>분리된 각 통장으로 자동 입금이 되어 계좌별로 정산관리가 편리합니다.
+                                    </p>
+                                    <div class="img_wrap">
+                                        <img src="../images/img_cms2.png" alt="">
+                                    </div>
+                                </div>
+                                <div class="box">
+                                    <h4 class="box_tit"><span>현금영수증</span> 자동 발행</h4>
+                                    <p class="normal_p txtC c_6a6a6a">
+                                        출금 금액에 대한 현금영수증을 자동으로 발행하여 드립니다. <br>* 수급자별 발행 여부 설정이 가능합니다. 
+                                    </p>
+                                </div>
+                                <div class="box">
+                                    <h4 class="box_tit">한눈에 보기 쉬운 <span>재무회계자료</span>와 편리한 <span>재무회계처리</span></h4>
+                                    <p class="normal_p txtC c_6a6a6a">
+                                        계좌를 일일이 정리하지 않아도 한 눈에 보기 쉬운 재무회계자료 형태로 출력되어 외부 감사에 대응이 편리합니다. <br>재무회계처리가 용이하도록 CMS 이용료는 수납금액과 별도로 정산하여 드립니다.
+                                    </p>
+                                </div>
+
+                                <div class="bg_box">
+                                    <div class="bg_area"></div>
+                                    <ul class="svc_list">
+                                        <li>
+                                            <dl class="svc_det">
+                                                <dt>
+                                                    <span class="su_svc"></span>
+                                                    <p>제공서비스</p>
+                                                </dt>
+                                                <dd>
+                                                    <ul class="su_svc_list">
+                                                        <li>
+                                                            <span>자동이체</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>가상계좌</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>카드결제</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>다계좌 정산</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>현금영수증</span>
+                                                        </li>
+                                                    </ul>
+                                                </dd>
+                                            </dl>
+                                        </li>
+                                        <li>
+                                            <dl class="svc_det">
+                                                <dt>
+                                                    <span class="m_type"></span>
+                                                    <p>급여종류</p>
+                                                </dt>
+                                                <dd>
+                                                    노인요양시설, 노인요양공동생활가정, 주야간보호
+                                                </dd>
+                                            </dl>
+                                        </li>
+                                        <li>
+                                            <dl class="svc_det">
+                                                <dt>
+                                                    <span class="u_info"></span>
+                                                    <p>이용안내<span>이용요금은 효성CMS에 납부됩니다.</span></p>
+                                                </dt>
+                                                <dd>
+                                                    <div class="m_item">
+                                                        <div class="m_month">
+                                                            <p>월 이용료 : 30,000원</p>
+                                                            <span>계좌분리 정산 서비스는 효성 CMS 별도문의</span>
+                                                        </div>
+                                                        <div class="m_day">
+                                                            <p class="m_day_tit">건별 이용료</p>
+                                                            <ul class="m_day_list">
+                                                                <li>자동이체 : 250원/1 건</li>
+                                                                <li>가상계좌 : 300원/1 건</li>
+                                                                <li>카드결제 : 별도문의</li>
+                                                                <li>(영세, 중소, 소상공인 우대수수료 적용)</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </dd>
+                                            </dl>
+                                        </li>
+                                        <li>
+                                            <dl class="svc_det">
+                                                <dt>
+                                                    <span class="h_reg"></span>
+                                                    <p>신청방법</p>
+                                                </dt>
+                                                <dd>
+                                                    <div class="h_reg_box">
+                                                        <img src="../images/bg_svc_how.png" alt="">
+
+                                                        <ul class="h_reg_step">
+                                                            <li>
+                                                                <p>신청하기</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>가입안내전화<span>효성 CMS 담당자</span></p>
+                                                            </li>
+                                                            <li>
+                                                                <p>가입완료</p>
+                                                            </li>
+                                                            <li>
+                                                                <p>서비스이용<span>효성 CMS 연동정보 입력 필수</span></p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </dd>
+                                            </dl>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="box_end" style="padding-top: 0px;">
+<!--                                     <div class="btn_area"> -->
+<!--                                         <a href="https://newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS" onclick="window.open(this.href, '_blank', 'width=885, height=885'); return false;" class="go_svc">서비스 신청하기</a> -->
+<!--                                     </div> -->
+                                    <div class="svc_info">
+                                        <a href="/silverangel/support/faq/list.do?cate_no_select1=35000" class="svc_qna" target="_blank">서비스 관련 자주 묻는 질문과 답</a>
+                                        <p class="svc_tel">서비스 가입 문의 : <span>1600-6859</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 인공지능상담 엔젤아이 -->
+                        <div class="tab10">
+                            <h3 class="seperate_tit">인공지능상담 엔젤아이</h3>
+                            <p class="exp">
+                                실제 엔젤아이 활용화면
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                엔젤 전용 인공지능(AI)이 시간제약 없이 24시간 응답 서비스로 여러분을 지원합니다. <br>
+                                스마트폰, PC 등 엔젤시스템에 접속하여 시간, 장소에 제약없이 질문 할 수 있습니다.
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_01.jpg" alt="">
+                                <img src="/newSilverangel/images/service2_01_02.jpg" alt="">
+                            </div>
+                            <p class="exp">
+                                엔젤아이의 장점!
+                            </p>
+                            <div class="txtC">
+                                <p class="normal_p txtL c_6a6a6a dib">
+                                	<font color="red">첫째!</font> 딥러닝을 마친 인공지능으로 기관의 활용도가 높을수록 스스로 학습하여 더욱 정확한 답변을 받을 수 있습니다.<br>
+									<font color="red">둘째!</font> 평가매뉴얼과 엔젤시스템 사용법 관련 PDF 등을 다운받아 보실 수 있습니다.<br>
+									<font color="red">셋째!</font> 24시간 상담을 지원하여 시간과 장소에 제약없이 실시간으로 궁금증을 해소할 수 있습니다.<br>
+									<font color="red">넷째!</font> 자동완성 기능으로 단어 하나만 입력해도 관련 답변을 모두 확인할 수 있습니다.<br>
+									<font color="red">다섯째!</font> PC 및 모바일에서의 가독성을 높이기 위해 개인별로 글씨 크기를 조절하는 기능을 제공합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 가상현실(VR) -->
+                        <div class="tab2">
+                            <h3 class="seperate_tit">엔젤 VR(가상현실 여행 프로그램)</h3>
+                            <p class="exp">
+                                국내최초 엔젤 VR 컨텐츠 론칭
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                엔젤 VR은 가상현실기술을 적용한 여행프로그램입니다. 정서적 안정으로 우울감이 감소하며 인지기능 향상으로 치매예방 및 치매완화를 목적으로 합니다. <br>
+                                외출이 자유롭지 못한 어르신이 마치 외출한 듯한 효과로 심리적, 정서적 안정과 많은 사람들과 경치를 둘러봄으로써 우울감을 낮춰 줄 수 있습니다. <br>
+                                또한 과거의 기억을 되살리는 계기가 될 수 있고 진행자와 대화를 자유스럽게 할 수 있으며 대화내용을 분석하면 <br>
+                                해당 어르신의 프로그램(인지기능프로그램 등)에 반영할 수있습니다.   
+                            </p>
+                            <p class="exp red">
+                                국내 최초 요양원 VR시스템 도입! <br>
+                                전국의 관광명소를 VR로 간접 체험! <br>
+                                심리적, 정서적 안정 및 우울감 감소 효과!
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_02.jpg" alt="">
+                            </div>
+                        </div>
+
+                        <!-- 모바일 앱 기록 -->
+                        <div class="tab3">
+                            <h3 class="seperate_tit">모바일 앱 기록</h3>
+                            <p class="exp">
+                                터치스크린기록 모바일(시설/데이케어)
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                서비스 제공 후 모바일로 신속 정확하게 기록할 수 있습니다. <br>
+                                스마트폰을 이용한 편리한 기록
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_03_1.jpg" alt="">
+                            </div>
+                            <ul class="program_list">
+                                <li>
+                                    <div>
+                                        <span style="margin: 0;">구글 플레이 스토어</span> 
+                                    </div>
+                                    <div>
+		                                <img src="/newSilverangel/images/playstore.png" alt="" class="store" onclick="javascript:location.href='http://play.google.com/store/apps/details?id=lcms.or.kr.angel'">
+		                                <img src="/newSilverangel/images/angel_android.png" alt="" class="qrcode">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div><span style="margin: 0;">앱 스토어</span></div>
+                                    <div>
+		                                <img src="/newSilverangel/images/appstore.png" alt="" class="store" onclick="javascript:location.href='https://apps.apple.com/kr/app/lcms-%EC%97%94%EC%A0%A4%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%85%B8%EC%9D%B8%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91-%ED%86%B5%ED%95%A9%EC%82%AC%EB%A1%80%EA%B4%80%EB%A6%AC%EC%8B%9C%EC%8A%A4%ED%85%9C/id1540218312'">
+		                                <img src="/newSilverangel/images/angel_apple.png" alt="" class="qrcode">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 보호자용 앱(굽은나무) -->
+                        <div class="tab4">
+                            <h3 class="seperate_tit">보호자용 앱(굽은나무)</h3>
+                            <p class="exp">
+                                보호자 정보제공용 굽은나무 앱 활용
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                굽은나무 앱을 통해서 보호자의 알 권리 충족을 위한 정보제공을 편리하게 수행 <br>
+                                시설에서 기록한 급여제공계획서, 급여제공기록지, 장기요양급여비용명세서, 어르신앨범, 식단표, 간호기록, 재활일지, <br>
+                                프로그램일지 등의 각종 자료를 별도의 작업 없이 자동으로 연계하여 보호자에게 제공가능 <br>
+                                알림장 기능으로 전체 공지사항 및 개별공지사항 작성, 양방향 서비스로 보호자와의 소통이 실시간으로 가능
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_04_1.jpg" alt="">
+                            </div>
+                            <ul class="program_list">
+                                <li>
+                                    <div>
+                                        <span style="margin: 0;">구글 플레이 스토어</span> 
+                                    </div>
+                                    <div>
+		                                <img src="/newSilverangel/images/playstore.png" alt="" class="store" onclick="javascript:location.href='http://play.google.com/store/apps/details?id=kr.or.mgbtree'">
+		                                <img src="/newSilverangel/images/gb_android.png" alt="" class="qrcode">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div><span style="margin: 0;">앱 스토어</span></div>
+                                    <div>
+		                                <img src="/newSilverangel/images/appstore.png" alt="" class="store" onclick="javascript:location.href='https://apps.apple.com/kr/app/%EA%B5%BD%EC%9D%80%EB%82%98%EB%AC%B4-lcms-%EC%97%94%EC%A0%A4%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%B3%B4%ED%98%B8%EC%9E%90%EC%9A%A9-%EC%95%B1/id1508947627'">
+		                                <img src="/newSilverangel/images/gb_apple.png" alt="" class="qrcode">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 태블릿 기록 -->
+                        <div class="tab5">
+                            <h3 class="seperate_tit">태블릿 기록</h3>
+                            <p class="exp">
+                                터치스크린기록 모바일(시설/데이케어)
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                서비스 제공 후 모바일로 신속 정확하게 기록할 수 있습니다. <br>
+                                태블릿PC를 이용한 편리한 기록
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_05_1.jpg" alt="">
+                            </div>
+                            
+                        </div>
+                        
+                        <!-- 전자결재 -->
+                        <div class="tab6">
+                            <h3 class="seperate_tit">전자결재</h3>
+                            <p class="exp">
+                                전자결재, 가정통신문, 법정서식 적용
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                보호자동의 전자서명, 서명&결재일시 자동연계, 작성자 전자서명, 모든 서류는 전자결재
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_06_1.jpg" alt="">
+                            </div>
+                            <div class="apprBanner">
+                        		<iframe width="100%" height="331" src="https://www.youtube.com/embed/tWorVM8pWXQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    		</div>
+                            <p class="exp">
+                                가정통신문 / 급여비용 명세서
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                LCMS-엔젤시스템에서만 가능한 가정통신문, 각종 안내장 만들기 <br>
+                                가정통신문, 급여비용 명세서, 급여제공 기록지(법정서식), 납부확인서 이메일 발송 <br>
+                                SMS 안내하기 - 매월 본인부담금 납부, 어르신이 참여한 프로그램, 어르신의 바이탈 사인 및 건강상태, 어르신에게 제공한 물리치료 안내 등
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_06_2.jpg" alt="">
+                            </div>
+                            
+                        </div>
+
+                        <!-- 고위험군 명찰 -->
+                        <div class="tab7">
+                            <h3 class="seperate_tit">고위험군 명찰</h3>
+                            <p class="exp">
+                                체위변경표 관리 및 고위험군 침상명찰 출력
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                욕창, 낙상 위험점수와 연계되어 손쉽게 명찰출력이 가능합니다. <br>
+                                급여제공계획 수립 시 체위변경 항목이 수립된 어르신이 체위변경표 목록에 조회됩니다.
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_07_1.jpg" alt="">
+                            </div>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_07_2.jpg" alt="">
+                            </div>
+                            <p class="normal_p txtC c_6a6a6a">
+                                출력하여 침상에 부착, 어르신의 상태를 한 눈에 확인!
+                            </p>
+                        </div>
+
+                        <!-- IoT기술 -->
+                        <div class="tab8">
+                            <h3 class="seperate_tit">IoT기술</h3>
+                            <p class="exp">
+                                IoT를 활용한 대소변 자동기록
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                기저귀 교환시점 자동알림, 교환 시 자동 기록되어 업무 효율성이 극대화됩니다. <br>
+                                매일 어르신의 혈압, 맥박, 호흡 등을 자동으로 엔젤시스템에 기록할 수 있습니다. <br>
+                                외부 출입이 부담스러운 요즘 엔젤만의 특화 서비스 VR로 프로그램을 제공할 수 있습니다. 
+                            </p>
+                            <ul class="program_list">
+                                <li>
+                                    <div>
+                                        <span>Wearable IoT와의 연계 </span> 
+                                    </div>
+                                    <div>
+                                        <strong>배변배뇨 자동기록(스마트 기저귀)</strong>
+                                        <img src="/newSilverangel/images/service2_08_1.jpg" alt="">
+                                        <p class="normal_p c_555 txtL">
+                                            스마트 기저귀를 착용한 어르신의 대소변을 감지
+                                            하고 종사자에게 알려주며 기저귀를 교환하면
+                                            자동으로 엔젤시스템에 기록할 수 있습니다.<br>
+                                            대소변 기록은 발생 즉시 제공해야하는 서비스로
+                                            스마트 기저귀를 활용하면 정확하고 간편한 
+                                            방법으로 기록이 가능합니다.
+                                        </p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div><span>Wearable IoT와의 연계 </span></div>
+                                    <div>
+                                        <strong>바이탈 사인 자동기록</strong>
+                                        <img src="/newSilverangel/images/service2_08_2.jpg" alt="">
+                                        <p class="normal_p c_555 txtL">
+                                            한전KDN(주)헬스밴드(Health Band)에서 측정
+                                            하는 체온, 맥박, 산소포화도, 동작인식 등의 데이터를 
+                                            엔젤시스템과 연계하여 건강관리 기록부
+                                            화면에 자동으로 기록됩니다.<br>간호(조무)사는 
+                                            별도 측정시간 없이 어르신 상태를 확인할 수 있어
+                                            정확한 서비스 제공이 가능합니다.
+                                        </p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div><span>가상현실(VR)피트니스 </span> </div>
+                                    <div> 
+                                        <strong>인지 및 운동능력 향상을 위한 첨단 기술</strong>
+                                        <img src="/newSilverangel/images/service2_08_3.jpg" alt="">
+                                        <p class="normal_p c_555 txtL">
+                                            최첨단 가상현실(VR) 영상과 동작인식 기술을 융
+                                            합하여 가상현실에서 자전거를 타거나 보트를 저어
+                                            이동하거나 등산을 하는 등 인지력 향상과 운동
+                                            효과를 기대할 수있습니다. (인지기능 프로그램 및
+                                            운동프로그램으로 활용) 
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 쇼핑몰 -->
+                        <div class="tab9">
+                            <h3 class="seperate_tit">쇼핑몰</h3>
+                            <p class="exp">
+                                엔젤쇼핑몰
+                            </p>
+                            <p class="normal_p txtC c_6a6a6a">
+                                노인요양시설에서 사용하는 다양한 제품들을 손쉽게 구입할 수 있는 요양시설 종사자 전문 쇼핑몰 입니다.<br>
+                                좋음 품질, 저렴한 가격, 빠른배송을 약속합니다.
+                            </p>
+                            <div class="img_wrap">
+                                <img src="/newSilverangel/images/service2_09_1.jpg" alt="">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+  <div id="applyerListPop"></div>
+</body>
+	
+
+<script type="text/javascript">
+
+//엔젤아이
+function angelChatBot(){
+
+	var myWindow = window.open('','title', 'width=450, height=720, menubar=no, status=no, toolbar=no');
+	if("" != ""){
+		myWindow.location.href = 'http://gnew-office.tplinkdns.com:48081/chatbot/angel-system?login=y';
+	}else{
+		myWindow.location.href = 'http://gnew-office.tplinkdns.com:48081/chatbot/angel-system?login=n';
+	}
+}
+
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFHQQNPD3E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BFHQQNPD3E');
+</script>
+<footer class="footer">
+    <div class="link">
+        <div class="inner" style="max-width: 1330px;">
+            <a href="/download.do?dwnFile=20240822 엔젤시스템 e-카달로그.pdf" download>e-카달로그</a>
+            
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf" download>평가지표(주야간)</a>
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator.pdf" download>평가지표(시설)</a>
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator(gong).pdf" download>평가지표(9인)</a>
+            <a href="/silverangel/publicize/partner.do">파트너</a>
+            <a href="/silverangel/companyinfo/map.do">오시는 길</a>
+            <a href="https://helpu.kr/uniforce/" target="_new">원격지원</a>
+            <a href="https://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EA%B8%89%EC%97%AC%20%EC%A0%9C%EA%B3%B5%EA%B8%B0%EC%A4%80%20%EB%B0%8F%20%EA%B8%89%EC%97%AC%EB%B9%84%EC%9A%A9%20%EC%82%B0%EC%A0%95%EB%B0%A9%EB%B2%95%20%EB%93%B1%EC%97%90%20%EA%B4%80%ED%95%9C%20%EA%B3%A0%EC%8B%9C" target="_new">장기요양급여 고시</a>
+            <a href="/silverangel/companyinfo/termsUse.do">이용약관</a>
+            <a href="/silverangel/companyinfo/sms_service.do">문자서비스 이용약관</a>
+            <a href="/silverangel/companyinfo/privacyPolicy.do" class="privacy">개인정보처리방침</a>
+            
+	            
+	            
+	            	<a href="/silverangel/cprtvCmpny/cprtvCmpnyLogin.do" onclick="window.open(this.href, '_blank', 'width=480, height=300'); return false;">협력업체</a>
+	            
+            
+
+        </div>
+    </div>
+    <div class="copy">
+        <div class="inner">
+	        <!-- <img src="https://yeorcqadlpopsmgaoudu.supabase.co/storage/v1/object/public/certification/mark/7600bc36-d377-4a22-a581-a0f9e20a3a67/37986dad-1bfc-47fa-8d1b-ac8449f85505-2025-09-18T02:54:30.456Z" style="cursor: pointer; width: 85px; height: 75px; margin-right: 15px;" onclick="(function(){window.open('https://cleanspam.or.kr/ci/852','_blank','width=800, height=1151, toolbar=no, menubar=no, scrollbars=no, resizable=no')})()" /> -->
+            <a href=""><span class="blind">주식회사 엔젤시스템</span></a>
+            <address>인천광역시 부평구 부평대로 293, 717호 (청천동, 부평테크시티) 전화 : 032-277-9797 이메일 : angelpost@naver.com<br>
+            대표자 : 정성훈 사업자번호 : 122-86-14661 통신판매면허번호 : 제 2011-인천부평-00326호 <br>
+                COPYRIGHTⓒ 2011 엔젤시스템. ALL RIGHTS RESERVED.</address>
+        </div>
+    </div>
+
+	<div class="floating">
+		
+<!-- 		<a href="/silverangel/support/edu_apply/write.do">도입문의</a>
+		<a onclick="angelChatBot();" style = "cursor: pointer;">엔젤아이</a>
+		<a href="https://www.silverangel.co.kr/">엔젤<br>쇼핑몰</a> -->
+
+		<a href="https://www.lcms.or.kr/" target="_blank" style="background: #5896f0;"><img src="/newSilverangel/images/angel_introduction_lcms.png"></a>
+		<a href="/silverangel/support/edu_apply/write.do"><img src="/newSilverangel/images/angel_introduction.png"></a>
+
+		<a href="https://www.silverangel.co.kr/"><img src="/newSilverangel/images/angel_shop.png"></a>
+
+	</div>
+</footer>
+
+<script src="/newSilverangel/js/swiper.js"></script>
+<script src="/newSilverangel/js/common.js"></script>
+
+
+</html>

@@ -1,0 +1,189 @@
+BNK-527 — ogada git 실측 6–8h · 320차 Backbone Cross-walk
+─────────────────────────────────────────────────────────────────────────────
+조사일: 2026-06-22T22:55Z
+rotation: ogada git 실측 (6–8h) — develop HEAD 재산정·KPI re-baseline·
+          backbone 320차 zero drift·SOLAPI placeholder readiness deepen.
+
+──────────────────────────────────────────────────────────────────────────────
+[A] 양쪽 SUBMODULE develop HEAD 실측
+──────────────────────────────────────────────────────────────────────────────
+
+FE develop = 8434435a0a266c616de533082d175033c4a73554
+  (BNK-526 80613c3 → HEAD +1)
+  └─ 8434435 fix(v1.2.1/QA-B255): align annual leave page title with pilot Must-page check
+        Author: jwj3400 · 2026-06-22 22:26:38 +0000
+        Files: 2 modified · +2/-2L
+          src/pages/StaffAnnualLeavePage.jsx               (1+/1−)
+          src/pages/pilotPageFlows.test.jsx                (1+/1−)
+        Diff verbatim:
+          - <AppShell title="직원 연차휴가 (US-R03e)">
+          + <AppShell title="직원 연차휴가">
+          (pilotPageFlows row 3096: ["/staff/annual-leaves", "직원 연차휴가"]
+           — pilot Must-page 검사가 정확한 heading "직원 연차휴가" 를 요구)
+        의미: BNK-526 에서 신규 wire 된 G-STAFF-ANNUAL-LEAVE page title 의
+              " (US-R03e)" suffix 가 tester pilot Must-page 검사를 깨뜨려
+              QA-20260622-B255 로 raise → 1-cycle closure. 신규 test 파일 0건.
+
+BE develop = 19ffa840d0d2113fd7d74844063d5aa2e9eaccb1
+  (BNK-526 6b35fb5 → HEAD +1)
+  └─ 19ffa84 fix(v2/j03): reject placeholder solapi values in readiness checks
+        Author: jwj3400 · 2026-06-22 22:56:54 +0000
+        Files: 4 modified · +101/-13L
+          src/main/java/com/ogada/backend/notification/config/
+            NotificationConfig.java                        (27+/5−)
+          src/main/java/com/ogada/backend/notification/domain/
+            NotificationChannelReadinessService.java       (26+/8−)
+          src/test/java/com/ogada/backend/notification/config/
+            NotificationConfigTest.java                    (15+/0−)
+          src/test/java/com/ogada/backend/notification/domain/
+            NotificationChannelReadinessServiceTest.java   (33+/0−)
+
+WT 상태: BE 양쪽 CLEAN · FE 양쪽 CLEAN.
+brand new test files: 0 · 기존 file deepen by @Test 추가만.
+
+──────────────────────────────────────────────────────────────────────────────
+[B] BE j03 SOLAPI placeholder rejection — block verbatim (역공학 cross-walk)
+──────────────────────────────────────────────────────────────────────────────
+
+신규 상수:
+    private static final List<String> SOLAPI_PLACEHOLDER_MARKERS = List.of(
+            "stub",
+            "default",
+            "placeholder",
+            "change-me",
+            "changeme",
+            "replace-me"
+    );
+
+신규 가드 메서드 (양쪽 클래스 동일 시그니처):
+    private boolean isLiveConfigured(String value) {
+        if (value == null || value.isBlank()) {
+            return false;
+        }
+        String normalized = value.trim().toLowerCase();
+        for (String marker : SOLAPI_PLACEHOLDER_MARKERS) {
+            if (normalized.equals(marker) || normalized.contains(marker)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+NotificationConfig.validateSolapiConfiguration(...) 4 곳 isBlank() → isLiveConfigured() 교체:
+    api-key · api-secret · sender-id · kakao-pf-id
+  + resolveTemplateId 비교에 isLiveConfigured 추가 (placeholder 템플릿 ID 거부).
+
+NotificationChannelReadinessService.getChannelStatus() 변경:
+  · apiKey/apiSecret/senderId/kakaoPfId 4-필드 readiness 가드 강화
+  · solapiMode 계산식 변경:
+      −  boolean solapiMode = notificationProperties.isSolapiEnabled();
+      +  boolean solapiMode = "solapi".equalsIgnoreCase(notificationProperties.getProvider());
+    (placeholder credentials 에도 isSolapiEnabled() 가 true 를 리턴할 수 있던 회귀 차단)
+  · isTemplateConfigured(...) 도 isLiveConfigured() 사용
+
+신규 테스트 (재발 방지) — 4 @Test:
+  NotificationConfigTest:
+    · solapiMessageClientFailsWhenApiKeyUsesPlaceholderValue (api-key="stub")
+    · solapiMessageClientFailsWhenTemplateIdsUsePlaceholders (templateId=internalCode)
+  NotificationChannelReadinessServiceTest:
+    · placeholderTemplateMappingShouldRemainNotReady
+    · placeholderSolapiCredentialsShouldRemainNotReady
+       (apiKey=stub·apiSecret=default·senderId=placeholder·kakaoPfId=change-me
+        → liveAlimtalkDispatchReady=false
+        + missingSolapiConfigKeys = [SOLAPI_API_KEY, SOLAPI_API_SECRET,
+                                      SOLAPI_SENDER_ID, KAKAO_PF_ID]
+        + readinessBlockers contains MISSING_SOLAPI_CONFIG)
+
+──────────────────────────────────────────────────────────────────────────────
+[C] KPI 정본 carry — re-baselining
+──────────────────────────────────────────────────────────────────────────────
+
+  · 111 Route (110 `<Route\b` + 1 `<Routes>` wrapper) ........ carry BNK-526
+  · 89  *Page.jsx (+RootRedirect = 90 total)              ... carry BNK-526
+  · V1–V172  contiguous (latest: V172__staff_annual_leave_yearly_us_r03e.sql)
+  · BE Test 244 files (carry · 신규 test 파일 0 · 2 file deepen +48L tests)
+  · FE test 447 files (182 `.test.js` + 265 `.test.jsx` · 신규 0 · 1 file deepen)
+  · 모듈 78.79% (22.85/29 entries · `competitorModuleCoverage.js` 미변경)
+  · BE ahead vs origin/test (598d108) ........... 522 commits (BNK-526 521 + 1)
+  · FE ahead vs origin/test (ab4de83) ............. 175 commits (BNK-526 174 + 1)
+  · merge gate ............. 697  (BNK-526 695 + 2 = FE+1·BE+1)
+
+폐기 SHA 재checkout 0건. .agents/workspace_baseline.yaml 의 BNK-516 SHA(d361833/df9ec6c)
+보다 현재 git HEAD(19ffa84/8434435)가 우선 — rules.md §6 Baseline.
+
+──────────────────────────────────────────────────────────────────────────────
+[D] 백본 320차 재실측 — live HTTP 200 = on-disk md5 IDENTICAL
+──────────────────────────────────────────────────────────────────────────────
+
+URL                                                       HTTP  SIZE     md5         판정
+─────────────────────────────────────────────────────────────────────────────────────────
+NHIS #44 joHistoryContent (러-1~4 본문)                    200   7,572   c886ff1f    320차 IDENTICAL
+ezCare top-nav-item-V2.js?20260428                         200  25,470   95286775    320차 IDENTICAL
+silverangel mainService.do (CMS 본인부담금 자동이체)        200  59,002   bcf6df41    320차 IDENTICAL
+silverangel extraService.do (CMS 5-method+LCMS)            200  81,637   f9c5d877    320차 IDENTICAL
+
+──────────────────────────────────────────────────────────────────────────────
+[E] LIVE DOWN — carefor func.php (carry 「미확인」)
+──────────────────────────────────────────────────────────────────────────────
+
+URL: https://daycare.carefor.co.kr/func.php
+재실측 1: curl --max-time 15            → exit 28 (Connection timed out 15s)
+재실측 2: curl --max-time 30            → exit 28 (Connection timed out 30s)
+재실측 3: curl --max-time 20 -A Chrome  → exit 28 (Connection timed out 20s)
+판정: live unreachable from agent runtime · on-disk `6226e6eb`(98,328B) carry.
+      BNK-517 동일 패턴(LIVE DOWN) 재발 — carefor daycare 서브도메인 게이트/이전
+      가능성 「가정」 carry. 덮어쓰기 0 · 「미확인」 1건.
+
+──────────────────────────────────────────────────────────────────────────────
+[F] competitor cross-walk — SOLAPI placeholder 가드 ↔ 경쟁사
+──────────────────────────────────────────────────────────────────────────────
+
+본 readiness 가드(공개 stub/default/placeholder/change-me/changeme/replace-me 6-marker
+거부)는 ogada 의 운영자 UI(notification channel status) 가 자가 진단하여 라이브
+알림 dispatch ready 가 거짓-양성이 되지 않도록 한다.
+
+  · 케어포   : func.php 모듈 10 (부가서비스 SMS/알림) 공개 메뉴만 노출. credential
+              readiness self-diagnostic 노출 0 (「가정」 — admin internal 가능성 carry).
+  · 이지케어 : ERP `[/new.ez]` 10-module nav 에 「알림톡 관리」 노출이나 readiness
+              blockers 공개 카탈로그 0. FAQ rowid 검색 0.
+  · 엔젤시스템: silverangel system_feature `c9507190` 「알림서비스」 정적·평가 지표 #27
+              보호자회의 verbatim·readiness blockers 메뉴 0.
+  · 롱텀(공단): 알림톡 N/A.
+
+판정: ogada 차별화 우위(`liveAlimtalkDispatchReady=false` + `readinessBlockers`
+      explicit list = MISSING_SOLAPI_CONFIG / MISSING_TEMPLATE_MAPPING / SMTP_FAILURE …).
+      module 10 (부가서비스 SMS·알림) 0.5 coverage 유지 — 본 사이클은 readiness
+      품질 보강 deepen 만, 모듈 추가 KPI 없음.
+
+──────────────────────────────────────────────────────────────────────────────
+[G] 가정 번복·갭·candidate 변동
+──────────────────────────────────────────────────────────────────────────────
+
+가정 번복            : 0
+신규 core 갭          : 0
+신규 candidate        : 0
+candidate 상태 변경   : 0  (G-STAFF-ANNUAL-LEAVE ✅ closure deepen 만·BNK-521 carry)
+상태 변경             : 1  (FE +1·BE +1·merge 695→697)
+미확인               : 1 carry (carefor func.php LIVE DOWN — BNK-517 패턴 재발)
+신규 snapshot 파일    : 1  (본 extract)
+덮어쓰기              : 0
+엑셀 포맷 변경        : 0
+per-cycle minimum     : 4종 충족
+                       ① 신규/재실측 증거 URL 1건+ ✅ (백본 4-URL 320차 + 본 extract)
+                       ② 메뉴/필드/워크플로 1블록+ ✅ ([B] j03 placeholder block)
+                       ③ COMPETITOR_MATRIX 1행+ @HEAD 갱신 ✅ (별도 갱신)
+                       ④ BENCHMARK_REPORT §527 신규 소절 1건+ ✅ (별도 추가)
+
+──────────────────────────────────────────────────────────────────────────────
+[H] planner P0/P1/P2/P3 carry — 본 사이클 변동
+──────────────────────────────────────────────────────────────────────────────
+
+P0  · merge gate 697 — operation BLOCK 한정: QA-B116 origin/test push pending carry.
+P0  · v1.3-B TSP FE wire (BNK-214 carry) — 「자동 제안 → hq_admin 수동(DRAFT) →
+       확정」 UX carry, 본 사이클 변동 0.
+P1  · G-STAFF-ANNUAL-LEAVE FE/BE 검증 deepen 완결 — QA-B255 title 정합 closure.
+P1  · J03 SOLAPI readiness placeholder 가드 (✅ 본 사이클 closure) — 운영 launch
+       전 admin Notification readiness UI false-positive 차단 (planner 결정 23-A 강화).
+P2  · L03 잔여 6 leaf · G-ONBOARD-SUPPORT carry.
+P3  · G-STAFF-COUNSEL · G18-SHORT-PILOT · G41-COG-REFRESHER · G-GUARDIAN-MEETING ·
+       #44(P0 ✅) carry.

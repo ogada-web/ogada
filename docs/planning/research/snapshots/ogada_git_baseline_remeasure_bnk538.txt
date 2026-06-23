@@ -1,0 +1,61 @@
+BNK-538 — ogada git 실측 6–8h · baseline re-measurement + 백본 2-URL live=on-disk zero drift
+====================================================================================
+조사일: 2026-06-23T06:05Z | rotation: ogada git 실측 (6–8h) | owner: BNK | audience: PLN
+
+[1] ogada submodule develop HEAD (실측)
+--------------------------------------------------------------------------------
+$ git -C src/frontend rev-parse --short develop
+  → 2040571  (BNK-537 carry · HEAD zero advance)
+$ git -C src/frontend log -1 --oneline develop
+  → 2040571 feat(v1.2.1/US-R01): add reverse HR cross-links on staff attendance page
+$ git -C src/frontend status -sb
+  → ## develop...origin/develop   (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop
+  → 183
+
+$ git -C src/backend rev-parse --short develop
+  → 6ab3760  (BNK-537 carry · HEAD zero advance)
+$ git -C src/backend log -1 --oneline develop
+  → 6ab3760 feat(v2/US-R03e): expose leave-ledger cross-links in yearly responses
+$ git -C src/backend status -sb
+  → ## develop...origin/develop   (WT CLEAN)
+$ git -C src/backend rev-list --count origin/test..develop
+  → 525
+
+merge gate = 183 (FE) + 525 (BE) = 708   (BNK-537 carry · stable · tester FF merge 708 대기)
+
+[2] ogada KPI 재산정 (실측)
+--------------------------------------------------------------------------------
+Route        : 111  (App.jsx grep -cE "path=" = 110  +  1 "<Routes>" wrapper)
+*Page.jsx    : 89   (find src -name "*Page.jsx" | wc -l)  (+ RootRedirect = 90)
+Flyway V     : V1–V173  (find -name "V*__*.sql" = 173 · 최신 V173__staff_annual_leave_yearly_integrity_us_r)
+BE Test 파일 : 246  (find src/test -name "*Test.java")  · @Test method 1,811
+FE test 파일 : 449  (183 *.test.js + 266 *.test.jsx)
+모듈 커버    : 78.79%  (competitorModuleCoverage.js total/length = 22.85/29 · 파일 미변경 carry)
+
+→ BNK-537 대비 전 지표 ZERO ADVANCE (양쪽 develop HEAD 정지 · 양쪽 WT CLEAN).
+  ~33분간(BNK-537 05:32 → BNK-538 06:05) 양쪽 submodule develop 정지.
+
+[3] 백본 2-URL live 재실측 — live HTTP 200 = on-disk md5 IDENTICAL (zero drift)
+--------------------------------------------------------------------------------
+NHIS #44 이동서비스비 joHistory (법령 canonical):
+  URL  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  live HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  on-disk nhis_jo44.html      · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba   → IDENTICAL
+  내용: 러-1~4 등급별 단가 · 편도 50% · 1일 1회 · ④ 이동서비스 일지(별지 제22호) 의무 verbatim 불변
+  ↔ ogada TransportServiceFeeService 5/5 ✅ parity/우위 (PLAN_NOTES #44 1차 확인 재입증)
+
+ezCare top-nav-item-V2.js (10-module·51-PGID nav 정본):
+  URL  https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428
+  live HTTP 200 · 25,470B · md5 95286775000f06c8ad13688fcb0d6dbb
+  on-disk ezcare_top_nav_v2.js · md5 95286775000f06c8ad13688fcb0d6dbb  → IDENTICAL
+
+→ 덮어쓰기 0건 (zero drift) · 엑셀 포맷 변경 0건.
+
+[4] 사이클 요약
+--------------------------------------------------------------------------------
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0
+상태 변경 0 (HEAD zero advance · 양쪽 WT CLEAN · merge gate 708 carry)
+미확인 0 · 신규 snapshot 1건(본 extract) · 덮어쓰기 0건 · 엑셀 포맷 변경 0건
+per-cycle minimum: 신규/재실측 증거 URL 2건(NHIS#44·top-nav-V2 재실측) · 워크플로 1블록(ogada git KPI) ·
+                   COMPETITOR_MATRIX 1행+ @HEAD 갱신 · BENCHMARK_REPORT §538 소절 — 4종 충족.

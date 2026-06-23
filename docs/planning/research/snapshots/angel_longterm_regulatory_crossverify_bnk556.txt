@@ -1,0 +1,66 @@
+# BNK-556 엔젤·롱텀·규제 4–6h 역공학 extract
+
+**조사일**: 2026-06-23T18:14:05Z | **rotation**: 엔젤·롱텀·규제 — silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 1차 재확인(PLAN_NOTES #44) + 2026 수가·평가 #27·단기보호·통합재가 교차검증.
+
+## ogada git 실측 (@develop)
+
+| 항목 | 실측 |
+| --- | --- |
+| FE HEAD | `64584f4 fix(v3/us-r01-c): preserve API-resolved branch scope metadata in HR leave views` |
+| BE HEAD | `c4e6bcb feat(v3/US-R01-c): add V175 leave ledger integrity and harden dev isolation` |
+| WT | FE 66 dirty / BE 6 dirty |
+| ahead | FE `origin/test..develop` 191 / BE 532 → merge gate **723** |
+| surface KPI | 112 Route(111 `<Route\b` + 1 `<Routes>`) · 90 `*Page.jsx`(+RootRedirect=91) · V1–V175 · BE `*Test.java` 251 · `@Test` 1,833 · FE test 463(190 `.test.js` + 273 `.test.jsx`) |
+
+## live URL 재실측
+
+| URL | HTTP | size | md5 | 판정 |
+| --- | ---: | ---: | --- | --- |
+| silverangel daycareEssentialWork | 200 | 131,664B | `c79c1be3` | IDENTICAL · 평가 #27 carry |
+| silverangel extraService | 200 | 81,637B | `f9c5d877` | IDENTICAL · CMS 5-method/요금 carry |
+| lcms root | 200 | 50,740B | `c0c66076` | **DRIFT** `6c0d22b4`→type1 디자인 샘플 역회전 |
+| NHIS joHistory #44 | 200 | 7,572B | `c886ff1f` | IDENTICAL · 러-1~4·편도50%·1일1회·일지④ |
+| law.go.kr 제2025-247호 | 200 | 78,450B | `f87e1858` | **DRIFT** cachebuster-only · `?Time=1782238423` |
+| MOHW 2026-126 | 200 | 109,510B | `eda74c3c` | **DRIFT** counter-only · 조회수 2,510 |
+| longterm 502 | 200 | 105,552B | `b5aee8c1` | **NEW live canonical** · 단기보호 74,060 직접 확인 |
+| longterm 503 | 200 | 422B | `d3c90b33` | NEW refreshedException gate |
+| longterm 610 | 200 | 91,421B | `0ea575be` | **NEW 통합재가 partial shell** · 월 10만원·제공기관 조건 직접 확인 |
+
+## 메뉴·필드·워크플로 상세
+
+### 엔젤 CMS 부가서비스 (확인)
+
+- URL: https://www.silverangel.kr/newSilverangel/service/extraService.do · HTTP 200 · 조사일 2026-06-23.
+- 메뉴/탭: `편리한 본인부담금 납부(CMS)` → `본인부담금 자동관리(CMS)`.
+- 필드/요금 힌트: 자동이체(CMS), 가상계좌, 카드결제, 계좌분리 정산, 재무회계자료 출력, 효성 CMS 연동정보 입력.
+- 인용: “본인부담금, 식사재료비, 의료비(진료약제비) 등 장기요양기관의 이용료를 자동이체, 가상계좌, 카드결제 등 다양한 결제 방법으로 제공”, “월 이용료 : 30,000원”, “자동이체 : 250원/1 건”, “가상계좌 : 300원/1 건”.
+- ogada 대비: `BillingCmsEnrollmentService`는 외부 효성CMS 연동정보 입력 의존 없이 자체 enrollment DB + 지점 로스터 + 4-state 필터를 제공하므로 v2 CMS 차별화 우위 유지.
+
+### 엔젤 평가 #27 가족과의 소통 (확인)
+
+- URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do · HTTP 200 · 조사일 2026-06-23.
+- 평가 row: `평가번호 27` / `가족과의 소통`.
+- 요구 워크플로: 보호자 회의 온라인/오프라인 반기 1회 이상, 월간 프로그램 계획표·식단표·기관 소식을 월 1회 이상 제공.
+- 엔젤 연계 메뉴: 기관운영, 모바일 앱, 수급자관리, 급여제공계획, SMS, 기관운영 / 보호자회의, 보호자용 앱(굽은나무), 가정통신문, 프로그램계획, 안내장관리, 식단표.
+- ogada 대비: 보호자 portal·프로그램/식단/알림 surface는 부분 보유하나 보호자회의 전용 evidence bundle은 P3 `G-GUARDIAN-MEETING` carry.
+
+### NHIS #44 이동서비스비 러-1~4 (확인)
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 · HTTP 200 · 조사일 2026-06-23.
+- 법정 워크플로: 이동서비스 제공 → 최단거리(편도) 기준 러-1~러-4 비용 산정 → 1일 1회만 산정 → 편도 이용 시 50% → 수급자 부담 없음 → 이동서비스 일지 작성·보관.
+- 인용: “이동서비스비용은 이용 횟수에 관계없이 1일 1회만 산정”, “편도만… 이용한 경우에는… ‘러-1’부터 ‘러-4’까지 비용의 50%”, “이동서비스 일지를 작성하여 보관”.
+- ogada 대비: `TransportServiceFeeService`·`/transport/service-fees`·이동서비스 일지/통계 surface와 5/5 parity 유지.
+
+### longterm 2026 수가·단기보호·통합재가 (확인)
+
+- URL 502: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742 · HTTP 200 · 이번 회차에서 105,552B canonical 본문 직접 수신.
+- 단기보호 인용: `월 한도액 및 급여비용(2026.1.1. 기준)`, `단기보호 급여비용(1일당)`, `1등급 74,060`, `2026.01.05 수정`.
+- URL 610: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731 · HTTP 200 · 통합재가 partial shell 91,421B.
+- 통합재가 인용: “하나의 기관기호로 ① 방문간호+방문요양, ② 주·야간보호+방문요양 등 2종 이상의 급여”, “주·야간보호형: 제공기관 수급자 1인당 월 10만원 지급”.
+- ogada 대비: `IntegratedHomeProviderDiscoveryPanel` 및 `fetchIntegratedHomeProviderDiscoveryApi`가 통합재가 검색/가산 안내를 이미 노출하므로 P3 discovery 우위 유지. 단기보호 full 운영 모듈은 아직 MVP out-of-scope `G18-SHORT` carry.
+
+## 결론
+
+- 신규 증거 URL/스냅샷: longterm 502 canonical live, longterm 610 통합재가 partial shell, longterm 503 gate.
+- 변동: LCMS root type1 역회전, law.go.kr cachebuster, MOHW 조회수 counter. 본문 정책/수가 verbatim 변동 없음.
+- 신규 core 갭: 0. P3 carry 강화: `G-GUARDIAN-MEETING`, `G18-SHORT`, 통합재가 discovery는 ogada 우위 유지.

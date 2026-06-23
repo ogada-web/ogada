@@ -10,10 +10,11 @@
 #
 # 루트 저장소(.) 는 docs · memory · transfer · .agents 만 관리 (브랜치: main).
 #
-# 에이전트 협업:
-#   planner → docs/ROADMAP.md (v1·v2…) 작성·유지
-#   coder   → submodule develop 브랜치, ROADMAP in_progress 버전 구현
-#   tester  → submodule test 브랜치, transfer/ 이관·검증
+# 에이전트 협업 (git worktree 분리):
+#   planner → docs/planning/ROADMAP.md (v1·v2…) 작성·유지
+#   coder   → src/{stream} @ develop (주 worktree)
+#   tester  → src/{stream}-test @ test (별도 worktree) + transfer/ 이관·검증
+#   develop/test 는 물리 폴더가 분리되어 역할 간 checkout 충돌이 없다.
 #
 # 초기화: ./scripts/git_branch_setup.sh
 
@@ -27,6 +28,8 @@ root:
 submodules:
   backend:
     path: src/backend
+    worktrees:
+      test: src/backend-test
     branches:
       develop: develop
       test: test
@@ -34,6 +37,8 @@ submodules:
     transfer: transfer/backend
   frontend:
     path: src/frontend
+    worktrees:
+      test: src/frontend-test
     branches:
       develop: develop
       test: test
@@ -48,24 +53,28 @@ agents:
     allowed_write:
       - src/backend
       - src/frontend
-      - docs/ROADMAP.md
-      - docs/QA_FEEDBACK.md
+      - docs/planning/ROADMAP.md
+      - docs/qa/QA_FEEDBACK.md
     forbidden_write:
       - transfer/
-      - docs/TEST_REPORT.md
+      - docs/qa/TEST_REPORT.md
   tester:
     phase: test
-    submodule_checkout: true
-    description: submodule test 브랜치에서 검증·QA_FEEDBACK 기록 (src/ 직접 수정 금지)
+    submodule_checkout: false
+    worktree_phase: test
+    description: src/{stream}-test worktree(test 브랜치)에서 검증·QA_FEEDBACK 기록 (src/ 주 경로 수정 금지)
     allowed_write:
       - transfer/backend
       - transfer/frontend
-      - docs/TEST_REPORT.md
-      - docs/QA_FEEDBACK.md
+      - docs/qa/TEST_REPORT.md
+      - docs/qa/QA_FEEDBACK.md
       - tests/
     forbidden_write:
       - src/backend
       - src/frontend
+    read_only_worktrees:
+      - src/backend-test
+      - src/frontend-test
   planner:
     phase: planning
     submodule_checkout: false
@@ -79,6 +88,6 @@ agents:
     checkout_phase: develop
     description: submodule develop 브랜치에서 React UI·디자인 토큰 작업
     allowed_write:
-      - docs/DESIGN_SYSTEM.md
+      - docs/product/DESIGN_SYSTEM.md
       - src/frontend/src/styles/
       - src/frontend/src/components/ui/

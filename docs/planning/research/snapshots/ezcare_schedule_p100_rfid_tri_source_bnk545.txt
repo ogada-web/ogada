@@ -1,0 +1,63 @@
+# BNK-545 ezCare schedule-p100 + RFID/이중일정 tri-source crosswalk
+# fetched_at: 2026-06-23T10:01Z
+# ogada @949e9bf (FE) / @40ab9e7 (BE) · merge gate 713
+
+## ★★★ PGID schedule-p100 — 「3. 방문일정 - 일정표 출력 및 문자발송」(확인)
+URL: https://ezcare.easyms.co.kr/new.ez?PGID=schedule-p100 (데모 oCode=DEMO)
+HTTP 200 · 113,979B · md5 a55157b8 (was c32f7e23/113,768B BNK-early · +211B DRIFT)
+snapshot: ezcare_new_ez_pgid_schedule-p100.html
+
+### 2-tab IA
+| tab | id | grid | Ajax endpoint |
+|-----|-----|------|---------------|
+| 01 수급자 일정표 | tabs-schedule-p100-01 | grid-schedule-p100-01 | /page/schedule/json-schedule.php?data=patient_schedule |
+| 02 요양보호사 일정표 | tabs-schedule-p100-02 | grid-schedule-p100-02 | /page/schedule/json-schedule.php?data=worker_schedule |
+
+### Tab01 colModel (visible 8 + excel hidden)
+name, pInfo(uInfo btn), pGroup, birthdate, tAmount(integer), stmTotal, cnt, wName, 일정관리(calendar btn→ScheduleManager)
+excel hidden: longTermMgmtNo, pID, telNo, gName, gHandphone
+
+### Tab02 colModel (visible 8)
+name, wInfo, wGroup, birthdate, terM(실근무시간), stmTotal(수가인정시간), cnt, pName(방문수급자), btn(일정표→worker_month_schedule)
+
+### 출력·엑셀·문자 워크플로
+- 일정표(+문자): print sw=A/B/C (가로/세로/출력) → patient_month_schedule
+- 급여제공기록지: btn-hml-servicePaper sKind → /document_V2/hml_serviceReportPaper.php
+- 상태변화기록지: btn-print-care-record-paper → hml_careRecorePaper.php
+- 제공대장: btn-print-servicePaper-list → hml_servicePaper_provide.php
+- batch docCode (0134 hidden when Ym >= 2025-07)
+- 엑셀: xls_patient_service_table(.php/.php2), xls_patient_list, grid excel foot merge A:G
+- **직원인권문자 일괄발송**: #btn-message-send → send-message-protect-list-GET → send_patient_protect_message(data)
+- Tab02: worker_month_schedule, xls_status.worker_{sw}.html, excel_worker_list POST
+
+### ogada 매핑
+- 재가 G21 전용(out-of-scope) · 주야간 MVP: 통합 일정표+보호자 SMS hub ❌
+- ogada: /transport/*·/visits/*·SOLAPI 외부 분리(BNK-527) · 인쇄 리포트 분산 carry
+- candidate: G21-SCHEDULE-PRINT-SMS-HUB P3 carry (재가 전용·ogada 주야간 우선순위 낮음)
+
+## ★★ pAmt-a100 notYet → schedule-fix gate (확인)
+snapshot: ezcare_new_ez_pgid_pAmt-a100.html · 134,593B · md5 1db5ac12 (was 66f4f77c +236B)
+grid-pAmt-a100-notYet colModel: pCode, name, sum_tAmount, calendar(btn-sch)
+dialog_notYetList title: 「본인부담금 청구서 미생성 수급자」
+CTA: window.location = schedule-fix&Ym= → 일정확정 gate before billing
+main grid colModel: cNo, pID, name, pInfo, pRate, tAmount, rAmount, pAmt, pAmt_ext, pAmount, pay_amount2, pay_date, cms_chk row class
+
+## ★★ RFID·이중일정·처리상태 tri-source (재실측)
+| 축 | evidence | 판정 |
+|----|----------|------|
+| RFID 8-leaf comp_01~09 | schedule-rfid on-disk carry | ↔ ogada visits.js COMP_01~09 ✅ 8/8 parity+ (BNK-525) |
+| 일정확정 17-col | schedule-fix dd54b420 carry | G21 billing lock · ogada △ out-of-scope |
+| 중복일정 PGID | duplicate-schedule d8e08fc1 · grid-job-post-list only | **negative misroute** 재확인 |
+| change_work marketing | ezCare_change_work.html RFID·듀얼·트리플·중복 verbatim | read-only carry |
+| FAQ 21450 | help/faq.ez?rowid=21450 e1eb78e1 IDENTICAL | 엑셀 2종·rfid_upload tri-source |
+| Channel.io 01805b93 | 243,635B · md5 27350a91→91934244 DRIFT | SIZE identical · 원천세/본인부담 verbatim carry |
+
+## ★ 가격·도입 재실측 (확인 · 2026-06-23T10:01Z)
+| URL | counter/price | vs BNK-544 |
+|-----|---------------|------------|
+| home | 재가 9,273 · mCnt {1:9273,2:4595,3:2353,4:1820} | mCnt[1] carry · mCnt[2] +1 |
+| fnc | 9,348개 | +2 vs on-disk 9,346 |
+| charge | 33,000 / 25,850 / 55,000 | verbatim 불변 |
+| home banner | [무료 이벤트] 재무회계 무료 | was [추천 이벤트] BNK-544 |
+
+엑셀 포맷 변경 0 · 신규 core 갭 0

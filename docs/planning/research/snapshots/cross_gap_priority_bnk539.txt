@@ -1,0 +1,104 @@
+BNK-539 — 교차검증·갭 우선순위 8h+ · 4축 P0/P1 재정렬 + 공지/가격 스캔
+================================================================================
+조사일: 2026-06-23T06:42Z | rotation: 교차검증·갭 우선순위 | owner: BNK | audience: PLN
+
+[1] ogada submodule develop HEAD (실측)
+--------------------------------------------------------------------------------
+$ git -C src/frontend rev-parse --short develop
+  -> 95f55aa
+$ git -C src/frontend log -1 --oneline develop
+  -> 95f55aa fix(v1.2.1/US-R01): wire work-attendance API relatedSurfaces cross-links
+$ git -C src/frontend status -sb
+  -> ## develop...origin/develop (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop
+  -> 184
+
+$ git -C src/backend rev-parse --short develop
+  -> 83a26e7
+$ git -C src/backend log -1 --oneline develop
+  -> 83a26e7 feat(v2/US-R01): expose annual-leave cross-links on work-attendance roster
+$ git -C src/backend status -sb
+  -> ## develop...origin/develop (WT CLEAN)
+$ git -C src/backend rev-list --count origin/test..develop
+  -> 526
+
+merge gate = 184 (FE) + 526 (BE) = 710 (+2 vs BNK-538 708)
+
+[2] ogada KPI 재산정 (실측)
+--------------------------------------------------------------------------------
+Route        : 111 (App.jsx path= 110 + <Routes> wrapper 1)
+*Page.jsx    : 89  (+ RootRedirect = 90)
+Flyway V     : V1-V173 (173 files)
+BE Test 파일 : 247 (@Test method 1,812)
+FE test 파일 : 453 (187 *.test.js + 266 *.test.jsx)
+모듈 커버    : 78.79% carry (22.85/29)
+
+해석:
+- BNK-538 대비 FE +1 / BE +1, 양쪽 WT CLEAN.
+- 신규 커밋은 US-R01 relatedSurfaces cross-link 양방향 보강이다.
+- route/page/Flyway/module coverage는 변동 없음, test inventory만 증가(FE +4, BE +1).
+
+[3] 신규/재실측 증거 URL
+--------------------------------------------------------------------------------
+1) silverangel notice 221623 probe
+   URL: https://www.silverangel.kr/silverangel/support/notice/view.do?Tmp_idx=221623
+   live HTTP 200 · 51,765B · md5 8437f255b4eaf22e9844d1d260554093
+   판정: 미게시 shell IDENTICAL. 221623-221625 3-probe 모두 같은 shell.
+   인용: "본인부담금 자동이체(CMS) 서비스" 광고 shell, 실제 신규 공지 본문 0.
+
+2) ezCare homepage
+   URL: https://ezcare.easyms.co.kr/
+   live HTTP 200 · 106,127B · md5 b4778ac6d86497024d23ae1da3b7cf9f
+   인용: "9,271개 재가기관이 이지케어를 선택한 이유!"
+   인용: "2026년 06월 23일 현재" · mCnt={1:9271,2:4595,3:2353,4:1820}
+   판정: 재가기관 9,271 carry, mCnt type2 4,594->4,595 +1.
+
+3) ezCare_fnc
+   URL: https://ezcare.easyms.co.kr/new/ezCare_fnc.html
+   live HTTP 200 · 17,870B · md5 d5e4d6a3eea4efe1dbcb928cb8b87ad3
+   인용: "전국 9,346개 기관 사용중"
+   판정: 도입 카운터 9,346 carry. BNK-533 하락 가정은 BNK-537 +1 복귀 후 추가 하락 없음.
+
+4) ezCare_charge
+   URL: https://ezcare.easyms.co.kr/new/ezCare_charge.html
+   live HTTP 200 · 22,979B · md5 56309b2eaabee1ffc740d03db97c6e49
+   인용: "33,000원", "37명 ... 25,850원", "55,000원"
+   판정: 요금 문구 불변, cachebuster성 md5 변동.
+
+5) NHIS #44 joHistory
+   URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+   live HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+   판정: zero drift. 러-1~4·편도 50%·1일 1회·④ 이동서비스 일지 의무 carry.
+
+[4] 메뉴/필드/워크플로 상세 — 4축 교차검증 + 갭 우선순위
+--------------------------------------------------------------------------------
+축 A. G14 급여제공계획서
+- 확인: ogada `/clients/:clientId/care-plan-form` + `ClientCarePlanForm` 10-field closure carry.
+- 경쟁 근거: ezCare FAQ21802/케어포 plan form carry.
+- 판정: P0/P1 재오픈 없음. live upload E2E 잔여는 P2/P3 검증 트랙.
+
+축 B. 대시보드/G26
+- 확인: ogada `/billing/reports/statistics` + DashboardPage KPI carry.
+- 신규 경쟁 근거: ezCare homepage mCnt type2 4,595(+1) 공개 카운터는 마케팅 지표일 뿐 운영 대시보드 core gap 아님.
+- 판정: P0/P1 재오픈 없음. 직원/보험 대시보드(worker-g01 등)는 P3 후보 유지.
+
+축 C. v1.3-C 이동서비스·법정 일지
+- 확인: NHIS #44 joHistory c886ff1f zero drift, ogada `TransportServiceFeeService` 5/5 parity/우위 carry.
+- 판정: P0/P1 재오픈 없음. 일지④ 인쇄/보관 polish는 P2 이하 carry.
+
+축 D. v2 CMS
+- 확인: G2-CMS-ENROLLMENT-ROSTER full-stack closure carry, silverangel notice 221623 미게시 shell.
+- 판정: P0/P1 재오픈 없음. CMS 5-method/전자결재/가정통신문 번들은 P3 차별화/마케팅 트랙.
+
+[5] 우선순위 재정렬 결과
+--------------------------------------------------------------------------------
+P0/P1: 신규 0, 재오픈 0.
+P2 carry: QR 이미지, AttendanceStatsPage/월별 출석 통계 UI polish, 이동서비스 일지④ 인쇄/보관 polish.
+P3 유지/강화: G-AGENCY-OPERATIONS-CALENDAR, G-LIABILITY-INSURANCE-ROSTER, G-MENU-PERMISSION-MATRIX, G-COMM-CALLER-AUTH, G-GUARDIAN-MEETING, v3 `/staff/leave-ledger`.
+
+[6] 사이클 요약
+--------------------------------------------------------------------------------
+가정 번복 1(부분): ezCare 도입 하락 신호는 BNK-537 +1 복귀 후 9,346 carry, homepage mCnt type2 +1로 더 약화.
+신규 core 갭 0 · P0/P1 재정렬 0 · candidate 신규 0 · 상태 변경 2(FE+1/BE+1, merge 708->710)
+미확인 0 · 신규 snapshot 1건(본 extract) + 신규 HTML 1건(silverangel 221623) · 덮어쓰기 3건(ezCare public pages) · 엑셀 포맷 변경 0
+per-cycle minimum: 증거 URL 5건, 워크플로 1블록, COMPETITOR_MATRIX @HEAD 1행+, BENCHMARK_REPORT §539.

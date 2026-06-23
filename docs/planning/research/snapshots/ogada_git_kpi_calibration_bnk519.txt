@@ -1,0 +1,128 @@
+BNK-519 — ogada git 실측 6–8h · HEAD zero advance carry + FE test KPI calibration 정정
+================================================================================
+조사일: 2026-06-22T17:43Z
+rotation: ogada git 실측 6–8h (npm test/mvn test proxy = git ls-tree 실측·Route grep·V*.sql/Test.java count)
+
+[1] HEAD (BNK-518 carry — 둘 다 HEAD zero advance)
+----------------------------------------------------
+src/frontend develop:  3ece965 (BNK-518 carry · WT CLEAN · ahead 169 vs origin/test=ab4de83)
+  - last commit: feat(v1.2.1/G2-CMS-ENROLLMENT-ROSTER): deepen CMS roster branch scope and client links
+src/backend develop:   d3d4d2d (BNK-518 carry · WT CLEAN · ahead 516 vs origin/test=598d108)
+  - last commit: test(v2/G2): deepen CMS branch roster scope and pilot coverage
+
+[2] FE KPI 실측 (git ls-tree -r HEAD --name-only)
+----------------------------------------------------
+<Route\b in src/App.jsx               = 109
+<Routes> wrapper                       = 1
+  → total Route gate                   = 110 (carry)
+*Page.jsx in src/pages/                = 88
+RootRedirect (App.jsx)                 = 1
+  → total page surface                 = 89 (carry)
+src/config/competitorModuleCoverage.js → 22.85 / 29 = 0.78793 → 78.79% (carry)
+  · 29 entries: 1-1,1-3,1-5,1-7,1-9,1-10,2,3-1,4,5,26,43,6,7-1,7-2,7-2-1,7-3,7-4,7-6,7-10,8,9,10,11,12,nhis,qr,hq,platform
+  · sum = 22.85 (✅=22·△ 2=0.85·8=0.85·7-4=0.65·10=0.5·1-5/1-10/6/11/12=0×5)
+
+[2b] FE test KPI calibration 정정 (가정 번복 1)
+----------------------------------------------------
+BNK-518 보고:  FE test 447  (184 .test.js + 263 .test.jsx · "BNK-517 443→447 +4")
+실측 BNK-519:  FE test 443  (180 .test.js + 263 .test.jsx)
+  delta: -4 (.test.js 184→180 = +4 과집계 정정)
+
+근거 (둘 다 HEAD zero advance):
+  $ git ls-tree -r HEAD --name-only | grep -E '\.test\.js$' | wc -l   →  180
+  $ git ls-tree -r HEAD --name-only | grep -E '\.test\.jsx$' | wc -l  →  263
+  $ git ls-tree -r HEAD --name-only | grep -E '\.test\.(ts|tsx)$'     →  0
+  total = 443
+
+BNK-518 → BNK-517 diff (HEAD 947312c..3ece965):
+  M src/components/ui/CmsEnrollmentTable.jsx        (+12L)
+  M src/components/ui/CmsEnrollmentTable.test.jsx   (+27/-1L)
+  M src/pages/CmsPage.jsx                           (+24/-1L)
+  M src/pages/CmsPage.test.jsx                      (+38/-3L)
+  → 4 files Modified · 0 files Added · +101/-5 (Modified만·신규 test 파일 0)
+  → BNK-518 의 "+4 .test.js 신규" 보고는 +65L test code deepen 을 file count 로 오기재한 calibration 오류.
+
+동일 패턴 carry: BNK-505 (441→437 정정·.test.js 181→177 +4 과집계).
+
+[3] BE KPI 실측 (git ls-tree -r HEAD --name-only)
+----------------------------------------------------
+Flyway migrations (V*.sql in src/main/resources/db/migration/):
+  V1..V171 contiguous (171건)
+  최신 5건:
+    V167__billing_overdue_management_and_adjustments.sql
+    V168__billing_overdue_management_and_adjustments_integrity.sql
+    V169__staff_work_attendance_g_staff_work_attendance.sql
+    V170__billing_report_filters.sql
+    V171__staff_work_attendance_and_billing_report_filters_integrity.sql
+
+Test.java in src/test/:                 242 (carry · BNK-518 "+54L test deepen" = no new file)
+  · CmsPilotServiceFlowE2eTest +45L · CmsServiceTest +9L → 둘 다 기존 파일 deepen
+
+[4] merge gate
+----------------------------------------------------
+FE ahead vs origin/test (ab4de83) = 169
+BE ahead vs origin/test (598d108) = 516
+  → merge gate = 169 + 516 = 685 (carry · BNK-518 동일 · HEAD zero advance)
+
+[5] backbone 3-URL live HTTP 200 re-measurement (BNK-519 cycle)
+----------------------------------------------------
+NHIS #44 joHistoryContent.do?...&SEQ=1637 → HTTP 200 · 7,572B · c886ff1f
+  on-disk: docs/planning/research/snapshots/nhis_jo44.html → c886ff1f IDENTICAL
+  311차 zero drift ↔ ogada BE @d3d4d2d TransportServiceFeeService 5/5 ✅ parity/우위 carry
+  · TransportDistanceBand.RU_1~RU_4 / ONE_WAY_RATIO=0.5 / 1일 1회 dedup / TransportServiceLog + V148/V154/V155 CHECK
+
+carefor func.php Wayback id_ → HTTP 200 · 98,328B · 6226e6eb
+  on-disk: docs/planning/research/snapshots/carefor_func.php → 6226e6eb IDENTICAL
+  312차 zero drift (M2 10-leaf · M5 13-leaf · M7 11-leaf · M8 15-leaf verbatim)
+
+ezcare top-nav-item-V2.js?20260428 → HTTP 200 · 25,470B · 95286775
+  on-disk: docs/planning/research/snapshots/ezcare_top_nav_v2.js → 95286775 IDENTICAL
+  311차 zero drift (10-module · 51-PGID nav verbatim)
+
+엑셀 포맷 변경 0 · 덮어쓰기 0 · 신규 evidence URL = 재실측 carry (per-cycle minimum 충족)
+
+[6] ogada Route inventory — /programs/* + /staff/* (BNK-516·517 candidate carry 재확인)
+----------------------------------------------------
+/programs/* (3-route):
+  /programs                              → ProgramsPage (5-1 제공기록 ✅ · 5-2 일정 ✅)
+  /programs/functional-recovery          → FunctionalRecoveryPage (G17 · carefor module 26 별도)
+  /programs/provision-result-evaluations → ProvisionResultEvaluationPage (지표44 compliance · 5-5 ✅)
+
+/staff/* (9-route):
+  /staff                       → StaffPage
+  /staff/:id                   → StaffDetailPage
+  /staff/attendance            → StaffAttendancePage
+  /staff/grievance-counselings → StaffGrievanceCounselingsPage
+  /staff/health-checkups       → StaffHealthCheckupsPage (worker-b100 02 ✅ parity)
+  /staff/lead-caregiver-log    → LeadCaregiverLogPage (8-1-1)
+  /staff/reports/status        → StaffReportsStatusPage
+  /staff/training              → StaffRefresherTrainingPage (worker-b100 04 보수교육 ✅ parity)
+  /staff/training-logs         → StaffTrainingLogPage (8-7 통합 카탈로그 · 03/05 △)
+
+미존재 (ROADMAP candidate carry):
+  /programs/groups       (ROADMAP P0 · M5 5-3 그룹 · DDL `program_groups`)
+  /programs/catalog      (ROADMAP P0 · M5 5-4 정보관리 · DDL `program_catalog`)
+  /programs/feedback     (ROADMAP P0 · M5 5-5 의견)
+  /programs/plans        (ROADMAP P0 · M5 5-6 계획)
+  /programs/instructors  (ROADMAP P1 · M5 5-1-1 외부강사/봉사 · DDL `external_instructors`)
+  /staff/annual-leaves   (BNK-516 candidate G-STAFF-ANNUAL-LEAVE P3「가정」 · 연차/leave/vacation grep=0 · ROADMAP 미등재 carry)
+
+[7] 종합
+----------------------------------------------------
+HEAD zero advance · 양쪽 WT CLEAN · 신규 commit 0
+merge gate 685 carry
+KPI calibration: FE test 447→443 (가정 번복 1 · BNK-505 동일 패턴)
+candidate 변동 0 · 신규 core 갭 0 · 미확인 0 추가
+백본 3-URL 311–312차 zero drift IDENTICAL · 덮어쓰기 0
+per-cycle minimum 4종 충족:
+  · 신규/재실측 URL = 백본 3-URL 311–312차 ✅
+  · 메뉴/필드/워크플로 1블록+ = /programs 3-route + /staff 9-route + 미존재 6-route 카탈로그 ✅
+  · COMPETITOR_MATRIX 1행+ @HEAD = BNK-519 rows (`@3ece965`/`@d3d4d2d` · merge 685 · FE test 443) ✅
+  · BENCHMARK_REPORT §소절 = §519-1~3 ✅
+
+planner 액션:
+  ① baseline FE `@3ece965`·BE `@d3d4d2d` carry · merge 685 · HEAD zero advance
+  ② FE test KPI **443**(180 .test.js + 263 .test.jsx) — 이전 BNK-518 「447」 사용 시 정정 필요
+  ③ ROADMAP P0/P1 carry 재확인: /programs/{groups,catalog,feedback,plans,instructors} · /staff/annual-leaves (G-STAFF-ANNUAL-LEAVE P3「가정」)
+  ④ 백본 3-URL 311–312차 zero drift carry (NHIS #44 PLAN_NOTES #44 1차 확인 carry)
+  ⑤ △4 잔여 우선순위 carry (7-4 CMS deepen → 10 부가 → 2 이동 → 8 직원근태 연차)

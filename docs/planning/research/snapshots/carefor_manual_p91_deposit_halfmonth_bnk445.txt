@@ -1,0 +1,20 @@
+# 케어포 주야간보호 사용매뉴얼 PDF p.91 추출 (BNK-445 신규)
+# 원본: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=91
+# full PDF md5: 96f7d45eaca91525068ec9bfb626fb18 (132p·9,992,772B)
+# 조사일: 2026-06-20 | HTTP: 200 (Wayback id_ fetch) | pypdf page[90]
+
+--- p.91 각종 입금·수납 리포트 (PDF 정본 번호) ---
+메뉴위치: 7-5.연간 본인부담금 청구대장 리포트, 7-6.월별 본인부담금 입금대장 리포트, 7-7.월별 본인부담금 수납대장 리포트
+
+① 청구대장: 수급자별 연도 청구내역·월별 상세 목록·출력·엑셀 다운로드
+② 입금대장: 월별 입금일자 기준 처리현황 — 수급자 입금영수증, 본인부담금 입금대장(월간), **본인부담금 입금대장(1일~15일)**, **본인부담금 입금대장(16일~말일)** 출력 + 해당월 입금내역 엑셀 다운로드
+③ 수납대장: 월별 청구금액 기준 — **월별 수납대장(청구기준)**, **월별 수납대장(수납기준)** 구분 조회·출력
+
+[BNK-445 3원 번호 drift cross-walk]
+| PDF p.91 | func.php/demo L07 (시설 셸) | ogada `@fffc2c1` Route |
+|---|---|---|
+| 7-5 연간 청구대장 | 7-6 `view.cost_master_report` | `/billing/reports/charges` (월별·연간 aggregate △) |
+| 7-6 월별 입금대장 (+**1~15/16~말일**) | 7-7 `view.cost_deposit_report` | `/billing/reports/deposits` (**월간 only**·반월 split ❌) |
+| 7-7 월별 수납대장 (청구/수납 기준) | 7-8 `view.cost_receipt_report` | `/billing/reports/receipts` (**단일 기준**·청구/수납 2-track △) |
+
+[BNK-445 ogada 갭] PDF ② **입금대장 1~15일·16~말일** 반월 출력 = **P3 candidate G-BILLING-DEPOSIT-HALFMONTH-REPORT**「가정」·MVP out-of-scope

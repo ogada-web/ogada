@@ -1,0 +1,65 @@
+{
+  "extract": "carefor_m1_recipient_route_crosswalk_bnk524",
+  "cycle": "BNK-524",
+  "rotation": "케어포 역공학 0-2h",
+  "date": "2026-06-22T21:00Z",
+  "sources": {
+    "carefor_func_php": "Wayback id_ 6226e6eb (98,328B) — 317차 zero drift IDENTICAL (live HTTP 200 = on-disk md5)",
+    "carefor_func_menu_catalog": "carefor_func_menu_catalog.json (BNK-449·107 leaf·module 1 = 11 leaf)",
+    "ogada_fe": "src/frontend develop @a170f9c (App.jsx client routes + ClientDetailPage 11-tab git grep)"
+  },
+  "ogada_client_surface": {
+    "routes": [
+      "/clients",
+      "/clients/new",
+      "/clients/care-plan-notifications",
+      "/clients/periodic-risk-assessments",
+      "/clients/needs-assessments",
+      "/clients/:clientId",
+      "/clients/:clientId/edit",
+      "/clients/:clientId/care-plan-form",
+      "/clients/:clientId/files"
+    ],
+    "client_detail_tabs": ["basic","grade","care-plan-form","assessment","contract","risk-assessment","health","attendance","care-provision","outing","billing"],
+    "support_pages": ["ClientOutingReportPage","CarePlanNotificationPage","GradeHistoryTimeline","GradeHistoryAttachmentPanel"]
+  },
+  "crosswalk": [
+    {"leaf": "1-1", "title": "수급자 정보관리", "ogada": "/clients (list) + /clients/new + /clients/:id basic tab + /clients/:id/edit", "verdict": "✅ parity+"},
+    {"leaf": "1-1-1", "title": "대기 수급자 관리 (waitlist)", "ogada": "미존재 (git grep wait=0)", "verdict": "❌ — ROADMAP P2 carry (88차 「대기수급자(1-1-1) P2」)"},
+    {"leaf": "1-2", "title": "전체 기초평가 현황", "ogada": "/clients/needs-assessments", "verdict": "✅ parity"},
+    {"leaf": "1-3", "title": "기초평가 관리", "ogada": "ClientDetailPage assessment tab", "verdict": "✅ parity"},
+    {"leaf": "1-4", "title": "상담일지 (client counseling log)", "ogada": "GrievanceCounselingPage = 직원 고충상담(staff)·수급자 상담일지 dedicated 미존재", "verdict": "△ 분리 surface"},
+    {"leaf": "1-5", "title": "가정통신문 (home newsletter)", "ogada": "newsletter grep=0", "verdict": "❌ — ROADMAP P2 carry (861행 「가정통신문·수가변경 안내 케어포 1-5·10-2-1 P2」·candidate G-LCMS-NEWSLETTER P3)"},
+    {"leaf": "1-6", "title": "수급자 안내사항/예방접종 (notices/vaccination)", "ogada": "vaccin grep=0", "verdict": "❌ gap — MVP out-of-scope 「가정」(예방접종 별도 보건소 연동)"},
+    {"leaf": "1-7", "title": "수급자 현황 리포트", "ogada": "/clients roster (dedicated status report 미존재)", "verdict": "△ list-only"},
+    {"leaf": "1-8", "title": "수급자 월별 통계 리포트", "ogada": "BillingStatisticsReportPage = 청구 통계(billing·수급자 demographic 통계 아님)", "verdict": "△ 분리 surface (billing only)"},
+    {"leaf": "1-9", "title": "수급자 등급 변동 현황", "ogada": "ClientDetailPage grade tab + GradeHistoryTimeline + GradeHistoryAttachmentPanel", "verdict": "✅ parity+ (timeline+attachment 우위·carefor 정적 현황 대비 깊이)"},
+    {"leaf": "1-10", "title": "연계기록지 발송 리포트 (linkage record dispatch report)", "ogada": "미존재", "verdict": "❌ gap — MVP out-of-scope 「가정」(타기관 연계기록지)"}
+  ],
+  "summary": {
+    "total_leaf": 11,
+    "parity": 4,
+    "partial": 3,
+    "gap": 4,
+    "gap_breakdown": "1-1-1·1-5 = ROADMAP P2 carry (신규 candidate 아님) / 1-6·1-10 = MVP out-of-scope 「가정」",
+    "new_core_gap": 0,
+    "new_candidate": 0,
+    "calibration": "competitorModuleCoverage.js id=1 coverage carry (coarse 대표 entry·1-1 기준)·11-leaf 분해 시 ✅4/△3/❌4·보조 leaf KPI 미포함 별도 ROADMAP P2 트랙 = 과대평가 아님·설계상 coarse (BNK-517 M5 동일 패턴)"
+  },
+  "backbone_3url_317th": {
+    "carefor_func_php": "6226e6eb (98,328B) HTTP 200 IDENTICAL",
+    "nhis_44": "c886ff1f (7,572B) HTTP 200 IDENTICAL",
+    "ezcare_top_nav_v2": "95286775 (25,470B) HTTP 200 IDENTICAL"
+  },
+  "ogada_git_kpi": {
+    "fe_head": "a170f9c (WT CLEAN·BNK-523 6fcd750 HEAD +1 fix(v1.2.1/qa-b95): normalize default credential blocker variants·2-file +58L·신규 test 파일 0·ahead 173)",
+    "be_head": "a45745c (WT CLEAN·BNK-523 6b84bcd HEAD +1 fix(v2/G-STAFF-ANNUAL-LEAVE): validate monthly usage input·2-file +30/-1L·ahead 519)",
+    "route": 111,
+    "page": "89 (+RootRedirect=90)",
+    "fe_test": 447,
+    "be_test": 244,
+    "flyway": "V1-V172",
+    "module_coverage": "78.79% (22.85/29·competitorModuleCoverage.js 미변경)",
+    "merge_gate": 692
+  }
+}

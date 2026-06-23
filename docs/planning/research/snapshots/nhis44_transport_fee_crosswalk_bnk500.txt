@@ -1,0 +1,47 @@
+BNK-500 (2026-06-22T04:50Z) — NHIS #44 이동서비스비 러-1~4 ↔ ogada TransportServiceFeeService full-stack cross-walk
+==========================================================================================================
+rotation: 엔젤·롱텀·규제 4–6h | PLAN_NOTES #44 1차 확인 재입증 (500차 마일스톤)
+
+[근거 URL] (live 재실측 2026-06-22T04:50Z)
+- NHIS #44 joHistory: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f · 295차 zero drift (on-disk nhis_jo44_joHistory.html IDENTICAL)
+
+[NHIS #44 고시 verbatim 핵심 (장기요양 이동서비스비용)]
+- 거리구간별 산정: 러-1 ~ 러-4 (거리 구간별 단가)
+- 편도(片道) 산정: 왕복 아님 → 편도 50%
+- 1일 1회만 산정: 수급자별 1일 1회에 한하여 청구
+- ④ 이동서비스 일지 작성·보관 의무 (별지 제22호 서식)
+- ③ 수급자 본인부담 없음 (공단 부담)
+
+[ogada 구현 실측 (BE develop @99d03fa)]
+파일: src/main/java/com/ogada/backend/transport/.../TransportServiceFeeService(.java) + TransportDistanceBand(.java)
+- TransportDistanceBand enum:
+    RU_1 "러-1 (5km 미만)"
+    RU_2 "러-2 (5~10km)"
+    RU_3 "러-3 (10~20km)"
+    RU_4 "러-4 (20km 이상)"
+- ONE_WAY_RATIO = 0.5  → baseAmount.multiply(ONE_WAY_RATIO) (편도 50%)
+- "이동서비스비용은 수급자별 1일 1회에 한하여 산정됩니다 (협회 세부운영규정 제8조)."
+- 중복 청구 guard: "이미 1일 1회 청구 기록이 있습니다." → skipped 처리
+- 일지: TransportServiceLog (별지 제22호·V148/V154/V155 운전자 서명 pair-CHECK·WAYPOINT non-empty CHECK)
+
+[cross-walk 판정]
+| NHIS #44 항목            | ogada 구현                                  | 판정 |
+|--------------------------|---------------------------------------------|------|
+| 거리구간 러-1~러-4       | TransportDistanceBand RU_1~RU_4             | ✅ parity |
+| 편도 50%                 | ONE_WAY_RATIO=0.5 multiply                  | ✅ parity |
+| 1일 1회만 산정           | 1일 1회 guard + 중복 skip                   | ✅ 우위(자동 dedup) |
+| ④ 이동서비스 일지        | TransportServiceLog 별지 제22호 입력/인쇄/export | ✅ 우위(full-stack) |
+| ③ 본인부담 없음          | 공단 부담 청구 모델                         | ✅ parity |
+
+→ ogada G16 이동서비스비 = **full-stack ✅ parity/우위**. PLAN_NOTES #44 1차 확인 carry.
+→ 경쟁사: 케어포 func 2-x = 차량 마스터·연료비만(이동서비스비 청구 ❌)·demo 시설 셸 transport nav 0 / 엔젤 daycare essential = 이동서비스 평가지표(운전자·동승자) 정적 수칙만 → ogada 이동서비스비 산정 자동화는 **차별화 우위**.
+→ 신규 core 갭 0 · candidate 신규 없음 · KPI 영향 0.
+
+[교차검증: 2026 수가·규제 backbone (live 재실측 2026-06-22T04:50Z)]
+- longterm 502 (단기보호) b5aee8c1 105,552B zero drift — 단기보호 74,060 verbatim
+- longterm 503 (경감)    8ca7d1fa 104,652B zero drift — 경감 50%×4 / 60%×3 verbatim
+- silverangel daycare essential c79c1be3 131,664B zero drift — 이동서비스 평가지표 verbatim
+- law247 admRulInfoP cachebuster DRIFT (strip-md5 0e07cef1 IDENTICAL) — 제2025-247호·시행 2026.1.1 verbatim 불변
+- mohw126 본인부담상한액 counter+widget DRIFT (조회수 2,286→2,313 +27) — 제2026-126호·본인부담상한액 verbatim 불변
+- silverangel notice 221587 probe 51,765B 8437f255 미게시 shell IDENTICAL — weekly notice 0 (최신 real 221563 6/18·next Wed ~6/24–25)

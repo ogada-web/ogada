@@ -1,0 +1,75 @@
+BNK-491 신규 evidence — silverangel essential URL refactor (확인·2026-06-21)
+================================================================================
+
+조사일: 2026-06-21T23:00Z
+조사자: benchmark_researcher (BNK)
+rotation: 이지케어 역공학 2–4h (cross-checking silverangel backbone)
+
+## 발견 사항
+
+silverangel.kr 「Essential」(주야간보호 핵심 제품) 페이지의 URL이 IA 정비를
+거치면서 변경되었음. **content/verbatim 변경 0** — 사이트 구조만 재정비.
+
+### Before (BNK-490 carry · 287차 zero drift 직전)
+- URL: `https://www.silverangel.kr/silverangel/products/essential.do`
+- HTTP: **404** (1,028B `3c93af5446540c1cb323ede8414c2bbb` error stub)
+- 마지막 200 응답: BNK-489 285차 zero drift
+
+### After (BNK-491 신규 발견)
+- URL: `https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do`
+- HTTP: **200** · 131,664B · md5 `c79c1be37f947aab04ab7ba35cc7814d`
+- on-disk snapshot `silverangel_essential.html` (`c79c1be3`·131,664B) **IDENTICAL** = **287차 zero drift**
+
+## 검증 방법
+
+```
+curl -sS "https://www.silverangel.kr/silverangel/products/essential.do"
+  → HTTP 404 SIZE 1028 md5 3c93af5446540c1cb323ede8414c2bbb
+curl -sS -L "https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do"
+  → HTTP 200 SIZE 131664 md5 c79c1be37f947aab04ab7ba35cc7814d
+md5sum docs/planning/research/snapshots/silverangel_essential.html
+  → c79c1be37f947aab04ab7ba35cc7814d  IDENTICAL
+```
+
+루트 `https://www.silverangel.kr/` HTTP 200 nav 검사 결과 신규 `/newSilverangel/`
+prefix 도입(주야간/시설급여/서비스/웹사이트 5-cluster). 「Essential」 클러스터는
+`/newSilverangel/daycare/daycareEssentialWork.do`(주야간) + `/newSilverangel/fcltySlry/essentialWork.do`(시설)
+2-route 분리.
+
+### 신규 nav 전체 (silverangel 루트)
+- /newSilverangel/daycare/daycareAngelSystemSummary.do
+- /newSilverangel/daycare/daycareEssentialWork.do      ← 「Essential」 신규 정본 (주야간)
+- /newSilverangel/daycare/daycareProgramProvided.do
+- /newSilverangel/fcltySlry/angelSystemSummary.do
+- /newSilverangel/fcltySlry/essentialWork.do          ← 시설 분리
+- /newSilverangel/fcltySlry/programProvided.do
+- /newSilverangel/service/businessSupportService.do
+- /newSilverangel/service/extraService.do(?mainFlag=AI|Mobile|VR|gbTree)
+- /newSilverangel/service/feeService.do
+- /newSilverangel/service/mainService.do
+- /newSilverangel/webSite/websiteProvided.do(List)
+
+기존 `/silverangel/companyinfo/*`(business_area/ceo/history/map) 4-route는 carry.
+
+## 의미
+
+- silverangel은 「엔젤시스템」 제품 IA를 **주야간 vs 시설(요양원)** 으로 명확히 분리하기
+  시작함. 이전 단일 `/silverangel/products/essential.do`가 양 시장을 합쳤다면,
+  신규 `/newSilverangel/daycare/*` vs `/newSilverangel/fcltySlry/*`는 ogada 동일
+  포지셔닝(주야간 전용 SaaS).
+- content verbatim **불변**(`c79c1be3` IDENTICAL) → 기능/필드 변경 0·신규 갭 0·
+  competitor coverage 변경 0.
+- **다음 사이클**: 신규 `/newSilverangel/fcltySlry/essentialWork.do` 시설 분기 fetch →
+  주야간/시설 feature divergence가 발생하는지 확인 (BNK-492+ 4–6h rotation 후보).
+
+## ogada 영향
+
+- competitor coverage 변경 **0**.
+- 「Essential」 ↔ ogada attendance/care 모듈 매핑 carry (BNK-394·BNK-451 등).
+- **즉시(planner)**: snapshots/README 에 신규 URL 등록·이전 URL 404 carry.
+
+## 출처
+
+- live: `https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do`
+- on-disk: `docs/planning/research/snapshots/silverangel_essential.html`
+- 사이트 nav 추출: `https://www.silverangel.kr/` HTTP 200 (101,258B)

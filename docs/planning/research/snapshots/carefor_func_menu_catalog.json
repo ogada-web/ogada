@@ -1,0 +1,908 @@
+{
+  "source": "carefor_func.php Wayback id_ 6226e6eb",
+  "updated": "2026-06-20 (BNK-449)",
+  "leaf_count": 107,
+  "module_counts": {
+    "1": 11,
+    "2": 10,
+    "3": 11,
+    "4": 10,
+    "5": 13,
+    "6": 5,
+    "7": 11,
+    "8": 15,
+    "9": 6,
+    "10": 9,
+    "11": 6
+  },
+  "leaves": [
+    {
+      "id": "1-1",
+      "title": "수급자 정보관리",
+      "module": 1
+    },
+    {
+      "id": "1-1-1",
+      "title": "대기 수급자 관리",
+      "module": 1
+    },
+    {
+      "id": "1-2",
+      "title": "전체 기초평가 현황",
+      "module": 1
+    },
+    {
+      "id": "1-3",
+      "title": "기초평가 관리",
+      "module": 1
+    },
+    {
+      "id": "1-4",
+      "title": "상담일지",
+      "module": 1
+    },
+    {
+      "id": "1-5",
+      "title": "가정통신문",
+      "module": 1
+    },
+    {
+      "id": "1-6",
+      "title": "수급자 안내사항/예방접종",
+      "module": 1
+    },
+    {
+      "id": "1-7",
+      "title": "수급자 현황 리포트",
+      "module": 1
+    },
+    {
+      "id": "1-8",
+      "title": "수급자 월별 통계 리포트",
+      "module": 1
+    },
+    {
+      "id": "1-9",
+      "title": "수급자 등급 변동 현황",
+      "module": 1
+    },
+    {
+      "id": "1-10",
+      "title": "연계기록지 발송 리포트",
+      "module": 1
+    },
+    {
+      "id": "2-1",
+      "title": "일정관리(공단연동)",
+      "module": 2
+    },
+    {
+      "id": "2-1-1",
+      "title": "외출 관리",
+      "module": 2
+    },
+    {
+      "id": "2-2",
+      "title": "탑승관리(차량 이용)",
+      "module": 2
+    },
+    {
+      "id": "2-3",
+      "title": "출석관리(차량 미이용)",
+      "module": 2
+    },
+    {
+      "id": "2-4",
+      "title": "차량관리",
+      "module": 2
+    },
+    {
+      "id": "2-5",
+      "title": "청구내역상세(공단연동)",
+      "module": 2
+    },
+    {
+      "id": "2-6",
+      "title": "공단 급여비용 청구 자료(공단연동)",
+      "module": 2
+    },
+    {
+      "id": "2-7",
+      "title": "월간 서비스 변동현황",
+      "module": 2
+    },
+    {
+      "id": "2-8",
+      "title": "월간 입소자 현황",
+      "module": 2
+    },
+    {
+      "id": "2-9",
+      "title": "수급자 외출 리포트",
+      "module": 2
+    },
+    {
+      "id": "3-1",
+      "title": "요양급여 제공 기록",
+      "module": 3
+    },
+    {
+      "id": "3-1-1",
+      "title": "통합식사도움기록",
+      "module": 3
+    },
+    {
+      "id": "3-1-2",
+      "title": "간호급여 제공기록(요양보호사)",
+      "module": 3
+    },
+    {
+      "id": "3-1-3",
+      "title": "요양급여 특이사항 관리",
+      "module": 3
+    },
+    {
+      "id": "3-1-4",
+      "title": "식사(간식) 선호도 조사 및 반영",
+      "module": 3
+    },
+    {
+      "id": "3-2",
+      "title": "상태변화 기록",
+      "module": 3
+    },
+    {
+      "id": "3-3",
+      "title": "목욕일정 및 제공현황",
+      "module": 3
+    },
+    {
+      "id": "3-4",
+      "title": "요양/식사(조치사항)/화장실 리포트",
+      "module": 3
+    },
+    {
+      "id": "3-5",
+      "title": "목욕도움 리포트",
+      "module": 3
+    },
+    {
+      "id": "3-6",
+      "title": "급여제공 리포트",
+      "module": 3
+    },
+    {
+      "id": "3-7",
+      "title": "급여제공 서비스 집계",
+      "module": 3
+    },
+    {
+      "id": "4-1",
+      "title": "간호급여 제공기록(간호,투약,진료)",
+      "module": 4
+    },
+    {
+      "id": "4-1-1",
+      "title": "통합 바이탈 기록",
+      "module": 4
+    },
+    {
+      "id": "4-2",
+      "title": "응급상황 기록",
+      "module": 4
+    },
+    {
+      "id": "4-3",
+      "title": "통합 간호제공 리포트",
+      "module": 4
+    },
+    {
+      "id": "4-4",
+      "title": "병의원 진료내역 리포트",
+      "module": 4
+    },
+    {
+      "id": "4-5",
+      "title": "투약제공 리포트",
+      "module": 4
+    },
+    {
+      "id": "4-6",
+      "title": "물리(작업)치료 제공기록",
+      "module": 4
+    },
+    {
+      "id": "4-6-1",
+      "title": "물리(작업)치료 일정",
+      "module": 4
+    },
+    {
+      "id": "4-6-2",
+      "title": "물리(작업)치료 제공 리포트",
+      "module": 4
+    },
+    {
+      "id": "4-6-3",
+      "title": "물리(작업)치료 일정 리포트",
+      "module": 4
+    },
+    {
+      "id": "5-1",
+      "title": "프로그램 제공기록",
+      "module": 5
+    },
+    {
+      "id": "5-1-1",
+      "title": "외부강사/자원봉사자 관리",
+      "module": 5
+    },
+    {
+      "id": "5-2",
+      "title": "프로그램 일정관리",
+      "module": 5
+    },
+    {
+      "id": "5-3",
+      "title": "프로그램 수급자 그룹 설정(필요시)",
+      "module": 5
+    },
+    {
+      "id": "5-3-1",
+      "title": "프로그램 그룹 관리",
+      "module": 5
+    },
+    {
+      "id": "5-4",
+      "title": "프로그램 정보관리",
+      "module": 5
+    },
+    {
+      "id": "5-5",
+      "title": "프로그램평가(의견수렴)",
+      "module": 5
+    },
+    {
+      "id": "5-5-1",
+      "title": "프로그램관리자 업무수행일지",
+      "module": 5
+    },
+    {
+      "id": "5-6",
+      "title": "프로그램 콘텐츠",
+      "module": 5
+    },
+    {
+      "id": "5-7",
+      "title": "수급자 참여프로그램 리포트",
+      "module": 5
+    },
+    {
+      "id": "5-8",
+      "title": "프로그램 제공기록 리포트(운영기록지)",
+      "module": 5
+    },
+    {
+      "id": "5-9",
+      "title": "프로그램 수급자 그룹 설정 이력 리포트",
+      "module": 5
+    },
+    {
+      "id": "5-10",
+      "title": "수급자 프로그램 일정 리포트",
+      "module": 5
+    },
+    {
+      "id": "6-1",
+      "title": "주간식단표",
+      "module": 6
+    },
+    {
+      "id": "6-2",
+      "title": "일일점검",
+      "module": 6
+    },
+    {
+      "id": "6-3",
+      "title": "정기점검",
+      "module": 6
+    },
+    {
+      "id": "6-3-1",
+      "title": "감염병 관리",
+      "module": 6
+    },
+    {
+      "id": "6-4",
+      "title": "시설운영일지",
+      "module": 6
+    },
+    {
+      "id": "7-1",
+      "title": "본인부담금 청구관리",
+      "module": 7
+    },
+    {
+      "id": "7-2",
+      "title": "본인부담금 입금관리",
+      "module": 7
+    },
+    {
+      "id": "7-2-1",
+      "title": "의료비공제(연말정산)",
+      "module": 7
+    },
+    {
+      "id": "7-3",
+      "title": "본인부담금 미납관리",
+      "module": 7
+    },
+    {
+      "id": "7-4",
+      "title": "본인부담금 자동이체 (CMS)",
+      "module": 7
+    },
+    {
+      "id": "7-5",
+      "title": "본인부담금 간편결제",
+      "module": 7
+    },
+    {
+      "id": "7-6",
+      "title": "본인부담금 청구대장 리포트",
+      "module": 7
+    },
+    {
+      "id": "7-7",
+      "title": "본인부담금 입금대장 리포트",
+      "module": 7
+    },
+    {
+      "id": "7-8",
+      "title": "본인부담금 수납대장 리포트",
+      "module": 7
+    },
+    {
+      "id": "7-9",
+      "title": "본인부담금 수납,환불내역",
+      "module": 7
+    },
+    {
+      "id": "7-10",
+      "title": "본인부담금 간편계산기",
+      "module": 7
+    },
+    {
+      "id": "8-1",
+      "title": "직원 정보관리",
+      "module": 8
+    },
+    {
+      "id": "8-1-1",
+      "title": "선임 요양보호사 업무수행일지",
+      "module": 8
+    },
+    {
+      "id": "8-2",
+      "title": "근무일정표",
+      "module": 8
+    },
+    {
+      "id": "8-3",
+      "title": "연간 일정계획",
+      "module": 8
+    },
+    {
+      "id": "8-4",
+      "title": "출퇴근 및 근무관리",
+      "module": 8
+    },
+    {
+      "id": "8-5",
+      "title": "사례관리 회의록",
+      "module": 8
+    },
+    {
+      "id": "8-6",
+      "title": "회의록(보호자,복지및포상)",
+      "module": 8
+    },
+    {
+      "id": "8-7",
+      "title": "교육일지(노인인권, 재난, 소화, 직원권익)",
+      "module": 8
+    },
+    {
+      "id": "8-7-1",
+      "title": "요양보호사 보수교육",
+      "module": 8
+    },
+    {
+      "id": "8-8",
+      "title": "자원봉사자 활동일지",
+      "module": 8
+    },
+    {
+      "id": "8-9",
+      "title": "고충처리 관리",
+      "module": 8
+    },
+    {
+      "id": "8-10",
+      "title": "건강검진관리",
+      "module": 8
+    },
+    {
+      "id": "8-11",
+      "title": "질향상노력",
+      "module": 8
+    },
+    {
+      "id": "8-12",
+      "title": "현황 리포트",
+      "module": 8
+    },
+    {
+      "id": "8-13",
+      "title": "연차,유급휴일 대장",
+      "module": 8
+    },
+    {
+      "id": "9-1",
+      "title": "시설정보설정",
+      "module": 9
+    },
+    {
+      "id": "9-1-1",
+      "title": "기초작업 및 기초설정",
+      "module": 9
+    },
+    {
+      "id": "9-2",
+      "title": "요양급여 수가설정",
+      "module": 9
+    },
+    {
+      "id": "9-3",
+      "title": "이용요금 결제 및 연장",
+      "module": 9
+    },
+    {
+      "id": "9-4",
+      "title": "비품관리대장",
+      "module": 9
+    },
+    {
+      "id": "9-5",
+      "title": "연간 부담금현황",
+      "module": 9
+    },
+    {
+      "id": "10-1",
+      "title": "문자메시지 발송",
+      "module": 10
+    },
+    {
+      "id": "10-2",
+      "title": "급여제공내역 안내 발송",
+      "module": 10
+    },
+    {
+      "id": "10-2-1",
+      "title": "수가변경안내 발송",
+      "module": 10
+    },
+    {
+      "id": "10-3",
+      "title": "보호자 급여기록 열람내역",
+      "module": 10
+    },
+    {
+      "id": "10-4",
+      "title": "기관 공지사항, 자료실",
+      "module": 10
+    },
+    {
+      "id": "10-5",
+      "title": "홈페이지 서비스",
+      "module": 10
+    },
+    {
+      "id": "10-6",
+      "title": "보호자 앱 관리",
+      "module": 10
+    },
+    {
+      "id": "10-7",
+      "title": "안내발송내역(문자, 이메일)",
+      "module": 10
+    },
+    {
+      "id": "10-8",
+      "title": "평가항목 및 사전 준비자료 출력",
+      "module": 10
+    },
+    {
+      "id": "11-1",
+      "title": "월별 급여대장",
+      "module": 11
+    },
+    {
+      "id": "11-2",
+      "title": "퇴직적립금 관리",
+      "module": 11
+    },
+    {
+      "id": "11-3",
+      "title": "직원 급여계약 설정",
+      "module": 11
+    },
+    {
+      "id": "11-4",
+      "title": "급여기초 설정(수당/공제)",
+      "module": 11
+    },
+    {
+      "id": "11-5",
+      "title": "인건비 지출비율 참고자료",
+      "module": 11
+    },
+    {
+      "id": "11-6",
+      "title": "직원 급여대장 리포트(간이지급명세서)",
+      "module": 11
+    }
+  ],
+  "demo_l07": [
+    {
+      "pamcode": "L07_M01",
+      "class": "",
+      "view": "/share/cost/view.cost_master",
+      "title": "7-1.본인부담금 청구관리"
+    },
+    {
+      "pamcode": "L07_M02",
+      "class": "",
+      "view": "/share/cost/view.cost_receipt",
+      "title": "7-2.본인부담금 입금관리"
+    },
+    {
+      "pamcode": "L07_M09",
+      "class": "submp",
+      "view": "/share/cost/view.cost_master_statistic",
+      "title": "7-2-1.의료비공제(연말정산)"
+    },
+    {
+      "pamcode": "L07_M03",
+      "class": "",
+      "view": "/share/cost/view.cost_nopay",
+      "title": "7-3.본인부담금 미납관리"
+    },
+    {
+      "pamcode": "L07_M11",
+      "class": "",
+      "view": "/share/cost/view.cms_manage",
+      "title": "7-4.본인부담금 자동이체 (CMS)"
+    },
+    {
+      "pamcode": "L07_M12",
+      "class": "",
+      "view": "/share/cost/view.npay_manage",
+      "title": "7-5.본인부담금 간편결제"
+    },
+    {
+      "pamcode": "L07_M05",
+      "class": "rpt",
+      "view": "/share/cost/view.cost_master_report",
+      "title": "7-6.본인부담금 청구대장 리포트"
+    },
+    {
+      "pamcode": "L07_M06",
+      "class": "rpt",
+      "view": "/share/cost/view.cost_deposit_report",
+      "title": "7-7.본인부담금 입금대장 리포트"
+    },
+    {
+      "pamcode": "L07_M07",
+      "class": "rpt",
+      "view": "/share/cost/view.cost_receipt_report",
+      "title": "7-8.본인부담금 수납대장 리포트"
+    },
+    {
+      "pamcode": "L07_M10",
+      "class": "rpt",
+      "view": "/share/cost/view.cost_receipt_apply_yearly",
+      "title": "7-9.본인부담금 수납,환불내역"
+    }
+  ],
+  "demo_facility_shell": {
+    "transport_keywords": 0,
+    "loadPage": 110,
+    "rpt_count": 34,
+    "rpt_ratio": "34/110=30.9%",
+    "submp_count": 18,
+    "menu_depth_max": 2,
+    "note": "BNK-449 정정: BNK-441「113」→110(sitemap 제외)·rpt 29.8%→30.9%"
+  },
+  "ogada_module4_route_map": {
+    "source": "BNK-397 (2026-06-19) — func.php module 4(간호급여 제공기록) 10-leaf ↔ ogada App.jsx @09912ba",
+    "summary": "✅7 · △3 · ❌0 · ogada competitorModuleCoverage.js {id:'4', coverage:1} cross-confirm · 신규 갭 0",
+    "leaves": [
+      { "carefor": "4-1", "title": "간호급여 제공기록(간호,투약,진료)", "route": "/nursing/service", "page": "NursingServicePage", "status": "✅" },
+      { "carefor": "4-1-1", "title": "통합 바이탈 기록", "route": "/nursing/vital-checks", "page": "VitalCheckPage", "status": "✅" },
+      { "carefor": "4-2", "title": "응급상황 기록", "route": "/nursing/emergency-records", "page": "EmergencyRecordsPage", "status": "✅" },
+      { "carefor": "4-3", "title": "통합 간호제공 리포트", "route": "/nursing/service/reports/total · /care/reports/nursing-service", "page": "NursingServiceReports", "status": "✅" },
+      { "carefor": "4-4", "title": "병의원 진료내역 리포트", "route": "/nursing/service/reports/hospital-visits · /care/reports/hospital-visits", "page": "HospitalVisitsReport", "status": "✅" },
+      { "carefor": "4-5", "title": "투약제공 리포트", "route": "/nursing/service/reports/medication-delivery · /care/reports/medication-delivery", "page": "MedicationDeliveryReport", "status": "✅" },
+      { "carefor": "4-6", "title": "물리(작업)치료 제공기록", "route": "/programs/functional-recovery", "page": "FunctionalRecoveryPage (G17·지표27 기능회복훈련 동치)", "status": "✅" },
+      { "carefor": "4-6-1", "title": "물리(작업)치료 일정", "route": "FunctionalRecoveryPage planContent", "page": "전용 PT 일정 그리드 없음·계획 텍스트", "status": "△ (시설 PT out-of-scope)" },
+      { "carefor": "4-6-2", "title": "물리(작업)치료 제공 리포트", "route": "/care/reports/* 집계", "page": "전용 PT 리포트 없음", "status": "△ (시설 PT out-of-scope)" },
+      { "carefor": "4-6-3", "title": "물리(작업)치료 일정 리포트", "route": "—", "page": "전용 PT 일정 리포트 없음", "status": "△ (시설 PT out-of-scope)" }
+    ],
+    "ogada_superset": [
+      "/nursing/pressure-ulcer (+/assessment /plan /records /reports /reports/provision) — 욕창 5-단계 lifecycle",
+      "/nursing/excretion-tubes · /care/intensive-excretion · /care/reports/intensive-excretion",
+      "/nursing/weight-records",
+      "/nursing/oral-care-checks"
+    ]
+  },
+  "ogada_module3_route_map": {
+    "source": "BNK-401 (2026-06-19) — func.php module 3(요양급여 제공기록) 11-leaf ↔ ogada App.jsx @cfc4b04 · on-disk func.php 6226e6eb 219차 zero drift verbatim",
+    "summary": "✅11 · △0 · ❌0 · ogada competitorModuleCoverage.js {id:'3-1', coverage:1} cross-confirm · 신규 갭 0",
+    "leaves": [
+      { "carefor": "3-1", "title": "요양급여 제공 기록", "route": "/care/weekly-service-records · /nursing/service", "page": "CareServiceWeeklyRecordPage (주간 7-필드) + BNK-398 케어포 3-1 care provision segment nav", "status": "✅" },
+      { "carefor": "3-1-1", "title": "통합식사도움기록", "route": "/care/meal-assistance-records", "page": "MealAssistanceRecordsPage", "status": "✅" },
+      { "carefor": "3-1-2", "title": "간호급여 제공기록(요양보호사)", "route": "/care/weekly-service-records (nursingNotes 필드)", "page": "요양보호사 간호 노트 = module 4(간호사 간호)와 직종 구분", "status": "✅" },
+      { "carefor": "3-1-3", "title": "요양급여 특이사항 관리", "route": "/care/service-special-notes", "page": "CareServiceSpecialNotesPage", "status": "✅" },
+      { "carefor": "3-1-4", "title": "식사(간식) 선호도 조사 및 반영", "route": "/care/meal-preference-surveys", "page": "MealPreferenceSurveyPage", "status": "✅" },
+      { "carefor": "3-2", "title": "상태변화 기록", "route": "/care/weekly-service-records (stateChangeNotes) + G39 FAQ21817 7일 SLA alerts", "page": "주1회 7일 due-date alert(@b881883)", "status": "✅" },
+      { "carefor": "3-3", "title": "목욕일정 및 제공현황", "route": "/care/bathing-schedules", "page": "BathingSchedulePage", "status": "✅" },
+      { "carefor": "3-4", "title": "요양/식사(조치사항)/화장실 리포트", "route": "/care/reports/patient-service · /care/reports/meal-excretion · /care/reports/position-change", "page": "분리 리포트 3종", "status": "✅" },
+      { "carefor": "3-5", "title": "목욕도움 리포트", "route": "/care/reports/bath-help", "page": "BathHelpReport", "status": "✅" },
+      { "carefor": "3-6", "title": "급여제공 리포트", "route": "/care/reports/nursing-service · /care/reports/patient-service", "page": "급여제공 리포트", "status": "✅" },
+      { "carefor": "3-7", "title": "급여제공 서비스 집계", "route": "/care/reports/service-summary", "page": "ServiceSummaryReport", "status": "✅" }
+    ],
+    "ogada_superset": [
+      "/care/body-restraint — 신체구속(신체제한) 기록·법정 동의(케어포 module 3 부재)",
+      "/care/intensive-excretion · /care/reports/intensive-excretion — 집중배설",
+      "/nursing/pressure-ulcer/* — 욕창 5-단계 lifecycle",
+      "/nursing/weight-records · /nursing/oral-care-checks — 체중·구강관리"
+    ]
+  },
+  "ogada_7x_route_map": [
+    {
+      "carefor": "7-1",
+      "title": "본인부담금 청구관리",
+      "route": "/billing",
+      "page": "BillingPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-2",
+      "title": "본인부담금 입금관리",
+      "route": "/billing/payments",
+      "page": "PaymentsPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-2-1",
+      "title": "의료비공제(연말정산)",
+      "route": "/billing/reports/statistics",
+      "page": "BillingStatisticsReportPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-3",
+      "title": "본인부담금 미납관리",
+      "route": "/billing/overdue",
+      "page": "OverduePage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-4",
+      "title": "본인부담금 자동이체 (CMS)",
+      "route": "/billing/cms",
+      "page": "CmsPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-5",
+      "title": "본인부담금 간편결제",
+      "route": "/billing/easy-pay",
+      "page": "EasyPayPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-6",
+      "title": "본인부담금 청구대장 리포트",
+      "route": "/billing/reports/charges",
+      "page": "BillingReportPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-7",
+      "title": "본인부담금 입금대장 리포트",
+      "route": "/billing/reports/deposits",
+      "page": "BillingReportPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-8",
+      "title": "본인부담금 수납대장 리포트",
+      "route": "/billing/reports/receipts",
+      "page": "BillingReportPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-9",
+      "title": "본인부담금 수납,환불내역",
+      "route": "/billing/reports/refunds",
+      "page": "BillingReportPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "7-10",
+      "title": "본인부담금 간편계산기",
+      "route": "/billing/calculator",
+      "page": "CopayCalculatorPage",
+      "status": "✅"
+    },
+    {
+      "carefor": "PDF p.90",
+      "title": "청구시작 금액설정",
+      "route": "BillingSettingsPanel",
+      "page": "OrganizationSettingsPage G33",
+      "status": "✅"
+    },
+    {
+      "carefor": "PDF p.92",
+      "title": "의료비공제 및 본인부담금 통계",
+      "route": "/billing/reports/statistics",
+      "page": "BillingStatisticsReportPage",
+      "status": "✅(번호충돌 7-8)"
+    }
+  ],
+  "ogada_module9_route_map": {
+    "source": "BNK-413 (2026-06-19) — func.php module 9(6-leaf) + demo-work left_sub9(7-leaf) 3원 drift + PDF p.108–112 ↔ ogada @501fedc/@4da0ca8",
+    "summary": "✅3 · △3 · ❌3 · N/A1 · 신규 갭 0 · func.php 230차 zero drift",
+    "three_source_drift": "func 9-2=수가 vs demo 9-2=건물·생활실 · func 9-3=SaaS결제 vs demo 9-3=수가 · func 9-4=비품 vs demo 9-4=SaaS결제",
+    "leaves": [
+      { "carefor": "9-1", "title": "시설정보설정", "route": "/settings · /organization/settings · BillingSettingsPanel", "demo_view": "view.center_master", "status": "✅" },
+      { "carefor": "9-1-1", "title": "기초작업 및 기초설정", "route": "G-ONBOARD wizard carry", "demo_view": "view.basic_set", "status": "△" },
+      { "carefor": "9-2", "title": "요양급여 수가설정 (func) / 건물·생활실 (demo)", "route": "/billing/fee-schedules · /branches", "demo_view": "view.center_room", "status": "✅/△ drift" },
+      { "carefor": "9-3", "title": "이용요금 결제 (func) / SaaS 구독", "route": "out-of-scope", "demo_view": "view.service_cost", "status": "N/A" },
+      { "carefor": "9-4", "title": "비품관리대장 (func)", "route": "—", "demo_view": "view.service_pay", "status": "❌ P3 G-EQUIPMENT-INVENTORY" },
+      { "carefor": "9-5", "title": "연간 부담금 (func) / 운영관리 (demo)", "route": "/billing/reports/statistics · /transport/vehicles · /staff/grievance-counselings", "demo_view": "view.operational_manage", "status": "△" },
+      { "carefor": "9-6", "title": "연간 부담금현황 (demo only)", "route": "/billing/reports/statistics · /billing/calculator", "demo_view": "view.sales_amount", "status": "△" }
+    ],
+    "pdf_p108_subsettings": [
+      { "tab": "② 본인부담금정보·청구명세서생성기준", "ogada": "BillingSettingsPanel.claimGenerationBasis", "status": "✅" },
+      { "tab": "⑤ 결재라인", "ogada": "—", "status": "❌ G34-APPROVAL P3" },
+      { "tab": "⑨ 프로그램권한", "ogada": "JWT RBAC 7역할", "status": "✅" },
+      { "tab": "⑬ 프로그램특이사항 자동표기", "ogada": "—", "status": "❌ G17-AUTO-LINK P3" },
+      { "tab": "⑬ 급여제공마감설정", "ogada": "—", "status": "❌ G-RECORD-LOCK P3" }
+    ]
+  },
+  "ogada_module10_route_map": {
+    "source": "BNK-421 (2026-06-20) — func.php module 10(부가서비스 9-leaf) + PDF p.112–122 (carefor_manual_p114_module10_bnk421.txt db79d8ca, 10-leaf + 10-6-1 album sub) + demo-work left_sub10 (11-leaf, 시설 셸) 3원 drift 4종 ↔ ogada @202c1fe/@1139e79",
+    "summary": "✅3 · △5 · ❌1 · 신규 갭 0 · candidate +3 P3「가정」 (G-CLIENT-PHOTO-ALBUM·G-NOTICE-BOARD·G-BULK-SMS) · func.php 238차 zero drift · competitorModuleCoverage.js {id:'10', coverage:0.78} cross-confirm",
+    "three_source_drift_4kinds": [
+      "① func 10-7=안내발송 ↔ 10-8=평가일괄 vs PDF SWAP (PDF 10-7=평가일괄·10-8=안내발송) — BNK-377 module 5·BNK-385 module 7·BNK-413 module 9·BNK-417 module 11 동일 패턴 5회차 누적 확장 = 케어포 시설 셸 모듈 번호 재배열 패턴",
+      "② func 10-2-1 수가변경안내 발송 (PDF 2018 부재·신규 leaf)",
+      "③ PDF 10-6-1 수급자 앨범관리 sub-leaf (func/demo 부재·앨범은 보호자앱 내부 화면으로 흡수)",
+      "④ demo 10-7 면회예약(view.meet_reservation)·10-8 야간점검NFC(view.nfc_tag) — 시설 only (주간보호 모드 자동 숨김) + commented L10_M13 10-9 전자결재(view.electronic_authorization·G34-APPROVAL P3 carry)"
+    ],
+    "leaves": [
+      { "carefor": "10-1", "title": "문자메시지 발송 (대량)", "route": "NotificationChannelReadinessPanel(OrganizationSettings·Solapi readiness) + 개별 GuardianDocumentNotifyPanel + /clients/care-plan-notifications", "demo_view": "view.send_sms", "pdf_page": 114, "status": "△ (channel readiness only·대량 SMS UI 부재·candidate G-BULK-SMS P3「가정」 신규)" },
+      { "carefor": "10-2", "title": "급여제공내역 안내 발송", "route": "GuardianDocumentNotifyPanel J03 3-type quiet-hours E2E @7e4c07e BNK-415", "demo_view": "view.send_service_url", "pdf_page": 115, "status": "✅ (J03 full-stack parity·quiet-hours 22:00~08:00 reject·ogada 우위)" },
+      { "carefor": "10-2-1", "title": "수가변경안내 발송 (수가 인상/인하 공지)", "route": "BillingSettingsPanel(/billing/fee-schedules) · CopayRatesPage(/billing/copay-rates)", "demo_view": "view.send_sign_url", "pdf_page": "부재(2018 PDF 미수록)", "status": "△ (수가 변경 푸시 SMS 부재·수동 안내만·MVP carry)" },
+      { "carefor": "10-3", "title": "보호자 급여기록 열람내역 (audit)", "route": "NotificationHistoryPanel variant=guardian (GuardianPortalPage 7d/30d) + ClientDetailPage NotificationHistoryPanel variant=staff", "demo_view": "view.protector_service_reading", "pdf_page": 116, "status": "△ (열람 audit는 알림 발송 로그 overlap·열람 자체 logging 부재·년도별 통계 출력 부재)" },
+      { "carefor": "10-4", "title": "기관 공지사항·자료실", "route": "ClientDetailPage 서류 첨부(/clients/:id/files·ClientFilesPage) + /staff/training-logs 자료실 부분 + 전 기관 공지 단일 leaf 부재", "demo_view": "view.form_storage", "pdf_page": 117, "status": "△ (개별 첨부만·기관 단위 공지·자료실 단일 게시판 부재·candidate G-NOTICE-BOARD P3「가정」 신규)" },
+      { "carefor": "10-5", "title": "홈페이지 서비스 (220k/년 부가)", "route": "—", "demo_view": "view.hompy", "pdf_page": 118, "status": "❌ (P3 G-HOMEPAGE carry·MVP out-of-scope·외부 부가서비스 — 220,000원/년 vat포함)" },
+      { "carefor": "10-6", "title": "보호자 앱 관리", "route": "GuardianInvitationAcceptPage(/guardian/invitations/:token/accept) · GuardianInviteModal+GuardianInvitationList(ClientDetailPage) · GuardianPortalPage(/guardian) · GuardianCheckinPage(/guardian/checkin) · resendGuardianInvitationByIdApi", "demo_view": "view.family_app", "pdf_page": 119, "status": "✅ (token-link 기반 invitation·portal·checkin 3-screen·ogada 우위=토큰 link vs 케어포 기관인증번호+설치문자)" },
+      { "carefor": "10-7", "title": "안내발송내역(문자, 이메일)", "route": "NotificationHistoryPanel variant=guardian/staff + BillingNotificationHistory", "demo_view": "view.center_send_history2 (demo 10-9)", "pdf_page": "122 (PDF 10-8)", "status": "✅ (전체 발송 이력 + 필터·ogada parity·수단/구분 필터링)" },
+      { "carefor": "10-8", "title": "평가항목 및 사전 준비자료 출력 (일괄)", "route": "MonitoringSelfDiagnosisPage(/compliance/monitoring) · /programs/provision-result-evaluations · /staff/training-logs 평가 indicator", "demo_view": "view.print_all (demo 10-10)", "pdf_page": "121 (PDF 10-7)", "status": "△ (operational ✅·일괄 출력 PDF 부재·candidate G-EVAL-PREP-BULK-PRINT P3 carry·BNK-416/389)" }
+    ],
+    "pdf_p119_guardian_app_services_9": [
+      { "svc": "건강정보", "ogada_route": "/health · HealthOverviewPage G15", "status": "✅" },
+      { "svc": "앨범", "ogada_route": "/clients/:id/files (개별 사진 첨부만·보호자앱 앨범 전용 UI 부재)", "status": "❌ candidate G-CLIENT-PHOTO-ALBUM P3「가정」(500MB 무료·추가 별도)" },
+      { "svc": "식단표", "ogada_route": "/meals · MealsPage", "status": "✅" },
+      { "svc": "급여제공내역", "ogada_route": "J03 GuardianDocumentNotifyPanel · GuardianPortalPage notes", "status": "✅" },
+      { "svc": "급여비용명세", "ogada_route": "/billing/reports/receipts · /billing G21", "status": "✅" },
+      { "svc": "입금내역", "ogada_route": "/billing/payments", "status": "✅" },
+      { "svc": "프로그램일정", "ogada_route": "/programs · ProgramsPage", "status": "✅" },
+      { "svc": "가정통신문", "ogada_route": "J03 HOME_NEWSLETTER · GuardianDocumentNotifyPanel", "status": "✅" },
+      { "svc": "공지사항", "ogada_route": "—(기관 공지 단일 게시판 부재·NotificationHistoryPanel은 알림 로그 only)", "status": "△ candidate G-NOTICE-BOARD P3「가정」" }
+    ],
+    "pdf_p122_send_type_7": [
+      { "type": "청구서", "ogada": "/billing/payments 발송·G21 statement", "status": "✅" },
+      { "type": "미납내역", "ogada": "/billing/overdue · OverduePage alert", "status": "✅" },
+      { "type": "급여제공내역", "ogada": "J03 notifyCareProvisionRecord @7e4c07e BNK-415", "status": "✅" },
+      { "type": "직원급여", "ogada": "HR payroll out-of-scope (BNK-417 module 11 carry)", "status": "N/A" },
+      { "type": "일반문자 (대량 SMS)", "ogada": "NotificationChannelReadinessPanel (readiness only·대량 발송 UI 부재)", "status": "△ candidate G-BULK-SMS P3「가정」 신규" },
+      { "type": "보호자앱설치안내", "ogada": "GuardianInviteModal token URL + email/SMS template", "status": "✅" },
+      { "type": "가정통신문", "ogada": "J03 notifyHomeNewsletter @7e4c07e BNK-415", "status": "✅" }
+    ],
+    "pdf_p118_price_supplemental": "홈페이지 부가서비스 1년 220,000원(vat포함) — 케어포 관리프로그램 외 별도 부가서비스 · MVP out-of-scope (G-HOMEPAGE P3 carry)",
+    "pdf_p120_album_capacity": "보호자앱 앨범 무료 용량 전체 500MB · 추가는 고객센터 문의 · 직원용 앱에서 사진/안내 등록 가능 · MVP candidate G-CLIENT-PHOTO-ALBUM P3「가정」 신규"
+  },
+  "ogada_module6_route_map": {
+    "source": "BNK-541 (2026-06-23) — func.php module 6(위생·시설관리 5-leaf·verbatim 6-1~6-4) + ROADMAP v3.1 §범위(결정 94) ↔ ogada @95f55aa App.jsx grep · func.php Wayback 6226e6eb 323차 zero drift",
+    "summary": "✅1 LIVE(6-1 /meals) · 📋4 v3.1 P1 PLANNED(6-2~6-4 /safety/*) · 신규 core 갭 0 · competitorModuleCoverage.js {id:'6', label:'위생·안전 점검', coverage:0} cross-confirm",
+    "leaves": [
+      { "carefor": "6-1", "title": "주간식단표", "route": "/meals", "page": "MealsPage (MealMenuForm+MealRecordForm)", "status": "✅ LIVE" },
+      { "carefor": "6-2", "title": "일일점검", "route": "/safety/daily-checks", "page": "(부재·v3.1 P1)", "status": "📋 v3.1 P1 PLANNED·DB safety_checks" },
+      { "carefor": "6-3", "title": "정기점검", "route": "/safety/periodic-checks", "page": "(부재·v3.1 P1)", "status": "📋 v3.1 P1 PLANNED·DB safety_checks" },
+      { "carefor": "6-3-1", "title": "감염병 관리", "route": "/safety/infection-control", "page": "(부재·v3.1 P1)", "status": "📋 v3.1 P1 PLANNED" },
+      { "carefor": "6-4", "title": "시설운영일지", "route": "/safety/operation-log", "page": "(부재·v3.1 P1)", "status": "📋 v3.1 P1 PLANNED·DB operation_logs" }
+    ],
+    "roadmap_ref": "ROADMAP v3.1 §범위 '일일·정기 점검·감염·시설운영일지 (6-2~6-4)' P1 · 결정 94(2026-06-09·Won't 철회) · PLAN_NOTES §3-14",
+    "verdict": "M6 위생·안전·시설점검 = ogada v3.1 P1 기등재(6-1 식단표만 live)·신규 core 갭 0"
+  },
+  "ogada_module2_route_map": {
+    "source": "BNK-425 (2026-06-20) — func.php module 2(이동서비스 10-leaf) + PDF p.32–42 (carefor_manual_p32_module2_bnk425.txt 19256fb8) + demo-work 시설 셸(이동 nav 0·113 loadPage) ↔ ogada @94f2535/@cfce0b4",
+    "summary": "✅5 · ✅+1 · △4 · 신규 갭 0 · demo transport 0-leaf vs func 10-leaf = G15 ogada 차별화 우위",
+    "three_source_drift": "PDF·func module 2=이동서비스 vs demo left_sub2=요양급여(15 loadPage renumber) · demo 이동/탑승/송영 nav 0",
+    "demo_shell_metrics": { "loadPage_count": 113, "rpt_class_count": 34, "submp_class_count": 18, "transport_nav_leaves": 0 },
+    "leaves": [
+      { "carefor": "2-1", "title": "일정관리(공단연동)", "route": "/visits · /billing/imports/nhis", "demo_view": "부재(시설 셸)", "pdf_page": "34-37", "status": "✅" },
+      { "carefor": "2-1-1", "title": "외출 관리", "route": "/transport/outings", "demo_view": "부재", "status": "✅" },
+      { "carefor": "2-2", "title": "탑승관리(차량 이용)", "route": "/attendance/boarding · /transport/runs/*", "demo_view": "부재", "status": "✅" },
+      { "carefor": "2-3", "title": "출석관리(차량 미이용)", "route": "/attendance/on-site", "demo_view": "부재", "status": "✅" },
+      { "carefor": "2-4", "title": "차량관리", "route": "/transport/vehicles", "demo_view": "9-5 operational_manage 차량 항목 only", "status": "✅" },
+      { "carefor": "2-5", "title": "청구내역상세(공단연동)", "route": "/billing/imports/nhis · VisitNhisComparisonPanel", "demo_view": "부재", "status": "✅+ superset" },
+      { "carefor": "2-6", "title": "공단 급여비용 청구 자료", "route": "/billing/imports/nhis cluster", "demo_view": "부재", "status": "△ dedicated UI ❌ P3 carry" },
+      { "carefor": "2-7", "title": "월간 서비스 변동현황", "route": "/visits stats partial", "demo_view": "부재", "status": "△ P3 carry" },
+      { "carefor": "2-8", "title": "월간 입소자 현황", "route": "/attendance/stats partial", "demo_view": "부재", "status": "△ P3 carry" },
+      { "carefor": "2-9", "title": "수급자 외출 리포트", "route": "/transport/outings data", "demo_view": "부재", "status": "△ dedicated rpt ❌ P3 carry" }
+    ],
+    "pdf_workflow_highlights": [
+      "일정 색상박스: 반쪽파란=공단동일 · 주황=청구완료(7-1 삭제 선행) · 노랑=2-5 청구상세 반영 · 회색=급여이용계획",
+      "차량일정 변경: 2-4 운전자 변경 ≠ 일정 자동반영 — 2-1 차량일정 변경 필수",
+      "공단 일정계획: 기타>엑셀다운로드>일정계획 → 케어포 업로드 · 결석 자동삭제 ❌"
+    ]
+  },
+  "ogada_demo_l07_route_map": {
+    "source": "BNK-425 — demo-work L07 left_sub7 loadPage 10-leaf view.cost_* ↔ ogada /billing/* @94f2535",
+    "summary": "✅ 10/10 demo-visible leaves · func 7-10 calculator demo-hidden · ogada superset + /cash-receipts + /imports/nhis",
+    "leaves": [
+      { "demo": "7-1", "view": "view.cost_master", "route": "/billing", "status": "✅" },
+      { "demo": "7-2", "view": "view.cost_receipt", "route": "/billing/payments", "status": "✅" },
+      { "demo": "7-2-1", "view": "view.cost_master_statistic", "route": "/billing/reports/statistics", "status": "✅" },
+      { "demo": "7-3", "view": "view.cost_nopay", "route": "/billing/overdue", "status": "✅" },
+      { "demo": "7-4", "view": "view.cms_manage", "route": "/billing/cms", "status": "✅" },
+      { "demo": "7-5", "view": "view.npay_manage", "route": "/billing/easy-pay", "status": "✅" },
+      { "demo": "7-6", "view": "view.cost_master_report", "route": "/billing/reports/charges", "status": "✅" },
+      { "demo": "7-7", "view": "view.cost_deposit_report", "route": "/billing/reports/deposits", "status": "✅" },
+      { "demo": "7-8", "view": "view.cost_receipt_report", "route": "/billing/reports/receipts", "status": "✅" },
+      { "demo": "7-9", "view": "view.cost_receipt_apply_yearly", "route": "/billing/reports/refunds", "status": "✅" },
+      { "func_only": "7-10", "title": "본인부담금 간편계산기", "route": "/billing/calculator", "demo_visible": false, "status": "✅ ogada only vs demo hidden" }
+    ]
+  },
+  "ogada_module8_route_map": {
+    "source": "BNK-486 (2026-06-21) — func.php module8 15-leaf + PDF p.93–100 + demo L08 ↔ ogada @ebdf737",
+    "summary": "✅9 · △4 · ❌2 · G-STAFF-WORK-ATTENDANCE P2 closure · module 8 coverage 0.85",
+    "three_source_drift": "demo 8-9 alert→9-5 · demo 8-13=급여제공 vs func 8-13=연차 · demo 8-14=연차(demo-only) · demo 8-7-1 commented · func 8-1-2=선임일지 vs PDF/demo=NHIS excel",
+    "leaves": [
+      { "carefor": "8-1", "title": "직원 정보관리", "route": "/staff · /staff/:id · StaffNhisCaregiverImportPanel", "demo_view": "view.staff_manage", "pdf_page": "94-96", "status": "✅" },
+      { "carefor": "8-1-1", "title": "선임 요양보호사 업무수행일지", "route": "/staff/lead-caregiver-log", "demo_view": "view.senior_staff_work_report", "status": "✅" },
+      { "carefor": "8-1-2", "title": "요양보호사 엑셀업로드 (PDF/demo) / 선임일지 (func title drift)", "route": "StaffNhisCaregiverImportPanel @ /staff", "demo_view": "submp under 8-1 (func title drift)", "pdf_page": 95, "status": "✅ NHIS import (BNK-444)" },
+      { "carefor": "8-2", "title": "근무일정표", "route": "—", "demo_view": "view.work_plan", "pdf_page": 98, "status": "△ P3 HR schedule" },
+      { "carefor": "8-3", "title": "연간 일정계획", "route": "—", "demo_view": "view.schedule_manage", "status": "△ P3 carry" },
+      { "carefor": "8-4", "title": "출퇴근 및 근무관리", "route": "/staff/attendance · StaffWorkAttendancePage", "demo_view": "view.staff_work_manage", "status": "✅ (BNK-486 FE @ebdf737 + BE @560057f full-stack)" },
+      { "carefor": "8-5", "title": "사례관리 회의록", "route": "/compliance/case-management (CaseManagementPage G32)", "demo_view": "view.patient_case_meeting", "status": "✅" },
+      { "carefor": "8-6", "title": "회의록(보호자,복지및포상)", "route": "—", "demo_view": "view.staff_meeting", "status": "△ P3 carry" },
+      { "carefor": "8-7", "title": "교육일지", "route": "/staff/training-logs · StaffRefresherTrainingPage", "demo_view": "view.staff_education", "status": "✅" },
+      { "carefor": "8-7-1", "title": "요양보호사 보수교육", "route": "StaffRefresherTrainingPage · StaffRefresherCertificatePanel", "demo_view": "commented out", "status": "✅ (demo hidden·func/PDF leaf)" },
+      { "carefor": "8-8", "title": "자원봉사자 활동일지", "route": "—", "demo_view": "view.staff_daily_volunteer", "status": "❌ P3 out-of-scope" },
+      { "carefor": "8-9", "title": "고충처리 관리", "route": "/staff/grievance-counselings", "demo_view": "alert→9-5 redirect", "status": "✅ ogada route · demo UX moved" },
+      { "carefor": "8-10", "title": "건강검진관리", "route": "/staff/health-checkups", "demo_view": "view.staff_yearly_report (demo 8-10 label drift)", "status": "✅" },
+      { "carefor": "8-11", "title": "질향상노력", "route": "—", "demo_view": "view.center_quality", "status": "△ P3 facility cert" },
+      { "carefor": "8-12", "title": "현황 리포트", "route": "/staff/reports/status", "demo_view": "view.staff_report rpt", "status": "✅" },
+      { "carefor": "8-13", "title": "연차,유급휴일 대장 (func) / 급여제공 리포트 (demo drift)", "route": "—", "demo_view": "view.staff_work_report rpt (demo 8-13)", "status": "❌ HR payroll P3" }
+    ],
+    "pdf_p96_gaps": [
+      { "feature": "서류관리 20개 + 모바일", "ogada": "StaffOnboardingCompliancePanel 7종", "candidate": "G-STAFF-DOCUMENT-REPOSITORY P3" },
+      { "feature": "복직처리", "ogada": "STAFF_LIFECYCLE_STATUS 4-state (RETURN ❌)", "candidate": "G-STAFF-LEAVE-STATUS P3 carry 확장" }
+    ]
+  }
+}

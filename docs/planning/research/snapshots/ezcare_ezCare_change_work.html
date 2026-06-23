@@ -1,0 +1,531 @@
+<!doctype html>
+
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=960">
+<title> [이지케어]  재가장기요양기관 업무관리프로그램</title>
+<Meta name="Keywords" content="요양보호사,수급자,요양보호사급여,방문요양,방문간호, 노인장기요양보험 업무관리프로그램">
+<link type="text/css" rel="stylesheet" href="style.css?1782164449">
+<script language="JavaScript" type="text/javascript" src="/js2/jquery.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js2/trustlogo.js"></script>
+<script language="JavaScript" type="text/javascript" src="/js2/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css2/smoothness/jquery-ui.min.css" />
+
+<script type="text/javascript">
+<!--
+	$(function(){
+		$(".topM").mouseover( function(){  
+			var str = $(this).attr("src").replace("off","on");
+			$(this).attr("src",str);
+		});
+		$(".topM").mouseout( function(){
+			var str = $(this).attr("src").replace("on","off");
+			$(this).attr("src",str);
+		});
+	});
+
+	function check_login() {
+		var form=document.login_frm;
+		if(!form.oCode.value) {
+			alert('시설코드를 입력하세요.')
+			form.oCode.focus()
+			return false
+		}
+		if(!form.User_ID.value) {
+			alert('아이디를 입력하세요.')
+			form.User_ID.focus()
+			return false
+		}
+		if(!form.User_PW.value) {
+			alert('비밀번호를 입력하세요.')
+			form.User_PW.focus()
+			return false
+		}
+		var winName = "ezCareMwin_" + form.oCode.value;
+		form.target = winName;
+		popup = window.open("/blank.html",winName,"width=1024, height=715,top=0,left=0,status=yes,resizable=yes");
+		if(!popup) {
+			alert("팝업 차단을 해제 해주세요.");
+			return false;
+		}
+	}
+  
+	function CreateBookmarkLink(url) {
+		title = "ezCare(이지케어)";
+		if (window.sidebar) { //FF
+			window.sidebar.addPanel(title, url,"");
+		}else if( window.external ) { //IE
+			window.external.AddFavorite( url, title);
+		}else if(window.opera && window.print) { //Opera
+			return true;
+		}
+	}
+  
+	function demoAction(){
+		if(document.login_frm){
+			document.login_frm.oCode.value = "DEMO";
+			document.login_frm.User_ID.value = "admin";
+			document.login_frm.User_PW.value = "g8317";
+			check_login();
+			document.login_frm.submit();
+		}
+	}
+
+	function alert_caution(obj){
+		if(obj.checked){
+			alert("주의!!\n\n불특정 다수의 이용자가 이용하는 PC에서의\n'시설코드, 아이디'저장하기는 권장하지 않습니다.");
+		}
+	}
+	
+	var _NGUL = "wcs.naver.net/wcslog.js";
+	if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+	document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+//-->
+</script>
+<style type="text/css">
+	ul#nav  { margin-left:20px; width:650px; border:1px solid #999; border-radius:10px; display:flex; justify-content:space-between; padding:7px 5px;align-items:center; margin-top:20px; box-shadow: 3px 3px 5px 2px gray; margin-right:1em;  }
+	ul#nav li { font-size:10pt; font-weight:bold; }
+	ul#nav a { text-decoration:none } 
+	ul#nav li:hover { background:#efefef; box-shadow: 1px 1px 5px 5px #efefef; } 
+	ul#nav li:hover a{ height:100%; display:block; color:blue }
+	#headstatus2 { text-align:right ; margin-right:1em  }
+	#headstatus2 .st2 { color:red !important; font-weight:bold !important }
+</style>
+</head>
+<body>
+<!-- 상단메뉴 시작 -->
+
+<!-- 바디 시작 -->
+
+<div id="wrap">
+<div style="display:flex; justify-content:space-between">
+	<ul>
+		<li><a href="/"><img src="/new/img/sub_top_Logo_new2.png" width=245 height=65 border=0></li>
+	</ul>
+	<div>
+		<!-- <div style="text-align:right; font-size:12px;"><a href="javascript:CreateBookmarkLink('http://ezcare.easyms.co.kr');">이지케어 즐겨찾기에 추가</a></div> -->
+		<ul id="nav">
+			<li><a href="/new/ezCare.html">이지케어소개</a></li>
+			<li><a href="/new/ezCare_fnc.html">주요기능</a></li>
+			<li><a href="/new/ezCare_change_work.html">도입효과</a></li>
+			<li><a href="/new/Use_letter.html">사용후기</a></li>
+			<li><a href="javascript:demoAction();">체험하기</a></li>
+			<li><a href="javascript:window.open('/help/manual.ez','ezFaq','width=1200,height=1000, top=50, left=50, scrollbars=yes,status=yes,resizable=yes')">메뉴얼</a></li>
+			<li><a href="/new/ezCare_charge.html">이용요금</a></li>
+			<li><a href="/new/application_form.html">이용신청</a></li>
+			<li><a onfocus="blur()" href="javascript:location.href='https://939.co.kr/downloadsupport.php?userid=easyms'"><img src="/new/img/btn_ezh.gif" border="0" height="22" width="60" alt="원격지원서비스"></a></li>
+		</ul>
+	</div>
+</div>
+<div id="headstatus2"><span class="st1">업계 1위!! 이지케어 이용현황:</span> 전국 <span class="st2">9,346개</span> 기관 사용중</div>
+
+
+  <div id="sidebar">
+      <div id="page_title">이지케어 도입효과</div>
+    
+<div id="login_frm_wrap" style="display:none;">
+<iframe name="act_frm" width=0 height=0 src="/blank.html" style="display:none;"></iframe>
+<form method=POST name="login_frm" action="https://ezcare.easyms.co.kr/login_act.php" style="margin:0;" onsubmit="return check_login();" target="ezCareMwin_DEMO">
+<input type="hidden" name="mode" value="User_login_Action">
+<input type="hidden" name="oCode" size=10 maxlength=4 value="" style="ime-mode:disabled; text-transform:uppercase;" onKeyUp="javascript:this.value=this.value.toUpperCase();" class="i_01"><input type="hidden" name="User_ID" size=15 maxlength=15 style="ime-mode:disabled;" class="i_01"><input type="hidden" name="User_PW" size=15 maxlength=15 class="i_01">
+</form>
+</div>
+
+<ul id="quick_menu" ondragstart="return false" onselectstart="return false">
+  <li class="link">
+    <a href="javascript:demoAction();">
+    <p style="float:right; margin-right:5px;"><img src="/new/img/icon01.png" width="32" height="33"></p>
+    <p class="st1">이지케어 프로그램</p>
+    <p class="st2">데모 체험하기</p></a>
+  <li class="link">
+    <a href="javascript:intro_viewMovie();">
+    <p style="float:right; margin-right:5px;"><img src="/new/img/icon01.png" width="32" height="33"></p>
+    <p class="st1">이지케어 소개</p>
+    <p class="st2">소개 동영상 보기</p></a>
+
+  <li class="link">
+    <a href="/new/application_form.html"><p class="st1">프로그램</p>
+    <p class="st2">가입&amp;이용신청</p></a>
+
+  <li class="link">
+    <a href="#" onclick="window.open('/help/manual.ez','ezFaq','width=1200,height=1000, top=50, left=50, scrollbars=yes,status=yes,resizable=yes')"><p class="st1">이지케어</p>
+    <p class="st2">메뉴얼 &amp; FAQ</p></a>
+
+  <li class="link">
+    <a href="http://cafe.naver.com/egcare" target="_blank"><p><img src="/new/img/navercafe.png"></p>
+    <p class="st3">이지케어 사용자 & 재가업무 커뮤니티</p></a>
+
+  <li>
+    <p style="float:right; margin:0px; margin-right:0px;"><img src="/new/img/icon02.png" width="50" height="85"></p>
+    <p class="st1">이용문의&amp;상담</p>
+    <p class="st2">070-8656-4100</p>
+    <p class="st3">상담시간 09:30~17:30<br>
+    토, 일, 공휴일 휴무</p>
+    <p class="st4">FAX 0505-877-0933</p>
+    
+</ul>
+
+    <div id="movieDsp"></div>
+
+<script type="text/javascript">
+<!--
+      function intro_viewMovie(){
+        var setTop = jQuery(window).scrollTop() + jQuery(window).height()/2 - 240;//this.layer.height()/2;
+        setTop = setTop > 0 ? setTop : 20;
+        var setLft = jQuery(window).width()/2 - 300;
+
+        var outHtml = '';
+        outHtml += '<div id="black_bg" style="position:fixed; z-index: 200; top:0px; left:0px; width:100%; height:100%; background-color:#000000; filter:Alpha(opacity=70); opacity:0.7; -moz-opacity:0.7;" onclick="intro_hideMovie()"></div>';
+        outHtml += '<div id="pop_wrap">';
+        outHtml += '  <div id="movieblock" style="z-index:201; position:absolute; top:'+setTop+'px; left:'+setLft+'px; border:20px solid #999999;">';
+        outHtml += '    <div style="position:absolute;text-align:right; width:100%;"><img src="/new/img/btn_close.png"  onclick="intro_hideMovie()" style="cursor:pointer"></div>';
+        outHtml += '    <iframe width="660" height="371" src="https://www.youtube.com/embed/yNngWhGiM94?autoplay=1&loop=1;playlist=yNngWhGiM94&vq=hd1080" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border:5px solid #ccc"></iframe>';
+        outHtml += '	</div>';
+        outHtml += '</div>';
+
+        $("#movieDsp").html(outHtml);
+      }
+	  
+      function intro_hideMovie(){
+        $("#movieDsp").html("");
+      }
+//-->
+</script>  </div>
+  <div id="content">
+
+
+      <h2 class="slogan">하나, 둘, 셋...  재가센터의 1/4이 도입한 <span class="st2">이지케어!</span></h3>
+
+      <h3 class="sub_slogan">재가센터 4곳중 1곳은 이지케어를 업무에 활용하고 있습니다. <span class="st1">지금도 늦지 않았습니다!!</span></h3>
+      <br><br>
+  <h3 class="sub_slogan">사용법에대한 <u>두려움과 어려움을 갖지 마세요</u>. <br> <b>이지케어 사용법을 전담상담원이 무료(원격지원+전화)로 친절하게 안내</b>해 드릴것입니다.</span></h3>
+
+      <script type="text/javascript">
+      <!--
+      $(document).ready(function(){
+          
+        // faq
+
+          $(".faqInner ul li a.faqlists").click(function(){
+          
+            if($(this).parent().attr('class') == 'faqTitle open'){
+              $('.faqInner li .faqTitle').removeClass('open');
+              $('.faqInner li .faqCon').slideUp(200);
+
+              return false;
+            }else{
+              $('.faqInner li .faqTitle').removeClass('open');
+              $('.faqInner li .faqCon').slideUp(150);
+              $(this).parent().next('div').slideDown(500);
+              $(this).parent().addClass('open');
+
+              return false;
+            };
+            
+          });
+      });
+      //-->
+      </script>
+
+			<h3 class="sub_title">도입효과 & 업무변화</h3>
+<br>
+		<div class="faqInner">
+			<ul>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">01</span>
+							가산수가 및 본인부담금 계산이 간편해지고 정확해져 오류가 줄었습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=687">사용기 보기</a>
+            <span class="st1">일일이 본인부담금 및 수가액을 계산하는 번거로움이 줄어 들었습니다.</span>
+            <span class="st2">[경기] 효사랑복지요양원에서 남겨주신 관련 사용기입니다.</span> 
+						</p>
+						<p>
+
+            <p>
+            
+            <a class="goBtn" href="./Use_letter_view.html?rowid=666">사용기 보기</a>
+            <span class="st1">7.5%경감이신분인지 아닌지에 따라 수급자 한분한분 요양,목욕 따로 계산해서 더하고 했는데 자동으로 구현되고 한번에 출력도 되니까 진짜 좋았습니다.</span>
+            <span class="st2">[전남] 우리노인복지센터 에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+
+            <p>
+            
+            <a class="goBtn" href="./Use_letter_view.html?rowid=25">사용기 보기</a>
+            <span class="st1">실수가 많이 줄었구요 저희 센터의경우 수작업업무의 70%가 줄어든 것 같습니다.</span>
+            <span class="st2">[충남] 수*** 에서 남겨주신 관련 사용기입니다.</span> 
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">02</span>
+							일정표 작성 업무와, 중복일정체크 등의 일정관리가 간편해졌습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=628">사용기 보기</a>
+            <span class="st1">양보호사간 시간 중복도 체크할 수 있고 급여 또한 자동으로 계산되어 너무 편리합니다.  이젠 이지케어 없이 업무를 한다는 것은 상상도 안될정도로 우리기관에 정말 필요한 서비스 입니다.</span>
+            <span class="st2">[인천] 간***에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=42">사용기 보기</a>
+            <span class="st1">수급자/요양보호사 일정표를 마음대로 수정할 수 있어서 너무 좋았습니다. 달력처럼 한장으로 훤히 들여다보는 시스템이 아주 간단해서 좋았습니다</span>
+            <span class="st2">[대전] 효행복지센터 에서  남겨주신 관련 사용기입니다.</span>
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">03</span>
+							공단의 일정 연동(급여내역통보, RFID조회)으로 업무가 간단해졌습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+						<a class="goBtn" href="./Use_letter_view.html?rowid=710">사용기 보기</a>
+            <span class="st1">공단에 별도로 계획서 올리지 않고 이지케어에서 연동되어 너무 편리하고 간편해졌습니다.</span>
+            <span class="st2">[전북] 큰나무재가복지센터에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+            <p>
+						<a class="goBtn" href="./Use_letter_view.html?rowid=710">사용기 보기</a>
+            <span class="st1">급여계획된 부분과 RFID 태그된 한눈에 비교가 되기 때문에 기존에 작업하던 분량이 확 줄었네요. 기존에는 듀얼 모니터 트리플 모니터로 작업해야 그나마 손쉽게 비교 했는데..</span>
+            <span class="st2">[충북] 단***에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">04</span>
+							급여비용명세서 등 각종서식 생성/출력이 수월해졌습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=711">사용기 보기</a>
+            <span class="st1">일정등록및 출력 본인부담금 출력등 수급자 관리가 넘 편해지고 업무 서식자료실이 잘되어 있어 넘 편하고 행복합니다.</span>
+            <span class="st2">[경기] 은혜방문노인복지센터에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=201">사용기 보기</a>
+            <span class="st1">모든 서류를 다 수작업으로 했었는데 일주일치 작업들이 하루에 입력만 끝내면 모두 편리하게 사용가능하네요.</span>
+            <span class="st2">[경북] 경주간호노인복지센터 에서  남겨주신 관련 사용기입니다.</span>
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">05</span>
+							수급자를 발굴과 서비스 질 향상에 쏟을수 있는 시간의 여유가 생겼습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=32">사용기 보기</a>
+            <span class="st1">행정업무시간이 무척 빨라져서 홍보및 대상자 발굴에 더 투자할 수 있게 되었어요. 대상자 100명 정도도 혼자서 충분히 관리할 수 있을 것 같아요.</span>
+            <span class="st2">[인천] 참요양복지센터 에서  남겨주신 관련 사용기입니다.</span>
+            </p>
+
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=128">사용기 보기</a>
+            <span class="st1">이지케어로 하면 오전만 사무적인 일을 하고, 오후에는 수급자 방문 및 수급자 발굴에 시간을 사용할 수 있습니다.</span>
+            <span class="st2">[서울] 연세경로센터 에서  남겨주신 관련 사용기입니다.</span>
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">06</span>
+							체계적이고 효율적인 업무관리로 인력증원 고민이 없어졌습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=73">사용기 보기</a>
+            <span class="st1">체계적인 업무관리 및 요양보호사 일정관리의 효율화로 인력의 낭비를 줄일수 있어 정말 좋아 다른 센터에도 많이 소개했습니다/한사람 약 50% 업무감소가 있습니다 일단은 이 프로그램을 사용하고 부터는 업무체계가 잡혀 마음이 편합니다</span>
+            <span class="st2">[부산] 뉴*** 에서  남겨주신 관련 사용기입니다.</span>
+            </p>
+
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=119">사용기 보기</a>
+            <span class="st1">업무량이 90%줄어들었고 사무원이 필요업어 인건비 에서도 많은 차이를보임</span>
+            <span class="st2">[부산] 한울요양보호사파견재가센터에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">07</span>
+							업무가 여유로워졌고 혼자라는 두려움이 사라졌습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=674">사용기 보기</a>
+            <span class="st1">급여수가 및 자부담계산이 쉬움, 일정배정을 자동으로 생성되어 일의 능율향상, 정보검색이 쉽고 
+            모든일의 능율이 빠름, 월말 급여계산에 서두르지 않아도 아주 편리함</span>
+            <span class="st2">[전남] 제일재가복지센터에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=12">사용기 보기</a>
+            <span class="st1">업무량이 줄어들뿐더러 근로자에 과중한 업무에 대한 스트레스가 없어졌습니다...감사드립니다..^^*</span>
+            <span class="st2">[대전] 한밭사랑복지센터 에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">08</span>
+							시간을 절약하고 효율적인 업무를 원하신다면 이지케어를 강력추천합니다
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=694">사용기 보기</a>
+            <span class="st1">서류정리하는데 있어서 엄청난 시간과 인력이 들었었는데 이지케어를 사용하고 난뒤엔 정말 몇가지 입력만 하고나면 이지케어에서 제공한 모든 양식에 자동으로 입력되어 출력만 하면 되니 얼마나 좋은지 모릅니다.</span>
+            <span class="st2">[인천] (주)늘푸른노인복지센터에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=631">사용기 보기</a>
+            <span class="st1">아주 쉽고 편하답니다. 아직 망설이고 계신 센터는 하루빨리 이용하시어 업무에 큰 도웅 받으시기 바랍니다.</span>
+            <span class="st2">[경기] 은***에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=46">사용기 보기</a>
+            <span class="st1">재가 어르신댁에 상담 및 건강 체크등으로 방문 하고는 서류 정리등 행정적인 일들이 여러가지 많아서 어려웠는데... 행정적인 일정등록 및 관리가 정말, 편해 졌어요.</span>
+            <span class="st2">[경기] 가인재가방문요양센터 에서  남겨주신 관련 사용기입니다.</span>
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">09</span>
+							급여관리(4대보험, 명세서작성, 근로기준법 등) 업무에서 해방되었습니다.
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=652">사용기 보기</a>
+            <span class="st1">특히 급여계산은 처음이라 법정수당에서 어려움을 겪었는데 이지케어는 입력만 하면 자동분개가 되니 정말 편합니다.</span>
+            <span class="st2">[전북] 새희망노인복지센터에서 남겨주신 관련 사용기입니다.</span>
+            </p>
+            <p>
+            <a class="goBtn" href="./Use_letter_view.html?rowid=677">사용기 보기</a>
+            <span class="st1">요양보호사 급여 계산및 처우개선비까지 자동 계산이 되고 4대보험과 식비 휴일수당등 아주 편리합니다.</span>
+            <span class="st2">[경기] 샘물재가복지센터에서 남겨주신 관련 사용기입니다.</span>
+            
+            </p>
+
+						<p><a class="goBtn" href="./Use_letter_view.html?rowid=715">사용기 보기</a>
+            <span class="st1">요양보호사의 급여 산정 및 명세서 출력이 일목요연하게 잘 정리되어 있어 종전에 사용하던 프로그램과는 차별과 되어 있어서 정말 편리하게 잘 쓰고 있습니다.</span>
+            <span class="st2">[부산] 부***에서 남겨주신 관련 사용기입니다.</span>
+            
+            </p>
+					</div>
+				</li>
+
+				<li>
+					<div class="faqTitle">
+						<a href="#" class="faqlists" target="_blank" title="클릭시 상세 내용 펼쳐짐">
+							<span class="faqNum">..</span>
+							4959건의 도입효과(사용기) 더 보러 가기
+						</a>
+					</div>
+					<div class="faqCon">
+						<p>
+            <a class="goBtn" href="./Use_letter.html">사용기 더 보러가기</a>
+            이지케어 사용자가 직접 올려주신 4959건의 업무변화(후기/경험기)를 더 보실 수 있습니다.
+            </p>
+					</div>
+				</li>
+      </ul>
+    </div>
+
+
+
+<br><br><br>
+
+
+
+			<h3 id="closing" style="text-align:center"><span class="st1">지금 바로</span> 이지케어의 <span class="st2">효율적인 업무</span>를 <span class="st2">경험</span> 해보세요.</h3>
+			<ul id="closing_btn" style="text-align:center">
+				<li><a href="javascript:demoAction();"><img src="./img/btn02.png" width="115" height="115" border="0" alt="이지케어 데모체험하기"></a>
+				<li><a href="application_form.html"><img src="./img/btn03.png" width="115" height="115" border="0" alt="이지케어 이용신청하기"></a>
+				<li><a href="ezCare_fnc.html"><img src="./img/btn01.png" width="115" height="115" border="0" alt="이지케어 주요기능보기"></a>
+			</ul>
+  </div>
+
+
+
+<!-- 바디 끝 -->
+
+</div>
+<div style="height:50px;"></div>
+<!-- 카피라이트 시작 -->
+<TABLE width=100% height=200 border=0 cellpadding=0 cellspacing=0>
+<TR>
+  <TD bgcolor="#f2f1ed" valign=top align=center>
+    <table width=900 border=0 cellpadding=0 cellspacing=0>
+    <tr>
+      <td><img src="/new/img/btm_copyright.png" width=670 height=100 border=0 usemap="#Map"></td>
+      <td align=right><SCRIPT type=text/javascript>TrustLogo("/new/trustlogo/cornertrust.gif", "SC2", "none");</SCRIPT></td>
+    </tr>
+    </table>
+    <map name="Map" id="Map">
+      <area shape="rect" coords="402,9,471,27" href="/new/location.html" />
+      <area shape="rect" coords="344,9,391,27" href="/new/proposal.html" />
+      <area shape="rect" coords="248,9,334,27" href="/new/rules_privacy.html" />
+      <area shape="rect" coords="190,9,237,27" href="/new/rules_service.html" />
+      <area shape="rect" coords="133,9,180,27" href="/new/easyMS.html" />
+    </map>
+  </TD>
+</TR>
+</TABLE>
+<!-- 카피라이트 끝 -->
+
+
+<!-- 공통 적용 스크립트 , 모든 페이지에 노출되도록 설치. 단 전환페이지 설정값보다 항상 하단에 위치해야함 -->  
+
+<script type="text/javascript">
+var _NGUL = "wcs.naver.net/wcslog.js";
+if(location.protocol=="https:"){var nUrl="https://"+_NGUL;}else{var nUrl="http://"+_NGUL;}
+document.write("<scr"+"ipt type='text/javascript' src='"+nUrl+"'></scr"+"ipt>");
+</script>
+<script type="text/javascript">
+if (!wcs_add) var wcs_add={};
+wcs_add["wa"] = "s_5a2a6c280b8b";
+if (!_nasa) var _nasa={};
+wcs.inflow("easyms.co.kr");
+wcs_do(_nasa);
+</script>
+
+
+</body>
+</html>

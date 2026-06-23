@@ -3,14 +3,16 @@
 #   planner → db_architect → ux_designer
 #   → [backend: coder → tester] → [frontend: coder → tester]
 #
-# 한 사이클 완료 후 AGENT_INTERVAL_SECONDS(기본 900=15분) 대기.
+# 한 사이클 완료 후 AGENT_INTERVAL_SECONDS(기본 3분) 대기.
+# 기본은 구현 사이클(coder→tester만). planner/db/ux는 N사이클마다 1회(기본 6).
 #
 # 사용:
 #   ./scripts/agent_pipeline.sh
 #   ./scripts/agent_pipeline.sh --once
 #
 # 환경변수:
-#   AGENT_INTERVAL_SECONDS=900   사이클 간 대기(초)
+#   AGENT_INTERVAL_SECONDS=180    사이클 간 대기(초, 기본 3분)
+#   AGENT_PIPELINE_FULL_EVERY=6   planner·db·ux 포함 전체 사이클 주기(기본 6회마다 1번)
 
 set -uo pipefail
 
@@ -19,10 +21,27 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PYTHON="$ROOT/.venv/bin/python"
 RUN="$PYTHON $ROOT/scripts/run_agent.py"
 
-INTERVAL="${AGENT_INTERVAL_SECONDS:-900}"
+INTERVAL="${AGENT_INTERVAL_SECONDS:-180}"
+FULL_EVERY="${AGENT_PIPELINE_FULL_EVERY:-6}"
+CYCLE_FILE="$ROOT/.agents/pipeline_cycle"
 STREAMS=(backend frontend)
 ONCE=0
 PIPELINE_FAILURES=()
+
+pipeline_release_resources() {
+  echo "[pipeline] bridge/run_agent 자원 정리"
+  "$PYTHON" "$ROOT/scripts/run_agent.py" prune-bridges --quiet 2>/dev/null || true
+}
+
+pipeline_release_bridge() {
+  pipeline_release_resources
+}
+
+pipeline_release_bridge_resources() {
+  pipeline_release_resources
+}
+
+trap pipeline_release_resources EXIT INT TERM
 
 if [[ "${1:-}" == "--once" ]]; then
   ONCE=1
@@ -73,12 +92,15 @@ run_step() {
   echo "========================================"
   echo "[pipeline] $(date -Is) role=$role $*"
   echo "========================================"
+  local rc=0
   if $RUN build --role "$role" "$@"; then
-    return 0
+    rc=0
+  else
+    rc=$?
+    echo "[pipeline] ERROR role=$role exit=$rc" >&2
+    PIPELINE_FAILURES+=("${role}${*:+ $*}")
   fi
-  local rc=$?
-  echo "[pipeline] ERROR role=$role exit=$rc" >&2
-  PIPELINE_FAILURES+=("${role}${*:+ $*}")
+  pipeline_release_bridge_resources
   return "$rc"
 }
 
@@ -90,11 +112,35 @@ stream_cycle() {
   run_step tester --stream "$stream" || true
 }
 
+next_cycle_number() {
+  local n=0
+  if [[ -f "$CYCLE_FILE" ]]; then
+    n=$(cat "$CYCLE_FILE" 2>/dev/null || echo 0)
+  fi
+  n=$((n + 1))
+  echo "$n" > "$CYCLE_FILE"
+  echo "$n"
+}
+
 cycle() {
   PIPELINE_FAILURES=()
-  run_step planner || true
-  run_step db_architect || true
-  run_step ux_designer || true
+  pipeline_release_bridge
+  local cycle_no
+  cycle_no="$(next_cycle_number)"
+  local run_full=0
+  if (( cycle_no == 1 || cycle_no % FULL_EVERY == 0 )); then
+    run_full=1
+  fi
+
+  if (( run_full == 1 )); then
+    echo "[pipeline] cycle=$cycle_no mode=full (planner·db·ux 포함)"
+    run_step planner || true
+    run_step db_architect || true
+    run_step ux_designer || true
+  else
+    echo "[pipeline] cycle=$cycle_no mode=implement (coder→tester만 — 기획 스킵)"
+  fi
+
   for stream in "${STREAMS[@]}"; do
     stream_cycle "$stream"
   done
@@ -107,8 +153,8 @@ cycle() {
   return 0
 }
 
-echo "[pipeline] streams=${STREAMS[*]} interval=${INTERVAL}s"
-echo "[pipeline] order: planner → db_architect → ux_designer → coder → tester (×2 streams)"
+echo "[pipeline] streams=${STREAMS[*]} interval=${INTERVAL}s full_every=${FULL_EVERY}"
+echo "[pipeline] order: [full] planner → db_architect → ux_designer → coder → tester (×2 streams)"
 
 if ! preflight; then
   exit 2

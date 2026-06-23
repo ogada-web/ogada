@@ -1,0 +1,103 @@
+BNK-521 — G-STAFF-ANNUAL-LEAVE △ FE shell → ✅ FULL-STACK CLOSURE (이지케어 역공학 2–4h)
+조사일: 2026-06-22 | rotation: 이지케어 역공학 2–4h (worker-b100 tab01 ↔ ogada /staff/annual-leaves)
+========================================================================
+
+[1] ogada git 실측 (@HEAD) — FE +1 · BE +1 advance · 양쪽 WT CLEAN
+------------------------------------------------------------------------
+FE develop @3902dba  (WT CLEAN · BNK-520 @5353991 HEAD +1 · ahead 171 vs origin/test=ab4de83)
+  last: feat(v1.2.1/G-STAFF-ANNUAL-LEAVE): wire annual leave roster page and API
+BE develop @41fb84f  (WT CLEAN · BNK-520 @d3d4d2d HEAD +1 · ahead 517 vs origin/test=598d108)
+  last: feat(v2/G-STAFF-ANNUAL-LEAVE): add branch annual leave roster API
+
+KPI: 111 Route (110 <Route\b + 1 <Routes> wrapper · BNK-520 110 → +1 /staff/annual-leaves)
+     89 *Page.jsx (+RootRedirect=90 · BNK-520 88 → +1 StaffAnnualLeavePage)
+     V1–V172 (BNK-520 V1–V171 → +1 V172__staff_annual_leave_yearly_us_r03e.sql)
+     BE Test 243 (BNK-520 242 → +1 StaffAnnualLeaveServiceTest)
+     FE test 447 (182 .test.js + 265 .test.jsx · BNK-520 445 → +2)
+     모듈 78.79% (competitorModuleCoverage.js 미변경 · 22.85/29 · module 8 직원·근태 0.85 carry)
+     merge gate 688 (FE171 + BE517 · BNK-520 686 → +2)
+
+[2] BE commit @41fb84f diff (12-file +1283L) — staffannualleave 도메인 신규
+------------------------------------------------------------------------
+  domain/StaffAnnualLeaveService.java                 374 ++  (NEW · roster+yearly+upsert)
+  persistence/StaffAnnualLeaveYearlyEntity.java       274 ++  (NEW)
+  test/.../StaffAnnualLeaveServiceTest.java           238 ++  (NEW · BE Test +1)
+  routing/MustApiEndpointRoutingTest.java              94 ++  (routing assert)
+  domain/StaffAnnualLeaveSupport.java                  90 ++  (NEW)
+  api/StaffAnnualLeaveController.java                  59 ++  (NEW · GET/PUT)
+  resources/db/migration/V172__...us_r03e.sql          55 ++  (NEW · V172)
+  api/StaffAnnualLeaveYearlyResponse.java              21 ++  (NEW)
+  api/StaffAnnualLeaveRosterItemResponse.java          21 ++  (NEW)
+  api/SaveStaffAnnualLeaveRequest.java                 19 ++  (NEW)
+  StaffAnnualLeaveYearlyRepository.java                26 ++  (NEW)
+  api/StaffAnnualLeaveRosterResponse.java              12 ++  (NEW)
+
+[3] FE commit @3902dba diff (12-file +707/-3L) — Page wire + services + route
+------------------------------------------------------------------------
+  src/pages/StaffAnnualLeavePage.jsx                  331 ++  (NEW · roster + edit modal)
+  src/pages/StaffAnnualLeavePage.test.jsx             105 ++  (NEW · .test.jsx +1)
+  src/api/staffAnnualLeaveServices.test.js             79 ++  (NEW · .test.js +1)
+  src/api/services.js                                  39 +   (GET/PUT /staff/annual-leaves)
+  src/utils/staffAnnualLeave.js                        45 +   (util deepen)
+  src/utils/staffAnnualLeave.test.js                   41 +
+  src/components/ui/StaffAnnualLeaveTable.jsx          22  ±  (edit-mode wire)
+  src/components/ui/StaffAnnualLeaveTable.test.jsx     25  ±
+  src/App.jsx                                          12 +   (+1 Route /staff/annual-leaves)
+  src/layout/navConfig.js                               6 +   (nav link)
+  src/components/ui/StaffContextNav.jsx                 1 +
+  src/components/ui/StaffContextNav.test.jsx            4 +
+
+[4] V172 schema verbatim ↔ ezCare worker-b100 tab01 colModel cross-walk (✅ FULL parity)
+------------------------------------------------------------------------
+V172 헤더 verbatim:
+  "v2/US-R03e — 직원 연차휴가 연간 현황 (ezCare worker-b100 tab01 · BNK-516)"
+
+| V172 column (staff_annual_leave_yearly) | type            | ezCare worker-b100 colModel | 판정 |
+|---|---|---|---|
+| user_id (→users)                        | UUID FK         | wCode/wName/wGroup (join)   | ✅ |
+| leave_year                              | INT CHECK 2000-2100 | (연도 필터)             | ✅ |
+| month_01 ~ month_12                     | NUMERIC(4,1) ≥0 | month_1 ~ month_12          | ✅ |
+| total_entitlement                       | NUMERIC(5,1) ≥0 | annual_vacation(_2)         | ✅ |
+| (derived 사용 합계 Σmonth)              | service compute | vacation_total              | ✅ |
+| (derived 잔여 = 부여-사용)              | service compute | (ezCare 미노출)             | ✅+ 우위 |
+| memo                                    | TEXT            | memo                        | ✅ |
+| organization_id + branch_id             | UUID FK (tenant)| (단일 기관 ERP)            | ✅+ 멀티테넌트 우위 |
+
+제약 우위(ezCare 공개 노출 0):
+  uq_..._org_user_year UNIQUE(org,user,leave_year) — 연도별 1행 무결성
+  chk_..._month_non_negative (month_01~12 ≥0) — 음수 사용일수 차단
+  chk_..._entitlement_non_negative · chk_..._updated_after_created (temporal)
+  3× composite FK (org,user)/(org,branch)/(org,recorded_by) — 테넌트 격리
+  idx_..._org_branch_year + idx_..._org_user_year DESC
+
+[5] 상태 변경 — candidate G-STAFF-ANNUAL-LEAVE △ FE shell(BNK-520) → ✅ FULL-STACK CLOSURE
+------------------------------------------------------------------------
+| 항목 | BNK-520 (△ FE shell) | BNK-521 (✅ 실측) | 판정 |
+|---|---|---|---|
+| FE 컴포넌트 | ✅ StaffAnnualLeaveTable | ✅ (edit-mode wire +22L)         | carry ✅ |
+| Route       | ❌                    | ✅ /staff/annual-leaves (App.jsx +12L) | △→✅ |
+| Page        | ❌                    | ✅ StaffAnnualLeavePage.jsx (331L)     | △→✅ |
+| BE API      | ❌                    | ✅ GET/PUT StaffAnnualLeaveController   | △→✅ |
+| V172        | ❌                    | ✅ V172__staff_annual_leave_yearly      | △→✅ |
+| nav         | ❌                    | ✅ navConfig +6L · StaffContextNav      | △→✅ |
+판정: BNK-516 candidate 등재(P3「가정」) → BNK-520 △ FE shell(UXD-154) → BNK-521 ✅ FULL-STACK
+      closure (3-cycle lifecycle). ogada 우위: 잔여 derived(ezCare 미노출)·멀티테넌트
+      org/branch 격리·DB-level CHECK(월별 음수 차단·temporal·연도 UNIQUE) 경쟁사 공개 노출 0.
+      planner: module 8 직원·근태 0.85 → 연차 sub-feature ✅ 반영 시 KPI 상향 후보(현 KPI 0 carry).
+
+[6] 이지케어 데모 셸 재실측 (login code 0000 · 314차 nav zero drift)
+------------------------------------------------------------------------
+  POST /page/login.php oCode=DEMO → code 0000 (데모 세션 OK)
+  /new.ez demo shell        200 · 143,446B · 0d43cdf0  (세션별 token 가변 · 구조 동일)
+  top-nav-item-V2.js?20260428 200 · 25,470B · 95286775  (314차 zero drift IDENTICAL)
+  /new.ez?PGID=worker-b100  200 · 118,691B · 44eecc84  (SIZE IDENTICAL with BNK-516 760b32b3
+                                                        = 구조 zero drift · md5 차이는 세션 CSRF/token)
+  redirect stub (비로그인)  70B · e1d52bd5  (역공학 금지 stub carry)
+nav 10-module top level: 1직원·2수급자·3방문일정·4RFID점검·5본인부담·6직원급여·7재무회계·
+                         8세무·사회보험·9기관관리·10기관평가
+
+per-cycle minimum 4종 충족:
+  ① 신규/재실측 URL: 이지케어 데모 login+worker-b100 314차 + top-nav-V2 314차 zero drift
+  ② 메뉴/필드/워크플로 1블록: V172 schema ↔ worker-b100 tab01 colModel 8-field FULL cross-walk
+  ③ COMPETITOR_MATRIX 1행+ @HEAD: BNK-521 rows @3902dba/@41fb84f
+  ④ BENCHMARK_REPORT §소절: §521-1~3

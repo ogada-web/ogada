@@ -1,0 +1,86 @@
+{
+  "updated": "2026-06-22",
+  "demo_visible": 10,
+  "func_leaves": 11,
+  "mapping": [
+    {
+      "id": "7-1",
+      "title": "본인부담금 청구관리",
+      "demo_view": "view.cost_master",
+      "ogada_route": "/billing",
+      "ogada_page": "BillingPage"
+    },
+    {
+      "id": "7-2",
+      "title": "본인부담금 입금관리",
+      "demo_view": "view.cost_receipt",
+      "ogada_route": "/billing/payments",
+      "ogada_page": "PaymentPage"
+    },
+    {
+      "id": "7-2-1",
+      "title": "의료비공제(연말정산)",
+      "demo_view": "view.cost_master_statistic",
+      "ogada_route": "/billing/reports/statistics",
+      "ogada_page": "BillingStatisticsReportPage"
+    },
+    {
+      "id": "7-3",
+      "title": "본인부담금 미납관리",
+      "demo_view": "view.cost_nopay",
+      "ogada_route": "/billing/overdue",
+      "ogada_page": "OverduePage"
+    },
+    {
+      "id": "7-4",
+      "title": "본인부담금 자동이체 (CMS)",
+      "demo_view": "view.cms_manage",
+      "ogada_route": "/billing/cms",
+      "ogada_page": "CmsPage"
+    },
+    {
+      "id": "7-5",
+      "title": "본인부담금 간편결제",
+      "demo_view": "view.npay_manage",
+      "ogada_route": "/billing/easy-pay",
+      "ogada_page": "EasyPayPage"
+    },
+    {
+      "id": "7-6",
+      "title": "본인부담금 청구대장 리포트",
+      "demo_view": "view.cost_master_report",
+      "ogada_route": "/billing/reports/charges",
+      "ogada_page": "BillingReportPage(charges)"
+    },
+    {
+      "id": "7-7",
+      "title": "본인부담금 입금대장 리포트",
+      "demo_view": "view.cost_deposit_report",
+      "ogada_route": "/billing/reports/deposits",
+      "ogada_page": "BillingReportPage(deposits)"
+    },
+    {
+      "id": "7-8",
+      "title": "본인부담금 수납대장 리포트",
+      "demo_view": "view.cost_receipt_report",
+      "ogada_route": "/billing/reports/receipts",
+      "ogada_page": "BillingReportPage(receipts)"
+    },
+    {
+      "id": "7-9",
+      "title": "본인부담금 수납,환불내역",
+      "demo_view": "view.cost_receipt_apply_yearly",
+      "ogada_route": "/billing/reports/refunds",
+      "ogada_page": "BillingReportPage(refunds)"
+    },
+    {
+      "id": "7-10",
+      "title": "본인부담금 간편계산기",
+      "demo_view": null,
+      "demo_visible": false,
+      "ogada_route": "/billing/calculator",
+      "ogada_page": "CopayCalculatorPage",
+      "note": "func.php only — demo L07 nav 미노출(10/11). view.service_cost는 9-3 요양급여 수가설정(L09)과 혼동 금지"
+    }
+  ]
+}

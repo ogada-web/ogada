@@ -1,0 +1,26 @@
+케어포 주야간 매뉴얼 PDF p.96 zone③ — 모바일 서류 등록 ↔ ogada US-R03 mobile capture cross-walk
+출처: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=96
+조사일: 2026-06-21 | HTTP 200 | BNK-476 신규 evidence (ogada git 실측 6–8h · p.96 재인용 + ogada `@6bde24a` 실측)
+
+=== 케어포 p.96 zone③ (확인·on-disk BNK-470 extract 재인용) ===
+③ 직원별 서류관리 — 직원별로 필요한 서류가 **20개까지 등록관리**
+※ **서류관리는 모바일 앱에서도 등록이 가능합니다.**
+
+=== ogada `@6bde24a` git 실측 (확인·2026-06-21) ===
+커밋: feat(v1.2.1/US-R03): add mobile camera capture for staff HR uploads
+파일: StaffDocumentRepositoryPanel.jsx · FileUpload.jsx · StaffHrFilePanel.jsx · StaffRefresherCertificatePanel.jsx
+
+| 필드/워크플로 | 케어포 p.96 | ogada `@6bde24a` |
+|---|---|---|
+| 슬롯 수 | 20개 | **21-slot superset** (`STAFF_DOCUMENT_REPOSITORY_SLOT_COUNT=21`·careforParityLabel 20) |
+| 모바일 등록 | **네이티브 모바일 앱** | **웹 모바일** `input[type=file] accept="image/*" capture="environment"` per-slot 「모바일 촬영」버튼 |
+| 업로드 API | 미확인(앱 전용) | `uploadStaffHrFileApi(userId, documentType, file)` — 기존 HR file hub 재사용 |
+| 검증 | 미확인 | `validateStaffHrFile(file)` — FE 파일 타입/크기 guard |
+| HR 패널 연동 | — | `FileUpload enableMobileCapture` — StaffHrFilePanel·RefresherCertificatePanel |
+| 테스트 | — | `StaffDocumentRepositoryPanel.test.jsx` 「uploads missing slot via mobile camera capture」·`capture="environment"` assert |
+
+판정: **G-STAFF-DOCUMENT-REPOSITORY mobile △ → ✅+ partial closure** — 웹 모바일 카메라 촬영으로 p.96 「모바일 등록」워크플로 **기능 패리티(웹)**. 잔여 갭: 케어포 **네이티브 앱**·오프라인·푸시 알림(미확인·MVP out-of-scope).
+
+=== 백본 func.php 273차 zero drift (확인·2026-06-21) ===
+URL: https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php
+HTTP 200 · 98,328B · md5 `6226e6eb` — on-disk IDENTICAL (273차)

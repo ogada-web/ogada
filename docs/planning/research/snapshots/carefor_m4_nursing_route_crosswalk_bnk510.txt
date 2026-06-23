@@ -1,0 +1,59 @@
+# BNK-510 (2026-06-22T11:30Z) — 케어포 func.php 모듈4(간호·물리 급여) 10-leaf ↔ ogada /nursing/* 16-route 전수 cross-walk
+# rotation: 케어포 역공학 0–2h
+# 근거 URL: https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php (HTTP 200·98,328B·md5 6226e6eb·304차 zero drift live=on-disk IDENTICAL)
+# ogada 실측: FE @fdc135b (WT CLEAN·ahead 164) `git show develop:src/App.jsx` grep
+#
+# ─────────────────────────────────────────────────────────────────────────
+# 케어포 func.php 모듈4 정적 메뉴 verbatim (간호·물리 = "간호·물리 급여")
+# ─────────────────────────────────────────────────────────────────────────
+# 4-1   간호급여 제공기록(간호,투약,진료)
+#   4-1-1 통합 간호관리 기록 / 통합 바이탈 기록
+# 4-2   응급상황 기록(필요시)
+# 4-3   통합 간호제공 리포트
+# 4-4   병의원 진료내역 리포트
+# 4-5   투약제공 리포트
+# 4-6   물리/작업치료 제공기록(필요시)
+#   4-6-1 물리(작업)치료 일정
+#   4-6-2 물리(작업)치료 제공 리포트
+#   4-6-3 물리(작업)치료 일정 리포트
+# → 총 10-leaf (6 top + 4 sub; 4-1-1 + 4-6-1/2/3)
+#
+# ─────────────────────────────────────────────────────────────────────────
+# ogada /nursing/* 16-route + 인접 모듈 cross-walk
+# ─────────────────────────────────────────────────────────────────────────
+# func 4-leaf                        | ogada Route / Page                                   | 판정
+# -----------------------------------|------------------------------------------------------|------
+# 4-1 간호급여 제공기록              | /nursing/service (NursingServiceRecordPage)          | ✅
+# 4-1-1 통합 바이탈/간호관리         | /nursing/vital-checks (NursingVitalCheckPage)        | ✅
+# 4-2 응급상황 기록(필요시)          | /nursing/emergency-records (NursingEmergencyRecord)  | ✅
+# 4-3 통합 간호제공 리포트           | /care/reports/nursing-service (CareNursingServiceRpt)| ✅
+#                                    |  + /nursing/service/reports/total                    | ✅+
+# 4-4 병의원 진료내역 리포트         | /nursing/service/reports/hospital-visits             | ✅
+# 4-5 투약제공 리포트                | /nursing/service/reports/medication-delivery         | ✅
+#                                    |  + /care/reports/medication-delivery                 | ✅+
+# 4-6 물리/작업치료 제공기록(필요시) | /programs/functional-recovery (FunctionalRecovery)   | ✅(인접 모듈26 G17·기능회복훈련)
+# 4-6-1 물리치료 일정                |  └ 기능회복훈련 일정·`functionalRecoveryCompliance`  | △(프로그램 일정 통합)
+# 4-6-2 물리치료 제공 리포트         |  └ /programs/provision-result-evaluations            | △
+# 4-6-3 물리치료 일정 리포트         |  └ (전용 PT/OT 일정 리포트 ❌·기능회복 리포트로 대체) | △
+#
+# ─────────────────────────────────────────────────────────────────────────
+# ogada SUPERSET (func.php 모듈4에 없는 ogada 간호 전용 route 5건)
+# ─────────────────────────────────────────────────────────────────────────
+#   /nursing/weight-records        (체중 기록)            ← func 모듈4 미노출
+#   /nursing/oral-care-checks      (구강간호 점검)        ← func 모듈4 미노출 (silverangel 평가지표·간호처치 4-service)
+#   /nursing/excretion-tubes       (배설·튜브 관리)       ← func 모듈4 미노출
+#   /nursing/pressure-ulcer/*      (욕창 평가·계획·기록·리포트 5-route) ← func 모듈4 미노출
+#
+# ─────────────────────────────────────────────────────────────────────────
+# 판정 요약 (KPI 영향 0 — 모듈4 coverage=1 committed canonical 재확인)
+# ─────────────────────────────────────────────────────────────────────────
+# - 간호(4-1~4-5) 6-leaf = ogada /nursing/* 5/5 ✅ + 리포트 dual-path superset.
+# - 4-6 물리/작업치료(4-leaf) = ogada에 "물리치료 전용 기록" route ❌이나,
+#   주야간보호 현장에서 물리/작업치료는 기능회복훈련(G17·모듈26)으로 제공·기록 →
+#   ogada `/programs/functional-recovery` + `functionalRecoveryCompliance.js`로 cross-module 커버.
+#   ※ `competitorModuleCoverage.js` `{id:"4", coverage:1}` + `{id:"26"(기능회복), coverage:1}` 양쪽 ✅ = 분류 정합.
+# - ogada 욕창·체중·구강·배설튜브 4-cluster = func.php 모듈4 미노출 영역 → ogada **간호 superset 우위**.
+# - 가정: func 4-6 "물리/작업치료 전용 일정/리포트 3-sub"를 별도 PT/OT 모듈로 분리 요구하는
+#   시설 인증 평가가 발생할 경우에만 P3 candidate(G-PT-OT-RECORD) carry — 현 MVP out-of-scope·KPI 0.
+#
+# 가정 번복 0 · 신규 core 갭 0 · 모듈4 coverage=1 재확인(번복 아님) · 16 /nursing route 실측.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# submodule 내부 develop → test 수동 merge.
-# ROADMAP merge_status=ready 일 때 coder build 가 자동 merge 하므로 보통은 불필요.
+# submodule develop → test merge (test worktree 에서 수행).
+# ROADMAP merge_status=ready 일 때 run_agent.py 가 자동 merge 하므로 보통은 불필요.
 #
 # 사용:
 #   ./scripts/git_merge_to_test.sh backend
@@ -14,8 +14,14 @@ STREAM="${1:-backend}"
 VERSION="${2:-manual}"
 
 case "$STREAM" in
-  backend) SUBMODULE="$ROOT/src/backend" ;;
-  frontend) SUBMODULE="$ROOT/src/frontend" ;;
+  backend)
+    PRIMARY="$ROOT/src/backend"
+    TEST_WT="$ROOT/src/backend-test"
+    ;;
+  frontend)
+    PRIMARY="$ROOT/src/frontend"
+    TEST_WT="$ROOT/src/frontend-test"
+    ;;
   *)
     echo "[fatal] stream 은 backend 또는 frontend 여야 합니다." >&2
     exit 1
@@ -25,21 +31,18 @@ esac
 DEVELOP="develop"
 TEST="test"
 
-if ! git -C "$SUBMODULE" rev-parse --git-dir >/dev/null 2>&1; then
-  echo "[fatal] submodule git 저장소가 아닙니다: $SUBMODULE" >&2
+if ! git -C "$PRIMARY" rev-parse --git-dir >/dev/null 2>&1; then
+  echo "[fatal] submodule git 저장소가 아닙니다: $PRIMARY" >&2
   exit 1
 fi
 
-CURRENT="$(git -C "$SUBMODULE" branch --show-current 2>/dev/null || true)"
-
-echo "[merge] $STREAM: ${DEVELOP} → ${TEST} (${VERSION}) in $SUBMODULE"
-git -C "$SUBMODULE" checkout "$TEST"
-git -C "$SUBMODULE" merge "$DEVELOP" -m "chore(${STREAM}): merge ${DEVELOP} into ${TEST} (${VERSION})"
-
-if [[ -n "$CURRENT" ]]; then
-  git -C "$SUBMODULE" checkout "$CURRENT"
-else
-  git -C "$SUBMODULE" checkout "$DEVELOP"
+if ! git -C "$PRIMARY" worktree list --porcelain 2>/dev/null | grep -q "^worktree $TEST_WT$"; then
+  echo "[fatal] test worktree 없음: $TEST_WT — ./scripts/git_branch_setup.sh 실행" >&2
+  exit 1
 fi
 
-echo "[ok] merge 완료"
+echo "[merge] $STREAM: ${DEVELOP} → ${TEST} (${VERSION}) in $TEST_WT"
+git -C "$TEST_WT" checkout "$TEST"
+git -C "$TEST_WT" merge "$DEVELOP" -m "chore(${STREAM}): merge ${DEVELOP} into ${TEST} (${VERSION})"
+
+echo "[ok] merge 완료 (primary $PRIMARY 는 develop 유지)"

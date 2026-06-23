@@ -19,20 +19,25 @@ Cursor SDK 기반 멀티 모드 에이전트 실행기.
 from __future__ import annotations
 
 import argparse
+import atexit
+import fcntl
 import hashlib
 import json
 import os
+import signal
 import subprocess
 import sys
 import time
 import traceback
 from collections.abc import Mapping
+from contextlib import contextmanager
 from pathlib import Path
 
 from dotenv import load_dotenv
 from cursor_sdk import (
     Agent,
     AgentOptions,
+    Client,
     CursorAgentError,
     LocalAgentOptions,
     SendOptions,
@@ -97,6 +102,8 @@ TEST_REPORT_FILE = QA_DIR / "TEST_REPORT.md"
 REQUIREMENTS_FILE = PLANNING_DIR / "REQUIREMENTS.md"
 BENCHMARK_REPORT_FILE = RESEARCH_DIR / "BENCHMARK_REPORT.md"
 COMPETITOR_MATRIX_FILE = RESEARCH_DIR / "COMPETITOR_MATRIX.md"
+SNAPSHOTS_DIR = RESEARCH_DIR / "snapshots"
+SNAPSHOTS_README_FILE = SNAPSHOTS_DIR / "README.md"
 USER_STORIES_FILE = PLANNING_DIR / "USER_STORIES.md"
 FLOWCHART_FILE = PLANNING_DIR / "FLOWCHART.md"
 API_SPEC_FILE = TECHNICAL_DIR / "API_SPEC.md"
@@ -112,12 +119,12 @@ APPROVAL_MARKER = "<!-- approved-by-user: true -->"
 
 DEFAULT_MODEL_FALLBACK = "composer-2.5"
 ENV_MODEL = os.environ.get("AGENT_MODEL")
-DEFAULT_INTERVAL = int(os.environ.get("AGENT_INTERVAL_SECONDS", "900"))
+DEFAULT_INTERVAL = int(os.environ.get("AGENT_INTERVAL_SECONDS", "1800"))
 DEFAULT_WRITER_INTERVAL = int(os.environ.get("AGENT_WRITER_INTERVAL_SECONDS", "3600"))
-DEFAULT_TESTER_INTERVAL = int(os.environ.get("AGENT_TESTER_INTERVAL_SECONDS", "900"))
-DEFAULT_PLANNING_INTERVAL = int(os.environ.get("AGENT_PLANNING_INTERVAL_SECONDS", "900"))
-DEFAULT_BENCHMARK_INTERVAL = int(os.environ.get("AGENT_BENCHMARK_INTERVAL_SECONDS", "86400"))
-DEFAULT_UX_INTERVAL = int(os.environ.get("AGENT_UX_INTERVAL_SECONDS", "900"))
+DEFAULT_TESTER_INTERVAL = int(os.environ.get("AGENT_TESTER_INTERVAL_SECONDS", "1800"))
+DEFAULT_PLANNING_INTERVAL = int(os.environ.get("AGENT_PLANNING_INTERVAL_SECONDS", "1800"))
+DEFAULT_BENCHMARK_INTERVAL = int(os.environ.get("AGENT_BENCHMARK_INTERVAL_SECONDS", "1800"))
+DEFAULT_UX_INTERVAL = int(os.environ.get("AGENT_UX_INTERVAL_SECONDS", "1800"))
 DEFAULT_SECURITY_INTERVAL = int(os.environ.get("AGENT_SECURITY_INTERVAL_SECONDS", "86400"))
 
 BUILD_ROLES = frozenset({
@@ -170,6 +177,306 @@ PLAN_PROBE_BEFORE_SEND = os.environ.get("AGENT_PLAN_PROBE", "0").strip().lower()
     "true",
     "yes",
 )
+BRIDGE_LAUNCH_LOCK = AGENTS_DIR / "bridge.launch.lock"
+_BRIDGE_LAUNCH_LOCK_INSTALLED = False
+
+
+@contextmanager
+def _bridge_launch_lock():
+    """동시 Bridge.launch 직렬화 (race → --tool-callback-auth-token 누락 방지)."""
+
+    BRIDGE_LAUNCH_LOCK.parent.mkdir(parents=True, exist_ok=True)
+    with open(BRIDGE_LAUNCH_LOCK, "a+", encoding="utf-8") as fp:
+        fcntl.flock(fp.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fp.fileno(), fcntl.LOCK_UN)
+
+
+def _install_bridge_launch_lock() -> None:
+    global _BRIDGE_LAUNCH_LOCK_INSTALLED
+    if _BRIDGE_LAUNCH_LOCK_INSTALLED:
+        return
+    from cursor_sdk._bridge import Bridge
+
+    original = Bridge.launch.__func__
+
+    @classmethod
+    def locked_launch(cls, *args, **kwargs):
+        with _bridge_launch_lock():
+            return original(cls, *args, **kwargs)
+
+    Bridge.launch = locked_launch
+    _BRIDGE_LAUNCH_LOCK_INSTALLED = True
+
+
+_install_bridge_launch_lock()
+
+# build 모드: 프로세스당 1 bridge 재사용 + 종료 시 반드시 close (orphan node 누수 방지)
+_BUILD_CLIENT: Client | None = None
+_BRIDGE_CLEANUP_HANDLERS_INSTALLED = False
+BRIDGE_PRUNE_ENABLED = os.environ.get("AGENT_BRIDGE_PRUNE", "1").strip().lower() not in (
+    "0",
+    "false",
+    "no",
+)
+
+
+def _proc_ppid(pid: int) -> int | None:
+    try:
+        for line in Path(f"/proc/{pid}/status").read_text(encoding="utf-8").splitlines():
+            if line.startswith("PPid:"):
+                return int(line.split()[1])
+    except (OSError, ValueError, IndexError):
+        return None
+    return None
+
+
+def _proc_cmdline(pid: int) -> str | None:
+    try:
+        raw = Path(f"/proc/{pid}/cmdline").read_bytes()
+        if not raw:
+            return None
+        return raw.replace(b"\0", b" ").decode("utf-8", errors="replace").strip()
+    except OSError:
+        return None
+
+
+def _parse_ps_pid_cmd(line: str) -> tuple[int, str] | None:
+    line = line.strip()
+    if not line:
+        return None
+    parts = line.split(None, 1)
+    if len(parts) != 2 or not parts[0].isdigit():
+        return None
+    return int(parts[0]), parts[1]
+
+
+def _iter_ps_lines(pattern: str) -> list[tuple[int, str]]:
+    try:
+        proc = subprocess.run(
+            ["pgrep", "-af", pattern],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return []
+    rows: list[tuple[int, str]] = []
+    for line in (proc.stdout or "").splitlines():
+        parsed = _parse_ps_pid_cmd(line)
+        if parsed is not None:
+            rows.append(parsed)
+    return rows
+
+
+def _workspace_path_token() -> str:
+    return WORKSPACE_ROOT.as_posix()
+
+
+def _cmd_targets_workspace(cmd: str) -> bool:
+    token = _workspace_path_token()
+    return token in cmd and "cursor-sdk-bridge" in cmd
+
+
+def _iter_workspace_bridge_processes() -> list[dict[str, int | str]]:
+    rows: list[dict[str, int | str]] = []
+    for pid, cmd in _iter_ps_lines("cursor-sdk-bridge"):
+        if not _cmd_targets_workspace(cmd):
+            continue
+        ppid = _proc_ppid(pid)
+        rows.append(
+            {
+                "pid": pid,
+                "ppid": ppid if ppid is not None else -1,
+                "cmd": cmd,
+            }
+        )
+    return rows
+
+
+def _is_run_agent_ancestor(pid: int, *, max_depth: int = 12) -> bool:
+    """pid 의 조상 중 python run_agent.py 프로세스가 있으면 True."""
+
+    cur = pid
+    for _ in range(max_depth):
+        if cur <= 1:
+            return False
+        cmd = _proc_cmdline(cur)
+        if cmd and "run_agent.py" in cmd and "python" in cmd.lower():
+            base = Path(cmd.split(None, 1)[0]).name.lower() if cmd.split() else ""
+            if base.startswith("python") or "/python" in cmd.lower():
+                return True
+        parent = _proc_ppid(cur)
+        if parent is None:
+            return False
+        cur = parent
+    return False
+
+
+def _active_run_agent_pids() -> set[int]:
+    active: set[int] = set()
+    root_token = _workspace_path_token()
+    for pid, cmd in _iter_ps_lines("run_agent.py"):
+        if "run_agent.py" not in cmd:
+            continue
+        if root_token not in cmd and "scripts/run_agent.py" not in cmd:
+            continue
+        # pgrep -af 는 cursor sandbox bash wrapper 도 매칭 — python 프로세스만
+        base = Path(cmd.split(None, 1)[0]).name.lower() if cmd.split() else ""
+        if base not in ("python", "python3", "python3.10", "python3.11", "python3.12"):
+            if "python" not in cmd.lower() or " extglob " in cmd:
+                continue
+        active.add(pid)
+    return active
+
+
+def _owned_build_bridge_pid() -> int | None:
+    client = _BUILD_CLIENT
+    if client is None:
+        return None
+    owned = getattr(client, "_owned_bridge", None)
+    if owned is None:
+        return None
+    process = getattr(owned, "process", None)
+    if process is None:
+        return None
+    pid = getattr(process, "pid", None)
+    return int(pid) if isinstance(pid, int) and pid > 0 else None
+
+
+def _close_build_client() -> None:
+    global _BUILD_CLIENT
+    client = _BUILD_CLIENT
+    _BUILD_CLIENT = None
+    if client is None:
+        return
+    try:
+        client.close()
+    except Exception:
+        pass
+
+
+def _ensure_build_client() -> Client:
+    global _BUILD_CLIENT
+    if _BUILD_CLIENT is not None:
+        return _BUILD_CLIENT
+    close_default_client()
+    _BUILD_CLIENT = Client.launch_bridge(workspace=str(WORKSPACE_ROOT))
+    return _BUILD_CLIENT
+
+
+def prune_orphan_bridges(
+    *,
+    dry_run: bool = False,
+    quiet: bool = False,
+    keep_pids: set[int] | None = None,
+) -> dict[str, int | list[int]]:
+    """ogada workspace orphan cursor-sdk-bridge 정리.
+
+    orphan = PPID 1(reparented) · 부모 프로세스 소멸 · 부모가 run_agent.py 가 아님.
+    """
+
+    keep = set(keep_pids or ())
+    owned = _owned_build_bridge_pid()
+    if owned is not None:
+        keep.add(owned)
+
+    active_agents = _active_run_agent_pids()
+    killed: list[int] = []
+    kept: list[int] = []
+
+    for info in _iter_workspace_bridge_processes():
+        pid = int(info["pid"])
+        if pid in keep:
+            kept.append(pid)
+            continue
+
+        ppid = int(info["ppid"])
+        if ppid in active_agents or _is_run_agent_ancestor(pid):
+            kept.append(pid)
+            continue
+
+        parent_cmd = _proc_cmdline(ppid) if ppid > 0 else None
+        if ppid > 0 and parent_cmd and "run_agent.py" in parent_cmd:
+            kept.append(pid)
+            continue
+
+        is_orphan = ppid <= 0 or ppid == 1 or parent_cmd is None
+        if not is_orphan and parent_cmd:
+            is_orphan = not _is_run_agent_ancestor(pid)
+
+        if not is_orphan:
+            kept.append(pid)
+            continue
+
+        if dry_run:
+            killed.append(pid)
+            continue
+
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except OSError:
+            kept.append(pid)
+            continue
+        time.sleep(0.05)
+        if Path(f"/proc/{pid}").exists():
+            try:
+                os.kill(pid, signal.SIGKILL)
+            except OSError:
+                pass
+        if not Path(f"/proc/{pid}").exists():
+            killed.append(pid)
+        else:
+            kept.append(pid)
+
+    summary: dict[str, int | list[int]] = {
+        "killed": killed,
+        "kept": kept,
+        "killed_count": len(killed),
+        "kept_count": len(kept),
+    }
+    if not quiet:
+        print(
+            f"[bridge-prune] killed={len(killed)} kept={len(kept)} "
+            f"active_run_agent={len(active_agents)}"
+        )
+        if killed:
+            print(f"  removed PIDs: {' '.join(str(p) for p in killed[:20])}"
+                  + (" …" if len(killed) > 20 else ""))
+    return summary
+
+
+def _release_bridge_resources(*, prune: bool = True) -> None:
+    _close_build_client()
+    try:
+        close_default_client()
+    except Exception:
+        pass
+    if prune and BRIDGE_PRUNE_ENABLED:
+        prune_orphan_bridges(quiet=True)
+
+
+def _install_bridge_cleanup_handlers() -> None:
+    global _BRIDGE_CLEANUP_HANDLERS_INSTALLED
+    if _BRIDGE_CLEANUP_HANDLERS_INSTALLED:
+        return
+    _BRIDGE_CLEANUP_HANDLERS_INSTALLED = True
+    atexit.register(_release_bridge_resources)
+
+    def _signal_release(signum: int, _frame: object) -> None:
+        _release_bridge_resources()
+        raise SystemExit(128 + signum if signum < 128 else 1)
+
+    for sig in (signal.SIGTERM, signal.SIGINT):
+        try:
+            signal.signal(sig, _signal_release)
+        except (OSError, ValueError):
+            pass
+
+
+_install_bridge_cleanup_handlers()
 
 
 def _load_branches_yaml() -> dict | None:
@@ -712,15 +1019,81 @@ def merge_develop_to_test(stream: str, version_id: str) -> bool:
     return True
 
 
-def maybe_merge_version_to_test(stream: str) -> None:
+def maybe_merge_version_to_test(stream: str) -> bool:
     """ROADMAP merge_status=ready 이면 develop → test 자동 merge."""
 
     version_id = _roadmap_merge_ready(stream)
     if not version_id:
-        return
+        return False
     if merge_develop_to_test(stream, version_id):
         _roadmap_mark_merged(version_id)
         print(f"[merge] ROADMAP {version_id} → merge_status=merged")
+        return True
+    return False
+
+
+def run_live_e2e_post_merge(stream: str, version_id: str | None = None) -> int:
+    """frontend merge 성공 직후 실백엔드 Vitest (결정 73 post-merge, 결정 96 파이프라인)."""
+
+    if stream != "frontend":
+        return 0
+    if os.environ.get("AGENT_SKIP_LIVE_E2E", "").strip().lower() in ("1", "true", "yes"):
+        print("[live-e2e-skip] AGENT_SKIP_LIVE_E2E set")
+        return 0
+
+    script = WORKSPACE_ROOT / "scripts" / "run-live-e2e.sh"
+    if not script.is_file():
+        print("[live-e2e-skip] scripts/run-live-e2e.sh 없음", file=sys.stderr)
+        return 0
+
+    label = version_id or "merge"
+    print(f"[live-e2e] post-merge ({label}): {script.name} 실행 중...")
+    result = subprocess.run(
+        [str(script)],
+        cwd=WORKSPACE_ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if result.stdout:
+        print(result.stdout.rstrip())
+    if result.returncode == 0:
+        print("[live-e2e-ok] post-merge live E2E passed")
+        return 0
+
+    print(
+        f"[live-e2e-fail] post-merge live E2E failed (exit={result.returncode})",
+        file=sys.stderr,
+    )
+    if result.stderr:
+        print(result.stderr.rstrip(), file=sys.stderr)
+    _record_live_e2e_failure(version_id or "unknown", result)
+    return result.returncode
+
+
+def _record_live_e2e_failure(version_id: str, result: subprocess.CompletedProcess) -> None:
+    """LIVE E2E 실패 요약을 QA_FEEDBACK Open 에 기록."""
+
+    if not QA_FEEDBACK_FILE.exists():
+        return
+    tail = (result.stdout or "")[-1200:] + (result.stderr or "")[-800:]
+    tail = tail.strip().replace("\n", " ")[:500]
+    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    entry = (
+        f"\n### [TSR] post-merge live E2E FAIL — {version_id} ({stamp})\n\n"
+        f"- **severity**: HIGH\n"
+        f"- **stream**: frontend\n"
+        f"- **exit**: {result.returncode}\n"
+        f"- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·"
+        f"`scripts/dev-live-e2e.env` 확인\n"
+        f"- **로그 tail**: `{tail or 'empty'}`\n"
+    )
+    text = QA_FEEDBACK_FILE.read_text(encoding="utf-8")
+    marker = "## Open\n"
+    if marker not in text:
+        return
+    text = text.replace(marker, marker + entry, 1)
+    QA_FEEDBACK_FILE.write_text(text, encoding="utf-8")
+    print("[live-e2e] QA_FEEDBACK.md Open 에 실패 항목 기록")
 
 
 def branch_for_stream(stream: str, phase: str) -> str:
@@ -987,6 +1360,40 @@ def require_api_key() -> str:
     return key
 
 
+def _recover_build_bridge(*, restart: bool = False) -> None:
+    """build/plan bridge 정리 — owned client 종료 + orphan prune."""
+
+    if restart:
+        _close_build_client()
+    try:
+        close_default_client()
+    except Exception:
+        pass
+    if BRIDGE_PRUNE_ENABLED:
+        prune_orphan_bridges(quiet=True)
+
+
+def _build_agent_prompt(
+    prompt: str,
+    *,
+    api_key: str,
+    model_id: str,
+    cwd: Path,
+) -> object:
+    """build 모드용 Agent.prompt — 프로세스별 bridge 재사용 + 기본 client 오염 방지."""
+
+    client = _ensure_build_client()
+    return Agent.prompt(
+        prompt,
+        AgentOptions(
+            api_key=api_key,
+            model=model_id,
+            local=LocalAgentOptions(cwd=str(cwd)),
+        ),
+        client=client,
+    )
+
+
 def call_agent(prompt: str, cwd: Path, role: str | None = None):
     """모델 체인을 따라 순차 시도. 성공 시 `RunResult` 를 반환, 실패 시 None."""
 
@@ -995,22 +1402,40 @@ def call_agent(prompt: str, cwd: Path, role: str | None = None):
     label = ROLE_LABELS.get(role or "", role or "에이전트")
 
     def _run_prompt(model_id: str):
+        bridge_recoveries = 0
+
         def _do() -> object:
-            return Agent.prompt(
+            return _build_agent_prompt(
                 prompt,
-                AgentOptions(
-                    api_key=api_key,
-                    model=model_id,
-                    local=LocalAgentOptions(cwd=str(cwd)),
-                ),
+                api_key=api_key,
+                model_id=model_id,
+                cwd=cwd,
             )
 
-        status_msg = f"[bold green]{label} 작업 중 ({model_id})...[/bold green]"
-        if _RICH and _CONSOLE is not None:
-            with _CONSOLE.status(status_msg, spinner="dots"):
+        while True:
+            status_msg = f"[bold green]{label} 작업 중 ({model_id})...[/bold green]"
+            try:
+                if _RICH and _CONSOLE is not None:
+                    with _CONSOLE.status(status_msg, spinner="dots"):
+                        return _retry_call(_do, label=f"build model={model_id}")
+                print(f"  ({label} 작업 중 — {model_id}...)", flush=True)
                 return _retry_call(_do, label=f"build model={model_id}")
-        print(f"  ({label} 작업 중 — {model_id}...)", flush=True)
-        return _retry_call(_do, label=f"build model={model_id}")
+            except CursorAgentError as err:
+                msg = err.message or ""
+                if (
+                    _looks_like_bridge_restart_needed(msg)
+                    and bridge_recoveries < BRIDGE_RECOVER_MAX
+                ):
+                    bridge_recoveries += 1
+                    print(
+                        f"[recover] bridge 재시작 ({bridge_recoveries}/{BRIDGE_RECOVER_MAX}) "
+                        f"— {msg[:80]}",
+                        file=sys.stderr,
+                    )
+                    _recover_build_bridge(restart=True)
+                    time.sleep(BRIDGE_RECOVER_DELAY * bridge_recoveries)
+                    continue
+                raise
 
     for i, model_id in enumerate(chain):
         has_next = i < len(chain) - 1
@@ -1019,7 +1444,9 @@ def call_agent(prompt: str, cwd: Path, role: str | None = None):
         except CursorAgentError as err:
             msg = err.message or ""
             if has_next and (
-                _looks_like_quota_or_unavailable(msg) or not err.is_retryable
+                _looks_like_quota_or_unavailable(msg)
+                or _looks_like_bridge_restart_needed(msg)
+                or not err.is_retryable
             ):
                 print(
                     f"[fallback] model={model_id} 실패 → 다음 모델 시도: {chain[i+1]}"
@@ -1206,6 +1633,26 @@ def _build_coder_prompt(target: Path, task: str | None = None, stream: str = "ba
         "- 이번 호출에서 **반드시 파일을 생성·수정**한다. 텍스트만 돌려주면 실패.\n"
         "- 불확실하면 `docs/planning/PLAN_NOTES.md` 의 `### 코더 질문` 에 기록 후 중단.\n"
         "- 비밀값 하드코딩 금지 (.agents/rules.md §3).\n\n"
+        "## 2-1. 구현 품질 — 신중하게 (CRITICAL)\n"
+        "- **추측 구현 금지**: 커밋 전에 `docs/technical/API_SPEC.md`·백엔드 Request/Response record·"
+        "기존 유사 화면을 **읽고** HTTP 메서드·필드명·필수값을 맞춘다.\n"
+        "- **반쪽 기능 금지**: UI만 있고 API가 없거나, raw `fetch`로 JWT가 빠지거나, "
+        "백엔드 DTO와 다른 필드명(`address` vs `addressLine1` 등)으로 저장하는 코드는 **실패**로 간주.\n"
+        "- **프론트**: `src/frontend/src/api/http.js` 의 `apiFetch`·`services.js` 패턴 준수. "
+        "`Field`는 render-prop `{(p) => <TextInput {...p} />}` 로 label 연결.\n"
+        "- **범위 최소화**: 요청·ROADMAP·QA 항목만 수정. 무관한 리팩터·문서 대량 수정 금지.\n"
+        "- **검증**: backend는 `mvn test`(관련 테스트), frontend는 `npm test`(관련 파일) "
+        "최소 1회 — 실패 시 원인 수정 후 커밋.\n"
+        "- **사용자 체감**: 저장 실패·모달 오동작·빈 목록이 '정상'처럼 보이게 만들지 말 것 — "
+        "오류 메시지·필수 필드·권한 분기를 명확히.\n\n"
+        "## 2-2. 파이프라인 속도 — 사용자 피드백과 동일 (CRITICAL)\n"
+        "- **느긋한 문서 작업 금지**: TEST_REPORT·ROADMAP·PLAN_NOTES만 손대고 `src/` 를 안 고치면 **실패**.\n"
+        "- **우선순위**: (1) `memory/decisions.md` 최근 사용자 확정·버그 (2) `docs/qa/QA_FEEDBACK.md` "
+        "Open BLOCK/HIGH (3) ROADMAP `in_progress` 완료 기준 미충족 항목.\n"
+        "- **한 사이클 목표**: 사용자가 채팅으로 지적한 유형의 버그 1건 이상을 **end-to-end**로 "
+        "(API+UI+테스트) 닫거나, Open QA 1건을 Fixed로 옮길 만큼 구현.\n"
+        "- **질문·대기 금지**: 피드백이 있으면 바로 코드 수정·커밋. \"다음에 할까요?\" 금지.\n"
+        "- 신중함(§2-1)은 **속도와 양립** — 스펙 읽기는 하되, 범위는 QA·피드백 항목에만 한정.\n\n"
         f"{task_block}\n\n"
         "## 3. 읽어야 할 문서 (워크스페이스에서 직접 열기)\n"
         "- `.agents/workspace_baseline.yaml` (확정 baseline — **최우선**)\n"
@@ -1355,7 +1802,41 @@ def _build_tech_writer_prompt(task: str | None = None) -> str:
     )
 
 
+def _benchmark_rotation_focus() -> str:
+    """30분 주기 역공학 로테이션 — UTC 시각 기준."""
+    slot = (int(time.time()) // 1800) % 5
+    focuses = (
+        (
+            "**케어포 역공학** — `daycare/func.php` 109항목 전수·매뉴얼 PDF 목차·"
+            "`demo-work.carefor.co.kr` loadPage/view 파싱(시설 셸=이동서비스 없음 명시). "
+            "메뉴 depth·리포트 밀도·본인부담 7-x 번호식 흐름을 ogada Route와 1:1 매핑."
+        ),
+        (
+            "**이지케어 역공학** — `./scripts/ezcare-demo-fetch.sh`(데모 로그인→`/new.ez`)·"
+            "`ezCare_fnc.html`·Channel.io 도움말·FAQ rowid "
+            "전수(기능명·엑셀 컬럼·처리상태·RFID·이중 일정). 가격·도입 기관 수 재실측."
+        ),
+        (
+            "**엔젤·롱텀·규제** — silverangel/lcms 공개 기능·CMS 부가·"
+            "law.go.kr 이동서비스비 러-1~4 **1차 확인**(PLAN_NOTES #44). "
+            "2026 수가·평가 #27·단기보호·통합재가 고시 교차검증."
+        ),
+        (
+            "**ogada git 실측** — `src/backend`·`src/frontend` develop HEAD·"
+            "`npm test`/`mvn test`·Route·page·모듈 커버 % 재산정. "
+            "COMPETITOR_MATRIX ogada 열을 `@HEAD` SHA로 일괄 갱신."
+        ),
+        (
+            "**교차검증·갭 우선순위** — 이전 BNK 가정 번복 여부·미확인 항목 축소·"
+            "G14·대시보드·v1.3-C·v2 CMS 등 P0/P1 재정렬. "
+            "신규 경쟁사 공지·엑셀 포맷 변경 스캔."
+        ),
+    )
+    return focuses[slot]
+
+
 def _benchmark_progress_hint() -> str:
+    rotation = _benchmark_rotation_focus()
     missing = [
         name
         for name, path in (
@@ -1364,20 +1845,28 @@ def _benchmark_progress_hint() -> str:
         )
         if not path.exists()
     ]
+    cycle_minimum = (
+        "→ **이번 사이클 최소 산출**: 신규 증거 URL 1건+ · 메뉴/필드/워크플로 상세 1블록+ · "
+        "COMPETITOR_MATRIX 1행+ `@HEAD` 갱신 · BENCHMARK_REPORT §소절 1건+.\n"
+    )
     if missing:
         first = missing[0]
         return (
             f"현재 진행: **{len(missing)}개 벤치마크 산출물 미작성**\n"
             f"→ 지금 즉시 `docs/planning/research/{first}` 초안 작성.\n"
             "→ REQUIREMENTS §1-5, PLAN_NOTES 의 경쟁사 목록(케어포·이지케어·엔젤시스템·롱텀)을 우선 조사.\n"
-            "→ 각 서비스의 **제공 항목·기능·모듈·역할별 화면·청구·출석·보호자 포털**을 표로 정리.\n"
-            "→ 출처 URL·조사일 기록. 사용자 질문 금지, docs/·memory/ 파일 생성 필수."
+            "→ **역공학**: func.php·demo-work·FAQ·Channel.io에서 메뉴·필드명·화면 흐름 추출.\n"
+            f"{cycle_minimum}"
+            f"→ 이번 로테이션 초점: {rotation}\n"
+            "→ 출처 URL·조사일·HTTP 상태 기록. 사용자 질문 금지, docs/·memory/ 파일 생성 필수."
         )
     return (
-        "현재 진행: **기본 벤치마크 산출물 있음**\n"
-        "→ 최신 공식 사이트·매뉴얼·공지를 재조사해 BENCHMARK_REPORT·COMPETITOR_MATRIX 갱신.\n"
-        "→ ogada REQUIREMENTS·USER_STORIES 대비 갭·차별화·MVP 우선순위 제안 추가.\n"
-        "→ 새 인사이트는 memory/decisions.md 최상단에 기록."
+        "현재 진행: **30분 주기 역공학 벤치마크**\n"
+        f"→ 이번 로테이션 초점: {rotation}\n"
+        f"{cycle_minimum}"
+        "→ agents.yaml `reverse_engineering` 방법론 준수 — HTML/JS·FAQ·PDF·git 실측 병행.\n"
+        "→ ogada REQUIREMENTS·USER_STORIES·ROADMAP 대비 갭·차별화·MVP 우선순위 제안.\n"
+        "→ 새 인사이트는 memory/decisions.md 최상단 + BENCHMARK_REPORT 차수(BNK-N) 기록."
     )
 
 
@@ -1420,31 +1909,53 @@ def _build_benchmark_researcher_prompt(task: str | None = None) -> str:
     return (
         f"=== .agents/rules.md ===\n{rules}\n\n"
         "지금 너의 역할은 `.agents/agents.yaml` 의 `benchmark_researcher` 이다.\n"
-        "agents.yaml 의 benchmark_researcher 섹션(research_focus·outputs)을 읽어라.\n\n"
+        "agents.yaml 의 benchmark_researcher 섹션(research_focus·reverse_engineering·outputs)을 읽어라.\n\n"
         f"{_doc_identity_block('benchmark_researcher')}\n"
         "## 0. 범위\n"
         "- **docs/ 및 memory/decisions.md 만** 작성·갱신. src/ 코드 변경 금지.\n"
         "- 주간보호·요양기관 관리 SaaS/ERP 경쟁사의 **서비스 제공 항목·기능·모듈**을 조사·정리.\n"
-        "- 웹 검색·공식 사이트·매뉴얼·교육 공지 등 **공개 자료**를 근거로 한다.\n\n"
+        "- 공개 자료 + **역공학**(HTML/JS·데모·FAQ·도움말·앱스토어·PDF·git 실측)을 병행한다.\n\n"
         "## 1. 자율 실행 (필수)\n"
         "- 사용자에게 질문하지 말고 **반드시 파일을 생성·수정**한다.\n"
-        "- 불확실한 내용은 「가정」으로 표시하고 출처·조사일을 남긴다.\n"
+        "- **30분 주기 최소 산출**(agents.yaml `reverse_engineering.per_cycle_minimum`):\n"
+        "  · 신규 증거 URL 1건 이상 (또는 기존 URL 재실측 + 변동 기록)\n"
+        "  · 경쟁사 메뉴/필드/워크플로 상세 1블록 이상\n"
+        "  · COMPETITOR_MATRIX 1행 이상 ogada `@develop HEAD` SHA로 갱신\n"
+        "  · BENCHMARK_REPORT §신규 소절 또는 BNK 차수 메모 1건 이상\n"
+        "- 불확실한 내용은 「가정」으로 표시 — 로그인·인증서 필요 영역은 「미확인」.\n"
+        "- 확인한 내용은 「확인」+ URL·조사일·HTTP 상태·인용 문구.\n"
         "- 불명확해 작업을 중단해야 하면 `docs/planning/PLAN_NOTES.md` 의 "
         "`### 벤치마크 질문` 에 기록 후 중단.\n\n"
         f"{task_block}\n\n"
-        "## 2. 읽을 문서\n"
+        "## 2. 역공학 방법 (필수 — 매 사이클 1개 이상 적용)\n"
+        "- **케어포**: `daycare/func.php` 정적 메뉴(주야간 정본)·매뉴얼 PDF 목차·"
+        "`demo-work.carefor.co.kr` loadPage/view 파싱(시설 셸, 이동서비스 없음).\n"
+        "- **이지케어**: `./scripts/ezcare-demo-fetch.sh` 로 데모 로그인 후 `/new.ez` ERP 셸·"
+        "`ezcare_top_nav_v2.js`·PGID 화면 스냅샷(비로그인 `/new.ez` 70B stub 금지). "
+        "Channel.io 도움말·FAQ rowid·공지에서 기능·엑셀 컬럼·RFID·이중 일정·가격 역추출.\n"
+        "- **엔젤·롱텀**: silverangel/lcms 공개 페이지·law.go.kr 고시(이동서비스비 #44).\n"
+        "- **로컬 스냅샷**: `docs/planning/research/snapshots/` — live 재실측 후 md5/SIZE 비교·"
+        "DRIFT 시 HTML 덮어쓰기·`snapshots/README.md` 표 갱신. grep/verbatim은 "
+        "`docs/planning/research/snapshots/<파일명>` 경로 사용.\n"
+        "- **ogada 실측**: `git -C src/frontend rev-parse develop`·Route grep·"
+        "`git -C src/backend rev-parse develop`·테스트 집계로 baseline 갱신.\n"
+        "- HTML에서 form field name·menu-id·Ajax endpoint 힌트·리포트 화면 목록 추출.\n\n"
+        "## 3. 읽을 문서\n"
         "- docs/planning/REQUIREMENTS.md (§1-5 벤치마킹, MVP 범위)\n"
-        "- docs/planning/PLAN_NOTES.md\n"
-        "- docs/planning/research/BENCHMARK_REPORT.md, docs/planning/research/COMPETITOR_MATRIX.md (있으면 갱신)\n\n"
-        "## 3. 출력 위치\n"
-        "- docs/planning/research/BENCHMARK_REPORT.md — 경쟁사별 상세 분석(기능·UX·청구·출석·가격 등)\n"
-        "- docs/planning/research/COMPETITOR_MATRIX.md — 기능·서비스 항목 비교 표(ogada vs 경쟁사)\n"
+        "- docs/planning/PLAN_NOTES.md · docs/planning/ROADMAP.md\n"
+        "- .agents/workspace_baseline.yaml (ogada HEAD)\n"
+        "- docs/planning/research/BENCHMARK_REPORT.md, docs/planning/research/COMPETITOR_MATRIX.md (있으면 갱신)\n"
+        "- docs/planning/research/snapshots/README.md 및 snapshots/*.html (오프라인 carry·md5 비교)\n\n"
+        "## 4. 출력 위치\n"
+        "- docs/planning/research/BENCHMARK_REPORT.md — 경쟁사별 상세·역공학 실측·§차수(BNK-N)\n"
+        "- docs/planning/research/COMPETITOR_MATRIX.md — 기능 비교 표(ogada `@SHA` 열 최신화)\n"
+        "- docs/planning/research/snapshots/ — live HTML 스냅샷 갱신·신규 추가·README md5 표 동기화\n"
         "- memory/decisions.md — 벤치마킹에서 도출된 기획 결정(최상단 추가)\n\n"
-        "## 4. COMPETITOR_MATRIX 권장 구조\n"
-        "- 행: 기능/서비스 항목 (이용자관리, 출석, 건강기록, 청구, 대시보드, 보호자포털, 다지점, QR 등)\n"
-        "- 열: ogada, 케어포, 이지케어, 엔젤시스템, 롱텀(공단)\n"
-        "- 셀: 지원 여부(✅/❌/△), 비고, 근거 URL\n\n"
-        "## 5. 최종 응답 포맷\n"
+        "## 5. COMPETITOR_MATRIX 권장 구조\n"
+        "- 행: 기능/서비스 항목 (이용자관리, 출석, 건강기록, 청구, 대시보드, 보호자포털, 다지점, QR, 배차 등)\n"
+        "- 열: ogada `@HEAD`, 케어포, 이지케어, 엔젤시스템, 롱텀(공단)\n"
+        "- 셀: 지원 여부(✅/❌/△), 비고, 근거 URL·역공학 출처\n\n"
+        "## 6. 최종 응답 포맷\n"
         "  ## 벤치마크 작업 요약\n"
         "  - 조사·갱신한 경쟁사\n"
         "  - 생성/수정한 파일\n"
@@ -1714,6 +2225,18 @@ def _build_tester_prompt(stream: str = "backend", task: str | None = None) -> st
         f"- `{'Maven' if stream == 'backend' else 'npm'}` 테스트는 `{test_rel}` 에서 실행·결과 기록.\n"
         "- BLOCK 이슈 있으면 transfer/ 체크리스트에 PASS 금지 명시.\n"
         "- 불확실하면 `docs/planning/PLAN_NOTES.md` `### QA 이관 질문` 에 기록 후 중단.\n\n"
+        "## 1-1. 파이프라인 속도 (CRITICAL)\n"
+        "- **문서만 갱신하는 긴 사이클 금지** — develop WT가 DIRTY·Open QA가 남았는데 "
+        "TEST_REPORT 1000줄만 다시 쓰지 말 것.\n"
+        "- develop에 **미커밋 구현**이 있으면: merge 스킵 + QA_FEEDBACK에 coder BLOCK 1건 "
+        "(무엇을 커밋해야 하는지)만 추가해도 됨 — Opus 장문 리포트보다 **coder 압박**이 우선.\n"
+        "- `docs/qa/QA_FEEDBACK.md` Open이 있으면 TEST_REPORT보다 **재현·severity·담당 stream** "
+        "명확화가 우선.\n\n"
+        "## 1-2. post-merge live E2E (결정 96)\n"
+        "- **frontend** `merge_status: ready` → develop→test merge 성공 시 "
+        "`scripts/run-live-e2e.sh` 가 **자동 실행**된다 (백엔드 `localhost:8080` 필요).\n"
+        "- 실패 시 Open 항목이 자동 추가됨 — TEST_REPORT에 결과 요약·재현 절차 기록.\n"
+        "- merge가 없었으면 live E2E는 스킵(정상).\n\n"
         f"{task_block}\n\n"
         "## 2. 읽을 자료\n"
         "- docs/planning/ROADMAP.md (검증 대상 버전·완료 기준)\n"
@@ -1804,11 +2327,15 @@ def _role_watched_paths(role: str, target: Path, stream: str = "backend") -> lis
         for path in (
             BENCHMARK_REPORT_FILE,
             COMPETITOR_MATRIX_FILE,
+            SNAPSHOTS_README_FILE,
             REQUIREMENTS_FILE,
             PLAN_NOTES_FILE,
             DECISIONS_FILE,
         ):
             paths.add(path)
+        if SNAPSHOTS_DIR.is_dir():
+            for html in SNAPSHOTS_DIR.glob("*.html"):
+                paths.add(html)
     elif role == "planner":
         for path in (
             BENCHMARK_REPORT_FILE,
@@ -2407,10 +2934,7 @@ def _recover_plan_bridge(
     """
 
     if restart_bridge:
-        try:
-            close_default_client()
-        except Exception:
-            pass
+        _recover_build_bridge(restart=True)
     if state is None:
         return
     try:
@@ -2443,6 +2967,7 @@ def _recreate_plan_agent(state: PlanSendState) -> None:
         close_default_client()
     except Exception:
         pass
+    _recover_build_bridge(restart=True)
     new_agent = Agent.create(
         api_key=state.api_key,
         model=model,
@@ -2939,8 +3464,9 @@ def cmd_doctor(args: argparse.Namespace) -> None:
         # 서버가 "Available models" 로 공개한 풀 (2026-06). 계정 권한에
         # 따라 일부는 거절될 수 있다. 거절되면 서버가
         # "Cannot use this model. Available models: ..." 를 돌려준다.
-        # 기본/저비용
+        # 기본/자동 라우팅
         "default",
+        "auto",
         "composer-2.5",
         "composer-2",
         # Claude Opus
@@ -2980,54 +3506,57 @@ def cmd_doctor(args: argparse.Namespace) -> None:
     results: list[tuple[str, str, object, object, str]] = []
     # (model, kind, status, code, message)
     # kind: RUN-OK | RUN-ERR | FAIL | CRASH
-    for m in candidates:
-        t0 = time.time()
-        try:
-            result = Agent.prompt(
-                "ping",
-                AgentOptions(
+    try:
+        for m in candidates:
+            t0 = time.time()
+            try:
+                _recover_build_bridge()
+                result = _build_agent_prompt(
+                    "ping",
                     api_key=api_key,
-                    model=m,
-                    local=LocalAgentOptions(cwd=str(WORKSPACE_ROOT)),
-                ),
-            )
-            dt = time.time() - t0
-            status = str(result.status or "?")
-            detail = (getattr(result, "result", "") or "").strip()
-            if detail:
-                short = detail[:80] + ("…" if len(detail) > 80 else "")
-            else:
-                short = ""
-            if status == "finished":
-                kind = "RUN-OK"
-                label = "RUN-OK"
-            else:
-                kind = "RUN-ERR"
-                label = "RUN-ERR"
-            extra = f" detail={short!s}" if short else ""
-            if not ok_only or kind != "RUN-ERR":
-                print(
-                    f"  {m:32s}  {label:<7s} status={status:<10s} time={dt:.1f}s{extra}"
+                    model_id=m,
+                    cwd=WORKSPACE_ROOT,
                 )
-            results.append((m, kind, status, None, detail))
-        except CursorAgentError as err:
-            dt = time.time() - t0
-            msg = err.message or ""
-            short = msg[:140]
-            status = getattr(err, "status_code", None) or getattr(err, "status", None)
-            code = getattr(err, "code", None)
-            req_id = getattr(err, "request_id", None)
-            print(
-                f"  {m:32s}  FAIL   status={status} code={code} "
-                f"req={req_id} retryable={err.is_retryable} "
-                f"time={dt:.1f}s msg={short}"
-            )
-            results.append((m, "FAIL", status, code, msg))
-        except Exception as e:
-            dt = time.time() - t0
-            if not ok_only:
-                print(f"  {m:32s}  CRASH  {type(e).__name__}: {e} time={dt:.1f}s")
-            results.append((m, "CRASH", None, type(e).__name__, str(e)))
+                dt = time.time() - t0
+                status = str(result.status or "?")
+                detail = (getattr(result, "result", "") or "").strip()
+                if detail:
+                    short = detail[:80] + ("…" if len(detail) > 80 else "")
+                else:
+                    short = ""
+                if status == "finished":
+                    kind = "RUN-OK"
+                    label = "RUN-OK"
+                else:
+                    kind = "RUN-ERR"
+                    label = "RUN-ERR"
+                extra = f" detail={short!s}" if short else ""
+                if not ok_only or kind != "RUN-ERR":
+                    print(
+                        f"  {m:32s}  {label:<7s} status={status:<10s} time={dt:.1f}s{extra}"
+                    )
+                results.append((m, kind, status, None, detail))
+            except CursorAgentError as err:
+                dt = time.time() - t0
+                msg = err.message or ""
+                short = msg[:140]
+                status = getattr(err, "status_code", None) or getattr(err, "status", None)
+                code = getattr(err, "code", None)
+                req_id = getattr(err, "request_id", None)
+                print(
+                    f"  {m:32s}  FAIL   status={status} code={code} "
+                    f"req={req_id} retryable={err.is_retryable} "
+                    f"time={dt:.1f}s msg={short}"
+                )
+                results.append((m, "FAIL", status, code, msg))
+            except Exception as e:
+                dt = time.time() - t0
+                if not ok_only:
+                    print(f"  {m:32s}  CRASH  {type(e).__name__}: {e} time={dt:.1f}s")
+                results.append((m, "CRASH", None, type(e).__name__, str(e)))
+
+    finally:
+        _release_bridge_resources()
 
     import re
 
@@ -3106,6 +3635,41 @@ def cmd_doctor(args: argparse.Namespace) -> None:
         )
 
 
+def cmd_prune_bridges(args: argparse.Namespace) -> None:
+    """ogada workspace orphan cursor-sdk-bridge 프로세스 정리."""
+
+    dry_run = bool(getattr(args, "dry_run", False))
+    quiet = bool(getattr(args, "quiet", False))
+    prune_orphan_bridges(dry_run=dry_run, quiet=quiet)
+
+
+def cmd_bridge_status(_: argparse.Namespace) -> None:
+    """bridge / run_agent 프로세스 현황 (htop 대조용)."""
+
+    bridges = _iter_workspace_bridge_processes()
+    agents = _active_run_agent_pids()
+    orphans = 0
+    managed = 0
+    for info in bridges:
+        pid = int(info["pid"])
+        ppid = int(info["ppid"])
+        if ppid in agents or _is_run_agent_ancestor(pid):
+            managed += 1
+            continue
+        parent_cmd = _proc_cmdline(ppid) if ppid > 0 else None
+        if ppid > 0 and parent_cmd and "run_agent.py" in parent_cmd:
+            managed += 1
+        else:
+            orphans += 1
+
+    print(f"workspace : {_workspace_path_token()}")
+    print(f"bridges   : total={len(bridges)} managed={managed} orphan={orphans}")
+    print(f"run_agent : active={len(agents)} PIDs={sorted(agents)}")
+    owned = _owned_build_bridge_pid()
+    if owned is not None:
+        print(f"owned     : build_client bridge PID={owned}")
+
+
 def cmd_status(_: argparse.Namespace) -> None:
     print(f"workspace : {WORKSPACE_ROOT}")
     print(f"rules     : {'OK' if RULES_FILE.exists() else 'MISSING'}")
@@ -3122,6 +3686,13 @@ def cmd_status(_: argparse.Namespace) -> None:
     print(f"security_auditor     : {resolve_model_chain('security_auditor')}")
     print(f"tech_writer          : {resolve_model_chain('tech_writer')}")
     print(f"default              : {resolve_model_chain(None)}")
+    bridges = _iter_workspace_bridge_processes()
+    agents = _active_run_agent_pids()
+    print(
+        f"bridges              : {len(bridges)} process(es), "
+        f"run_agent={len(agents)} "
+        f"(prune: .venv/bin/python scripts/run_agent.py prune-bridges)"
+    )
     if _git_repo_ready(WORKSPACE_ROOT):
         print(f"git root branch     : {_git_current_branch(WORKSPACE_ROOT) or '(detached)'}")
     for stream in ("backend", "frontend"):
@@ -3442,66 +4013,80 @@ def cmd_build(args: argparse.Namespace) -> None:
             else ""
         )
 
-        print(f"[build] role={role} model_chain={resolve_model_chain(role)}")
-        result = call_agent(prompt, WORKSPACE_ROOT, role=role)
+        try:
+            if BRIDGE_PRUNE_ENABLED:
+                prune_orphan_bridges(quiet=True)
+            _recover_build_bridge()
+            print(f"[build] role={role} model_chain={resolve_model_chain(role)}")
+            result = call_agent(prompt, WORKSPACE_ROOT, role=role)
 
-        watched_after = _role_watched_paths(role, target, stream=stream)
-        changes = diff_snapshots(before, watched_after)
+            watched_after = _role_watched_paths(role, target, stream=stream)
+            changes = diff_snapshots(before, watched_after)
 
-        if result is not None and getattr(result, "result", ""):
-            render_agent_output(result.result, title=label)
-        else:
-            print(f"[info] {role} 가 텍스트 요약을 반환하지 않았습니다.")
-
-        render_build_changes(changes, before)
-
-        plan_notes_after = (
-            PLAN_NOTES_FILE.read_text(encoding="utf-8")
-            if PLAN_NOTES_FILE.exists()
-            else ""
-        )
-        if plan_notes_after != plan_notes_before and question_marker in plan_notes_after:
-            msg = (
-                f"{role} 가 docs/planning/PLAN_NOTES.md '### {question_marker}' 섹션에 "
-                "질문을 추가했습니다.\n"
-                "→ plan 모드에서 해결:\n"
-                "    .venv/bin/python scripts/run_agent.py plan --resume"
-            )
-            if _RICH and _CONSOLE is not None:
-                _CONSOLE.print(Panel(msg, title="확인 필요", border_style="red"))
+            if result is not None and getattr(result, "result", ""):
+                render_agent_output(result.result, title=label)
             else:
-                print("[확인 필요]")
-                print(msg)
+                print(f"[info] {role} 가 텍스트 요약을 반환하지 않았습니다.")
 
-        if role in ("coder", "ux_designer"):
-            push_submodule_develop(role, stream)
+            render_build_changes(changes, before)
 
-        print()
-        print(f"[다음 단계] role={role}")
-        if role == "coder":
-            sub = submodule_dir_for_stream(stream)
-            print(f"  - git -C {sub} status · develop 커밋 후 push (자동 push 시도 완료)")
-        elif role == "tester":
-            wt = worktree_dir_for_stream(stream, "test")
-            print(f"  - {wt.relative_to(WORKSPACE_ROOT)} (test worktree) · transfer/{stream}/ 확인")
-            print("  - docs/qa/TEST_REPORT.md · docs/qa/QA_FEEDBACK.md 확인")
-            print("  - planner 자동 반영: agent_pipeline.sh")
-            maybe_merge_version_to_test(stream)
-        elif role == "db_architect":
-            print("  - docs/technical/ERD.md · db/migration SQL 확인")
-        elif role == "benchmark_researcher":
-            print("  - docs/planning/research/BENCHMARK_REPORT.md · docs/planning/research/COMPETITOR_MATRIX.md 확인")
-            print("  - planner 자동 동기화: agent_pipeline.sh")
-        elif role == "security_auditor":
-            print("  - docs/security/SECURITY_AUDIT.md · SECURITY_CHECKLIST.md 확인")
-            print("  - [SEC] QA_FEEDBACK Open 항목 → coder/planner 반영")
-        elif role == "ux_designer":
-            print("  - docs/product/DESIGN_SYSTEM.md · src/frontend/src/styles 확인")
-        elif role == "planner":
-            print("  - docs/planning/REQUIREMENTS.md · docs/planning/USER_STORIES.md · docs/planning/PLAN_NOTES.md 확인")
-            print("  - 사용자 승인 전 plan --resume 으로 대화형 검토 권장")
-        else:
-            print("  - docs/ops/USER_MANUAL.md 등 문서 확인")
+            plan_notes_after = (
+                PLAN_NOTES_FILE.read_text(encoding="utf-8")
+                if PLAN_NOTES_FILE.exists()
+                else ""
+            )
+            if plan_notes_after != plan_notes_before and question_marker in plan_notes_after:
+                msg = (
+                    f"{role} 가 docs/planning/PLAN_NOTES.md '### {question_marker}' 섹션에 "
+                    "질문을 추가했습니다.\n"
+                    "→ plan 모드에서 해결:\n"
+                    "    .venv/bin/python scripts/run_agent.py plan --resume"
+                )
+                if _RICH and _CONSOLE is not None:
+                    _CONSOLE.print(Panel(msg, title="확인 필요", border_style="red"))
+                else:
+                    print("[확인 필요]")
+                    print(msg)
+
+            if role in ("coder", "ux_designer"):
+                push_submodule_develop(role, stream)
+
+            print()
+            print(f"[다음 단계] role={role}")
+            if role == "coder":
+                sub = submodule_dir_for_stream(stream)
+                print(f"  - git -C {sub} status · develop 커밋 후 push (자동 push 시도 완료)")
+            elif role == "tester":
+                wt = worktree_dir_for_stream(stream, "test")
+                print(f"  - {wt.relative_to(WORKSPACE_ROOT)} (test worktree) · transfer/{stream}/ 확인")
+                print("  - docs/qa/TEST_REPORT.md · docs/qa/QA_FEEDBACK.md 확인")
+                print("  - planner 자동 반영: agent_pipeline.sh")
+                version_id = _roadmap_merge_ready(stream)
+                merged = maybe_merge_version_to_test(stream)
+                if merged:
+                    rc = run_live_e2e_post_merge(stream, version_id=version_id)
+                    if rc != 0:
+                        print(
+                            f"[warn] post-merge live E2E exit={rc} — docs/qa/QA_FEEDBACK.md 확인",
+                            file=sys.stderr,
+                        )
+            elif role == "db_architect":
+                print("  - docs/technical/ERD.md · db/migration SQL 확인")
+            elif role == "benchmark_researcher":
+                print("  - docs/planning/research/BENCHMARK_REPORT.md · docs/planning/research/COMPETITOR_MATRIX.md 확인")
+                print("  - planner 자동 동기화: agent_pipeline.sh")
+            elif role == "security_auditor":
+                print("  - docs/security/SECURITY_AUDIT.md · SECURITY_CHECKLIST.md 확인")
+                print("  - [SEC] QA_FEEDBACK Open 항목 → coder/planner 반영")
+            elif role == "ux_designer":
+                print("  - docs/product/DESIGN_SYSTEM.md · src/frontend/src/styles 확인")
+            elif role == "planner":
+                print("  - docs/planning/REQUIREMENTS.md · docs/planning/USER_STORIES.md · docs/planning/PLAN_NOTES.md 확인")
+                print("  - 사용자 승인 전 plan --resume 으로 대화형 검토 권장")
+            else:
+                print("  - docs/ops/USER_MANUAL.md 등 문서 확인")
+        finally:
+            _release_bridge_resources()
 
     if not args.loop:
         one_iteration()
@@ -3634,6 +4219,24 @@ def main() -> None:
     )
     p_cleanup.set_defaults(func=cmd_cleanup_agents)
 
+    p_prune = sub.add_parser(
+        "prune-bridges",
+        help="orphan cursor-sdk-bridge 프로세스 정리 (API 키 불필요)",
+    )
+    p_prune.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="종료할 PID만 출력하고 kill 하지 않음",
+    )
+    p_prune.add_argument("--quiet", action="store_true", help="요약만 출력")
+    p_prune.set_defaults(func=cmd_prune_bridges)
+
+    p_bridge = sub.add_parser(
+        "bridge-status",
+        help="bridge/run_agent 프로세스·orphan 현황",
+    )
+    p_bridge.set_defaults(func=cmd_bridge_status)
+
     p_build = sub.add_parser("build", help="구현/설계/문서 에이전트 (승인된 REQUIREMENTS 기반)")
     p_build.add_argument(
         "--role",
@@ -3666,7 +4269,7 @@ def main() -> None:
         "--interval",
         type=int,
         default=None,
-        help="--loop 반복 간격(초). 미지정 시 coder/db/ux/tester/planner=900, tech_writer=3600, security/benchmark=86400",
+        help="--loop 반복 간격(초). 미지정 시 coder/db/ux/tester/planner/benchmark=1800, tech_writer=3600, security=86400",
     )
     p_build.add_argument("--loop", action="store_true", help="반복 실행")
     p_build.set_defaults(func=cmd_build)

@@ -1,0 +1,31 @@
+# BNK-509 ogada G30-LEGEND full-stack closure cross-walk extract
+# FE @fdc135b feat(v1.2.1/G30-LEGEND): add official indicator cross-walk legend on monitoring page
+# 조사일: 2026-06-22T11:00Z
+
+## git HEAD
+- FE develop: fdc135b (WT CLEAN, +1 vs BNK-508 d058e43, ahead 164 vs origin/test=ab4de83)
+- BE develop: 9db0bbb (WT CLEAN commit HEAD, WT DIRTY 5M WIP, ahead 512 vs origin/test=598d108)
+
+## 신규 파일 (7 files, +341L)
+- src/utils/monitoringOfficialIndicatorCrosswalk.js (189L) — 15-row MAP, mappingKind direct|partial|none
+- src/components/monitoring/MonitoringOfficialIndicatorLegendPanel.jsx (67L) — Table + Badge UI
+- MonitoringSelfDiagnosisPage.jsx wire (+6L)
+- tests: MonitoringOfficialIndicatorLegendPanel.test.jsx, monitoringOfficialIndicatorCrosswalk.test.js, MonitoringSelfDiagnosisPage.test.jsx
+
+## cross-walk 정본 (BNK-507 FAQ21836–21842 대비)
+| ogada # | 공단 평가지표 | mappingKind | FAQ |
+|---------|--------------|-------------|-----|
+| 6 | 15 (매월 자가진단) | direct | FAQ21842 |
+| 15 | 12~14 (유선상담 5명·60%) | direct | FAQ21841 |
+| 1,2,3,7,8 | 1~3, 4~5, 6~10 (partial ranges) | partial | FAQ21836–21838 |
+| 4,5,9–14 | — | none | FAQ21814/21838 |
+
+## BNK-507 candidate 상태
+- G30-LEGEND P3「가정」→ ✅ FULL-STACK CLOSURE (FE wire · BE MonitoringItemCatalog carry)
+- KPI 영향 0 (module coverage 78.79% 불변 · G30 monitoring 기능 deepen only)
+
+## 4축 교차검증 (가정 번복 0)
+- G14 ClientCarePlanForm ✅
+- 대시보드/G26 KAKAO_QUOTA + G26 xlsx ✅
+- v1.3-C ✅+
+- v2 CMS CmsPage ✅
