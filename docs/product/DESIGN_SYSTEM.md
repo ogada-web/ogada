@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23T09:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23T18:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-23 (155차 — **G-STAFF-ANNUAL-LEAVE Page wire-up 접근성 재점검 + `.ds-help-text`·`.ds-fieldset` FE-16 승격 + §78** — 154차(§77)·UXD-154(`5353991`) 이후 coder 신규 커밋 6건(`3902dba` Page·API wire·`80613c3`/`8434435`/`971c7f1` validation·title) 미점검 a11y·FE-16 갭 해소. ① **`StaffAnnualLeavePage`** — 저장 성공 `Alert role=status`·수정 modal `form aria-label`·표 섹션 `aria-busy`. ② **`.ds-help-text`·`.ds-fieldset`** — coder가 사용했으나 미정의였던 2 클래스 승격(`StaffWorkAttendancePage`·`StaffHealthCheckupsPage` 공유). ③ **§78** 신규. 회귀 +2. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-23 (156차 — **US-R01 relatedSurfaces cross-link 접근성 재점검 + `RelatedSurfacesPanel` UI 승격 + §79** — 155차(§78)·UXD-155(`085a85a`) 이후 coder 신규 커밋 4건(`0b0d7ba`/`2040571`/`95f55aa` US-R01 양방향 cross-link·API metadata wire) 미점검 a11y·FE-16 갭 해소. ① **`RelatedSurfacesPanel`** — 공통 cross-link 패널 신규(`components/ui/`)·`StaffAnnualLeaveRelatedSurfacesPanel` thin wrapper. ② **landmark 정합** — `StaffWorkAttendancePage`에서 `surfaceKind` 미전달로 aside `aria-label`이 「연차휴가 관련 화면」으로 잘못 노출되던 결함 → `DAILY_WORK_ATTENDANCE_ROSTER`별 「출퇴근 관련 화면」·nav 「직원 HR 관련 화면」. ③ **PLANNED surface** — 평문 「(준비 중)」→`Badge tone=neutral`+`aria-label="${label}, 준비 중"`(WCAG 1.4.1). ④ **`StaffWorkAttendancePage`** — 직원 링크 `${이름} 직원 상세` `aria-label`·목록 `section aria-busy`. ⑤ **`.ds-monitoring-evidence-context__planned`** — inline-flex·`forced-colors` 경계선. ⑥ **§79** 신규. 회귀 +4. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-23 (155차 — **G-STAFF-ANNUAL-LEAVE Page wire-up 접근성 재점검 + `.ds-help-text`·`.ds-fieldset` FE-16 승격 + §78** — 154차(§77)·UXD-154(`5353991`) 이후 coder 신규 커밋 6건(`3902dba` Page·API wire·`80613c3`/`8434435`/`971c7f1` validation·title) 미점검 a11y·FE-16 갭 해소. ① **`StaffAnnualLeavePage`** — 저장 성공 `Alert role=status`·수정 modal `form aria-label`·표 섹션 `aria-busy`. ② **`.ds-help-text`·`.ds-fieldset`** — coder가 사용했으나 미정의였던 2 클래스 승격(`StaffWorkAttendancePage`·`StaffHealthCheckupsPage` 공유). ③ **§78** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-22 (154차 — **G2-CMS-ROSTER·G34-WORKFLOW-CATALOG·G30-LEGEND 접근성 재점검 + G-STAFF-ANNUAL-LEAVE UI 셸 신규 + §77** — 153차(§76)·UXD-153(`da34daf`) 이후 coder 신규 커밋 6건(`77cfc38`/`9f110a5` G34·`fdc135b` G30-LEGEND·`df9ec6c`→`3ece965` G2 CMS roster) 미점검 a11y·US-R03e 컴포넌트 갭 해소. ① **`CmsEnrollmentTable`** — `enrolledAt` `<time dateTime>`·이용자 링크 `aria-label`. ② **`EzcareWorkflowCatalogPanel`·`MonitoringOfficialIndicatorLegendPanel`** — `Table caption` 추가. ③ **`StaffAnnualLeaveTable`** — ezCare worker-b100 tab01 14-field parity UI 셸·`staffAnnualLeave.js` 유틸·`.ds-staff-annual-leave*` CSS. ④ **§77** 신규. 회귀 +6. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-22 (153차 — **US-D03 이용자 출석 탭·G-BILLING-REPORT-FILTER-PERSISTENCE·US-E03 QR 이미지 접근성 재점검 + §76 신규** — 152차(§75)·UXD-152(`df7f308`) 이후 coder 신규 기능 커밋 5건(`d058e43` US-D03 출석 이력 탭·`250619e` US-E03 QR 이미지·`8aabeae` chore·`daaba4b` QA-B233·`77b1ea8` G-BILLING-REPORT-FILTER-PERSISTENCE) 미점검 a11y·FE-16 갭 해소. ① **`BillingReportPage`** — `hydrateFiltersAndFetch` 필터 복원 비동기 구간(loadSavedFilters 호출~fetchReport 시작)에서 `loading=false` 상태로 버튼 `aria-busy` 미전달 갭 → `setLoading(true)` 선행 추가(WCAG 4.1.3). ② **`QrGeneratePage`** — `validUntil` 표시 시각 `toLocaleTimeString` 평문 → `<time dateTime={qrData.validUntil}>` 래핑(WCAG 1.3.1·88차 `StaffDetailPage` 날짜 의미론 패턴). ③ **US-D03 `ClientDetailPage` 출석 탭** — `Table` caption·`<time dateTime>`·`StatusBadge ATTENDANCE_STATUS`·`EmptyState`·`Spinner role=status` 모두 표준 준수(변경 불요). ④ **§76** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-22 (152차 — **G-STAFF-WORK-ATTENDANCE·G-BILLING-DEPOSIT-ORDER-GUARD·US-E05 출석 통계 접근성 재점검 + §75 신규** — 151차(§74)·UXD-151(`9812ac4`) 이후 coder 신규 커밋 3종(`StaffWorkAttendancePage`·`CmsDebitPanel`·`AttendanceStatsPage`) 미점검 a11y 갭 해소. ① **`StaffWorkAttendancePage`** — 조회 `aria-busy`·StatCard `role=group aria-label`·출근·퇴근 반복 행 버튼 `aria-label`에 직원명·`aria-busy`·출퇴근 시각 `<time dateTime>`. ② **`AttendanceStatsPage`** — 조회 `aria-busy`·StatCard `role=group aria-label`. ③ **`CmsDebitPanel`** — 요청·완료 일시 `<time dateTime>`·상태 컨테이너 `<div>`→`<section aria-labelledby>` + `h3 id`. ④ **§75** 신규. 회귀 +4. `npm test`·build PASS.)
@@ -4356,13 +4357,61 @@ ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100
 
 ### 78-4. coder 전달 메모
 
-- **US-R01 leave-ledger cross-link** — `/staff/leave-ledger` Route 미구현 → 링크 추가 보류(USER_STORIES US-R03e 잔여 항목).
+- **US-R01 leave-ledger cross-link** — `/staff/leave-ledger` Route 미구현 → 링크 추가 보류(USER_STORIES US-R03e 잔여 항목). **156차 갱신**: `RelatedSurfacesPanel` `PLANNED` Badge 패턴으로 전환(§79).
 - **pilot Must-page title** — `STAFF_ANNUAL_LEAVE_PAGE_TITLE = "직원 연차휴가"` story-id suffix 금지 유지(BNK-527).
 - **`StaffAnnualLeaveTable`** — Page에서 `PageLoading` + 표 컴포넌트 분리 패턴 유지(coder wire 그대로).
 
 ### 78-5. 검증
 
 - `StaffAnnualLeavePage.test.jsx` — `form` `aria-label`·성공 `role=status` +2.
+- `npm test` · build PASS.
+
+---
+
+## §79. US-R01 relatedSurfaces cross-link 접근성 재점검 + `RelatedSurfacesPanel` (156차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23 -->
+
+> **156차 UXD (2026-06-23)** — 155차(§78)·UXD-155(`085a85a`) 이후 coder가 US-R01 양방향 `relatedSurfaces[]` cross-link를 wire(`0b0d7ba`→`95f55aa`)한 뒤 미점검 a11y·FE-16 갭 해소.
+
+### 79-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `StaffAnnualLeaveRelatedSurfacesPanel` | `0b0d7ba` | US-R03e → US-R01 cross-link |
+| `StaffWorkAttendancePage` reverse cross-link | `2040571`/`95f55aa` | US-R01-a · G-STAFF-WORK-ATTENDANCE |
+| `staffAnnualLeave.js` metadata normalize | `95f55aa` | API `relatedSurfaces[]` |
+
+### 79-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `StaffWorkAttendancePage` cross-link aside | `surfaceKind` 미전달 → aside `aria-label`이 「연차휴가 관련 화면」으로 잘못 노출 | `surfaceKind={DAILY_WORK_ATTENDANCE_ROSTER}`·`STAFF_WORK_ATTENDANCE_RELATED_ASIDE_LABEL` | WCAG 4.1.2 · landmark 정합 |
+| cross-link nav | `aria-label="US-R01 관련 화면"`(스토리 ID 노출) | `STAFF_HR_RELATED_NAV_LABEL` → 「직원 HR 관련 화면」 | WCAG 2.4.6 |
+| PLANNED surface | 평문 「(준비 중)」만·시각 상태 약함 | `Badge tone=neutral`+`aria-label="${label}, 준비 중"`·`aria-hidden` 라벨 텍스트 | WCAG 1.4.1 · §70 `ON_LEAVE` 패턴 |
+| `StaffWorkAttendancePage` 직원 링크 | `aria-label` 누락 | `${userName} 직원 상세` | WCAG 2.4.4 · §77 `StaffAnnualLeaveTable` |
+| `StaffWorkAttendancePage` 목록 | 로딩 중 `aria-busy` 미전달 | `<section aria-busy={loading} aria-label="직원 출퇴근 목록">` | WCAG 4.1.3 |
+| `MonitoringEvidenceContextPanel` CSS | PLANNED 행 레이아웃·`forced-colors` 미정의 | **`.ds-monitoring-evidence-context__planned`** 신규 | FE-16 |
+
+### 79-3. 컴포넌트·토큰
+
+| 항목 | 설명 |
+|------|------|
+| `RelatedSurfacesPanel` | `components/ui/` — API `relatedSurfaces[]` 범용 cross-link 패널(`aside`+`nav`+`helpText`) |
+| `StaffAnnualLeaveRelatedSurfacesPanel` | staff HR thin wrapper — `surfaceKind`별 aside label 분기 |
+| `RELATED_SURFACE_AVAILABLE` / `PLANNED` | availability 상수 export |
+| `STAFF_*_RELATED_ASIDE_LABEL` | `staffAnnualLeave.js` — landmark 라벨 상수 |
+
+### 79-4. coder 전달 메모
+
+- **`/staff/leave-ledger`** — Route·API 미구현(US-R01-c P1). 현재 `PLANNED` Badge 비링크가 정본 UX. 구현 시 `relatedSurfaces[].availability: "AVAILABLE"`만 반환하면 `RelatedSurfacesPanel`이 자동 링크화.
+- **양방향 cross-link** — `ANNUAL_LEAVE_USAGE_SNAPSHOT`↔`DAILY_WORK_ATTENDANCE_ROSTER` 각 Page에서 `surfaceKind` prop 전달 필수(landmark 라벨 분기).
+- **재사용** — 모니터링·청구 등 다른 `relatedSurfaces[]` 소비 화면은 `RelatedSurfacesPanel` 직접 import 권장.
+
+### 79-5. 검증
+
+- `RelatedSurfacesPanel.test.jsx` — landmark·PLANNED Badge·link 2건.
+- `StaffAnnualLeaveRelatedSurfacesPanel.test.jsx`·`StaffWorkAttendancePage.test.jsx`·`StaffAnnualLeavePage.test.jsx` — PLANNED assertion 갱신.
 - `npm test` · build PASS.
 
 ---
