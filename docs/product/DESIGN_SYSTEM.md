@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23T19:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23T20:00:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-23 (157차 — **US-R01-c leave-ledger Page 접근성 재점검 + `StaffLeaveLedgerTable`·`StaffLeaveLedgerDeleteModal` + `.ds-form-grid--compact` FE-16 승격 + §80** — 156차(§79)·UXD-156(`c183ebd`) 이후 coder 신규 커밋 1건(`8057c1e` US-R01-c leave-ledger Page·API wire) 미점검 a11y·FE-16 갭 해소. ① **`StaffLeaveLedgerTable`** — 표 `caption`·시작/종료일 `<time dateTime>`·행 수정/삭제 `${직원명} 휴가 대장 …` `aria-label`(WCAG 2.4.6·§77 `StaffAnnualLeaveTable` 패턴). ② **`StaffLeaveLedgerDeleteModal`** — `window.confirm` 대체·`variant=danger`·삭제 중 `aria-busy`·모달 내 오류 `Alert`(WCAG 4.1.2·`TransportDeleteRunModal` 패턴). ③ **`StaffLeaveLedgerPage`** — 시작/종료일 `DateInput` 표준화(FE-16·64차)·조회 `aria-busy`·목록 `section aria-busy`·성공 `role=status` 유지. ④ **`.ds-form-grid--compact`** — `StaffLeaveLedgerPage`·`StaffAnnualLeavePage`·`StaffWorkAttendancePage`·`MonitoringSelfDiagnosisPage` 4곳 미정의 클래스 승격. ⑤ **§80** 신규·§79-4 leave-ledger AVAILABLE closure 반영. 회귀 +6. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-23 (158차 — **US-D01·US-D02 한국 주소 검색·수급자 등록/수정·목록 필터 접근성 재점검 + `KoreanAddressFields`·`TableColumnFilter` + §81** — 157차(§80)·UXD-157(`bd1d0ad`) 이후 coder 신규 커밋 1건(`7e048c0` Kakao postcode 주소·수급자 수정·배차 픽업·목록 컬럼 필터) 미점검 a11y·FE-16 갭 해소. ① **`KoreanAddressFields`** — 주소 검색 `aria-busy`·로드 실패 `Alert role=alert`·`Field`+`TextInput` 표준(우편번호·기본·상세). ② **`TableColumnFilter`** — `aria-haspopup`·`listbox`·`aria-selected` 준수 확인·`forced-colors` 패널·선택 옵션 경계선 신규. ③ **`ClientListPage`** — 행 링크 `${이름} 수급자 상세` `aria-label`(WCAG 2.4.6). ④ **`ClientDetailPage`·`ClientFormPage`** — 수정 링크·폼 `aria-label`·저장 `aria-busy`. ⑤ **`ClientPrimaryGuardianSection`** — 보호자 Select 로드 `aria-busy`. ⑥ **`ClientTransportProfileSection`** — 거주지 픽업 미리보기 `Field`+readOnly `TextInput`·경고 `role=alert`. ⑦ **barrel** — `KoreanAddressFields` export. ⑧ **§81** 신규. 회귀 +3. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-23 (157차 — **US-R01-c leave-ledger Page 접근성 재점검 + `StaffLeaveLedgerTable`·`StaffLeaveLedgerDeleteModal` + `.ds-form-grid--compact` FE-16 승격 + §80** — 156차(§79)·UXD-156(`c183ebd`) 이후 coder 신규 커밋 1건(`8057c1e` US-R01-c leave-ledger Page·API wire) 미점검 a11y·FE-16 갭 해소. ① **`StaffLeaveLedgerTable`** — 표 `caption`·시작/종료일 `<time dateTime>`·행 수정/삭제 `${직원명} 휴가 대장 …` `aria-label`(WCAG 2.4.6·§77 `StaffAnnualLeaveTable` 패턴). ② **`StaffLeaveLedgerDeleteModal`** — `window.confirm` 대체·`variant=danger`·삭제 중 `aria-busy`·모달 내 오류 `Alert`(WCAG 4.1.2·`TransportDeleteRunModal` 패턴). ③ **`StaffLeaveLedgerPage`** — 시작/종료일 `DateInput` 표준화(FE-16·64차)·조회 `aria-busy`·목록 `section aria-busy`·성공 `role=status` 유지. ④ **`.ds-form-grid--compact`** — `StaffLeaveLedgerPage`·`StaffAnnualLeavePage`·`StaffWorkAttendancePage`·`MonitoringSelfDiagnosisPage` 4곳 미정의 클래스 승격. ⑤ **§80** 신규·§79-4 leave-ledger AVAILABLE closure 반영. 회귀 +6. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-23 (156차 — **US-R01 relatedSurfaces cross-link 접근성 재점검 + `RelatedSurfacesPanel` UI 승격 + §79** — 155차(§78)·UXD-155(`085a85a`) 이후 coder 신규 커밋 4건(`0b0d7ba`/`2040571`/`95f55aa` US-R01 양방향 cross-link·API metadata wire) 미점검 a11y·FE-16 갭 해소. ① **`RelatedSurfacesPanel`** — 공통 cross-link 패널 신규(`components/ui/`)·`StaffAnnualLeaveRelatedSurfacesPanel` thin wrapper. ② **landmark 정합** — `StaffWorkAttendancePage`에서 `surfaceKind` 미전달로 aside `aria-label`이 「연차휴가 관련 화면」으로 잘못 노출되던 결함 → `DAILY_WORK_ATTENDANCE_ROSTER`별 「출퇴근 관련 화면」·nav 「직원 HR 관련 화면」. ③ **PLANNED surface** — 평문 「(준비 중)」→`Badge tone=neutral`+`aria-label="${label}, 준비 중"`(WCAG 1.4.1). ④ **`StaffWorkAttendancePage`** — 직원 링크 `${이름} 직원 상세` `aria-label`·목록 `section aria-busy`. ⑤ **`.ds-monitoring-evidence-context__planned`** — inline-flex·`forced-colors` 경계선. ⑥ **§79** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-23 (155차 — **G-STAFF-ANNUAL-LEAVE Page wire-up 접근성 재점검 + `.ds-help-text`·`.ds-fieldset` FE-16 승격 + §78** — 154차(§77)·UXD-154(`5353991`) 이후 coder 신규 커밋 6건(`3902dba` Page·API wire·`80613c3`/`8434435`/`971c7f1` validation·title) 미점검 a11y·FE-16 갭 해소. ① **`StaffAnnualLeavePage`** — 저장 성공 `Alert role=status`·수정 modal `form aria-label`·표 섹션 `aria-busy`. ② **`.ds-help-text`·`.ds-fieldset`** — coder가 사용했으나 미정의였던 2 클래스 승격(`StaffWorkAttendancePage`·`StaffHealthCheckupsPage` 공유). ③ **§78** 신규. 회귀 +2. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-22 (154차 — **G2-CMS-ROSTER·G34-WORKFLOW-CATALOG·G30-LEGEND 접근성 재점검 + G-STAFF-ANNUAL-LEAVE UI 셸 신규 + §77** — 153차(§76)·UXD-153(`da34daf`) 이후 coder 신규 커밋 6건(`77cfc38`/`9f110a5` G34·`fdc135b` G30-LEGEND·`df9ec6c`→`3ece965` G2 CMS roster) 미점검 a11y·US-R03e 컴포넌트 갭 해소. ① **`CmsEnrollmentTable`** — `enrolledAt` `<time dateTime>`·이용자 링크 `aria-label`. ② **`EzcareWorkflowCatalogPanel`·`MonitoringOfficialIndicatorLegendPanel`** — `Table caption` 추가. ③ **`StaffAnnualLeaveTable`** — ezCare worker-b100 tab01 14-field parity UI 셸·`staffAnnualLeave.js` 유틸·`.ds-staff-annual-leave*` CSS. ④ **§77** 신규. 회귀 +6. `npm test`·build PASS.)
@@ -4461,6 +4462,59 @@ ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100
 - `StaffLeaveLedgerTable.test.jsx` — `<time dateTime>`·row action labels 2건.
 - `StaffLeaveLedgerDeleteModal.test.jsx` — 확인 문구·`onConfirm` 2건.
 - `StaffLeaveLedgerPage.test.jsx` — modal delete flow·contextual edit label 갱신.
+- `npm test` · build PASS.
+
+---
+
+## §81. US-D01·US-D02 한국 주소·수급자 등록/수정·목록 필터 접근성 재점검 (158차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-23 -->
+
+> **158차 UXD (2026-06-23)** — 157차(§80)·UXD-157(`bd1d0ad`) 이후 coder가 Kakao postcode 주소 검색·수급자 수정·배차 픽업·목록 컬럼 필터를 wire(`7e048c0`)한 뒤 미점검 a11y·FE-16 갭 해소.
+
+### 81-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `KoreanAddressFields` | `7e048c0` | US-D01 · Kakao postcode 주소 검색 |
+| `ClientFormPage`·`BranchesPage` | `7e048c0` | US-D01 · 수급자·지점 주소 입력 |
+| `ClientTransportProfileSection` | `7e048c0` | US-T01 · 거주지=픽업 주소 재사용 |
+| `ClientPrimaryGuardianSection` | `7e048c0` | US-D01 · 대표 보호자 연결 |
+| `ClientListPage`·`TableColumnFilter` | `7e048c0` | US-D02 · 목록 컬럼 필터 |
+| `ClientDetailPage` | `7e048c0` | US-D01 · 기본정보 수정 링크 |
+
+### 81-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `KoreanAddressFields` | 검색 중 진행 상태 미전달 | 주소 검색 버튼 `aria-busy={loading}` | WCAG 4.1.3 |
+| `KoreanAddressFields` | API 실패 Alert 시맨틱 | `Alert role=alert` | WCAG 4.1.3 |
+| `TableColumnFilter` | 강제 색상 모드 패널 경계 | `.ds-table-col-menu__panel`·`__option--selected` `forced-colors` | WCAG 1.4.11 |
+| `ClientListPage` | 동일 링크 텍스트(이름만) | `${이름} 수급자 상세` `aria-label` | WCAG 2.4.6 · StaffPage 패턴 |
+| `ClientDetailPage` | 「수정」 링크 맥락 부족 | `${이름} 정보/기본정보 수정` `aria-label` | WCAG 2.4.6 |
+| `ClientFormPage` | 저장 중 진행·폼 식별 | 폼 `aria-label`·저장 `aria-busy` | WCAG 4.1.2·4.1.3 |
+| `ClientPrimaryGuardianSection` | 보호자 목록 로드 중 | Select `aria-busy={guardiansLoading}` | WCAG 4.1.3 |
+| `ClientTransportProfileSection` | 픽업 미리보기 비표준 마크업 | `Field`+readOnly `TextInput`·경고 `role=alert` | WCAG 1.3.1·FE-16 |
+
+### 81-3. 컴포넌트·토큰
+
+| 항목 | 설명 |
+|------|------|
+| `KoreanAddressFields` | `components/ui/` — Kakao postcode 검색·우편번호·기본·상세 주소 3필드 |
+| `TableColumnFilter` | `components/ui/` — 표 헤더 `listbox` 필터 메뉴(지점·성별·등급·배차) |
+| `.ds-korean-address*` | 주소 검색 행·미리보기·모바일 전폭 버튼 |
+| `.ds-table-col-menu*` | 헤더 필터 트리거·패널·옵션·건수 배지 |
+
+### 81-4. coder 전달 메모
+
+- **주소 검색 SDK** — `openKakaoPostcodeSearch()` 실패는 컴포넌트 내부 `role=alert`로 노출·필드 `searchError`와 분리.
+- **거주지=픽업** — `useHomePickupAddress` on 시 별도 `KoreanAddressFields` 숨김·readOnly 미리보기로 SR에 최종 주소 전달.
+- **목록 필터** — `TableColumnFilter`는 `fixed` 패널·스크롤/리사이즈 reposition·Escape 닫기·닫힘 시 트리거 포커스 복귀 유지.
+
+### 81-5. 검증
+
+- `KoreanAddressFields.test.jsx`·`TableColumnFilter.test.jsx`·`ClientTransportProfileSection.test.jsx` PASS.
+- `ClientListPage.test.jsx` — `aria-label` 링크 이름 갱신.
 - `npm test` · build PASS.
 
 ---
