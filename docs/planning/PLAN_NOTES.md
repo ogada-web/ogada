@@ -1,4 +1,8 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-24T01:30:00Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-24T16:30:00Z -->
+<!-- tech_writer-sync: TWR 353차 2026-06-24T19:42:00Z — **FINAL CLOSURE: G-SMS 6/6 dispatchImplemented + ezcareMessageKind** · **baseline sync BE `a12873c`/FE `216ab7a`·V1–V175·112 route·91 page** · **all ops docs SYNCED** — CHANGELOG Q700·FAQ Q693~Q700·USER_MANUAL §1-4·ADMIN_GUIDE Q685·DEPLOYMENT_GUIDE baseline · **module KPI 79.66% (G-SMS 0.75 superset)** · **merge gate 764 FULLY UNBLOCKED** · **QA Open 0(active)** · 다음: J03 live dispatch runbook·7-5 PG·L03 nursing 5-leaf·G-PROGRAM-GROUP-CONFIG P3 · **작업 방식**: 자율 조회 + submodule src/ 코드 미수정 + docs/ only update · 다음 신호: coder QR 이미지 구현(Q624)·L03 간호급여 live runbook·7-5 본인부담 간편결제 PG 통합 문서화 →>
+<!-- planner-sync: PLN 196차 2026-06-24T15:00 UTC — BNK-583~587·TSR 1366~1367차 · ★★★ G-SMS 6/6 dispatchImplemented + ezcareMessageKind end-to-end closure @3f686e3/@ef8bb4e · ★★ M7 10/10 core parity · ★ module 10 0.75·79.66% · ★ QA-B290/B291/B292 Fixed · merge gate 764 · cross-stream SYNCED · QA Open 0(active) -->
+<!-- tech_writer-sync: TWR 350차 2026-06-24T15:45:00Z — **G-SMS-TEMPLATE-CATALOG operational docs enhancement** · **FAQ Q693·Q694·Q695 신규 추가** — SMS/ALIMTALK 운영 3단계 체크리스트·스케줄 발송 전략·template-catalog API 스키마 완전 문서화 · **operationalize G-SMS** — **smoke test·readiness panel·catalog 필드·error handling** 통합 · **baseline 349차 준용** · 다음: J03 live dispatch runbook·7-5 PG·L03 nursing 5 leaf·G-PROGRAM-GROUP-CONFIG P3 -->
+<!-- planner-sync: PLN 195차 2026-06-24T09:00 UTC — BNK-576~577·TSR 1353~1354차 · ★★★ G-SMS-TEMPLATE-CATALOG ✅ full-stack closure @c9cf03b/@b6c9b16 · ★★ carefor 모듈5 프로그램 10-leaf parity 재확인 · ★ 신규 candidate G-PROGRAM-GROUP-CONFIG P3 · ★ QA-B287 Open→Planned · ★ QA-B288 Fixed · merge gate 751 · cross-stream BLOCK(BE dirty) · QA Open 0(active) -->
 <!-- planner-sync: PLN 193차 2026-06-24T01:30 UTC — BNK-566~567·TSR 1342~1343차 · ★★★ FAQ 21700 G-CASH-RECEIPT-LOG ✅ FULL parity · ★★★ FAQ 21823 tri-source + pilot harness 3-layer @17472bb · ★★ FAQ 21750 out-of-scope · ★ US-R01-c ✅ full-stack closure · ★ 신규 candidate G-NHIS-EXCEL-RECONCILE P3 · ★ QA-B272/B273/B277/B278 Fixed · cross-stream SYNCED · merge gate 739 · QA Open 0(active) -->
 <!-- planner-sync: PLN 192차 2026-06-23T18:30 UTC — BNK-553~556·TSR 1323~1331차 · ★★★ longterm 502 canonical(단기보호 74,060)·610 통합재가(월 10만원) · ★★ NHIS #44 이동서비스비 러-1~4 IDENTICAL → P2 문구 고정 · ★ 신규 candidate G-BILLING-START-STANDALONE P3·G-GUARDIAN-MEETING P3 · ★ G-STAFF-ANNUAL-LEAVE full-stack ✅ CLOSURE 재확인·V175 integrity · KPI 정정 Route 112·FE test 463 · QA-B272/B273 Planned(update) · merge gate 723 · cross-stream BLOCK · disk 34% 회복 · QA Open 0(active) -->
 <!-- planner-sync: PLN 191차 2026-06-23T17:30 KST — BNK-551~552·TSR 1321~1322차 · ★ US-R01-c leave-ledger BE ✅ FE wire △ · ★ v1.3-C M2 차별화 · ★ QA-B272/B273 Open→Planned · merge gate 718 · cross-stream BLOCK · disk ENOSPC · QA Open 0(active) -->
@@ -77,7 +81,68 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-06-24 (193차 PLN — **자동 기획 동기화** BNK-566~567·TSR 1342~1343차·★★★ FAQ 21700 G-CASH-RECEIPT-LOG ✅ FULL parity·★★★ FAQ 21823 tri-source + pilot harness 3-layer @17472bb·★ US-R01-c ✅ full-stack closure·★ 신규 candidate G-NHIS-EXCEL-RECONCILE P3·★ QA-B272/B273/B277/B278 Fixed·cross-stream SYNCED·merge gate 739·QA Open 0) | **313차 TWR** — 문서 baseline 1차 확정 carry  
+> **최종 갱신**: 2026-06-24 (196차 PLN — **자동 기획 동기화** BNK-583~587·TSR 1366~1367차·★★★ G-SMS 6/6 dispatchImplemented + ezcareMessageKind closure·★★ M7 10/10 core parity·★ module 10 0.75·79.66%·★ QA-B290/B291/B292 Fixed·merge gate 764·cross-stream SYNCED·QA Open 0) | **350차 TWR** — G-SMS operational docs carry  
+
+### [PLN] QA 피드백 반영 (2026-06-24, 196차 — BNK-583~587 · TSR 1366~1367차 · QA Open 0(active)·★ QA-B290/B291/B292 Fixed · cross-stream SYNCED)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test `@ef8bb4e` WT **CLEAN** · **SYNCED** · post-merge **1893/1893 PASS** · FE develop/test `@3f686e3` WT **CLEAN** · **SYNCED** · post-merge **2137/2137 PASS** · merge gate **764**(FE215+BE549) · origin/test push **549 BE+215 FE** · live E2E **147 SKIP/0 PASS** carry(bootstrap-disabled) · **112 route·91 page·V1–V175** · **BE Test 258** · **FE test 467**(193+274) · **모듈 79.66%**(id=10 **0.75**) · disk **38%** | ROADMAP CURRENT BASELINE |
+| **QA-B290 Fixed** | TSR 1367차 FE merge EXECUTED FF `068049b`→`3f686e3` (4 commits: G-SMS dispatch readiness + message_kind UI wire) · post-merge **2137/2137 PASS** | QA_FEEDBACK Fixed · ROADMAP |
+| **QA-B291 Fixed** | TSR 1367차 FE post-merge full regression summary 확보 carry | QA_FEEDBACK Fixed · ROADMAP |
+| **QA-B292 Fixed** | TSR 1366차 BE merge EXECUTED FF `1d5d441`→`ef8bb4e` (2 commits) · post-merge **1893/1893 PASS** | QA_FEEDBACK Fixed · ROADMAP |
+| **BNK-583~587** | **★★★ G-SMS-TEMPLATE-CATALOG 13-cycle 마감** — 6/6 dispatchImplemented + dispatch response `ezcareMessageKind` + FE vitest lock · **★★ M7 10/10 core parity**(7-4/7-5 △0.65) · **★ NHIS #44 359차 zero drift** · **4축 P0/P1 재오픈 0** · **candidate P3 carry 4** | ROADMAP·REQUIREMENTS·USER_STORIES·API_SPEC |
+
+**coder/ops 다음 액션 (196차)**: ① **origin/test push**(549 BE+215 FE) ② **QA-B116 post-merge** ③ **QA-B95** operation 승격 ④ **P2** G-REPORT-DENSITY · CMS/간편결제 deepen · v1.3-C NHIS #44 parity 문구 ⑤ **P3 carry** G-PROGRAM-GROUP-CONFIG scope 검토.
+
+> **195차→196차 delta**: merge gate 751→**764** · cross-stream BLOCK→**SYNCED** · BE `@b6c9b16` DIRTY 6M→**`ef8bb4e` CLEAN** · FE `@c9cf03b`→**`3f686e3`**(+4 commits merge) · **G-SMS dispatchImplemented 3/6→6/6** · **module 10 0.5→0.75** · **QA-B287 Fixed carry** · **QA-B290/B291/B292 Fixed** · origin/test push **543+208→549+215**.
+
+### [BNK] BNK-583~587 인사이트 (2026-06-24) — ★★★ G-SMS 6/6 + ezcareMessageKind closure · ★★ M7 10/10 · ★ module KPI 79.66%
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-583~584** | BE message_kind 21 dispatch + FE 1·12·21 dispatch UI wire · module 10 0.65→0.7 | ROADMAP v1 · USER_STORIES US-J03 |
+| **BNK-585** | M7 본인부담 10/10 core parity — carefor PDF p.84~92 crosswalk · CMS(7-4)·간편결제(7-5) △0.65만 P2 | ROADMAP v2 · REQUIREMENTS §1-5 |
+| **BNK-586** | FE label align 11·13·19 · module 10 0.7→0.75 | USER_STORIES US-J03-t |
+| **BNK-587** | **★★★ cluster 마감** — `BillingClaimNotifyResponse`·`GuardianDocumentNotifyResponse` `ezcareMessageKind` 노출 + FE `notificationChannelStatus.test.js` vitest lock · NHIS #44 359차 zero drift | ROADMAP v1 ✅ · API_SPEC §11-11·notify response |
+| **BNK-587** | **candidate P3 carry 4** — G-PROGRAM-GROUP-CONFIG · G-BILLING-OPENING-BALANCE · G-ORAL-CARE-OBSERVATION-REPORT · G-VENDOR-ONBOARDING-CHECKLIST | ROADMAP v3 |
+
+**planner 액션 (BNK-587)**: ① baseline FE `@3f686e3`·BE `@ef8bb4e` · merge gate **764** ② **G-SMS cluster ✅ closure** 문서화 ③ origin/test push(549 BE+215 FE) → QA-B116 → QA-B95 ④ **P2** G-REPORT-DENSITY·CMS/간편결제 deepen.
+
+### 추가 질문 (자동 기획 동기화 196차)
+1. **G-PROGRAM-GROUP-CONFIG (P3「가정」)**: 케어포 모듈5 micro-gap을 v3.1 **US-P01**에 흡수할지 standalone P3로 유지할지 — 195차 질문 carry.
+2. **ezCare message_kind 22**(급여명세서): id=11 직원급여 v3+ Epic으로 defer 확인 — MVP out-of-scope 가정 유지.
+3. **QA-B116 origin/test push 우선순위**: merge gate 764(549 BE+215 FE) push 선행 vs operation pilot 병행 여부 — ops 결정 요청.
+4. **G-NHIS-EXCEL-RECONCILE(P3) carry**: DBA/운영 POC 범위 — 193차 질문 carry.
+
+### [PLN] QA 피드백 반영 (2026-06-24, 195차 — BNK-576~577 · TSR 1353~1354차 · QA Open 0(active)·★ QA-B287 Open→Planned · ★ QA-B288 Fixed · cross-stream BLOCK)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test `@b6c9b16` WT **DIRTY 6M**(G-SMS-TEMPLATE-CATALOG dispatchReady deepen WIP) · **SYNCED** · post-merge **1875/1875 PASS** · FE develop/test `@c9cf03b` WT **CLEAN** · **SYNCED** · post-merge **2126/2126 PASS** · merge gate **751**(FE208+BE543) · origin/test push **543 BE+208 FE** · live E2E **127 PASS/19 SKIP** carry(bootstrap-disabled **147 SKIP/0 PASS**) · **112 route·91 page·V1–V175** · **BE Test 255** · **FE test 465** · **모듈 78.79%** · disk **37%** | ROADMAP CURRENT BASELINE |
+| **QA-B287 Planned** | TSR 1353차 BE develop WT **DIRTY 6M** — `NotificationTemplateCatalogEntryResponse`·`dispatchReadyCount` deepen 미커밋 · test SYNCED **1875/1875 PASS** · **기능 갭 아님**(이관 규율 1·5·7) | QA_FEEDBACK Planned · ROADMAP P0 |
+| **QA-B288 Fixed** | TSR 1354차 FE merge EXECUTED FF `d682562`→`c9cf03b` · G-SMS-TEMPLATE-CATALOG-FE-WIRE · post-merge **2126/2126 PASS** | QA_FEEDBACK Fixed · ROADMAP |
+| **BNK-576~577** | **★★★ G-SMS-TEMPLATE-CATALOG ✅ full-stack closure** · **★★ carefor 모듈5 10-leaf ↔ ogada `/programs` 핵심 4-leaf parity** · **★ 신규 candidate G-PROGRAM-GROUP-CONFIG P3** · **★ BNK-576 longterm 610 URL remap DRIFT 철회** · **4축 P0/P1 재오픈 0** · **신규 core 갭 0** | ROADMAP·REQUIREMENTS·USER_STORIES |
+
+**coder/ops 다음 액션 (195차)**: ① **BE 6M commit/discard** → WT **CLEAN** ② **origin/test push**(543 BE+208 FE) ③ **QA-B116 post-merge** ④ **QA-B95** operation 승격 ⑤ **P2** v1.3-C 이동서비스비 parity · G-REPORT-DENSITY ⑥ **P3 carry** G-PROGRAM-GROUP-CONFIG scope 검토.
+
+> **194차→195차 delta**: merge gate 751 carry · FE `@d682562`→**`c9cf03b`**(merge EXECUTED·+1 test) · BE `@b6c9b16` WT **DIRTY 6M** carry · **G-SMS-TEMPLATE-CATALOG P2 candidate→✅ full-stack closure** · **신규 candidate G-PROGRAM-GROUP-CONFIG P3** · **QA-B287 Open→Planned** · **QA-B288 Fixed** · origin/test push **543+207→543+208** · **cross-stream SYNCED→BLOCK(BE dirty)**.
+
+### [BNK] BNK-576~577 인사이트 (2026-06-24) — ★★★ G-SMS-TEMPLATE-CATALOG full-stack ✅ CLOSURE · ★★ carefor 모듈5 프로그램 10-leaf parity · ★ 신규 G-PROGRAM-GROUP-CONFIG P3
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-576** | **★★★ G-SMS-TEMPLATE-CATALOG ✅ full-stack closure** — BE `@b6c9b16` catalog API(6종 ezCare message_kind) + FE `@c9cf03b` `NotificationChannelReadinessPanel` wire · dispatchImplemented 3/6 ALIMTALK · BE dirty `dispatchReadyCount` deepen 미커밋 carry | ROADMAP v1 · USER_STORIES US-J03 · REQUIREMENTS §1-5 |
+| **BNK-576** | **★★★ longterm 610 URL remap DRIFT 철회** — wrong URL `npe0000000610`(거짓청구 명단공표 shell) vs canonical `npeb610m01.web?menuId=npe0000002731` HTTP 200 `0ea575be` 「통합재가서비스」 recovery · BNK-575 가정 번복 1 | PLAN_NOTES · ROADMAP v3.1 G18-SHORT carry |
+| **BNK-577** | **★★ carefor func.php 모듈5 「프로그램 급여」 10-leaf ↔ ogada `/programs` cross-walk** — 핵심 4-leaf(제공기록·일정·정보관리·평가) full parity + 의견수렴 5단 척도/결과평가 분리 ogada 우위 · `competitorModuleCoverage.js` id=5 coverage=1 ✅ 재확인 · micro-gap → **G-PROGRAM-GROUP-CONFIG P3「가정」**(그룹 설정/이력 5-3·5-9·콘텐츠 5-6·프로그램관리자 일지) | ROADMAP v3 · USER_STORIES US-P01 deepen · REQUIREMENTS §1-5 |
+| **BNK-577** | **★ ogada 실측** — FE `@c9cf03b` WT **CLEAN** SYNCED · BE `@b6c9b16` WT **DIRTY 6M** SYNCED · merge gate **751** · origin/test push **543 BE+208 FE** | ROADMAP baseline KPI |
+
+**planner 액션 (BNK-577)**: ① baseline FE `@c9cf03b`·BE `@b6c9b16` · merge gate **751** ② **COD BE 6M commit/discard** → cross-stream UNBLOCK ③ **G-SMS-TEMPLATE-CATALOG closure** 문서화 완료 ④ **G-PROGRAM-GROUP-CONFIG P3** scope — v3.1 US-P01 vs standalone P3 결정 carry ⑤ origin/test push(543 BE+208 FE) → QA-B116 → QA-B95.
+
+### 추가 질문 (자동 기획 동기화 195차)
+1. **G-PROGRAM-GROUP-CONFIG (P3「가정」)**: 케어포 모듈5 micro-gap(그룹 설정/이력·콘텐츠·프로그램관리자 일지)을 기존 v3.1 **US-P01** 범위에 흡수할지, 별도 P3 candidate로 유지할지 결정 요청.
+2. **G-SMS-TEMPLATE-CATALOG dispatchReady deepen (BE 6M WIP)**: `dispatchReadyCount`/`dispatchReady` 필드 commit 시 module 10 coverage 0.5→0.65 KPI 반영 여부 — commit 후 tester 재검증 필요.
+3. **G-NHIS-EXCEL-RECONCILE(P3) carry**: DBA/운영 부담 수준 POC 범위(수동 검토 보조 리포트 vs 자동 alert) — 193차 질문 carry.
 
 ### [PLN] QA 피드백 반영 (2026-06-24, 193차 — BNK-566~567 · TSR 1342~1343차 · QA Open 0(active)·신규 Open 0·태스크화 불요 · ★ QA-B272/B273/B277/B278 Fixed · cross-stream SYNCED)
 
@@ -96,6 +161,38 @@
 **coder/ops 다음 액션 (193차)**: ① **origin/test push**(538 BE+201 FE) ② **QA-B116 post-merge** ③ **QA-B95** operation 승격 ④ **P2** v1.3-C 이동서비스비 parity 문구 · G-REPORT-DENSITY ⑤ **P3 carry** G-NHIS-EXCEL-RECONCILE scope 검토.
 
 > **192차→193차 delta**: merge gate 723→**739** · cross-stream BLOCK→**SYNCED** · BE `@c4e6bcb` dirty→**`8b3fdcd` CLEAN SYNCED** · FE `@64584f4` dirty→**`17472bb` CLEAN SYNCED** · **QA-B272/B273/B277/B278 Fixed** · origin/test push **532+191→538+201** · **US-R01-c △→✅ full-stack** · **FAQ 21700 parity 재확인** · **신규 candidate G-NHIS-EXCEL-RECONCILE P3**.
+
+### [BNK] BNK-590 인사이트 (2026-06-24) — ★★★ lcms.kr 도메인 폐기 DRIFT (50,740B 엔젤시스템 home `c0c66076` → 19-byte placeholder · 자매 cross-promo funnel 마감) · ★★ NHIS #44 이동서비스비 러-1~4 361차 zero drift IDENTICAL ↔ ogada full-stack ✅ parity/우위 · ★★ silverangel.kr 본진 4-URL zero drift + weekly notice 0 · ★ longterm 610 통합재가 zero drift `0ea575be` · 502 단기보호 HTTP 302 「미확인」 19-cycle · FE `@c06d581`/BE `@88a58d9` HEAD zero advance 1-cycle · merge gate **767** carry
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-590** | **★ ogada 실측** — FE `@c06d581`(WT CLEAN·BNK-589 동일 SHA·**HEAD zero advance 1-cycle**·ahead **217**)/BE `@88a58d9`(WT CLEAN·BNK-589 동일 SHA·**HEAD zero advance 1-cycle**·ahead **550**) · **112 Route·91 page·V1–V175·BE Test 258·FE test 467(193+274)·모듈 79.66%(23.10/29·id=10 0.75)·merge gate 767** 전부 carry | ROADMAP baseline KPI · tester FF merge **767** 가속 권장 |
+| **BNK-590** | **★★★ lcms.kr 도메인 폐기 DRIFT (신규 insight)** — `http://www.lcms.kr/` HTTP 200·**19B** `welcome to lcms.kr`(prior canonical `c0c66076` 50,740B `<title>엔젤시스템</title>`·「요양시설통합사례관리솔루션」·type1↔type2↔type3 cross-promo rotation)·HTTPS 000·/index.php 404·retry×3 안정. BNK-515~586 「lcms 3-type cross-promo funnel」 인사이트 역사적 마감(capped)·본진 silverangel.kr 정상 → 멀티 도메인 cross-promo 단일 도메인 축소「가정」·canonical 보존+named snapshot `lcms_root_decommission_bnk590.html`(19B) 추가(덮어쓰기 0) | **ogada 단일 ERP 통합 차별화 메시지 상대적 강화** — 경쟁사 분산 cross-promo 약화 · **v3 marketing copy 검토 반영** |
+| **BNK-590** | **★★ NHIS #44 이동서비스비 러-1~4 361차 zero drift IDENTICAL** — `c886ff1f`(7,572B·러-1~4·편도50%·1일1회·④별지 제22호) ↔ ogada `TransportServiceFeeService` 5/5 + FE `transportServiceFee.js` 4-상수 + `TransportServiceFeePanel` UXD-159 a11y **full-stack ✅ parity/우위** | PLAN_NOTES #44 carry · REQUIREMENTS G16 · **P2 v1.3-C parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry** |
+| **BNK-590** | **★★ silverangel.kr 본진 4-URL zero drift + weekly notice 0** — notice list `52c9457f`·essentialWork `80517b18`(보호자회의·반기·평가#27 가족소통)·extraService `f9c5d877`(효성CMS) · notice probe 221564/221565/221570 `8437f255` 미게시 shell · latest real 221563(6/18)·next ~6/25(내일) | **G-GUARDIAN-MEETING P3 carry** · ogada CMS 자체 DB 우위 carry |
+| **BNK-590** | **★ longterm 610 통합재가 zero drift · 502 단기보호 「미확인」 19-cycle** — 610 `0ea575be`(91,421B·통합재가서비스·월 10만원·주야간보호형) IDENTICAL · 502 HTTP 302 SIZE 0(canonical `b5aee8c1` 105,552B·단기보호 1등급 74,060 보존) · **4축+leave-ledger P0/P1 재오픈 0 (39-cycle carry, BNK-549~590)** | ROADMAP v3.1 G18-SHORT P3 carry · canonical on-disk 우선 정책 유지 |
+
+**planner 액션 (BNK-590)**: ① baseline FE `@c06d581`·BE `@88a58d9` · merge gate **767** carry · KPI 112/91/V175/BE258/FE467/79.66% 전부 carry ② **★★★ lcms.kr 도메인 폐기** — 엔젤 자매 3-type cross-promo funnel(BNK-515~586) 마감·본진 silverangel.kr 정상 → ogada 단일 ERP 통합 차별화 메시지 상대적 강화(v3 marketing copy 검토 반영) ③ **tester FF merge 767 가속 권장** — 양쪽 WT CLEAN·HEAD zero advance·선행 commit 불필요 ④ NHIS #44 361차 carry·v1.3-C parity 문구 고정 carry ⑤ silverangel weekly notice 0·latest real 221563(6/18)·next ~6/25 carry ⑥ longterm 502 「미확인」 19-cycle carry(canonical on-disk 우선)·610 통합재가 stable carry ⑦ candidate carry 4건 — G-GUARDIAN-MEETING·G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG·G-BILLING-OPENING-BALANCE P3(MVP out-of-scope).
+
+### [BNK] BNK-575 인사이트 (2026-06-24) — ★★★ G-SMS-TEMPLATE-CATALOG P3「가정」(BNK-574) → ✅ BE CLOSURE @ `b6c9b16` · ★★★ NEW URL→menu 재맵 DRIFT (npbs 신규홈페이지 26.1.16) — longterm `npe0000000610` `<h2>거짓청구 명단공표(미사용)</h2>`(canonical `8d53dcc1` 통합재가서비스 보존) · ★★ NHIS #44 350차 zero drift + silverangel 5-URL IDENTICAL + lcms type1+3 carry · ★★ longterm 502 단기보호 canonical 「미확인」 9-cycle carry · ★ MOHW 2026-126 counter +16/law247 cachebuster verbatim 불변 → 덮어쓰기 2건 · ★ merge gate **750**(+2 vs BNK-574 748·cross-stream FE+1·BE+1)
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-575** | **★ ogada 실측** — FE `@596658a`→**`@d682562`** `fix(v1.2.1/QA-B285): align FAQ21823 tests with compliance API wire`(**WT CLEAN**·**HEAD +1**·ahead **207**)/BE `@9aaefa0`→**`@b6c9b16`** `feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API`(**WT CLEAN**·**HEAD +1**·ahead **543**) · **112 Route·91 page·V1–V175·BE Test 255**(+1 `NotificationSmsTemplateCatalogServiceTest`)**·FE test 465·모듈 78.79%·merge gate 750**(+2) · **cross-stream advance 2 (양쪽 +1·SYNCED 가능)** | ROADMAP baseline KPI · tester FF merge **750** 가속 권장 |
+| **BNK-575** | **★★★ G-SMS-TEMPLATE-CATALOG P3「가정」(BNK-574) → ✅ BE CLOSURE @ `b6c9b16`** — 9-file +235L: `GET /api/v1/notifications/template-catalog` + `NotificationSmsTemplateCatalog.EZCARE_PARITY_ENTRIES` 6-종(1 `STAFF_ACCESS_KEY` SMS · 11 `BILLING_STATEMENT` ALIMTALK · 12 `CLIENT_MONTHLY_SCHEDULE` ALIMTALK · 13 `CARE_PROVISION_RECORD` ALIMTALK · 19 `ELDER_ABUSE_PREVENTION_GUIDELINE` ALIMTALK · 21 `STAFF_MONTHLY_SCHEDULE` ALIMTALK) · dispatchImplemented=**3/6** ALIMTALK(11/13/19 live·Solapi templateId BE fail-closed BNK-562 carry) · `NotificationChannelReadinessService` catalog 조립 + DTO 2종 + BE Test 3종 +128L · 이지케어 `mobile-sendW` 7-template `message_kind`(BNK-574 evidence) ↔ ogada parity 6-종 cross-walk (22-급여명세서 도메인 경계 제외) · **FE wire ❌**(`git grep "template-catalog\|fetchNotificationTemplateCatalog"` = 0 hit) → 신규 candidate **`G-SMS-TEMPLATE-CATALOG-FE-WIRE` P2「가정」**(`J03DashboardPage` SMS template readiness widget wire 시 module 10 0.5→0.65 후보) | ROADMAP·USER_STORIES·REQUIREMENTS · **BNK-574 P3 candidate 1-cycle BE closure** · **신규 P2 candidate `G-SMS-TEMPLATE-CATALOG-FE-WIRE`**(FE wire 시 모듈 KPI 0.5→0.65) |
+| **BNK-575** | **★★★ NEW URL→menu 재맵 DRIFT (npbs 신규홈페이지 26.1.16) — longterm `npe0000000610`** — live HTTP 200 90,700B `8706bc2c` `<h2 class="page-title">거짓청구 장기요양기관 명단공표(미사용)</h2>`(통합재가 **0건**) vs canonical `8d53dcc1`(91,430B·통합재가서비스·11 keyword·월 10만원·주야간보호형 verbatim) **보존**. 사이트 배너 "신규 홈페이지 오픈('26.1.16. ~)에 따른 최신 브라우저 설치 필요 안내" · 14 menuId candidate probe 0 hit → 신규 「통합재가서비스」 menuId 「미확인」 1-cycle carry · ROADMAP v3.1 G18-SHORT/integrated home discovery 본문 의존 0 (영향 0) | ROADMAP v3.1 G18-SHORT carry · canonical on-disk 우선 정책 유지 · **next cycle 신규 menuId 발견 task carry** |
+| **BNK-575** | **★★ NHIS #44 이동서비스비 러-1~4 350차 zero drift IDENTICAL** — `c886ff1f`(7,572B·러-1~4·편도50%·1일1회·④별지 제22호 일지) ↔ ogada `TransportServiceFeeService` 5/5 + FE `transportServiceFee.js` 4-상수 + `TransportServiceFeePanel` UXD-159 a11y **full-stack ✅ parity/우위 350차 재입증** | PLAN_NOTES #44 carry · REQUIREMENTS G16 · **P2 v1.3-C parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry** |
+| **BNK-575** | **★★ silverangel 5-URL zero drift IDENTICAL + weekly notice 0 (6-day stale)** — essential `c79c1be3`·extraService `f9c5d877`·mainService `bcf6df41`·feeService `eab352a8`·notice list `52c9457f`(최신 real 221563(6/18)) · 221564~221580 **17-probe** 모두 HTTP 200 · 51,765B · `8437f255` 미게시 shell IDENTICAL · weekly notice 0 · next ~6/25(내일) 예상 carry | **G-GUARDIAN-MEETING P3 carry** · **G-TRANSPORT-RULES-DOC P3 carry** · ogada CMS 자체 DB 우위 carry |
+| **BNK-575** | **★★ lcms 루트 `6b750291` type1+type3 IDENTICAL carry (4-cycle rotation 관측)** — 50,498B·websiteProvided+CJ MOU · BNK-556→568→571→575 4-cycle rotation (type1+3 ↔ type2 silverangel CMS cross-promo) | **ogada 단일 ERP 통합 vs silverangel SaaS cross-promo 분산 marketing copy carry**(planner v3 marketing copy 검토 carry) |
+| **BNK-575** | **★★ longterm 502 단기보호 canonical 「미확인」 9-cycle carry** — HTTP 302 session gate · on-disk canonical `b5aee8c1`(105,552B·**단기보호 1등급 74,060**·월 한도액 및 급여비용 2026.1.1 기준) 보존 carry | ROADMAP v3.1 G18-SHORT P3 carry · canonical on-disk 우선 정책 |
+| **BNK-575** | **★ 2026 규제 cosmetic DRIFT (verbatim 불변·덮어쓰기 2건)** — law247 `a9474058`→`d373750d`(`?Time=1782274342`→`?Time=1782284472`·strip-cachebuster IDENTICAL `0e07cef1`·제2025-247호·시행 2026.1.1) · MOHW 2026-126 `c8150e16`→`59c4f02b`(조회수 2,559→**2,575**(+16)·미리보기 555→**560**(+5)·다운로드 473 carry·제2026-126호 verbatim 불변) → 덮어쓰기 2건 · **4축+leave-ledger P0/P1 재오픈 0 (24-cycle carry, BNK-549~575)** | 덮어쓰기 2건 · 4축+leave-ledger 24-cycle carry · candidate 변동 +1(closure +1·신규 +1) |
+
+**planner 액션 (BNK-575)**: ① baseline FE `@d682562`·BE `@b6c9b16` · merge gate **750**(+2) · KPI 112/91/V175/BE**255**/FE465/78.79% (BE Test +1=`NotificationSmsTemplateCatalogServiceTest`) ② **tester FF merge 750 가속 권장** — cross-stream advance 2·양쪽 WT CLEAN·origin/test push(BE 543+FE 207) 우선순위 ③ **G-SMS-TEMPLATE-CATALOG P3→BE ✅ CLOSURE** (BNK-574 1-cycle closure)·신규 P2 candidate **`G-SMS-TEMPLATE-CATALOG-FE-WIRE`** FE wire 결정 요청(module 10 0.5→0.65 deepen 후보) ④ **NEW longterm `npe0000000610` URL→menu 재맵** — canonical 보존·live 「미확인」 carry·ROADMAP v3.1 G18-SHORT 영향 0·next cycle 신규 menuId 발견 task carry ⑤ NHIS #44 350차 carry·v1.3-C parity 문구 고정 carry ⑥ silverangel weekly notice 0 6-day stale·next ~6/25 carry ⑦ candidate carry — G-GUARDIAN-MEETING·G-TRANSPORT-RULES-DOC·G-NHIS-EXCEL-RECONCILE·G18-SHORT·G-PAYROLL-EXTERNAL-INTEGRATION P3 carry.
+
+### 벤치마크 질문
+
+1. **G-SMS-TEMPLATE-CATALOG-FE-WIRE (P2「가정」 신규)**: `J03DashboardPage` SMS template readiness widget(catalog API 응답 시각화 + dispatchImplemented 3/6 ↔ 6/6 진척률 표시)을 v1.2.x에서 wire할 것인지, v2/v3로 미룰 것인지 결정 요청. wire 시 module 10(부가서비스) coverage 0.5→0.65 deepen 후보.
+2. **longterm `npe0000000610` URL→menu 재맵 (npbs 신규홈페이지 26.1.16)**: 신규 「통합재가서비스」 menuId 「미확인」 — ROADMAP v3.1 G18-SHORT·`IntegratedHomeProviderDiscoveryPanel` 본문 의존 0이므로 영향 0 carry로 처리 vs DBA에 NHIS API/시드 재검토 요청할 것인지 결정 요청. (현 권장: canonical on-disk 우선 정책 carry · next cycle 신규 menuId 발견 task로 처리)
 
 ### [BNK] BNK-568 인사이트 (2026-06-24) — ★★★ NHIS #44 346차 zero drift + UXD-159 G16 a11y deepen · ★★★ longterm 502/610 5-cycle stable · ★★ silverangel 4-URL zero drift · ★★ lcms type1→type2 rotation 재출현 · ★ cross-stream SYNCED 가능(merge gate 741)
 
@@ -273,6 +370,126 @@
 | **BNK-507** | **G34-WORKFLOW-CATALOG P3** — ezCare FAQ 21795–21828 15/28 verbatim·13건 미인용(일일 라운딩·급여계획 변경·급여제공기록지·관리자 방문일정·직원회의·반기 결과평가 등) | ROADMAP v3.1 · USER_STORIES · PLAN_NOTES `### 추가 질문` |
 | **BNK-507** | **G30-LEGEND P3** — `MonitoringItemCatalog` 15-item ↔ 공단 평가지표 1-15 직접 2건·순서 ❌·MAP UX 개선 후보 | ROADMAP v3.1 · G30 deepen |
 | **BNK-507** | **guide-E200 SaaS+컨설팅 번들** — 지정갱신제·유료 1:1 컨설팅·강사진 = **v2/v3 monetization out-of-scope** | ROADMAP v3 · REQUIREMENTS §1-2 |
+
+---
+
+---
+
+### [TWR] 351차 documentation baseline sync (2026-06-24, 16:30 KST — **UXD-161 · Q697 fallback label · Q698 health G21 seed · BE `88a58d9`/FE `c06d581`**)
+
+**351차 문서 갱신**: CHANGELOG 3건 · FAQ **Q696~Q698 신규** · USER_MANUAL §4-7-3·§4-7-4·§5-5 · ADMIN_GUIDE §1-4 UXD-161·Q697 · DEPLOYMENT_GUIDE §1-3·§1-4 smoke · README — **`88a58d9`/`c06d581`**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| CHANGELOG | UXD-161 form-stack · fallback label sync · health G21 seed test lock | ✅ |
+| FAQ | **Q696** UXD-161 · **Q697** ezCare parity labels · **Q698** `liveE2eG21SeedStatusDetail` | ✅ |
+| USER_MANUAL | §4-7-3·§4-7-4 a11y · §5-5 readiness 라벨 · baseline | ✅ |
+| ADMIN_GUIDE | UXD-161·Q697 sysadmin 체크 | ✅ |
+| DEPLOYMENT_GUIDE | smoke Q696·Q697 · HealthControllerTest Q698 | ✅ |
+
+**다음 우선순위**: **J03 Solapi live dispatch runbook** · **7-5 live PG** · **L03 nursing live E2E runbook** · **G-PROGRAM-GROUP-CONFIG** P3
+
+---
+
+### [TWR] 350차 documentation operational enhancement (2026-06-24, 15:45 KST — **G-SMS-TEMPLATE-CATALOG SMS/ALIMTALK 운영 체크리스트·API schema·스케줄 발송 전략**)
+
+**350차 문서 갱신**: FAQ **Q693·Q694·Q695 신규 추가 (3건)** · **operationalize G-SMS** 전략 · **baseline 349차 준용**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| FAQ | **Q693** 운영 3단계 체크리스트 (Solapi·조직설정·smoke test) | ✅ |
+| FAQ | **Q694** 수동 vs 스케줄 vs live dispatch 전략 구분 | ✅ |
+| FAQ | **Q695** template-catalog API 응답 스키마 + 필드 가이드 | ✅ |
+
+**추가 내용**:
+- **Q693**: Solapi env·조직설정 readiness panel·3단계 smoke test (직원 접속키·월간 일정·청구 알림)
+- **Q693 확인 리스트**: API 응답 필드 (`templateCode`·`ezcareMessageKind`·`dispatchStatus`) · dashboard 모니터링 (catalog count·발송 대기 목록) · 오류 처리 (422 시나리오별)
+- **Q694**: 현황 (수동 6/6 ✅) vs 계획 (자동/스케줄 P2·live J03 P2)
+- **Q695**: GET `/notifications/template-catalog` 응답 스키마 정리 — **`messageKind`·`ezcareMessageKind`·`channel`·`configured`·`dispatchImplemented`·`dispatchReady`·`solveConfigured`** 필드 설명 + 시나리오 테이블
+
+**목표**: **운영자·IT담당** 이 화면 UI 없이도 **API + readiness panel** 으로 **발송 기능 상태** 를 **정확히 진단·복구** 할 수 있도록 **operational playbook** 문서화.
+
+**다음 우선순위**: **J03 Solapi live dispatch** runbook (dispatcher.schedule·failed message retry) · **7-5 live PG** (webhook integration) · **L03 간호급여 잔여 5 leaf** · **G-PROGRAM-GROUP-CONFIG** P3
+
+---
+
+### [TWR] 349차 documentation carry (2026-06-24, 15:30 KST — **G-SMS deepen `ef8bb4e`/`fed6f1f`/`5a6d42c`·`dispatchReady` 채널 자격·`ezcareMessageKind`·message_kind 11·13·19 UI**)
+
+**349차 문서 갱신**: CHANGELOG 3건 · FAQ **Q692 신규·Q686·Q690 정정** · USER_MANUAL §1-3·§1-5·§4-6·§4-7-3·§5-5 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-3·§1-4 · README baseline — **`ef8bb4e`/`5a6d42c`** · **112 route·91 page·merge gate 755**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| CHANGELOG | `ezcareMessageKind` 응답 · `dispatchReady` 채널 자격 · message_kind 11·13·19 UI | ✅ |
+| FAQ | Q692 crosswalk · Q686·Q690 `dispatchReady` 정정 | ✅ |
+| USER_MANUAL | §4-6·§4-7-3 라벨·응답 필드 · §5-5 readiness | ✅ |
+| ADMIN_GUIDE | §1-4 dispatch response·channel credentials | ✅ |
+| DEPLOYMENT_GUIDE | smoke Q692·PF ID guard · baseline 349차 | ✅ |
+
+**다음 우선순위**: **J03 Solapi live dispatch** runbook · **7-5 live PG** · **L03 간호급여 잔여 5 leaf** · **G-PROGRAM-GROUP-CONFIG** (P3)
+
+---
+
+### [TWR] 348차 documentation carry (2026-06-24, 23:45 KST — **G-SMS full closure `1d5d441`/`9c25d44`·message_kind 1·12·21 발송 UI·6/6 dispatch**)
+
+**348차 문서 갱신**: CHANGELOG 2건 · FAQ **Q691 신규·Q686·Q687·Q689 갱신** · USER_MANUAL §1-3·§1-5·§4-7-3·§4-7-4(신규)·§5-5 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-3·§1-4 · README baseline — **`1d5d441`/`9c25d44`** · **112 route·91 page·merge gate 755**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| CHANGELOG | STAFF_ACCESS_KEY API · message_kind 1·12·21 FE wire | ✅ |
+| FAQ | Q691 접속키 SMS · Q687·Q689 UI ✅ · Q686 6/6 | ✅ |
+| USER_MANUAL | §4-7-4 직원 발송 · §4-7-3 일정표-수급자 UI | ✅ |
+| ADMIN_GUIDE | §1-4 staff-access-key · dispatch 6/6 | ✅ |
+| DEPLOYMENT_GUIDE | smoke Q691·dispatch UI · baseline 348차 | ✅ |
+
+**다음 우선순위**: **J03 Solapi live dispatch** runbook · **7-5 live PG** · **L03 간호급여 잔여 5 leaf** · **G-PROGRAM-GROUP-CONFIG** (P3)
+
+---
+
+### [TWR] 346차 documentation carry (2026-06-24, 22:30 KST — **G-SMS deepen `8631d1e`/`068049b`·CLIENT_MONTHLY_SCHEDULE API·UXD-160 a11y**)
+
+**346차 문서 갱신**: CHANGELOG 3건 · FAQ **Q686 deepen·Q687·Q688 신규** · USER_MANUAL §1-3·§1-5·§4-7-3·§5-3·§5-5 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-3·§1-4 · README baseline — **`8631d1e`/`068049b`** · **112 route·91 page·merge gate 754**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| CHANGELOG | CLIENT_MONTHLY_SCHEDULE API · dispatchReadyCount · UXD-160 | ✅ |
+| FAQ | Q687 client-monthly-schedule · Q688 UXD-160 · Q686 deepen | ✅ |
+| USER_MANUAL | §4-7-3 API-only row · §5-5 catalog Alert · §5-3 a11y | ✅ |
+| ADMIN_GUIDE | §1-4 dispatch 4/6 · UXD-160 · Q687 API | ✅ |
+| DEPLOYMENT_GUIDE | smoke 3행 · baseline 346차 | ✅ |
+
+**다음 우선순위**: **CLIENT_MONTHLY_SCHEDULE FE wire** (`GuardianDocumentNotifyPanel`) · **J03 Solapi live dispatch** runbook · **7-5 live PG** · **L03 간호급여 잔여 5 leaf**
+
+---
+
+### [TWR] 345차 documentation carry (2026-06-24, 21:00 KST — **G-SMS-TEMPLATE-CATALOG FE wire `c9cf03b`·BE `b6c9b16`/FE `c9cf03b`**)
+
+**345차 문서 갱신**: CHANGELOG 1건 · FAQ **Q686 deepen** · USER_MANUAL §1-3·§1-5·§5-5 · ADMIN_GUIDE §1-4·§10-8 · DEPLOYMENT_GUIDE §1-3·§1-4 · README baseline — **`b6c9b16`/`c9cf03b`** · **112 route·91 page·merge gate 750**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| CHANGELOG | G-SMS-TEMPLATE-CATALOG FE wire · BE 항목 full-stack 정정 | ✅ |
+| FAQ | Q686 — FE wire ✅ · 화면 경로·표 열 | ✅ |
+| USER_MANUAL | §5-5 template catalog 섹션 · §1-5 점검표 | ✅ |
+| ADMIN_GUIDE | §1-4·§10-8 readiness UI + catalog | ✅ |
+| DEPLOYMENT_GUIDE | UI smoke 1행 · baseline 345차 | ✅ |
+
+**다음 우선순위**: **J03 Solapi live dispatch** runbook · **7-5 live PG** · **G-NHIS-EXCEL-RECONCILE P3** · **L03 간호급여 잔여 5 leaf**
+
+---
+
+### [TWR] 344차 documentation carry (2026-06-24, 18:30 KST — **FAQ21823 compliance API doc 정정·G-SMS-TEMPLATE-CATALOG·BE `b6c9b16`/FE `d682562`**)
+
+**344차 문서 갱신**: CHANGELOG 1건 · FAQ **Q540·Q547·Q685 갱신·Q686 신규** · USER_MANUAL §1-3·§1-5·§4-2·§5-3 · ADMIN_GUIDE §1-4·§6-2-6b · DEPLOYMENT_GUIDE §1-3·§1-4 · README baseline — **`b6c9b16`/`d682562`** · **112 route·91 page·merge gate 750**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| CHANGELOG | G-SMS-TEMPLATE-CATALOG BE · compliance API doc carry | ✅ |
+| FAQ | Q686 · Q540/Q547/Q685 compliance API 정정 | ✅ |
+| USER_MANUAL | dashboard 3-widget · `/staff` compliance API | ✅ |
+| ADMIN_GUIDE | §6-2-6b BE API · template catalog §1-4 | ✅ |
+| DEPLOYMENT_GUIDE | smoke 2행 · baseline 344차 | ✅ |
+
+**다음 우선순위**: **J03 Solapi live dispatch** runbook · **7-5 live PG** · **G-NHIS-EXCEL-RECONCILE P3** · **L03 간호급여 잔여 5 leaf**
 
 ---
 
@@ -5930,6 +6147,29 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 75. **V49 v3 meals/programs + Must billing·attendance 재대조 0건 (2026-06-08, round 75, backend `53a1ffe`)** — Must billing·attendance·NHIS 핵심 제약 7건 SQL `rg` 물리 재확인 — **Must 신규 누락 0건**. **V49** `meal_menus`·`meal_records`·`activity_programs`·`program_participations` 4테이블 신규(API §13·frontend `7ef1083`·`config/meals.js`/`programs.js` enum 정합). agents.yaml `core_entities` `meal_records`·`activity_programs` **V49 충족**. ERD §4-11·§8·DATA_RETENTION §3 갱신. **coder**: `MealService`/`ProgramService`·JPA·`MustApiEndpointRoutingTest` §13·`mvn flyway:migrate` 검증.
 
 ### [DBA] DB 설계 질문
+
+#### #180. round 194/G-SMS-TEMPLATE-CATALOG dispatch wiring · VisitScheduleRepository 2메서드 · 신규 DDL 0건 (2026-06-25, round 195, backend `ef8bb4e`)
+- **배경**: round 194(#179 — FAQ21823·catalog API·live-e2e probe, backend `b6c9b16`) → backend HEAD **`ef8bb4e`** 7 commit 전진 — **v2/G-SMS-TEMPLATE-CATALOG dispatch closure**(BNK-587): `8631d1e` client monthly visit schedule alimtalk·`b9d0599` staff monthly schedule alimtalk·`1d5d441` staff access key SMS·`fb323ae` catalog `dispatchReady` counts·`fed6f1f` channel-credentials gate·`ef8bb4e` dispatch 응답 `ezcareMessageKind` 노출. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`ef8bb4e`**·branch **develop**.
+- **`git diff --name-only b6c9b16..ef8bb4e -- src/main/resources/db/migration/`** = **0파일**. **`… -- '**/*Entity.java'`** = **0파일**. **`… -- '**/*Repository.java'`** = **`VisitScheduleRepository.java` 1파일**. **`git diff b6c9b16..ef8bb4e | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column|@Index'`** = **0건**.
+- **신규 Repository 메서드 2건 DB backing 대조** (신규 인덱스 0건):
+  - `findByOrganizationIdAndClientIdAndVisitDateBetweenAndScheduleKindAndStatusOrderByVisitDateAscPlannedStartTimeAsc` — `VisitScheduleNotificationService.notifyClientMonthlySchedule`(message_kind **12**) → **V53 `idx_visit_schedules_org_client_date (organization_id, client_id, visit_date DESC)`** equality prefix. `schedule_kind`/`status` residual filter + `planned_start_time ASC` sort 는 client×month bounded roster(인메모리/Index Scan+Sort — round 187 CMS branch roster·round 184 attendance roster 동일 정책).
+  - `findByOrganizationIdAndAssignedUserIdAndVisitDateBetweenAndScheduleKindAndStatusOrderByVisitDateAscPlannedStartTimeAsc` — `StaffMonthlyScheduleNotificationService`(message_kind **13**) → **V56 `idx_visit_schedules_org_assigned_date (organization_id, assigned_user_id, visit_date DESC) WHERE assigned_user_id IS NOT NULL`** prefix.
+- **G-SMS-TEMPLATE-CATALOG DB 영향**: `NotificationSmsTemplateCatalog`·`NotificationChannelReadinessService`·`NotificationTemplateCodes` — **인메모리** ezCare `message_kind`↔internal `template_code`↔Solapi template ID 매핑·env credential readiness. 신규 테이블·컬럼·DDL **0건**. 발송 이력은 기존 `notifications`(`template_code`·`channel` V3 CHECK)·`billing_statement_dispatches`(V133) 위 `NotificationService.dispatch*`.
+- **검증 결과**:
+  - **마이그레이션 연속성**: `ls db/migration | wc -l` = **175** contiguous(V1–V175, 갭·중복 0). V175 HEAD 유지.
+  - **`mvn flyway:validate`** (로컬 PG14 `ogada` DB) → **Successfully validated 175 migrations** PASS.
+  - **Must billing·attendance·NHIS 핵심 제약 7건** `pg_constraint`/`pg_trigger` 실측 → **전부 존재**(`uq_claim_branch_month`·`uq_billing_claim_items_claim_client`·`chk_billing_claims_amount_sum`·`trg_billing_claims_total_reconciliation`·`chk_attendance_presence_xor_absence`·`uq_nhis_import_rows_org_id`·`chk_nhis_import_rows_match_requires_client`).
+  - `agents.yaml` `core_entities` 11종 전수 충족 — `notifications`·`billing`·`attendance`·`visit_schedules`(G21) 기존 스키마 위 dispatch wiring.
+- **결론**: **신규 V176 불요** — 7 commit 전부 앱/테스트 only. ERD §1 round 195 행 + 메타 timestamp + DATA_RETENTION 메타 timestamp 갱신. **보류 carry**(전 라운드 동일): split address PII CHECK(P3)·V174 `recorded_by` P3·V169 overlap P3·V166 `is_active` P3·V162 `branch_ids` UUID P3·현금영수증 cross-table/time(P2)·PLAN↔BILLING reciprocal(P2)·`billing_payments`(Epic L). **coder 전달**: 추가 DDL 0건·schema readiness probe 신설 불요. `mvn test -Dtest='*VisitScheduleNotification*','*StaffMonthlyScheduleNotification*','*NotificationSmsTemplateCatalog*'` 재검증 권장.
+
+#### #179. round 193 후속 — FAQ21823 compliance·G-SMS-TEMPLATE-CATALOG catalog API·live-e2e probe · 신규 DDL 0건 (2026-06-24, round 194, backend `b6c9b16`)
+- **배경**: round 193(#178 — G-CLIENT split-address read/PATCH·Solapi fail-closed, backend `8b3fdcd`) → backend HEAD **`b6c9b16`** 5 commit 전진 — `c8358e9`/`0494334`/`d11263b` v2/live-e2e readiness/probe 응답 문구·bootstrap service-unavailable 상태 구분(앱/probe only)·`9aaefa0` **v2/FAQ21823 직원 고용계약 compliance API + 대시보드 count**·`b6c9b16` **v2/G-SMS-TEMPLATE-CATALOG ezCare message_kind Solapi 템플릿 카탈로그 API**.
+- **`git diff --name-only 8b3fdcd..b6c9b16 -- src/main/resources/db/migration/`** = **0파일**. **`… -- '**/*Entity.java' '**/*Repository.java'`** = **0파일**. **`git diff 8b3fdcd..b6c9b16 | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column'`** = **0건**.
+- **신규 쿼리·인덱스 0건**:
+  - **FAQ21823** `StaffEmploymentContractComplianceService.getCompliance` — 기존 `users`(**V86 `contract_signed_at`**·**V166 `lifecycle_status`**)·`user_branches`·`branches` **인메모리** 집계. 재사용 Repository만(`UserRepository.findByOrganizationId`·`UserBranchRepository.findByUserIdIn`/`findByUserId`·`BranchRepository.findByOrganizationId`). 연 1회 갱신·3년 보존 경고는 `LocalDate` 계산(앱 책임 — `CURRENT_DATE` non-immutable CHECK 불가).
+  - **G-SMS-TEMPLATE-CATALOG** — `NotificationSmsTemplateCatalog` 인메모리 카탈로그 노출. 기존 `notifications.template_code`·`channel` V3 CHECK 위 메타 — 신규 DDL 0건.
+- **검증 결과**: V1–V175 contiguous·Must 7건 SQL 물리 grep 불변·`users.contract_signed_at`·`chk_users_lifecycle_status` `ON_LEAVE`·`idx_users_org_lifecycle_status` 실측.
+- **결론**: **신규 V176 불요**. ERD §1 round 194 행(선행 커밋) 반영 완료. **coder 전달**: 추가 DDL 0건.
 
 #### #178. round 192/V175 후속 — G-CLIENT split-address read/PATCH·Solapi fail-closed·live-e2e opt-in 코멘트 · 신규 DDL 0건 (2026-06-24, round 193, backend `8b3fdcd`)
 - **배경**: round 192(#177 — V175 commit·G-CLIENT split address write, backend `642ea11`) → backend HEAD **`8b3fdcd`** 5 commit 전진 — `deda5b4` G-CLIENT read API 가 `addressSearch`/`addressDetail` split 필드 노출(round 192 write 짝)·`01edba7` G-CLIENT PATCH RBAC 을 caregiver/HQ_ADMIN 까지 확장(`RoleHierarchy` security 설정)·`2cae74c` `addressDetail`-only PATCH 보존(`ClientService` + 회귀 테스트)·`f600fd6` v2/US-J03 Solapi 템플릿 미매핑 alimtalk **fail-closed**(`SolapiMessageClient` + provider 테스트)·`8b3fdcd` **QA-B277 live-e2e bootstrap opt-in 주석 1줄**(`application.yml`, 동작 변경 0). 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`8b3fdcd`**·branch **develop**·working tree clean.
