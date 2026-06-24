@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-23T18:30:00Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-24T01:30:00Z -->
+<!-- planner-sync: PLN 193차 2026-06-24T01:30 UTC — BNK-566~567·TSR 1342~1343차 · ★★★ FAQ 21700 G-CASH-RECEIPT-LOG ✅ FULL parity · ★★★ FAQ 21823 tri-source + pilot harness 3-layer @17472bb · ★★ FAQ 21750 out-of-scope · ★ US-R01-c ✅ full-stack closure · ★ 신규 candidate G-NHIS-EXCEL-RECONCILE P3 · ★ QA-B272/B273/B277/B278 Fixed · cross-stream SYNCED · merge gate 739 · QA Open 0(active) -->
 <!-- planner-sync: PLN 192차 2026-06-23T18:30 UTC — BNK-553~556·TSR 1323~1331차 · ★★★ longterm 502 canonical(단기보호 74,060)·610 통합재가(월 10만원) · ★★ NHIS #44 이동서비스비 러-1~4 IDENTICAL → P2 문구 고정 · ★ 신규 candidate G-BILLING-START-STANDALONE P3·G-GUARDIAN-MEETING P3 · ★ G-STAFF-ANNUAL-LEAVE full-stack ✅ CLOSURE 재확인·V175 integrity · KPI 정정 Route 112·FE test 463 · QA-B272/B273 Planned(update) · merge gate 723 · cross-stream BLOCK · disk 34% 회복 · QA Open 0(active) -->
 <!-- planner-sync: PLN 191차 2026-06-23T17:30 KST — BNK-551~552·TSR 1321~1322차 · ★ US-R01-c leave-ledger BE ✅ FE wire △ · ★ v1.3-C M2 차별화 · ★ QA-B272/B273 Open→Planned · merge gate 718 · cross-stream BLOCK · disk ENOSPC · QA Open 0(active) -->
 <!-- planner-sync: PLN 190차 2026-06-23T16:30 KST — BNK-540~541·TSR 1305~1308차 · ★ M6 v3.1 P1 재확인 · ★ US-R01 relatedSurfaces 차별화 · ★ leave-ledger P1 candidate · ★ QA-B255/B263/B264 Fixed · merge gate 710 · cross-stream SYNCED · QA Open 0(active) -->
@@ -76,7 +77,48 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-06-23 (192차 PLN — **자동 기획 동기화** BNK-553~556·TSR 1323~1331차·★★★ longterm 502 canonical(단기보호 74,060)·610 통합재가(월 10만원)·★★ NHIS #44 이동서비스비 IDENTICAL→P2 문구 고정·★ 신규 candidate G-BILLING-START-STANDALONE·G-GUARDIAN-MEETING P3·★ G-STAFF-ANNUAL-LEAVE ✅ CLOSURE 재확인·V175 integrity·KPI 정정 Route 112·FE test 463·merge gate 723·cross-stream BLOCK·disk 34% 회복·QA Open 0) | **313차 TWR** — 문서 baseline 1차 확정 carry  
+> **최종 갱신**: 2026-06-24 (193차 PLN — **자동 기획 동기화** BNK-566~567·TSR 1342~1343차·★★★ FAQ 21700 G-CASH-RECEIPT-LOG ✅ FULL parity·★★★ FAQ 21823 tri-source + pilot harness 3-layer @17472bb·★ US-R01-c ✅ full-stack closure·★ 신규 candidate G-NHIS-EXCEL-RECONCILE P3·★ QA-B272/B273/B277/B278 Fixed·cross-stream SYNCED·merge gate 739·QA Open 0) | **313차 TWR** — 문서 baseline 1차 확정 carry  
+
+### [PLN] QA 피드백 반영 (2026-06-24, 193차 — BNK-566~567 · TSR 1342~1343차 · QA Open 0(active)·신규 Open 0·태스크화 불요 · ★ QA-B272/B273/B277/B278 Fixed · cross-stream SYNCED)
+
+### 추가 질문 (자동 기획 동기화 193차)
+1. G-NHIS-EXCEL-RECONCILE(P3): DBA/운영 부담(파싱 · 스키마 정합성)은 어느 수준까지 coder에게 위임할지 검토 필요. 권장: 초기 POC는 수동 검토 보조 리포트(백오피)로 시작.
+2. G-CASH-RECEIPT-LOG parity는 확인됨 — 운영상 'Must'로 승격할지, 아니면 'Should' 유지할지 제품팀 결정을 요청합니다.
+
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test `@8b3fdcd` WT **CLEAN** · **SYNCED** · post-merge **1857/1857 PASS** · FE develop/test `@17472bb` WT **CLEAN** · **SYNCED** · post-merge **2115/2115 PASS** · merge gate **739**(FE201+BE538) · origin/test push **538 BE+201 FE** · live E2E **127 PASS/19 SKIP** carry(bootstrap-disabled **147 SKIP/0 PASS**) · **112 route·91 page·V1–V175** · **BE Test 252(@Test 1,841)** · **FE test 465** · **모듈 78.79%** · disk **35%** | ROADMAP CURRENT BASELINE |
+| **QA Open 0·태스크화 불요** | TSR 1342~1343차 **신규 Open 0** · **★ QA-B272 Fixed @ `2cae74c`** · **★ QA-B273 Fixed @ `170ce56`** · **★ QA-B277 Fixed @ `8b3fdcd`** · **★ QA-B278 Fixed @ `87da06d`** · **Planned QA-B116+QA-B95** carry · **cross-stream SYNCED** | QA_FEEDBACK Planned(이동 불요) · ROADMAP P0 |
+| **BNK-566~567** | **★★★ FAQ 21700 → G-CASH-RECEIPT-LOG ✅ FULL parity**(BNK-315 P3 candidate concern 해소) · **★★★ FAQ 21823 tri-source + pilot harness 3-layer @ `17472bb`** · **★★ FAQ 21750 가족요양 감산 = 방문요양 out-of-scope** · **★ US-R01-c leave-ledger ✅ full-stack @ `bc6180e` chain** · **★ 신규 candidate G-NHIS-EXCEL-RECONCILE P3** · **4축 P0/P1 재오픈 0** · **신규 core 갭 0** | ROADMAP·REQUIREMENTS·USER_STORIES |
+| **잔여 P0/P2/P3** | **origin/test push(538 BE+201 FE)** → **QA-B116 post-merge** → **QA-B95 operation 승격** · **P2 carry** v1.3-C 이동서비스비 parity · G-REPORT-DENSITY · **P3 carry** G-NHIS-EXCEL-RECONCILE · G-BILLING-START-STANDALONE · G-GUARDIAN-MEETING · G18-SHORT · G-TRANSPORT-TIME-SYNC · G-VISIT-RESERVATION · G-NFC-NIGHT-PATROL | ROADMAP v2·v3·v3.1 |
+
+**coder/ops 다음 액션 (193차)**: ① **origin/test push**(538 BE+201 FE) ② **QA-B116 post-merge** ③ **QA-B95** operation 승격 ④ **P2** v1.3-C 이동서비스비 parity 문구 · G-REPORT-DENSITY ⑤ **P3 carry** G-NHIS-EXCEL-RECONCILE scope 검토.
+
+> **192차→193차 delta**: merge gate 723→**739** · cross-stream BLOCK→**SYNCED** · BE `@c4e6bcb` dirty→**`8b3fdcd` CLEAN SYNCED** · FE `@64584f4` dirty→**`17472bb` CLEAN SYNCED** · **QA-B272/B273/B277/B278 Fixed** · origin/test push **532+191→538+201** · **US-R01-c △→✅ full-stack** · **FAQ 21700 parity 재확인** · **신규 candidate G-NHIS-EXCEL-RECONCILE P3**.
+
+### [BNK] BNK-568 인사이트 (2026-06-24) — ★★★ NHIS #44 346차 zero drift + UXD-159 G16 a11y deepen · ★★★ longterm 502/610 5-cycle stable · ★★ silverangel 4-URL zero drift · ★★ lcms type1→type2 rotation 재출현 · ★ cross-stream SYNCED 가능(merge gate 741)
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-568** | **★ ogada 실측** — FE `@17472bb`→**`@0869589`** `ux(a11y): G16 transport fees, client RBAC edit link, and summary layout (UXD-159)`(**WT CLEAN**·**HEAD +1**·ahead **202**) / BE `@8b3fdcd`→**`@c8358e9`** `fix(v2/live-e2e): add explicit bootstrap enable hint in readiness responses`(**WT CLEAN**·**HEAD +1**·ahead **539**) · **112 Route·91 page·V1–V175·BE Test 252(@Test 1,840)·FE test 465·모듈 78.79%·merge gate 741**(+2) · **cross-stream SYNCED 가능** | ROADMAP baseline KPI · tester FF merge 741 가속 권장 |
+| **BNK-568** | **★★★ NHIS #44 이동서비스비 러-1~4 346차 zero drift IDENTICAL** — `c886ff1f`(7,572B) live=on-disk·"'러-1'부터 '러-4'까지 비용의 50%"·"1일 1회" verbatim ↔ ogada BE `TransportServiceFeeService` 5/5 + FE `transportServiceFee.js` 4-상수 + **신규** FE `0869589` UXD-159 a11y(G16 페이지 RBAC edit link/summary layout aria) **full-stack ✅ parity/우위 deepen 재입증** | PLAN_NOTES #44 carry · REQUIREMENTS G16 · **P2 v1.3-C parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry** |
+| **BNK-568** | **★★★ longterm 502 canonical 5-cycle stable + 610 통합재가 5-cycle stable** — 502 `b5aee8c1`(105,552B·canonical·단기보호 1등급 **74,060** verbatim) BNK-556→568 carry · 610 `0ea575be`(91,421B·**2종 이상·월 10만원·주야간보호형** verbatim) BNK-566→568 carry·oscillation 종결 | ROADMAP v3.1(**G18-SHORT P3 carry**)·canonical on-disk 우선 정책·`IntegratedHomeProviderDiscoveryPanel` 우위 carry |
+| **BNK-568** | **★★ silverangel 4-URL zero drift IDENTICAL** — extraService CMS 5-method `f9c5d877`·daycareEssentialWork 평가#27 보호자회의+이동#41-42 수칙 `c79c1be3`·mainService `bcf6df41`·feeService `eab352a8` · ogada CMS 자체 DB 우위 carry·반기 보호자회의 dedicated workflow ❌·수칙 템플릿 embed ❌ | **G-GUARDIAN-MEETING P3 carry** · **G-TRANSPORT-RULES-DOC P3 carry** |
+| **BNK-568** | **★★ lcms 루트 type1→type2 rotation 재출현** — `6b750291`(type1+type3)→**`6c0d22b4`**(50,554B·type2 silverangel CMS cross-promo 정본 BNK-515 reveal carry·`ad_cont type2`+`img_banner2.png`+「본인부담금 자동이체(CMS)」+CTA→silverangel extraService.do+「1600-6859」) → 덮어쓰기 | **ogada 단일 ERP 통합 vs silverangel SaaS cross-promo 분산 marketing copy carry**(planner v3 marketing copy 검토 carry) |
+| **BNK-568** | **★ 2026 규제 cosmetic DRIFT (verbatim 불변)** — law247 `b64a5bc3`(?Time=1782265509·제2025-247호·시행 2026.1.1) · MOHW 2026-126 `85682695`(조회수 2,528→**2,540**(+12)·제2026-126호 verbatim) → 덮어쓰기 2건 · silverangel notice 221563 view probe `8437f255` unpublished shell·신규 게시 0 | 덮어쓰기 3건 · **4축 P0/P1 재오픈 0 (20-cycle carry)** |
+
+**planner 액션 (BNK-568)**: ① baseline FE `@0869589`·BE `@c8358e9` · merge gate **741**(+2) · KPI 112/91/V175/BE252/FE465/78.79% 불변 ② **tester FF merge 741 가속 권장** — cross-stream SYNCED·양쪽 WT CLEAN·origin/test push(BE 539+FE 202) 우선순위 ③ NHIS #44 346차 carry·v1.3-C parity 문구 고정 carry ④ lcms type2 rotation 재출현 marketing copy carry(신규 인사이트 0) ⑤ candidate 변동 0 — G-GUARDIAN-MEETING·G-TRANSPORT-RULES-DOC·G-NHIS-EXCEL-RECONCILE·G18-SHORT P3 carry.
+
+### [BNK] BNK-566~567 인사이트 (2026-06-24) — ★★★ FAQ 21700/21823 · ★★ FAQ 21750 out-of-scope · ★ G-NHIS-EXCEL-RECONCILE P3
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-567** | **★★★ FAQ 21700 현금영수증** — 수납 1:1 종속·발급목록·미발급 큐 → ogada `G-CASH-RECEIPT-LOG` **✅ FULL parity+분리 우위** · BNK-315 P3 candidate concern **해소** | REQUIREMENTS G-CASH-RECEIPT-LOG · USER_STORIES US-G26 |
+| **BNK-566** | **★★★ FAQ 21823 근로(재)계약 tri-source** — ezCare 정본·케어포 전용 leaf 없음 · FE `@17472bb` pilot harness 3-layer(R03-a/R03-b·`pilotPageFlows` +83L) | USER_STORIES US-R03 · REQUIREMENTS G-Staff-LC |
+| **BNK-567** | **★★ FAQ 21750 가족요양 감산** — 방문요양 전용(제69조의2) = ogada 주간보호 **out-of-scope·갭 아님** · `medicalExpenseDeduction`과 혼동 금지 | PLAN_NOTES 추가 질문 |
+| **BNK-567** | **★ 신규 candidate G-NHIS-EXCEL-RECONCILE P3「가정」** — 공단 엑셀 import 자동 재계산·불일치 alert(이지케어는 수동 보정 안내) | ROADMAP P3 · PLAN_NOTES 추가 질문 |
+| **BNK-566** | **★ US-R01-c leave-ledger ✅ full-stack closure** @ `bc6180e`/`170ce56` chain · FAQ21823 harness `@17472bb` +1 | USER_STORIES US-R01-c |
 
 ### [PLN] QA 피드백 반영 (2026-06-23, 192차 — BNK-553~556 · TSR 1323~1331차 · QA Open 0(active)·신규 Open 0·태스크화 불요 · ★★★ longterm 502/610 canonical · ★★ NHIS #44 이동서비스비 IDENTICAL · ★ 신규 candidate 2건 · ★ G-STAFF-ANNUAL-LEAVE ✅ CLOSURE 재확인 · KPI 정정 · merge gate 723 · cross-stream BLOCK)
 
@@ -231,6 +273,52 @@
 | **BNK-507** | **G34-WORKFLOW-CATALOG P3** — ezCare FAQ 21795–21828 15/28 verbatim·13건 미인용(일일 라운딩·급여계획 변경·급여제공기록지·관리자 방문일정·직원회의·반기 결과평가 등) | ROADMAP v3.1 · USER_STORIES · PLAN_NOTES `### 추가 질문` |
 | **BNK-507** | **G30-LEGEND P3** — `MonitoringItemCatalog` 15-item ↔ 공단 평가지표 1-15 직접 2건·순서 ❌·MAP UX 개선 후보 | ROADMAP v3.1 · G30 deepen |
 | **BNK-507** | **guide-E200 SaaS+컨설팅 번들** — 지정갱신제·유료 1:1 컨설팅·강사진 = **v2/v3 monetization out-of-scope** | ROADMAP v3 · REQUIREMENTS §1-2 |
+
+---
+
+### [TWR] 343차 documentation carry (2026-06-24, 15:00 KST — **FAQ21823 retention D-day·서식 인쇄·live E2E operationReason·BE `d11263b`/FE `a43bcb7`**)
+
+**343차 문서 갱신**: CHANGELOG 2건 · FAQ **Q684 deepen·Q685 신규** · USER_MANUAL §1-3·§5-3 · ADMIN_GUIDE §1-4·§6-2-6b · DEPLOYMENT_GUIDE §1-3·§11-3 · README baseline — **`d11263b`/`a43bcb7`** · **112 route·91 page**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| CHANGELOG | FAQ21823 retention·print · operationReason BE | ✅ |
+| FAQ | Q685 · Q684 deepen · baseline 343차 | ✅ |
+| USER_MANUAL | §5-3 보관 D-day·서식 인쇄 | ✅ |
+| ADMIN_GUIDE | §6-2-6b Q685 | ✅ |
+| DEPLOYMENT_GUIDE | §11-3 smoke checklist | ✅ |
+
+**다음 우선순위**: **G-NHIS-EXCEL-RECONCILE P3** (acceptance criteria 확정 후) · **J03 Solapi live dispatch** 운영 runbook · **7-5 live PG** (stub→live 전환 체크리스트)
+
+---
+
+### [TWR] 342차 documentation carry (2026-06-24, 12:30 KST — **bootstrap service-unavailable·Q12 caregiver RBAC 정정·BE `0494334`/FE `cba9ff8`**)
+
+**342차 문서 갱신**: CHANGELOG 1건 · FAQ **Q12 정정·Q680 deepen·Q684 신규** · USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE·README baseline — **`0494334`/`cba9ff8`**
+
+**완료**: live E2E **disabled vs service-unavailable** health/probe 진단 분리 (Q684) · FE **`liveE2eOperationReason`** skip diagnostic (Q684) · FAQ **Q12** caregiver **수정 vs 등록** Q675 정합
+
+**다음 우선순위**: L03 간호급여 잔여 5 leaf · G15 일지④ 인쇄·별지 제22호 전항목 · 7-5 live PG · G-COMM-CALLER-AUTH P3
+
+---
+
+### [TWR] 340차 documentation carry (2026-06-24, 09:00 KST — **J03 Solapi dispatch fail-closed·live E2E bootstrap opt-in·employment-contract harness·BE `8b3fdcd`/FE `87da06d`**)
+
+**340차 문서 갱신**: CHANGELOG 4건 · FAQ **Q679·Q680·Q681·Q682** 신규 · README 헤더·USER_MANUAL §1-3·§1-5 · DEPLOYMENT_GUIDE §1-3·§3-7 준비 중→AVAILABLE · ADMIN_GUIDE §1-4 — baseline **`8b3fdcd`/`87da06d`**
+
+**완료**: Solapi **런타임 templateId fail-closed** (Q679) · **live E2E bootstrap opt-in** 명시 (Q680) · **leave-ledger·G16 pilot E2E harness** (Q681) · **employment-contract pilot harness** (Q682, `17472bba`) · **leave-ledger 상태 AVAILABLE** 업데이트
+
+**다음 우선순위**: L03 간호급여 잔여 5 leaf · 7-5 live PG · G15 일지④ 인쇄·별지 제22호 전항목 · G-COMM-CALLER-AUTH P3
+
+---
+
+### [TWR] 339차 documentation carry (2026-06-23, 22:00 KST — **addressDetail-only PATCH·G16 NHIS #44 parity UI·BE `f600fd6`/FE `a531ed6`**)
+
+**339차 문서 갱신**: CHANGELOG 2건 · FAQ **Q677·Q678** · USER_MANUAL §1-3·§4-3·§5-8-1·§6-1·§6-5(caregiver 수정) · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4 smoke — baseline **`f600fd6`/`a531ed6`**
+
+**완료**: Q12·Q46·Q42 caregiver **등록 vs 수정** 분리 정정 · **상세주소만 PATCH** (Q677) · **이동서비스비 NHIS #44 4항 고정 UI** (Q678)
+
+**다음 우선순위**: J03 Solapi template mapping live (BE `f600fd6` test carry) · L03 간호급여 잔여 leaf · 7-5 live PG · G-COMM-CALLER-AUTH P3
 
 ---
 
@@ -5843,6 +5931,31 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 
 ### [DBA] DB 설계 질문
 
+#### #178. round 192/V175 후속 — G-CLIENT split-address read/PATCH·Solapi fail-closed·live-e2e opt-in 코멘트 · 신규 DDL 0건 (2026-06-24, round 193, backend `8b3fdcd`)
+- **배경**: round 192(#177 — V175 commit·G-CLIENT split address write, backend `642ea11`) → backend HEAD **`8b3fdcd`** 5 commit 전진 — `deda5b4` G-CLIENT read API 가 `addressSearch`/`addressDetail` split 필드 노출(round 192 write 짝)·`01edba7` G-CLIENT PATCH RBAC 을 caregiver/HQ_ADMIN 까지 확장(`RoleHierarchy` security 설정)·`2cae74c` `addressDetail`-only PATCH 보존(`ClientService` + 회귀 테스트)·`f600fd6` v2/US-J03 Solapi 템플릿 미매핑 alimtalk **fail-closed**(`SolapiMessageClient` + provider 테스트)·`8b3fdcd` **QA-B277 live-e2e bootstrap opt-in 주석 1줄**(`application.yml`, 동작 변경 0). 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`8b3fdcd`**·branch **develop**·working tree clean.
+- **`git diff --name-only 642ea11..8b3fdcd -- src/main/resources/db/migration/`** = **0파일**. **`… -- '**/*Entity.java' '**/*Repository.java'`** = **0파일**. **`git diff 642ea11..8b3fdcd | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column'`** = **0건**(신규 테이블·컬럼·엔티티·레포지토리 0).
+- **5 commit 영향 분석 (전부 앱/설정/테스트 only)**:
+  - **`deda5b4` G-CLIENT split address read 노출** — `ClientResponse.addressSearch`/`addressDetail` 추가 + `ClientService.resolveHomeAddress` 가 기존 V47 `address_search_encrypted`/`address_detail_encrypted` 컬럼을 복호화해 응답(round 192 write 짝, 동일 컬럼 위 read). **스키마 미접근**.
+  - **`01edba7` G-CLIENT PATCH RBAC 확장** — `@PreAuthorize` 가 social_worker→caregiver/HQ_ADMIN 까지 허용(`RoleHierarchy` Spring Security config). 데이터 모델 영향 0.
+  - **`2cae74c` `addressDetail`-only PATCH 보존** — `ClientService.applyClientAddress` 가 `addressSearch` 누락 시 기존 행의 검색주소를 유지하도록 분기(앱 도메인). DB CHECK 미러 불가(PII `BYTEA` 암호문 — round 192 carry).
+  - **`f600fd6` v2/US-J03 Solapi 템플릿 fail-closed** — `SolapiMessageClient` 가 internal template code → Solapi template ID 매핑이 없을 때 dispatch 거부(외부 API 호출 경로). `notifications` 테이블·발송 이력 스키마 미변경.
+  - **`8b3fdcd` QA-B277 live-e2e bootstrap opt-in 주석** — `application.yml` 에 "Keep disabled by default" 코멘트 1줄 추가. 기존 `${LIVE_E2E_BOOTSTRAP_ENABLED:${LIVE_E2E:false}}` 평가식 불변·DB 미접근.
+- **신규 쿼리·인덱스 0건** — 5 commit 전부 기존 V47/V1 PII 암호화 컬럼·security config·외부 API 클라이언트·yaml 코멘트 범위. `ClientRepository` `findBy*`/`@Query` 메서드 시그니처 변동 0건.
+- **DB 방어 불가(의도적, round 192 carry)**: split address 3종(`address_search_encrypted`·`address_detail_encrypted`·`address_encrypted` 결합 미러) 모두 PII `BYTEA`(`PiiCryptoService.encrypt`) 암호문이라 nonempty·형식·길이 immutable CHECK 표현 불가. 검색주소 필수·상세주소 trim→NULL 정규화는 앱(`ClientService.applyClientAddress` `BusinessRuleException`) 책임 유지(현금영수증 `amount==copay`·care-plan 텍스트 암호화 외 동일 정책).
+- **Solapi fail-closed 의 DB 영향**: 발송 거부 시 `notifications` 행 INSERT 자체가 발생하지 않거나 `status=FAILED` 로 적재(coder 책임 — `NotificationDeliveryService`). V133 `billing_statement_dispatches`·`notifications` 기존 CHECK·Tenant FK 위에서 동작 — DB 추가 방어 불요.
+- **검증 결과**:
+  - **마이그레이션 연속성**: `ls db/migration | wc -l` = **175** contiguous(V1–V175, 갭·중복 0 — `seq 1 175 | while read n; do ls V${n}__* 2>/dev/null; done | wc -l` = **175** PASS). V175 `staff_leave_ledger_entries_integrity_us_r01c.sql` HEAD 유지.
+  - **Must billing·attendance·NHIS 핵심 제약 7건** SQL 물리 grep 재확인 → **전부 불변**:
+    - `uq_claim_branch_month` — V1:129
+    - `uq_billing_claim_items_claim_client` — V26:18
+    - `chk_billing_claims_amount_sum` — V6:22
+    - `trg_billing_claims_total_reconciliation` — V11
+    - `chk_attendance_presence_xor_absence` — V11:22 + V14 commentary
+    - `uq_nhis_import_rows_org_id` — V37:37
+    - `chk_nhis_import_rows_match_requires_client` — V19:26 → V54:40 교체본
+  - `agents.yaml` `core_entities` 11종 전수 충족 — `clients` 행 round 192 split-address carry + 본 라운드 read API/PATCH RBAC/`addressDetail`-only 보존(앱 only).
+- **결론**: **신규 V176 불요** — 5 commit 전부 앱/설정/테스트 only(`application.yml` 코멘트 1줄 + 4건 앱 도메인 + 외부 알림 channel). ERD §1 round 193 행 + 메타 timestamp + DATA_RETENTION 메타 timestamp 갱신만(스키마·테이블·CHECK·트리거 변경 0). **보류 carry**(전 라운드 동일): split address PII 암호문 nonempty/형식 CHECK(P3 — 앱 책임)·V174 `recorded_by` NOT NULL/actor backstop/purge index(P3)·V169 same-day cross-row overlap(P3)·V166 `is_active` pairing(P3)·V162 `branch_ids` 요소 UUID(P3)·현금영수증 cross-table/time(P2)·PLAN↔BILLING reciprocal(P2)·`billing_payments`(Epic L). **coder 전달**: 추가 DDL 0건 — 본 5 commit 의 마이그레이션·schema readiness probe 신설 불요. `mvn test -Dtest='ClientServiceTest,RoleHierarchyTest,SolapiKakaoAlimtalkProviderTest'` 는 round 192~193 commit 자체에서 PASS(테스트가 변경분과 함께 커밋됨). G-CLIENT split address 가 향후 검색·정렬 술어로 노출되면 `address_search_encrypted` 위 일반 인덱스가 아닌 결정론적 해시 컬럼·정규화 컬럼 추가가 우선(PII 암호문 trgm 불가) — 그 때 V176 재평가.
+
 #### #177. V174 G-STAFF-LEAVE-LEDGER 신규 + V175 defense-in-depth integrity (2026-06-23, round 191, backend `5fd12dd`)
 - **배경**: round 189(#176 — V172/V173 annual leave·backend `83a26e7`) → backend HEAD **`5fd12dd`** — `bb9df48` **feat(v3/US-R01-c) add canonical staff leave ledger API**(coder, V174 `staff_leave_ledger_entries`·`StaffLeaveLedgerController`·`StaffLeaveLedgerService`·케어포 8-13·BNK-532)·`5fd12dd` leave-ledger live API routing harness(앱). 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`5fd12dd`**·branch **develop**.
 - **`git diff --name-only 83a26e7..5fd12dd -- src/main/resources/db/migration/`** = **`V174__staff_leave_ledger_us_r01c.sql` 1파일**(coder `bb9df48`). `… -- '**/*Entity.java' '**/*Repository.java'` = **2파일**(`StaffLeaveLedgerEntryEntity.java`·`StaffLeaveLedgerEntryRepository.java`, V174 짝).
@@ -6874,6 +6987,12 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 
 다음 항목이 확정되기 전까지 상세 스펙·일정·구현 범위는 가정으로만 기재한다.
 
+#### [PLN] G-NHIS-EXCEL-RECONCILE — 공단 엑셀 import 자동 재계산·불일치 alert (2026-06-24, 193차 — BNK-567 · **신규 candidate · 「가정」 P3**)
+
+- **근거**: 이지케어 [FAQ 21750](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21750&type=web) — 공단 엑셀 오류(감산 미적용) 시 **수동 보정 안내**만 제공 · BNK-559 FAQ21450 RFID/엑셀 비실시간 패턴 동형.
+- **현황**: ogada NHIS import·G21 비교 workflow ✅ · **import 결과 vs 자체 산정 자동 재계산·불일치 alert ❌**.
+- **검토 질문**: MVP 범위 포함 여부 — **planner 권고(추측·미확인)**: **P3 backlog·v3.1 billing reconciliation UX·MVP out-of-scope** · FAQ 21750 가족요양 감산은 **방문요양 도메인 밖**.
+
 #### [PLN] G-GUARDIAN-MEETING — 보호자회의·가족소통 evidence bundle (2026-06-23, 192차 — BNK-556 · **신규 candidate · 「가정」 P3**)
 
 - **근거**: silverangel [daycareEssentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3` **평가번호 27 가족과의 소통** — 보호자회의 반기 1회 이상·프로그램 계획표/식단표/기관 소식 월 1회 이상·연계 메뉴=보호자회의/보호자용 앱/가정통신문/프로그램계획/안내장관리/식단표.
@@ -6898,11 +7017,11 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 - **현황**: **✅ closure** — monthly snapshot surface · US-R03e full-stack · G-STAFF-ANNUAL-LEAVE P3 candidate 제거.
 - **검토 질문**: 추가 Must 승격 불요 — canonical per-event ledger는 **US-R01-c `/staff/leave-ledger` P1 candidate「가정」** 별도 검토.
 
-#### [PLN] US-R01-c `/staff/leave-ledger` — per-event canonical leave ledger (2026-06-23, 191차 — BNK-551~552 · **P1 in_progress**)
+#### [PLN] US-R01-c `/staff/leave-ledger` — per-event canonical leave ledger (2026-06-24, 193차 — BNK-566 · **✅ full-stack closure**)
 
-- **근거**: 케어포 8-13 연차·유급휴일 대장 · ogada monthly snapshot(`/staff/annual-leaves`) vs per-event ledger 정보 모델 분리.
-- **현황**: BE API+V174 ✅ @ `bb9df48`/`5fd12dd`(`StaffLeaveLedgerController`·RBAC) · FE Route/API client wire **△** @ `8057c1e`(committed 1·WT **DIRTY 5M** transport WIP) · **relatedSurfaces BE AVAILABLE ↔ FE PLANNED 동기화 잔여**(BNK-551).
-- **검토 질문**: MVP v3 Must 포함 여부 — **planner 권고(추측·미확인)**: **P1 in_progress·BE closure 확인·FE wire completion 우선** · 근로기준법 60조 자동 산정·이월·소멸 규칙 복잡도 = scope 확정 전 DBA 검토 필요.
+- **근거**: 케어포 8-13 연차·유급휴일 대장 · V174 `StaffLeaveLedgerController` · FE `@bc6180e` leave-ledger wire + live E2E harness.
+- **현황**: **✅ full-stack closure** @ `bc6180e`/`170ce56` chain · FAQ21823 pilot harness `@17472bb` +1 · **relatedSurfaces BE AVAILABLE ↔ FE wire 동기화 완료**.
+- **검토 질문**: **191차 P1 in_progress → 193차 ✅ closure** — 추가 Must 승격 불요.
 
 #### [PLN] G34-WORKFLOW-CATALOG — 운영주기별 워크플로 FAQ cross-walk (2026-06-22, 188차 — BNK-512 · **✅ full-stack closure @ `77cfc38`**)
 
@@ -8664,11 +8783,19 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 ---
 ---
 
-### [TWR] 문서 작성 질문 (2026-06-21 293차)
+### [TWR] 문서 동기화 상태 (2026-06-24 344차)
 
-> tech_writer (`TWR`) — 자율 실행 기준 규칙.md §1·§10 준수. 사용자 질문 금지, 이번 호출에서 docs 반드시 생성·수정.
+> tech_writer (`TWR`) — 자율 실행 기준 규칙.md §1·§10 준수. **344차**: baseline audit **✅ CLEAN** — 모든 ops 문서 2026-06-24 15:30 UTC 동기화 확정.
 
-**현재 기준**: BE `20485f1` / FE `751c593` / V1–V168 / 108 route · 87 page / **merge gate 638**
+**현재 기준**: BE `9aaefa0` / FE `a43bcb7` / V1–V175 / 112 route · 91 page / **merge gate 748→751**
+
+**344차 동기화 결과**:
+- ✅ **API_SPEC.md** — employment-contract compliance endpoint ✅ · dashboard snapshot fields ✅ · US-R01-c ✅
+- ✅ **CHANGELOG.md** — FAQ21823 3-feature (compliance API·retention D-day·contract print) ✅ · Q684 operationReason ✅
+- ✅ **FAQ.md** — Q685 retention + print ✅ · Q684 bootstrap health ✅ · Q683 a11y ✅ · Q681-Q682 harness ✅
+- ✅ **USER_MANUAL.md** — §1-3 state table ✅ · §1-5 Must 기능 checklist ✅ · §5-3 FAQ21823 renewal alerts ✅
+- ✅ **ADMIN_GUIDE.md** — dashboard widget · RBAC · compliance API ✅
+- ✅ **메타 태그** — owner/audience/updated 일관성 ✅
 
 **최근 완료 (293차 자동 동기화)**:
 - ✅ **CHANGELOG.md** — 293차 TWR 자동 동기화 기록 · V168 overdue integrity · UXD-150 a11y · Q605–Q606
