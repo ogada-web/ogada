@@ -1,4 +1,166 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T19:36:00+00:00 -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T20:03:00+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1 (`merge_status: merged`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T20:03:00+00:00
+
+> **1376차 재검증 (2026-06-24T20:03 UTC) — SYNCED revalidation test `@2eaf17e` (`src/backend-test`) `mvn test` **1899/1899 PASS**(55.253s, 359 suites, BUILD SUCCESS) · develop HEAD `@2eaf17e` WT **CLEAN** · `test..develop` **0**(SYNCED) · merge **SKIP**(SYNCED) · `npm test` N/A(no `package.json`) · origin/test (**554 unpushed BE** · **220 unpushed FE**) · Open **1 carry** QA-B298(MEDIUM · FE live E2E US-O05) · Planned **QA-B116(origin/test push 554 BE+220 FE)+QA-B95 partial(bootstrap-disabled·121 PASS FE carry)** · 판정 **PASS(v1 @ test SYNCED @2eaf17e)** · **transfer PASS**. 교차(frontend git): FE develop/test `@64a7648` **SYNCED CLEAN** · **cross-stream SYNCED** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(89G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T20:00:24+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1 (`merge_status: merged`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T20:00:24+00:00
+
+> **1375차 재검증 (2026-06-24T20:00 UTC) — ROADMAP merged baseline `@670756a` (`src/backend-test`) `mvn test` **1895/1895 PASS**(60.3s, 358 suites, BUILD SUCCESS) · develop HEAD `@2eaf17e` WT **CLEAN** · develop pre-merge (`src/backend`) **1899/1899 PASS**(60.5s, 359 suites, +4 tests) · ★ **merge EXECUTED** FF `670756a`→`2eaf17e` (1 commit: v2/G2b CMS payment method catalog API) · post-merge **1899/1899 PASS**(79.4s, 359 suites) · develop/test `@2eaf17e` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**554 unpushed BE** · **220 unpushed FE**) · **★ QA-20260624-B299 Fixed @ `2eaf17e`** · Open **1(active frontend carry)** QA-B298 · Planned **QA-B116(origin/test push 554 BE+220 FE)+QA-B95 partial(bootstrap-disabled·121 PASS FE carry)** · 판정 **PASS(v1 @ test post-merge SYNCED @2eaf17e)** · **transfer PASS**. 교차(frontend git): FE develop/test `@64a7648` **SYNCED CLEAN** · **cross-stream SYNCED** · backend@8080 **UP/200** · operation **BLOCK** · disk **39%**(89G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T19:01:00+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **1373차 재검증 (2026-06-24T19:01 UTC) — pre-merge test `@88a58d9` (`src/backend-test`) `mvn test` **1893/1893 PASS**(85.2s, 358 suites, BUILD SUCCESS) · develop HEAD `@670756a` WT **CLEAN** · develop pre-merge (`src/backend`) **1895/1895 PASS**(82.7s, 358 suites, +2 tests) · ★ **merge EXECUTED** FF `88a58d9`→`670756a` (3 commits: G-SMS ezcareMessageKind staff+guardian + live-e2e bootstrap env toggle) · post-merge **1895/1895 PASS**(78.5s, 358 suites) · develop/test `@670756a` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**553 unpushed BE** · **219 unpushed FE**) · **★ QA-20260624-B295 Fixed @ `670756a`** · Open **0(active)** · Planned **QA-B116(origin/test push 553 BE+219 FE)+QA-B95 partial(bootstrap-disabled carry)** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @670756a)** · **transfer PASS**. 교차(frontend git): FE develop/test `@216ab7a` **SYNCED CLEAN** · **cross-stream SYNCED** · backend@8080 **UP/200** · operation **BLOCK** · disk **39%**(89G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T16:50:30+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **1370차 재검증 (2026-06-24T16:50 UTC) — ROADMAP merged baseline `@88a58d9` (`src/backend-test`) `mvn test` **1893/1893 PASS**(59.388s, 358 suites, BUILD SUCCESS) · develop HEAD `@2f83563` WT **CLEAN** · develop pre-merge (`src/backend`) **1893/1893 PASS**(59.267s, 358 suites) · merge **SKIP**(`test..develop` **0/1** pending `2f83563`) · pending commit `feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on staff dispatch responses` · `npm test` N/A(no `package.json`) · origin/test (**550 unpushed BE** · **217 unpushed FE**) · **QA-20260624-B295 Open**(severity **BLOCK**, backend develop→test merge pending 1 미이관) · Open **1(active backend)** · Open **0(active frontend)** · Planned **QA-B295+QA-B116(origin/test push 550 BE+217 FE)+QA-B95 partial(bootstrap-disabled carry)** · 판정 **BLOCK(v1.2.1 regression PASS but backend pending 1 미검증)** · **transfer BLOCK**. 교차(frontend git): FE develop/test `@c06d581` **SYNCED CLEAN** · ⚠ **cross-stream BLOCK(BE pending 1 @2f83563 · FE SYNCED@c06d581)** · backend@8080 **UP/200** · operation **BLOCK** · disk **39%**(90G avail).**
+
+> **PASS 금지 사유 (1370차)**: **QA-B295 Open(BLOCK)** — develop WT **CLEAN**이지만 `test..develop` **0/1** pending(`@2f83563`)으로 merge 게이트 미충족. ✅ test `mvn test` **1893/1893 PASS** · develop pre-merge **1893/1893 PASS**. **테스트 PASS ≠ develop 이관 가능**.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T15:47:47+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: merged`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T15:47:47+00:00
+
+> **1368차 재검증 (2026-06-24T15:47 UTC) — pre-merge test `@ef8bb4e` (`src/backend-test`) `mvn test` **1893/1893 PASS**(358 suites, ~58s, BUILD SUCCESS) · develop HEAD `@88a58d9` WT **CLEAN** · develop pre-merge (`src/backend`) **1893/1893 PASS**(358 suites, ~59s) · ★ **merge EXECUTED** FF `ef8bb4e`→`88a58d9` (1 commit: v2/live-e2e G21 seed detail health fallback lock) · post-merge **1893/1893 PASS**(358 suites, ~72s) · develop/test `@88a58d9` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**550 unpushed BE** · **216 unpushed FE**) · **★ QA-20260624-B293 Fixed @ `88a58d9`** · Open **0(active backend)** · Open **1(active frontend carry)** FE pending 1 `@4adeb1c` · Planned **QA-B116(origin/test push 550 BE+216 FE)+QA-B95 partial(bootstrap-disabled carry)** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @88a58d9)** · **transfer PASS**. 교차(frontend git): FE develop `@4adeb1c` / test `@3f686e3` · `test..develop` **0/1** pending · ⚠ **cross-stream BLOCK(BE SYNCED@88a58d9 · FE pending 1 @4adeb1c)** · backend@8080 **UP/200** · operation **BLOCK** · disk **39%**(90G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T14:13:22+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **1366차 재검증 (2026-06-24T14:13 UTC) — pre-merge test `@1d5d441` (`src/backend-test`) `mvn test` **1891/1891 PASS**(358 suites, ~57s, BUILD SUCCESS) · develop HEAD `@ef8bb4e` WT **CLEAN** · develop pre-merge (`src/backend`) **1893/1893 PASS**(358 suites, ~57s, +2 tests) · ★ **merge EXECUTED** FF `1d5d441`→`ef8bb4e` (2 commits: G-SMS-TEMPLATE-CATALOG dispatchReady credential gate + ezcareMessageKind) · post-merge **1893/1893 PASS**(358 suites, ~81s) · develop/test `@ef8bb4e` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**549 unpushed BE** · **211 unpushed FE**) · **★ QA-20260624-B292 Fixed @ `ef8bb4e`** · Open **0(active backend)** · Open **2(active frontend carry)** QA-B290+QA-B291 · Planned **QA-B116(origin/test push 549 BE+211 FE)+QA-B95 partial(bootstrap-disabled carry)** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @ef8bb4e)** · **transfer PASS**. 교차(frontend git): FE develop `@5a6d42c` / test `@068049b` · `test..develop` **0/3** pending · ⚠ **cross-stream BLOCK(BE SYNCED@ef8bb4e · FE pending 3 @5a6d42c + QA-B290/B291)** · backend@8080 **UP/200** · operation **BLOCK** · disk **38%**(91G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T13:10:05+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **1364차 재검증 (2026-06-24T13:10 UTC) — ROADMAP merged regression `@1d5d441` (`src/backend-test`) `mvn test` **1891/1891 PASS**(59.43s, BUILD SUCCESS) · develop HEAD `@fed6f1f` WT **CLEAN** · merge **SKIP**(`test..develop` **0/1** pending `fed6f1f`) · `npm test` N/A(no `package.json`) · origin/test (**547 unpushed BE** · **211 unpushed FE**) · **QA-20260624-B292 Open**(severity **BLOCK**, backend develop→test merge pending 1 `fed6f1f` 미검증) · Open **1(active backend)** · Open **2(active frontend carry)** QA-B290+QA-B291 · Planned **QA-B292+QA-B116(origin/test push 547 BE+211 FE)+QA-B95 partial(bootstrap-disabled carry)** · 판정 **BLOCK(v1.2.1 @ test regression PASS but develop pending 1 미검증)** · **transfer BLOCK**. 교차(frontend git): FE develop `@9c25d44` / test `@068049b` · `test..develop` **0/2** pending · ⚠ **cross-stream BLOCK(BE pending 1 @fed6f1f · FE pending 2 @9c25d44 + QA-B290/B291)** · backend@8080 **UP/200** · operation **BLOCK** · disk **38%**(91G avail).**
+
+> **PASS 금지 사유 (1364차)**: **QA-B292 Open(BLOCK)** — develop WT **CLEAN**이지만 `test..develop` **0/1** pending(`@fed6f1f`)으로 merge gate 미충족. ✅ test `mvn test` **1891/1891 PASS**. **테스트 PASS ≠ develop 이관 가능** — develop pre-merge 검증 + merge/post-merge 재검증 선행.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T12:38:25+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: merged`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T12:38:25+00:00
+
+> **1362차 재검증 (2026-06-24T12:38 UTC) — pre-merge test `@b9d0599` (`src/backend-test`) `mvn test` **1884/1884 PASS**(357 suites, ~86s, BUILD SUCCESS) · develop HEAD `@1d5d441` WT **CLEAN** · develop pre-merge (`src/backend`) **1891/1891 PASS**(358 suites, ~86s, +7 tests) · ★ **merge EXECUTED** FF `b9d0599`→`1d5d441` (1 commit: G-SMS-TEMPLATE-CATALOG staff access key SMS dispatch) · post-merge **1891/1891 PASS**(358 suites, ~77s) · develop/test `@1d5d441` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**547 unpushed BE** · **211 unpushed FE**) · Open **0(active backend)** · Open **2(active frontend carry)** QA-B290+QA-B291 · Planned **QA-B116(origin/test push 547 BE+211 FE)+QA-B95 partial(bootstrap-disabled carry)** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @1d5d441)** · **transfer PASS**. 교차(frontend git): FE test `@068049b` / develop `@c04968c` · `test..develop` **0/1** pending · ⚠ **cross-stream BLOCK(BE SYNCED@1d5d441 · FE pending 1 @c04968c + QA-B290/B291)** · backend@8080 **UP/200** · operation **BLOCK** · disk **38%**(91G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T10:31:22+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **1357차 재검증 (2026-06-24T10:31 UTC) — pre-merge test `@fb323ae` (`src/backend-test`) `mvn test` **1875/1875 PASS**(354 suites, ~56s, BUILD SUCCESS) · develop HEAD `@8631d1e` WT **CLEAN** · develop pre-merge (`src/backend`) **1879/1879 PASS**(355 suites, ~55s, +4 tests) · ★ **merge EXECUTED** FF `fb323ae`→`8631d1e` (1 commit: G-SMS-TEMPLATE-CATALOG client monthly schedule alimtalk dispatch) · post-merge **1879/1879 PASS**(355 suites, ~80s) · develop/test `@8631d1e` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**545 unpushed BE** · **208 unpushed FE**) · Open **0(active backend)** · Open **1(active frontend carry)** QA-B289 · Planned **QA-B116(origin/test push 545 BE+208 FE)+QA-B95 partial(bootstrap-disabled carry)** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @8631d1e)** · **transfer PASS**. 교차(frontend git): FE develop `@ef3948c` / test `@c9cf03b` · `test..develop` **0/2** pending · develop pre-merge **2127/2128 FAIL** · ⚠ **cross-stream BLOCK(BE SYNCED@8631d1e · FE pending 2 @ef3948c + pre-merge FAIL QA-B289)** · backend@8080 **UP/200** · operation **BLOCK** · disk **38%**(92G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T09:09:00+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **1353차 재검증 (2026-06-24T07:40 UTC) — ROADMAP merged SYNCED revalidation `@b6c9b16` (`src/backend-test`) `mvn test` **1875/1875 PASS**(354 suites, ~56s, BUILD SUCCESS) · develop HEAD `@b6c9b16` WT **DIRTY 5M**(G-SMS-TEMPLATE-CATALOG catalog deepen WIP) · develop dirty WIP **1875/1875 PASS**(354 suites, ~60s) · merge **SKIP**(`test..develop` **0/0** SYNCED · develop dirty) · `npm test` N/A(no `package.json`) · origin/test (**543 unpushed BE** · **207 unpushed FE**) · **QA-20260624-B287 Open**(BLOCK) · Open **1(active backend)** · Planned **QA-B116+QA-B95** · 판정 **BLOCK(v1.2.1 @ test regression PASS · develop WT DIRTY 5M)** · **transfer BLOCK**. 교차(frontend git): FE develop/test `@d682562` **SYNCED CLEAN** · ⚠ **cross-stream BLOCK(BE dirty@b6c9b16 · FE SYNCED@d682562)** · backend@8080 **UP/200** · operation **BLOCK** · disk **37%**(93G avail).**
+
+> **PASS 금지 사유 (1353차)**: **QA-B287 Open(BLOCK)** — develop WT **DIRTY 5M**(G-SMS-TEMPLATE-CATALOG catalog deepen WIP) · merge **SKIP**(0/0 SYNCED+dirty). ✅ test `mvn test` **1875/1875 PASS**. ✅ develop dirty WIP **1875/1875 PASS**. **테스트 PASS ≠ develop 이관 가능** — COD commit or discard → WT **CLEAN** 선행.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T06:38:00+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T06:38:00+00:00
+
+> **1351차 재검증 (2026-06-24T06:38 UTC) — pre-merge test `@9aaefa0` (`src/backend-test`) `mvn test` **1872/1872 PASS**(353 suites, ~85s, BUILD SUCCESS) · develop HEAD `@b6c9b16` WT **CLEAN** · develop pre-merge (`src/backend`) **1875/1875 PASS**(354 suites, ~83s, +3 tests) · ★ **merge EXECUTED** FF `9aaefa0`→`b6c9b16` (1 commit: G-SMS-TEMPLATE-CATALOG ezCare message_kind Solapi template catalog API) · post-merge **1875/1875 PASS**(354 suites, ~75s) · develop/test `@b6c9b16` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**543 unpushed BE** · **205 unpushed FE**) · **★ QA-20260624-B286 Fixed @ `b6c9b16`** · Open **0(active backend)** · Open **1(active frontend carry)** QA-B285 · Planned **QA-B116+QA-B95** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @b6c9b16)** · **transfer PASS**. 교차(frontend git): FE test `@a43bcb7` · develop `@596658a` · `test..develop` **0/1** pending · develop pre-merge **2123/2125 FAIL** · ⚠ **cross-stream BLOCK(BE SYNCED@b6c9b16 · FE pending 1 @596658a + pre-merge FAIL)** · backend@8080 **UP/200** · operation **BLOCK** · disk **37%**(93G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T05:10:57+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T05:10:57+00:00
+
+> **1349차 재검증 (2026-06-24T05:10 UTC) — pre-merge test `@d11263b` (`src/backend-test`) `mvn test` **1863/1863 PASS**(349 suites, ~58s, BUILD SUCCESS) · develop HEAD `@9aaefa0` WT **CLEAN** · develop pre-merge (`src/backend`) **1872/1872 PASS**(356 suites, ~60s) · ★ **merge EXECUTED** FF `d11263b`→`9aaefa0` (1 commit: FAQ21823 employment contract compliance API + dashboard counts) · post-merge **1872/1872 PASS**(356 suites, ~75s) · develop/test `@9aaefa0` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**542 unpushed BE** · **205 unpushed FE**) · **★ QA-20260624-B284 Fixed @ `9aaefa0`** · Open **0(active)** · Planned **QA-B116+QA-B95** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @9aaefa0)** · **transfer PASS**. 교차(frontend git): FE develop/test `@a43bcb7` **SYNCED** · ★ **cross-stream SYNCED(FE@a43bcb7 + BE@9aaefa0)** · backend@8080 **UP/200** · operation **BLOCK**.**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T03:44:19+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T03:44:19+00:00
+
+> **1347차 재검증 (2026-06-24T03:44 UTC) — pre-merge test `@0494334` (`src/backend-test`) `mvn test` **1863/1863 PASS**(349 suites, ~56s, BUILD SUCCESS) · develop HEAD `@d11263b` WT **CLEAN** · develop pre-merge **1863/1863 PASS**(349 suites, ~58s) · ★ **merge EXECUTED** FF `0494334`→`d11263b` (1 commit: live-e2e operation reason in health/probe) · post-merge **1863/1863 PASS**(349 suites, ~75s) · develop/test `@d11263b` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**541 unpushed BE** · **204 unpushed FE**) · **★ QA-20260624-B282 Fixed @ `d11263b`** · Open **0(active)** · Planned **QA-B116+QA-B95** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @d11263b)** · **transfer PASS**. 교차(frontend git): FE develop/test `@cba9ff8` **SYNCED** · ★ **cross-stream SYNCED(FE@cba9ff8 + BE@d11263b)** · backend@8080 **UP/200** · operation **BLOCK** · disk **36%**(94G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T02:39:11+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T02:39:11+00:00
+
+> **1346차 재검증 (2026-06-24T02:39 UTC) — pre-merge test `@c8358e9` (`src/backend-test`) `mvn test` **1857/1857 PASS**(349 suites, ~57s, BUILD SUCCESS) · develop HEAD `@0494334` WT **CLEAN** · develop pre-merge **1863/1863 PASS**(349 suites, ~57s, +6 tests) · ★ **merge EXECUTED** FF `c8358e9`→`0494334` (1 commit: live-e2e bootstrap service-unavailable state) · post-merge **1863/1863 PASS**(349 suites, ~75s) · develop/test `@0494334` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**540 unpushed BE** · **201 unpushed FE**) · **★ QA-20260624-B281 Fixed @ `0494334`** · Open **0(active backend)** · Open **1(active frontend carry)** QA-B280 · Planned **QA-B116+QA-B95** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @0494334)** · **transfer PASS**. 교차(frontend git): FE develop `@28033cf` / test `@17472bb` · `test..develop` **0/2** pending · ⚠ **cross-stream BLOCK(BE SYNCED@0494334 · FE pending 2 @28033cf)** · backend@8080 **UP/200** · operation **BLOCK** · disk **36%**(94G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T01:44:46+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-24T01:44:46+00:00
+
+> **1344차 재검증 (2026-06-24T01:44 UTC) — pre-merge test `@8b3fdcd` (`src/backend-test`) `mvn test` **1857/1857 PASS**(349 suites, ~56s, BUILD SUCCESS) · develop HEAD `@c8358e9` WT **CLEAN** · develop pre-merge **1857/1857 PASS**(349 suites, ~58s) · ★ **merge EXECUTED** FF `8b3fdcd`→`c8358e9` (1 commit: live-e2e bootstrap enable hint in readiness) · post-merge **1857/1857 PASS**(349 suites, ~75s) · develop/test `@c8358e9` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**539 unpushed BE** · **202 unpushed FE**) · **★ QA-20260624-B279 Fixed @ `c8358e9`** · Open **0(active)** · Planned **QA-B116+QA-B95** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @c8358e9)** · **transfer PASS**. 교차(frontend git): FE develop `@0869589` / test `@17472bb` · `test..develop` **0/1** pending · ⚠ **cross-stream BLOCK(BE SYNCED@c8358e9 · FE pending 1 @0869589)** · backend@8080 **UP/200** · operation **BLOCK** · disk **36%**(95G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T00:09:00+00:00 -->
+# Backend develop → test 이관 체크리스트
+
+> **스트림**: backend  
+> **develop 브랜치**: `develop` (`src/backend`)  
+> **test 브랜치**: `test` (`src/backend-test` worktree)  
+> **검증 기준**: `docs/planning/ROADMAP.md` v1.2.1 (`merge_status: ready`)  
+> **작성**: tester (`TSR`)  
+> **최종 갱신**: 2026-06-23T23:03:36+00:00
+
+> **1341차 재검증 (2026-06-23T23:03 UTC) — ROADMAP merged SYNCED revalidation `@f600fd6` (`src/backend-test`) `mvn test` **1857/1857 PASS**(349 suites, ~70s, BUILD SUCCESS) · develop HEAD `@f600fd6` WT **DIRTY 1M**(`application.yml` · live-e2e bootstrap default uncommitted) · merge **SKIP**(`test..develop` **0/0** SYNCED · develop dirty) · `npm test` N/A(no `package.json`) · origin/test (**537 unpushed BE** · **199 unpushed FE**) · **QA-20260623-B277 Open**(BLOCK · develop dirty recurrence) · Open **1(active)** · Planned **QA-B116+QA-B95** · 판정 **BLOCK(v1.2.1 test regression PASS · develop WT DIRTY 1M)** · **transfer BLOCK**. 교차(frontend git): FE develop/test `@bc6180e` WT **CLEAN SYNCED** · ⚠ **cross-stream BLOCK(BE dirty@f600fd6 · FE SYNCED@bc6180e)** · backend@8080 **UP/200** · operation **BLOCK** · disk **35%**(95G avail).**
+
+> **PASS 금지 사유 (1341차)**: **QA-B277 Open(BLOCK)** — develop WT **DIRTY 1M**(`application.yml` live-e2e bootstrap default) · merge **SKIP**(0/0 SYNCED+dirty). ✅ test `mvn test` **1857/1857 PASS**. **테스트 PASS ≠ develop 이관 가능** — COD discard or commit→WT **CLEAN** 선행.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T21:57:00+00:00 -->
+
+> **1339차 재검증 (2026-06-23T21:57 UTC) — pre-merge test `@2cae74c` (`src/backend-test`) `mvn test` **1856/1856 PASS**(349 suites, ~67s) · develop HEAD `@f600fd6` WT **CLEAN** · develop pre-merge **1857/1857 PASS**(349 suites, ~66s, +1 test) · ★ **merge EXECUTED** FF `2cae74c`→`f600fd6` (1 commit) · post-merge **1857/1857 PASS**(349 suites, ~92s) · develop/test `@f600fd6` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**537 unpushed BE** · **198 unpushed FE**) · **★ QA-20260623-B275 Fixed @ `f600fd6`** · Open **0(active)** · Planned **QA-B116+QA-B95** · 판정 **PASS(v1.2.1 @ test post-merge SYNCED @f600fd6)** · **transfer PASS**. 교차(frontend git): FE develop/test `@a531ed6` WT **CLEAN SYNCED** · ★ **cross-stream SYNCED(FE@a531ed6 + BE@f600fd6)** · backend@8080 **UP/200** · operation **BLOCK** · disk **35%**(96G avail).**
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T21:27:11+00:00 -->
 # Backend develop → test 이관 체크리스트
 
 > **스트림**: backend  

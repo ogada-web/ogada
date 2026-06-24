@@ -1,3 +1,71 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T20:03:00+00:00 -->
+# revalidation_1376th: 2026-06-24T20:03Z — SYNCED revalidation test @2eaf17e mvn 1899/1899 PASS(55.253s,359 suites,BUILD SUCCESS) · develop @2eaf17e WT CLEAN · test..develop 0(SYNCED) · merge SKIP(SYNCED) · Open 1 carry(B298 FE MEDIUM) · origin/test BE 554 unpushed · FE 220 unpushed · cross-stream SYNCED(FE@64a7648 + BE@2eaf17e) · backend@8080 UP/200 · operation BLOCK · disk 40% avail · BE Test 260.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T20:00:24+00:00 -->
+# revalidation_1375th: 2026-06-24T20:00Z — baseline test @670756a mvn 1895/1895 PASS(60.3s,358 suites) · develop @2eaf17e pre-merge 1899/1899 PASS(60.5s,+4 tests) WT CLEAN · ★ merge EXECUTED FF 670756a→2eaf17e (1 commit: v2/G2b CMS payment method catalog) · post-merge 1899/1899 PASS(79.4s,359 suites) · develop/test @2eaf17e SYNCED · ★ QA-B299 Fixed @2eaf17e · Open 1 carry(B298 FE) · origin/test BE 554 unpushed · FE 220 unpushed · cross-stream SYNCED(FE@64a7648 + BE@2eaf17e) · backend@8080 UP/200 · operation BLOCK · disk 39% avail · BE Test 259.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T19:01:00+00:00 -->
+# revalidation_1373rd: 2026-06-24T19:01Z — pre-merge test @88a58d9 mvn 1893/1893 PASS(85.2s,358 suites) · develop @670756a pre-merge 1895/1895 PASS(82.7s,+2 tests) WT CLEAN · ★ merge EXECUTED FF 88a58d9→670756a (3 commits) · post-merge 1895/1895 PASS(78.5s) · develop/test @670756a SYNCED · ★ QA-B295 Fixed @670756a · Open 0 · origin/test BE 553 unpushed · FE 219 unpushed · cross-stream SYNCED(FE@216ab7a + BE@670756a) · backend@8080 UP/200 · operation BLOCK · disk 39% avail.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T18:00:00+00:00 -->
+# revalidation_1371st: 2026-06-24T18:00Z — roadmap-merged test @88a58d9 mvn 1893/1893 PASS(83.0s,358 suites) · develop @a12873c pre-merge 1894/1894 PASS(84.0s,+1 test) WT CLEAN · merge SKIP(test..develop 0/2 pending 2f83563+a12873c) · QA-B295 Open update(BLOCK,pending 1→2) · Open 1 BE+0 FE · origin/test BE 550 unpushed · FE 218 unpushed · transfer BLOCK · cross-stream BLOCK(BE pending 2 @a12873c · FE pending 1 @c7d0982) · backend@8080 UP/200 · operation BLOCK · disk 39% avail.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T16:50:30+00:00 -->
+# revalidation_1370th: 2026-06-24T16:50Z — roadmap-merged test @88a58d9 mvn 1893/1893 PASS(59.388s,358 suites) · develop @2f83563 pre-merge 1893/1893 PASS(59.267s) WT CLEAN · merge SKIP(test..develop 0/1 pending 2f83563) · pending commit feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on staff dispatch responses · QA-B295 Open(BLOCK) · Open 1 BE+0 FE · origin/test BE 550 unpushed · FE 217 unpushed · transfer BLOCK · cross-stream BLOCK(BE pending 1 @2f83563 · FE SYNCED@c06d581) · backend@8080 UP/200 · operation BLOCK · disk 39% avail.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T15:47:47+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T15:47:47+00:00
+# revalidation_1368th: 2026-06-24T15:47Z — pre-merge test @ef8bb4e mvn 1893/1893 PASS(~58s,358 suites) · develop @88a58d9 pre-merge 1893/1893 PASS(~59s) WT CLEAN · ★ merge EXECUTED FF ef8bb4e→88a58d9 (1 commit) · post-merge 1893/1893 PASS(~72s) · develop/test @88a58d9 SYNCED · ★ QA-B293 Fixed @88a58d9 · Open 0 BE+1 FE carry(pending 1 @4adeb1c) · origin/test BE 550 unpushed · FE 216 unpushed · cross-stream BLOCK(BE SYNCED@88a58d9 · FE pending 1 @4adeb1c) · backend@8080 UP/200 · operation BLOCK · disk 39% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T14:13:22+00:00 -->
+# revalidation_1366th: 2026-06-24T14:13Z — pre-merge test @1d5d441 mvn 1891/1891 PASS(~57s,358 suites) · develop @ef8bb4e pre-merge 1893/1893 PASS(~57s,358 suites,+2 tests) WT CLEAN · ★ merge EXECUTED FF 1d5d441→ef8bb4e (2 commits) · post-merge 1893/1893 PASS(~81s) · develop/test @ef8bb4e SYNCED · ★ QA-B292 Fixed @ef8bb4e · Open 0 BE+2 FE carry(B290+B291) · origin/test BE 549 unpushed · FE 211 unpushed · cross-stream BLOCK(BE SYNCED@ef8bb4e · FE pending 3 @5a6d42c+QA-B290/B291) · backend@8080 UP/200 · operation BLOCK · disk 38% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T13:10:05+00:00 -->
+# revalidation_1364th: 2026-06-24T13:10Z — roadmap-merged test @1d5d441 mvn 1891/1891 PASS(59.43s, BUILD SUCCESS) · develop @fed6f1f WT CLEAN · merge SKIP(test..develop 0/1 pending fed6f1f) · QA-B292 Open(BLOCK) · Open 1 BE+2 FE carry(B290+B291) · origin/test BE 547 unpushed · FE 211 unpushed · cross-stream BLOCK(BE pending 1 @fed6f1f · FE pending 2 @9c25d44 + QA-B290/B291) · backend@8080 UP/200 · operation BLOCK · disk 38% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T12:38:25+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T12:38:25+00:00
+# revalidation_1362nd: 2026-06-24T12:38Z — pre-merge test @b9d0599 mvn 1884/1884 PASS(~86s,357 suites) · develop @1d5d441 pre-merge 1891/1891 PASS(~86s,358 suites,+7 tests) WT CLEAN · ★ merge EXECUTED FF b9d0599→1d5d441 (1 commit) · post-merge 1891/1891 PASS(~77s) · develop/test @1d5d441 SYNCED · Open 0 BE+2 FE carry(B290+B291) · origin/test BE 547 unpushed · FE 211 unpushed · cross-stream BLOCK(BE SYNCED@1d5d441 · FE pending 1 @c04968c+QA-B290/B291) · backend@8080 UP/200 · operation BLOCK · disk 38% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T11:49:04+00:00 -->
+# revalidation_1359th: 2026-06-24T11:49Z — pre-merge test @8631d1e mvn 1879/1879 PASS(~55s,355 suites) · develop @b9d0599 pre-merge 1884/1884 PASS(~55s,357 suites,+5 tests) WT CLEAN · ★ merge EXECUTED FF 8631d1e→b9d0599 (1 commit) · post-merge 1884/1884 PASS(~76s) · develop/test @b9d0599 SYNCED · Open 0 · origin/test BE 546 unpushed · FE 211 unpushed · cross-stream SYNCED(FE@068049b + BE@b9d0599) · backend@8080 UP/200 · operation BLOCK · disk 38% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T10:31:22+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T10:31:22+00:00
+# revalidation_1357th: 2026-06-24T10:31Z — pre-merge test @fb323ae mvn 1875/1875 PASS(~56s,354 suites) · develop @8631d1e pre-merge 1879/1879 PASS(~55s,355 suites,+4 tests) WT CLEAN · ★ merge EXECUTED FF fb323ae→8631d1e (1 commit) · post-merge 1879/1879 PASS(~80s) · develop/test @8631d1e SYNCED · Open 0 BE+1 FE carry(B289) · origin/test BE 545 unpushed · FE 208 unpushed · cross-stream BLOCK(BE SYNCED@8631d1e · FE pending 2 @ef3948c+pre-merge FAIL) · backend@8080 UP/200 · operation BLOCK · disk 38% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T09:09:00+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T09:09:00+00:00
+# revalidation_1355th: 2026-06-24T09:09Z — pre-merge test @b6c9b16 mvn 1875/1875 PASS(~56s,354 suites) · develop @fb323ae pre-merge 1875/1875 PASS(~57s) WT CLEAN · ★ merge EXECUTED FF b6c9b16→fb323ae (1 commit) · post-merge 1875/1875 PASS(~77s) · develop/test @fb323ae SYNCED · ★ QA-B287 Fixed @fb323ae · Open 0 BE+1 FE carry(pending 1) · origin/test BE 544 unpushed · FE 208 unpushed · cross-stream BLOCK(BE SYNCED@fb323ae · FE pending 1 @15f2195) · backend@8080 UP/200 · operation BLOCK · disk 37% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T07:40:00+00:00 -->
+# revalidation_1353rd: 2026-06-24T07:40Z — test @b6c9b16 mvn 1875/1875 PASS(~56s,354 suites) · develop @b6c9b16 WT DIRTY 5M(G-SMS-TEMPLATE-CATALOG catalog deepen WIP) · dirty WIP mvn 1875/1875 PASS(~60s) · merge SKIP(0/0 SYNCED+dirty) · QA-B287 Open(BLOCK) · Open 1(active backend) · origin/test BE 543 unpushed · FE 207 unpushed · cross-stream BLOCK(BE dirty@b6c9b16 · FE SYNCED@d682562) · backend@8080 UP/200 · operation BLOCK · disk 37% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T06:38:00+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T06:38:00+00:00
+# revalidation_1351st: 2026-06-24T06:38Z — pre-merge test @9aaefa0 mvn 1872/1872 PASS(~85s,353 suites) · develop @b6c9b16 pre-merge 1875/1875 PASS(~83s,354 suites,+3 tests) WT CLEAN · ★ merge EXECUTED FF 9aaefa0→b6c9b16 (1 commit) · post-merge 1875/1875 PASS(~75s) · develop/test @b6c9b16 SYNCED · ★ QA-B286 Fixed @b6c9b16 · Open 0 BE+1 FE carry(B285) · origin/test BE 543 unpushed · FE 205 unpushed · cross-stream BLOCK(BE SYNCED · FE pending 1 @596658a+pre-merge FAIL) · backend@8080 UP/200 · operation BLOCK · disk 37% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T05:10:57+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T05:10:57+00:00
+# revalidation_1349th: 2026-06-24T05:10Z — pre-merge test @d11263b mvn 1863/1863 PASS(~58s,349 suites) · develop @9aaefa0 pre-merge 1872/1872 PASS(~60s,356 suites) WT CLEAN · ★ merge EXECUTED FF d11263b→9aaefa0 (1 commit) · post-merge 1872/1872 PASS(~75s) · develop/test @9aaefa0 SYNCED · ★ QA-B284 Fixed @9aaefa0 · Open 0(active) · origin/test BE 542 unpushed · FE 205 unpushed · cross-stream SYNCED(FE@a43bcb7 + BE@9aaefa0) · backend@8080 UP/200 · operation BLOCK.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T03:44:19+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T03:44:19+00:00
+# revalidation_1347th: 2026-06-24T03:44Z — pre-merge test @0494334 mvn 1863/1863 PASS(~56s,349 suites) · develop @d11263b pre-merge 1863/1863 PASS(~58s) WT CLEAN · ★ merge EXECUTED FF 0494334→d11263b (1 commit) · post-merge 1863/1863 PASS(~75s) · develop/test @d11263b SYNCED · ★ QA-B282 Fixed @d11263b · Open 0(active) · origin/test BE 541 unpushed · FE 204 unpushed · cross-stream SYNCED(FE@cba9ff8 + BE@d11263b) · backend@8080 UP/200 · operation BLOCK · disk 36% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T02:39:11+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T02:39:11+00:00
+# revalidation_1346th: 2026-06-24T02:39Z — pre-merge test @c8358e9 mvn 1857/1857 PASS(~57s,349 suites) · develop @0494334 pre-merge 1863/1863 PASS(~57s,+6 tests) WT CLEAN · ★ merge EXECUTED FF c8358e9→0494334 (1 commit) · post-merge 1863/1863 PASS(~75s) · develop/test @0494334 SYNCED · ★ QA-B281 Fixed @0494334 · Open 0 BE+1 FE carry(B280) · origin/test BE 540 unpushed · FE 201 unpushed · cross-stream BLOCK(BE SYNCED · FE pending 2 @28033cf) · backend@8080 UP/200 · operation BLOCK · disk 36% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T01:44:46+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-24T01:44:46+00:00
+# revalidation_1344th: 2026-06-24T01:44Z — pre-merge test @8b3fdcd mvn 1857/1857 PASS(~56s,349 suites) · develop @c8358e9 pre-merge 1857/1857 PASS(~58s) WT CLEAN · ★ merge EXECUTED FF 8b3fdcd→c8358e9 (1 commit) · post-merge 1857/1857 PASS(~75s) · develop/test @c8358e9 SYNCED · ★ QA-B279 Fixed @c8358e9 · Open 0(active) · origin/test BE 539 unpushed · FE 202 unpushed · cross-stream BLOCK(BE SYNCED · FE pending 1 @0869589) · backend@8080 UP/200 · operation BLOCK · disk 36% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T00:09:00+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-23T23:03:36+00:00
+# revalidation_1341st: 2026-06-23T23:03Z — test @f600fd6 mvn 1857/1857 PASS(~70s,349 suites) · develop @f600fd6 WT DIRTY 1M(application.yml live-e2e bootstrap default) · merge SKIP(0/0 SYNCED+dirty) · QA-B277 Open(BLOCK) · Open 1(active) · origin/test BE 537 unpushed · FE 199 unpushed · cross-stream BLOCK(BE dirty · FE SYNCED@bc6180e) · backend@8080 UP/200 · operation BLOCK · disk 35% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T21:57:00+00:00 -->
+# revalidation_1339th: 2026-06-23T21:57Z — pre-merge test @2cae74c mvn 1856/1856 PASS(~67s,349 suites) · develop @f600fd6 pre-merge 1857/1857 PASS(~66s,+1 test) WT CLEAN · ★ merge EXECUTED FF 2cae74c→f600fd6 (1 commit) · post-merge 1857/1857 PASS(~92s) · develop/test @f600fd6 SYNCED · ★ QA-B275 Fixed @f600fd6 · origin/test BE 537 unpushed · FE 198 unpushed · cross-stream SYNCED(FE@a531ed6 + BE@f600fd6) · backend@8080 UP/200 · operation BLOCK · disk 35% avail.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T21:27:11+00:00 -->
+# Backend develop → test 이관 매니페스트 (최신)
+# updated: 2026-06-23T21:27:11+00:00
+# revalidation_1338th: 2026-06-23T21:27Z — pre-merge test @62fce23 mvn 1843/1843 PASS(~60s,347 suites) · develop @2cae74c pre-merge 1856/1856 PASS(~89s,349 suites,+13 tests) WT CLEAN · ★ merge EXECUTED FF 62fce23→2cae74c (6 commits) · post-merge 1856/1856 PASS(~78s) · develop/test @2cae74c SYNCED · ★ QA-B272 Fixed @2cae74c · origin/test BE 536 unpushed · FE 197 unpushed · cross-stream SYNCED(FE@170ce56 + BE@2cae74c) · backend@8080 UP/200 · operation BLOCK · disk 35% avail.
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T19:36:00+00:00 -->
 # Backend develop → test 이관 매니페스트 (최신)
 # updated: 2026-06-23T19:36:00+00:00
@@ -600,10 +668,10 @@
 # revalidation_703rd: 2026-06-14T22:01Z — test @598d108 CLEAN · test `mvn test` 246/246 PASS(14.013s). develop @6b0238a HEAD 불변 · WT DIRTY 2M · Open 1 BLOCK QA-B93 · merge BLOCK · cross-stream BLOCK · merge pending 565 · merge 실행 금지.
 
 stream: backend
-roadmap_version: v1
-roadmap_status: done
-merge_status: pending
-transfer_verdict: BLOCK(v1.2.1 regression PASS · develop dirty+pending 2 @c4e6bcb)  # 1330차: test @62fce23 mvn 1843/1843 PASS(~80s) · develop @c4e6bcb WT DIRTY 4M(ClientService*) · merge SKIP(test..develop 0/2 pending+dirty) · QA-B272 Planned(update,BLOCK dirty recurrence) · cross-stream BLOCK(BE dirty pending 2 · FE dirty pending 3) · backend@8080 UP/200 · operation BLOCK · disk 34% avail
+roadmap_version: v1.2.1
+roadmap_status: merged
+merge_status: merged
+transfer_verdict: PASS(v1 @ test post-merge SYNCED @2eaf17e)  # 1375차: baseline test @670756a mvn 1895/1895 PASS(60.3s,358 suites) · develop @2eaf17e pre-merge 1899/1899 PASS(60.5s,+4 tests) WT CLEAN · merge EXECUTED FF 670756a→2eaf17e (1 commit) · post-merge 1899/1899 PASS(79.4s,359 suites) · cross-stream SYNCED(FE@64a7648 + BE@2eaf17e) · origin/test 554 unpushed BE · 220 unpushed FE · Open 1 carry(B298 FE) · operation BLOCK · disk 39% avail
 
 repository:
   submodule_path: src/backend
@@ -613,10 +681,15 @@ repository:
 branches:
   develop:
     name: develop
-    head: c4e6bcb
-    head_short: "c4e6bcb"
-    message: "feat(v3/US-R01-c): add V175 leave ledger integrity and harden dev isolation"
-    working_tree_note_1330th: "DIRTY 4M — test @62fce23 regression mvn 1843/1843 PASS(~80s, 347 suites). develop @c4e6bcb pending 2 + WIP: ClientService*·CreateClientRequest·UpdateClientRequest·ClientServiceTest (client address/PII masking). merge SKIP(0/2 pending+dirty). QA-B272 Planned(update,BLOCK dirty recurrence). origin/test 530 unpushed BE · 187 unpushed FE. cross-stream BLOCK(BE dirty pending 2 @c4e6bcb · FE dirty@426d63a pending 3). backend@8080 UP/200. operation BLOCK. disk 34% avail."
+    head: 2eaf17e
+    head_short: "2eaf17e"
+    message: "feat(v2/G2b): add CMS payment method catalog API for silverangel parity"
+    working_tree_note_1375th: "CLEAN — develop/test @2eaf17e SYNCED. baseline test @670756a mvn 1895/1895 PASS(60.3s, 358 suites). develop pre-merge mvn 1899/1899 PASS(60.5s, 359 suites, +4 tests). ★ merge EXECUTED(FF 670756a→2eaf17e, 1 commit). post-merge 1899/1899 PASS(79.4s). QA-B299 Fixed. Open 1(active frontend carry B298). origin/test 554 unpushed BE · 220 unpushed FE. cross-stream SYNCED(FE@64a7648 + BE@2eaf17e). backend@8080 UP/200. operation BLOCK. disk 39% avail."
+    working_tree_note_1368th: "CLEAN — develop/test @88a58d9 SYNCED. pre-merge test @ef8bb4e mvn 1893/1893 PASS(~58s, 358 suites). develop pre-merge mvn 1893/1893 PASS(~59s). ★ merge EXECUTED(FF ef8bb4e→88a58d9, 1 commit). post-merge 1893/1893 PASS(~72s). QA-B293 Fixed. Open 0(active backend)+1 FE carry(pending 1 @4adeb1c). origin/test 550 unpushed BE · 216 unpushed FE. cross-stream BLOCK(BE SYNCED@88a58d9 · FE pending 1 @4adeb1c). backend@8080 UP/200. operation BLOCK. disk 39% avail."
+    working_tree_note_1362nd: "CLEAN — develop/test @1d5d441 SYNCED. pre-merge test @b9d0599 mvn 1884/1884 PASS(~86s, 357 suites). develop pre-merge mvn 1891/1891 PASS(~86s, 358 suites, +7 tests). ★ merge EXECUTED(FF b9d0599→1d5d441, 1 commit). post-merge 1891/1891 PASS(~77s). Open 0(active backend)+2 FE carry(B290+B291). origin/test 547 unpushed BE · 211 unpushed FE. cross-stream BLOCK(BE SYNCED@1d5d441 · FE pending 1 @c04968c+QA-B290/B291). backend@8080 UP/200. operation BLOCK. disk 38% avail."
+    working_tree_note_1359th: "CLEAN — develop/test @b9d0599 SYNCED. pre-merge test @8631d1e mvn 1879/1879 PASS(~55s, 355 suites). develop pre-merge mvn 1884/1884 PASS(~55s, 357 suites, +5 tests). ★ merge EXECUTED(FF 8631d1e→b9d0599, 1 commit). post-merge 1884/1884 PASS(~76s). Open 0(active). origin/test 546 unpushed BE · 211 unpushed FE. cross-stream SYNCED(FE@068049b + BE@b9d0599). backend@8080 UP/200. operation BLOCK. disk 38% avail."
+    working_tree_note_1346th: "CLEAN — develop/test @0494334 SYNCED. pre-merge test @c8358e9 mvn 1857/1857 PASS(~57s, 349 suites). develop pre-merge mvn 1863/1863 PASS(~57s, +6 tests). ★ merge EXECUTED(FF c8358e9→0494334, 1 commit). post-merge 1863/1863 PASS(~75s). QA-B281 Fixed. origin/test 540 unpushed BE · 201 unpushed FE. cross-stream BLOCK(BE SYNCED@0494334 · FE pending 2 @28033cf). backend@8080 UP/200. operation BLOCK. disk 36% avail."
+    working_tree_note_1343rd: "CLEAN — develop/test @8b3fdcd SYNCED. pre-merge test @f600fd6 mvn 1857/1857 PASS(~56s, 349 suites). develop pre-merge mvn 1857/1857 PASS(~57s). ★ merge EXECUTED(FF f600fd6→8b3fdcd, 1 commit). post-merge 1857/1857 PASS(~59s). QA-B277 Fixed. origin/test 538 unpushed BE · 200 unpushed FE. cross-stream SYNCED(FE@87da06d + BE@8b3fdcd). backend@8080 UP/200. operation BLOCK. disk 35% avail."
     working_tree_note_1323rd: "DIRTY 6M+1U — test @62fce23 regression mvn 1843/1843 PASS(~72s, 347 suites). develop @5fd12dd pending 1 + WIP: LiveE2eBootstrapService*·application.yml·live-e2e tests·V175 untracked. dirty WIP mvn SKIP(disk 100%; 1321차 HEAD 1845/1845 PASS carry). merge SKIP(0/1 pending+dirty). QA-B272 Planned(update,BLOCK). origin/test 530 unpushed BE · 187 unpushed FE. cross-stream BLOCK(BE dirty@5fd12dd · FE dirty@8057c1e). backend@8080 UP/200. operation BLOCK. disk 100% ENOSPC risk."
     working_tree_note_1321th: "CLEAN — test @62fce23 regression mvn 1843/1843 PASS(59.608s, 347 suites). develop @5fd12dd pre-merge mvn 1845/1845 PASS(56.226s, +2 tests). merge SKIP(test..develop 0/1 pending 5fd12dd). QA-B272 Open(BLOCK). origin/test 530 unpushed BE · 187 unpushed FE. cross-stream BLOCK(BE pending 1 @5fd12dd · FE SYNCED@b7101d5). backend@8080 UP/200. operation BLOCK(QA-B272+push 530 BE+187 FE+QA-B95 partial). disk 100% ENOSPC risk."
     working_tree_note_1319th: "CLEAN — develop/test @62fce23 SYNCED. pre-merge test @bb9df48 mvn 1837/1837 PASS(~91s, 345 suites). develop pre-merge mvn 1843/1843 PASS(~91s, 347 suites, +6 tests). ★ merge EXECUTED(FF bb9df48→62fce23, 1 commit). post-merge 1843/1843 PASS(~74s). QA-B271 Fixed. origin/test 530 unpushed BE · 187 unpushed FE. cross-stream BLOCK(BE SYNCED@62fce23 · FE pre-merge FAIL@b7101d5 QA-B270). backend@8080 UP/200. operation BLOCK(QA-B270+push 530 BE+187 FE+QA-B95 partial). disk 100% ENOSPC risk."
@@ -797,9 +870,9 @@ branches:
     working_tree_note_683rd: "CLEAN — @230659a(+1 vs db94a65: G21 batch-confirm date range guard). superseded by 685차."
     working_tree_note_679th: "DIRTY 15 (2M+13U) — superseded by 681차 (WT CLEAN · QA-B90 Fixed @db94a65)."
     working_tree_clean: false
-    working_tree_modified: 1
+    working_tree_modified: 5
     working_tree_untracked: 0
-    working_tree_total: 1
+    working_tree_total: 5
     ahead_of_origin: 0
     origin_develop: c0403b00839a2dbf9bb113a4073f5dd18406d129
     working_tree_note_675th: "CLEAN — superseded by 677차 (WT DIRTY 4M · QA-B88 Open)."
@@ -1025,16 +1098,17 @@ branches:
     note: "598차: develop @6191b91(+1 US-S02 staff training log API BNK-184) · WT **CLEAN** · develop HEAD `mvn test` 미재실행(tester read-only). develop **211 ahead** of test. origin/develop @6191b91 (동기화). backend-test `mvn test` **246/246 PASS**(64 suites, 14.329s). **v1.2.1 merge gate FULLY UNBLOCKED**. Open 0(backend). 교차(frontend git, 597차) = @400c835 WT **CLEAN** · 256 ahead · Open 0 · **cross-stream merge FULLY UNBLOCKED** · merge pending 467."
   test:
     name: test
-    head: 62fce23
-    head_short: "62fce23"
-    message: "test(v3/US-R01-c): add leave ledger pilot flow and RBAC coverage"
+    head: 2eaf17e
+    head_short: "2eaf17e"
+    message: "feat(v2/G2b): add CMS payment method catalog API for silverangel parity"
     working_tree_clean: true
     spring_boot: "3.3.1"
     head_origin: 598d1086d98d765d6f2b53136c00c5b59ae65d95
     head_origin_short: "598d108"
     pushed_to_origin: false
-    ahead_of_origin: 530
-    note: "1319차: test @62fce23 CLEAN SYNCED · mvn test 1843/1843 PASS(~74s post-merge, 347 suites). merge EXECUTED(FF bb9df48→62fce23, 1 commit). origin/test STALE @598d108 — 530 unpushed. QA-B271 Fixed. cross-stream BLOCK(BE SYNCED@62fce23 · FE pre-merge FAIL@b7101d5 QA-B270). backend@8080 UP/200."
+    ahead_of_origin: 554
+    note: "1375차: test @2eaf17e CLEAN SYNCED · mvn test 1899/1899 PASS(79.4s post-merge, 359 suites). merge EXECUTED(FF 670756a→2eaf17e, 1 commit). origin/test STALE @598d108 — 554 unpushed. QA-B299 Fixed. Open 1(active frontend carry B298). cross-stream SYNCED(FE@64a7648 + BE@2eaf17e). backend@8080 UP/200."
+    note_1368th: "1368차: test @88a58d9 CLEAN SYNCED · mvn test 1893/1893 PASS(~72s post-merge, 358 suites). merge EXECUTED(FF ef8bb4e→88a58d9, 1 commit). origin/test STALE @598d108 — 550 unpushed. QA-B293 Fixed. Open 0(active backend)+1 FE carry(pending 1 @4adeb1c). cross-stream BLOCK(BE SYNCED@88a58d9 · FE pending 1 @4adeb1c). backend@8080 UP/200."
     note_1317th: "1317차: test @bb9df48 CLEAN SYNCED · mvn test 1837/1837 PASS(~76s post-merge, 345 suites). merge EXECUTED(FF f1225b0→bb9df48, 1 commit). origin/test STALE @598d108 — 529 unpushed. QA-B269 Fixed. cross-stream BLOCK(BE SYNCED@bb9df48 · FE dirty@949e9bf QA-B268). backend@8080 UP/200."
     note_1309th: "1309차: test @40ab9e7 CLEAN SYNCED · mvn test 1829/1829 PASS(~76s post-merge, 342 suites). merge EXECUTED(FF 83a26e7→40ab9e7, 1 commit). origin/test STALE @598d108 — 527 unpushed. QA-B265 Fixed. cross-stream BLOCK(BE SYNCED@40ab9e7 · FE pending 1 @c183ebd). backend@8080 UP/200."
     note_1301st: "1301차: test @6ab3760 CLEAN SYNCED · mvn test 1827/1827 PASS(~58s revalidation, 341 suites). merge SKIP(0/0 · 1299차 carry). origin/test STALE @598d108 — 525 unpushed. Open 0(active). cross-stream SYNCED(FE@0b0d7ba + BE@6ab3760). backend@8080 UP/200."
@@ -1061,10 +1135,14 @@ branches:
     note_1158th: "1158차: superseded by 1160차 (merge EXECUTED @8b3f66d · G21 NHIS seed readiness validation tighten)."
 
 develop_test_diff:
-  commits_develop_ahead_of_test: 2
+  commits_develop_ahead_of_test: 0
   commits_test_ahead_of_develop: 0
-  merge_executed_local: false
-  merge_executed_note: "1317차: merge EXECUTED FF f1225b0→bb9df48 (1 commit: bb9df48 feat(v3/US-R01-c) canonical staff leave ledger API + V174). pre-merge test 1830/1830 PASS(~58s) · develop pre-merge 1837/1837 PASS(~60s, +7 tests) · post-merge 1837/1837 PASS(~76s). QA-B269 Fixed. cross-stream BLOCK(BE SYNCED@bb9df48 · FE dirty@949e9bf QA-B268)."
+  merge_executed_local: true
+  merge_executed_note_1368th: "1368차: merge EXECUTED FF ef8bb4e→88a58d9 (1 commit: test(v2/live-e2e) lock g21 seed detail in health fallback). pre-merge test 1893/1893 PASS(~58s) · develop pre-merge 1893/1893 PASS(~59s) · post-merge 1893/1893 PASS(~72s). QA-B293 Fixed. cross-stream BLOCK(BE SYNCED@88a58d9 · FE pending 1 @4adeb1c)."
+  merge_executed_note_1362nd: "1362차: merge EXECUTED FF b9d0599→1d5d441 (1 commit: feat(v2/G-SMS-TEMPLATE-CATALOG) staff access key SMS dispatch). pre-merge test 1884/1884 PASS(~86s) · develop pre-merge 1891/1891 PASS(~86s, +7 tests) · post-merge 1891/1891 PASS(~77s). cross-stream BLOCK(BE SYNCED@1d5d441 · FE pending 1 @c04968c+QA-B290/B291)."
+  merge_executed_note_1359th: "1359차: merge EXECUTED FF 8631d1e→b9d0599 (1 commit: feat(v2/G-SMS-TEMPLATE-CATALOG) staff monthly schedule alimtalk dispatch). pre-merge test 1879/1879 PASS(~55s) · develop pre-merge 1884/1884 PASS(~55s, +5 tests) · post-merge 1884/1884 PASS(~76s). cross-stream SYNCED(FE@068049b + BE@b9d0599)."
+  merge_executed_note_1353rd: "1353차: merge SKIP(0/0 SYNCED+develop dirty 5M). test @b6c9b16 mvn 1875/1875 PASS(~56s, 354 suites). develop @b6c9b16 WT DIRTY 5M(G-SMS-TEMPLATE-CATALOG catalog deepen WIP) · dirty WIP mvn 1875/1875 PASS(~60s). QA-B287 Open(BLOCK). cross-stream BLOCK(BE dirty@b6c9b16 · FE SYNCED@d682562)."
+  merge_executed_note: "1351차: merge EXECUTED FF 9aaefa0→b6c9b16 (1 commit: feat(v2/G-SMS-TEMPLATE-CATALOG) ezCare message_kind Solapi template catalog API). pre-merge test 1872/1872 PASS(~85s) · develop pre-merge 1875/1875 PASS(~83s, +3 tests) · post-merge 1875/1875 PASS(~75s). QA-B286 Fixed. cross-stream BLOCK(BE SYNCED@b6c9b16 · FE pending 1 @596658a+pre-merge FAIL QA-B285)."
   merge_executed_note_1309th: "1309차: merge EXECUTED FF 83a26e7→40ab9e7 (1 commit: 40ab9e7 fix(v2/us-r01) honor active branch context in annual leave roster). pre-merge test 1828/1828 PASS(~57s) · develop pre-merge 1829/1829 PASS(~58s, +1 test) · post-merge 1829/1829 PASS(~76s). QA-B265 Fixed. cross-stream BLOCK(BE SYNCED@40ab9e7 · FE pending 1 @c183ebd)."
   merge_executed_note_1299th: "1299차: merge EXECUTED FF 8c5dd65→6ab3760 (2 commits: bbf333c US-R01 leave-ledger cross-link metadata · 6ab3760 yearly response links). pre-merge test 1826/1826 PASS(~90s) · develop pre-merge 1827/1827 PASS(~89s, +1 test) · post-merge 1827/1827 PASS(~79s). QA-B259 Fixed. cross-stream SYNCED(FE@e296387 + BE@6ab3760)."
   merge_executed_note_1296th: "1296차: merge EXECUTED FF 19ffa84→8c5dd65 (1 commit: 8c5dd65 V173 annual leave yearly integrity checks). pre-merge test 1820/1820 PASS(~95s) · develop pre-merge 1826/1826 PASS(~96s, +6 tests) · post-merge 1826/1826 PASS(~76s). QA-B257 Fixed. cross-stream BLOCK(BE SYNCED@8c5dd65 · FE test@8434435 / develop pending 3 @61f670f · B255 revalidation pending)."
@@ -1082,10 +1160,13 @@ develop_test_diff:
   merge_executed_note_1206th: "1206차: merge EXECUTED FF 375fb9d→ad11fda (3 commits: 14935a3 G-BILLING applied filters · 7b99313 receipt claim-basis tests · ad11fda notification quiet-hours tests). post-merge 1703/1703 PASS(71.953s, 322 suites). QA-B197 Fixed · QA-B192 Fixed."
   develop_uncommitted_wip: []
   develop_unpushed_commits: []
-  test_ahead_of_origin_test: 529
+  test_ahead_of_origin_test: 550
   test_pushed_to_origin: false
   pending_commits: []
-  merged_commits_1299th:
+  merged_commits_1368th:
+    - 88a58d9  # test(v2/live-e2e): lock g21 seed detail in health fallback
+  merged_commits_1359th:
+    - b9d0599  # feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff monthly schedule alimtalk dispatch
     - bbf333c  # feat(v2/US-R03e): add US-R01 leave-ledger cross-link metadata on annual leave roster
     - 6ab3760  # feat(v2/US-R03e): expose leave-ledger cross-links in yearly responses
   merged_commits_1296th:
@@ -1460,41 +1541,41 @@ build:
 
 tests:
   command: mvn test
-  context: test branch (src/backend-test @ 40ab9e7, clean working tree) — 1309차 post-merge
-  executed_at: 2026-06-23T08:06:23+00:00
+  context: test branch (src/backend-test @ 2eaf17e, clean working tree) — 1375차 post-merge
+  executed_at: 2026-06-24T20:00:24+00:00
   current:
-    sha: 40ab9e7
-    suites: 342
-    total: 1829
+    sha: 2eaf17e
+    suites: 359
+    total: 1899
     failures: 0
     errors: 0
-    duration_seconds: 76
+    duration_seconds: 79.4
   pre_merge:
-    sha: 83a26e7
-    suites: 342
-    total: 1828
+    sha: 670756a
+    suites: 358
+    total: 1895
     failures: 0
     errors: 0
-    duration_seconds: 57
+    duration_seconds: 60.3
   develop_head:
-    sha: 40ab9e7
-    suites: 342
-    total: 1829
+    sha: 2eaf17e
+    suites: 359
+    total: 1899
     failures: 0
     errors: 0
-    duration_seconds: 58
+    duration_seconds: 60.5
   post_merge:
-    sha: 40ab9e7
-    suites: 342
-    total: 1829
+    sha: 2eaf17e
+    suites: 359
+    total: 1899
     failures: 0
     errors: 0
-    duration_seconds: 76
+    duration_seconds: 79.4
   note: >-
-    1309차: pre-merge test @83a26e7 1828/1828 PASS(~57s, 342 suites). develop pre-merge @40ab9e7 1829/1829 PASS(~58s, +1 test).
-    merge EXECUTED(FF 83a26e7→40ab9e7, 1 commit) · post-merge 1829/1829 PASS(~76s). QA-B265 Fixed. develop/test @40ab9e7 WT CLEAN SYNCED.
-    cross-stream BLOCK(BE SYNCED@40ab9e7 · FE pending 1 @c183ebd).
-    origin/test STALE @598d108 — 527 unpushed BE · 184 unpushed FE · backend@8080 UP/200 · operation BLOCK(push 527 BE+184 FE+QA-B95 partial).
+    1375차: baseline test @670756a 1895/1895 PASS(60.3s, 358 suites). develop pre-merge @2eaf17e 1899/1899 PASS(60.5s, +4 tests).
+    merge EXECUTED(FF 670756a→2eaf17e, 1 commit: v2/G2b CMS payment method catalog) · post-merge 1899/1899 PASS(79.4s). develop/test @2eaf17e WT CLEAN SYNCED.
+    cross-stream SYNCED(FE@64a7648 + BE@2eaf17e). QA-B299 Fixed. Open 1 carry(B298 FE live E2E).
+    origin/test STALE @598d108 — 554 unpushed BE · 220 unpushed FE · backend@8080 UP/200 · operation BLOCK.
   develop_head_committed:
     command: mvn test
     context: develop HEAD (src/backend @ b45830d, committed only; 705차 COD carry)
@@ -1738,20 +1819,21 @@ develop_head_verification:
 
 qa_feedback:
   open_count: 1
-  open_block: 1
+  open_block: 0
   open_high: 0
-  open_medium: 0
-  planned_block: 3
+  open_medium: 1
+  planned_block: 2
   open_items:
-    - QA-20260623-B267
-  cross_stream_open: []
+    - QA-20260624-B298
+  cross_stream_open:
+    - QA-20260624-B298
   note: >-
-    Open 1(active backend) · Open 0(active frontend).
-    QA-B267 Open(BLOCK, develop WT DIRTY 1M CmsServiceTest +23L · B246 lineage).
-    Planned QA-B267+QA-B116(origin/test push 527 BE+186 FE)+QA-B95(live E2E full verify pending · 19 SKIP carry).
-    backend test @40ab9e7 1829/1829 PASS(~56s revalidation, 342 suites) · develop/test @40ab9e7 SYNCED · develop WT DIRTY 1M.
-    merge SKIP(1312차 0/0 SYNCED+dirty) · cross-stream BLOCK(BE dirty@40ab9e7 · FE SYNCED@949e9bf) · backend@8080 UP/200 · disk 99% ENOSPC risk.
-    operation BLOCK(QA-B267+origin/test push+QA-B95 partial).
+    Open 1(active frontend QA-B298 MEDIUM · live E2E US-O05 sessions assertion 1 FAIL).
+    QA-B299 Fixed @2eaf17e (backend merge EXECUTED · post-merge 1899/1899 PASS).
+    Planned QA-B116(origin/test push 554 BE+220 FE)+QA-B95(bootstrap-disabled partial · 121 PASS FE carry).
+    backend test @2eaf17e mvn 1899/1899 PASS(79.4s, 359 suites) · develop/test @2eaf17e SYNCED · develop WT CLEAN.
+    cross-stream SYNCED(FE@64a7648 + BE@2eaf17e) · backend@8080 UP/200 · disk 39% avail.
+    operation BLOCK(QA-B298+origin/test push+QA-B95 partial).
 
 blockers:
   - id: QA-20260613-B64
