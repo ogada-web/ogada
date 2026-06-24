@@ -4613,6 +4613,81 @@ ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100
 
 ---
 
+## §85. G2b CMS 결제수단 카탈로그 패널 접근성 재점검 + G16 parity-rules FE 설계 명세 (162차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-24 -->
+
+> **162차 UXD (2026-06-24)** — 161차(§84)·UXD-161(`4adeb1c`/`c06d581`) 이후 coder가 G2b `CmsPaymentMethodCatalogPanel`(`4875937`)를 추가한 뒤 미점검 a11y·FE-16 갭 해소. G16 parity-rules FE catalog wire(P2 BNK-599)에 대한 `TransportParityRulesPanel` 설계 명세를 coder에 전달한다.
+
+### 85-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `CmsPaymentMethodCatalogPanel`(신규)·`CmsPage` | `4875937` | G2b · 케어포 7-4 · silverangel 5-method CMS 수납 카탈로그 |
+
+### 85-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `.ds-cms-payment-method-catalog` | **미정의 클래스** — `CmsPaymentMethodCatalogPanel`의 루트 `<section>` 참조 클래스가 CSS에 없어 **내부 요소 간 세로 간격·첫 헤딩 상단 여백**이 미적용 | flex column·`gap: var(--space-3)`·`> .ds-modal-section-title:first-child { margin-top: 0 }`·`> .ds-page-footnote { margin-top: 0 }`·`forced-colors` 경계선 승격 | FE-16 · §1 단일 원천 |
+| `CmsPaymentMethodCatalogPanel` | `aria-busy`·`aria-labelledby`·table `caption`·`scope=col`·Error `role="alert"`·Status `role="status"` | 모두 표준 준수 — 변경 불요 | WCAG 4.1.3·1.3.1 |
+| `CmsPaymentMethodCatalogPanel` | `ImplementationBadge` — 구현 여부를 `SENT`/`FAILED` 키로 재사용 | 텍스트 라벨 "구현됨"/"미구현" 병기 — 색만 의존하지 않음. 준수(변경 불요) | WCAG 1.4.1 |
+
+> **결론** — 유일한 실 결함은 **미정의 `.ds-cms-payment-method-catalog`**(간격·헤딩 상단 여백 소실)로, CSS 단일 원천에 승격해 해소. JSX 변경 불요.
+
+### 85-3. 토큰·컴포넌트
+
+| 항목 | 설명 |
+|------|------|
+| `.ds-cms-payment-method-catalog` | flex column·`gap: --space-3`·첫 섹션제목 상단 여백 0 |
+| `forced-colors` | 배경 틴트 제거 시 `ButtonText` 경계선으로 카탈로그 섹션 식별 |
+
+### 85-4. G16 parity-rules FE 설계 명세 (coder 전달)
+
+**대상**: `GET /transport/service-fee-parity-rules` → 4-rule catalog (`DISTANCE_BANDS`, `ONE_WAY_RATIO`, `ONE_PER_DAY`, `SERVICE_LOG`)  
+**목적**: `TransportServiceFeePanel` 내 하드코딩 상수(`TRANSPORT_SERVICE_FEE_NHIS_PARITY_NOTES`) 제거 후 BE catalog 소비로 단일 원천 확보 (BNK-599 P2)
+
+#### 컴포넌트 명세: `TransportParityRulesPanel`
+
+```
+props:
+  fetchRules?: () => Promise<{ rules: ParityRule[] }>   // 테스트 주입용 (기본: API)
+  className?: string
+
+ParityRule = {
+  ruleCode: "DISTANCE_BANDS" | "ONE_WAY_RATIO" | "ONE_PER_DAY" | "SERVICE_LOG"
+  labelKo: string        // 표시 제목
+  descriptionKo: string  // NHIS #44 기준 설명 문구
+  nhisReference?: string // "NHIS #44" 등
+}
+```
+
+**UI 구조**:
+- `<section aria-labelledby="transport-parity-rules-heading" aria-busy={loading}>`
+- `<h3 id="…" className="ds-modal-section-title">` — 이동서비스비 NHIS 기준 규칙
+- 로딩: `<Spinner label="이동서비스비 기준 규칙 불러오는 중" />`
+- 오류: `<Alert tone="danger" role="alert">`
+- 규칙 목록: `<dl className="ds-parity-rules-list">` — 규칙별 `<dt>` 제목 + `<dd>` 설명
+- 빈 상태 없음 (규칙 0건이면 섹션 미노출)
+
+**클래스**:
+- `.ds-parity-rules-list` — `dl` grid (2열: 항목명 120px / 설명 1fr)·`gap: --space-2 --space-4`
+- `forced-colors`: 경계선 `ButtonText`
+
+**배치**: `TransportServiceFeePanel` 상단 — 기존 `TRANSPORT_SERVICE_FEE_NHIS_PARITY_NOTES` 배열 상수 제거 후 이 컴포넌트로 대체.
+
+**접근성 요구사항**:
+- `h3`(AppShell h1 → Card h2 → 패널 h3 계층) 유지
+- `forced-colors` `dl` 경계선
+- `aria-busy` 로딩 상태 전달
+
+### 85-5. 검증
+
+- `CmsPaymentMethodCatalogPanel.test.jsx` — CSS-only 승격으로 JSX 회귀 없음. `npm run build` PASS.
+- G16 `TransportParityRulesPanel` — coder 구현 후 `TransportParityRulesPanel.test.jsx` 신규 추가 권장.
+
+---
+
 ## §84. G-SMS 직원 알림톡·SMS 발송 패널 + `.ds-form-stack` 미정의 클래스 승격 (161차)
 
 <!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-24 -->
