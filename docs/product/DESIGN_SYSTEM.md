@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-24T12:00:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-24T15:40:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-24 (160차 — **G-SMS-TEMPLATE-CATALOG·FAQ21823 retention/compliance wire 접근성 재점검 + §83** — 159차(§82)·UXD-159(`0869589`) 이후 coder 신규 커밋 4건(`c9cf03b` G-SMS-TEMPLATE-CATALOG·`a43bcb7` FAQ21823 retention·`596658a` compliance API wire) 미점검 a11y·FE-16 갭 해소. ① **`NotificationChannelReadinessPanel`** — 로드 `aria-busy`·ezCare 카탈로그 `section aria-labelledby`·6열 표 `forced-colors` 래퍼·`.ds-notification-channel-panel*` 베이스 승격. ② **`StaffEmploymentContractRenewalPanel`** — `${직원명} 재계약 완료 기록`·`근로계약서 서식 인쇄` `aria-label`·재계약 modal `<form aria-label>`. ③ **`StaffEmploymentContractRenewalSummaryPanel`** — 보관 기한 전용 attention Alert 문구 분기. ④ **§83** 신규. 회귀 +4. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-24 (161차 — **G-SMS 직원 알림톡·SMS 발송 패널 접근성 재점검 + `.ds-form-stack` 미정의 클래스 승격 + §84** — 160차(§83)·UXD-160(`15f2195`) 이후 coder 신규 커밋 6건(`ef3948c`/`c04968c`/`9c25d44`/`5a6d42c`/`3f686e3` G-SMS message_kind 1·12·13·19·21 dispatch UI·`068049b` QA-B289) 미점검 a11y·FE-16 갭 해소. ① **`StaffNotificationDispatchPanel`(신규)·`GuardianDocumentNotifyPanel`** — `<form aria-label>`·`Field` render-prop·연월 필수 `Field error`·submit `aria-busy`+`aria-describedby`·성공 `role=status` 표준 이미 충족(JSX 변경 불요)·접속키 키 값 미노출 확인(rules §3). ② **`.ds-form-stack`** — 양 패널이 공유하나 CSS 미정의여서 제목↔폼·필드 간 세로 간격이 0으로 붙던 회귀를 flex column·`gap`·`> form` 스택으로 승격(FE-16·§1 단일 원천). ③ **§84** 신규. 회귀 없음(CSS-only). `npm test`(3 files 11 tests)·build PASS.)
+> **이전 갱신**: 2026-06-24 (160차 — **G-SMS-TEMPLATE-CATALOG·FAQ21823 retention/compliance wire 접근성 재점검 + §83** — 159차(§82)·UXD-159(`0869589`) 이후 coder 신규 커밋 4건(`c9cf03b` G-SMS-TEMPLATE-CATALOG·`a43bcb7` FAQ21823 retention·`596658a` compliance API wire) 미점검 a11y·FE-16 갭 해소. ① **`NotificationChannelReadinessPanel`** — 로드 `aria-busy`·ezCare 카탈로그 `section aria-labelledby`·6열 표 `forced-colors` 래퍼·`.ds-notification-channel-panel*` 베이스 승격. ② **`StaffEmploymentContractRenewalPanel`** — `${직원명} 재계약 완료 기록`·`근로계약서 서식 인쇄` `aria-label`·재계약 modal `<form aria-label>`. ③ **`StaffEmploymentContractRenewalSummaryPanel`** — 보관 기한 전용 attention Alert 문구 분기. ④ **§83** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-24 (159차 — **G16 NHIS #44 이동서비스비·수급자 RBAC rank-based edit·US-R01-c leave-ledger wire 접근성 재점검 + §82** — 158차(§81)·UXD-158(`0606a3b`) 이후 coder 신규 커밋 5건(`77584a0`/`2e7374b` client RBAC·`a531ed6` G16 NHIS parity·`bc6180e` leave-ledger FE wire) 미점검 a11y·FE-16 갭 해소. ① **`TransportServiceFeePanel`** — NHIS #44 산정 기준 `section` landmark·조회/생성 `aria-busy`·이용일 `<time dateTime>`·행 확정/왕복 `${이용자} ${이용일}` `aria-label`·성공 `role=status`·`Table caption`. ② **`ClientDetailPage`** — RBAC 리팩터 후 회귀된 「수정」`aria-label` 복구·요약 헤더 `.ds-client-summary__action` 배치. ③ **`.ds-client-summary`** — `forced-colors` 경계선. ④ **§82** 신규. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-23 (158차 — **US-D01·US-D02 한국 주소 검색·수급자 등록/수정·목록 필터 접근성 재점검 + `KoreanAddressFields`·`TableColumnFilter` + §81** — 157차(§80)·UXD-157(`bd1d0ad`) 이후 coder 신규 커밋 1건(`7e048c0` Kakao postcode 주소·수급자 수정·배차 픽업·목록 컬럼 필터) 미점검 a11y·FE-16 갭 해소. ① **`KoreanAddressFields`** — 주소 검색 `aria-busy`·로드 실패 `Alert role=alert`·`Field`+`TextInput` 표준(우편번호·기본·상세). ② **`TableColumnFilter`** — `aria-haspopup`·`listbox`·`aria-selected` 준수 확인·`forced-colors` 패널·선택 옵션 경계선 신규. ③ **`ClientListPage`** — 행 링크 `${이름} 수급자 상세` `aria-label`(WCAG 2.4.6). ④ **`ClientDetailPage`·`ClientFormPage`** — 수정 링크·폼 `aria-label`·저장 `aria-busy`. ⑤ **`ClientPrimaryGuardianSection`** — 보호자 Select 로드 `aria-busy`. ⑥ **`ClientTransportProfileSection`** — 거주지 픽업 미리보기 `Field`+readOnly `TextInput`·경고 `role=alert`. ⑦ **barrel** — `KoreanAddressFields` export. ⑧ **§81** 신규. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-23 (157차 — **US-R01-c leave-ledger Page 접근성 재점검 + `StaffLeaveLedgerTable`·`StaffLeaveLedgerDeleteModal` + `.ds-form-grid--compact` FE-16 승격 + §80** — 156차(§79)·UXD-156(`c183ebd`) 이후 coder 신규 커밋 1건(`8057c1e` US-R01-c leave-ledger Page·API wire) 미점검 a11y·FE-16 갭 해소. ① **`StaffLeaveLedgerTable`** — 표 `caption`·시작/종료일 `<time dateTime>`·행 수정/삭제 `${직원명} 휴가 대장 …` `aria-label`(WCAG 2.4.6·§77 `StaffAnnualLeaveTable` 패턴). ② **`StaffLeaveLedgerDeleteModal`** — `window.confirm` 대체·`variant=danger`·삭제 중 `aria-busy`·모달 내 오류 `Alert`(WCAG 4.1.2·`TransportDeleteRunModal` 패턴). ③ **`StaffLeaveLedgerPage`** — 시작/종료일 `DateInput` 표준화(FE-16·64차)·조회 `aria-busy`·목록 `section aria-busy`·성공 `role=status` 유지. ④ **`.ds-form-grid--compact`** — `StaffLeaveLedgerPage`·`StaffAnnualLeavePage`·`StaffWorkAttendancePage`·`MonitoringSelfDiagnosisPage` 4곳 미정의 클래스 승격. ⑤ **§80** 신규·§79-4 leave-ledger AVAILABLE closure 반영. 회귀 +6. `npm test`·build PASS.)
@@ -4609,6 +4610,44 @@ ezCare [**worker-b100**](https://www.ezcare.easyms.co.kr/new.ez?PGID=worker-b100
 - `StaffEmploymentContractRenewalPanel.test.jsx` — 직원명 재계약 버튼·인쇄 `aria-label`.
 - `StaffEmploymentContractRenewalSummaryPanel.test.jsx` — 보관 전용 Alert 문구.
 - `npm test` · build PASS.
+
+---
+
+## §84. G-SMS 직원 알림톡·SMS 발송 패널 + `.ds-form-stack` 미정의 클래스 승격 (161차)
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-24 -->
+
+> **161차 UXD (2026-06-24)** — 160차(§83)·UXD-160(`15f2195`) 이후 coder 신규 커밋 6건(`ef3948c` module 10 coverage·`c04968c` pending template dispatch readiness·`9c25d44`/`5a6d42c`/`3f686e3` message_kind 1·12·13·19·21 dispatch UI·`068049b` QA-B289) 미점검 a11y·FE-16 갭 해소.
+
+### 84-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `StaffNotificationDispatchPanel`(신규)·`StaffDetailPage` | `9c25d44` | G-SMS-TEMPLATE-CATALOG message_kind 1·21 |
+| `GuardianDocumentNotifyPanel` | `5a6d42c`·`3f686e3` | G-SMS-TEMPLATE-CATALOG message_kind 12·13·19 |
+| `NotificationChannelReadinessPanel` | `c04968c` | 발송 대기(pending) 템플릿 readiness |
+
+### 84-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `.ds-form-stack` | **미정의 클래스** — `StaffNotificationDispatchPanel`·`GuardianDocumentNotifyPanel`의 `<section className="ds-form-stack">` + 내부 `<form>`이 CSS에 없어 제목↔폼·**필드 간 세로 간격이 0**으로 붙던 회귀 | `.ds-form-stack`(flex column·`gap: var(--space-4)`)·`> .ds-modal-section-title { margin:0 }`·`> form`(flex column·gap) 승격 | FE-16 · §1 단일 원천 |
+| `StaffNotificationDispatchPanel`(신규) | 발송 종류별 동적 안내·필수 검증·발송 진행 상태 | `<form aria-label>`·`Field`+`Select`/`MonthInput`/`Textarea` render-prop·연월 필수 시 `Field error`(`aria-invalid`)·submit `aria-busy`+`aria-describedby`(설명문 `id`)·성공 `Alert role=status`·실패 `role=alert` — 표준 준수(변경 불요) | WCAG 3.3.1·4.1.2·4.1.3 |
+| `StaffNotificationDispatchPanel` | 접속키(message_kind=1) 값 노출 | 안내문에 "키 값은 화면에 표시되지 않습니다" 명시·API 응답 키 미렌더 — 준수 확인(변경 불요) | rules §3 비밀값 비노출 |
+| `GuardianDocumentNotifyPanel` | message_kind 12·13·19 라벨·`일정표-수급자` 신규 발송 종류 추가 | 4종 발송 종류 모두 `Field`·`MonthInput`(연월 필수)·`aria-describedby`·`aria-busy` 표준 준수(변경 불요) | WCAG 1.3.1 |
+
+> **결론** — 두 발송 패널의 ARIA·검증·라이브 영역은 §83 readiness 패널과 동일 표준을 이미 충족해 JSX 변경 불요. 유일한 실 결함은 양 패널이 공유하던 **미정의 `.ds-form-stack`**(필드 간격 소실)으로, CSS 단일 원천에 승격해 해소.
+
+### 84-3. coder 전달 메모
+
+- **`StaffNotificationDispatchPanel`** — `notifyStaffMonthlyScheduleApi`(message_kind=21)·`notifyStaffAccessKeyApi`(message_kind=1) 2종. `canManageHrFiles` 권한 게이트는 `StaffDetailPage` 기본정보 탭에서만 노출.
+- **발송 종류 동적 필드** — `STAFF_ACCESS_KEY` 선택 시 연월·요약 필드 언마운트는 정상(SR은 submit `aria-describedby` 설명문으로 컨텍스트 인지). 추가 라이브 영역 불요.
+- **`.ds-form-stack`** — 향후 "제목 + 단일 컬럼 폼" 패널은 `ds-form-grid`(다열) 대신 본 클래스를 재사용해 세로 리듬을 통일.
+
+### 84-4. 검증
+
+- `StaffNotificationDispatchPanel.test.jsx`·`GuardianDocumentNotifyPanel.test.jsx`·`NotificationChannelReadinessPanel.test.jsx` 3 files 11 tests PASS.
+- `npm run build` PASS. CSS-only 승격이라 회귀 없음.
 
 ---
 
