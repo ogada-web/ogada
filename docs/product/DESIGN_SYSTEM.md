@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-24T15:40:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-25T20:20:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-24 (161차 — **G-SMS 직원 알림톡·SMS 발송 패널 접근성 재점검 + `.ds-form-stack` 미정의 클래스 승격 + §84** — 160차(§83)·UXD-160(`15f2195`) 이후 coder 신규 커밋 6건(`ef3948c`/`c04968c`/`9c25d44`/`5a6d42c`/`3f686e3` G-SMS message_kind 1·12·13·19·21 dispatch UI·`068049b` QA-B289) 미점검 a11y·FE-16 갭 해소. ① **`StaffNotificationDispatchPanel`(신규)·`GuardianDocumentNotifyPanel`** — `<form aria-label>`·`Field` render-prop·연월 필수 `Field error`·submit `aria-busy`+`aria-describedby`·성공 `role=status` 표준 이미 충족(JSX 변경 불요)·접속키 키 값 미노출 확인(rules §3). ② **`.ds-form-stack`** — 양 패널이 공유하나 CSS 미정의여서 제목↔폼·필드 간 세로 간격이 0으로 붙던 회귀를 flex column·`gap`·`> form` 스택으로 승격(FE-16·§1 단일 원천). ③ **§84** 신규. 회귀 없음(CSS-only). `npm test`(3 files 11 tests)·build PASS.)
+> **최종 갱신**: 2026-06-25 (165차 — **US-R09 직원 월간 근무일정표·G-REPORT-DENSITY M5 프로그램 리포트·G-REFUND-FEE-FE-WIRE 환불 수수료 미리보기·US-O01-b 목욕 지표27 접근성 재점검 + `.ds-refund-fee-preview` 미정의 클래스 승격 + §88** — 164차(§87)·UXD-164(`d64f81b`) 이후 coder 신규 커밋 5건(`3d7f13b` US-O01-b 목욕 지표27·`cadd74a` 환불 수수료 FE wire·`15a3b7f` M5 프로그램 리포트 4종·`33944e4` 직원 월간 근무일정표 US-R09·`bd3253a`·`2c9abd6` QA 보조) 미점검 a11y·FE-16 갭 해소. ① **`StaffMonthlySchedulePage`** — StatCard 래퍼 `role="group" aria-label="근무 요약"` 부재(§43·93차 패턴 회귀) + 조회 버튼 `aria-busy={loading}` 미전달(WCAG 4.1.3) 2건 수정. ② **`.ds-refund-fee-preview`** — `RefundRecordModal`의 환불 수수료 미리보기 `<dl>`이 CSS 미정의 상태여서 grid 정렬·배경·간격이 미적용되던 FE-16 결함 해소. ③ **`BathingScheduleIndicator27Panel`·`BathingScheduleForm`(US-O01-b)** — `aria-labelledby`·`aria-busy`·`Table captionVisuallyHidden`·`StatusBadge` 텍스트+색 병행 표준 준수 확인(변경 불요). ④ **`ProgramReportPanel`·`ProgramReportNav`·`ProgramReportsPage`(M5 4종)** — `section aria-labelledby`·`h3`·`StatCard role=group`·`Table captionVisuallyHidden`·`aria-busy`·인쇄 `aria-hidden` 표준 준수 확인(변경 불요). ⑤ **`RefundRecordModal`(환불 수수료)** — submit `aria-busy`·오류 `role=alert`·`aria-readonly` 표준 준수 확인, `.ds-refund-fee-preview` CSS 단일 원천 승격. ⑥ **§88** 신규. `StaffMonthlySchedulePage.test.jsx` 3/3 PASS·`npm run build` PASS.)
+> **이전 갱신**: 2026-06-24 (161차 — **G-SMS 직원 알림톡·SMS 발송 패널 접근성 재점검 + `.ds-form-stack` 미정의 클래스 승격 + §84** — 160차(§83)·UXD-160(`15f2195`) 이후 coder 신규 커밋 6건(`ef3948c`/`c04968c`/`9c25d44`/`5a6d42c`/`3f686e3` G-SMS message_kind 1·12·13·19·21 dispatch UI·`068049b` QA-B289) 미점검 a11y·FE-16 갭 해소. ① **`StaffNotificationDispatchPanel`(신규)·`GuardianDocumentNotifyPanel`** — `<form aria-label>`·`Field` render-prop·연월 필수 `Field error`·submit `aria-busy`+`aria-describedby`·성공 `role=status` 표준 이미 충족(JSX 변경 불요)·접속키 키 값 미노출 확인(rules §3). ② **`.ds-form-stack`** — 양 패널이 공유하나 CSS 미정의여서 제목↔폼·필드 간 세로 간격이 0으로 붙던 회귀를 flex column·`gap`·`> form` 스택으로 승격(FE-16·§1 단일 원천). ③ **§84** 신규. 회귀 없음(CSS-only). `npm test`(3 files 11 tests)·build PASS.)
 > **이전 갱신**: 2026-06-24 (160차 — **G-SMS-TEMPLATE-CATALOG·FAQ21823 retention/compliance wire 접근성 재점검 + §83** — 159차(§82)·UXD-159(`0869589`) 이후 coder 신규 커밋 4건(`c9cf03b` G-SMS-TEMPLATE-CATALOG·`a43bcb7` FAQ21823 retention·`596658a` compliance API wire) 미점검 a11y·FE-16 갭 해소. ① **`NotificationChannelReadinessPanel`** — 로드 `aria-busy`·ezCare 카탈로그 `section aria-labelledby`·6열 표 `forced-colors` 래퍼·`.ds-notification-channel-panel*` 베이스 승격. ② **`StaffEmploymentContractRenewalPanel`** — `${직원명} 재계약 완료 기록`·`근로계약서 서식 인쇄` `aria-label`·재계약 modal `<form aria-label>`. ③ **`StaffEmploymentContractRenewalSummaryPanel`** — 보관 기한 전용 attention Alert 문구 분기. ④ **§83** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-24 (159차 — **G16 NHIS #44 이동서비스비·수급자 RBAC rank-based edit·US-R01-c leave-ledger wire 접근성 재점검 + §82** — 158차(§81)·UXD-158(`0606a3b`) 이후 coder 신규 커밋 5건(`77584a0`/`2e7374b` client RBAC·`a531ed6` G16 NHIS parity·`bc6180e` leave-ledger FE wire) 미점검 a11y·FE-16 갭 해소. ① **`TransportServiceFeePanel`** — NHIS #44 산정 기준 `section` landmark·조회/생성 `aria-busy`·이용일 `<time dateTime>`·행 확정/왕복 `${이용자} ${이용일}` `aria-label`·성공 `role=status`·`Table caption`. ② **`ClientDetailPage`** — RBAC 리팩터 후 회귀된 「수정」`aria-label` 복구·요약 헤더 `.ds-client-summary__action` 배치. ③ **`.ds-client-summary`** — `forced-colors` 경계선. ④ **§82** 신규. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-23 (158차 — **US-D01·US-D02 한국 주소 검색·수급자 등록/수정·목록 필터 접근성 재점검 + `KoreanAddressFields`·`TableColumnFilter` + §81** — 157차(§80)·UXD-157(`bd1d0ad`) 이후 coder 신규 커밋 1건(`7e048c0` Kakao postcode 주소·수급자 수정·배차 픽업·목록 컬럼 필터) 미점검 a11y·FE-16 갭 해소. ① **`KoreanAddressFields`** — 주소 검색 `aria-busy`·로드 실패 `Alert role=alert`·`Field`+`TextInput` 표준(우편번호·기본·상세). ② **`TableColumnFilter`** — `aria-haspopup`·`listbox`·`aria-selected` 준수 확인·`forced-colors` 패널·선택 옵션 경계선 신규. ③ **`ClientListPage`** — 행 링크 `${이름} 수급자 상세` `aria-label`(WCAG 2.4.6). ④ **`ClientDetailPage`·`ClientFormPage`** — 수정 링크·폼 `aria-label`·저장 `aria-busy`. ⑤ **`ClientPrimaryGuardianSection`** — 보호자 Select 로드 `aria-busy`. ⑥ **`ClientTransportProfileSection`** — 거주지 픽업 미리보기 `Field`+readOnly `TextInput`·경고 `role=alert`. ⑦ **barrel** — `KoreanAddressFields` export. ⑧ **§81** 신규. 회귀 +3. `npm test`·build PASS.)
@@ -4783,6 +4784,93 @@ ParityRule = {
 - `npm run build` PASS 확인 필요 (CSS-only 승격 + JSX 신규 파일).
 - `TransportParityRulesPanel.test.jsx` — coder가 `TransportServiceFeePanel`에 연동 시 신규 추가 권장 (fetchRules mock 주입 패턴).
 - `NhisAltKeyMatchedBadge` — `NhisReconciliationTable.test.jsx`의 기존 테스트로 coverage 충분.
+
+---
+
+## §87. 미정의 유틸 클래스 승격 — flex 프리미티브·text/spacing 유틸 패밀리 완성 (164차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-25 -->
+
+> **164차 UXD (2026-06-25)** — 163차(§86)·UXD-163 이후 coder 신규 커밋 `5914b2f`(`EasyPayProviderCatalogPanel` 신규 + `TransportParityRulesPanel` mount, G2/케어포 7-5) 미점검 a11y·FE-16 갭 해소. 전체 JSX↔CSS 클래스 교차 점검(`used 293 vs defined 259`)으로 **여러 화면에서 공유되나 CSS 단일 원천에 미정의된 유틸 클래스**를 발견·승격.
+
+### 87-1. FE-16 재점검 결과 (used-but-undefined 유틸)
+
+| 클래스 | 사용처 | 결함(승격 전) | 조치 | 근거 |
+|--------|--------|---------------|------|------|
+| `ds-flex` `ds-items-center` `ds-gap-2` `ds-flex-wrap` | `EasyPayProviderCatalogPanel`·`CmsPaymentMethodCatalogPanel`·`RefundRecordModal` 에러+「다시 시도」 행 | 4-클래스 조합이 모두 미정의 → 에러 텍스트·재시도 버튼 행에 **flex 레이아웃 미적용**(버튼 줄바꿈·정렬 깨짐) | Layout utilities에 원자 flex 프리미티브 4종 승격 | FE-16 · §1 단일 원천 |
+| `ds-text-success` | `ClientRiskAssessmentPanel`·`ClientPeriodicRiskAssessmentPanel` `role="status"` 확인 메시지 | 미정의 → 「안전/적합」 확인문이 **success 색상 시각 단서 소실**(기본 본문색) | `.ds-text-success { color: var(--color-success-text) }` 승격(`ds-text-secondary/muted` 패밀리 완성). 텍스트가 의미를 함께 전달하므로 색-only 아님(WCAG 1.4.1 충족) | WCAG 1.4.1·1.3.3 |
+| `ds-text-sm` | `BankDepositImportPanel`·`StaffNhisCaregiverImportPanel`·`StaffStatusReportPage` 등 | 미정의 → 보조 안내문이 본문(md) 크기로 렌더 | `.ds-text-sm { font-size: var(--font-size-sm) }` | 텍스트 위계 |
+| `ds-mb-2` `ds-mb-4` | `StaffStatusReportPage`·`ComplaintConsultationPanel`·`GrievanceCounselingPage` 등 | 미정의 → 컨텍스트 내비·요약 그리드 하단 **간격 0**(붙음) | `.ds-mb-2/4 { margin-bottom: var(--space-2/4) }` 간격 유틸 승격 | 세로 리듬 |
+| `ds-empty-hint` | `TransportAddRosterModal`·`TransportLoadPreviousRunModal` 빈 상태 | 미정의 → 빈 상태 보조문이 본문색·본문크기 | `.ds-empty-hint`(muted·sm·margin:0) | 빈 상태 위계 |
+
+> **결론** — 모두 **CSS 단일 원천 승격(JSX 변경 불요)**. 기존 `.ds-text-secondary/muted/mono` 타이포 유틸 패밀리와 `.ds-inline-cluster` 레이아웃 패턴에 정합하는 원자 유틸을 보강해, 다중 화면에서 조용히 무효였던 레이아웃·색상·간격을 복원.
+
+### 87-2. coder 연동 지침
+
+- **원자 flex 프리미티브** — `ds-flex`/`ds-items-center`/`ds-gap-2`/`ds-flex-wrap`는 「텍스트+버튼 클러스터 행」 용도로만 조합한다. 인라인 배지 클러스터는 기존 시맨틱 클래스 **`.ds-inline-cluster`**(`inline-flex`)를 우선 재사용한다.
+- **신규 success 확인문** — `role="status"` + 텍스트 + `.ds-text-success`. 색상은 보조 단서이며 텍스트가 의미를 전달해야 한다(색-only 금지).
+- **잔여 미정의 시맨틱 클래스(~40종)** — `ds-assessment-*`·`ds-nursing-*-form`·`ds-page-section` 등은 의도된 스타일이 불명확해 이번 범위에서 제외(임의 시각 변경 시 회귀 위험, rules §11·§17). 해당 화면 작업 시 컴포넌트별로 개별 점검·승격 권장.
+
+### 87-3. 검증
+
+- `npm run build` PASS(8.47s).
+- `npm test -- EasyPayProviderCatalogPanel CmsPaymentMethodCatalogPanel RefundRecordModal ClientRiskAssessmentPanel ClientPeriodicRiskAssessmentPanel ComplaintConsultationPanel` → **6 files / 29 tests PASS**. CSS-only 승격이라 JSX 회귀 없음.
+
+---
+
+---
+
+## §88. US-R09 직원 월간 근무일정표·G-REPORT-DENSITY M5·G-REFUND-FEE-FE-WIRE·US-O01-b 접근성 재점검 + `.ds-refund-fee-preview` 미정의 클래스 승격 (165차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-25 -->
+
+> **165차 UXD (2026-06-25)** — 164차(§87)·UXD-164(`d64f81b`) 이후 coder 신규 커밋 5건(`3d7f13b` US-O01-b 목욕 지표27·`cadd74a` 환불 수수료 FE wire·`15a3b7f` M5 프로그램 리포트 4종·`33944e4` 직원 월간 근무일정표 US-R09) 미점검 a11y·FE-16 갭 해소.
+
+### 88-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `StaffMonthlySchedulePage`(신규) | `33944e4` | US-R09 · 케어포 8-2 직원 월간 근무일정표 |
+| `ProgramReportPanel`·`ProgramReportNav`·`ProgramReportsPage`(신규 4종) | `15a3b7f` | US-P02 · M5 G-REPORT-DENSITY |
+| `RefundRecordModal`(환불 수수료 확장) | `cadd74a` | G-REFUND-FEE-FE-WIRE · 7-9 KCP |
+| `BathingScheduleForm`·`BathingScheduleIndicator27Panel` | `3d7f13b` | US-O01-b · L02_M03 목욕 지표27 |
+
+### 88-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `StaffMonthlySchedulePage` | **StatCard 래퍼 `role="group"` 미부여** — `ds-stat-grid` 3개 StatCard(근무일 수·확정 일정·전체 일정)가 그룹 시맨틱 없이 나열 | `role="group" aria-label="근무 요약"` 추가(§43·93차 `StaffStatusReportPage` 패턴) | WCAG 1.3.1 |
+| `StaffMonthlySchedulePage` | **조회 버튼 `aria-busy` 미전달** — 로딩 중 「다시 조회」버튼이 진행 상태를 SR에 전달하지 못함 | `aria-busy={loading}` 추가 | WCAG 4.1.3 |
+| `.ds-refund-fee-preview` | **미정의 클래스(FE-16)** — `RefundRecordModal`의 환불 수수료 미리보기 `<dl className="ds-refund-fee-preview">`가 CSS 단일 원천에 없어 grid 정렬·배경·간격 미적용(수수료 항목 세로 나열 회귀) | `components.css` 단일 원천 승격 — grid 2열(항목명/금액)·`surface-muted` 배경·`forced-colors` 경계선 | FE-16 · §1 단일 원천 |
+| `BathingScheduleIndicator27Panel` | `aria-labelledby`·`aria-busy`·`Table captionVisuallyHidden`·`StatusBadge`(충족/미충족 텍스트+색 병행) | 모두 표준 준수 — 변경 불요 | WCAG 1.3.1·4.1.3·1.4.1 |
+| `BathingScheduleForm`(관찰 필드 추가) | 사전/사후 관찰 메모 `Textarea` — `Field` render-prop·`aria-label` 폼·submit `aria-busy` | 표준 준수 — 변경 불요 | WCAG 3.3.2·4.1.2 |
+| `ProgramReportPanel` | `section aria-labelledby`·`h3`·`role=group` StatCard·`Table captionVisuallyHidden`·`<time dateTime>`·`StatusBadge` 참여 상태 텍스트+색 | 모두 표준 준수 — 변경 불요 | WCAG 1.3.1·1.4.1 |
+| `ProgramReportNav` | `nav aria-label="프로그램 리포트 종류"`·`ds-context-nav--sub`(§45·119차에서 정의됨)·`aria-current` | 표준 준수 — 변경 불요 | WCAG 2.4.7 |
+| `ProgramReportsPage` | `form aria-label`·조회 `aria-busy`·인쇄 `aria-hidden="true"` | 표준 준수 — 변경 불요 | WCAG 4.1.3 |
+| `RefundRecordModal` | submit `aria-busy={submitting\|\|catalogLoading\|\|previewLoading}`·오류 `role=alert`·`aria-readonly` readOnly 안내 | 표준 준수 — 변경 불요 | WCAG 4.1.2·4.1.3 |
+
+> **결론** — 실 결함 3건: ① `StaffMonthlySchedulePage` StatCard `role="group"` + 조회 버튼 `aria-busy` JSX 수정 2건, ② 미정의 `.ds-refund-fee-preview` CSS 단일 원천 승격 1건. 나머지 신규 화면(ProgramReport 4종·BathingScheduleIndicator27·RefundRecordModal)은 기존 표준 준수.
+
+### 88-3. 토큰·컴포넌트
+
+| 항목 | 설명 |
+|------|------|
+| `.ds-refund-fee-preview` | `dl` grid 2열(minmax(120px,auto) / 1fr)·`gap: --space-1 --space-4`·`surface-muted` 배경·`radius-md`·`border`·`forced-colors` ButtonText 경계선 |
+| `.ds-refund-fee-preview dt` | `font-size: --font-size-sm`·`color: --color-text-secondary`·`font-weight: --font-weight-medium` |
+| `.ds-refund-fee-preview dd` | `margin: 0`·`font-size: --font-size-sm`·`text-align: right` |
+| `.ds-refund-fee-preview dd strong` | `color: --color-primary`·`font-weight: --font-weight-semibold`(실환불액 강조) |
+
+### 88-4. coder 전달 메모
+
+- **`StaffMonthlySchedulePage`** — 직원 월간 알림톡(`StaffNotificationDispatchPanel`) 섹션 접근성은 §84에서 이미 검증됨(변경 불요).
+- **`ProgramReportsPage` 이용자 필터** — `clientId` 기반 필터가 `supportsClientFilter` variant에만 노출되나, 이용자 Select `aria-busy` 로드 패턴 추가 권장(현재 미구현).
+- **`.ds-refund-fee-preview`** — 모달 내 `<form>` 외부에 위치한 미리보기 `dl`이므로 `Field` 없이 직접 CSS grid. 수수료 정책 없으면 패널 자체가 미노출(`usesFeePolicy` 가드)이므로 EmptyState 불요.
+
+### 88-5. 검증
+
+- `StaffMonthlySchedulePage.test.jsx` 3/3 PASS.
+- `npm run build` PASS (8.43s).
+- CSS-only `.ds-refund-fee-preview` 승격 — JSX 회귀 없음.
 
 ---
 
