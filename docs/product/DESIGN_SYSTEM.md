@@ -4726,4 +4726,64 @@ ParityRule = {
 
 ---
 
+## §86. US-G06 NHIS alt-key audit badge 접근성 재점검 + G16 TransportParityRulesPanel 구현 완료 메모 (163차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-25 -->
+
+> **163차 UXD (2026-06-25)** — 162차(§85)·UXD-162 이후 coder 신규 커밋 `5bb84a6`(`NhisAltKeyMatchedBadge.jsx` + `NhisReconciliationTable` mount, US-G06 QA-B311 merge pending) 미점검 a11y·FE-16 갭 해소. §85-4에서 설계한 `TransportParityRulesPanel`(G16 P2) 컴포넌트 구현 완료 + CSS 단일 원천 승격.
+
+### 86-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `NhisAltKeyMatchedBadge`(신규)·`NhisReconciliationTable` mount | `5bb84a6` | US-G06 · NHIS 공단 이름 마스킹 대체키 audit badge |
+| `TransportParityRulesPanel`(신규)·CSS `.ds-parity-rules-list`·`.ds-nhis-alt-key-badge` | UXD-163 | G16 parity-rules FE wire (P2 BNK-599) |
+
+### 86-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `NhisAltKeyMatchedBadge` | **미정의 `.ds-nhis-alt-key-badge`** — `<span className="ds-nhis-alt-key-badge">` 래퍼가 CSS 미정의 상태. 인라인 테이블 셀 내 배지 세로 정렬이 불안정 | `.ds-nhis-alt-key-badge { display: inline-flex; align-items: center; }` + `forced-colors` 경계선 승격 | FE-16 · §1 단일 원천 |
+| `NhisAltKeyMatchedBadge` | `aria-label` — badge 텍스트에 사유 전체 문자열 포함 | `aria-label="${NHIS_ALT_KEY_MATCH_BADGE_LABEL}. ${NHIS_ALT_KEY_MATCH_REASON}"` — 스크린리더 완전 문맥 제공. 준수(변경 불요) | WCAG 2.4.6 |
+| `NhisAltKeyMatchedBadge` | `title` 속성 — 마우스 hover 툴팁으로 사유 노출 | 마우스 전용 보완 수단. WCAG tooltip는 `aria-label`로 보완(준수) | WCAG 1.3.3 |
+| `NhisReconciliationTable` | `ds-inline-cluster__item` — `NhisAltKeyMatchedBadge`에 적용된 클래스가 CSS 미정의 | `ds-inline-cluster`는 정의됨. `__item` 한정자는 BEM 자식이 아닌 modifier로 사용 — 레이아웃 효과 없음. `ds-nhis-alt-key-badge`의 `inline-flex`로 대체되어 시각 효과 충족(변경 불요) | FE-16 |
+| `NhisAltKeyMatchedBadge` | index.js 미수출 — 직접 상대경로 import만 사용 중. 외부 사용 불가 | `index.js` `export` 추가 완료(UXD-163) | 재사용성 |
+
+> **결론** — 유일한 실 결함은 **미정의 `.ds-nhis-alt-key-badge`**(테이블 셀 내 세로 정렬 불안정)로, CSS 단일 원천 승격으로 해소. JSX 변경 불요.
+
+### 86-3. TransportParityRulesPanel 구현 완료 메모
+
+`components/transport/TransportParityRulesPanel.jsx` 신규 생성(§85-4 설계 명세 구현).
+
+#### 설계 결정 사항
+
+| 항목 | 결정 | 근거 |
+|------|------|------|
+| BE 응답 shape 호환 | `normaliseRule()` — `{ labelKo, descriptionKo }` (신규) · `{ bodyKo }` (현행 BE) 양쪽 허용 | `TransportServiceFeePanel` 기존 테스트가 `bodyKo` 고정 — 하위 호환 필수 |
+| API 오류 처리 | 오류 발생 시 정적 fallback(`STATIC_PARITY_RULES`) 유지 + `Alert role="alert"` 병기 | 규칙이 사라지면 청구 근거 공백 → 운영 리스크 |
+| 빈 상태 | `rules.length === 0 && !loading` → `null` 반환(섹션 미노출) | §85-4 설계 명세 준수 |
+| `display: contents` div | `<dl>` 내 key 없는 `<dt>/<dd>` 쌍을 grid에 맞추기 위한 불가시 래퍼 | Grid 2열에서 dt/dd 쌍 정렬 유지 |
+| `aria-busy` | 로딩 중 section에 `aria-busy={loading}` 전달 | WCAG 4.1.3 라이브 리전 |
+
+#### coder 연동 지침
+
+- **`TransportServiceFeePanel`** — 기존 `<section>` 블록(line 189–199의 `parityNotes ul`)을 제거하고 `<TransportParityRulesPanel />` 으로 교체. `parityNotes` state·import 불요.
+- **`fetchRules` prop** — 테스트에서 `fetchRules={() => Promise.resolve({ rules: mockRules })}` 주입으로 API mock 가능.
+- **`TRANSPORT_SERVICE_FEE_NHIS_PARITY_NOTES` 정적 상수** — `TransportParityRulesPanel` 내부 fallback(`STATIC_PARITY_RULES`)으로 이전 완료. `TransportServiceFeePanel`에서 import 제거 가능.
+
+### 86-4. 토큰·컴포넌트
+
+| 항목 | 설명 |
+|------|------|
+| `.ds-nhis-alt-key-badge` | `inline-flex`·`align-items: center` · `forced-colors` ButtonText 경계선 |
+| `.ds-parity-rules-list` | `dl` grid 2열(minmax(120px,auto) / 1fr)·`gap: --space-2 --space-4` · dt 중간 굵기 보조색 · `forced-colors` ButtonText 경계선·패딩 |
+
+### 86-5. 검증
+
+- `npm run build` PASS 확인 필요 (CSS-only 승격 + JSX 신규 파일).
+- `TransportParityRulesPanel.test.jsx` — coder가 `TransportServiceFeePanel`에 연동 시 신규 추가 권장 (fetchRules mock 주입 패턴).
+- `NhisAltKeyMatchedBadge` — `NhisReconciliationTable.test.jsx`의 기존 테스트로 coverage 충분.
+
+---
+
 *이 문서는 ux_designer 에이전트(UXD)가 관리합니다. 토큰·컴포넌트 변경 시 본 문서와 `memory/decisions.md`를 동기화하세요.*
