@@ -1,0 +1,66 @@
+# BNK-573 케어포 M8 직원관리 · 근로(재)계약 tri-source cross-walk
+# 조사일: 2026-06-24T05:30Z (KST 14:30) | ogada FE @596658a / BE @9aaefa0
+
+## 신규 evidence ★★★
+- [func.php Wayback id_](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) HTTP **200** · md5 `6226e6eb` · 98,328B · **338차 zero drift IDENTICAL** (on-disk `carefor_func_live_bnk561_check.html` 동일)
+- [demo-work Wayback id_](https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/) HTTP **200** · md5 `ebee4d47` · 71,742B · on-disk `carefor_demo_work.html` `b2e8e5c8` 75,587B dual-snapshot · **L08/M7 verbatim 동일**
+- [PDF p.96 서류관리](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=96) — 8-1 ③ 서류관리 **20개 슬롯**·모바일 등록 가능 · **근로계약 전용 leaf 0**
+- [ezcare FAQ 21823](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21823&type=web) carry — UI「직원관리▶서식▶근로계약서」·7-step·근로기준법 §17·3년 보관
+- ogada `@596658a`/`@9aaefa0` — `GET /api/v1/staff/employment-contracts/compliance` + dashboard 3-widget + `StaffEmploymentContractRenewalSummaryPanel`
+
+## LIVE 미확인 (11-cycle carry)
+- carefor.co.kr / demo-work.carefor.co.kr LIVE **HTTP 000** (timeout 20s) — Wayback id_ 정본 carry
+
+## M8 leaf 전수 (func 15 · demo 14 loadPage · PDF tri-source)
+
+| func | demo L08 | PDF | ogada Route/API | 판정 |
+|---|---|---|---|---|
+| 8-1 직원 정보관리 | view.staff_manage | p.96 3-zone·서류 20개 | `/staff` · `/staff/:id` · HR file slots 21 | ✅ |
+| 8-1-1 선임 요양보호사 일지 | view.senior_staff_work_report | — | `/staff/lead-caregiver-log` | ✅ |
+| 8-2 근무일정표 | view.work_plan | p.98 NHIS excel 6-step | — | △ P3 |
+| 8-3 연간 일정계획 | view.schedule_manage | — | — | △ P3 |
+| 8-4 출퇴근·근무관리 | view.staff_work_manage | p.100 월간 출퇴근 | `/staff/attendance` | ✅ |
+| 8-5 사례관리 회의록 | view.patient_case_meeting | — | `/case-management/meetings` | ✅ |
+| 8-6 회의록(보호자) | view.staff_meeting | — | `/staff` embed | △ |
+| 8-7 교육일지 | view.staff_education | — | `/staff/training` · `/staff/training-logs` | ✅ |
+| 8-7-1 보수교육 | **commented** | — | training embed | △ |
+| 8-8 자원봉사 | view.staff_daily_volunteer | — | — | ❌ P3 |
+| 8-9 고충처리 | **alert→9-5** | 2025 평가 비필수 | `/staff/grievance-counselings` | ✅ ogada 우위 |
+| 8-10 건강검진 | demo label=연간관리현황 | p.96 carry | `/staff/health-checkups` | ✅ |
+| 8-11 질향상노력 | view.center_quality | 삭제예정(func) | — | △ P3 |
+| 8-12 현황 리포트 | view.staff_report rpt | p.106 7종 출력 | `/staff/reports/status` | ✅ |
+| 8-13 연차대장(func) | demo **8-14** | — | `/staff/annual-leaves` · `/staff/leave-ledger` | ✅ |
+| demo-only 8-13 | view.staff_work_report rpt | — | — | ❌ HR payroll P3 |
+
+**번호 drift**: func 8-13=연차 · demo 8-13=급여제공 리포트·8-14=연차 (BNK-536 carry 재확인)
+
+## ★★★ 근로(재)계약 tri-source (신규 핵심)
+
+| 출처 | 전용 메뉴/leaf | 워크플로 | D-day·보존 3년 | 판정 |
+|---|---|---|---|---|
+| 케어포 func/demo | **leaf 0** — 8-1 서류 20슬롯 generic | PDF p.96 ③ embed only | 미확인 | △ |
+| 이지케어 FAQ21823 | 「직원관리▶서식▶근로계약서」 | 7-step·표준근로계약서(재가용) | 3년 보관 verbatim | ✅ |
+| ogada `@596658a`/`@9aaefa0` | `StaffEmploymentContractRenewalSummaryPanel` | API compliance + dashboard 3-widget | `computeRetentionUntil` 3년·D-day 30일·MISSING/OVERDUE/DUE_SOON | **✅+ 우위** |
+
+ogada API surface (확인):
+- `GET /api/v1/staff/employment-contracts/compliance?branchId=`
+- Response: `renewalGapCount` · `retentionExpiringCount` · `retentionExpiredCount` · `renewalAlerts[]`
+- Dashboard widgets: `employmentContractRenewalGap` · `employmentContractRetentionExpiring` · `employmentContractRetentionExpired`
+
+**결론**: 케어포 = 서류 슬롯 embed only(전용 compliance workflow 없음) · 이지케어 = FAQ+서식 UI · ogada = **BE API + FE dashboard/staff wire full-stack** → module 8 deepen 후보(0.85→1.0)
+
+## 시설 셸 · 이동서비스 부재 (demo-work 재확인)
+
+| 지표 | func.php 정본 | demo-work L02(IA remap) | ogada |
+|---|---|---|---|
+| 이동/송영/배차 nav grep | M2: 2-2 탑승·2-3 출석·2-4 차량 (10 leaf) | **0 hits** — L02=요양급여 제공기록 | `/transport/*` 8-route ✅ |
+| loadPage/rpt | — | 110 leaf · 34 rpt = **30.9%** | 23/111 = **20.7%** |
+| 리포트 밀도 갭 | — | −10.2%p vs ogada | P2 carry |
+
+**확인**: demo-work = **시설(주야간) 데모 셸** — func M2 이동서비스 10항목이 demo L02 요양기록으로 **IA remap**되어 이동서비스 UX 미노출. ogada 이동서비스 8-route = **차별화 우위** carry.
+
+## planner 액션
+- P2 **G-REPORT-DENSITY** carry (−10.2%p·demo 30.9% vs ogada 20.7%)
+- P2 **module 8 deepen** — FAQ21823 API wire closure → `competitorModuleCoverage.js` id=8 0.85→1.0 검토
+- P3 **G-STAFF-WORK-SCHEDULE-NHIS-EXCEL** — carefor 8-2 PDF p.98 6-step 양방향 ❌ carry
+- P3 **G-STAFF-PAYROLL-REPORT** — demo 8-13 급여제공 리포트 vs func 8-13 연차 drift

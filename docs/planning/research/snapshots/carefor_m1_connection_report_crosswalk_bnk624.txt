@@ -1,0 +1,67 @@
+# 케어포 M1 연계기록지(1-12) · 리포트 밀도 잔여 6 · func 377차 DRIFT (BNK-624)
+# 조사일: 2026-06-25T14:22:00Z (KST 23:22)
+# 작성: benchmark_researcher [BNK]
+
+## 신규 evidence URL (확인)
+
+1. [Wayback func.php 377차](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) HTTP 200 · 104,182B · md5 `c2049b41` → `carefor_func_wayback_live_bnk624.html`
+   - BNK-620 `4b4d60e4` → **wrapper DRIFT** · **107-leaf semantic IDENTICAL**
+2. [demo-work Wayback shell](https://web.archive.org/web/20260528120000/https://demo-work.carefor.co.kr/) (on-disk `carefor_demo_wayback_live_bnk573.html`) — M1 1-12 `view.patient_connection_send_report` 재인용
+3. [silverangel daycareEssentialWork 평가지표 #30](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) — 연계기록지 제공 필수항목·제공대장 컬럼 cross-ref (on-disk `silverangel_daycareEssentialWork.html` `c79c1be3`)
+4. carefor.co.kr/daycare/func.php LIVE HTTP **000 timeout 39-cycle** (2026-06-25T14:22Z)
+5. demo-work.carefor.co.kr LIVE HTTP **000 timeout 39-cycle** (2026-06-25T14:22Z)
+
+## M1 연계기록지 — tri-source 번호·view·필드 (확인)
+
+| 축 | 메뉴 번호 | view / endpoint | 비고 |
+|---|---|---|---|
+| func.php marketing (107-leaf) | **1-10**.연계기록지 발송 리포트 | (리포트 leaf·view 미노출) | `carefor_func_menu_catalog.json` id=1-10 |
+| demo-work 시설 셸 | **1-12**.연계기록지 제공(발송) 리포트 | `/share/patient/view.patient_connection_send_report` | `class="rpt"` · pamcode `L01_M15` |
+| intro 시설급여 func | **1-12**.연계기록지 제공(발송) 리포트 | — | `carefor_intro_si_func.html` — demo 번호 정합 |
+| ogada | `competitorModuleCoverage.js` id=**1-10** label「연계기록지」 | Route **0** · grep `connection|연계기록` FE 0 hit | coverage **0** |
+
+→ **번호 drift**: marketing(func)=1-10 vs operational(demo)=1-12. ogada KPI id는 **marketing 1-10** 기준 유지 권장 · UI/Route 명칭은 demo **1-12** verbatim 반영 시 혼동 감소.
+
+### 평가·법정 워크플로 (silverangel #30 cross-ref · 확인)
+
+**트리거**: 전원·퇴소 시 종료상담 + 연계기록지 작성·제공 (주야간보호 평가지표 30 「외부기관연계」)
+
+**연계기록지 본문 필수(인용)** — 성명·등급·심신기능상태·제공한 급여·작성일자·퇴소 후 이용계획(또는 수급자 희망급여)
+
+**연계기록지 제공대장 컬럼(인용)** — 수급자명·제공일자·제공방법·수령자
+
+**ogada 매핑 가설** (MVP out-of-scope carry · v2+ 후보):
+- 작성: `/clients/:id` 퇴소·전원 워크플로 + care summary export
+- 발송 리포트: `/clients/reports/linkage-dispatch` (demo `patient_connection_send_report` parity)
+- KPI: `competitorModuleCoverage.js` id=1-10 closure → +0.034pp (1/29)
+
+## 리포트 밀도 — M5 closure 후 잔여 gap 6 (확인)
+
+| 지표 | BNK-620 | BNK-623 (M5 landed) | BNK-624 |
+|---|---|---|---|
+| demo `class="rpt"` | 34 | 34 | 34 |
+| ogada reports Route | 23 | **28** | **28** |
+| gap | 11 | 6 | **6** |
+
+### demo 34 rpt 중 ogada 미커버 우선순위 6 (planner 제안)
+
+| 순위 | carefor demo | view | ogada | 비고 |
+|---|---|---|---|---|
+| P1 | 1-12 연계기록지 제공(발송) | `view.patient_connection_send_report` | ❌ | id=1-10 coverage 0 · 평가 #30 |
+| P2 | 11-6 직원 급여대장 | `view.salary_report` | ❌ `/payroll` 0 | id=11 coverage 0 · +3.4pp lever |
+| P3 | 1-11 호전현황(관절·욕창) | `view.patient_improvement_status` | ❌ | 리포트 전용 |
+| P4 | 9-6 연간 부담금현황 | `view.sales_amount` | △ billing 통계 분리 | |
+| P5 | 10-9 안내발송내역 | `view.center_send_history2` | △ SMS partial | |
+| P6 | 10-10 평가항목 일괄출력 | `view.print_all` | ❌ | 2026 평가 대비 |
+
+※ M5 프로그램 5 rpt(5-6~5-10) → ogada `/programs/reports/*` 5 Route **BNK-623 closure** ✅
+
+## M7 본인부담 7-x demo 10-leaf 재확인 (확인)
+
+demo L07 loadPage **10건**(7-1~7-5 운영 + 7-6~7-9 rpt/내역) · **7-10 간편계산기 demo 미노출**(func-only) · 7-2-1 `view.cost_master_statistic` ↔ ogada `/billing/reports/statistics` ✅ carry
+
+## ogada baseline (2026-06-25T14:22Z git 실측)
+
+- FE `@15a3b7f` WT **CLEAN** · BE `@650801b` WT **CLEAN** · merge gate **807**
+- 117 Route · 92 page · reports route **28** · BE @Test **1953** · FE test **477**
+- 모듈 80.86%(23.45/29) · HEAD zero advance vs BNK-623

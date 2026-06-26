@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-23T21:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-26T10:00:00+09:00 -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **338차 자동 동기화 완료** (BE `01edba7`·FE `1193761`·V1–V175·111 route·90 page·**US-D01/D02**·**client RBAC hierarchy**·merge gate 723 carry)  
-> **최종 갱신**: 2026-06-23 (338차 TWR — **client RBAC Q675**·**addressSearch/detail Q676**)
+> **상태**: MVP v1 개발 중 — **377차 자동 동기화 완료** (BE `d06e3f1`·FE `4bbd54a`·V1–V180·118 route·93 page·**Q722 recovered-auth readiness hints**)  
+> **최종 갱신**: 2026-06-26 (377차 TWR — **Q722·Q713 deepen · baseline 정합**)
 
 ---
 
@@ -23,11 +23,149 @@
 
 **포함 내용**:
 - 클라우드 배포 환경 설정 (Docker, PostgreSQL, Spring Boot 실행)
-- 데이터베이스 마이그레이션 (Flyway **V1–V175**, G21 NHIS 비교·G32 케이스관리·G42 민원상담·**V175 staff_leave_ledger integrity**·**V174 staff_leave_ledger_entries**·**V173 staff_annual_leave_yearly integrity**)
+- 데이터베이스 마이그레이션 (Flyway **V1–V180**, G21 NHIS 비교·G32 케이스관리·**V180 program group integrity**·**V179 프로그램 그룹**·**V178 CMS·목욕 CHECK**·**V177 목욕 전후관찰**)
 - 환경 변수·시크릿 관리 (API 키, JWT 시크릿, Kakao 배차 API, CMS 연동)
 - SSL/HTTPS 설정
 - 모니터링·로그 수집
 - 백업·복구
+
+**최신 항목** (2026-06-26, 377차):
+- **Q722** — **QA-B95 recovered-auth readiness hints** — **`liveE2eBootstrapEnableHint`** BE expose (`d06e3f1`) · FE parse·neutral filter (`4bbd54a`)
+- **Q713 deepen** — allow-recovered-auth + hint **full-stack align**
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`d06e3f1`/`4bbd54a`** · **118 route · 93 page**
+
+**이전 항목** (2026-06-26, 376차):
+- **Q719** — **G21 seed `service-unavailable` vs `disabled` 분리** — health **`liveE2eG21SeedStatusDetail`** precision (`42a369e`)
+- **Q720** — **QA-B95 neutral operation blocker filter** — **`none`/`ok` placeholder 제외** (`7e7c296`)
+- **Q721** — **V180 program_client_groups integrity** — 3-way FK·active-client guard (`42a369e`)
+- **UXD-165** — **`StaffMonthlySchedulePage` a11y** · **`.ds-refund-fee-preview` CSS** (`bee97b9`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`42a369e`/`7e7c296`** · **118 route · 93 page**
+
+**이전 항목** (2026-06-26, 375차):
+- **Q717** — **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE** — **`/staff/schedules`** PLAN visit aggregation · G-SMS message_kind=21 (`33944e4`)
+- **Q718** — **QA-B95 singular operation blocker merge** — **`liveE2eOperationBlocker`** fallback (`b7004ca`)
+- **Q713 deepen** — **BE `allow-recovered-auth`** health/probe align (`3342938`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`3342938`/`b7004ca`** · **118 route · 93 page**
+
+**이전 항목** (2026-06-26, 374차):
+- **Q716** — **QA-B95 string-form operation blocker normalize** — health·probe state comma/semicolon/newline split (`2c9abd6`·`bd3253a`)
+- **Q713 deepen** — persisted **`.live-backend-state.json`** string blocker parsing (`bd3253a`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`49fe2e7`/`bd3253a`**
+
+**이전 항목** (2026-06-26, 373차):
+- **Q714 deepen** — **5-9 group-history** V179 membership 집계 · **`groupConfigAvailable=true`** (`337453d`)
+- **Q715** — program reports optional **`branchId`** query · JWT scope (`49fe2e7`)
+- **Q713 deepen** — **`liveBackendProbe`** health **`reason`** surfacing (`f74a6e7`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`49fe2e7`/`f74a6e7`**
+
+**이전 항목** (2026-06-26, 372차):
+- **Q713 deepen** — **`bootstrapServiceAvailable` probe field** — disabled vs bean-missing 분리 (`0e55f3b`)
+- **Q713 deepen** — **`bootstrap-unavailable` blocker auth-recovery filter** (`75c0f51`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`0e55f3b`/`75c0f51`**
+
+**최신 항목** (2026-06-25, 371차):
+- **Q714** — **G-REPORT-DENSITY M5 program reports** — **`/programs/reports/*`** 5-7~5-10 · **BE `650801b` · FE `15a3b7f`**
+- **baseline 정합** — FAQ·DEPLOYMENT **`650801b`/`15a3b7f`** · **117 route · 92 page**
+
+**최신 항목** (2026-06-25, 370차):
+- **Q705 deepen** — **목욕 FE full-stack ✅** 정합 — USER_MANUAL §1-5·§5-26
+- **Q712 deepen** — **M7 7-9 lifecycle** — §5-10-0 환불 수수료 cross-ref
+- **baseline 정합** — FAQ·DEPLOYMENT **`9f67954`/`5914b2f`**
+
+**최신 항목** (2026-06-25, 369차):
+- **Q709 deepen** — **`EasyPayProviderCatalogPanel`** FE wire (`5914b2f`)
+- **Q710 deepen** — **`TransportParityRulesPanel`** page mount (`5914b2f`)
+- **Q713 deepen** — **`enforce-bootstrap-readiness`** env · health **`liveE2eBootstrapReadinessEnforced`** (`9f67954`)
+
+**최신 항목** (2026-06-25, 368차):
+- **Q712 deepen** — **`feePolicyCode` `@Pattern` Bean Validation** — invalid code **`400`** (`79725eb`)
+- **Q713** — **QA-B95 effective operation readiness** — **`liveE2eEffectiveOperationReady`** after auth recovery (`e070c45`)
+
+**최신 항목** (2026-06-25, 367차):
+- **Q712 deepen** — **7-9 refund fee full-stack** — **`RefundRecordModal`** · **`feePolicyCode` net validation** (`cadd74a`·`aeecc1b`)
+
+**최신 항목** (2026-06-25, 366차):
+- **Q712** — **7-9 copay refund fee catalog** — KCP **3.3%/500원** · **`GET/POST /billing/copay/refund-fee-*`** (`2adae59`)
+- **Q705 deepen** — **목욕 FE full-stack** — **`BathingScheduleIndicator27Panel`** · **전·후 관찰 폼** (`3d7f13b`)
+
+**최신 항목** (2026-06-25, 365차):
+- **Q711** — **연차 `branchName` 공백 fallback** — **`BranchScopeNotice` trim·지점 ID 라벨** (`58f3858`)
+- **Q709 deepen** — **`EasyPayControllerRoutingTest`** — provider-catalog **routing·RBAC lock** (`5a5174a`)
+
+**최신 항목** (2026-06-25, 364차 — **369차에서 FE closure 완료**):
+- **Q709** — **7-5 easy-pay provider-catalog** — **`GET /billing/easy-pay/provider-catalog`** CARD·KAKAO_PAY · **FE wire ✅** (`5914b2f`, 369차)
+- **Q710** — **G16 `TransportParityRulesPanel`** — **`/transport/service-fees` mount ✅** (`5914b2f`, 369차)
+- **V178** — **CMS collection·목욕 관찰 DB CHECK** — defense-in-depth (`3c1fdce`)
+
+**최신 항목** (2026-06-25, 363차):
+- **Q708** — **CMS catalog EmptyState** — 빈 **`entries[]`** 시 **「카탈로그 정보 없음」** · **수납 탭은 독립 동작** (`9a583ec`)
+- **Q706·Q707** — **NHIS 자동 매칭 의사결정표** — USER_MANUAL §4-6-1 · alt-key Badge spot-check
+- **Q705** — **목욕 전·후 관찰·지표27** — USER_MANUAL §5-26 (**FE ✅ `3d7f13b`**)
+- **Q703** — **G16 parity-rules `description`/`bodyKo` fallback** — USER_MANUAL §5-8-1
+
+**최신 항목** (2026-06-25, 362차):
+- **Q707** — **G-NHIS-ALT-KEY-AUDIT-BADGE** — **`altKeyMatched`** API·UI Badge · **`4963535`/`5bb84a6`**
+- **Q706** — **G-NHIS-MASKED-NAME-FALLBACK** — 마스킹 수급자명 alt-key · **`37416ac`**
+
+**최신 항목** (2026-06-25, 360차):
+- **Q703** — **G16 parity-rules API spec + RBAC** — 응답 **`code`·`label`·`description`** · **`social_worker` 403** · **`e4f83af`**
+- **Q578** — **live E2E placeholder casing·whitespace 정규화** — **`5afef2d`**
+
+**최신 항목** (2026-06-25, 359차):
+- **Q701·Q704** — **G2b CMS 5/5 full-stack** — **`CmsCollectionPanel`** 가상계좌·다계좌 탭 · **M7 7-4 coverage 1.0** · **`9aeedfe`**
+- **Q703** — **G16 parity-rules FE wire** — **`TransportServiceFeePanel`** · **`fetchTransportServiceFeeParityRulesApi`**
+- **Q705** — **US-O01 목욕 전·후 관찰 + 평가지표 27 compliance API** · **`GET /care/bathing-schedules/indicator-27-compliance`** · **V177** · **`e12b084`**
+- **Q704** — **G2b CMS collection methods closure** — **가상계좌·다계좌 정산** BE API · **FE `CmsCollectionPanel` full-stack** · **V176** · **`dac8ebd`/`9aeedfe`**
+- **Q703 신규** — **G16 NHIS #44 parity-rules API** · **`GET /transport/service-fee-parity-rules`** · 4-rule catalog (`bd1e87e`)
+- **Q702 신규** — **live E2E bootstrap** · **`OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`** toggle (`670756a`/`c3c6272`)
+
+**최신 항목** (2026-06-24, 356차):
+- **Q701** — **G2b CMS payment-method-catalog** — **`/billing/cms`** 5-method catalog panel · **수납 5/5 완성** (`dac8ebd`)
+- **Q703** — **G16 NHIS #44 parity rules API** — **`GET /transport/service-fee-parity-rules`** · 4-rule catalog · **`oneWayRatio=0.5`** (`bd1e87e`)
+- **Q702** — **live E2E bootstrap** — **`OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`** · QA-B95 blocker gating · skip dedupe (`670756a`/`64a7648`/`c3c6272`)
+
+**최신 항목** (2026-06-24, 352차):
+- **Q699** — **G-SMS dispatch success label** — 발송 성공 Alert **괄호 한글명** · **`formatGsmDispatchSuccessMessage`** (`c7d0982`)
+- **Q692 갱신** — **staff dispatch `ezcareMessageKind`** — 접속키(1)·일정표-직원(21) API parity (`2f83563`)
+
+**최신 항목** (2026-06-24, 351차):
+- **Q696** — **UXD-161 G-SMS form-stack** — **`GuardianDocumentNotifyPanel`**·**`StaffNotificationDispatchPanel`** 필드 간격 (`4adeb1c`)
+- **Q697** — **readiness fallback label sync** — ezCare **본인부담 안내·급여제공내역·직원인권보호** (`3f686e3`)
+- **Q698** — **health `liveE2eG21SeedStatusDetail`** — bootstrap disabled contract test lock (`88a58d9`)
+
+**최신 항목** (2026-06-24, 349차):
+- **Q692** — **발송 API `ezcareMessageKind` 응답** — catalog crosswalk 11·12·13·19·21·1 (`ef8bb4e`)
+- **Q686·Q690 갱신** — **`dispatchReady` 채널 자격** — SMS key/secret/sender · ALIMTALK + PF ID (`fed6f1f`)
+- **message_kind 11·13·19 UI** — **`GuardianDocumentNotifyPanel`**·**`BillingDetailPage`** ezCare 라벨 (`5a6d42c`)
+
+**최신 항목** (2026-06-24, 348차):
+- **Q691** — **STAFF_ACCESS_KEY SMS dispatch** — **`POST …/staff/notifications/staff-access-key`** · catalog **6/6 dispatchImplemented** (`1d5d441`)
+- **Q687·Q689 FE wire** — **`GuardianDocumentNotifyPanel`** 일정표-수급자 · **`StaffNotificationDispatchPanel`** 일정표-직원·접속키 (`9c25d44`)
+
+**최신 항목** (2026-06-24, 347차):
+- **Q689** — **STAFF_MONTHLY_SCHEDULE alimtalk dispatch** — **`POST …/staff/notifications/staff-monthly-schedule`** · catalog **5/6 dispatchImplemented** (`b9d0599`)
+- **Q690** — **발송 대기 UI** — readiness 패널 **「발송 대기 N종」** Alert·목록 (`c04968c`)
+
+**최신 항목** (2026-06-24, 346차):
+- **Q687** — **CLIENT_MONTHLY_SCHEDULE alimtalk dispatch** — **`POST …/client-monthly-schedule`** · catalog **4/6 dispatchImplemented** (`8631d1e`)
+- **Q688** — **UXD-160 a11y** — catalog Alert·FAQ21823 보관 Alert·재계약 버튼 (`15f2195`/`068049b`)
+- **Q686 deepen** — **`dispatchReadyCount`** 집계 · 패널 **「발송 구현 N종 중 M종 발송 가능」** Alert (`fb323ae`/`15f2195`)
+
+**최신 항목** (2026-06-24, 345차):
+- **Q686 deepen** — **G-SMS-TEMPLATE-CATALOG full-stack** — **`NotificationChannelReadinessPanel`** ezCare 6종 catalog · **`dispatchReady`** (`b6c9b16`/`c9cf03b`)
+
+**최신 항목** (2026-06-24, 344차):
+- **Q686** — **G-SMS-TEMPLATE-CATALOG BE** — **`GET /notifications/template-catalog`** 6종 parity · **`dispatchReady`** (`b6c9b16`)
+- **Q540·Q685 갱신** — **FAQ21823 compliance API** — 대시보드 **3 StatCard** · 목록·Alert **`fetchStaffEmploymentContractComplianceApi`** (`9aaefa0`/`d682562`)
+
+**최신 항목** (2026-06-24, 343차):
+- **Q685** — **FAQ21823 3년 보관 D-day·서식 인쇄** — **`EMPLOYMENT_CONTRACT_RETENTION_WARNING_DAYS=90`** · **`window.print`** (`a43bcb7`)
+- **Q684 deepen** — **live E2E `liveE2eOperationReason`** health·probe BE canonical (`d11263b`)
+- **Q684** — **live E2E bootstrap service-unavailable** — disabled vs bean-missing 진단 분리 · health hint · FE **`liveE2eOperationReason`** probe (`0494334`/`cba9ff8`)
+- **Q12 정정** — **caregiver 수정 ✅** · **신규 등록 social_worker+** (Q675와 정합)
+
+**최신 항목** (2026-06-24, 341차):
+- **Q677~Q683** — **addressDetail-only PATCH** · **G16 NHIS #44 UI** · **Solapi fail-closed** · **bootstrap hint** · **leave-ledger·employment-contract harness** · **UXD-159 a11y**
 
 **최신 항목** (2026-06-23, 338차):
 - **Q675** — **client RBAC hierarchy** — **`caregiver` PATCH ✅** · **create social_worker+** · **`clientPermissions.js`** (`01edba7`/`77584a0`)
@@ -131,7 +269,28 @@
 - **청구·정산**: 수가표 관리, 월별 청구서 생성, 본인부담금 계산, **NHIS 엑셀 import**
 - **대시보드**: 지점별·통합 현황·통계
 
-**최신 항목** (2026-06-21, 290차):
+**최신 항목** (2026-06-25, 369차):
+- **Q709** — **7-5 provider-catalog FE** — **`EasyPayProviderCatalogPanel`** · §4-6 (`5914b2f`)
+- **Q710** — **G16 parity panel mount** — **`TransportParityRulesPanel`** · §5-8-1 (`5914b2f`)
+
+**최신 항목** (2026-06-25, 368차):
+
+**최신 항목** (2026-06-25, 367차):
+- **Q712 deepen** — **환불 수수료 full-stack** — **`RefundRecordModal`** policy·preview · §5-10 (`cadd74a`)
+
+**최신 항목** (2026-06-25, 366차):
+- **Q705 deepen** — **목욕 FE full-stack** — **`BathingScheduleIndicator27Panel`** · **전·후 관찰 폼** (`3d7f13b`) · §5-26
+- **Q712** — **7-9 KCP 환불 수수료 catalog** — Swagger preview · §5-10 (`2adae59`)
+
+**최신 항목** (2026-06-24, 349차):
+- **Q692** — **발송 API `ezcareMessageKind`** — 청구·보호자 서류 crosswalk (`ef8bb4e`)
+- **§4-6·§4-7-3** — **본인부담 안내·급여제공·인권보호** 알림톡 라벨 (`5a6d42c`)
+
+**최신 항목** (2026-06-24, 348차):
+- **Q691** — **직원 접속키 SMS** — **`POST …/staff/notifications/staff-access-key`** · catalog **6/6** (`1d5d441`)
+- **§4-7-3·§4-7-4** — **GuardianDocumentNotifyPanel** 일정표-수급자 · **StaffNotificationDispatchPanel** 일정표-직원·접속키 (`9c25d44`)
+
+**최신 항목** (2026-06-24, 347차):
 - **Q594** — **G21 NHIS 비교 갭** — 지점 대시보드 통계 위젯 — 공단 일정 미등록/불일치 통계
 - **Q595** — **G15 카카오 API 잔여** — HQ 관리자 대시보드 — 배차 API 호출량 모니터링
 - **Q551** — **보호자 인증 blocker 분리** — guardian-credentials-missing vs default
@@ -166,6 +325,10 @@
 - **보안 정책**: 세션 타임아웃, IP 화이트리스트, 로그인 이력
 - **V166 DB 스키마**: `ltc_grade`, `grievance_counseling_records`, `case_management_records` 등
 
+**최신 항목** (2026-06-25, 369차):
+- **Q709·Q710** — **7-5 catalog FE** · **G16 parity panel** — §10-14 · G16 섹션 (`5914b2f`)
+- **Q713 deepen** — **`enforce-bootstrap-readiness`** — live E2E harness checklist (`9f67954`)
+
 **최신 항목** (2026-06-21, 290차):
 - **G21 NHIS 비교** — 대시보드 widget · 공단 일정 미등록/불일치 통계 (Q594)
 - **G15 Kakao quota** — HQ 대시보드 widget · API 호출량 모니터링 (Q595)
@@ -192,9 +355,35 @@
 **구성**:
 - **§1–§10**: 서비스 개요, 계정, 역할, 기능별 FAQ
 - **§11–§20**: 청구·정산, 공단·NHIS, 보호자, 배차, 청구 리포트 등
-- **§21+**: 최신 기능 (인지지원·CMS·고충상담·HR lifecycle·G21 NHIS·G15 배차·G32 사례관리·G42 민원상담 등)
+- **§21+**: 최신 기능 (인지지원·CMS·고충상담·HR lifecycle·G21 NHIS·G15 배차·G32 사례관리·G42 민원상담·G-SMS 템플릿 카탈로그 등)
 
-**최신 엔트리** (2026-06-21, 299차):
+**최신 엔트리** (2026-06-25, 369차):
+- **Q709 deepen**: **7-5 provider-catalog FE wire** — **`EasyPayProviderCatalogPanel`** (`5914b2f`)
+- **Q710 deepen**: **G16 parity panel mount** — **`TransportParityRulesPanel`** (`5914b2f`)
+- **Q713 deepen**: **bootstrap readiness enforcement** — **`LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS`** (`9f67954`)
+
+**최신 엔트리** (2026-06-25, 368차):
+- **Q712 deepen**: **`feePolicyCode` `@Pattern` validation** — invalid code **`400`** (`79725eb`)
+- **Q713**: **QA-B95 effective operation readiness** — auth recovery 후 **`liveE2eEffectiveOperationReady`** (`e070c45`)
+
+**최신 엔트리** (2026-06-25, 367차):
+- **Q712 deepen**: **7-9 refund fee full-stack** — **`RefundRecordModal`** + **`feePolicyCode`** validation (`cadd74a`·`aeecc1b`)
+
+**최신 엔트리** (2026-06-25, 366차):
+- **Q712**: **7-9 copay refund fee catalog** — KCP 3.3%/500원 · preview API (`2adae59`)
+- **Q705 deepen**: **목욕 전·후 관찰·지표27** — FE full-stack closure (`3d7f13b`)
+
+**최신 엔트리** (2026-06-24, 349차):
+- **Q692**: **`ezcareMessageKind`** — 발송 API 응답 crosswalk (`ef8bb4e`)
+- **Q686·Q690 갱신**: **`dispatchReady` 채널 자격** — PF ID·SMS sender (`fed6f1f`)
+- **message_kind 11·13·19**: UI 라벨 ezCare parity (`5a6d42c`)
+
+**최신 엔트리** (2026-06-24, 348차):
+- **Q691**: **STAFF_ACCESS_KEY** — 직원 접속키 SMS API·UI (`1d5d441`/`9c25d44`)
+- **Q687·Q689 갱신**: **message_kind 12·21** — 이용자·직원 상세 발송 UI (`9c25d44`)
+- **Q686 갱신**: catalog **6/6 dispatchImplemented** closure
+
+**최신 엔트리** (2026-06-24, 347차):
 - **Q613**: **G-ATTENDANCE-STATS contract** — `/attendance/stats` · `GET /attendance/stats/monthly?from=&to=` vs FE `yearMonth`/`dailyRates` 갭
 - **Q612**: **G-STAFF-WORK-ATTENDANCE full-stack** — `/staff/attendance` · `GET/POST /staff/work-attendance*` (케어포 8-4)
 - **Q589**: **정정** — 직원 출퇴근 vs 이용자 출석 API 분리·실측 API 경로 반영
@@ -254,16 +443,16 @@
 
 ## 6. 문서 상태 & 구현 진행도
 
-### 현재 상태 (2026-06-21, 290차, develop HEAD `0c9518a`/`580a86b`, V1–V166)
+### 현재 상태 (2026-06-26, 377차, develop HEAD `d06e3f1`/`4bbd54a`, V1–V180)
 
 | 문서 | 상태 | 마지막 갱신 | 커버리지 |
 |------|------|-----------|---------|
-| **USER_MANUAL.md** | ✅ 현행 | 2026-06-13 (143차) | MVP Must + G9-COG 인지지원 + Q309-Q313 최신화 |
-| **FAQ.md** | ✅ 현행 | 2026-06-13 (143차) | 315+ Q&A · Q309-Q313 Fixed · **P2 Planned 14개 명시** |
-| **ADMIN_GUIDE.md** | ✅ 현행 | 2026-06-13 (최근) | V99 마이그레이션 · G42 pending-approval · US-R03 lifecycle · G2 CMS · **14개 P2 갭 명시** |
-| **DEPLOYMENT_GUIDE.md** | ✅ 현행 | 2026-06-13 (최근) | V99 마이그레이션 · ENV 설정 · LCMS/CMS 연동 · 모니터링 |
-| **CHANGELOG.md** | ✅ 현행 | 2026-06-23 | 날짜별 카드 형식 (에이전트 작업 일지) |
-| **README.md** (본 문서) | 🆕 신규 | 2026-06-13 | 문서 네비게이션 · 역할별 가이드 · 최신 진행도 |
+| **USER_MANUAL.md** | ✅ 현행 | 2026-06-26 (377차) | MVP Must full-stack · **8-2 근무일정표** · M5 program reports · baseline sync |
+| **FAQ.md** | ✅ 현행 | 2026-06-26 (377차) | 700+ Q&A · **Q722 recovered-auth hint · Q719·Q720·Q721 · Q713 deepen** |
+| **ADMIN_GUIDE.md** | ✅ 현행 | 2026-06-26 (377차) | live E2E harness Q722 · **§6-2-21 근무일정표** · V180 · M5 reports API |
+| **DEPLOYMENT_GUIDE.md** | ✅ 현행 | 2026-06-26 (377차) | §1-4 Q722 smoke · §11-3 recovered-auth hint · Must API smoke |
+| **CHANGELOG.md** | ✅ 현행 | 2026-06-26 | 날짜별 카드 형식 (에이전트 작업 일지) |
+| **README.md** (본 문서) | ✅ 현행 | 2026-06-26 (377차) | 문서 네비게이션 · 역할별 가이드 · 최신 진행도 |
 
 ---
 
@@ -271,29 +460,29 @@
 
 | 영역 | 상태 | 비고 |
 |------|------|------|
-| **백엔드 API** | 78.28% | Must + G9-COG + G42 + G34b + G40b + G40 + FAQ21806 + G2 + US-R03/R02 · **902/902 test PASS** |
-| **데이터베이스** | V99 | `ltc_grade` 0–5 · `grievance_counseling_records` · V93–V99 마이그레이션 완료 |
-| **프론트엔드** | 65 라우트 | G9-COPAY-NAMING + FAQ21824 + G9-COG 30칸 + Q309-Q313 반영 · **1022/1022 test PASS** |
-| **문서화** | Must + P2 갭 | USER_MANUAL·FAQ·ADMIN_GUIDE·DEPLOYMENT 최신화 · **P2 Planned 14개 명시** |
+| **백엔드 API** | Must + V180 ✅ | @ `d06e3f1` · **QA-B95 recovered-auth hint ✅** · **G-REPORT-DENSITY M5 reports+** · BE Test **271 suites** |
+| **데이터베이스** | V1–V180 | V180 program group integrity · V179 프로그램 그룹·멤버십 · V178 CMS·목욕 CHECK |
+| **프론트엔드** | 118 route · 93 page | @ `4bbd54a` · **StaffMonthlySchedulePage** · **ProgramReportsPage** · FE test **479+** |
+| **문서화** | Must 갭 0 | **P2**: 5-9 그룹 CRUD UI · program reports FE `branchId` · 7-5 live PG · M6 safety |
 
 ---
 
 ## 7. 로드맵 & 다음 단계
 
-### v1.2.1 현황 (2026-06-13)
+### v1.2.1 현황 (2026-06-25)
 
 **완료**:
-- ✅ G9-COG 인지지원등급 수가 (30칸 수가표, import gate)
-- ✅ Q309–Q313 최신화 (정식 용어, workflow, lifecycle)
-- ✅ 902/1022 test PASS · **merge gate FULLY UNBLOCKED**
+- ✅ M7 본인부담 **7-4 CMS 5/5** · **7-5 catalog FE** · **7-9 refund fee full-stack**
+- ✅ US-O01 목욕 **평가지표 27 FE wire**
+- ✅ G16 NHIS #44 **parity panel mount**
+- ✅ merge gate **802** · cross-stream **SYNCED**
 
 **P2 Planned** (이후 버전):
-- FAQ21824 **단일 wizard** — 계약→청구 자동화
-- 건강검진 **결과통보서 파일함** — PDF 저장소
-- **LCMS CMS 3-method** — 가상계좌·카드·다계좌
-- **G34 SMS live OTP** — 전자결재 인증
-- **G42 결재함 UI** — pending-approval 전용 화면
-- G-Payroll 직원 급여 관리 (v3)
+- **7-5 live PG** — 실제 카드·카카오페이 벤더 연동 (현재 stub)
+- **J03 Solapi live dispatch** — 알림톡·SMS 실발송
+- **M6 6-2~6-4 `/safety/*`** — 안전점검 서브폼
+- **L03 간호급여 잔여 5 leaf**
+- **G34 SMS live OTP** · **G-Payroll** (v3)
 
 **자세히**: [ROADMAP.md](../planning/ROADMAP.md) 참고
 

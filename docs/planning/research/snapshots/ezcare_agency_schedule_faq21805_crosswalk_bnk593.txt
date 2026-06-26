@@ -1,0 +1,73 @@
+BNK-593 이지케어 역공학 2-4h — FAQ21805 수급자 계약 + agency-schedule 기관일정 + schedule-p100 방문일정 + 가격 재실측
+조사일: 2026-06-24T18:45:00Z (KST 03:45) | rotation: 2-4h 이지케어 ERP·FAQ·Channel.io·가격
+
+ogada git 실측 (HEAD zero advance 1-cycle vs BNK-592)
+  FE @216ab7a WT CLEAN (BNK-592 동일 SHA · ahead 219 vs origin/test=ab4de83)
+  BE @a12873c WT CLEAN (BNK-592 동일 SHA · ahead 552 vs origin/test=598d108)
+  112 Route · 91 page · V1-V175 · BE Test 258 · FE test 467(193+274) · 모듈 79.66%(23.10/29 · id=10 0.75)
+  merge gate 771 carry · 상태 변경 0 · KPI 변경 0
+
+=== 신규 evidence URL 1건 (주력) ===
+[FAQ 21805](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21805&type=web)
+  HTTP 200 · 19,402B · md5 bd0780c9 (신규 named snapshot ezcare_faq_21805_bnk593.html)
+  제목: 「[비정기] 수급자 계약」
+  평가지표: 10번 + 14~18번
+  7-step 워크플로 (verbatim):
+    ①계약서 작성 → ②기초평가·욕구사정 → ③급여제공계획서작성(공단)
+    → ④출력 → ⑤수급자확인 서명 → ⑥급여제공계획서 통보 → ⑦급여일정 등록
+  파일함: 계약서·급여제공계획서·일정표·급여제공기록지·급여비용명세서·자료제공 안내문(+동의서)
+  도메인: 방문요양(재가) 수급자 계약 — ogada 주간보호 MVP 밖(갭 아님)
+
+=== PGID agency-schedule 기관 내부 일정표 (session 재실측) ===
+[/new.ez?PGID=agency-schedule](https://ezcare.easyms.co.kr/new.ez?PGID=agency-schedule) (데모)
+  HTTP 200(session) · 150,081B · md5 6185aced (BNK-593 session IDENTICAL vs prior on-disk)
+  nav: 「9.기관관리 ▶ 스케쥴」·RFID점검 링크 동반
+  UI: YmBar 월 선택 · 색상 구분(category) 캘린더 · 구분추가/수정/삭제 다이얼로그
+  endpoint (verbatim):
+    GET  /page/agency/json.php?data=agency-base-data-GET
+    GET  /page/agency/json.php?data=p-schedule-category-GET
+    POST /page/agency/run.php?mode=p-schedule-{INSERT|UPDATE|DELETE}
+    POST /page/agency/run.php?mode=p-schedule-this-UPDATE
+    POST /page/agency/run.php?mode=p-schedule-category-{UPDATE|DELETE}
+  print: btn-print-agency-schedule-calendar · btn-print-agency-schedule-list (formFile agency.schedule.html)
+  ogada: 기관 내부 일정 캘린더 Route grep 0 → candidate G-AGENCY-INTERNAL-SCHEDULE P3「가정」(MVP out-of-scope)
+
+=== PGID schedule-p100 방문일정 2-tab colModel (session 재실측) ===
+[/new.ez?PGID=schedule-p100](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-p100) (데모)
+  HTTP 200(session) · 113,979B · md5 7035e1ca (BNK-593 session IDENTICAL)
+  tab-01 수급자 일정표 grid-schedule-p100-01:
+    colModel visible: name·pInfo·pGroup·birthdate·tAmount·stmTotal·cnt·wName·일정관리(btn)
+    excel hidden: longTermMgmtNo·pID·telNo·gName·gHandphone·cnt·tAmount·wName
+    endpoint: /page/schedule/json-schedule.php?data=patient_schedule
+    download: "{Ym} 서비스제공 명단" excelfoot merge A:G
+  tab-02 요양보호사 일정표 grid-schedule-p100-02:
+    colModel: name·wInfo·wGroup·birthdate·terM·stmTotal·cnt·pName·일정표(btn)
+    endpoint: /page/schedule/json-schedule.php?data=worker_schedule
+    download: /schedule_print/xls_patient_service_tableYm.php
+  도메인: 방문요양(재가) — ogada 주간보호 MVP 밖(갭 아님)
+
+=== billing-list PGID negative 재확인 ===
+[/new.ez?PGID=billing-list](https://ezcare.easyms.co.kr/new.ez?PGID=billing-list) (데모)
+  HTTP 200(session) · 93,393B · md5 b0265429 · main=「Page Not Found :(」404 shell (BNK-533 negative carry 재확인)
+  실제 본인부담 청구 진입점: ?PGID=pAmt-a100 (nav direct-link 「청구」)
+
+=== 가격·도입 재실측 (2026-06-24) ===
+home mCnt: 9280 / 4600 / 2353억 / 1820억 (BNK-589 verbatim 불변 · SIZE +28B cosmetic DRIFT)
+fnc 도입: 9,350개 (BNK-589 verbatim 불변 · cachebuster DRIFT 91cfdcba→0149a763)
+charge: 33,000 / 25,850 / 55,000 / 10,000 / 500 / 0원 verbatim 불변 (cachebuster DRIFT)
+demo shell: 140,046B md5 6ef5b90c (+6B vs BNK-589 98cfd5eb · widget id 회전)
+
+=== Channel.io bc7f4cd9 oscillation ===
+live md5 dbd710c8 228,038B (BNK-589 ba20c74e → BNK-593 dbd710c8 · −330B oscillation · semantic 검은/빨간 처리상태 verbatim 불변)
+
+=== per-cycle minimum 4종 ===
+  [O] 신규 evidence URL 1건+ — FAQ21805 HTTP 200 19,402B
+  [O] 메뉴/필드/워크플로 1블록+ — agency-schedule p-schedule CRUD + schedule-p100 2-tab colModel
+  [O] COMPETITOR_MATRIX 1행+ @HEAD — agency-schedule·FAQ21805·billing-list negative
+  [O] BENCHMARK_REPORT §소절 1건+ — BNK-593 차수 메모
+
+[planner 액션]
+  ① FAQ21805·schedule-p100 = 방문요양 도메인 경계 재확인(주간보호 갭 아님)
+  ② agency-schedule = 기관 내부 일정 캘린더 — ogada ❌ · candidate G-AGENCY-INTERNAL-SCHEDULE P3
+  ③ billing-list 404 → pAmt-a100 canonical 청구 PGID 정본 유지
+  ④ tester FF merge 771 carry (HEAD zero advance · 양쪽 WT CLEAN)

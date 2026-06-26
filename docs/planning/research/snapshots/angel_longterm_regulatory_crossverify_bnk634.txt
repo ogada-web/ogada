@@ -1,0 +1,82 @@
+# BNK-634 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-25T21:30:00Z)
+
+rotation: 엔젤·롱텀·규제 (silverangel/lcms·NHIS #44·2026 수가·평가#27·단기보호·통합재가·PLAN_NOTES #44)
+조사일: 2026-06-25T21:30:00Z (KST 익일 06:30)
+
+## 0. ogada git 실측 (HEAD zero advance vs BNK-633 · WT DIRTY regression)
+| 항목 | 값 |
+|---|---|
+| FE develop | `33944e4` `feat(v1.2.1/staff): add monthly work schedule page for carefor 8-2` · WT **DIRTY 2** (`StaffMonthlySchedulePage.jsx` +8/-2 · `components.css` +39L) · ahead **243** vs `origin/test=ab4de83` |
+| BE develop | `3342938` `fix(v2/QA-B95): honor recovered auth in health and live-e2e probe` · WT **DIRTY 1** (`V180__program_client_groups_integrity_us_p01.sql` untracked) · ahead **573** vs `origin/test=598d108` |
+| merge gate | **816** carry (FE 243 + BE 573) |
+| KPI | **118** Route(117 `<Route\b` + 1 `<Routes>`)·**93** page(92 `*Page.jsx` + RootRedirect)·V1–**V179**(+V180 untracked)·BE Test **271**·BE @Test **1957**·FE test **479** tracked(196+283)·reports **28**·모듈 **80.86%** |
+
+→ BNK-633(`@33944e4`/`@3342938`) 대비 **HEAD zero advance**·**WT CLEAN → DIRTY regression**(FE 2M·BE V180 untracked)·KPI SHA-level IDENTICAL.
+
+## 1. 규제·엔젤 live 재실측 (HTTP / md5 / size)
+| URL | HTTP | size | live md5 | on-disk md5 | 판정 |
+|---|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `c886ff1f` | `c886ff1f` | **393차 zero drift IDENTICAL** |
+| [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637 | `f9c5d877` | `f9c5d877` | IDENTICAL |
+| [essential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664 | `c79c1be3` | `c79c1be3` | IDENTICAL |
+| [feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513 | `eab352a8` | `eab352a8` | IDENTICAL |
+| [mainService](https://www.silverangel.kr/newSilverangel/service/mainService.do) | 200 | 59,002 | `bcf6df41` | `bcf6df41` | IDENTICAL |
+| [system_feature](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) | 200 | 45,601 | `c9507190` | `c9507190` | IDENTICAL |
+| [businessSupportService](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do) | 200 | 75,878 | `a13cb5ac` | `a13cb5ac`(BNK-578) | **IDENTICAL 12-cycle** |
+| [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do?pageNo=1) | 200 | 3,594,181 | `52c9457f` | — | list 갱신·221564 미노출 |
+| [notice 221564](https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564) | 200 | 51,765 | `44223150` | `44223150` | 비공개 shell 지속·**D-4** |
+| [notice 221562](https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221562) | 200 | (list inline) | — | — | **발신번호 본인인증 마감 6/23 18:00 경과** |
+| [lcms.or.kr](https://www.lcms.or.kr/) | **503→200** | 299→50,740 | `66b56e51`→`c0c66076` | `c0c66076` | **★ transient 503 1차·retry IDENTICAL 38-cycle** |
+| [longterm 502](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502) | 200 | 422 | `d3c90b33` | canonical `b5aee8c1` 105,552B | partial shell 「미확인」 **47-cycle** |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610) | 200 | 458 | `c26a5e57` | canonical `0ea575be` 91,421B | shell oscillation 「미확인」 |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | 200 | 109,510 | `806a4361` | `106a4278`(BNK-618) | **★ DRIFT counter** → 덮어쓰기 |
+
+verbatim 재확인:
+- NHIS #44: `러-1`~`러-4`·`50%`·`1일 1회`·`편도만`·별지 제22호·「수급자가 부담하지 아니한다」— 불변(393차).
+- MOHW 2026-126: 고시 제2026-126호·「본인부담상한액 기준보험료」일부개정·조회수 **2,644**·다운로드 **483**(+1 vs BNK-618 482)·미리보기 **571**(+7 vs BNK-618 564)·본문 개정 조항 verbatim 불변(카운터만 DRIFT).
+- silverangel essential #41-42·목욕27·extra CMS 5-method — 불변.
+- longterm canonical 502: 단기보호 1등급 **74,060**(2026.1.1.)·610: 통합재가 가산 **월 10만원** — on-disk 보존.
+
+## 2. ★★★ silverangel businessSupportService 「도입 후 관리」4회차 온보딩 체크리스트 ↔ ogada cross-walk (신규 상세 블록)
+
+근거: [businessSupportService.do](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do) HTTP 200·`a13cb5ac`·2026-06-25·tab2 「도입 후 관리」
+
+| 회차 | 시점 | silverangel 점검 항목 (verbatim 요약) | ogada `@33944e4`/`@3342938` | 판정 |
+|---|---|---|---|---|
+| **1회차** | 오픈+10일 | 관리: ID등록·권한·기록지복사옵션 / 간호: 처치기록·시간설정·약등록·건강관리기록부 / 복지: 프로그램그룹·계획서·일지·욕구사정·**급여제공계획(롱텀 다운로드 업로드)** / 요양: 큰화면·**배변배뇨 QR**·관찰기록·체위변경·목욕기록·일괄등록 / 재활: 기능회복훈련·물리치료기록 | `/staff` RBAC·`/care/*`·`/programs/*`·`/clients/care-plans`·`/care/bathing-schedules`·QR 출석·`/rehab/*` | ✅ 대부분 parity·**롱텀 care-plan import UI △** |
+| **2회차** | 1회차+10일 | 1차 완수·계획서 비대면·집중배설·**사례관리회의**·상담일지·프로그램달력·보고서(관찰/배변/목욕)·간호시간 자동생성·처방약 연장·욕창평가 사후관리·작업/물리치료일지·기관운영 메뉴 | `/case-management/meetings`·`/reports/*`·nursing auto-time·pressure ulcer·`/rehab/*` | ✅ superset·**committee-meeting P1 carry(BNK-633)** |
+| **3회차** | 오픈+6주 | 직무교육 실시 | `/staff/training`·`/staff/training-logs` | ✅ |
+| **4회차** | 직무교육+10일 | 묻고답하기 건수·기록지·욕구사정·KPI·계획평가달력 | dashboard KPI·care-plan eval calendar △ | △ **G-VENDOR-ONBOARDING-CHECKLIST P3「가정」** 강화 |
+
+**ogada 차별화**: 엔젤은 **공급자 주도 4회차 현장 점검 SLA**를 마케팅·온보딩에 명시. ogada는 SaaS self-serve 온보딩·`G-ONBOARD-SUPPORT` ✅ partial+ 있으나 **회차별 체크리스트 UI 0 hit** → v3 `G-VENDOR-ONBOARDING-CHECKLIST` P3 candidate 유지·강화.
+
+## 3. ★★ system_feature LCMS 인프라 스택 공개 ↔ ogada 차별화 (신규 블록)
+
+근거: [system_feature.do](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) HTTP 200·`c9507190`
+
+| 구분 | silverangel 공개 스펙 | ogada |
+|---|---|---|
+| 하드웨어 | HP(휴렛팩커드)·KT IDC | 클라우드(가정·미확인) |
+| OS | HP-UX(유닉스) | Linux container |
+| WAS | WEBLOGIC | Spring Boot 3 |
+| DB | Oracle 11g | PostgreSQL |
+| 리포트 | Rexpert 3.0 JAVA | React PDF/export |
+
+**의미**: 엔젤은 레거시 엔터프라이즈 스택을 **보안·안정성** 마케팅 포인트로 공개. ogada는 **현대 스택·SaaS 멀티테넌트** 차별화 narrative 가능(BNK-515 3-product line carry).
+
+## 4. silverangel notice 221564 — D-4 · 221562 마감 경과 (확인)
+- list 최신 가시: **221562**(발신번호 본인인증)·221551 링크 carry·221564 **미노출**
+- view 221564: **51,765B `44223150`** shell (BNK-618~634 **16-cycle+**)
+- 공지 명시일 **2026-06-30** → **D-4** (BNK-632 carry)
+- **221562**: 인증 마감 **2026-06-23 18:00 경과** → `G-COMM-CALLER-AUTH` P3 operational relevance 재확인
+
+## 5. ogada parity / 갭 요약
+- NHIS #44(G16): full-stack ✅ — **393-cycle** zero drift
+- MOHW 2026-126: ogada G26 본인부담상한 ✅ — 고시 카운터 DRIFT only
+- silverangel CMS 5-method: ogada 5/5 parity
+- 평가지표 27 목욕: ogada `BathingScheduleIndicator27Panel` parity
+- M11·M12 P1 격상 demand-signal carry (BNK-633)
+- 4축+leave-ledger P0/P1 재오픈 0 (84-cycle carry)
+
+## 6. 사이클 집계
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · closure 0 · **상태 변경 1**(WT CLEAN→DIRTY regression) · KPI 변경 0(HEAD zero advance) · **재실측 zero drift 7**(NHIS+silverangel 6-URL+businessSupport) · **DRIFT counter 1**(MOHW 2026-126) · **신규 transient 1**(lcms 503) · **미확인 carry 3**(longterm 502/610·carefor LIVE) · 신규 snapshot 1건(이 파일) · 덮어쓰기 1건(`mohw_gosi_2026_126.html`) · per-cycle minimum 4종 충족 · tester FF merge 816 가속 권장 · **coder WT DIRTY commit 우선**

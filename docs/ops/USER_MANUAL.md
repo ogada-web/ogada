@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T21:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T23:00:00+09:00 -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-23 (338차 TWR 자동 동기화 — **BE `01edba7`/FE `1193761`·V1–V175·111 route·90 page·US-D01/D02 ✅·client RBAC hierarchy ✅·addressSearch/detail read ✅**)  
+> **최종 갱신**: 2026-06-26 (378차 TWR 자동 동기화 — **Q722 recovered-auth hint · Q719 G21 seed detail · Q720 neutral blocker · Q721 V180 · Q717 staff schedule · Q715 program reports branchId · baseline `d06e3f1`/`4bbd54a`**)  
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -25,13 +25,13 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 역할별 메뉴·권한·업무 절차 | `sysadmin` 기술 설정 상세 (→ `ADMIN_GUIDE.md`) |
 | 보호자 QR 셀프 체크인 (B방식) | `caregiver`·`social_worker` 전용 **식단·일정 등록** (관리자만, §5-9) |
 
-### 1-3. 구현 상태 안내 (2026-06-23 develop HEAD `01edba7` / frontend `1193761` 기준 — 338차 baseline)
+### 1-3. 구현 상태 안내 (2026-06-26 develop HEAD `d06e3f1` / frontend `4bbd54a` 기준 — 377차 baseline)
 
 | 영역 | 상태 | 비고 |
 |------|------|------|
-| 백엔드 API | **Must + … + V175 ✅** @ `01edba7` **SYNCED** · **`RoleHierarchy` client RBAC ✅** (Q675) · **`addressSearch`·`addressDetail` read ✅** (Q676) · **거주지 전체·픽업 마스킹 유지** · … | BE Test **1837+** (Q675) |
-| 데이터베이스 | Flyway **V1–V175** | **V175** leave-ledger memo·user_branch FK · **V174** `staff_leave_ledger_entries` · **V173** annual-leave integrity · **V172** roster table |
-| 프론트엔드 | **111 route · 90 page** @ `1193761` **SYNCED** | **`clientPermissions.js` RBAC ✅** (Q675) · **`KoreanAddressFields` ✅** (Q671) · **`/clients` column filters ✅** (Q672) · **HR `branchName` scope ✅** (Q674) |
+| 백엔드 API | **Must + … + V180 ✅** @ `d06e3f1` **SYNCED** · **QA-B95 recovered-auth hint ✅** (Q722) · **G21 seed service-unavailable detail ✅** (Q719) · **V180 program group integrity ✅** (Q721) · **G-REPORT-DENSITY M5 program reports ✅+** · **QA-B95 allow-recovered-auth ✅** · **G-REFUND-FEE-DEDUCTION ✅+** · **G-EASYPAY-PROVIDER-CATALOG ✅** · … | BE Test **271 suites** |
+| 데이터베이스 | Flyway **V1–V180** | **V180** 프로그램 그룹 3-way FK·active-client guard · **V179** 프로그램 수급자 그룹·멤버십 · **V178** CMS collection·목욕 CHECK · **V177** 목욕 전·후 관찰 |
+| 프론트엔드 | **118 route · 93 page** @ `4bbd54a` **SYNCED** | **QA-B95 recovered-auth hint wire ✅** (Q722) · **QA-B95 neutral blocker filter ✅** (Q720) · **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE ✅+a11y** (Q717·UXD-165) · **G-REPORT-DENSITY M5 reports ✅** (Q714) · **QA-B95 singular blocker merge ✅** (Q718, IT harness) · **G-EASYPAY-PROVIDER-CATALOG-FE-WIRE ✅** (Q709) · **G-REFUND-FEE-FE-WIRE ✅** (Q712) · **US-O01 bathing FE ✅** (Q705) · **G2b CMS 5/5 ✅** |
 | UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·직원 출퇴근·연차 roster·**연차·유급휴일 대장**·HR cross-link 등 | **M6 6-1 `/meals` LIVE** (Q660) |
 | UI API 갭 | **Must 갭 0** (기존 Must) | **P3**: **G-COMM-CALLER-AUTH** · 카메라 QR · NFC · **7-5 live PG** · **M6 6-2~6-4 `/safety/*`** |
 | **P2 Planned** | **L03 간호급여 잔여 5 leaf·7-5 live PG·J03 Solapi live dispatch·LCMS CMS 3-method·G34 SMS live·G-Payroll·G30 live E2E** | **G-STAFF-WELFARE P3**(FAQ21796) · **8-12 PDF 공식 서식**(Q315) · **선임 업무수행일지 템플릿 카탈로그** P3 (Q635 잔여) |
@@ -73,6 +73,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 직원 서류관리 repository (G-STAFF-DOCUMENT-REPOSITORY) | `/staff/{userId}?tab=files` | `GET /api/v1/staff/hr-files/users/{userId}/repository-progress` | **FAQ21825 21슬롯** · **「모바일 촬영」** 전폭 버튼 (`6bde24a`/`9812ac4`, Q608·Q611) |
 | **이용자 당일 출석 roster (G-ATTENDANCE-ROSTER-STATUS)** | `/attendance` · `/attendance/boarding` · `/attendance/on-site` | `GET /api/v1/attendance?transportMode=` | **활성 이용자 전원** · **`clientName`·`status`·`usesTransport`** · pending **`id=null`** · FE **`fetchAttendanceApi` 단일 호출** (`8383f8d`, Q609) |
 | **직원 출퇴근 (G-STAFF-WORK-ATTENDANCE, 8-4)** | `/staff/attendance` | `GET /api/v1/staff/work-attendance` · `POST …/check-in` · `POST …/check-out` | **활성 직원 전원** · **출근 방식 `MANUAL`/`MOBILE`/`NFC`** · **수동 출근/퇴근** · **`BranchScopeNotice`**·**API `surfaceKind`·`relatedSurfaces` cross-link 패널** (Q651·Q653·Q657, `83a26e7`/`949e9bf`) · **당일만** (`5fd468b`/`a6eb8b7`, Q612) |
+| **직원 근무일정표 (G-STAFF-MONTHLY-SCHEDULE-FE-WIRE, 8-2, Q717)** | `/staff/schedules` | `GET /api/v1/visits?from=&to=&branchId=&scheduleKind=PLAN` | **PLAN 방문 일정** 직원별·월별 조회 · **StatCard·Table** · **월간 일정표 알림톡** (`33944e4`) · 일정 CRUD는 **`/visits`** |
 | **선행입금 입금 순서 (G-BILLING-DEPOSIT-ORDER-GUARD)** | `/billing/payments` | `POST /api/v1/billing/claims/{claimId}/payments` · `POST …/imports/bank-deposits` | **이전 미납 청구 선행** · 은행 import **가장 이른 월 우선** (`a6eb8b7`, Q614) |
 | **청구 대장 필터 저장 (G-BILLING-REPORT-FILTER-PERSISTENCE, Q621)** | `/billing/reports/deposits` · `/receipts` · … | `GET/PUT /api/v1/billing/reports/filters` | **마운트 시 hydrate** · **「조회」PUT persist** · **4-variant** (`77b1ea8`, Q621) |
 | **월별 출석 통계 (G-ATTENDANCE-STATS, US-E05)** | `/attendance/stats` | `GET /api/v1/attendance/stats/monthly?from=&to=&branchId=` | **지점·월 집계** BE+FE ✅ (`dffd726`, Q615) — StatCard·6개월 추이·다지점 표 |
@@ -81,11 +82,22 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **공단 평가지표 cross-walk legend (G30-LEGEND, Q629)** | `/compliance/monitoring` | `GET /api/v1/compliance/monitoring/items` (템플릿) | **`MonitoringOfficialIndicatorLegendPanel`** — ogada 15문항 ↔ 공단 1~15 매핑 · **#6↔15** · **#15↔12-14** (`fdc135b`, Q629) |
 | **운영주기별 워크플로 카탈로그 (G34-WORKFLOW-CATALOG, Q635)** | `/compliance/workflow-catalog` | *(FE 정적 cross-walk)* | **`EzcareWorkflowCatalogPanel`** — ezCare FAQ **21795–21828** 28건 · **16/28 ogada 인용** · 주기·인용 **FilterChips** (`9f110a5`, Q635) |
 | **CMS 지점 등록 roster (G2, Q637·Q638·Q662)** | `/billing/cms` **등록 관리** · `/billing/payments` | `GET /api/v1/billing/cms/enrollments?branchId=&status=` | **이용자 미선택** 시 활성 지점 roster · **FilterChips**·**이용자 deep link** · **입금 화면 CMS 등록 열** · **`status` trim·uppercase API 방어** (`f1225b0`, Q662) |
+| **CMS 결제수단 카탈로그 (G2b, Q701)** | `/billing/cms` **등록 관리** 상단 | `GET /api/v1/billing/cms/payment-method-catalog` | **엔젤 5-method** 표 · **수납 5/5 full-stack ✅** · **가상계좌·다계좌 탭** (Q704) |
+| **CMS 가상계좌·다계좌 (G2b, Q704)** | `/billing/cms` **가상계좌·다계좌** 탭 | `POST/GET …/virtual-account` · `POST/GET …/multi-account-settlement` | **`CmsCollectionPanel`** · 입금 은행·상태 조회 · **7-4 선행입금 가드** (`9aeedfe`) |
+| **목욕 평가지표 27 compliance (US-O01, Q705)** | `/care/bathing-schedules` · Swagger | `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=` · `POST/PATCH …/bathing-schedules` **`preObservationNotes`/`postObservationNotes`** | **월 5회+·전후관찰** · **COMPLETED 시 관찰 필수** · **`BathingScheduleIndicator27Panel`·전·후 관찰 폼 ✅** (`3d7f13b`·BE `e12b084`) |
+| **G16 NHIS #44 parity rules (Q703·Q710)** | `/transport/service-fees` | `GET /api/v1/transport/service-fee-parity-rules` | **4-rule catalog** · **`TransportParityRulesPanel` page mount ✅** (`5914b2f`) |
+| **7-5 easy-pay provider catalog (Q709)** | `/billing/easy-pay` · Swagger | `GET /api/v1/billing/easy-pay/provider-catalog` | **CARD·KAKAO_PAY 2종** · **`EasyPayProviderCatalogPanel` FE wire ✅** (`5914b2f`) · **`pgMode` stub/live** |
+| **연차 branchName trim fallback (Q711)** | `/staff/annual-leaves` | `GET /api/v1/staff/annual-leaves/roster` | **`BranchScopeNotice`** — API **공백 `branchName`** 시 **지점 ID fallback** (`58f3858`) |
+| **NHIS 마스킹 이름 alt-key (Q706)** | `/billing/imports/nhis` · `/visits` (방문일정 import) | **`POST /billing/imports/nhis`** · **`POST /visits/imports/nhis`** | **LTC cert 실패 시** 마스킹 이름+생년월일·주민 앞 6자리 **자동 매칭** · **`matchStatusReason` alt-key 안내** (`37416ac`) |
+| **NHIS alt-key audit Badge (Q707)** | `/billing/imports/nhis/:batchId` · `/visits` (공단 비교) | import·대사·**`GET /visits/nhis-comparison`** — **`altKeyMatched`** | **「대체 매칭됨 — 검증 필요」** warning Badge · tooltip **alt-key 사유** · **spot-check 유도** (`4963535`/`5bb84a6`) |
 | **직원 연차휴가 (G-STAFF-ANNUAL-LEAVE, US-R03e, Q639)** | `/staff/annual-leaves` | `GET /api/v1/staff/annual-leaves/roster?year=&branchId=` · `PUT …/users/{userId}` | **지점 roster** · **`BranchScopeNotice`**·**관련 화면 패널** — 출퇴근 링크·대장 cross-link **API AVAILABLE** (Q650·Q657·Q663) · **multi-branch activeBranch fallback** (Q656) · **정수·0~31·비고 30자 `422`** (Q641·Q642) · **V173 DB CHECK/FK** (Q645) |
 | **연차·유급휴일 대장 (US-R01-c, Q663·Q665·Q666·Q667·Q668·Q674)** | `/staff/leave-ledger` | `GET /api/v1/staff/leave-ledger?year=&branchId=` · `POST …/users/{userId}` · `PUT …/entries/{entryId}` · `DELETE …/entries/{entryId}` | **건별 canonical ledger** · **V175 DB integrity** (Q668) · **`StaffLeaveLedgerPage`** CRUD · **`social_worker` 등록** · **`hq_admin` 조회만** · **API `branchName` scope** (Q674) |
+| **FAQ21823 근로(재)계약 compliance (US-R03, Q540·Q685·Q686)** | `/staff` · `/dashboard` · `/staff/{userId}` | `GET /api/v1/staff/employment-contracts/compliance?branchId=&referenceDate=` · dashboard **`employmentContractRenewalGapCount`**·**`employmentContractRetentionExpiringCount`**·**`employmentContractRetentionExpiredCount`** | **BE 집계 단일 소스** · 목록 **`StaffEmploymentContractRenewalSummaryPanel`** · 대시보드 **3 StatCard** + **`EmploymentContractRenewalAlertsPanel`** · 상세 **보관 D-day·서식 인쇄** (Q685) |
 | **이용자 주소 검색·등록 (US-D01/D02, Q671·Q676)** | `/clients/new` · `/clients/:id/edit` | `POST/PATCH /api/v1/clients` — **`address`·`addressDetail`** · read **`addressSearch`·`addressDetail`** | **`KoreanAddressFields`** Kakao postcode · **수정 prefill ✅** (Q676) · **거주지 전체 표시** · **픽업 「거주지와 동일」** · **caregiver 수정 ✅** (Q675) |
 | **이용자 등록·수정 RBAC (Q675)** | `/clients/new` · `/clients/:id/edit` | `POST` social_worker+ · `PATCH` caregiver+ | **`clientPermissions.js`** · **요양보호사 수정만** · **등록은 사회복지사 이상** |
 | **이용자 목록 열 필터 (US-D01, Q672)** | `/clients` | `GET /api/v1/clients` (클라이언트 필터) | **`TableColumnFilter`** — 등급·성별·배차·지점 · **「거주지」열** (`7e048c0`) |
+| **ezCare SMS 템플릿 카탈로그 (G-SMS-TEMPLATE-CATALOG, Q686~Q692·Q697·Q699)** | `/organization/settings` · `/dashboard` · `/clients/:id` · `/staff/:id` · `/billing/claims/:id` | `GET /api/v1/notifications/template-catalog` · `POST …/client-monthly-schedule` · `POST …/staff/notifications/*` · `POST …/billing/claims/{id}/notify` | **`NotificationChannelReadinessPanel`** 6종 · **발송 UI** · **성공 Alert 템플릿 라벨** · **fallback 라벨 ezCare parity** · **`dispatchReady` 채널 자격** |
+| **본인부담 7-x lifecycle (M7, Q700)** | `/billing` · `/billing/payments` · `/billing/overdue` · `/billing/cms` · `/billing/easy-pay` · `/billing/reports/*` · `/billing/calculator` | *(Route crosswalk — BNK-592)* | **케어포 7-1~7-10 ↔ ogada 1:1** · **10/10 ✅** · **7-4 CMS 5/5 full-stack ✅** · superset 5 |
 
 ---
 
@@ -108,7 +120,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 2. **로그인 화면**(`/`)에서 ogada 브랜드 카드 안에 **이메일**과 **비밀번호**를 입력합니다.
 3. **로그인** 버튼을 누르면 역할에 맞는 **홈 화면**으로 이동합니다.
 
-> **현재 UI 상태 (FE `949e9bf`)**: **110 route · 89 page** · **`/staff/annual-leaves`** — **연차 roster**·**`BranchScopeNotice`**·**관련 화면 패널(출퇴근·대장)** (Q650·Q657) · **`/staff/attendance`** — **출퇴근 roster**·**`BranchScopeNotice`**·**API 메타 기반 역방향 패널(연차휴가·대장)** (Q651·Q653·Q657) · **`/billing/cms`** — **지점 CMS roster**·**FilterChips**·**`?clientId=` deep link** (Q637·Q638) · **`/compliance/workflow-catalog`** — **ezCare FAQ cross-walk** (G34, Q635)
+> **현재 UI 상태 (FE `9c25d44`)**: **112 route · 91 page** · **`/clients/:id`** — **`GuardianDocumentNotifyPanel`** **일정표-수급자** 알림톡 발송 (Q687·Q691) · **`/staff/:id`** — **`StaffNotificationDispatchPanel`** **일정표-직원·접속키 SMS** (Q689·Q691) · **`/staff/annual-leaves`** — **연차 roster**·**`BranchScopeNotice`**·**관련 화면 패널(출퇴근·대장 AVAILABLE)** (Q650·Q657) · **`/staff/attendance`** — **출퇴근 roster**·**`BranchScopeNotice`**·**API 메타 기반 역방향 패널(연차휴가·대장 AVAILABLE)** (Q651·Q653·Q657) · **`/staff/leave-ledger`** — **canonical 대장 CRUD** (Q663·Q666·Q667) · **`/staff/{userId}` lifecycle** — **FAQ21823 보관 D-day Alert·서식 인쇄** (Q685) · **`/billing/cms`** — **`CmsPaymentMethodCatalogPanel`** 5-method catalog · **지점 CMS roster**·**FilterChips**·**`?clientId=` deep link** (Q637·Q638·Q701) · **`/compliance/workflow-catalog`** — **ezCare FAQ cross-walk** (G34, Q635) · **`/clients`** — **Korean address search + column filters** (US-D01/D02, Q671-Q676) · **`/transport/service-fees`** — **NHIS #44 parity + UXD-159 a11y** (Q678·Q683)
 
 > **로그아웃 방법**: AppShell **로그아웃** 버튼 · **브라우저 탭 종료** · 다른 탭에서 로그아웃 시 refresh token 폐기.
 
@@ -174,7 +186,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 |------|----------|:--------------:|:----------:|:-------:|:----------:|
 | **운영** | 대시보드·지점·이용자·**급여계획 통보 (G38)**·**모니터링 자가진단 (G30)**·**운영주기별 워크플로 (G34)**·**정기욕구평가 현황 (G40b)**·보호자·**직원** | ✅ | ✅ | ✅(G38·G30·G34·G40b·보호자 제외) | 포털만 |
 
-> **직원 모듈 in-page 네비 (`StaffContextNav`, UXD-86·UXD-92)**: **직원 관리** · **연차휴가 (US-R03e G-STAFF-ANNUAL-LEAVE)** · **출퇴근 (8-4 G-STAFF-WORK-ATTENDANCE)** · **교육일지 (8-7 G41)** · **보수교육 (8-7-1)** · **건강검진 (8-10)** · **직원현황 리포트 (8-12 US-R02)** · **고충상담 (8-8 G42)** · **선임 업무수행일지** 9화면 상단에서 **서브 탭**으로 전환합니다 (Q639·Q612·Q321·Q294·Q296·Q305·Q308·`02cbd05`). **연차휴가**는 **`/staff/annual-leaves`** · **출퇴근**은 **`/staff/attendance`** · **교육일지**는 **`/staff/training-logs`** · **직원현황 리포트**는 **`/staff/reports/status`** · **고충상담**은 **`/staff/grievance-counselings`** · **건강검진**은 **`/staff/health-checkups`** · **보수교육**은 **`/staff/training`** · **선임 업무수행일지**는 **`/staff/lead-caregiver-log`** 로 직접 진입합니다.
+> **직원 모듈 in-page 네비 (`StaffContextNav`, UXD-86·UXD-92)**: **직원 관리** · **연차휴가 (US-R03e G-STAFF-ANNUAL-LEAVE)** · **근무일정표 (8-2 G-STAFF-MONTHLY-SCHEDULE-FE-WIRE, Q717)** · **출퇴근 (8-4 G-STAFF-WORK-ATTENDANCE)** · **교육일지 (8-7 G41)** · **보수교육 (8-7-1)** · **건강검진 (8-10)** · **직원현황 리포트 (8-12 US-R02)** · **고충상담 (8-8 G42)** · **선임 업무수행일지** 10화면 상단에서 **서브 탭**으로 전환합니다 (Q639·Q612·Q321·Q294·Q296·Q305·Q308·Q717·`02cbd05`). **연차휴가**는 **`/staff/annual-leaves`** · **근무일정표**는 **`/staff/schedules`** · **출퇴근**은 **`/staff/attendance`** · **교육일지**는 **`/staff/training-logs`** · **직원현황 리포트**는 **`/staff/reports/status`** · **고충상담**은 **`/staff/grievance-counselings`** · **건강검진**은 **`/staff/health-checkups`** · **보수교육**은 **`/staff/training`** · **선임 업무수행일지**는 **`/staff/lead-caregiver-log`** 로 직접 진입합니다.
 | **출석** | 현황·**탑승(차량)**·**현장 출석**·수기 체크인·통계·QR | ✅ | ✅ | ✅ | — |
 | **기록** | 건강·**요양급여 제공기록 (L02_M01)**·**집중배설관찰 (L02_M02)**·**목욕 일정·제공현황 (L02_M03)**·**통합식사도움기록 (L02_M13)**·**간호급여 제공기록 (L02_M14)**·**병의원 진료내역 리포트 (L03_M09)**·**투약제공 리포트 (L03_M10)**·**요양급여 특이사항 (L02_M15)**·**식사 선호도 조사 (L02_M16)**·**신체제재 기록 (L02_M07)**·**요양/식사/화장실 리포트 (L02_M04)**·**목욕도움 리포트 (L02_M05)**·**체위변경 리포트 (L02_M06)**·**집중배설 리포트 (L02_M17)**·**수급자별 급여제공 리포트 (L02_M11)**·**급여제공 서비스 집계 (L02_M12)**·**식사**·**프로그램**·**기능회복훈련**·**급여제공결과 평가**·**방문 일정**·**사례관리 회의록**·**통합 바이탈 (L03_M11)**·**체중 기록 (L03_M14)**·**구강상태 점검 (L03_M13)**·**응급상황 기록 (L03_M04)**·**욕창 케어 (US-O03)**·**선임 업무수행일지** | ✅ | ✅ | ✅(사례관리 제외) | — |
 | **청구** | 청구·NHIS·입금·미납·**간편결제**·CMS·**본인부담 통계 (G26)**·수가표·**청구/입금/수납/환불 대장**·**현금영수증 발급목록 (G-CASH-RECEIPT-LOG)** | ✅ | ✅ | — | — |
@@ -182,7 +194,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 > **청구 리포트 in-page 네비 (`BillingReportsContextNav`, G26, Q379·Q380·Q530)**: **청구대장** · **입금대장** · **수납대장** · **현금영수증 발급목록** · **환불대장** · **본인부담 통계** · **간편계산기** 7화면 상단에서 **서브 탭**으로 전환합니다 — SideNav **청구 → 본인부담 통계**(`/billing/reports/statistics`)·**현금영수증 발급목록**(`/billing/cash-receipts`)와 병행합니다.
 | **이동** | **배차·이동경로** · **수칙·계약 (G15)** · **차량 관리** · **이동서비스비 청구** · **외출 관리** · **외출 리포트** (`/transport`, `/transport/compliance`, `/transport/vehicles`, `/transport/service-fees`, `/transport/outings`, `/reports/client-outings`) | ✅ | ✅ | ✅ | — |
 
-> **기록 모듈 in-page 네비 (`RecordsContextNav`, UXD-75)**: 건강·식사·프로그램·**기능회복훈련**·**급여제공결과 평가**·방문 일정·**사례관리 회의록**·**선임 업무수행일지** 8화면 상단에서 **서브 탭**으로 전환합니다 — SideNav **기록** 그룹과 병행 (Q248·Q262·Q263·Q276·**Q284**). **선임 업무수행일지**는 **`/staff/lead-caregiver-log`** 로 직접 진입합니다 (G34, `6d6b426`).
+> **기록 모듈 in-page 네비 (`RecordsContextNav`, UXD-75)**: 건강·식사·프로그램·**프로그램 리포트 (5-7~5-10)**·**기능회복훈련**·**급여제공결과 평가**·방문 일정·**사례관리 회의록**·**선임 업무수행일지** 9화면 상단에서 **서브 탭**으로 전환합니다 — SideNav **기록** 그룹과 병행 (Q248·Q262·Q263·Q276·**Q284**·**Q714**). **선임 업무수행일지**는 **`/staff/lead-caregiver-log`** 로 직접 진입합니다 (G34, `6d6b426`).
 
 > **L02↔L03 care nav (`careLeafParity.js`·`navConfig.js`, BNK-262/273, Q378·Q386)**: SideNav **기록** 그룹에서 케어포 demo **2-x ↔ 3-x** parity를 지원합니다.
 >
@@ -504,9 +516,17 @@ Must 운영에서 누락이 잦은 두 화면은 아래 순서로 점검하면 �
 >
 > **직원교육 미충족 위젯 (G41, Q461, `9e91e6a`)**: 동일 역할에 **「직원교육 미충족」** StatCard가 표시됩니다. **노인인권 상·하반기**·**운영규정 연간**·**G41b 3종 연간**·**신규 7일 오리엔테이션**·**FAQ21808 주제** 중 미충족 항목 수를 **`countStaffTrainingComplianceGaps`** 로 집계합니다. 1건 이상이면 **danger** 톤. 클릭 **`/staff/training-logs`**. 대시보드 스냅샷에 **`staffTrainingComplianceGapCount`** 가 없으면 **`GET /staff/training-logs/compliance`** 로 **병렬 폴백**합니다. API 실패 시 **「일부 준수지표를 불러오지 못했습니다: 직원교육 준수」** warning Alert.
 >
-> **근로재계약 미충족 위젯 (FAQ21823, US-R03, Q540, FE `f31c346`)**: **`hq_admin`·`branch_admin`** 에 **「근로재계약 미충족」** StatCard가 표시됩니다. **재직·입사 진행** 직원 중 **재계약 기한 초과** 또는 **근로계약서 서명일 미등록** 인원 수를 **`countEmploymentContractRenewalGaps`** 로 집계합니다. 1명 이상이면 **warning** 톤. 클릭 시 **`/staff`** — §5-3 **FAQ21823 목록 집계**에서 상세를 확인합니다. 대시보드 스냅샷에 **`employmentContractRenewalGapCount`** 가 없으면 **`GET /users`**(페이지 0·size 200)로 **병렬 폴백**합니다. API 실패 시 **「일부 준수지표를 불러오지 못했습니다: 근로재계약 준수」** warning Alert.
+> **근로재계약·보관 위젯 3종 (FAQ21823, US-R03, Q540·Q685, BE `9aaefa0`·FE `596658a`/`d682562`)**: **`hq_admin`·`branch_admin`** 에 아래 StatCard가 표시됩니다. 집계는 **`GET /api/v1/staff/employment-contracts/compliance`** 가 **단일 소스**이며, 대시보드 스냅샷(`GET /dashboard/branch`·`/dashboard/hq`)에 동일 필드가 있으면 **compliance API 호출을 생략**합니다. 스냅샷·API 모두 실패 시 **「일부 준수지표를 불러오지 못했습니다: 근로재계약 준수」** warning Alert.
 >
-> **근로(재)계약 갱신 알림 목록 (FAQ21823, US-R03, Q547·Q552, FE `033b319`/`bd6e1c2`)**: StatCard 아래 **`EmploymentContractRenewalAlertsPanel`** (**「근로(재)계약 갱신 알림 (FAQ 21823)」**) 이 **1건 이상** 있을 때 표시됩니다. **`computeEmploymentContractRenewalDueAlerts`** 로 **기한 초과(overdue)** · **서명일 미등록(missing)** · **기한 임박(due-soon, 30일 이내)** 직원을 나열합니다. **재계약 기한**은 **`<time dateTime>`** 으로 읽히며, 직원명 링크는 **`/staff/{userId}?tab=lifecycle`** (**`aria-label`「{이름} 근로(재)계약 lifecycle 보기」**, Q552). Badge 톤: **기한 초과=warning** · **서명일 미등록=danger** · **기한 임박=info**.
+> | StatCard | API 필드 | 의미 |
+> |----------|----------|------|
+> | **「근로재계약 미충족」** | **`renewalGapCount`** / **`employmentContractRenewalGapCount`** | 재계약 **기한 초과** + **서명일 미등록** 합산 |
+> | **「근로계약 보관 임박」** | **`retentionExpiringCount`** / **`employmentContractRetentionExpiringCount`** | 서명일 **+3년** 보관 기한 **90일 이내** |
+> | **「근로계약 보관 만료」** | **`retentionExpiredCount`** / **`employmentContractRetentionExpiredCount`** | **3년 보관 기한 경과** — 폐기 전 백업·감사 추적 |
+>
+> 1건 이상이면 **warning** 또는 **danger** 톤. 클릭 시 **`/staff`** — §5-3 FAQ21823 목록 집계에서 상세를 확인합니다.
+>
+> **근로(재)계약 갱신 알림 목록 (FAQ21823, US-R03, Q547·Q552, FE `033b319`/`bd6e1c2`)**: StatCard 아래 **`EmploymentContractRenewalAlertsPanel`** (**「근로(재)계약 갱신 알림 (FAQ 21823)」**) 이 **1건 이상** 있을 때 표시됩니다. **`renewalAlerts[]`** (compliance API)로 **기한 초과(overdue)** · **서명일 미등록(missing)** · **기한 임박(due-soon, 30일 이내)** 직원을 나열합니다. **재계약 기한**은 **`<time dateTime>`** 으로 읽히며, 직원명 링크는 **`/staff/{userId}?tab=lifecycle`** (**`aria-label`「{이름} 근로(재)계약 lifecycle 보기」**, Q552). Badge 톤: **기한 초과=warning** · **서명일 미등록=danger** · **기한 임박=info**.
 >
 > **현금영수증 미발급·발급 지연 위젯 (G-CASH-RECEIPT-LOG, FAQ21716, Q532, BE `fe54af8`·FE `221458e`)**: **`hq_admin`·`branch_admin`** 에 **「현금영수증 미발급」**·**「현금영수증 발급 지연」** StatCard 2종이 표시됩니다. **`PAID`+`CASH`** 수납 중 **NTS 발급 이력이 없는 건수**(`cashReceiptPendingCount`)와 **수납일+7일 SLA 초과** 건수(`cashReceiptOverdueCount`)를 집계합니다. 미발급 1건 이상 **warning** · 지연 1건 이상 **danger** 톤. 클릭 시 **`/billing/cash-receipts`** — §5-10-1에서 발급 등록을 진행합니다. 통합 대시보드(`/dashboard/hq`)는 **전 지점 합산**입니다.
 >
@@ -598,7 +618,7 @@ SideNav **운영 → 「정기욕구평가 현황 (G40b)」** 또는 대시보�
 >
 > **API 갭** — 등록·수정 **기본 정보** 본문(`birthdate`·`primaryGuardian` 등) 불일치 시 저장 실패 — FAQ **Q151**·Swagger 우회.
 
-> **수정** — 상세 **「수정」**·**「기본정보 수정」** → **`/clients/:id/edit`**. **`caregiver`** 도 **기본정보·주소·배차** 수정 가능 (Q675). 보호자 변경은 상세·`POST /clients/{id}/guardians`. **주소**는 **`KoreanAddressFields`** 로 재검색·상세주소 수정 — **`addressSearch`·`addressDetail` prefill** (Q671·Q676).
+> **수정** — 상세 **「수정」**·**「기본정보 수정」** → **`/clients/:id/edit`**. **`caregiver`** 도 **기본정보·주소·배차** 수정 가능 (Q675). **상세주소만** 변경할 때는 도로명을 다시 검색하지 않아도 **`PATCH` body에 `addressDetail`만** 보내면 저장됩니다 (Q677). 보호자 변경은 상세·`POST /clients/{id}/guardians`. **주소**는 **`KoreanAddressFields`** 로 재검색·상세주소 수정 — **`addressSearch`·`addressDetail` prefill** (Q671·Q676).
 
 #### 급여계획 통보 모니터링 (`/clients/care-plan-notifications`, G38, BNK-106)
 
@@ -907,7 +927,7 @@ SideNav **청구** 그룹 — **`PaymentPage`·`OverduePage`·`EasyPayPage`·`Cm
 | 미납 관리 (`/billing/overdue`) | **`BillingContextNav`** + **`OverdueSummaryBar`** + 보호자 **`MaskedPhone`** + **「안내 발송」** + **「관리」** + **`Pagination`** | **`GET /billing/overdue?page&size&q=` Fixed** (Q197) · **`POST /claims/{id}/notify` Fixed** (Q196) · **독려·조정 Modal** (Q602, `0420e6b`) |
 | **간편결제 (7-5)** (`/billing/easy-pay`) | **`BillingContextNav`** + **`EasyPayPage`** — **`EasyPayPanel`** — 청구 선택·**CARD/카카오페이**·보호자(선택)·**전월 미입금 가드 배너** | **`POST/GET /billing/easy-pay/claims/{id}/payment` Fixed** (BNK-189, Q326·Q327) |
 | 청구 상세 (`/billing/claims/:id`) | **`BillingDetailPage`** — **`DRAFT`** 시 **「공단 명세 비교」** (`BillingNhisComparisonPanel`, Q264) · **`CONFIRMED`/`PAID`** 시 **「명세 4채널 발송」** (`BillingStatementDispatchPanel`, Q364) · **「명세 인쇄 산출물 (7-1)」** (`BillingStatementPrintPanel`, Q475) · **「보호자 발송」** · **「납부확인서 발송」** (`PAID`+`paidAt`+`paymentMethod`, Q221·Q249) · **「환불 처리」** (`PAID`+`paidAt`, Q261) | **`GET/POST …/statement-dispatches`** · **`PATCH …/statement-dispatches/{id}`** · **`GET …/statement-pdf`** (명세 PDF) · **`GET /claims/{id}/nhis-comparison`** · **`POST /claims/{id}/notify`** · **`POST /claims/{id}/payment-receipt-notify`** · **`POST /claims/{id}/refunds`** |
-| CMS 자동이체 (`/billing/cms`) | **`CmsPage`** — **등록 관리**·**CMS 출금** 2탭 · **`CmsEnrollmentForm`·`CmsEnrollmentTable`·`CmsDebitPanel`** | **`POST/GET/DELETE /billing/cms/enrollments*`** · **`POST/GET /billing/cms/claims/{id}/debit`** |
+| CMS 자동이체 (`/billing/cms`) | **`CmsPage`** — **`CmsPaymentMethodCatalogPanel`** · **등록 관리**·**CMS 출금**·**가상계좌·다계좌** 3탭 · **`CmsEnrollmentForm`·`CmsEnrollmentTable`·`CmsDebitPanel`·`CmsCollectionPanel`** | **`GET /billing/cms/payment-method-catalog`** · **`POST/GET/DELETE /billing/cms/enrollments*`** · **`POST/GET /billing/cms/claims/{id}/debit`** · **`POST/GET …/virtual-account`** · **`POST/GET …/multi-account-settlement`** |
 
 **입금 처리 절차 (UI, FE `dd72ff8`)**
 
@@ -977,8 +997,8 @@ SideNav **청구** 그룹 — **`PaymentPage`·`OverduePage`·`EasyPayPage`·`Cm
 **보호자 명세 발송 (G2)**
 
 1. **청구·정산** 목록에서 청구서를 클릭해 **상세**(`/billing/claims/:id`)로 이동합니다.
-2. 상태가 **확정** 또는 **수납완료**이면 **「보호자 발송」**을 누릅니다.
-3. 성공 시 **「보호자 N건에게 명세 안내를 발송했습니다.」** 메시지가 표시됩니다 — **N은 연결 이용자 수**(동일 이용자 중복 라인은 1회만 발송, Q219). stub 환경은 `notifications` 이력만 생성 — **email·kakao·sms** 채널별, Q147·Q204).
+2. 상태가 **확정** 또는 **수납완료**이면 **「본인부담 안내 알림톡 발송」**을 누릅니다 (ezCare **`message_kind=11`**, FE `5a6d42c`).
+3. 성공 시 **「보호자 N건에게 명세 안내를 발송했습니다. (본인부담 안내)」** 형태의 메시지가 표시됩니다 — **N은 연결 이용자 수**(동일 이용자 중복 라인은 1회만 발송, Q219). 괄호 안 한글명은 **ezCare 템플릿 라벨**입니다 (Q699, `c7d0982`). stub 환경은 `notifications` 이력만 생성 — **email·kakao·sms** 채널별, Q147·Q204). API 응답에 **`templateCode`·`ezcareMessageKind=11`** 이 포함됩니다 (Q692, BE `ef8bb4e`·`2f83563`).
 4. **미납 관리**(`/billing/overdue`)에서도 행별 **「안내 발송」**으로 동일 API를 호출합니다.
 
 > **조용한 시간대 (Q329, FE `111f056` / BE `39f5f4e`)**: **22:00~08:00 (Asia/Seoul)** 에는 **「보호자 발송」·「안내 발송」·「납부확인서 발송」** 버튼이 **비활성**됩니다. UI 우회 호출을 하더라도 BE가 수동 청구 발송 API(`POST /billing/claims/{id}/notify`, `POST /billing/claims/{id}/statement-dispatches`)를 **`422 BUSINESS_RULE`** 로 차단합니다(메시지: `현재 22:00~08:00 (Asia/Seoul) 조용한 시간대입니다...`). **긴급(`EMERGENCY`)** 알림(예: 낙상)은 **우회**됩니다 (Q147). **08:00 이후** 재시도하세요.
@@ -997,20 +1017,21 @@ SideNav **청구** 그룹 — **`/billing/cms`** + 상단 **`BillingContextNav`*
 
 | 화면 | UI | 백엔드 |
 |------|-----|--------|
-| CMS 자동이체 (`/billing/cms`) | **`CmsPage`** — **등록 관리**·**CMS 출금** 2탭 · **`CmsEnrollmentForm`·`CmsEnrollmentTable`·`CmsDebitPanel`** | **`POST/GET/DELETE /billing/cms/enrollments*`** · **`POST/GET /billing/cms/claims/{id}/debit`** |
+| CMS 자동이체 (`/billing/cms`) | **`CmsPage`** — **`CmsPaymentMethodCatalogPanel`** · **등록 관리**·**CMS 출금**·**가상계좌·다계좌** 3탭 · **`CmsEnrollmentForm`·`CmsEnrollmentTable`·`CmsDebitPanel`·`CmsCollectionPanel`** | **`GET /billing/cms/payment-method-catalog`** · **`POST/GET/DELETE /billing/cms/enrollments*`** · **`POST/GET /billing/cms/claims/{id}/debit`** · **`POST/GET …/virtual-account`** · **`POST/GET …/multi-account-settlement`** |
 
-**CMS 등록 절차 (UI, FE `9a6fdb6`·`d361833`·`3ece965`)**
+**CMS 등록 절차 (UI, FE `9a6fdb6`·`d361833`·`3ece965`·`4875937`)**
 
 1. **청구 → CMS 자동이체**로 이동합니다.
-2. 상단 **`BranchScopeNotice`** 에서 **활성 지점**을 확인합니다 — 다지점 `hq_admin` 은 **BranchSwitcher**로 지점을 먼저 선택하세요 (Q638).
-3. **등록 관리** 탭에서 **이용자**를 선택합니다.
+2. **등록 관리** 탭 상단 **「CMS 결제수단 카탈로그」** 에서 엔젤 5-method 수납 방식·ogada 화면 매핑을 확인합니다 — **수납 구현 5/5** · **모든 수납 수단 지원** (자동이체·카드·현금영수증·가상계좌·다계좌 정산) (Q701). catalog API가 빈 **`entries[]`** 를 반환하면 **「카탈로그 정보 없음」** EmptyState가 표시됩니다 (`9a583ec`, **Q708**) — **등록·출금·가상계좌 탭은 정상 사용** 가능합니다.
+3. 상단 **`BranchScopeNotice`** 에서 **활성 지점**을 확인합니다 — 다지점 `hq_admin` 은 **BranchSwitcher**로 지점을 먼저 선택하세요 (Q638).
+4. **등록 관리** 탭에서 **이용자**를 선택합니다.
    - **이용자를 선택하지 않으면** 활성 지점의 **CMS 등록 roster**가 표시됩니다 (케어포 7-4, Q637). **등록 상태 FilterChips**로 **전체·활성·해지·대기**를 전환합니다 (기본 **활성**, Q638).
    - roster 모드에서는 **이용자**·**예금주**·**은행**·**계좌**·**상태**·**등록일시** 열이 표시됩니다. **이용자명**을 클릭하면 해당 이용자 등록 화면(`?clientId=`)으로 이동합니다 (Q638). **ACTIVE** 행에서 **해지**할 수 있습니다.
    - **`/billing/payments`** 목록의 **「미등록 · CMS 등록」** 링크로도 동일 화면에 진입할 수 있습니다 (Q638).
-4. **연결 보호자**·**예금주명**·**은행**·**계좌번호 끝 4자리**를 입력합니다 — ogada는 **전체 계좌번호를 저장하지 않습니다** (Q207).
-5. **CMS 자동이체 등록**을 클릭합니다. 성공 시 하단 **등록 이력**에 **등록완료** Badge가 표시됩니다.
-6. 보호자 **서면 자동이체 동의서**는 센터가 별도 보관합니다.
-7. 동일 이용자에 **다른 보호자**로 이미 **ACTIVE** 등록이 있으면 **거부**됩니다 — 기존 등록을 **해지**한 뒤 재등록하세요 (Q299).
+5. **연결 보호자**·**예금주명**·**은행**·**계좌번호 끝 4자리**를 입력합니다 — ogada는 **전체 계좌번호를 저장하지 않습니다** (Q207).
+6. **CMS 자동이체 등록**을 클릭합니다. 성공 시 하단 **등록 이력**에 **등록완료** Badge가 표시됩니다.
+7. 보호자 **서면 자동이체 동의서**는 센터가 별도 보관합니다.
+8. 동일 이용자에 **다른 보호자**로 이미 **ACTIVE** 등록이 있으면 **거부**됩니다 — 기존 등록을 **해지**한 뒤 재등록하세요 (Q299).
 
 > **활성 지점 없음**: **「활성 지점을 먼저 선택한 후 CMS roster를 조회하세요.」** (Q638)  
 > **Swagger — CMS 목록 (roster)**: **`GET /api/v1/billing/cms/enrollments?branchId=<uuid>&status=ACTIVE|CANCELLED|PENDING`** — **`clientId` 생략** 시 지점 roster · 응답에 **`clientName`** 포함 (Q637·Q638). **`status`** 는 서버에서 trim·uppercase 정규화 — **` pending `** 도 허용 (Q662).
@@ -1036,6 +1057,36 @@ SideNav **청구** 그룹 — **`/billing/cms`** + 상단 **`BillingContextNav`*
 
 > **stub 환경 (Q208)**: **`FCMS_PROVIDER=stub`** — 실제 은행 출금 없이 **`StubFcmsClient`** 가 즉시 성공합니다. 패널 상단에 stub 안내가 표시됩니다. 효성 FCMS **실연동**은 운영 배포 시 `FCMS_*` 설정 후 활성화 (DEPLOYMENT §4-6).
 
+#### 4-6-3. CMS 가상계좌 (G2b, Q704, FE `9aeedfe`)
+
+**개요**: 확정 청구에 대해 보호자가 은행 가상계좌로 입금할 수 있도록 발급·관리합니다.
+
+1. **청구 → CMS 자동이체** → **「가상계좌·다계좌」** 탭으로 이동합니다.
+2. **확정(`CONFIRMED`)** 청구를 **청구서** 드롭다운에서 선택합니다 — 이용자·청구월·본인부담금 요약이 표시됩니다.
+3. **이전 미납**이 있으면 **`ClaimGenerationGuardBanner`** 가 표시되고 발급 버튼이 **비활성**됩니다 — **`/billing/payments`** 에서 선행 입금 후 재시도 (Q614).
+4. **입금 은행**을 선택하고 **「가상계좌 발급」**을 클릭합니다.
+5. 성공 시 **「가상계좌 발급이 접수되었습니다.」** Alert · **가상계좌 상태** 섹션에 **상태 Badge**·**금액**·**가상계좌 번호**·**요청·완료일시**가 표시됩니다.
+6. 보호자 입금 시 FCMS 콜백으로 청구가 **`PAID`** 로 전환됩니다.
+
+> **stub (Q704)**: **`FCMS_PROVIDER=stub`** 환경에서도 가상계좌 발급 응답 시뮬레이션이 동작합니다 (실제 입금 없음). 패널 footnote에 stub 안내가 표시됩니다.
+
+#### 4-6-4. CMS 다계좌 정산 (G2b, Q704, FE `9aeedfe`)
+
+**개요**: 복수 계좌로 입금을 분리·관리해야 할 때 **다계좌 정산**을 요청합니다.
+
+1. **「가상계좌·다계좌」** 탭에서 **확정 청구**를 선택합니다.
+2. **「다계좌 정산 요청」**을 클릭합니다.
+3. 성공 시 **「다계좌 정산이 접수되었습니다.」** Alert · **다계좌 정산 상태** 섹션에 **분할 계좌 수**·**상태**·**금액**·**요청·완료일시**가 표시됩니다.
+4. 효성 FCMS 정산 완료 시 청구가 **`PAID`** 로 자동 전환됩니다.
+
+> **선행입금 가드**: 가상계좌와 동일 — **7-4 CMS 수납 제한** 배너 확인 (Q614).
+
+> **Swagger (API 직접 호출 시)**
+> - **`POST /api/v1/billing/cms/claims/{claimId}/virtual-account`** — body `{ "bankCode": "004" }` · 선행: 청구 **CONFIRMED**
+> - **`GET /api/v1/billing/cms/claims/{claimId}/virtual-account`**
+> - **`POST /api/v1/billing/cms/claims/{claimId}/multi-account-settlement`**
+> - **`GET /api/v1/billing/cms/claims/{claimId}/multi-account-settlement`**
+
 > **Swagger — CMS 등록**
 
 ```json
@@ -1059,18 +1110,19 @@ SideNav **청구** 그룹 — **`/billing/easy-pay`** + 상단 **`BillingContext
 
 | 화면 | UI | 백엔드 |
 |------|-----|--------|
-| 간편결제 (`/billing/easy-pay`) | **`EasyPayPage`** — **`EasyPayPanel`** — 확정 청구 선택 · **카드(CARD)·카카오페이(KAKAO_PAY)** · 연결 보호자(선택) · 결제 상태 **`StatusBadge`** · **필드 단위 검증·접근성**(US-L06) | **`POST/GET /billing/easy-pay/claims/{claimId}/payment`** · **alias `/claims/{claimId}`** (`438f5c7`·`8f9ad0c`·`9a4ab8e`) |
+| 간편결제 (`/billing/easy-pay`) | **`EasyPayPage`** — **`EasyPayProviderCatalogPanel`**(PG catalog) · **`EasyPayPanel`** — 확정 청구 선택 · **카드(CARD)·카카오페이(KAKAO_PAY)** · 연결 보호자(선택) · 결제 상태 **`StatusBadge`** · **필드 단위 검증·접근성**(US-L06) | **`POST/GET /billing/easy-pay/claims/{claimId}/payment`** · **`GET …/provider-catalog`** (Q709, BE `56831fc`·FE `5914b2f`) · **alias `/claims/{claimId}`** |
 
-**간편결제 절차 (UI, FE `c9baca2`·`51f2505`)**
+**간편결제 절차 (UI, FE `c9baca2`·`51f2505`·`5914b2f`)**
 
 1. **청구 → 간편결제**(`/billing/easy-pay`)로 이동합니다.
-2. **청구서** 드롭다운에서 **확정(`CONFIRMED`)**·미수납 청구를 선택합니다 — 이용자명·청구월·본인부담금이 표시됩니다. 미선택 시 **청구서** 필드 아래에 오류가 표시됩니다 (Q328).
-3. 청구 선택 시 **선행입금 사전 점검**이 실행됩니다. **전월 미입금(`CONFIRMED`)** 또는 **G33 미정산**이 있으면 **`ClaimGenerationGuardBanner`**(「간편결제 제한 (7-5 선행입금 가드)」)가 표시되고 **「간편결제 요청」** 버튼이 **비활성**됩니다 (Q327). **입금 처리**·**미납 관리** 링크로 선행 수납을 완료하세요 — 월별 청구 생성 가드(Q310)와 **동일 규칙**입니다.
-4. **결제 수단** — **카드** 또는 **카카오페이**를 선택합니다. 미선택 시 **결제 수단** 필드 아래에 오류가 표시됩니다.
-5. (선택) **보호자** — 연결 보호자를 지정할 수 있습니다. 미지정 시 `guardianUserId` 없이 요청합니다.
-6. **간편결제 요청**을 클릭합니다. 버튼은 stub 안내·가드 배너와 **`aria-describedby`** 로 연결되어 있습니다 (스크린 리더 사용자용, Q328).
-7. **성공(`SUCCEEDED`)** 시 청구 **`PAID`**·`payment_method=EASY_PAY` · 보호자 **`BILLING_PAYMENT_RECEIVED`** 알림(J03). 하단 **「결제 상태」** 섹션에 PG 주문 ID·**요청·완료 시각**(`<time>` 요소)이 표시됩니다.
-8. **실패(`FAILED`)** 시 — **실패 사유**가 표시됩니다. 청구는 **CONFIRMED 유지**이며 **재요청**할 수 있습니다 (이전 **`FAILED`** 건은 덮어씁니다).
+2. 상단 **「간편결제 PG 제공자 카탈로그」** 에서 **카드·카카오페이** 지원·**결제 구현 상태**·**PG 모드**(스텁/실 PG)를 확인합니다 (Q709).
+3. **청구서** 드롭다운에서 **확정(`CONFIRMED`)**·미수납 청구를 선택합니다 — 이용자명·청구월·본인부담금이 표시됩니다. 미선택 시 **청구서** 필드 아래에 오류가 표시됩니다 (Q328).
+4. 청구 선택 시 **선행입금 사전 점검**이 실행됩니다. **전월 미입금(`CONFIRMED`)** 또는 **G33 미정산**이 있으면 **`ClaimGenerationGuardBanner`**(「간편결제 제한 (7-5 선행입금 가드)」)가 표시되고 **「간편결제 요청」** 버튼이 **비활성**됩니다 (Q327). **입금 처리**·**미납 관리** 링크로 선행 수납을 완료하세요 — 월별 청구 생성 가드(Q310)와 **동일 규칙**입니다.
+5. **결제 수단** — **카드** 또는 **카카오페이**를 선택합니다. 미선택 시 **결제 수단** 필드 아래에 오류가 표시됩니다.
+6. (선택) **보호자** — 연결 보호자를 지정할 수 있습니다. 미지정 시 `guardianUserId` 없이 요청합니다.
+7. **간편결제 요청**을 클릭합니다. 버튼은 stub 안내·가드 배너와 **`aria-describedby`** 로 연결되어 있습니다 (스크린 리더 사용자용, Q328).
+8. **성공(`SUCCEEDED`)** 시 청구 **`PAID`**·`payment_method=EASY_PAY` · 보호자 **`BILLING_PAYMENT_RECEIVED`** 알림(J03). 하단 **「결제 상태」** 섹션에 PG 주문 ID·**요청·완료 시각**(`<time>` 요소)이 표시됩니다.
+9. **실패(`FAILED`)** 시 — **실패 사유**가 표시됩니다. 청구는 **CONFIRMED 유지**이며 **재요청**할 수 있습니다 (이전 **`FAILED`** 건은 덮어씁니다).
 
 > **stub 환경 (Q326)**: 현재 PG 연동은 **`StubEasyPayProvider`** — 실제 카드·카카오페이 결제창 없이 **즉시 성공** 시뮬레이션합니다. 패널 상단 footnote(`role="note"`)에 stub 안내가 표시됩니다. **live PG 벤더 연동**은 P2 후속(DEPLOYMENT §4-6-1).
 
@@ -1091,6 +1143,8 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 > **provider 값**: API는 **`CARD`·`KAKAO_PAY`** 를 기대합니다. **허용 alias** — 대소문자·공백·하이픈(`" card "`, `"kakao pay"`, `"kakao-pay"`, `"KAKAOPAY"`, 전각 `ｋａｋａｏ pay`) → canonical 저장. **거부** — `card1`·`kakao/pay`·`카카오페이` 등 (Q328, `0cd8ea8`·`3dd94e6`·`745a2f6`·`82054f1`). FE **`normalizeEasyPayProvider`** 가 전송 전 정규화·검증합니다. **SUCCEEDED 재조회** 시 DB 비정규 provider **자동 정규화**됩니다 (QA-B93).
 
 > **Swagger — 간편결제 상태**: **`GET /api/v1/billing/easy-pay/claims/{claimId}/payment`** — 선행: 청구 **CONFIRMED** · **단일 이용자** · **copay > 0** · **전월 미입금 없음**.
+
+> **Swagger — PG 수단 catalog (Q709, BE `56831fc`·FE `5914b2f`)**: **`GET /api/v1/billing/easy-pay/provider-catalog`** — **`entries[]`** CARD·KAKAO_PAY · **`pgMode`** stub/live · **`hq_admin`·`branch_admin` only**. UI **`EasyPayProviderCatalogPanel`** 이 동일 catalog를 표시합니다 — **결제 수단 선택**은 하단 **`EasyPayPanel`** 에서 수행합니다.
 
 > **Swagger 우회 — 본인부담금 수납 (US-L01, BE Fixed)**
 
@@ -1154,9 +1208,27 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 | `DISCREPANCY` | 이용자는 매칭되었으나 일수·금액 불일치 | 출석·등급 재점검 · **「비교」** Modal |
 | `PENDING_REVIEW` | 공단 처리 **대기·보류** (G7, Q181) | 심사 완료 후 **엑셀 재import** — 수동 연결 불가 |
 
+#### NHIS 자동 매칭 판별 (Q706·Q707)
+
+대사 표·방문 공단 비교에서 **행 상태**와 **Badge**를 함께 보면 다음 조치가 정해집니다.
+
+| 대사 상태 | **「대체 매칭됨 — 검증 필요」** Badge | 매칭 경로 | 현장 조치 |
+|----------|:--------------------------------------:|----------|----------|
+| `MATCHED` | 없음 | LTC cert 등 **일반 자동 매칭** | 금액·일수만 확인 |
+| `MATCHED` | **있음** (`altKeyMatched=true`) | **마스킹 이름 alt-key** (Q706) | **이름·생년월일 1회 spot-check** (Q707) 후 진행 |
+| `UNMATCHED` | — | 자동 매칭 실패 | §4-6-1 **수동 연결** · ogada **생년월일·주민등록** 등록 확인 |
+| `DISCREPANCY` | 있을 수 있음 | 매칭됐으나 금액·일수 차이 | **「비교」** Modal · 출석·등급 재점검 |
+| `PENDING_REVIEW` | — | 공단 **대기·보류** | **재import** 대기 — 수동 연결 **불가** (Q181) |
+
+> **동명·동월생 2명 이상**: alt-key는 **의도적으로 매칭하지 않음** → **`UNMATCHED`** 유지 · 수동 연결 필수 (Q706).
+
 #### 4-6-1. NHIS `UNMATCHED` 수동 매칭
 
-자동 매칭(인정번호·이름·생년월일)에 실패한 공단 엑셀 행을 이용자와 연결하는 절차입니다.
+자동 매칭(인정번호 → **마스킹 이름+생년월일 alt-key** → 생년월일+주민 앞 6자리)에 실패한 공단 엑셀 행을 이용자와 연결하는 절차입니다 (Q706).
+
+> **2026 공단 이름 마스킹 alt-key (G-NHIS-MASKED-NAME-FALLBACK, BE `37416ac`, Q706)**: 롱텀 export에서 **수급자명이 `홍*동` 형태**로 마스킹되면 LTC cert만으로는 매칭이 실패할 수 있습니다. ogada는 **동일 지점·동일 생년월일**에서 **이름 첫·끝 글자가 일치하는 이용자가 1명**이면 자동 **`MATCHED`** 합니다. 대사 표 **「보류 사유」** 에 「**공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨**」이 표시됩니다. **동명·동월생 2명 이상**이면 alt-key는 **의도적으로 매칭하지 않으며** 아래 수동 연결을 사용하세요. **방문일정 NHIS import**에도 동일 규칙이 적용됩니다.
+
+> **대체 매칭 audit Badge (G-NHIS-ALT-KEY-AUDIT-BADGE, BE `4963535`·FE `5bb84a6`, Q707)**: alt-key로 자동 매칭된 행은 API **`altKeyMatched: true`** 와 함께 대사 표·방문 공단 비교 표 **수급자명 옆**에 **「대체 매칭됨 — 검증 필요」** warning Badge가 표시됩니다. 마우스를 올리거나 스크린리더로 **alt-key 매칭 사유**를 확인한 뒤, **ogada 등록 이름·생년월일**이 맞는지 **반드시 1회 확인**하세요. Badge가 없으면 LTC cert 등 **일반 매칭**입니다.
 
 > **UI (FE `c30aaac`·`42f48e1`·`190b2b1`·`1220bfb`·`2b6024a`·`0abf164`, BE `9a97a1c`·`970c7af`·`8f208e4`·`2edbdc4`)**: `/billing/imports/nhis` — 월·파일 업로드 + **`NhisImportGuidePanel`**(Chrome/Edge·4단계 + **`GET /billing/imports/nhis/guidance` 실서버 안내**, QA-B24, Q133) + **`NhisScheduleConfirmLockGuide`** + **`FeeScheduleYearGuardBanner`**(US-G04, Q260) + **`fetchFeeScheduleYearCoverageApi`** 서버 사전 점검 + 배치 목록·대사 (`ReconciliationPage`). guidance API 일시 실패 시 **기존 실서버 안내 문구 유지** (`Promise.allSettled`).
 
@@ -1178,7 +1250,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
    - **미매칭 행** 드롭다운에서 대상 행 선택.
    - **후보 이용자 검색**(`SearchInput`)에 이름·인정번호 입력 → `GET …/candidates?q=` 후보 목록 갱신.
    - **매칭 이용자** 선택 후 **수동 연결** — `PATCH …/rows/{rowId}/match`.
-   - **`NhisReconciliationTable`** — `MATCHED`/`DISCREPANCY`/`UNMATCHED`/**`PENDING_REVIEW`** **상태 Badge**·**「보류 사유」**열(`matchStatusReason`)·차이 금액·일수 강조 (UXD-39·UXD-58, G7 Q181). **`PENDING_REVIEW`** 행은 안내 문구만 표시하고 수동 연결·비교 버튼이 없습니다.
+   - **`NhisReconciliationTable`** — `MATCHED`/`DISCREPANCY`/`UNMATCHED`/**`PENDING_REVIEW`** **상태 Badge**·**「보류 사유」**열(`matchStatusReason`)·**`altKeyMatched` 시 「대체 매칭됨 — 검증 필요」 Badge**(Q707)·차이 금액·일수 강조 (UXD-39·UXD-58, G7 Q181). **`PENDING_REVIEW`** 행은 안내 문구만 표시하고 수동 연결·비교 버튼이 없습니다.
 8. **`DISCREPANCY`**(일수·금액 불일치) 행은 **「비교」** 버튼을 눌러 **`DiscrepancyComparePanel`** Modal을 엽니다 (US-G06, FE `fd4e8f3`).
    - 공단(NHIS) vs ogada **청구액·이용일수**를 표로 비교합니다. 차이는 **「공단 초과/부족」** 텍스트 Badge와 함께 표시됩니다 (색상만으로 구분하지 않음).
    - `claimId`가 연결된 행은 Modal 하단 **「ogada 청구 라인 상세 보기」** 링크로 `/billing/claims/{claimId}` 이동이 가능합니다.
@@ -1237,7 +1309,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 이지케어 **worker-b100 tab01 「연차휴가 현황」** 과 동일하게, 지점 직원의 **연차 부여·월별 사용·잔여일**을 한 화면에서 관리합니다 (`3902dba`/`41fb84f`).
 
 1. **운영 → 직원 관리** 상단 **`StaffContextNav`** 에서 **「연차휴가 (US-R03e)」** 를 선택하거나 **`/staff/annual-leaves`** 로 직접 이동합니다. 페이지 제목(AppShell `<h1>`)은 **「직원 연차휴가」** 입니다 (`STAFF_ANNUAL_LEAVE_PAGE_TITLE`, Q643).
-2. **`StaffContextNav`** 아래 **`BranchScopeNotice`** 로 **조회 지점**을 확인합니다 — 다지점 `hq_admin`·`branch_admin` 은 **지점 선택기** 전환 후 **「조회」** 하세요 (Q657, `949e9bf`).
+2. **`StaffContextNav`** 아래 **`BranchScopeNotice`** 로 **조회 지점**을 확인합니다 — 다지점 `hq_admin`·`branch_admin` 은 **지점 선택기** 전환 후 **「조회」** 하세요 (Q657, `949e9bf`). API **`branchName`이 공백**이어도 **지점 ID 기반 fallback** 으로 **「조회 지점」** 이 유지됩니다 (Q711, `58f3858`).
 3. 표 상단 **「연차휴가 관련 화면」** 패널을 확인합니다 (`StaffAnnualLeaveRelatedSurfacesPanel` → **`RelatedSurfacesPanel`**, Q650·Q657). **「이 화면은 월별 사용일 스냅샷입니다…」** 안내 아래 **「출퇴근 기록」** 링크로 **`/staff/attendance`** · **「연차·유급휴일 대장」** 링크로 **`/staff/leave-ledger`** 로 이동할 수 있습니다 (Q666).
 4. **기준 연도**를 선택하고 **「조회」** 를 누릅니다 (전년·당해·익년 선택 가능).
 5. 표에서 **직원명·소속·입사일·1~12월 사용·연차 부여·사용 합계·잔여·비고**를 확인합니다. 상단 StatCard에 **대상 직원·사용 합계·잔여 합계**가 표시됩니다.
@@ -1416,14 +1488,18 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 
 #### 4-7-3. 보호자 서류 이메일 발송 (G2)
 
-케어포·엔젤 패리티 **보호자 서류 5종** 중 **노인학대예방 지침·가정통신문·급여제공기록지**는 이용자 상세 **`GuardianDocumentNotifyPanel`** 에서 발송합니다 (FE `d1149a5`, FAQ **Q217·Q222·Q517 Fixed**). **납부확인서**는 청구 상세 **「납부확인서 발송」**(Q221).
+케어포·엔젤 패리티 **보호자 서류 5종** 중 **노인학대예방 지침·가정통신문·급여제공기록지·수급자 월간 일정표**는 이용자 상세 **`GuardianDocumentNotifyPanel`** 에서 발송합니다 (FE `5a6d42c`, FAQ **Q217·Q222·Q517·Q687·Q692**). **납부확인서**는 청구 상세 **「납부확인서 발송」**(Q221).
 
-| 서류 | 화면 | API | 템플릿 |
-|------|------|-----|--------|
-| 급여제공기록지 | **「급여제공」탭 조회** (Q243) · **기본정보 탭 발송** (Q517) | `GET …/care-provision-records/{yearMonth}` · `POST …/notifications/care-provision-record` | `CARE_PROVISION_RECORD` |
-| 가정통신문 | **`GuardianDocumentNotifyPanel`** — 문서 유형 **가정통신문** | `POST /api/v1/clients/{clientId}/notifications/home-newsletter` | `HOME_NEWSLETTER` |
-| **노인학대예방 및 대응지침** | **`GuardianDocumentNotifyPanel`** — 문서 유형 **노인학대예방** | `POST /api/v1/clients/{clientId}/notifications/elder-abuse-prevention-guideline` | `ELDER_ABUSE_PREVENTION_GUIDELINE` |
-| **납부확인서** | **`/billing/claims/:id`** — **「납부확인서 발송」** (`PAID`+`paidAt`) | `POST /api/v1/billing/claims/{claimId}/payment-receipt-notify` | `BILLING_PAYMENT_RECEIVED` |
+| 서류 | 화면 | API | 템플릿 · ezCare |
+|------|------|-----|-----------------|
+| **급여제공내역 (알림톡)** | **`GuardianDocumentNotifyPanel`** — 문서 유형 **급여제공내역** | `POST …/notifications/care-provision-record` | `CARE_PROVISION_RECORD` · **`message_kind=13`** |
+| 가정통신문 | **`GuardianDocumentNotifyPanel`** — 문서 유형 **가정통신문** | `POST …/notifications/home-newsletter` | `HOME_NEWSLETTER` · *(catalog 6종 외)* |
+| **직원인권보호 (알림톡)** | **`GuardianDocumentNotifyPanel`** — 문서 유형 **직원인권보호** | `POST …/notifications/elder-abuse-prevention-guideline` | `ELDER_ABUSE_PREVENTION_GUIDELINE` · **`message_kind=19`** |
+| **수급자 월간 일정표 (알림톡)** | **`GuardianDocumentNotifyPanel`** — 문서 유형 **일정표-수급자** | `POST …/notifications/client-monthly-schedule` | `CLIENT_MONTHLY_SCHEDULE` · **`message_kind=12`** |
+| **직원 월간 일정표 (알림톡)** | **직원 상세** **`StaffNotificationDispatchPanel`** — **일정표-직원** (§4-7-4) | `POST …/staff/notifications/staff-monthly-schedule` | `STAFF_MONTHLY_SCHEDULE` · **`message_kind=21`** |
+| **직원 접속키 (SMS)** | **직원 상세** **`StaffNotificationDispatchPanel`** — **접속키 발송** (§4-7-4) | `POST …/staff/notifications/staff-access-key` | `STAFF_ACCESS_KEY` · **`message_kind=1`** |
+| **본인부담 안내 (알림톡)** | **`/billing/claims/:id`** — **「본인부담 안내 알림톡 발송」** | `POST …/billing/claims/{id}/notify` | `BILLING_STATEMENT` · **`message_kind=11`** |
+| **납부확인서** | **`/billing/claims/:id`** — **「납부확인서 발송」** (`PAID`+`paidAt`) | `POST …/payment-receipt-notify` | `BILLING_PAYMENT_RECEIVED` · *(catalog 6종 외)* |
 
 **공통 요청 본문**
 
@@ -1437,14 +1513,50 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 **보호자 서류 발송 절차 (UI, FE `d1149a5`)**
 
 1. **이용자 상세**(`/clients/:id`) → **기본정보** 탭 하단 **「보호자 서류 발송 (G2)」** 카드를 엽니다.
-2. **문서 유형**을 선택합니다 — **노인학대예방 및 대응지침** · **가정통신문** · **급여제공기록지**.
+2. **문서 유형**을 선택합니다 — **직원인권보호** · **가정통신문** · **급여제공내역** · **일정표-수급자**(알림톡, `5a6d42c`).
 3. **대상 연월**(`MonthInput`)을 선택하고, 필요 시 **요약**(최대 500자)을 입력합니다.
-   - **급여제공기록지** — 요약을 비우면 서버가 **이동서비스 요약**을 본문에 자동 병합합니다 (Q216).
-4. 유형별 발송 버튼(**지침 이메일 발송** / **가정통신문 이메일 발송** / **급여제공기록지 이메일 발송**)을 클릭합니다 — 성공 시 초록색 안내가 표시됩니다.
+   - **급여제공내역** — 요약을 비우면 서버가 **이동서비스 요약**을 본문에 자동 병합합니다 (Q216).
+4. 유형별 발송 버튼(**인권보호 알림톡 발송** / **가정통신문 이메일 발송** / **급여제공내역 알림톡 발송** / **일정표 알림톡 발송**)을 클릭합니다 — 성공 시 초록색 안내가 표시됩니다. 메시지 끝 **괄호 안 한글명**(예: **「(직원인권보호)」**)으로 발송 템플릿을 확인할 수 있습니다 (Q699, `c7d0982`). API 응답 **`ezcareMessageKind`** 는 Swagger·테스트 전용입니다 (Q692). 버튼·도움말 한글 명칭은 ezCare **`mobile-sendW`** 와 동일합니다 (Q697, `3f686e3`).
+
+> **접근성 (UXD-161, `4adeb1c`)**: **문서 유형·연월·요약** 필드는 **`.ds-form-stack`** 간격으로 구분됩니다 — 키보드·스크린리더 사용자는 섹션 제목과 입력란을 순서대로 탐색하세요 (FAQ Q696).
 5. **22:00~08:00 (KST) 조용한 시간대**에는 발송이 **서버에서 거부**됩니다 — **「현재 22:00~08:00 (Asia/Seoul) 조용한 시간대입니다…」** danger Alert가 표시되면 **08:00 이후 재시도**하세요 (Q329·Q539, BE `71b2d32`). 청구 화면과 달리 **버튼은 비활성화되지 않으며**, API 오류 메시지로 안내됩니다.
 6. 보호자 **`channelEmail=true`** · **`users.email`** 등록이 필요합니다 (Q204). 동의는 **`notify_daily_care`** preference를 재사용합니다 (Q222).
 
+> **수급자 월간 일정표 알림톡 (Q687, BE `8631d1e`·FE `9c25d44`)**: ezCare **「일정표-수급자」**(`CLIENT_MONTHLY_SCHEDULE`)는 **`GuardianDocumentNotifyPanel`** 문서 유형 **일정표-수급자**에서 발송합니다. 해당 월 **확정 PLAN 방문일정**이 1건 이상 있어야 하며, **`branch_admin`·`social_worker`** 권한이 필요합니다.
+
+> **직원 월간 일정표·접속키 SMS (Q689·Q691, BE `b9d0599`/`1d5d441`·FE `9c25d44`)**: §4-7-4 **직원 상세** **`StaffNotificationDispatchPanel`** 참고.
+
 > **본인부담금 명세**는 청구 상세 **「보호자 발송」**(`POST /billing/claims/{id}/notify`, Q196)으로 발송합니다. **납부확인서**는 **「납부확인서 발송」**(Q221) 또는 수납 시 **자동** `BILLING_PAYMENT_RECEIVED`(J03)입니다.
+
+---
+
+#### 4-7-4. 직원 알림톡·SMS 발송 (G-SMS-TEMPLATE-CATALOG, Q689·Q691)
+
+이지케어 **`mobile-sendW`** **`message_kind=1`(접속키)**·**`21`(일정표-직원)** 을 **직원 상세** 화면에서 발송합니다 (`StaffNotificationDispatchPanel`, FE `9c25d44`).
+
+**접근**: **운영 → 직원 관리** → 직원명 클릭 → **기본정보** 탭 하단 **「알림톡·SMS 발송 (G-SMS)」** 카드 (`hq_admin`·`branch_admin`·`social_worker`).
+
+| 발송 종류 | 채널 | 선행 조건 |
+|----------|------|----------|
+| **일정표-직원** | ALIMTALK | 해당 월 **대상 직원 배정 확정 PLAN 방문** 1건 이상 |
+| **접속키 발송** | SMS | **활성 직원** · **휴대전화 번호 등록** · **직원 역할 계정** |
+
+**발송 절차**
+
+1. **발송 종류**를 선택합니다 — **일정표-직원** 또는 **접속키 발송**.
+2. **일정표-직원** 선택 시 **대상 연월**·선택 **요약**(최대 500자)을 입력합니다.
+3. **일정표 알림톡 발송** 또는 **접속키 SMS 발송** 버튼을 클릭합니다.
+4. 성공 시 초록색 안내가 표시됩니다 — **「(접속키 발송)」**·**「(일정표-직원)」** 등 **괄호 한글명**으로 템플릿을 확인할 수 있습니다 (Q699). **접속키 값은 화면에 표시되지 않습니다** — 직원 휴대폰 SMS로만 전달됩니다.
+
+> **접근성 (UXD-161, `4adeb1c`)**: **발송 종류·연월·요약** 필드 간 **수직 간격**이 보장됩니다 (FAQ Q696).
+5. **22:00~08:00 (KST) 조용한 시간대**에는 서버가 발송을 거부할 수 있습니다 — danger Alert 확인 후 **08:00 이후 재시도** (Q329).
+
+| API | 요청 본문 |
+|-----|----------|
+| `POST /api/v1/staff/notifications/staff-monthly-schedule` | `{ "staffUserId": "uuid", "yearMonth": "2026-06", "summary": "선택" }` |
+| `POST /api/v1/staff/notifications/staff-access-key` | `{ "staffUserId": "uuid" }` |
+
+> **readiness**: **`/organization/settings`** 또는 **대시보드** **`NotificationChannelReadinessPanel`** 에서 **발송 구현 6/6**·**발송 대기** 항목을 확인하세요. **`dispatchReady=true`** 는 templateId 설정뿐 아니라 **SMS/알림톡 채널 자격**(Solapi key·secret·sender·PF ID)까지 충족해야 합니다 (FAQ Q686·Q690·`fed6f1f`).
 
 ---
 
@@ -1549,6 +1661,29 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 > **DB**: **Flyway V169** `staff_work_attendance` — `(organization_id, branch_id, user_id, work_date)` UNIQUE.  
 > 관련: FAQ **Q612·Q589·Q651·Q652·Q653** · USER_MANUAL §4-7-0b · ADMIN_GUIDE §6-2-20
 
+#### 직원 근무일정표 (8-2, G-STAFF-MONTHLY-SCHEDULE-FE-WIRE, Q717)
+
+케어포 **PDF 8-2 「근무일정표」** — **확정 방문 계획 일정(PLAN)** 을 **직원별·월별**로 모아 확인하고 **월간 일정표 알림톡(G-SMS message_kind=21)** 을 발송합니다. **일정 등록·수정**은 **방문 일정**(`/visits`)에서 진행합니다.
+
+1. SideNav **운영 → 직원**(`/staff`) 진입 후 **`StaffContextNav`「근무일정표 (8-2)」** 또는 URL **`/staff/schedules`** 로 이동합니다 (`33944e4`).
+2. **`BranchScopeNotice`** 로 **조회 지점**을 확인합니다 — 다지점 관리자는 **지점 선택기** 전환 후 조회하세요.
+3. **대상 연월**(`MonthInput`)과 **직원**(`Select`)을 선택하고 **「다시 조회」** 를 누릅니다 — **`fetchVisitsApi`** 가 **`GET /api/v1/visits?from=&to=&branchId=&scheduleKind=PLAN`** 을 호출합니다.
+4. StatCard에서 **근무일 수·확정 일정·전체 일정** 건수를 확인합니다 — StatCard 영역은 **`role="group" aria-label="근무 요약"`** 으로 스크린리더에 묶여 있습니다 (UXD-165, `bee97b9`).
+5. 테이블에서 **일자·이용자·시간·종류·상태 Badge** 를 확인합니다 — PLAN 일정이 없으면 **EmptyState** 가 표시됩니다.
+6. 하단 **「월간 일정표 알림톡 (G-SMS)」** 카드의 **`StaffNotificationDispatchPanel`** 에서 **알림톡 발송**을 진행합니다 — **`notifyStaffMonthlyScheduleApi`** (직원 상세 발송 패널과 동일 API, Q689·Q691).
+
+> **접근성 (UXD-165)**: **「다시 조회」** 버튼은 데이터 로드 중 **`aria-busy={true}`** 로 busy 상태를 알립니다 (WCAG 4.1.3).
+
+| 권한 | 조회 | 알림톡 발송 |
+|------|:----:|:-----------:|
+| `hq_admin` | ✅ | ✅ |
+| `branch_admin` | ✅ | ✅ |
+| `social_worker` | ✅ | ✅ |
+| `caregiver` | ❌ | ❌ |
+
+> **데이터 주의**: 이 화면은 **조회·발송 전용**입니다. 일정 변경은 **`/visits`** 에서 PLAN 일정을 등록·수정하세요.  
+> 관련: FAQ **Q717·Q689·Q691** · ADMIN_GUIDE §6-2-21 · DEPLOYMENT §1-4
+
 #### 직원 lifecycle — 입사~퇴사 (US-R03, FAQ21825·FAQ21806, Q290·Q298)
 
 이지케어 FAQ21825 **4단계**(입사·신고·근로활동·퇴사)를 **체크리스트**로 관리합니다. **입사/퇴사 서류 스캔**은 **「HR 파일함」** 탭에서 업로드할 수 있습니다(Q298). 체크리스트 **수동 체크**와 **파일 업로드**는 동일 checklist id로 연동됩니다.
@@ -1609,24 +1744,31 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 
 > **다지점 `hq_admin`**: **지점 선택기**로 활성 지점을 바꾼 뒤 패널이 해당 지점 직원만 집계합니다. API: `GET /api/v1/staff/hr-files/onboarding-compliance?branchId=`
 
-#### FAQ21823 근로(재)계약·임금협의 집계 (`/staff` 목록, Q540)
+#### FAQ21823 근로(재)계약·임금협의 집계 (`/staff` 목록, Q540·Q685)
 
-이지케어 FAQ21823 **연간 임금협의·근로(재)계약** 준수를 **직원 목록 상단**에서 먼저 확인합니다. **별도 BE API 없음** — 로드된 직원 목록과 **`contractSignedAt`** 기준 **FE 계산**입니다 (`10585b9`).
+이지케어 FAQ21823 **연간 임금협의·근로(재)계약** 준수를 **직원 목록 상단**에서 먼저 확인합니다. **`GET /api/v1/staff/employment-contracts/compliance`** (`fetchStaffEmploymentContractComplianceApi`)가 **단일 집계 소스**입니다 (`9aaefa0`/`596658a`).
 
 1. **`/staff`** 직원 관리 화면을 엽니다.
 2. 목록 **상단** **`StaffEmploymentContractRenewalSummaryPanel`** (**「근로(재)계약·임금협의 (FAQ 21823)」**) 을 확인합니다.
-3. **StatCard** — **재직·입사 대상** · **재계약 기한 초과** · **서명일 미등록** · **예정** 인원 수를 봅니다.
-4. **기한 초과** 또는 **서명일 미등록**이 1명 이상이면 warning Alert — 「직원 상세 lifecycle 탭에서 재계약 안내와 HR 파일함을 확인하세요.」
-5. **확인 필요 목록** 표 — **이름** 링크 → **`/staff/{userId}`** (스크린리더: **「{이름} 근로(재)계약 lifecycle 보기」**, Q544) · **서명일** · **다음 재계약** · **상태 Badge**(기한 초과·서명일 미등록)를 확인합니다.
-6. **대시보드**(`/dashboard`·`/dashboard/hq`) **「근로재계약 미충족」** StatCard(`f31c346`)를 클릭해도 같은 **`/staff`** 화면으로 이동합니다.
+3. **StatCard 5종** — **재계약 미충족** · **재계약 기한 초과** · **서명일 미등록** · **보관 기한 임박(90일)** · **보관 기한 만료** 인원 수를 봅니다.
+4. **재계약 미충족**·**보관 임박/만료**가 1명 이상이면 warning Alert — 「직원 상세 lifecycle 탭에서 재계약 안내와 HR 파일함을 확인하세요.」
+5. **확인 필요 목록** 표 — **`renewalAlerts[]`** 중 **overdue·missing** 직원 — **이름** 링크 → **`/staff/{userId}?tab=lifecycle`** · **서명일** · **다음 재계약** · **상태 Badge**를 확인합니다.
+6. **대시보드**(`/dashboard`·`/dashboard/hq`) **「근로재계약 미충족」·「근로계약 보관 임박」·「근로계약 보관 만료」** StatCard를 클릭해도 같은 **`/staff`** 화면으로 이동합니다.
 
 | 상태 Badge | 의미 |
 |-----------|------|
 | **기한 초과** | 서명일 **+1년** 재계약·임금협의 기한 경과 |
 | **서명일 미등록** | **`contractSignedAt`** 없음 — lifecycle **「입사~퇴사」** 탭에서 입력 |
-| **예정** | 서명일 등록·재계약 기한 **이내** (목록에는 미표시, StatCard **예정**만 집계) |
+| **예정** | 서명일 등록·재계약 기한 **이내** (due-soon, 30일 이내 — 대시보드 Alert 패널) |
 
-> **퇴사 완료** 직원은 집계에서 **제외**됩니다. **급여명세·G-Payroll 연동**은 P2 잔여입니다.
+| API 필드 | 의미 |
+|----------|------|
+| **`renewalGapCount`** | 재계약 **기한 초과 + 서명일 미등록** 합산 |
+| **`retentionExpiringCount`** | **3년 보관** 기한 **90일 이내** (`EMPLOYMENT_CONTRACT_RETENTION_WARNING_DAYS=90`) |
+| **`retentionExpiredCount`** | **3년 보관 기한 경과** |
+| **`renewalAlerts[]`** | `staffId`·`staffName`·`status`(overdue/missing/due_soon)·`renewalDueDate`·`contractSignedAt`·`daysUntilDue` |
+
+> **퇴사 완료** 직원은 집계에서 **제외**됩니다. API 실패 시 패널에 **danger Alert**가 표시됩니다. **급여명세·G-Payroll 연동**은 P2 잔여입니다.
 
 #### FAQ21823 근로(재)계약·임금협의 안내 (`/staff/{userId}`, Q540)
 
@@ -1637,11 +1779,14 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 3. **근로계약서 서명일** — **「입사~퇴사 lifecycle」** 패널의 **`DateInput`** 과 동일 값이 표시됩니다. 미등록 시 **「서명일 등록 후 1년」** 안내가 나옵니다.
 4. **다음 재계약·임금협의** — 서명일 **+1년** 날짜가 자동 계산됩니다. 기한이 지나면 **warning Alert**·**「기한 초과」** Badge가 표시됩니다.
 5. **보관 기한(3년)** — 서명일 기준 **+3년** 날짜가 표시됩니다 (근로계약서·임금협의 기록 보관).
+   - **90일 이내** — **warning Alert** — 「**N일 남았습니다**」·HR 파일함 스캔본·서면 보관 점검 (Q685, `a43bcb7`).
+   - **기한 경과** — **info Alert** — 법정 보관 기한 만료 · **폐기 전 백업·감사 추적** 확인 (Q685).
 6. **2026 최저임금 참고** — **10,320원/시간** 안내값이 표시됩니다 (법정 최저임금 변경 시 앱 업데이트 필요).
 7. **「근로계약서 파일함」** 버튼 — **「HR 파일함」** 탭으로 이동하며 문서 유형 **`employment-contract`** 가 미리 선택됩니다. 기한 초과 시 버튼이 **warning Alert** 와 **`aria-describedby`** 로 연결됩니다 (Q544, UXD-141).
 8. **필수 기재 5항 (FAQ 21823)** — **임금·소정근로시간·휴일·연차유급휴가·근로조건** ordered checklist를 확인합니다 (Q546, `1b6d2b1`).
 9. **연간 갱신 절차** — **① 임금협의 → ② 근로(재)계약서 작성 → ③ 보관·등록(HR 파일함)** 3단계 안내를 따릅니다 (Q546).
-10. **「근로계약서 서식 보기」** — Modal에서 **출력·필기용 서식**을 확인합니다. 작성 후 **기관·근로자 각 1부** 보관하고 스캔본을 HR 파일함에 등록하세요 (Q546). **BE PDF 자동 생성 ❌** (P2).
+10. **「근로계약서 서식 보기」** — Modal에서 **출력·필기용 서식**을 확인합니다. **「서식 인쇄」** 로 브라우저 인쇄(`window.print`) — 작성 후 **기관·근로자 각 1부** 보관하고 스캔본을 HR 파일함에 등록하세요 (Q546·Q685). **BE PDF 자동 생성 ❌** (P2).
+11. **접근성 (UXD-160, Q688)**: **보관 D-day Alert**·**재계약 목록**·**「재계약 완료 기록」** 버튼은 스크린리더가 **상태·직원 맥락**을 읽을 수 있도록 **`role="alert"`/`role="status"`·표 caption** 이 연결됩니다. **「재계약 완료 기록」** 버튼의 accessible name은 **화면 표시와 동일**합니다 (QA-B289, `068049b`).
 11. **「재계약 완료 기록」** (`branch_admin`·`social_worker`만, Q547, `033b319`) — 연간 임금협의·근로(재)계약 완료 후 **재계약 서명일**을 저장합니다.
     1. **「재계약 완료 기록」** 버튼을 누릅니다.
     2. Modal에서 **재계약 서명일**(`DateInput`)을 입력합니다.
@@ -1655,13 +1800,14 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 | **법적 안내** | 임금·소정근로·휴일·연차·근로조건 **5항** 포함 근로계약서 · 기관·근로자 **각 1부** 보관 |
 | **필수 5항 checklist (Q546)** | **`EMPLOYMENT_CONTRACT_REQUIRED_CLAUSES`** — 각 항목별 상세 설명 |
 | **연간 갱신 workflow (Q546)** | **`EMPLOYMENT_CONTRACT_RENEWAL_WORKFLOW`** — 임금협의·작성·보관 3단계 |
-| **서식 Modal (Q546)** | **`EMPLOYMENT_CONTRACT_RENEWAL_TEMPLATE`** — 2026 최저임금 placeholder 포함 |
+| **서식 Modal (Q546·Q685)** | **`EMPLOYMENT_CONTRACT_RENEWAL_TEMPLATE`** — 2026 최저임금 placeholder · **「서식 인쇄」** (`@media print`) |
+| **보관 D-day (Q685)** | **`EMPLOYMENT_CONTRACT_RETENTION_WARNING_DAYS=90`** · **`staff-employment-contract-retention-alert`** |
 | **스캔 보관** | HR 파일함 **「근로계약서」** (`employment-contract`) 에 PDF·이미지 업로드 |
 | **입사 완료 가드** | **서명일** 또는 checklist **「근로계약서」** 체크 없이 **입사 완료** 저장 불가 (기존 Q290) |
 | **재계약 기록 (Q547)** | **「재계약 완료 기록」** Modal — **`updateUserApi`** — 서명일+checklist 동시 저장 · **대시보드 due-date Alert** (30일 임박 포함) |
 | **P2 잔여** | **전자서명 workflow** · **서식 PDF 자동 생성** · **G-Payroll 급여명세 연동** |
 
-> 관련: Q290 · Q298 · Q300 · Q546 · Q547 · FAQ21825 · FAQ21806
+> 관련: Q290 · Q298 · Q300 · Q546 · Q547 · **Q685** · FAQ21825 · FAQ21806
 
 #### 직원 HR 파일함 (US-R03, FAQ21806·FAQ21825, Q298)
 
@@ -1882,7 +2028,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 3. 토글이 **즉시 서버에 저장**됩니다 — `GET /api/v1/organization` 로드 · `PATCH /api/v1/organization/settings` 저장 (FE `f749311`, Q116 **Fixed**).
 4. **「청구·정산」** 카드 — **`BillingSettingsPanel`** 에서 **청구명세서 생성 기준**을 선택하고 **저장**합니다 (FE `ac23529`, Q224). 레거시 DB 값 **`ATTENDANCE`/`NHIS`** 는 화면에서 **`ATTENDANCE_SCHEDULE`/`NHIS_IMPORT`** 로 자동 정규화됩니다.
 5. (기존 ERP 이관 시) 같은 카드 하단 **「청구시작 기준금액 (G33)」** 에서 **도입 전 미납·선납**을 **1회만** 설정합니다 (§5-5-1, Q269).
-6. **「알림 채널 준비 상태」** 카드 — **`NotificationChannelReadinessPanel`** (Q318, `6b1258c`·`76b5ff0`) — Solapi·SMTP·필수 알림톡 템플릿 **설정 여부**와 **라이브 발송 준비**·**조용한 시간대(22:00~08:00 KST)** 를 확인합니다. 각 설정 표 앞에 **섹션 제목(`<h3>`)** 이 표시되어 시각적으로 구분됩니다(UXD-97). API 키 등 **비밀값은 표시되지 않습니다**. **`branch_admin`** 은 **대시보드**(`/dashboard`) 하단 동일 패널에서도 확인할 수 있습니다.
+6. **「알림 채널 준비 상태」** 카드 — **`NotificationChannelReadinessPanel`** (Q318·Q686~Q692·Q697, `6b1258c`·`15f2195`·`c04968c`·`3f686e3`) — Solapi·SMTP·필수 알림톡 템플릿 **설정 여부**와 **라이브 발송 준비**·**조용한 시간대(22:00~08:00 KST)** 를 확인합니다. **「이지케어 메시지 종류 (템플릿 카탈로그)」** 섹션에서 **발송 구현 N종 중 M종 발송 가능 · 발송 대기 Y종** 요약 Alert(`role="status"`, UXD-160)와 6종 표(**발송 구현·Solapi 설정·발송 가능**)를 확인합니다 — 한글 라벨은 ezCare **본인부담 안내·급여제공내역·직원인권보호** 등과 동일 (Q697). **발송 대기** warning Alert로 **templateId 미설정** 또는 **채널 자격 미충족**(예: PF ID 없음) 항목을 확인하세요 (Q690·`fed6f1f`). API 키 등 **비밀값은 표시되지 않습니다**. **`branch_admin`** 은 **대시보드**(`/dashboard`) 하단 동일 패널에서도 확인할 수 있습니다.
 7. **「배차·카카오 API」** 카드 (Q554, FE `138ac26`/`ba74bb5`) — **`TransportKakaoApiStatusPanel`** — **`GET /api/v1/transport/kakao-api-status`** — REST 키 설정 여부 · **Geocode·Directions** 연결 상태 Badge · **「오늘 API 사용량 (ogada 백엔드 기준)」** 테이블 — **좌표(Geocode)·경로(단일)·경로(다중경유)** 각 **오늘 사용·일일 한도·잔여 추정** · **한도 초과** warning · [Kakao Developers 콘솔](https://developers.kakao.com/console/app) 링크 **(새 탭)** (UXD-143). **브라우저 JS SDK·콘솔 Quota와 다를 수 있음** 안내가 표시됩니다.
 
 | 설정 | 기본값 | 설명 |
@@ -2208,7 +2354,9 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 **케어포 2-5** 대응 — 확정 배차를 기반으로 **이동서비스비 청구 기록**을 생성·확정합니다 (BE `88d4c59` + FE `9dfef92`, BNK-25).
 
 1. **`TransportContextNav`** → **「이동서비스비 청구」** (또는 `/transport/service-fees` 직접 접속).
-2. **조회 기간**(기본: 당월)을 설정하고 **거리구간 수가표**(RU_1 830원 ~ RU_4 6,230원)와 **「수급자별 1일 1회」** 안내를 확인합니다.
+2. **조회 기간**(기본: 당월)을 설정하고 **거리구간 수가표**(RU_1 830원 ~ RU_4 6,230원)를 확인합니다. 수가표 아래 **「이동서비스비 NHIS 기준 규칙」** 은 **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** catalog를 **`label`·`description`** 으로 표시합니다 — API 실패 시 **static fallback** 4항(러-1~러-4·편도 50%·1일 1회·별지 제22호 일지)이 유지됩니다 (Q678·**Q703·Q710**, BE `e4f83af` · FE `5914b2f`). **catalog API 직접 호출**은 **`hq_admin`·`branch_admin`** 만 허용 — **`social_worker` 403** (Q703).
+
+> **동적 catalog (Q710)**: **`TransportParityRulesPanel`** 이 **`/transport/service-fees`** 에 mount되어 BE **`rules[].description`** 을 **`descriptionKo`** 로 정규화해 표시합니다. **스크린리더** 사용자는 표 **caption**·행별 **「확정」·「편도/왕복 전환」** 버튼 **`aria-label`** 로 이용자·일자 맥락을 확인할 수 있습니다 (Q683, UXD-159).
 3. **`TransportForm18GuidePanel`** — 공단 **별지 제18·19·20호** 선행 절차 5단계·**3분리 신청 유형**·**등록상태 4단**을 읽습니다 (Q237).
 4. **「확정 배차에서 생성」** — 기간 내 **CONFIRMED** 운행의 정차별 **DRAFT** 기록을 만듭니다.
 5. 각 행에서 **거리구간(RU_1~RU_4)** · **왕복/편도**(편도 = 50%)를 조정하고 **「확정」**으로 `CONFIRMED` 상태로 바꿉니다. **다지점** `hq_admin`은 **BranchSwitcher** 작업 지점과 기록 지점이 일치해야 수정됩니다 (Q247).
@@ -2221,6 +2369,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 | API | 용도 |
 |-----|------|
 | `GET /api/v1/transport/service-fee-rates` | BNK-25 거리구간 수가 catalog |
+| `GET /api/v1/transport/service-fee-parity-rules` | NHIS #44 **4-rule** 안내 문구 catalog · **`rules[].code`·`label`·`description`** · **`oneWayRatio=0.5`** · **`hq_admin`/`branch_admin` only** (Q703, `e4f83af`) |
 | `GET /api/v1/transport/service-fees?fromDate=&toDate=` | 기간별 청구 기록 |
 | `POST /api/v1/transport/service-fees/generate` | 확정 배차 기반 일괄 생성 |
 | `PATCH /api/v1/transport/service-fees/{recordId}` | DRAFT 수정·확정 |
@@ -2229,33 +2378,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 >
 > **갭**: 공단 포털 **자동 제출 없음** · 거리구간 **자동 산출 미연동**(기본 RU_1).
 
-#### 5-8-2. 이동서비스비 청구 (`/transport/service-fees`, G16, Q239)
-
-**케어포 2-5** 대응 — 확정 배차를 기반으로 **이동서비스비 청구 기록**을 생성·확정합니다 (BE `88d4c59` + FE `9dfef92`, BNK-25).
-
-1. **`TransportContextNav`** → **「이동서비스비 청구」** (또는 `/transport/service-fees` 직접 접속).
-2. **조회 기간**(기본: 당월)을 설정하고 **거리구간 수가표**(RU_1 830원 ~ RU_4 6,230원)와 **「수급자별 1일 1회」** 안내를 확인합니다.
-3. **`TransportForm18GuidePanel`** — 공단 **별지 제18·19·20호** 선행 절차 5단계·**3분리 신청 유형**·**등록상태 4단**을 읽습니다 (Q237).
-4. **「확정 배차에서 생성」** — 기간 내 **CONFIRMED** 운행의 정차별 **DRAFT** 기록을 만듭니다.
-5. 각 행에서 **거리구간(RU_1~RU_4)** · **왕복/편도**(편도 = 50%)를 조정하고 **「확정」**으로 `CONFIRMED` 상태로 바꿉니다. **다지점** `hq_admin`은 **BranchSwitcher** 작업 지점과 기록 지점이 일치해야 수정됩니다 (Q247).
-
-| 스킵 사유 (UI 표시) | 의미 |
-|---------------------|------|
-| 동일 일자 기록 존재 | **1일 1회** 규칙 — UNIQUE `(client, serviceDate)` |
-| 계약서 미서명 | 보호자·기관 **이중 서명** 필수 (Q231) |
-
-| API | 용도 |
-|-----|------|
-| `GET /api/v1/transport/service-fee-rates` | BNK-25 거리구간 수가 catalog |
-| `GET /api/v1/transport/service-fees?fromDate=&toDate=` | 기간별 청구 기록 |
-| `POST /api/v1/transport/service-fees/generate` | 확정 배차 기반 일괄 생성 |
-| `PATCH /api/v1/transport/service-fees/{recordId}` | DRAFT 수정·확정 |
-
-> **권한**: **`caregiver`** 는 `/transport/*` 라우트는 열리지만 **API 403** — 화면이 오류로 보일 수 있습니다 (Q239). **`hq_admin`·`branch_admin`·`social_worker`** 만 생성·확정하세요.
->
-> **갭**: 공단 포털 **자동 제출 없음** · 거리구간 **자동 산출 미연동**(기본 RU_1).
-
-#### 5-8-3. 외출 관리·리포트 (G15 2-1-1·2-9, Q240)
+#### 5-8-2. 외출 관리·리포트 (G15 2-1-1·2-9, Q240)
 
 이용자 **외출 예정·출발·복귀**를 기록하고, 월간 **외출 리포트**를 출력합니다 (BE `7dfcc9e` + FE `a0dcfc0`).
 
@@ -2355,6 +2478,39 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 | `POST /api/v1/programs/schedule` | 일정 등록 (`hq_admin`·`branch_admin`) — `programType`에 **`COGNITIVE`** 지정 가능 |
 | `GET /api/v1/programs/participations?date=YYYY-MM-DD` | 참여 기록 목록 — **`skipReason`** 포함 |
 | `POST /api/v1/programs/participations` | 참여·만족도·**`skipReason`** 등록·갱신 |
+
+#### 프로그램 리포트 (5-7~5-10, G-REPORT-DENSITY, US-P02, BE `49fe2e7` · FE `15a3b7f` · carry `337453d`·`650801b`)
+
+케어포 func **모듈5** 리포트 leaf **5-7~5-10**을 **기간별 집계·인쇄**하는 화면입니다. **`/programs`** 의 **당일 입력**과 구분됩니다 (FAQ **Q714**·**Q715**).
+
+1. **`RecordsContextNav`** **「프로그램 리포트」** 또는 SideNav **기록 → 프로그램 리포트 (5-7)** 로 이동합니다.
+2. **`ProgramReportNav`** 에서 **5-7 참여 · 5-8 제공기록 · 5-9 그룹 이력 · 5-10 일정** 탭을 선택합니다.
+3. **시작일·종료일**을 지정합니다 (기본 **당월 1일~오늘**). **5-7 참여** 리포트만 **이용자** 필터(전체/개별)를 사용할 수 있습니다.
+4. **「조회」** — **`ProgramReportPanel`** 에 집계 결과가 표시됩니다.
+   - **5-7** — 참여/불참 건수 요약 · 행별 **상태·만족도·G17b 미제공 사유**
+   - **5-8** — 프로그램·일자별 **참석·불참·평균 만족도** (운영기록지 집계)
+   - **5-10** — 일정별 **진행자·정원·참석·불참** 집계
+   - **5-9** — **그룹명·적용 기간·수급자 수** 집계 (`337453d`, V179) · 멤버십 없으면 **빈 목록** · **그룹 등록 화면은 P3** (G-PROGRAM-GROUP-CONFIG)
+5. **「인쇄」** — 브라우저 인쇄로 현장 보관·점검 자료를 출력합니다.
+6. API 오류 시 **danger Alert** 와 **「다시 시도」** 버튼으로 재조회합니다.
+
+| 화면 | 경로 |
+|------|------|
+| 5-7 수급자 참여프로그램 | `/programs/reports/participations` |
+| 5-8 프로그램 제공기록 | `/programs/reports/provision-records` |
+| 5-9 그룹 설정 이력 | `/programs/reports/group-history` |
+| 5-10 수급자 프로그램 일정 | `/programs/reports/schedules` |
+
+| API | 용도 |
+|-----|------|
+| `GET /api/v1/programs/reports/participations?fromDate=&toDate=&clientId=&branchId=` | 5-7 참여 집계 · **`summary.totalCount`·`attendedCount`·`absentCount`** |
+| `GET /api/v1/programs/reports/provision-records?fromDate=&toDate=&branchId=` | 5-8 제공기록(운영) 집계 |
+| `GET /api/v1/programs/reports/schedules?fromDate=&toDate=&branchId=` | 5-10 일정·참석 집계 |
+| `GET /api/v1/programs/reports/group-history?fromDate=&toDate=&branchId=` | 5-9 그룹 이력 — **`groupConfigAvailable=true`** · **`items[].groupName`·`effectiveFrom`·`effectiveTo`·`clientCount`** |
+
+> **지점 스코프 (Q715)**: 화면은 **로그인 활성 지점** 기준입니다. **통합 관리자**가 Swagger로 **다른 지점**을 조회하려면 optional **`branchId`** query를 사용합니다 — 권한 밖 지점은 **403**.
+>
+> **권한**: **`hq_admin`·`branch_admin`·`social_worker`** 만 조회 가능 — **`caregiver`** 는 **`/programs`** 당일 기록만 (Q714).
 
 > **식단·일정이 비어 있을 때**: **`caregiver`·`social_worker`** 는 등록 폼이 없습니다 — **`hq_admin`·`branch_admin`** 에게 등록을 요청하세요 (Q161).
 >
@@ -2520,6 +2676,27 @@ MOHW **평가 지표 44**(주 1회 상태변화·월 1회 급여제공기록지�
 
 ### 5-10. 본인부담 리포트·간편계산기 (US-M03, UXD-56)
 
+#### 5-10-0. 케어포 본인부담(7-x) ↔ ogada 화면 대응표 (M7 lifecycle, Q700, BNK-592)
+
+케어포 func.php **모듈 7 본인부담** 10개 메뉴는 ogada **청구** SideNav와 **1:1** 대응합니다. 파일럿·인수 시 아래 표로 빠르게 찾을 수 있습니다.
+
+| 케어포 | ogada 화면 | 경로 | 비고 |
+|--------|-----------|------|------|
+| **7-1** 청구관리 | 월별 청구 생성 | `/billing` | **ClaimGenerationGuard** · Q225 |
+| **7-2** 입금관리 | 입금 처리 | `/billing/payments` | 은행 엑셀 import — Q572 |
+| **7-3** 미납관리 | 미납 독려·조정 | `/billing/overdue` | Q605 |
+| **7-4** CMS 자동이체 | CMS 등록·**결제수단 카탈로그**·가상계좌·다계좌 | `/billing/cms` | ✅ **5/5 full-stack** · roster·catalog·**CmsCollectionPanel** (Q701·Q704) |
+| **7-5** 간편결제 | 간편결제·**PG catalog** | `/billing/easy-pay` | **`EasyPayProviderCatalogPanel` ✅** · stub PG 결제 — Q709·Q326 |
+| **7-6** 청구대장 | 청구대장 | `/billing/reports/charges` | |
+| **7-7** 입금대장 | 입금대장 | `/billing/reports/deposits` | 반월 구간 — Q585 |
+| **7-8** 수납대장 | 수납대장 | `/billing/reports/receipts` | 집계 기준 — Q585 |
+| **7-9** 수납·환불 | 환불대장·**환불 수수료** | `/billing/reports/refunds` · `/billing/claims/:id` | **`RefundRecordModal` KCP catalog ✅** — Q261·Q712 |
+| **7-10** 간편계산기 | 간편계산기 | `/billing/calculator` | |
+
+**ogada만 있는 화면 (superset)**: **현금영수증**(`/billing/cash-receipts`) · **본인부담률**(`/billing/copay-rates`) · **수가표**(`/billing/fee-schedules`) · **공단 import**(`/billing/imports/nhis`) · **본인부담 통계**(`/billing/reports/statistics`).
+
+> **월말 권장 순서**: 7-1 청구 → (공단 import) → 7-2 입금 → 7-3 미납 정리 → 7-6~7-10 대장 마감. 상세 FAQ **Q700**.
+
 케어포 7-6~7-10에 대응하는 **청구·입금·수납·환불 대장**과 **본인부담금 간편계산기**입니다 (`hq_admin`·`branch_admin`).
 
 | 화면 | 경로 | 설명 |
@@ -2670,11 +2847,28 @@ MOHW **평가 지표 44**(주 1회 상태변화·월 1회 급여제공기록지�
 1. **청구** 목록 또는 **입금 처리**에서 해당 청구 **상세**(`/billing/claims/:claimId`)로 이동합니다.
 2. 요약에 **수납일·결제수단**이 표시되는 **`PAID`** 청구인지 확인합니다.
 3. **「환불 처리」** 버튼을 누릅니다.
-4. **`RefundRecordModal`**에서 **환불일**·**환불 금액**(본인부담금과 **동일**해야 함)·**환불 사유**(선택)를 입력하고 저장합니다.
+4. **`RefundRecordModal`**에서 다음을 확인·입력합니다.
+   - **간편결제(`EASY_PAY`)·계좌이체·CMS** 결제인 경우: **환불 수수료 정책** 선택 · **본인부담금(총액)·환불 수수료·실환불액** 미리보기 grid (**`.ds-refund-fee-preview`**, UXD-165 `bee97b9`, Q712) · **환불 금액**은 **실환불액(net)** 으로 자동 채워집니다.
+   - **현금** 등 catalog 미적용 수단: **환불 금액 = 본인부담금 전액** (부분 환불 불가, Q261).
+   - **환불일**·**환불 사유**(선택)를 입력하고 저장합니다.
 5. 상태가 **`REFUNDED`** 로 바뀌고 요약에 **환불일·환불 금액·사유**가 표시됩니다.
 6. **환불대장**에서 해당 월 내역을 확인합니다.
 
 > **주의**: 부분 환불은 지원하지 않습니다. **연말정산 의료비공제** 집계에서 해당 청구는 **자동 제외**됩니다 (Q252).
+
+#### KCP PG 환불 수수료 안내 (7-9, Q712)
+
+카드·계좌/CMS 결제 환불 시 **KCP(한국사이버페이먼트)** 수수료가 차감될 수 있습니다. ogada는 **케어포 7-9**와 동일한 **3종 정책 catalog**를 제공하고, **`RefundRecordModal`** 에서 **실환불액**을 확인·저장합니다 (`2adae59`·`aeecc1b`·`79725eb`·`cadd74a`).
+
+| 정책 | 수수료 | 적용 결제수단 |
+|------|--------|---------------|
+| 카드 당월 취소 | 없음 | **간편결제** (`EASY_PAY`) |
+| 카드 부분/기간경과 | **환불액의 3.3%** | **간편결제** |
+| 계좌/CMS | **500원** | **계좌이체** · **CMS** |
+
+**「환불 처리」** 모달에서 **정책 선택 → 실환불액 미리보기 → 저장** 순으로 진행합니다. catalog 로드 실패 시 **「다시 시도」** 버튼으로 재요청할 수 있습니다. **현금 수납**은 수수료 정책 없이 **본인부담금 전액** 환불 규칙이 적용됩니다. API 직접 호출 시 **`feePolicyCode`** 는 catalog **3종 code만** 허용되며, 오타는 **`400`** 으로 거부됩니다 (Q712, `79725eb`).
+
+IT 담당은 Swagger **`GET /api/v1/billing/copay/refund-fee-policy-catalog`** · **`POST …/refund-fee-preview`** 로 동일 계산을 검증할 수 있습니다 (**live PG 정산 없음**).
 
 #### 간편계산기
 
@@ -2766,7 +2960,7 @@ NHIS **청구 일정**과 **계획 일정** 페어가 일치하는지 **일괄�
 3. **StatCard 4종** — **일치·불일치·NHIS 누락·일정 외 NHIS** 건수가 표시됩니다.
 4. import 배치가 없으면 info Alert — **공단 청구내역 import** 후 **「비교 새로고침」** 을 누르세요.
 5. **전 라인 일치** 시 success Alert · **불일치·누락** 시 warning Alert가 표시됩니다.
-6. 불일치가 있으면 **「수급자별 상세 보기」** 를 눌러 **이용자별 일정 일수 vs 공단 일수** 표를 확인합니다 (Q487, `VisitNhisComparisonDetail`). 버튼은 **불일치 Alert**와 **`aria-describedby`** 로 연결되어 있고, 상세 영역은 **`h4`「수급자별 공단 명세 비교 상세」** region heading으로 스크린리더에 안내됩니다 (Q493, UXD-134).
+6. 불일치가 있으면 **「수급자별 상세 보기」** 를 눌러 **이용자별 일정 일수 vs 공단 일수** 표를 확인합니다 (Q487, `VisitNhisComparisonDetail`). **마스킹 이름 alt-key로 매칭된 이용자**는 이름 옆 **「대체 매칭됨 — 검증 필요」** Badge가 표시됩니다 — ogada 등록 정보를 **1회 확인**하세요 (Q707). 버튼은 **불일치 Alert**와 **`aria-describedby`** 로 연결되어 있고, 상세 영역은 **`h4`「수급자별 공단 명세 비교 상세」** region heading으로 스크린리더에 안내됩니다 (Q493, UXD-134).
 7. 보정 후 **「비교 새로고침」** 으로 재확인한 뒤 § **방문일정 일괄확정** 을 진행합니다.
 
 > **IT 참고**: **`GET /api/v1/visits/nhis-comparison`** — **동일 월** `from`/`to` 필수 (Q479). Modal 사전 점검의 **`nhisComparisonSummary`** embed(Q481)와 **동일 집계**입니다.
@@ -3568,10 +3762,20 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 
 1. **기록** 그룹에서 **「목욕 일정·제공현황 (L02_M03)」** 을 선택합니다.
 2. 상단 **「대상 월」** 을 선택하고 **조회**합니다.
-3. **「새 목욕 일정」** 카드에서 **`BathingScheduleForm`** 을 작성합니다.
-4. 이용자·예정일·목욕 유형·제공 상태를 입력하고 **저장**합니다.
-5. 상태를 **제공 완료**로 바꿀 때는 **제공 내용**(`provisionNotes`)이 필수입니다.
-6. **취소**·**미제공** 처리 시 **비고(사유)**(`notes`)가 필수입니다 (`47a4e25`).
+3. 화면 상단 **「평가지표 27 — 목욕 서비스 준수」** 패널(`BathingScheduleIndicator27Panel`)에서 해당 월 **이용자별 준수 현황**을 확인합니다 (Q705, `3d7f13b`).
+4. **「새 목욕 일정」** 카드에서 **`BathingScheduleForm`** 을 작성합니다.
+5. 이용자·예정일·목욕 유형·제공 상태를 입력하고 **저장**합니다.
+6. 상태를 **제공 완료**로 바꿀 때는 **제공 내용**(`provisionNotes`)·**목욕 전 상태 관찰**(`preObservationNotes`)·**목욕 후 상태 관찰**(`postObservationNotes`)을 **폼에서 모두** 입력합니다 (V177, Q705). 빈 칸이 있으면 저장 시 필드 오류가 표시됩니다.
+7. **취소**·**미제공** 처리 시 **비고(사유)**(`notes`)가 필수입니다 (`47a4e25`).
+
+#### 평가지표 27 준수 확인 (US-O01, Q705)
+
+silverangel **essentialWork 평가지표 27** — **월 5회 이상 목욕 제공** + **매 회 전·후 상태 관찰 기록** — 준수 여부는 **`BathingScheduleIndicator27Panel`** 에서 월별로 표시됩니다 (**G17 기능회복훈련 지표27과 별도**).
+
+1. **대상 월**을 선택하면 패널이 **`GET /api/v1/care/bathing-schedules/indicator-27-compliance`** 를 자동 조회합니다.
+2. 상단 Alert에서 **`compliantClientCount` / `clientCount`** 로 지점 전체 준수율을 확인합니다.
+3. 표에서 **`indicator27Met`** 가 **「미충족」** 인 이용자를 우선 점검합니다 — **5회 미만** 또는 **전·후 관찰 누락**이 원인입니다.
+4. 해당 일정을 **수정**하여 **`COMPLETED`** 건의 관찰 필드를 보완합니다.
 
 #### 전월 일정 복사 (G-BATHING, Q598)
 
@@ -3594,7 +3798,7 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 | 제공 상태 | 의미 |
 |----------|------|
 | `SCHEDULED` | 예정 |
-| `COMPLETED` | 제공 완료 — **제공 내용 필수** |
+| `COMPLETED` | 제공 완료 — **제공 내용·목욕 전·후 관찰 필수** (V177, Q705) |
 | `CANCELLED` | 취소 — **사유 필수** |
 | `SKIPPED` | 미제공 — **사유 필수** |
 
@@ -3606,10 +3810,23 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 | `POST /api/v1/care/bathing-schedules` | 신규 등록 |
 | `PATCH /api/v1/care/bathing-schedules/{recordId}` | 수정 |
 | `POST /api/v1/care/bathing-schedules/copy-from-previous-month` | **전월 `SCHEDULED`/`COMPLETED` → 대상 월 일괄 복사** (Q598) |
+| `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=&clientId=` | **평가지표 27** 월별 준수 집계 — **`indicator27Met`** · **`completedCount`≥5** · **전후관찰** (Q705) |
+
+**요청 예 (제공 완료 + 전·후 관찰)**
+
+```json
+PATCH /api/v1/care/bathing-schedules/{recordId}
+{
+  "status": "COMPLETED",
+  "provisionNotes": "전신 목욕 완료",
+  "preObservationNotes": "피부 건조함 없음, 혈압 안정",
+  "postObservationNotes": "피부 상태 양호, 보호자 만족"
+}
+```
 
 > **L02_M01(`/care/weekly-service-records`)·L03 간호기록과 구분**: L02_M03은 **목욕 일정·제공 현황** 전용입니다.
 
-> 관련: FAQ **Q363·Q598** · ADMIN_GUIDE §6-2-16 · REQUIREMENTS L02 v3.1 Must
+> 관련: FAQ **Q363·Q598·Q705** · ADMIN_GUIDE §6-2-16 · REQUIREMENTS L02 v3.1 Must
 
 ### 5-27. 통합식사도움기록 (L02_M13, v3.1 Must — **화면 연동 완료**)
 
@@ -4033,7 +4250,7 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 
 ## 6. 요양보호사 (`caregiver`) 매뉴얼
 
-요양보호사는 소속 지점에서 **수기 출석**과 **건강 기록 입력**이 핵심 업무입니다. 파일럿 현장의 주 사용 역할입니다.
+요양보호사는 소속 지점에서 **수기 출석**, **건강 기록 입력**, **기존 이용자 정보 수정**이 핵심 업무입니다. 파일럿 현장의 주 사용 역할입니다.
 
 ### 6-1. 권한 요약
 
@@ -4041,7 +4258,8 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 |------|:----------:|:------:|
 | 지점 대시보드 조회 | ✅ | ✅ |
 | 이용자 목록 조회 | ✅ | ✅ |
-| 이용자 등록·수정 | ❌ | ✅ |
+| 이용자 **신규 등록** | ❌ | ✅ |
+| 이용자 **정보 수정** | ✅ (Q675) | ✅ |
 | 수기 체크인/아웃 | ✅ | ✅ |
 | 건강 기록 입력 | ✅ | ✅ |
 | **통합 바이탈 기록** (`/nursing/vital-checks`) | ✅ | ✅ (§5-16) |
@@ -4119,7 +4337,18 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 
 > **건강·투약·사고 저장** — `/health` **4탭 UI**에서 저장 가능 (Q154·UXD-41). 실패 시 FAQ Q95. **자유 메모(notes)** 는 Swagger.
 
-### 6-5. 일일 체크리스트
+### 6-5. 이용자 정보 수정 (`/clients/:id/edit`, Q675·Q677·Q683)
+
+요양보호사는 **신규 등록**은 할 수 없지만, 담당 이용자의 **연락처·주소·배차** 등 기본 정보는 **직접 수정**할 수 있습니다.
+
+1. **이용자** → 목록에서 이름 클릭 → 상세 **「수정」** 또는 **「기본정보 수정」** — **`aria-label="{이름} 정보 수정"`** (Q683, UXD-159).
+2. **주소** — **상세주소만** 바꿀 때는 **「주소 검색」** 없이 상세주소란만 수정 후 저장해도 됩니다 (Q677). **도로명까지** 바꿀 때는 **「주소 검색」**으로 다시 선택합니다.
+3. **배차·픽업** — **「거주지 주소와 동일」** 체크 또는 별도 픽업 주소 검색 (§4-3).
+4. 저장 후 목록·상세에서 **거주지 전체 주소**가 반영됐는지 확인합니다.
+
+> **신규 등록**이 필요하면 **사회복지사·센터장**에게 요청하세요 — **`/clients/new`** 는 route guard로 차단됩니다.
+
+### 6-6. 일일 체크리스트
 
 - [ ] 지점 선택기가 올바른 지점인지 확인 (다지점 권한 시)
 - [ ] 미입소·결석 이용자 센터장에게 공유
@@ -4398,6 +4627,28 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-26 | **377차** — §1-3 **Q722 recovered-auth readiness hints (IT harness)** · baseline **`d06e3f1`/`4bbd54a`** |
+| 2026-06-26 | **376차** — §1-3·§4-7 **Q719·Q720·Q721 · UXD-165 a11y·refund preview CSS** · baseline **`42a369e`/`7e7c296`** |
+| 2026-06-26 | **375차** — §1-3·§1-5·§4-7-0c **Q717 G-STAFF-MONTHLY-SCHEDULE-FE-WIRE `/staff/schedules`** · **StaffContextNav 10탭** · baseline **`3342938`/`b7004ca`** |
+| 2026-06-25 | **370차** — §1-5·§5-10-0 **Q705 bathing FE closure 정합 · Q712 M7 7-9 refund fee deepen** · baseline **`9f67954`/`5914b2f`** |
+| 2026-06-25 | **369차** — §1-3·§4-6·§5-8-1 **Q709 provider-catalog FE · Q710 parity panel mount** · baseline **`9f67954`/`5914b2f`** |
+| 2026-06-25 | **365차** — §1-3·§4-7-0a·§4-6 **Q711 연차 branchName trim · Q709 routing test lock** · baseline **`5a5174a`/`58f3858`** |
+| 2026-06-25 | **364차** — §1-3·§4-6·§5-8-1 **Q709 7-5 provider-catalog · Q710 TransportParityRulesPanel scaffold** · baseline **`56831fc`/`892122d`** |
+| 2026-06-25 | **368차** — §5-10 **Q712 feePolicyCode `@Pattern` validation** · baseline **`79725eb`/`e070c45`** |
+| 2026-06-25 | **367차** — §5-10 **Q712 refund fee full-stack · RefundRecordModal** · baseline **`aeecc1b`/`cadd74a`** |
+| 2026-06-25 | **366차** — §5-10·§5-26 **Q712 refund fee catalog · Q705 목욕 FE closure** · baseline **`2adae59`/`3d7f13b`** |
+| 2026-06-25 | **365차** — §4-7-0a **Q711 연차 branchName fallback · Q709 routing test** · baseline **`5a5174a`/`58f3858`** |
+| 2026-06-25 | **362차** — §1-3·§1-5·§4-6-1·§5-21 **Q707 G-NHIS-ALT-KEY-AUDIT-BADGE** · baseline **`4963535`/`5bb84a6`** |
+| 2026-06-25 | **361차** — §1-3·§1-5·§4-6·§4-6-1 **Q706 G-NHIS-MASKED-NAME-FALLBACK** · **CMS catalog empty state** · baseline **`37416ac`/`9a583ec`** |
+| 2026-06-25 | **360차** — §1-3·§5-8-1 **Q703 G16 parity-rules RBAC·응답 스키마** · baseline **`e4f83af`/`5afef2d`** |
+| 2026-06-25 | **359차** — §1-3·§4-6-3·§4-6-4·§5-8-1 **G2b CMS collection UI + G16 parity-rules FE wire** (Q701·Q703·Q704) · baseline **`e12b084`/`9aeedfe`** |
+| 2026-06-25 | **358차** — §1-3·§5-26 **Q705 US-O01 목욕 전후관찰·지표27 compliance** · **Q700/Q701 CMS 5/5 정정** · baseline **`e12b084`/`1db75d0`** |
+| 2026-06-24 | **355차** — §1-3·§4-6·§5-10-0 **Q701 G2b CMS payment-method-catalog** · **`2eaf17e`/`4875937`** |
+| 2026-06-24 | **353차** — §1-3·§1-5·§5-10-0 **Q700 M7 7-x lifecycle** · **G-SMS test lock** · **`a12873c`/`216ab7a`** |
+| 2026-06-24 | **352차** — §1-3·§1-5·§4-6·§4-7-3·§4-7-4 **Q699 dispatch success label** · **Q692 staff ezcareMessageKind** · **`2f83563`/`c7d0982`** |
+| 2026-06-24 | **351차** — §1-3·§1-5·§4-7-3·§4-7-4·§5-5 **UXD-161 form-stack** · **Q697 fallback label sync** · **`88a58d9`/`c06d581`** |
+| 2026-06-24 | **349차** — §1-3·§1-5·§4-6·§4-7-3·§5-5 **G-SMS deepen** — **`dispatchReady` 채널 자격** · **`ezcareMessageKind` 응답** · **message_kind 11·13·19 UI** · **`ef8bb4e`/`fed6f1f`/`5a6d42c`** |
+| 2026-06-24 | **348차** — §1-3·§1-5·§4-7-3·§4-7-4(신규)·§5-5 **G-SMS full closure** — message_kind **1·12·21** 발송 UI · **6/6 dispatch** · **`1d5d441`/`9c25d44`** |
 | 2026-06-21 | **301차** — §1-3·§1-5·§4-6·§5-3 **G-BILLING-DEPOSIT-ORDER-GUARD**·**G-STAFF 출근방식**·**Q614**·`a6eb8b7`·`5fd468b` |
 | 2026-06-21 | **299차** — §1-3·§1-5·§4-4 **G-ATTENDANCE-STATS contract**·**Q613**·baseline carry |
 | 2026-06-21 | **298차** — §1-3·§1-5·§3-1·§5-3 **G-STAFF-WORK-ATTENDANCE full-stack**·**Q612**·`560057f`·`53d65a0` |

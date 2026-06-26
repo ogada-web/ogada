@@ -1,0 +1,60 @@
+# BNK-577 — 케어포 역공학 0–2h · func.php 모듈5 프로그램 급여 10-leaf ↔ ogada /programs cross-walk
+# 조사일: 2026-06-24 (KST) | rotation: 케어포 역공학 0–2h
+# 근거 snapshot: docs/planning/research/snapshots/carefor_func_wayback_live_bnk573.html (md5 6226e6eb · 98,328B · 339차 zero drift IDENTICAL)
+#               docs/planning/research/snapshots/carefor_demo_wayback_live_bnk573.html (md5 ebee4d47 · 71,742B · zero drift IDENTICAL)
+
+## 1. ogada git 실측 KPI (BNK-577) — HEAD zero advance 1-cycle · BE WT DIRTY 6M carry
+- FE develop @c9cf03b  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG-FE-WIRE): wire ezCare template catalog into readiness panel
+  · WT CLEAN · ahead 208 vs origin/test=ab4de83 · BNK-576 carry · HEAD zero advance 1-cycle
+- BE develop @b6c9b16  feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API
+  · WT DIRTY 6M (dispatchReadyCount + DTO dispatchReady field uncommitted deepen·BNK-576 carry) · ahead 543 vs origin/test=598d108 · HEAD zero advance 1-cycle
+- 112 Route(111 `<Route\b` + 1 `<Routes>`) · 91 page(90 *Page.jsx + RootRedirect) · V1–V175 · BE Test 255 · FE test 465(192 .test.js + 273 .test.jsx) · 모듈 78.79%(22.85/29 · id=10 still 0.5)
+- merge gate = FE208 + BE543 = 751 carry (BNK-576=577)
+
+## 2. carefor LIVE/Wayback 재실측 (BNK-577)
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| https://www.carefor.co.kr/daycare/func.php (LIVE) | 000 | 0 | - | 연결 실패 13-cycle 「미확인」 carry |
+| https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php | 200 | 98,328 | 6226e6eb | 339차 zero drift IDENTICAL → 덮어쓰기 |
+| https://demo-work.carefor.co.kr/ (LIVE) | 000 | 0 | - | 연결 실패 「미확인」 carry |
+| https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/ | 200 | 71,742 | ebee4d47 | zero drift IDENTICAL → 덮어쓰기 |
+
+## 3. ★★★ func.php 모듈5 「프로그램 급여」 10-leaf 정본 ↔ ogada /programs cross-walk (NEW 블록)
+케어포 func.php 정적 메뉴(주야간 정본·98,328B) verbatim 추출:
+
+| func 5-x | 케어포 leaf 명칭 | ogada @c9cf03b 대응 | 판정 |
+|---|---|---|---|
+| 5-1 | 프로그램 제공기록 | `/programs` ProgramsPage + `ProgramParticipationForm` (참여/불참+사유) | ✅ parity |
+| 5-1.1 | 외부강사/자원봉사자 관리 | △ (자원봉사 활동일지 = func 8-8 / ogada 미전용) | △ 부분(도메인 인접) |
+| 5-2 | 프로그램 일정관리 | `ProgramScheduleForm` "프로그램 일정"·"일일 프로그램" | ✅ parity |
+| 5-3 | 프로그램 수급자 그룹 설정(필요시) | △ 그룹 설정 전용 UI 미노출 | △ micro-gap P3 |
+| 5-3.1 | 프로그램 그룹 관리 | △ | △ micro-gap P3 |
+| 5-4 | 프로그램 정보관리 | "프로그램 관리"(정보 마스터) | ✅ parity |
+| 5-5 | 프로그램 의견수렴 및 반영(평가) | satisfaction 5-scale(매우만족~매우불만족) + `/programs/provision-result-evaluations` | ✅ parity·우위(5단 척도 + 결과평가 분리) |
+| 5-1(중복) | 프로그램관리자 업무수행일지 | ❌ 전용 leaf 0 (업무수행일지 일반) | ❌ micro-gap P3 |
+| 5-6 | 프로그램 계획/콘텐츠 | △ 콘텐츠 라이브러리 미노출 | △ micro-gap P3 |
+| 5-7 | 수급자 참여프로그램 리포트 | participation 기록(참여/불참 사유: 인력부족/시설장애/수급자거부/기타) | ✅ parity |
+| 5-8 | 프로그램 제공기록 리포트(운영기록지) | `/programs/provision-result-evaluations` | ✅ parity |
+| 5-9 | 프로그램 수급자 그룹 설정 이력 리포트 | ❌ 그룹 이력 리포트 0 | ❌ micro-gap P3 |
+| 5-10 | 수급자 프로그램 일정 리포트 | △ ProgramsPage 일정 뷰 내포(전용 리포트 0) | △ micro-gap P3 |
+| 4-6→6-x | 물리(작업)치료 제공기록·일정·리포트 | `/programs/functional-recovery` (G17·모듈26) | ✅ cross-module parity |
+
+### 판정 요약
+- `competitorModuleCoverage.js` id=5 「프로그램 급여」 coverage=1 ✅ 완전 — **재확인(가정 번복 아님)**
+- 핵심 4-leaf(제공기록·일정·정보관리·평가) full parity + 의견수렴 5단 척도·결과평가 분리 = ogada 우위
+- micro-gap(전부 P3·MVP out-of-scope): 프로그램 수급자 그룹 설정/이력 리포트(5-3·5-9), 콘텐츠 라이브러리(5-6), 프로그램관리자 업무수행일지
+- **신규 core 갭 0** — 모듈5는 이미 ✅ 완전·micro-gap만 P3 candidate carry
+- candidate `G-PROGRAM-GROUP-CONFIG` P3「가정」(수급자 그룹 설정 + 이력 리포트 — 대규모 센터 다그룹 운영 시 가치, MVP 단일 그룹으로 충분)
+
+## 4. demo-work 시설 셸 교차검증 (carry)
+- demo-work 71,742B `ebee4d47` — 시설 셸·이동서비스(transport) nav grep 0 (BNK-573 carry 재확인)
+- func M2(2-2 탑승·2-3 출석·2-4 차량)는 존재하나 demo nav 미노출 = IA remap carry
+
+## 5. per-cycle minimum 충족
+- 신규 증거 URL: carefor func/demo Wayback 재실측 + 변동 기록(zero drift 339차) ✅
+- 메뉴/필드/워크플로 1블록+: 모듈5 프로그램 10-leaf cross-walk 표 ✅
+- COMPETITOR_MATRIX 1행+ @c9cf03b/@b6c9b16 갱신 ✅
+- BENCHMARK_REPORT §577 신규 소절 ✅
+- 신규 snapshot 1건: 본 extract ✅ · 덮어쓰기 2건(carefor func/demo Wayback)
+- 가정 번복 0 · 신규 core 갭 0 · candidate carry(G-PROGRAM-GROUP-CONFIG P3) · 엑셀 포맷 변경 0
+- tester FF merge 751 가속 권장

@@ -1,0 +1,46 @@
+carefor_m7_copay_7-9_refund_fee_crosswalk_bnk616.txt — BNK-616 교차검증 (2026-06-25T08:56Z)
+================================================================================
+[BNK] benchmark_researcher · carefor 7-9 ↔ ogada CopayRefundFeePolicyCatalog crosswalk
+
+출처
+----
+- carefor Wayback: https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php
+- 조사일: 2026-06-25 · HTTP 200 · SIZE 104,183B · md5 `84ffd89e` (375차 wrapper variance · semantic IDENTICAL)
+- ogada BE: `2adae591` `CopayRefundFeePolicyCatalog.java` · `BillingController` refund-fee endpoints
+- ogada FE: `3d7f13b` (bathing wire only · refund-fee FE grep **0 hit**)
+
+carefor 7-9 verbatim (「제 17 조 (비용의 환불)」)
+------------------------------------------------
+1. 카드 전액 환불: 수수료 없음 · 매입취소/승인취소
+2. 카드 부분/통장 환불: 「환불금액의 **3.3%** 수수료」
+3. 가상계좌: 「환불금액에서 **500원**의 수수료를 제외」
+4. 실시간계좌이체: 「**3.3%** 수수료」 (carefor func.php — ogada catalog는 BANK_OR_CMS 500원 flat으로 단순화)
+5. 공통: 「결제대행업체인 **한국사이버페이먼트(KCP)** … 수수료를 제외한 나머지 결제 비용만 환불」
+
+ogada `CopayRefundFeePolicyCatalog` 매핑
+----------------------------------------
+| policyCode | carefor 대응 | feeType | rate/flat | ogada labelKo |
+|---|---|---|---|---|
+| CARD_VOID_SAME_MONTH | 카드 전액/당월 취소 | NONE | — | 카드 매입/승인 취소(당월) |
+| CARD_PARTIAL_OR_EXPIRED | 카드 부분/기간경과·실시간이체 3.3% | PERCENT | 0.033 | 카드 부분/기간경과 환불 |
+| BANK_OR_CMS_TRANSFER | 가상계좌/CMS 500원 | FLAT | 500 | 계좌이체/CMS 환불 |
+
+API:
+- `GET /api/v1/billing/copay/refund-fee-policy-catalog` → entries + PG_VENDOR_LABEL_KO + DISCLAIMER_KO
+- `POST /api/v1/billing/copay/refund-fee-preview` → grossAmount → feeAmount + netAmount
+
+갭·우선순위
+-----------
+| 레이어 | ogada | carefor | 비고 |
+|---|---|---|---|
+| catalog 정책 정의 | ✅ BE LANDED BNK-616 | ✅ func 7-9 | **catalog layer FULL PARITY** |
+| preview net 계산 | ✅ BE API | ✅ KCP PG 실정산 | ogada PG-중립·감사 추적 우위 |
+| 환불 기록 UI | ✅ RefundRecordModal | ✅ 7-9 수납,환불내역 | full-stack |
+| FE catalog wire | ❌ 0 hit | N/A | **P3 `G-REFUND-FEE-FE-WIRE`** |
+| 실 PG 연동 | ❌ | ✅ KCP | v3+ 묶음(MVP out-of-scope) |
+
+△ 가정: carefor 실시간계좌이체 3.3% vs ogada BANK_OR_CMS 500원 flat — carefor func.php는 채널별 상이.
+ogada catalog는 BNK-613 추출(카드 3.3%/계좌 500원) 기준. 실시간이체 세분화는 v3+ 검토.
+
+planner 제안: G-REFUND-FEE-DEDUCTION P3 → **BE catalog LANDED** + **FE wire P3 분리** (`G-REFUND-FEE-FE-WIRE`).
+7-5 `G-EASYPAY-PROVIDER-CATALOG-FE-WIRE` 와 v3+ PG 통합 묶음 권장.

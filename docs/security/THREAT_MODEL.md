@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-23T17:00:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-25T17:30:00+09:00 -->
 # 위협 모델 (security/THREAT_MODEL.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **방법**: STRIDE + 데이터 흐름 기반  
 > **시스템**: ogada — 주간보호센터 B2B SaaS (멀티테넌트)  
 > **스택**: React SPA ↔ Spring Boot API ↔ PostgreSQL  
-> **2026-06-23 23차 갱신**: develop **`5fd12dd`/`426d63a`**(양 스트림 **WT DIRTY** — BE 9M+1U·FE 38M+11U) · `origin/test`=`598d108`/`ab4de83`(P0·SEC-D14·530+187 unpushed). 신규: **V172 staff_annual_leave_yearly roster/yearly/save API** · **V173 defense-in-depth(상한·합계·non-empty·user_branch 3-way FK) + readiness probe** · **V174 staff_leave_ledger per-event canonical API**(Tenant FK pairs·leave_type/days CHECK) · **V175 leave_ledger 무결성(memo non-empty·user_branch FK·WT untracked·SEC-D35)** · **G-STAFF-ANNUAL-LEAVE 입력 검증**(범위·precision·합계·payload 길이) · **j03 solapi placeholder 거부**(fail-closed 강화) · **ClientService 주소 마스킹**(PII 최소노출·시·구·도로명까지) · **live-e2e 테넌트 UUID 격리**(dev seed 비중첩). **23차 신규 BLOCK급 audit Open 0건** · **신규 SEC-D35**(V175 미커밋·양 스트림 WT DIRTY·Low/process). SEC-D33·D34·D4(4 파서)·SEC-D18 악화(+16/+20) 유지. 상세 `SECURITY_AUDIT.md` §1.25.
+> **2026-06-25 25차 갱신**: develop **`49fe2e7`/`2c9abd6`**(양 스트림 **WT CLEAN**·BE local test **SYNCED**·TSR 1408차 merge) · `origin/test`=`598d108`/`ab4de83`(P0·SEC-D14·572+241 unpushed·SEC-D18 더 악화 +21/+23 vs 24차). 신규: **G-NHIS-MASKED-NAME-FALLBACK**(§2-3 확장·`NhisClientResolver`·`matched.size()==1` 단일후보·org+branch scope·PII reveal 차단·SEC-D40 신규 — 복수 매칭 skip으로 안전 측 동작) · **G-REPORT-DENSITY M5 branch filter**(§2-20 신규·`ProgramReportController`·HQ/BRANCH/SOCIAL_WORKER·`resolveBranchScope`·org scope) · **G2b CMS 가상계좌·다계좌**(§2-7 확대·`requestClaimVirtualAccount`/`requestClaimMultiAccountSettlement`·HQ/BRANCH·SUCCEEDED 멱등·V178 CHECK·SEC-D39) · **V178 9종 CHECK DB-level**(CMS collection + bathing defense-in-depth) · **ProductionSecretValidator 3-form env 봉인**(§3-6 T-E5 SEC-D29 진전) · **QA-B95 enforce-bootstrap-readiness 토글**(SEC-D38 신규 Monitor·false 시 operationReady=true 오보·인증 우회 없음). **25차 신규 BLOCK급 audit Open 0건** · **신규 SEC-D38**(Low·Monitor·enforce-readiness 오설정)·**신규 SEC-D39**(Low·Monitor·CMS 가상계좌 번호 노출 범위). SEC-D33·D34·D4(4 파서)·SEC-D32·D36·D37 유지. 상세 `SECURITY_AUDIT.md` §1.27.
 
 ---
 
@@ -313,10 +313,42 @@ flowchart TB
     --> [StaffLeaveLedgerService] requireOrganizationId · resolveReadableBranchId / requireWritableStaffUser
     --> update/delete: findByOrganizationIdAndId(org 격리) 후 writable 재검증
     --> 입력 검증: leaveType allowlist(ANNUAL_LEAVE/PAID_HOLIDAY) · date order · 0<daysUsed≤99.9 · precision
-    --> [staff_leave_ledger_entries] (V174 Tenant FK pairs·CHECK + V175 memo nonempty·user_branch FK·**WT untracked·SEC-D35**)
+    --> [staff_leave_ledger_entries] (V174 Tenant FK pairs·CHECK + V175 memo nonempty·user_branch FK·**24차 커밋 완료·SEC-D35 Mitigated**)
 ```
 
-**위협**: 크로스테넌트 휴가 항목 IDOR(**org 격리 조회 + V174 Tenant FK**), 권한 없는 write(**create/update/delete=BRANCH/SOCIAL_WORKER only**), 잘못된 유형·음수 일수(**allowlist + CHECK**), 빈 memo·교차지점 적재(**V175 — 단 미커밋 시 무결성 유실 위험·SEC-D35**)
+**위협**: 크로스테넌트 휴가 항목 IDOR(**org 격리 조회 + V174 Tenant FK**), 권한 없는 write(**create/update/delete=BRANCH/SOCIAL_WORKER only**), 잘못된 유형·음수 일수(**allowlist + CHECK**), 빈 memo·교차지점 적재(**V175 커밋·SEC-D35 Mitigated**)
+
+### 2-19. 직원 모바일 접속키 SMS 발송 (v2 G-SMS-TEMPLATE-CATALOG message_kind=1, ezCare mobile-sendW)
+
+```
+[HQ/BRANCH/사회복지사] --Bearer JWT--> [POST /api/v1/staff/notifications/staff-access-key
+                                       @PreAuthorize('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')]
+    --> [StaffAccessKeyNotificationService] requireOrganizationId
+    --> 직원 검증: findByIdAndOrganizationId + isActive + terminatedAt==null + STAFF_ROLE_CODES allowlist
+        + GuardianPhoneResolver.resolveMobileDigits 존재 강제
+    --> branch 해석: activeBranchId or userBranches(org 매치) fallback → validateBranchWriteScope
+    --> 키 생성: SecureRandom 6-digit(100_000..999_999, 키스페이스 10^6 — SEC-D36 Monitor)
+    --> at-rest: PasswordResetTokenEntity { tokenHash=SHA-256(accessKey), expiresAt=now+60min }
+                 invalidateActiveTokensForUser(userId) 선행(단일활성 강제·기존 reset/access key 토큰 회전)
+    --> payload: GuardianNotificationPayloadBuilder.staffAccessKeyPayload
+                 { staffUserId, staffName, centerName, accessKey, expiresAt } JSON
+    --> [NotificationService.dispatchManualStaffSms] quiet-hours(KST 22:00~08:00) 시 BusinessRuleException 거부
+        --> NotificationEntity(channel=SMS, payload_json=평문 accessKey 포함 — SEC-D37 Monitor)
+        --> SolapiMessageClient (외부) → 직원 휴대전화
+    --> 응답: StaffAccessKeyNotifyResponse { staffUserId, templateCode=STAFF_ACCESS_KEY,
+                                              expiresAt, ezcareMessageKind=1 } — accessKey 필드 없음
+[직원] --SMS 수신 6-digit 키--> [POST /api/v1/auth/password/reset]
+    --> AuthRateLimitService (ip 20/min · token 8/min)
+    --> AuthService.resetPassword → tokenHash 매칭(SHA-256) → 비밀번호 변경 + token 소비
+```
+
+**위협**:
+- 인사이더 abuse(SOCIAL_WORKER가 동일 branch 직원에게 무단 발송) — **branch write scope + audit_logs + quiet-hours guard**로 완화
+- 6-digit 키 brute force — `/auth/password/reset` rate limit(token 8/min)로 60분 480 시도 vs 키스페이스 10^6 = P(match)≈0.048% 매우 낮음 — **Low (SEC-D36 Monitor)**
+- 응답 본문 키 유출(JWT 탈취·MITM) — **응답 record `accessKey` 필드 없음**으로 차단(SMS 채널 전용)
+- DB 침해 시 만료 전 키 유출 — `notifications.payload_json`에 평문 accessKey 60분 잔존(SEC-D37 Monitor — payload redact 또는 dispatch 후 purge 권고). `PasswordResetTokenEntity.tokenHash`는 SHA-256만 저장
+- 키 재발급 race(이전 키 사용 중 신규 발급으로 잘못된 키 적용) — `invalidateActiveTokensForUser`로 단일활성 강제(한 직원에 활성 토큰 1건만 유효)
+- 야간 무차별 발송으로 인한 직원 SMS 폭주 — `NotificationQuietHoursPolicy`(22:00~08:00 KST) 서버 거부 + 운영 정책
 
 ---
 
@@ -344,7 +376,7 @@ flowchart TB
 | T-T5 | 검증된 코드 ≠ 배포 산출물 | merge/push 미실행 | git 이관 규율 | **Low** — `origin/test`=`598d108`/`c7c8f07` P0 포함 ✓ · v2/v1.3 develop 152+186 ahead(feature only·SEC-D18) · 양 스트림 WT CLEAN |
 | T-T6 | visit_schedules 직접 변조 | raw SQL·비서비스 경로 | V55 트리거(퇴소 가드·actor backstop) | **Low** — DB-level 무결성 강화 |
 | T-T7 | 크로스테넌트 CMS 위임 변조 | 타 테넌트 청구↔CMS 위임 연결 | V60 복합 테넌트 FK + 앱 스코프 | **Low** — DB-level 차단(org+claim/enrollment 복합 FK) |
-| T-T8 | 신규 테이블 크로스테넌트/퇴소 client INSERT | raw SQL·body org/branch 변조 | V70/V74 트리거 + V168 overdue + **V173 연차·V174/V175 휴가대장 Tenant FK + user_branch 3-way FK** | **Low** — outings·기능회복·사례관리·미납·**연차/휴가대장** DB-level 무결성(V175 커밋 전까지 leave_ledger nonempty/user_branch FK는 WT만·SEC-D35) |
+| T-T8 | 신규 테이블 크로스테넌트/퇴소 client INSERT | raw SQL·body org/branch 변조 | V70/V74 트리거 + V168 overdue + **V173 연차·V174/V175 휴가대장 Tenant FK + user_branch 3-way FK** | **Low** — outings·기능회복·사례관리·미납·연차/휴가대장 DB-level 무결성(V175 24차 커밋 완료·SEC-D35 Mitigated) |
 | T-T9 | tenant context 미설정 우회 | 인증 전 필터 실행으로 org/branch null | SecurityConfig 필터를 `BearerTokenAuthenticationFilter` 뒤로(SEC-D24) | **Low** — 인증 후 JWT principal로 TenantContext 정확 설정 · **커밋 완료(WT CLEAN)** |
 | T-T10 | 신규 첨부(급여계약서·등급이력·**HR·보수교육**) 크로스테넌트/퇴소 INSERT | raw SQL·body org/branch 변조 | V85/V79/V92 트리거(client 파생·active 가드·actor backstop) | **Low** — DB-level 무결성 강화 |
 | T-T11 | G21 무단 체크인/아웃(배정 외 caregiver) | 타 caregiver ID로 check-in | `VisitService` 배정 caregiver·active·branch 가드(`0db1e68`~`78cfb8a`) | **Low** — 방어 강화 |
@@ -375,6 +407,8 @@ flowchart TB
 | T-I15 | dev 빌드 체인 RCE | 악의적 NPM registry로 esbuild binary 치환 | overrides `esbuild ^0.25.0` | **Low(dev)** — SEC-D26 GHSA-gv7w-rqvm-qjhr · prod 0건 · CI 격리 권고 |
 | T-I16 | health·live-e2e 상태 정보 노출 | `GET /api/v1/health`로 activeProfiles·DB 장애 유형·live-e2e readiness 추론 | permitAll health · DB probe detail sanitize | **Low** — SEC-D30 · prod profile 마스킹 권고 |
 | T-I17 | CSV/수식 인젝션 | 이용자명·보호자명에 `=`/`+`/`-`/`@` 삽입 → 명세·NTS export CSV를 Excel로 열 때 수식·DDE 실행 | org+branch RBAC export · `csvEscape` quote(`"`/`,`/`\n`) | **Low** — SEC-D33 · 수식 prefix sanitize(`'` escape) 권고(CWE-1236) |
+| T-I18 | staff access key 응답 본문 평문 노출 | 발송 응답 JSON에 6-digit accessKey 포함 시 JWT 탈취·MITM·브라우저 콘솔 캡처 시 유출 | `StaffAccessKeyNotifyResponse`에 `accessKey` 필드 없음 — SMS 채널 전용 전달 | **Low** — 24차 설계 시점부터 응답 record에서 제외 |
+| T-I19 | staff access key payload_json at-rest 잔존 | DB 침해/덤프 시 `notifications.payload_json` 평문 accessKey 60분 잔존 노출 | `PasswordResetTokenEntity.tokenHash`는 SHA-256만 저장 · `notifications` 행 60분 TTL 만료 후에도 purge 정책 미정의 | **Low** — SEC-D37 · payload redact 또는 dispatch 완료 시 purge 권고 |
 | T-I6 | DB 백업 유출 | 스토리지 침해 | — | **High** | 백업 암호화 |
 | T-I7 | PII 전화번호 마스킹 회귀 | 마스킹 제거 빌드 배포 | `PhoneMaskingUtil`·`MaskedPhone` | **Low** — SEC-D9 Fixed · `010-****-5678` 유지 |
 | T-I8 | Solapi relay credential 노출 | env 누락·로그 유출 | env 주입·HMAC 헤더 | **Low** — 미설정 fail-closed · 로그에 key/전화 미노출 |
@@ -386,6 +420,7 @@ flowchart TB
 | T-D1 | 로그인 flood | mass POST /login | `AuthRateLimitService` (60s window) | **Low (develop)** · **Low (origin/test `598d108`)** |
 | T-D2 | 대용량 업로드 | 10MB×N 동시 | multipart limit | Medium | WAF·conn limit |
 | T-D3 | xlsx 파싱 CPU | zip bomb xlsx (NHIS·은행입금·RFID·요양보호사 4표면) | multipart limit | Medium | POI 5.4.0+ 업그레이드(SEC-D4 상향) |
+| T-D4 | staff access key SMS flood | 인사이더가 직원 N명에게 반복 발송으로 Solapi 비용·SMS 폭주 유발 | `NotificationQuietHoursPolicy`(KST 22:00~08:00 거부) · branch write scope · `@PreAuthorize` HQ/BRANCH/SOCIAL_WORKER만 · `invalidateActiveTokensForUser`로 신규 발급 시 이전 무효화(중복 가치 감소) · audit_logs | **Low** — 추가 rate limit(per-actor·per-staff) 권고(현행 미적용·24차 carry) |
 
 ### 3-6. Elevation of Privilege (권한 상승)
 
@@ -395,7 +430,8 @@ flowchart TB
 | T-E2 | guardian → staff 데이터 | 잘못된 branch_ids | JWT 발급 시 검증 | Low | 유지 |
 | T-E3 | ApplicationTemp (CVE) | 동일 호스트 공격자 | Boot **3.3.1** | **Medium** — 패치 라인 업그레이드 검토 | Boot CVE 스캔 |
 | T-E4 | 직원 생성 시 상위 역할 부여 | account-request role=ogada_*/hq_admin | `enforceRolePolicy` allowlist(submit+approve 이중)·`createUser` 봉인·`@PreAuthorize` | **Low** — ogada_*/sysadmin/hq_admin 차단·branch_admin allowlist·V161 hq_admin UNIQUE (US-R03·account-request 20차) |
-| T-E5 | live-e2e bootstrap 무인증 hq_admin | `LIVE_E2E_BOOTSTRAP_ENABLED=true` 노출 환경 | `@ConditionalOnProperty` 기본 off · `ProductionSecretValidator` prod 거부 · password 필드 0 · blank credential fail-fast · probe default cred 허용(QA-B95) | **Low** — SEC-D29 **Mitigated** |
+| T-E5 | live-e2e bootstrap 무인증 hq_admin | `LIVE_E2E_BOOTSTRAP_ENABLED=true` 노출 환경 | `@ConditionalOnProperty` 기본 off · `ProductionSecretValidator` prod 거부 · password 필드 0 · blank credential fail-fast · probe default cred 허용(QA-B95) · 24차 HealthControllerTest G21 seed detail lock 추가 | **Low** — SEC-D29 **Mitigated** |
+| T-E6 | staff access key brute force | 직원 휴대전화 미보유 공격자가 `/auth/password/reset`에 6-digit 키 시도 | `AuthRateLimitService` ip 20/min·token 8/min · `PasswordResetTokenEntity` 단일활성(invalidateActiveTokensForUser) · 60분 TTL · SHA-256 hash 비교 · 키스페이스 10^6 | **Low** — SEC-D36 Monitor(키 길이/charset 확장 검토·현행 rate limit으로 P(match)≈0.05%/60분/토큰) |
 
 ---
 
@@ -455,7 +491,7 @@ flowchart TB
 | 운영 시크릿은 시크릿 매니저 | **부분 충족** (develop prod: `ProductionSecretValidator` / test stale) | test merge + 시크릿 매니저 |
 | 파일럿 사용자 기기 무악성 | 낮음 | 보호자 모바일 고려 |
 | Spring Boot 단일 JVM 또는 키 공유 | **부분 충족** (develop prod 키 필수; test stale) | test merge |
-| 검증 코드 = 배포 산출물 | **충족** — `origin/test`=`598d108`/`c7c8f07` P0 포함 · v2/v1.2.1/v1.3 feature merge 잔여(198+241) | SEC-D18 develop→test TSR merge |
+| 검증 코드 = 배포 산출물 | **충족** — `origin/test`=`598d108`/`ab4de83` P0 포함 · v2/v1.2.1/v1.3 feature merge 잔여(551+218·SEC-D18 더 악화 +21/+31) | SEC-D18 develop→test TSR merge + origin push |
 
 ---
 
@@ -479,12 +515,17 @@ flowchart TB
 | 5 | T-T2 / SEC-D34 | 3 | 요양보호사 import 확장자/Content-Type 검증 |
 | 6 | T-I15 / SEC-D26 | 3 | form-data dev 패치 또는 CI 격리(1 HIGH) |
 | 7 | T-I12 / SEC-D22 | 3 | parent repo `.gitignore` `*.env` 커밋 |
-| 8 | T-E5 / SEC-D29 | 2 | live-e2e prod misconfiguration 방지(validator·password 0) |
+| 8 | T-E5 / SEC-D29 | 2 | live-e2e prod misconfiguration 방지 — 25차 3-form env 봉인(SEC-D29 진전)·SEC-D38 신규(enforce-readiness 오설정) |
 | 9 | T-I6 백업 암호화 | 4 | 인프라 백업 암호화 |
-| 10 | T-I11 / SEC-D21·D32 | 2 | `payer_name`·현금영수증 `identifier_value` at-rest 암호화(V159 무결성은 보강) |
+| 10 | T-I11 / SEC-D21·D32 | 2 | `payer_name`·현금영수증 `identifier_value` at-rest 암호화 |
 | 11 | T-I16 / SEC-D30 | 2 | prod health `activeProfiles` 마스킹 |
-| 12 | SEC-D35 (process) | 2 | **V175 커밋 + develop 커밋·push**(양 스트림 WT DIRTY·무결성 제약 유실 방지) |
-| ✅ | V172/V173/V174·readiness probe·annual-leave/leave-ledger RBAC·j03 placeholder 거부·ClientService 주소 마스킹·live-e2e 격리·SEC-D17·D19·D14·D23·D24 | ↓ | develop `5fd12dd`/`426d63a` Pass/보안 긍정 |
+| 12 | SEC-D37 | 2 | `notifications.payload_json` 평문 access key purge·redact 정책(24차 carry) |
+| 13 | SEC-D36 | 2 | staff access key 키 길이/charset 확장 검토(현행 rate limit 의존·24차 carry) |
+| 14 | SEC-D38 | 2 | **(NEW 25차)** prod `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 명시·운영 가이드 문서화 |
+| 15 | SEC-D39 | 2 | **(NEW 25차)** CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토 |
+| 16 | SEC-D18 (악화) | 2 | **origin/test push**(572 BE/241 FE·+21/+23 vs 24차·BE local test SYNCED는 부분 완화) |
+| 17 | SEC-D35 (closed) | 1 | WT CLEAN·V175 커밋(24차 closure·25차 유지) |
+| ✅ | G-NHIS-MASKED-NAME-FALLBACK(단일후보 강제·PII reveal 차단)·V178 9종 CHECK(DB-level defense-in-depth)·G-REPORT-DENSITY branch filter(org+branch scope)·G16 RBAC fix·ProductionSecretValidator 3-form 봉인(SEC-D29 진전)·G2b CMS 가상계좌·다계좌(RBAC+멱등)·BE TSR local test SYNCED·FE 7종+ API apiFetch(SEC-D17 유지)·G-SMS/dispatchReady/HealthControllerTest/V172~V175·SEC-D17·D19·D14·D23·D24 | ↓ | develop `49fe2e7`/`2c9abd6` Pass/보안 긍정 |
 
 ---
 
@@ -509,4 +550,4 @@ flowchart TB
 3. 파일럿 배포 시 MFA 요구 여부
 
 ---
-*다음 갱신: V175 커밋 + 양 스트림 develop 커밋·push(SEC-D35·SEC-D18 530+187)·poi-ooxml 상향(SEC-D4·4 파서)·CSV export 수식 sanitize(SEC-D33)·요양보호사 import 검증(SEC-D34)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·form-data dev 패치(SEC-D26)·`.gitignore` `*.env` 커밋(SEC-D22) 또는 신규 src 변경 후*
+*다음 갱신: origin/test push(SEC-D18 572+241·악화)·enforce-bootstrap-readiness prod 설정(SEC-D38)·CMS 가상계좌 guardian 확장 설계(SEC-D39)·staff access key payload redact·purge 정책(SEC-D37)·access key 키 길이/charset 확장 검토(SEC-D36)·poi-ooxml 상향(SEC-D4·4 파서)·CSV export 수식 sanitize(SEC-D33)·요양보호사 import 검증(SEC-D34)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·form-data dev 패치(SEC-D26)·`.gitignore` `*.env` 커밋(SEC-D22) 또는 신규 src 변경 후*

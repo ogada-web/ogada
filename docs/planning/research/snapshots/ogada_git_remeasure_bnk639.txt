@@ -1,0 +1,216 @@
+BNK-639 ogada git 실측 8h+ 교차검증·갭 우선순위 (cross-verify · gap priority) — 2026-06-25T23:42:00Z (KST 익일 08:42)
+
+================================================================
+1. ogada submodule git HEAD 실측 — FE+1 · BE+1 cross-stream (양쪽 WT CLEAN)
+================================================================
+
+FE develop  : @fcc16ca4d32d8f2a8544cfc7b0a6709e5f734180  WT CLEAN  ahead 248 vs origin/test (ab4de83)
+   BNK-638 @4bbd54a → HEAD +1
+   fix(v1.2.1/QA-B95): expose bootstrap enable hints in live skip diagnostics
+   diff 4bbd54a..fcc16ca  2-file +48
+     src/e2e/liveConfig.js              +19
+     src/test/liveE2eHarness.test.js    +29
+   commit body (verbatim):
+     "Surface live bootstrap-enable hints in skip diagnostics whenever operation
+      readiness is blocked so QA-B95 runtime blockers are actionable, and lock
+      behavior with a focused regression test."
+   → QA-B95 cluster 12th layer — BNK-625~639 12-layer 누적
+     (BNK-625 8th singular blocker normalize → 626 9th neutral marker → 627 readiness gating →
+      630 string-form blocker normalize → 631 probe-state blocker normalize → 632 backend probe
+      bootstrap-unavailable filter → 633 bootstrap-unavailable recoverable → 636 g21 seed detail →
+      637 BE expose recovered-auth → 638 FE consume recovered-auth → 639 FE expose bootstrap
+      enable hints in skip diagnostics → blockers actionable)
+
+BE develop  : @68b08b008a37ae3c0901ce2a75c109d9ca73153a  WT CLEAN  ahead 576 vs origin/test (598d108)
+   BNK-638 @d06e3f1 → HEAD +1
+   feat(v2/G-STAFF-COMMITTEE-MEETING-LOG): add staff committee meeting CRUD API
+   diff d06e3f1..68b08b0  12-file +1059
+     V181__staff_committee_meeting_logs_us_r08.sql                                      +69
+     staffcommitteemeeting/persistence/StaffCommitteeMeetingLogEntity.java             +197
+     staffcommitteemeeting/persistence/StaffCommitteeMeetingLogRepository.java          +28
+     staffcommitteemeeting/domain/StaffCommitteeMeetingService.java                    +264
+     staffcommitteemeeting/api/StaffCommitteeMeetingController.java                    +80
+     staffcommitteemeeting/api/CreateStaffCommitteeMeetingRequest.java                  +16
+     staffcommitteemeeting/api/UpdateStaffCommitteeMeetingRequest.java                  +16
+     staffcommitteemeeting/api/StaffCommitteeMeetingResponse.java                       +23
+     staffcommitteemeeting/api/StaffCommitteeMeetingListResponse.java                    +6
+     test  staffcommitteemeeting/domain/StaffCommitteeMeetingServiceTest.java          +188  NEW
+     test  routing/MustApiEndpointRoutingTest.java                                     +87
+     test  security/RoleBasedControllerAccessTest.java                                 +85
+   commit body (verbatim):
+     "Carefor 8-6 / ezCare FAQ 21601 demand-signal — V181 staff_committee_meeting_logs
+      with OPERATING_COMMITTEE/GUARDIAN/WELFARE_COMPENSATION types, draft/finalize
+      workflow, and routing/RBAC regression tests."
+   ↳ verbatim citation: BNK-629 cross-walk (carefor 8-6) + BNK-633 가정 번복 (FAQ 21601 83,875 hit demand-signal)
+     = BNK→COD traceability 4th closure 명시적 cite
+
+merge gate = 248 + 576 = 824 (+2 cross-stream vs BNK-638 822)
+
+KPI (BNK-638 → BNK-639 delta)
+   FE Route                 118 (117 <Route\b + 1 <Routes>)         carry
+   FE page                  93  (92 *Page.jsx + RootRedirect)       carry
+   FE test                  479 (196 *.test.js + 283 *.test.jsx)    carry (FE +1 only modified existing test)
+   BE 마이그레이션         V1–V181  (max V181)                       +1 NEW (V181 staff_committee_meeting_logs)
+   BE Test FILE             272 (271 Test.java + 1 Tests.java)      +1 NEW (StaffCommitteeMeetingServiceTest.java)
+   BE @Test                 1967                                     +10 (3 test files +188/+87/+85L 흡수)
+   모듈 커버               80.86% (23.45/29)                        carry pending FE wire
+                              ↳ 8-6 ❌→△ BE-only micro-closure (module 8 0.85 → ~0.89 after FE wire 적용)
+   reports Route            28                                        carry
+
+================================================================
+2. ★★★ G-STAFF-COMMITTEE-MEETING-LOG (BNK-633 가정 번복 P3→P1) → BE FULL CRUD LANDED
+    = 4th BNK→COD traceable closure (6-cycle BNK-633→639)
+================================================================
+
+타임라인 (BNK→COD traceability chain):
+  BNK-629  (2026-06-25T16:55Z)  carefor func.php Module 8 cross-walk 발굴
+                                  8-6 "위원회/보호자 회의록" ❌ (0/13 leaf) — 신규 P3 candidate
+                                  "G-STAFF-COMMITTEE-MEETING-LOG" 「facility-admin 서식 MVP out-of-scope」 가정
+  BNK-633  (2026-06-25T19:35Z)  ezCare 도움말 /help/faq.ez taxonomy 추출
+                                  top-30 #1 hit = rowid 21601 「직원 회의록을 전산으로 작성, 관리」
+                                  83,875 hit (도움말 1위) → 「out-of-scope」 가정 번복
+                                  → P3→P1 격상 권장 (planner 결정 question)
+  BNK-637  (2026-06-25T22:30Z)  P1 carry 명시 "G-STAFF-COMMITTEE-MEETING-LOG(BNK-633 도움말 #1)"
+  BNK-639  (2026-06-25T23:09Z)  coder BE FULL CRUD LANDED — 12-file +1059L
+                                  commit msg verbatim cite "Carefor 8-6 / ezCare FAQ 21601 demand-signal"
+                                  → BNK→COD 4번째 traceable closure (in ~7h)
+
+  cf. 이전 BNK→COD closures:
+    1st  BNK-620 → BNK-623   G-REPORT-DENSITY M5 program report (4-cycle)
+    2nd  BNK-623 → BNK-627   group-history-fill (4-cycle)
+    3rd  BNK-616 → BNK-617 → BNK-618   G-REFUND-FEE 5-layer (3-cycle)
+    4th  BNK-633 → BNK-639   G-STAFF-COMMITTEE-MEETING-LOG (6-cycle·도움말 #1 demand-signal)  ★ NEW
+
+V181 schema (`staff_committee_meeting_logs`) — defense-in-depth integrity:
+  * 3-type CHECK: OPERATING_COMMITTEE | GUARDIAN | WELFARE_COMPENSATION
+                  = 「운영위원회·보호자 회의·복지노사위원회」 (carefor 8-6 정합)
+  * draft/finalize workflow CHECK: (DRAFT, finalized_at IS NULL) OR (FINALIZED, finalized_at IS NOT NULL)
+  * non-empty CHECK 4종: title·meeting_content·meeting_result·attendee_names (length(trim(...))>0)
+  * updated_at >= created_at CHECK (time travel 차단)
+  * fk_..._branch_org 3-way FK (V179 패턴·cross-branch raw SQL INSERT 차단)
+  * fk_..._created_by_org 3-way FK (actor org 게이트)
+  * uq_..._org_id (organization scope UK)
+  * 2 index: (org, branch, meeting_date DESC) + (org, branch, type, meeting_date DESC) — list/filter UX
+  * trg_..._set_created_by (BEFORE INSERT actor backstop — V49 패턴)
+
+API surface (`/api/v1/staff/committee-meetings`):
+  GET  /                            listMeetings (from, to, meetingType filter)   RBAC HQ_ADMIN|BRANCH_ADMIN|SOCIAL_WORKER
+  GET  /{meetingId}                  getMeeting                                    RBAC HQ_ADMIN|BRANCH_ADMIN|SOCIAL_WORKER
+  POST /                             createMeeting (draft)                         RBAC HQ_ADMIN|BRANCH_ADMIN|SOCIAL_WORKER
+  PATCH /{meetingId}                 updateMeeting (draft only)                    RBAC HQ_ADMIN|BRANCH_ADMIN|SOCIAL_WORKER
+  POST /{meetingId}/finalize         finalizeMeeting (출력·보관 확정)              RBAC HQ_ADMIN|BRANCH_ADMIN|SOCIAL_WORKER
+
+경쟁 4종 cross-walk:
+  ogada @68b08b0     ✅ BE FULL CRUD (V181 + 5-route + RBAC 3-role + 3-type)        FE wire ❌ 0 hit (NEW P3 partial closure candidate)
+  carefor 8-6         ✅ 위원회/보호자 회의록 (정적 메뉴 leaf · BNK-629 cross-walk)
+  ezcare 21601        ✅ 도움말 #1 「직원 회의록을 전산으로 작성, 관리」 83,875 hit (BNK-633)
+  silverangel         △ 평가지표 일부 cover (운영위원회·보호자 동의 area)
+  longterm (NHIS)     N/A (운영규정 - 표준운영지침 PDF 별도)
+
+신규 P3 partial closure candidate (BNK-639):
+  G-STAFF-COMMITTEE-MEETING-FE-WIRE — BE CRUD landed · FE 0 hit
+  expected pattern: G-EASYPAY (BE landed BNK-612 → FE wire BNK-621 = 9-cycle)
+                    또는 G-REFUND-FEE (BE landed BNK-616→617 → FE wire BNK-618 = 2-cycle)
+  recommend: ux_designer 「3-type tab」 layout + 「draft → finalize」 workflow + 「출력」 hwp/pdf 옵션
+              StaffCommitteeMeetingPage.jsx (가설) + Route /staff/committee-meetings + services.js
+              committeeMeetings.js (FE service wrapper) + tests
+
+================================================================
+3. ★★ QA-B95 cluster 12th layer — FE bootstrap enable hints in skip diagnostics (확인)
+================================================================
+
+  FE @fcc16ca  fix(v1.2.1/QA-B95): expose bootstrap enable hints in live skip diagnostics
+    src/e2e/liveConfig.js              +19
+    src/test/liveE2eHarness.test.js    +29  ← regression lock
+
+  목적: live readiness 가 차단(blocked)됐을 때, bootstrap enable hint 를
+        skip diagnostics 에 노출 → QA 가 「blocked 이유」를 보고 어떤 toggle 을
+        켜면 unblock 되는지 actionable 하게 안내.
+
+  BNK-625~639 QA-B95 cluster 12-layer 누적 history:
+    8th  BNK-625  singular operationBlocker key normalize  (FE)
+    9th  BNK-626  neutral operation blocker markers ignore (FE)
+    10th BNK-627  bootstrap readiness enforcement          (BE)
+    11th BNK-630  string-form live blocker normalize       (FE)
+    12th BNK-631  probe-state blocker normalize            (FE)
+    13th BNK-632  bootstrap service availability expose    (BE)
+    14th BNK-633  bootstrap-unavailable recoverable filter (FE)
+    15th BNK-636  g21 seed detail refine + V180 integrity  (BE)
+    16th BNK-637  recovered-auth mode expose               (BE)  [10th in BNK-637 numbering]
+    17th BNK-638  recovered-auth readiness consume         (FE)  [11th]
+    18th BNK-639  bootstrap enable hints in skip diag      (FE)  [12th]  ★ NEW
+
+  ※ counter 합: 18(rolling cluster history) vs 12(BNK-637 numbering 기준)
+     본 cycle 기준 12th layer = BNK-638 11th(consume) → BNK-639 12th(diagnostic surface).
+
+================================================================
+4. ★★ 백본 4종 오프라인 md5 zero-drift 재실측 (확인 · network-independent carry)
+================================================================
+
+  NHIS #44                       nhis_jo44.html                      c886ff1f  7,572B    IDENTICAL  (live HTTP via R&D endpoint 404 transient·disk canonical 보존)
+  NHIS #44 (live carry)          nhis_jo44_live_bnk584.html          c886ff1f  7,572B    IDENTICAL  (same md5 as canonical)
+  silverangel essential          silverangel_essential.html          c79c1be3  131,664B  IDENTICAL
+  silverangel extra              silverangel_extraService.html       f9c5d877  81,637B   IDENTICAL
+  carefor func.php canonical     carefor_func.php                    6226e6eb  98,328B   IDENTICAL  (107-leaf 정본·8-6 위원회/보호자 회의록 leaf 정합)
+  law mohw 247 (장기요양)        law_mohw_2025_247_admRulInfoP.html  6c32b661  78,450B   IDENTICAL
+
+  ogada `TransportServiceFeeService` NHIS #44 러-1~4 경쟁 4종 유일 full-stack 우위 395차 carry
+  (편도50%·1일1회·수급자 부담 X·별지 제22호 verbatim 불변)
+
+================================================================
+5. ★ 잔여 갭·우선순위 재정렬 (BNK-639 cross-verify)
+================================================================
+
+closure (BNK-639):
+  ✅ G-STAFF-COMMITTEE-MEETING-LOG BE FULL CRUD (V181·5-route·RBAC 3·3-type·draft/finalize)
+     → P1 carry BNK-633 → BE LANDED — FE wire 1건 carry로 P3 partial split
+
+신규 candidate (BNK-639):
+  P3 「가정」 G-STAFF-COMMITTEE-MEETING-FE-WIRE
+     FE Page (3-type tab + draft/finalize + 출력) + Route + services + tests
+     expected close: 2~9 cycle (G-REFUND-FEE 2-cycle 또는 G-EASYPAY 9-cycle 패턴)
+
+P0/P1 carry (4축+leave-ledger 재오픈 0 — 89-cycle BNK-549~639):
+  - P1 carry: M11/M12 결제·재무 클러스터
+      ezCare K008+K012~K014 37.6% view + BPO 외주 위탁법인 (rowid=434) demand-signal
+      ogada `/payroll/*`·`/accounting/*` 0 route + 외주 BPO 어댑터 0
+      planner 결정 question carry「in-app 모듈 vs BPO 어댑터」(BNK-637 PLAN_NOTES)
+      closure 시 +6.9pp (80.86%→87.76%)
+
+P3 carry:
+  - G-DB-INTEGRITY-DEFENSE-DEPTH (BNK-635 V180 + V181 carry — 표층 API + 심층 DB 2중 게이트)
+  - G-VENDOR-ONBOARDING-CHECKLIST (BNK-634)
+  - G-CASE-MANAGER-EXECUTION-LOG (BNK-637 신규 「가정」)
+  - G-STAFF-COMMITTEE-MEETING-FE-WIRE (BNK-639 신규 partial closure)
+
+미확인 carry 4:
+  - carefor LIVE timeout (HTTP 000 44-cycle, BNK-558~639) — Wayback 검증 정상
+  - longterm 502 단기보호 46-cycle 「미확인」
+  - longterm 610 통합재가 oscillation
+  - ezcare /new.ez 비로그인 70B refresh stub 5-cycle (agents.yaml §2 역공학 금지 area)
+
+================================================================
+6. per-cycle minimum 충족 (agents.yaml reverse_engineering.per_cycle_minimum 4종)
+================================================================
+
+  ✅ 신규 증거 URL/재실측 1건+ : ogada submodule git 실측 — FE @fcc16ca + BE @68b08b0
+                                  + V181 신규 + 백본 4종 md5 재계산 + BE 12-file +1059L diff
+  ✅ 메뉴/필드/워크플로 1블록+ : V181 staff_committee_meeting_logs 3-type CHECK
+                                  + draft/finalize workflow + 5-route RBAC + 2-index list/filter
+                                  + carefor 8-6 ↔ ezCare 21601 cross-walk full-stack
+  ✅ COMPETITOR_MATRIX 1행+ 갱신 : @fcc16ca/@68b08b0 baseline + carefor 8-6 ❌→△ BE-only 행 갱신
+  ✅ BENCHMARK_REPORT §소절 + 차수 메모 : BNK-639 § 추가
+
+================================================================
+7. tester / planner 액션 권장
+================================================================
+
+  tester  : FF merge 824 가속 권장 (양쪽 WT CLEAN·신규 routing/RBAC test 2-file 흡수·@Test +10)
+  ux_designer : G-STAFF-COMMITTEE-MEETING-FE-WIRE 후보 — StaffCommitteeMeetingPage 3-type tab + draft/finalize
+                workflow + 「출력」(hwp/pdf) 옵션 설계 (BNK-637 FAQ 21705 「빈서식 출력」 UX 패턴 carry)
+  coder   : FE wire 우선순위 — `/staff/committee-meetings` Route + 5-API services.js + Page.jsx + tests
+            (G-REFUND-FEE 2-cycle 패턴 권장 · 도움말 #1 demand-signal 사용자 가치 높음)
+  planner : G-STAFF-COMMITTEE-MEETING-LOG P1 closure 부분 인정 (BE FULL) → FE wire 신규 P3 split
+            BNK-633「P1 격상 권장」 → ★★★ in-cycle BE 완료 = BNK→COD 4번째 traceability win
+            새로운 P1 cycle = M11/M12 결제·재무 BPO 어댑터 단일 lever 1순위 carry
+

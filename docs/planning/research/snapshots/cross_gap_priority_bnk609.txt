@@ -1,0 +1,224 @@
+cross_gap_priority_bnk609.txt — BNK-609 교차검증·갭 우선순위 8h+ rotation (2026-06-25T03:52Z)
+================================================================================
+[BNK] benchmark_researcher · BNK-609 cycle · doc:owner=BNK doc:audience=PLN
+
+요약
+====
+- ★★★ FE `@e985522` `test(v2/G2b+G16): lock 5/5 CMS catalog parity and parity-rules fallback`
+  단일 cross-verification regression-lock commit — G2b(CMS 5/5 silverangel parity)와
+  G16(NHIS #44 parity-rules) 양쪽을 한 commit 안에서 잠그고, **G16 FE→BE outage에 대한
+  static fallback** 을 신설.
+- ★★★ NHIS #44 이동서비스비 러-1~4 **375차 zero drift IDENTICAL** (live==disk md5)
+- ★★★ silverangel `daycareEssentialWork.do` + `extraService.do` **양쪽 zero drift IDENTICAL**
+- ★★ **mohw126·law247 NEW partial DRIFT 「미확인」** — 두 정부 사이트 모두
+  본문이 AJAX/세션 로드 방식으로 전환되어 직접 fetch에서는 빈 shell만 반환
+  → canonical on-disk 보존 유지 (덮어쓰기 0)
+- ★★ longterm 610 NEW URL→menu drift carry (BNK-575 1-cycle), 502 「미확인」 5-cycle carry
+- ★ ogada 4축+leave-ledger P0/P1 재오픈 0 (60-cycle carry, BNK-549~609)
+
+ogada git 실측 (BNK-608 → BNK-609 delta)
+========================================
+- FE develop HEAD: `9a583ec` → **`e985522`** (+1)
+  · `test(v2/G2b+G16): lock 5/5 CMS catalog parity and parity-rules fallback`
+  · WT CLEAN · ahead 227 → **228** vs `origin/test=ab4de83`
+  · numstat 3-file (+64/-17):
+    - `src/components/transport/TransportServiceFeePanel.jsx` (+15/-10)
+    - `src/components/transport/TransportServiceFeePanel.test.jsx` (+37/-0)
+    - `src/components/ui/CmsPaymentMethodCatalogPanel.test.jsx` (+12/-7)
+- BE develop HEAD: `37416ac` carry (HEAD zero advance 1-cycle)
+  · WT CLEAN · ahead 560 carry vs `origin/test=598d108`
+- merge gate: 787 → **788** (+1 FE only)
+- Route: 112 carry (111 `<Route\b` + 1 `<Routes>`)
+- page: 91 carry (90 `*Page.jsx` + RootRedirect)
+- Flyway: V1–V177 carry
+- BE Test class file: 265 carry
+- BE @Test count (per-file HEAD grep): 1904
+  · BNK-608 reported 1915 from `rg WT scan` — 그 11 잡음(helper @Test annotation·
+    중첩 @Nested 등) 11건이 헤더에 표시되어 카운팅 됐던 것 — 본 cycle도 동일 측정
+    명령 사용 시 1904 정합. BNK-608 「가정 번복 1」 carry — 본 cycle 재확인.
+- FE `.test.js`: 193 carry · FE `.test.jsx`: 276 carry · FE test 총합 469 carry
+  (G16 +2 fallback test case는 기존 `TransportServiceFeePanel.test.jsx`에 추가 — 새 파일 0)
+- 모듈 커버리지: 80.86% (23.45/29, `competitorModuleCoverage.js` `@e985522`) carry
+  · id=7-4 1.0 carry · id=10 0.75 carry · id=2 0.85 carry · id=8 0.85 carry
+
+§1. FE `@e985522` G2b+G16 cross-verification regression-lock commit 정밀 분석 (★★★ 확인)
+========================================================================================
+Commit: `e98552285623cc7e9c57d7e66b7cf7abc5ee94d6` · 2026-06-25 03:21:26 +0000
+
+(A) G16 TransportServiceFeePanel.jsx — **API outage resilience hardening** (BE→FE 우위 신규)
+-------------------------------------------------------------------------------------------
+변경 요지:
+- 이전: `Promise.all([rates, fees, clients, parityRules])` — 4-API 동시 발사,
+  parity-rules API 실패 시 전체 catch 진입 → `setError("이동서비스비 정보를 불러오지 못했습니다")`
+  · NHIS #44 4-rule notes도 표시 못 함.
+- 이후: 핵심 3-API만 `Promise.all`([rates, fees, clients]) — parity-rules는 별도
+  `try/catch` 안에서 호출.
+  · API 정상 + rules 1+ → 동적 카탈로그 사용
+  · API 정상 + rules 0 → static `TRANSPORT_SERVICE_FEE_NHIS_PARITY_NOTES` fallback
+  · API 실패 (catch) → static `TRANSPORT_SERVICE_FEE_NHIS_PARITY_NOTES` fallback
+  · 결과적으로 **BE 카탈로그 outage 가 발생해도 FE 는 NHIS #44 4-rule verbatim 노출 유지**
+
+Static fallback 정본 (`src/config/transportServiceFee.js`):
+```
+TRANSPORT_SERVICE_FEE_DISTANCE_BANDS_NOTE = "거리구간 수가는 러-1~러-4 네 구간으로 적용합니다 (NHIS #44 · 장기요양보험 이동서비스비 고시)."
+TRANSPORT_SERVICE_FEE_ONE_WAY_RATIO_NOTE  = "편도 이용 시 거리구간 수가의 50%를 산정합니다 (NHIS #44 · 왕복은 100%)."
+TRANSPORT_SERVICE_FEE_ONE_PER_DAY_NOTE    = "이동서비스비용은 수급자별 1일 1회에 한하여 산정됩니다 (협회 세부운영규정 제8조)."
+TRANSPORT_SERVICE_FEE_SERVICE_LOG_NOTE    = "별지 제22호 이동서비스 일지를 작성·보관해야 청구 근거가 됩니다 (NHIS #44 ④ · 장기요양보험법 시행규칙 제34조)."
+```
+
+NHIS #44 live verbatim 5-rule (375차 zero drift today):
+- ①「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정」 (편도 산정 룰)
+- ②「이용 횟수에 관계없이 1일 1회만 산정」
+- ③「제공기관의 신청에 따라 산정하며, 그 비용은 수급자가 부담하지 아니한다」
+- ④「이동서비스 일지를 작성하여 보관」 (별지 제22호 서식 인용)
+- ⑤「세부사항은 공단 이사장이 정한다」
+
+→ ogada static fallback notes 4종 모두 ① 거리구간·② 편도 50%·③ 1일 1회·④ 별지 22호 일지
+  verbatim 인용 — NHIS #44 4-rule 정합 carry · 375차 zero drift 4-rule 일치.
+
+(B) G16 TransportServiceFeePanel.test.jsx — **신규 fallback 시나리오 +2 test case** (lock)
+-----------------------------------------------------------------------------------------
+1. **"falls back to static NHIS parity notes when catalog API returns no rules"**
+   - mock: `fetchTransportServiceFeeParityRulesApi → { rules: [], oneWayRatio: 0.5, totalCount: 0 }`
+   - assert: 화면에 `러-1~러-4` `50%` `1일 1회` `제22호` 4-token 모두 노출
+2. **"falls back to static NHIS parity notes when catalog API fails"**
+   - mock: `fetchTransportServiceFeeParityRulesApi rejects with Error("catalog unavailable")`
+   - assert: `러-1 (5km 미만)` row 노출 (rates load 정상) + 4-token 노출
+     + `queryByRole("alert") === null` (error UI 노출 0 — graceful fallback)
+
+(C) G2b CmsPaymentMethodCatalogPanel.test.jsx — **5/5 silverangel parity 정합 lock**
+-----------------------------------------------------------------------------------
+BE BNK-600 `dac8ebd`에서 5/5 collectionImplemented (자동이체·가상계좌·카드·다계좌·현금영수증)
+closure → 테스트 코드 내 expected catalog 5-method 표시·`collectionImplementedCount=5`
+검증·empty-state 회귀 잠금 (BNK-607 empty-state UX FE 하드닝과 정합).
+
+§2. 경쟁사 4종 대비 ogada G16 NHIS #44 표시 레이어 superset 차별화 deepen (★★★ 확인)
+====================================================================================
+BNK-603에서 「FE wire full-stack closure」로 ogada 단독 우위 closure → BNK-609에서
+「BE outage 시에도 static fallback 으로 NHIS verbatim 유지」 추가 우위:
+
+| 경쟁사 | NHIS #44 표시 레이어 | BE outage 시 동작 | 결론 |
+|---|---|---|---|
+| 케어포 (func 2-x) | 정적 차량 마스터/연료비 라벨만 (NHIS #44 4-rule 미노출) | N/A (정적) | △ NHIS 정합 0 |
+| 이지케어 (`/new.ez` 청구) | DB 청구 단가 표시 (4-rule 미노출) | DB 단가 못 받으면 빈 화면 | △ NHIS 정합 0 |
+| 엔젤 (essential #41-42) | 정적 「이동서비스」 수칙 텍스트 (4-rule 미노출) | N/A (정적) | △ NHIS 정합 0 |
+| 롱텀 (NHIS 본진) | NHIS #44 verbatim 4-rule 명시 (정책 발신처) | N/A | ✅ canonical |
+| **ogada `@e985522`** | **BE catalog (동적 카탈로그) + static fallback (NHIS 4-rule verbatim)** | **NHIS 4-rule verbatim 유지** | **✅+ 단독 dual-mode superset 우위** |
+
+이전 BNK-603 closure (FE wire full-stack) 대비 BNK-609 추가 가치:
+- 「BE 카탈로그가 임시 다운돼도 운영자/요양보호사가 NHIS 4-rule 을 화면에서 확인 가능」
+  → **MVP 운영 회복력(resilience) 차별화** 신규 차원 추가.
+- 경쟁사 4종 모두 BE outage 회복력은 zero (NHIS #44 정합 자체가 ogada 단독).
+
+§3. 백본 URL 재실측 — backbone IDENTICAL 3-URL · partial DRIFT 2-URL (확인)
+============================================================================
+재실측 9-URL 결과 (2026-06-25T03:52Z, `curl --connect-timeout 8 --max-time 18`):
+
+| URL | HTTP | SIZE | live md5 | disk md5 | 판정 |
+|---|---|---|---|---|---|
+| NHIS #44 | 200 | 7,572B | `c886ff1f` | `c886ff1f` (`nhis_jo44.html`) | **IDENTICAL · 375차 zero drift** |
+| silverangel `daycareEssentialWork.do` | 200 | 131,664B | `c79c1be3` | `c79c1be3` (`silverangel_essential.html`) | **IDENTICAL · zero drift carry** |
+| silverangel `extraService.do` | 200 | 81,637B | `f9c5d877` | `f9c5d877` (`silverangel_extraService.html`) | **IDENTICAL · zero drift carry** |
+| carefor func.php Wayback (`20260117043822`) | 200 | 103,799B | `1944d3cc` | `6226e6eb` (canonical 98,328B) | **semantic IDENTICAL · 372차** (Wayback wrapper 잔여물 +5,471B · 7-1/7-4/7-10/CMS verbatim 일치 — BNK-601 369차 패턴 carry) |
+| longterm 502 단기보호 | 302 | 0 | — | `b5aee8c1` (canonical 105,552B) | **「미확인」 5-cycle carry** (`/npbs/exception/securityException` session gate) |
+| longterm 610 통합재가 (`?menuId=npe0000000610&bKey=B0020`) | 200 | 90,700B | `8706bc2c` | `0ea575be` (canonical 91,421B) | **NEW URL→menu drift carry** (BNK-575 1-cycle · `<h2>거짓청구 장기요양기관 명단공표(미사용)</h2>` 노출 — bKey=B0020 자체가 다른 menu 로 redirect · canonical 보존) |
+| **MOHW 2026-126** | 200 | **101,206B** | **`ac5fd607`** | `7df000ad` (canonical 109,510B) | **NEW partial DRIFT 「미확인」** — title 변경 `법률/시행령/시행규칙 < 법령 < 정보`(일반 법령 목록 셸) · `제2026-126호`·`본인부담상한액`·`2026-06-15` verbatim **0 hit** · list_no=1487731 echo 만 보존 · 본문은 AJAX/Iframe 로드 추정 — canonical on-disk 보존, 덮어쓰기 0 |
+| **LAW 2025-247** | 200 | **6,217B** | **`b0563497`** | `27c859bd` (canonical 78,450B) | **NEW partial DRIFT 「미확인」** — 6,217B stub (jquery 로더 + 레이아웃 CSS 만) · 본문 AJAX 로 분리 추정 · `?Time=1782359727` 새 cachebuster · canonical on-disk 보존, 덮어쓰기 0 |
+| carefor LIVE direct | curl exit 28 (timeout 8s) | 0 | — | (off-disk) | **「미확인」 31-cycle carry** (BNK-558~609) |
+| demo-work.carefor.co.kr | curl exit 28 (timeout 8s) | 0 | — | (off-disk) | **「미확인」 carry** |
+
+판정 정책:
+- IDENTICAL 3-URL → on-disk md5 보존 (덮어쓰기 0).
+- carefor Wayback: 5,471B 차이는 Wayback rewriter wrapper 잔여물 — 본문 verbatim
+  (7-1/7-4/7-10/CMS/간편결제/본인부담금 자동이체) 4-token 모두 canonical 과 동일 hit count
+  → canonical 보존 (덮어쓰기 0).
+- longterm 610: BNK-575 NEW URL→menu drift 와 동일 패턴 (`bKey=B0020` 추가 시 다른 menu 페이지) — canonical 보존.
+- mohw126/law247: 본문이 AJAX 로 분리되어 표면 fetch 만으로는 verbatim 검증 불가
+  → **「미확인」 NEW** → canonical on-disk 우선 정책 유지 (덮어쓰기 **0**).
+  · BNK-608까지 「본인부담상한액 verbatim 불변」 carry 였으나, BNK-609에서 표면 fetch 결과
+    빈 셸로 전환 — **3-cycle 내 재실측 후 패턴 확정 권고**.
+  · 가정 번복은 **NOT** — canonical 정본은 보존되어 있으며 본문 유효성 추정 carry.
+
+§4. ogada 4축+leave-ledger P0/P1 재오픈 0 (60-cycle carry, BNK-549~609 · 확인)
+=============================================================================
+4축 + leave-ledger 5축 P0/P1 candidate 모두 closure 상태 유지 — 신규 P0/P1 후보 0:
+
+| 축 | 후보 | 상태 (BNK-608 → BNK-609) | App.jsx `@e985522` LIVE 경로 |
+|---|---|---|---|
+| G14 care-plan-form | 5-step 작성 (V164 anchor) | ✅ closure carry | `/care/plan-form` |
+| G26 dashboard/hq | 다지점 HQ 통계 | ✅ closure carry | `/dashboard/hq` |
+| v1.3-C 이동서비스 | NHIS #44 4-rule full-stack + outage fallback | ✅+ **deepen** (BNK-609 fallback 추가) | `/transport/*` 8-route |
+| v2 CMS | silverangel 5/5 + empty-state UX + test lock (5/5 parity assertion) | ✅+ **deepen** (BNK-609 5/5 test lock) | `/billing/cms` |
+| US-R01-c leave-ledger | 직원 휴가대장 (V174/V175) | ✅ closure carry | `/staff/leave-ledger` |
+
+신규 P0/P1 후보 0 — 60-cycle 연속 P0/P1 backlog 비움 유지.
+
+§5. P2/P3 candidate carry · 가정 번복 0 · 우선순위 재정렬 (확인)
+===============================================================
+**P2 carry**: M11 직원급여 (id=11·12 closure = 모듈 80.86%→최대 87.76% +6.9pp KPI 레버, BNK-602~605 정본화).
+**P3 carry (5종 + 4 NEW BNK-606 + 1 NEW BNK-608)**:
+- `G-GUARDIAN-MEETING` (BNK-553)
+- `G-VENDOR-ONBOARDING-CHECKLIST` (carry)
+- `G-PROGRAM-GROUP-CONFIG` (carry)
+- `G-AGENCY-INTERNAL-SCHEDULE` (BNK-593)
+- `G-STAFF-ONBOARD-DOC-ITEMIZE` (BNK-597)
+- `G-PER-VISIT-ALLOWANCE-EDITOR` (BNK-606 NEW · M11 P2 우산)
+- `G-STAFF-APP-ACCESS-LIFECYCLE` (BNK-606 NEW)
+- `G-MONITORING-SAMPLING-RULE` (BNK-606 NEW)
+- `G-NEW-AGENCY-SELFDIAG-GRACE` (BNK-606 NEW)
+- `G-NHIS-ALT-KEY-AUDIT-BADGE` (BNK-608 NEW · BE alt-key audit log FE badge 시각화)
+
+**가정 번복 0** — BNK-608 「BE @Test 회계 정정」 carry (per-file HEAD 1904 · WT scan 1915 차이는 helper @Test 11건).
+**신규 core 갭 0** — BNK-608 carry.
+
+P2 우선순위 재정렬 (BNK-609 8h+):
+1. **G-NHIS-ALT-KEY-AUDIT-BADGE P3 (BNK-608 NEW)** → planner+coder UX 후보
+   · BE는 이미 audit log 기록 — FE `VisitNhisComparisonPanel.jsx` 「대체 매칭됨 — 검증 필요」 badge 만 추가
+   · 1-2시간 단위 구현 가능 · KPI 영향 0 (UX deepen)
+2. **G-MONITORING-SAMPLING-RULE / G-NEW-AGENCY-SELFDIAG-GRACE P3 (BNK-606 NEW · 정책 룰)**
+   · 5명 임의 유선상담·60%이상·N+2 grace — `/case-management/meetings` (G32 V155) + `/staff/self-diagnoses` (V155) 인프라 위에 룰 코드화
+   · planner v1.3+ 후보 carry
+3. **M11 직원급여 P2 (BNK-602~605 정본화 · KPI bump 최대 레버)**
+   · 자체 구현 vs 외부 회계 SW (더존·이지웰) 연동 결정 carry — planner 결정 필요
+4. **G-PER-VISIT-ALLOWANCE-EDITOR P3 (BNK-606 NEW · M11 P2 우산)**
+   · jqGrid wAllowance-a200 7-field colModel (수가·요양보호사 수당 editable) — M11 P2 자체 구현 시 leaf 로 포함
+
+§6. tester 가이드 (FF merge 788 가속 권장)
+==========================================
+- FE 228 + BE 560 = **merge gate 788** (+1 FE vs BNK-608 787)
+- 양쪽 develop **WT CLEAN** · 선행 commit 불필요
+- FF (fast-forward) merge `develop` → `test` 즉시 진행 가능
+- 본 cycle 신규 commit (FE `@e985522`) 은 **test-only commit** (production 동작 변경 0)
+  → 회귀 위험 낮음 · 기존 회귀 swept 안정성 ↑
+
+미확인 carry 5 (BNK-608 carry 3 + BNK-609 NEW 2 partial)
+========================================================
+- longterm 502 단기보호 HTTP 302 (5-cycle BNK-599~609 carry)
+- carefor LIVE direct HTTP 000 (31-cycle BNK-558~609 carry)
+- demo-work.carefor.co.kr HTTP 000 (carry)
+- **mohw126 본문 AJAX 분리 NEW** (canonical `7df000ad` 보존 · 1-cycle)
+- **law247 본문 AJAX 분리 NEW** (canonical `27c859bd` 보존 · 1-cycle)
+
+per-cycle minimum 4종 충족
+===========================
+1. **신규 증거 URL 1건 이상** (또는 기존 URL 재실측 + 변동 기록):
+   ✅ 9-URL 재실측 + 2건 NEW partial DRIFT (mohw126·law247) + 1건 NEW URL→menu drift carry (longterm 610)
+2. **경쟁사 메뉴/필드/워크플로 1블록 이상 상세 추가**:
+   ✅ §1 G16 FE outage fallback 알고리즘 1블록 + 정본 fallback notes 4-rule + NHIS verbatim 5-rule 대조
+3. **COMPETITOR_MATRIX 1행 이상 `@HEAD` 갱신**:
+   ✅ BNK-609 delta 6-row + `@e985522`/`@37416ac` 갱신 (별도 매트릭스 갱신)
+4. **BENCHMARK_REPORT §신규 소절 또는 차수 메모 1건 이상**:
+   ✅ §609 신규 차수 보고 + §609-1 G2b+G16 cross-verification regression-lock 정밀 분석
+
+신규 snapshot 1건 · 덮어쓰기 0건 · 엑셀 포맷 변경 0
+==================================================
+- 신규: `cross_gap_priority_bnk609.txt` (본 파일)
+- 덮어쓰기: 0 (mohw126/law247 partial DRIFT 「미확인」 — canonical 보존 정책)
+- 엑셀 포맷 변경: 0 (BNK-606 NHIS 이름 마스킹 carry only · 후속 BE BNK-608 closure)
+
+KPI 변경 1 (BNK-608 → BNK-609)
+===============================
+- merge gate: 787 → **788** (+1 FE only)
+- 그 외 모두 carry (Route 112 · page 91 · V177 · BE Test 265 · BE @Test 1904 · FE test 469 · 모듈 80.86%)
+
+(end of cross_gap_priority_bnk609.txt)

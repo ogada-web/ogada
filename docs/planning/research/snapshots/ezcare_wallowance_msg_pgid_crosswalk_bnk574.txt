@@ -1,0 +1,163 @@
+BNK-574 이지케어 역공학 2–4h — `wAllowance-awData` · `mobile-sendW` 신규 PGID 역공학 extract
+조사일: 2026-06-24T06:15Z · owner=BNK · audience=PLN
+========================================================================
+
+[0] ogada git 실측 baseline (@HEAD develop)
+------------------------------------------------------------------------
+FE develop = 596658a  feat(v1.2.1/FAQ21823): wire employment contract compliance API to dashboard and staff
+  · WT CLEAN · ahead 206 vs origin/test=ab4de83 · BNK-573 carry (HEAD zero advance 1-cycle)
+BE develop = 9aaefa0  feat(v2/FAQ21823): add employment contract compliance API and dashboard counts
+  · WT CLEAN · ahead 542 vs origin/test=598d108 · BNK-573 carry (HEAD zero advance 1-cycle)
+112 Route(111 `<Route\b` + 1 `<Routes>`) · 90 *Page.jsx (+RootRedirect=91)
+V1–V175 · BE *Test.java=254 · @Test loose=1,856(BNK-573 1,845 +11) · FE .test.js+jsx=465(192+273)
+모듈 78.79%(22.85/29) · merge gate = FE206 + BE542 = 748 (BNK-573 동일)
+
+[KPI 가정 번복 1 — 경미한 회계 교정] BNK-573 §573-1 「FE test 469 (196+273)」은 raw `git ls-tree -r develop`
+실측 192+273=**465**(BNK-572 carry, HEAD 596658a 시점에서 변동 0)으로 정정. .test.js +0·.test.jsx +0.
+
+[1] PGID `wAllowance-awData` (NEW) — 모듈 11 직원급여 4-tab 정본
+------------------------------------------------------------------------
+URL: https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-awData (demo 세션 인증)
+HTTP 200 · md5 769af968 · 134,687B · 신규 확보(이전 차수 미확보)
+endpoint: page/wAllowance/json-wAllowance.php
+
+4-tab IA:
+  #tabs-awData-01  수당산정방식 및 분개값
+  #tabs-awData-02  사회보험 가입현황 관리
+  #tabs-awData-03  월급제 수당관리
+  #tabs-awData-04  목욕/간호 건별수당
+
+그리드:
+  · grid-a200, grid-awData-tab-01/02/03/04, grid-awData-tab-02-02, grid-awData-tab-02-03
+  · grid-search-awData-tab-01~04 (탭별 검색 grid 분리)
+
+핵심 colModel name 발췌:
+  · 식별/근태: rowid · code · sCode · sCode2 · sKind_name · worker_kind · worker_kind_name
+              · pay_type(01 시급/02 일급/03 월급/04 건당) · Ym · date_enter · birthdate · state
+  · 수당 컴포넌트: a1 · a2_amount · a3_amount · a7 · a9 · b1
+                · hAmount · hAmount_base · allowance · meal_amount · tAmount_rate
+  · 4대보험: insure4_a · insure4_b · insure4_c · insure4_d
+            · insure4_amount · insure4_info_ext
+  · 세무/분개: income_tax_type · taxField · bungaeType · bungaeType_org · sCode_amount
+
+해석:
+  · 1탭(수당산정방식 및 분개값) — a1/a2/a3/a7/a9/b1 등 임금 컴포넌트별 산식·회계 분개 코드 관리.
+  · 2탭(사회보험 가입현황) — insure4_{a,b,c,d}(국민/건강/고용/산재 4대보험) 가입/말소 ledger,
+    grid-awData-tab-02-02 / -02-03 분리 = "현재 가입현황" + "변경이력" 두 grid.
+  · 3탭(월급제 수당관리) — 시급/일급/건당이 아닌 월급제 직원의 별도 수당 산정 룰.
+  · 4탭(목욕/간호 건별수당) — 케어포 func 4-x 간호·물리치료 leaf와 달리, 이지케어는
+    **목욕(003) + 간호 합산 건별 수당**을 단일 grid로 묶음(BNK-563 schedule-s100 `중증수당 분리 룰` 보조).
+
+↔ ogada `@596658a` 대비:
+  · ogada `competitorModuleCoverage.js` id=11(직원급여) = **0.0 ❌갭** (MVP out-of-scope).
+  · `BillingCompensation`·`StaffPayrollPlaceholder` 등 자체 payroll 도메인 없음 → MVP scope 외 carry.
+  · 본인부담·청구 도메인(`BillingTransaction`·`CashReceipt*`)은 ✅ 완전 — 임금 분개 ledger와 분리 유지.
+  · **갭 아님(도메인 경계)** — 시범 모드에서 PG 외부 회계연동(더존/세무사 SaaS) 권장 carry.
+
+[2] PGID `mobile-sendW` (NEW) — 모듈 9 기관관리 SMS 4-tab + 7 template
+------------------------------------------------------------------------
+URL: https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendW (demo 세션 인증)
+HTTP 200 · md5 4d47d14f · 133,272B · 신규 확보
+endpoint:
+  · page/mobile/json-mobile.php?data=...   (SMS data API)
+  · page/mobile/run-mobile.php?mode=...    (SMS action API)
+  · addService/recruit/json.php?data=...   (CareMatch 구인)
+  · addService/recruit/run.php?mode=...    (구인 액션)
+  · addService/recruit/work24/json.work24.php?data=...  (고용노동부 Work24 통합)
+
+4-tab IA:
+  #tabs-mobile-sendW-01  문자 보내기 → 직원
+  #tabs-mobile-sendW-02  문자 발송내역
+  #tabs-mobile-sendW-03  포인트 사용내역(선불 SMS)
+  #tabs-mobile-sendW-04  받은 쪽지
+
+그리드:
+  · grid-mobile-sendW-01            (직원 발송 대상 선택)
+  · grid-mobile-messageLogG-01      (발송내역)
+  · grid-mobile-pointLog-01         (포인트 사용/충전 ledger)
+  · grid-mobile-reciveLog-01        (수신 쪽지)
+
+7-template `message_kind` 정본(<option value="N">):
+  1  접속키 발송       — 신규 직원 모바일 앱 접근 키
+  11 본인부담         — 수급자 본인부담 청구 안내(보호자/수급자)
+  12 일정표-수급자    — 월간 일정표 발송
+  13 급여제공내역     — 장기요양 급여 제공 결과
+  19 직원인권보호     — 안전·인권 공지(년 1회 의무)
+  21 일정표-직원     — 근무 일정표(요양보호사)
+  22 급여명세서      — 임금명세서(근로기준법 제48조)
+
+핵심 colModel:
+  · 발신: User_ID · aKey · uCode · uKind · uPhone · token · sw · login_count · login_date
+  · 메시지: message · message_org · message_kind · method · num · cnt
+  · 수신/응답: rPhone · rdate · wdate · state · emma_tran_rslt · memo
+  · 결제/포인트: amount · balancePoint · charge · charge_amount · usePoint · goMessage
+  · 직군 필터: wGroup · worker_kind · worker_kind_nm · name
+
+구인(addService/recruit/*) 임베드:
+  · 입력 필드: job_address · job_days · job_location · job_location_code
+             · job_pay · job_time_start · job_time_end · job_time_min
+             · job_type(01 시급/02 일급/03 월급/04 건당)
+  · 외부 통합: work24/json.work24.php → 고용노동부 Work24 API 호출
+  · UI 라벨: "요양보호사 구인" · "기관관리▶부가서비스" 메뉴 진입
+
+해석:
+  · 이지케어는 **알림톡/SMS 라우터를 단일 모듈(mobile-send*)** 로 모듈화 — 직원/수급자/보호자
+    채널별 별도 PGID(`mobile-sendO`/`-P`/`-W`) 분리, 7-template `message_kind` 코드로 분기.
+  · **선불 포인트 모델**(`balancePoint`·`charge_amount`·`usePoint`) = SaaS 자체 billing
+    (BNK-563 `customer-ezc_bill_list`의 `amount_sms` 컬럼과 정합).
+  · `emma_tran_rslt` = 발송 결과 코드(Emma SMS 게이트웨이 추정) — 송신 실패 reason ledger.
+  · 같은 화면에서 **구인공고 + Work24 외부 채용 API** 통합 → 인력풀 확보 = CareMatch 진입 funnel.
+
+↔ ogada `@596658a` 대비:
+  · `competitorModuleCoverage.js` id=10(부가서비스) = **0.5 △부분** carry.
+  · ogada BE `SolapiMessageClient` + `templateId` 매핑(BNK-562 G16 fail-closed) = ✅ 외부
+    Solapi 의존(자체 ledger ❌·자체 결제 ❌·외부 분리 우위) — 운영 부담 ↓.
+  · **7-template `message_kind` 코드 ↔ ogada 알림 카탈로그 cross-walk 후보**:
+        ezCare              ogada 대응                                       판정
+        1  접속키 발송      `StaffOnboardingInvitation` 흐름(US-R01-a)        △ 부분 (SMS 발송 ❌·이메일 ✅)
+        11 본인부담        `CashReceipt*`·`BillingTransaction` 통지            △ 메일/in-app ✅ · SMS 템플릿 ❌
+        12 일정표-수급자  `OutingPlan`·`AttendancePlan` 보호자 알림           △ in-app ✅ · SMS ❌
+        13 급여제공내역   `CareProvisionRecord` 보호자 통지                   △ in-app ✅ · SMS ❌
+        19 직원인권보호  `StaffGrievanceCounseling` annual notice             △ in-app ✅ · SMS ❌
+        21 일정표-직원   `StaffWorkSchedule` push                              △ in-app ✅ · SMS ❌
+        22 급여명세서    `BillingCompensation`(MVP out-of-scope)                ❌ (도메인 경계)
+  · candidate `G-SMS-TEMPLATE-CATALOG` P3「가정」(MVP out-of-scope) — Solapi templateId 6종
+    스토어 검토(부가서비스 deepen 시 모듈 10 0.5→0.7 점진 상승 후보).
+
+[3] 백본 live 재실측 (2026-06-24T06:10Z)
+------------------------------------------------------------------------
+ezcare home  : HTTP 200 · md5 3bb39fde (BNK-572 507198dc) · 106,107B(-13B)
+  mCnt = {1:9279, 2:4598, 3:2353, 4:1820} verbatim 불변 (BNK-572 동일)
+  "9,279개 재가기관이 이지케어를 선택한 이유!" verbatim 불변
+  → cosmetic DRIFT (회전 배너/timestamp only) · 덮어쓰기
+
+ezcare fnc   : HTTP 200 · md5 e1634b0b (BNK-572 282d3a20) · 17,870B 동일
+  "9,351개" verbatim 불변
+  → cachebuster DRIFT · 덮어쓰기
+
+ezcare charge: HTTP 200 · md5 9304b16a (BNK-570 46de7215) · 22,979B 동일
+  33,000 / 25,850 / 55,000 / 10,000 / 2,350 / 500 / 0원 verbatim 불변
+  → cachebuster DRIFT · 덮어쓰기
+
+ezcare /new.ez demo shell: md5 3b084d18 (prior db4d19d9) · 145,313B(+2B)
+  nav 10-module verbatim 불변(1직원·2수급자·3방문일정·4RFID점검·5본인부담·6직원급여·7재무회계·8세무·사회보험·9기관관리·10기관평가)
+  diff = "오늘의 업무 [06월21일→24일]" + widget id 회전 + carematch sidebar JS +3L
+  → cosmetic DRIFT · 덮어쓰기
+
+ezcare top_nav_v2.js: md5 95286775 · 25,470B 동일 (BNK-547 carry 검증)
+
+[4] planner 반영 제안 (BNK-574)
+------------------------------------------------------------------------
+· merge gate **748 carry** (HEAD zero advance 1-cycle) — 양쪽 develop WT CLEAN, tester FF merge 가속 권장.
+· module 11(직원급여) **❌갭→유지** — `wAllowance-awData` 4-tab은 도메인 경계 밖.
+  v3+ 시점 더존/세무SaaS API 외부 연동(`G-PAYROLL-EXTERNAL-INTEGRATION` P3「가정」) carry.
+· module 10(부가서비스 0.5) **deepen 후보** — ezCare 7-template `message_kind` 카탈로그를
+  ogada SMS template registry(`SolapiMessageTemplateCatalog`) 6-종으로 매핑 시 0.5→0.7 상승 가능.
+  · planner P3 candidate `G-SMS-TEMPLATE-CATALOG`(접속키·본인부담·일정표S·급여제공·인권공지·일정표W).
+· **구인 + Work24 통합**(addService/recruit/work24)은 CareMatch 진입 funnel 정본 evidence —
+  ogada `G-CAREMATCH-JOB-POST` P3 carry, MVP out-of-scope.
+· KPI 회계 정정 1건(FE test 469→465) — `competitorModuleCoverage.js`·module 78.79% 영향 0.
+
+가정 번복 1(KPI 회계 정정) · 신규 core 갭 0 · candidate +2(P3「가정」 SMS catalog · payroll external)
+신규 snapshot 3건(wallowance-awData·mobile-sendW·본 extract) · 덮어쓰기 5건(home·fnc·charge·demo shell·top_nav)
+엑셀 포맷 변경 0 · per-cycle minimum 4종 충족(신규 URL 2 · 워크플로 2블록 · matrix 1행 · §574 소절 5건)

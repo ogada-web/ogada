@@ -1,0 +1,104 @@
+BNK-603 — 엔젤·롱텀·규제 4–6h crossverify extract
+조사일: 2026-06-25T00:10:00Z (KST 09:10)
+rotation: 엔젤·롱텀·규제 (silverangel 평가지표 27 목욕·CMS·law.go.kr NHIS #44)
+
+================================================================
+1. ogada baseline 실측 (BNK-603 정본)
+================================================================
+FE develop HEAD : 9aeedfe  feat(v2/G2b+G16): wire CMS collection methods and transport parity-rules API
+                  (BNK-602 @1db75d0 HEAD +1 · WT CLEAN · ahead 225 vs origin/test=ab4de83)
+BE develop HEAD : e12b084  feat(v2/US-O01): add bathing pre/post observation fields and indicator-27 compliance API
+                  (BNK-602 @dac8ebd HEAD +1 · WT CLEAN · ahead 557 vs origin/test=598d108)
+merge gate      : 782 (FE 225 + BE 557 · +2 cross-stream vs BNK-602 780)
+Route           : 112 (111 <Route\b + 1 <Routes>)
+page            : 91 (90 *Page.jsx + RootRedirect.jsx)
+Flyway 최대     : V177 (+1 · V177__bathing_schedules_indicator_27_pre_post_observation.sql)
+BE Test class   : 262 (+1 · BathingScheduleIndicator27ComplianceTest.java)
+FE .test.js     : 193
+FE .test.jsx    : 276 (+1)
+FE test 총합    : 469 (+1 vs BNK-602 468)
+모듈 커버리지   : 80.86% (23.45/29) ← id=7-4 0.65→1.0 KPI bump LANDED (79.66%→80.86% · +1.20pp)
+
+================================================================
+2. ★★★ G16 NHIS #44 이동서비스비 parity-rules FE wire CLOSURE (확인)
+================================================================
+이전: BNK-598~602 "FE wire 0 hit (P2 carry)" — BE catalog API만 존재(@bd1e87e)
+지금: FE @9aeedfe TransportServiceFeePanel.jsx +29L
+  - import fetchTransportServiceFeeParityRulesApi (services.js L961-962
+    → apiFetch("/api/v1/transport/service-fee-parity-rules"))
+  - Promise.all([rate, fee, clientItems, fetchTransportServiceFeeParityRulesApi()])
+  - const rules = Array.isArray(parityPayload?.rules) ? parityPayload.rules : []
+  - <section aria-labelledby="service-fee-nhis-parity-heading">
+      <h3 id="service-fee-nhis-parity-heading">NHIS #44 산정 기준</h3>
+      {parityNotes.map(...)}
+  - .test.jsx +25L
+→ G16 NHIS #44 이동서비스비 = BE(TransportServiceFeeParityCatalog 4-rule
+  러-1~4·편도50%·1일1회·별지 제22호) ↔ FE 소비 = FULL-STACK CLOSURE.
+  경쟁사 4종(케어포·이지케어·엔젤·롱텀) 중 ogada만 #44 표시 레이어 보유 = 차별화 우위.
+
+NHIS #44 live 재실측 (369차 zero drift):
+  URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP : 200 · 7,572B · 0.18s
+  md5  : c886ff1fd1d5ca2cb5dc76d30adde8ba = on-disk nhis_jo44.html IDENTICAL
+  내용 : 제34조·러-1~4 거리구간별·편도 50%·1일 1회만 산정·이동서비스 일지 작성·보관 의무
+
+================================================================
+3. ★★★ G2b CMS silverangel 5/5 parity FE wire CLOSURE + KPI bump LANDED (확인)
+================================================================
+FE @9aeedfe — CmsCollectionPanel.jsx NEW 413L + CmsPage.jsx +54L + config/cms.js +8L
+  - virtual-account (가상계좌 발급) UI + multi-account settlement (다계좌 정산) UI
+  - competitorModuleCoverage.js: { id: "7-4", label: "CMS·간편결제", coverage: 1 }
+    (이전 0.65 → 1.0 · "G2b silverangel 5-method CMS 수납 full-stack" 주석)
+  - competitorModuleCoverage.test.js: "reflects CMS module as full coverage
+    after G2b 5-method collection wire" → expect(cms.coverage).toBe(1)
+→ 4-layer cascade 완전 종결: BE catalog(BNK-595 3/5) → FE wire(BNK-596) →
+  BE 5/5(BNK-600 @dac8ebd) → UXD-162 CSS(BNK-600) → FE retry(BNK-601) →
+  **FE collection UI + KPI bump(BNK-603 @9aeedfe)**. 모듈 80.86% 달성.
+  (BNK-600~602 "KPI bump 후보 3-cycle carry" → BNK-603 LANDED·carry 해소)
+
+silverangel extraService (CMS 5-method) live 재실측 zero drift:
+  URL  : https://www.silverangel.kr/newSilverangel/service/extraService.do
+  HTTP : 200 · 81,637B · 0.37s
+  md5  : f9c5d8773ad0a481be6d7eb4b192d982 = on-disk silverangel_extraService.html IDENTICAL
+  내용 : 효성CMS 5-method(자동이체 250원·가상계좌 300원·카드·항목별 계좌분리·현금영수증)·1600-6859
+
+================================================================
+4. ★★ silverangel 평가지표 27 목욕 BE deepen (BE-only closure · FE wire P2)
+================================================================
+BE @e12b084 — 18-file +537L:
+  - V177 CHECK 제약: status='COMPLETED' → pre_observation_notes·post_observation_notes 둘 다 non-empty 필수
+  - GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=...
+    (PreAuthorize HQ_ADMIN/BRANCH_ADMIN/SOCIAL_WORKER/CAREGIVER)
+  - BathingScheduleIndicator27Catalog: INDICATOR_27 · MONTHLY_MINIMUM_COMPLETED=5
+    · "월 5회 이상 목욕서비스 제공" · "목욕 전·후 수급자 상태 관찰 및 기록"
+  - BathingScheduleIndicator27ComplianceTest NEW 210L
+  - CreateBathingScheduleRequest/UpdateBathingScheduleRequest +pre/post observation
+FE indicator-27 wire grep = 0 hit → BE-only closure · FE wire = 다음 사이클 P2.
+
+silverangel daycareEssentialWork live 재실측 zero drift:
+  URL  : https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+  HTTP : 200 · 131,664B · 0.42s
+  md5  : c79c1be37f947aab04ab7ba35cc7814d = on-disk silverangel_daycareEssentialWork.html IDENTICAL
+  목욕 row verbatim : <td>목욕제공</td><td>필수사항 아니며 목욕서비스 제공시 청구 가능</td>
+
+★ 정밀 구분(중요): silverangel essentialWork 페이지는 목욕을 「평가 연계 기능」으로만
+  표시(필수 아님·청구 가능). "월 5회 이상"·"전·후 상태 관찰"은 silverangel 페이지에 verbatim
+  없음 — 이는 장기요양 정기평가 지표 27 규정에서 유래. ogada V177 CHECK 강제(COMPLETED 시
+  전후 관찰 필수) + monthly min 5 compliance API = **규제 준수 superset**(엔젤 정적 표시 대비 우위).
+  엔젤 essentialWork 「평가지표 27」 verbatim 미기재 → ogada 구현은 규정 근거(NHIS 정기평가)임을 명시.
+
+================================================================
+5. 미확인 carry · DRIFT
+================================================================
+- silverangel essentialWork 경로 정정: /newSilverangel/daycare/daycareEssentialWork.do (HTTP 200)
+  · /newSilverangel/daycare/essentialWork.do = 404 (1,028B 3c93af54 표준 404)
+- longterm 502 단기보호 canonical(74,060) — 「미확인」 carry (이번 사이클 미재측)
+- carefor func.php LIVE direct — 「미확인」 carry (이번 사이클 미재측)
+
+================================================================
+6. planner 반영 제안
+================================================================
+P1) G16 NHIS #44 full-stack closure 확정 — v1.3-C "이동서비스비 법정 4-rule 표시" 마케팅 카피 사용 가능.
+P1) 모듈 KPI 80.86% 정본 — ROADMAP v1.2 KPI(≥60%) 대비 +20.86pp 초과 달성. v1.3 목표 상향 검토.
+P2) 평가지표 27 목욕 indicator-27-compliance FE wire — coder 다음 사이클 후보(BE-only carry).
+P2) M11 직원급여(BNK-602 P2 신규 갭) carry — 본 사이클 변동 없음.

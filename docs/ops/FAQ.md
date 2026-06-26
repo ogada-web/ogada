@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T21:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T23:00:00+09:00 -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-23 (338차 TWR 자동 동기화 — **BE `01edba7`/FE `1193761`·V1–V175·111 route·90 page·모듈 KPI 78.79%·US-D01/D02 ✅·client RBAC hierarchy ✅·addressSearch/detail read ✅**)  
+> **최종 갱신**: 2026-06-26 (378차 TWR 자동 동기화 — **Q722 recovered-auth hint · Q719 G21 seed detail · Q720 neutral blocker · Q721 V180 program group · Q713 deepen · baseline `d06e3f1`/`4bbd54a`**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -16,14 +16,14 @@
 ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능별**로 정리했습니다.  
 상세 조작 절차는 [`USER_MANUAL.md`](ops/USER_MANUAL.md), 플랫폼·기술 관리는 [`ADMIN_GUIDE.md`](ops/ADMIN_GUIDE.md), 배포·인프라는 [`DEPLOYMENT_GUIDE.md`](ops/DEPLOYMENT_GUIDE.md)를 참고하세요.
 
-### 구현 상태 안내 (2026-06-23 develop HEAD `01edba7` / frontend `1193761` 기준 — 338차 baseline)
+### 구현 상태 안내 (2026-06-26 develop HEAD `d06e3f1` / frontend `4bbd54a` 기준 — 377차 baseline)
 
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
-| 백엔드 API | **Must + … + V175 ✅** @ `01edba7` **SYNCED** · **`RoleHierarchy` client RBAC ✅** (Q675) · **`addressSearch`·`addressDetail` read ✅** (Q676) · **거주지 전체·픽업 마스킹 유지** · … | BE Test **1837+** (Q675) |
-| 데이터베이스 | Flyway **V1–V175** | **V175** memo·user_branch FK (Q668) · **V174** per-event ledger (Q663) · **V173** annual-leave integrity (Q645) |
-| 프론트엔드 | **111 route · 90 page** @ `1193761` **SYNCED** | **`clientPermissions.js` RBAC ✅** (Q675) · **`KoreanAddressFields` ✅** (Q671) · **`/clients` column filters ✅** (Q672) · **HR `branchName` scope ✅** (Q674) |
-| 본 FAQ | **Q675·Q676 신규** (338차) · **Q671~Q674 carry** | **Must 갭 0** carry · **US-D01/D02 closure ✅** · **caregiver client edit ✅** (`01edba7`/`1193761`) |
+| 백엔드 API | **Must + … + V180 ✅** @ `d06e3f1` **SYNCED** · **QA-B95 recovered-auth hint ✅** (Q722) · **G21 seed service-unavailable detail ✅** (Q719) · **V180 program group integrity ✅** (Q721) · **G-REPORT-DENSITY M5 program reports ✅+** · **QA-B95 allow-recovered-auth ✅** (Q713) · … | BE Test **271 suites** |
+| 데이터베이스 | Flyway **V1–V180** | **V180** 프로그램 그룹 3-way FK·active-client guard · **V179** 프로그램 수급자 그룹·멤버십 · **V178** CMS collection·목욕 CHECK |
+| 프론트엔드 | **118 route · 93 page** @ `4bbd54a` **SYNCED** | **QA-B95 recovered-auth hint wire ✅** (Q722) · **QA-B95 neutral blocker filter ✅** (Q720) · **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE ✅+a11y** (Q717·UXD-165) · **QA-B95 singular blocker merge ✅** (Q718) · **G-REPORT-DENSITY M5 reports ✅** (Q714) · **G2b CMS 5/5 ✅** |
+| 본 FAQ | **Q722 recovered-auth hint · Q719·Q720·Q721 · Q713 deepen** | **Must 갭 0** · **M5 5-7~5-10 ✅ partial+** (5-9 read path · 그룹 CRUD UI P3) |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
@@ -109,12 +109,13 @@ ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능
 
 ### Q578. live E2E에서 **placeholder 자격증명**이면 suite가 skip 되나요?
 
-**A.** **✅ FE Fixed (`fffc2c1`·`82a542c`, QA-B95)** — `scripts/dev-live-e2e.env`·환경변수에 **예시 placeholder**만 있으면 authenticated live suite가 **FAIL 대신 SKIP** 됩니다. **`liveGlobalSetup`** bootstrap 단계에서는 placeholder **access token**도 **missing**으로 취급하여 **bootstrap·credential login fallback**이 계속 시도됩니다 (`82a542c`).
+**A.** **✅ FE Fixed (`fffc2c1`·`82a542c`·`5afef2d`, QA-B95)** — `scripts/dev-live-e2e.env`·환경변수에 **예시 placeholder**만 있으면 authenticated live suite가 **FAIL 대신 SKIP** 됩니다. **`liveGlobalSetup`** bootstrap 단계에서는 placeholder **access token**도 **missing**으로 취급하여 **bootstrap·credential login fallback**이 계속 시도됩니다 (`82a542c`).
 
 | 항목 | 내용 |
 |------|------|
 | 검사 함수 | **`liveConfig.js`** — **`isUsableAccessToken`/`isUsableCredential`** · **`liveGlobalSetup.js`** — bootstrap probe 시 동일 placeholder 거부 |
 | 거부 placeholder | `test@test.com` · `guardian@ogada.test` · `ogada1234` · `********` 등 |
+| **casing·공백 정규화 (`5afef2d`)** | **` Test@Test.com `** · **` OGADA1234 `** 등 — **trim + 소문자** 후 placeholder 집합과 비교 · stale example이 auth fallback을 **우회하지 않음** |
 | 대상 env | **`LIVE_E2E_ACCESS_TOKEN`** · **`LIVE_E2E_EMAIL`/`PASSWORD`** · **`LIVE_E2E_GUARDIAN_*`** |
 | bootstrap 동작 (`82a542c`) | placeholder **token만** env에 있고 **실제 email/password** usable → **login fallback RUN** (Q583과 병행) |
 | 조치 | **`scripts/dev-live-e2e.env.example`** 를 복사해 **실제 스테이징 계정**으로 교체 후 `./scripts/run-live-e2e.sh` 재실행 |
@@ -667,9 +668,19 @@ if (!liveConfig.requireStaffAuth) {
 
 ### Q12. 요양보호사는 이용자를 등록할 수 있나요?
 
-**A.** **이용자 등록·수정은 `hq_admin`, `branch_admin`, `social_worker`** 권한입니다 (BE `208b37e`, Q267). `caregiver`는 **출석·건강 기록 입력**과 이용자 목록 **조회**가 주 업무입니다.
+**A.** **신규 등록은 불가**, **기존 이용자 수정은 가능**합니다 (BE `01edba7`, Q675). 이전 문서(등록·수정 모두 social_worker+)는 **2026-06-23 이후 폐기**되었습니다.
+
+| 작업 | `caregiver` | 최소 역할 |
+|------|:-----------:|-----------|
+| **이용자 목록·상세 조회** | ✅ | — |
+| **이용자 수정** (`PATCH /clients/{id}`, `/clients/:id/edit`) | ✅ | `caregiver` |
+| **이용자 신규 등록** (`POST /clients`, `/clients/new`) | ❌ | `social_worker` |
+
+요양보호사는 **출석·건강 기록**과 함께 담당 이용자의 **연락처·주소·배차** 등 기본 정보를 **직접 수정**할 수 있습니다. **신규 등록** 버튼·`/clients/new` 경로는 **route guard로 차단**됩니다.
 
 > **`hq_admin` 주의**: 다지점 통합 관리자는 **지점 선택기(Branch Switcher)로 활성 지점을 선택한 뒤** 해당 지점에만 등록할 수 있습니다. 활성 지점이 없으면 **403**(`활성 지점이 선택되지 않았습니다.`)이 반환됩니다.
+
+> 관련: **Q675** · **Q677** · USER_MANUAL §6-5 · ADMIN_GUIDE §1-4
 
 ---
 
@@ -3909,6 +3920,578 @@ POST /api/v1/billing/claims/{claimId}/payments
 
 > 관련: Q174 · Q206 · Q254 · Q256 · USER_MANUAL §4-6 · DEPLOYMENT §4-6
 
+### Q701. CMS 결제수단 **카탈로그** — 구현 상태는 어떻게 되나요? (M7 module 7-4 coverage)
+
+**A.** **Fixed (BE `dac8ebd` + FE `9aeedfe`, G2b CMS collection, V176)** — 엔젤 시스템 **5가지 수납 수단** 중 ogada가 지원하는 기능을 카탈로그로 확인할 수 있습니다 — **수납 구현 5/5 full-stack ✅**.
+
+|| 수납 수단 | 방식 | ogada 상태 | 화면·API |
+||----------|------|----------|--------|
+|| 1. **자동이체** | 은행 출금 | ✅ 완료 · stub FCMS | **`/billing/cms`** · **CMS 출금** 탭 · `POST /api/v1/billing/cms/claims/{id}/debit` · Q206–Q208 |
+|| 2. **카드** | PG 결제 | ✅ 완료 · stub PG | **`/billing/easy-pay`** · 카드 선택 · Q326 |
+|| 3. **현금영수증** | 현금 기록 | ✅ 완료 | **입금 처리** > **현금 입금**·**현금영수증** · Q180 |
+|| 4. **가상계좌** | 계좌번호 발급·입금 | ✅ **full-stack** | **`/billing/cms` → 가상계좌·다계좌** · `POST …/virtual-account` · Q704 |
+|| 5. **다계좌 정산** | 복수 계좌 분담 | ✅ **full-stack** | **`/billing/cms` → 가상계좌·다계좌** · `POST …/multi-account-settlement` · Q704 |
+
+|| 화면 | 위치 | UI 상태 | 참고 |
+||------|------|--------|------|
+|| **CMS 결제수단 카탈로그** | **`/billing/cms`** 상단 Panel | ✅ 표시 · **5/5 Alert** | 엔젤 5-method 1:1 매핑 · Q701 |
+|| **CMS 자동이체·출금** | **등록 관리**·**CMS 출금** 탭 | ✅ 완료 | 1번 수납 (자동이체) · USER_MANUAL §4-6 |
+|| **간편결제** | **`/billing/easy-pay`** | ✅ 완료 | 2번 수납 (카드·카카오페이) · USER_MANUAL §4-6 |
+|| **가상계좌·다계좌 정산** | **`/billing/cms` → 가상계좌·다계좌** | ✅ **`CmsCollectionPanel`** | 4·5번 수납 · 입금 은행 선택·상태 조회 · Q704 |
+
+> **BE API**: 가상계좌·다계좌 정산 BE API는 **V176 완료**(`dac8ebd`) · 효성 FCMS 실연동 시 활용 · stub 환경에서도 응답 시뮬레이션 가능.
+
+> **이전 "3/5" 표기 정정**: 이 Q701은 **356차 (`bd1e87e`) 이전 FAQ에서 "미구현 2종(가상계좌·다계좌)"라고 기록한 내용을 정정**합니다 — **357차(`dac8ebd`) 이후 5/5 완성**입니다.
+
+> 관련: Q206 · Q208 · Q254 · Q326 · Q704 · USER_MANUAL §4-6 · DEPLOYMENT §4-6
+
+### Q702. 스테이징 live E2E **부트스트랩 가드** — 운영 환경에서도 적용되나요?
+
+**A.** **아닙니다.** Live E2E 부트스트랩 토글(`OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`, `670756a`·`88a58d9`)은 **스테이징 테스트 환경에서만** 사용됩니다.
+
+|| 환경 | 부트스트랩 토글 | 의미 |
+||------|--------------|------|
+|| **개발(dev)** | 미사용 | 로컬 DB `mvn flyway:migrate` |
+|| **스테이징(staging)** | ✅ 기본 활성 | Live E2E harness (`npm run test:live-e2e`) 전 bootstrap blocker 필터 · 데이터 일관성 점검 |
+|| **운영(prod)** | ❌ 비활성화 | 부트스트랩 없음 — 기존 데이터로 즉시 서비스 |
+
+> **DEPLOYMENT_GUIDE §11-3**에서 상세 설정 가능합니다.
+
+> 관련: DEPLOYMENT_GUIDE §1-4 · FAQ Q703 (live parity-rules API)
+
+### Q703. NHIS #44 **이동서비스비 parity rules API** — 어디서 사용하나요?
+
+**A.** **Fixed (BE `e4f83af` + FE `9aeedfe`, G16 NHIS #44)** — `GET /api/v1/transport/service-fee-parity-rules`로 이동서비스비 청구 규칙 카탈로그를 조회할 수 있습니다.
+
+|| 항목 | 내용 |
+||------|------|
+|| **규칙 수** | **4가지** (DISTANCE_BANDS·ONE_WAY_RATIO·ONE_PER_DAY·SERVICE_LOG) |
+|| **화면** | **`/transport/service-fees`** · **`TransportServiceFeePanel`** — 페이지 로드 시 **`fetchTransportServiceFeeParityRulesApi`** 로 **「NHIS #44 산정 기준」** 목록 동적 표시 · API 실패 시 **`TRANSPORT_SERVICE_FEE_NHIS_PARITY_NOTES`** static fallback |
+|| **청구 영향** | 편도비 **50%(`oneWayRatio=0.5`)**·**1일 1회**(`ONE_PER_DAY`)·이동 경로(`SERVICE_LOG`) |
+|| **API** | `GET /api/v1/transport/service-fee-parity-rules` · 응답: `totalCount=4` · `oneWayRatio=0.5` · `rules[]` |
+|| **응답 필드** | 각 rule: **`code`** · **`label`** · **`description`** (한글 안내 문구) — API_SPEC §9-16 정본 |
+|| **권한** | **`hq_admin`·`branch_admin` only** — **`social_worker`·`caregiver` 403** (`e4f83af`) |
+|| **참고** | NHIS 별지 제22호 · Q594–Q598 · USER_MANUAL §5-8-1 |
+
+> **FE API wire (P2)**: **`9aeedfe`** 는 **`rules[].bodyKo`** 를 매핑하지만 BE는 **`description`** 을 반환 — **동적 catalog가 비어 보일 수 있음** · static fallback 또는 **P2: `description` wire** (`5a717ac`).
+
+> **Swagger**: `GET /api/v1/transport/service-fee-parity-rules` — 인증 필수 · 200 예: `{ "totalCount": 4, "oneWayRatio": 0.5, "rules": [{ "code": "DISTANCE_BANDS", "label": "거리 구간별 단가", "description": "..." }] }`
+
+> 관련: Q594 · Q595 · Q598 · USER_MANUAL §5-8-1 · API_SPEC §9-16 · DEPLOYMENT §1-4
+
+### Q704. CMS **가상계좌**·**다계좌 정산** — 어떻게 사용하나요? (G2b collection methods v2)
+
+**A.** **Fixed (BE `dac8ebd` + FE `9aeedfe`, G2b CMS collection, V176)** — `POST /api/v1/billing/cms/claims/{claimId}/virtual-account` 및 `POST /api/v1/billing/cms/claims/{claimId}/multi-account-settlement`로 신규 수납 수단을 처리합니다.
+
+**1. 가상계좌(Virtual Account)**
+
+| 항목 | 내용 |
+|------|------|
+| **목적** | 보호자가 은행 가상계좌로 입금 — CMS 자동이체 미등록 시에도 사용 가능 |
+| **화면** | **`/billing/cms` → 「가상계좌·다계좌」** 탭 · **`CmsCollectionPanel`** |
+| **흐름** | ① **확정 청구** 선택 ② **입금 은행** 선택 ③ **「가상계좌 발급」** ④ **`virtualAccountNumber`**·요청·완료일시 표시 ⑤ 보호자 입금 ⑥ FCMS 콜백 → 청구 **`PAID`** |
+| **상태 조회** | 탭 진입·청구 선택 시 **`GET …/virtual-account`** 자동 조회 · **상태 Badge**·**금액**·**가상계좌 번호** |
+| **stub 환경** | `FCMS_PROVIDER=stub` — 가상계좌 번호 시뮬레이션 반환 · 실제 입금 없음 |
+| **선행입금 가드** | **7-4 선행입금 가드** — 이전 미납 시 **`ClaimGenerationGuardBanner`** 로 발급 버튼 비활성 (Q614) |
+| **권한** | `HQ_ADMIN`·`BRANCH_ADMIN` |
+
+**2. 다계좌 정산(Multi-Account Settlement)**
+
+| 항목 | 내용 |
+|------|------|
+| **목적** | 센터 운영비·이용자 부담금 등 **복수 계좌**로 입금 분담 |
+| **화면** | **`/billing/cms` → 「가상계좌·다계좌」** 탭 · **`CmsCollectionPanel`** |
+| **흐름** | ① **확정 청구** 선택 ② **「다계좌 정산 요청」** ③ **분할 계좌 수·상태** 표시 ④ 효성 FCMS 정산 ⑤ **정산 완료** → 청구 **`PAID`** |
+| **상태 조회** | **`GET …/multi-account-settlement`** — **정산 상태**·**정산액**·**분할 계좌 수** |
+| **stub 환경** | `FCMS_PROVIDER=stub` — 정산 요청 응답 시뮬레이션 · 실제 계좌 이동 없음 |
+| **권한** | `HQ_ADMIN`·`BRANCH_ADMIN` |
+
+> **통합 참고**: M7 module 7-4 coverage **1.0** — CMS 자동이체(Q206–Q208) + **가상계좌·다계좌 UI** (Q701·Q704, FE `9aeedfe`).
+
+> **Swagger endpoints**:
+> - `POST /api/v1/billing/cms/claims/{claimId}/virtual-account` — 요청 본문 없음 · 응답: `{ "virtualAccountNumber": "...", "issuedAt": "...", "expiresAt": "..." }`
+> - `GET /api/v1/billing/cms/claims/{claimId}/virtual-account` — 상태 조회
+> - `POST /api/v1/billing/cms/claims/{claimId}/multi-account-settlement` — 요청 본문: 정산 계좌 배열
+> - `GET /api/v1/billing/cms/claims/{claimId}/multi-account-settlement` — 상태 조회
+
+> 관련: Q206 · Q208 · Q701 · USER_MANUAL §4-6 · DEPLOYMENT §4-6
+
+### Q705. 목욕 **전·후 상태 관찰**과 **평가지표 27 준수**는 어떻게 확인하나요? (US-O01, L02_M03, BE `e12b084` · FE `3d7f13b`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`e12b084`·`3d7f13b`, US-O01, V177)** — silverangel **essentialWork 평가지표 27**(월 5회 이상 목욕·**전·후 상태 관찰 및 기록**) 준수를 **목욕 일정 API**로 집계하고, **`/care/bathing-schedules`** 화면에서 입력·확인합니다. **G17 기능회복훈련 지표27**(`/programs/functional-recovery`)과 **별도**입니다.
+
+**1. 제공 완료 시 전·후 관찰 (필수)**
+
+| 항목 | 내용 |
+|------|------|
+| **필드** | **`preObservationNotes`**(목욕 전) · **`postObservationNotes`**(목욕 후) — `POST`/`PATCH /api/v1/care/bathing-schedules` |
+| **규칙** | 상태 **`COMPLETED`** 일 때 **제공 내용(`provisionNotes`)** 과 **전·후 관찰** 모두 **비어 있으면 안 됨** |
+| **DB** | V177 **`chk_bathing_schedules_completed_requires_pre_post_observation`** |
+| **`422`** | 「목욕 제공 완료 시 목욕 전·후 상태 관찰 내용을 입력하세요.」 |
+| **UI** | **`BathingScheduleForm`** — **「목욕 전 상태 관찰」**·**「목욕 후 상태 관찰」** 입력란 · **`COMPLETED` 선택 시 필수** (`3d7f13b`) |
+
+**2. 월별 평가지표 27 compliance**
+
+| API | 용도 |
+|-----|------|
+| **`GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=2026-06&clientId=`** | 지점·월별 **이용자별** 준수 집계 |
+
+| 응답 필드 | 의미 |
+|-----------|------|
+| **`requiredMonthlyCompletedCount`** | **5** (월 최소 완료 횟수) |
+| **`monthlyFrequencyNote`** | 「월 5회 이상 목욕서비스 제공」 |
+| **`prePostObservationNote`** | 「목욕 전·후 수급자 상태 관찰 및 기록」 |
+| **`entries[].completedCount`** | 해당 월 **`COMPLETED`** 건수 |
+| **`entries[].withPrePostObservationCount`** | 전·후 관찰 모두 기록된 **`COMPLETED`** 건수 |
+| **`entries[].monthlyFiveTimesMet`** | 완료 **≥ 5** |
+| **`entries[].prePostObservationMet`** | 완료 건 **전원** 전·후 관찰 기록 |
+| **`entries[].indicator27Met`** | 위 **두 조건 모두** 충족 |
+
+| RBAC | **`HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`·`CAREGIVER`** |
+|------|-----------------------------------------------------------|
+| **화면** | **`/care/bathing-schedules`** — **`BathingScheduleIndicator27Panel`** **「평가지표 27 — 목욕 서비스 준수」** 표 (`3d7f13b`) |
+| **리포트** | **`/care/reports/bath-help`** (L02_M05) — 기간별 목욕 집계 (Q363) |
+
+**현장 조치 (월말)**
+
+1. **`/care/bathing-schedules`** — **대상 월** 선택 후 **평가지표 27 패널**에서 **`indicator27Met=false`** 이용자를 확인합니다.
+2. 일정 **수정** — **`COMPLETED`** 건에 **전·후 관찰**이 비어 있으면 폼에서 보완 후 저장합니다.
+3. **5회 미만** → 추가 목욕 일정·완료 처리 · **관찰 누락** → **`preObservationNotes`/`postObservationNotes`** 보완.
+
+> 관련: Q363 · Q598 · USER_MANUAL §5-26 · ADMIN_GUIDE §6-2-16 · DEPLOYMENT §1-4 · CHANGELOG 370차
+
+### Q706. NHIS import에서 **수급자명이 마스킹**(예: `홍*동`)되어 인정번호 매칭이 실패하면? (G-NHIS-MASKED-NAME-FALLBACK)
+
+**A.** **✅ BE Fixed (`37416ac`, G-NHIS-MASKED-NAME-FALLBACK)** — 2026년 공단 엑셀 **수급자명 마스킹 정책**으로 장기요양인정번호(LTC cert) 조회가 실패해도, **대체 키(alt-key)** 로 ogada 이용자를 **자동 매칭**합니다.
+
+| 순서 | 매칭 방식 | 조건 |
+|------|----------|------|
+| 1 | **LTC cert 번호** | ogada **`ltcCertNo`** 와 일치 |
+| 2 | **마스킹 이름 + 생년월일** | `홍*동` 패턴 · 동일 지점·동일 **`birthDate`** 후보 **정확히 1명** |
+| 3 | **생년월일 + 주민등록 앞 6자리** | ogada **`residentRegistrationNoMasked`** prefix 일치 · 후보 **1명** |
+
+| UI·API | 내용 |
+|--------|------|
+| **`matchStatusReason`** | 「**공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨**」 — 대사 표 **「보류 사유」** 열 |
+| **`altKeyMatched`** | **`true`** — alt-key fallback으로 매칭됨 · FE **「대체 매칭됨 — 검증 필요」** warning Badge (Q707) |
+| **적용 API** | **`POST /api/v1/billing/imports/nhis`** (청구내역 import) · **`POST /api/v1/visits/imports/nhis`** (방문일정 import) · 대사·**`GET /visits/nhis-comparison`** 응답 행 |
+| **다중 후보** | 동일 생년월일·패턴 후보 **2명 이상** → **`UNMATCHED` 유지** — §4-6-1 **수동 연결** (Q181) |
+| **마스킹 패턴** | **`NhisMaskedNameMatcher`** — `^[가-힣]\*[가-힣]+$` · 전체 이름 **첫·끝 글자** 일치 |
+
+**현장 조치**
+
+1. 대사 화면에서 **`matchStatusReason`** alt-key 문구 또는 **「대체 매칭됨 — 검증 필요」** Badge가 보이면 **이름·생년월일이 ogada 등록과 일치**하는지 spot-check (Q707).
+2. 여전히 **`UNMATCHED`** 이면 — ogada **이용자 생년월일·주민등록(마스킹) 등록** 확인 후 **수동 연결** (Q181).
+3. **동명·동월생** 이용자가 2명 이상이면 alt-key가 **의도적으로 매칭하지 않음** — 수동 연결 필수.
+
+> 관련: Q181 · Q582 · Q707 · USER_MANUAL §4-6-1 · ADMIN_GUIDE §10-6 · DEPLOYMENT §1-4 · CHANGELOG 362차
+
+### Q707. NHIS import **대체 매칭** 행은 화면에서 어떻게 구분하나요? (G-NHIS-ALT-KEY-AUDIT-BADGE)
+
+**A.** **✅ BE+FE Fixed (`4963535`·`5bb84a6`, G-NHIS-ALT-KEY-AUDIT-BADGE)** — 마스킹 이름 alt-key로 자동 매칭된 행은 API **`altKeyMatched: true`** 와 UI **warning Badge** 로 표시됩니다. **`matchStatusReason` 문자열 파싱 없이** 감사·현장 검증이 가능합니다.
+
+| 계층 | 내용 |
+|------|------|
+| **API 필드** | **`altKeyMatched: boolean`** — import row·대사 row·방문 import row·**`GET /visits/nhis-comparison` items[]** |
+| **Badge 라벨** | **「대체 매칭됨 — 검증 필요」** (`NhisAltKeyMatchedBadge`) |
+| **tooltip·a11y** | **`title`·`aria-label`** = 「공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨」 (`nhisAltKeyMatch.js`) |
+| **표시 위치** | **`/billing/imports/nhis/:batchId`** — **`NhisReconciliationTable`** 수급자명 열 · **`/visits`** — **`VisitNhisComparisonDetail`** 이용자명 열 |
+
+**현장 조치**
+
+1. Badge가 붙은 **`MATCHED`** 행은 **자동 매칭이 맞는지** 이름·생년월일·인정번호를 **1회 확인** (Q706).
+2. 불일치면 **수동 연결 해제·재매칭** 또는 ogada 이용자 **등록 정보 수정** 후 **엑셀 재import**.
+3. **`altKeyMatched=false`** 이면 LTC cert 등 **일반 매칭** — Badge 없음.
+
+> 관련: Q706 · Q570 · USER_MANUAL §4-6-1 · ADMIN_GUIDE §10-6 · DEPLOYMENT §1-4 · CHANGELOG 362차
+
+### Q708. CMS **결제수단 카탈로그**가 「카탈로그 정보 없음」으로만 보이면? (G2b, FE `9a583ec`)
+
+**A.** **✅ FE Fixed (`9a583ec`)** — **`GET /api/v1/billing/cms/payment-method-catalog`** 응답의 **`entries[]`가 빈 배열**이면 **`CmsPaymentMethodCatalogPanel`** 이 빈 표 대신 **「카탈로그 정보 없음」** **`EmptyState`** 를 표시합니다. **CMS 수납 기능 자체가 미구현인 것은 아닙니다.**
+
+| 구분 | 내용 |
+|------|------|
+| **정상** | **`entries` 5건** — 엔젤 5-method 표 · **수납 5/5** Alert (Q701) |
+| **EmptyState** | API **`entries: []`** 또는 필드 누락 — **안내 문구만** 표시 |
+| **영향 없음** | **등록 관리**·**CMS 출금**·**가상계좌·다계좌** 탭 — **별도 API**로 동작 (Q704) |
+
+**현장·IT 조치**
+
+1. **새로고침** 후 **`/billing/cms`** 재진입 — 일시적 API 오류였는지 확인.
+2. **Swagger** `GET /api/v1/billing/cms/payment-method-catalog` — **`hq_admin`/`branch_admin` JWT** 로 **`entries` 길이** 확인.
+3. **`entries`가 정상 5건**인데 UI만 EmptyState → 브라우저 캐시·세션 재로그인 · IT에 FE 버전 **`9a583ec` 이상** 확인 요청.
+4. **API도 빈 배열** → BE **`CmsPaymentMethodCatalogService`**·앱 로그 확인 — **등록·출금·가상계좌는 catalog 없이도** 사용 가능하므로 **긴급 수납은 다른 탭**으로 진행 (Q701·Q704).
+
+> **오해 방지**: EmptyState는 **「5-method 미구현」이 아님** — 357차 이후 **가상계좌·다계좌 포함 5/5 full-stack ✅** (Q701 정정).
+
+> 관련: Q701 · Q704 · USER_MANUAL §4-6 · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-4 · CHANGELOG 363차
+
+### Q709. **7-5 간편결제** 지원 PG 수단 catalog API는? (G-EASYPAY-PROVIDER-CATALOG, BE `56831fc` · FE `5914b2f`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`56831fc`·`5a5174a`·`5914b2f`, v2/7-5)** — 케어포 **7-5 본인부담금 간편결제**(view.npay_manage) parity로 **`GET /api/v1/billing/easy-pay/provider-catalog`** 가 **CARD·KAKAO_PAY** 2종 catalog를 반환합니다. **`EasyPayControllerRoutingTest`** (`5a5174a`)가 **라우팅·`pgMode`·RBAC** 을 WebMvcTest로 고정합니다. **FE `/billing/easy-pay`** 상단 **`EasyPayProviderCatalogPanel`** 이 catalog를 표시합니다 — **결제 요청**은 하단 **`EasyPayPanel`** 에서 **CARD/KAKAO_PAY** 를 직접 선택합니다.
+
+| 필드 | 내용 |
+|------|------|
+| **`entries[]`** | **`providerCode`** (`CARD`·`KAKAO_PAY`) · **`labelKo`** · **`ogadaRoute`** (`/billing/easy-pay`) · **`paymentImplemented`** |
+| 집계 | **`paymentImplementedCount=2`** · **`totalCount=2`** |
+| **`pgMode`** | **`stub`**(기본) 또는 **`live`** — `ogada.easy-pay.provider` 설정 |
+| RBAC | **`hq_admin`·`branch_admin`** — **`guardian` 403** |
+| **routing test** | **`EasyPayControllerRoutingTest`** — **`pgMode`·`entries[]`·`paymentImplementedCount`** · HQ/branch admin **200** (`5a5174a`) |
+| **FE UI** | **`EasyPayProviderCatalogPanel`** — catalog 표 · **결제 구현 N/M** · **PG 모드 badge** · catalog 오류 시 **「다시 시도」** (`5914b2f`) |
+
+**Swagger 예시**
+
+```http
+GET /api/v1/billing/easy-pay/provider-catalog
+Authorization: Bearer <branch_admin JWT>
+```
+
+```json
+{
+  "entries": [
+    { "providerCode": "CARD", "labelKo": "카드결제", "ogadaRoute": "/billing/easy-pay", "paymentImplemented": true },
+    { "providerCode": "KAKAO_PAY", "labelKo": "카카오페이", "ogadaRoute": "/billing/easy-pay", "paymentImplemented": true }
+  ],
+  "paymentImplementedCount": 2,
+  "totalCount": 2,
+  "pgMode": "stub"
+}
+```
+
+> **현장**: **「간편결제 PG 제공자 카탈로그」** 로 지원 수단·구현 상태를 확인한 뒤, 하단 **`EasyPayPanel`** 에서 **결제 수단 선택 → 요청**합니다. catalog는 **IT·월말 점검**에도 유용합니다.
+
+> 관련: Q326 · Q328 · Q700 · USER_MANUAL §4-6 · ADMIN_GUIDE §10-14 · DEPLOYMENT §1-4·§8-1 · CHANGELOG 369차
+
+### Q710. G16 **parity-rules** 전용 패널과 **`description` wire** 상태는? (UXD-163, FE `7b4c6f9`·`5914b2f`)
+
+**A.** **✅ FE Fixed (`7b4c6f9`·`5914b2f`)** — **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** 를 **`labelKo`·`descriptionKo`·legacy `bodyKo`** 로 정규화해 **`/transport/service-fees`** 페이지에 표시합니다. API 실패 시 **static fallback** 4항이 유지됩니다.
+
+| 구분 | 상태 |
+|------|------|
+| BE catalog | **`rules[].code`·`label`·`description`** ✅ (`e4f83af`) |
+| **`TransportParityRulesPanel`** | **page mount ✅** (`5914b2f`) · API error → static fallback · **`TransportServiceFeePage.test`** lock |
+| **`TransportServiceFeePanel`** | 수가표·청구 기록 전용 — parity rules **중복 제거** (`5914b2f`) |
+| RBAC | catalog API **`hq_admin`·`branch_admin` only** · **`social_worker` 403** |
+
+**현장 조치**
+
+1. **`/transport/service-fees`** — 수가표 아래 **「이동서비스비 NHIS 기준 규칙」** 4항(거리구간·편도 50%·1일 1회·일지 보관)을 확인합니다.
+2. API 오류 시에도 **static fallback** 과 **동일 내용**이 표시되므로 **청구·확정 업무는 계속 가능**합니다.
+3. IT는 Swagger **`GET …/service-fee-parity-rules`** 로 **`description`** 필드를 교차 확인할 수 있습니다.
+
+> 관련: Q703 · Q678 · USER_MANUAL §5-8-1 · DEPLOYMENT §1-4 · CHANGELOG 369차
+
+### Q711. 연차 roster API **`branchName`이 공백**이면 **「조회 지점」** 이 사라지나요? (QA-B312, FE `58f3858`)
+
+**A.** **✅ FE Fixed (`58f3858`, QA-B312 deepen)** — **`/staff/annual-leaves`** 가 roster 응답의 **`branchId`·`branchName`** 을 **`normalizeBranchScope`** 로 **trim** 한 뒤 **`BranchScopeNotice`** 에 표시합니다. API **`branchName`이 공백·탭만**이어도 **지점 ID 기반 fallback 라벨**이 유지되어 **「조회 지점」** 이 비지 않습니다.
+
+| 상황 | 이전 동작 | 현재 동작 (`58f3858`) |
+|------|----------|----------------------|
+| API `branchName: "   "` · `branchId: "branch-resolved"` | **「조회 지점」** 빈 표시 가능 | **trim 후 이름 없음 → ID fallback** |
+| API 오류 · user **`activeBranchName`** 공백 | fallback 불안정 | **`activeBranchId`·`activeBranchName` 동일 trim** |
+| 정상 `branchName` | **「조회 지점: ○○점」** | 동일 — trim만 적용 |
+
+**현장 점검**
+
+1. **`/staff/annual-leaves`** 상단 **`BranchScopeNotice`** — **조회 지점**이 항상 표시되는지 확인합니다.
+2. 다지점 **`hq_admin`** 은 **BranchSwitcher** 전환 후 **「조회」** — Q657·Q656과 병행합니다.
+3. 지점명이 비정상이면 **지점 마스터(`/branches`)** 의 **지점명** 등록을 점검하세요 — UI fallback은 **가시성 보장**이며 **데이터 정정 대체가 아님**.
+
+| 테스트 | 내용 |
+|--------|------|
+| **`StaffAnnualLeavePage.test`** | **`falls back to branch id label when API branch name is blank text`** (`58f3858`) |
+| lineage | **`892122d`** vitest isolation · **B266/B270/B291** pollution carry |
+
+> 관련: Q639 · Q656 · Q657 · USER_MANUAL §4-7-0a · DEPLOYMENT §8-1 · CHANGELOG 365차
+
+### Q712. 본인부담금 **환불 시 PG 수수료**(KCP 3.3%/500원)는 어디서 확인하나요? (7-9, G-REFUND-FEE-DEDUCTION, BE `2adae59`·`aeecc1b`·`79725eb` · FE `cadd74a`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`2adae59`·`aeecc1b`·`79725eb`·`cadd74a`, US-M03 7-9 / 케어포 7-9 KCP parity)** — 케어포 **7-9 수납·환불내역**의 **KCP PG 환불 수수료 정책**(카드 3.3%·계좌/CMS 500원)을 **catalog API**로 노출하고, **`RefundRecordModal`** 에서 **정책 선택·실환불액(net) 미리보기·저장**까지 연동합니다. **live PG 정산 없음** — ogada는 **안내·검증 catalog**만 제공합니다.
+
+| API | 용도 |
+|-----|------|
+| **`GET /api/v1/billing/copay/refund-fee-policy-catalog`** | **3종 정책 catalog** + KCP disclaimer |
+| **`POST /api/v1/billing/copay/refund-fee-preview`** | `{ policyCode, grossAmount }` → **fee·net** 계산 |
+| **`POST /api/v1/billing/claims/{claimId}/refunds`** | 환불 기록 — 선택 **`feePolicyCode`** 시 **net 금액 일치** 필수 (`aeecc1b`) · **입력 검증** (`79725eb`) |
+
+| `policyCode` | 수수료 | 결제수단 매핑 |
+|--------------|--------|---------------|
+| **`CARD_VOID_SAME_MONTH`** | **0원** | **`EASY_PAY`** (카드/간편결제) |
+| **`CARD_PARTIAL_OR_EXPIRED`** | **gross × 3.3%** (반올림) | **`EASY_PAY`** |
+| **`BANK_OR_CMS_TRANSFER`** | **500원** (gross 미만이면 gross) | **`BANK_TRANSFER`** · **`CMS`** |
+
+| **`feePolicyCode` 검증 (`79725eb`)** | **`@Pattern`** — 위 3종만 허용 · **대소문자 무시** · 오타·미등록 code → **`400`**「허용되지 않는 환불 수수료 정책입니다.」 |
+| **net 불일치** | 결제수단 호환·금액 불일치 → **`422`** BusinessRule (`aeecc1b`) |
+
+| 응답 (catalog) | **`entries[]`·`totalCount=3`·`pgVendorLabelKo`·`disclaimerKo`** |
+|----------------|-------------------------------------------------------------------|
+| 응답 (preview) | **`grossAmount`·`feeAmount`·`netAmount`·`feeDescriptionKo`** |
+| RBAC | **`hq_admin`·`branch_admin`** — **`social_worker`·`caregiver` 403** |
+| UI | **`/billing/claims/:id` → 「환불 처리」** — **`RefundRecordModal`** 정책 Select · **본인부담금/수수료/실환불액** `<dl class="ds-refund-fee-preview">` grid · **환불 금액 자동 채움** (`cadd74a`·UXD-165 `bee97b9` **`.ds-refund-fee-preview` CSS 단일 source**) |
+
+**현장 조치**
+
+1. **`PAID`** 청구 상세에서 **결제 수단**(간편결제/계좌/CMS)을 확인합니다.
+2. **「환불 처리」** → 모달이 **호환 정책**을 자동 로드합니다 (카드 3종·계좌/CMS 1종).
+3. **실환불액** 미리보기를 확인하고 보호자에게 안내합니다.
+4. **환불일**·**사유**(선택) 입력 후 저장 — 서버가 **net 금액·정책 호환**을 재검증합니다.
+5. **현금(`CASH`)** 등 catalog 미적용 수단은 **본인부담금 전액** 환불 규칙이 그대로 적용됩니다 (Q261).
+
+| 테스트 | **`CopayRefundFeePolicyCatalogTest`** · **`BillingServiceTest.recordCopayRefund*`** · **`RefundRecordModal.test`** · **`billingGuardianPlatformServices.test`** |
+
+> 관련: Q261 · Q179 · USER_MANUAL §5-10 · ADMIN_GUIDE §10-4 · DEPLOYMENT §1-4 · CHANGELOG 368차
+
+### Q713. live E2E에서 **auth 복구 후** bootstrap blocker만 남으면 suite가 false blocked 되나요? (QA-B95, FE `75c0f51` · BE `0e55f3b` · carry `e070c45`·`9f67954`)
+
+**A.** **✅ FE+BE Fixed+deepen (`75c0f51`·`0e55f3b`·`3342938`·`d06e3f1`·`4bbd54a`·carry `e070c45`·`9f67954`, QA-B95, Q580·Q583 deepen)** — **FE** `liveGlobalSetup` 이 staff/guardian **credential login fallback** 으로 auth를 복구한 뒤, health probe의 **`bootstrap-disabled`·`bootstrap-service-unavailable`·`bootstrap-unavailable`** 및 **staff/guardian auth recovery** 라벨 blocker를 **effective operation readiness** 에서 **제외**합니다 (`75c0f51`). **BE** `ogada.live-e2e.enforce-bootstrap-readiness` (기본 **`true`**) 가 **`false`** 이면 health/probe에서 bootstrap availability blocker 자체가 **미적용**됩니다 — **`liveE2eBootstrapReadinessEnforced`** 필드로 노출 (`9f67954`). **BE probe** 는 **`bootstrapEnabled`**(설정)과 **`bootstrapServiceAvailable`**(runtime bean wiring)을 **분리**합니다 (`0e55f3b`). **BE allow-recovered-auth (`3342938`)** — bootstrap **disabled** 이어도 **`ogada.live-e2e.allow-recovered-auth=true`**(기본) + bootstrap service bean 존재 시 **full operation gate** 평가 — health **`liveE2eAllowRecoveredAuth`** · FE auth-recovery와 **raw readiness align**. **377차 deepen (`d06e3f1`·`4bbd54a`, Q722)** — recovered-auth 경로에서 **`liveE2eBootstrapEnableHint`** = **`Bootstrap is disabled; recovered-auth readiness mode is active.`** · FE **`isLiveRecoveredAuthAllowed()`** · hint를 **neutral operation reason/blocker** 로 처리.
+
+| persisted state (`.live-backend-state.json`) | 의미 |
+|------------------------------------------------|------|
+| **`liveE2eOperationReady`** / **`liveE2eOperationBlockers`** | health probe **원본** |
+| **`liveE2eEffectiveOperationReady`** | auth 복구·blocker 필터 **후** harness 판정 |
+| **`liveE2eEffectiveOperationBlockers`** | suite gate에 **실제 적용** blocker |
+| **`liveE2eEffectiveOperationReason`** | effective reason (없으면 `""`) |
+
+| **`liveConfig.js`** | **`isLiveOperationReady()`** — **`liveE2eEffectiveOperationReady === true`** 이면 **ready** · **`getLiveE2eOperationBlockers()`** — effective 배열 우선 |
+
+| **BE enforcement (`9f67954`)** | **`enforce-bootstrap-readiness=true`**(기본) — bootstrap disabled → **`bootstrap-disabled` blocker** · **`false`** — **`liveE2eOperationReady=true`** (다른 blocker 없을 때) · health/probe **`liveE2eBootstrapReadinessEnforced`** |
+| **BE allow-recovered-auth (`3342938`)** | **`ogada.live-e2e.allow-recovered-auth`** (기본 **`true`**) — bootstrap disabled + bean wired → **full gate path** · health **`liveE2eAllowRecoveredAuth`** · env **`OGADA_LIVE_E2E_ALLOW_RECOVERED_AUTH`** |
+| **BE recovered-auth hint (`d06e3f1`, Q722)** | **`liveE2eBootstrapEnableHint`** — **`Bootstrap is disabled; recovered-auth readiness mode is active.`** · probe **`bootstrapEnableHint`** 동일 · **`HealthControllerTest`·`LiveE2eControllerTest`** lock |
+| **FE recovered-auth hint wire (`4bbd54a`, Q722)** | **`isLiveRecoveredAuthAllowed()`** · **`getLiveBootstrapEnableHint()`** · hint/reason **neutral filter** — **`liveE2eHarness.test`** lock |
+| **BE probe split (`0e55f3b`)** | **`GET /api/v1/system/live-e2e/probe`** — **`bootstrapEnabled`** = env/config on · **`bootstrapServiceAvailable`** = **`LiveE2eBootstrapService` bean wired** · disabled → both **`false`** · enabled·bean missing → **`bootstrapEnabled=true`·`bootstrapServiceAvailable=false`** · detail **`bootstrap=service-unavailable`** |
+| env | **`OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS`** · **`LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS`** |
+
+| ignorable when auth recovered (FE) | **`bootstrap-disabled`** · **`bootstrap service unavailable`** · **`bootstrap unavailable`** (`75c0f51`) · **`staff-bootstrap-not-ready`** · **`staff-auth-not-ready`** · **`staff-credentials-*`** · guardian 동등 라벨 |
+
+**IT 조치**
+
+1. **`GET /api/v1/health`** — **`liveE2eBootstrapReadinessEnforced`** · raw **`liveE2eOperationBlockers`** 확인.
+2. **`GET /api/v1/system/live-e2e/probe`** — **`bootstrapEnabled` vs `bootstrapServiceAvailable`** 로 **disabled vs bean missing** 구분 (`0e55f3b`).
+3. auth 복구 harness만 사용 시 **`LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=false`** (선택) — BE raw readiness도 ready 가능.
+4. **`./scripts/run-live-e2e.sh`** — globalSetup 후 **`.live-backend-state.json`** 의 **`liveE2eEffectiveOperationReady`** 확인 — **`bootstrap-unavailable` only** + auth recovered → **effective ready** (`75c0f51`).
+5. staff creds로 login fallback 성공 시 **staff-only suite** 가 **false SKIP** 되지 않아야 합니다 (`liveE2eHarness.test` lock).
+6. backend **reachable·`ready=false`** 이면 harness skip 메시지에 **`GET /api/v1/health` `reason`** 또는 **`liveE2eOperationReason`** 이 포함되어야 합니다 — generic fallback만 나오면 **`liveBackendProbe`** 회귀 (`f74a6e7`, Q713 deepen).
+7. bootstrap disabled + **`liveE2eAllowRecoveredAuth=true`** 이면 **`liveE2eBootstrapEnableHint`** recovered-auth 문구가 health/probe에 **노출**되어야 합니다 — 없으면 **`d06e3f1` 미반영 BE** (Q722).
+
+> 관련: Q580 · Q583 · Q578 · Q680 · Q684 · Q722 · DEPLOYMENT §4-3·§11-3 · `docs/qa/VITEST_CONCURRENCY.md` · CHANGELOG 377차
+
+### Q714. 프로그램 **리포트 5-7~5-10**은 어디서 확인하나요? (G-REPORT-DENSITY, US-P02, BE `49fe2e7` · FE `15a3b7f` · carry `337453d`·`650801b`)
+
+**A.** **✅ BE+FE Full-stack Fixed+deepen (`49fe2e7`·`15a3b7f`·carry `337453d`·`650801b`, G-REPORT-DENSITY / US-P02)** — 케어포 func **모듈5 프로그램 급여** 리포트 leaf 4종을 ogada **`/programs/reports/*`** 에서 기간별로 집계·인쇄합니다.
+
+| 케어포 leaf | ogada 화면 | API |
+|-------------|-----------|-----|
+| **5-7** 수급자 참여프로그램 | **`/programs/reports/participations`** | `GET /api/v1/programs/reports/participations?fromDate=&toDate=&clientId=&branchId=` |
+| **5-8** 프로그램 제공기록(운영기록지) | **`/programs/reports/provision-records`** | `GET /api/v1/programs/reports/provision-records?fromDate=&toDate=&branchId=` |
+| **5-9** 수급자 그룹 설정 이력 | **`/programs/reports/group-history`** | `GET /api/v1/programs/reports/group-history?fromDate=&toDate=&branchId=` — **membership 집계 ✅** (`337453d`) |
+| **5-10** 수급자 프로그램 일정 | **`/programs/reports/schedules`** | `GET /api/v1/programs/reports/schedules?fromDate=&toDate=&branchId=` |
+
+| UI 단계 | 내용 |
+|---------|------|
+| 1 | **`RecordsContextNav`** **「프로그램 리포트」** 또는 SideNav **기록 → 프로그램 리포트 (5-7)** |
+| 2 | **`ProgramReportNav`** — **5-7 참여 · 5-8 제공기록 · 5-9 그룹 이력 · 5-10 일정** 탭 전환 |
+| 3 | **시작일·종료일** (기본 **당월 1일~오늘**) · **5-7만** 이용자 필터 · **「조회」** |
+| 4 | **`ProgramReportPanel`** — 참여/불참·만족도·**G17b skipReason** · 일정별 참석 집계 · 제공기록 운영 집계 |
+| 5 | **「인쇄」** — 브라우저 인쇄 (`window.print`) |
+
+| 5-7 참여 리포트 `summary` | `totalCount` · `attendedCount` · `absentCount` |
+| 5-7 행 | `status` · `satisfaction` · **`skipReasonLabel`** (인지활동형 불참 사유) |
+| 5-10 일정 행 | `programName` · `startTime` · `facilitator` · `capacity` · `attendedCount` · `absentCount` |
+| 5-8 제공기록 행 | 프로그램·일자별 **`attendedCount`·`absentCount`·`averageSatisfaction`** |
+| **5-9 그룹 이력 행 (`337453d`)** | **`groupName`** · **`effectiveFrom`·`effectiveTo`** · **`clientCount`** — **`program_client_group_members`** 기간 겹침 집계 |
+| **5-9 availability** | **`groupConfigAvailable=true`** (V179 read path) · 멤버십 없음 → **`items:[]`** · **그룹 등록·수정 UI는 P3** (G-PROGRAM-GROUP-CONFIG) |
+| **`branchId` (Q715)** | optional query — 생략 시 **JWT active branch** · 지정 시 **read scope 검증** · **UI 미연동(P2)** — Swagger·통합 HQ용 |
+| RBAC | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver`·`guardian` → 403** |
+| 날짜 검증 | **`toDate < fromDate`** → **`422`**「종료일은 시작일 이후여야 합니다.」 |
+| 오류 UX | API 실패 → **danger Alert + 「다시 시도」** (`ProgramReportsPage`) |
+
+> **일상 입력 vs 리포트** — **`/programs`** 는 **당일 참여 기록 입력** · **`/programs/reports/*`** 는 **기간 집계·인쇄** (USER_MANUAL §5-9).
+
+> 관련: USER_MANUAL §5-9 · ADMIN_GUIDE §10-11-2 · DEPLOYMENT §1-4 · CHANGELOG 373차 · BNK-620~621 G-REPORT-DENSITY
+
+### Q715. 프로그램 리포트 API에서 **다른 지점(`branchId`)** 을 조회할 수 있나요? (G-REPORT-DENSITY, BE `49fe2e7`)
+
+**A.** **✅ BE API Fixed (`49fe2e7`)** — 4종 program report GET 모두 optional **`branchId`** query를 받습니다. **통합 관리자(`hq_admin`)** 가 Swagger·스크립트로 **권한 범위 내 지점** 집계를 실행할 때 사용합니다.
+
+| query | 동작 |
+|-------|------|
+| **`branchId` 생략** | JWT **active branch** (`TenantContext`) — 현장 UI 기본과 동일 |
+| **`branchId={uuid}`** | **`jwtScopeResolver.validateBranchReadScope`** — 스코프 밖 지점 → **403** |
+| FE UI | **`ProgramReportsPage`** — **`branchId` 미전달(P2)** — 화면은 **활성 지점**만 |
+
+| 엔드포인트 | 예시 |
+|-----------|------|
+| 5-7 | `GET /api/v1/programs/reports/participations?fromDate=2026-06-01&toDate=2026-06-25&branchId={uuid}` |
+| 5-8~5-10·5-9 | 동일 패턴 — **`branchId` optional** |
+
+| 테스트 | **`ProgramReportControllerRoutingTest.scheduleReportRouteShouldAcceptBranchFilter`** · **`ProgramReportServiceTest`** branch scope |
+
+> 관련: Q714 · USER_MANUAL §5-9 · ADMIN_GUIDE §10-11-2 · DEPLOYMENT §1-4 · CHANGELOG 373차
+
+### Q716. live E2E에서 health **`liveE2eOperationBlockers`** 가 **문자열**로 오면 harness가 무시하나요? (QA-B95, FE `2c9abd6` · carry `bd3253a`)
+
+**A.** **✅ FE Fixed (`2c9abd6`·`bd3253a`, QA-B95, Q713 cluster deepen)** — **`GET /api/v1/health`** 또는 probe 응답의 **`liveE2eOperationBlockers`** 가 **JSON 배열이 아닌 단일 문자열**(`comma`/`semicolon`/`newline` 구분)로 내려와도 harness가 **개별 blocker 라벨**로 파싱합니다. 이전에는 string-form → **빈 배열** 처리로 **actionable skip 사유가 유실**될 수 있었습니다.
+
+| 모듈 | 역할 |
+|------|------|
+| **`liveBackendProbe.js`** (`2c9abd6`) | health fetch 직후 **`extractLiveE2eHealthFields`** — **`normalizeOperationBlockers`** 로 string·array 통합 |
+| **`liveConfig.js`** (`bd3253a`) | **`.live-backend-state.json`** persisted state — **`getLiveE2eOperationBlockers()`** 가 string blocker split |
+| **`liveGlobalSetup.js`** (`bd3253a`) | globalSetup probe — **`rawOperationBlockers`** normalize 후 effective blocker 필터 |
+
+| 입력 예 | 파싱 결과 |
+|---------|-----------|
+| `"bootstrap-unavailable, guardian-auth-not-ready; g21-seed-missing"` | `["bootstrap-unavailable","guardian-auth-not-ready","g21-seed-missing"]` |
+| `"bootstrap-unavailable; guardian-auth-not-ready, g21-seed-missing\nstaff-bootstrap-not-ready"` | **4개** 개별 blocker |
+| `["bootstrap-disabled","staff-auth-not-ready"]` | trim·빈 항목 제거 후 **배열 그대로** |
+
+| split 규칙 | **`/[,\\n;]+/`** — 쉼표·세미콜론·줄바꿈 · 각 토큰 **trim** · 빈 문자열 제거 |
+| effective blockers | normalize **후** auth-recovery ignorable 필터 (`75c0f51`·Q713) · feature-scoped filter (`cb3fe3d`, Q580) |
+| 테스트 | **`liveE2eHarness.test`** — health string-form · persisted probe state string-form regression lock |
+
+**IT 조치**
+
+1. live E2E skip 메시지에 blocker가 **한 덩어리 문자열**로만 보이면 **`bd3253a` 미반영 FE** 가능 — develop **`bd3253a`** 이상 확인.
+2. **`./scripts/run-live-e2e.sh`** 후 **`.live-backend-state.json`** — **`liveE2eOperationBlockers`**·**`liveE2eEffectiveOperationBlockers`** 가 **배열**인지 확인.
+3. health **`liveE2eOperationBlockers`** string vs array — harness triage에 **동일 blocker 집합**이어야 합니다.
+
+> 관련: Q713 · Q580 · Q548 · DEPLOYMENT §11-3 · `docs/qa/VITEST_CONCURRENCY.md` · CHANGELOG 374차
+
+### Q717. 케어포 **8-2 근무일정표**는 어디서 확인하나요? (G-STAFF-MONTHLY-SCHEDULE-FE-WIRE, FE `33944e4`·UXD-165 `bee97b9`)
+
+**A.** **✅ FE Fixed (`33944e4`, G-STAFF-MONTHLY-SCHEDULE-FE-WIRE, carefor 8-2 parity)** — SideNav **운영 → 직원**(`/staff`) 진입 후 **`StaffContextNav`「근무일정표」** 또는 URL **`/staff/schedules`** 로 이동합니다. **확정 방문 계획 일정(PLAN)** 을 **직원별·월별**로 모아 케어포 **8-2 근무일정표**와 동일하게 확인합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`StaffMonthlySchedulePage`** — **`BranchScopeNotice`** · 연월·직원 Select · StatCard(근무일 수·확정·전체) · 일정 Table |
+| **데이터** | **`fetchVisitsApi`** → **`GET /api/v1/visits?from=&to=&branchId=&scheduleKind=PLAN`** |
+| **일정 등록·수정** | **이 화면에서 불가** — **`/visits`**(방문 일정)에서 진행 (화면 내 Link 안내) |
+| **알림톡** | 하단 **`StaffNotificationDispatchPanel`** — **월간 일정표 알림톡 (G-SMS message_kind=21)** · **`notifyStaffMonthlyScheduleApi`** |
+| **a11y (UXD-165 `bee97b9`)** | StatCard wrapper **`role="group" aria-label="근무 요약"`** · **「다시 조회」** **`aria-busy={loading}`** (WCAG 4.1.3) |
+| **RBAC** | 조회·발송 **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` → 권한 없음** Alert |
+
+| smoke | **`StaffMonthlySchedulePage.test`** — PLAN visit filter · empty state · dispatch panel mount |
+| carry | **8-3 연간일정계획** · **8-6 위원회 회의록** — MVP **P3 out-of-scope** |
+
+> 관련: Q689 · Q691 · USER_MANUAL §4-7-0c · ADMIN_GUIDE §6-2-21 · DEPLOYMENT §1-4 · CHANGELOG 375차
+
+### Q718. live E2E에서 health **`liveE2eOperationBlocker`**(단수)만 오면 harness가 무시하나요? (QA-B95, FE `b7004ca`)
+
+**A.** **✅ FE Fixed (`b7004ca`, QA-B95, Q716 cluster deepen)** — 일부 health·probe·persisted state payload가 **복수형 `liveE2eOperationBlockers` 배열 대신 단수형 `liveE2eOperationBlocker`**(또는 snake_case **`live_e2e_operation_blocker`**)만 노출해도 harness가 **blocker 목록에 merge**합니다. Q716이 **문자열-form plural** 을 처리한다면, Q718은 **singular key fallback** 입니다.
+
+| 모듈 | 역할 |
+|------|------|
+| **`liveBackendProbe.js`** (`b7004ca`) | **`extractLiveE2eHealthFields`** — plural normalize **후** singular **`liveE2eOperationBlocker`** merge · dedupe |
+| **`liveConfig.js`** (`b7004ca`) | **`getLiveE2eOperationBlockers()`** — persisted **`liveE2eEffectiveOperationBlocker`/`liveE2eOperationBlocker`** fallback merge |
+
+| alias keys | **`liveE2eOperationBlocker`** · **`live_e2e_operation_blocker`** · **`operationBlocker`** · **`operation_blocker`** |
+| persisted state | **`.live-backend-state.json`** — **`liveE2eEffectiveOperationBlockers` 우선** · 없으면 plural · **singular fallback 추가 merge** |
+| 테스트 | **`liveE2eHarness.test`** — health singular-only · persisted singular-only regression lock |
+
+**IT 조치**
+
+1. skip 메시지에 blocker가 **전혀** 안 보이면 **`b7004ca` 미반영 FE** 가능 — develop **`b7004ca`** 이상 확인.
+2. health에 **`liveE2eOperationBlockers:[]`** 이지만 **`liveE2eOperationBlocker:"staff-auth-not-ready"`** → harness가 **1개 blocker** 로 인식해야 합니다.
+3. Q716(string plural) + Q718(singular key) + Q713(auth recovery) **함께** triage하세요.
+
+> 관련: Q716 · Q713 · Q720 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 375차
+
+### Q719. health **`liveE2eG21SeedStatusDetail`** 이 `g21-seed=disabled` 와 `g21-seed=service-unavailable` 은 어떻게 다른가요? (QA-B95, BE `42a369e`)
+
+**A.** **✅ BE Fixed (`42a369e`, QA-B95, Q698 deepen)** — bootstrap **설정 비활성**과 **런타임 bean 미배선(service-unavailable)** 을 G21 seed 진단 문자열에서 **분리**합니다. 이전에는 service-unavailable 경로도 **`g21-seed=disabled`** 로 내려와 IT triage가 혼동되었습니다.
+
+| `liveE2eG21SeedStatusDetail` | 조건 | 의미 |
+|------------------------------|------|------|
+| **`g21-seed=disabled`** | **`LIVE_E2E_BOOTSTRAP_ENABLED` unset/false** (정상 운영) | bootstrap **의도적 비활성** — G21 seed 미적용 |
+| **`g21-seed=service-unavailable`** | env **enabled** · **`LiveE2eBootstrapService` bean missing** | bootstrap **설정은 켰으나 서비스 미배선** — Q684 **`bootstrap-service-unavailable`** 와 동일 축 |
+| **`g21-seed=not-applicable`** | seed 지점 **방문요양 계열 아님** | **`liveG21Describe` skip** (Q541) |
+| **`g21-seed=applicable visit-schedule=…`** | G21 applicable + 3축 상세 | visit·billing visit·NHIS seed 준비도 (Q515) |
+
+| 연동 health 필드 | service-unavailable 시 |
+|------------------|------------------------|
+| **`liveE2eStatusDetail`** | **`bootstrap=service-unavailable`** (Q684) |
+| **`liveE2eOperationBlocker`** | **`bootstrap-service-unavailable`** |
+| **`liveE2eG21SeedApplicable`** | **`false`** |
+
+**IT 조치**: **`g21-seed=disabled`** 인데 bootstrap을 켜려면 env를 확인하고, **`g21-seed=service-unavailable`** 이면 **Spring bean wiring·profile** 을 먼저 해결하세요 — disabled와 **원인·조치가 다릅니다**.
+
+| 테스트 | **`HealthControllerTest`** — bootstrap enabled·bean missing → **`g21-seed=service-unavailable`** assert (`42a369e`) |
+
+> 관련: Q698 · Q684 · Q713 · DEPLOYMENT §11-3 · CHANGELOG 376차
+
+### Q720. live E2E에서 health blocker **`none`**·**`ok`** 는 harness가 무시하나요? (QA-B95, FE `7e7c296`)
+
+**A.** **✅ FE Fixed (`7e7c296`·carry `4bbd54a`, QA-B95, Q716·Q718 cluster deepen)** — health·probe·persisted state의 operation blocker 목록에 **중립 placeholder** **`none`**·**`ok`**(대소문자·trim 후)가 포함돼도 harness가 **실제 blocker로 취급하지 않습니다**. **377차 (`4bbd54a`, Q722)** — **`liveE2eBootstrapEnableHint`** recovered-auth 문구(**`recovered-auth` + `readiness mode`**)도 **`isNeutralOperationReason`** 에 포함됩니다. Q716(string plural)·Q718(singular key)과 **병행** 적용됩니다.
+
+| 모듈 | 역할 |
+|------|------|
+| **`liveBackendProbe.js`** | **`NEUTRAL_BLOCKERS = {"none","ok"}`** — array·string normalize 시 **필터** |
+| **`liveConfig.js`** | **`isNeutralOperationBlocker`** · **`isNeutralOperationReason`** — persisted blocker·**`liveE2eOperationReason`** 에도 동일 규칙 |
+| **`getLiveE2eOperationBlockers()`** | **`.live-backend-state.json`** 에 **`["none","bootstrap-unavailable"]`** → **`bootstrap-unavailable` 1개만** |
+
+| 입력 예 | harness 인식 blocker |
+|---------|---------------------|
+| **`liveE2eOperationBlockers: "none, ok; bootstrap-unavailable"`** | **`["bootstrap-unavailable"]`** |
+| **`liveE2eOperationReason: "none"`** (blocker 배열 비어 있음) | skip reason에 **`operation readiness blocked: none`** **미포함** — generic fallback |
+| **`liveE2eBootstrapEnableHint`** recovered-auth (Q722) | **`Bootstrap is disabled; recovered-auth readiness mode is active.`** — **neutral reason** · actionable blocker **아님** |
+| **`liveE2eOperationBlockers: ["none", " ok ", "staff-auth-not-ready"]`** | **`["staff-auth-not-ready"]`** |
+
+**IT 조치**: health에 **`liveE2eOperationReady=false`** 인데 blocker가 **`none`/`ok`만** 보이면 **`7e7c296` 미반영 FE** 또는 **다른 축**(G21 seed·auth)을 확인하세요.
+
+| 테스트 | **`liveE2eHarness.test`** — **`ignores neutral operation blocker markers from backend payloads`** · **`drops neutral placeholders from persisted operation blockers`** · **`falls back to a generic operation message when operation reason is neutral`** |
+
+> 관련: Q716 · Q718 · Q713 · Q722 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 377차
+
+### Q721. Flyway **V180** 프로그램 수급자 그룹 무결성은 무엇을 보강하나요? (G-PROGRAM-GROUP-CONFIG, BE `42a369e`)
+
+**A.** **✅ BE Fixed (`42a369e`, DBA defense-in-depth, V179 carry)** — **V179** `program_client_groups`·`program_client_group_members` 도입 후 **DB 레벨**에서 cross-branch·비활성 이용자 멤버십 적재를 **차단**합니다. **5-9 그룹 이력 리포트**(Q714) 집계의 **데이터 정합** 기반입니다.
+
+| 대상 | V180 보강 |
+|------|-----------|
+| **`program_client_groups`** | **`(organization_id, branch_id, id)` UNIQUE** — 3-way FK backing |
+| **`program_client_group_members`** | **group-branch 3-way FK** — member.`branch_id` ≠ group.`branch_id` **cross-branch 참조 거부** |
+| | **`trg_*_set_org_branch`** — `client_id` 로 org/branch **자동 동기화** |
+| | **`trg_*_guard_active_client`** — **퇴소·비활성 이용자** 멤버십 INSERT 거부 |
+| | **`created_by` actor backstop** · **purge index** `idx_program_client_group_members_client_purge` |
+
+| 운영 영향 | **없음** — 앱 UI·API 동작 동일 · **raw SQL·import** 경로 defense-in-depth |
+| UI | **5-9 그룹 CRUD 화면은 P3** — **`GET /programs/reports/group-history`** read path만 LIVE (Q714) |
+| 배포 | Flyway **V180** 자동 적용 — **신규 컬럼 0건** · backfill 불요 (적재 행 0 가정) |
+
+> 관련: Q714 · DATA_RETENTION_POLICY §4-1 · DEPLOYMENT §2-2 · ADMIN_GUIDE §1-4 · CHANGELOG 376차
+
+### Q722. health **`liveE2eBootstrapEnableHint`** recovered-auth 문구는 harness가 어떻게 처리하나요? (QA-B95, BE `d06e3f1` · FE `4bbd54a`)
+
+**A.** **✅ FE+BE Fixed (`d06e3f1`·`4bbd54a`, QA-B95, Q713 deepen)** — bootstrap **설정 disabled** 이지만 **`ogada.live-e2e.allow-recovered-auth=true`**(기본) + **`LiveE2eBootstrapService` bean wired** 일 때, health·probe가 **recovered-auth 모드**를 **명시 hint**로 노출합니다. FE harness는 hint·**`liveE2eAllowRecoveredAuth`** 를 파싱하고 **neutral operation reason/blocker** 로 처리해 **false SKIP** 을 방지합니다.
+
+| 필드 | 값·의미 |
+|------|---------|
+| **`liveE2eAllowRecoveredAuth`** | **`true`** — bootstrap disabled + bean wired + allow-recovered-auth (`3342938`·`d06e3f1`) |
+| **`liveE2eBootstrapEnableHint`** | **`Bootstrap is disabled; recovered-auth readiness mode is active.`** — **`BOOTSTRAP_RECOVERED_AUTH_HINT`** (`d06e3f1`) |
+| **`liveE2eBootstrapEnabled`** | **`false`** — env/bootstrap config off |
+| probe **`bootstrapEnableHint`** | health와 **동일 문자열** (`LiveE2eController`, `d06e3f1`) |
+
+| FE 모듈 | 역할 |
+|---------|------|
+| **`liveBackendProbe.js`** (`4bbd54a`) | **`extractLiveE2eHealthFields`** — **`liveE2eAllowRecoveredAuth`·`liveE2eBootstrapEnableHint`·`liveE2eBootstrapEnabled`** parse |
+| **`liveConfig.js`** (`4bbd54a`) | **`isLiveRecoveredAuthAllowed()`** · **`getLiveBootstrapEnableHint()`** · **`isRecoveredAuthBootstrapHint()`** — hint/reason **neutral** |
+| **`liveGlobalSetup.js`** (`4bbd54a`) | **`isIgnorableOperationReasonForRecoveredAuth`** — recovered-auth hint **skip reason 제외** |
+
+| neutral 판정 규칙 | hint/reason 문자열 **trim·lower** 후 **`recovered-auth`** 와 **`readiness mode`** **모두 포함** |
+| effective blockers | **`isLiveRecoveredAuthAllowed()`** + recovered-auth hint → **blocker 목록에서 제외** (`getEffectiveOperationBlockers`) |
+| before (`3342938` only) | **`liveE2eAllowRecoveredAuth=true`** 이지만 hint **`null`** — IT triage 혼동 |
+| after (`d06e3f1`·`4bbd54a`) | hint **명시** + FE **neutral filter** — Q713 auth-recovery와 **정합** |
+
+**IT 조치**
+
+1. **`GET /api/v1/health`** — bootstrap disabled + bean wired → **`liveE2eAllowRecoveredAuth=true`** · **`liveE2eBootstrapEnableHint`** recovered-auth 문구 확인.
+2. **`GET /api/v1/system/live-e2e/probe`** — **`bootstrapEnableHint`** 동일 문자열 (`d06e3f1`).
+3. **`./scripts/run-live-e2e.sh`** 후 **`.live-backend-state.json`** — hint만 남아도 **`liveE2eEffectiveOperationReady=true`** (staff creds 복구 시).
+4. skip reason에 recovered-auth hint가 **actionable blocker** 로 중복되면 **`4bbd54a` 미반영 FE** — develop **`4bbd54a`** 이상 확인.
+
+| 테스트 | **`HealthControllerTest`** · **`LiveE2eControllerTest`** (`d06e3f1`) · **`liveE2eHarness.test`** recovered-auth parse·neutral reason (`4bbd54a`) |
+
+> 관련: Q713 · Q720 · Q684 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 377차
+
 ### [TWR] Q299. CMS 자동이체 **해지**는 어떻게 하나요?
 
 **A.** **Fixed (BE `a34d0eb`·`4a622ab`·FE `9a6fdb6`, G2/US-L03)** — 센터 **`hq_admin`·`branch_admin`** 이 **`/billing/cms`** → **등록 관리** 탭에서 수행합니다.
@@ -4919,9 +5502,9 @@ POST /api/v1/billing/claims/{claimId}/payments
 | 구분 | 동작 |
 |------|------|
 | **화면** | **`/billing/claims/:claimId`** — **`BillingDetailPage`** — **`PAID`+`paidAt`** 일 때 **「환불 처리」** → **`RefundRecordModal`** |
-| **입력** | **환불일**(`DateInput`) · **환불 금액**(기본=본인부담금 전액, **부분 환불 불가**) · **환불 사유**(선택) |
-| **API** | **`POST /billing/claims/{claimId}/refunds`** — `{ refundedAt, amount?, reason? }` |
-| **서버 검증** | **`PAID`만 허용** · **`paidAt`·`paymentMethod` 필수** · **환불 금액 = `copayAmount`** · **미래 환불일 거부** · **이미 `REFUNDED` 거부** |
+| **입력** | **환불일**(`DateInput`) · **환불 금액** · **환불 사유**(선택) · **간편결제/계좌/CMS** 시 **환불 수수료 정책** + **실환불액(net) 미리보기** (Q712, `cadd74a`) |
+| **API** | **`POST /billing/claims/{claimId}/refunds`** — `{ refundedAt, amount?, reason?, feePolicyCode? }` |
+| **서버 검증** | **`PAID`만 허용** · **`paidAt`·`paymentMethod` 필수** · **`feePolicyCode` 없음** → **환불 금액 = `copayAmount`** · **`feePolicyCode` 있음** → **3종 code `@Pattern`만 허용** (`79725eb`) · **결제수단 호환 + net 일치** (`aeecc1b`) · **미래 환불일 거부** · **이미 `REFUNDED` 거부** |
 | **DB** | **V71** — `refunded_at`·`refund_amount`·`refund_reason`·`refund_recorded_by` · 상태 전이 **`PAID`→`REFUNDED` only** |
 | **연말정산** | **`getMedicalExpenseDeduction`** — 환불된 청구는 **귀속 연도 집계에서 제외** (Q252 연계) |
 | **권한** | **`hq_admin`·`branch_admin`** — `social_worker`·`caregiver` **거부** |
@@ -4934,7 +5517,7 @@ POST /api/v1/billing/claims/{claimId}/payments
 
 | 테스트 | **`BillingServiceTest.recordCopayRefund*`** · **`CopayGuardianNotifyPaymentE2eTest`** · **`BillingDetailPage.test`** · **`RefundRecordModal.test`** |
 
-> 관련: Q179 · Q252 · USER_MANUAL §4-6·§5-10 · ADMIN_GUIDE §10-4 · DEPLOYMENT §8-1
+> 관련: Q179 · Q252 · **Q712** · USER_MANUAL §4-6·§5-10 · ADMIN_GUIDE §10-4 · DEPLOYMENT §8-1
 
 ### Q262. **기능회복 훈련** 계획·평가 지표는 어디서 관리하나요?
 
@@ -9507,14 +10090,15 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 ### [TWR] Q540. **연간 임금협의·근로(재)계약** 기한은 어디서 확인하나요? (FAQ21823, US-R03)
 
-**A.** **△ Partial Fixed (FE `10585b9`·`f31c346`·`f62402f`·`1b6d2b1`·`033b319`·`debe6dd`, US-R03, Q540)** — 이지케어 FAQ21823 **연간 임금협의·근로(재)계약**을 **목록·대시보드·직원 상세** 3계층에서 확인·기록합니다. **별도 compliance BE API 없음** — **근로계약서 서명일(`contractSignedAt`)** 기준 **FE 계산** · **재계약 기록은 `PATCH /users/{userId}`** (Q547).
+**A.** **✅ Full-stack Fixed (BE `9aaefa0`·FE `596658a`/`d682562`, US-R03, Q540·Q685)** — 이지케어 FAQ21823 **연간 임금협의·근로(재)계약**을 **목록·대시보드·직원 상세** 3계층에서 확인·기록합니다. **`GET /api/v1/staff/employment-contracts/compliance`** 가 **집계 단일 소스** · **재계약 기록은 `PATCH /users/{userId}`** (Q547).
 
 | 계층 | 화면 | 내용 |
 |------|------|------|
-| **대시보드 StatCard** | **`/dashboard`·`/dashboard/hq`** — **`DashboardPage`** | **「근로재계약 미충족」** StatCard — **기한 초과+서명일 미등록** 합산 · 클릭 **`/staff`** (`f31c346`) |
-| **대시보드 Alert** | **`EmploymentContractRenewalAlertsPanel`** | **기한 초과·서명일 미등록·기한 임박(30일)** Alert 목록 · 링크 **`/staff/{id}?tab=lifecycle`** (Q547, `033b319`) |
-| **목록** | **`/staff`** — **`StaffEmploymentContractRenewalSummaryPanel`** | StatCard 4종 · **확인 필요 목록** 표 · 이름 링크 **`aria-label`「{이름} 근로(재)계약 lifecycle 보기 ({staffId})」** (Q544, `debe6dd`) (`10585b9`) |
-| **상세** | **`/staff/{userId}` → 「입사~퇴사」** — **`StaffEmploymentContractRenewalPanel`** | Card **「근로(재)계약·임금협의 (FAQ 21823)」** · **「재계약 완료 기록」** Modal (Q547) · checklist·서식 Modal (Q546) · overdue Alert **`id`**·**「근로계약서 파일함」`aria-describedby`** (Q544) (`f62402f`/`033b319`) |
+| **compliance API** | **`GET /staff/employment-contracts/compliance?branchId=&referenceDate=`** | **`renewalGapCount`** · **`retentionExpiringCount`** · **`retentionExpiredCount`** · **`renewalAlerts[]`** · RBAC **`hq_admin`·`branch_admin`·`social_worker`** |
+| **대시보드 StatCard 3종** | **`/dashboard`·`/dashboard/hq`** — **`DashboardPage`** | **「근로재계약 미충족」** · **「근로계약 보관 임박」** · **「근로계약 보관 만료」** — 스냅샷 필드 우선 · 누락 시 compliance API 폴백 |
+| **대시보드 Alert** | **`EmploymentContractRenewalAlertsPanel`** | **`renewalAlerts[]`** — **overdue·missing·due-soon(30일)** · 링크 **`/staff/{id}?tab=lifecycle`** (Q547) |
+| **목록** | **`/staff`** — **`StaffEmploymentContractRenewalSummaryPanel`** | **`fetchStaffEmploymentContractComplianceApi`** — StatCard 5종 · 확인 필요 표 · **`aria-label` staff ID** (Q544) |
+| **상세** | **`/staff/{userId}` → 「입사~퇴사」** — **`StaffEmploymentContractRenewalPanel`** | checklist·서식 Modal·**보관 D-day Alert** (Q685) · **「재계약 완료 기록」** Modal (Q547) |
 
 | 항목 | 내용 |
 |------|------|
@@ -9532,7 +10116,7 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 | **파일함** | **「근로계약서 파일함」** → HR **`documentType=employment-contract`** |
 | **입사 완료 가드** | **서명일** 또는 checklist **「근로계약서」** 없이 **입사 완료** 저장 불가 (Q290) |
 | **숨김** | **퇴사 완료(`TERMINATED`)** 직원 — 패널·집계 **제외** |
-| **대시보드 폴백** | 스냅샷 **`employmentContractRenewalGapCount`** 없으면 **`fetchUsersApi`** + **`countEmploymentContractRenewalGaps`** |
+| **대시보드 폴백** | 스냅샷 3필드 누락 시 **`fetchStaffEmploymentContractComplianceApi`** · API 실패 시 count **0** + partial-load warning |
 | **테스트** | **`StaffEmploymentContractRenewalSummaryPanel.test`** · **`DashboardPage.test`** · **`staffEmploymentContractCompliance.test`** · **`StaffEmploymentContractRenewalPanel.test`** · **`staffEmploymentContract.test`** · **`StaffDetailPage.test`** |
 | **P2 잔여** | **G-Payroll** 급여명세 · **전자서명 workflow** · **서식 PDF 자동 생성** |
 
@@ -9621,7 +10205,7 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 | **화면** | **`/staff/{userId}` → 「입사~퇴사」** — **`StaffEmploymentContractRenewalPanel`** |
 | **필수 5항** | **`EMPLOYMENT_CONTRACT_REQUIRED_CLAUSES`** — **임금·소정근로시간·휴일·연차유급휴가·근로조건** — ordered checklist (`staff-employment-contract-clauses-heading`) |
 | **연간 갱신 절차** | **`EMPLOYMENT_CONTRACT_RENEWAL_WORKFLOW`** — **① 임금협의 → ② 근로(재)계약서 작성 → ③ 보관·등록(HR 파일함)** |
-| **서식 Modal** | **「근로계약서 서식 보기」** — **`EMPLOYMENT_CONTRACT_RENEWAL_TEMPLATE`** — 2026 최저임금·5항 placeholder · **`pre.ds-staff-employment-contract__template`** |
+| **서식 Modal** | **「근로계약서 서식 보기」** — **`EMPLOYMENT_CONTRACT_RENEWAL_TEMPLATE`** — 2026 최저임금·5항 placeholder · **「서식 인쇄」** (`window.print`·`@media print`, Q685, `a43bcb7`) · **`pre.ds-staff-employment-contract__template`** |
 | **보관 연계** | 서식 작성 후 **기관·근로자 각 1부** 보관 · 스캔본 → **「근로계약서 파일함」** (`employment-contract`) |
 | **설정** | **`staffEmploymentContract.js`** — clause·workflow·template·due-date helpers |
 | **테스트** | **`StaffEmploymentContractRenewalPanel.test`** — checklist·Modal open · **`staffEmploymentContract.test`** |
@@ -9631,14 +10215,14 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 ### [TWR] Q547. FAQ21823 **재계약 완료 기록**과 **대시보드 due-date 알림**은? (US-R03)
 
-**A.** **✅ FE Fixed (`033b319`, US-R03, Q547)** — Q540·Q546 안내 패널에 **재계약 서명일 저장** workflow와 **대시보드 기한 알림**을 추가했습니다. **별도 BE compliance API 없음** — **`PATCH /api/v1/users/{userId}`** (`updateUserApi`) 로 lifecycle 필드를 갱신합니다.
+**A.** **✅ Full-stack Fixed (BE `9aaefa0`·FE `033b319`/`596658a`, US-R03, Q547·Q685)** — Q540·Q546 안내 패널에 **재계약 서명일 저장** workflow와 **대시보드 기한·보관 알림**을 추가했습니다. **집계·Alert 목록**은 **`GET /staff/employment-contracts/compliance`** · **저장**은 **`PATCH /api/v1/users/{userId}`** (`updateUserApi`).
 
 | 항목 | 내용 |
 |------|------|
 | **재계약 기록** | **`StaffEmploymentContractRenewalPanel`** — **「재계약 완료 기록」** Modal — **`contractSignedAt`** + **`lifecycleChecklist["employment-contract"]=true`** |
 | **권한** | **`branch_admin`·`social_worker`** — **`canManage=true`** 일 때만 버튼 표시 |
 | **저장 후** | success Alert — **다음 재계약 기한 = 새 서명일 +1년** · HR 파일함 스캔 업로드 안내 |
-| **대시보드 Alert** | **`EmploymentContractRenewalAlertsPanel`** — **`computeEmploymentContractRenewalDueAlerts`** — **overdue·missing·due-soon(30일)** |
+| **대시보드 Alert** | **`EmploymentContractRenewalAlertsPanel`** — compliance API **`renewalAlerts[]`** — **overdue·missing·due-soon(30일)** |
 | **Alert 링크** | **`/staff/{staffId}?tab=lifecycle`** — **`aria-label`「{이름} 근로(재)계약 lifecycle 보기」** |
 | **Badge** | **기한 초과=warning** · **서명일 미등록=danger** · **기한 임박=info** |
 | **설정** | **`staffEmploymentContractCompliance.js`** — **`EMPLOYMENT_CONTRACT_RENEWAL_DUE_SOON_DAYS=30`** |
@@ -10036,6 +10620,34 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-26 | **377차** — **Q722 recovered-auth readiness hints · Q713 deepen** · baseline **`d06e3f1`/`4bbd54a`** |
+| 2026-06-26 | **376차** — **Q719 G21 seed service-unavailable · Q720 neutral blocker · Q721 V180 · UXD-165** · baseline **`42a369e`/`7e7c296`** |
+| 2026-06-26 | **375차** — **Q717 근무일정표 · Q718 singular blocker · Q713 BE allow-recovered-auth** · baseline **`3342938`/`b7004ca`** |
+| 2026-06-26 | **374차** — **Q716 string-form operation blocker normalize · Q713 deepen probe-state** · baseline **`49fe2e7`/`bd3253a`** |
+| 2026-06-26 | **373차** — **Q714 deepen 5-9 group-history fill · Q715 branchId · Q713 health reason** · baseline **`49fe2e7`/`f74a6e7`** |
+| 2026-06-25 | **369차** — **Q709 provider-catalog FE wire · Q710 parity panel mount · Q713 bootstrap enforcement** · baseline **`9f67954`/`5914b2f`** |
+| 2026-06-25 | **368차** — **Q712 feePolicyCode validation · Q713 live E2E effective readiness** · baseline **`79725eb`/`e070c45`** |
+| 2026-06-25 | **367차** — **Q712 refund fee full-stack** · **`RefundRecordModal`·`feePolicyCode`** · baseline **`aeecc1b`/`cadd74a`** |
+| 2026-06-25 | **366차** — **Q712 7-9 refund fee catalog** · **Q705 목욕 FE closure** · baseline **`2adae59`/`3d7f13b`** |
+| 2026-06-25 | **365차** — **Q711 연차 branchName 공백 fallback** · **Q709 routing test lock** · baseline **`5a5174a`/`58f3858`** |
+| 2026-06-25 | **364차** — **Q709 7-5 provider-catalog** · **Q710 G16 parity panel scaffold** · baseline **`56831fc`/`892122d`** |
+| 2026-06-25 | **363차** — **Q708 CMS catalog EmptyState** · **Q706·Q707 NHIS 매칭 의사결정표 cross-ref** · baseline **`4963535`/`5bb84a6`** |
+| 2026-06-25 | **362차** — **Q707 G-NHIS-ALT-KEY-AUDIT-BADGE** · **Q706 `altKeyMatched` 보강** · baseline **`4963535`/`5bb84a6`** |
+| 2026-06-25 | **361차** — **Q706 G-NHIS-MASKED-NAME-FALLBACK** · **CMS catalog empty state** · baseline **`37416ac`/`9a583ec`** |
+| 2026-06-25 | **360차** — **Q703 G16 parity-rules RBAC·응답 스키마** · **Q578 placeholder casing** · baseline **`e4f83af`/`5afef2d`** |
+| 2026-06-25 | **359차** — **Q701·Q703·Q704 G2b/G16 FE wire full-stack** · baseline **`e12b084`/`9aeedfe`** |
+| 2026-06-25 | **358차** — **Q705 US-O01 목욕 전후관찰·지표27 compliance** · **Q700/Q701 CMS 5/5 정정** · baseline **`e12b084`/`1db75d0`** |
+| 2026-06-24 | **356차** — **Q703 G16 NHIS #44 parity rules API** · **Q702 live E2E dedupe carry** · baseline **`bd1e87e`/`c3c6272`** |
+| 2026-06-24 | **355차** — **Q701 G2b CMS payment-method-catalog FE wire** · **Q702 live E2E bootstrap** · baseline **`2eaf17e`/`4875937`** |
+| 2026-06-24 | **354차** — **Q701 G2b CMS payment-method-catalog API** · baseline **`2eaf17e`/`64a7648`** |
+| 2026-06-24 | **353차** — **Q700 M7 7-x lifecycle crosswalk** · **G-SMS test lock** · baseline **`a12873c`/`216ab7a`** |
+| 2026-06-24 | **352차** — **Q699 dispatch success label** · **Q692 staff `ezcareMessageKind`** · baseline **`2f83563`/`c7d0982`** |
+| 2026-06-24 | **351차** — **Q696~Q698 신규** · **UXD-161 form-stack** · **fallback label sync** · baseline **`88a58d9`/`c06d581`** |
+| 2026-06-24 | **350차** — **Q693~Q695 신규** · **G-SMS operational checklist·API schema** · baseline **`ef8bb4e`/`5a6d42c`** |
+| 2026-06-24 | **349차** — **Q692 신규** · **Q686·Q690 `dispatchReady` 정정** · **message_kind 11·13·19 UI** · baseline **`ef8bb4e`/`5a6d42c`** |
+| 2026-06-24 | **348차** — **Q691 신규** · **message_kind 1·12·21 발송 UI** · **G-SMS 6/6 closure** · baseline **`1d5d441`/`9c25d44`** |
+| 2026-06-24 | **347차** — **Q689·Q690 신규** · **STAFF_MONTHLY_SCHEDULE API·발송 대기 UI** · baseline **`b9d0599`/`c04968c`** |
+| 2026-06-24 | **346차** — **Q687·Q688 신규** · **Q686 deepen** · **CLIENT_MONTHLY_SCHEDULE API·UXD-160 a11y** · baseline **`8631d1e`/`068049b`** |
 | 2026-06-23 | **338차** — **client RBAC hierarchy (Q675)**·**addressSearch/detail read (Q676)**·baseline **`01edba7`/`1193761`** |
 | 2026-06-23 | **337차** — **US-D01/D02 Korean address**·**Q671~Q674 신규**·**Q669 갱신**·baseline **`642ea11`/`0606a3b`** |
 | 2026-06-23 | **336차** — **V175 leave-ledger integrity**·**Q668·Q669·Q670 신규**·baseline **`c4e6bcb`/`426d63a`** |
@@ -11906,7 +12518,7 @@ PUT /api/v1/billing/reports/filters
 
 | UI 요소 | 화면 | 구현 (`949e9bf`/`c183ebd`) |
 |---------|------|---------------------------|
-| **`BranchScopeNotice`** | 연차·출퇴근 roster | API **`resolvedBranchId`** · **`user.activeBranchName`** — **「조회 지점: ○○점」** (`role="status"`) |
+| **`BranchScopeNotice`** | 연차·출퇴근 roster | API **`resolvedBranchId`** · **`user.activeBranchName`** — **「조회 지점: ○○점」** (`role="status"`) · **공백 `branchName` trim·ID fallback** (`58f3858`, Q711) |
 | **`RelatedSurfacesPanel`** | 양 화면 cross-link | **`StaffAnnualLeaveRelatedSurfacesPanel`** thin wrapper · **`aside` `aria-label`** surface별 분리 |
 | **aside 라벨** | 연차 | **`STAFF_ANNUAL_LEAVE_RELATED_ASIDE_LABEL`** = **「연차휴가 관련 화면」** |
 | **aside 라벨** | 출퇴근 | **`STAFF_WORK_ATTENDANCE_RELATED_ASIDE_LABEL`** = **「출퇴근 관련 화면」** (이전 잘못된 라벨 수정, UXD-156) |
@@ -11922,7 +12534,7 @@ PUT /api/v1/billing/reports/filters
 | 테스트 | 내용 |
 |--------|------|
 | **`RelatedSurfacesPanel.test`** | AVAILABLE 링크·PLANNED Badge·빈 배열 null render (`c183ebd`) |
-| **`StaffAnnualLeavePage.test`** | API-resolved branch scope notice (`949e9bf`) |
+| **`StaffAnnualLeavePage.test`** | API-resolved branch scope notice · **whitespace `branchName` ID fallback** (`58f3858`, Q711) |
 | **`StaffAnnualLeaveRelatedSurfacesPanel.test`** | wrapper·aside label by `surfaceKind` (`c183ebd`) |
 | **`StaffWorkAttendancePage.test`** | cross-link panel·branch scope carry |
 
@@ -12382,5 +12994,695 @@ PUT /api/v1/billing/reports/filters
 > **337차 이전**: read API는 **`address` 결합값만** 제공 — 수정 화면에서 search/detail **prefill 불가**였습니다.
 
 > 관련: Q671 · Q673 · USER_MANUAL §4-3 · ADMIN_GUIDE §5-1
+
+---
+
+### Q677. **상세주소만** 바꿔도 이용자 주소가 저장되나요? (BE `2cae74c`)
+
+**A.** **✅ BE Fixed (`2cae74c`, Q677)** — 이용자 수정 시 **도로명(`addressSearch`)은 그대로** 두고 **`addressDetail`만** 보내도 반영됩니다. **`ClientService.applyAddressDetailOnlyUpdate`** 가 기존 도로명을 유지한 채 상세만 갱신합니다.
+
+| PATCH body | 동작 |
+|------------|------|
+| **`address` + `addressDetail`** | 도로명·상세 **전체** 갱신 |
+| **`addressDetail`만** | **기존 도로명 유지** + 상세만 갱신 |
+| **도로명 없이 상세만·기존 주소 없음** | **`422`「주소를 입력하세요.」** |
+
+**현장 절차**
+
+1. **`/clients/:id/edit`** — **「주소 검색」** 없이 **상세주소** 입력란만 수정
+2. **저장** — FE는 기존 **`addressSearch` prefill** 을 유지한 채 **`addressDetail`** 만 PATCH body에 포함
+3. **확인** — 목록·상세 **`address`** 결합값에 상세가 반영 · **`addressSearch`** 는 불변
+
+> 관련: Q676 · Q671 · USER_MANUAL §4-3·§6-5 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-3
+
+---
+
+### Q678. **이동서비스비** 화면의 **「NHIS #44 산정 기준」** 안내는 어디에 있나요? (G16, FE `a531ed6`)
+
+**A.** **✅ FE Fixed (`a531ed6`·`9aeedfe`, G16, Q678·Q703)** — **`/transport/service-fees`** **`TransportServiceFeePanel`** 수가표 아래 **「NHIS #44 산정 기준」** 4항이 표시됩니다. 페이지 로드 시 **`GET /transport/service-fee-parity-rules`** (`e4f83af`) 동적 로드를 시도하나, FE **`description` wire P2** 잔여 시 **static config** fallback을 사용합니다.
+
+| 안내 항목 | 내용 |
+|-----------|------|
+| **러-1~러-4** | 거리구간별 수가 (RU_1 830원 ~ RU_4 6,230원) |
+| **편도 50%** | 왕복 대비 편도는 **50%** 산정 |
+| **1일 1회** | 수급자별 **서비스일 1건** (UK) |
+| **별지 제22호** | **이동서비스 일지 작성·보관** 의무 |
+
+**접근성 (UXD-159, `0869589`)** — 조회 form **`aria-label="이동서비스비 조회 기간"`** · 수가·청구 표 **`caption`+`captionVisuallyHidden`** · 행별 **「확정」·「편도/왕복 전환」** 버튼에 **`aria-label`**·**`aria-busy`** (Q683).
+
+> 관련: Q239 · Q247 · Q317 · **Q703** · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4
+
+---
+
+### Q679. Solapi 알림톡 **templateId 미매핑**이면 무음 발송되나요? (BE `f600fd6`)
+
+**A.** **✅ BE Fixed (`f600fd6`, Q679)** — **`NOTIFICATION_PROVIDER=solapi`** 에서 **내부 템플릿 코드 → Solapi `templateId`** 매핑이 **없거나 placeholder**면 **발송 실패**로 처리합니다. Solapi API를 **호출하지 않으며** `notifications` 가 **FAILED** 상태로 남습니다.
+
+| 조건 | `SolapiMessageClient` 동작 |
+|------|---------------------------|
+| `resolveTemplateId(code)` → `null`·blank | **failure** — API 미호출 |
+| templateId == 내부 코드명(placeholder) | **failure** — 무음 발송 방지 |
+| 승인 templateId env 매핑됨 | 정상 `messages/v4/send` |
+
+> **readiness Q644** 와 별도 — **기동 시** placeholder env 거부 + **런타임 dispatch** 단계 fail-closed가 **이중**으로 동작합니다.
+
+**sysadmin 조치** — `KAKAO_TPL_*` env에 **Solapi 콘솔 승인 templateId** 를 1:1 매핑 · 스테이징에서 stub → solapi 전환 후 **`notifications.status=SENT`** 대조 (ADMIN_GUIDE §1-4·§10-8).
+
+> 관련: Q148 · Q157 · Q644 · DEPLOYMENT_GUIDE §4-5
+
+---
+
+### Q680. live E2E **bootstrap**은 기본으로 켜져 있나요? **`liveE2eBootstrapEnableHint`** 는? (BE `8b3fdcd`·`c8358e9`·`0494334`)
+
+**A.** **✅ BE Fixed (`8b3fdcd`·`c8358e9`·`0494334`, Q680·Q684)** — **`ogada.live-e2e.bootstrap-enabled`** 는 **기본 비활성(opt-in)** 입니다. **운영·프로덕션**에서는 **`LIVE_E2E_BOOTSTRAP_ENABLED`/`LIVE_E2E` env를 명시하지 않으면** bootstrap endpoint가 **거부**됩니다.
+
+| env | bootstrap |
+|-----|-----------|
+| **미설정** (prod 기본) | **disabled** — `POST /system/live-e2e/bootstrap` **403/비활성** |
+| **`LIVE_E2E=1`** 또는 **`LIVE_E2E_BOOTSTRAP_ENABLED=true`** | **enabled** — 스테이징·CI live E2E 전용 |
+
+**health·probe 힌트**
+
+| 상태 | **`liveE2eBootstrapEnabled`** | **`liveE2eBootstrapEnableHint`** | **`liveE2eStatusDetail`** | **`liveE2eOperationBlocker`** |
+|------|-------------------------------|----------------------------------|---------------------------|-------------------------------|
+| **disabled** (기본) | `false` | **`Set LIVE_E2E_BOOTSTRAP_ENABLED=true to enable live E2E bootstrap.`** | `bootstrap=disabled` | `bootstrap-disabled` |
+| **enabled·bean missing** (`0494334`) | `true` | **`LIVE_E2E_BOOTSTRAP_ENABLED=true is set but bootstrap service is unavailable.`** | `bootstrap=service-unavailable` | `bootstrap-service-unavailable` |
+| **enabled·정상** | `true` | `null` | readiness probe 결과 | seed/credential blocker 등 |
+
+**`/live-e2e/probe`** 응답에도 동일 **`bootstrapEnableHint`** 가 포함됩니다 — 로그 없이 **조치 env** 를 확인할 수 있습니다. **`POST /system/live-e2e/bootstrap`** 는 enabled·bean missing 시 **`503 LIVE_E2E_BOOTSTRAP_SERVICE_UNAVAILABLE`** 를 반환합니다.
+
+**실행** — **`./scripts/run-live-e2e.sh`** (env 자동 주입) 또는 **`scripts/dev-live-e2e.env`** 복사 후 수동 설정 (DEPLOYMENT_GUIDE §11-3).
+
+> 관련: Q384 · Q578 · Q681 · **Q684** · DEPLOYMENT_GUIDE §3-7·§9-1
+
+---
+
+### Q681. **연차·유급휴일 대장**·**이동서비스비** live E2E·pilot harness는 무엇을 검증하나요? (FE `bc6180e`·`87da06d`)
+
+**A.** **✅ FE harness deepen (Q681)** — **US-R01-c leave-ledger** 와 **G16 transport service fees** 가 **live E2E·pilot checklist** 에 등록되어 인수 테스트 자동화가 보강되었습니다.
+
+| harness | 검증 내용 |
+|---------|----------|
+| **`staffLeaveLedgerLiveApi.e2e.test.js`** (`bc6180e`) | **`GET/POST/PUT/DELETE /staff/leave-ledger*`** live routing · **`relatedSurfaces[1].availability=AVAILABLE`** |
+| **`StaffLeaveLedgerPilotServiceFlowE2eTest`** (BE) | list→create→update→delete pilot · **`hq_admin` CUD 403** |
+| **`pilotChecklist` G16** (`87da06d`) | **`service-fee-rates`·`service-fees`** API contract · Must route **`/transport/service-fees`** |
+| **`TransportServiceFeePage.test`** | **NHIS #44 parity notes** 4항 assertion (Q678) |
+
+**전제** — bootstrap **enabled** (Q680) · **`npm test`** 는 **`scripts/npm-test-locked.sh`** 경유 · **동시 2 suite 금지** (`docs/qa/VITEST_CONCURRENCY.md`).
+
+> 관련: Q663 · Q666 · Q678 · USER_MANUAL §4-7-0d · DEPLOYMENT_GUIDE §11-3
+
+---
+
+### Q682. **고용계약 갱신**(employment-contract renewal) pilot harness는 언제 사용하나요? (FE `17472bb`·`28033cf`)
+
+**A.** **✅ FE pilot harness deepen (`17472bb`·`28033cf`, Q682)** — FAQ21823 **고용계약 갱신**이 **`pilotChecklist` R03-a/b/c** 및 **`pilotPageFlows` FAQ21823 block**에 등록되어 **인수 테스트 CI 검증**이 강화되었습니다.
+
+| harness | 검증 내용 |
+|---------|----------|
+| **`pilotChecklist` R03-a/b** (`17472bb`) | **`fetchUserByIdApi`** · **`updateUserApi`** — lifecycle·재계약 서명일 갱신 contract |
+| **`pilotChecklist` R03-c** (`28033cf`) | **`fetchUsersApi`** — **직원 목록 (근로재계약 대시보드)** API contract |
+| **`pilotPageFlows` FAQ21823 block** (`17472bb`·`28033cf`) | **`/staff/{id}?tab=lifecycle`** renewal panel · **`/dashboard`「근로재계약 미충족」** StatCard · **`EmploymentContractRenewalAlertsPanel`** |
+
+**사용 시점**
+
+- FAQ21823 **근로(재)계약** 인수 테스트·배포 전 smoke
+- pilot site 인수 단계
+- **command**: `LIVE_E2E=1 npm test -- pilotPageFlows FAQ21823`
+
+> **FAQ21823** — ezCare 운영 주기 표 항목 (연간 임금협의·근로재계약). **현장 UI** — USER_MANUAL §4-2·§5-3 (Q540·Q547).
+
+> 관련: Q540 · Q547 · Q681 · USER_MANUAL §4-2·§5-3 · DEPLOYMENT_GUIDE §11-3
+
+---
+
+### Q683. **이동서비스비·이용자 수정** 화면 접근성(a11y)은 어떻게 보강되었나요? (UXD-159, FE `0869589`)
+
+**A.** **✅ FE Fixed (`0869589`, UXD-159, Q683)** — RBAC refactor 이후 깨졌던 **이용자 수정 링크** 라벨과 **G16 이동서비스비** 조작 버튼·표 접근성을 보강했습니다.
+
+| 화면 | 보강 |
+|------|------|
+| **`/clients/:id`** | **「수정」** Link — **`aria-label="{이름} 정보 수정"`** (`canEditClient` RBAC 유지, Q675) |
+| **`/transport/service-fees`** | 조회 form **`aria-label`** · **조회/생성 `aria-busy`** · 표 **`caption`** · 행별 **확정·왕복/편도 `aria-label`** · **`<time dateTime>`** |
+| **NHIS #44 안내** | **`components.css`** — parity notes **summary layout** (스크린리더·고대비) |
+
+> 관련: Q675 · Q678 · USER_MANUAL §5-8-1·§6-5 · FAQ Q552 (FAQ21823 a11y carry)
+
+---
+
+### Q684. live E2E bootstrap **enabled** 인데 **`bootstrap-service-unavailable`** 이면? (BE `0494334`·`d11263b`·FE `cba9ff8`)
+
+**A.** **✅ BE+FE Fixed (`0494334`·`d11263b`·`cba9ff8`, Q684)** — env로 bootstrap을 **켰지만** Spring **bootstrap service bean이 없을 때** disabled와 **별도 진단**을 반환합니다. 이전에는 disabled와 동일하게 보여 **env만 바꿔도 해결되지 않는** 경우가 있었습니다.
+
+| 진단 필드 | **disabled** | **service-unavailable** |
+|-----------|--------------|-------------------------|
+| **`liveE2eBootstrapEnabled`** | `false` | `true` |
+| **`liveE2eBootstrapEnableHint`** | `Set LIVE_E2E_BOOTSTRAP_ENABLED=true…` | **`LIVE_E2E_BOOTSTRAP_ENABLED=true is set but bootstrap service is unavailable.`** |
+| **`liveE2eStatusDetail`** | `bootstrap=disabled` | **`bootstrap=service-unavailable`** |
+| **`liveE2eOperationBlocker`** | `bootstrap-disabled` | **`bootstrap-service-unavailable`** |
+| **`liveE2eOperationReason`** | **`bootstrap-disabled`** | **`bootstrap-service-unavailable`** |
+| **`POST …/bootstrap`** | disabled 응답 | **`503 LIVE_E2E_BOOTSTRAP_SERVICE_UNAVAILABLE`** |
+
+**BE health·probe (`d11263b`)** — **`liveE2eOperationReason`** 이 **`liveE2eOperationBlocker`** 와 **동일 코드**로 노출됩니다. triage 시 blocker·reason **불일치**가 있으면 **백엔드 HEAD·재기동**을 확인하세요.
+
+| **`liveE2eOperationReason` (대표)** | 의미 |
+|-------------------------------------|------|
+| **`none`** | operation ready — blocker 없음 |
+| **`bootstrap-disabled`** | env opt-in 미설정 |
+| **`bootstrap-service-unavailable`** | env enabled·bean missing |
+| **`staff-bootstrap-not-ready`** | staff bootstrap seed 미완료 |
+| **`guardian-bootstrap-not-ready`** | guardian bootstrap 미완료 |
+| **`seed-client-missing`** | live E2E client seed 없음 |
+| **`g21-branch-missing-or-inactive`** | G21 seed 대상 지점 없음 |
+
+**FE live E2E (`cba9ff8`)** — **`liveBackendProbe`** 가 health의 **`liveE2eOperationReason`**(및 blocker 목록)을 파싱해 skip 메시지에 **구체적 blocker** 를 남깁니다. generic 「unknown」 대신 **`operation readiness blocked: bootstrap-service-unavailable`** 형태로 표시됩니다.
+
+**sysadmin 조치**
+
+1. **`GET /api/v1/health`** — hint·blocker·**`liveE2eOperationReason`** 확인 (FAQ Q680 표 참고).
+2. **스테이징 전용 profile**·**live E2E 전용 배포**인지 확인 — prod 기본 이미지에 bootstrap bean이 **의도적으로 없을 수** 있습니다.
+3. **`./scripts/run-live-e2e.sh`** 로 **검증된 env·profile** 조합 재실행 (DEPLOYMENT_GUIDE §11-3).
+
+> 관련: Q680 · Q578 · Q681 · **Q685** · DEPLOYMENT_GUIDE §9-1·§11-3
+
+---
+
+### Q685. FAQ21823 **3년 보관 D-day 알림**·**근로계약서 서식 인쇄**·**compliance API**는? (BE `9aaefa0`·FE `d682562`)
+
+**A.** **✅ Full-stack (`9aaefa0`·`596658a`/`d682562`, US-R03, Q685)** — Q540·Q546 상세 패널에 **근로계약서·임금협의 기록 3년 보관** 기한 **D-day 안내**와 **서식 Modal 인쇄**를 추가했습니다. **BE `9aaefa0`** 에서 **`GET /staff/employment-contracts/compliance`** 로 **재계약·보관 집계**를 공식 지원하며, **대시보드 3 StatCard**·**목록 패널**·**Alert 패널**이 **동일 API**를 사용합니다 (`fetchUsersApi` FE fallback **제거**).
+
+| 항목 | 내용 |
+|------|------|
+| **compliance API** | **`renewalGapCount`** · **`retentionExpiringCount`**(90일) · **`retentionExpiredCount`** · **`renewalAlerts[]`** |
+| **대시보드 위젯** | **「근로재계약 미충족」** · **「근로계약 보관 임박」** · **「근로계약 보관 만료」** — dashboard snapshot 우선 |
+| **화면** | **`/staff/{userId}` → 「입사~퇴사」** — **`StaffEmploymentContractRenewalPanel`** |
+| **보관 기한 계산** | **`computeEmploymentContractRetentionUntil`** — 서명일 **+3년** (`EMPLOYMENT_CONTRACT_RETENTION_YEARS=3`) |
+| **임박 Alert (90일)** | **`isEmploymentContractRetentionExpiringSoon`** — **`EMPLOYMENT_CONTRACT_RETENTION_WARNING_DAYS=90`** · **warning Alert** — 「**N일 남았습니다**」·HR 파일함 스캔본 점검 안내 · **`id=staff-employment-contract-retention-alert`** |
+| **만료 Alert** | **`isEmploymentContractRetentionExpired`** — **info Alert** — 법정 보관 기한 경과 · **폐기 전 백업·감사 추적** 안내 |
+| **서식 Modal** | **「근로계약서 서식 보기」** → **`EMPLOYMENT_CONTRACT_RENEWAL_TEMPLATE`** · **「서식 인쇄」** — **`window.print()`** · **`@media print`** — **`.ds-staff-employment-contract-print-zone`** |
+| **재계약 Alert carry** | **기한 초과(renewal overdue)** warning Alert — Q540·Q547과 **병행 표시** (재계약 1년 vs 보관 3년 **별도**) |
+| **설정** | **`staffEmploymentContract.js`** — **`daysUntilEmploymentContractRetentionExpiry`** · retention helpers |
+| **테스트** | **`StaffEmploymentContractRenewalPanel.test`** — 90일 임박·만료 Alert · **`staffEmploymentContract.test`** — retention window |
+| **P2 잔여** | **서식 PDF 자동 생성** · **전자서명 workflow** · **G-Payroll 급여명세 연동** |
+
+> 관련: Q540 · Q546 · Q547 · USER_MANUAL §5-3 · ADMIN_GUIDE §6-2-6b · `DATA_RETENTION_POLICY.md`
+
+---
+
+### Q686. Solapi **알림 템플릿 카탈로그**는 어디서 확인하나요? (G-SMS-TEMPLATE-CATALOG, BE `ef8bb4e`·FE `5a6d42c`)
+
+**A.** **✅ Full-stack closure + deepen (`ef8bb4e`·`fed6f1f`·`5a6d42c`·`1d5d441`·`9c25d44`, G-SMS-TEMPLATE-CATALOG)** — 이지케어 **`mobile-sendW`** 7종 `message_kind` 중 ogada 도메인 **6종**에 대한 **Solapi templateId 매핑·dispatch 구현·발송 가능** 상태를 **화면** 또는 API로 확인합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/organization/settings`** (`hq_admin`) · **`/dashboard`·`/dashboard/hq`** 하단 — **`NotificationChannelReadinessPanel`** **「이지케어 메시지 종류 (템플릿 카탈로그)」** 섹션 |
+| **API** | **`GET /api/v1/notifications/template-catalog`** — RBAC **`hq_admin`·`branch_admin`** · FE **`fetchNotificationTemplateCatalogApi`** |
+| **응답 요약** | **`configuredCount`** · **`dispatchImplementedCount`** (=**6/6** @ `1d5d441`) · **`dispatchReadyCount`** · **`totalCount`** (=6) |
+| **패널 Alert** | **「발송 구현 N종 중 M종 발송 가능 · Solapi 설정 X / 6 · 발송 대기 Y종」** — **`dispatchReadyCount === dispatchImplementedCount`** 이면 success (UXD-160·`c04968c`) |
+| **발송 대기** | **`dispatchImplemented && !dispatchReady`** — warning Alert **「발송 대기 템플릿: …」** · dl **「발송 대기」** 건수 (`c04968c`, Q690) |
+| **entries[]** | **`templateCode`** · **`labelKo`** · **`ezcareMessageKind`** · **`channel`**(SMS/ALIMTALK) · **`dispatchImplemented`** · **`configured`** · **`dispatchReady`** |
+| **6종 parity** | **`STAFF_ACCESS_KEY`(1, SMS)** · **`BILLING_STATEMENT`(11)** · **`CLIENT_MONTHLY_SCHEDULE`(12)** · **`CARE_PROVISION_RECORD`(13)** · **`ELDER_ABUSE_PREVENTION_GUIDELINE`(19)** · **`STAFF_MONTHLY_SCHEDULE`(21)** — **6/6 dispatchImplemented** |
+| **dispatchReady** | **`configured && dispatchImplemented && channel credentials`** — **SMS**: `NOTIFICATION_PROVIDER=solapi` + apiKey + apiSecret + senderId · **ALIMTALK**: SMS 자격 + **`SOLAPI_KAKAO_PF_ID`** (`fed6f1f`, Q679 fail-closed 연동) |
+| **발송 UI** | **`/clients/:id`** **`GuardianDocumentNotifyPanel`** (message_kind **12·13·19**) · **`/billing/claims/:id`** **「본인부담 안내 알림톡 발송」**(11) · **`/staff/:id`** **`StaffNotificationDispatchPanel`** (message_kind **1·21**, `5a6d42c`) |
+| **운영 조치** | `dispatchReady=false` — **`KAKAO_TPL_*` env**·Solapi 콘솔 templateId · **PF ID·발신번호** 등 **채널 자격** · **`GET /notifications/channel-status`** 와 병행 |
+
+> 관련: Q679 · Q687 · Q688 · Q689 · Q690 · Q691 · Q692 · Q644 · Q318 · USER_MANUAL §4-7-3·§4-7-4 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4 · API_SPEC §11-11
+
+---
+
+### Q687. **수급자 월간 일정표** 알림톡은 어떻게 발송하나요? (G-SMS-TEMPLATE-CATALOG, BE `8631d1e`·FE `9c25d44`)
+
+**A.** **✅ Full-stack Fixed (`8631d1e`·`9c25d44`, G-SMS-TEMPLATE-CATALOG / G21)** — ezCare **「일정표-수급자」**(`message_kind=12`, `CLIENT_MONTHLY_SCHEDULE`) 알림톡을 **이용자 상세** **`GuardianDocumentNotifyPanel`** 에서 발송합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/{clientId}`** 기본정보 탭 — **「보호자 서류 발송」** · 문서 유형 **일정표-수급자** |
+| **API** | **`POST /api/v1/clients/{clientId}/notifications/client-monthly-schedule`** |
+| **권한** | **`BRANCH_ADMIN`·`SOCIAL_WORKER`** |
+| **요청 본문** | `{ "yearMonth": "2026-06", "summary": "선택 (500자 이하)" }` — **`summary` 생략** 시 서버가 **「YYYY-MM 확정 방문일정 N건」** 자동 생성 |
+| **선행 조건** | 해당 **`yearMonth`** 에 **확정(`CONFIRMED`) PLAN 방문일정** 1건 이상 — **0건** → **`422`「해당 월에 확정된 방문일정이 없어 일정표 알림을 발송할 수 없습니다.」** |
+| **채널** | **ALIMTALK** (`NotificationEventType.CLIENT_MONTHLY_SCHEDULE`) — Solapi **`KAKAO_TPL_CLIENT_MONTHLY_SCHEDULE`** 설정 필요 |
+| **readiness** | **`GET /notifications/template-catalog`** — **`CLIENT_MONTHLY_SCHEDULE`** **`dispatchImplemented=true`** · **`dispatchReady`** = Solapi 설정 여부 |
+| **FE wire** | **`GuardianDocumentNotifyPanel` ✅** — **`notifyClientMonthlyScheduleApi`** (`9c25d44`) |
+
+> 관련: Q686 · Q517 · USER_MANUAL §4-7-3 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4
+
+---
+
+### Q688. **템플릿 카탈로그·FAQ21823 보관** 접근성(UXD-160)은 무엇이 바뀌었나요?
+
+**A.** **✅ FE Fixed (`15f2195`·`068049b`, UXD-160 / QA-B289)** — G-SMS readiness 패널과 FAQ21823 **근로계약 보관** UI의 스크린리더·키보드 조작을 보강했습니다.
+
+| 화면 | 변경 |
+|------|------|
+| **`NotificationChannelReadinessPanel`** | catalog **요약 Alert `role="status"`** · 6종 표 **`caption`**(시각적 숨김) · **`ReadinessStatusBadge`** 고정 라벨 |
+| **`StaffEmploymentContractRenewalSummaryPanel`** | **보관 임박/만료** warning Alert **`role="alert"`** · 확인 목록 표 caption |
+| **`StaffEmploymentContractRenewalPanel`** | **3년 보관 D-day Alert** · **「재계약 완료 기록」** 버튼 — accessible name **= 표시 텍스트만** (`068049b`, pilot harness 정합) |
+
+> **운영**: 키보드만으로 **`/organization/settings`** catalog Alert·표 탐색 · **`/staff/{id}?tab=lifecycle`** **보관 Alert** 확인 가능.
+
+> 관련: Q685 · Q686 · Q690 · Q552 · USER_MANUAL §5-3 · ADMIN_GUIDE §1-4
+
+---
+
+### Q689. **직원 월간 일정표** 알림톡은 어떻게 발송하나요? (G-SMS-TEMPLATE-CATALOG, BE `b9d0599`·FE `9c25d44`)
+
+**A.** **✅ Full-stack Fixed (`b9d0599`·`9c25d44`, G-SMS-TEMPLATE-CATALOG / G21)** — ezCare **「일정표-직원」**(`message_kind=21`, `STAFF_MONTHLY_SCHEDULE`) 알림톡을 **직원 상세** **`StaffNotificationDispatchPanel`** 에서 발송합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/staff/{userId}`** 기본정보 탭 — **「알림톡·SMS 발송 (G-SMS)」** · 발송 종류 **일정표-직원** |
+| **API** | **`POST /api/v1/staff/notifications/staff-monthly-schedule`** |
+| **권한** | **`HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`** |
+| **요청 본문** | `{ "staffUserId": "uuid", "yearMonth": "2026-06", "summary": "선택 (500자 이하)" }` — **`summary` 생략** 시 서버가 **「YYYY-MM 확정 방문일정 N건」** 자동 생성 |
+| **선행 조건** | 해당 **`yearMonth`** 에 **대상 직원에게 배정된 확정(`CONFIRMED`) PLAN 방문일정** 1건 이상 — **0건** → **`422`「해당 월에 확정된 방문일정 배정이 없어 근무 일정표 알림을 발송할 수 없습니다.」** |
+| **추가 guard** | **퇴사·비활성 직원** → **`422`「퇴사 또는 비활성 직원에게는…」** · **직원 미존재** → **404** |
+| **채널** | **ALIMTALK** — Solapi **`KAKAO_TPL_STAFF_MONTHLY_SCHEDULE`** 설정 필요 |
+| **readiness** | **`GET /notifications/template-catalog`** — **`STAFF_MONTHLY_SCHEDULE`** **`dispatchImplemented=true`** · **`dispatchReady`** = Solapi 설정 여부 |
+| **FE wire** | **`StaffNotificationDispatchPanel` ✅** — **`notifyStaffMonthlyScheduleApi`** (`9c25d44`) |
+
+> 관련: Q686 · Q687 · Q691 · Q517 · USER_MANUAL §4-7-4 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4
+
+---
+
+### Q690. readiness 패널 **「발송 대기」** 는 무엇을 의미하나요? (G-SMS-TEMPLATE-CATALOG, FE `c04968c`·BE `fed6f1f`)
+
+**A.** **✅ FE+BE Fixed (`c04968c`·`fed6f1f`, G-SMS-TEMPLATE-CATALOG)** — **`NotificationChannelReadinessPanel`** 이 **백엔드 발송 플로우는 구현됐지만 아직 실제 발송이 불가**한 템플릿을 **「발송 대기」** 로 구분해 표시합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **판정** | **`dispatchImplemented=true`** 이고 **`dispatchReady=false`** |
+| **원인 1** | **`configured=false`** — Solapi templateId 미설정·placeholder (`Q679` fail-closed) |
+| **원인 2** | **채널 자격 미충족** — templateId는 설정됐으나 **SMS key/secret/sender** 또는 **알림톡 PF ID** 미설정 (`fed6f1f`) |
+| **요약 Alert** | **「발송 구현 N종 중 M종 발송 가능 · Solapi 설정 X / 6 · 발송 대기 Y종」** |
+| **warning Alert** | **「발송 대기 템플릿: 일정표-직원, …」** — 한글 라벨 목록 |
+| **dl 그리드** | **「발송 대기」** 건수 — **`pendingReadyEntries.length`** |
+| **운영 조치** | 대기 항목별 **`KAKAO_TPL_*` env**·Solapi 콘솔 templateId · **`SOLAPI_KAKAO_PF_ID`**(알림톡) · **`SOLAPI_SENDER_ID`**(SMS) 확인 후 **`dispatchReady=true`** 재확인 |
+
+> **예시**: catalog **6/6 발송 구현**·templateId **6/6 설정**·**PF ID 미설정**이면 **알림톡 5종 발송 대기** — SMS **`STAFF_ACCESS_KEY`** 만 **`dispatchReady=true`** 가능.
+
+> 관련: Q686 · Q679 · Q688 · USER_MANUAL §5-5 · ADMIN_GUIDE §1-4
+
+---
+
+### Q691. **직원 접속키 SMS**는 어떻게 발송하나요? (G-SMS-TEMPLATE-CATALOG, BE `1d5d441`·FE `9c25d44`)
+
+**A.** **✅ Full-stack Fixed (`1d5d441`·`9c25d44`, G-SMS-TEMPLATE-CATALOG)** — ezCare **「접속키 발송」**(`message_kind=1`, `STAFF_ACCESS_KEY`) SMS를 **직원 상세** **`StaffNotificationDispatchPanel`** 에서 발송합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/staff/{userId}`** 기본정보 탭 — **「알림톡·SMS 발송 (G-SMS)」** · 발송 종류 **접속키 발송** |
+| **API** | **`POST /api/v1/staff/notifications/staff-access-key`** |
+| **권한** | **`HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`** |
+| **요청 본문** | `{ "staffUserId": "uuid" }` |
+| **선행 조건** | **활성 직원** · **직원 역할 계정** · **휴대전화 번호 등록** — 미충족 시 **`422`** |
+| **접속키** | **6자리 일회용 숫자** · TTL **`ogada.security.password-reset-ttl-minutes`**(기본 **60분**) · **`password_reset_tokens`** 저장 · **화면에 키 미표시** |
+| **채널** | **SMS** — Solapi **`STAFF_ACCESS_KEY`** templateId 설정 필요 |
+| **readiness** | **`GET /notifications/template-catalog`** — **`STAFF_ACCESS_KEY`** **`dispatchImplemented=true`** (`1d5d441`) |
+| **FE wire** | **`notifyStaffAccessKeyApi`** (`9c25d44`) |
+
+> 관련: Q686 · Q689 · USER_MANUAL §4-7-4 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4
+
+---
+
+### Q692. 알림 **발송 API 응답**의 **`ezcareMessageKind`** 는 무엇인가요? (G-SMS-TEMPLATE-CATALOG, BE `ef8bb4e`·`2f83563`)
+
+**A.** **✅ BE Fixed (`ef8bb4e`·`2f83563`, G-SMS-TEMPLATE-CATALOG)** — **6종 catalog 수동 발송 API** 성공 응답에 **`templateCode`** 와 함께 **`ezcareMessageKind`** 가 포함됩니다. Swagger·Postman·자동화 테스트에서 **catalog crosswalk** 와 발송 결과를 대조할 때 사용합니다.
+
+| API | `templateCode` | `ezcareMessageKind` |
+|-----|----------------|---------------------|
+| `POST …/billing/claims/{id}/notify` | `BILLING_STATEMENT` | **11** |
+| `POST …/clients/{id}/notifications/care-provision-record` | `CARE_PROVISION_RECORD` | **13** |
+| `POST …/clients/{id}/notifications/elder-abuse-prevention-guideline` | `ELDER_ABUSE_PREVENTION_GUIDELINE` | **19** |
+| `POST …/clients/{id}/notifications/client-monthly-schedule` | `CLIENT_MONTHLY_SCHEDULE` | **12** |
+| `POST …/staff/notifications/staff-monthly-schedule` | `STAFF_MONTHLY_SCHEDULE` | **21** |
+| `POST …/staff/notifications/staff-access-key` | `STAFF_ACCESS_KEY` | **1** |
+
+| 항목 | 내용 |
+|------|------|
+| **UI** | 화면에 **`ezcareMessageKind` 숫자는 표시하지 않음** — API·로그·테스트 전용 · **성공 Alert 한글 라벨**은 Q699 |
+| **FE 라벨** | **`GuardianDocumentNotifyPanel`**·**`BillingDetailPage`** 버튼·도움말에 **message_kind** 문구 병기 (`5a6d42c`) · **직원 API parity** (`2f83563`) |
+| **미매핑** | catalog 6종 외 템플릿(예: `BILLING_PAYMENT_RECEIVED`) — **`ezcareMessageKind=null`** |
+
+> 관련: Q686 · Q687 · Q689 · Q691 · Q699 · USER_MANUAL §4-6·§4-7-3 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4
+
+---
+
+### [TWR] Q693. **알림톡·SMS 발송 기능** 전체 운영 체크리스트는? (G-SMS-TEMPLATE-CATALOG, BNK-576/583/584)
+
+**A.** **✅ G-SMS-TEMPLATE-CATALOG full closure (`ef8bb4e`·`5a6d42c`, 349차)** — ogada에서 **알림톡·SMS 자동 발송**을 활성화하려면 아래 **3단계 + 3확인** 체크리스트를 수행하세요.
+
+#### **단계 1: Solapi 계정·설정**
+
+| 항목 | 필수 환경변수 | 조치 |
+|------|---------------|------|
+| **SMS 채널** | `NOTIFICATION_PROVIDER=solapi` · `SOLAPI_API_KEY` · `SOLAPI_API_SECRET` · `SOLAPI_SENDER_ID` | `.env` 또는 시크릿 매니저 설정 (ADMIN_GUIDE §10-7) |
+| **알림톡 채널** | 위 + **`SOLAPI_KAKAO_PF_ID`** | PF ID 미설정 → SMS만 발송 가능 (Q690 발송 대기) |
+| **템플릿 ID** | `KAKAO_TPL_STAFF_ACCESS_KEY` · `KAKAO_TPL_CLIENT_MONTHLY_SCHEDULE` · `KAKAO_TPL_STAFF_MONTHLY_SCHEDULE` · (billing, care-provision, elder-abuse 자동 매핑) | Solapi 콘솔 **Template** → ID 복사 · `.env` 병기 |
+
+#### **단계 2: 조직 설정 (Organization Settings)**
+
+| 화면 | 경로 | 확인 항목 |
+|------|------|----------|
+| **readiness 패널** | `/organization/settings` 하단 | `NotificationChannelReadinessPanel` 6종 목록 표시 |
+| **카탈로그 조회** | 동일 화면 | **6/6 구현 완료** · **N/6 발송 가능** (조건: Solapi 자격 충족 + env 설정) |
+| **발송 대기 Alert** | 동일 화면 | ❌ **미설정 템플릿/채널** — `dispatchReady=false` 목록 경고 (Q690) |
+
+#### **단계 3: 발송 테스트 (Smoke Test)**
+
+| 기능 | 테스트 경로 | API / UI |
+|------|----------|---------|
+| **직원 접속키** | `/staff/{userId}` → 기본정보 → **「알림톡·SMS 발송」** → **접속키 발송** | `POST /api/v1/staff/notifications/staff-access-key` · FE `notifyStaffAccessKeyApi` |
+| **직원 월간 일정** | 동일 경로 → **일정표-직원** | `POST /api/v1/staff/notifications/staff-monthly-schedule` · 확정 PLAN 1건 이상 사전 준비 |
+| **이용자 월간 일정** | `/clients/{clientId}` → **보호자 서류 발송** → **일정표-수급자** | `POST /api/v1/clients/{clientId}/notifications/client-monthly-schedule` · FE **`GuardianDocumentNotifyPanel` ✅** (`9c25d44`) |
+| **청구 알림** | `/billing/claims/{claimId}` → **「본인부담 안내 알림톡 발송」** | `POST …/billing/claims/{id}/notify` · message_kind=**11** · 성공 Alert **「(본인부담 안내)」** (Q699) |
+
+#### **확인 1: API 응답 필드**
+
+```json
+{
+  "templateCode": "BILLING_STATEMENT",
+  "ezcareMessageKind": 11,
+  "dispatchStatus": "SUBMITTED",
+  "sentAt": "2026-06-24T15:30:00+09:00"
+}
+```
+
+| 필드 | 의미 | 참고 |
+|------|------|------|
+| **`templateCode`** | 템플릿 유형 | catalog 매핑 용도 |
+| **`ezcareMessageKind`** | 발송 종류 번호 | **1·11·12·13·19·21** — 타 시스템과 crosswalk |
+| **`dispatchStatus`** | 발송 상태 | **`SUBMITTED`** = Solapi 큐 진입 (즉시 보장 안 함) |
+
+#### **확인 2: Dashboard 모니터링**
+
+| 항목 | 조회 경로 | 의미 |
+|------|---------|------|
+| **catalog 요약** | `/organization/settings` 또는 `/dashboard` 하단 Alert | **「발송 구현 6/6 중 M/6 발송 가능」** — M < 6 시 env 재확인 |
+| **dispatch count** | 동일 패널 | **`dispatchImplementedCount`** · **`dispatchReadyCount`** |
+| **발송 대기 목록** | 동일 패널 warning | ❌ 발송 불가 템플릿 목록 — 빨간 배지 (Q690) |
+
+#### **확인 3: 로그·오류 처리**
+
+| 상황 | 에러 코드 | 조치 |
+|------|---------|------|
+| **Solapi 미설정** | `422 BUSINESS_RULE: Notification provider not configured` | 환경변수 설정 후 **container restart** |
+| **채널 자격 미충족** | `422 BUSINESS_RULE: SMS/ALIMTALK channel not ready` | PF ID 또는 API key 재확인 · `dispatchReady` 재조회 (Q690) |
+| **직원 조건 미충족** | `422: 퇴사 또는 비활성 직원에게는…` | 활성 직원 선택 · 휴대전화 미등록 시 입력 |
+| **일정 부재** | `422: 해당 월에 확정된 방문일정이 없어…` | 대상월 PLAN **`CONFIRMED`** 일정 1건 이상 생성 |
+
+> **운영 팁**: **월말·월초** 에 **`/organization/settings` catalog Panel** 을 **주 1회** 점검하고, **발송 대기** 건수가 0이 되도록 유지합니다. 수동 발송 후 **성공 Alert 괄호 한글명**(Q699)으로 템플릿을 확인하세요.
+
+#### **확인 4: UI 성공 Alert (Q699)**
+
+| 항목 | 기대 |
+|------|------|
+| **성공 메시지** | **「…발송했습니다. (한글 템플릿명)」** — 예: **「(급여제공내역)」** · **「(접속키 발송)」** |
+| **미표시** | **`ezcareMessageKind` 숫자** — 화면에 노출하지 않음 (Q692) |
+| **함수** | **`formatGsmDispatchSuccessMessage`** — `notificationChannelStatus.js` (`c7d0982`) |
+
+> 관련: Q686 · Q687 · Q688 · Q689 · Q691 · Q692 · Q699 · USER_MANUAL §1-5 · §5-5 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-3·§1-4·§11-4 · CHANGELOG 352차
+
+---
+
+### [TWR] Q694. **수동 발송 vs 스케줄 발송** 차이는? — G-SMS 전략 (기획)
+
+**A.** (안내) ogada **v1.3 G-SMS-TEMPLATE-CATALOG** 현황:
+
+| 발송 방식 | 구현 | 시점 | 권한 | 비고 |
+|----------|:--:|------|------|------|
+| **수동 발송** | **✅ 6/6** | 사용자 클릭 시 즉시 | 운영자·관리자 | **현재 운영** — Q686 · Q687 · Q689 · Q691 · Q692 |
+| **자동/스케줄** | △ **P2 planning** | 설정된 시각 자동 | 관리자 설정 | **향후**: billing 월말 자동·정기 공지 반복 발송 |
+| **live dispatch** | △ **P2 planned** | real-time (결제 승인·변동 즉시) | 자동 | **J03** — Solapi 실제 연동 (stub Fixed, Q326) |
+
+**현재 (`353차 baseline`)**: **수동 발송만** 전면 운영 중 — 화면에서 버튼 클릭 → Solapi 큐 → SMS/ALIMTALK 발송 · 성공 Alert **템플릿 한글명**(Q699).
+
+> 관련: Q686 · USER_MANUAL §5-5 · ROADMAP **P2 candidates** · REQUIREMENTS §5-5-4 (auto alert 후속)
+
+---
+
+### [TWR] Q695. **template-catalog API 응답** 전체 필드 스키마는? (API_SPEC §3-10-6, BE `ef8bb4e`)
+
+**A.** **✅ BE Fixed (`ef8bb4e`, G-SMS-TEMPLATE-CATALOG)** — **`GET /api/v1/notifications/template-catalog`** 응답 스키마:
+
+```json
+{
+  "items": [
+    {
+      "templateId": "uuid",
+      "messageKind": 1,
+      "ezcareMessageKind": 1,
+      "templateCode": "STAFF_ACCESS_KEY",
+      "description": "직원 접속키 SMS",
+      "channel": "SMS",
+      "configured": true,
+      "dispatchImplemented": true,
+      "dispatchReady": true,
+      "solveConfigured": true
+    },
+    {
+      "templateId": "uuid",
+      "messageKind": 12,
+      "ezcareMessageKind": 12,
+      "templateCode": "CLIENT_MONTHLY_SCHEDULE",
+      "description": "수급자 월간 일정표 알림톡",
+      "channel": "ALIMTALK",
+      "configured": true,
+      "dispatchImplemented": true,
+      "dispatchReady": false,
+      "solveConfigured": false
+    }
+  ],
+  "dispatchImplementedCount": 6,
+  "dispatchReadyCount": 5,
+  "summary": "6/6 구현 · 5/6 발송 가능"
+}
+```
+
+| 필드 | 타입 | 의미 |
+|------|------|------|
+| **`messageKind`** | `int` (1, 11, 12, 13, 19, 21) | ogada 내부 ID |
+| **`ezcareMessageKind`** | `int` | ezCare 시스템 호환 ID (Q692) |
+| **`templateCode`** | `string` | enum: `STAFF_ACCESS_KEY`, `BILLING_STATEMENT`, `CLIENT_MONTHLY_SCHEDULE` 등 |
+| **`channel`** | `string` | **`SMS`** \| **`ALIMTALK`** |
+| **`configured`** | `boolean` | 템플릿 ID `.env` 설정 여부 |
+| **`dispatchImplemented`** | `boolean` | 백엔드 발송 플로우 구현 여부 — 현재 **6/6 ✅** (Q687) |
+| **`dispatchReady`** | `boolean` | **실제 발송 가능** = `configured && solveConfigured` (Q690) |
+| **`solveConfigured`** | `boolean` | **SMS 자격**: API key·secret·sender · **ALIMTALK 자격**: + PF ID (Q690) |
+
+| 필드 | 시나리오 |
+|------|---------|
+| **`dispatchImplemented=T, dispatchReady=F`** | **발송 대기** (Q690) — API 구현 완료·설정 미완료 |
+| **`configured=T, solveConfigured=F`** | **채널 자격 미충족** — templateId ✅ · PF ID ❌ (알림톡만) |
+
+> 관련: Q686 · Q690 · API_SPEC §3-10-6 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE smoke test
+
+---
+
+### [TWR] Q696. G-SMS 발송 패널 **필드 간격(a11y)** 은 어떻게 보강되었나요? (UXD-161, FE `4adeb1c`)
+
+**A.** **✅ FE Fixed (`4adeb1c`/`c06d581`, UXD-161)** — **`StaffNotificationDispatchPanel`**·**`GuardianDocumentNotifyPanel`** 이 공유하던 **`.ds-form-stack`** 클래스가 정의되지 않아 **섹션 제목과 입력란이 붙어** 보이던 문제를 **`components.css`** 단일 소스 flex column(`gap var(--space-4)`)으로 복원했습니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/:id`** **「보호자 서류 발송」** · **`/staff/:id`** **「알림톡·SMS 발송」** |
+| **변경** | CSS만 — **ARIA·validation·live-region** JSX는 기존 §83 표준 유지 |
+| **테스트** | **`StaffNotificationDispatchPanel.test`** · **`GuardianDocumentNotifyPanel.test`** |
+
+> 관련: Q687 · Q691 · USER_MANUAL §4-7-3·§4-7-4 · ADMIN_GUIDE §1-4 UXD-161
+
+---
+
+### [TWR] Q697. readiness 패널 **한글 라벨**이 ezCare와 다른 경우는? (G-SMS, FE `3f686e3`)
+
+**A.** **✅ FE Fixed (`3f686e3`, G-SMS-TEMPLATE-CATALOG)** — **`notificationChannelStatus.js`** fallback 라벨을 BE **`NotificationSmsTemplateCatalog.EZCARE_PARITY_ENTRIES`** 와 동기화했습니다. catalog API 응답 **`description`** 이 없을 때 패널·버튼에 아래 명칭이 표시됩니다.
+
+| `templateCode` | ezCare `message_kind` | 한글 라벨 (정본) |
+|----------------|----------------------|------------------|
+| `BILLING_STATEMENT` | 11 | **본인부담 안내** |
+| `CARE_PROVISION_RECORD` | 13 | **급여제공내역** |
+| `ELDER_ABUSE_PREVENTION_GUIDELINE` | 19 | **직원인권보호** |
+| `CLIENT_MONTHLY_SCHEDULE` | 12 | **일정표-수급자** |
+| `STAFF_MONTHLY_SCHEDULE` | 21 | **일정표-직원** |
+| `STAFF_ACCESS_KEY` | 1 | **접속키 발송** |
+
+| 항목 | 내용 |
+|------|------|
+| **상수** | **`EZCARE_MESSAGE_KIND_BY_TEMPLATE`** — vitest lock (`notificationChannelStatus.test.js`) |
+| **UI** | **`NotificationChannelReadinessPanel`** · **`BillingDetailPage`** · 발송 패널 버튼·도움말 |
+
+> 관련: Q686 · Q692 · USER_MANUAL §5-5 · CHANGELOG 351차
+
+---
+
+### [TWR] Q698. health **`liveE2eG21SeedStatusDetail`** 진단 문자열은? (BE `88a58d9`·`42a369e`)
+
+**A.** **✅ BE test lock + deepen (`88a58d9`·`42a369e`, live E2E)** — **`GET /api/v1/health`**·**`/live-e2e/probe`** 의 **`liveE2eG21SeedStatusDetail`** 은 G21 seed bootstrap **3축**(visit schedule·billing visit schedule·NHIS import) 진단 문자열입니다 (Q515). **376차 (`42a369e`)** 부터 bootstrap **service-unavailable** 과 **disabled** 를 **분리**합니다 (Q719).
+
+| 값 | 의미 |
+|----|------|
+| **`g21-seed=disabled`** | bootstrap **설정 비활성** — **`LIVE_E2E_BOOTSTRAP_ENABLED` unset/false** (정상 운영) |
+| **`g21-seed=service-unavailable`** | bootstrap **enabled·bean missing** — Q684·Q719 (**`42a369e` 이전에는 `disabled`로 오표시**) |
+| **`g21-seed=not-applicable`** | seed 지점이 **방문요양 계열이 아님** — **`liveG21Describe`** suite skip (Q541) |
+| **`g21-seed=branch-missing-or-inactive`** | bootstrap 지점 미설정·비활성 |
+| **`g21-seed=applicable visit-schedule=…`** | applicable + 3축 상세 (Q515) |
+
+| 항목 | 내용 |
+|------|------|
+| **운영 영향** | **없음** — 스테이징 live E2E·health 진단 전용 |
+| **연동 필드** | **`liveE2eG21SeedApplicable`** · **`liveE2eOperationReason`** · **`operationBlockers[]`** |
+| **테스트** | **`HealthControllerTest`** — disabled → **`g21-seed=disabled`** · service-unavailable → **`g21-seed=service-unavailable`** (`42a369e`) |
+
+> 관련: Q515 · Q684 · Q719 · DEPLOYMENT_GUIDE §11-3 · ADMIN_GUIDE §1-4 live E2E
+
+---
+
+### [TWR] Q699. 발송 **성공 Alert**에 표시되는 **템플릿 한글명**은? (G-SMS-TEMPLATE-CATALOG, FE `c7d0982`)
+
+**A.** **✅ FE Fixed (`c7d0982`, G-SMS-TEMPLATE-CATALOG)** — G-SMS 수동 발송 성공 시 초록색 Alert 끝에 **ezCare 템플릿 한글명**이 **괄호**로 붙습니다. API 응답 **`templateCode`** → **`notificationTemplateLabel()`** 로 변환하며, **`ezcareMessageKind` 숫자는 화면에 표시하지 않습니다** (Q692).
+
+| 화면 | 성공 Alert 예시 |
+|------|----------------|
+| **`/clients/:id`** 보호자 서류 | **「노인학대예방 및 대응지침을 보호자에게 발송했습니다. (직원인권보호)」** |
+| **`/clients/:id`** 급여제공기록지 | **「…급여제공기록지를 발송했습니다. (급여제공내역)」** |
+| **`/staff/:id`** 접속키 SMS | **「직원 접속키 SMS를 발송했습니다. (접속키 발송)」** |
+| **`/billing/claims/:id`** 본인부담 안내 | **「보호자 N건에게 … 발송했습니다. (본인부담 안내)」** |
+| **`/billing/overdue`** 안내 발송 | **`interpretBillingNotifyResult`** 동일 규칙 |
+
+| 항목 | 내용 |
+|------|------|
+| **함수** | **`formatGsmDispatchSuccessMessage(baseMessage, response)`** — `notificationChannelStatus.js` |
+| **`templateCode` 없음** | 기본 메시지만 표시 — suffix 없음 |
+| **라벨 출처** | BE catalog **`description`** 우선 · 없으면 **`NOTIFICATION_TEMPLATE_LABELS`** fallback (Q697) |
+| **테스트** | **`notificationChannelStatus.test.js`** · **`GuardianDocumentNotifyPanel.test`** · **`StaffNotificationDispatchPanel.test`** |
+
+> 관련: Q692 · Q697 · USER_MANUAL §4-6·§4-7-3·§4-7-4 · ADMIN_GUIDE §1-4 · CHANGELOG 352차
+
+---
+
+### [TWR] Q700. 케어포 **본인부담(7-x) 10-leaf**는 ogada 어디 화면에 대응하나요? (M7 lifecycle, BNK-592)
+
+**A.** **✅ Crosswalk 재입증 (BNK-592, FE `@9aeedfe` · CMS 5/5 full-stack `@dac8ebd`)** — 케어포 func.php **모듈 7 본인부담** 10개 메뉴는 ogada SideNav **청구** 그룹 **`/billing/*`** Route와 **1:1** 대응합니다. **10/10 full parity ✅** · **7-4 CMS** — roster·catalog panel·**가상계좌·다계좌 정산 UI ✅** (Q701·Q704).
+
+| 케어포 7-x | ogada 화면 | 경로 | 상태 |
+|------------|-----------|------|------|
+| **7-1** 본인부담금 청구관리 | 월별 청구 생성·가드 | `/billing` | ✅ |
+| **7-2** 본인부담금 입금관리 | 입금 처리·은행 엑셀 import | `/billing/payments` | ✅ |
+| **7-3** 본인부담금 미납관리 | 미납 독려·조정 | `/billing/overdue` | ✅ |
+| **7-4** 본인부담금 자동이체(CMS) | CMS 등록·관리·**결제수단 카탈로그**·가상계좌·다계좌 | `/billing/cms` | ✅ **5/5 full-stack** · catalog·**CmsCollectionPanel** (Q701·Q704) |
+| **7-5** 본인부담금 간편결제 | 간편결제(stub PG) | `/billing/easy-pay` | ✅ UI·API |
+| **7-6** 청구대장 리포트 | 청구대장 | `/billing/reports/charges` | ✅ |
+| **7-7** 입금대장 리포트 | 입금대장 | `/billing/reports/deposits` | ✅ |
+| **7-8** 수납대장 리포트 | 수납대장 | `/billing/reports/receipts` | ✅ |
+| **7-9** 수납·환불내역 | 환불대장 | `/billing/reports/refunds` | ✅ |
+| **7-10** 간편계산기 | 본인부담금 계산기 | `/billing/calculator` | ✅ |
+
+**ogada superset (케어포 7-x에 없음 · 차별화 우위 5)**
+
+| 화면 | 경로 | 설명 |
+|------|------|------|
+| 현금영수증 발급목록 | `/billing/cash-receipts` | NTS 발급 이력·미발급 큐 (Q530) |
+| 본인부담률 | `/billing/copay-rates` | 등급·감경 50%/60% 관리 |
+| 수가표 | `/billing/fee-schedules` | 2026 장기요양 수가 |
+| 공단 청구 import | `/billing/imports/nhis` | NHIS 엑셀·reconciliation |
+| 본인부담 통계 | `/billing/reports/statistics` | G26 3축 통계 대시보드 |
+
+**월말 운영 순서 (권장)**
+
+1. **`/billing`** — 청구 생성 (7-1) · **전월 미입금 가드** 확인 (Q571)
+2. **`/billing/imports/nhis`** — 공단 엑셀 대조 (선택)
+3. **`/billing/payments`** — 입금·은행 엑셀 (7-2)
+4. **`/billing/overdue`** — 미납 독려 (7-3)
+5. **`/billing/reports/*`** — 대장·통계 마감 (7-6~7-10)
+
+> 관련: Q179 · Q224 · Q225 · Q571 · Q572 · Q701 · USER_MANUAL §5-10-0 · ADMIN_GUIDE §1-4 · CHANGELOG 355차
+
+---
+
+### [TWR] Q701. **CMS 결제수단 카탈로그**(엔젤 5-method)는 어디서 보나요? (G2b, BE `2eaf17e`·FE `4875937`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`2eaf17e`·`4875937`, G2b / 케어포 7-4, BNK-595~596)** — 엔젤시스템 **extraService** 5-method 수납 방식과 ogada 본인부담 화면 매핑을 **`/billing/cms`** 상단 **`CmsPaymentMethodCatalogPanel`** 에서 확인합니다.
+
+| 결제수단 (`methodCode`) | 한글명 | 수수료 안내 | ogada 화면 | 수납 구현 |
+|-------------------------|--------|------------|-----------|----------|
+| **`AUTO_DEBIT_CMS`** | 자동이체(CMS) | 250원/1건 | `/billing/cms` | ✅ |
+| **`VIRTUAL_ACCOUNT`** | 가상계좌 | 300원/1건 | — | ❌ |
+| **`CARD`** | 카드결제 | — | `/billing/easy-pay` | ✅ (stub PG) |
+| **`MULTI_ACCOUNT_SETTLEMENT`** | 다계좌 정산 | — | — | ❌ |
+| **`CASH_RECEIPT`** | 현금영수증 | — | `/billing/cash-receipts` | ✅ |
+
+**화면 사용법**
+
+1. SideNav **청구 → CMS 자동이체** (`/billing/cms`) 로 이동합니다.
+2. **등록 관리** 탭 상단 **「CMS 결제수단 카탈로그」** 섹션을 확인합니다.
+3. 요약 Alert — **「수납 구현 3 / 5 · 미구현 2종(가상계좌·다계좌 정산)」** — 로 잔여 갭을 표시합니다.
+4. 표 **ogada 화면** 열 링크로 **CMS·간편결제·현금영수증** 화면으로 이동할 수 있습니다.
+
+**API (Swagger·Postman)**
+
+```
+GET /api/v1/billing/cms/payment-method-catalog
+```
+
+| 응답 필드 | 설명 |
+|----------|------|
+| **`entries[]`** | **`methodCode`·`labelKo`·`feeLabel`·`ogadaRoute`·`collectionImplemented`** |
+| **`collectionImplementedCount`** | 수납 구현 건수 (**3**) |
+| **`totalCount`** | 전체 (**5**) |
+
+| RBAC | **`hq_admin`·`branch_admin`** 조회 허용 · **`guardian` 거부** |
+
+> **모듈 KPI**: M7 **7-4 CMS 5/5 full-stack ✅** (Q701·Q704, FE `9aeedfe`) · coverage **1.0**.
+> 관련: Q637 · Q638 · Q700 · USER_MANUAL §4-6 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 355차
+
+---
+
+### [TWR] Q702. live E2E **bootstrap** 환경변수·blocker gating은 무엇이 바뀌었나요? (BE `670756a`·FE `64a7648`·`c3c6272`)
+
+**A.** **✅ BE+FE Fixed (`670756a`·`64a7648`·`c3c6272`, QA-B95 carry)** — 스테이징 live E2E가 bootstrap-disabled 상태에 **불필요하게 stuck** 되거나, auth 복구 후에도 **false skip** 되던 문제를 완화했습니다.
+
+| 변경 | 설명 |
+|------|------|
+| **BE `OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`** | namespaced env toggle path 추가 — bootstrap 활성화 env 이름 불일치 시 **disabled stuck** 방지 |
+| **FE blocker gating** | **auth 이미 준비**된 경우 bootstrap availability blocker **필터** — QA-B95 false skip 완화 |
+| **FE skip reason dedupe (`c3c6272`)** | **`liveConfig.js`** — operation readiness **중복 skip reason** 제거 · harness regression lock |
+| **health contract** | **`liveE2eG21SeedStatusDetail`** — bootstrap disabled 시 **`g21-seed=disabled`** (Q698 carry) |
+
+> **운영**: live E2E는 **opt-in** — DEPLOYMENT_GUIDE §11-3 env checklist 참고. 현장 사용자 화면 변화 없음.  
+> 관련: Q680 · Q698 · DEPLOYMENT_GUIDE §11-3 · CHANGELOG 356차
+
+---
+
+### [TWR] Q703. **NHIS #44 이동서비스비 parity rules API**는 무엇을 반환하나요? (G16, BE `e4f83af`)
+
+**A.** **✅ BE Fixed (`5a717ac`·`e4f83af`, G16 / v1.3-C, BNK-562 deepen)** — NHIS #44 **러-1~4·편도50%·1일1회·별지 제22호** 안내 문구를 **machine-readable JSON** 으로 제공합니다. **`/transport/service-fees`** 화면은 **`fetchTransportServiceFeeParityRulesApi`** 로 동적 로드를 시도하나, FE **`bodyKo` 매핑 잔여** 시 **static fallback** 을 사용합니다 (P2).
+
+| 항목 | 값 |
+|------|-----|
+| **API** | **`GET /api/v1/transport/service-fee-parity-rules`** |
+| **RBAC** | **`hq_admin`·`branch_admin` only** · **`social_worker`·`caregiver` 403** (`e4f83af`) |
+| **`totalCount`** | **4** |
+| **`oneWayRatio`** | **0.5** (편도 50%) |
+| **`rules[]`** | **`DISTANCE_BANDS`** · **`ONE_WAY_RATIO`** · **`ONE_PER_DAY`** · **`SERVICE_LOG`** — 각 **`code`·`label`·`description`** |
+
+**응답 예 (요약)**
+
+```json
+{
+  "totalCount": 4,
+  "oneWayRatio": 0.5,
+  "rules": [
+    { "code": "DISTANCE_BANDS", "label": "거리 구간별 단가", "description": "거리구간 수가는 러-1~러-4 …" },
+    { "code": "ONE_WAY_RATIO", "label": "편도 비율", "description": "편도 이용 시 … 50% …" },
+    { "code": "ONE_PER_DAY", "label": "1일 1회", "description": "… 1일 1회 …" },
+    { "code": "SERVICE_LOG", "label": "서비스 제공기록 연계", "description": "별지 제22호 …" }
+  ]
+}
+```
+
+**sysadmin smoke** — JWT **`branch_admin`** 로 호출 → **200** · **`rules[2].description`** 가 **`TransportServiceFeeParityCatalog.ONE_PER_DAY_NOTE`** 와 동일 · JWT **`social_worker`** → **403** (`e4f83af`) · FE **`description` wire P2** (DEPLOYMENT §1-4).
+
+> **잔여**: FE가 API에서 **동적 fetch** 하도록 wire — **P2 후보** (현재 화면 동작 변화 없음).  
+> 관련: Q678 · Q681 · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4 · CHANGELOG 356차
 
 ---

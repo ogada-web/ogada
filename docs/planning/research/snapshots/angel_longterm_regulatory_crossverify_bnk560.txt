@@ -1,0 +1,60 @@
+BNK-560 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-23 live re-measure)
+====================================================================
+조사일: 2026-06-23T20:40Z (KST 2026-06-24 05:40)
+rotation: 엔젤·롱텀·규제 4–6h (PLAN_NOTES #44 1차 확인 carry · 2026 수가·평가 #27·단기보호·통합재가)
+ogada baseline: FE @170ce56 (WT CLEAN) / BE @01edba7 (WT CLEAN) · HEAD zero advance (=BNK-559)
+KPI: 112 Route(111 <Route\b+1 <Routes>)·90 page(+RootRedirect=91)·V1–V175·BE Test 252(@Test 1,828)·FE test 464(191+273)·모듈 78.79%·ahead FE197/BE535·merge gate 732
+
+[1] 백본 6-URL zero drift IDENTICAL (live HTTP 200 = on-disk md5)
+--------------------------------------------------------------------
+- NHIS #44 이동서비스비 러-1~4         c886ff1f  7,572B   **340차 zero drift**
+  (러-1~4 거리 4구간·편도 50%·1일 1회·③수급자 부담X·④별지 제22호 이동서비스 일지)
+  ↔ ogada TransportServiceFeeService(RU_1~RU_4·ONE_WAY_RATIO=0.5·1일1회 중복 guard)
+    + TransportServiceLog(V148/V154/V155 DB-level CHECK) = full-stack ✅ parity/우위
+- silverangel daycareEssentialWork    c79c1be3  131,664B  평가지표 #27 보호자회의·이동서비스 6 verbatim
+- silverangel extraService            f9c5d877  81,637B   CMS 5-method (아래 [3])
+- silverangel mainService             bcf6df41  59,002B   2-track 소개
+- silverangel feeService              eab352a8  44,513B   요금 안내
+- lcms root                           c0c66076  50,740B   type1 디자인 샘플 회전 carry (3-type rotation)
+
+[2] 2026 수가 규제 DRIFT (verbatim 불변 확인)
+--------------------------------------------------------------------
+- law247  live 4339da94 / on-disk(BNK-556) f87e1858  (78,450B 동일·md5 DIFF)
+  = cachebuster-only DRIFT · ?Time=1782238423 → ?Time=1782247357
+  verbatim 불변: **제2025-247호 · 시행 2026. 1. 1.** → 덮어쓰기 1건
+- mohw126  live 3f2fc5ac / on-disk(BNK-556) eda74c3c  (109,510B 동일·md5 DIFF)
+  = counter-only DRIFT · **조회수 2,510 → 2,512 (+2)**
+  verbatim 불변: **제2026-126호 · 본인부담상한액 ×13** → 덮어쓰기 1건
+
+[3] 엔젤 extraService CMS 5-method (verbatim 불변 ↔ ogada parity)
+--------------------------------------------------------------------
+  자동이체(250원)·가상계좌(300원)·카드·항목별 계좌분리·현금영수증(수급자별)
+  ↔ ogada: 자동이체/현금영수증/의료비공제 ✅(자체 CMS DB·외부 효성CMS 의존 0)
+           가상계좌/계좌분리 ❌ (외부 PG 의존 out-of-scope 후보 carry)
+
+[4] longterm 2026 수가 canonical 본문 live 수신 (★ 의미 있음)
+--------------------------------------------------------------------
+- longterm 502  live 72148cfe / 105,561B  vs canonical(on-disk) b5aee8c1 / 105,552B
+  = **diff = `var s16;` 1 line (+9B) 뿐** (byte-level diff 153d152) → strip-s16 IDENTICAL
+  verbatim 확인: **월 한도액 및 급여비용(2026.1.1. 기준) · 단기보호 · 1등급 74,060**
+  → canonical 본문 live 직접 수신(BNK-542~552 partial shell/refreshedException gate 시기와 대비)
+  → canonical longterm_502.html(no-s16) 보존 (덮어쓰기 0·var s16 oscillation 패턴 carry)
+- longterm 503  live d3c90b33 / 422B = refreshedException gate(세션 anti-bot)
+  canonical 8ca7d1fa(경감 50%×4/60%×3) on-disk 보존
+- longterm 610  live 8d53dcc1 / 91,430B  vs BNK-556 0ea575be / 91,421B (+9B var s16)
+  verbatim: **통합재가서비스 ×11 · 2종 이상의 급여 제공 · 통합재가 서비스 가산 지급 월 10만원 · 주야간보호형**
+  → 신규 named snapshot longterm_610_live_partial_shell_bnk560.html (재실측 carry)
+
+[5] planner 액션
+--------------------------------------------------------------------
+- baseline carry: FE @170ce56·BE @01edba7 (HEAD zero advance·양쪽 WT CLEAN)·merge gate 732
+- #44 이동서비스비 러-1~4 340차 ↔ TransportServiceFeeService full-stack ✅ parity/우위 재입증(PLAN_NOTES #44)
+- 통합재가(longterm 610) 「2종 이상 급여·월 10만원 가산」 = ogada 주야간 단일 서비스 포지셔닝 vs 통합재가 결합 모델 차이 carry (MVP out-of-scope)
+- CMS 가상계좌/계좌분리 ❌ = 외부 PG 의존 out-of-scope 후보 carry (효성CMS 미의존이 ogada 마케팅 카피)
+- 신규 core 갭 0 · candidate 변동 0 · 가정 번복 0
+
+per-cycle minimum 4종 충족:
+  ① 재실측 11-URL + 변동 기록(DRIFT 3·canonical 본문 수신 1)
+  ② 메뉴/필드/워크플로 1블록(CMS 5-method + 단기보호/통합재가 수가)
+  ③ COMPETITOR_MATRIX @170ce56/@01edba7 행 갱신
+  ④ BENCHMARK_REPORT §BNK-560 소절

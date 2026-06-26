@@ -1,0 +1,77 @@
+# BNK-581 carefor M3 요양급여 tri-source cross-walk extract
+# Generated: 2026-06-24T11:00:00Z (KST 20:00)
+# rotation: 케어포 역공학 0–2h — func.php M3 · demo L02 loadPage · PDF p.45–50 · ogada `/care/*`
+
+## ogada git HEAD (실측)
+FE `068049b` fix(v1.2.1/QA-B289): align renewal action accessible name · WT CLEAN · ahead 211 vs origin/test=ab4de83
+BE `8631d1e` feat(v2/G-SMS-TEMPLATE-CATALOG): wire client monthly schedule alimtalk dispatch · WT CLEAN · ahead 545 vs origin/test=598d108
+Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+BE Test 256 · FE test 465(192+273) · 모듈 79.31%(23.00/29 · id=10 0.65)
+merge gate = FE211 + BE545 = 756 (+2 vs BNK-580 754)
+
+## 신규 evidence URL
+1. [PDF p.45–50 요양급여제공](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=45)
+   HTTP 200 · 9,992,772B · md5 `96f7d45eaca91525068ec9bfb626fb18` · pypdf 132 pages · 조사일 2026-06-24
+   extract: `carefor_manual_p45_p50_care_bnk581.txt`
+2. func.php Wayback 340차 재실측 — HTTP 200 · 98,328B · md5 `6226e6eb` IDENTICAL (on-disk carry)
+3. demo-work Wayback 340차 재실측 — HTTP 200 · 71,742B · md5 `ebee4d47` IDENTICAL · transport nav grep 0 · 시설 셸
+4. carefor LIVE — func.php HTTP 000 · demo-work HTTP 000 · **15-cycle 「미확인」** (BNK-580 14-cycle +1)
+
+## func M3 요양급여 11-leaf (정본 `6226e6eb`)
+| func | leaf | demo L02 pamcode | demo view | rpt |
+|------|------|------------------|-----------|-----|
+| 3-1 | 요양급여 제공 기록 | L02_M01 | /share/care/view.care_service_weekly | |
+| 3-1-1 | 통합식사도움기록 | L02_M13 submp | /share/care/view.total_meal | |
+| 3-1-2 | 간호급여 제공기록(바이탈,투약) 요양보호사 | L02_M14 submp | /share/nursing/view.nursing_service menu_target=care | |
+| 3-1-3 | 요양급여 특이사항 관리 | L02_M15 submp | /share/care/view.care_service_bigo_all | |
+| 3-1-4 | 식사(간식) 만족도 조사 및 반영 | L02_M16 submp | /share/care/view.meal_satisfaction | |
+| 3-2 | 상태변화 기록 | (embed 3-1 weekly) | — | |
+| 3-3 | 목욕일정 및 제공현황 | L02_M03 | /share/care/view.care_bath_manage | |
+| 3-4 | 요양/식사(조치사항)/화장실 리포트 | L02_M04 rpt | /share/care/view.care_meal_excretion | rpt |
+| 3-5 | 목욕도움 리포트 | L02_M05 rpt | /share/care/view.bath_help | rpt |
+| 3-6 | 급여제공 리포트 | L02_M11 rpt | /share/care/view.patient_service | rpt |
+| 3-7 | 급여제공 서비스 집계 | L02_M12 rpt | /share/care/view.service | rpt |
+
+## demo L02 superset (func M3 미노출 · ogada ✅+)
+| demo | title | view | ogada Route |
+|------|-------|------|-------------|
+| L02_M02 | 2-2.집중배설관찰 기록 | /care/view.care_excretion | `/care/intensive-excretion` ✅ |
+| L02_M07 | 2-4.신체제재 기록 | /care/view.care_sanction | `/care/body-restraint` ✅ |
+| L02_M06 rpt | 2-7.체위변경 대상자 관리 리포트 | /care/view.position_YC_report | `/care/reports/position-change` ✅ |
+| L02_M17 rpt | 2-8.집중배설관찰 리포트 | /nursing/view.total_excretion | `/care/reports/intensive-excretion` ✅ |
+
+demo L02: 14 loadPage · 6 rpt = **42.9%** report density (L02 cluster only)
+func M3: 11 leaf · 4 rpt = **36.4%**
+ogada `/care/*`: 16 Route · 9 `/care/reports/*` = **56.3%** (care cluster report 우위)
+
+## PDF p.45–50 tri-source 번호·워크플로 drift 「확인」
+| PDF | func | demo | ogada | 비고 |
+|-----|------|------|-------|------|
+| p.46 3-in-1 급여제공기록지 | 3-1+4-1+5-1+4-6물리 | L02 weekly embed | `CareServiceWeeklyRecordForm` 다영역 단일 폼 + `/programs` cross-ref | ✅ parity — PDF「4-2 물리」= func **4-6** 번호 drift |
+| p.47 3-2 상태변화 | 3-2 독립 leaf | weekly embed only | `stateChangeNotes` 필드 + FAQ21817 7일 SLA + dashboard gap widget | ✅+ embed+SLA 우위 |
+| p.49 3-4 구강관리 리포트 | **부재**(func 3-4=요양/식사/화장실) | L02 2-5=요양/식사/화장실 | `/nursing/oral-care-checks` 입력만 · **구강관찰 리포트 Route 0** | △ micro-gap → candidate **G-ORAL-CARE-OBSERVATION-REPORT P3「가정」** |
+| p.49 3-5 목욕도움 | 3-5 | L02 2-6 | `/care/reports/bath-help` | ✅ |
+| p.50 3-6 급여제공기록지 출력 | 3-6 | L02 2-9 | `/care/reports/patient-service` + `/care/reports/service-summary` | ✅+ 2-route superset |
+| p.50 출력양식 | 급여제공기록지·요양일지·식사/화장실·기저귀대장 | 리포트 cluster | meal-excretion·patient-service·service-summary | ✅ parity |
+
+## ogada Route 1:1 매핑 (핵심 11/11 ✅ + 4 superset)
+| carefor | ogada Route | coverage |
+|---------|-------------|----------|
+| 3-1·3-2 | `/care/weekly-service-records` | id 3-1 coverage=1 |
+| 3-1-1 | `/care/meal-assistance-records` | ✅ |
+| 3-1-3 | `/care/service-special-notes` | ✅ |
+| 3-1-4 | `/care/meal-preference-surveys` | ✅ |
+| 3-3 | `/care/bathing-schedules` | ✅ |
+| 3-4 | `/care/reports/meal-excretion` | ✅ |
+| 3-5 | `/care/reports/bath-help` | ✅ |
+| 3-6 | `/care/reports/patient-service` | ✅ |
+| 3-7 | `/care/reports/service-summary` | ✅ |
+| L02 superset 4-leaf | intensive-excretion·body-restraint·position-change·intensive-excretion rpt | ✅+ |
+
+**판정**: module 3 요양급여 **핵심 11/11 full parity** + demo superset 4-leaf ogada 우위 · `competitorModuleCoverage.js` id `3-1` coverage=1 ✅ 재확인.
+micro-gap 1건: PDF 구강관리 관찰 리포트(1·2·3개월 일지) → P3 out-of-scope.
+
+## planner 권고
+1. tester FF merge **756** 가속 (FE+1·BE+1·양쪽 WT CLEAN)
+2. G-ORAL-CARE-OBSERVATION-REPORT P3「가정」 — PDF p.49 3-4 구강관리 4종 출력양식 vs ogada oral-check 입력만
+3. 리포트 밀도: care cluster ogada 56.3% > demo L02 42.9% > func M3 36.4% — 전체 demo 30.9% 갭은 타 모듈 리포트 부족에서 기인(carry)

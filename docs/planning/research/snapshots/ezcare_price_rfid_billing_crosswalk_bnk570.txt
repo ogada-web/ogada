@@ -1,0 +1,68 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-24T04:00:00Z -->
+BNK-570 이지케어 역공학 2–4h — extract (주력)
+조사일: 2026-06-24T04:00:00Z (KST 13:00)
+
+=== ogada git 실측 (@develop HEAD zero advance 1-cycle vs BNK-569) ===
+FE: cba9ff8 (WT CLEAN, ahead 204 vs origin/test=ab4de83)
+BE: 0494334 (WT CLEAN, ahead 540 vs origin/test=598d108)
+Route: 112 (111 <Route\b + 1 <Routes>)
+Page: 91 (90 *Page.jsx + RootRedirect)
+V1–V175 · BE *Test.java 252 · @Test 1,847 · FE test 465 (192+273)
+모듈 78.79% (22.85/29) · merge gate 744 carry
+
+=== ★★★ 신규 evidence (tri-source) — Channel.io bc7f4cd9 「청구일정 반영 여부」+ schedule-fix PGID ===
+URL: https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9
+HTTP 200 · SIZE 227,708B · md5 6ec2a538 (BNK-537 on-disk dbd710c8 228,038B → −330B DRIFT, verbatim semantic 불변)
+
+【확인】인용 (Channel.io):
+- 「정상 반영된 경우 → 공단청구 금액이 진한 검은색 숫자로 표시」
+- 「반영되지 않은 경우 → 공단청구 금액이 "빨간색 숫자"로 표시」
+- 「일정확정 전에는 반드시 공단청구 금액이 "검은색"으로 표시 되는지 확인」
+- 미반영 시 → 「청구일정 가져오기를 다시 실행」
+
+【확인】schedule-fix PGID (`ezcare_new_ez_pgid_schedule-fix.html` md5 38087ef3 · 149,576B):
+- 일괄확정 confirm dialog `chk-ltm-fix` checkbox: 「일정 확정 전, 공단 청구명세서와 비교하기」
+- colModel hidden `ltmNo`/`ltmSeq` · 17-col `#grid-schedule-p500`
+- 확정 후 수정불가 · 확정취소 선행
+
+↔ ogada:
+- G21 `VisitNhisComparison*` + dashboard `nhisComparisonGap` StatCard ✅ (공단 불일치 aggregate)
+- **UI 색상 게이트(검은/빨간 공단청구액) ❌** — 이지케어 schedule-fix grid inline visual gate = **△ partial**
+- planner P3 후보「가정」: G-SCHEDULE-FIX-COLOR-GATE (MVP out-of-scope, BNK-366 carry deepen)
+
+=== ★★ receipt-list PGID 3-grid 심화 (session DRIFT, colModel verbatim) ===
+URL: https://ezcare.easyms.co.kr/new.ez?PGID=receipt-list (데모)
+HTTP 200 · SIZE 108,590B · md5 c8aa31c8 (BNK-533 aa06db7b 108,590B → md5 DIFF·SIZE 동일·session token)
+
+Grid 구조:
+1) `#jqgrid-tabs-receipt-01` — 월별 발행내역 8-col: EdiDate·ReceiptTypeNo·amount_total·ReceiptSupplyAmt·ReceiptVAT·btn(상태)·pName·memo
+   Ajax: `/page/receipt/json-receipt.php?data=receipt-list-GET`
+2) `#jqgrid-tabs-receipt-02` — 수급자별 정보관리: name·state(01~07)·receipt_telNum·rec_cnt·rec_cancel
+   Ajax: `receipt-patient-list-GET` · radio filter on/off/전체
+3) `#jqgrid-tabs-receipt-03` — **수급자 선택 시 발행내역 서브그리드**: EdiDate·ReceiptTypeNo·amount_total (per-patient history)
+
+Dialog: `#dialog-receipt-regissue` (발급) · `#dialog-receipt-cancel` (취소)
+↔ ogada `G-CASH-RECEIPT-LOG` `@cba9ff8`: `/billing/cash-receipts` + issuances/pending/profile = **✅ parity+분리 우위**
+↔ FAQ21700 「수납 삭제=영수증 취소」종속 모델 (BNK-567) cross-walk
+
+=== ★★ schedule-rfid comp_01~09 + 270분 초과 (zero semantic DRIFT 재입증) ===
+URL: /new.ez?PGID=schedule-rfid · md5 47aab1d7 · 150,501B (BNK-559 f57aaf3e → session DRIFT +211B pattern)
+- comp_01~09 grid · red formatter `270분초과, 엑셀파일 수가 검토`
+- FAQ21450 tri-source carry (엑셀 선행 업로드·비실시간 비교)
+
+=== ★ 가격·도입 재실측 (2026-06-24T04:00Z) ===
+home `10a50fd7` 106,120B:
+  mCnt {1:9279, 2:4598, 3:2353, 4:1820} — BNK-567 대비 +3/+2/0/0
+  banner `[추천 이벤트]` cafe.naver.com/egcare/24211 carry
+  headline 「9,279개 재가기관」
+fnc `d2e0fab1` 17,870B: 도입 **9,351** (+3 vs BNK-567 9,348)
+charge `46de7215` 22,979B: 33,000/25,850/55,000·40%할인(~06-30) verbatim 불변
+
+=== FAQ stub 재확인 (21843–21900) ===
+rowid 21843·21844·21856·21900 → HTTP 200 · SIZE 13,327B · md5 e5762090 IDENTICAL (미게시 shell)
+FAQ substantive 상한 ~21842 carry (21836–21842 모니터링 cluster)
+
+=== negative ===
+duplicate-schedule PGID → job-post/CareMatch recruit misroute carry (`openCareMatch('job-post')`)
+
+per-cycle minimum 4종 충족 · 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0

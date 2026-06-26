@@ -1,0 +1,81 @@
+# 케어포 demo-work 리포트 밀도 · 7-x · M6 역공학 crosswalk (BNK-620)
+# 조사일: 2026-06-25T11:50:00Z (KST 20:50)
+# 작성: benchmark_researcher [BNK]
+
+## 신규 evidence URL (확인)
+1. [Wayback func.php 376차](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) HTTP 200 · 104,177B · md5 `4b4d60e4` → `carefor_func_wayback_live_bnk620.html` (BNK-616 `84ffd89e` wrapper DRIFT · 107-leaf semantic IDENTICAL)
+2. [PDF p.77–82 Wayback](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=77) HTTP 200 · md5 `96f7d45e` · M6 일일·정기점검 필드 재인용
+3. carefor.co.kr/daycare/func.php LIVE HTTP **000 timeout 38-cycle** (2026-06-25T11:46Z)
+4. demo-work.carefor.co.kr LIVE HTTP **000 timeout 38-cycle** (2026-06-25T11:46Z)
+
+## demo-work 시설 셸 — 이동서비스 없음 (확인)
+- on-disk: `carefor_demo_wayback_live_bnk573.html` (Wayback 20260528)
+- `openMenu` 11모듈: L01 수급자 · **L02 요양급여**(func M2=이동서비스와 번호 충돌) · L03 간호 · L04 물리 · L05 프로그램 · L06 위생*안전 · L07 본인부담 · L08 직원 · L09 기초설정 · L10 부가 · L11 급여
+- grep `이동서비스` in demo menu shell: **0 hit** (func.php M2 「2.이동서비스관리」 9-leaf 전부 미노출)
+- 차량은 L09_M05 `view.operational_manage` 「9-5.운영관리 (차량/비품/CCTV/고충/특별침실)」만 잔존
+
+## 리포트 밀도 tri-source (확인)
+
+| 축 | 리포트·통계 화면 수 | 비고 |
+|---|---|---|
+| demo-work `class="rpt"` loadPage | **34** | 114 loadPage 중 29.8% |
+| func.php marketing `리포트`/`통계`/`집계` leaf | **19** | 마케팅 페이지는 운영 leaf 일부만 노출 |
+| ogada App.jsx `path="*reports*"` | **23** | Navigate 중복 1건 포함 |
+
+### demo 리포트 모듈별 분포 (34건)
+| 모듈 | rpt 수 | 대표 |
+|---|---|---|
+| M1 수급자 | 5 | 1-8 현황 · 1-10 월별통계 · 1-12 연계기록지 |
+| M2 요양 | 6 | 2-5~2-10 (식사/화장실·목욕·체위·배설·급여·집계) |
+| M3 간호 | 5 | 3-4~3-8 |
+| M4 물리 | 2 | 4-2·4-3 |
+| M5 프로그램 | 5 | 5-7~5-10 + 운영기록지 |
+| M7 본인부담 | 4 | 7-6 청구대장 · 7-7 입금대장 · 7-8 수납대장 · (7-9는 rpt class이나 운영 화면) |
+| M8 직원 | 3 | 8-12 현황 등 |
+| M9 기초 | 1 | |
+| M10 부가 | 2 | |
+| M11 급여 | 1 | 11-6 급여대장 |
+| **M6 위생·안전** | **0** | 리포트 leaf 없음 — 일지·점검 **입력** 전용 |
+
+→ ogada 갭(리포트): M5 프로그램 리포트 5종·M1 연계기록지 발송 리포트·M11 급여대장 = v1.3+/v2. M6는 리포트가 아니라 **점검 입력 폼** 갭(id=6 coverage 0).
+
+## M7 본인부담 7-x demo loadPage ↔ ogada Route 1:1 (확인)
+
+| carefor # | demo title | demo view | ogada Route | 상태 |
+|---|---|---|---|---|
+| 7-1 | 본인부담금 청구관리 | `/share/cost/view.cost_master` | `/billing` + `/billing/claims/:id` | ✅ |
+| 7-2 | 본인부담금 입금관리 | `view.cost_receipt` | `/billing/payments` | ✅ |
+| 7-2-1 | 의료비공제(연말정산) | `view.cost_master_statistic` | `/billing/reports/statistics` | ✅ **BNK-620 신규 명시** |
+| 7-3 | 미납관리 | `view.cost_nopay` | `/billing/overdue` | ✅ |
+| 7-4 | 자동이체(CMS) | `view.cms_manage` | `/billing/cms` | ✅ |
+| 7-5 | 간편결제 | `view.npay_manage` | `/billing/easy-pay` | ✅ |
+| 7-6 | 청구대장 리포트 | `view.cost_master_report` | `/billing/reports/charges` | ✅ |
+| 7-7 | 입금대장 리포트 | `view.cost_deposit_report` | `/billing/reports/deposits` | ✅ |
+| 7-8 | 수납대장 리포트 | `view.cost_receipt_report` | `/billing/reports/receipts` | ✅ |
+| 7-9 | 수납,환불내역 | `view.cost_receipt_apply_yearly` | `/billing/reports/refunds` | ✅ 5-layer G-REFUND-FEE |
+| **7-10** | **간편계산기** | **(demo 미노출)** | `/billing/calculator` | △ func.php only · demo shell 10-leaf |
+
+PDF p.91 「각종 입금,수납 리포트」번호: 7-5/7-6/7-7 (구버전) ↔ demo 7-6/7-7/7-8 (현행) ↔ func 7-6/7-7/7-8 — **리포트 3종 번호 +1 drift** carry.
+
+## M6 위생·안전 — PDF 필드 · demo view · ogada (확인)
+
+| carefor | demo view | PDF p. | 핵심 필드·워크플로 | ogada |
+|---|---|---|---|---|
+| 6-1 주간식단표 | `view.weekly_menu` | 78 | 우리푸드·보건소 식단 적용·월간 엑셀 up/down·각종 식단표 출력 | `/meals` ✅ |
+| 6-1-1 식단표 제공 협약 | (demo HTML 주석 `submp_noready`) | 79 | 영양사면허증 다운·평가 제출 | ❌ v3.1+ |
+| 6-2 일일점검 | `view.daily_check` | 80 | **위생점검일지** · **간호비품 관리일지** · **급식운영**(식단분석·조리근무·**보존식 폐기일**) · 모바일 작성 | ❌ `/safety/daily-checks` v3.1 P1 |
+| 6-3 정기점검 | `view.regularly_check` | 81 | **소화시설 월1회** · **약품 분기1회** · **정기소독 분기1회** | ❌ `/safety/periodic-checks` v3.1 P1 |
+| 6-3-1 감염병 관리 | `view.infection_manage` | — | (PDF M6 챕터 외 별도 leaf) | ❌ v3.1 P1 |
+| 6-4 시설운영일지 | `view.daily_center` | 82 | 일자별 통합(인력·프로그램·식단·근무)·기간 일괄 출력 | ❌ `/safety/operation-log` v3.1 P1 |
+
+→ v3.1 P1 스펙 보강 제안: 6-2는 **3 sub-journal** 탭·6-3는 **주기별 3 ledger**(월/분기/분기) — carefor PDF verbatim이 ogada `safety_checks` 스키마 초안 근거.
+
+## ogada baseline (2026-06-25T11:50Z git 실측)
+- FE `@e070c45` WT **CLEAN** · BE `@79725eb` WT **DIRTY 6** (LiveE2e·Health 미커밋 — HEAD zero advance 1-cycle)
+- 112 Route · 91 page · merge gate **802** carry · 모듈 80.86%
+
+## planner 제안 (요약)
+1. M7 7-2-1 → `/billing/reports/statistics` 매핑 문서화 완료 — 추가 구현 불요
+2. M6 6-2/6-3 PDF 3+3 sub-form을 v3.1 P1 API_SPEC 초안에 반영 (planner+DBA)
+3. 리포트 갭 우선순위: M5 프로그램 5 rpt > M1 연계기록지 > M11 급여대장 (KPI 외 운영 pain)
+4. demo 7-10 부재 = 데모 체험에서 계산기 미노출 — ogada `/billing/calculator`는 차별화 유지

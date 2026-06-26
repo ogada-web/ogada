@@ -1,0 +1,69 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-25T12:35:00Z -->
+BNK-621 이지케어 역공학 2–4h — schedule-s100 중증수당 집계 + customer-ezc_bill_list SaaS 이용료 청구 + 도입 카운터 재실측 + ogada G-EASYPAY-FE-WIRE closure
+조사일: 2026-06-25T12:35:00Z | rotation: 이지케어 /new.ez·FAQ·가격·도입 (2–4h)
+
+=== ogada git 실측 ===
+FE @5914b2f WT CLEAN (BNK-620 @e070c45 HEAD +1 `feat(v2/G2/7-5): wire easy-pay provider catalog and mount transport parity panel` · ahead 236 vs origin/test)
+BE @9f67954 WT CLEAN (BNK-620 @79725eb HEAD +1 `fix(v2/QA-B95): add configurable bootstrap readiness enforcement` · ahead 568 vs origin/test)
+merge gate 804 (+2 cross-stream) · 112 Route · 91 page · V1–V178 · BE Test 269 · BE @Test 1942 · FE test 474(194+280) · 모듈 80.86%(23.45/29 carry)
+
+=== ★★★ 신규 PGID schedule-s100 「3. 중증수당 일정 집계」 (확인) ===
+URL: https://ezcare.easyms.co.kr/new.ez?PGID=schedule-s100
+HTTP 200 · 101,220B · md5 f0ff7e1d1f2d56f4f83267cf2fb87eb0
+snapshot: ezcare_new_ez_pgid_schedule-s100.html
+
+화면: 2-tab (요양보호사 기준 / 수급자 기준) · YmBar 월 선택
+숨김 notice(d-none): 「본 페이지는 정식 기능 지원 전 중증수당 현황파악 및 집계를 위한 화면입니다」
+
+API:
+  - /page/schedule/json-schedule.php?data=schedule-severe-amt-worker-GET3
+  - /page/schedule/json-schedule.php?data=schedule-severe-amt-patient-GET3
+
+grid-schedule-s100-01 colModel (7-field, 요보사 기준):
+  name · wInfo · birthdate · btn(일정표) · pName(해당수급자) · cnt(해당건, Ym>=2025-11 시 목욕 cnt_003 병기) · amt(중증수당 계 원)
+
+grid-schedule-s100-02 colModel (7-field, 수급자 기준):
+  name · pInfo · birthdate · btn · wName(해당직원) · cnt · amt
+
+규정 인용(화면 내장):
+  - 제19조의2 방문요양급여 중증 수급자 가산: 60–120분 2,000원 · 120–180분 4,000원 · 180분+ 6,000원 · 1인 1일 6,000원 상한
+  - 제26조의2 방문목욕급여 중증 수급자 가산: 60분+ 3,000원 · 1인 1일 6,000원 상한
+  - 분배식: 중증수당 × (근무시간 ÷ 대상자 총 근무시간) · 소수점 올림
+
+ogada crosswalk: grep src/{backend,frontend} severe|중증|severeAllowance 0 hit → 신규 P3「가정」G-SEVERE-ALLOWANCE-SCHEDULE-AGG (방문요양 도메인 · 주간보호 MVP out-of-scope)
+
+=== ★★★ 신규 PGID customer-ezc_bill_list 「이지케어 이용료 청구내역」 (확인) ===
+URL: https://ezcare.easyms.co.kr/new.ez?PGID=customer-ezc_bill_list
+HTTP 200 · 97,638B · md5 ce5cf9120083cbcb2a7ce5bedaeac4e0
+snapshot: ezcare_new_ez_pgid_customer-ezc_bill_list.html
+
+API: /page/customer/json-customer.php?data=customer-billLog-GET (postData oCode=DEMO)
+
+grid-ezcBill colModel (14 visible + hidden):
+  Ym(청구월) · amount_ezc(이지케어) · amount_w4c(재무회계) · amount_sms(문자) · amount(계) · amount_vat(부가세) · amount_total(청구금액)
+  · pay_date · pay_amount · pay_memo · bill_paper(청구서 프린터) · aTotal(영수증: card→카드매출전표 showReceipt2 / cash→현금영수증)
+
+Group header: 이용요금 (amount_ezc ~ amount 4-col span)
+
+ogada crosswalk: SaaS 테넌트 자체 이용료·재무회계 BPO·SMS 과금 통합 청구 포털 0 route → 신규 P3「가정」G-SAAS-TENANT-BILLING-PORTAL (플랫폼 과금 · v3+ · MVP out-of-scope)
+차별화 시사: 이지케어는 ERP+재무회계 BPO+문자 3-line-item 단일 청구서 — ogada 단일 SaaS 요금 모델 대비 번들 과금 UX 참고
+
+=== ★ schedule-r100 negative/empty shell (확인) ===
+URL: https://ezcare.easyms.co.kr/new.ez?PGID=schedule-r100
+HTTP 200 · 93,395B · md5 2d6fe38fb3ad8258d3ac4b9509f54613
+jqGrid 0 · main content empty shell (Page Not Found 아님 · 레거시 PGID 잔존)
+
+=== ezCare 도입·점유율·가격 재실측 (확인) ===
+home mCnt: {1:9287, 2:4603, 3:2353, 4:1820} — mCnt[1] BNK-617 9286 → BNK-621 9287 (+1)
+fnc 도입: 9,356 → 9,357 (+1) verbatim「9,357개 기관 사용중」
+?PG=e01: 17,489 / 9,354 / 53.49% / 집계일 2026.06.25 (+1/+0.01pp vs BNK-617 9,353/53.48%)
+charge: 33,000/25,850/55,000/9,000/9,500 verbatim 불변 (cachebuster DRIFT only)
+change_work 후기: 4,965 verbatim 불변
+
+=== ogada G-EASYPAY-PROVIDER-CATALOG-FE-WIRE closure (확인) ===
+FE 5914b2f: EasyPayPage.jsx L166 `<EasyPayProviderCatalogPanel>` wire + TransportServiceFeePage.jsx TransportParityRulesPanel mount
+→ BNK-612 P3 G-EASYPAY-PROVIDER-CATALOG-FE-WIRE **FULL CLOSURE** (BE catalog BNK-612 → FE wire BNK-621 · 9-cycle carry 종결)
+M7 7-5 간편결제 lifecycle: catalog API ✅ + FE provider panel ✅ + payment request ✅
+
+=== per-cycle minimum ===
+신규 evidence URL 2건+ (schedule-s100 · customer-ezc_bill_list) · 메뉴/필드 2블록+ · COMPETITOR_MATRIX @5914b2f/@9f67954 · BENCHMARK_REPORT §621

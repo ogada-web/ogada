@@ -1,0 +1,161 @@
+# BNK-575 — 엔젤·롱텀·규제 4–6h cross-verify (2026-06-24T06:55Z)
+# rotation: 엔젤·롱텀·규제 4–6h (PLAN_NOTES #44 + 2026 수가/평가#27 + 단기보호/통합재가 고시 + npbs 신규홈페이지 26.1.16 menuId 재맵)
+
+## §1. ogada git 실측 KPI (BNK-575) — FE+1·BE+1·G-SMS-TEMPLATE-CATALOG BE CLOSURE
+
+$ git -C src/frontend rev-parse --short develop  → d682562
+  fix(v1.2.1/QA-B285): align FAQ21823 tests with compliance API wire
+  WT CLEAN · BNK-574 `@596658a` HEAD +1 · ahead 207 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → b6c9b16
+  feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API
+  WT CLEAN · BNK-574 `@9aaefa0` HEAD +1 · ahead 543 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files · carry · last V175__staff_leave_ledger_entries_integrity_us_r01c.sql)
+$ BE *Test.java=255 (BNK-574 254 +1 = NotificationSmsTemplateCatalogServiceTest)
+$ FE .test.js=192 + .test.jsx=273 = 465 (carry)
+$ 모듈 78.79% (22.85/29 · `competitorModuleCoverage.js` carry · 미변경 — module 10 0.5 carry)
+$ merge gate = FE207 + BE543 = 750 (+2 vs BNK-574 748)
+
+양쪽 develop WT CLEAN · cross-stream advance 2 (FE+1·BE+1) · tester FF merge **750** 가속 권장.
+
+## §2. ★★★ G-SMS-TEMPLATE-CATALOG P3 (BNK-574 「가정」) → ✅ BE CLOSURE @ `b6c9b16`
+
+【확인】 `feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API`
++235L · 9-file:
+- api: `NotificationChannelStatusController` +9L (`GET /api/v1/notifications/template-catalog` 신규 엔드포인트)
+- api: `NotificationTemplateCatalogResponse` (list-of-entries DTO) +11L
+- api: `NotificationTemplateCatalogEntryResponse` (templateCode·labelKo·ezcareMessageKind·channel·dispatchImplemented 5-field) +11L
+- domain: `NotificationChannelReadinessService` +35L (catalog 조립·SOLAPI mapping 상태 노출)
+- domain: `NotificationSmsTemplateCatalog` +35L (EZCARE_PARITY_ENTRIES 6 항목 static list)
+- domain: `NotificationTemplateCodes` +6L (코드 상수 6종 신규)
+- test: `NotificationSmsTemplateCatalogServiceTest` +60L
+- routing test: `MustApiEndpointRoutingTest` +34L
+- RBAC test: `RoleBasedControllerAccessTest` +34L
+
+이지케어 `/new.ez?PGID=mobile-sendW` 7-template `message_kind` ↔ ogada parity 6-종 cross-walk (22-급여명세서 도메인 경계 제외):
+
+| message_kind | label | templateCode (ogada) | channel | dispatchImplemented |
+|---|---|---|---|---|
+| 1 | 접속키 발송 | STAFF_ACCESS_KEY | SMS | ❌ false |
+| 11 | 본인부담 안내 | BILLING_STATEMENT | ALIMTALK | ✅ true |
+| 12 | 일정표-수급자 | CLIENT_MONTHLY_SCHEDULE | ALIMTALK | ❌ false |
+| 13 | 급여제공내역 | CARE_PROVISION_RECORD | ALIMTALK | ✅ true |
+| 19 | 직원인권보호 | ELDER_ABUSE_PREVENTION_GUIDELINE | ALIMTALK | ✅ true |
+| 21 | 일정표-직원 | STAFF_MONTHLY_SCHEDULE | ALIMTALK | ❌ false |
+
+해석:
+- dispatchImplemented=3/6 (11/13/19 ALIMTALK live·Solapi templateId BE J03 fail-closed BNK-562 carry).
+- 3 catalog-only (1·12·21) — FE/J03 dispatch 미연결, P2 wire 후보로 carry.
+- 22-급여명세서(근로기준법 §48) = 도메인 경계 외부 더존/세무 SaaS — `G-PAYROLL-EXTERNAL-INTEGRATION` P3「가정」 carry.
+
+↔ ogada @b6c9b16 모듈 cross-walk:
+- `competitorModuleCoverage.js` id=10(부가서비스) = **0.5 △부분 carry**. catalog API 신규 = 운영 readiness 가시화 한정·feature 산식 미변경.
+- FE wire 검증: `git grep -l "template-catalog\|fetchNotificationTemplateCatalog" -- 'src/**'` → **0 hit** (BE-only closure).
+- next-cycle FE wire = `services.js fetchNotificationTemplateCatalogApi` + `J03DashboardPage`(부가서비스 운영 readiness widget) candidate `G-SMS-TEMPLATE-CATALOG-FE-WIRE` P2「가정」 신규(closure 시 module 10 0.5→0.65).
+
+## §3. ★★ NHIS #44 이동서비스비 러-1~4 350차 zero drift IDENTICAL
+
+【확인】 [NHIS #44 joHistoryContent](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+HTTP 200 · 7,572B · `c886ff1f` IDENTICAL (BNK-574 carry · 350차)
+- "'러-1'부터 '러-4'까지 비용의 50%" verbatim
+- "1일 1회" verbatim
+- "이동서비스 일지(별지 제22호 서식) 작성·보관 의무" verbatim
+↔ ogada `TransportServiceFeeService`(RU_1~RU_4·ONE_WAY_RATIO=0.5·1일1회 guard) + `TransportServiceLog`(V148/V154/V155) + FE `transportServiceFee.js` 4 parity-copy 상수 + `TransportServiceFeePanel`(UXD-159 a11y)
+= full-stack ✅ parity/우위 350차 재입증 (PLAN_NOTES #44 carry).
+
+## §4. ★★ silverangel 5-URL zero drift IDENTICAL
+
+| URL | md5 (BNK-571→575) | SIZE | 판정 |
+|---|---|---|---|
+| [daycareEssentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | `c79c1be3` carry | 131,664B | zero drift IDENTICAL (이동#41-42·차량운행표·평가#27 목욕) |
+| [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | `f9c5d877` carry | 81,637B | zero drift IDENTICAL (CMS 5-method·250원/300원·1600-6859) |
+| [mainService](https://www.silverangel.kr/newSilverangel/service/mainService.do) | `bcf6df41` carry | 59,002B | zero drift IDENTICAL (루트 동등 셸 carry) |
+| [feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | `eab352a8` carry | 44,513B | zero drift IDENTICAL |
+| [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) | `52c9457f` carry | 3,594,181B | zero drift IDENTICAL (최신 real 221563(6/18)) |
+
+silverangel weekly notice 0 (7-day stale carry):
+- 221564 ~ 221580 (17건 probe) 모두 HTTP 200 · 51,765B · `8437f255`(`?list_no=N` clean URL canonical) 미게시 shell IDENTICAL.
+- 최신 real 221563 (6/18) → 6-day stale · next Wed ~6/25(내일) 예상 carry.
+
+## §5. ★★ lcms 루트 type1+type3 IDENTICAL carry
+
+【확인】 [lcms 루트](https://www.lcms.or.kr/)
+HTTP 200 · 50,498B · `6b750291` IDENTICAL (BNK-571 carry)
+- type1+type3 (websiteProvided + CJ프레시웨이 MOU)
+- BNK-556→568→571→575 4-cycle rotation 관측 (type1+3 ↔ type2 silverangel CMS cross-promo)
+- 현재 type1+3 표시 carry.
+
+## §6. ★ MOHW 2026-126 counter DRIFT (verbatim 불변)
+
+【확인】 [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000)
+HTTP 200 · 109,510B · md5 DRIFT:
+- BNK-571 `c8150e16` → BNK-575 **`59c4f02b`**
+- 조회수 **2,559 → 2,575**(+16)
+- 미리보기 첨부① **555 → 560**(+5)
+- 다운로드 첨부① **473** carry(불변)
+- "제2026-126호" verbatim 불변
+- "본인부담상한액 기준보험료의 산정기준 등에 관한 고시 일부개정" verbatim 불변
+- "보건복지부 고시 제2026-126호" verbatim 불변
+→ 덮어쓰기 1건.
+
+## §7. ★ law247 cachebuster DRIFT (strip-cachebuster IDENTICAL)
+
+【확인】 [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)
+HTTP 200 · 78,450B · md5 DRIFT:
+- BNK-571 `a9474058` → BNK-575 **`d373750d`**
+- `?Time=1782274342` → `?Time=1782284472` (cachebuster +10,130s)
+- strip-cachebuster md5 = `0e07cef1`(BNK-560 carry) live=disk IDENTICAL
+- "제2025-247호" verbatim 불변
+- "[시행 2026.1.1]" verbatim 불변
+→ 덮어쓰기 1건.
+
+## §8. ★★★ NEW URL DRIFT — longterm `npe0000000610` menuId 재맵 (npbs 신규홈페이지 26.1.16)
+
+【확인】 [npe0000000610](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610&bKey=B0020) live re-fetch:
+- HTTP 200 · 90,700B(-730B vs canonical 91,430B) · md5 `8706bc2c`(NEW)
+- **`<h2 class="page-title" id="pageTitle" tabindex="-1">거짓청구 장기요양기관 명단공표(미사용)</h2>`** (DIFFERENT page)
+- 사이트 배너: "신규 홈페이지 오픈('26.1.16. ~)에 따른 최신 브라우저 설치 필요 안내"
+- live HTML grep: 통합재가 **0건** · 단기보호 **0건** · 74,060 **0건** (모두 제로)
+- on-disk canonical `8d53dcc1`(91,430B) `<h2 class="page-title">통합재가서비스</h2>` · 통합재가 **11건** · 「2종 이상」·「월 10만원」·「주야간보호형」 verbatim 9건 → **보존**(canonical on-disk 우선 정책 유지).
+
+**해석**:
+- 2026-01-16 npbs.longtermcare.or.kr **신규 홈페이지 오픈**으로 menuId 매핑이 재구성됨.
+- 기존 menuId=610 → 「통합재가서비스」 → 현재 「거짓청구 명단공표(미사용)」 페이지로 재할당.
+- 신규 「통합재가서비스」 페이지의 menuId는 「미확인」 (probe 14 candidate 중 0 hit) → next cycle 신규 URL 발견 task carry.
+- ROADMAP v3.1 G18-SHORT·`IntegratedHomeProviderDiscoveryPanel` 우위 carry는 canonical 본문 보존으로 영향 0.
+
+## §9. ★★★ longterm 502 단기보호 canonical 「미확인」 carry (~9-cycle)
+
+【미확인】 [npe0000000502](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502)
+HTTP 302 (session gate redirect) — live re-fetch 불가.
+- on-disk canonical `b5aee8c1`(105,552B·단기보호 1등급 **74,060**·월 한도액 및 급여비용 2026.1.1 기준) → 보존 carry.
+- BNK-548부터 9-cycle 「미확인」 carry · 가정 번복 0 · canonical 본문 우선 정책 유지.
+
+## §10. ★ 4축+leave-ledger P0/P1 재오픈 0 (24-cycle carry, BNK-549~575)
+
+- G14 care-plan-form ✅ App.jsx `/care-plan-form` carry @d682562
+- G26 dashboard/hq ✅ carry
+- v1.3-C transport 8-route ✅ carry
+- v2 CMS ✅ carry
+- US-R01-c leave-ledger ✅ FE wire + LIVE E2E AVAILABLE carry @bc6180e (BNK-563 closure)
+가정 번복 0 · 신규 candidate 없음.
+
+## §11. planner 반영 제안 (BNK-575)
+
+1. **merge gate 750 (+2 vs BNK-574 748)** — 양쪽 develop WT CLEAN · cross-stream advance 2 · **tester FF merge 750 가속 권장**.
+2. **★★★ G-SMS-TEMPLATE-CATALOG P3「가정」 → BE ✅ CLOSURE @ `b6c9b16`** — BNK-574 candidate 즉시 closure(1-cycle).
+   - 신규 candidate **G-SMS-TEMPLATE-CATALOG-FE-WIRE P2「가정」** — `J03DashboardPage` SMS template readiness widget wire 시 module 10 0.5→0.65.
+3. **★★★ NEW longterm `npe0000000610` URL→menu 재맵 DRIFT** (npbs 신규홈페이지 26.1.16) — canonical `8d53dcc1`(통합재가) on-disk 보존 carry · live URL 「미확인」 → ogada 본문 종속 0 (G18-SHORT·integrated home discovery unchanged) · next cycle 신규 menuId 발견 task carry.
+4. **★★ NHIS #44 이동서비스비 러-1~4 350차 zero drift** ↔ ogada full-stack ✅ parity/우위 carry · PLAN_NOTES #44 closure carry.
+5. **★★ silverangel 5-URL zero drift IDENTICAL** + weekly notice 0(6-day stale·next ~6/25 carry).
+6. **★ MOHW 2026-126 counter +16 / law247 cachebuster** verbatim 불변 carry · 덮어쓰기 2건.
+7. **△4 잔여 우선순위 변동**:
+   - 10 부가서비스 0.5 carry (BE catalog API closure만 → KPI 산식 영향 0)
+   - 8 직원근태 0.85 · 2 이동 0.85 · 7-4 CMS 0.65 → carry
+8. **가정 번복 0 · 신규 core 갭 0 · candidate 변동 +1 신규**(G-SMS-TEMPLATE-CATALOG-FE-WIRE P2 「가정」) · **상태 변경 2**(FE+1 QA-B285·BE+1 G-SMS-TEMPLATE-CATALOG closure) · **미확인 carry 2**(longterm 502 9-cycle·longterm 610 신규 URL 1-cycle).
+9. **per-cycle minimum 4종 충족**:
+   - 신규 evidence URL 1건+: 신규 BE API `GET /api/v1/notifications/template-catalog`(BNK-574 candidate closure evidence) + longterm 610 신규 DRIFT(URL→menu remap 신규 발견) = 2건.
+   - 메뉴/필드/워크플로 1블록+: §2 6-template catalog table + §8 longterm 610 page-title remap table.
+   - COMPETITOR_MATRIX `@HEAD` 갱신: FE `@d682562` / BE `@b6c9b16` 5+ row (이지케어 모바일/카카오·NHIS#44·longterm 502/610·MOHW126).
+   - BENCHMARK_REPORT §575 신규 소절: §575-1 KPI · §575-2 G-SMS-TEMPLATE-CATALOG closure · §575-3 NHIS#44 · §575-4 silverangel · §575-5 lcms · §575-6 longterm DRIFT · §575-7 planner.

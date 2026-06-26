@@ -1,0 +1,178 @@
+BNK-568 — 엔젤·롱텀·규제 4–6h 교차검증 evidence extract
+조사일: 2026-06-24T01:50:00Z (KST 10:50)
+작성자: benchmark_researcher [BNK]
+rotation: 4–6h "엔젤·롱텀·규제" — silverangel·lcms·law.go.kr 이동서비스비 러-1~4·2026 단기보호·통합재가·평가 #27 cross-verify
+
+================================================================
+1) ogada git 실측 KPI (BNK-568)
+================================================================
+FE develop: 0869589  ux(a11y): G16 transport fees, client RBAC edit link, and summary layout (UXD-159)
+  - WT CLEAN · ahead 202 vs origin/test=ab4de83 · BNK-567 @17472bb HEAD +1
+BE develop: c8358e9  fix(v2/live-e2e): add explicit bootstrap enable hint in readiness responses
+  - WT CLEAN · ahead 539 vs origin/test=598d108 · BNK-567 @8b3fdcd HEAD +1
+
+KPI 측정:
+  - <Route\b=111 + <Routes>=1 → Route 112 (carry)
+  - *Page.jsx=90 + RootRedirect=91 (carry)
+  - V1–V175 (175 files, carry)
+  - BE *Test.java=252 · @Test loose=1,840 (carry)
+  - FE test=465 (192 .test.js + 273 .test.jsx, carry)
+  - 모듈 78.79% (22.85/29, carry)
+  - merge gate = FE202 + BE539 = 741 (+2 vs BNK-567 739)
+
+상태 변경: FE +1 (UXD-159 a11y carry G16/client RBAC/summary layout) · BE +1 (live-e2e bootstrap enable hint readiness)
+HEAD advance: 양쪽 +1 cycle · cross-stream SYNCED 가능 상태 · tester FF merge 741 가속 권장.
+
+================================================================
+2) 백본 10-URL 346차 재실측 (md5 / SIZE / counter)
+================================================================
+
+| URL                                  | live md5    | size      | on-disk(BNK-567) | 판정 |
+|--------------------------------------|-------------|-----------|------------------|------|
+| NHIS #44                             | c886ff1f    | 7,572B    | c886ff1f         | ZERO DRIFT 346차 |
+| longterm 502 (canonical)             | b5aee8c1    | 105,552B  | b5aee8c1         | ZERO DRIFT canonical · 단기보호 1등급 74,060 verbatim |
+| longterm 610 (통합재가 partial)      | 0ea575be    | 91,421B   | (BNK-566 carry)  | ZERO DRIFT · 2종 이상·월 10만원·주야간보호형 verbatim |
+| silverangel daycareEssentialWork     | c79c1be3    | 131,664B  | c79c1be3         | ZERO DRIFT · 평가 #27 보호자회의·이동서비스 #41/42 수칙 carry |
+| silverangel /service/extraService    | f9c5d877    | 81,637B   | f9c5d877         | ZERO DRIFT · CMS 5-method(자동이체 250원·가상계좌 300원·카드·계좌분리·현금영수증) |
+| silverangel /service/mainService     | bcf6df41    | 59,002B   | bcf6df41         | ZERO DRIFT · 2-track 주야간/방문 |
+| silverangel /service/feeService      | eab352a8    | 44,513B   | eab352a8         | ZERO DRIFT · 수가표 |
+| lcms 루트                            | 6c0d22b4    | 50,554B   | 6b750291         | DRIFT type1→type2 rotation 재출현 · `ad_cont type2` + `img_banner2.png` + 「본인부담금 자동이체(CMS)」 + CTA → silverangel `/newSilverangel/service/extraService.do` 「자세히보기」 + 「1600-6859」 (BNK-515 reveal·BNK-556 type1 carry·BNK-568 type2 재출현) · 덮어쓰기 |
+| law.go.kr 247                        | b64a5bc3    | 78,450B   | b0c34ac6         | DRIFT cachebuster `?Time=1782265509` · 제2025-247호·시행 2026.1.1 verbatim 불변 · 덮어쓰기 |
+| MOHW 2026-126                        | 85682695    | 109,510B  | 5ee70fe2         | DRIFT counter 2,528→2,540 (+12) · 제2026-126호·본인부담상한액 verbatim 불변 · 덮어쓰기 |
+| silverangel /notice/list (carry)     | 52c9457f    | 3,594,181B| 52c9457f         | ZERO DRIFT · 221563(view probe `8437f255` unpublished shell, 51,765B) · 신규 notice 0 |
+
+요약: ZERO DRIFT 8건 + DRIFT 3건(lcms type rotation·law247 cachebuster·MOHW counter) · 덮어쓰기 3건 · 엑셀 포맷 변경 0.
+
+================================================================
+3) ★★★ NHIS #44 이동서비스비 러-1~4 346차 zero drift (PLAN_NOTES #44 1차 확인 carry)
+================================================================
+
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+live md5 = c886ff1fd1d5ca2cb5dc76d30adde8ba · 7,572B (on-disk IDENTICAL)
+verbatim 핵심: "‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다." · "1일 1회" · "별지 제22호 일지"(역공학 BNK-355 carry) · "이동서비스비"
+
+ogada 교차검증 (@c8358e9/@0869589 실측):
+  - BE `TransportServiceFeeService` + `TransportDistanceBand.RU_1~RU_4` (5km 미만·5~10km·10~20km·20km 이상) + `ONE_WAY_RATIO=0.5` + roundTrip Map override + 1일 1회 dedup + V148/V154/V155 5/5 CHECK
+  - FE `transportServiceFee.js` 4-상수(러-1~4·편도50%/왕복100%·1일1회 협회 세부운영규정 제8조·별지 제22호 일지 시행규칙 제34조) + `TransportServiceFeePage` + `BillingStatisticsReportPage` + `pilotPageFlows.test.jsx` + `pilotChecklist.js` G16 entries
+  - FE `0869589` UXD-159 a11y → G16 페이지에 RBAC edit link/summary layout aria/keyboard nav 정리(우위 deepen·구조적 변화 0)
+  → ★ ogada **full-stack ✅ parity/우위 IDENTICAL 정합 346차 재입증** (PLAN_NOTES #44 1차 확인 carry).
+
+================================================================
+4) ★★★ 2026 수가 교차검증 — longterm 502 canonical + 610 통합재가
+================================================================
+
+(A) longterm 502 canonical (단기보호 1등급 74,060) — ZERO DRIFT canonical stable
+  - URL: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742
+  - live `b5aee8c1` / 105,552B = on-disk IDENTICAL (BNK-556→568 5-cycle stable)
+  - 월 한도액 및 급여비용(2026.1.1.기준) 다중 출현 + "74,060" verbatim 단기보호 1등급 (1일당)
+  - ogada 적용: MVP 주야간 단일 모드 — 단기보호 G18-SHORT P3 carry(ROADMAP v3.1) · canonical on-disk 우선 정책(BNK-522·556 carry).
+
+(B) longterm 610 통합재가 (2종 이상·월 10만원·주야간보호형) — ZERO DRIFT vs BNK-566 carry
+  - URL: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731
+  - live `0ea575be` / 91,421B (BNK-566 → BNK-568 5-cycle stable·BNK-560 oscillation 종결)
+  - "2종 이상" + "10만원" + "통합재가" + "주야간보호형" verbatim
+  - ogada 포지셔닝: MVP 주야간 단일 서비스 — 통합재가 결합 모델 out-of-scope carry · `IntegratedHomeProviderDiscoveryPanel` discovery 우위 유지(BNK-556 carry).
+
+================================================================
+5) ★★ silverangel CMS / 평가 #27 / 이동서비스 #41-42 cross-walk (zero drift)
+================================================================
+
+(A) extraService CMS 5-method (zero drift)
+  - URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+  - live `f9c5d877` / 81,637B (carry)
+  - 자동이체 250원·가상계좌 300원·카드결제·계좌분리·현금영수증 carry
+  - ogada 교차: 자체 CMS DB(`BillingCmsEnrollmentService`) — 자동이체/현금영수증/의료비공제 ✅ · 가상계좌/계좌분리 ❌(외부 PG 의존 out-of-scope) carry.
+
+(B) daycareEssentialWork 평가 #27 보호자회의 + #41-42 이동서비스 수칙 (zero drift)
+  - URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+  - live `c79c1be3` / 131,664B (carry)
+  - #27 「반기별 보호자회의 1회+ 월간 프로그램/식단표/소식 → 전자서명」 carry
+  - #41 운전자자격·동승자·차량안전·사고조치·차량운행표+계약서 / #42 직원동승·시간준수 carry
+  - ogada 교차:
+    · 평가 #27 → G-GUARDIAN-MEETING P3 carry (반기 dedicated workflow ❌ · `/meals` 식단표·`/care/notice` 소식만 ✅·필드/배지 분리 P3)
+    · #41-42 → G15 일지④·배차 8-route operational ✅ · 「수칙 템플릿·계약서 embed ❌」 G-TRANSPORT-RULES-DOC P3 carry
+
+================================================================
+6) ★★ lcms 루트 type1→type2 rotation 재출현 (silverangel CMS cross-promo 정본 carry)
+================================================================
+
+URL: https://www.lcms.or.kr/
+live `6c0d22b4` / 50,554B (이전 on-disk `6b750291` type1+type3 marker · BNK-515 type2 정본 reveal carry)
+verbatim 핵심:
+  - `<section class="ad_cont type2">` + `<img src="/images/egovframework/lcms/login/img_banner2.png" alt="">`
+  - 「본인부담금 자동이체(CMS) 서비스」 / 「본인부담금을 보호자계좌에서 자동출금, 카드 자동결제, …」
+  - CTA → `extraService.do` (silverangel `/newSilverangel/service/extraService.do`)
+  - 「자세히보기」 + 「1600-6859」 (silverangel 자매 도메인 cross-promo funnel)
+
+해석: LCMS 루트 3-type rotation(type1 디자인 샘플·type2 silverangel CMS cross-promo·type3 CJ프레시웨이 MOU 식단·BNK-419 carry) 중 **type2 재출현** 확인 — silverangel SaaS cross-promo 분산 모델 정본 reveal 패턴 carry (BNK-515 reveal carry).
+ogada 차별화 message 후보(carry, BNK-515): "단일 ERP 통합 vs silverangel SaaS cross-promo 분산" 마케팅 카피 — planner v3 marketing copy 검토.
+
+================================================================
+7) ★ 2026 규제 cosmetic DRIFT (verbatim 불변)
+================================================================
+
+(A) law247 (제2025-247호·시행 2026.1.1) — cachebuster DRIFT (verbatim 불변)
+  - on-disk `b0c34ac6` → live `b64a5bc3` · 78,450B unchanged
+  - cachebuster `?Time=1782265509` · 제2025-247호 verbatim · 시행 2026 verbatim 유지
+  - 덮어쓰기
+
+(B) MOHW 2026-126 본인부담상한액 — counter DRIFT (verbatim 불변)
+  - on-disk `5ee70fe2` → live `85682695` · 109,510B unchanged
+  - 조회수 2,528 → 2,540 (+12 since BNK-566) · 제2026-126호·본인부담상한액 verbatim 유지
+  - 덮어쓰기
+
+================================================================
+8) ★ silverangel 공지 weekly scan (zero notice, carry)
+================================================================
+
+  - URL: https://www.silverangel.kr/silverangel/support/notice/list.do
+  - live `52c9457f` / 3,594,181B (carry — BNK-566 IDENTICAL)
+  - 게시 ids: 221563(view probe `8437f255` 51,765B unpublished shell carry)·221562·221561·221551·221549·221547·221546·139864
+  - 신규 게시 notice: 0 (next weekly window ~6/25 Wed·BNK-566 carry)
+  - 발신번호 본인인증 deadline 2026-06-23 17:00/18:00 = **경과** (BNK-564 carry close)
+
+================================================================
+9) 4축 P0/P1 재오픈 + candidate carry
+================================================================
+
+| 축 | BNK-568 | 재오픈 |
+|---|---|---|
+| G14 care-plan-form | App.jsx LIVE carry | 0 |
+| G26 dashboard/hq + FAQ21823 widget | LIVE carry | 0 |
+| v1.3-C transport + NHIS#44 346차 | LIVE + zero drift + FE UXD-159 a11y +1 | 0 |
+| v2 CMS | `/billing/cms` LIVE | 0 |
+| US-R01-c leave-ledger | BNK-563 closure carry | 0 |
+| US-R03 FAQ21823 | BNK-566 3-layer test closure carry | 0 |
+
+candidate carry: G-NHIS-EXCEL-RECONCILE P3(BNK-567)·G-GUARDIAN-MEETING P3·G-TRANSPORT-RULES-DOC P3·G-BILLING-START-STANDALONE P3·G-REPORT-DENSITY P2·G-TRANSPORT-TIME-SYNC P3·G-VISIT-RESERVATION P3·G-NFC-NIGHT-PATROL P3·G18-SHORT P3 — 신규 +0, 변동 0.
+
+================================================================
+10) per-cycle minimum 충족 / 요약
+================================================================
+
+  ✅ 신규 증거 URL ≥ 1건 (NHIS#44 346차 live re-fetch + longterm 502 canonical 5-cycle stable + longterm 610 통합재가 carry + lcms type2 rotation 재출현)
+  ✅ 메뉴/필드/워크플로 1-block (§3 NHIS#44 5/5 parity · §5 silverangel #27/#41-42 워크플로 cross-walk)
+  ✅ COMPETITOR_MATRIX BNK-568 신규 행
+  ✅ BENCHMARK_REPORT §568 신규 소절
+
+요약:
+  - 가정 번복 0
+  - 신규 core 갭 0
+  - candidate 변동 0
+  - 상태 변경 2 (FE +1 UXD-159 a11y · BE +1 live-e2e bootstrap enable hint)
+  - 미확인 carry 1 (carefor func.php LIVE 직접 HTTP 000 — 8-cycle, Wayback `6226e6eb` IDENTICAL carry)
+  - 신규 snapshot 1건 (이 extract)
+  - 덮어쓰기 3건 (lcms·law247·mohw126)
+  - 엑셀 포맷 변경 0
+  - merge gate 739→741 (+2)
+  - cross-stream 동기화 (FE/BE 양쪽 1-cycle advance)
+
+================================================================
+11) planner 액션 (BNK-568)
+================================================================
+
+① baseline FE `@0869589`·BE `@c8358e9` · merge gate **741**(+2) · KPI 112/91/V175/BE252/FE465/78.79% 불변
+② **tester FF merge 741 가속 권장** — 양쪽 commit closure cross-stream SYNCED → origin/test push (BE 539 + FE 202) 우선순위.
+③ **lcms type2 rotation 재출현** marketing copy carry(BNK-515 reveal 동일·신규 인사이트 0)
+④ NHIS #44 346차 carry · △4 잔여 우선순위 불변(10 부가 0.5 → 7-4 CMS 0.65 → 2 이동 0.85 → 8 직원근태 0.85)
+⑤ candidate 변동 0 — G-GUARDIAN-MEETING·G-TRANSPORT-RULES-DOC·G-NHIS-EXCEL-RECONCILE P3 carry.

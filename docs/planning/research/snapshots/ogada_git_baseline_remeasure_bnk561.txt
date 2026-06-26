@@ -1,0 +1,64 @@
+# ogada git baseline re-measure — BNK-561 (2026-06-23T21:30:00Z)
+# rotation: 6–8h ogada git 실측 · Route·page·테스트·모듈 커버 % · 4축 P0/P1 · 갭 우선순위
+
+## @HEAD develop
+FE: 170ce56  test(clients): cover caregiver edit link on ClientDetailPage
+     WT CLEAN · BNK-560 carry · HEAD zero advance 2-cycle · ahead 197 vs origin/test=ab4de83
+BE: 2cae74c  fix(clients): handle addressDetail-only PATCH updates
+     WT CLEAN · BNK-560 @01edba7 HEAD +1 · ahead 536 vs origin/test=598d108
+merge gate = FE197 + BE536 = **733** (+1 vs BNK-560 732)
+
+## KPI (git 실측)
+Route **112** = 111 `<Route\b` + 1 `<Routes>` (App.jsx @170ce56)
+path= **111** · report-path **23** → report density **20.7%** (23/111)
+page **90** *Page.jsx (+RootRedirect=91)
+Flyway **V1–V175** (latest V175__staff_leave_ledger_entries_integrity_us_r01c.sql)
+BE *Test.java **252** · @Test **1,829** (+1 vs BNK-560 1,828 · `2cae74c` ClientServiceTest +91L)
+FE test **464** = 191 .test.js + 273 .test.jsx (.test.ts/.spec=0 on develop)
+모듈 coverage **22.85/29 = 78.79%** (competitorModuleCoverage.js unchanged)
+transport routes **8** (`/transport` cluster LIVE)
+
+## BE HEAD +1 — addressDetail-only PATCH (신규 workflow)
+commit `2cae74c` (+104L ClientService + ClientServiceTest):
+- PATCH body에 `address` 없이 `addressDetail`만 전송 시 기존 `addressSearchEncrypted`/`addressEncrypted` 복호화 후 상세주소만 갱신
+- `applyAddressDetailOnlyUpdate()` — search blank 시 `BusinessRuleException("주소를 입력하세요.")`
+- BNK-557 split address full-stack 보완 — 상세주소 단독 수정이 무시되던 회귀 방지
+- 이지케어 patient-b100 `job_address` 분리 필드 패턴과 정합(기본주소+상세 분리 저장 carry)
+
+## 4축 P0/P1 재오픈 0 (App.jsx @170ce56 LIVE)
+- G14 `/clients/:clientId/care-plan-form` ✅
+- G26 `/dashboard` · `/dashboard/hq` ✅
+- v1.3-C `/transport/*` 8-route ✅
+- v2 CMS `/billing/cms` ✅
+- US-R01-c `/staff/leave-ledger` ✅
+
+## Backbone 2-URL 341차 zero drift (live=on-disk)
+| URL | HTTP | md5 | size | drift |
+|-----|------|-----|------|-------|
+| [carefor func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | 200 | `6226e6eb` | 98,328B | **341차 IDENTICAL** vs on-disk carefor_func.php |
+| [ezcare top-nav-V2](https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428) | 200 | `95286775` | 25,470B | **341차 IDENTICAL** vs on-disk ezcare_top_nav_v2.js |
+| carefor func.php LIVE | **000** timeout | — | — | **미확인 carry** (BNK-558~561 4-cycle) |
+
+## △4 carry (모듈 78.79% — planner 우선순위 불변)
+| id | label | cov | P |
+|----|-------|-----|---|
+| 2 | 이동서비스 | 0.85 | v1.3-C deepen |
+| 7-4 | CMS·간편결제 | 0.65 | G2 |
+| 8 | 직원·근태 | 0.85 | US-R03 |
+| 10 | 부가서비스 | 0.5 | J03/SMS |
+
+## P2/P3 갭 carry (신규 core 갭 0)
+- G-REPORT-DENSITY: ogada 20.7% vs carefor demo 29.8% (**−9.1%p**)
+- G-BILLING-REPORT-FILTER-PERSISTENCE: BE V170 ✅ · FE wire ❌
+- G-MENU-PERMISSION-MATRIX: per-account menu deny P3
+- G-BILLING-START-STANDALONE: PDF p.90 7-3 P3
+- G-AGENCY-APPRAISAL-DASH: guide-E100 3-tab P3
+
+## planner 액션
+1. P1 — addressDetail-only PATCH `2cae74c` REQUIREMENTS 이용자관리 주소 분할 필드 정본에 「상세주소 단독 수정」 명시
+2. P1 — tester FF merge **733** 가속 (BE +1 address regression)
+3. P2 — G-BILLING-REPORT-FILTER-PERSISTENCE FE wire
+4. P2 — G-REPORT-DENSITY 리포트 Route 확대 백로그
+5. carry — carefor func.php LIVE HTTP 000 → 다음 0–2h 재시도
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1(BE +1·WT CLEAN) · 미확인 1(carefor LIVE) · per-cycle minimum 4종 충족

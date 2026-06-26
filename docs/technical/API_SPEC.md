@@ -1,14 +1,17 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-23T23:30:00Z -->
-<!-- tech_writer-sync: TWR 340차 2026-06-23T23:30:00Z — **client address + RBAC documentation update** · **BE `f600fd6`·FE `a531ed6`·V1–V175·111 route·90 page·merge gate 735** · **새 섹션 4-0/4-1**: addressSearch·addressDetail 분리 저장 명세 · caregiver PATCH 제한 권한 · **Q675/Q676/Q677** FAQ 링크 추가 · **다음 TWR 신호**: coder Q624 QR implementation → Q625~Q627 신규 FAQ -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-26T23:00:00+09:00 -->
+<!-- planner-sync: PLN 197차 2026-06-24T22:30 UTC — BNK-596~599 G2b CMS payment-method-catalog + G16 parity-rules BE API · BE `bd1e87e`/FE `c3c6272` baseline -->
+<!-- tech_writer-sync: TWR 344차 2026-06-24T23:45:00Z — **G2b CMS collection methods closure** · **`POST/GET .../virtual-account`** · **`POST/GET .../multi-account-settlement`** · **V176 integration** · BE `dac8ebd`·FE `c3c6272`·V1–V176·112 route·91 page·**merge gate 778** · **신규 섹션**: CMS 가상계좌·다계좌 정산 API (Q704) · **FAQ Q701·Q704 신규** · **USER_MANUAL §4-6 정정** · **다음**: G16 FE parity-rules wire · G2b CMS FE panel UI (가상계좌·다계좌) P2 -->
+<!-- planner-sync: PLN 196차 2026-06-24T16:00 UTC — BNK-587 G-SMS dispatch response ezcareMessageKind · BE `ef8bb4e`/FE `3f686e3` baseline -->
+<!-- tech_writer-sync: TWR 343차 2026-06-24T15:30:00Z — **employment-contract compliance API + BE V175 integration** · **BE `9aaefa0`·FE `a43bcb7`·V1–V175·112 route·91 page·merge gate 751** · **신규 섹션**: `/api/v1/staff/employment-contracts/compliance` · dashboard snapshot fields (`employmentContractRetentionExpiringCount`, `employmentContractRetentionExpiredCount`) · **US-R01-c leave-ledger full-stack ✅** · **FAQ21823 Q685 BE API 추가** · **다음**: G-NHIS-EXCEL-RECONCILE P3 planning -->
 <!-- tech_writer-sync: TWR 291차 2026-06-21T08:48:00 UTC — API_SPEC resync (248차→291차) — **G21 대시보드 `nhisComparisonGapCount`·G15 Kakao `transportKakaoQuotaSummary`·G-BATHING `copy-from-previous-month`** 신규 추가 · **Q594/Q595/Q598** FAQ 링크 · BE `0c9518a` / FE `580a86b` · V1–V166 · next: live E2E G21/G32/G42 하위 scoped blocker 문서화 -->
 # 주간보호센터 웹 시스템 — REST API 명세 (technical/API_SPEC.md)
 
 > **작성**: planner, tech_writer 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-23 (TWR 340차 — **client address·RBAC documentation** · **BE `f600fd6` / FE `a531ed6`** · V1–V175 · **새 섹션 4-0/4-1** addressSearch/addressDetail 분리·caregiver PATCH 제한 · **Q675/Q676/Q677** 기준 · **다음**: coder Q624~Q627 QR 구현)
+> **최종 갱신**: 2026-06-25 (COD 198차 sync — **G-NHIS-ALT-KEY-AUDIT-BADGE** `altKeyMatched` 필드 · **v2/7-5 easy-pay provider catalog** · **BE `56831fc` / FE `892122d`** · V1–V178·112 route·91 page · merge gate 790 · **다음**: Kakao Biz 채널 연동 · easy-pay live PG)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, **대시보드(G21 NHIS·G15 Kakao)**, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, 케이스관리·기능회복훈련·민원상담, **목욕 자동 복사**, 시스템 헬스체크
-> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `a6eb8b7` / **frontend** `5fd468b`
+> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `56831fc` / **frontend** `892122d`
 
 ---
 
@@ -757,7 +760,18 @@
 | GET | `/billing/claims/{id}/statement.pdf` | 급여비용 명세서 출력(PDF) |
 | POST | `/billing/imports/nhis` | 공단 청구내역상세 **엑셀 import** (multipart) |
 
-**POST `/billing/claims/{id}/notify`** (BNK-28 @ `84f3441`, **email skeleton** @ `fbedcc3`/`6eba2ef`): 청구서 확정 후 보호자에게 명세 안내 알림을 **요청**한다. `guardian_notification_preferences.notify_billing` 동의 필수. `StubEmailProvider`로 email 채널 **skeleton dispatch** — **SMTP/메일벤더 실연동 v2 잔여**. frontend billing 상세 **「보호자 알림」** UI @ `c48fb67`.
+**POST `/billing/claims/{id}/notify`** (BNK-28 @ `84f3441`, **email skeleton** @ `fbedcc3`/`6eba2ef`, **G-SMS metadata** @ `ef8bb4e` BNK-587): 청구서 확정 후 보호자에게 명세 안내 알림을 **요청**한다. `guardian_notification_preferences.notify_billing` 동의 필수. `StubEmailProvider`로 email 채널 **skeleton dispatch** — **SMTP/메일벤더 실연동 v2 잔여**. frontend billing 상세 **「보호자 알림」** UI @ `c48fb67`.
+
+**응답 필드 (BNK-587)**:
+
+| 필드 | 의미 |
+|------|------|
+| `templateCode` | Solapi 템플릿 코드 |
+| `ezcareMessageKind` | ezCare `message_kind` 대조용 정수(예: 1·11·12·13·19·21) |
+| `channel` | `ALIMTALK` \| `SMS` \| `EMAIL` |
+| `status` | 발송 요청 결과 |
+
+> `GuardianDocumentNotifyResponse` 등 기타 notify 엔드포인트도 동일하게 `templateCode`·`ezcareMessageKind`를 노출한다 (G-SMS-TEMPLATE-CATALOG 13-cycle closure).
 
 **GET `/billing/claims` 쿼리**
 
@@ -810,6 +824,7 @@
 - **`PENDING_REVIEW`**: 자동 매칭 보류·운영자 검토 대기 — `match_status_reason`에 안내 문구(V54). 케어포 **「대기」** 3상태 패리티(BNK-15·17)
 - 수동 매칭: `client_id` + 상태 전이 **단일 트랜잭션** (부분 업데이트 금지)
 - 매칭 이용자 `branch_id` = 배치 `branch_id` (V21 `trg_nhis_rows_client_branch`)
+- `altKeyMatched`(boolean): **가명(마스킹) 이름을 대체키로 해석해 매칭한 행** 표시 — `match_status_reason`에 ALT_KEY fallback 이유를 그대로 노출하며, FE 뱃지 용도 (G-NHIS-ALT-KEY-AUDIT-BADGE)
 
 **PATCH `/billing/imports/nhis/rows/{rowId}/match`**
 
@@ -1259,6 +1274,25 @@
 - `isQuietHoursActive()`: `!now.isBefore(22:00) || now.isBefore(08:00)` (Asia/Seoul) @ `fffd355`
 - FE `fetchNotificationChannelStatusApi` · **`NotificationChannelReadinessPanel`** — configured boolean only(키·시크릿 미노출)
 
+### 11-11. 알림 템플릿 카탈로그 (G-SMS-TEMPLATE-CATALOG) — v1.2.1 ✅ closure @ `ef8bb4e`/`3f686e3`
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/notifications/template-catalog` | ezCare `message_kind` ↔ ogada Solapi 템플릿 매핑 상태 노출 | `hq_admin`, `branch_admin` |
+
+**응답 필드**:
+
+| 필드 | 의미 |
+|------|------|
+| `entries[]` | 템플릿별 code·라벨·`ezcareMessageKind`·채널(SMS/ALIMTALK)·`dispatchImplemented`(BE 플로우 존재)·`configured`(Solapi templateIds 매핑 완료)·`dispatchReady`(dispatchImplemented && configured) |
+| `configuredCount` / `dispatchImplementedCount` / `dispatchReadyCount` / `totalCount` | 카탈로그 요약 집계 |
+
+**메모**:
+
+- Solapi 템플릿 ID가 code와 동일하거나 `stub/default` 등 플레이스홀더일 경우 `configured=false`.
+- `dispatchReady=true` 항목만 실제 채널 발송 가능(알림톡/SMS fail-closed 정책 일관성 확보).
+- **BNK-587 closure**: 6/6 `dispatchImplemented=true` · dispatch 응답(`BillingClaimNotifyResponse` 등)에 `ezcareMessageKind` 노출 · FE `notificationChannelStatus.test.js` vitest regression lock.
+
 ---
 
 ## 12. 배차·이동경로 (Transport) — v1.3-A implemented
@@ -1351,7 +1385,7 @@
 **일괄확정 (`GET /visits/confirm-readiness` + `POST /visits/batch-confirm`)** @ `0b807d8` — 이지케어 FAQ 21782 「4.일정확정」6단 게이트 패리티:
 
 - **`GET /visits/confirm-readiness`**: `from`·`to`(필수), `scheduleKind`(선택), `branchId`(선택). 응답 `VisitConfirmReadinessResponse` — `draftCount`, `pairedDivergedCount`, `unassignedDraftCount`, `confirmedCount`, `ready`, `blockers[]`. **PLAN/BILLING split**(BNK-365 @ `f26abb0`/`5f710e3`): `draftPlanCount`/`draftBillingCount`, `pairedDivergedPlanCount`/`...BillingCount`, `unassignedDraftPlanCount`/`...BillingCount`, `confirmedPlanCount`/`...BillingCount`, **`readyPlan`/`readyBilling`** per-kind 플래그(미배정 draft = not ready). **`nhisComparisonSummary`**(BNK-367 @ `8a8c5b3`): 동일 월 범위면 `matchedLineCount`/`discrepancyLineCount`/`missingNhisLineCount`/`extraNhisLineCount` embed(별도 `/visits/nhis-comparison` round-trip 불필요)·cross-month `null`.
-- **`GET /visits/nhis-comparison`**(BNK-366~367 @ `03a052a` — G-SCHEDULE-FIX-LTM-COMPARE·이지케어 `schedule-fix` `chk-ltm-fix` parity): `from`·`to`(필수·**동일 월**), `branchId`(선택). 일정 서비스 일수를 **최신 `NhisImportBatch`+`NhisImportRow`** client별로 대조. 응답 `VisitNhisComparisonResponse` — `items[]`(`VisitNhisComparisonItemResponse`: client별 `visitDayCount`↔`nhisServiceDays`·`serviceDaysMatch`·`nhisMatchStatus`)·집계 `matchedLineCount`/`discrepancyLineCount`/`missingNhisLineCount`/`extraNhisLineCount`·`overallMatch`. 비동일 월 → `400` `NHIS_COMPARISON_SAME_MONTH_MESSAGE` 「공단 명세서 비교는 동일 월 범위에서만 가능합니다.」. **FE `VisitBatchConfirmPanel` summary StatCard wire 잔여 △ P2**(BNK-367).
+- **`GET /visits/nhis-comparison`**(BNK-366~367 @ `03a052a` — G-SCHEDULE-FIX-LTM-COMPARE·이지케어 `schedule-fix` `chk-ltm-fix` parity): `from`·`to`(필수·**동일 월**), `branchId`(선택). 일정 서비스 일수를 **최신 `NhisImportBatch`+`NhisImportRow`** client별로 대조. 응답 `VisitNhisComparisonResponse` — `items[]`(`VisitNhisComparisonItemResponse`: client별 `visitDayCount`↔`nhisServiceDays`·`serviceDaysMatch`·`nhisMatchStatus`·`altKeyMatched`)·집계 `matchedLineCount`/`discrepancyLineCount`/`missingNhisLineCount`/`extraNhisLineCount`·`overallMatch`. 비동일 월 → `400` `NHIS_COMPARISON_SAME_MONTH_MESSAGE` 「공단 명세서 비교는 동일 월 범위에서만 가능합니다.」. **FE `VisitBatchConfirmPanel` summary StatCard wire 잔여 △ P2**(BNK-367).
 - **`POST /visits/batch-confirm`**: 본문 `BatchConfirmVisitSchedulesRequest` — `fromDate`, `toDate`, `scheduleKind`(선택), `branchId`(선택), **`nhisComparisonAcknowledged`**(필수 `true`), **`changeHistoryChecked`**(필수 `true`). 응답 `BatchConfirmVisitSchedulesResponse` — `confirmedCount`, `confirmedVisitIds[]`.
 - **게이트**: `nhisComparisonAcknowledged=false` → `400` 「공단 청구명세서 비교 확인 후…」 · `changeHistoryChecked=false` → `400` 「공단조회 변경이력 확인 후…」 · 페어 PLAN/BILLING 상태 불일치 → `400` · **미배정 draft**(직원 미배정) → not ready·거부 @ `5f710e3` · DRAFT 0건 → `400`.
 
@@ -1864,12 +1898,13 @@ form-data:
 
 ## 9-15. 본인부담 간편결제 7-5 (US-L06 / G2) — BNK-189~190
 
-> **상태**: backend **`b893e97`** · frontend **`bebd874`** — `EasyPayController`·V108 `easy_pay_requests_g7_5.sql`·`POST/GET /api/v1/billing/easy-pay/claims/{claimId}` **✅ partial+** (Stub PG·pilot E2E·prior-month guard) · FE `/billing/easy-pay`·`EasyPayPage`·`EasyPayPanel` **✅** · **잔여 P2**: provider normalization commit(QA-B78/B79) · live PG provider · G2b.
+> **상태**: backend **`56831fc`** · frontend **`892122d`** — `EasyPayController`·V108 `easy_pay_requests_g7_5.sql`·`POST/GET /api/v1/billing/easy-pay/claims/{claimId}` **✅ partial+** (Stub PG·pilot E2E·prior-month guard) · `GET /api/v1/billing/easy-pay/provider-catalog` **✅** (CARD/KAKAO_PAY + `pgMode=stub|live`) · FE `/billing/easy-pay`·`EasyPayPage`·`EasyPayPanel` **✅** · **잔여 P2**: live PG provider · FE provider-catalog badge(G2b).
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | POST | `/api/v1/billing/easy-pay/claims/{claimId}` | 간편결제 요청 생성 (provider: `CARD` \| `KAKAO_PAY`) | hq_admin, branch_admin |
 | GET | `/api/v1/billing/easy-pay/claims/{claimId}` | 간편결제 요청 이력 조회 | hq_admin, branch_admin |
+| GET | `/api/v1/billing/easy-pay/provider-catalog` | 간편결제 PG 제공 목록(카드·카카오페이) + 구현 여부 + `pgMode`(`stub`\|`live`) | hq_admin, branch_admin |
 
 **요청 본문 (POST, 요약)**:
 
@@ -1884,8 +1919,75 @@ form-data:
 
 - **Stub PG** — `StubEasyPayProvider` (BNK-189) · live PG = P2
 - **prior-month copay guard** — 전월 본인부담 미입금 시 결제 차단 @ `b893e97` (BNK-189 deepen)
-- **provider normalization WIP** — case/whitespace `@Pattern` @ WT dirty (QA-B78)
+- **provider normalization** — case/whitespace 정규화(`CARD`/`KAKAO_PAY` 허용, QA-B78) + canonical provider 저장
+- **provider catalog** — CAREFOR `npay_manage` parity 2종(CARD/KAKAO_PAY) + `paymentImplementedCount`·`totalCount`·`pgMode=stub|live` 노출 @ `56831fc` (G2b 7-5)
 - pilot E2E: `EasyPaymentPilotServiceFlowE2eTest` @ `1231389` · FE `easyPayPilot.e2e.test.js` @ `3848af6`
+
+---
+
+## 9-15a. CMS 결제수단 카탈로그 (G2b / US-L03) — BNK-598~599
+
+> **상태**: backend **`2eaf17e`** · frontend **`4875937`** — `GET /api/v1/billing/cms/payment-method-catalog` **✅** · FE `CmsPaymentMethodCatalogPanel` **✅** (5-method 표시·수납 3/5 badge) · **잔여 P2**: VIRTUAL_ACCOUNT·MULTI_ACCOUNT_SETTLEMENT 수납 구현 → id=7-4 0.65→1.0.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/billing/cms/payment-method-catalog` | CMS 결제수단 5종 카탈로그·수납 구현 여부 | hq_admin, branch_admin |
+
+**응답 필드 (요약)**:
+
+```json
+{
+  "methods": [
+    {
+      "code": "CMS_AUTO_DEBIT",
+      "label": "CMS 자동이체",
+      "collectionImplemented": true
+    },
+    {
+      "code": "VIRTUAL_ACCOUNT",
+      "label": "가상계좌",
+      "collectionImplemented": false
+    }
+  ],
+  "collectionImplementedCount": 3,
+  "totalMethodCount": 5
+}
+```
+
+**semantics**:
+
+- silverangel 5-method parity crosswalk (BNK-598~599)
+- **3/5 collectionImplemented** @ `4875937` — VIRTUAL_ACCOUNT·MULTI_ACCOUNT_SETTLEMENT = P2 deepen
+- FE wire: `CmsPaymentMethodCatalogPanel` on `/billing/cms` · vitest @ `4875937` · **QA-B300 Fixed**
+
+---
+
+## 9-16. 이동서비스비 NHIS #44 parity-rules (G16 / US-T05) — BNK-599
+
+> **상태**: backend **`bd1e87e`** — `GET /api/v1/transport/service-fee-parity-rules` **✅ BE catalog** (4 rules) · FE wire **0 hit** → **P2**: `TransportServiceFeePanel` 상수 duplicate 제거·catalog 소비.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/transport/service-fee-parity-rules` | NHIS #44 이동서비스비 산정 규칙 카탈로그 | hq_admin, branch_admin |
+
+**응답 필드 (요약)**:
+
+```json
+{
+  "rules": [
+    { "code": "DISTANCE_BANDS", "label": "거리 구간별 단가", "description": "..." },
+    { "code": "ONE_WAY_RATIO", "label": "편도 비율", "description": "..." },
+    { "code": "ONE_PER_DAY", "label": "1일 1회", "description": "..." },
+    { "code": "SERVICE_LOG", "label": "서비스 제공기록 연계", "description": "..." }
+  ]
+}
+```
+
+**semantics**:
+
+- NHIS #44 **366차 zero drift IDENTICAL** (BNK-599 carry)
+- BE `@bd1e87e` · **QA-B301 Fixed**
+- **잔여 P2**: FE catalog wire — hardcoded constants → API-driven labels
 
 ---
 

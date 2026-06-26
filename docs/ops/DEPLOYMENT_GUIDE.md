@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-23T21:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T23:00:00+09:00 -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-23 (338차 TWR 자동 동기화 — **BE `01edba7`/FE `1193761`·V1–V175·111 route·90 page·US-D01/D02 ✅·client RBAC hierarchy ✅·addressSearch/detail read ✅**)  
+> **최종 갱신**: 2026-06-26 (378차 TWR 자동 동기화 — **Q722 recovered-auth hint · Q719 G21 seed detail · Q720 neutral blocker · Q721 V180 program group · Q713 deepen · baseline `d06e3f1`/`4bbd54a`**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -53,15 +53,15 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 |------|------|------|
 | 프론트엔드 | React 18 + **Vite 6** SPA | 빌드 산출물 `src/frontend/dist/` |
 | 백엔드 | Spring Boot **3.5.3**, Java **17** | REST API Base URL `/api/v1` |
-| 데이터베이스 | PostgreSQL | `pgcrypto` 확장, Flyway V1–V175 |
+| 데이터베이스 | PostgreSQL | `pgcrypto` 확장, Flyway V1–V180 |
 | 인증 | JWT (RS256) + RBAC | access 30분, refresh 7일 |
 | 멀티테넌트 | Organization → Branch | `organization_id` 강제 격리 |
 
-> **구현 상태 (2026-06-23 develop HEAD `01edba7` / frontend `1193761` 기준 — 338차 baseline)**:
-> - **백엔드**: Must API + **V1–V175** · **SYNCED @ `01edba7`**. **`RoleHierarchy` client RBAC ✅** (Q675) · **`addressSearch`·`addressDetail` read ✅** (Q676) · **거주지 전체·픽업 마스킹 유지** · **V175 leave-ledger integrity ✅** (Q668) · …
-> - **프론트엔드**: **111 route · 90 page** @ **`1193761`** **SYNCED**. **`clientPermissions.js` ✅** (Q675) · **`KoreanAddressFields` ✅** (Q671) · **`/clients` column filters ✅** (Q672) · **HR `branchName` scope ✅** (Q674) · develop `npm test` **~2169 PASS**
-> - **merge gate**: **723 carry** · **cross-stream SYNCED WT CLEAN** · **BE Test 1837+** · **FE test ~2169 PASS**
-> - **마이그레이션**: V43 … **V175** `staff_leave_ledger_entries` integrity (Q668) · **V174** per-event ledger (Q663) · **V173** `staff_annual_leave_yearly` integrity. Flyway 자동 실행. **V173 미적용 시 health `v173StaffAnnualLeaveYearlyIntegrityCheckReady=false`** · blocker **`v173-staff-annual-leave-yearly-constraint-missing`** (Q645). **V171 미적용 시 `v171-defense-in-depth-constraint-missing`** (Q625).
+> **구현 상태 (2026-06-26 develop HEAD `d06e3f1` / frontend `4bbd54a` 기준 — 377차 baseline)**:
+> - **백엔드**: Must API + **V1–V180** · **SYNCED @ `d06e3f1`**. **QA-B95 recovered-auth hint ✅** (Q722) · **G21 seed service-unavailable detail ✅** (Q719) · **V180 program group integrity ✅** (Q721) · **G-REPORT-DENSITY M5 program reports ✅+** · **QA-B95 allow-recovered-auth health align ✅** (Q713) · **G-REFUND-FEE-DEDUCTION ✅+** · **G-EASYPAY-PROVIDER-CATALOG ✅** · **G2b CMS 5/5 ✅** · …
+> - **프론트엔드**: **118 route · 93 page** @ **`4bbd54a`** **SYNCED**. **QA-B95 recovered-auth hint wire ✅** (Q722) · **QA-B95 neutral blocker filter ✅** (Q720) · **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE ✅+a11y** (Q717·UXD-165) · **G-REPORT-DENSITY M5 reports ✅** (Q714) · **QA-B95 singular blocker merge ✅** (Q718) · **QA-B95 operation blocker normalize ✅** (Q716) · **G-EASYPAY-PROVIDER-CATALOG-FE-WIRE ✅** (Q709) · **G-REFUND-FEE-FE-WIRE ✅** (Q712) · **US-O01 bathing FE ✅** (Q705) · **G2b CMS 5/5 ✅**
+> - **merge gate**: **818** · **cross-stream SYNCED** (FE `4bbd54a` + BE `d06e3f1`) · **BE Test 271 suites**
+> - **마이그레이션**: V43 … **V180** program group 3-way FK·active-client guard (`42a369e`) · **V179** 프로그램 수급자 그룹·멤버십 (`337453d`) · **V178** CMS collection·목욕 관찰 defense-in-depth · **V177** 목욕 pre/post · **V176** CMS 가상계좌·다계좌. Flyway 자동 실행.
 > - **프로덕션 주의**: Solapi·FCMS·SMTP·**PG(stub)** 미사용 시 **`NOTIFICATION_PROVIDER=stub`** · **`NOTIFICATION_EMAIL_PROVIDER=stub`** · **`FCMS_PROVIDER=stub`** 기본값 유지. §4-3·§4-6·§4-6-1·§4-8 참고.
 
 ### [TWR] 1-4. Must 기능 운영 검증용 API 스모크 목록
@@ -71,11 +71,45 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | 영역 | 스모크 API | 기대 결과(요약) |
 |------|-----------|-----------------|
 | G17 기능회복훈련 | `GET /api/v1/programs/functional-recovery/compliance` | 200, 지표 필드(`plansRecordedCount`, `gapCount`) 반환 |
+| G-REPORT-DENSITY M5 program reports (Q714) | `GET /api/v1/programs/reports/participations?fromDate=2026-06-01&toDate=2026-06-25` | 200, **`summary.totalCount`**·**`items[]`** · **`caregiver` JWT → 403** (`650801b`·carry `49fe2e7`) |
+| G-REPORT-DENSITY M5 program reports UI (Q714) | UI **`/programs/reports/participations`** · **`/programs/reports/schedules`** | **`ProgramReportNav`** 4-tab · filter form · **「다시 시도」** on error · **`ProgramReportsPage.test`** PASS (`15a3b7f`) |
+| G-REPORT-DENSITY 5-9 group-history fill (Q714 deepen) | `GET /api/v1/programs/reports/group-history?fromDate=2026-06-01&toDate=2026-06-25` | 200, **`groupConfigAvailable=true`** · **`items[]`** with **`groupName`·`effectiveFrom`·`effectiveTo`·`clientCount`** when V179 memberships exist · empty **`items:[]`** otherwise (`337453d`) |
+| G-REPORT-DENSITY program report branch filter (Q715) | `GET /api/v1/programs/reports/schedules?fromDate=2026-06-01&toDate=2026-06-25&branchId={uuid}` | 200 when **`branchId` in JWT read scope** · out-of-scope → **403** (`49fe2e7`) |
 | G32 사례관리 | `GET /api/v1/case-management/compliance` | 200, `meetingsRecordedCount`, `reflectionGapCount` 반환 |
 | G42 민원상담 | `GET /api/v1/staff/grievance-counselings/follow-up/compliance` | 200, `pendingFollowUpCount`·`followUpCompletionRate` 반환 |
 | G21 방문요양 | `GET /api/v1/visits/confirm-readiness?from=YYYY-MM-DD&to=YYYY-MM-DD` | 200, `readyPlan`·`readyBilling`·`blockers[]` 반환 |
 | G-STAFF-WORK-ATTENDANCE (Q612) | `GET /api/v1/staff/work-attendance?date=` | 200, `items[]` with `userName`·`status`·`checkInAt`·`checkInMethod` (`a6eb8b7`) |
+| G-STAFF-MONTHLY-SCHEDULE-FE-WIRE UI (Q717) | UI **`/staff/schedules`** | **`StaffContextNav`「근무일정표」** · **`StaffMonthlySchedulePage.test`** PASS · PLAN visit filter · dispatch panel mount (`33944e4`) |
+| G-STAFF-MONTHLY-SCHEDULE data (Q717) | `GET /api/v1/visits?from=2026-06-01&to=2026-06-30&branchId={uuid}&scheduleKind=PLAN` | 200, `items[]` — **`StaffMonthlySchedulePage`** aggregation source |
 | G-BILLING-DEPOSIT-ORDER-GUARD (Q614) | `POST /api/v1/billing/claims/{id}/payments` (이전 월 미납 존재 시) | **422**「이전 미납 청구(YYYY-MM) 입금 선행이 필요합니다.」 (`a6eb8b7`) |
+| M7 본인부담 7-x lifecycle (Q700) | UI **`/billing`** · **`/billing/payments`** · **`/billing/overdue`** · **`/billing/reports/charges`** · **`/billing/calculator`** | SPA **200** · SideNav **청구** 10-leaf 1:1 — **7-4 CMS 5/5 full-stack ✅** (Q701·Q704, FE `9aeedfe`) |
+| G2b CMS payment-method-catalog (Q701) | `GET /api/v1/billing/cms/payment-method-catalog` | 200, **`totalCount=5`** · **`collectionImplementedCount=5`** · **`entries[]`** with **`methodCode`·`labelKo`·`ogadaRoute`·`collectionImplemented`** — **모든 5가지 수납 구현** ✅ (`dac8ebd`) |
+| G2b CMS catalog UI (Q701) | UI **`/billing/cms`** | **`CmsPaymentMethodCatalogPanel`** — **수납 구현 5/5 full-stack ✅** · **가상계좌·다계좌 `CmsCollectionPanel`** · **empty `entries[]` → EmptyState** (`9a583ec`, **Q708**) |
+| G2b CMS catalog empty API edge (Q708) | `GET /api/v1/billing/cms/payment-method-catalog` | **`entries: []`** → UI **「카탈로그 정보 없음」** · **등록·출금·가상계좌 탭 smoke는 별도 통과** · 정상은 **`entries` 5건** |
+| G-NHIS-MASKED-NAME-FALLBACK (Q706) | `POST /api/v1/billing/imports/nhis` (마스킹 이름 test row) | **`matchedCount=1`** · **`rows[0].matchStatusReason`** = 「공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨」 · LTC cert miss + `홍*동` + birthDate unique (`37416ac`) |
+| G-NHIS-ALT-KEY-AUDIT-BADGE (Q707) | `POST /api/v1/billing/imports/nhis` (alt-key matched row) | **`rows[0].altKeyMatched=true`** · UI **`/billing/imports/nhis/:batchId`** — **`NhisAltKeyMatchedBadge`** 「대체 매칭됨 — 검증 필요」 · **`GET /visits/nhis-comparison`** items **`altKeyMatched`** (`4963535`/`5bb84a6`) |
+| G2b CMS collection UI (Q704) | **`/billing/cms` → 가상계좌·다계좌** tab | **`CmsCollectionPanel`** · **확정 청구** select · **가상계좌 발급**·**다계좌 정산 요청** · **7-4 선행입금 가드** (`9aeedfe`) |
+| G2b CMS virtual-account API (Q704) | `POST/GET /api/v1/billing/cms/claims/{claimId}/virtual-account` | POST 200: **`virtualAccountNumber`·`issuedAt`·`expiresAt`** · GET 200: **`virtualAccountNumber`·`balanceAmount`** · claim CONFIRMED 선행 · FCMS stub (`dac8ebd`) |
+| G2b CMS multi-account-settlement API (Q704) | `POST/GET /api/v1/billing/cms/claims/{claimId}/multi-account-settlement` | POST 200: **`settlementRequestedAt`·`status`** · 정산 계좌 배열 요청 · GET 200: **`status`·`settlementAmount`** · FCMS stub (`dac8ebd`) |
+| G16 NHIS #44 parity rules FE wire (Q703·Q710) | **`/transport/service-fees`** page load | **`TransportParityRulesPanel`** mount · **`description`/`bodyKo` 정규화** · static fallback on error (`5914b2f`) |
+| 7-5 easy-pay provider catalog FE (Q709) | UI **`/billing/easy-pay`** | **`EasyPayProviderCatalogPanel`** — CARD·KAKAO_PAY 표 · **`pgMode`** badge · catalog retry (`5914b2f`) |
+| 7-5 easy-pay provider catalog API (Q709) | `GET /api/v1/billing/easy-pay/provider-catalog` | 200, **`totalCount=2`** · **`paymentImplementedCount=2`** · **`entries[]`** CARD·KAKAO_PAY · **`pgMode=stub|live`** · **`guardian` JWT → 403** (`56831fc`·routing test `5a5174a`) |
+| QA-B312 annual leave branch scope (Q711) | UI **`/staff/annual-leaves`** | **`BranchScopeNotice`** — API **`branchName: "   "`** → **지점 ID fallback** 표시 (`58f3858`) |
+| 7-9 copay refund fee catalog (Q712) | `GET /api/v1/billing/copay/refund-fee-policy-catalog` | 200, **`totalCount=3`** · **`entries[]`** CARD_VOID·CARD_PARTIAL·BANK_OR_CMS · **`pgVendorLabelKo`** · **`social_worker` JWT → 403** (`2adae59`) |
+| 7-9 copay refund fee preview (Q712) | `POST /api/v1/billing/copay/refund-fee-preview` body `{"policyCode":"CARD_PARTIAL_OR_EXPIRED","grossAmount":10000}` | 200, **`feeAmount=330`** · **`netAmount=9670`** · invalid policy → **`422`** (`2adae59`) |
+| 7-9 copay refund with feePolicyCode (Q712) | `POST /api/v1/billing/claims/{claimId}/refunds` body `{"refundedAt":"2026-06-11","amount":44500,"feePolicyCode":"BANK_OR_CMS_TRANSFER"}` on **PAID** `BANK_TRANSFER` claim (gross 45000) | 200, **`REFUNDED`** · **`refundAmount=44500`** · mismatch amount → **`422`** (`aeecc1b`) · invalid `feePolicyCode` → **`400`** (`79725eb`) |
+| 7-9 copay refund invalid feePolicyCode (Q712) | `POST …/refunds` body `{"refundedAt":"2026-06-11","feePolicyCode":"INVALID"}` | **`400`**「허용되지 않는 환불 수수료 정책입니다.」 (`79725eb`) |
+| QA-B95 string-form operation blockers (Q716) | `./scripts/run-live-e2e.sh` | health **`liveE2eOperationBlockers`** string → **`liveBackendProbe`** split (`2c9abd6`) · **`.live-backend-state.json`** persisted string → **`getLiveE2eOperationBlockers`** split (`bd3253a`) · **`liveE2eHarness.test`** lock |
+| QA-B95 singular operation blockers (Q718) | `./scripts/run-live-e2e.sh` | health **`liveE2eOperationBlocker`** singular → **`liveBackendProbe`** merge with plural (`b7004ca`) · persisted **`liveE2eOperationBlocker`** fallback · **`liveE2eHarness.test`** lock |
+| QA-B95 neutral operation blockers (Q720) | `./scripts/run-live-e2e.sh` | health **`liveE2eOperationBlockers: "none, ok; bootstrap-unavailable"`** → harness **`["bootstrap-unavailable"]` only** (`7e7c296`) · **`liveE2eOperationReason: "none"`** neutral skip · **`liveE2eHarness.test`** lock |
+| QA-B95 recovered-auth readiness hints (Q722) | `GET /api/v1/health` (bootstrap disabled + allow-recovered-auth + bean wired) | **`liveE2eAllowRecoveredAuth=true`** · **`liveE2eBootstrapEnableHint`** = **`Bootstrap is disabled; recovered-auth readiness mode is active.`** (`d06e3f1`) · FE **`isLiveRecoveredAuthAllowed()`** · hint **neutral reason/blocker** (`4bbd54a`) · **`liveE2eHarness.test`** lock |
+| QA-B95 G21 seed service-unavailable detail (Q719) | `GET /api/v1/health` (bootstrap enabled·bean missing profile) | **`liveE2eG21SeedStatusDetail=g21-seed=service-unavailable`** — **not** `g21-seed=disabled` (`42a369e`) · pairs **`bootstrap=service-unavailable`** (Q684) |
+| V180 program group integrity (Q721) | Flyway migrate + `GET /api/v1/programs/reports/group-history?fromDate=2026-06-01&toDate=2026-06-30` | **V180 applied** · 5-9 report **200** · cross-branch member INSERT **DB reject** (defense-in-depth, `42a369e`) |
+| QA-B95 effective operation readiness (Q713) | `./scripts/run-live-e2e.sh` (bootstrap disabled/unavailable + staff creds) | **`.live-backend-state.json`** — raw **`liveE2eOperationReady=false`** · **`liveE2eEffectiveOperationReady=true`** when only **`bootstrap-disabled`/`bootstrap-unavailable`** remains (`75c0f51`·carry `e070c45`) · probe **`bootstrapServiceAvailable`** distinguishes bean missing (`0e55f3b`) · **`liveBackendProbe`** surfaces **`reason`/`liveE2eOperationReason`** on skip (`f74a6e7`) · BE **`liveE2eAllowRecoveredAuth`** when bootstrap disabled + bean wired (`3342938`) · **`liveE2eBootstrapEnableHint`** recovered-auth (`d06e3f1`·`4bbd54a`, Q722) |
+| QA-B95 bootstrap probe split (Q713) | `GET /api/v1/system/live-e2e/probe` | **`bootstrapEnabled`** vs **`bootstrapServiceAvailable`** — disabled → both **`false`** · enabled·bean null → **`bootstrapEnabled=true`·`bootstrapServiceAvailable=false`** · detail **`bootstrap=service-unavailable`** (`0e55f3b`) · **`liveE2eAllowRecoveredAuth`** (`3342938`) |
+| G-REFUND-FEE-FE-WIRE UI (Q712) | UI **`/billing/claims/:id` → 「환불 처리」** on **PAID** `BANK_TRANSFER`/`EASY_PAY`/`CMS` | **`RefundRecordModal`** policy Select · **실환불액** preview · submit **`feePolicyCode`** · **`RefundRecordModal.test`** PASS (`cadd74a`) |
+| US-O01 bathing FE wire (Q705) | UI **`/care/bathing-schedules`** | **`BathingScheduleIndicator27Panel`** load · **`COMPLETED` without pre/post** → form field error · **`BathingSchedulePage.test`** PASS (`3d7f13b`) |
+| G-BILLING generation guard (Q571) | `GET /api/v1/billing/claims/generation-guard?branchId=` | 200, **`blocked`**·**`unpaidPriorMonthClaimCount`** |
 | G-ATTENDANCE-STATS (Q615) | `GET /api/v1/attendance/stats/monthly?branchId=&from=YYYY-MM-01&to=YYYY-MM-last` | 200, `branches[].months[]` with `yearMonth`·`activeClientCount`·`attendanceRate` — **FE `/attendance/stats` ✅** (`dffd726`) |
 | G-BILLING-REPORT-FILTER-PERSISTENCE (Q621·Q626) | `GET /api/v1/billing/reports/filters?month=2026-06&branchId=` | 200, `filters[]` 4-variant — **FE hydrate ✅** · autosave **safe non-blocking** (`99d03fa`) |
 | V171 integrity readiness (Q625) | `GET /api/v1/system/health` | **`v171DefenseInDepthIntegrityCheckReady=true`** · blocker **`v171-defense-in-depth-constraint-missing`** 없음 |
@@ -83,6 +117,9 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | US-D03 client attendance (Q628) | `GET /api/v1/clients/{clientId}/attendance?from=2026-06-01&to=2026-06-30` | 200, **`clientId`·`items[]`** with `attendanceDate`·`status`·`checkInAt`·`checkOutAt` — FE **`/clients/:id` 출석 탭 ✅** (`d058e43`) |
 | US-D01 client RBAC (Q675) | `PATCH /api/v1/clients/{id}` (`caregiver` JWT) · `POST /api/v1/clients` (`caregiver` JWT) | **200** 수정 · **403** 등록 — FE **`/clients/new` guard** · **`/clients/:id/edit` ✅** (`01edba7`/`77584a0`) |
 | US-D01 address read split (Q676) | `GET /api/v1/clients/{id}` | 200, **`addressSearch`·`addressDetail`·`address`** — 수정 prefill (`deda5b4`) |
+| US-D01 addressDetail-only PATCH (Q677) | `PATCH /api/v1/clients/{id}` body **`{"addressDetail":"101동 202호"}`** only (`social_worker` JWT) | **200** · **`addressSearch` 불변** · **`address` 결합값 갱신** (`2cae74c`) |
+| G16 NHIS #44 parity UI (Q678) | UI **`/transport/service-fees`** | **「NHIS #44 산정 기준」** heading · **러-1~4·50%·1일 1회·제22호** 4항 (`a531ed6`) |
+| G16 NHIS #44 parity rules API (Q703) | `GET /api/v1/transport/service-fee-parity-rules` | 200, **`totalCount=4`** · **`oneWayRatio=0.5`** · **`rules[]`** with **`code`·`label`·`description`** (`DISTANCE_BANDS`·`ONE_WAY_RATIO`·`ONE_PER_DAY`·`SERVICE_LOG`, `e4f83af`) · **`social_worker` JWT → 403** |
 | G30 monitoring items + legend (Q629) | `GET /api/v1/compliance/monitoring/items` | 200, **15 templates** with `itemCode`·`inspectionDirection` — FE **`/compliance/monitoring` G30-LEGEND legend ✅** (`fdc135b`, client-side cross-walk) |
 | G34 workflow catalog (Q635) | UI **`/compliance/workflow-catalog`** | **200** SPA · **`EzcareWorkflowCatalogPanel`** 28-row table · **16 verbatim** StatCard (`9f110a5`, FE-only) |
 | G2 CMS branch roster (Q637·Q638·Q662) | `GET /api/v1/billing/cms/enrollments?branchId=&status=ACTIVE` (no `clientId`) | 200, `[]` or items with **`clientName`**·`payerName`·`status` (`d361833`/`d0c0d12`) |
@@ -98,10 +135,21 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | G-STAFF-ANNUAL-LEAVE UI (Q639·Q643·Q646·Q647) | UI **`/staff/annual-leaves`** | roster table · **AppShell `<h1>`「직원 연차휴가」** · **`ds-help-text`/`ds-fieldset`** · **`branch_admin` 편집 Modal field errors** (`31ab1aa`/`085a85a`) |
 | V173 annual leave integrity (Q645) | `GET /api/v1/health` | **`v173StaffAnnualLeaveYearlyIntegrityCheckReady=true`** · missing → **`v173-staff-annual-leave-yearly-constraint-missing`** (`8c5dd65`) |
 | J03 Solapi placeholder readiness (Q644) | `GET /api/v1/notifications/channel-status` (placeholder `SOLAPI_*`) | **`liveAlimtalkDispatchReady=false`** · **`readinessBlockers`** includes **`MISSING_SOLAPI_CONFIG`** (`19ffa84`) |
+| G-SMS fallback labels (Q697) | **`/organization/settings`** readiness panel | **본인부담 안내·급여제공내역·직원인권보호** 등 ezCare parity 라벨 표시 (`3f686e3`) |
+| G-SMS dispatch a11y (Q696) | **`/clients/:id`** · **`/staff/:id`** dispatch panels | **`.ds-form-stack`** 필드 수직 간격 — 키보드 탐색 smoke (`4adeb1c`) |
+| G-SMS-TEMPLATE-CATALOG (Q686) | `GET /api/v1/notifications/template-catalog` | 200, **`totalCount=6`** · **`dispatchImplementedCount=6`** · **`dispatchReadyCount`** ≥ 0 · **`entries[]`** with **`dispatchReady`** · ALIMTALK **`dispatchReady=false`** when **`SOLAPI_KAKAO_PF_ID`** unset (`fed6f1f`/`ef8bb4e`) |
+| G-SMS dispatch response (Q692) | `POST /api/v1/billing/claims/{id}/notify` · `POST …/clients/{id}/notifications/care-provision-record` · `POST …/clients/{id}/notifications/client-monthly-schedule` · `POST …/clients/{id}/notifications/elder-abuse-prevention-guideline` · `POST …/staff/notifications/staff-access-key` · `POST …/staff/notifications/staff-monthly-schedule` | 200, **`templateCode`** + **`ezcareMessageKind`** — **6/6 catalog parity** (`ef8bb4e`·`2f83563`·guardian test lock `a12873c`) |
+| G-SMS dispatch success label (Q699) | UI **`/clients/:id`** · **`/staff/:id`** · **`/billing/claims/:id`** — 수동 발송 1건 | 성공 Alert **「…발송했습니다. (한글 템플릿명)」** — **`ezcareMessageKind` 숫자 미표시** (`c7d0982`) |
+| G-SMS CLIENT_MONTHLY_SCHEDULE (Q687) | `POST /api/v1/clients/{clientId}/notifications/client-monthly-schedule` body `{"yearMonth":"2026-06"}` | 200 or **`422`**(확정 PLAN 방문 0건) · **`ezcareMessageKind=12`** (`8631d1e`/`ef8bb4e`) |
+| G-SMS STAFF_MONTHLY_SCHEDULE (Q689) | `POST /api/v1/staff/notifications/staff-monthly-schedule` body `{"staffUserId":"…","yearMonth":"2026-06"}` | 200 or **`422`**(직원 배정 확정 PLAN 방문 0건) · **`ezcareMessageKind=21`** (`b9d0599`/`2f83563`) |
+| G-SMS STAFF_ACCESS_KEY (Q691) | `POST /api/v1/staff/notifications/staff-access-key` body `{"staffUserId":"…"}` | 200, **`templateCode=STAFF_ACCESS_KEY`** · **`ezcareMessageKind=1`** · **`expiresAt`** or **`422`**(휴대전화 미등록·비활성) (`1d5d441`/`2f83563`) |
+| G-SMS dispatch UI (Q687·Q689·Q691·Q692) | UI **`/clients/:id`** · **`/staff/:id`** · **`/billing/claims/:id`** | **`GuardianDocumentNotifyPanel`** **일정표·급여제공·인권보호** · **`StaffNotificationDispatchPanel`** **일정표·접속키** · **`BillingDetailPage`** **「본인부담 안내 알림톡 발송」** (`5a6d42c`) |
+| G-SMS-TEMPLATE-CATALOG UI (Q686·Q688·Q690) | UI **`/organization/settings`** · **`/dashboard`** | **`NotificationChannelReadinessPanel`** — **「발송 구현 N종 중 M종 발송 가능 · 발송 대기 Y종」** Alert · catalog 표 (`15f2195`/`c04968c`/`fed6f1f`) |
+| FAQ21823 employment contract compliance (Q685) | `GET /api/v1/staff/employment-contracts/compliance?branchId=` | 200, **`renewalGapCount`** · **`retentionExpiringCount`** · **`retentionExpiredCount`** · **`renewalAlerts[]`** (`9aaefa0`) |
 | G-STAFF-WORK-ATTENDANCE API cross-link (Q653·Q663) | `GET /api/v1/staff/work-attendance?date=2026-06-21&branchId=` | 200, `items[]` · **`surfaceKind=DAILY_WORK_ATTENDANCE_ROSTER`** · **`relatedSurfaces[0].route=/staff/annual-leaves`** · **`relatedSurfaces[1].route=/staff/leave-ledger`** · **`relatedSurfaces[1].availability=AVAILABLE`** (`bb9df48`) |
 | US-R01-c leave-ledger (Q663·Q666) | `GET /api/v1/staff/leave-ledger?year=2026&branchId=` | 200, **`surfaceKind=CANONICAL_LEAVE_LEDGER`** · **`items[]`** · **`relatedSurfaces[0].route=/staff/annual-leaves`** · **`relatedSurfaces[1].route=/staff/attendance`** · **FE `/staff/leave-ledger` ✅** (`8057c1e`) |
 | US-R01-c leave-ledger CRUD (Q663) | `POST /api/v1/staff/leave-ledger/users/{userId}` | 200, **`leaveType`·`leaveDate`·`daysUsed`** · unsupported `leaveType` → **`422`** · `DELETE …/entries/{id}` → **204** |
-| G-STAFF-WORK-ATTENDANCE UI cross-link (Q651·Q653) | UI **`/staff/attendance`** | **「출퇴근 관련 화면」** panel — API **`relatedSurfaces`** 기반 **「연차휴가 현황」→ `/staff/annual-leaves`** · **「연차·유급휴일 대장 (준비 중)」** (`95f55aa`) |
+| G-STAFF-WORK-ATTENDANCE UI cross-link (Q651·Q653) | UI **`/staff/attendance`** | **「출퇴근 관련 화면」** panel — API **`relatedSurfaces`** 기반 **「연차휴가 현황」→ `/staff/annual-leaves`** · **「연차·유급휴일 대장」→ `/staff/leave-ledger` AVAILABLE** (`95f55aa`/`426d63a`) |
 | G21 dashboard NHIS gap (Q594) | `GET /api/v1/dashboard/branch` · `GET /api/v1/dashboard/hq` | 200, **`nhisComparisonGapCount`** ≥ 0 (`0796821`) |
 | G15 Kakao quota (Q595) | `GET /api/v1/transport/kakao-api-status` | 200, `restKeyConfigured`·`quotaUsage[]` (`580a86b` FE widget) |
 | 청구 생성 가드 | `GET /api/v1/dashboard/branch` | 200, `claimGenerationGuardBlocked` 필드 반환 |
@@ -116,6 +164,8 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | G-BILLING invalid period enum (Q585) | `GET …/deposits?month=2026-06&period=MID_MONTH` | **`422`「period는 FULL, FIRST_HALF, SECOND_HALF만…」** |
 | G-BILLING cross-variant guard (Q585) | `GET …/charges?month=2026-06&period=FIRST_HALF` | **`422`「period 필터는 입금대장(deposits)에서만…」** |
 | G-BATHING copy-from-previous-month (Q598) | `POST /api/v1/care/bathing-schedules/copy-from-previous-month` body `{"targetYearMonth":"2026-06"}` | 200, **`createdCount`·`skippedCount`·`sourceYearMonth`** (`49a1721`) |
+| US-O01 bathing indicator-27 compliance (Q705) | `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=2026-06` | 200, **`requiredMonthlyCompletedCount=5`** · **`entries[].indicator27Met`** · RBAC **caregiver+** (`e12b084`) |
+| US-O01 bathing pre/post observation guard (Q705) | `PATCH /api/v1/care/bathing-schedules/{id}` body `{"status":"COMPLETED","provisionNotes":"…"}` **without** pre/post | **`422`** 「목욕 제공 완료 시 목욕 전·후 상태 관찰 내용을 입력하세요.」 (`e12b084`, V177) |
 | G-BILLING-OVERDUE management records (Q602) | `GET /api/v1/billing/overdue/claims/{claimId}/management-records?clientId=` | 200, `items[]` (빈 배열 허용) |
 | G-BILLING-OVERDUE adjustments (Q602) | `GET /api/v1/billing/overdue/claims/{claimId}/adjustments?clientId=` | 200, `items[]` audit trail |
 | G-STAFF-DOCUMENT-REPOSITORY (Q604) | `GET /api/v1/staff/hr-files/users/{userId}/repository-progress` | 200, **`totalCount=21`** · **`slots[]`** · **`progressLabel`** · **`careforParityLabel`** (`b583c11`) |
@@ -384,7 +434,7 @@ CI 파이프라인에서도 동일 명령으로 단위·통합 테스트를 실�
 | J03 SMS fallback | **`AlimtalkFallbackTextTest`** · 한국어 relay 본문 · **`SolapiKakaoAlimtalkProviderTest`** fallback 검증 (Q158) |
 | J03 notification history | `NotificationHistoryServiceTest` 5건 · `GET /guardian/notifications` · `GET /clients/{id}/notifications` (Q152) |
 | J03 service flow E2E | **`J03AlimtalkServiceFlowE2eTest`** **8건** · **`J03EmailServiceFlowE2eTest`** — billing notify·copay payment email (Q204) |
-| **US-L03 CMS (G2)** | **`CmsServiceTest`** · **`CmsCopayLifecycleE2eTest`** — enrollment→debit→PAID·`payment_method=CMS` · **cancel enrollment**·**duplicate active guard**·**cancelled history list** (`a34d0eb`·`72aff00`·`4a622ab`, Q299) · **branch roster fallback** (`d0c0d12`/`d3d4d2d`, Q638) · **FAILED response(422 아님)** (`838a7f6`, Q256) · **`CmsPilotServiceFlowE2eTest`** retry·cancel lifecycle·**roster e2e** (BNK-104·Q638) · **`CmsPage.test`** · **`CmsEnrollmentTable.test`** · **`PaymentPage.test`** (Q638) · **`StubFcmsClientTest`** · **`MustApiEndpointRoutingTest$CmsRouting`** · **`RoleBasedControllerAccessTest$CmsAccess`** (Q208) |
+| **US-L03 CMS (G2)** | **`CmsServiceTest`** · **`CmsPaymentMethodCatalogServiceTest`** (Q701, `2eaf17e`) · **`CmsVirtualAccountServiceTest`** · **`CmsMultiAccountSettlementServiceTest`** (Q704, `dac8ebd`) · **`CmsCopayLifecycleE2eTest`** — enrollment→debit→PAID·`payment_method=CMS` · **cancel enrollment**·**duplicate active guard**·**cancelled history list** (`a34d0eb`·`72aff00`·`4a622ab`, Q299) · **branch roster fallback** (`d0c0d12`/`d3d4d2d`, Q638) · **FAILED response(422 아님)** (`838a7f6`, Q256) · **`CmsPilotServiceFlowE2eTest`** retry·cancel lifecycle·**roster e2e** (BNK-104·Q638) · **`CmsPage.test`** · **`CmsPaymentMethodCatalogPanel.test`** (Q701) · **`CmsCollectionPanel.test`** · **`CmsEnrollmentTable.test`** · **`PaymentPage.test`** (Q638) · **`StubFcmsClientTest`** · **`MustApiEndpointRoutingTest$CmsRouting`** · **`RoleBasedControllerAccessTest$CmsAccess`** (Q208) |
 | **G21 batch-confirm (BNK-197~198·213, Q330·Q477·Q479·Q481·Q483·Q484·Q486·Q487)** | **`VisitServiceTest`** confirm-readiness·**per-kind ready/blockers** (`f26abb0`/`28860ae`/`5f710e3`)·**`getNhisComparisonShould*`** (`03a052a`)·**`getConfirmReadinessShouldExposeNhisComparisonSummary*`**·**informational NHIS blockers** (`4046046`)·ack gates·batch confirm · **`VisitPilotServiceFlowE2eTest`** (`39fa41a`) · **`VisitLiveApiRoutingE2eTest`** nhis-comparison routing (`b73e5f4`, Q488) · **`VisitControllerRoutingTest.confirmReadinessRouteShouldSerializeNhisComparisonSummary`** · **`RoleBasedControllerAccessTest$VisitAccess`** · **`MustApiEndpointRoutingTest$VisitRouting`** · **`VisitNhisComparisonPanel.test`**·**`visitNhisComparison.test`** (`797c529`, Q486) · **`VisitNhisComparisonDetail.test`** (`ad18606`, Q487) · **`VisitBatchConfirmPanel.test`** (**NHIS StatCard wire+drill-down**, `68a4e35`/`ad18606`·**StatCard split**, `f9ed97d`) · **`VisitsContextNav.test`**·**`visitScheduleNav.test`** (`3a27303`) · **`VisitsPage.test`** · **`visits.test`** (`570912e`) · **`VisitRfidDiffComparePanel.test`** (**no-diff alert**, `f232285`) · **`BillingStatementPrintPanel.test`** (**receipt a11y**, `265fc42`) · **`LiveE2eBootstrapServiceTest`** NHIS import seed (`b73e5f4`, Q488) · **`pilotPageFlows`** G21 E2E |
 | **v1.3-A transport preview cache (Q553, FE `acc5933`)** | **`transportRunPreviewCache.test`** · **`kakaoMapGeocoder.test`** · **`transportRosterDispatch.test`** · **`TransportSuggestPanel.test`** · **`TransportRunNewPage.test`** · **`transportUtils.test`** |
 | **v1.3-A Kakao API status+usage probe (Q554, BE `e2b764b`/FE `ba74bb5`)** | **`TransportKakaoApiStatusServiceTest`** · **`KakaoRestApiUsageTrackerTest`** · **`TransportSuggestServiceTest`**(route preview embed) · **`RoleBasedControllerAccessTest$TransportAccess`**(kakao-api-status) · **`KakaoDirectionsClientTest`**(probe) · FE **`TransportKakaoApiStatusPanel.test`** · **`transportRosterDispatch.test`**(hasRouteLegDurations) · **`KakaoTransportMap.test.jsx`** |
@@ -427,14 +477,14 @@ CI 파이프라인에서도 동일 명령으로 단위·통합 테스트를 실�
 | **Live E2E bootstrap HTTP 500 restore (QA-B95, Q360·Q389)** | **`GlobalExceptionHandlerTest`** · **`LiveE2eControllerRoutingTest`** — disabled bootstrap **`503`** (`304bb2a`/`f6f1756`) |
 | **G21 split-view reflection summary+follow-up (BNK-273, Q387)** | FE **`VisitsPage.test`** — summary chip counts·follow-up list (`4c9103d`/`cb457b7`) |
 | **G21 UNPAIRED null-pair (QA-B110, Q388)** | **`VisitServiceTest`** — missing paired entity → **`UNPAIRED`** (`e54a699`) |
-| **Live E2E credential probe (Q360, QA-B96)** | **`LiveE2eControllerTest`**·**`HealthControllerTest`** — `credentialsConfigured` (`c5f1325`/`8a92179`) · FE **`liveE2eHarness.test`** placeholder guard (`7106106`·**`fffc2c1` access token deepen**, Q578) · **placeholder token bootstrap probing** (`82a542c`, Q578 deepen) · **auth blocker recovery** (`9105332`·`06c6bb5`·**`33e9e1a` snake_case normalize**, Q580) · **feature-scoped operation blocker filter** (`cb3fe3d`, Q580 deepen) · **stale token recovery** (`b60c622`, Q583) |
+| **Live E2E credential probe (Q360, QA-B96)** | **`LiveE2eControllerTest`**·**`HealthControllerTest`** — `credentialsConfigured` (`c5f1325`/`8a92179`) · FE **`liveE2eHarness.test`** placeholder guard (`7106106`·**`fffc2c1` access token deepen**, Q578) · **placeholder casing·whitespace normalize** (`5afef2d`, Q578) · **placeholder token bootstrap probing** (`82a542c`, Q578 deepen) · **auth blocker recovery** (`9105332`·`06c6bb5`·**`33e9e1a` snake_case normalize**, Q580) · **feature-scoped operation blocker filter** (`cb3fe3d`, Q580 deepen) · **stale token recovery** (`b60c622`, Q583) |
 | **L02 report·G21 a11y (BNK-262, UXD)** | FE unit tests on **PatientServiceReportPage**·**IntensiveExcretionReportPage**·**PositionChangeReportPage**·**ServiceSummaryReportPage**·**VisitsPage** — caption·StatCard group·badge label (`25291b3`) |
 | **v1.3-A Kakao map instance refactor (QA-B114, Q370·Q394·Q395, BNK-285)** | **`TransportRoutePreviewServiceTest`** · **`KakaoDirectionsClientTest`** · FE **`kakaoMapInstance.test`** · **`KakaoTransportMap.test.jsx`** · **`loadKakaoMapSdk`** integration (`5ebaade`) |
 | **v1.3-A Kakao Maps JS SDK preview (QA-B113, Q370·Q394, BNK-285)** | **`TransportRoutePreviewServiceTest`** · **`KakaoDirectionsClientTest`** · FE **`KakaoTransportMap.test.jsx`** · **`loadKakaoMapSdk`** integration (`b000d92`) · a11y `1daeda7` |
 | **Live E2E anonymous probe (SEC-D29, Q360)** | **`LiveE2eControllerTest`** (`221bde7`/`a25c9de`) — `organizationReady`·`branchReady`·`userReady`·`mappingReady` · FE **`liveE2eHarness.test.js`** · **`liveGlobalSetup.js`** (`4299914`/`3a14caf`) |
 | **G30 phone consultation satisfaction (Q365, FAQ21841)** | BE **`MonitoringServiceTest`** · FE **`MonitoringSelfDiagnosisPage.test`** · **`monitoringCompliance.test`** · **V138** `satisfied` · **`monitoringLiveApi.e2e.test.js`** |
 | **L02_M01 weekly care service provision (BNK-244, Q362)** | **`CareServiceWeeklyRecordServiceTest`** · **`CareServiceWeeklyRecordPilotServiceFlowE2eTest`** · **`MustApiEndpointRoutingTest$CareServiceWeeklyRecordRouting`** · FE **`CareServiceWeeklyRecordPage.test`** · **`careServiceWeeklyRecordLiveApi.e2e.test.js`** · **`pilotPageFlows`** · **V134** · **V135 integrity** · **a11y** (`15b09df`) |
-| **L02_M03 bathing schedule (BNK-245, Q363)** | **`BathingScheduleServiceTest`** · **`BathingSchedulePilotServiceFlowE2eTest`** · **`BathingScheduleLiveApiRoutingE2eTest`** · FE **`BathingSchedulePage.test`** · **`bathingScheduleLiveApi.e2e.test.js`** · **V136** · **V137** · **V139** notes CHECK · **a11y** (`15b09df`) |
+| **L02_M03 bathing schedule (BNK-245, Q363)** | **`BathingScheduleServiceTest`** · **`BathingScheduleIndicator27ComplianceTest`** (Q705, `e12b084`) · **`BathingSchedulePilotServiceFlowE2eTest`** · **`BathingScheduleLiveApiRoutingE2eTest`** · FE **`BathingSchedulePage.test`** · **`bathingScheduleLiveApi.e2e.test.js`** · **V136–V139** · **V177** pre/post observation · **a11y** (`15b09df`) |
 | **G-7-1-4CHANNEL billing statement dispatch (BNK-241, Q364)** | **`BillingStatementDispatchServiceTest`** · **`BillingStatementDispatchPilotServiceFlowE2eTest`** · **`MustApiEndpointRoutingTest$BillingStatementDispatchRouting`** · FE **`BillingStatementDispatchPanel.test`** · **`BillingDetailPage.test`** · **V133** · **V139** actor backstop · **a11y** (`15b09df`) |
 | **G-7-1 billing statement Excel export (BNK-409, Q535)** | **`BillingStatementExportServiceTest`** · **`MustApiEndpointRoutingTest`** · **`RoleBasedControllerAccessTest`** · FE **`BillingStatementPrintPanel.test`** — **`GET …/statement-export?kind=`** (`e454d3b`/`58d6694`) |
 | **G26 yearBasis+NTS batch CSV (BNK-407/408, Q534)** | **`MedicalExpenseDeductionYearBasisTest`** · **`BillingServiceTest.listMedicalExpenseDeductionReportShouldFilterByClaimYearBasis`** · **`G26StatisticsReportsLiveApiRoutingE2eTest`** · FE **`BillingStatisticsReportPage.test`** — **`yearBasis`**·**`exportMedicalExpenseDeductionReportCsvApi`** (`ceeaeb9`/`19ed7f3`) |
@@ -515,7 +565,7 @@ CI 파이프라인에서도 동일 명령으로 단위·통합 테스트를 실�
 | **V65 transport contract integrity** | **`TransportContractServiceTest`** — discharged·branch·signature guard (`24733c7`, Q235) |
 | **G2 no-op claim status** | **`BillingServiceTest.updateClaimStatusShouldRejectNoOpTransition`** (`b0a88ac`, Q68) |
 | **G21 paired check-in/out sync** | **`VisitServiceTest`** — `syncPairedScheduleProgress` on check-in/check-out (`9d7c17f`, Q238) |
-| **G16 service-fee billing** | **`TransportServiceFeeServiceTest`** · **`TransportControllerRoutingTest`** · **`TransportServiceFeePanel.test`** (`88d4c59`·`9dfef92`, Q239) |
+| **G16 service-fee billing** | **`TransportServiceFeeServiceTest`** · **`TransportServiceFeeParityCatalogTest`** (Q703, `e4f83af`) · **`TransportControllerRoutingTest`** · **`RoleBasedControllerAccessTest$TransportAccess`** — parity-rules **`social_worker` 403** · **`TransportServiceFeePanel.test`** — parity-rules API wire (`9aeedfe`, Q703) · (`88d4c59`·`9dfef92`, Q239) |
 | **G16 vehicles master** | **`VehicleServiceTest`** · **`VehicleControllerRoutingTest`** · **`MustApiEndpointRoutingTest$VehicleRouting`** · **`VehiclesPage.test`** (`107bfb3`, Q241) |
 | **US-M03 7-9 copay refund** | **`BillingServiceTest.recordCopayRefund*`** · **`CopayGuardianNotifyPaymentE2eTest`** refund·medical-expense exclusion · **`RoleBasedControllerAccessTest`**·**`MustApiEndpointRoutingTest`** · **`RefundRecordModal.test`** · **`BillingDetailPage.test`** · **`BillingReportPage.test`** refunds · **`pilotPageFlows`** refunds ledger (`de49b21`·`212e010`, Q261·Q179) |
 | **G17 functional recovery (BNK-100~101)** | **`FunctionalRecoveryServiceTest`**(+65 indicator27) · **`RoleBasedControllerAccessTest$FunctionalRecoveryAccess`** · **`MustApiEndpointRoutingTest$FunctionalRecoveryRouting`** · **`FunctionalRecoveryPage.test`**(edit flow, `26499b3`) ·**`functionalRecoveryCompliance.test`** · **`DashboardPage.test`**·**`dashboardSummary.test`**·**`pilotPageFlows`** (`0048105`·`e820b28`·`21b1855`·`f1c60fe`, V72, Q271·Q279) |
@@ -542,7 +592,7 @@ CI 파이프라인에서도 동일 명령으로 단위·통합 테스트를 실�
 | **US-R02 staff status report aggregated·CSV export (8-12, Q308·Q315)** | **`StaffStatusReportPilotServiceFlowE2eTest`** · **`StaffStatusReportServiceTest`** · **`StaffStatusReportPage.test`** — aggregated API·**BE CSV export** (`bc927f7`·`488f547`) |
 | **G42 follow-up·pending-approval (BNK-174, Q309·Q316)** | **`GrievanceCounselingPilotServiceFlowE2eTest`** · **`PilotChecklistJwtE2eTest`** follow-up routes · **`ComplaintConsultationPanel.test`** · **`GrievanceFollowUpModal.test`** (`bcb1d9f`·`6012044`) |
 | **J03 notification channel readiness (Q318)** | **`NotificationChannelReadinessServiceTest`** · **`NotificationChannelStatusPilotServiceFlowE2eTest`** · **`MustApiEndpointRoutingTest`** · **`RoleBasedControllerAccessTest$NotificationChannelStatusAccess`** (`fffd355`·`229f84c`) |
-| **J03 readiness UI (Q318)** | **`NotificationChannelReadinessPanel.test`** · **`notificationChannelStatusLiveApi.e2e.test.js`** (`6b1258c`·`d695923`) |
+| **J03 readiness UI (Q318·Q686)** | **`NotificationChannelReadinessPanel.test`** · **`notificationChannelStatusLiveApi.e2e.test.js`** · **template catalog wire** (`c9cf03b`) |
 | **#44 V103 transport fee seed (BNK-174, Q317)** | Flyway **V103** 적용 확인 · **`TransportServiceFeeServiceTest`** RU_3/RU_4 (`39ee679`) |
 | **G-7x-1-guard claim generation UX (BNK-160, Q310)** | **`ClaimGenerationGuardBanner.test`** · **`claimGenerationGuard.test`** · **`ClaimGenerationPanel.test`** — 7-2→7-1 workflow·G33 분기 (`338c014`) |
 | **G-7x-1 G33 YearMonth guard (Q270)** | **`BillingServiceTest`** — G33 **`effectiveMonth`** vs target claim month (`21eb0af`) |
@@ -773,6 +823,10 @@ npx vitest run --config vitest.live.config.js src/e2e/transportLiveApi.e2e.test.
 | 변수 | 용도 |
 |------|------|
 | `LIVE_E2E=1` | live E2E 활성화 (미설정 시 skip) |
+| `LIVE_E2E_BOOTSTRAP_ENABLED` | bootstrap endpoint 허용 — **기본 비활성** · `LIVE_E2E=1`과 동일 fallback (`8b3fdcd`, Q680) · disabled 시 health **`liveE2eBootstrapEnableHint`** 노출 (`c8358e9`, Q680) |
+| `OGADA_LIVE_E2E_BOOTSTRAP_ENABLED` | namespaced bootstrap toggle — **`LIVE_E2E_BOOTSTRAP_ENABLED`** 와 동일 path (`670756a`, Q702) |
+| `LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS` | bootstrap disabled·service-unavailable **blocker 강제 여부** — **기본 `true`** (`9f67954`, Q713) · **`false`** 시 health/probe **`liveE2eOperationReady=true`** (다른 blocker 없을 때) |
+| `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS` | namespaced enforcement toggle — **`LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS`** 와 동일 path (`9f67954`, Q713) |
 | `LIVE_E2E_EMAIL` / `LIVE_E2E_PASSWORD` 또는 `LIVE_E2E_ACCESS_TOKEN` | staff JWT 세션 |
 | `VITE_API_BASE` | API 베이스 (기본 `http://127.0.0.1:8080`) |
 | `VITE_ENABLE_PILOT_FIXTURE` | `true` 시 **`PilotFixturePanel`** 표시 (운영 기본 **미설정** — FAQ Q268, `c89a82b`) |
@@ -900,7 +954,7 @@ npx vitest run --config vitest.live.config.js src/e2e/transportLiveApi.e2e.test.
 6. (소수) **`monthlyUsage: [0.5, …]`** → **`422`「월별 사용일수는 정수…」** (`f88e8b1`, Q641)
 7. (비고) **`memo` 31자** → **`422`「비고는 30자 이하…」** (`6b35fb5`, Q642)
 8. (합계) **`monthlyUsage` 합계 > `totalEntitlement`** → **`422`**
-9. UI **`/staff/annual-leaves`** — **AppShell `<h1>`「직원 연차휴가」**·**관련 화면 패널** — **「출퇴근 기록」링크**·**「연차·유급휴일 대장 (준비 중)」** (`0b0d7ba`, Q650) · **기준 연도**·roster 표 · **`branch_admin`「수정」Modal** — field error·memo error clear·save **`422`** 표시 확인 (`96e9d25`/`31ab1aa`/`085a85a`, Q646·Q647)
+9. UI **`/staff/annual-leaves`** — **AppShell `<h1>`「직원 연차휴가」**·**관련 화면 패널** — **「출퇴근 기록」링크**·**「연차·유급휴일 대장」** AVAILABLE (`0b0d7ba`/`426d63a`, Q650) · **기준 연도**·roster 표 · **`branch_admin`「수정」Modal** — field error·memo error clear·save **`422`** 표시 확인 (`96e9d25`/`31ab1aa`/`085a85a`, Q646·Q647)
 10. UI **`/staff/attendance`** — **「출퇴근 관련 화면」** panel — API **`relatedSurfaces`** 기반 **「연차휴가 현황」→ `/staff/annual-leaves`** · **역방향 cross-link help text** (`95f55aa`, Q651·Q653)
 11. **`GET /api/v1/staff/work-attendance?date=&branchId=`** — **`surfaceKind=DAILY_WORK_ATTENDANCE_ROSTER`** · **`relatedSurfaces[]`** 2건 (`83a26e7`, Q653)
 10. **`GET /api/v1/health`** — **`v173StaffAnnualLeaveYearlyIntegrityCheckReady=true`** (Q645, `8c5dd65`)
@@ -1471,6 +1525,11 @@ pg_restore -h <db-host> -U ogada -d ogada --clean --if-exists ogada_20260605.dum
 | `service` | `ogada-backend` | 동일 |
 | `activeProfiles` | 배열 | 동일 |
 | `timestamp`·`checkedAt` | ISO-8601 | 동일 |
+| **`liveE2eBootstrapEnabled`** | bootstrap **enabled** 여부 | disabled `false` · enabled `true` (`8b3fdcd`, Q680) |
+| **`liveE2eBootstrapReadinessEnforced`** | bootstrap blocker **강제 적용** 여부 | **`true`**(기본) — disabled → **`bootstrap-disabled`** · **`false`** — blocker 미적용 (`9f67954`, Q713) |
+| **`bootstrapServiceAvailable`** (probe only, `0e55f3b`) | bootstrap **runtime bean** wiring | disabled → **`false`** · enabled·bean missing → **`false`** · fully wired → **`true`** — **`bootstrapEnabled`**(설정)과 **분리** (Q713) |
+| **`liveE2eBootstrapEnableHint`** | 조치 문구 | disabled → **`Set LIVE_E2E_BOOTSTRAP_ENABLED=true…`** · enabled·bean missing → **`LIVE_E2E_BOOTSTRAP_ENABLED=true is set but bootstrap service is unavailable.`** (`0494334`, Q684) · 정상 enabled → `null` |
+| **`liveE2eStatusDetail`** | bootstrap 상태 | `bootstrap=disabled` · **`bootstrap=service-unavailable`** · readiness 결과 |
 | `liveE2eClientReady` | bootstrap enabled 시 **시드 이용자 존재** (`true`/`false`) | bootstrap disabled·오류 시 `false` (`2926287`, Q360) |
 | `liveE2eSeedClientId` | 시드 이용자 UUID 문자열 | 미시드·오류 시 `null` (`2926287`, Q360) |
 | `liveE2eStaffBootstrapReady` | staff bootstrap **ready + credentials configured** | bootstrap disabled·오류 시 `false` (`3908044`, Q419) |
@@ -1489,7 +1548,7 @@ pg_restore -h <db-host> -U ogada -d ogada --clean --if-exists ogada_20260605.dum
 | `liveE2eG32AttendeeOpinionsArrayCheckReady` | V157 **`chk_case_management_meetings_attendee_opinions_array`** | false → **`g32-v157-constraint-missing`** (`caeac0d`, Q528) |
 | **`cashReceiptIdentifierValueCheckReady`** | V159 **`chk_cash_receipt_issuances_identifier_value_format`** | false → **`cash-receipt-identifier-check-missing`** — **health·probe 동기화** (`LiveE2eOperationReadinessSupport`, Q548, `bfad37d`/`4d4457f`) |
 | **`v171DefenseInDepthIntegrityCheckReady`** | V171 **5 CHECK/FK** on `staff_work_attendance`·`billing_report_filters` | false → **`v171-defense-in-depth-constraint-missing`** (Q625, `dce9bf1`/`175d9cb`) |
-| `liveE2eOperationBlocker` | … · **`g32-compliance-field-missing`·`g32-dashboard-field-missing`·`g32-v157-constraint-missing`** · **`cash-receipt-identifier-check-missing`** · **`v171-defense-in-depth-constraint-missing`** (**health·probe**, Q625) · **`g21-branch-missing-or-inactive`** (**health·probe**, Q505·Q511) · **`bootstrap-disabled`** | QA-B95 preflight 진단 · **health·probe credential/G21/G32/G-CASH-RECEIPT/V171 blocker 집합** (Q525·Q528·Q548·Q625) |
+| `liveE2eOperationBlocker` | … · **`bootstrap-disabled`** · **`bootstrap-service-unavailable`** (`0494334`, Q684) · **`g32-compliance-field-missing`·`g32-dashboard-field-missing`·`g32-v157-constraint-missing`** · **`cash-receipt-identifier-check-missing`** · **`v171-defense-in-depth-constraint-missing`** (**health·probe**, Q625) · **`g21-branch-missing-or-inactive`** (**health·probe**, Q505·Q511) | QA-B95 preflight 진단 · **health·probe credential/G21/G32/G-CASH-RECEIPT/V171 blocker 집합** (Q525·Q528·Q548·Q625) |
 | `liveE2eOperationBlockers` | … · G32 stale → **`["g32-compliance-field-missing", …]`** · V159 missing → **`["cash-receipt-identifier-check-missing"]`** (Q543·Q548) · branch missing/inactive 시 **`["g21-branch-missing-or-inactive"]`** (**health·probe**, Q505·Q511) | **`LiveE2eOperationReadinessSupport.resolveOperationBlockers`** — health·probe **동일 로직** (`bfad37d`) · FE **`liveBackendProbe`** nested/snake_case parse (Q545·Q549, `682d647`/`16afd4c`) |
 
 **readiness + live E2E operation 예** (`ready=true`, bootstrap enabled, HTTP 200):
@@ -1630,13 +1689,20 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 - [ ] **`NhisExcelParserTest`** — BOM·whitespace·alias processing-status header normalize (`2edbdc4`, Q582)
 - [ ] **`BankDepositImportServiceTest`** — empty·non-positive `rowNumbers` rejection·**invalid rowNumbers vs parsed spreadsheet** (`e3b74a0`·`7d29a38`·`6ed7cd4`, Q576·Q579)
 - [ ] **`/billing/payments`** — **`BankDepositImportPanel`** preview·select·import·**UXD-146 a11y** (`a18b30e`·`a7d9a2f`, Q572·Q581)
-- [ ] **`liveE2eHarness.test`** — **ignores recovered staff/guardian auth blockers** when auth ready (`9105332`·`06c6bb5`·**`33e9e1a` snake_case**, Q580) · **ignores `*-credentials-default` + wording variant blockers when auth recovered** (`6fcd750`/`a170f9c`, Q640) · **filters unrelated auth blockers by suite contract** (`5f1815f`, Q580 deepen) · **filters feature-scoped blockers** (`cb3fe3d` — G21·G32·cash-receipt·V165 when not required) · **`liveCashReceiptDescribe` suite guard** (`cd6891f`, Q597) · **stale token credential fallback** (`b60c622`, Q583) · **placeholder token bootstrap probing** (`82a542c`, Q578 deepen)
+- [ ] **`liveE2eHarness.test`** — **string-form operation blockers** — health extract + persisted probe state split (`2c9abd6`·`bd3253a`, Q716) · **effective operation readiness after auth recovery** — **`liveE2eEffectiveOperationReady=true`** when only **`bootstrap-disabled`** remains (`e070c45`, Q713) · when only **`bootstrap-unavailable`** remains (`75c0f51`, Q713 deepen) · **BE `enforce-bootstrap-readiness=false`** → raw **`liveE2eOperationReady=true`** (`9f67954`, Q713) · **ignores recovered staff/guardian auth blockers** when auth ready (`9105332`·`06c6bb5`·**`33e9e1a` snake_case**, Q580) · **ignores `*-credentials-default` + wording variant blockers when auth recovered** (`6fcd750`/`a170f9c`, Q640) · **filters unrelated auth blockers by suite contract** (`5f1815f`, Q580 deepen) · **filters feature-scoped blockers** (`cb3fe3d` — G21·G32·cash-receipt·V165 when not required) · **`liveCashReceiptDescribe` suite guard** (`cd6891f`, Q597) · **stale token credential fallback** (`b60c622`, Q583) · **placeholder token bootstrap probing** (`82a542c`, Q578 deepen)
+- [ ] **`HealthControllerTest`** · **`LiveE2eControllerTest`** — **`enforce-bootstrap-readiness=false`** → skip bootstrap blockers (`9f67954`, Q713) · **`bootstrapServiceAvailable=false`** when bean missing but enabled (`0e55f3b`, Q713 deepen)
+- [ ] **`EasyPayProviderCatalogPanel.test`** · **`EasyPayPage.test`** — provider catalog panel load (`5914b2f`, Q709)
+- [ ] **`TransportParityRulesPanel.test`** · **`TransportServiceFeePage.test`** — parity rules panel mount (`5914b2f`, Q710)
 - [ ] **`StaffAnnualLeaveServiceTest.saveYearlyRecordShouldRejectNegativeMonthlyUsage`** · **`validateMonthlyUsageShouldRejectDecimal`** · **`saveYearlyRecordShouldRejectOlongMemo`** · **`getRosterShouldUseActiveBranchWhenBranchIdMissing`** · **`RoleBasedControllerAccessTest.StaffAnnualLeaveAccess`** · **`StaffAnnualLeavePilotServiceFlowE2eTest`** (`6b84bcd`/`a45745c`/`f88e8b1`/`6b35fb5`, Q639·Q641·Q642)
 - [ ] **`StaffAnnualLeaveSupportTest`** · **`MustApiEndpointRoutingTest`** — roster·yearly **`surfaceKind`·`relatedSurfaces`** (`bbf333c`/`6ab3760`, Q648·Q650)
-- [ ] **`StaffAnnualLeavePage.test`** — isolated **`npx vitest run src/pages/StaffAnnualLeavePage.test.jsx`** **8/8 PASS** · full `npm test` **2049/2049 PASS** (`949e9bf`, Q658) — **QA-B266 Fixed**
+- [ ] **`CopayRefundFeePolicyCatalogTest`** · **`BillingServiceTest.recordCopayRefund*`** — catalog 3 entries · preview 3.3%/500원 · **`feePolicyCode` net validation** (`2adae59`·`aeecc1b`, Q712) · **invalid code `400`** (`79725eb`)
+- [ ] **`RefundRecordModal.test`** — BANK_TRANSFER net refund · EASY_PAY fee policy · catalog retry (`cadd74a`, Q712)
+- [ ] **`BathingSchedulePage.test`** · **`BathingScheduleIndicator27Panel.test`** — indicator-27 panel · pre/post observation on COMPLETED (`3d7f13b`, Q705)
+- [ ] **`EasyPayControllerRoutingTest`** — **`GET …/provider-catalog`** **`pgMode`·entries·RBAC** (`5a5174a`, Q709)
+- [ ] **`StaffAnnualLeavePage.test`** — isolated **`npx vitest run src/pages/StaffAnnualLeavePage.test.jsx`** PASS · **whitespace `branchName` ID fallback** (`58f3858`, Q711) · full `npm test` via **`scripts/npm-test-locked.sh`** (QA-B312 `892122d` isolation · Q658 B266 carry)
 - [ ] **develop `@949e9bf` / test SYNCED** — post-merge **2049/2049 PASS** (TSR 1311, Q658)
 - [ ] **`StaffAnnualLeaveServiceTest.getRosterShouldUseTenantActiveBranchForMultiBranchScope`** — multi-branch **`branch_admin`**·`branchId` 생략 → **`TenantContext.activeBranchId`** fallback (`40ab9e7`, Q656·Q659)
-- [ ] **`/staff/annual-leaves`** · **`/staff/attendance`** — **`BranchScopeNotice`** **「조회 지점」** · API **`resolvedBranchId`** 정합 (`949e9bf`, Q657)
+- [ ] **`/staff/annual-leaves`** · **`/staff/attendance`** — **`BranchScopeNotice`** **「조회 지점」** · API **`resolvedBranchId`** 정합 · **공백 `branchName` trim fallback** (`58f3858`, Q711)
 - [ ] **`RelatedSurfacesPanel.test`** — AVAILABLE 링크·PLANNED **`Badge`「준비 중」** · surface별 **`aside` `aria-label`** (`c183ebd`, Q657·UXD-156)
 - [ ] **`StaffAnnualLeaveRelatedSurfacesPanel.test`** · **`StaffAnnualLeavePage.test`** — **출퇴근 링크·대장 (준비 중)** panel (`0b0d7ba`/`c183ebd`, Q650·Q657)
 - [ ] **`staffAnnualLeaveLiveApi.e2e.test.js`** — US-R03e roster·yearly live harness (`96e9d25`, Q649)
@@ -1654,6 +1720,22 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 - [ ] **`StaffWorkAttendancePage.test`** · **`staffAnnualLeave.test`** — roster load·**checkInMethod MANUAL/MOBILE**·check-out·403 error · **API metadata cross-links** (`95f55aa`, Q612·Q651·Q653)
 - [ ] **`GET /api/v1/staff/work-attendance`** — **`surfaceKind=DAILY_WORK_ATTENDANCE_ROSTER`** · **`relatedSurfaces[0].route=/staff/annual-leaves`** · **`relatedSurfaces[1].route=/staff/leave-ledger`** · **`relatedSurfaces[1].availability=AVAILABLE`** (`bb9df48`, Q653·Q663)
 - [ ] **`StaffLeaveLedgerServiceTest`** · **`StaffLeaveLedgerSupportTest`** · **`MustApiEndpointRoutingTest.StaffLeaveLedgerRouting`** — canonical ledger CRUD·`surfaceKind`·cross-link (`bb9df48`, Q663)
+- [ ] **`SolapiKakaoAlimtalkProviderTest.sendShouldFailWhenTemplateMappingIsMissing`** — 미매핑 templateId → **dispatch failure** (`f600fd6`, Q679)
+- [ ] **`staffLeaveLedgerLiveApi.e2e.test.js`** — leave-ledger live routing · **`relatedSurfaces[1].availability=AVAILABLE`** (`bc6180e`, Q681)
+- [ ] **`pilotChecklist.test`** — **G16** `service-fee-rates`·`service-fees` contract · **`TransportServiceFeePage.test`** NHIS #44 parity notes (`87da06d`, Q681)
+- [ ] **`application.yml`** — `ogada.live-e2e.bootstrap-enabled` **기본 비활성** 주석 · prod **unset** (`8b3fdcd`, Q680)
+- [ ] **`HealthControllerTest`** — bootstrap disabled 시 **`liveE2eBootstrapEnableHint`** assert (`c8358e9`, Q680)
+- [ ] **`HealthControllerTest`** — bootstrap disabled 시 **`liveE2eG21SeedStatusDetail=g21-seed=disabled`** assert (`88a58d9`, Q698)
+- [ ] **`HealthControllerTest`** — bootstrap enabled·bean missing 시 **`liveE2eG21SeedStatusDetail=g21-seed=service-unavailable`** assert (`42a369e`, Q719)
+- [ ] **`HealthControllerTest`** · **`LiveE2eControllerTest`** — bootstrap disabled + allow-recovered-auth → **`liveE2eBootstrapEnableHint`** recovered-auth assert (`d06e3f1`, Q722)
+- [ ] **`liveE2eHarness.test.js`** — **`isLiveRecoveredAuthAllowed()`** · recovered-auth hint neutral reason/blocker (`4bbd54a`, Q722)
+- [ ] **`HealthControllerTest`** · **`LiveE2eControllerTest`** — bootstrap enabled·bean missing 시 **`bootstrap=service-unavailable`** · **`bootstrap-service-unavailable` blocker** · **`liveE2eOperationReason=bootstrap-service-unavailable`** · service-unavailable hint assert (`0494334`/`d11263b`, Q684)
+- [ ] **`HealthControllerTest`** · **`LiveE2eControllerTest`** — operation ready 시 **`liveE2eOperationReason=none`** · staff bootstrap not-ready 시 **`staff-bootstrap-not-ready`** (`d11263b`, Q684)
+- [ ] **`liveE2eHarness.test.js`** — health **`liveE2eOperationReason`** parse·skip diagnostic (`cba9ff8`/`d11263b`, Q684)
+- [ ] **`StaffEmploymentContractRenewalPanel.test`** — **90일 보관 임박**·**만료** retention Alert · **서식 Modal·「서식 인쇄」** (`a43bcb7`, Q685)
+- [ ] **`staffEmploymentContract.test.js`** — **`daysUntilEmploymentContractRetentionExpiry`** · **`EMPLOYMENT_CONTRACT_RETENTION_WARNING_DAYS=90`** (`a43bcb7`, Q685)
+- [ ] **`pilotChecklist.test`** — **FAQ21823 R03-c** `fetchUsersApi` contract (`28033cf`, Q682)
+- [ ] **`TransportServiceFeePanel.test`** — **UXD-159** row action **`aria-label`**·**`aria-busy`** (`0869589`, Q683)
 - [ ] **`StaffLeaveLedgerLiveApiRoutingE2eTest`** — list **`surfaceKind`·`relatedSurfaces`** · create contract (`5fd12dd`, Q666)
 - [ ] **`StaffLeaveLedgerPilotServiceFlowE2eTest`** · **`RoleBasedControllerAccessTest.StaffLeaveLedgerAccess`** — list→create→update→delete pilot · **`hq_admin` CUD 403** · **`caregiver` list 403** (`62fce23`, Q665)
 - [ ] **`GET /api/v1/staff/leave-ledger?year=2026&branchId=`** — **`surfaceKind=CANONICAL_LEAVE_LEDGER`** · **`items[]`** · **`relatedSurfaces[0].route=/staff/annual-leaves`** · **`relatedSurfaces[1].route=/staff/attendance`** (`bb9df48`, Q663)
@@ -1913,7 +1995,7 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 - [ ] **`/transport/runs/:runId`** DRAFT — **「명단에서 추가」** · **확정 전 `TransportConfirmWarningModal`** — **`pickupToleranceMinutes`** 반영 (Q550, `4681b5a`/`48eea95`)
 - [ ] **`PATCH /api/v1/transport/runs/{id}`** — **`plannedDepartureTime`** · **희망 시각 순서 역전 시 `422`** (Q550, `48eea95`)
 - [ ] **`GET /api/v1/health`**·**`GET /api/v1/system/live-e2e/probe`** — **`guardian-credentials-missing`** vs **`guardian-credentials-default`** **분리** (Q551, `520f10a`) · **`allow-default-credentials=true`**(기본) 시 default creds **blocker 없음** (Q542)
-- [ ] **`/staff/{userId}` → 「입사~퇴사」** — **`StaffEmploymentContractRenewalPanel`** — **「재계약 완료 기록」** Modal · checklist·서식 Modal (Q546·Q547, `033b319`/`1b6d2b1`)
+- [ ] **`/staff/{userId}` → 「입사~퇴사」** — **`StaffEmploymentContractRenewalPanel`** — **「재계약 완료 기록」** Modal · checklist·서식 Modal · **보관 D-day Alert** · **「서식 인쇄」** (Q546·Q547·Q685, `033b319`/`1b6d2b1`/`a43bcb7`)
 - [ ] **`GET /api/v1/health`**·**`GET /api/v1/system/live-e2e/probe`** — **`liveE2eOperationBlockers[]`** 동일 — **`LiveE2eOperationReadinessSupport`** (Q548, `bfad37d`)
 - [ ] **`/staff`** — **`StaffEmploymentContractRenewalSummaryPanel`** — **재계약 기한 초과·서명일 미등록** StatCard·확인 필요 표 (Q540, `10585b9`)
 - [ ] **`/dashboard`·`/dashboard/hq`** — **「근로재계약 미충족」** StatCard → **`/staff` 링크** (Q540, `f31c346`)
@@ -1959,6 +2041,38 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-24 | **356차** — §1-3·§1-4 **Q703 G16 NHIS #44 parity rules API** · **live E2E skip dedupe (`c3c6272`)** · baseline **`bd1e87e`/`c3c6272`** |
+| 2026-06-26 | **377차** — §1-4 **Q722 recovered-auth hint · Q713 deepen** · §11-3 HealthControllerTest·liveE2eHarness · baseline **`d06e3f1`/`4bbd54a`** |
+| 2026-06-26 | **376차** — §1-4 **Q719·Q720·Q721 · UXD-165** · §11-3 HealthControllerTest G21 detail 정정 · **V1–V180** · baseline **`42a369e`/`7e7c296`** |
+| 2026-06-26 | **375차** — §1-4 **Q717 근무일정표 · Q718 singular blocker · Q713 BE allow-recovered-auth** · baseline **`3342938`/`b7004ca`** |
+| 2026-06-26 | **374차** — §11-3 **Q716 string-form operation blocker normalize** · baseline **`49fe2e7`/`bd3253a`** |
+| 2026-06-26 | **373차** — §1-4 **Q714 deepen 5-9 · Q715 branchId · Q713 health reason** · baseline **`49fe2e7`/`f74a6e7`** |
+| 2026-06-25 | **370차** — §1-4 **baseline 정합 · Q705·Q712 M7 smoke cross-ref** · baseline **`9f67954`/`5914b2f`** |
+| 2026-06-25 | **369차** — §1-4·§4-3·§11-3 **Q709 provider-catalog FE · Q710 parity panel · Q713 bootstrap enforcement** · baseline **`9f67954`/`5914b2f`** |
+| 2026-06-25 | **368차** — §1-4·§11-3 **Q712 feePolicyCode validation · Q713 effective operation readiness** · baseline **`79725eb`/`e070c45`** |
+| 2026-06-25 | **367차** — §1-4·§8-1 **Q712 refund fee full-stack · RefundRecordModal smoke** · baseline **`aeecc1b`/`cadd74a`** |
+| 2026-06-25 | **366차** — §1-3·§1-4·§8-1 **Q712 refund fee catalog · Q705 bathing FE** · baseline **`2adae59`/`3d7f13b`** |
+| 2026-06-25 | **365차** — §1-4·§8-1 **Q711 branch scope · Q709 routing test** · baseline **`5a5174a`/`58f3858`** |
+| 2026-06-25 | **364차** — §1-3·§1-4 **Q709 provider-catalog · V178 migration · Q710 parity panel** · baseline **`56831fc`/`892122d`** |
+| 2026-06-25 | **363차** — §1-4 **Q708 CMS catalog empty edge smoke** · baseline **`4963535`/`5bb84a6`** |
+| 2026-06-25 | **362차** — §1-3·§1-4 **Q707 G-NHIS-ALT-KEY-AUDIT-BADGE** · baseline **`4963535`/`5bb84a6`** |
+| 2026-06-25 | **361차** — §1-3·§1-4 **Q706 G-NHIS-MASKED-NAME-FALLBACK** · **CMS catalog empty state** · baseline **`37416ac`/`9a583ec`** |
+| 2026-06-25 | **360차** — §1-3·§1-4 **Q703 G16 parity-rules RBAC·응답 스키마** · **Q578 placeholder casing** · baseline **`e4f83af`/`5afef2d`** |
+| 2026-06-25 | **359차** — §1-3·§1-4 **G2b CMS collection UI + G16 parity-rules FE wire** (Q701·Q703·Q704) · baseline **`e12b084`/`9aeedfe`** |
+| 2026-06-25 | **358차** — §1-4 **US-O01 bathing indicator-27 compliance** (Q705) · **V177** pre/post observation · baseline **`e12b084`/`1db75d0`** |
+| 2026-06-24 | **357차** — §1-3·§1-4 **G2b CMS collection closure** (Q704 가상계좌·다계좌) · **Q701 수정** 5/5 완성 · baseline **`dac8ebd`/`c3c6272`** · V176 추가 |
+| 2026-06-24 | **354차** — §1-3·§1-4 **Q701 G2b CMS payment-method-catalog API** · baseline **`2eaf17e`/`64a7648`** |
+| 2026-06-24 | **353차** — §1-3·§1-4 **Q700 M7 7-x lifecycle** · **G-SMS test lock** · baseline **`a12873c`/`216ab7a`** |
+| 2026-06-24 | **352차** — §1-3·§1-4 **Q699 dispatch success label** · **Q692 staff `ezcareMessageKind` 6/6** · baseline **`2f83563`/`c7d0982`** |
+| 2026-06-24 | **351차** — §1-3·§1-4 **UXD-161 form-stack (Q696)** · **fallback label sync (Q697)** · **health G21 seed test lock (Q698)** · baseline **`88a58d9`/`c06d581`** |
+| 2026-06-24 | **349차** — §1-3·§1-4 **G-SMS deepen (Q692 `ezcareMessageKind`·`dispatchReady` 채널 자격·message_kind 11·13·19 UI)** · baseline **`ef8bb4e`/`5a6d42c`** |
+| 2026-06-24 | **348차** — §1-3·§1-4 **G-SMS full closure (Q691 STAFF_ACCESS_KEY·dispatch UI 1·12·21·Q686 6/6)** · baseline **`1d5d441`/`9c25d44`** |
+| 2026-06-24 | **347차** — §1-3·§1-4 **G-SMS deepen (Q689 STAFF_MONTHLY_SCHEDULE smoke·Q690 발송 대기 UI·Q686 5/6)** · baseline **`b9d0599`/`c04968c`** |
+| 2026-06-24 | **346차** — §1-3·§1-4 **G-SMS deepen (Q687 CLIENT_MONTHLY_SCHEDULE smoke·Q686 dispatchReadyCount·Q688 UXD-160)** · baseline **`8631d1e`/`068049b`** |
+| 2026-06-24 | **343차** — §1-3·§11-3 **FAQ21823 retention D-day·서식 인쇄 (Q685)** · **live E2E `liveE2eOperationReason` BE canonical (Q684 deepen)** · baseline **`d11263b`/`a43bcb7`** |
+| 2026-06-24 | **342차** — §9-1 **bootstrap service-unavailable (Q684)** · **FAQ Q12 정정·Q684** · baseline **`0494334`/`cba9ff8`** |
+| 2026-06-24 | **341차** — §1-3·§3-7·§9-1·§11-3 **bootstrap enable hint (Q680)**·**FAQ21823 dashboard harness (Q682)**·**UXD-159 a11y (Q683)**·**FAQ Q677~Q683 본문**·baseline **`c8358e9`/`28033cf`** |
+| 2026-06-24 | **340차** — §1-3·§3-7·§11-3 **J03 Solapi dispatch fail-closed (Q679)**·**live E2E bootstrap opt-in (Q680)**·**leave-ledger·G16 pilot harness (Q681)**·baseline **`8b3fdcd`/`87da06d`** |
 | 2026-06-23 | **338차** — §1-3·§11-3 **client RBAC hierarchy (Q675)**·**addressSearch/detail read (Q676)**·baseline **`01edba7`/`1193761`** |
 | 2026-06-23 | **337차** — §1-3·§11-3 **US-D01/D02 Korean address (Q671·Q673)**·**client list filters (Q672)**·**HR branchName scope (Q674)**·baseline **`642ea11`/`0606a3b`** |
 | 2026-06-23 | **336차** — §1-3·§11-3 **V175 leave-ledger integrity (Q668)**·**SOCIAL_WORKER users RBAC (Q669)**·**live-e2e tenant isolation (Q670)**·baseline **`c4e6bcb`/`426d63a`** |

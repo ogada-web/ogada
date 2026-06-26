@@ -1,0 +1,72 @@
+# BNK-576 cross-gap priority extract
+# doc:owner=BNK doc:audience=PLN updated=2026-06-24T07:35:00Z
+# rotation=교차검증·갭 우선순위 8h+
+
+## ogada git HEAD (2026-06-24T07:35Z)
+FE develop @c9cf03b WT CLEAN (BNK-575 @d682562 HEAD +1)
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG-FE-WIRE): wire ezCare template catalog into readiness panel
+  ahead 208 vs origin/test=ab4de83
+BE develop @b6c9b16 WT DIRTY 6M (BNK-575 carry · HEAD zero advance 1-cycle)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API
+  dirty: NotificationChannelReadinessService dispatchReadyCount + DTO field + tests
+  ahead 543 vs origin/test=598d108
+Route 112 (111 <Route\b + 1 <Routes>) · 90 *Page.jsx + RootRedirect = 91
+V1–V175 · BE *Test.java=255 · FE test 465 (192+273)
+모듈 78.79% (22.85/29 · competitorModuleCoverage.js id=10 still 0.5 — FE wire 미반영)
+merge gate 751 (FE208+BE543 · +1 vs BNK-575 750)
+
+## ★★★ 가정 번복 1 — longterm 610 URL→menu 재맵 DRIFT (BNK-575) 철회
+BNK-575 probe URL: /npbs/d/m/000/moveBoardView?menuId=npe0000000610
+  HTTP 200 458B md5 c26a5e57 — bKey missing error shell (NOT content page)
+Canonical URL: /npbs/e/b/610/npeb610m01.web?menuId=npe0000002731
+  HTTP 200 91,421B md5 0ea575be IDENTICAL canonical recovery
+  <h2 class="page-title">통합재가서비스</h2>
+  통합재가 keyword 8건 · 「2종 이상」·「월 10만원」·「주야간보호형」 verbatim
+on-disk longterm_610.html d3c90b33(91,430B partial shell BNK-560 era) → 0ea575be 덮어쓰기
+결론: BNK-575 「거짓청구 명단공표」 DRIFT = wrong URL probe artifact · canonical live 정상
+
+## ★★★ G-SMS-TEMPLATE-CATALOG full-stack closure (BNK-574 P3 + BNK-575 P2)
+BE @b6c9b16 (committed): GET /api/v1/notifications/template-catalog
+  6-template EZCARE_PARITY_ENTRIES · dispatchImplemented 3/6 ALIMTALK(11/13/19)
+FE @c9cf03b (committed +1): NotificationChannelReadinessPanel
+  fetchNotificationTemplateCatalogApi parallel load
+  DashboardPage.jsx + OrganizationSettingsPage.jsx wire
+  6-col table: 메시지·종류(ezcareMessageKind)·채널·발송구현·Solapi설정·발송가능
+  tests: settingsServices.test.js + NotificationChannelReadinessPanel.test.jsx (+87L)
+BE dirty (uncommitted): dispatchReadyCount aggregate + entry.dispatchReady field
+planner: module 10 coverage 0.5→0.65 deepen 검토 (competitorModuleCoverage.js 미갱신)
+
+## 4축+leave-ledger P0/P1 재오픈 0 (25-cycle carry @c9cf03b)
+G14 /clients/:clientId/care-plan-form ✅
+G26 /dashboard + /dashboard/hq ✅ (+ NotificationChannelReadinessPanel template catalog)
+v1.3-C /transport/service-fees (+8-route family) ✅
+v2 /billing/cms ✅
+US-R01-c /staff/annual-leaves + /staff/leave-ledger ✅
+
+## NHIS #44 351차 zero drift IDENTICAL
+URL: nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 7,572B md5 c886ff1f
+러-1~4 · 편도50% · 1일1회 · ④별지 제22호 일지 verbatim
+
+## silverangel notice weekly 0 (7-day stale)
+notice list HTTP 200 3,594,181B md5 52c9457f IDENTICAL
+latest real embed 221563 (6/18) carry
+probe 221581–221590: all HTTP 200 51,765B md5 8437f255 unpublished shell
+next weekly notice ~6/25 carry (7-day stale)
+
+## carefor func.php LIVE HTTP 000 (12-cycle 미확인)
+on-disk Wayback 6226e6eb 98,328B carry
+
+## MOHW 2026-126 counter DRIFT (verbatim 불변)
+59c4f02b → 7c54ce09 (109,510B)
+조회수 2,575 → 2,581 (+6) · 제2026-126호 · 본인부담상한액 verbatim 불변
+
+## law247 cachebuster DRIFT (strip-cachebuster IDENTICAL carry)
+d373750d → cd73f7e6 (78,450B) · 제2025-247호 · 시행 2026.1.1 verbatim 불변
+
+## planner P0/P1 재정렬 제안
+1. G-SMS-TEMPLATE-CATALOG full-stack ✅ — candidate closure · module 10 deepen 0.65
+2. 4축+leave-ledger 재오픈 0 유지 — merge gate 751 tester FF 가속
+3. longterm 610 BNK-575 가정 철회 — integrated home canonical 복구 · G18-SHORT carry
+4. △4 잔여: 8 직원근태 0.85 · 2 이동 0.85 · 7-4 CMS 0.65 · 10 부가 0.5→0.65 후보
+5. P3 carry: G-REPORT-DENSITY · G-SCHEDULE-FIX-COLOR-GATE · G-PAYROLL-EXTERNAL

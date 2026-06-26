@@ -1,0 +1,120 @@
+cross_gap_priority_bnk566.txt — BNK-566 (rotation 8h+ 교차검증·갭 우선순위)
+조사일: 2026-06-24T01:00:00Z (KST 10:00)
+ogada baseline: FE develop @17472bb (BNK-565 @87da06d HEAD +1 · "test(v1.2.1/FAQ21823): wire employment contract renewal into pilot harness")
+                BE develop @8b3fdcd (BNK-565 carry · HEAD zero advance 1-cycle)
+                FE WT CLEAN · BE WT CLEAN
+                merge gate FE 201 + BE 538 = 739 (+1 vs BNK-565 738)
+
+──────────────────────────────────────────────────────────────────────────────
+1. KPI 재실측
+──────────────────────────────────────────────────────────────────────────────
+- Route: 112 (111 `<Route\b` + 1 `<Routes>`) — carry
+- path:  111 — carry
+- page:  91 (90 jsx + RootRedirect=91) — carry
+- V:     1–V175 — carry
+- BE Test 파일 수: 252 carry
+- @Test (develop 모든 *.java grep): 1,843 (+3 vs BNK-565 1,840 loose carry)
+- @Test (`*Test.java` glob strict): 1,832 carry
+- FE test: 192 .test.js + 273 .test.jsx = 465 carry (+110L in 17472bb but file count unchanged — pilotChecklist.test.js + pilotPageFlows.test.jsx delta within existing files)
+- 모듈 커버 22.85/29 = 78.79% (competitorModuleCoverage.js 미변경 carry)
+- report-density: 23/111 = 20.7% carry
+
+──────────────────────────────────────────────────────────────────────────────
+2. ★★★ 신규 evidence: 이지케어 FAQ 21823 — 임금협의 및 근로(재)계약
+──────────────────────────────────────────────────────────────────────────────
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21823&type=web
+LIVE: HTTP 200 · 21,430B · md5 129d793524971fe9f41192ce85abd4cd · 2026-06-24 fetched
+snapshot: ezcare_faq_21823_bnk566.html
+
+제목 (verbatim): 「임금협의 및 근로(재)계약」
+법적 근거 (verbatim): 근로기준법 제17조(근로조건의 명시) · 최저임금 변경 · 기관점검(근로감독·현지조사·지도점검 등 근로계약 또는 재계약 확인)
+핵심 의무 (verbatim): 매년 기관과 직원은 **최저임금을 반영한 임금협의 및 근로재계약**(계약서 작성)
+
+UI 경로 (verbatim):
+  「1.직원관리 정보창 ▶ 탭:서식 ▶ 근로계약서」
+
+워크플로 (verbatim 7-step):
+  1. 근로계약 재계약 여부 결정
+  2. 재계약 거부 → 계약종료
+  3. 재계약 → 임금협의 및 근로계약 재계약
+  4. 근로조건 및 임금협의 (기본급, 시급, 수당 등)
+  5. 근로계약 재계약 (근로계약서 작성, 각각 1부씩 보관)
+  6. 근로계약 내용: 계약의 당사자(사용자 및 근로자), 근로계약기간, 임금, 근로시간 및 휴게시간, 휴일 등 근로조건
+  7. 장기요양기관용 표준근로계약서(재가용) 참고 · 근로계약서 고용종료 후 3년간 보관 · 임금은 최저임금 이상
+
+ogada cross-walk (확인):
+- FE `staffEmploymentContractCompliance.js` — FAQ 21823 D-day 30일 창 · OVERDUE/DUE_SOON/MISSING 3-state · dashboard widget 「근로재계약 미충족」
+- FE `StaffEmploymentContractRenewalPanel` + `StaffDetailPage` lifecycle tab — panel layer ✅
+- BE `PATCH /api/v1/users/{userId}` contractSignedAt — API layer ✅ (prior commits carry)
+- FE `17472bb` pilot harness — R03-a GET user · R03-b PATCH contractSignedAt · pilotPageFlows E2E + StaffDetailPage FAQ21823 clause assertions = **3-layer test harness closure** (BNK-564 G16/#44 패턴 동형)
+
+경쟁사 대비:
+- 케어포 func 8-x: 8-1 직원정보·8-4 출퇴근·8-13 연차 — **근로(재)계약 전용 leaf 없음**(PDF 정적 carry)
+- 이지케어: FAQ 21823 + 직원관리 서식 탭 근로계약서 = **워크플로+법적근거+UI경로 tri-source 정본**
+- ogada: FAQ21823 semantic parity + D-day alert + dashboard gap widget = **△4 module 8 deepen (0.85 carry) · 계약서 PDF/서식 embed ❌ carry**
+
+──────────────────────────────────────────────────────────────────────────────
+3. 백본 7-URL 345차 재실측 (md5 / size live vs on-disk)
+──────────────────────────────────────────────────────────────────────────────
+
+URL                                                            | live md5         | live SIZE | on-disk (BNK-565) | drift
+---------------------------------------------------------------|------------------|-----------|-------------------|------
+NHIS #44 (joHistoryContent SEQ_CONTENTS=3281769)              | c886ff1f         | 7,572B    | 동일              | zero drift 345차
+carefor func.php Wayback (20260519072235id_)                   | 6226e6eb         | 98,328B   | 동일              | zero drift carry
+carefor func.php LIVE direct                                   | HTTP 000 (timeout 20s) | —    | —                 | 미확인 **8-cycle** carry (BNK-558→566)
+silverangel notice/list                                        | 52c9457f         | 3,594,181B| 동일              | zero drift · list embed Tmp_idx=221563 신규 · view probe unpublished shell 8437f255
+[FAQ 21823](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21823&type=web) | 129d7935 | 21,430B | **신규** | **신규 evidence ★★★**
+[law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | b0c34ac6 | 78,450B | 1c5cc602 | DRIFT cachebuster · 제2025-247호 verbatim 불변 → 덮어쓰기
+[MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | 5ee70fe2 | 109,510B | 611cb60b | DRIFT counter · 조회수 **2,527→2,528** (+1) · verbatim 불변 → 덮어쓰기
+[ezcare home](https://ezcare.easyms.co.kr/)                    | f145ae9b         | 106,143B  | 0758f245          | DRIFT cachebuster + banner `[무료 이벤트]` live · mCnt[1]=**9,274** verbatim 불변 → 덮어쓰기
+[ezcare fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html)  | 44e3617c         | 17,870B   | aef48a74          | DRIFT cachebuster only · 도입 **9,346** verbatim 5-cycle stable → 덮어쓰기
+
+엑셀 포맷 변경: FAQ 21823 본문 + Channel.io carry 스캔 — **변경 0**
+
+──────────────────────────────────────────────────────────────────────────────
+4. silverangel 공지 221563 probe (weekly notice scan)
+──────────────────────────────────────────────────────────────────────────────
+notice list embed: Tmp_idx=**221563** (BNK-565 최신 real ≤221562 대비 +1)
+view probe: https://www.silverangel.kr/silverangel/support/notice/view.do?Tmp_idx=221563
+  HTTP 200 · 51,765B · md5 8437f255 — BNK-540 221626 probe shell과 **IDENTICAL** (미게시 placeholder)
+판정: list counter +1 · real notice content **미확인 1** (weekly notice 0 패턴 carry)
+
+──────────────────────────────────────────────────────────────────────────────
+5. 4축(G14·대시보드·v1.3-C·v2 CMS) P0/P1 재오픈 점검
+──────────────────────────────────────────────────────────────────────────────
+- G14 care-plan-form: carry — 재오픈 0
+- G26 dashboard/hq + FAQ21823 gap widget carry: carry — 재오픈 0
+- v1.3-C transport 8-route + #44 345차 zero drift: carry — 재오픈 0
+- v2 CMS /billing/cms: carry — 재오픈 0
+- US-R01-c /staff/leave-ledger: carry — 재오픈 0
+- **US-R03 FAQ21823 pilot harness (`17472bb`)**: **신규 3-layer test closure** — P0 재오픈 0 · module 8 △ deepen
+
+판정: 4축 P0/P1 재오픈 0 (BNK-548부터 18 cycle carry)
+
+──────────────────────────────────────────────────────────────────────────────
+6. candidate carry (BNK-565/566 변동)
+──────────────────────────────────────────────────────────────────────────────
+- G-FACILITY-MODE-NURSING-LOG P3「가정」(BNK-565) — carry
+- G-PAYROLL-WALLOWANCE-MODEL · G-SAAS-SELF-BILLING-LEDGER · G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT (BNK-563) — carry
+- G-GUARDIAN-MEETING · G-TRANSPORT-RULES-DOC · G-COMM-CALLER-AUTH deadline 경과 (BNK-564) — carry
+- **신규 candidate 0** · **신규 core 갭 0** (FAQ21823 = ogada 기존 panel/API + test harness deepen)
+
+──────────────────────────────────────────────────────────────────────────────
+7. 즉시 액션
+──────────────────────────────────────────────────────────────────────────────
+tester:
+  merge gate **739** (FE 201 + BE 538) · FE WT CLEAN · BE WT CLEAN · 선행 commit 없음.
+planner:
+  - FAQ21823 tri-source(이지케어 FAQ + ogada staffEmploymentContractCompliance + pilot harness) → US-R03 §근로(재)계약 정본화
+  - module 8 △4 0.85 — FAQ21823 test harness = operational deepen · 계약서 PDF/서식 embed = P3 carry
+  - silverangel 221563 unpublished shell — weekly notice 0 carry
+
+──────────────────────────────────────────────────────────────────────────────
+8. per-cycle minimum 점검
+──────────────────────────────────────────────────────────────────────────────
+- ✅ 신규 증거 URL 1건 (FAQ 21823 named snapshot)
+- ✅ 경쟁사 메뉴/필드/워크플로 1-block (FAQ21823 7-step + UI path + 필수항목)
+- ✅ COMPETITOR_MATRIX +1 행 (ogada @17472bb/@8b3fdcd · merge gate 739)
+- ✅ BENCHMARK_REPORT §566 신규 소절
+
+요약: 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1 (FE +1 FAQ21823 pilot harness) · 미확인 carry 1 (carefor LIVE 8-cycle) · 미확인 신규 1 (silverangel 221563 unpublished) · 신규 snapshot 2건 (extract + FAQ21823) · 덮어쓰기 4건 (law247·mohw126·ezcare home·fnc) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.

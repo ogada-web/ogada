@@ -1,0 +1,82 @@
+# 교차검증·갭 우선순위 cross-verify — BNK-562 (2026-06-23T21:56:00Z)
+# rotation: 8h+ 교차검증·갭 우선순위 · 이전 BNK 가정 번복 여부 · 미확인 축소 · 4축 P0/P1 재정렬 · 신규 공지·엑셀 포맷 스캔
+
+## @HEAD develop (git 실측)
+FE: a531ed6  feat(v1.3-C/G16): pin NHIS #44 transport service fee parity copy
+     WT CLEAN · BNK-561 @170ce56 HEAD +1 · ahead 198 vs origin/test=ab4de83
+BE: f600fd6  test(v2/US-J03): fail closed without Solapi template mapping
+     WT CLEAN · BNK-561 @2cae74c HEAD +1 (BNK-560 @01edba7 HEAD +2) · ahead 537 vs origin/test=598d108
+merge gate = FE198 + BE537 = **735** (+2 vs BNK-561 733)
+
+## KPI (git 실측 @a531ed6 / @f600fd6)
+Route **112** = 111 `<Route\b` + 1 `<Routes>` (App.jsx @a531ed6) — carry
+path= **111** · report-path **23** → report density **20.7%** — carry
+page **90** *Page.jsx (+RootRedirect=91) — carry
+Flyway **V1–V175** — carry
+BE *Test.java **252** · @Test **1,841** (+12 vs BNK-561 1,829 · f600fd6 SolapiKakaoAlimtalkProviderTest +41L)
+FE test **464** = 191 .test.js + 273 .test.jsx (a531ed6 = transportServiceFee.test.js / TransportServiceFeePanel.test.jsx deepen·신규 test 파일 0)
+모듈 coverage **22.85/29 = 78.79%** (competitorModuleCoverage.js unchanged)
+transport routes **8** (`/transport` cluster LIVE)
+
+## ★★★ 이번 사이클 핵심: △4 모듈 2건 동시 deepen (KPI % 불변·품질/신뢰성 보강)
+이전 사이클(BNK-516~561)은 △4 우선순위 carry만 반복했으나, BNK-562 윈도에 △4 중
+**2 이동서비스**와 **10 부가서비스**를 동시에 보강하는 commit이 들어옴.
+
+### FE a531ed6 — module 2 이동서비스 (0.85 △) · v1.3-C/G16
+config/transportServiceFee.js 4 parity-copy 상수 신규:
+- TRANSPORT_SERVICE_FEE_DISTANCE_BANDS_NOTE  "거리구간 수가는 러-1~러-4 네 구간" (NHIS #44)
+- TRANSPORT_SERVICE_FEE_ONE_WAY_RATIO_NOTE   "편도 50%·왕복 100%" (ONE_WAY_RATIO=0.5 패리티)
+- TRANSPORT_SERVICE_FEE_ONE_PER_DAY_NOTE     "수급자별 1일 1회 산정 (협회 세부운영규정 제8조)"
+- TRANSPORT_SERVICE_FEE_SERVICE_LOG_NOTE     "별지 제22호 이동서비스 일지 작성·보관 (NHIS #44 ④·시행규칙 제34조)"
+TRANSPORT_SERVICE_FEE_NHIS_PARITY_NOTES[] 4-entry → TransportServiceFeePanel.jsx 노출.
+의미: 350+ cycle 추적해온 NHIS #44 러-1~4 4-rule이 BE-only(TransportServiceFeeService·
+TransportServiceLog V148/V154/V155)에서 **FE 표시 레이어까지 full-stack** — 사용자 가시 카피 closure.
+
+### BE f600fd6 — module 10 부가서비스 (0.5 △) · v2/US-J03 알림톡
+SolapiMessageClient.send(): internalTemplateCode → resolveTemplateId(code) 매핑이
+null·blank·code 자기참조(equalsIgnoreCase) 시 dispatch **거부**(fail-closed):
+  return NotificationSendResult.failure("Solapi templateId mapping missing for code: " + code)
+SolapiKakaoAlimtalkProviderTest +41L 로 lock → v2 채널 롤아웃 시 잘못된 templateId 무음 발송 차단.
+케어포 func 10-1 문자메시지 발송·10-2 급여제공내역 안내 발송 ↔ ogada 알림톡/SMS 채널 hardening.
+
+## ★★ 가정 번복 0 — 4축 P0/P1 재오픈 0 (App.jsx @a531ed6 LIVE)
+- G14   /clients/:clientId/care-plan-form ✅
+- G26   /dashboard · /dashboard/hq ✅
+- v1.3-C /transport/* 8-route ✅ (이번 사이클 G16 parity copy deepen)
+- v2 CMS /billing/cms ✅
+- US-R01-c /staff/leave-ledger ✅
+
+## ★★ 백본 2-URL 342차 zero drift (live=on-disk)
+| URL | HTTP | md5 | size | drift |
+|-----|------|-----|------|-------|
+| [NHIS #44 joHistory](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | `c886ff1f` | 7,572B | **342차 IDENTICAL** vs on-disk nhis_jo44.html — FE 신규 parity copy(러-1~4·편도50%·1일1회·④일지) verbatim 정합 |
+| [carefor func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | 200 | `6226e6eb` | 98,328B | **342차 IDENTICAL** vs on-disk carefor_func.php |
+| carefor func.php LIVE 직접 | **000** timeout(20.0s) | — | — | **미확인 carry 5-cycle**(BNK-558~562)·내용은 Wayback zero drift 검증·LIVE 접근성만 미확인 |
+
+## △4 carry (모듈 78.79% — planner 우선순위 불변·이번 사이클 2건 deepen)
+| id | label | cov | P | BNK-562 |
+|----|-------|-----|---|---------|
+| 10 | 부가서비스 | 0.5 | J03/SMS | ★ BE f600fd6 알림톡 fail-closed hardening |
+| 7-4 | CMS·간편결제 | 0.65 | G2 | carry |
+| 2 | 이동서비스 | 0.85 | v1.3-C deepen | ★ FE a531ed6 #44 parity copy full-stack |
+| 8 | 직원·근태 | 0.85 | US-R03 | carry |
+
+## P2/P3 갭 carry (신규 core 갭 0)
+- G-REPORT-DENSITY: ogada 20.7% vs carefor demo 29.8% (−9.1%p)
+- G-BILLING-REPORT-FILTER-PERSISTENCE: BE V170 ✅ · FE wire ❌
+- G-MENU-PERMISSION-MATRIX: per-account menu deny P3
+- G-BILLING-START-STANDALONE: PDF p.90 7-3 P3
+- G-AGENCY-APPRAISAL-DASH: guide-E100 3-tab P3
+
+## 신규 경쟁사 공지·엑셀 포맷 스캔
+- 엑셀 포맷 변경 0 (NHIS #44 verbatim 불변·func.php 109-item 불변)
+- 신규 core 갭 0
+
+## planner 액션
+1. P1 — tester FF merge **735** 가속 (FE+1 G16 parity copy·BE+1 J03 fail-closed·양쪽 WT CLEAN·선행 commit 불필요)
+2. P1 — REQUIREMENTS 이동서비스(§배차/이동서비스비)에 NHIS #44 4-rule(러-1~4·편도50%·1일1회·별지 제22호 일지) **FE 가시 카피 정본** 반영
+3. P1 — REQUIREMENTS 부가서비스(알림톡/SMS)에 「템플릿 매핑 누락 시 fail-closed」 운영 규칙 명시
+4. P2 — G-BILLING-REPORT-FILTER-PERSISTENCE FE wire / G-REPORT-DENSITY 리포트 Route 확대
+5. carry — carefor func.php LIVE HTTP 000 → 다음 0–2h 재시도
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 2(FE +1·BE +1·양쪽 WT CLEAN) · 미확인 1(carefor LIVE 5-cycle) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족

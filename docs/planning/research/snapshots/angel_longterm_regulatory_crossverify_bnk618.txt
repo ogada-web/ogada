@@ -1,0 +1,178 @@
+# BNK-618 엔젤·롱텀·규제 4–6h 교차검증 추출
+# 조사일: 2026-06-25T10:09:00Z (KST 19:09)
+# rotation: 엔젤·롱텀·규제 — silverangel/lcms 공개 기능 · CMS 부가서비스 · law.go.kr 이동서비스비 #44 · 2026 수가·평가 #27 · 단기보호 · 통합재가
+
+## 1. ogada baseline 실측 (BNK-618 정본)
+
+| 지표 | BNK-617 | BNK-618 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `3d7f13b` | **`cadd74a`** `feat(v1.2.1/G-REFUND-FEE-FE-WIRE): wire copay refund fee catalog into RefundRecordModal` | **+1** |
+| BE develop HEAD | `aeecc1b2` | `aeecc1b2` | carry |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 233 | **234** | +1 |
+| BE ahead vs `origin/test=598d108` | 566 | 566 | carry |
+| merge gate | 799 | **800** | +1 |
+| Route (FE App.jsx `<Route\b`+`<Routes>`) | 112 (111+1) | 112 (111+1) | carry |
+| page (`*Page.jsx`+RootRedirect) | 91 (90+1) | 91 (90+1) | carry |
+| Flyway 최대 | V178 | V178 | carry |
+| BE Test class | 268 | 268 | carry |
+| BE `@Test` method (`rg -c '@Test' src/test`) | 1939 (BNK-617 +3 주장) | **1938** | **-1 KPI 회계 정정** (BNK-617 over-count 1·BE `aeecc1b2` 실측 `BillingServiceTest +122L`/`CopayRefundFeePolicyCatalogTest +21L` @Test 합 = +12·1936→1938) |
+| FE `.test.js` / `.test.jsx` | 193 / 278 | **194** / 278 | js +1 |
+| FE test 총합 | 471 | **472** | +1 |
+| 모듈 커버리지 | 80.86% (23.45/29) | 80.86% (23.45/29) | carry |
+
+신규 commit 1건 (cross-rotation·맥락 기록):
+- FE `cadd74a feat(v1.2.1/G-REFUND-FEE-FE-WIRE): wire copay refund fee catalog into RefundRecordModal` — 7-file +517L
+  · `src/api/copayRefundFee.js` NEW(39L) — `fetchCopayRefundFeePolicyCatalog` + `previewCopayRefundFeeNetAmount`
+  · `src/api/copayRefundFee.test.js` NEW(58L)
+  · `src/api/services.js` +30L (catalog/preview endpoints)
+  · `src/components/ui/RefundRecordModal.jsx` +214L (feePolicyCode select + netAmount preview·BANK_TRANSFER/CMS + EASY_PAY)
+  · `src/components/ui/RefundRecordModal.test.jsx` +137L
+  · `src/api/billingGuardianPlatformServices.test.js` +47L
+  · `src/pages/BillingDetailPage.jsx` +8L
+  → **BNK-616 P3 split `G-REFUND-FEE-FE-WIRE` CLOSURE** (BE catalog BNK-616 → BE validation BNK-617 → FE wire BNK-618 · 3-cycle 4-layer cascade)·M7 7-9 lifecycle parity **PG 수수료 BE+FE 통합 full-stack ✅** 신규 달성.
+
+## 2. ★★★ silverangel 본진 4-URL zero drift IDENTICAL (확인 · 382→383 carry)
+
+| URL | live HTTP | live size | live md5 | on-disk md5 | 상태 |
+|---|---|---|---|---|---|
+| https://www.silverangel.kr/newSilverangel/service/extraService.do | 200 | 81,637 | `f9c5d877` | `f9c5d877` | IDENTICAL |
+| https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do | 200 | 131,664 | `c79c1be3` | `c79c1be3` | IDENTICAL |
+| https://www.silverangel.kr/newSilverangel/service/feeService.do | 200 | 44,513 | `eab352a8` | `eab352a8` | IDENTICAL |
+| https://www.silverangel.kr/newSilverangel/service/mainService.do | 200 | 59,002 | `bcf6df41` | `bcf6df41` | IDENTICAL |
+
+CMS 5-method verbatim 불변 (자동이체 효성CMS 250원 · 가상계좌 300원 · 카드 · 다계좌정산 · 현금영수증 · 1600-6859) ↔ ogada `CmsPaymentMethodCatalog` 5/5 `collectionImplemented=true` (V176+V178) **full-stack closure carry**.
+
+## 3. ★★★ silverangel **신규 공지 221564** (2026-06-30 dated · BNK-590~617 「next ~6/25」 가설 적중)
+
+- URL: https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564
+- live HTTP 200 · 88,732B · md5 `ffe82a0d` (신규 게시물 · BNK-590~617 「latest real 221563(6/18)」 carry **번복**)
+- 제목: 「[필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)」
+- 작성자: (주)엔젤시스템 · 등록일 2026-06-30 · 정기 업데이트 「매주 수요일 18시 서버 재기동」 verbatim
+- 저장: `docs/planning/research/snapshots/silverangel_notice_221564_bnk618.html`
+
+### 3-1. 시설+주야간 공통 — 8건 (간호·관리)
+
+1. **메인화면**: 메뉴 이동 시 공지사항 열람 이력 유지 개선
+2. **간호 - 간호처치기록**: 입원/외박 중에도 「병문안」 서비스 항목 생성·수정 가능
+3. **간호 - 간호처치기록**: **「지연」 상태값 변경 기능** + 급여계획 일괄생성 「**계획 횟수 전체 생성**」 옵션
+   - 지연 → 계획과 다르게 시행한 사유 선택 시 「기타」로 변경
+   - 상단 대시보드에 「지연」 선택 → 일괄 「기타」 변경 가능
+4. **간호 - 간호처치기록 목록 정렬**: 출력·엑셀 다운로드 시 동일 적용
+5. **간호 - 건강관리기록부**:
+   - 생활실/호실 선택 후 일일기록 실행 시 해당 수급자 체크박스 자동 활성화
+   - 입소예정일 이전 날짜 등록·기초정보 생성 불가 가드
+   - **매일 자동 생성 설정에 「주말생성여부」 옵션 추가**
+   - 생활실/호실 정렬 시 수급자명 가나다순
+6. **간호 - 건강관리기록부 법정서식**: **서명 이미지 누락 현상 개선** + 일괄수정 정렬
+7. **보고서 - 관찰일지(상태변화기록)**: 작성자 선택 오름차순(이름순)
+8. **관리 - 기관정보 - 관리자설정**: **간호처치기록 미이행 관련 설정 탭 추가** (NEW)
+   - 투약관리 지도·약복용·인슐린 주사·건강상태 관찰·구강간호 — **서비스별 미이행 건수 표시 여부 설정**
+   - 2026년 5월 이전 미이행(미작성) 건수 숨김/표시 토글
+   - 간호처치기록 급여계획(일간·주간·월간)에서 「간호처치기록 설정(NEW)」 버튼 바로가기
+   - 권한: 관리자 설정 권한 필요
+
+### 3-2. 주야간 적용 — 3건 (간호 평가)
+
+1. **간호 - 건강관리기록부 매일 자동 생성**: **「공휴일 생성」 옵션 추가** (주말 + 공휴일 2축 자동 생성 lifecycle)
+2. **간호 - 욕창위험도평가 주석문 변경**: 「* 신규 수급자는 급여제공 시작일까지 실시합니다」 평가지표 정합
+3. **간호 - 낙상위험도평가 주석문 변경**:
+   - **Huhn 평가도구**
+   - **낙상위험도평가(Gyldenvand and Shedd, 1989)**
+   - **보봐스기념병원 낙상위험평가도구**
+   - 「* 신규 수급자는 급여제공 시작일까지 실시합니다」 동일 주석문
+
+### 3-3. ogada 갭 매핑 (신규 P3 candidate 발굴)
+
+| silverangel 신규 기능 | ogada 현황 (`@cadd74a/@aeecc1b` grep) | 갭/제안 |
+|---|---|---|
+| **간호처치기록 미이행 dashboard + 설정 탭** | `미이행`·`missed`·`noncompliant` grep src/{backend,frontend} → **0 hit** | **신규 P3 `G-NURSING-MISSED-RECORD-DASHBOARD`** — 투약·관찰·구강간호·인슐린 미이행 건수 표시 토글·2026-05 이전 숨김/표시·관리자설정 권한 게이트 |
+| 간호처치기록 「지연→기타」 일괄 변경 | `nursing-treatments` 보유하나 「지연」 상태 lifecycle dashboard grep 0 | 위 P3 sub-feature 묶음 (status batch override) |
+| 건강관리기록부 **주말·공휴일 자동 생성 토글** | `feeSurchargeRates.js`·`staffEmploymentContract.js`·`staffLeaveLedger.js`에 공휴일 인지 있으나 **건강기록 자동생성에 공휴일/주말 토글 0 hit** | **신규 P3 `G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`** — 매일 자동 생성 lifecycle에 weekend/holiday 옵션 |
+| **법정서식 서명 이미지** | `signature_image`·`sigImage`·`signImage` grep src/{backend,frontend} → **0 hit (1건 SolapiAuthHeaders 무관)** | **신규 P3 `G-LEGAL-FORM-SIGNATURE-IMAGE`** — 케어플랜·건강관리기록부·요양일지 PDF 출력 시 서명 이미지 embed |
+| **욕창위험도평가 주석문** 「신규 수급자는 급여제공 시작일까지 실시」 | `pressureUlcerCompliance.js`·`pressureUlcerApiPayload.js` 보유 (FE+e2e) | △ 주석문 정합 검토 carry (텍스트 verbatim 일치 여부 next cycle) |
+| **낙상위험도평가 3-tool** (Huhn·Gyldenvand·보봐스) 주석문 | `ClientRiskAssessmentPanel.jsx`·`ClientPeriodicRiskAssessmentPanel.jsx`·`BodyRestraintRecordForm.jsx` 보유 | △ 3-tool 명시 carry (가정 — silverangel은 3-tool 명시 ogada는 generic risk assessment) |
+
+→ **신규 P3 candidate 3종 발굴** (`G-NURSING-MISSED-RECORD-DASHBOARD`·`G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`·`G-LEGAL-FORM-SIGNATURE-IMAGE`) · MVP out-of-scope이나 v1.3+/v2 marketing copy·평가지표 정합 강화 후보.
+
+## 4. ★★ lcms.or.kr 신규 도메인 — BNK-590 lcms.kr 폐기 28-cycle 후 **부활 도메인 발견**
+
+- URL: https://www.lcms.or.kr/ (silverangel.kr 본진 floating footer 「LCMS」 링크 destination)
+- live HTTP 200 · 50,554B · md5 `6c0d22b4`
+- 저장: `docs/planning/research/snapshots/lcms_or_kr_renew_bnk618.html`
+- 컨텐츠 verbatim 추출:
+  - `<title>엔젤시스템</title>` · 「장기요양 서비스 관리의 표준 엔젤시스템에 오신 것을 환영합니다」
+  - H: 「요양시설통합사례관리솔루션 엔젤시스템」 / 「엔젤시스템(LCMS) 방문을 환영합니다」
+  - 자산 경로: `/css/egovframework/lcms_renew/...` — **eGovFramework 기반 사이트 renewal**
+  - 외부 링크: `https://www.silverangel.kr/newSilverangel/webSite/websiteProvided.do` · `extraService.do`
+- BNK-590 시점 **lcms.kr 폐기**(`c0c66076` 50,740B → 19-byte placeholder) → BNK-618 **lcms.or.kr 부활** (size 50,554B·이전 lcms.kr `c0c66076` 50,740B와 -186B 거의 동일·동일 페이지 신규 도메인)
+- silverangel.kr 본진 footer floating 링크 verbatim:
+  `<a href="https://www.lcms.or.kr/" target="_blank" style="background: #5896f0;">` (notice 221564 footer 캡처)
+- 의미: 엔젤시스템 자매 「LCMS(요양시설통합사례관리솔루션)」 마케팅 funnel **lcms.or.kr로 복귀** — BNK-515~590 (lcms.kr type1~3 carry) cross-promo carry 재개
+
+## 5. ★★ NHIS #44 이동서비스비 러-1~4 — **383차 zero drift IDENTICAL** (확인)
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- live HTTP 200 · 7,572B · md5 `c886ff1f` = on-disk `nhis_jo44_live_bnk584.html` IDENTICAL (BNK-540 ~ BNK-618 = **383차 zero drift**)
+- 「'러-1'부터 '러-4'까지 비용의 50%」·「1일 1회」·「별지 제22호 서식 이동서비스 일지」 verbatim 불변
+- ogada full-stack ✅ parity/우위 carry (`TransportServiceFeeService` 5/5 · FE `TransportServiceFeePanel`(UXD-159) + `TransportParityRulesPanel`(UXD-163 BNK-612) · BE catalog `GET /api/v1/transport/service-fee-parity-rules` 4-rule)
+
+## 6. ★ longterm 2026 수가·고시 교차검증
+
+### 6-1. longterm 502 단기보호 — 「미확인」 carry (HTTP 200 422B partial shell)
+- URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502
+- live HTTP 200 · 422B · md5 `d3c90b33` = on-disk `longterm_502_live_partial_shell_bnk584.html` IDENTICAL (BNK-578 ~ BNK-618 = **41-cycle 「미확인」 carry**)
+- canonical on-disk `b5aee8c1` (105,552B · 단기보호 1등급 74,060 · 월 한도액 2026.1.1 기준) 보존
+
+### 6-2. longterm 610 통합재가 — 458B shell oscillation carry
+- URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610
+- live HTTP 200 · 458B · md5 `c26a5e57` (빈 shell · 신규홈 브라우저 가드 추정 carry)
+- canonical on-disk `0ea575be` (91,421B · 통합재가 2종 이상 급여 · 가산 월 10만원 · 주야간보호형) 보존
+
+### 6-3. law247 — cachebuster DRIFT · verbatim 불변 (덮어쓰기)
+- URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+- live HTTP 200 · 78,450B · md5 `b0ed8363` → **`6c32b661`** (cachebuster DRIFT · size 78,450 불변)
+- 제2025-247호 · 시행 2026 verbatim 불변 → 덮어쓰기
+
+### 6-4. mohw126 — counter DRIFT · 본인부담상한액 verbatim 불변 (덮어쓰기)
+- URL: https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000
+- live HTTP 200 · 109,510B · md5 `f0522041` → **`106a4278`** (조회수 counter DRIFT · size 109,510 불변)
+- 제2026-126호 · 본인부담상한액 verbatim 불변 → 덮어쓰기
+
+## 7. ★ lcms.kr (legacy) — HTTP 000 transient carry (29-cycle 「미확인」)
+
+- URL: https://www.lcms.kr/
+- live HTTP 000 (connect timeout) · canonical `c0c66076` 50,740B 보존 (BNK-590 폐기 19-byte placeholder도 보존)
+- → BNK-618 **lcms.or.kr** (위 §4) 부활로 의미 변동 · legacy lcms.kr 도메인 자체는 dead carry
+
+## 8. 요약
+
+- **신규 core 갭 0** (P0/P1/P2 변동 0)
+- **신규 P3 candidate 3종 발굴** (silverangel notice 221564 새 기능 ↔ ogada grep 0 hit):
+  · `G-NURSING-MISSED-RECORD-DASHBOARD` (간호처치기록 미이행 dashboard·5-서비스 토글·관리자 권한 게이트)
+  · `G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE` (건강관리기록부 매일 자동 생성 weekend/holiday 옵션)
+  · `G-LEGAL-FORM-SIGNATURE-IMAGE` (법정서식 PDF 출력 서명 이미지 embed)
+- **carry candidate 5+** (M11/M12 P2 · G-REFUND-FEE-DEDUCTION P3 split 1건은 BNK-618 closure·bathing P2 closure BNK-616·G-EASYPAY-PROVIDER-CATALOG-FE-WIRE P3 · 5 기존 P3)
+- **closure 신규 1종**: **`G-REFUND-FEE-FE-WIRE`** (BNK-616 split → BNK-618 FE wire FULL CLOSURE · M7 7-9 KCP PG full-stack ✅)
+- **가정 번복 1**: silverangel notice list 「latest real 221563 since 6/18·next ~6/25」(BNK-590 carry) → **6/25 = 221564 게시 적중·번복 closure** (지연 7-day 가설 적중)
+- **KPI 회계 정정 1**: BE @Test 1939(BNK-617 +3 주장) → 실측 1938 (BNK-617 over-count 1건·`CopayRefundFeePolicyCatalogTest` 신규 @Test 합·gap 번복 아님)
+- **상태 변경 1** (FE+1·BE carry)
+- **KPI 변경 3** (merge gate 800·FE test 472·FE .test.js 194)
+- **신규 snapshot 3건** (본 파일 BNK-618 · `silverangel_notice_221564_bnk618.html`(88,732B `ffe82a0d`) · `lcms_or_kr_renew_bnk618.html`(50,554B `6c0d22b4`))
+- **덮어쓰기 2건** (`law_mohw_2025_247_admRulInfoP.html` `b0ed8363→6c32b661` · `mohw_gosi_2026_126.html` `f0522041→106a4278`)
+- **엑셀 포맷 변경 0**
+- **per-cycle minimum 4종 충족**:
+  · 신규 증거 URL 1+: ✅ silverangel notice **221564**(2026-06-30·신규 게시물) + **lcms.or.kr** 부활 도메인
+  · 메뉴/필드/워크플로 1+ 블록: ✅ silverangel 간호처치기록 미이행 dashboard + 욕창/낙상 평가 3-tool + 공휴일 자동 생성 (§3-1·§3-2)
+  · COMPETITOR_MATRIX `@HEAD` 갱신 1+ 행: ✅ ogada FE `@cadd74a`/BE `@aeecc1b` 일괄
+  · BENCHMARK_REPORT §신규 소절: ✅ §618 BNK-618 (§3·§3-3 신규 P3 3종)
+- **tester FF merge 800 가속 권장** (234+566 적체·양쪽 WT CLEAN)
+
+## 9. planner 우선순위 제안
+
+1. **★★★ `G-NURSING-MISSED-RECORD-DASHBOARD` P3 candidate 검토** — 평가지표 정합 + silverangel 차별화 closure 후보 · 투약·관찰·구강간호 5-서비스 미이행 dashboard (관리자 권한 게이트·2026-05 이전 토글)
+2. **★★ `G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE` P3 candidate 검토** — 건강관리기록부 매일 자동 생성에 weekend/holiday 옵션 (silverangel 정확 매칭 · ogada 공휴일 인지 인프라(`feeSurchargeRates`/`staffEmploymentContract`) 보유 → 재가센터 운영 lifecycle wire 가능)
+3. **★★ `G-LEGAL-FORM-SIGNATURE-IMAGE` P3 candidate 검토** — 케어플랜·건강관리기록부·요양일지 PDF 서명 이미지 embed (signature_image grep 0·v2 종이서식 디지털화 흐름 후보)
+4. **★ G-REFUND-FEE-FE-WIRE BNK-618 closure 인지** — M7 7-9 PG 수수료 lifecycle full-stack ✅ carry · marketing copy「KCP 결제대행 PG 수수료 자동 차감 차별화」 v1.3 후보
+5. **★ lcms.or.kr 부활 도메인 모니터링 carry** — BNK-590 lcms.kr 폐기 28-cycle 후 도메인 변경 · silverangel 자매 마케팅 funnel 재개 · 자매 ERP cross-promo 메시지 carry

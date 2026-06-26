@@ -1,0 +1,233 @@
+BNK-591 ogada git 실측 + 교차검증·갭 우선순위 (rotation 6–8h)
+조사일: 2026-06-24T17:20:00Z (KST 26:20)
+owner=BNK audience=PLN
+
+================================================================
+[ src/frontend (develop) ]  — FE +1 commit vs BNK-590
+================================================================
+$ git -C src/frontend rev-parse develop
+  c7d0982f1deaaa324697048f5d2807ec61f993e7  →  c7d0982   (= BNK-590 @c06d581 HEAD +1)
+
+$ git -C src/frontend log -1 --pretty='%h %s' develop
+  c7d0982 feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): show template label on dispatch success
+
+$ git -C src/frontend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/frontend rev-list --count origin/test..develop
+  218  (vs origin/test = ab4de83)   +1 vs BNK-590 217
+
+================================================================
+[ src/backend (develop) ]  — BE +1 commit vs BNK-590
+================================================================
+$ git -C src/backend rev-parse develop
+  2f8356368632de91239c74d8daa6a1e1bb74f5ea  →  2f83563   (= BNK-590 @88a58d9 HEAD +1)
+
+$ git -C src/backend log -1 --pretty='%h %s' develop
+  2f83563 feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on staff dispatch responses
+
+$ git -C src/backend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/backend rev-list --count origin/test..develop
+  551  (vs origin/test = 598d108)   +1 vs BNK-590 550
+
+================================================================
+[ KPI 정본 (git 실측 — 규칙 §Baseline) ]
+================================================================
+Route                 : 112  (111 `<Route\b` App.jsx + 1 `<Routes>` wrapper)  carry
+Page                  : 91   (90 *Page.jsx + 1 RootRedirect.jsx)              carry
+Flyway migration      : V1–V175 (max V175 contiguous)                         carry
+BE *Test.java         : 258                                                   carry
+FE test (.test.js)    : 193   (git ls-tree -r develop)                        carry
+FE test (.test.jsx)   : 274                                                   carry
+FE test total         : 467                                                   carry
+모듈 coverage         : 79.66 %  (23.10/29 · id=10 부가서비스 0.75)          carry
+ahead vs origin/test  : FE 218 (+1) · BE 551 (+1)                             ★
+merge gate            : 769  (FE 218 + BE 551 · +2 vs BNK-590 767)            ★
+
+→ cross-stream FE+1 · BE+1 advance (양쪽 WT CLEAN).
+  상태 변경 2 (BNK-590 zero advance carry 마감) · KPI 변경 1 (merge gate 767→769).
+
+================================================================
+[ ★★★ 교차검증 1 — G-SMS-TEMPLATE-CATALOG cluster: staff 1·21 dispatch response metadata 추가 ]
+================================================================
+BNK-587 마감 (billing 11 · guardian 12·13·19) → BNK-591 staff 1·21 추가 = 6/6 응답 메타데이터 정합 완료.
+
+$ git -C src/backend show 2f83563 --stat
+  notification/api/StaffAccessKeyNotifyResponse.java        | 18 +++++++++++++++++-
+  notification/api/StaffMonthlyScheduleNotifyResponse.java  | 18 +++++++++++++++++-
+  notification/domain/StaffAccessKeyNotificationService.java       |  2 +-
+  notification/domain/StaffMonthlyScheduleNotificationService.java |  2 +-
+  notification/domain/StaffAccessKeyNotificationServiceTest.java   |  1 +
+  notification/domain/StaffMonthlyScheduleNotificationServiceTest.java | 1 +
+  routing/MustApiEndpointRoutingTest.java                          | 10 ++++++----
+  7 files changed, 44 insertions(+), 8 deletions(-)
+
+레코드 신규 필드 (BNK-587 billing/guardian 패턴 mirror):
+  StaffAccessKeyNotifyResponse(staffUserId, templateCode, expiresAt, Integer ezcareMessageKind)
+    factory: .of(staffUserId, templateCode, expiresAt)
+      → ezcareMessageKindFor(templateCode) = 1   (STAFF_ACCESS_KEY)
+  StaffMonthlyScheduleNotifyResponse(staffUserId, templateCode, yearMonth, Integer ezcareMessageKind)
+    factory: .of(staffUserId, templateCode, yearMonth)
+      → ezcareMessageKindFor(templateCode) = 21  (STAFF_MONTHLY_SCHEDULE)
+
+$ git -C src/backend grep -l 'ezcareMessageKind' develop -- 'src/main'
+  billing/api/BillingClaimNotifyResponse.java
+  notification/api/GuardianDocumentNotifyResponse.java
+  notification/api/NotificationTemplateCatalogEntryResponse.java
+  notification/api/StaffAccessKeyNotifyResponse.java          ← NEW BNK-591
+  notification/api/StaffMonthlyScheduleNotifyResponse.java    ← NEW BNK-591
+  notification/domain/NotificationChannelReadinessService.java
+  notification/domain/NotificationSmsTemplateCatalog.java
+  (7 source file — BNK-587 5 → BNK-591 7)
+
+ezCare `mobile-sendW` `<select name="message_kind">` 6-option (on-disk
+ezcare_new_ez_pgid_mobile-sendW.html · md5 4d47d14f · 133,272B):
+  1  접속키 발송   ↔ STAFF_ACCESS_KEY                SMS      ✅ BE 응답 메타 추가 (NEW)
+  11 본인부담      ↔ BILLING_STATEMENT               ALIMTALK ✅ BNK-587 carry
+  12 일정표-수급자 ↔ CLIENT_MONTHLY_SCHEDULE         ALIMTALK ✅ BNK-587 carry
+  13 급여제공내역  ↔ CARE_PROVISION_RECORD           ALIMTALK ✅ BNK-587 carry
+  19 직원인권보호  ↔ ELDER_ABUSE_PREVENTION_GUIDELINE ALIMTALK ✅ BNK-587 carry
+  21 일정표-직원   ↔ STAFF_MONTHLY_SCHEDULE          ALIMTALK ✅ BE 응답 메타 추가 (NEW)
+  (22 급여명세서 — id=11 직원급여 domain · ❌ MVP out-of-scope · v3+ Epic carry)
+
+→ 6/6 dispatch response metadata closure (BE 7-file 전파) · candidate 잔여 0 재확인.
+
+================================================================
+[ ★★★ 교차검증 2 — FE label-only UX 컨벤션 (이지케어 mirror, FAQ Q692 준수) ]
+================================================================
+$ git -C src/frontend show c7d0982 --stat
+  components/provisionresult/ProvisionResultDispatchPanel.jsx | 6 ++++--
+  components/provisionresult/ProvisionResultDispatchPanel.test.jsx | 5 ++++-
+  components/ui/GuardianDocumentNotifyPanel.jsx               | 7 +++++--
+  components/ui/GuardianDocumentNotifyPanel.test.jsx          | 9 +++++----
+  components/ui/StaffNotificationDispatchPanel.jsx            | 10 +++++++---
+  components/ui/StaffNotificationDispatchPanel.test.jsx       | 6 ++++--
+  config/notificationChannelStatus.js                         | 19 +++++++++++++++++++
+  config/notificationChannelStatus.test.js                    | 14 ++++++++++++++
+  pages/BillingDetailPage.jsx                                 | 6 ++++--
+  pages/OverduePage.jsx                                       | 3 ++-
+  utils/notificationQuietHours.js                             | 12 +++++++++---
+  utils/notificationQuietHours.test.js                        | 11 +++++++++++
+  12 files changed, 88 insertions(+), 20 deletions(-)
+
+신규 export `formatGsmDispatchSuccessMessage(baseMessage, response)`:
+  - response.templateCode → notificationTemplateLabel(templateCode) Korean
+  - 결과: "보호자 N건에게 알림을 발송했습니다. (본인부담금 안내)" 형식
+  - numeric `ezcareMessageKind` 는 화면 미노출 (off-screen per FAQ Q692)
+  - templateCode 없거나 fallback label == code 일 때 baseMessage 그대로 반환
+
+$ git -C src/frontend grep -l 'formatGsmDispatchSuccessMessage' develop -- 'src'
+  components/provisionresult/ProvisionResultDispatchPanel.jsx
+  components/ui/GuardianDocumentNotifyPanel.jsx
+  components/ui/StaffNotificationDispatchPanel.jsx
+  config/notificationChannelStatus.js
+  config/notificationChannelStatus.test.js
+  utils/notificationQuietHours.js                              ← interpretBillingNotifyResult wire
+  (6 source file — 4 UI panel + 1 util(`interpretBillingNotifyResult` 신규 `templateCode` 옵션) + 1 export)
+
+추가 wire surface:
+  - StaffNotificationDispatchPanel : 응답 캡처 후 selectedType.successMessage 에 label append
+  - GuardianDocumentNotifyPanel    : guardian 알림 성공 메시지에 label append
+  - ProvisionResultDispatchPanel   : 급여제공기록 dispatch 성공 메시지에 label append
+  - BillingDetailPage / OverduePage: `interpretBillingNotifyResult({templateCode})` wire
+
+이지케어 mirror 인사이트 (확인):
+  ezCare `mobile-sendW` 는 `<option value="11">본인부담</option>` 처럼 numeric value 는 DOM 속성에만 두고
+  사용자는 Korean 라벨만 본다. ogada 도 동일 — BE 응답에는 audit/analytics용 ezcareMessageKind 노출,
+  FE 화면에는 Korean templateCode 라벨만 표시. 양사 UX 컨벤션 정합 ✅.
+
+→ G-SMS-TEMPLATE-CATALOG cluster: BE 응답 메타 6/6 + FE label-only 6/6 = end-to-end 정합 closure.
+  candidate 잔여 0 carry (BNK-587 마감 + BNK-591 staff 응답 메타 deepen).
+
+================================================================
+[ ★★ 교차검증 3 — 4축+leave-ledger P0/P1 재오픈 0 (40-cycle carry, BNK-549~591) ]
+================================================================
+$ git -C src/frontend show develop:src/App.jsx | grep -oE 'path="[^"]*(care-plan-form|dashboard|transport/service-fees|billing/cms|annual-leaves|leave-ledger)[^"]*"' | sort -u
+  path="/billing/cms"                          ← v2 CMS
+  path="/clients/:clientId/care-plan-form"     ← G14
+  path="/dashboard"                            ← G26
+  path="/dashboard/hq"                         ← G26 HQ
+  path="/staff/annual-leaves"                  ← US-R01-c
+  path="/staff/leave-ledger"                   ← US-R01-c
+  path="/transport/service-fees"               ← v1.3-C
+모든 Route App.jsx @c7d0982 LIVE — 7/7 · 가정 번복 0 · 신규 core 갭 0.
+
+================================================================
+[ ★★ 교차검증 4 — candidate carry 4 git-grep 부재 재확인 (전부 P3「가정」MVP out-of-scope) ]
+================================================================
+$ git -C src/frontend grep -il 'guardianMeeting\|guardian-meeting' develop -- 'src'             → 0 hit
+    G-GUARDIAN-MEETING              여전히 부재 (carry from BNK-590)
+$ git -C src/frontend grep -il 'programGroup\|program-group' develop -- 'src'                   → 0 hit
+    G-PROGRAM-GROUP-CONFIG          여전히 부재 (carry from BNK-580)
+$ git -C src/frontend grep -il 'openingBalance\|opening-balance' develop -- 'src'               → 0 hit
+    G-BILLING-OPENING-BALANCE       여전히 부재 (carry from BNK-585)
+$ git -C src/frontend grep -il 'vendorOnboarding\|onboarding-checklist' develop -- 'src'        → 0 hit
+    G-VENDOR-ONBOARDING-CHECKLIST   여전히 부재 (carry from BNK-580)
+
+→ candidate 변동 0 · 4건 모두 P3「가정」 MVP out-of-scope carry.
+
+================================================================
+[ ★★ NHIS #44 이동서비스비 러-1~4 — 362차 zero drift IDENTICAL ]
+================================================================
+$ curl --max-time 30 'https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?\
+    DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769'
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  =  docs/planning/research/snapshots/nhis_jo44_live_bnk584.html  IDENTICAL (362차 zero drift)
+
+  ↔ ogada BE TransportServiceFeeService 5/5 (RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 dedup · V148/V154/V155)
+  + FE transportServiceFee.js 4 parity-copy + TransportServiceFeePanel UXD-159 a11y full-stack ✅ parity/우위.
+  PLAN_NOTES #44 1차 확인 carry · 덮어쓰기 0.
+
+================================================================
+[ ★ silverangel 본진 zero drift + weekly notice 0 ]
+================================================================
+$ curl --max-time 30 'https://www.silverangel.kr/silverangel/support/notice/list.do'
+  HTTP 200 · 3,594,181B · md5 52c9457f4e34a7d3c49275e5bf337677
+  = BNK-590 on-disk 52c9457f IDENTICAL (zero drift)
+  latest real 221563 (2026-06-18) carry · next ~6/25 (KST 내일) · weekly notice 0 · 엑셀 포맷 변경 0
+
+$ curl --max-time 20 'https://www.silverangel.kr/silverangel/support/notice/view.do?list_no=221565'
+  HTTP 200 · 51,765B · 8437f255b4eaf22e9844d1d260554093 (미게시 shell)
+$ curl --max-time 20 'https://www.silverangel.kr/silverangel/support/notice/view.do?list_no=221570'
+  HTTP 200 · 51,765B · 8437f255  (미게시 shell)
+$ curl --max-time 20 'https://www.silverangel.kr/silverangel/support/notice/view.do?list_no=221575'
+  HTTP 200 · 51,765B · 8437f255  (미게시 shell)
+
+→ silverangel weekly notice 0 carry · next ~6/25 KST 내일 예상 carry.
+
+================================================================
+[ cycle accounting ]
+================================================================
+  가정 번복           : 0
+  신규 core 갭        : 0
+  candidate 변동      : 0 (carry 4 P3 — 전부 git-grep 부재 재확인)
+  상태 변경           : 2 (FE+1 commit · BE+1 commit · cross-stream advance · 양쪽 WT CLEAN)
+  KPI 변경            : 1 (merge gate 767 → 769 · 다른 KPI carry)
+  미확인 carry        : 2 (carefor LIVE 24-cycle · longterm 502 20-cycle)
+  신규 snapshot       : 1 (이 파일 — ogada_git_remeasure_bnk591.txt)
+  덮어쓰기            : 0
+  엑셀 포맷 변경      : 0
+  per-cycle minimum   : 4종 충족
+                          ① 신규 evidence URL (NHIS #44 362차 + silverangel notice list/probe 221565·221570·221575 live 재실측)
+                          ② 메뉴/필드/워크플로 1블록 (BE Staff*NotifyResponse 신규 `ezcareMessageKind` 7-file 전파 + FE `formatGsmDispatchSuccessMessage` 6-file 전파)
+                          ③ COMPETITOR_MATRIX 1행+ `@HEAD` 갱신 (BNK-591 staff dispatch response metadata + label-only UX)
+                          ④ BENCHMARK_REPORT §591 신규 소절
+
+================================================================
+[ 권고 ]
+================================================================
+  · 즉시 (tester) : tester FF merge **769**(FE 218 + BE 551 · 양쪽 WT CLEAN ·
+                     선행 commit 불필요 · develop→test FF 가속 권장)
+  · planner       : baseline FE `@c06d581`→**`@c7d0982`**(ahead 217→218) ·
+                     BE `@88a58d9`→**`@2f83563`**(ahead 550→551) · merge 767→**769** ·
+                     **G-SMS-TEMPLATE-CATALOG cluster — staff 1·21 응답 메타 추가** :
+                       BE: 5 → 7 file 전파(`ezcareMessageKind` Staff* 2종 +) ·
+                       FE: 6 file `formatGsmDispatchSuccessMessage` wire (Korean 라벨 노출 · numeric off-screen) ·
+                     이지케어 `mobile-sendW` label-only UX 컨벤션 mirror 정합 ·
+                     candidate 잔여 0 carry · 4축+leave-ledger 40-cycle carry ·
+                     candidate 4 P3 carry(전부 부재 재확인) ·
+                     미확인 carry 2 (carefor LIVE 24-cycle · longterm 502 20-cycle)
+  · coder         : 신규 P0/P1 작업 0 — backlog 비움 유지 ·
+                     G-SMS 후속 22 급여명세서는 id=11 직원급여 v3+ Epic carry (MVP out-of-scope).

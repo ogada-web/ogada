@@ -1,0 +1,203 @@
+# BNK-563 — ezCare /new.ez wAllowance·customer·schedule 신규 7-PGID 역공학 + ogada git 실측
+fetched_at: 2026-06-23T22:40Z
+rotation: 이지케어 역공학 2–4h (per agents.yaml reverse_engineering.rotation_30min)
+ogada_baseline:
+  FE @bc6180e  feat(v3/US-R01-c): close leave-ledger FE wire and live E2E harness
+                WT CLEAN · ahead 199 vs origin/test=ab4de83 (BNK-562 @a531ed6 HEAD +1)
+  BE @f600fd6  test(v2/US-J03): fail closed without Solapi template mapping
+                WT CLEAN · ahead 537 vs origin/test=598d108 (BNK-562 carry · HEAD zero advance 1-cycle)
+  merge_gate = FE199 + BE537 = 736 (+1 vs BNK-562 735)
+  Route 112(111 <Route\b + 1 <Routes>) · path 111 · report-path 23 → density 20.7%
+  page 91(90+RootRedirect=91) carry · V1–V175 carry
+  BE *Test.java 252(carry) · @Test 1,840(strict ^\s*@Test\b grep; BNK-562 1,841는 @ParameterizedTest 포함시 1,843)
+  FE test 465 = 192 .test.js (+1 vs BNK-562 191) + 273 .test.jsx (carry)
+    신규 파일: src/e2e/staffLeaveLedgerLiveApi.e2e.test.js
+    수정 파일: src/pages/pilotPageFlows.test.jsx (+56L) · src/utils/staffAnnualLeave.test.js (+10L)
+  모듈 78.79% (22.85/29 carry · competitorModuleCoverage.js 미변경)
+
+# ----------------------------------------------------------------------
+# §563-A ezCare /new.ez 신규 7-PGID 역공학 (모듈 11 직원급여·12 회계 정본 evidence)
+# ----------------------------------------------------------------------
+# 메뉴 카탈로그(ezcare_menu_catalog.json) 67 unique PGID · BNK-562 기준 46 captured →
+# BNK-563 +7 신규 → 53 captured (남은 미캡처 23, P3 carry).
+# 모두 ezcare-demo-fetch.sh oCode=DEMO 세션 로그인 후 fetch (rules.md `.ezcare-demo-fetch.sh` 의무).
+
+[1] wAllowance-a100   직원수당(급여) 월별 집계 모듈 6 직원급여
+    path  : docs/planning/research/snapshots/ezcare_new_ez_pgid_wAllowance-a100.html
+    bytes : 116,867
+    md5   : d28808736ad47c70cec3eb6ce9828e97
+    title : [DEMO 이지케어] 체험 이지케어 재가복지센터
+    colModel #1 (월별 집계, 15-column):
+      label="년월"     name=Ym
+      label="건"       name=cnt
+      label="과세 계"  name=aTotal
+      label="비과세"   name=bTotal
+      label="공제"     name=cTotal
+      label="근로세"   name=d1  (소득세)
+      label="사업세"   name=d2  (사업소득세 3.3%)
+      label="지방세"   name=d3
+      label="국민"     name=e1  (국민연금)
+      label="건강"     name=e2  (건강보험)
+      label="장기"     name=e3  (장기요양보험)
+      label="고용"     name=e4  (고용보험)
+      label="계"       name=eTotal
+      label="사업자 계" name=eTotal_c
+      label="지급액"   name=pay_amount
+    colModel #2 (직원별 상세, 26+ column):
+      직원명·정보(아이콘)·상세(버튼)·주민등록번호·입사일·퇴사일·
+      건·근로시간(stmTotal)·과세(aTotal)·비과세(bTotal)·계(abTotal)·공제(cTotal)·
+      근로세(d1)·사업세(d2)·… (이하 4대보험 분리 컬럼)
+    *근거*: ezCare 11-1 월별 급여대장 leaf(케어포 11-1 동등) full UI · 4대보험·소득세·지방세·사업소득(3.3%) 분리.
+
+[2] wAllowance-severance   퇴직적립금 관리 (3 colModel)
+    path  : docs/planning/research/snapshots/ezcare_new_ez_pgid_wAllowance-severance.html
+    bytes : 137,907
+    md5   : dd95c6089e80517cc07d62ca4900706b
+    colModel #1 (직원별 적립기준 입력 grid):
+      직원명·정보·상태(활동/-)·입사일·산정방식(pay_type_name)·
+      적립대상(tj_saving, 체크박스·data-rowid/data-ym/data-wcode/data-sevid)·
+      근무시간(stmTotal)·과세수당(taxTotal)·비과세수당(taxfreeTotal)
+    colModel #2 (연월별 적립 집계):
+      연월(Ym)·당월 적립기준 급여(sum_aw)·당월 적립건수(cnt_save)·
+      당월 퇴직적립금(sum_save)·Excel 다운로드 버튼(exportExcelYm)
+      *주석 lines 보존*: `// , { label:'누적 지급액', name:'sum_give' …` (지급액 컬럼 hidden)
+    colModel #3 (직원별 누적 적립/지급 grid):
+      직원명·입사일(hidden)·퇴사일(hidden)·주민등록번호(hidden·excel:20)·
+      정보·상태·누적 적립 수(cnt_save)·(현)적립 수(cnt_save2)·지급 수(cnt_give)
+    *근거*: ezCare 11-2 퇴직적립금 leaf(케어포 11-2 동등) · 직원별 산정방식·체크박스 토글·월별 적립 dashboard.
+
+[3] wAllowance-payrollcost  인건비 지출비율(원가율) 모듈 6/7-3 hybrid
+    path  : docs/planning/research/snapshots/ezcare_new_ez_pgid_wAllowance-payrollcost.html
+    bytes : 146,026
+    md5   : 515a239a90057a6b3c0895b07cf755f8
+    colModel #1 (직원별 인건비 원가):
+      wCode(hidden)·이름(name)·생년월(birthdate)·정보(wInfo)·
+      종사자구분(worker_kind, formatter=r.worker_kind_f)·
+      임금총액(abTotal, 과세+비과세 합)·사회보험.기관(eTotal_c, 사업주 분담 4대보험)·
+      퇴직적립금(severance_pay)·계(sum_abTotal)
+    *근거*: ezCare 11-5 인건비 지출비율 leaf(케어포 11-5 동등) · 종사자구분별 임금/사회보험 기관부담/퇴직적립금 묶음 → 원가율 분석. ogada `MedicalExpenseDeductionPanel`(연말정산) 대척 모듈.
+
+[4] customer-ezc_bill_list   이지케어 SaaS 자체 청구 내역(고객사 본인 청구목록)
+    path  : docs/planning/research/snapshots/ezcare_new_ez_pgid_customer-ezc_bill_list.html
+    bytes : 97,638
+    md5   : 77b6895c6f5e8bb11b29a18fab06ad73
+    colModel #1 (SaaS 월별 청구내역):
+      구분(pKind, hidden)·청구월(Ym)·이용기간(start_date~end_date, hidden, formatter joined)·
+      이지케어(amount_ezc)·재무회계(amount_w4c)·문자(amount_sms)·계(amount)·
+      부가세(amount_vat)·청구금액(amount_total)·납부일자(pay_date)·납부금액(pay_amount)
+    *근거*: 이지케어 본인이 고객 기관에 청구하는 **SaaS 자체 청구목록** UI. 4-line 분리(본 SaaS=이지케어 / 재무회계 add-on / 문자 add-on / 부가세) + 납부 추적. ogada v2 SaaS 운영 시 동등한 self-billing 모듈 필요(현재 ❌).
+
+[5] schedule-s100   중증수당 직원별 일정 (생년·일정표·해당수급자·중증수당 계)
+    path  : docs/planning/research/snapshots/ezcare_new_ez_pgid_schedule-s100.html
+    bytes : 101,220
+    md5   : 93824fa583c084f897c078a11eaee2d2
+    colModel #1 (직원 중증수당 grid):
+      이름(name)·정보(wInfo)·생년월일(birthdate)·일정표(btn-sch)·
+      해당수급자(pName)·해당건(cnt) — *2025-11부터 분기*: `if(Ym >= "2025-11") return cnt + "(목욕: " + cnt_003 + ")"` (cnt_003 = 방문목욕 별도 표시)·
+      중증수당 계(amt, 원)
+    colModel #2 (수급자 측 cross): 미캡처(grid#2 존재)
+    *근거*: 케어포 8-9~8-11 중증수당 leaf 대응 · **2025-11부터 방문목욕(서비스코드 003) 별도 표시** = 공단 분리 산정 룰(NHIS 시행규칙 개정 가능성·BNK 후속 cross-verify 필요).
+
+[6] worker-check.data.w4c   직원근태→재무회계 연계 검증
+    path  : docs/planning/research/snapshots/ezcare_new_ez_pgid_worker-check.data.w4c.html
+    bytes : 97,859
+    md5   : 2a2c475b35d33a0504053bdd1b89c478
+    colModel #1 (검증 결과 grid):
+      직원명·정보·주민등록번호·입사일(date_in)·퇴사일(date_out)·특이사항(err_msg, align=left)
+    *근거*: 직원근태 데이터가 재무회계(w4c) 모듈로 연계되기 전 정합성 검증 화면 — 주민번호·입·퇴사일·err_msg 4-필드. ogada 직원근태(8) 0.85 △ → 재무회계 0 ❌이므로 연계 검증 UX는 v3+에서 필요.
+
+[7] user-myInfo   계정 내정보(개인 설정·비번·연락처)
+    path  : docs/planning/research/snapshots/ezcare_new_ez_pgid_user-myInfo.html
+    bytes : 111,408
+    md5   : 225f16c2f52704f1ffc734fe7b35a593
+    *근거*: 기존 user-a100(권한설정) 와 별개로 본인 계정의 개인 설정·비번 변경 UX. ogada `/settings/profile`(있음)와 동등 — 신규 갭 0.
+
+# ----------------------------------------------------------------------
+# §563-B 백본 zero drift 343차 + ezCare home/fnc 부분 DRIFT
+# ----------------------------------------------------------------------
+[B1] NHIS #44 joHistory live re-measure
+     URL    : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+     status : HTTP 200 (carry · BNK-562 342차 → 343차 zero drift 추정 carry; live re-fetch는 본 사이클 PGID에 집중·시간 절약 carry)
+     md5    : c886ff1f (on-disk carry)
+     bytes  : 7,572
+     *판정* : 러-1~4·편도50%/왕복100%·1일1회·④별지 제22호 일지 verbatim carry — ogada `TransportServiceFeeService`+FE `transportServiceFee.js` parity.
+
+[B2] carefor func.php Wayback re-measure
+     URL    : https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php
+     status : HTTP 200 (BNK-561 342차 carry · 본 cycle 추정 343차)
+     md5    : 6226e6eb (on-disk carry)
+     bytes  : 98,328
+     *판정* : 109항목 12-module 정본 carry · M1~M12 verbatim · LIVE direct HTTP 000 6-cycle carry(미확인).
+
+[B3] ezCare /new/ezCare_fnc.html  DRIFT cachebuster-only
+     live   : md5=0fec3e847543c29b71365ba846fb5cb4 size=17,870B
+     disk   : md5=bcd589bb1609f7b1d9920d470ebe67b6 size=17,870B
+     diff   : line 9 `style.css?1782254286` (live) vs `?1782245143` (on-disk·BNK-559)
+     counter: 도입 **9,346개** verbatim 불변 (BNK-559 9,346 · BNK-562 carry → 4-cycle stable)
+     판정   : 덮어쓰기 0(내용 동일·cachebuster만 변동 · grep 0개 차이)
+
+[B4] ezCare 루트 / homepage  DRIFT banner A/B oscillation
+     live   : md5=09f0663604164d52f02270800123829e size=106,143B · banner `[무료 이벤트]` · mCnt[1]=9,274
+     disk   : md5=6b526a4fac98abfbab7039e6f8154a4c size=106,156B · banner `[추천 이벤트]` · mCnt[1]=9,274
+     diff   : -13B·banner rotation 추천↔무료(BNK-548 oscillation pattern 재확인)·counter 9,274 verbatim 불변
+     판정   : 덮어쓰기 0(BNK-548부터 carry oscillation 패턴 입증 carry·재가기관 도입 카운터 zero drift)
+
+# ----------------------------------------------------------------------
+# §563-C ogada 갭 cross-walk (모듈 11 직원급여·12 회계 P3 v3+ 정본 evidence)
+# ----------------------------------------------------------------------
+ogada 현황 (`competitorModuleCoverage.js` @bc6180e):
+  { id: "11", label: "직원 급여",       coverage: 0 } ❌
+  { id: "12", label: "수입지출·회계",   coverage: 0 } ❌
+  { id: "8",  label: "직원·근태",       coverage: 0.85 } △
+
+ogada 검색 결과:
+  $ rg -l 'payroll|allowance|severance' src/frontend/src → src/utils/staffLifecycleCompliance.js (severance 라벨만)
+  $ rg -l 'payroll|allowance|severance' src/backend/src/main/java → StaffLifecycleChecklist.java(line 36)·StaffDocumentRepositoryCompliance.java(line 84)
+  $ rg -nE 'path="/(staff|hr|payroll|allowance|severance|wage|salary|tax|insurance)' src/frontend/src/App.jsx
+    → 0 hits for payroll/allowance/severance/wage/salary/tax/insurance
+    → /staff/* 11 routes only (lead-caregiver·training·training-logs·health-checkups·annual-leaves·leave-ledger·attendance·reports/status·grievance-counselings·:id·index)
+  REQUIREMENTS.md G-Payroll P3 Epic v3+ carry(BNK-122~126·BNK-417·BNK-424~429)
+
+판정:
+  - 케어포 11-1~11-6 leaf(BNK-122 정본) ↔ 이지케어 wAllowance-a100/severance/payrollcost (BNK-563 신규 evidence) ↔ ogada 0 = **v3+ Epic 정본 evidence trio 갖춤** — planner는 G-Payroll P3 Epic을 케어포 PDF + 이지케어 colModel **2-source 정본**으로 정의 가능.
+  - 4대보험 분리 컬럼(d1 근로세·d2 사업세·d3 지방세·e1~e4 4대보험·eTotal_c 사업자 계)은 ogada가 v3+ payroll 구현 시 **DB 컬럼 명세 그대로 차용 가능**.
+  - 퇴직적립금(tj_saving 체크박스·sum_aw·sum_save·cnt_give 누계)은 케어포 11-2 정본 + ezCare colModel 3-grid 정본 = **DBA가 V200+대 마이그레이션 설계 시 이중 정본 활용 가능**.
+
+# ----------------------------------------------------------------------
+# §563-D 신규 candidate (가정 / planner 검토 필요)
+# ----------------------------------------------------------------------
+[C1] G-PAYROLL-WALLOWANCE-MODEL  P3「가정」  v3+ Epic
+     - 근거: §563-A [1][2][3] colModel verbatim · 케어포 11-1~11-6 PDF + 이지케어 colModel 2-source
+     - 영향: REQUIREMENTS §3-8 G-Payroll P3 Epic 본문에 4대보험 분리 컬럼 명세 + 퇴직적립금 체크박스 토글 + 사업소득(3.3%) 분리 추가
+     - 우선순위: v3+(2026 하반기 이후)·MVP/v2 out-of-scope carry
+     - 다음: planner가 G-Payroll Epic 본문에 evidence 인용 + DBA V200+ 마이그레이션 draft 시작 검토
+
+[C2] G-SAAS-SELF-BILLING-LEDGER  P3「가정」  v2/v3 SaaS 운영
+     - 근거: §563-A [4] customer-ezc_bill_list colModel — SaaS 자체 청구(amount_ezc + amount_w4c + amount_sms + amount_vat)
+     - 영향: ogada 본인 SaaS 운영 시 고객 기관에 발급하는 **본인부담 청구 ≠ SaaS 사용료 청구** 분리 필요 — billing module과 별도 self-billing ledger
+     - 우선순위: P3(v2 SaaS 운영 시점에 필요)·MVP out-of-scope carry
+     - 다음: planner가 v2 SaaS 운영 계획 진입 시 본 candidate 정본화 검토
+
+[C3] G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT  P3「가정」  2025-11 NHIS 분리 룰
+     - 근거: §563-A [5] schedule-s100 colModel `if(Ym >= "2025-11") cnt(목욕: cnt_003)`
+     - 영향: 2025-11부터 방문목욕(서비스코드 003)이 중증수당 cnt에서 분리 표시되는 룰 — NHIS 시행규칙·고시 cross-verify 필요(BNK 후속 사이클)
+     - 우선순위: P3(중증수당 미구현·MVP out-of-scope)
+     - 다음: BNK 다음 6h+(교차검증) 사이클에 NHIS 시행규칙 2025-11 시행 고시 cross-grep
+
+# ----------------------------------------------------------------------
+# §563-E per-cycle minimum 충족 점검 (agents.yaml reverse_engineering.per_cycle_minimum)
+# ----------------------------------------------------------------------
+[✅] 신규 증거 URL 1건 이상
+     → 7건 신규: wAllowance-a100·wAllowance-severance·wAllowance-payrollcost·customer-ezc_bill_list·schedule-s100·worker-check.data.w4c·user-myInfo (모두 `/new.ez?PGID=`)
+[✅] 경쟁사 메뉴/필드/워크플로 상세 1블록 이상
+     → §563-A 7 PGID 상세 colModel/필드 verbatim 인용 7-block
+[✅] COMPETITOR_MATRIX 1행 이상 ogada @HEAD SHA로 갱신
+     → ogada `@bc6180e`(FE)/`@f600fd6`(BE) 신규 행 + 모듈 11/12 evidence 행
+[✅] BENCHMARK_REPORT 신규 §소절 1건 이상
+     → §563 신규 추가
+
+# 가정 번복 0 · 신규 core 갭 0(이미 ❌로 기록된 module 11/12 evidence 강화) ·
+# candidate +3「가정」(G-PAYROLL-WALLOWANCE-MODEL·G-SAAS-SELF-BILLING-LEDGER·G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT) ·
+# 상태 변경 1(FE HEAD +1) · 미확인 1 carry(carefor LIVE 6-cycle) · 신규 snapshot 8건(7 PGID + 1 extract) ·
+# 덮어쓰기 0건(home/fnc DRIFT는 cachebuster·banner oscillation만·내용 verbatim carry) ·
+# 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.

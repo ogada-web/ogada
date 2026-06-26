@@ -1,0 +1,62 @@
+# BNK-589 ezCare 역공학 extract — 가격·도입 재실측 + Channel.io 검은/빨간 tri-source + pAmt-a200 납부확인서·의료비공제 + FAQ21839
+# 조사일: 2026-06-24T16:10:00Z | rotation: 이지케어 역공학 2–4h
+# ogada @HEAD: FE c06d581 (WT CLEAN, +1 vs BNK-588 3f686e3) · BE 88a58d9 (WT CLEAN, +1 vs ef8bb4e) · merge gate 767
+
+## 1. 가격·도입 재실측 (확인)
+
+| URL | HTTP | SIZE | md5 | DRIFT vs BNK-574 | verbatim |
+|---|---|---|---|---|---|
+| [home](https://ezcare.easyms.co.kr/) | 200 | 106,062B | `83ec2bb2` | DRIFT (`3bb39fde`→`83ec2bb2`·−45B) | mCnt `{9280,4600,2353,1820}` · 배너 「**9,280**개 재가기관」(+1 vs 9279) · counter2 **4,600**(+2 vs 4598) |
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | 17,870B | `91cfdcba` | DRIFT cachebuster (SIZE 동일) | 도입 **9,350개**(−1 vs 9,351·oscillation carry) |
+| [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 200 | 22,979B | `85e48afa` | DRIFT cachebuster (SIZE 동일) | 셋팅 **33,000**·37명 예시 **25,850**·정가 55,000·기본료 10,000·2,350 vat **verbatim 불변** |
+
+## 2. Channel.io bc7f4cd9 — 검은/빨간 공단청구액 tri-source (확인·DRIFT)
+
+| URL | HTTP | SIZE | md5 | DRIFT |
+|---|---|---|---|---|
+| [bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) | 200 | 228,038B | `ba20c74e` | `6ec2a538`→`ba20c74e`(+330B·BNK-570 동형 SSR cosmetic·**semantic verbatim 불변**) |
+
+인용(확인): 「정상 반영된 경우 → 공단청구 금액이 진한 **검은색** 숫자」·「반영되지 않은 경우 → **빨간색** 숫자」·「일정확정 전에는 반드시 공단청구 금액이 검은색으로 표시」·「청구일정 가져오기를 다시 실행」
+↔ ogada `VisitBatchConfirm*` + billing reconciliation (G21) · schedule-fix `chk-ltm-fix` carry
+
+## 3. pAmt-a200 3-tab — 납부내역·의료비공제·납부확인서 (확인·session zero drift)
+
+PGID [pAmt-a200](https://ezcare.easyms.co.kr/new.ez?PGID=pAmt-a200) (oCode=DEMO) · on-disk `0c11e2db`(103,649B) · **session re-fetch IDENTICAL**
+
+| Tab | grid | endpoint / action | colModel 핵심 |
+|---|---|---|---|
+| 01 월간 수납내역 | `grid-pAmt-a200-01` | `json-pAmt.php?data=pay_list` | `pay_date`·`name`·`bill_Ym`·`pay_amount`·`balance`·`pay_type`·`pay_memo` |
+| 02 연간 수납내역 | `grid-pAmt-a200-02` | `data=pay_list_year` | `Ym`·`cnt`·`pay_amount`·`memo` |
+| 03 장기요양급여비 납부확인서 | `grid-pAmt-a200-03` | `data=pay_list_year_sum` | `state`(icon `status p{N}`)·`name`·`birthdate`·`pay_amount2`·`pAmt2`·`btn-print-doc99` |
+
+엑셀 export 3종: `xls_year_payList.php` · `xls_patient_year_payList.php` · `json-pAmt.php?data=payList2` → 「**Y년 의료비 공제목록.xls**」(col A1:D1 merge·style 객체)
+서식 출력: `docCode 0066`(doc66)·`docCode 9999`(doc99 납부확인서B)·`btn-print-all-tab03` batch `hml_doc_patient_batch`
+
+↔ ogada `/billing/payments`·`MedicalExpenseDeductionPanel`·`/billing/reports/receipts` **✅ parity** (id=7-2-1 coverage=1)
+
+## 4. FAQ 21839 — 2026 모니터링 문항11 방문상담 20분+ (확인·신규 named snapshot)
+
+| URL | HTTP | SIZE | md5 |
+|---|---|---|---|
+| [FAQ 21839](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21839&type=web) | 200 | 15,510B | `91519421` |
+
+인용: 「사회복지사 등이 **수급자(또는 보호자) 및 급여제공자를 20분 이상 면담**」·점검방법「**방문일정표, 사회복지사 업무수행일지**」·대상기간「모니터링 실시 월의 **전전월**」
+↔ ogada `MonitoringIntegratedChecklist.MIN_VISIT_CONSULTATION_MINUTES=20` · G30 evidence window **✅ parity** (주야간 MVP tracked·방문일정표 UI △)
+
+## 5. demo shell DRIFT (확인)
+
+| artifact | md5 | SIZE | 변동 |
+|---|---|---|---|
+| `ezcare_new_ez_demo.html` | `98cfd5eb` | 140,040B | `3b084d18`→`98cfd5eb`(−5,273B) · 「오늘의 업무 [**06월25일**]」·widget `EC000010-28110301` 회전 · nav 10-module verbatim 불변 |
+
+## 6. negative re-confirm
+
+- `billing-list` PGID: 93,393B 「Page Not Found」404 shell carry (BNK-533 negative·변동 0)
+- FAQ 21843: stub `e5762090` 13,327B carry · substantive 상한 ~21842 재확인
+
+## planner 권고
+
+1. tester FF merge **767** 가속 (FE 217+BE 550·양쪽 WT CLEAN)
+2. ezCare 도입 카운터 oscillation(home +1·fnc −1) — 마케팅 수치 단일 정본 금지·live 재실측 주기 유지
+3. pAmt-a200 tab-03 `state` icon 코드(검은/빨간 UI 연계「가정」) — schedule-fix grid 처리상태 cross-walk P3
+4. FAQ21839 전전월 evidence window — ogada G30 `BASE_OFFSET=2` carry 재확인(신규 갭 0)

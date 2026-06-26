@@ -1,0 +1,163 @@
+# BNK-637 — 이지케어 도움말 FAQ 21705 + 21325 dual work-log cross-walk + ezCare 백본 5-URL plateau day 5 + 재무회계 BPO 위탁법인 추가 공지(rowid 434) + ogada `@7e7c296`/`@d06e3f1` merge gate 821
+
+## 0. ogada submodule git HEAD (확인)
+
+| 축 | SHA | 상태 | commit (BNK-636 → BNK-637) | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `7e7c296a` | WT CLEAN | BNK-636 `@7e7c296` HEAD zero advance 1-cycle | 246 vs `ab4de83` (=) |
+| BE develop | `d06e3f1`  | WT CLEAN | BNK-636 `@42a369e` HEAD +1 — `fix(v2/QA-B95): expose recovered-auth mode in live readiness hints` (`HealthController`+2, `LiveE2eController`+10, `LiveE2eOperationReadinessSupport`+2, +Tests +6L) — **QA-B95 cluster 10th layer** | 575 vs `598d108` (+1) |
+
+merge gate = 246 + 575 = **821** (+1 BE-only vs BNK-636 820).
+
+KPI carry: **118 Route(117 `<Route\b`+1 `<Routes>`) · 93 page(92 `*Page.jsx`+RootRedirect) · V1–V180 · BE Test 271 · BE @Test 1957 · FE test 479(196+283) · reports route 28 · 모듈 80.86%(23.45/29)**. HEAD +1 advance with KPI identical (BE QA-B95 readiness payload deepen, 신규 page/route/test 0).
+
+## 1. ezCare 백본 5-URL live=disk 재실측 — counter plateau **day 5** (확인 · 덮어쓰기 5건 후보)
+
+| URL | LIVE md5 | DISK md5 (BNK-636 carry) | size | DRIFT 판정 |
+|---|---|---|---|---|
+| `/` (home)            | `3ea4f74cbe132e005d017c83daba2866` | `760883ead1670e3bc12a69d887ed2b98` | 106,031B (-41B) | **CONTENT DRIFT** — banner 슬롯 회전(아래 §2) |
+| `/new/ezCare_fnc.html`         | `bc2b2093a169f6eed92f1250b13a10b0` | `64a3eb4c8d301b4644e6414aca8910ba` | 17,870B (=) | cachebuster DRIFT |
+| `/?PG=e01`            | `a5bae3246a7cd5fd886e0c2c6716bc82` | `b982c7e5d4495d16e241a5f8a5312a63` | 47,130B (=) | cachebuster DRIFT |
+| `/new/ezCare_charge.html`      | `0d15bf8a9e3ceebce238d830628d5301` | `078f0b7e93c6eff6e4ef18c464b42ded` | 22,979B (=) | cachebuster DRIFT |
+| `/new/ezCare_change_work.html` | `c04ce5b2179020bc7a1e2fb1b4e070eb` | `3f054cd90390c3921f857058e3bad4e3` | 26,157B (=) | cachebuster DRIFT |
+
+verbatim **불변** (도입현황·점유율·집계일):
+
+- home `mCnt = {1:9287, 2:4603, 3:2353, 4:1820}` carry (BNK-621→637 5-cycle plateau)
+- fnc.html `<div id="headstatus2"> 업계 1위!! 이지케어 이용현황: 전국 <span class="st2">9,357개</span> 기관 사용중</div>` carry
+- `?PG=e01` `전국재가센터수(방문요양 기준): 17,489개 / 이용시설수: 9,354개 / 점유율: 53.49% / 집계일: 2026.06.25` carry
+- charge.html 33,000원/25,850원/55,000원 carry
+- change_work 후기 4,965·RFID verbatim carry
+
+**Plateau day 5** (BNK-633 = day 1 → BNK-636 = day 4 → BNK-637 = **day 5**) — BNK-540 이후 최장 plateau **갱신**. 콘텐츠 정체 시그널과 별개로, 동일 cachebuster URL 회전 → **부수 메타데이터**만 갱신 운영 패턴.
+
+## 2. ★★★ ezCare home 콘텐츠 DRIFT — 「[공지] 재무회계 BPO 위탁법인 추가」 노출 (확인 · NEW evidence URL)
+
+home 41-byte 축소의 원인은 **banner 슬롯 콘텐츠 교체**.
+
+- BEFORE (BNK-636 disk): `<a href="https://cafe.naver.com/egcare/24211" target="_blank"><p class="text-ellipsis"><span>[추천 이벤트]</span><br/>이지케어 · 이지케어 재무회계 추천하고 다양한 선물 받아가세요. </p></a>`
+- AFTER  (BNK-637 live): `<a href="/?PG=b01&rowid=434" target="_blank"><p class="text-ellipsis"><span>[공지]</span><br/>이지케어 재무회계 서비스 개인정보 처리방침 변경안내 </p></a>`
+
+신규 fetch → `https://ezcare.easyms.co.kr/?PG=b01&rowid=434` HTTP 200 · 39,897B · md5 `025c47a47b9bbde6c1ba697b792e9e20`. 등록일 **2025-06-26** · 조회 **4,910**. 본문 verbatim:
+
+> 「1. 약관 개정 사유: **이지케어 재무회계서비스 고용노동부 고용지원금 대행 신청 위탁법인 추가**」
+> 「2. 개정 반영일자: 2025년 06월 27일」
+> 「3. 개정내용: **제3조 노무법인 수탁사 추가**」
+> 「4. … 2025년 06월 27일부터 효력이 발생합니다.」
+
+해석 (확인):
+
+1. **이지케어 재무회계서비스 = 외주 BPO** — ezCare ERP 내부 모듈이 아니라 외부 **노무법인 수탁사**를 통한 「고용노동부 고용지원금 대행 신청」 서비스(2025-06-27 시행).
+2. 조회 4,910 + home banner 1순위 노출 = **고객사 대상 우선 공지**.
+3. BNK-610 가설 「ezCare 재무회계 = BPO 외주 사업」 + BNK-633 「결제·재무 클러스터 K012/K013/K014 도움말 view 37.6%」 demand-signal과 **정합**. ogada M11/M12 P1 격상 권장은 「**in-app 모듈** vs **외주 BPO 통합**」 선택 question 으로 명확화 (PLAN_NOTES 추가 질문).
+
+ogada 비교: ogada는 `/payroll/*`·`/accounting/*` 0 route (BNK-619~636 carry)·외주 노무법인 dispatch hook 0 hit → **결제·재무 클러스터 P1 epic 정의 시 외주 BPO 어댑터 패턴 후보 1건 추가**.
+
+## 3. ezCare 도움말 /help/faq.ez 재실측 (확인 · 392차 · md5 DRIFT counters only)
+
+| 항목 | LIVE (2026-06-25 22:15Z) | DISK (BNK-633 carry) |
+|---|---|---|
+| URL | `https://ezcare.easyms.co.kr/help/faq.ez?type=web` HTTP 200 | = |
+| size | 80,057B | 80,057B (=) |
+| md5  | `7db2d8fd5b81f53e6faef6f8a1ba7658` | `e14be4dfe1e67174a50babc2749719d3` |
+| rowid 카운트 | 233 (min 21131·max 21781) | = |
+
+`diff` 결과: 20+ rowid 의 `<span class="faq-hit">` 카운터만 증가 (예: 21193 23,903→23,905·21507 22,435→22,445·21601 carry 83,875·21274 carry 44,143). 14 카테고리 K001~K014 구조·rowid 분포·top-30 순위 IDENTICAL. **콘텐츠 정체 + 트래픽 증분만 누적** 패턴 (plateau day 5 정합).
+
+## 4. ★★★ NEW FAQ 21325 partial-gap cross-walk — per-client 사회복지사 업무수행일지 (확인 · 신규 candidate)
+
+`https://ezcare.easyms.co.kr/help/faq.ez?rowid=21325&type=web` HTTP 200·15,170B (18,476 hit·top-30 30위·[수급자관리,서식출력/설정])
+
+**Menu**: 「2.수급자 관리 > 수급자 선택 > 우측정보 「업무수행일지」」
+
+Workflow (verbatim):
+
+1. 「2.수급자 관리 > 수급자 선택 > 우측정보 업무수행일지」 클릭
+2. 작성내역(불러오기)에서 「**신규작성**」 선택 — (작성된 수행일지를 선택하여 **불러오기** 가능)
+3. **방문(상담)일자** 외 정보입력
+4. 업무수행일지의 **「욕구사정 등」 각 항목** 입력
+5. 「**새 일지로 저장하기**」 클릭하여 작성 완료 (불러온 일지는 수정 후 새 일지로 저장 가능)
+6. 「**다운로드(hwp)**」 클릭 → 한글파일로 출력 가능
+
+ogada 비교 (실측 grep):
+
+| 요소 | ezCare 21325 | ogada |
+|---|---|---|
+| 위치 | 수급자별 우측정보 「업무수행일지」 탭 | `/clients/:id/edit` 우측 메타 0 hit · 별도 page 0 hit |
+| 직군 | 「프로그램 관리자 및 사회복지사」 | `lead-caregiver-log` 선임 요양보호사 only (직군 분리) |
+| 「불러오기」 패턴 | 신규작성 + 기존 일지 reuse → 새 일지로 저장 | `lead-caregiver-log` 「불러오기」 patterned (G34b·FAQ21813), 사회복지사용 0 |
+| 욕구사정 항목 | 한 폼 안에 욕구사정 + 방문(상담)일자 + 업무 기록 통합 | `/clients/needs-assessments` (욕구사정만 별도) + `/clients/:id/care-plan-form` (계획만 별도) — 통합 폼 0 |
+| 출력 | hwp 다운로드 + 결재라인 | care-plan-form pdf only (hwp 0) |
+
+판정: **△ partial gap** — 욕구사정/케어플랜은 ogada 우위(분리 페이지 + 별지 #5), 단 **per-client 사회복지사 업무수행일지 통합 폼 + 신규/불러오기 + hwp 출력** 0 hit. ezCare 도움말 top-30 의 30위·18,476 hit demand-signal.
+
+신규 candidate (가정 · planner 결정 필요):
+
+- **`G-CASE-MANAGER-EXECUTION-LOG` P3 (가정)** — `/case-management/social-worker-execution-log` (가설 경로) per-client 사회복지사 업무수행일지 통합 폼 + 신규작성/불러오기 + hwp 출력. 단, ogada는 욕구사정·케어플랜이 **별도 폼**으로 분리되어 별지#5 등 법정 양식 정밀화 우위 — 분리 유지 vs 통합 폼 추가 정책 결정 필요.
+
+## 5. FAQ 21705 cross-walk — ezCare 「직원 출퇴근부/근무일지」 단일 통합 (확인 · ✅ parity)
+
+`https://ezcare.easyms.co.kr/help/faq.ez?rowid=21705&type=web` HTTP 200·15,089B (18,709 hit·top-30 28위·[직원관리,서식출력/설정])
+
+**Menu**: 「1.직원 > 1.8 직원 출퇴근부/근무일지」
+
+Workflow:
+
+1. 「1.직원 > 1.8 직원 출퇴근부/근무일지」 진입
+2. 좌측 목록 직원 선택 → 우측 달력에서 「**근무일지 아이콘 클릭**」 → 일지 작성
+3. 작성 완료된 일자는 **아이콘 색상 변경**(작성 유무 시각 표시)
+4. 「**근무일지 출력**」 클릭 → 출력기간 선택 → 출력
+5. **결재라인·출력방법** 설정 + **「빈서식 출력」** 가능
+6. 활용: 「직원 업무 파악 + 서비스 모니터링 + 현지조사 시 확인 자료」
+
+해석: ezCare는 **「출퇴근부」와 「근무일지」를 직원 단일 화면에서 통합** 운영 (「사회복지사 근무일지」도 동일 메뉴 사용 — FAQ 제목이 직군 호명일 뿐 페이지는 직원 단위).
+
+ogada 비교:
+
+| 요소 | ezCare 21705 | ogada |
+|---|---|---|
+| 페이지 | `1.8 직원 출퇴근부/근무일지` 단일 통합 | `/staff/attendance` `StaffWorkAttendancePage.jsx` (G-STAFF-WORK-ATTENDANCE·케어포 8-4) — 출퇴근부·근무일지 통합 ✅ |
+| 달력 UX | 좌측 직원 → 우측 달력 → 아이콘 클릭 | `StaffMonthlySchedulePage.jsx` `/staff/schedules` 달력 + `StaffWorkAttendancePage` 일자 필드 ✅ |
+| 아이콘 색상(작성 유무) | ✅ | △ 「작성 여부 시각 표시」 grep 0 hit on attendance page — UX micro-improvement 후보 (P3·UXD) |
+| 출력기간 선택·결재라인·빈서식 | ✅ | △ pdf/print preview 0 grep on attendance page — `/staff/reports/status` 와 별도 |
+
+판정: **✅ direct parity** (1.8 ↔ `/staff/attendance`) · UX 「작성 유무 아이콘 색상 변경」 + 「빈서식 출력」 = ogada UX polish 후보 (P3) but not gap.
+
+## 6. `/new.ez` 비로그인 redirect stub (확인 · 역공학 금지 carry)
+
+`GET /new.ez` (no session) → HTTP 200 · **70B**:
+
+```
+<meta http-equiv="refresh" content="0; url=/logout_msg.html?code=001">
+```
+
+md5 `e1d52bd5ab9bf2c3db53ab50a0eaae2f`. agents.yaml §2 reverse_engineering.methods 의 「비로그인 `/new.ez` 직접 fetch 는 70B redirect stub 만 반환 — 역공학 금지」 규칙 4-cycle 재입증. 데모 진입은 `./scripts/ezcare-demo-fetch.sh` 의 `POST /page/login.php oCode=DEMO` 흐름 사용 필요 (이 사이클은 정적 카탈로그 + FAQ + 공지로 충분 → 데모 페치 생략).
+
+## 7. ogada @HEAD KPI carry
+
+| KPI | 값 (`@7e7c296`/`@d06e3f1`) | BNK-636 대비 |
+|---|---|---|
+| FE Route          | **118** | = |
+| FE page           | **93**  | = |
+| FE test           | **479** (196+283) | = |
+| BE migration      | V1–**V180** | = |
+| BE test files     | **271** | = |
+| BE @Test          | **1957** | = |
+| reports Route     | **28** | = |
+| 모듈 커버         | **80.86%** (23.45/29) | = |
+| ahead FE          | 246 | = |
+| ahead BE          | 575 | +1 |
+| merge gate        | **821** | +1 BE-only |
+
+## 8. 평가 (BNK-637)
+
+★★★ NEW evidence: home banner DRIFT → 공지 rowid 434 「**이지케어 재무회계 = 외주 BPO 위탁법인 추가**」 (2025-06-27 시행·조회 4,910) — BNK-610/633 가설 강화·planner 결정 필요 (ogada M11/M12 epic scope 「in-app vs BPO 어댑터」).
+★★★ NEW FAQ 21325 partial-gap → per-client 사회복지사 업무수행일지 통합 폼 + 신규/불러오기 + hwp 출력 — 신규 candidate `G-CASE-MANAGER-EXECUTION-LOG` P3.
+★★ FAQ 21705 ✅ direct parity (1.8 ↔ `/staff/attendance`)·UX micro-improvement 후보 2건 (아이콘 색상·빈서식 출력) P3.
+★★ ezCare 백본 5-URL plateau **day 5** (BNK-540 이후 최장 갱신) — cachebuster DRIFT 5건·counters verbatim 불변.
+★ /help/faq.ez 392차 zero structural drift (size 80,057B carry·rowid 233 carry).
+★ `/new.ez` 비로그인 70B refresh stub 4-cycle carry.
+★ ogada BE QA-B95 cluster **10th layer** (BE `d06e3f1` `LiveE2eController` recovered-auth mode readiness hints +10L)·FE HEAD zero advance 1-cycle.
+★ merge gate **821**(+1 BE-only) — tester FF merge 821 가속 권장.
+★ 4축+leave-ledger P0/P1 재오픈 0 (**87-cycle** · BNK-549~637).
+★ per-cycle minimum 충족: 신규 URL 1건(rowid=434)·메뉴/워크플로 상세 2블록(FAQ 21705+21325)·COMPETITOR_MATRIX 1행+·BENCHMARK_REPORT §637 신규 차수.

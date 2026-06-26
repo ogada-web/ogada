@@ -1,0 +1,131 @@
+BNK-595 ogada git 실측 + G2b CMS payment-method-catalog API (rotation 6–8h)
+조사일: 2026-06-24T20:15:00Z (KST 05:15)
+owner=BNK audience=PLN
+
+================================================================
+[ src/frontend (develop) ]  — HEAD zero advance 1-cycle vs BNK-594
+================================================================
+$ git -C src/frontend rev-parse develop
+  64a7648743584197722613744b30d89919558ddb  →  64a7648   (= BNK-594 동일 SHA · HEAD zero advance)
+
+$ git -C src/frontend log -1 --pretty='%h %s' develop
+  64a7648 test(v1.2.1/QA-B95): relax bootstrap blocker gating for recovered auth
+
+$ git -C src/frontend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/frontend rev-list --count origin/test..develop
+  220  (vs origin/test = ab4de83)   carry vs BNK-594
+
+================================================================
+[ src/backend (develop) ]  — BE +1 commit vs BNK-594
+================================================================
+$ git -C src/backend rev-parse develop
+  2eaf17eb8c73281c58edb5028ef3482ad3b89b36  →  2eaf17e   (= BNK-594 @670756a HEAD +1)
+
+$ git -C src/backend log -1 --pretty='%h %s' develop
+  2eaf17e feat(v2/G2b): add CMS payment method catalog API for silverangel parity
+
+$ git -C src/backend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/backend rev-list --count origin/test..develop
+  554  (vs origin/test = 598d108)   +1 vs BNK-594 553
+
+================================================================
+[ KPI 정본 (git 실측 — 규칙 §Baseline) ]
+================================================================
+Route                 : 112  (111 `<Route\b` App.jsx + 1 `<Routes>` wrapper)  carry
+Page                  : 91   (90 *Page.jsx + 1 RootRedirect.jsx)              carry
+Flyway migration      : V1–V175 (max V175 contiguous)                         carry
+BE *Test.java         : 259  (+1 `CmsPaymentMethodCatalogServiceTest`)         ★
+FE test (.test.js)    : 193   (git ls-tree -r develop)                        carry
+FE test (.test.jsx)   : 274                                                   carry
+FE test total         : 467                                                   carry
+모듈 coverage         : 79.66 %  (23.10/29 · id=7-4 CMS 0.65 · id=10 0.75)   carry
+ahead vs origin/test  : FE 220 (carry) · BE 554 (+1)                         ★
+merge gate            : 774  (FE 220 + BE 554 · +1 vs BNK-594 773)            ★
+
+→ FE HEAD zero advance 1-cycle · BE HEAD +1 advance (양쪽 WT CLEAN).
+  상태 변경 1 (BE+1 only) · KPI 변경 2 (BE Test 258→259 · merge gate 773→774).
+
+================================================================
+[ ★★★ 교차검증 1 — G2b CMS payment-method-catalog API (silverangel 5-method parity) ]
+================================================================
+BE `@2eaf17e` 11-file +242/-7:
+  GET /api/v1/billing/cms/payment-method-catalog
+  CmsPaymentMethodCatalog.SILVERANGEL_PARITY_ENTRIES (5 methods)
+  CmsPaymentMethodCatalogServiceTest (93L NEW) + MustApiEndpointRoutingTest + RoleBasedControllerAccessTest
+
+$ git -C src/backend grep -l 'CmsPaymentMethodCatalog\|payment-method-catalog' develop -- 'src/main' 'src/test'
+  billing/cms/api/CmsController.java
+  billing/cms/api/CmsPaymentMethodCatalogEntryResponse.java
+  billing/cms/api/CmsPaymentMethodCatalogResponse.java
+  billing/cms/domain/CmsPaymentMethodCatalog.java
+  billing/cms/domain/CmsService.java
+  billing/cms/domain/CmsPaymentMethodCatalogServiceTest.java
+  routing/MustApiEndpointRoutingTest.java
+  security/RoleBasedControllerAccessTest.java
+
+Catalog entries (collectionImplemented / ogadaRoute):
+  ① AUTO_DEBIT_CMS  자동이체(CMS)  250원/1건  /billing/cms           true
+  ② VIRTUAL_ACCOUNT 가상계좌       300원/1건  null                   false
+  ③ CARD            카드결제       —          /billing/easy-pay      true
+  ④ MULTI_ACCOUNT   다계좌 정산    —          null                   false
+  ⑤ CASH_RECEIPT    현금영수증     —          /billing/cash-receipts true
+
+Response: totalCount=5 · collectionImplementedCount=3
+
+$ git -C src/frontend grep -l 'payment-method-catalog\|paymentMethodCatalog' develop
+  (0 hits — FE wire 미구현)
+
+→ module id=7-4 coverage **0.65 carry** (BE catalog API deepen · FE roster/catalog UI wire 잔여).
+  virtualAccount + multiAccount = 2/5 갭 → 0.65→1.0 후보는 지점 roster FE wire + 2-method 구현.
+
+================================================================
+[ ★★★ 교차검증 2 — silverangel extraService.do 5-method ↔ ogada catalog (재실측) ]
+================================================================
+URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+HTTP 200 · 81,637B · md5 f9c5d877 (live = on-disk IDENTICAL · zero drift vs BNK-594)
+
+verbatim grep (확인):
+  자동이체 · 가상계좌 · 카드결제 · 다계좌 · 현금영수증
+  250원 · 300원 · 1600-6859 (효성CMS 대행)
+
+ogada API crosswalk @2eaf17e:
+  silverangel ① ↔ AUTO_DEBIT_CMS  ✅ collectionImplemented
+  silverangel ② ↔ VIRTUAL_ACCOUNT ❌ not implemented
+  silverangel ③ ↔ CARD            ✅ collectionImplemented
+  silverangel ④ ↔ MULTI_ACCOUNT   ❌ not implemented
+  silverangel ⑤ ↔ CASH_RECEIPT    ✅ collectionImplemented
+
+→ 엔젤 5-method 정본 ↔ ogada BE catalog **3/5 parity closure** (BNK-594 △0.65 crosswalk → API layer deepen).
+
+================================================================
+[ ★★ 교차검증 3 — NHIS #44 이동서비스비 러-1~4 364차 zero drift ]
+================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f (live = on-disk IDENTICAL · 364차)
+
+verbatim: 러-1 · 러-4 · 편도 · 50% · 1일 1회 · 별지 제22호 일지
+
+================================================================
+[ ★ 4축+leave-ledger P0/P1 재오픈 0 (44-cycle carry, BNK-549~595) ]
+================================================================
+App.jsx `@64a7648` 7/7 path LIVE:
+  G14   /clients/:clientId/care-plan-form
+  G26   /dashboard + /dashboard/hq
+  v1.3-C /transport/service-fees
+  v2    /billing/cms
+  US-R01-c /staff/annual-leaves + /staff/leave-ledger
+
+candidate carry 4 P3 (grep 0): G-GUARDIAN-MEETING · G-VENDOR-ONBOARDING-CHECKLIST ·
+  G-PROGRAM-GROUP-CONFIG · G-AGENCY-INTERNAL-SCHEDULE
+
+================================================================
+[ planner 권고 ]
+================================================================
+1. G2b CMS catalog API BE closure — FE `/billing/cms` payment-method-catalog wire 후보 (id=7-4 0.65→0.75+)
+2. VIRTUAL_ACCOUNT + MULTI_ACCOUNT_SETTLEMENT 2-method 갭 = v2+ Epic 후보 (엔젤 5-method full parity)
+3. tester FF merge 774 가속 (FE 220+BE 554 · 양쪽 WT CLEAN · BE 선행 1 commit)
+4. NHIS#44 364차 carry · longterm 502 24-cycle 「미확인」 carry

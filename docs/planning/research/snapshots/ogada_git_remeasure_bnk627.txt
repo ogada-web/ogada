@@ -1,0 +1,77 @@
+BNK-627 ogada git 실측 6–8h (2026-06-25T16:16Z) — G-REPORT-DENSITY-GROUP-HISTORY-FILL CLOSURE
+==============================================================================================
+
+[rotation] 교차검증·갭 우선순위 8h+ (이번 사이클은 ogada git HEAD 전진 감지 → 실측 우선)
+
+[ogada submodule git HEAD 실측]
+- FE develop : f74a6e7  WT CLEAN  ahead 240 vs origin/test=ab4de83
+    BNK-626 @75c0f51 → HEAD +1
+    "Surface live E2E health reasons when backend is reachable"
+    (src/e2e/liveBackendProbe.js +9 / src/test/liveE2eHarness.test.js +22 = +29L; QA-B95 live-e2e
+     ready=false 시 backend reason 노출·status UP guard·회귀 test 1)
+- BE develop : 337453d  WT CLEAN  ahead 571 vs origin/test=598d108
+    BNK-626 @0e55f3b → HEAD +1
+    "feat(v2/G-REPORT-DENSITY): fill program group-history report from membership data"
+    (10-file +461/-14L)
+- merge gate = FE 240 + BE 571 = 811 (BNK-626 809 → +2 cross-stream)
+- 폐기 SHA(d5654c0·e5fd48d·428ba7d·4be0938) checkout 금지
+
+[KPI git 실측]
+| KPI            | BNK-627 값                                  | BNK-626 대비 |
+|----------------|---------------------------------------------|--------------|
+| FE Route       | 117 (116 <Route\b + 1 <Routes>)             | =            |
+| FE page        | 92 (91 *Page.jsx + RootRedirect inline)     | =            |
+| FE test        | 477 (195 .test.js + 282 .test.jsx)          | =            |
+| BE 마이그레이션 | V1–V179 (179 sql)                           | +1 (V179)    |
+| BE Test 파일   | 271 (270 Test.java + 1 Tests.java)          | =            |
+| BE @Test       | 1954                                        | +1           |
+| 모듈 커버      | 80.86% (23.45/29)                           | =            |
+| reports Route  | 28 (path="*reports*")                       | =            |
+
+[★★★ G-REPORT-DENSITY-GROUP-HISTORY-FILL (BNK-623 P3) → FULL CLOSURE (확인)]
+BNK-623 교차검증에서 program reports의 group-history 엔드포인트가 BE "shell"(집계 미구현·
+groupConfigAvailable hardcoded)임을 명시하고 P3 candidate `G-REPORT-DENSITY-GROUP-HISTORY-FILL`
+(집단활동 실데이터 집계 보강)을 등록. BNK-626에서 "shell→fill 후보" carry.
+→ BE `337453d` 가 in-cycle 종결:
+  · V179__program_client_groups_us_p01.sql (신규 schema: program_client_groups +
+    program_client_group_members)
+  · ProgramClientGroupEntity(117L) / ProgramClientGroupMemberEntity(140L) /
+    ProgramClientGroupMemberRepository(36L) / ProgramClientGroupRepository(8L)
+  · ProgramGroupHistoryAggregate(16L) — groupId/groupName/effectiveFrom/effectiveTo/clientCount
+  · ProgramReportService.getGroupHistoryReport() — programClientGroupMemberRepository
+    .aggregateHistoryWindows(orgId, branchId, from, to) 로 실데이터 집계 (org/branch JWT scope +
+    date window resolve) → groupConfigAvailable=true 실데이터 반영
+  · ProgramReportController.java +2(-1) · test 2-file:
+    - ProgramReportControllerRoutingTest: GET /api/v1/programs/reports/group-history →
+      $.groupConfigAvailable=true assert (+6L)
+    - ProgramReportServiceTest: getGroupHistoryReportShouldReturnAvailableWithEmptyItemsWhenNoMemberships
+      외 (+45L)
+commit 본문 verbatim: "Add V179 program client group schema and aggregate group-history windows
+for the 5-9 report endpoint so groupConfigAvailable reflects real data."
+→ M5 program report group-history(집단활동 이력·5-9 리포트) shell→실데이터 집계 종결.
+
+[BNK 벤치마크 → 코더 closure traceability chain]
+BNK-620 발굴(demo-work rpt 34 vs ogada 23 M5 갭)
+  → BNK-623 코더 in-cycle closure(reports 23→28) + P3 group-history-fill 등록
+    → BNK-626 git 실측 검증(reports route 28)
+      → BNK-627 group-history-fill FULL CLOSURE 확인 ← 본 사이클
+3번째 BNK→코더 traceable closure 사례. 벤치마크 산출물 실효성 재입증.
+
+[★★ NHIS #44 이동서비스비 러-1~4 388차 zero drift IDENTICAL (확인)]
+https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+live HTTP 200 · 7,572B · md5 c886ff1f = 388차 zero drift(러-1~4·편도50%·1일1회·별지 제22호)
+↔ ogada G16 TransportServiceFeeService + UXD-159/163 full-stack ✅ parity/우위.
+경쟁 4종 중 ogada 유일 #44 표시 레이어 차별화 388-cycle carry.
+
+[잔여 리포트 갭 우선순위 — group-history closure 후]
+P1 M1 1-12 연계기록지(id=1-10 coverage 0·+0.034pp)
+P2 M11 11-6 급여대장(id=11 +3.4pp) — id=11·12 동시 closure 시 80.86%→87.76%(+6.9pp) 최대 레버 carry
+신규 core 갭 0 · candidate 변동: P3 group-history-fill closure(-1) · 가정 번복 0
+
+[미확인 carry]
+carefor LIVE func+demo HTTP 000(BNK-558~) · longterm 502 단기보호 · 610 통합재가 (canonical 보존)
+
+[per-cycle minimum] 신규 evidence(BE 337453d group-history fill + NHIS #44 388차 재실측) 1+ ·
+메뉴/필드/워크플로 1블록(group-history aggregate schema/repo/service) · COMPETITOR_MATRIX @HEAD 1행+ ·
+BENCHMARK_REPORT §627 — 4종 충족
+[tester] FF merge 811 가속 권장

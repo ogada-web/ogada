@@ -1,0 +1,106 @@
+BNK-582 cycle extract (2026-06-24T11:32Z · rotation=엔젤·롱텀·규제 4–6h)
+================================================================================
+
+[ogada baseline @develop]
+  FE  068049bdac9bac687e41232990490a02b9ef7f36  fix(v1.2.1/QA-B289): align renewal action accessible name
+  BE  8631d1eb0ab1e0a0351f35ddd73981cb4161d2e7  feat(v2/G-SMS-TEMPLATE-CATALOG): wire client monthly schedule alimtalk dispatch
+  WT  FE CLEAN · BE CLEAN
+  ahead vs origin/test : FE 211 · BE 545 → merge gate 756 carry
+  KPI  112 Route(111 `<Route\b`+1 `<Routes>`) · 91 page(90+RootRedirect=91) · V1–V175 ·
+       BE Test 256 · FE test 465(192+273) · 모듈 79.31%(23.00/29·id=10 0.65)
+  HEAD zero advance 1-cycle (BNK-581 carry · 양쪽 동일 SHA)
+
+[Live re-fetch — 엔젤·롱텀·규제 (2026-06-24T11:32Z)]
+
+  silverangel zero drift IDENTICAL (5-URL · 355차 carry)
+    essential                 c79c1be37f947aab04ab7ba35cc7814d  131,664B  IDENTICAL
+    extraService              f9c5d8773ad0a481be6d7eb4b192d982   81,637B  IDENTICAL
+    mainService               bcf6df41310193a3ae997bde49111347   59,002B  IDENTICAL
+    feeService                eab352a8f98ba600561c06bd2e3eecb1   44,513B  IDENTICAL
+    notice list               52c9457f4e34a7d3c49275e5bf337677 3,594,181B IDENTICAL
+    notice probe 221564~221600 (7 IDs, +5 vs BNK-580) → 모두 미게시 shell
+                              8437f255b4eaf22e9844d1d260554093   51,765B  IDENTICAL
+    → 최신 real 221563(2026-06-18) · weekly notice 0 · 6-day stale
+    → next ~6/25(내일·KST) carry · 발신번호 본인인증 마감(BNK-541) re-issuance 미관찰
+
+  lcms type rotation DRIFT (덮어쓰기)
+    BNK-578 on-disk  c0c660760e9e5691491ace28f9d15f74  50,740B  (type1+websiteProvided+CJ MOU)
+    BNK-582 live     6b7502914de15aa75cabe04740dfca2c  50,498B  (type1+type3 hybrid; `ad_cont type3` + websiteProvided.do)
+    BNK-571 회귀     동일 md5 `6b750291` (re-occurrence · 5-cycle rotation 관측)
+    → 마케팅 카피·feature 변동 0 · ogada 단일 ERP 통합 vs SaaS cross-promo 분산 차별화 carry
+
+  longterm 502 단기보호 partial shell 「미확인」 13-cycle carry
+    live HTTP 200    d3c90b333be1f8d818978eaf0917ba76    422B  partial shell (BNK-578 carry)
+    canonical on-disk b5aee8c114f064f4b5503d1143c11787 105,552B  「월 한도액(2026.1.1.기준)·단기보호 1등급 74,060」 verbatim 보존
+    → BNK-548부터 13-cycle 「미확인」 · ROADMAP v3.1 G18-SHORT P3 carry · on-disk 우선 정책 유지
+
+  longterm 610 통합재가서비스 canonical 3-cycle stable
+    live HTTP 200    0ea575be5f11a817c635fe40f51dec39  91,421B  IDENTICAL
+    verbatim         「통합재가서비스」 12 hit · 「월 10만원」 · 「주야간보호형」
+    → BNK-576 recovery 이후 3-cycle stable · ROADMAP v3.1 G18-SHORT IntegratedHomeProviderDiscoveryPanel 우위 carry
+
+  NHIS #44 이동서비스비 러-1~4 — 355차 zero drift IDENTICAL
+    live HTTP 200    c886ff1fd1d5ca2cb5dc76d30adde8ba   7,572B  IDENTICAL
+    verbatim         "편도만(기관으로 이송 또는 수급자의 거주지로 이송하는 경우) 이용한 경우에는
+                      제1항의 표에 따른 '러-1'부터 '러-4'까지 비용의 50%"
+                      "1일 1회" · "별지 제22호" (운전자 서명 · 차량운행표)
+    ogada full-stack ✅ parity/우위 :
+      BE  TransportServiceFeeService 5/5 (RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 dedup · V148/V154/V155 운전자 서명 pair CHECK)
+      FE  transportServiceFee.js 4 parity-copy 상수 + TransportServiceFeePanel UXD-159 a11y
+    → PLAN_NOTES #44 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry
+
+  2026 규제 cosmetic DRIFT (verbatim 불변·덮어쓰기 2건)
+    law247
+      BNK-578 on-disk  cac7017a8d7f5559fd339733d652ab8d  78,450B  `?Time=...` cachebuster
+      BNK-582 live     3580a78a3820a969f556ec248b476986  78,450B  `?Time=1782300845`
+      strip-cachebuster IDENTICAL  0e07cef162aca47d37a65b8d93b69f08
+      verbatim         「제2025-247호」 · 「시행 2026.1.1」 불변
+      → cosmetic DRIFT · 덮어쓰기
+
+    MOHW 2026-126
+      BNK-578 on-disk  f1fc518c2760800746c1d3db105140ed  109,510B  조회수 2,584
+      BNK-582 live     e66c5af15b5b7c3e59568be66bc00f51  109,510B  조회수 2,585(+1) · 미리보기 564 carry · 다운로드 475회 carry
+      verbatim         「제2026-126호」 · 「본인부담상한액」 불변
+      → cosmetic counter +1 only · 덮어쓰기
+
+[Cross-walk to ogada baseline (BNK-581 carry)]
+
+  4축 + leave-ledger P0/P1 재오픈 0 — 31-cycle carry (BNK-549~582)
+    App.jsx @ `068049b` LIVE grep :
+      G14    /clients/:clientId/care-plan-form
+      G26    /dashboard · /dashboard/hq
+      v1.3-C /transport/service-fees (+8-route)
+      v2 CMS /billing/cms
+      US-R01-c /staff/annual-leaves · /staff/leave-ledger
+
+  candidate carry (BNK-580 교차검증 기준 · 변동 0)
+    G-VENDOR-ONBOARDING-CHECKLIST  P3「가정」  (BNK-578 silverangel businessSupport 4회차 체크리스트)
+    G-PROGRAM-GROUP-CONFIG         P3「가정」  (BNK-577 carefor 모듈5 micro-gap)
+    G-ORAL-CARE-OBSERVATION-REPORT P3「가정」  (BNK-581 carefor PDF p.49 3-4 구강관찰)
+
+[Cycle accounting]
+  per-cycle minimum 충족 :
+    [O] 신규 증거 URL 1건+   — 7 silverangel notice probe(221564~221600·+5 vs BNK-580 3-probe) + 355차 NHIS#44 재실측
+    [O] 메뉴/필드/워크플로 1블록+ — silverangel 5-URL md5 + NHIS#44 러-1~4 verbatim + lcms type rotation 관측
+    [O] COMPETITOR_MATRIX 1행+ @HEAD 갱신 — BNK-582 NHIS#44 355차·silverangel 6-day stale·lcms 5-cycle rotation
+    [O] BENCHMARK_REPORT §소절 1건+ — BNK-582 차수 메모
+
+  state changes :
+    가정 번복 0
+    신규 core 갭 0
+    candidate 변동 0 (carry 3)
+    상태 변경 0 (HEAD zero advance 1-cycle · 양쪽 WT CLEAN)
+    KPI 변경 0 (모듈 79.31% carry · BE Test 256 carry · FE test 465 carry)
+    미확인 carry 2 (carefor LIVE 15-cycle BNK-581 carry · longterm 502 13-cycle)
+    신규 snapshot 1건 (angel_longterm_regulatory_crossverify_bnk582.txt)
+    덮어쓰기 3건 (law247 · mohw126 · lcms_root)
+    엑셀 포맷 변경 0
+
+[planner 액션 (BNK-582)]
+  ① baseline FE `@068049b` · BE `@8631d1e` · merge gate 756 carry · 모듈 79.31% carry
+  ② tester FF merge 756 가속 권장 — 양쪽 WT CLEAN · cross-stream advance 0 · origin/test push(BE 545·FE 211) 우선순위
+  ③ NHIS #44 355차 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry
+  ④ silverangel weekly notice 0 6-day stale · next ~6/25 carry (내일 KST)
+  ⑤ longterm 502 partial shell 13-cycle 「미확인」 carry · canonical on-disk 우선 정책 유지
+  ⑥ longterm 610 통합재가 3-cycle stable carry · v3.1 G18-SHORT IntegratedHomeProviderDiscoveryPanel 우위 carry
+  ⑦ candidate carry 3건 (G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG·G-ORAL-CARE-OBSERVATION-REPORT P3·MVP out-of-scope)

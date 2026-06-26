@@ -1,0 +1,56 @@
+BNK-579 ogada git 실측 재산정 (6–8h rotation) — 2026-06-24
+============================================================
+owner=BNK audience=PLN
+
+[1] SUBMODULE HEAD 실측 (git -C rev-parse develop)
+  FE develop : ef3948c (ef3948cea28224f98674fbe71ff03dfdc629986c)
+               "feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): deepen module 10 coverage to 0.65"
+               WT CLEAN · BNK-578 @15f2195 HEAD +1 · ahead 210 vs origin/test=ab4de83
+  BE develop : fb323ae (fb323ae83b4a3e1d24e61c0b30e586bd71840e28)
+               "feat(v2/G-SMS-TEMPLATE-CATALOG): expose dispatch-ready counts in catalog API"
+               WT CLEAN · BNK-578 carry · HEAD zero advance 1-cycle · ahead 544 vs origin/test=598d108
+
+  FE 신규 commit (BNK-578 @15f2195 → @ef3948c, +1):
+    ef3948c feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): deepen module 10 coverage to 0.65
+
+[2] KPI 집계 (git ls-tree / git grep @develop)
+  Route       : 112 (111 `<Route\b` + 1 `<Routes>` wrapper, src/App.jsx)   ← 불변
+  page        : 91 (90 *Page.jsx + RootRedirect)                            ← 불변
+  Flyway      : V1–V175 (175 files, 최고 V175)                              ← 불변
+  BE Test     : 255 (*Test.java)                                            ← 불변
+  FE test     : 465 (192 .test.js + 273 .test.jsx)                          ← 불변
+  모듈 coverage: 23.00/29 = 79.31%   ★ (BNK-578 22.85/29 = 78.79% → +0.52pp)
+  merge gate  : FE 210 + BE 544 = 754  (BNK-578 753 → +1)
+
+[3] ★ 모듈 10 부가서비스(SMS·알림) 0.5 → 0.65 deepen 확정 (commit ef3948c)
+  src/config/competitorModuleCoverage.js diff:
+    -  { id: "10", label: "부가서비스(SMS·알림)", coverage: 0.5 },
+    +  { id: "10", label: "부가서비스(SMS·알림)", coverage: 0.65 },
+  competitorModuleCoverage.test.js +6L (회귀 lock)
+  → BNK-575/576/578 carry 권고 (G-SMS-TEMPLATE-CATALOG-FE-WIRE 가시화 +0.15) 실현.
+  → 산식 정본: ✅완전 20 · △부분 4(2 이동 0.85 · 7-4 CMS 0.65 · 8 직원근태 0.85 · 10 부가 0.65) · ❌갭 5(1-5·1-10·6·11·12)
+  → 23.00/29 = 79.310% (python 검산 일치)
+
+[4] G-SMS-TEMPLATE-CATALOG cluster full-stack 추적 종결 (확인)
+  BE catalog API     @b6c9b16 (BNK-575)  GET /api/v1/notifications/template-catalog
+  FE readiness wire  @c9cf03b (BNK-576)  NotificationChannelReadinessPanel + services.js
+  UXD a11y           @15f2195 (BNK-578)  UXD-160
+  BE dispatchReady   @fb323ae (BNK-578)  expose dispatch-ready counts
+  KPI deepen         @ef3948c (BNK-579)  module 10 0.5→0.65  ★ 이번 사이클
+  FE wire grep 확인  : git grep template-catalog @develop = 3 hit
+    (services.js · settingsServices.test.js · NotificationChannelReadinessPanel.jsx)
+
+[5] 증거 URL 재실측 — NHIS #44 이동서비스비 353차 zero drift (확인)
+  URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  live: HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  disk: nhis_jo44.html      · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba  → IDENTICAL
+  verbatim: 러-1 … 러-4 (편도 50% · 1일 1회 · ④별지 제22호 일지) 불변
+  ↔ ogada TransportServiceFeeService(RU_1~RU_4·ONE_WAY_RATIO=0.5·1일1회 dedup·V148/V154/V155)
+    + FE transportServiceFee.js 4 parity-copy 상수 + TransportServiceFeePanel(UXD-159)
+    = full-stack ✅ parity/우위 353차 재입증 (덮어쓰기 0 — md5 동일).
+
+[6] 요약 카운트 (BNK-579)
+  가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry) · 상태 변경 1(FE +1 module 10 deepen)
+  · KPI 변경 1(모듈 78.79%→79.31%) · merge gate 753→754(+1)
+  · 미확인 carry 2(carefor LIVE 14-cycle · longterm 502 12-cycle)
+  · 신규 snapshot 1건(본 extract) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족

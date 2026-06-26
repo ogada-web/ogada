@@ -1,0 +1,70 @@
+ogada git 실측 — BNK-638 (benchmark_researcher / 6–8h rotation)
+조사일: 2026-06-25T23:05:00Z (KST 익일 08:05)
+방법: git -C src/{frontend,backend} rev-parse develop · App.jsx Route grep · find *Page.jsx ·
+      flyway V migration · find *Test.java/*Tests.java · rg @Test · find *.test.{js,jsx} ·
+      백본 오프라인 snapshot md5 재계산 (network-independent carry 검증)
+
+================================================================================
+1. submodule develop HEAD (실측)
+================================================================================
+root HEAD            : 51d6ff1
+FE develop           : 4bbd54a  (BNK-637 @7e7c296 → HEAD +1)
+BE develop           : d06e3f1  (BNK-637 @d06e3f1 동일 → HEAD zero advance 1-cycle)
+
+FE WT status         : CLEAN (porcelain 0)
+BE WT status         : CLEAN (porcelain 0)
+
+FE ahead vs origin/test(ab4de83) : 247  (BNK-637 246 → +1)
+BE ahead vs origin/test(598d108) : 575  (BNK-637 575 → =)
+merge gate (FE+BE ahead)         : 247 + 575 = 822  (BNK-637 821 → +1 FE-only)
+
+================================================================================
+2. FE HEAD +1 — QA-B95 cluster 11th layer (cross-stream BE→FE closure)
+================================================================================
+commit 4bbd54a  fix(v1.2.1/QA-B95): wire recovered-auth readiness hints from health probe
+body  : Parse liveE2eAllowRecoveredAuth and liveE2eBootstrapEnableHint from /health,
+        treat recovered-auth bootstrap hint as neutral operation reason, and lock
+        behavior with liveE2eHarness regression tests (BE d06e3f1 alignment).
+
+diff 7e7c296..4bbd54a — 4 files, +185 / -7:
+  src/e2e/liveBackendProbe.js      +37 / -4   (/health 의 recovered-auth hint 파싱)
+  src/e2e/liveConfig.js            +45 / -1   (recovered-auth bootstrap = neutral 처리)
+  src/e2e/liveGlobalSetup.js       +11 / -0   (bootstrap readiness 게이팅)
+  src/test/liveE2eHarness.test.js  +92 / -2   (회귀 lock)
+
+해석: BNK-637 BE d06e3f1 (10th layer) 가 `recovered-auth-mode` field 를 live readiness
+      payload 에 노출 → BNK-638 FE 4bbd54a (11th layer) 가 그 field 를 /health probe 에서
+      파싱·neutral 처리·회귀 lock = QA-B95 recovered-auth readiness 가 BE→FE end-to-end 완결.
+      신규 page/route/test-FILE 0 → KPI 전부 IDENTICAL (probe 로직 deepen 만).
+
+================================================================================
+3. KPI baseline (실측 grep) — BNK-637 대비 전부 IDENTICAL
+================================================================================
+FE Route        : 118   (App.jsx 117 path= / <Route\b 117 + 1 <Routes>)        =
+FE page         : 93    (92 *Page.jsx + RootRedirect)                          =
+FE test         : 479   (196 *.test.js + 283 *.test.jsx)                       =
+BE 마이그레이션 : V1–V180 (max V180)                                           =
+BE Test 파일    : 271   (270 *Test.java + 1 *Tests.java)                       =
+BE @Test        : 1957  (rg '@Test\b' -o)                                      =
+모듈 커버       : 80.86% (23.45/29) carry                                      =
+reports Route   : 28    (path= 'reports' 28 unique)                            =
+
+================================================================================
+4. 백본 오프라인 snapshot md5 재계산 (network-independent zero-drift carry)
+================================================================================
+nhis_jo44_joHistory.html (NHIS #44 이동서비스비 러-1~4)  c886ff1f  7,572B   IDENTICAL
+silverangel_essential.html (평가지표 #41-42 이동·목욕27) c79c1be3  131,664B IDENTICAL
+silverangel_extraService.html (extra service)            f9c5d877  81,637B  IDENTICAL
+carefor_func.php (canonical 주야간 정본)                 6226e6eb  98,328B  IDENTICAL
+ezcare_faq_21844_bnk606.html (공단 엑셀 PII 마스킹)       d0aa760c  14,474B  IDENTICAL
+→ 디스크 md5 5종 zero drift carry. ogada TransportServiceFeeService (NHIS #44 러-1~4
+  편도50%·1일1회·별지 제22호) 경쟁 4종 유일 full-stack 우위 carry.
+
+================================================================================
+5. per-cycle minimum 충족 (BNK-638)
+================================================================================
+- 신규 증거/재실측        : 이 git 실측 snapshot (FE HEAD +1 diff) + 백본 5종 md5 재계산
+- 경쟁사 메뉴/필드/워크플로 : §4 백본 5-URL 오프라인 재실측 zero-drift 블록
+- COMPETITOR_MATRIX 1행+   : BNK-638 block @4bbd54a/@d06e3f1 갱신
+- BENCHMARK_REPORT §소절    : §638 추가
+- 4축+leave-ledger P0/P1 재오픈 0 (88-cycle carry)

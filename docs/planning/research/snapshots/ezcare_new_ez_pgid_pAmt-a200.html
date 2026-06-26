@@ -204,7 +204,7 @@
 			</li>
 			<li class="nav-menu-item nav-dropdown" nav-no="10" >
 				<a>기관평가</a>
-				<a href="/new.ez?PGID=guide-E100&tmp=1781840659#tab0" class="direct-link" hit-id="49000">현황</a>
+				<a href="/new.ez?PGID=guide-E100&tmp=1782390212#tab0" class="direct-link" hit-id="49000">현황</a>
 			</li>
 
 			<li class="nav-menu-divider"></li>
@@ -805,6 +805,7 @@ function ageGroup(age){
 			}
 
 			$("#btn-carmatch-open.blink").mouseover(function(){
+				//if($.cookie("carematch-sidebar-bubble")!="hide") $("#carematch-sidebar-bubble").show();
 				$("#carematch-sidebar-bubble").show();
 
 				// // 사이드바 버튼 hover 시 띄운 알림말풍선 2초 후 사라지도록
@@ -812,6 +813,9 @@ function ageGroup(age){
 				// bubbleClose = setTimeout(function() {
 				// 	$("#carematch-sidebar-bubble").fadeOut();
 				// }, 2000);
+			});
+			$("#btn-carmatch-open.blink").mouseleave(function(){
+				$("#carematch-sidebar-bubble").fadeOut();				
 			});
 
 			 // 구인구직 알림 말풍선 (#carematch-sidebar-bubble) 에 hover 시 timeout 을 취소한다

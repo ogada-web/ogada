@@ -1,0 +1,121 @@
+# ezCare 도움말 FAQ 카탈로그 — 14 카테고리 + 233 rowid · top-30 hit · ogada 모듈 cross-walk (BNK-633)
+
+조사일: 2026-06-25T19:35Z (KST 익일 04:35)
+rotation: 이지케어 역공학 2–4h
+출처: https://ezcare.easyms.co.kr/help/faq.ez?type=web
+on-disk: docs/planning/research/snapshots/ezcare_help_faq_list_bnk633.html (80,057B · md5=e14be4df · HTTP 200)
+방법: ezCare 공개 도움말 FAQ 목록 1-page HTML 정적 파싱 (rowid·title·category·faq-hit 4축 정규식 추출)
+ogada baseline: FE develop @33944e4 · BE develop @3342938 (이번 cycle 측정 HEAD)
+경쟁사 baseline (이지케어): home 9287·fnc 9357·e01 17489/9354/53.49% (BNK-625 plateau day 4·6/25 집계일 verbatim 불변·cachebuster-only DRIFT)
+
+
+## 1. FAQ 카테고리 14종 (K001~K014 · K011 「기타」가 마지막 노출)
+
+| 코드 | 카테고리 | FAQ 건수 | 누적 view | view 점유율 |
+|---|---|---:|---:|---:|
+| K008 | 수당/급여관리 | 64 | 968,439 | 26.6% |
+| K002 | 직원관리 | 47 | 790,267 | 21.7% |
+| K005 | 서식출력/설정 | 35 | 632,161 | 17.4% |
+| K003 | 수급자관리 | 28 | 438,049 | 12.0% |
+| K004 | 일정관리 | 26 | 399,683 | 11.0% |
+| K006 | 본인부담금 | 26 | 380,495 | 10.5% |
+| K011 | 기타 | 20 | 340,109 | 9.4% |
+| (미) | (미분류) | 20 | 301,971 | 8.3% |
+| K014 | 4대보험 | 15 | 206,325 | 5.7% |
+| K010 | 문자발송 | 8 | 138,669 | 3.8% |
+| K007 | 공단연동 | 7 | 122,982 | 3.4% |
+| K013 | 세무 | 7 | 104,076 | 2.9% |
+| K012 | 재무회계 | 6 | 88,323 | 2.4% |
+| K001 | 이용료/요금 | 5 | 74,436 | 2.0% |
+| K009 | 모바일앱 | 3 | 48,337 | 1.3% |
+
+집계 합: 233 FAQ (중복 카테고리 포함 357 cell-hit) · 누적 view 3,636,833
+- min rowid 21131 · max rowid 21781
+- 21844 (BNK-583~632 PII 마스킹 391차 IDENTICAL `d0aa760c`)는 **목록 미노출** → 직링크 전용
+- 21845~22000 전 범위 빈 shell `e5762090`(13,327B) — boundary 재확인
+
+### 카테고리 클러스터 분석 — ogada 갭 매핑
+
+- **결제·재무 클러스터 (K008+K014+K013+K012)** = **1,367,163 view = 37.6%** → ogada M11(직원급여)·M12(회계) **❌ 0 route** (BNK-619~632 P2 carry) ⇒ **이지케어 도움말 트래픽 1위 클러스터가 ogada P2 갭과 일치 — P1 격상 demand-signal 확정**
+- **운영·서식 클러스터 (K002+K005+K003+K004+K006)** = **2,640,655 view = 72.6%** → ogada module 1·3·4·5·7·8 covered (`/clients/*`·`/schedules`·`/billing/*`·`/staff/*` 전수) · BNK-628 4축+leave-ledger 82-cycle P0/P1 재오픈 0
+- **알림·연동 클러스터 (K010+K007)** = **261,651 view = 7.2%** → ogada G-SMS-TEMPLATE-CATALOG(6 ezCare message_kind parity·BNK-575 closure) + NHIS 일정 업로드 partial
+
+
+## 2. TOP-30 FAQ by hit · ogada cross-walk
+
+| 순위 | view | rowid | 카테고리 | 질문 | ogada 매핑 | 갭 평가 |
+|---:|---:|---|---|---|---|---|
+|  1 | 83,875 | 21601 | 직원관리,서식출력/설정 | 직원 회의록을 전산으로 작성, 관리하고 싶어요! | △ `/case-management/meetings`(사례관리)만 ✅ · 직원 회의록 0 hit | **★★★ 가정 번복** — BNK-629 P3 `G-STAFF-COMMITTEE-MEETING-LOG` 「MVP out-of-scope」 → **도움말 1위(83,875 hit) demand signal** → **P1 격상 권장** |
+|  2 | 44,143 | 21274 | 기타 | 비밀번호(패스워드) 변경은 어떻게 하나요? | ✅ JWT/RBAC + `/account/password` 회원 self-serve carry | parity ✅ · 운영 안내 매뉴얼 갭 0 |
+|  3 | 36,688 | 21529 | 서식출력/설정 | 파일 다운로드 진행시 파일 (항상)자동열기 설정과 해제 변경 방법 | N/A — IE-era ActiveX/브라우저 quirk | ogada는 SPA download trigger 표준 → 본질적으로 N/A (보안상 우위) |
+|  4 | 25,067 | 21723 | 수당/급여관리 | 2025년 요양보호사 시급 가이드 | ❌ `/payroll/*` 0 route | M11 P2 carry · 5건 top-30 진입(클러스터 demand signal) |
+|  5 | 24,232 | 21356 | (미분류) | 급여제공계획 추가방법 | ✅ `/clients/:clientId/care-plan-form` (G14 BNK-628 LIVE 재확인) | parity ✅ |
+|  6 | 23,903 | 21668 | 4대보험 | 만 65세 이상이면, 고용보험·산재보험 미가입? | ❌ ogada 4대보험 0 route | M11 cluster · K014 #1 |
+|  7 | 23,902 | 21193 | 일정관리,문자발송 | 일정표를 문자로 보내고 싶어요 | ✅ ezCare message_kind=21 `STAFF_MONTHLY_SCHEDULE` (BNK-575~583 BE/FE wire) + **BNK-633 신규 FE `/staff/schedules` `StaffMonthlySchedulePage` 33944e4** | **★★★ full-stack closure** — top-30 FAQ #7 demand signal 정합 closure |
+|  8 | 22,872 | 21574 | (미분류) | 근로자의 날 수당 알아보기 | ❌ ogada 휴일수당 0 route | M11 cluster carry |
+|  9 | 22,756 | 21589 | 문자발송 | 급여제공기록지 RFID 전송분을 문자로 발송하고 싶어요 | △ ogada `RFID`/`NFC` 0 hit · `CARE_PROVISION_RECORD`(message_kind=13 ALIMTALK) ✅ | **★★ G-RFID-CARE-PROVISION-DISPATCH** 신규 P3 「가정」 — 메시지템플릿은 있으나 RFID 트리거 surface 0 |
+| 10 | 22,435 | 21447 | (미분류) | 2024년 국민연금 보수월액을 수정해주세요!! | ❌ M11 cluster | carry |
+| 11 | 22,017 | 21473 | 본인부담금,공단연동 | 본인부담금이 공단과 달라요! | ✅ `/billing/cms` (5-method 5/5 collectionImplemented) + NHIS reconcile | parity ✅ (G-NHIS-EXCEL-RECONCILE P3 보완 carry) |
+| 12 | 20,927 | 21277 | 서식출력/설정 | 일정표 등을 출력 시,테두리 선이 안나와요 | N/A — IE print CSS quirk | ogada SPA print API → parity 본질적으로 우위 |
+| 13 | 20,907 | 21247 | 수당/급여관리 | 보전수당 의미가 무엇인가요? | ❌ M11 cluster | carry |
+| 14 | 20,241 | 21255 | 수당/급여관리 | 2025년 산재보험 요율을 확인해 주세요! | ❌ M11 cluster | carry |
+| 15 | 19,736 | 21506 | (미분류) | 2024년 의료비 세액공제 증명자료 제출 | ✅ `/billing/reports/statistics` (BNK-620 7-2-1 cross-walk) | parity ✅ |
+| 16 | 19,673 | 21507 | 수급자관리,서식출력/설정 | 2025년 급여제공 변경계약서를 일괄 출력하고 싶어요! | △ `/clients/contracts/*` 「일괄 출력」 0 hit · 개별 출력 ✅ | **신규 P2 「가정」 G-CLIENT-CONTRACT-BULK-PRINT** v2+ carry |
+| 17 | 19,607 | 21618 | 수당/급여관리 | 국공휴일 근로 직원에게만 유급휴일 수당 | ❌ M11 cluster | carry |
+| 18 | 19,592 | 21602 | 수급자관리,서식출력/설정 | 인지선별검사 CIST 결과를 관리하고 싶어요! | △ ogada 인지검사 0 hit · `/clients/health-records` 일반 | **신규 P3 「가정」 G-CIST-COGNITIVE-SCREENING-LOG** 인지선별검사 도구 surface |
+| 19 | 19,389 | 21298 | 일정관리,공단연동 | 공단 등록 일정 → 이지케어 업로드 방법 | △ ogada `/schedules/*` ✅ · 공단 schedule import 0 hit | **신규 P2 「가정」 G-NHIS-SCHEDULE-IMPORT** (G-NHIS-EXCEL-RECONCILE 자매) |
+| 20 | 19,372 | 21452 | (미분류) | 명절수당 선지급 → 급여명세서 반영 | ❌ M11 cluster | carry |
+| 21 | 19,357 | 21294 | 수당/급여관리 | 급여 화면에서 직접 연차수당 반영 | ❌ M11 cluster + ✅ `/staff/leave-ledger` 이월·소멸 ledger | leave-ledger는 ✅ 자체 우위 carry |
+| 22 | 19,354 | 21728 | 서식출력/설정,기타 | 2025년 계약서외 기관운영 변경서식 안내 | ✅ `/clients/contracts` 변경 ledger | parity ✅ |
+| 23 | 19,242 | 21521 | 수당/급여관리 | 연말정산 환급금 → 급여 반영 | ❌ M11 cluster | carry |
+| 24 | 19,239 | 21211 | 수당/급여관리 | 변경한 시급이 급여에 반영이 안돼요! | ❌ M11 cluster | carry |
+| 25 | 19,181 | 21651 | 직원관리,수당/급여관리 | 연차수당 매월 자동 급여 반영 | △ leave-ledger ✅ · payroll wire 0 | M11 cluster carry |
+| 26 | 19,080 | 21700 | (미분류) | 본인부담금 현금영수증 발급 | ✅ `CashReceiptService`+`extraService` 가상계좌/현금영수증 (BNK-575 G2b 5-method) | parity ✅ |
+| 27 | 18,753 | 21213 | 수당/급여관리 | 명절수당 추가 지급 | ❌ M11 cluster | carry |
+| 28 | 18,709 | 21705 | 직원관리,서식출력/설정 | 사회복지사 근무일지 작성 | ✅ `/staff/lead-caregiver-log` (ogada superset BNK-629) | parity 우위 — ezCare 「작성하고 싶어요」 단순 요청 / ogada 별도 ledger |
+| 29 | 18,673 | 21744 | 직원관리,수당/급여관리 | 2025년 포괄시급 일괄 변경 | ❌ M11 cluster | carry |
+| 30 | 18,476 | 21325 | 수급자관리,서식출력/설정 | 사회복지사 업무수행일지 저장 | ✅ `/staff/lead-caregiver-log` (ogada `LeadCaregiverLog*`) | parity ✅ |
+
+
+## 3. 도출 신규 갭 candidate (planner 검토 대상)
+
+| 우선순위 | id | 근거 (FAQ rowid · hit) | 영향 |
+|---|---|---|---|
+| **★★★ 가정 번복** | G-STAFF-COMMITTEE-MEETING-LOG | 21601 · 83,875 hit (도움말 #1) | BNK-629 「MVP out-of-scope」 가정 → demand signal 1위로 **P1 격상 권장** · v2+ |
+| ★★ **P2 격상 carry** | M11(직원급여)+M12(회계)+4대보험+세무 | TOP-30 11건(4·6·8·10·13·14·17·20·21·23·24·25·27·29) + 카테고리 view 37.6% | BNK-619~632 P2 carry → **이지케어 도움말 트래픽 #1 클러스터**·**v1.3+ P1 격상 강력 권장** |
+| ★ P3 신규「가정」 | G-RFID-CARE-PROVISION-DISPATCH | 21589 · 22,756 hit | RFID 출퇴근 트리거 → 급여제공기록지 ALIMTALK 자동 발송 surface (template ✅·trigger △) |
+| ★ P3 신규「가정」 | G-CIST-COGNITIVE-SCREENING-LOG | 21602 · 19,592 hit | 인지선별검사(CIST) 결과 ledger surface |
+| ★ P2 신규「가정」 | G-CLIENT-CONTRACT-BULK-PRINT | 21507 · 19,673 hit | 급여제공 변경계약서 일괄 출력 ledger |
+| ★ P2 신규「가정」 | G-NHIS-SCHEDULE-IMPORT | 21298 · 19,389 hit | 공단 등록 일정 → ogada 일괄 import (G-NHIS-EXCEL-RECONCILE 자매) |
+
+
+## 4. 직접 검증 closure (이번 cycle 신규 확인)
+
+| 갭 ID | 상태 | 근거 |
+|---|---|---|
+| **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE** (BNK-629 △ 8-2 carry) | **✅ FULL CLOSURE** | FE `33944e4` `feat(v1.2.1/staff): add monthly work schedule page for carefor 8-2` · 535L 8-file 신규(`StaffMonthlySchedulePage.jsx` 268L + test 121L + util 78L + test 45L + nav 12L + App.jsx +12L Route 1) · 「Wire /staff/schedules to visit PLAN schedules and G-SMS monthly schedule dispatch」 commit 문구 verbatim · ezCare `schedule-p100#tab1 요양보호사 일정표(근무현황표)` 1:1 cross-walk · ezCare FAQ 21193 (#7 23,902 hit) demand 정합 closure |
+
+
+## 5. 무드린트 (검증 한계)
+
+- 카탈로그 233 rowid는 **현재 가시 페이지**의 1-page 추출 — 페이지네이션 여부 미확인(상단 `?ct=K001` 카테고리 필터 외 next/prev 미관측) → 「가정」: 전체 visible FAQ ≈ 233 (max rowid 21781 vs 21844 직링크 격차 ~63건은 직링크 전용 추정)
+- faq-hit 카운트는 누적이며 시점 reset 미관측 → BNK-633 시점 절대값으로 carry (다음 cycle 동일 카운터 재실측 시 +Δ로 demand pulse 측정 가능)
+- TOP-30 cross-walk의 ogada 매핑은 **개념적 1:1 매칭** (실 API 또는 UI 동작 검증 시 별도 사이클 필요)
+- 카테고리 코드 K001~K014 중 K011은 노출 순서상 마지막 = ezCare 내부 분류 정렬 hint (P0~P9 → 기타 패턴과 동형)
+- 도움말 「2025년」 라벨 다수 — 현재 라이브 FAQ는 2025 회계연도 콘텐츠 carry (2026 신규 콘텐츠 미관측 = ezCare 도움말 콘텐츠 정체 신호 가능 · 도입 counter plateau day 4와 정합)
+
+
+## 6. 백본 재실측 동시 carry (이번 cycle)
+
+- ezCare home `b26fcf7d`(106,072B·cachebuster DRIFT) · fnc `6d8c18f8`(17,870B·DRIFT) · e01 `812b1922`(47,130B·DRIFT) — counter verbatim 불변(plateau day 4: BNK-625→628→632→633)
+- FAQ 21844 PII 마스킹 `d0aa760c`(14,474B·IDENTICAL **391차** zero drift vs `ezcare_faq_21844_bnk606.html`)
+- FAQ 21845~22000 entire range empty shell `e5762090`(13,327B) — boundary 21781(목록 max) ~ 21844(직링크 전용) 사이 21782~21843 미probe carry
+- Channel.io shell `90c1792f`(1,993B) — SPA shell·실제 도움말은 JS 로드(역공학 한계)
+
+
+## 7. ogada 측정 baseline 동시 carry (이번 cycle)
+
+- FE develop `33944e4` `feat(v1.2.1/staff): add monthly work schedule page for carefor 8-2` (BNK-632 `bd3253a` → **HEAD +1**) · WT CLEAN · ahead 243 vs origin/test=ab4de83
+- BE develop `3342938` `fix(v2/QA-B95): honor recovered auth in health and live-e2e probe` (BNK-632 `49fe2e7` → **HEAD +1**·BNK-632 DIRTY 6 → CLEAN commit 흡수) · WT CLEAN · ahead 573 vs origin/test=598d108
+- KPI: 118 Route(117 `<Route\b` + 1 `<Routes>`·+1)·93 page(92 `*Page.jsx` + RootRedirect·+1)·V1–V179·BE Test 271(270 `Test.java`+1 `Tests.java`)·BE @Test 1957·FE test 479(196 `.test.js`+283 `.test.jsx`·+2 staff schedule)·모듈 80.86%(23.45/29 · 8-2 △→✅ in-cycle micro-closure pending 다음 cycle 재산정)
+- merge gate = 243 + 573 = **816**(+2 cross-stream vs BNK-632 814)

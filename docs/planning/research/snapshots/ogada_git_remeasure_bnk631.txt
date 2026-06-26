@@ -1,0 +1,64 @@
+# BNK-631 ogada git 실측 + 백본 스냅샷 재실측 (2026-06-25T18:14Z)
+# owner=BNK audience=PLN  rotation=ogada git 실측 6–8h
+# ---------------------------------------------------------------------------
+
+## 1. ogada submodule git HEAD (git 실측)
+
+FE develop  bd3253a  WT CLEAN  "fix: normalize live operation blockers from probe state"
+            BNK-630 @2c9abd6 → HEAD +1   ahead 242 vs origin/test=ab4de83
+BE develop  49fe2e7  WT CLEAN  "feat(v2/G-REPORT-DENSITY): add branch filter to program reports"
+            BNK-629/630 @49fe2e7 동일 SHA → HEAD zero advance 2-cycle   ahead 572 vs origin/test=598d108
+merge gate  = 242(FE) + 572(BE) = 814   (+1 FE-only advance vs BNK-630 813)
+
+## 2. FE @bd3253a diff stat (HEAD +1)
+
+ src/e2e/liveConfig.js           | 25 ++++++++++++++++++-------
+ src/e2e/liveGlobalSetup.js      | 17 ++++++++++++++---
+ src/test/liveE2eHarness.test.js | 21 +++++++++++++++++++++
+ 3 files changed, 53 insertions(+), 10 deletions(-)
+ → QA-B95 클러스터: live-e2e probe state → blocker 정규화(문자열/객체 혼재 정규화)·
+   bootstrap probe readiness·신규 회귀 케이스 21L. 이지케어 live 도입현황 plateau 모니터링 harness resilience.
+
+## 3. KPI (git 실측, BNK-630 대비)
+
+FE Route        117  (116 `<Route\b` + 1 `<Routes>`)        =
+FE page          92  (91 `*Page.jsx` + RootRedirect inline)  =
+FE test         477  (195 `.test.js` + 282 `.test.jsx`)      =
+BE 마이그레이션  V1–V179 (179 sql)                            =
+BE Test 파일    271  (270 `Test.java` + 1 `Tests.java`)       =
+BE @Test       1957  (rg "@Test\b" -o)                        +1 reconcile*
+모듈 커버      80.86% (23.45/29)                              =
+reports Route    28                                           =
+BE @RestController  74
+
+* BNK-630은 BE @Test 1956으로 기록했으나 BE develop SHA(49fe2e7) IDENTICAL.
+  차이는 카운팅 방식(@TestConfiguration 등 1건 포함/제외)에 따른 reconcile +1 — 신규 BE 테스트 0.
+
+## 4. 백본 오프라인 스냅샷 재실측 (md5 재계산 · 변동 0)
+
+c886ff1f  nhis_jo44.html              7,572B   NHIS #44 제34조 이동서비스비 (canonical)  zero drift
+c79c1be3  silverangel_essential.html           평가지표 #41-42·목욕27               zero drift
+f9c5d877  silverangel_extraService.html        효성CMS 5-method·1600-6859           zero drift
+6226e6eb  carefor_func.php                     주야간 109/107-leaf 정본              zero drift
+
+## 5. NHIS #44 제34조 러-1~4 4-tier 이동서비스비 verbatim 재추출 ↔ ogada cross-walk
+
+verbatim (nhis_jo44.html `c886ff1f`):
+ - "제 34 조 (주 · 야간보호급여 이동서비스비용 등)"
+ - "최단거리(편도)에 따라 다음과 같다" — 러-1 ~ 러-4 4구간
+ - "이용 횟수에 관계없이 1일 1회만 산정"
+ - "수급자가 이동서비스를 편도만 … '러-1'부터 '러-4'까지 비용의 50%를 산정한다"
+ - "그 비용은 수급자가 부담하지 아니한다"
+ - "이동서비스 일지를 작성하여 보관하여야 한다" (별지 제22호)
+
+ogada full-stack:
+ - TransportServiceFeeService : RU_1~RU_4 4-tier 상수 · ONE_WAY_RATIO=0.5 · 1일1회 guard
+ - TransportServiceLog        : 별지 제22호 일지 (V148/V154/V155)
+ - FE transportServiceFee.js / TransportServiceFeePanel (UXD-159/163 a11y)
+ → 경쟁 4종(케어포 △차량만·이지케어 △·엔젤 △체크리스트·롱텀 규정만) 중 ogada 유일 산정·표시·일지·RBAC full-stack (391-cycle carry).
+
+## 6. 잔여 우선순위 (carry)
+
+P0/P1 재오픈 0 (81-cycle, BNK-549~631).
+최대 KPI lever: M11 직원급여(id=11) · M12 회계(id=12) closure → 80.86% → 87.76% (+6.9pp). v1.3+ 격상 권장.
+미확인 carry: carefor LIVE HTTP 000 · longterm 502/610 live shell.

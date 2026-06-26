@@ -1,0 +1,127 @@
+# BNK-571 (2026-06-24T04:10Z) — 엔젤·롱텀·규제 4–6h 교차검증 extract
+# rotation: angel(silverangel)/lcms · longterm(국민건강보험) · law.go.kr · MOHW gosi
+# author: BNK | audience: PLN
+# baseline ogada: FE `@a43bcb7` (WT CLEAN · ahead 205 vs origin/test=ab4de83)
+#                BE `@d11263b` (WT CLEAN · ahead 541 vs origin/test=598d108)
+# merge gate: FE205+BE541 = 746 (+2 vs BNK-570 744)
+
+=== 1. NHIS #44 이동서비스비 러-1~4 (348차 zero drift IDENTICAL) ===
+URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP : 200 / 7,572B / md5=c886ff1fd1d5ca2cb5dc76d30adde8ba
+on-disk: docs/planning/research/snapshots/nhis_jo44_live_bnk540.html (md5 IDENTICAL)
+verbatim 본문(불변):
+  · 제34조 「이동서비스비용」 거리구간별 정액
+  · 러-1 (5km 미만) · 러-2 (5–10km) · 러-3 (10–20km) · 러-4 (20km 이상)
+  · "수급자별 1일 1회에 한하여 산정"
+  · 편도는 산정금액의 100분의 50으로 한다 (편도 50%)
+  · ③ 본인일부부담금은 없다 (수급자 부담 X)
+  · ④ 이동서비스 일지 작성·보관 의무 (별지 제22호 서식)
+ogada full-stack cross-walk (`@a43bcb7`/`@d11263b`):
+  BE : TransportServiceFeeService (RU_1~RU_4 enum · ONE_WAY_RATIO=0.5 · 1일1회 guard)
+       TransportServiceLog (V148/V154/V155 · 별지 제22호 운전자 서명 pair CHECK)
+  FE : src/data/transportServiceFee.js (BNK-562 신규 4 parity-copy 상수 — 러-1~4 4구간·편도50%·1일1회·별지 제22호 일지)
+       TransportServiceFeePanel.jsx (UXD-159 BNK-567 a11y deepen · RBAC edit link · summary layout aria 정리)
+  결과: NHIS #44 4-rule = full-stack ✅ parity/우위 (BE 강제 + FE 가시 카피)·PLAN_NOTES #44 1차 확인 348차 carry
+
+=== 2. silverangel 5-URL 백본 zero drift IDENTICAL ===
+2-1. essential(daycareEssentialWork.do)  HTTP 200 / 131,664B / md5=c79c1be37f947aab04ab7ba35cc7814d  IDENTICAL
+     verbatim: "이동서비스 수칙이 있음" · "이동서비스 수칙을 수급자(보호자)에게 제공함"
+                · "이동서비스일지" · "이동서비스 시간을 준수함" · "차량운행표"
+                · "반기 1회" 보호자회의 · 평가지표#27 (목욕 월5회+) · 급여계약서
+2-2. extraService.do                       HTTP 200 / 81,637B / md5=f9c5d8773ad0a481be6d7eb4b192d982  IDENTICAL
+     verbatim: 효성CMS 5-method 자동이체·가상계좌·카드결제·다계좌(항목별 정산)·현금영수증
+                · 1600-6859 · `newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS`
+                · 자동이체 250원/건 · 가상계좌 300원/건 · 월 30,000원
+2-3. mainService.do                        HTTP 200 / 59,002B / md5=bcf6df41310193a3ae997bde49111347  IDENTICAL
+     (main.do 자체는 404 / 1,028B — 루트 https://www.silverangel.kr/ 가 동등 셸 101,258B `6b60b17f` 제공)
+2-4. feeService.do                         HTTP 200 / 44,513B / md5=eab352a8f98ba600561c06bd2e3eecb1  IDENTICAL
+2-5. notice/list.do                        HTTP 200 / 3,594,181B / md5=52c9457f4e34a7d3c49275e5bf337677  IDENTICAL
+     최신 게시: 221563 (2026-06-18) carry · 221571·221572·221573·221574 4-probe 모두
+     unpublished shell `8437f255` 51,765B IDENTICAL → silverangel weekly notice 0 (6-cycle carry)
+     next 예상 publish ~ 2026-06-25 Wed
+
+=== 3. lcms 루트 type rotation 회귀 (DRIFT — 덮어쓰기 1건) ===
+URL  : https://www.lcms.or.kr/
+HTTP : 200 / 50,498B / md5=6b7502914de15aa75cabe04740dfca2c
+이전 : BNK-568 `6c0d22b48da8fb30a0c49f34ce8c6864` 50,554B type2 (silverangel CMS cross-promo)
+현재 : type1+type3 rotation (websiteProvided.do 체험하기 + type3 CJ MOU 디자인 샘플)
+       (BNK-556 `c0c66076` → BNK-568 `6c0d22b4` → BNK-571 `6b750291` = 3-cycle rotation 관측)
+의미 : LCMS-엔젤시스템 자매 도메인 cross-promo funnel 3-type 무작위 rotation 패턴 carry
+       (BNK-515 정본 reveal carry · 마케팅 차별화 카피 "단일 ERP vs SaaS cross-promo")
+
+=== 4. 2026 수가 backbone (longterm 502·503·610) ===
+4-1. longterm 502 (시설급여)             HTTP 200 / 105,552B / md5=b5aee8c114f064f4b5503d1143c11787  IDENTICAL
+     verbatim 본문: "월 한도액 및 급여비용(2026.1.1.기준)" · "단기보호 급여비용(1일당)"
+                    · 1등급 74,060원 · 2등급 68,580원 등
+     주의: BNK-560 live `72148cfe` (+9B `var s16;`) → BNK-571 canonical 회복 carry (oscillation 11th cycle)
+4-2. longterm 503 (재가급여 본인부담경감)  HTTP 302 / 0B / refreshedException redirect
+     on-disk canonical `d3c90b333be1f8d818978eaf0917ba76` 422B (refreshedException gate) carry
+     verbatim 보존: 본인부담 경감 50%×4 / 60%×3 (canonical 8ca7d1fa 104,652B) carry
+4-3. longterm 610 (통합재가서비스)        HTTP 200 / 91,421B / md5=0ea575be5f11a817c635fe40f51dec39  IDENTICAL
+     verbatim: "통합재가서비스" · "2종 이상 급여" · "가산 월 10만원" · "주야간보호형"
+     주의: BNK-560 live `8d53dcc1` (+9B `var s16;`) → BNK-571 canonical 회복 carry (oscillation 동형)
+     ogada 영향: 통합재가 가산 v3+ Epic out-of-scope carry (decisions.md 2026-06-22 §통합재가 carry)
+
+=== 5. 규제 고시 2종 cosmetic DRIFT (verbatim 불변 · 덮어쓰기 2건) ===
+5-1. law.go.kr 2025-247                  HTTP 200 / 78,450B / md5=a94740584967ebaf595664779fbbadf3
+     이전: BNK-569 `55d43ed962656b1aaa3096374c926fd6`
+     DRIFT: cachebuster only `?Time=1782274342`
+     strip-cachebuster md5=02e3f5c8da60428fdbe303226d16adb7 ←→ disk strip md5=02e3f5c8…  IDENTICAL
+     verbatim 불변: 제2025-247호 · 시행 2026.1.1
+     의미: 「장기요양 급여제공기준 및 급여비용 산정방법 등에 관한 고시」 본문 정합 유지
+5-2. MOHW 2026-126 (본인부담상한액)       HTTP 200 / 109,510B / md5=c8150e16a61de378ba239b285107e426
+     이전: BNK-569 `0a8d502de10f649ee473f0b73804a76d`
+     DRIFT: 조회수 2,550 → 2,559 (+9)
+              · 다운로드 첨부① 469→473(+4) / 미리보기 553→555(+2)
+              · 다운로드 첨부② 387→389(+2) / 미리보기 363→364(+1)
+     verbatim 불변: 제2026-126호 · 본인부담상한액 · 시행 2026.1.15
+     의미: 본문 verbatim 영향 0 · counter-only DRIFT 8-cycle 누적 carry
+
+=== 6. ogada git 실측 baseline 갱신 (BNK-570 → BNK-571) ===
+FE develop: `@a43bcb7` (BNK-570 `@cba9ff8` HEAD +1 = `feat(v1.2.1/FAQ21823): add retention expiry alerts and contract template print`)
+            WT CLEAN · ahead 205 vs origin/test=ab4de83 (+1 vs BNK-570 204)
+BE develop: `@d11263b` (BNK-570 `@0494334` HEAD +1 = `feat(v2/live-e2e): add explicit operation reason in health and probe`)
+            WT CLEAN · ahead 541 vs origin/test=598d108 (+1 vs BNK-570 540)
+KPI:
+  · 112 Route (111 `<Route\b` + 1 `<Routes>` wrapper) · 91 page (90 *Page.jsx + RootRedirect=91)
+  · V1–V175 contiguous (V172 `staff_annual_leave_*` / V173 `_yearly_integrity` / V174 `_ledger_g_staff_annual_leave_v3` / V175 `_leave_ledger_integrity`)
+  · BE Test.java 252 · FE test 465 (192 .test.js + 273 .test.jsx)
+  · 모듈 78.79% (competitorModuleCoverage.js 22.85/29 · BNK-569 정본 carry · ✅완전 20·△부분 4·❌갭 5)
+  · merge gate 746 (+2 vs BNK-570 744 = FE+1·BE+1)
+
+=== 7. 4축 P0/P1 재오픈 0 (23-cycle carry, BNK-549~571) ===
+  · G14 care-plan-form          App.jsx `@a43bcb7` LIVE
+  · G26 dashboard/hq            App.jsx `@a43bcb7` LIVE
+  · v1.3-C transport 8-route   App.jsx `@a43bcb7` LIVE
+  · v2 CMS 4-state filter+roster App.jsx `@a43bcb7` LIVE
+  · US-R01-c leave-ledger       App.jsx `@a43bcb7` LIVE (BNK-553/562 closure carry)
+  · neue: FAQ21823 retention expiry alerts + contract template print (FE `a43bcb7`)
+         → US-R03 임금협의 및 근로(재)계약 BNK-566 ↔ 보존(3년) 정합 deepen
+         → ogada surface ✅+ (이지케어 FAQ21823 본문 verbatim cross-walk 7th)
+
+=== 8. 신규 candidate 변동 0 · 가정 번복 0 · 신규 core 갭 0 ===
+  · 백본 5-URL zero drift (silverangel) + NHIS#44 348차 zero drift + longterm 502/610 canonical 정합
+  · candidate carry: G-LCMS-NEWSLETTER P3「가정」(MVP out-of-scope·LCMS 자매 도메인 cross-promo) carry
+                     G-AGENCY-APPRAISAL-DASH P3「가정」(BNK-553·평가서류·서류함·매뉴얼&자가진단) carry
+                     G-PAYROLL-WALLOWANCE-MODEL P3「가정」(BNK-563·module 11 직원급여 v3+) carry
+                     G-SAAS-SELF-BILLING-LEDGER P3「가정」(BNK-563·SaaS 자체 청구) carry
+                     G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT P3「가정」(BNK-563·중증수당 2025-11 분리) carry
+
+=== 9. per-cycle minimum 4종 충족 ===
+  · 신규 증거 URL: 4건 재실측 (silverangel essential·extraService·mainService·feeService) + 1건 추가 (lcms type1 회귀) + 5건 cosmetic (law247·mohw126·lt502·lt610·notice list)
+  · 메뉴/필드/워크플로 상세 1블록: NHIS #44 4-rule full-stack closure ogada `@a43bcb7`/`@d11263b` (§1 위)
+  · COMPETITOR_MATRIX 1행+ ogada @HEAD SHA: BNK-571 `@a43bcb7`/`@d11263b` 행 갱신 (이동서비스·CMS·평가#27 3-row)
+  · BENCHMARK_REPORT §신규 소절: BNK-571 차수 메모 추가
+
+=== 10. 즉시 액션 ===
+  · tester: merge gate 746 (FE205 + BE541 · 양쪽 WT CLEAN · 선행 commit 불필요) — develop→test FF 권장
+  · planner: baseline FE `@a43bcb7` / BE `@d11263b` carry
+              · NHIS #44 348차 full-stack ✅ parity/우위 closure carry
+              · longterm 502 canonical / 610 통합재가 가산 10만원 MVP out-of-scope carry
+              · lcms type1 회귀 marketing copy carry (단일 ERP vs SaaS cross-promo 차별화 카피)
+              · △4 잔여 우선순위 불변: 10 부가서비스 0.5 → 7-4 CMS 0.65 → 2 이동서비스 0.85 → 8 직원근태 0.85
+              · FAQ21823 retention expiry alerts FE closure(BNK-566 US-R03 보존 3년 deepen) carry
+
+=== 11. 미확인 carry ===
+  · carefor func.php LIVE HTTP 000 timeout 9-cycle carry (Wayback `6226e6eb` 98,328B zero drift carry)
+  · silverangel /newSilverangel/main/main.do 404 (대체 URL: 루트 `/` 동등 셸 101,258B `6b60b17f` IDENTICAL) - 신규 미확인 (BNK-565 → BNK-571 변동)

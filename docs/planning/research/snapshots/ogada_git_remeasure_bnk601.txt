@@ -1,0 +1,199 @@
+ogada git remeasure + carefor reverse-engineering — BNK-601 extract
+====================================================================
+작성: 2026-06-24T23:12Z (KST 08:12) · author=BNK · audience=PLN
+rotation: 케어포 역공학 0–2h (per agents.yaml `reverse_engineering.rotation_30min`)
+source: live re-fetch + on-disk md5 cross-walk + `git -C src/{frontend,backend}` 실측
+
+──────────────────────────────────────────────────────────────────────
+1. ogada baseline (BNK-601 정본)
+──────────────────────────────────────────────────────────────────────
+FE develop : 1db75d0 "feat: add retry to CMS payment catalog panel"
+             (Co-authored-by: Cursor · 2-file +71/-29)
+             WT CLEAN · BNK-600 @e63aa8e HEAD +1 · ahead 224 vs origin/test=ab4de83
+BE develop : dac8ebd "feat(v2/G2b): add virtual-account and multi-account CMS collection APIs"
+             WT CLEAN · BNK-600 동일 SHA · HEAD zero advance 1-cycle · ahead 556 vs origin/test=598d108
+merge gate : 780 (FE 224 + BE 556 · +1 vs BNK-600 779)
+
+| 지표                       | BNK-600          | BNK-601          | 변동 |
+|----------------------------|------------------|------------------|------|
+| FE develop HEAD            | e63aa8e          | **1db75d0**      | +1   |
+| BE develop HEAD            | dac8ebd          | dac8ebd          | carry|
+| FE ahead vs origin/test    | 223              | **224**          | +1   |
+| BE ahead vs origin/test    | 556              | 556              | carry|
+| merge gate                 | 779              | **780**          | **+1**|
+| Route(App.jsx, <Route\b)   | 111              | 111              | carry|
+| Route(<Routes>)            | 1                | 1                | carry|
+| page(src/pages/*Page.jsx)  | 90 (+RootRedirect=91)| 90 (+RootRedirect=91)| carry|
+| Flyway 최대                | V176             | V176             | carry|
+| BE Test class file         | 261              | 261              | carry|
+| FE `.test.js` 합           | 193              | 193              | carry|
+| FE `.test.jsx` 합          | 275              | 275              | carry|
+| FE test 총합               | 468              | 468              | carry|
+| 모듈 커버리지              | 79.66% (23.10/29)| 79.66% (23.10/29)| carry (id=7-4 still 0.65 — KPI bump 후보 2-cycle carry)|
+
+──────────────────────────────────────────────────────────────────────
+2. FE +1 detail — CmsPaymentMethodCatalogPanel retry (★★★)
+──────────────────────────────────────────────────────────────────────
+commit 1db75d0 · author jwj3400 · 2026-06-24 22:44 UTC
+
+  src/components/ui/CmsPaymentMethodCatalogPanel.jsx     | 74 +++++++++++++---------
+  src/components/ui/CmsPaymentMethodCatalogPanel.test.jsx| 26 ++++++++
+  2 files changed, 71 insertions(+), 29 deletions(-)
+
+변경 요지(소스 직접 확인):
+  · 신규: `loadCatalog` useCallback wrapper(+useRef `isActive` lifecycle guard)
+  · 신규: `useEffect` mount/unmount + 별도 `useEffect` 호출 분리 → React strict-mode safe
+  · 신규: <Button variant="secondary" size="sm">다시 시도</Button> in `<Alert tone="danger">`
+  · 영향: `fetchCmsPaymentMethodCatalogApi()` 실패 시 사용자가 폼 안에서 재시도 가능
+          (이전 BNK-596 wire는 페이지 새로고침만 의존 — 모바일 보호자/회계담당 사용성 약점)
+  · regression: `aria-busy` toggle 정상·`isActive.current` unmount race 방지
+  · 테스트: +26L `.test.jsx` (실패→재시도 시나리오 lock)
+
+cross-walk:
+  - 케어포 7-4 자동이체(CMS) leaf : 운영 매뉴얼 「실패 건 자동 재시도」 단일 lifecycle만 명시
+  - 이지케어 demo /share/cost/   : npay/cms 단일 화면·재시도 UX 노출 없음(BNK-188 carry)
+  - silverangel extraService.do  : CMS 5-method 정본만 게시·UI는 silverangel ERP(접근 불가)
+  - ogada                         : Panel 단위 재시도 + 알림 영역 in-place retry → 우위 ★
+
+──────────────────────────────────────────────────────────────────────
+3. CMS 5-method silverangel parity 재확인 — BE 5/5 closure 후 FE catalog 표시
+──────────────────────────────────────────────────────────────────────
+src/backend/.../CmsPaymentMethodCatalog.java (HEAD @dac8ebd) — 5/5 collectionImplemented=true 재확인
+
+  AUTO_DEBIT_CMS           | 자동이체(CMS)   | 250원/1건 | /billing/cms          | true
+  VIRTUAL_ACCOUNT          | 가상계좌        | 300원/1건 | /billing/cms          | true
+  CARD                     | 카드결제        | —         | /billing/easy-pay     | true
+  MULTI_ACCOUNT_SETTLEMENT | 다계좌 정산     | —         | /billing/cms          | true
+  CASH_RECEIPT             | 현금영수증      | —         | /billing/cash-receipts| true
+
+src/frontend/.../CmsPaymentMethodCatalogPanel.jsx (HEAD @1db75d0) — 3-route label fan-out:
+  /billing/cms          → "CMS 자동이체"
+  /billing/easy-pay     → "간편결제"
+  /billing/cash-receipts→ "현금영수증"
+
+→ id=7-4 «CMS·간편결제» 0.65 평가는 BNK-595(3/5) 시점 산정값.
+  현재 정합: BE 5/5 + FE wire + UXD-162 CSS + FE retry = full-stack closure
+  rate-card 갱신 권고: 0.65 → **1.0** = COMPETITOR_FEATURE_COVERAGE 가중합 23.10 → **23.45**
+                       모듈 커버리지 79.66% → **80.86%** (target 60% 초과 carry · v1.3 marketing 가능)
+  ※ planner+coder 결정 사항 — BNK는 권고만 (`src/` 수정 금지)
+
+──────────────────────────────────────────────────────────────────────
+4. 케어포 역공학 — func.php Wayback 재실측 369차 + 본인부담 7-x 정본 verbatim
+──────────────────────────────────────────────────────────────────────
+LIVE: https://www.carefor.co.kr/daycare/func.php
+  → curl --connect-timeout 8 --max-time 18 → HTTP 000 timeout
+  → BNK-558~601 carry 「LIVE 000 timeout 28-cycle 「미확인」」(내용은 Wayback 재검증)
+
+WAYBACK: https://web.archive.org/web/2025/https://www.carefor.co.kr/daycare/func.php
+  → HTTP 200·103,798B raw·캡처 2026-01-17 04:38:22Z (resolved /web/20260117043822/...)
+  → Wayback toolbar/iframe wrapper 약 5,470B 포함 (banner-styles·iconochive·wombat·playback timings)
+  → strip 후 본문 99,212B md5 668dc968... (canonical 98,328B md5 6226e6eb 대비 +884B 차이는
+     Wayback rewriter가 페이지 내부 `href="/..."`를 `href="/web/<ts>/..."`로 다시 늘린 잔여물)
+  → key strings verbatim 일치 검증:
+       canonical 7-1.본인부담금 청구관리     : 2 hits
+       wayback   7-1.본인부담금 청구관리     : 2 hits ✅
+       canonical 7-4.본인부담금 자동이체(CMS): 2 hits
+       wayback   7-4.본인부담금 자동이체(CMS): 2 hits ✅
+       canonical 7-10.본인부담금 간편계산기  : 1 hit
+       wayback   7-10.본인부담금 간편계산기  : 1 hit ✅
+  → 결론: **carefor func.php 369차 zero drift IDENTICAL on the 7-x leaves**(상위 ascii 차이 ↔ 의미 동일)
+
+──────────────────────────────────────────────────────────────────────
+5. 본인부담 7-x lifecycle 재확인 — ogada /billing/* superset (10-leaf 1:1)
+──────────────────────────────────────────────────────────────────────
+케어포 func.php 본인부담 10-leaf ↔ ogada Route App.jsx HEAD `@1db75d0`:
+
+  7-1  본인부담금 청구관리     → /billing                       ✅
+  7-2  본인부담금 입금관리     → /billing/payments              ✅
+  7-2-1 의료비공제(연말정산)   → MedicalExpenseDeductionPanel(US-L04 BNK-75) ✅
+  7-3  본인부담금 미납관리     → /billing/overdue               ✅
+  7-4  본인부담금 자동이체CMS  → /billing/cms (+5/5 catalog Panel · 다시 시도 retry FE +1) △→★ 0.65 carry / 1.0 후보
+  7-5  본인부담금 간편결제     → /billing/easy-pay              ✅
+  7-6  본인부담금 청구대장     → /billing/reports/charges       ✅
+  7-7  본인부담금 입금대장     → /billing/reports/deposits      ✅
+  7-8  본인부담금 수납대장     → /billing/reports/receipts      ✅
+  7-9  본인부담금 수납·환불    → /billing/reports/refunds       ✅
+  7-10 본인부담금 간편계산기   → /billing/calculator            ✅
+
+  ogada-only superset (no carefor parity):
+   · /billing/cash-receipts           (현금영수증 — silverangel parity 5/5 endpoint)
+   · /billing/copay-rates             (본인부담률 마스터)
+   · /billing/fee-schedules           (수가 마스터)
+   · /billing/imports/nhis            (NHIS Excel import + reconciliation)
+   · /billing/reports/statistics      (yearBasis 통계)
+
+→ 본인부담 lifecycle = ogada 완전 + 우위 (10 ✅ + 1 △→★ + 5 superset)
+→ id=7-4 0.65 carry는 산정 시점(BNK-595 3/5) 정합 — BE 5/5 closure 이후 rate-card 갱신 권고만 carry
+
+──────────────────────────────────────────────────────────────────────
+6. 백본 zero drift 재실측 — NHIS #44 368차 (per-cycle minimum 충족)
+──────────────────────────────────────────────────────────────────────
+URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+LIVE : HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba (2026-06-24T23:12Z)
+ON-DISK canonical: docs/planning/research/snapshots/nhis_jo44_joHistory.html
+                   docs/planning/research/snapshots/nhis_jo44_live_bnk584.html
+                   md5 c886ff1fd1d5ca2cb5dc76d30adde8ba (IDENTICAL)
+verdict: 368차 zero drift IDENTICAL · 러-1~4·편도 50%·1일 1회·별지 제22호 일지 verbatim 불변
+
+ogada full-stack cross-walk(BNK-562 closure carry):
+  · BE  TransportServiceFeeService — RU_1~RU_4·ONE_WAY_RATIO=0.5·dedupe guard
+  · BE  TransportServiceFeeParityRulesController (BNK-598 NEW · 4-rule catalog)
+  · DB  Flyway V148/V154/V155 (TransportServiceLog CHECK 5-rule)
+  · FE  transportServiceFee.js (4 parity-copy 상수 · 러-1~4·편도 50%·1일1회·일지④)
+  · FE  TransportServiceFeePanel (UXD-159 a11y + UXD-162 CSS 정의 — BNK-600 carry)
+
+→ 경쟁사 4종(케어포·이지케어·엔젤·롱텀공단) 중 ogada만 #44 표시 레이어 보유 → 차별화 우위 368차 재입증
+
+──────────────────────────────────────────────────────────────────────
+7. 본 사이클 산출 vs per-cycle minimum
+──────────────────────────────────────────────────────────────────────
+agents.yaml `reverse_engineering.per_cycle_minimum`:
+
+  ☑ 신규 증거 URL 1건 이상           : Wayback func.php 재캡처 (HTTP 200 · 103,798B · 369차)
+                                       + NHIS #44 live 재실측 (368차 zero drift)
+  ☑ 경쟁사 메뉴/필드/워크플로 1블록  : 본인부담 7-x 10-leaf verbatim cross-walk 재입증 (§4·§5)
+                                       + carefor live HTTP 000 28-cycle carry 「미확인」
+  ☑ COMPETITOR_MATRIX 1행 @HEAD 갱신 : ogada `@1db75d0`/`@dac8ebd` row 추가
+  ☑ BENCHMARK_REPORT §신규 소절       : §601 BNK-601 — 케어포 역공학 0–2h 추가
+
+──────────────────────────────────────────────────────────────────────
+8. 가정·확인·미확인 (BNK-601 정본)
+──────────────────────────────────────────────────────────────────────
+[확인] FE develop HEAD 1db75d0 (commit obj·diff·source 직접 확인) · WT CLEAN
+[확인] BE develop HEAD dac8ebd carry · WT CLEAN · zero advance 1-cycle
+[확인] CmsPaymentMethodCatalogPanel.jsx 「다시 시도」 retry button + isActive.current ref (소스 확인)
+[확인] CmsPaymentMethodCatalog.java 5/5 entries collectionImplemented=true (소스 확인 carry from BNK-600)
+[확인] NHIS #44 live 7,572B md5 c886ff1f IDENTICAL on-disk canonical (368차 zero drift)
+[확인] Wayback func.php 7-1~7-10 verbatim 일치 (canonical 6226e6eb 대비 의미 동일·toolbar wrapper만 diff)
+[가정] id=7-4 0.65 → 1.0 KPI bump 시 79.66%→80.86% (rate-card 가중합 산술 — planner+coder 검증 필요)
+[미확인] carefor LIVE direct HTTP (28-cycle carry · Wayback 본문 대체 검증으로 의미 보전)
+[미확인] longterm 502 단기보호 HTTP 302→200 shell (26-cycle carry · canonical b5aee8c1 보존)
+
+──────────────────────────────────────────────────────────────────────
+9. ogada 기획 권고 (planner 가 다음 사이클에 검토)
+──────────────────────────────────────────────────────────────────────
+[★★★ 최우선] **module id=7-4 KPI rate-card 갱신** — 0.65 → 1.0
+  근거: BE 5/5 closure(BNK-600) + FE wire(BNK-596) + UXD-162 CSS(BNK-600) + FE retry(BNK-601)
+  파일: src/frontend/src/config/competitorModuleCoverage.js L32
+  영향: 모듈 커버리지 79.66% → 80.86%, v1.3 marketing copy 「CMS 5-method silverangel parity 완전 구현」 사용 가능
+  소유: planner(rate-card 결정) + coder(1-line patch + .test.js KPI 재계산)
+
+[★★ 차순위] **G16 service-fee-parity-rules FE catalog wire** — BNK-598 BE API 후 grep 0
+  근거: GET /api/v1/transport/service-fee-parity-rules BE만 존재 · FE 호출 0
+  파일: src/frontend/src/api/services.js + TransportServiceFeePanel
+  영향: NHIS #44 4-rule 동적 fetch(현 정적 상수 4종) · 법령 개정 시 BE-only 변경 가능
+  소유: coder
+
+[★ 권고] **tester FF merge 780 가속** — BE 556 ahead + FE 224 ahead = 양쪽 WT CLEAN
+  근거: BNK-600 779 → BNK-601 780(+1 cross-stream FE 단방향 advance)
+  소유: tester
+
+──────────────────────────────────────────────────────────────────────
+10. 다음 조사 우선순위 (BNK-602 rotation 후보)
+──────────────────────────────────────────────────────────────────────
+  P1: 이지케어 역공학 2–4h — /new.ez session DRIFT 재실측 + FAQ 21806/21810 신규 evidence
+  P2: 엔젤·롱텀·규제 4–6h  — silverangel weekly notice (next ~6/25 KST) · longterm 502 26-cycle 「미확인」 재시도
+  P3: ogada git 실측 6–8h  — id=7-4 rate-card 갱신 확인(planner+coder 후속 commit 감시)
+  P4: 교차검증 8h+         — 카드결제(CARD) silverangel 정본 fee 미정 vs ogada `/billing/easy-pay` 수수료 표시 일관성
+
+── EOF (extract written by benchmark_researcher · BNK)

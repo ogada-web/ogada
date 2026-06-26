@@ -1,0 +1,125 @@
+BNK-604 ogada git 실측 재산정 (rotation 6–8h)
+조사일: 2026-06-25T00:56:00Z (KST 09:56)
+owner=BNK audience=PLN
+
+================================================================
+[ src/frontend (develop) ]  — HEAD zero advance 1-cycle vs BNK-603
+================================================================
+$ git -C src/frontend rev-parse develop
+  9aeedfe0e156ada29f203c45d31344ac24a02793  →  9aeedfe   (= BNK-603 동일 SHA · HEAD zero advance)
+
+$ git -C src/frontend log -1 --pretty='%h %ci %s' develop
+  9aeedfe 2026-06-24 23:54:23 +0000 feat(v2/G2b+G16): wire CMS collection methods and transport parity-rules API
+
+$ git -C src/frontend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/frontend rev-list --count origin/test..develop
+  225  (vs origin/test = ab4de83)   carry vs BNK-603
+
+================================================================
+[ src/backend (develop) ]  — HEAD zero advance 1-cycle vs BNK-603
+================================================================
+$ git -C src/backend rev-parse develop
+  e12b0844ee954d3cba25d533ab930309dad4d63a  →  e12b084   (= BNK-603 동일 SHA · HEAD zero advance)
+
+$ git -C src/backend log -1 --pretty='%h %ci %s' develop
+  e12b084 2026-06-24 23:46:00 +0000 feat(v2/US-O01): add bathing pre/post observation fields and indicator-27 compliance API
+
+$ git -C src/backend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/backend rev-list --count origin/test..develop
+  557  (vs origin/test = 598d108)   carry vs BNK-603
+
+================================================================
+[ KPI 정본 (git 실측 — 규칙 §Baseline · 전 항목 carry) ]
+================================================================
+Route                 : 112  (111 `<Route\b` App.jsx + 1 `<Routes>` wrapper)   carry
+Page                  : 91   (90 *Page.jsx + 1 RootRedirect.jsx)               carry
+Flyway migration      : V1–V177 (max V177 contiguous)                          carry
+BE *Test.java         : 262                                                    carry
+BE @Test (method)     : 1904                                                   carry
+FE test (.test.js)    : 193   (git ls-tree -r develop)                         carry
+FE test (.test.jsx)   : 276                                                    carry
+FE test total         : 469                                                    carry
+모듈 coverage         : 80.86 %  (sum 23.45 / 29 entries)                      carry
+                        ※ id=7-4 CMS·간편결제 coverage=1.0 (BNK-603 bump LANDED·재확인)
+ahead vs origin/test  : FE 225 (carry) · BE 557 (carry)
+merge gate            : 782  (FE 225 + BE 557 · +0 vs BNK-603)                 carry
+
+→ 양쪽 develop HEAD zero advance 1-cycle (FE+BE 모두 WT CLEAN).
+  상태 변경 0 · KPI 변경 0 · 가정 번복 0 · per-cycle minimum 4종 충족(재실측 경로).
+
+검증 명령 (재현 가능):
+  git -C src/frontend grep -c '<Route\b' develop -- src/App.jsx          → 111
+  git -C src/frontend grep -c '<Routes>' develop -- src/App.jsx          → 1
+  git -C src/frontend ls-tree -r --name-only develop | grep -cE 'Page\.jsx$'  → 90
+  git -C src/frontend ls-tree -r --name-only develop | grep -cE '\.test\.js$'  → 193
+  git -C src/frontend ls-tree -r --name-only develop | grep -cE '\.test\.jsx$' → 276
+  git -C src/backend  ls-tree -r --name-only develop | grep -cE 'Test\.java$'  → 262
+  git -C src/backend  ls-tree -r --name-only develop | grep -oE 'V[0-9]+__' | grep -oE '[0-9]+' | sort -n | tail -1 → 177
+  (모듈 coverage: competitorModuleCoverage.js 29 entry 합 23.45 — JSDoc 주석 'coverage: 1' 1줄 제외)
+
+================================================================
+[ ★★★ 교차검증 1 — BNK-603 3종 closure HEAD 잔존 재확인 (zero-advance 무결성) ]
+================================================================
+이번 사이클 HEAD 미전진이므로 BNK-603 landed 산출물이 develop HEAD에 그대로 존재하는지 grep 재확인.
+
+(1) G2b CMS collection FE wire (silverangel 5/5):
+$ git -C src/frontend ls-tree -r --name-only develop | grep -i CmsCollectionPanel
+  src/components/ui/CmsCollectionPanel.jsx          ✅ (413L · 가상계좌+다계좌 정산 UI)
+  src/components/ui/CmsCollectionPanel.test.jsx     ✅
+  → module id=7-4 coverage 1.0 carry (BNK-603 bump LANDED 재확인)
+
+(2) G16 NHIS #44 transport parity-rules FE wire:
+$ git -C src/frontend grep -l 'fetchTransportServiceFeeParityRulesApi\|service-fee-parity-rules' develop
+  src/api/services.js                               ✅
+  src/components/transport/TransportServiceFeePanel.jsx   ✅ (Promise.all 소비 + <h3>NHIS #44 산정 기준</h3>)
+  src/components/transport/TransportServiceFeePanel.test.jsx ✅
+  → BNK-598~602 「FE wire 0 hit P2」 해소 상태 carry
+
+(3) US-O01 BE bathing indicator-27-compliance API:
+$ git -C src/backend grep -l 'indicator-27-compliance\|Indicator27' develop -- src/main
+  care/bathschedule/api/BathingScheduleController.java                          ✅
+  care/bathschedule/api/BathingScheduleIndicator27ClientComplianceEntry.java    ✅
+  care/bathschedule/api/BathingScheduleIndicator27ComplianceResponse.java       ✅
+  care/bathschedule/domain/BathingScheduleIndicator27Catalog.java               ✅ (월5회·전후관찰)
+  care/bathschedule/domain/BathingScheduleService.java                          ✅
+  dashboard/domain/DashboardService.java                                        ✅
+  → BE-only closure 재확인.  FE wire 잔여:
+$ git -C src/frontend grep -l 'bathing-schedules/indicator-27\|BathingScheduleIndicator27' develop
+  (0 hit) → bathing indicator-27 FE wire **P2 carry** (coder 다음 사이클 후보)
+  ※ 주의: FE 의 'indicator-27-plan/provision/benefit-start'(functionalRecoveryCompliance.js)
+     는 G17 기능회복훈련 지표로 목욕 평가지표 27 과 별개 — 혼동 금지.
+
+================================================================
+[ ★★ 교차검증 2 — NHIS #44 이동서비스비 러-1~4 live 재실측 (371차 zero drift) ]
+================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+$ curl -s -w "HTTP %{http_code} SIZE %{size_download}"
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+on-disk: docs/planning/research/snapshots/nhis_jo44.html  c886ff1f (= live IDENTICAL)
+→ 371차 zero drift CONFIRMED.  경쟁사 4종 중 ogada 만 #44 표시 레이어 full-stack 보유(G16 BNK-603 closure) 우위 carry.
+
+================================================================
+[ ★ 모듈 coverage 29-entry 재산정 블록 (이번 사이클 재유도) ]
+================================================================
+competitorModuleCoverage.js (develop @9aeedfe) 29 entry · 합 23.45 / 29 = 80.86%
+  coverage=1.0 (✅ 22종): 1-1·1-3·1-7·1-9·3-1·4·5·26·43·7-1·7-2·7-2-1·7-3·7-4·7-6·7-10·9·nhis·qr·hq + (others)
+  coverage=0.85 (△):  id=2 이동서비스 · id=8 직원·근태
+  coverage=0.75 (△):  id=10 부가서비스(SMS·알림)
+  coverage=0   (❌ 갭): id=1-5 가정통신문 · id=1-10 연계기록지 · id=6 위생·안전 점검 ·
+                       id=11 직원 급여 · id=12 수입지출·회계
+P2 갭 carry (App.jsx route 실측):
+  $ git -C src/frontend grep -c '/payroll'    develop -- src/App.jsx  → 0  (M11 직원급여 전무)
+  $ git -C src/frontend grep -c '/accounting' develop -- src/App.jsx  → 0  (M12 회계 전무)
+  → 케어포 M11 11-1~11-6 · 이지케어 wAllowance-payrollcost 양쪽 구현 vs ogada 전무 (BNK-602 P2 등록 carry)
+
+================================================================
+[ planner 권고 ]
+================================================================
+1. tester FF merge **782**(FE 225+BE 557·양쪽 WT CLEAN) 가속 — develop 산출물 안정(2-cycle zero advance).
+2. P2 coder 후보 2건: (a) bathing indicator-27-compliance FE wire(US-O01 후속) (b) M11 /payroll/* (id=11 0→).
+3. NHIS#44 371차 carry · longterm 502 「미확인」 carry · carefor LIVE HTTP 000 「미확인」 carry.
+4. 모듈 80.86% — v1.2 KPI ≥60% 초과 carry · id=11·12 closure 가 다음 KPI bump 최대 레버.

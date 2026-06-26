@@ -1,0 +1,108 @@
+BNK-628 교차검증·갭 우선순위 8h+ (2026-06-25T16:22Z)
+=====================================================================
+rotation: 교차검증·갭 우선순위 — G14·대시보드·v1.3-C·v2 CMS 4축 재확인·group-history closure 지속·엑셀 포맷 스캔
+focus headline: ★★★ 4축+leave-ledger 7/7 LIVE 재확인 · ★★ group-history-fill closure 지속(BE test +1) · ★ ezCare FAQ 21844 공단 엑셀 PII 마스킹 zero drift
+
+---------------------------------------------------------------------
+[ogada git 실측 — HEAD zero advance 1-cycle]
+---------------------------------------------------------------------
+FE develop @f74a6e7  Surface live E2E health reasons when backend is reachable
+        (BNK-627 동일 SHA · HEAD zero advance 1-cycle)
+        WT CLEAN · ahead origin/test = 240
+BE develop @337453d  feat(v2/G-REPORT-DENSITY): fill program group-history report from membership data
+        (BNK-627 동일 SHA · HEAD zero advance 1-cycle)
+        WT CLEAN · ahead origin/test = 571
+merge gate = 240 + 571 = 811  (BNK-627 carry · 0 delta)
+
+KPI (HEAD-tree 실측 · BNK-627 대비 전부 IDENTICAL):
+  Route        117  (116 `<Route\b` + 1 `<Routes>`)
+  page          92  (91 `*Page.jsx` + RootRedirect)
+  migration  V1–V179
+  BE Test      271  (270 `Test.java` + 1 `Tests.java`)
+  BE @Test    1954
+  FE test      477  (195 .test.js + 282 .test.jsx)
+  모듈 coverage 80.86%  (23.45/29)
+  reports route 28
+
+---------------------------------------------------------------------
+[★★★ 4축+leave-ledger P0/P1 재오픈 0 — App.jsx @f74a6e7 7/7 LIVE (확인)]
+---------------------------------------------------------------------
+| 축 | ogada Route | 판정 |
+|---|---|---|
+| G14 care-plan-form | `/clients/:clientId/care-plan-form` | ✅ LIVE |
+| G26 dashboard (운영) | `/dashboard` → DashboardPage | ✅ LIVE |
+| G26 dashboard (HQ) | `/dashboard/hq` → DashboardPage variant="hq" | ✅ LIVE |
+| v1.3-C transport (#44) | `/transport/service-fees` (+ 9 sibling transport routes) | ✅ LIVE |
+| v2 CMS | `/billing/cms` | ✅ LIVE |
+| v2 easy-pay (7-5) | `/billing/easy-pay` | ✅ LIVE |
+| US-R01-c leave-ledger | `/staff/leave-ledger` | ✅ LIVE |
+
+78-cycle carry (BNK-549~628). payroll/accounting 0 route unchanged.
+
+---------------------------------------------------------------------
+[★★★ G-REPORT-DENSITY-GROUP-HISTORY-FILL closure 지속 검증 (BNK-627 carry)]
+---------------------------------------------------------------------
+BE @337453d sustained:
+  V179 program_client_groups + program_client_group_members schema
+  ProgramReportService.getGroupHistoryReport() → aggregateHistoryWindows(org,branch,from,to)
+  groupConfigAvailable=true
+  Tests: routing $.groupConfigAvailable=true + service empty + **getGroupHistoryReportShouldMapAggregatedMembershipWindows** (BNK-628 grep confirm)
+M5 program report 5-rpt = demo M5 5-rpt full-stack ✅ (shell→fill 종결 유지).
+P3 candidate G-REPORT-DENSITY-GROUP-HISTORY-FILL → **제거 가능** carry.
+
+---------------------------------------------------------------------
+[★★ ezCare FAQ 21844 공단 엑셀 PII 마스킹 — 389차 zero drift (엑셀 포맷 변경 0)]
+---------------------------------------------------------------------
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844
+live: HTTP 200 · 14,474B · md5 d0aa760c4d3cf494b524466691d7fd4a
+disk: ezcare_faq_21844_bnk606.html = d0aa760c IDENTICAL
+인용: 「공단 개인정보보호 강화 조치로 공단 엑셀 자료 내 수급자, 종사자 이름 일부가 마스킹(*) 처리로 변경」
+      「260624_공단 개인정보보호 표시 방식 변경에 따른 방문일정 연동 안내」
+ogada: G-NHIS-EXCEL-RECONCILE P3 carry · liveE2eNhisImportReady probe exists · masked-name reconcile **미구현** grep 0 hit
+판정: 경쟁사(이지케어) 공단 엑셀 마스킹 대응 FAQ 존재 · ogada NHIS import reconcile P3 우선순위 유지 · **엑셀 포맷 변경 0**
+
+---------------------------------------------------------------------
+[★ FAQ 21856 empty body shell — negative (확인)]
+---------------------------------------------------------------------
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856
+live: HTTP 200 · 13,327B · md5 e5762090dafae4385da113934c1a50b5
+content_body: `<div id="content_body" class="cke_editable"></div>` — **empty** (Q title also blank)
+vs BNK-584: md5 IDENTICAL · empty since at least BNK-584
+판정: rowid 존재·본문 미게시 shell · 역공학 가치 없음 · NF negative carry
+
+---------------------------------------------------------------------
+[★★ ezCare 도입·점유율 plateau day 2 — cachebuster-only DRIFT]
+---------------------------------------------------------------------
+| URL | md5 (live) | size | counter | vs BNK-625 |
+|---|---|---|---|---|
+| home / | 760883ea | 106,072B | mCnt {1:9287,2:4603,3:2353,4:1820} | counter 0 · md5 DRIFT |
+| fnc | 64a3eb4c | 17,870B | 도입 9,357개 | counter 0 · md5 DRIFT |
+| ?PG=e01 | b982c7e5 | 47,130B | 17,489/9,354/53.49% 집계일 2026.06.25 | counter 0 · md5 DRIFT |
+
+BNK-625 plateau → BNK-628 day 2 plateau confirmed.
+
+---------------------------------------------------------------------
+[★★ silverangel notice 221564 — retraction-window 지속 (6/30 D-5)]
+---------------------------------------------------------------------
+list: HTTP 200 · Tmp_idx 최신 가시 = 221551 (221564 미노출)
+view 221564: HTTP 200 · 51,765B · md5 44223150 (비공개 shell · BNK-618 HAS-DATA ffe82a0d 미복귀)
+판정: 「next 6/30 정식 게시」 재검증 D-5 · P3 3종 「6/30 재검증 보류」 carry
+
+---------------------------------------------------------------------
+[★★ NHIS #44 — 389차 zero drift IDENTICAL]
+---------------------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+live: HTTP 200 · 7,572B · md5 c886ff1f IDENTICAL
+
+---------------------------------------------------------------------
+[★ 갭 우선순위 재정렬 (group-history closure 후 · P0/P1 재오픈 0)]
+---------------------------------------------------------------------
+P0/P1 재오픈: 0 (78-cycle).
+P1 리포트: M1 1-12 연계기록지 (id=1-10 coverage 0 · +0.034pp)
+P2 KPI lever: M11 11-6 급여대장 (id=11 +3.4pp) · M12 회계 (+3.5pp) → +6.9pp→87.76%
+P3 dashboard gap (silverangel 221564 evidence): G-NURSING-MISSED-RECORD-DASHBOARD · ogada DashboardPage KakaoApiStatus only · missed nursing 0 hit
+P3 excel: G-NHIS-EXCEL-RECONCILE (FAQ 21844 masked-name import reconcile)
+P3 silverangel 6/30 보류: G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE · G-LEGAL-FORM-SIGNATURE-IMAGE
+
+per-cycle minimum: 신규/재실측 URL 4건(NHIS#44·FAQ21844·FAQ21856·silverangel list/view) ·
+    워크플로 1블록(4축 7-route + FAQ21844 excel PII) · COMPETITOR_MATRIX @f74a6e7/@337453d · BENCHMARK_REPORT §628

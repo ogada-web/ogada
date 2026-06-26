@@ -1,0 +1,97 @@
+BNK-599 엔젤·롱텀·규제 4–6h 역공학 교차검증 (2026-06-24T22:00Z / KST 07:00)
+================================================================================
+rotation: 4–6h 엔젤·롱텀·law.go.kr·이동서비스비 #44·2026 평가·단기보호·통합재가 — silverangel/lcms 공개 + 규제 고시 교차검증
+
+--------------------------------------------------------------------------------
+[1] ogada git 실측 (BNK-599) — FE+1 · BE zero advance · 양쪽 WT CLEAN
+--------------------------------------------------------------------------------
+$ git -C src/frontend rev-parse --short develop  → c3c6272
+  fix: dedupe live e2e operation readiness skip reasons
+  WT CLEAN · ahead 222 vs origin/test=ab4de83 (BNK-598 @4875937 HEAD +1)
+$ git -C src/backend  rev-parse --short develop  → bd1e87e
+  feat(v2/G16): add NHIS #44 transport service fee parity rules API
+  WT CLEAN · ahead 555 vs origin/test=598d108 (BNK-598 동일 SHA · HEAD zero advance 1-cycle)
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90 *Page.jsx + RootRedirect)
+$ V1–V175 · BE Test 260(@Test 1,875) · FE test 472(197 .test.js + 275 .test.jsx · +4 js vs BNK-598)
+$ 모듈 79.66%(23.10/29 · id=2 0.85 · id=7-4 0.65 · id=10 0.75) carry
+$ merge gate = FE 222 + BE 555 = 777 (+1 vs BNK-598 776)
+
+--------------------------------------------------------------------------------
+[2] NHIS #44 이동서비스비 러-1~4 — 366차 zero drift IDENTICAL (확인)
+--------------------------------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f (live = on-disk nhis_jo44_joHistory.html IDENTICAL)
+verbatim grep: 러-1 · 러-4 · 편도 · "1일 1회" · "50%" · 별지 제22호 일지(④) 정상
+↔ ogada full-stack ✅ parity/우위:
+  BE TransportServiceFeeParityCatalog + GET /api/v1/transport/service-fee-parity-rules (4-rule)
+  BE TransportServiceFeeService(RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 dedup)
+  FE transportServiceFee.js 상수 parity-copy + TransportServiceFeePanel(UXD-159)
+  FE service-fee-parity-rules API wire = 0 hit (catalog UI 소비 잔여)
+PLAN_NOTES #44 1차 확인 366차 재입증
+
+--------------------------------------------------------------------------------
+[3] 롱텀(공단) 2026 수가·고시 교차검증
+--------------------------------------------------------------------------------
+longterm 610 통합재가서비스 (확인): 367차 zero drift
+  URL: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731
+  HTTP 200 · 91,421B · md5 0ea575be (canonical IDENTICAL)
+  verbatim: "통합재가서비스" · "2종 이상" · "월 10만원"(가산) → ogada MVP out-of-scope carry
+longterm 502 단기보호 (미확인): 24-cycle carry · HTTP 동작 변동
+  URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502
+  HTTP 200 · 422B · md5 d3c90b33 (refreshedException shell · on-disk IDENTICAL)
+  BNK-594~598: HTTP 302 session gate → BNK-599: HTTP 200 error shell (동작 변동·본문 동일)
+  canonical 단기보호 1등급 74,060원 = on-disk longterm_502.html / longterm_502_short_term.html 보존
+
+--------------------------------------------------------------------------------
+[4] 규제 고시 DRIFT (cosmetic·key phrase carry → 덮어쓰기 2건)
+--------------------------------------------------------------------------------
+law247 (보건복지부고시 제2025-247호):
+  URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+  HTTP 200 · 78,450B · md5 2edf7753(BNK-594) → a2cf9bf3(NEW cachebuster)
+  strip-?Time= md5 736edfd6 (BNK-594 strip 0e07cef1 대비 변동 — template drift 추정)
+  key phrase carry: "제2025-247호" · "시행 2026" · "2025-247" verbatim → 덮어쓰기
+mohw126 (보건복지부고시 제2026-126호 본인부담상한액):
+  URL: https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000
+  HTTP 200 · 109,510B · md5 8973c41b(BNK-594) → 1f71275c(NEW counter)
+  다운로드 477회 carry · 미리보기 564회 carry · "본인부담상한액" · "제2026-126" verbatim → 덮어쓰기
+
+--------------------------------------------------------------------------------
+[5] 엔젤시스템(silverangel.kr) 본진 — 5-URL 368차 zero drift + weekly notice 0
+--------------------------------------------------------------------------------
+extraService.do          : HTTP 200 · 81,637B · f9c5d877 (CMS 5-method)
+fcltySlry/essentialWork.do: HTTP 200 · 166,023B · 80517b18 (시설 — 이동서비스 0·2026 평가지표表)
+service/mainService.do   : HTTP 200 · 59,002B · bcf6df41
+businessSupportService.do: HTTP 200 · 75,878B · a13cb5ac
+notice list.do           : HTTP 200 · 3,594,181B · 52c9457f (latest real 221563 · 6/18)
+weekly notice probe 221620~221625 (view.do Tmp_idx):
+  → 모두 HTTP 200 · 51,765B · md5 8437f255 (미게시 shell IDENTICAL)
+  weekly notice 0 · 7-day stale(6/18→6/24) · next ~6/25(KST 수요일 패턴)
+systemFeature.do         : HTTP 404 · 1,028B (on-disk silverangel_system_feature.html 45,601B 보존·URL dead carry)
+
+--------------------------------------------------------------------------------
+[6] 메뉴/필드/워크플로 1블록 — 엔젤 essentialWork 평가지표 27 목욕 ↔ ogada bathing (2026 #27)
+--------------------------------------------------------------------------------
+silverangel fcltySlry/essentialWork.do (80517b18) 주야간보호 급여제공 필수업무表:
+  평가지표 27 목욕 서비스 (verbatim):
+    "- 월 5회 이상 목욕서비스 제공, 목욕 전.후 수급자의 상태 관찰 및 기록"
+  인접 항목(동일表):
+    평가지표 29 욕창예방 및 관리 — 욕창간호·상태변화 기록
+    평가지표 28 배설관리
+↔ ogada @c3c6272/@bd1e87e crosswalk:
+  /care/bathing-schedules (BathingSchedulePage) — 목욕일정·제공현황 ✅
+  /care/reports/bath-help — 목욕도움 리포트 ✅ (func 3-5 · demo L06_M03 1:1)
+  /nursing/* 욕창 cluster — 평가지표 29 partial+ ✅ (L03 nursing carry)
+  gap(가정): "목욕 전·후 상태 관찰" 전용 필드/리포트 leaf — carefor func 3-3·demo L06 vs ogada schedule+report 분리 △
+  → ogada 목욕 워크플로 = 엔젤 #27 핵심(월5회·전후관찰) **partial+ ✅** · 전후관찰 전용 UI deepen = P2 carry
+
+--------------------------------------------------------------------------------
+요약 (per-cycle minimum 4종 충족)
+--------------------------------------------------------------------------------
+· 신규 증거 URL/재실측: 17-URL 재실측(NHIS#44 366차·longterm 610/502·law247·mohw126·silverangel 5·notice probe 6·systemFeature 404)
+· 메뉴/필드/워크플로 1블록: 평가지표 27 목욕 ↔ ogada bathing crosswalk [6]
+· COMPETITOR_MATRIX: @HEAD c3c6272/bd1e87e 갱신(6-row)
+· BENCHMARK_REPORT: §599 신규 소절
+· 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 5 P3)
+· 상태 변경 1(FE+1·live-e2e skip dedupe·BE zero advance) · KPI 변경 2(FE test 472·merge gate 776→777)
+· 미확인 carry 1(longterm 502 canonical 24-cycle·HTTP 302→200 shell) · 신규 snapshot 2건 · 덮어쓰기 2건(law247·mohw126)
+· 엑셀 포맷 변경 0 · tester FF merge 777 가속 권장

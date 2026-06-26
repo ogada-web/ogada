@@ -1,0 +1,107 @@
+BNK-613 — 케어포 역공학 0–2h · 본인부담 7-9 수납,환불내역 환불 수수료 정책 verbatim crosswalk
+조사일: 2026-06-25T06:55Z (KST 15:55)
+
+================================================================================
+1. ogada git 실측 (BNK-613 정본)
+================================================================================
+FE develop HEAD : 892122d  fix(v1.2.1/QA-B312): harden StaffAnnualLeavePage branch scope vitest isolation
+                  (BNK-612 7b4c6f9 HEAD +1 · WT DIRTY→CLEAN · 미커밋 StaffAnnualLeavePage.test.jsx commit closure)
+BE develop HEAD : 56831fc  feat(v2/7-5): add easy-pay provider catalog API for carefor parity
+                  (BNK-612 동일 SHA · HEAD zero advance 1-cycle · WT CLEAN)
+FE WT          : CLEAN (BNK-612 DIRTY 1 closure)
+BE WT          : CLEAN (carry)
+FE ahead vs origin/test=ab4de83 : 231 (+1)
+BE ahead vs origin/test=598d108 : 563 (carry)
+merge gate     : 794 (+1 FE)
+Route(App.jsx) : 112 (111 <Route\b + 1 <Routes>)  carry
+page           : 91 (90 *Page.jsx + RootRedirect)  carry
+Flyway 최대    : V178  carry
+BE Test class  : 266  carry
+BE @Test       : 1922  carry
+FE .test.js / .test.jsx : 193 / 277 = 470  carry
+모듈 커버리지  : 80.86% (23.45/29 · id=7-4 1.0 carry)
+
+================================================================================
+2. 신규 evidence URL (재실측 + 변동 기록)
+================================================================================
+[확인] NHIS #44 이동서비스비 — joHistoryContent.do (SEQ=1637 SEQ_CONTENTS=3281769)
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f · on-disk nhis_jo44_joHistory.html 동일 → 378차 zero drift IDENTICAL
+
+[확인] carefor func.php Wayback (20260519072235 snapshot)
+  https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php
+  HTTP 200 · 104,180B · md5 246cce32 (BNK-612 9ee25a97·-2B Wayback rewriter wrapper variance)
+  → semantic 374차 IDENTICAL: 본인부담 7-x 10-leaf verbatim = canonical 6226e6eb (98,328B)
+  snapshot: carefor_func_wayback_live_bnk613.html
+
+[미확인] carefor func.php LIVE direct (35-cycle carry, BNK-558~613)
+  https://www.carefor.co.kr/daycare/func.php
+  HTTP 000 · 0B · curl --connect-timeout 8 --max-time 18 timeout
+  → 내용은 Wayback로 검증, LIVE 접근성만 미확인 carry
+
+================================================================================
+3. 케어포 본인부담 7-x lifecycle 10-leaf (func.php verbatim) ↔ ogada Route 1:1
+================================================================================
+7-1 본인부담금 청구관리          → /billing                         ✅
+7-2 본인부담금 입금관리          → /billing/payments                ✅
+7-3 본인부담금 미납관리          → /billing/overdue                 ✅
+7-4 본인부담금 자동이체(CMS)     → /billing/cms (CmsCollectionPanel) ✅ id=7-4 1.0 (BNK-603 closure)
+7-5 본인부담금 간편결제          → /billing/easy-pay (BE provider-catalog) △ FE wire P3 (BNK-612)
+7-6 본인부담금 청구대장 리포트   → /billing/reports/charges         ✅
+7-7 본인부담금 입금대장 리포트   → /billing/reports/deposits        ✅
+7-8 본인부담금 수납대장 리포트   → /billing/reports/receipts        ✅
+7-9 본인부담금 수납,환불내역     → /billing/reports/refunds + RefundRecordModal  △ (환불 기록 ✅ / PG 수수료 차감 ❌)
+7-10 본인부담금 간편계산기       → /billing/calculator              ✅
+ogada superset: /billing/cash-receipts·/billing/copay-rates·/billing/fee-schedules·/billing/imports/nhis·/billing/reports/statistics (5)
+
+================================================================================
+4. ★★★ NEW 메뉴/필드/워크플로 블록 — 7-9 환불 수수료 정책 verbatim (KCP PG 정산)
+================================================================================
+carefor func.php 7-9 본인부담금 수납,환불내역 본문 verbatim (canonical 6226e6eb · Wayback 246cce32 동일):
+
+  「환불에 대한 수수료는 아래 각호와 같습니다. 홈페이지에서 진행되는 모든 결제방식은
+    결제대행업체인 한국사이버페이먼트(KCP)를 통하여 진행되며, 환불시에는 결제대행업체,
+    은행사, 카드사의 수수료를 제외한 나머지 결제 비용만 환불 처리가 가능합니다.」
+
+  ① [카드 매입취소/승인취소] 「환불 처리시 수수료는 없으며, 매입취소와 승인취소를 통하여
+     환불이 진행됩니다. 최종 환불은 카드사의 환급 절차에 따라 진행됩니다.」 (당월 취소 = 무수수료)
+  ② [카드 부분/기간경과 환불] 「환불 요청시에는 환불금액의 3.3% 수수료가 발생됩니다.」
+     「환불금액에서 3.3%의 수수료를 제외한 나머지 금액을 환불 해 드립니다.」(통장계좌 환불)
+  ③ [계좌이체/CMS 환불] 「환불금액에서 500원의 수수료를 제외한 나머지 금액을 환불 해 드립니다.」
+
+→ 케어포 7-9 환불은 7-5 간편결제(KCP PG·BNK-612)와 동일 PG 정산 라인 = PG 수수료(3.3%/500원)
+  자동 차감·통장계좌 환급 워크플로. 카드사/은행사/KCP 수수료를 제외한 net 환불.
+
+ogada 대응 (RecordCopayRefundRequest · US-M03 7-9 v2):
+  public record RecordCopayRefundRequest(
+      @NotNull LocalDate refundedAt,   // 환불일
+      BigDecimal amount,               // 환불금액 (수동 입력)
+      String reason                    // 환불사유
+  )
+  FE: /billing/reports/refunds (BillingReportPage variant="refunds") + RefundRecordModal.jsx
+  → 환불 "기록"은 full-stack ✅ (날짜·금액·사유) — 회계/리포트 정합
+  → PG 수수료 자동 차감(3.3% card / 500원 bank) ❌ 미구현 (수동 amount 입력)
+
+차별점 분석:
+  · 케어포 차별점 = 실 KCP PG 연동 → 카드사 매입/승인취소 + net 환불 자동 정산 (PG 의존)
+  · ogada 차별점 = PG-중립 환불 기록 + 리포트(refunds variant) + 감사 추적 (SaaS·다지점)
+  · 갭 성격 = MVP out-of-scope (실 PG 미연동 단계) — 7-5 easy-pay FE wire 와 함께 v3+ PG 통합 시 일괄
+
+================================================================================
+5. 신규 candidate (planner 결정 보류)
+================================================================================
+NEW P3「가정」 G-REFUND-FEE-DEDUCTION
+  - RecordCopayRefundRequest 에 feeAmount/netAmount 파생 + 결제수단별 수수료율(카드 3.3% / 계좌 500원) 카탈로그
+  - 7-5 G-EASYPAY-PROVIDER-CATALOG-FE-WIRE 와 PG 통합 묶음 (v3+ 실 PG 연동 전제 — MVP out-of-scope)
+  - KPI 영향 0 (module 7 본인부담 lifecycle 이미 ✅완전, 환불 기록 존재)
+
+================================================================================
+6. 사이클 요약
+================================================================================
+가정 번복 0 · 신규 core 갭 0 · candidate +1 NEW P3(G-REFUND-FEE-DEDUCTION)
+상태 변경 1 (FE+1 QA-B312 · BNK-612 WT DIRTY 1 closure · BE carry · 양쪽 WT CLEAN)
+KPI 변경 1 (merge gate 793→794 · FE ahead 230→231)
+미확인 carry 3 (carefor LIVE 35-cycle · longterm 502 · demo-work)
+신규 snapshot 2건 (carefor_func_wayback_live_bnk613.html · 본 파일)
+덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족
+tester FF merge 794 가속 권장

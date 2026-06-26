@@ -1,0 +1,95 @@
+BNK-594 엔젤·롱텀·규제 4–6h 역공학 교차검증 (2026-06-24T19:15Z / KST 04:15)
+================================================================================
+rotation: 4–6h 엔젤·롱텀·law.go.kr·이동서비스비·2026 수가 — silverangel/lcms 공개 기능 + 규제 고시 교차검증
+
+--------------------------------------------------------------------------------
+[1] ogada git 실측 (BNK-594) — cross-stream FE+1·BE+1·양쪽 WT CLEAN
+--------------------------------------------------------------------------------
+$ git -C src/frontend rev-parse --short develop  → 64a7648
+  test(v1.2.1/QA-B95): relax bootstrap blocker gating for recovered auth
+  WT CLEAN · ahead 220 vs origin/test=ab4de83 (BNK-593 @216ab7a HEAD +1)
+$ git -C src/backend  rev-parse --short develop  → 670756a
+  fix(v2/live-e2e): accept ogada bootstrap env toggle
+  WT CLEAN · ahead 553 vs origin/test=598d108 (BNK-593 @a12873c HEAD +1)
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90 *Page.jsx + RootRedirect)
+$ V1–V175 · BE Test 258(@Test 1,881) · FE test 467(193 .test.js + 274 .test.jsx)
+$ 모듈 79.66%(23.10/29 · id=10 0.75 · id=7-4 0.65 · id=2 0.85 · id=8 0.85)
+  └ competitorModuleCoverage.js 216ab7a..64a7648 diff = EMPTY(불변) · KPI carry
+$ merge gate = FE 220 + BE 553 = 773 (+2 vs BNK-593 771)
+
+--------------------------------------------------------------------------------
+[2] NHIS #44 이동서비스비 러-1~4 — 363차 zero drift IDENTICAL (확인)
+--------------------------------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f (live = on-disk nhis_jo44_joHistory.html IDENTICAL)
+verbatim grep: 러-1 · 러-4 · 편도 · "1일 1회" 정상 노출
+↔ ogada full-stack ✅ parity/우위:
+  BE TransportServiceFeeService(RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 dedup guard
+     · TransportServiceLog 별지 제22호 일지 · V148/V154/V155 DB CHECK)
+  FE transportServiceFee.js 4 parity-copy 상수 + TransportServiceFeePanel(UXD-159 a11y)
+PLAN_NOTES #44 1차 확인 363차 재입증 (경쟁사 4종 중 ogada만 full-stack 표시 레이어 보유)
+
+--------------------------------------------------------------------------------
+[3] 롱텀(공단) 2026 수가·고시 교차검증
+--------------------------------------------------------------------------------
+longterm 610 통합재가서비스 (확인): zero drift
+  URL: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731
+  HTTP 200 · 91,421B · md5 0ea575be (canonical IDENTICAL)
+  verbatim: "통합재가서비스" · "2종 이상" · "월 10만원"(가산) → ogada MVP out-of-scope carry
+longterm 502 단기보호 (미확인): 23-cycle carry
+  URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502
+  HTTP 302 · 0B (session gate redirect) — canonical b5aee8c1(105,552B·단기보호 1등급 74,060) 보존
+  BNK-572~594 23-cycle 「미확인」 carry (세션·인증 필요 영역)
+
+--------------------------------------------------------------------------------
+[4] 규제 고시 DRIFT (cosmetic·verbatim 불변 → 덮어쓰기 2건)
+--------------------------------------------------------------------------------
+law247 (보건복지부고시 제2025-247호): cachebuster DRIFT
+  URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+  HTTP 200 · 78,450B · md5 99c591f3(BNK-586) → 2edf7753(NEW)
+  strip-cachebuster(?Time=) md5 = 0e07cef1 IDENTICAL → 본문 verbatim 불변
+  verbatim: "제2025-247호" · "시행 2026" 정상 → 덮어쓰기
+mohw126 (보건복지부고시 제2026-126호 본인부담상한액): counter DRIFT
+  URL: https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000
+  HTTP 200 · 109,510B · md5 aee6bcf3(BNK-586) → 8973c41b(NEW)
+  조회수 2,593 · 다운로드 476→477(+1) · 미리보기 564 carry · "본인부담상한액" verbatim 불변 → 덮어쓰기
+
+--------------------------------------------------------------------------------
+[5] 엔젤시스템(silverangel.kr) 본진 — 5-URL zero drift IDENTICAL + weekly notice 0
+--------------------------------------------------------------------------------
+extraService.do          : HTTP 200 · 81,637B · f9c5d877 (CMS 5-method 250/300원·1600-6859·효성CMS)
+fcltySlry/essentialWork.do: HTTP 200 · 166,023B · 80517b18 (시설 — 이동서비스 0·평가지표27 목욕)
+service/mainService.do   : HTTP 200 · 59,002B · bcf6df41
+businessSupportService.do: HTTP 200 · 75,878B · a13cb5ac (5-tab 업무지원·4회차 온보딩)
+notice list.do           : HTTP 200 · 3,594,181B · 52c9457f (latest real 221563 · 6/18)
+weekly notice probe (view.do Tmp_idx): 221564 / 221570 / 221580 / 221590
+  → 모두 HTTP 200 · 51,765B · md5 44223150 (미게시 shell IDENTICAL)
+  weekly notice 0 · 6-day stale(6/18→6/24) · next ~6/25(KST 내일·수요일 발행 패턴)
+lcms.kr 자매 도메인: BNK-590 폐기 placeholder(19B) 마감 carry — silverangel.kr 본진 정상
+
+--------------------------------------------------------------------------------
+[6] 메뉴/필드/워크플로 1블록 — 엔젤 extraService CMS 5-method ↔ ogada /billing/cms (재확인)
+--------------------------------------------------------------------------------
+silverangel extraService.do (f9c5d877) 본인부담금 자동이체(CMS) 5-method:
+  ① 자동이체(CMS)  건당 250원 · 월 30,000원
+  ② 가상계좌        건당 300원
+  ③ 카드결제
+  ④ 다계좌 정산
+  ⑤ 현금영수증
+  콜센터 1600-6859 (효성CMS 대행)
+↔ ogada module 7-4 CMS·간편결제 coverage 0.65(△):
+  /billing/cms (CMS 등록/출금 UI + API + 7-4 선행입금 가드 G-BILLING-DEPOSIT-ORDER-GUARD)
+  /billing/easy-pay (간편결제) · /billing/cash-receipts (현금영수증 ogada superset)
+  gap: 지점(branch) roster wire 시 0.65→1.0 후보 (BNK-592 carry · coder 후보)
+
+--------------------------------------------------------------------------------
+요약 (per-cycle minimum 4종 충족)
+--------------------------------------------------------------------------------
+· 신규 증거 URL/재실측: 11-URL 재실측(NHIS#44·longterm 610/502·law247·mohw126·silverangel 5·lcms carry)
+· 메뉴/필드/워크플로 1블록: 엔젤 CMS 5-method ↔ ogada /billing/cms 7-4 crosswalk [6]
+· COMPETITOR_MATRIX: @HEAD 64a7648/670756a 갱신(6-row)
+· BENCHMARK_REPORT: §594 신규 소절
+· 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 4 P3)
+· 상태 변경 2(FE+1·BE+1·cross-stream advance·양쪽 WT CLEAN) · KPI 변경 1(merge gate 771→773)
+· 미확인 carry 1(longterm 502 23-cycle) · 신규 snapshot 1건(본 extract) · 덮어쓰기 2건(law247·mohw126)
+· 엑셀 포맷 변경 0 · tester FF merge 773 가속 권장

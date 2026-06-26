@@ -1,0 +1,56 @@
+BNK-636 carefor M7 본인부담 7-x tri-source cross-walk (func.php · demo-work · 매뉴얼 PDF)
+조사일: 2026-06-25T22:15:00Z
+ogada @HEAD: FE `7e7c296` / BE `42a369e` · merge gate 820
+
+=== 신규 evidence URL ===
+[Wayback func.php 380차](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php)
+  HTTP 200 · 104,181B · md5 `b5eef9a8520e0f0fe2949ea9365bf122`
+  BNK-624 `c2049b41`(104,182B) → DRIFT -1B wrapper only · 107-leaf comment tags semantic IDENTICAL
+
+LIVE [func.php](https://www.carefor.co.kr/daycare/func.php) HTTP 000 timeout · 43-cycle 「미확인」(BNK-558~636)
+LIVE [demo-work](https://demo-work.carefor.co.kr/) HTTP 000 timeout · 43-cycle 「미확인」
+
+=== demo-work 시설 셸 — 이동서비스 없음 (확인) ===
+소스: `carefor_demo_work.html`(Wayback 20250712220444·75587B)
+loadPage 항목: 110 · class="rpt" 리포트: 34
+grep 「이동서비스」「transport」「배차」「view.transport」: 0 hit
+「차량」유일 출현:
+  · 9-5.운영관리 (차량/비품/CCTV/고충/특별침실) → view.operational_manage (시설 비품·차량 등록 수준)
+  · 8-9 고충처리 alert → 「9-5로 이동」안내 (배차·이동서비스 아님)
+결론: demo-work = 주야간/시설 운영 셸 · 이동서비스 배차 모듈 **미포함** (ogada `/transport/*` full-stack = 경쟁 대비 차별화 유지)
+
+=== M7 7-x 번호식 lifecycle — tri-source ===
+
+| leaf | func.php (107-leaf 정본) | demo-work view | 매뉴얼 PDF (p84–92) | ogada Route | 판정 |
+|------|--------------------------|----------------|---------------------|-------------|------|
+| 7-1 | 본인부담금 청구관리 | view.cost_master | p.86 청구서 생성·9-1 연계 | `/billing` | ✅ |
+| 7-2 | 본인부담금 입금관리 | view.cost_receipt | p.87 입금처리·납부확인서 | `/billing/payments` | ✅ |
+| 7-2-1 | 의료비공제(연말정산) | view.cost_master_statistic (submp) | p.91 의료비 공제 통계 | `/billing/reports/statistics` | ✅ |
+| 7-3 | 본인부담금 미납관리 | view.cost_nopay | p.88 미납관리 | `/billing/overdue` | ✅ |
+| 7-4 | 본인부담금 자동이체 (CMS) | view.cms_manage | p.84–92 CMS 언급 | `/billing/cms` | ✅ |
+| 7-5 | 본인부담금 간편결제 | view.npay_manage | KCP PG (BNK-612 carry) | `/billing/easy-pay` | ✅ |
+| 7-6 | 청구대장 리포트 (rpt) | view.cost_master_report | p.86 명세서·발송 | `/billing/reports/charges` | ✅ |
+| 7-7 | 입금대장 리포트 (rpt) | view.cost_deposit_report | p.87 입금대장 | `/billing/reports/deposits` | ✅ |
+| 7-8 | 수납대장 리포트 (rpt) | view.cost_receipt_report | p.87 수납대장 | `/billing/reports/receipts` | ✅ |
+| 7-9 | 수납,환불내역 (rpt) | view.cost_receipt_apply_yearly | p.89 환불 (BNK-616 5-layer) | `/billing/reports/refunds` | ✅ |
+| 7-10 | 본인부담금 간편계산기 | **demo 0 hit** (marketing-only) | p.84 업무흐름도만 | `/billing/calculator` | △ ogada superset |
+
+합계: **10✅ + 1△(7-10 demo 미노출·ogada calculator 구현)** = M7 coverage **1.0** (BNK-592 9✅+1△ 재확인·7-10 demo gap 명시)
+
+=== demo-work M7 번호 drift (신규 negative) ===
+L07_M10 loadPage title=「7-9.수납,환불내역」 BUT HTML comment=「<!-- 7-10.본인부담금 수납내역 -->」
+→ 케어포 내부 leaf renumber 잔존(comment stale)·func.php 정본 7-9/7-10 분리가 authoritative
+
+=== 리포트 밀도 (demo-work module별 rpt) ===
+M1:5 · M2:6 · M3:5 · M4:2 · M5:5 · M7:4 · M8:3 · M9:1 · M10:2 · M11:1 · total rpt=34
+ogada reports route=28 (BNK-626 carry) · gap 6 = M1 1-12·M11 11-6 등 carry
+
+=== 매뉴얼 PDF 업무흐름 verbatim (p84–92 carry + 재인용) ===
+「7월 청구 전 7-2 입금처리」→ 7-1 청구 → 7-2 입금 선행 워크플로
+「9-1 시설정보설정 본인부담금정보」→ 7-1 청구명세서 생성기준 연계
+PDF 구 numbering(7-5~7-8 연간/월별 대장) vs func/demo 현행(7-6~7-8) = **문서 edition drift carry**(BNK-585 tri-source)
+
+=== planner 제안 ===
+· M7 7-x ogada 1:1 매핑 **FULL PARITY 유지** — 7-10 calculator는 ogada 우위(데모 미노출)
+· demo-work 「이동서비스 0」= ogada transport/NHIS #44 차별화 narrative 강화
+· LIVE 43-cycle timeout 지속 — Wayback+오프라인 스냅샷 정본 유지

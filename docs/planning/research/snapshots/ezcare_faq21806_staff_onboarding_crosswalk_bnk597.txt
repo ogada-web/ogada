@@ -1,0 +1,110 @@
+BNK-597 이지케어 역공학 2–4h — ezCare FAQ 21806 요양보호사 입사 처리 ↔ ogada 입사서류 7종 crosswalk
+조사일: 2026-06-24T21:10:00Z (KST 06:10) · rotation: 2–4h 이지케어 ERP·FAQ·Channel.io·가격·온보딩
+
+========================================================================
+[1] ogada git 실측 KPI (BNK-597) — HEAD zero advance vs BNK-596 · 양쪽 WT CLEAN
+========================================================================
+FE develop = 4875937 (BNK-596 동일 SHA · HEAD zero advance 1-cycle)
+   feat(v1.2.1/G2b): wire CMS payment-method-catalog panel and fix US-O05 live E2E
+   WT CLEAN · ahead 221 vs origin/test=ab4de83
+BE develop = 2eaf17e (BNK-596 동일 SHA · HEAD zero advance 1-cycle)
+   feat(v2/G2b): add CMS payment method catalog API for silverangel parity
+   WT CLEAN · ahead 554 vs origin/test=598d108
+Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175 · BE Test 259
+FE test 468(193 .test.js + 275 .test.jsx) · 모듈 79.66%(23.10/29 · id=7-4 0.65 · id=10 0.75)
+merge gate = FE 221 + BE 554 = 775 (carry vs BNK-596 775)
+
+========================================================================
+[2] ★★★ 신규 evidence — ezCare FAQ rowid 5건 (HTTP 200 real content)
+========================================================================
+rowid=21806 17,619B md5=a82168d1 [비정기] 요양보호사 입사 처리  ← 주력
+rowid=21807 16,427B md5=43580241 (real)
+rowid=21810 20,284B md5=f105b2e6 정기 욕구사정 실시  ← 욕구사정→ogada assessment
+rowid=21830 17,110B md5=d93d223c 일정확정/일괄확정·취소 (Top5)
+rowid=21835 17,453B md5=1249065a 일정확정 가이드·청구일정 반영 (Top5)
+rowid=21842 14,756B md5=75cedf76 (latest real)
+rowid=21845/21850 13,327B md5=e5762090 = 미게시 stub (BNK 250+ rowid 동일 패턴)
+→ latest real ~21842 carry. 21806/21810 named snapshot 추가.
+
+========================================================================
+[3] ★★★ FAQ 21806 요양보호사 입사 처리 — 8-step 워크플로 (verbatim)
+========================================================================
+입사시 업무처리 절차:
+ ① 입사 전 자격사항 확인 — 자격증·당해연도 건강검진·치매전문교육 이수·코로나19 백신접종
+ ② 입사서류 제출여부·유효기간 검토
+ ③ 근로계약서 작성·서명 (기관/근로자 각 1부 보관)
+ ④ 신규직원교육 — 운영규정·급여제공지침(신규 7일 이내)·인수인계·직무/급여제공범위·
+    직원인권침해 대응지침·고충처리지침·응급상황대처·비상연락망·노인인권교육·급여제공계획서
+ ⑤ 근무복 제공 (기관명 각인 — 공단 평가항목)
+ ⑥ 인력변경신고 (신규 입사) → 희망이음
+ ⑦ 배상책임보험 가입
+ ⑧ 급여계약등록(일정등록) → 공단 + 요양보호사 스마트폰/단말기통합관리 RFID 등록 → 공단
+
+입사서류 8종 (FAQ 21806 verbatim):
+ 1. 신분증 사본
+ 2. 주민등록표등본(초본)
+ 3. 요양보호사 자격증
+ 4. 건강검진 결과통보서
+ 5. 치매교육 이수증 (인지활동형 서비스 제공 시)
+ 6. 노인학대관련범죄 경력 회보서
+ 7. 장애인학대관련범죄등 경력 회보서
+ 8. 범죄경력증명서(회보서)  [2번 기관]
+
+평가 인정 규칙 (verbatim):
+ - 건강검진 5개 영역 충족: 계측검사·요검사·혈액검사·영상검사·결과판정
+ - 신규직원 급여제공 시작일+7일 미도래 시 교육 미실시 예외 인정 (예: 시작 26.3.26 평가 26.3.30 인정)
+ - 건강검진 결과통보서: 검진일·발행일자 모두 근무시작일 기준 1년 이내 + 수령 객관자료
+ 콜센터 1644-0340
+
+========================================================================
+[4] ★★★ crosswalk — ezCare 입사서류 8종 ↔ ogada STAFF_HR_FILE 7종
+   (src/config/staffHrFiles.js STAFF_HR_ONBOARDING_REQUIRED_DOCUMENT_TYPES @4875937)
+========================================================================
+ezCare 8종                          | ogada 7종 (id)               | 판정
+1 신분증 사본                       | id-card 신분증               | ✅ parity
+2 주민등록표등본(초본)              | (없음)                       | ❌ ogada 미추적
+3 요양보호사 자격증                 | certificate 자격증           | ✅ parity
+4 건강검진 결과통보서               | health-check 건강검진 결과   | ✅ parity (5영역 StaffHealthCheckupRecordsPanel)
+5 치매교육 이수증                   | dementia-training 치매교육   | ✅ parity
+6 노인학대관련범죄 경력 회보서      | criminal-record 범죄경력조회 | △ 통합(3-in-1)
+7 장애인학대관련범죄등 경력 회보서  | criminal-record 범죄경력조회 | △ 통합(3-in-1)
+8 범죄경력증명서(회보서)            | criminal-record 범죄경력조회 | ✅ (consolidated)
+(ogada 추가)                        | bank-account 통장 사본       | ogada superset (급여 이체용)
+(ogada 추가)                        | employment-contract 근로계약서 | ogada superset (③ 매칭)
+(ogada 추가)                        | resignation 사직서 (퇴사)    | ogada superset (FAQ21825 퇴사)
+
+판정 요약:
+ - 핵심 입사서류 5/8 verbatim ✅ parity (신분증·자격증·건강검진·치매교육·범죄경력)
+ - ogada criminal-record 1종이 ezCare 3종 회보서(노인학대·장애인학대·범죄경력) 통합 △
+ - ogada 미추적 1건: 주민등록표등본(초본) — 공단 평가 제출서류이나 ogada checklist 부재
+ - ogada superset: 통장 사본·근로계약서·사직서(lifecycle 퇴사) 추가
+ - ⑥ 인력변경신고(희망이음)·⑦ 배상책임보험·⑧ RFID 단말기통합관리 = 공단/외부 시스템 연계
+   (ogada MVP out-of-scope: 희망이음/공단 직접 연계는 외부 포털)
+ - ogada utils/staffLifecycleCompliance.js L401 "FAQ 21806 ① 입사 전 자격확인" 이미 wire ✅
+
+→ 신규 candidate(planner 결정 보류): G-STAFF-ONBOARD-DOC-ITEMIZE P3「가정」
+   = (a) criminal-record 1종 → 노인학대/장애인학대/범죄경력 3-itemize (공단 평가 granularity)
+     (b) 주민등록표등본(초본) checklist 추가
+   MVP 단일 범죄경력조회 + 5종 핵심으로 충분 → P3 보류. KPI 영향 0(module 8 0.85 carry).
+
+========================================================================
+[5] ★ ezCare 가격·도입 재실측 (drift)
+========================================================================
+home   178121a3 → 7d440586 (106,090→106,103B · +13B cosmetic) → 덮어쓰기
+       mCnt = {1:9280, 2:4600, 3:2353, 4:1820} verbatim 불변
+fnc    0149a763 → d3f90083 (17,870B 동일 · cachebuster) → 덮어쓰기 · 도입 9,350개 verbatim 불변
+charge 6bdf9625 → 3ead19af (22,979B 동일 · cachebuster) → 덮어쓰기 · 33,000/25,850(37명)/55,000 verbatim
+change_work c7bd0a07 → 012f210b (26,157B 동일 · cachebuster) → 덮어쓰기 · RFID·중복일정·듀얼/트리플 verbatim
+
+========================================================================
+[6] per-cycle minimum 충족 + carry
+========================================================================
+- 신규 증거 URL: FAQ 21806/21807/21810/21830/21835 5건 (real) + drift 4건 ✅
+- 메뉴/필드/워크플로 1블록: FAQ 21806 입사 8-step + 입사서류 8종 ↔ ogada 7종 crosswalk ✅
+- COMPETITOR_MATRIX 1행 @4875937 갱신 (직원 입사/온보딩 행) ✅
+- BENCHMARK_REPORT §597 소절 ✅
+가정 번복 0 · 신규 core 갭 0 · candidate +1(G-STAFF-ONBOARD-DOC-ITEMIZE P3「가정」)
+상태 변경 0(HEAD zero advance·양쪽 WT CLEAN) · KPI 변경 0(merge gate 775 carry)
+미확인 carry 1(longterm 502 session gate) · 신규 snapshot 2건(21806·21810) · 덮어쓰기 4건
+tester: FF merge 775 가속 권장 (FE221+BE554·양쪽 WT CLEAN·선행 commit 불필요)
+planner: 입사서류 7종 ↔ ezCare 8종 crosswalk 정본화·G-STAFF-ONBOARD-DOC-ITEMIZE P3 등록 검토

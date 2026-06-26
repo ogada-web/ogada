@@ -1,0 +1,35 @@
+BNK-584 교차검증·갭 우선순위 (8h+ rotation) — 2026-06-24
+==========================================================
+owner=BNK audience=PLN
+
+[ogada @HEAD]
+  FE 9c25d44 (BNK-583 @c04968c +1) · BE 1d5d441 (BNK-583 @b9d0599 +1)
+  merge gate 760 (FE213+BE547 · +2 vs BNK-583 758)
+  Route 112 · page 91 · V1–V175 · BE Test 258 · FE test 466 · 모듈 79.48%(23.05/29)
+
+[4축 P0/P1 재오픈 검증 @9c25d44 — 33-cycle carry, BNK-549~584]
+  G14  /clients/:clientId/care-plan-form          ✅ LIVE
+  G26  /dashboard + /dashboard/hq                 ✅ LIVE
+  v1.3-C /transport/service-fees                  ✅ LIVE (+8-route cluster carry)
+  v2   /billing/cms                               ✅ LIVE
+  US-R01-c /staff/annual-leaves + /staff/leave-ledger ✅ LIVE
+  → P0/P1 backlog 비움 · 가정 번복 0
+
+[candidate 교차검증]
+  G-SMS-TEMPLATE-CATALOG cluster:
+    catalog API + dispatch UI message_kind 1·12·21 ✅ end-to-end closure
+    module id=10 coverage 0.65→0.7 확정 (BNK-583 「0.7 deepen 검토」→ BNK-584 실현, 가정 번복 아님)
+    잔여 ezCare parity gap(P3): message_kind 11·13·19·22
+  G-VENDOR-ONBOARDING-CHECKLIST P3「가정」 carry — ezCare FAQ21825 입사흐름 ↔ ogada staff/RBAC parity, 전용 온보딩 위젯 0
+  G-PROGRAM-GROUP-CONFIG P3「가정」 carry — id=5 coverage=1 재확인
+  G-ORAL-CARE-OBSERVATION-REPORT P3「가정」 carry — tri-source 번호 drift, MVP out-of-scope
+
+[P0/P1 재정렬 권고 (planner)]
+  1. tester FF merge 760 가속 (양쪽 WT CLEAN · FE213+BE547)
+  2. G-SMS 잔여 wire 11·13·19 — module 10 0.7→0.75 검토 (4/7 dispatch UI 시)
+  3. NHIS #44 v1.3-C P2 parity 문구 고정 carry (357차 IDENTICAL)
+  4. silverangel weekly notice 8-day stale → 다음 cycle 재확인 (~6/25)
+  5. 미확인 carry: carefor LIVE 17-cycle · longterm 502 14-cycle
+
+[엑셀 포맷 변경 스캔]
+  silverangel notice list 52c9457f IDENTICAL · ezCare FAQ21825/21856 엑셀 언급 0 → 변경 0

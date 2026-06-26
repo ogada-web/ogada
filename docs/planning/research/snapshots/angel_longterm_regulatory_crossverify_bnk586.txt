@@ -1,0 +1,112 @@
+BNK-586 cycle extract (2026-06-24 · rotation=엔젤·롱텀·규제 4–6h)
+================================================================================
+owner=BNK audience=PLN
+
+[ogada baseline @develop — git 실측]
+  FE  5a6d42c6d22ce5d4796e99876dfb81057219539c  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): align message_kind 11·13·19 dispatch UI labels
+  BE  fed6f1f4d9c42d1dbaee1a1f4401e16d4803436e  fix(v2/G-SMS-TEMPLATE-CATALOG): gate dispatchReady by channel credentials
+  WT  FE CLEAN · BE CLEAN
+  ahead vs origin/test : FE 214 · BE 548 → merge gate 762 carry
+  HEAD zero advance 1-cycle (FE+BE 양쪽 BNK-585 @5a6d42c/@fed6f1f 동일 SHA)
+  KPI  112 Route(111 `<Route\b`+1 `<Routes>`) · 91 page(90+RootRedirect=91) · V1–V175 ·
+       BE Test 258(*Test.java·@Test 1,878 loose) · FE test 466(192 .test.js + 274 .test.jsx) ·
+       모듈 79.66%(23.10/29·id=10 0.75)
+
+  ★ KPI 회계 정정 1 (가정 번복 1) — FE test 466, NOT 470
+     BNK-585 README/MATRIX claim : FE test 470(196+274) @5a6d42c
+     git 실측 (동일 SHA @5a6d42c) : `git ls-tree -r develop` .test.js=192 · .test.jsx=274 = 466
+     → BNK-585 .test.js +4 over-count. label-align 커밋(@5a6d42c)은 테스트 파일 추가 0.
+     → 규칙 §Baseline: git 실측 우선 → FE test 466 정본 채택. 모듈 79.66%·BE Test 258·Route 112 carry.
+
+[Live re-fetch — 엔젤·롱텀·규제 (2026-06-24)]
+
+  silverangel 5-URL zero drift IDENTICAL (358차 carry)
+    essential                 c79c1be37f947aab04ab7ba35cc7814d  131,664B  IDENTICAL
+    extraService              f9c5d8773ad0a481be6d7eb4b192d982   81,637B  IDENTICAL
+    mainService               bcf6df41310193a3ae997bde49111347   59,002B  IDENTICAL
+    feeService                eab352a8f98ba600561c06bd2e3eecb1   44,513B  IDENTICAL
+    notice list               52c9457f4e34a7d3c49275e5bf337677 3,594,181B IDENTICAL
+    notice probe 221621/221625/221630/221635 (4 IDs, +IDs vs BNK-584 221615/221620)
+                              8437f255b4eaf22e9844d1d260554093   51,765B  IDENTICAL (미게시 shell)
+    → 최신 real 221563(2026-06-18) · weekly notice 0 · next ~6/25(KST) carry · 엑셀 포맷 변경 0
+
+  lcms type rotation DRIFT (덮어쓰기)
+    BNK-582 on-disk  6b7502914de15aa75cabe04740dfca2c  50,498B  (type1+type3 hybrid)
+    BNK-586 live     c0c660760e9e5691491ace28f9d15f74  50,740B  (type1+websiteProvided+CJ MOU)
+    → BNK-578/556 동형 재출현 (6-cycle rotation: 556→568→571→578→582→586)
+    → 마케팅 카피·feature 변동 0 · ogada 단일 ERP 통합 vs SaaS cross-promo 분산 차별화 carry
+
+  longterm 502 단기보호 「미확인」 carry (15-cycle)
+    BNK-586 live     HTTP 302 SIZE 0 (d41d8cd9·empty redirect; BNK-584 200/422B partial shell에서 변동)
+    canonical on-disk b5aee8c1... longterm_502.html 105,552B  「월 한도액(2026.1.1.기준)·단기보호 1등급 74,060」 verbatim 보존
+    → BNK-548부터 15-cycle 「미확인」 · ROADMAP v3.1 G18-SHORT P3 carry · canonical on-disk 우선 정책 유지
+
+  longterm 610 통합재가서비스 canonical stable carry
+    live HTTP 200    0ea575be5f11a817c635fe40f51dec39  91,421B  IDENTICAL
+    verbatim         「통합재가서비스」 · 「월 10만원」 · 「주야간보호형」
+    → BNK-576 recovery 이후 stable · v3.1 G18-SHORT IntegratedHomeProviderDiscoveryPanel 우위 carry
+
+  NHIS #44 이동서비스비 러-1~4 — 358차 zero drift IDENTICAL
+    live HTTP 200    c886ff1fd1d5ca2cb5dc76d30adde8ba   7,572B  IDENTICAL (live=disk nhis_jo44_live_bnk584.html)
+    verbatim         "제1항의 표에 따른 '러-1'부터 '러-4'까지 비용의 50%를 산정한다"
+                     "이용 횟수에 관계없이 1일 1회만 산정"
+    ogada full-stack ✅ parity/우위 :
+      BE  TransportServiceFeeService 5/5 (RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 dedup · V148/V154/V155)
+      FE  transportServiceFee.js 4 parity-copy 상수 + TransportServiceFeePanel UXD-159 a11y
+    → PLAN_NOTES #44 1차 확인 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry
+
+  2026 규제 cosmetic DRIFT (verbatim 불변·덮어쓰기 2건)
+    MOHW 2026-126
+      BNK-582 on-disk  e66c5af15b5b7c3e59568be66bc00f51  109,510B  다운로드 475회·미리보기 564회
+      BNK-586 live     aee6bcf341f94c9e5eaff132f9a995b9  109,510B  다운로드 476회(+1)·미리보기 564 carry
+      verbatim         「고시 제2026-126호」·「본인부담상한액 기준보험료의 산정기준」 불변
+      → cosmetic counter +1 only · 덮어쓰기
+    law247
+      BNK-582 on-disk  3580a78a3820a969f556ec248b476986  78,450B
+      BNK-586 live     99c591f37761e235293114791ca36b54  78,450B
+      verbatim         prmlNo:"2025-247"·prmlYd:"20251230"·「[시행 2026. 1. 1.] [보건복지부고시 제2025-247호]」 불변
+      → cachebuster DRIFT (verbatim 불변) · 덮어쓰기
+
+[Cross-walk to ogada baseline]
+
+  4축 + leave-ledger P0/P1 재오픈 0 — 35-cycle carry (BNK-549~586)
+    App.jsx @ `5a6d42c` LIVE grep :
+      G14      /clients/:clientId/care-plan-form
+      G26      /dashboard · /dashboard/hq
+      v1.3-C   /transport/service-fees (+8-route)
+      v2 CMS   /billing/cms
+      US-R01-c /staff/annual-leaves · /staff/leave-ledger
+
+  candidate carry 4 (변동 0 · 전부 P3「가정」·MVP out-of-scope)
+    G-VENDOR-ONBOARDING-CHECKLIST   P3 (BNK-578 silverangel businessSupport 4회차 체크리스트)
+    G-PROGRAM-GROUP-CONFIG          P3 (BNK-577 carefor 모듈5 micro-gap)
+    G-ORAL-CARE-OBSERVATION-REPORT  P3 (BNK-581 carefor PDF p.49 3-4 구강관찰)
+    G-BILLING-OPENING-BALANCE       P3 (BNK-585 carefor M7 선행입금 가드)
+
+[Cycle accounting]
+  per-cycle minimum 충족 :
+    [O] 신규 증거 URL 1건+   — silverangel notice probe 221621/221625/221630/221635(+IDs) + NHIS#44 358차 재실측
+    [O] 메뉴/필드/워크플로 1블록+ — silverangel 5-URL md5 + NHIS#44 러-1~4 verbatim + lcms 6-cycle type rotation
+    [O] COMPETITOR_MATRIX 1행+ @HEAD 갱신 — BNK-586 NHIS#44 358차·silverangel notice 0·KPI 회계 정정
+    [O] BENCHMARK_REPORT §소절 1건+ — BNK-586 차수 메모
+
+  state changes :
+    가정 번복 1 (KPI 회계 정정 — FE test 470→466 @동일 SHA)
+    신규 core 갭 0
+    candidate 변동 0 (carry 4)
+    상태 변경 0 (HEAD zero advance 1-cycle · 양쪽 WT CLEAN)
+    KPI 변경 1 (FE test 470→466 정정 · 모듈 79.66%·BE Test 258·Route 112 carry)
+    미확인 carry 2 (carefor LIVE 19-cycle · longterm 502 15-cycle)
+    신규 snapshot 1건 (angel_longterm_regulatory_crossverify_bnk586.txt)
+    덮어쓰기 3건 (lcms_root · mohw_gosi_2026_126 · law_mohw_2025_247)
+    엑셀 포맷 변경 0
+
+[planner 액션 (BNK-586)]
+  ① baseline FE `@5a6d42c` · BE `@fed6f1f` · merge gate 762 carry · 모듈 79.66% carry
+  ② ★ FE test 정본 466(192+274) — BNK-585 470 over-count 정정. ROADMAP/QA KPI 인용 시 466 사용.
+  ③ tester FF merge 762 가속 권장 — 양쪽 WT CLEAN · cross-stream advance 0 · origin/test push(BE 548·FE 214) 우선순위
+  ④ NHIS #44 358차 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry
+  ⑤ silverangel weekly notice 0 · latest real 221563(6/18) · next ~6/25 carry
+  ⑥ longterm 502 partial shell→302 15-cycle 「미확인」 carry · canonical on-disk 우선 정책 유지
+  ⑦ longterm 610 통합재가 stable carry · v3.1 G18-SHORT IntegratedHomeProviderDiscoveryPanel 우위 carry
+  ⑧ candidate carry 4건 (G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG·G-ORAL-CARE-OBSERVATION-REPORT·G-BILLING-OPENING-BALANCE P3·MVP out-of-scope)

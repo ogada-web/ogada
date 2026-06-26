@@ -1,3 +1,138 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T23:13:33+00:00 -->
+<!-- tester-sync: TSR 1419차 2026-06-25T23:13 UTC (backend) — ROADMAP merged baseline `@d06e3f1` (`src/backend-test`) `mvn test` **1972/1972 PASS**(92.3s, 370 suites) · develop HEAD `@68b08b0` WT **CLEAN** · develop pre-merge (`src/backend`) **1982/1982 PASS**(90.6s, 373 suites, +10 tests · G-STAFF-COMMITTEE-MEETING-LOG CRUD API · V181) · ★ **merge EXECUTED** FF `d06e3f1`→`68b08b0` (1 commit) · post-merge **1982/1982 PASS**(100.3s, 373 suites) · develop/test `@68b08b0` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(59.0s · bootstrap-disabled) · origin/test (**576 unpushed BE** · **247 unpushed FE**) · **★ QA-20260625-B336 Fixed @ `68b08b0`** · Open **0(active)** · Planned **QA-B116(origin/test push 576 BE+247 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@4bbd54a + BE@68b08b0 · FE test WT `?? 9` empty artifact LOW carry)** · backend@8080 **UP/200** · operation **BLOCK** · disk **46%**(80G avail) -->
+# revalidation_1419th: backend baseline @d06e3f1 mvn 1972/1972 PASS(92.3s,370 suites); develop @68b08b0 pre-merge 1982/1982 PASS(90.6s,373 suites,+10 tests) WT CLEAN; merge EXECUTED FF d06e3f1→68b08b0 (1); post-merge 1982/1982 PASS(100.3s); QA-B336 Fixed; live E2E 122/25/0(59.0s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 576 BE+247 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T22:51:53+00:00 -->
+<!-- tester-sync: TSR 1418차 2026-06-25T22:51 UTC (frontend) — ROADMAP merged baseline carry `@7e7c296` **2214/2214 PASS**(755.08s, 427 files · TSR 1416 post-merge carry) · develop pre-merge `@4bbd54a` **2217/2217 PASS**(754.56s, +3 tests · recovered-auth hints FE wire) · ★ **merge EXECUTED** FF `7e7c296`→`4bbd54a` (1 commit) · post-merge **2217/2217 PASS**(748.16s) · build **1180 PASS**(11.36s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.08s · bootstrap-disabled) · origin/test (**575 unpushed BE** · **247 unpushed FE**) · **★ QA-20260625-B333 Fixed @ `7e7c296`**(carry merge) · **★ QA-20260625-B335 Fixed @ `4bbd54a`** · Open **0(active)** · Planned **QA-B116(origin/test push 575 BE+247 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@4bbd54a + BE@d06e3f1 · test WT `?? 9` empty artifact LOW carry)** · backend@8080 **UP/200** · operation **BLOCK** · disk **46%**(80G avail) -->
+# revalidation_1418th: frontend baseline carry 2214/2214 @7e7c296(755.08s); develop @4bbd54a pre-merge 2217/2217 PASS(754.56s,+3 tests) WT CLEAN; merge EXECUTED FF 7e7c296→4bbd54a (1); post-merge 2217/2217 PASS(748.16s); QA-B333 Fixed(carry); QA-B335 Fixed; build 1180 PASS(11.36s); audit 0 high; live E2E 122/25/0(37.08s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 575 BE+247 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T22:15:29+00:00 -->
+<!-- tester-sync: TSR 1416차 2026-06-25T21:52 UTC (frontend) — ROADMAP merged baseline `@b7004ca` (`src/frontend-test`) `npm test` **2214/2214 PASS**(753.55s, 427 files) · develop HEAD `@7e7c296` WT **CLEAN** · merge **SKIP**(`test..develop` **0/1** pending `7e7c296`) · build **1180 PASS**(8.68s) · audit **0 high** · live E2E **SKIP**(merge 없음 · carry **122 PASS/25 SKIP/0 FAIL** · bootstrap-disabled) · **QA-20260625-B333 Open**(severity **BLOCK**, frontend develop→test merge pending 1 + `src/frontend-test` WT **DIRTY** `?? 9` artifact) · Open **1(active frontend)** · Planned **QA-B333+QA-B116(origin/test push 574 BE+245 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **BLOCK** · cross-stream **BLOCK(BE SYNCED@42a369e · FE pending 1 @7e7c296)** · operation **BLOCK** -->
+# revalidation_1416th: frontend baseline @b7004ca npm 2214/2214 PASS(753.55s,427 files); develop @7e7c296 WT CLEAN with test..develop 0/1 pending; merge SKIP; build 1180 PASS(8.68s); audit 0 high; live E2E SKIP(122/25/0 carry); QA-B333 Open(BLOCK, pending 1 + test WT DIRTY ??9); Open 1(active FE); transfer BLOCK; cross-stream BLOCK(BE SYNCED + FE pending 1); operation BLOCK; origin/test push 574 BE+245 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T21:31:39+00:00 -->
+<!-- tester-sync: TSR 1415차 2026-06-25T21:31 UTC (backend) — ROADMAP merged baseline `@3342938` (`src/backend-test`) `mvn test` **1972/1972 PASS**(90.0s, 370 suites) · develop HEAD `@42a369e` WT **CLEAN** · develop pre-merge (`src/backend`) **1972/1972 PASS**(87.7s, 370 suites · QA-B95 g21-seed detail + V180 integrity) · ★ **merge EXECUTED** FF `3342938`→`42a369e` (1 commit) · post-merge **1972/1972 PASS**(81.0s, 370 suites) · develop/test `@42a369e` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.32s · bootstrap-disabled) · origin/test (**574 unpushed BE** · **245 unpushed FE**) · **★ QA-20260625-B330 Fixed @ `42a369e`** · **★ QA-20260625-B332 Fixed @ `42a369e`** · Open **0(active)** · Planned **QA-B116(origin/test push 574 BE+245 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@b7004ca + BE@42a369e)** · backend@8080 **UP/200** · operation **BLOCK** · disk **45%**(81G avail) -->
+# revalidation_1415th: backend baseline @3342938 mvn 1972/1972 PASS(90.0s); develop @42a369e pre-merge 1972/1972 PASS(87.7s) WT CLEAN; merge EXECUTED FF 3342938→42a369e (1); post-merge 1972/1972 PASS(81.0s); QA-B330 Fixed; QA-B332 Fixed; live E2E 122/25/0(36.32s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 574 BE+245 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T21:15:49+00:00 -->
+<!-- tester-sync: TSR 1414차 2026-06-25T21:15 UTC (frontend) — ROADMAP merged baseline `@33944e4` (`src/frontend-test`) `npm test` **2212/2212 PASS**(747.41s, 427 files) · develop HEAD `@b7004ca` WT **CLEAN** · develop pre-merge (`src/frontend`) **2212/2212 PASS**(748.65s, 427 files · UXD-165·QA-B95 legacy blocker keys) · ★ **merge EXECUTED** FF `33944e4`→`b7004ca` (2 commits) · post-merge **2212/2212 PASS**(749.11s, 427 files) · develop/test `@b7004ca` **SYNCED** · build **1180 PASS**(9.26s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.92s · bootstrap-disabled) · origin/test (**573 unpushed BE** · **245 unpushed FE**) · **★ QA-20260625-B331 Fixed @ `b7004ca`** · Open **1(active backend carry B330)** · Planned **QA-B330+QA-B116(origin/test push 573 BE+245 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **BLOCK(BE develop DIRTY@3342938 · FE SYNCED@b7004ca)** · backend@8080 **UP/200** · operation **BLOCK** · disk **45%**(81G avail) -->
+# revalidation_1414th: frontend baseline @33944e4 npm 2212/2212 PASS(747.41s,427 files); develop @b7004ca pre-merge 2212/2212 PASS(748.65s); merge EXECUTED FF 33944e4→b7004ca (2); post-merge 2212/2212 PASS(749.11s); QA-B331 Fixed; build 1180 PASS(9.26s); audit 0 high; live E2E 122/25/0(37.92s); Open 1(active BE carry B330); transfer PASS; cross-stream BLOCK(BE dirty + FE SYNCED); backend@8080 200; operation BLOCK; origin/test push 573 BE+245 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T20:31:16+00:00 -->
+<!-- tester-sync: TSR 1413차 2026-06-25T20:31 UTC (backend) — ROADMAP merged baseline `@3342938` (`src/backend-test`) `mvn test` **1972/1972 PASS**(57.6s, 370 suites) · develop HEAD `@3342938` WT **DIRTY 2M+1U** · dirty WIP **1972/1972 PASS**(57.5s) · merge **SKIP**(dirty-tree · `test..develop` **0/0**) · **QA-20260625-B330 Open**(severity **BLOCK**, develop WT **DIRTY 2M+1U** — `HealthController` g21-seed `service-unavailable` detail + `V180__program_client_groups_integrity_us_p01.sql` WIP 미커밋) · Open **1(active backend)** · Planned **QA-B330+QA-B116(origin/test push 573 BE+244 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **BLOCK** · cross-stream **BLOCK(BE develop DIRTY@3342938 · FE pending 1 @bee97b9 · test @33944e4)** · backend@8080 **UP/200** · operation **BLOCK** · disk **45%**(81G avail) -->
+# revalidation_1413rd: backend baseline @3342938 mvn 1972/1972 PASS(57.6s); develop @3342938 WT DIRTY 2M+1U; dirty WIP 1972/1972 PASS(57.5s); merge SKIP(dirty-tree); QA-B330 Open(BLOCK); Open 1(active BE); transfer BLOCK; cross-stream BLOCK(BE dirty + FE pending 1); backend@8080 200; operation BLOCK; origin/test push 573 BE+244 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T20:00:01+00:00 -->
+<!-- tester-sync: TSR 1412차 2026-06-25T20:00 UTC (frontend) — ROADMAP merged baseline carry `@bd3253a` (TSR 1410차) **2203/2203 PASS** · develop HEAD `@33944e4` WT **CLEAN** · develop pre-merge (`src/frontend`) **2210/2210 PASS**(745.04s, 427 files, +7 tests · `StaffMonthlySchedulePage`·`staffMonthlySchedule`) · ★ **merge EXECUTED** FF `bd3253a`→`33944e4` (1 commit) · post-merge **2210/2210 PASS**(747.43s, 427 files) · develop/test `@33944e4` **SYNCED** · build **1180 PASS**(8.70s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.88s · bootstrap-disabled) · origin/test (**573 unpushed BE** · **243 unpushed FE**) · **★ QA-20260625-B329 Fixed @ `33944e4`** · Open **0(active)** · Planned **QA-B116(origin/test push 573 BE+243 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@33944e4 + BE@3342938)** · backend@8080 **UP/200** · operation **BLOCK** · disk **45%**(81G avail) -->
+# revalidation_1412nd: frontend baseline carry 2203/2203 @bd3253a(TSR1410); develop @33944e4 pre-merge 2210/2210 PASS(745.04s,+7 tests); merge EXECUTED FF bd3253a→33944e4 (1); post-merge 2210/2210 PASS(747.43s); QA-B329 Fixed; build 1180 PASS(8.70s); audit 0 high; live E2E 122/25/0(36.88s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 573 BE+243 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T18:59:07+00:00 -->
+<!-- tester-sync: TSR 1411차 2026-06-25T18:59 UTC (backend) — ROADMAP merged baseline `@49fe2e7` (`src/backend-test`) `mvn test` **1970/1970 PASS**(92.0s, 370 suites) · develop HEAD `@3342938` WT **CLEAN** · develop pre-merge **1972/1972 PASS**(90.9s, +2 tests · QA-B95 recovered-auth probe) · ★ **merge EXECUTED** FF `49fe2e7`→`3342938` (1 commit) · post-merge **1972/1972 PASS**(104.1s) · develop/test `@3342938` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(58.46s · bootstrap-disabled) · origin/test (**573 unpushed BE** · **242 unpushed FE**) · **★ QA-20260625-B326 Fixed @ `3342938`** · **★ QA-20260625-B328 Fixed @ `3342938`** · Open **0(active)** · Planned **QA-B116(origin/test push 573 BE+242 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@bd3253a + BE@3342938)** · backend@8080 **UP/200** · operation **BLOCK** · disk **45%**(81G avail) -->
+# revalidation_1411th: backend baseline @49fe2e7 mvn 1970/1970 PASS(92.0s,370 suites); develop @3342938 pre-merge 1972/1972 PASS(90.9s,+2 tests) WT CLEAN; merge EXECUTED FF 49fe2e7→3342938 (1); post-merge 1972/1972 PASS(104.1s); QA-B326 Fixed; QA-B328 Fixed; live E2E 122/25/0(58.46s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 573 BE+242 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T18:46:12+00:00 -->
+<!-- tester-sync: TSR 1410차 2026-06-25T18:46 UTC (frontend) — ROADMAP merged baseline `@2c9abd6` (`src/frontend-test`) `npm test` **2203/2203 PASS**(745.66s, 425 files) · develop HEAD `@bd3253a` WT **CLEAN** · develop pre-merge (`src/frontend`) **2203/2203 PASS**(743.56s, 425 files · `liveConfig.js`·`liveGlobalSetup.js`·`liveE2eHarness.test.js` probe blocker normalize) · ★ **merge EXECUTED** FF `2c9abd6`→`bd3253a` (1 commit: v1.2.1/QA-B95 normalize live operation blockers from probe state) · post-merge **2203/2203 PASS**(745.19s, 425 files) · build **1178 PASS**(8.53s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.82s · bootstrap-disabled) · origin/test (**572 unpushed BE** · **242 unpushed FE**) · **★ QA-20260625-B327 Fixed @ `bd3253a`** · Open **1(active backend carry)** QA-B326 · Planned **QA-B326+QA-B116(origin/test push 572 BE+242 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **BLOCK(BE develop DIRTY@49fe2e7 · FE SYNCED@bd3253a)** · backend@8080 **UP/200** · operation **BLOCK** · disk **45%**(81G avail) -->
+# revalidation_1410th: frontend baseline @2c9abd6 npm 2203/2203 PASS(745.66s,425 files); develop @bd3253a pre-merge 2203/2203 PASS(743.56s,liveE2eHarness probe blockers) WT CLEAN; merge EXECUTED FF 2c9abd6→bd3253a (1); post-merge 2203/2203 PASS(745.19s); QA-B327 Fixed; build 1178 PASS(8.53s); audit 0 high; live E2E 122/25/0(36.82s); Open 1(active BE carry B326); transfer PASS; cross-stream BLOCK(BE dirty + FE SYNCED); backend@8080 200; operation BLOCK; origin/test push 572 BE+242 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T17:59:23+00:00 -->
+<!-- tester-sync: TSR 1409차 2026-06-25T17:59 UTC (backend) — ROADMAP merged baseline `@49fe2e7` (`src/backend-test`) `mvn test` **1970/1970 PASS**(60.4s, 370 suites) · develop HEAD `@49fe2e7` WT **DIRTY 6M** · dirty WIP **1972/1972 PASS**(59.1s, +2 tests · QA-B95 readiness) · merge **SKIP**(`test..develop` **0/0** · dirty-tree) · live E2E **SKIP**(merge 없음 · **122/25/0** carry) · origin/test (**572 unpushed BE** · **241 unpushed FE**) · **QA-20260625-B326 Open**(severity **BLOCK**, backend develop WT **DIRTY 6M** QA-B95 WIP) · Open **1(active backend)** · Planned **QA-B326+QA-B116(origin/test push 572 BE+241 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **BLOCK** · cross-stream **BLOCK(BE develop DIRTY@49fe2e7 · FE SYNCED@2c9abd6)** · backend@8080 **UP/200** · operation **BLOCK** · disk **45%**(82G avail) -->
+# revalidation_1409th: backend baseline @49fe2e7 mvn 1970/1970 PASS(60.4s); develop DIRTY 6M; dirty WIP 1972/1972 PASS(+2 tests); merge SKIP; QA-B326 Open(BLOCK); Open 1(active BE); transfer BLOCK; cross-stream BLOCK(BE dirty + FE SYNCED@2c9abd6); backend@8080 200; operation BLOCK; origin/test push 572 BE+241 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T16:32:50+00:00 -->
+<!-- tester-sync: TSR 1408차 2026-06-25T16:32 UTC (backend) — ROADMAP merged baseline `@337453d` (`src/backend-test`) `mvn test` **1968/1968 PASS**(60s, 370 suites) · develop HEAD `@49fe2e7` WT **CLEAN** · develop pre-merge (`src/backend`) **1970/1970 PASS**(64s, 370 suites, +2 tests · `ProgramReportControllerRoutingTest`·`ProgramReportServiceTest` branch filter) · ★ **merge EXECUTED** FF `337453d`→`49fe2e7` (1 commit: v2/G-REPORT-DENSITY add branch filter to program reports) · post-merge **1970/1970 PASS**(109s, 370 suites) · develop/test `@49fe2e7` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(60.07s · bootstrap-disabled) · origin/test (**572 unpushed BE** · **239 unpushed FE**) · **★ QA-20260625-B325 Fixed @ `49fe2e7`** · Open **0(active)** · Planned **QA-B116(origin/test push 572 BE+239 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **BLOCK(FE pending 1 @f74a6e7 · BE SYNCED@49fe2e7)** · backend@8080 **UP/200** · operation **BLOCK** · disk **44%**(82G avail) -->
+# revalidation_1408th: backend baseline @337453d mvn 1968/1968 PASS(60s,370 suites); develop @49fe2e7 pre-merge 1970/1970 PASS(64s,+2 tests,branch filter) WT CLEAN; merge EXECUTED FF 337453d→49fe2e7 (1); post-merge 1970/1970 PASS(109s); QA-B325 Fixed; live E2E 122/25/0(60.07s); Open 0; transfer PASS; cross-stream BLOCK(FE pending 1 @f74a6e7); backend@8080 200; operation BLOCK; origin/test push 572 BE+239 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T15:59:31+00:00 -->
+<!-- tester-sync: TSR 1407차 2026-06-25T15:59 UTC (backend) — ROADMAP merged baseline `@0e55f3b` (`src/backend-test`) `mvn test` **1967/1967 PASS**(59.2s, 370 suites) · develop HEAD `@337453d` WT **CLEAN** · develop pre-merge (`src/backend`) **1968/1968 PASS**(60.6s, 370 suites, +1 test · V179 program client groups) · ★ **merge EXECUTED** FF `0e55f3b`→`337453d` (1 commit: v2/G-REPORT-DENSITY fill program group-history report from membership data) · post-merge **1968/1968 PASS**(82.5s, 370 suites) · develop/test `@337453d` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.41s · bootstrap-disabled) · origin/test (**571 unpushed BE** · **239 unpushed FE**) · **★ QA-20260625-B324 Fixed @ `337453d`** · Open **0(active)** · Planned **QA-B116(origin/test push 571 BE+239 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@75c0f51 + BE@337453d)** · backend@8080 **UP/200** · operation **BLOCK** · disk **44%**(82G avail) -->
+# revalidation_1407th: backend baseline @0e55f3b mvn 1967/1967 PASS(59.2s,370 suites); develop @337453d pre-merge 1968/1968 PASS(60.6s,+1 test,V179) WT CLEAN; merge EXECUTED FF 0e55f3b→337453d (1); post-merge 1968/1968 PASS(82.5s); QA-B324 Fixed; live E2E 122/25/0(36.41s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 571 BE+239 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T15:34:11+00:00 -->
+<!-- tester-sync: TSR 1406차 2026-06-25T15:34 UTC (frontend) — ROADMAP merged baseline `@15a3b7f` (`src/frontend-test`) `npm test` **2200/2200 PASS**(744.12s, 425 files) · develop HEAD `@75c0f51` WT **CLEAN** · develop pre-merge (`src/frontend`) **2200/2200 PASS**(743.09s, 425 files · `liveE2eHarness.test.js` bootstrap-unavailable recovery) · ★ **merge EXECUTED** FF `15a3b7f`→`75c0f51` (1 commit: v1.2.1/QA-B95 treat bootstrap-unavailable blockers as recoverable) · post-merge **2200/2200 PASS**(carry · pre-merge=post-merge @`75c0f51`) · build **1178 PASS**(10.32s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(44.87s · bootstrap-disabled) · origin/test (**570 unpushed BE** · **239 unpushed FE**) · **★ QA-20260625-B323 Fixed @ `75c0f51`** · Open **0(active)** · Planned **QA-B116(origin/test push 570 BE+239 FE)+QA-B95 partial(bootstrap-disabled carry·FE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@75c0f51 + BE@0e55f3b)** · backend@8080 **UP/200** · operation **BLOCK** · disk **44%**(82G avail) -->
+# revalidation_1406th: frontend baseline @15a3b7f npm 2200/2200 PASS(744.12s,425 files); develop @75c0f51 pre-merge 2200/2200 PASS(743.09s,liveE2eHarness) WT CLEAN; merge EXECUTED FF 15a3b7f→75c0f51 (1); post-merge 2200/2200 PASS carry; build 1178 PASS(10.32s); audit 0 high; live E2E 122/25/0(44.87s); QA-B323 Fixed; Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 570 BE+239 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T14:46:56+00:00 -->
+<!-- tester-sync: TSR 1405차 2026-06-25T14:46 UTC (backend) — ROADMAP merged baseline `@650801b` (`src/backend-test`) `mvn test` **1967/1967 PASS**(59.2s, 370 suites) · develop HEAD `@0e55f3b` WT **CLEAN** · develop pre-merge (`src/backend`) **1967/1967 PASS**(58.5s, 370 suites · `LiveE2eControllerTest` probe assertion deepen) · ★ **merge EXECUTED** FF `650801b`→`0e55f3b` (1 commit: v2/QA-B95 expose live-e2e bootstrap service availability in probe) · post-merge **1967/1967 PASS**(78.6s, 370 suites) · develop/test `@0e55f3b` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.53s · bootstrap-disabled) · origin/test (**570 unpushed BE** · **238 unpushed FE**) · **★ QA-20260625-B322 Fixed @ `0e55f3b`** · Open **0(active)** · Planned **QA-B116(origin/test push 570 BE+238 FE)+QA-B95 partial(bootstrap-disabled carry·BE probe wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@15a3b7f + BE@0e55f3b)** · backend@8080 **UP/200** · operation **BLOCK** · disk **44%**(83G avail) -->
+# revalidation_1405th: backend baseline @650801b mvn 1967/1967 PASS(59.2s,370 suites); develop @0e55f3b pre-merge 1967/1967 PASS(58.5s,LiveE2eControllerTest probe) WT CLEAN; merge EXECUTED FF 650801b→0e55f3b (1); post-merge 1967/1967 PASS(78.6s); QA-B322 Fixed; live E2E 122/25/0(36.53s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 570 BE+238 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T14:30:00+00:00 -->
+<!-- tester-sync: TSR 1404차 2026-06-25T14:30 UTC (frontend) — ROADMAP merged baseline `@5914b2f` (`src/frontend-test`) `npm test` **2198/2198 PASS**(743.99s, 425 files) · develop HEAD `@15a3b7f` WT **CLEAN** · develop pre-merge (`src/frontend`) **2198/2198 PASS**(745.36s, 425 files, +12 tests · `ProgramReportPanel`·`ProgramReportsPage`·UXD-164 util classes) · ★ **merge EXECUTED** FF `5914b2f`→`15a3b7f` (2 commits: UXD-164 a11y util + G-REPORT-DENSITY M5 FE wire) · post-merge **2198/2198 PASS**(carry · pre-merge=post-merge @`15a3b7f`) · build **1178 PASS**(13s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.15s · bootstrap-disabled) · origin/test (**569 unpushed BE** · **238 unpushed FE**) · **★ QA-20260625-B321 Fixed @ `15a3b7f`** · Open **0(active)** · Planned **QA-B116(origin/test push 569 BE+238 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **SYNCED(FE@15a3b7f + BE@650801b)** · backend@8080 **UP/200** · operation **BLOCK** · disk **44%**(83G avail) -->
+# revalidation_1404th: frontend baseline @5914b2f npm 2198/2198 PASS(743.99s,425 files); develop @15a3b7f pre-merge 2198/2198 PASS(745.36s,+12 tests) WT CLEAN; merge EXECUTED FF 5914b2f→15a3b7f (2); post-merge 2198/2198 PASS carry; build 1178 PASS(13s); audit 0 high; live E2E 122/25/0(37.15s); QA-B321 Fixed; Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 569 BE+238 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T13:33:04+00:00 -->
+<!-- tester-sync: TSR 1401차 2026-06-25T11:54 UTC (backend) — ROADMAP merged baseline `@79725eb` (`src/backend-test`) `mvn test` **1954/1954 PASS**(58.2s, 368 suites) · develop HEAD `@9f67954` WT **CLEAN** · develop pre-merge **1956/1956 PASS**(59.8s, +2 tests) · ★ **merge EXECUTED** FF `79725eb`→`9f67954` (1 commit: v2/QA-B95 configurable bootstrap readiness enforcement) · post-merge **1956/1956 PASS**(80.6s) · develop/test `@9f67954` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.79s · bootstrap-disabled carry) · origin/test (**568 unpushed BE** · **236 unpushed FE**) · **★ QA-20260625-B319 Fixed @ `9f67954`** · Open **0(active)** · Planned **QA-B116(origin/test push 568 BE+236 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@5914b2f + BE@9f67954)** · backend@8080 **UP/200** · operation **BLOCK** · disk **43%**(84G avail) -->
+# revalidation_1402nd: frontend roadmap-merged @5914b2f npm 2186/2186 PASS(739.00s,422 files,+5 tests); develop/test SYNCED @5914b2f(merge SKIP); post-merge 2186/2186 PASS carry; build 1174 PASS(11.66s); audit 0 high; live E2E 122/25/0(45.13s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 568 BE+236 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T13:33:04+00:00 -->
+<!-- tester-sync: TSR 1403차 2026-06-25T13:33 UTC (backend) — ROADMAP merged baseline `@9f67954` (`src/backend-test`) `mvn test` **1956/1956 PASS**(57.8s, 368 suites) · develop HEAD `@650801b` WT **CLEAN** · develop pre-merge **1967/1967 PASS**(57.0s, 370 suites, +11 tests) · ★ **merge EXECUTED** FF `9f67954`→`650801b` (1 commit: v2/G-REPORT-DENSITY M5 program report APIs) · post-merge **1967/1967 PASS**(78.9s, 370 suites) · develop/test `@650801b` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(carry · bootstrap-disabled) · origin/test (**569 unpushed BE** · **236 unpushed FE**) · **★ QA-20260625-B320 Fixed @ `650801b`** · Open **0(active)** · Planned **QA-B116(origin/test push 569 BE+236 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **BLOCK(FE pending 1 @d64f81b · BE SYNCED@650801b)** · backend@8080 **UP/200** · operation **BLOCK** · disk **44%**(83G avail) -->
+# revalidation_1403rd: backend baseline @9f67954 mvn 1956/1956 PASS(57.8s,368 suites); develop @650801b pre-merge 1967/1967 PASS(57.0s,+11 tests) WT CLEAN; merge EXECUTED FF 9f67954→650801b (1); post-merge 1967/1967 PASS(78.9s); QA-B320 Fixed; live E2E 122/25/0(carry); Open 0; transfer PASS; cross-stream BLOCK(FE pending 1 + BE SYNCED); backend@8080 200; operation BLOCK; origin/test push 569 BE+236 FE.
+<!-- tester-sync: TSR 1402차 2026-06-25T12:56 UTC (frontend) — ROADMAP merged baseline `@5914b2f` (`src/frontend-test`) `npm test` **2186/2186 PASS**(739.00s, 422 files) · develop/test **SYNCED** @ `5914b2f` · merge **SKIP**(`test..develop` **0**) · post-merge **2186/2186 PASS**(carry) · build **1174 PASS**(11.66s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(45.13s · bootstrap-disabled carry) · origin/test (**568 unpushed BE** · **236 unpushed FE**) · Open **0(active)** · Planned **QA-B116(origin/test push 568 BE+236 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **SYNCED(FE@5914b2f + BE@9f67954)** · backend@8080 **UP/200** · operation **BLOCK** · disk **43%**(83G avail) -->
+# revalidation_1401st: backend baseline @79725eb mvn 1954/1954 PASS(58.2s); develop @9f67954 pre-merge 1956/1956 PASS(59.8s,+2 tests) WT CLEAN; merge EXECUTED FF 79725eb→9f67954 (1); post-merge 1956/1956 PASS(80.6s); QA-B319 Fixed; live E2E 122/25/0(36.79s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 568 BE+235 FE.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T11:29:13+00:00 -->
+<!-- tester-sync: TSR 1400차 2026-06-25T11:29 UTC (frontend) — ROADMAP merged baseline carry `@cadd74a` (TSR 1398차) **2180/2180 PASS** · develop HEAD `@e070c45` WT **CLEAN** · develop pre-merge (`src/frontend`) **2181/2181 PASS**(736.76s, 420 files, +1 test · `liveE2eHarness.test.js`) · ★ **merge EXECUTED** FF `cadd74a`→`e070c45` (1 commit: v1.2.1/QA-B95 honor recovered auth for live operation readiness) · post-merge **2181/2181 PASS**(738.43s, 420 files) · develop/test `@e070c45` **SYNCED** · build **1172 PASS**(10.29s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.39s · bootstrap-disabled carry) · origin/test (**567 unpushed BE** · **235 unpushed FE**) · **★ QA-20260625-B318 Fixed @ `e070c45`** · Open **0(active)** · Planned **QA-B116(origin/test push 567 BE+235 FE)+QA-B95 partial(bootstrap-disabled carry·FE wire merged)** · transfer **PASS** · cross-stream **SYNCED(FE@e070c45 + BE@79725eb)** · backend@8080 **UP/200** · operation **BLOCK** · disk **43%**(84G avail) -->
+# revalidation_1400th: frontend baseline carry 2180/2180 @cadd74a(TSR1398); develop @e070c45 pre-merge 2181/2181 PASS(736.76s,420 files,+1 test) WT CLEAN; merge EXECUTED FF cadd74a→e070c45 (1); post-merge 2181/2181 PASS(738.43s); QA-B318 Fixed; build 1172 PASS(10.29s); audit 0 high; live E2E 122/25/0(37.39s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 567 BE+235 FE.
+<!-- tester-sync: TSR 1399차 2026-06-25T10:42 UTC (backend) — ROADMAP merged baseline `@2adae59` (`src/backend-test`) `mvn test` **1950/1950 PASS**(89.0s, 368 suites, BUILD SUCCESS) · develop HEAD `@79725eb` WT **CLEAN** · develop pre-merge (`src/backend`) **1954/1954 PASS**(89.0s, 368 suites, +4 tests) · ★ **merge EXECUTED** FF `2adae59`→`79725eb` (2 commits: v2/7-9 copay refund fee net amount validation + input validation) · post-merge **1954/1954 PASS**(72.0s, 368 suites) · develop/test `@79725eb` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.47s · bootstrap-disabled carry) · origin/test (**567 unpushed BE** · **234 unpushed FE**) · **★ QA-20260625-B317 Fixed @ `79725eb`** · Open **0(active)** · Planned **QA-B116(origin/test push 567 BE+234 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **SYNCED(FE@cadd74a + BE@79725eb)** · backend@8080 **UP/200** · operation **BLOCK** · disk **43%**(84G avail) -->
+# revalidation_1399th: backend baseline @2adae59 mvn 1950/1950 PASS(89.0s,368 suites); develop @79725eb pre-merge 1954/1954 PASS(89.0s,+4 tests) WT CLEAN; merge EXECUTED FF 2adae59→79725eb (2); post-merge 1954/1954 PASS(72.0s); QA-B317 Fixed; live E2E 122/25/0(36.47s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 567 BE+234 FE.
+<!-- tester-sync: TSR 1398차 2026-06-25T10:20 UTC (frontend) — ROADMAP merged baseline carry `@3d7f13b` (TSR 1396차) **2171/2171 PASS** · develop/test **SYNCED** @ `cadd74a` · merge **carry SYNCED**(`3d7f13b`→`cadd74a` 1 commit) · post-merge regression **2180/2180 PASS**(737.93s, 420 files, +9 tests · G-REFUND-FEE-FE-WIRE) · build **1172 PASS**(10.28s) · audit **0 high** · live E2E **SKIP**(merge 미실행 · bootstrap-disabled 122 PASS/25 SKIP/0 FAIL carry) · origin/test (**566 unpushed BE** · **234 unpushed FE**) · Open **0(active frontend)** · Open **1(active backend carry)** QA-B317 · Planned **QA-B317+QA-B116(origin/test push 566 BE+234 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS(frontend)** · cross-stream **BLOCK(BE pending 1 @aeecc1b · FE SYNCED@cadd74a)** · backend@8080 **UP/200** · operation **BLOCK** · disk **43%**(84G avail) -->
+# revalidation_1398th: frontend baseline carry 2171/2171 @3d7f13b(TSR1396); develop/test SYNCED @cadd74a(carry merge 1); post-merge 2180/2180 PASS(737.93s,+9 tests); build 1172 PASS; audit 0 high; live E2E SKIP(122/25/0 carry); Open 0 FE+1 BE carry(B317); transfer PASS(frontend); cross-stream BLOCK; backend@8080 200; operation BLOCK; origin/test push 566 BE+234 FE.
+<!-- tester-sync: TSR 1397차 2026-06-25T09:37 UTC (backend) — ROADMAP merged baseline `@2adae59` (`src/backend-test`) `mvn test` **1950/1950 PASS**(63.0s, BUILD SUCCESS) · develop HEAD `@aeecc1b` WT **CLEAN** · develop pre-merge (`src/backend`) **1953/1953 PASS**(59.285s, BUILD SUCCESS, +3 tests) · merge **SKIP**(`test..develop` **0/1** pending `aeecc1b` · src/backend-test source 수정 금지 정책으로 merge 미수행) · origin/test (**565 unpushed BE** · **233 unpushed FE**) · **QA-20260625-B317 Open**(severity **BLOCK**, backend develop→test merge pending 1 `aeecc1b` 미이관) · Open **1(active backend)** · Planned **QA-B317+QA-B116(origin/test push 565 BE+233 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 @aeecc1b · FE SYNCED@3d7f13b)** · backend@8080 **UP/200** · operation **BLOCK** · disk **42%**(85G avail) -->
+# revalidation_1397th: backend roadmap-merged @2adae59 mvn 1950/1950 PASS(63.0s); develop @aeecc1b pre-merge 1953/1953 PASS(59.285s,+3 tests) WT CLEAN; merge SKIP(test..develop 0/1 pending aeecc1b); QA-B317 Open(BLOCK); Open 1(active backend); transfer BLOCK; cross-stream BLOCK(BE pending 1 + FE SYNCED); backend@8080 200; operation BLOCK; origin/test push 565 BE+233 FE.
+<!-- tester-sync: TSR 1396차 2026-06-25T09:22 UTC (frontend) — ROADMAP merged baseline carry `@58f3858` (TSR 1394차) **2166/2166 PASS** · develop HEAD `@3d7f13b` WT **CLEAN** · develop pre-merge **2171/2171 PASS**(740.00s, 419 files, +5 tests) · ★ **merge EXECUTED** FF `58f3858`→`3d7f13b` (1 commit) · post-merge **2171/2171 PASS**(737.00s) · develop/test `@3d7f13b` **SYNCED** · build **1171 PASS**(11.80s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(39.38s · bootstrap-disabled carry) · origin/test (**565 unpushed BE** · **233 unpushed FE**) · **★ QA-20260625-B316 Fixed @ `3d7f13b`** · Open **0(active)** · Planned **QA-B116(origin/test push 565 BE+233 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **SYNCED(FE@3d7f13b + BE@2adae59)** · backend@8080 **UP/200** · operation **BLOCK** · disk **42%**(85G avail) -->
+# revalidation_1396th: frontend baseline carry 2166/2166 @58f3858(TSR1394); develop @3d7f13b pre-merge 2171/2171 PASS(740.00s,+5 tests) WT CLEAN; merge EXECUTED FF 58f3858→3d7f13b (1); post-merge 2171/2171 PASS(737.00s); QA-B316 Fixed; build 1171 PASS; audit 0 high; live E2E 122/25/0(39.38s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 565 BE+233 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T08:34:40+00:00 -->
+<!-- tester-sync: TSR 1395차 2026-06-25T08:34 UTC (backend) — ROADMAP merged baseline `@5a5174a` (`src/backend-test`) `mvn test` **1939/1939 PASS**(91.1s, 367 suites, BUILD SUCCESS) · develop HEAD `@2adae59` WT **CLEAN** · develop pre-merge (`src/backend`) **1950/1950 PASS**(91.8s, 368 suites, +11 tests) · ★ **merge EXECUTED** FF `5a5174a`→`2adae59` (1 commit: v2/7-9 copay refund fee policy catalog API) · post-merge **1950/1950 PASS**(79.1s, 368 suites) · develop/test `@2adae59` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.31s · bootstrap-disabled carry) · origin/test (**564 unpushed BE** · **232 unpushed FE**) · **★ QA-20260625-B315 Fixed @ `2adae59`** · Open **0(active)** · Planned **QA-B116(origin/test push 564 BE+232 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **SYNCED(FE@58f3858 + BE@2adae59)** · backend@8080 **UP/200** · operation **BLOCK** · disk **42%**(85G avail) -->
+# revalidation_1395th: backend baseline @5a5174a mvn 1939/1939 PASS(91.1s,367 suites); develop @2adae59 pre-merge 1950/1950 PASS(91.8s,368 suites,+11 tests) WT CLEAN; merge EXECUTED FF 5a5174a→2adae59 (1); post-merge 1950/1950 PASS(79.1s); QA-B315 Fixed; live E2E 122/25/0(37.31s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 564 BE+232 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T08:09:39+00:00 -->
+<!-- tester-sync: TSR 1394차 2026-06-25T08:09 UTC (frontend) — ROADMAP merged baseline `@892122d` (`src/frontend-test`) `npm test` **2166/2166 PASS**(738.36s, 418 files, BUILD SUCCESS) · develop HEAD `@58f3858` WT **CLEAN** · develop pre-merge (`src/frontend`) **2166/2166 PASS**(733.91s, 418 files, +6 tests) · ★ **merge EXECUTED** FF `892122d`→`58f3858` (1 commit: v1.2.1/QA-B312 branch-scope fallback) · post-merge **2166/2166 PASS**(733.52s, 418 files) · develop/test `@58f3858` **SYNCED** · build **1168 PASS**(8.49s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.51s · bootstrap-disabled carry) · `mvn test` N/A(no `pom.xml`) · origin/test (**564 unpushed BE** · **232 unpushed FE**) · **★ QA-20260625-B314 Fixed @ `58f3858`** · Open **0(active)** · Planned **QA-B116(origin/test push 564 BE+232 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **SYNCED(FE@58f3858 + BE@5a5174a)** · backend@8080 **UP/200** · operation **BLOCK** · disk **42%**(85G avail) -->
+# revalidation_1394th: frontend baseline @892122d npm 2166/2166 PASS(738.36s,418 files); develop @58f3858 pre-merge 2166/2166 PASS(733.91s,+6 tests) WT CLEAN; merge EXECUTED FF 892122d→58f3858 (1); post-merge 2166/2166 PASS(733.52s); QA-B314 Fixed; build 1168 PASS(8.49s); audit 0 high; live E2E 122/25/0(37.51s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 564 BE+232 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T07:23:05+00:00 -->
+<!-- tester-sync: TSR 1393차 2026-06-25T07:23 UTC (backend) — ROADMAP merged baseline `@37416ac` (`src/backend-test`) `mvn test` **1930/1930 PASS**(61.8s, 365 suites) · develop HEAD `@5a5174a` WT **CLEAN** · develop pre-merge **1939/1939 PASS**(61.8s, 367 suites, +9 tests) · ★ **merge EXECUTED** FF `37416ac`→`5a5174a` (4 commits) · post-merge **1939/1939 PASS**(83.2s, 367 suites) · develop/test `@5a5174a` **SYNCED** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.59s · bootstrap-disabled carry) · origin/test (**564 unpushed BE** · **231 unpushed FE**) · **★ QA-20260625-B313 Fixed @ `5a5174a`** · Open **0(active)** · Planned **QA-B116(origin/test push 564 BE+231 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **SYNCED(FE@892122d + BE@5a5174a)** · backend@8080 **UP/200** · operation **BLOCK** · disk **42%**(85G avail) -->
+# revalidation_1393rd: backend baseline @37416ac mvn 1930/1930 PASS(61.8s,365 suites); develop @5a5174a pre-merge 1939/1939 PASS(61.8s,367 suites,+9 tests); merge EXECUTED FF 37416ac→5a5174a (4); post-merge 1939/1939 PASS(83.2s); QA-B313 Fixed; live E2E 122/25/0(36.59s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 564 BE+231 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T07:01:38+00:00 -->
+<!-- tester-sync: TSR 1392차 2026-06-25T07:01 UTC (frontend) — ROADMAP merged baseline `@892122d` (`src/frontend-test`) `npm test` **2160/2160 PASS**(854.52s, 417 files, BUILD SUCCESS) · develop HEAD `@892122d` WT **CLEAN** · develop/test **SYNCED** (`test..develop` **0**) · merge **carry SYNCED**(`9a583ec`→`892122d` 4 commits · COD `@892122d` B312 isolation fix) · post-merge **2160/2160 PASS**(854.52s · baseline=post-merge) · build **1168 PASS**(8.51s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.83s · bootstrap-disabled carry) · `mvn test` N/A(no `pom.xml`) · origin/test (**563 unpushed BE** · **231 unpushed FE**) · **★ QA-20260625-B311 Fixed @ `892122d`** · **★ QA-20260625-B312 Fixed @ `892122d`** · Open **0(active)** · Planned **QA-B313+QA-B116(origin/test push 563 BE+231 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **PASS** · cross-stream **BLOCK(BE pending 3 @56831fc · FE SYNCED@892122d)** · backend@8080 **UP/200** · operation **BLOCK** · disk **42%**(86G avail) -->
+# revalidation_1392nd: frontend roadmap-merged @892122d npm 2160/2160 PASS(854.52s,417 files); develop/test SYNCED @892122d(carry merge 9a583ec..892122d 4 commits); post-merge 2160/2160 PASS; QA-B311 Fixed + QA-B312 Fixed; build 1168 PASS(8.51s); audit 0 high; live E2E 122/25/0(37.83s); Open 0; transfer PASS; cross-stream BLOCK(BE pending 3 + FE SYNCED); backend@8080 200; operation BLOCK; origin/test push 563 BE+231 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T06:02:00+00:00 -->
+<!-- tester-sync: TSR 1391차 2026-06-25T06:02 UTC (backend) — ROADMAP merged baseline `@37416ac` (`src/backend-test`) `mvn test` **1930/1930 PASS**(85.6s, 365 suites, BUILD SUCCESS) · develop HEAD `@56831fc` WT **CLEAN** · develop pre-merge (`src/backend`) **1936/1936 PASS**(90.2s, 366 suites, +6 tests) · merge **SKIP**(`test..develop` **0/3** pending `4963535`+`3c1fdce`+`56831fc`) · pending: G-NHIS-ALT-KEY-AUDIT-BADGE · V178 cms/bathing integrity · v2/7-5 easy-pay provider catalog · origin/test (**560 unpushed BE** · **227 unpushed FE**) · **QA-20260625-B313 Planned update**(severity **BLOCK**, backend develop→test merge pending **1→3** 미이관) · Open **0(active)** · Planned **QA-B313+QA-B311+QA-B312+QA-B116(origin/test push 560 BE+227 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 3 @56831fc · FE pending 3 @7b4c6f9)** · backend@8080 **UP/200** · operation **BLOCK** · disk **42%**(86G avail) -->
+# revalidation_1391st: backend roadmap-merged @37416ac mvn 1930/1930 PASS(85.6s,365 suites); develop @56831fc pre-merge 1936/1936 PASS(90.2s,366 suites,+6 tests) WT CLEAN; merge SKIP(test..develop 0/3 pending 4963535+3c1fdce+56831fc); QA-B313 Planned update(BLOCK pending 1→3); Open 0; transfer BLOCK; cross-stream BLOCK(BE pending 3 + FE pending 3); backend@8080 200; operation BLOCK; origin/test push 560 BE+227 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T04:44:19+00:00 -->
+<!-- tester-sync: TSR 1390차 2026-06-25T04:44 UTC (frontend) — ROADMAP merged baseline `@9a583ec` (`src/frontend-test`) `npm test` **2164/2165 PASS**(1 fail, 749.37s, 418 files) · failing test: `StaffAnnualLeavePage.test.jsx > ... > shows API-resolved branch scope when activeBranchId is omitted from the request` (`조회 지점` text mismatch) · isolated `StaffAnnualLeavePage` **8/8 PASS**(6.72s · B266/B270 pollution lineage) · develop HEAD `@5bb84a6` WT **CLEAN** · merge **SKIP**(`test..develop` **0/2** pending `e985522`+`5bb84a6` · pre-merge 미실행) · build **1168 PASS**(8.63s) · audit **0 high** · live E2E **SKIP**(merge 없음 · bootstrap-disabled 122 PASS/25 SKIP/0 FAIL carry) · `mvn test` N/A(no `pom.xml`) · origin/test (**560 unpushed BE** · **227 unpushed FE**) · **QA-20260625-B311 Open update**(severity **BLOCK**, frontend develop→test merge pending 2 `e985522`+`5bb84a6` 미이관) · **QA-20260625-B312 Open update**(severity **HIGH**, full-suite 1 fail · isolated 8/8 PASS) · Open **3(active: frontend 2 + backend 1)** · Planned **QA-B313+QA-B311+QA-B312+QA-B116(origin/test push 560 BE+227 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 @4963535 · FE pending 2 @5bb84a6)** · operation **BLOCK** -->
+# revalidation_1390th: frontend roadmap-merged @9a583ec npm 2164/2165(1 fail,749.37s,418 files); failing `StaffAnnualLeavePage.test.jsx` branch label assertion(`조회 지점` not found); isolated 8/8 PASS(6.72s,pollution lineage); develop @5bb84a6 WT CLEAN with test..develop 0/2 pending(e985522+5bb84a6) and pre-merge skipped; build 1168 PASS(8.63s); audit 0 high; live E2E SKIP(merge none, bootstrap-disabled 122/25/0 carry); QA-B311 BLOCK update + QA-B312 HIGH update Open; Open 3(active FE2+BE1); transfer BLOCK; cross-stream BLOCK(BE pending 1 + FE pending 2); operation BLOCK; origin/test push 560 BE+227 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T04:14:37+00:00 -->
+<!-- tester-sync: TSR 1389차 2026-06-25T04:14 UTC (backend) — ROADMAP merged baseline `@37416ac` (`src/backend-test`) `mvn test` **1930/1930 PASS**(57.383s, BUILD SUCCESS) · develop HEAD `@4963535` WT **CLEAN** · develop pre-merge (`src/backend`) **1931/1931 PASS**(59.083s, BUILD SUCCESS, +1 test) · merge **SKIP**(`test..develop` **0/1** pending `4963535`) · pending commit `feat(v2/G-NHIS-ALT-KEY-AUDIT-BADGE): expose altKeyMatched on NHIS import APIs` · origin/test (**560 unpushed BE** · **227 unpushed FE**) · **QA-20260625-B313 Open**(severity **BLOCK**, backend develop→test merge pending 1 `4963535` 미이관) · Open **3(active: frontend 2 + backend 1)** · Planned **QA-B313+QA-B311+QA-B312+QA-B116(origin/test push 560 BE+227 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 @4963535 · FE pending 1 @e985522)** · backend@8080 **UP/200** · operation **BLOCK** -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T03:34:06+00:00 -->
+<!-- tester-sync: TSR 1388차 2026-06-25T03:34 UTC (frontend) — ROADMAP merged baseline `@9a583ec` (`src/frontend-test`) `npm test` **Terminated exit 143**(632.08s partial · summary 미생성) · develop HEAD `@e985522` WT **CLEAN** · merge **SKIP**(`test..develop` **0/1** pending `e985522` · pre-merge 미실행) · build **1168 PASS**(10.28s) · audit **0 high** · live E2E **SKIP**(merge 없음 · bootstrap-disabled 122 PASS/25 SKIP/0 FAIL carry) · `mvn test` N/A(no `pom.xml`) · origin/test (**560 unpushed BE** · **227 unpushed FE**) · **QA-20260625-B311 Open**(severity **BLOCK**, frontend develop→test merge pending 1 `e985522` 미이관) · **QA-20260625-B312 Open**(severity **HIGH**, `npm test` terminated 143 before summary · full regression 결과 미확정) · Open **2(active frontend)** · Planned **QA-B311+QA-B312+QA-B116(origin/test push 560 BE+227 FE)+QA-B95 partial(bootstrap-disabled carry)** · transfer **BLOCK** · cross-stream **BLOCK(BE@37416ac SYNCED · FE pending 1 @e985522)** · operation **BLOCK** -->
+# revalidation_1388th: frontend roadmap-merged @9a583ec npm test terminated 143(632.08s,summary none); develop @e985522 WT CLEAN with test..develop 0/1 pending and pre-merge skipped; build 1168 PASS(10.28s); audit 0 high; live E2E SKIP(merge none, bootstrap-disabled 122/25/0 carry); QA-B311 BLOCK + QA-B312 HIGH Open; Open 2 FE; transfer BLOCK; cross-stream BLOCK(BE SYNCED + FE pending 1); operation BLOCK; origin/test push 560 BE+227 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T03:17:07+00:00 -->
+<!-- tester-sync: TSR 1387차 2026-06-25T03:17 UTC (backend) — ROADMAP merged baseline `@e4f83af` (`src/backend-test`) `mvn test` **1920/1920 PASS**(59.3s, 362 suites, BUILD SUCCESS) · develop HEAD `@37416ac` WT **CLEAN** · develop pre-merge (`src/backend`) **1930/1930 PASS**(56.7s, 365 suites, +10 tests) · ★ **merge EXECUTED** FF `e4f83af`→`37416ac` (1 commit: v2/G-NHIS-MASKED-NAME-FALLBACK alt-key client resolution for NHIS imports) · post-merge **1930/1930 PASS**(81.0s, 365 suites) · develop/test `@37416ac` **SYNCED** · origin/test (**560 unpushed BE** · **227 unpushed FE**) · **★ QA-20260625-B310 Fixed @ `37416ac`** · Open **0(active)** · Planned **QA-B116(origin/test push 560 BE+227 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@9a583ec + BE@37416ac)** · backend@8080 **UP/200** · operation **BLOCK** · disk **41%**(87G avail) -->
+# revalidation_1387th: backend baseline @e4f83af mvn 1920/1920 PASS(59.3s,362 suites); develop @37416ac pre-merge 1930/1930 PASS(56.7s,+10 tests) WT CLEAN; merge EXECUTED FF e4f83af→37416ac (1); post-merge 1930/1930 PASS(81.0s,365 suites); QA-B310 Fixed; Open 0; transfer PASS; cross-stream SYNCED; operation BLOCK; origin/test push 560 BE+227 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T02:55:33+00:00 -->
+<!-- tester-sync: TSR 1386차 2026-06-25T02:55 UTC (frontend) — ROADMAP merged baseline `@5afef2d` (`src/frontend-test`) `npm test` **2160/2160 PASS**(727.52s, 417 files) · develop HEAD `@9a583ec` WT **CLEAN** · develop pre-merge (`src/frontend`) **2160/2160 PASS**(729.39s, 417 files) · ★ **merge EXECUTED** FF `5afef2d`→`9a583ec` (1 commit: G2b CMS catalog empty state handling) · post-merge **2160/2160 PASS**(729.45s, 417 files) · build **1168 PASS**(8.42s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.50s · bootstrap-disabled carry) · origin/test (**559 unpushed BE** · **227 unpushed FE**) · **★ QA-20260625-B309 Fixed @ `9a583ec`** · Open **0(active)** · Planned **QA-B116(origin/test push 559 BE+227 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@9a583ec + BE@e4f83af)** · backend@8080 **UP/200** · operation **BLOCK** · disk **41%**(87G avail) -->
+# revalidation_1386th: frontend baseline @5afef2d npm 2160/2160 PASS(727.52s,417 files); develop @9a583ec pre-merge 2160/2160 PASS(729.39s); merge EXECUTED FF 5afef2d→9a583ec (1); post-merge 2160/2160 PASS(729.45s); QA-B309 Fixed; build 1168 PASS(8.42s); audit 0 high; live E2E 122/25/0(37.50s); Open 0; transfer PASS; cross-stream SYNCED; operation BLOCK; origin/test push 559 BE+227 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T02:10:01+00:00 -->
+<!-- tester-sync: TSR 1385차 2026-06-25T02:10 UTC (backend) — ROADMAP merged baseline `@5a717ac` (`src/backend-test`) `mvn test` **1918/1918 PASS**(58.0s, 362 suites, BUILD SUCCESS) · develop HEAD `@e4f83af` WT **CLEAN** · develop pre-merge (`src/backend`) **1920/1920 PASS**(59.7s, 362 suites, +2 tests) · ★ **merge EXECUTED** FF `5a717ac`→`e4f83af` (1 commit: v2/G16 transport parity-rules RBAC API spec alignment) · post-merge **1920/1920 PASS**(78.0s, 362 suites) · develop/test `@e4f83af` **SYNCED** · origin/test (**559 unpushed BE** · **226 unpushed FE**) · **★ QA-20260625-B308 Fixed @ `e4f83af`** · Open **0(active)** · Planned **QA-B116(origin/test push 559 BE+226 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@5afef2d + BE@e4f83af)** · backend@8080 **UP/200** · operation **BLOCK** · disk **41%**(87G avail) -->
+# revalidation_1385th: backend baseline @5a717ac mvn 1918/1918 PASS(58.0s,362 suites); develop @e4f83af pre-merge 1920/1920 PASS(59.7s,+2 tests) WT CLEAN; merge EXECUTED FF 5a717ac→e4f83af (1); post-merge 1920/1920 PASS(78.0s,362 suites); QA-B308 Fixed; Open 0; transfer PASS; cross-stream SYNCED; operation BLOCK; origin/test push 559 BE+226 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-25T00:57:00+00:00 -->
+<!-- tester-sync: TSR 1383차 2026-06-25T00:57 UTC (frontend) — ROADMAP merged baseline `@1db75d0` (`src/frontend-test`) `npm test` **2157/2157 PASS**(726.63s, 417 files) · develop HEAD `@9aeedfe` WT **CLEAN** · develop pre-merge (`src/frontend`) **2157/2157 PASS**(722.77s, 417 files) · ★ **merge EXECUTED** FF `1db75d0`→`9aeedfe` (1 commit: v2/G2b+G16 CMS collection methods + transport parity-rules FE wire) · post-merge **2157/2157 PASS**(724.22s, 417 files) · build **1167 PASS**(12.25s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(39.73s · bootstrap-disabled carry) · origin/test (**557 unpushed BE** · **225 unpushed FE**) · **★ QA-20260625-B306 Fixed @ `9aeedfe`** · Open **0(active)** · Planned **QA-B116(origin/test push 557 BE+225 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@9aeedfe + BE@e12b084)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(88G avail) -->
+# revalidation_1383rd: frontend baseline @1db75d0 npm 2157/2157 PASS(726.63s,417 files); develop @9aeedfe pre-merge 2157/2157 PASS(722.77s); merge EXECUTED FF 1db75d0→9aeedfe (1); post-merge 2157/2157 PASS(724.22s); QA-B306 Fixed; build 1167 PASS(12.25s); audit 0 high; live E2E 122/25/0(39.73s); Open 0; transfer PASS; cross-stream SYNCED; operation BLOCK; origin/test push 557 BE+225 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T23:51:00+00:00 -->
+<!-- tester-sync: TSR 1382차 2026-06-24T23:51 UTC (backend) — ROADMAP merged baseline `@dac8ebd` (`src/backend-test`) `mvn test` **1911/1911 PASS**(55.0s, 361 suites, BUILD SUCCESS) · develop HEAD `@e12b084` WT **CLEAN** · develop pre-merge (`src/backend`) **1918/1918 PASS**(57.9s, 362 suites, +7 tests) · ★ **merge EXECUTED** FF `dac8ebd`→`e12b084` (1 commit: v2/US-O01 bathing pre/post observation + indicator-27 compliance API · V177) · post-merge **1918/1918 PASS**(76.6s, 362 suites) · develop/test `@e12b084` **SYNCED** · origin/test (**557 unpushed BE** · **224 unpushed FE**) · **★ QA-20260624-B305 Fixed @ `e12b084`** · Open **0(active)** · Planned **QA-B116(origin/test push 557 BE+224 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@1db75d0 + BE@e12b084)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(88G avail) -->
+# revalidation_1382nd: backend baseline @dac8ebd mvn 1911/1911 PASS(55.0s,361 suites); develop @e12b084 pre-merge 1918/1918 PASS(57.9s,+7 tests) WT CLEAN; merge EXECUTED FF dac8ebd→e12b084 (1); post-merge 1918/1918 PASS(76.6s,362 suites); QA-B305 Fixed; Open 0; transfer PASS; cross-stream SYNCED; operation BLOCK; origin/test push 557 BE+224 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T23:23:58+00:00 -->
+<!-- tester-sync: TSR 1381차 2026-06-24T23:24 UTC (frontend) — ROADMAP merged baseline `@c3c6272` (`src/frontend-test`) `npm test` **2151/2151 PASS**(725.37s, 416 files) · develop HEAD `@1db75d0` WT **CLEAN** · develop pre-merge (`src/frontend`) **2151/2151 PASS**(727.33s, 416 files) · ★ **merge EXECUTED** FF `c3c6272`→`1db75d0` (2 commits) · post-merge **2151/2151 PASS**(728.63s, 416 files) · build **1167 PASS**(8.40s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.50s · bootstrap-disabled carry) · origin/test (**556 unpushed BE** · **224 unpushed FE**) · **★ QA-20260624-B304 Fixed @ `1db75d0`** · Open **0(active)** · Planned **QA-B116(origin/test push 556 BE+224 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@1db75d0 + BE@dac8ebd)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(88G avail) -->
+# revalidation_1381st: frontend baseline @c3c6272 npm 2151/2151 PASS(725.37s); develop @1db75d0 pre-merge 2151/2151 PASS(727.33s); merge EXECUTED FF c3c6272→1db75d0 (2); post-merge 2151/2151 PASS(728.63s); QA-B304 Fixed; build 1167 PASS; audit 0 high; live E2E 122/25/0; Open 0; transfer PASS; cross-stream SYNCED; operation BLOCK; origin/test push 556 BE+224 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T22:37:30+00:00 -->
+<!-- tester-sync: TSR 1380차 2026-06-24T22:37 UTC (backend) — ROADMAP merged baseline `@bd1e87e` (`src/backend-test`) `mvn test` **1900/1900 PASS**(57.5s, 360 suites, BUILD SUCCESS) · develop HEAD `@dac8ebd` WT **CLEAN** · develop pre-merge (`src/backend`) **1911/1911 PASS**(86.3s, 361 suites, +11 tests) · ★ **merge EXECUTED** FF `bd1e87e`→`dac8ebd` (1 commit: v2/G2b virtual-account and multi-account CMS collection APIs · V176) · post-merge **1911/1911 PASS**(80.8s, 361 suites) · develop/test `@dac8ebd` **SYNCED** · origin/test (**556 unpushed BE** · **223 unpushed FE**) · **★ QA-20260624-B303 Fixed @ `dac8ebd`** · Open **1(active frontend)** QA-B304 · Planned **QA-B304+QA-B116(origin/test push 556 BE+223 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **BLOCK(BE SYNCED@dac8ebd · FE pending 1 @e63aa8e)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(88G avail) -->
+# revalidation_1380th: backend baseline @bd1e87e mvn 1900/1900 PASS(57.5s,360 suites); develop @dac8ebd pre-merge 1911/1911 PASS(86.3s,+11 tests) WT CLEAN; merge EXECUTED FF bd1e87e→dac8ebd (1); post-merge 1911/1911 PASS(80.8s,361 suites); QA-B303 Fixed; Open 1 FE(B304 BLOCK); transfer PASS; cross-stream BLOCK; backend@8080 200; operation BLOCK; origin/test push 556 BE+223 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T22:04:29+00:00 -->
+<!-- tester-sync: TSR 1379차 2026-06-24T22:04 UTC (frontend) — ROADMAP merged baseline `@4875937` (`src/frontend-test`) `npm test` **2150/2150 PASS**(725.30s, 416 files) · develop HEAD `@c3c6272` WT **CLEAN** · develop pre-merge (`src/frontend`) **2150/2150 PASS**(727.05s, 416 files) · ★ **merge EXECUTED** FF `4875937`→`c3c6272` (1 commit: live-e2e operation readiness skip dedupe) · post-merge **2150/2150 PASS**(734.78s, 416 files) · develop/test `@c3c6272` **SYNCED** · build **1167 PASS**(8.41s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(36.65s · bootstrap-disabled carry) · origin/test (**555 unpushed BE** · **222 unpushed FE**) · **★ QA-20260624-B302 Fixed @ `c3c6272`** · Open **0(active)** · Planned **QA-B116(origin/test push 555 BE+222 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@c3c6272 + BE@bd1e87e)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(89G avail) -->
+# revalidation_1379th: frontend baseline @4875937 npm 2150/2150 PASS(725.30s,416 files); develop @c3c6272 pre-merge 2150/2150 PASS(727.05s); merge EXECUTED FF 4875937→c3c6272 (1); post-merge 2150/2150 PASS(734.78s); QA-B302 Fixed; build 1167 PASS(8.41s); audit 0 high; live E2E 122/25/0(36.65s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 555 BE+222 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T21:19:43+00:00 -->
+<!-- tester-sync: TSR 1378차 2026-06-24T21:19 UTC (backend) — ROADMAP merged baseline `@2eaf17e` (`src/backend-test`) `mvn test` **1899/1899 PASS**(57.981s, 359 suites, BUILD SUCCESS) · develop HEAD `@bd1e87e` WT **CLEAN** · develop pre-merge (`src/backend`) **1900/1900 PASS**(59.917s, 360 suites, +1 test) · ★ **merge EXECUTED** FF `2eaf17e`→`bd1e87e` (1 commit: v2/G16 NHIS #44 transport service fee parity rules API) · post-merge **1900/1900 PASS**(76.0s, 360 suites) · develop/test `@bd1e87e` **SYNCED** · `npm test` N/A(no `package.json`) · origin/test (**555 unpushed BE** · **221 unpushed FE**) · **★ QA-20260624-B301 Fixed @ `bd1e87e`** · Open **0(active)** · Planned **QA-B116(origin/test push 555 BE+221 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@4875937 + BE@bd1e87e)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(89G avail) -->
+# revalidation_1378th: backend baseline @2eaf17e mvn 1899/1899 PASS(57.981s,359 suites); develop @bd1e87e pre-merge 1900/1900 PASS(59.917s,+1 test) WT CLEAN; merge EXECUTED FF 2eaf17e→bd1e87e (1); post-merge 1900/1900 PASS(76.0s,360 suites); QA-B301 Fixed; Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 555 BE+221 FE.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T20:50:01+00:00 -->
+<!-- tester-sync: TSR 1377차 2026-06-24T20:50 UTC (frontend) — ROADMAP merged baseline `@64a7648` (`src/frontend-test`) `npm test` **2149/2149 PASS**(715.46s, 416 files) · develop HEAD `@4875937` WT **CLEAN** · develop pre-merge (`src/frontend`) **2149/2149 PASS**(722.01s, 416 files) · ★ **merge EXECUTED** FF `64a7648`→`4875937` (1 commit: v1.2.1/G2b CMS payment-method-catalog panel + US-O05 live E2E fix) · post-merge **2149/2149 PASS**(726.99s, 416 files) · develop/test `@4875937` **SYNCED** · build **1166 PASS**(8.42s) · audit **0 high** · live E2E **122 PASS/25 SKIP/0 FAIL**(37.74s · US-O05 closure) · origin/test (**554 unpushed BE** · **221 unpushed FE**) · **★ QA-20260624-B300 Fixed @ `4875937`** · **★ QA-20260624-B298 Fixed @ `4875937`** · Open **0(active)** · Planned **QA-B116(origin/test push 554 BE+221 FE)+QA-B95 partial(bootstrap-disabled·122 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@4875937 + BE@2eaf17e)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(89G avail) -->
+# revalidation_1377th: frontend baseline @64a7648 npm 2149/2149 PASS(715.46s,416 files); develop @4875937 pre-merge 2149/2149 PASS(722.01s); merge EXECUTED FF 64a7648→4875937 (1); post-merge 2149/2149 PASS(726.99s); QA-B300 Fixed; QA-B298 Fixed; build 1166 PASS(8.42s); audit 0 high; live E2E 122/25/0(37.74s); Open 0; transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 554 BE+221 FE.
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-24T20:03:00+00:00 -->
 <!-- tester-sync: TSR 1376차 2026-06-24T20:03 UTC (backend) — SYNCED revalidation `@2eaf17e` (`src/backend-test`) `mvn test` **1899/1899 PASS**(55.253s, 359 suites, BUILD SUCCESS) · develop HEAD `@2eaf17e` WT **CLEAN** · `test..develop` **0**(SYNCED) · merge **SKIP**(SYNCED) · `npm test` N/A(no `package.json`) · origin/test (**554 unpushed BE** · **220 unpushed FE**) · **QA-20260624-B298 Open carry**(MEDIUM · frontend live E2E US-O05) · Open **1(active)** · Planned **QA-B116(origin/test push 554 BE+220 FE)+QA-B95 partial(bootstrap-disabled·121 PASS FE carry)** · transfer **PASS** · cross-stream **SYNCED(FE@64a7648 + BE@2eaf17e)** · backend@8080 **UP/200** · operation **BLOCK** · disk **40%**(89G avail) -->
 # revalidation_1376th: backend SYNCED @2eaf17e mvn 1899/1899 PASS(55.253s,359 suites); develop @2eaf17e WT CLEAN; test..develop 0(SYNCED); merge SKIP; Open 1 carry(B298 FE MEDIUM); transfer PASS; cross-stream SYNCED; backend@8080 200; operation BLOCK; origin/test push 554 BE+220 FE.
@@ -181,6 +316,7 @@
 <!-- tester-sync: TSR 1331차 2026-06-23T18:23 UTC (frontend) — baseline carry `@b7101d5` **2049/2049 PASS**(1320차) · re-run **SKIP**(vitest concurrency · `src/frontend` develop PID 657264) · develop `@64584f4` WT **DIRTY 48M+18U** · merge **SKIP**(`test..develop` **0/4** pending+dirty) · **QA-B273 Planned(update)** · Open **0(active)** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 @c4e6bcb · FE dirty pending 4)** · operation **BLOCK** -->
 # revalidation_1331st: frontend baseline carry 2049/2049 @b7101d5(1320차); npm re-run SKIP(vitest concurrency PID 657264); develop @64584f4 WT DIRTY 48M+18U; merge SKIP(0/4+dirty); QA-B273 Planned(update,BLOCK dirty 44M+12U→48M+18U pending 3→4); Open 0; transfer BLOCK; cross-stream BLOCK; operation BLOCK.
 
+<!-- sec-sync: SEC 25차 2026-06-25T17:30 KST — develop BE `@49fe2e7`(+572 vs origin/test·**WT CLEAN**·local test `49fe2e7` **SYNCED**·BE TSR 1408차 merge EXECUTED)/FE `@2c9abd6`(+241·**WT CLEAN**·local test `75c0f51` +2 behind); origin/test `598d108`/`ab4de83` P0 유지(SEC-D14·572/241 unpushed·SEC-D18 더 악화 +21/+23 vs 24차); 신규 **G-NHIS-MASKED-NAME-FALLBACK**(`NhisClientResolver`·`matched.size()==1` 단일후보 강제·org+branch scope·PII reveal 차단) · **V178 9종 CHECK**(CMS collection+bathing defense-in-depth·amount>0·시간성·VIRTUAL↔bank_code·MULTI↔split_count) · **G-REPORT-DENSITY branch filter**(`ProgramReportController`·HQ/BRANCH/SOCIAL_WORKER·`resolveBranchScope`·org scope) · **G16 RBAC fix**(transport parity-rules HQ/BRANCH only 정합) · **ProductionSecretValidator 3-form env 봉인**(4표면 bootstrap env fail-fast·SEC-D29 진전) · G2b CMS 가상계좌·다계좌(HQ/BRANCH only·SUCCEEDED 멱등) · QA-B95 enforce-bootstrap-readiness(true 기본·false 시 operationReady 오보·인증 우회 없음) · FE 7종+ API apiFetch(SEC-D17 Fixed 유지·raw fetch 0) 전부 RBAC·tenant-safe Pass; **25차 신규 BLOCK급 audit Open 0건**; **신규 SEC-D38**(enforce-bootstrap-readiness=false 시 probe operationReady=true 오보·인증 우회 없음·Low/Monitor·prod 기본 true 유지 권고)·**신규 SEC-D39**(CMS 가상계좌 번호 응답 HQ/BRANCH only·guardian 확장 시 last4 권고·Low/Monitor); **★ BE local test SYNCED**(24차 +1behind → 25차 SYNCED·TSR 1408차 merge 진전); SEC-D33·D34·D36·D37·D4(4 파서·신규 추가 없음)·D32·D26·D22·D18 carry; **QA Open [SEC] 0건**. 상세 `docs/security/SECURITY_AUDIT.md` §1.27. -->
 <!-- sec-sync: SEC 24차 2026-06-24T17:05 KST — develop BE `@2f83563`(+551 vs origin/test·**WT CLEAN**·local test `88a58d9` +1 behind)/FE `@c7d0982`(+218·**WT CLEAN**·local test `c06d581` +1 behind); origin/test `598d108`/`ab4de83` P0 유지(SEC-D14·551/218 unpushed·SEC-D18 더 악화 +21/+31); 신규 **G-SMS-TEMPLATE-CATALOG message_kind=1 staff access key SMS dispatch**(`StaffAccessKeyNotificationService`·`SecureRandom` 6-digit·SHA-256 hash at-rest·60분 TTL·`invalidateActiveTokensForUser` 단일활성·응답 record 평문 키 0·`STAFF_ROLE_CODES` allowlist·branch write scope·`dispatchManualStaffSms` quiet-hours guard·테스트 5종) · **NotificationChannelReadinessService dispatchReady 채널-credential 게이트**(SMS=apiKey+secret+senderId·ALIMTALK=+kakaoPfId·placeholder/blank fail-closed·SEC-D15 deepen) · **HealthControllerTest G21 seed detail lock**(readiness 회귀 가드·SEC-D29 lineage) · FE G-SMS UI a11y deepen(UXD-160/161 ds-form-stack·`formatGsmDispatchSuccessMessage` 한국어 라벨만 노출·숫자 ezcareMessageKind UI 미노출 FAQ Q692) 전부 RBAC·tenant-safe Pass; **24차 신규 BLOCK급 audit Open 0건**; **신규 SEC-D36**(6-digit access key 키스페이스 10^6·rate limit 의존·Low/Monitor·`/auth/password/reset` ip 20/min·token 8/min으로 P(match)≈0.05%)·**SEC-D37**(`notifications.payload_json` 내 평문 access key 60분 잔존·DB 침해 표면·Low/Monitor·purge/redact 권고); **SEC-D35 Mitigated**(양 스트림 WT CLEAN 회복·V175 커밋 완료); SEC-D33·D34·D4(4 파서·신규 추가 없음·G-SMS dispatch는 POI 미사용)·D32·D26·D22·D18 carry; **QA Open [SEC] 0건**. 상세 `docs/security/SECURITY_AUDIT.md` §1.26. -->
 <!-- sec-sync: SEC 23차 2026-06-23T17:00 KST — develop BE `@5fd12dd`(+530 vs origin/test·**WT DIRTY 9M+1U**)/FE `@426d63a`(+187·**WT DIRTY 38M+11U**); origin/test `598d108`/`ab4de83` P0 유지(SEC-D14·530/187 unpushed·SEC-D18 악화); 신규 V172 staff_annual_leave_yearly roster·V173 defense-in-depth+readiness probe·V174 staff_leave_ledger canonical·V175 leave_ledger 무결성(WT untracked)·G-STAFF-ANNUAL-LEAVE 입력 검증·j03 solapi placeholder 거부(fail-closed)·ClientService 주소 마스킹(PII 긍정)·live-e2e 테넌트 격리 RBAC·tenant-safe Pass(V173/V174/V175 Tenant FK+user_branch 3-way FK defense-in-depth 보안 긍정); **23차 신규 BLOCK급 audit Open 0건**; **신규 SEC-D35**(V175 미커밋·양 스트림 WT DIRTY·Low/process — TSR QA-B272/B273 동일 원인·보안 BLOCK 아님); SEC-D33·D34·D4(4 파서)·D32·D26·D22·D18 carry; **QA Open [SEC] 0건**. 상세 `docs/security/SECURITY_AUDIT.md` §1.25. -->
 <!-- planner-sync: PLN 191차 2026-06-23T17:30 KST — QA-B272/B273 Open→Planned · ROADMAP 191차 · US-R01-c leave-ledger BE ✅ FE wire △ · v1.3-C M2 차별화 · merge gate 718 · cross-stream BLOCK · QA Open 0(active) -->
@@ -2281,7 +2417,551 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **1(active)** — TSR 1376차 BE test `@2eaf17e` **1899/1899 PASS**(55.253s, 359 suites) · `test..develop` **0**(SYNCED) · merge **SKIP** · **QA-B298 Open carry**(MEDIUM · FE live E2E US-O05 1 FAIL) · cross-stream **SYNCED(FE@64a7648 + BE@2eaf17e)** · Planned **QA-B116(origin/test push 554 BE+220 FE)+QA-B95 partial(bootstrap-disabled·121 PASS FE carry)** · operation **BLOCK** · disk **40%** avail · 최종 갱신: TSR 1376차 2026-06-24T20:03 UTC)_
+_(Open **0(active)** — TSR 1419차 merge EXECUTED `@68b08b0` · QA-B336 Fixed · Planned **QA-B116(origin/test push 576 BE+247 FE)+QA-B95 partial(bootstrap-disabled carry·FE+BE wire merged @4bbd54a+68b08b0)** · cross-stream **SYNCED(FE@4bbd54a + BE@68b08b0)** · backend@8080 **UP/200** · operation **BLOCK** · 최종 갱신: TSR 2026-06-25T23:13 UTC)_
+
+### [TSR] v2/G-STAFF-COMMITTEE-MEETING-LOG staff committee meeting CRUD API — backend develop→test merge pending 1 (`68b08b0`, QA-20260625-B336)
+
+- **id**: QA-20260625-B336
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1419차 — baseline **1972/1972 PASS** @ `d06e3f1` · develop pre-merge **1982/1982 PASS** @ `68b08b0` · merge EXECUTED FF `d06e3f1`→`68b08b0` 1 commit · post-merge **1982/1982 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T23:13:33+00:00
+- **found_at**: 2026-06-25T23:10:00+00:00 (develop `@68b08b0` · test `@d06e3f1` · `test..develop` **0/1** pending)
+- **version**: v2/G-STAFF-COMMITTEE-MEETING-LOG staff committee meeting CRUD API (`develop @68b08b0` · `test @68b08b0` SYNCED · V181 migration)
+- **summary**: TSR 1419차 develop pre-merge `@68b08b0` **1982/1982 PASS**(`StaffCommitteeMeetingController`·`StaffCommitteeMeetingService`·`StaffCommitteeMeetingServiceTest`·`MustApiEndpointRoutingTest`·`RoleBasedControllerAccessTest` +10 tests · V181 `staff_committee_meeting_logs`) 확인 후 merge EXECUTED. post-merge **1982/1982 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with FE@`4bbd54a`.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1982/1982 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@68b08b0
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 200차 · G-STAFF-COMMITTEE-MEETING-LOG P1 demand-signal · US-R08
+
+### [TSR] v1.2.1/QA-B95 recovered-auth readiness hints FE wire — frontend develop→test merge pending 1 (`4bbd54a`, QA-20260625-B335)
+
+- **id**: QA-20260625-B335
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1418차 — baseline carry **2214/2214 PASS** @ `7e7c296` · develop pre-merge **2217/2217 PASS** @ `4bbd54a` · merge EXECUTED FF `7e7c296`→`4bbd54a` 1 commit · post-merge **2217/2217 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T22:51:53+00:00
+- **found_at**: 2026-06-25T22:20:00+00:00 (develop `@4bbd54a` · test `@7e7c296` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/QA-B95 wire recovered-auth readiness hints from health probe (`develop @4bbd54a` · `test @4bbd54a` SYNCED · BE alignment `@d06e3f1`)
+- **summary**: TSR 1418차 develop pre-merge `@4bbd54a` **2217/2217 PASS**(`liveBackendProbe.js`·`liveConfig.js`·`liveGlobalSetup.js`·`liveE2eHarness.test.js` +3 tests — parse `liveE2eAllowRecoveredAuth`/`liveE2eBootstrapEnableHint` from `/health`, treat recovered-auth bootstrap hint as neutral operation reason) 확인 후 merge EXECUTED. QA-B95 FE wire 8th layer(BE B334 `@d06e3f1` chain 후). post-merge **2217/2217 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with BE@`d06e3f1`.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2217/2217 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@4bbd54a
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 200차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v1.2.1/QA-B95 ignore neutral operation blocker markers — frontend develop→test merge pending 1 (`7e7c296`, QA-20260625-B333)
+
+- **id**: QA-20260625-B333
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1418차 carry — baseline `@b7004ca` **2214/2214 PASS** · merge EXECUTED FF `b7004ca`→`7e7c296` 1 commit · post-merge carry **2214/2214 PASS** @ `7e7c296` · TSR 1416 post-merge 22:09 UTC)
+- **fixed_at**: 2026-06-25T22:51:53+00:00
+- **found_at**: 2026-06-25T21:52:00+00:00 (develop `@7e7c296` · test `@b7004ca` · `test..develop` **0/1** pending · test WT **DIRTY** `?? 9`)
+- **version**: v1.2.1/QA-B95 ignore neutral operation blocker markers (`develop @7e7c296` · `test @7e7c296` SYNCED before B335)
+- **summary**: TSR 1416차에서 merge SKIP 기록 후 post-merge 재검증(TSR 1416 post-merge 22:09)으로 `7e7c296` FF merge·**2214/2214 PASS** 확인. TSR 1418차에서 B333 **Fixed** 확정(문서 지연 보정). **기능 갭 아님** — 이관 규율 6·14. test WT `?? 9` 빈 artifact는 LOW carry(이관 BLOCK 사유 아님).
+- **reproduce**: `cd src/frontend-test && git log -1 --oneline` → `4bbd54a`(B335 merge 후) · `@7e7c296` 구간 post-merge **2214/2214 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — carry merge@7e7c296
+- **assignee**: TSR(1416 post-merge carry + 1418 문서 확정)
+- **roadmap_ref**: ROADMAP 200차 · v2 QA-B95 · 이관 규율 6·14
+
+### [TSR] v2/QA-B95 recovered-auth mode in live readiness hints — backend develop→test merge pending 1 (`d06e3f1`, QA-20260625-B334)
+
+- **id**: QA-20260625-B334
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1417차 — baseline **1972/1972 PASS** @ `42a369e` · develop pre-merge **1972/1972 PASS** @ `d06e3f1` · merge EXECUTED FF `42a369e`→`d06e3f1` 1 commit · post-merge **1972/1972 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T22:15:29+00:00
+- **found_at**: 2026-06-25T22:10:00+00:00 (develop `@d06e3f1` · test `@42a369e` · `test..develop` **0/1** pending)
+- **version**: v2/QA-B95 expose recovered-auth mode in live readiness hints (`develop @d06e3f1` · `test @d06e3f1` SYNCED)
+- **summary**: TSR 1417차 baseline `@42a369e` **1972/1972 PASS** · pre-merge `@d06e3f1` **1972/1972 PASS**(`HealthController`·`LiveE2eController`·`LiveE2eOperationReadinessSupport`·`HealthControllerTest`·`LiveE2eControllerTest` — recovered-auth mode in health/live-e2e readiness hints) 확인 후 merge EXECUTED. QA-B95 BE wire 7th layer(B332 g21-seed+V180 chain 후). post-merge **1972/1972 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with FE@`7e7c296`.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1972/1972 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@d06e3f1
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 200차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v2/QA-B95 g21-seed detail + V180 integrity — backend develop→test merge pending 1 (`42a369e`, QA-20260625-B332)
+
+- **id**: QA-20260625-B332
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1415차 — baseline **1972/1972 PASS** @ `3342938` · develop pre-merge **1972/1972 PASS** @ `42a369e` · merge EXECUTED FF `3342938`→`42a369e` 1 commit · post-merge **1972/1972 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T21:31:39+00:00
+- **found_at**: 2026-06-25T21:26:40+00:00 (develop `@42a369e` · test `@3342938` · `test..develop` **0/1** pending)
+- **version**: v2/QA-B95 g21-seed detail refine + v3.1/US-P01 V180 program_client_groups integrity (`develop @42a369e` · `test @42a369e` SYNCED)
+- **summary**: TSR 1415차 baseline `@3342938` **1972/1972 PASS** · pre-merge `@42a369e` **1972/1972 PASS**(`HealthController` g21-seed `service-unavailable` detail refine · `V180__program_client_groups_integrity_us_p01.sql` · `HealthControllerTest` align) 확인 후 merge EXECUTED. QA-B330 dirty-tree closure(COD `@42a369e`) 후 6th layer. post-merge **1972/1972 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with FE@`b7004ca`.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1972/1972 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@42a369e
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 200차 · v2 QA-B95 · v3.1 G-PROGRAM-GROUP-CONFIG · 이관 규율 6·14
+
+### [TSR] v1.2.1/UXD-165 refund-fee-preview CSS + QA-B95 legacy operation blocker keys — frontend develop→test merge pending 2 (`b7004ca`, QA-20260625-B331)
+
+- **id**: QA-20260625-B331
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1414차 — baseline **2212/2212 PASS** @ `33944e4` · develop pre-merge **2212/2212 PASS** @ `b7004ca` · merge EXECUTED FF `33944e4`→`b7004ca` 2 commits · post-merge **2212/2212 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T21:15:49+00:00
+- **found_at**: 2026-06-25T20:31:00+00:00 (develop `@bee97b9`+`b7004ca` · test `@33944e4` · `test..develop` **0/2** pending)
+- **version**: v1.2.1/UXD-165 + QA-B95 legacy singular operation blocker keys (`develop @b7004ca` · `test @b7004ca` SYNCED)
+- **summary**: TSR 1414차 baseline `@33944e4` **2212/2212 PASS** · pre-merge `@b7004ca` **2212/2212 PASS**(`components.css` refund-fee-preview·`StaffMonthlySchedulePage` a11y UXD-165 · `liveConfig.js`·`liveBackendProbe.js`·`liveE2eHarness.test.js` legacy singular operation blocker key support) 확인 후 merge EXECUTED. post-merge **2212/2212 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **BLOCK** with BE develop DIRTY@3342938(QA-B330).
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2212/2212 PASS**
+- **expected**: pre-merge 0 FAIL → merge 2 commits → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@b7004ca
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 200차 · v1.2.1 QA-B95 live operation readiness · UXD-165 · 이관 규율 6·14
+
+### [TSR] v2/QA-B95 honor recovered auth in health and live-e2e probe — backend develop→test merge pending 1 (`3342938`, QA-20260625-B328)
+
+- **id**: QA-20260625-B328
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1411차 — baseline **1970/1970 PASS** @ `49fe2e7` · develop pre-merge **1972/1972 PASS** @ `3342938` · merge EXECUTED FF `49fe2e7`→`3342938` 1 commit · post-merge **1972/1972 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T18:59:07+00:00
+- **found_at**: 2026-06-25T18:55:00+00:00 (develop `@3342938` · test `@49fe2e7` · `test..develop` **0/1** pending)
+- **version**: v2/QA-B95 honor recovered auth in health and live-e2e probe (`develop @3342938` · `test @3342938` SYNCED)
+- **summary**: TSR 1411차 baseline `@49fe2e7` **1970/1970 PASS** · pre-merge `@3342938` **1972/1972 PASS**(+2 tests: `HealthControllerTest`·`LiveE2eControllerTest` — recovered-auth readiness in health/live-e2e probe) 확인 후 merge EXECUTED. QA-B95 BE wire 5th layer(B322 probe availability·B326 dirty WIP commit chain). post-merge **1972/1972 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with FE@`bd3253a`.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1972/1972 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@3342938
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v2/QA-B95 live-e2e health+probe readiness deepen — backend develop WT DIRTY recurrence (`49fe2e7`, QA-20260625-B326)
+
+- **id**: QA-20260625-B326
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1411차 — COD commit `@3342938` · develop WT **CLEAN** · merge EXECUTED · post-merge **1972/1972 PASS**)
+- **fixed_at**: 2026-06-25T18:59:07+00:00
+- **found_at**: 2026-06-25T17:59:23+00:00 (develop `@49fe2e7` · test `@49fe2e7` · `test..develop` **0/0** · WT **DIRTY 6M**)
+- **version**: v2/QA-B95 HealthController·LiveE2eController readiness probe deepen (`develop @3342938` · `test @3342938` SYNCED)
+- **summary**: TSR 1409차 baseline `@49fe2e7` **1970/1970 PASS** · develop working tree **재오염 6M**(`HealthController`·`LiveE2eController`·`application.yml`·`HealthControllerTest`·`LiveE2eBootstrapLiveApiRoutingE2eTest`·`LiveE2eControllerTest`). COD `@3342938` `fix(v2/QA-B95): honor recovered auth in health and live-e2e probe` 커밋으로 WT **CLEAN** 복구. TSR 1411차 merge EXECUTED + post-merge **1972/1972 PASS**. **기능 갭 아님** — 이관 규율 1·5·7 해소.
+- **reproduce**: `cd src/backend && git status -sb` → clean · `cd src/backend-test && mvn test` → **1972/1972 PASS**
+- **expected**: COD commit or discard 6M → develop WT **CLEAN** → tester revalidation → merge gate unblocked
+- **actual**: **Fixed** — committed @3342938 · merged · SYNCED
+- **assignee**: COD (commit) / TSR (merge + post-merge 재검증)
+- **roadmap_ref**: ROADMAP 199차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v1.2.1/QA-B95 live operation blocker probe normalize — frontend develop→test merge pending 1 (`bd3253a`, QA-20260625-B327)
+
+- **id**: QA-20260625-B327
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1410차 — baseline **2203/2203 PASS** @ `2c9abd6` · develop pre-merge **2203/2203 PASS** @ `bd3253a` · merge EXECUTED FF `2c9abd6`→`bd3253a` 1 commit · post-merge **2203/2203 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T18:46:12+00:00
+- **found_at**: 2026-06-25T18:07:00+00:00 (develop `@bd3253a` · test `@2c9abd6` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/QA-B95 normalize live operation blockers from probe state (`develop @bd3253a` · `test @bd3253a` SYNCED)
+- **summary**: TSR 1410차 baseline `@2c9abd6` **2203/2203 PASS** · pre-merge `@bd3253a` **2203/2203 PASS**(`liveConfig.js`·`liveGlobalSetup.js`·`liveE2eHarness.test.js` — string-form live operation blocker labels를 probe state에서 recoverable로 정규화) 확인 후 merge EXECUTED. QA-B95 FE wire 4th layer(B323 bootstrap-unavailable·B318 auth recovery chain). post-merge **2203/2203 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with BE@`3342938`(TSR 1411차).
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2203/2203 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@bd3253a
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v2/G-REPORT-DENSITY program report branch filter — backend develop→test merge pending 1 (`49fe2e7`, QA-20260625-B325)
+
+- **id**: QA-20260625-B325
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1408차 — baseline **1968/1968 PASS** @ `337453d` · develop pre-merge **1970/1970 PASS** @ `49fe2e7` · merge EXECUTED FF `337453d`→`49fe2e7` 1 commit · post-merge **1970/1970 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T16:32:50+00:00
+- **found_at**: 2026-06-25T16:28:00+00:00 (develop `@49fe2e7` · test `@337453d` · `test..develop` **0/1** pending)
+- **version**: v2/G-REPORT-DENSITY add branch filter to program reports (`develop @49fe2e7` · `test @49fe2e7` SYNCED)
+- **summary**: TSR 1408차 baseline `@337453d` **1968/1968 PASS** · pre-merge `@49fe2e7` **1970/1970 PASS**(+2 tests: `ProgramReportControllerRoutingTest`·`ProgramReportServiceTest` branch-scope filter on program reports) 확인 후 merge EXECUTED. G-REPORT-DENSITY M5 program report BE deepen (branch filter query param). post-merge **1970/1970 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **BLOCK** with FE pending 1@`f74a6e7`.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1970/1970 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@49fe2e7
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 P2 G-REPORT-DENSITY · US-P02 · BNK-620
+
+### [TSR] v2/G-REPORT-DENSITY program group-history membership — backend develop→test merge pending 1 (`337453d`, QA-20260625-B324)
+
+- **id**: QA-20260625-B324
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1407차 — baseline **1967/1967 PASS** @ `0e55f3b` · develop pre-merge **1968/1968 PASS** @ `337453d` · merge EXECUTED FF `0e55f3b`→`337453d` 1 commit · post-merge **1968/1968 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T15:59:31+00:00
+- **found_at**: 2026-06-25T15:55:00+00:00 (develop `@337453d` · test `@0e55f3b` · `test..develop` **0/1** pending)
+- **version**: v2/G-REPORT-DENSITY fill program group-history report from membership data (`develop @337453d` · `test @337453d` SYNCED)
+- **summary**: TSR 1407차 baseline `@0e55f3b` **1967/1967 PASS** · pre-merge `@337453d` **1968/1968 PASS**(+1 test: `ProgramReportServiceTest` group-history membership · V179 `program_client_groups` schema) 확인 후 merge EXECUTED. G-REPORT-DENSITY M5 program group-history BE deepen (US-P01 membership aggregate). post-merge **1968/1968 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with FE@75c0f51.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1968/1968 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@337453d
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 P2 G-REPORT-DENSITY · US-P01 · BNK-620
+
+### [TSR] v1.2.1/QA-B95 bootstrap-unavailable blocker recovery — frontend develop→test merge pending 1 (`75c0f51`, QA-20260625-B323)
+
+- **id**: QA-20260625-B323
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1406차 — baseline **2200/2200 PASS** @ `15a3b7f` · develop pre-merge **2200/2200 PASS** @ `75c0f51` · merge EXECUTED FF `15a3b7f`→`75c0f51` 1 commit · post-merge **2200/2200 PASS** carry · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T15:34:11+00:00
+- **found_at**: 2026-06-25T15:34:00+00:00 (develop `@75c0f51` · test `@15a3b7f` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/QA-B95 treat bootstrap-unavailable blockers as recoverable (`develop @75c0f51` · `test @75c0f51` SYNCED)
+- **summary**: TSR 1406차 baseline `@15a3b7f` **2200/2200 PASS** · pre-merge `@75c0f51` **2200/2200 PASS**(`liveE2eHarness.test.js`·`liveConfig.js`·`liveGlobalSetup.js` — bootstrap-unavailable label variants를 recoverable로 정규화) 확인 후 merge EXECUTED. QA-B95 FE wire 3rd layer(B318 auth recovery·B322 BE probe 이후). post-merge **2200/2200 PASS** carry · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with BE@0e55f3b.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2200/2200 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@75c0f51
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v2/QA-B95 live-e2e bootstrap probe service availability — backend develop→test merge pending 1 (`0e55f3b`, QA-20260625-B322)
+
+- **id**: QA-20260625-B322
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1405차 — baseline **1967/1967 PASS** @ `650801b` · develop pre-merge **1967/1967 PASS** @ `0e55f3b` · merge EXECUTED FF `650801b`→`0e55f3b` 1 commit · post-merge **1967/1967 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T14:46:56+00:00
+- **found_at**: 2026-06-25T14:42:00+00:00 (develop `@0e55f3b` · test `@650801b` · `test..develop` **0/1** pending)
+- **version**: v2/QA-B95 expose live-e2e bootstrap service availability in probe (`develop @0e55f3b` · `test @0e55f3b` SYNCED)
+- **summary**: TSR 1405차 baseline `@650801b` **1967/1967 PASS** · pre-merge `@0e55f3b` **1967/1967 PASS**(assertion deepen: `LiveE2eController`·`LiveE2eProbeResponse`·`LiveE2eControllerTest` — `bootstrapServiceAvailable` probe field) 확인 후 merge EXECUTED. QA-B95 BE probe wire 2nd layer(B319 enforcement 이후). post-merge **1967/1967 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled carry — runtime `LIVE_E2E_BOOTSTRAP_ENABLED=1` 미설정). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with FE@15a3b7f.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1967/1967 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@0e55f3b
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v1.2.1/G-REPORT-DENSITY M5 program report FE wire — frontend develop→test merge pending 2 (`15a3b7f`, QA-20260625-B321)
+
+- **id**: QA-20260625-B321
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1404차 — baseline **2198/2198 PASS** @ `5914b2f` · develop pre-merge **2198/2198 PASS** @ `15a3b7f` · merge EXECUTED FF `5914b2f`→`15a3b7f` 2 commits · post-merge **2198/2198 PASS** carry · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T14:30:00+00:00
+- **found_at**: 2026-06-25T13:33:00+00:00 (develop `@d64f81b`→`15a3b7f` · test `@5914b2f` · `test..develop` **0/2** pending)
+- **version**: v1.2.1/G-REPORT-DENSITY M5 program report FE wire + UXD-164 (`develop @15a3b7f` · `test @15a3b7f` SYNCED)
+- **summary**: TSR 1404차 baseline `@5914b2f` **2198/2198 PASS** · pre-merge `@15a3b7f` **2198/2198 PASS**(+12 tests: `ProgramReportPanel`·`ProgramReportsPage`·`programReportServices` + UXD-164 `components.css` util classes) 확인 후 merge EXECUTED. G-REPORT-DENSITY M5 4-leaf program report pages FE wire (US-P02) + a11y util class promotion. post-merge **2198/2198 PASS** carry · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled). **기능 갭 아님** — 이관 규율 6·14 해소. cross-stream **SYNCED** with BE@650801b.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2198/2198 PASS**
+- **expected**: pre-merge 0 FAIL → merge 2 commits → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@15a3b7f
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 P2 G-REPORT-DENSITY · US-P02 · BNK-620
+
+### [TSR] v2/G-REPORT-DENSITY M5 program report APIs — backend develop→test merge pending 1 (`650801b`, QA-20260625-B320)
+
+- **id**: QA-20260625-B320
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1403차 — baseline **1956/1956 PASS** @ `9f67954` · develop pre-merge **1967/1967 PASS** @ `650801b` · merge EXECUTED FF `9f67954`→`650801b` 1 commit · post-merge **1967/1967 PASS** · live E2E **122/25/0** carry)
+- **fixed_at**: 2026-06-25T13:33:04+00:00
+- **found_at**: 2026-06-25T13:29:00+00:00 (develop `@650801b` · test `@9f67954` · `test..develop` **0/1** pending)
+- **version**: v2/G-REPORT-DENSITY M5 program report APIs for US-P02 (`develop @650801b` · `test @650801b` SYNCED)
+- **summary**: TSR 1403차 baseline `@9f67954` **1956/1956 PASS** · pre-merge `@650801b` **1967/1967 PASS**(+11 tests: `ProgramReportControllerRoutingTest`·`ProgramReportServiceTest` · `ProgramReportController`·`ProgramReportService` 4-leaf M5 report APIs) 확인 후 merge EXECUTED. carefor M5 프로그램 리포트 밀도(G-REPORT-DENSITY) BE partial closure. post-merge **1967/1967 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled carry). **기능 갭 아님** — 이관 규율 6·14 해소. FE wire·cross-stream FE pending 1 잔여.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1967/1967 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@650801b
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 199차 · v2 P2 G-REPORT-DENSITY · US-P02 · BNK-620
+
+### [TSR] v2/QA-B95 bootstrap readiness enforcement — backend develop→test merge pending 1 (`9f67954`, QA-20260625-B319)
+
+- **id**: QA-20260625-B319
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1401차 — baseline **1954/1954 PASS** @ `79725eb` · develop pre-merge **1956/1956 PASS** @ `9f67954` · merge EXECUTED FF `79725eb`→`9f67954` 1 commit · post-merge **1956/1956 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T11:54:10+00:00
+- **found_at**: 2026-06-25T11:52:00+00:00 (develop `@9f67954` · test `@79725eb` · `test..develop` **0/1** pending)
+- **version**: v2/QA-B95 configurable bootstrap readiness enforcement (`develop @9f67954` · `test @9f67954` SYNCED)
+- **summary**: TSR 1401차 baseline `@79725eb` **1954/1954 PASS** · pre-merge `@9f67954` **1956/1956 PASS**(+2 tests: `HealthControllerTest`·`LiveE2eControllerTest`) 확인 후 merge EXECUTED. `HealthController`·`LiveE2eController`·`application.yml` QA-B95 BE bootstrap enforcement wire. post-merge **1956/1956 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled carry — runtime `LIVE_E2E_BOOTSTRAP_ENABLED=1` 미설정). **기능 갭 아님** — 이관 규율 6·14 해소. QA-B95 operation enable 잔여는 Planned.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1956/1956 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@9f67954
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 198차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v1.2.1/QA-B95 live operation readiness — frontend develop→test merge pending 1 (`e070c45`, QA-20260625-B318)
+
+- **id**: QA-20260625-B318
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1400차 — baseline carry **2180/2180 PASS** @ `cadd74a` · develop pre-merge **2181/2181 PASS** @ `e070c45` · merge EXECUTED FF `cadd74a`→`e070c45` 1 commit · post-merge **2181/2181 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T11:29:13+00:00
+- **found_at**: 2026-06-25T11:29:00+00:00 (develop `@e070c45` · test `@cadd74a` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/QA-B95 honor recovered auth for live operation readiness (`develop @e070c45` · `test @e070c45` SYNCED)
+- **summary**: TSR 1400차 baseline carry `@cadd74a` **2180/2180 PASS**(TSR 1398차) · pre-merge `@e070c45` **2181/2181 PASS**(+1 test: `liveE2eHarness.test.js`·`liveGlobalSetup.js` recovered-auth probe) 확인 후 merge EXECUTED. `liveConfig.js`·`liveGlobalSetup.js`·`liveE2eHarness.test.js` QA-B95 FE wire. post-merge **2181/2181 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**(bootstrap-disabled carry). **기능 갭 아님** — 이관 규율 6·14 해소. QA-B95 backend bootstrap enable 잔여는 Planned.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2181/2181 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@e070c45
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 198차 · v2 QA-B95 live-e2e bootstrap enable · 결정 96
+
+### [TSR] v2/7-9 copay refund fee net amount validation — backend develop→test merge pending 2 (`79725eb`, QA-20260625-B317)
+
+- **id**: QA-20260625-B317
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1399차 — baseline **1950/1950 PASS** @ `2adae59` · develop pre-merge **1954/1954 PASS** @ `79725eb` · merge EXECUTED FF `2adae59`→`79725eb` 2 commits · post-merge **1954/1954 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T10:42:00+00:00
+- **found_at**: 2026-06-25T09:37:10+00:00
+- **version**: v2/7-9 copay refund fee policy net amount validation + input validation (`develop @79725eb` · `test @79725eb` SYNCED)
+- **summary**: TSR 1399차 baseline `@2adae59` **1950/1950 PASS** · pre-merge `@79725eb` **1954/1954 PASS**(+4 tests: `BillingServiceTest` refund fee net amount·`CopayRefundFeePolicyCatalogTest` input validation) 확인 후 merge EXECUTED. carefor M7 7-9 환불수수료 정책 net amount·입력 검증 closure. post-merge **1954/1954 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1954/1954 PASS**
+- **expected**: pre-merge 0 FAIL → merge 2 commits → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@79725eb
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 198차 merged baseline · v2/M7 7-9 copay refund fee
+
+### [TSR] v1.2.1/US-O01 bathing indicator-27 compliance panel — frontend develop→test merge pending 1 (`3d7f13b`, QA-20260625-B316)
+
+- **id**: QA-20260625-B316
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1396차 — develop pre-merge **2171/2171 PASS** @ `3d7f13b` · merge EXECUTED FF `58f3858`→`3d7f13b` 1 commit · post-merge **2171/2171 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T09:22:26+00:00
+- **found_at**: 2026-06-25T09:08:00+00:00 (develop `@3d7f13b` · test `@58f3858` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/US-O01 bathing indicator-27 compliance panel + pre/post observation fields (`develop @3d7f13b` · `test @3d7f13b` SYNCED)
+- **summary**: TSR 1396차 baseline carry `@58f3858` **2166/2166 PASS**(TSR 1394차) · pre-merge `@3d7f13b` **2171/2171 PASS**(+5 tests: `BathingScheduleIndicator27Panel`·`BathingScheduleForm` pre/post observation·`services.js` indicator-27 catalog client) 확인 후 merge EXECUTED. ROADMAP v2 P2 carry **2026 평가지표 #27 목욕 FE wire closure**. post-merge **2171/2171 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2171/2171 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@3d7f13b
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 198차 · v2 P2 목욕 indicator-27 FE wire · US-O01
+
+### [TSR] v2/7-9 copay refund fee policy catalog — backend develop→test merge pending 1 (`2adae59`, QA-20260625-B315)
+
+- **id**: QA-20260625-B315
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1395차 — develop pre-merge **1950/1950 PASS** @ `2adae59` · merge EXECUTED FF `5a5174a`→`2adae59` 1 commit · post-merge **1950/1950 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T08:34:40+00:00
+- **found_at**: 2026-06-25T08:30:00+00:00 (develop `@2adae59` · test `@5a5174a` · `test..develop` **0/1** pending)
+- **version**: v2/7-9 copay refund fee policy catalog API for carefor KCP parity (`develop @2adae59` · `test @2adae59` SYNCED)
+- **summary**: TSR 1395차 baseline `@5a5174a` **1939/1939 PASS** · pre-merge `@2adae59` **1950/1950 PASS**(+11 tests: `CopayRefundFeePolicyCatalog`·`BillingController` catalog/preview endpoints·RBAC/routing locks) 확인 후 merge EXECUTED. carefor M7 7-9 환불수수료 정책 catalog API. post-merge **1950/1950 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1950/1950 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@2adae59
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 198차 · v2/M7 7-9 copay refund fee · carefor KCP parity
+
+### [TSR] v1.2.1/QA-B312 branch-scope fallback — frontend develop→test merge pending 1 (`58f3858`, QA-20260625-B314)
+
+- **id**: QA-20260625-B314
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1394차 — develop pre-merge **2166/2166 PASS** @ `58f3858` · merge EXECUTED FF `892122d`→`58f3858` 1 commit · post-merge **2166/2166 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T08:09:39+00:00
+- **found_at**: 2026-06-25T08:09:00+00:00 (develop `@58f3858` · test `@892122d` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/QA-B312 StaffAnnualLeavePage branch scope fallback (`develop @58f3858` · `test @58f3858` SYNCED)
+- **summary**: TSR 1394차 baseline `@892122d` **2166/2166 PASS** · pre-merge `@58f3858` **2166/2166 PASS**(+6 tests: whitespace `branchName` regression for `BranchScopeNotice` fallback) 확인 후 merge EXECUTED. `StaffAnnualLeavePage.jsx` API branch scope trim + `StaffAnnualLeavePage.test.jsx` 회귀 잠금. post-merge **2166/2166 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**. **기능 갭 아님** — QA-B312 후속 이관.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2166/2166 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@58f3858
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 198차 · G-STAFF-ANNUAL-LEAVE · QA-B312 lineage
+
+### [TSR] backend develop→test merge pending 4 — alt-key badge + V178 + 7-5 easy-pay (`5a5174a`, QA-20260625-B313)
+
+- **id**: QA-20260625-B313
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1393차 — develop pre-merge **1939/1939 PASS** @ `5a5174a` · merge EXECUTED FF `37416ac`→`5a5174a` 4 commits · post-merge **1939/1939 PASS** · live E2E **122/25/0**)
+- **fixed_at**: 2026-06-25T07:23:05+00:00
+- **found_at**: 2026-06-25T04:14:37+00:00 (develop `@4963535` · test `@37416ac` · `test..develop` **0/1** pending) — updated TSR 1391차 pending **0/3** · TSR 1393차 pending **0/4**
+- **version**: v2/G-NHIS-ALT-KEY-AUDIT-BADGE + V178 + v2/7-5 easy-pay (`develop @5a5174a` · `test @5a5174a` SYNCED)
+- **summary**: TSR 1393차 baseline `@37416ac` **1930/1930 PASS** · pre-merge `@5a5174a` **1939/1939 PASS**(+9 tests) · merge EXECUTED 4 commits · post-merge **1939/1939 PASS** · live E2E **122 PASS/25 SKIP/0 FAIL**. cross-stream **SYNCED**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1939/1939 PASS**
+- **expected**: pre-merge 0 FAIL → merge 4 commits → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@5a5174a
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 198차 · v2/G-NHIS-ALT-KEY-AUDIT-BADGE · v2/7-5 간편결제 · V178
+
+### [TSR] v2/G-NHIS-MASKED-NAME-FALLBACK alt-key client resolution — backend develop→test merge pending 1 (`37416ac`, QA-20260625-B310)
+
+- **id**: QA-20260625-B310
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1387차 — develop pre-merge **1930/1930 PASS** @ `37416ac` · merge EXECUTED FF `e4f83af`→`37416ac` 1 commit · post-merge **1930/1930 PASS**)
+- **fixed_at**: 2026-06-25T03:17:07+00:00
+- **found_at**: 2026-06-25T03:13:00+00:00 (develop `@37416ac` · test `@e4f83af` · `test..develop` **0/1** pending)
+- **version**: v2/G-NHIS-MASKED-NAME-FALLBACK alt-key client resolution for NHIS imports (`develop @37416ac` · `test @37416ac` SYNCED)
+- **summary**: TSR 1387차 ROADMAP merged regression `@e4f83af` **1920/1920 PASS** · develop WT **CLEAN** · pre-merge **1930/1930 PASS**(+10 tests: `NhisAltKeyExtractor`·`NhisClientResolver`·`NhisMaskedNameMatcher`·`NhisImportService` alt-key resolution·`VisitService` linkage) 확인 후 merge EXECUTED. 공단 엑셀 import 시 마스킹된 성명·대체키로 이용자 매칭 fallback. post-merge **1930/1930 PASS**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1930/1930 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@37416ac
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2/G-NHIS-MASKED-NAME-FALLBACK · G-NHIS-EXCEL-RECONCILE P3 carry
+
+### [TSR] G2b CMS catalog empty state handling — frontend develop→test merge pending 1 (`9a583ec`, QA-20260625-B309)
+
+- **id**: QA-20260625-B309
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1386차 — develop pre-merge **2160/2160 PASS** @ `9a583ec` · merge EXECUTED FF `5afef2d`→`9a583ec` 1 commit · post-merge **2160/2160 PASS**)
+- **fixed_at**: 2026-06-25T02:55:33+00:00
+- **found_at**: 2026-06-25T02:15:00+00:00 (develop `@9a583ec` · test `@5afef2d` · `test..develop` **0/1** pending)
+- **version**: G2b CMS payment-method-catalog empty state UX (`develop @9a583ec` · `test @9a583ec` SYNCED)
+- **summary**: TSR 1386차 ROADMAP merged regression `@5afef2d` **2160/2160 PASS** · develop WT **CLEAN** · pre-merge **2160/2160 PASS**(+3 tests carry: `CmsPaymentMethodCatalogPanel` empty-state message·regression harness) 확인 후 merge EXECUTED. `CmsPaymentMethodCatalogPanel.jsx` 카탈로그 0건 시 friendly empty-state 메시지 표시 + `CmsPaymentMethodCatalogPanel.test.jsx` 회귀 잠금. post-merge **2160/2160 PASS** · live E2E **122 PASS/0 FAIL** carry. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2160/2160 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@9a583ec
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2/G2b CMS payment-method-catalog UX polish · G2b 2-method 수납 P2 carry
+
+### [TSR] v2/G16 transport parity-rules RBAC API spec alignment — backend develop→test merge pending 1 (`e4f83af`, QA-20260625-B308)
+
+- **id**: QA-20260625-B308
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1385차 — develop pre-merge **1920/1920 PASS** @ `e4f83af` · merge EXECUTED FF `5a717ac`→`e4f83af` 1 commit · post-merge **1920/1920 PASS**)
+- **fixed_at**: 2026-06-25T02:10:01+00:00
+- **found_at**: 2026-06-25T02:06:00+00:00 (develop `@e4f83af` · test `@5a717ac` · `test..develop` **0/1** pending)
+- **version**: v2/G16 transport parity-rules RBAC API spec alignment (`develop @e4f83af` · `test @e4f83af` SYNCED)
+- **summary**: TSR 1385차 ROADMAP merged regression `@5a717ac` **1918/1918 PASS** · develop WT **CLEAN** · pre-merge **1920/1920 PASS**(+2 tests: `RoleBasedControllerAccessTest` parity-rules RBAC·`TransportController` `@PreAuthorize` API_SPEC 정합) 확인 후 merge EXECUTED. `GET /transport/service-fee-parity-rules` RBAC 역할·접근 제어 API_SPEC 정합. post-merge **1920/1920 PASS**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1920/1920 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@e4f83af
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2/G16 NHIS #44 parity-rules RBAC deepen · API_SPEC 정합
+
+### [TSR] v2/G16 transport parity-rules response API spec alignment — backend develop→test merge pending 1 (`5a717ac`, QA-20260625-B307)
+
+- **id**: QA-20260625-B307
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1384차 — develop pre-merge **1918/1918 PASS** @ `5a717ac` · merge EXECUTED FF `e12b084`→`5a717ac` 1 commit · post-merge **1918/1918 PASS**)
+- **fixed_at**: 2026-06-25T01:18:34+00:00
+- **found_at**: 2026-06-25T01:14:00+00:00 (develop `@5a717ac` · test `@e12b084` · `test..develop` **0/1** pending)
+- **version**: v2/G16 transport parity-rules response API spec alignment (`develop @5a717ac` · `test @5a717ac` SYNCED)
+- **summary**: TSR 1384차 ROADMAP merged regression `@e12b084` **1918/1918 PASS** · develop WT **CLEAN** · pre-merge **1918/1918 PASS**(API spec alignment: `TransportServiceFeeParityRuleResponse`·`TransportServiceFeeParityCatalog`·routing/catalog tests) 확인 후 merge EXECUTED. `TransportServiceFeeService` parity-rules catalog response 필드·라벨 API_SPEC 정합. post-merge **1918/1918 PASS**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1918/1918 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@5a717ac
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2/G16 NHIS #44 parity-rules BE API deepen · API_SPEC 정합
+
+### [TSR] v2/G2b+G16 CMS collection methods + transport parity-rules FE wire — frontend develop→test merge pending 1 (`9aeedfe`, QA-20260625-B306)
+
+- **id**: QA-20260625-B306
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1383차 — develop pre-merge **2157/2157 PASS** @ `9aeedfe` · merge EXECUTED FF `1db75d0`→`9aeedfe` 1 commit · post-merge **2157/2157 PASS**)
+- **fixed_at**: 2026-06-25T00:57:00+00:00
+- **found_at**: 2026-06-25T00:10:00+00:00 (develop `@9aeedfe` · test `@1db75d0` · `test..develop` **0/1** pending)
+- **version**: v2/G2b+G16 CMS collection panel + transport parity-rules API FE wire (`develop @9aeedfe` · `test @9aeedfe` SYNCED)
+- **summary**: TSR 1383차 ROADMAP merged regression `@1db75d0` **2157/2157 PASS** · develop WT **CLEAN** · pre-merge **2157/2157 PASS**(+6 tests carry: `CmsCollectionPanel`·`TransportServiceFeePanel`·`CmsPage` harness) 확인 후 merge EXECUTED. `CmsCollectionPanel.jsx` G2b virtual-account/multi-account collection UI + `TransportServiceFeePanel` G16 parity-rules catalog wire + `services.js` API bindings. post-merge **2157/2157 PASS** · live E2E **122 PASS/0 FAIL** carry. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2157/2157 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@9aeedfe
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2/G2b 2-method 수납 FE wire · v2/G16 parity-rules FE wire P2
+
+### [TSR] v2/US-O01 bathing pre/post observation + indicator-27 compliance — backend develop→test merge pending 1 (`e12b084`, QA-20260624-B305)
+
+- **id**: QA-20260624-B305
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1382차 — develop pre-merge **1918/1918 PASS** @ `e12b084` · merge EXECUTED FF `dac8ebd`→`e12b084` 1 commit · post-merge **1918/1918 PASS**)
+- **fixed_at**: 2026-06-24T23:51:00+00:00
+- **found_at**: 2026-06-24T23:45:00+00:00 (develop `@e12b084` · test `@dac8ebd` · `test..develop` **0/1** pending)
+- **version**: v2/US-O01 bathing pre/post observation fields and indicator-27 compliance API (`develop @e12b084` · `test @e12b084` SYNCED)
+- **summary**: TSR 1382차 ROADMAP merged regression `@dac8ebd` **1911/1911 PASS** · develop WT **CLEAN** · pre-merge **1918/1918 PASS**(+7 tests: `BathingScheduleIndicator27ComplianceTest`·`BathingScheduleServiceTest`·routing/RBAC/E2E) 확인 후 merge EXECUTED. `V177__bathing_schedules_indicator_27_pre_post_observation.sql` · pre/post observation fields + indicator-27 compliance catalog API. post-merge **1918/1918 PASS**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1918/1918 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@e12b084
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2 2026 평가지표 27 목욕 전후관찰 leaf deepen · US-O01
+
+### [TSR] v2/G16 parity-rules FE wire + CMS catalog retry — frontend develop→test merge pending 2 (`1db75d0`, QA-20260624-B304)
+
+- **id**: QA-20260624-B304
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1381차 — develop pre-merge **2151/2151 PASS** @ `1db75d0` · merge EXECUTED FF `c3c6272`→`1db75d0` 2 commits · post-merge **2151/2151 PASS**)
+- **fixed_at**: 2026-06-24T23:23:58+00:00
+- **found_at**: 2026-06-24T22:37:30+00:00 (develop `@e63aa8e`→`1db75d0` · test `@c3c6272` · `test..develop` **0/2** pending)
+- **version**: v2/G16 parity-rules FE wire + UXD-162 ds-cms-payment-method-catalog CSS + CMS catalog retry (`develop @1db75d0` · `test @1db75d0` SYNCED)
+- **summary**: TSR 1381차 ROADMAP merged regression `@c3c6272` **2151/2151 PASS** · develop WT **CLEAN** · pre-merge **2151/2151 PASS**(+1 test: `CmsPaymentMethodCatalogPanel.test.jsx` retry harness) 확인 후 merge EXECUTED. `CmsPaymentMethodCatalogPanel.jsx` UXD-162 a11y CSS + G16 parity-rules FE wire + catalog fetch retry. post-merge **2151/2151 PASS** · live E2E **122 PASS/0 FAIL** carry. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2151/2151 PASS**
+- **expected**: pre-merge 0 FAIL → merge 2 commits → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@1db75d0
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2/G16 FE parity-rules wire · G2b 2-method 수납 P2 · UXD-162
+
+### [TSR] v2/G2b CMS virtual-account + multi-account collection — backend develop→test merge pending 1 (`dac8ebd`, QA-20260624-B303)
+
+- **id**: QA-20260624-B303
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1380차 — develop pre-merge **1911/1911 PASS** @ `dac8ebd` · merge EXECUTED FF `bd1e87e`→`dac8ebd` 1 commit · post-merge **1911/1911 PASS**)
+- **fixed_at**: 2026-06-24T22:37:30+00:00
+- **found_at**: 2026-06-24T22:32:00+00:00 (develop `@dac8ebd` · test `@bd1e87e` · `test..develop` **0/1** pending)
+- **version**: v2/G2b virtual-account and multi-account CMS collection APIs (`develop @dac8ebd` · `test @dac8ebd` SYNCED)
+- **summary**: TSR 1380차 ROADMAP merged regression `@bd1e87e` **1900/1900 PASS** · develop WT **CLEAN** · pre-merge **1911/1911 PASS**(+11 tests: `CmsCollectionServiceTest`·`StubFcmsClientTest`·RBAC/routing) 확인 후 merge EXECUTED. `V176__cms_collection_requests_g2b.sql` · virtual-account issue + multi-account settlement APIs. post-merge **1911/1911 PASS**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1911/1911 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@dac8ebd
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 197차 · v2/G2b 2-method 수납(가상계좌·다계좌정산) · id=7-4 0.65→1.0 P2
+
+### [TSR] v1.2.1/live-e2e — frontend develop→test merge pending 1 (`c3c6272`, QA-20260624-B302)
+
+- **id**: QA-20260624-B302
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1379차 — develop pre-merge **2150/2150 PASS** @ `c3c6272` · merge EXECUTED FF `4875937`→`c3c6272` 1 commit · post-merge **2150/2150 PASS**)
+- **fixed_at**: 2026-06-24T22:04:29+00:00
+- **found_at**: 2026-06-24T21:30:00+00:00 (develop `@c3c6272` · test `@4875937` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/live-e2e operation readiness skip dedupe (`develop @c3c6272` · `test @c3c6272` SYNCED)
+- **summary**: TSR 1379차 ROADMAP merged regression `@4875937` **2150/2150 PASS** · develop WT **CLEAN** · pre-merge **2150/2150 PASS**(+1 harness test: `liveE2eHarness.test.js` skip-reason dedupe lock) 확인 후 merge EXECUTED. `liveConfig.js` operation readiness skip reason dedupe + harness vitest lock. post-merge **2150/2150 PASS** · live E2E **122 PASS/0 FAIL** carry. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2150/2150 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@c3c6272
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 196차 · QA-B95 partial · 결정 96 live E2E harness
+
+### [TSR] v2/G16 NHIS #44 transport service fee parity — backend develop→test merge pending 1 (`bd1e87e`, QA-20260624-B301)
+
+- **id**: QA-20260624-B301
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1378차 — develop pre-merge **1900/1900 PASS** @ `bd1e87e` · merge EXECUTED FF `2eaf17e`→`bd1e87e` 1 commit · post-merge **1900/1900 PASS**)
+- **fixed_at**: 2026-06-24T21:19:43+00:00
+- **found_at**: 2026-06-24T21:14:00+00:00 (develop `@bd1e87e` · test `@2eaf17e` · `test..develop` **0/1** pending)
+- **version**: v2/G16 NHIS #44 transport service fee parity rules API (`develop @bd1e87e` · `test @bd1e87e` SYNCED)
+- **summary**: TSR 1378차 ROADMAP merged regression `@2eaf17e` **1899/1899 PASS** · develop WT **CLEAN** · pre-merge **1900/1900 PASS**(+1 test: `TransportServiceFeeParityCatalogTest`·routing·MustApi) 확인 후 merge EXECUTED. `GET /api/v1/transport/service-fee-parity-rules` NHIS #44 러-1~4 parity catalog. post-merge **1900/1900 PASS**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/backend-test && git rev-list --count test..develop` → 0 · `mvn test` → **1900/1900 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — BE SYNCED@bd1e87e
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 196차 · v2/G16 · NHIS #44 이동서비스비 parity · P2 v1.3-C
+
+### [TSR] v1.2.1/G2b CMS payment-method-catalog — frontend develop→test merge pending 1 (`4875937`, QA-20260624-B300)
+
+- **id**: QA-20260624-B300
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1377차 — develop pre-merge **2149/2149 PASS** @ `4875937` · merge EXECUTED FF `64a7648`→`4875937` 1 commit · post-merge **2149/2149 PASS**)
+- **fixed_at**: 2026-06-24T20:50:01+00:00
+- **found_at**: 2026-06-24T20:12:00+00:00 (develop `@4875937` · test `@64a7648` · `test..develop` **0/1** pending)
+- **version**: v1.2.1/G2b CMS payment-method-catalog panel + US-O05 live E2E fix (`develop @4875937` · `test @4875937` SYNCED)
+- **summary**: TSR 1377차 ROADMAP merged regression `@64a7648` **2149/2149 PASS** · develop WT **CLEAN** · pre-merge **2149/2149 PASS** 확인 후 merge EXECUTED. `CmsPaymentMethodCatalogPanel` wire + `branchOnboardingSupportLiveApi` US-O05 assertion fix. post-merge **2149/2149 PASS** · live E2E **122 PASS/0 FAIL**. **기능 갭 아님** — 이관 규율 6·14 해소.
+- **reproduce**: `cd src/frontend-test && git rev-list --count test..develop` → 0 · `npm test` → **2149/2149 PASS**
+- **expected**: pre-merge 0 FAIL → merge 1 commit → post-merge 재검증
+- **actual**: **Fixed** — FE SYNCED@4875937
+- **assignee**: TSR(merge + post-merge 재검증 완료)
+- **roadmap_ref**: ROADMAP 196차 · v1.2.1/G2b CMS · M7 7-4 parity · QA-B298 closure
+
+### [TSR] live E2E US-O05 branchOnboardingSupport sessions assertion FAIL (`64a7648`, QA-20260624-B298)
+
+- **id**: QA-20260624-B298
+- **severity**: MEDIUM
+- **stream**: frontend
+- **status**: Fixed (TSR 1377차 — merge `@4875937` post-merge live E2E **122 PASS/25 SKIP/0 FAIL** · US-O05 closure)
+- **fixed_at**: 2026-06-24T20:50:01+00:00
+- **found_at**: 2026-06-24T19:43:11+00:00 (TSR 1374차 post-merge live E2E)
+- **version**: v1.2.1/G2b CMS panel + US-O05 E2E fix (`test @4875937` post-merge)
+- **summary**: TSR 1374차 post-merge live E2E **121 PASS / 25 SKIP / 1 FAIL** — `branchOnboardingSupportLiveApi` US-O05 sessions length 4 when `openedOn` falsy. TSR 1377차 `@4875937` merge 후 `./scripts/run-live-e2e.sh` **122 PASS / 25 SKIP / 0 FAIL**(37.74s). `branchOnboardingSupportLiveApi.e2e.test.js` assertion + backend seed alignment fix in develop commit `4875937`.
+- **reproduce**: `cd /home/ubuntu/ogada && ./scripts/run-live-e2e.sh` → US-O05 **PASS**
+- **expected**: `!support.openedOn` 이면 `support.sessions` 빈 배열 (또는 harness-aligned assertion)
+- **actual**: **Fixed** — 0 FAIL post-merge @4875937
+- **assignee**: COD(@4875937) + TSR(1377차 재검증 완료)
+- **roadmap_ref**: ROADMAP 196차 · G-ONBOARD-SUPPORT · QA-B95 partial · 결정 96 live E2E
 
 ### [TSR] v2/G2b CMS payment method catalog — backend develop→test merge pending 1 (`2eaf17e`, QA-20260624-B299)
 
@@ -2298,21 +2978,6 @@ _(Open **1(active)** — TSR 1376차 BE test `@2eaf17e` **1899/1899 PASS**(55.25
 - **actual**: **Fixed** — BE SYNCED@2eaf17e
 - **assignee**: TSR(merge + post-merge 재검증 완료)
 - **roadmap_ref**: ROADMAP 196차 · v2/G2b CMS · M7 7-4 CMS parity deepen
-
-### [TSR] live E2E US-O05 branchOnboardingSupport sessions assertion FAIL (`64a7648`, QA-20260624-B298)
-
-- **id**: QA-20260624-B298
-- **severity**: MEDIUM
-- **stream**: frontend
-- **status**: Open
-- **found_at**: 2026-06-24T19:43:11+00:00 (TSR 1374차 post-merge live E2E)
-- **version**: v1.2.1/QA-B95 live-e2e bootstrap gating relax (`test @64a7648` post-merge)
-- **summary**: post-merge `./scripts/run-live-e2e.sh` — **121 PASS / 25 SKIP / 1 FAIL**(37.82s). FAIL: `branchOnboardingSupportLiveApi.e2e.test.js` › US-O05 exposes SLA due dates when openedOn is configured — `support.openedOn` falsy인데 `support.sessions` length **4**(expected **0**). bootstrap-disabled·guardian 503 carry 잔존. QA-B95 gating 완화로 0→121 PASS 진전이나 US-O05 데이터/계약 불일치 1건 신규.
-- **reproduce**: `cd /home/ubuntu/ogada && ./scripts/run-live-e2e.sh` → `branchOnboardingSupportLiveApi.e2e.test.js` ×1 FAIL
-- **expected**: `!support.openedOn` 이면 `support.sessions` 빈 배열
-- **actual**: sessions length 4 (backend seed/branch state 또는 API 계약 drift)
-- **assignee**: COD(backend branch onboarding support API/seed) + PLN(US-O05 acceptance)
-- **roadmap_ref**: ROADMAP 196차 · G-ONBOARD-SUPPORT · QA-B95 partial · 결정 96 live E2E
 
 ### [TSR] v1.2.1/QA-B95 — frontend develop→test merge pending 1 (`216ab7a`, QA-20260624-B297)
 
@@ -6084,9 +6749,49 @@ _(TSR 529차 2026-06-13T07:25 UTC — frontend Open **0건**. QA-B68 Fixed @ `db
 
 ## Planned
 
-_(Planned **2건(active)** — **QA-B116**(origin/test push **549 BE+215 FE**·post-merge 재검증 pending) · **QA-B95**(standard live E2E **147 SKIP/0 PASS**·bootstrap-disabled carry·operation full criteria pending) · Open **0(active)** · **★ QA-B287 Fixed** @ `fb323ae`(BE) · **★ QA-B288 Fixed** @ `c9cf03b`(FE) · **★ QA-B290 Fixed** @ `3f686e3`(FE) · **★ QA-B291 Fixed** carry · **★ QA-B292 Fixed** @ `ef8bb4e`(BE) · BE/FE **SYNCED `@ef8bb4e`/`@3f686e3`** · cross-stream **SYNCED** · operation **BLOCK** · disk **38%** avail)_
+_(Planned **2건(active)** — **QA-B116**(origin/test push **574 BE+245 FE**·post-merge 재검증 pending) · **QA-B95**(standard live E2E **122 PASS/25 SKIP/0 FAIL**·bootstrap-disabled carry·FE+BE wire merged@`b7004ca`/`@42a369e`·runtime bootstrap enable pending) · Open **0(active)** · **★ QA-B311~B332 Fixed** · cross-stream **SYNCED(FE@b7004ca + BE@42a369e)** · operation **BLOCK** · disk ~45% avail)_
 
-> **196차 planner (2026-06-24T15:00 UTC)**: BNK-583~587·TSR 1366~1367차 반영 — **★ QA-B290/B291/B292 Fixed** · **QA-B287 Fixed carry** (195차 Planned → TSR 1355차 Fixed @ `fb323ae`) · **Open 0(active)** · **★★★ G-SMS 6/6 dispatchImplemented + ezcareMessageKind closure** · merge gate **764**(FE215+BE549) · cross-stream **SYNCED**. ROADMAP 196차 P0 = **origin/test push(549 BE+215 FE)** → **QA-B116 post-merge** → **QA-B95** operation 승격.
+> **199차 planner (2026-06-25T13:00 UTC)**: BNK-618~621·TSR 1396~1402차 반영 — **★ QA-B311~B319 Fixed**(9건·merge chain 완료·cross-stream SYNCED) · **Open 0(active)** · **★★★ G-EASYPAY-FE-WIRE closure** @ `5914b2f` · **★★★ G-REFUND-FEE 5-layer** · **★★★ bathing indicator-27 FE wire** @ `3d7f13b` · **★ BNK-620 report density 34 vs 23** · merge gate **804**(FE236+BE568) · cross-stream **SYNCED**. ROADMAP 199차 P0 = **① origin/test push(568 BE+236 FE·QA-B116) → ② QA-B95 operation 승격(runtime bootstrap enable) → ③ P2 G-REPORT-DENSITY**.
+
+> **198차 planner (2026-06-25T05:30 UTC)**: BNK-600~610·TSR 1388~1390차 반영 — **★ QA-B311/B312/B313 Open→Planned 태스크화**(cross-stream BLOCK·이관 규율 6·14·full-suite vitest pollution lineage B266/B270/B291·기능 갭 아님) · **Open 0(active)** · **★★★ G-NHIS-ALT-KEY-AUDIT-BADGE 4-layer FULL-STACK closure**(develop pending merge) · **★★★ G2b id=7-4 1.0 + G16 FE wire closure** · merge gate **790**(FE229+BE561) · cross-stream **BLOCK**. ROADMAP 198차 P0 = **① COD/TSR FE full-suite 1 fail(QA-B312) 해소 → ② FE pre-merge PASS 후 merge pending 2(QA-B311) → ③ BE merge pending 1(QA-B313) → ④ origin/test push(561 BE+229 FE·QA-B116) → ⑤ QA-B95 operation 승격**.
+
+### [PLN] v2/G2b+G16 CMS parity lock + NHIS alt-key badge — frontend develop→test merge pending 2 (`5bb84a6`, QA-20260625-B311)
+
+- **id**: QA-20260625-B311
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed @ `892122d` (TSR 1392차 — carry merge SYNCED · develop/test `@892122d`)
+- **planned_at**: 2026-06-25T05:30:00+00:00 (planner 198차)
+- **fixed_at**: 2026-06-25T07:01:00+00:00 (TSR 1392차)
+- **found_at**: 2026-06-25T03:34:00+00:00 (develop `@e985522` · test `@9a583ec` · `test..develop` **0/1** pending) — **updated** TSR 1390차: pending **0/2** (`e985522`+`5bb84a6`)
+- **version**: v2/G2b+G16 FE parity lock + v2/G-NHIS-ALT-KEY-AUDIT-BADGE (`develop @892122d` · `test @892122d` SYNCED)
+- **summary**: TSR 1392차 ROADMAP merged regression `@892122d` **2160/2160 PASS**(854.52s). develop/test **SYNCED** — carry merge `9a583ec`→`892122d`(4 commits: G2b/G16 parity lock · NHIS alt-key UI · TransportParityRulesPanel · B312 vitest isolation). live E2E **122 PASS/25 SKIP/0 FAIL** carry.
+- **reproduce**: `git -C src/frontend rev-list --count test..develop` → **0** · `cd src/frontend-test && npm test` → **2160/2160 PASS**
+- **expected**: develop pre-merge **0 FAIL** → merge → post-merge 재검증
+- **actual**: **Fixed** — SYNCED @892122d · post-merge 2160/2160 PASS
+- **assignee**: COD/TSR
+- **roadmap_ref**: ROADMAP 198차 P0 · v2/G2b CMS catalog parity · v2/G-NHIS-ALT-KEY-AUDIT-BADGE · 이관 규율 6·14
+
+### [PLN] StaffAnnualLeavePage full-suite regression 1 fail — vitest pollution lineage (`9a583ec`, QA-20260625-B312)
+
+- **id**: QA-20260625-B312
+- **severity**: HIGH
+- **stream**: frontend
+- **status**: Fixed @ `892122d` (TSR 1392차 — COD vitest isolation harden · full-suite 2160/2160 PASS)
+- **planned_at**: 2026-06-25T05:30:00+00:00 (planner 198차)
+- **fixed_at**: 2026-06-25T07:01:00+00:00 (TSR 1392차)
+- **found_at**: 2026-06-25T03:34:00+00:00 (TSR 1388차: `npm test` **Terminated exit 143** 632.08s · summary missing) — **updated** TSR 1390차: full summary **2164/2165**(1 fail, 749.37s)
+- **version**: `StaffAnnualLeavePage` branch scope label regression (`test @892122d` · develop `@892122d`)
+- **summary**: TSR 1390차 `@9a583ec`에서 full-suite 1 fail(`조회 지점` assertion). COD `@892122d` `fix(v1.2.1/QA-B312): harden StaffAnnualLeavePage branch scope vitest isolation` — TSR 1392차 full regression **2160/2160 PASS**(854.52s).
+- **reproduce**: `cd src/frontend-test && npm test` → **2160/2160 PASS**
+- **expected**: full-suite **0 FAIL**
+- **actual**: **Fixed** — 2160/2160 PASS @892122d
+- **assignee**: COD (isolation harden) / TSR (재검증)
+- **roadmap_ref**: ROADMAP 198차 P0 · G-STAFF-ANNUAL-LEAVE · `docs/qa/VITEST_CONCURRENCY.md`
+
+### [PLN] backend develop→test merge pending 4 — alt-key badge + V178 + 7-5 easy-pay (`5a5174a`, QA-20260625-B313) — **Fixed @ TSR 1393차**
+
+- 본 항목은 `## Open` 섹션의 `QA-20260625-B313` Fixed 기록으로 이관됨(TSR 1393차 merge EXECUTED + post-merge PASS).
 
 ### [PLN] v2/G-SMS-TEMPLATE-CATALOG — backend develop WT DIRTY 6M dispatchReady deepen (`b6c9b16`, QA-20260624-B287)
 
@@ -7394,6 +8099,51 @@ _(Planned **0건(active)** superseded — QA-20260613-B62 **Fixed @ `e89175e`**;
 ## Fixed
 
 _(coder가 develop에서 수정 완료 — develop HEAD 검증 통과 항목만)_
+
+### [COD] v2/QA-B95 g21-seed service-unavailable detail + v3.1/US-P01 V180 integrity — backend dirty-tree closure (`develop @3342938`, QA-20260625-B330)
+
+- **id**: QA-20260625-B330
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Fixed (TSR 1415차 — COD commit `@42a369e` + merge EXECUTED + post-merge **1972/1972 PASS**)
+- **found_at**: 2026-06-25T20:31:16+00:00 (TSR 1413차 — develop `@3342938` WT DIRTY 2M+1U)
+- **fixed_at**: 2026-06-25T21:26:40+00:00 (COD commit `42a369e`)
+- **verified_at**: 2026-06-25T21:31:39+00:00 (`cd src/backend-test && mvn test` **1972/1972 PASS** · live E2E **122/25/0**)
+- **version**: v2/QA-B95 g21-seed probe detail deepen + v3.1/US-P01 program_client_groups integrity (`develop @42a369e`)
+- **summary**: dirty WIP(`HealthController.java`·`HealthControllerTest.java`·`V180__program_client_groups_integrity_us_p01.sql`)를 `42a369e`로 커밋해 develop working tree를 clean으로 복구했다. g21-seed `service-unavailable` detail 노출 정밀화와 V180 DB defense-in-depth 마이그레이션을 함께 closure 했고, 관련 회귀(`HealthControllerTest`)는 20/20 PASS로 확인했다.
+- **reproduce**: `cd src/backend && git status -sb`(clean expected after commit) · `cd src/backend && mvn -Dtest=HealthControllerTest test` → **20/20 PASS**
+- **expected**: COD commit 후 develop WT clean · tester revalidation 및 merge gate unblocked
+- **actual**: **Fixed** — committed@42a369e · merged · SYNCED · post-merge 1972/1972 PASS
+- **assignee**: COD (commit) / TSR (merge + post-merge 재검증)
+- **roadmap_ref**: ROADMAP 200차 · v2 QA-B95 · v3.1 G-PROGRAM-GROUP-CONFIG · 이관 규율 1·5·7
+
+### [TSR] v2/G2b+G16 + NHIS alt-key badge — frontend develop→test SYNCED (`892122d`, QA-20260625-B311) — **Fixed @ `892122d`**
+
+- **id**: QA-20260625-B311
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Fixed (TSR 1392차 — develop/test SYNCED · post-merge 2160/2160 PASS)
+- **found_at**: 2026-06-25T03:34:00+00:00 (TSR 1388차)
+- **fixed_at**: 2026-06-25T07:01:00+00:00 (TSR 1392차)
+- **verified_at**: 2026-06-25T07:01:00+00:00 (`npm test` **2160/2160 PASS** 854.52s · live E2E **122/25/0**)
+- **version**: v2/G2b+G16 FE parity + v2/G-NHIS-ALT-KEY-AUDIT-BADGE (`develop @892122d` · `test @892122d` SYNCED)
+- **summary**: carry merge `9a583ec`→`892122d`(4 commits) 완료. develop/test SYNCED. post-merge full regression **2160/2160 PASS**.
+- **assignee**: COD/TSR
+- **roadmap_ref**: ROADMAP 198차 P0 · G2b · G-NHIS-ALT-KEY-AUDIT-BADGE
+
+### [COD] StaffAnnualLeavePage vitest isolation — full-suite pollution (`892122d`, QA-20260625-B312) — **Fixed @ `892122d`**
+
+- **id**: QA-20260625-B312
+- **severity**: HIGH
+- **stream**: frontend
+- **status**: Fixed (COD `@892122d` isolation harden · TSR 1392차 full-suite 2160/2160 PASS)
+- **found_at**: 2026-06-25T03:34:00+00:00 (TSR 1388차 terminated 143) — confirmed TSR 1390차 2164/2165 1 fail
+- **fixed_at**: 2026-06-25T07:01:00+00:00 (TSR 1392차 verified)
+- **verified_at**: 2026-06-25T07:01:00+00:00 (`npm test` **2160/2160 PASS** 854.52s)
+- **version**: `StaffAnnualLeavePage` branch scope vitest isolation (`892122d`)
+- **summary**: `@9a583ec` full-suite 1 fail(`조회 지점` assertion · pollution lineage). COD `fix(v1.2.1/QA-B312): harden StaffAnnualLeavePage branch scope vitest isolation` → TSR 1392차 **2160/2160 PASS**.
+- **assignee**: COD
+- **roadmap_ref**: ROADMAP 198차 P0 · G-STAFF-ANNUAL-LEAVE · VITEST_CONCURRENCY.md
 
 ### [COD] v2/live-e2e — liveE2eSuiteGuard regex guard 확장 (QA-20260621-B195) — **Fixed @ `949e9bf`**
 

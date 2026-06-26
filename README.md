@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=DEV,PLN,UXD,COD,DBA updated=2026-06-16T02:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=DEV,PLN,UXD,COD,DBA updated=2026-06-26T23:00:00+09:00 -->
 
 # ogada — 주간보호센터·요양기관 운영 시스템
 
@@ -271,9 +271,20 @@ Proprietary — ogada 저작권 보유. 허가 없이 복제·수정·배포 금
 
 ---
 
-**최종 갱신**: 2026-06-16  
-**현재 버전**: v1 (MVP)  
+**최종 갱신**: 2026-06-26 (TWR 374차 baseline: `49fe2e7` / `bd3253a`)
+**현재 버전**: v1 (MVP) — **V1–V179 Flyway** · **117 route · 92 page** · **Must 갭 0**
 **개발 branch**: `develop`  
 **배포 branch**: `operation` (→ production)
 
 문서 소유자: `tech_writer` (`TWR`)
+
+### ⭐ 최근 주요 추가 기능 (2026-06-26 기준)
+
+- **QA-B95 string-form operation blocker**: live E2E health blockers string/array uniform parsing (Q716·`normalizeOperationBlockers`)
+- **G-REPORT-DENSITY**: M5 프로그램 5-7~5-10 보고서 full-stack ✅ (Q714·`branchId` filter, Q715)
+- **G-REPORT-DENSITY 5-9 group-history**: membership aggregate V179 (Q714 deepen)
+- **QA-B95 bootstrap probe reason surfacing**: effective operation readiness (Q713 deepen)
+- **G-EASYPAY-PROVIDER-CATALOG**: 결제 수단 카탈로그 API + FE wire (Q709·`pgMode` stub/live)
+- **G-REFUND-FEE-DEDUCTION**: 7-9 환급 수수료 정책 카탈로그 + modal (Q712·`feePolicyCode` validation)
+- **US-O01**: 목욕 스케줄 FE 전·후 관찰 노트 form (Q705·`preObservationNotes` / `postObservationNotes`)
+- **G16 parity-rules**: 이동서비스 수가 규칙 패널 + NHIS 대체 매칭 Badge (Q703·Q707·Q706)

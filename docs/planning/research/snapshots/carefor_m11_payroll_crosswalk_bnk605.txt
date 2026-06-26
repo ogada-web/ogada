@@ -1,0 +1,128 @@
+# carefor_m11_payroll_crosswalk_bnk605.txt
+# BNK-605 | 2026-06-25T01:32:00Z (KST 10:32) | 케어포 역공학 0–2h
+# owner=BNK audience=PLN
+#
+# 초점: 케어포 M11 직원 급여관리 6-leaf ↔ 이지케어 wAllowance ↔ ogada(전무) 심화 crosswalk
+#        — M11/M12 = BNK-604 「다음 KPI bump 최대 레버」 P2 갭 정본화
+#        + carefor func.php / NHIS #44 live 재실측 zero drift
+
+================================================================
+[ ogada baseline 실측 (BNK-605 정본 · git 실측) ]
+================================================================
+$ git -C src/frontend rev-parse --short develop
+  5afef2d   (BNK-604 @9aeedfe HEAD +1 · WT CLEAN)
+$ git -C src/frontend log -1 --pretty='%h %s' develop
+  5afef2d fix(v1.2.1/QA-B95): normalize placeholder live-e2e credentials
+$ git -C src/frontend rev-list --count origin/test..develop
+  226   (vs origin/test=ab4de83 · +1 vs BNK-604 225)
+
+$ git -C src/backend rev-parse --short develop
+  5a717ac   (BNK-604 @e12b084 HEAD +1 · WT CLEAN)
+$ git -C src/backend log -1 --pretty='%h %s' develop
+  5a717ac Align transport parity rules response with API spec
+$ git -C src/backend rev-list --count origin/test..develop
+  558   (vs origin/test=598d108 · +1 vs BNK-604 557)
+
+KPI 정본 (carry):
+  Route             : 112  (111 `<Route\b` + 1 `<Routes>` wrapper · App.jsx)
+  page              : 91   (90 `*Page.jsx` + 1 RootRedirect.jsx)
+  Flyway 최대        : V177
+  BE *Test.java     : 262
+  BE @Test method   : 1904
+  FE .test.js       : 193
+  FE .test.jsx      : 276
+  FE test 총합       : 469
+  모듈 커버리지       : 80.86% (23.45/29 · id=7-4 1.0)
+  merge gate        : 784  (FE 226 + BE 558 · +2 cross-stream vs BNK-604 782)
+
+→ cross-stream FE+1·BE+1 · 양쪽 WT CLEAN · KPI(Route/page/V/Test/모듈) 전부 carry.
+  BE `5a717ac` = G16 transport parity-rules 응답을 API_SPEC 에 정렬(BNK-603 FE wire 후속 정합·신규 갭 0).
+
+================================================================
+[ ★★★ 교차검증 1 — carefor M11 직원 급여관리 6-leaf 심화 (P2 갭 정본화) ]
+================================================================
+Source: https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php
+Wayback live HTTP 200 · 104,180B · raw md5 307fc85f (cachebuster wrapper variance)
+Canonical on-disk: carefor_func.php 98,328B md5 6226e6eb (toolbar-stripped)
+판정: 본문 11모듈 107-leaf verbatim 일치 = 371차 zero drift (raw md5 변동=Wayback rewriter only)
+
+verbatim grep (확인) on Wayback 본문:
+  월별 급여대장 · 퇴직적립금 · 연차,유급휴일 · 선임 요양보호사 · 본인부담금 자동이체 · 본인부담금 간편계산기
+  11 module header 전수: 수급자관리·이동서비스관리·요양급여제공·간호/물리·프로그램급여제공·
+                         위생.안전·본인부담금관리·직원관리·기초설정·부가서비스·직원 급여관리
+
+[M11] 직원 급여관리 (6-leaf) — carefor daycare/func.php
+  11-1.월별 급여대장          → 직원별 월 급여(기본급·수당·공제·실지급) 산정·대장
+  11-2.퇴직적립금 관리        → 근로자퇴직급여보장법 퇴직급여 적립/충당금 관리
+  11-3.직원 급여계약 설정      → 연봉/시급 계약·계약서 항목 설정
+  11-4.급여기초 설정(수당/공제) → 수당 항목(직책·처우개선·장기근속)·공제 항목(4대보험·소득세) 마스터
+  11-5.인건비 지출비율 참고자료 → 장기요양급여비용 중 인건비 지출비율 신고(고시) 참고
+  11-6.직원 급여대장 리포트     → 급여대장·간이지급명세서 출력
+
+================================================================
+[ ★★★ 교차검증 2 — 이지케어 wAllowance 4-page ↔ carefor M11 (양쪽 구현 입증) ]
+================================================================
+on-disk snapshot grep (확인):
+
+  ezcare_new_ez_pgid_wAllowance-payrollcost.html (146,026B)
+    인건비 ×49 · 지출비율 ×4 · 급여대장 ×4 · 수당 ×11 · 공제 ×2 · 퇴직 ×9
+    기본급 ×3 · 방문요양 ×9 · 방문목욕 ×4 · 장기근속 ×1
+    → carefor 11-5 인건비 지출비율 + 11-1 급여대장 + 11-4 수당/공제 정합
+
+  ezcare_new_ez_pgid_wAllowance-severance.html (137,907B)
+    퇴직 ×20 · 수당 ×8 · 급여명세 ×1
+    → carefor 11-2 퇴직적립금 관리 정합
+
+  ezcare_new_ez_pgid_wAllowance-a100.html (116,867B)
+    간이지급명세 ×2 · 공제 ×2 · 퇴직 ×1
+    → carefor 11-6 급여대장 리포트(간이지급명세서) 정합
+
+  ezcare_new_ez_pgid_wAllowance-awData.html (134,687B)
+    수당 ×10 · 공제 ×1
+    → carefor 11-4 급여기초 설정(수당/공제) 정합
+
+→ 케어포 M11 6-leaf ↔ 이지케어 wAllowance 4-page = 양쪽 직원급여 모듈 완비.
+  공통 도메인: 급여대장·퇴직적립금·수당/공제 마스터·인건비 지출비율(고시 신고)·간이지급명세서.
+
+================================================================
+[ ★★★ 교차검증 3 — ogada /payroll·/accounting 전무 (P2 갭 실측) ]
+================================================================
+$ git -C src/frontend grep -c '/payroll'    develop -- src/App.jsx   → 0
+$ git -C src/frontend grep -c '/accounting' develop -- src/App.jsx   → 0
+$ git -C src/frontend grep -ci 'payroll|급여대장|퇴직적립|severance' develop -- src/App.jsx → 0
+
+competitorModuleCoverage.js (@5afef2d):
+  { id: "11", label: "직원 급여",       coverage: 0 }   ❌
+  { id: "12", label: "수입지출·회계",    coverage: 0 }   ❌
+
+ogada 인접 route(직원급여 ≠):
+  /staff/annual-leaves · /staff/leave-ledger  ← 연차/유급휴일 대장만(carefor 8-13 = M8 출퇴근군)
+  → 급여 산정/퇴직적립/지급명세는 전무.
+
+→ id=11·12 둘 다 coverage 0 = 모듈 합 23.45/29 에서 0 기여.
+  id=11 0→1·id=12 0→1 시 25.45/29 = 87.76% (+6.9pp) — 단일 최대 KPI bump 레버.
+  단, 요양기관 급여/회계는 외부 회계 SW(더존·이지웰) 연동 관행 → MVP 자체 구현 vs 연동 trade-off.
+
+================================================================
+[ ★★ 교차검증 4 — NHIS #44 이동서비스비 372차 zero drift ]
+================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f (live = on-disk nhis_jo44.html IDENTICAL · 372차)
+verbatim: 러-1 · 러-4 · 편도 · 1일 1회
+→ ogada G16 full-stack(BE catalog + FE TransportServiceFeePanel wire BNK-603) ✅ 우위 carry.
+
+================================================================
+[ ★ live 접근성 carry ]
+================================================================
+carefor LIVE direct https://www.carefor.co.kr/daycare/func.php : HTTP 000 timeout (30-cycle 「미확인」 BNK-558~605)
+demo-work.carefor.co.kr/ : HTTP 000 timeout (미확인 · 시설 셸 on-disk ebee4d47 carry: loadPage·view·transport nav 0)
+
+================================================================
+[ planner 권고 ]
+================================================================
+1. ★★ M11 직원급여 P2 갭 정본화 — 케어포 6-leaf + 이지케어 wAllowance 4-page 양쪽 구현 입증.
+   ogada 전무. id=11·12 closure = 모듈 80.86%→최대 87.76% 단일 최대 레버.
+2. 결정 필요(planner): 직원급여/회계 = MVP 자체 구현 vs 외부 회계 SW 연동(더존·이지웰).
+   요양기관 관행상 회계는 외부 위탁 多 → v2+ Epic 후보 or 연동 API only.
+3. tester FF merge 784 가속(FE 226+BE 558·양쪽 WT CLEAN·cross-stream).
+4. carefor LIVE 30-cycle·demo-work·longterm 502 「미확인」 carry — Wayback 본문 검증으로 의미 보전.

@@ -1,0 +1,126 @@
+BNK-619 ogada git 실측 6–8h (2026-06-25T10:59Z)
+=====================================================
+
+ROTATION: 6–8h ogada git 실측 (BNK-618 4–6h 직후, BNK-619 = 6–8h cycle)
+
+## 1. ogada baseline 실측 (BNK-619 정본)
+
+| 지표 | BNK-618 | BNK-619 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `cadd74a` | **`e070c45`** `fix(v1.2.1/QA-B95): honor recovered auth for live operation readiness` | **+1** |
+| BE develop HEAD | `aeecc1b2` | **`79725eb`** `fix(v2/7-9): validate refund fee policy inputs` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 234 | **235** | +1 |
+| BE ahead vs `origin/test=598d108` | 566 | **567** | +1 |
+| merge gate | 800 | **802** | **+2 cross-stream** |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V178 | V178 | carry |
+| BE Test class | 268 | 268 | carry |
+| BE `@Test` method | 1938 | **1939** | **+1** (`BillingServiceTest.recordCopayRefundShouldRejectWhenAmountDoesNotMatchFeePolicy` neg case) |
+| FE `.test.js` / `.test.jsx` | 194 / 278 | 194 / 278 | carry |
+| FE test 총합 | 472 | 472 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29) | 80.86% (23.45/29) | carry |
+
+재현 명령:
+```
+git -C src/backend rev-parse develop        # 79725eb
+git -C src/frontend rev-parse develop       # e070c45
+git -C src/backend  rev-list --count origin/test..develop  # 567
+git -C src/frontend rev-list --count origin/test..develop  # 235
+grep -rEh '^\s*@Test\b' src/backend/src/test 2>/dev/null | wc -l   # 1939
+find src/frontend/src -type f \( -name '*.test.js' -o -name '*.test.jsx' \) | wc -l  # 472
+```
+
+## 2. ★★★ G-REFUND-FEE-FE-WIRE 4-cycle 5-layer cascade — input validation hardening (BNK-619 신규)
+
+BNK-616 BE catalog → BNK-617 BE service validation → BNK-618 FE wire (FULL CLOSURE) → **BNK-619 BE input validation hardening**.
+
+BE `79725eb` 2-file +63L:
+
+| 파일 | 변경 | 역할 |
+|---|---|---|
+| `src/main/java/com/ogada/backend/billing/api/RecordCopayRefundRequest.java` | +5L | 정책별 입력값 검증 강화 (DTO-level guard) |
+| `src/test/java/com/ogada/backend/billing/domain/BillingServiceTest.java` | +58L NEW @Test +1 | `recordCopayRefundShouldRejectWhenAmountDoesNotMatchFeePolicy` — 정책-금액 mismatch 거부 회귀 lock |
+
+→ M7 7-9 본인부담금 환불 lifecycle **5-layer 완성**: DTO 검증(L0) → catalog(L1·BNK-616) → service validation(L2·BNK-617) → FE wire(L3·BNK-618) → 회귀 잠금(L4·BNK-619). carefor 단일 정책(3.3%/500원/KCP) 정본 vs ogada 다중-정책·preview-driven·역방향 검증 차별화 carry.
+
+## 3. ★★★ silverangel 221564 visibility REVERSAL — BNK-618 「7-day 가설 적중」 가정 carry corrected
+
+BNK-618 (2026-06-25T10:09Z): `view.do?Tmp_idx=221564` HTTP 200·**88,732B `ffe82a0d`** HAS-DATA·「[필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(**2026-06-30**)」·11개 신규 기능 verbatim 캡처.
+
+BNK-619 (2026-06-25T10:59Z, ~50min 후) 재실측:
+- `view.do?pageNo=1&Tmp_idx=221564` HTTP 200·**51,765B `44223150`** — 비공개 shell (BNK-599 `8437f255` 51,765B 미게시 probe shell 동일 패턴)
+- `view.do?pageNo=1&Tmp_idx=221551`(현재 list 최신 가시 ID) 도 동일 51,765B `44223150` shell ← shell 동일 = view.do 가 비활성 ID 모두 generic shell 반환
+- `notice/list.do` HTTP 200·`52c9457f` 3,594,181B 정적 list 최신 Tmp_idx **221551** 만 가시 — 221564 미노출
+
+→ 해석: **221564 는 2026-06-30 발행 예정 사전 게시 leak 가설** (BNK-618 캡처 = 미래일자 사전 등록 노출·BNK-619 회수). BNK-618 「7-day 가설 적중·번복 closure」 framing 정정: ① 11개 기능 evidence 자체는 유효 (BNK-618 snapshot `ffe82a0d` carry) ② 공개 가시성은 **현재 NONE** (50분 retraction window) ③ P3 candidate 3종(`G-NURSING-MISSED-RECORD-DASHBOARD`·`G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`·`G-LEGAL-FORM-SIGNATURE-IMAGE`) carry 유효 ④ 재공개 시점은 「next 6/30」(BNK-619 carry) — 6-day 후 재검증 권장.
+
+가정 번복 1: BNK-618 「6/25 정시 게시 적중」 → 「6/30 사전 게시 leak·50분 retraction·기능 evidence 유효·가시성 미확인」.
+
+## 4. ★★★ lcms.or.kr 「부활」 framing CORRECTION — 36-cycle 안정 재확인 (BNK-586~619)
+
+BNK-619 재측정:
+- `https://www.lcms.or.kr/` HTTP 200·**50,740B `c0c66076`** ← BNK-586 canonical `lcms_root.html`(50,740B `c0c66076`)와 **IDENTICAL**.
+- BNK-618 `lcms_or_kr_renew_bnk618.html`(50,554B `6c0d22b4`) 와 diff: byte 43521·line 1128·`<section class="ad_cont type1">` vs `type2` — **ad_cont 배너 sample rotation transient DRIFT only**, 자산/title/마케팅 카피 IDENTICAL.
+
+→ 해석: **lcms.or.kr 는 BNK-586~619 36-cycle 항상 살아있었음**. BNK-590 폐기된 것은 `http://www.lcms.kr/`(`.kr` TLD only·19B placeholder `c7a0e2e6`). BNK-618 §618-3 「lcms.or.kr 부활 도메인 발견」 framing 정정: ① lcms.kr(`.kr`) ≠ lcms.or.kr(`.or.kr`) 도메인 별개 ② lcms.or.kr 는 BNK-586 이후 36-cycle 안정 운영 ③ silverangel.kr 본진 footer floating 「LCMS」 링크 destination 확인 (BNK-618 유효 evidence) ④ BNK-515~590 cross-promo carry retired 해석은 `.kr` 도메인 폐기 단독 의미 — `.or.kr` 자매 ERP funnel 본래 운영 carry.
+
+가정 번복 1: BNK-618 「lcms.or.kr 28-cycle 후 부활」 → 「lcms.or.kr 36-cycle 안정·BNK-618 transient 배너 type 회전 DRIFT only」.
+
+## 5. ★★ NHIS #44 이동서비스비 러-1~4 — 384차 zero drift IDENTICAL (확인)
+
+- URL: `https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769`
+- live HTTP 200 · 7,572B · md5 `c886ff1f`(IDENTICAL `nhis_jo44.html`·`nhis_jo44_joHistory.html`)
+- 러-1~4(편도50%·1일1회·별지 제22호 일지④) verbatim 불변
+- ogada full-stack 우위 carry: BE `TransportServiceFeeService`(4-rule) ↔ FE `TransportServiceFeePanel`(UXD-159)+`TransportParityRulesPanel`(UXD-163·BNK-612)+RBAC(BNK-606)+fail-open(BNK-609)
+
+## 6. ★★ silverangel 본진 2-URL zero drift IDENTICAL (확인)
+
+| URL | live HTTP | size | md5 | on-disk | 상태 |
+|---|---|---|---|---|---|
+| `/newSilverangel/service/extraService.do` | 200 | 81,637 | `f9c5d877` | `f9c5d877` | IDENTICAL |
+| `/newSilverangel/daycare/daycareEssentialWork.do` | 200 | 131,664 | `c79c1be3` | `c79c1be3` | IDENTICAL |
+
+CMS 5-method verbatim 불변 (자동이체 효성CMS 250원·가상계좌 300원·카드·다계좌·현금영수증·1600-6859) ↔ ogada `CmsPaymentMethodCatalog` 5/5 `collectionImplemented=true`(V176+V178 무결성) **6-cycle 잔존**(BNK-614~619).
+
+## 7. ★ carefor LIVE timeout 37-cycle 「미확인」(BNK-558~619)
+
+- `https://www.carefor.co.kr/daycare/func.php` HTTP 000·timeout 8s·max 18s — 37-cycle carry
+- Wayback `20260519072235` 검증 정상(BNK-616 `84ffd89e` 104,183B semantic IDENTICAL carry)
+- 11모듈 107-leaf+7-1~7-10·7-9 KCP 환불 수수료 verbatim 정본 보존
+
+## 8. M11·M12 P2 갭 — 단일 최대 KPI bump 레버 carry (BNK-549~619, 70-cycle)
+
+- `/payroll/*`·`/accounting/*` 0 route — id=11·12 cov=0 carry
+- closure 시 모듈 23.45/29(80.86%) → 25.45/29(**87.76%·+6.9pp**) — v1.3+ 우선순위 격상 권장
+
+## 9. 4축+leave-ledger P0/P1 재오픈 0 (70-cycle carry, BNK-549~619)
+
+App.jsx `@e070c45` 7/7 path LIVE: G14·G26×2·v1.3-C·v2 CMS·US-R01-c×2.
+
+candidate carry:
+- P2: M11·M12 직원급여·회계 (1순위 KPI bump lever)
+- P3: G-EASYPAY-PROVIDER-CATALOG-FE-WIRE (7-5 BNK-612) + G-REFUND-FEE 5-layer (BNK-619 hardening 후 closure carry) + G-NURSING-MISSED-RECORD-DASHBOARD (BNK-618·**6/30 재검증 보류**) + G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE (BNK-618·**6/30 재검증 보류**) + G-LEGAL-FORM-SIGNATURE-IMAGE (BNK-618·**6/30 재검증 보류**) + G-FINANCE-BPO-PARTNERSHIP (BNK-610) + G-MARKET-SHARE-DASHBOARD (BNK-610) + G-PER-VISIT-ALLOWANCE-EDITOR (BNK-606) + G-STAFF-APP-ACCESS-LIFECYCLE (BNK-606) + G-MONITORING-SAMPLING-RULE (BNK-606) + G-NEW-AGENCY-SELFDIAG-GRACE (BNK-606)
+
+## 10. per-cycle minimum 4종 충족 체크
+
+- 신규 증거 URL: silverangel 221564 view.do 재측정(retraction window 발견) + lcms.or.kr 재측정(36-cycle 안정 재확인) ≥ 1건 ✅
+- 경쟁사 메뉴/필드/워크플로 1블록: silverangel 221564 visibility 회수 timeline + lcms.or.kr 도메인 분리 정정 표 ✅
+- COMPETITOR_MATRIX 1행 ogada `@HEAD` SHA 갱신 ✅
+- BENCHMARK_REPORT §신규 소절 + BNK-619 차수 메모 ✅
+
+## 11. 변동 요약
+
+- 가정 번복 **2**: ① BNK-618 「6/25 가설 적중 closure」 → 「6/30 사전 게시 leak·50분 retraction·기능 evidence 유효·가시성 미확인」 ② BNK-618 「lcms.or.kr 부활」 → 「lcms.or.kr 36-cycle 안정·BNK-590 폐기 .kr 도메인 단독」
+- 신규 core 갭 **0**
+- candidate 변동 **0** (BNK-618 P3 3종 「6/30 재검증 보류」 status 부여·핵심 unchanged)
+- closure 잔존 재확인 **2**(NHIS #44 384차 / silverangel 2-URL 6-cycle)
+- 상태 변경 **2** (FE+1·BE+1 cross-stream·양쪽 WT CLEAN)
+- KPI 변경 **2** (merge gate 802·BE @Test 1939)
+- 미확인 carry **3** (carefor LIVE 37-cycle·longterm 502 42-cycle·610 oscillation)
+- 신규 snapshot **1건** (`ogada_git_remeasure_bnk619.txt`)
+- 덮어쓰기 **0건** (lcms.or.kr BNK-618 file carry as historical evidence·NHIS #44 / silverangel core URLs zero drift IDENTICAL)
+- 엑셀 포맷 변경 **0**
+- tester **FF merge 802 가속 권장**(235+567 적체·양쪽 WT CLEAN·선행 commit 불필요)

@@ -1,0 +1,1698 @@
+
+
+
+
+<html lang="ko">
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엔젤시스템</title>
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="엔젤시스템 - 회사소개 공지사항 고객센터 등">
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="msapplication-config" content="none"/>
+<meta property="og:url" content="http://www.silverangel.kr/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="엔젤시스템" />
+<meta property="og:description" content="엔젤시스템 - 회사소개 공지사항 고객센터 등" />
+<meta property="og:image" content="/newSilverangel/images/metaImage.png">
+
+<link type="image/png" rel="shortcut icon" href="/images/favicon.png">    
+    
+<!-- jQuery UI -->
+<script src="/newSilverangel/js/jquery-3.4.1.min.js"></script>
+<script src="/newSilverangel/js/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/newSilverangel/css/style.css">
+<script type="text/javascript" src="/js/jquery.timepicker.min.js" ></script><!-- 타이머js -->
+<link type="text/css" rel="stylesheet" href="/css/jquery.timepicker.css" media=""/><!-- 타이머css -->
+<script type="text/javascript" src="/js/jquery.mtz.monthpicker.js"></script><!-- monthpicker js -->
+<!-- <script src="http://malsup.github.com/jquery.form.js"></script> -->
+	 
+<script type="text/javascript">
+
+new Promise(function() {
+	
+	//SSL 통신 START
+	var link = document.location.href;
+	var protocol = location.protocol;
+	if(link.indexOf("silverangel.kr") != -1){
+		if(protocol.indexOf("https") < 0){
+			location.href = link.replace("http","https");
+		}
+	}
+	//SSL 통신 END
+	
+});
+</script>
+		
+<script type="text/javascript">
+		
+	
+	
+	
+	
+	
+	
+		
+	//로그인
+	function loginChk(){
+		
+		if(!$("#f_code").val()) {
+			alert("시설코드를 입력하여 주십시오.");
+			$("#f_code").focus();
+			return false;
+		}
+		
+		if(!$("#user_id").val()) {
+			alert("아이디를 입력하여 주십시오.");
+			$("#user_id").focus();
+			return false;
+		}
+		
+		if(!$("#user_password").val()) {
+			alert("비밀번호를 입력하여 주십시오.");
+			$("#user_password").focus();
+			return false;
+		}
+		
+		$("#login_form").submit();
+	}
+		
+	//로그인 Enter
+	function goEnter() {
+		if(event.keyCode == 13) {
+			loginChk();
+		}
+	}
+		
+	//로그아웃
+	function logout() {
+		location.href = "/silverangel/login/logout.do";
+	}
+		
+	//PC화면 메뉴 이동
+	function goTopMenu(URL){
+		location.href = URL;
+	}
+		
+	//파일 확장자 체크
+	function chkExt(thumbext){
+		
+		thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+	
+		var chk = "";
+		
+		if(thumbext != "pdf" && thumbext != "hwp" &&  thumbext != "xls" &&  thumbext != "zip" &&  thumbext != "xlsx" &&  thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp" &&  thumbext != "ppt" &&  thumbext != "pptx" &&  thumbext != "doc" &&  thumbext != "docx"){ //확장자를 확인합니다.
+	
+			chk = 11;
+	
+		}else{
+			chk = 22;
+		}
+		
+		return chk;
+	}
+		
+	//파일 확장자 체크
+	function chkExt_img(thumbext){
+		
+		thumbext = thumbext.slice(thumbext.indexOf(".") + 1).toLowerCase(); //파일 확장자를 잘라내고, 비교를 위해 소문자로 만듭니다.
+	
+		var chk = "";
+		
+		if(thumbext != "jpg" &&  thumbext != "gif" &&  thumbext != "png" &&  thumbext != "bmp"){ //확장자를 확인합니다.
+			chk = 11;
+		}else{
+			chk = 22;
+		}
+		
+		return chk;
+	}
+
+	// 파일 확장자 가져오기
+	function getFileExtension(filename) {
+	    return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+	}
+		
+	//숫자만 입력 가능
+	function isNumOnly(arg) {
+		event.target.value = event.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
+		if(arg == 'c'){
+			var len, startStrLen, divideNum; 
+	        var tmpStr, remainStr, startStr;
+	        var resultStr;
+	        var valid = "0123456789";
+	        var num = "";
+	        var real = String(event.target.value);
+	        
+	        for(var i = 0 ; i< real.length ; i++){
+	            if(valid.indexOf(real.charAt(i)) != -1){
+	               num += real.charAt(i);
+	            }          
+	        }
+	        len = num.length;     
+	        divideNum = Math.floor(len / 3); 
+	        startStrLen = len % 3;
+	        resultStr = num.substr(0, startStrLen );  
+	       
+	        remainStr =  num.substr(startStrLen, len - startStrLen );
+	        
+	        tmpStr = "";
+	        if ( remainStr != "" ) {	     
+	        	for ( i = 0; i < divideNum ; i++ ){
+	         	tmpStr = tmpStr + "," + remainStr.substr(i*3, 3);
+	        	}
+	        }
+	        resultStr = resultStr + tmpStr;
+	        
+	        if ( startStrLen == 0 ) {
+	            resultStr = resultStr.substr(1, resultStr.length - 1);
+	        }
+	        event.target.value = resultStr;
+		}
+	}
+		
+	//홈페이지제작 메뉴 이동
+	function goWebsiteProvided(){
+		location.href="/newSilverangel/webSite/websiteProvided.do";
+	}
+
+	var resizeWidth = $(window).width();
+	//메인화면 이미지만 늘려서 보이도록 하기 위해 메인화면일때만 헤더에 "main"클래스를 추가함
+	$(document).ready(function(){
+		var href = window.location.href;
+		href = href.split('/');
+		
+		var hrefDo = href[href.length-1]; //href의 마지막값 가져오기
+		if (hrefDo == "main.do" || hrefDo == "login.do" || hrefDo == "logout.do" || hrefDo == ""){
+			$("header").addClass("main");
+		}
+		if(getCookiee( "layer_popUp" ) != "done"){
+			$('.layer_popUp').css("display", "block");
+		}
+		else {
+			$('.layer_popUp').css("display", "none");
+		}
+
+		//메뉴 이동 시 로딩창 띄우기(pc화면)
+	    $('.menu.pc a').on('click', function(e) {
+	    	showLoading();
+	    });
+		
+		//메뉴 이동 시 로딩창 띄우기(모바일 화면)
+	    $('.breadcrumb.mo .drop a').on('click', function(e) {
+	    	showLoading();
+	    });	
+	    
+		//뒤로가기로 페이지 진입 시 로딩창 감추기
+	    $(window).on('pageshow', function(event) {
+	    	if(event.originalEvent.persisted) {
+	    		hideLoading();
+	    	}
+	    });
+		
+		//TOP메뉴
+	    $('.depth1 a').on('click', function(e) {
+	    	//PC
+	    	if(resizeWidth > 850){
+		    	showLoading();
+	    	}
+	    });
+	    $('.depth2 a').on('click', function(e) {
+	    	//모바일
+	    	if(resizeWidth <= 850){
+	    		showLoading();
+	    	}
+	    });
+	    $(window).resize(resizeLoading);
+	    
+	});
+		
+	function closePop(){
+		$('.layer_popUp').css("display", "none");
+	}
+		
+	function goMove(){
+		var form = document.checkClose;
+		
+		var action = "https://cafe.naver.com/iangelsoftmax?iframe_url=/MyCafeIntro.nhn%3Fclubid=23609616";
+		form.action = action;
+		form.submit();
+	}
+
+	function close1Day(){ 
+		var expdate = new Date();
+		expdate.setDate(expdate.getDate() + 1); // 하루만 그만보기
+	 	expdate.setHours(0,0,0,0);
+	
+		setCookie("layer_popUp", "done" , expdate);
+	
+		$('.layer_popUp').css("display", "none");
+	}
+
+	function close7Day(){ 
+		var expdate = new Date();
+		expdate.setDate(expdate.getDate() + 1); // 일주일 그만보기
+	 	expdate.setHours(0,0,0,0);
+	
+		setCookie("layer_popUp", "done" , expdate);
+	
+		$('.layer_popUp').css("display", "none");
+	}
+
+	function setCookie(name, value, expires){ 
+		document.cookie = name + "=" + escape (value) + "; path=/; expires=" + expires.toGMTString();   
+	} 
+
+	function getCookiee(Name) {
+	    var search = Name + "=";
+	    if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+	        offset = document.cookie.indexOf(search)
+	        if (offset != -1) { // 쿠키가 존재하면
+	            offset += search.length
+	            // set index of beginning of value
+	            end = document.cookie.indexOf(";", offset)
+	            // 쿠키 값의 마지막 위치 인덱스 번호 설정
+	            if (end == -1)
+	                end = document.cookie.length
+	            return unescape(document.cookie.substring(offset, end))
+	        }
+	    }
+	    return "";
+	}
+
+	function openNewWindow() {
+	    var win = window.open('https://cafe.naver.com/iangelsoftmax?iframe_url=/MyCafeIntro.nhn%3Fclubid=23609616', '_blank');
+	    win.focus();
+	}
+	
+	//로딩창
+	function showLoading() {
+	    $('.loading').show();
+	}
+	function hideLoading() {
+	    $('.loading').hide();
+	}
+	function resizeLoading(){
+		resizeWidth = $(window).width();
+	}
+	
+	
+</script>
+</head>
+<style>
+	.layer_popUp{
+		position:absolute;
+		margin-left: 0px;
+		margin-top: 0px;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		text-align: left;
+		width: 661px;
+		height: 661px;
+		top: 6VW;
+		left: 12VW;
+	}
+    .topBanner {
+        background: url(/newSilverangel/images/topBanner.png) no-repeat left;
+        background-size: contain;
+        width: 190px;
+        height: 48px;
+        margin-right: 30px;
+    }
+@media screen and (min-width: 300px){
+	.layer_popUp{
+        width: 275px;
+        height: 275px;
+    }
+    .topBanner {
+        width: 107px;
+        height: 26.5px;
+        position: absolute;
+        left: 120px;
+        top: 27.5px;
+    }
+}
+	
+@media screen and (min-width: 450px){
+	.layer_popUp{
+        width: 325px;
+        height: 325px;
+    }
+}
+@media screen and (min-width: 600px){
+	.layer_popUp{
+        width: 475px;
+        height: 475px;
+    }
+}
+@media screen and (min-width: 851px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+    .topBanner {
+        width: 190px;
+        height: 48px;
+        position: absolute;
+        left: -1px;
+        top: 90px;
+    }
+}
+@media screen and (min-width: 1025px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}
+@media screen and (min-width: 1250px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}
+@media screen and (min-width: 1400px){
+    .topBanner {
+        width: 190px;
+        height: 48px;
+        position: unset;
+        left: unset;
+        top: unset;
+    }
+}
+@media screen and (min-width: 1500px){
+	.layer_popUp{
+        width: 600px;
+        height: 600px;
+    }
+}	
+
+</style>
+<body>
+	<form id="login_form" name="login_form" method="post" action="/silverangel/login/login.do">
+   		<div class="loading" style="display: none;"> 
+	      	<img src="/newSilverangel/images/loading.png" alt="">
+	      	<p>Loading</p>
+	   	</div>	
+		<header class="header row_section">
+		    <div class="header_top">
+		        <div class="section_inner" id="top_section_inner">
+                    <div style="display: flex;">
+		            <h1 class="topBanner" onclick="window.open('https://www.silverangel.co.kr/shop/listtype.php?type=5', '_blank');" style="cursor: pointer;"></h1>
+                    <h1 class="logo" onclick="goTopMenu('/silverangel/main/main.do'); showLoading();" style="cursor: pointer;"><span class="blind">요양시설통합세례관리솔루션 엔젤시스템</span></h1>
+                    </div>
+		            <div class="menu">
+		                <nav class="gnb">
+		                    <ul class="depth1">
+		                        <li>
+		                            <a href="/newSilverangel/fcltySlry/essentialWork.do">입소시설</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/fcltySlry/essentialWork.do">필수업무</a></li>
+		                                <li><a href="/newSilverangel/fcltySlry/programProvided.do">제공 프로그램</a></li>
+		                                <li><a href="/newSilverangel/fcltySlry/angelSystemSummary.do">엔젤시스템 개요</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/daycare/daycareEssentialWork.do">주야간보호</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/daycare/daycareEssentialWork.do">필수업무</a></li>
+		                                <li><a href="/newSilverangel/daycare/daycareProgramProvided.do">제공 프로그램</a></li>
+		                                <li><a href="/newSilverangel/daycare/daycareAngelSystemSummary.do">엔젤시스템 개요</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/service/mainService.do">서비스</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/service/mainService.do">주요서비스</a></li>
+		                                <li><a href="/newSilverangel/service/extraService.do">부가서비스</a></li>
+		                                <li><a href="/newSilverangel/service/businessSupportService.do">업무지원 서비스</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/newSilverangel/service/feeService.do">이용요금</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/service/feeService.do">이용요금</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <!-- <a href="#" onclick="goWebsiteProvided();">기관 홈페이지 제작</a> -->
+		                            <a href="/newSilverangel/webSite/websiteProvided.do">기관 홈페이지 제작</a>
+		                            <ul class="depth2">
+		                                <li><a href="/newSilverangel/webSite/websiteProvided.do">기관 홈페이지 제작</a></li>
+		                                <li><a href="/newSilverangel/webSite/websiteProvidedList.do">홈페이지 제작 현황</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/support/notice/list.do">고객지원</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/support/notice/list.do">공지사항</a></li>
+		                                <li><a href="/silverangel/support/download/list.do">자료실</a></li>
+		                                <li><a href="/silverangel/support/qna/list.do">묻고 답하기</a></li>
+		                                <li><a href="/silverangel/support/faq/list.do">자주묻는 질문</a></li>
+		                                <li><a href="/silverangel/support/edu_apply/write.do">도입문의</a></li>
+		                                
+		                                
+		                                
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/publicize/partner.do">홍보관</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/publicize/partner.do">파트너</a></li>
+		                                <li><a href="/silverangel/publicize/visit_list.do">사용시설 직무교육</a></li>
+		                                <li><a href="/silverangel/publicize/license.do">사업면허/표창</a></li>
+		                                <li><a href="/silverangel/publicize/angel_news_list.do">엔젤뉴스</a></li>
+		                            </ul>
+		                        </li>
+		                        <li>
+		                            <a href="/silverangel/companyinfo/business_area.do">기업정보</a>
+		                            <ul class="depth2">
+		                                <li><a href="/silverangel/companyinfo/business_area.do">사업분야</a></li>
+		                                <li><a href="/silverangel/companyinfo/vision.do">비전</a></li>
+		                                <li><a href="/silverangel/companyinfo/history.do">걸어온 길</a></li>
+		                                <li><a href="/silverangel/companyinfo/ceo.do">CEO 인사말</a></li>
+		                                <li><a href="/silverangel/companyinfo/organization_chart.do">조직도</a></li>
+		                                <li><a href="/silverangel/companyinfo/map.do">오시는 길</a></li>
+		                            </ul>
+		                        </li>
+								<!-- 로그인하는 ID에 따라 hide, show(조건) -->
+										                        
+		                    </ul>
+		                </nav>
+		                <div class="login_wrap">
+		                	
+		                		
+				                    <input type="text" id="f_code" name="f_code" onkeypress="JavaScript:goEnter();" placeholder="시설코드">
+				                    <input type="text" id="user_id" name="user_id" onkeypress="JavaScript:goEnter();" placeholder="아이디">
+				                    <input type="password" id="user_password" name="user_password" onkeypress="JavaScript:goEnter();" placeholder="비밀번호">
+				                    <button type="button" class="loginForm" onclick="loginChk();">로그인</button>
+				                    <button type="button" class="btn_close">닫기</button>											                		
+		                		
+		                		
+		                	
+		                </div>
+		                <button type="button" class="login"><span class="blind">로그인</span></button>
+		                <button type="button" class="menu" id="btnMenu"><span class="blind">메뉴열기</span></button>
+		            </div>
+		        </div>
+		    </div>
+		</form>
+			<!-- 메인 화면 -->		    
+		
+  		<div class="visual main_slide" id="mainView" style="display: none;">
+  		
+         	 <div class="layer_popUp" style="display: block; z-index:10;">
+        		<div>
+				    <form name="checkClose">
+						<img src="/images/sub/opneNaverCafe_popup_1.jpg" style="width: 100%; height: 100%;">
+						<!-- 오늘은 그만 보기 -->
+						<div class="close1Day" onclick="close1Day()" style="height: 6%;width: 26%;position: absolute;top: 94%;left: 3%;"></div>
+						<!-- 닫기 -->
+						<div class="closePop" onclick="closePop()" style="width: 19%;height: 7%;position: absolute;top: 93%;left: 81%;"></div>
+						<!-- 자세히 보기 -->
+						<div class="openNewWindow" onclick="openNewWindow()" style="width: 36%;height: 9%;position: absolute;top: 74%;left: 32%;"></div>
+						<!-- 일주일동안 그만 보기 -->
+						<div class="close7Day" onclick="close7Day()" style="height: 6%;width: 27%;position: absolute;top: 94%;left: 34%;"></div>
+					</form>
+				</div>
+			</div> 
+			
+ 			<div class="visual main_slide">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                    	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-06.jpg);">
+                            <div class="slide_inner_box type_c">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-06_add.png">
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">기관의 특성을 담은 홈페이지 제작</p>
+
+                                    <p class="d_text">계절별로 디자인이 자동 변경되는 홈페이지</p>
+
+                                    <p class="s_text">수급자 정보 자동연동으로 보호자와의 신뢰관계 유지, <br> 감각적인 디자인으로 기관 홍보 효과 또한 탁월합니다.</p>
+                                    <div class="ad_head">
+                						<a href="https://www.silverangel.kr/newSilverangel/webSite/websiteProvided.do" target="_self" class="exp_link">체험하기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                     	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-05.jpg);">
+                            <div class="slide_inner_box type_b">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-05_add.png">
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">본인부담금 자동이체(CMS) 서비스</p>
+
+                                    <p class="s_text">매월 발생하는 본인부담금을 보호자계좌에서 자동출금, 카드 자동결제, <br>
+                                        가상계좌 입금 등의 방법으로 편리하게 납부할 수 있는 기능을 제공합니다. </p>
+
+                                    <p class="m_text">가입문의 : <span>1600-6859</span></p>
+                                    <div class="ad_head">
+                						<a href="https://www.silverangel.kr/newSilverangel/service/extraService.do" target="_self" class="exp_link">자세히보기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                    	<div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-04.jpg);">
+                            <div class="slide_inner_box type_a">
+                                <div class="left_box">
+                                    <img src="/newSilverangel/images/main-visual-04_add.png">
+                                    <p class="">엔젤시스템 & CJ프레시웨이<br> 업무협약(MOU) 체결</p>
+                                </div>
+                                <div class="right_box">
+                                    <p class="h_text">CJ프레시웨이와 MOU 체결을 통해 <br>노인식단 전문영양사가 작성한<br> 식단표 활용</p>
+
+                                    <p class="s_text">노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로<br> 식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다.</p>
+                                    <div class="ad_head">
+                						<a href="https://silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864&Tmp_thread=1&Tmp_depth=0" target="_self" class="exp_link">자세히보기</a>
+            						</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide" style="background-image: url(/newSilverangel/images/main-visual-01.jpg)">
+                            <p class="slogan">
+                                <strong>고객의 입장에 서서 <br>
+                                최고의 서비스를 제공합니다</strong>
+                                <span>장기요양 서비스 관리의 표준 엔젤시스템</span>
+                            </p>
+                            <div class="ad_head2">
+                         		<a href="https://youtu.be/vsPs1Xtvzh8" target="_blank" class="exp_link">홍보영상보기</a>
+                        	</div>
+                        </div>
+  
+                    </div>
+                    <div class="swiper-pagination"> </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+		</div>
+		
+            <!-- 입소시설 - 필수업무 -->
+            <div class="visual sub1_1" id="fcltySlry1" style="display: none;">
+                <p class="slogan">
+                    <strong>입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>                        		    
+			
+			<!-- 입소시설 - 제공프로그램 -->
+            <div class="visual sub1_2" id="fcltySlry2" style="display: none;">
+                <p class="slogan">
+                    <strong class="tit">입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            		    
+		    <!-- 입소시설 - 엔젤시스템 개요 -->
+            <div class="visual sub1_3" id="fcltySlry3" style="display: none;">
+                <p class="slogan">
+                    <strong>입소시설</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 주야간보호 - 필수업무 -->
+            <div class="visual sub2_1" id="daycare1" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>		    
+		    
+		    <!-- 주야간보호 - 제공프로그램 -->
+            <div class="visual sub2_2" id="daycare2" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>		    
+		    
+		    <!-- 주야간보호 - 엔젤시스템 개요 -->
+            <div class="visual sub2_3" id="daycare3" style="display: none;">
+                <p class="slogan">
+                    <strong>주야간보호</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 서비스 - 주요서비스 -->
+            <div class="visual sub3_1" id="serviceView1" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 서비스 - 부가서비스 -->
+            <div class="visual sub3_2" id="serviceView2" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 서비스 - 업무지원서비스 -->
+            <div class="visual sub3_3" id="serviceView3" style="display: none;">
+                <p class="slogan">
+                    <strong>서비스</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홈페이지제작 -->
+            <div class="visual sub4_1" id="webSite1" style="display: none;">
+                <p class="slogan">
+                    <strong>기관 홈페이지 제작</strong>
+                    <span>고객의 편의를 항상 최우선으로 생각하는 <br>
+                        엔젤 시스템만의 특화된 서비스를 만나보세요.</span>
+                </p>
+            </div>  
+            
+            <!-- 홈페이지제작 -->
+            <div class="visual sub4_1" id="fee1" style="display: none;">
+                <p class="slogan">
+                    <strong>이용요금</strong>
+                    <span>고객의 편의를 항상 최우선으로 생각하는 <br>
+                        엔젤 시스템만의 특화된 서비스를 만나보세요.</span>
+                </p>
+            </div>            
+
+			<!-- 고객지원 - 공지사항 -->
+            <div class="visual sub5_1" id="support1" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+
+			<!-- 고객지원 - 자료실 -->
+            <div class="visual sub5_2" id="support2" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 묻고 답하기 -->
+            <div class="visual sub5_3" id="support3" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 자주묻는 질문 -->
+            <div class="visual sub5_4" id="support4" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+			<!-- 고객지원 - 시연신청 -->
+            <div class="visual sub5_5" id="support5" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 고객지원 - 시연신청현황 -->
+            <div class="visual sub5_6" id="support6" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 고객지원 - 직무교육신청 -->
+            <div class="visual sub5_7" id="support7" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 고객지원 - 직무교육 신청현황 -->
+            <div class="visual sub5_8" id="support8" style="display: none;">
+                <p class="slogan">
+                    <strong>고객지원</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홍보관 - 파트너 -->
+            <div class="visual sub6_1" id="publicize1" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+			
+			<!-- 홍보관 - 사용시설직무교육 -->
+            <div class="visual sub6_2" id="publicize2" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>			
+			
+			<!-- 홍보관 - 사업면허/표창 -->
+            <div class="visual sub6_3" id="publicize3" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 홍보관 - 엔젤뉴스 -->
+            <div class="visual sub6_4" id="publicize4" style="display: none;">
+                <p class="slogan">
+                    <strong>홍보관</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br> 안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+            
+            <!-- 기업정보 - 사업분야 -->
+            <div class="visual sub7_1" id="companyinfo1" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - 비전 -->
+            <div class="visual sub7_2" id="companyinfo2" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>            
+
+			<!-- 기업정보 - 걸어온 길 -->
+            <div class="visual sub7_3" id="companyinfo3" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - CEO 인사말 -->
+            <div class="visual sub7_4" id="companyinfo4" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- 기업정보 - 조직도 -->
+            <div class="visual sub7_5" id="companyinfo5" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+
+            <!-- 기업정보 - 오시는 길 -->
+            <div class="visual sub7_6" id="companyinfo6" style="display: none;">
+                <p class="slogan">
+                    <strong>기업정보</strong>
+                    <span>최상의 장기요양 서비스 관리를 지원할 수 있는 <br>
+                        안정적이고 유연한 관리 시스템을 구축합니다.</span>
+                </p>
+            </div>
+            
+            <!-- Footer - 개인정보처리방침 -->
+            <div class="visual sub7_7" id="privacyPolicy" style="display: none;">
+                <p class="slogan">
+                    <strong>개인정보처리방침</strong>
+                </p>
+            </div>                                                            
+            
+            <!-- Footer - 이용약관 -->
+            <div class="visual sub7_7" id="termsUse" style="display: none;">
+                <p class="slogan">
+                    <strong>이용약관</strong>
+                </p>
+            </div>              
+
+            <!-- Footer - 문자서비스 이용약관-->
+            <div class="visual sub7_7" id="sms_service" style="display: none;">
+                <p class="slogan">
+                    <strong>문자서비스 이용약관</strong>
+                </p>
+            </div>                                                            
+		</header>
+</body>
+<script>
+
+
+</script>
+
+<style type="text/css">
+
+	@media screen and (min-width: 851px){
+		.slideShop{
+			margin-right: 0px !important;
+		}
+	}
+	
+</style>
+
+<script type="text/javascript">
+function goDetail(arg1, arg2, arg3, arg4) {
+	jQuery("input[name=Tmp_idx]").val(arg2);
+	jQuery("input[name=Tmp_thread]").val(arg3);
+	jQuery("input[name=Tmp_depth]").val(arg4);
+	jQuery("form[name=search_form]").attr("method", "post");
+	
+	if(arg1 == "visit") {
+		var TmpDo = "visit_view";
+		var TmpUrl = "/silverangel/publicize";
+	} else if(arg1 == "news") {
+		var TmpDo = "angel_news_view";
+		var TmpUrl = "/silverangel/publicize";
+	} else if(arg1 == "qna"){
+		jQuery("input[name=Qna_list]").val(arg1);
+		var TmpDo = "list";
+		var TmpUrl = "/silverangel/support/qna"
+	} else {
+		var TmpDo = "view";
+		var TmpUrl = "/silverangel/support/"+arg1;
+	}
+	
+	jQuery("form[name=search_form]").attr("action",TmpUrl+"/"+TmpDo+".do").submit();
+}
+
+// 팝업창 -> 레이어팝업 변경으로 인해 주석처리
+// function apPOP(){
+//     var alarmWin;
+//     var nLeft = (window.screen.width - 980 ) / 2;
+//     var nTop = (window.screen.height- 900) / 3;
+    
+//     if(getCookiee( "apPOP" ) != "done"){
+//    		alarmWin = window.open("/common/popup/introductionPop.html", "pop", "width=660xp, height=661px, top=150px, left=200px, resizable=no, status=no, scrollbars=no, menubar=no");
+//     }
+	
+// }	
+
+// function getCookiee(Name) {
+//     var search = Name + "=";
+
+//     if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+//         offset = document.cookie.indexOf(search)
+//         if (offset != -1) { // 쿠키가 존재하면
+//             offset += search.length
+
+//             // set index of beginning of value
+//             end = document.cookie.indexOf(";", offset)
+//             // 쿠키 값의 마지막 위치 인덱스 번호 설정
+//             if (end == -1)
+//                 end = document.cookie.length
+//             return unescape(document.cookie.substring(offset, end))
+//         }
+//     }
+//     return "";
+// }
+
+//전자결재레이어 닫기
+function closeAppLayer(chk){
+		$('#appLayer'+chk).css("display", "none");
+}
+</script>
+
+<body>
+	<form name="search_form" id="search_form" method="post">
+		<input type="hidden" name="Tmp_idx" /><!-- //뷰 클릭시 글 번호 -->
+		<input type="hidden" name="Tmp_thread" /><!-- //뷰 클릭시 글 쓰레드 -->
+		<input type="hidden" name="Tmp_depth" /><!-- //뷰 클릭시 글 뎁스 -->
+		<input type="hidden" name="Qna_list" /><!-- //묻고답하기 해당글 선택 -->
+	</form>
+	
+<!-- 		<div id="appLayer6" style="display:none; overflow:hidden; margin-left:35%; margin-top:-30%; position:absolute; width:26.3%; height:auto; background-color:#FFF; text-align:center; z-index:100;"> -->
+<!-- 			<img src="/newSilverangel/images/silverangel_error.jpg" usemap="#mainLayer1" alt="ANGEL-ACCOUNT" style="width: 100%;"> -->
+<!-- 			<map name="mainLayer1" id="mainLayer1"> -->
+<!-- 				오늘은 그만 보기 -->
+<!-- 				<area onclick="mainLayerOpen('appLayer6',6); return false;" coords="55,375,188,395" style="cursor: pointer;"> -->
+<!-- 				닫기 -->
+<!-- 					<area onclick="closeAppLayer(6); return false;" coords="0,357,498,396" style="cursor: pointer;"> -->
+<!-- 				자세히 보기 -->
+<!-- 				<area onclick="angelLoginChk('AD'); return false;" coords="474,498,566,525" style="cursor: pointer;"> -->
+<!-- 				문의하기 -->
+<!-- 				<area onclick="angelLoginChk('AT'); return false;" coords="208,420,398,477" style="cursor: pointer;"> -->
+<!-- 			</map> -->
+<!-- 		</div> -->
+	
+    <div class="container">
+        <div class="main">
+            <section class="notice_slide row_section">
+                <div class="section_inner">
+                    <h2>공지사항</h2>
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                        	
+	                            <div class="swiper-slide">
+	                            	<a href="javascript:goDetail('notice','221563','1','0');">6월 셋째 주 엔젤시스템 주요 기능 추가 및 개선 안내</a>
+	                            	<span class="date pc">2026-06-18</span>
+	                            </div>
+                        	
+	                            <div class="swiper-slide">
+	                            	<a href="javascript:goDetail('notice','221562','1','0');">[필독] 미인증 휴대전화 발신번호 삭제 예정안내    </a>
+	                            	<span class="date pc">2026-06-16</span>
+	                            </div>
+                        	
+	                            <div class="swiper-slide">
+	                            	<a href="javascript:goDetail('notice','221561','1','0');">[필독][시설·주야간] 과거 데이터 복원 작업 안내(내용추가)</a>
+	                            	<span class="date pc">2026-06-12</span>
+	                            </div>
+                        	
+	                            <div class="swiper-slide">
+	                            	<a href="javascript:goDetail('notice','221559','1','0');">6월 둘째 주 엔젤시스템 주요 기능 추가 및 개선 안내</a>
+	                            	<span class="date pc">2026-06-11</span>
+	                            </div>
+                        	
+	                            <div class="swiper-slide">
+	                            	<a href="javascript:goDetail('notice','221558','1','0');">6월 첫째 주 엔젤시스템 주요 기능 추가 및 개선 안내</a>
+	                            	<span class="date pc">2026-06-04</span>
+	                            </div>
+                        	
+	                            <div class="swiper-slide">
+	                            	<a href="javascript:goDetail('notice','221557','1','0');">2026년 06월 엔젤시스템 활용 교육</a>
+	                            	<span class="date pc">2026-06-01</span>
+	                            </div>
+                        	
+                        </div>
+                    </div>
+                    <div class="swiper-button">
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+            </section>
+            <section class="service_slide row_section">
+                <div class="section_inner">
+                    <div class="info">
+                        <div>
+                            <h2>엔젤시스템 만의 특화된 서비스</h2>
+                        </div>
+                        <div class="swiper-pagination"> </div>
+                    </div>
+                
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper" style="height: auto;">
+                            <div class="swiper-slide"> 
+                                <div class="slide_inner">
+                                    <!-- 모바일 이미지 최대 크기를 style 속성을 이용해서 적용해주세요.  -->
+                                    <strong>총 3가지로 제공되는 퀄리티 높은 디자인!
+                                        <p>한가지 디자인에 각각 4가지의 색상 모드가 제공됩니다. <br>
+                                        무려 12가지의 홈페이지 중 취향에 맞게 골라서 사용해보세요!</p>
+                                    </strong>
+                                    <ul class="img_wrap">
+                                        <li><img src="/newSilverangel/images/service-banner-01-1.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-01-2.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-01-3.png" alt=""></li>
+                                    </ul>
+                                    <a href="/newSilverangel/webSite/websiteProvided.do" class="view_more">자세히보기</a>
+                                </div>
+                            </div>
+                            <div class="swiper-slide"> 
+                                <div class="slide_inner">
+                                    <strong>신뢰 있는 소통 이제 굽은 나무로
+                                        </strong>
+                                    <p>요양원에 계시는 어르신과 편안히 소통하세요. <br>
+                                        요양원에 계신 어르신의 하루하루를 살필 수 있습니다. 굽은나무로 옆에 오신 것 처럼 소통해보세요.</p>
+                                    <ul class="img_wrap">
+                                        <li><img src="/newSilverangel/images/service-banner-02-1.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-02-2.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-02-3.png" alt=""></li>
+                                    </ul>
+                                    <a href="/newSilverangel/service/extraService.do?mainFlag=gbTree" class="view_more">자세히보기</a>
+                                </div>
+                            </div>
+                            <div class="swiper-slide"> 
+                                <div class="slide_inner">
+                                    <strong>가상현실 기술을 적용한 여행프로그램! </strong>
+                                    <p> 전국의 관광명소를 VR로 간접 체험할 수 있습니다. <br>
+                                        정서적 안정으로 우울감을 해소하고 인지기능 향상으로 치매 예방, 치매 완화를 목적으로 합니다.</p>
+                                    <ul class="img_wrap">
+                                        <li><img src="/newSilverangel/images/service-banner-03-1.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-03-2.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-03-3.png" alt=""></li>
+                                    </ul>
+                                    <a href="/newSilverangel/service/extraService.do?mainFlag=VR" class="view_more">자세히보기</a>
+                                </div>
+                            </div>
+                            <div class="swiper-slide"> 
+                                <div class="slide_inner">
+                                    <strong>PC환경과 똑같은 서비스를 모바일 앱으로도 만나실 수 있습니다! </strong>
+                                    <p>환경이 바뀌더라도 안정적으로 서비스를 이용하실 수 있게 <br>
+                                        PC에서나 모바일에서나 같은 서비스를 편리하게 이용해보세요.</p>
+                                    <ul class="img_wrap">
+                                        <li><img src="/newSilverangel/images/service-banner-04-1.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-04-2.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-04-3.png" alt=""></li>
+                                    </ul>
+                                    <a href="/newSilverangel/service/extraService.do?mainFlag=Mobile" class="view_more">자세히보기</a>
+                                </div>
+                            </div>
+                            <div class="swiper-slide"> 
+                                <div class="slide_inner">
+                                    <strong class="slideShop">노인요양원에서 사용하는 다양한 제품을 손쉽게 구입할 수 있는 요양시설 및 종사자 전문쇼핑몰입니다. </strong>
+                                    <p>LCMS-엔젤을 사용하는 요양원에 좋은 제품을 저렴하게 드립니다.</p>
+                                    <ul class="img_wrap">
+                                        <li><img src="/newSilverangel/images/service-banner-05-1.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-05-2.png" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-05-3.png" alt=""></li>
+                                    </ul>
+                                    <a href="https://www.silverangel.co.kr/" class="view_more">자세히보기</a>
+                                </div>
+                            </div>
+                            <!-- <div class="swiper-slide"> 
+                                <div class="slide_inner">
+                                    <strong>엔젤 전용 인공지능, 엔젤아이!</strong>
+                                    <p> 24시간 응답 서비스로 여러분을 지원합니다. <br>
+                                        관련 다빈도 질문사항을 한눈에! 평가지표, 서비스 매뉴얼 등을 언제나 확인 가능합니다.</p>
+                                    <ul class="img_wrap">
+                                        <li><img src="/newSilverangel/images/service-banner-06-1.jpg" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-06-2.jpg" alt=""></li>
+                                        <li><img src="/newSilverangel/images/service-banner-06-3.jpg" alt=""></li>
+                                    </ul>
+                                    <a href="/newSilverangel/service/extraService.do?mainFlag=AI" class="view_more">자세히보기</a>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="swiper-btts">
+                            <div class="swiper-button">
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
+                            <div class="swiper-scrollbar"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="qna row_section">
+                <div class="section_inner">
+                    <h2>묻고 답하기 </h2>
+                    <p>엔젤시스템에 대해 궁금한 점을 문의해주시면 <br class="mo"> 친절히 답변드리겠습니다.</p>
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper" style="height: auto;">
+                            
+                            <div class="swiper-slide">
+                                <div class="inner">
+                                    <div class="q">
+                                        <div>
+                                            <a href="javascript:goDetail('qna','219188','1','0');"><p>건강수준평가 작성 기준</p></a>
+                                        </div>
+                                        <div>
+                                            <span class="writer">
+                                            
+												
+												
+													
+												
+											
+												
+												구립송파노인요양센터 김**
+                                            </span>
+                                            <span class="date">
+                                            	
+	                                        	
+	                                        		2025-04-23
+	                                        	
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="a">
+                                    
+										
+											 <span class="re ">건강수준평가 및 간호기록 </span>
+										
+										
+									
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="swiper-slide">
+                                <div class="inner">
+                                    <div class="q">
+                                        <div>
+                                            <a href="javascript:goDetail('qna','219187','1','0');"><p>업무수행일지(치매) 작성 관련하여</p></a>
+                                        </div>
+                                        <div>
+                                            <span class="writer">
+                                            
+												
+												
+													
+												
+											
+												
+												정성노인의집 임**
+                                            </span>
+                                            <span class="date">
+                                            	
+	                                        	
+	                                        		2025-04-23
+	                                        	
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="a">
+                                    
+										
+											 <span class="re ">업무수행일지(치매) </span>
+										
+										
+									
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="swiper-slide">
+                                <div class="inner">
+                                    <div class="q">
+                                        <div>
+                                            <a href="javascript:goDetail('qna','219185','1','0');"><p>밑에 내용에 대한 추가질문입니다. </p></a>
+                                        </div>
+                                        <div>
+                                            <span class="writer">
+                                            
+												
+												
+													
+												
+											
+												
+												요안나요양원 문**
+                                            </span>
+                                            <span class="date">
+                                            	
+	                                        	
+	                                        		2025-04-23
+	                                        	
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="a">
+                                    
+										
+											 <span class="re ">직무스트레스 해소 프로그램 </span>
+										
+										
+									
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="swiper-slide">
+                                <div class="inner">
+                                    <div class="q">
+                                        <div>
+                                            <a href="javascript:goDetail('qna','219184','1','0');"><p>평가지표 5번 직무해소 프로그램에 관해서</p></a>
+                                        </div>
+                                        <div>
+                                            <span class="writer">
+                                            
+												
+												
+													
+												
+											
+												
+												요안나요양원 문**
+                                            </span>
+                                            <span class="date">
+                                            	
+	                                        	
+	                                        		2025-04-23
+	                                        	
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="a">
+                                    
+										
+											 <span class="re ">직무스트레 </span>
+										
+										
+									
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="swiper-slide">
+                                <div class="inner">
+                                    <div class="q">
+                                        <div>
+                                            <a href="javascript:goDetail('qna','219165','1','0');"><p>sms  관리에서 수정요청</p></a>
+                                        </div>
+                                        <div>
+                                            <span class="writer">
+                                            
+												
+												
+													
+												
+											
+												
+												해운대실버홈 김**
+                                            </span>
+                                            <span class="date">
+                                            	
+	                                        	
+	                                        		2025-04-23
+	                                        	
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="a">
+                                    
+										
+											 <span class="re ">SMS 사진 첨부 기능 </span>
+										
+										
+									
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="swiper-button">
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                    <a href="/silverangel/support/qna/list.do" class="view_more"><span class="blind">더 보기</span></a>
+                </div>
+            </section> 
+            <section class="state row_section">
+                <div class="section_inner">
+                    <h2>사용시설<br> 직무교육<br> 현황</h2>
+                    <div>
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper" style="height: auto;">
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20260128164826_visit_3_햇살요양원(썸).png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>경기 햇살요양원</strong>
+	                                        <p>2026년 1월 26일 엔젤시스템 사용시설인 경기 의정부 소재 햇살요양원과 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 복지팀과 간호팀 위주로 참석하였으며, 교육에 대한 참여도와 집중도, 이해도가 매우 높았습니다.<br>전반적인 업무 흐름에 대해 이해하고 계셨으며, 특히 급여제공계획서의 작성 시 세부제공내용의 개별화에 대해 안내해드렸습니다.<br>주기적인 사례회의를 통해 수급자의 변화에 대응하기 위해 노력하며, 상담 실시 후 반영을 위해 노력하고 계셨습니다.<br>사례회의 후 급여반영과 관련한 시스템 활용 방법을 지도해드렸으며 관찰일지 활용을 심화적으로 안내해드렸습니다.<br>욕창 위험 수급자에게 이루어져야하는 서비스를 정확하게 파악 및 실시해주고 계셨으며, 간호처치 기록 및 투약 기록 등 간호파트를 심화 지도해드렸습니다.<br>어르신들을 위한 여러 프로그램을 계획 및 실시하고 계셨으며, 프로그램 의견수렴 및 반영의 효율적인 기록 관리에 대하여 추가적으로 안내해드렸습니다. <br>신설지표인 식사 반영은 월 1회 상담 진행하여 반영해주고 계셨으며 급여반영에 대해 시스템 활용 방법을 지도해드렸습니다.<br>욕구사정과 급여제공계획서 종합의견 작성 시 각 영역별로 상세히 작성해주고 계셨습니다.<br>교육 시 점검사항에 대한 이해도 또한 높은 것으로 보아 추후의 성장과 발전이 더욱 기대되는 기관이였습니다.</p>
+	                                        <span class="date">2026-01-28</span>
+	                                        <a href="javascript:goDetail('visit','221508','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20251105112735_visit_3_인창동구노인요양원_some.png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>부산 인창동구노인요양원</strong>
+	                                        <p>2025년 11월 4일 엔젤시스템 사용시설인 부산 동구 소재 인창동구노인요양원과 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 시설장님을 필두로 복지팀, 간호팀, 재활팀, 요양팀, 영양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 매우 높았습니다.<br>입소 시의 업무에 대한 파악이 잘 되어있었으며, 급여제공평가에 대한 파악도 잘 되어 있어 심화적인 부분을 지도해드렸습니다.<br>급여제공계획 시 어르신의 상태에 따라 세부제공내용을 구체적으로 기입하고 계셨으며, 종합의견도 충실하고 작성하고 계셨습니다.<br>주기적인 사례회의 및 상담 실시를 통해 어르신의 변화에 대응하고 계셨으며, 급여 반영 시 중요한 부분을 교육해드렸습니다.<br>상담일지를 꼼꼼히 작성하고 내용을 반영하고 계셨으며, 기록지와 목욕 기록 등 일상생활 기록과 관련된 부분을 점검해드렸습니다.<br>관찰일지 활용 방법을 지도해드렸으며, 프로그램 의견 수렴 및 반영 시의 요령에 대해서도 심화적인 교육을 실시하였습니다.<br>욕창 위험군에 대한 업무와 간호 관련 기록이 매우 우수하게 되어 있었으며, 신규입소자 집중배설관찰에 대해 점검해드렸습니다. <br>신설지표인 식사 반영 및 체중 관리 등은 시스템을 활용하여 작성하고 계셨으며, 파악이 잘 되어 있었습니다.<br>교육 시 참여도와 집중도가 매우 높고 열정이 돋보이는 기관으로, 이번 평가 결과와 추후의 발전이 더욱 기대되는 기관입니다.</p>
+	                                        <span class="date">2025-11-05</span>
+	                                        <a href="javascript:goDetail('visit','221044','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250919133626_visit_3_부산광역시노인건강센터_some.jpg" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>부산 부산광역시노인건강센터</strong>
+	                                        <p>2025년 9월 17일 엔젤시스템 사용시설인 부산 사상 소재 부산광역시노인건강센터와 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 시설장님을 필두로 복지팀, 간호팀, 재활팀, 요양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 매우 높았습니다.<br>입소시의 업무에 대한 파악이 잘 되어있었으며, 급여제공계획서 수립 시기와 욕구사정이 반영되어야하는 점을 강조하여 심화 지도하였습니다.<br>주기적인 사례회의 및 상담 실시를 통해 어르신의 변화에 대응하고 계셨으며, 급여 반영 시 중요한 부분을 교육해드렸습니다.<br>상담일지를 꼼꼼히 작성하고 내용을 반영하고 계셨으며, 기록지와 목욕 기록 등 일상생활 기록과 관련된 부분을 점검해드렸습니다.<br>관찰일지를 활용하여 어르신의 상태를 세심히 관찰하고 계셨으며, 추가적으로 인지관리지원 활용을 심화 안내해드렸습니다.<br>욕창 발생자를 효율적으로 관리하기 위한 시스템 활용 방법과 간호처치 기록 및 투약 기록 등 간호파트를 심화 지도해드렸습니다.<br>어르신들을 위한 다양한 프로그램을 월 단위로 계획하여 운영하고 계셨으며, 프로그램 의견수렴 및 반영 작성 요령을 교육해드렸습니다.<br>신설지표인 식사 반영 및 체중 관리 등을 시스템 기능과 함께 추가적으로 지도해드렸으며, 지표의 내용을 한 번 더 점검하였습니다.<br>다양한 질의를 하시는 등 교육 시 참여도와 집중도가 매우 높고 열정이 돋보이는 기관으로, 추후의 발전이 더욱 기대되는 기관입니다.</p>
+	                                        <span class="date">2025-09-19</span>
+	                                        <a href="javascript:goDetail('visit','220784','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250915171439_visit_3_김해골든케어요양원_some.png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>경남 김해골든케어요양원</strong>
+	                                        <p>2025년 9월 12일 엔젤시스템 사용시설인 경남 김해 소재 김해골든케어요양원과 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 시설장님을 필두로 국장님, 복지팀, 간호팀, 재활팀, 요양팀, 영양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 높았습니다.<br>전체적인 업무흐름의 파악이 매우 잘 되어있었으며 입소 시의 업무와 급여제공평가의 인과관계에 대한 이해도도 매우 높았습니다.<br>주기적인 사례회의를 통해 수급자의 변화에 대응하기 위해 노력하며, 특히 사례회의 후 문제 해결을 위한 반영이 매우 우수하게 실시되고 있었습니다.<br>수급자의 행동을 세심히 관찰하여 인지관리지원을 실시하고 계셨으며, 목욕 및 배변 관리 등 일상생활과 관련된 기록 및 관리도 우수하게 실시하고 계셨습니다.<br>간호파트의 기록도 매우 잘 실시하고 계셨으며, 의료기관 이용에 대한 기록을 상세히 실시하여 어르신의 건강 상태를 관리해주고 계셨습니다.<br>어르신들을 위한 다양한 프로그램을 실시하고 계셨으며, 프로그램 의견수렴 및 반영의 효율적인 기록 관리에 대하여 추가적으로 안내해드렸습니다.<br>수급자의 상태를 급여제공계획서에 즉각 반영하고, 보호자의 의견을 상담일지 등으로 상세히 기록하시는 등 전체적인 시스템 활용도와 업무 이해도가 높은 기관이었습니다.<br>평가지표에 대한 숙지가 매우 잘되어있으셨으며, 교육 시 심화적인 질의를 하시는 등 업무에 대한 열정이 돋보였습니다.<br>2025년 신설 지표에 대한 파악 역시 매우 잘되어있고, 시스템 활용 및 기록이 매우 잘되어있어 2025년 평가 결과가 기대되는 기관입니다.</p>
+	                                        <span class="date">2025-09-15</span>
+	                                        <a href="javascript:goDetail('visit','220744','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250901114941_visit_3_고성군치매전문요양원_some.png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>경남 고성군치매전문요양원</strong>
+	                                        <p>2025년 8월 29일 엔젤시스템 사용시설인 경남 고성 소재 고성군치매전문요양원과 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 2023년에 신설된 기관으로, 국장님을 필두로 복지팀, 간호팀, 재활팀, 영양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 매우 높았습니다.<br>입소 시 어르신 상태에 맞는 급여제공계획서를 수립하고 계셨으며, 급여제공계획서 수립 시 욕구사정이 반영되어야함과 작성 요령을 심화 지도하였습니다.<br>주기적인 사례회의 및 상담 실시를 통해 어르신의 변화에 대응해야함과 급여 반영 시의 시스템 활용 방법을 안내해드렸습니다.<br>기록지와 목욕 기록 등 일상생활 기록과 관련된 부분을 점검해드렸으며, 관찰일지 활용을 심화적으로 안내해드렸습니다.<br>욕창 발생자를 효율적으로 관리하기 위한 시스템 활용 방법과 간호처치 기록 및 투약 기록 등 간호파트를 심화 지도해드렸습니다.<br>어르신들을 위한 다양한 프로그램을 월 단위로 계획하여 운영하고 계셨으며, 프로그램 의견수렴 및 반영 작성 요령을 교육해드렸습니다.<br>신설지표인 식사 반영 및 체중 관리 등을 시스템 기능과 함께 추가적으로 지도해드렸으며, 연계기록지 작성의 기준을 안내해드렸습니다.<br>욕구사정과 급여제공계획서 등의 서술형 내용은 각 영역별로 충실하게 작성하고 계셨습니다.<br>다양한 질의를 하시는 등 교육 시 참여도와 집중도가 매우 높고 열정이 돋보이는 기관으로, 추후의 발전이 더욱 기대되는 기관입니다.</p>
+	                                        <span class="date">2025-09-01</span>
+	                                        <a href="javascript:goDetail('visit','220624','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250826172815_visit_3_참실버케어센터(썸).png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>경기 참실버케어센터</strong>
+	                                        <p>2025년 8월 25일 엔젤시스템 사용시설인 경기 남양주 소재 참실버케어센터와 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다. 위 기관은 원장님을 필두로 국장님, 복지팀, 간호팀, 재활팀, 요양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 높았습니다. 급여제공계획 수립 및 급여제공평가에 대한 업무 파악이 잘 되어 있으셨으며, 급여제공계획서 세부제공내용의 개별화 및 구체화에 대해 지도해드렸습니다.<br>정기적인 사례회의 및 상담을 통해 수급자의 상태 변화와 욕구에 즉시 대응하기 위해 노력하고 있으며, 반영사항이 있을 시 반영 사항을 구체적으로 작성하시도록 안내해드렸습니다.<br>특히 일상생활 기록에 대한 관리가 잘 되어있었으며, 관찰일지 활용 방법과 이동도움 및 의사소통도움의 정의에 대해 지도해드렸습니다.<br>간호파트 중 욕창 위험이 있는 수급자에게 제공되어야 할 서비스와 기록이 잘 이루어지고 있었으며, 어르신들을 위한 다양한 프로그램을 실시하고 계셨습니다.<br>그룹별 의견수렴 작성 및 요령과 반영 시 중요한 사항에 대하여 점검해드렸으며 재활파트 작성 시 개별화와 퇴소 업무 시 주요 점검사항을 함께 심화 지도 해드렸습니다.<br>식사, 관절구축, 체중 등의 신설 지표에 대한 파악이 잘 되어 있었으며 기록하는 요령에 대해 지도해드렸습니다.<br>교육 시 다양한 질의를 하시며 업무 보완에 대한 의지가 높으셨으며 교육에 열정적으로 임하셨습니다.<br>교육 시 점검사항에 대한 이해도 또한 높은 것으로 보아 추후의 성장과 발전이 더욱 기대되는 기관이었습니다.</p>
+	                                        <span class="date">2025-08-26</span>
+	                                        <a href="javascript:goDetail('visit','220524','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250819154206_visit_3_신망애치매전문요양원_some.png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>부산 신망애치매전문요양원</strong>
+	                                        <p>2025년 8월 18일 엔젤시스템 사용시설인 부산 금정 소재 신망애치매전문요양원과 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 국장님을 필두로 복지팀, 간호팀, 재활팀, 요양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 매우 높았습니다.<br>전체적인 업무흐름의 파악이 잘 되어있었으며 수급자 목표 중심의 급여제공계획 수립 및 급여제공평가 실시가 우수하게 이루어지고 있었습니다.<br>주기적인 사례회의를 통해 수급자의 변화에 대응하기 위해 노력하며, 상담 실시 후 반영을 위해 노력하고 계셨습니다.<br>기록지와 목욕 기록 등 일상생활 기록과 관련된 부분을 점검해드렸으며, 관찰일지 활용을 심화적으로 안내해드렸습니다.<br>욕창 위험 수급자에게 이루어져야하는 서비스를 파악 및 실시해주고 계셨으며, 간호처치 기록 및 투약 기록 등 간호파트를 심화 지도해드렸습니다.<br>어르신들을 위한 다양한 프로그램을 운영하고 계셨으며, 프로그램 의견수렴 및 반영의 효율적인 기록 관리에 대하여 추가적으로 안내해드렸습니다.<br>신설지표인 식사 반영 및 체중 관리와 관절구축 예방 등에 대해서도 파악하고 계셨으며, 시스템 기능과 함께 추가적으로 지도해드렸습니다.<br>욕구사정과 급여제공계획서 종합의견 작성 시 각 영역별 의견을 상세히 작성하셨으며, 퇴소 시에도 이용종료 상담을 꼼꼼히 실시하고 계셨습니다.<br>교육에 적극적으로 참여하시고 교육 종료 후 심화적인 질의를 하시는 등 업무에 대한 열정이 돋보여, 추후의 발전과 2025년 평가 결과가 기대되는 기관입니다.</p>
+	                                        <span class="date">2025-08-19</span>
+	                                        <a href="javascript:goDetail('visit','220424','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250813161018_visit_3_하나실버케어(썸).png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>인천 하나실버케어</strong>
+	                                        <p>2025년 8월 12일 엔젤시스템 사용시설인 인천 부평 소재 하나실버케어와 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 시설장님을 필두로 국장님, 복지팀, 간호팀, 재활팀, 영양팀의 담당자가 참석하였으며, 다양한 질의 등 교육에 대한 참여도와 집중도가 높았습니다.<br>업무 흐름에 대한 전반적인 이해를 지도해드렸으며, 특히 급여제공계획서의 작성 시 세부제공내용의 개별화에 대해 안내해드렸습니다.<br>다양한 문제가 있는 수급자를 대상으로 선정하여 실시하는 사례회의 작성 요령과 급여 반영 시 시스템 활용 방법을 지도해드렸습니다.<br>일상생활과 관련된 기록지에 대하여 지도해드렸으며, 특히 인지관리지원의 중요성과 관찰일지 활용 방법에 대해 안내해드렸습니다.<br>간호팀에서는 수급자의 건강 상태에 대해 세심하게 관찰 및 관리하고 계셨으며, 욕창 위험 대상자에게 시행되어야 하는 서비스에 대해 추가적으로 안내해드렸습니다.<br>수급자 퇴소 시 연계기록지를 충실하게 기재하셨으며, 급여 반영이 중요한 항목에 대해서 보완 지도해드렸습니다.<br>교육 시 다양한 질의를 하시며 업무 보완에 대한 의지가 높으셨으며 교육에 열정적으로 임하셨습니다.<br>교육 시 점검사항에 대한 이해도 또한 높은 것으로 보아 추후의 성장과 발전이 더욱 기대되는 기관이었습니다.</p>
+	                                        <span class="date">2025-08-13</span>
+	                                        <a href="javascript:goDetail('visit','220385','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250729103831_visit_3_거창노인전문요양원_some.png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>경남 거창노인전문요양원</strong>
+	                                        <p>2025년 7월 28일 엔젤시스템 사용시설인 경남 거창 소재 거창노인전문요양원과 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 시설장님을 필두로 국장님, 복지팀, 간호팀, 재활팀, 영양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 높았습니다.<br>전체적인 업무흐름의 파악이 매우 잘 되어있었으며 욕구사정을 반영한 급여제공계획 수립과 급여제공평가 실시가 매우 우수하게 되어있었습니다.<br>주기적인 사례회의를 통해 수급자의 변화에 대응하기 위해 노력하며, 특히 사례회의 후 문제 해결을 위한 반영을 매우 구체적으로 실시해주고 계셨습니다.<br>관찰일지와 목욕 기록 등 일상생활과 관련된 기록 및 관리가 우수하게 실시되고 있었으며, 체중과 식사 등 신설된 지표와 관련된 업무 파악도 잘 되어있었습니다.<br>욕창 위험 수급자에게 이루어져야하는 서비스를 파악 및 실시해주고 계셨으며, 간호처치 기록 및 투약 기록 등 간호파트를 심화 지도해드렸습니다.<br>어르신들을 위한 다양한 프로그램을 실시하고 계셨으며, 프로그램 의견수렴 및 반영의 효율적인 기록 관리에 대하여 심화 지도해드렸습니다.<br>퇴소 시에도 이용종료 상담을 진행하시는 등 상담일지를 꼼꼼히 반영하며 수급자 및 보호자의 의견 반영을 위해 노력하고 계셨으며, 특히 종합의견, 회의록 등 서술형 기록을 매우 충실히 해주고 계셨습니다. <br>교육 종료 후 심화적인 질의를 하시는 등 업무에 대한 열정이 돋보였으며, 신설 지표에 대한 파악 역시 매우 잘되어있어 추후의 발전과 2025년 평가 결과가 기대되는 기관입니다.</p>
+	                                        <span class="date">2025-07-29</span>
+	                                        <a href="javascript:goDetail('visit','220144','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+                                	<div class="swiper-slide">
+										
+											
+												
+											
+											
+										
+	                                    <div class="img_wrap"><img src="/download.do?dwnFile=20250723160941_visit_3_효도로 노인전문요양원_some.png" alt="배너이미지"></div>
+	                                    <div class="txt">
+	                                        <strong>서울 효도로 노인전문요양원</strong>
+	                                        <p>2025년 7월 18일 엔젤시스템 사용시설인 서울 구로 소재 효도로 노인전문요양원과 대학교 원격수업 방식으로 노인요양원 각 파트별 담당자의 업무 수행에 대하여 원격 직무 심화 교육을 진행하였습니다.<br>위 기관은 시설장님을 필두로 복지팀, 간호팀, 재활팀, 요양팀의 각 담당자가 참석하였으며, 교육에 대한 참여도와 집중도가 높았습니다.<br>전체적인 업무흐름의 파악이 매우 잘 되어있었으며 욕구사정을 반영하여 개별화된 급여제공계획 수립과 급여제공평가에 대한 이해도가 높았습니다.<br>특히 어르신의 상태를 반영한 총평과 종합의견 등의 서술형 기록이 매우 잘 되어있는 기관이었습니다.<br>주기적이고 전문적인 사례회의를 통해 수급자의 변화에 대응하기 위해 노력하며, 질높은 사례회의를 위한 질의를 하시는 등 적극적으로 교육에 임하셨습니다.<br>인지관리지원을 위한 관찰일지의 활용 방법과 목욕 및 배변 관리 등 일상생활과 관련된 기록에 대한 점검을 실시해드렸습니다.<br>간호파트의 기록도 매우 잘 실시하고 계셨으며, 특히 욕창 위험 수급자에게 이루어져야하는 서비스와 의료기관 이용에 대한 기록을 상세히 실시하여 어르신의 건강 상태를 관리해주고 계셨습니다.<br>어르신의 상태를 반영한 물리치료 계획을 수립하고 계셨으며, 계획에 맞게 시행이 이루어지도록 강조해드렸습니다.<br>어르신들을 위한 다양한 프로그램을 실시하고 계셨으며, 의견수렴 및 반영의 효율적인 기록 관리에 대하여 심화 지도해드렸습니다.<br>신설지표에 대해서 파악하고 계셨으며, 이와 관련된 시스템 활용 방법과 함께 심화 지도해드렸습니다.<br>기관의 직원 모두가 교육에 적극적으로 임하시며, 업무에 대한 열정이 돋보여 추후의 발전과 함께 2025년의 평가 결과가 기대되는 기관이었습니다.</p>
+	                                        <span class="date">2025-07-23</span>
+	                                        <a href="javascript:goDetail('visit','220084','1','0');" class="view_more"><span class="blind">더 보기</span></a>
+	                                    </div>
+	                                </div>
+								
+							</div>
+                        </div>
+                        <div class="swiper-button">
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="news row_section">
+                <div class="section_inner">
+                    <h2>엔젤뉴스</h2>
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper" style="height: auto;">
+                        	
+	                            <div class="swiper-slide"> 
+	                                <div class="img_wrap">
+	                                    <img src="/download.do?dwnFile=20260526135220_angelnews_1_some_260526.png" alt="배너이미지">
+	                                </div>
+	                                <strong style="cursor: pointer;" onclick="javascript:goDetail('news','221553','1','0');">엔젤시스템 활용교육 (제136차, 엔젤시스템 스튜디오, 2026.05.21.)</strong>
+	                            </div>
+                        	
+	                            <div class="swiper-slide"> 
+	                                <div class="img_wrap">
+	                                    <img src="/download.do?dwnFile=20260427110943_angelnews_1_활용교육260423.png" alt="배너이미지">
+	                                </div>
+	                                <strong style="cursor: pointer;" onclick="javascript:goDetail('news','221541','1','0');">엔젤시스템 활용교육 (제135차, 엔젤시스템 스튜디오, 2026.04.23.)</strong>
+	                            </div>
+                        	
+	                            <div class="swiper-slide"> 
+	                                <div class="img_wrap">
+	                                    <img src="/download.do?dwnFile=20260330094155_angelnews_1_활용교육260326.png" alt="배너이미지">
+	                                </div>
+	                                <strong style="cursor: pointer;" onclick="javascript:goDetail('news','221532','1','0');">엔젤시스템 활용교육 (제134차, 엔젤시스템 스튜디오, 2026.03.26.)</strong>
+	                            </div>
+                        	
+	                            <div class="swiper-slide"> 
+	                                <div class="img_wrap">
+	                                    <img src="/download.do?dwnFile=20260227160720_angelnews_1_활용교육133차.png" alt="배너이미지">
+	                                </div>
+	                                <strong style="cursor: pointer;" onclick="javascript:goDetail('news','221523','1','0');">엔젤시스템 활용교육 (제133차, 엔젤시스템 스튜디오, 2026.02.26.)</strong>
+	                            </div>
+                        	
+	                            <div class="swiper-slide"> 
+	                                <div class="img_wrap">
+	                                    <img src="/download.do?dwnFile=20260203115033_angelnews_1_활용교육132차.png" alt="배너이미지">
+	                                </div>
+	                                <strong style="cursor: pointer;" onclick="javascript:goDetail('news','221511','1','0');">엔젤시스템 활용교육 (제132차, 엔젤시스템 스튜디오, 2026.01.29.)</strong>
+	                            </div>
+                        	
+	                            <div class="swiper-slide"> 
+	                                <div class="img_wrap">
+	                                    <img src="/download.do?dwnFile=20251124143455_angelnews_1_some.png" alt="배너이미지">
+	                                </div>
+	                                <strong style="cursor: pointer;" onclick="javascript:goDetail('news','221164','1','0');">엔젤시스템 활용교육 (제131차, 엔젤시스템 스튜디오, 2025.11.20.)</strong>
+	                            </div>
+                        	
+                        </div>
+                    </div>
+                    <div class="swiper-button">
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                    <a href="/silverangel/publicize/angel_news_list.do" class="view_more"><span class="blind">더 보기</span></a>
+                </div>
+            </section>
+            <section class="multi row_section">
+                <div class="section_inner">
+                    <div class="reference">
+                        <h2>자료실</h2>
+                        <ul>
+                        	
+	                            <li>
+	                                <a href="javascript:goDetail('download','221537','1','0');" style="height: auto;">
+	                                    <p>노인요양시설 등 장기요양기관 종사자 대상 감염관리 교육 및 홍보자료 안내</p>
+	                                    <span class="date">2026-04-03</span>
+	                                </a>
+	                            </li>
+                        	
+	                            <li>
+	                                <a href="javascript:goDetail('download','221529','1','0');" style="height: auto;">
+	                                    <p>2026년 노인보건복지 사업안내</p>
+	                                    <span class="date">2026-03-20</span>
+	                                </a>
+	                            </li>
+                        	
+	                            <li>
+	                                <a href="javascript:goDetail('download','221518','1','0');" style="height: auto;">
+	                                    <p>2026년 평가대비 「면담 질문 예시」(재가급여)</p>
+	                                    <span class="date">2026-02-13</span>
+	                                </a>
+	                            </li>
+                        	
+	                            <li>
+	                                <a href="javascript:goDetail('download','221488','1','0');" style="height: auto;">
+	                                    <p>장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시・세부사항 개정</p>
+	                                    <span class="date">2026-01-05</span>
+	                                </a>
+	                            </li>
+                        	
+                        </ul>
+                        <a href="/silverangel/support/download/list.do" class="view_more"><span class="blind">더 보기</span></a>
+                    </div>
+                    <div class="banner">
+                        <iframe width="100%" height="331" src="https://www.youtube.com/embed/vsPs1Xtvzh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+	
+
+<script type="text/javascript">
+
+//엔젤아이
+function angelChatBot(){
+
+	var myWindow = window.open('','title', 'width=450, height=720, menubar=no, status=no, toolbar=no');
+	if("" != ""){
+		myWindow.location.href = 'http://gnew-office.tplinkdns.com:48081/chatbot/angel-system?login=y';
+	}else{
+		myWindow.location.href = 'http://gnew-office.tplinkdns.com:48081/chatbot/angel-system?login=n';
+	}
+}
+
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFHQQNPD3E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BFHQQNPD3E');
+</script>
+<footer class="footer">
+    <div class="link">
+        <div class="inner" style="max-width: 1330px;">
+            <a href="/download.do?dwnFile=20240822 엔젤시스템 e-카달로그.pdf" download>e-카달로그</a>
+            
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf" download>평가지표(주야간)</a>
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator.pdf" download>평가지표(시설)</a>
+            <a href="/download.do?dwnFile=LongTermCare_Appraisal_Indicator(gong).pdf" download>평가지표(9인)</a>
+            <a href="/silverangel/publicize/partner.do">파트너</a>
+            <a href="/silverangel/companyinfo/map.do">오시는 길</a>
+            <a href="https://helpu.kr/uniforce/" target="_new">원격지원</a>
+            <a href="https://www.law.go.kr/%ED%96%89%EC%A0%95%EA%B7%9C%EC%B9%99/%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91%EA%B8%89%EC%97%AC%20%EC%A0%9C%EA%B3%B5%EA%B8%B0%EC%A4%80%20%EB%B0%8F%20%EA%B8%89%EC%97%AC%EB%B9%84%EC%9A%A9%20%EC%82%B0%EC%A0%95%EB%B0%A9%EB%B2%95%20%EB%93%B1%EC%97%90%20%EA%B4%80%ED%95%9C%20%EA%B3%A0%EC%8B%9C" target="_new">장기요양급여 고시</a>
+            <a href="/silverangel/companyinfo/termsUse.do">이용약관</a>
+            <a href="/silverangel/companyinfo/sms_service.do">문자서비스 이용약관</a>
+            <a href="/silverangel/companyinfo/privacyPolicy.do" class="privacy">개인정보처리방침</a>
+            
+	            
+	            
+	            	<a href="/silverangel/cprtvCmpny/cprtvCmpnyLogin.do" onclick="window.open(this.href, '_blank', 'width=480, height=300'); return false;">협력업체</a>
+	            
+            
+
+        </div>
+    </div>
+    <div class="copy">
+        <div class="inner">
+	        <!-- <img src="https://yeorcqadlpopsmgaoudu.supabase.co/storage/v1/object/public/certification/mark/7600bc36-d377-4a22-a581-a0f9e20a3a67/37986dad-1bfc-47fa-8d1b-ac8449f85505-2025-09-18T02:54:30.456Z" style="cursor: pointer; width: 85px; height: 75px; margin-right: 15px;" onclick="(function(){window.open('https://cleanspam.or.kr/ci/852','_blank','width=800, height=1151, toolbar=no, menubar=no, scrollbars=no, resizable=no')})()" /> -->
+            <a href=""><span class="blind">주식회사 엔젤시스템</span></a>
+            <address>인천광역시 부평구 부평대로 293, 717호 (청천동, 부평테크시티) 전화 : 032-277-9797 이메일 : angelpost@naver.com<br>
+            대표자 : 정성훈 사업자번호 : 122-86-14661 통신판매면허번호 : 제 2011-인천부평-00326호 <br>
+                COPYRIGHTⓒ 2011 엔젤시스템. ALL RIGHTS RESERVED.</address>
+        </div>
+    </div>
+
+	<div class="floating">
+		
+<!-- 		<a href="/silverangel/support/edu_apply/write.do">도입문의</a>
+		<a onclick="angelChatBot();" style = "cursor: pointer;">엔젤아이</a>
+		<a href="https://www.silverangel.co.kr/">엔젤<br>쇼핑몰</a> -->
+
+		<a href="https://www.lcms.or.kr/" target="_blank" style="background: #5896f0;"><img src="/newSilverangel/images/angel_introduction_lcms.png"></a>
+		<a href="/silverangel/support/edu_apply/write.do"><img src="/newSilverangel/images/angel_introduction.png"></a>
+
+		<a href="https://www.silverangel.co.kr/"><img src="/newSilverangel/images/angel_shop.png"></a>
+
+	</div>
+</footer>
+
+<script src="/newSilverangel/js/swiper.js"></script>
+<script src="/newSilverangel/js/common.js"></script>
+
+
+</html>
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$("#mainView").css("display","block");
+	
+    if( getCookiee( "appLayer6" ) != "done6"){
+
+        $('#appLayer6').css("display", "inline");
+    }
+// 	 apPOP();
+});
+
+</script>

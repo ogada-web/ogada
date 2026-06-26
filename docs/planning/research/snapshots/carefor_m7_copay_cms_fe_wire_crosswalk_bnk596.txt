@@ -1,0 +1,70 @@
+BNK-596 (2026-06-24) — 케어포 역공학 0–2h
+케어포 func.php 7-4 CMS ↔ ogada CmsPage FE catalog panel wire crosswalk
+===========================================================================
+
+[ogada git 실측 @HEAD]
+- FE develop @4875937 (WT CLEAN) — BNK-595 @64a7648 HEAD +1
+  commit: feat(v1.2.1/G2b): wire CMS payment-method-catalog panel and fix US-O05 live E2E
+  author: jwj3400 / 2026-06-24 20:11:46 +0000
+  ahead 221 vs origin/test=ab4de83 (BNK-595 220, +1)
+- BE develop @2eaf17e (WT CLEAN) — BNK-595 동일 SHA · HEAD zero advance 1-cycle
+  ahead 554 vs origin/test=598d108 (carry)
+- merge gate 774 → 775 (+1)
+- 112 Route(111 <Route\b + 1 <Routes>) · 91 page(90+RootRedirect) · V1–V175
+- BE Test 259 file / 1885 @Test (carry) · FE test 468(193 js + 275 jsx, +1 jsx)
+- 모듈 79.66%(23.10/29 · id=7-4 0.65) carry
+
+[★★★ G2b FE CMS payment-method-catalog panel wire — "FE wire 잔여" closure]
+BNK-595는 "FE payment-method-catalog grep 0 = UI wire 잔여"로 기록.
+이번 cycle FE @4875937 이 panel을 wire — grep 7 source file:
+  - src/api/services.js                (fetchCmsPaymentMethodCatalogApi +5L)
+  - src/api/settingsServices.test.js   (+21L)
+  - src/components/ui/CmsPaymentMethodCatalogPanel.jsx     (NEW 150L)
+  - src/components/ui/CmsPaymentMethodCatalogPanel.test.jsx(NEW 89L)
+  - src/components/ui/index.js         (export +1)
+  - src/pages/CmsPage.jsx              (<CmsPaymentMethodCatalogPanel/> L314)
+  - src/pages/CmsPage.test.jsx         (+17L)
+8 files · +292/-1
+
+CmsPaymentMethodCatalogPanel.jsx 동작:
+  - GET /billing/cms/payment-method-catalog (fetchCmsPaymentMethodCatalogApi)
+  - Table 컬럼: 결제수단 | 수수료 | ogada 화면(Link) | 수납 구현(StatusBadge 구현됨/미구현)
+  - Alert: "수납 구현 {implementedCount}/{totalCount} · 미구현 {n}종(가상계좌·다계좌 정산)"
+  - CMS_ROUTE_LABELS: /billing/cms=CMS 자동이체 · /billing/easy-pay=간편결제 · /billing/cash-receipts=현금영수증
+  - CmsPage.jsx L301: "보호자 CMS 자동이체 등록·출금을 관리합니다 (US-L03, 케어포 7-4)"
+
+[★★★ 케어포 func.php 7-4 ↔ 엔젤 extraService 5-method ↔ ogada catalog crosswalk]
+| 결제수단(엔젤 정본)   | 수수료(효성CMS)  | ogada Route          | collectionImplemented |
+|----------------------|------------------|----------------------|-----------------------|
+| ①자동이체(CMS)       | 250원/건·월3만   | /billing/cms         | ✅                    |
+| ②가상계좌            | 300원/건         | (—)                  | ❌ (2-method 갭)      |
+| ③카드                | —                | /billing/easy-pay    | ✅                    |
+| ④다계좌 정산         | —                | (—)                  | ❌ (2-method 갭)      |
+| ⑤현금영수증          | 1600-6859 대행   | /billing/cash-receipts| ✅                   |
+→ collectionImplementedCount = 3/5 (BE @2eaf17e CmsPaymentMethodCatalog.SILVERANGEL_PARITY_ENTRIES)
+→ 케어포 func.php 7-4 = CMS 자동이체 단일 명단(7-x lifecycle 1 leaf)
+→ ogada는 엔젤 5-method 정본을 catalog로 표시 + 3종 backend 수납 구현(케어포·이지케어 상위 표시 레이어 우위)
+
+[★★ module id=7-4 coverage 0.65(△) carry — FE wire ≠ KPI bump]
+- competitorModuleCoverage.js id=7-4 "CMS·간편결제" coverage=0.65 불변(@4875937 grep 확인)
+- FE catalog display parity + branch roster(loadEnrollments branchId+status) 모두 LIVE
+- 0.65 잔여 사유: ②가상계좌·④다계좌정산 2-method 수납 backend ❌ (collection 3/5)
+- KPI 0.65→상향은 coder/planner 판단:
+  · 2-method collection 구현(가상계좌·다계좌) → 0.65→1.0 후보, 또는
+  · 카탈로그 표시+roster parity 반영해 부분 상향(예 0.8) 재산정 검토
+- BNK 산출물은 src 미변경 — KPI carry 보고
+
+[★★ carefor func.php Wayback 364차 zero drift IDENTICAL]
+- https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php
+  HTTP 200 · 98,328B · md5 6226e6eb92fdd25ed3e50842a5e8a00b
+  = on-disk carefor_func_wayback_live_bnk573.html IDENTICAL (zero drift · 덮어쓰기 0)
+- carefor LIVE direct https://www.carefor.co.kr/daycare/func.php
+  HTTP 000 · 20s timeout → 접근성만 27-cycle 「미확인」(BNK-558~596)·내용 Wayback 보강
+
+[planner 권고]
+1. ★★★ G2b FE catalog panel wire 완료(@4875937) — BNK-592/594/595 "FE wire 잔여" closure.
+   엔젤 5-method 정본이 ogada CMS 화면에 표시(3/5 수납 구현 badge) — 차별화 표시 레이어 LIVE.
+2. ★★ id=7-4 0.65→상향은 ②가상계좌·④다계좌정산 2-method 수납 구현이 핵심 잔여(coder 후보).
+   또는 catalog+roster parity 반영해 coverage 재산정 검토(planner+coder).
+3. ★ 케어포 func.php 364차 zero drift carry · LIVE 000 27-cycle 미확인 carry.
+4. tester FF merge 775 가속 권장(FE 221+BE 554·양쪽 WT CLEAN).

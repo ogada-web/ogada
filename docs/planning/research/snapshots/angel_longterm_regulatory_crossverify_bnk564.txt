@@ -1,0 +1,57 @@
+# BNK-564 엔젤·롱텀·규제 4–6h 교차검증 extract
+# doc:owner=BNK doc:audience=PLN updated=2026-06-23T23:30:00Z
+# ogada @HEAD FE `87da06d` / BE `f600fd6` (BE WT DIRTY 1M application.yml)
+
+## 1. ogada git 실측 (343차)
+- FE `87da06d` test(v1.3-C/G16): wire transport service fees into pilot harness — WT CLEAN — BNK-563 `@bc6180e` HEAD +1 — ahead 200
+- BE `f600fd6` carry — WT DIRTY `src/main/resources/application.yml` — ahead 537
+- merge gate **737** (FE200+BE537 · +1 vs BNK-563 736)
+- Route **112** (111 `<Route\b` + 1 `<Routes>`) · page **91** · report 23/111=20.7% · V1–V175
+- BE Test.java **252** · @Test **1,840** carry · FE test **465** (192+273 · +0 file · harness assertions in existing 4 files)
+- 모듈 **78.79%** carry
+
+## 2. NHIS #44 이동서비스비 — 343차 zero drift (확인)
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · 7,572B · md5 `c886ff1f` IDENTICAL (343차)
+- 인용: ② 「편도만 이용한 경우 … ‘러-1’부터 ‘러-4’까지 비용의 50%」·④ 「이동서비스 일지」
+- ogada: `a531ed6` parity copy + `87da06d` pilot harness G16 checklist/route assertions → **#44 3-layer closure** (BE rule · FE panel · test harness)
+
+## 3. 엔젤 silverangel — 6-URL 343차 zero drift + 공지 221562 신규 (확인)
+| URL | md5 | SIZE | 판정 |
+| essential daycareEssentialWork | `c79c1be3` | 131,664B | zero drift |
+| extraService CMS 5-method | `f9c5d877` | 81,637B | zero drift · 자동이체 250원·가상계좌 300원 |
+| system_feature | `c9507190` | 45,601B | zero drift · 반기 보호자회의·전자서명 |
+| lcms root type1 | `c0c66076` | 50,740B | zero drift |
+| **notice list (신규)** | `52c9457f` | 3,594,181B | **신규 evidence** |
+
+### §3-1 평가지표 #27·이동서비스 41–42 (essential 정적 수칙)
+- **#27 가족과의 소통**: 「보호자 회의 … 반기별 1회 이상」·월간 프로그램/식단표/소식 월 1회 → 모듈: 보호자회의·굽은나무·가정통신문·프로그램계획·식단표
+- **#41 이동서비스 수칙(기)**: 운전자 자격·동승자·차량안전·사고조치·차량운행표 + 계약서 포함·일지 예시
+- **#42 이동서비스(수)**: 직원 동승·시간 준수
+- ogada 대비: G15 `TransportServiceLog` 실데이터 일지 + NHIS #44 fee rule = **정적 수칙 대비 operational 우위** · 수칙 문서 템플릿·계약서 embed = **△ P3 carry**
+
+### §3-2 공지 221562 발신번호 본인인증 마감 (신규 evidence)
+- URL: https://www.silverangel.kr/silverangel/support/notice/list.do (list embed) · view `noticeSeq=221562` shell only(본문 empty·JS loginChkAjax)
+- 인용: 「2026년 6월 23일 화요일 **17:00까지** 반드시 본인인증」·「삭제 예정일 : 2026년 6월 23일 화요일 **18:00**」·「부가서비스 - **문자발신번호관리**」
+- ezCare cross-walk: `mobile-returnNumber` in-app KCP 인증 UI (BNK-527) · ogada: SOLAPI 외부 분리·in-app UI ❌ 의도적
+- planner: G-COMM-CALLER-AUTH P3「가정」**deadline 실측 확정 2026-06-23 17:00/18:00 KST**
+
+## 4. 롱텀 2026 수가·통합재가 (확인)
+| URL | md5 | SIZE | 판정 |
+| longterm 502 canonical | `b5aee8c1` | 105,552B | **canonical stable** · 단기보호 1등급 **74,060** verbatim |
+| longterm 610 | `0ea575be` | 91,421B | **oscillation −9B** vs BNK-560 `8d53dcc1`(91,430B) · strip-s16 pattern carry |
+- 610 인용: 「2종 이상의 급여」·「주·야간보호형: … 월 **10만원** 지급」
+
+## 5. 규제 DRIFT (verbatim 불변 · 덮어쓰기 2건)
+| URL | prior md5 | live md5 | delta |
+| law247 제2025-247호 | `4339da94` | `336950e6` | cachebuster `?Time=1782247357`→`1782257554` |
+| MOHW 2026-126 | `3f2fc5ac` | `64b7bf40` | 조회수 **2,512→2,519**(+7) · 고시 제2026-126호 본문 불변 |
+
+## 6. planner 액션
+1. **P1 carry**: NHIS #44 3-layer (BE+FE+harness) — REQUIREMENTS G16 정본화 문구 고정
+2. **P3 deepen**: G-GUARDIAN-MEETING ← essential #27 + system_feature verbatim
+3. **P3 carry**: G-TRANSPORT-RULES-DOC ← essential #41–42 수칙·계약서 embed
+4. **P3 carry**: G-COMM-CALLER-AUTH ← silverangel 221562 마감 실측 vs ogada SOLAPI 외부 분리 우위 카피
+5. **MVP out-of-scope carry**: 통합재가 610 결합 모델·단기보호 502 수가
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1(FE+1) · 미확인 0 · 신규 snapshot 2건 · 덮어쓰기 2건

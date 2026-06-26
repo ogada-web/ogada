@@ -1,0 +1,147 @@
+BNK-632 — 교차검증·갭 우선순위 8h+ (2026-06-25T18:55Z·KST 익일 03:55)
+==============================================================================
+rotation: 교차검증·갭 우선순위 8h+ (G14·대시보드·v1.3-C·v2 CMS 4축+leave-ledger
+재확인 · BE WT DIRTY caution · 백본 5-URL 재실측 · silverangel 221564 retraction
+range probe · ezCare plateau day 3 · 신규 경쟁사 공지·엑셀 포맷 변경 스캔)
+
+ogada submodule git HEAD 실측 (BNK-631 → 632)
+------------------------------------------------------------------------------
+FE develop: bd3253ac830bc307679ea169d88c5725ae433ee0  (BNK-631 carry · WT CLEAN)
+  - commit: fix: normalize live operation blockers from probe state
+  - HEAD zero advance 1-cycle vs BNK-631
+  - ahead 242 vs origin/test=ab4de8302b7a53944a9a969090b7ac091691a9dc
+BE develop: 49fe2e7d4631cf8e22e7d8027e1f6883bed7a834  (BNK-631 carry · WT DIRTY 6)
+  - commit: feat(v2/G-REPORT-DENSITY): add branch filter to program reports
+  - HEAD zero advance 2-cycle vs BNK-630/631 (3rd cycle now)
+  - ahead 572 vs origin/test=598d1086d98d765d6f2b53136c00c5b59ae65d95
+merge gate = 242 + 572 = 814 (carry from BNK-631 · zero advance)
+
+★★★ BE WT DIRTY 6-file caution (coder mid-flight · rules §6 push 누락 위험)
+------------------------------------------------------------------------------
+git diff --stat HEAD (BE develop):
+  src/main/java/com/ogada/backend/system/HealthController.java       |  12 ++-
+  src/main/java/com/ogada/backend/system/LiveE2eController.java      |  31 +++---
+  src/main/resources/application.yml                                 |   2 +
+  src/test/java/com/ogada/backend/system/HealthControllerTest.java   | 117 ++++++++++++++++---
+  src/test/.../LiveE2eBootstrapLiveApiRoutingE2eTest.java             |   3 +
+  src/test/java/com/ogada/backend/system/LiveE2eControllerTest.java  | 107 +++++++++++++----
+  6 files changed, 272 insertions(+), 48 deletions(-)
+의미: FE `bd3253a` QA-B95 live-e2e probe-state blocker 정규화에 대응하는 BE
+  expansion(HealthController·LiveE2eController·application.yml + 3-test) 진행 중.
+  **commit 없이 build 종료 시 push 누락 위험** (rules.md §6 Submodule 정책) —
+  coder build 전 develop commit + push 필수.
+
+★★★ 백본 5-URL live=disk md5 zero drift IDENTICAL (392차)
+------------------------------------------------------------------------------
+| md5         | URL                                                                                                  | HTTP | size    | disk file                          | 판정 |
+|-------------|------------------------------------------------------------------------------------------------------|------|---------|------------------------------------|------|
+| c886ff1f... | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | 200  | 7,572   | nhis_jo44_live_bnk584.html         | IDENTICAL 392차 |
+| c79c1be3... | https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do                           | 200  | 131,664 | silverangel_daycareEssentialWork.html | IDENTICAL |
+| f9c5d877... | https://www.silverangel.kr/newSilverangel/service/extraService.do                                   | 200  | 81,637  | silverangel_extraService.html      | IDENTICAL |
+| bcf6df41... | https://www.silverangel.kr/newSilverangel/service/mainService.do                                    | 200  | 59,002  | silverangel_mainService.html       | IDENTICAL |
+| eab352a8... | https://www.silverangel.kr/newSilverangel/service/feeService.do                                     | 200  | 44,513  | silverangel_feeService.html        | IDENTICAL |
+| 6226e6eb... | (carefor func.php canonical, LIVE 41-cycle timeout)                                                  | n/a  | 98,328  | carefor_func.php                   | canonical 보존 |
+
+★★ NHIS #44 제34조 러-1~4 4-tier verbatim ↔ ogada full-stack 우위 392차 carry
+------------------------------------------------------------------------------
+nhis_jo44.html 본문(c886ff1f IDENTICAL):
+  - 「제 34 조 (주 · 야간보호급여 이동서비스비용 등)」
+  - 「최단거리(편도)에 따라 다음과 같다」 — 러-1 ~ 러-4 4구간
+  - 「이용 횟수에 관계없이 1일 1회만 산정」
+  - 「편도만 … 러-1부터 러-4까지 비용의 50%를 산정」
+  - 「수급자가 부담하지 아니한다」
+  - 「이동서비스 일지를 작성하여 보관」 (별지 제22호)
+↔ ogada: TransportServiceFeeService(RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 guard)
+        + TransportServiceLog(V148/V154/V155) + RBAC + FE Panel + UXD-159/163
+        = 경쟁 4종 중 **유일** full-stack(산정·표시·일지·RBAC) — 392-cycle carry.
+
+★★★ silverangel notice 221564 retraction-window D-4 + range probe 「전부 shell」
+------------------------------------------------------------------------------
+공지 명시 게시일: 2026-06-30 → 2026-06-25T18:55Z 기준 **D-4** (BNK-630 D-5 → -1d).
+notice list (https://www.silverangel.kr/silverangel/support/notice/list.do) 재실측:
+  HTTP 200 · size 3,594,181 · md5 52c9457f4e34a7d3c49275e5bf337677
+  → 최신 가시 Tmp_idx=**221551** (BNK-622/623/628/630 동일 carry · 신규 공개 공지 0건)
+notice 221564 view (https://...notice/view.do?pageNo=1&Tmp_idx=221564):
+  HTTP 200 · size 51,765 · md5 442231504d57232b2d155516aa93394a
+  → BNK-630 동일 shell · ~19h 추가 carry · 비공개 지속.
+
+range probe (이번 사이클 신규 evidence — Tmp_idx 221552~221580 사이 7 rowid):
+| Tmp_idx | HTTP | size   | 판정 |
+|---------|------|--------|------|
+| 221552  | 200  | 51,765 | shell `44223150` |
+| 221553  | 200  | 51,765 | shell `44223150` |
+| 221555  | 200  | 51,765 | shell `44223150` |
+| 221560  | 200  | 51,765 | shell `44223150` |
+| 221564  | 200  | 51,765 | shell `44223150` (정식 매핑) |
+| 221570  | 200  | 51,765 | shell `44223150` |
+| 221580  | 200  | 51,765 | shell `44223150` |
+→ entire 221552-221580 range 모두 동일 비공개 shell = **사전 게시 leak 영역 전체
+  retraction 확정**. 221564 외 다른 rowid에 6/30 공지 추가 게시 0건. P3 3종
+  (G-NURSING-MISSED-RECORD-DASHBOARD · G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE ·
+   G-LEGAL-FORM-SIGNATURE-IMAGE) 「6/30 재검증 보류」 status carry.
+
+★★ ezCare 도입·점유율 plateau day 3 — cachebuster DRIFT·counter verbatim 불변
+------------------------------------------------------------------------------
+| URL                                          | HTTP | size    | md5(이번)   | md5(BNK-628) | 핵심 counter                           | 판정 |
+|----------------------------------------------|------|---------|-------------|--------------|----------------------------------------|------|
+| https://ezcare.easyms.co.kr/                 | 200  | 106,072 | 0e783db9... | 760883ea...  | mCnt[1]=9,287 · 4,603 · 2,353 · 1,820   | cachebuster DRIFT · counter 불변 |
+| https://ezcare.easyms.co.kr/new/ezCare_fnc.html | 200 | 17,870 | b6fa1b7b... | 64a3eb4c...  | 도입 9,357                              | cachebuster DRIFT · counter 불변 |
+| https://ezcare.easyms.co.kr/?PG=e01           | 200  | 47,130  | 7314101f... | b982c7e5...  | 17,489/9,354/53.49% · 집계일 2026.06.25 | cachebuster DRIFT · counter 불변 |
+| https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web | 200 | 14,474 | d0aa760c...  | d0aa760c...  | 공단 엑셀 PII 마스킹(*) verbatim           | IDENTICAL (zero drift 390차) |
+| https://ezcare.easyms.co.kr/new.ez            | 200  | 70      | e1d52bd5... | e1d52bd5...  | 비로그인 70B redirect stub               | IDENTICAL (역공학 금지 stub) |
+
+→ BNK-625(plateau 시작) → 628 (plateau day 2) → **632 (plateau day 3)** = 3-day
+  counter 0 변동·재가센터 도입 정체 신호 지속·`G-MARKET-SHARE-DASHBOARD` P3
+  데이터 소스 후보 carry. 엑셀 포맷 변경 0 (FAQ 21844 zero drift).
+
+★ carefor func.php Wayback 379차 wrapper DRIFT · LIVE 41-cycle 「미확인」
+------------------------------------------------------------------------------
+Wayback (https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php):
+  HTTP 200 · size 104,178 · md5 70daaca67224e003f0b5a5ee17a5cae0
+  BNK-629 `d80823be`(104,182B) → BNK-632 `70daaca6`(104,178B) = **379차 wrapper DRIFT**
+  (-4B Wayback toolbar cachebuster only)
+  본문 verbatim: 7-1~7-10 (10-leaf) · 8-1~8-13 (13-leaf) · 11-1~11-6 (6-leaf) ·
+    「이동서비스」 3 mentions · 107-leaf semantic IDENTICAL.
+  canonical `carefor_func.php` (98,328B md5 `6226e6eb`) reference 보존.
+LIVE (https://www.carefor.co.kr/daycare/func.php):
+  HTTP **000** timeout (--connect-timeout 8 --max-time 18) ·
+  41-cycle 「미확인」 carry (BNK-558~632).
+
+★ longterm 502/610 — 「미확인」 carry (canonical 보존)
+------------------------------------------------------------------------------
+| URL                                                                                | HTTP | size | md5         | 판정 |
+|------------------------------------------------------------------------------------|------|------|-------------|------|
+| https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502    | 302  | 0    | d41d8cd9... | sessionless gate → /npbs/exception/securityException · 「미확인」 45-cycle carry |
+| https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610    | 200  | 458  | c26a5e57... | partial shell oscillation · canonical `0ea575be`(91,421B 가산 월 10만원) 보존 |
+
+★ 잔여 갭 우선순위 — 4축+leave-ledger 82-cycle P0/P1 재오픈 0
+------------------------------------------------------------------------------
+| Tier | 갭 / Epic                              | KPI 영향                  | 상태                              |
+|------|----------------------------------------|---------------------------|-----------------------------------|
+| P2   | M11 직원급여 (id=11) closure            | 모듈 80.86% → 84.31% (+3.45pp) | `/payroll/*` 0 route · 최대 단일 레버 |
+| P2   | M12 회계 (id=12) closure                | 모듈 80.86% → 84.31% (+3.45pp) | `/accounting/*` 0 route · M11과 동시 closure 시 87.76% (+6.9pp) |
+| P3   | G-NURSING-MISSED-RECORD-DASHBOARD       | 대시보드 surface 1건         | silverangel 221564 retraction carry · 6/30 재검증 보류 |
+| P3   | G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE  | 건강기록 자동생성 옵션 1건    | 동상 · 6/30 재검증 보류 |
+| P3   | G-LEGAL-FORM-SIGNATURE-IMAGE            | 법정서식 서명 이미지 1건      | 동상 · 6/30 재검증 보류 |
+| P3   | G-STAFF-COMMITTEE-MEETING-LOG (BNK-629) | facility-admin 서식         | MVP out-of-scope carry |
+| P3   | G-VOLUNTEER-ACTIVITY-LOG (BNK-629)      | facility-admin 서식         | MVP out-of-scope carry |
+| P3   | G-MARKET-SHARE-DASHBOARD                | 시장 점유율 dashboard 1건    | 데이터 소스 carry · ezCare plateau 3-day |
+
+→ 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · KPI 변경 0 (HEAD zero advance)
+  · 재실측 zero drift 5 (NHIS #44·silverangel essential/extra/main/fee)
+  · 재실측 carry 4 (carefor LIVE 41-cycle·longterm 502 45-cycle·longterm 610 oscillation·ezCare plateau day 3)
+  · 신규 negative 1 (silverangel 221564 range probe 221552-221580 entire shell)
+  · 신규 snapshot 1건 (`cross_gap_priority_bnk632.txt` 이 파일)
+  · 덮어쓰기 0건 (전부 disk md5 IDENTICAL 또는 cachebuster-only DRIFT carry)
+  · 엑셀 포맷 변경 0 (FAQ 21844 IDENTICAL)
+  · per-cycle minimum 4종 충족
+
+권장 액션
+------------------------------------------------------------------------------
+- **coder**: BE WT DIRTY 6-file (HealthController·LiveE2eController·application.yml + 3 tests)
+  `git -C src/backend add . && git commit && git push origin develop` — build 전 commit 필수.
+- **tester**: FF merge **814** 가속 (FE 242 · BE 572) — 양쪽 develop 안정 carry.
+- **planner**: M11·M12 P2 closure 격상 권장 carry (+6.9pp 단일 최대 KPI 레버).
+- **planner**: silverangel 221564 6/30 재검증 D-4 — P3 3종 status carry.
+- **BNK 다음 rotation (0–2h)**: 케어포 LIVE 42-cycle 「미확인」 재실측 + demo-work
+  M2 어르신관리 13-leaf cross-walk (BNK-629 module 8 패턴 적용).

@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-23T17:00:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-25T17:30:00+09:00 -->
 # 보안 체크리스트 (security/SECURITY_CHECKLIST.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **용도**: develop 구현·test 이관·프로덕션 배포 전 게이트  
 > **연계**: `SECURITY_AUDIT.md`, `THREAT_MODEL.md`, `QA_FEEDBACK.md` `[SEC]` 항목
 
-> **2026-06-23 23차 재점검**: develop backend **`5fd12dd`**(+530 vs origin/test `598d108`·**WT DIRTY 9M+1U**) · frontend **`426d63a`**(+187 vs origin/test `ab4de83`·**WT DIRTY 38M+11U**). origin/test P0 포함(530 BE/187 FE unpushed). **★ V172 staff_annual_leave_yearly roster·V173 defense-in-depth + readiness probe·V174 staff_leave_ledger canonical·V175 leave_ledger 무결성(WT untracked)·G-STAFF-ANNUAL-LEAVE 입력 검증·j03 solapi placeholder 거부·ClientService 주소 마스킹(PII 긍정)·live-e2e 테넌트 격리** 전부 RBAC·tenant-safe Pass · **★ V173/V174/V175** Tenant FK pairs·user_branch 3-way FK·non-empty CHECK + readiness fail-fast(defense-in-depth) · **★ 23차 신규 BLOCK급 Open 0건** · **신규 SEC-D35**(V175 미커밋·양 스트림 WT DIRTY·Low/process). SEC-D33·D34·D4·D32·D17·D19·D23·D24·D14·SEC-008 prod 유지. SEC-D18 악화(530+187 unpushed).
+> **2026-06-25 25차 재점검**: develop backend **`49fe2e7`**(+572 vs origin/test `598d108`·**WT CLEAN**·local test **SYNCED**·BE TSR 1408차 merge) · frontend **`2c9abd6`**(+241 vs origin/test `ab4de83`·**WT CLEAN**·local test `75c0f51` +2 behind). origin/test P0 포함(572 BE/241 FE unpushed). **★ G-NHIS-MASKED-NAME-FALLBACK**(`NhisClientResolver`·`matched.size()==1` 단일후보 강제·org+branch scope·PII reveal 차단) · **★ V178 9종 CHECK**(CMS collection request·bathing defense-in-depth·amount>0·시간성·VIRTUAL↔bank_code·MULTI↔split_count) · **★ G-REPORT-DENSITY branch filter**(ProgramReportController HQ/BRANCH/SOCIAL_WORKER·`resolveBranchScope`·org+branch scope) · **★ ProductionSecretValidator 3-form env 봉인**(4표면 bootstrap env fail-fast·SEC-D29 진전) · **★ G16 RBAC fix**(transport parity-rules HQ/BRANCH only 정합) · G2b CMS 가상계좌·다계좌 정산(HQ/BRANCH only·`validateBranchWriteScope`·SUCCEEDED 멱등) · QA-B95 enforce-bootstrap-readiness(true 기본·false 운영 위험 SEC-D38 Monitor) · 7-9 refund fee validation · FE 7종+ API 전부 `apiFetch` 경유(SEC-D17 Fixed 유지·raw fetch 0) 전부 RBAC·tenant-safe Pass · **★ 25차 신규 BLOCK급 Open 0건** · **신규 SEC-D38**(enforce-bootstrap-readiness=false 시 operationReady=true 오보·인증 우회 없음·Low/Monitor)·**신규 SEC-D39**(CMS 가상계좌 번호 응답·HQ/BRANCH only·guardian 확장 시 last4 권고·Low/Monitor). SEC-D33·D34·D4(4 파서)·D32·D36·D37·D17·D19·D23·D24·D14·SEC-008 prod 유지. SEC-D18 더 악화(572+241 unpushed·+21/+23 vs 24차). **★ BE local test SYNCED**(TSR 1408차·24차 +1behind → 25차 SYNCED 진전).
 
 ---
 
@@ -76,6 +76,8 @@
 | B-7 | CMS 자동이체 최소 수집 — 전체 계좌번호 미저장 | High | ☑ `cms_enrollments`는 `account_last4`(4자리)·`bank_code`·`fcms_member_id`만(V59) |
 | B-8 | CMS `payer_name`(예금주명) at-rest 보호 | Low | ☐ 평문 저장(SEC-D21) — PII 정책 정합 위해 암호화 검토 |
 | B-13 | 현금영수증 `identifier_value`(휴대폰/사업자번호) at-rest 보호 | Low | ☐ 평문 저장(SEC-D32) — API 마스킹 ☑ · DB 암호화 검토 |
+| B-14 | 직원 접속키 6-digit at-rest 보호(`PasswordResetTokenEntity.tokenHash` SHA-256) + 응답 record 평문 키 미포함 | Medium | ☑ `StaffAccessKeyNotificationService.persistAccessKeyToken` — `JwtTokenService.hashRefreshToken` SHA-256 저장·`StaffAccessKeyNotifyResponse`에 `accessKey` 필드 없음(SMS 채널 전용 전달·24차) · ⚠ `notifications.payload_json`에 평문 키 60분 잔존(SEC-D37 Low/Monitor) |
+| B-15 | Solapi/Kakao 채널 dispatchReady fail-closed(credential 부재 시 readiness=false) | High | ☑ `NotificationChannelReadinessService.getTemplateCatalog` — `smsDispatchConfigured`/`alimtalkDispatchConfigured` 채널-credential 게이트 + `isLiveConfigured` 마커(stub/placeholder/change-me) 거부(24차 `fed6f1f`·SEC-D15 deepen) |
 | B-9 | FCMS/SMTP prod credential startup 검증 | Medium | ◑ Solapi·SMTP config-time fail-closed ☑(SEC-D15) · FCMS apiKey 미검증 ☐(SEC-D20·stub) |
 | B-11 | 간편결제 prod 실 PG provider 필수 (stub 기본값 금지) | Medium | ☐ SEC-D28 — `ogada.easy-pay.provider` stub `matchIfMissing=true` · prod credential startup 검증 없음 |
 | B-12 | prod에서 `LIVE_E2E_BOOTSTRAP_ENABLED`/`LIVE_E2E` **금지** · live-e2e bootstrap 무인증 endpoint 비활성 | Medium | ◑ SEC-D29 — `ProductionSecretValidator` prod 거부 ✓ · bootstrap 응답 **password 필드 0** ✓ · blank credential fail-fast ✓ · probe default guardian cred 허용(QA-B95·non-prod) · permitAll 유지 |
@@ -154,16 +156,18 @@
 
 | # | 항목 | BLOCK 조건 |
 |---|------|------------|
-| H-0 | **develop P0 패치 `origin/test` 반영** | ☑ — `origin/test`=`598d108`/`ab4de83` (SEC-D14 Fixed) · develop **500+147 ahead**(BE test SYNCED·FE test +3 behind·origin push pending) |
+| H-0 | **develop P0 패치 `origin/test` 반영** | ☑ — `origin/test`=`598d108`/`ab4de83` (SEC-D14 Fixed) · develop **572+241 ahead**(BE local test **SYNCED**·FE local test +2 behind·origin push pending·SEC-D18 악화) |
 | H-1 | 위 **BLOCK** 항목 0건 (develop baseline) | **충족** — develop ☑ · `origin/test` P0 ☑ |
-| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — SEC-D17·D19·D23·D24 Fixed · SEC-D22·D25·D26·D28·D32·D33·D34·D35·D4·A06-1·SEC-D29 audit Open(**BLOCK 아님**) |
-| H-3 | TSR 크로스테넌트·권한 거부 테스트 통과 | 필수 · `RoleBasedControllerAccessTest`(account-request·G-STAFF-NHIS·G-7-1 export)·live-e2e pilot E2E 회귀 |
+| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — SEC-D17·D19·D23·D24 Fixed · SEC-D22·D25·D26·D28·D32·D33·D34·**D36·D37**·D4·A06-1·SEC-D29·D35 audit Open/Monitor(**BLOCK 아님**) |
+| H-3 | TSR 크로스테넌트·권한 거부 테스트 통과 | 필수 · `RoleBasedControllerAccessTest`(account-request·G-STAFF-NHIS·G-7-1 export·**G-SMS staff-access-key**)·live-e2e pilot E2E 회귀 |
 | H-4 | `.env`·키 파일 Git 미포함 | ◑ — **SEC-D22**: WT `.gitignore` `*.env` 무시 ☑ · parent repo HEAD 커밋 선행 권고 |
 | H-5 | 파일럿 센터 개인정보 처리방침·동의 UI | PLN 확인 |
 | H-6 | J01 `SecurityConfig` 코드 리뷰 | ☑ develop lineage (SEC-D8 Fixed) · 필터 순서(SEC-D24 Fixed) |
-| H-7 | workspace baseline = git 실측 HEAD | ☑ `5fd12dd`/`426d63a` (23차 실측·**WT DIRTY** — V175 untracked·SEC-D35) |
-| H-8 | develop→test merge·origin push | ◑ — **develop WT DIRTY**(merge pending·QA-B272/B273) · **origin/test push 미실행**(530 BE/187 FE·SEC-D18 악화) |
-| H-9 | live-e2e bootstrap credential fail-fast | ☑ SEC-D29 — blank credential fail-fast·trim 정규화(`7848b0f`)·password 필드 0 |
+| H-7 | workspace baseline = git 실측 HEAD | ☑ `49fe2e7`/`2c9abd6` (25차 실측·**WT CLEAN**·BE local test SYNCED·SEC-D35 Mitigated carry) |
+| H-8 | develop→test merge·origin push | ◑ — **develop WT CLEAN** · BE local test **SYNCED**(TSR 1408차 완료·25차 진전) · FE local test `75c0f51` +2 behind · **origin/test push 미실행**(572 BE/241 FE·SEC-D18 더 악화 +21/+23) |
+| H-9 | live-e2e bootstrap credential fail-fast | ☑ SEC-D29 — blank credential fail-fast·trim 정규화(`7848b0f`)·password 필드 0 · 24차 HealthControllerTest G21 seed detail lock으로 readiness 회귀 가드 추가 |
+| H-10 | 외부 SMS/Alimtalk dispatchReady fail-closed(credential 부재) | ☑ 24차 — `NotificationChannelReadinessService` 채널-credential 게이트(`fed6f1f`)·`isLiveConfigured` 마커 거부(stub/placeholder/change-me)·SEC-D15 deepen |
+| H-11 | staff manual SMS quiet-hours guard(KST 22:00~08:00) | ☑ 24차 — `NotificationService.dispatchManualStaffSms`가 `NotificationQuietHoursPolicy.isActiveNow` 시 `BusinessRuleException` 즉시 거부(v2/J03 lineage 정합) |
 
 ---
 
@@ -179,4 +183,4 @@
 
 ---
 
-*마지막 점검: 2026-06-23 (23차) | develop HEAD `5fd12dd`/`426d63a`(**WT DIRTY** — BE 9M+1U·FE 38M+11U) · V172 annual-leave roster·V173/V174/V175 defense-in-depth(leave ledger·연차)·j03 solapi placeholder 거부·ClientService 주소 마스킹(PII 긍정)·live-e2e 테넌트 격리 Pass · **신규 SEC-D35**(V175 미커밋·WT DIRTY·Low/process) · SEC-D33/D34/D4 carry · origin push pending(530+187·SEC-D18 악화) · 잔존 poi-ooxml·Boot 패치·SEC-D22 커밋·form-data dev*
+*마지막 점검: 2026-06-25 (25차) | develop HEAD `49fe2e7`/`2c9abd6`(**WT CLEAN**·BE local test SYNCED·TSR 1408차 merge) · G-NHIS-MASKED-NAME-FALLBACK(single-candidate guard·PII reveal 차단) Pass · V178 9종 CHECK(DB-level defense-in-depth) Pass · G-REPORT-DENSITY branch filter(org+branch scope·resolveBranchScope) Pass · G16 RBAC fix(transport HQ/BRANCH 정합) Pass · G2b CMS 가상계좌·다계좌(RBAC+멱등) Pass · ProductionSecretValidator 3-form env봉인(SEC-D29 진전) Pass · FE 7종+ API apiFetch(SEC-D17 유지) Pass · **신규 SEC-D38**(enforce-bootstrap-readiness=false 운영 설정 위험·Low/Monitor·인증 우회 없음)·**신규 SEC-D39**(CMS 가상계좌 번호·HQ/BRANCH only·guardian 확장 시 last4 권고·Low/Monitor) · SEC-D33/D34/D36/D37/D4(4 파서)/D32 carry · origin push pending(572+241·SEC-D18 더 악화 +21/+23) · 잔존 poi-ooxml·Boot 패치·SEC-D22 커밋·form-data dev*

@@ -1,0 +1,12 @@
+=== https://www.carefor.co.kr/daycare/func.php ===
+curl: (28) Connection timeout after 20000 ms
+
+HTTP:000 SIZE:0
+=== https://demo-work.carefor.co.kr/ ===
+curl: (28) Connection timeout after 20001 ms
+
+HTTP:000 SIZE:0
+=== https://www.carefor.co.kr/daycare/manual/daycare_manual.pdf ===
+curl: (28) Connection timeout after 20001 ms
+
+HTTP:000 SIZE:0

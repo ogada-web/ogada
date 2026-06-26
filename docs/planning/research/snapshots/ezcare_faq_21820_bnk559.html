@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="kr">
+<head>
+	<meta charset="UTF-8">
+	<title>이지케어 FAQ</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<!-- css -->
+	<link href="/assets/_reboot_layout.css" rel="stylesheet" type="text/css" />
+	<link href="/help/ckeditor.custom.help.css?2" rel="stylesheet" type="text/css" />
+	<!-- jquery -->
+	<script src="/assets/jquery/jquery-3.5.1.min.js" type="text/javascript"></script>
+	<script src="faq.js?1123123" type="text/javascript"></script>
+	<style>
+	/* faq ************************************************************************************************************************************************/
+	ul,li{list-style:none;margin:0;padding:0;}
+	a{color:#333; }
+	a:hover{text-decoration:none;color:#333;}
+	button{border:0; outline:none; background:transparent;}
+	input{padding: calc(.4em - 1px);vertical-align:middle;}
+	body{overflow-y:scroll;overflow-x:hidden;}
+
+	#wrap{position:relative; margin:0 auto; font-size:16px; margin-bottom:50px;}
+	#header{z-index:99; width:100%;margin:0 auto;}
+	#header .header-wrap{/* position:relative; */position:fixed; top:0; width:100%; z-index:99;background:#4187d6;}
+
+	/* 상단바 높이 */
+	#faq-wrap{max-width:1100px; margin:0 auto;}
+	.header-content{position:relative; max-width:1100px; height:70px; margin:0 auto;  padding:20px 10px; overflow:hidden;}
+
+	.search-bar{position:relative; float:right; position:relative;}
+	.search-bar input{border:0; width:100%; height:40px; border-radius:5px; padding-left:10px; padding-right:30px; background:#fff;}
+	.search-bar input:focus{outline:0; background:#eee;}
+	.search-bar button{width:40px;height:100%; position:absolute; right:0;}
+
+	.header-logo{display:inline-block;position:relative;font-size:25px;margin-bottom:0;cursor:pointer;color:#fff;}
+	.header-logo:after{content:'';position:absolute;width:28px;height:25px;background:url('../page/img/intro_tit_icon.png') 100% no-repeat; background-size:contain; width:25px; height:28px; top:-10px; right:-15px;}
+
+	.faq-category-wrap{position:fixed; top:70px; width:100%; border-bottom:1px solid #ddd }
+	.faq-category{overflow:hidden; width:100%; max-width:1100px; margin:0 auto;background:#fff; padding:0 10px;}
+	.faq-category li{float:left;margin-right:14px;border-bottom:3px solid transparent; font-size:14px;}
+	.faq-category li a{line-height:50px; display:inline-block; width:100%; height:100%; text-align:center;}
+	.faq-category li.active {border-bottom:3px solid #007fff}
+	.faq-category li.active a{color:#007fff !important; font-weight:bold;}
+	
+	#faq-list{margin-top:120px;}
+	#faq-list li:first-child{border-top:0;}
+	#faq-list li{border-top:1px solid #e5e5e5;}
+	#faq-list li:hover{background:aliceblue;}
+	#faq-list li b{padding-right:10px; font-weight:bold; font-size:22px; color:#007fff}
+	#faq-list li a{display:inline-block; width:100%;}
+	#faq-list li a:before{content:'';z-index:-1;font-size:12px;position:absolute;width:12px;height:12px;border-radius:50px;margin-top:5px;margin-left:-5px;background:white;}
+	#faq-list li a:visited{color:#aaa;font-weight:bold;}
+	#faq-list li a:visited:before {background-color:#c1dcef;}
+	#faq-list li .q{display:table;table-layout:fixed; padding:15px; cursor:pointer; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+	#faq-list li .q span{display:table-cell;width:200px;color:#4187d6;text-align:right;font-size:12px;letter-spacing:-1px;white-space:break-spaces;word-break:keep-all;vertical-align:middle;}
+	#faq-list li .q a{display:table-cell;}
+
+	/* #wrap.mode-view faq내용 */
+	.mode-view #faq-wrap{max-width:none;margin-top:0px;}
+	.mode-view #wrap-content{max-width:1100px; min-height:30em; margin:0 auto;}
+	.mode-view .faq-category-wrap{display:none;}
+
+	.mode-view .search-bar{display:none;}
+	.mode-view #header.fixed{display:none;}
+
+
+	.wrap-footer button{display:inline-block;min-width:96px; height:40px; text-align:center;}
+	#wrap-content{width:100%;margin-bottom:10px;background:#fff;}
+	.wrap-footer{text-align:center;}
+	.wrap-footer button{ font-size:14px; border-radius:5px; background:#007fff; color:#fff;}
+	.wrap-footer button:before{
+	content: '';
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+	border-color:#fff;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+	margin-right:5px;}
+
+	.wrap-footer button:hover{background:#092d8b;}
+	
+	#faq-wrap > .q{display:table;table-layout:fixed; z-index:9; background:#fff;display:inline-block; cursor:pointer; width:100%; padding:10px; font-size:25px;  text-overflow:ellipsis; white-space:nowrap;}
+	#faq-wrap > .q b{display:table-cell; padding-right:10px; font-weight:bold;color:#007fff}
+	#faq-wrap > .q a{display:table-cell; width:100%; font-weight:bold;white-space:normal}
+	#faq-wrap > .q span{display:table-cell; width:200px;color:#666;text-align:right;font-size:12px;letter-spacing:-1px;white-space:break-spaces;word-break:keep-all;vertical-align:middle;}
+
+	#faq-wrap > .q.fixed{
+	position:fixed; /* top:50px; */
+	box-shadow:0 2px 15px 0 rgb(0 0 0 / 10%);
+	-webkit-box-shadow:0 2px 15px 0 rgb(0 0 0 / 10%);}
+	#faq-wrap > .q.fixed + #wrap-content{padding-top:50px;}
+
+	/* scroll css */
+	#header.fixed{position:fixed;top:0;}
+	#header.fixed .header-wrap .header-content, .mode-view .header-content{height:50px; line-height:50px;padding:0 10px;transition:all .2s}
+	#header.fixed .header-wrap .header-logo, .mode-view .header-logo{font-size:18px;line-height:50px;}
+	#header.fixed .header-wrap .header-logo:after, .mode-view .header-logo:after{width:25px;height:22px;top:0px;}
+	#header.fixed .header-wrap .search-bar input{height:35px;}
+
+
+
+	.faq-category-wrap.fixed{position:fixed;top:50px;z-index:9;-webkit-box-shadow: 0 2px 15px 0 rgba(0,0,0,.1);box-shadow: 0 2px 15px 0 rgba(0,0,0,.1);}
+	
+	#faq-list li .q span.faq-hit{width:50px;color:#999;}
+	
+	/* mediaquery */
+	@media all and (max-width:800px){
+	#wrap{width:100%;}
+	.faq-category{padding:0;}
+	.faq-category li{width:calc(100% / 3);padding:.2em;margin-right:0;}
+	.faq-category li a{font-size:14px;line-height:30px;}
+	#faq-list li{padding:0 10px;}
+	#faq-list li .q{display:inline-block; padding:5px 15px; white-space: normal;}
+	#faq-list li .q a{display:inline-block;}
+	#faq-list li .q span{width:100%;display:inline-block;float:right;padding-left:40px;}
+	#faq-wrap > .q{font-size:18px;}
+	#faq-wrap > .q b{font-size:25px;}
+	#faq-list li .q span.faq-hit{display:none;}
+	}
+
+	/* 상단노출 */
+	#faq-list li.fix-top{background:rgba(243,255,197,0.27);}
+	#faq-list li.fix-top .q a{font-weight: bold;}
+	#faq-list li.fix-top .q b{/* color:red; */}
+	#faq-list li.fix-top.new .q b:before{content:'new';font-size:16px;position:absolute;height:18px; line-height:18px; padding:0em 0.3em;
+	    border-radius: 0.3em; margin-top:-12px;margin-left:35px;background:#ffe500; color:#ff7448;}
+
+	
+
+	/* 신규안내자 유튜브 팝업영상 css */
+	#youtube-bg {position:fixed; z-index:1002; top : 0px ; left:0px;  width:100%; height:100% ; background-color:#000000; filter:Alpha(opacity=90); opacity:0.9; -moz-opacity:0.9 ; overflow:hidden;}
+	#youtube-wrap{overflow:hidden;}
+	#youtube-block{z-index:1003; position:absolute;top:50%; left:50%; transform:translate(-50%, -50%);}
+	#youtube-block iframe {border:10px solid #666}
+	#youtube-btn-wrap {position:absolute; top:-15px; right:-40px; display:inline-block; cursor:pointer;}
+	[youtube]:hover{cursor:pointer; opacity:.7; font-weight: bold;}
+
+	#content_body{padding:0 2em;}
+
+	@media all and (max-width:640px){
+		.header-content{height:auto;}
+		.header-logo{font-size:18px;margin-bottom:10px;}
+		.search-bar{width:100%;}
+		.faq-category-wrap{top:120px;}
+		#faq-list{margin-top:320px;}
+
+		#content_body{padding:0 1em;}
+		#youtube-btn-wrap{display:None; }
+		#youtube-block iframe{width:100vw !important; height:100vw !important; border:none;}
+		
+	}
+
+	</style>
+</head>
+<body>
+<div id="wrap" class="mode-view">
+
+<!-- faq header -->
+		<div id="header">
+		<div class="header-wrap">
+			<div class="header-content">
+				<a href="https://ezcare.easyms.co.kr/help/faq.ez"><h1 class="header-logo" >자주 하는 질문(FAQ)</h1></a>
+				<form class="search-bar" mxethod="get">
+					<button>
+						<svg width="20" height="20" viewBox="0 0 20 20">
+						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+					</button>
+					<input type="text" name="keyword" placeholder="궁금한 단어 검색" value="">
+				</form>
+			</div>
+		</div>
+	</div>
+		<div class="faq-category-wrap">
+		<ul class="faq-category">
+			<li class='active'><a href="?ct=">전체</a></li>
+					<li ><a href="?ct=K001&?keyword=K001">이용료/요금</a></li>
+					<li ><a href="?ct=K002&?keyword=K002">직원관리</a></li>
+					<li ><a href="?ct=K003&?keyword=K003">수급자관리</a></li>
+					<li ><a href="?ct=K004&?keyword=K004">일정관리</a></li>
+					<li ><a href="?ct=K005&?keyword=K005">서식출력/설정</a></li>
+					<li ><a href="?ct=K006&?keyword=K006">본인부담금</a></li>
+					<li ><a href="?ct=K007&?keyword=K007">공단연동</a></li>
+					<li ><a href="?ct=K008&?keyword=K008">수당/급여관리</a></li>
+					<li ><a href="?ct=K009&?keyword=K009">모바일앱</a></li>
+					<li ><a href="?ct=K010&?keyword=K010">문자발송</a></li>
+					<li ><a href="?ct=K012&?keyword=K012">재무회계</a></li>
+					<li ><a href="?ct=K013&?keyword=K013">세무</a></li>
+					<li ><a href="?ct=K014&?keyword=K014">4대보험</a></li>
+					<li ><a href="?ct=K011&?keyword=K011">기타</a></li>
+			
+		</ul>
+	</div>
+	<!-- faq content-->
+	<div id="faq-wrap">
+	
+				<div class="q">
+			<div style="max-width:1100px; margin:0 auto;position:relative;">
+				<b>Q.</b>
+				<a href="javascript:;">
+					[월간] 급여계약 통보				</a>
+			</div>
+		</div>
+				<!-- faq 답변내용 -->
+		<div id="wrap-content" style="position:relative;">
+			 <div id="content_body" class="cke_editable">
+				<div class="contents frameA">
+<h1>급여계약 통보서</h1>
+
+<div class="box box0">
+<h4>개요</h4>
+
+<div>
+<p style="text-align: justify;">장기요양기관이 수급자와 체결한 <strong>계약내용</strong> 중 <strong>수급자</strong>,&nbsp;<strong>계약 당사자</strong>, <strong>계약기간</strong>, <strong>급여종류 및 내용</strong>, <strong>비용</strong> 등 월별 급여제공 내용을 장기요양기관이 공단에 통보하는 절차를 급여계약통보라고 하며&nbsp;기관이 수급자에게 제공할 급여일정, 내용 등을 급여제공 <u><strong><span style="color:#e74c3c;">전월 말일</span>까지</strong> </u><strong><u><u>노</u>인장기요양보험 포털사이트에</u></strong>&nbsp;통보하여야 합니다.</p>
+</div>
+</div>
+
+<div class="box boxD">
+<h4>급여계약내용 일정등록&nbsp;&nbsp;방법</h4>
+
+<ul>
+	<li><em class="badge caution">주의</em>&nbsp; 전월 말일까지 해당월 일정등록 완료</li>
+	<li>장기요양정보시스템 > 급여계약 > <strong>급여계약내용 등록변경해지</strong></li>
+	<li><strong>수급자 선택</strong> > 급여계약내용 등록 또는 해당 월 선택&nbsp;> <strong>급여계약내용 등록(재가)</strong> 화면</li>
+	<li>급여계약내용 등록(재가) > 년월/대상자 확인 > &lsquo;입력&rsquo; 선택</li>
+	<li><strong>종사자검색</strong> 팝업창 생성 >&nbsp;요양보호사 선택 >&nbsp;가족여부, 시작/종료시간 입력 > &lsquo;입력&rsquo; 선택</li>
+	<li>종사자 선택완료 > 급여이용 일자&nbsp;선택 > 총 이용횟수, 월금액, 월 한도액 확인 > <strong>저장 및 통보</strong></li>
+	<li>특수한 유형의 급여제공(인지활동, 종일 방문 등)
+	<div class="caution">
+	<ul>
+		<li>인지활동형 방문요양 :&nbsp;종사자검색 팝업창에서 치매이수자 확인가능</li>
+		<li>종일 방문요양&nbsp;:&nbsp;종사자검색 팝업창에서 구분코드(해당자만 나타남), 시작/종료시간&nbsp;입력</li>
+		<li>종일 방문요양 동시제공 : 동시제공 신규 목록 생성하여 구분 값 표시</li>
+		<li>계약자 등록관리, 등록/변경, 장기요양급여 중복수급 금지</li>
+	</ul>
+	</div>
+	</li>
+</ul>
+</div>
+
+<div class="box boxD">
+<h4>급여계약내용 등록 - 지난일정 수정</h4>
+
+<ul>
+	<li>급여제공 종료시간 이후 급여일정 등록 제한 (&rarr; 지난일정 수정 입력하여 수정)</li>
+	<li>지난일정 수정 > 수정사유 선택 > 수정 > 지난 일정 선택하여 일정 수정 > 저장 및 통보</li>
+	<li>월금액 재산정 > 저장 및 통보
+	<div class="caution">
+	<ul>
+		<li>지난일정을 수정한 수급자의 경우 청구 전 월금액 재산정 버튼을 클릭하여 한도초과금액 확인</li>
+		<li>월금액 재산정 : 등록한 일정내역과 이용횟수, 월금액, 월 한도액 등이 맞지 않는 경우 사용</li>
+	</ul>
+	</div>
+	</li>
+</ul>
+</div>
+
+<div class="box boxA">
+<h4>기타 참고사항</h4>
+
+<ul>
+	<li>급여계약내용 등록변경해지&nbsp;- 확인사항 : 느낌표 표시가 있을 경우 확인하여야 할 사항이 있는 것으로 꼭 확인</li>
+	<li>시간,날짜 등 변경사항 있을 경우 서비스 개시 전 수정,변경 (부득이 서비스 개시 이후는 지난일정 수정)</li>
+	<li>급여제공 종료시간 이후 급여일정 등록 제한 &rarr; 지난일정 수정 선택 후 수정사유 입력하여 수정 가능</li>
+	<li>장기요양기관은 급여계약 문서가 아닌 급여계약통보서를 공단으로 통보 (장기요양정보시스템 이용)</li>
+</ul>
+</div>
+
+<div class="box boxFAQ">
+<h4>자주하는 질문</h4>
+
+<dl>
+	<dt>과거의 서비스 일정을 수정하고 싶은데 가능한가요?</dt>
+	<dd>① 입력 되어있던 일정을 삭제하는 경우: 클릭 &rarr; 수정사유 선택한 뒤 수정버튼 &rarr; 삭제하려는 일자의 해지<br />
+	② 새로 과거의 일정을 추가하려는 경우: 클릭 &rarr; 수정사유 선택한 뒤 수정버튼 &rarr; 일정 추가하려는 날짜 체크<br />
+	※ 수정 사유는 상황에 맞게 선택</dd>
+	<dt>기관에서 수급자의 자격(일반/감경/기초)을 확인하는 화면이 있나요?</dt>
+	<dd style="text-align: justify;">급여계약>급여계약내용 등록변경해지>확인사항>자격변경내역 에서 변경 전 자격과 변경 후 자격 확인 가능 합니다.&nbsp;급여계약>급여계약내용 등록변경해지 에서 자격이 표시되고, 월 중에 자격이 변경될 경우 급여계약해지란에 일자별로 자격 확인 가능합니다.</dd>
+	<dt>기관 전산화면에서는 월 한도 금액이 초과되지 않았다고 하는데, 공단에서는 월 한도 금액이 초과된 것으로 보인다고 합니다. 어떻게 해야 하나요?</dt>
+	<dd style="text-align: justify;">수가 재산정을 위한 월금액 재산정 버튼을 누르지 않아서 발생하는 현상입니다. 기관 전산 화면에서 월금액 재산정,&nbsp;저장 및 통보 버튼을 누르면 최소 5분 ~ 최대 30분 이내에 공단 전산에 적용됩니다. 지난 일정을 수정하거나, 타급여 중복으로 이용하는 수급자의 경우 청구 전 반드시 월금액 재산정 버튼을 클릭하여 금액을 확인하시기 바랍니다.</dd>
+</dl>
+</div>
+</div>			</div>
+		</div>
+				<hr>
+		<div class="wrap-footer py-3" >
+			<button type="button" onclick="history.back(-1)">뒤로가기</button>
+			<span style="display:block;font-size:14px;margin-top:10px;">도움이 되셨나요? 도움이 더 필요하시다면 <b>1644-0340</b></span><!-- 1644-0340 -->
+		</div>
+			
+	<!-- faq 질문 -->
+	</div>
+</div>
+
+</body>
+<!-- 이지케어 분석 -->
+<script src="/assets/jquery/jquery-3.5.1.min.js"></script>
+<script src="/assets/accessClick.log.js" type="text/javascript"></script>
+<script src="/assets/jquery/plugin/iframeTracker.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+	var _route = "";
+	if(_route) accessClick.hit(_route, "_route");
+
+	$(document).on("click", "[youtube]", function(){
+		var youtube = $(this).attr("youtube");
+		var new_win = $(this).attr("youtube-win");
+		if(new_win) return window.open("https://www.youtube.com/watch?v="+youtube, "ezcHelp-youtube"+youtube);
+
+		var youtube_width = $(this).attr("youtube-width") ? $(this).attr("youtube-width") : 980,
+			youtube_height = $(this).attr("youtube-height") ? $(this).attr("youtube-height") : 580,
+			setTop = $(window).scrollTop() + $(window).height()/2 - youtube_height/2;
+			setTop = setTop > 0 ? setTop : 20,
+			setLft = $(window).width()/2 - youtube_width/2,
+			outHtml = '';
+
+		var tmp_wrap = $("<div>", {id:"youtube-dsp"}),
+			tmp_bg = $("<div>", {id:"youtube-bg"}),
+			tmp_pop_wrap = $("<div>", {id:"youtube-wrap"}),
+			tmp_youtube_block = $("<div>", {id:"youtube-block"}),
+			//tmp_youtube_block = $("<div>", {id:"youtube-block"}).css({
+			//	"top":setTop+"px", "left":setLft+"px", height:youtube_height+"px"
+			//}),
+			tmp_youtube_close = $("<div>", {id:"youtube-btn-wrap"}).append( $("<img>", {src:"/new/img/btn_close.png"}) ),
+			tmp_youtube_iframe = $("<iframe>", {
+				width:youtube_width,
+				height:youtube_height,
+				src:"https://www.youtube.com/embed/"+youtube+"?autoplay=1&loop=1;playlist="+youtube+"&vq=hd1080",
+				"frameborder":"0",
+				"allow":"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+				"allowfullscreen":""
+			});
+
+		tmp_wrap.append(tmp_bg, tmp_pop_wrap);
+		tmp_pop_wrap.append(tmp_youtube_block);
+		tmp_youtube_block.append(tmp_youtube_close);
+		tmp_youtube_block.append(tmp_youtube_iframe);
+
+		$(tmp_bg).on("click", function(){
+			$("#youtube-dsp").remove();
+		});
+
+		$(tmp_youtube_close).on("click", function(){
+			$("#youtube-dsp").remove();
+		});
+
+		if($("#wrap").length > 0) $("#wrap").append(tmp_wrap);
+		else  $("body").append(tmp_wrap);
+	});
+	
+	$(window).on("resize", function(){
+		$("#faq-list").css("margin-top", ( $(".faq-category-wrap").height() + $(".header-wrap").height() + 5 )+"px");
+	});
+
+	$(window).trigger("resize");
+
+
+	
+	$.each( $("iframe[hit-id]"), function(idx, val){
+		let hit_id = $(val).attr("hit-id");
+		$(val).iframeTracker({
+			blurCallback: e => {
+				accessClick.hit(hit_id);
+			}
+		});
+	});
+</script>
+
+
+</html>

@@ -1,0 +1,77 @@
+# BNK-580 cross-gap priority extract
+# doc:owner=BNK doc:audience=PLN updated=2026-06-24T10:20:00Z
+# rotation=교차검증·갭 우선순위 8h+
+
+## ogada git HEAD (2026-06-24T10:20Z) — HEAD zero advance 1-cycle (BNK-579 carry)
+FE develop @ef3948c WT CLEAN (BNK-579 carry · HEAD zero advance 1-cycle)
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): deepen module 10 coverage to 0.65
+  ahead 210 vs origin/test=ab4de83
+BE develop @fb323ae WT CLEAN (BNK-579 carry · HEAD zero advance 2-cycle)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): expose dispatch-ready counts in catalog API
+  ahead 544 vs origin/test=598d108
+Route 112 (111 <Route\b + 1 <Routes>) · 90 *Page.jsx + RootRedirect = 91
+V1–V175 · BE *Test.java=255 · FE test 465 (192 .test.js + 273 .test.jsx)
+모듈 79.31% (23.00/29 · competitorModuleCoverage.js id=10 0.65)
+merge gate 754 (FE210+BE544 · carry vs BNK-579 754 · 양쪽 WT CLEAN)
+파이프라인 idle 윈도 — tester FF merge 754 가속 권장 (선행 commit 불필요)
+
+## ★★★ 4축+leave-ledger P0/P1 재오픈 0 (29-cycle carry, BNK-549~580)
+git show develop:src/App.jsx | grep path= cross-verify @ef3948c:
+  G14    path="/clients/:clientId/care-plan-form"   ✅ LIVE
+  G26    path="/dashboard" + path="/dashboard/hq"    ✅ LIVE
+  v1.3-C path="/transport/service-fees" (+8-route)   ✅ LIVE
+  v2 CMS path="/billing/cms"                          ✅ LIVE
+  US-R01-c path="/staff/annual-leaves" + path="/staff/leave-ledger" ✅ LIVE
+결론: P0/P1 backlog 비움 유지 · 가정 번복 0 · 신규 core 갭 0
+
+## ★★★ candidate 상태 교차검증 (git grep @develop)
+[CLOSED] G-SMS-TEMPLATE-CATALOG cluster — full-stack 5-commit 종결 (BNK-579 closure 재확인)
+  git grep -c "template-catalog" develop -- src/ = 3 hit:
+    src/api/services.js:1
+    src/api/settingsServices.test.js:2
+    src/components/ui/NotificationChannelReadinessPanel.jsx:2
+  → BE catalog @b6c9b16 → FE wire @c9cf03b → UXD-160 @15f2195 → BE dispatchReady @fb323ae → KPI deepen @ef3948c
+  candidate 잔여 0
+[CARRY P3] G-VENDOR-ONBOARDING-CHECKLIST 「가정」 (BNK-578)
+  git grep -il "vendor.onboarding|onboarding-checklist|VendorOnboarding" develop -- src/ = 0 전용 컴포넌트
+  (StaffHrFilePanel.jsx 일반 onboarding 매칭만 · 전용 도입후관리 체크리스트 위젯 없음)
+  → silverangel businessSupportService.do 4회차 도입 후 관리 체크리스트 = 휴먼서비스(SaaS 온보딩)·MVP out-of-scope carry
+[CARRY P3] G-PROGRAM-GROUP-CONFIG 「가정」 (BNK-577)
+  git grep -il "program-group|ProgramGroup|programGroupConfig" develop -- src/ = 0 hit
+  → func.php 모듈5 5-3/5-9 그룹 설정·이력 micro-gap · id=5 coverage=1 ✅ 재확인(가정 번복 아님)
+
+## ★★ US-R01-c leave-ledger 표면 전수 LIVE (git ls-tree @develop)
+  src/api/staffAnnualLeaveServices.test.js
+  src/api/staffLeaveLedgerServices.test.js
+  src/components/staff/StaffAnnualLeaveRelatedSurfacesPanel.jsx (+.test.jsx)
+  src/components/staff/StaffLeaveLedgerRelatedSurfacesPanel.jsx
+  src/components/ui/StaffAnnualLeaveTable.jsx (+.test.jsx)
+  src/components/ui/StaffLeaveLedgerDeleteModal.jsx (+.test.jsx)
+  src/components/ui/StaffLeaveLedgerTable.jsx
+  → 연차/휴가 원장 full-stack ✅ (근로기준법 60조 연차 산정·이월·소멸)
+
+## ★★ NHIS #44 이동서비스비 러-1~4 354차 zero drift IDENTICAL
+URL: nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+live HTTP 200 7,572B md5 c886ff1f = on-disk nhis_jo44.html c886ff1f IDENTICAL
+러-1~4 · 편도50% · 1일1회 · ④별지 제22호 일지 verbatim
+↔ ogada TransportServiceFeeService(RU_1~RU_4·ONE_WAY_RATIO=0.5·1일1회 dedup·V148/V154/V155)
+   + FE transportServiceFee.js 4 parity-copy + TransportServiceFeePanel(UXD-159)
+full-stack ✅ parity/우위 · 덮어쓰기 0 · PLAN_NOTES #44 carry
+
+## ★ silverangel weekly notice 0 (6-day stale)
+notice list HTTP 200 3,594,181B md5 52c9457f IDENTICAL (on-disk zero drift)
+latest real embed 221563 (6/18) carry → 6-day stale (오늘 6/24)
+신규 weekly notice probe (clean Tmp_idx URL):
+  221564 HTTP 200 51,765B md5 8437f255 unpublished shell
+  221570 HTTP 200 51,765B md5 8437f255 unpublished shell
+  221580 HTTP 200 51,765B md5 8437f255 unpublished shell
+3-probe 모두 미게시 shell IDENTICAL → weekly notice 0 · next ~6/25 (내일) 예상 carry
+엑셀 포맷 변경 0
+
+## planner P0/P1 재정렬 제안 (BNK-580)
+1. 4축+leave-ledger 재오픈 0 — 29-cycle carry · merge gate 754 tester FF 가속 권장
+2. G-SMS-TEMPLATE-CATALOG cluster ✅ closure 재확인 — candidate 잔여 0 (KPI 79.31%)
+3. candidate carry 2건 P3「가정」: G-VENDOR-ONBOARDING-CHECKLIST · G-PROGRAM-GROUP-CONFIG
+   둘 다 MVP out-of-scope (SaaS 온보딩 휴먼서비스 / 프로그램 그룹 micro-config)
+4. △4 잔여 우선순위 불변: 2 이동 0.85 · 8 직원근태 0.85 · 7-4 CMS 0.65 · 10 부가 0.65
+5. 미확인 carry: longterm 502 단기보호 canonical 12-cycle · carefor LIVE HTTP 000 14-cycle

@@ -1,0 +1,135 @@
+# BNK-609 교차검증·갭 우선순위 사이클 추출
+# 조사일: 2026-06-25T04:04:00Z (KST 13:04)
+# rotation: 교차검증·갭 우선순위 (G14·대시보드·v1.3-C·v2 CMS·P0/P1 재정렬 + 미확인 축소)
+
+## 1. ogada baseline 실측 (BNK-609 정본)
+
+| 지표 | BNK-608 | BNK-609 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `9a583ec` | **`e985522`** `test(v2/G2b+G16): lock 5/5 CMS catalog parity and parity-rules fallback` | **+1** |
+| BE develop HEAD | `37416ac` | **`37416ac`** carry (HEAD zero advance 1-cycle) | carry |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs origin/test=ab4de83 | 227 | **228** | +1 |
+| BE ahead vs origin/test=598d108 | 560 | 560 | carry |
+| merge gate | 787 | **788** | +1 |
+| Route (FE App.jsx) | 112 | 112 | carry (111 <Route\b + 1 <Routes>) |
+| page (*Page.jsx + RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file (*Test.java) | 265 | 265 | carry |
+| BE @Test method | 1915 | 1915 | carry |
+| FE .test.js | 193 | 193 | carry |
+| FE .test.jsx | 276 | 276 | carry |
+| FE test 총합 | 469 | 469 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% | carry |
+
+## 2. FE `e985522` 커밋 상세 (G2b+G16 테스트 lock)
+
+커밋: `test(v2/G2b+G16): lock 5/5 CMS catalog parity and parity-rules fallback`
+변경 파일 3개 (+64L/-17L):
+
+| 파일 | 변동 | 내용 |
+|---|---|---|
+| TransportServiceFeePanel.jsx | +21/-17 MOD | **parity-rules API 장애 시 static NHIS #44 fallback 내성 강화** (fail-open graceful degradation) |
+| TransportServiceFeePanel.test.jsx | +37 NEW tests | parity-rules API 장애 → fallback 동작 회귀 lock |
+| CmsPaymentMethodCatalogPanel.test.jsx | +23/-6 MOD | BE silverangel 5/5 collection closure 정합 test 강화 |
+
+핵심 개선: `TransportServiceFeePanel`이 parity-rules API 장애 시 NHIS #44 정적 주석으로 대체 표시
+→ G16 full-stack closure의 fail-open 회귀 방지
+
+## 3. 경쟁사 URL 재실측 결과
+
+### 3-1. NHIS #44 이동서비스비 — 375차 zero drift IDENTICAL
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- live HTTP 200 · 7,572B · md5 `c886ff1f` = on-disk IDENTICAL
+- 러-1~4 편도50% 1일1회 별지 제22호 verbatim 불변 (375차)
+- ogada `TransportServiceFeePanel` + `TransportServiceFeeParityCatalog` full-stack ✅ 우위 carry
+
+### 3-2. silverangel 2-URL — zero drift IDENTICAL (carry)
+- essentialWork: 131,664B md5 `c79c1be3` live=disk IDENTICAL
+- extraService: 81,637B md5 `f9c5d877` live=disk IDENTICAL
+- 「목욕제공—필수 아니며 제공시 청구」 · CMS 5-method verbatim 불변
+
+### 3-3. longterm 610 — 458B shell (oscillation 3-cycle carry)
+- live: 458B · md5 `c26a5e57` (빈 shell · 신규홈 브라우저 가드 추정)
+- canonical on-disk `0ea575be` (91,421B) 보존
+- oscillation: canonical ↔ 458B shell 반복 (BNK-607·608·609 3-cycle)
+
+### 3-4. longterm 502 단기보호 — 「미확인」 5-cycle carry (BNK-599→609)
+- HTTP 302 → /npbs/exception/securityException (size 0)
+- canonical on-disk `b5aee8c1` (105,552B · 단기보호 1등급 74,060) 보존
+
+### 3-5. ezCare home — cachebuster DRIFT · 의미 불변
+- live: 106,099B · mCnt 1: **9,283** (BNK-608 동일 · 불변)
+- live md5 ≠ disk (cachebuster 변동 only)
+- 저장 완료 (덮어쓰기)
+
+### 3-6. ezCare fnc — cachebuster DRIFT · 도입수 불변
+- live: 17,870B · 도입 **9,353**개 (BNK-608 동일 · 불변)
+- live md5 ≠ disk (cachebuster 변동 only)
+- 저장 완료 (덮어쓰기)
+
+### 3-7. law247 — cachebuster DRIFT · verbatim 불변
+- live: 78,450B · 제2025-247호 · 시행 2026.1.1 verbatim 불변
+- 저장 완료 (덮어쓰기)
+
+### 3-8. mohw126 — counter DRIFT · 본인부담상한액 verbatim 불변
+- live: 109,510B · 본인부담상한액 제2026-126호 verbatim 불변
+- 저장 완료 (덮어쓰기)
+
+## 4. 교차검증 — 미확인 항목 축소 시도
+
+### 4-1. carefor LIVE HTTP — 31-cycle 「미확인」 carry (BNK-558→609)
+- direct HTTP curl --connect-timeout 8 --max-time 18 → 000 timeout
+- Wayback 검증으로 내용 정합 확인 (func.php `6226e6eb` 371차 carry)
+
+### 4-2. demo-work — 「미확인」 carry
+- HTTP 000 carry · on-disk canonical `ebee4d47` 시설 셸 보존
+
+## 5. G16 TransportServiceFeePanel fail-open 상세
+
+BNK-608에서 G-NHIS-MASKED-NAME-FALLBACK BE FULL LANDED (37416ac).
+BNK-609에서 FE `e985522`가 G16 parity-rules API 장애 내성을 추가:
+- parity-rules API 호출 실패 → static NHIS #44 fallback notes로 대체 표시
+- CMS catalog 5/5 parity test 강화 (BE 5/5 closure BNK-600 대응)
+- 신규 P3 후보 없음 · 기존 candidate carry
+
+## 6. 갭 우선순위 재정렬 (BNK-609 기준)
+
+| 우선순위 | candidate | 상태 | 근거 |
+|---|---|---|---|
+| P2 carry | M11 직원급여 (id=11·12) | ❌ 0 route | 80.86%→87.76% 최대 KPI bump · 케어포/이지케어 모두 완비 |
+| P3 carry | G-NHIS-ALT-KEY-AUDIT-BADGE | BE ✅ FE △ | altKeyMatched badge UX · BE audit reason 기존 존재 |
+| P3 carry | G-PER-VISIT-ALLOWANCE-EDITOR | △ | M11 P2 하위 leaf · 이지케어 wAllowance-a200 |
+| P3 carry | G-STAFF-APP-ACCESS-LIFECYCLE | △ | 4-flag + 일괄발송 · 이지케어 mobile-aKey |
+| P3 carry | G-MONITORING-SAMPLING-RULE | △ | 60%·5명 규칙 · 이지케어 FAQ 21841 |
+| P3 carry | G-NEW-AGENCY-SELFDIAG-GRACE | △ | N+2 grace · 이지케어 FAQ 21842 |
+| P3 carry | G-GUARDIAN-MEETING | △ | 보호자 면담 |
+| P3 carry | G-VENDOR-ONBOARDING-CHECKLIST | △ | 협력업체 온보딩 |
+| P3 carry | G-PROGRAM-GROUP-CONFIG | △ | 프로그램 그룹 설정 |
+| P3 carry | G-AGENCY-INTERNAL-SCHEDULE | △ | 기관 내부 일정 (이지케어 agency-schedule) |
+| P3 carry | G-STAFF-ONBOARD-DOC-ITEMIZE | △ | 입사서류 8종 상세화 |
+| P2 carry | G-NHIS-ALT-KEY-AUDIT-BADGE | FE wire 0 hit | bathing indicator-27 FE wire = P2 coder 다음 |
+
+## 7. ogada 4축 P0/P1 재오픈 0 (60-cycle carry, BNK-549~609)
+
+App.jsx `@e985522` 7/7 path LIVE:
+- G14 care-plan-form ✅
+- G26 dashboard ✅ × 2
+- v1.3-C transport 8-route ✅
+- v2 CMS ✅
+- US-R01-c leave-ledger ✅ × 2
+
+## 8. 요약
+
+- **신규 core 갭 0**
+- **candidate 변동 0** (carry 5 P3 + M11 P2 + 3 NEW P3)
+- **가정 번복 0**
+- **상태 변경 1** (FE+1 only · BE carry · 양쪽 WT CLEAN)
+- **KPI 변경 1** (merge gate 788)
+- **미확인 carry 3** (longterm 502 5-cycle · carefor LIVE 31-cycle · demo-work)
+- **신규 snapshot 1건** (본 파일 BNK-609)
+- **덮어쓰기 4건** (ezcare_home · ezcare_fnc · law247 · mohw126)
+- **엑셀 포맷 변경 0**
+- **per-cycle minimum 4종 충족**
+- **tester FF merge 788 가속 권장**

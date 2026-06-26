@@ -1,0 +1,90 @@
+BNK-584 ogada git 실측 재산정 (교차검증·갭 우선순위 8h+) — 2026-06-24
+================================================================
+owner=BNK audience=PLN
+
+[1] SUBMODULE HEAD 실측 (git -C rev-parse develop)
+  FE develop : 9c25d44 (9c25d44e01ded80d14576b463db55769b27c88aa)
+               "feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): wire message_kind 1·12·21 dispatch UI"
+               WT CLEAN · BNK-583 @c04968c HEAD +1 · ahead 213 vs origin/test=ab4de83
+  BE develop : 1d5d441 (1d5d4414b4ee00b0b45487d5104c111b1b5d3126)
+               "feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff access key SMS dispatch"
+               WT CLEAN · BNK-583 @b9d0599 HEAD +1 · ahead 547 vs origin/test=598d108
+
+  FE 신규 commit (BNK-583 @c04968c → @9c25d44, +1):
+    9c25d44 feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): wire message_kind 1·12·21 dispatch UI
+      StaffNotificationDispatchPanel.jsx +189L (message_kind 1·21 UI)
+      GuardianDocumentNotifyPanel.jsx +13L (message_kind 12 wire)
+      services.js +24L (notifyStaffAccessKeyApi · notifyStaffMonthlyScheduleApi · notifyClientMonthlyScheduleApi)
+      competitorModuleCoverage.js id=10 coverage 0.65→0.7
+      + tests +140L
+
+  BE 신규 commit (BNK-583 @b9d0599 → @1d5d441, +1):
+    1d5d441 feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff access key SMS dispatch
+      POST /api/v1/staff/notifications/staff-access-key
+      StaffAccessKeyNotificationService (message_kind=1 · one-time token · phone/role guards)
+      StaffAccessKeyNotificationServiceTest +187L
+      MustApiEndpointRoutingTest +29L
+
+[2] KPI 집계 (git ls-tree / git grep @develop)
+  Route       : 112 (111 `<Route\b` + 1 `<Routes>` wrapper, src/App.jsx)   ← 불변
+  page        : 91 (90 *Page.jsx + RootRedirect)                            ← 불변
+  Flyway      : V1–V175 (175 files, 최고 V175)                              ← 불변
+  BE Test     : 258 (*Test.java)                                            ★ (+1 vs BNK-583 257)
+  FE test     : 466 (192 .test.js + 274 .test.jsx)                          ★ (+1 jsx vs BNK-583 465)
+  모듈 coverage: 23.05/29 = 79.48%   (id=10 0.65→0.7 · competitorModuleCoverage.js @9c25d44)
+  merge gate  : FE 213 + BE 547 = 760  (BNK-583 758 → +2)
+
+[3] ★★★ G-SMS-TEMPLATE-CATALOG cluster — message_kind 1·12·21 end-to-end dispatch UI (확인)
+  ezCare on-disk mobile-sendW 4d47d14f — 7 message_kind:
+    1 접속키 발송 · 11 본인부담 · 12 일정표-수급자 · 13 급여제공내역 · 19 직원인권보호 · 21 일정표-직원 · 22 급여명세서
+
+  ogada dispatch wire 완료(3/7 UI+API):
+    message_kind=1  → POST /api/v1/staff/notifications/staff-access-key (BE @1d5d441)
+                      + StaffNotificationDispatchPanel STAFF_ACCESS_KEY (FE @9c25d44)
+    message_kind=12 → POST /api/v1/clients/{id}/notifications/client-monthly-schedule (BE carry @8631d1e)
+                      + GuardianDocumentNotifyPanel wire (FE @9c25d44)
+    message_kind=21 → POST /api/v1/staff/notifications/staff-monthly-schedule (BE carry @b9d0599)
+                      + StaffNotificationDispatchPanel STAFF_MONTHLY_SCHEDULE (FE @9c25d44)
+
+  잔여 dispatch 후보(P3): 11 본인부담 · 13 급여제공 · 19 인권공지 · 22 급여명세서
+  (22는 G-7-1-4CHANNEL statement-dispatch와 별도 ezCare SMS template — 교차검증 carry)
+
+[4] 4축+leave-ledger P0/P1 재오픈 0 (33-cycle carry, BNK-549~584)
+  App.jsx @9c25d44 LIVE grep:
+    G14 /clients/:clientId/care-plan-form
+    G26 /dashboard · /dashboard/hq
+    v1.3-C /transport/service-fees
+    v2 /billing/cms
+    US-R01-c /staff/annual-leaves · /staff/leave-ledger
+  template-catalog grep @develop = 3 hit (carry)
+  candidate carry 3건 P3: G-VENDOR-ONBOARDING-CHECKLIST · G-PROGRAM-GROUP-CONFIG · G-ORAL-CARE-OBSERVATION-REPORT
+
+[5] 증거 URL 재실측
+  (a) NHIS #44 이동서비스비 357차 zero drift (확인)
+    URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+    live: HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+    → 357차 IDENTICAL carry (덮어쓰기 0)
+
+  (b) silverangel weekly notice probe +2 (확인)
+    221615 · 221620 → HTTP 200 · 51,765B · md5 8437f255 미게시 shell IDENTICAL
+    notice list → HTTP 200 · 3,594,181B · md5 52c9457f IDENTICAL
+    → weekly notice 0 · latest real 221563(6/18) · 8-day stale · next ~6/25 carry
+
+  (c) longterm 502 partial shell 14-cycle 「미확인」 carry
+    live: HTTP 200 · 422B · md5 d3c90b333be1f8d818978eaf0917ba76
+
+  (d) ezCare FAQ 21825 신규 evidence (확인)
+    URL : https://ezcare.easyms.co.kr/help/faq.ez?rowid=21825
+    live: HTTP 200 · 16,629B · md5 a5f73548021274cceea47bd16435cdbb
+    제목: [비정기] 직원 입사.퇴사 업무흐름
+    → RFID·희망이음 인력변경·급여명세서·근로계약서 워크플로 verbatim (엑셀 포맷 변경 0)
+
+[6] 요약 카운트 (BNK-584)
+  가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 3 P3)
+  · 상태 변경 2(FE +1 · BE +1 cross-stream advance)
+  · KPI 변경 2(BE Test 257→258 · 모듈 79.31%→79.48% id=10 0.7)
+  · merge gate 758→760(+2)
+  · 미확인 carry 2(carefor LIVE 17-cycle · longterm 502 14-cycle)
+  · 신규 snapshot 2건(ogada_git_remeasure_bnk584.txt · cross_gap_priority_bnk584.txt · ezcare_faq_21825_bnk584.html)
+  · 덮어쓰기 0건(verbatim 불변) · 엑셀 포맷 변경 0
+  · per-cycle minimum 4종 충족

@@ -1,0 +1,39 @@
+cross_gap_priority_bnk616.txt — BNK-616 교차검증·갭 우선순위 8h+ rotation (2026-06-25T08:56Z)
+================================================================================
+[BNK] benchmark_researcher · BNK-616 cycle · doc:owner=BNK doc:audience=PLN
+
+요약
+====
+- ★★★ **P2 closure 1건** — bathing indicator-27 FE wire (`3d7f13b` 10-file +457L)
+  BNK-603~615 「FE wire 0 hit P2 carry」 → **FULL LANDED** · false-closure 해소
+- ★★★ **P3 partial closure 1건** — G-REFUND-FEE-DEDUCTION catalog layer BE LANDED (`2adae591`)
+  FE wire 0 hit → **P3 split** `G-REFUND-FEE-FE-WIRE` 신규 carry
+- ★★★ **carefor 7-9 KCP 환불 수수료 ↔ ogada catalog FULL crosswalk** (375차 Wayback)
+- ★★★ **NHIS #44 381차 zero drift** · silverangel 2-URL IDENTICAL
+- ★ **4축+leave-ledger P0/P1 재오픈 0** (67-cycle carry)
+- ★ **M11·M12 P2 1순위 lever carry** — id=11+12 closure +6.9pp
+- ★ **엑셀 포맷 변경 0** · ezCare FAQ 21844 IDENTICAL
+
+ogada git 실측
+==============
+FE `@3d7f13b` (+1) · BE `@2adae591` (+1) · merge gate **798** · Route 112 · page 91
+BE Test 268 (+1) · @Test 1936 (+11) · FE test 471 (+1) · 모듈 80.86% carry
+
+P0/P1/P2/P3 재정렬 (BNK-616)
+=============================
+| 코드 | BNK-615 | BNK-616 | 변동 |
+|---|---|---|---|
+| bathing indicator-27 FE wire | P2 carry (0 hit) | **LANDED** `3d7f13b` | **P2→closure** |
+| G-REFUND-FEE-DEDUCTION | P3 (catalog+FE) | BE catalog ✅ · FE ❌ | **partial → FE wire P3 split** |
+| G-EASYPAY-PROVIDER-CATALOG-FE-WIRE | P3 | P3 carry | 변동 0 |
+| M11·M12 | P2 1순위 | P2 1순위 | 변동 0 |
+| G14·G26·v1.3-C·v2 CMS·US-R01-c | P0/P1 LIVE | 7/7 path LIVE `@3d7f13b` | 재오픈 0 |
+
+candidate P3 carry (BNK-616 정본):
+- M11/M12 P2
+- G-EASYPAY-PROVIDER-CATALOG-FE-WIRE
+- **G-REFUND-FEE-FE-WIRE** (NEW split from G-REFUND-FEE-DEDUCTION BE landing)
+- G-FINANCE-BPO-PARTNERSHIP · G-MARKET-SHARE-DASHBOARD · G-PER-VISIT-ALLOWANCE-EDITOR
+- G-STAFF-APP-ACCESS-LIFECYCLE · G-MONITORING-SAMPLING-RULE · G-NEW-AGENCY-SELFDIAG-GRACE
+
+tester FF merge **798** 가속 권장

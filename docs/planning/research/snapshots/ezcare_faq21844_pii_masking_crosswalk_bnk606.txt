@@ -1,0 +1,206 @@
+# BNK-606 — 이지케어 역공학 2–4h crosswalk extract
+
+조사일: 2026-06-25T02:18:00Z (KST 11:18)  •  rotation: 이지케어 역공학 2–4h
+ogada baseline 실측: FE `@5afef2d` (carry · WT CLEAN · BNK-605 동일 SHA · HEAD zero advance 1-cycle · ahead 226 vs `origin/test=ab4de83`) / BE `@e4f83af` `fix(v2/G16): align transport parity-rules RBAC with API spec` (BNK-605 `@5a717ac` HEAD +1 · WT CLEAN · ahead 559 vs `origin/test=598d108`)
+merge gate: 226 + 559 = **785** (+1 vs BNK-605 784)
+112 Route (111 `<Route\b` + 1 `<Routes>`) · 91 page (90+RootRedirect) · V1–V177 · BE Test 262 · BE @Test **1906** (+2 from BNK-605 1904) · FE test 469 (193 + 276) · 모듈 80.86%
+
+========================================================================
+1. ★★★ FAQ 21844 — `260624_공단 개인정보보호 표시 방식 변경에 따른 방문일정 연동 안내` (BNK-606 신규)
+========================================================================
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web  •  HTTP 200  •  14,474B  •  md5 `d0aa760c4d3cf494b524466691d7fd4a`
+on-disk: `docs/planning/research/snapshots/ezcare_faq_21844_bnk606.html`
+
+이지케어 verbatim 인용:
+> "안녕하세요. 이지케어입니다. 공단 개인정보보호 강화 조치로 공단 엑셀 자료 내
+>  수급자, 종사자 이름 일부가 마스킹(*) 처리로 변경되었습니다.
+>  공단의 변경된 개인정보 표시 방식으로 인한 필요한 조치는 진행하였으나,
+>  변경된 방식으로 인해 일부 기관에서 계획일정 반영이 원활하지 않을 수 있습니다.
+>  ※ 해당 현상은 공단 개인정보보호 정책 변경으로 인해 발생된 사항임을 안내드립니다."
+
+분석:
+- 발신일: **2026-06-24** (어제) — 1차 fresh real notice within 24h.
+- 영향 채널: NHIS(공단) → 기관 ERP 다운로드 엑셀(예: 일정통보, RFID 태그 비교, 급여내역통보)
+- 이름 마스킹 예: `홍길동` → `홍*동` (이지케어 본문은 마스킹 처리만 명시·자리수 비공개)
+- 이지케어 측 대응 carry: "필요한 조치는 진행"(상세 미공개), 다만 일부 기관 「계획일정 반영」 차질 자인.
+
+ogada crosswalk (실측):
+| 영역 | 파일 | 발견 |
+|---|---|---|
+| Excel 파싱 | `NhisImportService.java` (BE) | `client.getName()` 직접 매칭 — 마스킹 fallback **없음** |
+| Row 매칭 | `MatchNhisImportRowRequest.java` | matching by name/ltc cert search term — 마스킹 시 cert/주민번호 후미 등 alt key 필요 |
+| 비교 패널 | `VisitNhisComparisonPanel.jsx` (FE) | NHIS 행 vs ogada 행 row 비교 — 마스킹된 이름은 unique 매칭 불가 |
+
+→ **신규 P2 candidate**: `G-NHIS-MASKED-NAME-FALLBACK` —
+  · NhisImportRowParser: 이름 패턴 `^[가-힣]\*[가-힣]+$` 감지 시 LTC 인증번호·생년·주민 후미·전화 끝자리로 alt-match
+  · MatchNhisImportRowRequest: alt-key resolution 옵션
+  · FE: 「공단 이름 마스킹 감지 — 대체 키로 매칭됨」 안내 라벨
+  · 우선순위: **P2**(즉시 운영 차질 가능 → planner v1.2.x 후보)
+  · 케어포(func.php) / 엔젤(silverangel) / 롱텀(공단) 별도 안내 없음 — ezCare 단일 자인 → ogada가 동일 환경 직격 영향 가정
+
+========================================================================
+2. ★★★ FAQ 21841·21842 — `[2026 모니터링] 문항 12-14·15번` (BNK-606 신규)
+========================================================================
+FAQ 21841 (문항 12-14): 14,756B · md5 `c8bdc432c52019296f8f67642f6b8665`
+FAQ 21842 (문항 15): 14,756B · md5 `75cedf76d815cc2715efc3ffa495c3e0` (size identical, semantic distinct)
+
+FAQ 21841 verbatim:
+> "Q. [2026 모니터링] 문항 12-14번
+>  점검방향: 해당 기관을 이용하는 수급자(또는 보호자) 요양보호사의 서비스 수준을 만족하는지 등을 점검 한다.
+>  점검방법: 수급자(또는 보호자) 기관별 **5명 임의로 선정하여 유선상담**을 실시함
+>  상담대상: 모니터링 실시 월의 직전 **3개월** 부터 모니터링 실시 일까지 급여 이용 중인 수급자(또는 보호자)
+>  적용방법(최종): 점검결과 【Y】: 항목별 수급자(또는 보호자) 5명 점검결과의 **60%이상** 을 적용한다."
+
+FAQ 21842 verbatim:
+> "Q. [2026 모니터링] 문항 15번
+>  점검방향: 기관에서 서비스 모니터링 매뉴얼에 따라 자가진단이 지속적으로 실시하고 있는지 점검 한다.
+>  점검결과 【Y】: 직전 **6개월 동안 매월** 자가진단을 실시함
+>  대상기간: 모니터링 실시 월의 직전 6개월
+>  적용방법(신규기관): 가산을 적용받은 월(자가진단 등록가능 월)부터 지속적으로 실시함
+>  ※ 자가진단 등록가능 월: 가산을 1월부터 받았다면, **자가진단은 3월부터 가능함**"
+
+ogada crosswalk:
+| 평가 항목 | ezCare 명시 | ogada Route/엔티티 |
+|---|---|---|
+| 만족도 5명 임의 유선상담 | ezCare 안내만 | `/case-management/meetings` ✅ + `attendeeOpinions` (G32 BNK-391·V155) — **5명 표본 60% 룰 은 미구현** |
+| 자가진단 6개월 매월 | ezCare 안내만 | `/staff/self-diagnoses` ✅ (V155 self_diagnoses + monthly 컬럼) — 6개월 history 확인 가능, **신규기관 가산 시작월=N+2 룰은 미구현** |
+
+→ 신규 P3 candidate 후보 (정책 룰 코드화 — planner v1.3+):
+  · `G-MONITORING-SAMPLING-RULE` (60% threshold, 5명 표본)
+  · `G-NEW-AGENCY-SELFDIAG-GRACE` (가산 시작월+2 grace)
+
+========================================================================
+3. ★★★ ezCare 도입 기관 수 실시간 +3 — 시장 성장 신호 (BNK-606 신규)
+========================================================================
+| 페이지 | 카운터 | BNK-605 | BNK-606 | Δ | verbatim |
+|---|---|---|---|---|---|
+| home `ezcare_home.html` | mCnt 1 (도입) | 9280 | **9283** | +3 | `1: 9283,` |
+| home `ezcare_home.html` | mCnt 2 (실사용) | 4600 | **4601** | +1 | `2: 4601,` |
+| home `ezcare_home.html` | mCnt 3 (재가) | 2353 | 2353 | 0 | verbatim |
+| home `ezcare_home.html` | mCnt 4 (시설) | 1820 | 1820 | 0 | verbatim |
+| fnc `ezCare_fnc.html` | 도입 (st2) | 9,350 | **9,353** | +3 | `전국 9,353개 기관 사용중` |
+| charge `ezCare_charge.html` | 가격 | 33,000/25,850/55,000 | 33,000/25,850/55,000 | 0 | verbatim 불변 |
+| change_work | RFID·이중일정 | verbatim | verbatim | 0 | "양보호사간 시간 중복도 체크" "RFID조회" "듀얼/트리플 모니터" carry |
+
+해석: 1-cycle 사이 mCnt 1 +3 / fnc +3 동시 증가 → **하루 평균 도입 +3 기관** 의미적 시장 성장 신호 (15+ cycle 누적 첫 동시 increment). BNK-563(2026-04 추정 9,209) 대비 144개 증가 = 약 3개월 ~144 = 일평균 1.6 도입 추정 → 본 cycle 일평균 +3은 평소 1.9배. 단발성 가능성 carry, 다음 사이클 재확인.
+
+ogada 함의: marketing copy/competitor coverage 의 ezCare 도입 기관 수 인용 시 「9,353개 기관(@2026-06-25)」 으로 갱신.
+
+========================================================================
+4. ★★★ PGID wAllowance-a200 — 방문간호/방문목욕 건별수당 관리 (BNK-606 신규)
+========================================================================
+URL: `https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-a200`  •  HTTP 200(인증)  •  95,411B  •  md5 `eebfd34dc55720a754b00e9973023e5e`
+on-disk: `docs/planning/research/snapshots/ezcare_new_ez_pgid_wAllowance-a200.html`
+title: `[DEMO 이지케어] 체험 이지케어 재가복지센터`  •  PGID=`wAllowance-a200`  •  sKind 정본: `방문요양,방문목욕`
+정본 헤더: `<h4>방문간호/방문목욕 건별수당 관리</h4>`
+
+filter (3-radio · sKind):
+| value | label |
+|---|---|
+| `""` (default) | 전체 |
+| `003` | 목욕 |
+| `002` | 간호 |
+
+grid `#grid-a200` colModel (jqGrid):
+| name | label | width | fixed | align | formatter | editable | hidden |
+|---|---|---|---|---|---|---|---|
+| sKind_name | 서비스구분 | 100 | true | center | — | false | false |
+| sCode_name | 서비스명 | — | — | left | — | false | false |
+| sCode_amount | 수가 | 100 | true | right | integer | false | false |
+| **allowance** | **요양보호사 수당** | 100 | true | right | integer | **true** | false |
+| act | 저장 | 40 | true | center | — | (button) | false |
+| sCode | sCode | — | — | — | — | true | true |
+| sCode2 | sCode2 | — | — | — | — | true | true |
+
+핵심 차이:
+- ezCare: 서비스 코드 (sCode) 별로 **수가**(NHIS 공시) + **요양보호사 수당**(기관 자체 산정·편집 가능) 2-컬럼 분리
+- 저장 endpoint 추정: jqGrid `editRow` `saveRow` → `/page/wAllowance/json.php` (run.php 기반 행단위 inline edit)
+
+ogada crosswalk (실측):
+- `staff/leave-ledger` `staff/annual-leaves`(US-R01-c, US-R03-e): 연차/유급휴일 잔여 추적
+- `staff/work-attendance` (V169): 일별 근무 attendance
+- `payroll/per-visit-rate` — **0 route grep** → **미구현**
+
+→ 신규 P3 candidate: `G-PER-VISIT-ALLOWANCE-EDITOR` — 서비스 코드 × 요양보호사 수당 inline edit table.
+  · 케어포 M11-4 (수당/공제 마스터)와 의미 인접 — 양사 모두 「수당 마스터」 구현. BNK-602/605 carry M11 P2 정본화의 **하위 leaf**.
+  · 우선순위 carry: M11 직원급여 P2 우산 안에서 다루도록 planner 권고.
+
+========================================================================
+5. ★★ PGID mobile-aKey — 7. 앱 접속키 관리 (BNK-606 신규)
+========================================================================
+URL: `https://ezcare.easyms.co.kr/new.ez?PGID=mobile-aKey`  •  HTTP 200(인증)  •  136,424B  •  md5 `5cd56352aa84693002ad344303993aff`
+on-disk: `docs/planning/research/snapshots/ezcare_new_ez_pgid_mobile-aKey.html`
+title: `[DEMO 이지케어] 체험 이지케어 재가복지센터`  •  헤더: `<h3>7. 앱 접속키 관리</h3>`
+
+tabs:
+| anchor | label | 비고 |
+|---|---|---|
+| `tabs-mobile-app_aKey-01` | 요양보호사·간호사 | 직원 onboarding |
+| `tabs-mobile-app_aKey-02` | 수급자 | 클라이언트 onboarding |
+| `tabs-mobile-app_aKey-04` | 로그인기록 | **HTML 주석 처리(disabled)** — 향후 추가 가능성 |
+
+caregiver tab filter (4-status lifecycle):
+| filter | 옵션 | value | 의미 |
+|---|---|---|---|
+| 상태 | 전체/활동/휴직/퇴사/기타 | `""`/`01`/`02`/`03`/`04` | 직원 근태 상태 |
+| 초대장여부 | 전체/생성/미생성 | `""`/`y`/`n` | 초대장 발급 여부 |
+| 앱설치여부 | 전체/설치/미설치 | `""`/`y`/`n` | 단말기 설치 완료 여부 |
+| 접속허용여부 | 전체/허용/불가 | `""`/`y`/`n` | 관리자 승인 여부 |
+
+상단 bulk 버튼: `<button uKind="wa">초대장 일괄발송하기</button>` — caregiver 일괄 SMS 발송.
+
+ogada crosswalk (실측):
+- BE: `StaffAccessKeyNotificationService` + `StaffAccessKeyNotifyRequest/Response` (G-SMS-TEMPLATE-CATALOG)
+- FE: `StaffNotificationDispatchPanel.jsx` — **1-button dispatch** UI (개별 발송)
+- **개별 4-status 관리 dashboard·일괄 발송 toggle 없음** — `app_installed`·`access_allowed` 컬럼 자체가 없음
+
+→ 신규 P3 candidate: `G-STAFF-APP-ACCESS-LIFECYCLE` — 4-flag 모니터링 + 일괄 발송:
+  · BE: `StaffAppAccessEntity` (aKey_issued, app_installed, access_allowed, last_login_at)
+  · FE: 4-radio filter + grid + bulk-dispatch button
+  · M8 직원관리 모듈 cover 의 일부 — 모듈 id=8 (현 coverage 1.0) **유지**, KPI 영향 0.
+  · 우선순위: P3 (v1.3+ 모바일 카드 활성화 시기에 맞춤)
+
+========================================================================
+6. ★★ ogada git 실측 — BE +1 (G16 RBAC 보강) (BNK-606 정합)
+========================================================================
+BE: `@e4f83af` `fix(v2/G16): align transport parity-rules RBAC with API spec`
+  • 2-file +22/-1: `TransportController.java`(-1/+1 RBAC anno)·`RoleBasedControllerAccessTest.java`(+21L: hq_admin·branch_admin only · headcaregiver·socialworker·staff·family_guardian·anonymous deny)
+  • BE @Test: 1904 → **1906** (+2 deny 케이스)
+  • BE Test class file: 262 carry
+FE: `@5afef2d` carry (BNK-605 동일 SHA · HEAD zero advance 1-cycle · WT CLEAN)
+merge gate: **785** (+1 from 784 · cross-stream BE only)
+
+함의: 평소 「FE 표시 + BE RBAC enforcement」 풀스택 closure 패턴 carry. NHIS #44 G16 4-layer cascade (BE catalog → FE wire → BE RBAC) 종결 단계.
+
+========================================================================
+7. ★ 변동·번복 회계
+========================================================================
+| 항목 | BNK-605 | BNK-606 | 번복 |
+|---|---|---|---|
+| FE/BE HEAD | `5afef2d`/`5a717ac` | `5afef2d`(carry)/`e4f83af`(+1) | 0 |
+| 신규 core 갭 | 0 | **0** | 0 |
+| candidate | 5 P3 + M11 P2 정본화 | carry 5 P3 + M11 P2 + **+2 NEW** (`G-NHIS-MASKED-NAME-FALLBACK` **P2** · `G-STAFF-APP-ACCESS-LIFECYCLE` P3) | +2 candidate |
+| 가정 번복 | 0 | 0 | 0 |
+| 상태 변경 | 2 (FE+1·BE+1 cross-stream) | 1 (BE+1 only · FE carry) | — |
+| KPI 변경 | 1 (merge gate 784) | 2 (BE @Test 1906·merge gate 785) | — |
+| 미확인 carry | 3 (longterm 502·carefor LIVE·demo-work) | carry 3 | 0 |
+| 신규 snapshot | 1 | **8** (FAQ21841/21842/21844_bnk606 + wAllowance-a200 + mobile-aKey + 본 extract + 5 overwrite drift 갱신) | — |
+| 덮어쓰기 | 0 | **5** (home·fnc·charge·change_work·new_ez_demo cachebuster + counter DRIFT) | — |
+| 엑셀 포맷 변경 | 0 | **1** (NHIS 공단 엑셀 — 이름 마스킹) — **외부 정책 변경 1차 자인** | +1 외부 |
+
+per-cycle minimum 충족 ✅:
+- 신규 evidence URL ≥1: ✅ FAQ 21841·21842·21844 3건
+- 메뉴/필드/워크플로 1블록+: ✅ wAllowance-a200 colModel 7-field + mobile-aKey 4-flag lifecycle 2블록
+- COMPETITOR_MATRIX 1행 이상 ogada `@HEAD` 갱신: ✅ BNK-606 entry
+- BENCHMARK_REPORT § 신규 소절 1건+: ✅ §606 작성
+
+tester FF merge **785** 가속 권장.
+
+========================================================================
+8. ★ planner 권고 (BNK-606)
+========================================================================
+1. **★★★ G-NHIS-MASKED-NAME-FALLBACK P2 신규 등록** — FAQ 21844 (2026-06-24) NHIS 정책 변경 직격, ezCare 자인 「일부 기관 계획일정 반영 차질」 → ogada `NhisImportService.matchByName` alt-key fallback 우선 구현 (cert/생년/전화 후미).
+2. **★ ezCare 도입 +3/cycle 시장 성장 신호** — 9,353개 기관 (mCnt 1: 9,283) 갱신 — competitor_coverage 인용 데이터 refresh.
+3. **★ M11 직원급여 P2 정본화 carry** — wAllowance-a200 per-visit 수당 + a100/awData/severance/payrollcost 4-page = 5-page wAllowance 모듈 정본 → ogada id=11·12 closure 단일 최대 KPI bump 레버(80.86%→87.76%) carry.
+4. **★ G-STAFF-APP-ACCESS-LIFECYCLE P3 신규** — 4-flag dashboard + 일괄 발송 (M8 cover 보강, 모바일 카드 활성화 시기 v1.3+).
+5. **G16 BE RBAC closure** — `/api/v1/transport/service-fee-parity-rules` hq_admin/branch_admin only 잠금 — security 회귀 방지 ✅.

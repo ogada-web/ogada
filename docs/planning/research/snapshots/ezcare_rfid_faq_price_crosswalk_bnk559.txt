@@ -1,0 +1,59 @@
+# BNK-559 ezCare 역공학 cross-walk (2026-06-23T20:15:00Z)
+# rotation: 이지케어 2–4h — /new.ez·ezCare_fnc·Channel.io·FAQ rowid·RFID·가격·도입 재실측
+# ogada @170ce56(FE WT CLEAN)/@01edba7(BE WT CLEAN) · merge gate 732(+4 vs BNK-558 728)
+
+## 1. 가격·도입 3-source 재실측
+
+| Source | HTTP | Size | md5 | Counter / 가격 | 판정 |
+|--------|-----:|-----:|-----|----------------|------|
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | 17,870B | `bcd589bb` | **9,346개** 기관 (BNK-553 `02e1741c` 9,345 **+1**) | DRIFT 실 counter |
+| [home](https://ezcare.easyms.co.kr/) | 200 | 106,156B | `6b526a4f` | **9,274** 재가기관 (BNK-553 `5e4a3f8d` 9,273 **+1**) · mCnt `{1:9274,2:4595,3:2353,4:1820}` · KST **2026년 06월 24일** | DRIFT counter+date |
+| [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 200 | 22,979B | `343403a5` | 셋팅 **33,000**·37명 **25,850**·구독 **55,000** verbatim · **신규** `40%할인 (2026년 06월 30일까지)` 마케팅 배너 | DRIFT cachebuster+promo |
+| [/?PG=e01](https://ezcare.easyms.co.kr/?PG=e01) carry | — | — | `158a0d92` | 도입 **9,342** (3-source figure coexistence carry) | 미재실측 carry |
+
+## 2. FAQ rowid 8-probe (이번 회차)
+
+| rowid | HTTP | Size | md5 | 제목/판정 |
+|------:|-----:|-----:|-----|-----------|
+| [21450](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21450&type=web) | 200 | 17,278B | `e1eb78e1` | **★ 신규 named** 「4.1 RFID태그내역↔공단계획 비교」·엑셀 선행 업로드·비실시간 비교 |
+| [21800](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21800&type=web) | 200 | 20,307B | `156d08d1` | **★ 정정** 「[연간] 정기 욕구사정」·평가지표 15·`2.2정기욕구평가 현황` (BNK-540 excel 가이드 오표기 정정) |
+| [21815](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21815&type=web) | 200 | 25,773B | `85bda450` | 변경사유 조회·`chg_what/before/after` excel carry IDENTICAL |
+| [21820](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21820&type=web) | 200 | 18,730B | `7944b467` | 급여계약 통보·전월 말일·월금액/한도액 workflow carry |
+| [21695](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21695&type=web) | 200 | 14,526B | `1ac02138` | 7.1 통장 차폐·menu deny-list carry |
+| 21843/21844/21856/21900 | 200 | 13,327B | `e5762090` | 미게시 stub IDENTICAL |
+
+## 3. 데모 PGID 5건 re-fetch (POST login.php oCode=DEMO)
+
+| PGID | Size | md5 (old→new) | Δ | 핵심 carry |
+|------|-----:|---------------|--:|------------|
+| schedule-fix | 149,576B | `dd54b420`→`a651e8e1` | 0 | `#grid-schedule-p500` 17-col·일괄확정/취소·`tAmount_noExt`/`severe_amount` |
+| schedule-rfid | 150,501B | `19948db7`→`f57aaf3e` | +211B | `comp_01~09` 8-leaf·`rfid_upload`·270분초과 red formatter |
+| duplicate-schedule | 93,401B | →`8f80f275` | — | `faqDir=duplicate` 고객지원 dialog·구인공고 grid (이중일정 탐지 PGID 아님·negative carry) |
+| pAmt-a100 | 134,593B | `44dec417`→`e4657785` | +2B | `grid-pAmt-a100-notYet`→schedule-fix gate·CMS 14.5% carry |
+| schedule-p100 | 113,979B | `a55157b8`→`5d5d89b2` | 0 | 2-tab 일정표+직원인권문자·print/엑셀 6-endpoint |
+| demo shell | 145,310B | `c2664455`→`eb91bb22` | +1,651B | 10-module nav·top-nav `95286775` IDENTICAL |
+
+## 4. Channel.io tri-source
+
+| Article | Size | md5 | 판정 |
+|---------|-----:|-----|------|
+| [01805b93](https://docs.channel.io/ezcare/ko/articles/%EC%9D%BC%EC%A0%95%ED%99%95%EC%A0%95-%EA%B0%80%EC%9D%B4%EB%93%9C-01805b93) | 243,635B | `c1c6eb4e` (was `91934244`) | SIZE IDENTICAL·cachebuster DRIFT·원천세 확정취소 제한 verbatim carry |
+| [bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) | 228,038B | `b361e076` (was `dbd710c8`) | SIZE IDENTICAL·검은/빨간 semantic carry |
+
+## 5. ogada RBAC closure (BNK-558 in-flight → commit)
+
+- FE `2e7374b` `fix(auth): align client RBAC with backend role hierarchy` — `roleHierarchy.js`+test committed
+- FE `170ce56` `test(clients): cover caregiver edit link on ClientDetailPage`
+- BE `01edba7` `feat(clients): extend client PATCH RBAC to caregivers and HQ admins`
+- 양쪽 WT CLEAN · merge gate **732** (FE197+BE535)
+
+## 6. planner 액션
+
+| # | 우선순위 | 액션 |
+|---|---------|------|
+| 1 | P2 | FAQ rowid 21800 = 정기 욕구사정(평가#15) — BNK-540 「excel 가이드」오표기 문서 정정 |
+| 2 | P3 carry | charge 40% 프로모(06-30 마감) — ogada 가격 정책 무관·마케팅 참고만 |
+| 3 | P3 carry | 재가 G21 RFID→일정확정→청구 lifecycle — 주야간 MVP out-of-scope 유지 |
+| 4 | P1 closure | RBAC `roleHierarchy`/`RoleHierarchy` REQUIREMENTS 정본화 (BNK-558 carry closure) |
+
+가정 번복 0 · 가정 정밀화 1(FAQ21800 오표기) · 신규 core 갭 0 · 엑셀 포맷 변경 0

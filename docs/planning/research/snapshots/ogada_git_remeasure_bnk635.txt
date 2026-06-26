@@ -1,0 +1,137 @@
+BNK-635 — ogada git 실측 6–8h (2026-06-25T20:54Z · KST 익일 05:54)
+=========================================================================
+
+본 cycle 초점: ogada src/backend·src/frontend develop HEAD 실측·KPI 재산정
+(Route·page·테스트·BE @Test·모듈 커버 %·merge gate). COMPETITOR_MATRIX
+ogada `@HEAD` 열 일괄 갱신. BNK-634 baseline 대비 변동 검증·V180 정합.
+
+## 1. submodule git HEAD 실측 (확인)
+
+| 축 | SHA | branch | 상태 | BNK-634 대비 |
+|---|---|---|---|---|
+| FE | `b7004ca` | develop | WT **CLEAN** | **HEAD +2** (DIRTY 2 → CLEAN 흡수) |
+| BE | `3342938` | develop | WT **DIRTY 2 + 1 untracked** | **HEAD zero advance**(carry) · V180 untracked carry |
+
+### FE HEAD chain (BNK-634 `33944e4` → BNK-635 `b7004ca`)
+
+1. `bee97b9` `ux(a11y/FE-16): promote refund-fee-preview CSS + fix schedule page a11y (UXD-165)` (2026-06-25 20:21:45 UTC)
+   - `src/pages/StaffMonthlySchedulePage.jsx` +6/-2 — `role="group"` `aria-label="근무 요약"`·`aria-busy={loading}` (WCAG 4.1.3)
+   - `src/styles/components.css` +39L — `.ds-refund-fee-preview` 단일 source 승격 (grid 2-col label/amount·surface-muted bg·forced-colors border)
+   - **2 regression fix** introduced in BNK-633 `33944e4` (US-R09 monthly schedule a11y) + **FE-16** (`RefundRecordModal` fee-preview <dl> CSS 누락 보강)
+
+2. `b7004ca` `fix(v1.2.1/QA-B95): support legacy singular operation blocker keys` (2026-06-25 20:36:02 UTC)
+   - `src/e2e/liveBackendProbe.js` +13/-1 — singular `operationBlocker` 키 호환 readiness 게이팅
+   - `src/e2e/liveConfig.js` +9/-1 — persisted probe state singular key normalize
+   - `src/test/liveE2eHarness.test.js` +25/-0 — 회귀 lock(legacy singular form)
+
+### BE WT DIRTY 2 + 1 untracked 내용
+
+- `src/main/java/com/ogada/backend/system/HealthController.java` +1/-1 — `G21_SEED_DISABLED_DETAIL` 상수 옆 신규 `G21_SEED_SERVICE_UNAVAILABLE_DETAIL = "g21-seed=service-unavailable"` 추가·boot 미가용 payload 시 `g21-seed=disabled` → `g21-seed=service-unavailable` 의미 분리 (QA-B95 g21-seed detail 정밀화 in-progress refactor)
+- `src/test/java/com/ogada/backend/system/HealthControllerTest.java` +1/-1 — assertion 정합 ("g21-seed=disabled" → "g21-seed=service-unavailable")
+- `src/main/resources/db/migration/V180__program_client_groups_integrity_us_p01.sql` **untracked 165L** — DBA defense-in-depth: V179(`program_client_groups`/`program_client_group_members` BNK-627 신규) 5-항목 보강 ① `uq_..._org_branch_id` 3-way UK ② `fk_..._group_branch_org` 3-way FK(cross-branch 차단) ③ `trg_..._set_org_branch` client_id → org/branch 자동 복사 ④ `trg_..._guard_active_client` 퇴소·비활성 INSERT 차단 ⑤ `trg_..._set_created_by` actor backstop + ⑥ purge backing index (V49 activity_programs·V74 functional_recovery_plans·V169 패턴 일관 적용)
+
+### ahead vs origin/test
+
+| 축 | ahead | BNK-634 |
+|---|---|---|
+| FE `b7004ca` vs `origin/test=ab4de83` | **245** | 243 (+2 FE-only) |
+| BE `3342938` vs `origin/test=598d108` | **573** | 573 (carry) |
+
+**merge gate = 245 + 573 = 818** (+2 cross-stream vs BNK-634 **816** FE-only advance).
+
+## 2. KPI 재산정 (git 실측 정본)
+
+| KPI | 값 (`@b7004ca`/`@3342938`) | BNK-634 대비 |
+|---|---|---|
+| FE Route | **118** (117 `<Route\b` + 1 `<Routes>` wrapper) | = |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect inline) | = |
+| FE .test.js | **196** | = |
+| FE .test.jsx | **283** | = |
+| FE test total | **479** | = |
+| BE 마이그레이션 | **V1–V179** (V180 untracked carry) | = |
+| BE `Test.java` | **270** | = |
+| BE `Tests.java` | **1** | = |
+| BE Test 총 | **271** | = |
+| BE @Test | **1957** | = |
+| BE @RestController | **74** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+→ **HEAD +2 advance에도 KPI 전부 IDENTICAL** — `bee97b9`(a11y CSS+ARIA polish, 신규 page/route/test 0)·`b7004ca`(QA-B95 legacy compat, 신규 test js 0·기존 `liveE2eHarness.test.js` 확장 +25L). UX/회귀 polish-only cycle.
+
+## 3. BNK-634 ★ WT DIRTY regression — coder 흡수 검증 (확인)
+
+| 항목 | BNK-634 | BNK-635 | 판정 |
+|---|---|---|---|
+| FE `StaffMonthlySchedulePage.jsx` +8/-2 DIRTY | 미커밋 | `bee97b9` 흡수 (`+6/-2` a11y) | ✅ **CLEAN 흡수** |
+| FE `components.css` +39L DIRTY | 미커밋 | `bee97b9` 흡수 (.ds-refund-fee-preview 승격) | ✅ **CLEAN 흡수** |
+| BE V180 untracked 165L | 미커밋 | **여전히 untracked** | △ carry |
+| BE `HealthController.java` 미커밋 | 0 (BNK-634 V180만) | **+1L NEW** g21-seed service-unavailable | △ in-progress refactor |
+| BE `HealthControllerTest.java` 미커밋 | 0 | **+1L NEW** | △ in-progress refactor |
+
+**평가**: FE DIRTY regression **closure 1** — BNK-634 caution(rules §6 push 누락 위험) `bee97b9` 흡수 commit으로 해소. BE V180은 db_architect 산출물(165L defense-in-depth)이 1-cycle carry → coder/dba commit+push 우선 권장.
+
+## 4. 백본 1-URL live 재실측 — NHIS #44 394차 zero drift (확인)
+
+| 항목 | 값 |
+|---|---|
+| URL | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 |
+| HTTP | 200 · 7,572B · `c886ff1f` |
+| 판정 | live=disk **394차 IDENTICAL** (BNK-634 393차 → +1) |
+| verbatim | 러-1~러-4·편도50%·1일1회·수급자 부담 X·별지 제22호 일지 |
+
+↔ ogada `TransportServiceFeeService`(RU_1~RU_4·`ONE_WAY_RATIO=0.5`·1일1회 guard)+`TransportServiceLog`+`TransportServiceFeePanel`+`TransportParityRulesPanel` = **경쟁 4종 유일 full-stack** (394-cycle carry).
+
+## 5. V180 defense-in-depth — ogada 차별화 신호 (분석 · 「가정」)
+
+V180 신규 (db_architect)는 V179 `program_client_groups`·`program_client_group_members` (BNK-627 코더 closure 산출물·M5 program report group-history) 위에 **defense-in-depth integrity** 6-항목 적층:
+
+1. **3-way UK** `uq_program_client_groups_org_branch_id (organization_id, branch_id, id)` — 3-way FK backing
+2. **3-way FK** `fk_program_client_group_members_group_branch_org (org, branch_id, group_id) → program_client_groups` — **cross-branch 그룹 raw SQL 적재 차단** (동일 Tenant 내 branch 경계 강제·기존 (org, group_id) FK는 member.branch_id ≠ group.branch_id 허용)
+3. **trigger** `trg_..._set_org_branch` — `client_id` 로부터 `organization_id`/`branch_id` 자동 복사 (V74 functional_recovery_plans 패턴)
+4. **trigger** `trg_..._guard_active_client` — `is_active=true AND discharged_at IS NULL` 검사·**퇴소·비활성 이용자 INSERT 차단** (V49 program_participations 패턴)
+5. **trigger** `trg_..._set_created_by` — `ogada.actor_user_id` session GUC 기반 actor backstop (V49 패턴)
+6. **purge backing index** `idx_program_client_group_members_client_purge (client_id)` — DATA_RETENTION §4-1 cohort scan
+
+### 경쟁 4종 (케어포·이지케어·엔젤·롱텀) 공개 자료 DB-level 보호 노출 (확인 + 「가정」)
+
+- **케어포**: func.php·매뉴얼 PDF 메뉴 정적·DB 스키마/CHECK/FK 공개 0 (확인)
+- **이지케어**: `/new.ez`·FAQ·도움말·top-nav `95286775` jqGrid colModel·SQL 정합 공개 0 (확인)
+- **엔젤시스템**: essential/extraService UI 흐름·평가지표 27 텍스트·DB 스키마 공개 0 (확인)
+- **롱텀**: 공단 고시·서식·법규만·서비스 코드(러-1~4 등) 정의 공개·DB 보호 N/A (확인)
+
+→ **ogada V169 「표층 API + 심층 DB 2중 게이트」**(BNK-501 carry) **V180 「3-way FK + active-client guard + actor backstop trigger + purge backing index」 단일 단단한 격리** = 경쟁 4종 공개 한도에서 비대칭 우위(「미확인」 part — 경쟁사 비공개 DB layer 비교 불가). 마케팅 카피 후보: 「**ogada는 표층 RBAC + 심층 DB 2중 게이트로 cross-branch raw SQL·퇴소 이용자 누적·actor 누락을 PostgreSQL constraint·trigger 레벨에서 차단합니다**」.
+
+## 6. 갭·우선순위 (planner · 변동 없음 carry)
+
+| 우선순위 | 항목 | 근거 | 변동 |
+|---|---|---|---|
+| P1 carry | M11/M12 결제·재무 클러스터 | BNK-633 도움말 view 37.6% demand signal | carry |
+| P1 carry | G-STAFF-COMMITTEE-MEETING-LOG | BNK-633 도움말 #1 FAQ 83,875 hit 가정 번복 | carry |
+| P2 carry | NHIS #44 parity 문구 | 394-cycle zero drift | +1 (394차) |
+| P3 강화 | G-VENDOR-ONBOARDING-CHECKLIST | businessSupport 4회차 SLA | carry |
+| P3 carry | silverangel 221564 3종 | D-3 (6/28→6/30) | carry |
+| ops | V180 untracked + BE WT 2 in-progress | DBA 산출물·QA-B95 g21-seed detail 정밀화 | **신규 변동** |
+
+## 7. 사이클 집계
+
+- 가정 번복 0
+- 신규 core 갭 0
+- candidate 변동 0 (P3 carry)
+- closure 1 (BNK-634 FE WT DIRTY 2 regression → `bee97b9` 흡수 CLEAN)
+- 상태 변경 2 (FE+2 advance·BE WT DIRTY 1→2+ in-progress refactor)
+- KPI 변경 1 (merge gate 816 → **818** +2 FE-only)
+- KPI carry 8 (Route·page·test·BE Test·@Test·모듈·reports route·V179)
+- 재실측 zero drift 1 (NHIS #44 394차 live=disk IDENTICAL)
+- 미확인 carry 3 (carefor LIVE 42+cycle·longterm 502 47+cycle·610 oscillation)
+- 신규 snapshot 1건 (`ogada_git_remeasure_bnk635.txt`)
+- 덮어쓰기 0건
+- 엑셀 포맷 변경 0
+- per-cycle minimum 4종 충족 (NHIS #44 재실측 + V180 defense-in-depth 1블록 cross-walk + COMPETITOR_MATRIX `@b7004ca`/`@3342938` 갱신 + BENCHMARK_REPORT §635)
+
+## 8. 즉시 액션
+
+- **tester**: merge gate **818** (FE 245 + BE 573 · FE WT CLEAN · BE WT DIRTY 2 + V180 untracked → **선행 coder/dba commit+push 후 merge 권장**)
+- **coder**: BE WT 2(`HealthController.java`+test) g21-seed `service-unavailable` detail commit closure (QA-B95 detail 정밀화 완성)
+- **dba**: V180 165L untracked → commit+push (rules §6 push 누락 위험·BNK-634 1-cycle carry·dev seed 0건이므로 backfill 불요·안전)
+- **planner**: baseline FE `@33944e4` → **`@b7004ca`** · BE `@3342938` carry (HEAD zero advance·V180 untracked carry) · merge 816 → **818** · M11/M12 P1 demand-signal carry · V180 defense-in-depth 마케팅 카피 후보 검토 권장

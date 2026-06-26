@@ -1,0 +1,64 @@
+BNK-598 extract — 이지케어 wAllowance-payrollcost 재실측 + ogada G16 parity-rules API
+조사일: 2026-06-24T21:45:00Z (KST 06:45)
+rotation: 2–4h 이지케어 ERP·FAQ·가격·온보딩
+
+=== ogada git HEAD ===
+FE develop @4875937 (BNK-597 동일 SHA · HEAD zero advance 1-cycle · WT CLEAN · ahead 221 vs origin/test=ab4de83)
+BE develop @bd1e87e (BNK-597 @2eaf17e HEAD +1 · feat(v2/G16): add NHIS #44 transport service fee parity rules API · WT CLEAN · ahead 555 vs origin/test=598d108)
+Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 260(+1 TransportServiceFeeParityCatalogTest) · FE test 468(193 js + 275 jsx) carry · 모듈 79.66% carry · merge gate 776(FE 221 + BE 555 · +1)
+
+=== [1] 신규 evidence — PGID wAllowance-payrollcost session DRIFT (365차 재실측) ===
+URL   : https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-payrollcost (데모 oCode=DEMO)
+HTTP  : 200 (authenticated via ./scripts/ezcare-demo-fetch.sh --pgid wAllowance-payrollcost)
+SIZE  : 146,026B (IDENTICAL vs BNK-563 146,026B)
+md5   : a8dd17574857a3f3e344c0ca1e518421 (prior BNK-563 `515a239a` → session DRIFT)
+판정  : colModel·Ajax endpoint·인건비 지급비율 계산 로직 semantic 불변 · 엑셀 포맷 변경 0
+
+메뉴 경로 (top-nav V2 module 6 직원급여):
+  「인건비 지급 비율 참고자료」→ wAllowance-payrollcost
+  DEV variant: 「인건비 지급비율 DEV-han」(attr DEV)
+
+jqGrid colModel (visible 15 + hidden serviceKind views):
+  wCode | 귀속월 | 이름 | 생년월 | 정보 | 종사자구분(worker_kind) |
+  임금총액(abTotal) | 사회보험.기관(eTotal_c) | 퇴직적립금(severance_pay) | 계(sum_abTotal) |
+  groupHeader 「임금배분」: 요양(allowance_001) | 목욕(allowance_002) | 간호(allowance_003) | 비고 | 포함여부
+  hidden: worker_kind, eTotal_c001/002/003_view, severance_pay001/002/003_view
+
+Ajax:
+  GET /page/wAllowance/json-payrollcost.php?data=worker_kind (종사자구분 lookup)
+  grid reload postData: {Ym: YYYY-MM}
+
+워크플로 setRateAmount(serviceKind):
+  serviceKind 001(요양)·002(목욕)·003(간호) 별 임금·4대보험·퇴직적립금 합산
+  pay_rate = round((sumCost / applyAmount) * 1000) / 10  — 인건비 지급비율(%) 산출
+  applyAmount = r_amount_sum + r_amount_sum_add + p_amt (급여·가산·본인부담 합)
+
+ogada crosswalk:
+  ❌ 인건비 원가율·종사자구분·serviceKind 001/002/003 배분 UI 0 (재무회계 MVP out-of-scope)
+  △ MedicalExpenseDeductionPanel = 연말정산 의료비공제만 (ezCare payrollcost ≠ 동일 도메인)
+  candidate carry: G-PAYROLL-LABOR-COST-RATIO P3「가정」(v2+ 재무·인건비 모듈)
+
+=== [2] 가격·도입 재실측 (cachebuster DRIFT · verbatim 불변) ===
+| URL | prior md5 (BNK-597) | live md5 (BNK-598) | verbatim |
+| ezCare_fnc | d3f90083 | e35d15d9 | 도입 9,350개 |
+| ezCare_charge | 3ead19af | a64223c4 | 33,000 / 25,850(37명) / 55,000 |
+| ezCare_change_work | 012f210b | cd936589 | RFID·중복일정·듀얼/트리플 |
+
+demo shell ezcare_new_ez_demo.html: 579388a3 → 95f9c199 (+6B · notice dialog rowid 21844 carry)
+
+=== [3] FAQ 21800 [연간] 정기 욕구사정 — 365차 zero drift cross-confirm ===
+URL  : https://ezcare.easyms.co.kr/help/faq.ez?rowid=21800&type=web
+HTTP : 200 · 20,307B · md5 `156d08d1` (IDENTICAL vs ezcare_faq21800.html · BNK-350 최초 persist)
+핵심 : 평가지표 15 · 연 1회 이상(회계연도) · 8 세부항목+총평 서술형 · 메뉴 `2.수급자관리▶탭:기초평가▶욕구사정` + `2.2정기욕구평가 현황`
+ogada: G24b `NeedsAssessmentStatusPage` + `fetchNeedsAssessmentComplianceApi` + `ClientNeedsAssessmentPanel` 8-field parity ✅ carry
+
+=== [4] ogada G16 BE parity-rules API (BNK-598 primary delta) ===
+GET /api/v1/transport/service-fee-parity-rules
+TransportServiceFeeParityCatalog.NHIS_PARITY_RULES (4 rules):
+  DISTANCE_BANDS — 러-1~러-4 네 구간
+  ONE_WAY_RATIO — 편도 50% (ONE_WAY_RATIO=0.5)
+  ONE_PER_DAY   — 수급자별 1일 1회
+  SERVICE_LOG   — 별지 제22호 이동서비스 일지
+FE grep service-fee-parity = 0 hit → UI wire 잔여 (transportServiceFee.js 상수와 BE catalog 동기화 후보)
+
+per-cycle minimum 4종 충족 · tester FF merge 776 가속 권장

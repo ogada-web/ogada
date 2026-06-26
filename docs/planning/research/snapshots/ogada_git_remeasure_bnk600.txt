@@ -1,0 +1,182 @@
+BNK-600 ogada git 실측 6–8h (2026-06-24T22:35Z)
+=================================================
+
+[meta]
+owner=BNK audience=PLN rotation=ogada-git 6-8h cycle=600 prev=BNK-599
+
+[ogada baseline @HEAD]
+FE develop = e63aa8edb3ec544ccda45298c8279e6a0df93b9e
+  msg:  ux(a11y): promote ds-cms-payment-method-catalog CSS and spec G16 parity-rules FE (UXD-162)
+  date: 2026-06-24 22:25:25 +0000
+  prev (BNK-599): c3c6272  (HEAD +1 from BNK-599)
+  status: WT CLEAN · ahead vs origin/test=ab4de83 = 223 (+1 vs BNK-599 222)
+BE develop = dac8ebd487d5874b8f1426db51f8a6431ef4b017
+  msg:  feat(v2/G2b): add virtual-account and multi-account CMS collection APIs
+  date: 2026-06-24 22:31:03 +0000
+  prev (BNK-599): bd1e87e  (HEAD +1 from BNK-599)
+  status: WT CLEAN · ahead vs origin/test=598d108 = 556 (+1 vs BNK-599 555)
+merge gate = 223 + 556 = 779 (prev 777 · +2 cross-stream FE+1·BE+1)
+
+[Route / page / Flyway / tests]
+Route  : 112 (111 `<Route\b` + 1 `<Routes>`) — carry
+page   : 91   (90 *Page.jsx + RootRedirect.jsx) — carry
+Flyway : V1–**V176** (+1 — V176__cms_collection_requests_g2b.sql · 53L)
+BE Test class files : 261   (+1 — CmsCollectionServiceTest.java · 206L)
+BE @Test annotations: 1897  (+11)
+FE .test.js  : 193 (carry · whole-repo `git ls-tree -r develop --name-only | rg -c '\.test\.js$'`)
+FE .test.jsx : 275 (carry · whole-repo)
+FE test total: 468 (carry)
+
+[KPI 회계 정정 1 — 가정 번복 1]
+BNK-599 entry reported FE test "472 (197+275, +4 js)" but live recount on
+both `@c3c6272` (BNK-599 HEAD) and `@e63aa8e` (BNK-600 HEAD) yields **193+275=468**.
+The `4875937→c3c6272` diff shows `liveE2eHarness.test.js` MODIFIED (+32L) not ADDED,
+so "+4 js" was a counting artifact. **Authoritative FE test = 468 carry.**
+(BNK-586 similar correction precedent — KPI 회계 정정 not gap reversal.)
+
+[Module coverage @develop e63aa8e]
+sum = 23.10 / 29 features = **79.66%** (id=2 0.85 · id=7-4 0.65 · id=8 0.85 · id=10 0.75 carry)
+NOTE: BE `@dac8ebd` 5/5 collectionImplemented on CmsPaymentMethodCatalog,
+but FE `competitorModuleCoverage.js` id=7-4 STILL 0.65 — KPI bump deferred.
+0.65→1.0 bump = planner+coder action (FE re-rate after 2-method UI surface).
+
+[★★★ BE @dac8ebd — silverangel 5/5 CMS parity BE closure (NEW)]
+commit: feat(v2/G2b): add virtual-account and multi-account CMS collection APIs
+diff   : 18 files · +1136/+? insertions
+
+New files (BE):
+  - api/CmsVirtualAccountResponse.java                 (20L · DTO)
+  - api/CmsMultiAccountSettlementResponse.java         (19L · DTO)
+  - api/IssueCmsVirtualAccountRequest.java             (11L · request DTO)
+  - domain/CmsCollectionMethod.java                    (9L  · constants)
+        public static final String VIRTUAL_ACCOUNT = "VIRTUAL_ACCOUNT";
+        public static final String MULTI_ACCOUNT_SETTLEMENT = "MULTI_ACCOUNT_SETTLEMENT";
+  - domain/FcmsVirtualAccountResult.java               (32L · provider result)
+  - domain/FcmsMultiAccountSettlementResult.java       (23L · provider result)
+  - persistence/CmsCollectionRequestEntity.java        (199L · JPA Entity)
+  - persistence/CmsCollectionRequestRepository.java    (13L)
+  - db/migration/V176__cms_collection_requests_g2b.sql (53L · cms_collection_requests table)
+  - test/CmsCollectionServiceTest.java                 (206L · NEW BE Test +1)
+
+Modified:
+  - api/CmsController.java                  (+39L · claim-scoped CMS routes)
+  - domain/CmsPaymentMethodCatalog.java     (+4/-2L · 5/5 collectionImplemented=true)
+  - domain/CmsService.java                  (+339L · 871L total · FCMS stub collection + persistence)
+  - domain/FcmsClient.java                  (+28L · 2 new collection methods)
+  - provider/StubFcmsClient.java            (+37L · stub impl for virtual-account + multi-account)
+  - domain/BillingService.java              (+16L)
+  - test/CmsCopayLifecycleE2eTest.java      (+4L)
+  - test/CmsPaymentMethodCatalogServiceTest.java (+9L · 5/5 assertion)
+  - test/CmsServiceTest.java
+  - test/StubFcmsClientTest.java            (+39L)
+  - test/pilot/CmsPilotServiceFlowE2eTest.java   (+4L)
+  - test/routing/MustApiEndpointRoutingTest.java (+24L · 2 new routes lock)
+  - test/security/RoleBasedControllerAccessTest.java (+67L · RBAC lock)
+
+CmsPaymentMethodCatalog 5/5 verbatim (post-commit):
+  AUTO_DEBIT_CMS              "자동이체(CMS)"   "250원/1건" → /billing/cms             implemented=true
+  VIRTUAL_ACCOUNT             "가상계좌"         "300원/1건" → /billing/cms             implemented=true   (NEW)
+  CARD                        "카드결제"         (null)      → /billing/easy-pay        implemented=true
+  MULTI_ACCOUNT_SETTLEMENT    "다계좌 정산"      (null)      → /billing/cms             implemented=true   (NEW)
+  CASH_RECEIPT                "현금영수증"       (null)      → /billing/cash-receipts   implemented=true
+
+→ BE catalog API now returns collectionImplementedCount = **5/5** (silverangel parity closure).
+→ silverangel extraService.do(`f9c5d877`) 5-method 정본 ↔ ogada BE 1:1 full crosswalk.
+
+[★★★ FE @e63aa8e — UXD-162 G16 parity-rules CSS + design spec (NEW)]
+commit: ux(a11y): promote ds-cms-payment-method-catalog CSS and spec G16 parity-rules FE
+diff  : 1 file · +22/-0 (src/styles/components.css)
+
+  - Fix FE-16 gap: .ds-cms-payment-method-catalog class was referenced in
+    CmsPaymentMethodCatalogPanel but NOT defined in components.css
+    → missing flex gap, h2 top-margin override, and forced-colors boundary
+  - CSS-only change; no JSX regression
+  - Documents G16 TransportParityRulesPanel design spec for coder (BNK-599 P2)
+
+FE wire to BE `service-fee-parity-rules` catalog: `git -C src/frontend grep -l service-fee-parity develop` = **0 hit**
+  → BE catalog API LIVE since BNK-598, FE panel still consuming hard-coded constants
+  → coder P2 carry: TransportParityRulesPanel consume BE catalog (design spec landed BNK-600)
+
+[★★★ live re-measure (per-cycle minimum)]
+NHIS #44 이동서비스비 러-1~4 (367차 measurement)
+  URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP: 200 · SIZE: 7,572B · md5: c886ff1fd1d5ca2cb5dc76d30adde8ba
+  vs BNK-599: c886ff1f (**zero drift IDENTICAL**, 367th consecutive measurement)
+  verbatim: 러-1·러-2·러-3·러-4 거리구간별 산정 · 편도 50% 산정 · 1일 1회만 산정 · 별지 제22호 이동서비스 일지 작성·보관
+  ↔ ogada full-stack ✅: BE TransportServiceFeeService (RU_1~RU_4·ONE_WAY_RATIO=0.5)
+                         BE V148/V154/V155 DB CHECK constraints
+                         BE catalog API GET /api/v1/transport/service-fee-parity-rules (BNK-598)
+                         FE transportServiceFee.js 4 parity-copy constants
+                         FE TransportServiceFeePanel (UXD-159)
+                         FE UXD-162 CSS+spec promoted (BNK-600)
+
+silverangel notice list (369차 measurement)
+  URL: https://www.silverangel.kr/silverangel/support/notice/list.do
+  HTTP: 200 · SIZE: 3,594,181B · md5: 52c9457f4e34a7d3c49275e5bf337677
+  vs BNK-599: 52c9457f (**zero drift IDENTICAL**)
+  latest real notice id: 221563 (2026-06-18) carry · weekly notice 0 (8-day stale)
+  next anticipated: 2026-06-25 (KST 내일)
+
+[★★ silverangel 5-method ↔ ogada BE 5/5 catalog 1:1 crosswalk (closure)]
+silverangel extraService.do (BNK-595 zero drift `f9c5d877` 81,637B carry):
+  ① 자동이체 CMS    건당 250원 · 월 한도 30,000원       ↔ AUTO_DEBIT_CMS           /billing/cms             ✅
+  ② 가상계좌         건당 300원                            ↔ VIRTUAL_ACCOUNT           /billing/cms             ✅ NEW (BNK-600)
+  ③ 카드결제                                              ↔ CARD                      /billing/easy-pay        ✅
+  ④ 다계좌 정산                                            ↔ MULTI_ACCOUNT_SETTLEMENT  /billing/cms             ✅ NEW (BNK-600)
+  ⑤ 현금영수증 (효성CMS 대행 1600-6859)                  ↔ CASH_RECEIPT              /billing/cash-receipts   ✅
+
+→ BNK-595 BE catalog 3/5 → BNK-600 BE catalog **5/5** = silverangel parity backend closure.
+→ FE catalog panel (BNK-596 wire LIVE) will render "수납 구현 5/5" once redeployed.
+→ module id=7-4 0.65 → 1.0 bump 후보 (FE coverage rate-card 갱신 필요 · planner+coder).
+
+[★ longterm 502 단기보호 (25-cycle 「미확인」 carry)]
+URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502
+on-disk canonical: longterm_502.html `b5aee8c1`(105,552B·단기보호 1등급 74,060원) carry
+on-disk partial shell: longterm_502_live_partial_shell_bnk584.html `d3c90b33`(422B refreshedException) carry
+HTTP 302/200 oscillation gate · 25-cycle 「미확인」 (BNK-575~600) · planner no-op
+
+[★ 4축 + leave-ledger P0/P1 재오픈 0 (51-cycle carry, BNK-549~600)]
+App.jsx @e63aa8e grep:
+  /clients/:clientId/care-plan-form          (G14 LIVE)
+  /dashboard, /dashboard/hq                  (G26 LIVE)
+  /transport/service-fees                    (v1.3-C / G16 LIVE)
+  /billing/cms                                (v2 G2b LIVE)
+  /staff/annual-leaves, /staff/leave-ledger  (US-R01-c LIVE)
+
+[candidate carry 5 P3 (carry)]
+G-GUARDIAN-MEETING                  P3 (BNK-578)
+G-VENDOR-ONBOARDING-CHECKLIST       P3 (BNK-578)
+G-PROGRAM-GROUP-CONFIG              P3 (BNK-577)
+G-AGENCY-INTERNAL-SCHEDULE          P3 (BNK-593)
+G-STAFF-ONBOARD-DOC-ITEMIZE         P3 (BNK-597)
+
+[per-cycle minimum]
+- 신규 evidence URL 1건 이상: NHIS#44 367차 + silverangel 369차 (재실측 + zero drift 기록)  ✅
+- 메뉴/필드/워크플로 상세 1블록: BE G2b CMS 5/5 catalog (5-method · DTO 6종 · Flyway V176 · CmsService +339L)  ✅
+- COMPETITOR_MATRIX 1행 이상 @HEAD 갱신: ogada `@e63aa8e`/`@dac8ebd` 일괄 + 5/5 CMS parity row  ✅
+- BENCHMARK_REPORT §신규 소절 또는 BNK-N: §600 BNK-600  ✅
+
+[planner 권고]
+1. ★★★ G2b CMS silverangel 5/5 parity **BE closure** (BNK-600 BE `@dac8ebd`):
+   - FE `competitorModuleCoverage.js` id=7-4 0.65 → 1.0 재산정 검토
+     (5/5 collectionImplemented · 가상계좌·다계좌정산 BE 구현 closure)
+   - module 79.66% → ~80.86%(23.10+0.35=23.45/29) 가능 (KPI bump 후보)
+2. ★★★ FE TransportParityRulesPanel BE catalog wire (BNK-600 P2 carry):
+   - BE `GET /api/v1/transport/service-fee-parity-rules` LIVE (BNK-598)
+   - FE wire 0 hit · UXD-162 design spec landed (BNK-600)
+   - coder 후보: panel consume BE catalog 4-rule (DISTANCE_BANDS·ONE_WAY_RATIO·ONE_PER_DAY·SERVICE_LOG)
+3. ★★ tester FF merge **779** 가속 권장 (FE 223 + BE 556 · 양쪽 WT CLEAN · 선행 commit 불필요)
+4. ★ KPI 회계 정정 1 (BNK-599 FE test 472 → 468 · 가정 번복 1) — KPI 회계 정합 carry
+
+[delta summary]
+가정 번복 1 (FE test 472→468 KPI 회계 정정)
+신규 core 갭 0
+candidate 변동 0 (carry 5 P3)
+상태 변경 2 (FE +1 · BE +1 · cross-stream advance · 양쪽 WT CLEAN)
+KPI 변경 4 (Flyway V176 +1 · BE Test 261 +1 · BE @Test 1897 +11 · merge gate 779 +2)
+미확인 carry 1 (longterm 502 25-cycle)
+신규 snapshot 1건 (ogada_git_remeasure_bnk600.txt)
+덮어쓰기 0건
+엑셀 포맷 변경 0
+per-cycle minimum 4종 충족
+tester FF merge 779 가속 권장

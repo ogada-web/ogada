@@ -1,0 +1,82 @@
+BNK-607 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-25)
+=====================================================================
+조사일: 2026-06-25 (UTC) | rotation: 4–6h (엔젤·롱텀·law.go.kr·이동서비스비·2026 수가/평가)
+ogada baseline: FE `9a583ec`(+1·WT CLEAN·ahead 227) / BE `e4f83af`(carry·WT CLEAN·ahead 559) · merge gate 786(+1 FE)
+
+---------------------------------------------------------------------
+1. NHIS #44 이동서비스비 러-1~4 — 373차 zero drift IDENTICAL (확인)
+---------------------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+live : HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+disk : nhis_jo44.html · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+판정 : live == disk IDENTICAL (373차 zero drift)
+verbatim: 러-1·러-2·러-3·러-4 · 편도 50% · 1일 1회 · ④별지 제22호 일지
+ogada: BE TransportServiceFeeParityCatalog 4-rule ↔ FE TransportServiceFeePanel
+       fetchTransportServiceFeeParityRulesApi() + <h3>NHIS #44 산정 기준</h3> (G16 BNK-603 full-stack)
+       BE RBAC: parity-rules hq_admin/branch_admin only (BNK-606 @e4f83af)
+경쟁사 4종 중 ogada 만 #44 표시 레이어 full-stack 보유 — 차별화 우위 carry.
+
+---------------------------------------------------------------------
+2. silverangel(엔젤) 평가지표 27 목욕 + 부가서비스 — zero drift IDENTICAL (확인)
+---------------------------------------------------------------------
+[2-1] daycareEssentialWork.do (평가지표 27 목욕)
+URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+live : HTTP 200 · 131,664B · md5 c79c1be37f947aab04ab7ba35cc7814d
+disk : silverangel_essential.html · 131,664B · md5 (= live IDENTICAL)
+판정 : live == disk IDENTICAL (BNK-603 carry)
+verbatim 목욕: "목욕제공" / "목욕서비스 제공시 청구 가능"
+  → 「목욕제공 — 필수 아니며 목욕서비스 제공시 청구 가능」 (전후관찰/월5회는 페이지에 없음 = 규정 유래)
+
+[2-2] extraService.do (부가서비스 CMS 5-method)
+URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+live : HTTP 200 · 81,637B · md5 f9c5d8773ad0a481be6d7eb4b192d982
+disk : silverangel_extraService.html · 81,637B · md5 (= live IDENTICAL)
+판정 : live == disk IDENTICAL (BNK-603 carry)
+5-method: 자동이체·가상계좌·카드·다계좌 정산·현금영수증
+  → ogada G2b CMS 5/5 BE parity(BNK-600) + FE CmsCollectionPanel(BNK-603) closure
+
+---------------------------------------------------------------------
+3. longterm(공단) 단기보호/통합재가 — oscillation/미확인 carry
+---------------------------------------------------------------------
+[3-1] 통합재가 npe0000000610
+URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610
+fetch#1: md5 0ea575be5f11a817c635fe40f51dec39 (= canonical 통합재가·월 10만원·주야간보호형)
+fetch#2: HTTP 200 · 458B · md5 c26a5e573770ef3c3f1a10c9ae751361 (partial shell)
+판정 : 단일 사이클 내 oscillation (canonical ↔ 458B 빈 shell) — 신규홈('26.1.16) 브라우저 가드 추정
+       canonical on-disk 보존(우선 정책) · 본문 의존 0 (영향 0)
+
+[3-2] 단기보호 npe0000000502
+URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502
+live : HTTP 302 · SIZE 0 (empty)
+판정 : 「미확인」 carry (단기보호 1등급 74,060 canonical b5aee8c1 보존)
+
+---------------------------------------------------------------------
+4. ★ indicator-27 명칭 충돌 정리 (false-closure 방지) — 확인
+---------------------------------------------------------------------
+ogada FE grep('indicator-27|indicator27', develop):
+  src/utils/functionalRecoveryCompliance.js  : 12 hit  ← G17 기능회복훈련 평가지표 27 (BNK-101/102 landed)
+  src/pages/FunctionalRecoveryPage.jsx       : 3 hit   ← 동일(G17 functional recovery)
+  → indicator27Count·indicator27MetCount·id:"indicator-27-plan/provision/benefit-start"
+     = 기능회복 평가지표(인지/신체) 의 27번 지표. 오래전 landed.
+
+별개: silverangel 평가지표 27 "목욕제공" (US-O01 bathing) FE wire
+  git grep -c 'indicator-27-compliance|bathing-schedules/indicator' develop = 0 hit
+  → BE BathingScheduleIndicator27Catalog + GET /care/bathing-schedules/indicator-27-compliance (BE-only·BNK-603)
+  → FE wire 여전히 0 hit = P2 carry (coder 다음 사이클 후보)
+  App.jsx route: /care/bathing-schedules (panel 존재, indicator-27-compliance 소비 0)
+
+⚠ 결론: 두 "indicator-27"은 별개 도메인(G17 기능회복 vs US-O01 목욕).
+   "FE indicator27 hit 발견 = bathing wire closure" 로 오판 금지.
+   bathing US-O01 indicator-27-compliance FE wire = P2 carry 유지.
+
+---------------------------------------------------------------------
+5. ★ ogada FE +1 — CMS catalog empty-state UX hardening (확인)
+---------------------------------------------------------------------
+FE HEAD: 9a583ec "Improve CMS catalog empty state handling"
+  src/components/ui/CmsPaymentMethodCatalogPanel.jsx        +2/-1
+  src/components/ui/CmsPaymentMethodCatalogPanel.test.jsx   +19 (regression lock)
+  → CMS 결제수단 catalog 빈 결과 시 friendly empty-state 메시지 + 회귀 테스트
+G2b CMS 4-layer cascade 연장: BE 5/5(BNK-600) → FE retry(BNK-601) → FE wire(BNK-603)
+   → FE empty-state(BNK-607). 경쟁사(케어포 7-4 정적 명단·엔젤 5-method 정본)는 빈상태 UX 0
+   → ogada CMS UX superset 우위 재확인.
+FE test 합계: 193(.test.js)+276(.test.jsx)=469 carry (신규 test FILE 아님·기존 파일 +case).

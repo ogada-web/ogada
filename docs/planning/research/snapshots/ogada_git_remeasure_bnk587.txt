@@ -1,0 +1,175 @@
+BNK-587 ogada git 실측 (rotation 6–8h)
+조사일: 2026-06-24T14:45:00Z (KST 23:45)
+
+================================================================
+[ src/frontend (develop) ]
+================================================================
+$ git -C src/frontend rev-parse develop
+  3f686e375617e88ed5713ea9b6f6e0821e99a18d  →  3f686e3
+
+$ git -C src/frontend log -1 --pretty='%h %s' develop
+  3f686e3 fix(v1.2.1/G-SMS-TEMPLATE-CATALOG): align ezCare message_kind fallback labels
+
+$ git -C src/frontend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/frontend rev-list --count origin/test..develop
+  215  (vs origin/test = ab4de83)
+
+$ git -C src/frontend log --oneline c04968c..develop  (vs BNK-583 baseline)
+  3f686e3 fix(v1.2.1/G-SMS-TEMPLATE-CATALOG): align ezCare message_kind fallback labels  ← BNK-587
+  5a6d42c feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): align message_kind 11·13·19 dispatch UI labels  ← BNK-585
+  9c25d44 feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): wire message_kind 1·12·21 dispatch UI         ← BNK-584
+
+Δ (BNK-586 → BNK-587): FE HEAD +1 (5a6d42c → 3f686e3)
+  · 3-file: src/components/ui/NotificationChannelReadinessPanel.test.jsx (M, 2L)
+            src/config/notificationChannelStatus.js (M, +18L) — EZCARE_MESSAGE_KIND_BY_TEMPLATE
+              { STAFF_ACCESS_KEY:1, BILLING_STATEMENT:11, CLIENT_MONTHLY_SCHEDULE:12,
+                CARE_PROVISION_RECORD:13, ELDER_ABUSE_PREVENTION_GUIDELINE:19,
+                STAFF_MONTHLY_SCHEDULE:21 }
+            src/config/notificationChannelStatus.test.js (+33L NEW) — vitest regression lock
+  · 신규 test 1건 (.test.js +1)
+
+================================================================
+[ src/backend (develop) ]
+================================================================
+$ git -C src/backend rev-parse develop
+  ef8bb4eded15fc5b451735a4abec1abb3b7f50d6  →  ef8bb4e
+
+$ git -C src/backend log -1 --pretty='%h %s' develop
+  ef8bb4e feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on dispatch responses
+
+$ git -C src/backend status --porcelain
+  (empty — WT CLEAN)
+
+$ git -C src/backend rev-list --count origin/test..develop
+  549  (vs origin/test = 598d108)
+
+$ git -C src/backend log --oneline b9d0599..develop  (vs BNK-583 baseline)
+  ef8bb4e feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on dispatch responses  ← BNK-587
+  fed6f1f fix(v2/G-SMS-TEMPLATE-CATALOG): gate dispatchReady by channel credentials       ← BNK-585
+  1d5d441 feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff access key SMS dispatch              ← BNK-584
+
+Δ (BNK-586 → BNK-587): BE HEAD +1 (fed6f1f → ef8bb4e)
+  · 13-file +97/-16: BillingClaimNotifyResponse(+templateCode, +ezcareMessageKind)
+                     BillingService(of() factory rewire)
+                     GuardianDocumentNotifyResponse(+templateCode, +ezcareMessageKind)
+                     GuardianDocumentNotificationService(propagate)
+                     NotificationSmsTemplateCatalog(+ezcareMessageKindFor static API +15L)
+                     VisitScheduleNotificationService(propagate)
+                     7 test files (assertion 갱신; 신규 *Test.java 파일 0)
+  · 신규 *Test.java 0 → BE Test 258 carry
+
+================================================================
+[ KPI 정본 (git 실측 — 규칙 §Baseline) ]
+================================================================
+Route                 : 112  (111 `<Route\b` + 1 `<Routes>` wrapper)  carry
+Page                  : 91   (90 *Page.jsx + 1 RootRedirect.jsx)        carry
+Flyway migration      : V1–V175 contiguous                              carry
+BE *Test.java         : 258                                             carry  (ef8bb4e 신규 test 파일 0)
+BE @Test annotations  : 1,867 (loose count, ripgrep)
+FE test (.test.js)    : 193  (+1 vs BNK-586 192 = notificationChannelStatus.test.js NEW)
+FE test (.test.jsx)   : 274                                             carry
+FE test total         : 467  (+1)
+모듈 coverage         : 79.66 %  (23.10/29 · id=10 부가서비스 0.75)     carry
+ahead vs origin/test  : FE 215 (+1) · BE 549 (+1)
+merge gate            : 764  (FE 215 + BE 549 · +2 vs BNK-586 762)
+
+================================================================
+[ ★★★ G-SMS-TEMPLATE-CATALOG cluster — 6/6 end-to-end closure deepen ]
+================================================================
+이지케어 `mobile-sendW` `<select name="message_kind">` 6 옵션 (on-disk
+`docs/planning/research/snapshots/ezcare_new_ez_pgid_mobile-sendW.html`
+md5=4d47d14f · 133,272B):
+  value="1"  접속키 발송            STAFF_ACCESS_KEY               SMS
+  value="11" 본인부담               BILLING_STATEMENT              ALIMTALK
+  value="12" 일정표-수급자          CLIENT_MONTHLY_SCHEDULE        ALIMTALK
+  value="13" 급여제공내역           CARE_PROVISION_RECORD          ALIMTALK
+  value="19" 직원인권보호           ELDER_ABUSE_PREVENTION_GUIDELINE ALIMTALK
+  value="21" 일정표-직원            STAFF_MONTHLY_SCHEDULE         ALIMTALK
+                                              (22 급여명세서 — id=11 직원급여 domain · MVP out-of-scope)
+
+ogada `NotificationSmsTemplateCatalog.EZCARE_PARITY_ENTRIES`
+(@ef8bb4e · src/backend/.../NotificationSmsTemplateCatalog.java):
+  Entry(STAFF_ACCESS_KEY,                "접속키 발송", 1,  SMS,      dispatchImplemented=true)
+  Entry(BILLING_STATEMENT,               "본인부담 안내", 11, ALIMTALK, dispatchImplemented=true)
+  Entry(CLIENT_MONTHLY_SCHEDULE,         "일정표-수급자", 12, ALIMTALK, dispatchImplemented=true)
+  Entry(CARE_PROVISION_RECORD,           "급여제공내역", 13, ALIMTALK, dispatchImplemented=true)
+  Entry(ELDER_ABUSE_PREVENTION_GUIDELINE,"직원인권보호", 19, ALIMTALK, dispatchImplemented=true)
+  Entry(STAFF_MONTHLY_SCHEDULE,          "일정표-직원", 21, ALIMTALK, dispatchImplemented=true)
+
+→ dispatchImplemented = 6/6 (BNK-575 3/6 → BNK-583 4/6 → BNK-584 5/6 → BNK-585 6/6 label
+   → BNK-587 6/6 + dispatch response metadata exposed end-to-end)
+
+신규 노출 metadata (BE @ef8bb4e):
+  · POST /api/v1/billing/claims/{id}/notify       →  { claimId, dispatchedCount, templateCode, ezcareMessageKind }
+  · POST /api/v1/guardian-documents/{id}/notify   →  { ..., templateCode, ezcareMessageKind }
+  · NotificationSmsTemplateCatalog.ezcareMessageKindFor(templateCode) → Integer
+
+신규 FE alignment (@3f686e3):
+  · src/config/notificationChannelStatus.js — EZCARE_MESSAGE_KIND_BY_TEMPLATE export
+  · src/config/notificationChannelStatus.test.js — vitest 회귀 lock (3 it)
+  · NotificationChannelReadinessPanel.test.jsx fallback label 갱신
+
+================================================================
+[ NHIS #44 이동서비스비 러-1~4 — 359차 zero drift ]
+================================================================
+$ curl --max-time 25 'https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?\
+  DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769'
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  =  docs/planning/research/snapshots/nhis_jo44_live_bnk584.html  IDENTICAL
+
+verbatim 「'러-1'부터 '러-4'까지 비용의 50%」·「1일 1회」·「별지 제22호」
+↔ ogada BE `TransportServiceFeeService` 5/5 (RU_1~RU_4 · ONE_WAY_RATIO=0.5 ·
+   1일1회 dedup guard · V148/V154/V155 운전자 서명 pair-CHECK)
+   FE `transportServiceFee.js` 4 parity-copy 상수 · `TransportServiceFeePanel`(UXD-159)
+   full-stack ✅ parity/우위. PLAN_NOTES #44 1차 확인 carry.
+
+================================================================
+[ 4축+leave-ledger P0/P1 재오픈 0 — 36-cycle carry (BNK-549~587) ]
+================================================================
+$ git -C src/frontend show develop:src/App.jsx | grep -E "path=\"/(clients/:clientId/care-plan-form|dashboard|transport/service-fees|billing/cms|staff/annual-leaves|staff/leave-ledger)\"" -c
+  ≥ 6 hits (G14 · G26 dashboard · G26 dashboard/hq · v1.3-C transport · v2 CMS ·
+            US-R01-c annual-leaves · US-R01-c leave-ledger)
+모든 Route App.jsx @3f686e3 LIVE — 가정 번복 0 · 신규 core 갭 0.
+
+================================================================
+[ candidate carry — 변동 0 · 전부 P3「가정」MVP out-of-scope ]
+================================================================
+  · G-VENDOR-ONBOARDING-CHECKLIST          (carry from BNK-580)
+  · G-PROGRAM-GROUP-CONFIG                 (carry from BNK-580)
+  · G-ORAL-CARE-OBSERVATION-REPORT         (carry from BNK-581)
+  · G-BILLING-OPENING-BALANCE              (carry from BNK-585)
+
+================================================================
+[ cycle accounting ]
+================================================================
+  가정 번복           : 0
+  신규 core 갭        : 0
+  candidate 변동      : 0 (carry 4 P3)
+  상태 변경           : 2 (FE +1 · BE +1 · 양쪽 WT CLEAN · cross-stream 양쪽 advance)
+  KPI 변경            : 2 (FE test 466→467 · merge gate 762→764)
+  미확인 carry        : 2 (carefor LIVE 20-cycle · longterm 502 16-cycle)
+  신규 snapshot       : 1 (이 파일 — ogada_git_remeasure_bnk587.txt)
+  덮어쓰기            : 0
+  엑셀 포맷 변경      : 0
+  per-cycle minimum   : 4종 충족
+                          ① 신규 evidence URL (NHIS #44 359차 zero drift live 재실측)
+                          ② 메뉴/필드/워크플로 1블록 (ezCare 6 message_kind ↔ ogada
+                             EZCARE_PARITY_ENTRIES + dispatch response metadata)
+                          ③ COMPETITOR_MATRIX 1행+ `@HEAD` 갱신
+                          ④ BENCHMARK_REPORT §587 신규 소절
+
+================================================================
+[ 권고 ]
+================================================================
+  · 즉시 (tester) : tester FF merge **764**(FE 215 + BE 549 · 양쪽 WT CLEAN ·
+                     선행 commit 불필요 · develop→test FF 가속 권장)
+  · planner       : baseline FE `@5a6d42c`→`@3f686e3` · BE `@fed6f1f`→`@ef8bb4e` ·
+                     **G-SMS-TEMPLATE-CATALOG 6/6 dispatchImplemented + dispatch response
+                     metadata end-to-end closure** (BNK-575 BE catalog → BNK-587 metadata
+                     노출, 13-cycle journey 마감) · ROADMAP 「G-SMS 잔여 wire」 항목 closure ·
+                     candidate 잔여 0 (P3 carry 4) · module 10 0.75 carry · 미확인
+                     carry 2 (carefor LIVE 20-cycle · longterm 502 16-cycle)
+  · coder         : G-SMS 후속은 22 급여명세서 (id=11 직원급여 도메인) — MVP out-of-scope ·
+                     v3+ Epic carry.

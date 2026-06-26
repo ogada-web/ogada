@@ -1,0 +1,56 @@
+# BNK-622 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-25T13:05Z)
+
+rotation: 엔젤·롱텀·규제 (silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 #44·2026 수가·평가#27·단기보호·통합재가)
+조사일: 2026-06-25T13:05:00Z (KST 22:05)
+
+## 0. ogada git 실측 (HEAD zero advance 1-cycle vs BNK-621)
+| 항목 | 값 |
+|---|---|
+| FE develop | `5914b2f` `feat(v2/G2/7-5): wire easy-pay provider catalog and mount transport parity panel` · WT CLEAN · ahead 236 vs origin/test |
+| BE develop | `9f67954` `fix(v2/QA-B95): add configurable bootstrap readiness enforcement` · WT CLEAN · ahead 568 vs origin/test |
+| merge gate | 804 carry (FE 236 + BE 568) |
+| KPI | 112 Route·91 page·V1–V178·BE Test 269·BE @Test 1942·FE test 474·모듈 80.86%(23.45/29) |
+→ BNK-621 대비 양쪽 HEAD zero advance·WT CLEAN — tester FF merge 804 가속 권장.
+
+## 1. 규제·엔젤 백본 live 재실측 (HTTP 200 / md5 / size)
+| URL | HTTP | size | live md5 | on-disk md5 | 판정 |
+|---|---|---|---|---|---|
+| https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | 200 | 7,572 | `c886ff1f` | `c886ff1f` | IDENTICAL (385차) |
+| https://www.silverangel.kr/newSilverangel/service/extraService.do | 200 | 81,637 | `f9c5d877` | `f9c5d877` | IDENTICAL |
+| https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do | 200 | 131,664 | `c79c1be3` | `c79c1be3` | IDENTICAL |
+| https://www.silverangel.kr/newSilverangel/service/feeService.do | 200 | 44,513 | `eab352a8` | `eab352a8` | IDENTICAL |
+| https://www.silverangel.kr/newSilverangel/service/mainService.do | 200 | 59,002 | `bcf6df41` | `bcf6df41` | IDENTICAL |
+| https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502 | 200 | 422 | `d3c90b33` | (canonical `b5aee8c1` 105,552) | partial shell 「미확인」 43-cycle |
+| https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610 | 200 | 458 | `c26a5e57` | (canonical `0ea575be` 91,421) | shell oscillation 「미확인」 |
+
+verbatim 재확인:
+- NHIS #44: `러-1`·`러-4`·`50%`·`1일 1회`·`편도만(기관으로 이송 또는 … 편도)에 따라 다음과 같다`·별지 제22호 — 불변.
+- silverangel essential 평가지표 27 목욕: `목욕제공`·`목욕서비스 제공시 청구 가능` — 불변(필수항목 아님).
+- silverangel extraService CMS 5-method: `효성CMS`·`250원`·`가상계좌`·`300원`·`다계좌`·`현금영수증`·`1600-6859` — 불변.
+
+→ NHIS #44 + silverangel 4-URL 전부 zero drift IDENTICAL · 덮어쓰기 0건(IDENTICAL) · longterm 502/610 live shell = 「미확인」 carry(canonical 보존·덮어쓰기 0건).
+
+## 2. ★★★ silverangel notice 221564 retraction-window 가설 재검증 (BNK-619 carry → 확정)
+근거:
+- list: https://www.silverangel.kr/silverangel/support/notice/list.do?pageNo=1 (HTTP 200) — 최신 가시 Tmp_idx = **221551** (221546/221547/221549/221551 노출, 221564 미노출).
+- view 221564: https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564 → HTTP 200·**51,765B `44223150`** (비공개 generic shell·221565/221566도 동일 shell).
+
+타임라인:
+| 시각 | 221564 상태 | 근거 |
+|---|---|---|
+| BNK-618 T10:09Z | HAS-DATA 88,732B `ffe82a0d` (11개 기능 본문) | `silverangel_notice_221564_bnk618.html` |
+| BNK-619 T10:59Z (~50min 후) | 51,765B `44223150` shell (비공개) | BNK-619 git-remeasure |
+| **BNK-622 T13:05Z (~27h 후)** | **51,765B `44223150` shell (여전히 비공개)** | 이 extract |
+
+판정: BNK-619 「사전 게시 leak·retraction window」 가설 **확정** — 6/30자 공지 본문이 ~27h 경과 후에도 공개 미복귀. 공개 가시성 NONE 지속. BNK-618 11개 기능 evidence(snapshot `ffe82a0d`) carry 유효. **「next 6/30(공지 명시일)」 정식 게시 재검증** 권장 carry.
+→ P3 candidate 3종 `G-NURSING-MISSED-RECORD-DASHBOARD`·`G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`·`G-LEGAL-FORM-SIGNATURE-IMAGE` 「6/30 재검증 보류」 status carry (BNK-619).
+→ 신규 공개 공지 0건 since 221551 (BNK-619=BNK-622 동일) — silverangel 공개 채널 정체.
+
+## 3. ogada parity / 갭 요약
+- NHIS #44(G16): ogada full-stack ✅ + UXD-159/163 `TransportServiceFeePanel`+`TransportParityRulesPanel`+RBAC+fail-open+catalog API → 경쟁 4종 중 ogada 유일 #44 표시 레이어 full-stack 차별화 (385-cycle carry).
+- silverangel CMS 5-method: ogada `CmsPaymentMethodCatalog` 5/5 `collectionImplemented=true`(V176+V178) parity 유지.
+- 평가지표 27 목욕: ogada V177/V178 `bathing_schedules` pre/post observation + FE `BathingScheduleIndicator27Panel`(BNK-616 wire) parity 유지.
+- M11 직원급여·M12 회계 P2 갭 carry: `/payroll/*`·`/accounting/*` 0 route → closure 시 80.86%→87.76%(+6.9pp) 최대 KPI bump 레버.
+
+## 4. 사이클 집계
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(P3 3종 「6/30 재검증 보류」 carry) · closure 잔존 재확인 2(NHIS #44 385차·silverangel 4-URL zero drift) · 상태 변경 0(HEAD zero advance·양쪽 WT CLEAN) · KPI 변경 0(merge gate 804 carry) · 미확인 carry 3(longterm 502 43-cycle·610 oscillation·carefor LIVE) · 신규 snapshot 1건(이 파일) · 덮어쓰기 0건(전부 IDENTICAL·canonical 보존) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족 · tester FF merge 804 가속 권장.

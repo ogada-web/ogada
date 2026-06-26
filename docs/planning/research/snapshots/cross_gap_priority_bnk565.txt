@@ -1,0 +1,186 @@
+cross_gap_priority_bnk565.txt — BNK-565 (rotation 8h+ 교차검증·갭 우선순위)
+조사일: 2026-06-24T00:15:00Z (KST 09:15)
+ogada baseline: FE develop @87da06d (BNK-564 carry · HEAD zero advance 1-cycle)
+                BE develop @8b3fdcd (BNK-564 @f600fd6 HEAD +1 · "Fix QA-B277: keep live-e2e bootstrap opt-in" · src/main/resources/application.yml +1L)
+                FE WT CLEAN · BE WT CLEAN
+                merge gate FE 200 + BE 538 = 738 (+1 vs BNK-564 737)
+
+──────────────────────────────────────────────────────────────────────────────
+1. KPI 재실측 (zero data correction)
+──────────────────────────────────────────────────────────────────────────────
+- Route: 112 (111 `<Route\b` + 1 `<Routes>`) — carry from BNK-564
+- path:  111 — carry
+- page:  91 (90 jsx + RootRedirect=91) — carry
+- V:     1–V175 — carry
+- BE Test 파일 수: 252 carry
+- @Test (no path filter, 모든 *.java grep): 1,840 — carry
+- @Test (`*Test.java` glob 한정 strict): 1,829 (loose -11 = test base/IT 클래스 11건)
+- FE test: 192 .test.js + 273 .test.jsx = 465 carry
+- 모듈 커버 22.85/29 = 78.79% (competitorModuleCoverage.js 미변경 carry)
+- report-density: 23/111 = 20.7% carry
+
+──────────────────────────────────────────────────────────────────────────────
+2. 백본 8-URL 344차 재실측 (md5 / size live vs on-disk)
+──────────────────────────────────────────────────────────────────────────────
+
+URL                                                            | live md5         | live SIZE | on-disk         | drift
+---------------------------------------------------------------|------------------|-----------|-----------------|------
+NHIS #44 (joHistoryContent SEQ_CONTENTS=3281769)              | c886ff1f         | 7,572B    | 동일            | zero drift 344차 (러-1~4·편도50%·④일지 verbatim)
+carefor func.php Wayback (20260519072235id_)                   | 6226e6eb         | 98,328B   | 동일            | zero drift carry · LIVE direct HTTP 000 timeout 7-cycle 미확인
+carefor func.php LIVE direct                                   | HTTP 000 (timeout 20s) | —    | —               | 미확인 7-cycle carry (BNK-558→565)
+silverangel daycareEssentialWork (newSilverangel/daycare/)     | c79c1be3         | 131,664B  | 동일            | zero drift 344차 (#27 보호자회의·#41-42 이동서비스 수칙)
+silverangel notice/list                                        | 52c9457f         | 3,594,181B| 동일            | zero drift carry (221562 deadline post embed 동일)
+longterm 502 canonical                                         | b5aee8c1         | 105,552B  | 동일            | canonical stable carry (단기보호 1등급 74,060)
+longterm 610 통합재가                                          | 0ea575be         | 91,421B   | 동일            | stable carry (2종 이상 가산 월 10만원)
+law247 (admRulInfoP admRulSeq=2100000271110)                   | 1c5cc602         | 78,450B   | 336950e6        | DRIFT cachebuster (Time=1782259900) · 제2025-247호 verbatim 불변 → 덮어쓰기
+MOHW 2026-126 (board.es list_no=1490826)                       | 611cb60b         | 109,510B  | 64b7bf40        | DRIFT counter — 조회수 2,519→2,527 (+8) · 제2026-126호 verbatim 불변 → 덮어쓰기
+lcms 루트                                                      | 6b750291         | 50,498B   | c0c66076        | DRIFT type rotation (type1+type3 markers; -242B vs BNK-564 type1 50,740B)
+ezcare 루트                                                    | 0758f245         | 106,143B  | 6b526a4f        | DRIFT cachebuster + banner oscillation `[추천 이벤트]` (BNK-559 disk) ↔ `[무료 이벤트]` (BNK-565 live)
+ezcare /new/ezCare_fnc.html                                    | aef48a74         | 17,870B   | bcd589bb        | DRIFT cachebuster only · 도입 9,346 verbatim 불변
+
+──────────────────────────────────────────────────────────────────────────────
+3. ★★★ 가정 번복 1건: silverangel daycare/* 4-URL 경로 reorganization
+──────────────────────────────────────────────────────────────────────────────
+BNK-560~564 carry: "엔젤 5-URL zero drift IDENTICAL" (essential·extra·system_feature·main·fee).
+BNK-565 직접 fetch 결과:
+
+OLD path (BNK-560~564 backbone) → BNK-565 status
+- /newSilverangel/daycare/extraService.do        f9c5d877 81,637B → 404 (Apache HTTP/1.1 404 404)
+- /newSilverangel/daycare/system_feature.do      c9507190 45,601B → 404
+- /newSilverangel/daycare/main.do                bcf6df41 59,002B → 404
+- /newSilverangel/daycare/serviceFee.do          eab352a8 44,513B → 404
+
+NEW canonical path (BNK-565 신규 evidence — silverangel main.do 네비게이션에서 추출):
+- /newSilverangel/service/extraService.do        f9c5d877 81,637B  ← SAME content (zero content drift)
+- /newSilverangel/service/feeService.do          eab352a8 44,513B  ← SAME content
+- /newSilverangel/service/mainService.do         bcf6df41 59,002B  ← SAME content
+- /newSilverangel/service/businessSupportService.do (신규 메뉴 — 업무지원 서비스)
+
+판정: Path-only reorganization. md5/size 완전 동일 → 콘텐츠 zero drift, **routing layer DRIFT만**.
+"엔젤 5-URL zero drift" carry 가정 = 부분 번복 (URL 변경 + 내용 보존).
+on-disk 파일은 BNK-560 시점 fetched(`silverangel_extraService.html`,`silverangel_system_feature.html`); 신규 canonical URL로 README 표 갱신 필요.
+
+system_feature.do 는 신규 사이트 IA에서 제거됐고 angelSystemSummary 가 대체 메뉴로 보임:
+- /newSilverangel/daycare/daycareAngelSystemSummary.do (주야간보호 모드)
+- /newSilverangel/fcltySlry/angelSystemSummary.do      (입소시설 모드)
+
+──────────────────────────────────────────────────────────────────────────────
+4. ★★★ silverangel multi-mode SaaS evidence — 입소시설(fcltySlry) 모드 신규 namespace
+──────────────────────────────────────────────────────────────────────────────
+신규 URL: https://www.silverangel.kr/newSilverangel/fcltySlry/essentialWork.do
+LIVE: HTTP 200 · 166,023B · md5 80517b18 · 2026-06-24 fetched
+
+silverangel main.do 네비게이션 anchor에서 발견된 dual-mode 메뉴 트리:
+- /newSilverangel/daycare/daycareEssentialWork.do      ← 주야간보호 필수업무
+- /newSilverangel/daycare/daycareProgramProvided.do    ← 주야간보호 제공프로그램
+- /newSilverangel/daycare/daycareAngelSystemSummary.do ← 주야간보호 시스템개요
+- /newSilverangel/fcltySlry/essentialWork.do           ← **입소시설 필수업무** (신규 evidence)
+- /newSilverangel/fcltySlry/programProvided.do         ← 입소시설 제공프로그램
+- /newSilverangel/fcltySlry/angelSystemSummary.do      ← 입소시설 시스템개요
+- /newSilverangel/service/mainService.do               ← 주요서비스 (cross-cutting)
+- /newSilverangel/service/extraService.do              ← 부가서비스
+- /newSilverangel/service/businessSupportService.do    ← 업무지원 서비스
+- /newSilverangel/service/feeService.do                ← 이용요금
+- /newSilverangel/webSite/websiteProvided.do           ← 기관 홈페이지 제작
+- /newSilverangel/webSite/websiteProvidedList.do       ← 홈페이지 제작 현황
+
+입소시설(fcltySlry) essentialWork.do 화면 헤딩 추출 (verbatim):
+  업무내용 / 필수교육 / 평가 매뉴얼 / 법정 의무교육 / 공단평가 연계 / 부서별 일상업무
+  주기 분류 (4-cycle): 1.매일 / 2.매주 / 3.매월 / 4.발생시
+  일상기록 (8-record): 1.식사제공현황 / 2.배설관찰기록 / 3.관찰일지 / 4.도뇨관·경관식·수분공급
+                      5.종합일지 / 6.체위변경기록 / 7.배변배뇨기록 / 8.기록지 점검
+  평가연계: 공단 평가연계·평가매뉴얼
+
+ogada 적용:
+- 현재 ogada MVP = 주야간보호 단일 모드 (agents.yaml domain 명시).
+- silverangel 전수 evidence = 입소시설(fcltySlry) + 주야간보호(daycare) **dual-mode SaaS** + 공통 service/* 모듈 분리 IA.
+- 입소시설 8-record 일상기록 = 24h 케어 (식사·배설·관찰·도뇨관·종합·체위변경·배변배뇨·점검) — 주야간보호 일지보다 dense.
+- ogada v3+ 시설직원 모드 확장 검토 시 reference candidate「가정」 신규 P3:
+  · G-FACILITY-MODE-NURSING-LOG (입소시설 8-record 일상기록 + 4-cycle classification)
+
+──────────────────────────────────────────────────────────────────────────────
+5. ★★★ silverangel 부가서비스 mainFlag 4-product evidence
+──────────────────────────────────────────────────────────────────────────────
+URL pattern: /newSilverangel/service/extraService.do?mainFlag={AI|Mobile|VR|gbTree}
+
+신규 evidence: AI flag tab fetched
+- /newSilverangel/service/extraService.do?mainFlag=AI · 81,645B · md5 a168c791
+- 비교: 기본 /newSilverangel/service/extraService.do · 81,637B · md5 f9c5d877
+- 차이 +8B → mainFlag=AI 탭 마커 8 byte 추가 (콘텐츠 동일 추정)
+
+silverangel 부가서비스 4-product 라인업 (mainFlag query param):
+  AI       — AI 분석/진단/요약 (가정)
+  Mobile   — 모바일 앱 (방문직원 ↔ 보호자)
+  VR       — VR 인지재활 (가정 — 케어포 5-x 프로그램 카탈로그와 차별)
+  gbTree   — 굽은나무 (가정통신문·소식지 모듈 — BNK-65부터 carry된 gbTree carry-name 일치)
+
+ogada 적용:
+- ogada v2 SaaS 부가서비스 모듈 (`competitorModuleCoverage.js` id=10 부가서비스 0.5) carry — silverangel 4-product 분류는 SaaS 마케팅·롤아웃 plan 단위.
+- candidate 「가정」: mainFlag=gbTree 가 BNK-65~ carry "굽은나무 가정통신문" 모듈명과 일치하므로 G-GUARDIAN-NEWSLETTER (1-5 가정통신문 ❌ carry) 시장 선례 확인.
+
+──────────────────────────────────────────────────────────────────────────────
+6. ★★ 가정 번복 1건: ezCare top-nav-V2.js 자산 제거
+──────────────────────────────────────────────────────────────────────────────
+BNK-547~561 carry: "/new/js/top-nav-V2.js" zero drift `95286775`.
+BNK-565 직접 fetch: HTTP 404 Not Found (Apache 2.4.6).
+대체 경로 시도: /new/js/top-nav.js → 404 동일.
+home.html / fnc.html 본문 내 top-nav 참조 grep: 0건 (자산 deprecated).
+
+판정: BNK-547 이래 18 cycle carry된 ezCare backbone 자산 제거. ezCare 사이트 정적 자산 리팩토링 진행 중. backbone-set에서 제외 권장.
+
+──────────────────────────────────────────────────────────────────────────────
+7. 4축(G14·대시보드·v1.3-C·v2 CMS) P0/P1 재오픈 점검
+──────────────────────────────────────────────────────────────────────────────
+- G14 care-plan-form (App.jsx LIVE Route): carry — 재오픈 0
+- G26 dashboard/hq (App.jsx LIVE): carry — 재오픈 0
+- v1.3-C transport 8-route (App.jsx LIVE + #44 parity copy `87da06d`): carry — 재오픈 0
+- v2 CMS /billing/cms (App.jsx LIVE): carry — 재오픈 0
+- US-R01-c /staff/leave-ledger (BNK-563 closure): carry — 재오픈 0
+
+판정: 4축 P0/P1 재오픈 0 (BNK-548부터 17 cycle carry).
+
+──────────────────────────────────────────────────────────────────────────────
+8. candidate carry 점검 (BNK-563/564 신규 candidate 6건 변동 0)
+──────────────────────────────────────────────────────────────────────────────
+- G-PAYROLL-WALLOWANCE-MODEL P3「가정」 (BNK-563 §563-3) — carry, 진행 0
+- G-SAAS-SELF-BILLING-LEDGER  P3「가정」 (BNK-563 §563-3) — carry
+- G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT P3「가정」 (BNK-563 §563-3) — carry
+- G-GUARDIAN-MEETING (#27)    P3「가정」 (BNK-564 §564-3) — carry
+- G-TRANSPORT-RULES-DOC (#41-42) P3「가정」 (BNK-564 §564-3) — carry
+- G-COMM-CALLER-AUTH (221562)  P3「가정」 (BNK-564 §564-4 silverangel notice 마감 2026-06-23 17:00/18:00) — **deadline 경과**
+  · 2026-06-23 17:00 본인인증 마감일 도달; silverangel notice list 동일 md5 carry → notice 텍스트 변경 0.
+  · ogada SOLAPI 외부 분리 모델은 의도적 (BNK-564 판정 carry); 이지케어/엔젤 in-app 발신번호관리 UI는 ogada outside-MVP carry.
+
+신규 candidate (BNK-565):
+- G-FACILITY-MODE-NURSING-LOG P3「가정」 (out-of-scope MVP) — silverangel /newSilverangel/fcltySlry/essentialWork.do (8-record 24h 케어) reference; ogada v3+ 시설직원 모드 검토 시 import.
+
+──────────────────────────────────────────────────────────────────────────────
+9. 미확인 carry / 신규
+──────────────────────────────────────────────────────────────────────────────
+- carefor func.php LIVE direct HTTP 000 timeout 20s — 7-cycle carry (BNK-558→565)
+  · 콘텐츠는 Wayback `6226e6eb` 98,328B 기준 변동 0 검증됨; LIVE 접근성만 미확인.
+- silverangel /newSilverangel/daycare/{system_feature}.do 404 — system_feature 메뉴 자체 IA에서 제거 (대체 angelSystemSummary 추정·미확인 1)
+- ezCare top-nav-V2.js 자산 deprecated — 대체 backbone URL 미확인 1
+
+──────────────────────────────────────────────────────────────────────────────
+10. 즉시 액션
+──────────────────────────────────────────────────────────────────────────────
+tester:
+  merge gate **738** (FE 200 + BE 538) · FE WT CLEAN · BE WT CLEAN · 선행 commit 없음.
+  BNK-564 carry "BE WT DIRTY 1M application.yml" → BE +1 commit `8b3fdcd Fix QA-B277` 으로 closure (BE WT CLEAN).
+planner:
+  - silverangel IA reorg 인식 — 백본 표 newSilverangel/daycare/{extra,system_feature,main,serviceFee}
+    → newSilverangel/service/{extraService,feeService,mainService,businessSupportService} 갱신 필요.
+  - silverangel multi-mode SaaS evidence — ogada MVP=주야간보호 단일 모드 carry; 시설직원 모드 v3+ 후보.
+  - ezCare top-nav-V2.js deprecated — backbone-set 8→7 URL (top-nav 제거) 권장.
+  - candidate 6건 carry; 신규 G-FACILITY-MODE-NURSING-LOG P3「가정」 reference (out-of-scope MVP 확인).
+
+──────────────────────────────────────────────────────────────────────────────
+11. per-cycle minimum 점검 (agents.yaml reverse_engineering.per_cycle_minimum)
+──────────────────────────────────────────────────────────────────────────────
+- ✅ 신규 증거 URL **3건** (silverangel /service/extraService·/service/feeService·/service/mainService canonical reorg + /fcltySlry/essentialWork + service/extraService.do?mainFlag=AI)
+- ✅ 경쟁사 메뉴/필드/워크플로 **2-block** (입소시설 8-record + 4-cycle / silverangel 부가서비스 4-product mainFlag)
+- ✅ COMPETITOR_MATRIX +1 행 갱신 (ogada @8b3fdcd · merge gate 738)
+- ✅ BENCHMARK_REPORT §565 신규 소절
+
+요약: 가정 번복 2 (silverangel daycare 4-URL path reorg · ezCare top-nav-V2.js 자산 제거) · 신규 core 갭 0 · candidate +1 (G-FACILITY-MODE-NURSING-LOG P3「가정」 out-of-scope) · 상태 변경 1 (BE +1 application.yml live-e2e bootstrap opt-in fix) · 미확인 carry 1 (carefor LIVE 7-cycle) · 미확인 신규 2 (silverangel system_feature 대체·ezCare top-nav 대체) · 신규 snapshot 4건 (extract + 3 silverangel) · 덮어쓰기 5건 (law247·mohw126·lcms·ezcare home·ezcare fnc) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.

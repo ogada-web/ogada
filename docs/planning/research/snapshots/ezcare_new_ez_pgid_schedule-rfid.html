@@ -204,7 +204,7 @@
 			</li>
 			<li class="nav-menu-item nav-dropdown" nav-no="10" >
 				<a>기관평가</a>
-				<a href="/new.ez?PGID=guide-E100&tmp=1782164448#tab0" class="direct-link" hit-id="49000">현황</a>
+				<a href="/new.ez?PGID=guide-E100&tmp=1782379951#tab0" class="direct-link" hit-id="49000">현황</a>
 			</li>
 
 			<li class="nav-menu-divider"></li>
@@ -805,6 +805,7 @@ function ageGroup(age){
 			}
 
 			$("#btn-carmatch-open.blink").mouseover(function(){
+				//if($.cookie("carematch-sidebar-bubble")!="hide") $("#carematch-sidebar-bubble").show();
 				$("#carematch-sidebar-bubble").show();
 
 				// // 사이드바 버튼 hover 시 띄운 알림말풍선 2초 후 사라지도록
@@ -812,6 +813,9 @@ function ageGroup(age){
 				// bubbleClose = setTimeout(function() {
 				// 	$("#carematch-sidebar-bubble").fadeOut();
 				// }, 2000);
+			});
+			$("#btn-carmatch-open.blink").mouseleave(function(){
+				$("#carematch-sidebar-bubble").fadeOut();				
 			});
 
 			 // 구인구직 알림 말풍선 (#carematch-sidebar-bubble) 에 hover 시 timeout 을 취소한다
@@ -961,11 +965,11 @@ function ageGroup(age){
 //-->
 </script>
 
-<script type="text/javascript" src="../assets/gw_module_new.js?1782164448"></script>
-<link rel="stylesheet" type="text/css" href="../assets/gw_module_new.css?1782164448" />
+<script type="text/javascript" src="../assets/gw_module_new.js?1782379951"></script>
+<link rel="stylesheet" type="text/css" href="../assets/gw_module_new.css?1782379951" />
 
-<script type="text/javascript" src="/page/schedule/rfid.js?1782164448"></script>
-<link rel="stylesheet" type="text/css" href="/page/schedule/rfid.css?1782164448" />
+<script type="text/javascript" src="/page/schedule/rfid.js?1782379951"></script>
+<link rel="stylesheet" type="text/css" href="/page/schedule/rfid.css?1782379951" />
 
 <script type="text/javascript" src="/js2/plugin/jquery.form.js"></script>
 
@@ -1695,7 +1699,7 @@ function ageGroup(age){
 div#send_tag_time td[aria-describedby=grid_send_tag_time_message]{white-space: break-spaces;}
 </style>
 
-<script type="text/javascript" src="/assets/smartaib4pc/smart.scrap.js?1782164448"></script>
+<script type="text/javascript" src="/assets/smartaib4pc/smart.scrap.js?1782379951"></script>
 
 <script>
 	const oInfo_oCode = "DEMO";

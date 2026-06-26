@@ -1,0 +1,71 @@
+ezcare_g21_rfid_schedule_crosswalk_bnk617.txt — BNK-617 이지케어 역공학 2–4h (2026-06-25T09:32Z)
+
+[BNK] benchmark_researcher · BNK-617 cycle · doc:owner=BNK doc:audience=PLN
+
+ogada git 실측 (BNK-616 → BNK-617 delta)
+| 지표 | BNK-616 | BNK-617 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `3d7f13b` | `3d7f13b` | zero advance |
+| BE develop HEAD | `2adae591` | `aeecc1b2` `feat(v2/7-9): apply refund fee policy net amount validation` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs origin/test | 233 | 233 | carry |
+| BE ahead vs origin/test | 565 | **566** | +1 |
+| merge gate | 798 | **799** | +1 |
+| Route | 112 | 112 | carry |
+| page | 91 | 91 | carry |
+| BE Test class | 268 | 268 | carry |
+| BE @Test | 1936 | **1939** | +3 |
+| FE test | 471 | 471 | carry |
+| 모듈 커버리지 | 80.86% | 80.86% | carry |
+
+§1. 이지케어 가격·도입 재실측 (확인 · 2026-06-25T09:32Z HTTP 200)
+
+| URL | HTTP | SIZE | md5 | BNK-616 → BNK-617 변동 |
+|---|---|---|---|---|
+| [/](https://ezcare.easyms.co.kr/) | 200 | 106,034B | `ff0c18e9` | mCnt `{1:9286,2:4603,3:2353,4:1820}` — **mCnt[1] 9285→9286 (+1)** |
+| [/new/ezCare_fnc.html](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | 17,870B | `80596966` | 도입 **9,353→9,356 (+3)** verbatim「전국 9,356개 기관 사용중」 |
+| [/new/ezCare_charge.html](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 200 | 22,979B | `d4cca508` | 가격 **33,000/25,850/55,000 verbatim 불변** (40%할인 2026-06-30까지) |
+| [/?PG=e01](https://ezcare.easyms.co.kr/?PG=e01) | 200 | 47,117B | `dbeca3c6` | 이용시설 **9,350→9,353 (+3)** · 점유율 **53.46%→53.48%** · 집계일 2026.06.25 |
+| [/new/ezCare_change_work.html](https://ezcare.easyms.co.kr/new/ezCare_change_work.html) | 200 | 26,157B | `9eb38e77` | 후기 **4,965건 verbatim 불변** · RFID·듀얼/트리플 모니터 카피 불변 |
+
+§2. G21 4축 lifecycle 역공학 (데모 POST 세션 · 7 PGID 재실측)
+
+| PGID | SIZE | md5 | 핵심 필드/워크플로 |
+|---|---|---|---|
+| [schedule-rfid](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-rfid) | 150,501B | `e0f7cf36` | 「4. 공단 계획↔태그 비교」·4-tab(수급자/직원/태그시간/전송태그)·`grid_match_list` colModel **comp_01~09** 9-flag(태그안함·종료·시작·30분·직접입력·제공자다름·계획없음)·excel `"{Ym} 계획&태그 비교 결과"`·RFID전송내역 엑셀 upload(`mode=rfid_upload`)·FAQ [21450](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21450) 링크 |
+| [schedule-fix](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-fix) | 149,576B | `0ade2861` | `#grid-schedule-p500` **17-col**(sName·pRate_type·name·pRate·tAmount_noExt·rAmount·pAmt·pAmt_ext·pAmount·tAmount·inji·severe·sch)·`fixed=="확정"` row class·`chk-ltm-fix` 일괄확정 전 공단 청구명세서 비교·`comp_ltm_fix_data()` RFID 연동 |
+| [duplicate-schedule](https://ezcare.easyms.co.kr/new.ez?PGID=duplicate-schedule) | 93,401B | `48b6204a` | 이중일정 검출 PGID shell·`faqDir=duplicate` 고객지원 다이얼로그·ogada 주야간 MVP N/A(재가 G21) |
+| [change-list](https://ezcare.easyms.co.kr/new.ez?PGID=change-list) | 100,278B | `391c76f7` | 「2.10 변경사유 조회」·8-field colModel(`sDate`/`pName`/`pCode`/`chg_what`/`memo`/`chg_before`/`chg_after`/`mName`)·excel `"{Ym} 변경사유"`·Ajax `/page/change/json.php?data=change_reason_SELECT` |
+| [pAmt-a100](https://ezcare.easyms.co.kr/new.ez?PGID=pAmt-a100) | 134,593B | `df5c6418` | 본인부담금 청구·`grid-pAmt-a100-notYet` 미생성 수급자 dialog → **「일정 확정하러 가기」→ schedule-fix&Ym=** deep-link |
+| [receipt-list](https://ezcare.easyms.co.kr/new.ez?PGID=receipt-list) | 108,590B | `e0c833d5` | 현금영수증 3-tab ↔ ogada `/billing/cash-receipts` parity carry |
+| [patient-schedule](https://ezcare.easyms.co.kr/new.ez?PGID=patient-schedule) | 93,397B | `36eb413e` | **404 shell negative** 「페이지를 찾을 수 없습니다」(BNK-533 carry 재확인) |
+
+§3. Channel.io 청구일정 반영 여부 (bc7f4cd9 · 확인)
+
+URL: https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9
+HTTP 200 · 230,636B · md5 `ec62bfcc` (BNK-616 `dbd710c8` +2,598B wrapper DRIFT)
+strip-text semantic **IDENTICAL** (647 chars): 「정상 반영 → 공단청구 금액 진한 검은색」·「미반영 → 빨간색 숫자」·「계획일정 최종 등록」·「청구일정 가져오기 재실행」
+
+§4. FAQ rowid 스캔 (확인)
+
+| rowid | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| 21844 | 200 | 14,474B | `d0aa760c` | NHIS 이름 마스킹 자인 · **zero drift** |
+| 21845 | 200 | 13,327B | `e5762090` | NF stub (HAS-DATA 경계) |
+| 21850 | 200 | 13,327B | `e5762090` | NF stub carry |
+
+§5. ogada 갭·제안 (planner)
+
+| 코드 | 근거 | ogada | 우선순위 |
+|---|---|---|---|
+| G-REFUND-FEE-FE-WIRE | BE `aeecc1b2` `recordCopayRefund` netAmount policy validation ✅ · FE grep refund-fee **0 hit** | catalog+preview+validation BE-only | P3 carry |
+| G-CHANGE-REASON-AUDIT | change-list 8-field before/after 그리드 | AuditLogPanel action-level only | P3 carry |
+| G21 visit billing | schedule-rfid/fix/duplicate 4축 | 주야간 MVP out-of-scope | N/A 재가 |
+| M11/M12 | wAllowance family | `/payroll/*` 0 route | P2 1순위 lever |
+
+§6. per-cycle minimum 충족
+- 신규 evidence URL: pg e01 counter DRIFT `dbeca3c6` (+3 facilities · +0.02pp)
+- 메뉴/필드/워크플로: §2 G21 4축 + pAmt-a100→schedule-fix deep-link
+- COMPETITOR_MATRIX: ogada `@3d7f13b`/`@aeecc1b2` 갱신 예정
+- BENCHMARK_REPORT §617 소절 추가 예정

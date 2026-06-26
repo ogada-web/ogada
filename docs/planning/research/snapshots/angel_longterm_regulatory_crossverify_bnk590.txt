@@ -1,0 +1,123 @@
+BNK-590 cycle extract (2026-06-24 · rotation=엔젤·롱텀·규제 4–6h)
+================================================================================
+owner=BNK audience=PLN
+조사일: 2026-06-24T16:40:00Z (KST 25:40)
+
+[ogada baseline @develop — git 실측]
+  FE  c06d581ea93159eb0f4cf6f4d967543b187a13a9  test(v1.2.1/UXD-161): lock G-SMS dispatch panel form-stack a11y
+  BE  88a58d9456d41173a68b6bb85ac7ac8165ce9a18  test(v2/live-e2e): lock g21 seed detail in health fallback
+  WT  FE CLEAN · BE CLEAN
+  ahead vs origin/test : FE 217 · BE 550 → merge gate 767 carry
+  HEAD zero advance 1-cycle (FE+BE 양쪽 BNK-589 @c06d581/@88a58d9 동일 SHA)
+  KPI  112 Route(111 `<Route\b`+1 `<Routes>`) · 91 page(90+RootRedirect=91) · V1–V175 ·
+       BE Test 258(*Test.java) · FE test 467(193 .test.js + 274 .test.jsx) ·
+       모듈 79.66%(23.10/29·id=10 0.75)  전부 carry
+  → 상태 변경 0 · KPI 변경 0 · 가정 번복 0
+
+================================================================================
+[ ★★★ lcms.kr 도메인 폐기 DRIFT (NEW insight — 자매 cross-promo 도메인 decommission) ]
+================================================================================
+$ curl -s 'http://www.lcms.kr/'                 → HTTP 200 · 19 bytes · "welcome to lcms.kr "
+                                                   md5 c7a0e2e66a1035d6e657da8b404b3357
+$ curl -sL 'https://www.lcms.kr/'               → HTTP 000 · 0 bytes (TLS 미제공)
+$ curl -sL 'http://www.lcms.kr/index.php'       → HTTP 404 · 1,238 bytes (server default)
+  retry ×3 모두 동일(transient 아님 — 안정적 placeholder)
+
+  prior on-disk canonical lcms_root.html  c0c660760e9e5691491ace28f9d15f74  50,740B
+    <title>엔젤시스템</title> · keywords "요양시설통합사례관리솔루션 엔젤..."
+    (BNK-515 type2 silverangel CMS cross-promo · BNK-568/586 type1↔type2↔type3 6-cycle rotation 정본)
+
+  → 엔젤시스템 자매 마케팅/CMS 도메인 lcms.kr 가 49,000+B 풀 홈페이지에서 19-byte 텍스트 placeholder 로 폐기.
+  → BNK-515~586 의 "lcms type rotation 3-type cross-promo funnel" 인사이트는 역사적으로 마감(capped).
+  → 본진 silverangel.kr 는 정상(아래 zero drift) — 멀티 도메인 cross-promo 전략을 단일 도메인으로 축소한 것으로 추정「가정」.
+  → ogada 의의: 단일 ERP 통합 메시지 차별화 carry. 경쟁사 분산 cross-promo 약화 → ogada 통합 가치 상대적 강화.
+  → canonical lcms_root.html(c0c66076) 보존 + 신규 named snapshot lcms_root_decommission_bnk590.html(19B) 추가
+     (longterm 502 canonical-보존 패턴 준용 — 풍부한 역사 콘텐츠를 stub 으로 덮어쓰지 않음).
+
+================================================================================
+[ ★★ NHIS #44 이동서비스비 러-1~4 — 361차 zero drift IDENTICAL ]
+================================================================================
+$ curl 'https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?\
+  DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769'
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  =  docs/planning/research/snapshots/nhis_jo44_live_bnk584.html  IDENTICAL (361차 zero drift)
+  verbatim grep : 러-1 ×1 · 러-4 ×1 · 편도 ×2 · 50% ×11 · "1일 1회" ×1
+
+  ogada full-stack ✅ parity/우위 :
+    BE  TransportServiceFeeService 5/5 (RU_1~RU_4 · ONE_WAY_RATIO=0.5 · 1일1회 dedup · V148/V154/V155)
+    FE  transportServiceFee.js 4 parity-copy 상수 + TransportServiceFeePanel UXD-159 a11y
+  → PLAN_NOTES #44 1차 확인 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry · 덮어쓰기 0
+
+================================================================================
+[ ★★ silverangel.kr 본진 4-URL zero drift IDENTICAL + weekly notice 0 ]
+================================================================================
+  notice list   https://www.silverangel.kr/silverangel/support/notice/list.do
+                52c9457f4e34a7d3c49275e5bf337677  3,594,181B  IDENTICAL (= bnk584 on-disk)
+  essentialWork https://www.silverangel.kr/newSilverangel/fcltySlry/essentialWork.do
+                80517b184358c46ac3ba9206dc48db5f    166,023B  IDENTICAL (보호자회의 ×1 · 반기 ×28 — 평가#27 가족소통)
+  extraService  https://www.silverangel.kr/newSilverangel/service/extraService.do
+                f9c5d8773ad0a481be6d7eb4b192d982     81,637B  IDENTICAL (효성CMS 본인부담금 자동이체)
+  mainService / feeService  bcf6df41 / eab352a8  carry (BNK-586 on-disk)
+
+  notice probe (next 예상 ~6/25) :
+    221564 / 221565 / 221570  → 전부 HTTP 200 · 51,765B · 8437f255b4eaf22e9844d1d260554093 (미게시 shell)
+    → latest real 221563(2026-06-18) · weekly notice 0 (6-day stale) · next ~6/25(KST 내일) carry · 엑셀 포맷 변경 0
+
+  → ogada CMS 자체 DB 우위 carry (BillingCmsEnrollment* · 외부 효성CMS 의존 0)
+  → 평가#27 가족소통(보호자회의 반기 1회) dedicated workflow ❌ → G-GUARDIAN-MEETING P3 carry
+
+================================================================================
+[ ★ longterm(공단) 수가 — 610 통합재가 zero drift · 502 단기보호 「미확인」 ]
+================================================================================
+  longterm 610  https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731
+                HTTP 200 · 91,421B · 0ea575be5f11a817c635fe40f51dec39  IDENTICAL (= longterm_610.html on-disk)
+                verbatim 「통합재가서비스」·「월 10만원」·「주야간보호형」 carry
+                → v3.1 G18-SHORT IntegratedHomeProviderDiscoveryPanel discovery 우위 carry
+
+  longterm 502  https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000043
+                HTTP 302 · SIZE 0 (empty redirect; BNK-586 동일 패턴)
+                canonical on-disk b5aee8c1... longterm_502.html 105,552B 「단기보호 1등급 74,060」 verbatim 보존
+                → 19-cycle 「미확인」 carry (BNK-548~590) · canonical on-disk 우선 정책 유지 · ROADMAP v3.1 G18-SHORT P3 carry
+
+================================================================================
+[ Cross-walk to ogada baseline ]
+================================================================================
+  4축 + leave-ledger P0/P1 재오픈 0 — 39-cycle carry (BNK-549~590) — git-grep App.jsx @c06d581 LIVE 7/7
+    G14 /clients/:clientId/care-plan-form · G26 /dashboard·/dashboard/hq ·
+    v1.3-C /transport/service-fees · v2 /billing/cms · US-R01-c /staff/annual-leaves·/staff/leave-ledger
+
+  candidate carry 4 (변동 0 · 전부 P3「가정」·MVP out-of-scope)
+    G-GUARDIAN-MEETING              P3 (평가#27 보호자회의 반기·silverangel essential)
+    G-VENDOR-ONBOARDING-CHECKLIST   P3 (BNK-578 silverangel businessSupport 4회차)
+    G-PROGRAM-GROUP-CONFIG          P3 (BNK-577 carefor 모듈5)
+    G-BILLING-OPENING-BALANCE       P3 (BNK-585 carefor M7 선행입금)
+
+================================================================================
+[ Cycle accounting ]
+================================================================================
+  per-cycle minimum 충족 :
+    [O] 신규 증거 URL 1건+   — lcms.kr 폐기 재실측(신규 DRIFT) + silverangel notice probe 221564/221565/221570 + NHIS#44 361차
+    [O] 메뉴/필드/워크플로 1블록+ — lcms 폐기 분석 + silverangel 4-URL md5 + NHIS#44 러-1~4 verbatim
+    [O] COMPETITOR_MATRIX 1행+ @HEAD 갱신 — BNK-590 lcms 폐기·NHIS#44 361차·silverangel notice 0
+    [O] BENCHMARK_REPORT §소절 1건+ — BNK-590 차수 메모
+
+  state changes :
+    가정 번복 0
+    신규 core 갭 0
+    candidate 변동 0 (carry 4)
+    상태 변경 0 (HEAD zero advance 1-cycle · 양쪽 WT CLEAN)
+    KPI 변경 0 (전부 carry · merge gate 767)
+    미확인 carry 2 (carefor LIVE 23-cycle · longterm 502 19-cycle)
+    신규 snapshot 2건 (lcms_root_decommission_bnk590.html · angel_longterm_regulatory_crossverify_bnk590.txt)
+    덮어쓰기 0건 (lcms canonical 보존 — decommission 은 named snapshot 으로 추가)
+    엑셀 포맷 변경 0
+
+[planner 액션 (BNK-590)]
+  ① baseline FE `@c06d581` · BE `@88a58d9` · merge gate 767 carry (HEAD zero advance 양쪽 1-cycle)
+  ② ★★★ lcms.kr 도메인 폐기(50,740B→19B placeholder) — 엔젤 자매 cross-promo funnel 마감.
+     ogada 단일 ERP 통합 차별화 메시지 상대적 강화 carry (v3 marketing copy 검토 시 반영).
+  ③ tester FF merge 767 가속 권장 — 양쪽 WT CLEAN · cross-stream advance 0
+  ④ NHIS #44 361차 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry
+  ⑤ silverangel weekly notice 0 · latest real 221563(6/18) · next ~6/25(내일) carry
+  ⑥ longterm 502 「미확인」 19-cycle carry(canonical on-disk 우선) · 610 통합재가 stable carry
+  ⑦ candidate carry 4건 (G-GUARDIAN-MEETING·G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG·G-BILLING-OPENING-BALANCE P3·MVP out-of-scope)

@@ -1,0 +1,101 @@
+BNK-623 교차검증·갭 우선순위 8h+ (2026-06-25T13:42Z)
+=====================================================================
+rotation: 교차검증·갭 우선순위 (8h+) — 이전 BNK 가정 번복·미확인 축소·P0/P1 재정렬
+focus headline: ★★★ G-REPORT-DENSITY (BNK-620 finding) FULL-STACK CLOSURE in-cycle
+
+---------------------------------------------------------------------
+[ogada git 실측 — baseline cross-stream FE+2 · BE+1]
+---------------------------------------------------------------------
+FE develop @15a3b7f  feat(v1.2.1/G-REPORT-DENSITY): wire M5 program report pages for US-P02
+        (prev @d64f81b ux(a11y/FE-16) UXD-164 promote undefined shared util classes)
+        WT CLEAN · ahead origin/test = 238
+BE develop @650801b  feat(v2/G-REPORT-DENSITY): add M5 program report APIs for US-P02
+        WT CLEAN · ahead origin/test = 569
+merge gate = 238 + 569 = 807  (BNK-622 804 → +3: FE+2 UXD-164 + G-REPORT-DENSITY wire, BE+1 M5 BE)
+
+KPI (HEAD-tree 실측):
+  Route        117  (116 `<Route\b` + 1 `<Routes>`)   ← BNK-622 112 → +5 (/programs/reports ×5)
+  page          92  (91 `*Page.jsx` + RootRedirect)    ← BNK-622 91 → +1 (ProgramReportsPage.jsx)
+  migration  V1–V178
+  BE Test      270  (find src/backend/src/test -name '*Test.java')
+  BE @Test    1952  (git grep '^\s*@Test\b' HEAD -- src/test) ← BNK-622 1942 → +10 (program report tests)
+  FE test      477  (195 .test.js + 282 .test.jsx)     ← BNK-622 474 → +3 (program report tests)
+  모듈 coverage 80.86%  (23.45/29 — calculateWeightedModuleCoverage, id=5 program 이미 1.0·불변)
+  reports route 28  (was 23 @BNK-620) — billing 5 + care 9 + nursing 6 + programs 5(NEW) + top-level 3
+
+---------------------------------------------------------------------
+[★★★ G-REPORT-DENSITY M5 program report — BNK-620 갭 → 코더 in-cycle 종결 (traceability 확인)]
+---------------------------------------------------------------------
+BNK-620 (COMPETITOR_MATRIX): "demo-work 리포트 밀도 34 vs ogada 23 … 갭: M5 프로그램 5 rpt".
+→ BE commit 650801b 메시지 verbatim 인용:
+   "Expose four GET /api/v1/programs/reports/* endpoints (participations,
+    schedules, provision-records, group-history shell) to close the BNK-620
+    M5 report density backend gap ahead of frontend /programs/reports/* wire."
+→ FE commit 15a3b7f: ProgramReportsPage.jsx + ProgramReportNav.jsx + ProgramReportPanel.jsx
+   + config/programReports.js + api/programReportServices + App.jsx 5 routes.
+
+BE 산출 (650801b · 15 files +961L):
+  ProgramReportController.java  @RequestMapping("/api/v1/programs/reports")  (+70L)
+  ProgramReportService.java     (+392L)
+  ProgramReportControllerRoutingTest.java (+102L) · ProgramReportServiceTest.java (+246L)
+  DTO: ProgramParticipationReport(+Row+Summary)·ProgramScheduleReport(+Row)·
+       ProgramProvisionRecordReport(+Row)·ProgramGroupHistoryReport(+Row)
+  repo: ActivityProgramRepository(+15L)·ProgramParticipationRepository(+15L)
+
+FE 산출 (15a3b7f · App.jsx HEAD routes):
+  /programs/reports                       (hub)
+  /programs/reports/participations
+  /programs/reports/provision-records
+  /programs/reports/group-history
+  /programs/reports/schedules
+  config/programReports.js endpoint map:
+    participations  → /programs/reports/participations
+    provisionRecords→ /programs/reports/provision-records
+    groupHistory    → /programs/reports/group-history
+    schedules       → /programs/reports/schedules
+
+갭 상태: BNK-620 「M5 프로그램 5 rpt 갭」 → BNK-623 BE+FE full-stack LANDED.
+  demo-work 34 rpt vs ogada 23 (gap 11) → 34 vs 28 (gap 6). M5 모듈 단위 리포트 갭 종결.
+  잔여 demo-work 우위: M1 연계기록지(1-10 coverage 0)·M11 급여대장(coverage 0).
+참고: group-history 는 BE "shell" 명시 (집계 미구현) → P3 carry `G-REPORT-DENSITY-GROUP-HISTORY-FILL`.
+
+---------------------------------------------------------------------
+[★★ NHIS #44 이동서비스비 러-1~4 — 386차 zero drift IDENTICAL]
+---------------------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+live: HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+disk: nhis_jo44_joHistory.html / nhis_jo44_live_bnk584.html = c886ff1f… IDENTICAL
+내용: 러-1~4 이동서비스비·편도 50%·1일 1회·별지 제22호 verbatim 불변.
+ogada: G16 full-stack + UXD-159/163 TransportServiceFeePanel + TransportParityRulesPanel
+       + RBAC + fail-open + catalog API. 경쟁 4종 중 유일 #44 표시 레이어 차별화 386-cycle carry.
+덮어쓰기 0건 (live=disk IDENTICAL).
+
+---------------------------------------------------------------------
+[★★ silverangel notice 221564 retraction-window — BNK-623 지속 (가정 carry)]
+---------------------------------------------------------------------
+list https://www.silverangel.kr/silverangel/support/notice/list.do?pageNo=1
+     HTTP 200 · 3,594,181B · 최신 가시 Tmp_idx = 221551 (221564 미노출 지속)
+view https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564
+     HTTP 200 · 51,765B · md5 442231504d57232b2d155516aa93394a (비공개 generic shell)
+시계열: BNK-618 T10:09Z HAS-DATA ffe82a0d(88,732B·11개 기능) → BNK-619 T10:59Z shell
+        → BNK-622 T13:05Z shell → BNK-623 T13:42Z 여전히 shell 44223150.
+판정: 6/30자(미래일) 공지 사전 게시 leak·retraction window 가정 carry. 공개 가시성 NONE.
+        「next 6/30 정식 게시」 재검증 권장. P3 3종 「6/30 재검증 보류」 status carry
+        (G-NURSING-MISSED-RECORD-DASHBOARD·G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE·
+         G-LEGAL-FORM-SIGNATURE-IMAGE).
+
+---------------------------------------------------------------------
+[★ 갭 우선순위 재정렬 (P0/P1 재오픈 0 · P2/P3 carry)]
+---------------------------------------------------------------------
+P0/P1 재오픈: 0 (BNK-549~623 carry).
+P2 최대 KPI 레버: M11 직원급여·M12 회계 — /payroll/*·/accounting/* 0 route.
+    id=11·12 closure 시 80.86% → 87.76% (+6.9pp) 단일 최대 bump. v1.3+ 격상 권장 carry.
+P3 closure (이번 cycle): G-REPORT-DENSITY M5 (BE+FE full-stack).
+P3 carry: G-REPORT-DENSITY-GROUP-HISTORY-FILL(신규)·G-SEVERE-ALLOWANCE-SCHEDULE-AGG·
+    G-SAAS-TENANT-BILLING-PORTAL·G-MARKET-SHARE-DASHBOARD·
+    silverangel 3종 「6/30 재검증 보류」 + 기존 P3.
+
+per-cycle minimum 충족: 신규 증거 URL 재실측 3건(NHIS#44·silverangel list·view)·
+    메뉴/필드/워크플로 1블록(M5 program report 4 BE + 5 FE)·
+    COMPETITOR_MATRIX 행 갱신 @15a3b7f/@650801b·BENCHMARK_REPORT §623 소절.
+tester: FF merge 807 가속 권장.

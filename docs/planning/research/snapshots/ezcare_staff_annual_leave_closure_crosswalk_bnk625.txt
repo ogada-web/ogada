@@ -1,0 +1,72 @@
+BNK-625 이지케어 역공학 2–4h — ezCare 직원(module 1) worker-b100 5-tab ↔ ogada /staff/* cross-walk
+조사일: 2026-06-25 (KST) | rotation: 이지케어 역공학 (/new.ez·top-nav catalog·ezCare_fnc·?PG=e01·도입/점유율 재실측)
+======================================================================================================
+
+[0] ogada baseline 실측 (git develop HEAD)
+- FE develop @75c0f51  fix(v1.2.1/QA-B95): treat bootstrap-unavailable blockers as recoverable
+    · WT CLEAN · BNK-624 @15a3b7f → HEAD +1 · ahead 239 vs origin/test=ab4de83
+- BE develop @0e55f3b  fix(v2/QA-B95): expose live-e2e bootstrap service availability in probe
+    · WT CLEAN · BNK-624 @650801b → HEAD +1 · ahead 570 vs origin/test=598d108
+- KPI: 117 Route(116 <Route\b + 1 <Routes>) · 92 page(91 *Page.jsx + RootRedirect) · V1–V178
+       · BE Test 271(+1) · BE @Test 1953 · FE test 477(195 .test.js + 282 .test.jsx)
+       · 모듈 80.86%(23.45/29 직접 산출 검증: 21×1.0 + 2×0.85 + 1×0.75 + 5×0 = 23.45 · id=7-4 1.0)
+- merge gate = FE ahead 239 + BE ahead 570 = 809 (+2 cross-stream vs BNK-624 807)
+- cross-stream 2 commit 모두 QA-B95 live-e2e bootstrap readiness (기능 KPI Route/page/test 불변)
+
+[1] ★★★ ezCare module 1 「직원」 worker-b100 「연간 관리 현황」 5-tab ↔ ogada /staff/* (확인)
+   근거: ezcare_menu_catalog.json (top-nav-item-V2.js 95286775 zero drift · 10-module 148-leaf 59-PGID)
+         worker-b100 = 직원 연간 관리 현황 단일 화면 + 5-tab (BNK-516 13-tab IA 패턴 carry)
+
+   | ezCare worker-b100 leaf (menu_catalog url)        | ogada Route (App.jsx @75c0f51)                | 판정 |
+   |---------------------------------------------------|-----------------------------------------------|------|
+   | worker-b100#tab0 연차휴가                          | /staff/annual-leaves (StaffAnnualLeavePage)   | ✅ + /staff/leave-ledger (StaffLeaveLedgerPage) superset |
+   | worker-b100#tab1 건강검진                          | /staff/health-checkups                        | ✅ parity |
+   | worker-b100#tab2 직무교육                          | /staff/training-logs (StaffTrainingLogPage)   | △ 통합 교육일지 surface |
+   | worker-b100#tab3 보수교육 현황                     | /staff/training (StaffRefresherTrainingPage)  | ✅ parity |
+   | worker-b100#tab4 교육이수 현황                     | /staff/training-logs                          | △ 통합 교육일지 surface |
+   | (module1) worker-timesheet3 직원 출퇴근부/근무일지 | /staff/attendance                             | ✅ G-STAFF-WORK-ATTENDANCE (BNK-483 closure) |
+   | (module1) worker-workerDoc 요양보호사 상담일지     | /staff/grievance-counselings                  | ✅ |
+   | (module1) worker-g02 일일 방문일정                 | /staff/reports/status                         | △ |
+   | (module1) worker-g01 직원 집계 및 현황             | /staff/reports/status                         | △ |
+
+   ★ BNK-516 G-STAFF-ANNUAL-LEAVE P3「가정」 → FULL CLOSURE 재확인 ★
+   - BNK-516(2026-06): worker-b100 tab01 연차휴가 ↔ ogada `git grep -i annual|연차|leave|vacation` = 0 hit
+     → 「신규 candidate G-STAFF-ANNUAL-LEAVE P3 (외부 HR SaaS vs 자체 구현 결정 보류)」
+   - BNK-625(현재): ogada develop @75c0f51 App.jsx 실측 path="/staff/annual-leaves"(StaffAnnualLeavePage)
+     + path="/staff/leave-ledger"(StaffLeaveLedgerPage) 2-route 존재 → 자체 구현 결정·closure
+     · ezCare worker-b100 단일 5-tab 화면 vs ogada 전용 page 분리(annual-leaves + leave-ledger
+       = 사용/잔여 grid + 이월·소멸 ledger 분리) = ogada IA 분리 surface 우위 (mobile/RBAC/검색)
+   - module 8 「직원·근태」 coverage 0.85 carry (KPI 영향 0 — 연차휴가는 module 8 sub-feature)
+
+[2] ★★ ezCare /new.ez demo shell + top-nav catalog 재실측 (확인)
+   - 데모 진입: scripts/ezcare-demo-fetch.sh (oCode=DEMO → POST /page/login.php code=0000 → 세션 → /new.ez)
+   - top-nav-item-V2.js: md5 95286775 (zero drift · ?20260428) · 10-module 148-leaf 59-PGID 불변
+   - demo shell /new.ez: 138,402B md5 0bc59733 (BNK-621 474a3874 138,142B → DRIFT session widget id 회전·semantic 불변)
+   - redirect stub(비로그인 /new.ez): 70B e1d52bd5 (zero drift · 역공학 금지 stub 재확인)
+
+[3] ★★ ezCare 도입·점유율 counter 14-day plateau (확인 · cachebuster-only DRIFT · 카운터 verbatim 불변)
+   | URL                      | md5(BNK-625) | size    | counter (verbatim)              | vs BNK-621 |
+   |--------------------------|--------------|---------|---------------------------------|-----------|
+   | / (home mCnt)            | e28d4da2     | 106,031 | mCnt={1:9287,2:4603,3:2353,4:1820} | 9,287 0 변동 |
+   | /new/ezCare_fnc.html     | 3bccc829     | 17,870  | 도입 9,357개                    | 9,357 0 변동 |
+   | /?PG=e01                 | bfe22807     | 47,117  | 17,489/9,354/53.49% 집계일 2026.06.25 | 9,354/53.49% 0 변동 |
+   - BNK-617→621 +3/+1 increment 후 BNK-625 **plateau** (재가센터 도입 카운터 정체 신호)
+   - G-MARKET-SHARE-DASHBOARD P3「가정」 데이터 소스 후보 carry (BNK-610)
+
+[4] ★ Non-catalog PGID negative evidence (확인 · snapshot 미보존)
+   - 데모 세션에서 catalog 59-PGID 외 추정 PGID 3종 fetch → 전부 ~93KB empty shell (jqGrid/content 0):
+     pAmt-a300 (93,387B bc08c3da) · schedule-p200 (93,395B 1befc7c1) · patient-billList (93,397B 040d1c4a)
+   - patient-schedule 404(36eb413e 93,397B)·schedule-r100(2d6fe38f 93,395B BNK-621)·billing-list 동일 패턴
+   → ezCare PGID 라우팅은 top-nav catalog 등록 PGID(59종)에 gating · 추정 PGID 미렌더 재확인
+   - 노이즈 방지: 3종 shell snapshot 미보존(finding만 기록)
+
+[5] per-cycle minimum 충족
+   - 신규 증거 URL: worker-b100 5-tab catalog cross-ref + non-catalog PGID 3종 negative probe + home/fnc/e01/demo 재실측 DRIFT
+   - 메뉴/필드/워크플로 1블록: [1] worker-b100 5-tab ↔ /staff/* 9-row cross-walk
+   - COMPETITOR_MATRIX 1행+: @75c0f51/@0e55f3b 5-row delta
+   - BENCHMARK_REPORT §625 소절 + memory/decisions.md 최상단
+
+[요약] 가정 번복 0 · 신규 core 갭 0 · candidate closure 재확인 1(G-STAFF-ANNUAL-LEAVE BNK-516 P3 → ✅)
+       · 상태 변경 2(FE+1·BE+1 QA-B95 cross-stream·양쪽 WT CLEAN) · KPI 변경 2(merge gate 809·BE Test 271)
+       · 미확인 carry 0 추가 · 신규 snapshot 1건(본 파일) · 덮어쓰기 4건(home·fnc·e01·demo_shell)
+       · 엑셀 포맷 변경 0 · tester FF merge 809 가속 권장

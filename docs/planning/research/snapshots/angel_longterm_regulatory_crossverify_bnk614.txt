@@ -1,0 +1,125 @@
+# BNK-614 엔젤·롱텀·규제 4–6h 교차검증 추출
+# 조사일: 2026-06-25T07:32:00Z (KST 16:32)
+# rotation: 엔젤·롱텀·규제 — silverangel/lcms CMS 부가서비스 · law.go.kr 이동서비스비 #44 · 2026 수가·평가#27·단기보호·통합재가
+
+## 1. ogada baseline 실측 (BNK-614 정본)
+
+| 지표 | BNK-613 | BNK-614 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `892122d` | **`58f3858`** `fix(v1.2.1/QA-B312): normalize annual leave branch scope fallback` | **+1** |
+| BE develop HEAD | `56831fc` | **`5a5174a`** `test: cover easy-pay provider catalog routing` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 231 | **232** | +1 |
+| BE ahead vs `origin/test=598d108` | 563 | **564** | +1 |
+| merge gate | 794 | **796** | +2 |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V178 | V178 | carry (총 178) |
+| BE Test class (`*Test.java`) | 266 | **267** | +1 (`EasyPayControllerRoutingTest`) |
+| BE `@Test` method (`rg -c '@Test' src/test`) | 1922 | **1925** | +3 |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / 277 | carry |
+| FE test 총합 | 470 | 470 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% | carry |
+
+신규 commit 2건:
+- FE `58f3858 fix(v1.2.1/QA-B312): normalize annual leave branch scope fallback` (BNK-613 `892122d` HEAD +1)
+- BE `5a5174a test: cover easy-pay provider catalog routing` (`EasyPayControllerRoutingTest.java` +72L·@Test +3·BNK-613 `56831fc` HEAD +1)
+
+## 2. ★★★ silverangel CMS 5-method ↔ ogada 5/5 collectionImplemented FULL PARITY (확인·closure 재입증)
+
+### 2-1. silverangel extraService.do 부가서비스 CMS 5-method verbatim
+- URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+- live HTTP 200 · 81,637B · md5 `f9c5d877` = on-disk IDENTICAL (zero drift)
+- verbatim 추출: 자동이체(6회)·가상계좌(7회)·다계좌(1회)·현금영수증(3회)·효성(4회=효성CMS)·250원·300원·1600-6859
+- 5-method: ① 자동이체(효성CMS 250원) ② 가상계좌(300원) ③ 카드 ④ 다계좌정산 ⑤ 현금영수증
+
+### 2-2. ogada CmsController + payment-method-catalog 5/5 collectionImplemented
+git 실측 `5a5174a`:
+- `CmsPaymentMethodCatalog` Entry 5종 (모두 collectionImplemented=true):
+  - `AUTO_DEBIT_CMS` 자동이체(CMS) 250원/1건 → `/billing/cms`
+  - `VIRTUAL_ACCOUNT` 가상계좌 300원/1건 → `/billing/cms`
+  - `CARD` 카드결제 → `/billing/easy-pay`
+  - `MULTI_ACCOUNT_SETTLEMENT` 다계좌 정산 → `/billing/cms`
+  - `CASH_RECEIPT` 현금영수증 → `/billing/cash-receipts`
+- `collectionImplementedCount() == 5` (`CmsPaymentMethodCatalogServiceTest` assertEquals 5)
+- `CmsController` 엔드포인트:
+  - `POST/GET /claims/{claimId}/debit` (AUTO_DEBIT_CMS)
+  - `POST/GET /claims/{claimId}/virtual-account` (VIRTUAL_ACCOUNT)
+  - `POST/GET /claims/{claimId}/multi-account-settlement` (MULTI_ACCOUNT_SETTLEMENT)
+  - `GET /payment-method-catalog`·`POST/GET/DELETE /enrollments`
+
+### 2-3. 갭 closure 추적 (3/5 → 5/5)
+- BNK-595/601 시점: collectionImplemented 3/5 (AUTO_DEBIT_CMS·CARD·CASH_RECEIPT) — VIRTUAL_ACCOUNT·MULTI_ACCOUNT ❌
+- V176 (`dac8ebd`) `cms_collection_requests` 테이블 + VIRTUAL_ACCOUNT·MULTI_ACCOUNT_SETTLEMENT collection_method lifecycle 도입
+- V178 (`3c1fdce`) `cms_collection_requests` defense-in-depth 무결성 (amount>0·시간성·status lifecycle·수단별 형상 CHECK)
+- → 현재 5/5 collectionImplemented = **silverangel CMS 5-method 완전 parity + DB-level 무결성 우위**(silverangel 공개 사이트는 DB CHECK 미노출)
+
+## 3. ★★ 평가지표 27 목욕 — silverangel essential ↔ ogada V177 bathing observation
+
+### 3-1. silverangel daycareEssentialWork.do
+- URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+- live HTTP 200 · 131,664B · md5 `c79c1be3` = on-disk IDENTICAL (zero drift)
+- 목욕 verbatim: 「목욕서비스 제공시 청구 가능」·「목욕제공」·「(평가지표 필수항목은 아님)」 — 평가지표 27 목욕은 선택(필수 아님)·제공시 청구
+
+### 3-2. ogada V177/V178 bathing pre/post observation
+- V177 (`e12b084`): `bathing_schedules.pre_observation_notes`·`post_observation_notes` 컬럼 + `chk_bathing_schedules_completed_requires_pre_post_observation`
+- V178: 비완료 상태 raw SQL 공백 적재 차단 무결성 보강 (WAYPOINT 동형 패턴)
+- bathing FE wire (`indicator-27-compliance`) = **0 hit P2 carry** (BNK-611 decision 6·G17 indicator27 별개 도메인·false-closure 방지)
+
+## 4. ★ NHIS #44 이동서비스비 러-1~4 — 379차 zero drift IDENTICAL (확인)
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- live HTTP 200 · 7,572B · md5 `c886ff1f` = on-disk IDENTICAL (379차)
+- 러-1~4 편도50% 1일1회 별지 제22호 일지 verbatim 불변
+- ogada `TransportServiceFeePanel`+`TransportServiceFeeService`+`TransportParityRulesPanel`(UXD-163 BNK-612) full-stack ✅ 우위 carry
+
+## 5. ★ longterm 2026 수가·고시 교차검증
+
+### 5-1. longterm 502 단기보호 — 「미확인」 carry (HTTP 302 securityException)
+- URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502
+- live HTTP 302 → /npbs/exception/securityException (size 0)
+- canonical on-disk `b5aee8c1` (105,552B · 단기보호 1등급 74,060 · 월 한도액 2026.1.1 기준) 보존
+
+### 5-2. longterm 610 통합재가 — 458B shell oscillation carry
+- URL: https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610
+- live HTTP 200 · 458B · md5 `c26a5e57` (빈 shell · 신규홈 브라우저 가드 추정)
+- canonical on-disk `0ea575be` (91,421B · 통합재가 2종 이상 급여 · 가산 월 10만원 · 주야간보호형) 보존
+
+### 5-3. law247 — cachebuster DRIFT · verbatim 불변 (덮어쓰기)
+- URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+- live HTTP 200 · 78,450B · md5 `013ef108`→**`b0ed8363`** (cachebuster)
+- 제2025-247호 · 시행 2026 verbatim 불변 → 덮어쓰기
+
+### 5-4. mohw126 — counter DRIFT · 본인부담상한액 verbatim 불변 (덮어쓰기)
+- URL: https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000
+- live HTTP 200 · 109,510B · md5 `783cf957`→**`f0522041`** (조회수 counter)
+- 제2026-126호 · 본인부담상한액 verbatim 불변 → 덮어쓰기
+
+## 6. ★ silverangel feeService + lcms
+
+### 6-1. silverangel feeService.do — zero drift IDENTICAL
+- URL: https://www.silverangel.kr/newSilverangel/service/feeService.do
+- live HTTP 200 · 44,513B · md5 `eab352a8` = on-disk IDENTICAL
+
+### 6-2. lcms — HTTP 000 transient 「미확인」 1-cycle
+- URL: https://www.lcms.kr/
+- live HTTP 000 (connect 실패·transient) · canonical on-disk `c0c66076` (lcms_root) 보존
+
+## 7. easy-pay provider catalog (7-5) — git 실측 보조
+- BE `5a5174a` `EasyPayControllerRoutingTest` 신규 (@Test +3·pgMode/entry payload + HQ/branch admin access lock)
+- `EasyPayProviderCatalog.CAREFOR_PARITY_ENTRIES` = {CARD 카드결제·KAKAO_PAY 카카오페이} (paymentImplemented=true)
+- 7-5 FE wire = `G-EASYPAY-PROVIDER-CATALOG-FE-WIRE` P3 carry (BNK-612)
+
+## 8. 요약
+- **신규 core 갭 0**
+- **candidate 변동 0** (carry: M11/M12 P2 + G-EASYPAY-PROVIDER-CATALOG-FE-WIRE P3 + G-REFUND-FEE-DEDUCTION P3 + bathing indicator-27 FE wire P2 + 5 P3)
+- **가정 번복 0**
+- **상태 변경 2** (FE+1·BE+1·양쪽 WT CLEAN)
+- **KPI 변경 3** (merge gate 796·BE Test 267·@Test 1925)
+- **closure 재입증 1** (silverangel CMS 5-method ↔ ogada 5/5 collectionImplemented FULL PARITY·V176+V178)
+- **미확인 carry 3** (longterm 502 단기보호 · longterm 610 oscillation · lcms transient)
+- **신규 snapshot 1건** (본 파일 BNK-614)
+- **덮어쓰기 2건** (law247·mohw126)
+- **엑셀 포맷 변경 0**
+- **per-cycle minimum 4종 충족** (NHIS#44 379차 재실측 + silverangel CMS 5-method 워크플로 1블록 + COMPETITOR_MATRIX `@HEAD` 갱신 + BENCHMARK_REPORT §614)
+- **tester FF merge 796 가속 권장** (232+564 적체·양쪽 WT CLEAN)

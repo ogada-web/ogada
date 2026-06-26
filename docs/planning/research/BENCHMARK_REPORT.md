@@ -1,7 +1,6921 @@
-<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-23T18:14:05Z -->
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-25T23:42:00Z -->
 # 경쟁사 벤치마크 보고서 (planning/research/BENCHMARK_REPORT.md)
 
 > **오프라인 HTML 스냅샷**: `docs/planning/research/snapshots/` — live URL 재실측·md5 비교·grep 근거. 카탈로그는 `snapshots/README.md`. 과거 기록의 bare 파일名(예: `silverangel_essential.html`)은 동일 디렉터리로 해석.
+
+## §639 BNK-639 — 교차검증·갭 우선순위 8h+ · ★★★ **G-STAFF-COMMITTEE-MEETING-LOG (BNK-633 가정 번복 P3→P1) → BE FULL CRUD LANDED = 4번째 BNK→COD traceable closure** (6-cycle BNK-633→639·V181 schema·5-API·RBAC 3-role·3-type CHECK·draft/finalize workflow·12-file +1059L·commit msg verbatim cite「Carefor 8-6 / ezCare FAQ 21601 demand-signal」 = BNK-629 + BNK-633 cite·도움말 #1 demand-signal 83,875 hit) · ★★★ **QA-B95 cluster 12th layer** — FE `fcc16ca` bootstrap enable hints in skip diagnostics (blocked 시 enable hint surface → QA actionable·2-file +48L) · ★★ **백본 4종 오프라인 md5 zero-drift 재실측** (NHIS #44 `c886ff1f`·silverangel essential `c79c1be3`/extra `f9c5d877`·func.php `6226e6eb`·law mohw 247 `6c32b661`) · ★ **모듈 8-6 위원회/보호자 회의록 ❌→△ BE-only micro-closure** (module 8 0.85 → ~0.89 after FE wire) · ★ **신규 P3 partial closure candidate** `G-STAFF-COMMITTEE-MEETING-FE-WIRE` · merge gate **824**(+2 cross-stream) · **4축+leave-ledger P0/P1 재오픈 0 (89-cycle)**
+
+**조사일**: 2026-06-25T23:42:00Z (KST 익일 08:42) | **rotation**: 교차검증·갭 우선순위 8h+ — ogada git submodule HEAD remeasure · 4축+leave-ledger 재확인 · BNK→COD traceability chain 검증 · 신규 경쟁사 공지/엑셀 포맷 변경 스캔 · 백본 4종 md5 재계산 · NHIS #44 live re-fetch + disk canonical 비교. 신규 snapshot 1건: `ogada_git_remeasure_bnk639.txt`(15,017B·md5 `7b356273`). 덮어쓰기 0건.
+
+### §639-1 ogada submodule git HEAD 실측 — FE+1 (QA-B95 12th layer) · BE+1 (G-STAFF-COMMITTEE-MEETING-LOG BE FULL CRUD) cross-stream
+
+| 축 | SHA | 상태 | commit (BNK-638 → BNK-639) | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `fcc16ca` | WT **CLEAN** | BNK-638 `@4bbd54a` **HEAD +1** `fix(v1.2.1/QA-B95): expose bootstrap enable hints in live skip diagnostics` — QA-B95 cluster **12th layer**·2-file +48L (`liveConfig.js`+19·`liveE2eHarness.test.js`+29·regression lock) | **248** vs `ab4de83` (+1) |
+| BE develop | `68b08b0` | WT **CLEAN** | BNK-638 `@d06e3f1` **HEAD +1** `feat(v2/G-STAFF-COMMITTEE-MEETING-LOG): add staff committee meeting CRUD API` — 12-file +1059L (V181 +69 NEW + Entity +197 + Service +264 + Controller +80 + 4 DTO + Repository +28 + ServiceTest +188 NEW + routing test +87 + RBAC test +85) · commit msg verbatim「Carefor 8-6 / ezCare FAQ 21601 demand-signal」 | **576** vs `598d108` (+1) |
+
+merge gate = 248 + 576 = **824** (+2 cross-stream vs BNK-638 **822**).
+
+| KPI | 값 (`@fcc16ca`/`@68b08b0`) | BNK-638 대비 |
+|---|---|---|
+| FE Route | **118** (117 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect) | = |
+| FE test | **479** (196 `*.test.js` + 283 `*.test.jsx`) | = (FE +1 modified `liveE2eHarness.test.js` 기존 파일) |
+| BE 마이그레이션 | **V1–V181** (max V181 NEW) | +1 (V181 `staff_committee_meeting_logs`) |
+| BE Test 파일 | **272** (271 `*Test.java` + 1 `*Tests.java`) | +1 (StaffCommitteeMeetingServiceTest.java NEW) |
+| BE @Test | **1967** | +10 (3 test file +188/+87/+85L 흡수) |
+| 모듈 커버 | **80.86%** (23.45/29) | = (carry pending FE wire·module 8 8-6 ❌→△ BE-only micro·module 8 0.85 → ~0.89 after FE wire) |
+| reports Route | **28** | = |
+
+**해석**: BE HEAD +1 은 신규 도메인 `staffcommitteemeeting` 패키지 (entity·service·controller·dto·repository·test) + 신규 V181 schema + 신규 ServiceTest 파일 → Test 파일·@Test annotation·migration 모두 증가. FE HEAD +1 은 QA-B95 cluster 12th layer (skip diagnostics enable hint surface)·신규 page/route/test-FILE 0 → FE KPI 불변.
+
+### §639-2 ★★★ G-STAFF-COMMITTEE-MEETING-LOG (BNK-633 가정 번복 P3→P1) → BE FULL CRUD LANDED = 4번째 BNK→COD traceable closure (확인 · 6-cycle)
+
+타임라인 (BNK→COD traceability chain):
+
+| 차수 | 시점 | 이벤트 |
+|---|---|---|
+| **BNK-629** | 2026-06-25T16:55Z | carefor func.php Module 8 cross-walk 발굴 — `8-6 위원회/보호자 회의록` ❌ (0/13 leaf) → 신규 P3 candidate `G-STAFF-COMMITTEE-MEETING-LOG` 「facility-admin 서식 MVP out-of-scope」 가정 |
+| **BNK-633** | 2026-06-25T19:35Z | ezCare 도움말 `/help/faq.ez` taxonomy 추출 — top-30 #1 hit = rowid 21601 「직원 회의록을 전산으로 작성, 관리」 **83,875 hit** (도움말 1위) → 「out-of-scope」 가정 번복 → **P3→P1 격상 권장** |
+| **BNK-637** | 2026-06-25T22:30Z | P1 carry 명시 「G-STAFF-COMMITTEE-MEETING-LOG(BNK-633 도움말 #1)」 |
+| **BNK-639** | 2026-06-25T23:09Z | **coder BE FULL CRUD LANDED** — 12-file +1059L · commit msg verbatim cite 「Carefor 8-6 / ezCare FAQ 21601 demand-signal」 = BNK→COD 4번째 traceable closure (in ~7h since BNK-633) |
+
+이전 BNK→COD closure 4건:
+
+| # | Open BNK | Close BNK | epic | 사이클 |
+|---|---|---|---|---|
+| 1 | BNK-620 | BNK-623 | G-REPORT-DENSITY M5 program report | 3-cycle |
+| 2 | BNK-623 | BNK-627 | G-REPORT-DENSITY group-history-fill | 4-cycle |
+| 3 | BNK-616 | BNK-618 | G-REFUND-FEE 5-layer (BE catalog → BE validation → FE wire) | 3-cycle |
+| **4** | **BNK-633** | **BNK-639** | **G-STAFF-COMMITTEE-MEETING-LOG (도움말 #1 demand-signal)** | **6-cycle** ★ NEW |
+
+V181 schema (`staff_committee_meeting_logs`) — defense-in-depth integrity:
+- **3-type CHECK**: `OPERATING_COMMITTEE` | `GUARDIAN` | `WELFARE_COMPENSATION` (운영위원회·보호자 회의·복지노사위원회 = carefor 8-6 정합)
+- **draft/finalize workflow CHECK**: `(record_status='DRAFT' AND finalized_at IS NULL) OR (record_status='FINALIZED' AND finalized_at IS NOT NULL)`
+- **non-empty CHECK 4종**: title·meeting_content·meeting_result·attendee_names (`length(trim(...))>0`)
+- **updated_at >= created_at CHECK** (time travel 차단)
+- **fk_..._branch_org** 3-way FK (V179 패턴·cross-branch raw SQL INSERT 차단)
+- **fk_..._created_by_org** 3-way FK (actor org 게이트)
+- **uq_..._org_id** (organization scope UK)
+- **2 index**: `(org, branch, meeting_date DESC)` + `(org, branch, meeting_type, meeting_date DESC)` — list/filter UX
+- **trg_..._set_created_by** (BEFORE INSERT actor backstop · V49 패턴)
+
+API surface (`/api/v1/staff/committee-meetings`):
+
+| HTTP | Path | RBAC | 기능 |
+|---|---|---|---|
+| GET | `/` | HQ_ADMIN·BRANCH_ADMIN·SOCIAL_WORKER | listMeetings (from·to·meetingType filter) |
+| GET | `/{meetingId}` | 동일 | getMeeting |
+| POST | `/` | 동일 | createMeeting (draft 생성) |
+| PATCH | `/{meetingId}` | 동일 | updateMeeting (draft only) |
+| POST | `/{meetingId}/finalize` | 동일 | finalizeMeeting (출력·보관 확정) |
+
+경쟁 4종 cross-walk:
+
+| 경쟁사 | 상태 | 근거 |
+|---|---|---|
+| **ogada `@68b08b0`** | ✅ **BE FULL CRUD** (V181 + 5-route + RBAC 3-role + 3-type + draft/finalize) · FE wire ❌ 0 hit (`rg committee src/frontend` = 0) | BNK-639 BE FULL — `staffcommitteemeeting` 패키지 + V181 신규 |
+| 케어포 8-6 | ✅ 위원회/보호자 회의록 (정적 메뉴 leaf) | BNK-629 cross-walk · `carefor_func.php` `6226e6eb` |
+| 이지케어 FAQ 21601 | ✅ 도움말 #1 「직원 회의록을 전산으로 작성, 관리」 83,875 hit | BNK-633 taxonomy 추출 |
+| silverangel | △ 평가지표 일부 cover (운영위원회·보호자 동의 area) | `silverangel_essential.html` `c79c1be3` |
+| longterm (NHIS) | N/A (운영규정 - 표준운영지침 PDF 별도) | — |
+
+**모듈 coverage 영향**: 케어포 8-6 ❌ → △ BE-only micro-closure → module 8 (현재 0.85, BNK-629 cross-walk 9✅+1△+3❌+1N/A) → after FE wire 적용 시 8-6 △→✅로 **module 8 score 0.85 → ~0.89** (전체 23.45/29 → 23.49/29 → 80.86% → 81.0%). 현재는 carry pending FE wire.
+
+**신규 P3 partial closure candidate (BNK-639)**: **`G-STAFF-COMMITTEE-MEETING-FE-WIRE`** — BE CRUD landed · FE 0 hit. expected pattern: G-EASYPAY (BE BNK-612 → FE wire BNK-621 = 9-cycle) 또는 G-REFUND-FEE (BE BNK-616→617 → FE wire BNK-618 = 2-cycle). 권장: ux_designer 「3-type tab」 layout + 「draft → finalize」 workflow + 「출력(hwp/pdf)」 옵션 설계 — `StaffCommitteeMeetingPage.jsx` (가설) + Route `/staff/committee-meetings` + `services.js` API wrapper + `committeeMeetings.js` FE service + tests.
+
+### §639-3 ★★★ QA-B95 cluster 12th layer — FE bootstrap enable hints in skip diagnostics (확인 · QA actionable surface)
+
+commit `fcc16ca` `fix(v1.2.1/QA-B95): expose bootstrap enable hints in live skip diagnostics` — diff `4bbd54a..fcc16ca` 2-file **+48**:
+
+| 파일 | +/- | 변경 |
+|---|---|---|
+| `src/e2e/liveConfig.js` | +19 | live readiness blocked 시 `bootstrap-enable` hint 를 skip diagnostics 에 surface |
+| `src/test/liveE2eHarness.test.js` | +29 | regression lock |
+
+**목적**: live readiness 가 차단(blocked)됐을 때, bootstrap enable hint 를 skip diagnostics 에 노출 → QA-B95 가 「blocked 이유」를 보고 **어떤 toggle 을 켜면 unblock 되는지 actionable 안내** (BNK-637 BE expose recovered-auth → BNK-638 FE consume → BNK-639 FE surface in diagnostics = BE→FE→QA-DX 3-stage progression).
+
+BNK-625~639 QA-B95 cluster **12-layer 누적** — 본 cycle 기준 BNK-637 10th(BE expose recovered-auth) → BNK-638 11th(FE consume) → BNK-639 12th(FE surface in skip diagnostics).
+
+### §639-4 ★★ 백본 4종 오프라인 md5 zero-drift 재실측 (확인 · network-independent carry)
+
+디스크 snapshot md5 재계산 — 4종 전부 IDENTICAL (NHIS #44 live R&D endpoint 404 transient·disk canonical carry):
+
+| snapshot | md5 | size | 대상 |
+|---|---|---|---|
+| `nhis_jo44.html` | `c886ff1f` | 7,572B | NHIS #44 이동서비스비 러-1~4 (편도50%·1일1회·별지 제22호) — `nhis_jo44_live_bnk584.html`·`law_mohw_nhis44_bnk634.html` 동일 md5 |
+| `silverangel_essential.html` | `c79c1be3` | 131,664B | 엔젤 평가지표 #41-42 이동서비스 + 목욕(27) · 평가지표 (운영위원회·보호자 동의 area) |
+| `silverangel_extraService.html` | `f9c5d877` | 81,637B | 엔젤 extra service · CMS 5-method |
+| `carefor_func.php` | `6226e6eb` | 98,328B | 케어포 주야간 정본 (107-leaf · 8-6 leaf 정합) |
+| `law_mohw_2025_247_admRulInfoP.html` | `6c32b661` | 78,450B | 장기요양 행정규칙 제2025-247호 |
+
+ogada `TransportServiceFeeService` (NHIS #44 러-1~4 full-stack) · `TransportServiceLog` (별지 제22호) 경쟁 4종 유일 우위 **395차 carry** 재확인.
+
+### §639-5 잔여 갭·우선순위 재정렬 (BNK-639 cross-verify)
+
+**closure (BNK-639)**: G-STAFF-COMMITTEE-MEETING-LOG BE FULL CRUD (V181·5-API·RBAC 3·3-type·draft/finalize) → P1 carry BNK-633 → **BE LANDED**
+
+**신규 candidate (BNK-639)**: P3「가정」 G-STAFF-COMMITTEE-MEETING-FE-WIRE (BE landed·FE 0 hit·expected close 2~9 cycle)
+
+**P0/P1 carry** (4축+leave-ledger 재오픈 0 — **89-cycle** BNK-549~639):
+- P1 carry **M11/M12 결제·재무 클러스터** — ezCare K008+K012~K014 37.6% view + BPO 외주 위탁법인 (rowid=434) demand-signal · ogada `/payroll/*`·`/accounting/*` 0 route + 외주 BPO 어댑터 0 · planner 결정 question carry「in-app 모듈 vs BPO 어댑터」(BNK-637 PLAN_NOTES) · closure 시 **+6.9pp** (80.86%→87.76%)
+
+**P3 carry**: G-DB-INTEGRITY-DEFENSE-DEPTH (BNK-635 V180 + V181 carry — V181 도 동일 패턴 적용 → 표층 API + 심층 DB 2중 게이트 deepen) · G-VENDOR-ONBOARDING-CHECKLIST (BNK-634) · G-CASE-MANAGER-EXECUTION-LOG (BNK-637 신규 「가정」) · G-STAFF-COMMITTEE-MEETING-FE-WIRE (BNK-639 신규 partial closure)
+
+**미확인 carry 4**: carefor LIVE timeout (HTTP 000 **44-cycle**, BNK-558~639·Wayback 검증 정상) · longterm 502 단기보호 **46-cycle** · longterm 610 통합재가 oscillation · ezcare /new.ez 비로그인 70B refresh stub **5-cycle** (agents.yaml §2 역공학 금지 area)
+
+### §639-6 per-cycle minimum 충족
+- 신규 증거/재실측: git 실측 snapshot(`ogada_git_remeasure_bnk639.txt` 15,017B `7b356273`·FE+1·BE+1 diff verbatim·V181 schema 정밀화·5-API surface·12-cycle BNK→COD traceability chain) + 백본 4종 md5 재계산 zero drift
+- 경쟁사 메뉴/필드/워크플로 1블록+: V181 staff_committee_meeting_logs 3-type CHECK + draft/finalize workflow + 5-route RBAC + 2-index list/filter + carefor 8-6 ↔ ezCare 21601 full-stack cross-walk
+- COMPETITOR_MATRIX 1행+ `@HEAD` 갱신: BNK-639 block `@fcc16ca`/`@68b08b0` + carefor 8-6 ❌→△ BE-only 행 갱신
+- BENCHMARK_REPORT §소절: §639 추가 + BNK-639 차수 메모 (6-section)
+
+### §639-7 tester / planner / ux_designer / coder 액션 권장
+- **tester**: FF merge **824** 가속 권장 (양쪽 WT CLEAN · 신규 routing/RBAC test 2-file 흡수 · @Test +10 · 회귀 lock 명시)
+- **ux_designer**: G-STAFF-COMMITTEE-MEETING-FE-WIRE 후보 — `StaffCommitteeMeetingPage` 3-type tab + draft/finalize workflow + 「출력」(hwp/pdf) 옵션 설계 (BNK-637 FAQ 21705 「빈서식 출력」 UX 패턴 carry)
+- **coder**: FE wire 우선순위 — `/staff/committee-meetings` Route + 5-API services.js wrapper + Page.jsx + tests (G-REFUND-FEE 2-cycle 패턴 권장 · 도움말 #1 demand-signal 사용자 가치 높음)
+- **planner**: G-STAFF-COMMITTEE-MEETING-LOG P1 carry **closure 부분 인정** (BE FULL CRUD) → FE wire 신규 P3 split · BNK-633「P1 격상 권장」 → ★★★ in-cycle BE 완료 = BNK→COD 4번째 traceability win · 새로운 P1 cycle = **M11/M12 결제·재무 BPO 어댑터 단일 lever 1순위 carry**
+
+## §638 BNK-638 — ogada git 실측 6–8h · ★★★ **QA-B95 recovered-auth readiness wiring BE→FE end-to-end 완결** (BNK-637 BE 10th layer `d06e3f1` expose `recovered-auth-mode` → BNK-638 FE 11th layer `4bbd54a` consume·`/health` 파싱·neutral 처리·회귀 lock) · ★★ **백본 5종 오프라인 md5 zero-drift 재실측** (NHIS #44 `c886ff1f`·silverangel essential `c79c1be3`/extra `f9c5d877`·func.php `6226e6eb`·ezCare FAQ 21844 `d0aa760c`) · ★★ **FE HEAD +1 advance에도 KPI 전부 IDENTICAL** (probe 로직 deepen·신규 page/route/test-FILE 0) · ★ **ogada `TransportServiceFeeService` NHIS #44 경쟁 4종 유일 full-stack 우위 carry** · merge gate **822**(+1 FE-only) · **4축+leave-ledger P0/P1 재오픈 0 (88-cycle)**
+
+**조사일**: 2026-06-25T23:05:00Z (KST 익일 08:05) | **rotation**: ogada git 실측 6–8h — `git -C src/{frontend,backend} rev-parse develop`·App.jsx Route grep·find `*Page.jsx`·flyway V·find `*Test.java`·rg `@Test`·find `*.test.{js,jsx}`·백본 오프라인 snapshot md5 재계산. 신규 snapshot 1건: `ogada_git_remeasure_bnk638.txt`(4,740B·md5 `e55bad08`). 덮어쓰기 0건.
+
+### §638-1 ogada submodule git HEAD 실측 — FE HEAD +1 QA-B95 11th layer · BE HEAD zero advance 1-cycle (확인)
+
+| 축 | SHA | 상태 | commit (BNK-637 → BNK-638) | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `4bbd54a` | WT **CLEAN** | BNK-637 `@7e7c296` **HEAD +1** `fix(v1.2.1/QA-B95): wire recovered-auth readiness hints from health probe` — **QA-B95 cluster 11th layer**·4-file +185/-7 | **247** vs `ab4de83` (+1) |
+| BE develop | `d06e3f1` | WT **CLEAN** | BNK-637 carry · **HEAD zero advance 1-cycle** | **575** vs `598d108` (=) |
+
+merge gate = 247 + 575 = **822** (+1 FE-only vs BNK-637 **821**).
+
+| KPI | 값 (`@4bbd54a`/`@d06e3f1`) | BNK-637 대비 |
+|---|---|---|
+| FE Route | **118** (App.jsx 117 `path=`/`<Route\b` + 1 `<Routes>`) | = |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect) | = |
+| FE test | **479** (196 `*.test.js` + 283 `*.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V180** (max V180) | = |
+| BE Test 파일 | **271** (270 `*Test.java` + 1 `*Tests.java`) | = |
+| BE @Test | **1957** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+**해석**: FE HEAD +1 은 QA-B95 live-e2e probe 로직 deepen(`recovered-auth-mode` 소비)·신규 page/route/test-FILE 0 → KPI 전부 IDENTICAL.
+
+### §638-2 ★★★ QA-B95 recovered-auth readiness wiring — BE→FE end-to-end 완결 (확인 · cross-stream closure)
+
+BNK-637 BE `d06e3f1`(10th layer)가 live readiness payload 에 `recovered-auth-mode` field 를 **노출(expose)** → BNK-638 FE `4bbd54a`(11th layer)가 그 field 를 **소비(consume)** = QA-B95 recovered-auth readiness 가 BE↔FE 정합 완결.
+
+commit `4bbd54a` `fix(v1.2.1/QA-B95): wire recovered-auth readiness hints from health probe` (BE `d06e3f1` alignment 명시) — diff `7e7c296..4bbd54a` 4-file **+185/-7**:
+
+| 파일 | +/- | 변경 |
+|---|---|---|
+| `src/e2e/liveBackendProbe.js` | +37/-4 | `/health` 에서 `liveE2eAllowRecoveredAuth`·`liveE2eBootstrapEnableHint` 파싱 |
+| `src/e2e/liveConfig.js` | +45/-1 | recovered-auth bootstrap hint = **neutral operation reason** 처리 |
+| `src/e2e/liveGlobalSetup.js` | +11/-0 | bootstrap readiness 게이팅 |
+| `src/test/liveE2eHarness.test.js` | +92/-2 | 회귀 lock |
+
+BNK-625~638 QA-B95 cluster **11-layer 누적** — 10th(BE expose)→11th(FE consume) cross-stream closure. 이지케어 live 도입현황 plateau 모니터링 harness 의 BE↔FE readiness 정합이 완결되어, 경쟁사 live 상태/자사 live readiness 추적 harness resilience 가 deepen.
+
+### §638-3 ★★ 백본 5종 오프라인 md5 zero-drift 재실측 (확인 · network-independent carry)
+
+디스크 snapshot md5 재계산 — 5종 전부 IDENTICAL:
+
+| snapshot | md5 | size | 대상 |
+|---|---|---|---|
+| `nhis_jo44_joHistory.html` | `c886ff1f` | 7,572B | NHIS #44 이동서비스비 러-1~4 (편도50%·1일1회·별지 제22호) |
+| `silverangel_essential.html` | `c79c1be3` | 131,664B | 엔젤 평가지표 #41-42 이동서비스 + 목욕(27) |
+| `silverangel_extraService.html` | `f9c5d877` | 81,637B | 엔젤 extra service |
+| `carefor_func.php` | `6226e6eb` | 98,328B | 케어포 주야간 정본(canonical) |
+| `ezcare_faq_21844_bnk606.html` | `d0aa760c` | 14,474B | 이지케어 공단 엑셀 PII 마스킹 |
+
+ogada `TransportServiceFeeService`(NHIS #44 러-1~4 full-stack)·`TransportServiceLog`(별지 제22호) 경쟁 4종 유일 우위 carry 재확인.
+
+### §638-4 per-cycle minimum 충족
+- 신규 증거/재실측: git 실측 snapshot(`ogada_git_remeasure_bnk638.txt`·FE HEAD +1 diff) + 백본 5종 md5 재계산
+- 경쟁사 메뉴/필드/워크플로 1블록: §638-3 백본 5-URL 오프라인 재실측 zero-drift
+- COMPETITOR_MATRIX 1행+ `@HEAD` 갱신: BNK-638 block `@4bbd54a`/`@d06e3f1`
+- BENCHMARK_REPORT §소절: §638 추가
+
+## §637 BNK-637 — 이지케어 역공학 2–4h · ★★★ **ezCare home banner 콘텐츠 DRIFT → 「[공지] 재무회계 BPO 위탁법인 추가」 rowid=434 노출 (NEW evidence URL · 2025-06-26·조회 4,910·노무법인 수탁사 추가·2025-06-27 시행)** — BNK-610/633 「재무회계 BPO 사업」 가설 **강화 확정** · ★★★ **NEW FAQ 21325 partial-gap — per-client 사회복지사 업무수행일지 + 신규/불러오기 + hwp** (18,476 hit·신규 candidate P3 `G-CASE-MANAGER-EXECUTION-LOG`) · ★★ **FAQ 21705 ✅ direct parity** (`1.8 직원 출퇴근부/근무일지` ↔ `/staff/attendance` — UX micro-improvement 후보 2건) · ★★ **이지케어 백본 5-URL plateau day 5** (BNK-540 이후 최장 plateau **갱신**·md5 DRIFT 5건·counters verbatim 불변) · ★ **/help/faq.ez 392차 zero structural drift** (size 80,057B carry·233 rowid carry·md5 DRIFT counters only) · ★ **/new.ez 비로그인 70B refresh stub 4-cycle carry** · ★ **BE QA-B95 cluster 10th layer** (`d06e3f1` `LiveE2eController` recovered-auth-mode readiness hints +10L) · merge gate **821**(+1 BE-only) · **4축+leave-ledger P0/P1 재오픈 0 (87-cycle)**
+
+**조사일**: 2026-06-25T22:30:00Z (KST 익일 07:30) | **rotation**: 이지케어 역공학 2–4h — `/new.ez` (비로그인 70B refresh stub)·`/help/faq.ez` 233 rowid·rowid 21705/21325 detail body 추출·`ezCare_fnc.html` 도입 9,357 carry·home banner 콘텐츠 DRIFT 신규 발견·NEW URL `/?PG=b01&rowid=434` 「재무회계 BPO 공지」 추출·5-URL 백본 plateau day 5 갱신. 신규 snapshot 2건: `ezcare_notice_b01_rowid434_bnk637.html`(39,897B 원문 verbatim 추출본·md5 `025c47a4`) · `ezcare_faq_21705_21325_dual_work_log_crosswalk_bnk637.txt`. 덮어쓰기 5건(ezcare_home·fnc·pg_e01·charge·change_work).
+
+### §637-1 ogada submodule git HEAD 실측 — BE HEAD +1 QA-B95 10th layer · FE HEAD zero advance 1-cycle (확인)
+
+| 축 | SHA | 상태 | commit (BNK-636 → BNK-637) | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `7e7c296` | WT **CLEAN** | BNK-636 carry · **HEAD zero advance 1-cycle** | **246** vs `ab4de83` (=) |
+| BE develop | `d06e3f1` | WT **CLEAN** | BNK-636 `@42a369e` **HEAD +1** `fix(v2/QA-B95): expose recovered-auth mode in live readiness hints` — **QA-B95 cluster 10th layer**·`LiveE2eController`+10L `recovered-auth-mode` field·`HealthController`+2L·`LiveE2eOperationReadinessSupport`+2L·Tests +6L | **575** vs `598d108` (+1) |
+
+merge gate = 246 + 575 = **821** (+1 BE-only vs BNK-636 **820**).
+
+| KPI | 값 (`@7e7c296`/`@d06e3f1`) | BNK-636 대비 |
+|---|---|---|
+| FE Route | **118** (117 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect) | = |
+| FE test | **479** (196 + 283) | = |
+| BE 마이그레이션 | **V1–V180** | = |
+| BE Test 파일 | **271** | = |
+| BE @Test | **1957** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+**해석**: BE HEAD +1 advance는 QA-B95 readiness payload 표현력 deepen(`recovered-auth-mode` field 신규 노출)·신규 page/route/test 0 → KPI 전부 IDENTICAL.
+
+### §637-2 ★★★ ezCare home banner 콘텐츠 DRIFT — 「재무회계 BPO 위탁법인」 공지 노출 (확인 · 신규 evidence URL)
+
+home (`https://ezcare.easyms.co.kr/`) HTTP 200·**106,031B**(BNK-636 disk 106,072B → **-41B**)·md5 `760883ea` → **`3ea4f74c`**. -41B 의 원인은 banner 슬롯 콘텐츠 교체.
+
+- BEFORE (BNK-636 disk): `<a href="https://cafe.naver.com/egcare/24211" target="_blank"><p class="text-ellipsis"><span>[추천 이벤트]</span><br/>이지케어 · 이지케어 재무회계 추천하고 다양한 선물 받아가세요. </p></a>`
+- AFTER  (BNK-637 live): `<a href="/?PG=b01&rowid=434" target="_blank"><p class="text-ellipsis"><span>[공지]</span><br/>이지케어 재무회계 서비스 개인정보 처리방침 변경안내 </p></a>`
+
+신규 fetch — `https://ezcare.easyms.co.kr/?PG=b01&rowid=434` HTTP 200 · 39,897B · md5 `025c47a47b9bbde6c1ba697b792e9e20`. 등록일 **2025-06-26**·조회 **4,910**. 본문 verbatim:
+
+> 「**1. 약관 개정 사유**: 이지케어 재무회계서비스 **고용노동부 고용지원금 대행 신청 위탁법인 추가**」
+> 「**2. 개정 반영일자**: 2025년 06월 27일」
+> 「**3. 개정내용**: **제3조 노무법인 수탁사 추가**」
+> 「**4. 효력**: 2025년 06월 27일부터 효력이 발생합니다.」
+
+**해석 (확인)**:
+
+1. **이지케어 재무회계서비스 = 외주 BPO** — ezCare ERP 내부 모듈이 아니라 **외부 노무법인 수탁사** 통한 「고용지원금 대행 신청」 (2025-06-27 시행).
+2. 조회 **4,910** + home banner 1순위 노출 = **고객사 우선 공지** 트래픽.
+3. BNK-610 가설 (재무회계 BPO 사업) + BNK-633 「결제·재무 클러스터 37.6% view」 demand-signal과 정합 → **ogada M11/M12 P1 epic scope 「in-app 모듈 vs BPO 어댑터」 결정 question** (planner 추가 질문).
+
+ogada 현황: `/payroll/*`·`/accounting/*` 0 route (BNK-619~637 carry) · 외주 노무법인 dispatch hook 0 hit. 신규 시나리오: 「M11/M12 P1 = ogada 자체 모듈 vs 노무·세무 외주 BPO 어댑터 (이지케어 모델 차용)」.
+
+### §637-3 ★★★ NEW FAQ 21325 partial-gap — per-client 사회복지사 업무수행일지 (확인 · 신규 candidate)
+
+`https://ezcare.easyms.co.kr/help/faq.ez?rowid=21325&type=web` HTTP 200·15,170B·md5 `(생략)`. 18,476 hit·top-30 30위·[수급자관리,서식출력/설정].
+
+**Menu**: 「**2.수급자 관리 > 수급자 선택 > 우측정보 「업무수행일지」**」
+
+Workflow (verbatim):
+
+1. 「2.수급자 관리 > 수급자 선택 > 우측정보 업무수행일지」 클릭
+2. 작성내역(불러오기)에서 「**신규작성**」 선택 — (작성된 수행일지를 선택하여 **불러오기** 가능)
+3. **방문(상담)일자** 외 정보입력
+4. 업무수행일지의 **「욕구사정 등」 각 항목** 입력
+5. 「**새 일지로 저장하기**」 클릭 — 불러온 일지는 수정 후 새 일지로 저장
+6. 「**다운로드(hwp)**」 → 한글파일 출력
+
+ogada cross-walk (실측):
+
+| 요소 | ezCare 21325 | ogada |
+|---|---|---|
+| 위치 | 수급자별 우측정보 「업무수행일지」 탭 | `/clients/:id/edit` 0 hit · 별도 page 0 hit |
+| 직군 | 「프로그램 관리자 및 사회복지사」 (수급자 컨텍스트) | `lead-caregiver-log` 선임 요양보호사 only (직군 분리) |
+| 「불러오기」 패턴 | 신규작성 + 기존 일지 reuse → 새 일지 저장 | G34b `lead-caregiver-log` 「불러오기」 ✅ (FAQ21813)·사회복지사 0 |
+| 통합 폼 (욕구사정+방문+업무) | ✅ 한 폼 통합 | ❌ 분리: `/clients/needs-assessments`(욕구사정)·`/clients/:id/care-plan-form`(계획) |
+| 출력 | hwp 다운로드 + 결재라인 | care-plan-form pdf only (**hwp 0**) |
+
+판정: **△ partial gap** — ogada 우위(욕구사정·계획 분리·별지#5 정밀화) but per-client 「사회복지사 업무수행일지 통합 폼 + 신규/불러오기 + hwp 출력」 0 hit (18,476 hit demand-signal).
+
+**신규 candidate (가정 · planner 결정 필요)**:
+
+- **P3 `G-CASE-MANAGER-EXECUTION-LOG` (가정)** — `/case-management/social-worker-execution-log` (가설 경로) · per-client 사회복지사 업무수행일지 통합 폼 + 신규작성/불러오기 + hwp 출력. 단, ogada는 욕구사정·케어플랜이 별도 폼으로 분리되어 별지#5 등 **법정 양식 정밀화 우위** — **통합 폼 vs 분리 유지** 정책 결정 필요.
+
+### §637-4 ★★ FAQ 21705 ✅ direct parity — 직원 출퇴근부/근무일지 단일 통합 (확인)
+
+`https://ezcare.easyms.co.kr/help/faq.ez?rowid=21705&type=web` HTTP 200·15,089B·18,709 hit·top-30 28위·[직원관리,서식출력/설정].
+
+**Menu**: 「**1.직원 > 1.8 직원 출퇴근부/근무일지**」
+
+Workflow: 좌측 직원 → 우측 달력 → **근무일지 아이콘 클릭** → 일지 작성 → 작성 완료 시 **아이콘 색상 변경** → 「근무일지 출력」 출력기간 선택 → **결재라인·출력방법·「빈서식 출력」 설정 가능**. 활용: 「직원 업무 파악 + 서비스 모니터링 + 현지조사 시 확인 자료」.
+
+ogada cross-walk: `/staff/attendance` `StaffWorkAttendancePage.jsx` (G-STAFF-WORK-ATTENDANCE·케어포 8-4) — 출퇴근·근무일지 통합 page ✅. 단일 통합 패턴 정합.
+
+**UX micro-improvement 후보 (P3·UXD)**:
+
+1. 달력 아이콘 색상으로 작성 유무 표시 — 현재 ogada attendance page 0 hit
+2. 「빈서식 출력」 옵션 — pdf print 모드 0 hit
+
+이는 gap이 아닌 UX 향상 후보 (parity 유지).
+
+### §637-5 이지케어 백본 5-URL plateau day 5 — BNK-540 이후 최장 plateau **갱신** (확인 · 덮어쓰기 5건)
+
+| URL | LIVE md5 | DISK md5 | size | 판정 |
+|---|---|---|---|---|
+| `/` (home) | `3ea4f74c` | `760883ea` | 106,031B (-41B) | CONTENT DRIFT (banner 슬롯 회전·§637-2) |
+| `/new/ezCare_fnc.html` | `bc2b2093` | `64a3eb4c` | 17,870B | cachebuster DRIFT |
+| `/?PG=e01` | `a5bae324` | `b982c7e5` | 47,130B | cachebuster DRIFT |
+| `/new/ezCare_charge.html` | `0d15bf8a` | `078f0b7e` | 22,979B | cachebuster DRIFT |
+| `/new/ezCare_change_work.html` | `c04ce5b2` | `3f054cd9` | 26,157B | cachebuster DRIFT |
+
+verbatim 불변: home `mCnt {1:9287,2:4603,3:2353,4:1820}`·fnc 도입 `9,357개`·e01 `17,489/9,354/53.49%/2026.06.25`·charge `33,000/25,850/55,000`·change_work `후기 4,965·RFID`. Plateau day **5** (BNK-633→634→635→636→637) = BNK-540 이후 최장 plateau **갱신**. → 덮어쓰기 5건.
+
+### §637-6 /help/faq.ez 392차 — zero structural drift (확인)
+
+`https://ezcare.easyms.co.kr/help/faq.ez?type=web` HTTP 200·**80,057B carry**·md5 `e14be4df`→`7db2d8fd`. 233 rowid (21131~21781) IDENTICAL·14 카테고리 K001~K014 IDENTICAL·top-30 by hit IDENTICAL rank. `diff` = 20+ rowid의 `<span class="faq-hit">` 카운터만 +1~+10 증분 (예: 21193 23,903→23,905·21507 22,435→22,445·21601 carry 83,875). 콘텐츠 정체 + 트래픽 누적만 = plateau day 5 정합.
+
+### §637-7 `/new.ez` 비로그인 70B refresh stub — 역공학 금지 area carry (확인)
+
+`GET /new.ez` (no session cookie) → HTTP 200 · **70B** · md5 `e1d52bd5`. payload:
+
+```
+<meta http-equiv="refresh" content="0; url=/logout_msg.html?code=001">
+```
+
+4-cycle carry (BNK-634~637) · agents.yaml §2 reverse_engineering.methods 「비로그인 stub 역공학 금지」 규칙 재입증. 이번 사이클은 정적 카탈로그(home·fnc·e01·charge·change_work)+`/help/faq.ez`+FAQ rowid detail로 minimum 충족 → 데모 fetch 생략.
+
+### §637-8 planner 제안 (BNK-637)
+
+1. **★★★ M11/M12 P1 epic scope 결정 question — in-app 모듈 vs BPO 어댑터** — ezCare home banner 1순위 공지 (rowid=434·2025-06-26·조회 4,910) 「재무회계 BPO 위탁법인 추가」 = 이지케어 모델은 외주 노무법인 수탁사 통한 「고용지원금 대행」. ogada M11/M12 P1 격상 demand-signal carry (BNK-633 37.6% view) + **scope 명확화 question** 신규 — PLAN_NOTES 추가.
+2. **★★★ 신규 P3 candidate `G-CASE-MANAGER-EXECUTION-LOG` (가정)** — per-client 사회복지사 업무수행일지 통합 폼 + 신규/불러오기 + hwp 출력 (FAQ 21325·18,476 hit). 단, ogada는 욕구사정·계획 별지#5 분리 정밀화 우위 — 「통합 폼 추가 vs 분리 유지」 정책 결정 question.
+3. **★★ UX micro-improvement P3 후보 2건 (UXD)** — `/staff/attendance` 달력 아이콘 색상 작성 유무 표시 + 「빈서식 출력」 옵션 (FAQ 21705·18,709 hit · ezCare 직원 출퇴근부/근무일지 패턴).
+4. **★★ tester FF merge 821 가속 권장** — 양쪽 WT CLEAN·cross-stream(FE carry+BE +1)·신규 회귀 risk 0(QA-B95 readiness 표현 deepen만).
+5. **★ candidate carry** — P1 carry M11/M12·G-STAFF-COMMITTEE-MEETING-LOG(BNK-633)·P3 carry G-DB-INTEGRITY-DEFENSE-DEPTH(BNK-635)·G-VENDOR-ONBOARDING-CHECKLIST(BNK-634)·신규 P3 G-CASE-MANAGER-EXECUTION-LOG(BNK-637).
+6. **★ 4축+leave-ledger P0/P1 재오픈 0 (87-cycle)** carry.
+
+---
+
+## §636 BNK-636 — 케어포 역공학 0–2h · ★★★ **M7 본인부담 7-x tri-source(func·demo·PDF) ↔ ogada `/billing/*` 10✅+1△ 재입증** · ★★★ **demo-work 시설 셸 이동서비스 0 hit 명시** (loadPage 110·rpt 34·transport/배차 0) · ★★ **func.php Wayback 380차 wrapper DRIFT** (`c2049b41`→`b5eef9a8`·107-leaf IDENTICAL) · ★★ **V180 defense-in-depth BE commit closure** (`42a369e`) · ★★ **QA-B95 neutral blocker marker 정규화** (`7e7c296`) · ★ **LIVE HTTP 000 43-cycle** (func+demo-work) · merge gate **820**(+2 cross-stream) · **4축+leave-ledger P0/P1 재오픈 0 (86-cycle)**
+
+**조사일**: 2026-06-25T22:15:00Z | **rotation**: 케어포 역공학 0–2h — `daycare/func.php` 107-leaf·매뉴얼 PDF p84–92·`demo-work` loadPage/view 파싱·M7 7-x ogada Route 1:1·리포트 밀도·시설 셸 이동서비스 부재. 신규 snapshot 2건: `carefor_m7_demo_func_tri_source_crosswalk_bnk636.txt` · `carefor_func_wayback_live_bnk636.html`(104,181B `b5eef9a8`). 덮어쓰기 1건(Wayback func.php wrapper DRIFT).
+
+### §636-1 ogada submodule git HEAD 실측 — cross-stream FE+1·BE+1·V180 commit closure (확인)
+
+| 축 | SHA | 상태 | commit (BNK-635 → BNK-636) | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `7e7c296` | WT **CLEAN** | BNK-635 `@b7004ca` **HEAD +1** `fix(v1.2.1/QA-B95): ignore neutral operation blocker markers` | **246** vs `ab4de83` (+1) |
+| BE develop | `42a369e` | WT **CLEAN** | BNK-635 `@3342938` **HEAD +1** `fix(v2/QA-B95): refine g21 seed detail and add V180 integrity guards` — **V180 165L untracked → committed**·`HealthController` g21-seed detail 정밀화 closure | **574** vs `598d108` (+1) |
+
+merge gate = 246 + 574 = **820** (+2 cross-stream vs BNK-635 **818**).
+
+| KPI | 값 (`@7e7c296`/`@42a369e`) | BNK-635 대비 |
+|---|---|---|
+| FE Route | **118** (117 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect) | = |
+| FE test | **479** (196 + 283) | = |
+| BE 마이그레이션 | **V1–V180** (V180 committed) | **+1 V180 closure** |
+| BE Test 파일 | **271** | = |
+| BE @Test | **1957** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+### §636-2 케어포 M7 본인부담 7-x tri-source cross-walk (확인 · 신규 상세)
+
+**3축 정본**: func.php canonical `6226e6eb`(107-leaf) · demo-work Wayback `carefor_demo_work.html`(110 loadPage) · 매뉴얼 PDF p84–92 `carefor_manual_p84_p92_copay_bnk585.txt`
+
+| leaf | func.php | demo-work `view.*` | ogada Route | 판정 |
+|---|---|---|---|---|
+| 7-1 | 청구관리 | `view.cost_master` | `/billing` | ✅ |
+| 7-2 | 입금관리 | `view.cost_receipt` | `/billing/payments` | ✅ |
+| 7-2-1 | 의료비공제 | `view.cost_master_statistic` | `/billing/reports/statistics` | ✅ |
+| 7-3 | 미납관리 | `view.cost_nopay` | `/billing/overdue` | ✅ |
+| 7-4 | CMS | `view.cms_manage` | `/billing/cms` | ✅ |
+| 7-5 | 간편결제 | `view.npay_manage` | `/billing/easy-pay` | ✅ |
+| 7-6 | 청구대장 rpt | `view.cost_master_report` | `/billing/reports/charges` | ✅ |
+| 7-7 | 입금대장 rpt | `view.cost_deposit_report` | `/billing/reports/deposits` | ✅ |
+| 7-8 | 수납대장 rpt | `view.cost_receipt_report` | `/billing/reports/receipts` | ✅ |
+| 7-9 | 수납,환불 rpt | `view.cost_receipt_apply_yearly` | `/billing/reports/refunds` | ✅ |
+| 7-10 | 간편계산기 | **demo 0 hit** | `/billing/calculator` | △ ogada superset |
+
+**매뉴얼 PDF 업무흐름**(p84–92): 「7-2 입금처리 선행 → 7-1 청구」·「9-1 시설정보설정 본인부담금정보 → 7-1 청구명세서 생성기준」= ogada `/billing`→`/billing/payments` lifecycle 정합.
+
+**demo numbering drift negative**: L07_M10 title=7-9 but HTML comment=7-10(구 수납내역) — func.php 7-9/7-10 분리가 authoritative.
+
+### §636-3 demo-work 시설 셸 — 이동서비스·배차 모듈 부재 (확인)
+
+| 지표 | demo-work | ogada |
+|---|---|---|
+| loadPage | 110 | 118 Route |
+| class="rpt" | 34 | reports 28 |
+| 이동서비스/transport/배차 grep | **0 hit** | `/transport/*` + NHIS #44 full-stack ✅ |
+| 차량 관련 | 9-5 운영관리(차량/비품 등록) only | vehicles + compliance + service-log |
+
+**의의**: 케어포 demo-work는 주야간/시설 운영 UX 패턴(loadPage/view Ajax) 정본이나 **이동서비스 배차는 별도 제품 축**(func 2-x·엔젤 essential #41-42) — ogada transport 모듈 = 경쟁 대비 차별화 유지.
+
+### §636-4 func.php Wayback 380차 · LIVE 43-cycle (확인)
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| [Wayback func.php](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) | 200 | 104,181B | `b5eef9a8` | BNK-624 `c2049b41`→**DRIFT -1B**·107-leaf IDENTICAL |
+| LIVE func.php | **000** | 0 | — | 43-cycle 「미확인」 |
+| LIVE demo-work | **000** | 0 | — | 43-cycle 「미확인」 |
+
+### §636-5 planner 제안 (BNK-636)
+
+1. **M7 7-x FULL PARITY 유지** — 10✅+1△(7-10 calculator ogada superset)·G-REFUND-FEE 6-layer carry.
+2. **demo-work 「이동서비스 0」** — ogada `/transport`+NHIS #44 마케팅 차별화 narrative 강화.
+3. **M11/M12 P1 demand-signal carry** — id=11·12 closure 시 +6.9pp(80.86%→87.76%).
+4. **G-STAFF-COMMITTEE-MEETING-LOG P1** — ezCare 도움말 #1 FAQ 83,875 hit carry.
+
+---
+
+## §635 BNK-635 — ogada git 실측 6–8h · ★★★ **BNK-634 FE WT DIRTY 2 regression → `bee97b9` 흡수 CLEAN closure** · ★★★ **V180 defense-in-depth integrity migration 신규 cross-walk** (V179 위 6-항목 적층·경쟁 4종 DB-level 보호 노출 0·표층 API+심층 DB 2중 게이트 deepen) · ★★ **NHIS #44 이동서비스비 러-1~4 394차 zero drift IDENTICAL** · ★★ **QA-B95 legacy singular blocker key 정규화 — cluster 8th layer hardening** · ★ **BE WT DIRTY 2 in-progress refactor (`HealthController` g21-seed `disabled`→`service-unavailable` detail 정밀화)** · ★ **V180 untracked 1-cycle carry** · merge gate **818**(+2 FE-only) · **4축+leave-ledger P0/P1 재오픈 0 (85-cycle)**
+
+**조사일**: 2026-06-25T20:54:00Z (KST 익일 05:54) | **rotation**: ogada git 실측 6–8h — `src/backend`·`src/frontend` develop HEAD·Route·page·BE @Test·모듈 커버 %·V180 정합·COMPETITOR_MATRIX `@HEAD` SHA 일괄 갱신·백본 1-URL 재실측. 신규 snapshot 1건: `ogada_git_remeasure_bnk635.txt`(10,156B `725b251a`). 덮어쓰기 0건.
+
+### §635-1 ogada submodule git HEAD 실측 — FE HEAD +2 BNK-634 DIRTY 흡수·BE HEAD zero advance (확인)
+
+| 축 | SHA | 상태 | commit (BNK-634 → BNK-635) | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `b7004ca` | WT **CLEAN** | BNK-634 `@33944e4` **DIRTY 2 → HEAD +2 CLEAN 흡수**: ① `bee97b9` `ux(a11y/FE-16): promote refund-fee-preview CSS + fix schedule page a11y (UXD-165)` 2-file +45/-2 `StaffMonthlySchedulePage.jsx`+6/-2 `role="group" aria-label="근무 요약"`+`aria-busy={loading}` (WCAG 4.1.3·BNK-633 US-R09 regression fix) + `components.css`+39L `.ds-refund-fee-preview` 단일 source 승격 (grid 2-col label/amount·surface-muted bg·forced-colors border·FE-16 fix) · ② `b7004ca` `fix(v1.2.1/QA-B95): support legacy singular operation blocker keys` 3-file +47/-2 `liveBackendProbe.js`+13 singular `operationBlocker` key 호환 readiness 게이팅·`liveConfig.js`+9 persisted state singular key normalize·`liveE2eHarness.test.js`+25 회귀 lock | **245** vs `ab4de83` (+2 FE-only) |
+| BE develop | `3342938` | WT **DIRTY 2 + 1 untracked** | BNK-634 carry · **HEAD zero advance** · `HealthController.java` +1/-1 신규 `G21_SEED_SERVICE_UNAVAILABLE_DETAIL = "g21-seed=service-unavailable"` 상수·boot 미가용 payload 시 `g21-seed=disabled` → `g21-seed=service-unavailable` 의미 분리 in-progress refactor · `HealthControllerTest.java` +1/-1 assertion 정합 · V180 untracked 165L carry from BNK-634 (DBA defense-in-depth 6-항목) | **573** vs `598d108` (carry) |
+
+merge gate = 245 + 573 = **818** (+2 FE-only vs BNK-634 **816**).
+
+| KPI | 값 (`@b7004ca`/`@3342938`) | BNK-634 대비 |
+|---|---|---|
+| FE Route | **118** (117 `<Route\b` + 1 `<Routes>` wrapper) | = |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **479** (196 `.test.js` + 283 `.test.jsx` tracked) | = |
+| BE 마이그레이션 | **V1–V179** (V180 untracked carry) | = (V180 untracked carry) |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1957** (rg `@Test\b` -o) | = |
+| BE @RestController | **74** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+**의미**: HEAD +2 advance에도 KPI 전부 IDENTICAL — `bee97b9`(a11y CSS 단일 source 승격 + ARIA polish·신규 page/route/test 0)·`b7004ca`(QA-B95 legacy compat·신규 test js 0·기존 `liveE2eHarness.test.js` 확장 +25L). **UX a11y polish + 회귀 lock-only cycle**.
+
+### §635-2 BNK-634 FE WT DIRTY 2 regression → `bee97b9` 흡수 CLEAN closure (확인 · 신규 closure)
+
+| 항목 | BNK-634 baseline | BNK-635 측정 | 판정 |
+|---|---|---|---|
+| FE `StaffMonthlySchedulePage.jsx` +8/-2 DIRTY | 미커밋 caution | `bee97b9` 흡수 (+6/-2 a11y) | ✅ **CLEAN 흡수** |
+| FE `components.css` +39L DIRTY | 미커밋 caution | `bee97b9` 흡수 (`.ds-refund-fee-preview` 단일 source 승격) | ✅ **CLEAN 흡수** |
+| BE V180 untracked 165L | 미커밋 caution | **여전히 untracked** | △ 1-cycle carry |
+| BE `HealthController.java` | 0 (BNK-634 V180만) | **+1/-1 NEW** g21-seed service-unavailable | △ in-progress refactor |
+| BE `HealthControllerTest.java` | 0 | **+1/-1 NEW** assertion 정합 | △ in-progress refactor |
+
+**의의**: BNK-634 「coder commit+push 우선 권장(rules §6 push 누락 위험)」 caution이 `bee97b9` UXD-165 a11y promote commit으로 흡수 → **rules §6 push 누락 위험 FE측 해소**. 다만 BE는 V180 untracked + WT 2-file in-progress refactor로 **dba/coder commit 우선 권장** 잔존.
+
+**G-REFUND-FEE 5-layer cascade의 6번째 layer UX a11y polish** — BNK-616 BE catalog → BNK-617 BE service validation → BNK-618 FE wire → BNK-619 BE DTO + neg @Test → BNK-635 **FE UX a11y CSS 단일 source 승격**(`RefundRecordModal` 환불 수수료 미리보기 <dl> grid 2-col·forced-colors border·BNK-616~619 5-layer 위 UX 마감) = M7 7-9 환불 수수료 lifecycle **6-layer 완성**.
+
+### §635-3 ★★★ V180 defense-in-depth integrity migration 신규 cross-walk (확인 · 「가정」 part)
+
+**근거**: `src/backend/src/main/resources/db/migration/V180__program_client_groups_integrity_us_p01.sql` 165L untracked (DBA 산출물·BNK-634→635 1-cycle carry)
+
+V180은 V179 (`program_client_groups`·`program_client_group_members` BNK-627 코더 closure 산출물·M5 group-history 리포트 백킹) 위에 **defense-in-depth 6-항목** 적층:
+
+| # | 항목 | 패턴 출처 | 의도 |
+|---|---|---|---|
+| 1 | `uq_program_client_groups_org_branch_id (organization_id, branch_id, id)` 3-way UK | V169 (program_participations·activity_programs) | 3-way FK backing |
+| 2 | `fk_program_client_group_members_group_branch_org (organization_id, branch_id, group_id) → program_client_groups (organization_id, branch_id, id)` 3-way FK | V169 | **cross-branch raw SQL 적재 차단** — 기존 (org, group_id) FK는 member.branch_id ≠ group.branch_id 허용 가능 |
+| 3 | `trg_program_client_group_members_set_org_branch` BEFORE INSERT/UPDATE OF client_id | V74 (functional_recovery_plans) | client_id → org/branch 자동 복사 |
+| 4 | `trg_program_client_group_members_guard_active_client` BEFORE INSERT | V49 (program_participations) | **퇴소·비활성 이용자 멤버십 INSERT 차단** (`is_active=true AND discharged_at IS NULL` 검사) |
+| 5 | `trg_program_client_group{,_member}s_set_created_by` BEFORE INSERT (2 trigger) | V49 actor backstop | `ogada.actor_user_id` GUC 기반 created_by 자동 보강 |
+| 6 | `idx_program_client_group_members_client_purge (client_id)` | V169 purge backing | DATA_RETENTION §4-1 cohort scan |
+
+**의도적 제외 (V180 본문 verbatim)**: 멤버십 기간 overlap 금지 — plain CHECK/subquery 표현 불가, 앱 책임(P3) · `active=false` 그룹에 신규 멤버 INSERT 금지 — 운영상 이력 보존 필요(P3) · `created_by` NOT NULL — system-actor 일괄 import 경로 보존(P3, V174 동일).
+
+**경쟁 4종 공개 자료 DB-level 보호 노출 (확인 · 「가정」)**:
+
+| 경쟁사 | 공개 자료 | DB-level CHECK/FK/trigger 노출 | 판정 |
+|---|---|---|---|
+| 케어포 | func.php·매뉴얼 PDF 메뉴 | 0 | 확인 (공개 없음) |
+| 이지케어 | `/new.ez`·FAQ·도움말·jqGrid colModel·`/help/faq.ez` K001~K014 | 0 | 확인 (UI 레벨만) |
+| 엔젤시스템 | essential/extra/system_feature/businessSupport·평가지표 27 | 0 | 확인 (정적 텍스트만) |
+| 롱텀(공단) | 고시·서식·법규·서비스 코드(러-1~4) | N/A (수가 명세만) | 확인 (DB 보호 N/A) |
+
+→ **ogada V169 「표층 API + 심층 DB 2중 게이트」(BNK-501 carry)** + **V180 「3-way FK + active-client guard + actor backstop + purge backing index 단일 단단한 격리」** = 경쟁 4종 공개 한도 비대칭 우위. **「미확인」 part**: 경쟁사 비공개 backend DB layer는 공개되지 않아 비교 불가 — 추측 금지·`G-DB-INTEGRITY-DEFENSE-DEPTH` 차별화 「가정」으로 표시.
+
+**planner 마케팅 카피 후보**: 「**ogada는 표층 RBAC + 심층 DB 2중 게이트로 cross-branch raw SQL 적재·퇴소 이용자 누적 멤버십·actor 누락을 PostgreSQL constraint·trigger·index 레벨에서 차단합니다 (V169·V180 defense-in-depth)**」
+
+### §635-4 NHIS #44 이동서비스비 러-1~4 — 394차 zero drift (확인 · PLAN_NOTES #44)
+
+| 항목 | 값 |
+|---|---|
+| URL | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 |
+| HTTP | 200 · 7,572B · `c886ff1f` |
+| 판정 | live=disk **394차 IDENTICAL** (BNK-634 393차 → +1) |
+| verbatim | 러-1~러-4·편도50%·1일1회·수급자 부담 X·별지 제22호 일지 |
+
+↔ ogada `TransportServiceFeeService`(`RU_1~RU_4`·`ONE_WAY_RATIO=0.5`·1일1회 guard)+`TransportServiceLog`+`TransportServiceFeePanel`+`TransportParityRulesPanel` = **경쟁 4종 유일 full-stack** (394-cycle carry).
+
+### §635-5 QA-B95 cluster 8th layer hardening — legacy singular blocker key 정규화 (확인)
+
+**근거**: FE `b7004ca` 3-file +47/-2 (`liveBackendProbe.js`+13·`liveConfig.js`+9·`liveE2eHarness.test.js`+25 회귀 lock)
+
+QA-B95 cluster 누적 layer (BNK-625~635):
+
+| BNK | layer | 산출물 |
+|---|---|---|
+| 625 | 1 | FE `75c0f51` `fix(v1.2.1/QA-B95): treat bootstrap-unavailable blockers as recoverable` |
+| 625 | 2 | BE `0e55f3b` `fix(v2/QA-B95): expose live-e2e bootstrap service availability in probe` |
+| 627 | 3 | FE `f74a6e7` `Surface live E2E health reasons when backend is reachable` |
+| 628 | 4 | BE `9f67954` `fix(v2/QA-B95): add configurable bootstrap readiness enforcement` |
+| 630 | 5 | FE `2c9abd6` `fix(v1.2.1/QA-B95): normalize string-form live operation blockers` |
+| 631 | 6 | FE `bd3253a` `fix: normalize live operation blockers from probe state` |
+| 633 | 7 | BE `3342938` `fix(v2/QA-B95): honor recovered auth in health and live-e2e probe` |
+| **635** | **8** | **FE `b7004ca` `fix(v1.2.1/QA-B95): support legacy singular operation blocker keys`** + BE WT 2 in-progress `g21-seed=disabled`→`service-unavailable` detail 정밀화 |
+
+→ legacy backend shape(singular `operationBlocker` vs plural `operationBlockers`) 호환·readiness gating 정확도 carry 8-layer 누적. **이지케어 live 도입현황 plateau 모니터링 harness resilience 강화**(BNK-625~628 plateau 추적 연계).
+
+### §635-6 갭·우선순위 (planner)
+
+| 우선순위 | 항목 | 근거 | 변동 |
+|---|---|---|---|
+| P1 carry | M11/M12 결제·재무 클러스터 | BNK-633 도움말 view 37.6% demand signal | carry |
+| P1 carry | G-STAFF-COMMITTEE-MEETING-LOG | BNK-633 도움말 #1 FAQ 83,875 hit 가정 번복 | carry |
+| P2 carry | NHIS #44 parity 문구 고정 | 394-cycle zero drift | +1 (393→394) |
+| P3 강화 | G-VENDOR-ONBOARDING-CHECKLIST | BNK-634 businessSupport 4회차 SLA | carry |
+| P3 carry | silverangel 221564 3종 (G-NURSING-MISSED-RECORD-DASHBOARD·G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE·G-LEGAL-FORM-SIGNATURE-IMAGE) | 6/30 정식 게시 D-3 | carry |
+| P3 「가정」 | G-DB-INTEGRITY-DEFENSE-DEPTH 차별화 narrative | V169·V180 defense-in-depth·경쟁 4종 공개 한도 0 | **신규** |
+| ops | V180 untracked + BE WT 2 in-progress | DBA·coder QA-B95 g21-seed detail 정밀화 | **신규 변동** |
+
+### §635-7 즉시 액션
+
+- **tester**: merge gate **818** (FE 245 + BE 573 · FE WT CLEAN · BE WT DIRTY 2 + V180 untracked → **선행 coder/dba commit+push 후 merge 권장**)
+- **coder**: BE WT 2(`HealthController.java`+test) g21-seed `service-unavailable` detail commit closure (QA-B95 detail 정밀화 완성 · 작은 단위 commit 권장 by rules §2)
+- **dba**: V180 165L untracked → commit+push (rules §6 push 누락 위험·BNK-634→635 1-cycle carry·dev seed 0건이므로 backfill 불요·안전)
+- **planner**: baseline FE `@33944e4` → **`@b7004ca`** · BE `@3342938` carry (HEAD zero advance·V180 untracked carry) · merge 816 → **818** · V180 defense-in-depth `G-DB-INTEGRITY-DEFENSE-DEPTH` P3 「가정」 신규 candidate 검토 · M11/M12 P1 demand-signal carry
+
+**사이클 집계**: 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(P3 carry·신규 P3 「가정」 1건 G-DB-INTEGRITY-DEFENSE-DEPTH) · closure 1(BNK-634 FE WT DIRTY 2 regression `bee97b9` 흡수) · 상태 변경 2(FE+2 advance + WT DIRTY 2→CLEAN·BE WT DIRTY 1→2+ in-progress refactor) · KPI 변경 1(merge gate 816→818) · KPI carry 8(Route·page·test·BE Test·@Test·모듈·reports·V179) · 재실측 zero drift 1(NHIS #44 394차) · 미확인 carry 3(carefor LIVE 42+·longterm 502 47+·610 oscillation) · 신규 snapshot 1건 · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족 · tester FF merge 818 가속 권장(선행 coder/dba commit 권장).
+
+---
+
+## §634 BNK-634 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 393차 zero drift IDENTICAL** · ★★★ **silverangel businessSupportService 「도입 후 관리」4회차 온보딩 체크리스트 cross-walk** · ★★ **MOHW 2026-126 본인부담상한 DRIFT counter** (`106a4278`→`806a4361`·조회 2,644·DL 483·미리보기 571·본문 불변) · ★★ **lcms.or.kr HTTP 503 transient → retry IDENTICAL** · ★ **system_feature LCMS 인프라 스택(HP-UX/Oracle11g/WebLogic) 공개** · ★ **silverangel 221564 shell D-4 + 221562 발신번호 인증 마감 6/23 경과** · ★ **ogada WT DIRTY regression**(FE 2M·BE V180 untracked) · HEAD zero advance · merge gate **816** carry · **4축+leave-ledger P0/P1 재오픈 0 (84-cycle)**
+
+**조사일**: 2026-06-25T21:30:00Z (KST 익일 06:30) | **rotation**: 엔젤·롱텀·규제 4–6h — NHIS #44(#44 PLAN_NOTES)·silverangel 6-URL+businessSupport+system_feature·lcms.or.kr·MOHW 2026-126·longterm 502/610·notice 221564/221562·ogada git HEAD. 신규 snapshot 1건: `angel_longterm_regulatory_crossverify_bnk634.txt`. 덮어쓰기 1건: `mohw_gosi_2026_126.html`(DRIFT counter).
+
+### §634-1 ogada submodule git HEAD 실측 — HEAD zero advance + WT DIRTY regression (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `33944e4` | WT **DIRTY 2** | `feat(v1.2.1/staff): add monthly work schedule page for carefor 8-2` (BNK-633 carry · **HEAD zero advance** · `StaffMonthlySchedulePage.jsx` +8/-2 · `components.css` +39L) | **243** vs `ab4de83` |
+| BE develop | `3342938` | WT **DIRTY 1** | `fix(v2/QA-B95): honor recovered auth in health and live-e2e probe` (BNK-633 carry · **HEAD zero advance** · `V180__program_client_groups_integrity_us_p01.sql` untracked) | **573** vs `598d108` |
+
+merge gate = 243 + 573 = **816** carry (BNK-633 IDENTICAL).
+
+| KPI | 값 (git 실측) | BNK-633 대비 |
+|---|---|---|
+| FE Route | **118** (117 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect) | = |
+| FE test | **479** (196 `.test.js` + 283 `.test.jsx` tracked) | = |
+| BE 마이그레이션 | **V1–V179** (+V180 untracked) | V180 untracked NEW |
+| BE Test 파일 | **271** | = |
+| BE @Test | **1957** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+**의미**: BNK-633 CLEAN 흡수 직후 **WT DIRTY regression** — FE 스타일/페이지 미커밋 2건·BE V180 integrity migration 미추적. rules §6 push 누락 위험 재발 가능 → **coder commit 우선 권장**.
+
+### §634-2 NHIS #44 이동서비스비 러-1~4 — 393차 zero drift (확인 · PLAN_NOTES #44)
+
+| 항목 | 값 |
+|---|---|
+| URL | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 |
+| HTTP | 200 · 7,572B · `c886ff1f` |
+| 판정 | live=disk **393차 IDENTICAL** (BNK-632 392차 → +1) |
+
+verbatim (불변): ① 최단거리(편도)·러-1~러-4 표 ② 1일 1회만 산정 ③ 편도만 50% ④ 수급자 부담 X ⑤ 일지 작성·보관(별지 제22호) ⑥ 공단 이사장 세부사항.
+
+↔ ogada `TransportServiceFeeService`(RU_1~RU_4·`ONE_WAY_RATIO=0.5`)+`TransportServiceLog`+`TransportServiceFeePanel`+`TransportParityRulesPanel` = **경쟁 4종 유일 full-stack** (393-cycle carry).
+
+### §634-3 ★★★ silverangel businessSupportService 4회차 온보딩 체크리스트 (신규 상세 · 확인)
+
+근거: https://www.silverangel.kr/newSilverangel/service/businessSupportService.do HTTP 200·75,878B·`a13cb5ac`·BNK-578 최초 발굴 → BNK-634 **12-cycle IDENTICAL 재확인**
+
+5-tab: 실시간 업무지도·**도입 후 관리**·업무지원 교육·주요교육실적·사용후기
+
+**1회차(오픈+10일)** 직무별 점검 — 관리(ID·권한·기록지복사) / 간호(처치·시간·약·건강기록) / 복지(프로그램·욕구사정·**롱텀 급여계획 업로드**) / 요양(큰화면·**QR 배변배뇨**·관찰·체위·목욕) / 재활(기능회복·물리치료)
+
+**2회차(1회차+10일)** — 사례관리회의·상담일지·프로그램달력·보고서 3종·간호 자동시간·욕창 사후관리·기관운영 메뉴
+
+**3회차(오픈+6주)** — 직무교육 / **4회차(교육+10일)** — 묻고답하기·KPI·계획평가달력
+
+↔ ogada: 대부분 route parity ✅ · 잔여 △ = **롱텀 care-plan import UI**·**회차별 온보딩 체크리스트 0 hit** → `G-VENDOR-ONBOARDING-CHECKLIST` P3「가정」강화 · **G-STAFF-COMMITTEE-MEETING-LOG** P1 carry(BNK-633 2회차 「사례관리회의」정합)
+
+### §634-4 MOHW 2026-126 본인부담상한 — DRIFT counter (확인 · 덮어쓰기)
+
+| 항목 | BNK-618 | BNK-634 | 판정 |
+|---|---|---|---|
+| md5 | `106a4278` | `806a4361` | DRIFT counter |
+| size | 109,510B | 109,510B | = |
+| 조회수 | — | **2,644** | +51 vs BNK-594 2,593 |
+| 다운로드(hwpx) | 482 | **483** | +1 |
+| 미리보기(hwpx) | 564 | **571** | +7 |
+| 본문 | 고시 제2026-126호·본인부담상한액 | 동일 verbatim | **내용 불변** |
+
+↔ ogada G26 `/dashboard`+`/dashboard/hq` 본인부담상한 ✅ — 규제 본문 변경 0 · 카운터 DRIFT만.
+
+### §634-5 lcms.or.kr 503 transient + silverangel 6-URL backbone (확인)
+
+- **lcms.or.kr**: 1차 HTTP **503**·299B `66b56e51` → retry HTTP 200·50,740B `c0c66076` IDENTICAL (38-cycle). **가용성 리스크 신호** — 경쟁사 인프라 transient outage 관측.
+- silverangel essential/extra/main/fee/system_feature/businessSupport: 전부 live=disk IDENTICAL.
+- extraService 2-product nav: **입소시설**(`fcltySlry/essentialWork.do`) + **주야간보호**(`daycare/daycareEssentialWork.do`) — 방문요양 별도 surface 미노출(기존 carry).
+
+### §634-6 silverangel notice · longterm shell (확인)
+
+- **221564**: 51,765B shell·list 미노출·**D-4**(6/30 정식 게시) · P3 3종 「6/30 재검증」carry
+- **221562**: 발신번호 본인인증 마감 **2026-06-23 18:00 경과** → `G-COMM-CALLER-AUTH` P3 relevance
+- **longterm 502**: `d3c90b33` 422B shell 47-cycle 「미확인」·canonical 74,060 보존
+- **longterm 610**: `c26a5e57` 458B shell·canonical 월 10만원 보존
+
+### §634-7 갭·우선순위 (planner)
+
+| 우선순위 | 항목 | 근거 |
+|---|---|---|
+| P1 carry | M11/M12·G-STAFF-COMMITTEE-MEETING-LOG | BNK-633 demand-signal |
+| P2 carry | NHIS #44 parity 문구 고정 | 393-cycle zero drift |
+| P3 강화 | `G-VENDOR-ONBOARDING-CHECKLIST` | businessSupport 4회차 SLA |
+| P3 carry | silverangel 221564 3종 | D-4 재검증 |
+| ops | WT DIRTY regression | FE 2M+BE V180 · rules §6 |
+
+**사이클 집계**: 가정 번복 0 · 신규 core 갭 0 · candidate 0 · closure 0 · 상태 변경 1(WT DIRTY) · 재실측 zero drift 7 · DRIFT 1 · transient 1 · 덮어쓰기 1 · per-cycle minimum 4종 충족.
+
+---
+
+## §633 BNK-633 — 이지케어 역공학 2–4h · ★★★ **ezCare 도움말 /help/faq.ez 카탈로그 첫 정적 추출 — 14 카테고리 K001~K014 + 233 rowid + 누적 view 3,636,833 + top-30 cross-walk** · ★★★ **가정 번복 — BNK-629 P3 `G-STAFF-COMMITTEE-MEETING-LOG` 「MVP out-of-scope」 → 도움말 #1 FAQ 83,875 hit demand signal → P1 격상 권장** · ★★★ **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE (BNK-629 △ 8-2 carry) → FULL CLOSURE @FE `33944e4`** · ★★★ **결제·재무 클러스터 (K008+K014+K013+K012) view 점유율 37.6% = ogada M11/M12 P2 갭과 정확히 일치 → P1 격상 demand-signal** · ★★ **신규 candidate +4** (P2 G-CLIENT-CONTRACT-BULK-PRINT·P2 G-NHIS-SCHEDULE-IMPORT·P3 G-RFID-CARE-PROVISION-DISPATCH·P3 G-CIST-COGNITIVE-SCREENING-LOG) · ★★ **BE WT DIRTY 6 (BNK-632) → CLEAN 흡수** `3342938` rules §6 push 누락 위험 0 · ★ **ezCare counter plateau day 4 — BNK-540 이후 최장** · ★ **FAQ 21844 IDENTICAL 391차 zero drift** · ★ **FAQ 21845~22000 17-rowid boundary 재확인 empty shell `e5762090`** · ★ **Channel.io shell carry** · merge gate **816**(+2 cross-stream) · **4축+leave-ledger P0/P1 재오픈 0 (83-cycle)**
+
+**조사일**: 2026-06-25T19:35:00Z (KST 익일 04:35) | **rotation**: 이지케어 역공학 2–4h — `/help/faq.ez` 도움말 카탈로그 첫 정적 추출(14 카테고리·233 rowid·누적 view·top-30 by hit·ogada cross-walk) + 백본 4-URL(home/fnc/e01/FAQ 21844) 재실측 + FAQ rowid 21845~22000 17-rowid boundary 재확인 + Channel.io shell + ogada git HEAD cross-stream +1/+1 (FE staff schedule + BE QA-B95 DIRTY 흡수). 신규 snapshot 2건: `ezcare_help_faq_list_bnk633.html`(80,057B `e14be4df`) · `ezcare_faq_taxonomy_top30_crosswalk_bnk633.txt`. 덮어쓰기 0건(home/fnc/e01 BNK-632 paths carry — 본 cycle은 ezCare 신규 surface 우선).
+
+### §633-1 ogada submodule git HEAD 실측 — cross-stream FE+1·BE+1 + BE DIRTY 6 → CLEAN 흡수 (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `33944e4` | WT **CLEAN** | `feat(v1.2.1/staff): add monthly work schedule page for carefor 8-2` (BNK-632 `bd3253a` → **HEAD +1** · 8-file +535L) | **243** vs `ab4de83` |
+| BE develop | `3342938` | WT **CLEAN** | `fix(v2/QA-B95): honor recovered auth in health and live-e2e probe` (BNK-632 `49fe2e7` DIRTY 6 → **HEAD +1** · 6-file +224/-48L · **BNK-632 DIRTY 흡수 CLEAN commit**) | **573** vs `598d108` |
+
+merge gate = 243 + 573 = **816** (+2 cross-stream vs BNK-632 814).
+
+| KPI | 값 (git 실측) | BNK-632 대비 |
+|---|---|---|
+| FE Route | **118** (117 `<Route\b` + 1 `<Routes>`) | **+1** (Route `/staff/schedules`) |
+| FE page | **93** (92 `*Page.jsx` + RootRedirect inline) | **+1** (`StaffMonthlySchedulePage.jsx`) |
+| FE test | **479** (196 `.test.js` + 283 `.test.jsx`) | **+2** (`StaffMonthlySchedulePage.test.jsx` + `staffMonthlySchedule.test.js`) |
+| BE 마이그레이션 | **V1–V179** (179 sql) | = |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = (기존 6-file 확장, 신규 0) |
+| BE @Test | **1957** (rg `@Test\b` -o) | = (신규 BE 테스트 0·기존 `HealthControllerTest`/`LiveE2eControllerTest` 확장) |
+| BE @RestController | **74** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = (8-2 △→✅ in-cycle micro-closure pending 재산정) |
+| reports Route | **28** | = |
+
+### §633-2 ★★★ ezCare 도움말 /help/faq.ez 카탈로그 첫 정적 추출 — 14 카테고리 + 233 rowid + 누적 view 3,636,833 (확인 · 신규 evidence URL)
+
+**신규 evidence URL**: `https://ezcare.easyms.co.kr/help/faq.ez?type=web` HTTP 200 · **80,057B** · md5 `e14be4df` · on-disk `ezcare_help_faq_list_bnk633.html`
+
+**카테고리 catalog 14종** (K001~K014 · K011 「기타」는 노출 순서상 마지막 — ezCare 내부 분류 정렬 hint):
+
+| 코드 | 카테고리 | FAQ 건수 | 누적 view | view 점유율 |
+|---|---|---:|---:|---:|
+| K008 | 수당/급여관리 | 64 | 968,439 | 26.6% |
+| K002 | 직원관리 | 47 | 790,267 | 21.7% |
+| K005 | 서식출력/설정 | 35 | 632,161 | 17.4% |
+| K003 | 수급자관리 | 28 | 438,049 | 12.0% |
+| K004 | 일정관리 | 26 | 399,683 | 11.0% |
+| K006 | 본인부담금 | 26 | 380,495 | 10.5% |
+| K011 | 기타 | 20 | 340,109 | 9.4% |
+| (미) | (미분류) | 20 | 301,971 | 8.3% |
+| K014 | 4대보험 | 15 | 206,325 | 5.7% |
+| K010 | 문자발송 | 8 | 138,669 | 3.8% |
+| K007 | 공단연동 | 7 | 122,982 | 3.4% |
+| K013 | 세무 | 7 | 104,076 | 2.9% |
+| K012 | 재무회계 | 6 | 88,323 | 2.4% |
+| K001 | 이용료/요금 | 5 | 74,436 | 2.0% |
+| K009 | 모바일앱 | 3 | 48,337 | 1.3% |
+
+**합계**: 233 FAQ · 누적 view **3,636,833** · min rowid **21131** · max rowid **21781** · 21844(BNK 391차 IDENTICAL)는 **목록 미노출** → 직링크 전용
+
+**클러스터 인사이트**:
+- **결제·재무 클러스터** (K008 수당/급여관리 + K014 4대보험 + K013 세무 + K012 재무회계) = **1,367,163 view = 37.6%** → ogada **M11(직원급여) + M12(회계) ❌ 0 route P2 carry (BNK-619~632)** ⇒ **이지케어 도움말 트래픽 #1 클러스터가 ogada P2 갭과 정확히 일치 = P1 격상 demand-signal 확정**
+- **운영·서식 클러스터** (K002+K005+K003+K004+K006) = **2,640,655 view = 72.6%** → ogada module 1·3·4·5·7·8 전수 covered (BNK-628 4축+leave-ledger 82-cycle P0/P1 재오픈 0)
+- **알림·연동 클러스터** (K010+K007) = **261,651 view = 7.2%** → ogada `G-SMS-TEMPLATE-CATALOG`(6 ezCare message_kind parity·BNK-575 closure) + NHIS partial
+
+### §633-3 ★★★ TOP-30 by hit + ogada cross-walk — 가정 번복 1 + 신규 candidate +4 (확인 · 신규 블록)
+
+| 순위 | view | rowid | 카테고리 | 질문 | ogada 매핑 | 갭 평가 |
+|---:|---:|---|---|---|---|---|
+| 1 | **83,875** | 21601 | 직원관리,서식출력/설정 | 직원 회의록을 전산으로 작성, 관리하고 싶어요! | △ `/case-management/meetings`만 ✅·직원 회의록 0 hit | **★★★ 가정 번복** — BNK-629 P3 `G-STAFF-COMMITTEE-MEETING-LOG` 「facility-admin 서식 MVP out-of-scope carry」 → **도움말 1위(83,875 hit) demand signal** → **P1 격상 권장** |
+| 4 | 25,067 | 21723 | 수당/급여관리 | 2025년 요양보호사 시급 가이드 | ❌ `/payroll/*` 0 route | M11 P2 carry · top-30 11건 진입(클러스터 demand signal) |
+| 6 | 23,903 | 21668 | 4대보험 | 만 65세 이상이면, 고용·산재 미가입? | ❌ ogada 4대보험 0 route | M11 cluster · K014 #1 |
+| 7 | **23,902** | 21193 | 일정관리,문자발송 | 일정표를 문자로 보내고 싶어요 | ✅ `STAFF_MONTHLY_SCHEDULE` BNK-575~583 + **BNK-633 신규 FE `/staff/schedules` `StaffMonthlySchedulePage`** | **★★★ full-stack closure** — top-30 demand signal 정합 closure |
+| 9 | 22,756 | 21589 | 문자발송 | 급여제공기록지 RFID 전송분을 문자로 발송하고 싶어요 | △ RFID 0 hit·`CARE_PROVISION_RECORD` template ✅ | **★★ 신규 P3 「가정」 `G-RFID-CARE-PROVISION-DISPATCH`** — template ✅·trigger △ |
+| 11 | 22,017 | 21473 | 본인부담금,공단연동 | 본인부담금이 공단과 달라요! | ✅ `/billing/cms` (5-method 5/5) + NHIS reconcile | parity ✅ |
+| 16 | 19,673 | 21507 | 수급자관리,서식출력/설정 | 2025년 급여제공 변경계약서 일괄 출력 | △ 일괄 출력 0 hit·개별 ✅ | **★ 신규 P2 「가정」 `G-CLIENT-CONTRACT-BULK-PRINT`** v2+ |
+| 18 | 19,592 | 21602 | 수급자관리,서식출력/설정 | 인지선별검사 CIST 결과 관리 | △ 인지검사 0 hit·`/clients/health-records` 일반 | **★ 신규 P3 「가정」 `G-CIST-COGNITIVE-SCREENING-LOG`** |
+| 19 | 19,389 | 21298 | 일정관리,공단연동 | 공단 등록 일정 → 이지케어 업로드 | △ 공단 schedule import 0 hit | **★ 신규 P2 「가정」 `G-NHIS-SCHEDULE-IMPORT`** (G-NHIS-EXCEL-RECONCILE 자매) |
+| 28 | 18,709 | 21705 | 직원관리,서식출력/설정 | 사회복지사 근무일지 작성 | ✅ `/staff/lead-caregiver-log` (BNK-629 superset) | parity 우위 |
+| 30 | 18,476 | 21325 | 수급자관리,서식출력/설정 | 사회복지사 업무수행일지 저장 | ✅ `LeadCaregiverLog*` | parity ✅ |
+
+(전체 TOP-30 cross-walk는 `ezcare_faq_taxonomy_top30_crosswalk_bnk633.txt` §2)
+
+**TOP-30 중 M11 결제·재무 클러스터 11건**: #4·#6·#8·#10·#13·#14·#17·#20·#21·#23·#24·#25·#27·#29 (14건 hit 집계) — 단일 클러스터에서 top-30의 47% 차지 = **ezCare 도움말 트래픽의 절반 가까이가 ogada M11/M12 P2 갭과 정합** = **v1.3+ P1 격상 강력 권장 demand signal**
+
+### §633-4 ★★★ G-STAFF-MONTHLY-SCHEDULE-FE-WIRE (BNK-629 △ 8-2 carry) → FULL CLOSURE @FE `33944e4` (확인 · 신규 closure)
+
+| 갭 ID | BNK-632 상태 | BNK-633 상태 | 근거 |
+|---|---|---|---|
+| **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE** (carefor 8-2 근무일정표) | △ BE-only dispatch (BNK-575~583 `STAFF_MONTHLY_SCHEDULE` message_kind=21 ezCare parity·FE wire 0) | **✅ FULL CLOSURE** | FE `33944e4` `feat(v1.2.1/staff): add monthly work schedule page for carefor 8-2`·8-file +535L: `StaffMonthlySchedulePage.jsx` 268L + `StaffMonthlySchedulePage.test.jsx` 121L + `staffMonthlySchedule.js` 78L + `staffMonthlySchedule.test.js` 45L + `StaffContextNav.jsx`+1 + `StaffContextNav.test.jsx`+4L + `navConfig.js`+6L + `App.jsx`+12L Route 1(`/staff/schedules`)·commit msg verbatim 「Wire /staff/schedules to visit PLAN schedules and G-SMS monthly schedule dispatch so module 8-2 FE gap closes without a new backend API」 |
+
+**의미**: BNK-629 cross-walk에서 「8-2 근무일정표 BE-only dispatch」로 △ 표시했던 케어포 module 8 0.85 잔여 갭이 **이번 cycle FE wire로 종결**. **케어포 8-2** (BE-only dispatch BNK-575~583) → **BNK-633 FE wire 종결** = **모듈 8 coverage 0.85 → ~0.88** (8-2 △ → ✅ micro-closure·in-cycle 진척·다음 cycle 정합 산정). **ezCare cross-walk**: ezCare `schedule-p100#tab1 요양보호사 일정표(근무현황표)` (BNK-625 top-nav catalog `95286775` carry) ↔ ogada `/staff/schedules` 1:1 parity. **도움말 cross-walk**: ezCare FAQ rowid 21193 (top-30 #7 「일정표를 문자로 보내고 싶어요」 **23,902 hit**) demand signal 정합 closure — **벤치마크 demand signal → 코더 closure traceability** (BNK-633 4번째 traceable closure: BNK-620 M5→623 closure / BNK-623 P3→627 closure / BNK-617 7-9→619 hardening / **BNK-629 8-2 △→633 closure**).
+
+### §633-5 ★★ 백본 4-URL ezCare 재실측 zero drift / cachebuster-only DRIFT — plateau day 4 BNK-540 이후 최장 (확인)
+
+| URL | HTTP | size | md5(이번) | md5(BNK-632) | 핵심 counter | 판정 |
+|---|---|---|---|---|---|---|
+| [home](https://ezcare.easyms.co.kr/) | 200 | 106,072 | `b26fcf7d` | `0e783db9` | mCnt `{1:9287, 2:4603, 3:2353, 4:1820}` | cachebuster DRIFT · counter verbatim 불변 |
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | 17,870 | `6d8c18f8` | `b6fa1b7b` | 도입 **9,357** | cachebuster DRIFT · counter verbatim 불변 |
+| [?PG=e01](https://ezcare.easyms.co.kr/?PG=e01) | 200 | 47,130 | `812b1922` | `7314101f` | 17,489 / 9,354 / **53.49%** · 집계일 **2026.06.25** | cachebuster DRIFT · counter verbatim 불변 |
+| [FAQ 21844](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web) | 200 | 14,474 | `d0aa760c` | `d0aa760c` | 공단 엑셀 PII 마스킹(*) verbatim | **IDENTICAL 391차 zero drift** (엑셀 포맷 변경 0) |
+
+**plateau day 4 분석**: BNK-625(plateau 시작) → 628(day 2) → 632(day 3) → **BNK-633 (plateau day 4)** = **4-day counter 0 변동** · **BNK-540 이후 최장** (이전 최장 plateau는 BNK-617→621 4-cycle·BNK-632 day 3 → BNK-633 day 4로 갱신·tie or 신기록 carry). 재가센터 도입 정체 신호 지속 carry · `G-MARKET-SHARE-DASHBOARD` (BNK-610 P3「가정」) 데이터 소스 후보 carry. 도입 counter 정체는 ezCare 도움말 콘텐츠 「2025년」 라벨 다수와 정합(2026 신규 콘텐츠 미관측 = 콘텐츠 정체 signal).
+
+### §633-6 ★ FAQ rowid 21845~22000 boundary 재확인 + Channel.io shell carry (확인 · 신규 negative)
+
+**FAQ rowid 17-건 probe — 전부 empty shell `e5762090`** (BNK-628 21856 negative carry):
+
+| 범위 | rowid | HTTP | size | md5 | 판정 |
+|---|---|---|---|---|---|
+| 21845~21855 (BNK-503 probe carry) | 21845/21847/21850/21852/21855 | 200 | 13,327 | `e5762090` | empty shell carry |
+| 21856 (BNK-628 negative carry) | 21856 | 200 | 13,327 | `e5762090` (재실측) | empty shell carry |
+| 21860~21902 | 21860/21870/21880/21890/21895/21900/21901/21902 | 200 | 13,327 | `e5762090` | empty shell 신규 negative |
+| 21910~22000 | 21910/21920/21950/22000 | 200 | 13,327 | `e5762090` | empty shell 신규 negative |
+
+→ **17-rowid 전 범위 empty shell `e5762090`** · 목록 max rowid **21781** vs 직링크 전용 **21844** 사이 **21782~21843 미probe** carry (다음 cycle 후보) · **카탈로그 visible boundary = 21131~21781 (233 rowid)** 재확인 + 직링크 21844 = ezCare 도움말의 **internal/CS 직링크 영역** 존재 가정 강화.
+
+**Channel.io shell**: `https://ezcare.channel.io/` HTTP 200 · 1,993B · `90c1792f` · SPA shell (`<title>실시간   고객센터</title>` · `og:image` `/og/front/channels/@ezcare` · 실제 도움말 콘텐츠는 JavaScript SPA bundle 로드 · `gw/api/cdn/cf` preconnect) → **역공학 한계 carry** (정적 HTML fetch만으로는 실 도움말 콘텐츠 비추출).
+
+### §633-7 잔여 갭 우선순위 — 가정 번복 1 + 신규 candidate +4 (확인 · 본 cycle 핵심 산출)
+
+| Tier | 갭 / Epic | KPI 영향 | 상태 |
+|---|---|---|---|
+| **P1 ★★★ 격상 권장 (가정 번복)** | **G-STAFF-COMMITTEE-MEETING-LOG** (BNK-629 P3 「MVP out-of-scope carry」) | 도움말 #1 FAQ 83,875 hit demand signal | **★★★ 가정 번복** — BNK-629 「facility-admin 서식·MVP out-of-scope」 → 도움말 1위 demand → **P1 격상 권장** · ogada `/staff/committee-meeting-log` 신규 page 검토 |
+| **P1 ★★★ 격상 권장** | **M11 직원급여** (id=11) + **M12 회계** (id=12) closure | 모듈 80.86% → **87.76% (+6.9pp)** · 도움말 결제·재무 클러스터 view 점유율 **37.6%** + top-30 11건 진입 | `/payroll/*`·`/accounting/*` 0 route · **이지케어 도움말 트래픽 #1 클러스터가 ogada P2 갭과 정확히 일치 = P1 격상 demand signal 확정** carry (BNK-619~632 P2 → BNK-633 P1 권장) |
+| **P2 신규 「가정」 ★** | **G-CLIENT-CONTRACT-BULK-PRINT** | 도움말 #16 FAQ 19,673 hit | 급여제공 변경계약서 일괄 출력 · ogada `/clients/contracts/*` 「일괄 출력」 0 hit · 개별 ✅ · v2+ |
+| **P2 신규 「가정」 ★** | **G-NHIS-SCHEDULE-IMPORT** | 도움말 #19 FAQ 19,389 hit | 공단 등록 일정 → 이지케어 업로드 · ogada `/schedules/*` ✅ · 공단 schedule import 0 hit · `G-NHIS-EXCEL-RECONCILE` 자매 |
+| **P3 신규 「가정」 ★** | **G-RFID-CARE-PROVISION-DISPATCH** | 도움말 #9 FAQ 22,756 hit | RFID 출퇴근 트리거 → 급여제공기록지 ALIMTALK 자동 발송 surface · template `CARE_PROVISION_RECORD` ✅ message_kind=13 · trigger △ |
+| **P3 신규 「가정」 ★** | **G-CIST-COGNITIVE-SCREENING-LOG** | 도움말 #18 FAQ 19,592 hit | 인지선별검사 (CIST) 결과 ledger surface · ogada 인지검사 0 hit · `/clients/health-records` 일반 |
+| P3 carry | G-NURSING-MISSED-RECORD-DASHBOARD | 1건 | silverangel 221564 retraction carry · 6/30 재검증 D-4 |
+| P3 carry | G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE | 1건 | 동상 · 6/30 재검증 D-4 |
+| P3 carry | G-LEGAL-FORM-SIGNATURE-IMAGE | 1건 | 동상 · 6/30 재검증 D-4 |
+| P3 carry | G-VOLUNTEER-ACTIVITY-LOG (BNK-629) | facility-admin 서식 | MVP out-of-scope carry (도움말 미발견·BNK-629 가정 carry) |
+| P3 carry | G-MARKET-SHARE-DASHBOARD | 시장 점유율 dashboard | 데이터 소스 carry · ezCare plateau day 4 |
+| ✅ closure | **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE** (BNK-629 △ 8-2 carry) | 모듈 8 coverage 0.85 → ~0.88 micro-closure | FE `33944e4` full-stack closure · 도움말 #7 23,902 hit demand 정합 |
+
+**가정 번복 1 (G-STAFF-COMMITTEE-MEETING-LOG)** · **신규 core 갭 0** · **candidate +4** (P2×2·P3×2 「가정」) · **closure +1** (G-STAFF-MONTHLY-SCHEDULE-FE-WIRE BNK-629 △→✅) · **KPI 변경 4** (merge gate 816·Route 118·page 93·FE test 479) · **상태 변경 3** (FE+1·BE+1 cross-stream·BE DIRTY 6 → CLEAN) · **재실측 zero drift 2** (FAQ 21844 391차·counter 4-URL verbatim) · **미확인 carry 3** (carefor LIVE 42-cycle·longterm 502 46-cycle·610 oscillation) · **신규 negative 1** (FAQ 21845~22000 17-rowid empty shell) · **신규 evidence URL 1** (`/help/faq.ez` 카탈로그 첫 추출) · **신규 snapshot 2건** · **덮어쓰기 0건** · **엑셀 포맷 변경 0** (FAQ 21844 IDENTICAL) · **per-cycle minimum 4종 충족** · **tester FF merge 816 가속 권장** (양쪽 develop WT CLEAN · BNK-632 BE DIRTY 6 → BNK-633 CLEAN 흡수 · 8-2 △→✅ in-cycle 진척).
+
+---
+
+## §632 BNK-632 — 교차검증·갭 우선순위 8h+ · ★★★ **백본 5-URL live=disk md5 zero drift IDENTICAL 392차**(NHIS #44 + silverangel essential/extra/main/fee) · ★★★ **silverangel 221564 retraction-window D-4 + range probe 221552–221580 entire shell** (사전 게시 leak 영역 전체 retraction 확정) · ★★ **ezCare 도입·점유율 plateau day 3 — cachebuster-only DRIFT·counter verbatim 불변** · ★★ **BE WT DIRTY 6-file caution — QA-B95 BE expansion 미커밋·rules §6 push 누락 위험** · ★ **carefor func.php Wayback 379차 wrapper DRIFT** `70daaca6`(104,178B·BNK-629 `d80823be` → -4B cachebuster only·107-leaf semantic IDENTICAL)·**LIVE HTTP 000 41-cycle 「미확인」** · ★ **longterm 502 45-cycle 「미확인」·610 partial shell oscillation carry** · ★ **HEAD zero advance**(FE 1-cycle·BE 2-cycle) · merge gate **814** carry · ★ **4축+leave-ledger P0/P1 재오픈 0 (82-cycle)**
+
+**조사일**: 2026-06-25T18:55:00Z (KST 익일 03:55) | **rotation**: 교차검증·갭 우선순위 8h+ — 백본 5-URL live=disk 재실측·silverangel 221564 retraction range probe(7 rowid)·ezCare plateau day 3 cachebuster scan·carefor Wayback+LIVE 재실측·longterm 502/610 carry·BE WT DIRTY 6-file caution. 신규 snapshot 1건: `cross_gap_priority_bnk632.txt`. 덮어쓰기 0건(전부 IDENTICAL 또는 cachebuster-only DRIFT carry).
+
+### §632-1 ogada submodule git HEAD 실측 — HEAD zero advance + BE WT DIRTY 6 caution (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `bd3253a` | WT **CLEAN** | `fix: normalize live operation blockers from probe state` (BNK-631 carry · **HEAD zero advance 1-cycle**) | **242** vs `ab4de83` |
+| BE develop | `49fe2e7` | WT **DIRTY 6** | `feat(v2/G-REPORT-DENSITY): add branch filter to program reports` (BNK-630/631 동일 SHA · **HEAD zero advance 2-cycle → 3-cycle**) | **572** vs `598d108` |
+
+merge gate = 242 + 572 = **814** carry (BNK-631 IDENTICAL · 양쪽 SHA 불변).
+
+| KPI | 값 (git 실측) | BNK-631 대비 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **92** (91 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V179** (179 sql) | = |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1957** (rg `@Test\b` -o) | = (WT DIRTY commit 전·HEAD 동일) |
+| BE @RestController | **74** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+### §632-2 ★★★ BE WT DIRTY 6-file caution — QA-B95 BE expansion 미커밋 (확인 · 신규 블록 · rules §6)
+
+`git -C src/backend diff --stat HEAD` 실측 (2026-06-25T18:55Z):
+
+| 파일 | 변경 | 역할 |
+|---|---|---|
+| `src/main/java/com/ogada/backend/system/HealthController.java` | +12/-? | live-e2e bootstrap health surface |
+| `src/main/java/com/ogada/backend/system/LiveE2eController.java` | +31/-? | probe state→blocker BE mirror (FE `bd3253a` 대응) |
+| `src/main/resources/application.yml` | +2 | bootstrap 설정 추가 |
+| `src/test/java/com/ogada/backend/system/HealthControllerTest.java` | +117 | health 회귀 확장 |
+| `src/test/java/com/ogada/backend/system/LiveE2eBootstrapLiveApiRoutingE2eTest.java` | +3 | routing e2e patch |
+| `src/test/java/com/ogada/backend/system/LiveE2eControllerTest.java` | +107 | controller 회귀 확장 |
+| **합계** | **+272/-48 (6 files)** | QA-B95 live-e2e BE expansion (FE `bd3253a` blocker 정규화 대응 mirror) |
+
+**의미**: FE `bd3253a`가 probe state(문자열/객체 혼재)를 blocker로 정규화하고 bootstrap readiness를 반영한 후, BE에서 이를 미러링하는 controller/test 확장이 진행 중. **commit 없이 build 종료 시 `run_agent.py build` 자동 push에서 누락 → submodule 재 clone 시 유실 위험**(rules.md §6 「Submodule develop 브랜치 작업 완료 시 반드시 커밋 — push 누락 금지」). **coder 권장 액션**: `git -C src/backend add . && git commit -m "feat(v2/QA-B95): mirror live-e2e probe-state blocker normalization in BE" && git push origin develop` (또는 후속 cycle에서 자연스럽게 cover). tester는 현재 HEAD `49fe2e7` 기준으로 FF merge 814 가속 가능 — WT DIRTY는 develop 만의 미커밋이고 origin/test 영향 0.
+
+### §632-3 ★★★ 백본 5-URL live=disk md5 zero drift IDENTICAL — 392차 (확인 · 신규 블록 — fee/main URL 신규 추가)
+
+| md5 | URL | HTTP | size | disk file | 판정 |
+|---|---|---|---|---|---|
+| `c886ff1f` | [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `nhis_jo44_live_bnk584.html` | **IDENTICAL 392차** zero drift |
+| `c79c1be3` | [silverangel essential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664 | `silverangel_daycareEssentialWork.html` | IDENTICAL |
+| `f9c5d877` | [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637 | `silverangel_extraService.html` | IDENTICAL |
+| `bcf6df41` | [silverangel mainService](https://www.silverangel.kr/newSilverangel/service/mainService.do) | 200 | 59,002 | `silverangel_mainService.html` | IDENTICAL (신규 재실측) |
+| `eab352a8` | [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513 | `silverangel_feeService.html` | IDENTICAL (신규 재실측) |
+| `6226e6eb` | (carefor func.php canonical) | LIVE 000 | 98,328 | `carefor_func.php` | canonical 보존·LIVE 41-cycle 「미확인」 |
+
+**의미**: BNK-622·625·628·630·631 백본 4-URL(NHIS #44 + silverangel essential/extra + carefor canonical)에 더해 BNK-632가 **silverangel fee/main 2-URL을 추가 재실측**해 backbone을 5-URL로 확장. live=disk 전부 IDENTICAL = 경쟁 4종 baseline 안정 carry. NHIS #44는 BNK-540~632 **392-cycle zero drift**(러-1~4·편도50%·1일1회·별지 제22호 verbatim 불변) ↔ ogada `TransportServiceFeeService`+`TransportServiceLog` full-stack 우위 carry.
+
+### §632-4 ★★★ silverangel notice 221564 retraction-window D-4 + range probe 「전부 shell」 (확인 · 신규 negative 블록)
+
+공지 명시 게시일 **2026-06-30** 기준 2026-06-25T18:55Z → **D-4** (BNK-630 D-5 → -1d).
+
+- **list** (`/silverangel/support/notice/list.do`) HTTP 200 · 3,594,181B · md5 `52c9457f` · 최신 가시 **Tmp_idx=221551** 그대로 (BNK-622 carry · 신규 공개 공지 0건)
+- **221564 view** HTTP 200 · 51,765B · md5 `44223150` · BNK-630 동일 비공개 shell · ~19h 추가 carry
+
+**range probe 신규 evidence — Tmp_idx 221552 ~ 221580 사이 7 rowid**:
+
+| Tmp_idx | HTTP | size | 판정 |
+|---|---|---|---|
+| 221552 | 200 | 51,765 | shell `44223150` |
+| 221553 | 200 | 51,765 | shell `44223150` |
+| 221555 | 200 | 51,765 | shell `44223150` |
+| 221560 | 200 | 51,765 | shell `44223150` |
+| 221564 | 200 | 51,765 | shell `44223150` (정식 매핑) |
+| 221570 | 200 | 51,765 | shell `44223150` |
+| 221580 | 200 | 51,765 | shell `44223150` |
+
+→ **entire 221552–221580 range 전부 동일 비공개 shell**. 사전 게시 leak 영역 전체 retraction 확정·221564 외 다른 rowid에 6/30 공지 추가 게시 0건 = BNK-622 「retraction-window 가설 확정」을 range probe로 deepen. P3 3종(`G-NURSING-MISSED-RECORD-DASHBOARD`·`G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`·`G-LEGAL-FORM-SIGNATURE-IMAGE`) 「6/30 재검증 보류」 status carry.
+
+### §632-5 ★★ ezCare 도입·점유율 plateau day 3 — cachebuster DRIFT·counter verbatim 불변 (확인)
+
+| URL | HTTP | size | md5(이번) | md5(BNK-628) | 핵심 counter | 판정 |
+|---|---|---|---|---|---|---|
+| [home](https://ezcare.easyms.co.kr/) | 200 | 106,072 | `0e783db9` | `760883ea` | mCnt `{1:9287, 2:4603, 3:2353, 4:1820}` | cachebuster DRIFT · counter 불변 |
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | 17,870 | `b6fa1b7b` | `64a3eb4c` | 도입 **9,357** | cachebuster DRIFT · counter 불변 |
+| [?PG=e01](https://ezcare.easyms.co.kr/?PG=e01) | 200 | 47,130 | `7314101f` | `b982c7e5` | 17,489 / 9,354 / **53.49%** · 집계일 **2026.06.25** | cachebuster DRIFT · counter 불변 |
+| [FAQ 21844](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web) | 200 | 14,474 | `d0aa760c` | `d0aa760c` | 공단 엑셀 PII 마스킹(*) verbatim | **IDENTICAL 390차 zero drift** (엑셀 포맷 변경 0) |
+| [new.ez](https://ezcare.easyms.co.kr/new.ez) (비로그인) | 200 | 70 | `e1d52bd5` | `e1d52bd5` | redirect stub | IDENTICAL (역공학 금지 stub carry) |
+
+→ BNK-625(plateau 시작)·628(day 2) → **BNK-632 (plateau day 3)** = **3-day counter 0 변동**. 재가센터 도입 정체 신호 지속 carry · `G-MARKET-SHARE-DASHBOARD` (BNK-610 P3「가정」) 데이터 소스 후보 carry. 엑셀 포맷 변경 0 → `G-NHIS-EXCEL-RECONCILE` P3 carry status 불변. **plateau가 day 3까지 이어진 것은 BNK-540 이후 최장**(이전 최장 plateau는 BNK-617→621 4-cycle plateau).
+
+### §632-6 ★ carefor + longterm carry — LIVE 41-cycle 「미확인」 (확인)
+
+- **carefor func.php LIVE** `https://www.carefor.co.kr/daycare/func.php` HTTP **000** timeout (`--connect-timeout 8 --max-time 18`) → **41-cycle 「미확인」 carry**(BNK-558~632)
+- **carefor func.php Wayback** [20260519072235](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) HTTP 200 · 104,178B · md5 **`70daaca6`** (BNK-629 `d80823be`·104,182B → **-4B cachebuster only**·**379차 wrapper DRIFT**) · 본문 verbatim: 7-1~7-10 / 8-1~8-13 / 11-1~11-6 / 「이동서비스」 3 mentions · 107-leaf semantic IDENTICAL · canonical `carefor_func.php` (98,328B `6226e6eb`) reference 보존
+- **longterm 502** HTTP 302 → `/npbs/exception/securityException` SIZE 0 · sessionless gate · **45-cycle 「미확인」 carry**·canonical `b5aee8c1`(105,552B·단기보호 1등급 74,060) 보존
+- **longterm 610** HTTP 200·458B·md5 `c26a5e57` partial shell oscillation carry · canonical `0ea575be`(91,421B·통합재가 주야간보호형 월 10만원 가산) 보존
+
+### §632-7 잔여 갭 우선순위 — 4축+leave-ledger 82-cycle P0/P1 재오픈 0 (확인)
+
+| Tier | 갭 / Epic | KPI 영향 | 상태 |
+|---|---|---|---|
+| P2 | **M11 직원급여** (id=11) closure | 모듈 80.86% → 84.31% (+3.45pp) | `/payroll/*` 0 route · 최대 단일 레버 carry |
+| P2 | **M12 회계** (id=12) closure | 모듈 80.86% → 84.31% (+3.45pp) | `/accounting/*` 0 route · M11과 동시 closure 시 **87.76% (+6.9pp)** |
+| P3 | G-NURSING-MISSED-RECORD-DASHBOARD | 대시보드 surface 1건 | silverangel 221564 retraction carry · 6/30 재검증 D-4 |
+| P3 | G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE | 건강기록 자동생성 옵션 1건 | 동상 · 6/30 재검증 D-4 |
+| P3 | G-LEGAL-FORM-SIGNATURE-IMAGE | 법정서식 서명 이미지 1건 | 동상 · 6/30 재검증 D-4 |
+| P3 | G-STAFF-COMMITTEE-MEETING-LOG (BNK-629) | facility-admin 서식 | MVP out-of-scope carry |
+| P3 | G-VOLUNTEER-ACTIVITY-LOG (BNK-629) | facility-admin 서식 | MVP out-of-scope carry |
+| P3 | G-MARKET-SHARE-DASHBOARD | 시장 점유율 dashboard 1건 | 데이터 소스 carry · ezCare plateau day 3 |
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · KPI 변경 0 (HEAD zero advance) · 재실측 zero drift 5 · 신규 negative 1 (silverangel range probe) · 신규 snapshot 1건 (`cross_gap_priority_bnk632.txt`) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족. **tester FF merge 814 가속 권장**(양쪽 develop 안정 carry·BE WT DIRTY는 develop 미커밋·origin/test 영향 0). **coder 권장**: BE WT DIRTY 6-file `git commit + push` 우선 (rules §6 push 누락 위험 해소).
+
+---
+
+## §631 BNK-631 — ogada git 실측 6–8h · ★★★ **FE HEAD +1 `bd3253a` live-e2e probe-state blocker 정규화(QA-B95)** · ★★ **백본 4-URL 오프라인 재실측 zero drift** · ★★ **NHIS #44 제34조 러-1~4 4-tier verbatim 재추출 ↔ ogada full-stack 우위 391차** · ★ **BE HEAD zero advance 2-cycle** · merge gate **814**(+1 FE-only) · ★ **4축+leave-ledger P0/P1 재오픈 0 (81-cycle)**
+
+**조사일**: 2026-06-25T18:14:00Z (KST 익일 03:14) | **rotation**: ogada git 실측 6–8h — develop HEAD·Route·page·모듈 커버 %·테스트 수 재산정 + COMPETITOR_MATRIX ogada 열 `@HEAD` SHA 일괄 갱신 + 백본 스냅샷 md5 재실측. 신규 snapshot 1건: `ogada_git_remeasure_bnk631.txt`. 덮어쓰기 0건.
+
+### §631-1 ogada submodule git HEAD 실측 — FE HEAD +1 · BE zero advance (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `bd3253a` | WT **CLEAN** | `fix: normalize live operation blockers from probe state` (BNK-630 `@2c9abd6` **HEAD +1**) | **242** vs `ab4de83` |
+| BE develop | `49fe2e7` | WT **CLEAN** | `feat(v2/G-REPORT-DENSITY): add branch filter to program reports` (BNK-629/630 동일 SHA·**HEAD zero advance 2-cycle**) | **572** vs `598d108` |
+
+merge gate = 242 + 572 = **814** (+1 FE-only advance vs BNK-630 813).
+
+| KPI | 값 (git 실측) | BNK-630 대비 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **92** (91 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V179** (179 sql) | = |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1957** (rg `@Test\b` -o) | +1 reconcile* |
+| BE @RestController | **74** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+\* BE develop SHA(`49fe2e7`) IDENTICAL — BNK-630이 1956으로 기록한 것은 카운팅 방식(@TestConfiguration 등 1건 포함/제외) 차이. **신규 BE 테스트 0**·counting reconcile +1.
+
+### §631-2 ★★★ FE `bd3253a` live-e2e probe-state blocker 정규화 — QA-B95 클러스터 deepen (확인 · 신규 블록)
+
+근거: `git -C src/frontend show --stat bd3253a` (2026-06-25T18:06:18Z)
+
+| 파일 | 변경 | 역할 |
+|---|---|---|
+| `src/e2e/liveConfig.js` | +18/-7 | live operation probe **state → blocker** 정규화 (문자열/객체 혼재 입력 정규화) |
+| `src/e2e/liveGlobalSetup.js` | +14/-3 | bootstrap probe readiness 반영 |
+| `src/test/liveE2eHarness.test.js` | +21 (신규) | probe-state blocker 정규화 회귀 케이스 |
+
+**의미**: QA-B95 클러스터(live operation readiness)의 probe-state 정규화 회귀 lock — 이지케어 live **도입현황 plateau**(BNK-625~628 home 9,287·fnc 9,357·e01 53.49% 추적) 모니터링 harness resilience 강화. ogada는 자체 live-e2e harness로 운영 readiness를 코드 레벨에서 검증 — 경쟁 4종 대비 운영 관측성 차별화 carry.
+
+### §631-3 ★★ 백본 4-URL 오프라인 스냅샷 재실측 zero drift (확인)
+
+| md5 | 파일 | size | 대상 | 판정 |
+|---|---|---|---|---|
+| `c886ff1f` | `nhis_jo44.html` | 7,572B | NHIS #44 제34조 이동서비스비 (canonical) | zero drift IDENTICAL |
+| `c79c1be3` | `silverangel_essential.html` | — | 평가지표 #41-42·목욕27 | zero drift IDENTICAL |
+| `f9c5d877` | `silverangel_extraService.html` | — | 효성CMS 5-method·1600-6859 | zero drift IDENTICAL |
+| `6226e6eb` | `carefor_func.php` | — | 주야간 107-leaf 정본 | zero drift IDENTICAL |
+
+disk md5 재계산 — 4-URL 백본 전부 IDENTICAL·변동 0(offline carry 재실측).
+
+### §631-4 ★★ NHIS #44 제34조 러-1~4 4-tier 이동서비스비 verbatim 재추출 ↔ ogada cross-walk (확인)
+
+verbatim (nhis_jo44.html `c886ff1f`):
+- 「제 34 조 (주 · 야간보호급여 이동서비스비용 등)」
+- 「급여를 제공하는 주 · 야간보호기관으로부터 수급자의 실거주지까지의 **최단거리(편도)**에 따라 다음과 같다」 — 러-1 ~ 러-4 4구간
+- 「이용 횟수에 관계없이 **1일 1회만 산정**」
+- 「수급자가 이동서비스를 **편도만** … '러-1'부터 '러-4'까지 **비용의 50%를 산정**한다」
+- 「그 비용은 **수급자가 부담하지 아니한다**」
+- 「이동서비스 **일지를 작성하여 보관**하여야 한다」 (별지 제22호)
+
+| NHIS #44 규칙 | ogada 구현 | 판정 |
+|---|---|---|
+| 러-1~러-4 4-tier (편도 거리) | `TransportServiceFeeService` RU_1~RU_4 상수 | ✅ |
+| 편도만 50% 산정 | `ONE_WAY_RATIO=0.5` | ✅ |
+| 1일 1회만 산정 | 1일1회 guard | ✅ |
+| 일지 작성·보관 (별지 제22호) | `TransportServiceLog` (V148/V154/V155) | ✅ |
+| 수급자 미부담 | 제공기관 신청·청구 처리 | ✅ |
+
+**차별화**: 케어포 △(func 2-x 차량만)·이지케어 △(정적)·엔젤 △(essential 체크리스트)·롱텀(규정 본문만) → ogada **산정·표시·일지·RBAC까지 full-stack** = 경쟁 4종 중 유일(391-cycle carry).
+
+### §631-5 잔여 갭 우선순위 (확인)
+
+P0/P1 재오픈 0(81-cycle, BNK-549~631). 최대 KPI lever: **M11 직원급여(id=11)·M12 회계(id=12)** closure → **87.76%**(+6.9pp). 신규 core 갭 0·가정 번복 0·candidate 변동 0. 미확인 carry: carefor LIVE HTTP 000·longterm 502/610 live shell. **tester FF merge 814 가속 권장**.
+
+---
+
+## §630 BNK-630 — 엔젤·롱텀·규제 4–6h · ★★★ **silverangel essential 평가지표 #41-42 이동서비스 + 목욕(27) ↔ ogada transport/bathing cross-walk** — #41 수칙·차량운행표·#42 동승·시간준수·목욕 청구연동 3행 1:1 · ogada NHIS #44 표시 레이어 **경쟁 4종 유일 full-stack 우위** · ★ **신규 negative** `/newSilverangel/system/systemFeature.do` HTTP **404** → 정본 `/silverangel/angelsystem/system_feature.do` `c9507190` · ★★ **NHIS #44 390차 zero drift IDENTICAL** · ★ **221564 shell D-5**(6/30 정식 게시) · ★ **HEAD zero advance** · merge gate **813** carry · ★ **4축+leave-ledger P0/P1 재오픈 0 (80-cycle)**
+
+**조사일**: 2026-06-25T17:42:00Z (KST 익일 02:42) | **rotation**: 엔젤·롱텀·규제 4–6h — silverangel/lcms·NHIS #44·2026 수가·평가#27·단기보호·통합재가 교차검증. 신규 snapshot 1건: `angel_longterm_regulatory_crossverify_bnk630.txt`. 덮어쓰기 0건.
+
+### §630-1 ogada submodule git HEAD 실측 — HEAD zero advance (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `2c9abd6` | WT **CLEAN** | `fix(v1.2.1/QA-B95): normalize string-form live operation blockers` | **241** vs `ab4de83` |
+| BE develop | `49fe2e7` | WT **CLEAN** | `feat(v2/G-REPORT-DENSITY): add branch filter to program reports` | **572** vs `598d108` |
+
+BNK-629(`@2c9abd6`/`@49fe2e7`) 대비 **HEAD zero advance 1-cycle**(양쪽 WT CLEAN). merge gate = 241 + 572 = **813** carry. KPI 전부 IDENTICAL.
+
+| KPI | 값 (git 실측) | BNK-629 대비 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **92** (91 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V179** (179 sql) | = |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1956** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+### §630-2 ★★★ silverangel essential 평가지표 #41-42 이동서비스 + 목욕(27) ↔ ogada cross-walk (확인 · 신규 블록)
+
+근거: [daycareEssentialWork.do](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) HTTP 200·131,664B·md5 `c79c1be3`·2026-06-25
+
+| silverangel 평가지표 | 구분 | 필수/확인 항목 (verbatim 요약) | silverangel 연동 화면 | ogada surface | 판정 |
+|---|---|---|---|---|---|
+| **#41 이동서비스수칙** | 기 | 운전자 자격·동승자 역할·차량안전수칙·사고조치·**차량운행표**·수급자(보호자) 제공 | 수급자현황-계약서(이동서비스수칙)·이동서비스일지-수칙 예시 | `/transport`·`/transport/compliance`·`/transport/vehicles`·`TransportServiceLog`(별지 제22호) | ✅ superset |
+| **#42 이동서비스** | 수 | 운전자 외 기관 직원 동승·**이동서비스 시간 준수** | 급여제공계획·이동서비스 | `/transport/auto-dispatch`·`/transport/runs/*`·`TransportTimeCompliance`·NHIS #44 fee/parity panels | ✅ **full-stack + #44 규칙 표시 우위** |
+| **목욕(평가지표27)** | 청구 | 「필수사항 아니며 **목욕서비스 제공시 청구 가능**」 | essential 탭·PDF 평가지표(주야간) | `/care/bathing-schedules`·`BathingScheduleIndicator27Panel`·V177/V178 pre/post observation | ✅ parity |
+
+**차별화**: silverangel essential은 평가 **준수 체크리스트**·연동 화면명 수준. ogada는 NHIS #44 러-1~4 **산정·표시·일지·RBAC**까지 full-stack — 경쟁 4종 중 유일(390-cycle carry).
+
+### §630-3 ★ 신규 negative — systemFeature 오경로 404 · 백본 390차 zero drift (확인)
+
+| URL | HTTP | size | md5 | 판정 |
+|---|---|---|---|---|
+| `/newSilverangel/system/systemFeature.do` | **404** | 1,028 | `3c93af54` | **신규 negative** — 역공학 금지 |
+| `/silverangel/angelsystem/system_feature.do` (정본) | 200 | 45,601 | `c9507190` | 390차 zero drift IDENTICAL |
+| NHIS #44 | 200 | 7,572 | `c886ff1f` | 390차 zero drift IDENTICAL |
+| extraService·essential·feeService·mainService·lcms.or.kr | 200 | — | BNK-622 동일 | 전부 IDENTICAL·덮어쓰기 0건 |
+
+### §630-4 silverangel notice 221564 D-5 · longterm shell carry (확인)
+
+- **221564**: view **51,765B `44223150`** shell 지속·list 최신 가시 Tmp_idx=**221551**·공지 명시일 **2026-06-30** → **D-5**·P3 3종 「6/30 재검증 보류」
+- **longterm 502**: live **422B `d3c90b33`** partial shell 44-cycle 「미확인」·canonical `longterm_502.html` **단기보호 74,060** 보존
+- **longterm 610**: live **458B `c26a5e57`** oscillation·canonical **주·야간보호형 월 10만원** 가산 보존
+
+### §630-5 잔여 갭 우선순위 (확인)
+
+P0/P1 재오픈 0(80-cycle). M11·M12 closure → **87.76%**(+6.9pp) 최대 KPI lever carry. 신규 core 갭 0·가정 번복 0. **tester FF merge 813 가속 권장**.
+
+## §629 BNK-629 — 케어포 역공학 0–2h · ★★★ **func.php Module 8 「직원관리」 13-leaf ↔ ogada /staff/* + case-management 전수 cross-walk** — 8✅(direct 7 + cross-module 1)+1△+3❌+1 N/A = module 8 coverage **0.85 정합 재확인** · ★★ **신규 P3 candidate +2**(`G-STAFF-COMMITTEE-MEETING-LOG`·`G-VOLUNTEER-ACTIVITY-LOG` 「가정」·facility-admin 서식 MVP out-of-scope) · ★★ **func.php Wayback 378차 wrapper DRIFT** `d80823be`(104,182B·107-leaf IDENTICAL·canonical 보존)·**LIVE HTTP 000 40-cycle 「미확인」** · ★ ogada `@2c9abd6`/`@49fe2e7` **cross-stream FE+1·BE+1**·merge gate **813**(+2)·BE @Test 1956(+2) · ★ **4축+leave-ledger P0/P1 재오픈 0 (79-cycle)**
+
+**조사일**: 2026-06-25T16:55:00Z (KST 익일 01:55) | **rotation**: 케어포 역공학 0–2h — func.php Module 8 직원관리 13-leaf 전수 cross-walk·func.php Wayback 재실측·ogada git HEAD 실측. 신규 snapshot 1건: `carefor_m8_staff_module_crosswalk_bnk629.txt`. 덮어쓰기 0건.
+
+### §629-1 ogada submodule git HEAD 실측 — cross-stream FE+1·BE+1 (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `2c9abd6` | WT **CLEAN** | `fix(v1.2.1/QA-B95): normalize string-form live operation blockers` | **241** vs `ab4de83` |
+| BE develop | `49fe2e7` | WT **CLEAN** | `feat(v2/G-REPORT-DENSITY): add branch filter to program reports` | **572** vs `598d108` |
+
+BNK-628(`@f74a6e7`/`@337453d`) 대비 **cross-stream FE+1·BE+1**(양쪽 WT CLEAN). merge gate = 241 + 572 = **813**(+2). 폐기 SHA(`d5654c0`·`e5fd48d`·`428ba7d`·`4be0938`) checkout 금지.
+
+| KPI | 값 (git 실측) | BNK-628 대비 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **92** (91 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V179** (179 sql) | = |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1956** | +2 |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+### §629-2 ★★★ 케어포 func.php Module 8 「직원관리」 13-leaf ↔ ogada 전수 cross-walk (확인 · 신규 블록)
+
+func.php Wayback 본문(canonical `6226e6eb`와 verbatim 일치)에서 Module 8 직원관리 13-leaf 추출 후 ogada `@2c9abd6` `/staff/*`·`/case-management/*` Route grep 으로 1:1 매핑.
+
+| 케어포 Module 8 leaf | ogada Route / surface | 판정 |
+|---|---|---|
+| 8-1 직원 정보관리 | `/staff` · `/staff/:id` (StaffPage·StaffDetailPage) | ✅ |
+| 8-2 근무일정표 | BE `StaffMonthlyScheduleNotificationService`(msg_kind 21 dispatch) · FE 전용 page ❌ | △ |
+| 8-3 연간 일정계획 | (직원 연간 근무계획 grid) — 0 hit | ❌ |
+| 8-4 출퇴근 및 근무관리 | `/staff/attendance` (StaffWorkAttendancePage) | ✅ |
+| 8-5 사례관리 회의록 | `/case-management/meetings` (CaseManagement·BE `casemanagement` 패키지) | ✅ cross-module |
+| 8-6 회의록(운영위원회·보호자·복지및포상) | (위원회/보호자 회의록) — 0 hit | ❌ |
+| 8-7 교육일지(노인인권·재난·소방) | `/staff/training-logs` (StaffTrainingLogPage) | ✅ |
+| 8-8 자원봉사자 활동일지(필요시) | (volunteer 활동일지) — 0 hit | ❌ |
+| 8-9 고충처리 관리 | `/staff/grievance-counselings` | ✅ |
+| 8-10 건강검진관리 | `/staff/health-checkups` | ✅ |
+| 8-11 질향상노력(삭제예정) | N/A — 케어포 자체 폐기예정 | N/A |
+| 8-12 직원 현황 리포트 | `/staff/reports/status` (StaffStatusReportPage) | ✅ |
+| 8-13 연차·유급휴일 대장 | `/staff/leave-ledger` + `/staff/annual-leaves` (BNK-516→625 closure) | ✅ |
+
+**집계**(8-11 deprecated 제외 = 12 in-scope): ✅ 8(direct 7 + cross-module 1) · △ 1(8-2) · ❌ 3(8-3·8-6·8-8) → **module 8 coverage 0.85 정합 재확인**(`competitorModuleCoverage.js` id=8 「직원·근태」 0.85 grep 일치). **ogada superset 2**: `/staff/training`(요양보호사 보수교육)·`/staff/lead-caregiver-log`(선임요양보호사 업무일지) — 케어포 Module 8 미노출.
+
+### §629-3 ★★ 신규 P3 candidate +2 · func.php Wayback 378차 DRIFT (확인)
+
+- **신규 P3 candidate +2**: 8-6 위원회/보호자 회의록 → `G-STAFF-COMMITTEE-MEETING-LOG` 「가정」 · 8-8 자원봉사자 활동일지 → `G-VOLUNTEER-ACTIVITY-LOG` 「가정」. 둘 다 시설 행정 서식군(재무/HR/시설인증 클러스터와 동일 성격) → **주야간 MVP out-of-scope** 판정·planner 결정 보류·KPI 영향 0. 8-3 직원 연간일정계획·8-2 근무일정표 FE wire 도 △ carry(8-2 FE wire 시 0.85→0.9 후보·+0.5pp 미만).
+- **func.php Wayback 378차 wrapper DRIFT**: [Wayback](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) HTTP 200·104,182B·md5 **`d80823be`**(BNK-624 `c2049b41`→DRIFT)·toolbar wrapper cachebuster only·본문 107-leaf(7-x 10·8-x 13 verbatim) semantic IDENTICAL·canonical `carefor_func.php` `6226e6eb`(98,328B) 보존.
+- **LIVE 40-cycle 「미확인」**: `https://www.carefor.co.kr/daycare/func.php` HTTP **000** timeout(BNK-558~629·`--connect-timeout 8 --max-time 18`)·내용은 Wayback 으로 검증 carry.
+
+### §629-4 잔여 갭 우선순위 — module 8 분석 후 (확인)
+
+P0/P1 재오픈 0(79-cycle carry, BNK-549~629). 리포트 밀도 P1 **M1 1-12 연계기록지**(id=1-10·+0.034pp) > P2 **M11 11-6 급여대장**(id=11 +3.4pp)·M11·M12 closure → **87.76%**(+6.9pp) 단일 최대 레버 carry. module 8 잔여 ❌ 3종은 전부 facility-admin 서식 MVP out-of-scope·신규 core 갭 0·candidate +2 P3(out-of-scope)·가정 번복 0·엑셀 포맷 변경 0. **tester FF merge 813 가속 권장**.
+
+## §628 BNK-628 — 교차검증·갭 우선순위 8h+ · ★★★ **4축+leave-ledger 7/7 LIVE 재확인**(G14·G26×2·v1.3-C·v2 CMS·US-R01-c) · ★★ **group-history-fill closure 지속** — BE `@337453d` test `getGroupHistoryReportShouldMapAggregatedMembershipWindows` · ★★ **ezCare FAQ 21844 공단 엑셀 PII 마스킹 389차 zero drift** — masked-name import reconcile ogada P3 carry · ★ **FAQ 21856 empty body shell negative** · ★ **ezCare plateau day 2** · ★ **silverangel 221564 shell D-5** · ogada `@f74a6e7`/`@337453d` **HEAD zero advance** · merge gate **811**
+
+**조사일**: 2026-06-25T16:22:00Z (KST 익일 01:22) | **rotation**: 교차검증·갭 우선순위 8h+ — G14·대시보드·v1.3-C·v2 CMS 4축+leave-ledger 재확인·group-history closure 지속·엑셀 포맷·공지 스캔. 신규 snapshot 2건: `ogada_git_remeasure_bnk628.txt`·`cross_gap_priority_bnk628.txt`. 덮어쓰기 3건: `ezcare_home.html`·`ezcare_ezCare_fnc.html`·`ezcare_pg_e01.html`(cachebuster-only DRIFT·counter verbatim 불변).
+
+### §628-1 ogada submodule git HEAD 실측 — HEAD zero advance (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `f74a6e7` | WT **CLEAN** | `Surface live E2E health reasons when backend is reachable` | **240** vs `ab4de83` |
+| BE develop | `337453d` | WT **CLEAN** | `feat(v2/G-REPORT-DENSITY): fill program group-history report from membership data` | **571** vs `598d108` |
+
+BNK-627(`@f74a6e7`/`@337453d`) 대비 **HEAD zero advance 1-cycle**(양쪽 WT CLEAN). merge gate = 240 + 571 = **811** carry. KPI 전부 IDENTICAL.
+
+| KPI | 값 (git 실측) | BNK-627 대비 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **92** (91 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V179** (179 sql) | = |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1954** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+### §628-2 ★★★ 4축+leave-ledger P0/P1 재오픈 0 — App.jsx @f74a6e7 7/7 LIVE (확인)
+
+| 축 | ogada Route | BE/FE surface | 판정 |
+|---|---|---|---|
+| G14 care-plan-form | `/clients/:clientId/care-plan-form` | CarePlanFormPage (BNK-432 closure carry) | ✅ |
+| G26 dashboard 운영 | `/dashboard` | DashboardPage title="운영 대시보드" | ✅ |
+| G26 dashboard HQ | `/dashboard/hq` | DashboardPage variant="hq" | ✅ |
+| v1.3-C transport (#44) | `/transport/service-fees` (+ 9 sibling) | TransportServiceFeePanel·G16 full-stack | ✅ |
+| v2 CMS | `/billing/cms` | CmsPaymentMethodCatalog (BNK-596 closure) | ✅ |
+| v2 easy-pay (7-5) | `/billing/easy-pay` | EasyPayProviderCatalogPanel (BNK-621 closure) | ✅ |
+| US-R01-c leave-ledger | `/staff/leave-ledger` | StaffLeaveLedgerPage (BNK-567 closure) | ✅ |
+
+78-cycle carry(BNK-549~628). **대시보드 갭 carry**: silverangel 221564 evidence 「간호처치기록 미이행 dashboard」·ogada `missed|미이행` grep 0 hit → P3 `G-NURSING-MISSED-RECORD-DASHBOARD` · 6/30 재검증 D-5.
+
+### §628-3 ★★ ezCare FAQ 21844 공단 엑셀 PII 마스킹 — 389차 zero drift (확인 · 엑셀 포맷 변경 0)
+
+[FAQ 21844](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844) — live HTTP **200**·**14,474B**·md5 `d0aa760c` = **389차 zero drift IDENTICAL**(BNK-606 canonical).
+
+| 항목 | 내용 |
+|---|---|
+| 제목 | 「260624_공단 개인정보보호 표시 방식 변경에 따른 방문일정 연동 안내」 |
+| 핵심 workflow | 공단 엑셀 다운로드 시 수급자·종사자 이름 **마스킹(*)** 적용 → 이지케어 대응 조치 완료·일부 기관 계획일정 반영 지연 가능 |
+| 첨부 | `공단 일정계획 마스킹 자료.png` |
+| ogada gap | masked-name NHIS excel import reconcile **미구현** → P3 `G-NHIS-EXCEL-RECONCILE` carry |
+
+### §628-4 ★ group-history-fill closure 지속 · FAQ 21856 negative · ezCare plateau · silverangel D-5 (확인)
+
+- **group-history-fill**: BE `@337453d` test `getGroupHistoryReportShouldMapAggregatedMembershipWindows` grep 확인 → BNK-627 closure 지속·P3 candidate **제거 가능**.
+- **FAQ 21856**: [rowid=21856](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21856) HTTP 200·13,327B·md5 `e5762090`·`content_body` **empty shell** — BNK-584 이후 본문 미게시 negative carry.
+- **ezCare plateau day 2**: home mCnt `{1:9287}`·fnc **9,357**·e01 **9,354/53.49%** verbatim 불변(BNK-625 대비 0)·md5 cachebuster-only DRIFT 3건 덮어쓰기.
+- **silverangel 221564**: list 최신 Tmp_idx=**221551**·view **51,765B `44223150` shell** — 6/30 정식 게시 **D-5**·P3 3종 「6/30 재검증 보류」 carry.
+- **NHIS #44**: [389차 zero drift IDENTICAL](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) `c886ff1f`.
+
+### §628-5 잔여 갭 우선순위 — group-history P3 제거 후 (확인)
+
+P0/P1 재오픈 0(78-cycle). P1 **M1 1-12 연계기록지**(id=1-10·+0.034pp) > P2 **M11 11-6 급여대장**(id=11 +3.4pp). M11·M12 closure → **87.76%**(+6.9pp). candidate -1(group-history-fill closure)·엑셀 포맷 변경 0·가정 번복 0. **tester FF merge 811 가속 권장**.
+
+## §627 BNK-627 — 교차검증·갭 우선순위 8h+ (ogada git HEAD 전진 감지 → 실측 우선) · ★★★ **G-REPORT-DENSITY-GROUP-HISTORY-FILL (BNK-623 P3) → 코더 in-cycle FULL CLOSURE** — BE `337453d` V179 `program_client_groups` schema + `ProgramReportService.getGroupHistoryReport()` 실데이터 집계(`aggregateHistoryWindows`·groupConfigAvailable=true)·test 2-file·commit verbatim 「aggregate group-history windows for the 5-9 report endpoint so groupConfigAvailable reflects real data」·**BNK→코더 3번째 traceable closure**(BNK-620 발굴→623 closure+P3 등록→626 검증→627 closure 확인) · ★★ **NHIS #44 이동서비스비 388차 zero drift IDENTICAL** `c886ff1f` · ★ **HEAD cross-stream FE+1·BE+1**(FE `@f74a6e7` QA-B95 live-e2e health reasons·BE `@337453d`·V179·BE @Test 1954)·merge gate **811** · ★ **잔여 리포트 갭 P1 M1 1-12·P2 M11 11-6**(M11/M12 closure 시 +6.9pp→87.76%) · ★ **4축+leave-ledger P0/P1 재오픈 0 (77-cycle)**
+
+**조사일**: 2026-06-25T16:16:00Z (KST 익일 01:16) | **rotation**: 교차검증·갭 우선순위 8h+ — ogada `src/frontend`·`src/backend` develop HEAD 전진 감지(FE+1·BE+1)로 git 실측 우선 + BE group-history fill 검증 + NHIS #44 백본 재실측. 신규 snapshot 1건: `ogada_git_remeasure_bnk627.txt`. 덮어쓰기 0건.
+
+### §627-1 ogada submodule git HEAD 실측 — cross-stream FE+1·BE+1 (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `f74a6e7` | WT **CLEAN** | `Surface live E2E health reasons when backend is reachable`(QA-B95 live-e2e probe·+29L) | **240** vs `ab4de83` |
+| BE develop | `337453d` | WT **CLEAN** | `feat(v2/G-REPORT-DENSITY): fill program group-history report from membership data`(10-file +461/-14L) | **571** vs `598d108` |
+
+BNK-626(`@75c0f51`/`@0e55f3b`) 대비 **cross-stream FE+1·BE+1**(양쪽 WT CLEAN). merge gate = 240 + 571 = **811**(+2). 폐기 SHA(`d5654c0`·`e5fd48d`·`428ba7d`·`4be0938`) checkout 금지.
+
+| KPI | 값 (git 실측) | BNK-626 대비 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **92** (91 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V179** (179 sql) | **+1 (V179)** |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1954** | **+1** |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+### §627-2 ★★★ G-REPORT-DENSITY-GROUP-HISTORY-FILL (BNK-623 P3) → FULL CLOSURE (확인)
+
+BNK-623 교차검증이 program reports의 group-history(집단활동 이력·M5 5-9 리포트) 엔드포인트를 BE 「shell」(집계 미구현·`groupConfigAvailable` 미반영)로 명시하고 P3 candidate `G-REPORT-DENSITY-GROUP-HISTORY-FILL`(집단활동 실데이터 집계 보강)을 등록 → BNK-626 「shell→fill 후보」 carry → **BE `337453d` 가 in-cycle 종결**.
+
+| 산출물 (BE `337453d`) | 내용 |
+|---|---|
+| `V179__program_client_groups_us_p01.sql` (71L) | `program_client_groups` + `program_client_group_members` 신규 schema |
+| `ProgramClientGroupEntity`(117L) / `ProgramClientGroupMemberEntity`(140L) | 그룹·멤버 JPA 엔티티 |
+| `ProgramClientGroupRepository`(8L) / `ProgramClientGroupMemberRepository`(36L) | `aggregateHistoryWindows(org,branch,from,to)` 집계 쿼리 |
+| `ProgramGroupHistoryAggregate`(16L) | groupId·groupName·effectiveFrom·effectiveTo·clientCount |
+| `ProgramReportService.getGroupHistoryReport()` (+34/-14) | JWT org/branch scope + date window resolve → 실데이터 집계·`groupConfigAvailable=true` |
+| `ProgramReportControllerRoutingTest`(+6) / `ProgramReportServiceTest`(+45) | `GET /api/v1/programs/reports/group-history` `$.groupConfigAvailable=true` + `getGroupHistoryReportShouldReturnAvailableWithEmptyItemsWhenNoMemberships` |
+
+- commit 본문 verbatim: 「Add V179 program client group schema and aggregate group-history windows for the 5-9 report endpoint so groupConfigAvailable reflects real data.」
+- **BNK → 코더 closure traceability chain (3번째)**: BNK-620 발굴(demo-work `class="rpt"` 34 vs ogada 23·M5 갭) → BNK-623 코더 in-cycle closure(reports 23→28) + P3 group-history-fill 등록 → BNK-626 git 실측 검증(reports route 28) → **BNK-627 group-history-fill FULL CLOSURE 확인**. M5 program report 5-rpt 전부 실데이터 full-stack 완성.
+
+### §627-3 NHIS #44 이동서비스비 388차 zero drift (확인)
+
+[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — live HTTP **200**·**7,572B**·md5 `c886ff1f` = **388차 zero drift IDENTICAL**(러-1~4·편도50%·1일1회·별지 제22호) ↔ ogada G16 `TransportServiceFeeService`+UXD-159/163 full-stack ✅ parity/우위(경쟁 4종 중 ogada 유일 #44 표시 레이어 차별화 388-cycle carry).
+
+### §627-4 잔여 리포트 갭 우선순위 — group-history closure 후 (확인)
+
+M5 program report 종결 후 잔여 리포트 갭(coverage 0): P1 **M1 1-12 연계기록지**(id=1-10·+0.034pp) > P2 **M11 11-6 급여대장**(id=11 +3.4pp). M11·M12 동시 closure 시 80.86%→**87.76%(+6.9pp)** 단일 최대 KPI 레버 carry. 4축+leave-ledger P0/P1 재오픈 0(77-cycle)·신규 core 갭 0·candidate -1(group-history-fill closure)·가정 번복 0. **tester FF merge 811 가속 권장**.
+
+## §626 BNK-626 — ogada git 실측 6–8h · ★★★ **G-REPORT-DENSITY M5 program report — demo 34 vs ogada 28 gap closure 심층 cross-walk 검증** — reports Route **28** 확정·demo M5 5-rpt ↔ ogada `/programs/reports/{participations,schedules,provision-records,group-history}`+index 1:1·BE `ProgramReportController`(4 `@GetMapping`)+`ProgramReportService`+test @Test 11 full-stack · **BNK 벤치마크→코더 closure traceability**(BNK-620 발굴→BNK-623 closure→BNK-626 검증) · ★★ **모듈 80.86% 29-feature 실측 합 정본**(✅완전 21·△부분 3·❌갭 5·23.45/29) · ★★ **NHIS #44 이동서비스비 387차 zero drift IDENTICAL** `c886ff1f` · ★ **잔여 리포트 갭 P1 M1 1-12·P2 M11 11-6** · ★ **M11·M12 P2 갭 carry**(+6.9pp→87.76%) · ogada `@75c0f51`/`@0e55f3b` **HEAD zero advance**(양쪽 WT CLEAN) · merge gate **809**
+
+**조사일**: 2026-06-25T15:36:00Z (KST 00:36 익일) | **rotation**: ogada `src/frontend`·`src/backend` develop HEAD·Route·page·test·migration·모듈 커버 git 실측 + reports Route 28 M5 closure 검증 + NHIS #44 백본 재실측. 신규 snapshot 1건: `ogada_git_remeasure_bnk626.txt`. 덮어쓰기 0건.
+
+### §626-1 ogada submodule git HEAD 실측 — HEAD zero advance (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `75c0f51` | WT **CLEAN** | `fix(v1.2.1/QA-B95): treat bootstrap-unavailable blockers as recoverable` | **239** vs `ab4de83` |
+| BE develop | `0e55f3b` | WT **CLEAN** | `fix(v2/QA-B95): expose live-e2e bootstrap service availability in probe` | **570** vs `598d108` |
+
+BNK-625(`@75c0f51`/`@0e55f3b`) 대비 **HEAD zero advance 1-cycle**(양쪽 WT CLEAN·신규 commit 0). merge gate = 239 + 570 = **809** carry. 폐기 SHA(`d5654c0`·`e5fd48d`·`428ba7d`·`4be0938`) checkout 금지.
+
+| KPI | 값 (git 실측) | BNK-625 대비 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | = |
+| FE page | **92** (91 `*Page.jsx` + RootRedirect inline) | = |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | = |
+| BE 마이그레이션 | **V1–V178** (178 sql) | = |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | = |
+| BE @Test | **1953** | = |
+| 모듈 커버 | **80.86%** (23.45/29) | = |
+| reports Route | **28** | = |
+
+→ HEAD zero advance 정합으로 BNK-625 KPI 전부 IDENTICAL 재확인.
+
+### §626-2 ★★★ G-REPORT-DENSITY M5 program report — demo 34 vs ogada 28 gap closure 심층 cross-walk (확인)
+
+BNK-620(케어포 0–2h)이 「demo-work `class="rpt"` **34** vs ogada `*reports*` Route **23**(gap 11)」을 발굴 → BNK-623(교차검증)이 코더 in-cycle 종결(FE `15a3b7f`+BE `650801b`·23→28·gap 6) → **BNK-626 git 실측 재확인**: reports Route **28** 확정 + BE 4-endpoint full-stack 검증.
+
+| demo-work M5 프로그램 rpt (5) | ogada Route | ogada BE endpoint | 상태 |
+|---|---|---|---|
+| 5-7~5-10 프로그램 참여/제공 통계 | `/programs/reports/participations` | `GET /api/v1/programs/reports/participations` | ✅ |
+| 프로그램 일정표 | `/programs/reports/schedules` | `GET /api/v1/programs/reports/schedules` | ✅ |
+| 프로그램 제공기록지 | `/programs/reports/provision-records` | `GET /api/v1/programs/reports/provision-records` | ✅ |
+| 집단활동 이력 | `/programs/reports/group-history` | `GET /api/v1/programs/reports/group-history` | ✅ (BNK-623 shell→fill 후보) |
+| (리포트 허브) | `/programs/reports` (ProgramReportsPage index) | — | ✅ |
+
+- BE: `ProgramReportController`(`@RequestMapping("/api/v1/programs/reports")` 4 `@GetMapping`)·`ProgramReportService`·test 2-file **@Test 11**(routing 5 + service 6).
+- **BNK 벤치마크 → 코더 closure traceability**: BNK-623 commit msg verbatim 「to close the BNK-620 M5 report density backend gap」.
+- ogada 28 reports Route 전수: billing 5·care 9·nursing 4·pressure-ulcer 2·**programs 5(M5 신규)**·기타 3(client-outings·transport-monthly·staff/reports/status).
+- ogada 28 = demo 34의 **82.4%**. ogada 요양(care 9)·간호(nursing 4 + pressure-ulcer 2) 리포트 **밀도 우위** carry. 잔여 리포트 갭(coverage 0): **M1 1-12 연계기록지**·**M11 11-6 급여대장**.
+
+### §626-3 모듈 커버 80.86% 29-feature 실측 합 정본 (확인)
+
+`competitorModuleCoverage.js`(`@75c0f51`) 실측: ✅완전(=1) **21**(1-1·1-3·1-7·1-9·3-1·4·5·26·43·7-1·7-2·7-2-1·7-3·7-4·7-6·7-10·9·nhis·qr·hq·platform)·△부분 **3**(2 이동서비스 0.85·8 직원근태 0.85·10 부가서비스 0.75)·❌갭(=0) **5**(1-5 가정통신문·1-10 연계기록지·6 위생·안전·11 직원급여·12 회계). 합 = 21 + 2.45 = **23.45/29 = 80.86%**. id=7-4 CMS·간편결제 **1.0**(BNK-619 closure carry). M11·M12 동시 closure 시 25.45/29 = **87.76%**(+6.9pp) — 최대 KPI 레버 carry.
+
+### §626-4 NHIS #44 이동서비스비 387차 zero drift (확인)
+
+[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — live HTTP **200**·**7,572B**·md5 `c886ff1f` = **387차 zero drift IDENTICAL**(러-1~4·편도50%·1일1회·별지 제22호) ↔ ogada G16 `TransportServiceFeeService`+UXD-159/163 full-stack ✅ parity/우위(경쟁 4종 중 ogada 유일 #44 표시 레이어 차별화 387-cycle carry).
+
+### §626-5 planner 제안 (요약)
+
+1. baseline FE `@75c0f51`·BE `@0e55f3b` carry(HEAD zero advance)·merge gate **809**·**tester FF merge 809 가속 권장**.
+2. **G-REPORT-DENSITY M5 closure** ROADMAP candidate 제거 가능·reports route KPI **28** 정본화.
+3. 잔여 리포트 갭 우선순위: P1 **M1 1-12 연계기록지**(id=1-10 0·+0.034pp) > P2 **M11 11-6 급여대장**(id=11 +3.4pp).
+4. `group-history` BE shell → P3 `G-REPORT-DENSITY-GROUP-HISTORY-FILL`(집단활동 실데이터 집계 보강) carry.
+5. M11·M12 동시 closure = 최대 KPI 레버(80.86%→87.76%·+6.9pp) v1.3+ 우선순위 격상 권장 carry.
+
+## §625 BNK-625 — 이지케어 역공학 2–4h · ★★★ **G-STAFF-ANNUAL-LEAVE (BNK-516 P3) → FULL CLOSURE 재확인** — ezCare module 1 직원 `worker-b100` 5-tab(연차휴가·건강검진·직무교육·보수교육·교육이수) ↔ ogada `/staff/annual-leaves`+`/staff/leave-ledger`+`/staff/training`+`/staff/training-logs`+`/staff/health-checkups` · ★★ **top-nav catalog `95286775` zero drift**(10-module 148-leaf 59-PGID) · demo shell `0bc59733` session DRIFT · ★★ **ezCare 도입·점유율 14-day plateau**(home mCnt 9,287·fnc 9,357·e01 9,354/53.49% verbatim 불변·cachebuster-only DRIFT) · ★ **non-catalog PGID 3종 ~93KB empty shell** negative · ogada `@75c0f51`/`@0e55f3b` cross-stream FE+1·BE+1(QA-B95) · merge gate **809**
+
+**조사일**: 2026-06-25T15:02:00Z (KST 00:02 익일) | **rotation**: 이지케어 `/new.ez`·top-nav catalog·`ezCare_fnc`·`?PG=e01`·도입/점유율 재실측 + ogada `/staff/*` git 실측. 신규 snapshot 1건: `ezcare_staff_annual_leave_closure_crosswalk_bnk625.txt`. 덮어쓰기 4건: `ezcare_home.html`·`ezcare_ezCare_fnc.html`·`ezcare_pg_e01.html`·`ezcare_new_ez_demo.html`.
+
+### §625-1 ezCare 직원 `worker-b100` 5-tab ↔ ogada `/staff/*` — G-STAFF-ANNUAL-LEAVE closure 재확인 (확인)
+
+ezCare 직원(module 1) 「연간 관리 현황」 단일 화면 5-tab(`ezcare_menu_catalog.json` top-nav `95286775`)을 ogada `/staff/*` Route(App.jsx `@75c0f51`)와 교차:
+
+| ezCare `worker-b100` leaf | ogada Route | 판정 |
+|---|---|---|
+| `#tab0` 연차휴가 | `/staff/annual-leaves`(StaffAnnualLeavePage) | ✅ + `/staff/leave-ledger`(이월·소멸 ledger) **superset** |
+| `#tab1` 건강검진 | `/staff/health-checkups` | ✅ parity |
+| `#tab2` 직무교육 | `/staff/training-logs` | △ 통합 교육일지 surface |
+| `#tab3` 보수교육 현황 | `/staff/training`(StaffRefresherTrainingPage) | ✅ parity |
+| `#tab4` 교육이수 현황 | `/staff/training-logs` | △ 통합 교육일지 surface |
+| (module1) `worker-timesheet3` 출퇴근부/근무일지 | `/staff/attendance` | ✅ (BNK-483 G-STAFF-WORK-ATTENDANCE closure) |
+| (module1) `worker-workerDoc` 상담일지 | `/staff/grievance-counselings` | ✅ |
+
+**★★★ BNK-516 G-STAFF-ANNUAL-LEAVE P3「가정」 → FULL CLOSURE (확인)** — BNK-516(2026-06)은 `worker-b100` tab01 연차휴가 ↔ ogada `git grep -i annual|연차|leave|vacation` **0 hit** 으로 「신규 P3 candidate(외부 HR SaaS vs 자체 구현 결정 보류)」를 등록했다. BNK-625 ogada `@75c0f51` App.jsx 실측 결과 `path="/staff/annual-leaves"`(StaffAnnualLeavePage) + `path="/staff/leave-ledger"`(StaffLeaveLedgerPage) **2-route 존재** → **자체 구현 결정·closure**. ezCare 단일 5-tab vs ogada 전용 page 분리(연차 사용/잔여 grid + 이월·소멸 ledger) = ogada IA 분리 surface 우위(mobile/RBAC/검색). module 8 「직원·근태」 coverage **0.85 carry**(KPI 영향 0).
+
+### §625-2 ezCare demo shell · top-nav catalog 재실측 (확인)
+
+| 자산 | HTTP | size | md5 | 판정 |
+|---|---|---|---|---|
+| `top-nav-item-V2.js?20260428` | 200 | 25,470 | `95286775` | **zero drift** · 10-module 148-leaf 59-PGID 불변 |
+| `/new.ez` demo shell | 200 | 138,402 | `0bc59733` | **session DRIFT** (BNK-621 `474a3874` 138,142B·widget id 회전·semantic 불변) |
+| `/new.ez` redirect stub(비로그인) | 200 | 70 | `e1d52bd5` | **zero drift** · 역공학 금지 stub 재확인 |
+
+### §625-3 ezCare 도입·점유율 14-day plateau (확인 · cachebuster-only DRIFT)
+
+| URL | md5 | size | counter (verbatim) | vs BNK-621 |
+|---|---|---|---|---|
+| `/` home `mCnt` | `e28d4da2` | 106,031 | `{1:9287, 2:4603, 3:2353, 4:1820}` | **9,287 · 0 변동** |
+| `/new/ezCare_fnc.html` | `3bccc829` | 17,870 | 도입 **9,357개** | **0 변동** |
+| `/?PG=e01` | `bfe22807` | 47,117 | 17,489 / 9,354 / **53.49%** (집계일 2026.06.25) | **0 변동** |
+
+BNK-617→621 +3/+1 increment 후 BNK-625 **plateau** — 재가센터 도입 카운터 정체 신호. `G-MARKET-SHARE-DASHBOARD` P3「가정」(BNK-610) 데이터 소스 후보 carry.
+
+### §625-4 Non-catalog PGID negative evidence (확인 · snapshot 미보존)
+
+데모 세션에서 catalog 외 추정 PGID 3종 fetch → 전부 ~93KB empty shell: `pAmt-a300`(93,387B `bc08c3da`)·`schedule-p200`(93,395B `1befc7c1`)·`patient-billList`(93,397B `040d1c4a`). `patient-schedule` 404(`36eb413e`)·`schedule-r100`(`2d6fe38f`·BNK-621) 동일 패턴 → ezCare PGID 라우팅은 top-nav catalog 등록 59-PGID에 **gating**·추정 PGID 미렌더 재확인. 노이즈 방지 위해 3종 shell snapshot 미보존(finding만 기록).
+
+### §625-5 ogada baseline · cross-stream FE+1·BE+1 (확인)
+
+ogada `@75c0f51`(FE·WT CLEAN·BNK-624 `@15a3b7f` HEAD +1 `fix(v1.2.1/QA-B95): treat bootstrap-unavailable blockers as recoverable`·ahead 239)/`@0e55f3b`(BE·WT CLEAN·BNK-624 `@650801b` HEAD +1 `fix(v2/QA-B95): expose live-e2e bootstrap service availability in probe`·ahead 570) · **117 Route·92 page·V1–V178·BE Test 271(+1)·BE @Test 1953·FE test 477·모듈 80.86%(23.45/29·id=7-4 1.0)** · merge gate **809**(+2 cross-stream) · 2 commit 모두 QA-B95 live-e2e bootstrap readiness(기능 KPI 불변) · tester FF merge 809 가속 권장.
+
+## §624 BNK-624 — 케어포 역공학 0–2h · ★★ **M1 1-12 연계기록지 tri-source crosswalk**(func 1-10 vs demo 1-12·`patient_connection_send_report`·평가 #30 필드) · ★ **func.php Wayback 377차 wrapper DRIFT** `c2049b41`·107-leaf IDENTICAL · ★ **리포트 밀도 잔여 gap 6 우선순위 표** (M5 closure 후) · ★ **LIVE 39-cycle timeout** · ogada `@15a3b7f`/`@650801b` HEAD zero advance · merge gate **807**
+
+**조사일**: 2026-06-25T14:22:00Z (KST 23:22) | **rotation**: 케어포 func.php·demo-work loadPage·매뉴얼 PDF·M7 7-x·리포트 밀도 ogada Route 1:1. 신규 snapshot 1건: `carefor_m1_connection_report_crosswalk_bnk624.txt`. 덮어쓰기 1건: `carefor_func_wayback_live_bnk624.html`.
+
+### §624-1 M1 연계기록지 — func 1-10 vs demo 1-12 번호 drift · view·평가 필드 (확인)
+
+| 출처 | 번호 | view / 식별자 | HTTP·근거 |
+|---|---|---|---|
+| func.php marketing | **1-10** 연계기록지 발송 리포트 | leaf only | [Wayback 377차](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) `c2049b41` |
+| demo-work 시설 셸 | **1-12** 연계기록지 제공(발송) 리포트 | `view.patient_connection_send_report` | `carefor_demo_wayback_live_bnk573.html` |
+| ogada | id=**1-10** `competitorModuleCoverage.js` | Route 0 · coverage **0** | FE grep `connection|연계기록` 0 hit |
+
+**평가 #30 필드(확인)** — [silverangel daycareEssentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) on-disk `c79c1be3`: 연계기록지 본문(성명·등급·심신기능상태·제공급여·작성일자·퇴소후계획) + 제공대장(수급자명·제공일자·제공방법·수령자). 전원·퇴소 시 종료상담 트리거.
+
+→ **planner**: MVP out-of-scope carry 유지 시에도 v2+ Route 후보 `/clients/reports/linkage-dispatch` 명시 권장. KPI id=1-10(marketing 번호) vs UI label 1-12(demo 번호) 분리 문서화.
+
+### §624-2 func.php Wayback 377차 · LIVE 39-cycle (확인)
+
+| URL | HTTP | size | md5 | 판정 |
+|---|---|---|---|---|
+| [Wayback func.php](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) | 200 | 104,182 | `c2049b41` | **377차 wrapper DRIFT** (BNK-620 `4b4d60e4`→`c2049b41`) · **107-leaf semantic IDENTICAL** |
+| carefor.co.kr/daycare/func.php LIVE | 000 | 0 | — | **39-cycle 「미확인」** (BNK-558~624) |
+| demo-work.carefor.co.kr LIVE | 000 | 0 | — | **39-cycle 「미확인」** carry |
+
+### §624-3 리포트 밀도 잔여 gap 6 · M7 7-x carry (확인)
+
+BNK-623 M5 closure 후: demo **34** `rpt` vs ogada **28** reports Route → **gap 6**.
+
+| 우선순위 | carefor demo rpt | ogada | KPI lever |
+|---|---|---|---|
+| P1 | 1-12 연계기록지 발송 | ❌ | id=1-10 +0.034pp |
+| P2 | 11-6 급여대장 | ❌ `/payroll` 0 | id=11 +3.4pp |
+| P3~P6 | 1-11 호전·9-6 연간부담금·10-9 안내발송·10-10 평가출력 | △/❌ | 리포트 밀도 |
+
+M7 demo 10-leaf(7-1~7-9)·7-2-1 `/billing/reports/statistics` 1:1 · 7-10 func-only(demo 미노출) — BNK-620 carry 재확인.
+
+### §624-4 ogada baseline · HEAD zero advance (확인)
+
+ogada `@15a3b7f`(FE·WT CLEAN)/`@650801b`(BE·WT CLEAN) · **117 Route·92 page·reports 28·BE @Test 1953·FE test 477·모듈 80.86%** · merge gate **807** carry · tester FF merge 807 가속 권장.
+
+## §623 BNK-623 — 교차검증·갭 우선순위 8h+ · ★★★ **G-REPORT-DENSITY M5 program report — BNK-620 갭 → 코더 in-cycle FULL-STACK 종결** (BE `650801b` 4 GET + FE `15a3b7f` ProgramReportsPage+5 routes·벤치마크→코더 closure traceability) · ★★ **NHIS #44 386차 zero drift IDENTICAL** `c886ff1f` · ★★ **silverangel notice 221564 retraction-window 지속**(list max 221551·view 51,765B `44223150`) · ★ **M11·M12 P2 갭 carry**(+6.9pp) · ogada `@15a3b7f`/`@650801b` cross-stream FE+2·BE+1 · merge gate **807**
+
+**조사일**: 2026-06-25T13:42:00Z (KST 22:42) | **rotation**: 교차검증·갭 우선순위 (8h+) — 이전 BNK 가정 번복·미확인 축소·P0/P1 재정렬·ogada git 실측. 신규 snapshot 1건: `cross_gap_priority_bnk623.txt`. 덮어쓰기 0건.
+
+### §623-1 G-REPORT-DENSITY M5 program report — BNK-620 갭 → 코더 in-cycle FULL-STACK 종결 (확인·traceability)
+
+이번 cycle 중 ogada submodule HEAD 가 **3 commit 전진**(FE+2·BE+1)했고, 그 중 2건이 **BNK-620 벤치마크 발견을 직접 종결**했다.
+
+| layer | commit | 산출 |
+|---|---|---|
+| BE | `650801b` `feat(v2/G-REPORT-DENSITY): add M5 program report APIs for US-P02` | 4 GET `/api/v1/programs/reports/*`(participations·schedules·provision-records·group-history **shell**)·`ProgramReportController`(+70L)·`ProgramReportService`(+392L)·DTO 9종·repo +2·test 2종(routing 102L+service 246L)·**+961L** |
+| FE | `15a3b7f` `feat(v1.2.1/G-REPORT-DENSITY): wire M5 program report pages for US-P02` | `ProgramReportsPage.jsx`·`ProgramReportNav.jsx`·`ProgramReportPanel.jsx`·`config/programReports.js`·`api/programReportServices`·App.jsx **5 routes**(/programs/reports + participations·provision-records·group-history·schedules) |
+
+**traceability 확인**: BE commit 본문 verbatim — 「Expose four GET /api/v1/programs/reports/* endpoints … **to close the BNK-620 M5 report density backend gap** ahead of frontend /programs/reports/* wire.」 → BNK-620 COMPETITOR_MATRIX 행 「demo-work 리포트 밀도 34 vs ogada 23 … 갭: M5 프로그램 5 rpt」가 코더 작업 지시로 연결된 **벤치마크→구현 closure** 사례.
+
+| 지표 | BNK-620 | BNK-623 | 판정 |
+|---|---|---|---|
+| ogada reports route | 23 | **28** (+5 /programs/reports) | M5 모듈 리포트 갭 종결 |
+| demo-work vs ogada gap | 34 vs 23 (11) | 34 vs 28 (**6**) | gap −5 |
+
+잔여 demo-work 우위(carry): M1 연계기록지(id 1-10 coverage 0)·M11 급여대장(id 11 coverage 0). group-history 는 BE 「shell」(집계 미구현) 명시 → **P3 신규 `G-REPORT-DENSITY-GROUP-HISTORY-FILL`**.
+
+### §623-2 NHIS #44 이동서비스비 386차 zero drift · silverangel 221564 retraction-window 지속 (확인·carry)
+
+| URL | HTTP | size | md5 | 판정 |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `c886ff1f` | IDENTICAL (**386차**)·러-1~4·편도50%·1일1회·별지 제22호 verbatim |
+| [silverangel notice list](https://www.silverangel.kr/silverangel/support/notice/list.do?pageNo=1) | 200 | 3,594,181 | — | 최신 가시 Tmp_idx=**221551**(221564 미노출) |
+| [silverangel view 221564](https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564) | 200 | 51,765 | `44223150` | 비공개 shell — BNK-618 T10:09Z HAS-DATA(`ffe82a0d` 88,732B) → BNK-623 T13:42Z 여전히 비공개 |
+
+→ silverangel 221564 retraction window 가설 **carry**(6/30자 미래일 공지 사전 게시 leak·공개 가시성 NONE). 「next 6/30 정식 게시」 재검증·P3 3종 「6/30 재검증 보류」 status carry.
+
+### §623-3 ogada baseline 실측 · 갭 우선순위 재정렬
+
+ogada `@15a3b7f`(FE develop·WT CLEAN·ahead 238)/`@650801b`(BE develop·WT CLEAN·ahead 569) · **117 Route(116 `<Route\b`+1 `<Routes>`)·92 page(91 `*Page.jsx`+RootRedirect)·V1–V178·BE Test 270·BE @Test 1952·FE test 477(195+282)·모듈 80.86%(23.45/29 — id=5 program 이미 1.0·M5 리포트 갭은 sub-feature granularity·KPI 불변)·reports route 28** · merge gate **807**(+3 cross-stream).
+
+- **P0/P1 재오픈 0** (BNK-549~623 carry).
+- **P2 최대 KPI 레버**: M11 직원급여·M12 회계 — `/payroll/*`·`/accounting/*` 0 route. id=11·12 closure 시 80.86%→**87.76%(+6.9pp)** 단일 최대 bump. **planner**: v1.3+ 우선순위 격상 검토 권장 carry.
+- **P3 closure(이번 cycle)**: G-REPORT-DENSITY M5(BE+FE full-stack). **P3 신규**: `G-REPORT-DENSITY-GROUP-HISTORY-FILL`(group-history BE shell 집계 채움).
+- **tester**: FF merge **807** 가속 권장.
+
+## §622 BNK-622 — 엔젤·롱텀·규제 4–6h · ★★★ **silverangel notice 221564 retraction-window 가설 확정** — BNK-618 leak(88,732B `ffe82a0d`) → ~27h 후 여전히 51,765B `44223150` 비공개 shell·list 최신 가시 221551 · ★★ **NHIS #44 이동서비스비 러-1~4 385차 zero drift IDENTICAL** `c886ff1f` · ★★ **silverangel 본진 4-URL zero drift IDENTICAL**(CMS 5-method·평가지표 27 목욕) · ★ **longterm 502 43-cycle 「미확인」·610 oscillation** canonical 보존 · ★ **M11·M12 P2 갭 carry**(+6.9pp) · ogada `@5914b2f`/`@9f67954` HEAD zero advance · merge gate **804** carry
+
+**조사일**: 2026-06-25T13:05:00Z (KST 22:05) | **rotation**: silverangel/lcms·CMS 부가·law.go.kr 이동서비스비 #44·2026 수가·평가#27·단기보호·통합재가 (4–6h). 신규 snapshot 1건: `angel_longterm_regulatory_crossverify_bnk622.txt`. 덮어쓰기 0건(전부 IDENTICAL·canonical 보존).
+
+### §622-1 silverangel notice 221564 retraction-window 가설 확정 (확인)
+
+근거: [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do?pageNo=1) HTTP 200 최신 가시 Tmp_idx=**221551** · [view 221564](https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564) HTTP 200·**51,765B `44223150`** 비공개 shell
+
+| 시각 | 221564 상태 | size·md5 |
+|---|---|---|
+| BNK-618 T10:09Z | HAS-DATA (11개 기능 본문) | 88,732B `ffe82a0d` |
+| BNK-619 T10:59Z (~50min) | 비공개 shell | 51,765B `44223150` |
+| **BNK-622 T13:05Z (~27h)** | **여전히 비공개 shell** | **51,765B `44223150`** |
+
+→ BNK-619 「사전 게시 leak·retraction window」 가설 **확정** — 6/30자 공지 본문이 ~27h 경과 후에도 공개 미복귀. 공개 가시성 NONE 지속·신규 공개 공지 0건 since 221551. BNK-618 11개 기능 evidence(`silverangel_notice_221564_bnk618.html` `ffe82a0d`) carry 유효. **「next 6/30(공지 명시일) 정식 게시」 재검증** carry. P3 3종 `G-NURSING-MISSED-RECORD-DASHBOARD`·`G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`·`G-LEGAL-FORM-SIGNATURE-IMAGE` 「6/30 재검증 보류」 status carry.
+
+### §622-2 규제·엔젤 백본 live 재실측 zero drift (확인)
+
+| URL | HTTP | size | md5 | 판정 |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `c886ff1f` | IDENTICAL (385차)·러-1~4·편도50%·1일1회·별지 제22호 verbatim |
+| [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637 | `f9c5d877` | IDENTICAL·CMS 5-method(효성CMS 250원·가상계좌 300원·다계좌·현금영수증·1600-6859) |
+| [silverangel daycareEssentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664 | `c79c1be3` | IDENTICAL·평가지표 27 목욕 「필수 아님·제공시 청구」 |
+| [silverangel feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200 | 44,513 | `eab352a8` | IDENTICAL |
+| [silverangel mainService](https://www.silverangel.kr/newSilverangel/service/mainService.do) | 200 | 59,002 | `bcf6df41` | IDENTICAL |
+| [longterm 502 단기보호](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502) | 200 | 422 | `d3c90b33` | partial shell 「미확인」 43-cycle (canonical `b5aee8c1` 105,552B 1등급 74,060 보존) |
+| [longterm 610 통합재가](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610) | 200 | 458 | `c26a5e57` | shell oscillation 「미확인」 (canonical `0ea575be` 91,421B 가산 월 10만원 보존) |
+
+→ NHIS #44 + silverangel 4-URL 전부 zero drift IDENTICAL·덮어쓰기 0건. longterm 502/610 live shell = 「미확인」 carry·canonical 보존·덮어쓰기 0건.
+
+### §622-3 ogada parity·baseline (확인)
+
+| 항목 | 값 |
+|---|---|
+| FE develop | `5914b2f` WT CLEAN · ahead 236 · HEAD zero advance 1-cycle vs BNK-621 |
+| BE develop | `9f67954` WT CLEAN · ahead 568 · HEAD zero advance 1-cycle vs BNK-621 |
+| merge gate | **804** carry |
+| KPI | 112 Route·91 page·V1–V178·BE Test 269·@Test 1942·FE test 474·모듈 80.86%(23.45/29) |
+| NHIS #44 parity | G16 full-stack ✅ + UXD-159/163 `TransportServiceFeePanel`+`TransportParityRulesPanel`+RBAC+fail-open+catalog API — 경쟁 4종 중 유일 #44 표시 레이어 |
+| CMS 5-method | `CmsPaymentMethodCatalog` 5/5 `collectionImplemented=true`(V176+V178) parity |
+| 평가지표 27 목욕 | V177/V178 `bathing_schedules` pre/post observation + `BathingScheduleIndicator27Panel`(BNK-616) parity |
+| M11/M12 P2 갭 | `/payroll/*`·`/accounting/*` 0 route → closure 시 +6.9pp(→87.76%) 최대 KPI bump 레버 carry |
+
+집계: 가정 번복 0·신규 core 갭 0·candidate 변동 0·closure 잔존 재확인 2·상태 변경 0·KPI 변경 0·미확인 carry 3·신규 snapshot 1건·덮어쓰기 0건·per-cycle minimum 4종 충족·tester FF merge 804 가속 권장.
+
+## §621 BNK-621 — 이지케어 역공학 2–4h · ★★★ **PGID schedule-s100 중증수당 일정 집계** — 2-tab·7-col·제19조의2/제26조의2 인용·분배식 올림 · ★★★ **PGID customer-ezc_bill_list SaaS 이용료 청구** — ERP+재무회계+문자 3-line-item·카드/현금영수증 · ★★ **G-EASYPAY-FE-WIRE FULL CLOSURE** — FE `5914b2f` EasyPayProviderCatalogPanel wire · ★ **도입 +1/+1/+1** — fnc **9,357**·e01 **9,354/53.49%**·mCnt[1] **9,287** · 가격 33,000 verbatim 불변 · ★ **schedule-r100 empty shell** · ogada `@5914b2f`/`@9f67954` cross-stream +1·+1 · merge gate **804**
+
+**조사일**: 2026-06-25T12:35:00Z (KST 21:35) | **rotation**: 이지케어 `/new.ez`·FAQ·가격·도입 (2–4h). 신규 snapshot 3건: `ezcare_new_ez_pgid_schedule-s100.html`·`ezcare_new_ez_pgid_customer-ezc_bill_list.html`·`ezcare_severe_allowance_saas_billing_crosswalk_bnk621.txt`. 덮어쓰기 6건(home·fnc·charge·e01·change_work·demo session).
+
+### §621-1 schedule-s100 중증수당 일정 집계 (확인)
+
+근거: [PGID schedule-s100](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-s100) HTTP 200·101,220B·`f0ff7e1d` · `ezcare_new_ez_pgid_schedule-s100.html`
+
+| 축 | 내용 |
+|---|---|
+| 화면 제목 | 「3. 중증수당 일정 집계」 |
+| 탭 | 요양보호사 기준 (`grid-schedule-s100-01`) · 수급자 기준 (`grid-schedule-s100-02`) |
+| API | `json-schedule.php?data=schedule-severe-amt-worker-GET3` · `...-patient-GET3` |
+| colModel (각 7-field) | 이름·정보·생년월일·일정표(btn)·해당수급자/직원·해당건(cnt, 2025-11+ 목욕 cnt_003 병기)·중증수당 계(amt) |
+| 규정 인용 | 제19조의2(방문요양 2k/4k/6k·일 6k 상한) · 제26조의2(방문목욕 3k·일 6k 상한) |
+| 분배 | `중증수당 × (근무시간 ÷ 대상자 총 근무시간)` · 소수점 올림 |
+| 상태 | 숨김 notice: 「정식 기능 지원 전 … 현황파악 및 집계」 |
+
+→ **방문요양 전용** · ogada 주간보호 MVP **out-of-scope** · P3「가정」`G-SEVERE-ALLOWANCE-SCHEDULE-AGG` (v2+ 방문요양 확장 시 참고)
+
+### §621-2 customer-ezc_bill_list SaaS 이용료 청구내역 (확인)
+
+근거: [PGID customer-ezc_bill_list](https://ezcare.easyms.co.kr/new.ez?PGID=customer-ezc_bill_list) HTTP 200·97,638B·`ce5cf912` · `ezcare_new_ez_pgid_customer-ezc_bill_list.html`
+
+| 필드 | name | 비고 |
+|---|---|---|
+| 청구월 | Ym | |
+| 이용요금 그룹 | amount_ezc · amount_w4c · amount_sms · amount | 이지케어·재무회계·문자 3-line |
+| 세금 | amount_vat · amount_total | |
+| 납부 | pay_date · pay_amount · pay_memo | |
+| 서류 | bill_paper(프린터) · aTotal(카드매출전표/현금영수증) | `showReceipt2(tid)` · KCP easym tid 파싱 |
+
+API: `/page/customer/json-customer.php?data=customer-billLog-GET`
+
+→ ogada **SaaS 테넌트 자체 과금 포털 0** · P3「가정」`G-SAAS-TENANT-BILLING-PORTAL` (v3+ 플랫폼 과금 · BNK-610 재무회계 BPO 파트너십과 연계)
+
+### §621-3 도입·가격 재실측 · G-EASYPAY closure (확인)
+
+| URL | BNK-617 | BNK-621 | 변동 |
+|---|---|---|---|
+| home mCnt[1] | 9,286 | **9,287** | +1 |
+| fnc 도입 | 9,356 | **9,357** | +1 |
+| ?PG=e01 점유 | 9,353 / 53.48% | **9,354 / 53.49%** | +1 / +0.01pp |
+| charge 가격 | 33,000/25,850/55,000 | 동일 | 0 |
+| change_work 후기 | 4,965 | 4,965 | 0 |
+
+ogada FE `@5914b2f`: `EasyPayPage` → `EasyPayProviderCatalogPanel` wire + `TransportServiceFeePage` → `TransportParityRulesPanel` = **G-EASYPAY-PROVIDER-CATALOG-FE-WIRE closure** (BNK-612 P3 → BNK-621 landed · 9-cycle).
+
+### §621-4 schedule-r100 · ogada baseline (확인)
+
+| 항목 | 값 |
+|---|---|
+| schedule-r100 | HTTP 200·93,395B·jqGrid 0·empty shell (레거시 PGID 잔존) |
+| ogada FE | `@5914b2f` WT CLEAN · ahead 236 |
+| ogada BE | `@9f67954` WT CLEAN · ahead 568 |
+| merge gate | **804** (+2) |
+| KPI | 112 Route·91 page·BE Test 269·@Test 1942·FE test 474 |
+
+## §620 BNK-620 — 케어포 역공학 0–2h · ★★★ **demo-work 리포트 밀도 34 vs ogada 23** — demo `class="rpt"` 34건(M1:5·M2:6·M3:5·M5:5·M7:4·M6:0)·114 loadPage · func marketing 19 · ogada `*reports*` Route 23 · **M6 리포트 0 = 점검 입력 전용** · ★★★ **7-2-1 의료비공제 `view.cost_master_statistic` ↔ ogada `/billing/reports/statistics` 1:1 매핑 신규 명시** · ★★ **7-10 간편계산기 func-only** — func 7-10 leaf ✅ · demo shell 10-leaf(7-9까지)·`/billing/calculator` ogada only · ★★ **M6 PDF p80–81 3+3 sub-form** — 6-2 일일점검(위생점검일지·간호비품·급식운영+보존식 폐기일·모바일) · 6-3 정기점검(소화시설 월1·약품 분기1·정기소독 분기1) → v3.1 P1 `safety_checks` 스키마 초안 근거 · ★★ **demo 시설 셸 이동서비스 없음 재확인** — menu grep `이동서비스` 0 · L02=요양(func M2=이동 9-leaf 충돌) · 차량=9-5 operational_manage only · ★ **func.php Wayback 376차 wrapper DRIFT** — `4b4d60e4`(104,177B) vs BNK-616 `84ffd89e` · 107-leaf semantic IDENTICAL · ★ **carefor LIVE+demo-work LIVE timeout 38-cycle** · ogada `@e070c45`/`@79725eb` HEAD zero advance · BE WT **DIRTY 6**(LiveE2e 미커밋)
+
+**조사일**: 2026-06-25T11:50:00Z (KST 20:50) | **rotation**: 케어포 func.php·매뉴얼·demo-work loadPage (0–2h). 신규 snapshot 2건: `carefor_func_wayback_live_bnk620.html`·`carefor_report_density_crosswalk_bnk620.txt`. 덮어쓰기 1건(func Wayback wrapper).
+
+### §620-1 demo-work 리포트 밀도 · 모듈별 분포 (확인)
+
+| 축 | 수량 | 출처 |
+|---|---|---|
+| demo `loadPage` | 114 | `carefor_demo_wayback_live_bnk573.html` |
+| demo `class="rpt"` | **34** (29.8%) | 동일 |
+| func.php 리포트·통계 leaf | 19 | `carefor_func.php` canonical `6226e6eb` |
+| ogada `*reports*` Route | 23 | `App.jsx` `@e070c45` |
+
+모듈별 rpt: M1=5 · M2=6 · M3=5 · M4=2 · M5=5 · M7=4 · M8=3 · M9=1 · M10=2 · M11=1 · **M6=0**.
+
+→ M6 위생·안전은 carefor에서 **리포트 화면 없음** — 6-2 일일점검·6-3 정기점검·6-4 시설일지는 **입력·출력 폼**. ogada id=6 coverage 0은 리포트 갭이 아니라 **점검 입력 레이어** 갭.
+
+### §620-2 M7 7-x demo view ↔ ogada Route 1:1 (확인)
+
+| carefor | demo view | ogada | 비고 |
+|---|---|---|---|
+| 7-2-1 의료비공제 | `view.cost_master_statistic` | `/billing/reports/statistics` | **BNK-620 신규 crosswalk** |
+| 7-6~7-8 리포트 3종 | `cost_master_report`·`cost_deposit_report`·`cost_receipt_report` | `/billing/reports/{charges,deposits,receipts}` | PDF p.91 번호 +1 drift carry |
+| 7-9 수납·환불 | `cost_receipt_apply_yearly` | `/billing/reports/refunds` | G-REFUND-FEE 5-layer |
+| 7-10 간편계산기 | **demo 미노출** | `/billing/calculator` | func.php only |
+
+### §620-3 M6 PDF 필드 · demo view (확인)
+
+근거: [PDF p.77–82 Wayback](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=77) · on-disk `carefor_manual_p77_module6_bnk373.txt`
+
+| leaf | demo view | PDF 핵심 필드 | ogada |
+|---|---|---|---|
+| 6-1 | `view.weekly_menu` | 우리푸드·보건소 식단·월간 엑셀 | `/meals` ✅ |
+| 6-2 | `view.daily_check` | 위생점검일지·간호비품·급식운영(보존식 폐기일) | v3.1 P1 ❌ |
+| 6-3 | `view.regularly_check` | 소화시설 월1·약품 분기1·정기소독 분기1 | v3.1 P1 ❌ |
+| 6-3-1 | `view.infection_manage` | 감염병 관리 | v3.1 P1 ❌ |
+| 6-4 | `view.daily_center` | 시설일지 통합·기간 일괄 출력 | v3.1 P1 ❌ |
+
+### §620-4 func.php Wayback 376차 · LIVE 재실측 (확인)
+
+| URL | HTTP | size | md5 | 해석 |
+|---|---|---|---|---|
+| Wayback func.php (376차) | 200 | 104,177 | `4b4d60e4` | BNK-616 `84ffd89e` wrapper DRIFT · 107-leaf = canonical IDENTICAL |
+| carefor.co.kr LIVE | 000 | 0 | — | 38-cycle timeout carry |
+| demo-work LIVE | 000 | 0 | — | 38-cycle timeout carry |
+
+extract: `carefor_report_density_crosswalk_bnk620.txt`
+
+## §619 BNK-619 — ogada git 실측 6–8h · ★★★ **cross-stream FE+1·BE+1** — FE `e070c45` `fix(v1.2.1/QA-B95): honor recovered auth for live operation readiness`(live e2e bootstrap-disabled blocker 해소·3-file +158L) · BE `79725eb` `fix(v2/7-9): validate refund fee policy inputs`(`RecordCopayRefundRequest` DTO 입력 검증 강화·`BillingServiceTest` @Test +1 `recordCopayRefundShouldRejectWhenAmountDoesNotMatchFeePolicy` neg case 회귀 lock·2-file +63L) · ★★★ **G-REFUND-FEE 5-layer cascade hardening** — BNK-616 BE catalog → BNK-617 BE service validation → BNK-618 FE wire FULL CLOSURE → **BNK-619 BE DTO input validation + neg @Test 회귀 lock** = M7 7-9 본인부담금 환불 lifecycle **5-layer 완성**(DTO→catalog→service→FE wire→neg @Test) · ★★★ **silverangel 221564 visibility REVERSAL — BNK-618 「6/25 가설 적중 closure」 가정 정정** — BNK-618 (T10:09Z) 88,732B `ffe82a0d` HAS-DATA → BNK-619 (T10:59Z·~50min 후) **51,765B `44223150` shell**(BNK-599 probe shell 51,765B 동일 패턴)·notice list 최신 가시 Tmp_idx=**221551**만·221564 미노출 → **사전 게시 leak·~50min retraction window** 가설·11개 기능 evidence carry 유효(BNK-618 snapshot 보존)·공개 가시성 현재 NONE·**「next 6/30」 재검증 권장**·P3 3종에 「6/30 재검증 보류」 status · ★★★ **lcms.or.kr 「부활」 framing CORRECTION** — BNK-619 lcms.or.kr `c0c66076` 50,740B IDENTICAL ↔ BNK-586 canonical `lcms_root.html`(`c0c66076` 50,740B) → **lcms.or.kr 36-cycle 안정 재확인**(BNK-586~619)·lcms.kr(.kr) ≠ lcms.or.kr(.or.kr) 도메인 분리·BNK-618 `6c0d22b4` 50,554B = `ad_cont type1/type2` 배너 sample rotation transient DRIFT only · ★★ **NHIS #44 이동서비스비 384차 zero drift IDENTICAL** — `c886ff1f`(7,572B·live HTTP 200=disk) · ★★ **silverangel 본진 2-URL zero drift** — extra `f9c5d877`·essential `c79c1be3` live=disk IDENTICAL(CMS 5-method+평가#27 verbatim 불변·6-cycle 잔존 BNK-614~619) · ★ **carefor LIVE timeout 37-cycle 「미확인」**(Wayback 검증 정상 carry) · ★ **longterm 502 42-cycle 「미확인」·610 oscillation** carry · ★ **M11·M12 P2 갭 carry** — id=11·12 closure 시 80.86%→**87.76%(+6.9pp)** · ★ **4축+leave-ledger P0/P1 재오픈 0 (70-cycle carry, BNK-549~619)** · ogada baseline FE `@e070c45`/BE `@79725eb` **양쪽 +1·WT CLEAN** · merge gate **802**(+2 cross-stream)
+
+**조사일**: 2026-06-25T10:59:00Z (KST 19:59) | **rotation**: ogada git 실측 6–8h (FE/BE develop HEAD·테스트 집계·5-layer cascade 후속 검증·BNK-618 evidence 재실측 reversal 발견). 신규 snapshot 1건: `ogada_git_remeasure_bnk619.txt`. 덮어쓰기 0건.
+
+### §619-1 ogada baseline 실측 (BNK-619 정본)
+
+| 지표 | BNK-618 | BNK-619 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `cadd74a` | **`e070c45`** `fix(v1.2.1/QA-B95): honor recovered auth for live operation readiness` | **+1** |
+| BE develop HEAD | `aeecc1b2` | **`79725eb`** `fix(v2/7-9): validate refund fee policy inputs` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 234 | **235** | +1 |
+| BE ahead vs `origin/test=598d108` | 566 | **567** | +1 |
+| merge gate | 800 | **802** | **+2 cross-stream** |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V178 | V178 | carry |
+| BE Test class | 268 | 268 | carry |
+| BE `@Test` method | 1938 | **1939** | **+1** (`BillingServiceTest.recordCopayRefundShouldRejectWhenAmountDoesNotMatchFeePolicy`) |
+| FE `.test.js` / `.test.jsx` | 194 / 278 | 194 / 278 | carry |
+| FE test 총합 | 472 | 472 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29) | 80.86% (23.45/29) | carry |
+
+재현: `git -C src/backend rev-parse develop` = `79725eb` · `git -C src/frontend rev-parse develop` = `e070c45` · `git -C src/{backend,frontend} rev-list --count origin/test..develop` = 567/235 · `grep -rEh '^\s*@Test\b' src/backend/src/test | wc -l` = 1939.
+
+### §619-2 ★★★ G-REFUND-FEE 5-layer cascade hardening — BNK-619 input validation 회귀 lock (확인)
+
+BE `79725eb` 2-file +63L:
+
+| 파일 | 변경 | 역할 |
+|---|---|---|
+| `src/main/java/com/ogada/backend/billing/api/RecordCopayRefundRequest.java` | +5L | 정책별 입력값 검증 강화 (DTO-level guard) |
+| `src/test/java/com/ogada/backend/billing/domain/BillingServiceTest.java` | +58L (@Test +1) | `recordCopayRefundShouldRejectWhenAmountDoesNotMatchFeePolicy` neg case 회귀 lock |
+
+**5-layer cascade (BNK-616→619, 4-cycle)**:
+1. BNK-616 BE catalog (`CopayRefundFeePolicyCatalog.CAREFOR_PARITY_ENTRIES` 3-policy 카드 3.3%/계좌·CMS 500원/KCP)
+2. BNK-617 BE service validation (`BillingService.recordCopayRefund()` policy 호환+netAmount 검증)
+3. BNK-618 **FE wire FULL CLOSURE** (`RefundRecordModal` feePolicyCode select + netAmount preview)
+4. **BNK-619 BE DTO input validation** (`RecordCopayRefundRequest` 정책별 입력 검증 강화)
+5. **BNK-619 neg @Test 회귀 lock** (정책-금액 mismatch 거부)
+
+→ M7 7-9 본인부담금 환불 lifecycle **5-layer 완성**. carefor 단일 정책(3.3%/500원/KCP) 정본 vs ogada **다중-정책·preview-driven·역방향 검증·neg @Test 잠금** 차별화 carry.
+
+### §619-3 ★★★ silverangel 221564 visibility REVERSAL — BNK-618 「6/25 가설 적중 closure」 가정 정정 (가정 번복 1)
+
+| 시점 | URL HTTP | size | md5 | 해석 |
+|---|---|---|---|---|
+| BNK-618 (T10:09Z) | 200 | 88,732 | `ffe82a0d` | **HAS-DATA** — 「[필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)」 11개 기능 verbatim |
+| BNK-619 (T10:59Z·~50min 후) | 200 | **51,765** | **`44223150`** | **shell** — BNK-599 미게시 probe shell 51,765B 동일 패턴 |
+| 비교 reference: notice 221551 (현재 list 최신 가시 ID) | 200 | 51,765 | `44223150` | 동일 shell — view.do 가 비활성/미공개 ID 모두 generic 51,765B shell 반환 |
+| 비교 reference: notice list (정적 raw) | 200 | 3,594,181 | `52c9457f` | Tmp_idx 최신 가시 = **221551** (221564 미노출) |
+
+→ **해석**: 221564 = 2026-06-30 발행 예정 사전 게시 leak·~50min retraction window 가설.
+- BNK-618 「6/25 정시 게시 적중·번복 closure」 framing 정정: ① 11개 기능 evidence 자체는 BNK-618 snapshot `ffe82a0d` 88,732B **carry 유효** ② 공개 가시성 현재 NONE ③ 재공개 시점 「next 6/30」 carry — 6-day 후 재검증 권장.
+- P3 candidate 3종 status update: `G-NURSING-MISSED-RECORD-DASHBOARD`·`G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`·`G-LEGAL-FORM-SIGNATURE-IMAGE`에 **「6/30 재검증 보류」** status 부여 — 핵심 unchanged·재공개 후 verbatim cross-check.
+
+### §619-4 ★★★ lcms.or.kr 「부활」 framing CORRECTION — 36-cycle 안정 재확인 (가정 번복 1)
+
+| 시점 | URL HTTP | size | md5 | 해석 |
+|---|---|---|---|---|
+| BNK-586 canonical (`lcms_root.html` on-disk) | 200 | 50,740 | `c0c66076` | `https://www.lcms.or.kr/` home — eGovFramework `lcms_renew/...` 「엔젤시스템」 |
+| BNK-590 (`http://www.lcms.kr/`·.kr TLD) | 200 | **19** | `c7a0e2e6` | **placeholder** — `welcome to lcms.kr` (.kr 도메인 폐기) |
+| BNK-618 (`https://www.lcms.or.kr/`·.or.kr TLD) | 200 | 50,554 | `6c0d22b4` | renewal 「부활」 framing — `lcms_or_kr_renew_bnk618.html` |
+| **BNK-619** (`https://www.lcms.or.kr/`·.or.kr TLD) | 200 | **50,740** | **`c0c66076`** | **BNK-586 canonical IDENTICAL** → 36-cycle 안정 |
+
+→ **해석**: BNK-619 lcms.or.kr `c0c66076` 50,740B = BNK-586 `lcms_root.html` **IDENTICAL**.
+- BNK-618 `6c0d22b4` 50,554B → BNK-619 `c0c66076` 50,740B diff at byte 43521 line 1128: `<section class="ad_cont type1>` vs `type2` (`bg_samp1.png` vs `bg_samp2.png`) = **ad_cont 배너 sample rotation transient DRIFT only**·자산/title/카피 IDENTICAL.
+- BNK-618 §618-3 「lcms.or.kr 28-cycle 후 부활 도메인 발견」 framing 정정:
+  - lcms.kr(`.kr`) ≠ lcms.or.kr(`.or.kr`) **별개 도메인**
+  - lcms.or.kr는 **BNK-586~619 36-cycle 안정 운영**
+  - silverangel.kr 본진 footer floating 「LCMS」 링크 destination 확인은 BNK-618 유효 evidence
+  - BNK-515~590 cross-promo carry retired 해석은 **`.kr` 도메인 폐기 단독 의미** — `.or.kr` 자매 ERP funnel은 본래 운영 carry
+
+### §619-5 ★★ NHIS #44 이동서비스비 러-1~4 — 384차 zero drift IDENTICAL (확인)
+
+- URL: `https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769`
+- live HTTP 200 · 7,572B · md5 `c886ff1f` ↔ `nhis_jo44.html`·`nhis_jo44_joHistory.html` IDENTICAL
+- 러-1~4 (편도50%·1일1회·별지 제22호 일지④) verbatim 불변
+- ogada full-stack 우위 carry: BE `TransportServiceFeeService`(4-rule) ↔ FE `TransportServiceFeePanel`(UXD-159)+`TransportParityRulesPanel`(UXD-163·BNK-612)+RBAC(BNK-606)+fail-open(BNK-609)+catalog API `GET /api/v1/transport/service-fee-parity-rules`. 경쟁 4종 중 ogada 유일 #44 표시 레이어 full-stack 차별화 우위 384-cycle carry.
+
+### §619-6 ★★ silverangel 본진 2-URL zero drift IDENTICAL (확인 · 6-cycle 잔존)
+
+| URL | live HTTP | size | md5 | on-disk | 상태 |
+|---|---|---|---|---|---|
+| `/newSilverangel/service/extraService.do` | 200 | 81,637 | `f9c5d877` | `f9c5d877` | IDENTICAL |
+| `/newSilverangel/daycare/daycareEssentialWork.do` | 200 | 131,664 | `c79c1be3` | `c79c1be3` | IDENTICAL |
+
+CMS 5-method (자동이체 효성CMS 250원·가상계좌 300원·카드·다계좌·현금영수증·1600-6859) + 평가지표 27 목욕 (「필수항목 아님·제공시 청구」) verbatim 불변 ↔ ogada `CmsPaymentMethodCatalog` 5/5 `collectionImplemented=true`(V176+V178 무결성) + V177/V178 `bathing_schedules` pre/post observation 무결성 **BNK-614~619 6-cycle 잔존**.
+
+### §619-7 ★ carefor LIVE timeout 37-cycle 「미확인」(BNK-558~619) — Wayback 검증 정상 carry
+
+- `https://www.carefor.co.kr/daycare/func.php` HTTP 000·timeout (curl --connect-timeout 8 --max-time 18) — **37-cycle carry**
+- Wayback `20260519072235` 검증 정상 (BNK-616 `84ffd89e` 104,183B semantic IDENTICAL carry)
+- 11모듈 107-leaf + 7-1~7-10 + 7-9 KCP 환불 수수료 verbatim 정본 보존 (canonical `6226e6eb`)
+
+### §619-8 ★ M11·M12 P2 갭 — 단일 최대 KPI bump 레버 70-cycle carry (BNK-549~619)
+
+- `/payroll/*`·`/accounting/*` 0 route 재확인 — id=11·12 cov=0 carry
+- closure 시 23.45/29(80.86%) → 25.45/29(**87.76%·+6.9pp**)
+- v1.3+ 우선순위 격상 권장 — planner MVP 결정 보류 carry
+
+### §619-9 ★ 4축+leave-ledger P0/P1 재오픈 0 (70-cycle carry, BNK-549~619)
+
+App.jsx `@e070c45` 7/7 path LIVE: G14·G26×2·v1.3-C·v2 CMS·US-R01-c×2.
+
+**candidate carry**:
+- P2: M11·M12 직원급여·회계 (1순위 KPI bump lever)
+- P3: G-EASYPAY-PROVIDER-CATALOG-FE-WIRE (BNK-612) · G-REFUND-FEE 5-layer hardening (BNK-616~619 closure carry) · G-NURSING-MISSED-RECORD-DASHBOARD (BNK-618·**6/30 재검증 보류**) · G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE (BNK-618·**6/30 재검증 보류**) · G-LEGAL-FORM-SIGNATURE-IMAGE (BNK-618·**6/30 재검증 보류**) · G-FINANCE-BPO-PARTNERSHIP (BNK-610) · G-MARKET-SHARE-DASHBOARD (BNK-610) · G-PER-VISIT-ALLOWANCE-EDITOR (BNK-606) · G-STAFF-APP-ACCESS-LIFECYCLE (BNK-606) · G-MONITORING-SAMPLING-RULE (BNK-606) · G-NEW-AGENCY-SELFDIAG-GRACE (BNK-606)
+
+### §619-10 변동 요약 (BNK-619)
+
+- 가정 번복 **2**: ① BNK-618 「6/25 가설 적중 closure」 → 「6/30 사전 게시 leak·~50min retraction·기능 evidence 유효·가시성 미확인」 ② BNK-618 「lcms.or.kr 부활」 → 「lcms.or.kr 36-cycle 안정·BNK-590 폐기 .kr 도메인 단독·.or.kr 본래 운영 carry」
+- 신규 core 갭 **0**
+- candidate 변동 **0** (BNK-618 P3 3종 「6/30 재검증 보류」 status 부여·핵심 unchanged)
+- closure 잔존 재확인 **2** (NHIS #44 384차·silverangel 2-URL 6-cycle 잔존)
+- 5-layer cascade hardening **1** (G-REFUND-FEE DTO/neg @Test BNK-619)
+- 상태 변경 **2** (FE+1·BE+1 cross-stream·양쪽 WT CLEAN)
+- KPI 변경 **2** (merge gate 802·BE @Test 1939)
+- 미확인 carry **3** (carefor LIVE 37-cycle·longterm 502 42-cycle·610 oscillation)
+- 신규 snapshot **1건** (`ogada_git_remeasure_bnk619.txt`)
+- 덮어쓰기 **0건** (lcms.or.kr canonical `lcms_root.html` IDENTICAL·BNK-618 transient file carry as historical evidence·NHIS #44/silverangel zero drift IDENTICAL)
+- 엑셀 포맷 변경 **0**
+- per-cycle minimum 4종 충족 ✅
+- tester **FF merge 802 가속 권장**(235+567 적체·양쪽 WT CLEAN·선행 commit 불필요)
+
+---
+
+## §618 BNK-618 — 엔젤·롱텀·규제 4–6h · ★★★ **silverangel 신규 공지 221564 (2026-06-30) — 시설+주야간 11개 신규 기능 발견** — 7-day 「next ~6/25」 가설 적중·**P3 candidate 3종 신규 발굴**(`G-NURSING-MISSED-RECORD-DASHBOARD`·`G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`·`G-LEGAL-FORM-SIGNATURE-IMAGE`) · ★★★ **lcms.or.kr 부활 도메인 발견** — BNK-590 lcms.kr 폐기(28-cycle carry) → BNK-618 silverangel.kr 본진 floating footer 「LCMS」 링크 destination `https://www.lcms.or.kr/`(50,554B `6c0d22b4`·eGovFramework `lcms_renew/...`) — 자매 ERP 마케팅 funnel 재개 · ★★★ **G-REFUND-FEE-FE-WIRE FULL CLOSURE** — FE `cadd74a` 7-file +517L(`copayRefundFee.js` NEW·`RefundRecordModal.jsx` +214L) → BNK-616 P3 split(BE catalog) → BNK-617 BE validation → BNK-618 FE wire **3-cycle 4-layer cascade closure**·M7 7-9 KCP PG 수수료 lifecycle full-stack ✅ 신규 달성 · ★★ **NHIS #44 이동서비스비 러-1~4 383차 zero drift IDENTICAL** — `c886ff1f`(7,572B·live HTTP 200=on-disk) ↔ ogada G16 full-stack 우위 carry · ★★ **silverangel 본진 4-URL zero drift IDENTICAL** — `f9c5d877`·`c79c1be3`·`eab352a8`·`bcf6df41` live=disk · ★ **longterm 502 41-cycle 「미확인」·610 oscillation·lcms.kr legacy dead** carry(canonical 보존) · ★ **law247·mohw126 DRIFT(cachebuster·counter)** verbatim 불변 덮어쓰기 2건 · ★ **M11·M12 P2 갭 carry** — id=11·12 closure 시 **80.86%→87.76%(+6.9pp)** · ★ **4축+leave-ledger P0/P1 재오픈 0 (69-cycle carry, BNK-549~618)** · ogada baseline FE `@cadd74a`/BE `@aeecc1b2` **FE+1·BE carry·양쪽 WT CLEAN** · merge gate **800**(+1)
+
+**조사일**: 2026-06-25T10:09:00Z (KST 19:09) | **rotation**: 엔젤·롱텀·규제 4–6h (silverangel.kr·lcms.kr/lcms.or.kr·NHIS #44·law247·mohw126·longterm 502/610·평가#27·단기보호·통합재가 cross-verify). 신규 snapshot 3건: `angel_longterm_regulatory_crossverify_bnk618.txt`·`silverangel_notice_221564_bnk618.html`(88,732B `ffe82a0d`·신규 게시물)·`lcms_or_kr_renew_bnk618.html`(50,554B `6c0d22b4`·부활 도메인). 덮어쓰기 2건: `law_mohw_2025_247_admRulInfoP.html`(`b0ed8363→6c32b661`)·`mohw_gosi_2026_126.html`(`f0522041→106a4278`).
+
+**1. ogada baseline 실측 (BNK-618 정본)**
+
+| 지표 | BNK-617 | BNK-618 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `3d7f13b` | **`cadd74a`** `feat(v1.2.1/G-REFUND-FEE-FE-WIRE): wire copay refund fee catalog into RefundRecordModal` | **+1** |
+| BE develop HEAD | `aeecc1b2` | `aeecc1b2` | carry |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 233 | **234** | +1 |
+| BE ahead vs `origin/test=598d108` | 566 | 566 | carry |
+| merge gate | 799 | **800** | +1 |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V178 | V178 | carry |
+| BE Test class | 268 | 268 | carry |
+| BE `@Test` method | 1939 | **1938** | **-1 KPI 회계 정정** (BNK-617 over-count 1·`aeecc1b2` 실측 `BillingServiceTest+122L`·`CopayRefundFeePolicyCatalogTest+21L` @Test 합 +2·1936→1938·gap 번복 아님) |
+| FE `.test.js` / `.test.jsx` | 193 / 278 | **194** / 278 | js +1 |
+| FE test 총합 | 471 | **472** | +1 |
+| 모듈 커버리지 | 80.86% (23.45/29) | 80.86% (23.45/29) | carry |
+
+### §618-1 ★★★ silverangel 신규 공지 221564 — 시설+주야간 11개 기능 (확인)
+
+- URL: `https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564`
+- 제목: 「[필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)」 · 작성자 (주)엔젤시스템 · 등록일 **2026-06-30**
+- live HTTP 200 · 88,732B · md5 `ffe82a0d` · 정기 업데이트 「매주 수요일 18시 서버 재기동」 verbatim
+- 저장: `docs/planning/research/snapshots/silverangel_notice_221564_bnk618.html`
+
+**시설+주야간 공통 8건 + 주야간 적용 3건 = 11개 기능 신규 발견** — 상세는 `snapshots/angel_longterm_regulatory_crossverify_bnk618.txt` §3-1·§3-2.
+
+**핵심 신규 기능 (ogada 갭 직격)**:
+- **간호처치기록 미이행 dashboard + 「관리 - 기관정보 - 관리자설정」 미이행 설정 탭 신규** (투약관리 지도·약복용·인슐린·건강상태 관찰·구강간호 5-서비스 토글·2026-05 이전 숨김/표시·관리자 권한 게이트)
+- **「지연→기타」 일괄 상태 변경** (대시보드 「지연」 선택 → 사유 일괄 적용)
+- **건강관리기록부 매일 자동 생성에 「주말생성여부」+「공휴일 생성」 옵션 추가** (2축 lifecycle)
+- **법정서식 서명 이미지 누락 개선** (PDF 출력 signature embed)
+- **욕창위험도평가 + 낙상위험도평가 (Huhn·Gyldenvand and Shedd·보봐스기념병원) 주석문 변경** (「* 신규 수급자는 급여제공 시작일까지 실시합니다」 평가지표 정합)
+
+### §618-2 ★★★ silverangel 신규 기능 ↔ ogada grep 0 hit · P3 candidate 3종 발굴
+
+| silverangel 신규 기능 | ogada grep | 갭 close 제안 |
+|---|---|---|
+| 간호처치기록 미이행 dashboard + 설정 탭 | `미이행`·`missed`·`noncompliant` src/{backend,frontend} → **0 hit** | **신규 P3 `G-NURSING-MISSED-RECORD-DASHBOARD`** |
+| 건강관리기록부 주말·공휴일 자동 생성 토글 | `feeSurchargeRates`/`staffEmploymentContract`/`staffLeaveLedger`에 공휴일 인지 있으나 health record auto-gen 0 hit | **신규 P3 `G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE`** |
+| 법정서식 서명 이미지 | `signature_image`·`sigImage`·`signImage` src/{backend,frontend} → **0 hit** (1건 SolapiAuthHeaders 무관) | **신규 P3 `G-LEGAL-FORM-SIGNATURE-IMAGE`** |
+| 욕창·낙상 위험도평가 주석문 | `pressureUlcerCompliance.js`·`ClientRiskAssessmentPanel.jsx`·`BodyRestraintRecordForm.jsx` 보유 (ogada 인프라 ✅) | △ 주석문 verbatim 정합 검토 carry · 3-tool 명시 (Huhn·Gyldenvand·보봐스) 가정 |
+
+→ **신규 P3 candidate 3종 발굴**. MVP out-of-scope이나 v1.3+/v2 평가지표 정합·marketing copy 후보. planner 우선순위 검토 요청.
+
+### §618-3 ★★★ lcms.or.kr 부활 도메인 — BNK-590 lcms.kr 폐기 28-cycle 후 발견
+
+- URL: `https://www.lcms.or.kr/` — live HTTP 200 · 50,554B · md5 `6c0d22b4` · 저장: `lcms_or_kr_renew_bnk618.html`
+- `<title>엔젤시스템</title>` · H 「장기요양 서비스 관리의 표준 엔젤시스템에 오신 것을 환영합니다」 / 「요양시설통합사례관리솔루션 엔젤시스템」 / 「엔젤시스템(LCMS) 방문을 환영합니다」
+- 자산 경로: `/css/egovframework/lcms_renew/css/{style,board,login,ie8}.css` — **eGovFramework 기반 사이트 renewal**
+- silverangel.kr 본진 notice 221564 footer floating 캡처: `<a href="https://www.lcms.or.kr/" target="_blank" style="background: #5896f0;">`
+- BNK-590 시점 **lcms.kr 폐기**(`c0c66076` 50,740B → 19-byte placeholder) → BNK-618 **lcms.or.kr 부활** (size 50,554B·이전 lcms.kr `c0c66076` 50,740B와 -186B 거의 동일)
+- 의미: 엔젤시스템 자매 「LCMS(요양시설통합사례관리솔루션)」 마케팅 funnel **lcms.or.kr로 도메인 변경 + 부활** — BNK-515~590 cross-promo carry 재개·자매 ERP 통합 마케팅 메시지 carry
+
+### §618-4 ★★★ G-REFUND-FEE-FE-WIRE FULL CLOSURE — M7 7-9 KCP PG 수수료 lifecycle full-stack ✅
+
+FE `cadd74a` 7-file +517L:
+
+| 파일 | 변경 | 역할 |
+|---|---|---|
+| `src/api/copayRefundFee.js` | NEW (39L) | `fetchCopayRefundFeePolicyCatalog`·`previewCopayRefundFeeNetAmount` |
+| `src/api/copayRefundFee.test.js` | NEW (58L) | API 호출 테스트 |
+| `src/api/services.js` | +30L | catalog/preview endpoints |
+| `src/components/ui/RefundRecordModal.jsx` | +214L | feePolicyCode select + netAmount preview·BANK_TRANSFER/CMS + EASY_PAY |
+| `src/components/ui/RefundRecordModal.test.jsx` | +137L | 모달 lifecycle 테스트 |
+| `src/api/billingGuardianPlatformServices.test.js` | +47L | 회귀 |
+| `src/pages/BillingDetailPage.jsx` | +8L | 모달 연결 |
+
+**3-cycle 4-layer cascade closure**:
+1. BNK-616 BE catalog: `CopayRefundFeePolicyCatalog.CAREFOR_PARITY_ENTRIES` 3-policy(카드 3.3%·계좌/CMS 500원·KCP disclaimer) — BNK-616 `2adae591`
+2. BNK-617 BE service validation: `BillingService.recordCopayRefund()` policy compatibility + netAmount validation — BNK-617 `aeecc1b2`
+3. **BNK-618 FE wire**: `RefundRecordModal` feePolicyCode select + netAmount preview + EASY_PAY 채널 통합 — BNK-618 `cadd74a` (NEW)
+
+→ M7 7-9 본인부담금 환불 lifecycle **carefor parity full-stack ✅·차별화** (carefor func.php 7-9 「환불금액의 3.3% 수수료」·「500원의 수수료를 제외」·「KCP(한국사이버페이먼트) 결제대행」 verbatim ↔ ogada FE select + preview + BE validation).
+
+### §618-5 ★★ silverangel 본진 4-URL zero drift IDENTICAL (확인 · 383→384 carry)
+
+| URL | live HTTP | size | md5 | on-disk | 상태 |
+|---|---|---|---|---|---|
+| `/newSilverangel/service/extraService.do` | 200 | 81,637 | `f9c5d877` | `f9c5d877` | IDENTICAL |
+| `/newSilverangel/daycare/daycareEssentialWork.do` | 200 | 131,664 | `c79c1be3` | `c79c1be3` | IDENTICAL |
+| `/newSilverangel/service/feeService.do` | 200 | 44,513 | `eab352a8` | `eab352a8` | IDENTICAL |
+| `/newSilverangel/service/mainService.do` | 200 | 59,002 | `bcf6df41` | `bcf6df41` | IDENTICAL |
+
+CMS 5-method verbatim 불변 (자동이체 효성CMS 250원·가상계좌 300원·카드·다계좌정산·현금영수증·1600-6859) ↔ ogada `CmsPaymentMethodCatalog` 5/5 `collectionImplemented=true` (V176+V178 무결성) **full-stack closure carry** (BNK-614~618 = 5-cycle 잔존).
+
+### §618-6 ★★ NHIS #44 이동서비스비 러-1~4 — 383차 zero drift IDENTICAL (확인)
+
+- URL: `https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769`
+- live HTTP 200 · 7,572B · md5 `c886ff1f` = on-disk IDENTICAL (BNK-540~BNK-618 **383차 zero drift**)
+- 「'러-1'부터 '러-4'까지 비용의 50%」·「1일 1회」·「별지 제22호 서식 이동서비스 일지」 verbatim 불변
+- ogada full-stack ✅ parity/우위 carry (`TransportServiceFeeService` 5/5 · FE `TransportServiceFeePanel`(UXD-159)·`TransportParityRulesPanel`(UXD-163 BNK-612)·BE catalog API `GET /api/v1/transport/service-fee-parity-rules` 4-rule)
+
+### §618-7 ★ longterm 2026 수가·고시 교차검증
+
+| URL | live HTTP | live md5 | 상태 |
+|---|---|---|---|
+| longterm 502 단기보호 `npe0000000502` | 200 | `d3c90b33` (422B partial shell) | **41-cycle 「미확인」 carry** (BNK-578~618)·canonical `b5aee8c1` 105,552B (1등급 74,060) 보존 |
+| longterm 610 통합재가 `npe0000000610` | 200 | `c26a5e57` (458B oscillation shell) | oscillation carry·canonical `0ea575be` 91,421B (가산 월 10만원) 보존 |
+| law247 `admRulSeq=2100000271110` | 200 | `b0ed8363`→**`6c32b661`** | cachebuster DRIFT·size 78,450 verbatim 불변 → 덮어쓰기 |
+| mohw126 `list_no=1490826` | 200 | `f0522041`→**`106a4278`** | 조회수 counter DRIFT·size 109,510 verbatim 불변 → 덮어쓰기·제2026-126호 본인부담상한액 불변 |
+
+### §618-8 ★ lcms.kr (legacy) — 29-cycle 「미확인」 carry
+
+- URL: `https://www.lcms.kr/` — live HTTP 000 (connect timeout) · canonical `c0c66076` 50,740B 보존
+- BNK-590 폐기 19-byte placeholder도 보존 (`lcms_root_decommission_bnk590.html`)
+- → BNK-618 §618-3 **lcms.or.kr 부활**로 의미 변동 · legacy lcms.kr 도메인 자체는 dead carry
+
+### §618-9 P0/P1/P2/P3 재정렬 (BNK-618)
+
+| 우선 | 항목 | 상태 | Δ |
+|---|---|---|---|
+| **P3→closure** | **G-REFUND-FEE-FE-WIRE** | **FE LANDED `cadd74a` 7-file +517L** | -1 P3 · 3-cycle 4-layer cascade closure |
+| **P3 신규** | **G-NURSING-MISSED-RECORD-DASHBOARD** | silverangel notice 221564 매칭 · ogada grep 0 hit | NEW |
+| **P3 신규** | **G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE** | silverangel notice 221564 매칭 · ogada grep 0 hit | NEW |
+| **P3 신규** | **G-LEGAL-FORM-SIGNATURE-IMAGE** | silverangel notice 221564 매칭 · ogada grep 0 hit | NEW |
+| P2 1순위 carry | M11·M12 | `/payroll/*`·`/accounting/*` 0 route | carry (+6.9pp lever) |
+| P3 carry | G-EASYPAY-PROVIDER-CATALOG-FE-WIRE | EasyPayPage provider-catalog 0 hit | carry |
+| P0/P1 | G14·G26×2·v1.3-C·v2 CMS·US-R01-c×2 | App.jsx `@cadd74a` LIVE | 재오픈 0 (69-cycle) |
+
+**엑셀 포맷 변경**: 0 · **가정 번복 1**: silverangel notice list 「latest real 221563 since 6/18·next ~6/25」(BNK-590 carry) → **6/25 = 221564 게시 적중·번복 closure** (가설 적중·기능 갭 번복 아님).
+
+---
+
+## §617 BNK-617 — 이지케어 역공학 2–4h · ★★★ **G21 4축 lifecycle 재실측 — schedule-rfid comp_01~09·schedule-fix 17-col·pAmt-a100→schedule-fix deep-link** · ★★★ **BE `aeecc1b2` 7-9 환불 수수료 netAmount validation LANDED** — `recordCopayRefund` policy 호환+netAmount 검증 · FE refund-fee **0 hit** → P3 `G-REFUND-FEE-FE-WIRE` carry · ★★ **ezCare 도입 카운터 동시 +3/+3/+1** — home mCnt[1] 9285→**9286** · fnc 9,353→**9,356** · pg e01 9,350/53.46%→**9,353/53.48%** · 가격 33,000/25,850 verbatim 불변 · ★★ **Channel.io bc7f4cd9 wrapper DRIFT semantic IDENTICAL** — 검은/빨간 처리상태 verbatim 불변 · ★ **patient-schedule 404 negative 재확인**
+
+**조사일**: 2026-06-25T09:32:00Z (KST 18:32) | **rotation**: 이지케어 역공학 2–4h (`/new.ez`·`ezCare_fnc.html`·Channel.io·FAQ·RFID·이중일정·가격·도입). 신규 snapshot 1건: `ezcare_g21_rfid_schedule_crosswalk_bnk617.txt`. 덮어쓰기 13건: public 5(home·fnc·charge·change_work·pg_e01)·bc7f4cd9·demo shell·demo PGID 7종(session DRIFT·의미 불변 또는 counter만 변동).
+
+**1. ogada baseline 실측 (BNK-617 정본)**
+
+| 지표 | BNK-616 | BNK-617 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `3d7f13b` | `3d7f13b` | zero advance |
+| BE develop HEAD | `2adae591` | `aeecc1b2` `feat(v2/7-9): apply refund fee policy net amount validation` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 233 | 233 | carry |
+| BE ahead vs `origin/test=598d108` | 565 | **566** | +1 |
+| merge gate | 798 | **799** | +1 |
+| Route (FE App.jsx) | 112 | 112 | carry |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V178 | V178 | carry |
+| BE Test class | 268 | 268 | carry |
+| BE `@Test` method | 1936 | **1939** | +3 |
+| FE `.test.js` / `.test.jsx` | 193 / 278 | 193 / 278 | carry |
+| FE test 총합 | 471 | 471 | carry |
+| 모듈 커버리지 | 80.86% | 80.86% (23.45/29) | carry |
+
+### §617-1 ★★★ 7-9 환불 수수료 netAmount validation BE LANDED (P3 partial)
+
+BE `aeecc1b2` — `BillingService.recordCopayRefund()`:
+- `CopayRefundFeePolicyCatalog.isPolicyCompatibleWithPaymentMethod(feePolicyCode, paymentMethod)` 가드
+- `CopayRefundFeePolicyCatalog.preview(feePolicyCode, grossAmount).netAmount()` 기대 환불액 검증
+- `BillingServiceTest` +122L 회귀 (카드 3.3%·계좌/CMS 500원·KCP disclaimer)
+
+→ BNK-616 catalog layer FULL PARITY 이후 **service validation layer 추가**. FE grep `refund-fee`/`RefundFee` → **0 hit** → `RefundRecordModal` 미연동 유지 → **P3 `G-REFUND-FEE-FE-WIRE` carry**.
+
+### §617-2 ★★★ G21 4축 lifecycle 역공학 (이지케어 데모 7-PGID)
+
+| PGID | 핵심 역공학 | ogada 대비 |
+|---|---|---|
+| `schedule-rfid` | `grid_match_list` colModel **comp_01~09** 9-flag + excel `"{Ym} 계획&태그 비교 결과"` + RFID 엑셀 upload | △ `VisitRfidDiffComparePanel` superset · 주야간 MVP N/A |
+| `schedule-fix` | `#grid-schedule-p500` 17-col + `chk-ltm-fix` + `comp_ltm_fix_data()` | △ G21 visit billing out-of-scope |
+| `duplicate-schedule` | 이중일정 검출 shell + `faqDir=duplicate` | N/A 재가 |
+| `change-list` | 8-field before/after + `"{Ym} 변경사유"` excel | △ `G-CHANGE-REASON-AUDIT` P3 |
+| `pAmt-a100` | 미생성 수급자 dialog → **schedule-fix deep-link** | △ copay→schedule-fix 가드 UX |
+| `receipt-list` | 현금영수증 3-tab | ✅ `/billing/cash-receipts` parity |
+| `patient-schedule` | **404 shell** negative | N/A |
+
+**처리상태 UX (Channel.io bc7f4cd9 · 확인)**: 공단청구 금액 **검은색=반영** · **빨간색=미반영** · 계획일정 최종 등록·청구일정 가져오기 재실행 가이드 — strip-text semantic BNK-616 대비 **IDENTICAL**(wrapper +2,598B only).
+
+### §617-3 ★★ ezCare 가격·도입 재실측 (확인)
+
+| 지표 | BNK-616 | BNK-617 | Δ |
+|---|---|---|---|
+| home mCnt[1] 재가센터 | 9,285 | **9,286** | +1 |
+| fnc 도입 기관 | 9,353 | **9,356** | +3 |
+| pg e01 이용시설/점유율 | 9,350 / 53.46% | **9,353 / 53.48%** | +3 / +0.02pp |
+| charge 방문요양 기본료 | 33,000원(40%할인) | 33,000원 | 불변 |
+| change_work 후기 | 4,965건 | 4,965건 | 불변 |
+
+가격 앵커: 방문요양 33,000원·37명 예시 25,850원·정가 55,000원 verbatim 불변.
+
+### §617-4 FAQ·엑셀 포맷
+
+- FAQ 21844 `d0aa760c` **zero drift IDENTICAL** (NHIS 이름 마스킹 자인 carry)
+- FAQ 21845+ `e5762090` NF stub carry (HAS-DATA 13건 상한 불변)
+- **엑셀 포맷 변경 0**
+
+---
+
+## §616 BNK-616 — 교차검증·갭 우선순위 8h+ · ★★★ **cross-stream FE+1·BE+1 — bathing indicator-27 FE wire FULL LANDED** — FE `3d7f13b` 10-file +457L `BathingScheduleIndicator27Panel`+pre/post observation fields ↔ silverangel essential 「목욕 평가지표 필수항목 아님·제공시 청구」 = **BNK-603~615 P2 carry 「FE wire 0 hit」 CLOSURE** · ★★★ **7-9 환불 수수료 policy catalog BE LANDED** — BE `2adae591` `CopayRefundFeePolicyCatalog` 3-policy(카드 3.3%/계좌·CMS 500원/KCP disclaimer) + `GET/POST /billing/copay/refund-fee-*` ↔ carefor func.php 7-9 verbatim **catalog layer FULL PARITY** · FE grep refund-fee **0 hit** → P3 split `G-REFUND-FEE-FE-WIRE` · ★★★ **NHIS #44 381차 zero drift IDENTICAL** · ★★ **carefor Wayback 375차 semantic IDENTICAL** · ★ **4축+leave-ledger P0/P1 재오픈 0 (67-cycle)** · ★ **M11·M12 P2 1순위 lever carry**
+
+**조사일**: 2026-06-25T08:56:00Z (KST 17:56) | **rotation**: 교차검증·갭 우선순위 8h+ (이전 BNK 가정 번복·미확인 축소·G14·대시보드·v1.3-C·v2 CMS P0/P1 재정렬·경쟁사 공지·엑셀 포맷 스캔). 신규 snapshot 3건: `ogada_git_remeasure_bnk616.txt`·`carefor_m7_copay_7-9_refund_fee_crosswalk_bnk616.txt`·`cross_gap_priority_bnk616.txt`. 덮어쓰기 2건: `carefor_func_wayback_live_bnk616.html`·`ezcare_home.html`(cachebuster only·mCnt 불변).
+
+**1. ogada baseline 실측 (BNK-616 정본)**
+
+| 지표 | BNK-615 | BNK-616 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `58f3858` | `3d7f13b` `feat(v1.2.1/US-O01): wire bathing indicator-27 compliance panel and pre/post observation fields` | **+1** |
+| BE develop HEAD | `5a5174a` | `2adae591` `feat(v2/7-9): add copay refund fee policy catalog API for carefor KCP parity` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 232 | 233 | +1 |
+| BE ahead vs `origin/test=598d108` | 564 | 565 | +1 |
+| merge gate | 796 | **798** | +2 |
+| Route (FE App.jsx) | 112 | 112 | carry |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V178 | V178 | carry |
+| BE Test class | 267 | **268** | +1 |
+| BE `@Test` method | 1925 | **1936** | +11 |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / **278** | jsx +1 |
+| FE test 총합 | 470 | **471** | +1 |
+| 모듈 커버리지 | 80.86% | 80.86% (23.45/29) | carry |
+
+### §616-1 ★★★ bathing indicator-27 FE wire FULL LANDED (P2 closure)
+
+FE `3d7f13b` — `BathingScheduleIndicator27Panel.jsx`(173L) + `BathingScheduleForm.jsx` pre/post observation + tests 3건.
+
+- API: `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=&clientId=`
+- silverangel [essentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3`(131,664B·381차 IDENTICAL) 「목욕 평가지표 필수항목 아님·제공시 청구」 verbatim ↔ ogada US-O01 월간 준수 MET/PARTIAL 패널
+- BE V177/V178 bathing pre/post observation 무결성 + FE wire = **full-stack closure**
+- G17 `functionalRecoveryCompliance.js` indicator27(기능회복) = **별개 도메인** 유지 (false-closure 방지)
+
+→ BNK-603~615 「bathing indicator-27 FE wire 0 hit P2 carry」 **번복·closure**.
+
+### §616-2 ★★★ 7-9 환불 수수료 carefor ↔ ogada catalog crosswalk (BE LANDED · FE wire P3)
+
+BE `2adae591` — `CopayRefundFeePolicyCatalog.CAREFOR_PARITY_ENTRIES`:
+
+| policyCode | carefor func.php 7-9 | fee |
+|---|---|---|
+| CARD_VOID_SAME_MONTH | 카드 전액/당월 취소 | 0 |
+| CARD_PARTIAL_OR_EXPIRED | 카드 부분/기간경과 | 3.3% |
+| BANK_OR_CMS_TRANSFER | 가상계좌/CMS | 500원 |
+
+carefor Wayback [func.php](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) `84ffd89e`(104,183B·375차 semantic IDENTICAL) verbatim:
+「환불금액의 3.3% 수수료」·「500원의 수수료를 제외」·「한국사이버페이먼트(KCP) 결제대행」
+
+ogada FE grep `refund-fee`/`RefundFee` → **0 hit** → `RefundRecordModal` 미연동 → **P3 `G-REFUND-FEE-FE-WIRE`** (catalog fetch + preview netAmount UX).
+
+### §616-3 P0/P1/P2/P3 재정렬 (BNK-616)
+
+| 우선 | 항목 | 상태 | Δ |
+|---|---|---|---|
+| P2→closure | bathing indicator-27 FE wire | **LANDED** `3d7f13b` | -1 P2 |
+| P3 partial | G-REFUND-FEE-DEDUCTION | BE catalog ✅ · FE ❌ | split → `G-REFUND-FEE-FE-WIRE` |
+| P2 1순위 | M11·M12 | `/payroll/*`·`/accounting/*` 0 route | carry (+6.9pp lever) |
+| P3 | G-EASYPAY-PROVIDER-CATALOG-FE-WIRE | EasyPayPage provider-catalog 0 hit | carry |
+| P0/P1 | G14·G26×2·v1.3-C·v2 CMS·US-R01-c×2 | App.jsx `@3d7f13b` 7/7 LIVE | 재오픈 0 (67-cycle) |
+
+**엑셀 포맷 변경**: 0 (FAQ 21844 `d0aa760c` IDENTICAL·NHIS 마스킹 자인 carry).
+
+---
+
+## §615 BNK-615 — ogada git 실측 6–8h · ★★★ **HEAD zero advance — BNK-614 silverangel CMS 5/5 closure 6-cycle 잔존 재확인** — FE `@58f3858`/BE `@5a5174a` 양쪽 develop **WT CLEAN**·`git status --short` 비어있음·`git rev-list --count origin/test..develop` FE 232·BE 564·merge gate **796** carry · **112 Route(111 `<Route\b`+1 `<Routes>`)·91 page(90+RootRedirect=91)·V1–V178·BE Test 267·BE @Test 1925(rg -c '@Test' src/test 집계)·FE test 470(193+277)·모듈 80.86%(23.45/29 직접 산출 검증)** · ★★★ **모듈 커버리지 23.45/29 분해 (BNK-615 산출 검증)** — `competitorModuleCoverage.js` 29 entry 직접 합산: **21×1.0=21.00 + 2×0.85=1.70 + 1×0.75=0.75 + 5×0.0=0.00 = 23.45/29 = 80.86%** ✅ (BNK-614 carry 수치 검증 일치·id=7-4 1.0·id=2 0.85·id=8 0.85·id=10 0.75·id=1-5/1-10/6/11/12=0) · ★★★ **silverangel CMS 5/5 closure 잔존 무결성 재확인** — V178 `cms_collection_requests_and_bathing_observations_integrity.sql` HEAD 잔존(`ls src/backend/.../db/migration | tail` 검증)·`CmsPaymentMethodCatalog` 5종 `collectionImplemented=true` carry(BNK-614 closure 6-cycle 후 잔존) · ★★★ **NHIS #44 이동서비스비 러-1~4 380차 zero drift IDENTICAL** — `c886ff1f`(live HTTP 200·7,572B=on-disk)·러-1~4·편도50%·1일1회·별지 제22호 verbatim 불변 · ★★ **silverangel 2-URL zero drift IDENTICAL carry** — essential `c79c1be3`(131,664B)·extraService `f9c5d877`(81,637B) live=disk · ★★ **ezCare home mCnt 14-day +2 재가센터 미세 신호** — `mCnt[1]` BNK-610 9,283 → BNK-615 **9,285**(+2)·`mCnt = {1: 9285, 2: 4603, 3: 2353, 4: 1820}` verbatim · 14-day 추정 +2 → 월 ~4 신규 도입(가설)·`G-MARKET-SHARE-DASHBOARD`(BNK-610 P3 「가정」) 데이터 소스 후보 · ★★ **ezCare home·fnc cachebuster DRIFT** — home `d2e86c93`→`090f192f`(-12B)·fnc `d9ad49cb`→`379ff76c`(동일 size·cachebuster only) → 덮어쓰기 2건·의미 불변 · ★ **M11·M12 P2 갭 carry** — `rg 'path="/payroll'` 0 hit·`rg 'path="/accounting'` 0 hit → id=11·12 closure 시 **80.86%→87.76%(+6.9pp)** 단일 최대 KPI bump 레버 · ★ **carefor LIVE timeout 36-cycle 「미확인」 carry**(BNK-558~615·Wayback 내용 IDENTICAL 검증) · ★ **longterm 502/610 + lcms 미확인 carry**(canonical 보존) · ★ **4축+leave-ledger P0/P1 재오픈 0 (66-cycle carry, BNK-549~615)**
+
+**조사일**: 2026-06-25T08:16:00Z (KST 17:16) | **rotation**: ogada git 실측 6–8h (`src/backend`·`src/frontend` develop HEAD·Route·page·테스트·모듈 커버 %·갭 우선순위 재산정·COMPETITOR_MATRIX ogada 열 `@HEAD` SHA 일괄 갱신). 신규 snapshot 1건: `ogada_git_remeasure_bnk615.txt`(`f4a99bcb`·7,103B). 덮어쓰기 2건: `ezcare_home.html`·`ezcare_ezCare_fnc.html`(둘 다 cachebuster only·의미 불변).
+
+**1. ogada baseline 실측 (BNK-615 정본)**
+
+| 지표 | BNK-614 | BNK-615 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `58f3858` | `58f3858` `fix(v1.2.1/QA-B312): normalize annual leave branch scope fallback` | **zero advance** |
+| BE develop HEAD | `5a5174a` | `5a5174a` `test: cover easy-pay provider catalog routing` | **zero advance** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 232 | 232 | carry |
+| BE ahead vs `origin/test=598d108` | 564 | 564 | carry |
+| merge gate | 796 | 796 | carry |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V178 | V178 | carry (총 178) |
+| BE Test class (`*Test.java`) | 267 | 267 | carry |
+| BE `@Test` method (`rg -c '@Test' src/test`) | 1925 | 1925 | carry |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / 277 | carry |
+| FE test 총합 | 470 | 470 | carry |
+| 모듈 커버리지 | 80.86% | **80.86% (23.45/29 직접 산출 검증 ✅)** | carry+검증 |
+
+### §615-1 ★★★ 모듈 커버리지 23.45/29 분해 (BNK-615 산출 검증)
+
+`competitorModuleCoverage.js` 29 entry 직접 합산:
+
+```
+COMPETITOR_FEATURE_COVERAGE = [
+  { id: "1-1",  coverage: 1    }, { id: "1-3",  coverage: 1    }, { id: "1-5",  coverage: 0    },
+  { id: "1-7",  coverage: 1    }, { id: "1-9",  coverage: 1    }, { id: "1-10", coverage: 0    },
+  { id: "2",    coverage: 0.85 }, { id: "3-1",  coverage: 1    }, { id: "4",    coverage: 1    },
+  { id: "5",    coverage: 1    }, { id: "26",   coverage: 1    }, { id: "43",   coverage: 1    },
+  { id: "6",    coverage: 0    }, { id: "7-1",  coverage: 1    }, { id: "7-2",  coverage: 1    },
+  { id: "7-2-1",coverage: 1    }, { id: "7-3",  coverage: 1    }, { id: "7-4",  coverage: 1    },
+  { id: "7-6",  coverage: 1    }, { id: "7-10", coverage: 1    }, { id: "8",    coverage: 0.85 },
+  { id: "9",    coverage: 1    }, { id: "10",   coverage: 0.75 }, { id: "11",   coverage: 0    },
+  { id: "12",   coverage: 0    }, { id: "nhis", coverage: 1    }, { id: "qr",   coverage: 1    },
+  { id: "hq",   coverage: 1    }, { id: "platform", coverage: 1 }
+];
+```
+
+| 가중치 | id 개수 | 합산 | 해당 id (BNK-615 잔존) |
+|---|---|---|---|
+| 1.0  | 21 | 21.00 | 1-1·1-3·1-7·1-9·3-1·4·5·26·43·7-1·7-2·7-2-1·7-3·**7-4**(BNK-603 closure·6-cycle 후 잔존)·7-6·7-10·9·nhis·qr·hq·platform |
+| 0.85 | 2  | 1.70  | 2 이동서비스(G15 v1.3-C)·8 직원근태(US-R03+G-STAFF-WORK-ATTENDANCE) |
+| 0.75 | 1  | 0.75  | 10 부가서비스(G-SMS-TEMPLATE-CATALOG BNK-584) |
+| 0.0  | 5  | 0.00  | **1-5 가정통신문·1-10 연계기록지·6 위생·안전 점검·11 직원급여·12 회계** |
+| **합계** | **29** | **23.45** | **23.45 / 29 = 0.808620... = 80.86%** ✅ |
+
+→ BNK-614 carry 수치 (80.86%·23.45/29) **JavaScript 직접 합산 검증 일치** (BNK-603→615 13-cycle KPI 신뢰성 재확인).
+v1.2 KPI ≥60% 초과 carry 20.86pp 마진.
+
+**KPI lever 우선순위 재산정 (BNK-615 정본)**:
+| 우선 | id | 현 cov | closure 시 합산 | 모듈% | Δpp | 출처 |
+|---|---|---|---|---|---|---|
+| **1순위** | 11+12 (M11·M12 동반) | 0+0 | 23.45+2.0=25.45 | **87.76%** | **+6.9pp** | 케어포 11-1~6·이지케어 wAllowance-payrollcost·severance (단일 최대 lever) |
+| 2순위 | 1-5 (가정통신문) | 0 | 23.45+1.0=24.45 | 84.31% | +3.45pp | 케어포 1-5·이지케어 mobile-sendW |
+| 3순위 | 1-10 (연계기록지) | 0 | 23.45+1.0=24.45 | 84.31% | +3.45pp | 케어포 1-10·이지케어 worker-check |
+| 4순위 | 6 (위생·안전 점검) | 0 | 23.45+1.0=24.45 | 84.31% | +3.45pp | 케어포 func 6-x·HACCP 위생 |
+| 5순위 | 10 (부가서비스 0.75→1.0) | 0.75 | 23.45+0.25=23.70 | 81.72% | +0.86pp | G-SMS-TEMPLATE-CATALOG-FE-WIRE closure 시 |
+| 6순위 | 2 (이동 0.85→1.0) | 0.85 | 23.45+0.15=23.60 | 81.38% | +0.52pp | G15 v1.3-C 미완 항목 |
+| 7순위 | 8 (직원근태 0.85→1.0) | 0.85 | 23.45+0.15=23.60 | 81.38% | +0.52pp | G-STAFF-ANNUAL-LEAVE 등 |
+
+### §615-2 ★★★ silverangel CMS 5/5 closure 잔존 무결성 재확인
+
+BNK-614 §614-1 closure 6-cycle 후 (BNK-609 → 615 = 6-cycle) HEAD 잔존:
+- `ls src/backend/src/main/resources/db/migration | sort -V | tail -3` →
+  V176__cms_collection_requests_g2b.sql · V177__bathing_schedules_indicator_27_pre_post_observation.sql · V178__cms_collection_requests_and_bathing_observations_integrity.sql
+- `CmsPaymentMethodCatalog` 5종 entry (AUTO_DEBIT_CMS·VIRTUAL_ACCOUNT·CARD·MULTI_ACCOUNT_SETTLEMENT·CASH_RECEIPT) 모두 `collectionImplemented=true` carry (BE git `@5a5174a` HEAD).
+- `CmsController` `/claims/{id}/{debit,virtual-account,multi-account-settlement}` 3-route + `GET /payment-method-catalog` carry.
+- silverangel `extraService.do` live HTTP 200·81,637B·`f9c5d877` ↔ on-disk IDENTICAL (380차 zero drift) — 효성CMS 250원·가상계좌 300원·카드·다계좌·현금영수증·1600-6859 verbatim 불변.
+
+→ **BNK-614 closure 회귀 없음·DB-level CHECK 무결성 우위 잔존** (silverangel 공개 사이트 미노출).
+
+### §615-3 ★★★ NHIS #44 380차 + silverangel 2-URL zero drift + 미확인 carry
+
+| URL | HTTP | SIZE | md5 (live) | md5 (on-disk) | 비고 |
+|---|---|---|---|---|---|
+| [NHIS #44 joHistoryContent.do](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | `c886ff1f` | **380차 IDENTICAL** · 러-1~4·편도50%·1일1회·별지 제22호 일지 verbatim |
+| [silverangel essentialWork.do](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664B | `c79c1be3` | `c79c1be3` | IDENTICAL · 평가지표 27 목욕 「필수항목 아님·제공시 청구」 verbatim |
+| [silverangel extraService.do](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637B | `f9c5d877` | `f9c5d877` | IDENTICAL · CMS 5-method 250/300원·1600-6859 verbatim |
+| [carefor daycare/func.php](https://www.carefor.co.kr/daycare/func.php) | — | — | (timeout 18s) | `6226e6eb` | **「미확인」 36-cycle carry**(BNK-558~615·Wayback 검증 정상) |
+| longterm 502 단기보호 | 302 | 0 | securityException | `b5aee8c1` | 「미확인」 carry (canonical 105,552B 보존) |
+| longterm 610 통합재가 | — | (oscillation) | — | `0ea575be` | 458B shell oscillation carry (canonical 91,421B 보존) |
+| lcms 루트 | — | — | (transient 000) | `c0c66076` | 「미확인」 carry |
+
+### §615-4 ★★ ezCare home·fnc cachebuster DRIFT + mCnt 14-day +2 재가센터 미세 신호
+
+[`/` (home)](https://ezcare.easyms.co.kr/) live HTTP 200·106,087B·`090f192f`(BNK-610 disk `d2e86c93`·106,099B·-12B). cachebuster only · 의미 불변 → 덮어쓰기 `ezcare_home.html`.
+
+home 본문 verbatim 발췌:
+```
+mCnt = {
+    1: 9285,
+    2: 4603,
+    3: 2353,
+    4: 1820,
+}
+```
+- `mCnt[1]` BNK-609 9,283 → BNK-610 9,283 → **BNK-615 9,285** (+2 over ~14-day · cachebuster snapshot).
+- 14-day 추정 +2 = 월 ~4 신규 도입 추세 가설 (단일 측정점·통계 유의성 보장 안 됨).
+- BNK-610 「전국 재가센터 17,489·이용시설 9,350·점유율 53.46%」 verbatim 모집단(공단 통계·집계일 2026.06.25)과 별개의 ezCare 도입 카운터 추정.
+- **planner GTM 신호**: `G-MARKET-SHARE-DASHBOARD`(BNK-610 P3 「가정」) 데이터 소스 후보 — ezCare home/fnc cachebuster scrape 1d × 14d 시계열 자동화 가능(BNK 시계열 idea).
+
+[`/new/ezCare_fnc.html`](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) live HTTP 200·17,870B·`379ff76c`(BNK-611 disk `d9ad49cb`·동일 size). cachebuster only·도입 수치 본문 grep 미검출(BNK-609 9,353 verbatim은 BNK-611 캡처에 의존) → 덮어쓰기 `ezcare_ezCare_fnc.html`. 의미 불변 carry.
+
+### §615-5 ★ M11·M12 P2 갭 최우선 carry — KPI lever 우선순위 1위 재확정
+
+`rg 'path="/payroll' src/frontend/src/App.jsx` → **0 hit** · `rg 'path="/accounting' src/frontend/src/App.jsx` → **0 hit** (BNK-611·612·613·614 carry).
+→ id=11 직원 급여 cov=0 · id=12 수입지출·회계 cov=0 · 동반 closure 시 **80.86% → 87.76% (+6.9pp)** **단일 최대 KPI bump 레버**.
+
+경쟁사 매핑:
+- 케어포: func.php 11-1 급여대장·11-2 퇴직금·11-3 근로계약·11-4 4대보험·11-5 수당·11-6 연말정산 verbatim (Wayback `6226e6eb` canonical).
+- 이지케어: `?PGID=wAllowance-payrollcost`·`?PGID=wAllowance-severance`·`?PGID=wAllowance-awData`(BNK-588 카탈로그 carry).
+- 엔젤시스템: silverangel `?systemBase=hr` 추정 (미확인 carry).
+
+planner MVP 결정 보류 carry — id=11·12 v1.3+ 우선순위 격상 권장(KPI 87.76% 달성 시 v2 marketing copy 「케어포·이지케어 11-x 직원급여 full parity」 사용 가능).
+
+### §615-6 ★ 4축+leave-ledger P0/P1 재오픈 0 (66-cycle carry, BNK-549~615)
+
+App.jsx `@58f3858` 7/7 path LIVE 잔존 — G14 care-plan-form·G26 dashboard/hq×2·v1.3-C transport 8-route·v2 CMS·US-R01-c leave-ledger×2.
+candidate carry: M11/M12 P2 + G-EASYPAY-PROVIDER-CATALOG-FE-WIRE P3 + G-REFUND-FEE-DEDUCTION P3 + bathing indicator-27 FE wire P2 + 5 P3 (BNK-614 동일).
+
+**가정 번복 0·신규 core 갭 0·candidate 변동 0·closure 잔존 재확인 1(silverangel CMS 5/5·6-cycle 후)·상태 변경 0(HEAD zero advance·양쪽 WT CLEAN)·KPI 변경 0(80.86% 직접 산출 검증)·미확인 carry 4(carefor LIVE 36-cycle·longterm 502·610·lcms)·신규 snapshot 1건(`ogada_git_remeasure_bnk615.txt`)·덮어쓰기 2건(ezcare home·fnc·cachebuster only)·엑셀 포맷 변경 0·per-cycle minimum 4종 충족·tester FF merge 796 가속 권장**.
+
+## §614 BNK-614 — 엔젤·롱텀·규제 4–6h · ★★★ **silverangel CMS 5-method ↔ ogada 5/5 `collectionImplemented` FULL PARITY 재입증·closure** — silverangel `extraService.do` 부가서비스 CMS 5-method(자동이체 효성CMS 250원·가상계좌 300원·카드·다계좌정산·현금영수증·1600-6859) verbatim ↔ ogada `CmsPaymentMethodCatalog` 5종 모두 `collectionImplemented=true`·`collectionImplementedCount()==5` + `CmsController` `/claims/{claimId}/{debit,virtual-account,multi-account-settlement}` 엔드포인트 = **3/5(BNK-595/601 VIRTUAL_ACCOUNT·MULTI_ACCOUNT ❌)→5/5 갭 완전 closure** (V176 `cms_collection_requests` + V178 defense-in-depth 무결성·silverangel 공개 사이트 DB CHECK 미노출 → ogada **DB 무결성 우위**) · ★★★ **ogada cross-stream FE+1·BE+1** — FE `@58f3858`(QA-B312 annual leave branch scope)·BE `@5a5174a`(`EasyPayControllerRoutingTest` @Test +3)·merge gate 794→**796**·BE Test 266→**267**·BE @Test 1922→**1925** · ★★ **평가지표 27 목욕 silverangel essential ↔ ogada V177/V178 bathing pre/post observation** — 「목욕 평가지표 필수항목 아님·제공시 청구」 verbatim ↔ `bathing_schedules` pre/post 관찰 + 무결성(bathing FE wire `indicator-27-compliance` P2 carry) · ★★ **NHIS #44 이동서비스비 379차 zero drift IDENTICAL** — `c886ff1f`(live HTTP 200·7,572B=on-disk) ↔ ogada G16 full-stack + UXD-163 `TransportParityRulesPanel` · ★ **silverangel 3-URL zero drift IDENTICAL** — essential `c79c1be3`(131,664B)·extraService `f9c5d877`(81,637B)·feeService `eab352a8`(44,513B) live=disk · ★ **longterm 502 단기보호 「미확인」(HTTP 302 securityException)** canonical `b5aee8c1`(105,552B·1등급 74,060) 보존 · **longterm 610 통합재가 458B shell oscillation** canonical `0ea575be`(91,421B·가산 월 10만원) 보존 · ★ **law247 cachebuster DRIFT(`b0ed8363`)·mohw126 counter DRIFT(`f0522041`)** 제2025-247호/제2026-126호·본인부담상한액 verbatim 불변 → 덮어쓰기 2건 · ★ **M11·M12 P2 갭 carry** — id=11·12 closure 시 **80.86%→87.76%(+6.9pp)** 단일 최대 KPI bump 레버 · ★ **4축+leave-ledger P0/P1 재오픈 0 (65-cycle carry)**
+
+**조사일**: 2026-06-25T07:32:00Z (KST 16:32) | **rotation**: 엔젤·롱텀·규제 4–6h (silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 #44·2026 수가·평가#27·단기보호·통합재가). 신규 snapshot 1건: `angel_longterm_regulatory_crossverify_bnk614.txt`. 덮어쓰기 2건: `law_mohw_2025_247_admRulInfoP.html`·`mohw_gosi_2026_126.html`.
+
+**1. ogada baseline 실측 (BNK-614 정본)**
+
+| 지표 | BNK-613 | BNK-614 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `892122d` | **`58f3858`** `fix(v1.2.1/QA-B312): normalize annual leave branch scope fallback` | **+1** |
+| BE develop HEAD | `56831fc` | **`5a5174a`** `test: cover easy-pay provider catalog routing` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 231 | **232** | **+1** |
+| BE ahead vs `origin/test=598d108` | 563 | **564** | **+1** |
+| merge gate | 794 | **796** | **+2** |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V178 | V178 | carry (총 178) |
+| BE Test class (`*Test.java`) | 266 | **267** | **+1** (`EasyPayControllerRoutingTest`) |
+| BE `@Test` method (`rg -c '@Test' src/test`) | 1922 | **1925** | **+3** |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / 277 | carry |
+| FE test 총합 | 470 | 470 | carry |
+| 모듈 커버리지 | 80.86% | 80.86% | carry (23.45/29·id=7-4 1.0) |
+
+### §614-1 ★★★ silverangel CMS 5-method ↔ ogada 5/5 `collectionImplemented` FULL PARITY (확인·closure 재입증)
+
+silverangel `extraService.do` (live HTTP 200·81,637B·`f9c5d877`=on-disk) CMS 부가서비스 verbatim:
+자동이체(효성CMS 250원)·가상계좌(300원)·카드·다계좌정산·현금영수증·1600-6859.
+
+ogada git 실측 `@5a5174a` — `CmsPaymentMethodCatalog` Entry 5종 (전부 `collectionImplemented=true`):
+
+| # | silverangel method | ogada Entry | route | collectionImplemented |
+|---|---|---|---|---|
+| 1 | 자동이체(효성CMS 250원) | `AUTO_DEBIT_CMS` 자동이체(CMS) 250원/1건 | `/billing/cms` | ✅ |
+| 2 | 가상계좌(300원) | `VIRTUAL_ACCOUNT` 가상계좌 300원/1건 | `/billing/cms` | ✅ |
+| 3 | 카드 | `CARD` 카드결제 | `/billing/easy-pay` | ✅ |
+| 4 | 다계좌정산 | `MULTI_ACCOUNT_SETTLEMENT` 다계좌 정산 | `/billing/cms` | ✅ |
+| 5 | 현금영수증 | `CASH_RECEIPT` 현금영수증 | `/billing/cash-receipts` | ✅ |
+
+- `CmsPaymentMethodCatalogServiceTest`: `assertEquals(5, response.collectionImplementedCount())`
+- `CmsController` 엔드포인트: `POST/GET /claims/{claimId}/debit`·`/virtual-account`·`/multi-account-settlement`·`GET /payment-method-catalog`
+- **갭 closure 추적**: BNK-595/601 시점 3/5 (AUTO_DEBIT_CMS·CARD·CASH_RECEIPT)·VIRTUAL_ACCOUNT·MULTI_ACCOUNT ❌ → V176(`dac8ebd`) `cms_collection_requests`(VIRTUAL_ACCOUNT·MULTI_ACCOUNT_SETTLEMENT lifecycle) + V178(`3c1fdce`) defense-in-depth(amount>0·시간성·status lifecycle·수단별 형상 CHECK) → **현재 5/5 = silverangel 부가서비스 CMS 완전 parity + DB-level 무결성 우위** (silverangel 공개 사이트는 DB CHECK 미노출).
+
+### §614-2 ★★ 평가지표 27 목욕 — silverangel essential ↔ ogada V177/V178 bathing observation
+
+- silverangel `daycareEssentialWork.do` (live HTTP 200·131,664B·`c79c1be3`=on-disk) verbatim: 「목욕서비스 제공시 청구 가능」·「(평가지표 필수항목은 아님)」 — 평가지표 27 목욕은 **선택(필수 아님)·제공시 청구**.
+- ogada V177(`e12b084`) `bathing_schedules.pre_observation_notes`/`post_observation_notes` + `chk_bathing_schedules_completed_requires_pre_post_observation` · V178 비완료 raw SQL 공백 적재 차단(WAYPOINT 동형) → bathing 관찰 기록 무결성 ✅.
+- bathing FE wire (`indicator-27-compliance`) = **0 hit P2 carry** (BNK-611 decision 6·G17 indicator27 별개 도메인·false-closure 방지).
+
+### §614-3 ★ NHIS #44 379차 + 2026 수가·고시 교차검증
+
+- NHIS #44: [`joHistoryContent.do?…SEQ=1637&SEQ_CONTENTS=3281769`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) live HTTP 200·7,572B·`c886ff1f`=on-disk **379차** IDENTICAL — 러-1~4 편도50% 1일1회 별지 제22호 일지 verbatim 불변 ↔ ogada `TransportServiceFeePanel`+`TransportServiceFeeService`+UXD-163 `TransportParityRulesPanel` full-stack ✅ 우위.
+- silverangel feeService.do: live HTTP 200·44,513B·`eab352a8`=on-disk IDENTICAL.
+- longterm 502 단기보호: HTTP 302 → securityException(0B) **「미확인」 carry**·canonical `b5aee8c1`(105,552B·단기보호 1등급 74,060·월 한도액 2026.1.1) 보존.
+- longterm 610 통합재가: HTTP 200·458B shell(`c26a5e57`) oscillation carry·canonical `0ea575be`(91,421B·통합재가 2종 이상·가산 월 10만원·주야간보호형) 보존.
+- law247: HTTP 200·78,450B·`013ef108`→`b0ed8363`(cachebuster)·제2025-247호·시행 2026 verbatim 불변 → 덮어쓰기.
+- mohw126: HTTP 200·109,510B·`783cf957`→`f0522041`(counter)·제2026-126호·본인부담상한액 verbatim 불변 → 덮어쓰기.
+- lcms `https://www.lcms.kr/`: HTTP 000 transient **「미확인」 1-cycle**·canonical `c0c66076` 보존.
+
+## §613 BNK-613 — 케어포 역공학 0–2h · ★★★ **7-9 본인부담금 수납,환불내역 환불 수수료 정책 verbatim 신규 블록** — carefor func.php 7-9 본문 「환불금액의 3.3% 수수료가 발생」(카드 부분/기간경과)·「500원의 수수료를 제외」(계좌이체/CMS)·「KCP(한국사이버페이먼트) 결제대행 — 결제대행업체·은행사·카드사 수수료를 제외한 나머지만 환불」 = **7-5 간편결제(KCP PG·BNK-612)와 동일 PG 정산 라인** ↔ ogada `/billing/reports/refunds`+`RefundRecordModal.jsx`+BE `RecordCopayRefundRequest`(refundedAt/amount/reason·US-M03 7-9) **환불 기록 full-stack ✅ / PG 수수료 자동 차감 ❌** → 신규 P3 `G-REFUND-FEE-DEDUCTION`(7-5 FE wire 와 v3+ 실 PG 통합 묶음·MVP out-of-scope) · ★★★ **BNK-612 FE WT DIRTY 1 closure** — FE `892122d` `fix(v1.2.1/QA-B312): harden StaffAnnualLeavePage branch scope vitest isolation` 가 미커밋 `StaffAnnualLeavePage.test.jsx` 커밋(rules.md §6 push 누락 위험 해소·BNK-612 caution 해소) · ★★★ **본인부담 7-x lifecycle 10-leaf ↔ ogada Route 1:1 재입증** — 7-1~7-10 = **9✅+1△(7-5 FE wire) + 7-9 PG 수수료 △** · ogada superset 5(현금영수증·본인부담률·수가표·공단 import·통계) · ★★ **NHIS #44 이동서비스비 378차 zero drift IDENTICAL** — `c886ff1f`(live HTTP 200·7,572B=on-disk) ↔ ogada G16 full-stack · ★ **carefor func.php Wayback 374차 semantic IDENTICAL** — raw `246cce32`(104,180B·BNK-612 `9ee25a97`·-2B wrapper variance)·7-x 10-leaf+환불 수수료 verbatim = canonical `6226e6eb`·LIVE timeout **35-cycle 「미확인」** · ★ **M11·M12 P2 갭 carry** — id=11·12 closure 시 **80.86%→87.76%(+6.9pp)** 단일 최대 KPI bump 레버 · ★ **4축+leave-ledger P0/P1 재오픈 0 (64-cycle carry)**
+
+**조사일**: 2026-06-25T06:55:00Z (KST 15:55) | **rotation**: 케어포 역공학 0–2h (func.php 109항목·본인부담 7-x 번호식 흐름·매뉴얼 PDF·demo-work loadPage/view). 신규 snapshot 2건: `carefor_func_wayback_live_bnk613.html`(104,180B `246cce32`)·`carefor_m7_copay_7-9_refund_fee_crosswalk_bnk613.txt`(4.0KB). 덮어쓰기 0건.
+
+**1. ogada baseline 실측 (BNK-613 정본)**
+
+| 지표 | BNK-612 | BNK-613 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `7b4c6f9` | **`892122d`** `fix(v1.2.1/QA-B312): harden StaffAnnualLeavePage branch scope vitest isolation` | **+1** |
+| BE develop HEAD | `56831fc` | `56831fc` `feat(v2/7-5): add easy-pay provider catalog API for carefor parity` | carry (zero advance) |
+| FE WT | DIRTY 1 (`StaffAnnualLeavePage.test.jsx`) | **CLEAN** | ★ closure |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 230 | **231** | **+1** |
+| BE ahead vs `origin/test=598d108` | 563 | 563 | carry |
+| merge gate | 793 | **794** | **+1** |
+| Route (FE App.jsx) | 112 | 112 | carry |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V178 | V178 | carry |
+| BE Test class file | 266 | 266 | carry |
+| BE `@Test` method | 1922 | 1922 | carry |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / 277 | carry |
+| FE test 총합 | 470 | 470 | carry |
+| 모듈 커버리지 | 80.86% | 80.86% | carry (id=7-4 1.0) |
+
+### §613-1 ★★★ 7-9 본인부담금 수납,환불내역 — 환불 수수료 정책 verbatim (KCP PG 정산)
+
+carefor `func.php` 7-9 본인부담금 수납,환불내역 본문 verbatim (canonical `6226e6eb`·Wayback `246cce32` 동일):
+
+```
+환불에 대한 수수료는 아래 각호와 같습니다. 홈페이지에서 진행되는 모든 결제방식은
+결제대행업체인 한국사이버페이먼트(KCP)를 통하여 진행되며, 환불시에는 결제대행업체,
+은행사, 카드사의 수수료를 제외한 나머지 결제 비용만 환불 처리가 가능합니다.
+
+① [카드 당월 매입/승인취소] 환불 처리시 수수료는 없으며, 매입취소와 승인취소를 통하여 환불이 진행됩니다.
+② [카드 부분/기간경과] 환불 요청시에는 환불금액의 3.3% 수수료가 발생됩니다.
+③ [계좌이체/CMS] 환불금액에서 500원의 수수료를 제외한 나머지 금액을 환불 해 드립니다.
+```
+
+| 항목 | 케어포 7-9 | ogada `/billing/reports/refunds` (BNK-613) |
+|---|---|---|
+| PG | KCP(한국사이버페이먼트) — 7-5 간편결제와 동일 라인 | PG-중립 (수동 환불 기록) |
+| 카드 환불 | 당월=무수수료 / 부분·기간경과=3.3% 차감 | `RecordCopayRefundRequest.amount` 수동 입력 |
+| 계좌/CMS 환불 | 500원 정액 차감 | (수수료 차감 없음) |
+| 환불 기록 | npay/cost 화면 | ✅ `RefundRecordModal.jsx` + `RecordCopayRefundRequest`(refundedAt/amount/reason·US-M03 7-9) |
+| net 자동 정산 | ✅ KCP 의존 | ❌ 미구현 |
+
+**근거**: carefor `func.php` 7-9 본문 verbatim (위). ogada BE `git show develop:.../RecordCopayRefundRequest.java` = `record(@NotNull LocalDate refundedAt, BigDecimal amount, String reason)` (JavaDoc 「Copay refund payload for PAID claims (US-M03 7-9, v2)」). 환불 "기록"은 full-stack ✅(날짜·금액·사유·리포트 정합), PG 수수료 자동 차감(3.3% card / 500원 bank)은 ❌. **신규 P3 candidate `G-REFUND-FEE-DEDUCTION`** — `RecordCopayRefundRequest` 에 결제수단별 수수료율 카탈로그(카드 3.3% / 계좌 500원) + feeAmount/netAmount 파생. 7-5 `G-EASYPAY-PROVIDER-CATALOG-FE-WIRE` 와 v3+ 실 PG 통합 묶음(MVP out-of-scope·KPI 영향 0).
+
+### §613-2 ★★ 본인부담 7-x lifecycle 10-leaf ↔ ogada Route 1:1 재입증
+
+| func.php 7-x | ogada Route | 상태 |
+|---|---|---|
+| 7-1 청구관리 | `/billing` | ✅ |
+| 7-2 입금관리 | `/billing/payments` | ✅ |
+| 7-3 미납관리 | `/billing/overdue` | ✅ |
+| 7-4 자동이체(CMS) | `/billing/cms` (`CmsCollectionPanel`) | ✅ id=7-4 1.0 (BNK-603) |
+| 7-5 간편결제 | `/billing/easy-pay` (BE provider-catalog) | △ FE wire P3 (BNK-612) |
+| 7-6 청구대장 리포트 | `/billing/reports/charges` | ✅ |
+| 7-7 입금대장 리포트 | `/billing/reports/deposits` | ✅ |
+| 7-8 수납대장 리포트 | `/billing/reports/receipts` | ✅ |
+| 7-9 수납,환불내역 | `/billing/reports/refunds` + `RefundRecordModal` | △ 환불 기록 ✅ / PG 수수료 ❌ |
+| 7-10 간편계산기 | `/billing/calculator` | ✅ |
+
+ogada superset 5: `/billing/cash-receipts`·`/billing/copay-rates`·`/billing/fee-schedules`·`/billing/imports/nhis`·`/billing/reports/statistics`. → 본인부담 lifecycle ogada **완전+우위**, 잔여 △ 2건(7-5 FE wire·7-9 PG 수수료)은 모두 실 PG 미연동 단계(v3+ 묶음·MVP out-of-scope).
+
+### §613-3 ★ NHIS #44 378차 + carefor Wayback 374차 교차검증 + BNK-612 caution 해소
+
+- NHIS #44: [`joHistoryContent.do`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·`c886ff1f`(7,572B) live=disk IDENTICAL **378차**.
+- carefor Wayback: [`20260519072235/.../func.php`](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) HTTP 200·104,180B raw `246cce32`(BNK-612 `9ee25a97`·-2B Wayback rewriter wrapper variance) — 7-x 10-leaf+환불 수수료 본문 verbatim = canonical `6226e6eb` 의미 동일 **374차**. carefor LIVE direct HTTP **000** timeout **35-cycle 「미확인」**(BNK-558~613·내용 Wayback 검증).
+- BNK-612 FE WT DIRTY 1(`StaffAnnualLeavePage.test.jsx` 미커밋) → FE `892122d` QA-B312 commit closure(rules.md §6 push 누락 위험 해소·양쪽 WT CLEAN).
+
+## §612 BNK-612 — 교차검증·갭 우선순위 8h+ · ★★★ **7-5 본인부담금 간편결제 carefor parity BE LANDED** — BE `56831fc` `feat(v2/7-5): add easy-pay provider catalog API for carefor parity` 10-file +264L: `GET /api/v1/billing/easy-pay/provider-catalog`(JavaDoc 「Returns 7-5 easy-pay provider catalog … 케어포 npay_manage parity」) + `EasyPayProviderCatalog.CAREFOR_PARITY_ENTRIES`={`CARD` 카드결제·`KAKAO_PAY` 카카오페이}(둘 다 paymentImplemented=true) + `EasyPayProviderCatalogServiceTest` +100L + `MustApiEndpointRoutingTest` +32L + `RoleBasedControllerAccessTest` +30L 회귀 ↔ carefor func.php 7-5 본인부담금 간편결제(KCP 한국사이버페이먼트 PG·npay.php·카드 수수료 차감) — **FE wire 0 hit**(`/billing/easy-pay` EasyPageRoute 존재하나 provider-catalog 엔드포인트 미연결) → 신규 P3 `G-EASYPAY-PROVIDER-CATALOG-FE-WIRE`(false-closure 방지) · ★★★ **ogada baseline cross-stream FE+1·BE+2** — FE `@7b4c6f9`(UXD `TransportParityRulesPanel`+audit badge CSS·G16·US-G06)·BE `@56831fc`+`@3c1fdce`(V178)·merge gate **790→793**·V177→**V178**·BE @Test 1917→**1922**·BE Test class 265→**266** · ★★ **V178 cms_collection_requests + bathing pre/post observations defense-in-depth integrity** DB 무결성 강화 · ★★ **NHIS #44 이동서비스비 377차 zero drift IDENTICAL** — `c886ff1f`(live HTTP 200·7,572B=on-disk) ↔ ogada G16 full-stack + UXD parity-rules 패널(BNK-612) · ★ **carefor func.php Wayback 373차 semantic IDENTICAL** — raw `9ee25a97`(104,182B·cachebuster wrapper variance)·7-5 간편결제 leaf verbatim = canonical `6226e6eb`·LIVE timeout **34-cycle 「미확인」** · ★ **FE WT DIRTY caution** — `StaffAnnualLeavePage.test.jsx` 미커밋(coder build 전 commit 권장·push 누락 위험) · ★ **M11·M12 P2 갭 carry** — id=11·12 closure 시 **80.86%→87.76%(+6.9pp)** · ★ **4축+leave-ledger P0/P1 재오픈 0 (63-cycle carry)**
+
+**조사일**: 2026-06-25T06:15:00Z (KST 15:15) | **rotation**: 교차검증·갭 우선순위 8h+ (이전 가정 번복 여부·미확인 축소·BE coder 신규 commit co-detection). 신규 snapshot: `ogada_git_remeasure_bnk612.txt`(9,119B `58789ba3`)·`carefor_func_wayback_live_bnk612.html`(104,182B `9ee25a97`). 덮어쓰기 0건.
+
+**1. ogada baseline 실측 (BNK-612 정본)**
+
+| 지표 | BNK-611 | BNK-612 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `5bb84a6` | **`7b4c6f9`** `feat(uxd/163): add TransportParityRulesPanel + audit badge CSS (G16·US-G06)` | **+1** |
+| BE develop HEAD | `4963535` | **`56831fc`** `feat(v2/7-5): add easy-pay provider catalog API for carefor parity` (+`3c1fdce db(V178)`) | **+2** |
+| FE WT | CLEAN | **DIRTY 1** (`StaffAnnualLeavePage.test.jsx`) | ★ caution |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 229 | **230** | **+1** |
+| BE ahead vs `origin/test=598d108` | 561 | **563** | **+2** |
+| merge gate | 790 | **793** | **+3** |
+| Route (FE App.jsx) | 112 | 112 | carry |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V177 | **V178** | **+1** |
+| BE Test class file | 265 | **266** | **+1** |
+| BE `@Test` method | 1917 | **1922** | **+5** |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / 277 | carry |
+| FE test 총합 | 470 | 470 | carry |
+| 모듈 커버리지 | 80.86% | 80.86% | carry (id=7-5 easy-pay=BE-only) |
+
+### §612-1 ★★★ 7-5 본인부담금 간편결제 — carefor npay_manage parity BE LANDED
+
+BE commit `56831fc` 10-file +264/-3 — `EasyPayProviderCatalog` 도메인 카탈로그 + `GET /api/v1/billing/easy-pay/provider-catalog` 엔드포인트:
+
+```java
+// EasyPayProviderCatalog.java — JavaDoc: "Carefor 7-5 npay_manage · ezCare billing PG crosswalk"
+public static final List<Entry> CAREFOR_PARITY_ENTRIES = List.of(
+        new Entry("CARD", "카드결제", "/billing/easy-pay", true),
+        new Entry("KAKAO_PAY", "카카오페이", "/billing/easy-pay", true));
+```
+
+| 항목 | 케어포 7-5 | ogada `/billing/easy-pay` (BNK-612) |
+|---|---|---|
+| PG | KCP(한국사이버페이먼트) | stub/live PG mode (catalog) |
+| 결제수단 | 카드(수수료 차감) | CARD + KAKAO_PAY (2 provider) |
+| FE wire | npay_manage 화면 | EasyPayPage 존재·provider-catalog **미연결** |
+
+**근거**: carefor `func.php` 7-5 본문 verbatim 「결제대행업체인 한국사이버페이먼트(KCP)를 통하여 진행되며, … 수수료를 제외한 나머지 결제」·`npay.php`. ogada FE grep `provider-catalog|ProviderCatalog` **0 hit** → BE-only closure. **신규 P3 candidate `G-EASYPAY-PROVIDER-CATALOG-FE-WIRE`** — `EasyPayPage`에서 provider-catalog fetch → CARD/KAKAO_PAY 토글 UX(false-closure 방지).
+
+### §612-2 ★★ V178 — CMS·목욕 무결성 + NHIS #44 377차 교차검증
+
+- V178 `db(V178): cms_collection_requests + bathing pre/post observations defense-in-depth integrity` — G2b CMS 수집 요청 + 목욕 전후 관찰 무결성 제약 강화(Flyway V177→V178).
+- NHIS #44: [`joHistoryContent.do`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·`c886ff1f`(7,572B) live=disk IDENTICAL **377차**.
+- carefor Wayback: [`20260519072235/.../func.php`](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) HTTP 200·104,182B raw `9ee25a97`(cachebuster wrapper variance) — 7-5 본인부담금 간편결제 leaf verbatim = canonical `6226e6eb` 의미 동일 **373차**. LIVE timeout **34-cycle 「미확인」**.
+
+### §612-3 ★ FE WT DIRTY caution + M11·M12 P2 갭 carry
+
+- FE develop `7b4c6f9` WT에 `src/pages/StaffAnnualLeavePage.test.jsx` 미커밋 1건. rules.md §6 「작업 완료 시 반드시 커밋·push 누락 금지」 — coder 다음 build 전 commit 권장(submodule 재 clone 시 유실 위험).
+- M11 `/payroll/*` 0 route·M12 `/accounting/*` 0 route P2 갭 carry — id=11·12 closure 시 80.86%→**87.76%(+6.9pp)** 단일 최대 KPI bump 레버.
+
+## §611 BNK-611 — ogada git 실측 6–8h · ★★★ **HEAD zero advance — BNK-610 closure 무결성 재확인** — FE `@5bb84a6`/BE `@4963535` 양쪽 develop **WT CLEAN**·merge gate **790** carry · **112 Route·91 page·V1–V177·BE Test 265·BE @Test 1917(+1 KPI 회계 정정 vs BNK-610 1916)·FE test 470(193+277)·모듈 80.86%(23.45/29)** · ★★★ **G-NHIS-ALT-KEY-AUDIT-BADGE 15-file grep 무결성** — L0~L3 4-layer cascade HEAD 잔존 확인(BNK-608→610 closure carry) · ★★★ **BNK-603 3종 closure HEAD 잔존** — (1) `CmsCollectionPanel.jsx` id=7-4 1.0 (2) `TransportServiceFeePanel` NHIS #44 wire (3) `BathingScheduleIndicator27Catalog` BE-only · ★★★ **M11·M12 P2 갭 재확정** — `/payroll/*`·`/accounting/*` grep **0 route** → id=11·12 closure 시 **80.86%→87.76%(+6.9pp)** 단일 최대 KPI bump 레버 · ★★ **NHIS #44 이동서비스비 376차 zero drift IDENTICAL** — `c886ff1f`(live HTTP 200·7,572B=on-disk) · ★★ **carefor func.php Wayback 372차 semantic IDENTICAL** — `20260519072235` raw `02ad3834`(104,182B·wrapper variance)·canonical `6226e6eb` 11-module 107-leaf verbatim 불변 · LIVE HTTP timeout **33-cycle 「미확인」** carry · ★ **ezCare fnc cachebuster DRIFT** — `44605ced`→`d9ad49cb`·도입 **9,353** verbatim 불변 · ★ **bathing US-O01 FE wire 0 hit P2 carry** — `indicator-27-compliance` grep 0·G17 `functionalRecoveryCompliance.js` indicator27 15 hit(별개 도메인) · ★ **4축+leave-ledger P0/P1 재오픈 0 (62-cycle carry)**
+
+**조사일**: 2026-06-25T05:45:00Z (KST 14:45) | **rotation**: ogada git 실측 6–8h (`src/backend`·`src/frontend` develop HEAD·Route·page·테스트·모듈 커버 %·갭 우선순위). 신규 snapshot: `ogada_git_remeasure_bnk611.txt`·`carefor_func_wayback_live_bnk611.html`. 덮어쓰기 1건: `ezcare_ezCare_fnc.html`(cachebuster only·도입 9,353 불변).
+
+**1. ogada baseline 실측 (BNK-611 정본)**
+
+| 지표 | BNK-610 | BNK-611 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `5bb84a6` | `5bb84a6` | **zero advance** |
+| BE develop HEAD | `4963535` | `4963535` | **zero advance** |
+| FE/BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 229 | 229 | carry |
+| BE ahead vs `origin/test=598d108` | 561 | 561 | carry |
+| merge gate | 790 | 790 | carry |
+| Route (FE App.jsx) | 112 | 112 | carry |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file | 265 | 265 | carry |
+| BE `@Test` method | 1916 | **1917** | **+1 KPI 회계 정정** |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / 277 | carry |
+| FE test 총합 | 470 | 470 | carry |
+| 모듈 커버리지 | 80.86% | 80.86% | carry |
+
+### §611-1 ★★★ KPI 회계 정정 — BE @Test 1916→1917 (동일 HEAD)
+
+BNK-610 BE @Test **1916** 주장 → BNK-611 재실측 `rg -c '@Test' src/backend/src/test` 합 **1917** · `git archive develop` 동일 합 **1917** 확인. HEAD `4963535` 불변 — **과소 집계 1건 정정**(BNK-586/600 KPI 회계 정정 동형 선례). 기능 갭·closure 상태 변동 **0**.
+
+### §611-2 ★★★ M11·M12 P2 갭 — 모듈 KPI 최대 레버 재확정
+
+| 경쟁사 | 직원급여·회계 | ogada |
+|---|---|---|
+| 케어포 | 11-1~11-6 급여대장·퇴직·계약·수당·인건비비율·리포트 | `/payroll/*` **0 route** (id=11 cov=0) |
+| 이지케어 | wAllowance-payrollcost·severance·a100·awData | `/accounting/*` **0 route** (id=12 cov=0) |
+
+**planner 우선순위**: id=11·12 closure = **+6.9pp** (80.86%→87.76%) — MVP 결정 보류(자체 구현 vs 외부 HR/회계 SW 연동). candidate P3 `G-PER-VISIT-ALLOWANCE-EDITOR`는 M11 하위 leaf.
+
+### §611-3 ★★ NHIS #44 376차 + carefor Wayback 372차 교차검증
+
+- NHIS #44: [`joHistoryContent.do`](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·`c886ff1f`(7,572B) live=disk IDENTICAL
+- carefor Wayback: [`20260519072235/.../func.php`](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) HTTP 200·104,182B raw `02ad3834` — 11-module header+`11-1.월별 급여대장` leaf verbatim = canonical `6226e6eb` 의미 동일
+
+### §611-4 ★ ezCare fnc 재실측 — cachebuster DRIFT·counter 안정
+
+[/new/ezCare_fnc.html](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) HTTP 200·17,870B·`d9ad49cb` — verbatim「**9,353개** 기관 사용중」(BNK-610 +7 이후 **3-cycle 안정**). md5 DRIFT cachebuster only → 덮어쓰기.
+
+## §610 BNK-610 — 이지케어 역공학 0–2h · ★★★ **G-NHIS-ALT-KEY-AUDIT-BADGE Epic FULL-STACK CLOSURE** — BNK-608 P3 candidate(03:10Z BE landed) → BNK-609 carry → BNK-610 **BE `4963535` + FE `5bb84a6` 동일 사이클 closure**. BE 13-file +37L MOD(`NhisImportRowResponse·NhisReconciliationRowResponse·NhisClientResolver·NhisImportService·NhisVisitScheduleImportRowResponse·VisitNhisComparisonItemResponse·VisitService` API 7건에 `altKeyMatched` 노출 + 5 test) · FE 7-file +116L NEW(`NhisAltKeyMatchedBadge.jsx`+test 23+18L · `NhisReconciliationTable`·`VisitNhisComparisonDetail`에 badge mount 18+30L · `nhisAltKeyMatch.js` config 5L) — UX 신규 컴포넌트 + 회귀 lock · **G-NHIS-MASKED-NAME-FALLBACK 4-layer cascade 완성** (BE matcher → BE resolver → BE API field → FE badge UX) · 경쟁사 4종 중 ogada만 alt-key UX badge 완비 · ★★★ **이지케어 시장 점유율 53.46% 「확인」** — `?PG=e01` verbatim「전국 재가센터 수(방문요양 기준) 17,489개 / 이용시설수 9,350개 / 점유율 53.46% / 집계일 2026.06.25」 17-region breakdown(부산 63.08% · 울산 64.04% top · 대전 39.75% · 세종 41.38% bottom) · ★★ **재무회계 대행 가격 공식 verbatim 「확인」** — `popup_charge()` JS resolve → `/page/landing/daycare.t1.202404/chargecalc.html` `787c0c17`(24,675B) 「방문요양(목욕+간호) 기본료 50,000원 + 수급자수×2,000원(VAT 별도)」 60단계 step table(1명 52,000원 → 60명 170,000원) · 주간보호 = "맞춤 제안받기"(공개 가격 無·상담 필수) · 파트너십 「선율회계법인 + 노무법인 휴램프로」 · ★★ **/new/ezCare_fnc 도입 카운터 9,346→9,353(+7) · /new/ezCare_change_work 후기 4,964→4,965(+1) 실 counter 「확인」** — 카운터 동시 cachebuster DRIFT(`44605ced`·`f9cde293`·`8cb213df` 3건 덮어쓰기·verbatim 가격/RFID/중복일정/듀얼 불변) · ★ **이지케어 FAQ corpus 21845-23000 NF stub 재확인** — `/help/faq.ez?rowid={21845..23000}` 모두 13,327B 「e5762090」 NF · live HAS-DATA = `{21800,21805,21806,21810,21812,21815,21820,21823,21825,21839,21841,21842,21844}` (13건·BNK-606 21841/21842 carry + BNK-608 21844 carry) · 21843·21856·21900 retired 재확인(BNK-570 carry) · ★ **`?PG=r01&rowid=*` 실제 매핑 정정** — `r01`=**사용 후기(testimonials)**, FAQ는 `/help/faq.ez?rowid=*` (별개 엔드포인트) — BNK-553 §553-5「PG=r01 미설명」 해소 · ★ **이지케어 home cachebuster only DRIFT** 106,086→106,099B(+13B `home.js?1782360449→1782362831` 타임스탬프) · ogada baseline FE `@5bb84a6`(BNK-609 `@e985522` +1)/BE `@4963535`(BNK-609 `@37416ac` +1)·양쪽 WT CLEAN · merge gate **790**(+2 동일 사이클)
+
+**조사일**: 2026-06-25T04:55:00Z (KST 13:55) | **rotation**: 이지케어 역공학 0–2h (`/new.ez`·`?PG=*`·`/help/faq.ez` rowid 전수·가격·도입 기관 수·시장 점유율 재실측). 신규 snapshot: `ezcare_pg_r01_rowid21950_bnk610.html`(35,563B `4522612f`). 덮어쓰기 4건: `ezcare_pg_a01/e01/f01/j01.html`(BNK-553 → BNK-610) · `ezcare_ezCare_fnc.html`(9,346→9,353) · `ezcare_charge.html`(cachebuster) · `ezcare_change_work.html`(4,964→4,965) · `ezcare_home.html`(cachebuster).
+
+**1. ogada baseline 실측 (BNK-610 정본)**
+
+| 지표 | BNK-609 | BNK-610 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `e985522` | **`5bb84a6`** `feat(v2/G-NHIS-ALT-KEY-AUDIT-BADGE): surface alt-key matched rows in NHIS UI` | **+1** |
+| BE develop HEAD | `37416ac` | **`4963535`** `feat(v2/G-NHIS-ALT-KEY-AUDIT-BADGE): expose altKeyMatched on NHIS import APIs` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 228 | **229** | +1 |
+| BE ahead vs `origin/test=598d108` | 560 | **561** | +1 |
+| merge gate | 788 | **790** | **+2** (FE+BE 동일 사이클) |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file (`*Test.java`) | 265 | 265 | carry |
+| BE `@Test` method | 1915 | **1916** | **+1** (`NhisClientResolverTest` altKeyMatched 회귀) |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 276 | **277** | **+1** (`NhisAltKeyMatchedBadge.test.jsx`) |
+| FE test 총합 | 469 | **470** | **+1** |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% | carry |
+
+### §610-1 ★★★ G-NHIS-ALT-KEY-AUDIT-BADGE Epic 4-layer cascade FULL CLOSURE (BE+FE)
+
+BE commit `4963535` numstat (13-file · +37L):
+
+| file | LoC | 종류 |
+|---|---|---|
+| `NhisImportRowResponse.java` | +2/-1 | MOD — DTO에 `altKeyMatched` 필드 추가 |
+| `NhisReconciliationRowResponse.java` | +1 | MOD — Reconciliation DTO에 추가 |
+| `NhisClientResolver.java` | +7 | MOD — Resolution 반환에 alt-key flag 포함 |
+| `NhisImportService.java` | +3/-1 | MOD — flag 전파 |
+| `NhisVisitScheduleImportRowResponse.java` | +2/-1 | MOD — Visit 스케줄 import DTO |
+| `VisitNhisComparisonItemResponse.java` | +2/-1 | MOD — Visit 비교 DTO |
+| `VisitService.java` | +6/-2 | MOD — Visit flow flag 전파 |
+| `NhisClientResolverTest.java` | +7 | MOD — 회귀 |
+| `NhisImportServiceTest.java` | +1 | MOD — 회귀 |
+| `VisitLiveApiRoutingE2eTest.java` | +4/-2 | MOD |
+| `MustApiEndpointRoutingTest.java` | +2/-1 | MOD — routing 회귀 |
+| `VisitControllerRoutingTest.java` | +2/-1 | MOD |
+| `VisitServiceTest.java` | +1 | MOD |
+
+FE commit `5bb84a6` numstat (7-file · +116L NEW):
+
+| file | LoC | 종류 |
+|---|---|---|
+| `NhisAltKeyMatchedBadge.jsx` | +23 | **NEW** — badge + tooltip 컴포넌트 (audit reason verbatim) |
+| `NhisAltKeyMatchedBadge.test.jsx` | +18 | **NEW** — 렌더링·tooltip 회귀 |
+| `NhisReconciliationTable.jsx` | +9/-1 | MOD — badge mount in row |
+| `NhisReconciliationTable.test.jsx` | +22 | **NEW** — table-level 회귀 |
+| `VisitNhisComparisonDetail.jsx` | +9/-1 | MOD — badge mount in detail |
+| `VisitNhisComparisonDetail.test.jsx` | +30 | **NEW** — detail-level 회귀 |
+| `nhisAltKeyMatch.js` | +5 | **NEW** — config (badge label·tooltip text) |
+
+**4-layer cascade 완성** (BNK-608 → BNK-609 → BNK-610 3-cycle closure):
+1. **L0 BE matcher**: `NhisMaskedNameMatcher` (BNK-608 `37416ac` 40L NEW)
+2. **L1 BE resolver**: `NhisClientResolver` 2-tier cascade (BNK-608 108L NEW)
+3. **L2 BE API**: `altKeyMatched` field 7-DTO 노출 (BNK-610 `4963535` +37L MOD)
+4. **L3 FE UX**: `NhisAltKeyMatchedBadge` + 2-panel mount (BNK-610 `5bb84a6` +116L NEW)
+
+경쟁사 비교: 케어포·이지케어·엔젤·롱텀 4종 모두 alt-key 매칭 UX badge **없음**(이지케어 FAQ 21844 자체가 「공단 마스킹 → 일부 기관 일정 반영 미흡」 자인만 — 자동 매칭+검증 UX 미존재). ogada **유일** 4-layer full-stack closure 우위.
+
+### §610-2 ★★★ 이지케어 시장 점유율 53.46% verbatim 「확인」 (`?PG=e01` 신규 evidence)
+
+`?PG=e01` (`7169bdaf` 47,117B) 「이지케어 이용현황」 verbatim block (집계일 **2026.06.25**):
+
+| 지역 | 이용기관 수 | 점유율 |
+|---|---|---|
+| 서울 | 1,481 | 59.41% |
+| 부산 | 774 | **63.08%** |
+| 대구 | 555 | 55.50% |
+| 인천 | 535 | 47.14% |
+| 광주 | 328 | 49.03% |
+| 대전 | 221 | **39.75%** ↓ |
+| 울산 | 187 | **64.04%** ↑ top |
+| 경기 | 2,032 | 56.02% |
+| 강원 | 311 | 60.74% |
+| 충북 | 294 | 54.55% |
+| 충남 | 465 | 54.58% |
+| 전북 | 396 | 46.21% |
+| 전남 | 376 | 42.15% |
+| 경북 | 566 | 48.05% |
+| 경남 | 743 | 50.51% |
+| 제주 | 61 | 46.56% |
+| 세종 | 24 | **41.38%** ↓ |
+| **전국** | **9,350** | **53.46%** |
+| 전국 재가센터 수 (방문요양 기준) | **17,489** | — |
+
+verbatim: 「단위: 개소 / 전국재가센터수(방문요양 기준): **17,489개** / 이용시설수: **9,350개** / 점유율: **53.46%** / 집계일: **2026.06.25**」
+
+ogada GTM 시사점 (planner):
+- 시장 size: **17,489 방문요양 기관** (TAM 추산 base)
+- ezCare 점유 53.46% = **9,350 기관** (incumbent)
+- 미점유 = **8,139 기관 (46.54%)** = ogada 1차 타깃 zone
+- 지역 wedge: 대전(39.75%) · 세종(41.38%) · 전남(42.15%) — 미점유율 50%+ 지역
+- 부산(63.08%) · 울산(64.04%) — ezCare 점유 견고 (회피 권장)
+
+### §610-3 ★★ 재무회계 대행 가격 공식 verbatim 「확인」 (chargecalc.html 신규 분석)
+
+JS chain: `common.js?2025-10-22` `function pop_calc()` → `window.open('/page/landing/daycare.t1.202404/chargecalc.html', 'popup', 'width=800, height=760')`.
+
+snapshot: `ezcare_chargecalc_daycare.html`(`787c0c17` 24,675B · BNK-610 zero drift carry vs older snapshot · `_bnk610` 중복 제거).
+
+**가격 공식 verbatim**:
+- 방문요양 (목욕+간호) 기본료 **50,000원** + 수급자수 × **2,000원** (VAT 별도)
+- 주간보호: 「맞춤 제안받기」 — 공개 가격표 **無**, 정원·현원 입력 후 상담
+
+60-단계 누진표 carry:
+
+| 수급자 수 | 월 이용료 (방문요양) |
+|---|---|
+| 1 | 52,000 |
+| 5 | 60,000 |
+| 10 | 70,000 |
+| 20 | 90,000 |
+| 30 | 110,000 |
+| 50 | 150,000 |
+| 60 | 170,000 |
+
+파트너십 (verbatim `?PG=a01`):
+- **선율회계법인** (비영리 전문 회계법인) — 원칙적 회계처리 자문
+- **노무법인 휴램프로** — 4대보험·노무 서비스 위탁
+
+서비스 범위 verbatim:
+- W4C(사회복지시설정보시스템) 회계: 예산/결산서·추경·수입/지출 결의서·급여대장·영수증 증빙·총계정원장 (월 PDF 전자문서 제공)
+- 세무: 원천세·퇴직금/퇴직세액 정산·근로소득간이지급명세서·연말정산
+- 4대보험: 근로자 취득/상실·일자리 안정자금·보수월액 변경신청·보수총액 신고
+
+ogada 시사점:
+- ezCare는 SaaS + **재무회계 대행 BPO** 번들 — 2-tier 수익화
+- ogada는 현재 SaaS only — 재무회계 대행 partnership 가능성 검토 (planner P3 후보 `G-FINANCE-BPO-PARTNERSHIP「가정」`)
+- 가격 anchor: ogada SaaS가 기본료 50,000원 + 수급자 2,000원 이하면 경쟁력 확보 (현재 ogada는 베타·가격 미공개 — 비교 carry)
+
+### §610-4 ★★ /new/ezCare_*.html 실 counter DRIFT 「확인」
+
+| URL | live SIZE | live md5 | disk md5 (이전) | DRIFT |
+|---|---|---|---|---|
+| [/new/ezCare_fnc.html](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 17,870 | `44605ced` | `4a12c749` (BNK-553 carry) | **MD5 DIFF·SIZE 동일** — 도입 카운터 **9,346→9,353 (+7)** + cachebuster `1782164449→1782363217` |
+| [/new/ezCare_charge.html](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 22,979 | `f9cde293` | `e15e1f23` (BNK-553 carry) | **MD5 DIFF·SIZE 동일** — cachebuster only(가격 **33,000/25,850/55,000/9,000/9,500** verbatim 불변) |
+| [/new/ezCare_change_work.html](https://ezcare.easyms.co.kr/new/ezCare_change_work.html) | 26,157 | `8cb213df` | `389c94eb` (BNK-553 carry) | **MD5 DIFF·SIZE 동일** — 후기 카운터 **4,964→4,965 (+1)** + cachebuster |
+| [/](https://ezcare.easyms.co.kr/) | 106,099 | `d2e86c93` | `8e4b7a05` (BNK-609 carry 106,086) | **MD5 DIFF·SIZE +13B** — cachebuster `1782360449→1782362831` only(mCnt verbatim 불변) |
+
+3 file 덮어쓰기(`ezcare_ezCare_fnc.html`·`ezcare_charge.html`·`ezcare_change_work.html`·`ezcare_home.html`).
+
+ogada 시사점: ezCare는 사이클 사이에도 도입 신규(+7) + 후기 +1 — **실 활동성 carry**. 14-day 이동 평균 산정 권장(planner BNK 시계열 분석 idea).
+
+### §610-5 ★ FAQ corpus 21845-23000 NF stub 재확인 (`/help/faq.ez?rowid=*` 전수)
+
+probe 24-rowid (`for r in 21800..25000; ...`):
+
+| rowid 범위 | 결과 |
+|---|---|
+| 21800·21805·21806·21810·21812·21815·21820·21823·21825·21839·21841·21842·**21844** | HAS-DATA (각각 13,327~25,773B · 13건 활성) |
+| 21843·21845·21846·21847·21848·21849·21850·21856·21900·21910·...·25000 | **NF stub** `e5762090` 13,327B (전부 동일) |
+
+**14 카테고리 verbatim** (FAQ 좌측 탭):
+1. 전체
+2. 이용료/요금
+3. 직원관리
+4. 수급자관리
+5. 일정관리
+6. 서식출력/설정
+7. 본인부담금
+8. 공단연동
+9. 수당/급여관리
+10. 모바일앱
+11. 문자발송
+12. 재무회계
+13. 세무
+14. 4대보험
+15. 기타
+
+ogada 시사점: FAQ corpus는 **shrinking**(21843·21856·21900 retired). 신규 FAQ 추가는 21841/21842(2026-06 자가진단·신규기관 grace)·21844(2026-06-24 마스킹) 정도 — **2026 1H 신규 5건 미만** = ezCare는 신규 기능 add보다 **재무회계 대행 BPO 신규 사업 확장**에 리소스 투입 가설.
+
+### §610-6 ★ `?PG=r01&rowid=*` 실제 매핑 정정 (BNK-553 §553-5 해소)
+
+신규 snapshot: `ezcare_pg_r01_rowid21950_bnk610.html`(35,563B `4522612f`) — verbatim「고객 사용 후기 [서울] (A)비지팅엔젤스 노원공릉방문요양지점 수급자수 00미만 등록일 2021-04-25 이지케어 도입 전 엑셀/수기 평점 -->」.
+
+→ **r01 = 사용 후기(customer reviews/testimonials) 단일 entry view**, FAQ가 **아님**. BNK-553 §553-5「PG SPA-style GNB」 정정.
+
+전체 PG 매핑 (BNK-610 신규 정본):
+| PG | 콘텐츠 | size 범위 |
+|---|---|---|
+| `a01` | 서비스/사이트맵(재무회계+방문요양+주간보호) | 42,704B |
+| `e01` | 소개·이용현황·시장 점유율 17-region | 47,117B |
+| `f01` | 주요 기능(8 sub-feature) | 39,200B |
+| `j01` | 도입신청(가입 폼) | 40,477B |
+| `r01&rowid=N` | 사용 후기 entry view | 35,563B |
+| `b01&rowid=N` | 공지/뉴스 entry view | 35,334B (BNK-553) |
+| `w01` | 사용기관(?) | 미측 |
+| `ag-01`·`ag-02` | 재무회계·W4C 별도 페이지 | 미측 |
+| `easyms` | 회사 소개 | 미측 |
+
+### §610-7 갭 우선순위 재정렬 (BNK-610 기준)
+
+| 순위 | candidate | 상태 | 근거 | 예상 KPI 영향 |
+|---|---|---|---|---|
+| **P2 최우선** | M11 직원급여·M12 회계 (id=11·12) | ❌ 0 route | 케어포 11-1~11-6 + 이지케어 wAllowance 완비 | 80.86%→**87.76%** (+6.9pp 최대) |
+| **P2 carry** | bathing indicator-27 FE wire | BE ✅ FE 0 hit | `indicator-27-compliance` API 존재·FE wire 미구현 | id=3 deepen |
+| P3 carry | G-PER-VISIT-ALLOWANCE-EDITOR | △ | 이지케어 wAllowance-a200 7-field colModel | M11 하위 leaf |
+| P3 carry | G-STAFF-APP-ACCESS-LIFECYCLE | △ | 이지케어 mobile-aKey 4-flag | M8 보강 |
+| P3 carry | G-MONITORING-SAMPLING-RULE | △ | 이지케어 FAQ 21841 60%·5명 | 정책 룰 코드화 |
+| P3 carry | G-NEW-AGENCY-SELFDIAG-GRACE | △ | 이지케어 FAQ 21842 N+2 grace | 정책 룰 코드화 |
+| **P3 신규** | G-FINANCE-BPO-PARTNERSHIP「가정」 | ❌ 0 | 이지케어 chargecalc.html 50,000+수급자×2,000 BPO 번들 | v3 후 검토 — partnership/외주 회계법인 필요 |
+| **P3 신규** | G-MARKET-SHARE-DASHBOARD「가정」 | ❌ 0 | 이지케어 ?PG=e01 17-region 점유율 verbatim — ogada 자체 점유율 추적 UX | planner GTM dashboard |
+
+### §610-8 가정·확인·미확인 + per-cycle minimum
+
+- **확인**: `G-NHIS-ALT-KEY-AUDIT-BADGE` BE+FE 동일 사이클 closure · 이지케어 시장 점유율 53.46%(17,489 中 9,350·집계일 2026.06.25) · 재무회계 대행 가격 공식(50,000+수급자×2,000) · /new/ezCare_*.html 실 counter +7·+1 · FAQ rowid 21845-23000 NF · `r01` = 사용 후기(BNK-553 정정)
+- **가정 번복 1**(BNK-553 §553-5 `?PG=r01` FAQ 추정 → 사용 후기 실측 정정) · **신규 core 갭 0** · **candidate 변동 +2**(P3 신규 `G-FINANCE-BPO-PARTNERSHIP`·`G-MARKET-SHARE-DASHBOARD` 「가정」) · **candidate closure 1**(BNK-608 P3 `G-NHIS-ALT-KEY-AUDIT-BADGE` BE+FE 동일 사이클 closure) · **상태 변경 2**(FE+1·BE+1) · **KPI 변경 2**(merge gate 790·@Test 1916·.test.jsx 277)
+- **미확인 carry 3**: longterm 502 6-cycle · carefor LIVE 32-cycle · demo-work · ezCare `?PG=w01/ag-01/ag-02/easyms` 미측
+
+per-cycle minimum 충족:
+- ✅ 신규 증거 URL 1건+: `?PG=r01&rowid=21950`·`chargecalc.html` 「공식 verbatim」·`?PG=e01` 17-region 점유율 verbatim
+- ✅ 메뉴/필드/워크플로 1블록+: §610-2 17-region 점유율 표 · §610-3 60-단계 누진 가격표 · §610-5 14 FAQ 카테고리 verbatim
+- ✅ COMPETITOR_MATRIX 1행+ `@HEAD`: 시장 점유율 + 재무회계 대행 BPO + alt-key UX badge 3-행 BNK-610 갱신
+- ✅ BENCHMARK_REPORT §신규 소절: §610 본 차수
+
+**가정 번복 1 · 신규 core 갭 0 · candidate 변동 +2 / closure 1 · 상태 변경 2(FE+1·BE+1) · KPI 변경 2 · 미확인 carry 3 · 신규 snapshot 1건(`ezcare_pg_r01_rowid21950_bnk610.html`) · 덮어쓰기 5건(pg_a01·pg_e01·pg_f01·pg_j01·home·fnc·charge·change_work) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족 · tester FF merge 790 가속 권장**
+
+## §609 BNK-609 — 교차검증·갭 우선순위 8h+ · ★★★ **G16 fail-open 강화 + 375차 zero drift** — FE `e985522` `test(v2/G2b+G16): lock 5/5 CMS catalog parity and parity-rules fallback`(+64L/-17L·3-file) TransportServiceFeePanel parity-rules API 장애 시 static NHIS #44 fallback graceful degradation + 회귀 test lock · ★★★ **NHIS #44 375차 zero drift IDENTICAL** `c886ff1f`(live HTTP 200·7,572B) · ★★★ **silverangel 2-URL zero drift IDENTICAL** essentialWork `c79c1be3`(131,664B)+extraService `f9c5d877`(81,637B) · ★★ **longterm 610 oscillation 3-cycle** 458B shell carry · 502 HTTP 302 「미확인」 5-cycle · ★ **ezCare home·fnc cachebuster DRIFT(의미 불변)** mCnt 9,283/9,353 carry · ★ **law247·mohw126 DRIFT(verbatim 불변)** 덮어쓰기 4건 · ★ **4축 P0/P1 재오픈 0 (60-cycle carry)** · ogada baseline FE `@e985522`(BNK-608 `@9a583ec` +1)/BE `@37416ac`(carry)·양쪽 WT CLEAN · merge gate **788**(+1 FE)
+
+**조사일**: 2026-06-25T04:10:00Z (KST 13:10) | **rotation**: 교차검증·갭 우선순위 8h+ (G14·대시보드·v1.3-C·v2 CMS 등 P0/P1 재정렬 + 미확인 항목 축소 시도 + 신규 경쟁사 공지·엑셀 포맷 변경 스캔). extract `angel_longterm_regulatory_crossverify_bnk609.txt`(6,777B·`7ed1b2d2`).
+
+**1. ogada baseline 실측 (BNK-609 정본)**
+
+| 지표 | BNK-608 | BNK-609 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `9a583ec` | **`e985522`** `test(v2/G2b+G16): lock 5/5 CMS catalog parity and parity-rules fallback` | **+1** |
+| BE develop HEAD | `37416ac` | **`37416ac`** carry · BNK-608 동일 SHA · **HEAD zero advance 1-cycle** | carry |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 227 | **228** | +1 |
+| BE ahead vs `origin/test=598d108` | 560 | 560 | carry |
+| merge gate | 787 | **788** | +1 |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file (`*Test.java`) | 265 | 265 | carry |
+| BE `@Test` method | 1915 | 1915 | carry |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 276 | 276 | carry |
+| FE test 총합 | 469 | 469 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% | carry |
+
+### §609-1 ★★★ G16 TransportServiceFeePanel fail-open 강화 (FE+1 closure 연장)
+
+FE commit `e985522` numstat (3-file · +64L/-17L):
+
+| file | LoC | 종류 |
+|---|---|---|
+| `TransportServiceFeePanel.jsx` | +21/-17 | MOD — parity-rules API 장애 시 static NHIS #44 fallback notes 표시(graceful degradation) |
+| `TransportServiceFeePanel.test.jsx` | +37 | NEW tests — API 장애→fallback 동작 회귀 lock |
+| `CmsPaymentMethodCatalogPanel.test.jsx` | +23/-6 | MOD — BE silverangel 5/5 closure 정합 테스트 강화 |
+
+핵심 변경: `TransportServiceFeePanel`이 `/api/v1/transport/service-fee-parity-rules` 호출 실패 시 앱 크래시나 빈 화면 대신 **NHIS #44 정적 주석**을 fallback으로 렌더링. G16 full-stack closure의 **4-layer cascade 완성**:
+1. BE `TransportServiceFeeParityCatalog` 4-rule (BNK-598/603)
+2. FE `TransportServiceFeePanel` wire (BNK-603)
+3. BE RBAC hq_admin/branch_admin (BNK-606)
+4. **FE fail-open graceful degradation** (BNK-609 ← 신규)
+
+경쟁사 4종 중 ogada만 G16 4-layer cascade + fail-open 우위.
+
+### §609-2 ★★★ NHIS #44 이동서비스비 375차 zero drift IDENTICAL
+
+| URL | HTTP | SIZE | live md5 | disk md5 | 판정 |
+|---|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | `c886ff1f` (`nhis_jo44.html`) | **live == disk IDENTICAL · 375차** |
+
+러-1~4·편도50%·1일1회·③별도부담X·④별지 제22호 일지 verbatim 불변 — ogada G16+RBAC+fail-open full-stack 차별화 우위 carry.
+
+### §609-3 ★★★ silverangel 2-URL zero drift IDENTICAL (carry)
+
+| URL | HTTP | SIZE | live md5 | disk md5 | 판정 |
+|---|---|---|---|---|---|
+| daycareEssentialWork.do | 200 | 131,664B | `c79c1be3` | `c79c1be3` | **IDENTICAL · carry** |
+| extraService.do | 200 | 81,637B | `f9c5d877` | `f9c5d877` | **IDENTICAL · carry** |
+
+「목욕제공—필수 아니며 제공시 청구」·CMS 5-method(자동이체·가상계좌·카드·다계좌·현금영수증) verbatim 불변 ↔ ogada G2b CMS 5/5 carry.
+
+### §609-4 ★★ longterm 610 oscillation 3-cycle · 502 「미확인」 5-cycle
+
+- 610: live 458B `c26a5e57` (빈 shell · 신규홈 브라우저 가드 추정) → canonical `0ea575be`(91,421B) on-disk 보존
+- 502: HTTP 302→securityException, 422B `d3c90b33` — 「미확인」 5-cycle carry (BNK-599→609)
+
+### §609-5 ★ 갭 우선순위 재정렬 (BNK-609 기준)
+
+| 순위 | candidate | 상태 | 근거 | 예상 KPI 영향 |
+|---|---|---|---|---|
+| **P2 최우선** | M11 직원급여·M12 회계 (id=11·12) | ❌ 0 route | 케어포 11-1~11-6 + 이지케어 wAllowance 모두 완비 | 80.86%→**87.76%** (+6.9pp 최대) |
+| **P2 carry** | bathing indicator-27 FE wire | BE ✅ FE 0 hit | `indicator-27-compliance` API 존재·FE wire 미구현 | id=3 deepen |
+| P3 신규 | G-NHIS-ALT-KEY-AUDIT-BADGE | BE audit log ✅ FE △ | `altKeyMatched=true` 행에 badge·tooltip UX | UX only |
+| P3 신규 | G-PER-VISIT-ALLOWANCE-EDITOR | △ | 이지케어 wAllowance-a200 7-field colModel | M11 하위 leaf |
+| P3 신규 | G-STAFF-APP-ACCESS-LIFECYCLE | △ | 이지케어 mobile-aKey 4-flag | M8 보강 |
+| P3 신규 | G-MONITORING-SAMPLING-RULE | △ | 이지케어 FAQ 21841 60%·5명 | 정책 룰 코드화 |
+| P3 신규 | G-NEW-AGENCY-SELFDIAG-GRACE | △ | 이지케어 FAQ 21842 N+2 grace | 정책 룰 코드화 |
+
+**가정 번복 0·신규 core 갭 0·candidate 변동 0(carry)·상태 변경 1(FE+1 only·BE carry·양쪽 WT CLEAN)·KPI 변경 1(merge gate 788)·미확인 carry 3(longterm 502 5-cycle·carefor LIVE 31-cycle·demo-work)·신규 snapshot 1건(`angel_longterm_regulatory_crossverify_bnk609.txt` 6,777B `7ed1b2d2`)·덮어쓰기 4건(ezcare_home·ezcare_fnc·law247·mohw126)·엑셀 포맷 변경 0·per-cycle minimum 4종 충족·tester FF merge 788 가속 권장**
+
+## §608 BNK-608 — 엔젤·롱텀·규제 4–6h · ★★★ **G-NHIS-MASKED-NAME-FALLBACK P2 candidate ~52분 만에 BE FULL LANDED** — BNK-606(02:18Z) FAQ 21844 evidence 「공단 엑셀 수급자/종사자 이름 마스킹(`*`)」 → 신규 P2 제안 → BNK-608(03:10Z) BE `37416ac` 14-file +548L(7 NEW + 7 MOD) commit landed · **NhisMaskedNameMatcher** `Pattern("^[가-힣]\*[가-힣]+$")` + 1st·last char compare · **NhisClientResolver** 2-tier cascade(tier0: LTC cert · tier1: 생년월일+masked-name · tier2: 생년월일+주민등록 6자리) · **NhisAltKeyExtractor** 헤더 normalize(수급자명/이용자명/성명·생년월일/생일/출생일·주민등록번호 9-pattern) · **ClientRepository NEW JPQL** `findActiveByOrganizationIdAndBranchIdAndBirthDate`(tenant 격리 + 활성·미퇴소 가드) · **VisitService** import 통합 · audit reason 「공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨」 → planner P3 후보 신규: FE `VisitNhisComparisonPanel.jsx` altKeyMatched badge UX · ★★★ **NHIS #44 이동서비스비 러-1~4 374차 zero drift IDENTICAL** — `c886ff1f`(live HTTP 200·7,572B = on-disk `nhis_jo44.html`)·러-1~4·편도50%·1일1회·④별지 제22호 verbatim ↔ ogada G16 full-stack(BNK-603) + BE RBAC(BNK-606) · 경쟁사 4종 중 ogada만 #44 full-stack 우위 carry · ★★★ **silverangel 평가지표 27 목욕 + CMS 5-method zero drift IDENTICAL** — `daycareEssentialWork.do` `c79c1be3`(131,664B) + `extraService.do` `f9c5d877`(81,637B) live=disk IDENTICAL ↔ ogada G2b CMS 5/5 closure(BNK-600/603/607) · ★★ **longterm 610 oscillation 2-cycle** carry(canonical `0ea575be` ↔ 458B shell `c26a5e57`)·502 단기보호 「미확인」 4-cycle carry · ★ **indicator-27 명칭 충돌 carry** — bathing FE wire 0 hit P2 carry(false-closure 방지) · ★ **law247·mohw126 DRIFT(verbatim 불변)** 덮어쓰기 2건 · ogada baseline FE `@9a583ec`(carry · HEAD zero advance 1-cycle)/BE `@37416ac`(BNK-607 `@e4f83af` HEAD +1)·양쪽 WT CLEAN · merge gate **787**(+1 BE)
+
+**조사일**: 2026-06-25T03:07:00Z (KST 12:07) | **rotation**: 엔젤·롱텀·규제 4–6h (NHIS #44·silverangel essential/extra·longterm 502/610·law.go.kr 교차검증 + BE coder cycle co-detection). extract `angel_longterm_regulatory_crossverify_bnk608.txt`(16,287B·`ec43fd19`).
+
+**1. ogada baseline 실측 (BNK-608 정본)**
+
+| 지표 | BNK-607 | BNK-608 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `9a583ec` | **`9a583ec`** carry · BNK-607 동일 SHA · **HEAD zero advance 1-cycle** | carry |
+| BE develop HEAD | `e4f83af` | **`37416ac`** `feat(v2/G-NHIS-MASKED-NAME-FALLBACK): add alt-key client resolution for NHIS imports` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN (사이클 진입 시 DIRTY 7M+6U → 사이클 중 commit landed) | carry |
+| FE ahead vs `origin/test=ab4de83` | 227 | 227 | carry |
+| BE ahead vs `origin/test=598d108` | 559 | **560** | +1 |
+| merge gate | 786 | **787** | +1 |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry (NHIS masked-name fallback uses existing `client.birth_date` — 신규 migration 없음) |
+| BE Test class file (`*Test.java`) | 262 | **265** | **+3** (NhisAltKeyExtractorTest 42L · NhisClientResolverTest 118L · NhisMaskedNameMatcherTest 25L) |
+| BE `@Test` method | 1906 | **1915** | **+9** (NhisAltKeyExtractorTest 4 + NhisClientResolverTest 3 + NhisMaskedNameMatcherTest 2 + NhisImportServiceTest 9→10 = +10 신규 - 1 helper 잡음 회계 정정) |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 276 | 276 | carry |
+| FE test 총합 | 469 | 469 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% (23.45/29·id=7-4 1.0) | carry |
+
+BE `37416ac` = G-NHIS-MASKED-NAME-FALLBACK BE landed. BNK-606이 02:18Z에 FAQ 21844(「공단 엑셀 수급자/종사자 이름 마스킹」 자인) evidence로 P2 candidate 제안 → 03:10Z에 coder가 14-file +548L commit → **proposal→landed 소요 ~52분**, **단일 사이클 P2 BE closure**.
+
+### §608-1 ★★★ G-NHIS-MASKED-NAME-FALLBACK P2 candidate 1-cycle BE FULL LANDED (확인 · closure)
+
+commit `37416ac` numstat (14-file · +548L):
+
+| file | LoC | 종류 |
+|---|---|---|
+| `NhisAltKeyExtractor.java` | +99 | NEW (헤더 normalize · 9-pattern Korean+EN) |
+| `NhisAltKeys.java` | +21 | NEW (record · clientName·birthDate·residentRegistrationPrefix) |
+| `NhisClientResolver.java` | +108 | NEW (`@Component` · 2-tier cascade · audit reason) |
+| `NhisMaskedNameMatcher.java` | +40 | NEW (Pattern + first/last char compare) |
+| `NhisImportService.java` | +14/-2 | MOD (resolve→client mapping) |
+| `ClientRepository.java` | +16 | MOD (NEW JPQL `findActiveByOrganizationIdAndBranchIdAndBirthDate`) |
+| `VisitService.java` | +15/-3 | MOD (visit import도 동일 fallback 적용) |
+| `NhisAltKeyExtractorTest.java` | +42 | NEW (헤더 변형 케이스) |
+| `NhisClientResolverTest.java` | +118 | NEW (3-tier 시나리오) |
+| `NhisImportServiceTest.java` | +98 | MOD (alt-key 흐름 회귀) |
+| `NhisMaskedNameMatcherTest.java` | +25 | NEW (pattern 검증) |
+| `CognitiveSupportFeeSchedulePilotServiceFlowE2eTest` | +1 | MOD (생성자 시그니처) |
+| `VisitPilotServiceFlowE2eTest.java` | +1 | MOD (생성자 시그니처) |
+| `VisitServiceTest.java` | +51 | MOD (alt-key 회귀) |
+
+핵심 알고리즘:
+
+```
+NhisMaskedNameMatcher.MASKED_NAME_PATTERN = "^[가-힣]\*[가-힣]+$"
+matches(fullName, maskedName) =
+    fullName.charAt(0) == maskedName.charAt(0)
+    && fullName.last() == maskedName.last()
+// 「홍*동」 ↔ "홍길동"/"홍복동" 1차 후보 → birth date 교차 = unique 매칭만 통과
+```
+
+`NhisClientResolver` 2-tier cascade:
+- **tier 0**: LTC 인증번호 직접 매칭 (기존 경로 · `altKeyMatched=false`)
+- **tier 1**: 생년월일 + masked-name 패턴 매칭 (1개일 때만 resolve)
+- **tier 2**: 생년월일 + 주민등록번호 6자리 prefix (1개일 때만 resolve)
+- **fallback**: 다회 매칭 시 `Resolution.empty()` — silent false-positive 방지
+- **audit reason**: `ALT_KEY_MATCH_REASON = "공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨"`
+
+`ClientRepository` NEW JPQL (tenant 격리 + 활성·미퇴소 가드 — RBAC 회귀 방지):
+
+```
+@Query("""
+    select c from ClientEntity c
+     where c.organizationId = :organizationId
+       and c.branchId = :branchId
+       and c.birthDate = :birthDate
+       and c.active = true
+       and c.dischargedAt is null
+""")
+List<ClientEntity> findActiveByOrganizationIdAndBranchIdAndBirthDate(...)
+```
+
+planner P3 신규 후보: `G-NHIS-ALT-KEY-AUDIT-BADGE` — FE `VisitNhisComparisonPanel.jsx`에서 `altKeyMatched=true` 행에 「대체 매칭됨 — 검증 필요」 badge·tooltip 노출(audit reason verbatim). BE는 이미 audit log에 기록 — UX 만 추가.
+
+### §608-2 ★★★ NHIS #44 이동서비스비 러-1~4 374차 zero drift IDENTICAL (확인)
+
+| URL | HTTP | SIZE | live md5 | disk md5 | 판정 |
+|---|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | `c886ff1f` (`nhis_jo44.html`) | **live == disk IDENTICAL · 374차** |
+
+verbatim (5-항 본문):
+- ①「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정」 (편도 산정 룰)
+- ②「이용 횟수에 관계없이 1일 1회만 산정」
+- ③「제공기관의 신청에 따라 산정하며, 그 비용은 수급자가 부담하지 아니한다」
+- ④「이동서비스 일지를 작성하여 보관」 (별지 22호 서식 인용)
+- ⑤「세부사항은 공단 이사장이 정한다」
+
+ogada: BE `TransportServiceFeeParityCatalog` 4-rule ↔ FE `TransportServiceFeePanel` full-stack(BNK-603) + BE RBAC hq_admin/branch_admin(BNK-606). 경쟁사 4종 중 ogada만 #44 full-stack 우위 carry.
+
+### §608-3 ★★★ silverangel 평가지표 27 목욕 + CMS 5-method zero drift IDENTICAL (확인)
+
+| URL | HTTP | SIZE | live md5 | disk | 판정 |
+|---|---|---|---|---|---|
+| [daycareEssentialWork.do](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664B | `c79c1be3` | `silverangel_essential.html` | **IDENTICAL** (BNK-607 carry) |
+| [extraService.do](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637B | `f9c5d877` | `silverangel_extraService.html` | **IDENTICAL** (BNK-607 carry) |
+
+essential 목욕 verbatim: 「목욕제공」 / 「목욕서비스 제공시 청구 가능」. 「월 5회」·「전후 관찰」은 페이지에 없음 = 규정 유래(US-O01 bathing BE-only · FE wire P2 carry).
+
+extraService 5-method: 자동이체·가상계좌·카드·다계좌 정산·현금영수증 + 1600-6859 hotline → ogada G2b CMS 5/5 closure(BNK-600 BE · BNK-603 FE · BNK-607 empty-state UX) 4-cycle cascade.
+
+### §608-4 ★★ longterm 610 oscillation 2-cycle · 502 「미확인」 4-cycle carry
+
+| menuId | URL | 결과 | 판정 |
+|---|---|---|---|
+| npe0000000610 통합재가 | [610](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610) | live HTTP 200·458B `c26a5e57` (빈 shell) / canonical on-disk `0ea575be` (91,421B) | **oscillation 2-cycle** (BNK-607 1차·BNK-608 continues) — canonical 보존 |
+| npe0000000502 단기보호 | [502](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502) | HTTP 302 → `/npbs/exception/securityException` · 422B `d3c90b33` | **「미확인」 4-cycle carry** (BNK-599/600/607/608 · canonical `b5aee8c1` 보존) |
+
+해석: 신규 홈('26.1.16~) 브라우저 가드로 단일 사이클 내 canonical↔빈shell 진동. canonical on-disk 우선 정책 유지·ROADMAP v3.1 G18-SHORT 영향 0.
+
+### §608-5 ★ indicator-27 명칭 충돌 정리 carry (false-closure 방지)
+
+ogada FE git grep (`@9a583ec` carry):
+- `indicator-27-compliance | bathing-schedules/indicator` = **0 hit** (P2 carry · bathing US-O01 FE wire 미구현)
+- `indicator27` (G17 functional recovery) = 15 hit
+  - `src/utils/functionalRecoveryCompliance.js` 12 hit
+  - `src/pages/FunctionalRecoveryPage.jsx` 3 hit
+
+⚠ 두 "indicator-27"은 별개 도메인 (G17 기능회복 vs US-O01 목욕). 오판 금지 carry.
+
+### §608-6 ★ law247 · mohw126 DRIFT 재실측 (semantic 불변 → 덮어쓰기 2건)
+
+| URL | BNK-607 md5 | BNK-608 md5 | verbatim 변동 | 판정 |
+|---|---|---|---|---|
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | `a2cf9bf3` | `27c859bd` | 제2025-247호·시행 2026·장기요양 verbatim 불변 | DRIFT cachebuster |
+| [mohw126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | `1f71275c` | `7df000ad` | 다운로드 477→**478**(+1)·미리보기 564→**567**(+3)·본인부담상한액 verbatim 불변 | DRIFT counter only |
+
+→ 덮어쓰기 2건. semantic 불변 carry.
+
+### §608-7 ★ 변동·번복 회계 (BNK-607 → BNK-608)
+
+| 항목 | BNK-607 | BNK-608 | 번복 |
+|---|---|---|---|
+| FE/BE HEAD | `9a583ec`(+1)/`e4f83af`(carry) | `9a583ec`(carry)/`37416ac`(+1) | 0 |
+| 신규 core 갭 | 0 | 0 | 0 |
+| candidate | 5 P3 + M11 P2 + 4 NEW(P2×1·P3×3) | 5 P3 + M11 P2 + 3 NEW P3 + **P2 LANDED** + **+1 P3 NEW** `G-NHIS-ALT-KEY-AUDIT-BADGE` | -1 P2 / +1 P3 |
+| 가정 번복 | 0 | **1** (BE @Test 회계 정정 — rg WT scan 1915 = 1906+9 vs per-file HEAD 1894→1904+10·11 helper 잡음 회계 carry) | +1 |
+| 상태 변경 | 1 (FE+1 only) | 1 (BE+1 only · P2 closure) | — |
+| KPI 변경 | 1 (merge gate 786) | 3 (BE Test 265 · BE @Test 1915 · merge gate 787) | — |
+| 미확인 carry | 3 (longterm 502 · carefor LIVE · demo-work) | carry 3 | 0 |
+| 신규 snapshot | 1 | 1 (`angel_longterm_regulatory_crossverify_bnk608.txt`) | — |
+| 덮어쓰기 | 0 | 2 (law247 · mohw126) | — |
+| 엑셀 포맷 변경 | 0 | 0 | — |
+
+per-cycle minimum 충족 ✅: 신규 evidence URL 재실측 5건+ (NHIS #44 374차·silverangel essential/extra·longterm 610/502·law247·mohw126·BE git 실측) · 메뉴/필드/워크플로 1블록 (NhisClientResolver 2-tier cascade + NhisMaskedNameMatcher 패턴 정의 + ClientRepository NEW JPQL) · COMPETITOR_MATRIX 갱신(BNK-608 entry) · BENCHMARK_REPORT §608 신규.
+
+**planner 권고**:
+1. **★★★ G-NHIS-MASKED-NAME-FALLBACK P2 BE LANDED — FE altKeyMatched badge UX P3 신규 후보** : audit reason 「공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨」을 `VisitNhisComparisonPanel.jsx` row badge로 노출 → 운영자에게 「대체 매칭됨 — 검증 필요」 신호 제공. BE 이미 audit log 기록 — FE 표시 레이어만 추가. coder 다음 사이클 P3 후보.
+2. **★★★ NHIS #44 374차 + silverangel essential/extra IDENTICAL** : 규제·엔젤 정본 zero drift carry. ogada G16 + G2b + RBAC 차별화 우위 marketing copy 유효.
+3. **★★ 모듈 80.86% carry → 87.76% bump 잠재력 carry** : M11 직원급여·M12 회계 id=11·12 = 0 → 87.76% bump 단일 최대 KPI 레버 carry (BNK-605 정본화 carry).
+4. **★ longterm 610 oscillation 2-cycle** : canonical on-disk 우선 carry. 다음 사이클 first-load → cookie set 후 본문 복귀 가능성 추적.
+5. **★ bathing US-O01 FE wire 0 hit P2 carry** : indicator-27 명칭 충돌 정리 완료(BNK-607). coder 다음 P2 후보 carry.
+
+merge gate **787** (FE 227 + BE 560 · +1 BE) → tester FF merge 787 가속 권장.
+
+## §607 BNK-607 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 373차 zero drift IDENTICAL** — `c886ff1f`(live HTTP 200·7,572B = on-disk `nhis_jo44.html` 동일 md5)·러-1~4·편도50%·1일1회·④별지 제22호 verbatim ↔ ogada `TransportServiceFeeParityCatalog` 4-rule + FE `TransportServiceFeePanel` full-stack(G16 BNK-603) + BE RBAC hq_admin/branch_admin(BNK-606) → 경쟁사 4종 중 ogada만 #44 표시 레이어 full-stack 차별화 우위 carry · ★★★ **silverangel(엔젤) 평가지표 27 목욕 + 부가서비스 CMS 5-method 양쪽 zero drift IDENTICAL** — `daycareEssentialWork.do` `c79c1be3`(131,664B·「목욕제공 — 필수 아니며 목욕서비스 제공시 청구 가능」 verbatim) + `extraService.do` `f9c5d877`(81,637B·자동이체·가상계좌·카드·다계좌·현금영수증) 둘 다 live HTTP 200 = on-disk IDENTICAL ↔ ogada G2b CMS 5/5 closure(BNK-600/603) · ★★ **longterm 610 통합재가 oscillation** — 단일 사이클 내 canonical `0ea575be`(통합재가·월 10만원·주야간보호형) ↔ 458B 빈 shell `c26a5e57` 진동(신규홈 '26.1.16 브라우저 가드 추정)·canonical on-disk 보존·본문 의존 0 · 502 단기보호 HTTP 302 SIZE 0 「미확인」 carry · ★ **indicator-27 명칭 충돌 정리(false-closure 방지)** — ogada FE `functionalRecoveryCompliance.js` `indicator27`(G17 기능회복훈련 평가지표 27·BNK-101/102 landed) ≠ silverangel 평가지표 27 「목욕」(US-O01 bathing) · `git grep -c 'indicator-27-compliance|bathing-schedules/indicator' develop` = **0 hit** → bathing US-O01 FE wire **P2 carry 유지**(두 indicator-27 혼동 시 false closure 위험 명시) · ★ **ogada FE +1 — CMS catalog empty-state UX hardening** — `9a583ec` `CmsPaymentMethodCatalogPanel.jsx` +2/-1 + `.test.jsx` +19(회귀 lock)·G2b CMS cascade 연장(BE 5/5 → retry → wire → **empty-state**)·경쟁사 정적 명단 대비 빈상태 UX 우위 · ogada baseline FE `@9a583ec` **HEAD +1**·BE `@e4f83af`(carry) **HEAD zero advance 1-cycle**·양쪽 WT CLEAN · merge gate **786**(+1 FE)
+
+**조사일**: 2026-06-25T03:00:00Z (KST 12:00) | **rotation**: 엔젤·롱텀·규제 4–6h (NHIS #44·silverangel essential/extra·longterm 502/610·law.go.kr 교차검증). extract `angel_longterm_regulatory_crossverify_bnk607.txt`(5,789B·`3daf83cf`).
+
+**1. ogada baseline 실측 (BNK-607 정본)**
+
+| 지표 | BNK-606 | BNK-607 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `5afef2d` | **`9a583ec`** `Improve CMS catalog empty state handling` | **+1** |
+| BE develop HEAD | `e4f83af` | **`e4f83af`** carry · BNK-606 동일 SHA · **HEAD zero advance 1-cycle** | carry |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 226 | **227** | +1 |
+| BE ahead vs `origin/test=598d108` | 559 | 559 | carry |
+| merge gate | 785 | **786** | +1 |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file (`*Test.java`) | 262 | 262 | carry |
+| BE `@Test` method | 1906 | 1906 | carry |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 276 | 276 | carry |
+| FE test 총합 | 469 | 469 | carry (9a583ec 는 기존 `.test.jsx` +case·신규 FILE 아님) |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% (23.45/29·id=7-4 1.0) | carry |
+
+FE `9a583ec` = CMS 결제수단 catalog 가 빈 결과 반환 시 friendly empty-state 메시지 노출 + 회귀 테스트 lock. G2b CMS 4-layer cascade 연장(BE 5/5 BNK-600 → FE retry BNK-601 → FE wire BNK-603 → **FE empty-state BNK-607**).
+
+### §607-1 ★★★ NHIS #44 이동서비스비 러-1~4 373차 zero drift IDENTICAL (확인)
+
+| URL | HTTP | SIZE | live md5 | disk md5 | 판정 |
+|---|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | `c886ff1f` (`nhis_jo44.html`) | **live == disk IDENTICAL · 373차** |
+
+verbatim: 러-1·러-2·러-3·러-4 · 편도 50% · 1일 1회 · ④별지 제22호 일지.
+ogada: BE `TransportServiceFeeParityCatalog` 4-rule ↔ FE `TransportServiceFeePanel` `fetchTransportServiceFeeParityRulesApi()` + `<h3>NHIS #44 산정 기준</h3>`(G16 BNK-603 full-stack) + BE RBAC hq_admin/branch_admin(BNK-606). 경쟁사 4종 중 ogada만 #44 표시 레이어 full-stack 보유 — 차별화 우위 carry.
+
+### §607-2 ★★★ silverangel 평가지표 27 목욕 + 부가서비스 CMS 5-method zero drift IDENTICAL (확인)
+
+| URL | HTTP | SIZE | live md5 | disk | 판정 |
+|---|---|---|---|---|---|
+| [daycareEssentialWork.do](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664B | `c79c1be3` | `silverangel_essential.html` | **IDENTICAL** (BNK-603 carry) |
+| [extraService.do](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637B | `f9c5d877` | `silverangel_extraService.html` | **IDENTICAL** (BNK-603 carry) |
+
+essential 목욕 verbatim: `목욕제공` / `목욕서비스 제공시 청구 가능` → 「목욕제공 — 필수 아니며 목욕서비스 제공시 청구 가능」(전후관찰/월5회는 페이지에 없음 = 규정 유래).
+extraService 5-method: 자동이체·가상계좌·카드·다계좌 정산·현금영수증 → ogada G2b CMS 5/5 BE parity(BNK-600) + FE `CmsCollectionPanel`(BNK-603) closure.
+
+### §607-3 ★★ longterm 610 통합재가 oscillation · 502 단기보호 「미확인」 carry
+
+| menuId | URL | 결과 | 판정 |
+|---|---|---|---|
+| npe0000000610 통합재가 | [610](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610) | fetch#1 `0ea575be`(canonical 91KB) / fetch#2 HTTP 200·458B `c26a5e57`(빈 shell) | **oscillation** — canonical on-disk 보존·본문 의존 0 |
+| npe0000000502 단기보호 | [502](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502) | HTTP 302 · SIZE 0 | **「미확인」 carry** (단기보호 1등급 74,060 canonical `b5aee8c1` 보존) |
+
+해석: 신규 홈('26.1.16~) 브라우저 가드로 단일 사이클 내 canonical↔빈shell 진동. canonical on-disk 우선 정책 유지·ROADMAP v3.1 G18-SHORT 영향 0.
+
+### §607-4 ★ indicator-27 명칭 충돌 정리 — false-closure 방지 (확인)
+
+ogada FE `git grep -c 'indicator-27|indicator27' develop`:
+
+| file | hit | 도메인 |
+|---|---|---|
+| `src/utils/functionalRecoveryCompliance.js` | 12 | **G17 기능회복훈련 평가지표 27**(인지/신체·BNK-101/102 landed) |
+| `src/pages/FunctionalRecoveryPage.jsx` | 3 | 동일(G17 functional recovery) |
+
+별개: silverangel 평가지표 27 「목욕제공」(US-O01 bathing). `git grep -c 'indicator-27-compliance|bathing-schedules/indicator' develop` = **0 hit** → BE `BathingScheduleIndicator27Catalog` + `GET /care/bathing-schedules/indicator-27-compliance`(BE-only·BNK-603)·FE wire 여전히 0 hit = **P2 carry**.
+
+⚠ 두 "indicator-27"은 별개 도메인(G17 기능회복 vs US-O01 목욕). 「FE indicator27 hit 발견 = bathing wire closure」 **오판 금지** — bathing US-O01 FE wire = coder 다음 사이클 P2 carry 유지.
+
+### §607-5 ★ ogada FE +1 — CMS catalog empty-state UX hardening (확인)
+
+FE `9a583ec` `Improve CMS catalog empty state handling`:
+- `src/components/ui/CmsPaymentMethodCatalogPanel.jsx` +2/-1 — 빈 catalog 시 friendly empty-state 메시지
+- `src/components/ui/CmsPaymentMethodCatalogPanel.test.jsx` +19 — 빈상태 회귀 lock
+
+경쟁사: 케어포 7-4 CMS 자동이체 정적 명단·엔젤 extraService 5-method 정본 — 빈상태 UX 0. → ogada CMS UX superset 우위 재확인. G2b cascade: BE 5/5(BNK-600) → FE retry(BNK-601) → FE wire(BNK-603) → **FE empty-state(BNK-607)**.
+
+### §607-6 ★ 변동·번복 회계 (BNK-606 → BNK-607)
+
+| 항목 | BNK-606 | BNK-607 | 번복 |
+|---|---|---|---|
+| FE/BE HEAD | `5afef2d`/`e4f83af` | `9a583ec`(+1)/`e4f83af`(carry) | 0 |
+| 신규 core 갭 | 0 | 0 | 0 |
+| candidate | 5 P3 + M11 P2 + 4 NEW(P2×1·P3×3) | carry (변동 0·신규 0) | 0 |
+| 가정 번복 | 0 | 0 | 0 |
+| 상태 변경 | 1 (BE+1) | 1 (FE+1 only · BE carry) | — |
+| KPI 변경 | 2 | 1 (merge gate 786) | — |
+| 미확인 carry | 3 (longterm 502·carefor LIVE·demo-work) | carry 3 | 0 |
+| 신규 snapshot | 6 | **1** (`angel_longterm_regulatory_crossverify_bnk607.txt`) | — |
+| 덮어쓰기 | 5 | **0** (전 URL live == disk IDENTICAL) | — |
+| 엑셀 포맷 변경 | 1 (외부) | 0 | — |
+
+per-cycle minimum 충족 ✅: 신규 evidence URL 재실측 4건+ (NHIS #44 373차·silverangel essential/extra·longterm 610 oscillation 신규 변동 기록) · 메뉴/필드/워크플로 1블록 (indicator-27 명칭 충돌 crosswalk + silverangel 목욕 verbatim) · COMPETITOR_MATRIX 갱신(BNK-607 entry) · BENCHMARK_REPORT §607 신규.
+
+**planner 권고**:
+1. **★★★ NHIS #44 373차 + silverangel essential/extra IDENTICAL** — 규제·엔젤 정본 zero drift carry. ogada G16 #44 full-stack + G2b CMS 5/5 차별화 우위 유지.
+2. **★ indicator-27 명칭 충돌 정리 — bathing US-O01 FE wire P2 carry** — ogada `functionalRecoveryCompliance.js` indicator27(G17)과 silverangel 목욕 평가지표 27(US-O01)을 혼동 금지. bathing `indicator-27-compliance` FE wire는 여전히 0 hit → coder 다음 사이클 P2 후보로 유지.
+3. **★ CMS empty-state UX (FE +1)** — G2b CMS cascade 연장, 경쟁사 정적 명단 대비 빈상태 UX 우위 marketing copy 활용 가능.
+4. **longterm 610 oscillation / 502 「미확인」 carry** — canonical on-disk 우선 정책 유지 · tester FF merge **786** 가속 권장.
+
+## §606 BNK-606 — 이지케어 역공학 2–4h · ★★★ **FAQ 21844 「260624_공단 개인정보보호 표시 방식 변경에 따른 방문일정 연동 안내」 신규 evidence — NHIS 엑셀 수급자/종사자 이름 마스킹(`*`) 정책 변경 자인 → ogada 신규 P2 후보 `G-NHIS-MASKED-NAME-FALLBACK`** — FAQ 21844 HTTP 200·14,474B·`d0aa760c` 2026-06-24자 fresh notice, 이지케어 자체가 「일부 기관 계획일정 반영이 원활하지 않을 수 있습니다」 자인 → ogada `NhisImportService.matchByName` 직접 매칭 → 마스킹 시 unique 매칭 불가 직격 가정·alt-key(LTC 인증번호·생년·주민 후미·전화 끝자리) fallback 후보 · ★★★ **PGID wAllowance-a200 「방문간호/방문목욕 건별수당 관리」 신규 evidence** — 95,411B·`eebfd34d`·jqGrid `#grid-a200` colModel **7-field**(sKind_name·sCode_name·**수가**·**요양보호사 수당**(editable)·act·sCode·sCode2)·3-radio filter(전체/목욕 003/간호 002)·서비스코드별 수가+수당 inline-edit·M6 직원급여 child(케어포 M11-4 수당/공제 마스터와 의미 인접) · ★★★ **ezCare mCnt 시장 성장 신호 +3** — home mCnt 1: 9,280→**9,283**(+3) · mCnt 2: 4,600→**4,601**(+1) · fnc 도입: 9,350→**9,353**(+3) 동시 increment(15+ cycle 누적 첫 동시 증가) → 평균 도입 +3/일 추정·marketing copy refresh · ★★ **PGID mobile-aKey 「7. 앱 접속키 관리」 신규 evidence** — 136,424B·`5cd56352`·2-tab(요양보호사·간호사/수급자)+(disabled 로그인기록)·**4-flag lifecycle**(상태 활동/휴직/퇴사·초대장 생성/미생성·앱설치 y/n·접속허용 y/n)·`<button uKind="wa">초대장 일괄발송하기</button>` → ogada `StaffNotificationDispatchPanel` 개별 dispatch 만 보유, 4-flag dashboard·일괄 발송 toggle **없음** → 신규 P3 후보 `G-STAFF-APP-ACCESS-LIFECYCLE` · ★★ **FAQ 21841·21842 [2026 모니터링] 문항 12-15 신규 evidence** — 5명 임의 유선상담·**60%이상** 적용·자가진단 6개월 매월·신규기관 가산월+2 grace 룰 verbatim → planner 정책 룰 코드화 P3 후보 2종 · ★ **ogada git BE+1 G16 RBAC closure** — `e4f83af` `fix(v2/G16): align transport parity-rules RBAC with API spec` `/api/v1/transport/service-fee-parity-rules` hq_admin·branch_admin only 잠금·`RoleBasedControllerAccessTest` +21L(2 deny 케이스)·BE @Test 1904→**1906** · ★ ogada baseline FE `@5afef2d`(carry) **HEAD zero advance 1-cycle**·BE `@e4f83af` **HEAD +1**·양쪽 WT CLEAN · merge gate **785**(+1)
+
+**조사일**: 2026-06-25T02:18:00Z (KST 11:18) | **rotation**: 이지케어 역공학 2–4h (`/new.ez`·`ezCare_fnc.html`·FAQ rowid 전수·가격·도입 기관 수 재실측). extract `ezcare_faq21844_pii_masking_crosswalk_bnk606.txt`(15,310B·`c6cb0b50`).
+
+**1. ogada baseline 실측 (BNK-606 정본)**
+
+| 지표 | BNK-605 | BNK-606 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `5afef2d` | **`5afef2d`** carry · BNK-605 동일 SHA · **HEAD zero advance 1-cycle** | carry |
+| BE develop HEAD | `5a717ac` | **`e4f83af`** `fix(v2/G16): align transport parity-rules RBAC with API spec` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 226 | 226 | carry |
+| BE ahead vs `origin/test=598d108` | 558 | **559** | +1 |
+| merge gate | 784 | **785** | +1 |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file (`*Test.java`) | 262 | 262 | carry |
+| BE `@Test` method | 1904 | **1906** | **+2** (RoleBasedControllerAccessTest hq_admin/branch_admin parity-rules deny pair) |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 276 | 276 | carry |
+| FE test 총합 | 469 | 469 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% (23.45/29·id=7-4 1.0) | carry |
+
+BE `e4f83af` = G16 `/api/v1/transport/service-fee-parity-rules` 엔드포인트를 `hq_admin`·`branch_admin` 으로 잠금. `TransportController.java` -1/+1·`RoleBasedControllerAccessTest.java` +21L(`shouldAllowHqAdmin`·`shouldAllowBranchAdmin`·`shouldDenyHeadCaregiver`·`shouldDenyAnonymous` 2 deny + 권한 회귀 방지). G16 4-layer cascade 종결 단계 (BE catalog → FE wire → CSS spec → BE RBAC).
+
+### §606-1 ★★★ FAQ 21844 「260624_공단 개인정보보호 표시 방식 변경」 — NHIS 이름 마스킹 정책 변경 자인 (확인 · 신규 P2)
+
+| URL | HTTP | SIZE | md5 | on-disk | 판정 |
+|---|---|---|---|---|---|
+| [FAQ 21844](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web) | 200 | 14,474B | `d0aa760c` | `ezcare_faq_21844_bnk606.html` | **BNK-606 신규 evidence ★★★** |
+
+이지케어 verbatim:
+> "공단 개인정보보호 강화 조치로 공단 엑셀 자료 내 수급자, 종사자 이름 일부가 **마스킹(`*`) 처리** 로 변경되었습니다. … 변경된 방식으로 인해 **일부 기관에서 계획일정 반영이 원활하지 않을 수 있습니다.** ※ 해당 현상은 공단 개인정보보호 정책 변경으로 인해 발생된 사항임을 안내드립니다."
+
+ogada 실측 영향 (`@e4f83af`/`@5afef2d`):
+- `NhisImportService.java` (BE): `client.getName()` 직접 매칭만 — 마스킹 fallback **없음**
+- `MatchNhisImportRowRequest.java`: matching by name/ltc cert — 마스킹 시 alt-key 필수
+- `VisitNhisComparisonPanel.jsx` (FE): NHIS 행 ↔ ogada 행 row-level 비교 — 마스킹 시 unique 매칭 불가
+
+→ **신규 P2 candidate `G-NHIS-MASKED-NAME-FALLBACK`**: 마스킹 패턴(`^[가-힣]\*[가-힣]+$`) 감지 → LTC 인증번호·생년·주민 후미·전화 끝자리로 alt-match. 케어포·엔젤·롱텀 별도 안내 없음 → ezCare 단일 자인. ogada 동일 환경 직격 가정 → **planner v1.2.x 후보**.
+
+### §606-2 ★★★ PGID wAllowance-a200 「방문간호/방문목욕 건별수당 관리」 (확인 · M6 직원급여 child)
+
+URL: `https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-a200` (인증) · 95,411B · md5 `eebfd34dc55720a754b00e9973023e5e` · on-disk `ezcare_new_ez_pgid_wAllowance-a200.html`
+정본 헤더: `<h4>방문간호/방문목욕 건별수당 관리</h4>` · sKind: `방문요양,방문목욕` (재가복지센터 DEMO)
+
+filter (3-radio `sKind`): 전체 / 목욕 `003` / 간호 `002`
+
+grid `#grid-a200` colModel (jqGrid · 7 field):
+
+| name | label | width | align | formatter | editable | hidden |
+|---|---|---|---|---|---|---|
+| sKind_name | 서비스구분 | 100 | center | — | false | false |
+| sCode_name | 서비스명 | auto | left | — | false | false |
+| sCode_amount | **수가** | 100 | right | integer | false | false |
+| **allowance** | **요양보호사 수당** | 100 | right | integer | **true** | false |
+| act | 저장 | 40 | center | (button) | — | false |
+| sCode | sCode | — | — | — | true | true |
+| sCode2 | sCode2 | — | — | — | true | true |
+
+ogada 실측 (`@5afef2d` grep `payroll/per-visit-rate` = **0 route**) → 미구현. 인접 `/staff/leave-ledger`·`/staff/work-attendance`(V169)는 연차/근태만.
+
+→ 신규 P3 candidate `G-PER-VISIT-ALLOWANCE-EDITOR` — 서비스 코드 × 요양보호사 수당 inline-edit. M11 직원급여 P2(BNK-602/605 carry) 우산 안에서 다루도록 권고.
+
+### §606-3 ★★★ ezCare mCnt +3 시장 성장 신호 (확인 · marketing refresh)
+
+| 페이지 | 카운터 | BNK-605 | BNK-606 | Δ |
+|---|---|---|---|---|
+| home `ezcare_home.html` | mCnt 1 (도입) | 9,280 | **9,283** | +3 |
+| home | mCnt 2 (실사용) | 4,600 | **4,601** | +1 |
+| home | mCnt 3 (재가) | 2,353 | 2,353 | 0 |
+| home | mCnt 4 (시설) | 1,820 | 1,820 | 0 |
+| fnc `ezCare_fnc.html` | 도입 (st2) | 9,350 | **9,353** | +3 |
+
+해석: 1-cycle 사이 home·fnc 양쪽 +3 동시 증가 — 15+ cycle 누적 첫 동시 increment. 일평균 +3개 도입 가정 → BNK-563(~9,209) 대비 ~144개 / ~90일 = 1.6/일 추세 대비 1.9배. **단발성 가능성 carry** — 다음 사이클 재확인 필요. ogada competitor coverage 인용 「9,353개 기관 (@2026-06-25)」 갱신 권장.
+
+### §606-4 ★★ PGID mobile-aKey 「7. 앱 접속키 관리」 — 4-flag lifecycle (확인 · P3 신규)
+
+URL: `https://ezcare.easyms.co.kr/new.ez?PGID=mobile-aKey` (인증) · 136,424B · md5 `5cd56352aa84693002ad344303993aff` · on-disk `ezcare_new_ez_pgid_mobile-aKey.html`
+정본 헤더: `<h3>7. 앱 접속키 관리</h3>`
+
+tabs: `요양보호사·간호사`(`#tabs-mobile-app_aKey-01`) / `수급자`(`#tabs-mobile-app_aKey-02`) / (disabled `#tabs-mobile-app_aKey-04` 로그인기록)
+
+caregiver tab 4-flag filter:
+| filter | 옵션 (value) |
+|---|---|
+| 상태 | 전체 / 활동 `01` / 휴직 `02` / 퇴사 `03` / 기타 `04` |
+| 초대장여부 | 전체 / 생성 `y` / 미생성 `n` |
+| 앱설치여부 | 전체 / 설치 `y` / 미설치 `n` |
+| 접속허용여부 | 전체 / 허용 `y` / 불가 `n` |
+
+상단: `<button uKind="wa">초대장 일괄발송하기</button>` — caregiver bulk SMS dispatch.
+
+ogada 실측: `StaffAccessKeyNotificationService` + `StaffNotificationDispatchPanel.jsx`(BNK-591 G-SMS) = **개별 발송**만. `app_installed`·`access_allowed`·`aKey_issued` 컬럼·일괄 발송 toggle **없음**.
+
+→ 신규 P3 candidate `G-STAFF-APP-ACCESS-LIFECYCLE` — 4-flag entity + dashboard + bulk dispatch. M8 직원관리(coverage 1.0 carry) 보강. **v1.3+** (모바일 카드 활성화 시기).
+
+### §606-5 ★★ FAQ 21841·21842 — [2026 모니터링] 문항 12-15 (확인 · P3 정책 룰)
+
+| URL | HTTP | SIZE | md5 | on-disk |
+|---|---|---|---|---|
+| [FAQ 21841](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21841&type=web) 문항 12-14 | 200 | 15,350B | `c8bdc432` | `ezcare_faq_21841_bnk606.html` |
+| [FAQ 21842](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21842&type=web) 문항 15 | 200 | 14,755B | `75cedf76` | `ezcare_faq_21842_bnk606.html` |
+
+핵심 룰:
+- 문항 12-14: 「수급자/보호자 **5명 임의 유선상담** · 직전 **3개월** · 항목별 **60%이상**【Y】」
+- 문항 15: 「자가진단 **직전 6개월 동안 매월** 실시 【Y】 · 신규기관: 가산을 1월부터 받았다면 **자가진단은 3월부터** (N+2 grace)」
+
+→ 신규 P3 candidate 2종: `G-MONITORING-SAMPLING-RULE`(60%·5명 표본 점검 룰)·`G-NEW-AGENCY-SELFDIAG-GRACE`(가산월+2 grace). 우선순위: planner v1.3+ 정책 코드화.
+
+### §606-6 ★ 가격·marketing 재실측 (verbatim 불변 · cachebuster DRIFT)
+
+| 페이지 | BNK-605 md5 | BNK-606 md5 | SIZE | verbatim 변동 | 판정 |
+|---|---|---|---|---|---|
+| `ezcare_home.html` | `7d440586` | `ffcface8` | 106,099B | mCnt 1·2 **+3·+1** | DRIFT 의미 |
+| `ezcare_fnc.html` | `e35d15d9` | `08c83d43` | 17,870B | 도입 9,353 **+3** | DRIFT 의미 |
+| `ezcare_charge.html` | `a64223c4` | `e15e1f23` | 22,979B | 33,000·25,850·55,000 verbatim 불변 | DRIFT cachebuster |
+| `ezcare_change_work.html` | `cd936589` | `389c94eb` | 26,157B | RFID·이중일정·듀얼/트리플 verbatim 불변 | DRIFT cachebuster |
+| `ezcare_new_ez_demo.html` | `95f9c199` | `d22772bc` | 140,034B | widget id 회전 (semantic 불변) | DRIFT session |
+| `ezcare_top_nav_v2.js` | `95286775` | `95286775` | 25,470B | — | **zero drift IDENTICAL** |
+| `ezcare_new_ez_redirect.html` | `e1d52bd5` | `e1d52bd5` | 70B | — | **zero drift IDENTICAL** |
+
+5건 덮어쓰기 (home·fnc·charge·change_work·new_ez_demo). top-nav-V2.js·redirect stub zero drift carry.
+
+### §606-7 ★ 변동·번복 회계 (BNK-605 → BNK-606)
+
+| 항목 | BNK-605 | BNK-606 | 번복 |
+|---|---|---|---|
+| FE/BE HEAD | `5afef2d`/`5a717ac` | `5afef2d`(carry)/`e4f83af`(+1) | 0 |
+| 신규 core 갭 | 0 | 0 | 0 |
+| candidate | 5 P3 + M11 P2 정본화 | carry 5 P3 + M11 P2 + **+1 NEW P2** (`G-NHIS-MASKED-NAME-FALLBACK`) + **+3 NEW P3** (`G-PER-VISIT-ALLOWANCE-EDITOR`·`G-STAFF-APP-ACCESS-LIFECYCLE`·`G-MONITORING-SAMPLING-RULE`+`G-NEW-AGENCY-SELFDIAG-GRACE` pair) | +4 candidate |
+| 가정 번복 | 0 | 0 | 0 |
+| 상태 변경 | 2 (FE+1·BE+1) | 1 (BE+1 only · FE carry) | — |
+| KPI 변경 | 1 (merge gate 784) | 2 (BE @Test 1906·merge gate 785) | — |
+| 미확인 carry | 3 (longterm 502·carefor LIVE·demo-work) | carry 3 | 0 |
+| 신규 snapshot | 1 | **6** (FAQ21841/21842/21844_bnk606 + wAllowance-a200 + mobile-aKey + extract crosswalk) | — |
+| 덮어쓰기 | 0 | **5** (home·fnc·charge·change_work·new_ez_demo) | — |
+| 엑셀 포맷 변경 | 0 | **1 (외부)** (NHIS 공단 엑셀 이름 마스킹 — ezCare 자인) | +1 |
+
+per-cycle minimum 충족 ✅: 신규 evidence URL 3건+ · 메뉴/필드/워크플로 2블록(wAllowance-a200 colModel·mobile-aKey lifecycle) · COMPETITOR_MATRIX 갱신(BNK-606 entry) · BENCHMARK_REPORT §606 신규.
+
+**planner 권고**:
+1. **★★★ G-NHIS-MASKED-NAME-FALLBACK P2 신규** — FAQ 21844 fresh(2026-06-24) · ezCare 자인 「일부 기관 계획일정 반영 차질」 → ogada `NhisImportService.matchByName` alt-key fallback(LTC 인증번호·생년·주민 후미·전화 끝자리) 우선 구현.
+2. **★ 모듈 80.86% carry · M11 P2 정본화 carry** — wAllowance 5-page(payrollcost·severance·a100·awData·a200) 모듈 정본 + 케어포 M11 6-leaf — ogada id=11·12 closure = 80.86%→87.76% 단일 최대 KPI bump 레버 carry.
+3. **★ ezCare 시장 성장 +3/cycle** — 「9,353개 기관(@2026-06-25)」 marketing copy refresh.
+4. **G16 BE RBAC closure** — `/api/v1/transport/service-fee-parity-rules` hq_admin/branch_admin only → security 회귀 방지 ✅ · tester FF merge **785** 가속 권장.
+
+## §605 BNK-605 — 케어포 역공학 0–2h · ★★★ **케어포 M11 직원 급여관리 6-leaf ↔ 이지케어 wAllowance 4-page ↔ ogada(전무) 심화 crosswalk — P2 갭 정본화** — 케어포 M11(11-1 월별 급여대장·11-2 퇴직적립금·11-3 급여계약·11-4 수당/공제·11-5 인건비 지출비율·11-6 급여대장 리포트) + 이지케어 `wAllowance-payrollcost`(인건비×49·지출비율×4)·`wAllowance-severance`(퇴직×20)·`wAllowance-a100`(간이지급명세×2)·`wAllowance-awData`(수당×10) 양쪽 직원급여 모듈 완비 ↔ ogada `/payroll`·`/accounting` **grep 0 route**(`competitorModuleCoverage.js` id=11·12 둘 다 coverage **0**) → **id=11·12 closure = 모듈 80.86%→최대 87.76%(+6.9pp) 단일 최대 KPI bump 레버** 재확정(BNK-604 carry 심화) · ★★★ **carefor func.php 11모듈 107-leaf 371차 zero drift** — Wayback `20260519072235` live HTTP 200·104,180B(raw md5 `307fc85f` = cachebuster wrapper variance) 본문 11-module header + key leaf verbatim 일치 = canonical `6226e6eb`(98,328B) 의미 동일 · ★★ **NHIS #44 이동서비스비 러-1~4 372차 zero drift IDENTICAL** `c886ff1f`(live HTTP 200·7,572B = on-disk) · ★ **carefor LIVE HTTP 000 30-cycle·demo-work HTTP 000 「미확인」 carry** · ogada baseline FE `@5afef2d`/BE `@5a717ac` **양쪽 HEAD +1·WT CLEAN** · merge gate **784**(+2 cross-stream)
+
+**조사일**: 2026-06-25T01:32:00Z (KST 10:32) | **rotation**: 0–2h 케어포 func.php·매뉴얼·demo-work UX 패턴(M11 직원급여 심화). extract `carefor_m11_payroll_crosswalk_bnk605.txt`(7,941B·`50ae0ed6`).
+
+**1. ogada baseline 실측 (BNK-605 정본)**
+
+| 지표 | BNK-604 | BNK-605 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `9aeedfe` | **`5afef2d`** `fix(v1.2.1/QA-B95): normalize placeholder live-e2e credentials` | **+1** |
+| BE develop HEAD | `e12b084` | **`5a717ac`** `Align transport parity rules response with API spec` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 225 | **226** | +1 |
+| BE ahead vs `origin/test=598d108` | 557 | **558** | +1 |
+| merge gate | 782 | **784** | +2 (cross-stream) |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file (`*Test.java`) | 262 | 262 | carry |
+| BE `@Test` method | 1904 | 1904 | carry |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 276 | 276 | carry |
+| FE test 총합 | 469 | 469 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% (23.45/29·id=7-4 1.0) | carry |
+
+BE `5a717ac` = G16 transport parity-rules 응답을 API_SPEC 에 정렬(BNK-603 FE wire 후속 정합 commit·신규 갭 0·KPI 영향 0).
+
+### §605-1 ★★★ 케어포 M11 직원 급여관리 6-leaf ↔ 이지케어 wAllowance ↔ ogada(전무) (확인 · P2 갭 정본화)
+
+**케어포 func.php M11 6-leaf** (Wayback 본문 verbatim):
+
+| leaf | 명칭 | 도메인 | ogada |
+|---|---|---|---|
+| 11-1 | 월별 급여대장 | 기본급·수당·공제·실지급 산정 | ❌ |
+| 11-2 | 퇴직적립금 관리 | 근로자퇴직급여보장법 충당금 | ❌ |
+| 11-3 | 직원 급여계약 설정 | 연봉/시급 계약 항목 | ❌ |
+| 11-4 | 급여기초 설정(수당/공제) | 수당(직책·처우개선·장기근속)·공제(4대보험·소득세) 마스터 | ❌ |
+| 11-5 | 인건비 지출비율 참고자료 | 장기요양급여비용 中 인건비 지출비율 신고(고시) | ❌ |
+| 11-6 | 직원 급여대장 리포트 | 급여대장·간이지급명세서 출력 | ❌ |
+
+**이지케어 wAllowance 4-page on-disk grep** (양쪽 구현 입증):
+- `wAllowance-payrollcost.html`(146,026B): 인건비 ×49·지출비율 ×4·급여대장 ×4·수당 ×11·공제 ×2·퇴직 ×9·기본급 ×3·방문요양 ×9·방문목욕 ×4·장기근속 ×1 → carefor 11-5+11-1+11-4 정합
+- `wAllowance-severance.html`(137,907B): 퇴직 ×20·수당 ×8·급여명세 ×1 → carefor 11-2 정합
+- `wAllowance-a100.html`(116,867B): 간이지급명세 ×2·공제 ×2 → carefor 11-6 정합
+- `wAllowance-awData.html`(134,687B): 수당 ×10·공제 ×1 → carefor 11-4 정합
+
+**ogada 실측** (`@5afef2d`):
+```
+$ git -C src/frontend grep -c '/payroll'    develop -- src/App.jsx  → 0
+$ git -C src/frontend grep -c '/accounting' develop -- src/App.jsx  → 0
+competitorModuleCoverage.js: { id:"11", coverage:0 } · { id:"12", coverage:0 }
+```
+인접 `/staff/annual-leaves`·`/staff/leave-ledger` 는 연차/유급휴일 대장(carefor 8-13·M8군)일 뿐 급여 산정/퇴직적립/지급명세 전무.
+
+→ **id=11·12 둘 다 coverage 0** → 0→1 시 25.45/29 = **87.76%(+6.9pp)** = 단일 최대 KPI bump 레버(BNK-604 carry 심화). **단, 요양기관 급여/회계는 외부 회계 SW(더존·이지웰) 연동 관행** → MVP 자체 구현 vs 연동 trade-off = planner 결정 필요.
+
+### §605-2 ★★★ carefor func.php 11모듈 107-leaf 371차 zero drift (확인)
+
+| URL | HTTP | SIZE | raw md5 | canonical | 판정 |
+|---|---|---|---|---|---|
+| [func.php Wayback](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) | 200 | 104,180B | `307fc85f` (cachebuster variance) | `carefor_func.php` `6226e6eb`(98,328B) | **371차 zero drift** (본문 11-module + key leaf verbatim 일치) |
+
+verbatim 확인: 11 module header 전수(수급자·이동서비스·요양급여·간호/물리·프로그램·위생.안전·본인부담금·직원관리·기초설정·부가서비스·직원급여) + 월별 급여대장·퇴직적립금·연차,유급휴일·선임 요양보호사·본인부담금 자동이체·본인부담금 간편계산기. raw md5 변동은 Wayback rewriter 잔여물 only(의미 무변).
+
+### §605-3 ★★ NHIS #44 이동서비스비 러-1~4 372차 zero drift (확인)
+
+| URL | HTTP | SIZE | md5 | on-disk | 판정 |
+|---|---|---|---|---|---|
+| [NHIS #44 joHistory](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | `nhis_jo44.html` `c886ff1f` | **372차 zero drift IDENTICAL** |
+
+verbatim: 러-1·러-4·편도·1일 1회. ogada G16 full-stack(BE catalog + FE `TransportServiceFeePanel` wire BNK-603) ✅ 우위 carry.
+
+### §605-4 변동·번복 회계
+
+| 항목 | BNK-604 | BNK-605 | 번복 |
+|---|---|---|---|
+| FE/BE HEAD | `9aeedfe`/`e12b084` | **`5afef2d`/`5a717ac`** (cross-stream +1·+1) | 0 |
+| 신규 core 갭 | 0 | 0 | 0 |
+| candidate | 5 P3 + M11 P2 | carry (M11 P2 심화·정본화) | 0 |
+| 가정 번복 | 0 | 0 | 0 |
+| 상태 변경 | 0 | FE+1·BE+1 (양쪽 WT CLEAN) | — |
+| KPI 변경 | 0 | 1 (merge gate 782→784) | — |
+| 미확인 carry | longterm 502·carefor LIVE | carry 2 (+demo-work) | 0 |
+| 신규 snapshot | 1 | 1 (`carefor_m11_payroll_crosswalk_bnk605.txt` 7,941B `50ae0ed6`) | — |
+
+**planner 권고**: (1) **M11 직원급여 P2 갭 정본화** — 케어포 6-leaf + 이지케어 wAllowance 4-page 양쪽 구현 입증·ogada 전무·id=11·12 closure = 모듈 80.86%→최대 87.76% 단일 최대 레버 (2) **결정 필요**: 직원급여/회계 MVP 자체 구현 vs 외부 회계 SW 연동(요양기관 외부 위탁 관행) = v2+ Epic or 연동 API only (3) tester FF merge **784** 가속(cross-stream·양쪽 WT CLEAN).
+
+## §604 BNK-604 — ogada git 실측 6–8h · ★★★ **양쪽 develop HEAD zero advance — BNK-603 3종 closure HEAD 잔존 무결성 grep 재확인** — FE `@9aeedfe`/BE `@e12b084` 모두 BNK-603 동일 SHA·**WT CLEAN**·HEAD zero advance 1-cycle. (1) G2b FE `CmsCollectionPanel.jsx`(413L·가상계좌+다계좌 정산 UI) 존재 → module id=7-4 coverage **1.0 carry** 재확인 (2) G16 FE `TransportServiceFeePanel.jsx` `fetchTransportServiceFeeParityRulesApi` + `<h3>NHIS #44 산정 기준</h3>` wire 존재 → 「FE wire 0 hit」 해소 상태 carry (3) US-O01 BE `BathingScheduleIndicator27Catalog` + `indicator-27-compliance` API 6-file 존재(BE-only)·**FE bathing indicator-27 wire 0 hit P2 carry**(coder 다음 사이클 후보) · ★★ **NHIS #44 이동서비스비 371차 zero drift IDENTICAL** `c886ff1f`(live HTTP 200·7,572B = on-disk) · ★★ **모듈 coverage 29-entry 재유도 검증** 합 23.45/29=80.86%(`competitorModuleCoverage.js` JSDoc 주석 `coverage: 1` 1줄 제외 회계 확정) · ★ **M11 직원급여 `/payroll/*` 0 route(id=11 cov 0)·M12 회계 `/accounting/*` 0 route(id=12 cov 0) P2 갭 carry** → 다음 KPI bump 최대 레버 · merge gate **782** carry(FE 225+BE 557·+0)
+
+**조사일**: 2026-06-25T00:56:00Z (KST 09:56) | **rotation**: 6–8h ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정. extract `ogada_git_remeasure_bnk604.txt`(8,344B·`1d14994c`).
+
+**1. ogada baseline 실측 (BNK-604 정본 · 전 항목 carry)**
+
+| 지표 | BNK-603 | BNK-604 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `9aeedfe` | **`9aeedfe`** `feat(v2/G2b+G16): wire CMS collection methods and transport parity-rules API` | carry (zero advance) |
+| BE develop HEAD | `e12b084` | **`e12b084`** `feat(v2/US-O01): add bathing pre/post observation fields and indicator-27 compliance API` | carry (zero advance) |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 225 | 225 | carry |
+| BE ahead vs `origin/test=598d108` | 557 | 557 | carry |
+| merge gate | 782 | 782 | carry |
+| Route (FE App.jsx) | 112 | 112 | carry (111 `<Route\b`+1 `<Routes>`) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry (90+1) |
+| Flyway 최대 | V177 | V177 | carry |
+| BE Test class file (`*Test.java`) | 262 | 262 | carry |
+| BE `@Test` method | 1904 | 1904 | carry |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 276 | 276 | carry |
+| FE test 총합 | 469 | 469 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29·id=7-4 1.0) | 80.86% (23.45/29·id=7-4 1.0) | carry |
+
+### §604-1 ★★★ BNK-603 3종 closure HEAD 잔존 무결성 grep 재확인 (확인)
+
+zero-advance 사이클 — landed 산출물이 develop HEAD 에 그대로 존재하는지 grep 으로 회귀 검증.
+
+```
+(1) G2b CMS collection FE wire (silverangel 5/5):
+$ git -C src/frontend ls-tree -r --name-only develop | grep -i CmsCollectionPanel
+  src/components/ui/CmsCollectionPanel.jsx        ✅ 413L
+  src/components/ui/CmsCollectionPanel.test.jsx   ✅
+  → module id=7-4 coverage 1.0 carry (BNK-603 bump LANDED 재확인)
+
+(2) G16 NHIS #44 transport parity-rules FE wire:
+$ git -C src/frontend grep -l 'fetchTransportServiceFeeParityRulesApi|service-fee-parity-rules' develop
+  src/api/services.js                                      ✅
+  src/components/transport/TransportServiceFeePanel.jsx    ✅ Promise.all + <h3>NHIS #44 산정 기준</h3>
+  src/components/transport/TransportServiceFeePanel.test.jsx ✅
+
+(3) US-O01 BE bathing indicator-27-compliance API:
+$ git -C src/backend grep -l 'indicator-27-compliance|Indicator27' develop -- src/main
+  care/bathschedule/api/BathingScheduleController.java                       ✅
+  care/bathschedule/domain/BathingScheduleIndicator27Catalog.java            ✅ 월5회·전후관찰
+  care/bathschedule/api/BathingScheduleIndicator27ComplianceResponse.java    ✅ (+3 file)
+  → BE-only closure.  FE wire:
+$ git -C src/frontend grep -l 'bathing-schedules/indicator-27|BathingScheduleIndicator27' develop
+  (0 hit) → bathing indicator-27 FE wire P2 carry
+```
+
+**주의**: FE `functionalRecoveryCompliance.js` 의 `indicator-27-plan/provision/benefit-start` 는 G17 기능회복훈련 지표로 목욕 평가지표 27 과 **별개 개념** — grep 혼동 금지.
+
+### §604-2 ★★ NHIS #44 이동서비스비 러-1~4 371차 zero drift (확인)
+
+| URL | HTTP | SIZE | md5 | on-disk | 판정 |
+|---|---|---|---|---|---|
+| [NHIS #44 joHistory](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | `nhis_jo44.html` `c886ff1f` | **371차 zero drift IDENTICAL** |
+
+경쟁사 4종 중 ogada 만 #44 표시 레이어 full-stack 보유(G16 BNK-603 closure) — 차별화 우위 carry.
+
+### §604-3 ★ 모듈 coverage 29-entry 재유도 + M11·M12 P2 갭 (확인)
+
+`competitorModuleCoverage.js`(`@9aeedfe`) 29 entry 합 23.45 → **80.86%**.
+- coverage=0.85(△): id=2 이동서비스 · id=8 직원·근태
+- coverage=0.75(△): id=10 부가서비스(SMS·알림)
+- coverage=0(❌ 갭): id=1-5 가정통신문 · id=1-10 연계기록지 · id=6 위생·안전 · **id=11 직원급여** · **id=12 수입지출·회계**
+
+```
+$ git -C src/frontend grep -c '/payroll'    develop -- src/App.jsx  → 0  (M11 전무)
+$ git -C src/frontend grep -c '/accounting' develop -- src/App.jsx  → 0  (M12 전무)
+```
+케어포 M11 11-1~11-6 · 이지케어 wAllowance-payrollcost 양쪽 구현 vs ogada 전무(BNK-602 P2 등록 carry). **id=11·12 closure 가 다음 모듈 KPI bump 최대 레버** — planner MVP 우선순위 재검토 권고.
+
+### §604-4 변동·번복 회계
+
+| 항목 | BNK-603 | BNK-604 | 번복 |
+|---|---|---|---|
+| FE/BE HEAD | `9aeedfe`/`e12b084` | 동일 (zero advance) | **0** |
+| 신규 core 갭 | — | 0 | 0 |
+| candidate | 5 P3 + M11 P2 | carry | 0 |
+| 가정 번복 | — | 0 | 0 |
+| 상태 변경 | FE+1·BE+1 | 0 (양쪽 zero advance) | — |
+| KPI 변경 | 5 | 0 | — |
+| 미확인 carry | longterm 502·carefor LIVE | carry 2 | 0 |
+| 신규 snapshot | 1 | 1 (`ogada_git_remeasure_bnk604.txt`) | — |
+
+**planner 권고**: (1) tester FF merge **782** 가속(2-cycle zero advance·develop 안정) (2) P2 coder 후보 2건 — bathing indicator-27 FE wire / M11 `/payroll/*` (3) id=11·12 = 다음 KPI bump 최대 레버.
+
+## §603 BNK-603 — 엔젤·롱텀·규제 4–6h · ★★★ **G16 NHIS #44 이동서비스비 parity-rules FE wire FULL-STACK CLOSURE** — FE `@9aeedfe` `feat(v2/G2b+G16): wire CMS collection methods and transport parity-rules API`·`TransportServiceFeePanel.jsx` +29L `fetchTransportServiceFeeParityRulesApi()`(services.js L961 `apiFetch("/api/v1/transport/service-fee-parity-rules")`) `Promise.all` 소비 + `<h3>NHIS #44 산정 기준</h3>` 렌더 → BNK-598~602 「FE wire 0 hit(P2)」 **해소**·BE catalog(`TransportServiceFeeParityCatalog` 4-rule 러-1~4·편도50%·1일1회·별지 제22호) ↔ FE 소비 = 경쟁사 4종 중 ogada만 #44 표시 레이어 **full-stack 차별화 우위** · ★★★ **G2b CMS silverangel 5/5 parity FE wire CLOSURE + module id=7-4 KPI bump LANDED** — FE `@9aeedfe` `CmsCollectionPanel.jsx` NEW 413L(가상계좌 발급 + 다계좌 정산 UI) + `competitorModuleCoverage.js` id=7-4 **0.65→1.0** → 모듈 **79.66%→80.86%**(23.45/29·+1.20pp)·BNK-600~602 「KPI bump 후보 3-cycle carry」 **종결**·4-layer cascade(BE catalog BNK-595 → FE wire BNK-596 → BE 5/5 BNK-600 → UXD-162 BNK-600 → FE retry BNK-601 → **FE collection UI+KPI BNK-603**) 완전 종결 · ★★★ **silverangel 평가지표 27 목욕 BE deepen (BE-only closure)** — BE `@e12b084` `feat(v2/US-O01)` 18-file +537L: V177 CHECK(COMPLETED 시 전·후 관찰 필수) + `GET /api/v1/care/bathing-schedules/indicator-27-compliance` + `BathingScheduleIndicator27Catalog`(월 5회 이상·전후 관찰)·`BathingScheduleIndicator27ComplianceTest` NEW 210L·FE wire 0 hit → 다음 사이클 P2 · ★★ **NHIS #44 369차 zero drift IDENTICAL** `c886ff1f`(live HTTP 200·7,572B·러-1~4 verbatim) · ★★ **silverangel extraService(CMS) + daycareEssentialWork zero drift IDENTICAL** `f9c5d877`(81,637B)·`c79c1be3`(131,664B) live HTTP 200 = on-disk · ogada baseline FE `@9aeedfe`/BE `@e12b084` **양쪽 HEAD +1·WT CLEAN** · merge gate **782**(+2)
+
+**조사일**: 2026-06-25T00:10:00Z (KST 09:10) | **rotation**: 4–6h 엔젤·롱텀·규제·silverangel 평가#27 목욕·CMS·law.go.kr NHIS #44. extract `angel_longterm_regulatory_crossverify_bnk603.txt`(7,349B·`80c94877`).
+
+**1. ogada baseline 실측 (BNK-603 정본)**
+
+| 지표 | BNK-602 | BNK-603 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `1db75d0` `feat: add retry to CMS payment catalog panel` | **`9aeedfe`** `feat(v2/G2b+G16): wire CMS collection methods and transport parity-rules API` | **+1** |
+| BE develop HEAD | `dac8ebd` `feat(v2/G2b): add virtual-account and multi-account CMS collection APIs` | **`e12b084`** `feat(v2/US-O01): add bathing pre/post observation fields and indicator-27 compliance API` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 224 | **225** | +1 |
+| BE ahead vs `origin/test=598d108` | 556 | **557** | +1 |
+| merge gate | 780 | **782** | +2 (cross-stream) |
+| Route (FE App.jsx) | 112 | 112 | carry |
+| page (`src/pages/*.jsx`) | 91 | 91 | carry |
+| Flyway 최대 | V176 | **V177** | +1 (`V177__bathing_schedules_indicator_27_pre_post_observation.sql`) |
+| BE Test class file (`*Test.java`) | 261 | **262** | +1 (`BathingScheduleIndicator27ComplianceTest`) |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 275 | **276** | +1 |
+| FE test 총합 | 468 | **469** | +1 |
+| 모듈 커버리지 | 79.66% (23.10/29·id=7-4 0.65) | **80.86% (23.45/29·id=7-4 1.0)** | **+1.20pp (KPI bump LANDED)** |
+
+### §603-1 ★★★ G16 NHIS #44 이동서비스비 parity-rules FE wire FULL-STACK CLOSURE (확인)
+
+**이전 상태** (BNK-598~602): BE catalog API `GET /api/v1/transport/service-fee-parity-rules`(@bd1e87e)만 존재, FE wire **0 hit(P2 carry)**.
+
+**BNK-603 closure** — FE `@9aeedfe` `TransportServiceFeePanel.jsx` +29L:
+```
+services.js L961: export async function fetchTransportServiceFeeParityRulesApi() {
+                    return apiFetch("/api/v1/transport/service-fee-parity-rules"); }
+Panel L68:  const [ratePayload, feePayload, clientItems, parityPayload] = await Promise.all([
+              ..., fetchTransportServiceFeeParityRulesApi()]);
+Panel L77:  const rules = Array.isArray(parityPayload?.rules) ? parityPayload.rules : [];
+Panel L188: <h3 id="service-fee-nhis-parity-heading">NHIS #44 산정 기준</h3>
+```
+→ BE `TransportServiceFeeParityCatalog`(러-1~4·편도50%·1일1회·별지 제22호 일지) ↔ FE 소비 = **G16 NHIS #44 full-stack CLOSURE**. 케어포·이지케어·엔젤·롱텀(공단) 경쟁사 4종 중 ogada만 #44 이동서비스비 산정 기준 표시 레이어 보유 = **차별화 우위 확정**.
+
+**NHIS #44 live 재실측 (369차 zero drift)**:
+```
+URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP : 200 · 7,572B · 0.18s · md5 c886ff1f = on-disk nhis_jo44.html IDENTICAL
+내용 : 제34조·러-1~4 거리구간별·편도 50%·1일 1회만 산정·이동서비스 일지 작성·보관 의무 verbatim
+```
+
+### §603-2 ★★★ G2b CMS silverangel 5/5 parity FE wire CLOSURE + module id=7-4 KPI bump LANDED (확인)
+
+**FE `@9aeedfe`** — `CmsCollectionPanel.jsx` NEW 413L + `CmsPage.jsx` +54L + `config/cms.js` +8L:
+- 가상계좌(virtual-account) 발급 UI + 다계좌 정산(multi-account settlement) UI on `CmsPage`
+- `competitorModuleCoverage.js`: `{ id: "7-4", label: "CMS·간편결제", coverage: 1 }` (이전 0.65 → **1.0**)
+- `competitorModuleCoverage.test.js`: "reflects CMS module as full coverage after G2b 5-method collection wire" → `expect(cms.coverage).toBe(1)`
+
+**KPI 재계산**: 23.45/29 = **80.86%** (이전 23.10/29 = 79.66% · **+1.20pp**). BNK-600~602 「KPI bump 후보 3-cycle carry」 → **BNK-603 LANDED·carry 해소**.
+
+**4-layer cascade 완전 종결**: BE catalog(BNK-595 3/5) → FE catalog wire(BNK-596) → BE 5/5(BNK-600 @dac8ebd) → UXD-162 CSS(BNK-600) → FE retry(BNK-601) → **FE collection UI + KPI bump(BNK-603 @9aeedfe)**.
+
+**silverangel extraService(CMS) live 재실측 zero drift**:
+```
+URL  : https://www.silverangel.kr/newSilverangel/service/extraService.do
+HTTP : 200 · 81,637B · 0.37s · md5 f9c5d877 = on-disk silverangel_extraService.html IDENTICAL
+내용 : 효성CMS 5-method(자동이체 250원·가상계좌 300원·카드·항목별 계좌분리·현금영수증)·1600-6859
+```
+
+### §603-3 ★★★ silverangel 평가지표 27 목욕 BE deepen (BE-only closure · FE wire P2)
+
+**BE `@e12b084`** `feat(v2/US-O01)` 18-file +537L:
+- **V177 CHECK 제약**: `status='COMPLETED'` → `pre_observation_notes`·`post_observation_notes` 둘 다 non-empty 필수 (목욕 전·후 수급자 상태 관찰 강제)
+- `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=...` (`@PreAuthorize` HQ_ADMIN/BRANCH_ADMIN/SOCIAL_WORKER/CAREGIVER)
+- `BathingScheduleIndicator27Catalog`: `INDICATOR_27` · `MONTHLY_MINIMUM_COMPLETED=5` · "월 5회 이상 목욕서비스 제공" · "목욕 전·후 수급자 상태 관찰 및 기록"
+- `BathingScheduleIndicator27ComplianceTest` NEW 210L · `BathingScheduleServiceTest` +33L
+- FE indicator-27 wire grep = **0 hit** → BE-only closure · FE wire = 다음 사이클 P2
+
+**silverangel daycareEssentialWork live 재실측 zero drift**:
+```
+URL  : https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+HTTP : 200 · 131,664B · 0.42s · md5 c79c1be3 = on-disk silverangel_daycareEssentialWork.html IDENTICAL
+목욕 row : <td>목욕제공</td><td>필수사항 아니며 목욕서비스 제공시 청구 가능</td>
+```
+
+**★ 정밀 구분(중요·「확인」)**: silverangel essentialWork 페이지는 목욕을 「평가 연계 기능」으로만 표시(필수 아님·청구 가능). **"월 5회 이상"·"전·후 상태 관찰"은 silverangel 페이지에 verbatim 없음** — 이는 장기요양 정기평가 지표 27 **규정**에서 유래한다. ogada V177 CHECK 강제 + monthly min 5 compliance API = silverangel 정적 표시 대비 **규제 준수 superset 우위**. ogada `BathingScheduleIndicator27Catalog` 주석은 essentialWork를 parity 기준으로 인용하나, 실제 강제 규칙(전후 관찰·월 5회)의 근거는 NHIS 정기평가 지표임을 명시한다(「가정→규정 근거 확인」으로 정합).
+
+### §603-4 경로 정정 · 미확인 carry
+
+- **silverangel essentialWork 경로 정정**: `/newSilverangel/daycare/daycareEssentialWork.do` (HTTP 200 IDENTICAL). `/newSilverangel/daycare/essentialWork.do` = **404**(1,028B `3c93af54` 표준 404).
+- **longterm 502 단기보호** canonical(74,060) — 「미확인」 carry (이번 사이클 미재측).
+- **carefor func.php LIVE direct** — 「미확인」 carry (이번 사이클 미재측).
+
+## §602 BNK-602 — 케어포 역공학 0–2h · ★★★ **carefor func.php daycare 11모듈 107-leaf 전수 확인** — Wayback 20260519072235 `dda5c515`(104,181B raw) = canonical `6226e6eb`(98,328B stripped) 의미 동일·**370차 zero drift CONFIRMED** · LIVE HTTP **000** 29-cycle 「미확인」 carry(BNK-558~602) · demo-work.carefor.co.kr HTTP **000** (http/https 양쪽 미확인) · ★★★ **M11 직원 급여관리 6-leaf P2 신규 갭 발견** — ogada `/payroll/*` 전무·케어포 11-1~11-6(월별급여대장·퇴직적립금·계약설정·수당공제설정·인건비비율·대장리포트)·이지케어 wAllowance-payrollcost(BNK-598 확인) → **planner P2 재검토 필요** · ★★★ **M8 직원관리 ogada 11/14 전수 crosswalk** — 케어포 15-leaf(8-1~8-13·삭제예정 8-11 제외 14) ↔ ogada `/staff/*` 11-route(8-1·8-1-2·8-4·8-5·8-7·8-7-1·8-9·8-10·8-12·8-13) = △3 gap(8-2 근무일정표·8-3 연간일정계획·8-8 자원봉사자) P3 carry · ★★ **M2 이동서비스 daycare 전용 10-leaf 확인** — 시설급여 M2 없음·daycare 2-1~2-9 ↔ ogada `/transport/*` 9-route 우위(NHIS #44 4-rule·RFID·자동배차) · ★ **4축+leave-ledger P0/P1 재오픈 0 (53-cycle carry, BNK-549~602)** · ★ **longterm 502 27-cycle 「미확인」 carry** · ogada baseline FE `@1db75d0`/BE `@dac8ebd` **양쪽 zero advance·WT CLEAN** · merge gate **780** carry
+
+**조사일**: 2026-06-24T23:40:00Z (KST 08:40) | **rotation**: 0–2h 케어포 역공학·func.php Wayback 370차·11모듈 107-leaf 전수·M8/M11 ↔ ogada crosswalk. extract `carefor_func_full_menu_crosswalk_bnk602.txt`(8,299B·`f45ddef4`).
+
+**1. ogada baseline 실측 (BNK-602 정본)**
+
+| 지표 | BNK-601 | BNK-602 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `1db75d0` `feat: add retry to CMS payment catalog panel` | `1db75d0` | carry (zero advance) |
+| BE develop HEAD | `dac8ebd` `feat(v2/G2b): add virtual-account and multi-account CMS collection APIs` | `dac8ebd` | carry (zero advance) |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 224 | 224 | carry |
+| BE ahead vs `origin/test=598d108` | 556 | 556 | carry |
+| merge gate | 780 | 780 | carry |
+| Route (FE App.jsx) | 112 (111 `<Route\b`+1 `<Routes>`) | 112 | carry |
+| page (`src/pages/*.jsx`) | 91 (90 `*Page.jsx`+RootRedirect.jsx) | 91 | carry |
+| Flyway 최대 | V176 | V176 | carry |
+| BE Test class file (`*Test.java`) | 261 | 261 | carry |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 275 | 275 | carry |
+| FE test 총합 | 468 | 468 | carry |
+| 모듈 커버리지 | 79.66% (23.10/29) | 79.66% (23.10/29) | carry (id=7-4 still **0.65** — KPI bump 후보 **3-cycle carry**) |
+
+### §602-1 ★★★ carefor func.php daycare 11모듈 107-leaf 전수 확인 (확인 · 370차 zero drift)
+
+**Wayback probe** (BNK-602):
+```
+URL RESOLVED : https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php
+HTTP          : 200 · 104,181B raw · md5 dda5c51518737bfbd3b575f91b6c6a7b
+CAPTURE       : 2026-05-19 07:22:35 UTC (RETRIEVED 2026-06-24 23:30:00 UTC)
+```
+
+**LIVE direct** (BNK-602): HTTP 000 timeout 8001ms — **29-cycle carry** (BNK-558~602)
+
+**demo-work.carefor.co.kr** (BNK-602 신규): HTTP 000 (http) / HTTP 000 (https) — **미확인**
+
+**Wayback toolbar strip 검증**: raw 104,181B → strip after rewriter injection → 103,400B (md5 `2015f9ca`) — vs canonical `6226e6eb` 98,328B(URL 상대경로 rewrite +5,072B 잔여·의미 IDENTICAL)
+
+**carefor func.php daycare PC 11모듈 구조 전수** (canonical `6226e6eb` 정본 근거):
+
+| 모듈 | 명칭 | leaf 수 | ogada 커버 | 비고 |
+|---|---|---|---|---|
+| M1 | 수급자관리 | 11 | ✅ `/clients`+상세 11-tab | 기초평가·상담일지·통계리포트 |
+| M2 | 이동서비스관리 | 10 | ✅ `/transport/*` 9-route 우위 | **daycare 전용·시설급여=없음** |
+| M3 | 요양 급여제공 | 11 | ✅ `/care/*` 부분 | 목욕·식사·상태변화 |
+| M4 | 간호/물리(작업) 급여제공 | 10 | △ `/care/*` 부분 | 물리치료 일정·리포트 |
+| M5 | 프로그램 급여제공 | 13 | △ `/programs/*` 부분 | 외부강사·그룹설정·계획 |
+| M6 | 위생.안전 점검관리 | 5 | △ `/facility/*` 부분 | 식단표·일일점검·감염병 |
+| M7 | 본인부담금관리 | 11 | ✅ `/billing/*` **10/10 + 5-route superset** | **ogada 우위** |
+| M8 | 직원관리 | 15 | △ `/staff/*` **11/14** | △3 gap(근무일정표·연간일정계획·자원봉사자) |
+| M9 | 기초설정 및 운영관리 | 6 | △ `/settings`·`/billing/fee-schedules` 부분 | 비품관리·연간부담금 ❌ |
+| M10 | 부가서비스 | 9 | △ SMS+알림톡 부분 | 보호자포털 3-leaf ❌ |
+| M11 | 직원 급여관리 | 6 | ❌ **0/6 · /payroll/* 전무** | **★★★ P2 신규 갭** |
+| **합계** | — | **107 PC** | — | APP 19-item 별도 |
+
+### §602-2 ★★★ M11 직원 급여관리 P2 신규 갭 발견
+
+**케어포 M11 6-leaf**:
+- 11-1.월별 급여대장
+- 11-2.퇴직적립금 관리
+- 11-3.직원 급여계약 설정
+- 11-4.급여기초 설정(수당/공제)
+- 11-5.인건비 지출비율 참고자료
+- 11-6.직원 급여대장 리포트(간이지급명세서)
+
+**이지케어** (BNK-598 확인): `wAllowance-payrollcost` `a8dd1757`(146,026B) — abTotal·eTotal_c·severance_pay·serviceKind 001/002/003 인건비 배분 3-way·`setRateAmount` %
+
+**ogada 현황**: `/payroll/*` 0 route · `/staff/annual-leaves` + `/staff/leave-ledger` (연차 대장만·급여 계산 없음)
+
+**갭 영향**: 이지케어 기존 candidate `G-PAYROLL-LABOR-COST-RATIO P3` → 케어포 M11 전체 6-leaf 확인으로 **P3→P2 격상 검토 필요** (planner 판단). 요양기관 직원 급여 처리는 규제 필수(근로기준법·퇴직급여법) — MVP 후순위 정당성 재검토.
+
+### §602-3 ★★★ M8 직원관리 ogada 11/14 crosswalk 전수
+
+| 케어포 leaf | ogada route | 상태 |
+|---|---|---|
+| 8-1.직원 정보관리 | `/staff` | ✅ |
+| 8-1-2.선임 요양보호사 업무수행일지 | `/staff/lead-caregiver-log` | ✅ |
+| 8-2.근무일정표 | ❌ | ❌ P3 |
+| 8-3.연간 일정계획 | ❌ | ❌ P3 |
+| 8-4.출퇴근 및 근무관리 | `/staff/attendance` | ✅ |
+| 8-5.사례관리 회의록 | `/case-management/meetings` | ✅ |
+| 8-6.회의록(운영위원회) | ❌ (사례관리 전용) | △ P3 |
+| 8-7.교육일지 | `/staff/training` | ✅ |
+| 8-7-1.요양보호사 보수교육 | `/staff/training-logs` | ✅ (partial) |
+| 8-8.자원봉사자 활동일지(필요시) | ❌ | ❌ P3 |
+| 8-9.고충처리 관리 | `/staff/grievance-counselings` | ✅ |
+| 8-10.건강검진관리 | `/staff/health-checkups` | ✅ |
+| 8-11.질향상노력 | 삭제예정 (케어포 주석 확인) | N/A |
+| 8-12.직원 현황 리포트 | `/staff/reports/status` | ✅ |
+| 8-13.연차,유급휴일 대장 | `/staff/annual-leaves` + `/staff/leave-ledger` | ✅ |
+
+**결과**: 11/14 ✅ (삭제예정 8-11 제외 시 11/13) · △3 gap: 근무일정표·연간일정계획·자원봉사자 활동일지 → P3 carry
+
+### §602-4 ★★ M2 이동서비스 daycare 전용 10-leaf 확인
+
+**케어포 M2**: 2-1.일정관리(공단연동) · 2-1-1.외출관리 · 2-2.탑승관리(차량이용) · 2-3.출석관리(차량미이용) · 2-4.차량관리 · 2-5.청구내역상세(공단연동) · 2-6.공단 입퇴소내용 자료 · 2-7.월간서비스변동현황 · 2-8.월간입소자현황 · 2-9.수급자 외출리포트
+
+**ogada `/transport/*`**: `/transport`·`/transport/compliance`·`/transport/auto-dispatch`·`/transport/service-fees`·`/transport/vehicles`·`/transport/runs/new`·`/transport/runs/:runId`·`/transport/outings`·`/reports/transport-monthly` = **9-route**
+
+**ogada 우위**: NHIS #44 이동서비스비 법정 4-rule(러-1~4·편도50%·1일1회·별지 제22호 일지) 완전 구현·RFID·자동배차 — 케어포 10-leaf **동등 + 법정규정 표시 레이어 ogada 우위**
+
+## §601 BNK-601 — 케어포 역공학 0–2h · ★★★ **FE `CmsPaymentMethodCatalogPanel` retry hardening** — FE `@1db75d0` `feat: add retry to CMS payment catalog panel`(2-file +71/-29)·`loadCatalog` useCallback wrapper + `isActive` useRef lifecycle guard + 신규 `<Button variant="secondary" size="sm" onClick={loadCatalog}>다시 시도</Button>` in `<Alert tone="danger">`·`.test.jsx` +26L 실패→재시도 시나리오 lock → **G2b 케어포 7-4 본인부담 자동이체(CMS) 4-layer closure cascade** (BE 5/5 BNK-600 → FE wire BNK-596 → UXD-162 CSS BNK-600 → FE retry BNK-601) · ★★★ **carefor func.php Wayback 369차 zero drift IDENTICAL on 7-x leaves** — live HTTP **000** timeout 28-cycle 「미확인」 carry(BNK-558~601)·Wayback HTTP 200·103,798B raw `/web/20260117043822/...` 캡처·toolbar wrapper strip 후 본문 99,212B(canonical `6226e6eb` 98,328B 의미 동일·rewriter 잔여 +884B)·7-1.본인부담금 청구관리·7-4.본인부담금 자동이체(CMS)·7-10.본인부담금 간편계산기 verbatim 일치 · ★★★ **NHIS #44 이동서비스비 러-1~4 368차 zero drift IDENTICAL** `c886ff1f`(7,572B·live HTTP 200·러-1~4·편도·1일1회·일지④ verbatim) ↔ ogada full-stack ✅ parity/우위 368차 재입증 · ★★ **module id=7-4 KPI bump 후보 2-cycle carry** — 4-layer 완성이나 `competitorModuleCoverage.js` id=7-4 still **0.65** 불변(`@1db75d0` grep)·rate-card 갱신 시 모듈 79.66%→**80.86%**(23.10+0.35=23.45/29)·v1.3 marketing copy 「CMS 5-method silverangel parity 완전 구현」 사용 가능 — planner+coder 결정 사항 · ★ **케어포 본인부담 7-x 10-leaf ↔ ogada `/billing/*` 재입증** 10/10 ✅ + 7-2-1 의료비공제 + 5-route superset(`/billing/cash-receipts`·`/billing/copay-rates`·`/billing/fee-schedules`·`/billing/imports/nhis`·`/billing/reports/statistics`)·본인부담 lifecycle ogada **완전 + 우위** 재입증 · ★ **4축+leave-ledger P0/P1 재오픈 0 (52-cycle carry, BNK-549~601)** · ★ **longterm 502 26-cycle 「미확인」 carry** · ogada baseline FE `@1db75d0`/BE `@dac8ebd` **FE+1 only·BE carry·양쪽 WT CLEAN** · merge gate **780**(+1)
+
+**조사일**: 2026-06-24T23:12:00Z (KST 08:12) | **rotation**: 0–2h 케어포 역공학·func.php Wayback·본인부담 7-x lifecycle·BE/FE CMS 4-layer cascade. extract `ogada_git_remeasure_bnk601.txt`(16,929B·`1c583b8f`).
+
+**1. ogada baseline 실측 (BNK-601 정본)**
+
+| 지표 | BNK-600 | BNK-601 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `e63aa8e` `ux(a11y): promote ds-cms-payment-method-catalog CSS and spec G16 parity-rules FE (UXD-162)` | **`1db75d0`** `feat: add retry to CMS payment catalog panel` | **+1** |
+| BE develop HEAD | `dac8ebd` `feat(v2/G2b): add virtual-account and multi-account CMS collection APIs` | `dac8ebd` | carry (zero advance) |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 223 | **224** | +1 |
+| BE ahead vs `origin/test=598d108` | 556 | 556 | carry |
+| merge gate | 779 | **780** | **+1** (FE-only advance) |
+| Route (FE App.jsx) | 112 (111 `<Route\b`+1 `<Routes>`) | 112 | carry |
+| page (`src/pages/*.jsx`) | 91 (90 `*Page.jsx`+RootRedirect.jsx) | 91 | carry |
+| Flyway 최대 | V176 | V176 | carry |
+| BE Test class file (`*Test.java`) | 261 | 261 | carry |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 275 | 275 | carry |
+| FE test 총합 | 468 | 468 | carry |
+| 모듈 커버리지 | 79.66% (23.10/29) | 79.66% (23.10/29) | carry (id=7-4 still **0.65** — KPI bump 후보 **2-cycle carry**) |
+
+### §601-1 ★★★ FE `CmsPaymentMethodCatalogPanel` retry hardening (확인 · 7-4 4-layer cascade closure)
+
+**commit** `1db75d0` (author jwj3400 · Co-authored-by: Cursor · 2026-06-24 22:44:58 UTC)
+
+**diff stat** (`git -C src/frontend show --stat 1db75d0`):
+```
+ src/components/ui/CmsPaymentMethodCatalogPanel.jsx     | 74 +++++++++++++---------
+ src/components/ui/CmsPaymentMethodCatalogPanel.test.jsx | 26 ++++++++
+ 2 files changed, 71 insertions(+), 29 deletions(-)
+```
+
+**구현 요지** (`CmsPaymentMethodCatalogPanel.jsx` 직접 확인):
+- 신규 `useCallback(() => loadCatalog, [fetchCatalog])` wrapper — 재시도 button onClick 안정화
+- 신규 `useRef(true) isActive` — unmount race 방지 (`setCatalog`/`setError`/`setLoading` 각각 가드)
+- mount/unmount `useEffect` 분리 → React strict-mode safe
+- 신규 `<Button variant="secondary" size="sm" onClick={loadCatalog}>다시 시도</Button>` in `<Alert tone="danger">` (error 상태일 때만 렌더)
+- 신규 `.test.jsx` +26L 실패→재시도 시나리오 lock
+
+**7-4 본인부담 자동이체(CMS) 4-layer cascade closure** (BNK 추적):
+1. **BNK-596 @4875937** `feat(v1.2.1/G2b): wire CMS payment-method-catalog panel and fix US-O05 live E2E` — FE wire 첫 진입
+2. **BNK-600 @dac8ebd** `feat(v2/G2b): add virtual-account and multi-account CMS collection APIs` — BE 5/5 silverangel parity closure (18-file +1136L · Flyway V176)
+3. **BNK-600 @e63aa8e** `ux(a11y): promote ds-cms-payment-method-catalog CSS and spec G16 parity-rules FE (UXD-162)` — UXD-162 CSS + G16 spec
+4. **BNK-601 @1db75d0** `feat: add retry to CMS payment catalog panel` — FE retry hardening (NEW)
+
+**경쟁사 4-way cross-walk** (재시도 UX 관점):
+| 항목 | 케어포 7-4 | 이지케어 (demo /share/cost) | 엔젤 silverangel extraService | ogada @1db75d0 |
+|---|---|---|---|---|
+| 단일 lifecycle 화면 | ✅ 자동이체 단일 명단 | ✅ npay/cms 단일 view | ✅ extraService.do 5-method | ✅ `/billing/cms` + Panel |
+| 5-method parity | △ CMS 자동이체 only | △ M7 본인부담 통합 | ✅ 5-method 정본(자동이체·가상계좌·카드·다계좌·현금영수증) | ✅ 5/5 backend (BNK-600) |
+| **In-place retry UX** | ❌ (운영 매뉴얼 「자동 재시도」 단일 lifecycle) | ❌ (페이지 새로고침만) | ❌ (silverangel ERP 접근 불가·UI 미관측) | **✅ NEW BNK-601** (Panel 내 「다시 시도」 + lifecycle ref) |
+| 의의 | — | — | — | **케어포·이지케어·엔젤 4-way 대비 ogada 단일 우위 ★ 차별화 신규 closure** |
+
+### §601-2 ★★★ carefor func.php Wayback 369차 zero drift IDENTICAL on 7-x leaves
+
+**LIVE direct probe** (재현 가능):
+```
+curl --connect-timeout 8 --max-time 18 https://www.carefor.co.kr/daycare/func.php
+→ HTTP 000 (connection timeout after 8001ms)
+→ BNK-558~601 carry 「LIVE 000 timeout 28-cycle 「미확인」」(내용은 Wayback 재검증)
+```
+
+**WAYBACK probe** (정본 대체):
+```
+URL    : https://web.archive.org/web/2025/https://www.carefor.co.kr/daycare/func.php
+RESOLVED: https://web.archive.org/web/20260117043822/https://www.carefor.co.kr/daycare/func.php
+HTTP   : 200 · 103,798B raw
+CAPTURE: 2026-01-17 04:38:22 UTC (RETRIEVED 2026-06-24 23:14:48 UTC)
+```
+
+**Wayback toolbar wrapper strip + 본문 검증**:
+- strip 후 본문 99,212B (md5 `668dc968...`)
+- canonical on-disk `carefor_func.php` 98,328B (md5 `6226e6eb`)
+- size diff +884B = Wayback rewriter가 `href="/static/..."` → `href="/web/<ts>/static/..."`로 재기록한 prefix 잔여물 (semantic NO drift)
+- **verbatim 키 7-x leaves 일치**:
+  | leaf | canonical hit | wayback hit |
+  |---|---|---|
+  | `7-1.본인부담금 청구관리` | 2 | **2 ✅** |
+  | `7-2.본인부담금 입금관리` | 2 | **2 ✅** |
+  | `7-2-1.의료비공제(연말정산)` | 2 | **2 ✅** |
+  | `7-3.본인부담금 미납관리` | 2 | **2 ✅** |
+  | `7-4.본인부담금 자동이체 (CMS)` | 2 | **2 ✅** |
+  | `7-5.본인부담금 간편결제` | 2 | **2 ✅** |
+  | `7-6.본인부담금 청구대장 리포트` | 2 | **2 ✅** |
+  | `7-7.본인부담금 입금대장 리포트` | 2 | **2 ✅** |
+  | `7-10.본인부담금 간편계산기` | 1 | **1 ✅** |
+
+→ **carefor func.php 369차 zero drift IDENTICAL on 본인부담 7-x leaves** (BNK-568에서 367차 → BNK-600 367차 → BNK-601 369차).
+
+### §601-3 ★★★ NHIS #44 이동서비스비 러-1~4 368차 zero drift IDENTICAL
+
+**LIVE probe**:
+```
+URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP: 200 · 7,572B
+md5 : c886ff1fd1d5ca2cb5dc76d30adde8ba (2026-06-24T23:12Z)
+```
+
+**ON-DISK canonical**:
+- `docs/planning/research/snapshots/nhis_jo44_joHistory.html` md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+- `docs/planning/research/snapshots/nhis_jo44_live_bnk584.html` md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+
+→ **368차 zero drift IDENTICAL** · 러-1~4·편도 50%·1일 1회·별지 제22호 일지 verbatim 불변 · ogada full-stack ✅ parity/우위 368차 재입증 · 경쟁사 4종 중 ogada만 표시 레이어 보유 = 차별화 우위 carry.
+
+### §601-4 ★★ module id=7-4 KPI bump 후보 2-cycle carry (가정·planner 결정 사항)
+
+**현 상태** (`@1db75d0` `src/frontend/src/config/competitorModuleCoverage.js` grep):
+```
+{ id: "7-4", label: "CMS·간편결제", coverage: 0.65 },
+```
+
+**4-layer cascade closure 충족 검증**:
+| layer | 상태 | 근거 |
+|---|---|---|
+| BE 5/5 silverangel parity | ✅ BNK-600 | `CmsPaymentMethodCatalog.SILVERANGEL_PARITY_ENTRIES` 5 entries `collectionImplemented=true` |
+| FE Panel wire | ✅ BNK-596 | `CmsPaymentMethodCatalogPanel.jsx` + `fetchCmsPaymentMethodCatalogApi` services.js |
+| UXD-162 CSS + a11y | ✅ BNK-600 | `.ds-cms-payment-method-catalog` class 정의 in `components.css` |
+| FE retry hardening | ✅ BNK-601 | `loadCatalog` useCallback + `isActive` useRef + 「다시 시도」 button |
+
+**KPI bump 가정 (planner+coder 검증 필요)**:
+- 현: `coverage: 0.65` × 29 모듈 가중평균 23.10/29 = **79.66%**
+- 후: `coverage: 1.0` 으로 갱신 → 23.10 + 0.35 = 23.45/29 = **80.86%** (+1.20pp)
+- v1.2 KPI ≥60% 초과 carry · v1.3 marketing copy 「CMS 5-method silverangel parity 완전 구현」 사용 가능
+- src/ 수정 권한은 coder — BNK는 권고만
+
+### §601-5 ★ 케어포 본인부담 7-x 10-leaf ↔ ogada `/billing/*` 재입증 (BNK-592 carry + BE 5/5 + FE retry 갱신)
+
+| carefor func.php leaf | ogada Route (`@1db75d0` App.jsx) | 상태 |
+|---|---|---|
+| 7-1 본인부담금 청구관리 | `/billing` | ✅ |
+| 7-2 본인부담금 입금관리 | `/billing/payments` | ✅ |
+| 7-2-1 의료비공제(연말정산) | `MedicalExpenseDeductionPanel` (US-L04 G26 BNK-75) | ✅ |
+| 7-3 본인부담금 미납관리 | `/billing/overdue` | ✅ |
+| 7-4 본인부담금 자동이체 (CMS) | `/billing/cms` + `CmsPaymentMethodCatalogPanel` (BE 5/5 + FE retry) | △(0.65 carry → ★ bump 후보) |
+| 7-5 본인부담금 간편결제 | `/billing/easy-pay` | ✅ |
+| 7-6 본인부담금 청구대장 | `/billing/reports/charges` | ✅ |
+| 7-7 본인부담금 입금대장 | `/billing/reports/deposits` | ✅ |
+| 7-8 본인부담금 수납대장 | `/billing/reports/receipts` | ✅ |
+| 7-9 본인부담금 수납·환불 | `/billing/reports/refunds` | ✅ |
+| 7-10 본인부담금 간편계산기 | `/billing/calculator` | ✅ |
+
+**ogada-only superset** (no carefor parity, 본인부담 lifecycle 우위):
+1. `/billing/cash-receipts` — 현금영수증 (silverangel parity 5/5 endpoint)
+2. `/billing/copay-rates` — 본인부담률 마스터
+3. `/billing/fee-schedules` — 수가 마스터
+4. `/billing/imports/nhis` — NHIS Excel import + reconciliation
+5. `/billing/reports/statistics` — yearBasis 통계
+
+→ 본인부담 lifecycle = **ogada 완전 + 우위** (10 ✅ + 1 △→★ + 5 superset) — BNK-592 carry + BE 5/5 closure + FE retry hardening 추가.
+
+### §601-6 가정·확인·미확인 정리
+
+- **확인**: ogada baseline FE `@1db75d0`/BE `@dac8ebd` · WT CLEAN(양쪽) · `CmsPaymentMethodCatalogPanel.jsx` 다시 시도 button + isActive ref(소스 확인) · BE `CmsPaymentMethodCatalog` 5/5 carry · NHIS #44 live 7,572B `c886ff1f` IDENTICAL on-disk(368차) · Wayback func.php 7-1~7-10 verbatim 일치(canonical `6226e6eb` 의미 동일)
+- **가정**: id=7-4 0.65 → 1.0 KPI bump 시 79.66% → 80.86%(rate-card 가중합 산술 — planner+coder 검증 필요)
+- **미확인**: carefor LIVE direct HTTP **28-cycle carry**(Wayback 본문 검증으로 의미 보전) · longterm 502 단기보호 HTTP 302→200 shell **26-cycle carry**(canonical `b5aee8c1` 보존)
+
+### §601-7 다음 조사 우선순위 (BNK-602 rotation 후보)
+
+| 우선순위 | 영역 | 액션 |
+|---|---|---|
+| P1 | 이지케어 역공학 2–4h | `/new.ez` session DRIFT 재실측 + FAQ 21806/21810 신규 evidence |
+| P2 | 엔젤·롱텀·규제 4–6h | silverangel weekly notice (next ~6/25 KST) · longterm 502 26-cycle 「미확인」 재시도 |
+| P3 | ogada git 실측 6–8h | id=7-4 rate-card 갱신 확인(planner+coder 후속 commit 감시) |
+| P4 | 교차검증 8h+ | 카드결제(CARD) silverangel 정본 fee 미정 vs ogada `/billing/easy-pay` 수수료 표시 일관성 |
+
+### §601-8 변동 요약
+
+**601차 delta**: merge gate 779 → **780**(+1) · FE `@e63aa8e` → **`@1db75d0`**(HEAD +1·FE retry hardening) · BE `@dac8ebd` carry(HEAD zero advance) · Flyway V176 carry · BE Test 261 carry · FE test 468 carry · 모듈 79.66% carry(id=7-4 still 0.65·KPI bump 후보 **2-cycle carry**) · 신규 core 갭 0 · candidate 변동 0(carry 5 P3) · 가정 번복 0 · 상태 변경 1(FE+1 only·BE carry) · 미확인 carry 2(carefor LIVE 28-cycle·longterm 502 26-cycle) · 신규 snapshot 1건(`ogada_git_remeasure_bnk601.txt`) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족 · **tester FF merge 780 가속 권장**.
+
+---
+
+## §600 BNK-600 — ogada git 실측 6–8h · ★★★ **BE G2b CMS 5/5 silverangel parity closure** — BE `@dac8ebd` `feat(v2/G2b): add virtual-account and multi-account CMS collection APIs`(18-file +1136L)·신규 `CmsCollectionMethod` 상수 2종·DTO 6종·`StubFcmsClient` +37L·`CmsService` +339L·`CmsController` +39L·`CmsCollectionRequestEntity`(199L)·**Flyway V176**(+1)·`CmsCollectionServiceTest` NEW(206L) → `CmsPaymentMethodCatalog` **5/5 `collectionImplemented=true`**·BE catalog API `collectionImplementedCount=5/5` · silverangel extraService 5-method ↔ ogada BE 1:1 full crosswalk closure(BNK-595 3/5 → BNK-600 5/5) · ★★★ **FE UXD-162** — FE `@e63aa8e` `src/styles/components.css` +22/-0·`.ds-cms-payment-method-catalog` class 정의(FE-16 gap fix·flex gap·h2 margin·forced-colors boundary)+G16 TransportParityRulesPanel design spec landed(BNK-599 P2 carry)·CSS-only·JSX regression 0 · ★★★ **NHIS #44 이동서비스비 러-1~4 367차 zero drift IDENTICAL** `c886ff1f`(7,572B·러-1~4·편도·1일1회·일지④ verbatim) ↔ ogada full-stack ✅ parity/우위 · ★★★ **silverangel notice list 369차 zero drift IDENTICAL** `52c9457f`(3,594,181B·latest real 221563·6/18·weekly notice 0·8-day stale·next ~6/25) · ★★ **module id=7-4 KPI bump 후보** — BE 5/5 backend closure이나 FE `competitorModuleCoverage.js` id=7-4 still **0.65** carry(planner+coder rate-card 갱신 시 23.10+0.35=23.45/29=**80.86%** 가능·v1.2 KPI ≥60% 초과 carry) · ★ **KPI 회계 정정 1(가정 번복 1)** — BNK-599 「FE test 472(197+275·+4 js)」주장 → 실측 raw `git ls-tree -r develop | rg '\.test\.js$'` = **193+275=468 carry**(BNK-598→599 diff `liveE2eHarness.test.js` MODIFIED+32L·신규 ADDED 아님 — KPI 회계 정정·gap 번복 아님·BNK-586 동형 선례) · ★ **4축+leave-ledger P0/P1 재오픈 0 (51-cycle carry, BNK-549~600)** · ★ **longterm 502 25-cycle 「미확인」 carry** · ogada baseline FE `@e63aa8e`/BE `@dac8ebd` **cross-stream FE+1·BE+1·양쪽 WT CLEAN** · merge gate **779**(+2)
+
+**조사일**: 2026-06-24T22:35:00Z (KST 07:35) | **rotation**: 6–8h ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정. extract `ogada_git_remeasure_bnk600.txt`(11,300B·`361c65d4`).
+
+**1. ogada baseline 실측 (BNK-600 정본)**
+
+| 지표 | BNK-599 | BNK-600 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `c3c6272` `fix: dedupe live e2e operation readiness skip reasons` | **`e63aa8e`** `ux(a11y): promote ds-cms-payment-method-catalog CSS and spec G16 parity-rules FE (UXD-162)` | **+1** |
+| BE develop HEAD | `bd1e87e` `feat(v2/G16): add NHIS #44 transport service fee parity rules API` | **`dac8ebd`** `feat(v2/G2b): add virtual-account and multi-account CMS collection APIs` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 222 | **223** | +1 |
+| BE ahead vs `origin/test=598d108` | 555 | **556** | +1 |
+| merge gate | 777 | **779** | **+2 cross-stream** |
+| Route (FE App.jsx) | 112 (111 `<Route\b`+1 `<Routes>`) | 112 | carry |
+| page (`src/pages/*.jsx`) | 91 (90 `*Page.jsx`+RootRedirect.jsx) | 91 | carry |
+| Flyway 최대 | V175 | **V176** | **+1** (`V176__cms_collection_requests_g2b.sql` 53L) |
+| BE Test class file (`*Test.java`) | 260 | **261** | **+1** (`CmsCollectionServiceTest.java` 206L NEW) |
+| BE `@Test` 어노테이션 | 1886 | **1897** | **+11** |
+| FE `.test.js` | 193 (BNK-599 entry "197" 가정 번복) | 193 | **carry (KPI 회계 정정 1)** |
+| FE `.test.jsx` | 275 | 275 | carry |
+| FE test 총합 | 468 (BNK-599 entry "472" 가정 번복) | **468** | **carry** |
+| 모듈 커버리지 | 79.66% (23.10/29) | 79.66% (23.10/29) | carry (id=7-4 still 0.65·KPI bump 후보) |
+
+> KPI 회계 정정: BNK-599 README+decisions entry는 "FE test 472(197+275·+4 js)"로 기록했으나, `4875937→c3c6272` diff = `src/test/liveE2eHarness.test.js` **MODIFIED**(+32L·신규 ADDED 아님). 양쪽 SHA(`@c3c6272`·`@e63aa8e`) 정실측 = **193 .test.js**. BNK-586 동형 선례에 따라 KPI 회계 정정 1·가정 번복 1로 기록한다(neutral correction·gap 번복 아님).
+
+**2. ★★★ G2b CMS silverangel 5/5 parity — BE backend closure (NEW)**
+
+BE `@dac8ebd` 18-file +1136L 다이프(`git -C src/backend show dac8ebd --stat`):
+
+| 파일 | 종류 | LOC | 역할 |
+|---|---|---|---|
+| `api/CmsController.java` | M | +39 | claim-scoped CMS routes 노출 |
+| `api/CmsVirtualAccountResponse.java` | A | 20 | 가상계좌 발급 응답 DTO |
+| `api/CmsMultiAccountSettlementResponse.java` | A | 19 | 다계좌 정산 응답 DTO |
+| `api/IssueCmsVirtualAccountRequest.java` | A | 11 | 가상계좌 발급 요청 DTO |
+| `domain/CmsCollectionMethod.java` | A | 9 | constants `VIRTUAL_ACCOUNT`·`MULTI_ACCOUNT_SETTLEMENT` |
+| `domain/CmsPaymentMethodCatalog.java` | M | +4/-2 | **5/5 `collectionImplemented=true`** |
+| `domain/CmsService.java` | M | +339 | FCMS stub collection + persistence (871L 총) |
+| `domain/FcmsClient.java` | M | +28 | 2 new collection methods 인터페이스 |
+| `domain/FcmsVirtualAccountResult.java` | A | 32 | provider result |
+| `domain/FcmsMultiAccountSettlementResult.java` | A | 23 | provider result |
+| `persistence/CmsCollectionRequestEntity.java` | A | 199 | JPA Entity |
+| `persistence/CmsCollectionRequestRepository.java` | A | 13 | Repository |
+| `db/migration/V176__cms_collection_requests_g2b.sql` | A | 53 | `cms_collection_requests` 테이블 |
+| `provider/StubFcmsClient.java` | M | +37 | stub impl 2-method |
+| `billing/domain/BillingService.java` | M | +16 | CMS 연동 hook |
+| `test/CmsCollectionServiceTest.java` | A | 206 | **NEW BE Test +1** |
+| `test/MustApiEndpointRoutingTest.java` | M | +24 | 2 신규 routes lock |
+| `test/RoleBasedControllerAccessTest.java` | M | +67 | RBAC lock |
+| `test/CmsPaymentMethodCatalogServiceTest.java` | M | +9 | 5/5 assertion |
+| `test/StubFcmsClientTest.java` | M | +39 | stub test |
+| `test/CmsCopayLifecycleE2eTest.java` | M | +4 | E2E adjust |
+| `test/pilot/CmsPilotServiceFlowE2eTest.java` | M | +4 | pilot adjust |
+
+**`CmsPaymentMethodCatalog` 5/5 verbatim post-commit (BNK-600)**:
+
+```
+AUTO_DEBIT_CMS              "자동이체(CMS)"   "250원/1건" → /billing/cms             implemented=true
+VIRTUAL_ACCOUNT             "가상계좌"         "300원/1건" → /billing/cms             implemented=true   (NEW)
+CARD                        "카드결제"         (null)      → /billing/easy-pay        implemented=true
+MULTI_ACCOUNT_SETTLEMENT    "다계좌 정산"      (null)      → /billing/cms             implemented=true   (NEW)
+CASH_RECEIPT                "현금영수증"       (null)      → /billing/cash-receipts   implemented=true
+```
+
+**3. ★★★ FE UXD-162 — `.ds-cms-payment-method-catalog` CSS + G16 spec promotion**
+
+FE `@e63aa8e` 1-file +22/-0 (`src/styles/components.css`):
+- `.ds-cms-payment-method-catalog` class가 `CmsPaymentMethodCatalogPanel`(BNK-596 wire)에서 참조되었으나 components.css 정의 0 → **flex gap·h2 top-margin override·forced-colors boundary** 누락(FE-16) closure
+- G16 `TransportParityRulesPanel` design spec landed (BNK-599 P2 carry 충족)
+- CSS-only change · JSX regression 0
+- FE → BE `service-fee-parity-rules` catalog wire: `git -C src/frontend grep -l service-fee-parity develop` = **0 hit** (coder 다음 사이클 후보 carry)
+
+**4. ★★★ silverangel 5-method ↔ ogada BE 5/5 1:1 full crosswalk closure**
+
+silverangel `extraService.do` (zero drift `f9c5d877` 81,637B carry BNK-595~600):
+
+| # | silverangel 본인부담금 자동이체 5-method | 수수료 | ogada BE 매핑 | ogada Route | BNK-600 status |
+|---|---|---|---|---|---|
+| ① | 자동이체 (CMS) | 건당 250원·월 30,000원 한도 | `AUTO_DEBIT_CMS` | `/billing/cms` | ✅ carry (BNK-579 closure) |
+| ② | 가상계좌 | 건당 300원 | **`VIRTUAL_ACCOUNT`** | `/billing/cms` | **✅ NEW BNK-600** |
+| ③ | 카드결제 | — | `CARD` | `/billing/easy-pay` | ✅ carry |
+| ④ | 다계좌 정산 | — | **`MULTI_ACCOUNT_SETTLEMENT`** | `/billing/cms` | **✅ NEW BNK-600** |
+| ⑤ | 현금영수증 (효성CMS 대행 1600-6859) | — | `CASH_RECEIPT` | `/billing/cash-receipts` | ✅ carry |
+
+`collectionImplementedCount`: 3/5 (BNK-595) → 5/5 (BNK-600) · BE backend silverangel parity **closure**.
+
+**5. ★★★ NHIS #44 이동서비스비 러-1~4 — 367차 zero drift IDENTICAL**
+
+| 측정 | 값 |
+|---|---|
+| URL | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 |
+| HTTP | 200 |
+| SIZE | 7,572 bytes |
+| md5 | `c886ff1fd1d5ca2cb5dc76d30adde8ba` (BNK-599 `c886ff1f` IDENTICAL 367th consecutive) |
+| verbatim | 러-1·러-2·러-3·러-4 거리구간별 산정 · 편도 50% 산정 · 1일 1회만 산정 · 별지 제22호 이동서비스 일지 작성·보관 |
+| ogada 매핑 | BE `TransportServiceFeeService`(RU_1~RU_4·`ONE_WAY_RATIO=0.5`·1일1회 dedup)·DB V148/V154/V155 CHECK · BE catalog API `GET /api/v1/transport/service-fee-parity-rules`(BNK-598 LIVE) · FE `transportServiceFee.js` 4 parity-copy 상수 · FE `TransportServiceFeePanel`(UXD-159)·UXD-162 CSS(BNK-600) |
+
+→ **케어포·이지케어·엔젤·롱텀(공단) 경쟁사 4종 중 ogada만 #44 이동서비스비 표시 레이어 보유 = 차별화 우위 367차 재입증.**
+
+**6. ★★★ silverangel notice list — 369차 zero drift IDENTICAL**
+
+| 측정 | 값 |
+|---|---|
+| URL | https://www.silverangel.kr/silverangel/support/notice/list.do |
+| HTTP | 200 |
+| SIZE | 3,594,181 bytes |
+| md5 | `52c9457f4e34a7d3c49275e5bf337677` (BNK-599 `52c9457f` IDENTICAL 369th consecutive) |
+| latest real notice id | **221563** (2026-06-18) carry |
+| weekly notice 0 | 8-day stale · next anticipated 2026-06-25 (KST 내일) |
+
+**7. ★★ module id=7-4 KPI bump 후보**
+
+`competitorModuleCoverage.js` @ `e63aa8e` recompute (raw `git show develop:src/config/competitorModuleCoverage.js | rg -o 'coverage: [0-9.]+'`):
+
+```
+features = 29 (JSDoc 헤더 1행 제외)
+sum      = 23.10
+weighted = 23.10 / 29 = 0.7966 = 79.66%
+id=2     이동서비스        0.85
+id=7-4   CMS·간편결제      0.65   ← BE 5/5 closure이나 still
+id=8     직원·근태         0.85
+id=10    부가서비스(SMS)   0.75
+```
+
+| 시나리오 | id=7-4 | sum | features | 모듈% |
+|---|---|---|---|---|
+| BNK-600 현행 (BE 5/5 · FE rate 0.65) | 0.65 | 23.10 | 29 | 79.66% carry |
+| KPI bump 후보 (FE rate 1.0) | **1.0** | 23.10+0.35=**23.45** | 29 | **80.86%** |
+
+→ **planner+coder rate-card 갱신 시 모듈 79.66% → 80.86%** 가능. v1.2 KPI ≥60% 초과 carry · v1.3 marketing copy 「CMS 5-method 완전 구현·silverangel 정본 parity」 사용 가능.
+
+**8. ★ 4축+leave-ledger P0/P1 재오픈 0 (51-cycle carry, BNK-549~600)**
+
+App.jsx `@e63aa8e` grep:
+- `/clients/:clientId/care-plan-form` (G14 LIVE)
+- `/dashboard`, `/dashboard/hq` (G26 LIVE)
+- `/transport/service-fees` (v1.3-C / G16 LIVE)
+- `/billing/cms` (v2 G2b LIVE)
+- `/staff/annual-leaves`, `/staff/leave-ledger` (US-R01-c LIVE)
+
+**9. ★ longterm 502 — 25-cycle 「미확인」 carry**
+
+| 측정 | 값 |
+|---|---|
+| URL | https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502 |
+| on-disk canonical | `longterm_502.html` `b5aee8c1`(105,552B·단기보호 1등급 74,060원) carry |
+| on-disk partial shell | `longterm_502_live_partial_shell_bnk584.html` `d3c90b33`(422B refreshedException) carry |
+| 상태 | HTTP 302/200 oscillation gate · 25-cycle 「미확인」 (BNK-575~600) · planner no-op |
+
+**10. candidate carry 5 P3 (carry)**
+
+- `G-GUARDIAN-MEETING` P3 (BNK-578)
+- `G-VENDOR-ONBOARDING-CHECKLIST` P3 (BNK-578)
+- `G-PROGRAM-GROUP-CONFIG` P3 (BNK-577)
+- `G-AGENCY-INTERNAL-SCHEDULE` P3 (BNK-593)
+- `G-STAFF-ONBOARD-DOC-ITEMIZE` P3 (BNK-597)
+
+**11. delta summary**
+
+가정 번복 1 (FE test 472→468 KPI 회계 정정) · 신규 core 갭 0 · candidate 변동 0 (carry 5 P3) · 상태 변경 2 (FE+1·BE+1·cross-stream advance·양쪽 WT CLEAN) · KPI 변경 4 (Flyway V176·BE Test 261·BE @Test 1897·merge gate 779) · 미확인 carry 1 (longterm 502 25-cycle) · 신규 snapshot 1건 (`ogada_git_remeasure_bnk600.txt`) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족 · **tester FF merge 779 가속 권장**.
+
+**12. planner 권고**
+
+1. **★★★ module id=7-4 CMS 0.65→1.0 bump 검토** — BE `@dac8ebd` 5/5 backend closure + FE panel 5/5 display 결합·`competitorModuleCoverage.js` rate-card 갱신 시 모듈 79.66%→**~80.86%** 가능. ROADMAP G2b 단계 완료 표기 검토.
+2. **★★ FE TransportParityRulesPanel BE catalog wire (coder 후보 carry)** — BE catalog API LIVE(BNK-598)·UXD-162 spec landed(BNK-600)·FE wire 0 hit. coder 다음 사이클 후보.
+3. **★★ tester FF merge 779 가속** — FE ahead 223·BE ahead 556·양쪽 WT CLEAN.
+4. **★ KPI 회계 정정 carry** — BNK-599 FE test 472→468 정정 기록.
+5. candidate carry 5 P3 일관 검토.
+
+---
+
+## §599 BNK-599 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 366차 zero drift IDENTICAL** + G16 parity-rules API carry · ★★ **silverangel essentialWork 평가지표 27 목욕** ↔ ogada `/care/bathing-*` partial+ ✅ · ★★ **silverangel 5-URL 368차 zero drift** + weekly notice 0(7-day stale) · ★ **longterm 502 HTTP 302→200 refreshedException shell** · FE `@c3c6272` HEAD +1 · merge gate **777**(+1)
+
+**조사일**: 2026-06-24T22:00:00Z (KST 07:00) | **rotation**: 4–6h 엔젤·롱텀·law.go.kr·이동서비스비 #44·2026 평가·단기보호·통합재가. extract `angel_longterm_regulatory_crossverify_bnk599.txt`.
+
+### §599-1 ogada git 실측 KPI (BNK-599) — FE+1 · BE zero advance · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse --short develop  → c3c6272 (BNK-598 @4875937 HEAD +1)
+  fix: dedupe live e2e operation readiness skip reasons · WT CLEAN · ahead 222
+$ git -C src/backend  rev-parse --short develop  → bd1e87e (BNK-598 동일 SHA · HEAD zero advance 1-cycle)
+  feat(v2/G16): add NHIS #44 transport service fee parity rules API · WT CLEAN · ahead 555
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 260(@Test 1,875) · FE test 472(197 js + 275 jsx · +4 js)
+$ 모듈 79.66%(23.10/29 · id=2 0.85 · id=7-4 0.65) carry · merge gate = 222 + 555 = 777 (+1 vs BNK-598 776)
+```
+
+### §599-2 ★★★ NHIS #44 이동서비스비 러-1~4 — 366차 zero drift + G16 catalog carry
+
+**【확인】** [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200·7,572B·`c886ff1f`** — **366차 zero drift IDENTICAL** (BNK-598 365차 carry).
+
+| 규칙 | NHIS verbatim | ogada BE/FE | 판정 |
+|---|---|---|---|
+| 러-1~4 | 거리구간 표(lawImg) | `TransportServiceFeeService` distance bands | ✅ |
+| 편도 50% | 「50%를 산정」 | `ONE_WAY_RATIO=0.5` | ✅ |
+| 1일 1회 | 「1일 1회만 산정」 | dedup guard + `ONE_PER_DAY_NOTE` | ✅ |
+| 일지 ④ | 이동서비스 일지 작성·보관 | `SERVICE_LOG_NOTE` + TransportServiceLog | ✅ |
+| catalog API | — | `GET /api/v1/transport/service-fee-parity-rules` 4-rule | ✅ BE only |
+
+`git -C src/frontend grep service-fee-parity develop` = **0 hit** → FE panel BE catalog 미소비 carry. 경쟁사 4종 중 ogada만 full-stack 표시 레이어 + machine-readable catalog API 보유.
+
+### §599-3 ★★ 엔젤 essentialWork 평가지표 27 목욕 ↔ ogada bathing (메뉴/필드 1블록 · 2026 #27)
+
+**【확인】** [essentialWork.do](https://www.silverangel.kr/newSilverangel/fcltySlry/essentialWork.do) `80517b18`(368차 zero drift) 주야간보호 필수업무表:
+
+| 엔젤 평가지표 | verbatim 요건 | ogada route | 판정 |
+|---|---|---|---|
+| **27 목욕** | 월 5회 이상 · 목욕 전·후 상태 관찰·기록 | `/care/bathing-schedules` | ✅ 일정·제공 |
+| 27 연계 | 동일 | `/care/reports/bath-help` | ✅ 리포트(func 3-5) |
+| 29 욕창 | 욕창간호·상태변화 | `/nursing/*` pressure ulcer cluster | △ partial+ |
+| 28 배설 | 배설관리 | `/care/reports/meal-excretion` 등 | △ |
+
+**gap(가정)**: 「목욕 전·후 상태 관찰」전용 입력 leaf — ogada는 schedule+report 분리로 **partial+ ✅** · 전후관찰 필드 deepen = P2 carry(케어포 demo L06·func 3-3 tri-source).
+
+### §599-4 ★ 롱텀·규제·엔젤 notice 재실측
+
+| 대상 | HTTP·md5 | 판정 | 비고 |
+|---|---|---|---|
+| longterm 610 | 200·`0ea575be` | **367차 IDENTICAL** | 통합재가 MVP out |
+| longterm 502 | 200·422B·`d3c90b33` | **미확인 24-cycle** | HTTP 302→200 shell 변동 · canonical 74,060 보존 |
+| law247 | 200·`a2cf9bf3` | **DRIFT** cachebuster | 제2025-247호·시행2026 verbatim → 덮어쓰기 |
+| mohw126 | 200·`1f71275c` | **DRIFT** counter | 다운로드 477·본인부담상한 verbatim → 덮어쓰기 |
+| silverangel 5-URL | 200·368차 IDENTICAL | carry | extraService·essentialWork·main·businessSupport·notice |
+| notice 221620~625 | 200·`8437f255` | 미게시 shell | weekly notice 0 · latest real 221563(6/18) |
+| systemFeature.do | **404** | URL dead | on-disk 45,601B 보존 |
+
+→ 4축+leave-ledger P0/P1 재오픈 0 (48-cycle carry, BNK-549~599)·가정 번복 0·신규 core 갭 0·candidate 변동 0(carry 5 P3)·신규 snapshot 2건·덮어쓰기 2건·tester FF merge **777** 가속 권장.
+
+## §598 BNK-598 — 이지케어 역공학 2–4h · ★★★ **ogada G16 `GET /api/v1/transport/service-fee-parity-rules` NHIS #44 4-rule catalog API** — BE `@bd1e87e` HEAD +1 · FE `@4875937` zero advance · ★★★ **PGID wAllowance-payrollcost 365차 session DRIFT** `515a239a`→`a8dd1757`(146,026B·colModel 15-field·serviceKind 001/002/003 임금배분·인건비 지급비율 % 산출) ↔ ogada 인건비 원가율 ❌ · ★★ **가격·도입 3종 cachebuster DRIFT**(fnc `e35d15d9`·charge `a64223c4`·change_work `cd936589`·도입 **9,350** verbatim) · ★ **FAQ 21800 정기 욕구사정 365차 zero drift** `156d08d1` ↔ G24b ✅ carry · merge gate **776**(+1)
+
+**조사일**: 2026-06-24T21:45:00Z (KST 06:45) | **rotation**: 2–4h 이지케어 ERP·FAQ·Channel.io·가격·온보딩. extract `ezcare_wallowance_payrollcost_crosswalk_bnk598.txt`.
+
+### §598-1 ogada git 실측 KPI (BNK-598) — BE+1(G16 parity-rules) · FE zero advance · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse --short develop  → 4875937 (BNK-597 동일 SHA · HEAD zero advance 1-cycle)
+  feat(v1.2.1/G2b): wire CMS payment-method-catalog panel and fix US-O05 live E2E · WT CLEAN · ahead 221
+$ git -C src/backend  rev-parse --short develop  → bd1e87e (BNK-597 @2eaf17e HEAD +1)
+  feat(v2/G16): add NHIS #44 transport service fee parity rules API · WT CLEAN · ahead 555
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 260(+1) · FE test 468(193 js + 275 jsx) carry
+$ 모듈 79.66%(23.10/29 · id=2 이동 0.85 · id=7-4 0.65) carry · merge gate = 221 + 555 = 776 (+1 vs BNK-597 775)
+```
+
+### §598-2 ★★★ PGID wAllowance-payrollcost — 인건비 지급비율·serviceKind 3-way 배분 (메뉴/필드 1블록)
+
+**【확인】** [wAllowance-payrollcost](https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-payrollcost) (데모 `./scripts/ezcare-demo-fetch.sh --pgid wAllowance-payrollcost`) HTTP **200·146,026B·`a8dd1757`** — BNK-563 `515a239a` 대비 **365차 session DRIFT**(SIZE IDENTICAL·colModel semantic 불변).
+
+| 구분 | 이지케어 verbatim | ogada `@4875937`/`@bd1e87e` | 판정 |
+|---|---|---|---|
+| 메뉴 | module 6 직원급여 → 「인건비 지급 비율 참고자료」 | N/A (재무회계 MVP out) | ❌ |
+| colModel | abTotal·eTotal_c·severance_pay·sum_abTotal + groupHeader 「임금배분」요양/목욕/간호 | N/A | ❌ |
+| worker_kind | 종사자구분 lookup `json-payrollcost.php?data=worker_kind` | `StaffMember` role enum only | △ |
+| 인건비율 | `setRateAmount(001/002/003)` → `(임금+4대보험+퇴직)/applyAmount` % | N/A | ❌ |
+| Ajax | `postData {Ym}` 월별 grid reload | N/A | ❌ |
+
+→ **candidate `G-PAYROLL-LABOR-COST-RATIO` P3「가정」** carry(v2+ 재무·인건비 모듈·MVP out-of-scope). ezCare는 급여(wAllowance-a100)·퇴직적립금(severance)·**인건비 원가율(payrollcost)** 3-PGID family로 모듈 6 직원급여 정본 완성 — ogada는 직원 급여·근태만·재무 원가율 0.
+
+### §598-3 ★★★ ogada G16 NHIS #44 parity-rules API — machine-readable catalog (확인)
+
+BE `@bd1e87e` `TransportServiceFeeParityCatalog` + `GET /api/v1/transport/service-fee-parity-rules`:
+
+| ruleCode | bodyKo (요약) | FE `transportServiceFee.js` | 판정 |
+|---|---|---|---|
+| DISTANCE_BANDS | 러-1~러-4 네 구간 | `DISTANCE_BANDS_NOTE` parity-copy | ✅ |
+| ONE_WAY_RATIO | 편도 50% | `ONE_WAY_RATIO=0.5` | ✅ |
+| ONE_PER_DAY | 1일 1회 | `ONE_PER_DAY_NOTE` | ✅ |
+| SERVICE_LOG | 별지 제22호 일지 | `SERVICE_LOG_NOTE` | ✅ |
+
+`git -C src/frontend grep service-fee-parity develop` = **0 hit** → FE panel이 BE catalog API를 소비하지 않음(상수 duplicate carry). module id=2 이동서비스 **0.85 carry** — API deepen이나 FE wire 전 KPI 불변.
+
+### §598-4 ★ 가격·도입·FAQ 백본 재실측
+
+| 대상 | md5 변동 | verbatim 불변 |
+|---|---|---|
+| fnc | `d3f90083`→`e35d15d9` | 도입 **9,350** |
+| charge | `3ead19af`→`a64223c4` | 33,000/25,850/55,000 |
+| change_work | `012f210b`→`cd936589` | RFID·중복일정·듀얼/트리플 |
+| FAQ 21800 | `156d08d1` carry | 평가지표 15·8항목·G24b ✅ |
+| demo shell | `579388a3`→`95f9c199`(+6B) | notice 21844 dialog carry |
+
+→ 덮어쓰기 4건·4축+leave-ledger P0/P1 재오픈 0 (47-cycle carry, BNK-549~598)·가정 번복 0·신규 core 갭 0·candidate 변동 0(carry 5 P3)·미확인 carry 1(longterm 502)·신규 snapshot 2건·tester FF merge **776** 가속 권장.
+
+## §597 BNK-597 — 이지케어 역공학 2–4h · ★★★ **ezCare FAQ 21806 「[비정기] 요양보호사 입사 처리」 신규 evidence** — HTTP 200·17,619B·`a82168d1`·입사 8-step + **입사서류 8종** ↔ ogada `staffHrFiles.js` **7종** crosswalk(5/8 verbatim ✅·criminal-record 1종=ezCare 3 회보서 통합 △·주민등록표등본 ogada 미추적·통장/근로계약/사직서 ogada superset) · ★★★ **신규 FAQ 4건 real**(21807·21810 정기 욕구사정·21830/21835 일정확정 가이드)·latest real ~21842 · ★★ **module 8 직원근태 0.85 carry**(`staffLifecycleCompliance.js` L401 「FAQ 21806 ① 입사 전 자격확인」 이미 wire ✅)·신규 candidate **G-STAFF-ONBOARD-DOC-ITEMIZE P3「가정」** · ★ **가격·도입 drift 4건 cachebuster/cosmetic verbatim 불변**(home `7d440586`·fnc 9,350·charge 33,000/25,850/55,000·change_work RFID) · FE `@4875937` / BE `@2eaf17e` **HEAD zero advance 1-cycle** · merge gate **775** carry
+
+**조사일**: 2026-06-24T21:10:00Z (KST 06:10) | **rotation**: 2–4h 이지케어 ERP·FAQ·Channel.io·가격·온보딩. extract `ezcare_faq21806_staff_onboarding_crosswalk_bnk597.txt`.
+
+### §597-1 ogada git 실측 KPI (BNK-597) — HEAD zero advance · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse --short develop  → 4875937 (BNK-596 동일 SHA · HEAD zero advance 1-cycle)
+  feat(v1.2.1/G2b): wire CMS payment-method-catalog panel and fix US-O05 live E2E · WT CLEAN · ahead 221
+$ git -C src/backend  rev-parse --short develop  → 2eaf17e (BNK-596 동일 SHA · HEAD zero advance 1-cycle)
+  feat(v2/G2b): add CMS payment method catalog API for silverangel parity · WT CLEAN · ahead 554
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 259 · FE test 468(193 js + 275 jsx)
+$ 모듈 79.66%(23.10/29 · id=7-4 0.65 · id=10 0.75) carry · merge gate = 221 + 554 = 775 (carry)
+```
+
+### §597-2 ★★★ ezCare FAQ 21806 요양보호사 입사 처리 — 8-step 워크플로 (메뉴/필드 1블록)
+
+FAQ 21806 [비정기] 요양보호사 입사 처리 입사시 업무처리 절차(verbatim):
+
+| # | 단계 | 내용 |
+|---|---|---|
+| ① | 입사 전 자격사항 확인 | 자격증·당해연도 건강검진·치매전문교육 이수·코로나19 백신접종 |
+| ② | 입사서류 제출/유효기간 검토 | 8종(아래 표) |
+| ③ | 근로계약서 | 작성·서명, 기관/근로자 각 1부 보관 |
+| ④ | 신규직원교육 | 운영규정·급여제공지침(신규 7일 이내)·인수인계·인권/고충/응급/비상연락망·노인인권교육 |
+| ⑤ | 근무복 제공 | 기관명 각인(공단 평가항목) |
+| ⑥ | 인력변경신고(신규 입사) | → 희망이음 |
+| ⑦ | 배상책임보험 가입 | |
+| ⑧ | 급여계약등록(일정등록)·RFID 단말기통합관리 | → 공단 |
+
+평가 인정 규칙(verbatim): 건강검진 5개 영역(계측·요·혈액·영상·결과판정) · 신규직원 급여제공 시작+7일 미도래 시 교육 미실시 예외 인정 · 건강검진 결과통보서 검진일·발행일자 근무시작일 기준 1년 이내. 콜센터 1644-0340.
+
+### §597-3 ★★★ crosswalk — ezCare 입사서류 8종 ↔ ogada STAFF_HR_FILE 7종 (`@4875937`)
+
+`src/config/staffHrFiles.js` `STAFF_HR_ONBOARDING_REQUIRED_DOCUMENT_TYPES` 7종 ↔ FAQ 21806 입사서류 8종:
+
+| ezCare 8종 | ogada 7종(id) | 판정 |
+|---|---|---|
+| 1 신분증 사본 | id-card 신분증 | ✅ parity |
+| 2 주민등록표등본(초본) | (없음) | ❌ ogada 미추적 |
+| 3 요양보호사 자격증 | certificate 자격증 | ✅ parity |
+| 4 건강검진 결과통보서 | health-check 건강검진 결과 | ✅ parity(5영역 `StaffHealthCheckupRecordsPanel`) |
+| 5 치매교육 이수증 | dementia-training 치매교육 | ✅ parity |
+| 6 노인학대 경력 회보서 | criminal-record 범죄경력조회 | △ 통합(3-in-1) |
+| 7 장애인학대 경력 회보서 | criminal-record 범죄경력조회 | △ 통합(3-in-1) |
+| 8 범죄경력증명서(회보서) | criminal-record 범죄경력조회 | ✅(consolidated) |
+| — | bank-account 통장 사본 | ogada superset |
+| — | employment-contract 근로계약서 | ogada superset(③ 매칭) |
+| — | resignation 사직서 | ogada superset(FAQ21825 퇴사) |
+
+판정: 핵심 5/8 verbatim ✅ parity. ogada criminal-record 1종이 ezCare 3 회보서(노인학대·장애인학대·범죄경력)를 통합 △. ogada 미추적 1건(주민등록표등본). ⑥⑦⑧ 희망이음·공단 RFID 단말기통합관리는 외부 포털 연계(ogada MVP out-of-scope). `staffLifecycleCompliance.js` L401 「FAQ 21806 ① 입사 전 자격확인」 이미 wire ✅ → **module 8 직원근태 0.85 carry(KPI 영향 0)**.
+
+→ **신규 candidate `G-STAFF-ONBOARD-DOC-ITEMIZE` P3「가정」**(planner 결정 보류): (a) criminal-record 1종 → 노인학대/장애인학대/범죄경력 3-itemize(공단 평가 granularity) (b) 주민등록표등본(초본) checklist 추가. MVP 단일 범죄경력조회 + 5종 핵심으로 충분 → P3 보류.
+
+### §597-4 ★ ezCare 가격·도입 재실측 drift (cachebuster/cosmetic verbatim 불변)
+
+| 파일 | md5 변동 | 변동 | verbatim 불변 |
+|---|---|---|---|
+| home | `178121a3`→`7d440586` | +13B cosmetic | mCnt 9280/4600/2353/1820 |
+| fnc | `0149a763`→`d3f90083` | cachebuster | 도입 9,350개 |
+| charge | `6bdf9625`→`3ead19af` | cachebuster | 33,000/25,850(37명)/55,000 |
+| change_work | `c7bd0a07`→`012f210b` | cachebuster | RFID·중복일정·듀얼/트리플 |
+
+→ 덮어쓰기 4건. 4축+leave-ledger P0/P1 재오픈 0 (46-cycle carry, BNK-549~597). 가정 번복 0·신규 core 갭 0·candidate +1·미확인 carry 1(longterm 502 session gate)·신규 snapshot 3건·tester FF merge **775** 가속 권장.
+
+## §596 BNK-596 — 케어포 역공학 0–2h · ★★★ **G2b FE CMS payment-method-catalog panel wire 완료** — FE `@4875937` `feat(v1.2.1/G2b): wire CMS payment-method-catalog panel and fix US-O05 live E2E`(8-file +292/-1)·`CmsPaymentMethodCatalogPanel.jsx`(150L) `CmsPage.jsx` L314 wire → BNK-595 「FE wire 잔여(grep 0)」 **closure**(grep 7 source file)·엔젤 5-method 정본 표 표시(수납 3/5 badge·미구현 2종 가상계좌·다계좌정산) · ★★ **module id=7-4 coverage 0.65(△) carry** — FE 표시 parity≠KPI bump(2-method 수납 backend ❌) · ★★ **케어포 func.php Wayback 364차 zero drift IDENTICAL** `6226e6eb`(98,328B·live=disk)·LIVE direct HTTP 000 27-cycle 「미확인」 · FE `@4875937` **HEAD +1** · BE `@2eaf17e` **HEAD zero advance** · merge gate **775**(+1)
+
+**조사일**: 2026-06-24T20:40:00Z (KST 05:40) | **rotation**: 0–2h 케어포 func.php·매뉴얼·demo-work UX 패턴. extract `carefor_m7_copay_cms_fe_wire_crosswalk_bnk596.txt`.
+
+### §596-1 ogada git 실측 KPI (BNK-596) — FE+1(G2b CMS panel wire) · BE zero advance · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse --short develop  → 4875937 (BNK-595 @64a7648 HEAD +1)
+  feat(v1.2.1/G2b): wire CMS payment-method-catalog panel and fix US-O05 live E2E
+  WT CLEAN · ahead 221 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 2eaf17e (BNK-595 동일 SHA · HEAD zero advance 1-cycle)
+  feat(v2/G2b): add CMS payment method catalog API for silverangel parity
+  WT CLEAN · ahead 554 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 259(carry·1885 @Test)
+$ FE test 468(193 js + 275 jsx · +1 jsx CmsPaymentMethodCatalogPanel.test.jsx)
+$ 모듈 79.66%(23.10/29 · id=7-4 0.65 · id=10 0.75) carry — competitorModuleCoverage.js id=7-4 0.65 불변
+$ merge gate = FE 221 + BE 554 = 775 (+1 vs BNK-595 774)
+```
+
+상태 변경 1(FE+1 only) · KPI 변경 2(FE test 467→468 · merge gate 774→775) · 가정 번복 0 · candidate 변동 0(carry 4 P3).
+
+### §596-2 ★★★ G2b FE CMS payment-method-catalog panel wire — BNK-595 「FE wire 잔여」 closure (메뉴/필드 1블록)
+
+BNK-595는 BE catalog API(`GET /billing/cms/payment-method-catalog`)는 LIVE이나 `git -C src/frontend grep payment-method-catalog`=**0 hit**로 「FE wire 잔여」 기록. BNK-596 FE `@4875937` 8-file +292/-1 로 panel wire 완료:
+
+```
+$ git -C src/frontend grep -l payment-method-catalog develop -- src   → 7 source file
+  src/api/services.js                                 (fetchCmsPaymentMethodCatalogApi +5L)
+  src/api/settingsServices.test.js                    (+21L)
+  src/components/ui/CmsPaymentMethodCatalogPanel.jsx  (NEW 150L)
+  src/components/ui/CmsPaymentMethodCatalogPanel.test.jsx (NEW 89L)
+  src/components/ui/index.js                          (export +1)
+  src/pages/CmsPage.jsx                               (<CmsPaymentMethodCatalogPanel/> L314)
+  src/pages/CmsPage.test.jsx                          (+17L)
+```
+
+`CmsPaymentMethodCatalogPanel.jsx` 동작 — `GET /billing/cms/payment-method-catalog` 호출 후 Table 렌더:
+
+| 컬럼 | 내용 |
+|---|---|
+| 결제수단 | `entry.labelKo`(자동이체(CMS)·가상계좌·카드결제·다계좌 정산·현금영수증) |
+| 수수료 | `entry.feeLabel`(250원/300원·효성CMS 기준 안내) |
+| ogada 화면 | `entry.ogadaRoute` → `<Link>`(`/billing/cms`·`/billing/easy-pay`·`/billing/cash-receipts`) |
+| 수납 구현 | `StatusBadge` 구현됨(success)/미구현(danger) — `entry.collectionImplemented` |
+
+- Alert: `수납 구현 {implementedCount}/{totalCount} · 미구현 {n}종(가상계좌·다계좌 정산)` (3/5)
+- `CmsPage.jsx` L301: "보호자 CMS 자동이체 등록·출금을 관리합니다 (US-L03, 케어포 7-4)" · L314 panel 노출
+
+→ **엔젤 extraService 5-method 정본이 ogada CMS 화면에 표시(3/5 수납 badge)** = 차별화 표시 레이어 LIVE. 케어포 func.php 7-4 = CMS 자동이체 단일 명단(상위 catalog 표 없음)·이지케어 M7 본인부담 부분 노출 — ogada가 5-method catalog + 3-method 수납 구현으로 표시 레이어 우위.
+
+### §596-3 ★★ module id=7-4 coverage 0.65(△) carry — FE 표시 parity ≠ KPI bump
+
+`competitorModuleCoverage.js` id=7-4 "CMS·간편결제" coverage **0.65** 불변(`@4875937` grep 확인). FE catalog display + branch roster(`CmsPage` `loadEnrollments` branchId+status filter) 모두 LIVE이나 0.65 잔여 사유:
+
+- ② 가상계좌(VIRTUAL_ACCOUNT 300원) · ④ 다계좌 정산(MULTI_ACCOUNT_SETTLEMENT) **2-method 수납 backend ❌**(catalog `collectionImplementedCount=3/5`: AUTO_DEBIT_CMS·CARD·CASH_RECEIPT).
+- 0.65→상향 경로(coder/planner 판단): (a) 2-method 수납 구현 → 0.65→1.0 후보, 또는 (b) catalog 표시+roster parity 반영해 부분 상향(예 0.8) 재산정.
+- BNK 산출물은 src 미변경 — 모듈 KPI 79.66% carry 보고.
+
+### §596-4 ★★ 케어포 func.php Wayback 364차 zero drift + LIVE 000 27-cycle 「미확인」
+
+```
+$ curl Wayback id_ https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php
+  HTTP 200 · 98,328B · md5 6226e6eb92fdd25ed3e50842a5e8a00b
+  = on-disk carefor_func_wayback_live_bnk573.html IDENTICAL (364차 zero drift · 덮어쓰기 0)
+$ curl LIVE direct https://www.carefor.co.kr/daycare/func.php
+  HTTP 000 · 20s timeout → 접근성만 27-cycle 「미확인」(BNK-558~596) · 내용 Wayback 보강
+```
+
+### §596-5 planner 권고 (BNK-596)
+
+1. **★★★ G2b FE catalog panel wire 완료(@4875937)** — BNK-592/594/595 carry 권고(「FE wire 잔여」) 실현. 엔젤 5-method 정본이 ogada CMS 화면에 표시 — REQUIREMENTS §본인부담 「엔젤 5-method catalog + ogada 3-method 수납 표시 레이어」 정본화 검토.
+2. **★★ id=7-4 0.65→상향** = ② 가상계좌·④ 다계좌정산 2-method 수납 구현이 핵심 잔여(coder 후보·module 79.66%→~80% 가능), 또는 catalog+roster parity 반영 coverage 재산정(planner+coder).
+3. **★ 케어포 func.php 364차 zero drift carry** · LIVE 000 27-cycle 미확인 carry · candidate carry 4 P3.
+4. **tester FF merge 775 가속 권장**(FE 221+BE 554·양쪽 WT CLEAN). **per-cycle minimum 4종 충족**.
+
+---
+
+## §595 BNK-595 — ogada git 실측 6–8h · ★★★ **G2b CMS payment-method-catalog API** — `GET /api/v1/billing/cms/payment-method-catalog` silverangel 5-method parity crosswalk(3/5 `collectionImplemented`) · AUTO_DEBIT_CMS 250원·VIRTUAL_ACCOUNT 300원·CARD·MULTI_ACCOUNT·CASH_RECEIPT ↔ ogada Route 매핑 · BE `@2eaf17e` 11-file +242L · `CmsPaymentMethodCatalogServiceTest` NEW · ★★ **silverangel extraService.do 재실측 zero drift** `f9c5d877`(81,637B·5-method verbatim) ↔ catalog 1:1 · ★★ **NHIS #44 이동서비스비 러-1~4 364차 zero drift IDENTICAL** `c886ff1f` · FE `@64a7648` **HEAD zero advance 1-cycle** · BE `@2eaf17e` **HEAD +1** · merge gate **774**(+1)
+
+**조사일**: 2026-06-24T20:15:00Z (KST 05:15) | **rotation**: 6–8h ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정. extract `ogada_git_remeasure_bnk595.txt`.
+
+### §595-1 ogada git 실측 KPI (BNK-595) — BE+1 only · FE zero advance · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse --short develop  → 64a7648 (BNK-594 동일 SHA · HEAD zero advance 1-cycle)
+  test(v1.2.1/QA-B95): relax bootstrap blocker gating for recovered auth
+  WT CLEAN · ahead 220 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 2eaf17e (BNK-594 @670756a HEAD +1)
+  feat(v2/G2b): add CMS payment method catalog API for silverangel parity
+  WT CLEAN · ahead 554 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 259(+1) · FE test 467(193+274) carry
+$ 모듈 79.66%(23.10/29 · id=7-4 0.65 · id=10 0.75) carry — competitorModuleCoverage.js 64a7648 diff EMPTY(불변)
+$ merge gate = FE 220 + BE 554 = 774 (+1 vs BNK-594 773)
+```
+
+상태 변경 1(BE+1 only) · KPI 변경 2(BE Test 258→259 · merge gate 773→774) · 가정 번복 0 · candidate 변동 0(carry 4 P3).
+
+### §595-2 ★★★ G2b CMS payment-method-catalog — silverangel 5-method ↔ ogada API (메뉴/필드 1블록)
+
+엔젤 [extraService.do](https://www.silverangel.kr/newSilverangel/service/extraService.do) HTTP 200·81,637B·`f9c5d877`(364차 zero drift) 본인부담금 자동이체(CMS) 5-method ↔ ogada `CmsPaymentMethodCatalog.SILVERANGEL_PARITY_ENTRIES`:
+
+| methodCode | labelKo | feeLabel | ogadaRoute | collectionImplemented | 엔젤 대응 |
+|---|---|---|---|---|---|
+| AUTO_DEBIT_CMS | 자동이체(CMS) | 250원/1건 | `/billing/cms` | ✅ true | ① 자동이체 250원/월 30,000원 |
+| VIRTUAL_ACCOUNT | 가상계좌 | 300원/1건 | null | ❌ false | ② 가상계좌 300원 |
+| CARD | 카드결제 | — | `/billing/easy-pay` | ✅ true | ③ 카드결제 |
+| MULTI_ACCOUNT_SETTLEMENT | 다계좌 정산 | — | null | ❌ false | ④ 다계좌 정산 |
+| CASH_RECEIPT | 현금영수증 | — | `/billing/cash-receipts` | ✅ true | ⑤ 현금영수증 |
+
+API: `GET /api/v1/billing/cms/payment-method-catalog` → `{ totalCount: 5, collectionImplementedCount: 3, entries: [...] }` · RBAC BRANCH_ADMIN+ 허용 · GUARDIAN 거부.
+
+→ ogada module **7-4 CMS coverage 0.65(△) carry** — BE catalog API deepen(3/5) · FE `payment-method-catalog` wire + VIRTUAL_ACCOUNT/MULTI_ACCOUNT 구현 시 0.65→1.0 후보.
+
+### §595-3 ★★ NHIS #44 이동서비스비 러-1~4 — 364차 zero drift (확인)
+
+| 항목 | 내용 |
+|---|---|
+| URL | [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200**·7,572B·md5 `c886ff1f` (live = on-disk IDENTICAL · **364차**) |
+| ogada | `TransportServiceFeeService` + FE `transportServiceFee.js` + `TransportServiceFeePanel` full-stack ✅ parity/우위 carry |
+
+### §595-4 4축+leave-ledger P0/P1 재오픈 0 (44-cycle carry)
+
+App.jsx `@64a7648` 7/7 path LIVE: G14·G26×2·v1.3-C·v2 CMS·US-R01-c×2 · candidate carry 4 P3(grep 0 재확인).
+
+## §594 BNK-594 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 363차 zero drift IDENTICAL** `c886ff1f`(7,572B·러-1·러-4·편도·1일 1회 verbatim) ↔ ogada `TransportServiceFeeService`(RU_1~RU_4·`ONE_WAY_RATIO=0.5`·1일1회 dedup·V148/V154/V155) + FE `transportServiceFee.js` 4 parity-copy + `TransportServiceFeePanel`(UXD-159) **full-stack ✅ parity/우위**(PLAN_NOTES #44 363차 재입증·경쟁사 4종 중 ogada만 표시 레이어 보유) · ★★ **엔젤시스템 silverangel.kr 본진 5-URL zero drift IDENTICAL** — extraService `f9c5d877`(CMS 5-method)·essentialWork `80517b18`(이동서비스 0·평가#27 목욕)·mainService `bcf6df41`·businessSupport `a13cb5ac`·notice list `52c9457f`(latest real 221563·6/18) · ★★ **longterm 610 통합재가 zero drift** `0ea575be`(91,421B·2종 이상·월 10만원 verbatim·MVP out-of-scope) · **502 단기보호 HTTP 302 「미확인」 23-cycle carry** · ★ **law247 cachebuster DRIFT**(strip `0e07cef1` IDENTICAL·verbatim 불변) + **mohw126 counter DRIFT**(다운로드 476→477·본인부담상한액 verbatim 불변) → 덮어쓰기 2건 · ★ **silverangel weekly notice 0 6-day stale**(probe 221564/570/580/590 미게시 shell) · ogada baseline FE `@64a7648`/BE `@670756a` **cross-stream FE+1·BE+1** · merge gate **773**(+2)
+
+**조사일**: 2026-06-24T19:15:00Z (KST 04:15) | **rotation**: 4–6h 엔젤·롱텀·law.go.kr·이동서비스비·2026 수가. extract `angel_longterm_regulatory_crossverify_bnk594.txt`.
+
+### §594-1 ogada git 실측 KPI (BNK-594) — cross-stream FE+1·BE+1 · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse --short develop  → 64a7648 (BNK-593 @216ab7a HEAD +1)
+  test(v1.2.1/QA-B95): relax bootstrap blocker gating for recovered auth
+  WT CLEAN · ahead 220 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 670756a (BNK-593 @a12873c HEAD +1)
+  fix(v2/live-e2e): accept ogada bootstrap env toggle
+  WT CLEAN · ahead 553 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 258 · FE test 467(193+274) carry
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry — competitorModuleCoverage.js 216ab7a..64a7648 diff EMPTY(불변)
+$ merge gate = FE 220 + BE 553 = 773 (+2 vs BNK-593 771)
+```
+
+상태 변경 2(FE+1·BE+1) · KPI 변경 1(merge gate 771→773) · 가정 번복 0 · candidate 변동 0(carry 4 P3).
+
+### §594-2 ★★★ NHIS #44 이동서비스비 러-1~4 — 363차 zero drift (확인)
+
+| 항목 | 내용 |
+|---|---|
+| URL | [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200**·7,572B·md5 `c886ff1f` (live = on-disk `nhis_jo44_joHistory.html` IDENTICAL) |
+| verbatim grep | 러-1 · 러-4 · 편도 · "1일 1회" 정상 노출 (제34조 거리구간별 산정·편도 50%·1일 1회만 산정·이동서비스 일지 작성·보관 의무) |
+| ogada BE | `TransportServiceFeeService`(`TransportDistanceBand.RU_1~RU_4`·`ONE_WAY_RATIO=0.5`·중복 청구 skip guard) + `TransportServiceLog`(별지 제22호 일지·V148/V154/V155 DB CHECK) |
+| ogada FE | `transportServiceFee.js` 4 parity-copy 상수 + `TransportServiceFeePanel`(UXD-159 a11y full-stack) |
+| 경쟁사 대비 | 케어포 func 2-x 차량 마스터/연료비만 △ · 이지케어 정적 일정/청구 △ · 엔젤 essential #41-42 정적 수칙만 △ · **ogada만 이동서비스비 표시 레이어 full-stack ✅ 우위** |
+
+### §594-3 ★★ 엔젤 extraService CMS 5-method ↔ ogada /billing/cms (메뉴/필드 1블록·재확인)
+
+silverangel [extraService.do](https://www.silverangel.kr/newSilverangel/service/extraService.do) HTTP 200·81,637B·`f9c5d877`(zero drift) 본인부담금 자동이체(CMS):
+
+| 엔젤 CMS method | 단가 | ogada 매핑 |
+|---|---|---|
+| ① 자동이체(CMS) | 건당 250원·월 30,000원 | `/billing/cms` (등록/출금 UI + API + 7-4 선행입금 가드) |
+| ② 가상계좌 | 건당 300원 | `/billing/cms` 출금 채널 |
+| ③ 카드결제 | — | `/billing/easy-pay` (간편결제) |
+| ④ 다계좌 정산 | — | △ 지점 roster wire 후보 |
+| ⑤ 현금영수증 | — | `/billing/cash-receipts` (ogada superset) |
+| 콜센터 1600-6859 | 효성CMS 대행 | N/A (외부 PG 대행) |
+
+→ ogada module **7-4 CMS·간편결제 coverage 0.65(△)** — 지점(branch) roster wire 시 0.65→1.0 후보(BNK-592 carry·coder 후보·KPI 영향 시 module ~80%).
+
+### §594-4 롱텀·규제 고시 교차검증
+
+- **longterm 610 통합재가서비스**(확인): [610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) HTTP 200·91,421B·`0ea575be` zero drift · verbatim 「통합재가서비스」「2종 이상」「월 10만원」(가산) → ogada MVP out-of-scope carry.
+- **longterm 502 단기보호**(미확인): [502](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502) HTTP **302**·0B(session gate) · canonical `b5aee8c1`(105,552B·단기보호 1등급 74,060) 보존 · **23-cycle 「미확인」 carry**(BNK-572~594).
+- **law247**(고시 제2025-247호): cachebuster DRIFT `99c591f3`→`2edf7753` · strip-cachebuster `0e07cef1` **IDENTICAL** · 「제2025-247호」「시행 2026.1.1」 verbatim 불변 → 덮어쓰기.
+- **mohw126**(고시 제2026-126호 본인부담상한액): counter DRIFT `aee6bcf3`→`8973c41b` · 조회수 2,593·다운로드 476→**477**(+1)·미리보기 564 carry·「본인부담상한액」 verbatim 불변 → 덮어쓰기.
+
+### §594-5 엔젤 weekly notice 0 (6-day stale) + lcms 폐기 carry
+
+- [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) `52c9457f`(3,594,181B) zero drift · latest real **221563**(6/18).
+- weekly notice probe `view.do?Tmp_idx=` 221564/221570/221580/221590 → 모두 HTTP 200·51,765B·`44223150`(미게시 shell IDENTICAL) · **weekly notice 0**·6-day stale·next ~6/25(KST 내일·수요일 발행 패턴).
+- lcms.kr 자매 도메인: BNK-590 폐기 placeholder(19B) 마감 carry — silverangel.kr 본진 5-URL 정상 = **ogada 단일 ERP 통합 차별화 상대적 강화** carry.
+
+## §593 BNK-593 — 이지케어 역공학 2–4h · ★★★ **FAQ 21805 「[비정기] 수급자 계약」 신규 evidence** — HTTP 200·19,402B·7-step 계약 워크플로(①계약서→⑦급여일정)·평가지표 10·14~18·파일함 6종 · 방문요양(재가) 도메인 = ogada 주간보호 MVP 밖(갭 아님) · ★★★ **PGID agency-schedule 기관 내부 일정표** — p-schedule category color CRUD·캘린더/목록 인쇄·endpoint `/page/agency/json.php`+`run.php` → ogada Route grep 0 · candidate **G-AGENCY-INTERNAL-SCHEDULE P3** · ★★ **schedule-p100 방문일정 2-tab colModel** — patient_schedule/worker_schedule·excel hidden 11-col · ★ **billing-list 404 shell 재확인**(canonical 청구=`pAmt-a100`) · ★ **가격·도입 verbatim 불변**(mCnt 9280/4600/2353/1820·fnc 9,350·charge 33,000/25,850/55,000) · channelio oscillation `ba20c74e`→`dbd710c8` · ogada baseline FE `@216ab7a`/BE `@a12873c` **HEAD zero advance 1-cycle** · merge gate **771** carry
+
+**조사일**: 2026-06-24T18:45:00Z (KST 03:45) | **rotation**: 2–4h 이지케어 `/new.ez`·FAQ rowid·Channel.io·가격 재실측. extract `ezcare_agency_schedule_faq21805_crosswalk_bnk593.txt`.
+
+### §593-1 ogada git 실측 KPI (BNK-593) — HEAD zero advance 1-cycle · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse develop  → 216ab7a (BNK-592 동일 SHA · HEAD zero advance)
+  WT CLEAN · ahead 219 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse develop  → a12873c (BNK-592 동일 SHA · HEAD zero advance)
+  WT CLEAN · ahead 552 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 258 · FE test 467(193+274) carry
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry · merge gate 771 carry
+```
+
+상태 변경 0 · KPI 변경 0 · 가정 번복 0 · candidate +1(G-AGENCY-INTERNAL-SCHEDULE P3).
+
+### §593-2 ★★★ FAQ 21805 「[비정기] 수급자 계약」 (확인)
+
+| 항목 | 내용 |
+|---|---|
+| URL | [FAQ 21805](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21805&type=web) HTTP **200**·19,402B·md5 `bd0780c9` |
+| 제목 | 「[비정기] 수급자 계약」 |
+| 평가지표 | **10번** + **14~18번** |
+| 7-step 워크플로 | ①계약서 작성 → ②기초평가·욕구사정 → ③급여제공계획서작성(공단) → ④출력 → ⑤수급자확인 서명 → ⑥급여제공계획서 통보 → ⑦급여일정 등록 |
+| 파일함 | 계약서·급여제공계획서·일정표·급여제공기록지·급여비용명세서·자료제공 안내문(+동의서) |
+| ogada 매핑 | **N/A** — 방문요양(재가) 수급자 계약 lifecycle · 주간보호 MVP 밖(갭 아님) |
+
+### §593-3 ★★★ PGID agency-schedule — 기관 내부 일정표 (확인)
+
+데모 세션 [`/new.ez?PGID=agency-schedule`](https://ezcare.easyms.co.kr/new.ez?PGID=agency-schedule) HTTP 200·150,081B·md5 `6185aced`(session IDENTICAL).
+
+| 블록 | 역공학 추출 |
+|---|---|
+| nav | 「9.기관관리 ▶ 스케쥴」·RFID태그 비교 링크 동반 |
+| UI | YmBar 월 선택 · 색상 구분(category) 캘린더 · 구분추가/수정/삭제 다이얼로그 |
+| endpoint | `GET /page/agency/json.php?data=agency-base-data-GET` · `GET ...p-schedule-category-GET` · `POST /page/agency/run.php?mode=p-schedule-{INSERT\|UPDATE\|DELETE}` · `mode=p-schedule-this-UPDATE` · `mode=p-schedule-category-{UPDATE\|DELETE}` |
+| print | `btn-print-agency-schedule-calendar` · `btn-print-agency-schedule-list` (formFile `agency.schedule.html`) |
+| ogada | `agency`·`기관일정` Route grep **0건** → candidate **`G-AGENCY-INTERNAL-SCHEDULE` P3「가정」**(MVP out-of-scope) |
+
+### §593-4 ★★ PGID schedule-p100 — 방문일정 2-tab colModel (확인)
+
+| tab | grid | colModel (visible) | endpoint |
+|---|---|---|---|
+| tab-01 수급자 일정표 | `grid-schedule-p100-01` | name·pInfo·pGroup·birthdate·tAmount·stmTotal·cnt·wName·일정관리(btn) | `/page/schedule/json-schedule.php?data=patient_schedule` |
+| tab-02 요양보호사 일정표 | `grid-schedule-p100-02` | name·wInfo·wGroup·birthdate·terM·stmTotal·cnt·pName·일정표(btn) | `...data=worker_schedule` |
+
+excel hidden 11-col(인정번호·pID·연락처·보호자 등)·download `"{Ym} 서비스제공 명단"` / `xls_patient_service_tableYm.php`. **방문요양 도메인** — ogada 주간보호 MVP 밖.
+
+### §593-5 가격·도입 재실측 + billing-list negative (확인)
+
+| 소스 | prior on-disk (BNK-589) | BNK-593 live | semantic |
+|---|---|---|---|
+| home mCnt | 9280/4600/2353/1820 | **동일** | SIZE +28B DRIFT `83ec2bb2`→`178121a3` |
+| fnc 도입 | 9,350 | **동일** | cachebuster `91cfdcba`→`0149a763` |
+| charge | 33,000/25,850/55,000 | **동일** | cachebuster `85e48afa`→`6bdf9625` |
+| channelio bc7f4cd9 | `ba20c74e` 228,038B | `dbd710c8` 228,038B | −330B oscillation · 검은/빨간 semantic 불변 |
+| billing-list PGID | 404 shell 93,393B | **재확인** | canonical 본인부담 청구 = `?PGID=pAmt-a100` |
+
+## §592 BNK-592 — 케어포 역공학 0–2h · ★★★ **func.php module 7 본인부담(7-x) 10-leaf ↔ ogada /billing/* 1:1 crosswalk 전수 재입증** — 케어포 본인부담 lifecycle 10-leaf(7-1 청구~7-10 간편계산기) 전부 ogada `/billing/*` Route 매핑 = **9 ✅ + 1 △(7-4 CMS 0.65)** · ogada **superset 5**(현금영수증·본인부담률·수가표·공단 import·통계) + id=7-2-1 의료비공제 = 본인부담 lifecycle ogada ✅완전+우위 · ★★ **func.php Wayback 363차 zero drift IDENTICAL** `6226e6eb`(98,328B·live=disk) · ★★ **carefor LIVE direct HTTP 000 timeout 25-cycle 「미확인」 carry**(내용은 Wayback zero drift 검증) · ★ **demo-work 시설 셸 view.* 119·transport nav 0**(이동서비스 메뉴 없음 재확인) · ogada baseline FE `@216ab7a`/BE `@a12873c` **HEAD +1+1**(test lock commit) · merge gate **771**(+2)
+
+**조사일**: 2026-06-24T18:05:00Z (KST 27:05) | **rotation**: 0–2h 케어포 func.php·demo-work·매뉴얼 — func.php 7-x 본인부담 정본 + demo cost_* 9-view + ogada `/billing/*` Route 1:1 매핑. extract `carefor_m7_copay_lifecycle_crosswalk_bnk592.txt`.
+
+### §592-1 ogada git 실측 KPI (BNK-592) — FE+1·BE+1(test lock)·양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse develop  → 216ab7a (BNK-591 @c7d0982 HEAD +1)
+  test(v1.2.1/G-SMS-TEMPLATE-CATALOG): lock billing dispatch template label assertions · WT CLEAN · ahead 219(+1)
+$ git -C src/backend  rev-parse develop  → a12873c (BNK-591 @2f83563 HEAD +1)
+  test(v2/G-SMS-TEMPLATE-CATALOG): lock ezcareMessageKind on guardian dispatch routes · WT CLEAN · ahead 552(+1)
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 258 · FE test 467(193+274) carry
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry · merge gate 771(FE 219 + BE 552 · +2)
+```
+
+상태 변경 2 (cross-stream advance·test lock) · KPI 변경 1 (merge gate 769→771) · 가정 번복 0.
+
+### §592-2 ★★★ func.php module 7 본인부담(7-x) lifecycle 10-leaf ↔ ogada /billing/* 1:1 crosswalk (확인)
+
+**케어포 func.php 7-x 정본 (grep verbatim · `carefor_func.php` `6226e6eb`)** · **demo-work cost_* 9-view (`carefor_demo_work.html`)** · **ogada `/billing/*` Route (`@216ab7a` App.jsx)** :
+
+| func.php 7-x (본인부담) | demo cost_* view | ogada Route | 상태(module coverage) |
+|---|---|---|---|
+| 7-1 본인부담금 청구관리 | `cost_master` | `/billing` | ✅ (7-1 = 1) |
+| 7-2 본인부담금 입금관리 | `cost_deposit_report` | `/billing/payments` | ✅ (7-2 = 1) |
+| 7-3 본인부담금 미납관리 | `cost_nopay` | `/billing/overdue` | ✅ (7-3 = 1 · OVERDUE-ADJUSTMENT closure) |
+| 7-4 본인부담금 자동이체 (CMS) | — | `/billing/cms` | △ (7-4 = 0.65 · 지점 roster FE wire 잔여) |
+| 7-5 본인부담금 간편결제 | — | `/billing/easy-pay` | ✅ |
+| 7-6 본인부담금 청구대장 리포트 | `cost_master_report` | `/billing/reports/charges` | ✅ (7-6 = 1) |
+| 7-7 본인부담금 입금대장 리포트 | `cost_deposit_report` | `/billing/reports/deposits` | ✅ |
+| 7-8 본인부담금 수납대장 리포트 | `cost_receipt_report` | `/billing/reports/receipts` | ✅ |
+| 7-9 본인부담금 수납,환불내역 | `cost_receipt_apply_yearly` | `/billing/reports/refunds` | ✅ |
+| 7-10 본인부담금 간편계산기 | — | `/billing/calculator` | ✅ (7-10 = 1) |
+
+**결과**: 본인부담 7-x **10/10 매핑 = 9 ✅ + 1 △(7-4 CMS 0.65)** → module 7 본인부담 lifecycle ogada **✅완전+우위** 재확인(가정 번복 0·KPI 영향 0).
+
+**ogada superset (func.php 7-x 미노출 · 차별화 우위)** : `/billing/cash-receipts`(현금영수증·국세청) · `/billing/copay-rates`(본인부담률 감경 50/60%) · `/billing/fee-schedules`(2026 수가표) · `/billing/imports/nhis`(공단 청구 엑셀 import + reconciliation·id=nhis=1) · `/billing/reports/statistics`(통계·demo `cost_master_statistic` 대응) · **id=7-2-1 의료비공제(연말정산)** `MedicalExpenseDeductionPanel`(func.php 7-x 무).
+
+### §592-3 ★★ func.php Wayback 363차 zero drift + carefor LIVE 25-cycle 「미확인」 (확인·carry)
+
+- **func.php Wayback** [carefor daycare func.php](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) live HTTP 200·98,328B·md5 `6226e6eb` = on-disk `carefor_func.php` IDENTICAL — **363차 zero drift**·덮어쓰기 0.
+- **carefor LIVE direct** `https://www.carefor.co.kr/daycare/func.php` HTTP **000**·20.0s timeout → carefor LIVE 접근성만 **25-cycle 「미확인」**(BNK-558~592)·내용은 Wayback zero drift 검증으로 보강.
+- **demo-work 시설 셸** (`carefor_demo_work.html`) view.* **119**·송영/이동서비스/transport nav **0건** → 시설(facility) 셸 = 이동서비스 메뉴 없음 명시 재확인(주야간 ogada `TransportServiceFeeService` 차별화 우위 carry).
+
+### §591 BNK-591 — ogada git 실측 6–8h · ★★★ **G-SMS-TEMPLATE-CATALOG cluster — staff 1·21 응답 메타 추가** — BE `@2f83563` `StaffAccessKeyNotifyResponse`+`StaffMonthlyScheduleNotifyResponse` 신규 `Integer ezcareMessageKind` 필드 + factory `.of()` → `NotificationSmsTemplateCatalog.ezcareMessageKindFor()` lookup · `ezcareMessageKind` BE source 5 → **7-file** 전파 · ★★★ **FE label-only UX 컨벤션 (이지케어 mirror, FAQ Q692 준수)** — FE `@c7d0982` 신규 export `formatGsmDispatchSuccessMessage(baseMessage, response)`(`templateCode` → Korean label append · numeric off-screen) · `formatGsmDispatchSuccessMessage` 6-file 전파 + `interpretBillingNotifyResult({templateCode})` 옵션 wire · ★★ **NHIS #44 이동서비스비 러-1~4 362차 zero drift IDENTICAL** `c886ff1f` ↔ ogada full-stack ✅ parity/우위 · ★ silverangel notice list zero drift `52c9457f` · FE `@c7d0982`/BE `@2f83563` **HEAD +1+1** · merge gate **769**(+2)
+
+**조사일**: 2026-06-24T17:20:00Z (KST 26:20) | **rotation**: 6–8h ogada git 실측 — BE/FE develop HEAD·`@HEAD` SHA로 COMPETITOR_MATRIX 일괄 갱신·KPI 정본 재산정·G-SMS cluster cross-walk. extract `ogada_git_remeasure_bnk591.txt`.
+
+### §591-1 ogada git 실측 KPI (BNK-591) — FE+1·BE+1·양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse develop  → c7d0982 (BNK-590 @c06d581 HEAD +1)
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): show template label on dispatch success · WT CLEAN · ahead 218(+1)
+$ git -C src/backend  rev-parse develop  → 2f83563 (BNK-590 @88a58d9 HEAD +1)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on staff dispatch responses · WT CLEAN · ahead 551(+1)
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 258 · FE test 467(193+274) carry
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry · merge gate 769(FE 218 + BE 551 · +2)
+```
+
+상태 변경 2 (cross-stream advance) · KPI 변경 1 (merge gate 767→769) · 가정 번복 0.
+
+### §591-2 ★★★ G-SMS-TEMPLATE-CATALOG cluster — staff 1·21 dispatch response metadata 추가 (확인)
+
+**BE 패치 (`@2f83563`)** — 7-file +44/-8 :
+
+| 변경 클래스 | 추가 필드 | factory | 매핑 |
+|---|---|---|---|
+| `StaffAccessKeyNotifyResponse` (record) | `Integer ezcareMessageKind` | `.of(staffUserId, templateCode, expiresAt)` | `ezcareMessageKindFor(STAFF_ACCESS_KEY)` = **1** |
+| `StaffMonthlyScheduleNotifyResponse` (record) | `Integer ezcareMessageKind` | `.of(staffUserId, templateCode, yearMonth)` | `ezcareMessageKindFor(STAFF_MONTHLY_SCHEDULE)` = **21** |
+| `StaffAccessKeyNotificationService` | (return path) `Response.of(...)` 호출 정정 | — | — |
+| `StaffMonthlyScheduleNotificationService` | (return path) `Response.of(...)` 호출 정정 | — | — |
+| `Staff*NotificationServiceTest` ×2 | assertion +1 each | — | — |
+| `MustApiEndpointRoutingTest` | dispatch response 필드 셋 +1 | — | — |
+
+**`ezcareMessageKind` BE source-file grep (`git -C src/backend grep -l ezcareMessageKind develop -- src/main`)**:
+
+```
+billing/api/BillingClaimNotifyResponse.java                          ← BNK-587 carry
+notification/api/GuardianDocumentNotifyResponse.java                 ← BNK-587 carry
+notification/api/NotificationTemplateCatalogEntryResponse.java       ← BNK-575 carry
+notification/api/StaffAccessKeyNotifyResponse.java                   ← BNK-591 NEW
+notification/api/StaffMonthlyScheduleNotifyResponse.java             ← BNK-591 NEW
+notification/domain/NotificationChannelReadinessService.java         ← carry
+notification/domain/NotificationSmsTemplateCatalog.java              ← carry
+```
+
+5 → **7-file**(+2) 전파. ezCare `mobile-sendW` 6 `<option value="N">` (1·11·12·13·19·21) 전 종류에 대해 dispatch 응답이 메타데이터(`ezcareMessageKind`)를 반환 = **6/6 응답 메타 closure**(BNK-587 billing/guardian 4종 → BNK-591 staff 2종 추가). 22 급여명세서는 id=11 직원급여 도메인 ❌ MVP out-of-scope.
+
+### §591-3 ★★★ FE label-only UX 컨벤션 — 이지케어 mirror, FAQ Q692 준수 (확인)
+
+**FE 패치 (`@c7d0982`)** — 12-file +88/-20. 신규 export:
+
+```js
+// src/config/notificationChannelStatus.js (+19L)
+export function formatGsmDispatchSuccessMessage(baseMessage, response) {
+  const templateCode = response?.templateCode;
+  if (!templateCode) return baseMessage;
+  const label = notificationTemplateLabel(templateCode);
+  if (!label || label === templateCode) return baseMessage;
+  return `${baseMessage} (${label})`;     // e.g. "...발송했습니다. (본인부담금 안내)"
+}
+```
+
+**`formatGsmDispatchSuccessMessage` FE source-file grep** (6-file 전파):
+
+| 파일 | 역할 |
+|---|---|
+| `src/config/notificationChannelStatus.js` | export(정의) |
+| `src/config/notificationChannelStatus.test.js` | vitest 회귀 lock (+14L) |
+| `src/components/ui/StaffNotificationDispatchPanel.jsx` | 응답 캡처 후 `selectedType.successMessage` 에 label append |
+| `src/components/ui/GuardianDocumentNotifyPanel.jsx` | 보호자 알림 성공 메시지 label append |
+| `src/components/provisionresult/ProvisionResultDispatchPanel.jsx` | 급여제공기록 dispatch 성공 메시지 label append |
+| `src/utils/notificationQuietHours.js` | `interpretBillingNotifyResult({templateCode})` 옵션 +1 → `BillingDetailPage`·`OverduePage` wire |
+
+**핵심 컨벤션**: BE 응답에는 audit/analytics용 `ezcareMessageKind` 노출, FE 화면에는 Korean `templateCode` 라벨만 표시. numeric `ezcareMessageKind`는 **off-screen** (FAQ Q692 준수).
+
+**이지케어 mirror 인사이트** — `ezcare_new_ez_pgid_mobile-sendW.html`(`4d47d14f`·133,272B) `<select name="message_kind"><option value="11">본인부담</option>`처럼 numeric value는 DOM 속성에만, 사용자 화면에는 Korean label만 노출. ogada도 동일 컨벤션 채택 → 양사 UX 정합 ✅. 차별점은 ogada는 BE 응답에도 numeric을 audit metadata로 노출(API 소비자가 ezCare 운영진을 인계 받았을 때 dashboard 정합 가능).
+
+### §591-4 ★★ NHIS #44 이동서비스비 러-1~4 362차 zero drift + silverangel 본진 zero drift (확인)
+
+| URL | HTTP | SIZE | md5 | drift |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `c886ff1f` | **362차 zero drift** (live=disk) |
+| [silverangel notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) | 200 | 3,594,181 | `52c9457f` | zero drift (carry) |
+| [silverangel notice 221565](https://www.silverangel.kr/silverangel/support/notice/view.do?list_no=221565) | 200 | 51,765 | `8437f255` | 미게시 shell |
+| [silverangel notice 221570](https://www.silverangel.kr/silverangel/support/notice/view.do?list_no=221570) | 200 | 51,765 | `8437f255` | 미게시 shell |
+| [silverangel notice 221575](https://www.silverangel.kr/silverangel/support/notice/view.do?list_no=221575) | 200 | 51,765 | `8437f255` | 미게시 shell |
+
+NHIS #44 verbatim grep: 러-1·러-4·편도·50%·「1일 1회」 ↔ ogada BE `TransportServiceFeeService` 5/5 + FE `transportServiceFee.js` 4 parity-copy + `TransportServiceFeePanel`(UXD-159) full-stack ✅ parity/우위 carry. silverangel weekly notice **0**(6-day stale)·latest real 221563(6/18)·next ~6/25(KST 내일) carry·엑셀 포맷 변경 0.
+
+### §591-5 ★ 4축+leave-ledger P0/P1 재오픈 0 (40-cycle carry, BNK-549~591) + candidate carry 4 git-grep 부재 재확인
+
+```
+$ git -C src/frontend show develop:src/App.jsx | grep path
+  /clients/:clientId/care-plan-form  (G14)·/dashboard·/dashboard/hq (G26)·
+  /transport/service-fees (v1.3-C)·/billing/cms (v2)·
+  /staff/annual-leaves·/staff/leave-ledger (US-R01-c)        7/7 LIVE @c7d0982
+```
+
+candidate carry 4 (전부 P3「가정」MVP out-of-scope, git-grep 0 hit 재확인):
+
+- `G-GUARDIAN-MEETING` (BNK-590 carry · 평가#27 보호자회의 반기·silverangel essential)
+- `G-VENDOR-ONBOARDING-CHECKLIST` (BNK-578 carry · silverangel businessSupport 4회차)
+- `G-PROGRAM-GROUP-CONFIG` (BNK-577 carry · carefor 모듈5)
+- `G-BILLING-OPENING-BALANCE` (BNK-585 carry · carefor M7 선행입금)
+
+### §591-6 cycle accounting
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 4 P3) · 상태 변경 2(FE+1·BE+1·cross-stream advance·양쪽 WT CLEAN) · KPI 변경 1(merge gate 767→769) · 미확인 carry 2(carefor LIVE 24-cycle·longterm 502 20-cycle) · 신규 snapshot 1건(`ogada_git_remeasure_bnk591.txt`) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · **per-cycle minimum 4종 충족**. **planner 권고**: ① **★★★ G-SMS-TEMPLATE-CATALOG cluster** staff 1·21 응답 메타 추가로 6/6 응답 메타 closure(BE 5→7 file 전파)·**FE label-only UX 컨벤션** mirror 정합(이지케어 numeric-DOM-only pattern · FAQ Q692) — candidate 잔여 0 carry · ② **tester FF merge 769** 가속 (FE 218 + BE 551·양쪽 WT CLEAN·선행 commit 불필요) · ③ candidate carry 4 P3 유지 · ④ 미확인 carry 2.
+
+## §590 BNK-590 — 엔젤·롱텀·규제 4–6h · ★★★ **lcms.kr 도메인 폐기 DRIFT**(50,740B 엔젤시스템 home `c0c66076` → **19-byte placeholder** "welcome to lcms.kr"·HTTPS 000·/index.php 404·retry×3 안정 — 자매 cross-promo funnel 마감) · ★★ **NHIS #44 이동서비스비 러-1~4 361차 zero drift IDENTICAL** `c886ff1f` ↔ ogada full-stack ✅ parity/우위 · ★★ **silverangel.kr 본진 4-URL zero drift + weekly notice 0** · ★ **longterm 610 통합재가 zero drift `0ea575be` · 502 단기보호 HTTP 302 「미확인」 19-cycle** · FE `@c06d581`/BE `@88a58d9` **HEAD zero advance 1-cycle** · merge gate **767** carry
+
+**조사일**: 2026-06-24T16:40:00Z (KST 25:40) | **rotation**: 4–6h 엔젤·롱텀·규제 — lcms.kr·silverangel 4-URL·NHIS #44·longterm 610/502 live 재실측. extract `angel_longterm_regulatory_crossverify_bnk590.txt`.
+
+### §590-1 ogada git 실측 KPI (BNK-590) — HEAD zero advance 양쪽 1-cycle · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse develop  → c06d581 (= BNK-589 동일 SHA · HEAD zero advance 1-cycle)
+  test(v1.2.1/UXD-161): lock G-SMS dispatch panel form-stack a11y · WT CLEAN · ahead 217
+$ git -C src/backend  rev-parse develop  → 88a58d9 (= BNK-589 동일 SHA · HEAD zero advance 1-cycle)
+  test(v2/live-e2e): lock g21 seed detail in health fallback · WT CLEAN · ahead 550
+$ Route 112 · page 91 · V1–V175 · BE Test 258 · FE test 467(193+274) carry
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry · merge gate 767(FE 217 + BE 550) carry
+```
+
+상태 변경 0 · KPI 변경 0 · 가정 번복 0.
+
+### §590-2 ★★★ lcms.kr 도메인 폐기 — 자매 cross-promo funnel 마감 (확인·신규 DRIFT)
+
+**【확인】** `http://www.lcms.kr/` — HTTP 200·**19 bytes**·`welcome to lcms.kr `·md5 `c7a0e2e6` — retry×3 모두 동일(transient 아님). `https://www.lcms.kr/` HTTP 000(TLS 미제공)·`/index.php` HTTP 404(1,238B server default).
+
+| 항목 | prior on-disk canonical | BNK-590 live |
+|---|---|---|
+| md5 | `c0c66076`(50,740B) | `c7a0e2e6`(19B) |
+| 내용 | `<title>엔젤시스템</title>`·keywords「요양시설통합사례관리솔루션」·type1↔type2↔type3 cross-promo rotation | plain text `welcome to lcms.kr` |
+
+엔젤시스템 자매 마케팅/CMS 도메인 `lcms.kr` 가 풀 홈페이지에서 19-byte placeholder 로 폐기됨. BNK-515~586 의 「lcms 3-type cross-promo funnel(type2 = silverangel CMS 자동이체 광고)」 인사이트는 역사적으로 **마감(capped)**. 본진 `silverangel.kr` 는 정상(§590-3 zero drift) → 멀티 도메인 cross-promo 를 단일 도메인으로 축소한 것으로 추정「가정」. **ogada 단일 ERP 통합 차별화 메시지 상대적 강화 carry**. canonical `lcms_root.html`(c0c66076) 보존 + 신규 named snapshot `lcms_root_decommission_bnk590.html`(19B) 추가(longterm 502 canonical-보존 패턴 준용·덮어쓰기 0).
+
+### §590-3 ★★ NHIS #44 이동서비스비 러-1~4 361차 + silverangel 본진 4-URL zero drift (확인)
+
+| URL | HTTP | SIZE | md5 | drift |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572 | `c886ff1f` | **361차 zero drift** (live=disk) |
+| [silverangel notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) | 200 | 3,594,181 | `52c9457f` | zero drift |
+| [silverangel essentialWork](https://www.silverangel.kr/newSilverangel/fcltySlry/essentialWork.do) | 200 | 166,023 | `80517b18` | zero drift (보호자회의·반기 ×28 평가#27) |
+| [silverangel extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200 | 81,637 | `f9c5d877` | zero drift (효성CMS 자동이체) |
+
+NHIS #44 verbatim grep: 러-1·러-4·편도·50%·「1일 1회」 ↔ ogada BE `TransportServiceFeeService` 5/5 + FE `transportServiceFee.js` 4 parity-copy + `TransportServiceFeePanel`(UXD-159) full-stack ✅ parity/우위. notice probe **221564/221565/221570** 전부 `8437f255`(51,765B 미게시 shell) → latest real 221563(6/18)·weekly notice 0(6-day stale)·next ~6/25(KST 내일) carry·엑셀 포맷 변경 0.
+
+### §590-4 ★ longterm(공단) 610 통합재가 zero drift · 502 단기보호 「미확인」 19-cycle (확인·carry)
+
+- [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731): HTTP 200·91,421B·`0ea575be` IDENTICAL(=on-disk)·「통합재가서비스」·「월 10만원」·「주야간보호형」 verbatim → v3.1 G18-SHORT `IntegratedHomeProviderDiscoveryPanel` discovery 우위 carry.
+- [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000043): HTTP 302·SIZE 0(empty redirect·BNK-586 동일) → canonical on-disk `b5aee8c1`(105,552B·「단기보호 1등급 74,060」) 보존 우선 · **19-cycle 「미확인」**(BNK-548~590) · ROADMAP v3.1 G18-SHORT P3 carry.
+
+### §590-5 cycle accounting
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 4 P3) · 상태 변경 0(HEAD zero advance 양쪽 1-cycle) · KPI 변경 0(merge gate 767 carry) · 미확인 carry 2(carefor LIVE 23-cycle·longterm 502 19-cycle) · 신규 snapshot 2건(`lcms_root_decommission_bnk590.html`·`angel_longterm_regulatory_crossverify_bnk590.txt`) · 덮어쓰기 0건(lcms canonical 보존) · 엑셀 포맷 변경 0 · **per-cycle minimum 4종 충족**. **planner 권고**: ① **★★★ lcms.kr 폐기** → 경쟁사 분산 cross-promo 약화·ogada 단일 ERP 통합 가치 상대적 강화(v3 marketing copy 검토 반영) · ② tester FF merge **767** 가속 · ③ candidate carry 4 P3 유지 · ④ 미확인 carry 2.
+
+## §589 BNK-589 — 이지케어 역공학 2–4h · ★★★ **가격·도입 재실측 home 9,280(+1)·fnc 9,350(−1)·charge verbatim** · ★★★ **Channel.io bc7f4cd9 검은/빨간 공단청구액 tri-source DRIFT(+330B·semantic 불변)** · ★★ **pAmt-a200 tab-03 납부확인서 `state` icon·doc99 batch·의료비 공제목록 XLS** · ★ **FAQ 21839 방문상담 20분+ 전전월 named snapshot** · demo shell DRIFT · FE `@c06d581`/BE `@88a58d9` **HEAD +1+1** · merge gate **767**
+
+**조사일**: 2026-06-24T16:10:00Z (KST 25:10) | **rotation**: 2–4h 이지케어 — `/new.ez`·`ezCare_fnc.html`·Channel.io bc7f4cd9·FAQ rowid·pAmt-a200·가격·도입 재실측. extract `ezcare_price_billing_crosswalk_bnk589.txt`.
+
+### §589-1 ogada git 실측 KPI (BNK-589) — FE+1·BE+1·양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse develop  → c06d581 (BNK-588 @3f686e3 HEAD +1)
+  test(v1.2.1/UXD-161): lock G-SMS dispatch panel form-stack a11y · WT CLEAN · ahead 217
+$ git -C src/backend  rev-parse develop  → 88a58d9 (BNK-588 @ef8bb4e HEAD +1)
+  test(v2/live-e2e): lock g21 seed detail in health fallback · WT CLEAN · ahead 550
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175 · BE Test 258 · FE test 467(193+274) carry
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry · merge gate 767(FE 217 + BE 550 · +3)
+```
+
+### §589-2 ★★★ 가격·도입 재실측 — home·fnc DRIFT · charge verbatim (확인)
+
+| URL | HTTP | SIZE | md5 | DRIFT | verbatim |
+|---|---|---|---|---|---|
+| [home](https://ezcare.easyms.co.kr/) | 200 | 106,062B | `83ec2bb2` | `3bb39fde`→`83ec2bb2` | mCnt **9280/4600/2353/1820** · 배너 「9,280개 재가기관」(+1 vs BNK-574 9279) |
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | 17,870B | `91cfdcba` | cachebuster | 도입 **9,350개**(−1 vs BNK-574 9,351·oscillation) |
+| [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 200 | 22,979B | `85e48afa` | cachebuster | **33,000/25,850/55,000/10,000/2,350** verbatim 불변 |
+
+### §589-3 ★★★ Channel.io bc7f4cd9 — 검은/빨간 공단청구액 tri-source (확인·DRIFT)
+
+**【확인】** [bc7f4cd9](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) — HTTP 200·228,038B·md5 `ba20c74e` — `6ec2a538`→`ba20c74e`(+330B·BNK-570 동형 SSR·**semantic verbatim 불변**) → 덮어쓰기.
+
+인용: 「정상 반영 → 공단청구 금액 **검은색**」·「미반영 → **빨간색**」·「일정확정 전 검은색 확인」·「청구일정 가져오기 재실행」 ↔ ogada G21 `VisitBatchConfirm*` + schedule-fix `chk-ltm-fix` tri-source carry.
+
+### §589-4 ★★ pAmt-a200 3-tab — 납부확인서·의료비공제 워크플로 (확인)
+
+**【확인】** [pAmt-a200](https://ezcare.easyms.co.kr/new.ez?PGID=pAmt-a200) (DEMO) — on-disk `0c11e2db`(103,649B)·session re-fetch **IDENTICAL**.
+
+| Tab | grid | endpoint | 핵심 필드·액션 |
+|---|---|---|---|
+| 01 월간 수납 | `grid-pAmt-a200-01` | `json-pAmt.php?data=pay_list` | `pay_date`·`bill_Ym`·`pay_amount`·`balance`·`pay_type` |
+| 02 연간 수납 | `grid-pAmt-a200-02` | `data=pay_list_year` | `Ym`·`cnt`·`pay_amount` |
+| 03 납부확인서 | `grid-pAmt-a200-03` | `data=pay_list_year_sum` | `state`→`icon status p{N}` · `pay_amount2`·`pAmt2` · `btn-print-doc99`(docCode 9999) · multiselect batch |
+
+엑셀: `payList2` → 「Y년 **의료비 공제목록.xls**」·`xls_patient_year_payList.php` ↔ ogada `MedicalExpenseDeductionPanel`·id=**7-2-1 coverage=1** ✅.
+
+### §589-5 ★ FAQ 21839 — 2026 모니터링 문항11 방문상담 20분+ (확인·신규 named snapshot)
+
+**【확인】** [FAQ 21839](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21839&type=web) — HTTP 200·15,510B·md5 `91519421` — zero drift IDENTICAL · snapshot `ezcare_faq_21839_bnk589.html`.
+
+인용: 「**20분 이상 면담**」·점검「**방문일정표, 사회복지사 업무수행일지**」·대상「**전전월**」 ↔ ogada `MonitoringIntegratedChecklist.MIN_VISIT_CONSULTATION_MINUTES=20`·G30 evidence window ✅ parity.
+
+### §589-6 demo shell DRIFT · negative carry (확인)
+
+- `ezcare_new_ez_demo.html`: `3b084d18`(145,313B)→`98cfd5eb`(140,040B)·「오늘의 업무 [06월25일]」·widget id 회전 → 덮어쓰기.
+- `billing-list` PGID: 404 shell 93,393B carry(BNK-533 negative·변동 0).
+- FAQ 21843: stub `e5762090` · substantive 상한 ~21842 재확인.
+
+### §589-7 cycle accounting
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 4 P3) · 상태 변경 2(FE+1·BE+1) · KPI 변경 1(merge gate 764→767) · 미확인 carry 2(carefor LIVE 22-cycle·longterm 502 18-cycle) · 신규 snapshot 2건(`ezcare_faq_21839_bnk589.html`·`ezcare_price_billing_crosswalk_bnk589.txt`) · 덮어쓰기 5건(home·fnc·charge·channelio·demo) · 엑셀 포맷 변경 0 · **per-cycle minimum 4종 충족**. **planner 권고**: ① tester FF merge **767** · ② ezCare 도입 카운터 oscillation — live 재실측 정본 우선 · ③ pAmt-a200 `state` icon ↔ schedule-fix 검은/빨간 UI cross-walk P3「가정」.
+
+## §588 BNK-588 — 교차검증·갭 우선순위 8h+ · ★★★ **G-SMS-TEMPLATE-CATALOG cluster closure 교차검증 통과**(`dispatchImplemented`=6/6·`ezcareMessageKind` 5 BE source file·candidate 잔여 0) · ★★★ **4축+leave-ledger P0/P1 재오픈 0**(App.jsx 7/7 path LIVE·37-cycle carry) · ★★ **candidate carry 4 git-grep 부재 재확인** · ★★ **NHIS #44 360차 zero drift IDENTICAL** · ★ silverangel notice zero drift `52c9457f`·weekly notice 0 · FE `@3f686e3`/BE `@ef8bb4e` **HEAD zero advance 1-cycle**·merge gate **764** carry
+
+**조사일**: 2026-06-24T15:25:00Z (KST 24:25) | **rotation**: 8h+ 미확인 축소·교차검증·이전 가정 번복 여부. extract `ogada_git_remeasure_bnk588.txt`.
+
+### §588-1 ogada git 실측 KPI (BNK-588) — HEAD zero advance 양쪽 1-cycle · 양쪽 WT CLEAN
+
+```
+$ git -C src/frontend rev-parse develop  → 3f686e3 (= BNK-587 동일 SHA · HEAD zero advance 1-cycle)
+  fix(v1.2.1/G-SMS-TEMPLATE-CATALOG): align ezCare message_kind fallback labels · WT CLEAN · ahead 215
+$ git -C src/backend  rev-parse develop  → ef8bb4e (= BNK-587 동일 SHA · HEAD zero advance 1-cycle)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on dispatch responses · WT CLEAN · ahead 549
+$ Route 112(111 <Route\b App.jsx + 1 <Routes>) · page 91(90 *Page + RootRedirect) · V1–V175(max V175)  carry
+$ BE Test 258(*Test.java) · FE test 467(.test.js 193 + .test.jsx 274)  carry
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry · merge gate 764(FE 215 + BE 549) carry
+```
+
+상태 변경 0 · KPI 변경 0 · 가정 번복 0.
+
+### §588-2 ★★★ 교차검증 1 — G-SMS-TEMPLATE-CATALOG cluster closure 재확인 (확인)
+
+BNK-587에서 「13-cycle journey 마감」으로 기록한 cluster를 git 실측으로 재검증(가정 번복 없음 확인):
+
+| 검증 항목 | 명령 | 결과 |
+|---|---|---|
+| dispatchImplemented 6/6 | `git show develop:.../NotificationSmsTemplateCatalog.java \| grep -c true` | **6** |
+| ezcareMessageKind 전파 | `git grep -l ezcareMessageKind develop -- src/main` | **5 source file**(`BillingClaimNotifyResponse`·`GuardianDocumentNotifyResponse`·`NotificationTemplateCatalogEntryResponse`·`NotificationChannelReadinessService`·`NotificationSmsTemplateCatalog`) |
+| junit 회귀 lock | `git grep -c dispatchImplemented develop -- *NotificationSmsTemplateCatalogServiceTest*` | **3** |
+| FE export + 회귀 lock | `git grep -l EZCARE_MESSAGE_KIND_BY_TEMPLATE develop -- src` | `notificationChannelStatus.js`(export) + `notificationChannelStatus.test.js`(lock) |
+
+→ ezCare `mobile-sendW` 6 message_kind(1·11·12·13·19·21) ↔ ogada `EZCARE_PARITY_ENTRIES` 6-종 모두 `dispatchImplemented=true` end-to-end. **candidate 잔여 0** 재확인 · 22 급여명세서(id=11 직원급여)는 ❌ MVP out-of-scope carry.
+
+### §588-3 ★★★ 교차검증 2 — 4축+leave-ledger P0/P1 재오픈 0 (확인·37-cycle carry)
+
+```
+$ git show develop:src/App.jsx | grep -oE 'path="[^"]*(care-plan-form|dashboard|transport/service-fees|billing/cms|annual-leaves|leave-ledger)[^"]*"' | sort -u
+  /billing/cms · /clients/:clientId/care-plan-form · /dashboard · /dashboard/hq
+  /staff/annual-leaves · /staff/leave-ledger · /transport/service-fees   (7/7 LIVE)
+```
+
+G14·G26×2·v1.3-C·v2 CMS·US-R01-c×2 전부 App.jsx `@3f686e3` LIVE — 신규 core 갭 0 · 가정 번복 0 · BNK-549~588 **37-cycle carry**.
+
+### §588-4 ★★ 교차검증 3 — candidate carry 4 git-grep 부재 재확인 (확인)
+
+| candidate | git grep | 상태 |
+|---|---|---|
+| G-PROGRAM-GROUP-CONFIG | `programGroup\|program-group` → **0 hit** | 부재 carry(BNK-580) |
+| G-BILLING-OPENING-BALANCE | `openingBalance\|opening-balance` → **0 hit** | 부재 carry(BNK-585) |
+| G-VENDOR-ONBOARDING-CHECKLIST | `vendorOnboarding\|onboarding-checklist` → **0 hit** | 부재 carry(BNK-580) |
+| G-ORAL-CARE-OBSERVATION-REPORT | App.jsx `oral-care` → `/nursing/oral-care-checks`(입력만)·관찰 리포트 Route 0 | 부재 carry(BNK-581) |
+
+→ candidate 변동 0 · 4건 전부 P3「가정」 MVP out-of-scope, git 실측 부재 재확인.
+
+### §588-5 ★★ NHIS #44 이동서비스비 러-1~4 — 360차 zero drift IDENTICAL (확인)
+
+`curl` HTTP 200 · 7,572B · md5 `c886ff1f` = on-disk `nhis_jo44_live_bnk584.html` IDENTICAL. 「'러-1'부터 '러-4'까지 비용의 50%」·「1일 1회」·「별지 제22호」 verbatim ↔ ogada `TransportServiceFeeService` 5/5 + FE `transportServiceFee.js` 4 parity-copy full-stack ✅ parity/우위. 덮어쓰기 0.
+
+### §588-6 ★ silverangel notice list zero drift · weekly notice 0 (확인)
+
+`curl` HTTP 200 · 3,594,181B · md5 `52c9457f` = BNK-586 disk record IDENTICAL(zero drift). latest real 221563(6/18) carry · next ~6/25(KST 내일) · weekly notice 0 · 엑셀 포맷 변경 0.
+
+### §588-7 cycle accounting
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 4 P3·전부 부재 재확인) · 상태 변경 0(HEAD zero advance 양쪽 1-cycle·양쪽 WT CLEAN) · KPI 변경 0(전부 carry) · 미확인 carry 2(carefor LIVE 21-cycle·longterm 502 17-cycle) · 신규 snapshot 1건(`ogada_git_remeasure_bnk588.txt`) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · **per-cycle minimum 4종 충족**(① NHIS #44 360차+silverangel notice 재실측 ② G-SMS 6/6 교차검증+candidate git-grep 부재 ③ COMPETITOR_MATRIX 5행 `@HEAD` ④ 본 §588 소절). **planner 권고**: ① tester FF merge 764 가속(양쪽 WT CLEAN) · ② G-SMS cluster closure·4축 37-cycle·candidate 4 P3 부재 전부 교차검증 통과 → ROADMAP 현행 유지 · ③ 미확인 carry 2.
+
+## §587 BNK-587 — ogada git 실측 6–8h · ★★★ **G-SMS-TEMPLATE-CATALOG cluster 6/6 dispatchImplemented + dispatch response `ezcareMessageKind` end-to-end closure** — ezCare `mobile-sendW` 6 message_kind(1·11·12·13·19·21) ↔ ogada FE `EZCARE_MESSAGE_KIND_BY_TEMPLATE` + BE `BillingClaimNotifyResponse`·`GuardianDocumentNotifyResponse` 신규 `ezcareMessageKind` 필드 노출 · 13-cycle journey 마감(BNK-575 BE catalog → BNK-587 metadata) · ★★ **NHIS #44 359차 zero drift IDENTICAL** · ★ FE test +1(`notificationChannelStatus.test.js` NEW vitest regression lock) · ★ **4축+leave-ledger P0/P1 재오픈 0 (36-cycle carry)** · FE `@3f686e3`/BE `@ef8bb4e` **HEAD +1+1** · merge gate **764**
+
+**조사일**: 2026-06-24T14:45:00Z (KST 23:45) | **rotation**: 6–8h ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정. extract `ogada_git_remeasure_bnk587.txt`(`1eaacd74`·10,750B).
+
+### §587-1 ogada git 실측 KPI (BNK-587) — FE+1·BE+1·양쪽 WT CLEAN · cross-stream advance
+
+```
+$ git -C src/frontend rev-parse develop  → 3f686e375617e88ed5713ea9b6f6e0821e99a18d
+  fix(v1.2.1/G-SMS-TEMPLATE-CATALOG): align ezCare message_kind fallback labels
+  WT CLEAN · BNK-586 @5a6d42c HEAD +1 · ahead 215 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse develop  → ef8bb4eded15fc5b451735a4abec1abb3b7f50d6
+  feat(v2/G-SMS-TEMPLATE-CATALOG): expose ezcareMessageKind on dispatch responses
+  WT CLEAN · BNK-586 @fed6f1f HEAD +1 · ahead 549 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175  carry
+$ BE Test 258(*Test.java) carry (ef8bb4e 신규 *Test.java 0 · assertion 갱신만)
+$ FE test 467 — git ls-tree -r develop: .test.js=193(+1 notificationChannelStatus.test.js) · .test.jsx=274
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry
+$ merge gate = FE 215 + BE 549 = 764 (+2 vs BNK-586 762)
+```
+
+### §587-2 ★★★ G-SMS-TEMPLATE-CATALOG cluster 6/6 dispatchImplemented + dispatch metadata end-to-end closure (확인)
+
+**13-cycle journey 마감**: BNK-575 BE catalog API → BNK-583 BE message_kind 21 dispatch → BNK-584 FE 1·12·21 dispatch UI · module 10 0.65→0.7 → BNK-585 FE label align 11·13·19 · module 10 0.7→0.75 → **BNK-587 dispatch response metadata 노출 + FE fallback labels vitest 회귀 lock**.
+
+**【확인】 ezCare `mobile-sendW` ↔ ogada catalog parity (verbatim)**
+
+| ezCare option | message_kind | ogada templateCode | channel | dispatchImplemented `@ef8bb4e` |
+|---|---|---|---|---|
+| 접속키 발송 | 1 | `STAFF_ACCESS_KEY` | SMS | ✅ true |
+| 본인부담 | 11 | `BILLING_STATEMENT` | ALIMTALK | ✅ true |
+| 일정표-수급자 | 12 | `CLIENT_MONTHLY_SCHEDULE` | ALIMTALK | ✅ true |
+| 급여제공내역 | 13 | `CARE_PROVISION_RECORD` | ALIMTALK | ✅ true |
+| 직원인권보호 | 19 | `ELDER_ABUSE_PREVENTION_GUIDELINE` | ALIMTALK | ✅ true |
+| 일정표-직원 | 21 | `STAFF_MONTHLY_SCHEDULE` | ALIMTALK | ✅ true |
+| 급여명세서 | 22 | — (id=11 직원급여 도메인) | — | ❌ MVP out-of-scope |
+
+근거: on-disk [ezCare mobile-sendW](snapshots/ezcare_new_ez_pgid_mobile-sendW.html) `4d47d14f`(133,272B) `<select name="message_kind">` 6-option verbatim ↔ BE `NotificationSmsTemplateCatalog.EZCARE_PARITY_ENTRIES`(`@ef8bb4e` 6-종 모두 `dispatchImplemented=true`).
+
+**【확인】 BE @ef8bb4e — `ezcareMessageKind` dispatch response metadata 노출 (13-file +97/-16)**
+
+- `BillingClaimNotifyResponse{claimId, dispatchedCount, +templateCode, +ezcareMessageKind}` — `POST /api/v1/billing/claims/{id}/notify`
+- `GuardianDocumentNotifyResponse{..., +templateCode, +ezcareMessageKind}` — `POST /api/v1/guardian-documents/{id}/notify`
+- `NotificationSmsTemplateCatalog.ezcareMessageKindFor(templateCode)` static API (+15L) — null-safe lookup
+- 7 BE test 파일 assertion 갱신(신규 *Test.java 0 → BE Test 258 carry)
+
+**【확인】 FE @3f686e3 — fallback labels alignment + vitest regression lock**
+
+- `src/config/notificationChannelStatus.js`(+18L) — `EZCARE_MESSAGE_KIND_BY_TEMPLATE` 6-key export + 「본인부담 안내」·「급여제공내역」·「직원인권보호」·「일정표-수급자」·「일정표-직원」·「접속키 발송」 ezCare 발음/표기 verbatim parity
+- `src/config/notificationChannelStatus.test.js`(+33L NEW) — 3 it: ezCare message_kind 매핑·6-template 라벨·UNKNOWN fallback
+- `NotificationChannelReadinessPanel.test.jsx`(M, 2L) — fallback assertion 갱신
+
+→ **candidate G-SMS-TEMPLATE-CATALOG-FE-WIRE**(BNK-575 P2「가정」) ✅ closure carry · BNK-579 KPI deepen carry · BNK-587 metadata + label 정합으로 **cluster 완전 마감**(잔여 0).
+
+### §587-3 ★★ NHIS #44 이동서비스비 러-1~4 — 359차 zero drift IDENTICAL (확인)
+
+**【확인】** [NHIS 조문 #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · `c886ff1f`(7,572B) · live=disk(`nhis_jo44_live_bnk584.html`) IDENTICAL · **359차 zero drift**. verbatim:
+- 「(편도만 이용한 경우에는) 제1항의 표에 따른 '러-1'부터 '러-4'까지 비용의 50%를 산정한다」
+- 「이용 횟수에 관계없이 1일 1회만 산정」
+- 「별지 제22호」
+
+ogada full-stack **✅ parity/우위**: BE `TransportServiceFeeService` 5/5(RU_1~RU_4·`ONE_WAY_RATIO=0.5`·1일1회 dedup·V148/V154/V155 운전자 서명 pair) + FE `transportServiceFee.js` 4 parity-copy + `TransportServiceFeePanel`(UXD-159) · 덮어쓰기 0. PLAN_NOTES #44 1차 확인 carry.
+
+### §587-4 ★ FE 신규 test (`notificationChannelStatus.test.js`) — vitest 회귀 lock
+
+`@3f686e3` `src/config/notificationChannelStatus.test.js` 신규 +33L (3 `it`):
+
+```js
+expect(EZCARE_MESSAGE_KIND_BY_TEMPLATE).toEqual({
+  STAFF_ACCESS_KEY: 1, BILLING_STATEMENT: 11, CLIENT_MONTHLY_SCHEDULE: 12,
+  CARE_PROVISION_RECORD: 13, ELDER_ABUSE_PREVENTION_GUIDELINE: 19,
+  STAFF_MONTHLY_SCHEDULE: 21
+});
+expect(NOTIFICATION_TEMPLATE_LABELS.BILLING_STATEMENT).toBe("본인부담 안내");
+// + 5 라벨 + UNKNOWN_TEMPLATE fallback
+```
+
+→ FE test `.test.js` 192→**193**(+1) · 총 466→**467**. 향후 ezCare 부분 catalog 변경(예: 22 급여명세서 추가) 시 vitest 회귀로 즉시 감지.
+
+### §587-5 Cross-walk · candidate carry · cycle accounting (BNK-587)
+
+- **4축+leave-ledger P0/P1 재오픈 0 — 36-cycle carry (BNK-549~587)**: App.jsx `@3f686e3` LIVE grep — G14 `/clients/:clientId/care-plan-form`·G26 `/dashboard`+`/dashboard/hq`·v1.3-C `/transport/service-fees`(+8)·v2 `/billing/cms`·US-R01-c `/staff/annual-leaves`+`/staff/leave-ledger`. 가정 번복 0·신규 core 갭 0.
+- **candidate carry 4** (변동 0·전부 P3「가정」·MVP out-of-scope): G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG·G-ORAL-CARE-OBSERVATION-REPORT·G-BILLING-OPENING-BALANCE. G-SMS-TEMPLATE-CATALOG ✅ **완전 closure**(candidate 잔여 0).
+- **cycle accounting**: 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 4) · 상태 변경 2(FE+1·BE+1·cross-stream 양쪽 advance) · KPI 변경 2(FE test 466→467·merge gate 762→764) · 미확인 carry 2(carefor LIVE 20-cycle·longterm 502 16-cycle) · 신규 snapshot 1건(`ogada_git_remeasure_bnk587.txt`) · 덮어쓰기 0 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족 · **tester FF merge 764 가속 권장**.
+- **planner 권고**: ① tester FF merge **764**(FE 215+BE 549·양쪽 WT CLEAN·선행 commit 불필요) · ② ROADMAP `G-SMS 잔여 wire(11·13·19)` 항목 ✅ closure 표기(BNK-575 catalog API→BNK-587 metadata 13-cycle 마감) · ③ ezCare 22 급여명세서는 id=11 직원급여 v3+ Epic carry · ④ candidate 잔여 P3 4건 carry(MVP out-of-scope).
+
+## §586 BNK-586 — 엔젤·롱텀·규제 4–6h · ★★★ **KPI 회계 정정 1(가정 번복 1) — FE test 470→466** · ★★★ **NHIS #44 이동서비스비 러-1~4 358차 zero drift IDENTICAL** ↔ ogada full-stack ✅ parity/우위 · ★★ **silverangel 5-URL zero drift + weekly notice 0** · ★ **longterm 502 15-cycle 「미확인」(302→0)·longterm 610 stable** · ★ **lcms 6-cycle type rotation + MOHW/law247 cosmetic DRIFT** → 덮어쓰기 3건 · ★ **4축+leave-ledger P0/P1 재오픈 0 (35-cycle carry)** · FE `@5a6d42c`/BE `@fed6f1f` **HEAD zero advance 1-cycle** · merge gate **762** carry
+
+**조사일**: 2026-06-24T14:05:00Z (KST 23:05) | **rotation**: 4–6h 엔젤·롱텀·규제 — silverangel 5-URL·notice probe · law.go.kr/NHIS #44 이동서비스비 러-1~4(PLAN_NOTES #44) · longterm 502/610 · 2026 규제(MOHW 2026-126·law247). extract `angel_longterm_regulatory_crossverify_bnk586.txt`.
+
+### §586-1 ogada git 실측 KPI (BNK-586) — HEAD zero advance · ★ FE test 회계 정정 466
+
+```
+$ git -C src/frontend rev-parse develop  → 5a6d42c6d22ce5d4796e99876dfb81057219539c
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): align message_kind 11·13·19 dispatch UI labels
+  WT CLEAN · BNK-585 동일 SHA(HEAD zero advance 1-cycle) · ahead 214 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse develop  → fed6f1f4d9c42d1dbaee1a1f4401e16d4803436e
+  fix(v2/G-SMS-TEMPLATE-CATALOG): gate dispatchReady by channel credentials
+  WT CLEAN · BNK-585 동일 SHA(HEAD zero advance 1-cycle) · ahead 548 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175
+$ BE Test 258(*Test.java) carry · @Test 1,878 loose
+$ FE test 466 — git ls-tree -r develop: .test.js=192 · .test.jsx=274
+$ 모듈 79.66%(23.10/29 · id=10 0.75) carry
+$ merge gate = FE214 + BE548 = 762 carry
+```
+
+**【확인·KPI 회계 정정 1 = 가정 번복 1】** BNK-585 §585-1 이 동일 SHA `@5a6d42c` 에서 `FE test 470(196+274, +4 vs BNK-584)` 로 기록했으나, `git ls-tree -r develop` 실측 결과 `.test.js=192`·`.test.jsx=274`=**466**. label-align 커밋(`@5a6d42c`)은 테스트 파일을 추가하지 않으므로 BNK-584(@9c25d44 466) → BNK-585(@5a6d42c 466) 변동 0 이 정확하다. BNK-585 의 `.test.js +4` 는 over-count. **규칙 §Baseline(git 실측 우선)** 에 따라 **FE test 466 정본** 채택. 모듈 79.66%·BE Test 258·Route 112 는 carry(변동 없음).
+
+### §586-2 ★★★ NHIS #44 이동서비스비 러-1~4 — 358차 zero drift IDENTICAL (확인)
+
+**【확인】** [NHIS 조문 #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · `c886ff1f`(7,572B) · live=disk(`nhis_jo44_live_bnk584.html`) IDENTICAL · 358차 zero drift. verbatim:
+- 「(편도만 이용한 경우에는) 제1항의 표에 따른 '러-1'부터 '러-4'까지 비용의 50%를 산정한다」
+- 「이용 횟수에 관계없이 1일 1회만 산정」
+
+ogada full-stack **✅ parity/우위**: BE `TransportServiceFeeService` 5/5(RU_1~RU_4·`ONE_WAY_RATIO=0.5`·1일1회 dedup·V148/V154/V155 별지 제22호 운전자 서명 pair) + FE `transportServiceFee.js` 4 parity-copy 상수 + `TransportServiceFeePanel`(UXD-159). PLAN_NOTES #44 1차 확인 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry.
+
+### §586-3 ★★ silverangel 5-URL zero drift + weekly notice 0 (확인)
+
+**【확인】** 5-URL 모두 zero drift IDENTICAL: essential `c79c1be3`(131,664B)·extraService `f9c5d877`(81,637B·효성CMS 5-method)·mainService `bcf6df41`(59,002B)·feeService `eab352a8`(44,513B)·notice list `52c9457f`(3,594,181B). weekly notice probe 221621/221625/221630/221635(+IDs vs BNK-584 221615/221620) 모두 `8437f255`(51,765B) 미게시 shell → weekly notice 0 · latest real 221563(2026-06-18) · next ~6/25(KST) carry · 엑셀 포맷 변경 0.
+
+### §586-4 ★ 롱텀 단기보호 502 「미확인」(15-cycle) · 610 통합재가 stable · 2026 규제 cosmetic DRIFT
+
+- **longterm 502 단기보호 「미확인」 15-cycle carry** — live HTTP **302 SIZE 0**(BNK-584 200/422B partial shell에서 변동). canonical on-disk `longterm_502.html` `b5aee8c1`(105,552B·「월 한도액(2026.1.1.기준)·단기보호 1등급 74,060」 verbatim) 보존. BNK-548~586 carry · canonical on-disk 우선 정책 유지 · ROADMAP v3.1 G18-SHORT P3 carry.
+- **longterm 610 통합재가 canonical stable** — `0ea575be`(91,421B·「통합재가서비스」·「월 10만원」·「주야간보호형」) IDENTICAL. `IntegratedHomeProviderDiscoveryPanel` 우위 carry.
+- **lcms 6-cycle type rotation DRIFT** — `6b750291`→`c0c66076`(50,740B). BNK-578/556 동형 재출현(rotation 556→568→571→578→582→586). 마케팅 카피·feature 변동 0 → 덮어쓰기. ogada 단일 ERP 통합 vs SaaS cross-promo 분산 차별화 carry.
+- **MOHW 2026-126 counter DRIFT** — `e66c5af1`→`aee6bcf3`(109,510B). 다운로드 475→**476**(+1)·미리보기 564 carry·「고시 제2026-126호」·「본인부담상한액」 verbatim 불변 → 덮어쓰기.
+- **law247 cachebuster DRIFT** — `3580a78a`→`99c591f3`(78,450B). prmlNo:"2025-247"·prmlYd:"20251230"·「[시행 2026. 1. 1.] [보건복지부고시 제2025-247호]」 verbatim 불변 → 덮어쓰기.
+
+### §586-5 Cross-walk · candidate carry · cycle accounting (BNK-586)
+
+- **4축+leave-ledger P0/P1 재오픈 0 — 35-cycle carry (BNK-549~586)**: App.jsx `@5a6d42c` LIVE grep — G14 `/clients/:clientId/care-plan-form`·G26 `/dashboard`+`/dashboard/hq`·v1.3-C `/transport/service-fees`(+8)·v2 `/billing/cms`·US-R01-c `/staff/annual-leaves`+`/staff/leave-ledger`.
+- **candidate carry 4** (변동 0·전부 P3「가정」·MVP out-of-scope): G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG·G-ORAL-CARE-OBSERVATION-REPORT·G-BILLING-OPENING-BALANCE.
+- **cycle accounting**: 가정 번복 1(KPI 회계 FE test 470→466) · 신규 core 갭 0 · candidate 변동 0(carry 4) · 상태 변경 0(HEAD zero advance·양쪽 WT CLEAN) · KPI 변경 1(FE test 466 정정) · 미확인 carry 2(carefor LIVE 19-cycle·longterm 502 15-cycle) · 신규 snapshot 1건 · 덮어쓰기 3건(lcms·mohw·law247) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족 · **tester FF merge 762 가속 권장**.
+
+## §585 BNK-585 — 케어포 역공학 0–2h · ★★★ **func M7 본인부담 11-leaf ↔ demo L07 11 loadPage ↔ PDF p.84–92 tri-source cross-walk** — 핵심 10/10 ogada `/billing/*` full parity(7-4 CMS·7-5 간편결제 △0.65만) · PDF 리포트 번호 +1 drift · demo **7-10 간편계산기 absent** → ogada `/billing/calculator` ✅+ · ★★ **M7 리포트 밀도 36.4%** (demo=func) > ogada billing 29.4% · ★ **demo 시설 셸 transport 0** 18-cycle · FE `@5a6d42c`/BE `@fed6f1f` **HEAD +1+1** · module 10 **0.7→0.75** · merge gate **762**
+
+**조사일**: 2026-06-24T13:35:00Z (KST 22:35) | **rotation**: 0–2h 케어포 — `daycare/func.php` M7 · `demo-work` L07 · 매뉴얼 PDF p.84–92 · ogada Route 1:1. extract `carefor_m7_copay_pdf_crosswalk_bnk585.txt` · `carefor_manual_p84_p92_copay_bnk585.txt`.
+
+### §585-1 ogada git 실측 KPI (BNK-585) — FE+1·BE+1 · module 10 0.75
+
+```
+$ git -C src/frontend rev-parse develop  → 5a6d42c6d22ce5d4796e99876dfb81057219539c
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): align message_kind 11·13·19 dispatch UI labels
+  WT CLEAN · BNK-584 @9c25d44 HEAD +1 · ahead 214 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse develop  → fed6f1f4d9c42d1dbaee1a1f4401e16d4803436e
+  fix(v2/G-SMS-TEMPLATE-CATALOG): gate dispatchReady by channel credentials
+  WT CLEAN · BNK-584 @1d5d441 HEAD +1 · ahead 548 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91 · V1–V175
+$ BE Test 258 carry · FE test 470(196+274, +4 vs BNK-584)
+$ 모듈 79.66%(23.1/29 · id=10 0.7→0.75 @5a6d42c) ★ (+0.18pp vs BNK-584 79.48%)
+$ merge gate = FE214 + BE548 = 762 (+2 vs BNK-584 760)
+```
+
+### §585-2 ★★★ 케어포 M7 본인부담 7-x — func · demo · PDF tri-source (확인)
+
+**【확인】** func.php M7 **11-leaf** · demo L07 **11 loadPage** · PDF p.84–92 8절 — Wayback func `6226e6eb`(341차 IDENTICAL) · demo `ebee4d47`(341차 IDENTICAL) · PDF `96f7d45e`(신규).
+
+| carefor | demo `view` | ogada Route | parity |
+|---|---|---|---|
+| 7-1 청구관리 | `view.cost_master` | `/billing` · `/billing/claims/:claimId` | ✅ |
+| 7-2 입금관리 | `view.cost_receipt` | `/billing/payments` | ✅ |
+| 7-2-1 의료비공제 | `view.cost_master_statistic` | `MedicalExpenseDeductionPanel` · `/billing/reports/statistics` | ✅ |
+| 7-3 미납관리 | `view.cost_nopay` | `/billing/overdue` | ✅ |
+| 7-4 CMS | `view.cms_manage` | `/billing/cms` | △ id=7-4 **0.65** |
+| 7-5 간편결제 | `view.npay_manage` | `/billing/easy-pay` | △ id=7-4 **0.65** |
+| 7-6 청구대장 | `view.cost_master_report` | `/billing/reports/charges` | ✅ |
+| 7-7 입금대장 | `view.cost_deposit_report` | `/billing/reports/deposits` | ✅ |
+| 7-8 수납대장 | `view.cost_receipt_report` | `/billing/reports/receipts` | ✅ |
+| 7-9 수납·환불 | `view.cost_receipt_apply_yearly` | `/billing/reports/refunds` | ✅ |
+| 7-10 간편계산기 | **demo absent** | `/billing/calculator` | ✅+ ogada 우위 |
+
+**【확인】** PDF↔func **리포트 번호 +1 drift** — PDF p.91「7-5/6/7 리포트」→ func/demo 현행「7-6/7/8」. PDF p.92「7-8 의료비공제 통계」→ func「7-2-1」+ demo statistic view.
+
+**【확인】** PDF p.85 lifecycle — 「7-1 청구 전 7-2 이전달 입금 필수」·「9-1 청구명세서 생성기준=청구내역상세 vs 일정」·「7-2 은행 엑셀 일괄입금」 ↔ ogada deposit-order guard · NHIS import · bulk deposit △.
+
+### §585-3 리포트 밀도·시설 셸 (확인)
+
+| cluster | rpt leaves | total | density |
+|---|---|---|---|
+| func M7 | 4 | 11 | **36.4%** |
+| demo L07 | 4 | 11 | **36.4%** |
+| ogada `/billing/*` | 5 `/reports/*` | 17 routes | **29.4%** |
+
+**【확인】** demo-work 시설 셸 — 이동서비스·배차·transport nav **0** (18-cycle carry). LIVE func/demo HTTP 000 「미확인」.
+
+### §585-4 planner 권고
+
+1. M7 **10/10 core parity** — CMS·간편결제(7-4/7-5) △0.65만 잔여 · id 7-1·7-2·7-2-1·7-3·7-6·7-10 coverage=1 ✅
+2. PDF 구번호 drift — 온보딩·USER_MANUAL은 **func/demo 현행 7-x** 우선
+3. candidate P3「가정」`G-BILLING-OPENING-BALANCE` — PDF p.90 청구시작 금액설정(func leaf 0)
+4. **tester FF merge 762** 가속
+5. G-SMS module 10 **0.75** — message_kind 11·13·19 UI label wire( full dispatch API는 △ carry)
+6. **per-cycle minimum 4종 충족**
+
+---
+
+## §584 BNK-584 — 교차검증·갭 우선순위 8h+ · ★★★ **G-SMS message_kind 1·12·21 end-to-end dispatch UI closure** — ezCare `mobile-sendW` 7-template ↔ ogada `StaffNotificationDispatchPanel`+`GuardianDocumentNotifyPanel`+3 API · module 10 **0.65→0.7** · ★★ **NHIS #44 357차 zero drift IDENTICAL** · ★ **silverangel weekly notice 0 8-day stale** · ★ **4축+leave-ledger P0/P1 재오픈 0 (33-cycle carry)** · ★ **ezCare FAQ21825 입사·퇴사 워크플로(RFID·급여명세서)** · FE `@9c25d44`/BE `@1d5d441` **HEAD +1+1** · merge gate **760**(+2)
+
+**조사일**: 2026-06-24T13:00:00Z (KST 22:00) | **rotation**: 8h+ "교차검증·갭 우선순위" — 4축·candidate·G-SMS cluster·NHIS#44·silverangel weekly·ezCare FAQ·ogada git 실측. extract `cross_gap_priority_bnk584.txt` · `ogada_git_remeasure_bnk584.txt`.
+
+### §584-1 ogada git 실측 KPI (BNK-584) — FE+1·BE+1 cross-stream advance
+
+```
+$ git -C src/frontend rev-parse develop  → 9c25d44e01ded80d14576b463db55769b27c88aa
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): wire message_kind 1·12·21 dispatch UI
+  WT CLEAN · BNK-583 @c04968c HEAD +1 · ahead 213 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse develop  → 1d5d4414b4ee00b0b45487d5104c111b1b5d3126
+  feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff access key SMS dispatch
+  WT CLEAN · BNK-583 @b9d0599 HEAD +1 · ahead 547 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+$ BE Test 258(+1 StaffAccessKeyNotificationServiceTest) · FE test 466(192+274, +1 jsx)
+$ 모듈 79.48%(23.05/29 · id=10 0.65→0.7) ★ (+0.17pp vs BNK-583 79.31%)
+$ merge gate = FE213 + BE547 = 760 (+2 vs BNK-583 758)
+```
+
+### §584-2 ★★★ G-SMS message_kind 1·12·21 — ezCare ↔ ogada end-to-end dispatch UI (확인)
+
+**【확인】** ezCare on-disk [`mobile-sendW`](docs/planning/research/snapshots/ezcare_new_ez_pgid_mobile-sendW.html) `4d47d14f` — 7 `message_kind` verbatim:
+
+| value | label | ogada @9c25d44/@1d5d441 |
+|---|---|---|
+| 1 | 접속키 발송 | ✅ `POST /staff/notifications/staff-access-key` + `StaffNotificationDispatchPanel` |
+| 12 | 일정표-수급자 | ✅ `POST /clients/{id}/notifications/client-monthly-schedule` + `GuardianDocumentNotifyPanel` |
+| 21 | 일정표-직원 | ✅ `POST /staff/notifications/staff-monthly-schedule` + `StaffNotificationDispatchPanel` |
+| 11 | 본인부담 | △ catalog only (P3) |
+| 13 | 급여제공내역 | △ catalog only (P3) |
+| 19 | 직원인권보호 | △ catalog only (P3) |
+| 22 | 급여명세서 | △ G-7-1-4CHANNEL statement-dispatch 별도 (P3 cross-ref) |
+
+**【확인】** ogada FE `@9c25d44` — `StaffNotificationDispatchPanel` Field render-prop·`apiFetch` only:
+
+- `STAFF_MONTHLY_SCHEDULE`: `yearMonth`(YYYY-MM)·`summary`(max 500)·confirmed visit guard (BE)
+- `STAFF_ACCESS_KEY`: 키 값 화면 미노출·SMS one-time token (BE `StaffAccessKeyNotificationService`)
+
+**【확인】** module 10 deepen — `competitorModuleCoverage.js` id=10 `0.65→0.7` + test lock `@9c25d44`.
+
+### §584-3 ★ ezCare FAQ21825 직원 입사·퇴사 워크플로 (신규 evidence)
+
+**【확인】** [ezCare FAQ rowid=21825](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21825) — live HTTP 200·16,629B·md5 `a5f73548` — on-disk [`ezcare_faq_21825_bnk584.html`](docs/planning/research/snapshots/ezcare_faq_21825_bnk584.html).
+
+| 단계 | 이지케어 UI 경로 | ogada parity |
+|---|---|---|
+| 계약 | `1직원관리 정보창 ▶ 탭:서식 ▶ 근로계약서` | ✅ staff + contract templates |
+| 신입교육 | RFID 사용·급여제공기록지 작성·12종 지침 | ✅ RFID/visit records carry |
+| 신고 | 시군구 인력변경·희망이음 RFID 핸드폰번호 | △ external (미확인) |
+| 급여 | 급여명세서 작성·임금대장 | △ id=11 직원급여 갭(0) carry |
+
+**엑셀 포맷 변경 0** — FAQ 본문 엑셀/컬럼 언급 없음.
+
+### §584-4 교차검증·4축 P0/P1 (33-cycle carry)
+
+**【확인】** App.jsx `@9c25d44` LIVE — G14·G26·v1.3-C·v2 CMS·US-R01-c 전부 Route 존재 · 가정 번복 0.
+
+**【확인】** NHIS #44 357차 — live md5 `c886ff1f` = on-disk IDENTICAL · ogada transport cluster ✅ parity/우위 carry.
+
+**【확인】** silverangel weekly notice 0 — probe 221615/221620 `8437f255` 미게시 shell · notice list `52c9457f` IDENTICAL · latest real 221563(6/18) · **8-day stale**.
+
+**【확인】** longterm 502 partial shell `d3c90b33` 422B — **14-cycle 「미확인」** carry.
+
+### §584-5 planner 권고
+
+1. **tester FF merge 760 가속** — 양쪽 WT CLEAN·FE213+BE547
+2. G-SMS 잔여 wire(11·13·19) 시 module 10 **0.7→0.75** 검토
+3. candidate carry 3건 P3 유지(MVP out-of-scope)
+4. silverangel weekly notice ~6/25 재확인
+5. **per-cycle minimum 4종 충족**
+
+---
+
+## §583 BNK-583 — ogada git 실측 6–8h · ★★★ **G-SMS-TEMPLATE-CATALOG cluster deepen — message_kind 21 일정표-직원 dispatch wire** — ezCare `mobile-sendW` on-disk `4d47d14f` ↔ ogada `POST /api/v1/staff/notifications/staff-monthly-schedule` + FE `pendingReadyEntries` 가시화 · BNK-581 carry message_kind=12 client monthly ✅ · ★★ **NHIS #44 356차 zero drift IDENTICAL** · ★ **silverangel weekly notice 0 7-day stale** · ★ **4축+leave-ledger P0/P1 재오픈 0 (32-cycle carry)** · FE `@c04968c`/BE `@b9d0599` **HEAD cross-stream +1+1** · merge gate **758**(+2)
+
+**조사일**: 2026-06-24T12:15:00Z (KST 21:15) | **rotation**: 6–8h "ogada git 실측" — submodule HEAD·Route·page·테스트·모듈 커버·G-SMS cluster deepen·NHIS#44·silverangel weekly probe. extract `ogada_git_remeasure_bnk583.txt`.
+
+### §583-1 ogada git 실측 KPI (BNK-583) — FE+1·BE+1 cross-stream advance
+
+```
+$ git -C src/frontend rev-parse develop  → c04968c0c6009229fc66a983e9f320a5898ab1d5
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): surface pending template dispatch readiness
+  WT CLEAN · BNK-582 @068049b HEAD +1 · ahead 212 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse develop  → b9d0599033987cc63b28e5a63e8e00133a4add92
+  feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff monthly schedule alimtalk dispatch
+  WT CLEAN · BNK-582 @8631d1e HEAD +1 · ahead 546 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+$ BE Test 257(+1 StaffMonthlyScheduleNotificationServiceTest) · FE test 465(192+273) carry
+$ 모듈 79.31%(23.00/29 · id=10 0.65) carry — competitorModuleCoverage.js 미변경
+$ merge gate = FE212 + BE546 = 758 (+2 vs BNK-582 756)
+```
+
+### §583-2 ★★★ G-SMS message_kind 21 일정표-직원 — ezCare ↔ ogada dispatch wire (확인)
+
+**【확인】** ezCare on-disk [`mobile-sendW`](docs/planning/research/snapshots/ezcare_new_ez_pgid_mobile-sendW.html) `4d47d14f`(133,272B·BNK-574 demo snapshot) — verbatim:
+
+```html
+<option value="21">일정표-직원</option>
+```
+
+비로그인 live fetch `https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendW` → HTTP 200·**70B** redirect stub(`e1d52bd5`) — 역공학 금지·on-disk 정본 carry.
+
+**【확인】** ogada BE `@b9d0599` — `NotificationSmsTemplateCatalog.EZCARE_PARITY_ENTRIES`:
+
+| templateCode | labelKo | ezcareMessageKind | channel | dispatchImplemented |
+|---|---|---|---|---|
+| STAFF_MONTHLY_SCHEDULE | 일정표-직원 | 21 | ALIMTALK | true |
+
+**API 워크플로** — `POST /api/v1/staff/notifications/staff-monthly-schedule` (`StaffNotificationController`):
+
+| 필드 | 타입 | 검증 | 비고 |
+|---|---|---|---|
+| `staffUserId` | UUID | `@NotNull` | 활성 직원·퇴사/비활성 거부 |
+| `yearMonth` | string | `^\\d{4}-\\d{2}$` | YYYY-MM |
+| `summary` | string | max 500 | 생략 시 「{yearMonth} 확정 방문 배정 N건」 자동 |
+
+**비즈니스 게이트** (`StaffMonthlyScheduleNotificationService`):
+
+1. 조직·지점 RBAC scope 검증
+2. 해당 월 `VisitScheduleEntity` 확정(PLAN·CONFIRMED) 배정 0건 → `BusinessRuleException` 「해당 월에 확정된 방문일정 배정이 없어…」
+3. `notificationService.dispatchManualStaffAlimtalk` → `NotificationTemplateCodes.STAFF_MONTHLY_SCHEDULE`
+
+**【확인】** ogada FE `@c04968c` — `NotificationChannelReadinessPanel`:
+
+- `pendingReadyEntries = catalogEntries.filter(dispatchImplemented && !dispatchReady)`
+- Alert: 「발송 구현 N종 중 M종 발송 가능 · 발송 대기 K종」
+- 발송 대기 템플릿 labelKo 목록 인라인 표시
+
+**cluster 진행** (G-SMS-TEMPLATE-CATALOG):
+
+| 차수 | commit | message_kind | API |
+|---|---|---|---|
+| BNK-581 | `@8631d1e` | 12 일정표-수급자 | `POST …/clients/{id}/notifications/client-monthly-schedule` |
+| BNK-583 | `@b9d0599` | 21 일정표-직원 | `POST …/staff/notifications/staff-monthly-schedule` |
+| 잔여 P3 | — | 11·13·19 | 본인부담·급여제공·인권공지 wire 후보 |
+
+**planner 권고** — module 10 **0.65 carry** · ALIMTALK 5종 중 2종 dispatch wire 완료(12·21) · 잔여 3종(11/13/19) wire 시 **0.7 deepen 검토** carry.
+
+### §583-3 ★★ NHIS #44 이동서비스비 러-1~4 — 356차 zero drift IDENTICAL (확인)
+
+- **URL**: <https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769>
+- **live HTTP 200** | **size 7,572B** | **md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`**
+- on-disk snapshots 모두 동일 md5 → **356차 zero drift IDENTICAL** (덮어쓰기 0)
+- ogada full-stack ✅ parity/우위 carry (BNK-582와 동일)
+
+### §583-4 ★ silverangel weekly notice 0 (7-day stale)
+
+- weekly probe **+2** vs BNK-582: 221605 · 221610 → HTTP 200·51,765B·md5 `8437f255` 미게시 shell IDENTICAL
+- **weekly notice 0** · latest real 221563(2026-06-18) · **7-day stale** · next ~6/25(KST) carry
+
+### §583-5 ★ 4축+leave-ledger P0/P1 재오픈 0 — 32-cycle carry (BNK-549~583)
+
+- App.jsx `@c04968c` LIVE grep:
+  - G14 `/clients/:clientId/care-plan-form`
+  - G26 `/dashboard` · `/dashboard/hq`
+  - v1.3-C `/transport/service-fees` (+8-route)
+  - v2 CMS `/billing/cms`
+  - US-R01-c `/staff/annual-leaves` · `/staff/leave-ledger`
+- **신규 core 갭 0** · candidate carry 3건 P3(MVP out-of-scope)
+
+### §583-planner 권고
+
+1. **tester FF merge 758 가속** — 양쪽 WT CLEAN·cross-stream FE+1·BE+1·origin/test push(BE 546·FE 212) 우선순위
+2. **G-SMS cluster deepen** — message_kind 21 wire 완료 · 잔여 11/13/19 dispatch wire 시 module 10 **0.7 deepen 검토**
+3. **NHIS #44 356차 IDENTICAL carry** — v1.3-C P2 parity 문구 고정 carry · 추가 BE/FE 변경 권고 없음
+4. **silverangel weekly notice 7-day stale** — next ~6/25 재확인 carry
+5. **per-cycle minimum 4종 충족** — 신규 evidence(NHIS#44 356차·silverangel probe +2·G-SMS message_kind 21 crosswalk) · 워크플로 1블록(staff-monthly-schedule API 필드·게이트) · COMPETITOR_MATRIX 5-row `@HEAD` · BENCHMARK_REPORT §583
+
+---
+
+## §582 BNK-582 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 355차 zero drift IDENTICAL** `c886ff1f`(7,572B·러-1~4·편도50%·1일1회·④별지 제22호 일지) ↔ ogada full-stack ✅ parity/우위 · ★★ **silverangel 5-URL zero drift IDENTICAL** (essential `c79c1be3`·extra `f9c5d877`·main `bcf6df41`·fee `eab352a8`·notice list `52c9457f`) · weekly notice 0 **6-day stale** · ★★ **longterm 502 단기보호 partial shell 13-cycle 「미확인」** carry · ★★ **longterm 610 통합재가 canonical 3-cycle stable** `0ea575be`(91,421B·월 10만원·주야간보호형) · ★ **lcms 루트 type rotation DRIFT** `c0c66076`→`6b750291`(BNK-571 재출현·5-cycle 관측) → 덮어쓰기 · ★ **2026 규제 cosmetic DRIFT(verbatim 불변)** — MOHW 2026-126 조회수 2,584→**2,585**(+1·미리보기/다운로드 carry) · law247 cachebuster only(`?Time=1782300845`·strip-cachebuster IDENTICAL `0e07cef1`) → 덮어쓰기 2건 · ★ **4축+leave-ledger P0/P1 재오픈 0 (31-cycle carry, BNK-549~582)** · FE `@068049b`/BE `@8631d1e` **HEAD zero advance 1-cycle**(양쪽 carry) · merge gate **756** carry
+
+**조사일**: 2026-06-24T11:32:00Z (KST 20:32) | **rotation**: 4–6h "엔젤·롱텀·규제" — silverangel/lcms·law.go.kr·NHIS #44·longterm 502/610·MOHW 2026-126 교차검증. extract `angel_longterm_regulatory_crossverify_bnk582.txt`(7,085B·`8ce2810a`).
+
+### §582-1 ogada git 실측 KPI (BNK-582) — HEAD zero advance 1-cycle (양쪽 carry)
+
+```
+$ git -C src/frontend rev-parse develop  → 068049bdac9bac687e41232990490a02b9ef7f36
+  fix(v1.2.1/QA-B289): align renewal action accessible name
+  WT CLEAN · ahead 211 vs origin/test=ab4de83 (BNK-581 carry)
+$ git -C src/backend  rev-parse develop  → 8631d1eb0ab1e0a0351f35ddd73981cb4161d2e7
+  feat(v2/G-SMS-TEMPLATE-CATALOG): wire client monthly schedule alimtalk dispatch
+  WT CLEAN · ahead 545 vs origin/test=598d108 (BNK-581 carry)
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+$ BE Test 256 carry · FE test 465(192+273) carry
+$ 모듈 79.31%(23.00/29 · id=10 0.65) carry
+$ merge gate = FE211 + BE545 = 756 carry (BNK-581 carry)
+```
+
+### §582-2 ★★★ NHIS #44 이동서비스비 러-1~4 — 355차 zero drift IDENTICAL (확인)
+
+- **URL**: <https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769>
+- **live HTTP 200** | **size 7,572B** | **md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`**
+- on-disk snapshots (`nhis_jo44.html`·`nhis_joHistory_44.html`·`nhis_jo44_joHistory.html`·`nhis_jo44_live_bnk540.html`) 모두 동일 md5 → **355차 zero drift IDENTICAL** (덮어쓰기 0)
+- verbatim 인용:
+  - "편도만(기관으로 이송 또는 수급자의 거주지로 이송하는 경우) 이용한 경우에는 제1항의 표에 따른 **'러-1'부터 '러-4'까지 비용의 50%**"
+  - "**1일 1회**" 이상 산정 금지
+  - "**별지 제22호** 서식의 차량운행표 작성·보존 (운전자 서명)"
+- **ogada full-stack ✅ parity/우위 cross-walk** :
+  - BE  `TransportServiceFeeService` 5/5 (RU_1·RU_2·RU_3·RU_4·`ONE_WAY_RATIO=0.5`·1일1회 dedup·V148/V154/V155 별지 제22호 운전자 서명 pair CHECK)
+  - FE  `transportServiceFee.js` 4 parity-copy 상수(러-1~4) + `TransportServiceFeePanel` UXD-159 a11y(RBAC edit link·summary layout aria)
+- **planner 권고** — PLAN_NOTES #44 carry · v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry · 추가 BE/FE 변경 권고 없음
+
+### §582-3 ★★ silverangel 5-URL zero drift IDENTICAL + weekly notice 0 (6-day stale)
+
+| URL | md5 | size | 상태 |
+|---|---|---|---|
+| [essential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | `c79c1be37f947aab04ab7ba35cc7814d` | 131,664B | **IDENTICAL** carry — 이동#41-42·평가#27 |
+| [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | `f9c5d8773ad0a481be6d7eb4b192d982` | 81,637B | **IDENTICAL** carry — 효성CMS 5-method 250/300원 |
+| [mainService](https://www.silverangel.kr/newSilverangel/service/mainService.do) | `bcf6df41310193a3ae997bde49111347` | 59,002B | **IDENTICAL** carry |
+| [feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | `eab352a8f98ba600561c06bd2e3eecb1` | 44,513B | **IDENTICAL** carry |
+| [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) | `52c9457f4e34a7d3c49275e5bf337677` | 3,594,181B | **IDENTICAL** carry — 최신 real 221563(6/18) |
+
+- **weekly notice probe** (7 candidate IDs · +5 vs BNK-580 3-probe):
+  - 221564 · 221570 · 221580 · 221585 · 221590 · 221595 · 221600 → 모두 HTTP 200·51,765B·md5 `8437f255b4eaf22e9844d1d260554093` 미게시 shell IDENTICAL
+- **weekly notice 0** · latest real 221563(2026-06-18) · **6-day stale** · next ~6/25(내일·KST) carry · 발신번호 본인인증 마감(BNK-541) re-issuance 미관찰
+
+### §582-4 ★★ longterm 502/610 — partial shell 13-cycle 「미확인」 + canonical 3-cycle stable
+
+- **longterm 502 단기보호** :
+  - live HTTP 200 · 422B · md5 `d3c90b333be1f8d818978eaf0917ba76` → **partial shell** (BNK-578 carry)
+  - on-disk canonical `longterm_502.html` `b5aee8c114f064f4b5503d1143c11787`(105,552B·**단기보호 1등급 74,060** verbatim) 보존
+  - **BNK-548부터 13-cycle 「미확인」** carry · canonical on-disk 우선 정책 유지 · ROADMAP v3.1 G18-SHORT P3 carry
+- **longterm 610 통합재가** :
+  - live HTTP 200 · 91,421B · md5 `0ea575be5f11a817c635fe40f51dec39` (BNK-576 recovery 이후 **3-cycle stable**)
+  - verbatim grep: 「통합재가서비스」 12 hit · 「월 10만원」 · 「주야간보호형」
+  - ROADMAP v3.1 G18-SHORT `IntegratedHomeProviderDiscoveryPanel` 우위 carry
+
+### §582-5 ★ lcms 루트 type rotation DRIFT (5-cycle 관측·marketing only)
+
+- BNK-578 on-disk `c0c660760e9e5691491ace28f9d15f74`(50,740B·type1+websiteProvided+CJ MOU)
+- BNK-582 live   `6b7502914de15aa75cabe04740dfca2c`(50,498B·type1+type3 hybrid·`ad_cont type3` + `websiteProvided.do`)
+- BNK-571 회귀: 동일 md5 `6b750291` (5-cycle rotation 관측: BNK-556→568→571→578→582)
+- **덮어쓰기 1건** · 마케팅 카피·feature 변동 0 · **ogada 단일 ERP 통합 vs SaaS cross-promo 분산 차별화** carry(BNK-515 reveal)
+
+### §582-6 ★ 2026 규제 cosmetic DRIFT (verbatim 불변·덮어쓰기 2건)
+
+- **MOHW 2026-126** :
+  - BNK-578 on-disk `f1fc518c2760800746c1d3db105140ed` 조회수 **2,584** · 미리보기 564 · 다운로드 475회
+  - BNK-582 live    `e66c5af15b5b7c3e59568be66bc00f51` 조회수 **2,585(+1)** · 미리보기 564 carry · 다운로드 475회 carry
+  - 「제2026-126호」·「본인부담상한액」 verbatim 불변 · counter +1 only · 덮어쓰기
+- **law247** :
+  - BNK-578 on-disk `cac7017a8d7f5559fd339733d652ab8d` · `?Time=...`
+  - BNK-582 live    `3580a78a3820a969f556ec248b476986` · `?Time=1782300845`
+  - **strip-cachebuster IDENTICAL** `0e07cef162aca47d37a65b8d93b69f08`
+  - 「제2025-247호」·「시행 2026.1.1」 verbatim 불변 · 덮어쓰기
+
+### §582-7 ★ 4축+leave-ledger P0/P1 재오픈 0 — 31-cycle carry (BNK-549~582)
+
+- App.jsx `@068049b` LIVE grep (BNK-580 교차검증 carry):
+  - G14 `/clients/:clientId/care-plan-form`
+  - G26 `/dashboard` · `/dashboard/hq`
+  - v1.3-C `/transport/service-fees` (+8-route)
+  - v2 CMS `/billing/cms`
+  - US-R01-c `/staff/annual-leaves` · `/staff/leave-ledger`
+- **신규 core 갭 0** · 가정 번복 0 · candidate 변동 0 (carry 3: G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG·G-ORAL-CARE-OBSERVATION-REPORT P3·MVP out-of-scope)
+
+### §582-planner 권고
+
+1. **tester FF merge 756 가속** — 양쪽 WT CLEAN·HEAD zero advance 1-cycle·origin/test push(BE 545·FE 211) 우선순위
+2. **NHIS #44 355차 IDENTICAL carry** — v1.3-C P2 parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry · BE/FE 추가 변경 권고 없음
+3. **silverangel weekly notice 6-day stale** — next ~6/25(내일·KST) carry · BNK-583 cycle에 재확인
+4. **longterm 502 partial shell 13-cycle 「미확인」** carry — canonical on-disk 우선 정책 유지 · ROADMAP v3.1 G18-SHORT P3 carry
+5. **longterm 610 canonical 3-cycle stable** — `IntegratedHomeProviderDiscoveryPanel` 우위 carry
+6. **per-cycle minimum 4종 충족** — 신규 evidence URL 1건+(NHIS#44 355차·silverangel weekly probe 7건·MOHW/law247/lcms drift) · 메뉴/필드/워크플로 1블록(NHIS#44 verbatim·silverangel 5-URL md5·lcms type rotation) · COMPETITOR_MATRIX 1행+ `@HEAD` 갱신(BNK-582 row) · BENCHMARK_REPORT §582 차수 메모
+
+---
+
+## §581 BNK-581 — 케어포 역공학 0–2h · ★★★ **func M3 요양급여 11-leaf ↔ demo L02 14 loadPage ↔ PDF p.45–50 tri-source cross-walk** — 핵심 11/11 ogada `/care/*` full parity + demo superset 4-leaf 우위 · PDF p.49 **3-4 구강관리 리포트** 번호 drift → candidate `G-ORAL-CARE-OBSERVATION-REPORT` P3「가정」 · ★★ **care cluster 리포트 밀도** ogada 56.3% > demo L02 42.9% > func M3 36.4% · ★ **Wayback 340차 zero drift** func `6226e6eb`·demo `ebee4d47` · LIVE HTTP 000 **15-cycle 「미확인」** · FE `@068049b`/BE `@8631d1e` cross-stream **HEAD +1+1** · merge gate **756**(+2)
+
+**조사일**: 2026-06-24T11:00:00Z (KST 20:00) | **rotation**: 0–2h "케어포 func.php·매뉴얼·demo-work" — M3 요양급여·PDF p.45–50·L02 loadPage/view·3-in-1 기록지·구강 리포트 drift. extract `carefor_m3_care_l02_pdf_crosswalk_bnk581.txt`(5,8xxB).
+
+### §581-1 ogada git 실측 KPI (BNK-581) — FE+1·BE+1 cross-stream advance
+
+```
+$ git -C src/frontend rev-parse --short develop  → 068049b  (BNK-580 @ef3948c HEAD +1)
+  fix(v1.2.1/QA-B289): align renewal action accessible name
+  WT CLEAN · ahead 211 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 8631d1e  (BNK-580 @fb323ae HEAD +1)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): wire client monthly schedule alimtalk dispatch
+  WT CLEAN · ahead 545 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+$ BE Test 256(+1) · FE test 465(192+273) carry
+$ 모듈 79.31%(23.00/29 · id=10 0.65) carry
+$ merge gate = FE211 + BE545 = 756 (+2 vs BNK-580 754)
+```
+
+### §581-2 ★★★ func M3 요양급여 11-leaf ↔ demo L02 ↔ PDF p.45–50 tri-source cross-walk (NEW)
+
+**【확인】** [func.php Wayback id_](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) HTTP **200·98,328B·`6226e6eb`** → **340차 zero drift IDENTICAL**. [demo-work Wayback id_](https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/) HTTP **200·71,742B·`ebee4d47`** → **340차 zero drift IDENTICAL** · transport nav grep **0** · 시설 셸. LIVE 양쪽 HTTP **000** **15-cycle 「미확인」**.
+
+**【확인】** [PDF p.45–50](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=45) HTTP **200·9,992,772B·`96f7d45e`** · pypdf 132 pages · extract `carefor_manual_p45_p50_care_bnk581.txt`.
+
+| func M3 | demo L02 | ogada Route | 판정 |
+|---------|----------|-------------|------|
+| 3-1 요양급여 제공 기록 | L02_M01 `view.care_service_weekly` | `/care/weekly-service-records` | ✅ |
+| 3-1-1 통합식사도움 | L02_M13 `view.total_meal` | `/care/meal-assistance-records` | ✅ |
+| 3-1-2 간호(요양보호사) embed | L02_M14 `view.nursing_service` menu_target=care | weekly form 간호 영역 cross-ref | ✅ embed |
+| 3-1-3 특이사항 | L02_M15 `view.care_service_bigo_all` | `/care/service-special-notes` | ✅ |
+| 3-1-4 식사선호도 | L02_M16 `view.meal_satisfaction` | `/care/meal-preference-surveys` | ✅ |
+| 3-2 상태변화 기록 | weekly embed (독립 leaf 없음) | `stateChangeNotes` + FAQ21817 7일 SLA + dashboard gap | ✅+ |
+| 3-3 목욕일정 | L02_M03 `view.care_bath_manage` | `/care/bathing-schedules` | ✅ |
+| 3-4 요양/식사/화장실 rpt | L02_M04 rpt | `/care/reports/meal-excretion` | ✅ |
+| 3-5 목욕도움 rpt | L02_M05 rpt | `/care/reports/bath-help` | ✅ |
+| 3-6 급여제공 rpt | L02_M11 rpt | `/care/reports/patient-service` | ✅ |
+| 3-7 서비스 집계 rpt | L02_M12 rpt | `/care/reports/service-summary` | ✅ |
+
+**demo L02 superset (func M3 미노출 · ogada ✅+)**:
+
+| demo | ogada |
+|------|-------|
+| L02_M02 집중배설관찰 | `/care/intensive-excretion` |
+| L02_M07 신체제재 | `/care/body-restraint` |
+| L02_M06 rpt 체위변경 | `/care/reports/position-change` |
+| L02_M17 rpt 집중배설 | `/care/reports/intensive-excretion` |
+
+### §581-3 ★★ PDF tri-source 번호 drift · 3-in-1 기록지 · 구강 리포트 micro-gap
+
+**【확인】** PDF p.46「3-in-1 급여제공 기록지」= 신체활동(3-1) + 간호및처치(4-1) + 기능회복(5-1·**PDF 4-2 물리**·3-1 항목) 한 장 → func 정본은 물리 **4-6** cluster(번호 drift carry). ogada `CareServiceWeeklyRecordForm` 다영역 단일 폼 + `/programs` cross-ref = **✅ parity**.
+
+**【확인】** PDF p.49 **3-4=구강관리 리포트**(일일·1·2·3개월 구강관리일지) vs func **3-4=요양/식사/화장실 리포트** vs demo L02 **2-5=요양/식사/화장실** — **tri-source 번호 drift**. ogada `/nursing/oral-care-checks` 입력 ✅ · **구강관찰 리포트 Route 0** → 신규 candidate **`G-ORAL-CARE-OBSERVATION-REPORT` P3「가정」**(MVP out-of-scope).
+
+**【확인】** PDF p.47「모바일 앱 상태변화 작성」— ogada 모바일 앱 **미확인**(웹 weekly embed+SLA로 평가지표44 커버).
+
+### §581-4 ★ care cluster 리포트 밀도 · module 3-1 coverage 재확인
+
+| 소스 | leaf | rpt | 밀도 |
+|------|------|-----|------|
+| func M3 | 11 | 4 | **36.4%** |
+| demo L02 | 14 loadPage | 6 | **42.9%** |
+| ogada `/care/*` | 16 Route | 9 reports | **56.3%** |
+
+- `competitorModuleCoverage.js` id `3-1` coverage=**1** ✅ 재확인(가정 번복 아님).
+- 전체 demo 30.9% vs ogada 20.7% 갭(−10.2%p, BNK-573 carry)은 **타 모듈 리포트 부족**에서 기인 — care cluster 단독은 ogada 우위.
+
+### §581-5 planner 권고 (BNK-581)
+
+1. **tester FF merge 756 가속** — FE+1·BE+1·양쪽 WT CLEAN·G-SMS alimtalk dispatch wire.
+2. **module 3-1 coverage=1 유지** — 핵심 11/11 parity + superset 4-leaf 우위 재확인.
+3. **G-ORAL-CARE-OBSERVATION-REPORT P3「가정」** — PDF p.49 구강관리 4종 출력 vs oral-check 입력만 · v3+ Epic.
+4. **미확인 carry** — carefor LIVE HTTP 000 **15-cycle** · longterm 502 12-cycle carry.
+
+가정 번복 0 · 신규 core 갭 0 · candidate +1(G-ORAL-CARE-OBSERVATION-REPORT P3) · 상태 변경 2(FE+1·BE+1) · KPI 변경 1(BE Test 255→256) · 미확인 carry 2(carefor LIVE 15-cycle·longterm 502) · 신규 snapshot 2건 · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.
+
+---
+
+## §580 BNK-580 — 교차검증·갭 우선순위 8h+ · ★★★ **4축+leave-ledger P0/P1 재오픈 0 (29-cycle carry, BNK-549~580)** · ★★★ **candidate 상태 교차검증 — G-SMS-TEMPLATE-CATALOG cluster ✅ closure 재확인(candidate 잔여 0)·G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG P3「가정」 carry** · ★★ **NHIS #44 354차 zero drift IDENTICAL** `c886ff1f` · ★ **silverangel weekly notice 0 (6-day stale)** · HEAD zero advance · merge gate **754** carry
+
+**조사일**: 2026-06-24T10:20:00Z (KST 19:20) | **rotation**: 8h+ "교차검증·갭 우선순위" — 이전 BNK 가정 번복 여부·미확인 항목 축소·G14·대시보드·v1.3-C·v2 CMS P0/P1 재정렬·신규 경쟁사 공지·엑셀 포맷 변경 스캔. extract `cross_gap_priority_bnk580.txt`.
+
+### §580-1 ogada git 실측 KPI (BNK-580) — HEAD zero advance · 모듈 79.31% carry
+
+```
+$ git -C src/frontend rev-parse --short develop  → ef3948c  (BNK-579 carry · HEAD zero advance 1-cycle)
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): deepen module 10 coverage to 0.65
+  WT CLEAN · ahead 210 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → fb323ae  (BNK-579 carry · HEAD zero advance 2-cycle)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): expose dispatch-ready counts in catalog API
+  WT CLEAN · ahead 544 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+$ BE Test 255 · FE test 465(192+273)
+$ 모듈 79.31%(23.00/29 · id=10 0.65)  ← BNK-579 carry 불변
+$ merge gate = FE210 + BE544 = 754 (carry vs BNK-579 754 · 양쪽 WT CLEAN · 파이프라인 idle 윈도)
+```
+
+### §580-2 ★★★ 4축+leave-ledger P0/P1 재오픈 0 (29-cycle carry, BNK-549~580)
+
+**【확인】** `git show develop:src/App.jsx | grep path=` (`@ef3948c`):
+
+| 축 | Route | 상태 |
+|---|---|---|
+| G14 NHIS care-plan-form | `path="/clients/:clientId/care-plan-form"` | ✅ LIVE |
+| G26 대시보드 | `path="/dashboard"` + `path="/dashboard/hq"` | ✅ LIVE |
+| v1.3-C 이동서비스비 | `path="/transport/service-fees"` (+8-route family) | ✅ LIVE |
+| v2 CMS | `path="/billing/cms"` | ✅ LIVE |
+| US-R01-c 연차/휴가원장 | `path="/staff/annual-leaves"` + `path="/staff/leave-ledger"` | ✅ LIVE |
+
+- P0/P1 backlog 비움 유지 · 가정 번복 0 · 신규 core 갭 0.
+
+### §580-3 ★★★ candidate 상태 교차검증 (git grep `@develop`)
+
+| candidate | grep 결과 | 상태 |
+|---|---|---|
+| **G-SMS-TEMPLATE-CATALOG cluster** | `git grep -c template-catalog` = 3 hit (`services.js`·`settingsServices.test.js`·`NotificationChannelReadinessPanel.jsx`) | ✅ **closure 재확인** — BE `@b6c9b16`→FE `@c9cf03b`→UXD-160 `@15f2195`→dispatchReady `@fb323ae`→KPI `@ef3948c` 5-commit 종결 · candidate 잔여 0 |
+| **G-VENDOR-ONBOARDING-CHECKLIST** P3「가정」 (BNK-578) | `vendor.onboarding\|onboarding-checklist\|VendorOnboarding` = 전용 컴포넌트 0 | carry — silverangel 4회차 도입 후 관리 체크리스트 = SaaS 온보딩 휴먼서비스·MVP out-of-scope |
+| **G-PROGRAM-GROUP-CONFIG** P3「가정」 (BNK-577) | `program-group\|ProgramGroup\|programGroupConfig` = 0 hit | carry — func.php 모듈5 5-3/5-9 그룹 설정·이력 micro-gap · `id=5 coverage=1` ✅ 재확인(가정 번복 아님) |
+
+- US-R01-c leave-ledger 표면 전수 LIVE 재확인: `StaffAnnualLeaveTable`·`StaffLeaveLedgerTable`·`StaffLeaveLedgerDeleteModal`·`StaffAnnualLeaveRelatedSurfacesPanel`·`StaffLeaveLedgerRelatedSurfacesPanel` + 서비스/테스트 full-stack ✅.
+
+### §580-4 ★★ NHIS #44 이동서비스비 러-1~4 354차 zero drift IDENTICAL
+
+**【확인】** live HTTP 200·7,572B·md5 `c886ff1f` = on-disk `nhis_jo44.html` `c886ff1f` **IDENTICAL** (러-1~4·편도50%·1일1회·④별지 제22호 일지 verbatim) ↔ ogada `TransportServiceFeeService`(RU_1~RU_4·`ONE_WAY_RATIO=0.5`·1일1회 dedup·V148/V154/V155) + FE `transportServiceFee.js` 4 parity-copy + `TransportServiceFeePanel`(UXD-159) full-stack ✅ parity/우위. 덮어쓰기 0. PLAN_NOTES #44 carry.
+
+### §580-5 ★ silverangel weekly notice 0 (6-day stale) · 엑셀 포맷 변경 0
+
+**【확인】** notice list HTTP 200·3,594,181B·md5 `52c9457f` = on-disk IDENTICAL (zero drift). latest real embed 221563(6/18) carry → 6-day stale(오늘 6/24). 신규 weekly notice probe(clean `Tmp_idx` URL):
+
+```
+221564 HTTP 200 51,765B md5 8437f255 — unpublished shell
+221570 HTTP 200 51,765B md5 8437f255 — unpublished shell
+221580 HTTP 200 51,765B md5 8437f255 — unpublished shell
+```
+
+- 3-probe 모두 미게시 shell IDENTICAL → weekly notice 0 · next ~6/25(내일) 예상 carry · 엑셀 포맷 변경 0.
+
+### §580-6 planner 권고 (BNK-580)
+
+1. **tester FF merge 754 가속** — FE210+BE544·양쪽 WT CLEAN·선행 commit 불필요·파이프라인 idle 윈도.
+2. **4축+leave-ledger 재오픈 0 유지** — 29-cycle carry(BNK-549~580)·P0/P1 backlog 비움.
+3. **candidate 잔여 P3 2건 carry** — G-VENDOR-ONBOARDING-CHECKLIST·G-PROGRAM-GROUP-CONFIG 둘 다 MVP out-of-scope·planner 결정 보류 가능.
+4. **△4 잔여 우선순위 불변** — 2 이동 0.85·8 직원근태 0.85·7-4 CMS 0.65·10 부가 0.65(BNK-579 deepen 완결).
+5. **미확인 carry** — longterm 502 단기보호 canonical 12-cycle·carefor LIVE HTTP 000 14-cycle(on-disk canonical 보존).
+
+---
+
+## §579 BNK-579 — ogada git 실측 6–8h · ★★★ **모듈 커버 78.79%→79.31% — module 10 부가서비스(SMS·알림) 0.5→0.65 deepen 확정 @ `ef3948c`** · G-SMS-TEMPLATE-CATALOG cluster 5-commit full-stack 종결(BNK-575/576/578 carry 권고 실현) · ★★ **NHIS #44 353차 zero drift IDENTICAL** `c886ff1f` · ★ **4축+leave-ledger P0/P1 재오픈 0 (28-cycle carry)** · merge gate **754**(+1)
+
+**조사일**: 2026-06-24T09:40:00Z (KST 18:40) | **rotation**: 6–8h "ogada git 실측" — src/backend·src/frontend develop HEAD·Route·page·테스트·모듈 커버 % 재산정 + COMPETITOR_MATRIX ogada `@HEAD` 일괄 갱신. extract `ogada_git_remeasure_bnk579.txt`.
+
+### §579-1 ogada git 실측 KPI (BNK-579) — FE+1·BE carry · 모듈 78.79%→79.31%
+
+```
+$ git -C src/frontend rev-parse --short develop  → ef3948c  (BNK-578 `@15f2195` HEAD +1)
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): deepen module 10 coverage to 0.65
+  WT CLEAN · ahead 210 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → fb323ae  (BNK-578 carry · HEAD zero advance 1-cycle)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): expose dispatch-ready counts in catalog API
+  WT CLEAN · ahead 544 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+$ BE Test 255 · FE test 465(192+273)
+$ 모듈 79.31%(23.00/29 · id=10 0.5→0.65)  ← BNK-578 78.79%(22.85/29) +0.52pp
+$ merge gate = FE210 + BE544 = 754 (+1 vs BNK-578 753)
+```
+
+### §579-2 ★★★ module 10 부가서비스(SMS·알림) 0.5→0.65 deepen 확정 (commit `ef3948c`)
+
+**【확인】** `src/config/competitorModuleCoverage.js` diff:
+
+```
+-  { id: "10", label: "부가서비스(SMS·알림)", coverage: 0.5 },
++  { id: "10", label: "부가서비스(SMS·알림)", coverage: 0.65 },
+```
+
+- `competitorModuleCoverage.test.js` +6L 회귀 lock.
+- 모듈 KPI 산식 검산(29 feature): ✅완전 20 × 1 + (2 이동 0.85 + 7-4 CMS 0.65 + 8 직원근태 0.85 + 10 부가 **0.65**) = **23.00 / 29 = 79.310%** (python 검산 일치).
+- BNK-575「G-SMS-TEMPLATE-CATALOG-FE-WIRE 가시화 시 module 10 0.5→0.65 후보」·BNK-576/578 planner carry 권고 **실현**.
+
+### §579-3 ★★★ G-SMS-TEMPLATE-CATALOG cluster — 5-commit full-stack 종결
+
+| 단계 | commit | 사이클 | 내용 |
+|---|---|---|---|
+| BE catalog API | `b6c9b16` | BNK-575 | `GET /api/v1/notifications/template-catalog` + `EZCARE_PARITY_ENTRIES` 6-종 |
+| FE readiness wire | `c9cf03b` | BNK-576 | `NotificationChannelReadinessPanel` + `services.js` fetch |
+| UXD a11y | `15f2195` | BNK-578 | UXD-160 panel a11y |
+| BE dispatchReady | `fb323ae` | BNK-578 | dispatch-ready counts 노출 |
+| **KPI deepen** | **`ef3948c`** | **BNK-579** | **module 10 0.5→0.65** |
+
+- `git grep template-catalog @develop` = 3 hit(`services.js`·`settingsServices.test.js`·`NotificationChannelReadinessPanel.jsx`).
+- 이지케어 `mobile-sendW` 7-template `message_kind`(1 접속키·11 본인부담·12 일정표-수급자·13 급여제공·19 직원인권·21 일정표-직원·22 급여명세서) ↔ ogada 6-종 parity(22 급여명세서 도메인 경계 제외).
+- candidate 잔여 0 (P2 closure BNK-576 · KPI 완결 BNK-579).
+
+### §579-4 ★★ NHIS #44 이동서비스비 러-1~4 353차 zero drift (증거 URL 재실측)
+
+**【확인】** [NHIS #44 joHistoryContent](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) live HTTP 200 · 7,572B · md5 **`c886ff1f`** = on-disk `nhis_jo44.html` **IDENTICAL**.
+
+- verbatim: 러-1 … 러-4 거리구간 · 편도 50% · 1일 1회 한하여 산정 · ④별지 제22호 일지 작성/보관 의무.
+- ↔ ogada `TransportServiceFeeService`(`TransportDistanceBand.RU_1~RU_4`·`ONE_WAY_RATIO=0.5`·1일1회 dedup guard·V148/V154/V155 DB CHECK) + FE `transportServiceFee.js` 4 parity-copy 상수 + `TransportServiceFeePanel`(UXD-159 a11y) = **full-stack ✅ parity/우위 353차 재입증** · 덮어쓰기 0 · PLAN_NOTES #44 1차 확인 carry.
+
+### §579-5 요약 카운트 (BNK-579)
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry) · 상태 변경 1(FE+1 module 10 deepen) · KPI 변경 1(모듈 78.79%→79.31%) · 미확인 carry 2(carefor LIVE 14-cycle·longterm 502 12-cycle) · 신규 snapshot 1건(`ogada_git_remeasure_bnk579.txt`) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.
+
+**→ planner**: baseline FE `@15f2195`→**`@ef3948c`**·BE `@fb323ae` carry(HEAD zero advance 1-cycle)·merge 753→**754**·**모듈 78.79%→79.31%**(module 10 0.5→0.65 deepen 확정)·G-SMS-TEMPLATE-CATALOG cluster full-stack 종결(candidate 잔여 0)·△4 잔여 우선순위(10 부가 deepen 완결 → 7-4 CMS 0.65→2 이동 0.85→8 직원근태 0.85 carry).
+**→ tester**: merge **754**(FE210+BE544·양쪽 WT CLEAN·선행 commit 불필요·develop→test FF 가속 권장).
+
+---
+
+## §578 BNK-578 — 엔젤·롱텀·규제 4–6h · ★★★ **신규 evidence [businessSupportService.do](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do) 5-tab 업무지원·4회차 도입 후 관리 체크리스트** — 직무별(관리·간호·복지·요양·재활) 온보딩 워크플로 verbatim · ogada 기능 parity 대부분 ✅ · 엔젤 전용 카톡·오픈톡·원격지원 △ → candidate **`G-VENDOR-ONBOARDING-CHECKLIST` P3「가정」** · ★★ **G-SMS-TEMPLATE-CATALOG deepen** — BE `@fb323ae` dispatchReady catalog API · FE `@15f2195` UXD-160 a11y wire · ★★ **NHIS #44 352차 zero drift** · ★ **lcms type1 rotation DRIFT** `6b750291`→`c0c66076` · ★ **longterm 502 partial shell 11-cycle 「미확인」** · merge gate **753**
+
+**조사일**: 2026-06-24T09:10:00Z (KST 18:10) | **rotation**: 4–6h "엔젤·롱텀·규제" — silverangel/lcms 공개·law.go.kr NHIS #44 이동서비스비 러-1~4·2026 수가·단기보호·통합재가 교차검증. extract `angel_longterm_regulatory_crossverify_bnk578.txt`.
+
+### §578-1 ogada git 실측 KPI (BNK-578) — FE+1·BE+1 cross-stream advance
+
+```
+$ git -C src/frontend rev-parse --short develop  → 15f2195  (BNK-577 `@c9cf03b` HEAD +1)
+  ux(a11y): G-SMS template catalog and FAQ21823 retention wire (UXD-160)
+  WT CLEAN · ahead 209 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → fb323ae  (BNK-577 `@b6c9b16` HEAD +1)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): expose dispatch-ready counts in catalog API
+  WT CLEAN · ahead 544 vs origin/test=598d108
+$ Route 112(111 <Route\b + 1 <Routes>) · page 91(90+RootRedirect) · V1–V175
+$ BE Test 255 · FE test 465(192+273) · 모듈 78.79%(22.85/29 · id=10 still 0.5)
+$ merge gate = FE209 + BE544 = 753 (+2 vs BNK-577 751)
+```
+
+### §578-2 ★★★ 신규 evidence — silverangel 업무지원서비스 5-tab + 4회차 도입 후 관리 체크리스트
+
+**【확인】** [businessSupportService.do](https://www.silverangel.kr/newSilverangel/service/businessSupportService.do) HTTP 200 · 75,878B · md5 **`a13cb5ac`** · snapshot `silverangel_service_businessSupport_bnk578.html`.
+
+| tab (`serv_btn`) | 핵심 워크플로 | ogada 대응 |
+|---|---|---|
+| 실시간 업무지도 | 묻고답하기 전담부서 · 카톡 1:1 상담 · 오픈톡 `open.kakao.com/o/gsixWHJ` | △ 휴먼서비스·SaaS MVP out-of-scope |
+| 도입 후 관리 | **4회차** 체크리스트(오픈+10일·+10일·6주·+10일) | △ in-app 온보딩 위젯 0 → **P3 candidate** |
+| 업무지원 교육 | 엔젤사용법 단체교육 · 직무 심화교육(기관별·분할화면) | △ 오프라인 교육 |
+| 주요교육실적 | 분기 직무능력향상교육·지역 협회 교육 이력 | N/A |
+| 사용후기 | 고객 피드백(평가 점검 언급) | N/A |
+
+**1회차(오픈+10일) 직무별 체크리스트【확인】verbatim:**
+
+| 직무 | 체크 항목 |
+|---|---|
+| 관리 | 직원별 ID등록(서명·본인인증) · 직무별 권한관리 · 기록지 복사옵션 |
+| 간호 | 간호처치기록 · 업무별 시간설정 · 약 등록 · 건강관리기록부 |
+| 복지 | 프로그램 그룹 설정·매핑 · 프로그램 계획서 · 프로그램일지 그룹선택 · 욕구사정 · **급여제공계획(롱텀 다운로드→업로드)** |
+| 요양 | 기록지 큰화면 · 배변배뇨 QR · 관찰기록 불러오기 · 체위변경 · 목욕서비스제공기록 · 작성자 일괄등록 |
+| 재활 | 기능회복훈련계획 · 물리(작업)치료 기록(시간 필수) |
+
+**2회차【확인】**: 사례관리회의 · 상담일지(단순공지 X) · 프로그램계획 달력 · 보고서(관찰·배변배뇨·목욕) · 욕창위험도평가 사후관리 · 기관운영 메뉴 인지.
+
+**planner**: 엔젤 4회차 온보딩 = **기능 갭 아님**(휴먼서비스) · in-app self-serve 온보딩 위젯화 시 ogada 차별화 → **`G-VENDOR-ONBOARDING-CHECKLIST` P3「가정」**. 「롱텀 다운로드→업로드」는 ogada G14 `/care-plan-form` API 직접입력 **우위**.
+
+### §578-3 ★★ G-SMS-TEMPLATE-CATALOG deepen (BE dispatchReady + FE UXD-160)
+
+**【확인】** BE `@fb323ae` — BNK-576 dirty `dispatchReadyCount` carry → **committed closure**. `GET /api/v1/notifications/template-catalog` 응답에 dispatch-ready counts 노출.
+
+**【확인】** FE `@15f2195` UXD-160 — `NotificationChannelReadinessPanel` a11y(aria-labelledby·table scope) + `StaffEmploymentContractRenewal*` FAQ21823 retention wire. `competitorModuleCoverage.js` id=10 **still 0.5** — dispatchReady FE 가시화 미반영 → planner **0.5→0.65** 검토 carry.
+
+### §578-4 ★★ NHIS #44 이동서비스비 러-1~4 352차 zero drift IDENTICAL
+
+**【확인】** [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · md5 **`c886ff1f`** IDENTICAL (352차).
+
+- ① 러-1~4 최단거리(편도) 표 · ② 편도 50% · 1일 1회 · ③ 수급자 부담 0 · ④ 별지 제22호 일지
+- ↔ ogada `TransportServiceFeeService` + FE `transportServiceFee.js` 4 parity-copy + `TransportServiceFeePanel` full-stack ✅ parity/우위 (PLAN_NOTES #44 carry)
+
+### §578-5 ★ silverangel 5-URL IDENTICAL + notice 8-day stale
+
+**【확인】** essential `c79c1be3` · extraService `f9c5d877` · mainService `bcf6df41` · feeService `eab352a8` · notice list `52c9457f` — **5-URL zero drift IDENTICAL** (352차 carry).
+
+- notice latest real **221563**(6/18) · probe 221591/221600 unpublished shell `8437f255` · **weekly notice 0 (8-day stale)**
+
+### §578-6 ★ lcms type1 rotation DRIFT + longterm 502/610
+
+| URL | HTTP | SIZE | md5 | 비고 |
+|---|---|---|---|---|
+| [lcms](https://www.lcms.or.kr/) | 200 | 50,740B | `c0c66076` | BNK-571 `6b750291`(type1+3) → **type1+websiteProvided** 회귀(BNK-556 동형) → 덮어쓰기 |
+| [longterm 610 canonical](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) | 200 | 91,421B | `0ea575be` | IDENTICAL 2-cycle stable · 통합재가 월 10만원 |
+| [longterm 502](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502) | 200 | 422B | `d3c90b33` | partial shell only · canonical `b5aee8c1`(74,060) **11-cycle 「미확인」** |
+
+### §578-7 ★ MOHW 2026-126 + law247 cosmetic DRIFT (verbatim 불변)
+
+**【확인】** [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) `7c54ce09`→**`f1fc518c`** — 조회수 2,581→**2,584**(+3) · 미리보기 560→**564**(+4) · 다운로드 473→**475**(+2) · 제2026-126호 verbatim 불변.
+
+**【확인】** [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) `cd73f7e6`→**`cac7017a`** — cachebuster DRIFT · strip-cachebuster IDENTICAL · 제2025-247호 시행 2026.1.1 verbatim 불변.
+
+### §578-8 planner 반영 제안 (BNK-578)
+
+1. **merge gate 753 (+2 vs BNK-577 751)** — cross-stream FE+1·BE+1 · 양쪽 WT CLEAN · **tester FF merge 753 가속 권장**.
+2. **★★★ 신규 evidence businessSupport 4회차 온보딩** — candidate `G-VENDOR-ONBOARDING-CHECKLIST` P3「가정」·기능 갭 0.
+3. **★★ G-SMS-TEMPLATE-CATALOG deepen** — BE dispatchReady committed · FE UXD-160 a11y · module 10 **0.5→0.65** 검토(dispatchReady panel 가시화 시).
+4. **★★ NHIS #44 352차 carry** — P2 문구 고정 유지 · ogada transport cluster 우위 메시지 유지.
+5. **★ lcms type rotation** — marketing copy only · ERP 기능 갭 0.
+6. **★ longterm 502 canonical on-disk 우선** — live 11-cycle 「미확인」 carry.
+7. **per-cycle minimum 4종 충족** — 신규 URL businessSupport · 메뉴/필드 §578-2 table · COMPETITOR_MATRIX `@15f2195`/`@fb323ae` · BENCHMARK_REPORT §578.
+
+## §577 BNK-577 — 케어포 역공학 0–2h · ★★★ **func.php 모듈5 「프로그램 급여」 10-leaf ↔ ogada `/programs` 전수 cross-walk** — 핵심 4-leaf(제공기록·일정·정보관리·평가) full parity + 의견수렴 5단 척도/결과평가 분리 우위 · `competitorModuleCoverage.js` id=5 coverage=1 ✅ **재확인(가정 번복 아님)** · micro-gap 전부 P3 → candidate `G-PROGRAM-GROUP-CONFIG` P3「가정」 · ★★ carefor func.php Wayback **339차 zero drift IDENTICAL** `6226e6eb` + demo `ebee4d47` → 덮어쓰기 2건 · LIVE 양쪽 HTTP 000 **13-cycle 「미확인」** · merge gate **751** carry
+
+**조사일**: 2026-06-24T08:20:00Z (KST 17:20) | **rotation**: 0–2h "케어포 역공학" — `daycare/func.php` 모듈5 프로그램 10-leaf 전수 cross-walk + demo-work 시설 셸 transport nav 0 재확인 + func/demo Wayback 재실측 + 엑셀 포맷 변경 0. extract `carefor_module5_program_crosswalk_bnk577.txt`(5,514B·`3ba6baf0`).
+
+### §577-1 ogada git 실측 KPI (BNK-577) — HEAD zero advance 1-cycle (BNK-576=577) · BE WT DIRTY 6M carry
+
+```
+$ git -C src/frontend rev-parse --short develop  → c9cf03b  (BNK-576 carry · HEAD zero advance 1-cycle)
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG-FE-WIRE): wire ezCare template catalog into readiness panel
+  WT CLEAN · ahead 208 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → b6c9b16  (BNK-576 carry · HEAD zero advance 1-cycle)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API
+  WT DIRTY 6M — dispatchReadyCount + DTO dispatchReady field + 3 test (uncommitted deepen·BNK-576 carry)
+  ahead 543 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files · carry)
+$ BE *Test.java=255 (carry)
+$ FE .test.js=192 + .test.jsx=273 = 465 (carry)
+$ 모듈 78.79% (22.85/29 · id=10 부가서비스 still 0.5)
+$ merge gate = FE208 + BE543 = 751 carry (BNK-576=577)
+```
+
+FE WT CLEAN · BE WT DIRTY 6M (dispatchReady deepen in-flight·coder 커밋 대기) · HEAD zero advance 1-cycle 양쪽 · tester FF merge **751** 가속 적기.
+
+### §577-2 ★★★ func.php 모듈5 「프로그램 급여」 10-leaf ↔ ogada `/programs` 전수 cross-walk (NEW)
+
+**【확인】** 근거: `carefor_func_wayback_live_bnk573.html` `6226e6eb`(98,328B·339차 zero drift) verbatim 메뉴 추출 ↔ ogada App.jsx `@c9cf03b` `/programs*` Route + `config/programs.js` + `ProgramsPage.jsx` grep.
+
+| func 5-x | 케어포 leaf | ogada 대응 | 판정 |
+|---|---|---|---|
+| 5-1 | 프로그램 제공기록 | `/programs` + `ProgramParticipationForm` | ✅ parity |
+| 5-2 | 프로그램 일정관리 | `ProgramScheduleForm` "일일 프로그램"·일정 | ✅ parity |
+| 5-4 | 프로그램 정보관리 | "프로그램 관리"(정보 마스터) | ✅ parity |
+| 5-5 | 프로그램 의견수렴 및 반영(평가) | satisfaction 5-scale(매우만족~매우불만족)+`/programs/provision-result-evaluations` | ✅ **우위**(5단 척도+결과평가 분리) |
+| 5-7 | 수급자 참여프로그램 리포트 | participation(참여/불참 사유: 인력부족/시설장애/수급자거부/기타) | ✅ parity |
+| 5-8 | 프로그램 제공기록 리포트(운영기록지) | `/programs/provision-result-evaluations` | ✅ parity |
+| 4-6→6-x | 물리(작업)치료 제공기록·일정·리포트 | `/programs/functional-recovery`(G17·모듈26) | ✅ cross-module parity |
+| 5-3·5-3.1 | 프로그램 수급자 그룹 설정·그룹 관리 | △ 전용 UI 미노출 | △ micro-gap P3 |
+| 5-6 | 프로그램 계획/콘텐츠 | △ 콘텐츠 라이브러리 미노출 | △ micro-gap P3 |
+| 5-9 | 수급자 그룹 설정 이력 리포트 | ❌ 0 | ❌ micro-gap P3 |
+| 5-10 | 수급자 프로그램 일정 리포트 | △ ProgramsPage 일정 뷰 내포(전용 리포트 0) | △ micro-gap P3 |
+| 5-1(중복) | 프로그램관리자 업무수행일지 | ❌ 전용 leaf 0 | ❌ micro-gap P3 |
+
+**판정**: 모듈5 핵심 4-leaf full parity + 의견수렴 5단 척도/결과평가 분리 = ogada 우위 · `competitorModuleCoverage.js` id=5 coverage=1 ✅ 완전 **재확인(가정 번복 아님)**. micro-gap 전부 P3·MVP out-of-scope(대규모 다그룹 운영 시에만 가치) → 신규 candidate **`G-PROGRAM-GROUP-CONFIG` P3「가정」**(수급자 그룹 설정 + 이력 리포트, v3+ Epic carry).
+
+### §577-3 ★★ carefor func.php/demo Wayback 339차 zero drift + LIVE HTTP 000 13-cycle 「미확인」
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| `func.php` (LIVE) | 000 | 0 | - | 13-cycle 「미확인」 carry |
+| `func.php` Wayback id_ | 200 | 98,328 | `6226e6eb` | **339차 zero drift IDENTICAL** → 덮어쓰기 |
+| `demo-work` (LIVE) | 000 | 0 | - | 「미확인」 carry |
+| `demo-work` Wayback id_ | 200 | 71,742 | `ebee4d47` | zero drift IDENTICAL · 시설 셸 transport nav 0 재확인 → 덮어쓰기 |
+
+**planner**: carefor LIVE 백본-set 13-cycle 연속 HTTP 000 — Wayback id_ on-disk 정본만 carry 정책 유지 권장. demo-work 시설 셸 = 이동서비스 미노출(BNK-573 carry 재확인) → ogada `/transport/*` 8-route + NHIS #44 full-stack 차별화 메시지 유지.
+
+## §576 BNK-576 — 교차검증·갭 우선순위 8h+ · ★★★ **G-SMS-TEMPLATE-CATALOG full-stack ✅ CLOSURE** — FE `@c9cf03b` `NotificationChannelReadinessPanel` + `DashboardPage` wire · BE `@b6c9b16` catalog API · ★★★ **가정 번복 1** — BNK-575 longterm 610 URL→menu 재맵 DRIFT **철회** (wrong URL `npe0000000610` bKey error shell) · canonical `npeb610m01.web?menuId=npe0000002731` HTTP 200 `0ea575be` 「통합재가서비스」 recovery · ★★ NHIS #44 351차 zero drift · ★ silverangel notice 7-day stale · ★ MOHW/law247 cosmetic DRIFT → 덮어쓰기 3건 · merge gate **751**
+
+**조사일**: 2026-06-24T07:35:00Z (KST 16:35) | **rotation**: 8h+ "교차검증·갭 우선순위" — G14·G26·v1.3-C·v2 CMS·US-R01-c 4축 재검증 + BNK-575 가정 번복 여부 + G-SMS-TEMPLATE-CATALOG-FE-WIRE closure + longterm 610 canonical recovery + 엑셀 포맷 변경 0. extract `cross_gap_priority_bnk576.txt`.
+
+### §576-1 ogada git 실측 KPI (BNK-576) — FE+1 G-SMS-TEMPLATE-CATALOG-FE-WIRE · BE WT DIRTY 6M
+
+```
+$ git -C src/frontend rev-parse --short develop  → c9cf03b  (BNK-575 `@d682562` HEAD +1)
+  feat(v1.2.1/G-SMS-TEMPLATE-CATALOG-FE-WIRE): wire ezCare template catalog into readiness panel
+  WT CLEAN · ahead 208 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → b6c9b16  (BNK-575 carry · HEAD zero advance 1-cycle)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API
+  WT DIRTY 6M — dispatchReadyCount + DTO dispatchReady field (uncommitted deepen)
+  ahead 543 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files · carry)
+$ BE *Test.java=255 (carry) · @Test loose 1,850
+$ FE .test.js=192 + .test.jsx=273 = 465 (carry · +87L in existing test files)
+$ 모듈 78.79% (22.85/29 · id=10 부가서비스 still 0.5 — competitorModuleCoverage.js 미갱신)
+$ merge gate = FE208 + BE543 = 751 (+1 vs BNK-575 750)
+```
+
+FE WT CLEAN · BE WT DIRTY 6M (dispatchReady deepen in-flight) · cross-stream FE+1 · tester FF merge **751** 가속 권장.
+
+### §576-2 ★★★ G-SMS-TEMPLATE-CATALOG full-stack ✅ CLOSURE (BNK-574 P3 + BNK-575 P2)
+
+**【확인】** FE `c9cf03b` `feat(v1.2.1/G-SMS-TEMPLATE-CATALOG-FE-WIRE)` (+227L · 5-file)
+
+| 레이어 | 구현 | 근거 |
+|---|---|---|
+| API client | `fetchNotificationTemplateCatalogApi()` → `GET /api/v1/notifications/template-catalog` | `services.js` L1190 |
+| UI panel | `NotificationChannelReadinessPanel` parallel `Promise.all([channelStatus, catalog])` | `NotificationChannelReadinessPanel.jsx` |
+| Dashboard wire | `<NotificationChannelReadinessPanel />` on `DashboardPage.jsx` L1425 | App.jsx `/dashboard` G26 |
+| Settings wire | `<NotificationChannelReadinessPanel />` on `OrganizationSettingsPage.jsx` L78 | US-J03 |
+| Tests | `settingsServices.test.js` + `NotificationChannelReadinessPanel.test.jsx` (+87L) | catalog table 6-col assertions |
+
+**ezCare `mobile-sendW` message_kind 카탈로그 UI (6-col table)**:
+
+| col | 필드 | ezCare 대응 |
+|---|---|---|
+| 메시지 | `labelKo` | template label |
+| 종류 | `ezcareMessageKind` | message_kind 1·11·12·13·19·21 |
+| 채널 | `channel` | SMS / ALIMTALK |
+| 발송 구현 | `dispatchImplemented` | BE static catalog |
+| Solapi 설정 | `configured` | templateId env |
+| 발송 가능 | `dispatchReady` | configured ∧ dispatchImplemented (BE dirty uncommitted) |
+
+BE dirty 6M: `NotificationChannelReadinessService.getTemplateCatalog()` + `dispatchReadyCount` aggregate — coder 커밋 대기.
+
+**planner**: BNK-575 candidate `G-SMS-TEMPLATE-CATALOG-FE-WIRE` P2「가정」→ **✅ CLOSURE** · `competitorModuleCoverage.js` id=10 **0.5→0.65** deepen 검토.
+
+### §576-3 ★★★ 가정 번복 1 — longterm 610 URL→menu 재맵 DRIFT (BNK-575) 철회
+
+**【가정 번복】** BNK-575 §575-6 「거짓청구 장기요양기관 명단공표(미사용)」 DRIFT = **wrong URL probe artifact**.
+
+| URL | HTTP | SIZE | md5 | page-title | 통합재가 |
+|---|---|---|---|---|---|
+| `moveBoardView?menuId=npe0000000610` (BNK-575 probe) | 200 | 458B | `c26a5e57` | bKey error shell | 0 |
+| `npeb610m01.web?menuId=npe0000002731` (canonical) | 200 | 91,421B | **`0ea575be`** | **통합재가서비스** | **8건** |
+
+**【확인】** canonical live HTTP 200 · md5 `0ea575be` = on-disk canonical recovery (BNK-571 era).
+- 「2종 이상의 급여」·「월 10만원」·「주야간보호형」 verbatim carry
+- on-disk `longterm_610.html` `d3c90b33`(partial shell) → **`0ea575be` 덮어쓰기**
+- ogada G18-SHORT·`IntegratedHomeProviderDiscoveryPanel` canonical 본문 의존 **복구** (영향 0→정상 carry)
+
+### §576-4 ★★★ 4축+leave-ledger P0/P1 재오픈 0 (25-cycle carry, BNK-549~576)
+
+**【확인】** App.jsx `@c9cf03b` grep:
+
+| 축 | Route | 상태 |
+|---|---|---|
+| G14 | `/clients/:clientId/care-plan-form` | ✅ LIVE |
+| G26 | `/dashboard` · `/dashboard/hq` | ✅ LIVE (+ template catalog panel deepen) |
+| v1.3-C | `/transport/service-fees` (+8-route family) | ✅ LIVE |
+| v2 CMS | `/billing/cms` | ✅ LIVE |
+| US-R01-c | `/staff/annual-leaves` · `/staff/leave-ledger` | ✅ LIVE |
+
+가정 번복 0(4축) · 신규 core 갭 0 · P0/P1 backlog 비움 유지.
+
+### §576-5 ★★ NHIS #44 이동서비스비 러-1~4 351차 zero drift IDENTICAL
+
+**【확인】** [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+HTTP 200 · 7,572B · md5 **`c886ff1f`** IDENTICAL (351차).
+↔ ogada `TransportServiceFeeService` + FE `transportServiceFee.js` + `TransportServiceFeePanel` = full-stack ✅ parity/우위 carry.
+
+### §576-6 ★ silverangel notice weekly 0 (7-day stale)
+
+**【확인】** [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) HTTP 200 · 3,594,181B · md5 **`52c9457f`** IDENTICAL.
+- latest real embed **221563** (6/18) carry
+- probe **221581–221590**: all `8437f255`(51,765B) unpublished shell IDENTICAL
+- weekly notice **0** (7-day stale · next ~6/25 carry)
+
+### §576-7 ★ carefor func.php LIVE HTTP 000 (12-cycle 미확인)
+
+**【미확인】** [func.php](https://www.carefor.co.kr/daycare/func.php) LIVE HTTP **000** (12-cycle).
+on-disk Wayback `6226e6eb`(98,328B·109항목 정본) carry.
+
+### §576-8 ★ MOHW 2026-126 + law247 cosmetic DRIFT (verbatim 불변·덮어쓰기 2건)
+
+**【확인】** [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) `59c4f02b`→**`7c54ce09`** — 조회수 **2,575→2,581**(+6) · 제2026-126호 verbatim 불변.
+
+**【확인】** [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) `d373750d`→**`cd73f7e6`** — cachebuster DRIFT · strip-cachebuster IDENTICAL carry.
+
+### §576-9 planner 반영 제안 (BNK-576)
+
+1. **merge gate 751 (+1 vs BNK-575 750)** — FE WT CLEAN · BE WT DIRTY 6M(dispatchReady deepen) · **tester FF merge 751 가속 권장**.
+2. **★★★ G-SMS-TEMPLATE-CATALOG full-stack ✅ CLOSURE** — BNK-574 P3 BE + BNK-575 P2 FE 1-cycle closure. `competitorModuleCoverage.js` id=10 **0.5→0.65** deepen 검토. BE dirty dispatchReady 커밋 후 merge.
+3. **★★★ 가정 번복 1** — BNK-575 longterm 610 URL remap DRIFT **철회** · canonical `0ea575be` recovery · `longterm_610.html` 덮어쓰기.
+4. **★★ 4축+leave-ledger P0/P1 재오픈 0 (25-cycle)** — G26 dashboard에 template catalog panel deepen carry.
+5. **★★ NHIS #44 351차** — full-stack parity/우위 carry · PLAN_NOTES #44 closure.
+6. **△4 잔여 우선순위** — 8 직원근태 0.85 · 2 이동 0.85 · 7-4 CMS 0.65 · 10 부가 0.5→0.65 후보.
+7. **엑셀 포맷 변경 0** — FAQ/Channel.io/공지 스캔 negative carry.
+8. **per-cycle minimum 4종 충족** — 신규 evidence: FE wire closure + longterm 610 recovery URL 재실측 · 메뉴/필드: §576-2 catalog 6-col table + §576-3 longterm recovery · COMPETITOR_MATRIX `@c9cf03b`/`@b6c9b16` · BENCHMARK_REPORT §576.
+
+## §575 BNK-575 — 엔젤·롱텀·규제 4–6h · ★★★ **G-SMS-TEMPLATE-CATALOG P3「가정」(BNK-574) → ✅ BE CLOSURE @ `b6c9b16`** (`GET /api/v1/notifications/template-catalog` + 6-template parity·dispatchImplemented=3/6 ALIMTALK) · 신규 candidate **G-SMS-TEMPLATE-CATALOG-FE-WIRE P2「가정」**(module 10 0.5→0.65 후보) · FE `@d682562`/BE `@b6c9b16` advance 2 · merge gate **750**(+2) · ★★★ **NEW URL→menu 재맵 DRIFT (npbs 신규홈페이지 26.1.16)** — longterm `npe0000000610` live 「거짓청구 명단공표(미사용)」(통합재가 0건) vs canonical `8d53dcc1`(통합재가서비스 11건 verbatim 보존) · ★★ NHIS #44 350차 zero drift + silverangel 5-URL IDENTICAL + lcms `6b750291` type1+3 carry + longterm 502 canonical 「미확인」 9-cycle carry · ★ MOHW 2026-126 counter +16/law247 cachebuster verbatim 불변 → 덮어쓰기 2건
+
+**조사일**: 2026-06-24T06:55:00Z (KST 15:55) | **rotation**: 4–6h "엔젤·롱텀·규제" — silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 1차 확인 carry + 2026 수가·평가 #27·단기보호·통합재가 고시 교차검증 + npbs 신규홈페이지(26.1.16) menuId 재맵 신규 발견. extract `angel_longterm_regulatory_crossverify_bnk575.txt`.
+
+### §575-1 ogada git 실측 KPI (BNK-575) — FE+1·BE+1·G-SMS-TEMPLATE-CATALOG BE closure
+
+```
+$ git -C src/frontend rev-parse --short develop  → d682562  (BNK-574 `@596658a` HEAD +1)
+  fix(v1.2.1/QA-B285): align FAQ21823 tests with compliance API wire
+  WT CLEAN · ahead 207 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → b6c9b16  (BNK-574 `@9aaefa0` HEAD +1)
+  feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API
+  WT CLEAN · ahead 543 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files · carry)
+$ BE *Test.java=255 (BNK-574 254 +1 = `NotificationSmsTemplateCatalogServiceTest`)
+$ FE .test.js=192 + .test.jsx=273 = 465 (carry)
+$ 모듈 78.79% (22.85/29 · `competitorModuleCoverage.js` 미변경 · 정본)
+$ merge gate = FE207 + BE543 = 750 (+2 vs BNK-574 748)
+```
+
+양쪽 develop WT CLEAN · cross-stream advance 2 (FE+1 QA-B285 회귀 정렬·BE+1 G-SMS-TEMPLATE-CATALOG closure) · tester FF merge **750** 가속 권장.
+
+### §575-2 ★★★ G-SMS-TEMPLATE-CATALOG P3 「가정」(BNK-574) → ✅ BE CLOSURE @ `b6c9b16`
+
+**【확인】** `feat(v2/G-SMS-TEMPLATE-CATALOG): add ezCare message_kind Solapi template catalog API` (+235L · 9-file)
+
+신규 BE 자원:
+- `GET /api/v1/notifications/template-catalog` (Controller +9L)
+- DTO: `NotificationTemplateCatalogResponse`(list·+11L) + `NotificationTemplateCatalogEntryResponse`(templateCode·labelKo·ezcareMessageKind·channel·dispatchImplemented 5-field·+11L)
+- `NotificationChannelReadinessService` +35L (catalog 조립·Solapi mapping status)
+- `NotificationSmsTemplateCatalog` +35L (`EZCARE_PARITY_ENTRIES` 6 항목 static list)
+- `NotificationTemplateCodes` +6L (코드 상수)
+- 테스트 +128L: `NotificationSmsTemplateCatalogServiceTest`(+60L)·`MustApiEndpointRoutingTest`(+34L)·`RoleBasedControllerAccessTest`(+34L)
+
+이지케어 `mobile-sendW` 7-template `message_kind`(BNK-574 evidence) ↔ ogada parity 6-종 cross-walk (22-급여명세서 도메인 경계 제외):
+
+| ezcare message_kind | label | ogada templateCode | channel | dispatchImplemented |
+|---|---|---|---|---|
+| 1 | 접속키 발송 | `STAFF_ACCESS_KEY` | SMS | ❌ false (catalog-only) |
+| 11 | 본인부담 안내 | `BILLING_STATEMENT` | ALIMTALK | ✅ true |
+| 12 | 일정표-수급자 | `CLIENT_MONTHLY_SCHEDULE` | ALIMTALK | ❌ false (catalog-only) |
+| 13 | 급여제공내역 | `CARE_PROVISION_RECORD` | ALIMTALK | ✅ true |
+| 19 | 직원인권보호 | `ELDER_ABUSE_PREVENTION_GUIDELINE` | ALIMTALK | ✅ true |
+| 21 | 일정표-직원 | `STAFF_MONTHLY_SCHEDULE` | ALIMTALK | ❌ false (catalog-only) |
+| ~~22~~ | ~~급여명세서~~ | (도메인 경계) | — | — (외부 더존/세무 SaaS·`G-PAYROLL-EXTERNAL-INTEGRATION` P3「가정」 carry) |
+
+해석:
+- dispatchImplemented=3/6 ALIMTALK live (11·13·19) — Solapi templateId BE fail-closed BNK-562 carry.
+- 3 catalog-only (1·12·21) — FE/J03 dispatch 미연결, P2 wire 후보.
+- BE-only closure — FE wire `git grep "template-catalog|fetchNotificationTemplateCatalog"` = **0 hit**.
+
+↔ ogada @b6c9b16 모듈 cross-walk:
+- `competitorModuleCoverage.js` id=10(부가서비스) = **0.5 △부분 carry** (catalog API readiness 가시화 한정 · feature 산식 미변경).
+- 신규 candidate **`G-SMS-TEMPLATE-CATALOG-FE-WIRE` P2「가정」** — `J03DashboardPage`/`services.js fetchNotificationTemplateCatalogApi` wire 시 module 10 **0.5→0.65** 후보(catalog +0.15 가시화 가중).
+
+### §575-3 ★★ NHIS #44 이동서비스비 러-1~4 350차 zero drift IDENTICAL
+
+**【확인】** [NHIS #44 joHistoryContent](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+HTTP 200 · 7,572B · `c886ff1f` IDENTICAL (BNK-574 carry · **350차**)
+- "'러-1'부터 '러-4'까지 비용의 50%" verbatim
+- "1일 1회" verbatim
+- "이동서비스 일지(별지 제22호 서식) 작성·보관 의무" verbatim
+↔ ogada `TransportServiceFeeService`(RU_1~RU_4·`ONE_WAY_RATIO=0.5`·1일1회 guard) + `TransportServiceLog`(V148/V154/V155) + FE `transportServiceFee.js` 4 parity-copy 상수 + `TransportServiceFeePanel`(UXD-159 a11y) = **full-stack ✅ parity/우위 350차 재입증**(PLAN_NOTES #44 carry).
+
+### §575-4 ★★ silverangel 5-URL zero drift IDENTICAL + weekly notice 0 (6-day stale carry)
+
+| URL | md5 (BNK-571→575) | SIZE | 판정 |
+|---|---|---|---|
+| [daycareEssentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | `c79c1be3` carry | 131,664B | zero drift (이동#41-42·차량운행표·평가#27 목욕) |
+| [extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | `f9c5d877` carry | 81,637B | zero drift (효성CMS 5-method 250/300원·1600-6859) |
+| [mainService](https://www.silverangel.kr/newSilverangel/service/mainService.do) | `bcf6df41` carry | 59,002B | zero drift (루트 동등 셸 carry) |
+| [feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | `eab352a8` carry | 44,513B | zero drift |
+| [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) | `52c9457f` carry | 3,594,181B | zero drift (최신 real 221563(6/18) carry) |
+
+weekly notice 0:
+- 221564 ~ 221580 17-probe(`?list_no=N` clean URL) 모두 HTTP 200 · 51,765B · `8437f255` 미게시 shell IDENTICAL.
+- 최신 real 221563(6/18) → 6-day stale · next Wed ~6/25(내일) 예상 carry.
+
+### §575-5 ★★ lcms 루트 type1+type3 IDENTICAL carry (4-cycle rotation 관측)
+
+**【확인】** [lcms 루트](https://www.lcms.or.kr/)
+HTTP 200 · 50,498B · `6b750291` IDENTICAL (BNK-571 carry).
+- type1+type3 (websiteProvided + CJ프레시웨이 MOU)
+- BNK-556→568→571→575 4-cycle rotation 관측 (type1+3 ↔ type2 silverangel CMS cross-promo).
+
+### §575-6 ★★★ NEW DRIFT — longterm `npe0000000610` URL→menu 재맵 (npbs 신규홈페이지 26.1.16)
+
+**【확인】 live re-fetch**: [npe0000000610&bKey=B0020](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610&bKey=B0020)
+- HTTP 200 · 90,700B(-730B vs canonical 91,430B) · md5 **`8706bc2c`**(NEW)
+- `<h2 class="page-title">거짓청구 장기요양기관 명단공표(미사용)</h2>` (DIFFERENT page)
+- 사이트 배너: "신규 홈페이지 오픈('26.1.16. ~)에 따른 최신 브라우저 설치 필요 안내"
+- live HTML grep: 통합재가 **0건** · 단기보호 **0건** · 74,060 **0건**
+
+**【canonical 보존】** on-disk `longterm_610_live_partial_shell_bnk560.html`
+- md5 `8d53dcc1`(91,430B) · `<h2 class="page-title">통합재가서비스</h2>` · 통합재가 **11건** · 「2종 이상」·「월 10만원」·「주야간보호형」 verbatim 9건 · **보존**(canonical on-disk 우선 정책 유지).
+
+**해석**:
+- 2026-01-16 longtermcare.or.kr **신규 홈페이지 오픈**으로 menuId 매핑이 재구성됨.
+- 기존 menuId=610 → 「통합재가서비스」 → 현재 「거짓청구 명단공표(미사용)」로 재할당.
+- 신규 「통합재가서비스」 페이지 menuId 「미확인」 (probe 14 candidate `npe0000000420~npe0000000800` 중 hit 0건) → next cycle 신규 menuId 발견 task carry.
+- ROADMAP v3.1 G18-SHORT·`IntegratedHomeProviderDiscoveryPanel` 우위 carry는 canonical 본문 보존으로 **영향 0**.
+
+### §575-7 ★★★ longterm 502 단기보호 canonical 「미확인」 carry (~9-cycle)
+
+**【미확인】** [npe0000000502](https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502)
+HTTP 302 (session gate redirect) — live re-fetch 불가.
+- on-disk canonical `b5aee8c1`(105,552B·단기보호 1등급 **74,060**·월 한도액 및 급여비용 2026.1.1 기준) → 보존 carry.
+- BNK-548부터 9-cycle 「미확인」 carry · 가정 번복 0 · canonical 본문 우선 정책 유지.
+
+### §575-8 ★ MOHW 2026-126 counter DRIFT (verbatim 불변)
+
+**【확인】** [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000)
+HTTP 200 · 109,510B · md5 **`c8150e16`→`59c4f02b`** DRIFT.
+- 조회수 **2,559 → 2,575**(+16)
+- 미리보기 첨부① **555 → 560**(+5)
+- 다운로드 첨부① **473** carry(불변)
+- "제2026-126호" verbatim 불변
+- "본인부담상한액 기준보험료의 산정기준 등에 관한 고시 일부개정" verbatim 불변
+- "보건복지부 고시 제2026-126호" verbatim 불변
+→ 덮어쓰기 1건.
+
+### §575-9 ★ law247 cachebuster DRIFT (strip-cachebuster IDENTICAL)
+
+**【확인】** [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110)
+HTTP 200 · 78,450B · md5 **`a9474058`→`d373750d`** DRIFT.
+- `?Time=1782274342` → `?Time=1782284472` (cachebuster +10,130s)
+- strip-cachebuster md5 = `0e07cef1` (BNK-560 carry) live=disk IDENTICAL
+- "제2025-247호" verbatim 불변
+- "[시행 2026.1.1]" verbatim 불변
+→ 덮어쓰기 1건.
+
+### §575-10 ★ 4축+leave-ledger P0/P1 재오픈 0 (24-cycle carry, BNK-549~575)
+
+- G14 care-plan-form ✅ App.jsx `/care-plan-form` carry @d682562
+- G26 dashboard/hq ✅ carry
+- v1.3-C transport 8-route ✅ carry
+- v2 CMS ✅ carry
+- US-R01-c leave-ledger ✅ FE wire + LIVE E2E AVAILABLE carry @bc6180e (BNK-563 closure)
+가정 번복 0 · 신규 candidate 0.
+
+### §575-11 planner 반영 제안 (BNK-575)
+
+1. **merge gate 750 (+2 vs BNK-574 748)** — 양쪽 develop WT CLEAN · cross-stream advance 2 · **tester FF merge 750 가속 권장**.
+2. **★★★ G-SMS-TEMPLATE-CATALOG P3「가정」 → BE ✅ CLOSURE @ `b6c9b16`** — BNK-574 candidate 1-cycle closure(BE-only). 신규 candidate **G-SMS-TEMPLATE-CATALOG-FE-WIRE P2「가정」** — `J03DashboardPage` SMS template readiness widget wire 시 module 10 **0.5→0.65** 후보. 22-급여명세서 도메인 경계 `G-PAYROLL-EXTERNAL-INTEGRATION` P3 carry.
+3. **★★★ NEW longterm `npe0000000610` URL→menu 재맵 DRIFT** (npbs 신규홈페이지 26.1.16) — canonical `8d53dcc1`(통합재가) on-disk 보존 carry · live URL 「미확인」 → ogada 본문 종속 0 (G18-SHORT·integrated home discovery unchanged) · next cycle 신규 menuId 발견 task carry.
+4. **★★ NHIS #44 이동서비스비 러-1~4 350차 zero drift** ↔ ogada full-stack ✅ parity/우위 carry · PLAN_NOTES #44 closure carry.
+5. **★★ silverangel 5-URL zero drift IDENTICAL** + weekly notice 0(6-day stale·next ~6/25 carry).
+6. **★ MOHW 2026-126 counter +16 / law247 cachebuster** verbatim 불변 carry · 덮어쓰기 2건.
+7. **△4 잔여 우선순위 불변** — 10 부가서비스 0.5 carry (BE catalog API closure만 → KPI 산식 영향 0 · FE wire 후 0.5→0.65 후보) · 8 직원근태 0.85 · 2 이동 0.85 · 7-4 CMS 0.65 → carry.
+8. **가정 번복 0 · 신규 core 갭 0 · candidate +1 신규**(`G-SMS-TEMPLATE-CATALOG-FE-WIRE P2「가정」`) · **상태 변경 2**(FE+1·BE+1) · **미확인 carry 2**(longterm 502 9-cycle·longterm 610 신규 URL 1-cycle).
+9. **per-cycle minimum 4종 충족**:
+   - 신규 evidence URL 1건+: 신규 BE API `GET /api/v1/notifications/template-catalog`(BNK-574 candidate closure) + longterm 610 신규 URL→menu remap DRIFT 발견 = 2건.
+   - 메뉴/필드/워크플로 1블록+: §575-2 6-template parity table + §575-6 longterm 610 page-title remap table.
+   - COMPETITOR_MATRIX `@HEAD` 갱신: FE `@d682562` / BE `@b6c9b16` 6 row 신규.
+   - BENCHMARK_REPORT §575 신규 소절 11건.
+
+## §574 BNK-574 — 이지케어 역공학 2–4h · ★★★ **신규 PGID 2건 — `wAllowance-awData` 4-tab(모듈 11 직원급여 정본) + `mobile-sendW` 4-tab + 7-template `message_kind` 정본** — FE `@596658a`/BE `@9aaefa0` HEAD zero advance 1-cycle·merge gate **748** carry · ★★★ **이지케어 SMS 라우터 7-template 정본** — `message_kind={1 접속키·11 본인부담·12 일정표-수급자·13 급여제공·19 직원인권·21 일정표-직원·22 급여명세서}` + `addService/recruit/work24` Work24 외부 통합 funnel + 선불 포인트(`balancePoint`·`charge_amount`·`usePoint`) + `emma_tran_rslt` SMS 게이트웨이 ledger · ★★ **module 10 부가서비스(0.5) deepen 후보** `G-SMS-TEMPLATE-CATALOG` P3「가정」 신규 — Solapi templateId 6-종 catalog 시 0.5→0.7 상승 · ★★ **module 11 직원급여 ❌갭 유지** — `wAllowance-awData`(수당산정 a1~a9/b1·4대보험 insure4_{a,b,c,d}·월급제·목욕/간호 건별·`bungaeType` 분개·`taxField` 세무) 도메인 경계(외부 더존/세무 SaaS 분리 v3+ carry) · ★ **백본 5-URL cosmetic DRIFT** home/fnc/charge/demo shell/top_nav verbatim 불변 → 덮어쓰기 5건 · ★ **KPI 회계 정정 1**(가정 번복 1) — BNK-573 §573-1 「FE test 469」 → raw `git ls-tree -r develop` 실측 **192+273=465** carry
+
+**조사일**: 2026-06-24T06:15:00Z (KST 15:15) | **rotation**: 2–4h "이지케어 역공학" — `/new.ez` 미수집 PGID 신규 fetch + Channel.io/FAQ rowid 보강 + 가격·도입 재실측. extract `ezcare_wallowance_msg_pgid_crosswalk_bnk574.txt`.
+
+### §574-1 ogada git 실측 KPI (BNK-574) — HEAD zero advance 1-cycle
+
+```
+$ git -C src/frontend rev-parse --short develop  → 596658a  (BNK-573 carry · HEAD zero advance 1-cycle)
+  feat(v1.2.1/FAQ21823): wire employment contract compliance API to dashboard and staff
+  WT CLEAN · ahead 206 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 9aaefa0  (BNK-573 carry · HEAD zero advance 1-cycle)
+  feat(v2/FAQ21823): add employment contract compliance API and dashboard counts
+  WT CLEAN · ahead 542 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files · carry)
+$ BE *Test.java=254 · @Test loose=1,856 (BNK-573 1,845 +11 — testify 추가 검증 카운트 증가 · *Test.java 파일 0 변동)
+$ FE .test.js=192 + .test.jsx=273 = 465 (BNK-572 carry · BNK-573 「469」 회계 정정)
+$ 모듈 78.79% (22.85/29 · `competitorModuleCoverage.js` carry · 정본)
+$ merge gate = FE206 + BE542 = 748 (BNK-573 동일 carry)
+```
+
+[**KPI 가정 번복 1 — 경미한 회계 정정**] BNK-573 §573-1 「`FE test 469 (+4 vs BNK-572 465)`」은 raw `git ls-tree -r develop` 재실측 결과 **192+273=465**(BNK-572 carry, HEAD `596658a` 시점 .test.js·.test.jsx 변동 0)로 정정한다. `competitorModuleCoverage.js`·모듈 78.79%·merge gate 748·기능 candidate 영향 0(회계 교정만).
+
+양쪽 develop WT CLEAN · cross-stream HEAD zero advance 1-cycle · tester FF merge **748** 가속 권장 carry.
+
+### §574-2 ★★★ PGID `wAllowance-awData` (NEW) — 모듈 11 직원급여 4-tab 정본
+
+**【확인】** [/new.ez?PGID=wAllowance-awData](https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-awData) (demo 세션) HTTP **200** · `769af968` / **134,687B** · 신규 확보(이전 차수 미수집). endpoint `page/wAllowance/json-wAllowance.php`.
+
+| Tab | id | 명칭 | grid (메인) | grid (검색) |
+|---|---|---|---|---|
+| 1 | `#tabs-awData-01` | **수당산정방식 및 분개값** | `grid-awData-tab-01` | `grid-search-awData-tab-01` |
+| 2 | `#tabs-awData-02` | **사회보험 가입현황 관리** | `grid-awData-tab-02` + `-02-02`(현황) + `-02-03`(변경이력) | `grid-search-awData-tab-02` |
+| 3 | `#tabs-awData-03` | **월급제 수당관리** | `grid-awData-tab-03` | `grid-search-awData-tab-03` |
+| 4 | `#tabs-awData-04` | **목욕/간호 건별수당** | `grid-awData-tab-04` | `grid-search-awData-tab-04` |
+
+핵심 colModel 정본:
+
+| 카테고리 | colModel name |
+|---|---|
+| 식별/근태 | `rowid`·`code`·`sCode`·`sCode2`·`sKind_name`·`worker_kind`·`worker_kind_name`·`pay_type`(01 시급/02 일급/03 월급/04 건당)·`Ym`·`date_enter`·`birthdate`·`state` |
+| 수당 컴포넌트 | `a1`·`a2_amount`·`a3_amount`·`a7`·`a9`·`b1`·`hAmount`·`hAmount_base`·`allowance`·`meal_amount`·`tAmount_rate` |
+| 4대보험 | `insure4_a`·`insure4_b`·`insure4_c`·`insure4_d` (국민/건강/고용/산재 4개)·`insure4_amount`·`insure4_info_ext` |
+| 세무/분개 | `income_tax_type`·`taxField`·`bungaeType`·`bungaeType_org`·`sCode_amount` |
+
+해석:
+- 1탭(수당산정방식 및 분개값) — `a1`/`a2`/`a3`/`a7`/`a9`/`b1` 임금 컴포넌트별 산식+회계 분개 코드(`bungaeType`).
+- 2탭(사회보험) — `insure4_{a,b,c,d}` 4대보험 가입/말소 ledger + 변경이력 분리 grid(`-02-02`/`-02-03`).
+- 3탭(월급제) — 시급/일급/건당이 아닌 월급제 직원 별도 수당 룰.
+- 4탭(목욕/간호 건별) — 케어포 func 4-x 간호·물리 leaf와 달리, 이지케어는 **목욕(003) + 간호 건별 수당**을 단일 grid로 묶음(BNK-563 `schedule-s100` 「중증수당 분리 룰」보조 evidence).
+
+↔ ogada `@596658a` 대비:
+- `competitorModuleCoverage.js` id=11(직원급여) = **0.0 ❌갭** carry (MVP out-of-scope).
+- ogada 자체 payroll 도메인 (`BillingCompensation`·`StaffPayrollPlaceholder`) 없음 — 본인부담·청구(`BillingTransaction`·`CashReceipt*`) ✅ full parity.
+- **갭 아님(도메인 경계)** — v3+ 외부 더존/세무 SaaS API 연동(`G-PAYROLL-EXTERNAL-INTEGRATION` P3「가정」 신규 candidate).
+
+### §574-3 ★★★ PGID `mobile-sendW` (NEW) — 모듈 9/10 SMS 라우터 4-tab + 7-template `message_kind`
+
+**【확인】** [/new.ez?PGID=mobile-sendW](https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendW) (demo 세션) HTTP **200** · `4d47d14f` / **133,272B** · 신규 확보. endpoints:
+- `page/mobile/json-mobile.php?data=...` (SMS data API)
+- `page/mobile/run-mobile.php?mode=...` (SMS action API)
+- `addService/recruit/json.php?data=...` (CareMatch 구인)
+- `addService/recruit/run.php?mode=...` (구인 액션)
+- `addService/recruit/work24/json.work24.php?data=...` (**고용노동부 Work24 통합 API**)
+
+| Tab | id | 명칭 | grid |
+|---|---|---|---|
+| 1 | `#tabs-mobile-sendW-01` | **문자 보내기 → 직원** | `grid-mobile-sendW-01` |
+| 2 | `#tabs-mobile-sendW-02` | **문자 발송내역** | `grid-mobile-messageLogG-01` |
+| 3 | `#tabs-mobile-sendW-03` | **포인트 사용내역(선불 SMS)** | `grid-mobile-pointLog-01` |
+| 4 | `#tabs-mobile-sendW-04` | **받은 쪽지** | `grid-mobile-reciveLog-01` |
+
+**7-template `message_kind` 정본** (`<option value="N">`):
+
+| code | 라벨 | 대응 도메인 | ogada cross-walk (@596658a) | 판정 |
+|---|---|---|---|---|
+| **1** | 접속키 발송 | 신규 직원 모바일 앱 접근 키 | `StaffOnboardingInvitation` (US-R01-a) | △ in-app/email ✅ · SMS ❌ |
+| **11** | 본인부담 | 본인부담 청구 안내 | `CashReceipt*`·`BillingTransaction` 통지 | △ in-app ✅ · SMS 템플릿 ❌ |
+| **12** | 일정표-수급자 | 월간 일정표(보호자/수급자) | `OutingPlan`·`AttendancePlan` 통지 | △ in-app ✅ · SMS ❌ |
+| **13** | 급여제공내역 | 장기요양 급여 제공 결과 | `CareProvisionRecord` 통지 | △ in-app ✅ · SMS ❌ |
+| **19** | 직원인권보호 | 안전·인권 공지(년 1회 의무) | `StaffGrievanceCounseling` annual | △ in-app ✅ · SMS ❌ |
+| **21** | 일정표-직원 | 근무 일정표(요양보호사) | `StaffWorkSchedule` push | △ in-app ✅ · SMS ❌ |
+| **22** | 급여명세서 | 임금명세서(근로기준법 §48) | `BillingCompensation` (MVP out-of-scope) | ❌ (도메인 경계) |
+
+기타 핵심 colModel:
+- 발신: `User_ID`·`aKey`·`uCode`·`uKind`·`uPhone`·`token`·`sw`·`login_count`·`login_date`
+- 메시지: `message`·`message_org`·`message_kind`·`method`·`num`·`cnt`
+- 수신/응답: `rPhone`·`rdate`·`wdate`·`state`·**`emma_tran_rslt`**(Emma SMS 게이트웨이 결과 코드)·`memo`
+- 결제(선불 포인트): `amount`·`balancePoint`·`charge`·`charge_amount`·`usePoint`·`goMessage` ↔ BNK-563 `customer-ezc_bill_list` `amount_sms` 컬럼 정합
+- 구인 임베드(addService/recruit): `job_address`·`job_days`·`job_location`·`job_location_code`·`job_pay`·`job_time_start/end/min`·`job_type` (01 시급/02 일급/03 월급/04 건당)
+
+↔ ogada `@596658a` 대비:
+- `competitorModuleCoverage.js` id=10(부가서비스) = **0.5 △부분** carry.
+- ogada BE `SolapiMessageClient` + `templateId` 매핑(BNK-562 G16 fail-closed) = ✅ 외부 Solapi 의존(자체 ledger ❌·자체 결제 ❌·**외부 분리 우위** — 운영 부담 ↓).
+- **planner P3 신규 candidate `G-SMS-TEMPLATE-CATALOG`「가정」** — `SolapiMessageTemplateCatalog` 6-종(접속키·본인부담·일정표S·급여제공·인권공지·일정표W) 매핑 시 module 10 **0.5→0.7** 상승 후보 (22-급여명세서는 도메인 경계로 제외).
+- **Work24 외부 채용 API 통합** → ogada candidate `G-CAREMATCH-JOB-POST` P3 carry 보강(MVP out-of-scope).
+
+### §574-4 백본 live 재실측 (2026-06-24T06:10Z)
+
+| URL | md5 (BNK-572→574) | SIZE | verbatim 검증 | 판정 |
+|---|---|---|---|---|
+| [home](https://ezcare.easyms.co.kr/) | `507198dc`→`3bb39fde` | 106,107B (-13B) | `mCnt = {1:9279, 2:4598, 3:2353, 4:1820}` verbatim 불변 · "9,279개 재가기관이 이지케어를 선택한 이유!" verbatim 불변 | cosmetic DRIFT (회전 배너/timestamp only) → 덮어쓰기 |
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | `282d3a20`→`e1634b0b` | 17,870B 동일 | "9,351개" verbatim 불변 | cachebuster DRIFT → 덮어쓰기 |
+| [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | `46de7215`→`9304b16a` | 22,979B 동일 | 33,000 / 25,850 / 55,000 / 10,000 / 2,350 / 500 / 0원 verbatim 불변 | cachebuster DRIFT → 덮어쓰기 |
+| [/new.ez](https://ezcare.easyms.co.kr/new.ez) (demo) | `db4d19d9`→`3b084d18` | 145,313B (+2B) | nav 10-module verbatim 불변(1직원·2수급자·3방문일정·4RFID점검·5본인부담·6직원급여·7재무회계·8세무·사회보험·9기관관리·10기관평가)·diff="오늘의 업무 [06월21일→24일]"·widget id 회전·carematch sidebar JS +3L | cosmetic DRIFT → 덮어쓰기 |
+| [top-nav-V2.js?20260428](https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428) | `95286775` carry | 25,470B | BNK-547부터 정본 carry (BNK-565 「자산 제거」 가정 번복 carry — 실제로는 `/assets/top-nav-item-V2.js?20260428` query 경로에서 200 살아있음) | idempotent → 덮어쓰기 |
+
+[**가정 번복 1 carry** — BNK-565 §565-4 「ezCare `/new/js/top-nav-V2.js` 자산 제거(404)」는 **`/assets/top-nav-item-V2.js?20260428` 새 경로 살아있음**으로 18-cycle 이상 carry. 본 차수 demo fetch에서 `25,470B`·`95286775` 동일 자산 재취득(BNK-540 `25,470B` 동일 carry).]
+
+### §574-5 planner 반영 제안 (BNK-574)
+
+- **merge gate 748 carry** (HEAD zero advance 1-cycle) — 양쪽 develop WT CLEAN, tester FF merge 748 가속 권장 carry.
+- **module 11 ❌갭→유지** — `wAllowance-awData` 4-tab은 도메인 경계 밖. v3+ 시점 더존/세무SaaS API 외부 연동(`G-PAYROLL-EXTERNAL-INTEGRATION` P3「가정」) carry.
+- **module 10 △0.5→0.7 deepen 후보** — 신규 candidate `G-SMS-TEMPLATE-CATALOG` P3「가정」: Solapi templateId 6-종(접속키·본인부담·일정표S·급여제공·인권공지·일정표W) catalog 시 부가서비스 0.5→0.7 상승. (22-급여명세서 도메인 경계 제외)
+- **CareMatch + Work24 외부 채용 API funnel** = 이지케어 자체 구인 모듈 — ogada `G-CAREMATCH-JOB-POST` P3 carry 보강(MVP out-of-scope, v2+ candidate).
+- **KPI 회계 정정 1건** — BNK-573 §573-1 `FE test 469` → `192+273=465`(`competitorModuleCoverage.js`·모듈 78.79%·merge gate 영향 0).
+
+**요약 카운트(BNK-574)**: 가정 번복 1(KPI 회계) · 신규 core 갭 0 · candidate +2(P3「가정」 `G-SMS-TEMPLATE-CATALOG` · `G-PAYROLL-EXTERNAL-INTEGRATION`) · 상태 변경 0(HEAD zero advance 1-cycle) · 신규 snapshot 3건(wallowance-awData·mobile-sendW·extract) · 덮어쓰기 5건(home·fnc·charge·demo shell·top_nav) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족(신규 URL 2 · 워크플로 2블록 · matrix 1행 · §574 5소절).
+
+## §573 BNK-573 — 케어포 역공학 0–2h · ★★★ **M8 직원관리 15-leaf ↔ demo L08 14 loadPage ↔ ogada FAQ21823 compliance API full-stack closure** — FE `@596658a`/BE `@9aaefa0` cross-stream **HEAD +1+1**·merge gate **748** · ★★★ **근로(재)계약 tri-source** — 케어포 func **leaf 0**(8-1 서류 20슬롯 embed only·PDF p.96) · 이지케어 FAQ21823 7-step ✅ · ogada `GET /api/v1/staff/employment-contracts/compliance` + dashboard 3-widget + `StaffEmploymentContractRenewalSummaryPanel` **✅+ 우위** · ★★ **demo-work 시설 셸 이동서비스 0 재확인** — transport nav grep **0**·func M2 10-leaf(2-2~2-4) IA remap → L02 요양기록 · ★★ **리포트 밀도** demo 34/110=**30.9%** vs ogada 23/111=**20.7%**(갭 **−10.2%p**) · ★ **Wayback 338차 zero drift** func `6226e6eb`(98,328B)·demo `ebee4d47`(71,742B) · ★ **carefor LIVE HTTP 000 미확인 11-cycle carry**
+
+**조사일**: 2026-06-24T05:35:00Z (KST 14:35) | **rotation**: 0–2h "케어포 func.php·매뉴얼·demo-work" — M8 직원관리·근로계약 tri-source·시설 셸·7-x carry·Route 1:1 매핑. extract `carefor_m8_employment_contract_crosswalk_bnk573.txt`.
+
+### §573-1 ogada git 실측 KPI (BNK-573) — HEAD cross-stream FE+1·BE+1
+
+```
+$ git -C src/frontend rev-parse --short develop  → 596658a  (BNK-572 @a43bcb7 HEAD +1)
+  596658a feat(v1.2.1/FAQ21823): wire employment contract compliance API to dashboard and staff
+  WT CLEAN · ahead 206 vs origin/test=ab4de83 (+1)
+$ git -C src/backend  rev-parse --short develop  → 9aaefa0  (BNK-572 @d11263b HEAD +1)
+  9aaefa0 feat(v2/FAQ21823): add employment contract compliance API and dashboard counts
+  WT CLEAN · ahead 542 vs origin/test=598d108 (+1)
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files · carry)
+$ BE *Test.java=254 files · @Test loose=1,845 (carry)
+$ FE .test.js+.test.jsx=469 (+4 vs BNK-572 465)
+$ 모듈 78.79% (22.85/29 carry · 정본)
+$ merge gate = FE206 + BE542 = 748 (+2 vs BNK-572 746)
+```
+
+양쪽 develop WT CLEAN · cross-stream HEAD advance (FE FAQ21823 API wire · BE compliance API) · tester FF merge **748** 가속 권장.
+
+### §573-2 ★★★ M8 직원관리 15-leaf 전수 · 근로(재)계약 tri-source
+
+**【확인】** [func.php Wayback id_](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) HTTP **200·98,328B·`6226e6eb`** → **338차 zero drift IDENTICAL** (on-disk `carefor_func_live_bnk561_check.html` 동일). M8 func **15 leaf**: 8-1~8-13(+8-1-1·8-7-1).
+
+**【확인】** [demo-work Wayback id_](https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/) HTTP **200·71,742B·`ebee4d47`** — L08 **14 loadPage** visible (8-9 고충처리=alert→9-5·8-7-1 commented). 번호 drift: func 8-13=연차대장 · demo 8-13=급여제공 리포트·8-14=연차 (BNK-536 carry 재확인).
+
+| func | demo L08 view | ogada Route | 판정 |
+|---|---|---|---|
+| 8-1 직원 정보관리 | `/staff/view.staff_manage` | `/staff` · `/staff/:id` | ✅ |
+| 8-1-1 선임 요양보호사 일지 | `view.senior_staff_work_report` | `/staff/lead-caregiver-log` | ✅ |
+| 8-4 출퇴근·근무관리 | `view.staff_work_manage` | `/staff/attendance` | ✅ |
+| 8-7 교육일지 | `view.staff_education` | `/staff/training` · `/staff/training-logs` | ✅ |
+| 8-9 고충처리 | alert→9-5(2025 평가 비필수) | `/staff/grievance-counselings` | ✅ ogada 우위 |
+| 8-12 현황 리포트 | `view.staff_report` rpt | `/staff/reports/status` | ✅ |
+| 8-13 연차대장 | demo 8-14 `view.staff_vacation_report` | `/staff/annual-leaves` · `/staff/leave-ledger` | ✅ |
+| 8-2 근무일정표 | `view.work_plan` | — | △ P3 NHIS excel |
+| demo-only 8-13 | `view.staff_work_report` rpt | — | ❌ HR payroll P3 |
+
+**【확인】** [PDF p.96](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=96) — 8-1 ③ **서류관리 20개 슬롯**·모바일 등록 · **근로계약 전용 leaf 0**.
+
+**【확인】** 근로(재)계약 tri-source:
+
+| 출처 | 전용 leaf | compliance workflow | 판정 |
+|---|---|---|---|
+| 케어포 | leaf 0 (8-1 서류 embed) | PDF p.96 generic 20-slot | △ |
+| 이지케어 FAQ21823 | 「직원관리▶서식▶근로계약서」 | 7-step·3년 보관 | ✅ |
+| ogada `@596658a`/`@9aaefa0` | `StaffEmploymentContractRenewalSummaryPanel` | `GET /api/v1/staff/employment-contracts/compliance` + dashboard 3-widget (gap/expiring/expired) + D-day 30일·MISSING/OVERDUE/DUE_SOON | **✅+ 우위** |
+
+→ **ogada 차별화**: 케어포 대비 전용 compliance API·dashboard 집계 · 이지케어 대비 BE 강제 + retention 3년 자동계산. module 8 deepen 후보(0.85→1.0).
+
+### §573-3 ★★ demo-work 시설 셸 · 이동서비스 부재 · 리포트 밀도
+
+**【확인】** demo-work on-disk `carefor_demo_work.html` parse — loadPage **110**·rpt **34** = **30.9%** · transport/송영/배차/이동서비스 nav grep **0 hits**.
+
+**【확인】** func.php M2 이동서비스 10-leaf(2-2 탑승·2-3 출석·2-4 차량 등) 존재하나 demo L02는 **요양급여 제공기록**으로 IA remap — **시설 데모 셸에서 이동서비스 UX 미노출** 명시.
+
+| 지표 | carefor demo | ogada `@596658a` |
+|---|---|---|
+| 리포트 밀도 | 34/110 = **30.9%** | 23/111 = **20.7%** |
+| 갭 | — | **−10.2%p** (P2 G-REPORT-DENSITY carry) |
+| 이동서비스 | nav 0 (IA remap) | `/transport/*` 8-route ✅ |
+
+### §573-4 M7 본인부담 7-x lifecycle carry (BNK-555 정본)
+
+**【확인】** func M7 11-leaf ↔ demo L07 10-leaf ↔ ogada `/billing/*` 11/11 ✅ + 5 superset carry. PDF p.90 「7-3 청구시작」번호 이중 의미(온보딩 vs func 7-3 미납)·p.85 7-1→7-2 선행입금 가드·p.86 9-1 생성기준 분기 — 변경 없음(BNK-555 tri-source).
+
+### §573-5 백본 live 재실측
+
+**【미확인】** [carefor func.php LIVE](https://www.carefor.co.kr/daycare/func.php) · [demo-work LIVE](https://demo-work.carefor.co.kr/) · [manual PDF LIVE](https://www.carefor.co.kr/daycare/manual/daycare_manual.pdf) — **HTTP 000**(timeout 20s) · **11-cycle 미확인 carry**. Wayback id_ 정본만 carry.
+
+**【확인】** Wayback 재실측 — func `6226e6eb` IDENTICAL · demo `ebee4d47` IDENTICAL vs prior Wayback (on-disk `b2e8e5c8` 75,587B dual-snapshot·verbatim 동일).
+
+### §573-6 planner 반영 제안 (BNK-573)
+
+- **merge gate 748** — FE/BE develop 양쪽 WT CLEAN·cross-stream HEAD +1+1 → **tester FF merge 748 가속**.
+- **module 8 deepen** — FAQ21823 API wire closure → `competitorModuleCoverage.js` id=8 **0.85→1.0** 검토(planner P2).
+- **G-REPORT-DENSITY P2 carry** — carefor demo 30.9% vs ogada 20.7% (−10.2%p).
+- **케어포 근로계약 갭** — 전용 leaf 0·서류 embed only → ogada ✅+ 우위 마케팅 카피 후보.
+- **carefor LIVE 11-cycle** — 백본-set Wayback id_ 의존 정책 carry.
+
+**요약 카운트(BNK-573)**: 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 2(FE+1·BE+1·cross-stream advance) · 미확인 carry 1(carefor LIVE 11-cycle) · 신규 snapshot 3건 · 덮어쓰기 2건(wayback func/demo) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.
+
+## §572 BNK-572 — ogada git 실측 6–8h · ★★★ **HEAD zero advance 2-cycle (BNK-571=572)** — FE `@a43bcb7`/BE `@d11263b` 양쪽 develop **WT CLEAN**·merge gate **746** carry · ★★★ **모듈 78.79%(22.85/29) 정본 재산정 검증** — `competitorModuleCoverage.js` raw grep 30행/23.85 → 헤더 주석 `* coverage: 1 = ✅` 1행 제외 = **29행/22.85=78.79%**(불변·✅완전 20·△부분 4·❌갭 5) · ★★★ **NHIS #44 이동서비스비 러-1~4 349차 zero drift IDENTICAL** `c886ff1f`(7,572B) ↔ ogada `TransportServiceFeeService`+FE `transportServiceFee.js` full-stack ✅ parity/우위 · ★★ **silverangel essential zero drift IDENTICAL** `c79c1be3`(131,664B) · ★ **ezcare home/fnc cosmetic DRIFT** (home `507198dc`·mCnt 9,279/4,598/2,353억/1,820억 verbatim 불변 / fnc `282d3a20`·도입 9,351 verbatim 불변 → 덮어쓰기 2건) · ★ **carefor func.php LIVE HTTP 000 미확인 10-cycle carry** (on-disk `6226e6eb` 98,328B carry)
+
+**조사일**: 2026-06-24T04:55:00Z (KST 13:55) | **rotation**: 6–8h "ogada git 실측" — `src/backend`·`src/frontend` develop HEAD·Route·page·테스트·모듈 KPI 재산정 + COMPETITOR_MATRIX ogada `@HEAD` 열 갱신. extract `ogada_git_remeasure_bnk572.txt`.
+
+### §572-1 ogada git 실측 KPI (BNK-572) — HEAD zero advance 2-cycle
+
+```
+$ git -C src/frontend rev-parse --short develop  → a43bcb7  (BNK-571 carry · HEAD zero advance 2-cycle)
+  a43bcb7 feat(v1.2.1/FAQ21823): add retention expiry alerts and contract template print
+  WT CLEAN · ahead 205 vs origin/test=ab4de83 (carry)
+$ git -C src/backend  rev-parse --short develop  → d11263b  (BNK-571 carry · HEAD zero advance 2-cycle)
+  d11263b feat(v2/live-e2e): add explicit operation reason in health and probe
+  WT CLEAN · ahead 541 vs origin/test=598d108 (carry)
+$ <Route\b=111 (App.jsx grep) + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files · 최신 V173/V174/V175 · carry)
+$ BE *Test.java=252 files · @Test=1,847 (carry)
+$ FE .test.js=192 + .test.jsx=273 → 465 (carry)
+$ 모듈 78.79% (22.85/29 · competitorModuleCoverage.js raw 30행/23.85 − 헤더 주석 1행 = 29행/22.85)
+$ merge gate = FE205 + BE541 = 746 (carry vs BNK-571 746)
+```
+
+양쪽 develop WT CLEAN · HEAD zero advance 2-cycle (신규 코드 변동 0) · 회귀 위험 낮음 → tester FF merge **746** 가속 적기.
+
+### §572-2 모듈 커버리지 정본 재산정 검증 (competitorModuleCoverage.js @a43bcb7)
+
+**【확인】** `src/config/competitorModuleCoverage.js` `git show develop:` 파싱 — `coverage: N` 패턴 raw 30행/합 23.85 → 헤더 JSDoc 주석 `* coverage: 1 = ✅ 완전, 0.6 = △ 부분, 0 = ❌ 갭` 1행(값 1.0) 제외 = **29 feature / 합 22.85 = 78.79%** (BNK-480부터 정본 불변).
+
+| 구분 | 건수 | 비고 |
+|---|---|---|
+| ✅완전 (1.0) | 20 | 수급자·보호자·출석·건강·청구·대시보드·등급변동 등 core |
+| △부분 | 4 | id=2 이동서비스(0.85)·7-4 CMS(0.65)·8 직원근태(0.85)·10 부가서비스(0.5) |
+| ❌갭 | 5 | 1-5 가정통신문·1-10 연계기록지·6·11·12 (전부 MVP out-of-scope) |
+
+상향 여지: △부분 4건 중 **부가서비스(0.5)** deepen이 단위 상승폭 최대 (0.5→1.0 = +0.5/29 ≈ +1.7%p) — planner P3.
+
+### §572-3 백본 live 재실측 (2026-06-24 ~04:50 UTC)
+
+**【확인】** [NHIS #44 joHistory](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200·7,572B·`c886ff1f`** → **349차 zero drift IDENTICAL** (BNK-540~572). ↔ ogada `TransportServiceFeeService`(RU_1~RU_4·ONE_WAY_RATIO=0.5·1일1회 dedup·V148/V154/V155) + FE `transportServiceFee.js` 4 parity-copy 상수 + `TransportServiceFeePanel`(UXD-159 a11y) full-stack ✅ parity/우위.
+
+**【확인】** [silverangel daycareEssentialWork.do](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) HTTP **200·131,664B·`c79c1be3`** → zero drift IDENTICAL (이동서비스 #41-42·차량운행표·평가#27 목욕 월5회 carry).
+
+**【확인】** [ezcare home](https://ezcare.easyms.co.kr/) HTTP **200·106,120B·`10a50fd7`→`507198dc`** cosmetic DRIFT — `mCnt = {1:9279, 2:4598, 3:2353(억), 4:1820(억)}` verbatim 불변 (BNK-570 동일) · 회전 배너/cachebuster only → 덮어쓰기.
+
+**【확인】** [ezcare fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) HTTP **200·17,870B·`d2e0fab1`→`282d3a20`** cachebuster DRIFT — 도입 **9,351개** verbatim 불변 (BNK-570 동일) → 덮어쓰기.
+
+**【미확인】** [carefor func.php](https://www.carefor.co.kr/daycare/func.php) LIVE **HTTP 000**(연결 실패/timeout) — 10-cycle 미확인 carry. on-disk `carefor_func_live_bnk561_check.html` `6226e6eb`(98,328B·109항목 정본) carry. 백본-set에서 LIVE 의존 제거·on-disk 정본만 carry 권장.
+
+### §572-4 planner 반영 제안 (BNK-572)
+
+- **merge gate 746 carry** — FE/BE develop 양쪽 WT CLEAN·HEAD zero advance 2-cycle(신규 코드 변동 0)·회귀 위험 낮음 → **tester FF merge 746 가속 적기**.
+- **모듈 78.79%(22.85/29)** 6-cycle+ 정본 안정 — 상향 우선순위 부가서비스(0.5) deepen(단위 상승폭 최대).
+- **carefor func.php LIVE 10-cycle 미확인** — 백본-set LIVE 의존 제거, on-disk 정본만 carry 권장.
+
+**요약 카운트(BNK-572)**: 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 0(HEAD zero advance 2-cycle) · 미확인 carry 1(carefor LIVE 10-cycle) · 신규 snapshot 1건 · 덮어쓰기 2건(ezcare home/fnc) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족.
+
+## §571 BNK-571 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 348차 zero drift IDENTICAL** `c886ff1f`(7,572B·러-1~4·편도50%·1일1회·④별지 제22호 일지) ↔ ogada `TransportServiceFeeService` + FE `transportServiceFee.js` 4 parity-copy 상수 + `TransportServiceFeePanel` UXD-159 a11y full-stack ✅ parity/우위 · ★★★ **silverangel 5-URL zero drift IDENTICAL** (essential `c79c1be3`·extraService `f9c5d877` 효성CMS 5-method·mainService `bcf6df41`·feeService `eab352a8`·notice list `52c9457f`·weekly notice 0) · ★★★ **longterm 502/610 canonical 정합** (502 단기보호 1등급 **74,060** stable · 610 통합재가 가산 월 **10만원** stable, oscillation 11th cycle 회복) · ★★ **lcms 루트 3-type rotation 회귀** `6c0d22b4`(type2)→`6b750291`(type1+type3 50,498B·BNK-556→568→571 3-cycle 관측) · ★ **MOHW 2026-126 counter 2,550→2,559(+9) + law247 cachebuster cosmetic DRIFT verbatim 불변 (덮어쓰기 2건)** · ★ **silverangel `/newSilverangel/main/main.do` 404 신규 미확인** (루트 `/` 동등 셸 101,258B `6b60b17f` IDENTICAL carry — main 콘텐츠 영향 0)
+
+**조사일**: 2026-06-24T04:10:00Z (KST 13:10) | **rotation**: 4–6h "엔젤·롱텀·규제" — silverangel/lcms 공개·CMS·law.go.kr 이동서비스비·2026 수가·평가#27·단기보호·통합재가. extract `angel_longterm_regulatory_crossverify_bnk571.txt`.
+
+### §571-1 ogada git 실측 KPI (BNK-571)
+
+```
+$ git -C src/frontend rev-parse --short develop  → a43bcb7  (BNK-570 @cba9ff8 HEAD +1)
+  a43bcb7 feat(v1.2.1/FAQ21823): add retention expiry alerts and contract template print
+  WT CLEAN · ahead 205 vs origin/test=ab4de83 (+1)
+$ git -C src/backend  rev-parse --short develop  → d11263b  (BNK-570 @0494334 HEAD +1)
+  d11263b feat(v2/live-e2e): add explicit operation reason in health and probe
+  WT CLEAN · ahead 541 vs origin/test=598d108 (+1)
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files, carry)
+$ BE *Test.java=252 (carry)
+$ FE .test.js=192 + .test.jsx=273 → 465 (carry)
+$ 모듈 78.79% (22.85/29 carry · 정본)
+$ merge gate = FE205 + BE541 = 746 (+2 vs BNK-570 744)
+```
+
+HEAD cross-stream advance (FE+1·BE+1) · 양쪽 WT CLEAN · tester FF merge **746** 가속 권장 (선행 commit 불필요).
+
+### §571-2 ★★★ NHIS #44 이동서비스비 러-1~4 348차 zero drift IDENTICAL — full-stack ✅ parity/우위 재입증
+
+**【확인】** [NHIS #44 joHistory](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200·7,572B·`c886ff1fd1d5ca2cb5dc76d30adde8ba`** (on-disk `nhis_jo44_live_bnk540.html` IDENTICAL, BNK-540~571 348차 zero drift)
+
+verbatim 본문(불변):
+
+- 제34조 「이동서비스비용」 거리구간별 정액: **러-1**(5km 미만) · **러-2**(5–10km) · **러-3**(10–20km) · **러-4**(20km 이상)
+- 「수급자별 **1일 1회**에 한하여 산정」
+- **편도**는 산정금액의 100분의 50으로 한다 (편도 **50%**)
+- ③ 본인일부부담금은 없다 (수급자 부담 X)
+- ④ **이동서비스 일지** 작성·보관 의무 (**별지 제22호 서식**)
+
+| 4-rule | ogada `@a43bcb7`/`@d11263b` 구현 |
+|---|---|
+| 러-1~4 거리구간 정액 | BE `TransportDistanceBand.RU_1~RU_4` enum + `TransportServiceFeeService` rate matrix |
+| 편도 50% | BE `ONE_WAY_RATIO=0.5` 상수 + FE `transportServiceFee.js` parity-copy 상수 (BNK-562 신규) |
+| 1일 1회 한 산정 | BE 중복 청구 skip guard (`@WAYPOINT non-empty` CHECK) + FE 안내 카피 |
+| 별지 제22호 일지 | BE `TransportServiceLog` 엔티티 + V148/V154/V155 (운전자 서명 pair CHECK) + FE `TransportServiceFeePanel` UXD-159 a11y (BNK-567~568 deepen) |
+
+**결과**: NHIS #44 4-rule = full-stack ✅ parity/우위 (BE 강제 + FE 가시 카피 + a11y) · 케어포 func 2-x 차량 마스터/연료비만(NHIS #44 미반영) · ezCare 정적 메뉴만 · 엔젤 essential 정적 수칙만 → **ogada 차별화 우위** carry · PLAN_NOTES #44 1차 확인 **348차** carry.
+
+### §571-3 ★★★ silverangel 5-URL 백본 zero drift IDENTICAL
+
+| URL | HTTP·SIZE·md5 | 상태 |
+|---|---|---|
+| [daycareEssentialWork.do](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200·131,664B·`c79c1be3` | IDENTICAL · 이동서비스 #41-42 · 차량운행표 · 평가#27 목욕 · 반기 1회 보호자회의 |
+| [extraService.do](https://www.silverangel.kr/newSilverangel/service/extraService.do) | 200·81,637B·`f9c5d877` | IDENTICAL · 효성CMS 5-method (자동이체·가상계좌·카드결제·다계좌·현금영수증) · 1600-6859 · `newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS` · 자동이체 250원 / 가상계좌 300원 / 월 30,000원 |
+| [service/mainService.do](https://www.silverangel.kr/newSilverangel/service/mainService.do) | 200·59,002B·`bcf6df41` | IDENTICAL (main.do 자체는 404 — 루트 `/` 동등 셸 101,258B `6b60b17f` IDENTICAL carry) |
+| [feeService.do](https://www.silverangel.kr/newSilverangel/service/feeService.do) | 200·44,513B·`eab352a8` | IDENTICAL |
+| [notice/list.do](https://www.silverangel.kr/silverangel/support/notice/list.do) | 200·3,594,181B·`52c9457f` | IDENTICAL · 최신 게시 **221563** (2026-06-18) carry · 221571·221572·221573·221574 4-probe 미게시 shell `8437f255` 51,765B IDENTICAL · weekly notice 0 · next 예상 publish ~ 2026-06-25 Wed |
+
+**미확인 신규 1건**: `/newSilverangel/main/main.do` (BNK-565 기존 경로) 가 BNK-571 404 / 1,028B 응답 — 다만 동일 콘텐츠가 루트 `/` 에서 101,258B `6b60b17f` IDENTICAL 로 서빙되어 정보 손실 0. URL refactor 추정「가정」 → 「확인」 시 BNK-572 carry.
+
+### §571-4 ★★★ longterm 502/610 canonical 정합 (oscillation 11th cycle 회복)
+
+| URL | HTTP·SIZE·md5 | verbatim 본문(불변) |
+|---|---|---|
+| [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) | 200·105,552B·`b5aee8c1` | "월 한도액 및 급여비용(2026.1.1.기준)" · "단기보호 급여비용(1일당)" · **1등급 74,060원** · BNK-560 live `72148cfe`(+9B `var s16;`) → BNK-571 canonical 회복 |
+| [longterm 503](https://www.longtermcare.or.kr/npbs/e/b/503/npeb503m01.web?menuId=npe0000002751) | 302 · refreshedException | canonical `d3c90b33` 422B 보존 · 본인부담 경감 50%×4 / 60%×3 carry |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) | 200·91,421B·`0ea575be` | "통합재가서비스" · "2종 이상 급여" · **가산 월 10만원** · "주야간보호형" · BNK-560 live `8d53dcc1`(+9B) → BNK-571 canonical 회복 |
+
+**ogada 영향**: 단기보호 / 통합재가 가산 = MVP out-of-scope carry (`decisions.md` 2026-06-22 §통합재가 carry) · v3+ Epic 후보 carry.
+
+### §571-5 ★★ lcms 루트 3-type rotation 회귀 (DRIFT — 덮어쓰기 1건)
+
+| URL | HTTP·SIZE·md5 | 의미 |
+|---|---|---|
+| [lcms 루트](https://www.lcms.or.kr/) | 200·50,498B·`6b7502914de15aa75cabe04740dfca2c` | **DRIFT** — `6c0d22b4` (BNK-568 type2 CMS) → `6b750291` (BNK-571 type1+type3 websiteProvided.do + CJ MOU 디자인 샘플) · 3-cycle rotation 관측 (BNK-556 `c0c66076` type1 → BNK-568 `6c0d22b4` type2 → BNK-571 `6b750291` type1+type3) · BNK-515 정본 reveal carry → 덮어쓰기 |
+
+**의미**: LCMS-엔젤시스템 자매 도메인 cross-promo funnel 3-type 무작위 rotation 패턴 → planner 마케팅 카피 「단일 ERP vs SaaS 다중 도메인 cross-promo」 차별화 활용 가능 carry (BNK-515).
+
+### §571-6 ★ 규제 고시 2종 cosmetic DRIFT (verbatim 불변 · 덮어쓰기 2건)
+
+| URL | HTTP·SIZE·md5 | DRIFT | verbatim |
+|---|---|---|---|
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | 200·78,450B·`a9474058` | cachebuster `?Time=1782274342` · strip-cachebuster IDENTICAL | 제2025-247호 · 시행 2026.1.1 |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | 200·109,510B·`c8150e16` | 조회수 **2,550 → 2,559**(+9) · 다운로드 첨부① 469→473 · 첨부② 387→389 · 미리보기 553→555 · 363→364 | 제2026-126호 · 본인부담상한액 · 시행 2026.1.15 |
+
+### §571-7 ★ 4축 + leave-ledger P0/P1 재오픈 0 (23-cycle carry, BNK-549~571)
+
+| 축 | App.jsx `@a43bcb7` route LIVE 검증 |
+|---|---|
+| G14 care-plan-form | `/clients/care-plan-notifications` ✅ |
+| G26 dashboard/hq | `/dashboard`·`/dashboard/hq` ✅ |
+| v1.3-C transport 8-route | `/transport/*` 8-route ✅ + V154/V155 |
+| v2 CMS 4-state filter+roster | `/billing/cms` 4-state filter + 지점 roster ✅ |
+| US-R01-c leave-ledger | `/staff/leave-ledger` ✅ + V173/V174/V175 (BNK-553/562 closure carry) |
+| **neue (BNK-571)** | FAQ21823 retention expiry alerts + contract template print (FE `a43bcb7`) → US-R03 임금협의 및 근로(재)계약 (BNK-566) ↔ 보존 3년 정합 deepen → ogada surface ✅+ (이지케어 FAQ21823 verbatim cross-walk 7th cycle) |
+
+### §571-8 per-cycle minimum 4종 충족
+
+- **신규 증거 URL**: NHIS#44 348차 재실측 + silverangel 5-URL (essential/extraService/mainService/feeService/notice) + lcms 루트 + law247 + mohw126 + longterm 502/610 = **9-URL 재실측·1건 신규 추가**(silverangel `/main/main.do` 404 「미확인」)
+- **메뉴/필드/워크플로 1블록**: NHIS #44 4-rule full-stack closure ogada `@a43bcb7`/`@d11263b` (§571-2 표)
+- **COMPETITOR_MATRIX 1행+ @HEAD SHA**: 이동서비스 · CMS · 평가#27 · 단기보호 / 통합재가 행 `@a43bcb7`/`@d11263b` 갱신
+- **BENCHMARK_REPORT §신규 소절**: BNK-571 (본 소절)
+
+**즉시(tester)**: merge gate **746** (FE205+BE541 · 양쪽 WT CLEAN · 선행 commit 불필요) — develop→test FF 권장.
+
+**planner**:
+- baseline FE `@a43bcb7` / BE `@d11263b` carry · merge gate 746
+- **NHIS #44 348차 full-stack ✅ parity/우위 closure carry** (PLAN_NOTES #44 1차 확인 + FE 4 parity-copy + UXD-159 a11y deepen)
+- **longterm 502 canonical (단기보호 74,060) / 610 통합재가 가산 10만원 carry** — v3+ Epic out-of-scope carry
+- **lcms type 3-cycle rotation 회귀** — marketing copy 「단일 ERP vs SaaS cross-promo」 차별화 카피 carry
+- **silverangel `/main/main.do` 404 신규 미확인** — 루트 `/` 동등 셸로 정보 손실 0 · URL refactor 「가정」 carry, BNK-572 「확인」 검증 예정
+- △4 잔여 우선순위 불변: **10 부가서비스 0.5 → 7-4 CMS 0.65 → 2 이동서비스 0.85 → 8 직원근태 0.85** (모듈 78.79% 정본 carry)
+- FAQ21823 retention expiry alerts FE closure (BNK-566 US-R03 보존 3년 deepen) carry — 임금협의·근로(재)계약 ogada 차별화 ✅+ 재입증
+
+## §570 BNK-570 — 이지케어 역공학 2–4h · ★★★ **Channel.io bc7f4cd9 「검은/빨간 공단청구액」tri-source + schedule-fix `chk-ltm-fix` checkbox** · ★★ **receipt-list PGID 3-grid(발행내역·정보관리·수급자별 서브히스토리) 심화** · ★★ **가격·도입 재실측 home 9,279·fnc 9,351(+3)** · ★ **schedule-rfid comp_01~09·270분초과·FAQ stub 21843–21900 재확인**
+
+**조사일**: 2026-06-24T04:00:00Z (KST 13:00) | **rotation**: 2–4h "이지케어 역공학" — `/new.ez`·Channel.io·FAQ rowid·가격·RFID·이중일정·처리상태. extract `ezcare_price_rfid_billing_crosswalk_bnk570.txt`.
+
+### §570-1 ogada git 실측 KPI (BNK-570)
+
+```
+$ git -C src/frontend rev-parse --short develop  → cba9ff8  (BNK-569 carry·HEAD zero advance 1-cycle)
+  WT CLEAN · ahead 204 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 0494334  (BNK-569 carry·HEAD zero advance 1-cycle)
+  WT CLEAN · ahead 540 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files, carry)
+$ BE *Test.java=252 · @Test loose=1,847 (carry)
+$ FE .test.js=192 + .test.jsx=273 → 465 (carry)
+$ 모듈 78.79% (22.85/29, carry)
+$ merge gate = FE204 + BE540 = 744 (carry)
+```
+
+HEAD zero advance 1-cycle(BNK-569=570) · cross-stream WT CLEAN · tester FF merge **744** carry.
+
+### §570-2 ★★★ Channel.io bc7f4cd9 + schedule-fix — 검은/빨간 공단청구액 처리상태 tri-source
+
+| 소스 | URL / 스냅샷 | 핵심 워크플로 | HTTP·md5 |
+|---|---|---|---|
+| Channel.io | [bc7f4cd9 청구일정 반영 여부](https://docs.channel.io/ezcare/ko/articles/%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95-%EB%B0%98%EC%98%81-%EC%97%AC%EB%B6%80-%ED%99%95%EC%9D%B8-%EB%B0%A9%EB%B2%95-bc7f4cd9) | 공단청구액 **검은색=정상 반영** · **빨간색=미반영** · 일정확정 전 검은색 필수 · 미반영 시 「청구일정 가져오기」재실행 | **200** · `6ec2a538` / 227,708B (**DRIFT** `dbd710c8`→`6ec2a538` −330B·semantic verbatim 불변) |
+| PGID schedule-fix | [/new.ez?PGID=schedule-fix](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-fix) (데모) | 17-col grid · 일괄확정 confirm · `chk-ltm-fix` 「공단 청구명세서와 비교하기」·`ltmNo`/`ltmSeq` hidden | `38087ef3` / 149,576B (session DRIFT·colModel verbatim) |
+
+↔ ogada: `VisitNhisComparison*` + dashboard `nhisComparisonGap` StatCard = **공단 불일치 aggregate ✅** · **grid inline 검은/빨간 색상 게이트 ❌** = **△ partial** · P3「가정」`G-SCHEDULE-FIX-COLOR-GATE` carry (MVP out-of-scope).
+
+### §570-3 ★★ receipt-list PGID 3-grid — 현금영수증 발급/취소 워크플로
+
+**【확인】** [/new.ez?PGID=receipt-list](https://ezcare.easyms.co.kr/new.ez?PGID=receipt-list) (데모) HTTP 200 · `c8aa31c8` / 108,590B
+
+| Grid | colModel 핵심 | Ajax endpoint |
+|---|---|---|
+| tab-01 발행내역 | `EdiDate`·`ReceiptTypeNo`·`amount_total`·`ReceiptSupplyAmt`·`ReceiptVAT`·`btn`(상태)·`pName`·`memo` | `json-receipt.php?data=receipt-list-GET` |
+| tab-02 정보관리 | `name`·`state`(01~07)·`receipt_telNum`·`rec_cnt`·`rec_cancel` · radio on/off/전체 | `receipt-patient-list-GET` |
+| tab-03 수급자별 히스토리 | `EdiDate`·`ReceiptTypeNo`·`amount_total` (수급자 선택 시 서브그리드) | `receipt-list-GET` (pCode scope) |
+
+Dialog: `#dialog-receipt-regissue`(발급) · `#dialog-receipt-cancel`(취소)
+
+↔ ogada `G-CASH-RECEIPT-LOG` `@cba9ff8`: `CashReceiptRegisterModal` + `/billing/cash-receipt-issuances` + `/pending` + `/clients/{id}/cash-receipt-profile` = **✅ FULL parity+분리 우위** · FAQ21700 「수납 삭제=취소」cross-walk (BNK-567).
+
+### §570-4 ★★ schedule-rfid comp_01~09 + 270분초과 (재입증)
+
+- PGID `schedule-rfid` `47aab1d7` / 150,501B — comp_01~09 · red formatter 「270분초과, 엑셀파일 수가 검토」·FAQ21450 엑셀 선행 업로드 tri-source carry
+- PGID `duplicate-schedule` → **negative** job-post/CareMatch misroute carry
+
+### §570-5 ★ 가격·도입 재실측 (2026-06-24)
+
+| URL | counter | BNK-567 → BNK-570 |
+|---|---|---|
+| [home](https://ezcare.easyms.co.kr/) `10a50fd7` | mCnt `{1:9279, 2:4598, 3:2353, 4:1820}` · headline **9,279** 재가기관 | +3 / +2 / 0 / 0 |
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) `d2e0fab1` | 도입 **9,351** | +3 |
+| [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) `46de7215` | 33,000 / 25,850 / 55,000 · 40% (~06-30) | verbatim 불변 |
+
+FAQ stub: rowid 21843·21844·21856·21900 → SIZE **13,327B** · md5 `e5762090` IDENTICAL (미게시 shell) · substantive 상한 ~21842 carry.
+
+**per-cycle minimum 4종 충족** — 신규 core 갭 0 · candidate 변동 0 · 가정 번복 0 · 상태 변경 0(HEAD zero advance) · 신규 snapshot 2건(extract + FAQ21825) · 덮어쓰기 8건(home·fnc·charge·channelio·demo·4 PGID) · 엑셀 포맷 변경 0.
+**즉시(tester)**: merge **744** carry — 양쪽 WT CLEAN.
+**planner**: baseline `@cba9ff8`/`@0494334` · G-CASH-RECEIPT-LOG parity 유지 · schedule-fix 색상 게이트는 P3 out-of-scope carry.
+
+## §569 BNK-569 — 교차검증·갭 우선순위 8h+ · ★★★ **4축(G14·G26·v1.3-C·v2 CMS) + US-R01-c leave-ledger 전부 App.jsx `@cba9ff8` LIVE — P0/P1 재오픈 0 (21-cycle carry)** · ★★★ **NHIS #44 이동서비스비 러-1~4 347차 zero drift IDENTICAL** `c886ff1f`(7,572B) · ★★ **ogada baseline FE+2·BE+1 advance (WT CLEAN·cross-stream merge gate 744)** · ★★ **모듈 29-feature 정본 재산정 22.85/29=78.79% (✅완전 20·△부분 4·❌갭 5 — 불변)** · ★ **MOHW 2026-126 counter 2,540→2,550 + law247 cachebuster cosmetic DRIFT (verbatim 불변·덮어쓰기 2건)**
+
+**조사일**: 2026-06-24T03:00:00Z (KST 12:00) | **rotation**: 8h+ "교차검증·갭 우선순위" — 4축 P0/P1 재오픈 여부·미확인 축소·백본 재실측·ogada git 실측. extract `cross_gap_priority_bnk569.txt`.
+
+### §569-1 ogada git 실측 KPI (BNK-569)
+
+```
+$ git -C src/frontend rev-parse --short develop  → cba9ff8  (BNK-568 @0869589 HEAD +2)
+  cba9ff8 test(v1.2.1/QA-B95): preserve live-e2e operation readiness reason
+  28033cf test(v1.2.1/FAQ21823): wire dashboard renewal gap into pilot harness
+  WT CLEAN · ahead 204 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 0494334  (BNK-568 @c8358e9 HEAD +1)
+  0494334 fix(v2/live-e2e): distinguish bootstrap service-unavailable state
+  WT CLEAN · ahead 540 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files, carry)
+$ BE *Test.java=252 · @Test loose=1,847 (BNK-568 1,840 +7)
+$ FE .test.js=192 + .test.jsx=273 → 465 (carry)
+$ 모듈 78.79% (22.85/29, carry)
+$ merge gate = FE204 + BE540 = 744 (+3 vs BNK-568 741)
+```
+
+cross-stream **양쪽 advance**(FE+2·BE+1·WT CLEAN) → tester FF merge **744** 가속 권장.
+
+### §569-2 ★★★ 4축 + leave-ledger P0/P1 재오픈 0 (21-cycle carry, App.jsx `@cba9ff8` 직접 grep)
+
+| 축 | route(App.jsx) | 판정 |
+|---|---|---|
+| G14 care-plan | `/clients/:clientId/care-plan-form` · `/clients/care-plan-notifications` | LIVE ✅ |
+| G26 dashboard | `/dashboard` · `/dashboard/hq` | LIVE ✅ |
+| v1.3-C transport | `/transport/service-fees` (+ compliance·auto-dispatch·vehicles·runs·outings 8-route) | LIVE ✅ |
+| v2 CMS | `/billing/cms` | LIVE ✅ |
+| US-R01-c leave-ledger | `/staff/annual-leaves` | LIVE ✅ |
+
+→ 4축 + leave-ledger 전부 LIVE · **신규 P0/P1 재오픈 0** · 가정 번복 0 · BNK-548부터 **21-cycle carry**.
+
+### §569-3 ★★ 모듈 29-feature 정본 재산정 (competitorModuleCoverage.js `@cba9ff8`)
+
+- **✅완전(=1) 20**: 1-1·1-3·1-7·1-9·3-1·4·5·26·43·7-1·7-2·7-2-1·7-3·7-6·7-10·9·nhis·qr·hq·platform
+- **△부분 4**: 2 이동서비스 **0.85** · 7-4 CMS·간편결제 **0.65** · 8 직원·근태 **0.85** · 10 부가서비스 **0.5**
+- **❌갭 5(의도적 MVP out-of-scope)**: 1-5 가정통신문 · 1-10 연계기록지 · 6 위생·안전 점검 · 11 직원급여 · 12 수입지출·회계
+- 합 **22.85 / 29 = 78.79%** (BNK-480부터 정본·불변·`competitorModuleCoverage.js` 미변경)
+
+### §569-4 백본 3-URL 재실측 (md5 / SIZE 대조, 347차)
+
+| URL | live md5 / SIZE | on-disk(BNK-568) | 판정 |
+|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B | 동일 | **zero drift 347차** · 「'러-1'부터 '러-4'까지 비용의 50%」·「1일 1회」 verbatim |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | `0a8d502d` / 109,510B | `85682695` | **DRIFT counter** → 덮어쓰기 · 조회수 **2,540→2,550 (+10)**·제2026-126호·본인부담상한액 verbatim 불변 |
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | `55d43ed9` / 78,450B | `b64a5bc3` | **DRIFT cachebuster** → 덮어쓰기 · 「[시행 2026. 1. 1.] [보건복지부고시 제2025-247호, 2025. 12. 30., 일부개정]」 verbatim 불변 |
+
+엑셀 포맷 변경: **0**.
+
+**per-cycle minimum 4종 충족** — 신규 core 갭 0 · candidate 변동 0 · 가정 번복 0 · 상태 변경 2(FE+2·BE+1·양쪽 WT CLEAN) · 미확인 0 · 신규 snapshot 1건(`cross_gap_priority_bnk569.txt`) · 덮어쓰기 2건(mohw126·law247).
+**즉시(tester)**: merge **744**(FE204+BE540·양쪽 WT CLEAN·선행 commit 불필요).
+**planner**: baseline FE `@cba9ff8`·BE `@0494334`·4축+leave-ledger 21-cycle P0/P1 비움 유지·△4 잔여 우선순위 불변(7-4 CMS→10 부가→2 이동→8 직원근태)·신규 candidate 없음.
+
+## §568 BNK-568 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 346차 zero drift IDENTICAL + FE `0869589` UXD-159 a11y G16 deepen** · ★★★ **longterm 502 canonical 5-cycle stable(단기보호 74,060) + longterm 610 통합재가 5-cycle stable(월 10만원·주야간보호형)** · ★★ **silverangel 4-URL zero drift(CMS 5-method·평가 #27·이동서비스 #41–42)** · ★★ **lcms 루트 type1→type2 rotation 재출현(BNK-515 silverangel CMS cross-promo 정본 reveal carry)** · ★ **law247 cachebuster + MOHW 2026-126 counter 2,528→2,540 cosmetic DRIFT (verbatim 불변)** · ★ **4축 P0/P1 재오픈 0 (20-cycle carry)**
+
+**조사일**: 2026-06-24T01:50:00Z (KST 10:50) | **rotation**: 4–6h "엔젤·롱텀·규제" — silverangel·lcms·law.go.kr 이동서비스비 러-1~4·2026 단기보호·통합재가·평가 #27 cross-verify. extract `angel_longterm_regulatory_crossverify_bnk568.txt` (`e8f5ed5f`·13,237B).
+
+### §568-1 ogada git 실측 KPI (BNK-568)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 0869589  (BNK-567 @17472bb HEAD +1)
+  ux(a11y): G16 transport fees, client RBAC edit link, and summary layout (UXD-159)
+  WT CLEAN · ahead 202 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → c8358e9  (BNK-567 @8b3fdcd HEAD +1)
+  fix(v2/live-e2e): add explicit bootstrap enable hint in readiness responses
+  WT CLEAN · ahead 539 vs origin/test=598d108
+$ <Route\b=111 + <Routes>=1 → Route 112 (carry)
+$ *Page.jsx=90 + RootRedirect=91 (carry)
+$ migration V1–V175 (175 files, carry)
+$ BE *Test.java=252 · @Test loose=1,840 (carry)
+$ FE .test.js=192 + .test.jsx=273 → 465 (carry)
+$ 모듈 78.79% (22.85/29, carry)
+$ merge gate = FE202 + BE539 = 741 (+2 vs BNK-567 739)
+```
+
+cross-stream **SYNCED 가능 상태** — 양쪽 1-cycle advance(FE/BE WT CLEAN) → tester FF merge 741 가속 권장.
+
+### §568-2 백본 10-URL 346차 재실측 (md5 / SIZE 대조)
+
+| URL | live md5 / SIZE | on-disk(BNK-567) | 판정 |
+|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B | 동일 | **zero drift 346차** · 「'러-1'부터 '러-4'까지 비용의 50%」·「1일 1회」·이동서비스비 verbatim |
+| [longterm 502 canonical](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) | `b5aee8c1` / 105,552B | 동일 | **canonical 5-cycle stable** · 월 한도액 및 급여비용(2026.1.1.기준)·단기보호 1등급 **74,060** verbatim |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) | `0ea575be` / 91,421B | 동일(BNK-566 carry) | **partial shell 5-cycle stable** · 2종 이상·통합재가·월 **10만원**·주야간보호형 verbatim |
+| [silverangel daycareEssentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | `c79c1be3` / 131,664B | 동일 | zero drift · #27 보호자회의 반기 1회·#41 운전자자격/차량운행표/계약서·#42 직원동승 carry |
+| [silverangel /service/extraService](https://www.silverangel.kr/newSilverangel/service/extraService.do) | `f9c5d877` / 81,637B | 동일 | zero drift · CMS 5-method(자동이체 250원·가상계좌 300원·카드·계좌분리·현금영수증) |
+| [silverangel /service/mainService](https://www.silverangel.kr/newSilverangel/service/mainService.do) | `bcf6df41` / 59,002B | 동일 | zero drift · 2-track 주야간/방문 |
+| [silverangel /service/feeService](https://www.silverangel.kr/newSilverangel/service/feeService.do) | `eab352a8` / 44,513B | 동일 | zero drift · 수가표 |
+| [lcms 루트](https://www.lcms.or.kr/) | `6c0d22b4` / 50,554B | `6b750291` | **DRIFT type1→type2 rotation 재출현** → 덮어쓰기 · `ad_cont type2`+`img_banner2.png`+「본인부담금 자동이체(CMS) 서비스」+CTA→silverangel `/newSilverangel/service/extraService.do` 「자세히보기」+「1600-6859」 (BNK-515 reveal 정본 carry) |
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | `b64a5bc3` / 78,450B | `b0c34ac6` | **DRIFT cachebuster** → 덮어쓰기 · `?Time=1782265509`·**제2025-247호·시행 2026.1.1** verbatim 불변 |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | `85682695` / 109,510B | `5ee70fe2` | **DRIFT counter** → 덮어쓰기 · 조회수 **2,528→2,540 (+12)**·**제2026-126호·본인부담상한액** verbatim 불변 |
+| silverangel /notice/list (carry) | `52c9457f` / 3,594,181B | 동일 | zero drift · embed 221563 · view probe `8437f255`(51,765B) unpublished shell carry · 신규 게시 0 |
+
+엑셀 포맷 변경: **0**.
+
+### §568-3 ★★★ NHIS #44 이동서비스비 러-1~4 346차 zero drift (PLAN_NOTES #44 1차 확인 carry)
+
+**확인** — [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+verbatim 핵심: **"'러-1'부터 '러-4'까지 비용의 50%를 산정한다."** · **"1일 1회"** · 이동서비스비 verbatim
+
+ogada 교차검증 (@c8358e9/@0869589 실측):
+| Layer | 구현 | BNK-568 evidence |
+|---|---|---|
+| BE | `TransportServiceFeeService`+`TransportDistanceBand.RU_1~RU_4`(5km 미만/5~10km/10~20km/20km 이상)+`ONE_WAY_RATIO=0.5`+roundTrip Map override+1일 1회 dedup+V148/V154/V155 5/5 CHECK | carry |
+| FE config | `transportServiceFee.js` 4-상수(러-1~4·편도50%/왕복100%·1일1회 협회 세부운영규정 제8조·별지 제22호 일지 시행규칙 제34조)+`TransportServiceFeePage`+`BillingStatisticsReportPage`+`pilotPageFlows.test.jsx`+`pilotChecklist.js` G16 entries | carry (BNK-562 FE wire closure) |
+| FE a11y (신규) | `0869589` UXD-159 — G16 transport fees 페이지에 client RBAC edit link 정합 + summary layout aria/keyboard nav 정리 | **BNK-568 신규 deepen** (구조적 변화 0·우위 deepen) |
+
+→ ★ ogada **full-stack ✅ parity/우위 IDENTICAL 정합 346차 재입증**. **planner P2 v1.3-C parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry**.
+
+### §568-4 ★★★ 2026 수가 교차검증 — longterm 502 canonical + 610 통합재가 5-cycle stable
+
+(A) **longterm 502 canonical** (단기보호 1등급 74,060) — ZERO DRIFT canonical 5-cycle stable
+  - URL: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742
+  - live `b5aee8c1` / 105,552B = on-disk IDENTICAL (BNK-556→568 5-cycle stable)
+  - "월 한도액 및 급여비용(2026.1.1.기준)" + "**74,060**" verbatim (단기보호 급여비용 1일당 1등급)
+  - **ogada 적용**: MVP 주야간 단일 모드 — 단기보호 **G18-SHORT P3 carry** (ROADMAP v3.1) · canonical on-disk 우선 정책(BNK-522·556 carry)
+
+(B) **longterm 610 통합재가** (2종 이상·월 10만원·주야간보호형) — ZERO DRIFT 5-cycle stable
+  - URL: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731
+  - live `0ea575be` / 91,421B (BNK-566 → BNK-568 stable · BNK-560 var s16 oscillation 종결)
+  - "2종 이상" + "10만원" + "통합재가" + "주야간보호형" verbatim
+  - **ogada 포지셔닝**: MVP 주야간 단일 서비스 — 통합재가 결합 모델 out-of-scope carry · `IntegratedHomeProviderDiscoveryPanel` discovery 우위 유지 (BNK-556 carry)
+
+### §568-5 ★★ silverangel CMS / 평가 #27 / 이동서비스 #41-42 cross-walk (zero drift)
+
+(A) extraService CMS 5-method — zero drift (자동이체 250원·가상계좌 300원·카드·계좌분리·현금영수증)
+  - **ogada 교차**: 자체 CMS DB(`BillingCmsEnrollmentService`)·자동이체/현금영수증/의료비공제 ✅ · 가상계좌/계좌분리 ❌(외부 PG 의존 out-of-scope) carry
+
+(B) daycareEssentialWork 평가 #27 보호자회의 + #41-42 이동서비스 수칙 — zero drift
+  - #27: 반기별 보호자회의 1회+ 월간 프로그램/식단표/소식 → 전자서명
+  - #41: 운전자자격·동승자·차량안전·사고조치·차량운행표+계약서 / #42: 직원동승·시간준수
+  - **ogada 교차**:
+    · #27 → **G-GUARDIAN-MEETING P3 carry** (반기 dedicated workflow ❌ · `/meals` 식단표·`/care/notice` 소식만 ✅·필드/배지 분리 P3)
+    · #41-42 → G15 일지④·배차 8-route operational ✅ · 「수칙 템플릿·계약서 embed ❌」 **G-TRANSPORT-RULES-DOC P3 carry**
+
+### §568-6 ★★ lcms 루트 type1→type2 rotation 재출현 (silverangel CMS cross-promo 정본 carry)
+
+URL: https://www.lcms.or.kr/
+live `6c0d22b4` / 50,554B vs on-disk `6b750291`(BNK-565 type1+type3 marker) → **DRIFT type rotation**
+verbatim 핵심: `<section class="ad_cont type2">` + `<img src="/images/egovframework/lcms/login/img_banner2.png" alt="">` + 「**본인부담금 자동이체(CMS) 서비스**」 + 「본인부담금을 보호자계좌에서 자동출금, 카드 자동결제, …」 + CTA → `extraService.do` (silverangel `/newSilverangel/service/extraService.do`) + 「자세히보기」 + 「**1600-6859**」
+
+해석: LCMS 루트 **3-type rotation**(type1 디자인 샘플·type2 silverangel CMS cross-promo·type3 CJ프레시웨이 MOU 식단·BNK-419 carry) 중 **type2 재출현** 확인 — silverangel SaaS cross-promo 분산 모델 정본 reveal 패턴 carry (BNK-515 reveal carry · BNK-556 type1 → BNK-568 type2 rotation 5-cycle 안에서 재확인).
+
+**ogada 차별화 message 후보 carry** (BNK-515): "단일 ERP 통합 vs silverangel SaaS cross-promo 분산" 마케팅 카피 — planner v3 marketing copy 검토 carry.
+
+### §568-7 4축 P0/P1 재오픈 + candidate carry
+
+| 축 | BNK-568 | 재오픈 |
+|---|---|---|
+| G14 care-plan-form | App.jsx LIVE carry | 0 |
+| G26 dashboard/hq + FAQ21823 widget | LIVE carry | 0 |
+| v1.3-C transport + NHIS#44 346차 | LIVE + zero drift + FE UXD-159 a11y +1 | 0 |
+| v2 CMS | `/billing/cms` LIVE | 0 |
+| US-R01-c leave-ledger | BNK-563 closure carry | 0 |
+| US-R03 FAQ21823 | BNK-566 3-layer test closure carry | 0 |
+
+candidate 9건 BNK-567 carry · 신규 +0 · core 갭 +0 · 20-cycle 안정.
+
+### §568-8 per-cycle minimum
+
+- ✅ 신규 증거 URL ≥ 1건 (NHIS#44 346차 live + longterm 502 canonical 5-cycle stable + longterm 610 통합재가 5-cycle stable + lcms type2 rotation 재출현)
+- ✅ 메뉴/필드/워크플로 1-block (§568-3 NHIS#44 5/5 parity + §568-5 silverangel #27/#41-42 워크플로)
+- ✅ COMPETITOR_MATRIX BNK-568 신규 행
+- ✅ BENCHMARK_REPORT §568 (본 항목)
+
+**요약**: 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 2(FE+1·BE+1) · cross-stream SYNCED 가능 · 미확인 carry 1(carefor LIVE 8-cycle) · 신규 snapshot 1건(extract) · 덮어쓰기 3건(lcms·law247·mohw126) · 엑셀 포맷 변경 0 · merge gate 739→**741**(+2).
+
+**planner 액션 (BNK-568)**: ① baseline FE `@0869589`·BE `@c8358e9` · merge gate **741**(+2) · KPI 112/91/V175/BE252/FE465/78.79% 불변 ② **tester FF merge 741 가속 권장** — cross-stream SYNCED → origin/test push(BE 539 + FE 202) 우선순위 ③ lcms type2 rotation 재출현 marketing copy carry(신규 인사이트 0) ④ NHIS #44 346차 carry · △4 잔여 우선순위 불변 ⑤ candidate 변동 0.
+
+---
+
+## §567 BNK-567 — 이지케어 역공학 2–4h · ★★★ **FAQ 21700 「본인부담금 현금영수증 발급/취소」 신규 evidence → ogada `G-CASH-RECEIPT-LOG` ✅ FULL parity** · ★★★ **FAQ 21750 「가족요양 급여비용 감산」(제69조의2·10%·공단 엑셀 수동 보정) → 방문요양 도메인 경계** · ★★ **가격·도입 재실측 도입기관 9,276·fnc 9,348(+2)**
+
+**조사일**: 2026-06-24T01:08:00Z (KST 10:08) | **rotation**: 2–4h "이지케어 역공학" — FAQ rowid 전수(기능명·메뉴 경로·엑셀·처리상태)·가격·도입 재실측·ogada cross-walk. extract `ezcare_faq_cashreceipt_familycare_deduction_bnk567.txt`.
+
+### §567-1 ogada git 실측 KPI (BNK-567)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 17472bb  (BNK-566 carry · HEAD zero advance 1-cycle)
+  test(v1.2.1/FAQ21823): wire employment contract renewal into pilot harness
+  WT CLEAN · ahead 201 vs origin/test=ab4de83
+$ git -C src/backend  rev-parse --short develop  → 8b3fdcd  (BNK-566 carry · HEAD zero advance 1-cycle)
+  Fix QA-B277: keep live-e2e bootstrap opt-in
+  WT CLEAN · ahead 538 vs origin/test=598d108
+$ App.jsx <Route\b=111 +<Routes>=1  → 112 Route
+$ *Page.jsx=90 (+RootRedirect=91)
+$ migration V1–V175 (175 files)
+$ BE @Test=1,841 · *Test.java=252
+$ FE .test.js=192 + .test.jsx=273 → 465
+$ 모듈 커버 78.79% (competitorModuleCoverage.js 22.85/29)
+$ merge gate = FE201 + BE538 = 739 (carry)
+```
+
+### §567-2 ★★★ FAQ 21700 — 본인부담금 현금영수증 발급/취소 (신규 evidence)
+
+- **URL**: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21700&type=web · HTTP 200 · 17,090B · md5 `1831ca70adac59d7d7ffce838be0bd12` · snapshot `ezcare_faq_21700_bnk567.html`
+- **verbatim Q&A**:
+  - Q. 현금영수증 발급 취소 → "등록한 수납 내역을 삭제하면 현금영수증 발급이 취소됩니다."
+  - Q. 이미 수납등록한 내역 현금영수증 발급 → "이전 수납등록 내역을 삭제후 현금영수증 발급 요청과 함께 재 수납 등록시 가능"
+  - Q. 발행 내역 확인 → "[2.수급자] > [2.10 본인부담금 현금영수증]에서 발행 내역 확인"
+- **메뉴 경로(역공학)**: 이지케어 「2.수급자 ▶ 2.10 본인부담금 현금영수증」
+- **워크플로 모델**: 현금영수증 = "수납 내역" 1:1 종속 (수납 삭제 → 영수증 자동 취소, 재발급 = 삭제 후 재수납). 독립 토글 없음.
+- **ogada 교차검증 (@17472bb 실측)**: `CashReceiptRegisterModal.jsx`·`CashReceiptLegalAlerts.jsx`·`PaymentRecordModal.jsx` + services `G-CASH-RECEIPT-LOG` → `GET /api/v1/billing/cash-receipt-issuances`(발급목록)·`/pending`(미발급 큐)·`/clients/{id}/cash-receipt-profile`(수급자별) = **✅ FULL parity + 발급/미발급 분리 큐 우위**. → **신규 갭 아님 · 현금영수증 module 정본 재확인**.
+
+### §567-3 ★★★ FAQ 21750 — 가족요양 급여비용 감산 (신규 evidence · 방문요양 도메인)
+
+- **URL**: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21750&type=web · HTTP 200 · 15,773B · md5 `d163c99bb95a59aa3871bb604fbffaca` · snapshot `ezcare_faq_21750_bnk567.html`
+- **제목**: "가족요양 급여비용 감산을 확인해 주세요!!(수급자 15인 이상, 사회복지사 미채용 기관)"
+- **verbatim 핵심(시행규칙 제69조의2 방문요양 급여관리 의무)**: "수급자 수가 15인 이상의 방문요양기관은 ... 사회복지사·간호(조무)사·팀장급 요양보호사가 수급자 수의 50% 미만의 가정을 방문하여 급여관리 업무를 수행한 경우 가족 관계인 수급자에게 제공한 전체 방문요양 급여비용의 90%를 산정" (= **10% 감산**).
+- **운영 이슈(verbatim)**: "공단 엑셀파일 오류(감산이 일부만 적용되는 현상)로 가족케어 청구 금액이 공단과 다르게 반영" → **이지케어는 공단 엑셀 import 결과를 그대로 신뢰하지 않고 수동 보정 안내** (RFID/엑셀 비실시간 비교 패턴 동형 — BNK-559 FAQ21450).
+- **수정 경로(역공학)**: 「4. 일정확정」(일정확정 후) ▶ 「5. 본인부담 청구」 ▶ 수급자 이름 오른쪽 연필 아이콘 클릭 → 직접 수정. 공단 청구금액 확인: 공단 급여비용청구 ▶ 청구명세서 조회.
+- **ogada 교차검증**: 가족요양 급여비용 감산(제69조의2)은 **방문요양 전용 = ogada 주간보호 도메인 밖 = 갭 아님**. ogada `medicalExpenseDeduction`(의료비 세액공제·연말정산)과 **혼동 금지(가정 번복 방지)**.
+- **planner P3 후보**: 공단 엑셀 import 결과를 자체 산정 로직으로 **자동 재계산·불일치 alert** (이지케어는 수동 보정 안내에 그침 = ogada 차별화 여지).
+
+### §567-4 ★★ 가격·도입 기관 수 재실측 (2026-06-24)
+
+| 지표 | 값 | 변동 |
+|---|---|---|
+| home counter1 이지케어 도입 기관 | **9,276** 개 | BNK-509 era 9,270~9,271 → +5~6 |
+| home counter2 재무회계 도입기관 | **4,596** 개 | BNK-507 4,594 → +2 |
+| home counter3 공단 급여청구 금액 | **2,353** 억원 | 불변 |
+| home counter4 종사자 급여처리 금액 | **1,820** 억원 | 불변 |
+| fnc 도입 | **9,348** 개 | BNK-566 9,346 → +2 (counter DRIFT) |
+
+- home `395edeb47483faf315e7d0f1158873dd`(106,116B·표기일 "2026년 06월 24일 현재") · fnc `e0283589d6006e98ac2ddb04e5122763`(17,870B) · 둘 다 counter/cachebuster DRIFT(feature verbatim 불변) → 덮어쓰기 2건.
+- **FAQ stub 식별자 확정**: 미게시 stub SIZE=**13,327B**(21780·21860·21880·21950·22000). 실문서: 21700·21750.
+
+### §567-5 사이클 요약
+
+- **per-cycle minimum 4종 충족**: 신규 evidence URL 2건(FAQ 21700·21750) + 메뉴/워크플로 블록 2건 + COMPETITOR_MATRIX @HEAD 4행 갱신 + BENCHMARK_REPORT §567 신규.
+- 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(현금영수증 parity·감산 도메인 밖) · 상태 변경 0(HEAD zero advance) · 미확인 0 · 신규 snapshot 3건 · 덮어쓰기 2건 · 엑셀 포맷 변경 0(공단 오류는 이지케어측 보정 안내).
+- **다음 우선순위**: (1) FAQ rowid 21701–21749 미게시/실문서 스캔 계속(현금영수증·감산 인접 영역), (2) charge 페이지 가격 재실측(33,000/25,850/55,000 변동 확인), (3) planner P3 「공단 엑셀 자동 재계산·불일치 alert」 후보 ROADMAP 반영 여부 확인.
+
+## §566 BNK-566 — 교차검증·갭 우선순위 8h+ · ★★★ **이지케어 FAQ 21823 「임금협의 및 근로(재)계약」 tri-source 신규 evidence + FE `17472bb` pilot harness 3-layer closure (panel·API·test harness)** · ★★ **module 8 △4 deepen (D-day 30일·OVERDUE/DUE_SOON/MISSING·dashboard gap widget)** · ★ **백본 345차 zero drift(NHIS#44·func Wayback) + 규제/ezCare DRIFT 4건** · ★ **4축 P0/P1 재오픈 0 (18-cycle carry)**
+
+**조사일**: 2026-06-24T01:00:00Z (KST 10:00) | **rotation**: 8h+ "교차검증·갭 우선순위" — FAQ21823 cross-walk·G14·대시보드·v1.3-C·v2 CMS P0/P1 재정렬·silverangel 221563 weekly notice scan·엑셀 포맷 변경 0. extract `cross_gap_priority_bnk566.txt`.
+
+### §566-1 ogada git 실측 KPI (BNK-566)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 17472bb  (BNK-565 @87da06d **HEAD +1**)
+  test(v1.2.1/FAQ21823): wire employment contract renewal into pilot harness
+  diff stat: pilotChecklist.js +14L · pilotChecklist.test.js +10L · pilotPageFlows.test.jsx +83L · StaffDetailPage.test.jsx +3L
+$ git -C src/backend  rev-parse --short develop   → 8b3fdcd  (BNK-565 carry · **HEAD zero advance 1-cycle**)
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/backend  status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop → 201 (+1 vs BNK-565 200)
+$ git -C src/backend  rev-list --count origin/test..develop → 538 (carry)
+merge gate = FE201 + BE538 = **739** (+1 vs BNK-565 738)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`)·path **111**·report-path **23** → density **20.7%** — carry
+page **91**(90 + RootRedirect=91)·V1–V175·transport routes **8** — carry
+BE *Test.java **252** carry · @Test loose **1,843** (+3) · @Test strict **1,832** carry
+FE test **465** = 192 .test.js + 273 .test.jsx — carry (17472bb +110L within existing test files)
+모듈 **78.79%** (22.85/29 carry · `competitorModuleCoverage.js` 미변경)
+```
+
+### §566-2 ★★★ 이지케어 FAQ 21823 — 임금협의 및 근로(재)계약 (신규 evidence)
+
+**확인** — [FAQ 21823](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21823&type=web) HTTP 200 · 21,430B · md5 `129d793524971fe9f41192ce85abd4cd` · snapshot `ezcare_faq_21823_bnk566.html`
+
+| 항목 | verbatim 인용 | ogada 매핑 |
+|---|---|---|
+| 제목 | 「임금협의 및 근로(재)계약」 | `StaffEmploymentContractRenewalPanel` · US-R03 |
+| 법적 근거 | 근로기준법 제17조 · 최저임금 · 기관점검(근로계약/재계약 확인) | `staffEmploymentContractCompliance.js` FAQ21823 주석 |
+| UI 경로 | 「1.직원관리 정보창 ▶ 탭:서식 ▶ 근로계약서」 | `/staff/{id}?tab=lifecycle` + HR file panel carry |
+| 워크플로 | 재계약 여부 결정 → 거부=종료 / 재계약=임금협의+계약서 작성 | 7-step FAQ verbatim · ogada D-day alert 3-state |
+| 필수 항목 | 당사자·계약기간·임금·근로시간·휴게·휴일·연차유급휴가 | PATCH `contractSignedAt` + renewal due compute |
+| 보관 | 고용종료 후 **3년** · 임금 **최저임금 이상** | HR document repository panel carry · validation carry |
+| 표준서식 | 장기요양기관용 표준근로계약서(재가용) 참고 | ❌ PDF/서식 embed 갭 carry (P3) |
+
+**케어포 대비**: func.php 8-x(8-1 직원정보·8-4 출퇴근·8-13 연차) — **근로(재)계약 전용 leaf 없음**. 이지케어 FAQ21823 = **시장 워크플로 정본**.
+
+### §566-3 ★★★ FE `17472bb` FAQ21823 pilot harness 3-layer closure
+
+BNK-564 G16/#44 패턴 동형:
+
+| Layer | 구현 | BNK-566 evidence |
+|---|---|---|
+| Panel | `StaffEmploymentContractRenewalPanel` · `EmploymentContractRenewalAlertsPanel` · dashboard gap widget | prior commits carry |
+| API | `GET/PATCH /api/v1/users/{userId}` · `contractSignedAt` | prior commits carry |
+| Test harness | **신규** `17472bb` — `pilotChecklist.js` R03-a/R03-b · `pilotPageFlows.test.jsx` +83L E2E · `StaffDetailPage.test.jsx` FAQ21823 clause assertions | 3-layer closure |
+
+**planner P1**: REQUIREMENTS US-R03 §근로(재)계약을 「FAQ21823 tri-source + 3-layer closure」로 정본화.
+
+### §566-4 백본 7-URL 345차 재실측
+
+| URL | live md5 / SIZE | on-disk (BNK-565) | 판정 |
+|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B | 동일 | **zero drift 345차** |
+| [carefor func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | `6226e6eb` / 98,328B | 동일 | zero drift · LIVE HTTP 000 **8-cycle 미확인** |
+| silverangel notice/list | `52c9457f` / 3,594,181B | 동일 | zero drift · embed 221563 · view probe unpublished |
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | `b0c34ac6` / 78,450B | `1c5cc602` | DRIFT cachebuster → 덮어쓰기 |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | `5ee70fe2` / 109,510B | `611cb60b` | DRIFT counter 2,527→**2,528** → 덮어쓰기 |
+| [ezcare home](https://ezcare.easyms.co.kr/) | `f145ae9b` / 106,143B | `0758f245` | DRIFT banner `[무료 이벤트]` · mCnt 9,274 verbatim → 덮어쓰기 |
+| [ezcare fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | `44e3617c` / 17,870B | `aef48a74` | DRIFT cachebuster · 도입 9,346 verbatim → 덮어쓰기 |
+
+엑셀 포맷 변경: **0** (FAQ21823 + backbone carry 스캔).
+
+### §566-5 4축 P0/P1 재오픈 + candidate carry
+
+| 축 | BNK-566 | 재오픈 |
+|---|---|---|
+| G14 care-plan-form | App.jsx LIVE carry | 0 |
+| G26 dashboard/hq + FAQ21823 gap widget | LIVE carry | 0 |
+| v1.3-C transport + #44 345차 | LIVE + zero drift | 0 |
+| v2 CMS | `/billing/cms` LIVE | 0 |
+| US-R01-c leave-ledger | BNK-563 closure carry | 0 |
+| US-R03 FAQ21823 | **17472bb 3-layer test closure** | 0 (deepen only) |
+
+candidate 7건 BNK-565 carry · 신규 +0 · core 갭 +0.
+
+### §566-6 per-cycle minimum
+
+- ✅ 신규 증거 URL 1건 (FAQ 21823)
+- ✅ 메뉴/필드/워크플로 1-block (§566-2)
+- ✅ COMPETITOR_MATRIX BNK-566 행
+- ✅ BENCHMARK_REPORT §566 (본 항목)
+
+**요약**: 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1 (FE +1) · 미확인 carry 1 (carefor LIVE 8-cycle) · 신규 snapshot 2건 · 덮어쓰기 4건 · 엑셀 포맷 변경 0.
+
+---
+
+## §565 BNK-565 — 교차검증·갭 우선순위 8h+ · ★★★ **silverangel `/newSilverangel/daycare/{extraService,system_feature,main,serviceFee}.do` 4-URL HTTP 404 → `/newSilverangel/service/*` 경로 재배치 발견 (콘텐츠 md5 zero drift·routing layer DRIFT만)** · ★★★ **silverangel 입소시설(`fcltySlry/`) 모드 신규 namespace evidence — 8-record 24h 케어(식사·배설·관찰·도뇨관·종합·체위변경·배변배뇨·점검) + 4-cycle(매일/매주/매월/발생시)** · ★★ **silverangel 부가서비스 `mainFlag={AI|Mobile|VR|gbTree}` 4-product 분류 evidence** · ★★ **ezCare top-nav-V2.js 자산 제거(BNK-547 이래 18-cycle backbone carry 가정 번복)** · ★ **NHIS #44 344차 zero drift + BE `8b3fdcd` BNK-564 `application.yml` carry closure**
+
+**조사일**: 2026-06-24T00:15:00Z (KST 09:15) | **rotation**: 8h+ "교차검증·갭 우선순위" — 이전 BNK 가정 번복 여부·미확인 축소·G14·대시보드·v1.3-C·v2 CMS·US-R01-c P0/P1 재정렬·신규 공지·엑셀 포맷 스캔. extract `cross_gap_priority_bnk565.txt`.
+
+### §565-1 ogada git 실측 KPI (BNK-565)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 87da06d  (BNK-564 carry · **HEAD zero advance 1-cycle**)
+$ git -C src/backend  rev-parse --short develop   → 8b3fdcd  (BNK-564 @f600fd6 **HEAD +1**)
+  Fix QA-B277: keep live-e2e bootstrap opt-in
+  diff stat: src/main/resources/application.yml +1L  (BNK-564 carry "BE WT DIRTY 1M application.yml" → CLOSURE)
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/backend  status --porcelain | wc -l → 0  (WT CLEAN — BNK-564 1M → 0 closure)
+$ git -C src/frontend rev-list --count origin/test..develop → 200 (carry)
+$ git -C src/backend  rev-list --count origin/test..develop → 538 (+1 vs BNK-564 537)
+merge gate = FE200 + BE538 = **738** (+1 vs BNK-564 737)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`)·path **111**·report-path **23** → density **20.7%** — carry
+page **91**(90 + RootRedirect=91)·V1–V175·transport routes **8** — carry
+BE *Test.java **252** carry · @Test loose **1,840** (`git grep -E "^\s*@Test\b"` 모든 .java) carry · @Test strict **1,829** (`*Test.java` glob 한정) — 차이 11건은 base/IT 클래스
+FE test **465** = 192 .test.js + 273 .test.jsx — carry
+모듈 **78.79%** (22.85/29 carry · `competitorModuleCoverage.js` 미변경)
+```
+
+### §565-2 백본 8-URL 344차 재실측 (md5 / SIZE 대조)
+
+| URL | live md5 / SIZE | on-disk | 판정 | 핵심 인용 |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B | 동일 | **zero drift 344차** | 러-1~4·편도50%·1일1회·④일지 verbatim |
+| silverangel daycareEssentialWork (`/newSilverangel/daycare/`) | `c79c1be3` / 131,664B | 동일 | zero drift | #27 보호자회의·#41-42 이동서비스 수칙 carry |
+| silverangel notice/list | `52c9457f` / 3,594,181B | 동일 | zero drift | 221562 본인인증 마감 2026-06-23 17:00/18:00 deadline 경과 |
+| [longterm 502 canonical](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) | `b5aee8c1` / 105,552B | 동일 | canonical stable | 단기보호 1등급 **74,060** verbatim |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) | `0ea575be` / 91,421B | 동일 | stable | 2종 이상 가산 월 10만원·주야간보호형 |
+| [carefor func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | `6226e6eb` / 98,328B | 동일 | zero drift | LIVE direct HTTP 000 timeout **7-cycle 미확인 carry** |
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | `1c5cc602` / 78,450B | `336950e6` | **DRIFT cachebuster** → 덮어쓰기 | `?Time=1782259900` · 제2025-247호 verbatim 불변 |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | `611cb60b` / 109,510B | `64b7bf40` | **DRIFT counter** → 덮어쓰기 | 조회수 **2,519→2,527 (+8)** · 제2026-126호 verbatim 불변 |
+| [lcms 루트](https://www.lcms.or.kr/) | `6b750291` / 50,498B | `c0c66076` | **DRIFT type rotation** → 덮어쓰기 | type1+type3 marker · −242B vs BNK-564 type1 |
+| [ezcare 루트](https://ezcare.easyms.co.kr/) | `0758f245` / 106,143B | `6b526a4f` | **DRIFT cachebuster + banner** → 덮어쓰기 | banner `[추천 이벤트]`(disk) ↔ `[무료 이벤트]`(live) A/B oscillation carry · mCnt[1] 9,274 verbatim |
+| [ezcare /new/ezCare_fnc.html](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | `aef48a74` / 17,870B | `bcd589bb` | **DRIFT cachebuster only** → 덮어쓰기 | 도입 **9,346** verbatim 불변 4-cycle stable |
+
+### §565-3 ★★★ silverangel `/newSilverangel/daycare/*` 4-URL HTTP 404 (BNK-560~564 carry 가정 번복 1)
+
+**확인** — 2026-06-24 직접 fetch · Apache/2.4.61 (Unix) HTTP/1.1 404 404
+
+| 구 URL (BNK-560~564 backbone) | 구 md5 / SIZE | BNK-565 LIVE | 신규 canonical URL | 콘텐츠 |
+|---|---|---|---|---|
+| `/newSilverangel/daycare/extraService.do` | `f9c5d877` / 81,637B | **HTTP 404** | `/newSilverangel/service/extraService.do` | `f9c5d877` / 81,637B (zero content drift) |
+| `/newSilverangel/daycare/serviceFee.do` | `eab352a8` / 44,513B | **HTTP 404** | `/newSilverangel/service/feeService.do` | `eab352a8` / 44,513B (zero content drift) |
+| `/newSilverangel/daycare/main.do` | `bcf6df41` / 59,002B | **HTTP 404** | `/newSilverangel/service/mainService.do` | `bcf6df41` / 59,002B (zero content drift) |
+| `/newSilverangel/daycare/system_feature.do` | `c9507190` / 45,601B | **HTTP 404** | (제거; 추정 대체 `daycareAngelSystemSummary.do`/`fcltySlry/angelSystemSummary.do` — 미확인 1) | — |
+
+silverangel main.do 네비게이션에서 추출한 신규 canonical 메뉴:
+
+- `/newSilverangel/daycare/{daycareEssentialWork,daycareProgramProvided,daycareAngelSystemSummary}.do` — **주야간보호** 모드 3-leaf
+- `/newSilverangel/fcltySlry/{essentialWork,programProvided,angelSystemSummary}.do` — **입소시설** 모드 3-leaf (신규 namespace)
+- `/newSilverangel/service/{mainService,extraService,businessSupportService,feeService}.do` — **공통 서비스** 4-leaf (cross-cutting)
+- `/newSilverangel/webSite/{websiteProvided,websiteProvidedList}.do` — 기관 홈페이지 제작
+
+**판정**: silverangel 사이트 IA가 **dual-mode SaaS 분리 + cross-cutting 모듈 추출**로 재구성됨. 콘텐츠 md5 100% 동일 → routing layer DRIFT만(가정 부분 번복). README 표 신규 canonical 경로로 갱신 필요.
+
+### §565-4 ★★★ silverangel 입소시설(`fcltySlry/`) 신규 namespace — 8-record 24h 케어 evidence
+
+**확인** — [fcltySlry/essentialWork](https://www.silverangel.kr/newSilverangel/fcltySlry/essentialWork.do) `80517b18` / 166,023B · 2026-06-24 HTTP 200 · `silverangel_fcltySlry_essentialWork_bnk565.html`
+
+화면 헤딩 verbatim 추출 (`<h1>~<h4>` grep):
+
+| 분류 | 항목 |
+|------|------|
+| **상단 메뉴** | 업무내용 · 필수교육 · 평가 매뉴얼 · 법정 의무교육 · 공단평가 연계 · 부서별 일상업무 |
+| **주기 (4-cycle)** | 1.매일 · 2.매주 · 3.매월 · 4.발생시 |
+| **일상기록 (8-record)** | 1.식사제공현황 · 2.배설관찰기록 · 3.관찰일지 · 4.도뇨관/경관식/수분공급 · 5.종합일지 · 6.체위변경기록 · 7.배변배뇨기록 · 8.기록지 점검 |
+| **연계** | 공단 평가연계 · 평가매뉴얼 |
+
+ogada vs silverangel 입소시설 cross-walk:
+
+| 입소시설 8-record | ogada 주야간보호 매핑 | 갭 |
+|---|---|---|
+| 1.식사제공현황 | `/meals` 식단표 ✅ + meal_records | parity |
+| 2.배설관찰기록 | `/health/elimination` ❌ (없음) | 입소시설 24h 케어 전용 — MVP out-of-scope |
+| 3.관찰일지 | `/health/observation` 일부 △ | 주야간 9h 단축 |
+| 4.도뇨관·경관식·수분공급 | ❌ | 의료행위 — out-of-scope |
+| 5.종합일지 | △ activity logs | 입소시설 24h 종합 vs 주야간 일정 |
+| 6.체위변경기록 | ❌ | 침상 케어 전용 — out-of-scope |
+| 7.배변배뇨기록 | ❌ | 24h 케어 전용 — out-of-scope |
+| 8.기록지 점검 | ✅ care plan QA, audit_logs | parity (감사 측면) |
+
+**판정**: silverangel = **입소시설(`fcltySlry/`) + 주야간보호(`daycare/`) dual-mode SaaS** 정본화. ogada MVP = 주야간보호 단일 모드 carry (agents.yaml domain 명시). 입소시설 8-record 24h 케어는 ogada v3+ 시설직원 모드 확장 시 reference candidate.
+
+### §565-5 ★★ silverangel 부가서비스 `mainFlag` 4-product 분류
+
+**확인** — [/service/extraService.do?mainFlag=AI](https://www.silverangel.kr/newSilverangel/service/extraService.do?mainFlag=AI) `a168c791` / 81,645B (기본 `f9c5d877` 81,637B · +8B AI 탭 마커)
+
+| mainFlag | 추정 라인업 | ogada 갭 |
+|----------|-------------|----------|
+| AI | AI 분석/진단/요약 | 「가정」 v3+ AI 모듈 candidate carry |
+| Mobile | 모바일 앱 (방문직원 ↔ 보호자) | ogada `/staff/mobile`(△ partial) carry · `/guardian/*` ✅ |
+| VR | VR 인지재활 | 케어포 5-x 프로그램 카탈로그·ogada `/programs/*` ✅·VR 디바이스 외부 IoT |
+| gbTree | 굽은나무 (가정통신문/소식지 모듈명) | ogada 1-5 가정통신문 ❌ carry (BNK-65) |
+
+**판정**: silverangel 부가서비스 라인업이 **mainFlag query param 4-product** 분류. ogada `competitorModuleCoverage.js` id=10 부가서비스 0.5 carry — 4-product 분리 마케팅·롤아웃 plan 단위. mainFlag=`gbTree` carry 명칭 = BNK-65 이래 **굽은나무** 가정통신문 모듈 시장 선례 재확인 (1-5 가정통신문 ❌ → ROADMAP carry 일치).
+
+### §565-6 ★★ ezCare `top-nav-V2.js` 자산 제거 (BNK-547 이래 18-cycle carry 가정 번복 1)
+
+**확인** — 직접 fetch:
+
+```
+$ curl -sS -I https://ezcare.easyms.co.kr/new/js/top-nav-V2.js
+HTTP/1.1 404 Not Found · Apache/2.4.6 (CentOS) · 2026-06-24 00:17 KST
+$ curl -sS -I https://ezcare.easyms.co.kr/new/js/top-nav.js
+HTTP/1.1 404 Not Found
+$ grep -c 'top-nav' ezcare_home.html  → 0
+$ grep -c 'top-nav' ezcare_fnc.html   → 0
+```
+
+**판정**: BNK-547 이래 18 cycle carry된 ezCare 정적 자산 `/new/js/top-nav-V2.js` (md5 `95286775` carry) **HTTP 404 deprecated**. home.html / fnc.html 본문 grep 0건 → 자산 참조 자체 제거. ezCare 프론트 정적 자산 리팩토링 진행 중. **백본-set 8→7 URL** (top-nav 제거) 권장. 대체 backbone 미확인 1.
+
+### §565-7 4축 P0/P1 재오픈 점검 + candidate carry
+
+| 축 | App.jsx LIVE @87da06d | 재오픈 |
+|---|---|---|
+| G14 care-plan-form | ✅ Route LIVE | 0 |
+| G26 dashboard/hq | ✅ | 0 |
+| v1.3-C transport 8-route + #44 parity copy (`87da06d`) | ✅ | 0 |
+| v2 CMS `/billing/cms` | ✅ | 0 |
+| US-R01-c `/staff/leave-ledger` (BNK-563 closure) | ✅ | 0 |
+
+**판정**: 4축 P0/P1 재오픈 0 (BNK-548부터 17-cycle carry).
+
+candidate carry 점검:
+
+| ID | 출처 | 상태 |
+|----|------|------|
+| G-PAYROLL-WALLOWANCE-MODEL P3「가정」 | BNK-563 §563-3 | carry |
+| G-SAAS-SELF-BILLING-LEDGER P3「가정」 | BNK-563 §563-3 | carry |
+| G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT P3「가정」 | BNK-563 §563-3 | carry |
+| G-GUARDIAN-MEETING (#27) P3「가정」 | BNK-564 §564-3 | carry |
+| G-TRANSPORT-RULES-DOC (#41-42) P3「가정」 | BNK-564 §564-3 | carry |
+| G-COMM-CALLER-AUTH (221562 deadline 2026-06-23 17:00) P3「가정」 | BNK-564 §564-4 | **deadline 경과** · notice list md5 carry · 텍스트 변경 0 · ogada SOLAPI 외부 분리 모델 carry (의도적) |
+| **신규 G-FACILITY-MODE-NURSING-LOG P3「가정」** | BNK-565 §565-4 | **out-of-scope MVP** · ogada v3+ 시설직원 모드 검토 시 입소시설 8-record 24h 케어 reference |
+
+### §565-8 per-cycle minimum 점검 (agents.yaml `reverse_engineering.per_cycle_minimum`)
+
+- ✅ 신규 증거 URL **5건** (silverangel `/newSilverangel/service/{extraService,feeService,mainService}` canonical reorg + `/fcltySlry/essentialWork` + `/service/extraService.do?mainFlag=AI`)
+- ✅ 경쟁사 메뉴/필드/워크플로 **2-block 상세** (입소시설 8-record + 4-cycle / silverangel 부가서비스 `mainFlag` 4-product)
+- ✅ COMPETITOR_MATRIX **+1 행** ogada `@8b3fdcd` BE HEAD + merge gate 738 갱신
+- ✅ BENCHMARK_REPORT **§565 신규 소절** (본 항목)
+
+**가정 번복 2(silverangel daycare 4-URL path reorg + ezCare top-nav-V2.js 자산 제거) · 신규 core 갭 0 · candidate +1(G-FACILITY-MODE-NURSING-LOG out-of-scope) · 상태 변경 1(BE +1 — BNK-564 carry application.yml closure) · 미확인 carry 1(carefor LIVE 7-cycle) · 미확인 신규 2(silverangel system_feature 대체·ezCare top-nav 대체) · 신규 snapshot 4건 · 덮어쓰기 5건(law247·mohw126·lcms·ezcare home·ezcare fnc) · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족** · **즉시(tester)**: merge **738** (FE200+BE538·양쪽 WT CLEAN·선행 commit 불필요) · **planner**: silverangel IA reorg(canonical /newSilverangel/service/* 갱신·dual-mode evidence)·ezCare backbone-set 8→7(top-nav 제거)·candidate carry 6건 + G-FACILITY-MODE-NURSING-LOG out-of-scope reference.
+
+## §564 BNK-564 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 343차 zero drift + FE `87da06d` pilot harness G16 3-layer closure** · ★★★ **silverangel 공지 221562 발신번호 본인인증 마감(2026-06-23 17:00/18:00) 신규 evidence** · ★★ **essential 평가지표 #27·이동서비스 #41–42 정적 수칙 상세** · ★★ **longterm 502 canonical `b5aee8c1` stable·610 oscillation −9B** · ★ **law247·MOHW 2026-126 counter DRIFT(verbatim 불변)**
+
+**조사일**: 2026-06-23T23:30:00Z | **rotation**: 4–6h "엔젤·롱텀·규제" — silverangel/lcms 공개 페이지·law.go.kr/NHIS 고시 재실측·md5 대조·이동서비스비 #44·2026 수가(단기보호·통합재가)·평가 #27 교차검증.
+
+### §564-1 ogada git 실측 KPI (BNK-564)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 87da06d  (BNK-563 @bc6180e **HEAD +1**)
+  test(v1.3-C/G16): wire transport service fees into pilot harness
+  diff stat: pilotChecklist.js +28 · pilotChecklist.test.js +9 · TransportServiceFeePage.test.jsx +9 · pilotPageFlows.test.jsx +20
+$ git -C src/backend  rev-parse --short develop   → f600fd6  (BNK-563 carry · **HEAD zero advance 2-cycle**)
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/backend  status --porcelain | wc -l → 1  (WT DIRTY: application.yml)
+$ git -C src/frontend rev-list --count origin/test..develop → 200 (+1 vs BNK-563 199)
+$ git -C src/backend  rev-list --count origin/test..develop → 537 (carry)
+merge gate = FE200 + BE537 = **737** (+1 vs BNK-563 736)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`)·path **111**·report-path **23** → density **20.7%** — carry
+page **91**(90 + RootRedirect=91)·V1–V175·transport routes **8** — carry
+BE *Test.java **252** carry · @Test **1,840** carry
+FE test **465** = 192 .test.js (carry) + 273 .test.jsx (carry) — harness assertions in 4 existing files (+0 new .test.js)
+모듈 **78.79%** (22.85/29 carry · competitorModuleCoverage.js 미변경)
+```
+
+### §564-2 백본 8-URL 343차 재실측
+
+| URL | live md5 / SIZE | on-disk | 판정 | 핵심 인용 |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B | 동일 | **zero drift (343차)** | 러-1~4·편도50%·1일1회·④일지 |
+| silverangel essential | `c79c1be3` / 131,664B | 동일 | zero drift | #27 보호자회의·#41–42 이동서비스 수칙 |
+| silverangel extraService | `f9c5d877` / 81,637B | 동일 | zero drift | CMS 5-method 250/300원 |
+| silverangel system_feature | `c9507190` / 45,601B | 동일 | zero drift | 반기 보호자회의·전자서명 |
+| lcms type1 | `c0c66076` / 50,740B | 동일 | zero drift | websiteProvided.do 체험하기 |
+| [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) | `b5aee8c1` / 105,552B | canonical 동일 | **canonical stable** | 단기보호 1등급 **74,060** |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) | `0ea575be` / 91,421B | BNK-560 `8d53dcc1` | **oscillation −9B** | 2종 이상·주야간보호형 월 10만원 |
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | `336950e6` / 78,450B | `4339da94` | **DRIFT cachebuster** | 제2025-247호·시행 2026.1.1 verbatim |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | `64b7bf40` / 109,510B | `3f2fc5ac` | **DRIFT counter** | 조회수 2,512→**2,519** · 제2026-126호 verbatim |
+
+### §564-3 엔젤 essential 평가지표 #27·이동서비스 #41–42 (메뉴/워크플로 상세)
+
+**확인** — [daycareEssentialWork](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) `c79c1be3` · 2026-06-23 HTTP 200
+
+| 지표 | 구분 | 필수 수칙 | 연계 모듈(엔젤) | ogada |
+|---|---|---|---|---|
+| **#27** 가족과의 소통 | 기 | 반기별 보호자회의 1회+·월간 프로그램/식단표/소식 1회+ | 보호자회의·굽은나무·가정통신문·프로그램계획·식단표 | `/meals` 식단표 ✅ · **G-GUARDIAN-MEETING P3** dedicated workflow ❌ |
+| **#41** 이동서비스 수칙 | 기 | 운전자 자격·동승자·차량안전·사고조치·차량운행표 + 계약서·일지 예시 | 수급자현황·이동서비스일지 | G15 일지④ 실데이터 ✅ · **수칙 문서 템플릿 △ P3** |
+| **#42** 이동서비스 | 수 | 직원 동승·시간 준수 | 이동서비스일지 | `TransportServiceLog` + 배차 8-route ✅ |
+
+### §564-4 silverangel 공지 221562 발신번호 본인인증 (신규 evidence)
+
+**확인** — [notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) HTTP 200 · 3,594,181B · `52c9457f` · embed notice **221562**
+
+- 「문자발신자 번호에 대한 **본인인증** 절차」·「**2026년 6월 23일 화요일 17:00까지** 반드시 본인인증」·「삭제 예정일 : **18:00**」
+- 워크플로: 「부가서비스 - **문자발신번호관리**」→ 「(본인인증필요)」표시 → 본인인증 진행
+- view URL `noticeSeq=221562` = empty shell(loginChkAjax) — **list embed가 정본**
+- ogada: SOLAPI 외부 분리·in-app 발신번호 UI ❌(의도적) vs 이지케어 `mobile-returnNumber` in-app KCP UI vs 엔젤 in-ERP 발신번호관리
+
+**판정**: BNK-562 FE parity copy + BNK-564 pilot harness = NHIS #44 **3-layer closure**. silverangel 221562 = G-COMM-CALLER-AUTH P3 deadline 실측. essential #41–42 = 이동서비스 **정적 수칙** evidence(ogada operational layer 우위·문서 템플릿 갭 carry).
+
+**가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1(FE +1·BE WT DIRTY 1M carry) · 미확인 0 · 신규 snapshot 2건 · 덮어쓰기 2건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족** · **즉시(tester)**: merge **737**(FE200+BE537·FE WT CLEAN·BE application.yml 선행 정리 권장) · **planner**: #44 3-layer 정본화·G-GUARDIAN-MEETING(#27)·G-TRANSPORT-RULES-DOC(#41–42)·G-COMM-CALLER-AUTH(221562 마감) P3 carry.
+
+## §563 BNK-563 — 이지케어 역공학 2–4h · ★★★ **이지케어 `wAllowance-*` family 3-PGID 신규 역공학 — 모듈 11 직원급여 정본 evidence (4대보험·소득세·지방세·사업소득 분리 컬럼·퇴직적립금 3-grid·인건비 원가율)** · ★★★ **`customer-ezc_bill_list` 이지케어 SaaS 자체 청구 모델 신규 evidence(amount_ezc + amount_w4c + amount_sms + amount_vat)** · ★★ **`schedule-s100` 2025-11 방문목욕(003) 중증수당 분리 룰 신규 발견** · ★★ **leave-ledger FE wire + 라이브 E2E harness closure (`bc6180e`)** · ★ **fnc/home DRIFT cachebuster+banner oscillation only(덮어쓰기 0)**
+
+**조사일**: 2026-06-23T22:40:00Z | **rotation**: 2–4h "이지케어 역공학" — `/new.ez`·`ezCare_fnc.html`·Channel.io 도움말·FAQ rowid 전수(기능명·엑셀 컬럼·처리상태·RFID·이중 일정). 가격·도입 기관 수 재실측. extract `ezcare_wAllowance_payroll_billing_bnk563.txt`.
+
+### §563-1 ogada git 실측 KPI (BNK-563)
+
+```
+$ git -C src/frontend rev-parse --short develop  → bc6180e  (BNK-562 @a531ed6 **HEAD +1**)
+  feat(v3/US-R01-c): close leave-ledger FE wire and live E2E harness
+  diff stat: src/e2e/staffLeaveLedgerLiveApi.e2e.test.js +64 (신규)
+             src/pages/pilotPageFlows.test.jsx +56 · src/utils/staffAnnualLeave.test.js +10
+$ git -C src/backend  rev-parse --short develop   → f600fd6  (BNK-562 carry · HEAD zero advance 1-cycle)
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/backend  status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop → 199 (+1 vs BNK-562 198)
+$ git -C src/backend  rev-list --count origin/test..develop → 537 (carry)
+merge gate = FE199 + BE537 = **736** (+1 vs BNK-562 735)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`)·path **111**·report-path **23** → density **20.7%** — carry
+page **91**(90 + RootRedirect=91)·V1–V175·transport routes **8** — carry
+BE *Test.java **252** carry · @Test **1,840** (strict `^\s*@Test\b` grep — BNK-562 1,841/`@Test\b`=1,840; `@Test\b|@ParameterizedTest\b`=1,843; 측정 방식 차이로 -1 carry)
+FE test **465** = 192 .test.js (+1 vs BNK-562 191) + 273 .test.jsx (carry) — bc6180e = staffLeaveLedgerLiveApi.e2e.test.js 1-file 신규
+모듈 **78.79%** (22.85/29 carry · competitorModuleCoverage.js 미변경)
+```
+
+### §563-2 ★★★ /new.ez 신규 7-PGID 역공학 (모듈 11 직원급여·12 회계 정본 evidence)
+
+> 메뉴 catalog 67 unique PGID · BNK-562 기준 46 captured → BNK-563 +7 신규 → 53 captured (남은 23 P3 carry). 모두 `ezcare-demo-fetch.sh` oCode=DEMO 세션 로그인 후 fetch (비로그인 `/new.ez` 직접은 70B redirect stub).
+
+| # | PGID (URL) | size | md5 | 핵심 colModel/필드 | ogada 갭 |
+|---|------------|------|-----|--------------------|-----------|
+| 1 | [wAllowance-a100](https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-a100) | 116,867B | `d2880873` | **월별 15-column**: Ym·cnt·aTotal(과세)·bTotal(비과세)·cTotal(공제)·d1(근로세)·d2(사업세)·d3(지방세)·e1(국민)·e2(건강)·e3(장기)·e4(고용)·eTotal·eTotal_c(사업자)·pay_amount + 직원별 26+ column 상세 | ❌ ogada module 11 직원급여 coverage=0 |
+| 2 | [wAllowance-severance](https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-severance) | 137,907B | `dd95c608` | **3-grid**: ①직원별 적립대상(`tj_saving` 체크박스·data-rowid/data-ym/data-wcode/data-sevid 토글) + 산정방식·근무시간·과세/비과세수당 ②연월별 sum_aw·cnt_save·sum_save + Excel 다운로드 ③직원별 누적 cnt_save·cnt_save2·cnt_give | ❌ ogada 퇴직정산은 staffLifecycleCompliance 라벨만 — UI 0 |
+| 3 | [wAllowance-payrollcost](https://ezcare.easyms.co.kr/new.ez?PGID=wAllowance-payrollcost) | 146,026B | `515a239a` | wCode·name·birthdate·worker_kind(종사자구분)·**abTotal(임금총액)·eTotal_c(사회보험.기관)·severance_pay(퇴직적립금)·sum_abTotal(계)** | ❌ ogada 인건비 원가율 0(`MedicalExpenseDeductionPanel` 연말정산만 보유) |
+| 4 | [customer-ezc_bill_list](https://ezcare.easyms.co.kr/new.ez?PGID=customer-ezc_bill_list) | 97,638B | `77b6895c` | **SaaS 4-line 청구**: Ym·이용기간(start_date~end_date)·**amount_ezc(이지케어) + amount_w4c(재무회계) + amount_sms(문자) + amount_vat(부가세) → amount_total**·납부일자·납부금액 | ❌ ogada v2 SaaS self-billing ledger 0 |
+| 5 | [schedule-s100](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-s100) | 101,220B | `93824fa5` | 이름·정보·생년월·일정표(btn-sch)·해당수급자·해당건 — **`if(Ym>="2025-11") cnt(목욕: cnt_003)` 방문목욕(003) 분리** · 중증수당 계(amt 원) | △ ogada 중증수당 미구현·2025-11 분리 룰 신규 |
+| 6 | [worker-check.data.w4c](https://ezcare.easyms.co.kr/new.ez?PGID=worker-check.data.w4c) | 97,859B | `2a2c475b` | 직원명·정보·주민등록번호·date_in(입사)·date_out(퇴사)·**err_msg(특이사항)** | ❌ ogada 직원근태→재무회계 연계 검증 UI 0 (재무 모듈 0) |
+| 7 | [user-myInfo](https://ezcare.easyms.co.kr/new.ez?PGID=user-myInfo) | 111,408B | `225f16c2` | 본인 계정 개인 설정(user-a100 권한설정과 별개) | ✅ ogada `/settings/profile` parity carry |
+
+**판정**: ezCare wAllowance-*는 **케어포 11-1~11-6 정본 PDF + ezCare colModel 정본**의 **2-source 정본**으로 동등 매핑되어 ogada `G-Payroll` P3 Epic(v3+) 정본 evidence를 완성. 4대보험·소득세·지방세·사업소득(3.3%) 분리 컬럼은 DBA가 V200+ 마이그레이션 컬럼 명세 그대로 차용 가능. 퇴직적립금 `tj_saving` 체크박스 토글·월별 sum_aw/sum_save·누적 cnt_save/cnt_give 3-grid는 v3+ 퇴직정산 모듈 UX 정본.
+
+### §563-3 ★★★ 신규 candidate 3건「가정」 (모두 P3 v3+ Epic)
+
+| ID | 근거 | 영향 | 우선순위 |
+|----|------|------|----------|
+| **G-PAYROLL-WALLOWANCE-MODEL** | §563-2 #1·#2·#3 colModel verbatim + 케어포 11-1~11-6 PDF (BNK-122) | REQUIREMENTS §3-8 G-Payroll P3 Epic 본문에 4대보험 분리 컬럼 + 퇴직적립금 체크박스 + 사업소득(3.3%) 분리 명세 추가 | P3「가정」 v3+ |
+| **G-SAAS-SELF-BILLING-LEDGER** | §563-2 #4 customer-ezc_bill_list 4-line (amount_ezc + w4c + sms + vat) | ogada v2 SaaS 운영 시 본인부담 billing ≠ SaaS 사용료 청구 분리 필요 — 별도 self-billing ledger | P3「가정」 v2 SaaS 운영 시점 |
+| **G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT** | §563-2 #5 schedule-s100 `if(Ym>="2025-11") cnt(목욕: cnt_003)` | 2025-11부터 방문목욕(003) 중증수당 분리 룰 — NHIS 시행규칙·고시 cross-verify 필요 | P3「가정」 중증수당 모듈 추후 |
+
+### §563-4 ★★ leave-ledger FE wire + 라이브 E2E harness closure (FE `bc6180e`)
+
+| 단계 | BNK-551 carry | BNK-563 closure |
+|------|----------------|------------------|
+| BE `/staff/leave-ledger` API | ✅ V174 + RBAC + relatedSurfaces AVAILABLE (BNK-550 closure) | carry |
+| FE Route + page | ✅ App.jsx `/staff/leave-ledger` + `StaffLeaveLedgerPage.jsx` (BNK-553 closure) | carry |
+| FE staffAnnualLeave.js 상수 동기화 | ✅ STAFF_ANNUAL_LEAVE_SURFACE_AVAILABLE 4-entry (BNK-553) | carry |
+| **FE 라이브 E2E harness** | ❌ 미구현 carry | ✅ **신규** `src/e2e/staffLeaveLedgerLiveApi.e2e.test.js` (+64L)·`fetchStaffLeaveLedgerApi`·`normalizeStaffLeaveLedgerListResponse`·**relatedSurfaces.availability="AVAILABLE"** 단언(`/staff/annual-leaves`+`/staff/attendance`)·`PLANNED` 미존재 단언 |
+| pilotPageFlows CRUD flow | △ partial | ✅ **신규** `src/pages/pilotPageFlows.test.jsx` +56L (leave-ledger CRUD 흐름 검증) |
+| staffAnnualLeave 단위 테스트 | ✅ | ✅ +10L (AVAILABLE relatedSurfaces 단언 보강) |
+
+**판정**: BNK-553에서 closure로 보고된 leave-ledger FE wire가 이번 commit으로 **라이브 백엔드 호출 단언까지 포함**되어 full-stack US-R01-c 완전 정본화. BNK-562 ★★ "4축 P0/P1 재오픈 0" carry 강화.
+
+### §563-5 백본 zero drift carry + ezCare home/fnc DRIFT cachebuster-only
+
+| URL | live / disk | drift |
+|-----|-------------|-------|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B (BNK-562 342차) | carry 추정(시간 절약 — 본 cycle PGID 7건 신규 집중) |
+| [carefor func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | `6226e6eb` / 98,328B | carry · LIVE direct HTTP 000 6-cycle 미확인 |
+| [ezCare /new/ezCare_fnc.html](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | live `0fec3e84` / 17,870B vs disk `bcd589bb` / 17,870B | **DRIFT cachebuster-only** — line 9 `style.css?1782254286` vs `?1782245143` · **도입 9,346** verbatim 불변 4-cycle stable · 덮어쓰기 0 |
+| [ezCare 루트](https://ezcare.easyms.co.kr/) | live `09f06636` / 106,143B + banner `[무료 이벤트]` + mCnt[1]=9,274 vs disk `6b526a4f` / 106,156B + banner `[추천 이벤트]` + 9,274 | **DRIFT banner A/B oscillation** — -13B·counter 9,274 verbatim 불변·BNK-548 oscillation 패턴 carry · 덮어쓰기 0 |
+
+### §563-6 per-cycle minimum 점검 (agents.yaml reverse_engineering.per_cycle_minimum)
+
+- ✅ 신규 증거 URL **7건** (wAllowance-a100·wAllowance-severance·wAllowance-payrollcost·customer-ezc_bill_list·schedule-s100·worker-check.data.w4c·user-myInfo)
+- ✅ 경쟁사 메뉴/필드/워크플로 **7-block** colModel verbatim (§563-2)
+- ✅ COMPETITOR_MATRIX **+1 신규 행 + 모듈 11/12 evidence** (별도 갱신)
+- ✅ BENCHMARK_REPORT **§563 신규 소절** (본 항목)
+
+**가정 번복 0 · 신규 core 갭 0(기존 ❌ module 11/12 evidence 강화) · candidate +3「가정」(G-PAYROLL-WALLOWANCE-MODEL·G-SAAS-SELF-BILLING-LEDGER·G-CARE-SEVERE-ALLOWANCE-BATHING-SPLIT) · 상태 변경 1(FE +1) · 미확인 1 carry(carefor LIVE 6-cycle) · 신규 snapshot 8건(7 PGID + 1 extract) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족** · **즉시(tester)**: merge **736**(FE199+BE537·양쪽 WT CLEAN·선행 commit 불필요) · **planner**: REQUIREMENTS §3-8 G-Payroll Epic 본문에 ezCare wAllowance colModel evidence 인용·G-SAAS-SELF-BILLING-LEDGER 추가 검토·NHIS 2025-11 방문목욕 분리 룰 cross-verify 후속 사이클.
+
+## §562 BNK-562 — 교차검증·갭 우선순위 8h+ · ★★★ **△4 모듈 2건 동시 deepen — FE module 2 이동서비스 #44 parity copy full-stack + BE module 10 부가서비스 알림톡 fail-closed** · ★★ **가정 번복 0·4축 P0/P1 재오픈 0** · ★★ **백본 2-URL 342차 zero drift(NHIS#44 `c886ff1f`·func.php `6226e6eb`)** · ★ **carefor func.php LIVE HTTP 000 미확인 5-cycle carry**
+
+**조사일**: 2026-06-23T21:56:00Z | **rotation**: 8h+ "교차검증·갭 우선순위" — 이전 BNK 가정 번복 여부·미확인 축소·G14·대시보드·v1.3-C·v2 CMS 등 P0/P1 재정렬·신규 공지·엑셀 포맷 스캔. extract `cross_gap_priority_bnk562.txt`.
+
+### §562-1 ogada git 실측 KPI (BNK-562)
+
+```
+$ git -C src/frontend rev-parse --short develop  → a531ed6  (BNK-561 @170ce56 **HEAD +1**)
+  feat(v1.3-C/G16): pin NHIS #44 transport service fee parity copy
+$ git -C src/backend  rev-parse --short develop   → f600fd6  (BNK-561 @2cae74c **HEAD +1** · BNK-560 @01edba7 HEAD +2)
+  test(v2/US-J03): fail closed without Solapi template mapping
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/backend  status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop → 198 (+1 vs BNK-561 197)
+$ git -C src/backend  rev-list --count origin/test..develop → 537 (+1 vs BNK-561 536)
+merge gate = FE198 + BE537 = **735** (+2 vs BNK-561 733)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`)·path= **111**·report-path **23** → density **20.7%** — carry
+page **90**(+RootRedirect=91)·V1–V175·transport routes **8** — carry
+BE *Test.java **252** · @Test **1,841** (+12 vs BNK-561 1,829 · f600fd6 SolapiKakaoAlimtalkProviderTest +41L)
+FE test **464** = 191 .test.js + 273 .test.jsx (a531ed6 = transportServiceFee.test.js / TransportServiceFeePanel.test.jsx deepen·신규 test 파일 0)
+모듈 **78.79%** (22.85/29 carry·competitorModuleCoverage.js 미변경)
+```
+
+### §562-2 ★★★ △4 모듈 2건 동시 deepen (KPI % 불변·품질/신뢰성 보강)
+
+| 모듈 | △ cov | commit | 내용 | 경쟁사 |
+|------|-------|--------|------|--------|
+| **2 이동서비스** | 0.85 | FE `a531ed6` | `transportServiceFee.js` 4 parity-copy 상수: 러-1~4 4구간·편도50%/왕복100%(`ONE_WAY_RATIO=0.5`)·1일1회(협회 세부운영규정 제8조)·별지 제22호 일지(시행규칙 제34조) → `TransportServiceFeePanel` 노출. **BE-only #44 4-rule → FE 표시 레이어 full-stack closure** | 케어포 func 2-x 차량 마스터/연료비만 · 이지케어 정적 일정·청구 · 엔젤 정적 평가지표 · NHIS #44 고시 정본 |
+| **10 부가서비스** | 0.5 | BE `f600fd6` | `SolapiMessageClient` — internalTemplateCode→live templateId 매핑 null·blank·자기참조(`equalsIgnoreCase`) 시 dispatch **거부**(`failure("templateId mapping missing")`)·`SolapiKakaoAlimtalkProviderTest` +41L lock. v2 채널 롤아웃 시 잘못된 templateId **무음 발송 차단** | 케어포 func 10-1 문자메시지·10-2 급여제공내역 안내 발송(정적) |
+
+**판정**: BNK-516~561 시기 △4 우선순위 carry만 반복했으나, BNK-562 윈도에 △4 중 2건(2 이동·10 부가)을 동시 보강하는 commit 유입. KPI 모듈 %(coverage feature 미변경)는 불변이나 **NHIS #44 full-stack 가시화 + 알림톡 fail-closed hardening** 으로 신뢰성·정합성 보강. planner: REQUIREMENTS 이동서비스(#44 4-rule FE 가시 카피)·부가서비스(템플릿 매핑 누락 fail-closed) 정본화.
+
+### §562-3 백본 2-URL 342차 재실측 + 4축 P0/P1·미확인
+
+| URL | live md5 / size | on-disk | drift |
+|---|---|---|---|
+| [NHIS #44 joHistory](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B | `nhis_jo44.html` 동일 | **342차 zero drift** — FE 신규 parity copy verbatim 정합 |
+| [carefor func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | `6226e6eb` / 98,328B | `carefor_func.php` 동일 | **342차 zero drift** |
+| carefor func.php LIVE 직접 | HTTP **000** timeout(20.0s) | — | **미확인 5-cycle carry**(BNK-558~562)·내용 zero drift 검증·LIVE 접근성만 미확인 |
+
+- **4축 P0/P1 재오픈 0** (App.jsx `@a531ed6` LIVE): G14 care-plan-form·G26 dashboard/hq·v1.3-C transport 8-route·v2 CMS `/billing/cms`·US-R01-c `/staff/leave-ledger`.
+- **신규 공지·엑셀 포맷 스캔**: 엑셀 포맷 변경 0·신규 core 갭 0.
+
+**가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 2(FE +1·BE +1·양쪽 WT CLEAN) · 미확인 1(carefor LIVE 5-cycle) · 신규 snapshot 1건(`cross_gap_priority_bnk562.txt`) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족** · **즉시(tester)**: merge **735**(FE198+BE537·양쪽 WT CLEAN·선행 commit 불필요) · **planner**: baseline FE `@a531ed6`·BE `@f600fd6`·#44 이동서비스비 FE parity copy full-stack·알림톡 fail-closed·△4 잔여 우선순위 불변(2건 deepen·KPI 78.79% 불변).
+
+## §561 BNK-561 — ogada git 실측 6–8h · ★★ **BE `@2cae74c` addressDetail-only PATCH closure — split 주소 상세단독 수정 회귀 방지** · ★★ **백본 2-URL 341차 zero drift(func.php `6226e6eb`·top-nav `95286775`)** · ★ **리포트 밀도 23/111=20.7%·모듈 78.79%·4축 P0/P1 재오픈 0** · ★ **carefor func.php LIVE HTTP 000 미확인 4-cycle carry**
+
+**조사일**: 2026-06-23T21:30:00Z | **rotation**: 6–8h "ogada git 실측" — submodule develop HEAD·Route/page·BE/FE test·모듈 커버 %·4축 교차검증·갭 우선순위 재산정.
+
+### §561-1 ogada git 실측 KPI (BNK-561)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 170ce56  (BNK-560 carry · HEAD zero advance 2-cycle)
+$ git -C src/backend  rev-parse --short develop   → 2cae74c  (BNK-560 @01edba7 **HEAD +1**)
+  fix(clients): handle addressDetail-only PATCH updates (+104L ClientService+Test)
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/backend  status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop → 197 (carry)
+$ git -C src/backend  rev-list --count origin/test..develop → 536 (+1 vs BNK-560 535)
+merge gate = FE197 + BE536 = **733** (+1 vs BNK-560 732)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`)·path= **111**·report-path **23** → density **20.7%**
+page **90**(+RootRedirect=91)·V1–V175·transport routes **8**
+BE *Test.java **252** · @Test **1,829** (+1 vs BNK-560 1,828)
+FE test **464** = 191 .test.js + 273 .test.jsx
+모듈 **78.79%** (22.85/29 carry)
+```
+
+### §561-2 ★★ addressDetail-only PATCH workflow (BE `2cae74c`)
+
+| 단계 | 필드·동작 | ogada | 이지케어 patient-b100 |
+|------|-----------|-------|----------------------|
+| 등록 | `address` + `addressDetail` 분리 | ✅ BNK-557 `kakaoPostcode`+`combineKoreanAddress` | ✅ `btn-searchAddress`+hidden `search_address_string` |
+| 조회 | `address`/`addressMasked`/`pickupAddressMasked` | ✅ 응답 마스킹 | △ 「시/구까지만 노출」 |
+| **수정(PATCH)** | `addressDetail`만 전송 | ✅ **신규** `applyAddressDetailOnlyUpdate` — 기존 search 복호화 후 상세만 갱신·search blank → `BusinessRuleException` | △ 분리 필드 carry(역공학 미확인) |
+| 회귀 테스트 | encrypted address field update | ✅ `ClientServiceTest` +91L @ `2cae74c` | N/A |
+
+**판정**: BNK-557 split address의 잔여 갭(상세주소 단독 PATCH 무시) **closure**. planner P1: REQUIREMENTS 이용자관리에 「상세주소 단독 수정」 정본 등재.
+
+### §561-3 백본 2-URL 341차 재실측
+
+| URL | live md5 / size | on-disk | drift |
+|---|---|---|---|
+| [carefor func.php Wayback](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) | `6226e6eb` / 98,328B | `carefor_func.php` 동일 | **341차 zero drift** |
+| [ezcare top-nav-V2](https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428) | `95286775` / 25,470B | `ezcare_top_nav_v2.js` 동일 | **341차 zero drift** |
+| carefor func.php LIVE | HTTP **000** timeout | on-disk carry | **미확인 4-cycle** (BNK-558~561) |
+
+### §561-4 4축·갭 우선순위 (planner)
+
+| # | 우선순위 | 액션 |
+|---|---------|------|
+| 1 | P1 | addressDetail-only PATCH `2cae74c` — REQUIREMENTS 주소 분할 필드 정본 보완 |
+| 2 | P1 | tester FF merge **733** — `ClientServiceTest` address regression 우선 |
+| 3 | P2 carry | G-BILLING-REPORT-FILTER-PERSISTENCE — BE V170 ✅ · FE wire ❌ |
+| 4 | P2 carry | G-REPORT-DENSITY — 20.7% vs carefor 29.8% (**−9.1%p**) |
+| 5 | P3 carry | G-MENU-PERMISSION-MATRIX·G-BILLING-START-STANDALONE·G-AGENCY-APPRAISAL-DASH |
+
+**가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 1(BE +1·양쪽 WT CLEAN) · 미확인 1(carefor LIVE) · 신규 snapshot 2건(extract+Wayback check) · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족**.
+
+> **즉시(tester)**: merge gate **733** — BE `2cae74c` addressDetail regression + RBAC closure carry 회귀.
+
+---
+
+## §560 BNK-560 — 엔젤·롱텀·규제 4–6h · ★★★ **NHIS #44 이동서비스비 러-1~4 340차 zero drift ↔ ogada `TransportServiceFeeService` full-stack ✅ parity/우위(PLAN_NOTES #44)** · ★★★ **longterm 502 canonical 본문 live 직접 수신 — diff=`var s16;` 1줄(+9B)·strip-s16 IDENTICAL·단기보호 1등급 74,060 verbatim** · ★★ **longterm 610 통합재가 재실측 — 2종 이상 급여·가산 월 10만원·주야간보호형** · ★★ **엔젤 5-URL zero drift(CMS 5-method 250/300원)** · ★ **law247 cachebuster·MOHW 2026-126 counter DRIFT(조회수 2,510→2,512·verbatim 불변)**
+
+**조사일**: 2026-06-23T20:45:00Z | **rotation**: 4–6h "엔젤·롱텀·규제" — silverangel/lcms 공개 페이지·law.go.kr/NHIS 고시 재실측·md5 대조·이동서비스비 #44·2026 수가(단기보호·통합재가)·평가 #27 교차검증.
+
+### §560-1 ogada git 실측 KPI (BNK-560)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 170ce56  (BNK-559 carry · HEAD zero advance 1-cycle)
+$ git -C src/backend  rev-parse --short develop   → 01edba7  (BNK-559 carry · HEAD zero advance 1-cycle)
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/backend  status --porcelain | wc -l → 0  (WT CLEAN)
+$ git -C src/frontend rev-list --count origin/test..develop → 197 (carry)
+$ git -C src/backend  rev-list --count origin/test..develop → 535 (carry)
+merge gate = FE197 + BE535 = **732** carry (tester FF merge 732 대기)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`)·page **90**(+RootRedirect=91)·V1–V175·BE Test **252**(@Test 1,828)·FE test **464**(191 `.test.js` + 273 `.test.jsx`)·모듈 **78.79%** — 전부 carry(HEAD zero advance).
+```
+
+### §560-2 엔젤·롱텀·규제 live 재실측 (md5 대조)
+
+| URL | live md5 / size | on-disk | drift | verbatim |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | `c886ff1f` / 7,572B | 동일 | **zero drift (340차)** | 러-1~4·편도50%·1일1회·④별지 제22호 일지 |
+| silverangel essential | `c79c1be3` / 131,664B | 동일 | zero drift | 평가지표 #27 보호자회의·이동서비스 6 |
+| silverangel extraService | `f9c5d877` / 81,637B | 동일 | zero drift | CMS 5-method: 자동이체 250원·가상계좌 300원·카드·계좌분리·현금영수증 |
+| silverangel mainService | `bcf6df41` / 59,002B | 동일 | zero drift | 2-track 소개 |
+| silverangel feeService | `eab352a8` / 44,513B | 동일 | zero drift | 요금 안내 |
+| lcms root | `c0c66076` / 50,740B | 동일 | zero drift | type1 디자인 샘플 회전 |
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | `4339da94` / 78,450B | `f87e1858` | **cachebuster DRIFT** | 제2025-247호·시행 2026.1.1 (불변) → 덮어쓰기 |
+| [MOHW 2026-126](https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000) | `3f2fc5ac` / 109,510B | `eda74c3c` | **counter DRIFT** | 제2026-126호·본인부담상한액·**조회수 2,510→2,512** → 덮어쓰기 |
+| [longterm 502](https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000002742) | `72148cfe` / 105,561B | canonical `b5aee8c1`(105,552B) | **+9B `var s16;` 1줄** | **월 한도액 및 급여비용(2026.1.1.기준)·단기보호 1등급 74,060** · strip-s16 IDENTICAL · canonical 보존 |
+| [longterm 503](https://www.longtermcare.or.kr/npbs/e/b/503/npeb503m01.web?menuId=npe0000002751) | `d3c90b33` / 422B | canonical `8ca7d1fa` | refreshedException gate | 경감 50%×4/60%×3 canonical 보존 |
+| [longterm 610](https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000002731) | `8d53dcc1` / 91,430B | BNK-556 `0ea575be`(91,421B·+9B) | partial shell 재실측 | **통합재가서비스·2종 이상 급여·가산 월 10만원·주야간보호형** → 신규 named snapshot |
+
+### §560-3 인사이트 (planner)
+
+- **#44 이동서비스비 러-1~4 340차 zero drift** — `c886ff1f`(7,572B) ↔ ogada `TransportServiceFeeService`(RU_1~RU_4·편도 50%·1일1회 중복 guard) + `TransportServiceLog`(V148/V154/V155 DB-level CHECK) = full-stack ✅ parity/우위. PLAN_NOTES #44 1차 확인 재입증.
+- **longterm 502 canonical 본문 live 수신** — BNK-542~552 시기에는 partial shell/refreshedException gate로만 수신되던 502 본문이 이번에 canonical 본문(단기보호 1등급 74,060 포함)으로 직접 수신됨. live md5 `72148cfe`는 canonical `b5aee8c1`와 `var s16;` 1줄(+9B)만 차이 → strip-s16 IDENTICAL. canonical `longterm_502.html`(no-s16) 보존, var s16 oscillation 패턴 carry.
+- **통합재가(longterm 610)** — 「2종 이상의 급여 제공·통합재가 서비스 가산 지급 월 10만원·주야간보호형」. ogada는 주야간 단일 서비스 포지셔닝이므로 통합재가 결합 모델은 MVP out-of-scope carry. planner: 향후 통합재가 결합 청구가 시장 요구가 될 경우 v3+ 후보로 기록.
+- **CMS 5-method** — 엔젤 extraService 자동이체(250원)/가상계좌(300원)/카드/계좌분리/현금영수증. ogada는 자동이체·현금영수증·의료비공제를 자체 CMS DB로 ✅(외부 효성CMS 미의존 = 마케팅 카피), 가상계좌·계좌분리는 외부 PG 의존 out-of-scope 후보 carry.
+- **신규 core 갭 0 · candidate 변동 0 · 가정 번복 0 · 상태 변경 0(HEAD zero advance)**.
+
+## §559 BNK-559 — 이지케어 역공학 2–4h · ★★★ **FAQ [21450](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21450&type=web) RFID↔공단계획 엑셀 tri-source named snapshot 신규** · ★★ **FAQ rowid 21800 오표기 정정 — 「excel 가이드」→「[연간] 정기 욕구사정」(평가지표 15)** · ★★ **가격·도입 재실측 fnc 9,346(+1)·home 9,274(+1)·charge 40% 프로모(06-30 마감)** · ★★ **ogada RBAC `roleHierarchy` BNK-558 in-flight → commit closure(WT CLEAN)** · ★ **데모 PGID 5건+shell DRIFT(schedule-rfid +211B·demo +1,651B)**
+
+**조사일**: 2026-06-23T20:15:00Z | **rotation**: 2–4h "이지케어 ERP" — `./scripts/ezcare-demo-fetch.sh` 데모 세션·`/new/ezCare_fnc.html`·Channel.io·FAQ rowid 8-probe·RFID/일정확정 PGID re-fetch·가격·도입 카운터 재실측.
+
+### §559-1 ogada git 실측 KPI (BNK-559)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 170ce56
+  test(clients): cover caregiver edit link on ClientDetailPage
+  ← 77584a0 (BNK-558) +3: 2e7374b fix(auth) roleHierarchy · 1193761 QA-B274 · 170ce56 test
+$ git -C src/backend  rev-parse --short develop   → 01edba7
+  feat(clients): extend client PATCH RBAC to caregivers and HQ admins
+  ← deda5b4 (BNK-558) +1
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN · BNK-558 DIRTY 6 → closure)
+$ git -C src/backend  status --porcelain | wc -l → 0  (WT CLEAN · BNK-558 DIRTY 4 → closure)
+$ git -C src/frontend rev-list --count origin/test..develop → 197 (+3 vs BNK-558 194)
+$ git -C src/backend  rev-list --count origin/test..develop → 535 (+1 vs BNK-558 534)
+merge gate = FE197 + BE535 = **732** (+4 vs BNK-558 728)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`) carry
+*Page.jsx **90** (+RootRedirect=91) carry
+Flyway V1–V175 carry
+BE *Test.java **252** (+1 vs BNK-558 251) · @Test **1,828** (−6 vs BNK-558 1,834 · `1193761` QA-B274 regression 정리)
+FE test **464** = 191 .test.js + 273 .test.jsx carry (+ `roleHierarchy.test.js` 신규)
+모듈 coverage 22.85/29 = **78.79%** carry
+```
+
+### §559-2 ★★★ FAQ rowid 8-probe — RFID·욕구사정·stub 분류
+
+| rowid | HTTP | Size | md5 | 제목·판정 |
+|------:|-----:|-----:|-----|-----------|
+| [21450](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21450&type=web) | 200 | 17,278B | `e1eb78e1` | **★ 신규 named** `ezcare_faq_21450_bnk559.html` — 「4.1 RFID태그내역↔공단계획 비교」·**엑셀 선행 업로드**(계획일정+RFID 전송내역)·비실시간 비교·`comp` 탭 점검 |
+| [21800](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21800&type=web) | 200 | 20,307B | `156d08d1` | **★ 오표기 정정** 「[연간] 정기 욕구사정」·평가지표 15·`2.2정기욕구평가 현황` — BNK-540 `ezcare_faq_excel_guide_21800`은 Channel.io Next.js error page였음 |
+| [21815](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21815&type=web) | 200 | 25,773B | `85bda450` | 변경사유 excel·`chg_what/before/after` carry IDENTICAL |
+| [21820](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21820&type=web) | 200 | 18,730B | `7944b467` | 급여계약 통보·전월 말일·월금액/한도액 workflow carry |
+| [21695](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21695&type=web) | 200 | 14,526B | `1ac02138` | 7.1 통장 차폐·menu deny-list carry |
+| 21843/21844/21856/21900 | 200 | 13,327B | `e5762090` | 미게시 stub IDENTICAL |
+
+**가정 정밀화(번복 아님)**: FAQ rowid 21800은 faq.ez 기준 「정기 욕구사정」이며 excel 업로드 가이드가 아님. excel/RFID 워크플로 정본은 FAQ **21450** + PGID `schedule-rfid` + Channel.io **01805b93** tri-source.
+
+### §559-3 ★★★ RFID·일정확정·처리상태 워크플로 (데모 PGID re-fetch)
+
+| PGID | Size | md5 Δ | 핵심 필드·워크플로 |
+|------|-----:|-------|-------------------|
+| [schedule-rfid](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-rfid) | 150,501B | `19948db7`→`f57aaf3e` **+211B** | `rfid_upload`·`comp_01~09` 8-leaf·`270분초과, 엑셀파일 수가 검토` red formatter ↔ ogada `visits.js` COMP_01~09 **8/8 parity+** carry |
+| [schedule-fix](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-fix) | 149,576B | `dd54b420`→`a651e8e1` SIZE 동일 | `#grid-schedule-p500` 17-col·`tAmount_noExt`/`rAmount`/`pAmt`/`pAmt_ext`/`severe_amount`·일괄확정/확정취소·원천세 확정취소 제한(Channel.io) |
+| [pAmt-a100](https://ezcare.easyms.co.kr/new.ez?PGID=pAmt-a100) | 134,593B | `44dec417`→`e4657785` **+2B** | `grid-pAmt-a100-notYet`→`schedule-fix&Ym=` gate·CMS 14.5% carry |
+| [schedule-p100](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-p100) | 113,979B | `a55157b8`→`5d5d89b2` SIZE 동일 | 2-tab 일정표+직원인권문자·print/엑셀 6-endpoint carry |
+| [duplicate-schedule](https://ezcare.easyms.co.kr/new.ez?PGID=duplicate-schedule) | 93,401B | `8f80f275` | **negative carry** — 구인공고(`grid-job-post-list`)·`faqDir=duplicate` 고객지원 dialog·이중일정 탐지 UI **아님** |
+
+### §559-4 ★★ 가격·도입 3-source 재실측
+
+| URL | Counter/가격 | BNK-553→559 Δ | 판정 |
+|-----|-------------|---------------|------|
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | **9,346개** | +1 (9,345→9,346) | 실 counter DRIFT `bcd589bb` |
+| [home](https://ezcare.easyms.co.kr/) | **9,274** 재가·mCnt `{9274,4595,2353,1820}` | +1·KST **06-24** rollover | DRIFT `6b526a4f` (+50B) |
+| [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 33,000/25,850/55,000 + **40%할인(~06-30)** | 가격 verbatim·promo 신규 | cachebuster DRIFT |
+| [/?PG=e01](https://ezcare.easyms.co.kr/?PG=e01) carry | 9,342 | 3-source coexistence | 미재실측 carry |
+
+### §559-5 ★★ ogada RBAC closure (BNK-558 in-flight → committed)
+
+| 커밋 | 내용 |
+|------|------|
+| FE `2e7374b` | `roleHierarchy.js`+`.test.js` committed · `ROLE_RANK` 100/80/60/40 · `hasMinRank`/`rolesWithMinRank` |
+| FE `170ce56` | `ClientDetailPage` caregiver edit link test — BNK-558 P1 보안검증 UI 회귀 가드 |
+| BE `01edba7` | `updateClient` `@PreAuthorize` +HQ_ADMIN+CAREGIVER 확대 |
+
+BNK-558 「in-flight WT DIRTY」→ 본 회차 **WT CLEAN closure**. planner P1: REQUIREMENTS RBAC RANK 표 정본화 carry.
+
+### §559-6 planner 액션
+
+| # | 우선순위 | 액션 |
+|---|---------|------|
+| 1 | P1 | RBAC `ROLE_RANK`·CAREGIVER 수정 권한 — REQUIREMENTS·SEC 감사 정본화 (BNK-558→559 closure) |
+| 2 | P2 | FAQ 21800 오표기 정정 — BENCHMARK_REPORT·MATRIX 과거 행 주석 갱신 |
+| 3 | P3 carry | 재가 G21 RFID→일정확정→청구 lifecycle — 주야간 MVP out-of-scope |
+| 4 | P3 | charge 40% 프로모(06-30) — 마케팅 참고·ogada 가격 무관 |
+
+**가정 번복 0 · 가정 정밀화 1(FAQ21800) · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 4(FE +3·BE +1·WT DIRTY→CLEAN) · 미확인 0 신규 · 신규 snapshot 10건(FAQ 9+extract 1) · 덮어쓰기 14건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족**.
+
+> **즉시(tester)**: merge gate **732** — RBAC closure 회귀 `RoleBasedControllerAccessTest`/`sevenRoleRouteGuard`/`roleHierarchy.test.js` 우선.
+
+---
+
+## §558 BNK-558 — 교차검증·갭 우선순위 8h+ · ★★★ **ogada RBAC 숫자형 역할 계층(`roleHierarchy`/`RoleHierarchy`) in-flight 신규 — 「ogada=role invariant·numeric level 미사용」 가정(BNK 누적) 정밀화** · ★★ **수급자 수정 권한 CAREGIVER 확대(`updateClient` `@PreAuthorize` +HQ_ADMIN+CAREGIVER) — 현장 직원 데이터 입력 현실 반영** · ★★ **이지케어 `user-a100` numeric level 0/1/4/5/6 ↔ ogada ROLE_RANK 100/80/60/40 cross-walk** · ★ **NHIS #44 러-1~4 339차 IDENTICAL·carefor func.php LIVE HTTP 000 미확인(on-disk `6226e6eb` carry)·ezcare patient-b100 70B stub carry**
+
+**조사일**: 2026-06-23T19:30:00Z | **rotation**: 8h+ "미확인·교차검증·이전 가정 번복 여부" — 누적 BNK 매트릭스의 「ogada는 numeric level 대신 role invariant 유지」 가정을 in-flight 코드(`roleHierarchy`/`RoleHierarchy` 숫자 RANK 도입)로 재검증, 4축(G14·대시보드/G26·v1.3-C·v2 CMS) P0/P1 재오픈 여부 확인, backbone live drift 재측정.
+
+### §558-1 ogada git 실측 KPI (BNK-558)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 77584a0
+  fix(clients): centralize create/edit RBAC and guard client routes
+  ← 0606a3b (BNK-557) +1
+$ git -C src/backend  rev-parse --short develop   → deda5b4
+  feat(clients): expose split home address fields on client read API
+  ← 642ea11 (BNK-557) +1
+$ git -C src/frontend status --porcelain | wc -l → 6  (WT DIRTY · in-flight RBAC 역할 계층)
+    M src/auth/clientPermissions.js · D src/auth/clientPermissions.test.js
+    M src/auth/roleNav.js · M src/auth/sevenRoleRouteGuard.test.jsx
+    ?? src/auth/roleHierarchy.js · ?? src/auth/roleHierarchy.test.js
+$ git -C src/backend  status --porcelain | wc -l → 4  (WT DIRTY · in-flight RBAC 역할 계층)
+    M .../clients/api/ClientController.java · M .../security/RoleBasedControllerAccessTest.java
+    ?? .../security/RoleHierarchy.java · ?? .../security/RoleHierarchyTest.java
+$ git -C src/frontend rev-list --count origin/test..develop → 194 (+1 vs BNK-557 193)
+$ git -C src/backend  rev-list --count origin/test..develop → 534 (+1 vs BNK-557 533)
+merge gate = FE194 + BE534 = **728** (+2 vs BNK-557 726)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`) carry  [git show develop:src/App.jsx | grep -cE "<Route\b" = 111]
+*Page.jsx **90** (+RootRedirect=91) carry
+Flyway V1–V175 carry (distinct V = 175)
+BE *Test.java **251** carry · @Test **1,834** (+1 vs BNK-556 1,833)
+FE test **464** = 191 .test.js + 273 .test.jsx (+1 vs BNK-557 463 — `77584a0`가 `clientPermissions.test.js` 신규 A +18L)
+모듈 coverage 22.85/29 = **78.79%** carry (`competitorModuleCoverage.js` `df9ec6c..develop` diff 0)
+```
+
+### §558-2 ★★★ ogada RBAC 숫자형 역할 계층 in-flight — 코드 실측
+
+| 레이어 | 신규/변경 (HEAD `77584a0`/`deda5b4` 위 working tree) | 내용 |
+| --- | --- | --- |
+| FE 신규 | `src/auth/roleHierarchy.js`(??) + `.test.js`(??) | `ROLE_RANK = {hq_admin:100, branch_admin:80, social_worker:60, caregiver:40}`·`CLIENT_EDIT_MIN_RANK = caregiver`·`CLIENT_CREATE_MIN_RANK = social_worker`·`roleRank/hasMinRank/rolesWithMinRank` 헬퍼. 「숫자가 클수록 상위(본사>지점장>현장)·상위는 하위 권한 포함」 |
+| FE 변경 | `clientPermissions.js`(M) | 기존 명시 배열(`CLIENT_EDIT_ROLES`/`CLIENT_CREATE_ROLES`) → `rolesWithMinRank(MIN_RANK)`로 파생·`canEditClient/canCreateClient` = `hasMinRank()` 위임 |
+| FE 변경 | `roleNav.js`(M)·`sevenRoleRouteGuard.test.jsx`(M)·`clientPermissions.test.js`(D) | 라우트 가드/네비 역할 판정도 rank 기반으로 정렬·기존 명시-배열 테스트 제거 |
+| BE 신규 | `security/RoleHierarchy.java`(??) + `RoleHierarchyTest.java`(??) | FE와 **동일 RANK**(HQ_ADMIN 100·BRANCH_ADMIN 80·SOCIAL_WORKER 60·CAREGIVER 40)·`CLIENT_EDIT_MIN_RANK=CAREGIVER`·`CLIENT_CREATE_MIN_RANK=SOCIAL_WORKER`·`rankForRole/hasMinRank`(대소문자 정규화·null→0) |
+| BE 변경 | `ClientController.java`(M) | `@PatchMapping("/{clientId}") updateClient` `@PreAuthorize` **`hasAnyRole('BRANCH_ADMIN','SOCIAL_WORKER')` → `hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER','CAREGIVER')`** — 수급자 수정을 현장 직원(CAREGIVER)까지 확대 |
+
+> 직전 HEAD 커밋 `77584a0 fix(clients): centralize create/edit RBAC and guard client routes`(8-file +66/-32)는 권한을 `clientPermissions.js`로 **중앙화**(명시 배열)하고 `ClientDetailPage`/`ClientListPage` 라우트를 가드. 위 working tree는 그 위에 **숫자형 계층(rank)** 으로 한 단계 더 추상화하는 in-flight 작업.
+
+### §558-3 ★★★ 경쟁사 cross-walk — 이지케어 numeric level ↔ ogada ROLE_RANK (가정 정밀화)
+
+| 축 | 이지케어 (확인·snapshot carry) | ogada `@77584a0`/`@deda5b4` (+working tree) | 판정 |
+| --- | --- | --- | --- |
+| 권한 모델 | [user-a100](https://ezcare.easyms.co.kr/new.ez?PGID=user-a100) `5c00aa89` — **numeric level `0/1/4/5/6`** + `duty` + `user-access-denied`/`access-denied-UPDATE` 액션별 차폐 | **numeric `ROLE_RANK 100/80/60/40` 계층**(상위가 하위 포함) + role 코드 + path/`@PreAuthorize` 가드 | **부분 parity** — ogada도 이제 숫자 rank 도입(역할 코드 위에 계층 비교) |
+| 계정×메뉴 fine-grained 차폐 | 메뉴별 권한 부여/회수(`9.5 사용자 관리 > 권한설정`·`7.1 통장 차폐`) | rank 기반 **기능 단위**(client edit/create) 게이트 · **계정별 메뉴 deny-list ❌** | **갭 carry** — `G-MENU-PERMISSION-MATRIX` P3 유지(주야간 소규모 SaaS 의도적 단순화) |
+| 권한 확대 | level 별 read/update 분리 | `updateClient` CAREGIVER까지 확대(현장 직원 입력) | planner 검증 필요(아래 §558-5 #2) |
+
+**가정 정밀화(번복 아님)**: 누적 BNK 매트릭스(예: line 197 `user-a100` 행)는 「ogada는 numeric level 대신 role invariant 유지」로 기록했다. BNK-558 in-flight 코드는 **숫자 RANK(`ROLE_RANK`/`RoleHierarchy`)를 도입**했으나, 이는 *계정별 메뉴 차폐용 level*이 아니라 **역할 코드의 계층적 포함관계(상위⊇하위)를 표현하는 내부 비교값**이다. 따라서 「per-account numeric menu level은 여전히 미사용·계정×메뉴 deny-list 갭 carry」는 유지하되, 「ogada는 numeric 미사용」이라는 표현은 **「ogada는 역할 *계층* numeric rank를 쓰되 per-menu level은 미사용」으로 정밀화**한다. (가정 번복 0 · 가정 정밀화 1)
+
+### §558-4 ★ live 재실측 — backbone (drift check)
+
+| URL | HTTP | size | md5 | 판정 |
+| --- | ---: | ---: | --- | --- |
+| [NHIS joHistory #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | IDENTICAL · 러-1~4·편도50%·1일1회·일지④ (**339차 zero drift**) |
+| [carefor func.php](https://daycare.carefor.co.kr/daycare/func.php) | **000** | 0 | — | **미확인(연결 실패)** — on-disk `carefor_func.php` `6226e6eb`(98,328B) carry, 덮어쓰기 0 |
+| [ezcare new.ez?PGID=patient-b100](https://ezcare.easyms.co.kr/new.ez?PGID=patient-b100) | 200 | 70B | `e1d52bd5` | 비로그인 redirect stub(역공학 금지)·데모 세션 snapshot carry |
+
+### §558-5 4축 P0/P1 재검증 + planner 액션 권장
+
+| # | 우선순위 | 액션 | 근거 |
+| --- | --- | --- | --- |
+| 1 | P1(검증) | **RBAC 숫자 계층을 REQUIREMENTS RBAC 명세에 정본화** — `ROLE_RANK`(HQ 100>지점장 80>사회복지사 60>요양보호사 40)·「상위 역할은 하위 권한 포함」 invariant·FE/BE RANK 동기화 규칙 | §558-2 FE/BE 동일 RANK 구현 |
+| 2 | P1(보안검증) | **수급자 수정 권한 CAREGIVER 확대 의도 확인** — `updateClient`가 요양보호사까지 허용으로 변경됨. REQUIREMENTS의 역할별 데이터 권한 표와 일치하는지·SEC 감사 필요 여부 결정 | §558-2 `@PreAuthorize` +CAREGIVER |
+| 3 | P3(carry) | 계정×메뉴 fine-grained deny-list(`G-MENU-PERMISSION-MATRIX`)는 이지케어 우위 영역으로 carry — MVP out-of-scope 유지, v3 enterprise 후보 | §558-3 갭 carry |
+| 4 | — | 4축(G14·대시보드/G26·v1.3-C·v2 CMS) **P0/P1 재오픈 0** — backbone NHIS #44 339차 IDENTICAL·신규 경쟁사 공지/엑셀 포맷 변경 0 | §558-4 |
+
+**가정 번복 0 · 가정 정밀화 1(numeric level 표현) · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 2(FE +1·BE +1, in-flight WT DIRTY FE6/BE4) · 미확인 1(carefor func.php LIVE 000 carry) · 신규 snapshot 0건 · 덮어쓰기 0건 · 엑셀 포맷 변경 0 · per-cycle minimum 4종 충족(URL 재실측·RBAC 필드/워크플로 블록·매트릭스 6행·§558 신규)**.
+
+> **즉시(coder)**: FE WT DIRTY 6·BE WT DIRTY 4(RBAC 역할 계층 in-flight) — `roleHierarchy.js`/`RoleHierarchy.java` + 동반 테스트 **commit closure** 권장(미커밋 시 next `run_agent.py build` push 누락 위험·FE/BE RANK 동기화 검증 포함).
+> **즉시(tester)**: merge gate **728**(FE194+BE534) — RBAC 변경은 권한 경계 영향 → `RoleBasedControllerAccessTest`/`sevenRoleRouteGuard.test.jsx` 회귀 우선.
+
+---
+
+## §557 BNK-557 — ogada git 실측 6–8h · ★★★ **한국형 주소검색(카카오/다음 우편번호) + 분할 주소 필드 full-stack 신규 — 이지케어 `btn-searchAddress` parity 달성** · ★★ **ogada PII 주소 마스킹(`addressMasked`/`pickupAddressMasked`) ↔ 이지케어 「공고에는 시/구까지만 노출」 동일 패턴** · ★★ **이용자 목록 필터 신규(`clientListFilters.js` 183L)** · ★ **NHIS #44 러-1~4 338차 IDENTICAL·ezcare patient-b100 직접 fetch 70B 로그인 stub carry**
+
+**조사일**: 2026-06-23T18:50:00Z | **rotation**: 6–8h "ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정" — `src/frontend`·`src/backend` develop HEAD 재측정, COMPETITOR_MATRIX ogada `@HEAD` 열 일괄 갱신, BNK-556 in-flight 변경의 commit closure 확인.
+
+### §557-1 ogada git 실측 KPI (BNK-557)
+
+```
+$ git -C src/frontend rev-parse --short develop  → 0606a3b
+  ux(a11y): Korean address fields, client list filters, and form accessibility (UXD-158)
+  ← 64584f4 (BNK-556) +2: 7e048c0 feat(clients): Korean address search/edit/transport pickup UX
+$ git -C src/backend rev-parse --short develop   → 642ea11
+  feat(clients): split home address fields and return full address on read
+  ← c4e6bcb (BNK-556) +1
+$ git -C src/frontend status --porcelain | wc -l → 0  (WT CLEAN · BNK-556 DIRTY 66 → commit closure)
+$ git -C src/backend status --porcelain | wc -l  → 0  (WT CLEAN · BNK-556 DIRTY 6 → commit closure)
+$ git -C src/frontend rev-list --count origin/test..develop → 193 (+2 vs BNK-556 191)
+$ git -C src/backend  rev-list --count origin/test..develop → 533 (+1 vs BNK-556 532)
+merge gate = FE193 + BE533 = **726** (+3 vs BNK-556 723)
+
+Route **112** (111 `<Route\b` + 1 `<Routes>`) carry  [git show develop:src/App.jsx | grep -cE "<Route\b" = 111]
+*Page.jsx **90** (+RootRedirect=91) carry
+Flyway V1–V175 carry (distinct V = 175)
+BE *Test.java **251** carry (BE diff = ClientServiceTest +76L, 신규 파일 0)
+FE test **463** = 190 .test.js + 273 .test.jsx (carry · BNK-556 WT DIRTY 신규 test가 commit으로 편입 → 총계 불변)
+모듈 coverage 22.85/29 = **78.79%** carry
+```
+
+### §557-2 ★★★ 한국형 주소검색 full-stack 신규 — 코드 실측
+
+| 레이어 | 신규/변경 | 내용 |
+| --- | --- | --- |
+| FE lib | `src/lib/kakaoPostcode.js`(87L 신규)+`.test.js`(56L) | 다음 `postcode.v2.js`(`t1.kakaocdn.net`) **단일 로드**(`loadPromise` 캐시)·`openKakaoPostcodeSearch()` → `{zonecode, roadAddress, buildingName}`·도로명/지번 `userSelectedType==="R"` 분기·`FORCE_CLOSE` 시 `null` resolve |
+| FE util | `src/utils/koreanAddress.js`+`.test.js` | `combineKoreanAddress(addressSearch, addressDetail)` = base + 상세 trim 합본 |
+| FE page | `ClientFormPage.jsx`(+615L)·`ClientListPage.jsx`(285L)·`clientListFilters.js`(183L 신규)+`.test.js`(83L) | 이용자 등록/수정 폼 주소검색 통합·목록 필터·`userFacingNav`/`complianceNavLinks` 정비·`TransportPage` 픽업 UX |
+| BE api | `CreateClientRequest`/`UpdateClientRequest` `+addressDetail`·`ClientResponse` `address`/`addressMasked`/`pickupAddressMasked` | 분할 주소 입력 + PII 마스킹 응답 |
+| BE domain | `ClientService`(+41/-)·`ClientServiceTest`(+76L) | split home address 저장·조회시 full address 반환 |
+
+### §557-3 ★★★ 경쟁사 cross-walk — 이지케어 주소검색 ↔ ogada parity
+
+| 축 | 이지케어 (확인·snapshot) | ogada `@0606a3b`/`@642ea11` | 판정 |
+| --- | --- | --- | --- |
+| 주소검색 팝업 | [patient-b100](https://ezcare.easyms.co.kr/new.ez?PGID=patient-b100) snapshot L432 `<button class="ui-button btn-searchAddress">주소검색</button>` + hidden `search_address_string`/`job_address`/`job_location_code` | `kakaoPostcode.openKakaoPostcodeSearch()` 팝업 + zonecode/도로명/상세 분할 | **parity 달성** (BNK-556까지 ogada 미보유 갭 → BNK-557 closure) |
+| PII 주소 마스킹 | snapshot L430 「근무지(수급자 소재지). **공고에는 시/구까지만 노출됩니다**」 | `addressMasked`·`pickupAddressMasked` 응답 마스킹 | ogada는 **응답 레벨** 마스킹 = parity/우위(개인정보보호법 정합) |
+| 분할 주소 저장 | hidden 필드 다수(`job_address`·`job_location_code`) | `address` + `addressDetail` split·조회시 full address 합본 | parity |
+
+### §557-4 ★ live 재실측 — backbone (drift check)
+
+| URL | HTTP | size | md5 | 판정 |
+| --- | ---: | ---: | --- | --- |
+| [NHIS joHistory #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | IDENTICAL · 러-1~4·편도50%·1일1회·일지④ (338차 zero drift) |
+| [ezcare new.ez?PGID=patient-b100](https://ezcare.easyms.co.kr/new.ez?PGID=patient-b100) | 200 | 70B | `e1d52bd5` | 비로그인 redirect stub(역공학 금지)·데모 세션 snapshot `ezcare_new_ez_pgid_patient-b100.html` carry |
+
+### §557-5 planner 액션 권장
+
+| # | 우선순위 | 액션 | 근거 |
+| --- | --- | --- | --- |
+| 1 | P1→완료 | 주소검색 갭(이전 차수 미보유) closure 반영 — REQUIREMENTS/USER_STORIES 이용자관리에 「우편번호 주소검색 + 분할 주소」 정본 등재 | §557-2/3 full-stack 구현 실측 |
+| 2 | P2 | 외부 의존(다음 우편번호 `postcode.v2.js`) 명시 — 망 분리/오프라인 환경 fallback(수기 입력) 정책 검토 | §557-2 외부 CDN 스크립트 로드 |
+| 3 | P2 | PII 주소 마스킹 정책을 보호자 포털·송영 화면까지 일관 적용 확인 | §557-3 `addressMasked`/`pickupAddressMasked` |
+| 4 | P3 | 이용자 목록 필터(`clientListFilters.js`)를 USER_STORIES 검색/필터 스토리로 정식화 | §557-1 신규 183L |
+
+**가정 번복 0 · 신규 core 갭 0(주소검색 갭 closure) · candidate 변동 0 · 상태 변경 2(FE +2·BE +1) · 신규 snapshot 0건 · 덮어쓰기 0건 · per-cycle minimum 4종 충족(URL 재실측·메뉴/필드 블록·매트릭스 6행·§557 신규)**.
+
+---
 
 ## §556 BNK-556 — 엔젤·롱텀·규제 4–6h · ★★★ **longterm 502 canonical live 회복 — 2026 수가·단기보호 1등급 74,060 직접 확인** · ★★★ **longterm 610 통합재가 partial shell 신규 확보 — 2종 이상 급여·주야간보호형 월 10만원** · ★★ **silverangel CMS 5-method·평가 #27 가족소통 zero drift** · ★★ **NHIS #44 이동서비스비 러-1~4 337차 IDENTICAL** · ★ **LCMS type1 역회전·law/MOHW cosmetic DRIFT**
 

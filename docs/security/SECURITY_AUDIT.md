@@ -1,12 +1,12 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-23T17:00:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-25T17:30:00+09:00 -->
 # 보안 감사 보고서 (security/SECURITY_AUDIT.md)
 
 > **작성**: security_auditor (`SEC`)  
-> **감사일**: 2026-06-23 (23차 일일 재점검)  
-> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `5fd12dd`**, **WT DIRTY 9M+1U**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `426d63a`**, **WT DIRTY 38M+11U**), PostgreSQL  
-> **baseline**: workspace **git 실측** — backend develop **`5fd12dd`**(+530 vs origin/test) · origin/test **`598d108`**(**530 unpushed**) · frontend develop **`426d63a`**(+187 vs origin/test) · origin/test **`ab4de83`**(**187 unpushed**)  
-> **원격 test**: backend **`origin/test` `598d108`** · frontend **`origin/test` `ab4de83`** — **P0 전부 포함**(SEC-D14 Fixed 유지) · develop **530+187 ahead**(신규 기능·보안 통제 누락 아님·origin push 미실행)  
-> **워킹트리**: backend **DIRTY**(ClientService 주소 마스킹·LiveE2eBootstrap 테넌트 격리·application.yml·V175 untracked) · frontend **DIRTY**(US-R01-c leave-ledger wire WIP) — **TSR QA-B272/B273 BLOCK(merge pending·dirty)·기능 게이트**  
+> **감사일**: 2026-06-25 (25차 일일 재점검)  
+> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `49fe2e7`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `2c9abd6`**, **WT CLEAN**), PostgreSQL  
+> **baseline**: workspace **git 실측** — backend develop **`49fe2e7`**(+572 vs origin/test · **local test `49fe2e7` SYNCED** ← 24차 `88a58d9`+1behind → 25차 **SYNCED·BE TSR 1408차 merge EXECUTED**) · origin/test **`598d108`**(**572 unpushed**) · frontend develop **`2c9abd6`**(+241 vs origin/test · local test **`75c0f51`** +2 behind develop) · origin/test **`ab4de83`**(**241 unpushed**)  
+> **원격 test**: backend **`origin/test` `598d108`** · frontend **`origin/test` `ab4de83`** — **P0 전부 포함**(SEC-D14 Fixed 유지) · develop **572+241 ahead**(신규 기능·보안 통제 누락 아님·origin push 미실행·SEC-D18 더 악화 +21 BE/+23 FE vs 24차)  
+> **워킹트리**: backend **CLEAN** · frontend **CLEAN** — 25차에도 CLEAN 유지(SEC-D35 closure carry)  
 > **기준**: OWASP Top 10 (2021), 개인정보보호법(PIPA), `docs/ops/DATA_RETENTION_POLICY.md`, `docs/technical/API_SPEC.md`  
 > **코드 변경**: 없음 (읽기 전용 점검)
 
@@ -16,10 +16,10 @@
 
 | 구분 | 결과 |
 |------|------|
-| 전체 위험도 | **Low~Medium (develop)** — develop `d0c0d12`/`947312c` 기준 **P0 통제 유지** + 21차 이후 **+15 BE / +22 FE** 커밋(**V169 staff_work_attendance 출퇴근 API·V170 billing_report_filters·V171 defense-in-depth integrity + readiness probe·G-BILLING-DEPOSIT-ORDER-GUARD prior-deposit guard·G2 branch-scoped CMS roster API·CMS enrollment input service-layer hardening·US-E03 branch QR PNG 렌더(서명 토큰)·US-D03 client attendance tab·G34-WORKFLOW-CATALOG ezCare FAQ cross-walk·G30-LEGEND** 등) **운영 API 전부 RBAC·tenant-safe Pass**. BE 양 스트림 **SYNCED**(local test=develop) · FE 양 스트림 **SYNCED**(local test=develop). **`origin/test` push 미실행**(514 BE/167 FE unpushed). SEC-D17·D19·D23·D24·D14 Fixed 유지. **★ 22차 신규 audit Open 0건**(BLOCK 없음). **★ 진전**: V171 `staff_work_attendance.check_out_at >= check_in_at` 시간성 CHECK + `billing_report_filters` Tenant FK pairs(org+branch / org+user)·temporal CHECK·`search_query` non-empty CHECK(defense-in-depth) · `V171DefenseInDepthSchemaReadinessProbe`로 `/health`·live-e2e readiness에 미적용 마이그레이션 fail-fast · CMS `normalizePayerName/BankCode/AccountLast4` 서비스 레이어 강제(컨트롤러 우회 방어·보안 긍정) · CMS/easy-pay에 `assertCopayDepositOrder` prior-month guard 적용(외부 PG 호출 전 차단·보안 긍정) · staff attendance checkout-before-checkin 서비스 레이어 가드(`35e6c52`) · QR 코드 클라이언트 렌더링은 **서버 서명 토큰만** `qrcode@1.5.4`로 PNG 인코딩(시크릿 미노출). **유지**: SEC-D33·D34(Low)·SEC-D4(**4 파서**·poi 5.3.0)·SEC-D32 at-rest 평문·SEC-D29 Mitigated·SEC-D26 dev 1 HIGH·SEC-D22(WT만)·SEC-D28·D25·D30·D31·A06-1·origin push gap(SEC-D18 514+167). |
-| OWASP Top 10 | develop HEAD: **0건 High**(prod 배포 경로), **5건 Medium**, **나머지 Pass/Low**. `origin/test`: P0 포함(develop 기능 514+167 behind) |
-| 의존성 취약점 | Backend: Boot **3.3.1**(A06-1), poi-ooxml **5.3.0**(CVE-2025-31672 — **NHIS·은행입금·RFID·요양보호사 4 파서 표면**, 미해소). OWASP dependency-check **NVD 429 rate-limit으로 미실행**(pom 버전 실측). Frontend: npm audit prod **0건**(신규 `qrcode@1.5.4` 포함) · dev **1건 HIGH**(form-data CRLF GHSA-hmw2-7cc7-3qxx — SEC-D26, dev-only) |
-| 즉시 조치 | ① poi-ooxml 5.4.0+(SEC-D4·**4 파서** 회귀) ② Spring Boot 3.3.x 패치(A06-1) ③ CSV export 수식 prefix sanitize(SEC-D33) ④ 요양보호사 import 확장자/Content-Type 검증(SEC-D34) ⑤ parent repo `.gitignore` `*.env`/`scripts/*.env` **커밋**(SEC-D22 WT-only) ⑥ 첨부 magic-byte(SEC-D25) ⑦ form-data `npm audit fix`(SEC-D26) ⑧ **`origin/test` push**(514 BE/167 FE unpushed·SEC-D18) ⑨ prod 간편결제 실 PG(SEC-D28) ⑩ prod `application-prod.yml`(SEC-D5)·health 마스킹(SEC-D30) ⑪ Kakao Maps appkey 도메인 제한(SEC-D31) ⑫ 현금영수증 식별자 at-rest 암호화 검토(SEC-D32·SEC-D21 패턴) |
+| 전체 위험도 | **Low~Medium (develop)** — develop `49fe2e7`/`2c9abd6` 기준 **P0 통제 유지** · 양 스트림 **WT CLEAN** · BE local test **`49fe2e7` SYNCED**(BE TSR 1408차 merge EXECUTED·24차 `88a58d9`+1behind → SYNCED 진전) · FE local test `75c0f51` +2 behind(24차 +1 → 25차 +2·QA-B95 FE 2커밋 미이관) · `origin/test` push 미실행(572 BE/241 FE unpushed·SEC-D18 더 악화 +21/+23 vs 24차). **운영 API 전부 RBAC·tenant-safe Pass**. **★ 25차 신규 BLOCK급 audit Open 0건** · **★ 신규 SEC-D38**(Low·`enforce-bootstrap-readiness=false` 시 probe `operationReady=true`·인증 우회 없음·운영 설정 권고)·**★ 신규 SEC-D39**(Low·CMS 가상계좌 번호 응답·HQ/BRANCH만·guardian 확장 시 last4 권고). **★ 25차 보안 긍정**: ① BE local test SYNCED(TSR 1408차 merge) ② NhisClientResolver `matched.size()==1` 단일후보 강제(masked-name fallback PII reveal 차단) ③ V178 9종 CHECK(amount>0·시간성 3종·텍스트 4종 nonempty·lifecycle·SUCCEEDED↔tx·FAILED↔reason·VIRTUAL↔bank_code·MULTI↔split_count) ④ ProductionSecretValidator 3-form env fail-fast(4표면: ogada.live-e2e.bootstrap-enabled·OGADA_LIVE_E2E_BOOTSTRAP_ENABLED·LIVE_E2E_BOOTSTRAP_ENABLED·LIVE_E2E·SEC-D29 한 단계 더 진전) ⑤ G16 transport parity-rules RBAC HQ/BRANCH fix ⑥ FE 신규 7종+ API 전부 `apiFetch` 경유(SEC-D17 Fixed 유지·raw `fetch()` 0). **유지**: SEC-D33·D34(Low)·SEC-D4(**4 파서**·poi 5.3.0·신규 파서 추가 없음)·SEC-D32 at-rest 평문·SEC-D36/D37 carry·SEC-D26 dev 1 HIGH·SEC-D22(WT만)·SEC-D28·D25·D30·D31. |
+| OWASP Top 10 | develop HEAD: **0건 High**(prod 배포 경로), **5건 Medium**, **나머지 Pass/Low**. `origin/test`: P0 포함(develop 기능 572+241 behind) |
+| 의존성 취약점 | Backend: Boot **3.3.1**(A06-1·25차 불변·pom diff 0), poi-ooxml **5.3.0**(CVE-2025-31672 — **NHIS·은행입금·RFID·요양보호사 4 파서 표면**, 미해소·신규 파서 추가 없음·G-NHIS-MASKED-NAME-FALLBACK·G2b 가상계좌는 POI 미사용). OWASP dependency-check **NVD 429 rate-limit으로 미실행**(pom 버전 실측). Frontend: npm audit prod **0건**(25차 실측 불변) · dev **1건 HIGH**(form-data CRLF GHSA-hmw2-7cc7-3qxx — SEC-D26 carry, dev-only) |
+| 즉시 조치 | ① poi-ooxml 5.4.0+(SEC-D4·**4 파서** 회귀) ② Spring Boot 3.3.x 패치(A06-1) ③ CSV export 수식 prefix sanitize(SEC-D33) ④ 요양보호사 import 확장자/Content-Type 검증(SEC-D34) ⑤ parent repo `.gitignore` `*.env`/`scripts/*.env` **커밋**(SEC-D22 WT-only) ⑥ 첨부 magic-byte(SEC-D25) ⑦ form-data `npm audit fix`(SEC-D26) ⑧ **`origin/test` push**(572 BE/241 FE unpushed·SEC-D18 악화) ⑨ prod 간편결제 실 PG(SEC-D28)·prod FCMS provider 실 connector ⑩ prod `application-prod.yml`(SEC-D5)·health 마스킹(SEC-D30) ⑪ Kakao Maps appkey 도메인 제한(SEC-D31) ⑫ 현금영수증 식별자 at-rest 암호화 검토(SEC-D32) ⑬ staff access key payload purge·redact(SEC-D37·Low·Monitor) ⑭ access key 키 길이 8자리+영숫자 확장 검토(SEC-D36·Low·Monitor) ⑮ prod 환경 `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS` 미설정 또는 `true` 명시(SEC-D38·Low·Monitor) ⑯ CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토(SEC-D39·Low·Monitor) |
 
 ### 긍정적 통제 (이미 구현됨)
 
@@ -30,6 +30,170 @@
 - `GlobalExceptionHandler` — 500 응답에 스택 트레이스 미노출
 - `@PreAuthorize` + `JwtScopeResolver` 멀티테넌트·지점 스코프
 - 로그인 실패·비밀번호 재설정 응답 통일 (계정 열거 완화)
+
+---
+
+## 1.27 일일 재점검 델타 (2026-06-25 25차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD/test/origin/test` · `git -C src/frontend …` · `git log 2f83563..49fe2e7`(+21) / `git log c7d0982..2c9abd6`(+23) · `git status`(양 스트림 **WT CLEAN**) · `npm audit`/`npm audit --omit=dev` · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `ProgramReportController.java`·`ProgramReportService.java`·`NhisClientResolver.java`·`NhisAltKeyExtractor.java`·`NhisMaskedNameMatcher.java`·`CmsService.requestClaimVirtualAccount`/`requestClaimMultiAccountSettlement`·`ProductionSecretValidator.java`·`application.yml`·`LiveE2eController.java`·`HealthController.java`)를 24차 `2f83563`/`c7d0982` 기준선과 대조. backend develop **+21 커밋** · frontend develop **+23 커밋** 전진. **양 스트림 WT CLEAN** 유지.
+
+### (A) 상태 변화 — develop 추가 전진 · WT CLEAN 유지 · BE local test SYNCED · origin/test stale 더 악화
+
+| 스트림 | 24차 develop | 25차 develop HEAD | local test / origin/test | WT |
+|--------|--------------|-------------------|--------------------------|----|
+| backend | `2f83563` | **`49fe2e7`**(+572 vs origin/test: G-REPORT-DENSITY branch filter·QA-B95 enforce-bootstrap-readiness·7-9 refund fee policy·7-5 easy-pay test·V178 CMS collection+bathing·G-NHIS-ALT-KEY-AUDIT-BADGE·G-NHIS-MASKED-NAME-FALLBACK·G16 RBAC fix·US-O01 bathing·G2b CMS virtual+multi·ProductionSecretValidator 3-form·a12873c ezcareMessageKind lock) | local **`49fe2e7`**(**SYNCED** ← 24차 `88a58d9` +1 behind → **25차 SYNCED·BE TSR 1408차 merge EXECUTED·보안 긍정**) / origin **`598d108`**(불변·**572 unpushed**) | **CLEAN** |
+| frontend | `c7d0982` | **`2c9abd6`**(+241 vs origin/test: QA-B95 live-op readiness normalize·G-REPORT-DENSITY M5 pages·US-O01 bathing indicator-27·G-REFUND-FEE-WIRE·QA-B312 annual leave scope·G-NHIS-ALT-KEY-AUDIT-BADGE UI·G2b CMS collection+transport parity-rules·CMS catalog empty state·UXD-164·G-SMS-TEMPLATE-CATALOG ezcareMessageKind lock) | local **`75c0f51`**(+2 behind develop — `f74a6e7`·`2c9abd6` 미이관) / origin **`ab4de83`**(불변·**241 unpushed**) | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. develop↔origin/test 격차 **572+241**(신규 기능·보안 통제 누락 아님) → **BLOCK 아님**(SEC-D18 더 악화: +21 BE/+23 FE vs 24차 551/218). **★ 진전**: BE local test `88a58d9`(+1 behind) → **`49fe2e7` SYNCED**(BE TSR 1408차 merge 실행). FE local test `75c0f51` +2 behind (24차 +1 behind → 25차 +2 — 신규 QA-B95 FE 커밋 2건 미이관). QA Open BLOCK은 **FE TSR 2 pending**(기능/이관 게이트) — **보안 BLOCK 없음**.
+
+### (B) ✅ 신규 기능 보안 검토 — 전부 RBAC·tenant-safe Pass · 보안 긍정 다수
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **G-REPORT-DENSITY M5 program reports + branch filter** (`49fe2e7`·`337453d`·`650801b`·FE `15a3b7f`) | **Pass · 보안 긍정** | `ProgramReportController` 4개 GET — `@PreAuthorize("hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')")` · `ProgramReportService.requireOrganizationId` + `resolveBranchScope(requestedBranchId)` — branchId `@RequestParam(required=false)`가 서비스 레이어에서 `validateBranchReadScope` 교차 검증 · `program_client_groups`/`program_client_group_members` V179 Tenant FK + `created_by_org` pair(commit `650801b`) · PII: 이름·생년월일 등 개인식별 필드 미포함(참여 회수·날짜 메타만) |
+| **QA-B95 enforce-bootstrap-readiness 토글 도입** (`9f67954`·`0e55f3b`·FE `e070c45`·`75c0f51`·`f74a6e7`·`2c9abd6`·`5afef2d`·`c3c6272`·`64a7648`) | **Pass · ⚠ SEC-D38 신규 Monitor** | `ogada.live-e2e.enforce-bootstrap-readiness:true`(기본값) — false 시 probe·health의 `operationReady`가 bootstrap-disabled blocker를 건너뜀(인증 우회 없음·readiness 시그널 범위만) · `@ConditionalOnProperty` bootstrap endpoint 보호는 enforce-readiness 설정과 독립 — **bootstrap endpoint 자체 인증 우회 없음** · FE normalize: recovered-auth 시그널 분리·string-form blocker 정규화·health reason surface · prod에서 `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 강제(기본 true 유지 시 안전) |
+| **★ ProductionSecretValidator 3-form env 봉인** (`670756a` lineage + `ProductionSecretValidator.java` 현재 HEAD) | **Pass · ★ 보안 긍정(SEC-D29 lineage 추가 진전)** | `collectViolations`에서 `ogada.live-e2e.bootstrap-enabled`·`OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`·`LIVE_E2E_BOOTSTRAP_ENABLED`·`LIVE_E2E` **4표면 검사**(3-form env fail-fast) — prod 프로파일에서 어느 경로로든 live-e2e 활성화 시 `IllegalStateException` 즉시 기동 중단 · 25차 실측 확인(HEAD 코드 직접 검토) |
+| **7-9 copay refund fee policy catalog + validation** (`79725eb`·`aeecc1b`·`2adae59`·FE `cadd74a`) | **Pass** | `CopayRefundFeePolicyCatalog`·`@PreAuthorize(HQ/BRANCH)` · `@Pattern` allowlist 3종 · `RecordCopayRefundRequest` `@Valid` — net amount `copayAmount ≥ 0` 서버 검증 · BillingService net-amount validation 강화 · FE `RefundRecordModal` `apiFetch` 경유 · PII 없음(금액·정책코드 메타만) |
+| **7-5 easy-pay provider catalog test** (`5a5174a`·`56831fc`·FE `5914b2f`) | **Pass** | `@PreAuthorize(HQ/BRANCH only)` · CARD/KAKAO_PAY allowlist · 테스트 coverage lock · SEC-D28(prod stub default) carry — 현행 기능 범위 미변경 |
+| **V178 CMS collection + bathing defense-in-depth** (`3c1fdce`) | **Pass · ★ 보안 긍정(DB-level 무결성)** | `cms_collection_requests` 9종 CHECK: `amount>0`·시간성 3종·텍스트 4종 nonempty·lifecycle·`SUCCEEDED↔transaction_id`·`FAILED↔failure_reason`·`VIRTUAL_ACCOUNT↔bank_code+virtual_account_number`·`MULTI_ACCOUNT↔split_count≥2` — raw SQL·migration-only path 악용 차단. `bathing_schedules` pre/post observation V178 추가 CHECK(COMPLETED 시 observation 필수·nonempty)·V177 COMPLETED CHECK 직교 보강 |
+| **G-NHIS-ALT-KEY-AUDIT-BADGE** (`4963535`·FE `5bb84a6`) | **Pass — 안전(감사 메타만)** | `NhisImportService` alt-key 매칭 결과 `altKeyMatched: boolean` 응답 추가 — import 수행자에게 매칭 방식 표시 · `@PreAuthorize(HQ/BRANCH)` org+branch scope 동일 · PII 미포함(boolean 플래그만) |
+| **★ G-NHIS-MASKED-NAME-FALLBACK alt-key client resolver** (`37416ac`) | **Pass · ★ 보안 긍정(PII reveal 차단)** | `NhisClientResolver.resolve(organizationId, branchId, ltcCertNo, altKeys)` — org+branchId 항상 주입(scope leak 없음) · `resolveByMaskedNameAndBirthDate`: `findActiveByOrganizationIdAndBranchIdAndBirthDate` → `NhisMaskedNameMatcher.matches` 필터 → **`matched.size()==1` 단일후보 강제**(복수 매칭 시 skip — 다른 이용자 PII reveal 차단) · `resolveByBirthDateAndResidentPrefix`: 동일 `matched.size()==1` 가드 · 2026 NHIS 마스킹 정책 대응(인정번호 실패 시 fallback — 단일후보 확인 후 audit reason 기록) · `NhisAltKeyExtractorTest` 42 케이스 |
+| **G16 transport service-fee parity-rules RBAC fix** (`e4f83af`·`5a717ac`·FE `7b4c6f9`) | **Pass · 보안 긍정(RBAC 정합)** | `@PreAuthorize` HQ/BRANCH only — API spec 정합 수정(`e4f83af`) · 응답 스키마 정렬(`5a717ac`) · 전 NHIS #44 규제 wording 메타만(PII 없음) |
+| **US-O01 BathingSchedule pre/post observation + indicator-27** (`e12b084`·FE `3d7f13b`) | **Pass** | `BathingScheduleController` `@PreAuthorize(HQ/BRANCH/SOCIAL_WORKER/CAREGIVER)` · org+branch scope · V178(25차) + V177(24차) COMPLETED CHECK 이중 직교 방어 · FE `apiFetch` 경유 |
+| **G2b CMS 가상계좌·다계좌 정산 APIs** (`dac8ebd`·FE `9aeedfe`·`4875937`·`1db75d0`) | **Pass · ⚠ SEC-D39 신규 Monitor** | `CmsController @PreAuthorize(HQ/BRANCH)` · `requireOrganizationId`·`validateBranchWriteScope` · CONFIRMED claim only · 멱등 guard: SUCCEEDED→`validateSucceededCollectionIntegrity`·REQUESTED/ISSUED→`BusinessRuleException` · V178 9종 CHECK DB-level · 응답: `CmsVirtualAccountResponse`(`claimId`·`collectionMethod`·`status`·`virtualAccountNumber`·`bankCode`·`accountReference`) — HQ/BRANCH scope·guardian 확장 시 last4만 노출 권고(SEC-D39 Monitor) |
+| **G2b CMS payment method catalog** (`2eaf17e`·FE `e63aa8e`·`64a7648`·`e985522`·`9a583ec`) | **Pass** | `@PreAuthorize(HQ/BRANCH)` · VIRTUAL_ACCOUNT/MULTI_ACCOUNT/CMS_DEBIT allowlist · FE `apiFetch` 경유 · 테스트 5/5 lock(22차 CMS catalog parity) |
+| **QA-B312 annual leave branch scope FE fix** (`58f3858`·`892122d`) | **Pass** | branch scope fallback 정규화 · vitest isolation 강화 — 서버 `@PreAuthorize` 최종 방어 동일 |
+| **UXD-164 shared util class 승격** (`d64f81b`) | **Pass(no security surface)** | CSS util class 중복 제거·공유 상수화 — 보안 표면 변동 없음 |
+| **FE live-E2E readiness normalize** (다수) | **Pass** | bootstrap-unavailable 시그널 분리·string-form blocker 정규화·recovered-auth honoring — 운영 가시성 개선, auth 우회 없음 |
+| **G-SMS-TEMPLATE-CATALOG ezcareMessageKind guardian dispatch lock** (`a12873c`) | **Pass** | 기존 guardian dispatch routes에 `ezcareMessageKind` 응답 assertion 테스트 추가 — 24차 보안 긍정(숫자 노출 가드·FAQ Q692) 회귀 방어 |
+| **FE 신규 API `fetchCmsPaymentMethodCatalogApi`·`requestCmsVirtualAccountApi`·`fetchCmsVirtualAccountStatusApi`·`requestCmsMultiAccountSettlementApi`·`fetchCmsMultiAccountSettlementStatusApi`·`fetchTransportServiceFeeParityRulesApi`·`fetchProgramParticipationReportApi` 등** | **Pass — SEC-D17 Fixed 유지** | 전부 `apiFetch` 경유(Bearer·refresh·raw `fetch()` 0건) · `rg` 실측: `src/services/services.js` raw `fetch()` 0건 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **25차 신규 BLOCK급 audit Open 0건** | — | — | 신규 API 전부 RBAC·tenant-safe Pass · V178 DB-level defense-in-depth · NhisClientResolver 단일후보 강제 · ProductionSecretValidator 3-form 봉인 · 신규 prod 의존성 0(pom.xml·package.json prod 표면 불변·prod audit 0건 유지) |
+| **SEC-D38** | **`enforce-bootstrap-readiness=false` 시 probe/health `operationReady=true` 보고** | **Low** | **Open(Monitor)** | `HealthController`/`LiveE2eController`에서 `enforceBootstrapReadiness=false`이면 bootstrap-disabled blocker를 건너뛰고 `operationReady=true` 반환 — **인증 우회 없음**(bootstrap endpoint 자체는 `@ConditionalOnProperty` 보호·`ProductionSecretValidator` prod 거부). 단 prod에서 false로 운영 시 실제 bootstrap 미준비 상태를 readiness=true로 오보 가능 · 권장: prod 환경 `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS` 미설정(true 기본 유지) 또는 `true` 명시 강제(SEC-D29 lineage·운영 가이드 문서화 권고) |
+| **SEC-D39** | **CMS 가상계좌·다계좌 응답 `virtualAccountNumber`/`accountReference` 표시** | **Low** | **Open(Monitor)** | `CmsVirtualAccountResponse`·`CmsMultiAccountSettlementResponse`에 가상계좌번호·정산계좌 참조값 포함 — 현재 `@PreAuthorize(HQ/BRANCH only)` + `validateBranchReadScope`로 guardian/client_user 차단. 향후 보호자 셀프 납부 확장 시 가상계좌번호 last4만 노출 권고(본인부담 회수용 가상계좌·PII는 아니나 회계 사기 표면) |
+| SEC-D18 | origin/test push 미실행 | Low | **Monitor(악화)** | origin/test **572 BE/241 FE unpushed**(24차 551/218 → 25차 572/241·**+21 BE/+23 FE** · BE local test 진전·FE local test 2 behind는 별도) |
+| SEC-D4 | poi-ooxml **5.3.0** — **4 파서** | **Medium** | **Open** | `pom.xml` 5.3.0 불변 — CVE-2025-31672 미해소(신규 파서 추가 없음·G-NHIS-MASKED-NAME-FALLBACK는 POI 미사용·표면 동일 4종) |
+| A06-1 | Spring Boot **3.3.1** | **Medium** | **Open** | `pom.xml` 3.3.1 불변 — 패치 라인 업그레이드 검토 |
+| SEC-D33 | 명세·NTS CSV export 수식 인젝션 | **Low** | **Open(Monitor)** | 24차와 동일 |
+| SEC-D34 | 요양보호사 import 확장자 미검증 | **Low** | **Open(Monitor)** | 24차와 동일 |
+| SEC-D36 | staff access key 6-digit 키스페이스 | **Low** | **Open(Monitor)** | 24차와 동일 · rate limit 의존 유지 |
+| SEC-D37 | `notifications.payload_json` 내 평문 access key 잔존 | **Low** | **Open(Monitor)** | 24차와 동일 · purge/redact 정책 미정의 |
+| SEC-D32 | 현금영수증 식별자 at-rest 평문 | **Low** | **Open(Monitor)** | 24차와 동일 |
+| SEC-D26 | npm audit dev form-data CRLF | High(dev-only) | **Open(dev)** | prod **0건**(25차 실측 불변) · dev **1 HIGH** GHSA-hmw2-7cc7-3qxx(불변) |
+| SEC-D29 | live-e2e bootstrap | Low~Medium | **Mitigated → 한 단계 더 진전** | 25차 ProductionSecretValidator 3-form 봉인 실측 확인(4표면 env 검사) · SEC-D38 신규 Monitor(enforce-readiness 오설정 표면)와 병존 |
+| SEC-D22 | `scripts/*.env` gitignore parent HEAD | Low | **Mitigated** | 24차와 동일(parent repo 커밋 대기) |
+
+### (D) ✅ 유지 — Fixed/Pass 재확인
+
+| 항목 | 25차 재확인 |
+|------|-------------|
+| SEC-D17 raw fetch | **Fixed 유지** — 신규 FE API 7종 이상 전부 `apiFetch` 경유 · raw `fetch()` 0건(25차 `services.js` 실측) |
+| SEC-D19 error handler | **Fixed 유지** — 신규 NhisClientResolver/CmsService 예외도 `GlobalExceptionHandler` 고정 응답 |
+| SEC-D23 PilotFixturePanel | **Fixed 유지** |
+| SEC-D24 SecurityConfig 필터 | **Fixed 유지** — 신규 CMS/report/bathing 엔드포인트도 인증 후 TenantContext 적용 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — `598d108`/`ab4de83` P0 포함(unpushed gap은 SEC-D18) |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(25차 실측) |
+| JWT session (SEC-005) | **Pass** — access 메모리 + refresh `sessionStorage` |
+| SEC-D15 Solapi config-time fail-closed | **Pass 유지** — 신규 알림 표면 없음(24차 deepen 유지) |
+| SEC-D35 WT CLEAN | **Mitigated 유지** — 양 스트림 24차 → 25차 CLEAN carry |
+
+### (E) 우선순위 (25차)
+
+| 순위 | ID | Severity | 조치 |
+|------|-----|----------|------|
+| P1 | SEC-D4 | Medium | poi-ooxml 5.4.0+ — **4 파서** 회귀(신규 파서 추가 없음·현행 유지) |
+| P1 | A06-1 | Medium | Spring Boot 3.3.x 패치 라인 |
+| P2 | SEC-D18 | Low(악화) | **origin/test push**(572 BE/241 FE·+21/+23 vs 24차) |
+| P2 | SEC-D38 | Low | **(NEW)** prod `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 명시 강제·운영 가이드 문서화 |
+| P2 | SEC-D39 | Low | **(NEW)** CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토 |
+| P2 | SEC-D36 | Low | staff access key 키 길이/charset 확장 검토(carry) |
+| P2 | SEC-D37 | Low | `notifications.payload_json` 평문 access key purge·redact 정책(carry) |
+| P2 | SEC-D33 | Low | CSV export 수식 prefix sanitize |
+| P2 | SEC-D34 | Low | 요양보호사 import 확장자/Content-Type 검증 |
+| P2 | SEC-D26 | High(dev·1건) | form-data `npm audit fix` |
+| P2 | SEC-D22 | Low | parent repo `.gitignore` `*.env` 커밋 |
+| P2 | SEC-D25 | Low~Medium | 첨부 magic-byte |
+| P2 | SEC-D32 | Low | identifier at-rest 암호화 검토 |
+| ✅ | G-REPORT-DENSITY branch filter(org+branch scope·`matched.size()==1`·단일후보 강제)·G-NHIS-MASKED-NAME-FALLBACK(PII reveal 차단)·V178 9종 CHECK(DB-level defense-in-depth)·G16 RBAC fix·ProductionSecretValidator 3-form env 봉인(SEC-D29 진전)·BE TSR local test SYNCED·SEC-D17/D19/D24/D14/SEC-D35 | — | 25차 Pass/Fixed/보안 긍정 |
+
+---
+
+## 1.26 일일 재점검 델타 (2026-06-24 24차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD/origin/test/test` · `git -C src/frontend …` · `git log b9d0599..2f83563`(+5) / `git log c04968c..c7d0982`(+6) · `git status`(양 스트림 **WT CLEAN**) · `npm audit`/`npm audit --omit=dev` · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `StaffAccessKeyNotificationService.java`·`StaffAccessKeyNotifyRequest/Response.java`·`StaffNotificationController.java`·`NotificationService.dispatchManualStaffSms`·`NotificationChannelReadinessService`·`NotificationSmsTemplateCatalog.ezcareMessageKindFor`·`AlimtalkFallbackText.STAFF_ACCESS_KEY`·`AlimtalkTemplateVariables`·`GuardianNotificationPayloadBuilder.staffAccessKeyPayload`·`BillingClaimNotifyResponse`·`StaffMonthlyScheduleNotifyResponse`·`GuardianDocumentNotifyResponse`·`HealthControllerTest`·FE `StaffNotificationDispatchPanel.jsx`·`services.js`(`notifyStaffAccessKeyApi`/`notifyClientMonthlyScheduleApi`/`notifyStaffMonthlyScheduleApi`)·`notificationChannelStatus.js`(`formatGsmDispatchSuccessMessage`)·`notificationQuietHours.js` diff)를 23차 `5fd12dd`/`426d63a` 기준선과 대조. backend develop **+6 커밋** · frontend develop **+6 커밋** 전진. **양 스트림 WT CLEAN**(23차 BE 9M+1U·FE 38M+11U → 24차 CLEAN·SEC-D35 process 게이트 closure 카운터).
+
+### (A) 상태 변화 — develop 추가 전진 · WT CLEAN 회복 · origin/test stale 더 악화
+
+| 스트림 | 23차 develop | 24차 develop HEAD | local test / origin/test | WT |
+|--------|--------------|-------------------|--------------------------|----|
+| backend | `5fd12dd` | **`2f83563`**(+551 vs origin/test: G-SMS-TEMPLATE-CATALOG `1d5d441` staff access key SMS dispatch·`fed6f1f` dispatchReady channel credential gate·`ef8bb4e`/`2f83563` ezcareMessageKind 응답 노출·`88a58d9` HealthControllerTest G21 seed detail lock) | local **`88a58d9`**(+1 behind develop) / origin **`598d108`**(불변·**551 unpushed**) | **CLEAN**(23차 DIRTY 9M+1U·V175 untracked → 24차 CLEAN·SEC-D35 closure) |
+| frontend | `426d63a` | **`c7d0982`**(+218 vs origin/test: G-SMS-TEMPLATE-CATALOG `9c25d44`/`5a6d42c`/`3f686e3` message_kind 1·11·12·13·19·21 dispatch UI 라벨·UXD-160/161 ds-form-stack a11y·`c06d581` 잠금·`c7d0982` 라벨 노출·`068049b` QA-B289 fix) | local **`c06d581`**(+1 behind develop) / origin **`ab4de83`**(불변·**218 unpushed**) | **CLEAN**(23차 DIRTY 38M+11U·US-R01-c leave-ledger wire WIP → 24차 CLEAN·SEC-D35 closure) |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. develop↔origin/test 격차 **551+218**(신규 기능·보안 통제 누락 아님) → **BLOCK 아님**(SEC-D18 더 악화: +21 BE/+31 FE). QA Open BLOCK은 **QA-B295(BE develop→test merge pending 1 `2f83563`·기능/이관 규율 게이트)** — **보안 BLOCK 없음**.
+
+### (B) ✅ 신규 기능 보안 검토 — 전부 RBAC·tenant-safe Pass · ★ 신규 SMS dispatch 보안 긍정 다수
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **G-SMS-TEMPLATE-CATALOG message_kind=1 직원 접속키 SMS dispatch** (`1d5d441`·`StaffAccessKeyNotificationService`·`StaffNotificationController.notifyStaffAccessKey`) | **Pass · ★ 보안 긍정 다중** | `POST /api/v1/staff/notifications/staff-access-key` = `@PreAuthorize("hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')")` · `JwtScopeResolver.requireOrganizationId` + 직원 존재·`isActive`·`getTerminatedAt()==null` 검증 + `StaffHealthCheckupCompliance.STAFF_ROLE_CODES` allowlist(guardian/client_user 거부) + `GuardianPhoneResolver.resolveMobileDigits` 존재 강제 · `resolveStaffBranchId`(activeBranchId or `userBranches` org-매치 fallback) + `validateBranchWriteScope` 분리 검증 · **키 생성**: `SecureRandom` `100_000..999_999` 6-digit(키스페이스 10^6) · **at-rest**: `JwtTokenService.hashRefreshToken`(SHA-256) `PasswordResetTokenEntity` 저장(60분 TTL·`ogada.security.password-reset-ttl-minutes:60`) · `passwordResetTokenRepository.invalidateActiveTokensForUser`로 활성 토큰 회전(단일활성 강제·재발급 시 이전 토큰 무효화) · **응답 record `StaffAccessKeyNotifyResponse`**: `staffUserId`/`templateCode`/`expiresAt`/`ezcareMessageKind`(정수 1)만 노출 — **`accessKey` 필드 없음**(SMS 채널 전용 전달) · **dispatch**: `NotificationService.dispatchManualStaffSms` → `NotificationQuietHoursPolicy.isActiveNow` true 시 `BusinessRuleException` 즉시 거부(야간 22:00~08:00 KST 차단·v2/J03 lineage 동일 정책) · 테스트 커버 5건(`StaffAccessKeyNotificationServiceTest` — phone missing·guardian role·unknown staff·branch fallback·payload assertion) |
+| **NotificationService.dispatchManualStaffSms** (`1d5d441`) | **Pass · 보안 긍정(quiet-hours guard)** | 신규 메서드 — SMS 채널 한 종 + quiet-hours guard + `createPendingNotification`→`sendViaProvider(CHANNEL_SMS,…)`→`finalizeNotification` 표준 파이프라인 경유 · 외부 manual SMS dispatch 표면 추가 시에도 quiet-hours 강제 |
+| **NotificationChannelReadinessService dispatchReady 채널-credential 게이트** (`fed6f1f`) | **Pass · ★ 보안 긍정(fail-closed 강화)** | `getTemplateCatalog`에서 `smsDispatchConfigured`(solapi mode + apiKey + apiSecret + senderId) · `alimtalkDispatchConfigured`(+kakaoPfId) credential 게이트 계산 후 `dispatchReady = configured && dispatchImplemented && isDispatchChannelConfigured(channel, …)` — placeholder/blank/누락 credential 시 false → 운영자에게 부정확한 readiness 표시 차단 · `isLiveConfigured` 마커(stub/placeholder/change-me/replace-me) 거부(BNK-575 lineage 강화) · 채널별(SMS/ALIMTALK) 분리 게이트로 부분 설정(SMS만·ALIMTALK만) 시나리오 정확 반영 |
+| **NotificationSmsTemplateCatalog.STAFF_ACCESS_KEY dispatchImplemented=true** + `ezcareMessageKindFor` 헬퍼 (`1d5d441`·`ef8bb4e`) | **Pass — 안전 메타** | catalog entry templateCode→ezcareMessageKind(SMS 1·ALIMTALK 11/12/13/19/21) lookup · 응답 record들(`StaffAccessKeyNotifyResponse`·`BillingClaimNotifyResponse.of`·`GuardianDocumentNotifyResponse.of`·`StaffMonthlyScheduleNotifyResponse.of`)이 noisy 정수만 노출(PII·DB 식별자·세션 토큰 미포함) · 외부 SDK(Solapi) 식별자 노출 아님 — ezCare 운영자가 message_kind 매트릭스를 참조해 발송 통계 추적용 |
+| **AlimtalkFallbackText/AlimtalkTemplateVariables/GuardianNotificationPayloadBuilder.staffAccessKeyPayload** (`1d5d441`) | **Pass · ⚠ SEC-D37 신규 Monitor** | payload JSON에 `accessKey`(평문 6자리)·`staffName`·`centerName`·`expiresAt` 포함 — SMS 본문 렌더링 필수 · **단 `notifications.payload_json` 컬럼에 평문 키 60분간 잔존** → DB 침해/덤프 시 만료 전 키 유출 가능 · 운영 SMS 발송 후 즉시 dispatch 완료 시 키 사용가치는 24차 기준 단발성이나 purge·redact 정책 검토 필요(아래 SEC-D37) |
+| **HealthControllerTest G21 seed detail health fallback lock** (`88a58d9`) | **Pass · 보안 긍정(readiness 회귀 가드)** | live-e2e G21 visit seed detail 결손 시 `liveE2eOperationBlocker` 메시지 잠금 — operation readiness 진단 일관성 강화 · SEC-D29 lineage(probe·readiness fail-fast 게이트 회귀 방어) · 정보 노출 표면 추가 없음 |
+| **FE G-SMS dispatch UI deepen** `StaffNotificationDispatchPanel`·`services.js`·`notificationChannelStatus.formatGsmDispatchSuccessMessage`·`GuardianDocumentNotifyPanel`·`ProvisionResultDispatchPanel`·`interpretBillingNotifyResult` (`9c25d44`·`5a6d42c`·`3f686e3`·`4adeb1c`·`c06d581`·`c7d0982`) | **Pass — 안전(라벨 표시 only·SEC-D17 유지)** | `services.js` 신규 3 API(`notifyStaffAccessKeyApi`·`notifyClientMonthlyScheduleApi`·`notifyStaffMonthlyScheduleApi`) 전부 **`apiFetch` 경유**(Bearer·refresh·raw `fetch()` 0건·SEC-D17 Fixed 유지) · FE는 `staffUserId`만 송신 · 응답 record의 `templateCode`→`notificationTemplateLabel`(한국어 catalog) 매핑 후 success Alert에 표기 — **숫자 `ezcareMessageKind` UI 미노출**(FAQ Q692 명시) · UXD-161 `ds-form-stack` a11y(label·id·noValidate·`aria-busy`·`aria-describedby`) 폼 컨트롤 결합 강화 · access key 또는 password 입력·표시 표면 없음 · 외부 링크/`dangerouslySetInnerHTML` 0 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **24차 신규 BLOCK급 audit Open 0건** | — | — | 신규 SMS dispatch 표면(staff access key)이 RBAC·hash·TTL·quiet-hours·응답 키 미포함 등 다중 가드로 보호 · 신규 prod 의존성 0(BE/FE pom.xml·package.json prod 의존성 표면 변동 없음·prod audit 0건 유지) |
+| **SEC-D36** | **staff access key 6-digit 키스페이스(10^6)** | **Low** | **Open(Monitor)** | `StaffAccessKeyNotificationService.generateAccessKey`=`100_000+secureRandom.nextInt(900_000)` 6자리 숫자 · 60분 TTL + `PasswordResetTokenEntity` 단일활성 + 소비 측 `/api/v1/auth/password/reset`이 `AuthRateLimitService`로 ip 20/min·token 8/min rate limit(60분에 480 시도/토큰·키스페이스 10^6 대비 P(match)≈0.048%·매우 낮음) → **순 키스페이스 위험은 rate limit으로 완화** · 단 가입자 수 증가 시 일괄 brute scan 잠재 표면 · 8자리+영숫자 또는 base32(키스페이스 ~10^12) 확장 검토 권고 |
+| **SEC-D37** | **`notifications.payload_json` 내 평문 access key 잔존(at-rest TTL 60분)** | **Low** | **Open(Monitor)** | `GuardianNotificationPayloadBuilder.staffAccessKeyPayload` JSON에 `accessKey` 평문 포함 — SMS 본문 렌더링 후에도 `notifications` 테이블의 `payload_json` 컬럼에 60분 잔존 가능(소비 측 `passwordResetTokenRepository`는 SHA-256 hash만 보관) · DB 침해/덤프 시 만료 전 키 유출 표면 · 권장: ① dispatch 완료 시 `notifications.payload_json`에서 `accessKey` 키 redact(`***`) ② 또는 notification 행 단위 purge(60분 expiry 도래 시) ③ 또는 `accessKey` 위치를 NotificationEntity 외 ephemeral cache(Redis TTL)로 분리 |
+| SEC-D35 | leave-ledger V175 미커밋 + 양 스트림 WT DIRTY | Low(process) | **Mitigated(24차 closure 카운터)** | 23차 BE 9M+1U(V175 untracked)·FE 38M+11U → **24차 양 스트림 WT CLEAN**(BE V175 포함 모든 변경 커밋 완료·FE WIP commit 완료) · TSR QA-B272/B273 BLOCK도 동일 closure 카운터(이관 BLOCK은 QA-B295=BE pending 1로 잔존하지만 dirty 원인은 해소) |
+| SEC-D18 | origin/test push 미실행 | Low | **Monitor(악화)** | origin/test **551 BE/218 FE unpushed**(23차 530/187 → 24차 551/218·**+21 BE/+31 FE**·5+6 신규 commit 누적) |
+| SEC-D4 | poi-ooxml **5.3.0** — **4 파서** | **Medium** | **Open** | `pom.xml:64` 5.3.0 불변 — CVE-2025-31672 미해소(신규 파서 추가 없음·G-SMS dispatch는 POI 미사용·표면 동일 4종) |
+| A06-1 | Spring Boot **3.3.1** | **Medium** | **Open** | `pom.xml:9` 3.3.1 불변 — 패치 라인 업그레이드 검토 |
+| SEC-D33 | 명세·NTS CSV export 수식 인젝션 | **Low** | **Open(Monitor)** | 23차와 동일 — `csvEscape` prefix 미중화 |
+| SEC-D34 | 요양보호사 import 확장자 미검증 | **Low** | **Open(Monitor)** | 23차와 동일 |
+| SEC-D32 | 현금영수증 식별자 at-rest 평문 | **Low** | **Open(Monitor)** | 23차와 동일 |
+| SEC-D26 | npm audit dev form-data CRLF | High(dev-only) | **Open(dev)** | prod **0건**(24차 실측 불변) · dev **1 HIGH** GHSA-hmw2-7cc7-3qxx(불변) |
+| SEC-D29 | live-e2e bootstrap | Low~Medium | **Mitigated** | 24차 HealthControllerTest G21 seed detail lock으로 readiness 회귀 추가 가드 — 추가 진전 |
+| SEC-D22 | `scripts/*.env` gitignore parent HEAD | Low | **Mitigated** | 23차와 동일(parent repo 커밋 대기) |
+
+### (D) ✅ 유지 — Fixed/Pass 재확인
+
+| 항목 | 24차 재확인 |
+|------|-------------|
+| SEC-D17 raw fetch | **Fixed 유지** — 신규 G-SMS API 3종(`notifyStaffAccessKeyApi`·`notifyClientMonthlyScheduleApi`·`notifyStaffMonthlyScheduleApi`) 전부 `apiFetch` 경유(`services.js:1558~1581`) · raw `fetch()` 0건 |
+| SEC-D19 error handler | **Fixed 유지** — `StaffAccessKeyNotificationService`의 `BusinessRuleException`/`ResourceNotFoundException`는 `GlobalExceptionHandler` 고정 응답 경로 · 스택 미노출 |
+| SEC-D23 PilotFixturePanel | **Fixed 유지** |
+| SEC-D24 SecurityConfig 필터 | **Fixed 유지** — 신규 staff-notifications 엔드포인트도 인증 후 TenantContext 적용 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — `598d108`/`ab4de83` P0 포함(unpushed gap은 SEC-D18) |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(24차 실측) |
+| JWT session (SEC-005) | **Pass** — access 메모리 + refresh `sessionStorage`(`session.js`) |
+| SEC-D15 Solapi config-time fail-closed | **Pass(deepen)** — `NotificationChannelReadinessService`가 채널별 credential 게이트로 한 단계 더 fail-closed(`fed6f1f`) |
+
+### (E) 우선순위 (24차)
+
+| 순위 | ID | Severity | 조치 |
+|------|-----|----------|------|
+| P1 | SEC-D4 | Medium | poi-ooxml 5.4.0+ — **4 파서** 회귀 |
+| P1 | A06-1 | Medium | Spring Boot 3.3.x 패치 라인 |
+| P2 | SEC-D18 | Low(악화) | **origin/test push**(551 BE/218 FE·+21/+31 vs 23차) |
+| P2 | SEC-D37 | Low | **(NEW)** staff access key payload at-rest redact·purge 정책 |
+| P2 | SEC-D36 | Low | **(NEW)** access key 키 길이/charset 확장 검토(현행 rate limit 의존) |
+| P2 | SEC-D33 | Low | CSV export 수식 prefix sanitize |
+| P2 | SEC-D34 | Low | 요양보호사 import 확장자/Content-Type 검증 |
+| P2 | SEC-D26 | High(dev·1건) | form-data `npm audit fix` |
+| P2 | SEC-D22 | Low | parent repo `.gitignore` `*.env` 커밋 |
+| P2 | SEC-D25 | Low~Medium | 첨부 magic-byte |
+| P2 | SEC-D32 | Low | identifier at-rest 암호화 검토 |
+| ✅ | G-SMS-TEMPLATE-CATALOG message_kind=1 staff access key(SHA-256 hash·60분 TTL·quiet-hours guard·응답 평문 키 미포함·키 회전)·dispatchReady fail-closed credential 게이트·HealthControllerTest readiness lock·SEC-D17/D19/D24/D14·SEC-D15 deepen·SEC-D35 closure 카운터(WT CLEAN 회복) | — | 24차 Pass/Fixed/보안 긍정 |
 
 ---
 

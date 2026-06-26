@@ -1,0 +1,82 @@
+BNK-583 ogada git 실측 재산정 (6–8h rotation) — 2026-06-24
+============================================================
+owner=BNK audience=PLN
+
+[1] SUBMODULE HEAD 실측 (git -C rev-parse develop)
+  FE develop : c04968c (c04968c0c6009229fc66a983e9f320a5898ab1d5)
+               "feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): surface pending template dispatch readiness"
+               WT CLEAN · BNK-582 @068049b HEAD +1 · ahead 212 vs origin/test=ab4de83
+  BE develop : b9d0599 (b9d0599033987cc63b28e5a63e8e00133a4add92)
+               "feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff monthly schedule alimtalk dispatch"
+               WT CLEAN · BNK-582 @8631d1e HEAD +1 · ahead 546 vs origin/test=598d108
+
+  FE 신규 commit (BNK-582 @068049b → @c04968c, +1):
+    c04968c feat(v1.2.1/G-SMS-TEMPLATE-CATALOG): surface pending template dispatch readiness
+      NotificationChannelReadinessPanel.jsx +104/-75L
+      NotificationChannelReadinessPanel.test.jsx +24L
+      → pendingReadyEntries(발송 구현·미준비) 가시화·catalog summary Alert
+
+  BE 신규 commit (BNK-582 @8631d1e → @b9d0599, +1):
+    b9d0599 feat(v2/G-SMS-TEMPLATE-CATALOG): wire staff monthly schedule alimtalk dispatch
+      16 files +584/-18L
+      POST /api/v1/staff/notifications/staff-monthly-schedule
+      StaffMonthlyScheduleNotificationService (message_kind=21)
+      StaffMonthlyScheduleNotificationServiceTest +205L
+      MustApiEndpointRoutingTest +37L
+
+[2] KPI 집계 (git ls-tree / git grep @develop)
+  Route       : 112 (111 `<Route\b` + 1 `<Routes>` wrapper, src/App.jsx)   ← 불변
+  page        : 91 (90 *Page.jsx + RootRedirect)                            ← 불변
+  Flyway      : V1–V175 (175 files, 최고 V175)                              ← 불변
+  BE Test     : 257 (*Test.java)                                            ★ (+1 vs BNK-582 256)
+  FE test     : 465 (192 .test.js + 273 .test.jsx)                          ← 불변
+  모듈 coverage: 23.00/29 = 79.31%   (id=10 0.65 carry · competitorModuleCoverage.js 미변경)
+  merge gate  : FE 212 + BE 546 = 758  (BNK-582 756 → +2)
+
+[3] ★ G-SMS-TEMPLATE-CATALOG cluster deepen — message_kind 21 일정표-직원 dispatch wire (확인)
+  ezCare on-disk [mobile-sendW](docs/planning/research/snapshots/ezcare_new_ez_pgid_mobile-sendW.html)
+    md5 4d47d14f · 133,272B · `<option value="21">일정표-직원</option>` verbatim
+  ogada BE NotificationSmsTemplateCatalog.EZCARE_PARITY_ENTRIES:
+    STAFF_MONTHLY_SCHEDULE · labelKo 「일정표-직원」 · ezcareMessageKind=21 · ALIMTALK · dispatchImplemented=true
+  ogada API:
+    POST /api/v1/staff/notifications/staff-monthly-schedule
+    Request: staffUserId(UUID) · yearMonth(YYYY-MM) · summary(max 500)
+    Guard: active staff · branch scope · confirmed visit schedules in month (empty → BusinessRuleException)
+    Template: NotificationTemplateCodes.STAFF_MONTHLY_SCHEDULE
+  ogada FE @c04968c:
+    catalogEntries.filter(dispatchImplemented && !dispatchReady) → 「발송 대기 N종」Alert
+    summary: 발송 구현 N종 중 M종 발송 가능 · Solapi 설정 X/Y
+  BNK-581 carry: POST /api/v1/clients/{clientId}/notifications/client-monthly-schedule (message_kind=12)
+  잔여 dispatch wire 후보(P3): message_kind 11 본인부담 · 13 급여제공 · 19 인권공지
+
+[4] 4축+leave-ledger P0/P1 재오픈 0 (32-cycle carry, BNK-549~583)
+  App.jsx @c04968b LIVE grep:
+    G14 /clients/:clientId/care-plan-form
+    G26 /dashboard · /dashboard/hq
+    v1.3-C /transport/service-fees
+    v2 /billing/cms
+    US-R01-c /staff/annual-leaves · /staff/leave-ledger
+  template-catalog grep @develop = 3 hit (services.js · settingsServices.test.js · NotificationChannelReadinessPanel.jsx)
+
+[5] 증거 URL 재실측
+  (a) NHIS #44 이동서비스비 356차 zero drift (확인)
+    URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+    live: HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+    → 356차 IDENTICAL carry (덮어쓰기 0)
+
+  (b) silverangel weekly notice probe +2 (확인)
+    221605 · 221610 → HTTP 200 · 51,765B · md5 8437f255 미게시 shell IDENTICAL
+    → weekly notice 0 · latest real 221563(6/18) · 7-day stale · next ~6/25 carry
+
+  (c) ezcare mobile-sendW 비로그인 stub (확인·역공학 금지)
+    live direct fetch: HTTP 200 · 70B · md5 e1d52bd5 (redirect stub)
+    on-disk demo snapshot 4d47d14f carry 우선
+
+[6] 요약 카운트 (BNK-583)
+  가정 번복 0 · 신규 core 갭 0 · candidate 변동 0(carry 3 P3)
+  · 상태 변경 2(FE +1 · BE +1 cross-stream advance)
+  · KPI 변경 1(BE Test 256→257) · 모듈 79.31% carry
+  · merge gate 756→758(+2)
+  · 미확인 carry 2(carefor LIVE 16-cycle · longterm 502 14-cycle)
+  · 신규 snapshot 1건(본 extract) · 덮어쓰기 0건 · 엑셀 포맷 변경 0
+  · per-cycle minimum 4종 충족

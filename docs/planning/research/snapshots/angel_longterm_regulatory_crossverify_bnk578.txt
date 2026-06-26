@@ -1,0 +1,87 @@
+BNK-578 엔젤·롱텀·규제 4–6h 교차검증 extract
+조사일: 2026-06-24T09:10:00Z (KST 18:10)
+rotation: 4–6h "엔젤·롱텀·규제" — silverangel/lcms 공개·law.go.kr NHIS #44·2026 수가·단기보호·통합재가
+
+=== ogada git 실측 KPI ===
+FE develop: 15f2195  ux(a11y): G-SMS template catalog and FAQ21823 retention wire (UXD-160)
+  BNK-577 c9cf03b HEAD +1 · WT CLEAN · ahead 209 vs origin/test=ab4de83
+BE develop: fb323ae  feat(v2/G-SMS-TEMPLATE-CATALOG): expose dispatch-ready counts in catalog API
+  BNK-577 b6c9b16 HEAD +1 · WT CLEAN · ahead 544 vs origin/test=598d108
+Route: 112 (111 <Route\b + 1 <Routes>) · page: 91 (90+RootRedirect) · V1–V175
+BE Test: 255 · FE test: 465 (192 .test.js + 273 .test.jsx) · 모듈 78.79% (22.85/29 · id=10 still 0.5)
+merge gate: 753 (FE209+BE544 · +2 vs BNK-577 751)
+
+=== 신규 evidence URL ===
+[silverangel businessSupportService.do]
+URL: https://www.silverangel.kr/newSilverangel/service/businessSupportService.do
+HTTP 200 · 75,878B · md5 a13cb5ac3c265d692ddfaadb9051f3d6
+snapshot: silverangel_service_businessSupport_bnk578.html
+
+5-tab IA (serv_btn):
+  1 실시간 업무지도 — 묻고답하기 전담부서 / 카톡상담(1:1) / 엔젤시스템 오픈톡 https://open.kakao.com/o/gsixWHJ
+  2 도입 후 관리 — 4회차 온보딩 체크리스트(오픈+10일·+10일·6주·+10일)
+  3 업무지원 교육 — 엔젤사용법 단체교육 / 직무 심화교육(기관별)
+  4 주요교육실적 — 분기 직무능력향상교육·지역 협회 교육 이력
+  5 사용후기
+
+도입 후 관리 1회차(오픈+10일) 직무별 체크리스트 verbatim:
+  관리: 직원별 ID등록(서명·본인인증) / 직무별 권한 / 기록지 복사옵션
+  간호: 간호처치기록 / 업무별 시간설정 / 약 등록 / 건강관리기록부
+  복지: 프로그램 그룹 설정·매핑 / 프로그램 계획서 / 프로그램일지 그룹선택 / 욕구사정 / 급여제공계획(롱텀 다운로드→업로드)
+  요양: 기록지 큰화면 / 배변배뇨 QR / 관찰기록 불러오기 / 체위변경 / 목욕서비스제공기록 / 작성자 일괄등록
+  재활: 기능회복훈련계획 / 물리(작업)치료 기록(시간 필수)
+2회차: 사례관리회의 / 상담일지 / 프로그램계획 달력 / 보고서(관찰·배변배뇨·목욕) / 욕창위험도평가 사후관리 / 기관운영 메뉴 인지
+
+ogada cross-walk:
+  ✅ 대부분 parity (권한·프로그램·요양기록·사례관리·기능회복)
+  △ 엔젤 전용: 카톡상담·오픈톡·원격지원(helpu.kr/uniforce) — SaaS 온보딩 휴먼서비스·ogada MVP out-of-scope
+  △ 「급여제공계획 롱텀 다운로드→업로드」 — ogada G14 care-plan-form API 직접입력 우위
+  → candidate G-VENDOR-ONBOARDING-CHECKLIST P3「가정」(엔젤 4회차 체크리스트를 in-app 온보딩 위젯화 시 차별화)
+
+=== silverangel 5-URL 재실측 (352차 carry) ===
+essential daycareEssentialWork.do: 200 131,664B c79c1be3 IDENTICAL — 이동#41-42·차량운행표·평가#27 목욕
+extraService.do: 200 81,637B f9c5d877 IDENTICAL — 효성CMS 5-method 250/300원
+mainService.do: 200 59,002B bcf6df41 IDENTICAL
+feeService.do: 200 44,513B eab352a8 IDENTICAL
+notice list.do: 200 3,594,181B 52c9457f IDENTICAL — latest real 221563(6/18) · probe 221591/221600 unpublished 8437f255 · weekly notice 0 (8-day stale)
+
+=== lcms 루트 DRIFT (type rotation) ===
+URL: https://www.lcms.or.kr/
+HTTP 200 · 50,740B · md5 c0c660760e9e5691491ace28f9d15f74
+BNK-571 6b750291(type1+type3) → BNK-578 c0c66076(type1+websiteProvided+CJ MOU) — BNK-556 동형 회귀
+strip-feature IDENTICAL carry · marketing copy rotation 5-cycle 관측
+
+=== NHIS #44 이동서비스비 러-1~4 ===
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f IDENTICAL (352차 zero drift)
+러-1~4 표 · 편도 50% · 1일 1회 · ④별지 제22호 일지
+↔ ogada TransportServiceFeeService + FE transportServiceFee.js + TransportServiceFeePanel full-stack ✅ parity/우위
+
+=== longterm 502 단기보호 ===
+URL: moveBoardView?menuId=npe0000000502
+HTTP 200 · 422B · md5 d3c90b33 — partial shell only (canonical b5aee8c1 105,552B·1등급 74,060 미수신)
+11-cycle 「미확인」 carry (session gate → partial shell oscillation)
+
+=== longterm 610 통합재가 ===
+URL: npeb610m01.web?menuId=npe0000002731
+HTTP 200 · 91,421B · md5 0ea575be IDENTICAL (2-cycle stable post-BNK-576 recovery)
+통합재가서비스 · 월 10만원 · 주야간보호형 verbatim
+
+=== MOHW 2026-126 / law247 ===
+MOHW: 7c54ce09 → f1fc518c — 조회수 2,581→2,584(+3) · 미리보기 560→564(+4) · 다운로드 473→475(+2) · 제2026-126호 verbatim 불변
+law247: cd73f7e6 → cac7017a — cachebuster DRIFT · strip-cachebuster IDENTICAL · 제2025-247호 시행 2026.1.1 verbatim 불변
+
+=== G-SMS-TEMPLATE-CATALOG deepen ===
+BE fb323ae: dispatch-ready counts in catalog API (BNK-576 dirty carry → committed)
+FE 15f2195 UXD-160: NotificationChannelReadinessPanel a11y + FAQ21823 retention wire
+module 10 coverage still 0.5 — planner 0.65 deepen 검토 carry (dispatchReady 가시화 미반영)
+
+=== planner 액션 ===
+1. merge gate 753 — cross-stream FE+1·BE+1 · tester FF merge 가속
+2. NHIS #44 352차 carry — P2 문구 고정 유지
+3. silverangel businessSupport 4회차 온보딩 → G-VENDOR-ONBOARDING-CHECKLIST P3「가정」
+4. lcms type rotation — marketing only · 기능 갭 0
+5. longterm 502 canonical on-disk 우선 · live 11-cycle 미확인
+6. module 10: dispatchReady FE 가시화 시 0.5→0.65 검토
+
+per-cycle minimum 4종 충족: 신규 URL 1+ · 워크플로 1블록+ · matrix 1행+ · §578 1건+

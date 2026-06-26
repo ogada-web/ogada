@@ -1,0 +1,12 @@
+BNK-573 ogada git 실측 @ 596658a/9aaefa0
+596658a feat(v1.2.1/FAQ21823): wire employment contract compliance API to dashboard and staff
+9aaefa0 feat(v2/FAQ21823): add employment contract compliance API and dashboard counts
+FE WT: CLEAN | BE WT: CLEAN
+ahead FE 206 vs origin/test=ab4de83 | BE 542 vs origin/test=598d108
+merge gate 748 (+2 vs BNK-572 746)
+Route 112 (111 <Route\b + 1 <Routes>)
+page 90+RootRedirect=91
+BE *Test.java=254 (@Test loose=1845)
+FE test=469 (192+277 approx)
+module 78.79% (22.85/29 carry)
+HEAD cross-stream advance FE+1·BE+1 (BNK-572 a43bcb7/d11263b → 596658a/9aaefa0)

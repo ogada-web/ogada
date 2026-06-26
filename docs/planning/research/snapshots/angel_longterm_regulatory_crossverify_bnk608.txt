@@ -1,0 +1,279 @@
+BNK-608 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-25T03:07Z · KST 12:07)
+============================================================================
+
+rotation: 엔젤·롱텀·규제 4–6h (silverangel essential/extra · longterm 502/610 ·
+law.go.kr 이동서비스비 #44 374차 · 2026 수가 평가지표 27 목욕 · 통합재가 #45).
+
+==============================================================================
+1. ogada baseline 실측 (BNK-608 정본)
+==============================================================================
+
+FE develop HEAD : 9a583ec  carry  (BNK-607 동일 SHA · HEAD zero advance 1-cycle)
+                              `Improve CMS catalog empty state handling`
+BE develop HEAD : 37416ac  NEW   (BNK-607 `e4f83af` HEAD +1 cross-stream)
+                              `feat(v2/G-NHIS-MASKED-NAME-FALLBACK):
+                               add alt-key client resolution for NHIS imports`
+FE WT           : CLEAN
+BE WT           : CLEAN  (BNK-608 진입 시 DIRTY 7M+6U → 사이클 중 commit landed)
+FE ahead vs origin/test=ab4de83 : 227  carry
+BE ahead vs origin/test=598d108 : 560  (+1 BE)
+merge gate (FE 227 + BE 560)    : 787  (+1 BE)
+
+Route          : 112 (111 <Route\b + 1 <Routes>)            carry
+page           : 91  (90 *Page.jsx + 1 RootRedirect)        carry
+Flyway 최대    : V177 (NHIS masked-name fallback uses existing client.birth_date
+                       column · 신규 V178 없음 — 변경 폭 최소화)
+BE Test files  : 265 (+3 = NhisAltKeyExtractorTest 42L + NhisClientResolverTest
+                       118L + NhisMaskedNameMatcherTest 25L)
+BE @Test (rg)  : 1915 (+9 from BNK-607 1906; new NhisAltKeyExtractorTest 4 +
+                       NhisClientResolverTest 3 + NhisMaskedNameMatcherTest 2 +
+                       NhisImportServiceTest 9→10 +1 = 10 신규 - 1 helper 잡음
+                       = +9 합산)
+FE .test.js    : 193  carry
+FE .test.jsx   : 276  carry
+FE test 총합   : 469  carry
+모듈 coverage  : 80.86% (23.45/29 · id=7-4 1.0 carry · id=2 0.85 carry)
+
+==============================================================================
+2. ★★★ G-NHIS-MASKED-NAME-FALLBACK P2 candidate **1-cycle BE FULL LANDED**
+==============================================================================
+
+BNK-606 (2026-06-25T02:18Z) — FAQ 21844 「260624_공단 개인정보보호 표시 방식 변경」
+                              evidence → 신규 P2 candidate 제안.
+BNK-608 (2026-06-25T03:10Z) — BE 37416ac 14-file (7 NEW + 7 MODIFIED) +548L LANDED.
+
+소요 시간     : ~52분 (proposal → BE landed)
+P2 closure   : BE 부 1-cycle · FE 부 P2 carry (raw fetch 없이 NhisImportService
+              가 자동 fallback — FE 단 trigger UI 변경 불필요)
+
+commit 37416ac numstat:
+  src/main/java/.../billing/domain/NhisAltKeyExtractor.java          +99   NEW
+  src/main/java/.../billing/domain/NhisAltKeys.java                  +21   NEW (record)
+  src/main/java/.../billing/domain/NhisClientResolver.java          +108   NEW (@Component)
+  src/main/java/.../billing/domain/NhisMaskedNameMatcher.java        +40   NEW
+  src/main/java/.../billing/domain/NhisImportService.java            +14/-2  MOD
+  src/main/java/.../clients/persistence/ClientRepository.java        +16   MOD (NEW JPQL)
+  src/main/java/.../visits/domain/VisitService.java                  +15/-3  MOD
+  src/test/.../billing/domain/NhisAltKeyExtractorTest.java           +42   NEW
+  src/test/.../billing/domain/NhisClientResolverTest.java           +118   NEW
+  src/test/.../billing/domain/NhisImportServiceTest.java             +98   MOD
+  src/test/.../billing/domain/NhisMaskedNameMatcherTest.java         +25   NEW
+  src/test/.../pilot/CognitiveSupportFeeSchedulePilotServiceFlowE2eTest +1  MOD
+  src/test/.../visits/domain/VisitPilotServiceFlowE2eTest.java       +1   MOD
+  src/test/.../visits/domain/VisitServiceTest.java                  +51   MOD
+
+핵심 알고리즘 (NhisMaskedNameMatcher):
+  static final Pattern MASKED_NAME_PATTERN = Pattern.compile("^[가-힣]\*[가-힣]+$");
+  matches(fullName, maskedName) =
+      fullName.charAt(0) == maskedName.charAt(0)
+      && fullName.last() == maskedName.last()
+  ※ 「홍*동」 ↔ "홍길동"/"홍복동" 1차 후보 검색·birth date 교차로 unique 매칭.
+
+NhisClientResolver 2-tier fallback cascade:
+  tier 0 : LTC 인증번호 직접 매칭 (기존 경로 · altKeyMatched=false)
+  tier 1 : 생년월일 + masked-name 패턴 매칭 (1개일 때만 reslve)
+  tier 2 : 생년월일 + 주민등록번호 prefix 6자리 (1개일 때만 resolve)
+  audit  : altKeyMatched=true 시 reason="공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨"
+  fallback : 다회 매칭 시 Resolution.empty() — silent false-positive 방지.
+
+NhisAltKeyExtractor 헤더 normalize:
+  client_name 헤더    : 수급자명·이용자명·성명·수급자·이름 (+ EN)
+  birth_date 헤더     : 생년월일·생일·출생일 (+ EN)
+  resident_no 헤더    : 주민등록번호·주민번호·주민등록 (+ EN)
+  date formats        : ISO_LOCAL_DATE · yyyy-M-d · yyyyMMdd (8 digits)
+  resident prefix     : 6자리 digits (생년 6자리 추출)
+
+ClientRepository NEW method (+16L):
+  @Query("select c from ClientEntity c
+            where c.organizationId = :organizationId
+              and c.branchId = :branchId
+              and c.birthDate = :birthDate
+              and c.active = true
+              and c.dischargedAt is null")
+  List<ClientEntity> findActiveByOrganizationIdAndBranchIdAndBirthDate(...)
+  ※ tenant 격리 + 활성·미퇴소 가드 — RBAC 회귀 방지.
+
+VisitService 통합 (+15/-3):
+  NhisAltKeys altKeys = NhisAltKeyExtractor.fromRawRow(parsedRow.rawRow());
+  NhisClientResolver.Resolution clientResolution = nhisClientResolver.resolve(...);
+  → 출입퇴소 visit 일정 import 도 동일 fallback 흐름 적용.
+
+==============================================================================
+3. ★★★ NHIS #44 이동서비스비 러-1~4 374차 zero drift IDENTICAL (확인)
+==============================================================================
+
+URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do
+       ?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP: 200    SIZE: 7,572B
+live md5 : c886ff1fd1d5ca2cb5dc76d30adde8ba
+disk md5 : c886ff1fd1d5ca2cb5dc76d30adde8ba (`nhis_jo44.html`)
+판정    : live == disk IDENTICAL · 374차 zero drift
+
+verbatim 본문 (374차):
+- ①「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정」 (편도 산정 룰)
+- ②「이용 횟수에 관계없이 1일 1회만 산정」
+- ③「제공기관의 신청에 따라 산정하며, 그 비용은 수급자가 부담하지 아니한다」
+- ④「이동서비스 일지를 작성하여 보관」 (별지 22호 서식 인용)
+- ⑤「세부사항은 공단 이사장이 정한다」
+
+ogada 대응 (BNK-603 LANDED · BNK-606 RBAC 강화 carry):
+- BE TransportServiceFeeParityCatalog : 4-rule (러-1~4)
+- FE TransportServiceFeePanel        : fetchTransportServiceFeeParityRulesApi()
+                                      + <h3>NHIS #44 산정 기준</h3>
+- BE RBAC                            : hq_admin / branch_admin only (e4f83af BNK-606)
+
+경쟁사 4종 중 ogada만 #44 표시 레이어 full-stack 차별화 우위 → 374차 carry.
+
+==============================================================================
+4. ★★★ silverangel 평가지표 27 목욕 + CMS 5-method zero drift IDENTICAL
+==============================================================================
+
+(1) daycareEssentialWork.do
+URL : https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+HTTP: 200    SIZE: 131,664B
+live md5 : c79c1be37f947aab04ab7ba35cc7814d
+disk md5 : c79c1be37f947aab04ab7ba35cc7814d (`silverangel_essential.html`)
+판정    : live == disk IDENTICAL (BNK-607 carry)
+
+verbatim (평가지표 27 목욕):
+- 「목욕제공 — 필수 아니며 목욕서비스 제공시 청구 가능」
+- ※ 「월 5회 이상」, 「목욕 전.후 상태 관찰 및 기록」은 페이지에 없음 = 규정 유래.
+
+(2) extraService.do (부가서비스 CMS 5-method)
+URL : https://www.silverangel.kr/newSilverangel/service/extraService.do
+HTTP: 200    SIZE: 81,637B
+live md5 : f9c5d8773ad0a481be6d7eb4b192d982
+disk md5 : f9c5d8773ad0a481be6d7eb4b192d982 (`silverangel_extraService.html`)
+판정    : live == disk IDENTICAL (BNK-607 carry)
+
+verbatim 5-method:
+- 자동이체  ↔ ogada CMS_DIRECT_DEBIT
+- 가상계좌  ↔ ogada CMS_VIRTUAL_ACCOUNT (BNK-600 V176 landed)
+- 카드결제  ↔ ogada CMS_CARD
+- 다계좌 정산 ↔ ogada CMS_MULTI_ACCOUNT_SETTLEMENT (BNK-600 landed)
+- 현금영수증 ↔ ogada CashReceiptService (BNK-459 carry)
+hotline    : 1600-6859 (carry · marketing copy 인용 가능)
+
+ogada G2b CMS 5/5 closure : BNK-600 BE 5/5 → BNK-601 FE retry → BNK-603 FE wire
+                          → BNK-607 FE empty-state UX = 4-cycle cascade
+                          → ogada G2b empty-state UX 우위 (경쟁사 정적 명단 0)
+
+==============================================================================
+5. ★★ longterm 610 통합재가 oscillation continues · 502 「미확인」 carry
+==============================================================================
+
+(1) npe0000000610 통합재가
+URL  : https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000610
+HTTP : 200   SIZE: 458B  live md5: c26a5e573770ef3c3f1a10c9ae751361
+disk : 91,421B canonical (md5 `0ea575be...`, BNK-594 carry · 통합재가 verbatim)
+판정 : oscillation 2-cycle (BNK-607 첫 oscillation, BNK-608 continues) — 458B
+       빈 shell ↔ 91KB canonical 진동
+원인 추정 : 신규홈 '26.1.16~ 브라우저 가드 + 첫 진입 redirect
+정책 : canonical on-disk 우선 유지 · 본문 의존 0 · ROADMAP v3.1 G18-SHORT 영향 0
+
+(2) npe0000000502 단기보호
+URL  : https://www.longtermcare.or.kr/npbs/d/m/000/moveBoardView?menuId=npe0000000502
+HTTP : 200 (302 → /npbs/exception/securityException)  SIZE: 422B
+live md5 : d3c90b333be1f8d818978eaf0917ba76 (BNK-599 carry shell · 미게시는 아님)
+disk : 74,060B canonical (md5 `b5aee8c1...`, BNK-396 carry)
+판정 : 「미확인」 4-cycle carry (BNK-599 · 600 · 607 · 608)
+정책 : canonical on-disk 우선 유지
+
+==============================================================================
+6. ★★ law.go.kr 2025-247호 · MOHW 2026-126호 DRIFT 재실측
+==============================================================================
+
+(1) law247 (장기요양 행정규칙)
+URL : https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP: 200    SIZE: 78,450B (carry)
+live md5 : 27c859bd193e88fb7b5dd73e4cc77180  (DRIFT)
+disk md5 : a2cf9bf3ff08c49a9854e0d3ea409eee  (BNK-599 carry)
+verbatim 검증: 「제2025-247호 · 시행 2026 · 장기요양」 grep ✅ 불변 → cachebuster DRIFT
+정책 : DRIFT 의미 0 (key phrase verbatim 불변) — 덮어쓰기 OK
+
+(2) mohw126 (본인부담상한 고시)
+URL : https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000
+HTTP: 200    SIZE: 109,510B (carry)
+live md5 : 7df000adaa7e4dc79a89ce60c65f40a7  (DRIFT)
+disk md5 : 1f71275c9bfb234eb023db98aa4812c1  (BNK-599 carry)
+counter delta:
+  - 다운로드 477→**478** (+1)
+  - 미리보기 564→**567** (+3)
+  - 본인부담상한액 verbatim 불변
+정책 : DRIFT counter only (semantic 불변) — 덮어쓰기 OK
+
+==============================================================================
+7. ★ indicator-27 명칭 충돌 정리 (false-closure 방지 · BNK-607 carry)
+==============================================================================
+
+ogada FE git grep 재실측 (`@9a583ec` carry):
+  indicator-27-compliance | bathing-schedules/indicator : 0 hit (P2 carry)
+  indicator27 (G17 functional recovery)                  : 15 hit (BNK-101/102)
+    - functionalRecoveryCompliance.js               12 hit
+    - FunctionalRecoveryPage.jsx                     3 hit
+
+별개 도메인:
+  silverangel 평가지표 27 「목욕제공」  → US-O01 bathing  (BE-only · BNK-603 landed)
+  ogada functionalRecoveryCompliance27 → G17 기능회복훈련 (FE landed · BNK-102)
+
+⚠ false-closure 위험: 「FE indicator27 hit 발견 = bathing wire closure」 오판 금지.
+  bathing US-O01 FE wire = coder 다음 사이클 P2 carry 유지.
+
+==============================================================================
+8. ★ 변동·번복 회계 (BNK-607 → BNK-608)
+==============================================================================
+
+| 항목                       | BNK-607              | BNK-608              | 번복 |
+|----------------------------|----------------------|----------------------|------|
+| FE / BE HEAD               | 9a583ec / e4f83af    | 9a583ec carry /      |  0   |
+|                            |                      | 37416ac (BE +1)      |      |
+| 신규 core 갭               | 0                    | 0                    |  0   |
+| candidate                  | 5 P3 + M11 P2 +      | 5 P3 + M11 P2 +      |  0   |
+|                            | 4 NEW (P2×1 + P3×3)  | 3 NEW (P3×3) +       |      |
+|                            |                      | **P2 LANDED**        |      |
+| 가정 번복                  | 0                    | 0                    |  0   |
+| 상태 변경                  | 1 (FE+1 only)        | 1 (BE+1 only ·       |  —   |
+|                            |                      | P2 closure)          |      |
+| KPI 변경                   | 1 (merge gate 786)   | 3 (BE Test 265 +     |  —   |
+|                            |                      | BE @Test 1915 +      |      |
+|                            |                      | merge gate 787)      |      |
+| 미확인 carry               | 3 (longterm 502 ·    | 3 (carry)            |  0   |
+|                            | carefor LIVE · demo) |                      |      |
+| 신규 snapshot              | 1                    | 1 (this extract)     |  —   |
+| 덮어쓰기                   | 0                    | 2 (law247 · mohw126) |  —   |
+| 엑셀 포맷 변경             | 0                    | 0                    |  —   |
+
+per-cycle minimum 충족 ✅:
+- 신규 evidence URL 재실측 5건+ (NHIS #44 374차 · silverangel essential/extra ·
+  longterm 610/502 · law247 · mohw126 · BE git 실측)
+- 메뉴/필드/워크플로 1블록 (NhisClientResolver 2-tier cascade +
+  NhisMaskedNameMatcher 패턴 정의 + ClientRepository JPQL)
+- COMPETITOR_MATRIX 갱신 (BNK-608 entry · ogada @9a583ec/@37416ac 정합)
+- BENCHMARK_REPORT §608 신규.
+
+==============================================================================
+9. planner 권고 (BNK-608 next-cycle)
+==============================================================================
+
+1. ★★★ **G-NHIS-MASKED-NAME-FALLBACK BE LANDED — coder 다음 사이클 FE 부수
+   alert UX 검토** : BE NhisClientResolver.altKeyMatched=true 시
+   audit reason 「공단 이름 마스킹 — 대체 키(생년월일·이름 패턴)로 매칭됨」을
+   VisitNhisComparisonPanel.jsx 행 단위 badge로 노출하면 운영자에게
+   「대체 매칭됨 — 검증 필요」 신호 제공 가능 → coder 후속 작업 P3 후보.
+
+2. ★★★ **NHIS #44 374차 + silverangel essential/extra IDENTICAL** :
+   규제·엔젤 정본 zero drift carry. ogada G16 #44 full-stack + G2b CMS 5/5
+   + RBAC 차별화 우위 carry. **차별화 marketing copy 유효**.
+
+3. ★★ **모듈 80.86% carry → 87.76% bump 잠재력 carry (M11 직원급여 +
+   M12 회계)** : id=11·12 coverage 0/0 carry → 케어포 11-1~11-6 + 이지케어
+   wAllowance 4-page 정본 대비 ogada 0 route. id=11·12 closure 단일 최대 KPI
+   bump 레버 carry. M11 P2 candidate carry.
+
+4. ★ **longterm 610 oscillation 2-cycle** : canonical on-disk 우선 정책 유지.
+   다음 사이클 first-load → cookie set 시 본문 복귀 가능성 추적.
+
+5. ★ **bathing US-O01 FE wire 0 hit P2 carry** : indicator-27 명칭 충돌 정리
+   완료 (BNK-607). 다음 코더 사이클 P2 후보.
+
+merge gate 787 (FE 227 + BE 560 · +1 BE) → tester FF merge 787 가속 권장.

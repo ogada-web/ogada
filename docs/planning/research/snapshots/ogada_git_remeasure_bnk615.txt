@@ -1,0 +1,111 @@
+# BNK-615 ogada git 실측 + 교차검증 (rotation 6–8h)
+조사일: 2026-06-25T08:16:00Z (KST 17:16)
+실측 디렉터리: /home/ubuntu/ogada (main · ahead 11 vs origin/main)
+대상 submodule: src/backend · src/frontend (develop 브랜치)
+
+==============================================================================
+1. submodule develop HEAD (BNK-614 → BNK-615 carry, HEAD zero advance)
+==============================================================================
+FE develop: 58f3858  fix(v1.2.1/QA-B312): normalize annual leave branch scope fallback
+    WT: CLEAN (git status --short = 비어있음)
+    ahead vs origin/test=ab4de83 : 232 (BNK-614 동일)
+
+BE develop: 5a5174a  test: cover easy-pay provider catalog routing
+    WT: CLEAN (git status --short = 비어있음)
+    ahead vs origin/test=598d108 : 564 (BNK-614 동일)
+
+merge gate (FE+BE 적체) : 232 + 564 = 796  (BNK-614 = 796, 변동 0)
+※ tester FF merge 796 가속 권장 — 양쪽 WT CLEAN · 선행 commit 불필요 (BNK-614 caution 0).
+
+==============================================================================
+2. FE Route / page / test 실측 (BNK-614 carry · zero advance)
+==============================================================================
+Route (App.jsx) : 111 `<Route\b` + 1 `<Routes>` wrapper = 112
+*Page.jsx       : find src/frontend/src/pages -name '*Page.jsx' | wc -l = 90
+                  (+ RootRedirect = 91 page)
+FE .test.js     : 193
+FE .test.jsx    : 277
+FE test 총합    : 470  (BNK-614 동일)
+
+==============================================================================
+3. BE Flyway / Test 실측
+==============================================================================
+Flyway 최대 : V178 (`V178__cms_collection_requests_and_bathing_observations_integrity.sql`)
+           ← BNK-614 동일 (총 178 마이그레이션 V1–V178)
+BE Test class (*Test.java) : 267  (BNK-614 동일·BNK-613 → +1 `EasyPayControllerRoutingTest`)
+BE @Test method (rg -c '@Test' src/test) : 1925  (BNK-614 동일·BNK-613 → +3)
+
+==============================================================================
+4. 모듈 커버리지 (competitorModuleCoverage.js)
+==============================================================================
+entries : 29
+sum     : 21×1.0 + 2×0.85 + 1×0.75 + 5×0.0 = 21.00 + 1.70 + 0.75 + 0.00 = 23.45
+ratio   : 23.45 / 29 = 0.808620... ≈ 80.86%
+∴ 모듈 커버리지 80.86% carry, v1.2 KPI ≥60% 초과 carry.
+
+세부 (id=7-4 1.0 carry · BNK-603 closure cascade):
+  1-1=1, 1-3=1, 1-5=0, 1-7=1, 1-9=1, 1-10=0,
+  2=0.85, 3-1=1, 4=1, 5=1, 26=1, 43=1, 6=0,
+  7-1=1, 7-2=1, 7-2-1=1, 7-3=1, 7-4=1, 7-6=1, 7-10=1,
+  8=0.85, 9=1, 10=0.75, 11=0, 12=0,
+  nhis=1, qr=1, hq=1, platform=1
+
+M11·M12 (id=11·12) 0 → closure 시 23.45+2.0=25.45/29=87.76% (+6.9pp 단일 최대 KPI lever).
+  rg 'path="/payroll' src/frontend/src/App.jsx → 0
+  rg 'path="/accounting' src/frontend/src/App.jsx → 0
+  (BNK-611 6-x 위생·안전 점검 0 / 1-5 가정통신문 0 / 1-10 연계기록지 0 → 각각 closure 시 +1pp/0.7pp lever 차순위)
+
+==============================================================================
+5. live URL 재실측 (380차 zero drift IDENTICAL · 교차검증)
+==============================================================================
+URL                                       HTTP  SIZE      md5                              vs disk
+NHIS #44 joHistoryContent.do(SEQ=1637)    200   7,572B    c886ff1fd1d5ca2cb5dc76d30adde8ba  IDENTICAL (380차)
+silverangel essentialWork.do              200   131,664B  c79c1be37f947aab04ab7ba35cc7814d  IDENTICAL
+silverangel extraService.do (CMS 5-method) 200  81,637B   f9c5d8773ad0a481be6d7eb4b192d982  IDENTICAL
+ezCare /(home) — mCnt cachebuster DRIFT   200   106,087B  090f192f53bd72c2549d107228ccdc76  DRIFT (BNK-610 d2e86c93·106,099B·-12B size)
+ezCare new/ezCare_fnc.html — DRIFT        200   17,870B   379ff76cf7682d349ba69155415f1b03  DRIFT (BNK-611 d9ad49cb·동일 size·cachebuster only)
+carefor daycare/func.php (LIVE)           ---   ---       (timeout 18s)                    「미확인」 36-cycle carry (BNK-558~615·Wayback 검증 정상)
+
+==============================================================================
+6. ezCare 점유율 시계열 신호 (BNK-610 → BNK-615, 14-day delta)
+==============================================================================
+home mCnt verbatim 발췌:
+  1: 9285  ← 재가센터(추정·BNK-609 mCnt 9,283)
+  2: 4603  ← 미상 (시설/이용시설 후보)
+  3: 2353  ← 미상
+  4: 1820  ← 미상
+
+mCnt[1] 9,283 → 9,285 = +2 재가센터 (14-day 추정)
+  - 미세 신호이나 BNK-610 「전국 재가센터 17,489·이용시설 9,350·점유율 53.46%」
+    verbatim 모집단과 별개 카운터(ezCare 도입 추정).
+  - planner GTM: 14-day +2 → 월 ~4 신규 도입 추세(가설).
+  - 신규 P3 carry `G-MARKET-SHARE-DASHBOARD` (BNK-610 「가정」) 데이터 소스
+    후보로 ezCare home/fnc cachebuster scrape 매일 1회 가능.
+
+==============================================================================
+7. 미확인·oscillation carry (BNK-614 → BNK-615)
+==============================================================================
+- carefor LIVE direct : HTTP timeout 36-cycle carry (BNK-558~615·내용 Wayback IDENTICAL)
+- longterm 502 단기보호 : HTTP 302 securityException 「미확인」 carry (canonical b5aee8c1 보존)
+- longterm 610 통합재가 : 458B shell oscillation carry (canonical 0ea575be 보존)
+- lcms : HTTP 000 transient 「미확인」 (canonical c0c66076 보존)
+- law247/mohw126 : 본 사이클 별도 URL 호출 — 결과 stub(6KB/102KB) drift 가능성 carry,
+  덮어쓰기 보류 (next 4–6h rotation 정밀 측정 권장).
+
+==============================================================================
+8. 결론 (BNK-615 정본)
+==============================================================================
+★ ogada baseline HEAD zero advance (FE 58f3858 · BE 5a5174a · 양쪽 WT CLEAN).
+★ Route 112 · 91 page · V1–V178 · BE Test 267 · BE @Test 1925 · FE test 470 · 모듈 80.86% carry.
+★ merge gate 796 carry — tester FF 가속 권장 (BNK-613→614 cross-stream FE+1·BE+1 적체 carry).
+★ silverangel CMS 5/5 closure 잔존 (V176+V178 무결성·BNK-614 closure 재입증 6-cycle 후).
+★ NHIS #44 380차 zero drift IDENTICAL — G16 full-stack 우위 carry.
+★ ezCare home mCnt 14-day +2 재가센터 미세 신호 — 경쟁사 시계열 추적 가설 데이터.
+★ M11·M12 P2 갭 carry — id=11·12 closure 시 80.86%→87.76% (+6.9pp) 단일 최대 KPI lever.
+★ 4축+leave-ledger P0/P1 재오픈 0 (66-cycle carry, BNK-549~615).
+
+신규 core 갭 0 · candidate 변동 0 · 가정 번복 0 · 상태 변경 0 (HEAD zero advance) · KPI 변경 0
+미확인 carry 4 (carefor LIVE 36-cycle·longterm 502/610·lcms transient)
+신규 snapshot 1건 (본 파일 ogada_git_remeasure_bnk615.txt)
+덮어쓰기 2건 (ezcare_home.html·ezcare_ezCare_fnc.html·둘 다 cachebuster only·의미 불변)
+per-cycle minimum 4종 충족.

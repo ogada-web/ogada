@@ -1,0 +1,52 @@
+BNK-628 교차검증·갭 우선순위 8h+ (2026-06-25T16:22Z)
+=====================================================================
+rotation: G14·대시보드·v1.3-C·v2 CMS 4축+leave-ledger 재확인 · group-history closure 지속 · 엑셀 포맷·공지 스캔
+
+---------------------------------------------------------------------
+[★★★ 4축 cross-walk — App.jsx @f74a6e7 git 실측 (확인)]
+---------------------------------------------------------------------
+G14  `/clients/:clientId/care-plan-form`           → CarePlanFormPage (BNK-432 closure carry)
+G26  `/dashboard` + `/dashboard/hq`                → DashboardPage (운영·HQ variant)
+v1.3-C `/transport/service-fees` + 9 routes        → TransportServiceFeePanel·G16 full-stack
+v2   `/billing/cms` + `/billing/easy-pay`          → CmsPaymentMethodCatalog·EasyPayProviderCatalog
+US-R01-c `/staff/leave-ledger`                     → StaffLeaveLedgerPage (BNK-567 closure carry)
+
+판정: 7/7 LIVE · P0/P1 재오픈 0 (78-cycle BNK-549~628)
+
+---------------------------------------------------------------------
+[★★ 대시보드 vs silverangel 221564 — gap carry (가정 유지)]
+---------------------------------------------------------------------
+silverangel (BNK-618 snapshot ffe82a0d evidence):
+  「간호처치기록 미이행 dashboard」+ 관리자설정 5-서비스 토글(투약·약복용·인슐린·건강관찰·구강)
+ogada @f74a6e7:
+  DashboardPage → HQ table·Kakao quota·transport status panels
+  grep missed|미이행|noncompliant src/{frontend,backend} → 0 hit (nursing missed dashboard)
+P3 G-NURSING-MISSED-RECORD-DASHBOARD carry · 6/30 재검증 보류 (view 221564 still shell 44223150)
+
+---------------------------------------------------------------------
+[★★ ezCare FAQ 21844 — 공단 엑셀 PII 마스킹 workflow (확인)]
+---------------------------------------------------------------------
+제목: 「260624_공단 개인정보보호 표시 방식 변경에 따른 방문일정 연동 안내」
+핵심 workflow:
+  1) 공단 엑셀 다운로드 시 수급자·종사자 이름 일부 마스킹(*) 적용
+  2) 이지케어 측 대응 조치 완료·일부 기관 계획일정 반영 지연 가능 안내
+  3) 첨부 이미지: 「공단 일정계획 마스킹 자료.png」
+ogada gap: masked-name NHIS excel import reconcile 미구현 → G-NHIS-EXCEL-RECONCILE P3
+엑셀 포맷 변경: 0 (389차 zero drift d0aa760c)
+
+---------------------------------------------------------------------
+[★ group-history-fill P3 → closure 제거 (BNK-627→628 지속)]
+---------------------------------------------------------------------
+BE @337453d + test getGroupHistoryReportShouldMapAggregatedMembershipWindows
+COMPETITOR_MATRIX: group-history row shell→✅ full-stack 갱신
+M5 5-rpt = ogada programs 5 routes full parity with demo-work M5
+
+---------------------------------------------------------------------
+[P0/P1/P2/P3 우선순위 정본 (BNK-628)]
+---------------------------------------------------------------------
+P0/P1: 4축+leave-ledger 재오픈 0
+P1: M1 1-12 연계기록지 (+0.034pp)
+P2: M11 급여 + M12 회계 (+6.9pp lever)
+P3 active: G-NHIS-EXCEL-RECONCILE · G-NURSING-MISSED · G-HEALTH-HOLIDAY-AUTOGEN · G-LEGAL-FORM-SIGNATURE · G-MARKET-SHARE-DASHBOARD · G-SEVERE-ALLOWANCE · G-SAAS-TENANT-BILLING
+P3 removed: G-REPORT-DENSITY-GROUP-HISTORY-FILL (closure)
+6/30 watch: silverangel 221564 view shell → P3 3종 재검증 D-5

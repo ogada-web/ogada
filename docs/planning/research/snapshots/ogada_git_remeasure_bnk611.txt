@@ -1,0 +1,93 @@
+# ogada git 실측 extract — BNK-611 (2026-06-25T05:45:00Z)
+# rotation: ogada git 실측 6–8h · HEAD zero advance from BNK-610
+
+## 1. Submodule HEAD (develop)
+
+| stream | HEAD | subject | WT | ahead vs origin/test |
+|---|---|---|---|---|
+| FE | `5bb84a6` | feat(v2/G-NHIS-ALT-KEY-AUDIT-BADGE): surface alt-key matched rows in NHIS UI | CLEAN | 229 |
+| BE | `4963535` | feat(v2/G-NHIS-ALT-KEY-AUDIT-BADGE): expose altKeyMatched on NHIS import APIs | CLEAN | 561 |
+
+merge gate = 229 + 561 = **790** (carry vs BNK-610)
+
+## 2. KPI 실측 (BNK-610 대비)
+
+| 지표 | BNK-610 | BNK-611 | 변동 |
+|---|---|---|---|
+| Route (`<Route\b` + `<Routes>`) | 112 | 112 | carry |
+| page (`*Page.jsx` + RootRedirect) | 91 | 91 | carry |
+| Flyway max | V177 | V177 | carry |
+| BE Test class (`*Test.java`) | 265 | 265 | carry |
+| BE `@Test` method (rg sum) | 1916 | **1917** | **+1 KPI 회계 정정** |
+| FE `.test.js` | 193 | 193 | carry |
+| FE `.test.jsx` | 277 | 277 | carry |
+| FE test 합계 | 470 | 470 | carry |
+| 모듈 커버리지 | 80.86% (23.45/29) | 80.86% (23.45/29) | carry |
+
+**KPI 회계 정정**: BNK-610 BE @Test 1916 → 실측 `rg -c '@Test' src/test` 합 **1917** (동일 HEAD `4963535`·archive 검증 동일). BNK-610 1건 과소 집계 — 기능 갭 0.
+
+## 3. BNK-610 closure HEAD 잔존 무결성 grep 재확인 (zero-advance)
+
+### 3-1 G-NHIS-ALT-KEY-AUDIT-BADGE (15 hit)
+- FE: `NhisAltKeyMatchedBadge.jsx`+test · `NhisReconciliationTable`+test · `VisitNhisComparisonDetail`+test · `nhisAltKeyMatch.js`
+- BE: 7-DTO `altKeyMatched` · `NhisClientResolver` · `NhisImportService` · `VisitService` · 5 test files
+
+### 3-2 BNK-603 3종 closure carry
+1. FE `CmsCollectionPanel.jsx` 존재 → id=7-4 cov=1.0
+2. FE `TransportServiceFeePanel.jsx` `fetchTransportServiceFeeParityRulesApi` + `<h3>NHIS #44 산정 기준</h3>` wire 존재
+3. BE `BathingScheduleIndicator27Catalog` + `GET /care/bathing-schedules/indicator-27-compliance` 존재 (BE-only)
+
+### 3-3 bathing US-O01 FE wire P2 carry
+- `git grep 'indicator-27-compliance|bathing-schedules/indicator' src/frontend/src` → **0 hit**
+- `functionalRecoveryCompliance.js` indicator27 = G17 기능회복 (15 hit) — 별개 도메인
+
+## 4. 4축+leave-ledger P0/P1 재오픈 0 (62-cycle carry)
+
+App.jsx `@5bb84a6` 7/7 path LIVE:
+- G14 `/dashboard`
+- G26×2 `/transport` + `/transport/service-fees` (NHIS #44 parity)
+- v1.3-C `/compliance/workflow-catalog` + `/compliance/monitoring`
+- v2 CMS `/billing/cms`
+- US-R01-c×2 `/staff/leave-ledger` (+ annual-leaves adjacent)
+
+## 5. M11·M12 P2 갭 — 단일 최대 KPI bump 레버
+
+| 모듈 id | label | cov | ogada route grep |
+|---|---|---|---|
+| 11 | 직원 급여 | 0 | `/payroll/*` **0 hit** |
+| 12 | 수입지출·회계 | 0 | `/accounting/*` **0 hit** |
+
+id=11·12 closure 시 23.45→30.45/29 = **87.76%** (+6.9pp) — 케어포 11-1~11-6 + 이지케어 wAllowance 양쪽 완비 vs ogada 전무.
+
+## 6. 모듈 29-entry 재유도 (competitorModuleCoverage.js @5bb84a6)
+
+합 23.45/29 = **80.86%**
+❌ 갭 5: id=1-5(가정통신문)·1-10(연계기록지)·6(위생안전)·11(직원급여)·12(회계)
+△ partial: id=2(0.85 이동)·8(0.85 직원근태)·10(0.75 부가서비스)
+
+## 7. 외부 재실측 (교차검증)
+
+| URL | HTTP | SIZE | md5 | vs on-disk |
+|---|---|---|---|---|
+| NHIS #44 | 200 | 7,572B | `c886ff1f` | IDENTICAL (376차) |
+| ezCare fnc | 200 | 17,870B | `d9ad49cb` | DRIFT cachebuster·도입 **9,353** verbatim 불변 |
+| carefor func.php Wayback 20260519072235 | 200 | 104,182B raw | `02ad3834` | wrapper variance·canonical `6226e6eb` 11-module semantic IDENTICAL (372차) |
+| carefor LIVE func.php | timeout | — | — | 「미확인」 33-cycle carry |
+
+## 8. 재현 명령
+
+```bash
+git -C src/frontend rev-parse develop
+git -C src/backend rev-parse develop
+rg -c '<Route\b' src/frontend/src/App.jsx
+find src/frontend/src -name '*Page.jsx' | wc -l
+rg -c '@Test' src/backend/src/test | awk -F: '{s+=$2} END {print s}'
+git -C src/frontend ls-tree -r develop --name-only | rg -c '\.test\.jsx$'
+rg 'path="/(payroll|accounting)' src/frontend/src/App.jsx
+```
+
+## 9. planner 시사점
+
+- 파이프라인 idle (HEAD zero advance) — tester FF merge **790** 가속 권장
+- 다음 KPI bump 최우선: **M11 직원급여 P2** (외부 HR SaaS vs 자체 구현 결정 보류)
+- candidate P3 carry 7 + M11 P2: G-FINANCE-BPO-PARTNERSHIP·G-MARKET-SHARE-DASHBOARD·G-PER-VISIT-ALLOWANCE-EDITOR·G-STAFF-APP-ACCESS-LIFECYCLE·G-MONITORING-SAMPLING-RULE·G-NEW-AGENCY-SELFDIAG-GRACE + 5 prior P3

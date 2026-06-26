@@ -1,0 +1,81 @@
+# ogada git 실측 재측정 + G-REPORT-DENSITY M5 closure 심층 cross-walk (BNK-626)
+# 조사일: 2026-06-25T15:36:00Z (KST 06-26 00:36)
+# 작성: benchmark_researcher [BNK]
+# 로테이션: ogada git 실측 6–8h
+
+## 1. ogada submodule git HEAD 실측 (확인)
+
+| 축 | SHA | 상태 | commit | ahead vs origin/test |
+|---|---|---|---|---|
+| FE develop | `75c0f51` | WT **CLEAN** | `fix(v1.2.1/QA-B95): treat bootstrap-unavailable blockers as recoverable` | **239** vs `ab4de83` |
+| BE develop | `0e55f3b` | WT **CLEAN** | `fix(v2/QA-B95): expose live-e2e bootstrap service availability in probe` | **570** vs `598d108` |
+
+- BNK-625(`@75c0f51`/`@0e55f3b`) 대비 **HEAD zero advance 1-cycle** (양쪽 WT CLEAN·신규 commit 0).
+- 폐기 SHA(`d5654c0`·`e5fd48d`·`428ba7d`·`4be0938`) checkout 금지 — 현재 baseline 위에서만 측정.
+- merge gate = FE 239 + BE 570 = **809** carry.
+
+## 2. KPI 실측 (git ls-tree/grep develop)
+
+| KPI | 값 | 측정 명령 |
+|---|---|---|
+| FE Route | **117** (116 `<Route\b` + 1 `<Routes>`) | `git show develop:src/App.jsx \| grep -oE "<Route\b" \| wc -l` = 116 |
+| FE page | **92** (91 `*Page.jsx` 파일 + RootRedirect inline) | `git ls-tree -r develop \| grep -E "Page\.jsx$" \| grep -v test \| wc -l` = 91 |
+| FE test | **477** (195 `.test.js` + 282 `.test.jsx`) | `git ls-tree -r develop` 카운트 |
+| BE 마이그레이션 | **V1–V178** (178 `V*__*.sql`) | `git ls-tree -r develop \| grep -cE "V[0-9]+__.*\.sql$"` |
+| BE Test 파일 | **271** (270 `Test.java` + 1 `Tests.java`) | `git ls-tree -r develop \| grep -cE "(Test\|Tests)\.java$"` |
+| BE @Test | **1953** | `git grep -h "@Test" develop -- "*.java" \| wc -l` |
+| 모듈 커버 | **80.86%** (23.45/29) | `competitorModuleCoverage.js` 실측 합 |
+| reports Route | **28** | `git show develop:src/App.jsx \| grep -oE 'path="[^"]*report[^"]*"' \| wc -l` |
+
+→ BNK-625 KPI(117 Route·92 page·BE Test 271·@Test 1953·FE test 477·merge gate 809·모듈 80.86%) **전부 IDENTICAL** (HEAD zero advance 정합).
+
+## 3. competitorModuleCoverage.js 29-feature 실측 합 (확인)
+
+✅완전(coverage=1) **21**: 1-1·1-3·1-7·1-9·3-1·4·5·26·43·7-1·7-2·7-2-1·7-3·7-4·7-6·7-10·9·nhis·qr·hq·platform
+△부분 **3**: 2 이동서비스 **0.85**·8 직원·근태 **0.85**·10 부가서비스(SMS·알림) **0.75**
+❌갭(coverage=0) **5**: 1-5 가정통신문·1-10 연계기록지·6 위생·안전·11 직원급여·12 회계
+
+합 = 21 + (0.85+0.85+0.75) + 0 = 21 + 2.45 = **23.45/29 = 80.86%**
+- id=7-4 CMS·간편결제 **1.0** (BNK-601 0.65→BNK-619 1.0 closure carry)
+- M11·M12(11·12) 동시 closure 시 → 26.45/29 = **91.21%**? (정정: 23.45+2 = 25.45/29 = 87.76%·+6.9pp) carry
+
+## 4. ★★★ G-REPORT-DENSITY M5 program report — demo-work 34 vs ogada 28 gap closure 심층 cross-walk (확인)
+
+BNK-620(케어포 역공학) 「demo-work `class="rpt"` **34** vs ogada `*reports*` Route **23**(gap 11)」 발굴
+→ BNK-623(교차검증) 코더 in-cycle FE `15a3b7f`+BE `650801b` closure(23→28·gap 6)
+→ **BNK-626 git 실측 재확인**: reports Route **28** 확정·BE 4-endpoint full-stack 검증.
+
+### demo M5 프로그램 5-rpt ↔ ogada `/programs/reports/*` cross-walk
+
+| demo-work M5 rpt (5) | ogada Route | ogada BE endpoint | 상태 |
+|---|---|---|---|
+| 5-7~5-10 프로그램 참여/제공 통계 | `/programs/reports/participations` | `GET /api/v1/programs/reports/participations` | ✅ |
+| 프로그램 일정표 | `/programs/reports/schedules` | `GET /api/v1/programs/reports/schedules` | ✅ |
+| 프로그램 제공기록지 | `/programs/reports/provision-records` | `GET /api/v1/programs/reports/provision-records` | ✅ |
+| 집단활동 이력 | `/programs/reports/group-history` | `GET /api/v1/programs/reports/group-history` | ✅ (BNK-623 shell→fill 후보) |
+| (리포트 허브) | `/programs/reports` (ProgramReportsPage index) | — | ✅ |
+
+- BE: `ProgramReportController`(`@RequestMapping("/api/v1/programs/reports")` 4 `@GetMapping`)·`ProgramReportService`·test 2-file **@Test 11**(routing 5 + service 6).
+- **BNK 벤치마크 → 코더 closure traceability**: BNK-623 commit msg verbatim 「to close the BNK-620 M5 report density backend gap」.
+
+### ogada 28 reports Route 전수 (모듈별)
+- billing 5: charges·deposits·receipts·refunds·statistics
+- care 9: meal-excretion·bath-help·intensive-excretion·position-change·patient-service·service-summary·nursing-service·hospital-visits·medication-delivery
+- nursing 4: service/reports·total·hospital-visits·medication-delivery
+- pressure-ulcer 2: reports·provision
+- **programs 5: reports·participations·provision-records·group-history·schedules (M5 신규)**
+- 기타 3: client-outings·transport-monthly·staff/reports/status
+
+→ ogada 28 = demo 34의 **82.4%**. 잔여 리포트 갭(coverage 0): M1 1-12 연계기록지·M11 11-6 급여대장.
+→ ogada 요양(care 9)·간호(nursing 4 + pressure-ulcer 2) 리포트 **밀도 우위** carry.
+
+## 5. 백본 URL 재실측 (확인)
+
+- [NHIS #44 이동서비스비](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) — live HTTP **200**·**7,572B**·md5 `c886ff1f` = **387차 zero drift IDENTICAL**(러-1~4·편도50%·1일1회·별지 제22호) ↔ ogada G16 `TransportServiceFeeService`+UXD-159/163 full-stack ✅ parity/우위.
+
+## 6. planner 제안 (요약)
+1. baseline FE `@75c0f51`·BE `@0e55f3b` carry(HEAD zero advance)·merge gate **809**·tester FF merge 809 가속 권장.
+2. **G-REPORT-DENSITY M5 closure** ROADMAP candidate 제거 가능(28 Route full-stack 검증)·reports route KPI 28 정본화.
+3. 잔여 리포트 갭 우선순위: P1 **M1 1-12 연계기록지**(+0.034pp·id=1-10 0) > P2 **M11 11-6 급여대장**(id=11 closure 시 +3.4pp).
+4. `group-history` BE shell → P3 `G-REPORT-DENSITY-GROUP-HISTORY-FILL`(BNK-623 carry) — 집단활동 실데이터 집계 보강.
+5. M11·M12 동시 closure = 최대 KPI 레버(80.86%→87.76%·+6.9pp) v1.3+ 우선순위 격상 권장 carry.

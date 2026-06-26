@@ -1,0 +1,105 @@
+ogada_git_remeasure_bnk616.txt — BNK-616 교차검증·갭 우선순위 8h+ rotation (2026-06-25T08:56Z)
+================================================================================
+[BNK] benchmark_researcher · BNK-616 cycle · doc:owner=BNK doc:audience=PLN
+
+요약
+====
+- ★★★ **cross-stream FE+1·BE+1** — FE `3d7f13b` bathing indicator-27 FE wire FULL LANDED
+  (P2 carry closure) · BE `2adae591` 7-9 환불 수수료 policy catalog BE LANDED
+  (G-REFUND-FEE-DEDUCTION catalog layer · FE wire 0 hit P3 carry)
+- ★★★ **carefor 7-9 KCP 환불 수수료 verbatim ↔ ogada `CopayRefundFeePolicyCatalog` FULL crosswalk**
+- ★★★ **NHIS #44 381차 zero drift IDENTICAL** — `c886ff1f`(7,572B live=disk)
+- ★★ **silverangel 2-URL zero drift IDENTICAL** carry
+- ★★ **carefor Wayback 375차 semantic IDENTICAL** — raw wrapper `84ffd89e` vs BNK-613 `246cce32`
+- ★ **ezCare home mCnt unchanged** — `{1:9285,2:4603,3:2353,4:1820}` cachebuster DRIFT only
+- ★ **FAQ 21844 zero drift** — `d0aa760c`(14,474B) 엑셀 마스킹 자인 carry · 신규 공지 0
+
+ogada git 실측 (BNK-615 → BNK-616 delta)
+========================================
+| 지표 | BNK-615 | BNK-616 | 변동 |
+|---|---|---|---|
+| FE develop HEAD | `58f3858` | **`3d7f13b`** `feat(v1.2.1/US-O01): wire bathing indicator-27 compliance panel and pre/post observation fields` | **+1** |
+| BE develop HEAD | `5a5174a` | **`2adae591`** `feat(v2/7-9): add copay refund fee policy catalog API for carefor KCP parity` | **+1** |
+| FE WT | CLEAN | CLEAN | carry |
+| BE WT | CLEAN | CLEAN | carry |
+| FE ahead vs `origin/test=ab4de83` | 232 | **233** | +1 |
+| BE ahead vs `origin/test=598d108` | 564 | **565** | +1 |
+| merge gate | 796 | **798** | +2 |
+| Route (`<Route\b`) | 111 | 111 | carry (+1 `<Routes>` = 112 total) |
+| page (`*Page.jsx`+RootRedirect) | 91 | 91 | carry |
+| Flyway max | V178 | V178 | carry |
+| BE Test class | 267 | **268** | +1 (`CopayRefundFeePolicyCatalogTest`) |
+| BE @Test (`rg -c '@Test' src/test`) | 1925 | **1936** | +11 |
+| FE `.test.js` / `.test.jsx` | 193 / 277 | 193 / **278** | jsx +1 |
+| FE test 총합 | 470 | **471** | +1 |
+| 모듈 커버리지 | 80.86% (23.45/29) | 80.86% (23.45/29) | carry (KPI id 미변동) |
+
+§1. FE `3d7f13b` bathing indicator-27 FE wire FULL LANDED (★★★ 확인)
+=====================================================================
+Commit: 10-file +457/-20L
+
+(A) `BathingScheduleIndicator27Panel.jsx` (173L NEW)
+- `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=&clientId=`
+- silverangel essential 「목욕 평가지표 필수항목 아님·제공시 청구」 ↔ ogada US-O01 월간 준수 현황 패널
+- MET/PARTIAL StatusBadge · EmptyState · Table
+
+(B) `BathingScheduleForm.jsx` — pre/post observation fields wire
+- `preObservationNotes` / `postObservationNotes` 필드 연동 (V177 DB 무결성 FE 반영)
+
+(C) Tests — `BathingScheduleIndicator27Panel.test.jsx` (79L) + `BathingSchedulePage.test.jsx` +12L
+
+→ **BNK-603~615 P2 carry 「bathing indicator-27 FE wire 0 hit」 CLOSURE**
+→ false-closure 방지 carry 해소 · G17 `functionalRecoveryCompliance.js` indicator27 = 별개 도메인 유지
+
+§2. BE `2adae591` 7-9 환불 수수료 policy catalog BE LANDED (★★★ 확인)
+========================================================================
+Commit: 10-file +445L
+
+Endpoints:
+- `GET /api/v1/billing/copay/refund-fee-policy-catalog`
+- `POST /api/v1/billing/copay/refund-fee-preview` (policyCode + grossAmount → feeAmount + netAmount)
+
+`CopayRefundFeePolicyCatalog.CAREFOR_PARITY_ENTRIES` 3-policy:
+1. CARD_VOID_SAME_MONTH — 수수료 없음 (매입/승인 취소)
+2. CARD_PARTIAL_OR_EXPIRED — **3.3%** 수수료 (카드 부분/기간경과)
+3. BANK_OR_CMS_TRANSFER — **500원** flat (계좌/CMS)
+
+DISCLAIMER_KO verbatim: 「한국사이버페이먼트(KCP) 결제대행 — 카드사/은행사 수수료 제외 net 환불」
+
+Tests: `CopayRefundFeePolicyCatalogTest` 92L · `MustApiEndpointRoutingTest` +56L · `RoleBasedControllerAccessTest` +51L
+
+FE grep `refund-fee` / `RefundFee` → **0 hit** → 신규 P3 carry `G-REFUND-FEE-FE-WIRE`
+(RefundRecordModal 에 catalog fetch + preview netAmount 표시 · 7-5 FE wire 와 v3+ PG 묶음)
+
+§3. carefor 7-9 verbatim crosswalk (★★★ 확인)
+==============================================
+Wayback `20260519072235` HTTP 200 · 104,183B · md5 `84ffd89e` (375차 wrapper variance)
+
+carefor func.php 7-9 「제17조 비용의 환불」:
+- 카드 부분/통장 환불: 「환불금액의 3.3% 수수료」
+- 가상계좌/계좌이체: 「500원의 수수료를 제외」
+- KCP 결제대행 disclaimer verbatim
+
+↔ ogada `CopayRefundFeePolicyCatalog` 3-policy + preview API = **catalog layer FULL PARITY**
+↔ ogada `RefundRecordModal` + `RecordCopayRefundRequest` = 환불 기록 ✅ / auto fee deduction ❌ (FE wire P3)
+
+§4. 외부 URL 재실측 (BNK-616)
+==============================
+| URL | HTTP | SIZE | md5 | drift |
+|---|---|---|---|---|
+| NHIS #44 | 200 | 7,572B | `c886ff1f` | 381차 IDENTICAL |
+| silverangel essentialWork | 200 | 131,664B | `c79c1be3` | IDENTICAL |
+| silverangel extraService | 200 | 81,637B | `f9c5d877` | IDENTICAL |
+| carefor Wayback func.php | 200 | 104,183B | `84ffd89e` | wrapper variance · semantic IDENTICAL |
+| ezCare home mCnt | 200 | 106,084B | `aef37108` | cachebuster · mCnt 불변 |
+| ezCare FAQ 21844 | 200 | 14,474B | `d0aa760c` | IDENTICAL · 엑셀 포맷 변경 0 |
+
+§5. KPI lever 우선순위 (BNK-616 재확정)
+========================================
+1순위: id=11+12 M11·M12 → +6.9pp (87.76%) — `/payroll/*`·`/accounting/*` 0 route carry
+2순위: id=1-5/1-10/6 각 +3.45pp 동률
+P3 carry: G-EASYPAY-PROVIDER-CATALOG-FE-WIRE · **G-REFUND-FEE-FE-WIRE (NEW split)** · 5 P3
+P2 closure: ~~bathing indicator-27 FE wire~~ → **LANDED BNK-616**
+
+4축+leave-ledger P0/P1 재오픈 0 (67-cycle carry, BNK-549~616)
+tester FF merge **798** 가속 권장 (233+565 적체)

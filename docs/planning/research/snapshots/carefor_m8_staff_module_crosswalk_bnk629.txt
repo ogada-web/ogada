@@ -1,0 +1,83 @@
+BNK-629 케어포 역공학 0–2h — Module 8 「직원관리」 13-leaf ↔ ogada /staff/* + case-management 전수 cross-walk
+조사일: 2026-06-25 (KST 익일 ~01:5x) | rotation: 케어포 역공학 0–2h
+
+================================================================================
+1) ogada git HEAD 실측 — cross-stream FE+1·BE+1 (확인)
+================================================================================
+FE develop  : 2c9abd6  `fix(v1.2.1/QA-B95): normalize string-form live operation blockers`
+              WT CLEAN · BNK-628 `@f74a6e7` HEAD +1 · ahead 241 vs origin/test=ab4de83
+BE develop  : 49fe2e7  `feat(v2/G-REPORT-DENSITY): add branch filter to program reports`
+              WT CLEAN · BNK-628 `@337453d` HEAD +1 · ahead 572 vs origin/test=598d108
+merge gate  : 241 + 572 = 813 (+2 cross-stream)
+
+KPI (git 실측, vs BNK-628):
+  FE Route        117 (116 <Route\b + 1 <Routes>)          =
+  FE page          92 (91 *Page.jsx + RootRedirect inline)  =
+  FE test         477 (195 .test.js + 282 .test.jsx)        =
+  BE 마이그레이션  V1–V179 (179 sql)                          =
+  BE Test 파일    271 (270 Test.java + 1 Tests.java)         =
+  BE @Test       1956                                        +2
+  모듈 커버      80.86% (23.45/29)                            =
+  reports route   28                                         =
+
+================================================================================
+2) carefor func.php 재실측 — LIVE 40-cycle 「미확인」 · Wayback 378차 wrapper DRIFT
+================================================================================
+LIVE    : https://www.carefor.co.kr/daycare/func.php  HTTP 000 timeout (BNK-558~629·40-cycle 「미확인」)
+Wayback : https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php
+          HTTP 200 · 104,182B · md5 d80823be (BNK-624 c2049b41 → DRIFT)
+          → Wayback toolbar wrapper cachebuster DRIFT only · 본문 107-leaf semantic IDENTICAL
+          canonical on-disk carefor_func.php 98,328B (md5 6226e6eb) 보존
+검증: 7-1~7-10 본인부담 10-leaf · 8-1~8-13 직원 13-leaf verbatim 일치 (canonical = wayback)
+
+================================================================================
+3) ★★★ Module 8 「직원관리」 13-leaf ↔ ogada cross-walk (신규 블록)
+================================================================================
+케어포 func.php Module 8 (13 leaf)            | ogada Route / surface                       | 판정
+--------------------------------------------- | ------------------------------------------- | ----
+8-1  직원 정보관리                            | /staff · /staff/:id (Staff/StaffDetailPage) | ✅
+8-2  근무일정표                               | BE StaffMonthlyScheduleNotificationService  | △ (FE 전용 page ❌·dispatch only·msg_kind 21)
+8-3  연간 일정계획                            | (직원 연간 근무계획 grid)                   | ❌ 0 hit
+8-4  출퇴근 및 근무관리                       | /staff/attendance (StaffWorkAttendancePage) | ✅
+8-5  사례관리 회의록                          | /case-management/meetings (CaseManagement)  | ✅ cross-module
+8-6  회의록(운영위원회·보호자·복지및포상)     | (위원회/보호자 회의록)                      | ❌ 0 hit
+8-7  교육일지(노인인권·재난·소방…)            | /staff/training-logs (StaffTrainingLogPage) | ✅
+8-8  자원봉사자 활동일지(필요시)              | (volunteer 활동일지)                        | ❌ 0 hit
+8-9  고충처리 관리                            | /staff/grievance-counselings                | ✅
+8-10 건강검진관리                             | /staff/health-checkups                      | ✅
+8-11 질향상노력(삭제예정)                     | N/A — carefor 자체 폐기예정                  | N/A
+8-12 직원 현황 리포트                         | /staff/reports/status (StaffStatusReport)   | ✅
+8-13 연차·유급휴일 대장                       | /staff/leave-ledger + /staff/annual-leaves  | ✅ (BNK-516→625 closure)
+
+집계 (8-11 deprecated 제외 = 12 in-scope):
+  ✅ direct 7 (8-1·8-4·8-7·8-9·8-10·8-12·8-13)
+  ✅ cross-module 1 (8-5 사례관리 회의록 → CaseManagement)
+  △ partial 1 (8-2 근무일정표 BE-only dispatch)
+  ❌ gap 3 (8-3 연간일정계획·8-6 위원회/보호자 회의록·8-8 자원봉사자 활동일지)
+  = 8✅ + 1△ + 3❌ → module 8 coverage 0.85 정합 재확인
+
+ogada superset (carefor Module 8 미노출):
+  /staff/training        요양보호사 보수교육 (StaffRefresherTrainingPage)
+  /staff/lead-caregiver-log  선임요양보호사 업무일지
+
+================================================================================
+4) 갭 평가 — 신규 P3 candidate 후보 (MVP out-of-scope 판정)
+================================================================================
+- 8-6 위원회/보호자 회의록·8-8 자원봉사자 활동일지·8-3 직원 연간일정계획 = 시설 행정 서식군
+  · 주야간 MVP out-of-scope 성격 (재무/HR/시설인증 클러스터와 동일)
+  · candidate `G-STAFF-COMMITTEE-MEETING-LOG`·`G-VOLUNTEER-ACTIVITY-LOG` P3「가정」 (planner 결정 보류)
+- 8-2 근무일정표 FE wire: BE StaffMonthlyScheduleNotificationService 존재(msg_kind 21 일정표-직원 dispatch)
+  · 전용 일정표 grid page wire 시 module 8 0.85→0.9 후보 (KPI 영향 < +0.5pp)
+- 결론: module 8 0.85 유지 정당 · 잔여 갭 전부 facility-admin 서식 · core 갭 0
+
+================================================================================
+5) per-cycle minimum 충족
+================================================================================
+- 신규 증거 URL 재실측 + 변동: Wayback func.php 378차 wrapper DRIFT (md5 c2049b41→d80823be)
+- 메뉴/필드/워크플로 1블록: Module 8 13-leaf ↔ ogada cross-walk (신규)
+- COMPETITOR_MATRIX 1행+ @2c9abd6/@49fe2e7 갱신
+- BENCHMARK_REPORT §629 신규 소절
+가정 번복 0 · 신규 core 갭 0 · candidate +2 P3「가정」(committee-meeting·volunteer-log·둘 다 MVP out-of-scope)
+상태 변경 2 (FE+1·BE+1 cross-stream·양쪽 WT CLEAN) · KPI 변경 2 (merge gate 813·BE @Test 1956)
+미확인 carry 3 (carefor LIVE 40-cycle·longterm 502·610) · 신규 snapshot 1건 · 덮어쓰기 0건
+tester FF merge 813 가속 권장

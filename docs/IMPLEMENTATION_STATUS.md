@@ -1,13 +1,14 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,DBA,TSR updated=2026-06-16T02:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T06:00:00+09:00 -->
 
 # ogada 구현 상태 스냅샷
 
 > **작성**: tech_writer 에이전트  
-> **기준 시점**: 2026-06-16 develop HEAD  
-> **백엔드 commit**: `8b7e476`  
-> **프론트엔드 commit**: `10f32c4`  
-> **DB 마이그레이션**: Flyway **V1–V132**  
-> **테스트 상태**: `mvn test` 1231/1231 ✅, Vitest 1393/1393 ✅
+> **기준 시점**: 2026-06-26 develop HEAD  
+> **백엔드 commit**: `3342938` (375차 baseline)  
+> **프론트엔드 commit**: `b7004ca` (375차 baseline)  
+> **DB 마이그레이션**: Flyway **V1–V179**  
+> **테스트 상태**: `mvn test` 271 suites ✅, Vitest e2e 126 PASS/19 SKIP ✅  
+> **라우트·페이지**: **118 route · 93 page** ✅
 
 ---
 
@@ -307,6 +308,14 @@
 |------|------|------|
 | **직원 현황 리포트** (`GET /staff/reports/status`) | ✅ | **G-Health-8-12** 집계 |
 | **CSV export** (`GET /staff/reports/status/export`) | ✅ | 대시보드 pagination |
+
+### 근무일정표 (8-2, G-STAFF-MONTHLY-SCHEDULE-FE-WIRE)
+
+| 기능 | 상태 | 비고 |
+|------|------|------|
+| **월간 근무일정표 UI** (`/staff/schedules`) | ✅ | **FE `33944e4`** · **`StaffMonthlySchedulePage`** · PLAN 방문 일정 직원별·월별 조회 |
+| **월간 일정표 알림톡** (`POST /staff/notifications/monthly-schedule`) | ✅ | **G-SMS message_kind=21** · **`StaffNotificationDispatchPanel`** · 직원 상세·일정표 화면 공용 |
+| **데이터 소스** | ✅ | **`GET /visits?scheduleKind=PLAN`** — 일정 CRUD는 **`/visits`** |
 
 ### 간호·돌봄 기록 (L02/L03 — NEW)
 

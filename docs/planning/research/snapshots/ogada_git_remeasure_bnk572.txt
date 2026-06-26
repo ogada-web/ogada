@@ -1,0 +1,66 @@
+BNK-572 ogada git 실측 6–8h — 역공학 evidence extract
+조사일: 2026-06-24 (UTC ~04:55) · owner=BNK · audience=PLN
+========================================================================
+
+[1] ogada git 실측 (@HEAD develop) — BNK-571 대비 HEAD zero advance carry
+------------------------------------------------------------------------
+FE develop = a43bcb7  feat(v1.2.1/FAQ21823): add retention expiry alerts and contract template print
+  · WT CLEAN · ahead 205 vs origin/test=ab4de83 · BNK-571 동일 (HEAD zero advance 1-cycle)
+  · 112 Route (111 `<Route\b` + 1 `<Routes>` wrapper, App.jsx 정본 grep)
+  · 90 *Page.jsx (+RootRedirect = 91 page)
+  · FE test 465 (192 .test.js + 273 .test.jsx · git ls-tree -r develop)
+  · 모듈 78.79% (22.85/29 · competitorModuleCoverage.js 정본 — 헤더 주석 1행 제외 후 합산 검증)
+
+BE develop = d11263b  feat(v2/live-e2e): add explicit operation reason in health and probe
+  · WT CLEAN · ahead 541 vs origin/test=598d108 · BNK-571 동일 (HEAD zero advance 1-cycle)
+  · BE Test 252 files (*Test.java · git ls-tree -r develop)
+  · @Test 1,847 (git grep '@Test' src/test 합산 · BNK-570/569 1,847 stable)
+  · Flyway 마이그레이션 V1–V175 (최신 V173/V174/V175)
+
+merge gate = FE 205 + BE 541 = 746 (BNK-571 동일 carry · tester FF merge 746 가속 권장)
+양쪽 develop WT CLEAN · cross-stream 양쪽 push 반영 상태 carry.
+
+[2] 모듈 커버리지 정본 재산정 (competitorModuleCoverage.js @a43bcb7)
+------------------------------------------------------------------------
+파일: src/config/competitorModuleCoverage.js
+coverage 합 = 22.85 / 29 feature = 78.79% (정본 불변 · BNK-480부터 carry)
+  · raw grep 'coverage: N' = 30행/23.85 → 헤더 주석 `* coverage: 1 = ✅...` 1행/1.0 제외 = 29행/22.85
+△부분 4건: id=2 이동서비스(0.85)·7-4 CMS(0.65)·8 직원근태(0.85)·10 부가서비스(0.5)
+❌갭 5건: 1-5 가정통신문·1-10 연계기록지·6·11·12 (전부 MVP out-of-scope)
+✅완전 20건.
+
+[3] 백본 live 재실측 (2026-06-24 ~04:50 UTC)
+------------------------------------------------------------------------
+NHIS #44 이동서비스비: HTTP 200 · md5 c886ff1f · 7,572B → 349차 zero drift IDENTICAL
+  URL https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  ↔ ogada BE TransportServiceFeeService (RU_1~RU_4·ONE_WAY_RATIO=0.5·1일1회 dedup·V148/V154/V155)
+     + FE transportServiceFee.js 4 parity-copy 상수 + TransportServiceFeePanel(UXD-159 a11y) = full-stack ✅ parity/우위
+
+silverangel daycareEssentialWork.do: HTTP 200 · md5 c79c1be3 · 131,664B → zero drift IDENTICAL
+  URL https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+  (이동서비스 #41-42·차량운행표·평가#27 목욕 월5회 carry)
+
+ezcare home: HTTP 200 · md5 10a50fd7→507198dc · 106,120B (SIZE 동일)
+  URL https://ezcare.easyms.co.kr/
+  mCnt = {1:9279, 2:4598, 3:2353(억), 4:1820(억)} verbatim 불변 (BNK-570 동일)
+  → 회전 배너/캐시버스터 cosmetic DRIFT only · 덮어쓰기
+
+ezcare fnc: HTTP 200 · md5 d2e0fab1→282d3a20 · 17,870B (SIZE 동일)
+  URL https://ezcare.easyms.co.kr/new/ezCare_fnc.html
+  도입 9,351개 verbatim 불변 (BNK-570 동일) → cachebuster DRIFT only · 덮어쓰기
+
+carefor func.php: HTTP 000 (연결 실패/timeout) — LIVE 미확인 carry (10-cycle)
+  URL https://www.carefor.co.kr/daycare/func.php
+  on-disk 스냅샷 carefor_func_live_bnk561_check.html `6226e6eb` 98,328B carry (정적 109항목 정본)
+
+[4] planner 반영 제안 (BNK-572)
+------------------------------------------------------------------------
+· merge gate 746(746 carry) — FE/BE develop 양쪽 WT CLEAN·HEAD zero advance 2-cycle
+  → develop 산출물 안정 상태, tester FF merge 746 가속 적기 (신규 코드 변동 0, 회귀 위험 낮음).
+· 모듈 78.79%(22.85/29) 6-cycle+ 정본 안정 — △부분 4건(이동 0.85·CMS 0.65·직원근태 0.85·부가 0.5)이
+  78.79%→85%+ 상향 여지. 우선순위: 부가서비스(0.5) deepen이 단위 상승폭 최대.
+· carefor func.php LIVE 10-cycle 미확인 — 백본-set에서 LIVE 의존 제거, on-disk 정본만 carry 권장.
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 상태 변경 0 (HEAD zero advance 2-cycle)
+신규 snapshot 1건(본 extract) · 덮어쓰기 2건(ezcare home/fnc) · 엑셀 포맷 변경 0
+미확인 carry 1(carefor LIVE 10-cycle) · per-cycle minimum 4종 충족
