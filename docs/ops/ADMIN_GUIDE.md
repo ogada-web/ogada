@@ -1,13 +1,13 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T23:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T17:00:00+09:00 -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-26 (378차 TWR 자동 동기화 — **Q722 Q719 Q720 Q721 Q717 baseline `d06e3f1`/`4bbd54a`** · **Flyway V1–V180**)  
+> **최종 갱신**: 2026-06-26 (386차 TWR 동기화 — **Q734 bulk export id normalize · Q726·Q733 deepen · V183 care-plan-form index · baseline `9664f29`/`d759ade`** · **Flyway V1–V183**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
-> **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL + **Flyway V1–V180**
+> **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL + **Flyway V1–V183**
 
 ---
 
@@ -50,9 +50,16 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-06-26 develop HEAD `42a369e` / frontend `7e7c296`, 376차 baseline)
+### 1-4. 구현 상태 안내 (2026-06-26 develop HEAD `9664f29` / frontend `d759ade`, 386차 baseline)
 
-> **이관·QA (TSR carry)**: BE develop **@ `d06e3f1`** · **QA-B95 recovered-auth hint ✅** (Q722) · **G21 seed service-unavailable detail ✅** (Q719) · **V180 program group integrity ✅** (Q721) · **G-REPORT-DENSITY M5 program reports ✅+** · **QA-B95 allow-recovered-auth ✅** (Q713) · FE develop **@ `4bbd54a`** · **QA-B95 recovered-auth hint wire ✅** (Q722) · **QA-B95 neutral blocker filter ✅** (Q720) · **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE ✅+a11y** (Q717·UXD-165) · **QA-B95 singular blocker merge ✅** (Q718) · merge gate **818** · **cross-stream SYNCED**.
+> **이관·QA (TSR pending)**: BE develop **@ `547c85f`** (V183 care-plan-form index WIP) · FE develop **@ `d759ade`** · merge gate **843+** · **cross-stream BLOCK(BE +1 pending · FE pending 0)**.
+> 
+> **기능 클로저**: 
+> - **G-CLIENT-CONTRACT-BULK-PRINT** ✅+: `/clients/care-plan-forms/bulk-export` API + FE `ClientCarePlanBulkExportPanel` + **branchId trim · clientIds dedupe** (Q734, `d759ade`/`547c85f`)
+> - **G-NHIS-SCHEDULE-IMPORT** ✅+: **`GET /visits/imports/nhis/guidance`** PLAN/BILLING dual + FE `VisitNhisImportGuidePanel` (Q731, `4567030`/`8ceb25c`)
+> - **G-STAFF-COMMITTEE-MEETING-LOG** ✅+: V181/V182 + `/staff/committee-meetings` CRUD·확정·export + FE full-stack (Q723-Q725, `68b08b0`/`0342076`)
+> - **G-REPORT-DENSITY** ✅+: 프로그램 리포트 5-7~5-10 + optional `branchId` query + V179 그룹 이력 집계 (Q714-Q715, `650801b`/`15a3b7f`)
+> - **QA-B95** ✅+: g21 seed status code expose + FE parse + 17계층 health/probe 정합 (Q729-Q733, `59e4e7f`/`d759ade`)
 
 #### [TWR] HR 직원 관리 화면 역할 분리·양방향 nav (Q648·Q650·Q651·Q652·Q653·Q656·Q657·Q659·Q663·Q665·Q666·Q667·Q668·Q674)
 
@@ -321,9 +328,9 @@ readiness Q644(placeholder·누락 key)와 별도로 **런타임 발송** 단계
 4q3d. **J03 Solapi placeholder credential readiness guard (Q644, BE `19ffa84`)**: **`NotificationChannelReadinessService.isLiveConfigured()`** — **`stub`·`default`·`placeholder`·`change-me`·`changeme`·`replace-me`** marker 포함 Solapi key/template → **live-alimtalk ready 거부** · **`NotificationConfig.validateSolapiConfiguration()`** bootstrap 동일 guard · **`NotificationChannelReadinessServiceTest.placeholderSolapiCredentialsShouldRemainNotReady`**
 6. **G15 이동서비스 수칙·계약·일지 hub**: `/transport/compliance` — **`TransportServiceLogLegalGuide`** 별지 제22호 안내 (Q446, `0df6902`) · **`TransportServiceLogRunsPanel`** 확정 배차→일지 링크 (Q426, `b93e098`)
 7. **G15 별지 제22호 일지**: 확정 루트 **`GET/PUT /transport/runs/{runId}/service-log`** — **응답 `direction`(`PICKUP`/`DROPOFF`)** (Q471) · **입력 폼 StatusBadge「시간 준수」** (Q476, `f8321c7`) · **정차별 법정 필드 필수**(Q439·Q443) · **운전자 서명** (Q445·Q450) · **duplicate client 거부**(Q440) · **`GET …/service-log/audit-trail`**
-8. **G21 visit batch-confirm·RFID**: **`GET /visits/confirm-readiness`** — **PLAN/BILLING split + per-kind ready·blockers** (Q474·Q477) · **`nhisComparisonSummary`** — **`yearMonth`·`overallMatch`·동일 월 NHIS 집계 + 정보성 blockers** (Q481·Q483, `8a8c5b3`/`4046046`) · **`GET /visits/nhis-comparison`** — **`VisitNhisComparisonPanel`** 사전 비교·**split-view dual PLAN+BILLING panels** (Q486·Q526, `797c529`/`9b80505`) · **수급자별 drill-down** (Q487, `ad18606`) · **Modal StatCard FE wire** (Q484, `68a4e35`) · **Modal NHIS ack Checkbox `aria-describedby`** (Q506, UXD-147 `0002943`) · **활성 지점 없을 때 Modal loading clear** (Q508, `5743333`) · **`POST /visits/imports/rfid/compare`** (Q452)
+8. **G21 visit batch-confirm·RFID·NHIS import guidance**: **`GET /visits/imports/nhis/guidance`** — PLAN/BILLING dual-workflow static copy (Q731, `4567030`) · **`VisitNhisImportGuidePanel`** on **`VisitNhisImportPanel`** (FE `8ceb25c`) · **`GET /visits/confirm-readiness`** — **PLAN/BILLING split + per-kind ready·blockers** (Q474·Q477) · **`nhisComparisonSummary`** — **`yearMonth`·`overallMatch`·동일 월 NHIS 집계 + 정보성 blockers** (Q481·Q483, `8a8c5b3`/`4046046`) · **`GET /visits/nhis-comparison`** — **`VisitNhisComparisonPanel`** 사전 비교·**split-view dual PLAN+BILLING panels** (Q486·Q526, `797c529`/`9b80505`) · **수급자별 drill-down** (Q487, `ad18606`) · **Modal StatCard FE wire** (Q484, `68a4e35`) · **Modal NHIS ack Checkbox `aria-describedby`** (Q506, UXD-147 `0002943`) · **활성 지점 없을 때 Modal loading clear** (Q508, `5743333`) · **`POST /visits/imports/rfid/compare`** (Q452)
 9. **배차·경유지·명단**: `/transport` — **V155 waypoint non-empty** (Q458) · **배차 명단 계획 픽업/하차** (Q433) · **v1.3-A roster tools+ETA guardrails** (Q550, `4681b5a`/`48eea95`) — **이전 배차 불러오기** · **명단에서 추가** · **확정 전 희망 시각 경고** · **PATCH plannedDepartureTime** · **v1.3-A preview cache+roster ETA merge** (Q553, `acc5933`) — **`transportRunPreviewCache.js`** · **`kakaoMapGeocoder` geocode cache** · **suggest「반영도착」→명단** · **v1.3-A Kakao API status+usage probe** (Q554, `e2b764b`/`ba74bb5`) — **`GET /transport/kakao-api-status`** · **`TransportKakaoApiStatusPanel`** · suggest **`legDurationsSeconds`·`routePath`** embed · **`hasRouteLegDurations`** guard
-10. **live E2E harness (QA-B95)**: **`ogada.live-e2e.enforce-bootstrap-readiness`** (기본 **`true`**, Q713, `9f67954`) — **`false`** 시 bootstrap disabled·service-unavailable **blocker 미적용** · health **`liveE2eBootstrapReadinessEnforced`** · **`ogada.live-e2e.allow-recovered-auth`** (기본 **`true`**, Q713 deepen, `3342938`) — bootstrap disabled + bean wired 시 **full operation gate** · health **`liveE2eAllowRecoveredAuth`** · **recovered-auth hint** — **`liveE2eBootstrapEnableHint=Bootstrap is disabled; recovered-auth readiness mode is active.`** (`d06e3f1`, Q722) · FE **`isLiveRecoveredAuthAllowed()`·hint neutral filter** (`4bbd54a`, Q722) · probe **`bootstrapServiceAvailable`** — runtime bean wiring vs **`bootstrapEnabled`** config 분리 (`0e55f3b`) · **G21 seed detail split** — service-unavailable → **`g21-seed=service-unavailable`** not `disabled` (`42a369e`, Q719) · FE **`liveE2eEffectiveOperationReady`** auth recovery (`e070c45`) · **`bootstrap-unavailable` label recoverable** when auth recovered (`75c0f51`) · **string-form operation blocker normalize** — health·probe state **`liveE2eOperationBlockers`** comma/semicolon/newline split (`2c9abd6`·`bd3253a`, Q716) · **singular operation blocker merge** — **`liveE2eOperationBlocker`** fallback (`b7004ca`, Q718) · **neutral blocker filter** — **`none`/`ok` placeholder 제외** (`7e7c296`, Q720) · bootstrap disabled → **`bootstrap-disabled` 단일 blocker** (Q472) · guardian fallback **`live-e2e-guardian@ogada.test`** (Q473) · **`ogada.live-e2e.allow-default-credentials`** (기본 **`true`**, Q542, `beef81e`) · **`guardian-credentials-missing`/`guardian-credentials-default` 분리** (Q551, `520f10a`) · **bootstrap error → derived blocker suppression** (`0c9518a`·**`20485f1` suffix match**, Q596) · **bootstrap blocker normalize** — **`-error`/`bootstrap-error` 제거·`-not-ready`만** · detail **`bootstrap=error`** 로 root cause (Q631, `24d25f1`) · **G21 seed readiness** blockers (Q495·Q500) · **G21 `serviceType` trim** (`b11e29a`, Q577) · **placeholder credential/token skip** (`fffc2c1`, Q578) · **placeholder access token bootstrap probing** (`82a542c`, Q578 deepen) · **auth blocker recovery when staff/guardian auth ready** (`9105332`·`06c6bb5`·**`33e9e1a` snake_case normalize**, Q580) · **default credential blocker recovery when auth ready** (`6fcd750`/`a170f9c`, Q640 — **`*-credentials-default` + wording variant** in `isStaffAuthBlocker`/`isGuardianAuthBlocker`) · **feature-scoped operation blocker filter** (`cb3fe3d`, Q580 deepen — **`requireG21Ready`/`requireG32Ready`/`requireCashReceiptReady`/`requireStaffNhisImportReady`**) · **`liveCashReceiptDescribe` suite guard** (`cd6891f`, Q597) · **stale access token → credential login fallback** (`b60c622`, Q583) · **unsupported branch `serviceType` → `notApplicable()`** (Q541, `091c372`) · **G32 probe+health schema readiness** (Q525·Q528) · **G-CASH-RECEIPT V159 schema readiness** — **`LiveE2eOperationReadinessSupport`** (Q548, `bfad37d`/`4d4457f`) · **FE nested/snake_case health parse** (Q545, `682d647`) · **legacy G21 seed flags without applicability** (Q549, `16afd4c`) · staging **`./scripts/run-live-e2e.sh`**
+10. **live E2E harness (QA-B95)**: **`ogada.live-e2e.enforce-bootstrap-readiness`** (기본 **`true`**, Q713, `9f67954`) — **`false`** 시 bootstrap disabled·service-unavailable **blocker 미적용** · health **`liveE2eBootstrapReadinessEnforced`** · **`ogada.live-e2e.allow-recovered-auth`** (기본 **`true`**, Q713 deepen, `3342938`) — bootstrap disabled + bean wired 시 **full operation gate** · health **`liveE2eAllowRecoveredAuth`** · **recovered-auth hint** — **`liveE2eBootstrapEnableHint=Bootstrap is disabled; recovered-auth readiness mode is active.`** (`d06e3f1`, Q722) · FE **`isLiveRecoveredAuthAllowed()`·hint neutral filter** (`4bbd54a`, Q722) · probe **`bootstrapServiceAvailable`** — runtime bean wiring vs **`bootstrapEnabled`** config 분리 (`0e55f3b`) · **G21 seed detail split** — service-unavailable → **`g21-seed=service-unavailable`** not `disabled` (`42a369e`, Q719) · **G21 seed status code** — **`liveE2eG21SeedStatusCode`**·probe **`g21SeedStatusCode`** — disabled·service-unavailable·error·not-applicable·branch-missing-or-inactive·applicable (`0f19767`, Q729) · **G21 seed 3축 component status code** — **`liveE2eVisitScheduleStatusCode`·`liveE2eBillingVisitScheduleStatusCode`·`liveE2eNhisImportStatusCode`** · probe alias **`visitScheduleStatusCode`·`billingVisitScheduleStatusCode`·`nhisImportStatusCode`** — present·missing·aggregate와 동일 disabled/service-unavailable/error/not-applicable/branch-missing-or-inactive (`59e4e7f`, Q733) · **FE code-first parse** — **`getLiveG21SeedStatusCode()`·`isLiveG21SeedReady()`·`buildSeedReadinessReasons`** code 우선 (`6009ba7`, Q732) · **G21 blocker suite scoping** — **`isG21Blocker`** wording variant · **`requireG21Ready=false`** general suite filter (`f851a59`, Q730) · FE **`liveE2eEffectiveOperationReady`** auth recovery (`e070c45`) · **`bootstrap-unavailable` label recoverable** when auth recovered (`75c0f51`) · **string-form operation blocker normalize** — health·probe state **`liveE2eOperationBlockers`** comma/semicolon/newline split (`2c9abd6`·`bd3253a`, Q716) · **singular operation blocker merge** — **`liveE2eOperationBlocker`** fallback (`b7004ca`, Q718) · **neutral blocker filter** — **`none`/`ok` placeholder 제외** (`7e7c296`, Q720) · bootstrap disabled → **`bootstrap-disabled` 단일 blocker** (Q472) · guardian fallback **`live-e2e-guardian@ogada.test`** (Q473) · **`ogada.live-e2e.allow-default-credentials`** (기본 **`true`**, Q542, `beef81e`) · **`guardian-credentials-missing`/`guardian-credentials-default` 분리** (Q551, `520f10a`) · **bootstrap error → derived blocker suppression** (`0c9518a`·**`20485f1` suffix match**, Q596) · **bootstrap blocker normalize** — **`-error`/`bootstrap-error` 제거·`-not-ready`만** · detail **`bootstrap=error`** 로 root cause (Q631, `24d25f1`) · **G21 seed readiness** blockers (Q495·Q500) · **G21 `serviceType` trim** (`b11e29a`, Q577) · **placeholder credential/token skip** (`fffc2c1`, Q578) · **placeholder access token bootstrap probing** (`82a542c`, Q578 deepen) · **auth blocker recovery when staff/guardian auth ready** (`9105332`·`06c6bb5`·**`33e9e1a` snake_case normalize**, Q580) · **default credential blocker recovery when auth ready** (`6fcd750`/`a170f9c`, Q640 — **`*-credentials-default` + wording variant** in `isStaffAuthBlocker`/`isGuardianAuthBlocker`) · **feature-scoped operation blocker filter** (`cb3fe3d`·**Q730 g21 wording deepen**, Q580 deepen — **`requireG21Ready`/`requireG32Ready`/`requireCashReceiptReady`/`requireStaffNhisImportReady`**) · **`liveCashReceiptDescribe` suite guard** (`cd6891f`, Q597) · **stale access token → credential login fallback** (`b60c622`, Q583) · **unsupported branch `serviceType` → `notApplicable()`** (Q541, `091c372`) · **G32 probe+health schema readiness** (Q525·Q528) · **G-CASH-RECEIPT V159 schema readiness** — **`LiveE2eOperationReadinessSupport`** (Q548, `bfad37d`/`4d4457f`) · **FE nested/snake_case health parse** (Q545, `682d647`) · **legacy G21 seed flags without applicability** (Q549, `16afd4c`) · staging **`./scripts/run-live-e2e.sh`**
 10a. **US-R03 FAQ21823 employment contract renewal (Q540·Q546·Q547·Q552·Q685)**: **`GET /staff/employment-contracts/compliance`** 집계 (`9aaefa0`) · **`/staff`** — **`StaffEmploymentContractRenewalSummaryPanel`** · **`/dashboard`·`/dashboard/hq`** — **「근로재계약 미충족」·「근로계약 보관 임박」·「근로계약 보관 만료」** StatCard 3종 · **`EmploymentContractRenewalAlertsPanel`** — **`renewalAlerts[]`** · **`/staff/{userId}` → 「입사~퇴사」** — **재계약 기록**·checklist·**서식 인쇄**·**보관 D-day (90일)** (Q685) · **P2**: 급여·전자서명·PDF 생성 API
 
 #### [TWR] 1-4-a. Must 신규 기능 운영 모니터링 (G17/G32/G42/G21)
@@ -1185,16 +1192,16 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 
 | 항목 | 내용 |
 |------|------|
-| API | `GET /api/v1/clients/{clientId}/care-plan-forms` (목록) · `GET …/care-plan-forms/{planYear}` (단건) · `PUT …/care-plan-forms` (upsert) |
-| RBAC | **조회**: `hq_admin`·`branch_admin`·`social_worker`·`caregiver` · **작성**: `branch_admin`·`social_worker` · JWT **활성 지점** 스코프 |
+| API | `GET /api/v1/clients/{clientId}/care-plan-forms` (목록) · `GET …/care-plan-forms/{planYear}` (단건) · `PUT …/care-plan-forms` (upsert) · **`GET /api/v1/clients/care-plan-forms/bulk-export`** (일괄 plain-text, Q726, `4df9465`) |
+| RBAC | **조회**: `hq_admin`·`branch_admin`·`social_worker`·`caregiver` · **작성**: `branch_admin`·`social_worker` · **bulk-export**: `hq_admin`·`branch_admin`·`social_worker` (**`caregiver` 403**) · JWT **활성 지점** 스코프 |
 | 필드 | `benefitServiceType`·`clientNameSnapshot`·`writtenDate`·`authorName`·`detailedGoal`·`neededContent`·`detailedProvisionContent`·`serviceFrequency`·`serviceDuration`·`overallOpinion`·`notifiedAt`(옵션) |
 | DB | **V164** UK `(organization_id, client_id, plan_year)` · CHECK 11건 · 트리거 3건(`set_org_branch`·`guard_active_client` INSERT only·`set_recorded_by`) |
-| FE UI | **`ClientCarePlanForm`** — 이용자 상세 **「급여계획서」** 탭 · **`ClientCarePlanFormPage`**(`/clients/:clientId/care-plan-form`) · **`CarePlanNotificationPage`** 행 링크 |
-| G38 연계 | **`GET /clients/care-plan-notifications/compliance`** — 5·11개월 milestone은 **G37 첨부**와 병행 · 본 API **`notifiedAt`** 은 통지 시각 기록용 |
+| FE UI | **`ClientCarePlanForm`** — 이용자 상세 **「급여계획서」** 탭 · **`ClientCarePlanFormPage`**(`/clients/:clientId/care-plan-form`) · **`CarePlanNotificationPage`** 행 링크 · **`ClientCarePlanBulkExportPanel`** — G38 **`/clients/care-plan-notifications`** 일괄 출력 (`0d0b587`/`96196ed`/`d759ade`, Q726·Q734) · API 전송 전 **branchId trim** · **clientOptions dedupe** |
+| G38 연계 | **`GET /clients/care-plan-notifications/compliance`** — 5·11개월 milestone은 **G37 첨부**와 병행 · 본 API **`notifiedAt`** 은 통지 시각 기록용 · **일괄 출력 패널**은 compliance 목록 위에 mount |
 | 보존 | **퇴소 후 5년** — `DATA_RETENTION_POLICY` §2-1 · `ON DELETE CASCADE` |
-| 테스트 | **`ClientCarePlanFormServiceTest`** · **`ClientCarePlanForm.test.jsx`** · **`ClientCarePlanFormPage.test.jsx`** |
+| 테스트 | **`ClientCarePlanFormServiceTest`** · **`ClientCarePlanForm.test.jsx`** · **`ClientCarePlanFormPage.test.jsx`** · **`MustApiEndpointRoutingTest.bulkExportCarePlanFormsRouteShouldAcceptGet`** · **`ClientCarePlanBulkExportPanel.test`** 5/5 (Q726·Q734) |
 
-> 현장: USER_MANUAL §3-3 · FAQ **Q557** · G38 §6-2-2
+> 현장: USER_MANUAL §3-3·§4-3 · FAQ **Q557·Q726·Q734** · G38 §6-2-2
 
 ### 6-2-2b. G-BILLING-PRIOR-DEPOSIT-GUARD 청구 생성 선행입금 가드 (BNK-433, BE·FE Fixed)
 
@@ -1223,7 +1230,7 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | 집계 | `fiveMonthsElapsed` · `elevenMonthsElapsed` · `reissueNotReflected` · `alertLevel` (`NONE`/`WARNING`/`CRITICAL`) |
 | CRITICAL | 최신 `ltc_grade_history` 행에 **G37 첨부 0건** |
 | WARNING | 급여시작 **≥5개월** 또는 **≥11개월** — 첨부는 있음 |
-| FE UI | **`CarePlanNotificationPage`**(`/clients/care-plan-notifications`) — StatCard·필터·표 · **`DashboardPage`** G38 위젯 3종 · compliance 실패 시 **partial-load warning** (`28c22b0`·`4b2b082`, Q277) |
+| FE UI | **`CarePlanNotificationPage`**(`/clients/care-plan-notifications`) — StatCard·필터·표 · **`ClientCarePlanBulkExportPanel`** 일괄 출력 embed (Q726) · **`DashboardPage`** G38 위젯 3종 · compliance 실패 시 **partial-load warning** (`28c22b0`·`4b2b082`, Q277) |
 | 연계 | **G37 첨부 업로드** — §6-2-1 · **`CarePlanNotificationComplianceServiceTest`** · **`CarePlanNotificationPage.test.jsx`** · **`pilotPageFlows`** · **`programComplianceLiveApi.e2e.test.js`** |
 
 > 현장: USER_MANUAL §4-3 · 인정기간 첨부 §3-3 · FAQ Q274·Q277
@@ -1479,9 +1486,32 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | RBAC | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` → 403 UI Alert** |
 | a11y | **`aria-label="근무일정표 조회 조건"`** form · StatCard **`role="group" aria-label="근무 요약"`** · **「다시 조회」`aria-busy={loading}`** · **`StaffMonthlySchedulePage.test`** (UXD-165 `bee97b9`) |
 | scope note | **일정 CRUD는 `/visits`** — 8-2 화면은 **read-only aggregation + notify** |
-| P3 잔존 | **8-3 연간일정계획** · **8-6 위원회/보호자 회의록** · **8-8 자원봉사자 활동일지** — MVP out-of-scope |
+| P3 잔존 | **8-3 연간일정계획** · **8-8 자원봉사자 활동일지** — MVP out-of-scope · **8-6 회의록 ✅** → §6-2-22 |
 
 > 현장: USER_MANUAL §4-7-0c · FAQ **Q717·Q689·Q691** · DEPLOYMENT §1-4 smoke · **직원 출퇴근** §6-2-20 · **방문 일정** §6-2-* `/visits`
+
+### 6-2-22. G-STAFF-COMMITTEE-MEETING-LOG 위원회·보호자 회의록 (carefor 8-6 · US-R08 · BNK-633, BE·FE Fixed)
+
+케어포 **PDF 8-6** · ezCare FAQ **21601** demand-signal — **운영위원회·보호자 회의·복지노사위원회** 회의록 CRUD·확정·plain-text export.
+
+| 항목 | 내용 |
+|------|------|
+| BE API | **`StaffCommitteeMeetingController`** — Base **`/api/v1/staff/committee-meetings`** (`68b08b0`/`3ae8098`) |
+| list | **`GET ?from=&to=&meetingType=`** — active branch · **`StaffCommitteeMeetingListResponse.items[]`** |
+| detail | **`GET /{meetingId}`** |
+| create | **`POST`** — **`CreateStaffCommitteeMeetingRequest`** — **`meetingType`·`meetingDate`·`title`·`meetingContent`·`meetingResult`·`attendeeNames`** `@NotBlank` · **`location`** optional |
+| update | **`PATCH /{meetingId}`** — **DRAFT only** |
+| finalize | **`POST /{meetingId}/finalize`** — **`recordStatus=FINALIZED`** · **`finalizedAt`** |
+| export | **`GET /{meetingId}/export`** — **`text/plain` UTF-8** · **FINALIZED only** (`3ae8098`) |
+| meeting types | **`OPERATING_COMMITTEE`** · **`GUARDIAN`** · **`WELFARE_COMPENSATION`** |
+| record status | **`DRAFT`** · **`FINALIZED`** — finalize 후 PATCH → **`422`** |
+| FE UI | **`StaffCommitteeMeetingPage`**(`/staff/committee-meetings`) · **`StaffContextNav` 12탭** (`0342076`) |
+| services | **`fetchStaffCommitteeMeetingsApi`** · **`createStaffCommitteeMeetingApi`** · **`updateStaffCommitteeMeetingApi`** · **`finalizeStaffCommitteeMeetingApi`** · **`downloadStaffCommitteeMeetingExportApi`** |
+| RBAC | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` 403** · **`RoleBasedControllerAccessTest`** |
+| DB | **Flyway V181** `staff_committee_meeting_logs` — type/status CHECK · org/branch FK · **`created_by` trigger** · **V182** (`b4958f1`) — `chk_*_location_nonempty` · `chk_*_finalized_after_created` |
+| P3 잔존 | **PDF 공식 서식** 일괄 인쇄 — 현재 **plain-text export** only |
+
+> 현장: USER_MANUAL 위원회 회의록 · FAQ **Q723·Q725** · DEPLOYMENT §1-4 V181·V182 · **고충상담** §6-2-* G42
 
 ### 6-2-23. G-STAFF-ANNUAL-LEAVE 직원 연차휴가 연간 현황 (ezCare worker-b100 tab01, US-R03e, BNK-516~521, BE·FE Fixed)
 
@@ -3573,6 +3603,13 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-06-26 | **384차** — §1-4 **Q731 G-NHIS-SCHEDULE-IMPORT FE full-stack · Q733 g21 component status codes** · baseline **`59e4e7f`/`8ceb25c`** |
+| 2026-06-26 | **383차** — §1-4 **Q731 NHIS visit import guidance · Q732 g21 code FE wire** · baseline **`4567030`/`6009ba7`** |
+| 2026-06-26 | **386차** — §6-2-2a **Q734 bulk export id normalize · Q726 deepen** · baseline **`9664f29`/`d759ade`** |
+| 2026-06-26 | **385차** — §6-2-2·§6-2-2a **Q726 G-CLIENT-CONTRACT-BULK-PRINT FE full-stack** · baseline **`9664f29`/`96196ed`** |
+| 2026-06-27 | **381차** — §1-4·§6-2-2a **Q726 bulk export API** · baseline **`4df9465`/`a727862`** |
+| 2026-06-27 | **380차** — §6-2-22 **Q725 V182 defense-in-depth** · **Flyway V182** · baseline **`b4958f1`/`8ed60cb`** |
+| 2026-06-27 | **379차** — §6-2-22 **Q723 G-STAFF-COMMITTEE-MEETING-LOG** · §6-2-21 P3 정정 · **Flyway V181** · baseline **`3ae8098`/`8ed60cb`** |
 | 2026-06-26 | **377차** — §1-4 live E2E harness **Q722 recovered-auth hint** · baseline **`d06e3f1`/`4bbd54a`** |
 | 2026-06-26 | **376차** — §1-4 live E2E harness **Q719 G21 seed detail · Q720 neutral blocker** · §6-2-21 **UXD-165 a11y** · **Flyway V180** · baseline **`42a369e`/`7e7c296`** |
 | 2026-06-26 | **375차** — §1-4 live E2E harness **Q718 singular blocker · Q713 BE allow-recovered-auth** · §6-2-21 **Q717 근무일정표** · baseline **`3342938`/`b7004ca`** |
