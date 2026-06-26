@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-26T10:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-26T14:00:00+09:00 -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **377차 자동 동기화 완료** (BE `d06e3f1`·FE `4bbd54a`·V1–V180·118 route·93 page·**Q722 recovered-auth readiness hints**)  
-> **최종 갱신**: 2026-06-26 (377차 TWR — **Q722·Q713 deepen · baseline 정합**)
+> **상태**: MVP v1 개발 중 — **384차 자동 동기화 완료** (BE `59e4e7f`·FE `8ceb25c`·V1–V182·118 route·94 page·**Q731 G-NHIS-SCHEDULE-IMPORT FE full-stack · Q733 g21 component status codes**)  
+> **최종 갱신**: 2026-06-26 (384차 TWR — **Q731 · Q733 · baseline 정합**)
 
 ---
 
@@ -23,13 +23,44 @@
 
 **포함 내용**:
 - 클라우드 배포 환경 설정 (Docker, PostgreSQL, Spring Boot 실행)
-- 데이터베이스 마이그레이션 (Flyway **V1–V180**, G21 NHIS 비교·G32 케이스관리·**V180 program group integrity**·**V179 프로그램 그룹**·**V178 CMS·목욕 CHECK**·**V177 목욕 전후관찰**)
+- 데이터베이스 마이그레이션 (Flyway **V1–V182**, G21 NHIS 비교·G32 케이스관리·**V182 staff committee meeting integrity**·**V181 staff committee meeting logs**·**V180 program group integrity**·**V179 프로그램 그룹**·**V178 CMS·목욕 CHECK**·**V177 목욕 전후관찰**)
 - 환경 변수·시크릿 관리 (API 키, JWT 시크릿, Kakao 배차 API, CMS 연동)
 - SSL/HTTPS 설정
 - 모니터링·로그 수집
 - 백업·복구
 
-**최신 항목** (2026-06-26, 377차):
+**최신 항목** (2026-06-26, 384차):
+- **Q731** — **G-NHIS-SCHEDULE-IMPORT** — **`VisitNhisImportGuidePanel`** on **`/visits`** · PLAN/BILLING dual workflow (`8ceb25c`/`4567030`) · **full-stack ✅**
+- **Q733** — **QA-B95 g21 component status codes** — **`liveE2eVisitScheduleStatusCode`·`liveE2eBillingVisitScheduleStatusCode`·`liveE2eNhisImportStatusCode`** (`59e4e7f`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`59e4e7f`/`8ceb25c`**
+
+**이전 항목** (2026-06-26, 383차):
+- **Q731** — **G-NHIS-SCHEDULE-IMPORT** — **`GET /visits/imports/nhis/guidance`** PLAN/BILLING dual workflow (`4567030`) · **FE wire P2**
+- **Q732** — **QA-B95 g21 status code FE wire** — code-first harness parse (`6009ba7`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`4567030`/`6009ba7`**
+
+**이전 항목** (2026-06-27, 382차):
+- **Q729** — **QA-B95 g21 seed status code** — **`liveE2eG21SeedStatusCode`** health/probe machine-readable (`0f19767`)
+- **Q730** — **QA-B95 g21 blocker suite scoping** — non-G21 live suite filter (`f851a59`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`0f19767`/`f851a59`**
+
+**이전 항목** (2026-06-27, 381차):
+- **Q726** — **G-CLIENT-CONTRACT-BULK-PRINT** — **`GET /clients/care-plan-forms/bulk-export`** plan-year plain-text 일괄 출력 (`4df9465`) · **FE wire P2**
+- **Q727** — **QA-B95 g21-seed probe align** — health/probe **`g21SeedStatusDetail`** 동기화 · FE skip reason (`14964f6`/`a727862`)
+- **Q728** — **UXD-166** — **`StaffCommitteeMeetingPage`** **`.ds-segmented`·`<time dateTime>`** (`4e574ce`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`4df9465`/`a727862`**
+
+**이전 항목** (2026-06-27, 380차):
+- **Q725** — **V182 staff committee meeting log defense-in-depth** — `location` nonempty · `finalized_at>=created_at` CHECK (`b4958f1`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`b4958f1`/`8ed60cb`** · **Flyway V1–V182**
+
+**이전 항목** (2026-06-27, 379차):
+- **Q723** — **G-STAFF-COMMITTEE-MEETING-LOG** — **`/staff/committee-meetings`** 8-6 CRUD·finalize·export · **V181** (`68b08b0`/`0342076`/`3ae8098`)
+- **Q724** — **G16 parity empty catalog hide** — **`TransportParityRulesPanel`** rules 0건 시 미표시 (`8ed60cb`)
+- **Q722 deepen** — bootstrap hint **skip diagnostics** (`fcc16ca`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`3ae8098`/`8ed60cb`** · **118 route · 94 page**
+
+**이전 항목** (2026-06-26, 377차):
 - **Q722** — **QA-B95 recovered-auth readiness hints** — **`liveE2eBootstrapEnableHint`** BE expose (`d06e3f1`) · FE parse·neutral filter (`4bbd54a`)
 - **Q713 deepen** — allow-recovered-auth + hint **full-stack align**
 - **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`d06e3f1`/`4bbd54a`** · **118 route · 93 page**
@@ -443,16 +474,16 @@
 
 ## 6. 문서 상태 & 구현 진행도
 
-### 현재 상태 (2026-06-26, 377차, develop HEAD `d06e3f1`/`4bbd54a`, V1–V180)
+### 현재 상태 (2026-06-26, 384차, develop HEAD `59e4e7f`/`8ceb25c`, V1–V182)
 
 | 문서 | 상태 | 마지막 갱신 | 커버리지 |
 |------|------|-----------|---------|
-| **USER_MANUAL.md** | ✅ 현행 | 2026-06-26 (377차) | MVP Must full-stack · **8-2 근무일정표** · M5 program reports · baseline sync |
-| **FAQ.md** | ✅ 현행 | 2026-06-26 (377차) | 700+ Q&A · **Q722 recovered-auth hint · Q719·Q720·Q721 · Q713 deepen** |
-| **ADMIN_GUIDE.md** | ✅ 현행 | 2026-06-26 (377차) | live E2E harness Q722 · **§6-2-21 근무일정표** · V180 · M5 reports API |
-| **DEPLOYMENT_GUIDE.md** | ✅ 현행 | 2026-06-26 (377차) | §1-4 Q722 smoke · §11-3 recovered-auth hint · Must API smoke |
-| **CHANGELOG.md** | ✅ 현행 | 2026-06-26 | 날짜별 카드 형식 (에이전트 작업 일지) |
-| **README.md** (본 문서) | ✅ 현행 | 2026-06-26 (377차) | 문서 네비게이션 · 역할별 가이드 · 최신 진행도 |
+| **USER_MANUAL.md** | ✅ 현행 | 2026-06-26 (384차) | MVP Must full-stack · **§5-11 NHIS visit import guidance FE (Q731)** · **8-6 회의록** · M5 program reports |
+| **FAQ.md** | ✅ 현행 | 2026-06-26 (384차) | 733+ Q&A · **Q731 G-NHIS-SCHEDULE-IMPORT full-stack · Q733 g21 component codes** |
+| **ADMIN_GUIDE.md** | ✅ 현행 | 2026-06-26 (384차) | **§1-4 G21 guidance FE wire** · §6-2-22 회의록 · live E2E Q733 |
+| **DEPLOYMENT_GUIDE.md** | ✅ 현행 | 2026-06-26 (384차) | §1-4 Q731·Q733 smoke · Must API smoke |
+| **CHANGELOG.md** | ✅ 현행 | 2026-06-26 (384차) | TWR 384차 · NHIS visit guidance FE · g21 component codes |
+| **README.md** (본 문서) | ✅ 현행 | 2026-06-26 (384차) | 문서 네비게이션 · 역할별 가이드 · 최신 진행도 |
 
 ---
 
@@ -463,28 +494,36 @@
 | **백엔드 API** | Must + V180 ✅ | @ `d06e3f1` · **QA-B95 recovered-auth hint ✅** · **G-REPORT-DENSITY M5 reports+** · BE Test **271 suites** |
 | **데이터베이스** | V1–V180 | V180 program group integrity · V179 프로그램 그룹·멤버십 · V178 CMS·목욕 CHECK |
 | **프론트엔드** | 118 route · 93 page | @ `4bbd54a` · **StaffMonthlySchedulePage** · **ProgramReportsPage** · FE test **479+** |
-| **문서화** | Must 갭 0 | **P2**: 5-9 그룹 CRUD UI · program reports FE `branchId` · 7-5 live PG · M6 safety |
+| **문서화** | Must 갭 0 | **P2**: 5-9 그룹 CRUD UI · program reports FE `branchId` · 7-5 live PG · M6 safety · **P3**: 8-6 PDF 공식 서식 |
 
 ---
 
 ## 7. 로드맵 & 다음 단계
 
-### v1.2.1 현황 (2026-06-25)
+### v1.2.1 현황 (2026-06-26)
 
 **완료**:
-- ✅ M7 본인부담 **7-4 CMS 5/5** · **7-5 catalog FE** · **7-9 refund fee full-stack**
-- ✅ US-O01 목욕 **평가지표 27 FE wire**
-- ✅ G16 NHIS #44 **parity panel mount**
-- ✅ merge gate **802** · cross-stream **SYNCED**
+- ✅ **Q731 G-NHIS-SCHEDULE-IMPORT** — 공단 방문일정 import guidance API + FE panel (`8ceb25c`)
+- ✅ **Q733 g21 component status codes** — **3축 machine-readable probe fields** (`59e4e7f`)
+- ✅ **Q723·Q725 G-STAFF-COMMITTEE-MEETING-LOG** — 위원회·보호자 회의록 CRUD + export + DB integrity V182 (`68b08b0`/`0342076`/`3ae8098`/`b4958f1`)
+- ✅ **Q717 G-STAFF-MONTHLY-SCHEDULE-FE-WIRE** — 직원 근무일정표 (`/staff/schedules`) + month-agg (`33944e4`)
+- ✅ **Q714 G-REPORT-DENSITY M5** — 프로그램 리포트 4종 + 5-9 group-history shell (`650801b`/`337453d`/`15a3b7f`)
+- ✅ merge gate **827** · cross-stream **SYNCED**
 
-**P2 Planned** (이후 버전):
-- **7-5 live PG** — 실제 카드·카카오페이 벤더 연동 (현재 stub)
-- **J03 Solapi live dispatch** — 알림톡·SMS 실발송
-- **M6 6-2~6-4 `/safety/*`** — 안전점검 서브폼
-- **L03 간호급여 잔여 5 leaf**
-- **G34 SMS live OTP** · **G-Payroll** (v3)
+**P2 Planned** (이후 버전) — 운영 주의:
+- **Q726 G-CLIENT-CONTRACT-BULK-PRINT FE wire** — 급여제공변경계약서 일괄 출력 화면 (BE API ready @`4df9465`)
+- **7-5 live PG** — 실제 카드·카카오페이 벤더 연동 (현재 stub) · **`EasyPayPanel` catalog wire P2** (API @`56831fc`)
+- **J03 Solapi live dispatch** — 알림톡·SMS 실발송 (framework ready, credential binding P2)
+- **program reports FE branchId query** — HQ 타 지점 리포트 조회 (API @`49fe2e7` ready)
+- **M6 6-2~6-4 `/safety/*`** — 안전점검 서브폼 (케어포 모듈 6, P2 부분)
+- **L03 간호급여 잔여 5 leaf** — 간호급여 필요 부분
 
-**자세히**: [ROADMAP.md](../planning/ROADMAP.md) 참고
+**P3 Out-of-scope**:
+- **8-6 회의록 PDF 공식 서식** — 전자서명 workflow (운영 요청 없음)
+- **RFID dispatch** — 장비 호환성 대기
+- **CMS 3-method (가상계좌·다계좌·현금)** — 추가 시스템 연동
+
+**자세히**: [ROADMAP.md](../planning/ROADMAP.md) · **실시간 진행**: [CHANGELOG.md](ops/CHANGELOG.md) 최근 7일 참고
 
 ---
 
