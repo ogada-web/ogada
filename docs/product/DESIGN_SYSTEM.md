@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-25T20:20:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-26T14:30:00+09:00 -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-25 (165차 — **US-R09 직원 월간 근무일정표·G-REPORT-DENSITY M5 프로그램 리포트·G-REFUND-FEE-FE-WIRE 환불 수수료 미리보기·US-O01-b 목욕 지표27 접근성 재점검 + `.ds-refund-fee-preview` 미정의 클래스 승격 + §88** — 164차(§87)·UXD-164(`d64f81b`) 이후 coder 신규 커밋 5건(`3d7f13b` US-O01-b 목욕 지표27·`cadd74a` 환불 수수료 FE wire·`15a3b7f` M5 프로그램 리포트 4종·`33944e4` 직원 월간 근무일정표 US-R09·`bd3253a`·`2c9abd6` QA 보조) 미점검 a11y·FE-16 갭 해소. ① **`StaffMonthlySchedulePage`** — StatCard 래퍼 `role="group" aria-label="근무 요약"` 부재(§43·93차 패턴 회귀) + 조회 버튼 `aria-busy={loading}` 미전달(WCAG 4.1.3) 2건 수정. ② **`.ds-refund-fee-preview`** — `RefundRecordModal`의 환불 수수료 미리보기 `<dl>`이 CSS 미정의 상태여서 grid 정렬·배경·간격이 미적용되던 FE-16 결함 해소. ③ **`BathingScheduleIndicator27Panel`·`BathingScheduleForm`(US-O01-b)** — `aria-labelledby`·`aria-busy`·`Table captionVisuallyHidden`·`StatusBadge` 텍스트+색 병행 표준 준수 확인(변경 불요). ④ **`ProgramReportPanel`·`ProgramReportNav`·`ProgramReportsPage`(M5 4종)** — `section aria-labelledby`·`h3`·`StatCard role=group`·`Table captionVisuallyHidden`·`aria-busy`·인쇄 `aria-hidden` 표준 준수 확인(변경 불요). ⑤ **`RefundRecordModal`(환불 수수료)** — submit `aria-busy`·오류 `role=alert`·`aria-readonly` 표준 준수 확인, `.ds-refund-fee-preview` CSS 단일 원천 승격. ⑥ **§88** 신규. `StaffMonthlySchedulePage.test.jsx` 3/3 PASS·`npm run build` PASS.)
+> **최종 갱신**: 2026-06-26 (167차 — **G-CLIENT-CONTRACT-BULK-PRINT 일괄 출력·G-NHIS-SCHEDULE-IMPORT 방문일정 가이드 접근성 재점검 + `.ds-nhis-guide__heading` 미정의 클래스 승격 + §90** — 166차(§89) 이후 coder 신규 커밋 `8ceb25c`(US-G08 `VisitNhisImportGuidePanel`·`VisitNhisImportPanel` guidance wire)·`0d0b587`(US-D05 `ClientCarePlanBulkExportPanel`·`CarePlanNotificationPage` embed) 미점검 a11y·FE-16 갭 해소. ① **`.ds-nhis-guide__heading`** — `VisitNhisImportGuidePanel` PLAN/BILLING `h4`가 미정의 클래스로 `.ds-subheading` 토큰(글자크기·세미볼드·여백)을 못 받던 FE-16 회귀를 `components.css` 승격. ② **`VisitNhisImportGuidePanel`** — 외부 포털 링크 `target=_blank`에 sr-only 「(새 탭)」(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ③ **`ClientCarePlanBulkExportPanel`** — 폼 `aria-label`·계획 연도 범위 오류 `Field error`+`aria-invalid`(WCAG 3.3.1)·submit `aria-busy`·성공/오류 `Alert` tone별 live region 표준 준수 확인. ④ **`VisitNhisImportPanel`** — import 결과 표 방문일 `<time dateTime>` 래핑(WCAG 1.3.1·166차 이전 평문 회귀). ⑤ **§90** 신규. 회귀 +3. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-26 (166차 — **G-STAFF-COMMITTEE-MEETING-LOG 위원회·보호자 회의록(US-R08·케어포 8-6) 페이지 접근성 재점검 + `.ds-page-section`·`.ds-form-grid--inline` 미정의 클래스 승격 + §89** — 165차(§88)·UXD-165(`bee97b9`) 이후 coder 신규 커밋 `0342076`(위원회·보호자 회의록 CRUD 페이지·운영위원회/보호자 회의/복지노사위원회 3종)·`8ed60cb`(parity-rules 빈 카탈로그 숨김) 미점검 a11y·FE-16 갭 해소(QA-B95 live-E2E 진단 4건은 UI 무관·제외). ① **`.ds-page-section`** — `StaffCommitteeMeetingPage` 등 **Staff HR 5개 페이지**가 컨텍스트 네비·조회 카드·목록 섹션 간격에 쓰나 CSS 단일 원천에 없어(`.ds-main`이 gap 미제공) 섹션이 붙던 회귀를 `margin-top: --space-6`·`:first-child` 리셋으로 승격. ② **`.ds-form-grid--inline`** — 조회일·반기·datetime 필터 **5곳**이 미정의로 base `minmax(200px,1fr)` 스트레치 폴백돼 날짜 필드가 전폭으로 늘어나던 회귀를 `flex` 인라인 정렬(`ds-filter-row` 패턴)로 승격. ③ **회의 유형 토글** — 일회성 미정의 `.ds-button-group`을 정의된 `.ds-segmented`(`BillingReportPage` 패턴)로 정합(`role="tab"`·`aria-selected` 불변). ④ **목록 회의일** `<time dateTime>` 래핑(WCAG 1.3.1). ⑤ 폼·표·상태 배지·모달 오류 패턴은 표준 준수(변경 불요). ⑥ **§89** 신규. `StaffCommitteeMeetingPage.test.jsx` 3/3 PASS·`npm run build` PASS.)
+> **이전 갱신**: 2026-06-25 (165차 — **US-R09 직원 월간 근무일정표·G-REPORT-DENSITY M5 프로그램 리포트·G-REFUND-FEE-FE-WIRE 환불 수수료 미리보기·US-O01-b 목욕 지표27 접근성 재점검 + `.ds-refund-fee-preview` 미정의 클래스 승격 + §88** — 164차(§87)·UXD-164(`d64f81b`) 이후 coder 신규 커밋 5건(`3d7f13b` US-O01-b 목욕 지표27·`cadd74a` 환불 수수료 FE wire·`15a3b7f` M5 프로그램 리포트 4종·`33944e4` 직원 월간 근무일정표 US-R09·`bd3253a`·`2c9abd6` QA 보조) 미점검 a11y·FE-16 갭 해소. ① **`StaffMonthlySchedulePage`** — StatCard 래퍼 `role="group" aria-label="근무 요약"` 부재(§43·93차 패턴 회귀) + 조회 버튼 `aria-busy={loading}` 미전달(WCAG 4.1.3) 2건 수정. ② **`.ds-refund-fee-preview`** — `RefundRecordModal`의 환불 수수료 미리보기 `<dl>`이 CSS 미정의 상태여서 grid 정렬·배경·간격이 미적용되던 FE-16 결함 해소. ③ **`BathingScheduleIndicator27Panel`·`BathingScheduleForm`(US-O01-b)** — `aria-labelledby`·`aria-busy`·`Table captionVisuallyHidden`·`StatusBadge` 텍스트+색 병행 표준 준수 확인(변경 불요). ④ **`ProgramReportPanel`·`ProgramReportNav`·`ProgramReportsPage`(M5 4종)** — `section aria-labelledby`·`h3`·`StatCard role=group`·`Table captionVisuallyHidden`·`aria-busy`·인쇄 `aria-hidden` 표준 준수 확인(변경 불요). ⑤ **`RefundRecordModal`(환불 수수료)** — submit `aria-busy`·오류 `role=alert`·`aria-readonly` 표준 준수 확인, `.ds-refund-fee-preview` CSS 단일 원천 승격. ⑥ **§88** 신규. `StaffMonthlySchedulePage.test.jsx` 3/3 PASS·`npm run build` PASS.)
 > **이전 갱신**: 2026-06-24 (161차 — **G-SMS 직원 알림톡·SMS 발송 패널 접근성 재점검 + `.ds-form-stack` 미정의 클래스 승격 + §84** — 160차(§83)·UXD-160(`15f2195`) 이후 coder 신규 커밋 6건(`ef3948c`/`c04968c`/`9c25d44`/`5a6d42c`/`3f686e3` G-SMS message_kind 1·12·13·19·21 dispatch UI·`068049b` QA-B289) 미점검 a11y·FE-16 갭 해소. ① **`StaffNotificationDispatchPanel`(신규)·`GuardianDocumentNotifyPanel`** — `<form aria-label>`·`Field` render-prop·연월 필수 `Field error`·submit `aria-busy`+`aria-describedby`·성공 `role=status` 표준 이미 충족(JSX 변경 불요)·접속키 키 값 미노출 확인(rules §3). ② **`.ds-form-stack`** — 양 패널이 공유하나 CSS 미정의여서 제목↔폼·필드 간 세로 간격이 0으로 붙던 회귀를 flex column·`gap`·`> form` 스택으로 승격(FE-16·§1 단일 원천). ③ **§84** 신규. 회귀 없음(CSS-only). `npm test`(3 files 11 tests)·build PASS.)
 > **이전 갱신**: 2026-06-24 (160차 — **G-SMS-TEMPLATE-CATALOG·FAQ21823 retention/compliance wire 접근성 재점검 + §83** — 159차(§82)·UXD-159(`0869589`) 이후 coder 신규 커밋 4건(`c9cf03b` G-SMS-TEMPLATE-CATALOG·`a43bcb7` FAQ21823 retention·`596658a` compliance API wire) 미점검 a11y·FE-16 갭 해소. ① **`NotificationChannelReadinessPanel`** — 로드 `aria-busy`·ezCare 카탈로그 `section aria-labelledby`·6열 표 `forced-colors` 래퍼·`.ds-notification-channel-panel*` 베이스 승격. ② **`StaffEmploymentContractRenewalPanel`** — `${직원명} 재계약 완료 기록`·`근로계약서 서식 인쇄` `aria-label`·재계약 modal `<form aria-label>`. ③ **`StaffEmploymentContractRenewalSummaryPanel`** — 보관 기한 전용 attention Alert 문구 분기. ④ **§83** 신규. 회귀 +4. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-24 (159차 — **G16 NHIS #44 이동서비스비·수급자 RBAC rank-based edit·US-R01-c leave-ledger wire 접근성 재점검 + §82** — 158차(§81)·UXD-158(`0606a3b`) 이후 coder 신규 커밋 5건(`77584a0`/`2e7374b` client RBAC·`a531ed6` G16 NHIS parity·`bc6180e` leave-ledger FE wire) 미점검 a11y·FE-16 갭 해소. ① **`TransportServiceFeePanel`** — NHIS #44 산정 기준 `section` landmark·조회/생성 `aria-busy`·이용일 `<time dateTime>`·행 확정/왕복 `${이용자} ${이용일}` `aria-label`·성공 `role=status`·`Table caption`. ② **`ClientDetailPage`** — RBAC 리팩터 후 회귀된 「수정」`aria-label` 복구·요약 헤더 `.ds-client-summary__action` 배치. ③ **`.ds-client-summary`** — `forced-colors` 경계선. ④ **§82** 신규. 회귀 +3. `npm test`·build PASS.)
@@ -4871,6 +4873,167 @@ ParityRule = {
 - `StaffMonthlySchedulePage.test.jsx` 3/3 PASS.
 - `npm run build` PASS (8.43s).
 - CSS-only `.ds-refund-fee-preview` 승격 — JSX 회귀 없음.
+
+---
+
+## §89. G-STAFF-COMMITTEE-MEETING-LOG 위원회·보호자 회의록 페이지 접근성 재점검 + `.ds-page-section`·`.ds-form-grid--inline` 미정의 클래스 승격 (166차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-26 -->
+
+> **166차 UXD (2026-06-26)** — 165차(§88)·UXD-165(`bee97b9`) 이후 coder 신규 커밋(`0342076` G-STAFF-COMMITTEE-MEETING-LOG 위원회·보호자 회의록 CRUD 페이지·`8ed60cb` parity-rules 빈 카탈로그 숨김·`QA-B95` live-E2E 진단 보강 4건) 미점검 a11y·FE-16 갭 해소. QA-B95 4건은 live-E2E 진단 로직(UI 무관)이라 점검 제외.
+
+### 89-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `StaffCommitteeMeetingPage`(신규) | `0342076` | US-R08 · 케어포 8-6 위원회·보호자 회의록(운영위원회·보호자 회의·복지노사위원회 3종) |
+
+### 89-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `.ds-page-section` | **미정의 클래스(FE-16)** — `StaffCommitteeMeetingPage`·`StaffMonthlySchedulePage`·`StaffAnnualLeavePage`·`StaffLeaveLedgerPage`·`StaffWorkAttendancePage` **5개 Staff HR 페이지**가 `StaffContextNav`·`BranchScopeNotice`·조회 Card·목록 section 간 세로 간격에 사용하나 CSS 단일 원천에 없어, `.ds-main`(gap 없는 block 컨테이너)에서 섹션들이 간격 없이 붙던 회귀 | `components.css` 승격 — `margin-top: --space-6`·`:first-child` 리셋(컨텍스트 네비 상단 여백 제거) | FE-16 · §1 단일 원천 |
+| `.ds-form-grid--inline` | **미정의 클래스(FE-16)** — `StaffCommitteeMeetingPage` 조회일·`NeedsAssessmentStatusPage`·`PeriodicRiskAssessmentStatusPage`·`ClientDetailPage` 반기 필터·`ComplaintConsultationForm` datetime **5곳**이 사용하나 미정의여서, base `.ds-form-grid`의 `minmax(200px,1fr)` 스트레치 그리드로 폴백돼 날짜·시각 필드가 전폭으로 늘어나던 회귀 | `components.css` 승격 — `display:flex`·`flex-wrap`·`align-items:flex-end`(필드 내용 폭 인라인 정렬·`ds-filter-row` 패턴 정합·gap은 base 상속) | FE-16 · §1 단일 원천 |
+| `StaffCommitteeMeetingPage` 회의 유형 토글 | **미정의 일회성 `.ds-button-group`(FE-16)** — `role="tablist"` 세그먼트 토글이 전 코드베이스 유일 사용 미정의 클래스를 써서 포커스 링·`forced-colors`·세그먼트 배경 토큰을 못 받음(`BillingReportPage`가 확립한 `.ds-segmented` 패턴과 불일치) | 정의된 **`.ds-segmented`**로 전환(§1 단일 원천·`role="tab"`·`aria-selected` 동작 불변) | FE-16 · §1 단일 원천 |
+| `StaffCommitteeMeetingPage` 목록 회의일 | **날짜 평문 노출** — `<td>{row.meetingDate}</td>`가 기계 판독 가능 날짜 의미론 없이 평문 렌더(88·89차 `StaffDetailPage`·다수 리포트 `<time>` 패턴과 불일치) | `<time dateTime={row.meetingDate}>` 래핑 | WCAG 1.3.1 |
+| `StaffCommitteeMeetingPage` 폼·표 | `Field` render-prop·필수값 `Field error`+`aria-invalid`·submit `aria-busy`·확정/출력 행 버튼 `aria-busy`+`Spinner`·`Table captionVisuallyHidden`·`StatusBadge`(작성중/확정 텍스트+색 병행)·모달 내 오류 `role=alert`·`EmptyState` | 모두 표준 준수 — 변경 불요 | WCAG 3.3.1·4.1.2·4.1.3·1.4.1 |
+
+> **결론** — 실 결함 4건: ① 미정의 `.ds-page-section`(5개 Staff HR 페이지 공유)·② 미정의 `.ds-form-grid--inline`(5곳 공유) CSS 단일 원천 승격 2건, ③ 일회성 `.ds-button-group`→정의된 `.ds-segmented` 정합 1건, ④ 회의일 `<time dateTime>` 래핑 1건. 폼·표·상태 배지·모달 오류 패턴은 기존 표준 준수.
+
+### 89-3. 토큰·컴포넌트
+
+| 항목 | 설명 |
+|------|------|
+| `.ds-page-section` | `margin-top: --space-6`(섹션 간 세로 리듬·`ds-section-gap--lg`와 동일 간격) |
+| `.ds-page-section:first-child` | `margin-top: 0`(`.ds-main` 첫 자식=컨텍스트 네비 상단 여백 제거) |
+| `.ds-form-grid--inline` | `display:flex`·`flex-wrap:wrap`·`align-items:flex-end`(인라인 필터·조회 행·gap은 `.ds-form-grid` 상속) |
+
+### 89-4. coder 전달 메모
+
+- **`StaffCommitteeMeetingPage`** 회의 유형 세그먼트 토글은 `BillingReportPage`(입금 구간·집계 기준)와 동일한 `.ds-segmented role="tablist"` 패턴이다. 신규 세그먼트 필터 작성 시 일회성 `.ds-button-group` 대신 `.ds-segmented`를 재사용한다.
+- **`.ds-page-section`** 은 `.ds-main`이 gap을 제공하지 않는 Staff HR 페이지 전용 섹션 간격 유틸이다. 새 페이지에서 `StaffContextNav`·`BranchScopeNotice`·Card·section을 스택할 때 동일 클래스로 간격을 일관 적용한다.
+- **`.ds-form-grid--inline`** 은 조회일·연도·반기 등 내용 폭 필터 행에 `.ds-form-grid`와 함께 사용한다(전폭 스트레치가 필요하면 `--inline` 미사용).
+
+### 89-5. 검증
+
+- `StaffCommitteeMeetingPage.test.jsx` 3/3 PASS.
+- `npm run build` PASS (8.82s).
+- CSS 2클래스 승격 + JSX 2건(세그먼트 클래스·`<time>`) — 회의 유형 `role="tab"` 조회·확정 동작 불변·회귀 없음.
+
+---
+
+## §90. G-CLIENT-CONTRACT-BULK-PRINT·G-NHIS-SCHEDULE-IMPORT 접근성 재점검 + `.ds-nhis-guide__heading` 미정의 클래스 승격 (167차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-26 -->
+
+> **167차 UXD (2026-06-26)** — 166차(§89) 이후 coder 신규 커밋(`8ceb25c` US-G08 `VisitNhisImportGuidePanel`·guidance API wire·`0d0b587` US-D05 `ClientCarePlanBulkExportPanel`·`CarePlanNotificationPage` embed) 미점검 a11y·FE-16 갭 해소.
+
+### 90-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `VisitNhisImportGuidePanel`(신규) | `8ceb25c` | US-G08 · G-NHIS-SCHEDULE-IMPORT · FAQ 21298 계획/청구 이중 워크플로 |
+| `VisitNhisImportPanel`(guidance embed) | `8ceb25c` | US-V04 · 방문일정 NHIS import |
+| `ClientCarePlanBulkExportPanel`(신규) | `0d0b587` | US-D05 · G-CLIENT-CONTRACT-BULK-PRINT · FAQ 21507 일괄 출력 |
+| `CarePlanNotificationPage`(embed) | `0d0b587` | US-D05 · 급여계획 통보 화면 하단 embed |
+
+### 90-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `.ds-nhis-guide__heading` | **미정의 클래스(FE-16)** — `VisitNhisImportGuidePanel` PLAN/BILLING `h4`가 `.ds-subheading` 토큰 없이 렌더돼 제목 계층·여백이 본문과 구분되지 않던 회귀 | `components.css` 승격 — `font-size: --font-size-md`·`font-weight: --font-weight-semibold`·`margin: 0 0 --space-2` | FE-16 · §1 단일 원천 |
+| `VisitNhisImportGuidePanel` 외부 링크 | **새 탭 안내 누락** — `longtermcare.or.kr` `target=_blank` 링크에 SR용 새 탭 힌트 없음 | `<span className="ds-sr-only"> (새 탭)</span>` 추가 | WCAG 3.2.5 · G201 |
+| `VisitNhisImportGuidePanel` 구조 | `aside aria-label`·PLAN/BILLING `section aria-labelledby`·`ol` 단계 sr-only 번호·실서버 `Alert role=alert`·내부 `Link` to `/visits?tab=nhis-comparison` | 표준 준수 — 변경 불요 | WCAG 1.3.1 · 2.4.6 |
+| `ClientCarePlanBulkExportPanel` 폼 | **폼 목적 SR 미전달**·**계획 연도 범위 오류 미노출** — `aria-invalid`만 있고 `Field error`·`aria-describedby` 병합 없음 | `<form aria-label="급여제공 변경계약서 일괄 출력">`·범위 밖 연도 `Field error` | WCAG 3.3.1 · 4.1.2 |
+| `ClientCarePlanBulkExportPanel` 나머지 | `Field` render-prop·`Checkbox` fieldset/legend·`BranchScopeNotice`·submit `aria-busy`+`Spinner`·성공 `Alert tone=success`(role=status)·오류 `Alert tone=danger`(role=alert) | 표준 준수 — 변경 불요 | WCAG 4.1.3 · 1.4.1 |
+| `VisitNhisImportPanel` 결과 표 | **방문일 평문 노출** — import 결과 `<td>{visitDate}</td>`가 `<time dateTime>` 패턴 미적용(166차 Staff HR·다수 리포트와 불일치) | `<time dateTime={row.visitDate}>` 래핑 | WCAG 1.3.1 |
+| `VisitNhisImportPanel` 나머지 | `section aria-labelledby`·폼 `aria-label`·`FileUpload error`·submit `aria-busy`·결과 요약 `Alert tone=info`(role=status)·`StatusBadge`+`VISIT_IMPORT_STATUS` | 표준 준수 — 변경 불요 | WCAG 3.3.1 · 4.1.3 |
+
+### 90-3. 토큰·컴포넌트
+
+| 항목 | 설명 |
+|------|------|
+| `.ds-nhis-guide__heading` | NHIS import 가이드 PLAN/BILLING 소제목 — `.ds-subheading`과 동일 토큰(§284 패턴 공유) |
+| `VisitNhisImportGuidePanel` | `GET /visits/imports/nhis/guidance` 응답을 `aside`로 렌더 — `VisitNhisImportPanel`·기존 `NhisImportGuidePanel`과 `.ds-nhis-guide*` 클래스 공유 |
+
+### 90-4. coder 전달 메모
+
+- **NHIS 가이드 소제목** — PLAN/BILLING `h4`는 `.ds-nhis-guide__heading`(또는 `.ds-subheading`)을 사용한다. 일회성 클래스 추가 금지.
+- **일괄 출력 패널** — `CarePlanNotificationPage` compliance 목록 `clients` prop을 그대로 전달한다. 선택 모드 fieldset/legend·전체 선택 Checkbox 패턴은 다른 bulk export UI와 동일하게 유지.
+- **import 결과 표** — 날짜·시간 열은 `<time dateTime>`·시간 범위는 평문(복합 값) 유지.
+
+### 90-5. 검증
+
+- `VisitNhisImportGuidePanel.test.jsx` 2/2 PASS.
+- `ClientCarePlanBulkExportPanel.test.jsx` 4/4 PASS.
+- `VisitNhisImportPanel.test.jsx` 5/5 PASS.
+- `npm run build` PASS.
+
+---
+
+## §91. US-G08b G-NHIS-IMPORT-ERROR-STATUS-SURFACE FE 최종 chain 접근성 재점검 (168차) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-26 -->
+
+> **168차 UXD (2026-06-26)** — §90(167차·UXD-167 `bee97b9` 직후) coder 신규 커밋 4건(`91675f1` outcome status wire·`e4dbe9a` inline recovery steps·`cda2a10` UNMATCHED deep-link·`562560a` branchId 유지) 미점검 a11y·FE-16 갭 해소. US-G08b G-NHIS-IMPORT-ERROR-STATUS-SURFACE 9-stage full-stack chain 최종 FE 완결분.
+
+### 91-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `VisitNhisImportGuidePanel`(outcomeStatusNotes·errorRecoverySteps 2섹션 추가) | `91675f1` | US-G08b · import 결과 상태 4종 안내 |
+| `VisitNhisImportPanel`(outcome Alert·recovery steps wire·UNMATCHED deep-link) | `91675f1`·`e4dbe9a`·`cda2a10`·`562560a` | US-G08b · G-NHIS-IMPORT-ERROR-STATUS-SURFACE |
+| `VisitNhisImportRecoverySteps`(신규) | `e4dbe9a` | US-G08b · inline 복구 안내 |
+| `ClientListPage`·`clientListFilters.js`(branchId deep-link 유지) | `cda2a10`·`562560a` | US-G08b · 지점 컨텍스트 persistence |
+| `config/visits.js`(VISIT_IMPORT_OUTCOME_STATUS·resolveVisitImportOutcome·resolveVisitImportRecoverySteps) | `91675f1` | US-G08b · 4-state 분류 상수 |
+
+### 91-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `VisitNhisImportGuidePanel` outcomeStatusNotes 섹션 | `aria-labelledby="visit-nhis-guide-outcome-heading"` ✅ · `dl.ds-nhis-guide__outcome-notes` dt/dd ✅ · `ds-mono` code ✅ | 표준 준수 — 변경 불요 | WCAG 1.3.1 |
+| `VisitNhisImportGuidePanel` errorRecoverySteps 섹션 | `aria-labelledby="visit-nhis-guide-recovery-heading"` ✅ · `ol.ds-nhis-guide__steps` + sr-only 단계 번호 ✅ | 표준 준수 — 변경 불요 | WCAG 1.3.1 |
+| `VisitNhisImportPanel` 결과 Alert | **`role="status"` 명시**로 `tone="warning/danger"` 시 assertive 자동 전환 억제 — import는 사용자 직접 제출 결과이므로 polite 유지가 UX 적합 ✅ | 의도된 설계 — 변경 불요 | WCAG 4.1.3 |
+| `VisitNhisImportPanel` UNMATCHED 행 deep-link | `aria-label={``인정번호 ${ltcCertNo} 수급자 목록에서 찾기``}` ✅ — 행별 고유 레이블(WCAG 2.4.6 패턴) · `buildClientListSearchHref(ltcCertNo, branchId)` → `/clients?branchId=b1&q=L0002` ✅ | 표준 준수 — 변경 불요 | WCAG 2.4.4 · 2.4.6 |
+| `VisitNhisImportPanel` 결과 행 visitDate | `<time dateTime={row.visitDate}>` ✅ (§90-4 패턴 준수) | 표준 준수 — 변경 불요 | WCAG 1.3.1 |
+| `VisitNhisImportRecoverySteps` section | **`section` 접근성명 미부여** — `data-testid`만 있고 `aria-label/aria-labelledby` 없음. 그러나 랜드마크가 아닌 일반 `section`이므로 WCAG 비위반. 내부 `Alert title="오류·부분 반영 시 조치"`가 의미 전달 | 변경 불요(WCAG 위반 아님) | WCAG 1.3.1(비위반 확인) |
+| `VisitNhisImportRecoverySteps` Alert `role` | `tone="info"` 기본값이 이미 `role="status"`이므로 명시적 `role="status"` prop은 중복 — 무해한 코드 스멜 | 변경 불요(동작 동일) | — |
+| `VisitNhisImportRecoverySteps` 단계 목록 | `ol.ds-nhis-guide__steps` + sr-only 단계 번호 ✅ | 표준 준수 — 변경 불요 | WCAG 1.3.1 |
+| `ClientListPage` branchId URL 초기화 | `useEffect` 내 `readClientListBranchFromQuery` ✅ · `Select aria-label` 등 기존 필터 a11y 패턴 불변 ✅ | 표준 준수 — 변경 불요 | WCAG 4.1.2 |
+| `.ds-nhis-guide__outcome-notes` / `.ds-nhis-guide__outcome-note` | **`91675f1`에서 `components.css` 단일 원천 승격 완료** — grid 없는 dl·dt bold·dd muted·space-3 간격 | 이미 반영(FE-16 없음) | §1 단일 원천 |
+
+> **결론** — 실 결함 0건. CSS는 `91675f1`에서 components.css에 승격 완료(FE-16 없음). a11y 패턴 전체 표준 준수. JSX·CSS 변경 불요.
+
+### 91-3. 신규 컴포넌트 등록
+
+| 컴포넌트 | 위치 | 역할 |
+|----------|------|------|
+| `VisitNhisImportRecoverySteps` | `src/components/visits/` | import outcome별 contextual 복구 안내 ol — `e4dbe9a`. `VisitNhisImportPanel` 내부 전용(ui/index 미노출). `steps=[]`이면 null 반환 |
+
+### 91-4. 토큰·컴포넌트
+
+| 항목 | 설명 |
+|------|------|
+| `.ds-nhis-guide__outcome-notes` | outcome 4종(SUCCESS/PARTIAL/UNMATCHED/ALL_SKIPPED) DL 컨테이너 — `margin: 0 0 --space-4` |
+| `.ds-nhis-guide__outcome-note` | 개별 outcome dt/dd 그룹 — `margin-bottom: --space-3` |
+| `.ds-nhis-guide__outcome-note dt` | `font-weight: semibold`·`color: text`·`margin-bottom: --space-1` |
+| `.ds-nhis-guide__outcome-note dd` | `margin: 0`·`color: text-secondary`·`line-height: relaxed` |
+| `VISIT_IMPORT_OUTCOME_STATUS` | `config/visits.js` — 4-state(SUCCESS·PARTIAL·UNMATCHED·ALL_SKIPPED·EMPTY) tone·label 매핑 |
+| `resolveVisitImportOutcome` | `config/visits.js` — outcomeStatus 문자열 정규화 → { code, tone, label, summary } |
+| `resolveVisitImportRecoverySteps` | `config/visits.js` — outcome별 키워드 필터로 관련 복구 단계만 추출. SUCCESS → [] |
+
+### 91-5. coder 전달 메모
+
+- **outcome Alert `role="status"` 유지** — import 결과 Alert는 사용자 직접 제출 결과이므로 `tone="warning/danger"`여도 `role="status"`(polite)로 유지한다. 에러 배너(`error` state)만 `role="alert"` 기본(미처리).
+- **`VisitNhisImportRecoverySteps`** — `VisitNhisImportPanel` 외부에서 재사용할 경우 `steps` 배열이 `resolveVisitImportRecoverySteps` 출력임을 보장한다(SUCCESS→빈 배열 자동 필터됨).
+- **UNMATCHED deep-link** — `buildClientListSearchHref(ltcCertNo, branchId)` 패턴은 `NhisReconciliationTable` UNMATCHED 행에도 동일 적용 권장(현재 별도 패턴 가능성).
+- **신규 섹션 추가 시** — `VisitNhisImportGuidePanel`에 새 섹션 추가 시 `aria-labelledby` + `ds-nhis-guide__heading` `h4` 패턴을 반드시 유지한다.
+
+### 91-6. 검증
+
+- `VisitNhisImportPanel.test.jsx` outcome 4-case(PARTIAL·UNMATCHED·ALL_SKIPPED·EMPTY)·branchId deep-link·inline recovery 확인 PASS(coder 기존 실행 확인).
+- `VisitNhisImportGuidePanel.test.jsx` outcomeStatusNotes·errorRecoverySteps 렌더 PASS.
+- CSS 변경 없음 — JSX 변경 없음 — 빌드 회귀 없음.
 
 ---
 
