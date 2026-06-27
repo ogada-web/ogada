@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-26T14:30:00+09:00 -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-27T03:47:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-26 (167차 — **G-CLIENT-CONTRACT-BULK-PRINT 일괄 출력·G-NHIS-SCHEDULE-IMPORT 방문일정 가이드 접근성 재점검 + `.ds-nhis-guide__heading` 미정의 클래스 승격 + §90** — 166차(§89) 이후 coder 신규 커밋 `8ceb25c`(US-G08 `VisitNhisImportGuidePanel`·`VisitNhisImportPanel` guidance wire)·`0d0b587`(US-D05 `ClientCarePlanBulkExportPanel`·`CarePlanNotificationPage` embed) 미점검 a11y·FE-16 갭 해소. ① **`.ds-nhis-guide__heading`** — `VisitNhisImportGuidePanel` PLAN/BILLING `h4`가 미정의 클래스로 `.ds-subheading` 토큰(글자크기·세미볼드·여백)을 못 받던 FE-16 회귀를 `components.css` 승격. ② **`VisitNhisImportGuidePanel`** — 외부 포털 링크 `target=_blank`에 sr-only 「(새 탭)」(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ③ **`ClientCarePlanBulkExportPanel`** — 폼 `aria-label`·계획 연도 범위 오류 `Field error`+`aria-invalid`(WCAG 3.3.1)·submit `aria-busy`·성공/오류 `Alert` tone별 live region 표준 준수 확인. ④ **`VisitNhisImportPanel`** — import 결과 표 방문일 `<time dateTime>` 래핑(WCAG 1.3.1·166차 이전 평문 회귀). ⑤ **§90** 신규. 회귀 +3. `npm test`·build PASS.)
+> **최종 갱신**: 2026-06-27 (170차 — **US-Q01 Safety module API wire-up 접근성 재점검 + `SafetyRecentDraftsPanel` + FE-16 `.ds-safety-checklist__items` 승격 + §94** — 169차(§93) 이후 coder 신규 커밋 4건(`47a068c` safety routes·`01f32dc` server API wire·`f7061c4` M6 coverage tests·`d1d0adf` e2e seed) 미점검 a11y·FE-16 갭 해소. ① **날짜 `<time dateTime>` 래핑** — 4 페이지 `SafetyRecentDraftsPanel` 날짜 열(checkDate·recordDate·logDate) ISO 평문 → `render` 함수로 래핑(WCAG 1.3.1). ② **`SafetyOperationLogForm`·`InfectionControlLogForm`** — 하드코딩 `id` → `useId()` 마이그레이션(SafetyChecklistForm 패턴 통일). ③ **`.ds-safety-checklist__items`** — FE-16 미정의 클래스 `margin-top` 정의 추가. ④ **§94** 신규. 회귀 없음. 7 files 11 tests PASS·build PASS.)
+> **이전 갱신**: 2026-06-26 (169차 — **G16 onePerDayNote parity-rules 접근성 재점검 + US-Q01 Epic Q 위생·안전 UI 셸(6종 sub-form·4 route) 신규 + §92·§93** — 168차(§91) 이후 coder 신규 커밋 3건(`aa0559b`/`e19328a`/`afbbaa7` G16 onePerDayNote parity-rules·PARTIAL boundary test) 미점검 a11y·USER_STORIES US-Q01 `/safety/*` 0 route 갭 해소. ① **`TransportServiceFeePanel`** — `id="service-fee-one-per-day-note"`·`.ds-transport-service-fee__note` 승격·`role="note"`·parity-rules BE catalog 우선 추출(`resolveTransportServiceFeeOnePerDayNoteFromRules`) 표준 준수 확인. ② **US-Q01 UI 셸** — `SafetyContextNav`·`SafetyChecklistForm`·`SafetySubFormPanel`(M6 6-3 6종)·`InfectionControlLogForm`·`SafetyOperationLogForm`·`config/safetyChecks.js`·`.ds-safety-*` CSS. ③ **§8-1** — `/safety/*` 4 route PLANNED 추가. ④ **§92·§93** 신규. 회귀 +12. `npm test`·build PASS.)
+> **이전 갱신**: 2026-06-26 (167차 — **G-CLIENT-CONTRACT-BULK-PRINT 일괄 출력·G-NHIS-SCHEDULE-IMPORT 방문일정 가이드 접근성 재점검 + `.ds-nhis-guide__heading` 미정의 클래스 승격 + §90** — 166차(§89) 이후 coder 신규 커밋 `8ceb25c`(US-G08 `VisitNhisImportGuidePanel`·`VisitNhisImportPanel` guidance wire)·`0d0b587`(US-D05 `ClientCarePlanBulkExportPanel`·`CarePlanNotificationPage` embed) 미점검 a11y·FE-16 갭 해소. ① **`.ds-nhis-guide__heading`** — `VisitNhisImportGuidePanel` PLAN/BILLING `h4`가 미정의 클래스로 `.ds-subheading` 토큰(글자크기·세미볼드·여백)을 못 받던 FE-16 회귀를 `components.css` 승격. ② **`VisitNhisImportGuidePanel`** — 외부 포털 링크 `target=_blank`에 sr-only 「(새 탭)」(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ③ **`ClientCarePlanBulkExportPanel`** — 폼 `aria-label`·계획 연도 범위 오류 `Field error`+`aria-invalid`(WCAG 3.3.1)·submit `aria-busy`·성공/오류 `Alert` tone별 live region 표준 준수 확인. ④ **`VisitNhisImportPanel`** — import 결과 표 방문일 `<time dateTime>` 래핑(WCAG 1.3.1·166차 이전 평문 회귀). ⑤ **§90** 신규. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-26 (166차 — **G-STAFF-COMMITTEE-MEETING-LOG 위원회·보호자 회의록(US-R08·케어포 8-6) 페이지 접근성 재점검 + `.ds-page-section`·`.ds-form-grid--inline` 미정의 클래스 승격 + §89** — 165차(§88)·UXD-165(`bee97b9`) 이후 coder 신규 커밋 `0342076`(위원회·보호자 회의록 CRUD 페이지·운영위원회/보호자 회의/복지노사위원회 3종)·`8ed60cb`(parity-rules 빈 카탈로그 숨김) 미점검 a11y·FE-16 갭 해소(QA-B95 live-E2E 진단 4건은 UI 무관·제외). ① **`.ds-page-section`** — `StaffCommitteeMeetingPage` 등 **Staff HR 5개 페이지**가 컨텍스트 네비·조회 카드·목록 섹션 간격에 쓰나 CSS 단일 원천에 없어(`.ds-main`이 gap 미제공) 섹션이 붙던 회귀를 `margin-top: --space-6`·`:first-child` 리셋으로 승격. ② **`.ds-form-grid--inline`** — 조회일·반기·datetime 필터 **5곳**이 미정의로 base `minmax(200px,1fr)` 스트레치 폴백돼 날짜 필드가 전폭으로 늘어나던 회귀를 `flex` 인라인 정렬(`ds-filter-row` 패턴)로 승격. ③ **회의 유형 토글** — 일회성 미정의 `.ds-button-group`을 정의된 `.ds-segmented`(`BillingReportPage` 패턴)로 정합(`role="tab"`·`aria-selected` 불변). ④ **목록 회의일** `<time dateTime>` 래핑(WCAG 1.3.1). ⑤ 폼·표·상태 배지·모달 오류 패턴은 표준 준수(변경 불요). ⑥ **§89** 신규. `StaffCommitteeMeetingPage.test.jsx` 3/3 PASS·`npm run build` PASS.)
 > **이전 갱신**: 2026-06-25 (165차 — **US-R09 직원 월간 근무일정표·G-REPORT-DENSITY M5 프로그램 리포트·G-REFUND-FEE-FE-WIRE 환불 수수료 미리보기·US-O01-b 목욕 지표27 접근성 재점검 + `.ds-refund-fee-preview` 미정의 클래스 승격 + §88** — 164차(§87)·UXD-164(`d64f81b`) 이후 coder 신규 커밋 5건(`3d7f13b` US-O01-b 목욕 지표27·`cadd74a` 환불 수수료 FE wire·`15a3b7f` M5 프로그램 리포트 4종·`33944e4` 직원 월간 근무일정표 US-R09·`bd3253a`·`2c9abd6` QA 보조) 미점검 a11y·FE-16 갭 해소. ① **`StaffMonthlySchedulePage`** — StatCard 래퍼 `role="group" aria-label="근무 요약"` 부재(§43·93차 패턴 회귀) + 조회 버튼 `aria-busy={loading}` 미전달(WCAG 4.1.3) 2건 수정. ② **`.ds-refund-fee-preview`** — `RefundRecordModal`의 환불 수수료 미리보기 `<dl>`이 CSS 미정의 상태여서 grid 정렬·배경·간격이 미적용되던 FE-16 결함 해소. ③ **`BathingScheduleIndicator27Panel`·`BathingScheduleForm`(US-O01-b)** — `aria-labelledby`·`aria-busy`·`Table captionVisuallyHidden`·`StatusBadge` 텍스트+색 병행 표준 준수 확인(변경 불요). ④ **`ProgramReportPanel`·`ProgramReportNav`·`ProgramReportsPage`(M5 4종)** — `section aria-labelledby`·`h3`·`StatCard role=group`·`Table captionVisuallyHidden`·`aria-busy`·인쇄 `aria-hidden` 표준 준수 확인(변경 불요). ⑤ **`RefundRecordModal`(환불 수수료)** — submit `aria-busy`·오류 `role=alert`·`aria-readonly` 표준 준수 확인, `.ds-refund-fee-preview` CSS 단일 원천 승격. ⑥ **§88** 신규. `StaffMonthlySchedulePage.test.jsx` 3/3 PASS·`npm run build` PASS.)
 > **이전 갱신**: 2026-06-24 (161차 — **G-SMS 직원 알림톡·SMS 발송 패널 접근성 재점검 + `.ds-form-stack` 미정의 클래스 승격 + §84** — 160차(§83)·UXD-160(`15f2195`) 이후 coder 신규 커밋 6건(`ef3948c`/`c04968c`/`9c25d44`/`5a6d42c`/`3f686e3` G-SMS message_kind 1·12·13·19·21 dispatch UI·`068049b` QA-B289) 미점검 a11y·FE-16 갭 해소. ① **`StaffNotificationDispatchPanel`(신규)·`GuardianDocumentNotifyPanel`** — `<form aria-label>`·`Field` render-prop·연월 필수 `Field error`·submit `aria-busy`+`aria-describedby`·성공 `role=status` 표준 이미 충족(JSX 변경 불요)·접속키 키 값 미노출 확인(rules §3). ② **`.ds-form-stack`** — 양 패널이 공유하나 CSS 미정의여서 제목↔폼·필드 간 세로 간격이 0으로 붙던 회귀를 flex column·`gap`·`> form` 스택으로 승격(FE-16·§1 단일 원천). ③ **§84** 신규. 회귀 없음(CSS-only). `npm test`(3 files 11 tests)·build PASS.)
@@ -1106,6 +1108,10 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/nursing/pressure-ulcer/records` | `PressureUlcerPage` | branch_admin, social_worker, caregiver, hq_admin | **US-O03** |
 | `/nursing/pressure-ulcer/reports` | `PressureUlcerPage` | branch_admin, hq_admin | **US-O03 L03_M05** |
 | `/nursing/pressure-ulcer/reports/provision` | `PressureUlcerPage` | branch_admin, hq_admin | **US-O03 L03_M15** |
+| `/safety/daily-checks` | `SafetyDailyChecksPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-2 |
+| `/safety/periodic-checks` | `SafetyPeriodicChecksPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-3 · 6종 sub-form |
+| `/safety/infection-control` | `SafetyInfectionControlPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-3-1 |
+| `/safety/operation-log` | `SafetyOperationLogPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-4 |
 | `/staff` | `StaffPage` | branch_admin, hq_admin | **§3-8** (직원 관리, v3) |
 | `/staff/:id` | `StaffDetailPage` | branch_admin, hq_admin | **US-R03** (직원 lifecycle FAQ21825) |
 | `/login` | `LoginPage` | 공개 | US-B01 (`/`는 `RootRedirect`) |
@@ -5034,6 +5040,122 @@ ParityRule = {
 - `VisitNhisImportPanel.test.jsx` outcome 4-case(PARTIAL·UNMATCHED·ALL_SKIPPED·EMPTY)·branchId deep-link·inline recovery 확인 PASS(coder 기존 실행 확인).
 - `VisitNhisImportGuidePanel.test.jsx` outcomeStatusNotes·errorRecoverySteps 렌더 PASS.
 - CSS 변경 없음 — JSX 변경 없음 — 빌드 회귀 없음.
+
+---
+
+## §92. G16 onePerDayNote parity-rules 접근성 재점검 (169차-a) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-26 -->
+
+> **169차 UXD (2026-06-26)** — §91(168차) coder 신규 커밋 3건(`aa0559b` onePerDayNote fallback·PARTIAL boundary test·`e19328a`/`afbbaa7` parity-rules BE catalog wire) 미점검 a11y·FE-16 갭 해소.
+
+### 92-1. 대상 화면·커밋
+
+| 화면/파일 | 커밋 | 스토리 |
+|-----------|------|--------|
+| `TransportServiceFeePanel`(onePerDayNote parity-rules 우선) | `e19328a`·`aa0559b`·`afbbaa7` | US-T05 G16 · NHIS #44 1일 1회 |
+| `config/transportServiceFee.js`(`resolveTransportServiceFeeOnePerDayNoteFromRules`) | `e19328a` | G16 · BE catalog DTO 정규화 |
+| `VisitNhisImportPanel.test.jsx`(importedCount=0 PARTIAL boundary) | `aa0559b` | US-G08b stage11 |
+
+### 92-2. 접근성·FE-16 재점검 결과
+
+| 파일 | 결함 | 조치 | 근거 |
+|------|------|------|------|
+| `TransportServiceFeePanel` onePerDayNote | **`id="service-fee-one-per-day-note"`** 추가·`.ds-transport-service-fee__note` CSS 승격 | programmatic reference·여백 단일 원천 | WCAG 1.3.1 |
+| `TransportServiceFeePanel` onePerDayNote `role` | `role="note"` 유지 — rates 섹션 보조 안내 | 표준 준수 | WCAG 1.3.1 |
+| `TransportServiceFeePanel` 조회/생성 | `aria-busy`·행 `${이용자} ${이용일}` `aria-label`·`<time dateTime>` | §82 패턴 유지 — 변경 불요 | WCAG 4.1.3 · 2.4.6 |
+| `VisitNhisImportPanel` PARTIAL boundary | importedCount=0 + unmatched/skipped → PARTIAL Alert·recovery steps | coder test lock — UI 변경 불요 | US-G08b stage11 |
+
+### 92-3. coder 전달 메모
+
+- **onePerDayNote 우선순위** — `resolveTransportServiceFeeOnePerDayNoteFromRules(parityPayload.rules, ratePayload.onePerDayNote)` → parity `ONE_PER_DAY.description` → rates API note → `TRANSPORT_SERVICE_FEE_ONE_PER_DAY_NOTE` static.
+- **`#service-fee-one-per-day-note`** — 향후 rates `section`에 `aria-describedby` 연결 시 동일 id 사용.
+
+### 92-4. 검증
+
+- `TransportServiceFeePanel.test.jsx` parity-rules·static fallback PASS.
+- `VisitNhisImportPanel.test.jsx` zero-import PARTIAL boundary PASS.
+
+---
+
+## §93. US-Q01 Epic Q 위생·안전·시설운영 UI 셸 (169차-b) [UXD]
+
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-26 -->
+
+> **169차 UXD (2026-06-26)** — USER_STORIES US-Q01·REQUIREMENTS §3-14·FLOWCHART 대비 **`/safety/*` 4 route UI 0건** 갭 해소. M6 6-2/6-3 PDF sub-form 6종 스키마 초안(DRA/UXD sign-off · BNK-620 P1).
+
+### 93-1. 신규 컴포넌트·상수
+
+| 산출물 | 위치 | 역할 |
+|--------|------|------|
+| `SAFETY_ROUTES`·`SAFETY_SUB_FORM_TYPES`·`DAILY_CHECK_TEMPLATE`·`PERIODIC_CHECK_TEMPLATES` | `config/safetyChecks.js` | 4 route·6 sub-form·체크리스트 템플릿 단일 원천 |
+| `SafetyContextNav` | `components/ui/` | `/safety/*` 4링크 컨텍스트 네비 |
+| `SafetyChecklistForm` | `components/ui/` | 일일·정기 공통 체크리스트 폼 |
+| `SafetySubFormPanel` | `components/ui/` | M6 6-3 6종 sub-form `FilterChips` 전환 |
+| `InfectionControlLogForm` | `components/ui/` | M6 6-3-1 감염병 관리 일지 |
+| `SafetyOperationLogForm` | `components/ui/` | M6 6-4 시설운영일지 |
+
+### 93-2. 접근성 패턴
+
+| 패턴 | 구현 |
+|------|------|
+| 컨텍스트 네비 | `nav aria-label="위생·안전 하위 메뉴"`·`NavLink aria-current` |
+| 체크리스트 | `fieldset legend="점검 항목"`·항목별 `Checkbox`+비고 `Field`·결과 `StatusBadge`+`role="status" aria-live="polite"` |
+| sub-form 전환 | `FilterChips role="radiogroup"`·키보드 roving tabindex(기존 DS 패턴) |
+| 폼 검증 | 필수값 `Field error`+`aria-invalid`(WCAG 3.3.1)·submit `aria-busy` |
+| 감염·운영일지 | `<form aria-label>`·증상/조치 `FilterChips`·오류 `Alert role=alert` |
+
+### 93-3. CSS (components.css)
+
+| 클래스 | 용도 |
+|--------|------|
+| `.ds-safety-checklist*` | 체크list 섹션·요약·항목·help |
+| `.ds-safety-sub-form` | sub-form 패널 vertical stack |
+| `.ds-safety-infection-log*`·`.ds-safety-operation-log*` | 감염·운영일지 폼 |
+| `.ds-transport-service-fee__note` | G16 onePerDayNote footnote |
+
+### 93-4. coder 전달 메모 (페이지 wire-up)
+
+1. **4 Page 생성** — `SafetyDailyChecksPage`(`SafetyChecklistForm`+`DAILY_CHECK_TEMPLATE`)·`SafetyPeriodicChecksPage`(`SafetySubFormPanel`)·`SafetyInfectionControlPage`(`InfectionControlLogForm`)·`SafetyOperationLogPage`(`SafetyOperationLogForm`). 공통: `SafetyContextNav`·`BranchScopeNotice`·`ds-page-section`.
+2. **`App.jsx` 라우트** — §8-1 4경로·`roleNav.js` RBAC(`branch_admin`·`social_worker`·`hq_admin`).
+3. **`navConfig.js`** — 기록 또는 운영 그룹에 「위생·안전」항목(플래너 IA 확정 후).
+4. **BE API** — `safety_checks` 스키마(DRA) 연동 시 payload: `{ checkDate, inspectorName, items[], overallNotes, resultCode, subFormCode? }`.
+5. **인쇄** — 체크list `window.print()` 또는 BE export는 v3.1 후속.
+
+### 93-5. 검증
+
+- `safetyChecks.test.js` 5 · `SafetyContextNav.test.jsx` 2 · `SafetyChecklistForm.test.jsx` 3 · `SafetySubFormPanel.test.jsx` 2 — PASS.
+
+---
+
+## §94. US-Q01 Safety module API wire-up 접근성 재점검 + `SafetyRecentDraftsPanel` + `.ds-safety-checklist__items` FE-16 해소 [UXD]
+
+> **169차(§93) 이후 coder 신규 커밋 4건** (`47a068c` safety module routes + pilot pages · `01f32dc` server SafetyCheck API wire · `f7061c4` M6 module coverage tests · `d1d0adf` live-e2e seed harness) 미점검 a11y·FE-16 갭 해소.
+
+### 94-1. 신규 컴포넌트 검토
+
+| 컴포넌트 | 경로 | a11y 검토 결과 |
+|----------|------|----------------|
+| `SafetyPilotNotice` | `components/safety/` | `Alert tone=info role=note` — 기존 패턴 준수 ✓ |
+| `SafetyRecentDraftsPanel` | `components/safety/` | `Card` + `Table caption={title} captionVisuallyHidden` + `scope=col` — 표준 준수 ✓. `onRemove` 미사용(현 4페이지 모두 미전달) — 활성화 시 행 `aria-label` 컨텍스트 추가 필요(coder 메모 §94-4) |
+
+### 94-2. 접근성 갭 해소
+
+① **날짜 열 `<time dateTime>` 래핑(WCAG 1.3.1)** — 4개 페이지의 `SafetyRecentDraftsPanel` 날짜 컬럼(`checkDate`·`recordDate`·`logDate`)이 렌더 함수 미제공으로 ISO 문자열 평문 출력되던 결함을, 각 페이지 column 정의에 `render: (row) => <time dateTime={row.X}>{row.X}</time>` 추가해 해소(88차 `StaffDetailPage`·123차 `TransportServiceLogPanel` 패턴 정합).
+
+② **`SafetyOperationLogForm`·`InfectionControlLogForm` 헤딩 ID `useId()` 마이그레이션** — 두 컴포넌트가 하드코딩된 `id="safety-operation-log-heading"`/`id="safety-infection-log-heading"`을 `aria-labelledby` 대상으로 사용했으나, 복수 인스턴스 마운트 시 ID 충돌 위험 및 `SafetyChecklistForm`(이미 `useId()` 사용) 패턴과 불일치. `useId()`로 교체해 단일 원천 패턴 통일(인스턴스 충돌 방지).
+
+③ **`.ds-safety-checklist__items` FE-16 해소** — `SafetyChecklistForm`의 `<fieldset>` 이 `.ds-fieldset.ds-safety-checklist__items` 두 클래스를 사용하나 `__items` 수정자가 `components.css` 미정의여서 FE-16 원칙 위반. `margin-top: var(--space-2)` 최소 정의 추가(fieldset 상단 여백·시각 불변).
+
+### 94-3. 검증
+
+- `SafetyChecklistForm.test.jsx` 3 · `SafetyContextNav.test.jsx` 2 · `SafetySubFormPanel.test.jsx` 2
+- `SafetyDailyChecksPage.test.jsx` 1 · `SafetyInfectionControlPage.test.jsx` 1 · `SafetyOperationLogPage.test.jsx` 1 · `SafetyPeriodicChecksPage.test.jsx` 1 — **7 files 11 tests PASS**. `npm run build` PASS.
+
+### 94-4. coder 전달 메모
+
+- `SafetyRecentDraftsPanel`의 `onRemove` prop 활성화 시: 삭제 `Button`에 `aria-label={${row.checkDate || row.logDate || row.recordDate} 기록 삭제}` 부여(WCAG 2.4.6 반복 행 액션 패턴).
+- `SafetyDailyChecksPage` · `SafetyPeriodicChecksPage`: `resultCode` 열이 현재 원시 코드 문자열(`PASS`/`PARTIAL`/`FAIL`)을 노출. `StatusBadge` + `SAFETY_CHECK_RESULT` 맵으로 색+텍스트 병행 전환 권고(WCAG 1.4.1 — 색만 의존 금지 · v3.1 후속 P2).
 
 ---
 
