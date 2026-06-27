@@ -1,3 +1,133 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T23:48:29+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-23 1342차)
+
+> **1342차 PASS(merge EXECUTED · FE SYNCED post-merge revalidation)** — develop/test `@87da06d` **SYNCED** · ★ merge **EXECUTED** FF `bc6180e`→`87da06d` (1 commit) · pre-merge **2115/2115 PASS**(718.52s) · post-merge **2115/2115 PASS**(723.21s, 413 files, +1 test) · build **1165 modules PASS**(9.02s) · audit **1 high**(form-data) · live E2E **SKIP**(bootstrap-disabled · 1340차 **147 SKIP/0 PASS** carry) · **QA-B278 Fixed** · transfer **PASS** · cross-stream **BLOCK(BE dirty@f600fd6 QA-B277 · FE SYNCED@87da06d)** · operation **BLOCK**
+
+## 1342차 검증 요약 (merge EXECUTED · FE SYNCED)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | **SYNCED** `87da06d` |
+| ahead (`test..develop`) | **0/0** (merge EXECUTED 1 commit) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 무해한 빈 파일 carry) |
+| npm test pre-merge (@develop) | **2115/2115 PASS** (718.52s, 413 files, +1 test) |
+| npm test post-merge (@test) | **2115/2115 PASS** (723.21s, 413 files) |
+| merge | **EXECUTED** FF `bc6180e`→`87da06d` (1 commit) |
+| build | **1165 modules PASS** (9.02s @ test) |
+| npm audit (high+) | **1 high** (form-data CRLF) |
+| live E2E | **SKIP** (bootstrap-disabled · guardian 503 · 1340차 carry) |
+| fixed issues (frontend) | **QA-20260623-B278** |
+| transfer verdict | **PASS** |
+| cross-stream | **BLOCK** (BE dirty@`f600fd6` QA-B277 · FE SYNCED@`87da06d`) |
+| operation | **BLOCK** (origin/test push 537 BE+**200** FE + QA-B95 bootstrap-disabled partial + QA-B277) |
+
+### merge EXECUTED 커밋 (1)
+
+| SHA | 메시지 |
+|---|---|
+| `87da06d` | test(v1.3-C/G16): wire transport service fees into pilot harness |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T22:42:09+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-23 1340차)
+
+> **1340차 PASS(merge EXECUTED · FE SYNCED post-merge revalidation)** — develop/test `@bc6180e` **SYNCED** · ★ merge **EXECUTED** FF `a531ed6`→`bc6180e` (1 commit) · post-merge `npm test` **2114/2114 PASS**(726.74s, 413 files, +3 tests) · build **1165 modules PASS**(8.43s) · audit **1 high**(form-data) · live E2E **147 SKIP/0 PASS**(bootstrap-disabled · QA-B95 criteria 미충족) · **QA-B276 Fixed** · transfer **PASS** · cross-stream **SYNCED(FE@bc6180e + BE@f600fd6)** · operation **BLOCK**
+
+## 1340차 검증 요약 (merge EXECUTED · FE SYNCED)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | **SYNCED** `bc6180e` |
+| ahead (`test..develop`) | **0/0** (merge EXECUTED 1 commit) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 무해한 빈 파일 carry) |
+| npm test post-merge (@bc6180e) | **2114/2114 PASS** (726.74s, 413 files, +3 tests) |
+| merge | **EXECUTED** FF `a531ed6`→`bc6180e` (1 commit) |
+| build | **1165 modules PASS** (8.43s @ test) |
+| npm audit (high+) | **1 high** (form-data CRLF) |
+| live E2E | **147 SKIP / 0 PASS** (bootstrap-disabled · guardian 503) |
+| fixed issues (frontend) | **QA-20260623-B276** |
+| transfer verdict | **PASS** |
+| cross-stream | **SYNCED** (FE@`bc6180e` + BE@`f600fd6`) |
+| operation | **BLOCK** (origin/test push 537 BE+**199** FE + QA-B95 bootstrap-disabled partial) |
+
+### merge EXECUTED 커밋 (1)
+
+| SHA | 메시지 |
+|---|---|
+| `bc6180e` | feat(v3/US-R01-c): close leave-ledger FE wire and live E2E harness |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T21:13:18+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-23 1337차)
+
+> **1337차 PASS(SYNCED post-merge revalidation)** — develop/test `@170ce56` **SYNCED** · post-merge `npm test` **2111/2111 PASS**(723.48s, 413 files) · merge **SKIP**(`0/0` · 1336차 FF applied) · build **1165 modules PASS**(12.21s) · audit **1 high**(form-data) · live E2E **SKIP**(bootstrap-disabled · 1320차 **127 PASS/19 SKIP** carry) · transfer **PASS** · cross-stream **BLOCK(BE pending 5 @01edba7)** · operation **BLOCK**
+
+## 1337차 검증 요약 (SYNCED post-merge revalidation)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | **SYNCED** `170ce56` |
+| ahead (`test..develop`) | **0/0** (1336차 merge applied) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 무해한 빈 파일 carry) |
+| npm test post-merge (@170ce56) | **2111/2111 PASS** (723.48s, 413 files) |
+| merge | **SKIP** (`0/0` · 1336차 FF `b7101d5`→`170ce56`) |
+| build | **1165 modules PASS** (12.21s @ test) |
+| npm audit (high+) | **1 high** (form-data CRLF) |
+| live E2E | **SKIP** (bootstrap-disabled · 1320차 **127 PASS / 19 SKIP** carry) |
+| planned issue (backend) | **QA-20260623-B272** (pending 5 @`01edba7`) |
+| transfer verdict | **PASS** |
+| cross-stream | **BLOCK** (BE pending 5 @`01edba7` QA-B272 · FE SYNCED@`170ce56`) |
+| operation | **BLOCK** (QA-B272 + origin/test push 530 BE+**197** FE + QA-B95 partial 19 SKIP) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T21:05:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-23 1336차)
+
+> **1336차 PASS(merge EXECUTED · FE SYNCED)** — develop `@170ce56` pre-merge `npm test` **2111/2111 PASS**(725.77s, 413 files) · ★ merge **EXECUTED** FF `b7101d5`→`170ce56` (10 commits) · post-merge re-run **Terminated exit 143**(~670s · FF carry) · build **1165 modules PASS**(11.12s) · audit **1 high**(form-data) · live E2E **SKIP**(bootstrap-disabled · 1320차 **127 PASS/19 SKIP** carry) · **QA-B274 Fixed** · **QA-B273 Fixed** · transfer **PASS** · cross-stream **BLOCK(BE pending 5 @01edba7)** · operation **BLOCK**
+
+## 1336차 검증 요약 (merge EXECUTED · FE SYNCED)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | **SYNCED** `170ce56` |
+| ahead (`test..develop`) | **0/0** (merge EXECUTED 10 commits) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 무해한 빈 파일 carry) |
+| npm test pre-merge (@170ce56) | **2111/2111 PASS** (725.77s, 413 files) |
+| merge | **EXECUTED** FF `b7101d5`→`170ce56` (10 commits) |
+| npm test post-merge (@170ce56) | **Terminated exit 143** (~670s partial · carry pre-merge) |
+| build | **1165 modules PASS** (11.12s @ test) |
+| npm audit (high+) | **1 high** (form-data CRLF) |
+| live E2E | **SKIP** (bootstrap-disabled · 1320차 **127 PASS / 19 SKIP** carry) |
+| fixed issues (frontend) | **QA-20260623-B274** · **QA-20260623-B273** |
+| planned issue (backend) | **QA-20260623-B272** (pending 5 @`01edba7`) |
+| transfer verdict | **PASS** |
+| cross-stream | **BLOCK** (BE pending 5 @`01edba7` QA-B272 · FE SYNCED@`170ce56`) |
+| operation | **BLOCK** (QA-B272 + origin/test push 530 BE+**197** FE + QA-B95 partial 19 SKIP) |
+
+### merge EXECUTED 커밋 (10)
+
+| SHA | 메시지 |
+|---|---|
+| `8057c1e` | feat(v3/US-R01-c): wire staff leave ledger page and API client |
+| `bd1d0ad` | ux(a11y): US-R01-c leave-ledger table, delete modal, compact grid |
+| `426d63a` | test(us-r01-c): align annual leave related surface availability |
+| `64584f4` | fix(v3/us-r01-c): preserve API-resolved branch scope metadata |
+| `7e048c0` | feat(clients): Korean address search, edit flow, transport pickup UX |
+| `0606a3b` | ux(a11y): Korean address fields, client list filters, form accessibility |
+| `77584a0` | fix(clients): centralize create/edit RBAC and guard client routes |
+| `2e7374b` | fix(auth): align client RBAC with backend role hierarchy |
+| `1193761` | fix(test): resolve QA-B274 pre-merge 7 FAIL regressions |
+| `170ce56` | test(clients): cover caregiver edit link on ClientDetailPage |
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-23T20:35:08+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-23 1335차)
 

@@ -1,3 +1,161 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T23:51:45+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-26 1460차 · latest)
+
+> **1460차 BLOCK** — baseline `@afbbaa7` **2292/2292 PASS**(775.15s, 439 files) · develop `@47a068c` WT **CLEAN** · pre-merge carry **2292/2292 PASS**(768.61s, +0 · same SHA) · merge **SKIP**(`test..develop` **0/4** pending · read-only 정책) · build **1200 PASS**(10.19s) · audit **0** · vitest lock guard **PASS carry**(TSR1459) · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **QA-B352 Planned carry(pending 4)** · cross-stream **BLOCK(BE pending 14 @8342f92 · FE pending 4 @47a068c)** · operation **BLOCK**
+
+## 1460차 검증 요약 (merge SKIP · BLOCK)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | test `@afbbaa7` · develop `@47a068c` |
+| ahead (`test..develop`) | **4** (`aa0559b`+`e19328a`+`724f4a9`+`47a068c`) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 빈 파일 artifact · LOW carry) |
+| npm test baseline (@test afbbaa7) | **2292/2292 PASS** (775.15s, 439 files · TSR1460 재실행) |
+| develop pre-merge (@develop 47a068c) | **2292/2292 PASS carry** (768.61s, 439 files, +0 test · TSR1459 same SHA) |
+| merge | **SKIP** (src/frontend-test read-only 정책 · pending 4) |
+| npm test post-merge | **SKIP** (merge 미실행) |
+| build | **1200 modules PASS** (10.19s @ develop) |
+| npm audit (high+, omit=dev) | **0** |
+| vitest concurrency guard | **PASS carry** (TSR1459 lock reject exit 75) |
+| live E2E | **SKIP** (carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled) |
+| transfer verdict | **BLOCK** |
+| open issue (active) | **1 active** (`QA-B344` backend carry) |
+| planned issue | **QA-B352 pending 4** (`47a068c`) |
+| cross-stream | **BLOCK** (BE pending 14 @8342f92 · FE pending 4 @47a068c) |
+| operation | **BLOCK** (origin/test push 596 BE+273 FE + QA-B116 + QA-B95 partial + QA-B344 + QA-B352) |
+
+## pending commits (`afbbaa7..47a068c`)
+
+1. `aa0559b` — `fix(v1.2.1/G16): fallback onePerDayNote and lock zero-import PARTIAL UI`
+2. `e19328a` — `fix(v1.2.1/G16): derive one-per-day note from parity rules`
+3. `724f4a9` — `feat(UXD/US-Q01): add safety module UI shell and G16 note a11y`
+4. `47a068c` — `feat(v1.2.1/US-Q01): wire safety module routes and pilot draft pages`
+
+## diff stat (실측 영향)
+
+- G16 onePerDayNote + PARTIAL boundary UI (2 commits)
+- US-Q01 safety module routes + UI shell (2 commits)
+- FE develop→test merge pending 4 — transfer **BLOCK**
+- cross-stream **BLOCK** 유지: backend `test..develop` pending **14** @8342f92
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T23:25:00+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-26 1459차 · latest)
+
+> **1459차 BLOCK** — baseline `@afbbaa7` **2292/2292 PASS**(770.04s, 439 files) · develop `@47a068c` WT **CLEAN** · pre-merge **2292/2292 PASS**(768.61s, 439 files, +0) · merge **SKIP**(`test..develop` **0/4** pending · read-only 정책) · build **1200 PASS**(10.33s) · audit **0** · vitest lock guard **PASS**(exit 75) · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **QA-B352 Planned update(pending 4)** · cross-stream **BLOCK(BE pending 14 @8342f92 · FE pending 4 @47a068c)** · operation **BLOCK**
+
+## 1459차 검증 요약 (merge SKIP · BLOCK)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | test `@afbbaa7` · develop `@47a068c` |
+| ahead (`test..develop`) | **4** (`aa0559b`+`e19328a`+`724f4a9`+`47a068c`) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 빈 파일 artifact · LOW carry) |
+| npm test baseline (@test afbbaa7) | **2292/2292 PASS** (770.04s, 439 files · +17 vs TSR1456·artifact carry) |
+| develop pre-merge (@develop 47a068c) | **2292/2292 PASS** (768.61s, 439 files, +0 test) |
+| merge | **SKIP** (src/frontend-test read-only 정책 · pending 4) |
+| npm test post-merge | **SKIP** (merge 미실행) |
+| build | **1200 modules PASS** (10.33s @ develop) |
+| npm audit (high+, omit=dev) | **0** |
+| vitest concurrency guard | **PASS** (`npm-test-locked.sh` lock reject exit 75 검증) |
+| live E2E | **SKIP** (carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled) |
+| transfer verdict | **BLOCK** |
+| open issue (active) | **1 active** (`QA-B344` backend carry) |
+| planned issue | **QA-B352 pending 4** (`47a068c`) |
+| cross-stream | **BLOCK** (BE pending 14 @8342f92 · FE pending 4 @47a068c) |
+| operation | **BLOCK** (origin/test push 596 BE+273 FE + QA-B116 + QA-B95 partial + QA-B344 + QA-B352) |
+
+## pending commits (`afbbaa7..47a068c`)
+
+1. `aa0559b` — `fix(v1.2.1/G16): fallback onePerDayNote and lock zero-import PARTIAL UI`
+2. `e19328a` — `fix(v1.2.1/G16): derive one-per-day note from parity rules`
+3. `724f4a9` — `feat(UXD/US-Q01): add safety module UI shell and G16 note a11y`
+4. `47a068c` — `feat(v1.2.1/US-Q01): wire safety module routes and pilot draft pages`
+
+## diff stat (실측 영향)
+
+- G16 onePerDayNote + PARTIAL boundary UI (2 commits)
+- US-Q01 safety module routes + UI shell (2 commits)
+- FE develop→test merge pending 4 — transfer **BLOCK**
+- cross-stream **BLOCK** 유지: backend `test..develop` pending **14** @8342f92
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T21:42:18+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-26 1456차)
+
+> **1456차 BLOCK** — baseline `@afbbaa7` **2275/2275 PASS**(765.88s, 433 files) · develop `@aa0559b` WT **CLEAN** · pre-merge **2275/2275 PASS**(763.19s, 433 files, +0) · merge **SKIP**(`test..develop` **0/1** pending `aa0559b` · read-only 정책) · build **1187 PASS**(9.98s) · audit **0** · vitest lock guard **PASS**(중복 실행 차단 exit 75) · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **QA-B352 Planned update(pending 1)** · cross-stream **BLOCK(BE pending 12 @eb6dd67 + DIRTY 1M · FE pending 1 @aa0559b)** · operation **BLOCK**
+
+## 1456차 검증 요약 (merge SKIP · BLOCK)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | test `@afbbaa7` · develop `@aa0559b` |
+| ahead (`test..develop`) | **1** (`aa0559b`) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 빈 파일 artifact · LOW carry) |
+| npm test baseline (@test afbbaa7) | **2275/2275 PASS** (765.88s, 433 files) |
+| develop pre-merge (@develop aa0559b) | **2275/2275 PASS** (763.19s, 433 files, +0 test) |
+| merge | **SKIP** (src/frontend-test read-only 정책 · pending 1) |
+| npm test post-merge | **SKIP** (merge 미실행) |
+| build | **1187 modules PASS** (9.98s @ test) |
+| npm audit (high+, omit=dev) | **0** |
+| vitest concurrency guard | **PASS** (`npm-test-locked.sh` lock reject exit 75 검증) |
+| live E2E | **SKIP** (carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled) |
+| transfer verdict | **BLOCK** |
+| open issue (active) | **2 active** (`QA-B344`, `QA-B353` backend carry) |
+| planned issue | **QA-B352 pending 1** (`aa0559b`) |
+| cross-stream | **BLOCK** (BE pending 12 @eb6dd67 + DIRTY 1M · FE pending 1 @aa0559b) |
+| operation | **BLOCK** (origin/test push 582 BE+269 FE + QA-B116 + QA-B95 partial + QA-B344 + QA-B352) |
+
+## pending commits (`afbbaa7..aa0559b`)
+
+1. `aa0559b` — `fix(v1.2.1/G16): fallback onePerDayNote and lock zero-import PARTIAL UI`
+
+## diff stat (실측 영향)
+
+- 5 files changed, 81 insertions(+), 3 deletions(-)
+- `TransportServiceFeePanel` + `VisitNhisImportPanel.test.jsx` + `transportServiceFee` config 테스트 보강
+- FE develop→test merge pending 1 — transfer **BLOCK**
+- cross-stream **BLOCK** 유지: backend `test..develop` pending **12** + develop WT **DIRTY 1M** @eb6dd67
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T20:30:18+00:00 -->
+# develop ↔ test diff 메타 — frontend (2026-06-26 1454차)
+
+> **1454차 BLOCK** — baseline `@320ba06` **2269/2269 PASS**(763s, 433 files · carry TSR 1452 · test HEAD unchanged) · develop `@afbbaa7` WT **CLEAN** · pre-merge **2272/2272 PASS**(759.78s, 433 files, +3) · merge **SKIP**(`test..develop` **0/4** pending · read-only 정책) · build **1187 PASS**(8.64s) · audit **0** · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **★ QA-B351 Fixed carry** · **QA-B352 Planned(pending 4)** · cross-stream **BLOCK(BE pending 12 @eb6dd67 · FE pending 4 @afbbaa7)** · operation **BLOCK**
+
+## 1454차 검증 요약 (merge SKIP · BLOCK)
+
+| 항목 | 결과 |
+|---|---|
+| test/develop HEAD | test `@320ba06` · develop `@afbbaa7` |
+| ahead (`test..develop`) | **4** (`2d9b9d3`+`2cf47a8`+`5636508`+`afbbaa7`) |
+| develop working tree | **CLEAN** |
+| test working tree | **DIRTY** (`?? 9`, 빈 파일 artifact · LOW carry) |
+| npm test baseline (@test 320ba06) | **2269/2269 PASS** (763s, 433 files · carry TSR 1452) |
+| develop pre-merge (@develop afbbaa7) | **2272/2272 PASS** (759.78s, 433 files, +3 tests) |
+| merge | **SKIP** (src/frontend-test read-only 정책 · pending 4) |
+| npm test post-merge | **SKIP** (merge 미실행) |
+| build | **1187 modules PASS** (8.64s @ develop) |
+| npm audit (high+, omit=dev) | **0** |
+| live E2E | **SKIP** (carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled) |
+| transfer verdict | **BLOCK** |
+| open issue (frontend) | **0 active** · **★ QA-B351 Fixed carry** · **QA-B352 Planned(pending 4)** |
+| cross-stream | **BLOCK** (BE pending 12 @eb6dd67 · FE pending 4 @afbbaa7) |
+| operation | **BLOCK** (origin/test push 582 BE+265 FE + QA-B116 + QA-B95 partial + QA-B344 + QA-B352) |
+
+## pending commits (`320ba06..afbbaa7`)
+
+1. `2d9b9d3` — `fix(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): surface branch-aware recovery steps`
+2. `2cf47a8` — `test: harden care service notes test isolation` (**QA-B351 fix** — vi.hoisted mock reset + afterEach cleanup)
+3. `5636508` — `feat(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): consume guidance recovery keyword notes`
+4. `afbbaa7` — `fix(v1.2.1/G16): wire transport parity-rules BE catalog DTO fields`
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T19:10:00+00:00 -->
 # develop ↔ test diff 메타 — frontend (2026-06-26 1452차 · latest)
 

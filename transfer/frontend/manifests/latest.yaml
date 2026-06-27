@@ -1,3 +1,311 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T05:19:20+00:00 -->
+<!-- tester-sync: TSR 1476차 2026-06-27T05:19 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2318/2318 PASS**(781.58s, 445 files) · develop `@bf9b4b1` WT **CLEAN** · merge **SKIP**(pending 10) · build **1187 PASS**(8.68s) · audit **0** · live E2E **SKIP**(carry 122/25/0) · **QA-B352 Planned update(pending 10)** · verdict **BLOCK** · operation **BLOCK** -->
+# updated: 2026-06-27T05:19:20+00:00
+# revalidation_1476th: frontend manifest => BLOCK (baseline 2318/2318 @afbbaa7 781.58s 445 files; develop @bf9b4b1 WT CLEAN; merge SKIP pending 10; build 1187 PASS 8.68s; audit 0 high; QA-B344 Open carry BE pending 19; QA-B352 Planned pending 10; cross-stream BLOCK(BE pending 19 + FE pending 10 + fee-schedule seed API 404/network carry); operation BLOCK origin/test push 582 BE+269 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: bf9b4b1
+merge_status: pending
+merge_pending_commits: 10
+merge_range: afbbaa7..bf9b4b1
+npm_test_baseline: "2318/2318 PASS @ test afbbaa7 (781.58s, 445 files · src/frontend-test flock vitest · TSR1476)"
+npm_test_pre_merge: "SKIP (src/frontend read-only · develop +46 tests post-merge 예상)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2318/2318)"
+build_modules: "1187 modules PASS @ test worktree (8.68s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B355, QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 19@aa9565c · FE pending 10@bf9b4b1 · fee-schedule seed API 404/network carry)
+operation: BLOCK (origin/test push 582 BE+269 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T04:50:18+00:00 -->
+<!-- tester-sync: TSR 1474차 2026-06-27T04:50 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2272/2272 PASS**(762s, 433 files · reconfirm) · develop `@dd5571d` WT **CLEAN** · merge **SKIP**(pending 9) · build **1187 PASS**(9.04s) · audit **0** · live E2E **SKIP**(carry 122/25/0) · **QA-B352 Planned carry(pending 9)** · verdict **BLOCK** · operation **BLOCK** -->
+# updated: 2026-06-27T04:50:18+00:00
+# revalidation_1474th: frontend manifest => BLOCK (baseline 2272/2272 @afbbaa7 762s 433 files; develop @dd5571d WT CLEAN; merge SKIP pending 9; build 1187 PASS 9.04s; audit 0; QA-B352 Planned pending 9; Open 1 B344; cross-stream BLOCK; operation BLOCK origin/test push 600 BE+278 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: dd5571d
+merge_status: pending
+merge_pending_commits: 9
+merge_range: afbbaa7..dd5571d
+npm_test_baseline: "2272/2272 PASS @ test afbbaa7 (762s, 433 files · src/frontend-test flock vitest · TSR1474)"
+npm_test_pre_merge: "SKIP (src/frontend read-only · develop +44 tests post-merge 예상 → ~2316)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2272/2272)"
+build_modules: "1187 modules PASS @ test worktree (9.04s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B355, QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 18@7a9ed71 · FE pending 9@dd5571d · fee-schedule seed 404/500 carry)
+operation: BLOCK (origin/test push 600 BE+278 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T04:49:52+00:00 -->
+<!-- tester-sync: TSR 1473차 2026-06-27T04:49 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2272/2272 PASS**(761.60s, 433 files · `src/frontend-test` flock vitest) · develop `@dd5571d` WT **CLEAN** · merge **SKIP**(pending 9) · build **1187 PASS**(10.12s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0) · **★ QA-B355 Fixed @ `dd5571d`** · **QA-B352 Planned update(pending 9 · post-merge +44 예상)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 18 @7a9ed71 · FE pending 9 @dd5571d · fee-schedule seed 404 carry)** · operation **BLOCK** -->
+# updated: 2026-06-27T04:49:52+00:00
+# revalidation_1473rd: frontend manifest => BLOCK (baseline 2272/2272 @afbbaa7 761.60s 433 files; develop @dd5571d WT CLEAN; merge SKIP pending 9; build 1187 PASS 10.12s; audit 0 high; QA-B355 Fixed@dd5571d; QA-B352 Planned pending 9; Open 1(active BE B344); cross-stream BLOCK(BE pending 18 + FE pending 9); operation BLOCK origin/test push 600 BE+278 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: dd5571d
+merge_status: pending
+merge_pending_commits: 9
+merge_range: afbbaa7..dd5571d
+npm_test_baseline: "2272/2272 PASS @ test afbbaa7 (761.60s, 433 files · src/frontend-test flock vitest · TSR1473)"
+npm_test_pre_merge: "SKIP (src/frontend read-only · develop +44 tests post-merge 예상 → ~2316)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2272/2272)"
+build_modules: "1187 modules PASS @ test worktree (10.12s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B355, QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 18@7a9ed71 · FE pending 9@dd5571d · fee-schedule seed 404/500 carry)
+operation: BLOCK (origin/test push 600 BE+278 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T03:21:35+00:00 -->
+<!-- tester-sync: TSR 1470차 2026-06-27T03:21 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2272/2272 PASS**(764.75s, 433 files · carry TSR1469) · develop `@d1d0adf` WT **CLEAN** · merge **SKIP**(`test..develop` **0/7** pending) · build **1187 PASS**(8.72s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0) · **QA-B352 Planned carry(pending 7)** · verdict **BLOCK** · operation **BLOCK** -->
+# updated: 2026-06-27T03:21:35+00:00
+# revalidation_1470th: frontend manifest => BLOCK (baseline carry 2272/2272 @afbbaa7; develop @d1d0adf WT CLEAN; merge SKIP pending 7; Open 1 B344; operation BLOCK).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: d1d0adf
+merge_status: pending
+merge_pending_commits: 7
+merge_range: afbbaa7..d1d0adf
+npm_test_baseline: "2272/2272 PASS @ test afbbaa7 (764.75s, 433 files · carry TSR1469 · TSR1470 git reconfirm)"
+npm_test_pre_merge: "SKIP (src/frontend read-only · post-merge +43 tests 예상)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2272/2272)"
+build_modules: "1187 modules PASS @ test worktree (8.72s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B355, QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 17@92770fd · FE pending 7@d1d0adf · fee-schedule seed 404/500 carry)
+operation: BLOCK (origin/test push 599 BE+276 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T03:18:00+00:00 -->
+<!-- tester-sync: TSR 1469차 2026-06-27T03:18 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2272/2272 PASS**(764.75s, 433 files · `src/frontend-test` flock vitest) · develop `@d1d0adf` WT **CLEAN** · merge **SKIP**(`test..develop` **0/7** pending) · build **1187 PASS**(8.83s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **★ QA-B355 Fixed carry @ `d1d0adf`** · **QA-B352 Planned carry(pending 7)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 17 @92770fd · FE pending 7 @d1d0adf · fee-schedule seed 404 carry · develop +43 tests post-merge 예상)** · operation **BLOCK** -->
+# updated: 2026-06-27T03:18:00+00:00
+# revalidation_1469th: frontend manifest => BLOCK (baseline 2272/2272 @afbbaa7 764.75s 433 files frontend-test flock vitest; develop @d1d0adf WT CLEAN; merge SKIP pending 7; build 1187 PASS 8.83s; audit 0 high; QA-B355 Fixed carry; QA-B352 Planned(pending 7); Open 1(active BE B344); cross-stream BLOCK(BE pending 17 + FE pending 7 + seed 404 carry); operation BLOCK origin/test push 599 BE+276 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: d1d0adf
+merge_status: pending
+merge_pending_commits: 7
+merge_range: afbbaa7..d1d0adf
+npm_test_baseline: "2272/2272 PASS @ test afbbaa7 (764.75s, 433 files · src/frontend-test flock vitest · TSR1469 재실행)"
+npm_test_pre_merge: "SKIP (src/frontend read-only 원칙 · develop @d1d0adf +43 tests vs baseline 예상)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2272/2272)"
+build_modules: "1187 modules PASS @ test worktree (8.83s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B355, QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 17@92770fd · FE pending 7@d1d0adf · fee-schedule seed 404/500 carry)
+operation: BLOCK (origin/test push 599 BE+276 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T02:52:00+00:00 -->
+<!-- tester-sync: TSR 1468차 2026-06-27T02:52 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2315/2315 PASS**(783.11s, 445 files) · develop `@d1d0adf` WT **CLEAN** · merge **SKIP**(`test..develop` **0/7** pending) · build **1187 PASS**(10.11s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **★ QA-B355 Fixed @ `d1d0adf`** · **QA-B352 Planned update(pending 7)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 17 @92770fd · FE pending 7 @d1d0adf · fee-schedule seed 404 carry)** · operation **BLOCK** -->
+# updated: 2026-06-27T02:52:00+00:00
+# revalidation_1468th: frontend manifest => BLOCK (baseline 2315/2315 @afbbaa7 783.11s; develop @d1d0adf WT CLEAN; merge SKIP pending 7; build 1187 PASS 10.11s; audit 0 high; QA-B355 Fixed@d1d0adf; QA-B352 Planned(pending 7); Open 1(active BE B344); cross-stream BLOCK(BE pending 17 + FE pending 7 + fee-schedule seed 404 carry); operation BLOCK origin/test push 599 BE+276 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: d1d0adf
+merge_status: pending
+merge_pending_commits: 7
+merge_range: afbbaa7..d1d0adf
+npm_test_baseline: "2315/2315 PASS @ test afbbaa7 (783.11s, 445 files · ROADMAP merged baseline · TSR1468 재실행)"
+npm_test_pre_merge: "SKIP (src/frontend read-only 원칙 · pending commit 검증은 git log 실측)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2315/2315)"
+build_modules: "1187 modules PASS @ test worktree (10.11s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B355, QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 17@92770fd · FE pending 7@d1d0adf · fee-schedule seed 404/500 carry)
+operation: BLOCK (origin/test push 599 BE+276 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T01:20:02+00:00 -->
+<!-- tester-sync: TSR 1464차 2026-06-27T01:20 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2312/2312 PASS**(774.07s, 444 files) · develop `@f7061c4` WT **CLEAN** · merge **SKIP**(`test..develop` **0/6** pending) · build **1200 PASS**(8.76s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **★ QA-B354 Fixed @ `ac69919`** · **QA-B352 Planned carry**(pending 6) · verdict **BLOCK** · cross-stream **BLOCK(BE pending 15 @ac69919 · FE pending 6 @f7061c4 · fee-schedule seed 404 carry)** · operation **BLOCK** -->
+# updated: 2026-06-27T01:20:02+00:00
+# revalidation_1464th: frontend manifest => BLOCK (baseline 2312/2312 @afbbaa7 774.07s; develop @f7061c4 WT CLEAN; merge SKIP pending 6; build 1200 PASS 8.76s; audit 0 high; QA-B354 Fixed@ac69919; QA-B352 Planned(pending 6); Open 1(active BE B344); cross-stream BLOCK(BE pending 15 + FE pending 6 + fee-schedule seed 404 carry); operation BLOCK origin/test push 582 BE+275 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: f7061c4
+merge_status: pending
+merge_pending_commits: 6
+merge_range: afbbaa7..f7061c4
+npm_test_baseline: "2312/2312 PASS @ test afbbaa7 (774.07s, 444 files · ROADMAP merged baseline · TSR1464 재실행)"
+npm_test_pre_merge: "SKIP (src/frontend read-only 원칙 · pending commit 검증은 git log 실측)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2312/2312)"
+build_modules: "1200 modules PASS @ test worktree (8.76s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 15@ac69919 · FE pending 6@f7061c4 · fee-schedule seed 404/500 carry)
+operation: BLOCK (origin/test push 582 BE+275 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T00:59:57+00:00 -->
+<!-- tester-sync: TSR 1463차 2026-06-27T00:59 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2312/2312 PASS**(785.34s, 444 files) · develop `@f7061c4` WT **CLEAN** · merge **SKIP**(`test..develop` **0/6** pending) · build **1200 PASS**(8.67s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **QA-B352 Planned update**(pending 6) · verdict **BLOCK** · cross-stream **BLOCK(BE pending 15 @ac69919 · FE pending 6 @f7061c4 · fee-schedule seed 404 carry)** · operation **BLOCK** -->
+# updated: 2026-06-27T00:59:57+00:00
+# revalidation_1463rd: frontend manifest => BLOCK (baseline 2312/2312 @afbbaa7 785.34s; develop @f7061c4 WT CLEAN; merge SKIP pending 6; build 1200 PASS 8.67s; audit 0 high; live E2E SKIP carry; QA-B352 Planned(pending 6); Open 1(active BE B344); cross-stream BLOCK(BE pending 15 + FE pending 6 + fee-schedule seed 404 carry); operation BLOCK origin/test push 582 BE+275 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: f7061c4
+merge_status: pending
+merge_pending_commits: 6
+merge_range: afbbaa7..f7061c4
+npm_test_baseline: "2312/2312 PASS @ test afbbaa7 (785.34s, 444 files · ROADMAP merged baseline · TSR1463 재실행)"
+npm_test_pre_merge: "SKIP (src/frontend read-only 원칙 · pending commit 검증은 최근 carry + git log 실측)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2312/2312)"
+build_modules: "1200 modules PASS @ test worktree (8.67s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260627-B354, QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 15@ac69919 · FE pending 6@f7061c4 · fee-schedule seed 404/500 carry)
+operation: BLOCK (origin/test push 582 BE+275 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T23:25:00+00:00 -->
+<!-- tester-sync: TSR 1459차 2026-06-26T23:25 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2292/2292 PASS**(770.04s, 439 files) · develop `@47a068c` WT **CLEAN** · pre-merge **2292/2292 PASS**(768.61s, 439 files, +0) · merge **SKIP**(`test..develop` **0/4** pending) · build **1200 PASS**(10.33s) · audit **0 high** · vitest lock guard **PASS**(exit 75) · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **QA-B352 Planned update**(pending 4) · verdict **BLOCK** · cross-stream **BLOCK(BE pending 14 @8342f92 · FE pending 4 @47a068c)** · operation **BLOCK** -->
+# updated: 2026-06-26T23:25:00+00:00
+# revalidation_1459th: frontend manifest => BLOCK (baseline 2292/2292 @afbbaa7 770.04s; pre-merge 2292/2292 PASS @47a068c 768.61s; merge SKIP pending 4; build 1200 PASS 10.33s; audit 0 high; vitest lock guard PASS(exit 75); live E2E SKIP carry; QA-B352 Planned(pending 4); Open 1(active BE B344); cross-stream BLOCK(BE pending 14 + FE pending 4); operation BLOCK origin/test push 596 BE+273 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: 47a068c
+merge_status: pending
+merge_pending_commits: 4
+merge_range: afbbaa7..47a068c
+npm_test_baseline: "2292/2292 PASS @ test afbbaa7 (770.04s, 439 files · ROADMAP merged baseline · +17 vs TSR1456 carry·??9 artifact LOW)"
+npm_test_pre_merge: "2292/2292 PASS @ develop 47a068c (768.61s, 439 files, +0 tests · G16 onePerDayNote + US-Q01 safety module routes)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2292/2292)"
+build_modules: "1200 modules PASS @ develop (10.33s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 1
+open_issue_ids: [QA-20260626-B344]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260626-B353, QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 14@8342f92 · FE pending 4@47a068c · FE test WT ??9 LOW carry)
+operation: BLOCK (origin/test push 596 BE+273 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T21:42:18+00:00 -->
+<!-- tester-sync: TSR 1456차 2026-06-26T21:42 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` **2275/2275 PASS**(765.88s, 433 files) · develop `@aa0559b` WT **CLEAN** · pre-merge **2275/2275 PASS**(763.19s, 433 files, +0) · merge **SKIP**(`test..develop` **0/1** pending) · build **1187 PASS**(9.98s) · audit **0 high** · vitest lock guard **PASS**(exit 75) · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **QA-B352 Planned update**(pending 1) · verdict **BLOCK** · cross-stream **BLOCK(BE pending 12 @eb6dd67 · FE pending 1 @aa0559b)** · operation **BLOCK** -->
+# updated: 2026-06-26T21:42:18+00:00
+# revalidation_1456th: frontend manifest => BLOCK (baseline 2275/2275 @afbbaa7 765.88s; pre-merge 2275/2275 PASS @aa0559b 763.19s; merge SKIP pending 1; build 1187 PASS 9.98s; audit 0 high; vitest lock guard PASS(exit 75); live E2E SKIP carry; QA-B352 Planned(pending 1); Open 2(active BE B344+B353); cross-stream BLOCK(BE pending 12 + FE pending 1); operation BLOCK origin/test push 582 BE+269 FE).
+
+stream: frontend
+test_branch_head: afbbaa7
+develop_head: aa0559b
+merge_status: pending
+merge_pending_commits: 1
+merge_range: afbbaa7..aa0559b
+npm_test_baseline: "2275/2275 PASS @ test afbbaa7 (765.88s, 433 files · ROADMAP merged baseline regression)"
+npm_test_pre_merge: "2275/2275 PASS @ develop aa0559b (763.19s, 433 files, +0 tests · G16 fallback onePerDayNote + zero-import PARTIAL lock UI)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @afbbaa7 2275/2275)"
+build_modules: "1187 modules PASS @ test (9.98s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 2
+open_issue_ids: [QA-20260626-B344, QA-20260626-B353]
+planned_issues: [QA-20260626-B352, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 12@eb6dd67 + DIRTY 1M · FE pending 1@aa0559b · FE test WT ??9 LOW carry)
+operation: BLOCK (origin/test push 582 BE+269 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T20:30:18+00:00 -->
+<!-- tester-sync: TSR 1454차 2026-06-26T20:30 UTC (frontend) — ROADMAP merged baseline `@320ba06` **2269/2269 PASS**(763s, 433 files · carry TSR 1452) · develop `@afbbaa7` WT **CLEAN** · pre-merge **2272/2272 PASS**(759.78s, 433 files, +3) · merge **SKIP**(`test..develop` **0/4** pending) · build **1187 PASS**(8.64s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **★ QA-B351 Fixed carry** · **QA-B352 Planned(pending 4)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 12 @eb6dd67 · FE pending 4 @afbbaa7)** · operation **BLOCK** -->
+# updated: 2026-06-26T20:30:18+00:00
+# revalidation_1454th: frontend manifest => BLOCK (baseline carry 2269/2269 @320ba06 763s; pre-merge 2272/2272 PASS @afbbaa7 759.78s +3 tests; merge SKIP pending 4; build 1187 PASS 8.64s; audit 0 high; live E2E SKIP carry; QA-B351 Fixed carry; QA-B352 Planned(pending 4); Open 0; cross-stream BLOCK(BE pending 12 + FE pending 4); operation BLOCK origin/test push 582 BE+265 FE).
+
+stream: frontend
+test_branch_head: 320ba06
+develop_head: afbbaa7
+merge_status: pending
+merge_pending_commits: 4
+merge_range: 320ba06..afbbaa7
+npm_test_baseline: "2269/2269 PASS @ test 320ba06 (763s, 433 files · ROADMAP merged baseline carry TSR 1452 · test HEAD unchanged)"
+npm_test_pre_merge: "2272/2272 PASS @ develop afbbaa7 (759.78s, 433 files, +3 tests · QA-B351 isolation + G-NHIS recovery notes + G16 parity-rules DTO wire)"
+npm_test_post_merge: "SKIP (merge 미실행 · carry @320ba06 2269/2269)"
+build_modules: "1187 modules PASS @ develop (8.64s)"
+build_exit: "0"
+audit_vulnerabilities: "0 high (omit=dev)"
+live_e2e: "SKIP (merge 없음 · carry 122 PASS / 25 SKIP / 0 FAIL · bootstrap-disabled)"
+develop_working_tree: "CLEAN"
+test_working_tree: "DIRTY ?? 9 (무해한 빈 파일 carry · LOW)"
+open_issues: 0
+open_issue_ids: []
+planned_issues: [QA-20260626-B352, QA-20260626-B344, QA-20260623-B116, QA-20260623-B95]
+fixed_issues: [QA-20260626-B351, QA-20260626-B350, QA-20260626-B349, QA-20260626-B348, QA-20260626-B347, QA-20260626-B346, QA-20260626-B345, QA-20260626-B343]
+verdict: BLOCK
+cross_stream: BLOCK (BE pending 12@eb6dd67 · FE pending 4@afbbaa7 · FE test WT ??9 LOW carry)
+operation: BLOCK (origin/test push 582 BE+265 FE + QA-B95 partial bootstrap-disabled + QA-B116 + QA-B344 + QA-B352)
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-26T19:10:00+00:00 -->
 <!-- tester-sync: TSR 1452차 2026-06-26T19:10 UTC (frontend) — ROADMAP merged baseline `@320ba06` **2269/2269 PASS**(763s, 433 files · carry TSR 1450) · develop `@5636508` WT **CLEAN** · pre-merge **2270/2270 PASS**(759.29s, 433 files, +1) · merge **SKIP**(`test..develop` **0/3** pending `2d9b9d3`+`2cf47a8`+`5636508`) · build **1187 PASS**(8.59s) · audit **0 high** · live E2E **SKIP**(carry 122/25/0 · bootstrap-disabled) · **★ QA-B351 Fixed @ `5636508`** · **QA-B352 Planned(pending 3)** · verdict **BLOCK** · cross-stream **BLOCK(BE pending 11 @331f24b · FE pending 3 @5636508)** · operation **BLOCK** -->
 # updated: 2026-06-26T19:10:00+00:00
