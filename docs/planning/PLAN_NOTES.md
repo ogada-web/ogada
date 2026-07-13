@@ -1,4 +1,17 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-26T08:00:00+09:00 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-13T21:45:00+00:00 -->
+<!-- planner-sync: PLN 207차 2026-07-13T21:45 UTC — BNK-698~701·TSR 1503~1506차 · ★★★ transport day-status 5-stage CLOSURE · ★★ ezCare dashboard 7-bucket vs 15 stage-gap · ★ QA-B352 Fixed+origin/test PUSHED · ★ QA-B344 Open BE pending 29 · merge gate FE cleared · cross-stream BLOCK(BE only) · QA Open 1(active) -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-27T12:30:00+00:00 -->
+<!-- tech_writer-sync: TWR 400차 2026-06-27T21:30:00+09:00 — **Q750 safety template catalog (`aa9565c`/`bf9b4b1`) · Q751 V185 integrity (`7a9ed71`) · Q752 fee seed auth hints (`dd5571d`) · Q753 safety live harness** · **baseline BE `aa9565c`/FE `bf9b4b1`** · CHANGELOG·FAQ Q750~Q753·USER_MANUAL §5-9·ADMIN_GUIDE §1-4 US-Q01·DEPLOYMENT §1-4·§11-3 · **P2 carry**: program reports FE branchId · 7-5 live PG · J03 Solapi live dispatch →
+<!-- tech_writer-sync: TWR 397차 2026-06-27T12:00:00+09:00 — **Q745 US-Q01 M6 safety full-stack (`ac69919`/`f7061c4`) · Q746 null g21 health/probe parity (`8342f92`) · Q660 M6 closure 정정** · **baseline BE `ac69919`/FE `f7061c4`** · CHANGELOG·FAQ Q745·Q746·Q660·USER_MANUAL §5-9·ADMIN_GUIDE §1-4 US-Q01·DEPLOYMENT §1-4 V184 · **P2 carry**: program reports FE branchId · 7-5 live PG · J03 Solapi live dispatch →
+<!-- tech_writer-sync: TWR 396차 2026-06-28T18:00:00+09:00 — **Q743 parity-rules ONE_PER_DAY description 우선 (`e19328a`) · Q744 bootstrap service-unavailable health probe lock (`7fcdfde`)** · **baseline BE `7fcdfde`/FE `e19328a`** · CHANGELOG·FAQ Q743·Q744·USER_MANUAL §5-8-1·ADMIN_GUIDE §1-4 G16·DEPLOYMENT §1-4·§11-3 · **P2 carry**: program reports FE branchId · 7-5 live PG · J03 Solapi live dispatch · M6 `/safety/*` →
+<!-- tech_writer-sync: TWR 395차 2026-06-28T12:00:00+09:00 — **Q743 onePerDayNote static fallback (`aa0559b`) · Q735 zero-import PARTIAL UI regression lock** · **baseline BE `eb6dd67`/FE `aa0559b`** · CHANGELOG·FAQ Q743·Q735 deepen·USER_MANUAL §5-8-1·§5-11·ADMIN_GUIDE §1-4 G16·G21·DEPLOYMENT §1-4 · **P2 carry**: program reports FE branchId · 7-5 live PG · J03 Solapi live dispatch · M6 `/safety/*` →
+<!-- tech_writer-sync: TWR 394차 2026-06-28T00:00:00+09:00 — **Q743 G16 parity-rules DTO full-stack (`afbbaa7`) · Q742 4-outcome keyword test lock (`eb6dd67`)** · **baseline BE `eb6dd67`/FE `afbbaa7`** · CHANGELOG·FAQ Q743·Q742 deepen·USER_MANUAL §5-8-1·ADMIN_GUIDE §1-4 G16·DEPLOYMENT §1-4 · **P2 carry**: program reports FE branchId · 7-5 live PG · J03 Solapi live dispatch · M6 `/safety/*` →
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-27T12:30:00Z -->
+<!-- planner-sync: PLN 206차 2026-06-27T12:30 UTC — TSR 1472~1492차 · ★ QA-B358 Fixed @154ebee(US-Q01 safety required-flag 테스트 sync) · ★ QA-B357/B356/B355/B354 Fixed · ★ QA-B359 Open→Planned(BE `BillingServiceTest` assertion 커밋 대기·기능 갭 아님) · QA-B344 Open carry pending 24 · QA-B352 Planned pending 17 · 신규 core 갭 0 · merge gate 892(FE286+BE606) · cross-stream BLOCK(BE dirty 1M) · operation BLOCK · QA Open 1(active: QA-B344) -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-27T03:45:00Z -->
+<!-- planner-sync: PLN 205차 2026-06-27T03:45 UTC — BNK-675~683·TSR 1468~1471차 · ★★★ US-Q01 M6 FULL CLOSURE(id=6 1.0·84.31%) · ★★★ M7 tri-source 11/11+6 superset(id=7 1.0) · ★★ Safety RBAC 4-endpoint×5-role + G-NHIS 4-link regulatory chain · ★★ M11/M12 sole P1 lever(+6.90pp→91.21%) · ★ QA-B355 Fixed @d1d0adf · ★ QA-B344 Open pending 17 · ★ QA-B352 Planned FE pending 7 · merge gate 875 · cross-stream BLOCK · QA Open 1(active) -->
+<!-- planner-sync: PLN 204차 2026-06-26T22:30 UTC — BNK-662~674·TSR 1456~1457차 · ★★★ law247 admRulSeq URL correction(2100000271110·BNK-673 −92% false alarm) · ★★★ G16 stage11 onePerDayNote fallback + G-NHIS PARTIAL boundary test · ★ QA-B353 Fixed @7fcdfde · ★ QA-B344 Open pending 13 · ★ QA-B352 Planned FE pending 1 · merge gate 865 · cross-stream BLOCK · QA Open 1(active) -->
+<!-- planner-sync: PLN 203차 2026-06-26T15:07 UTC — BNK-652~661·TSR 1436~1446차 · ★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE 9-stage full-stack chain(역대 최장 BNK→COD·4-state classify→inline guidance→deep-link→branch persistence→service-layer test lock·경쟁 4종 유일) · ★★★ silverangel 221564 leak CLOSED(보안 finding 번복·notice draft 게이팅 best-practice carry·비교 우위 framing 약화) · ★★ ezCare FAQ 14-카테고리 taxonomy → M11/M12 P1 demand-signal 재입증(K012 재무·K014 4대보험·K008 수당) · ★ NHIS #44 409차 zero drift · QA-B344 pending 7→8·QA-B350 Planned carry · merge gate 854 · cross-stream BLOCK · QA Open 0(active) -->
 <!-- planner-sync: PLN 202차 2026-06-26T08:00 UTC — BNK-643~651·TSR 1434~1435차 · ★★★ G-CLIENT-CONTRACT-BULK-PRINT FULL CLOSURE · ★★★ G-NHIS-SCHEDULE-IMPORT FULL CLOSURE · ★★ QA-B95 17th layer · ★ carefor PDF p.90 G33 · QA-B344/B345 Planned · merge gate 841 · cross-stream BLOCK · QA Open 0(active) -->
 <!-- tech_writer-sync: TWR 381차 2026-06-27T03:00:00+09:00 — **Q726 G-CLIENT-CONTRACT-BULK-PRINT BE API (`4df9465`) · Q727 g21-seed probe align (`14964f6`/`a727862`) · Q728 UXD-166 (`4e574ce`)** · **baseline BE `4df9465`/FE `a727862`** · CHANGELOG·FAQ Q726~Q728·USER_MANUAL §3-3·ADMIN_GUIDE §6-2-2a·DEPLOYMENT §1-4 · **P2 carry**: bulk-export FE wire · program reports FE branchId · 7-5 live PG · J03 Solapi live dispatch · M6 `/safety/*` →
 <!-- planner-sync: PLN 201차 2026-06-26T02:00 UTC — BNK-640~642·TSR 1418~1422차 · ★★★ G-STAFF-COMMITTEE-MEETING-LOG FULL CLOSURE · ★★★ QA-B95 13th layer g21-seed probe · ★★ NHIS #44 397차 · ★ QA-B337/B338/B339 Planned · merge gate 827 · cross-stream BLOCK · QA Open 0(active) -->
@@ -91,7 +104,207 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-06-26 (202차 PLN — **자동 기획 동기화** BNK-643~651·TSR 1434~1435차·★★★ G-CLIENT-CONTRACT-BULK-PRINT FULL CLOSURE·★★★ G-NHIS-SCHEDULE-IMPORT FULL CLOSURE·★★ QA-B95 17th layer·★ carefor PDF p.90 G33·★ QA-B344/B345 Planned·merge gate 841·cross-stream BLOCK·QA Open 0) | **381차 TWR** — G-CLIENT-CONTRACT-BULK-PRINT BE API carry  
+> **최종 갱신**: 2026-07-13 (207차 PLN — **자동 기획 동기화** BNK-698~701·TSR 1503~1506차·★★★ transport day-status 5-stage CLOSURE·★ QA-B352 Fixed+origin/test PUSHED·★ QA-B344 Open BE pending 29(sole BLOCK)·신규 P3 candidate +2 dashboard expiry·merge gate FE cleared·cross-stream BLOCK(BE only)·QA Open 1) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+
+### [COD] QA-B95 20th layer — V190 transport integrity probe (2026-07-13)
+
+- **완료**: BE `@bd43f59` `V189TransportShuttleSchemaReadinessProbe` — V190 constraints 4건 포함(shuttle nonempty×2 · flags-synced · updated_by org FK) · expected **5→9**.
+- **검증**: `mvn test -Dtest=V189TransportShuttleSchemaReadinessProbeTest,LiveE2eOperationReadinessSupportTest` **24/24 PASS**.
+- **blocker key**: `v189-transport-shuttle-schema-missing` 유지(FE ignore wire 불필요).
+- **다음**: tester origin/test push(QA-B116) · QA-B95 operation 승격 · M11/M12 scope는 planner §추가 질문 대기.
+
+### [COD] G16 송영 주소 normalize FE complement (2026-07-13)
+
+- **완료**: FE `VehiclesPage` + `config/vehicles.js` — BE `@3e627b3`/`normalizeAddress` 정합 (trim + 연속 공백 붕괴 · blank→null) @ `654b2c6`.
+- **검증**: `npm test -- src/config/vehicles.test.js src/pages/VehiclesPage.test.jsx` **8/8 PASS**.
+- **범위 외 carry**: M11/M12 in-app min set · dashboard expiry P3 — PLAN_NOTES §추가 질문 207-1 scope 확정 대기.
+- **다음**: tester origin/test push **613 BE**(QA-B116) · live E2E env(QA-B95).
+
+### [PLN] QA 피드백 반영 (2026-07-13, 207차 — BNK-698~701 · TSR 1503~1506차 · QA Open 1(active: QA-B344)·★ QA-B352 Fixed · cross-stream BLOCK(BE only))
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop `@5366944` WT **CLEAN** · test `@4567030` · pre-merge **2088/2088 PASS**(383 suites) · `test..develop` **0/29** pending · FE develop/test **`bd12f28` SYNCED** · post-merge **2372/2372 PASS**(453 files) · live E2E **120/29/0** · merge gate historical **903**(FE292+BE611) · origin/test **611 BE+0 FE**(TSR1506 FE PUSHED) · **124 Route·98 page·V1–V189·BE @Test 2073·FE test 506·모듈 84.31%** | ROADMAP CURRENT BASELINE 207차 |
+| **QA-B352 Fixed** | TSR1505 FF merge `afbbaa7`→`bd12f28`(pending 23→0) · TSR1506 **origin/test PUSHED** `ab4de83`→`bd12f28`(unpushed 292→0) · post-merge **2372/2372 PASS** · **기능 갭 아님** · 이관 규율 6·14 | QA_FEEDBACK Fixed · ROADMAP v1 P0 |
+| **QA-B344 Open carry (pending 24→29)** | BE develop→test merge pending **29** `@5366944`(transport day-status 5-stage·shuttle V186–V189·safety·NHIS·QA-B95 schema gate·QA-B367 mutate lock carry) · pre-merge **2088/2088 PASS** · FE stream **SYNCED** → residual BLOCK = BE only · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Open · ROADMAP v1/v2 P0 |
+| **QA-B366/B368/B367/B365 Fixed carry** | **★ day-status 5-stage full-stack CLOSURE** — suggest omit(B365)·create/update/confirm reject(B367)·FE all-excluded guidance(B366)·manual draft block(B368) · BE+FE copy 정합(`TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` 등) | QA_FEEDBACK Fixed · ROADMAP v2 · US-T02 |
+| **BNK-698~702** | **★★★ BNK-702 17-route LIVE P0/P1 재오픈 0 · FE SYNCED · WT DIRTY ops P0(V190·a11y) · 엑셀 포맷 변경 0** · **★★★ BNK-701 day-status 5-stage** · **★★ BNK-700 dashboard 7-bucket vs 15 stage-gap**(P3 유지) · **★★ BNK-699 M3 11/11** · **★ BNK-698 shuttle LIVE** · NHIS #44 **438차** · **신규 core 갭 0** | ROADMAP · REQUIREMENTS §1-5 · USER_STORIES · memory/decisions.md |
+
+**coder/ops 다음 액션 (207차+BNK-702)**: ① **COD/DBA V190 + FE shuttle a11y 2M commit+push**(rules §6 · BNK-702 WT DIRTY) ② **tester FF merge QA-B344(BE ~29/ahead 611)** @ `5366944` ③ **origin/test push 611 BE** ④ **QA-B116 post-merge 재검증** ⑤ **QA-B95 operation 승격** ⑥ **P1** M11 in-app min set scope 확정 ⑦ **P3** dashboard expiry·AI 총평 carry.
+
+> **206차→207차 delta**: merge gate 892→**903**(historical) → **FE stream cleared** · BE `@2f4bfdf` pending 24+DIRTY → **`5366944` pending 29 CLEAN** · FE `@154ebee` pending 17 → **`bd12f28` SYNCED+PUSHED** · **QA-B352 Fixed** · **QA-B359 resolved**(transport/billing carry absorbed) · **QA-B366~368/B365/B367 Fixed** · **transport day-status 5-stage CLOSURE** · **BNK-698~701 benchmark 반영** · Route 123→**124** · page 97→**98** · V185→**V189** · BE @Test 2047→**2073** · FE test 497→**506** · origin/test **606+286→611+0** · **신규 P3 candidate +2**(dashboard expiry) · **cross-stream BLOCK(BE only)**.
+
+### 추가 질문 (자동 기획 동기화 207차)
+1. **M11 in-app minimum set vs BPO adapter (★★★ BNK-700 carry)**: 이지케어 홈 통계 「재무회계 대행 4,663 기관」·FAQ 결제·재무 클러스터 vs ogada M11/M12 0 route — in-app 최소(11-1·11-3·11-6) vs BPO 어댑터 vs 미추종 확정 필요.
+2. **Dashboard expiry gap scope (★★ BNK-700)**: ezCare 7-bucket 중 ogada 미확인 2건(간호지시서·수급자계약 만료) — v3 P3 in-app 최소 리스트 vs BPO carry vs defer?
+3. **G-AI-NEEDS-ASSESSMENT-SUMMARY (★ BNK-695 carry)**: 엔젤 「AI 판단근거 기반 총평」 — P2/P3 차별화 vs 개인정보·정확성 리스크 trade-off · security_auditor 공동 검토 필요.
+4. **QA-B95 operation 승격 timing (★ carry)**: BE merge 29 + origin/test push 611 BE 직후 vs defer — live E2E bootstrap-disabled carry 120/29/0 · V189 schema gate @ `41cbc8a`/`e48db91` 선행 완료.
+5. **USER_MANUAL day-status copy (★ BNK-701)**: `TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` verbatim 을 운영자 가이드 「금일 배차 제외 표시 → 자동 배차 제외」 섹션에 반영할지(TWR carry).
+
+### [BNK] BNK-703 인사이트 (2026-07-13) — ★★★ **케어포 func.php dual-source(107 vs 103) · 7-10 calculator triple-gap fill** · ★★ **M7 7-x↔billing 17-route · WT DIRTY CLOSURE** · ★ **NHIS 439차**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-703 #1** | **★★★ func.php dual-source** — catalog **107**(`6226e6eb`) vs marketing **103**(`00992037` Wayback 20240515) · M7 마케팅·demo **7-10 없음** → ogada `/billing/calculator` **triple-gap fill** · CMS/NPay addservice 랜딩 vs in-app | REQUIREMENTS §M7 · COMPETITOR_MATRIX · GTM 카피 · 「109」=107+APP |
+| **BNK-703 #2** | **★★ M7 lifecycle 11/11+superset @`175c570`** — depth{2:88,3:19}·리포트 19.6%/demo 30.4%·시설 셸 transport **0**(≠주야간 M2) · M11/M12 sole P1 | ROADMAP · USER_STORIES billing · demo≠주야간 문구 |
+| **BNK-703 #3** | **★★ BNK-702 WT DIRTY CLOSURE** — FE `@175c570` a11y·BE `@3e627b3` **V190 LANDING** · residual **613 BE-only** · @Test 2076 | baseline · tester BE FF 613 |
+| **BNK-703 #4** | **★ NHIS #44 439차** · FAQ +10·size-lock 17-cycle · carefor LIVE timeout 65+ 「미확인」 | G16 · M11 demand-signal |
+
+### [BNK] BNK-702 인사이트 (2026-07-13) — ★★★ **17-route LIVE P0/P1 재오픈 0 · M11/M12 sole P1 · FE SYNCED · WT DIRTY ops P0** · ★★ **엑셀 포맷 변경 0** · ★ **NHIS #44 438차**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-702 #1** | **★★★ 17-route LIVE 교차검증** — G14·G26·v1.3-C×9(+day-status 5-stage)·v2 CMS·leave·M6×5 재오픈 0 · M11/M12 sole product P1 · BNK-700 gap 2건 **P3 「가정」 유지**(직원 employmentContract*≠수급자계약 「확인」) | ROADMAP P0/P1 · REQUIREMENTS §대시보드 · COMPETITOR_MATRIX |
+| **BNK-702 #2** | **★★ FE SYNCED(ahead 0) + 양쪽 WT DIRTY** — residual merge **611 BE-only** · FE shuttle a11y 2M · BE V190 integrity untracked → **ops P0**(rules §6) | QA_FEEDBACK · coder/DBA commit · tester BE FF |
+| **BNK-702 #3** | **★★ 공단 엑셀 FAQ 21844/21845 = BNK-694 IDENTICAL · silverangel ≥221573 신규 0** — 엑셀 포맷 긴급성 「미확인」→「확인: 변경 0」 | G-NHIS import · 긴급 adapter 불필요 |
+| **BNK-702 #4** | **★ NHIS #44 438차** · FAQ hit_sum 3,646,322(+7)·size-lock 16-cycle · home 통계 5-cycle lock | REQUIREMENTS G16 · GTM M11 demand-signal |
+
+### [BNK] BNK-701 인사이트 (2026-07-13) — ★★★ **transport day-status 5-stage full-stack CLOSURE** · ★ **NHIS #44 437차 zero drift**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-701 #1** | **★★★ V188/V189 day-status 5-stage enforcement** — BE `b89c6db`→`5366944` + FE `d285899`→`bd12f28` 4-commit chain · suggest→create→update→confirm→manual add roster 전 경로 게이트 · **경쟁 4종 유일**(이지케어 RFID 사후 통보 대비 사전 예방) | ROADMAP v2 · REQUIREMENTS G15/G16 · USER_STORIES US-T02 · COMPETITOR_MATRIX |
+| **BNK-701 #2** | **★ KPI** — FE `@bd12f28`·BE `@5366944`·merge gate **903**·BE @Test **2073**(+5)·FE test **506**(+2) | ROADMAP baseline 207차 · workspace_baseline 갱신 대기(run_agent build) |
+| **BNK-701 #3** | **★ NHIS #44 437차 zero drift** · ezCare FAQ hit_sum +5·size-lock 15-cycle | REQUIREMENTS G16 parity carry |
+
+### [BNK] BNK-700 인사이트 (2026-07-13) — ★★★ **ezCare dashboard 7-bucket vs ogada 15 stage-gap** · ★ **홈 통계 4-cycle lock**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-700 #1** | **★★★ dashboard expiry crosswalk** — ezCare 7-bucket(간호지시서·낙상·인지·욕창·욕구·수급자계약·수급자인정) vs ogada **15 stage-gap** 5/7 parity · gap 후보 **G-NURSING-DIRECTIVE-EXPIRY**·**G-CLIENT-CARE-AGREEMENT-EXPIRY** P3 | ROADMAP v3 · REQUIREMENTS §대시보드 · USER_STORIES **US-H03** |
+| **BNK-700 #2** | **★★ 홈 통계 lock 4-cycle** — 53.2%·9,298·4,663·2,353억·1,820억·집계일 2026.06.30 | PLAN_NOTES GTM 참조 · M11 demand-signal |
+
+### [PLN] QA 피드백 반영 (2026-06-27, 206차 — TSR 1472~1492차 · QA Open 1(active: QA-B344)·★ QA-B359 Open→Planned·★ QA-B358 Fixed · cross-stream BLOCK)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop `@2f4bfdf` WT **DIRTY 1M**(QA-B359 `BillingServiceTest` assertion sync WIP 미커밋) · test `@4567030` · baseline **1992/1992 PASS** · dirty WIP pre-merge **2061/2061 PASS** · `test..develop` **0/24** pending · FE develop `@154ebee` WT **CLEAN** · test `@afbbaa7` · baseline **2272/2272 PASS**(433 files) · flock pre-merge **2331/2331 PASS**(447 files) · `test..develop` **0/17** pending · merge gate **892**(FE286+BE606) · origin/test **606 BE+286 FE** · live E2E **122/25/0** carry · **123 Route·97 page·V1–V185·BE @Test 2047·FE test 497·모듈 84.31%** carry | ROADMAP CURRENT BASELINE 206차 |
+| **QA-B359 Open→Planned** | BE `@2f4bfdf` NHIS seed year guard 자체는 커밋 완료(`2f4bfdf`)·잔여는 **`BillingServiceTest` assertion 문자열 동기화 커밋 누락**(+7/-2 WIP·`git stash` 시 committed HEAD **2060/2061 FAIL**) → COD commit → tester FF merge · **기능 갭 아님** · 이관 규율 1·5·7·14 | QA_FEEDBACK Open→Planned · ROADMAP v2 P0 |
+| **QA-B344 Open carry (pending 17→24)** | BE develop→test merge pending **24** `@2f4bfdf`(US-Q01 SafetyCheckController+V184~V185·G-NHIS chain·QA-B95 fee seed guard·Safety RBAC·NHIS seed year guard @Test carry) · QA-B359 dirty 1M 선행 BLOCK · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Open · ROADMAP v1/v2 P0 |
+| **QA-B352 Planned (pending 7→17)** | FE develop→test merge pending **17** `@154ebee`(US-Q01 4-route FE wire·safety required-flag 테스트 sync·liveFeeScheduleSeed harness·G16 chain carry) · WT **CLEAN** · pre-merge **2331/2331 PASS** · cross-stream BE 선행 BLOCK · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Planned · ROADMAP v1.2.1 P0 · US-Q01 |
+| **QA-B358/B357/B356/B355/B354 Fixed** | **★ B358 @ `154ebee`**(US-Q01 safety required-flag optional-default 의미론 테스트 sync·FE pre-merge BLOCK 해소) · **★ B357 @ `2f4bfdf`**(NHIS seed year validation message dirty 해소) · **★ B356 @ `fbd403c`**(safety M6 routing HTTP contract lock) · **★ B355 @ `6dcf7d1`**(fee schedule seed preflight diagnostics) · **★ B354 @ `ac69919`** | QA_FEEDBACK Fixed carry · ROADMAP v2 · US-Q01 |
+| **신규 core 갭 0** | 벤치마크 신규 입력 없음(BENCHMARK_REPORT·COMPETITOR_MATRIX BNK 205차 이후 미갱신) · TSR revalidation 사이클(1472~1492)만 반영 · US-Q01 M6 FULL CLOSURE(id=6 1.0)·M7 tri-source(id=7 1.0) carry · P0/P1 재정렬 없음 | ROADMAP · REQUIREMENTS(변경 없음) · USER_STORIES(변경 없음) |
+
+**coder/ops 다음 액션 (206차)**: ① **COD QA-B359 `BillingServiceTest` assertion sync 커밋** → BE develop WT **CLEAN** ② **tester FF merge QA-B344(BE 24)+QA-B352(FE 17)** ③ **origin/test push 606 BE+286 FE** ④ **QA-B116 post-merge 재검증** ⑤ **QA-B95 operation 승격** ⑥ **P1** M11 in-app min set(11-1·11-3·11-6) scope 확정(carry).
+
+> **205차→206차 delta**: merge gate 875→**892** · BE `@92770fd` pending 17(CLEAN)→**`2f4bfdf` pending 24**(WT DIRTY 1M·QA-B359) · FE `@d1d0adf` pending 7→**`154ebee` pending 17**(pre-merge 2331/2331 PASS) · **QA-B354/B355/B356/B357/B358 Fixed** · **QA-B359 Open→Planned** · **QA Open 1(active: QA-B344) 유지** · origin/test **599+276→606+286** · V184→**V185** · BE @Test 2024→**2047** · **신규 core 갭 0**(벤치마크 미갱신·TSR revalidation only) · route/page/모듈 84.31% carry.
+
+### 추가 질문 (자동 기획 동기화 206차)
+1. **QA-B359 커밋 규율 재발 방지 (★ 이관 규율 1·5·7)**: `BillingServiceTest` assertion sync가 QA-B355/B356/B357에 이어 **dirty-tree 미커밋**으로 반복 BLOCK — 「완료 단위 develop 커밋」 pre-commit 게이트 강제 여부 사용자 확정 필요(#36 에스컬레이션 lineage).
+2. **merge gate 892 누적 (★ carry)**: cross-stream 이관 892(FE286+BE606) 장기 누적 — QA-B359 해소 후 **일괄 FF merge + origin/test push** 우선순위 vs 점진 merge 확정.
+3. **M11 in-app minimum set vs BPO adapter (★★★ BNK-679 carry)**: carefor M11 6-leaf 중 **11-1·11-3·11-6** in-app minimum vs 이지케어 BPO hybrid — 205차 carry, 사용자 확정 대기.
+4. **QA-B95 operation 승격 timing (★ carry)**: merge 892 직후 vs origin/test push 후 defer — live E2E bootstrap-disabled carry 122/25/0.
+
+### [PLN] QA 피드백 반영 (2026-06-27, 205차 — BNK-675~683 · TSR 1468~1471차 · QA Open 1(active: QA-B344)·★ QA-B352 Planned · cross-stream BLOCK)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop `@92770fd` WT **CLEAN** · test `@4567030` · pre-merge **SKIP**(read-only) · `test..develop` **0/17** pending · FE develop `@d1d0adf` WT **CLEAN** · test `@afbbaa7` · pre-merge carry **2272/2272 PASS** · `test..develop` **0/7** pending · merge gate **875**(FE276+BE599) · origin/test **599 BE+276 FE** · live E2E **122/25/0** carry · **123 Route·97 page·V1–V184·FE test 497·BE @Test 2024·모듈 84.31%**(id=6 **1.0**·id=7 **1.0**) | ROADMAP CURRENT BASELINE 205차 |
+| **QA-B344 Open (pending 13→17)** | BE develop→test merge pending **17** `@92770fd`(US-Q01 SafetyCheckController+V184·G-NHIS chain·QA-B95 fee seed guard·Safety RBAC 4-endpoint×5-role @Test carry) · WT **CLEAN** · TSR 1471차 update · **★ QA-B354/B355 Fixed 선행 완료** · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Open · ROADMAP v1/v2 P0 |
+| **QA-B352 Planned (pending 1→7)** | FE develop→test merge pending **7** `@d1d0adf`(US-Q01 4-route FE wire·SafetyCheck pages·liveFeeScheduleSeed harness @ QA-B355·G16 chain carry) · WT **CLEAN** · TSR 1468~1471차 update · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Planned · ROADMAP v1.2.1 P0 · US-Q01 |
+| **QA-B355 Fixed** | FE develop WT DIRTY 1M+1U(`liveFeeScheduleSeed`) → **`d1d0adf` commit** · WT **CLEAN** · TSR 1468~1469차 | QA_FEEDBACK Fixed carry · ROADMAP v2 |
+| **BNK-675~683** | **★★★ US-Q01 M6 FULL CLOSURE** — SafetyCheckController+4-route+V184+FE wire · id=6 **0→1.0**(+3.45pp→**84.31%**) · **★★★ M7 tri-source** demo 10+func 11-leaf+ogada 17 `/billing/*` = **11/11+6 superset** · id=7 **1.0** · **★★ Safety RBAC** 4-endpoint×5-role @Test · **G-NHIS 4-link** law247↔NHIS#44↔CATALOG_YEAR↔HTTP contract · **★ NHIS #44 422차 zero drift** · **★ M11/M12 sole P1 lever**(+6.90pp→91.21%) · **신규 core 갭 0** | ROADMAP · REQUIREMENTS §1-5 · USER_STORIES US-Q01 · memory/decisions.md |
+
+**coder/ops 다음 액션 (205차)**: ① **tester FF merge QA-B344(BE 17)+QA-B352(FE 7)**(양쪽 WT CLEAN) ② **origin/test push 599 BE+276 FE** ③ **QA-B116 post-merge 재검증** ④ **QA-B95 operation 승격** ⑤ **P1** M11 in-app min set(11-1·11-3·11-6) scope 확정 ⑥ **P2** demo facility shell transport differentiation carry.
+
+> **204차→205차 delta**: merge gate 865→**875** · BE `@7fcdfde` pending 13→**`92770fd` pending 17** · FE `@aa0559b` pending 1→**`d1d0adf` pending 7** · **QA-B354/B355 Fixed** · **US-Q01 M6 FULL CLOSURE** · **M7 id=7 1.0** · **모듈 80.86%→84.31%** · origin/test **595+270→599+276** · FE test 489→**497** · BE @Test 1999→**2024** · Route 118→**123** · page 93→**97** · V183→**V184**.
+
+### [BNK] BNK-697 인사이트 (2026-07-13) — ★★★ **BE transport 셔틀/로스터 WIP CLOSURE `@60c4e36`(rules §6 2-cycle 미커밋 risk 해소)** · ★★ **NHIS #44 433차 zero drift** · ★ **규제 backbone DRIFT=실체 변동 0**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-697 #1** | **★★★ BE transport 셔틀/로스터 WIP CLOSURE** — BNK-695/696 2-cycle 「미커밋(rules §6)」 경고분이 BE `@60c4e36` `feat(v2/transport): persist shuttle run metadata and roster day status`(WT CLEAN)로 커밋 · V186(출발 회차/왕복)·V187(차량 셔틀 정류장 주소)·V188/V189(일자별 배차 상태) develop tracked · BE @Test 2046→**2052**(+6) · FE `@2704fd8` WT DIRTY 29(셔틀/차량/배차 wiring·route 123→WT 124) → **coder FE commit closure 재권장** | ROADMAP v1.3-C 이동서비스 우위 · COMPETITOR_MATRIX · memory/decisions.md |
+| **BNK-697 #2** | **★★ NHIS #44 이동서비스비 러-1~4 — 433차 zero drift IDENTICAL** `c886ff1f` 7,572B — 「‘러-1’부터 ‘러-4’까지 비용의 50%」·「1일 1회만 산정」·「수급자가 부담하지 아니한다」·편도 최단거리 verbatim 불변 ↔ ogada `TransportServiceFeeService`(RU_1~4·`ONE_WAY_RATIO=0.5`·1일1회) 6-link chain 경쟁 4종 유일 full-stack | REQUIREMENTS G16 · **P2 v1.3-C parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry** |
+| **BNK-697 #3** | **★ 규제/엔젤 backbone DRIFT = 실체 변동 0** — silverangel notice list +2.1MB 구조 DRIFT(최신 Tmp_idx=221572·신규 공지 0)·lcms type3→type1 rotation·MOHW126/law247 md5 DRIFT semantic IDENTICAL(og:url param·`Time=` 동적 토큰)·extraService/essential zero drift·systemFeature 404 carry · **longterm 502/610 404 ~130-cycle 「미확인」 carry** | COMPETITOR_MATRIX · canonical 보존 우선 |
+
+### [BNK] BNK-675~683 인사이트 (2026-06-27) — ★★★ **US-Q01 M6 FULL CLOSURE** · ★★★ **M7 tri-source 11/11+6 superset** · ★★ **Safety RBAC + G-NHIS 4-link** · ★ **M11/M12 sole P1 lever**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-678** | **★★★ US-Q01 M6 FULL CLOSURE** — SafetyCheckController+4-endpoint CRUD+V184 migration+FE 4-route wire · module id=6 **0→1.0** · KPI **80.86%→84.31%**(+3.45pp) | USER_STORIES US-Q01 · ROADMAP v3.1 · REQUIREMENTS |
+| **BNK-683** | **★★★ M7 tri-source reconfirmed** — carefor demo 10 nav + func 11-leaf + ogada 17 `/billing/*` = **11/11 core + 6 superset** · demo 7-10 gap covered by `/billing/calculator` · id=7 **1.0** | COMPETITOR_MATRIX · ROADMAP v1 M7 |
+| **BNK-682** | **★★ Safety RBAC 2-layer gate** — 4-endpoint×5-role @Test matrix · **G-NHIS 4-link regulatory chain** law247↔NHIS#44↔CATALOG_YEAR↔HTTP contract tests | REQUIREMENTS §1-5 · USER_STORIES US-G08b |
+| **BNK-679** | **★★ M11/M12 sole remaining P1 lever** — carefor func.php 6-leaf · in-app **minimum set 11-1·11-3·11-6** · optional **11-5 labor-cost-ratio** compliance differentiator · closure **+6.90pp**(84.31%→**91.21%**) | USER_STORIES US-PAYROLL-M11 · PLAN_NOTES 추가 질문 |
+| **BNK-675~677** | **★ demo facility shell** — transport 0 vs ogada 9 routes + NHIS #44 differentiation · **NHIS #44 422차 zero drift** carry | COMPETITOR_MATRIX · ROADMAP v1.3-C |
+
+**planner 액션 (BNK-675~683)**: ① baseline BE `@92770fd`·FE `@d1d0adf`(양쪽 WT CLEAN) · merge gate **875** · KPI 123/97/V184/FE497/BE@Test 2024/84.31% carry ② **US-Q01 acceptance criteria** `[x]` 갱신 ③ **M11 in-app min set** 추가 질문 carry ④ **tester FF merge 875 가속 권장**.
+
+### 추가 질문 (자동 기획 동기화 205차)
+1. **M11 in-app minimum set vs BPO adapter (★★★ BNK-679 carry)**: carefor M11 6-leaf 중 **11-1 급여대장·11-3 수당/공제·11-6 급여 리포트** in-app minimum vs 이지케어 「선율회계법인」 BPO hybrid — 사용자 확정 필요.
+2. **M12 scope boundary (★★ BNK-679 carry)**: carefor func.php **12-x leaves 없음** · ezCare **K012 재무회계** FAQ reference only — M12 = accounting ledger minimum vs full ERP defer?
+3. **M11-5 labor-cost-ratio (★ BNK-679 optional)**: ezCare wAllowance-payrollcost 인건비 원가율 compliance differentiator — M11 epic 포함 vs standalone P3?
+4. **QA-B95 operation 승격 timing (★ carry)**: merge 875 직후 vs origin/test push(599+276) 후 defer — live E2E bootstrap-disabled carry 122/25/0.
+5. **Demo facility shell GTM (★ BNK-675 carry)**: transport 0 vs ogada 9 routes — v1.3-C marketing differentiation 문구 확정 vs defer.
+
+### [PLN] QA 피드백 반영 (2026-06-26, 204차 — BNK-662~674 · TSR 1456~1457차 · QA Open 1(active: QA-B344)·★ QA-B352 Planned · cross-stream BLOCK)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop `@7fcdfde` WT **CLEAN** · test `@4567030` · pre-merge **2014/2014 PASS**(376 suites·+22·BE @Test 1999) · `test..develop` **0/13** pending · FE develop `@aa0559b` WT **CLEAN** · test `@afbbaa7` · pre-merge **2275/2275 PASS** · `test..develop` **0/1** pending · merge gate **865**(FE270+BE595) · origin/test **595 BE+270 FE** · live E2E **122/25/0** carry · **118 Route·93 page·V1–V183·FE test 489·모듈 80.86%** | ROADMAP CURRENT BASELINE 204차 |
+| **QA-B344 Open (pending 12→13)** | BE develop→test merge pending **13** `@7fcdfde`(QA-B95 HealthControllerTest +1 @Test·G-NHIS recovery keyword notes·9-stage chain carry) · pre-merge **2014/2014 PASS** · WT **CLEAN** · TSR 1457차 update · **★ QA-B353 Fixed 선행 완료** · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Open · ROADMAP v1/v2 P0 |
+| **QA-B352 Planned (pending 4→1)** | FE develop→test merge pending **1** `@aa0559b`(G16 `resolveTransportServiceFeeOnePerDayNote()` NHIS copy fallback + `VisitNhisImportPanel` PARTIAL/ALL_SKIPPED boundary test · +4 FE tests→489) · pre-merge **2275/2275 PASS** · TSR 1456~1457차 update · **★ QA-B350 Fixed carry** · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Planned · ROADMAP v1.2.1 P0 · US-G08b · US-T05 |
+| **QA-B353 Fixed** | BE develop WT DIRTY 1M(`HealthControllerTest` WIP) → **`7fcdfde` commit** · bootstrap service-unavailable probe lock · WT **CLEAN** · TSR 1457차 | QA_FEEDBACK Open(Fixed carry) · ROADMAP v2 |
+| **BNK-662~674** | **★★★ law247 admRulSeq=2100000271110 정본**(wrong `2100000252389` 6,217B shell → 78,450B 제2025-247호 SSR·BNK-673 −92% false alarm) · **★★★ G16 stage11** onePerDayNote fallback + G-NHIS PARTIAL boundary UI test · **★★ 4축+leave-ledger 7/7 LIVE** P0/P1 재정렬 없음 · **★ NHIS #44 415차 zero drift** · **★ ezCare FAQ finance cluster 123**(+8 counter) · **신규 core 갭 0** | ROADMAP · REQUIREMENTS §1-5 · USER_STORIES US-G08b/US-T05 · memory/decisions.md |
+
+**coder/ops 다음 액션 (204차)**: ① **tester FF merge QA-B344(BE 13)+QA-B352(FE 1)**(양쪽 WT CLEAN) ② **origin/test push 595 BE+270 FE** ③ **QA-B116 post-merge 재검증** ④ **QA-B95 operation 승격**(runtime bootstrap enable·19th layer contract 검증) ⑤ **P1** M11/M12 epic scope 확정 ⑥ **P2** G-MEAL-PLAN-TEMPLATE(silverangel CMS+CJ MOU carry).
+
+> **203차→204차 delta**: merge gate 854→**865** · BE `@9b91e0f` pending 8→**`7fcdfde` pending 13** · FE `@cda2a10` pending 2→**`aa0559b` pending 1** · **QA-B350 Fixed** · **QA-B353 Fixed** · **QA Open 0→1(active: QA-B344)** · **G-NHIS chain 9-stage→14-stage**(stage10~11: G16 onePerDayNote + PARTIAL boundary) · **law247 URL correction** · origin/test **582+261→595+270** · FE test 485→**489** · BE @Test 1991→**1999**.
+
+### [BNK] BNK-662~674 인사이트 (2026-06-26) — ★★★ **law247 admRulSeq URL correction** · ★★★ **G16 stage11 onePerDayNote + G-NHIS PARTIAL boundary** · ★ **NHIS #44 415차 zero drift** · ★ **ezCare FAQ finance cluster 123**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-673~674** | **★★★ law247 URL correction** — `admRulInfoP.do?admRulSeq=2100000252389`(6,217B empty shell) → **`2100000271110`**(78,450B·제2025-247호 SSR) · BNK-673 「site refactor −92%」가정 **번복** | REQUIREMENTS §1-5 · memory/decisions.md · COMPETITOR_MATRIX |
+| **BNK-674** | **★★★ G16 stage11** — FE `@aa0559b` `resolveTransportServiceFeeOnePerDayNote()` NHIS #44 copy fallback + `VisitNhisImportPanel` PARTIAL vs ALL_SKIPPED boundary test(+4 FE tests) · G-NHIS chain **9→14 stage** | USER_STORIES US-G08b/US-T05 · ROADMAP v2 |
+| **BNK-674** | **★ QA-B353 Fixed @ `7fcdfde`** — HealthControllerTest bootstrap service-unavailable probe · dirty-tree 해소 → merge gate UNBLOCKED(dirty 선행 조건 충족) | QA_FEEDBACK · ROADMAP P0 |
+| **BNK-672~674** | **★ ezCare FAQ finance cluster 123**(+8 counter BNK-674) · M11/M12 P1 demand-signal carry · **4축+leave-ledger 7/7 LIVE** · **신규 core 갭 0** | ROADMAP v3 P1 · 추가 질문 |
+| **BNK-668~673** | **★ P2 carry G-MEAL-PLAN-TEMPLATE** — silverangel CMS+CJ MOU carousel·in-app 식단표 single-source vs 외부 MOU 링크 | ROADMAP v3 P2 · 추가 질문 |
+
+**planner 액션 (BNK-662~674)**: ① baseline BE `@7fcdfde`·FE `@aa0559b`(양쪽 WT CLEAN) · merge gate **865** · KPI 118/93/V183/FE489/BE@Test 1999/80.86% carry ② **law247 canonical URL** 문서 정본화 ③ **G16 stage11** US-G08b/US-T05 acceptance criteria 갱신 ④ **M11/M12 P1 demand-signal**(finance cluster 123) 추가 질문 carry ⑤ **tester FF merge 865 가속 권장**.
+
+### 추가 질문 (자동 기획 동기화 204차)
+1. **M11/M12 epic P1 scope (★★★ BNK-672~674 carry)**: ezCare FAQ finance cluster **123**(+8 counter) ↔ ogada M11/M12 0 route = +6.9pp 최대 KPI lever — **in-app vs BPO 어댑터** 하이브리드 default 유지·사용자 확정 필요(203차 carry).
+2. **law247 admRulSc direct body (★★ BNK-673 carry)**: `admRulSeq=2100000271110` SSR 정본 확정 · `admRulSc.do` direct body 미확인 carry — 법령 인용 시 InfoP URL만 canonical로 고정할지.
+3. **G-MEAL-PLAN-TEMPLATE P2 scope (★ BNK-668~673)**: silverangel CMS+CJ MOU carousel vs ogada in-app 식단표 single-source — v2 P2 등재 vs v3 defer.
+4. **QA-B95 operation 승격 timing (★ carry)**: 19th layer BE test lock `@7fcdfde` · live E2E bootstrap-disabled carry 122/25/0 — merge 865 직후 vs origin/test push 후 defer.
+5. **G-NHIS chain stage12+ (★ BNK-674)**: 14-stage chain 완성(stage11 G16+PARTIAL) — import 결과 알림/대시보드 due-gate v2 vs v3 backlog 여부.
+
+### [PLN] QA 피드백 반영 (2026-06-26, 203차 — BNK-652~661 · TSR 1436~1446차 · QA Open 0(active)·★ QA-B344 pending 8·QA-B350 Planned · cross-stream BLOCK)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop `@9b91e0f` WT **CLEAN** · test `@4567030` · pre-merge **2006/2006 PASS**(375 suites·+14·BE @Test 1991) · `test..develop` **0/8** pending · FE develop `@cda2a10` WT **CLEAN** · test `@91675f1` · pre-merge **2266/2266 PASS**(+7) · `test..develop` **0/2** pending · merge gate **854**(FE264+BE590) · origin/test **582 BE+261 FE** · live E2E **122/25/0** carry · **118 Route·93 page·V1–V183·FE test 485·모듈 80.86%** | ROADMAP CURRENT BASELINE 203차 |
+| **QA-B344 Planned (pending 7→8)** | BE develop→test merge pending **8** `@9b91e0f`(`VisitServiceTest`+`VisitControllerRoutingTest` PARTIAL/ALL_SKIPPED 경계 service-layer test lock·BNK-661) · pre-merge **2006/2006 PASS** · TSR 1446차 update · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Planned · ROADMAP v1/v2 P0 |
+| **QA-B350 Planned carry** | FE develop→test merge pending **2** `@cda2a10`(`e4dbe9a` inline recovery steps · `cda2a10` unmatched row→client search link · +7 @Test) · pre-merge **2266/2266 PASS** · TSR 1444차 Planned · **이관 규율 6·14·기능 갭 아님** | QA_FEEDBACK Planned · ROADMAP v1.2.1 P0 · US-G08 |
+| **QA-B345~B349 Fixed** | merge chain·dirty-tree 해소·G-NHIS-IMPORT-ERROR-STATUS-SURFACE FE wire(`@91675f1`)·bulk export panel·g21 component status FE wire · TSR 1437~1441차 | QA_FEEDBACK Fixed |
+| **BNK-655~661** | **★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE 9-stage full-stack chain**(역대 최장 BNK→COD) — BE 4-state classify(OK/PARTIAL/UNMATCHED/SKIPPED)→FE inline guidance→unmatched row deep-link→branch context persistence(`562560a`)→service-layer test lock(`9b91e0f`)·경쟁 4종 유일 | ROADMAP v2 · USER_STORIES US-G08 · REQUIREMENTS §1-5 |
+| **BNK-661** | **★★★ silverangel 221564 leak CLOSED** — POST/GET 양방향 1.8MB leak → 51,765B 빈 shell(`view.do` shell-only refactor·6/30 hotfix 추정)·보안 finding 번복 3건 · ogada `notice draft 게이팅`=보안 best-practice carry·**비교 우위 framing 약화**·6/30 release notes 16항목 decisions carry | COMPETITOR_MATRIX · memory/decisions.md · `NoticeViewPage` 2-접근(SSR draft 게이팅 vs SSR shell+client fetch+RBAC) 동등 안전 note |
+| **BNK-659** | **★★ ezCare FAQ 14-카테고리 taxonomy**(233 rowid·K001~K014) — demand cluster **K012 재무회계·K014 4대보험·K008 수당/급여** ↔ ogada **M11 직원급여·M12 회계** 갭 정확 정합 → **M11/M12 P1 demand-signal 재입증**(BNK-633/642 carry) | ROADMAP v3 P1 · PLAN_NOTES 추가 질문 |
+| **BNK-660** | **★ NHIS #44 이동서비스비 러-1~4 409차 zero drift IDENTICAL** `c886ff1f` ↔ ogada full-stack(`TransportServiceFeeParityCatalog`·`NhisVisitScheduleImportOutcome` 4-state) parity/우위 carry | COMPETITOR_MATRIX · v1.3-C parity 문구 carry |
+
+**coder/ops 다음 액션 (203차)**: ① **tester FF merge QA-B344(BE 8)+QA-B350(FE 2)**(양쪽 WT CLEAN·선행 commit 불필요) ② **origin/test push 582 BE+261 FE** ③ **QA-B95 operation 승격**(runtime bootstrap enable·18th layer contract 검증) ④ **P1** M11/M12 epic scope 확정 ⑤ silverangel 221564 leak **CLOSED 확인**(6/30 D-day hotfix 추정·비교 우위 framing 약화 반영).
+
+> **202차→203차 delta**: merge gate 841→**854** · BE `@9664f29` pending 2→**`9b91e0f` pending 8** · FE `@0d0b587` pending 1→**`cda2a10` pending 2** · cross-stream **BLOCK 유지** · **QA-B345~B349 Fixed**(5건) · **QA-B344 pending 8 / QA-B350 Planned** · **★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE 9-stage full-stack chain**(BNK-655~661) · **★★★ silverangel 221564 leak CLOSED**(보안 finding 번복) · **★★ ezCare FAQ taxonomy M11/M12 재입증** · origin/test **582+257→582+261** · **V182→V183** · BE @Test 1980→**1991**.
+
+### [BNK] BNK-652~661 인사이트 (2026-06-26) — ★★★ **G-NHIS-IMPORT-ERROR-STATUS-SURFACE 9-stage full-stack chain (역대 최장 BNK→COD)** · ★★★ **silverangel 221564 leak CLOSED (보안 finding 번복)** · ★★ **ezCare FAQ 14-카테고리 taxonomy → M11/M12 P1 재입증** · ★ **NHIS #44 409차 zero drift**
+
+| BNK | 인사이트 | planner 반영 |
+|-----|----------|-------------|
+| **BNK-655~656** | **★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE 8번째 BNK→COD 1-cycle full-stack** — BE `c38388d` 4-state classify(OK/PARTIAL/UNMATCHED/SKIPPED) + FE `91675f1` outcome notes/error recovery(commit msg verbatim "ezCare 21845 pattern" cite) · ezCare=사후·수동 FAQ 공지 vs ogada=실시간 in-app 4-state surfacing | ROADMAP v2 closure · USER_STORIES US-G08 |
+| **BNK-658~660** | **★★ chain hardening** — BNK-658 `VisitControllerRoutingTest` routing 보강(`97b94e7`) · BNK-659 ALL_SKIPPED→skip-only 제한 + 미매칭 행→`/clients?q=` deep-link(`ffa57ea`/`cda2a10`) · BNK-660 git-grounded 재입증 | QA-B344/B350 Planned |
+| **BNK-661** | **★★★ stage4 branch persistence + service-layer test lock** — FE `562560a` `?branchId=&q=` URL 초기화(다지점 잘못된 지점 데이터 미노출) + BE `9b91e0f` `VisitServiceTest`/`VisitControllerRoutingTest` PARTIAL/ALL_SKIPPED 경계 lock · **★★★ silverangel 221564 leak CLOSED**(보안 finding 번복 3건·notice draft 게이팅 best-practice carry·비교 우위 framing 약화) | QA-B344 pending 8 · COMPETITOR_MATRIX · decisions.md |
+| **BNK-659** | **★★ ezCare FAQ taxonomy** — `/help/faq.ez` 14-카테고리 전수(233 rowid·rowid=21601 83,877 최다=운영자 최대 pain) · K012 재무·K014 4대보험·K008 수당 cluster ↔ ogada M11/M12 갭 정합 → **M11/M12 P1 demand-signal 재입증** | ROADMAP v3 P1 · 추가 질문 |
+| **BNK-657·660** | **★ NHIS #44 이동서비스비 러-1~4 409차 zero drift IDENTICAL** `c886ff1f` ↔ ogada full-stack parity/우위 carry | v1.3-C parity 문구 carry |
+
+**planner 액션 (BNK-652~661)**: ① baseline BE `@9b91e0f`·FE `@cda2a10`(양쪽 WT CLEAN) · merge gate **854** · KPI 118/93/V183/FE485/BE@Test 1991/80.86% carry ② **G-NHIS-IMPORT-ERROR-STATUS-SURFACE 9-stage chain** = 경쟁 4종 유일 full-stack 우위 문서화(USER_STORIES US-G08) ③ **silverangel 221564 leak CLOSED** → COMPETITOR_MATRIX·decisions carry·비교 우위 framing 약화 반영(BNK→COD chain 보안 best-practice 유지) ④ **M11/M12 P1 demand-signal 재입증**(BNK-659 taxonomy) → 추가 질문 carry ⑤ **tester FF merge 854 가속 권장**(양쪽 WT CLEAN).
+
+### 추가 질문 (자동 기획 동기화 203차)
+1. **M11/M12 epic P1 scope (★★★ BNK-659 재입증)**: ezCare FAQ 14-카테고리 taxonomy(K012 재무·K014 4대보험·K008 수당)가 ogada M11/M12 갭과 정확 정합 = +6.9pp 최대 KPI lever 재확인 — **in-app vs BPO 어댑터** 하이브리드 권장 default 유지·사용자 확정 필요(199~202차 carry).
+2. **silverangel 221564 leak CLOSED 후 보안 framing (★★★ BNK-661)**: 경쟁사가 6/30 직전 leak hotfix → ogada `notice draft 게이팅` 비교 우위 framing 약화. `NoticeViewPage` 구현 시 2-접근(SSR 단계 draft 게이팅 vs SSR shell+client fetch+RBAC) 모두 동등 안전 — 어느 접근을 default로 채택할지 + 비교 마케팅 문구 조정 여부.
+3. **G-NHIS-IMPORT-ERROR-STATUS-SURFACE 후속 (★★ BNK-661)**: 9-stage chain 완성(branch persistence+service-layer lock) — 추가 deepen(예: import 결과 알림/대시보드 due-gate) v2 vs v3 backlog 등재 여부.
+4. **QA-B95 operation 승격 timing (★ carry)**: 18th layer BE test lock landed(`@9b91e0f`) · live E2E bootstrap-disabled carry 122/25/0 — runtime bootstrap enable + target pass rate 기준을 merge 854 직후 vs origin/test push 후로 defer할지.
+5. **silverangel 6/30 release notes 16항목 (carry · BNK-654)**: 시설/주야간 공통 13항목 + 주야간 적용 3항목(BNK-654 leak 본문) — P3 candidate 9건 검토 calibration 데이터 유지 vs 별도 epic 등재.
 
 ### [PLN] QA 피드백 반영 (2026-06-26, 202차 — BNK-643~651 · TSR 1434~1435차 · QA Open 0(active)·★ QA-B344/B345 Planned · cross-stream BLOCK)
 
@@ -700,6 +913,95 @@
 ---
 
 ---
+
+---
+
+### [TWR] ops 문서 baseline 정합 (2026-07-13 — **Q760 위생·안전 현장 체크리스트 · CHANGELOG 형식 정리**)
+
+**문서 갱신**: CHANGELOG 2026-07-13 · FAQ **Q760 신규** · USER_MANUAL §5-9 체크리스트·프로그램 리포트 지점 안내 · README·ADMIN·DEPLOYMENT 메타
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | 「최근 7일 요약」 운영자용 형식 정리 · 2026-07-13 카드 | ✅ |
+| **FAQ Q760** | M6 현장 7단계 체크리스트 (Q745~Q759 통합) | ✅ |
+| **USER_MANUAL** | §5-9 safety 체크리스트 · program reports BranchSwitcher vs API `branchId` | ✅ |
+| **README** | baseline·P2 carry 목록 갱신 | ✅ |
+
+**다음 문서화 우선순위**: **program reports FE `branchId`** · **7-5 live PG env checklist** · **J03 Solapi live dispatch** · **M11/M12 급여·재무 Epic scope 확정 후 USER_MANUAL §11 초안**
+
+### [TWR] 404차 documentation operational enhancement (2026-06-27, 24:00 KST — **Q759 safety required-flag vitest lock · Q758 deepen · BE `2f4bfdf`/FE `154ebee`**)
+
+**404차 문서 갱신**: CHANGELOG 404차 · FAQ **Q759 신규 · Q758 deepen** · USER_MANUAL §1-3·§5-9 · ADMIN_GUIDE §1-4 US-Q01 · DEPLOYMENT §11-3 · README
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | 404차 TWR + **QA-B358 unit test sync** (`154ebee`) | ✅ |
+| **FAQ Q759** | **`safetyChecks.test.js`·`safetyCheckCatalog.test.js`** — optional default · **`required: false` preserve** | ✅ |
+| **FAQ Q758** | vitest lock cross-ref (`154ebee`) | ✅ |
+| **USER_MANUAL** | §1-3·§1-5·§5-9 baseline **`154ebee`** | ✅ |
+| **ADMIN_GUIDE** | §1-4 US-Q01 FE validation test lock | ✅ |
+| **DEPLOYMENT** | §11-3 test matrix + **`safetyChecks.test.js`** | ✅ |
+
+**다음 문서화 우선순위 (405차+)**: **program reports FE `branchId`** · **7-5 live PG env checklist** · **J03 Solapi live dispatch** · **M11/M12 급여·재무 P1 Epic**
+
+### [TWR] 396차 documentation operational enhancement (2026-06-28, 18:00 KST — **Q743 parity-rules ONE_PER_DAY 우선 · Q744 bootstrap health lock · BE `7fcdfde`/FE `e19328a`**)
+
+**396차 문서 갱신**: CHANGELOG 396차 · FAQ **Q743 deepen · Q744 신규** · USER_MANUAL §1-3·§5-8-1 · ADMIN_GUIDE §1-4 G16·QA-B95 · DEPLOYMENT §1-4·§11-3
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | 396차 TWR + **G16 parity-rules derive** (`e19328a`) + **QA-B95 health probe lock** (`7fcdfde`) | ✅ |
+| **FAQ Q743** | **`resolveTransportServiceFeeOnePerDayNoteFromRules`** — **`ONE_PER_DAY.description` 우선** (395차 rates-only 정정) | ✅ |
+| **FAQ Q744** | **`HealthControllerTest`** bootstrap service-unavailable field matrix — QA-B95 20th layer | ✅ |
+| **USER_MANUAL** | §5-8-1 footnote cascade · §1-3 baseline **`7fcdfde`/`e19328a`** | ✅ |
+| **ADMIN_GUIDE** | §1-4 G16·QA-B95 smoke deepen | ✅ |
+| **DEPLOYMENT** | §1-4 G16·Q744 health smoke · §11-3 checklist · baseline **`7fcdfde`/`e19328a`** | ✅ |
+
+**다음 문서화 우선순위 (397차+)**: **program reports FE `branchId`** · **7-5 live PG env checklist** · **J03 Solapi live dispatch** · **M6 6-2~6-4 `/safety/*`** · **M11/M12 급여·재무 P1 Epic**
+
+### [TWR] 395차 documentation operational enhancement (2026-06-28, 12:00 KST — **Q743 onePerDayNote static fallback · Q735 zero-import PARTIAL UI lock · BE `eb6dd67`/FE `aa0559b`**)
+
+**395차 문서 갱신**: CHANGELOG 395차 · FAQ **Q743·Q735 deepen** · USER_MANUAL §1-3·§1-5·§5-8-1·§5-11 · ADMIN_GUIDE §1-4 G16·G21 · DEPLOYMENT §1-4 · README
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | 395차 TWR + **G16 onePerDayNote fallback** (`aa0559b`) + **NHIS PARTIAL UI regression** | ✅ |
+| **FAQ Q743** | **`resolveTransportServiceFeeOnePerDayNote`** — blank API → static NHIS copy (394차 「footnote 숨김」 정정) | ✅ |
+| **FAQ Q735** | **`VisitNhisImportPanel.test`** zero-import PARTIAL vs ALL_SKIPPED UI lock | ✅ |
+| **USER_MANUAL** | §5-8-1 footnote fallback · §5-11 PARTIAL 인라인 복구 · baseline **`aa0559b`** | ✅ |
+| **ADMIN_GUIDE** | §1-4 G16·G21 smoke deepen | ✅ |
+| **DEPLOYMENT** | §1-4 G16·NHIS import UI smoke · baseline **`eb6dd67`/`aa0559b`** | ✅ |
+
+**다음 문서화 우선순위 (396차+)**: **program reports FE `branchId`** · **7-5 live PG env checklist** · **J03 Solapi live dispatch** · **M6 6-2~6-4 `/safety/*`** · **M11/M12 급여·재무 P1 Epic**
+
+### [TWR] 394차 documentation operational enhancement (2026-06-28, 00:00 KST — **Q743 G16 parity-rules DTO full-stack · Q742 4-outcome test lock · BE `eb6dd67`/FE `afbbaa7`**)
+
+**394차 문서 갱신**: CHANGELOG 394차 · FAQ **Q743 신규** · **Q742·Q710·Q678 deepen** · USER_MANUAL §1-3·§1-5·§5-8-1 · ADMIN_GUIDE §1-4 G16 · DEPLOYMENT §1-4 · README §6
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | 394차 TWR + **G16 FE DTO wire** (`afbbaa7`) + **BE 4-outcome keyword lock** (`eb6dd67`) | ✅ |
+| **FAQ Q743** | G16 **`normalizeTransportParityRule`·`onePerDayNote`** full-stack · Q710 P2 carry closure | ✅ |
+| **FAQ Q742** | ALL_SKIPPED·EMPTY alignment test lock deepen | ✅ |
+| **USER_MANUAL** | §5-8-1 footnote + parity DTO wire · baseline **`afbbaa7`** | ✅ |
+| **ADMIN_GUIDE** | §1-4 G16 DTO wire · sysadmin smoke | ✅ |
+| **DEPLOYMENT** | §1-4 G16·guidance keyword smoke · baseline **`eb6dd67`/`afbbaa7`** | ✅ |
+
+**다음 문서화 우선순위 (395차+)**: **program reports FE `branchId`** · **7-5 live PG env checklist** · **J03 Solapi live dispatch** · **M6 6-2~6-4 `/safety/*`** · **M11/M12 급여·재무 P1 Epic**
+
+### [TWR] 393차 documentation operational enhancement (2026-06-27, 23:30 KST — **Q742 FE guidance keyword consume full-stack · BE `331f24b`/FE `5636508`**)
+
+**393차 문서 갱신**: CHANGELOG 393차 · FAQ **Q742 deepen** (P2 carry closure) · USER_MANUAL §1-3·§1-5·§5-11 · ADMIN_GUIDE §1-4 G21 · DEPLOYMENT §1-4 · README §6
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | 393차 TWR + **G-NHIS FE keyword consume** (`5636508`) | ✅ |
+| **FAQ Q742** | BE+FE full-stack · **`resolveVisitImportRecoveryKeywords` API 우선** · static fallback | ✅ |
+| **USER_MANUAL** | §1-3·§1-5·§5-11 baseline **`5636508`** | ✅ |
+| **ADMIN_GUIDE** | §1-4 G21 FE wire contract | ✅ |
+| **DEPLOYMENT** | §1-3·§1-4 smoke · baseline **`5636508`** | ✅ |
+
+**다음 문서화 우선순위 (394차+)**: **program reports FE `branchId`** · **7-5 live PG env checklist** · **J03 Solapi live dispatch** · **M6 6-2~6-4 `/safety/*`** · **M11/M12 급여·재무 P1 Epic**
 
 ### [TWR] 381차 documentation operational enhancement (2026-06-27, 03:00 KST — **Q726 G-CLIENT-CONTRACT-BULK-PRINT · Q727 g21-seed probe · Q728 UXD-166 · BE `4df9465`/FE `a727862`**)
 
@@ -2311,9 +2613,10 @@
 | # | 영역 | 기존 plan | 사용자 요청·확정 변경 | 구현·문서 반영 |
 |---|------|-----------|------------------------|----------------|
 | **1** | **배차 메뉴 IA** | `TransportContextNav` — 배차·차량·이동서비스비·외출 등 **이동 하위 분리** · v1.3-B 자동 배차는 별도 화면 후보 | **수동·자동 배차를 동일 `/transport` 페이지**에 통합 — 생성 방식만 다름 · **법정 준수(G15)** 는 `/transport/compliance` 분리 · `/transport/auto-dispatch` → `/transport` 리다이렉트 | `TransportPage.jsx` · `TransportCompliancePage.jsx` · `TransportContextNav.jsx` · `App.jsx` |
-| **2** | **`/transport` 섹션 순서** | 초기 UI 셸 — 「운행 조건」카드(날짜·지점) + 명단 + 루트 | ① **운행 루트**(확정·임시 run 목록) **최상단** · 날짜·지점 안내는 루트 카드 내부 · ② **배차 신청 인원 명단** · ③ **자동 배차**(`hq_admin`) · ④ **수동 배차** 생성 버튼 · **「운행 조건」독립 카드 제거** | `TransportPage.jsx` |
+| **2** | **`/transport` 섹션 순서** | 초기 UI 셸 — 「운행 조건」카드(날짜·지점) + 명단 + 루트 | ① **운행 루트**(확정·임시 run 목록) **최상단** · 날짜·지점 안내는 루트 카드 내부 · ② **배차 인원 명단** · ③ **자동 배차**(`hq_admin`) · ④ **수동 배차** 생성 버튼 · **「운행 조건」독립 카드 제거** | `TransportPage.jsx` |
 | **3** | **명단 연락처 컬럼** | US-T01·`c7941e9` — roster·정차 **`pickupContact`**(픽업 연락처) 노출·마스킹 | 명단 테이블 — **「연락처」**(이용자 `phone`) · **「보호자 연락처」**(대표 보호자 `primaryGuardian` 전화) · **픽업 연락처 컬럼 미표시** · API `pickupContact` **호환 유지** · 정차(`TransportStopList`)는 **기존 `pickupContact` 유지** | BE `TransportRosterItemResponse.contact`·`guardianContact` · FE `TransportPage.jsx` |
 | **4** | **`usesTransport` 노출** | DB·API(V47·`1ec538b`)에 **이미 존재** — plan은 ClientForm만 명시 | 이용자 **목록·상세**에 「배차 이용」컬럼·필터·요약 카드 노출(사용자 인지 갭) | `ClientListPage` · `ClientDetailPage` · `clientTransport.js` |
+| **4a** | **배차 명단 구성** | 초기 UI — 확정 배차에 포함된 이용자만 강조·미배정은 빈 칸 | **활성 지점의 이동서비스 이용자(`usesTransport=true`) 전원**을 명단에 표시 · 당일 **CONFIRMED** 루트 포함 여부만 **`confirmedDispatched`** · UI **「확정」/「미확정」** Badge · 확정자만 필터링하지 않음 | BE `TransportService.listRoster` · FE `TransportPage.jsx` (`7e048c0`) |
 | **5** | **SideNav 비주얼** | US-UX-05 — 5그룹 토글·초기 접힘·`sessionStorage` persist @ `3845f0c` (**기능** 위주) | **그룹 헤더 확대·브랜드 블록·아이콘·좌측 액센트·Linear/Stripe 스타일** · **무한 스크롤 버그** 수정(`html/body/#root overflow:hidden`·`overscroll-behavior`) | `SideNav.jsx` · `sideNavIcons.jsx` · `components.css` · `tokens.css` |
 | **6** | **로그인 세션 유지** | SEC-005·`session.js` — JWT **메모리 전용** · 새로고침 시 재로그인 **설계상 동작** · `LoginPage` 「메모리에만 보관」안내 | 새로고침·뒤로가기 후 **같은 탭 로그인 유지** — **refresh token만 `sessionStorage`**(탭 종료 시 삭제) · access token 메모리 · 앱 기동 시 `restoreSession()` | `session.js` · `AuthContext.jsx` · `ProtectedRoute.jsx` |
 
@@ -2322,6 +2625,12 @@
 1. **배차 UX** — 운영 진입점은 **`/transport` 단일 허브**; 자동/수동은 **탭·섹션 분리가 아닌 동일 페이지 내 생성 경로 차이**로만 구분한다. 법정 준수·차량·이동서비스비 등 **컨텍스트 네비 항목은 유지**한다.
 2. **명단 PII** — roster **`contact`·`guardianContact`** 는 **`pickupContact`와 동일 마스킹 규칙**(non-HQ `010-****-xxxx`) · `hq_admin`만 `tel:` 링크.
 3. **SEC-005 예외** — **access token localStorage/sessionStorage 금지는 유지** · **refresh token `sessionStorage` 허용**(탭 스코프) · httpOnly cookie 전환은 **후속(SEC-D30 후보)**.
+
+**결정 97 (2026-06-27, 사용자 요청 — 배차 명단 전체 표시·확정 배지)**
+
+1. **명단 범위** — `/transport` **「{방향} 배차 인원 명단」** 은 **활성 지점**의 **`usesTransport=true`·활성·미퇴소** 이용자 **전원**을 표시한다. **CONFIRMED 배차에만 포함된 이용자로 목록을 제한하지 않는다.**
+2. **배차 상태 표기** — API `confirmedDispatched` = 당일·선택 방향 **CONFIRMED** 루트 정차 포함 여부. UI **「확정」**(success) / **「미확정」**(neutral) Badge. 미확정 이용자도 명단·수동 배차 선택 목록에 **표시**한다(확정 배차 포함자만 선택 불가).
+3. **빈 명단** — 조회 지점에 배차 이용자가 없으면 **지점명**을 포함한 안내(지점 변경·`ClientForm` 배차 프로필 설정)를 표시한다.
 
 **후속 문서·QA**
 
@@ -6638,6 +6947,92 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 75. **V49 v3 meals/programs + Must billing·attendance 재대조 0건 (2026-06-08, round 75, backend `53a1ffe`)** — Must billing·attendance·NHIS 핵심 제약 7건 SQL `rg` 물리 재확인 — **Must 신규 누락 0건**. **V49** `meal_menus`·`meal_records`·`activity_programs`·`program_participations` 4테이블 신규(API §13·frontend `7ef1083`·`config/meals.js`/`programs.js` enum 정합). agents.yaml `core_entities` `meal_records`·`activity_programs` **V49 충족**. ERD §4-11·§8·DATA_RETENTION §3 갱신. **coder**: `MealService`/`ProgramService`·JPA·`MustApiEndpointRoutingTest` §13·`mvn flyway:migrate` 검증.
 
 ### [DBA] DB 설계 질문
+
+#### #190. V186–V189 transport committed + V190 defense-in-depth integrity (2026-07-13, round 206, backend `5366944`)
+- **배경**: round 205(#189 — 미커밋 V186–V189 WIP 보류, backend `2f4bfdf`) → backend HEAD **`5366944`**. coder 가 transport 스키마·앱을 develop 에 커밋 — `60c4e36` **feat(v2/transport) persist shuttle run metadata and roster day status**(V186–V189)·`c183d84` RBAC/service contracts·`41cbc8a` V189 readiness probe·`b89c6db` suggest exclusion·`5366944` day-status excluded clients on run mutate. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`5366944`**·branch **develop**·WT CLEAN(V190 추가 전).
+- **`git diff --name-only 2f4bfdf..5366944 -- src/main/resources/db/migration/`** = **V186·V187·V188·V189 4파일**.
+- **V186–V189 검토 (coder 소유 — DBA confirmation)**:
+  - **V186** `departure_round INT NOT NULL DEFAULT 1` + `CHECK (>=1)` + 다회차 UK — 완전. 상한 CHECK 불요(다회차 무제한 정당).
+  - **V187** shuttle addresses nullable VARCHAR(255) — **공백 nonempty CHECK 부재**(갭).
+  - **V188** `transport_roster_day_status` — natural UK·2 Tenant FK·direction enum·lookup index — 완전. **flags-synced CHECK·`(org, updated_by)` Tenant FK 부재**(갭).
+  - **V189** unify UPDATE only — DB CHECK 미러 부재(갭은 V190으로 흡수).
+- **DBA 신규 V190** — round 205 권장 3종 일괄 해소: `chk_vehicles_shuttle_start/end_address_nonempty` · `chk_transport_roster_day_status_flags_synced` · `fk_transport_roster_day_status_updated_by_org`. single-additive ALTER-only.
+- **의도적 제외(P3)**: `(org, id)` anchor UK · client×branch sync · `departure_round` 상한 · `updated_by` NOT NULL/actor backstop.
+- **Must billing·attendance·NHIS**: transport 전용 — Must 도메인 스키마 변경 0건. **핵심 제약 7건** 불변 재확인.
+- **검증**: scratch `ogada_dba_scratch_r206` V1–V190 **190 contiguous** exit=0 · **92 BASE** · NEG4+POS3 PASS · live blank shuttle=0 · roster=0.
+- **결론**: **V190 추가**. ERD §1/§4-9·DATA_RETENTION §2/§3·PLAN_NOTES #190 갱신. **coder 전달**: (1) live `ogada` `mvn flyway:migrate` V189→V190 적용(현재 live는 V188까지). (2) Entity/Repository 변경 불요(CHECK/FK only). (3) 앱이 이미 flags sync·trim→NULL 강제 — V190은 raw SQL defense. (4) readiness probe에 V190 constraint 존재 확인을 추가하면 QA-B95 transport gate 강화 가능(선택).
+
+#### #189. round 205 커밋 recheck (backend `2f4bfdf`) + 미커밋 transport WIP(V186–V189) 리뷰 — 신규 committed DDL 0건 (2026-07-13, round 205)
+- **배경**: round 204(#188 — V184/V185 safety_check_records, backend `92770fd`) → backend **커밋** HEAD **`2f4bfdf`** 6 commit 전진. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`2f4bfdf`**·branch **develop**.
+- **커밋 범위 DDL 대조**: `git diff --name-only 92770fd..2f4bfdf -- src/main/resources/db/migration/` = **`V185__safety_check_records_integrity_us_q01.sql` 1파일**(round 204 DBA 산출의 committed 형태·`7a9ed71`). `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일**. 나머지 5 commit(`fbd403c`/`72924bb`/`aa9565c`/`81e3c11`/`16e8ce0`/`2f4bfdf`)은 전부 **앱/테스트 only** — v2/US-Q01 safety checklist 템플릿 카탈로그 API·라우팅·RBAC contract 테스트 lock·`1f2803c` NHIS fee seed year guard(`BillingService` 인메모리 catalog·DB 컬럼 0건).
+- **미커밋 coder WIP 식별 (중요)**: submodule working tree 가 **dirty** — transport 도메인 Java 다수 수정 + **untracked 마이그레이션 4건**:
+  - `V186__transport_runs_departure_round.sql` — `transport_runs.departure_round INT NOT NULL DEFAULT 1` + `CHECK (>=1)` + 다회차 UK 재생성(direction·vehicle·round). 
+  - `V187__vehicles_shuttle_addresses.sql` — `vehicles.shuttle_start_address`·`shuttle_end_address` VARCHAR(255) nullable(미입력 시 지점 주소 fallback).
+  - `V188__transport_roster_day_status.sql` — 신규 테이블 `transport_roster_day_status`(운행일·방향별 배차 명단 토글: `absent_today`/`skip_dispatch`). natural UK·2 Tenant FK(branch_org·client_org)·direction enum CHECK·lookup index.
+  - `V189__transport_roster_day_status_unify.sql` — `absent_today`/`skip_dispatch` 통합 정규화(UPDATE only·둘 중 하나 true → 둘 다 true).
+- **DBA 판단 — 미커밋 마이그레이션 위 committed 후속(V190) 도입 보류**: 미커밋 마이그레이션 위에 committed defense-in-depth 마이그레이션을 올리면 ① 재 clone·재번호 시 체인 파손(V188 테이블 부재 시 V190 실패) ② coder 가 V186–V189 내용/번호를 바꾸면 충돌 → rules §6 submodule 정책(“작업 완료 시 반드시 커밋·미커밋 로컬 커밋 유실 위험”)에 따라 **coder 가 V186–V189 를 develop 에 커밋한 뒤 DBA 후속 라운드에서 검토**. 이번 라운드는 **docs/ 만 갱신**(submodule 무변경).
+- **transport WIP defense-in-depth 갭 리뷰 (coder 전달 — 커밋 시 함께 반영 권장)**:
+  - **V187** — `shuttle_start_address`/`shuttle_end_address` 제공 시 공백 거부 CHECK 부재. 앱이 trim→NULL 하더라도 raw SQL 방어 부재(V155 WAYPOINT `btrim()<>''`·V165 review_note·V182 location 패턴). → `chk_vehicles_shuttle_start_address_nonempty`(`shuttle_start_address IS NULL OR length(btrim(shuttle_start_address)) > 0`) + end 대칭.
+  - **V188/V189** — `transport_roster_day_status`:
+    - **flags-synced CHECK 부재** (가장 중요): V189 가 `absent_today = skip_dispatch` 를 항상 동기화(레거시 컬럼 통합)하는데도 CHECK 부재로 raw SQL 로 발산 가능 → `chk_transport_roster_day_status_flags_synced`(`absent_today = skip_dispatch`). V189 unify 의도의 DB 미러.
+    - **`(org, updated_by) → users` Tenant FK 부재** — `updated_by` nullable·cross-tenant actor 참조 가능(스키마 내 대다수 운영 테이블 보유 패턴). → nullable 이면 FK 는 `MATCH SIMPLE` 로 NULL 허용.
+  - **의도적 제외(P3)**: `(org, id)` anchor UK(자식 테이블 없음·향후 audit trail 도입 시 동시)·client×branch 정합 `set_org_branch` sync 트리거/3-way FK(daily 토글·과도)·`departure_round` 상한(다회차 무제한 정당)·roster 보존 cohort(운행일 단위 ephemeral).
+- **검증 결과 (로컬 PG14.23 scratch DB `ogada_dba_scratch_r205`, creds `ogada`/`ogada`)**:
+  - **커밋 체인 V1–V185 순차 적용 exit=0** (185 files·갭·중복 0·contiguous)·**91 BASE 테이블**.
+  - **Must billing·attendance·NHIS 핵심 제약 7건** `pg_constraint`/`pg_trigger` 실측 전부 존재(`uq_claim_branch_month`·`uq_billing_claim_items_claim_client`·`chk_billing_claims_amount_sum`·`trg_billing_claims_total_reconciliation`·`chk_attendance_presence_xor_absence`·`uq_nhis_import_rows_org_id`·`chk_nhis_import_rows_match_requires_client`).
+  - **미커밋 V186–V189 도 동일 scratch 에 순차 적용 exit=0**(체인 유효성만 확인 — `transport_roster_day_status` 6 constraint[natural UK·2 Tenant FK·direction CHECK·PK·org FK] + 3 index 실측). 커밋 상태에는 반영하지 않음.
+  - `agents.yaml` `core_entities` 11종 전수 충족 — billing·attendance·NHIS 도메인 스키마 변경 0건.
+- **결론**: **커밋 상태 신규 마이그레이션 불요**. ERD 헤더 메타·§1 round 205·PLAN_NOTES #189 갱신. **coder 전달**: (1) transport WIP(Java + V186–V189)을 develop 에 **커밋**해야 유실 방지 + DBA 후속 검토 가능. (2) 커밋 시 위 defense-in-depth 3종(V187 2 nonempty CHECK·V188 flags-synced CHECK·`(org, updated_by)` Tenant FK)을 V190 또는 각 마이그레이션 내 함께 반영 권장. (3) live `ogada` DB `mvn flyway:migrate` 로 미적용 V186~ 일괄 적용. **보류 carry**(전 라운드 동일): split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L).
+
+#### #188. V184 US-Q01 safety_check_records + V185 defense-in-depth integrity (2026-06-27, round 204, backend `92770fd`)
+- **배경**: round 203(#187 — G-NHIS-IMPORT-ERROR-STATUS-SURFACE 앱 only, backend `7fcdfde`) → backend HEAD **`92770fd`** 8 commit 전진 — `ac69919` **feat(v2/US-Q01) add SafetyCheckController API and V184 schema**(`safety_check_records`·`SafetyCheckRecordService`·4-endpoint CRUD·BNK-676)·`1f2803c` **fix(v2/billing) reject unsupported NHIS fee seed years**(앱 only — `BillingService` catalog year guard)·`92770fd` safety RBAC·fee seed HTTP contract test lock(앱 only). 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`92770fd`**·branch **develop**.
+- **`git diff --name-only 7fcdfde..92770fd -- src/main/resources/db/migration/`** = **V184 1파일**. **`… -- '**/*Entity.java' '**/*Repository.java'`** = **`SafetyCheckRecordEntity.java`·`SafetyCheckRecordRepository.java` 2파일**.
+- **V184 검토 (coder 소유 — DBA confirmation)**: UK `(org, id)`·`record_type` 4-enum(DAILY/PERIODIC/INFECTION/OPERATION)·`result_code` 4-enum nullable·`payload_json` NOT NULL JSONB·`updated_at >= created_at`·복합 Tenant FK 2종(`branch_org`·`created_by_org`)·조회 인덱스 2종(`idx_*_org_branch_type_recorded_on`·`idx_*_org_branch_created_at`)·`trg_*_set_created_by` actor backstop·`trg_*_touch_updated_at`. Repository `findByOrganizationIdAndBranchIdAndRecordTypeOrderByRecordedOnDescCreatedAtDesc` → V184 `(org, branch, record_type, recorded_on DESC)` index prefix backing.
+- **갭 식별**: ① `payload_json` object shape CHECK 부재 — scalar/array raw SQL 적재 시 Jackson decode 실패(V157 array 패턴 누락) ② PERIODIC `sub_form_code` 6-enum + non-PERIODIC NULL pair CHECK 부재 ③ DAILY/PERIODIC `result_code` NOT NULL vs INFECTION/OPERATION NULL pair CHECK 부재.
+- **DBA 신규 V185** — V184 비대칭 일괄 해소: **3 CHECK** single-additive `ALTER TABLE`-only (`chk_*_payload_json_object`·`chk_*_sub_form_code_shape`·`chk_*_result_code_shape`). 신규 컬럼·트리거·인덱스 0건.
+- **의도적 제외 (P3)**: payload 내부 checklist item key/value·inspectorName nonempty — JSONB 요소 집계 plain CHECK 표현 불가(앱 codec 책임, #162 P3 동일) · `(org, branch, created_by) → user_branches` 3-way FK — hq_admin 정당 작성(V171/V182 동일) · `recorded_on <= CURRENT_DATE` — CURRENT_DATE non-immutable.
+- **Must billing·attendance·NHIS**: `1f2803c` fee seed year guard는 앱 only — Must 도메인 스키마 변경 0건. **Must 핵심 제약 7건** 불변 재확인.
+- **검증 결과**: 마이그레이션 연속성 V1–V185 contiguous(185 files, 갭·중복 0). 로컬 PG14 scratch DB V1–V185 순차 적용 + negative/positive SQL 검증(아래 round 204 ERD §1).
+- **결론**: **V185 추가**. ERD §1 round 204·DATA_RETENTION §2/§3·PLAN_NOTES #188 갱신. **coder 전달**: live `ogada` DB `mvn flyway:migrate` V184→V185 적용. V184 Entity/Repository 변경 불요(V185 CHECK-only). API_SPEC § safety endpoints 후속 문서화는 tech_writer/coder carry.
+
+#### #187. G-NHIS-IMPORT-ERROR-STATUS-SURFACE counter validation + recovery keyword API 앱 only 재검증 (2026-06-26, round 203, backend `7fcdfde`)
+- **배경**: round 202(#186 — G-NHIS-IMPORT-ERROR-STATUS-SURFACE 앱 only + V183 coder commit 확인, backend `9b91e0f`) → backend HEAD **`7fcdfde`** 5 commit 전진 — `45acb75` chore: branch-aware NHIS import recovery 가이드 copy 보강(`NhisVisitScheduleImportGuidance` 2 line +)·`3d4e58a` **fix(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE) validate outcome counter integrity**(`NhisVisitScheduleImportOutcome.validateCounts` — 음수 카운터·`totalRows=0` 시 행 카운터 비제로·합계 > total 적재 즉시 `IllegalArgumentException` 거부)·`331f24b` **feat(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE) expose recovery keyword notes in guidance API**(`GET /visits/imports/nhis/guidance` 응답에 `errorRecoveryKeywordNotes` 노출 — 신규 record DTO `NhisVisitScheduleImportRecoveryKeywordNote`)·`eb6dd67` **test(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE) lock all four recovery keyword outcomes**(UNMATCHED/PARTIAL + ALL_SKIPPED/EMPTY 회귀 lock — `VisitControllerRoutingTest`/`NhisVisitScheduleImportGuidanceTest`/`NhisVisitScheduleImportRecoveryKeywordAlignmentTest` +47L)·`7fcdfde` **test(v2/QA-B95) lock bootstrap service-unavailable health probe outcomes**(`HealthControllerTest` +42L). 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`7fcdfde`**·branch **develop**·working tree clean.
+- **`git diff --name-only 9b91e0f..7fcdfde -- src/main/resources/db/migration/`** = **0파일**. **`… -- '**/*Entity.java' '**/*Repository.java'`** = **0파일**. **`git diff 9b91e0f..7fcdfde | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column|@Index'`** = **0건**.
+- **신규 코드 검토 — DB 영향 0건**:
+  - `NhisVisitScheduleImportOutcome.java`: **stateless pure-function** 도메인 객체(클래스 final + private constructor)·`@Repository`/`@Autowired`/`findBy*`/`@Query` 0건 grep 실측. `validateCounts(totalRows, importedCount, unmatchedCount, skippedCount)`는 4 인메모리 정수 인자에 산술 검증만(음수 거부·`totalRows=0` 시 행 카운터 비제로 거부·`imported+unmatched+skipped > total` 거부) — DB 컬럼/persist 0건.
+  - `NhisVisitScheduleImportGuidance.java`: 인메모리 FAQ 21298 plan/billing dual-workflow + 7-step recovery copy 텍스트 catalog. DB read 0건.
+  - `NhisVisitScheduleImportRecoveryKeywordNote.java`: 신규 record DTO 1종(outcome + keyword + note 3-field) — JSON 직렬화용·persist 없음.
+  - `NhisVisitScheduleImportGuidanceResponse.java`: 응답 DTO 에 `errorRecoveryKeywordNotes` 필드 1건 추가 — DB 컬럼 0건.
+  - 테스트 5종(`HealthControllerTest`·`VisitControllerRoutingTest`·`NhisVisitScheduleImportGuidanceTest`·`NhisVisitScheduleImportOutcomeTest`·`NhisVisitScheduleImportRecoveryKeywordAlignmentTest`): JUnit 단위 테스트 — `@SpringBootTest` 부트스트랩 외 DB 영향 0.
+- **`NhisVisitScheduleImportOutcome.validateCounts` 앱 가드 ↔ DB 미러 가능성 평가**:
+  - 4 인자 `totalRows`/`importedCount`/`unmatchedCount`/`skippedCount` 는 모두 NHIS Excel 배치 처리 중 인메모리 derived counter 로 **DB 컬럼이 아님**(persist 0건)·`nhis_import_batches`(V37·V57 spec)·`nhis_import_rows`(V7/V19/V54) 도 동일 의미의 컬럼을 갖지 않음 → immutable CHECK 표현 대상 자체 부재.
+  - **향후 P3 — `nhis_import_batches` 에 outcome counter persist 도입 시**: `total_rows`/`imported_count`/`unmatched_count`/`skipped_count` 컬럼 추가 시 row-level CHECK 3종 동시 도입(`chk_*_counters_non_negative`(`total/imported/unmatched/skipped >= 0`)·`chk_*_counters_sum_within_total`(`imported + unmatched + skipped <= total_rows`)·`chk_*_empty_counters_when_total_zero`(`total_rows = 0 → imported=0 AND unmatched=0 AND skipped=0`)). 컬럼 도입 결정은 ezCare/케어포 import history 조회 API 요구·BNK 차수 우선순위에 따라 coder 가 판단(현재 round 202 G-NHIS-IMPORT-ERROR-STATUS-SURFACE 가 인메모리 derive 로 충분히 운영자 정정 흐름 노출 — 최소 저장 원칙 우선).
+- **의도적 제외 (P3, round 202 carry)**:
+  - **`nhis_import_batches.outcome_status` persist 컬럼** — 파생값(counter 기반)·재조회 시 row 재집계로 재현 가능 → 최소 저장 원칙(round 202 #186 결정 carry).
+  - **`outcome_status` enum CHECK** — 앱 전용 도메인 상수·DB 미저장이므로 CHECK 대상 없음.
+  - **zero-import PARTIAL 분류 (`ffa57ea` round 202)** — 비즈니스 규칙·DB 술어 표현 불가(앱 책임).
+  - **`errorRecoveryKeywordNotes` 7-step copy 영속화** — 인메모리 catalog·다국어 i18n 도입 시 별도 `notification_templates`/`help_copy` 카탈로그 테이블 후속 검토(P3).
+- **검증 결과**:
+  - **마이그레이션 연속성**: `ls db/migration | wc -l` = **183** contiguous(V1–V183, 갭·중복 0).
+  - **로컬 PG14.23 scratch DB**(`ogada_dba_scratch_r203`): V1–V183 **183 migrations 순차 적용 exit=0**·**90 BASE 테이블** 실측·`pg_indexes` V183 `idx_client_care_plan_forms_org_branch_plan_year` 실측·`pg_constraint`/`pg_trigger` **Must billing·attendance·NHIS 핵심 제약 7건** 전부 존재(`uq_claim_branch_month`·`uq_billing_claim_items_claim_client`·`chk_billing_claims_amount_sum`·`trg_billing_claims_total_reconciliation`·`chk_attendance_presence_xor_absence`·`uq_nhis_import_rows_org_id`·`chk_nhis_import_rows_match_requires_client`).
+  - `agents.yaml` `core_entities` 11종 전수 충족 — billing·attendance·NHIS 도메인 스키마 변경 0건.
+- **결론**: **신규 V184 불요**. ERD 헤더 메타·§1 round 203·PLAN_NOTES #187 갱신. **보류 carry**(round 202 동일): `nhis_import_batches` outcome counter persist(P3)·split address PII CHECK(P3)·V176 amount==copay(P3)·V177 pre/post 길이 상한(P3)·V174 `recorded_by` NOT NULL/actor backstop(P3)·`days_used`↔date span(P3)·현금영수증 cross-table/time(P2)·PLAN↔BILLING reciprocal(P2)·`billing_payments`(Epic L). **coder 전달**: live `ogada` DB V175→V176~V183 (`ogada_db` 현재 V175 stop·8 migrations 후속 일괄 적용 carry — round 200/202 동일 carry) `mvn flyway:migrate` 권장. G-NHIS-IMPORT-ERROR-STATUS-SURFACE 는 앱 only — 추가 DDL·Entity 변경 불요. `NhisVisitScheduleImportOutcome.validateCounts`는 인메모리 counter 가드로 충분(향후 batch persist 컬럼 도입 시 CHECK 3종 동시 추가).
+
+#### #186. G-NHIS-IMPORT-ERROR-STATUS-SURFACE 앱 only 재검증 + V183 coder commit 확인 (2026-06-26, round 202, backend `9b91e0f`)
+- **배경**: round 201(#185 — V183 client_care_plan_forms branch+plan_year index, backend `9664f29`) → backend HEAD **`9b91e0f`** 6 commit 전진 — `547c85f` **feat(v2/G-CLIENT-CONTRACT-BULK-PRINT) index care plan forms by branch and plan year**(coder, **V183 commit** — round 201 DBA 산출의 committed 형태)·`1c7064d` QA-B95 g21 seed null normalization(앱 only)·`c38388d` **feat(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE) expose visit NHIS import outcome status**(앱 only — `NhisVisitScheduleImportOutcome`·`VisitService`·`NhisVisitScheduleImportGuidance`)·`ffa57ea` fix zero-import mixed unmatched+skipped → PARTIAL(앱 only)·`97b94e7`/`9b91e0f` service-layer test lock(앱 only). 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`9b91e0f`**·branch **develop**.
+- **`git diff --name-only 9664f29..9b91e0f -- src/main/resources/db/migration/`** = **V183 1파일**(round 201 DBA carry committed by coder `547c85f`). **`… -- '**/*Entity.java' '**/*Repository.java'`** = **0파일**. **`git diff 9664f29..9b91e0f | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column|@Index'`** = **0건**(V183 제외).
+- **G-NHIS-IMPORT-ERROR-STATUS-SURFACE 검토** — `POST /visits/imports/nhis` response 에 `outcomeStatus`(SUCCESS/PARTIAL/UNMATCHED/ALL_SKIPPED/EMPTY) + `outcomeSummary` 추가. `GET /visits/imports/nhis/guidance` 에 `outcomeStatusNotes` 5-code catalog 추가. **DB 영향 0건** — import 처리 중 `totalRows`/`importedCount`/`unmatchedCount`/`skippedCount` counter 를 `NhisVisitScheduleImportOutcome.resolve` 가 인메모리 분류. 행별 매칭 실패·보류 사유는 기존 `nhis_import_rows.match_status`·`match_status_reason`(V7/V54) 위 표시 — 신규 persist 컬럼·enum CHECK 불요.
+- **의도적 제외 (P3)**:
+  - **`nhis_import_batches.outcome_status` persist 컬럼** — 파생값(counter 기반)·재조회 시 row 재집계로 재현 가능 → 최소 저장 원칙. 배치 이력 조회 API 가 필요해지면 그때 추가 검토.
+  - **`outcome_status` enum CHECK** — 앱 전용 도메인 상수·DB 미저장이므로 CHECK 대상 없음.
+  - **zero-import PARTIAL 분류** — `ffa57ea` 가 unmatched+skipped 혼합 0-import 배치를 ALL_SKIPPED 에서 PARTIAL 로 정정 — 비즈니스 규칙이며 DB 술어 표현 불가(앱 책임).
+- **V183 coder commit 확인** — `547c85f` 가 round 201 DBA 산출 `V183__client_care_plan_forms_branch_plan_year_index.sql` 을 그대로 commit. `idx_client_care_plan_forms_org_branch_plan_year (organization_id, branch_id, plan_year)` 실측 PASS.
+- **검증 결과**:
+  - **마이그레이션 연속성**: `ls db/migration | wc -l` = **183** contiguous(V1–V183, 갭·중복 0).
+  - **로컬 PG14 scratch DB**(`ogada_dba_scratch_r202`): V1–V183 **183 migrations 순차 적용 exit=0**·90 BASE tables·`pg_indexes` V183 인덱스 실측.
+  - **Must billing·attendance·NHIS 핵심 제약 7건** 불변 재확인(`uq_claim_branch_month`·`uq_billing_claim_items_claim_client`·`chk_billing_claims_amount_sum`·`trg_billing_claims_total_reconciliation`·`chk_attendance_presence_xor_absence`·`uq_nhis_import_rows_org_id`·`chk_nhis_import_rows_match_requires_client` 전부 존재).
+  - `agents.yaml` `core_entities` 11종 전수 충족 — billing·attendance·NHIS 도메인 스키마 변경 0건.
+- **결론**: **신규 V184 불요**. ERD 헤더 메타·§1 round 202·§7 검증 헤더·API 매핑 `POST /visits/imports/nhis` outcomeStatus 노트·PLAN_NOTES #186 갱신. **보류 carry**(전 라운드 동일). **coder 전달**: live `ogada` DB V182→V183 `mvn flyway:migrate` 미적용 시 일괄 적용. G-NHIS-IMPORT-ERROR-STATUS-SURFACE 는 앱 only — 추가 DDL·Entity 변경 불요.
 
 #### #185. V183 G-CLIENT-CONTRACT-BULK-PRINT client_care_plan_forms branch+plan_year index (2026-06-26, round 201, backend `9664f29`)
 - **배경**: round 200(#184 — V181/V182 staff_committee_meeting_logs, backend `3ae8098`) → backend HEAD **`9664f29`** 5 commit 전진 — `4df9465` **feat(v2/G-CLIENT-CONTRACT-BULK-PRINT) add care plan bulk export API**(coder, `GET /clients/care-plan-forms/bulk-export`·`ClientCarePlanFormService.exportBulkChangeContractsText`·US-D05·ezCare FAQ 21507)·`4567030` **feat(v2/G-NHIS-SCHEDULE-IMPORT) add visit schedule NHIS import guidance API**(앱 only — `NhisVisitScheduleImportGuidance` 인메모리 FAQ 21298)·`0f19767`/`59e4e7f`/`9664f29` QA-B95 g21 seed status/readiness codes(앱 only). 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`9664f29`**·branch **develop**.
