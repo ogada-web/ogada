@@ -1302,6 +1302,7 @@
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/transport/roster` | 당일 픽업 명단 (`runDate`, `direction=PICKUP`) | `hq_admin`, `branch_admin`, `social_worker`, `caregiver` |
+| PATCH | `/transport/roster/{clientId}/day-status` | **금일 배차 제외** 토글 (`runDate`, `direction`, `absentToday`, `skipDispatch`) — V188/V189 | `hq_admin`, `branch_admin` |
 | GET | `/transport/runs` | 운행 목록 (`runDate`, `direction`) | `hq_admin`(전체), 직원(`CONFIRMED`만) |
 | POST | `/transport/runs` | DRAFT run 생성 (≤15 stops) | `hq_admin` |
 | GET | `/transport/runs/{id}` | run 상세·stops | `hq_admin` / 직원(`CONFIRMED`만) |
@@ -1336,6 +1337,8 @@
 | `pickupContact` | 픽업 연락처(미입력 시 이용자 연락처) | **명단 미표시**(호환 유지) · 정차 `stops[]`는 계속 노출 |
 
 `contact`·`guardianContact`도 non-HQ 역할에 **동일 `maskPhone` 규칙** 적용.
+
+**Roster day-status (v2 @ `60c4e36`+contract lock)**: `PATCH /transport/roster/{clientId}/day-status` — body `{ runDate, direction, absentToday, skipDispatch }`. `absentToday || skipDispatch` 이면 V188/V189 행 upsert(양쪽 true 저장), 해제 시 행 삭제. `GET /transport/roster` `items[]`에 `absentToday`·`skipDispatch` mirror · suggest 배차 제외와 동일 의미. 권한 **HQ/지점관리자만**(사회복지사·요양보호사 403).
 
 ---
 
