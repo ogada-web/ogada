@@ -1338,7 +1338,7 @@
 
 `contact`·`guardianContact`도 non-HQ 역할에 **동일 `maskPhone` 규칙** 적용.
 
-**Roster day-status (v2 @ `60c4e36`+contract lock)**: `PATCH /transport/roster/{clientId}/day-status` — body `{ runDate, direction, absentToday, skipDispatch }`. `absentToday || skipDispatch` 이면 V188/V189 행 upsert(양쪽 true 저장), 해제 시 행 삭제. `GET /transport/roster` `items[]`에 `absentToday`·`skipDispatch` mirror · suggest 배차 제외와 동일 의미. 권한 **HQ/지점관리자만**(사회복지사·요양보호사 403).
+**Roster day-status (v2 @ `60c4e36`+contract lock · suggest lock COD 2026-07-13 · create/update/confirm lock COD 2026-07-13)**: `PATCH /transport/roster/{clientId}/day-status` — body `{ runDate, direction, absentToday, skipDispatch }`. `absentToday || skipDispatch` 이면 V188/V189 행 upsert(양쪽 true 저장), 해제 시 행 삭제. `GET /transport/roster` `items[]`에 `absentToday`·`skipDispatch` mirror. **`POST /transport/runs/suggest`는 day-status 제외 이용자를 배정하지 않으며**, 전원이 제외면 `BusinessRuleException`(「금일 배차 제외…」). **`POST/PATCH /transport/runs`·`confirm`도 day-status 제외 이용자 포함 시 `BusinessRuleException`(「금일 배차 제외로 표시된 이용자가 포함되어 있습니다: …」)** — 수동 DRAFT로 우회 금지. 권한 **HQ/지점관리자만**(사회복지사·요양보호사 403).
 
 ---
 

@@ -1,3 +1,7 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-13T20:53:32+00:00 -->
+<!-- tester-sync: TSR 1503차 2026-07-13T20:53 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` (`src/frontend-test`) `npm test` **2367/2367 PASS**(791.63s, 451 files, EXIT=0) · develop HEAD `@d285899` WT **CLEAN** · develop pre-merge **SKIP**(read-only policy) · merge **SKIP**(`test..develop` **0/22** pending + BE pending 28 · src/frontend-test read-only 정책) · live E2E **SKIP**(merge 없음 · carry **122 PASS/25 SKIP/0 FAIL** · bootstrap-disabled) · **QA-B344 Open update**(severity **BLOCK** · BE pending **28** · pre-merge PASS) · **QA-B352 Planned update**(severity **BLOCK** · FE pending **22** `@d285899`) · Open **1(active: QA-B344)** · Planned **QA-B352+QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 28 @b89c6db · FE pending 22 @d285899)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1503rd: frontend baseline @afbbaa7 npm test 2367/2367 PASS(791.63s,451 files); develop @d285899 WT CLEAN; pre-merge SKIP(read-only); merge SKIP(pending 22+BE pending 28+read-only); QA-B344 Open update(BLOCK,BE pending 28,pre-merge PASS); QA-B352 Planned update(FE pending 22); Open 1(active B344); transfer BLOCK; cross-stream BLOCK(BE pending 28 + FE pending 22); backend@8080 200; operation BLOCK; origin/test push 610 BE+291 FE.
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-13T20:31:19+00:00 -->
 <!-- tester-sync: TSR 1502차 2026-07-13T20:31 UTC (backend) — ROADMAP merged baseline `@4567030` (`src/backend-test`) `mvn test` **1992/1992 PASS**(58.4s, 374 suites, BUILD SUCCESS) · `npm test` N/A(no `package.json`) · develop HEAD `@b89c6db` WT **CLEAN** · develop pre-merge **2085/2085 PASS**(61.7s, 383 suites) · merge **SKIP**(`test..develop` **0/28** pending · src/backend-test read-only 정책) · live E2E **SKIP**(merge 없음 · carry **122 PASS/25 SKIP/0 FAIL** · bootstrap-disabled) · **★ QA-B365 Fixed carry**(`@b89c6db`) · **QA-B344 Open update**(severity **BLOCK** · BE pending **28** · pre-merge PASS) · **QA-B352 Planned carry**(severity **BLOCK** · FE pending **21** `@e48db91`) · Open **1(active: QA-B344)** · Planned **QA-B352+QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 28 @b89c6db · FE pending 21 @e48db91)** · backend@8080 **UP/200** · operation **BLOCK** -->
 # revalidation_1502nd: backend baseline @4567030 mvn 1992/1992 PASS(58.4s,374 suites); develop @b89c6db WT CLEAN; pre-merge 2085/2085 PASS(61.7s,383 suites); merge SKIP(pending 28+read-only); QA-B365 Fixed carry@b89c6db; QA-B344 Open update(BLOCK,pending 28,pre-merge PASS); QA-B352 Planned carry(FE pending 21); Open 1(active B344); transfer BLOCK; cross-stream BLOCK(BE pending 28 + FE pending 21); backend@8080 200; operation BLOCK; origin/test push 610 BE+290 FE; BE @Test 2085.
@@ -2694,7 +2698,9 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(**COD 2026-07-13T20:40 UTC — frontend**: **★ QA-B366 Fixed** — QA-B365 FE complement: `TransportSuggestPanel` surfaces BE all-excluded BusinessRuleException copy when `totalRosterCount > 0 && rosterCount === 0` · `TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` · TransportPage+SuggestPanel unit tests · related **23/23 PASS** · residual Open = QA-B344(BE merge pending **28** · FE pending will be **22** after this commit))_
+_(**COD 2026-07-13T21:05 UTC — backend**: **★ QA-B367 Fixed** — V188/V189 day-status exclusion enforced on `createRun`/`updateRun`/`confirmRun` (manual DRAFT bypass closure after QA-B365 suggest-only lock) · `TransportServiceTest` +3 @Test PASS · residual Open = QA-B344(BE merge pending **29** after this commit))_
+
+_(**COD 2026-07-13T20:40 UTC — frontend**: **★ QA-B366 Fixed @ `d285899`** — QA-B365 FE complement: `TransportSuggestPanel` surfaces BE all-excluded BusinessRuleException copy when `totalRosterCount > 0 && rosterCount === 0` · `TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` · TransportPage+SuggestPanel unit tests · related **23/23 PASS** · residual Open = QA-B344(BE merge pending **28** · FE pending **22**))_
 
 _(**TSR 1502차 (2026-07-13T20:31 UTC) — backend revalidation**: baseline `@4567030` **1992/1992 PASS**(58.4s) · develop `@b89c6db` WT **CLEAN** · pre-merge **2085/2085 PASS**(61.7s, 383 suites) · Open **1(active: QA-B344)** · Planned **QA-B352+QA-B116+QA-B95**. **★ QA-B365 Fixed carry @ `b89c6db`** · **QA-B344 Open update**(pending **28** · pre-merge PASS · merge 대기) · **QA-B352 Planned carry**(FE pending **21** `@e48db91`) · merge **SKIP**(read-only) · live E2E **122/25/0**(carry) · cross-stream **BLOCK** · backend@8080 **UP/200** · operation **BLOCK** · 최종 갱신: TSR 1502차 2026-07-13T20:31 UTC)_
 
@@ -2720,21 +2726,34 @@ _(**COD 2026-07-13T19:12 UTC — backend deepen**: **★ QA-B362 Fixed @ `c183d8
 - **stream**: backend
 - **status**: Open
 - **found_at**: 2026-06-26T05:42:04+00:00 (develop→test pending 1 `@59e4e7f`)
-- **updated_at**: 2026-07-13T20:31:00+00:00 (TSR 1502차 · pre-merge **2085/2085 PASS** 재확인)
-- **version**: v2 backlog (`59e4e7f`·…·`b89c6db` — safety·NHIS import·transport roster/run/suggest · 28 commits)
-- **summary**: develop HEAD `@b89c6db` WT **CLEAN** (QA-B365 suggest day-status exclusion lock committed). test `@4567030` baseline **1992/1992 PASS**. develop pre-merge **2085/2085 PASS**(383 suites). `test..develop` **28** pending. FE stream QA-B361 Fixed · FE pending **21** pre-merge PASS. merge **BLOCKED** by read-only policy(`src/backend-test`) — tester FF merge 대기.
-- **reproduce**: `cd src/backend && git rev-list --count test..develop` → 28 · `git status --short | wc -l` → 0
-- **expected**: tester FF merge 28 commits → post-merge **0 FAIL** → origin/test push
-- **actual**: pending **28** 미이관 · merge **SKIP**(read-only)
+- **updated_at**: 2026-07-13T21:05:00+00:00 (COD QA-B367 day-status create/update/confirm lock · pending **29** target after commit)
+- **version**: v2 backlog (`59e4e7f`·…·`b89c6db`+QA-B367 — safety·NHIS import·transport roster/run/suggest/create)
+- **summary**: develop HEAD `@b89c6db` + QA-B367 WIP → commit 후 pending **29**. test `@4567030` baseline. FE stream pending merge carry. merge **BLOCKED** by read-only policy(`src/backend-test`) — tester FF merge 대기.
+- **reproduce**: `cd src/backend && git rev-list --count test..develop` → 28(+1 after QA-B367) · `git status --short | wc -l` → 0 post-commit
+- **expected**: tester FF merge pending commits → post-merge **0 FAIL** → origin/test push
+- **actual**: pending 미이관 · merge **SKIP**(read-only)
 - **assignee**: TSR (merge QA-B344)
 - **roadmap_ref**: ROADMAP merged baseline · merge gate · 이관 규율 6·14
+
+### [COD] v2/transport create·update·confirm reject day-status excluded clients — **Fixed**
+
+- **id**: QA-20260713-B367
+- **severity**: HIGH
+- **stream**: backend
+- **status**: Fixed (COD — `TransportService` day-status exclusion on create/update/confirm + `TransportServiceTest` +3)
+- **found_at**: 2026-07-13T20:55:00+00:00 (QA-B365 suggest-only exclusion left manual DRAFT create/update/confirm bypass)
+- **fixed_at**: 2026-07-13T21:05:00+00:00
+- **version**: v2/transport V188·V189 roster day-status full-stack deepen
+- **summary**: `validateNoDayStatusExcludedClients`를 `createRun`/`updateRun`/`confirmRun`에 적용해 「금일 배차 제외」가 suggest뿐 아니라 수동 배차에도 강제됨. BusinessRuleException 메시지 「금일 배차 제외로 표시된 이용자가 포함되어 있습니다: {names}」. related `mvn -Dtest=TransportServiceTest` PASS.
+- **assignee**: COD (완료) / TSR (merge QA-B344에 포함)
+- **roadmap_ref**: ROADMAP v2 · API_SPEC roster day-status · QA-B365 complement
 
 ### [COD] v1.2.1/QA-B365 FE — suggest all-excluded day-status guidance — **Fixed**
 
 - **id**: QA-20260713-B366
 - **severity**: HIGH
 - **stream**: frontend
-- **status**: Fixed (COD — TransportSuggestPanel all-excluded warning + BE copy parity)
+- **status**: Fixed (COD — `d285899` TransportSuggestPanel all-excluded warning + BE copy parity)
 - **found_at**: 2026-07-13T20:35:00+00:00 (BE QA-B365 reject copy not mirrored when suggestEligibleCount=0)
 - **fixed_at**: 2026-07-13T20:40:00+00:00
 - **version**: v1.2.1 / transport V188·V189 · QA-B365 FE complement
