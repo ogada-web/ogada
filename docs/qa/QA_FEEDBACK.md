@@ -2678,7 +2678,7 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 _(**TSR 1497차 (2026-07-13T19:03 UTC) — frontend revalidation**: baseline `@afbbaa7` **2267/2272 FAIL**(carry TSR1494) · develop `@d873894` WT **CLEAN** · pre-merge **2353/2358 FAIL**(same 5 FAIL) · Open **2(active: QA-B344+QA-B361)** · Planned **QA-B352+QA-B116+QA-B95**. **★ QA-B360 Fixed @ `d873894`**(transport shuttle sheet committed · DIRTY→CLEAN) · **QA-B361 Open update**(test+develop same 5 FAIL month-boundary · COD date-stable fixtures) · **QA-B344 Open carry**(BE pending **25** · pre-merge PASS) · **QA-B352 Planned update**(FE pending **19**) · cross-stream **BLOCK** · backend@8080 **UP/200** · operation **BLOCK** · build **1187 PASS**(8.98s) · audit **0** · live E2E **122/25/0**(carry) · 최종 갱신: TSR 1497차 2026-07-13T19:03 UTC)_
 
-_(**COD 2026-07-13T19:12 UTC — backend deepen**: **★ QA-B362 Fixed** — `PATCH /transport/roster/{clientId}/day-status` HTTP+RBAC+service contract lock on develop (V186–V189 follow-up · merge pending **26** after commit) · residual Open = QA-B344(merge)+QA-B361(FE date fixtures))_
+_(**COD 2026-07-13T19:12 UTC — backend deepen**: **★ QA-B362 Fixed @ `c183d84`** — `PATCH /transport/roster/{clientId}/day-status` HTTP+RBAC+service contract lock (V186–V189 follow-up · merge pending **26**) · residual Open = QA-B344(merge)+QA-B361(FE date fixtures))_
 
 ### [TSR] backend develop→test merge pending 25 — pre-merge PASS (`60c4e36`, QA-20260626-B344)
 
@@ -2687,14 +2687,14 @@ _(**COD 2026-07-13T19:12 UTC — backend deepen**: **★ QA-B362 Fixed** — `PA
 - **stream**: backend
 - **status**: Open
 - **found_at**: 2026-06-26T05:42:04+00:00 (develop→test pending 1 `@59e4e7f`)
-- **updated_at**: 2026-07-13T19:03:00+00:00 (TSR 1497차 — pending **25** carry · FE QA-B360 Fixed · FE QA-B361 still BLOCK)
-- **version**: v2 backlog (`59e4e7f`·…·`60c4e36` — safety·NHIS import·transport roster/run · 25 commits)
-- **summary**: develop `@60c4e36` WT **CLEAN** · pre-merge `mvn test` **2067/2067 PASS**(65.2s, 382 suites). test `@4567030` baseline **1992/1992 PASS**. `test..develop` **25** pending. merge **BLOCKED** by read-only policy(src/backend-test) + cross-stream FE QA-B361 — tester FF merge 대기.
-- **reproduce**: `cd src/backend && git rev-list --count test..develop` → 25 · `git status --short | wc -l` → 0 · `mvn test` → **2067/2067 PASS**
-- **expected**: tester FF merge 25 commits → post-merge **0 FAIL** → origin/test push
-- **actual**: pending **25** 미이관 · merge **SKIP**(read-only + FE QA-B361)
+- **updated_at**: 2026-07-13T19:12:00+00:00 (COD — pending **26** `@c183d84` · day-status contract lock · FE QA-B361 still BLOCK)
+- **version**: v2 backlog (`59e4e7f`·…·`c183d84` — safety·NHIS import·transport roster/run · 26 commits)
+- **summary**: develop `@c183d84` WT **CLEAN** · related day-status suites PASS. test `@4567030` baseline **1992/1992 PASS**. `test..develop` **26** pending. merge **BLOCKED** by read-only policy(src/backend-test) + cross-stream FE QA-B361 — tester FF merge 대기.
+- **reproduce**: `cd src/backend && git rev-list --count test..develop` → 26 · `git status --short | wc -l` → 0
+- **expected**: tester FF merge 26 commits → post-merge **0 FAIL** → origin/test push
+- **actual**: pending **26** 미이관 · merge **SKIP**(read-only + FE QA-B361)
 - **assignee**: TSR (merge QA-B344) / COD (FE QA-B361 date-stable fixtures)
-- **roadmap_ref**: ROADMAP merged baseline · merge gate 895 · 이관 규율 6·14
+- **roadmap_ref**: ROADMAP merged baseline · merge gate 896 · 이관 규율 6·14
 
 ### [TSR] month-boundary vitest 5 FAIL — test `@afbbaa7` + develop `@d873894` (QA-20260713-B361)
 
@@ -9056,20 +9056,20 @@ _(Planned **0건(active)** superseded — QA-20260613-B62 **Fixed @ `e89175e`**;
 
 _(coder가 develop에서 수정 완료 — develop HEAD 검증 통과 항목만)_
 
-### [COD] v2/transport roster day-status HTTP+RBAC+service contract lock (`60c4e36` follow-up, QA-20260713-B362) — **Fixed**
+### [COD] v2/transport roster day-status HTTP+RBAC+service contract lock (`c183d84`, QA-20260713-B362) — **Fixed @ `c183d84`**
 
 - **id**: QA-20260713-B362
 - **severity**: HIGH
 - **stream**: backend
-- **status**: Fixed (COD — HTTP routing + TransportAccess RBAC + service-layer tests · WT **CLEAN**)
+- **status**: Fixed (COD — `c183d84 test(v2/transport): lock roster day-status HTTP RBAC and service contracts` · WT **CLEAN**)
 - **found_at**: 2026-07-13T19:08:00+00:00 (COD — V186–V189 landed `@60c4e36` · day-status controller contract 미잠금)
 - **fixed_at**: 2026-07-13T19:12:00+00:00
 - **verified_at**: 2026-07-13T19:12:00+00:00 (`mvn -Dtest=TransportControllerRoutingTest,TransportServiceTest,RoleBasedControllerAccessTest$TransportAccess test` **PASS**)
 - **version**: v2/transport roster day-status (PATCH `/api/v1/transport/roster/{clientId}/day-status`)
-- **summary**: FE 셔틀/명단「금일 배차 제외」와 BE `updateRosterDayStatus` full-stack 계약을 4축으로 잠금 — ① routing PATCH accept ② RBAC HQ/BRANCH allow · SOCIAL_WORKER/CAREGIVER deny ③ service persist+clear+role/비이용자 reject ④ API_SPEC §12 경로 반영. QA-B344 merge pending **+1** 예정.
-- **reproduce**: `cd src/backend && mvn -Dtest=TransportControllerRoutingTest,TransportServiceTest,RoleBasedControllerAccessTest\$TransportAccess test`
+- **summary**: FE 셔틀/명단「금일 배차 제외」와 BE `updateRosterDayStatus` full-stack 계약을 4축으로 잠금 — ① routing PATCH accept ② RBAC HQ/BRANCH allow · SOCIAL_WORKER/CAREGIVER deny ③ service persist+clear+role/비이용자 reject ④ API_SPEC §12 경로 반영. QA-B344 merge pending **26** (`60c4e36`→`c183d84`).
+- **reproduce**: `cd src/backend && git rev-parse --short HEAD` → `c183d84` · `mvn -Dtest=TransportControllerRoutingTest,TransportServiceTest,RoleBasedControllerAccessTest\$TransportAccess test`
 - **expected**: day-status HTTP/RBAC/service regression-safe
-- **actual**: **Fixed** — related suites PASS
+- **actual**: **Fixed** — committed@`c183d84`
 - **assignee**: COD
 - **roadmap_ref**: ROADMAP v2 transport · QA-B359/B360 follow-up · 이관 규율 5
 
