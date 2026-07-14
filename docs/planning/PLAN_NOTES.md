@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-14T11:24:00Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-14T20:14:51Z -->
+<!-- planner-sync: PLN 213차 2026-07-14T20:14 UTC — BNK-727~732·TSR 1558~1567b · ★★★ id=1-5 FULL 1.0 + id=10-4 FULL · ★★ QA-B414 Open→Planned · 모듈 93.62% · J03 alias · SYNCED(BE@1f3698d·FE@71839a6) · residual 641 BE+B414 · Planned QA-B414+QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 211차 2026-07-14T11:24 UTC — BNK-720·TSR 1542~1543차 · ★★★ M12 SSO handoff FULL CLOSURE(id=12 0.7·모듈 91.90%)·잔여=ops credentials · ★★★ id=1-5 0→0.5 착지 · ★★ G-ACCOUNTING-IN-APP-LEDGER(v3+) · ★ QA Open 0 · SYNCED(BE@093ac88·FE@063c269) · residual 629 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 208차 2026-07-14T01:33 UTC — BNK-702~706·TSR 1507~1517차 · ★★★ M12=sujifine BPO SSO(BNK-706)·M11 in-app sole P1 · ★★★ G16 shuttle 6-commit CLOSURE(BNK-705) · ★★ 지표27=기능회복훈련(BNK-704) · ★ QA-B344/B373 Fixed · Open 0 · local SYNCED(BE@6e874df·FE@95192f5) · residual origin/test 617 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 207차 2026-07-13T21:45 UTC — BNK-698~701·TSR 1503~1506차 · ★★★ transport day-status 5-stage CLOSURE · ★★ ezCare dashboard 7-bucket vs 15 stage-gap · ★ QA-B352 Fixed+origin/test PUSHED · ★ QA-B344 Open BE pending 29 · merge gate FE cleared · cross-stream BLOCK(BE only) · QA Open 1(active) -->
@@ -106,7 +107,43 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-14 (211차 PLN — **자동 기획 동기화** BNK-720·TSR 1542~1543차·★★★ M12 SSO handoff FULL CLOSURE(id=12 0.7·모듈 91.90%)·★★★ id=1-5 0→0.5 착지·★★ G-ACCOUNTING-IN-APP-LEDGER(v3+)·★ QA Open 0·SYNCED BE@093ac88/FE@063c269·operation BLOCK 629 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-14 (213차 PLN — **자동 기획 동기화** BNK-727~732·TSR 1558~1567b·★★★ id=1-5/10-4 FULL·모듈 93.62%·★★ QA-B414 Open→Planned·J03 alias·SYNCED BE@1f3698d/FE@71839a6·operation BLOCK 641 BE+B414) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [COD] 코더 메모 (2026-07-14 — QA-B416 facility-notice GET detail view)
+
+- FE `@387419d` — PUBLISHED 「보기」 → `GET /facility-notices/{id}` 읽기 전용 상세 · nav 「기관 공지·자료실」 `#facility-notices` · related **51/51 PASS** · WT CLEAN · ahead origin/develop **2**.
+- Open **0** · Planned **QA-B116+QA-B95** · residual = ops M12 credentials · id=2/8/10 partial · P3 dashboard expiry 「가정」 · GUARDIAN 열람 §추가 질문 213-2 대기.
+
+### [COD] 코더 메모 (2026-07-14 — QA-B415 G2 board-ui-planned FE clear)
+
+- FE `@23f9e0d` — `normalizeHomeNewsletterAuthoringBlockers` defaults `[]` + strips cleared codes · facility-notices SPA remap `#facility-notices` · related **31/31 PASS** · WT CLEAN.
+- Open **0** · Planned **QA-B116+QA-B95** · residual in-app levers = ops M12 credentials · id=2/8/10 partial · P3 dashboard expiry 「가정」 · GUARDIAN 공지 열람은 §추가 질문 213-2 대기.
+
+---
+
+### [PLN] QA 피드백 반영 (2026-07-14, 213차 — BNK-727~732 · TSR 1558~1567b차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`1f3698d`** WT **CLEAN** · post-merge **2165/2165 PASS**(399 suites·TSR1566) · FE develop/test/origin/test **`71839a6` ALL SYNCED+PUSHED** · post-merge **2477/2477 PASS**(465 files·TSR1567) · live E2E **116/33/0** reconfirm(TSR1567b) · origin/test **641 BE + 0 FE** · **132 Route·105 page·V1–V192·BE @Test 2165·FE test 518·모듈 93.62%**(id=11 1.0·id=12 **0.7**·id=1-5 **1.0**) | ROADMAP CURRENT BASELINE 213차 |
+| **QA-B414 Open→Planned** | HIGH · `AccountingBpoService` multi-ctor 무 `@Autowired` → clean `spring-boot:run` BeanCreationException · runtime class hotfix만 임시 · **기능 갭 아님** · COD `@Autowired` on public ctor · 이관 규율 1·5·7 · SEC-D43 ctor 패턴 게이트 | QA_FEEDBACK Planned · ROADMAP v1/v2 P0 |
+| **QA residual Planned** | **QA-B414** + **QA-B116**(origin/test push **641 BE**) + **QA-B95**(operation 승격) | QA_FEEDBACK · ROADMAP |
+| **BNK-730 ★★★** | **id=1-5 FULL 1.0** — compose→facility-notice DRAFT 서버 영속 · **id=10-4 FULL-STACK** — FE 게시판 CRUD (BNK-729 BE V192) | REQUIREMENTS · USER_STORIES · ROADMAP v3 |
+| **BNK-729 ★★★** | carefor 10-4 P2 candidate **CLOSED** — FacilityNotice 6-endpoint + V192 · id=1-5 0.65→0.85 promote | REQUIREMENTS G-FACILITY-NOTICE-BOARD · US-FACILITY-NOTICE-BOARD |
+| **BNK-732 ★★** | J03 channel-status API_SPEC alias 3종 · 3-channel readiness 마케팅 lever · NHIS #44 **465차** | REQUIREMENTS · COMPETITOR_MATRIX carry |
+| **BNK-731 ★★** | ezCare FAQ workflow 재잠금 · RFID-dispatch + SMS 7-kind v2+ carry · M12 BPO ~50% demand | USER_STORIES US-RFID / US-SMS-7KIND · §추가 질문 213 |
+| **QA-B401~B413 Fixed** | G2 board/facility-notice cluster · J03 aliases · SEC-D43 · QA-B95 gate deepen · JVM restart(B413) · **기능 갭 아님** | QA_FEEDBACK Fixed · ROADMAP |
+
+**coder/ops 다음 액션 (213차)**: ① **COD QA-B414** — `AccountingBpoService` public ctor에 `@Autowired` · package-private test ctors 유지 · clean `spring-boot:run` 검증 ② **tester** origin/test push **641 BE**(QA-B116) ③ **QA-B95** operation 승격 ④ **ops** M12 facility credentials ⑤ **v2+** 연계기록지 · SMS 7-kind / RFID-dispatch go/no-go.
+
+### 추가 질문 (자동 기획 동기화 213차)
+1. **QA-B414 vs origin/test push 순서 (★★★)**: COD `@Autowired` Fixed 후 push vs push 선행 후 operation 환경에서 hotfix? — **정확성 우선** → Fixed 후 push 권장.
+2. **GUARDIAN 공지 열람 (★★ US-FACILITY-NOTICE-BOARD)**: PUBLISHED NOTICE를 보호자 앱/포털에서 열람할지 · HQ/BRANCH/SOCIAL만 관리?
+3. **G-SMS-7KIND / G-RFID-CARE-PROVISION-DISPATCH (★★ BNK-731)**: v2+ 동시 착수 vs SMS enum only 선행?
+4. **M12 credentials rollout (★ carry)**: facility별 sujifine secret naming · QA-B116 직후 vs staged pilot?
+5. **연계기록지(id=1-10) / G-ACCOUNTING-IN-APP-LEDGER / dashboard expiry (★ carry)**: v2+/v3+ go/no-go 유지?
+
+---
 
 ### [PLN] QA 피드백 반영 (2026-07-14, 212차 — BNK-721~726·TSR 1544~1557차)
 
@@ -1111,6 +1148,28 @@
 ---
 
 ---
+
+---
+
+### [TWR] 405차 documentation operational closure (2026-07-14, 21:30 UTC — **Q802·Q803 J03 채널 별칭 · G2 상세 재조회 · M12 SSO 오류 문구 · CHANGELOG 「최근 7일 요약」 메타 갱신**)
+
+**405차 문서 갱신**: CHANGELOG 최근 7일 요약 + 2026-07-14 메타 · **모든 ops 문서 완전 동기화 확인** · **baseline `1f3698d`/`71839a6` SYNCED · Flyway V1–V192**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | 「최근 7일 요약」 메타 갱신 — **모듈 93.6% · 문서 전수 최신화** · 2026-07-14 기록 완료 | ✅ |
+| **FAQ** | **Q802·Q803** 신규 · Q788~Q801 기존 기록 확인 · M11 P1 잔여 제시 | ✅ |
+| **USER_MANUAL** | **§4-6-5 M12 SSO** · **§4-7 직원** 최신 반영 확인 · FAQq 링크 동기화 | ✅ |
+| **ADMIN_GUIDE** | **§6-2-24f M12** · **§6-2-24h G2** 최신 반영 확인 · 운영자용 설정 가이드 | ✅ |
+| **DEPLOYMENT** | **§1-4·§4-9** G2/M12/J03 운영 매뉴얼 · 모듈 93.6% health/probe | ✅ |
+
+**현황 정리**:
+- **P1 CLOSED**: M11 in-app 최소 set · M12 SSO handoff · J03 채널 · G2 기관 공지
+- **P1 잔여**: M11 급여 persist · 수익·인건비 자동 집계 · 기관별 SSO 자격(테넌트)
+- **모듈 KPI**: **93.6%** (id=1–10 거의 complete · id=11·12 partial)
+- **문서화 상태**: **ops 문서 전수 `1f3698d`/`71839a6` 완전 동기화**
+
+**다음 문서화 우선순위**: **M11 급여 persist** (P1 잔여) · **G-ACCOUNTING-IN-APP-LEDGER** (v3+) · **program reports FE `branchId`** · **7-5 live PG checklist** · **J03 Solapi live dispatch**
 
 ---
 
