@@ -113,6 +113,7 @@
 |------|------|-----------|
 | **git baseline** | BE develop/test **`6e874df`** WT **CLEAN** · post-merge **2094/2094 PASS**(384 suites·TSR1516) · FE develop/test/origin/test **`95192f5` ALL SYNCED** · post-merge **2379/2379 PASS**(454 files·TSR1517) · live E2E **116/33/0** · origin/test **617 BE + 0 FE** · **124 Route·98 page·V1–V190·BE @Test 2094·FE test 507·모듈 84.31%** | ROADMAP CURRENT BASELINE 208차 |
 | **QA Open → Planned** | Open **0** — 신규 Open 이동 대상 없음 · residual Planned **QA-B116**(origin/test push **617 BE**) + **QA-B95**(operation 승격) | QA_FEEDBACK · ROADMAP v1 P0 |
+| **벤치마크 인사이트 반영** | `BENCHMARK_REPORT.md` §700 재실측 결과: `dashboardSummary` 15-stage ↔ ezCare 7-bucket 비교에서 **간호지시서 만료(G-NURSING-DIRECTIVE-EXPIRY)** 및 **수급자 서비스계약 만료(G-CLIENT-CARE-AGREEMENT-EXPIRY)** 2건이 gap 후보로 식별됨. 우선순위는 P3(가정)으로 REQUIREMENTS에 추가·검토. ROADMAP에 반영(비교우위 문구 보존). USER_STORIES에 2건 스토리 추가. | REQUIREMENTS · ROADMAP · USER_STORIES |
 | **QA-B344 Fixed** | TSR1516 FF `edfb55d`→`6e874df`(pending **2→0**) · 이관 규율 6·14 · **기능 갭 아님** | QA_FEEDBACK Fixed · ROADMAP v1 |
 | **QA-B373 Fixed** | TSR1517 FF `0c6950a`→`95192f5` + origin/test PUSH · bathing related **8/8** · **기능 갭 아님** | QA_FEEDBACK Fixed · ROADMAP v1 |
 | **BNK-706 ★★★** | **M12=수지파인(sujifine) BPO SSO**(L12=0·`carefor_login`) · **M11 in-app 6-leaf = sole P1** · options M12 (A)skip/(B)BPO/(C)in-app min — **(A)/(B) 권고** · +~6.90pp→91.21% if M11 closes | ROADMAP v3 · REQUIREMENTS · USER_STORIES · §추가 질문 208 |
@@ -131,6 +132,30 @@
 4. **G-AI-NEEDS-ASSESSMENT-SUMMARY (★ BNK-695 carry)**: P2/P3 차별화 vs 개인정보·정확성 리스크 · security_auditor 공동 검토?
 5. **QA-B95 operation 승격 timing (★)**: origin/test **617 BE** push 직후 vs defer — live E2E bootstrap-disabled carry **116/33/0** · V190 integrity probe 선행 완료.
 6. **USER_MANUAL day-status·지표27 copy (★ TWR)**: `TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` + Bathing panel「평가지표 27≠목욕」footers 반영 여부.
+
+### [COD] M12 accounting BPO readiness deepen (2026-07-14)
+
+- **완료 (BE)**: US-ACCOUNTING-M12 option **(B)** deepen — `AccountingBpoLaunchResponse`에 `portalLaunchReady`/`credentialsCollected`/`opensInNewWindow`/`ssoReadinessBlockers` 추가 · `/api/v1/health`에 `accountingBpoPortalLaunchReady`·`accountingBpoSsoReady`·`accountingBpoReadinessBlockers` (J03 channel readiness parity) · M11 payroll relatedSurfaces에 `/accounting` AVAILABLE cross-link.
+- **검증**: `AccountingBpoServiceTest` · `HealthControllerTest` · payroll relatedSurfaces assertions · routing/RBAC (실행 예정).
+- **API**: API_SPEC §9-20 갱신.
+- **범위 외 / 다음**: SSO OTP adapter · FE bpo-launch API wire · M11 ledger persist · P3 dashboard expiry.
+- **근거**: BNK-706/715 · QA-B386 pending merge `@edaa9e9` · PLAN_NOTES M12 next = readiness/SSO.
+
+### [COD] M12 재무회계 BPO launch catalog API (2026-07-14)
+
+- **완료 (BE)**: `GET /api/v1/billing/accounting/bpo-launch` — US-ACCOUNTING-M12 option **(B)** · `AccountingBpoController`/`AccountingBpoService` · `documentCode=M12-BPO` · `portalUrl=https://sujifine.co.kr/login` · `ssoAvailability=PLANNED` · relatedSurfaces(payroll ledger·billing·self AVAILABLE) · 자격증명 미수집.
+- **동시 수정**: M11 `retirementAccrualSurface(PLANNED→AVAILABLE)` ×2 (`laborCostRatioRelatedSurfaces`·`retirementAccrualRelatedSurfaces`) — FE `/payroll/retirement-accrual` 착지 반영(API_SPEC §9-19 정합).
+- **검증**: `AccountingBpoServiceTest` · payroll ledger availability assertions · routing/RBAC @Test 추가(실행 예정).
+- **API**: API_SPEC §9-20.
+- **범위 외 / 다음**: ~~SSO OTP readiness health~~ → **readiness deepen closed** · FE bpo-launch API wire(optional) · P3 dashboard expiry · M11 ledger persist.
+- **근거**: BNK-706/715 · FE `@891231d` AccountingBpoPage · PLAN_NOTES 「BE retirementAccrualSurface」「M12 BPO」.
+
+### [COD] M12 재무회계 BPO 진입 페이지 (2026-07-14)
+
+- **완료 (FE)**: `/accounting` `AccountingBpoPage` — US-ACCOUNTING-M12 option **(B) sujifine BPO 어댑터** 안내 · public `https://sujifine.co.kr/login` 새 창 오픈(`noopener,noreferrer`·자격증명 미수집) · `BillingContextNav`·청구 SideNav wire · id=12 coverage **0→0.35**.
+- **검증**: related `npm test` (AccountingBpoPage·accountingBpo util·BillingContextNav·competitorModuleCoverage).
+- **범위 외 / 다음**: ~~BE SSO OTP adapter · BE `retirementAccrualSurface(PLANNED→AVAILABLE)`~~ → **BE bpo-launch + retirement AVAILABLE closed** · planner §추가 질문 208-2 최종 확정 표기 · P3 dashboard expiry(G-NURSING/G-CLIENT-CARE) · M11 ledger persist · SSO OTP adapter.
+- **근거**: BNK-706/715 · REQUIREMENTS 「(A)/(B) 권고」 · carefor `open_sujifine()`→sujifine parity.
 
 ### [COD] M11-4 급여기초 수당/공제 마스터 카탈로그 API (2026-07-14)
 

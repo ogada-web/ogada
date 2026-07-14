@@ -2673,6 +2673,51 @@ form-data:
 
 ---
 
+## 9-20. 재무회계 외부 BPO 진입 (Accounting BPO) — US-ACCOUNTING-M12 / 케어포 M12=sujifine
+
+> **상태**: backend — `GET …/bpo-launch` ✅ · launch readiness fields ✅ · `/api/v1/health` accounting BPO readiness ✅ · frontend — `/accounting` `AccountingBpoPage` ✅ · schema migration **0** · **SSO OTP adapter 잔여**(자격증명 미수집·공개 login만).
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/billing/accounting/bpo-launch` | M12 수지파인 BPO 공개 포털 진입 메타데이터 | hq_admin, branch_admin, social_worker |
+
+**GET `/bpo-launch` 응답** (`AccountingBpoLaunchResponse`):
+
+```json
+{
+  "documentCode": "M12-BPO",
+  "surfaceKind": "ACCOUNTING_BPO_LAUNCH",
+  "pageTitle": "재무회계 (외부 BPO)",
+  "launchRoute": "/accounting",
+  "portalUrl": "https://sujifine.co.kr/login",
+  "portalProductName": "수지파인",
+  "portalTitle": "장기요양 재무회계 관리프로그램",
+  "helpTextKo": "케어포 M12와 동일하게 수입·지출·결의 등 재무회계는 외부 BPO(수지파인)에서 처리합니다. …",
+  "ssoFollowUpNoteKo": "기관 SSO(OTP) 자동 로그인은 후속 어댑터에서 연동합니다. …",
+  "ssoAvailability": "PLANNED",
+  "portalLaunchReady": true,
+  "credentialsCollected": false,
+  "opensInNewWindow": true,
+  "ssoReadinessBlockers": ["sso-otp-adapter-planned"],
+  "relatedSurfaces": [
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 급여대장", "route": "/payroll/ledger", "availability": "AVAILABLE" },
+    { "storyRef": "US-L01", "label": "본인부담금 청구", "route": "/billing", "availability": "AVAILABLE" },
+    { "storyRef": "US-ACCOUNTING-M12", "label": "재무회계 (외부 BPO)", "route": "/accounting", "availability": "AVAILABLE" }
+  ]
+}
+```
+
+**semantics**:
+
+- 케어포 `open_sujifine()` → 외부「장기요양 재무회계」parity · in-app 장부 CRUD 없음
+- `portalUrl` 은 public login만 · OTP/자격증명 필드 **0** (`credentialsCollected=false`)
+- `portalLaunchReady=true` · `opensInNewWindow=true` — FE는 새 창 `noopener,noreferrer` 로 공개 portal 오픈
+- `ssoAvailability=PLANNED` · `ssoReadinessBlockers=["sso-otp-adapter-planned"]` 까지 SSO OTP 어댑터 잔여
+- **`GET /api/v1/health`** expose: `accountingBpoCatalogAvailable` · `accountingBpoPortalLaunchReady` · `accountingBpoSsoReady` · `accountingBpoSsoAvailability` · `accountingBpoReadinessBlockers[]` (J03 notification readiness 패턴 parity)
+- M11 payroll relatedSurfaces 에 `/accounting` cross-link **AVAILABLE** (ledger·reports·basis·labor-cost-ratio·retirement-accrual)
+
+---
+
 ## 16. 미확정 (구현 전 확정 필요)
 
 - ~~주민등록번호 수집·암호화~~ → **확정** (REQUIREMENTS §3-2-1)
