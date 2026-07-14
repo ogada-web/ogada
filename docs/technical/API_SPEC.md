@@ -2357,22 +2357,27 @@ form-data:
 
 ```json
 {
+  "planYear": 2026,
   "totalClients": 40,
-  "plansRecordedCount": 38,
-  "provisionsRecordedCount": 35,
-  "benefitStartCount": 35,
-  "provisionsCompletionRate": 0.875,
-  "benefitStartConducted": true,
-  "provisionsProvided": true,
-  "gapCount": 3
+  "indicator25MetCount": 38,
+  "indicator26MetCount": 35,
+  "indicator27MetCount": 36,
+  "provisionRecordedMetCount": 35,
+  "planEstablishedBeforeBenefitStartMetCount": 34,
+  "items": [],
+  "indicator27Code": "INDICATOR_27",
+  "indicator27Label": "개인별 기능회복훈련 계획",
+  "daycareEvaluationRequired": true,
+  "daycareEvaluationIndicator27Owner": "FUNCTIONAL_RECOVERY",
+  "scopeNote": "주야간보호 공단평가 지표 27은 기능회복훈련입니다. 목욕 제공은 평가 필수 지표가 아니며 청구 선택 축(G-BATHING)입니다."
 }
 ```
 
-**semantics** (G17 3개 지표):
+**semantics** (G17 주야간보호 지표 25–27 · BNK-704/707):
 
-- **Indicator 22**: 계획 수립률 ≥ 95% (`plansRecordedCount` / `totalClients`)
-- **Indicator 23**: 급여제공 기록 ≥ 월 1회 이상
-- **Indicator 24**: 생성 30일 내 시작 여부 (`benefitStartConducted` = 급여개시일 이후 30일 내 기록 여부)
+- **Indicator 25**: 기능회복훈련 계획(급여계획 반영) — `indicator25MetCount`
+- **Indicator 26**: 기능회복훈련 연간 시행·제공 — `indicator26MetCount`
+- **Indicator 27**: 개인별 기능회복훈련 계획 — `indicator27Code=INDICATOR_27` · `daycareEvaluationRequired=true` · owner=`FUNCTIONAL_RECOVERY` (목욕 ≠ 지표 27; bathing API는 `BATHING_CLAIM_COMPLIANCE`)
 
 ---
 
@@ -2447,6 +2452,138 @@ form-data:
 - **G42 지표52**: 사후관리 준수율 ≥ 100% (60일 내 팔로우업 실시 비율)
 - **상태 전환**: DRAFT → PENDING(제출) → APPROVED(승인) → FOLLOW_UP_RECORDED(사후관리)
 - **익명 상자**: `targetName`이 익명 또는 비공개로 처리 가능 (PII 보호)
+
+---
+
+## 9-19. 직원 급여 (Payroll) — US-PAYROLL-M11 / 케어포 M11
+
+> **상태**: backend develop — `POST …/ledger-preview`(11-1·11-3) · `POST …/simple-payment-statement-preview`(11-6) · **`GET …/allowance-deduction-catalog`(11-4 급여기초 수당/공제 마스터)** ✅. frontend — `/payroll/ledger`·`/payroll/reports` wire **✅** · `/payroll/basis`(11-4) **📋 PLANNED**. schema migration **0**(카탈로그 정적 seed · persist/월급액 연동 잔여). **잔여 P1**: 11-2 퇴직적립 · 11-5 인건비 지출비율 · 11-1 대장 영속 · 11-4 FE wire.
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/staff/payroll/allowance-deduction-catalog` | M11 11-4 급여기초 설정(수당/공제) 마스터 카탈로그 | hq_admin, branch_admin, social_worker |
+| POST | `/api/v1/staff/payroll/ledger-preview` | M11 11-1·11-3 월별 급여대장 미리보기 (기본급+수당−공제·출근일수) | hq_admin, branch_admin, social_worker |
+| POST | `/api/v1/staff/payroll/simple-payment-statement-preview` | M11 11-6 간이지급명세서 미리보기 (지급/공제 라인·합계) | hq_admin, branch_admin, social_worker |
+
+**GET `/allowance-deduction-catalog` 응답** (`StaffPayrollAllowanceDeductionCatalogResponse`):
+
+```json
+{
+  "documentCode": "M11-4",
+  "surfaceKind": "STAFF_PAYROLL_ALLOWANCE_DEDUCTION_CATALOG",
+  "entries": [
+    {
+      "itemCode": "POSITION_ALLOWANCE",
+      "labelKo": "직책수당",
+      "side": "ALLOWANCE",
+      "categoryKo": "직책수당",
+      "sortOrder": 10,
+      "defaultEnabled": true,
+      "statutoryNoteKo": "케어포 11-4 수당 마스터 (직책)"
+    },
+    {
+      "itemCode": "NATIONAL_PENSION",
+      "labelKo": "국민연금",
+      "side": "DEDUCTION",
+      "categoryKo": "4대보험",
+      "sortOrder": 110,
+      "defaultEnabled": true,
+      "statutoryNoteKo": "4대보험 — 국민연금 근로자 부담분"
+    }
+  ],
+  "allowanceCount": 3,
+  "deductionCount": 6,
+  "totalCount": 9,
+  "relatedSurfaces": [
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 급여대장", "route": "/payroll/ledger", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "PLANNED" }
+  ]
+}
+```
+
+- 수당 3종: `POSITION_ALLOWANCE` · `TREATMENT_IMPROVEMENT_ALLOWANCE` · `LONG_SERVICE_ALLOWANCE`
+- 공제 6종: 4대보험 4 + `INCOME_TAX` · `LOCAL_INCOME_TAX`
+- 정적 seed(케어포 11-4 parity) · org 컨텍스트만 검증 · 항목 CRUD/세율 산출/persist ❌(후속)
+
+**공통 요청** (`StaffPayrollLedgerPreviewRequest`):
+
+```json
+{
+  "userId": "uuid",
+  "yearMonth": "2026-07",
+  "basePay": 2200000.00,
+  "allowances": 120000.00,
+  "deductions": 50000.00
+}
+```
+
+- `yearMonth`: `yyyy-MM` (필수)
+- `basePay` / `allowances` / `deductions`: ≥ 0, 소수 2자리 · `allowances`·`deductions` 생략 시 0
+- `deductions` > `basePay + allowances` 이면 `422 BUSINESS_RULE`
+
+**POST `/ledger-preview` 응답** (`StaffPayrollLedgerPreviewResponse`):
+
+```json
+{
+  "userId": "uuid",
+  "userName": "홍요양",
+  "branchId": "uuid",
+  "yearMonth": "2026-07",
+  "attendanceDays": 20,
+  "basePay": 2200000.00,
+  "allowances": 120000.00,
+  "deductions": 50000.00,
+  "grossPay": 2320000.00,
+  "netPay": 2270000.00,
+  "surfaceKind": "STAFF_PAYROLL_LEDGER_PREVIEW",
+  "relatedSurfaces": [
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 출퇴근", "route": "/staff/attendance", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 근로계약 컴플라이언스", "route": "/staff/employment-contracts", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "PLANNED" }
+  ]
+}
+```
+
+**POST `/simple-payment-statement-preview` 응답** (`StaffPayrollSimplePaymentStatementPreviewResponse`):
+
+```json
+{
+  "userId": "uuid",
+  "userName": "홍요양",
+  "branchId": "uuid",
+  "yearMonth": "2026-07",
+  "attendanceDays": 20,
+  "documentTitle": "간이지급명세서",
+  "documentCode": "M11-6",
+  "paymentLines": [
+    { "code": "BASE_PAY", "label": "기본급", "side": "PAYMENT", "amount": 2200000.00 },
+    { "code": "ALLOWANCES", "label": "수당", "side": "PAYMENT", "amount": 120000.00 }
+  ],
+  "deductionLines": [
+    { "code": "DEDUCTIONS", "label": "공제", "side": "DEDUCTION", "amount": 50000.00 }
+  ],
+  "paymentTotal": 2320000.00,
+  "deductionTotal": 50000.00,
+  "netPay": 2270000.00,
+  "surfaceKind": "STAFF_PAYROLL_SIMPLE_PAYMENT_STATEMENT_PREVIEW",
+  "relatedSurfaces": [
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 급여대장", "route": "/payroll/ledger", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 출퇴근", "route": "/staff/attendance", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 근로계약 컴플라이언스", "route": "/staff/employment-contracts", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "PLANNED" }
+  ]
+}
+```
+
+**semantics**:
+
+- 출근일수는 `staff_work_attendance` 체크인 일수(월 내 중복 날짜는 1일)
+- 수당/공제 = 0 이면 해당 statement line 생략 (기본급 line은 항상 포함)
+- 11-4 카탈로그는 정적 seed(케어포 parity) · 항목별 금액 CRUD·세율 자동계산·영속은 후속
+- 영속(persist)·PDF 출력 잔여
 
 ---
 

@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-13T21:45:00+00:00 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-14T01:33:00+00:00 -->
+<!-- planner-sync: PLN 208차 2026-07-14T01:33 UTC — BNK-702~706·TSR 1507~1517차 · ★★★ M12=sujifine BPO SSO(BNK-706)·M11 in-app sole P1 · ★★★ G16 shuttle 6-commit CLOSURE(BNK-705) · ★★ 지표27=기능회복훈련(BNK-704) · ★ QA-B344/B373 Fixed · Open 0 · local SYNCED(BE@6e874df·FE@95192f5) · residual origin/test 617 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 207차 2026-07-13T21:45 UTC — BNK-698~701·TSR 1503~1506차 · ★★★ transport day-status 5-stage CLOSURE · ★★ ezCare dashboard 7-bucket vs 15 stage-gap · ★ QA-B352 Fixed+origin/test PUSHED · ★ QA-B344 Open BE pending 29 · merge gate FE cleared · cross-stream BLOCK(BE only) · QA Open 1(active) -->
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-27T12:30:00+00:00 -->
 <!-- tech_writer-sync: TWR 400차 2026-06-27T21:30:00+09:00 — **Q750 safety template catalog (`aa9565c`/`bf9b4b1`) · Q751 V185 integrity (`7a9ed71`) · Q752 fee seed auth hints (`dd5571d`) · Q753 safety live harness** · **baseline BE `aa9565c`/FE `bf9b4b1`** · CHANGELOG·FAQ Q750~Q753·USER_MANUAL §5-9·ADMIN_GUIDE §1-4 US-Q01·DEPLOYMENT §1-4·§11-3 · **P2 carry**: program reports FE branchId · 7-5 live PG · J03 Solapi live dispatch →
@@ -104,8 +105,67 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-13 (207차 PLN — **자동 기획 동기화** BNK-698~701·TSR 1503~1506차·★★★ transport day-status 5-stage CLOSURE·★ QA-B352 Fixed+origin/test PUSHED·★ QA-B344 Open BE pending 29(sole BLOCK)·신규 P3 candidate +2 dashboard expiry·merge gate FE cleared·cross-stream BLOCK(BE only)·QA Open 1) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-14 (208차 PLN — **자동 기획 동기화** BNK-702~706·TSR 1507~1517차·★★★ M12=sujifine BPO·M11 in-app sole P1·★★★ G16 shuttle CLOSURE·★★ 지표27=기능회복훈련·★ QA-B344/B373 Fixed·Open 0·local SYNCED·operation BLOCK 617 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
 
+### [PLN] QA 피드백 반영 (2026-07-14, 208차 — BNK-702~706 · TSR 1507~1517차 · QA Open 0 · ★ QA-B344/B373 Fixed · local SYNCED · residual origin/test 617 BE)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`6e874df`** WT **CLEAN** · post-merge **2094/2094 PASS**(384 suites·TSR1516) · FE develop/test/origin/test **`95192f5` ALL SYNCED** · post-merge **2379/2379 PASS**(454 files·TSR1517) · live E2E **116/33/0** · origin/test **617 BE + 0 FE** · **124 Route·98 page·V1–V190·BE @Test 2094·FE test 507·모듈 84.31%** | ROADMAP CURRENT BASELINE 208차 |
+| **QA Open → Planned** | Open **0** — 신규 Open 이동 대상 없음 · residual Planned **QA-B116**(origin/test push **617 BE**) + **QA-B95**(operation 승격) | QA_FEEDBACK · ROADMAP v1 P0 |
+| **QA-B344 Fixed** | TSR1516 FF `edfb55d`→`6e874df`(pending **2→0**) · 이관 규율 6·14 · **기능 갭 아님** | QA_FEEDBACK Fixed · ROADMAP v1 |
+| **QA-B373 Fixed** | TSR1517 FF `0c6950a`→`95192f5` + origin/test PUSH · bathing related **8/8** · **기능 갭 아님** | QA_FEEDBACK Fixed · ROADMAP v1 |
+| **BNK-706 ★★★** | **M12=수지파인(sujifine) BPO SSO**(L12=0·`carefor_login`) · **M11 in-app 6-leaf = sole P1** · options M12 (A)skip/(B)BPO/(C)in-app min — **(A)/(B) 권고** · +~6.90pp→91.21% if M11 closes | ROADMAP v3 · REQUIREMENTS · USER_STORIES · §추가 질문 208 |
+| **BNK-705 ★★★** | **G16 shuttle address 6-commit e2e CLOSURE** (FE normalize+blank PATCH · BE V190 CHECK+health) · 경쟁 4종 유일 | ROADMAP v1/v2 · COMPETITOR_MATRIX |
+| **BNK-704 ★★** | **주야간 지표27=기능회복훈련** · 목욕=`BATHING_CLAIM_COMPLIANCE`(청구 준수·eval 비필수) · COD lock @ `6e874df` | USER_STORIES US-O01/US-T06 · REQUIREMENTS |
+| **BNK-702~703** | 17-route LIVE 재오픈 0 · M7 dual-source 107/103 · 7-10 calculator triple-gap · WT DIRTY→CLEAN(V190/a11y) · NHIS **442차** | ROADMAP · REQUIREMENTS |
+
+**coder/ops 다음 액션 (208차)**: ① **tester origin/test push 617 BE**(QA-B116) ② **QA-B95 operation 승격**(bootstrap enable timing) ③ **P1** M11 in-app min set **11-1·11-3·11-6** 구현 착수(scope A 승인 대기시에도 기획 정본) ④ **M12** (A)/(B) 분기 확정 ⑤ ~~**FE** BathingScheduleIndicator27Panel 제목 copy 정정~~ → **COD Fixed**(목욕=`BATHING_CLAIM_COMPLIANCE` · 지표27=G17 ownership wire) ⑥ **P3** dashboard expiry·AI 총평 carry.
+
+> **207차→208차 delta**: BE `@5366944` pending 29 → **`6e874df` local SYNCED** · FE `@bd12f28` → **`95192f5` ALL SYNCED+PUSHED** · **QA-B344/B373 Fixed** · Open **1→0** · origin/test **611→617 BE** · V189→**V190** · BE @Test 2073→**2094** · FE test 506→**507** · **M12 in-app 가정 번복→sujifine BPO** · **G16 shuttle CLOSED** · **지표27 ownership lock**.
+
+### 추가 질문 (자동 기획 동기화 208차)
+1. **M11 in-app minimum set 착수 범위 (★★★ BNK-706)**: 11-1 급여대장 · 11-3 수당/공제 · 11-6 간이지급명세서 — v3 P1 MVP로 **즉시 착수** vs UX/DBA 설계 사인오프 선행?
+2. **M12 수지파인/BPO 분기 (★★★ BNK-706 · 가정 번복)**: (A) 미추종 · (B) sujifine/유사 BPO 어댑터(SSO·만료 모달) · (C) in-app 최소 — 경쟁 2사 외부화 → **(A)/(B) 권고**. 확정값은?
+3. **Dashboard expiry gap (★★ BNK-700 carry)**: 간호지시서·수급자계약 만료 — v3 P3 in-app 최소 vs defer?
+4. **G-AI-NEEDS-ASSESSMENT-SUMMARY (★ BNK-695 carry)**: P2/P3 차별화 vs 개인정보·정확성 리스크 · security_auditor 공동 검토?
+5. **QA-B95 operation 승격 timing (★)**: origin/test **617 BE** push 직후 vs defer — live E2E bootstrap-disabled carry **116/33/0** · V190 integrity probe 선행 완료.
+6. **USER_MANUAL day-status·지표27 copy (★ TWR)**: `TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` + Bathing panel「평가지표 27≠목욕」footers 반영 여부.
+
+### [COD] M11-4 급여기초 수당/공제 마스터 카탈로그 API (2026-07-14)
+
+- **완료 (BE)**: `GET /api/v1/staff/payroll/allowance-deduction-catalog` — 케어포 11-4 parity 정적 seed(수당 3·공제 6=4대보험+세금) · `surfaceKind=STAFF_PAYROLL_ALLOWANCE_DEDUCTION_CATALOG` · relatedSurfaces에 `/payroll/basis` **PLANNED** · `/payroll/reports` **AVAILABLE** 로 정렬.
+- **범위 외 / 다음**: FE `/payroll/basis` wire · 항목 CRUD·세율 산출·persist · 11-5 인건비 지출비율 · 11-2 퇴직적립 · 11-1 대장 영속 · tester develop→test merge(QA-B376 + 본 커밋).
+
+### [COD] M11-6 간이지급명세서 preview API (2026-07-14)
+
+- **완료 (BE)**: `POST /api/v1/staff/payroll/simple-payment-statement-preview` (케어포 M11 11-6) · ledger 계산 재사용 · 지급/공제 line·합계·`documentTitle=간이지급명세서` · `surfaceKind=STAFF_PAYROLL_SIMPLE_PAYMENT_STATEMENT_PREVIEW`.
+- **완료 (FE @ `585155c`)**: `/payroll/reports` `StaffPayrollReportsPage` + `previewStaffPayrollSimplePaymentStatementApi` · nav/StaffContextNav · coverage id=11 **0.35→0.52** · relatedSurface FE normalize(`PLANNED`→`AVAILABLE` for wired routes).
+- **검증**: FE related `npm test` **27/27 PASS** · BE `StaffPayrollLedgerServiceTest` PASS(선행).
+- **API**: API_SPEC §9-19 (ledger-preview + simple-payment-statement-preview · FE reports ✅).
+- **다음**: residual **11-2/4/5** · ledger/report **persist** · BE relatedSurfaces PLANNED→AVAILABLE sync · tester FE FF merge · QA-B376 BE merge.
+
+### [COD] FE BNK-704/707 — bathing claim vs indicator27 ownership wire (2026-07-14)
+
+- **완료**: FE develop — `BathingScheduleIndicator27Panel` 제목을 「목욕 청구 준수」로 정정 · BE `scopeNote`/`indicatorCode=BATHING_CLAIM_COMPLIANCE`/`daycareEvaluationRequired=false` 표출 · 기능회복 `/programs/functional-recovery` deep-link · `mapFunctionalRecoveryComplianceView`에 ownership 필드 매핑 · G17 페이지 scopeNote + 목욕 청구 cross-link.
+- **검증**: related `npm test` (bathing panel/page · functionalRecovery util/page).
+- **다음**: tester FE FF merge(pending) · origin/test push(QA-B116) · M11/M12 scope는 planner §추가 질문 대기.
+
+### [COD] G17 compliance — surface indicator27 ownership metadata (2026-07-14)
+
+- **완료**: BE develop — `FunctionalRecoveryComplianceResponse`에 `indicator27Code`/`indicator27Label`/`daycareEvaluationRequired=true`/`daycareEvaluationIndicator27Owner=FUNCTIONAL_RECOVERY`/`scopeNote` 추가 · `FunctionalRecoveryService.getCompliance`가 `FunctionalRecoveryIndicatorCatalog`+bathing owner 상수 wire · 기존 8-arg compact ctor 유지(대시보드·mock 호환).
+- **검증**: `mvn test -Dtest=FunctionalRecoveryServiceTest,FunctionalRecoveryIndicatorCatalogTest,MustApiEndpointRoutingTest$FunctionalRecoveryRouting,BathingScheduleIndicator27ComplianceTest,DashboardServiceTest` PASS.
+- **API**: `GET /api/v1/programs/functional-recovery/compliance` 응답에 BNK-704/707 ownership 필드 노출 · API_SPEC §G17 예시 정합(구 indicator 22–24 예시 폐기).
+- **FE follow-up**: ✅ COD Fixed — compliance/bathing panels `scopeNote`·ownership deep-link wire.
+- **다음**: tester residual push(QA-B116) · M11/M12 scope는 planner §추가 질문 대기.
+
+### [COD] BNK-704 지표27 정본 — bathing ≠ daycare eval 27 (2026-07-14)
+
+- **완료**: BE develop — `BathingScheduleIndicator27Catalog` → `BATHING_CLAIM_COMPLIANCE` + `daycareEvaluationRequired=false` + owner=`FUNCTIONAL_RECOVERY` · response에 `scopeNote` 추가 · `FunctionalRecoveryIndicatorCatalog` NEW (`INDICATOR_27`=개인별 기능회복훈련 계획).
+- **검증**: `mvn test -Dtest=BathingScheduleIndicator27ComplianceTest,FunctionalRecoveryIndicatorCatalogTest,FunctionalRecoveryServiceTest,MustApiEndpointRoutingTest$BathingScheduleRouting,RoleBasedControllerAccessTest$BathingScheduleAccess` PASS.
+- **API**: path `/care/bathing-schedules/indicator-27-compliance` 유지(안정성) · `indicatorCode` 값 `INDICATOR_27`→`BATHING_CLAIM_COMPLIANCE`.
+- **FE follow-up**: ✅ COD Fixed — panel 「목욕 청구 준수」+ G17 deep-link (구 「평가지표 27 — 목욕」 폐기).
+- **다음**: tester FF/residual push(QA-B116) · M11/M12 scope는 planner §추가 질문 대기.
 
 ### [COD] QA-B95 20th layer — V190 transport integrity probe (2026-07-13)
 
@@ -114,10 +174,17 @@
 - **blocker key**: `v189-transport-shuttle-schema-missing` 유지(FE ignore wire 불필요).
 - **다음**: tester origin/test push(QA-B116) · QA-B95 operation 승격 · M11/M12 scope는 planner §추가 질문 대기.
 
+### [COD] G16 송영 주소 blank PATCH fallback (2026-07-13, QA-B372)
+
+- **완료**: FE `@a6255a0` `toVehicleShuttleAddressPayload` blank을 `null`→`""`로 변경 — BE `updateVehicle`가 `null`이면 필드 skip, blank/`""`만 지점 주소 폴백 (`VehicleServiceTest` `"   "` 케이스). QA-B371 follow-up.
+- **검증**: `npm test -- src/config/vehicles.test.js src/pages/VehiclesPage.test.jsx` **9/9 PASS**.
+- **범위 외 carry**: M11/M12 in-app min set · dashboard expiry P3 — PLAN_NOTES §추가 질문 207-1 scope 확정 대기.
+- **다음**: tester develop→test FF(QA-B372 @ `a6255a0`) · origin/test push BE(QA-B116) · live E2E env(QA-B95).
+
 ### [COD] G16 송영 주소 normalize FE complement (2026-07-13)
 
-- **완료**: FE `VehiclesPage` + `config/vehicles.js` — BE `@3e627b3`/`normalizeAddress` 정합 (trim + 연속 공백 붕괴 · blank→null) @ `654b2c6`.
-- **검증**: `npm test -- src/config/vehicles.test.js src/pages/VehiclesPage.test.jsx` **8/8 PASS**.
+- **완료**: FE `VehiclesPage` + `config/vehicles.js` — BE `@3e627b3`/`normalizeAddress` 정합 (trim + 연속 공백 붕괴) @ `654b2c6`. **superseded by QA-B372** (blank→`""`).
+- **검증**: `npm test -- src/config/vehicles.test.js src/pages/VehiclesPage.test.jsx` **8/8 PASS**(당시).
 - **범위 외 carry**: M11/M12 in-app min set · dashboard expiry P3 — PLAN_NOTES §추가 질문 207-1 scope 확정 대기.
 - **다음**: tester origin/test push **613 BE**(QA-B116) · live E2E env(QA-B95).
 
@@ -6948,6 +7015,14 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 
 ### [DBA] DB 설계 질문
 
+#### #191. V190 committed + G17/BNK-704 앱 only 재검증 — 신규 V191 불요 (2026-07-14, round 207, backend `6e874df`)
+- **배경**: round 206(#190 — DBA V190 WIP @ `5366944`) → backend HEAD **`6e874df`** 6 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`6e874df`**·branch **develop**·WT CLEAN·migrations contiguous V1–V190(190 files·갭·중복 0).
+- **`git diff --name-only 5366944..6e874df -- src/main/resources/db/migration/`** = **V190 1파일**(round 206 DBA 산출 · coder `2b3f3d9` commit). `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일**. `CREATE TABLE|ALTER TABLE|@Entity|@Column|@Index` grep(V190 제외) = **0건**.
+- **커밋 분해**: `2b3f3d9` V190+테스트 · `3e627b3` shuttle whitespace normalize(앱) · `bd43f59`/`edfb55d` V190 readiness probe(`pg_constraint` 읽기) · `c08329a` **G17/BNK-704** 주야간 지표 27 = 기능회복훈련 · 목욕 = `BATHING_CLAIM_COMPLIANCE`(앱 카탈로그) · `6e874df` compliance response lock(앱).
+- **G17 스키마 영향**: V177/V178 `pre/post_observation_notes` CHECK 는 **청구 준수** 불변식으로 유지 — 컬럼 rename/DROP 금지(운영 데이터·API path `/indicator-27-compliance` 레거시 segment 안정성). 평가지표 27 owner 정정은 `functional_recovery_plans`(V72)·`activity_programs.program_type`(V72/V113) 기존 스키마 위 인메모리 카탈로그만 변경 → **DDL 0건**.
+- **Must billing·attendance·NHIS**: 도메인 스키마 변경 0건. **live `ogada` 핵심 제약 7건 + V190 4제약** `pg_constraint`/`pg_trigger` 실측 전부 존재 · blank shuttle=0 · unsynced roster=0 · BASE 93.
+- **결론**: **신규 V191 불요**. ERD 헤더·§1 round 207·G17 의미 노트·DATA_RETENTION V177 문구(BNK-704)·PLAN_NOTES #191 갱신. **보류 carry**(전 라운드 동일): V190 P3(`(org,id)` anchor·client×branch sync·`updated_by` NOT NULL)·split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L). **coder 전달**: (1) 추가 DDL 0건 — Entity/Repository 변경 불요. (2) live V190 이미 적용됨 — 추가 `flyway:migrate` 불필요(V190 success 확인됨). (3) G17 FE/API 문서: `daycareEvaluationRequired=false`·owner=`FUNCTIONAL_RECOVERY` 노출 유지·path rename 금지.
+
 #### #190. V186–V189 transport committed + V190 defense-in-depth integrity (2026-07-13, round 206, backend `5366944`)
 - **배경**: round 205(#189 — 미커밋 V186–V189 WIP 보류, backend `2f4bfdf`) → backend HEAD **`5366944`**. coder 가 transport 스키마·앱을 develop 에 커밋 — `60c4e36` **feat(v2/transport) persist shuttle run metadata and roster day status**(V186–V189)·`c183d84` RBAC/service contracts·`41cbc8a` V189 readiness probe·`b89c6db` suggest exclusion·`5366944` day-status excluded clients on run mutate. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`5366944`**·branch **develop**·WT CLEAN(V190 추가 전).
 - **`git diff --name-only 2f4bfdf..5366944 -- src/main/resources/db/migration/`** = **V186·V187·V188·V189 4파일**.
@@ -6961,6 +7036,7 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 - **Must billing·attendance·NHIS**: transport 전용 — Must 도메인 스키마 변경 0건. **핵심 제약 7건** 불변 재확인.
 - **검증**: scratch `ogada_dba_scratch_r206` V1–V190 **190 contiguous** exit=0 · **92 BASE** · NEG4+POS3 PASS · live blank shuttle=0 · roster=0.
 - **결론**: **V190 추가**. ERD §1/§4-9·DATA_RETENTION §2/§3·PLAN_NOTES #190 갱신. **coder 전달**: (1) live `ogada` `mvn flyway:migrate` V189→V190 적용(현재 live는 V188까지). (2) Entity/Repository 변경 불요(CHECK/FK only). (3) 앱이 이미 flags sync·trim→NULL 강제 — V190은 raw SQL defense. (4) readiness probe에 V190 constraint 존재 확인을 추가하면 QA-B95 transport gate 강화 가능(선택).
+- **(갱신 round 207)**: V190 @ `2b3f3d9` 커밋·live flyway V190 적용·readiness probe ✅ · 후속 #191.
 
 #### #189. round 205 커밋 recheck (backend `2f4bfdf`) + 미커밋 transport WIP(V186–V189) 리뷰 — 신규 committed DDL 0건 (2026-07-13, round 205)
 - **배경**: round 204(#188 — V184/V185 safety_check_records, backend `92770fd`) → backend **커밋** HEAD **`2f4bfdf`** 6 commit 전진. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`2f4bfdf`**·branch **develop**.
