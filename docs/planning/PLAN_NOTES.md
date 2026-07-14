@@ -182,6 +182,13 @@
 5. **QA-B95 operation 승격 timing (★)**: origin/test **617 BE** push 직후 vs defer — live E2E bootstrap-disabled carry **116/33/0** · V190 integrity probe 선행 완료. → carry **629 BE**(211차).
 6. **USER_MANUAL day-status·지표27 copy (★ TWR)**: `TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` + Bathing panel「평가지표 27≠목욕」footers 반영 여부.
 
+### [COD] J03 channel-status API_SPEC alias FE + facility-notice GET detail + SEC-D43 SSO error surface (2026-07-14)
+
+- **완료 (FE)**: (1) `normalizeNotificationChannelStatus` — BE QA-B411 aliases (`solapiSenderNumberConfigured`·`kakaoChannelIdConfigured`·`requiredAlimtalkTemplates`) ↔ implementation keys · panel wire (2) `fetchFacilityNoticeApi` GET detail → DRAFT 편집 시 fresh body/attachmentUrl (3) `formatAccountingBpoSsoHandoffError` — SEC-D43 429/allowlist 한국어 표면.
+- **검증**: related **97 PASS** (6 files).
+- **범위 외 / 다음**: 독립 `/facility-notices` route · M12 ops credentials(0.7→1.0) · id=10 SMS 콘솔(v2+) · tester FF merge · QA-B116 origin/test push.
+- **근거**: API_SPEC §11-10 alias · BE `@1f3698d` QA-B411 · carefor 10-4 6-endpoint GET residual · SEC-D43 FE complement.
+
 ### [COD] G2 facility-notices DRAFT PATCH + attachmentUrl FE wire (2026-07-14)
 
 - **완료 (FE)**: carefor 10-4 board 6-endpoint FE 완성 — `updateFacilityNoticeApi` (PATCH) · DRAFT 「수정」→폼 로드→「초안 수정 저장」 · `attachmentUrl` Field(자료실 URL≤500) · PUBLISHED 본문 수정 UI 차단 유지 · `normalizeHomeNewsletterFacilityNotices` attachmentUrl.

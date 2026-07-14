@@ -1,6 +1,18 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-14T19:40:00+00:00 -->
+<!-- coder-sync: COD 2026-07-14T19:40:00+00:00 (frontend) — **★ QA-B412 Fixed** · J03 channel-status API_SPEC alias FE normalize(pairs BE QA-B411) · facility-notice GET detail wire · SEC-D43 SSO 429/allowlist error surface · related 97 PASS · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1567_frontend: QA-B412 Fixed (J03 alias normalize + facility-notice GET detail + M12 SSO error surface · WT CLEAN pending commit); Open 0; TSR FF merge pending.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-14T19:32:20+00:00 -->
+<!-- tester-sync: TSR 1566차 2026-07-14T19:32:20+00:00 (backend) — ROADMAP merged baseline carry `@bf96c29` (`src/backend-test`) · develop HEAD `@1f3698d` WT **CLEAN** · develop pre-merge related **176/176 PASS**(NotificationChannelReadinessServiceTest+MustApiEndpointRoutingTest · 13.1s, 2 suites) · **★ FF merge EXECUTED** `bf96c29`→`1f3698d`(pending **1→0** · **★ QA-B411 Fixed** J03 channel-status API_SPEC compatibility aliases · solapiSenderNumberConfigured/kakaoChannelIdConfigured/requiredAlimtalkTemplates) · post-merge **2165/2165 PASS**(81s, 399 suites) · live E2E **116 PASS/33 SKIP/0 FAIL**(37.63s · bootstrap-disabled) · develop/test **SYNCED `@1f3698d`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **BLOCK**(origin/test push **641 BE**) · cross-stream **SYNCED(BE `@1f3698d` · FE `@4d1b01c`)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1566th: backend merge FF bf96c29→1f3698d SYNCED@1f3698d; related 176/176 PASS(13.1s,2); post-merge 2165/2165 PASS(81s,399); live 116/33/0(37.63s); QA-B411 Fixed; Open 0; transfer BLOCK(origin push 641 BE); cross-stream SYNCED; backend@8080 200; operation BLOCK; BE @Test 2165.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-14T19:09:18+00:00 -->
+<!-- tester-sync: TSR 1565차 2026-07-14T19:09:18+00:00 (frontend) — ROADMAP merged baseline carry `@0210aaa` (`src/frontend-test`) · develop HEAD `@4d1b01c` WT **CLEAN** · develop pre-merge related **89/89 PASS**(8.18s, 4 files) · **★ FF merge EXECUTED** `0210aaa`→`4d1b01c`(pending **1→0** · **★ QA-B410 Fixed** G2 facility-notice DRAFT PATCH + attachmentUrl · carefor 10-4 6-endpoint FE CRUD complete) · post-merge **2471/2471 PASS**(835.38s, 465 files) · build **1217 PASS**(9.24s) · audit **0** · live E2E **116 PASS/33 SKIP/0 FAIL**(39.85s · bootstrap-disabled) · origin/test **★ PUSHED** `0210aaa`→`4d1b01c` · develop/test/origin/test **ALL SYNCED `@4d1b01c`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@bf96c29` · FE `@4d1b01c`)** · backend@8080 **UP/200** · operation **BLOCK**(640 BE) -->
+# revalidation_1565th: frontend merge FF 0210aaa→4d1b01c SYNCED+PUSHED@4d1b01c; related 89/89; post-merge 2471/2471 PASS(835.38s,465); build 1217 PASS(9.24s); audit 0; live 116/33/0(39.85s); QA-B410 Fixed; Open 0; transfer PASS(FE); origin/test PUSHED 0210aaa→4d1b01c; cross-stream SYNCED; backend@8080 200; operation BLOCK(640 BE).
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-14T18:55:00+00:00 -->
 <!-- coder-sync: COD 2026-07-14T18:55:00+00:00 (frontend) — **★ QA-B410 Fixed** · G2 facility-notices DRAFT PATCH + attachmentUrl FE wire · 6-endpoint CRUD complete · related 76 PASS · Open **0** · Planned QA-B116+QA-B95 -->
-# coder_1565_frontend: QA-B410 Fixed (facility-notices PATCH edit + attachmentUrl · WT CLEAN pending commit); Open 0; TSR FF merge pending.
+# coder_1565_frontend: QA-B410 Fixed @4d1b01c (facility-notices PATCH edit + attachmentUrl · WT CLEAN); Open 0; TSR FF merge pending.
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-14T18:46:00+00:00 -->
 <!-- tester-sync: TSR 1564차 2026-07-14T18:46:00+00:00 (backend) — ROADMAP merged baseline carry `@82a83e3` (`src/backend-test`) · develop HEAD `@bf96c29` WT **CLEAN** · develop pre-merge related **179/179 PASS**(AccountingBpoControllerTest+AccountingBpoServiceTest+MustApiEndpointRoutingTest · ~17s, 3 suites) · **★ FF merge EXECUTED** `82a83e3`→`bf96c29`(pending **1→0** · **★ QA-B409 Fixed** SEC-D43 M12 BPO SSO handoff harden) · post-merge **2165/2165 PASS**(84s, 399 suites) · live E2E **116 PASS/33 SKIP/0 FAIL**(37.76s · bootstrap-disabled) · develop/test **SYNCED `@bf96c29`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **BLOCK**(origin/test push **640 BE**) · cross-stream **SYNCED(BE `@bf96c29` · FE `@0210aaa`)** · backend@8080 **UP/200** · operation **BLOCK** -->
@@ -2975,7 +2987,65 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0** active · BE develop/test **SYNCED `@bf96c29`** · FE develop/test/origin/test **ALL SYNCED `@0210aaa`** · Planned **QA-B116**(origin/test **640 BE**)+**QA-B95** · operation **BLOCK**)_
+_(Open **0** active · BE develop/test **SYNCED `@1f3698d`** · FE develop/test/origin/test **ALL SYNCED `@4d1b01c`** · Planned **QA-B116**(origin/test **641 BE**)+**QA-B95** · operation **BLOCK**)_
+
+### [COD] v1.2.1/J03 channel-status API_SPEC alias FE normalize + facility-notice GET detail + SEC-D43 SSO error surface — frontend develop (QA-20260714-B412) — **Fixed**
+
+- **id**: QA-20260714-B412
+- **priority**: HIGH → Fixed (FE complement to BE QA-B411 / SEC-D43)
+- **stream**: frontend
+- **status**: Fixed (COD — related **97/97 PASS** · WT CLEAN commit pending TSR FF)
+- **found_at**: 2026-07-14T19:35:00+00:00
+- **fixed_at**: 2026-07-14T19:40:00+00:00
+- **version**: v1.2.1 / J03+G2+M12 — pairs BE `@1f3698d` QA-B411 aliases · deepens carefor 10-4 GET detail · SEC-D43 SSO 429/allowlist FE surface
+- **summary**: `normalizeNotificationChannelStatus` accepts API_SPEC aliases (`solapiSenderNumberConfigured`·`kakaoChannelIdConfigured`·`requiredAlimtalkTemplates`) alongside implementation keys · `NotificationChannelReadinessPanel` consumes normalized status · `fetchFacilityNoticeApi` GET `/{id}` wired into DRAFT edit (fresh attachmentUrl) · `formatAccountingBpoSsoHandoffError` surfaces BE 429/allowlist Korean copy.
+- **assignee**: COD (완료) / TSR (FF merge·push) / PLN (carry QA-B116+QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 · API_SPEC §11-10 · carefor 10-4 · SEC-D43
+- **prevention**: API_SPEC field alias changes require FE normalize+panel tests in the same cycle as BE `@JsonProperty` alias land.
+- **reproduce**:
+  1. `npm test -- --run src/config/notificationChannelStatus.test.js src/components/ui/NotificationChannelReadinessPanel.test.jsx src/utils/accountingBpo.test.js src/api/billingGuardianPlatformServices.test.js src/pages/HomeNewsletterLaunchPage.test.jsx src/pages/AccountingBpoPage.test.jsx` → **97/97 PASS**
+- **expected**: FE develop commit · Open 0 · alias-only payloads render readiness panel
+- **actual**: ★ Fixed (unit) — Open 0 · Planned QA-B116+QA-B95 carry
+
+### [TSR] v2/J03 channel-status API_SPEC compatibility aliases — backend develop→test merge EXECUTED (`1f3698d`, QA-20260714-B411) — **Fixed**
+
+- **id**: QA-20260714-B411
+- **priority**: HIGH → cleared (local merge · origin/test push residual Planned QA-B116)
+- **stream**: backend
+- **status**: Fixed (TSR 1566차 — FF merge `bf96c29`→`1f3698d` · pending **1→0** · post-merge **2165/2165 PASS** · live **116/33/0**)
+- **found_at**: 2026-07-14T19:28:25+00:00 (COD landed `@1f3698d` · TSR FF pending)
+- **fixed_at**: 2026-07-14T19:28:25+00:00 (COD commit)
+- **verified_at**: 2026-07-14T19:32:20+00:00 (TSR 1566 — pre-merge related **176/176** · post-merge **2165/2165** · live **116/33/0**)
+- **version**: v2 / J03 — notification channel-status API_SPEC compatibility aliases (`solapiSenderNumberConfigured` · `kakaoChannelIdConfigured` · `requiredAlimtalkTemplates`)
+- **summary**: COD `1f3698d` — `@JsonProperty` aliases on `NotificationChannelStatusResponse` map API_SPEC names to existing DTO fields without breaking consumers · +3 readiness test lock. TSR FF merge 완료 · 2 files (+27). residual = Planned **QA-B116** origin/test **641 BE** + **QA-B95**(bootstrap-disabled operation).
+- **assignee**: COD (완료) / TSR (merge·검증 완료 · origin push Planned) / PLN (QA-B116 origin push · QA-B95 bootstrap enable)
+- **roadmap_ref**: ROADMAP v2 · J03 notification channel readiness · API_SPEC channel-status
+- **prevention**: API_SPEC 필드 rename/alias는 DTO `@JsonProperty` alias + 동일 커밋 readiness 테스트로 lock · WT CLEAN 즉시 `./scripts/git_merge_to_test.sh backend`.
+- **reproduce**:
+  1. `git -C src/backend-test rev-parse --short HEAD` → `1f3698d`
+  2. `mvn test` → **2165/2165 PASS** · live E2E → **116/33/0**
+- **expected**: BE develop→test FF merge · post-merge PASS · live E2E · Open 0
+- **actual**: ★ Fixed — local SYNCED `@1f3698d` · Open 0 · transfer BLOCK(origin push 641 BE) · operation BLOCK
+
+### [TSR] v1.2.1/G2 facility-notice DRAFT PATCH + attachmentUrl — frontend develop→test merge+push EXECUTED (`4d1b01c`, QA-20260714-B410) — **Fixed**
+
+- **id**: QA-20260714-B410
+- **severity**: HIGH → cleared (local+remote merge)
+- **stream**: frontend
+- **status**: Fixed (TSR 1565차 — FF merge `0210aaa`→`4d1b01c` · pending **1→0** · origin/test **PUSHED** · post-merge **2471/2471 PASS** · live **116/33/0**)
+- **found_at**: 2026-07-14T18:52:12+00:00 (COD landed `@4d1b01c` · carefor 10-4 DRAFT PATCH + attachmentUrl)
+- **fixed_at**: 2026-07-14T18:52:12+00:00 (COD commit)
+- **verified_at**: 2026-07-14T19:09:18+00:00 (TSR 1565 — related **89/89** · post-merge **2471/2471** · build **1217** · live **116/33/0** · origin push)
+- **version**: v1.2.1 / G2 — facility-notices DRAFT PATCH edit + attachmentUrl · 6-endpoint FE CRUD complete
+- **summary**: COD `4d1b01c` — HomeNewsletterLaunch DRAFT PATCH update · optional attachmentUrl for RESOURCE notices · services.js facility-notice PATCH wire · related tests expand. TSR FF merge + origin/test push. residual = Planned **QA-B116** origin/test **640 BE** + **QA-B95**.
+- **assignee**: COD (완료) / TSR (merge·검증·push 완료) / PLN (QA-B116 BE origin push · QA-B95 bootstrap enable)
+- **roadmap_ref**: ROADMAP v1.2.1 · G2/id=1-5 · carefor 10-4 facility notice board
+- **prevention**: facility-notices CRUD FE 완성은 PATCH/attachmentUrl를 create·list·publish와 동일 커밋 단위로 묶고, BE 6-endpoint 착지 직후 즉시 wire.
+- **reproduce**:
+  1. `git -C src/frontend-test rev-parse --short HEAD` → `4d1b01c`
+  2. `npm test` → **2471/2471 PASS** · live E2E → **116/33/0**
+- **expected**: FE develop→test FF merge · post-merge PASS · origin/test push · Open 0
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@4d1b01c` · Open 0 · transfer PASS(FE) · operation BLOCK(640 BE)
 
 ### [TSR] v2/SEC-D43 M12 accounting BPO SSO handoff harden — backend develop→test merge EXECUTED (`bf96c29`, QA-20260714-B409) — **Fixed**
 
@@ -10329,13 +10399,13 @@ _(Planned **0건(active)** superseded — QA-20260613-B62 **Fixed @ `e89175e`**;
 
 ## Fixed
 
-### QA-20260714-B410 — G2 facility-notices DRAFT PATCH + attachmentUrl FE wire [COD]
+### QA-20260714-B410 — G2 facility-notices DRAFT PATCH + attachmentUrl FE wire [COD→TSR]
 - **Stream**: frontend
 - **Severity**: HIGH (half-wire CRUD · BE PATCH 미연결)
-- **Status**: Fixed (coder · TSR FF merge 대기)
+- **Status**: Fixed (TSR 1565차 — FF merge+push `@4d1b01c` · related **89/89** · post-merge **2471/2471** · live **116/33/0** reconfirm 38.27s)
 - **Summary**: `updateFacilityNoticeApi` (PATCH `/facility-notices/{id}`) + launch board DRAFT 수정 UX + `attachmentUrl` Field. create/list/publish/delete에 이어 6-endpoint FE wire 완성. PUBLISHED 본문 수정은 UI에서 제공하지 않음(BE contract).
-- **Verify**: `npm test -- --run src/pages/HomeNewsletterLaunchPage.test.jsx src/api/billingGuardianPlatformServices.test.js src/utils/homeNewsletter.test.js` → **76 PASS**.
-- **HEAD**: frontend develop (본 사이클 커밋).
+- **Verify**: related **89/89 PASS**(4 files) · `npm test` **2471/2471** · build **1217** · live **116/33/0** · develop/test/origin/test **ALL SYNCED `@4d1b01c`**.
+- **HEAD**: frontend develop/test/origin/test `@4d1b01c`.
 
 
 ### [TSR] v1.2.1/G2 facility-notices board CRUD FE wire — frontend develop→test merge+push EXECUTED (`d613826`, QA-20260714-B406) — **Fixed**
