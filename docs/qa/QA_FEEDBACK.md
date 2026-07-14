@@ -1,6 +1,6 @@
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-14T19:40:00+00:00 -->
-<!-- coder-sync: COD 2026-07-14T19:40:00+00:00 (frontend) — **★ QA-B412 Fixed** · J03 channel-status API_SPEC alias FE normalize(pairs BE QA-B411) · facility-notice GET detail wire · SEC-D43 SSO 429/allowlist error surface · related 97 PASS · Open **0** · Planned QA-B116+QA-B95 -->
-# coder_1567_frontend: QA-B412 Fixed (J03 alias normalize + facility-notice GET detail + M12 SSO error surface · WT CLEAN pending commit); Open 0; TSR FF merge pending.
+<!-- coder-sync: COD 2026-07-14T19:40:00+00:00 (frontend) — **★ QA-B412 Fixed** · `71839a6` · J03 channel-status API_SPEC alias FE normalize(pairs BE QA-B411 `@1f3698d`) · facility-notice GET detail wire · SEC-D43 SSO 429/allowlist error surface · related 97 PASS · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1567_frontend: QA-B412 Fixed @71839a6 (J03 alias normalize + facility-notice GET detail + M12 SSO error surface · WT CLEAN); Open 0; TSR FF merge pending.
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-14T19:32:20+00:00 -->
 <!-- tester-sync: TSR 1566차 2026-07-14T19:32:20+00:00 (backend) — ROADMAP merged baseline carry `@bf96c29` (`src/backend-test`) · develop HEAD `@1f3698d` WT **CLEAN** · develop pre-merge related **176/176 PASS**(NotificationChannelReadinessServiceTest+MustApiEndpointRoutingTest · 13.1s, 2 suites) · **★ FF merge EXECUTED** `bf96c29`→`1f3698d`(pending **1→0** · **★ QA-B411 Fixed** J03 channel-status API_SPEC compatibility aliases · solapiSenderNumberConfigured/kakaoChannelIdConfigured/requiredAlimtalkTemplates) · post-merge **2165/2165 PASS**(81s, 399 suites) · live E2E **116 PASS/33 SKIP/0 FAIL**(37.63s · bootstrap-disabled) · develop/test **SYNCED `@1f3698d`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **BLOCK**(origin/test push **641 BE**) · cross-stream **SYNCED(BE `@1f3698d` · FE `@4d1b01c`)** · backend@8080 **UP/200** · operation **BLOCK** -->
@@ -2994,7 +2994,7 @@ _(Open **0** active · BE develop/test **SYNCED `@1f3698d`** · FE develop/test/
 - **id**: QA-20260714-B412
 - **priority**: HIGH → Fixed (FE complement to BE QA-B411 / SEC-D43)
 - **stream**: frontend
-- **status**: Fixed (COD — related **97/97 PASS** · WT CLEAN commit pending TSR FF)
+- **status**: Fixed (COD `@71839a6` — related **97/97 PASS** · WT CLEAN · TSR FF pending)
 - **found_at**: 2026-07-14T19:35:00+00:00
 - **fixed_at**: 2026-07-14T19:40:00+00:00
 - **version**: v1.2.1 / J03+G2+M12 — pairs BE `@1f3698d` QA-B411 aliases · deepens carefor 10-4 GET detail · SEC-D43 SSO 429/allowlist FE surface
