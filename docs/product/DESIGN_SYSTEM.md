@@ -1,9 +1,15 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-06-27T03:47:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-14T20:35:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-06-27 (170차 — **US-Q01 Safety module API wire-up 접근성 재점검 + `SafetyRecentDraftsPanel` + FE-16 `.ds-safety-checklist__items` 승격 + §94** — 169차(§93) 이후 coder 신규 커밋 4건(`47a068c` safety routes·`01f32dc` server API wire·`f7061c4` M6 coverage tests·`d1d0adf` e2e seed) 미점검 a11y·FE-16 갭 해소. ① **날짜 `<time dateTime>` 래핑** — 4 페이지 `SafetyRecentDraftsPanel` 날짜 열(checkDate·recordDate·logDate) ISO 평문 → `render` 함수로 래핑(WCAG 1.3.1). ② **`SafetyOperationLogForm`·`InfectionControlLogForm`** — 하드코딩 `id` → `useId()` 마이그레이션(SafetyChecklistForm 패턴 통일). ③ **`.ds-safety-checklist__items`** — FE-16 미정의 클래스 `margin-top` 정의 추가. ④ **§94** 신규. 회귀 없음. 7 files 11 tests PASS·build PASS.)
+> **최종 갱신**: 2026-07-14 (176차 — **US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 + §100** — 175차(§99) 이후 coder 신규 커밋 11건(`7c5767c` M12 BPO sr-only 새 탭·`b7c9fa4`/`61f734d`/`5805d68`/`3bd50ac`/`6706f65`/`fcbc419`/`bb48b6c`/`d613826`/`0210aaa`/`4d1b01c` G2 가정통신문 launch 페이지 전체·`71839a6` J03 채널 상태 API 별칭 정합) 미점검 a11y·FE-16 갭 해소. ① **`.ds-pre` FE-16 해소** — `HomeNewsletterLaunchPage` compose 미리보기 `<pre>` 에 적용되나 CSS 미정의였던 결함을 `--font-family-mono`·`pre-wrap`·표면 승격. ② **3개 표 `<caption>` 추가** — 초안 게시판·기관 공지·이력 표 모두 SR 목적 미전달(WCAG 1.3.1). ③ **2개 폼 `aria-label`** — 작성 미리보기·기관 공지 저장 form landmark(WCAG 1.3.1). ④ **다중 행 버튼 `aria-label`** — 초안 불러오기/삭제·공지 수정/게시/삭제·이력 불러오기/상세 모두 대상 식별자 포함(WCAG 2.4.6). ⑤ **`StatusBadge` 정합** — 기관 공지 `recordStatus` 원시 코드→`FACILITY_NOTICE_STATUS_BADGE` 색+텍스트(WCAG 1.4.1). ⑥ **한국어 라벨** — `item.noticeCategory` 영문 코드→`FACILITY_NOTICE_CATEGORY_LABEL`. ⑦ **`NotificationChannelReadinessPanel`** — 별칭 정합 표준 준수(변경 불요). ⑧ **§100** 신규. 회귀 +5. `npm test`(18/18)·build(9.64s) PASS.)
+> **이전 갱신**: 2026-07-14 (175차 — **US-PAYROLL-M11 퇴직적립·US-ACCOUNTING-M12 BPO 진입 접근성 재점검 + 외부 포털 링크 새 탭 안내 + §99** — 174차(§98) 이후 coder 신규 커밋 6건(`02d185a` `/payroll/retirement-accrual` 퇴직적립·`891231d`/`84b336b`/`2b03b5c`/`b12f259`/`063c269` M12 재무회계 BPO 진입·SSO OTP 어댑터·`/health` readiness·module KPI 카피) 미점검 a11y 갭 해소. ① **`AccountingBpoPage` 외부 포털 링크** — 「공개 진입 URL」`<a target="_blank">`이 새 탭 전환을 알리지 않던 갭을 `ds-sr-only` 「(새 탭)」 병행으로 해소(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ② **`StaffPayrollRetirementAccrualPage`(11-2)** — §98 확립 패턴(`form aria-label`·`Field help`·submit `aria-busy`·`ds-summary-list` div 래퍼·판정 `StatusBadge`) 그대로 착지·신규 갭 0(변경 불요). ③ **§99** 신규. 회귀 +1(링크 접근명 「… (새 탭)」). `npm test`(6/6)·build PASS.)
+> **이전 갱신**: 2026-07-14 (174차 — **US-PAYROLL-M11 급여 4화면 접근성 재점검 + `.ds-summary-list` FE-16 승격 + §98** — 173차(§97) 이후 coder 신규 커밋 6건(`bc9389d`/`10bf059` G17 목욕 청구 ownership·`e18ee5c` 급여대장·`585155c` 간이지급명세서·`9ea151b` 급여기초·`aa86734` 인건비 지출비율) 미점검 a11y·FE-16 갭 해소. G17 2건은 StatusBadge·`<time>`·Link 텍스트 병행으로 변경 불요. ① **`.ds-summary-list`** — payroll 4페이지 요약 `<dl>`이 CSS 미정의여 그리드·배경·forced-colors 경계선이 없던 FE-16 결함을 `refund-fee-preview` 패턴(`div`→`display:contents`)으로 승격. ② **`hint`→`help`** — LaborCostRatio `Field` 미지원 `hint`로 안내문·`aria-describedby`가 끊기던 갭 해소(WCAG 1.3.1·3.3.2). ③ **`MonthInput`** — raw `type=month`/텍스트 연월 → FE-16 날짜 표준. ④ 제출 `aria-busy`·`<form aria-label>`. ⑤ **§98** 신규. 회귀 +a11y 단언. `npm test`·build PASS.)
+> **이전 갱신**: 2026-07-14 (173차 — **이동 명단 「금일 배차 제외」 항목 FE-16 해소 — `.ds-transport-roster-item--excluded` 승격 + §97** — 172차(§96) 이후 coder 신규 커밋 4건(`654b2c6` G16 차량 송영 주소 정규화·`a6255a0` QA-B372 blank 송영 주소 빈 문자열 PATCH·`0c6950a` QA-B95 live schema readiness flag·`95192f5` 지표27 copy 「목욕」→「기능회복훈련」) 미점검 a11y·FE-16 갭 해소. 네 커밋은 로직·카피 변경으로 a11y 표준 준수 확인(변경 불요). ① **`.ds-transport-roster-item--excluded`** — day-status 제외(QA-B366·B368) 항목에 JSX 적용되나 CSS 미정의여서 확정-잠금(`--locked`)과 시각 구분이 없던 FE-16 결함을 `--color-warning-soft` 배경+`--color-warning` 테두리 규칙으로 승격(`--locked` 뒤 배치·후행 우선). ② 색상은 보조 신호이며 의미는 기존 「금일 배차 제외」 텍스트 배지가 전달(WCAG 1.4.1·색상 단독 금지 준수). ③ `.ds-transport-shuttle-sheet`·`.ds-shuttle-grid-page` base 래퍼는 자식이 레이아웃 전담하는 시맨틱 컨테이너로 규칙 불요 확인(FE-16 아님). ④ **§97** 신규. CSS-only(1 규칙)·회귀 없음. `npm run build` PASS.)
+> **이전 갱신**: 2026-07-13 (172차 — **이동 송영표 무효 표 시맨틱 해소(`role="table"`/`columnheader` → `list`/`listitem`) + §96** — 171차(§95) 이후 coder 신규 커밋 5건(`d873894` transport shuttle sheet workflow·`c012ed0` month-boundary fixtures·`e48db91` transport·safety live suite schema gate·`d285899` all-excluded day-status guidance·`bd12f28` day-status excluded clients block) 미점검 a11y 갭 해소. §95-3 coder 메모로 인계했던 항목을 `d873894` 커밋 확정 후 직접 닫음. ① **`TransportShuttleSheetView`·`TransportShuttleScheduleView`** — grid 컨테이너 `role="table"` + 자식 열 `role="columnheader"`(중간 `role="row"` 부재)로 생성되던 **무효 ARIA 표 시맨틱**을 각 열이 실제로는 차량 1대의 독립 세로 카드임을 반영해 `role="list"`+`role="listitem"`로 전환(WCAG 1.3.1·4.1.2). `ShuttleStackBoard` 컨테이너에 누락됐던 `aria-label="차량별 송영 명단"` 보강. ② 전역 `role="table"`/`columnheader` 잔여 0건 확인. ③ **§96** 신규. 레이아웃 클래스 기반이라 시각 영향 0. `npm test`(2 files 5 tests)·린트 0·`npm run build` PASS.)
+> **이전 갱신**: 2026-07-13 (171차 — **US-Q01 Safety 점검 기록 결과(`resultCode`) 열 `StatusBadge` 정합 + §95** — 170차(§94) 이후 coder 신규 커밋 4건(`cf73ae8` 서버 템플릿 카탈로그 wire·`db15b56` 로컬 fallback·`de12f52` 템플릿 `required` 메타 배선·`b10c5bb`/`154ebee` optional flag) 미점검 a11y 갭 해소. ① **`SafetyDailyChecksPage`·`SafetyPeriodicChecksPage`** — `SafetyRecentDraftsPanel` 「결과」열이 `render` 없이 서버 enum 원시 코드(`PASS`/`FAIL`/`NA`/`PARTIAL`)를 노출하던 결함을 `StatusBadge`+`SAFETY_CHECK_RESULT`(적합/부적합/해당 없음/일부 미흡, 색+텍스트)로 전환(WCAG 1.4.1·1.3.1·§1-2·`SafetyChecklistForm` 요약 배지 정합). §94-4 coder 메모 후속 직접 해소. ② **§95** 신규·§95-3에 coder WT-dirty 송영표(`TransportShuttleSheetView`·`TransportShuttleScheduleView`) `role="table"`>`role="columnheader"`(중간 `row` 부재) 무효 시맨틱 인계 메모. 회귀 +2. `npm test`(2 files 6 tests)·build PASS.)
+> **이전 갱신**: 2026-06-27 (170차 — **US-Q01 Safety module API wire-up 접근성 재점검 + `SafetyRecentDraftsPanel` + FE-16 `.ds-safety-checklist__items` 승격 + §94** — 169차(§93) 이후 coder 신규 커밋 4건(`47a068c` safety routes·`01f32dc` server API wire·`f7061c4` M6 coverage tests·`d1d0adf` e2e seed) 미점검 a11y·FE-16 갭 해소. ① **날짜 `<time dateTime>` 래핑** — 4 페이지 `SafetyRecentDraftsPanel` 날짜 열(checkDate·recordDate·logDate) ISO 평문 → `render` 함수로 래핑(WCAG 1.3.1). ② **`SafetyOperationLogForm`·`InfectionControlLogForm`** — 하드코딩 `id` → `useId()` 마이그레이션(SafetyChecklistForm 패턴 통일). ③ **`.ds-safety-checklist__items`** — FE-16 미정의 클래스 `margin-top` 정의 추가. ④ **§94** 신규. 회귀 없음. 7 files 11 tests PASS·build PASS.)
 > **이전 갱신**: 2026-06-26 (169차 — **G16 onePerDayNote parity-rules 접근성 재점검 + US-Q01 Epic Q 위생·안전 UI 셸(6종 sub-form·4 route) 신규 + §92·§93** — 168차(§91) 이후 coder 신규 커밋 3건(`aa0559b`/`e19328a`/`afbbaa7` G16 onePerDayNote parity-rules·PARTIAL boundary test) 미점검 a11y·USER_STORIES US-Q01 `/safety/*` 0 route 갭 해소. ① **`TransportServiceFeePanel`** — `id="service-fee-one-per-day-note"`·`.ds-transport-service-fee__note` 승격·`role="note"`·parity-rules BE catalog 우선 추출(`resolveTransportServiceFeeOnePerDayNoteFromRules`) 표준 준수 확인. ② **US-Q01 UI 셸** — `SafetyContextNav`·`SafetyChecklistForm`·`SafetySubFormPanel`(M6 6-3 6종)·`InfectionControlLogForm`·`SafetyOperationLogForm`·`config/safetyChecks.js`·`.ds-safety-*` CSS. ③ **§8-1** — `/safety/*` 4 route PLANNED 추가. ④ **§92·§93** 신규. 회귀 +12. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-26 (167차 — **G-CLIENT-CONTRACT-BULK-PRINT 일괄 출력·G-NHIS-SCHEDULE-IMPORT 방문일정 가이드 접근성 재점검 + `.ds-nhis-guide__heading` 미정의 클래스 승격 + §90** — 166차(§89) 이후 coder 신규 커밋 `8ceb25c`(US-G08 `VisitNhisImportGuidePanel`·`VisitNhisImportPanel` guidance wire)·`0d0b587`(US-D05 `ClientCarePlanBulkExportPanel`·`CarePlanNotificationPage` embed) 미점검 a11y·FE-16 갭 해소. ① **`.ds-nhis-guide__heading`** — `VisitNhisImportGuidePanel` PLAN/BILLING `h4`가 미정의 클래스로 `.ds-subheading` 토큰(글자크기·세미볼드·여백)을 못 받던 FE-16 회귀를 `components.css` 승격. ② **`VisitNhisImportGuidePanel`** — 외부 포털 링크 `target=_blank`에 sr-only 「(새 탭)」(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ③ **`ClientCarePlanBulkExportPanel`** — 폼 `aria-label`·계획 연도 범위 오류 `Field error`+`aria-invalid`(WCAG 3.3.1)·submit `aria-busy`·성공/오류 `Alert` tone별 live region 표준 준수 확인. ④ **`VisitNhisImportPanel`** — import 결과 표 방문일 `<time dateTime>` 래핑(WCAG 1.3.1·166차 이전 평문 회귀). ⑤ **§90** 신규. 회귀 +3. `npm test`·build PASS.)
 > **이전 갱신**: 2026-06-26 (166차 — **G-STAFF-COMMITTEE-MEETING-LOG 위원회·보호자 회의록(US-R08·케어포 8-6) 페이지 접근성 재점검 + `.ds-page-section`·`.ds-form-grid--inline` 미정의 클래스 승격 + §89** — 165차(§88)·UXD-165(`bee97b9`) 이후 coder 신규 커밋 `0342076`(위원회·보호자 회의록 CRUD 페이지·운영위원회/보호자 회의/복지노사위원회 3종)·`8ed60cb`(parity-rules 빈 카탈로그 숨김) 미점검 a11y·FE-16 갭 해소(QA-B95 live-E2E 진단 4건은 UI 무관·제외). ① **`.ds-page-section`** — `StaffCommitteeMeetingPage` 등 **Staff HR 5개 페이지**가 컨텍스트 네비·조회 카드·목록 섹션 간격에 쓰나 CSS 단일 원천에 없어(`.ds-main`이 gap 미제공) 섹션이 붙던 회귀를 `margin-top: --space-6`·`:first-child` 리셋으로 승격. ② **`.ds-form-grid--inline`** — 조회일·반기·datetime 필터 **5곳**이 미정의로 base `minmax(200px,1fr)` 스트레치 폴백돼 날짜 필드가 전폭으로 늘어나던 회귀를 `flex` 인라인 정렬(`ds-filter-row` 패턴)로 승격. ③ **회의 유형 토글** — 일회성 미정의 `.ds-button-group`을 정의된 `.ds-segmented`(`BillingReportPage` 패턴)로 정합(`role="tab"`·`aria-selected` 불변). ④ **목록 회의일** `<time dateTime>` 래핑(WCAG 1.3.1). ⑤ 폼·표·상태 배지·모달 오류 패턴은 표준 준수(변경 불요). ⑥ **§89** 신규. `StaffCommitteeMeetingPage.test.jsx` 3/3 PASS·`npm run build` PASS.)
@@ -5155,7 +5161,245 @@ ParityRule = {
 ### 94-4. coder 전달 메모
 
 - `SafetyRecentDraftsPanel`의 `onRemove` prop 활성화 시: 삭제 `Button`에 `aria-label={${row.checkDate || row.logDate || row.recordDate} 기록 삭제}` 부여(WCAG 2.4.6 반복 행 액션 패턴).
-- `SafetyDailyChecksPage` · `SafetyPeriodicChecksPage`: `resultCode` 열이 현재 원시 코드 문자열(`PASS`/`PARTIAL`/`FAIL`)을 노출. `StatusBadge` + `SAFETY_CHECK_RESULT` 맵으로 색+텍스트 병행 전환 권고(WCAG 1.4.1 — 색만 의존 금지 · v3.1 후속 P2).
+- ~~`SafetyDailyChecksPage` · `SafetyPeriodicChecksPage`: `resultCode` 열이 현재 원시 코드 문자열(`PASS`/`PARTIAL`/`FAIL`)을 노출. `StatusBadge` + `SAFETY_CHECK_RESULT` 맵으로 색+텍스트 병행 전환 권고(WCAG 1.4.1 — 색만 의존 금지 · v3.1 후속 P2).~~ → **§95(171차)에서 해소.**
+
+---
+
+## §95. US-Q01 Safety 점검 기록 결과(`resultCode`) 열 `StatusBadge` 정합 (171차) [UXD]
+
+> **170차(§94) 이후 coder 신규 커밋 4건**(`cf73ae8` 서버 템플릿 카탈로그 wire · `db15b56` 로컬 fallback 노출 · `de12f52` 서버 템플릿 `required` 메타데이터를 체크리스트 폼에 배선 · `b10c5bb`/`154ebee` optional 템플릿 flag) 미점검 a11y 갭 해소. §94-4 coder 메모로 남겼던 후속 항목을 직접 닫음.
+
+### 95-1. 접근성 갭 해소 — 원시 enum 코드 노출 제거(WCAG 1.4.1·1.3.1)
+
+`SafetyDailyChecksPage`·`SafetyPeriodicChecksPage`의 `SafetyRecentDraftsPanel` **「결과」열**이 `render` 함수 없이 `resultCode`를 그대로 출력해, 사용자에게 서버 enum 원시 코드(`PASS`/`FAIL`/`NA`/`PARTIAL`)가 그대로 노출됐다. 이는
+
+- **① 원시 코드 노출(WCAG 1.3.1·명료성)** — 한국어 라벨(`적합`/`부적합`/`해당 없음`/`일부 미흡`)이 아닌 내부 코드를 표시,
+- **② 컴포넌트 내 불일치** — 같은 `SafetyChecklistForm`의 점검 결과 **요약 배지**는 이미 `StatusBadge status={resultCode} map={SAFETY_CHECK_RESULT}`(색+텍스트)로 렌더하는데 기록 표만 raw 텍스트,
+- **③ 코드베이스 상태 표준(§1-2) 위반** — 앱 전역의 상태 컬럼은 `StatusBadge`(색+텍스트 병행)로 통일.
+
+두 페이지의 「결과」 column 정의에 `render`를 추가해 `SAFETY_CHECK_RESULT` 맵 기반 `StatusBadge`로 전환(값 없으면 `—`). `StatusBadge`는 매핑되지 않은 코드도 `tone=neutral` 배지로 안전하게 폴백하므로 미지 코드 회귀 없음.
+
+```jsx
+{
+  key: "resultCode",
+  label: "결과",
+  render: (row) =>
+    row.resultCode ? (
+      <StatusBadge status={row.resultCode} map={SAFETY_CHECK_RESULT} />
+    ) : "—"
+}
+```
+
+`SAFETY_CHECK_RESULT`(`config/safetyChecks.js`) 매핑: `PASS→적합(success)` · `FAIL→부적합(danger)` · `NA→해당 없음(neutral)` · `PARTIAL→일부 미흡(warning)`.
+
+### 95-2. 범위 준수
+
+- `SafetyChecklistForm`·`SafetySubFormPanel`·`InfectionControlLogForm`·`useSafetyCheckTemplateCatalog`·safety 페이지 fallback `Alert`(`role=status`)·`required` 메타 배선(`(필수)` 라벨·`aria-invalid`·`aria-describedby`)은 표준 준수 확인 — 변경 불요.
+- coder WT-dirty 이동(transport) 송영표 파일군(`TransportShuttleSheetView`·`TransportShuttleScheduleView`·`TransportShuttleSheetPage` 등 미커밋)은 coder commit→push 영역이라 **미수정**(§47 규율). 단, 검토 중 발견한 a11y 이슈는 §95-3 coder 메모로 인계.
+
+### 95-3. coder 전달 메모
+
+- ~~**`TransportShuttleSheetView`·`TransportShuttleScheduleView`(WT-dirty·미커밋)** — grid 컨테이너가 `role="table"` 이고 자식 열이 `role="columnheader"` 인데 **중간 `role="row"` 가 없다**. ARIA `table` 은 `row`(또는 `rowgroup`)만 소유할 수 있고 `columnheader` 는 `row` 에 소속돼야 하므로 현재 구조는 **유효하지 않은 표 시맨틱**(스크린리더가 표를 「비어 있음」으로 읽거나 열 헤더 연결 실패). DOM 이 열-우선(각 열이 독립 세로 카드·탑승자 리스트)이라 단일 표로 매핑 불가 — **`role="list"` + 각 열 `role="listitem"`**(또는 순수 `<ul>/<li>` + 각 열 heading)로 전환 권고. 커밋 후 UXD 재점검 예정.~~ → **§96(172차)에서 해소.** coder `d873894`(`feat(v1.2.1/QA-B360): add transport shuttle sheet workflow…`) 커밋으로 확정된 뒤 권고안(`role="list"`/`role="listitem"`)대로 직접 전환 완료.
+
+### 95-4. 검증
+
+- `SafetyDailyChecksPage.test.jsx` 3(+badge 단언) · `SafetyPeriodicChecksPage.test.jsx` 4(+localized badge 렌더 신규) — **2 files 6 tests PASS**. `npm run build` PASS. 회귀 +2(원시 코드 미노출·한국어 라벨 노출 단언).
+
+---
+
+## §96. 이동(transport) 송영표 무효 표 시맨틱 해소 — `role="list"`/`role="listitem"` 전환 (172차) [UXD]
+
+> **171차(§95) 이후 coder 신규 커밋 5건**(`d873894` transport shuttle sheet workflow · `c012ed0` month-boundary fixtures · `e48db91` transport·safety live suites schema gate · `d285899` all-excluded day-status guidance · `bd12f28` day-status excluded clients block) 미점검 a11y 갭 해소. §95-3 coder 메모로 남겼던 송영표 무효 표 시맨틱을 커밋 확정 후 직접 닫음.
+
+### 96-1. 접근성 갭 해소 — 무효 ARIA 표 시맨틱 제거(WCAG 1.3.1·4.1.2)
+
+`d873894` 로 확정된 두 송영표 뷰가 grid 컨테이너에 `role="table"`, 각 차량 열에 `role="columnheader"` 를 직접 부여했다. ARIA 명세상 `table` 은 `row`/`rowgroup` 만 자식으로 가질 수 있고 `columnheader` 는 반드시 `row` 에 소속돼야 하는데 **중간 `role="row"` 가 없어** 유효하지 않은 접근성 트리가 생성됐다(스크린리더가 표를 「비어 있음」으로 읽거나 열 헤더 매핑 실패).
+
+또한 각 열은 실제로는 표의 **헤더 셀**이 아니라 차량 1대의 **독립 세로 카드**(차량명 배지·출발 라벨·탑승자 `<ol>/<ul>`·루트 링크)이므로 `columnheader` 시맨틱 자체가 부정확했다. DOM 이 열-우선 카드 나열이라 단일 표로 매핑할 수 없어, §95-3 권고대로 **목록 시맨틱**으로 전환했다.
+
+| 파일 | 이전 | 이후 |
+| --- | --- | --- |
+| `TransportShuttleSheetView.jsx` (`.ds-transport-shuttle-sheet__grid`) | `role="table"` | `role="list"` (`aria-label={title}` 유지) |
+| ↳ 각 차량 열 `<article>` | `role="columnheader"` | `role="listitem"` |
+| `TransportShuttleScheduleView.jsx` (`ShuttleStackBoard` `.ds-shuttle-stack`) | `role="table"`(무 `aria-label`) | `role="list"` + `aria-label="차량별 송영 명단"` |
+| ↳ 각 차량 열 `<div>` | `role="columnheader"` | `role="listitem"` |
+
+효과: 스크린리더가 「목록, N개 항목」으로 차량 수를 안내하고 각 열은 `aria-label`(예: `1호차 08:30`, `1호차 송영`)을 가진 목록 항목으로 탐색된다. `ShuttleStackBoard` 는 기존에 컨테이너 `aria-label` 이 없어 목록 이름을 추가 보강했다.
+
+### 96-2. 범위 준수
+
+- 레이아웃은 전부 클래스 기반 CSS(`.ds-transport-shuttle-sheet__grid`·`.ds-shuttle-stack`)라 role 속성 변경이 **시각 표현에 영향 없음**(속성 선택자 `[role="table"]` 미사용 확인). 열 내부의 `<time dateTime>`·`StatusBadge`·헤딩·리스트 시맨틱은 이미 표준 준수 — 변경 불요.
+- 코드베이스 전역 `role="table"`/`role="columnheader"` 잔여 0건 확인(두 뷰가 유일 사용처였음).
+
+### 96-3. 검증
+
+- `TransportShuttleSheetView.test.jsx` · `TransportShuttleScheduleView.test.jsx` — **2 files 5 tests PASS**(`npm test` locked 경유·기존 role 단언 없어 회귀 없음). 린트 0. `npm run build` PASS.
+
+---
+
+## §97. 이동 명단 「금일 배차 제외」 항목 FE-16 해소 — `.ds-transport-roster-item--excluded` 승격 (173차) [UXD]
+
+> **172차(§96) 이후 coder 신규 커밋 4건**(`654b2c6` G16 차량 송영 주소 정규화 · `a6255a0` QA-B372 blank 송영 주소 빈 문자열 PATCH · `0c6950a` QA-B95 live schema readiness flag · `95192f5` 지표27 copy 「목욕」→「기능회복훈련」) 미점검 a11y·FE-16 갭 해소. 네 커밋은 로직·카피 변경으로 a11y 표준 준수 확인(변경 불요)했고, 전역 JSX↔CSS 클래스 교차 점검에서 **적용되나 CSS 단일 원천에 미정의된 모디파이어** 1건을 발견·승격했다.
+
+### 97-1. FE-16 갭 — 적용되는 모디파이어가 미정의(day-status 제외)
+
+`d873894`/QA-B366·B368 로 도입된 **금일 배차 제외**(day-status excluded) 상태가 `TransportAddRosterModal`·`TransportRunNewPage` 명단 항목에 `ds-transport-roster-item--excluded` 클래스로 적용되나, `components.css` 에는 형제 모디파이어 `--locked` 만 정의돼 있고 **`--excluded` 규칙이 없어** 제외 항목이 일반 확정-잠금 항목과 시각적으로 동일했다(디자인 의도인 「제외 ≠ 확정」 구분이 미실현).
+
+| 항목 | 상태 | 조치 |
+| --- | --- | --- |
+| `.ds-transport-roster-item` (base) | 정의됨 | — |
+| `.ds-transport-roster-item--locked` | 정의됨(neutral-soft 배경) | — |
+| `.ds-transport-roster-item--excluded` | **JSX 적용·CSS 미정의(FE-16)** | `--color-warning-soft` 배경 + `--color-warning` 테두리 규칙 **승격** |
+
+제외 항목은 항상 `--locked` 도 함께 받으므로 규칙을 `--locked` **뒤에** 두어 배경·테두리를 덮어쓴다(동일 특이도, 후행 우선). 확정-잠금(중립 회색)과 금일 제외(경고 앰버)가 시각적으로 구분된다.
+
+### 97-2. 색상 단독 의존 회피(WCAG 1.4.1)
+
+경고 앰버 강조는 **보조 신호**일 뿐이며, 의미는 기존 「금일 배차 제외」 **텍스트 배지**(`ds-badge--warning`)가 전달한다(§7·rules §7 색상 단독 금지 준수). 색을 인지하지 못해도 배지 텍스트·`disabled` 체크박스로 상태가 완전히 전달된다.
+
+### 97-3. 범위 준수·잔여 점검
+
+- `.ds-transport-shuttle-sheet`·`.ds-shuttle-grid-page` base 래퍼는 자식(`__grid`·`__column` 등)이 레이아웃을 전담하는 **시맨틱 컨테이너**로 직접 규칙 불요 확인(FE-16 아님).
+- CSS-only 변경(1 규칙 추가)·JSX/토큰 무변경. 다크 테마는 `--color-warning-soft`/`--color-warning` 이미 정의(대비 확보).
+
+### 97-4. 검증
+
+- `npm run build` **PASS**(9.30s). FE-16 재교차검증 — `--excluded` 미정의 잔여 0건. CSS-only 변경으로 기존 컴포넌트 테스트 회귀 없음(role/클래스 단언 무영향).
+
+---
+
+## §98. US-PAYROLL-M11 급여 4화면 접근성 재점검 + `.ds-summary-list` FE-16 승격 (174차) [UXD]
+
+> **173차(§97) 이후 coder 신규 커밋 6건**(`bc9389d`·`10bf059` G17 목욕 청구 ownership · `e18ee5c` `/payroll/ledger` · `585155c` `/payroll/reports` · `9ea151b` `/payroll/basis` · `aa86734` `/payroll/labor-cost-ratio`) 미점검 a11y·FE-16 갭 해소. baseline FE `@aa86734`.
+
+### 98-1. FE-16 — `.ds-summary-list` 미정의 승격
+
+급여 미리보기 요약 `<dl>`(4페이지 공용)이 JSX에만 존재하고 `components.css`에 없어 dt/dd 그리드·표면·forced-colors 경계선이 적용되지 않던 회귀를, `.ds-refund-fee-preview`와 동일하게 `> div { display: contents }` + 2열 그리드로 승격.
+
+| 클래스 | 용도 | 조치 |
+| --- | --- | --- |
+| `.ds-summary-list` | 급여/준수 미리보기 요약 dl | **신규 정의** |
+| `.ds-summary-list > div` | dt/dd 쌍 래퍼 | `display: contents` |
+| `@media (forced-colors)` | 경계선 | `ButtonText` outline |
+
+### 98-2. 접근성 정합
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| `Field hint=` (LaborCostRatio) | `Field`는 `help`만 지원 → 안내문·`aria-describedby` 미연결 | `help=`로 교체 (WCAG 1.3.1·3.3.2) |
+| 대상/급여 월 | raw `type=month` 또는 평문 TextInput | **`MonthInput`**(FE-16·64차 날짜 표준) |
+| 미리보기 제출 버튼 | `disabled`만·진행 SR 미전달 | `aria-busy={previewing}` (WCAG 4.1.3) |
+| 미리보기 폼 | landmark 이름 부재 | `<form aria-label="…">` |
+| 판정 배지 | — | 기존 `StatusBadge` 색+텍스트 병행 유지(변경 불요) |
+| G17 bathing panel | ownership/scopeNote 카피 | SR·Link 텍스트 병행 확인(변경 불요) |
+
+### 98-3. 적용 화면
+
+- `StaffPayrollLaborCostRatioPage` · `StaffPayrollLedgerPage` · `StaffPayrollReportsPage` · `StaffPayrollBasisPage`
+- `StaffContextNav` payroll 4링크는 이미 `aria-current` 패턴 준수(변경 불요)
+
+### 98-4. coder 전달 메모
+
+- API payload·검증 유틸(`validateStaffPayroll*Form`) 불변. UI만 정합.
+- 잔여 M11 **11-2 퇴직적립** surface 착지 시 동일하게 `ds-summary-list`·`MonthInput`·`form aria-label`·submit `aria-busy` 재사용.
+- 표는 caption+`scope=col` raw `ds-table` 유지(`Table` 래퍼는 `data-testid` 미전달·이중 wrap이라 미전환).
+
+### 98-5. 검증
+
+- `npm test` payroll 4 files **13/13 PASS** (`StaffPayrollLaborCostRatioPage`·`Ledger`·`Reports`·`Basis`).
+- `npm run build` **PASS**(8.68s).
+
+---
+
+## §99. US-PAYROLL-M11 퇴직적립·US-ACCOUNTING-M12 BPO 진입 접근성 재점검 — 외부 포털 링크 새 탭 안내 (175차) [UXD]
+
+> **174차(§98) 이후 coder 신규 커밋 6건**(`02d185a` `/payroll/retirement-accrual` · `891231d`·`84b336b`·`2b03b5c`·`b12f259`·`063c269` M12 재무회계 BPO 진입 카탈로그·SSO OTP 어댑터·`/health` readiness·module KPI/SSO 블로커 카피) 미점검 a11y·FE-16 갭 해소. baseline FE `@063c269`.
+
+### 99-1. 접근성 정합 — 외부 포털 링크 새 탭 안내(WCAG 3.2.5·G201)
+
+`AccountingBpoPage`(M12 재무회계 외부 BPO 진입)의 **공개 진입 URL** 링크가 `target="_blank"`로 새 창을 여나 **새 탭 전환을 알리지 않던** 갭을, 코드베이스 표준(`TransportKakaoApiStatusPanel`·`VisitNhisImportGuidePanel`·`IntegratedHomeProviderDiscoveryPanel`)과 정합되게 `<span className="ds-sr-only"> (새 탭)</span>` 병행으로 해소. 컨텍스트 전환을 예고받지 못하던 스크린리더 사용자에게 링크 접근명에 「(새 탭)」을 노출.
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| BPO 공개 진입 URL `<a target="_blank">` | 새 탭 전환 미고지 | `ds-sr-only` 「(새 탭)」 병행 (WCAG 3.2.5) |
+| SSO handoff URL | `<code>` 텍스트(링크 아님) | 변경 불요 |
+
+### 99-2. 표준 준수 확인(변경 불요)
+
+- **`AccountingBpoPage`** — 로드 `PageLoading` label·오류 `Alert role="alert"`+재시도 버튼·SSO 상태/자격증명 `StatusBadge`·`role="note"`/`role="status"` Alert 분기·RBAC 차단 안내·`ds-summary-list`(§98 승격 클래스 재사용, flat dt/dd는 grid 직계로 정상 렌더)·`RelatedSurfacesPanel` `aside`/`nav` 라벨 모두 표준 준수.
+- **`StaffPayrollRetirementAccrualPage`**(11-2) — §98 확립 패턴을 그대로 착지: `<form aria-label>`·`Field` render-prop+`help`(`aria-describedby`)·필드 단위 `error`·submit `aria-busy`·`ds-summary-list`(div 래퍼)·판정 `StatusBadge` 색+텍스트·가이드 `Alert role="status"`. 신규 a11y 갭 0.
+
+### 99-3. 적용 화면
+
+- `AccountingBpoPage`(`/billing/accounting/bpo` 계열) — 링크 새 탭 안내 1건 수정.
+- `StaffPayrollRetirementAccrualPage`(`/payroll/retirement-accrual`) — 재점검 결과 변경 불요.
+
+### 99-4. coder 전달 메모
+
+- BPO 진입/SSO handoff·`/health` readiness 로직·payload 불변. UI 접근성만 정합.
+- 향후 신규 외부 포털 링크(`target="_blank"`)는 반드시 `ds-sr-only` 「(새 탭)」 병행(§99 표준).
+
+### 99-5. 검증
+
+- `npm test` `AccountingBpoPage.test.jsx` **6/6 PASS**(링크 접근명 「… (새 탭)」 회귀 단언 +1).
+- `npm run build` **PASS**(9.06s).
+
+---
+
+---
+
+## §100. US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 (176차) [UXD]
+
+> **175차(§99) 이후 coder 신규 커밋 11건**(`7c5767c` M12 BPO sr-only 새 탭 · `b7c9fa4`·`61f734d`·`5805d68`·`3bd50ac`·`6706f65`·`fcbc419`·`bb48b6c`·`d613826`·`0210aaa`·`4d1b01c` G2 가정통신문 launch 페이지 전체·`71839a6` J03 채널 상태 API 별칭 정합) 미점검 a11y·FE-16 갭 해소. baseline FE `@71839a6`.
+
+### 100-1. FE-16 — `.ds-pre` 미정의 승격
+
+`HomeNewsletterLaunchPage`의 compose 미리보기 결과 `<pre className="ds-pre">` 가 JSX 에만 존재하고 `components.css` 에 없어 모노스페이스 폰트·줄 바꿈·표면·forced-colors 경계선이 미적용되던 회귀.
+
+| 클래스 | 용도 | 조치 |
+| --- | --- | --- |
+| `.ds-pre` | 가정통신문 본문 미리보기 `<pre>` 블록 | **신규 정의** — `--font-family-mono`·`pre-wrap`·`break-word`·`ds-summary-list`와 동일 표면(surface-muted + border + radius) |
+| `@media (forced-colors)` | 경계선 | `ButtonText` outline |
+
+### 100-2. 접근성 정합 — `HomeNewsletterLaunchPage`
+
+| 항목 | 문제 | 조치 | WCAG |
+| --- | --- | --- | --- |
+| 초안 게시판 `<table>` | `<caption>` 없음 — SR이 표 목적 미전달 | `<caption className="ds-sr-only">가정통신문 초안 목록</caption>` | 1.3.1 |
+| 기관 공지 게시판 `<table>` | `<caption>` 없음 | `<caption className="ds-sr-only">기관 공지·자료실 게시물 목록</caption>` | 1.3.1 |
+| 발송 이력 `<table>` | `<caption>` 없음 | `<caption className="ds-sr-only">가정통신문 발송 이력 목록</caption>` | 1.3.1 |
+| 작성 미리보기 `<form>` | `aria-label` 없음 — form landmark SR 이름 미전달 | `aria-label="가정통신문 작성 미리보기"` | 1.3.1 |
+| 기관 공지 저장 `<form>` | `aria-label` 없음 | `aria-label="기관 공지·자료실 게시물 저장"` | 1.3.1 |
+| 초안 게시판 「불러오기」/「삭제」 버튼 | 다중 행에서 SR이 대상 초안 미식별 | `aria-label={draft.subject \|\| draft.yearMonth \|\| '초안'} 불러오기/삭제` | 2.4.6 |
+| 기관 공지 「수정」/「게시」/「삭제」 버튼 | 다중 행에서 SR이 대상 공지 미식별 | `aria-label={item.title \|\| '공지'} 수정/게시/삭제` | 2.4.6 |
+| 이력 「작성 폼에 불러오기」/「수급자 상세」 버튼 | 다중 행에서 SR이 대상 이력 미식별 | `aria-label={item.clientName \|\| item.yearMonth \|\| '이력'} …` | 2.4.6 |
+| 기관 공지 `item.recordStatus` 원시 텍스트 | 색 구분 없음·비표준 라벨 | `StatusBadge` + `FACILITY_NOTICE_STATUS_BADGE` (DRAFT→neutral「초안」/ PUBLISHED→success「게시됨」) 색+텍스트 병행 | 1.4.1 |
+| 기관 공지 `item.noticeCategory` 원시 코드 | 「NOTICE」「RESOURCE」 영문 코드 직접 노출 | `FACILITY_NOTICE_CATEGORY_LABEL` 한국어 라벨 변환 (「공지」/「자료」) | — |
+
+### 100-3. 신규 상수 (homeNewsletter.js)
+
+| 상수 | 내용 |
+| --- | --- |
+| `FACILITY_NOTICE_CATEGORY_LABEL` | `{ NOTICE: "공지", RESOURCE: "자료", ALL: "전체" }` |
+| `FACILITY_NOTICE_STATUS_BADGE` | `{ DRAFT: { tone: "neutral", label: "초안" }, PUBLISHED: { tone: "success", label: "게시됨" } }` |
+
+### 100-4. 표준 준수 확인(변경 불요)
+
+- **`NotificationChannelReadinessPanel`** — `71839a6` 에서 `normalizeNotificationChannelStatus` 별칭 정합(`solapiSenderNumberConfigured`↔`solapiSenderIdConfigured`·`kakaoChannelIdConfigured`↔`solapiKakaoPfIdConfigured`·`requiredAlimtalkTemplates`↔`templates`). 기존 `aria-busy`·`role="note"`·`Table caption`·`StatusBadge` 색+텍스트 패턴 표준 준수(변경 불요).
+- **`ClientsContextNav`** — 「가정통신문」 링크 추가(변경 불요). `aria-current` 패턴 준수.
+- **`navConfig.js`** — `/clients/home-newsletter` 경로 추가. 역할 제한(`branch_admin`·`social_worker`·`hq_admin`) 기존 `HOME_NEWSLETTER_VIEW_ROLES` 와 일치(변경 불요).
+- **`AccountingBpoPage`** — `7c5767c` sr-only 「(새 탭)」 §99 표준 준수 확인(변경 불요). `formatAccountingBpoSsoHandoffError` 유틸 추출은 로직 불변.
+
+### 100-5. coder 전달 메모
+
+- `FACILITY_NOTICE_STATUS_BADGE`·`FACILITY_NOTICE_CATEGORY_LABEL` export — 향후 독립형 기관 공지 페이지 분리 시 동일 상수 재사용.
+- 기관 공지 게시판 `recordStatus` 필터(`HOME_NEWSLETTER_NOTICE_STATUSES`) 는 「ALL」·「DRAFT」·「PUBLISHED」 유지 — BE API 파라미터와 동일.
+- `.ds-pre` 는 가정통신문 본문 외 긴 텍스트 미리보기(케어 기록 서술·인쇄 등)에도 재사용 가능.
+
+### 100-6. 검증
+
+- `npm test` `HomeNewsletterLaunchPage.test.jsx` **18/18 PASS** (기존 13 + 신규 a11y 5 — 이력 caption·compose form landmark·공지 StatusBadge·공지 버튼 aria-label·초안 caption).
+- `npm run build` **PASS**(9.64s). FE-16 재교차검증 — `ds-pre` 미정의 잔여 0건.
 
 ---
 
