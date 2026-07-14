@@ -2457,13 +2457,15 @@ form-data:
 
 ## 9-19. 직원 급여 (Payroll) — US-PAYROLL-M11 / 케어포 M11
 
-> **상태**: backend develop — `POST …/ledger-preview`(11-1·11-3) · `POST …/simple-payment-statement-preview`(11-6) · **`GET …/allowance-deduction-catalog`(11-4 급여기초 수당/공제 마스터)** ✅. frontend — `/payroll/ledger`·`/payroll/reports` wire **✅** · `/payroll/basis`(11-4) **📋 PLANNED**. schema migration **0**(카탈로그 정적 seed · persist/월급액 연동 잔여). **잔여 P1**: 11-2 퇴직적립 · 11-5 인건비 지출비율 · 11-1 대장 영속 · 11-4 FE wire.
+> **상태**: backend develop — `POST …/ledger-preview`(11-1·11-3) · `POST …/simple-payment-statement-preview`(11-6) · **`GET …/allowance-deduction-catalog`(11-4)** · **`POST …/labor-cost-ratio-preview`(11-5 인건비 지출비율 60% 준수)** · **`POST …/retirement-accrual-preview`(11-2 퇴직적립금 1/12)** ✅. frontend — `/payroll/ledger`·`/payroll/reports`·`/payroll/basis`·`/payroll/labor-cost-ratio`·**`/payroll/retirement-accrual`** wire **✅**. schema migration **0**(preview 집계 · persist/월급액 연동 잔여). **잔여**: 11-1 대장 영속.
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/api/v1/staff/payroll/allowance-deduction-catalog` | M11 11-4 급여기초 설정(수당/공제) 마스터 카탈로그 | hq_admin, branch_admin, social_worker |
 | POST | `/api/v1/staff/payroll/ledger-preview` | M11 11-1·11-3 월별 급여대장 미리보기 (기본급+수당−공제·출근일수) | hq_admin, branch_admin, social_worker |
 | POST | `/api/v1/staff/payroll/simple-payment-statement-preview` | M11 11-6 간이지급명세서 미리보기 (지급/공제 라인·합계) | hq_admin, branch_admin, social_worker |
+| POST | `/api/v1/staff/payroll/labor-cost-ratio-preview` | M11 11-5 인건비 지출비율 준수 미리보기 (법정 60% 기준) | hq_admin, branch_admin, social_worker |
+| POST | `/api/v1/staff/payroll/retirement-accrual-preview` | M11 11-2 퇴직적립금 미리보기 (적립율 1/12 · 근속 1개월 이상) | hq_admin, branch_admin, social_worker |
 
 **GET `/allowance-deduction-catalog` 응답** (`StaffPayrollAllowanceDeductionCatalogResponse`):
 
@@ -2497,7 +2499,7 @@ form-data:
   "relatedSurfaces": [
     { "storyRef": "US-PAYROLL-M11", "label": "직원 급여대장", "route": "/payroll/ledger", "availability": "AVAILABLE" },
     { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
-    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "PLANNED" }
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "AVAILABLE" }
   ]
 }
 ```
@@ -2541,7 +2543,7 @@ form-data:
     { "storyRef": "US-PAYROLL-M11", "label": "직원 출퇴근", "route": "/staff/attendance", "availability": "AVAILABLE" },
     { "storyRef": "US-PAYROLL-M11", "label": "직원 근로계약 컴플라이언스", "route": "/staff/employment-contracts", "availability": "AVAILABLE" },
     { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
-    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "PLANNED" }
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "AVAILABLE" }
   ]
 }
 ```
@@ -2573,7 +2575,89 @@ form-data:
     { "storyRef": "US-PAYROLL-M11", "label": "직원 출퇴근", "route": "/staff/attendance", "availability": "AVAILABLE" },
     { "storyRef": "US-PAYROLL-M11", "label": "직원 근로계약 컴플라이언스", "route": "/staff/employment-contracts", "availability": "AVAILABLE" },
     { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
-    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "PLANNED" }
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "AVAILABLE" }
+  ]
+}
+```
+
+**POST `/labor-cost-ratio-preview` 요청** (`StaffPayrollLaborCostRatioPreviewRequest`):
+
+```json
+{
+  "yearMonth": "2026-07",
+  "totalLaborCost": 6100000.00,
+  "totalCareRevenue": 10000000.00
+}
+```
+
+- `yearMonth`: `yyyy-MM` (필수)
+- `totalLaborCost`: ≥ 0, 소수 2자리
+- `totalCareRevenue`: ≥ 0.01, 소수 2자리
+
+**POST `/labor-cost-ratio-preview` 응답** (`StaffPayrollLaborCostRatioPreviewResponse`):
+
+```json
+{
+  "yearMonth": "2026-07",
+  "totalLaborCost": 6100000.00,
+  "totalCareRevenue": 10000000.00,
+  "laborCostRatioPercent": 61.00,
+  "statutoryThresholdPercent": 60.00,
+  "complianceGapPercent": 1.00,
+  "complianceMet": true,
+  "riskLevel": "COMPLIANT",
+  "guidance": "법정 직접인건비 지출비율 60% 이상 기준을 충족했습니다.",
+  "documentCode": "M11-5",
+  "surfaceKind": "STAFF_PAYROLL_LABOR_COST_RATIO_PREVIEW",
+  "relatedSurfaces": [
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 급여대장", "route": "/payroll/ledger", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "인건비 지출비율 준수", "route": "/payroll/labor-cost-ratio", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "퇴직적립금 관리", "route": "/payroll/retirement-accrual", "availability": "AVAILABLE" }
+  ]
+}
+```
+
+**POST `/retirement-accrual-preview` 요청** (`StaffPayrollRetirementAccrualPreviewRequest`):
+
+```json
+{
+  "yearMonth": "2026-07",
+  "accrualBasePay": 2400000.00,
+  "priorAccumulatedBalance": 1200000.00,
+  "continuousServiceMonths": 3
+}
+```
+
+- `yearMonth`: `yyyy-MM` (필수)
+- `accrualBasePay`: 적립기준 급여 ≥ 0, 소수 2자리
+- `priorAccumulatedBalance`: 이전 잔여 누적 ≥ 0, 소수 2자리
+- `continuousServiceMonths`: 근속 개월 ≥ 0
+
+**POST `/retirement-accrual-preview` 응답** (`StaffPayrollRetirementAccrualPreviewResponse`):
+
+```json
+{
+  "yearMonth": "2026-07",
+  "accrualBasePay": 2400000.00,
+  "priorAccumulatedBalance": 1200000.00,
+  "continuousServiceMonths": 3,
+  "accrualRateDenominator": 12,
+  "monthlyAccrualAmount": 200000.00,
+  "projectedAccumulatedBalance": 1400000.00,
+  "accrualEligible": true,
+  "eligibilityThresholdMonths": 1,
+  "riskLevel": "ACCRUING",
+  "guidance": "근속 1개월 이상 대상으로 적립기준 급여의 1/12를 당월 퇴직적립금으로 산정했습니다.",
+  "documentCode": "M11-2",
+  "surfaceKind": "STAFF_PAYROLL_RETIREMENT_ACCRUAL_PREVIEW",
+  "relatedSurfaces": [
+    { "storyRef": "US-PAYROLL-M11", "label": "직원 급여대장", "route": "/payroll/ledger", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "간이지급명세서", "route": "/payroll/reports", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "급여기초 설정(수당/공제)", "route": "/payroll/basis", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "인건비 지출비율 준수", "route": "/payroll/labor-cost-ratio", "availability": "AVAILABLE" },
+    { "storyRef": "US-PAYROLL-M11", "label": "퇴직적립금 관리", "route": "/payroll/retirement-accrual", "availability": "AVAILABLE" }
   ]
 }
 ```
@@ -2583,7 +2667,9 @@ form-data:
 - 출근일수는 `staff_work_attendance` 체크인 일수(월 내 중복 날짜는 1일)
 - 수당/공제 = 0 이면 해당 statement line 생략 (기본급 line은 항상 포함)
 - 11-4 카탈로그는 정적 seed(케어포 parity) · 항목별 금액 CRUD·세율 자동계산·영속은 후속
-- 영속(persist)·PDF 출력 잔여
+- 11-5 `laborCostRatioPercent = totalLaborCost / totalCareRevenue * 100` (HALF_UP·소수 2자리) · 법정 기준 `60.00` · `riskLevel` = `COMPLIANT`/`ALERT`
+- 11-2 `monthlyAccrualAmount = accrualBasePay / 12` (HALF_UP·소수 2자리) · 근속 `continuousServiceMonths >= 1` 일 때만 적립 · 미만이면 당월 0·잔여 유지 · `riskLevel` = `ACCRUING`/`INELIGIBLE`
+- 영속(persist)·PDF 출력·11-1 대장 영속 잔여
 
 ---
 
