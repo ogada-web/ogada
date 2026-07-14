@@ -1293,6 +1293,72 @@
 - `dispatchReady=true` 항목만 실제 채널 발송 가능(알림톡/SMS fail-closed 정책 일관성 확보).
 - **BNK-587 closure**: 6/6 `dispatchImplemented=true` · dispatch 응답(`BillingClaimNotifyResponse` 등)에 `ezcareMessageKind` 노출 · FE `notificationChannelStatus.test.js` vitest regression lock.
 
+### 11-12. 가정통신문 launch·authoring·이력 (US-GUARDIAN-NEWSLETTER / G2 id=1-5) — v2 deepen
+
+> **상태**: backend develop — `GET …/launch` · `GET …/authoring` · `POST …/compose-preview` · `GET …/dispatch-history`(+`centerName`·`summary`·**board filters** `yearMonth`/`status`/`q`·**pagination**) · **★★★ carefor 10-4 `facility-notices` board CRUD** · `/api/v1/health` readiness. frontend `/clients/home-newsletter` launch+history+compose · **`board-ui-planned` CLEAR**(서버 10-4 CRUD LIVE).
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/notifications/home-newsletter/launch` | launch catalog · dispatch/authoring readiness | `hq_admin`, `branch_admin`, `social_worker` |
+| GET | `/api/v1/notifications/home-newsletter/authoring` | compose field catalog · email subject skeleton | `hq_admin`, `branch_admin`, `social_worker` |
+| POST | `/api/v1/notifications/home-newsletter/compose-preview` | 제목·본문 초안 미리보기 (**발송 안 함**) | `hq_admin`, `branch_admin`, `social_worker` |
+| GET | `/api/v1/notifications/home-newsletter/dispatch-history` | 지점 범위 발송 이력 (`branchId`·`page`·`size`·`yearMonth`·`status`·`q`) | `hq_admin`, `branch_admin`, `social_worker` |
+| POST | `/api/v1/clients/{clientId}/notifications/home-newsletter` | 월간 가정통신문 이메일 발송 (기존) | `hq_admin`, `branch_admin`, `social_worker` |
+
+**authoring 응답 요약**:
+
+| 필드 | 의미 |
+|------|------|
+| `composeFields[]` | `yearMonth`(required·YYYY-MM)·`summary`(optional·max 500)·`clientName`·`centerName` |
+| `emailSubjectTemplateKo` | `[ogada] 가정통신문` |
+| `authoringAvailability` | `AVAILABLE` (compose catalog+preview live) |
+| `authoringReadinessBlockers` | `[]` (carefor 10-4 facility-notices board CRUD LIVE · `board-ui-planned` CLEARED) |
+
+**compose-preview 요청**: `yearMonth`(필수)·`summary`·`clientName`·`centerName`(미리보기 placeholder). 응답 `subject`/`bodyText`는 live `HOME_NEWSLETTER` 템플릿과 동일 렌더.
+
+**dispatch-history 쿼리**:
+
+| 파라미터 | 의미 |
+|----------|------|
+| `branchId` | HQ 지점 스코프 오버라이드 (optional) |
+| `page` / `size` | 페이지 (기본 0 / 20, size≤100) |
+| `yearMonth` | payload 대상 월 `YYYY-MM` (optional·invalid → 400) |
+| `status` | 발송 상태 (`ALL`/blank = no filter) |
+| `q` | 수급자·센터·요약·clientId 부분검색 (≤100자) |
+
+**dispatch-history `items[]`**:
+
+| 필드 | 의미 |
+|------|------|
+| `id` | notification UUID |
+| `clientId` | payload `clientId` |
+| `yearMonth` | 대상 월 `YYYY-MM` |
+| `clientName` | payload 이용자 표시명 (optional) |
+| `centerName` | payload 센터/지점 표시명 (optional·blank→null) |
+| `summary` | payload 요약 본문 (optional·blank→null) |
+| `channel` | `EMAIL` 등 |
+| `status` | 발송 상태 |
+| `sentAt` / `createdAt` | 발송·생성 시각 |
+
+**health 필드**: `homeNewsletterCatalogAvailable` · `homeNewsletterDispatchReady` · `homeNewsletterDispatchAvailability` · `homeNewsletterAuthoringAvailability` · `homeNewsletterReadinessBlockers[]`
+
+### 11-13. 기관 공지·자료실 (carefor 10-4 / G2 board-ui) — v2
+
+> **상태**: backend develop — Flyway **V192** `facility_notices` · CRUD+publish. frontend develop — launch board CRUD/PATCH/publish/delete + `attachmentUrl` (6-endpoint FE wire).
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/api/v1/notifications/facility-notices` | 게시판 목록 (`branchId`·`category`·`status`·`q`·`page`·`size`) | `hq_admin`, `branch_admin`, `social_worker` |
+| GET | `/api/v1/notifications/facility-notices/{noticeId}` | 단건 조회 | 동일 |
+| POST | `/api/v1/notifications/facility-notices` | 초안 생성 (`NOTICE`\|`RESOURCE`) | 동일 |
+| PATCH | `/api/v1/notifications/facility-notices/{noticeId}` | 초안 수정 | 동일 |
+| POST | `/api/v1/notifications/facility-notices/{noticeId}/publish` | 초안 → 게시 | 동일 |
+| DELETE | `/api/v1/notifications/facility-notices/{noticeId}` | 초안 삭제 (게시본 삭제 불가) | 동일 |
+
+**필드**: `noticeCategory`=`NOTICE`\|`RESOURCE` · `title`≤200 · `bodyText`≤5000 · `attachmentUrl`≤500(optional·자료실 URL) · `recordStatus`=`DRAFT`\|`PUBLISHED` · `publishedAt`.
+
+**목록 필터**: `category`/`status`=`ALL`/blank=no filter · `q`≤100(제목·본문) · page size 기본 20·최대 100.
+
 ---
 
 ## 12. 배차·이동경로 (Transport) — v1.3-A implemented
@@ -2675,11 +2741,12 @@ form-data:
 
 ## 9-20. 재무회계 외부 BPO 진입 (Accounting BPO) — US-ACCOUNTING-M12 / 케어포 M12=sujifine
 
-> **상태**: backend — `GET …/bpo-launch` ✅ · launch readiness fields ✅ · `/api/v1/health` accounting BPO readiness ✅ · frontend — `/accounting` `AccountingBpoPage` ✅ · schema migration **0** · **SSO OTP adapter 잔여**(자격증명 미수집·공개 login만).
+> **상태**: backend — `GET …/bpo-launch` ✅ · **`POST …/bpo-sso-handoff` ✅** · launch readiness fields ✅ · `/api/v1/health` accounting BPO readiness ✅ · frontend — `/accounting` `AccountingBpoPage` ✅ · SSO OTP FE adapter ✅ · schema migration **0**.
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/api/v1/billing/accounting/bpo-launch` | M12 수지파인 BPO 공개 포털 진입 메타데이터 | hq_admin, branch_admin, social_worker |
+| POST | `/api/v1/billing/accounting/bpo-sso-handoff` | 케어포 `open_sujifine` parity — 일회용 `usmusid`+`otp` handoff (비밀번호 미반환) · **SEC-D43** per-actor/org rate limit · portal host allowlist · **HQ/BRANCH only** | hq_admin, branch_admin |
 
 **GET `/bpo-launch` 응답** (`AccountingBpoLaunchResponse`):
 
@@ -2693,12 +2760,12 @@ form-data:
   "portalProductName": "수지파인",
   "portalTitle": "장기요양 재무회계 관리프로그램",
   "helpTextKo": "케어포 M12와 동일하게 수입·지출·결의 등 재무회계는 외부 BPO(수지파인)에서 처리합니다. …",
-  "ssoFollowUpNoteKo": "기관 SSO(OTP) 자동 로그인은 후속 어댑터에서 연동합니다. …",
-  "ssoAvailability": "PLANNED",
+  "ssoFollowUpNoteKo": "기관 SSO(OTP) handoff가 준비되었습니다. …",
+  "ssoAvailability": "AVAILABLE",
   "portalLaunchReady": true,
   "credentialsCollected": false,
   "opensInNewWindow": true,
-  "ssoReadinessBlockers": ["sso-otp-adapter-planned"],
+  "ssoReadinessBlockers": [],
   "relatedSurfaces": [
     { "storyRef": "US-PAYROLL-M11", "label": "직원 급여대장", "route": "/payroll/ledger", "availability": "AVAILABLE" },
     { "storyRef": "US-L01", "label": "본인부담금 청구", "route": "/billing", "availability": "AVAILABLE" },
@@ -2707,14 +2774,38 @@ form-data:
 }
 ```
 
+**POST `/bpo-sso-handoff` 응답** (`AccountingBpoSsoHandoffResponse`):
+
+```json
+{
+  "usmusid": "facility-sujifine-id",
+  "otp": "a1b2c3d4e5f60718",
+  "ssoPortalUrl": "https://www.sujifine.co.kr/carefor_login",
+  "guidanceKo": "수지파인 SSO handoff가 준비되었습니다. 새 창에 비밀번호를 입력하지 마세요.",
+  "handoffReady": true
+}
+```
+
+**env (시크릿 — 하드코딩 금지)**:
+
+| 변수 | 용도 |
+|------|------|
+| `ACCOUNTING_BPO_USMUSID` | 시설 SSO 사용자 id (`ogada.accounting-bpo.usmusid`) |
+| `ACCOUNTING_BPO_OTP_SECRET` | OTP 민트용 HMAC 시크릿 (`ogada.accounting-bpo.otp-secret`) |
+| `ACCOUNTING_BPO_SSO_PORTAL_URL` | 선택 — 기본 `https://www.sujifine.co.kr/carefor_login` · **호스트 allowlist**=`sujifine.co.kr`\|`www.sujifine.co.kr` (https only·SEC-D43) |
+| `ACCOUNTING_BPO_SSO_HANDOFF_ACTOR_RATE_LIMIT_PER_MINUTE` | 선택 — actor handoff throttle 기본 10 (SEC-D43) |
+| `ACCOUNTING_BPO_SSO_HANDOFF_ORG_RATE_LIMIT_PER_MINUTE` | 선택 — org handoff throttle 기본 30 (SEC-D43) |
+
 **semantics**:
 
-- 케어포 `open_sujifine()` → 외부「장기요양 재무회계」parity · in-app 장부 CRUD 없음
-- `portalUrl` 은 public login만 · OTP/자격증명 필드 **0** (`credentialsCollected=false`)
-- `portalLaunchReady=true` · `opensInNewWindow=true` — FE는 새 창 `noopener,noreferrer` 로 공개 portal 오픈
-- `ssoAvailability=PLANNED` · `ssoReadinessBlockers=["sso-otp-adapter-planned"]` 까지 SSO OTP 어댑터 잔여
-- **`GET /api/v1/health`** expose: `accountingBpoCatalogAvailable` · `accountingBpoPortalLaunchReady` · `accountingBpoSsoReady` · `accountingBpoSsoAvailability` · `accountingBpoReadinessBlockers[]` (J03 notification readiness 패턴 parity)
-- M11 payroll relatedSurfaces 에 `/accounting` cross-link **AVAILABLE** (ledger·reports·basis·labor-cost-ratio·retirement-accrual)
+- 케어포 `open_sujifine()` → Ajax handoff 후 form POST `usmusid`+`otp` → `carefor_login` parity · in-app 장부 CRUD 없음
+- `portalUrl` 은 public login · `credentialsCollected=false` (비밀번호/OTP 입력 폼 없음)
+- SSO ready = credentials + **portal allowlist** → `ssoAvailability=AVAILABLE` · blockers `[]`
+- SSO not ready → `ssoAvailability=PLANNED` · blockers `sso-otp-credentials-missing` 및/또는 `sso-portal-url-not-allowlisted` · handoff **422 BUSINESS_RULE**
+- OTP = HMAC-SHA256(`usmusid|⌊epoch/300⌋`, secret) hex 16자 — **로그·DB 저장 금지** · password 필드 **0**
+- **SEC-D43**: handoff **HQ/BRANCH only** (SOCIAL_WORKER는 public `bpo-launch`만) · per-actor/org sliding-window throttle → **429 RATE_LIMITED**
+- **`GET /api/v1/health`** expose: `accountingBpoCatalogAvailable` · `accountingBpoPortalLaunchReady` · `accountingBpoSsoReady` · `accountingBpoSsoAvailability` · `accountingBpoReadinessBlockers[]`
+- M11 payroll relatedSurfaces 에 `/accounting` cross-link **AVAILABLE**
 
 ---
 

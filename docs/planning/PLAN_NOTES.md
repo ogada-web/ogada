@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-14T01:33:00+00:00 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-14T11:24:00Z -->
+<!-- planner-sync: PLN 211차 2026-07-14T11:24 UTC — BNK-720·TSR 1542~1543차 · ★★★ M12 SSO handoff FULL CLOSURE(id=12 0.7·모듈 91.90%)·잔여=ops credentials · ★★★ id=1-5 0→0.5 착지 · ★★ G-ACCOUNTING-IN-APP-LEDGER(v3+) · ★ QA Open 0 · SYNCED(BE@093ac88·FE@063c269) · residual 629 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 208차 2026-07-14T01:33 UTC — BNK-702~706·TSR 1507~1517차 · ★★★ M12=sujifine BPO SSO(BNK-706)·M11 in-app sole P1 · ★★★ G16 shuttle 6-commit CLOSURE(BNK-705) · ★★ 지표27=기능회복훈련(BNK-704) · ★ QA-B344/B373 Fixed · Open 0 · local SYNCED(BE@6e874df·FE@95192f5) · residual origin/test 617 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 207차 2026-07-13T21:45 UTC — BNK-698~701·TSR 1503~1506차 · ★★★ transport day-status 5-stage CLOSURE · ★★ ezCare dashboard 7-bucket vs 15 stage-gap · ★ QA-B352 Fixed+origin/test PUSHED · ★ QA-B344 Open BE pending 29 · merge gate FE cleared · cross-stream BLOCK(BE only) · QA Open 1(active) -->
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-27T12:30:00+00:00 -->
@@ -105,7 +106,55 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-14 (208차 PLN — **자동 기획 동기화** BNK-702~706·TSR 1507~1517차·★★★ M12=sujifine BPO·M11 in-app sole P1·★★★ G16 shuttle CLOSURE·★★ 지표27=기능회복훈련·★ QA-B344/B373 Fixed·Open 0·local SYNCED·operation BLOCK 617 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-14 (211차 PLN — **자동 기획 동기화** BNK-720·TSR 1542~1543차·★★★ M12 SSO handoff FULL CLOSURE(id=12 0.7·모듈 91.90%)·★★★ id=1-5 0→0.5 착지·★★ G-ACCOUNTING-IN-APP-LEDGER(v3+)·★ QA Open 0·SYNCED BE@093ac88/FE@063c269·operation BLOCK 629 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [PLN] QA 피드백 반영 (2026-07-14, 212차 — BNK-721~726·TSR 1544~1557차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | FE `@3bd50ac` / BE `@5d6c007` (cross-stream SYNCED 확인) · residual origin/test **634 BE** | ROADMAP · PLAN_NOTES |
+| **QA-B95 closure (★★★)** | `live-e2e effective operation gate` FULL-STACK 정합 완료 — BE `liveE2eEffectiveOperation*` 필드 노출(`@5d6c007`) · FE `@5805d68`/`@3bd50ac`가 gate honor 처리 · bootstrap-only 오차단 방지 | REQUIREMENTS · ROADMAP · QA_FEEDBACK |
+| **Operational readiness QUAD (★★)** | `/api/v1/health` 4-probe: M12 회계 BPO + J03 알림 + G2 dispatch + G2 authoringAvailability 확인 — 운영 narrative·monitoring 권고 | REQUIREMENTS · ROADMAP |
+| **id=1-5 deepen (★★★)** | 가정통신문 coverage 0.65 유지(launch+history+branch-scope + authoring API/compose-preview landed) · FE `compose preview` wire residual board UI | USER_STORIES · REQUIREMENTS · PLAN_NOTES |
+| **New candidate (★★ BNK-724)** | `G-SMS-7KIND-TEMPLATE-ENUM` v2+ — ezCare SMS 7-kind evidence (접속키/본인부담/일정표/급여제공/직원인권/일정표-직원/급여명세) · pay-per-message economics 검토 | USER_STORIES · REQUIREMENTS |
+| **QA Open → Planned** | Open **0** — 이동 대상 없음 · residual Planned **QA-B116** + **QA-B95 (operation 승격 대기)** | QA_FEEDBACK · ROADMAP · PLAN_NOTES |
+
+**planner actions (212차)**:
+- tester: origin/test push residual **634 BE** (QA-B116)
+- planner: QA-B95 운영 승격 타이밍 협의(ops credentials / post-push)
+- ops: M12 facility credentials rollout runbook 검증(SSO handoff 실운영)
+- product: v2 scope 검토 — 연계기록지(id=1-10)·G-ACCOUNTING-IN-APP-LEDGER go/no-go
+
+### 추가 질문 (자동 기획 동기화 212차)
+1. QA-B95 운영 승격 시점: origin/test **634 BE** push 직후 vs staged(검증 window)? (우선권: 정확성→보안)
+2. M12 credentials rollout: facility별 credential secret naming · tenant 격리 방식(ops 요구 사항)
+3. G-SMS-7KIND 도입 경제성: 메시지 과금·템플릿 관리 정책(ops·finance 검토)
+
+---
+
+### [PLN] QA 피드백 반영 (2026-07-14, 211차 — BNK-720 · TSR 1542~1543차 · QA Open 0 · ★★★ M12 SSO handoff CLOSURE · SYNCED · residual origin/test 629 BE)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`093ac88`** WT **CLEAN** · post-merge **2126/2126 PASS**(391 suites·TSR1542) · FE develop/test/origin/test **`063c269` ALL SYNCED+PUSHED** · post-merge **2438/2438 PASS**(463 files·TSR1543) · live E2E **116/33/0** · origin/test **629 BE + 0 FE** · **131 Route·104 page·V1–V190·BE @Test 2111·FE test 516·모듈 91.90%**(id=11 1.0·id=12 **0.7**·id=1-5 **0.5**) | ROADMAP CURRENT BASELINE 211차 |
+| **QA Open → Planned** | Open **0** — 신규 Open 이동 대상 없음 · residual Planned **QA-B116**(origin/test push **629 BE**) + **QA-B95**(operation 승격) | QA_FEEDBACK · ROADMAP v1 P0 |
+| **BNK-720 ★★★** | **M12 SSO handoff full-stack CLOSURE** — BE `POST /bpo-sso-handoff`(env OTP)·credentials 시 AVAILABLE · id=12 **0.55→0.7** · 모듈 **91.90%** · **잔여 lever = ops credentials only** | ROADMAP v3 · REQUIREMENTS · USER_STORIES · §추가 질문 211 |
+| **BNK-720 ★★★** | **id=1-5 가정통신문 config 0→0.5 착지** @ `063c269` · authoring △ | REQUIREMENTS G-GUARDIAN-NEWSLETTER · US-GUARDIAN-NEWSLETTER |
+| **BNK-720 ★★** | **신규 candidate `G-ACCOUNTING-IN-APP-LEDGER`** v3+「가정」 — 이지케어 in-app 10-leaf · ~50% BPO 병행 → 외부 BPO 정당 · MVP out-of-scope | REQUIREMENTS · USER_STORIES · §추가 질문 211 |
+| **BNK-720 ★★** | **id=1-10 연계기록지** 진성 갭 carry → **US-CLIENT-LINKAGE-RECORD** v2+ | USER_STORIES · ROADMAP v2+ |
+| **QA-B390/B391 Fixed** | TSR1542/1543 FF — M12 SSO handoff BE + KPI/SSO messaging FE · **기능 갭 아님**(이관 규율 6·14) | QA_FEEDBACK Fixed · ROADMAP v1 |
+
+**coder/ops 다음 액션 (211차)**: ① **tester origin/test push 629 BE**(QA-B116) ② **QA-B95 operation 승격** ③ **ops** M12 실환경 facility credentials 등록·실운영 SSO 검증(0.7→1.0) ④ **v2+** 연계기록지(id=1-10) scope ⑤ **P3** 가정통신문 authoring · dashboard expiry · `G-ACCOUNTING-IN-APP-LEDGER` go/no-go.
+
+> **210차→211차 delta**: product text id=12 **0.55→0.7** · 모듈 **89.66%→91.90%** · sole in-app lever **소멸**(잔여=ops) · id=1-5 **0→0.5 land** · 신규 `G-ACCOUNTING-IN-APP-LEDGER` · US-CLIENT-LINKAGE-RECORD 스토리 본문 착지 · QA Open **0 유지**.
+
+### 추가 질문 (자동 기획 동기화 211차)
+1. **M12 실운영 credentials rollout (★★★ BNK-720)**: facility별 sujifine `usmusid`/secret 등록 runbook·환경변수 키 이름·tenant 격리 방식 — ops가 origin/test push(QA-B116) **직후** vs staged pilot?
+2. **`G-ACCOUNTING-IN-APP-LEDGER` go/no-go (★★ BNK-720)**: 이지케어 in-app 10-leaf vs ~50% BPO demand — v3+ 착수 vs **영구 defer**(외부 BPO only)?
+3. **연계기록지(id=1-10) v2+ 범위 (★★)**: 작성 워크플로 only vs 발송 리포트+제공대장까지 MVP? 평가지표30 SLA?
+4. **가정통신문 authoring deepen (★)**: id=1-5 0.5→1.0 — 게시판형 관리 필요 여부 · SMTP 실연동(G2-n)와 묶을지?
+5. **Dashboard expiry / AI 총평 (★ carry)**: G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY·G-AI-NEEDS-ASSESSMENT-SUMMARY — v3 P3 유지 vs defer?
+6. **QA-B95 operation 승격 timing (★)**: origin/test **629 BE** push 직후 vs defer — live E2E bootstrap-disabled carry **116/33/0**.
 
 ### [PLN] QA 피드백 반영 (2026-07-14, 208차 — BNK-702~706 · TSR 1507~1517차 · QA Open 0 · ★ QA-B344/B373 Fixed · local SYNCED · residual origin/test 617 BE)
 
@@ -126,12 +175,62 @@
 > **207차→208차 delta**: BE `@5366944` pending 29 → **`6e874df` local SYNCED** · FE `@bd12f28` → **`95192f5` ALL SYNCED+PUSHED** · **QA-B344/B373 Fixed** · Open **1→0** · origin/test **611→617 BE** · V189→**V190** · BE @Test 2073→**2094** · FE test 506→**507** · **M12 in-app 가정 번복→sujifine BPO** · **G16 shuttle CLOSED** · **지표27 ownership lock**.
 
 ### 추가 질문 (자동 기획 동기화 208차)
-1. **M11 in-app minimum set 착수 범위 (★★★ BNK-706)**: 11-1 급여대장 · 11-3 수당/공제 · 11-6 간이지급명세서 — v3 P1 MVP로 **즉시 착수** vs UX/DBA 설계 사인오프 선행?
-2. **M12 수지파인/BPO 분기 (★★★ BNK-706 · 가정 번복)**: (A) 미추종 · (B) sujifine/유사 BPO 어댑터(SSO·만료 모달) · (C) in-app 최소 — 경쟁 2사 외부화 → **(A)/(B) 권고**. 확정값은?
+1. **M11 in-app minimum set 착수 범위 (★★★ BNK-706)**: 11-1 급여대장 · 11-3 수당/공제 · 11-6 간이지급명세서 — v3 P1 MVP로 **즉시 착수** vs UX/DBA 설계 사인오프 선행? → **✅ M11 CLOSED**(211차)·질문 resolve.
+2. **M12 수지파인/BPO 분기 (★★★ BNK-706 · 가정 번복)**: (A) 미추종 · (B) sujifine/유사 BPO 어댑터(SSO·만료 모달) · (C) in-app 최소 — 경쟁 2사 외부화 → **(A)/(B) 권고**. 확정값은? → **(B) SSO handoff CLOSED 0.7**(211차)·잔여 ops credentials·in-app= `G-ACCOUNTING-IN-APP-LEDGER` v3+.
 3. **Dashboard expiry gap (★★ BNK-700 carry)**: 간호지시서·수급자계약 만료 — v3 P3 in-app 최소 vs defer?
 4. **G-AI-NEEDS-ASSESSMENT-SUMMARY (★ BNK-695 carry)**: P2/P3 차별화 vs 개인정보·정확성 리스크 · security_auditor 공동 검토?
-5. **QA-B95 operation 승격 timing (★)**: origin/test **617 BE** push 직후 vs defer — live E2E bootstrap-disabled carry **116/33/0** · V190 integrity probe 선행 완료.
+5. **QA-B95 operation 승격 timing (★)**: origin/test **617 BE** push 직후 vs defer — live E2E bootstrap-disabled carry **116/33/0** · V190 integrity probe 선행 완료. → carry **629 BE**(211차).
 6. **USER_MANUAL day-status·지표27 copy (★ TWR)**: `TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE` + Bathing panel「평가지표 27≠목욕」footers 반영 여부.
+
+### [COD] G2 facility-notices DRAFT PATCH + attachmentUrl FE wire (2026-07-14)
+
+- **완료 (FE)**: carefor 10-4 board 6-endpoint FE 완성 — `updateFacilityNoticeApi` (PATCH) · DRAFT 「수정」→폼 로드→「초안 수정 저장」 · `attachmentUrl` Field(자료실 URL≤500) · PUBLISHED 본문 수정 UI 차단 유지 · `normalizeHomeNewsletterFacilityNotices` attachmentUrl.
+- **검증**: `HomeNewsletterLaunchPage.test.jsx` + `billingGuardianPlatformServices.test.js` + `homeNewsletter.test.js` — **76 PASS**.
+- **범위 외 / 다음**: 독립 `/facility-notices` SPA route(요청 시) · M12 ops credentials · id=10 SMS 콘솔(v2+) · tester FF merge.
+- **근거**: API_SPEC §11-13 PATCH residual · BNK-730 id=10-4 deepen · half-wire CRUD 금지(rules §2-1).
+
+### [COD] SEC-D43 M12 accounting BPO SSO harden (2026-07-14)
+
+- **완료 (BE)**: SEC-D43 Monitor 3축 착지 — (1) `ACCOUNTING_BPO_SSO_PORTAL_URL` **host allowlist** (`sujifine.co.kr`|`www.sujifine.co.kr`·https only) · (2) **per-actor/org sliding-window rate limit** (`AccountingBpoSsoHandoffRateLimiter` · 기본 10/30 per min · 429 `RATE_LIMITED`) · (3) handoff **`@PreAuthorize` HQ/BRANCH only**(SOCIAL_WORKER는 `GET /bpo-launch` 공개 포털만) · readiness blocker `sso-portal-url-not-allowlisted`.
+- **검증**: `AccountingBpoServiceTest` · `AccountingBpoControllerTest` · `RoleBasedControllerAccessTest$AccountingBpoAccess` · `MustApiEndpointRoutingTest$AccountingBpoRouting` PASS.
+- **API**: API_SPEC §9-20 권한·env·semantics 갱신.
+- **범위 외 / 다음**: 장기 org-scoped facility credential(SEC-D43 잔여) · ops 실환경 credentials(0.7→1.0) · FE SOCIAL_WORKER SSO CTA → public portal fallback 카피(FE stream) · tester FF merge · origin/test push(QA-B116).
+- **근거**: SECURITY_AUDIT SEC-D43 · THREAT_MODEL T-D5/T-E7 · QA Open 0 · BNK-730 residual M12 harden.
+
+### [COD] G2 carefor 10-4 facility notice board CRUD (2026-07-14)
+
+- **완료 (BE)**: US-GUARDIAN-NEWSLETTER residual **`board-ui-planned` CLEAR** — carefor 10-4 기관 공지·자료실 `facility_notices` (V192) + CRUD API `/api/v1/notifications/facility-notices` (list/get/create/patch/publish/delete) · category `NOTICE`/`RESOURCE` · status `DRAFT`→`PUBLISHED` · page/filter · tenant org+branch 스코프 · authoring/launch `authoringReadinessBlockers=[]` · relatedSurfaces에 facility-notices AVAILABLE 추가.
+- **검증**: `FacilityNoticeServiceTest` · home-newsletter authoring/launch · MustApi routing · RoleBased access (관련 스위트).
+- **API**: API_SPEC §11-12·§11-13.
+- **범위 외 / 다음**: FE `/notices` SPA wire · config id=1-5 →1.0 · M12 ops credentials · tester FF merge.
+- **근거**: PLAN_NOTES 「다음 BE = 10-4 notice board API+Flyway」 · BNK-727 P2 candidate · USER_STORIES board residual.
+
+### [COD] G2 session draft board + history pagination/reuse (2026-07-14)
+
+- **완료 (FE)**: US-GUARDIAN-NEWSLETTER board deepen — (1) 발송 이력 **서버 page** 이전/다음 (2) 이력 행 → 작성 폼 재사용 (3) compose-preview 결과를 **세션 초안 게시판**에 저장/불러오기/삭제(인메모리·탭 종료 시 소멸·서버 미영속).
+- **검증**: `HomeNewsletterLaunchPage.test.jsx` + `homeNewsletter.test.js` + coverage config — **36 PASS**.
+- **잔여**: ~~BE `board-ui-planned` = 서버 10-4 기관 공지 CRUD~~ → **BE CLOSED** (본 사이클) · config **0.85→1.0** FE promote 대기.
+- **다음 (FE/planner)**: facility-notices SPA wire · tester FE/BE FF merge.
+
+### [COD] G2 dispatch-history board-style server filters (2026-07-14)
+
+- **완료 (BE)**: `GET …/home-newsletter/dispatch-history` 에 board-style 필터 `yearMonth`·`status`·`q` 서버 반영 (페이지네이션과 정합·`ALL`/blank=no filter · yearMonth `YYYY-MM` 검증 · q≤100) · unfiltered 경로는 기존 org/branch/template index 유지 · API_SPEC §11-12 갱신.
+- **근거**: FE `@6706f65` board-style history controls 는 현재 페이지 client filter 만 — 서버 filter 로 multi-page 정합. residual `board-ui-planned`(초안 CRUD / 10-4 기관 공지) 유지 · config 0.85 FE 착지.
+- **범위 외 / 다음**: FE services가 `yearMonth`/`status`/`q`를 API로 전달 · board CRUD →1.0 · tester FF merge.
+
+### [COD] G2 dispatch-history centerName/summary surface (2026-07-14)
+
+- **완료 (BE)**: `GET …/home-newsletter/dispatch-history` 응답 `items[]`에 payload `centerName`·`summary` 노출 (compose preview 필드와 동일·blank→null) · routing/service @Test 계약 lock · API_SPEC §11-12 갱신.
+- **근거**: FE `@3bd50ac` compose fields(yearMonth·summary·clientName·centerName) ↔ history payload parity · BNK-727 residual deepen · residual `board-ui-planned`/config promote(FE) 유지.
+- **범위 외 / 다음**: ~~FE history table `centerName`/`summary` 컬럼 wire · config 0.65→0.85~~ → **FE `@6706f65` CLOSED** · board CRUD →1.0 · tester FF merge.
+
+### [COD] G2 가정통신문 authoring catalog + compose-preview (2026-07-14)
+
+- **완료 (BE)**: US-GUARDIAN-NEWSLETTER id=1-5 authoring deepen — `GET /api/v1/notifications/home-newsletter/authoring` (composeFields yearMonth/summary · email subject skeleton) · `POST …/compose-preview` (live `HOME_NEWSLETTER` 템플릿 동일 렌더·발송 안 함) · launch/health `authoringAvailability` **PLANNED→AVAILABLE** · residual blocker `board-ui-planned` (게시판형 UI 후속).
+- **검증**: `GuardianHomeNewsletterAuthoringServiceTest` · LaunchService/Health/routing/RBAC 갱신 · `mvn test` 관련 스위트.
+- **API**: API_SPEC §11-12.
+- **범위 외 / 다음**: FE authoring/compose wire · 게시판형 CRUD · QA-B396 FE `branchId` history commit (FE stream) · M12 ops credentials.
+- **근거**: BNK-722 residual lever · memory/decisions.md 「1-5 authoring →1.0」 · USER_STORIES US-GUARDIAN-NEWSLETTER.
 
 ### [COD] M12 accounting BPO readiness deepen (2026-07-14)
 
@@ -7039,6 +7138,27 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 75. **V49 v3 meals/programs + Must billing·attendance 재대조 0건 (2026-06-08, round 75, backend `53a1ffe`)** — Must billing·attendance·NHIS 핵심 제약 7건 SQL `rg` 물리 재확인 — **Must 신규 누락 0건**. **V49** `meal_menus`·`meal_records`·`activity_programs`·`program_participations` 4테이블 신규(API §13·frontend `7ef1083`·`config/meals.js`/`programs.js` enum 정합). agents.yaml `core_entities` `meal_records`·`activity_programs` **V49 충족**. ERD §4-11·§8·DATA_RETENTION §3 갱신. **coder**: `MealService`/`ProgramService`·JPA·`MustApiEndpointRoutingTest` §13·`mvn flyway:migrate` 검증.
 
 ### [DBA] DB 설계 질문
+
+#### #193. G2 가정통신문 발송이력 조회 인덱스 V191 신규 (2026-07-14, round 210, backend `5d6c007`)
+- **배경**: round 209(#192 — `093ac88`) → backend HEAD **`5d6c007`** 5 commit 전진. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`5d6c007`**·branch **develop**·WT CLEAN.
+- **커밋 범위 DDL 대조**: `git diff --name-only 093ac88..HEAD -- src/main/resources/db/migration/` = **0파일** · `… -- '**/*Entity.java'` = **0파일** · `git diff 093ac88..HEAD | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column|@Index|CREATE INDEX'` = **0건**. **그러나** `git diff 093ac88..HEAD -- notification/persistence/NotificationRepository.java` = **신규 파생 쿼리 메서드 1건**.
+- **커밋 분해** (5): `6ab4d67` **feat(v2/G2)** 가정통신문 launch 카탈로그 API · `9254721` **feat(v2/G2)** 발송 이력(dispatch-history) API(신규 Repository 메서드) · `3ea0832` **test(v2/M12)** 회계 BPO SSO handoff 컨트롤러 테스트 · `ac422cc` **feat(v2/G2)** authoring 카탈로그 + compose-preview API · `5d6c007` **fix(v2/QA-B95)** live-e2e effective operation gate. 4건(launch/authoring/compose-preview/M12 test/QA-B95)은 앱·테스트 only(preview·catalog·health probe·SSO 외부 위임 — persist 0건).
+- **신규 쿼리 gap 식별**: `NotificationRepository.findByOrganizationIdAndBranchIdAndTemplateCodeOrderByCreatedAtDesc(organizationId, branchId, templateCode, Pageable)` — `GuardianHomeNewsletterDispatchHistoryService.listDispatchHistory` 가 지점 단위 「가정통신문」 발송 이력을 페이지네이션(기본 20·최대 100)으로 조회. `resolvedBranchId` 는 항상 non-null(활성 지점 미선택 시 `ScopeAccessException`)·`templateCode = NotificationTemplateCodes.HOME_NEWSLETTER` 고정·`created_at DESC` 정렬 + count 2-query.
+- **기존 notifications 인덱스 미커버 대조**: V2 `idx_notifications_org_created (org, created_at DESC)` — branch_id·template_code residual filter(테넌트 전체 스캔) · V46 `idx_notifications_org_recipient_created (org, recipient_user_id, created_at DESC)` — recipient 축(dispatch 이력은 보호자 알림·recipient_user_id NULL 가능) · V58 `idx_notifications_org_template_claim_reminder (org, template_code, (payload->>'claimId'), COALESCE(sent_at,created_at) DESC) WHERE payload ? 'claimId'` — 청구 리마인더 전용 partial(HOME_NEWSLETTER payload 는 claimId 부재·branch_id·created_at 정렬축 불일치).
+- **DBA 신규 V191** — `idx_notifications_org_branch_template_created (organization_id, branch_id, template_code, created_at DESC)`. single-additive `CREATE INDEX` · 신규 컬럼·CHECK·트리거·테이블 0건. V149 attendance/billing Must query index · V183 care-plan-form branch roster 와 동일한 `(org, branch_id, ...)` equality-prefix 정책. general(template_code 포함) 인덱스 — 향후 지점×템플릿 이력 조회 재사용 대비. V2 org-only 인덱스와 중복 아님(보완).
+- **검증 (로컬 PG14 scratch `ogada_dba_scratch_r210`, creds `ogada`/`ogada`)**: V1–V191 **191 migrations contiguous** exit=0(갭·중복 0) · **92 BASE 테이블**(V191 신규 테이블 0) · Must billing·attendance 핵심 제약(`uq_claim_branch_month`·`chk_billing_claims_amount_sum`·`chk_attendance_presence_xor_absence`·`uq_billing_claim_items_claim_client`·`trg_billing_claims_total_reconciliation`) `pg_constraint`/`pg_trigger` 전부 존재 · **EXPLAIN**(dispatch-history 쿼리 shape, `SET enable_seqscan=off`) = **Index Scan using idx_notifications_org_branch_template_created**(3-col Index Cond·Sort 노드 0 → ORDER BY+LIMIT 도 인덱스로 만족).
+- **검증 한계 (rules §14)**: live `ogada` DB 는 본 워크스페이스에서 미도달(scratch DB 로 검증) → live `flyway_schema_history`/EXPLAIN 은 coder/ops 가 배포 시 확인 권장(`flyway_schema_history` 191 success·notifications dispatch-history EXPLAIN).
+- **결론**: **V191 추가**. ERD 헤더 HEAD(`093ac88`→`5d6c007`·V190→V191)·§1 Must 커버리지 heading(round 209→210)·`notifications` 행·round 210 note·PLAN_NOTES #193 갱신. **보류 carry**(전 라운드 동일): V190 P3(`(org,id)` anchor·client×branch sync·`updated_by` NOT NULL)·split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L). **coder 전달**: (1) live `ogada` `mvn flyway:migrate` V190→V191 적용. (2) Entity/Repository 변경 불요(인덱스 only·파생 쿼리 메서드는 기존 Spring Data). (3) M11/M12/G2 나머지 4 commit 은 persist 0건.
+
+#### #192. M11 퇴직적립·M12 회계 BPO·J03/QA-B95 health 앱 only 재검증 — 신규 V191 불요 (2026-07-14, round 209, backend `093ac88`)
+- **배경**: round 208(#미기재 — ERD round 208 note @ `bd06646`) → backend HEAD **`093ac88`** 6 commit 전진. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`093ac88`**·branch **develop**·WT CLEAN·migrations contiguous **V1–V190**(190 files·갭·중복 0).
+- **커밋 범위 DDL 대조**: `git diff --name-only bd06646..093ac88 -- src/main/resources/db/migration/` = **0파일** · `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일** · `git diff bd06646..093ac88 -- 'src/main/**/*.java' 'src/main/resources/db/migration/**' | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column|@Index|CREATE INDEX'` = **0건** · `git diff --name-only bd06646..093ac88 -- 'src/main/**' | rg 'persistence|Entity|Repository'` = **0파일**.
+- **커밋 분해** (6): `ff90532` **feat(v2/M11)** 퇴직적립금 미리보기 API(`staffpayroll/domain` 인메모리 1/12·근속 게이트 산정·persist 0) · `ec7c6cb` **fix(v2/J03)** 알림 채널 readiness → `/api/v1/health`(config/probe 읽기) · `edaa9e9` **feat(v2/M12)** 회계 BPO(수지파인) launch 카탈로그 API(static list) · `54a3e56` **feat(v2/M12)** 회계 BPO readiness → health(probe) · `ac59458` **feat(v2/QA-B95)** transport shuttle readiness 를 V189/V190 로 분리(probe/test) · `093ac88` **feat(v2/M12)** 회계 BPO SSO OTP handoff API(외부 수지파인 포털 위임 — 신규 Entity/Repository/persist 0).
+- **M11/M12 무영속 확인**: M11 급여 도메인은 전부 `staffpayroll/api`(DTO)+`staffpayroll/domain`(서비스·static 카탈로그) — `persistence/`·`@Entity`·`save` 0건. 케어포 8-x 급여대장·간이명세서·인건비비율·퇴직적립금은 기존 `staff_work_attendance`(V169 출퇴근 roster) 행을 **인메모리** 집계·미리보기(저장 없음). M12 회계 BPO 는 케어포 외부 BPO 분기(수지파인 외부 SSO 진입)로 **in-app ERP 미구현 = 의도적 설계**(갭 아님) — catalog·SSO OTP handoff 모두 외부 포털 위임, 신규 테이블 불요.
+- **Repository 메서드 Δ**: `StaffWorkAttendanceRepository` 이번 range Δ=0 (round 208 신규 `findByOrganizationIdAndBranchIdAndUserIdAndWorkDateBetweenAndCheckInAtIsNotNull` 는 V169 `uq_staff_work_attendance_org_branch_user_date`(org,branch,user,work_date) UK equality prefix + range·`idx_staff_work_attendance_org_user_date`(org,user,work_date DESC) 로 backing 유지 — 신규 인덱스 불요).
+- **Must billing·attendance·NHIS 핵심 7건 물리 재확인** (migration SQL `rg`): `uq_claim_branch_month`(V1:129)·`chk_billing_claims_amount_sum`(V6:22)·`chk_attendance_presence_xor_absence`(V11:22)·`trg_billing_claims_total_reconciliation`(V11:81)·`uq_billing_claim_items_claim_client`(V26:18)·`uq_nhis_import_rows_org_id`(V37:37)·`uq_staff_work_attendance_org_branch_user_date`(V169:15) 전부 존재. `core_entities` 11종 전수 충족 유지.
+- **검증 한계 (rules §14)**: 본 워크스페이스에서 live `ogada` DB **미도달**(psql 존재·`ogada` DB unreachable) → live `pg_constraint`/`flyway_schema_history`/EXPLAIN 실측 불가. 결론은 **git diff 실측 + migration SQL 파일 물리 grep**에 근거하며, DDL Δ=0 이므로 round 208 live-DB 결과가 그대로 유효(carry). coder/ops 는 live 배포 시 `flyway_schema_history` 190 success·`staff_work_attendance` 인덱스 EXPLAIN(payroll roster 조회)만 확인 권장.
+- **결론**: **신규 V191 불요**. ERD 헤더 HEAD(`bd06646`→`093ac88`)·§1 round 209 note·Must 커버리지 heading(round 208→209)·PLAN_NOTES #192 갱신. **보류 carry**(전 라운드 동일): V190 P3(`(org,id)` anchor·client×branch sync·`updated_by` NOT NULL)·split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L). **coder 전달**: (1) M11/M12 추가 DDL 0건 — Entity/Repository/persist 불요(전부 인메모리 preview + 외부 BPO 위임). (2) M12 회계 SSO OTP handoff 는 외부 수지파인 포털 위임이므로 ogada DB 스키마 무관(자격증명 미저장 유지). (3) 향후 M12 in-app ERP 전환(외부 BPO → 자체 회계) 결정 시에만 신규 도메인 스키마(수입/지출/전표) 설계 필요 — 현재는 불요.
 
 #### #191. V190 committed + G17/BNK-704 앱 only 재검증 — 신규 V191 불요 (2026-07-14, round 207, backend `6e874df`)
 - **배경**: round 206(#190 — DBA V190 WIP @ `5366944`) → backend HEAD **`6e874df`** 6 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`6e874df`**·branch **develop**·WT CLEAN·migrations contiguous V1–V190(190 files·갭·중복 0).
