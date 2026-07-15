@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-14T20:35:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-15T02:30:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-14 (176차 — **US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 + §100** — 175차(§99) 이후 coder 신규 커밋 11건(`7c5767c` M12 BPO sr-only 새 탭·`b7c9fa4`/`61f734d`/`5805d68`/`3bd50ac`/`6706f65`/`fcbc419`/`bb48b6c`/`d613826`/`0210aaa`/`4d1b01c` G2 가정통신문 launch 페이지 전체·`71839a6` J03 채널 상태 API 별칭 정합) 미점검 a11y·FE-16 갭 해소. ① **`.ds-pre` FE-16 해소** — `HomeNewsletterLaunchPage` compose 미리보기 `<pre>` 에 적용되나 CSS 미정의였던 결함을 `--font-family-mono`·`pre-wrap`·표면 승격. ② **3개 표 `<caption>` 추가** — 초안 게시판·기관 공지·이력 표 모두 SR 목적 미전달(WCAG 1.3.1). ③ **2개 폼 `aria-label`** — 작성 미리보기·기관 공지 저장 form landmark(WCAG 1.3.1). ④ **다중 행 버튼 `aria-label`** — 초안 불러오기/삭제·공지 수정/게시/삭제·이력 불러오기/상세 모두 대상 식별자 포함(WCAG 2.4.6). ⑤ **`StatusBadge` 정합** — 기관 공지 `recordStatus` 원시 코드→`FACILITY_NOTICE_STATUS_BADGE` 색+텍스트(WCAG 1.4.1). ⑥ **한국어 라벨** — `item.noticeCategory` 영문 코드→`FACILITY_NOTICE_CATEGORY_LABEL`. ⑦ **`NotificationChannelReadinessPanel`** — 별칭 정합 표준 준수(변경 불요). ⑧ **§100** 신규. 회귀 +5. `npm test`(18/18)·build(9.64s) PASS.)
+> **최종 갱신**: 2026-07-15 (177차 — **US-J03 quiet-hours·G2 기관 공지 상세/복제 접근성 재점검 + ClientsContextNav hash aria-current + §101** — 176차(§100) 이후 coder 신규 커밋 7건(`23f9e0d`/`387419d`/`d4e1e68`/`5b3075f`/`200515b` G2 상세·복제·카테고리·`fb6ea17`/`655aaa7` J03 quiet-hours non-emergency readiness) 미점검 a11y 갭 해소. ① **타임스탬프 `<time dateTime>`** — 초안·기관 공지 표·상세 게시 시각·발송 이력 평문 라벨을 `HomeNewsletterTimestamp`+`resolveHomeNewsletterTimestampParts` ISO 래핑(WCAG 1.3.1). ② **상세 「초안으로 복제」 `aria-label`** — 제목 포함(WCAG 2.4.6·목록 행 패턴 정합). ③ **`NotificationChannelReadinessPanel` quiet-hours** — `tone=neutral`→`warning`(assertive `role=alert`·G2 launch warning 정합). ④ **`ClientsContextNav` hash deep-link** — `#facility-notices`와 본 경로 aria-current 이중 활성 해소. ⑤ **§101** 신규. `npm test`·build PASS.)
+> **이전 갱신**: 2026-07-14 (176차 — **US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 + §100** — 175차(§99) 이후 coder 신규 커밋 11건(`7c5767c` M12 BPO sr-only 새 탭·`b7c9fa4`/`61f734d`/`5805d68`/`3bd50ac`/`6706f65`/`fcbc419`/`bb48b6c`/`d613826`/`0210aaa`/`4d1b01c` G2 가정통신문 launch 페이지 전체·`71839a6` J03 채널 상태 API 별칭 정합) 미점검 a11y·FE-16 갭 해소. ① **`.ds-pre` FE-16 해소** — `HomeNewsletterLaunchPage` compose 미리보기 `<pre>` 에 적용되나 CSS 미정의였던 결함을 `--font-family-mono`·`pre-wrap`·표면 승격. ② **3개 표 `<caption>` 추가** — 초안 게시판·기관 공지·이력 표 모두 SR 목적 미전달(WCAG 1.3.1). ③ **2개 폼 `aria-label`** — 작성 미리보기·기관 공지 저장 form landmark(WCAG 1.3.1). ④ **다중 행 버튼 `aria-label`** — 초안 불러오기/삭제·공지 수정/게시/삭제·이력 불러오기/상세 모두 대상 식별자 포함(WCAG 2.4.6). ⑤ **`StatusBadge` 정합** — 기관 공지 `recordStatus` 원시 코드→`FACILITY_NOTICE_STATUS_BADGE` 색+텍스트(WCAG 1.4.1). ⑥ **한국어 라벨** — `item.noticeCategory` 영문 코드→`FACILITY_NOTICE_CATEGORY_LABEL`. ⑦ **`NotificationChannelReadinessPanel`** — 별칭 정합 표준 준수(변경 불요). ⑧ **§100** 신규. 회귀 +5. `npm test`(18/18)·build(9.64s) PASS.)
 > **이전 갱신**: 2026-07-14 (175차 — **US-PAYROLL-M11 퇴직적립·US-ACCOUNTING-M12 BPO 진입 접근성 재점검 + 외부 포털 링크 새 탭 안내 + §99** — 174차(§98) 이후 coder 신규 커밋 6건(`02d185a` `/payroll/retirement-accrual` 퇴직적립·`891231d`/`84b336b`/`2b03b5c`/`b12f259`/`063c269` M12 재무회계 BPO 진입·SSO OTP 어댑터·`/health` readiness·module KPI 카피) 미점검 a11y 갭 해소. ① **`AccountingBpoPage` 외부 포털 링크** — 「공개 진입 URL」`<a target="_blank">`이 새 탭 전환을 알리지 않던 갭을 `ds-sr-only` 「(새 탭)」 병행으로 해소(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ② **`StaffPayrollRetirementAccrualPage`(11-2)** — §98 확립 패턴(`form aria-label`·`Field help`·submit `aria-busy`·`ds-summary-list` div 래퍼·판정 `StatusBadge`) 그대로 착지·신규 갭 0(변경 불요). ③ **§99** 신규. 회귀 +1(링크 접근명 「… (새 탭)」). `npm test`(6/6)·build PASS.)
 > **이전 갱신**: 2026-07-14 (174차 — **US-PAYROLL-M11 급여 4화면 접근성 재점검 + `.ds-summary-list` FE-16 승격 + §98** — 173차(§97) 이후 coder 신규 커밋 6건(`bc9389d`/`10bf059` G17 목욕 청구 ownership·`e18ee5c` 급여대장·`585155c` 간이지급명세서·`9ea151b` 급여기초·`aa86734` 인건비 지출비율) 미점검 a11y·FE-16 갭 해소. G17 2건은 StatusBadge·`<time>`·Link 텍스트 병행으로 변경 불요. ① **`.ds-summary-list`** — payroll 4페이지 요약 `<dl>`이 CSS 미정의여 그리드·배경·forced-colors 경계선이 없던 FE-16 결함을 `refund-fee-preview` 패턴(`div`→`display:contents`)으로 승격. ② **`hint`→`help`** — LaborCostRatio `Field` 미지원 `hint`로 안내문·`aria-describedby`가 끊기던 갭 해소(WCAG 1.3.1·3.3.2). ③ **`MonthInput`** — raw `type=month`/텍스트 연월 → FE-16 날짜 표준. ④ 제출 `aria-busy`·`<form aria-label>`. ⑤ **§98** 신규. 회귀 +a11y 단언. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-14 (173차 — **이동 명단 「금일 배차 제외」 항목 FE-16 해소 — `.ds-transport-roster-item--excluded` 승격 + §97** — 172차(§96) 이후 coder 신규 커밋 4건(`654b2c6` G16 차량 송영 주소 정규화·`a6255a0` QA-B372 blank 송영 주소 빈 문자열 PATCH·`0c6950a` QA-B95 live schema readiness flag·`95192f5` 지표27 copy 「목욕」→「기능회복훈련」) 미점검 a11y·FE-16 갭 해소. 네 커밋은 로직·카피 변경으로 a11y 표준 준수 확인(변경 불요). ① **`.ds-transport-roster-item--excluded`** — day-status 제외(QA-B366·B368) 항목에 JSX 적용되나 CSS 미정의여서 확정-잠금(`--locked`)과 시각 구분이 없던 FE-16 결함을 `--color-warning-soft` 배경+`--color-warning` 테두리 규칙으로 승격(`--locked` 뒤 배치·후행 우선). ② 색상은 보조 신호이며 의미는 기존 「금일 배차 제외」 텍스트 배지가 전달(WCAG 1.4.1·색상 단독 금지 준수). ③ `.ds-transport-shuttle-sheet`·`.ds-shuttle-grid-page` base 래퍼는 자식이 레이아웃 전담하는 시맨틱 컨테이너로 규칙 불요 확인(FE-16 아님). ④ **§97** 신규. CSS-only(1 규칙)·회귀 없음. `npm run build` PASS.)
@@ -5400,6 +5401,61 @@ ParityRule = {
 
 - `npm test` `HomeNewsletterLaunchPage.test.jsx` **18/18 PASS** (기존 13 + 신규 a11y 5 — 이력 caption·compose form landmark·공지 StatusBadge·공지 버튼 aria-label·초안 caption).
 - `npm run build` **PASS**(9.64s). FE-16 재교차검증 — `ds-pre` 미정의 잔여 0건.
+
+## §101. US-J03 quiet-hours·G2 기관 공지 상세/복제 접근성 재점검 + ClientsContextNav hash aria-current (177차) [UXD]
+
+> **176차(§100) 이후 coder 신규 커밋 7건**(`23f9e0d` board-ui-planned residual · `387419d` facility-notice detail · `d4e1e68`/`5b3075f` clone·attachment sanitize · `200515b` editable categories · `fb6ea17`/`655aaa7` J03 quiet-hours non-emergency readiness) 미점검 a11y 갭 해소. baseline FE `@655aaa7`.
+
+### 101-1. 타임스탬프 `<time dateTime>` (WCAG 1.3.1)
+
+| 위치 | 문제 | 조치 |
+| --- | --- | --- |
+| 초안 게시판 「저장 시각」 | `formatHomeNewsletterHistoryTimestamp` 평문 | `HomeNewsletterTimestamp` → `<time dateTime={ISO}>` |
+| 기관 공지 표 「게시 시각」 | 동일 | 동일 |
+| 기관 공지 상세 「게시 …」 | 동일 | 동일 |
+| 발송 이력 「발송 시각」 | 동일 | 동일 |
+
+신규 유틸: `resolveHomeNewsletterTimestampParts(value)` → `{ dateTime, label }` (`formatHomeNewsletterHistoryTimestamp` 는 label 위임).
+
+### 101-2. 상세 「초안으로 복제」 aria-label (WCAG 2.4.6)
+
+| 항목 | 조치 |
+| --- | --- |
+| `facility-notice-detail-clone` | `aria-label={\`\${title \|\| "공지"} 초안으로 복제\`}` — 목록 행 복제 버튼과 동일 패턴 |
+
+### 101-3. J03 quiet-hours Alert tone
+
+| 패널 | Before | After | 근거 |
+| --- | --- | --- | --- |
+| `NotificationChannelReadinessPanel` quiet-hours Banner | `tone=neutral` → `role=status` | `tone=warning` → `role=alert`(assertive) | 비긴급 발송 제한은 즉시 인지해야 함 · G2 launch quiet-hours `tone=warning` 정합 |
+
+비긴급 즉시 발송 `StatusBadge`(가능/제한됨) 색+텍스트 병행은 변경 불요(WCAG 1.4.1).
+
+### 101-4. ClientsContextNav hash deep-link `aria-current` 단일화
+
+| 링크 | Active 조건 |
+| --- | --- |
+| 가정통신문 `/clients/home-newsletter` | pathname 일치 **그리고** hash ≠ `#facility-notices` |
+| 기관 공지·자료실 `…#facility-notices` | pathname 일치 **그리고** hash === `#facility-notices` |
+
+RR `NavLink` pathname-only 매칭으로 두 링크가 동시에 `aria-current="page"`가 되던 결함을 `Link`+`useLocation` 커스텀 `isActive`로 해소(WCAG 1.3.1 · 2.4.4).
+
+### 101-5. 표준 준수 확인(변경 불요)
+
+- 기관 공지 첨부 안전 URL — `target=_blank` + sr-only 「(새 탭)」·비안전 스킴 차단 `role=note`(§100·G201).
+- 필터/저장 form `aria-label`·표 `caption`·StatusBadge·한국어 분류 라벨(§100).
+- editable category Select options(NOTICE/RESOURCE only) — Field+Select 표준.
+
+### 101-6. coder 전달 메모
+
+- **US-V06** 월단위 batch-unconfirm(P2) · **US-H03** 만료 countdown 위젯(P3) — FE 표면 미착수. VisitsPage/`VisitBatchConfirmPanel`·DashboardWidgetGrid 확장 시 §57·§72 a11y 패턴(`aria-busy`·StatCard `role=group`·challenge Modal `form aria-label`) 재사용.
+- **US-CLIENT-LINKAGE-RECORD**(v2+) — UI 셸 0. ClientsContextNav 링크·§8-1 라우트는 planner 화면 ID 확정 후 추가.
+- quiet-hours `role=alert` 는 야간 오발송 방지 운영 UX — 톤을 다시 neutral로 낮추지 말 것.
+
+### 101-7. 검증
+
+- `npm test` — `ClientsContextNav`(3)·`HomeNewsletterLaunchPage`(a11y)·`homeNewsletter`·`NotificationChannelReadinessPanel` **56/56 PASS**.
+- `npm run build` **PASS**(8.88s).
 
 ---
 
