@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-15T06:15:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-15T10:21:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-15 (178차 — **US-V06 batch-unconfirm 접근성·FE-16 + G-LINKAGE-RECORD UX 셸 + J03 SMS readiness 재점검 + §102** — 177차(§101) 이후 coder 신규 커밋 6건(`6b0f2ae` J03 SMS·`6dbdd99` G2 draft/publish timestamps·`a772736` G2 branch scope·`2da7ead` US-V06 batch-unconfirm·`7d9dd70`/`0448efa` QA-B95 harness) 미점검 a11y·누락 화면 갭 해소. ① **`VisitBatchUnconfirmPanel`** — `.ds-visit-batch-unconfirm` FE-16·시작 버튼 `aria-label`(연월+종류)·challenge 만료 `<time dateTime>`·모달 body `aria-busy`. ② **G-LINKAGE-RECORD UX 셸** — `ClientLinkageRecordForm`·`ClientLinkageRecordsReportPanel`·`config/linkageRecords.js`·§8-1 PLANNED 2 route. ③ **J03 SMS** readiness Alert/`StatusBadge` 표준 준수(변경 불요). ④ **§102** 신규. `npm test`·build PASS.)
+> **최종 갱신**: 2026-07-15 (179차 — **G-LINKAGE-RECORD org-wide 발송 리포트 Route·접근성 재점검 + §103** — 178차(§102) 이후 coder 신규 커밋 7건(`d6f7069`/`fae1f34`/`c59da8f` linkage API wire·`9b65529`/`33f59a9`/`9dbdfc5`/`353eb7f` QA-B95) 미점검 a11y·USER_STORIES residual (org-wide `/clients/linkage-records`) 갭 해소. ① **`ClientLinkageRecordsReportPage`** — org-wide `GET /clients/linkage-records`·Field 필터·수급자 링크·ClientsContextNav/SideNav. ② **초안 행 a11y** — 수정/삭제 `aria-label`(유형+기관)·작성일 `<time>`·초안 섹션 `aria-busy`. ③ **ReportPanel** `useId` heading·`linkClients`. ④ **§8-1** PLANNED→AVAILABLE. ⑤ **§103** 신규. `npm test`·build PASS.)
+> **이전 갱신**: 2026-07-15 (178차 — **US-V06 batch-unconfirm 접근성·FE-16 + G-LINKAGE-RECORD UX 셸 + J03 SMS readiness 재점검 + §102** — VisitBatchUnconfirmPanel·G-LINKAGE UX 셸·§102. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-15 (177차 — **US-J03 quiet-hours·G2 기관 공지 상세/복제 접근성 재점검 + ClientsContextNav hash aria-current + §101** — 176차(§100) 이후 coder 신규 커밋 7건(`23f9e0d`/`387419d`/`d4e1e68`/`5b3075f`/`200515b` G2 상세·복제·카테고리·`fb6ea17`/`655aaa7` J03 quiet-hours non-emergency readiness) 미점검 a11y 갭 해소. ① **타임스탬프 `<time dateTime>`** — 초안·기관 공지 표·상세 게시 시각·발송 이력 평문 라벨을 `HomeNewsletterTimestamp`+`resolveHomeNewsletterTimestampParts` ISO 래핑(WCAG 1.3.1). ② **상세 「초안으로 복제」 `aria-label`** — 제목 포함(WCAG 2.4.6·목록 행 패턴 정합). ③ **`NotificationChannelReadinessPanel` quiet-hours** — `tone=neutral`→`warning`(assertive `role=alert`·G2 launch warning 정합). ④ **`ClientsContextNav` hash deep-link** — `#facility-notices`와 본 경로 aria-current 이중 활성 해소. ⑤ **§101** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-14 (176차 — **US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 + §100** — `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-14 (175차 — **US-PAYROLL-M11 퇴직적립·US-ACCOUNTING-M12 BPO 진입 접근성 재점검 + 외부 포털 링크 새 탭 안내 + §99** — 174차(§98) 이후 coder 신규 커밋 6건(`02d185a` `/payroll/retirement-accrual` 퇴직적립·`891231d`/`84b336b`/`2b03b5c`/`b12f259`/`063c269` M12 재무회계 BPO 진입·SSO OTP 어댑터·`/health` readiness·module KPI 카피) 미점검 a11y 갭 해소. ① **`AccountingBpoPage` 외부 포털 링크** — 「공개 진입 URL」`<a target="_blank">`이 새 탭 전환을 알리지 않던 갭을 `ds-sr-only` 「(새 탭)」 병행으로 해소(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ② **`StaffPayrollRetirementAccrualPage`(11-2)** — §98 확립 패턴(`form aria-label`·`Field help`·submit `aria-busy`·`ds-summary-list` div 래퍼·판정 `StatusBadge`) 그대로 착지·신규 갭 0(변경 불요). ③ **§99** 신규. 회귀 +1(링크 접근명 「… (새 탭)」). `npm test`(6/6)·build PASS.)
@@ -1120,8 +1121,8 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/safety/periodic-checks` | `SafetyPeriodicChecksPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-3 · 6종 sub-form |
 | `/safety/infection-control` | `SafetyInfectionControlPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-3-1 |
 | `/safety/operation-log` | `SafetyOperationLogPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-4 |
-| `/clients/:clientId/linkage-records` | `ClientLinkageRecordsPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-CLIENT-LINKAGE-RECORD** G-LINKAGE-RECORD · 작성 |
-| `/clients/linkage-records` | `ClientLinkageRecordsReportPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-CLIENT-LINKAGE-RECORD** G-LINKAGE-RECORD · 발송 리포트 |
+| `/clients/:clientId` *(tab 연계기록지)* | `ClientDetailPage` + `ClientLinkageRecordsPanel` | branch_admin, social_worker, hq_admin | **US-CLIENT-LINKAGE-RECORD** G-LINKAGE-RECORD · 작성·발송 |
+| `/clients/linkage-records` | `ClientLinkageRecordsReportPage` | branch_admin, social_worker, hq_admin | **US-CLIENT-LINKAGE-RECORD** G-LINKAGE-RECORD · org-wide 발송 리포트 |
 | `/staff` | `StaffPage` | branch_admin, hq_admin | **§3-8** (직원 관리, v3) |
 | `/staff/:id` | `StaffDetailPage` | branch_admin, hq_admin | **US-R03** (직원 lifecycle FAQ21825) |
 | `/login` | `LoginPage` | 공개 | US-B01 (`/`는 `RootRedirect`) |
@@ -5508,6 +5509,52 @@ RR `NavLink` pathname-only 매칭으로 두 링크가 동시에 `aria-current="p
 ### 102-5. 검증
 
 - `npm test` — VisitBatchUnconfirmPanel · ClientLinkageRecordForm · ClientLinkageRecordsReportPanel · linkageRecords config.
+- `npm run build`.
+
+---
+
+## §103. G-LINKAGE-RECORD org-wide 발송 리포트 Route·초안 a11y (179차) [UXD]
+
+> **178차(§102) 이후 coder 신규 커밋 7건**(`d6f7069` ClientDetail tab API wire · `fae1f34` draft fold rehydrate · `c59da8f` BE max-length 가드 · `9b65529`/`33f59a9`/`9dbdfc5`/`353eb7f` QA-B95 harness) 미점검 a11y·USER_STORIES residual(org-wide FE Route, BNK-754) 갭 해소. baseline FE `@353eb7f` → UXD-179.
+
+### 103-1. ClientLinkageRecordsReportPage (org-wide)
+
+| 항목 | 내용 |
+| --- | --- |
+| Route | `/clients/linkage-records` (`App.jsx` · `:clientId` 보다 선행 등록) |
+| API | `fetchClientLinkageRecordsReportApi` → `GET /api/v1/clients/linkage-records` |
+| RBAC | hq_admin · branch_admin · social_worker (페이지 가드 · BE PreAuthorize 정합) |
+| 필터 | 상태·연계 유형·검색 `Field`+`form aria-label` · 조회 `aria-busy` |
+| 표 | `ClientLinkageRecordsReportPanel` `linkClients` — `${이름} 상세` 링크 |
+| Nav | `ClientsContextNav` · `navConfig` SideNav 「연계기록지 리포트」 |
+
+### 103-2. ClientDetail 초안 관리 a11y (wire 후 패스)
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| 수정/삭제 버튼 | 동일 접근명 「수정」「삭제」만 | `${유형} ${기관} 초안 수정/삭제` `aria-label` (WCAG 2.4.6) |
+| 작성일 | 평문 부재 | 초안 행 `<time dateTime>` |
+| 로딩 | 초안 카드 busy 미전달 | `section aria-busy` |
+| ReportPanel heading | 고정 `id` | `useId()` |
+| 기관명 | BE 200자 초과 입력 가능 | `maxLength={LINKAGE_TARGET_INSTITUTION_MAX}` |
+
+### 103-3. §8-1 라우트 표
+
+- `/clients/linkage-records` **PLANNED → AVAILABLE**
+- 작성 surface는 전용 Route 대신 **ClientDetail 「연계기록지」 탭**으로 실측 정합(§102 PLANNED `/clients/:clientId/linkage-records` 폐기)
+
+### 103-4. coder 전달 메모
+
+1. **org-wide report** — Route·nav·`apiFetch` 착지. live E2E·API_SPEC org-wide 행 문서화는 TWR.
+2. **ClientDetail 탭 deep-link** (`?tab=linkage` / hash) — 선택 P2 · 현재는 상세 기본 탭 후 수동 전환.
+3. **초안 삭제 confirm Modal** — leave-ledger 패턴 잔여 P3(현 `aria-label`만).
+4. **§216-1 PLN 질문** — UXD는 USER_STORIES residual·BE report API를 근거로 **독립 Report Route 채택**(ClientDetail 리포트만 유지안 기각).
+5. **QA-B95** harness — UI 무관.
+6. **RFID SMS / kind22** — PLN P2 · UX 셸 미착수.
+
+### 103-5. 검증
+
+- `npm test` — ReportPage · ReportPanel · RecordsPanel · services · ClientsContextNav.
 - `npm run build`.
 
 ---
