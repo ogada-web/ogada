@@ -1,10 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-15T02:30:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-15T06:15:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-15 (177차 — **US-J03 quiet-hours·G2 기관 공지 상세/복제 접근성 재점검 + ClientsContextNav hash aria-current + §101** — 176차(§100) 이후 coder 신규 커밋 7건(`23f9e0d`/`387419d`/`d4e1e68`/`5b3075f`/`200515b` G2 상세·복제·카테고리·`fb6ea17`/`655aaa7` J03 quiet-hours non-emergency readiness) 미점검 a11y 갭 해소. ① **타임스탬프 `<time dateTime>`** — 초안·기관 공지 표·상세 게시 시각·발송 이력 평문 라벨을 `HomeNewsletterTimestamp`+`resolveHomeNewsletterTimestampParts` ISO 래핑(WCAG 1.3.1). ② **상세 「초안으로 복제」 `aria-label`** — 제목 포함(WCAG 2.4.6·목록 행 패턴 정합). ③ **`NotificationChannelReadinessPanel` quiet-hours** — `tone=neutral`→`warning`(assertive `role=alert`·G2 launch warning 정합). ④ **`ClientsContextNav` hash deep-link** — `#facility-notices`와 본 경로 aria-current 이중 활성 해소. ⑤ **§101** 신규. `npm test`·build PASS.)
-> **이전 갱신**: 2026-07-14 (176차 — **US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 + §100** — 175차(§99) 이후 coder 신규 커밋 11건(`7c5767c` M12 BPO sr-only 새 탭·`b7c9fa4`/`61f734d`/`5805d68`/`3bd50ac`/`6706f65`/`fcbc419`/`bb48b6c`/`d613826`/`0210aaa`/`4d1b01c` G2 가정통신문 launch 페이지 전체·`71839a6` J03 채널 상태 API 별칭 정합) 미점검 a11y·FE-16 갭 해소. ① **`.ds-pre` FE-16 해소** — `HomeNewsletterLaunchPage` compose 미리보기 `<pre>` 에 적용되나 CSS 미정의였던 결함을 `--font-family-mono`·`pre-wrap`·표면 승격. ② **3개 표 `<caption>` 추가** — 초안 게시판·기관 공지·이력 표 모두 SR 목적 미전달(WCAG 1.3.1). ③ **2개 폼 `aria-label`** — 작성 미리보기·기관 공지 저장 form landmark(WCAG 1.3.1). ④ **다중 행 버튼 `aria-label`** — 초안 불러오기/삭제·공지 수정/게시/삭제·이력 불러오기/상세 모두 대상 식별자 포함(WCAG 2.4.6). ⑤ **`StatusBadge` 정합** — 기관 공지 `recordStatus` 원시 코드→`FACILITY_NOTICE_STATUS_BADGE` 색+텍스트(WCAG 1.4.1). ⑥ **한국어 라벨** — `item.noticeCategory` 영문 코드→`FACILITY_NOTICE_CATEGORY_LABEL`. ⑦ **`NotificationChannelReadinessPanel`** — 별칭 정합 표준 준수(변경 불요). ⑧ **§100** 신규. 회귀 +5. `npm test`(18/18)·build(9.64s) PASS.)
+> **최종 갱신**: 2026-07-15 (178차 — **US-V06 batch-unconfirm 접근성·FE-16 + G-LINKAGE-RECORD UX 셸 + J03 SMS readiness 재점검 + §102** — 177차(§101) 이후 coder 신규 커밋 6건(`6b0f2ae` J03 SMS·`6dbdd99` G2 draft/publish timestamps·`a772736` G2 branch scope·`2da7ead` US-V06 batch-unconfirm·`7d9dd70`/`0448efa` QA-B95 harness) 미점검 a11y·누락 화면 갭 해소. ① **`VisitBatchUnconfirmPanel`** — `.ds-visit-batch-unconfirm` FE-16·시작 버튼 `aria-label`(연월+종류)·challenge 만료 `<time dateTime>`·모달 body `aria-busy`. ② **G-LINKAGE-RECORD UX 셸** — `ClientLinkageRecordForm`·`ClientLinkageRecordsReportPanel`·`config/linkageRecords.js`·§8-1 PLANNED 2 route. ③ **J03 SMS** readiness Alert/`StatusBadge` 표준 준수(변경 불요). ④ **§102** 신규. `npm test`·build PASS.)
+> **이전 갱신**: 2026-07-15 (177차 — **US-J03 quiet-hours·G2 기관 공지 상세/복제 접근성 재점검 + ClientsContextNav hash aria-current + §101** — 176차(§100) 이후 coder 신규 커밋 7건(`23f9e0d`/`387419d`/`d4e1e68`/`5b3075f`/`200515b` G2 상세·복제·카테고리·`fb6ea17`/`655aaa7` J03 quiet-hours non-emergency readiness) 미점검 a11y 갭 해소. ① **타임스탬프 `<time dateTime>`** — 초안·기관 공지 표·상세 게시 시각·발송 이력 평문 라벨을 `HomeNewsletterTimestamp`+`resolveHomeNewsletterTimestampParts` ISO 래핑(WCAG 1.3.1). ② **상세 「초안으로 복제」 `aria-label`** — 제목 포함(WCAG 2.4.6·목록 행 패턴 정합). ③ **`NotificationChannelReadinessPanel` quiet-hours** — `tone=neutral`→`warning`(assertive `role=alert`·G2 launch warning 정합). ④ **`ClientsContextNav` hash deep-link** — `#facility-notices`와 본 경로 aria-current 이중 활성 해소. ⑤ **§101** 신규. `npm test`·build PASS.)
+> **이전 갱신**: 2026-07-14 (176차 — **US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 + §100** — `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-14 (175차 — **US-PAYROLL-M11 퇴직적립·US-ACCOUNTING-M12 BPO 진입 접근성 재점검 + 외부 포털 링크 새 탭 안내 + §99** — 174차(§98) 이후 coder 신규 커밋 6건(`02d185a` `/payroll/retirement-accrual` 퇴직적립·`891231d`/`84b336b`/`2b03b5c`/`b12f259`/`063c269` M12 재무회계 BPO 진입·SSO OTP 어댑터·`/health` readiness·module KPI 카피) 미점검 a11y 갭 해소. ① **`AccountingBpoPage` 외부 포털 링크** — 「공개 진입 URL」`<a target="_blank">`이 새 탭 전환을 알리지 않던 갭을 `ds-sr-only` 「(새 탭)」 병행으로 해소(WCAG 3.2.5·G201·`TransportKakaoApiStatusPanel` 패턴). ② **`StaffPayrollRetirementAccrualPage`(11-2)** — §98 확립 패턴(`form aria-label`·`Field help`·submit `aria-busy`·`ds-summary-list` div 래퍼·판정 `StatusBadge`) 그대로 착지·신규 갭 0(변경 불요). ③ **§99** 신규. 회귀 +1(링크 접근명 「… (새 탭)」). `npm test`(6/6)·build PASS.)
 > **이전 갱신**: 2026-07-14 (174차 — **US-PAYROLL-M11 급여 4화면 접근성 재점검 + `.ds-summary-list` FE-16 승격 + §98** — 173차(§97) 이후 coder 신규 커밋 6건(`bc9389d`/`10bf059` G17 목욕 청구 ownership·`e18ee5c` 급여대장·`585155c` 간이지급명세서·`9ea151b` 급여기초·`aa86734` 인건비 지출비율) 미점검 a11y·FE-16 갭 해소. G17 2건은 StatusBadge·`<time>`·Link 텍스트 병행으로 변경 불요. ① **`.ds-summary-list`** — payroll 4페이지 요약 `<dl>`이 CSS 미정의여 그리드·배경·forced-colors 경계선이 없던 FE-16 결함을 `refund-fee-preview` 패턴(`div`→`display:contents`)으로 승격. ② **`hint`→`help`** — LaborCostRatio `Field` 미지원 `hint`로 안내문·`aria-describedby`가 끊기던 갭 해소(WCAG 1.3.1·3.3.2). ③ **`MonthInput`** — raw `type=month`/텍스트 연월 → FE-16 날짜 표준. ④ 제출 `aria-busy`·`<form aria-label>`. ⑤ **§98** 신규. 회귀 +a11y 단언. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-14 (173차 — **이동 명단 「금일 배차 제외」 항목 FE-16 해소 — `.ds-transport-roster-item--excluded` 승격 + §97** — 172차(§96) 이후 coder 신규 커밋 4건(`654b2c6` G16 차량 송영 주소 정규화·`a6255a0` QA-B372 blank 송영 주소 빈 문자열 PATCH·`0c6950a` QA-B95 live schema readiness flag·`95192f5` 지표27 copy 「목욕」→「기능회복훈련」) 미점검 a11y·FE-16 갭 해소. 네 커밋은 로직·카피 변경으로 a11y 표준 준수 확인(변경 불요). ① **`.ds-transport-roster-item--excluded`** — day-status 제외(QA-B366·B368) 항목에 JSX 적용되나 CSS 미정의여서 확정-잠금(`--locked`)과 시각 구분이 없던 FE-16 결함을 `--color-warning-soft` 배경+`--color-warning` 테두리 규칙으로 승격(`--locked` 뒤 배치·후행 우선). ② 색상은 보조 신호이며 의미는 기존 「금일 배차 제외」 텍스트 배지가 전달(WCAG 1.4.1·색상 단독 금지 준수). ③ `.ds-transport-shuttle-sheet`·`.ds-shuttle-grid-page` base 래퍼는 자식이 레이아웃 전담하는 시맨틱 컨테이너로 규칙 불요 확인(FE-16 아님). ④ **§97** 신규. CSS-only(1 규칙)·회귀 없음. `npm run build` PASS.)
@@ -1119,6 +1120,8 @@ import: `import { Button, Card, Field, Modal, Pagination } from "../components/u
 | `/safety/periodic-checks` | `SafetyPeriodicChecksPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-3 · 6종 sub-form |
 | `/safety/infection-control` | `SafetyInfectionControlPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-3-1 |
 | `/safety/operation-log` | `SafetyOperationLogPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-Q01** M6 6-4 |
+| `/clients/:clientId/linkage-records` | `ClientLinkageRecordsPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-CLIENT-LINKAGE-RECORD** G-LINKAGE-RECORD · 작성 |
+| `/clients/linkage-records` | `ClientLinkageRecordsReportPage` *(PLANNED)* | branch_admin, social_worker, hq_admin | **US-CLIENT-LINKAGE-RECORD** G-LINKAGE-RECORD · 발송 리포트 |
 | `/staff` | `StaffPage` | branch_admin, hq_admin | **§3-8** (직원 관리, v3) |
 | `/staff/:id` | `StaffDetailPage` | branch_admin, hq_admin | **US-R03** (직원 lifecycle FAQ21825) |
 | `/login` | `LoginPage` | 공개 | US-B01 (`/`는 `RootRedirect`) |
@@ -5448,14 +5451,64 @@ RR `NavLink` pathname-only 매칭으로 두 링크가 동시에 `aria-current="p
 
 ### 101-6. coder 전달 메모
 
-- **US-V06** 월단위 batch-unconfirm(P2) · **US-H03** 만료 countdown 위젯(P3) — FE 표면 미착수. VisitsPage/`VisitBatchConfirmPanel`·DashboardWidgetGrid 확장 시 §57·§72 a11y 패턴(`aria-busy`·StatCard `role=group`·challenge Modal `form aria-label`) 재사용.
-- **US-CLIENT-LINKAGE-RECORD**(v2+) — UI 셸 0. ClientsContextNav 링크·§8-1 라우트는 planner 화면 ID 확정 후 추가.
+- **US-V06** 월단위 batch-unconfirm — FE `@2da7ead` 착지 후 **§102**에서 a11y·FE-16 패스 완료.
+- **US-CLIENT-LINKAGE-RECORD** — **§102** UX 셸·§8-1 PLANNED 2 route 추가(페이지·nav wire는 coder).
 - quiet-hours `role=alert` 는 야간 오발송 방지 운영 UX — 톤을 다시 neutral로 낮추지 말 것.
 
 ### 101-7. 검증
 
 - `npm test` — `ClientsContextNav`(3)·`HomeNewsletterLaunchPage`(a11y)·`homeNewsletter`·`NotificationChannelReadinessPanel` **56/56 PASS**.
 - `npm run build` **PASS**(8.88s).
+
+## §102. US-V06 batch-unconfirm 접근성·FE-16 + G-LINKAGE-RECORD UX 셸 (178차) [UXD]
+
+> **177차(§101) 이후 coder 신규 커밋 6건**(`6b0f2ae` J03 SMS dispatch readiness · `6dbdd99` G2 draft/publish timestamps · `a772736` G2 branch scope · `2da7ead` US-V06 batch-unconfirm · `7d9dd70`/`0448efa` QA-B95 harness) 미점검 a11y·누락 화면 갭 해소. baseline FE `@0448efa` → UXD-178 HEAD.
+
+### 102-1. VisitBatchUnconfirmPanel (US-V06)
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| `.ds-visit-batch-unconfirm` | JSX 적용·CSS 미정의 (FE-16) | `components.css` — confirm 패널 패턴(border-top·forced-colors StatCard) |
+| 시작 버튼 | 「일괄 확정취소 시작」만 — 연월/종류 식별 불가 | `aria-label={\`${yearMonth} ${kindLabel} 일괄 확정취소 시작\`}` |
+| challenge 만료 | `toLocaleString` 평문 | `<time dateTime={ISO}>` (WCAG 1.3.1) |
+| 모달 본문 | 로딩/제출 중 busy 미전달 | `__body` 래퍼 `aria-busy` |
+| 오류 Alert | role 미명시 | `role="alert"` |
+
+표준 이미 충족(변경 불요): Modal `form aria-label`·Cascade Checkbox·challenge Field·StatCard `role=group`·submit `aria-busy`+`aria-describedby`.
+
+### 102-2. J03 SMS readiness (`6b0f2ae`) — 변경 불요
+
+| 표면 | 확인 |
+| --- | --- |
+| 라이브 SMS Alert | `tone` success/warning + `role=status` |
+| 비긴급 SMS `StatusBadge` | 가능/제한됨 색+텍스트 |
+| quiet-hours | §101 `tone=warning`·assertive 유지 |
+| kind 22 `STAFF_PAYROLL_STATEMENT` | 카탈로그 라벨만 · 발송 UI 미연동(문서화) |
+
+### 102-3. G-LINKAGE-RECORD UX 셸 (BNK-746 · sole coverage-0)
+
+| 산출물 | 경로 | 역할 |
+| --- | --- | --- |
+| `linkageRecords.js` | `config/` | `LINKAGE_TYPE_*`·`LINKAGE_RECORD_STATUS`·timestamp resolver |
+| `ClientLinkageRecordForm` | `components/ui/` | DRAFT 저장·DISPATCHED 발송 셸 · Field 단위 오류 · submit `aria-busy` |
+| `ClientLinkageRecordsReportPanel` | `components/ui/` | 발송 리포트 Table caption · `<time>` · StatusBadge |
+| `.ds-linkage-*` | `components.css` | 헤더·리포트 표면 · forced-colors |
+| §8-1 | DESIGN_SYSTEM | `/clients/:clientId/linkage-records`·`/clients/linkage-records` **PLANNED** |
+
+`ClientsContextNav` 실링크는 App.jsx 라우트 착지 후 추가(404 방지).
+
+### 102-4. coder 전달 메모
+
+1. **US-V06** — API wire 완료·a11y 패스. VisitsPage 임베드 유지.
+2. **G-LINKAGE-RECORD** — BE Entity/API 후 `ClientLinkageRecordForm`/`ReportPanel`을 페이지에 마운트·`services.js` `apiFetch` wire · ClientsContextNav 「연계기록지」 링크·`navConfig` 추가 · id=1-10 coverage 승격.
+3. **kind 22 급여명세서 SMS** — 카탈로그만 · `StaffNotificationDispatchPanel` 연동은 v2+ residual.
+4. **US-H03** 만료 countdown — P3 carry · DashboardWidgetGrid 확장 시 §57·§72 패턴.
+5. **QA-B95** harness-only — UI 변경 불요.
+
+### 102-5. 검증
+
+- `npm test` — VisitBatchUnconfirmPanel · ClientLinkageRecordForm · ClientLinkageRecordsReportPanel · linkageRecords config.
+- `npm run build`.
 
 ---
 
