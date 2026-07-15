@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T05:48:00Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T10:05:00Z -->
+<!-- planner-sync: PLN 216차 2026-07-15T10:05 UTC — BNK-748~754·TSR 1598~1613 · ★★★ G-LINKAGE FULL CLOSURE · ★★ RFID 평가29 근거 강화(격상 0) · ★ KPI 97.07 REVERT · SYNCED(BE@cdeb6bf·FE@353eb7f) · residual 659 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 215차 2026-07-15T05:48 UTC — BNK-742~747·TSR 1585~1597 · ★★★ US-V06 CLOSED · ★★★ G-LINKAGE-RECORD 스펙 · ★★ J03 SMS/kind22 · ★ RFID SMS P2 · ★ lcms 번복 · SYNCED(BE@d248916·FE@0448efa) · residual 653 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 214차 2026-07-15T01:50 UTC — BNK-738~741·TSR 1578~1584 · ★★★ J03 quiet-hours CLOSED · ★★★ sole 진성갭 id=1-10 · ★★ batch-unconfirm P2 · ★ QA-B414 Fixed · SYNCED(BE@c558f29·FE@655aaa7) · residual 647 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 213차 2026-07-14T20:14 UTC — BNK-727~732·TSR 1558~1567b · ★★★ id=1-5 FULL 1.0 + id=10-4 FULL · ★★ QA-B414 Open→Planned · 모듈 93.62% · J03 alias · SYNCED(BE@1f3698d·FE@71839a6) · residual 641 BE+B414 · Planned QA-B414+QA-B116+QA-B95 -->
@@ -109,7 +110,28 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-15 (215차 PLN — **자동 기획 동기화** BNK-742~747·TSR 1585~1597·★★★ US-V06 CLOSED·G-LINKAGE-RECORD 스펙·J03 SMS/kind22·RFID SMS P2·lcms 번복·SYNCED BE@d248916/FE@0448efa·operation BLOCK 653 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-15 (216차 PLN — **자동 기획 동기화** BNK-748~754·TSR 1598~1613·★★★ G-LINKAGE FULL CLOSURE·모듈 97.07%·RFID 평가29 근거 강화(격상 0)·org-wide report BE·KPI REVERT·SYNCED BE@cdeb6bf/FE@353eb7f·operation BLOCK 659 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [PLN] QA 피드백 반영 (2026-07-15, 216차 — BNK-748~754 · TSR 1598~1613차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`cdeb6bf`** WT **CLEAN** · post-merge **2194/2194 PASS**(401 suites·TSR1612) · FE develop/test/origin/test **`353eb7f` ALL SYNCED+PUSHED** · post-merge **2545/2545 PASS**(471 files·TSR1613) · live default **0/149/0** · origin/test **659 BE + 0 FE** · **132 Route·105 page·V1–V194·BE @Test 2194·FE test 524·모듈 97.07%**(28.15/29·id=11 1.0·id=12 **0.7**·id=1-5 **1.0**·**id=1-10 1.0**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 216차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **659 BE**) + **QA-B95**(operation 승격·B437~B449 deepen Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B438~B449 Fixed** | G-LINKAGE BE+FE B438~B441/B448 · QA-B95 harden B437/B440/B443~B447/B449 · linkage length B442 · draft rehydrate B441 | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-749 ★★★** | **G-LINKAGE-RECORD FULL CLOSURE** — V194+ClientDetail tab · coverage 0→1.0 · 모듈 **97.07%** · sole 진성갭 **소멸** | REQUIREMENTS · USER_STORIES · ROADMAP v2/v3 |
+| **BNK-753 ★★★** | **모듈 KPI 가정 번복** — `97.17%(29.15/30)`(BNK-752 grep 오염) → **`97.07%(28.15/29)`** | ROADMAP · PLAN_NOTES · baseline |
+| **BNK-754 ★★** | Channel.io TOP-10 + V.ez **평가문항 29·월1회** RFID→SMS 근거 강화 · messageAmt 10/20/50 · **P2 격상 0** · org-wide linkage report BE · ~7/31 셋팅비 모니터링 | REQUIREMENTS G-RFID · USER_STORIES · §추가 질문 216 |
+| **BNK-748/750~752 ★** | QA-B95 fail-closed 폐루프 · 이중 일정/RFID/본인부담 = 진성갭 아님 · 만료일 7-category P3「가정」 · 규제 488차 zero drift | REQUIREMENTS · COMPETITOR_MATRIX carry |
+
+**coder/ops 다음 액션 (216차)**: ① **tester** origin/test push **659 BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials ④ **v2+ P2** org-wide linkage FE Route · kind22 dispatch / RFID SMS go/no-go(§216-2).
+
+### 추가 질문 (자동 기획 동기화 216차)
+1. **G-LINKAGE org-wide FE Route (★ BNK-754)**: `/clients/linkage-records` 독립 Report Route vs ClientDetail 리포트만 유지?
+2. **RFID SMS P2 (★★ BNK-743/754)**: 요보사 불일치 문자만 vs 보호자 급여제공내역(평가29·FAQ 21589)도 MVP? — **격상 불요·근거만 강화**.
+3. **kind22 급여명세서 dispatch (★ carry)**: M11×G-SMS v2+ wire 우선 vs enum-only defer 유지?
+4. **만료일 7-category / CashReceipt 3-way / M12 credentials (★ carry)**: 215/214차 질문 유지·격상 0.
+5. ~~**G-LINKAGE MVP scope (215-1)**~~ → **CLOSED BNK-749**(authoring+dispatch+client report) · org-wide FE만 §216-1.
 
 ### [PLN] QA 피드백 반영 (2026-07-15, 215차 — BNK-742~747 · TSR 1585~1597차)
 
@@ -155,6 +177,10 @@
 3. **만료일 카운트다운 P3 격상 (★ BNK-739)**: 이지케어 `patient-list` 3-line D-day를 US-H03 StatCard에 선반영할지 vs defer 유지?
 4. **M12 credentials rollout vs QA-B116 (★ carry)**: origin/test push 직후 staged pilot vs 전 facility 일괄?
 5. **CashReceipt 3-way radio (patient/protector/xx) UX (★ BNK-739 receipt-list)**: v2 scope에 포함 vs P3 defer?
+
+### [COD] 코더 메모 (2026-07-15 — QA-B450 V195/V196 linkage integrity gate)
+
+- BE develop `feat(v2/G-LINKAGE-RECORD): land V195/V196 integrity + live readiness gate` — Flyway **V195** org/branch report index + **V196** length CHECK·client×branch FK·set_org_branch trigger·purge index · `V196ClientLinkageRecordsIntegrityReadinessProbe` → `/health`·`/live-e2e` operation gate blocker `v196-client-linkage-records-integrity-missing` · `hasBootstrapErrorDetail` nested JSON-array flatten (FE QA-B449 parity) · related **99/99 PASS** · Open **0** · Planned **QA-B116+QA-B95** · residual = origin/test push(ops) · M12 credentials · org-wide linkage FE Route · id=10 SMS/RFID SMS go/no-go.
 
 ### [COD] 코더 메모 (2026-07-15 — QA-B95 bracketed/quoted blocker parse)
 

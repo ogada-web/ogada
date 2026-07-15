@@ -1,3 +1,24 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T10:30:00Z -->
+<!-- coder-sync: COD 2026-07-15T10:30:00Z (backend) — **★ QA-B450** V195/V196 G-LINKAGE integrity + V196 readiness gate + nested bootstrap detail flatten (QA-B95/FE nested parity) · related **99/99** · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1614_backend: QA-B450 V195/V196 linkage integrity readiness gate + nested detail flatten; related 99/99; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T09:58:30Z -->
+<!-- planner-sync: PLN 216차 2026-07-15T10:05 UTC — Open 0(이동 없음) · Planned residual QA-B116(origin/test 659 BE)+QA-B95 · Fixed carry QA-B438~B449 · BNK-748~754 → ROADMAP/REQUIREMENTS/USER_STORIES/PLAN_NOTES · ★★★ G-LINKAGE FULL CLOSURE · ★★ KPI 97.07 REVERT · ★ RFID 평가29 근거 강화(격상 0) · baseline BE@cdeb6bf·FE@353eb7f SYNCED -->
+<!-- tester-sync: TSR 1613차 2026-07-15T09:58:30Z (frontend) — **★ QA-B449 Fixed** FF merge+PUSH `@353eb7f` · related **132/132**(1.42s) · post-merge **2545/2545**(855.91s) · build **1222**(11.18s) · live default **0/149/0** · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(659 BE) · cross-stream **SYNCED(BE `@cdeb6bf`)** -->
+# tester_1613: QA-B449 merge-verified+pushed @353eb7f (QA-B95 flatten nested live blocker composites · +1 @Test vs 2544 → 2545); Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T09:37:31Z -->
+<!-- tester-sync: TSR 1612차 2026-07-15T09:37:31Z (backend) — **★ QA-B448 Fixed** FF merge `@cdeb6bf` · related **177/177**(23.5s) · post-merge **2194/2194**(94s, 401) · live **0/149/0**(34.54s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(659 BE) · cross-stream **SYNCED(FE `@9dbdfc5`)** -->
+# tester_1612_backend: QA-B448 Fixed FF merge e7efe02→cdeb6bf; related 177/177; post-merge 2194/2194; live 0/149/0; Open 0; verdict BLOCK(origin push 659 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T09:23:30Z -->
+<!-- tester-sync: TSR 1611차 2026-07-15T09:23:30Z (frontend) — TSR1610 **reconfirm** · related **131/131**(1.46s) · Open 섹션 **★ QA-B447 Fixed** 본문 누락 보완 · FE ALL SYNCED+PUSHED `@9dbdfc5` · npm **CARRY 2544/2544** · build/audit reconfirm PASS · live **CARRY 0/149/0** · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(658 BE) · cross-stream **SYNCED(BE `@e7efe02`)** -->
+# tester_1611: Open-section sync + related reconfirm @9dbdfc5 (QA-B447 Fixed body · 131/131 · no new Open); Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T09:21:30Z -->
+<!-- tester-sync: TSR 1610차 2026-07-15T09:21:30Z (frontend) — **★ QA-B447 Fixed** FF merge+PUSH `@9dbdfc5` · related **131/131**(1.45s) · post-merge **2544/2544**(852.46s) · build **1222**(9.29s) · live default **0/149/0** · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(658 BE) · cross-stream **SYNCED(BE `@e7efe02`)** -->
+# tester_1610: QA-B447 merge-verified+pushed @9dbdfc5 (QA-B95 bracketed/quoted operation blocker unwrap · +2 @Test vs 2542 → 2544); Open 0; Planned QA-B116+QA-B95.
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T09:05:00Z -->
 <!-- coder-sync: COD 2026-07-15T09:05:00Z (frontend) — **★ QA-B95 bracketed/quoted blocker unwrap** · `normalizeLiveOperationBlockers` + probe/config/setup unwrap · BE `@e7efe02` parity · related **131/131** · Open **0** · Planned QA-B116+QA-B95 -->
 # coder_1609_frontend: QA-B95 unwrap bracketed/quoted operation blocker tokens; related 131/131; Open 0; Planned QA-B116+QA-B95.
@@ -3217,7 +3238,58 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0** active · TSR 1608 BE SYNCED `@e7efe02` · TSR 1607 FE ALL SYNCED+PUSHED `@33f59a9` · Fixed carry **QA-B435~B446** · cross-stream **SYNCED** · Planned **QA-B116**(origin/test **658 BE**)+**QA-B95** · operation **BLOCK**)_
+_(Open **0** active · TSR 1612 BE SYNCED `@cdeb6bf` · TSR 1613 FE ALL SYNCED+PUSHED `@353eb7f` · Fixed carry **QA-B435~B449** · cross-stream **SYNCED** · Planned **QA-B116**(origin/test **659 BE**)+**QA-B95** · operation **BLOCK**)_
+
+### [TSR] v1.2.1/QA-B95 flatten nested live blocker composites — frontend develop→test merge+push EXECUTED (`353eb7f`, QA-20260715-B449) — **Fixed**
+
+- **id**: QA-20260715-B449
+- **priority**: MEDIUM → Fixed (TSR 1613 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@353eb7f` · TSR 1613 FF merge + **2545/2545** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T09:41:32Z
+- **fixed_at**: 2026-07-15T09:41:32Z (COD `@353eb7f`)
+- **verified_at**: 2026-07-15T09:58:30Z
+- **version**: v1.2.1 / QA-B95 deepen — flatten nested/serialized array payloads in FE live-e2e health blocker normalization (dedupe + shape-tolerant parse)
+- **summary**: `liveBackendProbe` nested composite flatten so effective operation-gate diagnostics stay stable across bootstrap-suppression payload shapes (+1 @Test · 2544→2545 · related 131→132).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **659 BE** · QA-B95 residual bootstrap-disabled)
+- **roadmap_ref**: ROADMAP v1 QA-B95 operation gate · Planned QA-B95 effective operation 승격
+- **prevention**: Keep nested-list flatten before normalize/dedupe; lock nested composite cases in liveE2eHarness (132 tests)
+- **expected**: develop→test merge · related+full regression PASS · live 0 FAIL default · origin/test SYNCED · cross-stream SYNCED with BE `@cdeb6bf`
+- **actual**: ★ Fixed — ALL SYNCED `@353eb7f` · cross-stream SYNCED · residual Planned QA-B116 (**659 BE**) + QA-B95
+
+### [TSR] v2/G-LINKAGE-RECORD branch-scoped linkage dispatch report API — backend develop→test merge EXECUTED (`cdeb6bf`, QA-20260715-B448) — **Fixed**
+
+- **id**: QA-20260715-B448
+- **priority**: HIGH → Fixed (TSR 1612 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@cdeb6bf` · TSR 1612 FF merge · **2194/2194** · live **0/149/0** bootstrap-disabled)
+- **found_at**: 2026-07-15T09:33:00Z
+- **fixed_at**: 2026-07-15T09:33:00Z (COD `@cdeb6bf`)
+- **verified_at**: 2026-07-15T09:37:31Z
+- **version**: v2 / G-LINKAGE-RECORD — `GET /clients/linkage-records/report` branch-scoped dispatch report with status/type/q filters
+- **summary**: `ClientLinkageRecordReportController` + repository report query + service filters (`DISPATCHED`/`HOSPITAL`/search) · MustApi routing wired · (+2 @Test · 2192→2194 · ClientLinkageRecordServiceTest 9).
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (QA-B116 origin/test **659 BE** · G-LINKAGE-RECORD FE report wire residual)
+- **roadmap_ref**: ROADMAP v2+ id=1-10 G-LINKAGE-RECORD · BNK-746 스펙
+- **prevention**: Lock report filters + branch scope in ClientLinkageRecordServiceTest + MustApiEndpointRoutingTest
+- **expected**: develop→test merge · related+full regression PASS · live 0 FAIL under bootstrap-disabled
+- **actual**: ★ Fixed — BE develop/test SYNCED `@cdeb6bf` · residual Planned QA-B116 (**659 BE**) + QA-B95 · cross-stream SYNCED (FE `@9dbdfc5`) · live **0/149/0** (bootstrap-disabled)
+
+### [TSR] v1.2.1/QA-B95 unwrap bracketed/quoted operation blocker tokens — frontend develop→test merge+push EXECUTED (`9dbdfc5`, QA-20260715-B447) — **Fixed**
+
+- **id**: QA-20260715-B447
+- **priority**: MEDIUM → Fixed (TSR 1610 verified + origin/test PUSHED · TSR 1611 Open-body sync)
+- **stream**: frontend
+- **status**: Fixed (COD `@9dbdfc5` · TSR 1610 FF merge + **2544/2544** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T09:05:00Z
+- **fixed_at**: 2026-07-15T09:05:00Z (COD `@9dbdfc5`)
+- **verified_at**: 2026-07-15T09:21:30Z (TSR 1610) · Open body synced 2026-07-15T09:23:30Z (TSR 1611)
+- **version**: v1.2.1 / QA-B95 deepen — unwrap bracketed/`'`/`"`-wrapped composite operation blocker tokens in FE live-e2e probe/config/setup (BE `@e7efe02` parity)
+- **summary**: `normalizeLiveOperationBlockers` + `unwrapLiveOperationBlockerToken` in `liveBackendProbe`/`liveConfig`/`liveGlobalSetup` so QA-B95 diagnostics stay fail-closed across payload shapes (+2 @Test · 2542→2544 · related 129→131).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **658 BE** · QA-B95 residual bootstrap-disabled)
+- **roadmap_ref**: ROADMAP v1 QA-B95 operation gate · Planned QA-B95 effective operation 승격
+- **prevention**: Keep shape-tolerant unwrap before normalize; lock bracketed/quoted composite cases in liveE2eHarness (131 tests)
+- **expected**: develop→test merge · related+full regression PASS · live 0 FAIL default · origin/test SYNCED · cross-stream SYNCED with BE `@e7efe02`
+- **actual**: ★ Fixed — ALL SYNCED `@9dbdfc5` · cross-stream SYNCED · residual Planned QA-B116 (**658 BE**) + QA-B95
 
 ### [TSR] v2/QA-B95 harden bootstrap blocker detail parsing (bracketed/quoted) — backend develop→test merge EXECUTED (`e7efe02`, QA-20260715-B446) — **Fixed**
 
@@ -9551,6 +9623,8 @@ _(TSR 529차 2026-06-13T07:25 UTC — frontend Open **0건**. QA-B68 Fixed @ `db
 
 ## Planned
 
+_(**PLN 216차 sync** — Open **0**(이동 없음) · Planned residual **QA-B116**(origin/test push **659 BE**) + **QA-B95**(operation · bootstrap-disabled · B437~B449 Fixed deepen) · Fixed carry **QA-B438~B449** · BNK-748~754 기획 반영 · baseline BE `@cdeb6bf`/FE `@353eb7f` · **★★★ G-LINKAGE CLOSED** · **모듈 97.07%** · 최종 갱신: PLN 216차 2026-07-15T10:05:00Z)_
+
 _(**TSR 1605차 sync** — Open **0** · Planned residual **QA-B116**(origin/test push **657 BE**) + **QA-B95**(operation · bootstrap-disabled) · BE SYNCED `@d271cc3` · FE ALL SYNCED+PUSHED `@9b65529` · Fixed **QA-B444** · Fixed carry **QA-B401~B444** · 최종 갱신: TSR 1605차 2026-07-15T08:14:10Z)_
 
 _(**TSR 1604차 sync** — Open **0** · Planned residual **QA-B116**(origin/test push **656 BE**) + **QA-B95**(operation · bootstrap-disabled) · FE ALL SYNCED+PUSHED `@9b65529` · BE SYNCED `@0e66a38` · Fixed **QA-B443** · Fixed carry **QA-B401~B443** · 최종 갱신: TSR 1604차 2026-07-15T08:02:17Z)_
@@ -11190,6 +11264,22 @@ _(Planned **0건(active)** superseded — QA-20260613-B62 **Fixed @ `e89175e`**;
 ---
 
 ## Fixed
+
+### [COD] v2/G-LINKAGE V195/V196 integrity + QA-B95 nested detail flatten — backend develop (pending tester FF) (`QA-B450`) — **Fixed (local)**
+
+- **id**: QA-20260715-B450
+- **priority**: HIGH → cleared (local develop)
+- **stream**: backend
+- **status**: Fixed (local COD — tester merge/verify pending)
+- **found_at**: 2026-07-15T10:16:00Z (BNK dirty V195/V196 untracked)
+- **fixed_at**: 2026-07-15T10:30:00Z (COD)
+- **version**: v2 / G-LINKAGE-RECORD · QA-B95 deepen
+- **summary**: Land Flyway V195 org/branch report index + V196 defense-in-depth (length CHECK·3-way FK·set_org_branch·purge index) · wire `V196ClientLinkageRecordsIntegrityReadinessProbe` into live operation gate · flatten nested JSON-array bootstrap detail tokens (FE QA-B449 parity).
+- **assignee**: COD (완료) / TSR (merge·검증 대기) / PLN (QA-B116+QA-B95)
+- **roadmap_ref**: ROADMAP v2 G-LINKAGE · QA-B95
+- **reproduce**: related `V196*ProbeTest`+`LiveE2eOperationReadinessSupportTest`+`HealthControllerTest`+`LiveE2eControllerTest`+`LiveE2eBootstrapLiveApiRoutingE2eTest` **99/99 PASS**
+- **expected**: V195/V196 committed; gate fail-closed on missing integrity; nested detail detection
+- **actual**: ★ Fixed (local) — WT CLEAN pending commit · tester FF + origin/test push still QA-B116
 
 ### [TSR] v2/QA-B95 expose effectiveOperationSuppressedByBootstrap — backend develop→test merge EXECUTED (`cf1dada`, QA-20260715-B431) — **Fixed**
 
