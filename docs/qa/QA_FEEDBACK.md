@@ -1,3 +1,201 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T21:00:30Z -->
+<!-- coder-sync: COD 2026-07-15T21:00:30Z (frontend) — **★ id=10 SMS 발송 참고 단가 in-app** · ezCare `messageAmt` app10/sms20/mms50 · `NotificationChannelReadinessPanel` 안내용 표(청구 비사용·KPI promote 0) · related **7/7** · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1649_frontend: id=10 SMS reference unit rates (app10/sms20/mms50) in channel readiness panel; related 7/7; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T20:55:38Z -->
+<!-- tester-sync: TSR 1648차 2026-07-15T20:55:38Z (backend) — ROADMAP merged baseline `@89dc0a6` revalidation **2227/2227 PASS**(63s,404) · npm **N/A**(`src/backend-test` no package.json) · develop HEAD `@e9f24f7` vs test `@89dc0a6` pending **1** · merge **SKIP**(read-only policy) · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(origin/test 672 BE + pending 1) · cross-stream **BLOCK**(BE pending `@e9f24f7` · FE `@a5f4098` SYNCED) -->
+# tester_1648_backend: baseline @89dc0a6 revalidated 2227/2227 PASS; Open 0; BLOCK 유지(develop @e9f24f7 pending 1 + origin/test 672 BE); Planned QA-B116+QA-B95; FE @a5f4098 synced.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T20:55:00Z -->
+<!-- coder-sync: COD 2026-07-15T20:55:00Z (backend) — **★ QA-B95 BE semicolon-optional numeric HTML entity decode** · `&#45disabled` / `&#X2Dnot-…` + double-encoded `&AMP;#45` fail-closed (FE `@a5f4098` parity) · related LiveE2eOperationReadinessSupportTest PASS · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1648_backend: QA-B95 semicolon-optional numeric HTML entity blocker decode (FE a5f4098 parity); related PASS; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T20:46:12Z -->
+<!-- tester-sync: TSR 1647차 2026-07-15T20:46:12Z (frontend) — reconfirm PASS(FE ALL SYNCED+PUSHED @a5f4098) · related **166/166**(8.15s, 6) · build **1229**(11.00s) · npm **CARRY 2586/2586**(TSR1646) · live **SKIP**(no merge) · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(672 BE) · cross-stream **SYNCED(BE `@89dc0a6` · FE `@a5f4098`)** -->
+# tester_1647_frontend: SYNCED reconfirm @a5f4098 (related 166/166 · build 1229 · npm CARRY 2586/2586 · no new Open); residual Planned QA-B116(672 BE)+QA-B95; transfer PASS(FE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T20:44:51Z -->
+<!-- tester-sync: TSR 1646차 2026-07-15T20:44:51Z (frontend) — **★ QA-B473 Fixed** FF merge+PUSH `@a5f4098` · **UXD-180** a11y components merged · related **166/166**(8.06s, 6) · post-merge **2586/2586**(869.23s, 476 · +13) · live **0/149/0**(33.37s) · FE ALL SYNCED+PUSHED · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(672 BE) · cross-stream **SYNCED(BE `@89dc0a6` · FE `@a5f4098`)** -->
+# tester_1646_frontend: QA-B473 Fixed FF merge+PUSH b4008b0→a5f4098 (QA-B95 semicolon-optional numeric HTML entities + UXD-180 a11y · +13 vs 2573 → 2586); related 166/166; post-merge 2586/2586; live 0/149/0; Open 0; transfer PASS(FE); operation BLOCK(672 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T20:08:10Z -->
+<!-- tester-sync: TSR 1645차 2026-07-15T20:08:10Z (backend) — **★ QA-B472 Fixed** FF merge `@89dc0a6` · related **37/37**(~5s, 1) · post-merge **2227/2227**(87s, 404) · live **0/149/0**(34.62s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned **QA-B116+QA-B95** · operation BLOCK(672 BE) · cross-stream **BLOCK**(BE `@89dc0a6` · FE develop pending `@eb270ae` vs `@b4008b0`) -->
+# tester_1645_backend: QA-B472 Fixed FF merge cf700b9→89dc0a6 (QA-B95 double-encoded uppercase hex entity single-pass decode · pending 1→0 · +1 vs 2226 → 2227); related 37/37; post-merge 2227/2227; live 0/149/0; Open 0; verdict BLOCK(origin push 672 BE); cross-stream BLOCK(FE develop pending).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T19:41:08Z -->
+<!-- tester-sync: TSR 1644b차 2026-07-15T19:41:08Z (frontend) — reconfirm PASS(FE ALL SYNCED+PUSHED @b4008b0) · related **153/153**(2.38s) · build **1225**(9.23s) · live **0/149/0**(33.85s) · Open **0**(QA-B471 Fixed carry) · operation **BLOCK**(671 BE) · cross-stream **SYNCED(BE @cf700b9)** -->
+# tester_1644b_frontend: reconfirm @b4008b0 (related 153/153 · build 1225 · live 0/149/0 · no new Open); residual Planned QA-B116(671 BE)+QA-B95; transfer PASS(FE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T19:32:30Z -->
+<!-- tester-sync: TSR 1644차 2026-07-15T19:32:30Z (frontend) — **★ QA-B471 Fixed** FF merge+PUSH `@b4008b0` · related **153/153**(2.40s, 2) · post-merge **2573/2573**(865.83s, 472 · +2) · live **0/149/0**(33.27s) · FE ALL SYNCED+PUSHED · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(671 BE) · cross-stream **SYNCED(BE `@cf700b9`)** -->
+# tester_1644_frontend: QA-B471 Fixed FF merge+PUSH fd6b996→b4008b0 (QA-B95 uppercase hex HTML entity decode FE parity · +2 vs 2571 → 2573); related 153/153; post-merge 2573/2573; live 0/149/0; Open 0; transfer PASS(FE); operation BLOCK(671 BE); cross-stream SYNCED.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T19:01:00Z -->
+<!-- coder-sync: COD 2026-07-15T19:01:00Z (frontend) — **★ QA-B95 FE uppercase hex `#X` numeric entity decode** · `&#X2D;` + double-encoded `&AMP;#X2D;` fail-closed (channel-status + live probe/config/setup · BE `@cf700b9` parity) · related **153/153** · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1644_frontend: QA-B95 uppercase hex HTML entity decode FE parity (`&#X2D;`); related 153/153; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T18:58:17Z -->
+<!-- tester-sync: TSR 1643차 2026-07-15T18:58:17Z (backend) — **★ QA-B470 Fixed** FF merge `@cf700b9` · related **36/36**(~5s, 1) · post-merge **2226/2226**(94s, 404) · live **0/149/0**(35.31s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned **QA-B116+QA-B95** · operation BLOCK(671 BE) · cross-stream **SYNCED(BE `@cf700b9` · FE `@fd6b996`)** -->
+# tester_1643_backend: QA-B470 Fixed FF merge baa1792→cf700b9 (QA-B95 uppercase hex HTML entity decode · pending 1→0 · +1 vs 2225 → 2226); related 36/36; post-merge 2226/2226; live 0/149/0; Open 0; verdict BLOCK(origin push 671 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T18:48:46Z -->
+<!-- tester-sync: TSR 1642차 2026-07-15T18:48:46Z (frontend) — **★ QA-B469 Fixed** FF merge+PUSH `@fd6b996` · related **4/4**(4.88s, 1) · post-merge **2571/2571**(862.00s, 472 · +1) · live **0/149/0**(33.20s) · FE ALL SYNCED+PUSHED · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(670 BE) · cross-stream **SYNCED(BE `@baa1792`)** -->
+# tester_1642_frontend: QA-B469 Fixed FF merge+PUSH c779ca1→fd6b996 (G-LINKAGE report pagination controls · +1 vs 2570 → 2571); related 4/4; post-merge 2571/2571; live 0/149/0; Open 0; transfer PASS(FE); operation BLOCK(670 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T18:29:09Z -->
+<!-- tester-sync: TSR 1641차 2026-07-15T18:29:09Z (backend) — **★ QA-B468 Fixed** FF merge `@baa1792` · related **35/35**(~5s, 1) · post-merge **2225/2225**(81s, 404) · live **0/149/0**(33.51s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned **QA-B116+QA-B95** · operation BLOCK(670 BE) · cross-stream **SYNCED(BE `@baa1792` · FE `@c779ca1`)** -->
+# tester_1641_backend: QA-B468 Fixed FF merge 2768252→baa1792 (QA-B95 url+html encoded blocker decode coverage · pending 1→0 · +1 vs 2224 → 2225); related 35/35; post-merge 2225/2225; live 0/149/0; Open 0; verdict BLOCK(origin push 670 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T18:18:18Z -->
+<!-- tester-sync: TSR 1640차 2026-07-15T18:18:18Z (frontend) — merge **SKIP**(already SYNCED `@c779ca1`) · related reconfirm **151/151**(2.44s, 2) · npm **CARRY 2570/2570**(TSR1639) · build **1225**(9.16s) · audit **0** · live **SKIP**(no merge) · FE ALL SYNCED+PUSHED · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(669 BE) · cross-stream **SYNCED(BE `@2768252`)** · no new Open -->
+# tester_1640_frontend: SYNCED reconfirm @c779ca1 (related 151/151 · build 1225 · no new Open); residual Planned QA-B116(669 BE)+QA-B95; transfer PASS(FE); operation BLOCK(669 BE); cross-stream SYNCED.
+
+<!-- tester-sync: TSR 1639차 2026-07-15T18:10:48Z (frontend) — **★ QA-B467 Fixed** FF merge+PUSH `@c779ca1` · related **151/151**(2.38s, 2) · post-merge **2570/2570**(867.41s, 472 · +2) · build **1225**(10.71s) · audit **0** · live default **0/149/0**(34.43s) · FE ALL SYNCED+PUSHED · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(669 BE) · cross-stream **SYNCED(BE `@2768252`)** · (closes 17:52 Open/BLOCK same-id) -->
+# tester_1639_frontend: QA-B467 Fixed FF merge+PUSH e76e631→c779ca1 (QA-B95 multi-pass double-encoded HTML entity decode · +2 vs 2568 → 2570); related 151/151; post-merge 2570/2570; live 0/149/0; Open 0; transfer PASS(FE); operation BLOCK(669 BE); cross-stream SYNCED.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T17:35:03Z -->
+<!-- coder-sync: COD 2026-07-15T17:35:03Z (frontend) — **★ QA-B95 FE amp→numeric multi-pass decode** · `&LT;`/`&QUOT;`/`&AMP;` + double-encoded `&AMP;#x2d;` single-call fail-closed (channel-status + live probe/config/setup · BE `@2768252` parity deepen) · related **151/151** · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1639_frontend: QA-B95 case-insensitive + double-encoded HTML entity multi-pass decode FE; related 151/151; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T17:31:18Z -->
+<!-- tester-sync: TSR 1638차 2026-07-15T17:31:18Z (backend) — **★ QA-B466 Fixed** FF merge `@2768252` · related **34/34**(~7s, 1) · post-merge **2224/2224**(85s, 404) · live **0/149/0**(34.50s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned **QA-B116+QA-B95** · operation BLOCK(669 BE) · cross-stream **SYNCED(BE `@2768252` · FE `@e76e631`)** -->
+# tester_1638_backend: QA-B466 Fixed FF merge 556eeff→2768252 (QA-B95 case-insensitive named HTML entity decode · pending 1→0 · +1 vs 2223 → 2224); related 34/34; post-merge 2224/2224; live 0/149/0; Open 0; verdict BLOCK(origin push 669 BE); cross-stream SYNCED.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T17:30:00Z -->
+<!-- coder-sync: COD 2026-07-15T17:30:00Z (backend) — **★ QA-B95 case-insensitive named HTML entity decode** @ `2768252` · `&LT;`/`&QUOT;`/`&AMP;` + double-encoded `&AMP;#x2d;` bootstrap blocker fail-closed (FE `/gi` parity) · related LiveE2eOperationReadinessSupportTest PASS · Open **0** · Planned QA-B116+QA-B95 · FE parity `@e76e631` -->
+# coder_1637_backend: QA-B95 case-insensitive named HTML entity blocker decode @2768252; related PASS; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T17:19:23Z -->
+<!-- tester-sync: TSR 1636차 2026-07-15T17:19:23Z (frontend) — **★ QA-B465 Fixed** origin/test PUSH `e837185`→`e76e631` · related **159/159**(9.45s, 3) · npm **CARRY 2568/2568**(TSR1635) · build **1225**(9.51s) · audit **0** · live **SKIP**(no merge) · FE ALL SYNCED+PUSHED · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(668 BE) · cross-stream **SYNCED(BE `@556eeff`)** -->
+# tester_1636_frontend: QA-B465 Fixed origin/test PUSHED @e76e631; related 159/159; npm CARRY 2568/2568; build 1225; Open 0; transfer PASS(FE); operation BLOCK(668 BE).
+
+### [TSR] v1.2.1/QA-B95 FE HTML entity decode parity — frontend origin/test PUSH EXECUTED (`e76e631`, QA-20260715-B465) — **Fixed**
+
+- **id**: QA-20260715-B465
+- **severity**: BLOCK → Fixed (TSR 1636 origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (local `@e76e631` · TSR 1636 origin/test PUSH + related **159/159** + build **1225**)
+- **found_at**: 2026-07-15T17:04:09Z
+- **fixed_at**: 2026-07-15T17:15:00Z (TSR1636 `git push origin test` `e837185`→`e76e631`)
+- **verified_at**: 2026-07-15T17:19:23Z
+- **version**: v1.2.1 / QA-B95 — FE HTML entity decode parity (`&#45;`/`&#x2d;`/`&lt;`/`&gt;`)
+- **summary**: origin/test pending **1** push closure after TSR1635 local SYNCED validation · related **159/159** · npm **CARRY 2568/2568** · build **1225** · audit **0**.
+- **assignee**: TSR (origin/test push·회귀 완료) · PLN (baseline FE `@e76e631` · residual QA-B116 **668 BE**)
+- **roadmap_ref**: ROADMAP merged · Planned QA-B116+QA-B95
+- **prevention**: local test sync 후 same cycle에 `origin/test` push 여부를 manifest gate에서 BLOCK 처리 (TSR1635→1636 적용).
+- **expected**: `origin/test` includes `e76e631` and transfer verdict PASS(FE).
+- **actual**: ★ Fixed — develop/test/origin/test **ALL SYNCED+PUSHED `@e76e631`** · related **159/159** · residual = Planned **QA-B116**(668 BE)+**QA-B95**.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T17:04:09Z -->
+<!-- tester-sync: TSR 1635차 2026-07-15T17:04:09Z (frontend) — local SYNCED `@e76e631` · npm **2568/2568** · QA-B465 Open → **Fixed TSR1636** -->
+# tester_1635_frontend: locked npm 2568/2568 @e76e631; origin/test pending 1 → QA-B465 (closed TSR1636).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T16:46:14Z -->
+<!-- coder-sync: COD 2026-07-15T16:46:14Z (frontend) — **★ QA-B95 FE HTML entity decode parity** @ `e76e631` · `&#45;`/`&#x2d;`/`&lt;`/`&gt;` live operation blocker + channel readiness decode (split-before-decode 수정) · G-RFID `dispatched_count` snake_case success count · related **159/159** · Open **0** · Planned QA-B116+QA-B95 · BE parity `@556eeff` -->
+# coder_1634_frontend: QA-B95 numeric/named HTML entity blocker decode FE parity @e76e631 + RFID dispatched_count alias; related 159/159; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T16:41:43Z -->
+<!-- tester-sync: TSR 1633차 2026-07-15T16:41:43Z (backend) — **★ QA-B464 Fixed** FF merge `@556eeff` · related **291/291**(~14s, 6) · post-merge **2223/2223**(88s, 405) · live **0/149/0**(38.10s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned **QA-B116+QA-B95** · operation BLOCK(668 BE) · cross-stream **SYNCED(BE `@556eeff` · FE `@e837185`)** -->
+# tester_1633_backend: QA-B464 Fixed FF merge 956c487→556eeff (QA-B95 numeric HTML entity decode + G-RFID snake_case dispatch alias · pending 1→0 · +2 vs 2221 → 2223); related 291/291; post-merge 2223/2223; live 0/149/0; Open 0; verdict BLOCK(origin push 668 BE); cross-stream SYNCED.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T16:40:00Z -->
+<!-- coder-sync: COD 2026-07-15T16:40:00Z (backend) — **★ QA-B95 numeric HTML entity + G-RFID snake_case dispatch** @ `556eeff` · `&#45;`/`&#x2d;`/`&lt;`/`&gt;` bootstrap blocker decode · `VisitRfidCareProvisionDispatchRequest` `@JsonAlias`(branch_id/year_month/client_ids) · related LiveE2e+VisitControllerRouting PASS · Open **0** · Planned QA-B116+QA-B95 · FE parity `@e837185` -->
+# coder_1633_backend: QA-B95 numeric HTML entity hyphen/angle-bracket decode + G-RFID snake_case dispatch request alias @556eeff; related PASS; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T16:29:07Z -->
+<!-- tester-sync: TSR 1632차 2026-07-15T16:29:07Z (frontend) — **★ QA-B463 Fixed** FF merge+PUSH `@e837185` · related **9/9**(4.79s, 1) · post-merge **2565/2565**(861.87s, 472) · build **1225**(9.37s) · audit **0** · live default **0/149/0**(34.72s) · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(667 BE) · cross-stream **SYNCED(BE `@956c487`)** -->
+# tester_1632: QA-B463 merge-verified+pushed @e837185 (G-RFID dispatch candidate payload harden · +1 vs 2564 → 2565); Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T16:07:41Z -->
+<!-- tester-sync: TSR 1631차 2026-07-15T16:07:41Z (backend) — **★ QA-B461 Fixed** FF merge `@956c487` · related **270/270**(~15s, 4) · post-merge **2221/2221**(86.10s, 404) · live **0/149/0**(35.77s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned **QA-B116+QA-B95** · operation BLOCK(667 BE) · cross-stream **SYNCED(BE `@956c487` · FE `@5843845`)** -->
+# tester_1631_backend: QA-B461 Fixed FF merge 7868384→956c487 (QA-B95 unicode nested JSON + HTML-escaped bootstrap blocker decode · pending 2→0 · +2 vs 2219 → 2221); related 270/270; post-merge 2221/2221; live 0/149/0; Open 0; verdict BLOCK(origin push 667 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T15:55:43Z -->
+<!-- tester-sync: TSR 1630차 2026-07-15T15:55:43Z (frontend) — merge **SKIP**(already SYNCED `@5843845`) · related reconfirm **62/62**(5.80s, 2) · npm **CARRY 2564/2564** · build **1225**(9.31s) · live **SKIP** · Open **1**(QA-B461 BE · reconfirmed) · cross-stream **BLOCK** · operation **BLOCK**(666 BE) · **coder 압박(BE): QA-B461 develop `@27de3a3` → test merge** -->
+# tester_1630_frontend: SYNCED reconfirm @5843845 (related 62/62 · build 1225 · no new Open); residual Open 1 QA-B461 BE; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T15:29:53Z -->
+<!-- tester-sync: TSR 1629차 2026-07-15T15:29:53Z (frontend) — **★ FF merge+PUSH** `3fddccd`→`5843845`(G-RFID FE wire + UXD Toast · 2 commits) · related **62/62** · post-merge **2564/2564** · build **1225** · live **0/149/0** · **★ QA-B462 Fixed** · Open **1**(QA-B461 BE) · cross-stream **BLOCK** · operation **BLOCK**(666 BE) -->
+# tester_1629_frontend: FF merge+PUSH 3fddccd→5843845; related 62/62; post-merge 2564/2564; QA-B462 Fixed; Open 1(QA-B461 BE); cross-stream BLOCK; operation BLOCK(666 BE).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T15:15:00Z -->
+<!-- coder-sync: COD 2026-07-15T15:15:00Z (frontend) — **★ G-RFID-CARE-PROVISION-DISPATCH FE wire** · `dispatchRfidCareProvisionApi` + VisitRfidDiffComparePanel candidates→SMS batch (FAQ 21589 · kind13) · related **62/62** · Open **1**(QA-B461 BE) · Planned QA-B116+QA-B95 · BE parity `@c080529` -->
+# coder_1629_frontend: RFID care-provision SMS FE batch dispatch; related 62/62; Open 1(QA-B461 BE); Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T15:06:40Z -->
+<!-- tester-sync: TSR 1628차 2026-07-15T15:06:40Z (backend) — ROADMAP merged baseline `@7868384` revalidation **2219/2219 PASS**(62s,404) · npm N/A(`src/backend-test` no package.json) · develop HEAD `@27de3a3` vs test `@7868384` pending **1** · merge SKIP(read-only policy) · **★ QA-B461 Open(BLOCK)** develop/test SHA mismatch (new QA-B95 unicode nested JSON parser commit not yet revalidated on test) · Open **1** · Planned QA-B116+QA-B95 · operation BLOCK -->
+# tester_1628_backend: baseline @7868384 revalidated 2219/2219 PASS; Open 1 QA-B461 BLOCK (develop @27de3a3 pending 1 vs test @7868384); Planned QA-B116+QA-B95.
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T15:05:00Z -->
+<!-- coder-sync: COD 2026-07-15T15:05:00Z (backend) — **★ QA-B95 nested JSON unicode bootstrap blocker parse** · `LiveE2eOperationReadinessSupport` Jackson expand(`\u002d`+URL-encoded nested) · related `LiveE2eOperationReadinessSupportTest` PASS · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1628_backend: QA-B95 nested JSON unicode escape bootstrap blocker fail-closed; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T14:25:36Z -->
+<!-- tester-sync: TSR 1627차 2026-07-15T14:25:36Z (frontend) — **★ QA-B460 Fixed** FF merge+PUSH `@3fddccd` · related **11/11**(1.09s, 1) · post-merge **2560/2560**(859.91s, 472) · build **1223**(10.62s) · audit **0** · live default **0/149/0**(33.62s) · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(665 BE) · cross-stream **SYNCED(BE `@7868384`)** -->
+# tester_1627: QA-B460 merge-verified+pushed @3fddccd (QA-B95 decode encoded readiness payload aliases · +2 vs 2558 → 2560); Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T14:04:02Z -->
+<!-- tester-sync: TSR 1626차 2026-07-15T14:04:02Z (backend) — **★ QA-B459 Fixed** FF merge `@7868384` · related **266/266**(~14s, 4) · post-merge **2219/2219**(~87s, 404) · live **0/149/0**(33.24s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(665 BE) · cross-stream **SYNCED(BE `@7868384` · FE `@2992fa5`)** -->
+# tester_1626_backend: QA-B459 Fixed FF merge 79aa377→7868384 (QA-B95 URL-encoded bootstrap blocker payload decode · +1 vs 2218 → 2219); related 266/266; post-merge 2219/2219; live 0/149/0; Open 0; verdict BLOCK(origin push 665 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T13:51:49Z -->
+<!-- tester-sync: TSR 1625차 2026-07-15T13:51:49Z (frontend) — **★ QA-B458 Fixed** FF merge+PUSH `@2992fa5` · related **136/136**(1.50s, 1) · post-merge **2558/2558**(862.82s, 472) · build **1223**(10.85s) · audit **0** · live default **0/149/0**(34.56s) · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(664 BE) · cross-stream **SYNCED(BE `@79aa377`)** -->
+# tester_1625: QA-B458 merge-verified+pushed @2992fa5 (QA-B95 parse serialized blocker payload objects · +2 vs 2556 → 2558); Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T13:29:31Z -->
+<!-- tester-sync: TSR 1624차 2026-07-15T13:29:31Z (backend) — **★ QA-B457 Fixed** FF merge `@79aa377` · related **265/265**(~15s, 4) · post-merge **2218/2218**(~86s, 404) · live **0/149/0**(33.36s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(664 BE) · cross-stream **SYNCED(BE `@79aa377` · FE `@2c5bb2a`)** -->
+# tester_1624_backend: QA-B457 Fixed FF merge c080529→79aa377 (QA-B95 object-form bootstrap blocker parsing · +2 vs 2216 → 2218); related 265/265; post-merge 2218/2218; live 0/149/0; Open 0; verdict BLOCK(origin push 664 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T13:16:29Z -->
+<!-- tester-sync: TSR 1623차 2026-07-15T13:16:29Z (frontend) — **★ QA-B456 Fixed** FF merge+PUSH `@2c5bb2a` · related **134/134**(1.45s, 1) · post-merge **2556/2556**(859.79s, 472) · build **1223**(9.16s) · audit **0** · live default **0/149/0**(33.43s) · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(663 BE) · cross-stream **SYNCED(BE `@c080529`)** -->
+# tester_1623: QA-B456 merge-verified+pushed @2c5bb2a (QA-B95 object-form live operation blockers · +2 vs 2554 → 2556); Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T12:54:58Z -->
+<!-- tester-sync: TSR 1622차 2026-07-15T12:54:58Z (backend) — **★ QA-B455 Fixed** FF merge `@c080529` · related **904/904**(~44s, 7) · post-merge **2216/2216**(88s, 404) · live **0/149/0**(33.84s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(663 BE) · cross-stream **SYNCED(BE `@c080529` · FE `@5b9656c`)** -->
+# tester_1622_backend: QA-B455 Fixed FF merge 7de86eb→c080529 (G-RFID care-provision SMS batch dispatch · kind13); related 904/904; post-merge 2216/2216; live 0/149/0; Open 0; verdict BLOCK(origin push 663 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T12:38:29Z -->
+<!-- tester-sync: TSR 1621차 2026-07-15T12:38:29Z (frontend) — merge **SKIP**(already SYNCED `@5b9656c`) · related reconfirm **86/86**(10.68s, 5) · npm **CARRY 2554/2554**(TSR1620) · build **1223**(9.05s) · audit **0** · live **SKIP**(no merge · carry 0/149/0) · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(662 BE) · cross-stream **SYNCED(BE `@7de86eb`)** -->
+# tester_1621: SYNCED reconfirm @5b9656c (QA-B454 carry · related 86/86 · build 1223 · no new Open); Planned QA-B116+QA-B95.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T12:50:00Z -->
+<!-- coder-sync: COD 2026-07-15T12:50:00Z (backend) — **★ G-RFID-CARE-PROVISION-DISPATCH** compare `dispatchCandidates` + `POST /visits/imports/rfid/care-provision-dispatch` (kind13 · FAQ 21589) · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1622_backend: RFID care-provision SMS batch dispatch BE; kind13; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T12:30:58Z -->
+<!-- tester-sync: TSR 1620차 2026-07-15T12:30:58Z (frontend) — **★ QA-B454 Fixed** FF merge+PUSH `@5b9656c` · related **86/86**(10.90s, 5) · post-merge **2554/2554**(862.51s, 472) · build **1223**(9.03s) · audit **0** · live default **0/149/0**(33.31s) · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(662 BE) · cross-stream **SYNCED(BE `@7de86eb`)** -->
+# tester_1620: QA-B454 merge-verified+pushed @5b9656c (G-SMS kind22 staff payroll statement FE · +4 vs 2550 → 2554); Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T12:15:00Z -->
+<!-- coder-sync: COD 2026-07-15T12:15:00Z (frontend) — **★ G-SMS kind22 payroll statement FE dispatch** · `notifyStaffPayrollStatementApi` + StaffNotificationDispatchPanel + StaffPayrollReportsPage · id=10 0.75→0.85 · related **86/86** · Open **0** · Planned QA-B116+QA-B95 · BE parity `@7de86eb` -->
+# coder_1620_frontend: kind22 STAFF_PAYROLL_STATEMENT FE wire (panel+reports page); id=10 0.85; related 86/86; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T12:08:06Z -->
+<!-- tester-sync: TSR 1619차 2026-07-15T12:08:06Z (backend) — **★ QA-B453 Fixed** FF merge `@7de86eb` · related **197/197**(~15s, 5) · post-merge **2209/2209**(86s, 403) · live **0/149/0**(34.91s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(662 BE) · cross-stream **SYNCED(BE `@7de86eb` · FE `@68cd253`)** -->
+# tester_1619_backend: QA-B453 Fixed FF merge 34d4968→7de86eb (kind22 STAFF_PAYROLL_STATEMENT dispatch · catalog 7/7); related 197/197; post-merge 2209/2209; live 0/149/0; Open 0; verdict BLOCK(origin push 662 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T11:53:02Z -->
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T12:05:00Z -->
+<!-- coder-sync: COD 2026-07-15T12:05:00Z (backend) — **★ G-SMS kind22 payroll statement BE dispatch** @ `7de86eb` · `POST /staff/notifications/staff-payroll-statement` + catalog `dispatchImplemented=true`(7/7) · related PASS · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1619_backend: kind22 STAFF_PAYROLL_STATEMENT @7de86eb dispatchImplemented=true + notify API; related PASS; Open 0; Planned QA-B116+QA-B95.
+
+<!-- tester-sync: TSR 1618차 2026-07-15T11:53:02Z (frontend) — **★ QA-B451 Fixed** FF verify+PUSH `@68cd253` · related **13/13**(10.45s, 3) · post-merge **2550/2550**(869.20s, 472) · build **1223**(10.84s) · audit **0** · live default **0/149/0**(33.94s) · FE ALL SYNCED+PUSHED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(661 BE) · cross-stream **SYNCED(BE `@34d4968`)** -->
+# tester_1618: QA-B451 merge-verified+pushed @68cd253 (soft maxLength restore · UXD-179+B451 3-commit · +1 vs 2549 → 2550); Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T11:17:23Z -->
+<!-- tester-sync: TSR 1617차 2026-07-15T11:17:23Z (backend) — **★ QA-B452 Fixed** FF merge `@34d4968` · related **93/93**(6.2s) · post-merge **2203/2203**(86s, 402) · live **0/149/0**(34.34s · bootstrap-disabled) · BE develop/test SYNCED · Open **1 BLOCK(QA-B451 FE)** · Planned QA-B116+QA-B95 · operation BLOCK(661 BE) · cross-stream **BLOCK(FE unit FAIL `@a2db731` · BE `@34d4968`)** · **coder 압박(FE): QA-B451 maxLength vs length-error @Test 정합 커밋** -->
+# tester_1617_backend: QA-B452 Fixed FF merge 9dff00f→34d4968; related 93/93; post-merge 2203/2203; live 0/149/0; Open 1(FE QA-B451); verdict BLOCK(origin push 661 BE); cross-stream BLOCK(FE unit).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T11:07:00Z -->
+<!-- tester-sync: TSR 1616차 2026-07-15T11:07:00Z (frontend) — merge **SKIP**(local `@a2db731`) · QA-B451 **reconfirm FAIL** focused **1/6**(2.71s) · full npm **CARRY 2549/2550 FAIL**(TSR1615) · live **SKIP** · origin/test **NOT PUSHED**(`353eb7f`) · Open **1 BLOCK(QA-B451)** · Planned QA-B116+QA-B95 · operation BLOCK(660 BE) · cross-stream BLOCK(FE unit · BE `@9dff00f`) · **coder 압박: maxLength vs length-error @Test 정합 커밋 필요** -->
+# tester_1616: QA-B451 reconfirm FAIL @a2db731 (ClientLinkageRecordForm 1 failed|5 passed · no coder fix yet); Open 1; verdict BLOCK(no origin/test push).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T10:55:25Z -->
+<!-- tester-sync: TSR 1615차 2026-07-15T10:55:25Z (frontend) — FF merge `353eb7f`→`a2db731`(UXD-179 org-wide linkage report · 2 commits) · related **24/24**(13.43s, 6) · build **1223**(10.69s) · audit **0** · post-merge **2549/2550 FAIL**(857.89s, 472 · **QA-B451**) · live **SKIP**(unit FAIL) · origin/test **NOT PUSHED**(`353eb7f`) · Open **1 BLOCK(QA-B451)** · Planned QA-B116+QA-B95 · operation BLOCK(660 BE) · cross-stream BLOCK(FE unit fail · BE `@9dff00f`) -->
+# tester_1615: UXD-179 FF merge local @a2db731; related 24/24; post-merge 2549/2550 FAIL (ClientLinkageRecordForm maxLength vs length-error test); Open 1 QA-B451 BLOCK; verdict BLOCK(no origin/test push).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T10:35:00Z -->
+<!-- tester-sync: TSR 1614차 2026-07-15T10:35:00Z (backend) — **★ QA-B450 Fixed** FF merge `@9dff00f` · related **99/99**(16.3s) · post-merge **2201/2201**(96s, 402) · live **0/149/0**(33.86s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned QA-B116+QA-B95 · operation BLOCK(660 BE) · cross-stream **BLOCK(FE develop pending 1 `@8b8095a`)** -->
+# tester_1614_backend: QA-B450 Fixed FF merge cdeb6bf→9dff00f; related 99/99; post-merge 2201/2201; live 0/149/0; Open 0; verdict BLOCK(origin push 660 BE); cross-stream BLOCK(FE pending1).
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T10:30:00Z -->
 <!-- coder-sync: COD 2026-07-15T10:30:00Z (backend) — **★ QA-B450** V195/V196 G-LINKAGE integrity + V196 readiness gate + nested bootstrap detail flatten (QA-B95/FE nested parity) · related **99/99** · Open **0** · Planned QA-B116+QA-B95 -->
 # coder_1614_backend: QA-B450 V195/V196 linkage integrity readiness gate + nested detail flatten; related 99/99; Open 0; Planned QA-B116+QA-B95.
@@ -3238,7 +3436,385 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0** active · TSR 1612 BE SYNCED `@cdeb6bf` · TSR 1613 FE ALL SYNCED+PUSHED `@353eb7f` · Fixed carry **QA-B435~B449** · cross-stream **SYNCED** · Planned **QA-B116**(origin/test **659 BE**)+**QA-B95** · operation **BLOCK**)_
+_(Open **0** active · Fixed carry **QA-B435~B473** · Planned **QA-B116**(origin/test **672 BE**)+**QA-B95** · operation **BLOCK** · BE local SYNCED `@89dc0a6` · FE develop/test/origin **ALL SYNCED `@a5f4098`** · TSR1647 reconfirm · **PLN**: residual process blocker Planned 유지)_
+
+
+### [TSR] v1.2.1/QA-B95 semicolon-optional numeric HTML entity decode FE parity — frontend develop→test merge+push EXECUTED (`a5f4098`, QA-20260715-B473) — **Fixed**
+
+- **id**: QA-20260715-B473
+- **priority**: HIGH → Fixed (TSR 1646 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@a5f4098` · TSR 1646 FF merge + **2586/2586** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T20:10:00Z (COD commit `@a5f4098` · develop/test pending **2** incl. UXD-180 `@eb270ae`)
+- **fixed_at**: 2026-07-15T20:29:30Z (TSR1646 merge+push `@a5f4098`)
+- **verified_at**: 2026-07-15T20:29:30Z
+- **version**: v1.2.1 / QA-B95 — semicolon-optional numeric HTML entities in readiness blockers (`&#123` without `;` · BE `@89dc0a6` parity · channel-status + live harness)
+- **summary**: FF merge pending **2** (`eb270ae` UXD-180 + `a5f4098`) into test · related **166/166** · post-merge **2586/2586**(+13) · live fail-closed **0/149/0**(bootstrap-disabled) · ALL SYNCED+PUSHED `@a5f4098`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·push 완료) · PLN (baseline FE `@a5f4098` · residual QA-B116 672 BE)
+- **roadmap_ref**: ROADMAP v1.2.1 QA-B95 parsing harden · semicolon-optional numeric entity decode FE parity
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (+semicolon-optional cases · +3 @Test)
+- **expected**: develop→test merge · related+full regression PASS · origin/test push · cross-stream SYNCED
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@a5f4098` · related **166/166** · npm **2586/2586** · live **0/149/0** · UXD-180 a11y components co-merged · residual = Planned **QA-B116**(672 BE)+**QA-B95**
+
+
+### [TSR] v2/QA-B95 double-encoded uppercase hex entity single-pass decode — backend develop→test merge EXECUTED (`89dc0a6`, QA-20260715-B472) — **Fixed**
+
+- **id**: QA-20260715-B472
+- **priority**: HIGH → Fixed (TSR 1645 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@89dc0a6` · TSR 1645 FF merge + **2227/2227** + live **0/149/0**)
+- **found_at**: 2026-07-15T20:03:34Z (COD commit `@89dc0a6` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T20:08:10Z (TSR1645 merge `@89dc0a6`)
+- **verified_at**: 2026-07-15T20:08:10Z
+- **version**: v2 / QA-B95 — double-encoded uppercase hex HTML entities in bootstrap blockers (`&AMP;#X2D;` → single-pass decode after named `&amp;` · `LiveE2eOperationReadinessSupport` · +1 @Test)
+- **summary**: FF merge pending **1** (`89dc0a6`) into test · related **37/37** · post-merge **2227/2227**(+1) · live fail-closed **0/149/0**(bootstrap-disabled) · local SYNCED `@89dc0a6`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (baseline BE `@89dc0a6` · residual QA-B116 672 BE · FE develop pending `@eb270ae`)
+- **roadmap_ref**: ROADMAP v2 QA-B95 parsing harden · double-encoded uppercase hex entity single-pass decode
+- **prevention**: LiveE2eOperationReadinessSupportTest (+double-encoded uppercase hex entity decode case · +1)
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED
+- **actual**: ★ Fixed — local SYNCED `@89dc0a6` · related **37/37** · mvn **2227/2227** · live **0/149/0** · residual = Planned **QA-B116**(672 BE)+**QA-B95** · FE develop pending **1** `@eb270ae`
+
+
+### [TSR] v1.2.1/QA-B95 uppercase hex HTML entity decode FE parity — frontend develop→test merge+push EXECUTED (`b4008b0`, QA-20260715-B471) — **Fixed**
+
+- **id**: QA-20260715-B471
+- **priority**: HIGH → Fixed (TSR 1644 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@b4008b0` · TSR 1644 FF merge + **2573/2573** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T19:00:40Z (COD commit `@b4008b0` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T19:32:30Z (TSR1644 merge+push `@b4008b0`)
+- **verified_at**: 2026-07-15T19:32:30Z
+- **version**: v1.2.1 / QA-B95 — uppercase hex HTML entities in readiness blockers (`&#X2D;` / `&AMP;#X2D;` · BE `@cf700b9` parity · channel-status + live harness)
+- **summary**: FF merge pending **1** (`b4008b0`) into test · related **153/153** · post-merge **2573/2573**(+2) · live fail-closed **0/149/0**(bootstrap-disabled) · origin/test PUSHED · ALL SYNCED `@b4008b0`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (baseline FE `@b4008b0` · residual QA-B116 671 BE)
+- **roadmap_ref**: ROADMAP v1.2.1/v2 QA-B95 parsing harden · FE/BE uppercase hex HTML entity decode parity
+- **prevention**: notificationChannelStatus.test + liveE2eHarness.test (uppercase hex entity decode cases · +2 @Test)
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@b4008b0` · related **153/153** · npm **2573/2573** · live **0/149/0** · residual = Planned **QA-B116**(671 BE)+**QA-B95**
+
+### [TSR] v2/QA-B95 uppercase hex HTML entity decode — backend develop→test merge EXECUTED (`cf700b9`, QA-20260715-B470) — **Fixed**
+
+- **id**: QA-20260715-B470
+- **priority**: HIGH → Fixed (TSR 1643 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@cf700b9` · TSR 1643 FF merge + **2226/2226** + live **0/149/0**)
+- **found_at**: 2026-07-15T18:55:28Z (COD commit `@cf700b9` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T18:58:17Z (TSR1643 merge `@cf700b9`)
+- **verified_at**: 2026-07-15T18:58:17Z
+- **version**: v2 / QA-B95 — uppercase hex HTML entities in bootstrap blockers (`&#x2D;`/`&#X2D;` decode · `LiveE2eOperationReadinessSupport` · +1 @Test)
+- **summary**: FF merge pending **1** (`cf700b9`) into test · related **36/36** · post-merge **2226/2226**(+1) · live fail-closed **0/149/0**(bootstrap-disabled) · local SYNCED `@cf700b9`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (baseline BE `@cf700b9` · residual QA-B116 671 BE)
+- **roadmap_ref**: ROADMAP v2 QA-B95 parsing harden · uppercase hex HTML entity decode
+- **prevention**: LiveE2eOperationReadinessSupportTest (+uppercase hex entity decode cases · +1)
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED
+- **actual**: ★ Fixed — local SYNCED `@cf700b9` · related **36/36** · mvn **2226/2226** · live **0/149/0** · residual = Planned **QA-B116**(671 BE)+**QA-B95**
+
+### [TSR] v1.2.1/G-LINKAGE report pagination controls — frontend develop→test merge+push EXECUTED (`fd6b996`, QA-20260715-B469) — **Fixed**
+
+- **id**: QA-20260715-B469
+- **priority**: HIGH → Fixed (TSR 1642 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@fd6b996` · TSR 1642 FF merge + **2571/2571** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T18:31:58Z (COD commit `@fd6b996` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T18:48:46Z (TSR1642 merge+push `@fd6b996`)
+- **verified_at**: 2026-07-15T18:48:46Z
+- **version**: v1.2.1 / G-LINKAGE — org-wide linkage records report pagination + filter page-reset (`ClientLinkageRecordsReportPage` · +1 @Test)
+- **summary**: FF merge pending **1** (`fd6b996`) into test · related **4/4** · post-merge **2571/2571**(+1) · live fail-closed **0/149/0**(bootstrap-disabled) · origin/test PUSHED · ALL SYNCED `@fd6b996`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (baseline FE `@fd6b996` · residual QA-B116 670 BE)
+- **roadmap_ref**: ROADMAP v1.2.1 G-LINKAGE org-wide report UX · page/size API paging
+- **prevention**: ClientLinkageRecordsReportPage.test (pagination next-page + filter resets to page 0 · +1)
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@fd6b996` · related **4/4** · npm **2571/2571** · live **0/149/0** · residual = Planned **QA-B116**(670 BE)+**QA-B95**
+
+### [TSR] v2/QA-B95 url+html encoded blocker decode coverage — backend develop→test merge EXECUTED (`baa1792`, QA-20260715-B468) — **Fixed**
+
+- **id**: QA-20260715-B468
+- **priority**: HIGH → Fixed (TSR 1641 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@baa1792` · TSR 1641 FF merge + **2225/2225** + live **0/149/0**)
+- **found_at**: 2026-07-15T18:26:23Z (COD commit `@baa1792` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T18:29:09Z (TSR1641 merge `@baa1792`)
+- **verified_at**: 2026-07-15T18:29:09Z
+- **version**: v2 / QA-B95 — url+html encoded bootstrap blocker decode coverage (`LiveE2eOperationReadinessSupportTest` · +1 @Test)
+- **summary**: FF merge pending **1** (`baa1792`) into test · related **35/35** · post-merge **2225/2225**(+1) · live fail-closed **0/149/0**(bootstrap-disabled) · local SYNCED `@baa1792`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (baseline BE `@baa1792` · residual QA-B116 670 BE)
+- **roadmap_ref**: ROADMAP v2 QA-B95 parsing harden · url/html encoded blocker decode coverage
+- **prevention**: LiveE2eOperationReadinessSupportTest (+url+html encoded blocker decode cases · +1)
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED
+- **actual**: ★ Fixed — local SYNCED `@baa1792` · related **35/35** · mvn **2225/2225** · live **0/149/0** · residual = Planned **QA-B116**(670 BE)+**QA-B95**
+
+### [TSR] v1.2.1/QA-B95 FE multi-pass double-encoded HTML entity decode — frontend develop→test merge+push EXECUTED (`c779ca1`, QA-20260715-B467) — **Fixed**
+
+- **id**: QA-20260715-B467
+- **priority**: HIGH → Fixed (TSR 1639 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@c779ca1` · TSR 1639 FF merge + **2570/2570** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T17:35:03Z (COD commit `@c779ca1` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T18:10:48Z (TSR1639 merge+push `@c779ca1`)
+- **verified_at**: 2026-07-15T18:10:48Z
+- **version**: v1.2.1 / QA-B95 — multi-pass decode double-encoded HTML entities (`&AMP;#x2d;` / case-insensitive named · BE `@2768252` parity)
+- **summary**: FF merge pending **1** (`c779ca1`) into test · related **151/151** · post-merge **2570/2570**(+2) · live fail-closed **0/149/0**(bootstrap-disabled) · origin/test PUSHED · ALL SYNCED `@c779ca1`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (baseline FE `@c779ca1` · residual QA-B116 669 BE)
+- **roadmap_ref**: ROADMAP v1.2.1/v2 QA-B95 parsing harden · FE/BE HTML entity decode parity
+- **prevention**: notificationChannelStatus.test + liveE2eHarness.test (multi-pass / double-encoded entity cases · +2 @Test)
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@c779ca1` · related **151/151** · npm **2570/2570** · live **0/149/0** · residual = Planned **QA-B116**(669 BE)+**QA-B95**
+
+### [TSR] v2/QA-B95 case-insensitive named HTML entity decode — backend develop→test merge EXECUTED (`2768252`, QA-20260715-B466) — **Fixed**
+
+- **id**: QA-20260715-B466
+- **priority**: HIGH → Fixed (TSR 1638 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@2768252` · TSR 1638 FF merge + **2224/2224** + live **0/149/0**)
+- **found_at**: 2026-07-15T17:30:00Z (COD commit `@2768252` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T17:31:18Z (TSR1638 merge `@2768252`)
+- **verified_at**: 2026-07-15T17:31:18Z
+- **version**: v2 / QA-B95 — `&LT;`/`&QUOT;`/`&AMP;` + double-encoded `&AMP;#x2d;` bootstrap blocker fail-closed (FE `/gi` parity)
+- **summary**: FF merge pending **1** (`2768252`) into test · related **34/34** · post-merge **2224/2224**(+1) · live fail-closed **0/149/0**(bootstrap-disabled) · local SYNCED `@2768252`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (baseline BE `@2768252` · residual QA-B116 669 BE)
+- **roadmap_ref**: ROADMAP v2 QA-B95 parsing harden · case-insensitive named entity decode
+- **prevention**: LiveE2eOperationReadinessSupportTest (+case-insensitive named entity cases)
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED
+- **actual**: ★ Fixed — local SYNCED `@2768252` · related **34/34** · mvn **2224/2224** · live **0/149/0** · residual = Planned **QA-B116**(669 BE)+**QA-B95**
+
+### [TSR] v2/QA-B95 numeric HTML entity decode + G-RFID snake_case dispatch alias — backend develop→test merge EXECUTED (`556eeff`, QA-20260715-B464) — **Fixed**
+
+- **id**: QA-20260715-B464
+- **priority**: HIGH → Fixed (TSR 1633 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@556eeff` · TSR 1633 FF merge + **2223/2223** + live **0/149/0**)
+- **found_at**: 2026-07-15T16:38:00Z
+- **fixed_at**: 2026-07-15T16:41:43Z (TSR1633 merge `@556eeff`)
+- **verified_at**: 2026-07-15T16:41:43Z
+- **version**: v2 / QA-B95 + G-RFID — numeric HTML entity hyphen/angle-bracket bootstrap blocker decode · `VisitRfidCareProvisionDispatchRequest` `@JsonAlias`(branch_id/year_month/client_ids)
+- **summary**: FF merge pending **1** (`556eeff`) into test · related **291/291** · post-merge **2223/2223**(+2) · live fail-closed **0/149/0**(bootstrap-disabled) · local SYNCED `@556eeff`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (baseline BE `@556eeff` · residual QA-B116 668 BE)
+- **roadmap_ref**: ROADMAP v2 QA-B95 parsing harden · G-RFID care-provision dispatch BE/FE payload parity
+- **prevention**: LiveE2eOperationReadinessSupportTest (+numeric entity cases) · VisitControllerRoutingTest (+snake_case dispatch request)
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED
+- **actual**: ★ Fixed — local SYNCED `@556eeff` · related **291/291** · mvn **2223/2223** · live **0/149/0** · residual = Planned **QA-B116**(668 BE)+**QA-B95**
+
+### [TSR] v1.2.1/G-RFID harden dispatch candidate payload parsing — frontend develop→test merge+push EXECUTED (`e837185`, QA-20260715-B463) — **Fixed**
+
+- **id**: QA-20260715-B463
+- **priority**: HIGH → Fixed (TSR 1632 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@e837185` · TSR 1632 FF merge + **2565/2565** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T16:11:35Z
+- **fixed_at**: 2026-07-15T16:11:35Z (COD `@e837185`)
+- **verified_at**: 2026-07-15T16:29:07Z
+- **version**: v1.2.1 / G-RFID-CARE-PROVISION-DISPATCH — snake_case + serialized `dispatchCandidates` harden (BE response shape tolerance)
+- **summary**: `VisitRfidDiffComparePanel` accepts snake_case / serialized dispatch candidate payloads so care-provision SMS batch targets surface consistently · related **9/9** · post-merge **2565/2565**(+1) · live fail-closed **0/149/0**.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (baseline FE `@e837185` · residual QA-B116 667 BE)
+- **roadmap_ref**: ROADMAP v1.2.1/v2 G-RFID FE wire harden · BNK follow-up payload parity
+- **prevention**: VisitRfidDiffComparePanel.test (+payload parsing cases · 9 tests)
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@e837185` · related **9/9** · npm **2565/2565** · live **0/149/0** · residual = Planned **QA-B116**(667 BE)+**QA-B95**
+
+### [TSR] v2/QA-B95 unicode nested JSON + HTML-escaped bootstrap blocker decode — backend develop→test merge EXECUTED (`956c487`, QA-20260715-B461) — **Fixed**
+
+- **id**: QA-20260715-B461
+- **priority**: BLOCK → Fixed (TSR 1631 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@27de3a3`+`@956c487` · TSR 1631 FF merge + **2221/2221** + live **0/149/0**)
+- **found_at**: 2026-07-15T15:06:40Z
+- **reconfirmed_at**: 2026-07-15T15:55:43Z (TSR1630)
+- **fixed_at**: 2026-07-15T16:07:41Z (TSR1631 merge `@956c487`)
+- **verified_at**: 2026-07-15T16:07:41Z
+- **version**: v2 / QA-B95 — unicode nested JSON + HTML-escaped live blocker payload harden
+- **summary**: FF merge pending **2** (`27de3a3` nested JSON unicode · `956c487` HTML-escaped payloads) into test · related **270/270** · post-merge **2221/2221**(+2) · live fail-closed **0/149/0**(bootstrap-disabled) · local SYNCED `@956c487`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (baseline `@956c487` · QA-B116 origin/test **667 BE**)
+- **roadmap_ref**: ROADMAP CURRENT BASELINE → `@956c487` · QA-B95 operation residual
+- **prevention**: LiveE2eOperationReadinessSupportTest entity-escaped nested blocker coverage (+2 @Test)
+- **expected**: develop→test merge · `mvn test` + live PASS · Open 0
+- **actual**: ★ Fixed — develop/test **SYNCED `@956c487`** · **2221/2221** · live **0/149/0** · residual = Planned **QA-B116**(origin/test 667 BE)+**QA-B95**
+
+### [TSR] v1.2.1/G-RFID care-provision SMS FE batch dispatch — frontend develop→test merge+push EXECUTED (`5843845`, QA-20260715-B462) — **Fixed**
+
+- **id**: QA-20260715-B462
+- **priority**: HIGH → Fixed (TSR 1629 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@5843845` · TSR 1629 FF merge + **2564/2564** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T15:15:00Z
+- **fixed_at**: 2026-07-15T15:15:00Z (COD `@5843845`)
+- **verified_at**: 2026-07-15T15:29:53Z
+- **version**: v1.2.1 / G-RFID-CARE-PROVISION-DISPATCH — FAQ **21589** message_kind **13** FE wire (BE `@c080529` parity)
+- **summary**: `dispatchRfidCareProvisionApi` + `VisitRfidDiffComparePanel` compare `dispatchCandidates` → yearMonth/clientIds/summary batch SMS · empty-candidate guidance · Field/Checkbox a11y · UXD Toast carry (`2450662`).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (ROADMAP G-RFID FE residual CLOSED)
+- **roadmap_ref**: ROADMAP v1.2.1/v2 G-RFID-CARE-PROVISION-DISPATCH FE wire P2 → CLOSED · BNK-762 0-hit closure
+- **prevention**: VisitRfidDiffComparePanel.test (+3) + billingGuardianPlatformServices dispatch API lock (62 tests)
+- **expected**: develop→test merge · related+full regression PASS · care-provision-dispatch FE 0-hit 해소 · origin/test SYNCED
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@5843845` · related **62/62** · npm **2564/2564** · live **0/149/0** · residual Open = **QA-B461**(BE only)
+
+### [TSR] v1.2.1/QA-B95 decode encoded readiness payload aliases — frontend develop→test merge+push EXECUTED (`3fddccd`, QA-20260715-B460) — **Fixed**
+
+- **id**: QA-20260715-B460
+- **priority**: HIGH → Fixed (TSR 1627 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@3fddccd` · TSR 1627 FF merge + **2560/2560** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T14:07:50Z
+- **fixed_at**: 2026-07-15T14:07:50Z (COD `@3fddccd`)
+- **verified_at**: 2026-07-15T14:25:36Z
+- **version**: v1.2.1 / QA-B95 — URL-encoded and serialized channel-status blocker/config payload alias decode
+- **summary**: Decode URL-encoded/serialized readiness payload aliases in `notificationChannelStatus` so channel-status blockers are not silently dropped · +2 @Test (2558→2560 · related 11/11).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **665 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / QA-B95 live-e2e operation gate · BE parity `@7868384` (QA-B459)
+- **prevention**: Lock encoded/object-form alias decode in notificationChannelStatus tests (11) + keep full npm green before origin/test push
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED · cross-stream SYNCED with BE `@7868384`
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@3fddccd` · related **11/11** · npm **2560/2560** · live **0/149/0** · residual Planned QA-B116 (**665 BE**) + QA-B95
+
+### [TSR] v2/QA-B95 decode URL-encoded bootstrap blocker payloads — backend develop→test merge EXECUTED (`7868384`, QA-20260715-B459) — **Fixed**
+
+- **id**: QA-20260715-B459
+- **priority**: HIGH → Fixed (TSR 1626 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@7868384` · TSR 1626 FF merge · **2219/2219** · live **0/149/0** bootstrap-disabled)
+- **found_at**: 2026-07-15T13:59:19Z
+- **fixed_at**: 2026-07-15T13:59:19Z (COD `@7868384`)
+- **verified_at**: 2026-07-15T14:04:02Z
+- **version**: v2 / QA-B95 — URL-encoded object payload decode before bootstrap gate matching
+- **summary**: `LiveE2eOperationReadinessSupport` URL-decodes encoded object-form blocker payloads before bootstrap gate matching to prevent false-ready states · +1 @Test (2218→2219 · related 266/266).
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (QA-B116 origin/test **665 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v2 QA-B95 effective operation gate · FE parity `@2992fa5` (QA-B458)
+- **prevention**: LiveE2eOperationReadinessSupportTest locks URL-encoded object-form disabled/service-unavailable tokens
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED with FE `@2992fa5`
+- **actual**: ★ Fixed — BE SYNCED `@7868384` · related **266/266** · post-merge **2219/2219** · live **0/149/0** · residual Planned QA-B116 (**665 BE**) + QA-B95
+
+### [TSR] v1.2.1/QA-B95 parse serialized blocker payload objects — frontend develop→test merge+push EXECUTED (`2992fa5`, QA-20260715-B458) — **Fixed**
+
+- **id**: QA-20260715-B458
+- **priority**: HIGH → Fixed (TSR 1625 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@2992fa5` · TSR 1625 FF merge + **2558/2558** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T13:35:01Z
+- **fixed_at**: 2026-07-15T13:35:01Z (COD `@2992fa5`)
+- **verified_at**: 2026-07-15T13:51:49Z
+- **version**: v1.2.1 / QA-B95 — JSON-stringified object blocker payload normalization (probe+config fail-closed)
+- **summary**: Normalize serialized/stringified blocker payload objects in `liveBackendProbe`/`liveConfig` so QA-B95 operation gates remain fail-closed · +2 harness @Test (2556→2558 · related 136/136).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **664 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / QA-B95 live-e2e operation gate · BE parity `@79aa377` (QA-B457)
+- **prevention**: Lock serialized object-form blocker parsing in liveE2eHarness (136) + keep full npm green before origin/test push
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED · cross-stream SYNCED with BE `@79aa377`
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@2992fa5` · related **136/136** · npm **2558/2558** · live **0/149/0** · residual Planned QA-B116 (**664 BE**) + QA-B95
+
+### [TSR] v2/QA-B95 object-form bootstrap blocker parsing — backend develop→test merge EXECUTED (`79aa377`, QA-20260715-B457) — **Fixed**
+
+- **id**: QA-20260715-B457
+- **priority**: HIGH → Fixed (TSR 1624 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@79aa377` · TSR 1624 FF merge · **2218/2218** · live **0/149/0** bootstrap-disabled)
+- **found_at**: 2026-07-15T13:24:00Z
+- **fixed_at**: 2026-07-15T13:24:00Z (COD `@79aa377`)
+- **verified_at**: 2026-07-15T13:29:31Z
+- **version**: v2 / QA-B95 — object-form bootstrap blocker token parsing (health/probe readiness)
+- **summary**: `LiveE2eOperationReadinessSupport` treats object-style blocker markers (`bootstrap-disabled`/`service-unavailable`) as bootstrap blockers to prevent false-negative suppression · +2 @Test (2216→2218 · related 265/265).
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (QA-B116 origin/test **664 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v2 QA-B95 effective operation gate · FE parity `@2992fa5` (QA-B458)
+- **prevention**: LiveE2eOperationReadinessSupportTest locks object-form disabled/service-unavailable tokens
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED with FE `@2c5bb2a`
+- **actual**: ★ Fixed — BE SYNCED `@79aa377` · related **265/265** · post-merge **2218/2218** · live **0/149/0** · residual Planned QA-B116 (**664 BE**) + QA-B95
+
+### [TSR] v1.2.1/QA-B95 accept object-form live operation blockers — frontend develop→test merge+push EXECUTED (`2c5bb2a`, QA-20260715-B456) — **Fixed**
+
+- **id**: QA-20260715-B456
+- **priority**: HIGH → Fixed (TSR 1623 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@2c5bb2a` · TSR 1623 FF merge + **2556/2556** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T13:00:00Z
+- **fixed_at**: 2026-07-15T13:00:00Z (COD `@2c5bb2a`)
+- **verified_at**: 2026-07-15T13:16:29Z
+- **version**: v1.2.1 / QA-B95 — object-form / nested payload live operation blocker normalization (probe+config fail-closed)
+- **summary**: Harden `liveBackendProbe`/`liveConfig` blocker normalization to parse nested object payloads from health/probe state so QA-B95 gates remain fail-closed · +2 harness @Test (2554→2556 · related 134/134).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **663 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / QA-B95 live-e2e operation gate
+- **prevention**: Lock object-form blocker parsing in liveE2eHarness (134) + keep full npm green before origin/test push
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED · cross-stream SYNCED with BE `@c080529`
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@2c5bb2a` · related **134/134** · npm **2556/2556** · live **0/149/0** · residual Planned QA-B116 (**663 BE**) + QA-B95
+
+### [TSR] v2/G-RFID care-provision SMS batch dispatch — backend develop→test merge EXECUTED (`c080529`, QA-20260715-B455) — **Fixed**
+
+- **id**: QA-20260715-B455
+- **priority**: HIGH → Fixed (TSR 1622 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@c080529` · TSR 1622 FF merge · **2216/2216** · live **0/149/0** bootstrap-disabled)
+- **found_at**: 2026-07-15T12:50:00Z
+- **fixed_at**: 2026-07-15T12:50:00Z (COD `@c080529`)
+- **verified_at**: 2026-07-15T12:54:58Z
+- **version**: v2 / G-RFID-CARE-PROVISION-DISPATCH — ezCare FAQ **21589** message_kind **13** RFID care-provision SMS batch dispatch
+- **summary**: `GET /visits/imports/rfid/diff-compare` `dispatchCandidates` + `POST /visits/imports/rfid/care-provision-dispatch` batch SMS (kind13 · quiet-hours gated) · VisitRfidCareProvisionDispatchService + RBAC/routing locks (+7 @Test · 2209→2216 · related 904/904).
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (QA-B116 origin/test **663 BE** · FE RFID wire P2)
+- **roadmap_ref**: ROADMAP v2 G-RFID-CARE-PROVISION-DISPATCH · id=10 RFID SMS P2 lever (BNK-743/754)
+- **prevention**: VisitRfidCareProvisionDispatchServiceTest + MustApiEndpointRoutingTest + RoleBasedControllerAccessTest lock
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED with FE `@5b9656c`
+- **actual**: TSR 1622 FF merge EXECUTED · related **904/904 PASS** · post-merge **2216/2216 PASS** · live E2E **0/149/0** (bootstrap-disabled) · FE wire residual P2 (no Open)
+
+### [TSR] v1.2.1/G-SMS kind22 staff payroll statement FE dispatch — frontend develop→test merge+push EXECUTED (`5b9656c`, QA-20260715-B454) — **Fixed**
+
+- **id**: QA-20260715-B454
+- **priority**: HIGH → Fixed (TSR 1620 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@5b9656c` · TSR 1620 FF merge + **2554/2554** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T12:15:00Z
+- **fixed_at**: 2026-07-15T12:15:00Z (COD `@5b9656c`)
+- **verified_at**: 2026-07-15T12:30:58Z
+- **version**: v1.2.1 / G-SMS-7KIND · M11×J03 — ezCare message_kind **22** `STAFF_PAYROLL_STATEMENT` FE dispatch wire (BE `@7de86eb` parity)
+- **summary**: `notifyStaffPayrollStatementApi` + StaffNotificationDispatchPanel kind22 CTA + StaffPayrollReportsPage dispatch wire · competitorModuleCoverage id=10 **0.75→0.85** · notificationChannelStatus catalog parity (+4 @Test · 2550→2554 · related 86/86).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **662 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / v2 id=10 SMS/kind22 · US-SMS-7KIND-TEMPLATE
+- **prevention**: Lock kind22 panel+reports dispatch paths in StaffNotificationDispatchPanel + StaffPayrollReportsPage tests; keep BE catalog dispatchImplemented=7 parity
+- **expected**: develop→test merge · related+full regression PASS · origin/test SYNCED · cross-stream SYNCED with BE `@7de86eb`
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@5b9656c` · related **86/86** · npm **2554/2554** · live **0/149/0** · residual Planned QA-B116 (**662 BE**) + QA-B95
+
+### [TSR] v2/G-SMS kind22 staff payroll statement BE dispatch — backend develop→test merge EXECUTED (`7de86eb`, QA-20260715-B453) — **Fixed**
+
+- **id**: QA-20260715-B453
+- **priority**: HIGH → Fixed (TSR 1619 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@7de86eb` · TSR 1619 FF merge · **2209/2209** · live **0/149/0** bootstrap-disabled)
+- **found_at**: 2026-07-15T12:05:00Z
+- **fixed_at**: 2026-07-15T12:05:00Z (COD `@7de86eb`)
+- **verified_at**: 2026-07-15T12:08:06Z
+- **version**: v2 / G-SMS-7KIND · M11×J03 — ezCare message_kind **22** `STAFF_PAYROLL_STATEMENT` dispatch wire
+- **summary**: Catalog `dispatchImplemented` 6→**7** · `POST /api/v1/staff/notifications/staff-payroll-statement` (quiet-hours gated alimtalk) · M11 simple-payment-statement preview → netPay payload · fallback SMS 본문 · REQUIRED alimtalk template list 포함 (+6 @Test · 2203→2209 · related 197/197).
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (QA-B116 origin/test **662 BE**)
+- **roadmap_ref**: ROADMAP v2 id=10 SMS/kind22 · US-SMS-7KIND-TEMPLATE
+- **prevention**: StaffPayrollStatementNotificationServiceTest + catalog dispatchImplementedCount=7 lock
+- **expected**: develop→test merge · related+full regression PASS
+- **actual**: TSR 1619 FF merge EXECUTED · related **197/197 PASS** · post-merge **2209/2209 PASS** · live E2E **0/149/0** (bootstrap-disabled) · FE kind22 UI closed as **QA-B454** `@5b9656c`
+
+### [TSR] v2/QA-B95 normalize bootstrap detail delimiter variants — backend develop→test merge EXECUTED (`34d4968`, QA-20260715-B452) — **Fixed**
+
+- **id**: QA-20260715-B452
+- **priority**: HIGH → Fixed (TSR 1617 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@34d4968` · TSR 1617 FF merge · **2203/2203** · live **0/149/0** bootstrap-disabled)
+- **found_at**: 2026-07-15T11:13:29Z
+- **fixed_at**: 2026-07-15T11:13:29Z (COD `@34d4968`)
+- **verified_at**: 2026-07-15T11:17:23Z
+- **version**: v2 / QA-B95 deepen — accept colon and padded key-value bootstrap detail delimiter tokens in live operation readiness parsing (disabled + service-unavailable variants)
+- **summary**: `LiveE2eOperationReadinessSupport` normalizes delimiter variants so operation gate stay fail-closed across payload shape differences (+2 @Test · 2201→2203 · LiveE2eOperationReadinessSupportTest 27 · related 93/93).
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (QA-B116 origin/test **661 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v2 QA-B95 · operation gate · live-e2e readiness
+- **prevention**: Lock colon/padded delimiter variants in LiveE2eOperationReadinessSupportTest (disabled + unavailable)
+- **expected**: develop→test merge · related+full regression PASS · live 0 FAIL under bootstrap-disabled
+- **actual**: ★ Fixed — BE develop/test SYNCED `@34d4968` · residual Planned QA-B116 (**661 BE**) + QA-B95 · cross-stream **SYNCED**(FE `@68cd253` TSR1618) · live **0/149/0**
+
+### [TSR] v2/G-LINKAGE V195/V196 integrity + QA-B95 nested bootstrap detail flatten — backend develop→test merge EXECUTED (`9dff00f`, QA-20260715-B450) — **Fixed**
+
+- **id**: QA-20260715-B450
+- **priority**: HIGH → Fixed (TSR 1614 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@9dff00f` · TSR 1614 FF merge · **2201/2201** · live **0/149/0** bootstrap-disabled)
+- **found_at**: 2026-07-15T10:16:00Z
+- **fixed_at**: 2026-07-15T10:30:00Z (COD `@9dff00f`)
+- **verified_at**: 2026-07-15T10:35:00Z
+- **version**: v2 / G-LINKAGE-RECORD · QA-B95 deepen — Flyway V195 org/branch report index + V196 defense-in-depth (length CHECK·3-way FK·set_org_branch) · `V196ClientLinkageRecordsIntegrityReadinessProbe` wired into live operation gate · nested JSON-array bootstrap detail token flatten (FE QA-B449 parity)
+- **summary**: Integrity readiness gate fail-closed on missing V196 constraints · nested bootstrap detail parsing (+7 @Test · 2194→2201 · related 99/99 in 5 suites).
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (QA-B116 origin/test **660 BE** · FE UXD-179 org-wide linkage Route pending)
+- **roadmap_ref**: ROADMAP v2 G-LINKAGE · QA-B95 operation gate
+- **prevention**: Lock V196 probe + nested detail cases in LiveE2eOperationReadinessSupportTest + V196ClientLinkageRecordsIntegrityReadinessProbeTest
+- **expected**: develop→test merge · related+full regression PASS · live 0 FAIL under bootstrap-disabled
+- **actual**: ★ Fixed — BE develop/test SYNCED `@9dff00f` · residual Planned QA-B116 (**660 BE**) + QA-B95 · cross-stream **BLOCK**(FE develop pending 1) · live **0/149/0**
 
 ### [TSR] v1.2.1/QA-B95 flatten nested live blocker composites — frontend develop→test merge+push EXECUTED (`353eb7f`, QA-20260715-B449) — **Fixed**
 
@@ -11265,21 +11841,93 @@ _(Planned **0건(active)** superseded — QA-20260613-B62 **Fixed @ `e89175e`**;
 
 ## Fixed
 
-### [COD] v2/G-LINKAGE V195/V196 integrity + QA-B95 nested detail flatten — backend develop (pending tester FF) (`QA-B450`) — **Fixed (local)**
+### [TSR] v1.2.1/QA-B95 parse serialized blocker payload objects — frontend develop→test merge+push EXECUTED (`2992fa5`, QA-20260715-B458) — **Fixed**
+
+- **id**: QA-20260715-B458
+- **priority**: HIGH → Fixed (TSR 1625 verified + origin/test PUSHED)
+- **severity**: HIGH → cleared
+- **stream**: frontend
+- **status**: Fixed (COD `@2992fa5` · TSR 1625 related **136/136** · **2558/2558** · live **0/149/0** · origin/test PUSH)
+- **found_at**: 2026-07-15T13:35:01Z
+- **fixed_at**: 2026-07-15T13:35:01Z (COD `@2992fa5`)
+- **verified_at**: 2026-07-15T13:51:49Z (TSR 1625)
+- **version**: v1.2.1 / QA-B95 serialized blocker objects · BE `@79aa377` cross-stream
+- **summary**: Parse JSON-stringified object blocker payloads in live readiness normalization (`liveBackendProbe`/`liveConfig`) so QA-B95 gates remain fail-closed (+2 harness @Test).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **664 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / QA-B95 live-e2e operation gate
+- **prevention**: Keep liveE2eHarness serialized-object suite (136) + full npm green before origin/test push
+- **expected**: FE develop→test merge · suite green · origin/test SYNCED · cross-stream SYNCED with BE
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@2992fa5` · related **136/136** · npm **2558/2558** · live **0/149/0** · residual Planned QA-B116 (**664 BE**) + QA-B95
+
+### [TSR] v1.2.1/QA-B95 accept object-form live operation blockers — frontend develop→test merge+push EXECUTED (`2c5bb2a`, QA-20260715-B456) — **Fixed**
+
+- **id**: QA-20260715-B456
+- **priority**: HIGH → Fixed (TSR 1623 verified + origin/test PUSHED)
+- **severity**: HIGH → cleared
+- **stream**: frontend
+- **status**: Fixed (COD `@2c5bb2a` · TSR 1623 related **134/134** · **2556/2556** · live **0/149/0** · origin/test PUSH)
+- **found_at**: 2026-07-15T13:00:00Z
+- **fixed_at**: 2026-07-15T13:00:00Z (COD `@2c5bb2a`)
+- **verified_at**: 2026-07-15T13:16:29Z (TSR 1623)
+- **version**: v1.2.1 / QA-B95 object-form live operation blockers · BE `@c080529` cross-stream
+- **summary**: Parse nested object payloads in live readiness blocker normalization (`liveBackendProbe`/`liveConfig`) so QA-B95 gates remain fail-closed (+2 harness @Test).
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **663 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / QA-B95 live-e2e operation gate
+- **prevention**: Keep liveE2eHarness object-form suite (134) + full npm green before origin/test push
+- **expected**: FE develop→test merge · suite green · origin/test SYNCED · cross-stream SYNCED with BE
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@2c5bb2a` · related **134/134** · npm **2556/2556** · live **0/149/0** · residual Planned QA-B116 (**663 BE**) + QA-B95
+
+### [TSR] v1.2.1/G-SMS kind22 staff payroll statement FE dispatch — frontend develop→test merge+push EXECUTED (`5b9656c`, QA-20260715-B454) — **Fixed**
+
+- **id**: QA-20260715-B454
+- **priority**: HIGH → Fixed (TSR 1620 verified + origin/test PUSHED)
+- **severity**: HIGH → cleared
+- **stream**: frontend
+- **status**: Fixed (COD `@5b9656c` · TSR 1620 related **86/86** · **2554/2554** · live **0/149/0** · origin/test PUSH)
+- **found_at**: 2026-07-15T12:15:00Z
+- **fixed_at**: 2026-07-15T12:15:00Z (COD `@5b9656c`)
+- **verified_at**: 2026-07-15T12:30:58Z (TSR 1620)
+- **version**: v1.2.1 / G-SMS kind22 FE · BE `@7de86eb` parity
+- **summary**: Wire staff payroll statement kind22 dispatch UI (`notifyStaffPayrollStatementApi` + panel + reports page) · id=10 coverage 0.75→0.85.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **662 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / v2 id=10 SMS/kind22
+- **prevention**: Keep kind22 related suite (86) + full npm green before origin/test push
+- **expected**: FE develop→test merge · suite green · origin/test SYNCED · cross-stream SYNCED with BE kind22
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@5b9656c` · related **86/86** · npm **2554/2554** · live **0/149/0** · residual Planned QA-B116 (**662 BE**) + QA-B95
+
+### [COD] v1.2.1/UXD-179 ClientLinkageRecordForm `maxLength` breaks BE max-length error test (QA-20260715-B451) — **Fixed**
+
+- **id**: QA-20260715-B451
+- **priority**: BLOCK → Fixed (TSR 1618 verified + origin/test PUSHED)
+- **severity**: BLOCK → cleared
+- **stream**: frontend
+- **status**: Fixed (COD `@68cd253` · TSR 1618 related **13/13** · **2550/2550** · live **0/149/0** · origin/test PUSH)
+- **found_at**: 2026-07-15T10:55:25Z
+- **fixed_at**: 2026-07-15T11:34:00Z (COD `@68cd253`)
+- **verified_at**: 2026-07-15T11:53:02Z (TSR 1618)
+- **version**: v1.2.1 / UXD-179 G-LINKAGE org-wide report
+- **summary**: `ClientLinkageRecordForm`에서 `targetInstitution` 입력의 `maxLength` DOM cap을 제거해 soft validation(`연계 대상 기관명은 200자 이하여야 합니다.`) 분기가 다시 도달 가능하도록 복구.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·origin/test push 완료) · PLN (QA-B116 origin/test **661 BE** · QA-B95)
+- **roadmap_ref**: ROADMAP v1.2.1 / G-LINKAGE org-wide FE · USER_STORIES UXD-179
+- **prevention**: soft validation 메시지를 유지할 필드는 DOM `maxLength`와 충돌하지 않게 설계하고, focused + full `npm test`를 merge 전 고정 실행.
+- **expected**: `ClientLinkageRecordForm` 관련 실패 0 · full suite green · origin/test push 가능 상태 복귀
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@68cd253` · related **13/13** · npm **2550/2550** · live **0/149/0** · residual Planned QA-B116 (**661 BE**) + QA-B95
+
+### [COD] v2/G-LINKAGE V195/V196 integrity + QA-B95 nested detail flatten — backend develop→test merge EXECUTED (`9dff00f`, QA-20260715-B450) — **Fixed**
 
 - **id**: QA-20260715-B450
-- **priority**: HIGH → cleared (local develop)
+- **priority**: HIGH → Fixed (TSR 1614 verified)
 - **stream**: backend
-- **status**: Fixed (local COD — tester merge/verify pending)
+- **status**: Fixed (COD `@9dff00f` · TSR 1614 FF merge · **2201/2201** · live **0/149/0**)
 - **found_at**: 2026-07-15T10:16:00Z (BNK dirty V195/V196 untracked)
-- **fixed_at**: 2026-07-15T10:30:00Z (COD)
+- **fixed_at**: 2026-07-15T10:30:00Z (COD) · **verified_at**: 2026-07-15T10:35:00Z (TSR)
 - **version**: v2 / G-LINKAGE-RECORD · QA-B95 deepen
 - **summary**: Land Flyway V195 org/branch report index + V196 defense-in-depth (length CHECK·3-way FK·set_org_branch·purge index) · wire `V196ClientLinkageRecordsIntegrityReadinessProbe` into live operation gate · flatten nested JSON-array bootstrap detail tokens (FE QA-B449 parity).
-- **assignee**: COD (완료) / TSR (merge·검증 대기) / PLN (QA-B116+QA-B95)
+- **assignee**: COD (완료) / TSR (merge·검증 완료) / PLN (QA-B116 origin/test **660 BE** · QA-B95)
 - **roadmap_ref**: ROADMAP v2 G-LINKAGE · QA-B95
-- **reproduce**: related `V196*ProbeTest`+`LiveE2eOperationReadinessSupportTest`+`HealthControllerTest`+`LiveE2eControllerTest`+`LiveE2eBootstrapLiveApiRoutingE2eTest` **99/99 PASS**
+- **reproduce**: related **99/99**; full **2201/2201**; live **0/149/0**
 - **expected**: V195/V196 committed; gate fail-closed on missing integrity; nested detail detection
-- **actual**: ★ Fixed (local) — WT CLEAN pending commit · tester FF + origin/test push still QA-B116
+- **actual**: ★ Fixed — develop/test **SYNCED `@9dff00f`** · origin/test still **660 BE**(QA-B116)
 
 ### [TSR] v2/QA-B95 expose effectiveOperationSuppressedByBootstrap — backend develop→test merge EXECUTED (`cf1dada`, QA-20260715-B431) — **Fixed**
 
