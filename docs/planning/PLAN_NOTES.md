@@ -156,6 +156,14 @@
 4. **M12 credentials rollout vs QA-B116 (★ carry)**: origin/test push 직후 staged pilot vs 전 facility 일괄?
 5. **CashReceipt 3-way radio (patient/protector/xx) UX (★ BNK-739 receipt-list)**: v2 scope에 포함 vs P3 defer?
 
+### [COD] 코더 메모 (2026-07-15 — QA-B95 bracketed/quoted blocker parse)
+
+- FE develop `fix(v1.2.1/QA-B95): unwrap bracketed operation blocker tokens` — `normalizeLiveOperationBlockers` + `unwrapLiveOperationBlockerToken` in `liveBackendProbe.js` (JSON-array string · bracket/quote unwrap · quasi-JSON fallthrough) · same unwrap in `liveConfig.js`/`liveGlobalSetup.js` · BE `@e7efe02` detail-token parity · related liveE2eHarness **131/131** · Open **0** · Planned **QA-B116+QA-B95** · residual = origin/test push(ops) · M12 credentials · id=10 SMS/RFID SMS go/no-go.
+
+### [COD] 코더 메모 (2026-07-15 — G-LINKAGE-RECORD draft edit rehydrate)
+
+- FE `@fae1f34` `fix(v1.2.1/G-LINKAGE-RECORD): rehydrate folded summary on draft edit` — `parseLinkageSummaryFold` unfolds `[작성일]`/`[퇴소 후 이용계획]` → `normalizeLinkageRecord.summaryCore`·`carePlanAfterDischarge`·`recordDate` · `ClientLinkageRecordsPanel` 수정 폼 재주입 · round-trip 재저장 시 marker 중복 방지 · related linkageRecords+Panel **16/16 PASS** · Open **0** · Planned **QA-B116+QA-B95** · residual = ops M12 credentials · id=10 SMS/RFID SMS go/no-go · org-wide linkage report(TWR Q2).
+
 ### [COD] 코더 메모 (2026-07-15 — US-V06 batch-unconfirm FE)
 
 - FE `@2da7ead` `feat(v1.2.1/US-V06): wire monthly visit batch-unconfirm panel` — `VisitBatchUnconfirmPanel` on `/visits` · `fetchVisitBatchUnconfirmPreviewApi` + `batchUnconfirmVisitsApi` · 4-digit challenge 표시/재입력 · 6-cascade ack · visits-only scope note · related panel+services+VisitsPage tests · Open **0** · Planned **QA-B116+QA-B95** · BE parity `@d248916`.
@@ -1233,6 +1241,25 @@
 
 ### 문서 작성 질문
 
+### [TWR] 연계기록지 길이 가드·live E2E 파싱 문서화 (2026-07-15 — **Q822·Q823 · baseline `d271cc3`/`33f59a9`**)
+
+**문서 갱신**: develop HEAD 실측 후 ops 동기화 · Flyway **V1–V194** · 모듈 **~93.6%**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **API_SPEC** | **§4-2** 연계기록지 6-endpoint · 200/5000 · DRAFT→DISPATCHED | ✅ |
+| **CHANGELOG** | **2026-07-15** 카드 4건(TWR+BE+FE) · 「최근 7일 요약」갱신 | ✅ |
+| **FAQ** | **Q822**·**Q823** 신규 · Q819·Q820·Q821 보강 · baseline **`d271cc3`/`33f59a9`** | ✅ |
+| **USER_MANUAL** | **§1-3·§4-7-3b** 기관 200자·요약 5000자·필드 오류 | ✅ |
+| **ADMIN_GUIDE** | **§1-4** 길이 가드·bootstrap 구분자·env 정규화 | ✅ |
+| **DEPLOYMENT** | **§1-3·§1-4 스모크** over-max 422 · truthy trim | ✅ |
+
+**현황 정리**:
+1. 연계기록지 **이용자 상세 탭 full-stack**은 유지 — 잔여 Must는 **SideNav·지점 통합 리포트**만.
+2. live E2E는 **사용자 화면 영향 없음** — IT·QA 게이트 안정화.
+
+---
+
 ### [COD] G-LINKAGE-RECORD FE wire · OTHER=제거 · client-scope list (2026-07-15)
 
 **회신 (TWR Q819 연계)**:
@@ -1242,15 +1269,11 @@
 
 ---
 
-### [TWR] G-LINKAGE-RECORD BE WIP · FE `OTHER` 정합 (2026-07-15)
+### [TWR] G-LINKAGE-RECORD BE WIP · FE `OTHER` 정합 (2026-07-15) — **✅ 해소 (Q819 full-stack)**
 
-문서화는 **커밋된 FE UX 셸**(Q819)과 live E2E opt-in(Q820)까지 반영했습니다. 아래는 coder/planner 확인 전까지 **API_SPEC·USER_MANUAL 조작 절차 확장**을 보류한 항목입니다.
+이전 개방 질문은 COD 회신·develop HEAD 실측으로 **해소**했습니다. ops는 Q819 Fixed·§4-7-3b·DEPLOYMENT V194 스모크를 반영한 상태입니다.
 
-1. **BE `clientlinkage/` · Flyway `V194__client_linkage_records_carefor_1_10.sql`** 가 develop working tree에 **untracked** 로 존재합니다. 커밋·push 전에 ops/API_SPEC에 **V194·엔드포인트**를 「완료」로 올리면 안 되는지?
-2. FE `LINKAGE_TYPE_OPTIONS` 에 **`OTHER`(기타 연계)** 가 있으나, WIP V194 CHECK 는 **`HOSPITAL`/`HOME_CARE`/`TRANSFER`만** 허용합니다. 정본은 **OTHER 포함**(FE·스펙) vs **3종만**(DB) 중 어느?
-3. 리포트 목록 API를 **`GET /api/v1/clients/linkage-records`**(전역)로 둘지, **client 스코프 list만**으로 둘지? (UX 셸 `ClientLinkageRecordsReportPanel` vs 현재 WIP Controller는 `/{clientId}/linkage-records`만)
-
-> 확인되면 Q819를 full-stack Fixed로 승격하고 USER_MANUAL §4-7-3b·API_SPEC·DEPLOYMENT V194 스모크를 확장합니다.
+~~1. BE untracked~~ → **커밋됨** · ~~2. OTHER~~ → **3종만** · ~~3. 전역 리포트 API~~ → **client list만**(지점 통합은 v2+)
 
 ---
 
