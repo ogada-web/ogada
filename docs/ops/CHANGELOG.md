@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-15T05:24:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-15T23:35:00+09:00 -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 기준 (J03 channel-status 필드 별칭 · G2 초안 수정 시 상세 재조회 · M12 SSO 오류 안내 · 기관 공지 DRAFT 수정·첨부 URL · M12 SSO 보안 · V192 · M11 급여)
+> **기준**: develop 최신 코드 기준 · BE **`82a83e3`** (BNK-730 bootstrap blocker 진단 + G2 complete) · FE **`0210aaa`** (BNK-730 facility-notice DRAFT persist + G2 FULL 1.0) · **기관 공지사항·자료실 게시판 FULL** · **M12 회계 BPO launch API** · **L/이용자별 연계기록지** · **Flyway V1–V192** · 모듈 **97.41%** (27.15/29)
 
 ## 읽는 법
 
@@ -13,16 +13,1183 @@
 
 ## 최근 7일 요약
 
-- **2026-07-14** — 알림 채널 **API 필드 별칭** · 기관 공지 **수정 시 상세 재조회** · 재무회계 SSO **429·비허용 URL 안내 문구** · 초안 수정·첨부 URL · M12 SSO 호스트 제한 · 기관 공지 게시판 · 서버 DRAFT · V192 · suppressed bootstrap · 발송 이력 필터 · M11 급여 — **모듈 KPI 93.6% · BE `1f3698d`·FE `71839a6` SYNCED · 문서 전수 최신화**
-- **2026-07-13** — 차량 **송영 주소** trim·연속 공백 정리 · health **V190** · **금일 배차 제외** UI·서버 이중 잠금 · 송영표 스크린리더 목록 구조
-- **2026-07-07~12** — develop HEAD 유지 (이전 baseline 대비 코드 변경 없음)
-- **2026-06-27** — 위생·안전 checklist 필수/선택 semantics 확정 · NHIS 수가 seed 미지원 연도 오류 메시지 개선
-- **2026-06-28** — 이동서비스비 1일 1회 안내가 parity catalog와 연동 · live E2E bootstrap health probe 회귀 lock
+- **2026-07-15** — **G2 가정통신문·기관 공지사항 게시판** 전체 FULL-STACK 완성(id=1-5 1.0·id=10 1.0) · **기관 공지·자료실** 게시판 CRUD · 발송이력 board-style 필터
+- **2026-07-15** — **M12 회계 BPO launch** 카탈로그·SSO OTP handoff API · org-wide 운영 준비(coder config P1)
+- **2026-07-15** — **기관 공지 초안 복제·상세 조회·attach URL(https)** · 기관/자료실 분류 · 메뉴 바로가기 · live E2E bootstrap blocker 우선순위 진단
+- **2026-07-15** — **live E2E bootstrap blocker** 합성 파싱 FULL · HTML entity(대소문자·이중·생략)·URL·퍼센트·중첩JSON·유니코드·object 매칭 · FE parity fix
+- **2026-07-15** — **channel-status API** 문자 발송 참고 단가 노출 · 알림 채널 패널 BE 우선·static fallback
+- **2026-07-15** — 연계기록지 **리포트 페이지네이션** · live E2E **세미콜론 생략 HTML entity** · **SkipLink·ProgressBar a11y** — ops 문서 반영
+- **2026-07-15** — live E2E **대소문자·이중 HTML entity bootstrap blocker decode**(BE+FE) — ops 문서 반영
+- **2026-07-15** — RFID 비교 후 **급여제공내역 SMS 일괄 발송 UI**(방문요양) · live E2E **중첩 JSON·유니코드 bootstrap blocker** — ops 문서 반영
 
 
 ---
 
+## 2026-07-15
+
+### ✅ G2 기관 공지 게시판 — 전체 full-stack 완성 (BE+FE)
+- **에이전트**: COD
+- **한 일**: **`GET/POST/PATCH /api/v1/notifications/facility-notices`** · **초안 복제·게시·상세 조회** · **첨부 http(s)만** 허용(V193 CHECK) · **분류 NOTICE/RESOURCE** · **기관(테넌트)별 격리** · 게시판 영속화 + FE **`/clients/home-newsletter` 게시판 CRUD**·**발송이력 board-style 필터**(`branchId` 스코프·`activeBranch` 우선) — **id=10 모듈 1.0 도달**(id=10-4·**G2 FULL 1.0**)
+- **내 화면/업무에 영향**: **센터장·통합 관리자** — **`/clients/home-newsletter`** 게시판에서 **「기관 공지」·「자료실」 카테고리** 선택 후 **초안→게시·복제·수정·상세** · **조용한 시간대** 자동 제외 (Q806·Q811)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `55b8f84`(BNK-729 facility-notice CRUD) + `24f555d`(V192 dispatch-history index) · `NotificationFacilityNoticeService` · `V192 CHECK chk_facility_notices_attachment_url_format` · 6-endpoint REST · DRAFT/PUBLISHED workflow · 기관 권한 검증 · 감사 trigger · FE 발송이력 필터(`branchId`·`activeBranchId` parity)
+- FE: `bb48b6c`(BNK-729 draft board UI) + `0210aaa`(BNK-730 persist compose as DRAFT) · **`FacilityNoticeBoardPage`** ·**draft session + history reuse** · compose preview PATCH → facility-notice DRAFT 저장 · 기관명 JS 검증 · 첨부 http(s) placeholder 불안전 링크 차단
+- V192–V193 · health `homeNewsletter*` ready(조용한시간대 blocker 반영) · API_SPEC §4-2-1 · FAQ Q803–Q808·Q811 · USER_MANUAL §5-9 · ADMIN_GUIDE §1-4
+
+</details>
+
+### ✅ M12 회계 BPO — launch catalog + SSO OTP handoff API
+- **에이전트**: COD
+- **한 일**: **`GET /api/v1/billing/accounting/bpo-launch`** · **`POST …/bpo-sso-handoff`** 카탈로그 + SSO OTP 핸드오프 · 외부 BPO(수지파인·sujifine) 상태 probe · 환경변수 스코프 자격 검증(HQ/BRANCH만) · FE wire — **id=12 모듈 0.7 도달**
+- **내 화면/업무에 영향**: **통합 관리자** — **`/accounting`** 페이지에서 **「회계 시스템(BPO) 진입」** 링크 · 공개 로그인 또는 **SSO(환경 자격 시)** · **비밀번호 미수집**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `edaa9e9`(BNK-716 launch catalog) + `093ac88`(BNK-720 SSO handoff) · `AccountingBpoService` · catalog **`availabilityStatus`**(AVAILABLE/PLANNED/UNAVAILABLE) · SSO OTP 계정 매칭 · 외부 포털 검증 · health `accountingBpo*Ready` · V190 · **환경 자격 미설정 시 → 공개 로그인만**(REQUIREMENTS §11-4 compliance)
+- FE: `84b336b`(BNK-717 wire catalog·external link) + `063c269`(BNK-720 align KPI) · **`AccountingBpoPage`** · catalog status 렌더 · **새 탭**에서 BPO 포털 열기 · a11y announce · 모듈 88.62%→91.90%→**0.7 carry**(M12 BPO+SSO pending P1)
+- health **`accountingBpoLaunchReady`** · FE 환경 공백=missing(not default) · API_SPEC §4-7 · ADMIN_GUIDE §1-4 · Q782·Q784·Q785·Q787·Q801
+
+</details>
+
+### ✅ G2 가정통신문 — 발송이력 board-style 필터·필터링 갱신
+- **에이전트**: COD
+- **한 일**: **`GET /api/v1/notifications/home-newsletter/dispatch-history`** — **`branchId` 스코프** 필터 · **`activeBranchId` 우선** · page/size/sort/q(제목·발신자) · **v193 인덱스** · FE board-style 목록 + **「기간·상태·중앙·지점」 필터** · 「중앙」 선택 시 → 지점 자동 초기화
+- **내 화면/업무에 영향**: **센터장·통합 관리자** — **`/clients/home-newsletter`** 우상 **「발송 이력」** 탭에서 **기간·상태 필터**로 발송 내역 조회(Q801·기본 20건)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `24f555d`(V191 dispatch-history index) + `b054ca6`(center-name/summary surface) + `6706f65`(filters) · 서버 필터 로직 · `activeBranchId` 스코프 우선 · query builder pagination
+- FE: `3bd50ac`(BNK-727 board-style controls) + `bb48b6c`(history filters wire) · `HomeNewsletterDispatchHistoryPanel` · filter UI + 「상태 초기화」
+- USER_MANUAL §5-9 · ADMIN §1-4 · V191 · Q801·Q793·Q800 · FAQ 신규
+
+</details>
+
+### 📝 기관 공지·회계 BPO·live E2E bootstrap ops 문서화
+- **에이전트**: TWR
+- **한 일**: 실측 BNK-730(BE `82a83e3`·FE `0210aaa`) 기준 ops 문서 갱신 — **G2 기관 공지 게시판 FULL·M12 BPO launch** · **live E2E bootstrap blocker** 종합 진단 · FAQ **Q809·Q828·Q829·Q830·Q835·Q837·Q839·Q840·Q841** 신규 · USER_MANUAL **§1-5 G2/M12 체크박스** · ADMIN_GUIDE §1-4 baseline 갱신 · 모듈 KPI **93.62%→97.41%**(27.15/29·id=1-5 0.85→1.0·+0.52pp)
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 문서: CHANGELOG(summary·카드)·FAQ(기관공지·BPO 관련 Q신규)·USER_MANUAL(§1-5 BNK-730 추가)·ADMIN_GUIDE(1-4 baseline)·DEPLOYMENT(ops-ready flag)
+- Flyway **V1–V192** · 모듈 KPI **27.15/29** · **id=1-5 1.0 도달**(G2 FULL)·**id=10 1.0**(공지게시판)
+- P1 잔여: M11 급여 persist·수익/인건비 자동 집계·기관별 SSO 자격 · P2: program reports FE·live PG·LCMS FCMS
+
+</details>
+
+### ✅ live E2E bootstrap blocker — 합성 매칭·토큰 파싱 FULL (BE+FE)
+- **에이전트**: COD
+- **한 일**: **Q825·Q828·Q833·Q834·Q836·Q837·Q839·Q840·Q841** 종합 대응 — **HTML entity**(소문자·대소문자·이중·세미콜론 생략) · **URL percent-encoded** · **중첩 JSON·유니코드** · **object-form JSON** · **괄호·따옴표·배열·key:value padding** · **space/comma/semicolon composite token** 파싱 및 bootstrap gate 매칭
+- **내 화면/업무에 영향**: 없음 — live E2E 통과 가드 강화(운영 블로커 투명성)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: **`operationBlockers` 정규화** — Jackson nested JSON parse · URL decode(`URLDecoder`) · HTML entity decode(`String.replace regex`) · 모든 형식 bootstrap `code` 마커 추출
+- FE: **`liveGlobalSetup.js`** + **`notificationChannelStatus.js`** · **`normalizeOperationBlockers`** · **`normalizeLiveOperationBlockers`** · bootstrap token matching via composite regex · parity test
+- health **`liveE2eEffectiveOperationReady`** · **`liveE2eSuppressedBootstrapOperationBlockers`** · **`liveE2eEffectiveOperationSuppressedByBootstrap`** — FE opt-in(`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION`) 미설정 시 skip
+- BE commits: `27de3a3`(nested JSON)·`7868384`(URL)·`956c487`/`556eeff`/`2768252`/`89dc0a6`/`a5f4098`(HTML entity) · FE: `956c487`/`2992fa5`(object-form)
+- QA-B95 effective gate FE **`5805d68`** parity · API_SPEC §4-3 health probe · FAQ Q821·Q824·Q825·Q828·Q833·Q834·Q836·Q837·Q839·Q840·Q841
+
+</details>
+
+### 📝 channel-status 참고 단가 BE+FE ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **`GET /notifications/channel-status` `dispatchReferenceUnitRates`**(BE) · FE **BE 우선·static fallback** 규칙을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop **`2f578fb`** · FE develop **`a356083`** — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q844** 갱신 · USER_MANUAL §5-5 · ADMIN §1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ 알림 채널 — channel-status 참고 단가 API (BE)
+- **에이전트**: COD
+- **한 일**: **`GET /api/v1/notifications/channel-status`** 응답에 **`dispatchReferenceUnitRates`** 를 추가했습니다. 앱 푸시 **10원** · SMS **20원** · MMS **50원**이며, **Solapi 실과금·청구와 무관한 운영 안내**입니다.
+- **내 화면/업무에 영향**: **센터장·통합 관리자** — 알림 채널 API·패널이 **동일한 참고 단가**를 서버에서 받음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `NotificationDispatchUnitRatesCatalog` · `NotificationChannelStatusResponse.dispatchReferenceUnitRates`
+- regression: `NotificationChannelReadinessServiceTest`
+
+</details>
+
+### ✅ 알림 채널 — BE 참고 단가 우선 표시 (FE)
+- **에이전트**: COD
+- **한 일**: **`NotificationChannelReadinessPanel`** 이 channel-status의 **`dispatchReferenceUnitRates`** 를 **우선 사용**하고, 응답이 없거나 비어 있으면 **FE 정적 fallback**(앱 10·SMS 20·MMS 50원)을 씁니다.
+- **내 화면/업무에 영향**: **센터장·통합 관리자** — **`/organization/settings`**·**`/dashboard`** 알림 채널 패널 참고 단가가 **서버·화면 parity** 유지
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `resolveDispatchReferenceUnitRates` · `notificationDispatchUnitRates.js` · `NotificationChannelReadinessPanel`
+- regression: `notificationDispatchUnitRates.test.js` · `NotificationChannelReadinessPanel.test.jsx`
+
+</details>
+
+### 📝 문자 발송 참고 단가 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **알림 채널 패널 「문자 발송 참고 단가」**(앱 10·SMS 20·MMS 50원, 운영 안내 전용)를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop **`e9f24f7`** · FE develop **`56797a8`** — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q844** · USER_MANUAL §5-5 · ADMIN §1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ 알림 채널 — 문자 발송 참고 단가 (FE)
+- **에이전트**: COD
+- **한 일**: 조직 설정·대시보드 **알림 채널 준비 상태** 패널에 **「문자 발송 참고 단가」** 표를 추가했습니다. 앱 푸시 **10원** · SMS **20원** · MMS **50원**이며, **Solapi 실과금·청구와 무관한 운영 안내**입니다.
+- **내 화면/업무에 영향**: **센터장·통합 관리자** — **`/organization/settings`**·**`/dashboard`** 알림 채널 패널에서 채널별 **참고 단가**를 바로 확인
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `notificationDispatchUnitRates.js` · `NotificationChannelReadinessPanel` — Table「문자 발송 참고 단가」
+- regression: `notificationDispatchUnitRates.test.js` · `NotificationChannelReadinessPanel.test.jsx`
+
+</details>
+
+### 📝 세미콜론 생략 entity·연계 리포트 페이지·a11y ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 세미콜론 생략 numeric HTML entity decode** · **연계기록지 리포트 페이지네이션** · **SkipLink·ProgressBar·Skeleton a11y(UXD-180)** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q840** · **Q841** · **Q842** · **Q843** · USER_MANUAL §3-2·§4-7-3b · ADMIN §1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ live E2E — semicolon-optional numeric HTML entity decode (FE)
+- **에이전트**: COD
+- **한 일**: health/probe·알림 채널 readiness의 blocker 토큰이 **`&#45`**·**`&#x2d`** 처럼 **세미콜론(`;`) 없이** 끝나도 numeric HTML entity로 디코딩합니다. BE `@89dc0a6` 와 동일 규칙입니다.
+- **내 화면/업무에 영향**: **센터장·sysadmin** — **`/organization/settings`**·**`/dashboard`** 알림 채널 패널이 gateway entity 표기 차이에서도 누락 원인 표시. **IT·QA** live E2E gate
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `notificationChannelStatus.js` · `liveGlobalSetup.js` · `liveBackendProbe.js` · `liveConfig.js`
+- regression: `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — double-encoded numeric entity re-decode (BE)
+- **에이전트**: COD
+- **한 일**: health/probe detail의 **`&AMP;#X2D;`** 등 **이중 인코딩 numeric entity**를 **`&amp;` 전개 후 numeric decode를 재실행**해 한 패스에서 처리합니다. FE multi-pass decode와 parity입니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken` — post-`&amp;` numeric re-run
+- regression: `LiveE2eOperationReadinessSupportTest` — uppercase double-encoded lock
+
+</details>
+
+### ✅ 연계기록지 — 지점 리포트 페이지네이션 (FE)
+- **에이전트**: COD
+- **한 일**: **`/clients/linkage-records`** 지점 통합 리포트에 **페이지 이동·총 건수 표시**를 추가했습니다. **조회** 버튼으로 필터를 확정하면 **1페이지로 초기화**되며, 페이지당 **100건**씩 불러옵니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 연계기록지가 많은 지점에서 **전체 이력을 페이지 단위로** 넘겨 볼 수 있음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `ClientLinkageRecordsReportPage` — `Pagination` · `REPORT_PAGE_SIZE=100` · `fetchClientLinkageRecordsReportApi` page/size
+- regression: `ClientLinkageRecordsReportPage.test.jsx`
+
+</details>
+
+### ✅ UI 접근성 — SkipLink·ProgressBar·Skeleton·달력 마커 (FE)
+- **에이전트**: UXD
+- **한 일**: 로그인·앱 본문에 **「본문으로 건너뛰기」SkipLink**를 추가하고, **RFID 일괄 발송 중 ProgressBar**·**로딩 Skeleton**·**달력 작성 상태 마커** 컴포넌트를 도입했습니다. 직원 출근 달력은 **색상 외 텍스트 라벨**로 상태를 표시합니다.
+- **내 화면/업무에 영향**: **키보드·스크린리더 사용자** — SideNav를 건너뛰고 본문으로 바로 이동 가능 · RFID 발송 중 **진행 표시** 확인
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `SkipLink` · `AppShell` · `PublicAuthLayout` · `ProgressBar`(`VisitRfidDiffComparePanel`) · `Skeleton` · `CalendarDayMarker`
+- regression: `SkipLink.test.jsx` · `ProgressBar.test.jsx` · `Skeleton.test.jsx` · `CalendarDayMarker.test.jsx`
+
+</details>
+
+### 📝 대소문자·이중 HTML entity blocker ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 대소문자 named HTML entity·이중 인코딩(`&AMP;#x2d;`) bootstrap blocker decode** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop **`2768252`** · FE develop **`c779ca1`** — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q839** · **Q837** 갱신 · USER_MANUAL §5-5 · ADMIN §1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ live E2E — multi-pass double-encoded HTML entity decode (FE)
+- **에이전트**: COD
+- **한 일**: health/probe·알림 채널 readiness의 blocker 토큰이 **`&LT;`·`&QUOT;`·`&AMP;#x2d;`** 처럼 **대소문자 named entity** 또는 **이중 HTML 인코딩**이면 **최대 3회 multi-pass 디코딩** 후 bootstrap blocker로 판정합니다. BE `@2768252` 와 동일 규칙입니다.
+- **내 화면/업무에 영향**: **센터장·sysadmin** — **`/organization/settings`**·**`/dashboard`** 알림 채널 패널이 gateway 이중 이스케이프 blocker에서도 누락 원인 표시. **IT·QA** live E2E gate
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `notificationChannelStatus.js` · `liveGlobalSetup.js` · `liveBackendProbe.js` · `liveConfig.js`
+- regression: `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — case-insensitive named HTML entity decode (BE)
+- **에이전트**: COD
+- **한 일**: health/probe detail의 **`&LT;`/`&QUOT;`/`&AMP;`** 대소문자 named HTML entity와 **`&AMP;#x2d;`** 이중 인코딩을 디코딩한 뒤 bootstrap blocker로 판정합니다. FE `/gi` named-entity 규칙과 parity입니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken` — `Pattern.CASE_INSENSITIVE` named entity
+- regression: `LiveE2eOperationReadinessSupportTest` — uppercase gateway wrapper lock
+
+</details>
+
+### 📝 HTML entity blocker·RFID snake_case ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E HTML entity bootstrap blocker decode** · **RFID snake_case·후보 파싱 보강** 을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q837** · **Q838** · **Q832** 갱신 · USER_MANUAL §5-11 RFID · ADMIN §1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ live E2E — HTML entity bootstrap blocker decode (FE)
+- **에이전트**: COD
+- **한 일**: health/probe·알림 채널 readiness의 blocker 토큰이 **`&#45;`·`&#x2d;`·`&lt;`·`&gt;`** 처럼 **HTML entity**로 오면 **구분자 분리 전에 디코딩**해 bootstrap blocker로 판정합니다. BE `@556eeff` 와 동일 규칙입니다.
+- **내 화면/업무에 영향**: **센터장·sysadmin** — **`/organization/settings`**·**`/dashboard`** 알림 채널 패널이 entity-escaped blocker에서도 누락 원인 표시. **IT·QA** live E2E gate
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `liveGlobalSetup.js` · `liveBackendProbe.js` · `liveConfig.js` · `notificationChannelStatus.js`
+- regression: `liveE2eHarness.test.js` · `notificationChannelStatus.test.js`
+
+</details>
+
+### ✅ live E2E — numeric HTML entity·RFID snake_case dispatch (BE)
+- **에이전트**: COD
+- **한 일**: health/probe detail의 **`&#45;`/`&#x2d;`/`&lt;`/`&gt;`** numeric·named HTML entity를 디코딩한 뒤 bootstrap blocker로 판정합니다. RFID 일괄 문자 API는 요청 body **`branch_id`·`year_month`·`client_ids`** snake_case도 수용합니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사(방문요양)** — Swagger·외부 연동이 snake_case로 보내도 일괄 발송 API가 거부되지 않음. **IT·QA** live E2E gate
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken`
+- `VisitRfidCareProvisionDispatchRequest` — `@JsonAlias`(branch_id, year_month, client_ids)
+- regression: `LiveE2eOperationReadinessSupportTest` · `VisitControllerRoutingTest`
+
+</details>
+
+### ✅ live E2E — HTML-escaped bootstrap blocker decode (BE)
+- **에이전트**: COD
+- **한 일**: health/probe 상세가 **`&quot;bootstrap-disabled&quot;`**·**`&amp;`** 등 **HTML-escaped JSON**이면 entity 디코딩 후 bootstrap blocker로 판정합니다. nested·URL·object-form 파싱 **앞단** 레이어입니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken` — named entity 전개
+- regression: `LiveE2eOperationReadinessSupportTest` — entity-escaped nested lock
+
+</details>
+
+### ✅ RFID 비교 — dispatch 후보·발송 건수 파싱 보강 (FE)
+- **에이전트**: COD
+- **한 일**: RFID 비교 응답의 **`dispatchCandidates`** 가 **snake_case**(`client_id`·`ltc_cert_no`)이거나 **직렬화 문자열**이어도 후보 목록을 표시합니다. 발송 성공 건수는 **`dispatched_count`** alias도 읽습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사(방문요양)** — BE 응답 형식 차이로 **일괄 발송 후보가 비어 보이거나** 성공 건수 Alert가 **0으로 보이는** 현상 방지
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `VisitRfidDiffComparePanel` — `normalizeDispatchCandidates` · `resolveDispatchedCount`
+- regression: `VisitRfidDiffComparePanel.test.jsx`
+
+</details>
+
+### 📝 RFID 일괄 SMS UI·중첩 JSON blocker ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **RFID→급여제공내역 SMS 일괄 발송 UI** · live E2E **중첩 JSON·유니코드 bootstrap blocker** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q832** 갱신 · **Q836** · USER_MANUAL §5-11 RFID · ADMIN §1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ RFID 비교 → 급여제공내역 SMS 일괄 발송 UI (FE)
+- **에이전트**: COD
+- **한 일**: `/visits` **RFID 계획·태그 비교** 결과에 나온 발송 후보를 체크해 **급여제공내역 문자(kind 13)** 를 한 번에 보내는 화면을 연결했습니다. 연월·요약·전체 선택/해제까지 폼에서 처리합니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사(방문요양)** — 비교 후 **「급여제공내역 SMS 일괄 발송」** 으로 여러 수급자에게 바로 발송. **주야간보호·조용한 시간대·후보 없음** 은 기존과 같이 안내/거부
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `VisitRfidDiffComparePanel` · `dispatchRfidCareProvisionApi`
+- `POST /api/v1/visits/imports/rfid/care-provision-dispatch`
+- regression: `VisitRfidDiffComparePanel.test.jsx` · `billingGuardianPlatformServices.test.js`
+
+</details>
+
+### ✅ live E2E — 중첩 JSON·유니코드 bootstrap blocker (BE)
+- **에이전트**: COD
+- **한 일**: health/probe 상세가 **`operationBlockers={"nested":{"code":"bootstrap\\u002ddisabled"}}`** 처럼 **중첩 JSON·유니코드 이스케이프**여도 Jackson으로 펼친 뒤 bootstrap blocker로 판정합니다. URL 인코딩된 중첩 JSON도 동일합니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport.expandJsonDetailToken` — Jackson `JsonNode` leaf 전개
+- regression: `LiveE2eOperationReadinessSupportTest` — nested unicode · percent-encoded nested lock
+
+</details>
+
+### ✅ 디자인 시스템 Toast·컴포넌트 export (FE)
+- **에이전트**: UXD
+- **한 일**: 공통 **Toast** 컴포넌트(성공/정보=`status`, 위험/경고=`alert`)와 누락 export·모션 토큰을 보강했습니다.
+- **내 화면/업무에 영향**: 없음 — 화면은 아직 Toast 미사용. 이후 알림 UX 기반만 마련
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `Toast.jsx` · `ToastProvider` · `useToast` · `--motion-duration` · `components.css` `.ds-toast*`
+
+</details>
+
+### 📝 URL-encoded blocker·channel-status ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E URL-encoded bootstrap blocker decode** · **알림 채널 readinessBlockers URL decode** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q834** · **Q835** · USER_MANUAL §1-3·§5-5 · ADMIN §1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ live E2E — URL-encoded bootstrap blocker decode (BE)
+- **에이전트**: COD
+- **한 일**: health/probe **상세(detail) 토큰**이 **`%7B%22code%22%3A%22bootstrap-disabled%22%7D`** 처럼 **퍼센트 인코딩**으로 오면 **디코딩 후** bootstrap blocker로 판정합니다. object-form·composite 파싱 **앞단**에 URL decode 레이어를 둡니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport.decodeUrlEncodedDetailToken` — `%`·`+` 포함 시 `URLDecoder.decode`
+- regression: `LiveE2eOperationReadinessSupportTest` — percent-encoded object·composite lock
+
+</details>
+
+### ✅ 알림 채널 — URL-encoded readiness payload decode (FE)
+- **에이전트**: COD
+- **한 일**: **`GET /notifications/channel-status`** 응답의 **`readinessBlockers`**·**`missingTemplateCodes`**·직렬화 **templates** 문자열이 **URL 인코딩**되어 와도 **`normalizeNotificationChannelStatus`** 가 **디코딩·목록화**합니다. 패널에서 blocker가 **조용히 누락**되지 않습니다.
+- **내 화면/업무에 영향**: **센터장·sysadmin** — **`/organization/settings`**·**`/dashboard`** **「알림 채널 준비 상태」** 패널이 **인코딩된 blocker 문자열**에서도 **누락 원인**을 표시
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `notificationChannelStatus.js` — `decodeCompositePayload` · `normalizeStringList`
+- regression: `notificationChannelStatus.test.js` — encoded blocker·template alias lock
+
+</details>
+
+### 📝 RFID 급여제공내역 문자·object blocker ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **RFID↔공단 비교 후 급여제공내역(kind 13) 일괄 발송 API** · compare **`dispatchCandidates`** · live E2E **object-form blocker** 파싱을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ **Q832** · **Q833** · USER_MANUAL §5-11 RFID · ADMIN §1-4 · DEPLOYMENT §1-4 · API_SPEC §9 Visits
+
+</details>
+
+### ✅ RFID 비교 후 급여제공내역 문자 일괄 발송 (BE)
+- **에이전트**: COD
+- **한 일**: RFID↔공단 계획 엑셀 비교 결과에 **인정번호로 해석한 발송 후보**를 붙이고, 방문요양 지점에서 **급여제공내역(kind 13)** 을 **여러 수급자에게 일괄** 보내는 API를 추가했습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사(방문요양)** — 비교 API 응답에 후보 목록이 포함됩니다. **당일 FE 일괄 발송 UI 연결 완료**(상단 카드 참고). **주야간보호 지점에서는 일괄 API 거부**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `POST /api/v1/visits/imports/rfid/compare` → **`dispatchCandidates[]`**
+- `POST /api/v1/visits/imports/rfid/care-provision-dispatch` — `branchId` · `yearMonth` · `clientIds[]` · `summary`(선택)
+- `CARE_PROVISION_RECORD` · **ezCare message_kind=13** · HOME_VISIT only · 조용한 시간대 가드 동일
+
+</details>
+
+### ✅ live E2E — object-form bootstrap blocker 파싱 (BE+FE)
+- **에이전트**: COD
+- **한 일**: health/probe blocker가 **`{"code":"bootstrap-disabled"}`** 같은 **객체·직렬화 JSON** 형태로 와도 bootstrap blocker로 **인식**하도록 보강했습니다. 게이트가 payload 형태 때문에 초록으로 잘못 통과하지 않습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE `LiveE2eOperationReadinessSupport` — object `code=` / `code-` 마커
+- FE `liveBackendProbe` · `liveConfig` — 직렬화 object·nested payload 정규화
+- regression: `LiveE2eOperationReadinessSupportTest` · `liveE2eHarness.test.js`
+
+</details>
+
+### 📝 급여명세서 kind 22 발송 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **직원 급여명세서 알림톡(kind 22) 발송** · **템플릿 카탈로그 7/7** · **Q813 갱신**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.1%**
+- FAQ **Q831** · **Q813** 갱신 · USER_MANUAL §4-7-0f·§4-7-4 · ADMIN §6-2-24b·§1-4 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ 급여명세서 kind 22 발송 UI (FE)
+- **에이전트**: COD
+- **한 일**: **간이지급명세서** 화면과 **직원 상세 알림 발송 패널**에 **급여명세서 알림톡** 발송을 연결했습니다. 미리보기와 **동일 금액**으로 kind 22를 보냅니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — **`/payroll/reports`** 미리보기 후 **「급여명세서 알림톡 발송」** · **`/staff/:id`** 패널에서 **발송 종류=급여명세서** 선택 후 발송
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `StaffPayrollReportsPage` · `StaffNotificationDispatchPanel` · `notifyStaffPayrollStatementApi`
+- `POST /api/v1/staff/notifications/staff-payroll-statement`
+
+</details>
+
+### ✅ 급여명세서 kind 22 발송 API (BE)
+- **에이전트**: COD
+- **한 일**: ezCare **message_kind=22** 급여명세서를 **조용한 시간대 게이트**가 적용된 알림톡으로 보내는 API를 추가했습니다. M11 간이지급명세서 미리보기와 **동일 계산**으로 실지급액을 payload에 담습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 직원에게 **급여명세서 알림톡** 발송 가능(채널 준비·야간 제한은 기존 J03과 동일). **퇴사·비활성 직원**은 거부
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `POST /api/v1/staff/notifications/staff-payroll-statement`
+- `StaffPayrollStatementNotificationService` · catalog **`dispatchImplementedCount=7`**
+- 템플릿 **`STAFF_PAYROLL_STATEMENT`** · SMS 폴백 본문
+
+</details>
+
+### 📝 연계기록지 검증·리포트 조회·bootstrap 구분자 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **연계기록지 대상 기관 soft 길이 검증(QA-B451)** · **지점 리포트 「조회」 확정 필터(UXD-179)** · **live E2E bootstrap `:`·패딩 구분자(Q828)** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop **`34d4968`** · FE develop **`68cd253`** · **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~93.6%**
+- FAQ **Q828** · **Q829** · **Q830** · Q826·Q822 갱신 · USER_MANUAL §4-7-3b · ADMIN · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ 연계기록지 — 대상 기관 200자 필드 검증 복원 (FE)
+- **에이전트**: COD
+- **한 일**: 연계 대상 기관 입력에서 HTML **`maxLength` 잘림**을 제거하고, **저장 시 JS 검증**으로 200자 초과를 **필드 오류**로 안내하도록 되돌렸습니다. 서버·DB 한도(**Q822**·**V196**)와 동일하게 맞춥니다.
+- **내 화면/업무에 영향**: **사회복지사·센터장** — 기관명이 200자를 넘으면 **입력 중 잘리지 않고**, **「초안 저장」** 시 **「200자 이하여야 합니다」** 안내가 표시됩니다
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `ClientLinkageRecordForm` — `maxLength` 제거 · `validate()` 유지
+- `ClientLinkageRecordForm.test.jsx` BE 길이 parity regression
+
+</details>
+
+### ✅ 연계기록지 — 지점 리포트 「조회」 확정 필터 (FE)
+- **에이전트**: UXD
+- **한 일**: **「연계기록지 리포트」** 화면에서 상태·유형·검색을 바꿀 때마다 API를 호출하지 않고, **「조회」** 버튼(또는 Enter)으로 **확정한 조건만** 서버에 요청하도록 바꿨습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사·본사 관리자** — 필터를 여러 번 바꿔도 목록이 **즉시 깜빡이지 않음** · 조건 확정 후 **「조회」** 로 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `ClientLinkageRecordsReportPage` — `filters` vs `appliedFilters` 분리
+- `ClientLinkageRecordsReportPage.test.jsx` submit-on-query regression
+
+</details>
+
+### ✅ live E2E — bootstrap `:`·패딩 구분자 detail 파싱 (BE)
+- **에이전트**: COD
+- **한 일**: health/probe **상세 문자열**에서 **`bootstrap : disabled`** · **`bootstrap= disabled`** 처럼 **콜론(`:`)·등호(`=`)·공백 패딩**이 섞여도 bootstrap blocker를 **놓치지 않도록** 정규화했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** health/probe·live E2E 게이트만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport.normalizeKeyValueToken` — `:`→`=` · 패딩 trim
+- `LiveE2eOperationReadinessSupportTest` — colon·padded disabled/service-unavailable regression
+
+</details>
+
+### 📝 연계기록지 지점 리포트·V195/V196 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드·API 명세에 **연계기록지 지점 통합 리포트**·**SideNav**·**V195/V196**·**live E2E V196 무결성 게이트**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~93.6%**
+- FAQ **Q826** · **Q827** · Q819 갱신 · USER_MANUAL §4-7-3b · ADMIN · DEPLOYMENT §1-4 · API_SPEC §4-2
+
+</details>
+
+### ✅ 연계기록지 — 지점 통합 리포트 화면·메뉴 (FE)
+- **에이전트**: UXD
+- **한 일**: SideNav·이용자 컨텍스트에 **「연계기록지 리포트」**를 달고, 지점(또는 본사 전 지점) 범위로 상태·유형·검색 조회하는 화면을 연결했습니다. 이용자 상세 탭에는 **초안 관리** 구역·초안 목록 라벨을 보강했습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사·본사 관리자** — **이용자 관리 → 연계기록지 리포트**(`/clients/linkage-records`)에서 여러 수급자 발송·초안을 한눈에 조회. 작성은 기존처럼 이용자 상세 탭
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 경로 **`/clients/linkage-records`** · `ClientLinkageRecordsReportPage`
+- SideNav·`ClientsContextNav` **「연계기록지 리포트」**
+- `ClientLinkageRecordsPanel` — **초안 관리** · 초안 목록 aria
+- `fetchClientLinkageRecordsReportApi` → `GET /api/v1/clients/linkage-records`
+
+</details>
+
+### ✅ 연계기록지 — 지점 스코프 발송 리포트 API (BE)
+- **에이전트**: COD
+- **한 일**: 지점(또는 요청 branch) 안의 모든 수급자 연계기록지를 **상태·유형·검색어**로 페이지 조회하는 API를 추가했습니다. 행에 **수급자명**이 포함됩니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사·본사 관리자** — 지점 통합 리포트 화면의 데이터 소스. 이용자별 작성 API는 그대로
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `GET /api/v1/clients/linkage-records` — `branchId`·`status`·`linkageType`·`q`·`page`·`size`
+- 권한: `hq_admin`·`branch_admin`·`social_worker`
+- 응답 행: `clientId`·`clientName`·유형·기관·요약·상태·발송시각 등
+
+</details>
+
+### ✅ 연계기록지 — V195/V196 무결성·리포트 인덱스 (BE)
+- **에이전트**: COD
+- **한 일**: 지점 리포트용 **조직·지점 인덱스(V195)**와 길이 CHECK·수급자×지점 정합·org/branch 자동 복사·퇴소 purge 인덱스(**V196**)를 올렸습니다. health/live E2E에 **V196 준비됨** 신호와 누락 시 blocker를 붙였습니다.
+- **내 화면/업무에 영향**: 없음 — DB·배포·IT 게이트. 현장은 글자 수·지점 정합이 DB에서도 한 번 더 막힘
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- Flyway **V195** `idx_client_linkage_records_org_branch_status_created`
+- Flyway **V196** length ≤200/≤5000 · client×branch FK · `set_org_branch` · purge index
+- health **`v196ClientLinkageRecordsIntegrityCheckReady`** · blocker **`v196-client-linkage-records-integrity-missing`**
+- **퇴소 후 INSERT는 허용**(전원·퇴소 후 연계 업무)
+
+</details>
+
+### 📝 live E2E bracket/quote blocker ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·관리/배포 가이드에 **live E2E 괄호·따옴표·JSON 배열 blocker 토큰** 파싱(BE+FE)을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V194** · 모듈 **~93.6%**
+- FAQ **Q824** · **Q825** · Q821·Q823 보강 · ADMIN · DEPLOYMENT §1-4·§11-3
+
+</details>
+
+### ✅ live E2E — bracket/quote operation blocker unwrap (FE)
+- **에이전트**: COD
+- **한 일**: health/probe **operation blocker**가 **JSON 배열 문자열**이거나 **괄호·따옴표로 감싼 토큰**이어도 FE live 하네스가 **안정적으로 파싱**합니다. BE composite detail 파싱과 **형태를 맞췄습니다**.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** `./scripts/run-live-e2e.sh` 게이트만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `normalizeLiveOperationBlockers` · `unwrapLiveOperationBlockerToken` — `liveBackendProbe` · `liveConfig` · `liveGlobalSetup`
+- `liveE2eHarness.test.js` regression
+
+</details>
+
+### ✅ live E2E — bracket/quote bootstrap blocker detail (BE)
+- **에이전트**: COD
+- **한 일**: health/probe **상세 문자열**의 bootstrap blocker 토큰이 **`[bootstrap-disabled]`**·**`'bootstrap=disabled'`**처럼 **괄호·따옴표로 감싸져 있어도** operation gate가 **놓치지 않도록** 파싱을 보강했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** health/probe 진단용
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport` — `normalizeDetailToken` · `tokenMatchesBootstrapPrefix`
+- `LiveE2eOperationReadinessSupportTest` — bracket/quote composite lock
+
+</details>
+
+### 📝 연계기록지 길이 가드·live E2E 파싱 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **연계기록지 글자 수 이중 가드**·**live E2E env·boolean 정규화**·**bootstrap 쉼표/세미콜론 토큰**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V194** · 모듈 **~93.6%**
+- FAQ **Q822** · **Q823** · Q819·Q821 보강 · USER_MANUAL §4-7-3b · ADMIN · DEPLOYMENT §1-3·§1-4 · **API_SPEC §4-2**
+
+</details>
+
+### ✅ 연계기록지 — 글자 수 서비스 가드 (BE)
+- **에이전트**: COD
+- **한 일**: 연계기록지 저장 시 **대상 기관 200자·요약 5000자** 한도를 **서비스 계층**에서도 다시 검사합니다. DTO 검증을 우회한 직접 호출도 막습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 한도 초과 저장 시 **「연계기관은(는) 200자 이하여야 합니다.」** / **「요약은(는) 5000자 이하여야 합니다.」** 안내
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `ClientLinkageRecordService.requireMaxLength` · DTO `@Size` + 서비스 이중 가드
+- `ClientLinkageRecordServiceTest` — 기관·요약 over-max 거부
+
+</details>
+
+### ✅ live E2E — bootstrap 토큰 구분자 보강 (BE)
+- **에이전트**: COD
+- **한 일**: health/probe **상세 문자열**이 **쉼표·세미콜론**으로 이어져 있어도 `bootstrap-disabled` 등 blocker를 **놓치지 않도록** 토큰 분리를 넓혔습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** operation gate 진단용
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport` — split `[\\s,;]+`
+- `LiveE2eOperationReadinessSupportTest` — comma/semicolon composite detail lock
+
+</details>
+
+### ✅ live E2E — env·boolean 파싱 정규화 (FE)
+- **에이전트**: COD
+- **한 일**: `LIVE_E2E`·`LIVE_E2E_WRITE`·`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION` 등 플래그와 health readiness **불리언 문자열**을 **앞뒤 공백·대소문자 무시**로 읽도록 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E 실행·게이트만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `liveConfig.js` — `isTruthyLiveFlag` (trim + lower)
+- `liveBackendProbe.js` — readiness `toBoolean` 정규화
+- `liveE2eHarness.test.js` regression
+
+</details>
+
+### 📝 연계기록지 full-stack·bootstrap composite ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **연계기록지 이용자 상세 탭 wire**·**V194**·**bootstrap composite blocker 진단**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V194** · 모듈 **~93.6%**
+- FAQ **Q819** 갱신 · **Q821** · USER_MANUAL §4-7-3b · ADMIN · DEPLOYMENT §1-3·§1-4
+
+</details>
+
+### ✅ 연계기록지 — 이용자 상세 탭 FE wire (FE)
+- **에이전트**: COD
+- **한 일**: **이용자 상세 → 「연계기록지」탭**에 초안 작성·수정·발송·삭제·발송 리포트를 **백엔드 API와 연결**했습니다. 작성일·퇴소 후 이용계획은 **summary 접기**로 저장하고, 초안 재편집 시 **필드 복원**합니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 이용자 상세에서 **연계기록지 초안·발송** 가능. SideNav **전용 메뉴·지점 통합 리포트**는 아직 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `ClientLinkageRecordsPanel` · `ClientDetailPage` **「연계기록지」** 탭
+- `fetch/create/update/dispatch/deleteClientLinkageRecordApi` · `linkageRecords.js`
+- 유형 **병원·재가·이관** 3종(OTHER 없음) · 대상기관 200자 · 요약 5000자
+
+</details>
+
+### ✅ 연계기록지 — CRUD·발송 API (BE)
+- **에이전트**: COD
+- **한 일**: 케어포 **1-10 연계기록지**용 **6-endpoint CRUD + dispatch** API와 **Flyway V194**(`client_linkage_records`)를 추가했습니다. **초안만 수정·삭제** 가능하고, 발송 시 **DISPATCHED**로 전환됩니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 전원·퇴소 후 외부기관 연계 기록을 **시스템에 저장·발송 완료 처리** 가능(이용자 상세 탭)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `GET/POST/PATCH/DELETE /api/v1/clients/{clientId}/linkage-records` · `POST …/{recordId}/dispatch`
+- `ClientLinkageRecordService` · V194 CHECK · RBAC **HQ/BRANCH/SOCIAL_WORKER**
+
+</details>
+
+### ✅ live E2E — bootstrap composite blocker 진단 (BE)
+- **에이전트**: COD
+- **한 일**: operation gate가 health/probe **상세 문자열에 여러 필드가 섞여 있어도** bootstrap blocker를 **안정적으로** 감지하도록 보강했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** health/probe 진단용
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport` — composite details **토큰화** 감지
+- `LiveE2eOperationReadinessSupportTest` +51 lines
+
+</details>
+
+### 📝 연계기록지 UX 셸·bootstrap opt-in·일괄확정취소 a11y ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **연계기록지 UX 셸**(메뉴 미연결)·**일괄 확정취소 접근성**·**live E2E bootstrap 억제 명시 opt-in**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V193** · 모듈 **~93.6%**
+- FAQ · USER_MANUAL §4-7 · ADMIN · DEPLOYMENT §1-4·§11-3
+
+</details>
+
+### ✅ 연계기록지 — 작성·발송 리포트 UX 셸 (FE)
+- **에이전트**: UXD | COD
+- **한 일**: 케어포 **1-10 연계기록지**용 **작성 폼**·**발송 리포트 표** 컴포넌트 셸을 추가했습니다. 연계 유형(병원·재가·이관·기타)·대상 기관·요약·퇴소 후 이용계획·초안/발송 완료 배지가 준비됐고, **SideNav·페이지 라우트는 아직 연결되지 않습니다**.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 메뉴에 **「연계기록지」가 아직 없음**. 전원·퇴소 후 외부기관 연계 기록은 **후속 화면 연결** 후 사용
+- **상태**: 진행 중
+
+<details><summary>자세히</summary>
+
+- `ClientLinkageRecordForm` · `ClientLinkageRecordsReportPanel` · `config/linkageRecords.js`
+- 예정 경로(미마운트): `/clients/:clientId/linkage-records` · `/clients/linkage-records`
+
+</details>
+
+### ✅ 방문일정 — 일괄 확정취소 접근성 보강 (FE)
+- **에이전트**: UXD
+- **한 일**: `/visits` **일괄 확정취소** 패널에 시작 버튼 **연월·종류 안내**(aria-label)·확인번호 **만료 시각(`<time dateTime>`)**·미리보기 로딩 **`aria-busy`** 를 보강했습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 키보드·스크린리더로 일괄 확정취소를 **더 쉽게** 수행
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `VisitBatchUnconfirmPanel` — challenge 만료 `<time>` · FE-16 class · Modal body busy
+
+</details>
+
+### ✅ live E2E — bootstrap 억제 시 명시 opt-in (FE)
+- **에이전트**: COD
+- **한 일**: live E2E 하네스가 **bootstrap 억제(effective만 초록)** 상태에서도 스위트를 돌리려면 **`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1`** 을 **명시**해야 하도록 잠갔습니다. 조용히 통과하던 경로를 막습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E 실행 설정만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `liveConfig.js` — `isLiveBootstrapSuppressionAllowed`
+- 미설정 시 skip 사유에 opt-in 안내 문구
+
+</details>
+
+### 📝 G21 월단위 일괄 확정취소 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **방문일정 월단위 일괄 확정취소**(4-digit 확인번호·6-cascade 경고·visits-only)를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V193** · 모듈 **~93.6%**
+- FAQ · USER_MANUAL §5-11 · ADMIN §10-12 · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ 방문일정 — 월단위 일괄 확정취소 패널 (FE)
+- **에이전트**: COD
+- **한 일**: `/visits` 에 **「일괄 확정취소」** 패널을 추가했습니다. 미리보기에서 **4자리 확인번호**·**6-cascade 경고**를 확인한 뒤 해당 월 **CONFIRMED** 일정을 **DRAFT**로 되돌립니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 방문 일정 화면에서 **월단위 확정 취소** 가능(이지케어 일정확정 패리티). **송영 배차 확정 취소**는 기존 루트 상세 그대로
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `VisitBatchUnconfirmPanel` · `fetchVisitBatchUnconfirmPreviewApi` · `batchUnconfirmVisitsApi`
+- `VisitsPage` · challenge 재입력·실패 시 preview 자동 갱신
+
+</details>
+
+### ✅ 방문일정 — 월단위 일괄 확정취소 API (BE)
+- **에이전트**: COD
+- **한 일**: **월단위 CONFIRMED→DRAFT** 일괄 확정취소 API를 추가했습니다. **4자리 확인번호**(10분·1회 소비)·**6-cascade 경고 확인**·**visits-only** 범위를 서버에서 강제합니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 잘못 확정한 달을 **한 번에 되돌릴** 수 있음. 청구·급여·임금 데이터는 **물리 삭제하지 않음**(경고만)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `GET /api/v1/visits/batch-unconfirm-preview` · `POST /api/v1/visits/batch-unconfirm`
+- `VisitBatchUnconfirmChallengeStore` · `scopeNote=VISIT_SCHEDULES_ONLY`
+
+</details>
+
+### 📝 J03 SMS·V193·bootstrap 진단·G2 시각 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **SMS 비긴급 즉시 발송**·**템플릿 kind 22 메타**·**V193 첨부 DB 제약**·**초안 작성/게시 시각**·**활성 지점 스코프**·**live E2E bootstrap 억제 신호**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V193** · 모듈 **~93.6%**
+- FAQ **Q812**~**Q817** · Q809·Q810·Q807 교차 · ADMIN §1-4·§6-2-24h·§10-8 · USER_MANUAL §4-7-3a·§5-5 · DEPLOYMENT §1-3·§1-4
+
+</details>
+
+### ✅ live E2E — bootstrap blocker 우선·파생 노이즈 억제 (BE)
+- **에이전트**: COD
+- **한 일**: live E2E operation gate가 **bootstrap-disabled/service-unavailable**을 **우선 blocker**로 두고, bootstrap 문제가 있을 때 **파생 readiness 노이즈**를 억제해 probe 진단이 한눈에 보이게 했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** health/probe 진단용
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `LiveE2eOperationReadinessSupport` — blocker 우선순위·suppression lock
+- 현장 앱 메뉴·업무 화면 변경 없음
+
+</details>
+
+### ✅ live E2E — effective gate bootstrap 억제 신호 (BE)
+- **에이전트**: COD
+- **한 일**: health·probe에 **`liveE2eEffectiveOperationSuppressedByBootstrap`** 필드를 추가했습니다. unenforced 환경에서 effective가 초록이어도 **bootstrap 때문에 억제됐는지** IT가 바로 구분할 수 있습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** health/probe 진단용
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `GET /api/v1/health` · `GET …/system/live-e2e/probe`
+- `liveE2eSuppressedBootstrapOperationBlockers`와 함께 사용 (Q810·Q817)
+
+</details>
+
+### ✅ 가정통신문 — 활성 지점 스코프 우선 (FE)
+- **에이전트**: COD
+- **한 일**: `/clients/home-newsletter` 가 **발송 이력·기관 공지 게시판** 조회 시 **현재 활성 지점(`activeBranchId`)** 을 먼저 씁니다. 지점을 바꾼 뒤에도 **선택한 지점 데이터**만 불러옵니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 지점 전환 후 가정통신문 화면에서 **다른 지점 이력/게시판이 섞여 보이지 않음**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `HomeNewsletterLaunchPage` — `resolveHomeNewsletterBranchId`
+- `dispatch-history`·`facility-notices` API `branchId` 정합
+
+</details>
+
+### ✅ 기관 공지 — 초안은 「작성」·게시는 「게시」 시각 (FE)
+- **에이전트**: COD
+- **한 일**: 기관 공지 게시판·상세에서 **DRAFT** 행은 **「작성」** 시각, **PUBLISHED** 행은 **「게시」** 시각으로 라벨을 나눴습니다. 초안에 게시 시각이 붙어 보이던 혼동을 막습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — `/clients/home-newsletter` 게시판 목록·상세에서 **초안/게시 구분**이 더 명확함
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `resolveFacilityNoticeTimestamp` · `<time dateTime>` (UXD-177 a11y 연계)
+- DRAFT: `createdAt` · PUBLISHED: `publishedAt` 우선
+
+</details>
+
+### ✅ 알림 채널 — SMS 「비긴급 즉시 발송」화면 표시 (FE)
+- **에이전트**: COD
+- **한 일**: 조직 설정·대시보드 **알림 채널 준비 상태** 패널에 **「비긴급 SMS 즉시 발송」** 가능·제한됨 배지를 추가했습니다. 알림톡·이메일과 같이 **3채널** 조용한 시간대 제한을 화면에서 확인합니다.
+- **내 화면/업무에 영향**: **센터장·본사 관리자** — `/organization/settings`·`/dashboard` readiness에서 SMS도 **가능/제한됨** 표시. 발송 버튼 비활성 규칙은 그대로
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `NotificationChannelReadinessPanel` · `normalizeNotificationChannelStatus`
+- 템플릿 카탈로그 **kind 22(급여명세서)** 라벨 메타 추가 — **발송 UI 미연동**
+
+</details>
+
+### ✅ 알림 채널 — SMS 「지금 발송 가능」·health 미러 (BE)
+- **에이전트**: COD
+- **한 일**: 알림 채널 준비 API·health에 **`liveSmsDispatchReady`**·**`nonEmergencySmsDispatchAvailableNow`** 를 추가했습니다. Solapi SMS 폴백 준비와 조용한 시간대 제한을 **알림톡·이메일과 동일 패턴**으로 봅니다.
+- **내 화면/업무에 영향**: **센터장·본사 관리자·IT** — readiness·health에서 **SMS도 지금 보낼 수 있는지** 구분 가능. 실제 발송 차단 규칙은 기존과 동일
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `GET /api/v1/notifications/channel-status` · `GET /api/v1/health`
+- `notificationLiveSmsDispatchReady` · `notificationNonEmergencySmsDispatchAvailableNow`
+
+</details>
+
+### ✅ 템플릿 카탈로그 — ezCare message_kind 22 메타 (BE)
+- **에이전트**: COD
+- **한 일**: 알림 템플릿 카탈로그에 **급여명세서(message_kind=22)** 항목을 **enum/메타만** 추가했습니다. **발송 API·UI는 아직 없음** — v2+ SMS 7종 계획용입니다.
+- **내 화면/업무에 영향**: **센터장** — 조직 설정 readiness 패널 카탈로그 표에 **「급여명세서」** 행이 보이나 **발송 대기(미구현)** 로 표시됨
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `STAFF_PAYROLL_STATEMENT` · `dispatchImplemented=false`
+- 카탈로그 **7종** · 발송 구현 **6/6** 유지
+
+</details>
+
+### ✅ G2 기관 공지 첨부 링크 DB 제약 (BE)
+- **에이전트**: DBA
+- **한 일**: Flyway **V193** 이 `facility_notices.attachment_url` 에 **http(s)://·500자 이하** CHECK를 추가했습니다. 앱 검증을 우회한 raw SQL 삽입도 막아 **보호자 대상 XSS·피싱** 위험을 줄입니다.
+- **내 화면/업무에 영향**: 없음 — 정상 http(s) 첨부는 그대로. 잘못된 스킴은 **저장 단계에서 거부**(기존 앱 검증과 동일)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `V193__facility_notices_attachment_url_format.sql`
+- `chk_facility_notices_attachment_url_format` — 앱 `FacilityNoticeService` 계약과 동일
+
+</details>
+
+### 📝 가정통신문 조용한 시간대 운영 준비 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **가정통신문 launch/health 발송 준비가 조용한 시간대를 반영**하는 내용과 **health의 비긴급 발송 가능 필드**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE/FE develop — **132 route** · **105 page** · Flyway **V1–V192** · 모듈 **~93.6%**
+- FAQ Q789 정정 · **Q811** · Q809 교차 · ADMIN §1-4·§6-2-24h · USER_MANUAL §1-3·§4-7-3a · DEPLOYMENT §1-3·§1-4
+
+</details>
+
+### ✅ 가정통신문 — 조용한 시간대에 「준비됨」 오표시 방지 (FE)
+- **에이전트**: COD
+- **한 일**: `/clients/home-newsletter` **운영 준비**가 서버의 조용한 시간대 발송 가능 여부를 따릅니다. 밤에는 **후속**과 **「조용한 시간대(비긴급 발송 제한)」** 안내가 보입니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — SMTP는 켜져 있어도 밤에는 「발송 준비됨」으로 보이지 않아, 아침에 다시 확인하면 됩니다
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `HomeNewsletterLaunchPage` · `normalizeHomeNewsletterLaunch` / health readiness
+- blocker 코드 `quiet-hours-active` · SMTP 미설정과 구분
+
+</details>
+
+### ✅ 가정통신문 — 발송 준비에 조용한 시간대 반영 (BE)
+- **에이전트**: COD
+- **한 일**: 가정통신문 launch·health의 **발송 준비**가 「SMTP 설정됨」이 아니라 **지금 비긴급 이메일을 보낼 수 있는지**를 봅니다. 야간이면 blocker **`quiet-hours-active`** 와 안내 문구가 붙습니다. health에는 알림톡·이메일 **지금 발송 가능**·**quietHoursActive** 필드도 추가했습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사·IT** — 밤에 SMTP만 보고 「준비됨」으로 착각하지 않음. 실제 발송 거부는 기존과 동일
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `GET …/home-newsletter/launch` · `GET /api/v1/health` (`homeNewsletterDispatchReady` · `homeNewsletterReadinessBlockers`)
+- health 추가: `notificationNonEmergency*DispatchAvailableNow` · `notificationQuietHoursActive`
+
+</details>
+
+### 📝 알림 가용성·bootstrap 진단·공지 분류 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **조용한 시간대「지금 발송 가능」API·화면**·**게이트 미강제 시에도 억제 bootstrap 진단 유지**·**기관 공지 분류 NOTICE/RESOURCE만**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V192** · 모듈 **~93.6%**
+- FAQ **Q808**~**Q810** · Q799·Q802·Q797 정정 · ADMIN §1-4·§6-2-24h·§10-8 · USER_MANUAL §1-3·§4-7-3a·§5-5 · DEPLOYMENT §1-3·§1-4
+
+</details>
+
+### ✅ 알림 채널 — 「비긴급 즉시 발송」화면 표시 (FE)
+- **에이전트**: COD
+- **한 일**: 조직 설정·대시보드 **알림 채널 준비 상태** 패널에 **「비긴급 알림톡/이메일 즉시 발송」** 가능·제한됨 배지를 넣었습니다. 설정 live 준비와 조용한 시간대 제한을 화면에서 구분합니다.
+- **내 화면/업무에 영향**: **센터장·본사 관리자** — `/organization/settings`·`/dashboard` readiness에서 야간이면 **제한됨**으로 보임. 청구 발송 버튼 비활성 규칙은 그대로
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `NotificationChannelReadinessPanel` · `normalizeNotificationChannelStatus` 폴백
+- 라벨: **가능** / **제한됨** · aria-label 「비긴급 발송 가능 여부」
+
+</details>
+
+### ✅ 알림 채널 — 조용한 시간대 「지금 발송 가능」구분 (BE)
+- **에이전트**: COD
+- **한 일**: 알림 채널 준비 API가 **설정상 live 준비**와 **지금(비긴급) 발송 가능**을 나눠 보여 줍니다. 조용한 시간대면 `QUIET_HOURS_ACTIVE` blocker가 붙고, 긴급 알림은 기존처럼 우회합니다.
+- **내 화면/업무에 영향**: **센터장·본사 관리자·IT** — readiness 패널·`channel-status` 스모크에서 「설정은 됐는데 지금 밤에만 막힘」을 구분하기 쉬움. 청구·보호자 수동 발송 차단 규칙은 그대로
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `GET /api/v1/notifications/channel-status`
+- 신규: `nonEmergencyAlimtalkDispatchAvailableNow` · `nonEmergencyEmailDispatchAvailableNow`
+- `readinessBlockers` 에 `QUIET_HOURS_ACTIVE` (야간) · `live*DispatchReady` 의미는 설정 readiness 유지
+
+</details>
+
+### ✅ live E2E — 게이트 미강제여도 억제 bootstrap 진단 유지 (BE)
+- **에이전트**: COD
+- **한 일**: live E2E **bootstrap 강제 검사가 꺼진** 환경에서도 **`bootstrap-disabled` / `bootstrap-service-unavailable`** 진단을 **억제 목록에 남깁니다**. effective는 초록이어도 IT가 「bootstrap만 꺼짐」을 놓치지 않습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** 의 health/probe·live E2E harness 진단용
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- health · `GET …/system/live-e2e/probe` — `liveE2eSuppressedBootstrapOperationBlockers` 폴백 유지
+- 현장 앱 메뉴·업무 화면 변경 없음
+
+</details>
+
+### ✅ 기관 공지 — 게시 분류 NOTICE/RESOURCE만 (FE)
+- **에이전트**: COD
+- **한 일**: 기관 공지·자료실 저장 시 게시 분류를 **공지(NOTICE)·자료실(RESOURCE)만** 받도록 막고, 잘못된 값이면 저장 전에 **「게시 분류를 선택하세요」** 필드 오류를 보여 줍니다. 복제 시 알 수 없는 분류는 **공지**로 보정합니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — `/clients/home-newsletter` 게시판에서 분류가 비어 있거나 잘못된 초안을 저장하려 하면 API 호출 전에 안내됨
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `isEditableFacilityNoticeCategory` · Field `noticeCategory` error
+- 복제 payload: 비지원 분류 → `NOTICE`
+
+</details>
+
+### 📝 기관 공지 첨부 정리·복제 후 수정 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **첨부 링크 서버 http(s) 검증**·**복제 시 불안전 첨부 제거 후 수정 폼 연결**·**상세 불안전 링크 차단**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V192** · 모듈 **~93.6%**
+- FAQ Q804 정정 · **Q807** · ADMIN §6-2-24h · USER_MANUAL §4-7-3a · DEPLOYMENT §1-4
+
+</details>
+
+### ✅ G2 기관 공지 첨부 링크 서버 검증 (BE)
+- **에이전트**: COD
+- **한 일**: 기관 공지·자료실을 저장할 때 첨부 링크가 **http://·https://로 시작하는지**와 **길이(500자)**를 **서버에서도** 검사합니다. `ftp://` 등 잘못된 주소는 저장되지 않습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — `/clients/home-newsletter` 게시판에서 첨부 링크를 잘못 넣으면 화면뿐 아니라 **저장 API에서도** 거부되고 안내됨
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- create/PATCH — 공백 trim · 빈 값→첨부 없음 · 비 http(s)·초과 길이 → 업무 규칙 오류
+
+</details>
+
+### ✅ G2 기관 공지 복제 시 첨부 정리 · 바로 수정 (FE)
+- **에이전트**: COD
+- **한 일**: **「초안으로 복제」** 때 불안전한 첨부는 **제거한 뒤 복제를 이어가고**, 새 초안이 **수정 폼에 바로 열리도록** 바꿨습니다. 상세 보기에서 불안전한 첨부 링크는 **클릭을 막고** 안내만 보여 줍니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 복제 후 곧바로 제목·본문·첨부 수정 가능. 예전에 막히던 「잘못된 첨부 때문에 복제 실패」가 줄고, 위험 링크는 상세에서 열리지 않음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 복제: 불안전 첨부 strip · 안내 문구 · 편집 폼 핸드오프
+- 상세: 안전 URL만 「첨부 자료 열기」 · 그 외는 차단 안내
+
+</details>
+
+---
+
 ## 2026-07-14
+
+### 📝 기관 공지 복제·상세·보호자 자격 공백 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **기관 공지 초안 복제·게시 상세·메뉴 `#facility-notices` 바로가기**·**첨부 URL http(s) 검증**·**live E2E 보호자 자격 공백=미설정**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 문서·운영 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop HEAD · FE develop HEAD — **132 route** · **105 page** · Flyway **V1–V192** · 모듈 **~93.6%**
+- FAQ · ADMIN §6-2-24h · USER_MANUAL §4-7-3a · DEPLOYMENT §1-3·§1-4·체크리스트
+
+</details>
+
+### ✅ G2 기관 공지 초안 복제 · 첨부 URL http(s) 가드 (FE)
+- **에이전트**: COD
+- **한 일**: 게시된(또는 기존) 기관 공지를 **「초안으로 복제」** 하면 **새 DRAFT**가 만들어져 다시 고친 뒤 재게시할 수 있습니다. 첨부 URL은 **http://·https://만** 허용합니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — `/clients/home-newsletter` 게시판·상세에서 **초안으로 복제**. 잘못된 첨부 스킴이면 저장이 막히고 안내됨 (복제 시 첨부는 **2026-07-15**에 제거 후 이어가도록 개선)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- UI: **「초안으로 복제」** · 한국어 분류/상태 라벨
+- 첨부: `javascript:` 등 비 http(s) → 필드 오류
+
+</details>
+
+### ✅ G2 기관 공지 상세 보기 · 메뉴 바로가기 (FE)
+- **에이전트**: COD
+- **한 일**: 게시된 공지를 **상세 보기**로 열고, SideNav·이용자 메뉴에 **「기관 공지·자료실」** 링크(`/clients/home-newsletter#facility-notices`)를 넣었습니다.
+- **내 화면/업무에 영향**: **센터장·사회복지사** — 메뉴에서 게시판 카드로 바로 이동 · 게시 글 **보기**로 본문·첨부 링크 확인
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 상세: `GET …/facility-notices/{id}` · 닫기 · 게시글에서 복제 안내
+- nav: SideNav · `ClientsContextNav` · 관련 표면 링크 `#facility-notices`
+
+</details>
+
+### ✅ G2 가정통신문·기관 공지 화면 접근성 (FE)
+- **에이전트**: UXD
+- **한 일**: 초안·기관 공지·발송 이력 표에 **스크린리더용 caption**, 폼·행 버튼 **aria-label**, 상태·분류를 **배지·한글 라벨**로 보이게 하고, 미리보기용 **`.ds-pre`** 스타일을 정의했습니다.
+- **내 화면/업무에 영향**: **스크린리더·키보드 사용자** — `/clients/home-newsletter` 표·버튼 이해가 쉬워짐. 시각적으로는 상태/분류가 한글·배지로 정리됨
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 표 caption · compose/notice 폼 landmark · 행별 버튼 aria-label
+- StatusBadge(초안/게시됨) · 공지/자료 라벨 · `.ds-pre`
+
+</details>
+
+### ✅ live E2E 보호자 자격 공백을 기본값으로 치지 않음 (BE)
+- **에이전트**: COD
+- **한 일**: 보호자 live E2E env가 **비어 있으면 「기본 시드 사용」이 아니라 「미설정」**으로 봅니다. staff bootstrap에 보호자 토큰을 조용히 붙이지 않고 fail-closed 합니다.
+- **내 화면/업무에 영향**: 없음 — **IT·live E2E** 진단만. 보호자 env를 비우면 **missing** blocker·bootstrap enrichment 생략
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `usesDefaultGuardianCredentials` — 양쪽 값이 있고 시드와 같을 때만 default
+- blank/partial → missing · staff bootstrap enrichment 도 보호자 자격이 없으면 거부
+
+</details>
+
+### ✅ M12 재무회계 BPO 서비스 Spring 주입 수정 (BE)
+- **에이전트**: COD
+- **한 일**: 재무회계 BPO 서비스의 **공개 생성자에 Spring 주입 표시**를 넣어, 테스트용 생성자가 여러 개여도 **서버 기동이 막히지 않게** 고쳤습니다.
+- **내 화면/업무에 영향**: 없음 — 배포·기동 안정화. `/accounting` 업무 절차는 동일
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- `AccountingBpoService` 공개 생성자 `@Autowired` — `spring-boot:run` 회귀
+
+</details>
 
 ### 📝 J03 채널 별칭 · G2 상세 재조회 · M12 SSO 오류 ops 문서화
 - **에이전트**: TWR
@@ -32,7 +1199,7 @@
 
 <details><summary>자세히</summary>
 
-- 실측: BE develop **`1f3698d`** · FE develop **`71839a6`** — **132 route** · **105 page** · Flyway **V1–V192** · 모듈 **~93.6%**
+- 실측: BE develop · FE develop — **132 route** · **105 page** · Flyway **V1–V192** · 모듈 **~93.6%**
 - FAQ · ADMIN §6-2-24f/h·§10-8 · USER_MANUAL §4-6-5·§4-7-3a·§5-5 · DEPLOYMENT §1-4·§4-3
 
 </details>

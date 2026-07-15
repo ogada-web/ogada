@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T23:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-15T23:35:00+09:00 -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-26 (378차 TWR 자동 동기화 — **Q722 recovered-auth hint · Q719 G21 seed detail · Q720 neutral blocker · Q721 V180 program group · Q713 deepen · baseline `d06e3f1`/`4bbd54a`**)  
+> **최종 갱신**: 2026-07-15 (Q845–Q849 신규: G2 기관공지·M12 BPO·live E2E bootstrap · baseline `82a83e3`/`0210aaa` · Flyway **V1–V192** · 모듈 **97.41%**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -16,20 +16,20 @@
 ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능별**로 정리했습니다.  
 상세 조작 절차는 [`USER_MANUAL.md`](ops/USER_MANUAL.md), 플랫폼·기술 관리는 [`ADMIN_GUIDE.md`](ops/ADMIN_GUIDE.md), 배포·인프라는 [`DEPLOYMENT_GUIDE.md`](ops/DEPLOYMENT_GUIDE.md)를 참고하세요.
 
-### 구현 상태 안내 (2026-06-26 develop HEAD `d06e3f1` / frontend `4bbd54a` 기준 — 377차 baseline)
+### 구현 상태 안내 (2026-07-15 develop HEAD `82a83e3` / frontend `0210aaa` 기준)
 
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
-| 백엔드 API | **Must + … + V180 ✅** @ `d06e3f1` **SYNCED** · **QA-B95 recovered-auth hint ✅** (Q722) · **G21 seed service-unavailable detail ✅** (Q719) · **V180 program group integrity ✅** (Q721) · **G-REPORT-DENSITY M5 program reports ✅+** · **QA-B95 allow-recovered-auth ✅** (Q713) · … | BE Test **271 suites** |
-| 데이터베이스 | Flyway **V1–V180** | **V180** 프로그램 그룹 3-way FK·active-client guard · **V179** 프로그램 수급자 그룹·멤버십 · **V178** CMS collection·목욕 CHECK |
-| 프론트엔드 | **118 route · 93 page** @ `4bbd54a` **SYNCED** | **QA-B95 recovered-auth hint wire ✅** (Q722) · **QA-B95 neutral blocker filter ✅** (Q720) · **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE ✅+a11y** (Q717·UXD-165) · **QA-B95 singular blocker merge ✅** (Q718) · **G-REPORT-DENSITY M5 reports ✅** (Q714) · **G2b CMS 5/5 ✅** |
-| 본 FAQ | **Q722 recovered-auth hint · Q719·Q720·Q721 · Q713 deepen** | **Must 갭 0** · **M5 5-7~5-10 ✅ partial+** (5-9 read path · 그룹 CRUD UI P3) |
+| 백엔드 API | **Must + … + V196 ✅** @ `2f578fb` **SYNCED** · **J03 channel-status 참고 단가 ✅** (**Q844**) · **G-RFID 급여제공내역 일괄 문자 ✅** (**Q832**·**Q838**) · **G-SMS kind 22 ✅** (**Q813**·**Q831**) · **G-LINKAGE-RECORD ✅** (**Q819**·**Q826**·**Q827**) · **live E2E bootstrap ✅** (**Q821**·**Q828**·**Q833**·**Q834**·**Q836**·**Q837**·**Q839**·**Q841**) · **G21 월단위 일괄 확정취소 ✅** (**Q818**) · … | BE Test **~294 suites** · Flyway **V186–V196** |
+| 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
+| 프론트엔드 | **133 route · 106 page** @ `a356083` **SYNCED** | **channel-status 참고 단가 BE 우선 ✅** (**Q844**) · **RFID 일괄 SMS 발송 UI ✅** (**Q832**·**Q838**) · **급여명세서 kind 22 발송 UI ✅** (**Q831**) · **연계기록지 이용자 탭+지점 리포트+페이지네이션 ✅** (**Q819**·**Q826**·**Q829**·**Q830**·**Q842**) · **channel-status URL·HTML entity decode ✅** (**Q835**·**Q837**·**Q839**·**Q840**) · **SkipLink·ProgressBar a11y ✅** (**Q843**) · **G21 일괄 확정취소 a11y ✅** (**Q818**) · … |
+| 본 FAQ | **Q217 정정** · **Q788~Q844** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
 ### Q567. 기능회복훈련(G17)은 어디서 확인하나요?
 
-**A.** 화면은 `/programs/functional-recovery`이고, 준수 현황은 `GET /api/v1/programs/functional-recovery/compliance`로 확인합니다. 운영에서는 `plansRecordedCount`, `provisionsRecordedCount`, `gapCount`를 우선 점검하세요.
+**A.** 화면은 `/programs/functional-recovery`이고, 준수 현황은 `GET /api/v1/programs/functional-recovery/compliance`로 확인합니다. 운영에서는 `plansRecordedCount`, `provisionsRecordedCount`, `gapCount`를 우선 점검하세요. **주야간보호 공단평가 지표 27**(개인별 기능회복훈련 계획)의 정본 화면이 여기입니다 — 목욕 일정 패널과 혼동하지 마세요 (Q773·Q705).
 
 ### Q568. 사례관리(G32)에서 누락 여부는 어떻게 보나요?
 
@@ -3148,6 +3148,9 @@ POST /api/v1/billing/claims/{claimId}/payments
 
 | 규칙 | 내용 |
 |------|------|
+| 조회 지점 | **`GET /transport/roster`** 는 **활성 지점(`activeBranchId`)** 스코프 — 다른 지점 이용자는 표시되지 않음 (결정 97) |
+| 명단 구성 | **이동서비스 이용·활성·미퇴소** 이용자 **전원** — **CONFIRMED 배차 포함자만**으로 제한하지 않음 |
+| 배차 상태 | 당일 **CONFIRMED** 루트 정차 포함 → **`confirmedDispatched=true`** · UI **「확정」** / 미포함 → **「미확정」** (`7e048c0`) |
 | 수정 모드 | 입력란은 비워 두고 help에 **마스킹된 기존 값** 안내 — 변경 시에만 새 값 입력 |
 | 주소 변경 | 픽업 주소 변경 시 **geocode 캐시 무효화** — 다음 배차 시 `POST /transport/geocode` 재호출 |
 | a11y | 픽업 필드 **`role="group"`** · 스크린리더용 **「픽업 상세 정보」** 제목 (UXD-52) |
@@ -3155,10 +3158,11 @@ POST /api/v1/billing/claims/{claimId}/payments
 
 **현장 절차** — 배차 명단이 비어 있을 때:
 
-1. SideNav **이용자** → 대상 이용자 **수정** (`/clients/:id/edit`) 또는 **신규 등록**.
-2. **「배차·픽업 정보」** — **이동서비스 이용** 체크 · 픽업 주소·연락처·시각 입력 후 **저장**.
-3. **`/transport`** — 운행일 선택 후 명단 새로고침.
-4. **`hq_admin`** — **새 픽업 배차**로 루트 생성 (USER_MANUAL §5-8).
+1. **`/transport`** 상단 **`BranchScopeNotice`** 로 **조회 지점** 확인 — 배차 이용자가 **다른 지점**에 있으면 **지점 선택기**로 전환 (결정 97).
+2. SideNav **이용자** → 대상 이용자 **수정** (`/clients/:id/edit`) 또는 **신규 등록**.
+3. **「배차·픽업 정보」** — **이동서비스 이용** 체크 · 픽업 주소·연락처·시각 입력 후 **저장**.
+4. **`/transport`** — 운행일 선택 후 명단 새로고침.
+5. **`hq_admin`** — **새 픽업 배차**로 루트 생성 (USER_MANUAL §5-8).
 
 > API만 사용할 때 — Swagger **`PATCH /api/v1/clients/{id}`** 본문에 동일 필드 전달 가능.
 
@@ -4016,11 +4020,13 @@ POST /api/v1/billing/claims/{claimId}/payments
 
 > 관련: Q206 · Q208 · Q701 · USER_MANUAL §4-6 · DEPLOYMENT §4-6
 
-### Q705. 목욕 **전·후 상태 관찰**과 **평가지표 27 준수**는 어떻게 확인하나요? (US-O01, L02_M03, BE `e12b084` · FE `3d7f13b`)
+### Q705. 목욕 **전·후 상태 관찰**과 **목욕 청구 준수**는 어떻게 확인하나요? (US-O01, L02_M03, BE `6e874df` · FE `95192f5`)
 
-**A.** **✅ BE+FE Full-stack Fixed (`e12b084`·`3d7f13b`, US-O01, V177)** — silverangel **essentialWork 평가지표 27**(월 5회 이상 목욕·**전·후 상태 관찰 및 기록**) 준수를 **목욕 일정 API**로 집계하고, **`/care/bathing-schedules`** 화면에서 입력·확인합니다. **G17 기능회복훈련 지표27**(`/programs/functional-recovery`)과 **별도**입니다.
+**A.** **✅ BE+FE Full-stack Fixed (`e12b084`·`3d7f13b` · `95192f5` UI 문구, US-O01, V177)** — 목욕을 **제공할 때** 월 5회 이상·**전·후 상태 관찰**을 챙기는 **청구 준수(선택)** 집계입니다. **주야간보호 공단평가 지표 27이 아닙니다** — 평가 지표 27 정본은 **기능회복훈련**(`/programs/functional-recovery`, Q773·Q567)입니다.
 
-**1. 제공 완료 시 전·후 관찰 (필수)**
+> **용어 주의**: API 경로에 역사적으로 `…/indicator-27-compliance` 가 남아 있습니다. 화면 패널 제목은 **「목욕 청구 준수」** 이며, **표·집계는 목욕 제공 기록**입니다 (Q776·Q774). 응답 **`indicatorCode`** 는 **`BATHING_CLAIM_COMPLIANCE`**, **`daycareEvaluationRequired=false`** 입니다.
+
+**1. 제공 완료 시 전·후 관찰 (필수 — 목욕 제공 시)**
 
 | 항목 | 내용 |
 |------|------|
@@ -4030,35 +4036,40 @@ POST /api/v1/billing/claims/{claimId}/payments
 | **`422`** | 「목욕 제공 완료 시 목욕 전·후 상태 관찰 내용을 입력하세요.」 |
 | **UI** | **`BathingScheduleForm`** — **「목욕 전 상태 관찰」**·**「목욕 후 상태 관찰」** 입력란 · **`COMPLETED` 선택 시 필수** (`3d7f13b`) |
 
-**2. 월별 평가지표 27 compliance**
+**2. 월별 목욕 청구 준수 compliance**
 
 | API | 용도 |
 |-----|------|
-| **`GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=2026-06&clientId=`** | 지점·월별 **이용자별** 준수 집계 |
+| **`GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=2026-06&clientId=`** | 지점·월별 **이용자별** 청구 준수 집계 (경로명 유지) |
 
 | 응답 필드 | 의미 |
 |-----------|------|
-| **`requiredMonthlyCompletedCount`** | **5** (월 최소 완료 횟수) |
-| **`monthlyFrequencyNote`** | 「월 5회 이상 목욕서비스 제공」 |
-| **`prePostObservationNote`** | 「목욕 전·후 수급자 상태 관찰 및 기록」 |
+| **`indicatorCode`** | **`BATHING_CLAIM_COMPLIANCE`** (구 `INDICATOR_27` 별칭 폐기) |
+| **`daycareEvaluationRequired`** | **`false`** — 주야간 공단평가 필수 아님 |
+| **`daycareEvaluationIndicator27Owner`** | **`FUNCTIONAL_RECOVERY`** — 평가 지표 27 소유 |
+| **`scopeNote`** | 「목욕은 … 청구 준수 추적 … 평가지표 27은 기능회복훈련」 |
+| **`requiredMonthlyCompletedCount`** | **5** (청구 시 월 최소 완료 횟수) |
+| **`monthlyFrequencyNote`** | 「월 5회 이상 목욕서비스 제공**(청구 시)**」 |
+| **`prePostObservationNote`** | 「목욕 전·후 … 기록**(청구 시)**」 |
 | **`entries[].completedCount`** | 해당 월 **`COMPLETED`** 건수 |
 | **`entries[].withPrePostObservationCount`** | 전·후 관찰 모두 기록된 **`COMPLETED`** 건수 |
 | **`entries[].monthlyFiveTimesMet`** | 완료 **≥ 5** |
 | **`entries[].prePostObservationMet`** | 완료 건 **전원** 전·후 관찰 기록 |
-| **`entries[].indicator27Met`** | 위 **두 조건 모두** 충족 |
+| **`entries[].indicator27Met`** | 위 **두 조건 모두** 충족 (**청구 준수 충족 여부** — 평가 지표 27 아님) |
 
 | RBAC | **`HQ_ADMIN`·`BRANCH_ADMIN`·`SOCIAL_WORKER`·`CAREGIVER`** |
 |------|-----------------------------------------------------------|
-| **화면** | **`/care/bathing-schedules`** — **`BathingScheduleIndicator27Panel`** **「평가지표 27 — 목욕 서비스 준수」** 표 (`3d7f13b`) |
+| **화면** | **`/care/bathing-schedules`** — **`BathingScheduleIndicator27Panel`** · 카드 **「평가지표 27 기능회복훈련 준수」** (`95192f5`) |
 | **리포트** | **`/care/reports/bath-help`** (L02_M05) — 기간별 목욕 집계 (Q363) |
 
-**현장 조치 (월말)**
+**현장 조치 (목욕 제공 월)**
 
-1. **`/care/bathing-schedules`** — **대상 월** 선택 후 **평가지표 27 패널**에서 **`indicator27Met=false`** 이용자를 확인합니다.
+1. **`/care/bathing-schedules`** — **대상 월** 선택 후 패널에서 **`indicator27Met=false`** 이용자를 확인합니다 (목욕 **청구**를 챙길 이용자).
 2. 일정 **수정** — **`COMPLETED`** 건에 **전·후 관찰**이 비어 있으면 폼에서 보완 후 저장합니다.
 3. **5회 미만** → 추가 목욕 일정·완료 처리 · **관찰 누락** → **`preObservationNotes`/`postObservationNotes`** 보완.
+4. **공단평가 지표 27**이 필요하면 **`/programs/functional-recovery`** 로 이동합니다 (Q773).
 
-> 관련: Q363 · Q598 · USER_MANUAL §5-26 · ADMIN_GUIDE §6-2-16 · DEPLOYMENT §1-4 · CHANGELOG 370차
+> 관련: Q774 · Q773 · Q567 · Q363 · Q598 · USER_MANUAL §5-26 · ADMIN_GUIDE §6-2-16 · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
 
 ### Q706. NHIS import에서 **수급자명이 마스킹**(예: `홍*동`)되어 인정번호 매칭이 실패하면? (G-NHIS-MASKED-NAME-FALLBACK)
 
@@ -4162,24 +4173,24 @@ Authorization: Bearer <branch_admin JWT>
 
 > 관련: Q326 · Q328 · Q700 · USER_MANUAL §4-6 · ADMIN_GUIDE §10-14 · DEPLOYMENT §1-4·§8-1 · CHANGELOG 369차
 
-### Q710. G16 **parity-rules** 전용 패널과 **`description` wire** 상태는? (UXD-163, FE `7b4c6f9`·`5914b2f`)
+### Q710. G16 **parity-rules** 전용 패널과 **`description` wire** 상태는? (UXD-163, FE `7b4c6f9`·`5914b2f`·`afbbaa7`)
 
-**A.** **✅ FE Fixed (`7b4c6f9`·`5914b2f`)** — **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** 를 **`labelKo`·`descriptionKo`·legacy `bodyKo`** 로 정규화해 **`/transport/service-fees`** 페이지에 표시합니다. API 실패 시 **static fallback** 4항이 유지됩니다.
+**A.** **✅ FE Fixed (`7b4c6f9`·`5914b2f`·`afbbaa7`)** — **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** 를 **`normalizeTransportParityRule()`** 로 **`code`·`label`·`description`** (legacy `labelKo`/`bodyKo` 호환) 정규화해 **`/transport/service-fees`** 페이지에 표시합니다. API 실패 시 **`STATIC_TRANSPORT_PARITY_RULES`** static fallback 4-rule이 유지됩니다. **394차 Q743** — DTO field wire **full-stack closure**.
 
 | 구분 | 상태 |
 |------|------|
 | BE catalog | **`rules[].code`·`label`·`description`** ✅ (`e4f83af`) |
-| **`TransportParityRulesPanel`** | **page mount ✅** (`5914b2f`) · API error → static fallback · **`TransportServiceFeePage.test`** lock |
-| **`TransportServiceFeePanel`** | 수가표·청구 기록 전용 — parity rules **중복 제거** (`5914b2f`) |
+| **`TransportParityRulesPanel`** | **page mount ✅** · **BE DTO wire ✅** (`afbbaa7`) · API error → static fallback · **`TransportServiceFeePage.test`** lock |
+| **`TransportServiceFeePanel`** | 수가표·청구 기록 · **`onePerDayNote`** rates API footnote ✅ (`afbbaa7`) — parity rules **중복 제거** (`5914b2f`) |
 | RBAC | catalog API **`hq_admin`·`branch_admin` only** · **`social_worker` 403** |
 
 **현장 조치**
 
-1. **`/transport/service-fees`** — 수가표 아래 **「이동서비스비 NHIS 기준 규칙」** 4항(거리구간·편도 50%·1일 1회·일지 보관)을 확인합니다.
+1. **`/transport/service-fees`** — 수가표 **위** **1일 1회** footnote · **아래** **「이동서비스비 NHIS 기준 규칙」** 4항(거리구간·편도 50%·1일 1회·일지 보관)을 확인합니다.
 2. API 오류 시에도 **static fallback** 과 **동일 내용**이 표시되므로 **청구·확정 업무는 계속 가능**합니다.
-3. IT는 Swagger **`GET …/service-fee-parity-rules`** 로 **`description`** 필드를 교차 확인할 수 있습니다.
+3. IT는 Swagger **`GET …/service-fee-parity-rules`** **`rules[].description`** 과 화면 **`<dd>`** 를 교차 확인할 수 있습니다.
 
-> 관련: Q703 · Q678 · USER_MANUAL §5-8-1 · DEPLOYMENT §1-4 · CHANGELOG 369차
+> 관련: Q703 · Q743 · Q678 · USER_MANUAL §5-8-1 · DEPLOYMENT §1-4 · CHANGELOG 394차
 
 ### Q711. 연차 roster API **`branchName`이 공백**이면 **「조회 지점」** 이 사라지나요? (QA-B312, FE `58f3858`)
 
@@ -4273,7 +4284,7 @@ Authorization: Bearer <branch_admin JWT>
 6. backend **reachable·`ready=false`** 이면 harness skip 메시지에 **`GET /api/v1/health` `reason`** 또는 **`liveE2eOperationReason`** 이 포함되어야 합니다 — generic fallback만 나오면 **`liveBackendProbe`** 회귀 (`f74a6e7`, Q713 deepen).
 7. bootstrap disabled + **`liveE2eAllowRecoveredAuth=true`** 이면 **`liveE2eBootstrapEnableHint`** recovered-auth 문구가 health/probe에 **노출**되어야 합니다 — 없으면 **`d06e3f1` 미반영 BE** (Q722).
 
-> 관련: Q580 · Q583 · Q578 · Q680 · Q684 · Q722 · DEPLOYMENT §4-3·§11-3 · `docs/qa/VITEST_CONCURRENCY.md` · CHANGELOG 377차
+> 관련: Q580 · Q583 · Q578 · Q680 · Q684 · Q722 · **Q794**(BE health/probe effective gate expose) · DEPLOYMENT §4-3·§11-3 · `docs/qa/VITEST_CONCURRENCY.md` · CHANGELOG 377차 · 2026-07-14
 
 ### Q714. 프로그램 **리포트 5-7~5-10**은 어디서 확인하나요? (G-REPORT-DENSITY, US-P02, BE `49fe2e7` · FE `15a3b7f` · carry `337453d`·`650801b`)
 
@@ -4414,9 +4425,9 @@ Authorization: Bearer <branch_admin JWT>
 
 **IT 조치**: **`g21-seed=disabled`** 인데 bootstrap을 켜려면 env를 확인하고, **`g21-seed=service-unavailable`** 이면 **Spring bean wiring·profile** 을 먼저 해결하세요 — disabled와 **원인·조치가 다릅니다**.
 
-| 테스트 | **`HealthControllerTest`** — bootstrap enabled·bean missing → **`g21-seed=service-unavailable`** assert (`42a369e`) |
+| 테스트 | **`HealthControllerTest`** — bootstrap enabled·bean missing → **`g21-seed=service-unavailable`** assert (`42a369e`) · **381차 (`14964f6`)** — **`/live-e2e/probe`** **`g21SeedStatusDetail`** health와 **동일** · **`LiveE2eControllerTest`** lock |
 
-> 관련: Q698 · Q684 · Q713 · DEPLOYMENT §11-3 · CHANGELOG 376차
+> 관련: Q698 · Q684 · Q713 · Q727 · DEPLOYMENT §11-3 · CHANGELOG 376·381차
 
 ### Q720. live E2E에서 health blocker **`none`**·**`ok`** 는 harness가 무시하나요? (QA-B95, FE `7e7c296`)
 
@@ -4490,7 +4501,2117 @@ Authorization: Bearer <branch_admin JWT>
 
 | 테스트 | **`HealthControllerTest`** · **`LiveE2eControllerTest`** (`d06e3f1`) · **`liveE2eHarness.test`** recovered-auth parse·neutral reason (`4bbd54a`) |
 
-> 관련: Q713 · Q720 · Q684 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 377차
+| skip diagnostics deepen (`fcc16ca`, Q722 deepen) | **`getLiveE2eSkipReasons`** — operation **blocked** 시 **`bootstrap enable hint: {liveE2eBootstrapEnableHint}`** reason **추가** — SKIP 로그에서 IT triage actionable |
+| before (`4bbd54a` only) | hint **neutral filter** only — skip reason에 hint **미포함** |
+| after (`fcc16ca`) | blocked suite skip reason에 hint **명시** — recovered-auth **neutral** 과 **병행** |
+
+> 관련: Q713 · Q720 · Q684 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 377·379차
+
+### Q723. **위원회·보호자 회의록(8-6)** 은 어디서 작성·출력하나요? (G-STAFF-COMMITTEE-MEETING-LOG, US-R08, BE `68b08b0`/`3ae8098` · FE `0342076`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`68b08b0`·`0342076`·`3ae8098`, G-STAFF-COMMITTEE-MEETING-LOG)** — 케어포 **PDF 8-6** · ezCare 도움말 **FAQ rowid 21601 「직원 회의록 전산 작성/관리」** demand-signal 대응. **`/staff/committee-meetings`** 에서 **작성→확정→출력**까지 한 화면에서 처리합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`StaffCommitteeMeetingPage`** — **`StaffContextNav`「위원회·보호자 회의록」** · SideNav **운영 → 직원** |
+| **회의 유형** | **`OPERATING_COMMITTEE`** 운영위원회 · **`GUARDIAN`** 보호자 회의 · **`WELFARE_COMPENSATION`** 복지노사위원회 |
+| **상태** | **`DRAFT`** 작성중 — 수정 가능 · **`FINALIZED`** 확정 — **수정 불가** · 출력 가능 |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` → 403** UI Alert |
+
+| API | 용도 |
+|-----|------|
+| `GET /api/v1/staff/committee-meetings?from=&to=&meetingType=` | 기간·유형별 목록 — **JWT active branch** |
+| `GET /api/v1/staff/committee-meetings/{meetingId}` | 상세 |
+| `POST /api/v1/staff/committee-meetings` | **DRAFT** 등록 — **`meetingType`·`meetingDate`·`title`·`meetingContent`·`meetingResult`·`attendeeNames`** 필수 · **`location`** optional |
+| `PATCH /api/v1/staff/committee-meetings/{meetingId}` | **DRAFT** 수정 |
+| `POST /api/v1/staff/committee-meetings/{meetingId}/finalize` | **확정** — `recordStatus=FINALIZED` · `finalizedAt` 설정 |
+| `GET /api/v1/staff/committee-meetings/{meetingId}/export` | **확정 건만** plain-text 첨부 (`text/plain` UTF-8) |
+
+| UI 단계 | 내용 |
+|---------|------|
+| 1 | **유형 FilterChips** (운영위원회·보호자·복지노사) · **기간** 선택 → **「다시 조회」** |
+| 2 | **「회의록 등록」** Modal — **Field** render-prop · 필수값 FE 검증 |
+| 3 | **DRAFT** 행 — **「수정」** · **「확정」** |
+| 4 | **FINALIZED** 행 — **「출력」** → **`committee-meeting-{id}.txt`** 다운로드 |
+
+| 업무 규칙 | 응답 |
+|-----------|------|
+| **확정 후 PATCH** | **`422`「확정된 회의록은 수정할 수 없습니다.」** |
+| **DRAFT 상태 export** | **`422`「확정된 회의록만 출력할 수 있습니다.」** |
+| **미지원 meetingType** | **`422`「지원하지 않는 회의 유형입니다.」** |
+
+| DB | **Flyway V181** `staff_committee_meeting_logs` — meeting_type·record_status CHECK · org/branch FK sync · **V182** defense-in-depth 2 CHECK (Q725) |
+
+> 관련: USER_MANUAL §4-7 위원회 회의록 · ADMIN_GUIDE §6-2-22 · DEPLOYMENT §1-4 V181·V182 · FAQ **Q725** · REQUIREMENTS BNK-633 · CHANGELOG 379·380차
+
+### Q725. **위원회·보호자 회의록** Flyway **V182**는 무엇을 보강하나요? (G-STAFF-COMMITTEE-MEETING-LOG, BE `b4958f1`)
+
+**A.** **✅ DB Fixed (`b4958f1`, V182 defense-in-depth)** — **V181** `staff_committee_meeting_logs` 에 앱(`StaffCommitteeMeetingService`)만 강제하던 **2가지 규칙**을 DB CHECK 로 미러합니다. **정상 화면·API 사용에는 변화 없음** — raw SQL·향후 import 경로의 무의미 행·audit timeline 역행을 차단합니다.
+
+| CHECK | 규칙 | 거부 예 |
+|-------|------|---------|
+| `chk_staff_committee_meeting_logs_location_nonempty` | **`location` IS NULL** 또는 **trim 후 1자 이상** | `location=''` · `location='   '` |
+| `chk_staff_committee_meeting_logs_finalized_after_created` | **`finalized_at` IS NULL** 또는 **`finalized_at >= created_at`** | 확정 시각이 생성 시각보다 이전 |
+
+| 운영 포인트 | 내용 |
+|-------------|------|
+| **UI** | **장소** 미입력 → NULL 저장(허용) · 공백만 입력 시 앱이 trim→NULL 정규화 — **V182는 DB 이중 가드** |
+| **확정** | **`POST …/finalize`** 는 서버 시각으로 `finalizedAt` 설정 — 정상 경로는 항상 `created_at` 이후 |
+| **마이그레이션** | **`flyway migrate`** 후 `flyway_schema_history`에 **V182 success** · V181 신규 테이블이라 **backfill 불요** |
+| **P3 제외** | `meeting_date` 미래 거부 · `attendee_names` JSONB 구조화 · `(org, branch, created_by) → user_branches` 3-way FK — `hq_admin` 전 지점 쓰기 정책과 충돌 |
+
+> 관련: Q723 · USER_MANUAL 위원회 회의록 · ADMIN_GUIDE §6-2-22 · DEPLOYMENT §1-4 V182 · DATA_RETENTION §4-1 · CHANGELOG 380차
+
+### Q726. **급여제공 변경계약서 일괄 출력**은 어디서 받나요? (G-CLIENT-CONTRACT-BULK-PRINT, US-D05, BE `4df9465` · FE `0d0b587`/`96196ed`/`d759ade`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`4df9465`·`0d0b587`·`96196ed`·`d759ade`, G-CLIENT-CONTRACT-BULK-PRINT, ezCare FAQ **21507** demand-signal)** — **지점·계획 연도** 기준으로 **NHIS 10-field 급여제공계획서(G14)** 를 **plain-text** 로 **한 파일에 연속 출력**합니다. **개별 이용자 저장·수정**은 기존 **`PUT …/care-plan-forms`** (Q557).
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`CarePlanNotificationPage`**(`/clients/care-plan-notifications`) — **`ClientCarePlanBulkExportPanel`** 카드 · SideNav **운영 → 급여계획 통보 (G38)** |
+| **API** | **`GET /api/v1/clients/care-plan-forms/bulk-export`** — FE **`exportClientCarePlanFormsBulkApi`** |
+| **Query** | **`planYear`** (필수, 2000–2100) · **`branchId`** (선택 — 생략 시 JWT **활성 지점**) · **`clientIds`** (선택 — 복수 UUID, 생략 시 **해당 지점·연도 전체**) |
+| **RBAC** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 403** |
+| **응답** | **`text/plain` UTF-8** · **`Content-Disposition: attachment; filename="benefit-change-contracts-{planYear}.txt"`** |
+| **본문** | 헤더(연도·건수) + 이용자별 **「장기요양급여제공 변경계약서」** 10항목 블록 · 건 사이 **`---` 구분** |
+| **빈 결과** | 해당 지점·연도·선택 이용자에 **저장된 계획서 0건** → **`404`「해당 연도 급여제공계획서가 없습니다.」** |
+| **필터** | **퇴소·비활성 이용자** 행 **제외** — `active=true` 이용자만 |
+
+**현장 절차 (화면)**:
+1. 이용자별 **「급여계획서」** 탭에서 **해당 연도 10항목**을 먼저 저장합니다 (Q557).
+2. **`/clients/care-plan-notifications`** — **「급여제공 변경계약서 일괄 출력」** 카드에서 **계획 연도** 입력.
+3. **「지점 전체 출력」** 체크(기본) 또는 해제 후 **출력 대상 수급자** 선택 — 목록은 G38 compliance **이용자 목록** 기준.
+4. **「일괄 다운로드」** — **`benefit-change-contracts-{year}.txt`** 저장 · 성공 Alert 확인.
+5. 인쇄·보관 — **PDF 공식 서식·전자서명은 P3**.
+
+| Swagger·연동 (IT) | `GET /api/v1/clients/care-plan-forms/bulk-export?planYear=2026` |
+|-------------------|----------------------------------------------------------------|
+| 선택 출력 | `…&clientIds={uuid1}&clientIds={uuid2}` |
+| 타 지점(hq) | `…&branchId={branchUuid}` — JWT read scope 내 |
+
+| 테스트 | BE **`ClientCarePlanFormServiceTest.exportBulkChangeContractsText*`** · **`MustApiEndpointRoutingTest`** · FE **`ClientCarePlanBulkExportPanel.test`** 5/5 (`d759ade`, Q734) |
+
+> **FE payload 정규화 (Q734)**: API 호출 전 **`branchId` trim** · 이용자 목록 **공백·중복 UUID 제거** — G38 compliance 목록에 공백 ID가 섞여도 **잘못된 필터**로 **`404`/빈 결과**가 나는 경우를 줄입니다.
+
+> 관련: Q557 · **Q734** · USER_MANUAL §3-3·§4-3 · ADMIN_GUIDE §6-2-2a · DEPLOYMENT §1-4 · REQUIREMENTS BNK-651 · CHANGELOG 386차
+
+### Q727. **`/live-e2e/probe`** 의 **`g21SeedStatusDetail`** 은 health와 어떻게 맞추나요? (QA-B95, BE `14964f6` · FE `a8f4e8e` · `a727862`)
+
+**A.** **✅ FE+BE Fixed (`14964f6`·`a8f4e8e`·`a727862`, QA-B95, Q719 deepen)** — G21 seed 진단 문자열을 **`LiveE2eOperationReadinessSupport.resolveG21SeedStatusDetail`** 한 곳에서 생성해 **`/health`** 와 **`/live-e2e/probe`** 가 **동일 `liveE2eG21SeedStatusDetail`** 을 반환합니다. FE harness는 probe·health 어느 쪽이든 **같은 skip reason** 을 씁니다.
+
+| 축 | before | after (381차) |
+|----|--------|---------------|
+| **BE probe** | health만 detail · probe **누락/불일치** 가능 | probe **`g21SeedStatusDetail`** = health **동일 resolver** (`14964f6`) |
+| **FE parse** | legacy boolean만 | **`liveBackendProbe`** — **`liveE2eG21SeedStatusDetail`** · alias **`g21SeedStatusDetail`** (`a8f4e8e`) |
+| **skip reason** | generic **`g21-seed-missing`** fallback | **`g21-seed=service-unavailable`** → **`G21 seed service unavailable`** **우선** (`a727862`) |
+| **globalSetup** | detail 미표시 | **`liveGlobalSetup`** warning에 **detail 문자열** 포함 (`a8f4e8e`) |
+
+| detail 예 | harness skip reason (우선순위) |
+|-----------|--------------------------------|
+| **`g21-seed=service-unavailable`** | **`G21 seed service unavailable`** (1순위) |
+| **`g21-seed=disabled`** | **`G21 seed bootstrap disabled`** |
+| **`g21-seed=applicable visit-schedule=missing …`** | **`PLAN schedule seed missing`** 등 3축 개별 |
+
+**IT 조치**: probe JSON에 **`g21SeedStatusDetail`** 이 없으면 **`14964f6` 미반영 BE** · health와 probe detail이 다르면 **`LiveE2eOperationReadinessSupport`** 회귀를 확인하세요.
+
+| 테스트 | **`LiveE2eControllerTest`** — probe **`g21SeedStatusDetail`** assert · **`liveE2eHarness.test`** — detail parse·service-unavailable priority |
+
+> 관련: Q719 · Q722 · Q713 · **Q729** · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 381·382차
+
+### Q729. health·probe의 **`liveE2eG21SeedStatusCode`** 는 무엇인가요? (QA-B95, BE `0f19767`)
+
+**A.** **✅ BE Fixed (`0f19767`, QA-B95, Q727 deepen)** — G21 seed 진단을 **문자열 detail**(`liveE2eG21SeedStatusDetail`·probe **`g21SeedStatusDetail`**)과 별도로 **기계 판독 가능 code** 필드로 노출합니다. harness·CI triage가 **`g21-seed=service-unavailable` substring 파싱**에 의존하지 않도록 **382차**에서 추가되었습니다.
+
+| 필드 | 위치 | resolver |
+|------|------|----------|
+| **`liveE2eG21SeedStatusCode`** | **`GET /api/v1/health`** | **`LiveE2eOperationReadinessSupport.resolveG21SeedStatusCode`** |
+| **`g21SeedStatusCode`** | **`GET /api/v1/live-e2e/probe`** | health와 **동일 resolver** |
+
+| code | detail 예 | 의미 |
+|------|-----------|------|
+| **`disabled`** | **`g21-seed=disabled`** | bootstrap disabled profile |
+| **`service-unavailable`** | **`g21-seed=service-unavailable`** | bootstrap enabled·bean missing |
+| **`error`** | **`g21-seed=error`** | seed resolver 예외 |
+| **`not-applicable`** | *(detail 없음)* | G21 non-applicable branch · **`operationReady=true`** |
+| **`branch-missing-or-inactive`** | **`g21-seed=branch-missing-or-inactive`** | configured branch missing/inactive |
+| **`applicable`** | **`g21-seed=applicable visit-schedule=…`** | G21 applicable — 3축 present/missing는 **detail** 유지 |
+
+**IT 조치**: health JSON에 **`liveE2eG21SeedStatusCode`** 가 없으면 **`0f19767` 미반영 BE** · code와 detail이 모순되면 **`resolveG21SeedStatusCode`** 회귀를 확인하세요. FE harness는 **383차**(`6009ba7`, Q732)부터 **code 우선** skip reason을 사용합니다 — detail substring은 **code 없을 때만** fallback (Q727).
+
+| 테스트 | **`HealthControllerTest`** — disabled·service-unavailable·applicable·branch-missing·not-applicable·error code assert · **`LiveE2eControllerTest`** — probe **`g21SeedStatusCode`** assert |
+
+> 관련: Q727 · Q719 · Q730 · **Q732** · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 382·383차
+
+### Q730. live E2E에서 **G21 seed blocker**가 non-G21 suite를 막지 않나요? (QA-B95, FE `f851a59`)
+
+**A.** **✅ FE Fixed (`f851a59`, QA-B95, Q727·Q729 cluster)** — **`getEffectiveOperationBlockers`** 의 **`isG21Blocker`** 가 **381차**에서 추가된 **`g21-seed-service-unavailable`** 등 **wording variant**를 인식합니다. **`requireG21Ready=false`**(기본 **`liveDescribe`**) suite는 G21 seed blocker를 **필터**하고, **`liveG21Describe`**(`requireG21Ready: true`)만 **유지**합니다.
+
+| blocker 예 | **`requireG21Ready=false`** (general live) | **`requireG21Ready=true`** (`liveG21Describe`) |
+|-----------|-------------------------------------------|-----------------------------------------------|
+| **`g21-seed-service-unavailable`** | **제외** — non-G21 suite RUN 가능 | **유지** — G21 suite SKIP |
+| **`visit-schedule-missing`** | **제외** | **유지** |
+| **`G21 seed service unavailable`** (detail reason) | seed readiness reason — **`buildSeedReadinessReasons`** (Q727) | G21 suite gate |
+
+| **`isG21Blocker` normalized match (`f851a59`)** |
+|------------------------------------------------|
+| **`g21 seed missing`** · **`g21 seed disabled`** · **`g21 seed service unavailable`** |
+| **`visit schedule missing`** · **`billing visit schedule missing`** · **`nhis import missing`** · legacy **`g21-*`** tokens |
+
+**IT 조치**: general live suite가 **`g21-seed-service-unavailable`** 만으로 SKIP 되면 **`f851a59` 미반영 FE** · G21 suite가 seed blocker 없이 RUN 되면 **`requireG21Ready`** contract를 확인하세요.
+
+| 테스트 | **`liveE2eHarness.test`** — **`ignores g21 service-unavailable blocker when G21 readiness is not required`** · **`keeps G21 blockers when G21 readiness is required`** (carry) |
+
+> 관련: Q727 · Q729 · Q580 · Q713 · DEPLOYMENT §11-3 · CHANGELOG 382차
+
+### Q731. 공단 **방문일정 엑셀 import** 온보딩 안내는 어디서 보나요? (G-NHIS-SCHEDULE-IMPORT, BE `4567030`·FE `8ceb25c`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`4567030`·`8ceb25c`, G-NHIS-SCHEDULE-IMPORT, FAQ 21298)** — ezCare 도움말 **「공단 등록 일정 → 업로드」** 패턴을 ogada **API + 화면**으로 제공합니다. **계획(PLAN)·청구(BILLING) 이중 워크플로** 4단계 안내를 **`/visits`** import 패널 상단에서 확인합니다.
+
+| 항목 | 내용 |
+|------|------|
+| API | **`GET /api/v1/visits/imports/nhis/guidance`** |
+| FE UI | **`VisitNhisImportGuidePanel`** — **`VisitNhisImportPanel`** 상단 · **`fetchVisitNhisImportGuidanceApi`** |
+| RBAC | **`branch_admin`·`social_worker`** — **`caregiver` → 403** |
+| 응답 | **`portalUrl`** · **`browserRequirement`** · **`planImportSteps[]`**(4단계) · **`billingImportSteps[]`**(4단계) · **`outcomeStatusNotes[]`**(5종) · **`errorRecoverySteps[]`**(5단계) · **`confirmedScheduleResetNote`** · **`scheduleKindNote`** · **`message`·`guidanceMessage`** (Q735 deepen, `c38388d`) |
+| 실제 import | **`POST /api/v1/visits/imports/nhis`** — multipart `branchId`·`scheduleKind`·`file` · 응답 **`outcomeStatus`·`outcomeSummary`** (Q735, `c38388d`) |
+
+| PLAN 4단계 요약 | BILLING 4단계 요약 |
+|----------------|-------------------|
+| 공단 포털 로그인 → 계획일정 조회 → 엑셀 다운로드 → ogada **`scheduleKind=PLAN`** 업로드 | 청구일정 엑셀 다운로드 → **`scheduleKind=BILLING`** 업로드 → **`/visits?tab=nhis-comparison`** 대조 → batch-confirm readiness 충족 시 일괄확정 |
+
+**현장 조치**: SideNav **기록 → 방문 일정**(`/visits`) → **「공단 방문일정 엑셀 import」** 패널 상단 **브라우저 안내·PLAN/BILLING 단계**를 확인한 뒤 아래 폼에서 업로드합니다. guidance API가 일시 실패해도 **import 폼은 그대로 사용** 가능합니다(패널만 미표시). **CONFIRMED 일정 재업로드** 시 **`confirmedScheduleResetNote`** — DRAFT만 교체 옵션을 참고하세요.
+
+| 테스트 | **`NhisVisitScheduleImportGuidanceTest`** · **`MustApiEndpointRoutingTest`** · **`VisitNhisImportGuidePanel.test`** · **`VisitNhisImportPanel.test`** |
+
+> 관련: Q189 · Q570 · USER_MANUAL §5-11 · ADMIN_GUIDE §1-4 G21 · DEPLOYMENT §1-4 · CHANGELOG 384차
+
+### Q732. live E2E harness가 **`liveE2eG21SeedStatusCode`** 를 어떻게 사용하나요? (QA-B95, FE `6009ba7`)
+
+**A.** **✅ FE Fixed (`6009ba7`, QA-B95, Q729 deepen)** — BE **`0f19767`** 이 노출한 machine-readable code를 FE harness가 **parse·우선 분기**합니다. **detail substring 파싱보다 code를 먼저** 사용해 G21 seed triage가 안정화됩니다.
+
+| 모듈 | 변경 |
+|------|------|
+| **`liveBackendProbe.js`** | health/probe **`liveE2eG21SeedStatusCode`** · alias **`g21SeedStatusCode`** parse → **`.live-backend-state.json`** persist |
+| **`liveConfig.js`** | **`getLiveG21SeedStatusCode()`** · **`isLiveG21SeedReady()`** — **`not-applicable` → ready** · **`service-unavailable`/`disabled`/`error`/`branch-missing-or-inactive` → not ready** · **`buildSeedReadinessReasons`** — code **우선** · detail은 fallback |
+| **`liveGlobalSetup.js`** | probe state에 **code** 포함 |
+| **`liveE2eHarness.test.js`** | code present 시 **`g21 seed status code: …`** skip reason · detail **`g21-seed=`** reason **생략** · **`not-applicable` code → `isLiveG21SeedReady()=true`** |
+
+| code | harness 동작 (`requireG21Ready=true`) |
+|------|--------------------------------------|
+| **`service-unavailable`** | skip **`G21 seed service unavailable`** · **`g21 seed status code: service-unavailable`** |
+| **`not-applicable`** | G21 seed **ready** — skip reason **없음** |
+| *(code 없음)* | Q727 **detail substring** fallback 유지 |
+
+**IT 조치**: code가 있는데도 detail substring만 skip 되면 **`6009ba7` 미반영 FE** · **`liveE2eHarness.test`** — **`prefers service-unavailable status code for G21 seed readiness reason`** 회귀 확인.
+
+> 관련: Q729 · Q727 · Q730 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 383차
+
+### Q733. live E2E health/probe의 **G21 seed 3축 component status code**는 무엇인가요? (QA-B95, BE `59e4e7f`)
+
+**A.** **✅ BE Fixed (`59e4e7f`, QA-B95, Q729·Q727 cluster deepen)** — aggregate **`liveE2eG21SeedStatusCode`**(`0f19767`) 위에 **PLAN 일정·BILLING 일정·NHIS import** 각각의 **machine-readable code**를 health/probe에 추가합니다. **detail substring(`visit-schedule=present`) 파싱 없이** 3축 중 어느 seed가 비었는지 triage할 수 있습니다.
+
+| health 필드 | probe alias | 의미 |
+|------------|-------------|------|
+| **`liveE2eVisitScheduleStatusCode`** | **`visitScheduleStatusCode`** | PLAN 방문일정 seed |
+| **`liveE2eBillingVisitScheduleStatusCode`** | **`billingVisitScheduleStatusCode`** | paired BILLING 일정 seed |
+| **`liveE2eNhisImportStatusCode`** | **`nhisImportStatusCode`** | NHIS import batch+row seed |
+
+| code (applicable=true) | **`liveE2e*Ready`** | blocker |
+|------------------------|---------------------|---------|
+| **`present`** | **`true`** | — |
+| **`missing`** | **`false`** | **`visit-schedule-missing`** · **`billing-visit-schedule-missing`** · **`nhis-import-missing`** |
+
+| code (applicable=false 또는 bootstrap off) | 설명 |
+|-------------------------------------------|------|
+| **`disabled`·`service-unavailable`·`error`** | aggregate **`liveE2eG21SeedStatusCode`** 와 **동일** — component도 동일 code |
+| **`not-applicable`** | 주야간-only 지점 — G21 seed **해당 없음** |
+| **`branch-missing-or-inactive`** | configured branch missing/inactive |
+
+**IT 조치**: health JSON에 3축 code가 없으면 **`59e4e7f` 미반영 BE** · **`present`/`missing` 불일치** 시 **`liveE2eVisitScheduleReady` 등 boolean** 과 **`resolveG21SeedComponentStatusCode`** 회귀를 확인하세요. FE harness는 **387차**(`3eebddb`, Q736)부터 **component code도 code-first** — **`getLiveG21ComponentStatusCodes()`·`buildG21ComponentReadinessReasons()`**.
+
+| 테스트 | **`HealthControllerTest`** — disabled·service-unavailable·present·not-applicable·branch-missing · **`LiveE2eControllerTest`** — probe **`visitScheduleStatusCode`** 등 assert · **`LiveE2eOperationReadinessSupportTest`** — **`resolveG21SeedComponentStatusCode`** matrix +3 (**17th layer**, `9664f29`) · **null seed normalize** (`1c7064d`, Q737) |
+
+> 관련: Q729 · Q732 · Q736 · Q737 · Q727 · Q495 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 384~387차
+
+### Q735. 공단 **방문일정 import 결과 상태(`outcomeStatus`)** 는 어디서 확인하나요? (G-NHIS-IMPORT-ERROR-STATUS-SURFACE, BE `c38388d`·FE `91675f1`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`c38388d`·`91675f1`, G-NHIS-IMPORT-ERROR-STATUS-SURFACE, ezCare FAQ 21845 pattern)** — import 직후 **`outcomeStatus`·`outcomeSummary`** 로 전체 결과를 machine-readable하게 표시합니다. 이지케어 FAQ **21845** 유형 공단 엑셀 incident는 **사후 FAQ 공지**이지만, ogada는 **import 패널에서 실시간 surfacing**합니다.
+
+| `outcomeStatus` | 한글 라벨 | 의미 |
+|-----------------|----------|------|
+| **`SUCCESS`** | 전체 반영 | 모든 행이 **DRAFT** 일정으로 생성 |
+| **`PARTIAL`** | 부분 반영 | 일부만 반영 — **미매칭·건너뜀** 행 확인 |
+| **`UNMATCHED`** | 이용자 미매칭 | 인정번호·성명으로 등록 이용자를 찾지 못함 |
+| **`ALL_SKIPPED`** | 전체 건너뜀 | **건너뜀만** 있고 미매칭 0건일 때 — 중복·확정일정·퇴소 등으로 **반영 0건** (`ffa57ea` — 미매칭+건너뜀 혼합 0건 import는 **`PARTIAL`**) |
+| **`EMPTY`** | 빈 파일 | 엑셀에 처리 가능한 데이터 행 없음 |
+
+| API·화면 | 내용 |
+|----------|------|
+| **`POST /api/v1/visits/imports/nhis`** | 응답 **`outcomeStatus`·`outcomeSummary`** + **`totalRows`·`importedCount`·`unmatchedCount`·`skippedCount`** |
+| **`GET /api/v1/visits/imports/nhis/guidance`** | **`outcomeStatusNotes[]`** 5종(code·label·description) · **`errorRecoverySteps[]`** 5단계 |
+| **`VisitNhisImportPanel`** | 업로드 후 **Alert** — **`resolveVisitImportOutcome`** tone(success/warning/danger) · **`role="status"`** |
+| **`VisitNhisImportGuidePanel`** | **「import 결과 상태」** `<dl>` · **「오류·부분 반영 시 조치」** numbered list |
+| **`VisitNhisImportRecoverySteps`** (Q738) | import 결과 Alert **바로 아래** — **`resolveVisitImportRecoverySteps`** 로 outcome별 **맥락형 복구 단계** (`e4dbe9a`) |
+| **미매칭 행 조치** (Q738·Q739) | 결과 표 **「조치」** 열 — **`수급자 찾기`** → **`/clients?branchId={지점}&q={인정번호}`** (`562560a`) |
+
+**현장 조치**: **`/visits`** import 후 상단 Alert **라벨·요약**을 먼저 확인 → **`PARTIAL`/`UNMATCHED`** 이면 Alert 아래 **인라인 복구 단계**·하단 **행별 Badge·사유·「수급자 찾기」** 를 spot-check → 이용자 등록·수정 후 **동일 xlsx 재import**. 공단 엑셀 자료 오류 공지(21845 유형)는 **정상 조치 후 재다운로드**하세요.
+
+| 테스트 | **`NhisVisitScheduleImportOutcomeTest`** 6건+ · **`NhisVisitScheduleImportGuidanceTest`** · **`VisitNhisImportPanel.test`** — inline recovery·client lookup link · **zero-import PARTIAL vs ALL_SKIPPED UI regression** (`aa0559b`, Q735) · **`ClientListPage.test`** · **`visits.test`** · **`clientListFilters.test`** — outcome tone·recovery·deep-link |
+
+> 관련: Q738 · Q731 · Q189 · USER_MANUAL §5-11 · ADMIN_GUIDE §1-4 G21 · DEPLOYMENT §1-4 · CHANGELOG 389차
+
+### Q738. 공단 방문일정 import **부분 반영·미매칭** 후 복구는 화면에서 어떻게 이어지나요? (G-NHIS-IMPORT-ERROR-STATUS-SURFACE deepen, BE `ffa57ea`/`9b91e0f`·FE `e4dbe9a`·`cda2a10`·`562560a`)
+
+**A.** **✅ BE+FE Fixed (`ffa57ea`·`9b91e0f`·`e4dbe9a`·`cda2a10`·`562560a`, G-NHIS-IMPORT-ERROR-STATUS-SURFACE deepen, ezCare FAQ 21845 pattern)** — 387차 **정적 guide + outcome Alert** 에 더해, import 직후 **맥락형 복구 안내**와 **미매칭 행 → 수급자 목록** deep-link로 **FAQ 사후 공지 없이** 현장 triage 루프를 닫습니다.
+
+| 단계 | 화면·동작 |
+|------|----------|
+| 1 | **`/visits`** — xlsx import 후 **`outcomeStatus` Alert** (Q735) |
+| 2 | Alert **바로 아래** — **`VisitNhisImportRecoverySteps`** — **`resolveVisitImportRecoverySteps(outcomeStatus, guidance.errorRecoverySteps)`** 로 **outcome별 키워드 필터** 복구 `<ol>` (`e4dbe9a`) |
+| 3 | API **4xx/5xx** 시에도 동일 컴포넌트 — **`UNKNOWN`** outcome → guidance **전체 7단계** 표시 (Q740, `45acb75`/`2d9b9d3`) |
+| 4 | 결과 표 **`UNMATCHED`** 행 — **「조치」** 열 **「수급자 찾기」** → **`/clients?branchId={branchId}&q={ltcCertNo}`** — **`ClientListPage`** 검색·**지점 FilterChip** prefill (`562560a`, Q739) |
+| 5 | 이용자 **등록·인정번호 수정** 후 **`/visits`** 로 돌아와 **동일 xlsx 재import** |
+
+| BE 분류 정정 (`ffa57ea`·`9b91e0f`) | 이전 | 이후 |
+|--------------------------|------|------|
+| **반영 0건 + 미매칭 N + 건너뜀 M (M>0)** | **`ALL_SKIPPED`** — 미매칭 행 **숨김** | **`PARTIAL`** — **미매칭·건너뜀 건수 모두** Alert·표에 노출 |
+| **반영 0건 + 건너뜀만** | **`ALL_SKIPPED`** | **`ALL_SKIPPED`** (동일) |
+
+| service·routing test lock (`9b91e0f`) | 내용 |
+|--------------------------------------|------|
+| **`VisitServiceTest`** | **0 imported + unmatched + skipped** batch → **`PARTIAL`** service-layer assert |
+| **`VisitControllerRoutingTest`** | 동일 시나리오 routing → response **`outcomeStatus=PARTIAL`** |
+| **guidance copy** | **`errorRecoverySteps`** 5→**6**→**7** — 「반영 0건+미매칭·건너뜀 → PARTIAL」·**step 4 지점 필터 deep-link** (Q740, `45acb75`) |
+
+| 유틸·컴포넌트 | 역할 |
+|--------------|------|
+| **`visits.js`** — **`resolveVisitImportRecoverySteps`** | `PARTIAL`/`UNMATCHED`/`ALL_SKIPPED`/`EMPTY`별 **키워드 필터** (`VISIT_IMPORT_RECOVERY_KEYWORDS`) |
+| **`clientListFilters.js`** — **`buildClientListSearchHref`** · **`readClientListSearchFromQuery`** · **`readClientListBranchFromQuery`** | query **`q`** · **`branchId`** — NHIS·청구 미매칭 **공통 deep-link** |
+| **`VisitNhisImportRecoverySteps`** | **`data-testid="visit-import-inline-recovery"`** · **`role="status"`** info Alert |
+
+**현장**: **「수급자 찾기」** 로 이동했는데 **0건**이면 — 이용자 **미등록** 또는 **인정번호 불일치** → **`/clients/new`** 등록 또는 상세 **인정번호** 수정 후 재import. **다지점**이면 **지점 FilterChip**이 import 지점으로 좁혀져 있는지 확인 (Q739).
+
+| 테스트 | **`VisitNhisImportPanel.test`** — inline recovery·client lookup link · **zero-import PARTIAL UI lock** (`aa0559b`) · **`ClientListPage.test`** — `?q=`·`?branchId=` prefill · **`NhisVisitScheduleImportOutcomeTest`** · **`VisitServiceTest`** · **`VisitControllerRoutingTest`** — mixed zero-import → **`PARTIAL`** |
+
+> 관련: Q739 · Q735 · Q731 · Q189 · Q671 · USER_MANUAL §5-11 · ADMIN_GUIDE §1-4 G21 · DEPLOYMENT §1-4 · CHANGELOG 390차
+
+### Q739. NHIS import **「수급자 찾기」** deep-link에서 **지점 필터**가 유지되나요? (G-NHIS-IMPORT-ERROR-STATUS-SURFACE, FE `562560a`)
+
+**A.** **✅ FE Fixed (`562560a`, G-NHIS-IMPORT-ERROR-STATUS-SURFACE, Q738 deepen)** — **`/visits`** import 패널의 **`branchId`** 와 동일 지점으로 **수급자 목록 FilterChip** 이 prefill 됩니다. **단일 지점** 센터는 URL에 **`branchId`** 가 없어도 동작하고, **통합 관리자(`hq_admin`)·다지점** 조직에서 타 지점 수급자 혼선을 줄입니다.
+
+| 항목 | 내용 |
+|------|------|
+| deep-link URL | **`/clients?branchId={uuid}&q={ltcCertNo}`** — import **`UNMATCHED`** 행 **「수급자 찾기」** |
+| query key | **`q`** — 검색어(인정번호) · **`branchId`** — 지점 FilterChip (`CLIENT_LIST_BRANCH_QUERY_PARAM`) |
+| **`buildClientListSearchHref(query, branchId)`** | **`branchId` trim** 후 URLSearchParams에 **`branchId`**·**`q`** 설정 |
+| **`ClientListPage`** | **`readClientListBranchFromQuery(searchParams)`** — 마운트·URL 변경 시 **지점 필터 동기화** |
+| invalid **`branchId`** guard | JWT scope에 **없는 지점 ID** → FilterChip **`전체`** fallback |
+
+**현장 조치**: import 후 **「수급자 찾기」** 로 이동했는데 **다른 지점** 수급자만 보이면 — URL **`branchId`** 가 import 지점과 일치하는지 확인. **0건**이면 Q738 절차대로 **등록·인정번호 수정** 후 재import.
+
+| 테스트 | **`clientListFilters.test`** — href with **`branchId`** · **`VisitNhisImportPanel.test`** — link includes branch · **`ClientListPage.test`** — `?branchId=` prefill |
+
+> 관련: Q738 · Q735 · Q672 · USER_MANUAL §5-11 · ADMIN_GUIDE §1-4 G21 · DEPLOYMENT §1-4 · CHANGELOG 390차
+
+### Q740. NHIS import **outcome 집계**가 잘못되면 어떻게 되나요? 복구 안내는 몇 단계인가요? (G-NHIS-IMPORT-ERROR-STATUS-SURFACE, BE `45acb75`/`3d4e58a`·FE `2d9b9d3`)
+
+**A.** **✅ BE+FE Fixed (`45acb75`·`3d4e58a`·`2d9b9d3`, G-NHIS-IMPORT-ERROR-STATUS-SURFACE deepen)** — import 결과 **`outcomeStatus`/`outcomeSummary`** 는 행 카운터(`totalRows`·`importedCount`·`unmatchedCount`·`skippedCount`)에서 도출됩니다. **391차**부터 **불가능한 카운터 조합**은 **잘못된 Alert를 내지 않고** 서버에서 **즉시 거부**합니다. 정적·인라인 복구 안내는 **7단계**이며, **지점 필터 유지 deep-link** 문구가 **UNMATCHED/PARTIAL** 인라인 복구에도 노출됩니다.
+
+| BE 방어 (`3d4e58a`) | 조건 | 결과 |
+|---------------------|------|------|
+| **음수 카운터** | `importedCount`·`unmatchedCount`·`skippedCount` < 0 | **`IllegalArgumentException`** — 파서·집계 버그 fail-fast |
+| **합계 초과** | `imported + unmatched + skipped > totalRows` | 동일 |
+| **totalRows=0 비정상** | `totalRows=0` 인데 다른 카운터 > 0 | 동일 |
+
+| guidance·복구 (`45acb75`·`2d9b9d3`) | 내용 |
+|-----------------------------------|------|
+| **`GET …/imports/nhis/guidance`** | **`errorRecoverySteps.length()=7`** — step 4 **「미매칭 행 클릭 → 지점 필터 유지 수급자 검색 · 잘못된 지점이면 branches 수정」** |
+| **`VisitNhisImportRecoverySteps`** | **`resolveVisitImportRecoverySteps`** — **`UNMATCHED`** 키워드 **「지점 필터」·「수급자 검색」** · **`PARTIAL`** 키워드 **「반영 0건」·`outcomeStatus=PARTIAL`** |
+| **API 4xx/5xx** | **`UNKNOWN`** outcome → guidance **전체 7단계** 표시 |
+
+**현장**: import가 **500**으로 실패하고 outcome Alert가 없으면 — **IT에 로그 확인** 요청(카운터 무결성 위반 가능). 정상 응답이면 Alert·인라인 복구 **7단계**를 따르세요 (Q738·Q739).
+
+| 테스트 | **`NhisVisitScheduleImportOutcomeTest`** 9건 — counter integrity +3 · **`NhisVisitScheduleImportGuidanceTest`** — step 4 branch copy · **`visits.test`** · **`VisitNhisImportPanel.test`** — branch-aware keyword filter |
+
+> 관련: Q738 · Q739 · Q735 · Q731 · USER_MANUAL §5-11 · ADMIN_GUIDE §1-4 G21 · DEPLOYMENT §1-4 · CHANGELOG 391차
+
+### Q741. NHIS import **「수급자 찾기」** 후 수급자 목록이 **빈 채로 고정**될 수 있나요? (QA-B350, FE `320ba06`)
+
+**A.** **✅ FE Fixed (`320ba06`, QA-B350, G-NHIS-IMPORT-ERROR-STATUS-SURFACE deepen)** — **`/clients?branchId={uuid}&q={ltcCertNo}`** deep-link 시, URL **`branchId`** 가 **현재 목록에서 선택 가능한 지점이 아니면** FilterChip이 **`전체`** 로 자동 reset 됩니다. **해당 지점에 등록 수급자가 0명**이어도 **검색어(`q`)로 다른 지점 수급자**가 매칭되면 **목록에 표시**되어 **빈 화면 stuck** 을 방지합니다.
+
+| 상황 | 동작 |
+|------|------|
+| URL **`branchId`** 가 JWT scope에 **없음** | **`전체`** fallback (Q739, invalid guard) |
+| URL **`branchId`** 가 scope에 있으나 **`branchOptions`에 수급자 0명** | **`전체`** reset → **`q` 검색**으로 타 지점 수급자 노출 가능 (`320ba06`) |
+| URL **`branchId`** 정상·해당 지점에 수급자 있음 | **지점 FilterChip prefill 유지** (Q739) |
+
+**현장 조치**: **「수급자 찾기」** 후 **0건**이면 — ① FilterChip이 **`전체`** 인지 확인 ② **`q` 검색어(인정번호)** 가 URL에 있는지 확인 ③ 여전히 0건이면 **미등록·인정번호 불일치** → Q738 등록·수정 후 재import. **의도적으로 특정 지점만** 보려면 import 패널 **`branchId`** 와 이용자 **소속 지점**이 일치하는지 먼저 확인하세요.
+
+| 테스트 | **`ClientListPage.test`** — **`falls back to 전체 when query branch has no selectable clients`** |
+
+> 관련: Q739 · Q738 · Q672 · USER_MANUAL §5-11 · CHANGELOG 391차
+
+### Q742. NHIS import **복구 단계 필터 키워드**는 어디서 정의되나요? (G-NHIS-IMPORT-ERROR-STATUS-SURFACE, BE `eb6dd67`·FE `5636508`)
+
+**A.** **✅ BE+FE Full-stack Fixed (`331f24b`·`5636508`·test lock `eb6dd67`, G-NHIS-IMPORT-ERROR-STATUS-SURFACE)** — **`GET /api/v1/visits/imports/nhis/guidance`** 응답 **`errorRecoveryKeywordNotes[]`** 가 **서버 권위 contract** 이며, **FE**는 mount 시 로드한 guidance의 keyword notes를 **`resolveVisitImportRecoverySteps(…, keywordNotes)`** 에 전달해 **outcome별 복구 단계를 필터**합니다. guidance API **미로드·빈 keywords** 시 **`visits.js`** **`VISIT_IMPORT_RECOVERY_KEYWORDS`** **static fallback** — **화면 동작은 guidance 정상 시 BE copy와 항상 정합**합니다.
+
+| API 필드 | 내용 |
+|----------|------|
+| **`errorRecoveryKeywordNotes[]`** | **4건** — `UNMATCHED` · `PARTIAL` · `ALL_SKIPPED` · `EMPTY` |
+| **`code`** | outcome 코드 — import 응답 **`outcomeStatus`** 와 동일 enum |
+| **`keywords[]`** | 해당 outcome에서 노출할 **`errorRecoverySteps`** substring 필터 |
+
+| outcome `code` | 대표 `keywords[]` (394차) |
+|----------------|---------------------------|
+| **`UNMATCHED`** | `UNMATCHED)이면` · **`지점 필터`** · **`수급자 검색`** |
+| **`PARTIAL`** | `부분` · `PARTIAL` · `건너뜀` · `미매칭` · `수동` · **`반영 0건`** · **`outcomeStatus=PARTIAL`** |
+| **`ALL_SKIPPED`** | **`건너뜀`** · `outcomeStatus` · **`재다운로드`** |
+| **`EMPTY`** | `재다운로드` · `outcomeStatus` · **`엑셀`** |
+
+| 계층 | 동작 |
+|------|------|
+| **BE (`331f24b`·`eb6dd67`)** | guidance API keyword notes 노출 · **`NhisVisitScheduleImportRecoveryKeywordAlignmentTest`** **4건** — UNMATCHED·PARTIAL·**ALL_SKIPPED**·**EMPTY** 필터가 7단계 copy와 **정합** · **`VisitControllerRoutingTest`** — **`errorRecoveryKeywordNotes[2].keywords[0]` = 「건너뜀」** · **`[3].keywords[2]` = 「엑셀」** |
+| **FE (`5636508`)** | **`VisitNhisImportPanel`** — **`guidance?.errorRecoveryKeywordNotes`** → **`resolveVisitImportRecoveryKeywords`** — **API keywords 우선** · **`resolveVisitImportRecoverySteps(outcomeCode, guidance.errorRecoverySteps, keywordNotes)`** · guidance 없을 때 static fallback |
+| **IT/Swagger** | `curl …/imports/nhis/guidance` → **`errorRecoveryKeywordNotes[0].keywords[1]` = 「지점 필터」** · **`[2].keywords[0]` = 「건너뜀」** · **`[3].keywords[2]` = 「엑셀」** · UI import 후 **인라인 복구 단계** = API keywords 기준 필터 결과 |
+
+**현장**: import 후 **인라인 복구 단계**는 Q738·Q740과 **동일하게 보입니다**. **BE가 복구 copy·키워드를 변경**하면 **앱 재배포 없이** guidance API만 갱신해도 FE가 따라갑니다. **guidance API 일시 장애** 시 static fallback으로 **복구 단계는 계속 표시**됩니다.
+
+| 테스트 | **`NhisVisitScheduleImportGuidanceTest`** · **`NhisVisitScheduleImportRecoveryKeywordAlignmentTest`** **4건** (`eb6dd67`) · **`VisitControllerRoutingTest`** routing lock · **`visits.test`** · **`VisitNhisImportPanel.test`** |
+
+> 관련: Q740 · Q738 · Q735 · Q731 · USER_MANUAL §5-11 · ADMIN_GUIDE §1-4 G21 · DEPLOYMENT §1-4 · CHANGELOG 394차
+
+### Q743. G16 **parity-rules BE catalog DTO**와 **1일 1회 안내**는 화면에서 어떻게 표시되나요? (FE `afbbaa7`·`e19328a`)
+
+**A.** **✅ FE Fixed (`afbbaa7`/`e19328a`, G16 NHIS #44 deepen — Q710 P2 carry closure)** — **`/transport/service-fees`** 에서 BE catalog **`rules[].code`·`label`·`description`** 을 **`normalizeTransportParityRule()`** 로 정규화해 **`TransportParityRulesPanel`** 에 표시합니다. 청구 패널 상단 **1일 1회 footnote** 는 **`resolveTransportServiceFeeOnePerDayNoteFromRules(rules, onePerDayNote)`** 로 **parity catalog `ONE_PER_DAY.description`을 우선**하고, 없으면 rates API **`onePerDayNote`**, 둘 다 비면 **`TRANSPORT_SERVICE_FEE_ONE_PER_DAY_NOTE`** 정적 문구(BE catalog와 동일)로 cascade합니다 (`e19328a`). API 오류 시 **`STATIC_TRANSPORT_PARITY_RULES`** static fallback — **BE catalog 라벨과 동일 4-rule** 유지.
+
+| API | FE 소비 |
+|-----|---------|
+| **`GET /api/v1/transport/service-fee-parity-rules`** | **`TransportParityRulesPanel`** — `<dl>` **`rule.label` + `rule.description`** · **`TransportServiceFeePanel`** mount 시 **parallel fetch** → footnote **`ONE_PER_DAY` description 우선** |
+| **`GET /api/v1/transport/service-fee-rates`** | **`TransportServiceFeePanel`** — **`onePerDayNote`** 는 parity rule description **없을 때** 2순위 · **`role="note"`** footnote |
+
+| `rules[].code` | BE `label` (fallback 동일) |
+|----------------|---------------------------|
+| **`DISTANCE_BANDS`** | 거리 구간별 단가 |
+| **`ONE_WAY_RATIO`** | 편도 비율 |
+| **`ONE_PER_DAY`** | 1일 1회 — **footnote 1순위 source** |
+| **`SERVICE_LOG`** | 서비스 제공기록 연계 |
+
+| UI 동작 | 내용 |
+|---------|------|
+| catalog **정상** | **`ONE_PER_DAY.description`** = footnote · panel **`<dd>`** = 동일 copy source |
+| catalog **오류** | danger Alert + **`STATIC_TRANSPORT_PARITY_RULES`** 4-rule fallback (Q703·Q724) |
+| catalog **`rules:[]`** | **`TransportParityRulesPanel`** **섹션 미노출** (`8ed60cb`, Q724) · footnote → rates note → static cascade |
+| rates **`onePerDayNote` blank** · parity **`ONE_PER_DAY` present** | **parity description** footnote (`e19328a`) |
+| **both blank** | **`TRANSPORT_SERVICE_FEE_ONE_PER_DAY_NOTE`** static fallback (`aa0559b` carry) |
+
+**현장 조치**
+
+1. **`/transport/service-fees`** — 수가표 **위** **1일 1회** footnote · 수가표 **아래** **「이동서비스비 NHIS 기준 규칙」** 4항을 확인합니다 — **두 영역의 `ONE_PER_DAY` copy가 동일**해야 합니다.
+2. IT는 Swagger **`GET …/service-fee-parity-rules`** **`rules[ONE_PER_DAY].description`** 과 footnote·**`<dd>`** 를 **교차 대조**합니다.
+3. copy 변경은 **BE parity catalog 또는 rates API** 갱신으로 FE가 따라갑니다 — **앱 재배포 없이** 정합 가능(parity 우선).
+
+| 테스트 | **`transportServiceFee.test.js`** — **`resolveTransportServiceFeeOnePerDayNoteFromRules`** · **`TransportParityRulesPanel.test.jsx`** · **`TransportServiceFeePanel.test.jsx`** · **`TransportServiceFeePage.test.jsx`** |
+
+> 관련: Q703 · Q710 · Q678 · Q724 · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4 G16 · DEPLOYMENT §1-4 · CHANGELOG 396차
+
+### Q744. live E2E **bootstrap service-unavailable** health 응답은 어떻게 검증되나요? (QA-B95, BE `7fcdfde`)
+
+**A.** **✅ BE test lock (`7fcdfde`, QA-B95 20th layer, Q684·Q719 deepen)** — bootstrap **설정 enabled** · **`LiveE2eBootstrapService` bean missing** 일 때 **`GET /api/v1/health`** 가 노출하는 **operation readiness 필드 matrix** 를 **`HealthControllerTest.healthShouldSurfaceServiceUnavailableWhenBootstrapServiceMissing`** 가 회귀 lock합니다. **앱 동작 변화 없음** — IT·QA triage contract 고정.
+
+| health 필드 | 기대값 (enabled·bean missing) |
+|-------------|-------------------------------|
+| **`liveE2eReady`** | **`false`** |
+| **`liveE2eStatusDetail`** | **`bootstrap=service-unavailable`** |
+| **`liveE2eG21SeedStatusCode`** | **`service-unavailable`** |
+| **`liveE2eG21SeedStatusDetail`** | **`g21-seed=service-unavailable`** |
+| **`liveE2eOperationBlockers`** | **`["bootstrap-service-unavailable"]`** |
+| **`liveE2eOperationBlocker`** · **`liveE2eOperationReason`** | **`bootstrap-service-unavailable`** |
+
+**IT 조치**
+
+1. **`ogada.live-e2e.enforce-bootstrap-readiness=true`**(기본) 환경에서 bean wiring 장애 시 위 필드를 확인합니다 — **`bootstrap=disabled`** 와 **원인·조치가 다릅니다** (Q719).
+2. FE live E2E는 **`bootstrap-service-unavailable`** blocker를 auth-recovered 시 **effective readiness에서 제외**할 수 있습니다 (Q713, `75c0f51`).
+3. 회귀 확인: **`mvn test -Dtest=HealthControllerTest#healthShouldSurfaceServiceUnavailableWhenBootstrapServiceMissing`**.
+
+| 테스트 | **`HealthControllerTest`** +1 @Test (`7fcdfde`) · BE **@Test 1999** |
+
+> 관련: Q684 · Q719 · Q713 · Q737 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 396차
+
+### Q745. **위생·안전 점검(M6 6-2~6-4)** 은 어디서 기록하나요? (US-Q01, BE `ac69919`·FE `f7061c4`)
+
+**A.** **✅ Full-stack Fixed (US-Q01, Q745)** — 케어포 M6 **6-2 일일점검 · 6-3 정기점검(6종 sub-form) · 6-3-1 감염병 관리 · 6-4 시설운영일지** 가 **4 Route + REST API + V184** 로 연동되었습니다. 기록은 **서버(`safety_check_records`)에 저장**되며, **같은 지점 권한** 사용자가 조회합니다 — 브라우저 localStorage pilot는 **제거**되었습니다 (`f7061c4`).
+
+| leaf | 화면 | API | 비고 |
+|------|------|-----|------|
+| **6-2 일일점검** | `/safety/daily-checks` | `GET/POST /api/v1/safety/daily-checks` | 8항 checklist · **`resultCode`** PASS/PARTIAL/FAIL |
+| **6-3 정기점검** | `/safety/periodic-checks` | `GET/POST /api/v1/safety/periodic-checks` | **6 sub-form** (위생·간호비품·급식·소화·약품·소독) |
+| **6-3-1 감염병** | `/safety/infection-control` | `GET/POST /api/v1/safety/infection-control` | 증상·조치 코드 · 대상자 |
+| **6-4 시설운영일지** | `/safety/operation-log` | `GET/POST /api/v1/safety/operation-logs` | 운영 메모·특이사항 |
+
+**권한**: **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver`·`guardian` → 403**.
+
+**현장 절차**
+
+1. SideNav **기록 → 위생·안전 점검** (또는 **`/safety` → `/safety/daily-checks`**)으로 이동합니다.
+2. **`SafetyContextNav`** 에서 **일일 · 정기 · 감염병 · 시설운영** 탭을 선택합니다.
+3. 체크리스트·폼을 작성하고 **저장** — 성공 시 **success Alert** · 하단 **최근 기록** 테이블이 갱신됩니다.
+4. **`branchId`** 는 로그인 **활성 지점**에서 자동 전달됩니다 (`?branchId=` 쿼리).
+
+| KPI | **module id=6 「위생·안전 점검」** coverage **0 → 1.0** · 가중 모듈 KPI **~84.31%** (`competitorModuleCoverage.js`, `f7061c4`) |
+
+| 테스트 | **`SafetyCheckControllerRoutingTest`** · **`SafetyCheckRecordServiceTest`** · **`SafetyCheckTemplateCatalogTest`** · **`RoleBasedControllerAccessTest$SafetyCheckAccess`** **12 @Test** RBAC HTTP lock (`aa9565c`, Q748·Q750) · **`SafetyDailyChecksPage.test`** · **`SafetyPeriodicChecksPage.test`** · **`SafetyInfectionControlPage.test`** · **`SafetyOperationLogPage.test`** · **`useSafetyServerRecords.test`** · **`safetyCheckLiveApi.e2e.test.js`** (Q753) |
+
+> **접근성 (Q745 deepen, FE `58599c0`)**: 4 Safety page **점검일·기록일** 열 — **`<time dateTime>`** · **`InfectionControlLogForm`·`SafetyOperationLogForm`** heading **`useId()`** · checklist fieldset **`.ds-safety-checklist__items`**
+
+> 관련: Q660(정정) · Q750 · USER_MANUAL §5-9 · ADMIN_GUIDE §1-4 US-Q01 · DEPLOYMENT §1-4 · CHANGELOG 400차 · **V184** · **V185** (Q751)
+
+### Q746. live E2E에서 **G21 seed status가 null**일 때 **health와 probe** 응답이 어긋나지 않나요? (QA-B95, BE `8342f92`)
+
+**A.** **✅ BE test lock (`8342f92`, QA-B95 21st layer, Q737 deepen)** — **`LiveE2eController`** 가 null **`g21SeedStatus`** 를 처리하는 방식과 **`HealthController`** 가 **동일 contract** 를 노출하는지 **`HealthControllerTest`** 가 회귀 lock합니다. **앱 동작 변화 없음** — IT triage용 health/probe 정합 고정.
+
+| 검증 | **`HealthControllerTest`** — null g21 seed 시 health/probe **component code·detail** matrix assert |
+| carry | Q737 **`normalizeG21SeedStatus`** BE service layer · Q744 bootstrap service-unavailable 분리 |
+
+> 관련: Q737 · Q744 · DEPLOYMENT §11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 397차
+
+### Q747. NHIS **수가 seed API**에서 **2026년이 아닌 연도**를 요청하면 어떻게 되나요? (G9-COG, BE `1f2803c`)
+
+**A.** **✅ BE Fixed (`1f2803c`, G9-COG, Q747)** — **`BillingService.validateNhisSeedCatalogYear`** 가 catalog에 없는 연도를 **즉시 거부**합니다. **조직 scope·DB 조회 전** fail-fast 하므로 live E2E·자동화에서 **모호한 404/500 후속 오류**를 줄입니다. 화면 **「공단 2026 수가 시드」** 는 **2026 전용** — 현장 UI 체감 변화 없음.
+
+| API | 미지원 `year` (예: 2027) | 지원 `year` (2026) |
+|-----|---------------------------|-------------------|
+| `GET /api/v1/billing/fee-schedules/nhis-seed-payloads?year=` | **`422 BUSINESS_RULE`** | 200 · 미등록 셀 payload 목록 |
+| `POST /api/v1/billing/fee-schedules/apply-nhis-seeds?year=` | **`422 BUSINESS_RULE`** | 200 · **`FeeScheduleSeedApplyResponse`** |
+
+| 오류 메시지 | **`{year}년 수가 seed는 지원하지 않습니다. 공단 수가 seed는 2026년 기준만 지원합니다.`** (예: `2027년 …`, Q747 deepen `2f4bfdf`) |
+| catalog | **`Nhis2026DaycareRateCatalog.CATALOG_YEAR`** = **2026** (Q311) |
+| UI | **`FeeScheduleMatrix`** — 버튼 **「공단 2026 수가 시드 (N건)」** · **2026 보기 연도**에서만 노출 (Q214) |
+| 수동 등록 | **`POST /billing/fee-schedules`** — **연도별 수가표 CRUD**는 seed guard **대상 아님** — 다른 연도도 forward-only 등록 가능 (Q48) |
+
+| 테스트 | **`BillingServiceTest.listMissingNhisSeedPayloadsShouldRejectUnsupportedYear`** · **`applyMissingNhisSeedFeeSchedulesShouldRejectUnsupportedYear`** · **`RoleBasedControllerAccessTest$BillingAccess`** — **`applyNhisSeedsShouldAllowHqAdmin` 200** · **`applyNhisSeedsShouldDenyBranchAdmin` 403** · unsupported year **`422`** (`92770fd`, Q748) · BE **@Test 2024** (+14) |
+
+| RBAC (Q748) | **`POST …/apply-nhis-seeds`** — **`hq_admin` only** · **`branch_admin`·`social_worker` → 403** · list payloads 동일 연도 guard |
+
+> 관련: Q214 · Q311 · Q748 · Q752 · USER_MANUAL §5-4 · ADMIN_GUIDE §6-3-1 · DEPLOYMENT §1-4 · CHANGELOG 403차
+
+### Q748. **위생·안전 점검(M6)** 과 **NHIS fee seed** API RBAC·HTTP contract가 테스트로 고정되었나요? (US-Q01·G9-COG, BE `92770fd`)
+
+**A.** **✅ BE test lock (`92770fd`, Q748)** — **`RoleBasedControllerAccessTest`** 가 **M6 safety 4 endpoint** 와 **NHIS fee seed 2 endpoint** 의 **HTTP status contract** 를 `@WebMvcTest` 로 회귀 lock합니다. **앱 동작 변화 없음** — Q745·Q747 권한·연도 guard와 **동일 contract** 재확인용입니다.
+
+| 영역 | allow (200) | deny (403) | 기타 |
+|------|-------------|------------|------|
+| **M6 safety** (`SafetyCheckAccess` 12 @Test) | **`hq_admin`·`branch_admin`·`social_worker`** — daily/periodic/infection/operation **GET·POST** · **`GET /check-template-catalog`** | **`caregiver`** — daily GET·POST · catalog GET · infection GET · **`guardian`** — daily POST · **`client_user`** — operation GET | 4 endpoint + **template catalog** matrix sampling |
+| **NHIS fee seed** (4 @Test) | **`hq_admin`** — **`POST …/apply-nhis-seeds?year=2026`** → **200** | **`branch_admin`** — 동일 POST → **403** | **`year=2027`** → **`422`** (list·apply) |
+
+| 테스트 클래스 | 신규/확장 |
+|---------------|-----------|
+| **`RoleBasedControllerAccessTest$SafetyCheckAccess`** | **12 @Test** — `@WebMvcTest(SafetyCheckController.class)` · **+2 template catalog** (`aa9565c`, Q750) |
+| **`RoleBasedControllerAccessTest$BillingAccess`** | **+4 @Test** — fee seed RBAC·unsupported year HTTP |
+
+> 관련: Q745 · Q747 · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-4·§11-3 · CHANGELOG 399차
+
+### Q749. live E2E에서 **NHIS fee schedule seed** 가 실패하면 어떻게 우회·진단하나요? (QA-B355, FE `d1d0adf`)
+
+**A.** **✅ FE Fixed (`d1d0adf`, Q749, QA-B355 closure)** — **`ensureLiveFeeSchedules`** / **`ensureLiveFeeSchedulesForSession`** 가 P5b HQ dashboard 의존 **`POST /api/v1/billing/fee-schedules/apply-nhis-seeds`** 를 best-effort 호출합니다. **non-`hq_admin`** 세션은 **skip** · 실패 시 **`feeScheduleSeedReason`** 에 **actionable** 문구를 반환합니다.
+
+| 조건 | `feeScheduleSeedReady` | `feeScheduleSeedReason` (예) |
+|------|------------------------|------------------------------|
+| **`LIVE_E2E_SKIP_FEE_SEED=1`/`true`/`yes`** | **true** | `skipped by LIVE_E2E_SKIP_FEE_SEED` — **fetch 미호출** |
+| **non-`hq_admin` role** | **true** | `skipped for non-hq role` |
+| **access token 없음** | **false** | `no staff access token` |
+| **endpoint 404** | **false** | `apply-nhis-seeds endpoint missing (404) — deploy billing seed API or set LIVE_E2E_SKIP_FEE_SEED=1 to bypass` |
+| **network error** | **false** | `apply-nhis-seeds network error: …` |
+| **HTTP 401/403** | **false** | `apply-nhis-seeds unauthorized (HTTP 401): token expired — provide a valid hq_admin LIVE_E2E_ACCESS_TOKEN` (`dd5571d`, Q752) |
+| **HTTP 422 등** | **false** | `apply-nhis-seeds HTTP 422: 공단 수가 seed는 2026년 기준만 지원합니다.` (body parse) |
+| **200·`createdCount>0`** | **true** | `applied N fee schedule cells` |
+| **200·이미 완료** | **true** | `fee schedules already complete` |
+
+| IT 조치 | staging에 seed API 미배포 시 **`LIVE_E2E_SKIP_FEE_SEED=1`** in `scripts/dev-live-e2e.env` · **401/403** 시 **`LIVE_E2E_ACCESS_TOKEN`** = **`hq_admin`** JWT 재발급 · 또는 BE **`aa9565c`** 배포 후 재실행 |
+| 테스트 | **`liveFeeScheduleSeed.test.js`** — skip env · 404 reason · **401 auth hint** · success path (**FE test ~503**, +4 vs `d1d0adf`) |
+
+> 관련: Q747 · Q752 · Q214 · DEPLOYMENT §3-7 · §11-3 · CHANGELOG 400차
+
+### Q750. **위생·안전 점검(M6)** checklist **템플릿 카탈로그 API**는 무엇인가요? (US-Q01, BE `aa9565c` · FE `cf73ae8`/`2e35298`)
+
+**A.** **✅ BE+FE Fixed (`aa9565c`/`cf73ae8`, US-Q01, Q750 · 401차 FE closure)** — M6 **6-2~6-3-1** checklist·코드 목록을 **`GET /api/v1/safety/check-template-catalog`** 로 노출합니다. FE **`useSafetyCheckTemplateCatalog`** 가 마운트 시 catalog를 조회해 **일일·정기·감염병 3 화면**에 렌더링합니다 — **`safetyChecks.js` 로컬 catalog와 동일 항목·라벨** · API 실패 시 **Q754 fallback**. **저장 시 서버가 item ID를 검증**합니다.
+
+| 응답 필드 | 내용 |
+|-----------|------|
+| **`dailyItems[]`** | 8항 일일점검 — `id`·`label`·**`helpText`**·**`required`** (예: `floor_clean` 「바닥·복도 청결 상태」·help 「바닥 미끄럼…」·`required=true`, Q756) |
+| **`periodicSubForms[]`** | 6종 정기점검 — `code`·`label`·`careforRef`·`items[]` (**각 item `helpText`·`required`**, Q756) (HYGIENE·NURSING_SUPPLIES·MEAL_SERVICE·FIRE_SAFETY·MEDICATION·DISINFECTION) |
+| **`infectionSymptoms[]`** | 감염병 증상 코드 — FEVER·RESPIRATORY·DIGESTIVE·SKIN·OTHER |
+| **`infectionActions[]`** | 조치 코드 — ISOLATION·REPORT·DISINFECTION·MONITORING |
+
+| RBAC | **`hq_admin`·`branch_admin`·`social_worker` → 200** · **`caregiver` → 403** (Q748·Q750 HTTP lock) |
+| create validate | **`POST …/daily-checks`** · **`POST …/periodic-checks`** — catalog에 **없는 item ID** → **`422`** |
+| FE hook | **`useSafetyCheckTemplateCatalog()`** — **`source`** = `api` \| `local` · **`mapSafetyCheckTemplateCatalogResponse`** (`safetyCheckCatalog.js`) |
+| FE pages | **`SafetyDailyChecksPage`** · **`SafetyPeriodicChecksPage`** · **`SafetyInfectionControlPage`** — catalog wire (`cf73ae8`) |
+| live E2E | **`safetyCheckLiveApi.e2e.test.js`** — catalog **`dailyItems.length>0`** · **`periodicSubForms.length>0`** (Q753) |
+
+> 관련: Q745 · Q748 · Q754 · Q756 · Q753 · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-4 · CHANGELOG 402차
+
+### Q754. 위생·안전 점검 화면에서 **템플릿 API가 실패**하면 어떻게 되나요? (US-Q01, FE `db15b56`/`2e35298`)
+
+**A.** **✅ FE Fixed (`db15b56`/`2e35298`, US-Q01, Q754)** — **`useSafetyCheckTemplateCatalog`** 가 **`GET /api/v1/safety/check-template-catalog`** 호출에 **실패**하거나 응답이 **빈·무효**(`isUsableSafetyCheckCatalog`)이면 **`getLocalSafetyCheckCatalog()`** 로 fallback하고 **`source="local"`** info Alert를 표시합니다.
+
+| 화면 | catalog wire | fallback Alert |
+|------|--------------|----------------|
+| `/safety/daily-checks` | `catalog.dailyItems` | **「점검 템플릿 API 응답이 없어 로컬 기본 템플릿을 사용합니다. 네트워크를 확인한 뒤 새로고침해 주세요.」** |
+| `/safety/periodic-checks` | `subFormTypes`·`periodicTemplates` | 동일 |
+| `/safety/infection-control` | `infectionSymptoms`·`infectionActions` | 동일 |
+| `/safety/operation-log` | *(catalog 미사용 — 자유 입력)* | — |
+
+| 로딩 | **`PageLoading`** 「점검 템플릿 불러오는 중」 — catalog fetch 완료 전 폼 미표시 |
+| 저장 | fallback 사용 중에도 **서버 item ID 검증** 유지 — 로컬·API catalog **동일 ID** (Q750) |
+| 조치 | Alert 표시 시 **네트워크·403 권한** 확인 → **새로고침** · 지속 시 IT에 **`GET /safety/check-template-catalog`** smoke |
+
+| 테스트 | **`SafetyDailyChecksPage.test`** · **`SafetyPeriodicChecksPage.test`** · **`SafetyInfectionControlPage.test`** — **`surfaces local template fallback when catalog API fails`** |
+
+> 관련: Q750 · Q745 · USER_MANUAL §5-9 · CHANGELOG 401차
+
+### Q755. US-Q01 safety **9-endpoint routing contract**는 어떻게 lock 되나요? (BE `72924bb`/`fbd403c`)
+
+**A.** **✅ BE Fixed (`72924bb`/`fbd403c`, US-Q01, Q755)** — **`MustApiEndpointRoutingTest.SafetyCheckRouting`** + **`SafetyCheckControllerRoutingTest`** 가 **9 US-Q01 endpoint** routing·JSON contract를 회귀 lock합니다.
+
+| 테스트 클래스 | 검증 |
+|--------------|------|
+| **`MustApiEndpointRoutingTest.SafetyCheckRouting`** | catalog GET + **4 list GET + 4 create POST** — 전 route **200** |
+| **`SafetyCheckControllerRoutingTest.checkTemplateCatalogShouldExposeFeAlignedContract`** | **`dailyItems.length=8`** · **`periodicSubForms.length=6`** · **`infectionSymptoms.length=5`** · **`infectionActions.length=4`** |
+| FE alignment jsonPath | **`dailyItems[0].id=floor_clean`** · **`dailyItems[0].required=true`** · **`dailyItems[0].helpText`** string · **`periodicSubForms[0].items[0].required=true`** (Q756, `81e3c11`) · **`periodicSubForms[0].code=HYGIENE`** · **`infectionSymptoms[0].value=FEVER`** · **`infectionActions[0].value=ISOLATION`** |
+
+| IT smoke | `mvn test -Dtest=SafetyCheckControllerRoutingTest,MustApiEndpointRoutingTest$SafetyCheckRouting` — catalog shape + route acceptance |
+| 현장 영향 | **없음** — QA·CI 회귀 lock만 |
+
+> 관련: Q750 · Q756 · Q748 · ADMIN_GUIDE §1-4 · DEPLOYMENT §11-3 · CHANGELOG 402차
+
+### Q756. 위생·안전 checklist **템플릿 항목 `helpText`·`required`** 는 무엇인가요? (US-Q01, BE `81e3c11`)
+
+**A.** **✅ BE Fixed (`81e3c11`, US-Q01, Q756)** — **`GET /api/v1/safety/check-template-catalog`** 의 **`dailyItems[]`·`periodicSubForms[].items[]`** 각 항목에 **필드별 안내(`helpText`)** 와 **필수 여부(`required`)** 가 포함됩니다. FE **`SafetyChecklistForm`** 이 **`helpText`** 를 checklist 항목 아래 **`.ds-safety-checklist__help`** 로 표시하고 **`aria-describedby`** 로 checkbox와 연결합니다 — **프론트 하드코딩 없이 API copy** 로 현장 점검 가이드를 동기화합니다.
+
+| 필드 | 의미 | 예 (`floor_clean`) |
+|------|------|-------------------|
+| **`id`** | checklist item key | `floor_clean` |
+| **`label`** | 화면 표시명 | 「바닥·복도 청결 상태」 |
+| **`helpText`** | 점검 시 확인 포인트 안내 | 「바닥 미끄럼·이물질·오염 여부를 확인하세요.」 |
+| **`required`** | 필수 항목 플래그 | **`true`** — submit 전 체크 필수 (Q757) · **`false` 또는 미명시** — optional (Q758) |
+
+| FE wire | **`mapSafetyCheckTemplateCatalogResponse`** — explicit **`required` boolean** preserve · **`SafetyChecklistForm`** — **`helpText`** + **`aria-describedby`** · **`required: true` → 「(필수)」** · 미체크 시 submit 차단 (Q757) |
+| semantics (Q758) | **`isSafetyCheckItemRequired`** — **`item.required === true`만** 필수 · catalog **`required` 미포함** → optional default · BNK-691 stage9 regression fix (`b10c5bb`) |
+| fallback (Q754) | 로컬 catalog(`safetyChecks.js`)도 동일 **`helpText`** shape — API·local **동일 UX** |
+| routing lock (Q755) | **`SafetyCheckControllerRoutingTest`** — **`dailyItems[0].required=true`** · **`helpText` isString** · **`periodicSubForms[0].items[0].required=true`** |
+| domain test | **`SafetyCheckTemplateCatalogTest.catalogItemsShouldExposeHelpTextAndRequiredFlag`** · **`hygieneTemplateShouldMatchFrontendPeriodicSchema`** — 전 item **`required=true`** |
+
+| 현장 체감 | **일일·정기점검** checklist 각 항목 아래 **회색 안내 문구** 표시 — 스크린리더는 checkbox 선택 시 안내를 함께 읽음 |
+| P2 carry | **`required=false` optional item** — template-schema deepening 후속 · **local fallback catalog**에 explicit `required: true` 추가 검토 |
+
+> 관련: Q750 · Q754 · Q755 · Q757 · Q758 · USER_MANUAL §5-9 · ADMIN_GUIDE §1-4 · CHANGELOG 403차
+
+### Q757. 위생·안전 checklist **`required: true` 항목**을 체크하지 않으면 저장되나요? (US-Q01, FE `de12f525`)
+
+**A.** **✅ FE Fixed (`de12f525`, US-Q01, Q757)** — **`SafetyChecklistForm`** 이 catalog의 **`required: true`** 항목을 **submit 전에 검증**합니다. 미체크 필수 항목이 있으면 **저장 API를 호출하지 않고** 필드 오류를 표시합니다.
+
+| 검증 | 동작 |
+|------|------|
+| 필수 미체크 | **「필수 점검 항목을 모두 확인하세요.」** danger Alert · 항목별 **「{label} 항목을 확인하세요.」** |
+| UI 표시 | **`required: true`** checkbox 라벨에 **「(필수)」** suffix · **`required` HTML attribute** |
+| a11y | **`aria-invalid`** · **`aria-describedby`** — helpText + 오류 문구 연결 |
+| optional | **`required: false` 또는 미명시** — submit 차단 **없음** (Q758) |
+
+| 함수 | **`findUncheckedRequiredItems(items, template)`** · **`isSafetyCheckItemRequired(item)`** |
+| catalog source | **`useSafetyCheckTemplateCatalog`** API 우선 · fallback 시 로컬 catalog (Q754) |
+| 테스트 | **`SafetyChecklistForm.test.jsx`** — required 미체크 submit 차단 · **`safetyCheckCatalog.test.js`** — mapper `required`/`helpText` |
+
+> 관련: Q756 · Q758 · Q750 · USER_MANUAL §5-9 · CHANGELOG 403차
+
+### Q758. 위생·안전 checklist **`required` 플래그**는 어떤 의미론인가요? (US-Q01, FE `b10c5bb`)
+
+**A.** **✅ FE Fixed (`b10c5bb`, QA-B358, Q758)** — **서버 catalog가 명시한 boolean만** 신뢰합니다. **`required: true`만** 필수이고, **`required: false` 또는 필드 미포함**은 **optional(선택)** 입니다.
+
+| catalog `required` | FE **`isSafetyCheckItemRequired`** | submit |
+|--------------------|-------------------------------------|--------|
+| **`true`** | **필수** · **「(필수)」** 라벨 | 미체크 시 **차단** (Q757) |
+| **`false`** | optional | 미체크 허용 |
+| **미포함** | optional | 미체크 허용 |
+
+| mapper | **`mapChecklistItem`** — **`typeof item.required === "boolean"`** 일 때만 preserve (`true`·`false` 양쪽) |
+| regression | BNK-691 stage9 — **`required !== false`** 로 **미명시 item까지 필수 처리** → 전체 submit 차단 · **`b10c5bb`** 로 **`=== true`** semantics 확정 · **`154ebee`** vitest lock (Q759) |
+| API contract | BE catalog daily/periodic item — 현재 대부분 **`required: true`** · optional item은 **`required: false` explicit** (Q756) |
+
+> 관련: Q757 · Q756 · Q750 · USER_MANUAL §5-9 · CHANGELOG 403차
+
+### Q759. 위생·안전 **`required` semantics** 가 vitest로 회귀 lock 되었나요? (US-Q01, FE `154ebee`)
+
+**A.** **✅ FE test lock (`154ebee`, QA-B358, Q759)** — Q758 implementation(`b10c5bb`) 이후 **config·mapper 단위 테스트**가 **서버 explicit boolean semantics** 와 동기화되었습니다. **앱 동작 변화 없음** — CI에서 **optional default regression** 을 조기 차단합니다.
+
+| 테스트 파일 | lock 내용 |
+|-------------|-----------|
+| **`safetyChecks.test.js`** | **`isSafetyCheckItemRequired`** — **`required` 미포함·`false` → optional** · **`true` → 필수** · **`findUncheckedRequiredItems`** — optional 미체크 **제외** |
+| **`safetyCheckCatalog.test.js`** | **`mapSafetyCheckTemplateCatalogResponse`** — periodic item **`required: false`** round-trip preserve |
+
+| semantics (Q758 carry) | **`item.required === true`만** 필수 · catalog **미명시 = optional** · mapper **`typeof required === "boolean"`** 일 때만 preserve |
+| 운영 영향 | **없음** — 현장 저장·검증 UX는 Q757·Q758과 동일 |
+| 실행 | **`npm test`** — `safetyChecks.test.js` · `safetyCheckCatalog.test.js` (Vitest flock 경유) |
+
+> 관련: Q758 · Q757 · Q756 · DEPLOYMENT §11-3 · CHANGELOG 404차
+
+### Q760. 위생·안전 점검 **현장 운영 체크리스트**는? (US-Q01, Q745~Q759 통합)
+
+**A.** **✅ Must full-stack (US-Q01 M6)** — 아래 순서로 **일일·정기·감염·시설운영** 기록을 남깁니다. **같은 지점** 권한(`hq_admin`·`branch_admin`·`social_worker`) 사용자만 저장·조회 가능합니다.
+
+| 순서 | 할 일 | 화면 | 주의 |
+|------|-------|------|------|
+| 1 | SideNav **기록 → 위생·안전 점검** 진입 | `/safety/daily-checks` | **`caregiver`·`guardian` → 403** (Q748) |
+| 2 | 템플릿 로딩 확인 | 3 checklist 화면 | info Alert 「로컬 기본 템플릿」 → **네트워크 확인·새로고침** (Q754) |
+| 3 | **일일점검** 8항 checklist | `/safety/daily-checks` | **「(필수)」** 항목 **전부 체크** 후 저장 — 미체크 시 저장 안 됨 (Q757) |
+| 4 | **정기점검** 6종 sub-form 중 해당 항목 | `/safety/periodic-checks` | 위생·간호비품·급식·소화·약품·소독 — 동일 필수 규칙 (Q756) |
+| 5 | **감염병** 증상·조치 기록 | `/safety/infection-control` | catalog 증상·조치 코드 선택 |
+| 6 | **시설운영일지** 특이사항 | `/safety/operation-log` | 자유 입력 — catalog 미사용 |
+| 7 | 저장 후 **최근 기록** 테이블 확인 | 각 화면 하단 | 서버 저장 성공 Alert · **지점 공유** (localStorage pilot **폐기**, Q745) |
+
+| semantics (Q758) | **`required: true`만** 필수 · **미명시·`false` = 선택** — 선택 항목 미체크해도 저장 가능 |
+| helpText (Q756) | 각 checklist **회색 안내** — API catalog와 동기화 · 장애 시 로컬 fallback 동일 ID |
+| IT smoke | **`GET /api/v1/safety/check-template-catalog`** 200 · **`POST …/daily-checks`** 201 — Swagger·FAQ Q750 |
+
+> 관련: Q745 · Q757 · Q758 · USER_MANUAL §5-9 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-13
+
+### Q766. **금일 배차 제외**를 켰는데도 배차에 들어가면? 전원 제외면? (BE `2b3f3d9` · FE `175c570`)
+
+**A.** **✅ BE+FE Fixed (Q766·Q767)** — 제외 표시는 **자동 제안만**이 아니라 **수동 DRAFT 생성·수정·확정**에서도 막힙니다. 화면에서도 **선택 전에 잠금**되고(Q767), 서버가 한 번 더 거부합니다. **전원 제외**이면 자동 제안 버튼이 비활성화되고 **동일 안내 문구**가 표시됩니다.
+
+#### 전원 제외 · 자동 배차 안내
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/transport` — **「자동 배차 제안」** (`hq_admin`, 승차) |
+| **표시** | 경고 Alert · **「제안 대상 0/N명 (금일 배차 제외 반영)」** · 제안 버튼 **비활성** |
+| **문구** | **「자동 배차 제안 대상 이용자가 없습니다. 금일 배차 제외 표시를 확인하세요.」** |
+| **API** | `POST /api/v1/transport/runs/suggest` — 동일 문구 `BusinessRuleException` (422) |
+| **조치** | 명단 **「금일 배차 제외」** 체크를 해제한 뒤 다시 제안 |
+
+#### 수동 배차 · DRAFT 우회 차단
+
+| 단계 | 동작 |
+|------|------|
+| **화면 (Q767)** | `/transport/runs/new` · 「명단에서 추가」 — 제외 이용자 **체크 불가** · **「금일 배차 제외」** Badge |
+| **생성** `POST …/runs` | 정차에 제외 이용자 포함 → **422** 「금일 배차 제외로 표시된 이용자가 포함되어 있습니다: {이름}」 |
+| **수정** `PATCH …/runs/{id}` | 동일 |
+| **확정** `POST …/runs/{id}/confirm` | 동일 (DRAFT에 남아 있어도 확정 거부) |
+| **조치** | `/transport` 명단에서 제외 해제 → 정차에서 제거 또는 다시 저장 |
+
+| 운영 팁 | 내용 |
+|---------|------|
+| 부분 제외 | 일부만 제외해도 **제안 대상**에서만 빠짐 · 제외되지 않은 이용자로 제안·수동 배차 가능 |
+| 권한 | 제외 토글은 **`hq_admin`·`branch_admin`** 만 (Q763) |
+| UI+서버 | 화면 잠금(Q767) + 서버 422(Q766) **이중 차단** — 문구는 동일 접두 |
+
+> 관련: Q767 · Q768 · Q763 · Q762 · Q764 · USER_MANUAL §5-8 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-13
+
+### Q767. 수동 배차 화면에서 **금일 배차 제외** 이용자가 보이는데 선택할 수 있나요? (FE `bd12f28`)
+
+**A.** **✅ FE Fixed (Q767)** — **선택할 수 없습니다.** 제외 표시된 이용자는 수동 배차·명단 추가에서 **체크 잠금**되며, 서버 거부와 **같은 안내 문구**를 씁니다.
+
+| 화면 | 동작 |
+|------|------|
+| **`/transport/runs/new`** | roster 체크박스 **disabled** · **「금일 배차 제외」** warning Badge · 강제 클릭 시 Alert **「금일 배차 제외로 표시된 이용자가 포함되어 있습니다: {이름}」** |
+| **루트 상세 「명단에서 추가」** (`TransportAddRosterModal`) | 제외 행 **선택 불가** · 동일 Badge·문구 |
+| **「이전 배차 불러오기」** | 제외 이용자는 **건너뛰기** — skip 사유 **「금일 배차 제외」** |
+| **서버** | 우회 POST/PATCH/confirm 시에도 **422** (Q766) |
+
+| 조치 | `/transport` 승차 명단에서 **「금일 배차 제외」** 체크 해제 후 다시 선택 |
+| 권한 | 제외 토글 자체는 **`hq_admin`·`branch_admin`** 만 (Q763) |
+
+> 관련: Q766 · Q763 · USER_MANUAL §5-8 · CHANGELOG 2026-07-13
+
+### Q768. **V190**은 현장 화면에 무엇을 바꾸나요? (송영 주소·명단 제외 무결성, BE `2b3f3d9`·`3e627b3`)
+
+**A.** **✅ BE Fixed (Q768·Q770)** — 배차·송영표 **업무 흐름은 동일**합니다. DB가 **공백 송영 주소·플래그 불일치·타 테넌트 수정자**를 막아 데이터 품질을 보호합니다. 주소 입력은 **trim·연속 공백 정리** 후 저장합니다 (Q770).
+
+| 제약 | 의미 | 현장 체감 |
+|------|------|-----------|
+| `chk_vehicles_shuttle_*_nonempty` | 송영 시작/종료 주소는 **NULL**(지점 주소 사용) 또는 **공백 아닌 문자열** | `/transport/vehicles` 에서 공백만 입력 → **지점 주소** · 여러 칸 띄어쓰기 → **한 칸으로 정리**(Q770) |
+| `chk_transport_roster_day_status_flags_synced` | `absentToday` ≡ `skipDispatch` (V189 unify를 DB에 고정) | UI는 이미 동시 on/off — **변화 없음** |
+| `fk_…_updated_by_org` | 수정자(`updated_by`)는 **같은 조직 users** | IT·감사 — 현장 UI 변화 없음 |
+
+| 배포 | Flyway **V190** 적용 · health **V189/V190 probe**(Q764·Q771)로 마이그레이션 완료 확인 |
+| smoke | 차량 생성 시 송영 주소 ` ` → **지점 주소** · `서울  시청` → `서울 시청` · 제외 토글 후 roster 플래그 양쪽 `true` |
+
+> 관련: Q763 · Q764 · Q766 · Q770 · Q771 · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-4 · CHANGELOG 2026-07-13
+
+### Q769. 송영표가 **스크린리더**에서 표로 잘못 읽히나요? (UXD-172, FE `175c570`)
+
+**A.** **✅ FE Fixed (Q769)** — 차량 열은 **표(table)가 아니라 목록(list)** 으로 읽히도록 고쳤습니다. **화면 배치·인쇄 모습은 동일**합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/transport/shuttle-sheet` — `TransportShuttleSheetView` · `TransportShuttleScheduleView` |
+| **변경** | `role="table"`/`columnheader` → **`role="list"`/`listitem`** · 스택 보드 **`aria-label="차량별 송영 명단"`** |
+| **대상** | 스크린리더·접근성 검사 (WCAG 1.3.1 · 4.1.2) |
+| **시각** | CSS 클래스 기반 레이아웃 — **시각적 변경 없음** |
+
+> 관련: Q762 · USER_MANUAL §5-8 · CHANGELOG 2026-07-13
+
+### Q770. 차량 **송영 주소**에 공백·여러 칸 띄어쓰기를 넣으면? (G16, BE `3e627b3` · FE `a6255a0`)
+
+**A.** **✅ BE+FE Fixed (Q770·Q772)** — 저장 전에 **앞뒤 공백을 제거하고 연속 스페이스를 한 칸으로** 맞춥니다. **비우거나 공백만**이면 서버가 **지점(센터) 주소**로 저장합니다 (Q768). **수정(PATCH)** 에서 주소를 지울 때는 **`""`(빈 문자열)** 을 보냅니다 — `null`이면 서버가 필드를 건너뛰어 옛 주소가 남습니다 (Q772).
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/transport/vehicles` — 등록·수정 Modal **「송영 시작 주소」** · **「송영 종료 주소」** |
+| **규칙** | trim + 연속 공백 붕괴 · 빈 값 → **`""`**(PATCH)·지점 주소 폴백(서버, Q772) · `null`은 수정 시 **필드 skip**(비우기 불가) |
+| **FE** | `normalizeVehicleShuttleAddress` · `toVehicleShuttleAddressPayload` — blank는 **`""`** |
+| **BE** | `VehicleService.normalizeAddress` — create/update · blank→지점 · `null` on update → skip |
+| **DB** | **V190** nonempty CHECK — NULL 허용 · 공백 문자열 거부 (Q768) |
+
+| smoke | 주소 `서울  시청  ` 저장 → 응답 `서울 시청` · 주소 `   ` 저장 → **지점 주소** |
+| 권한 | **`hq_admin`·`branch_admin`** |
+
+> 관련: Q768 · Q772 · Q763 · Q771 · USER_MANUAL §5-8-4 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-13·14
+
+### Q771. health의 **송영 스키마 준비**는 V190까지 보나요? (QA-B95, BE `ac59458`)
+
+**A.** **✅ BE Fixed (Q771·Q786)** — **예.** 다만 **스키마(V186–V189)** 와 **무결성(V190)** 은 이제 **서로 다른 health 필드**로 나뉩니다(예전처럼 `v189…` 하나에 묶이지 않음).
+
+| 항목 | 내용 |
+|------|------|
+| **스키마 필드** | **`v189TransportShuttleSchemaCheckReady`** — V186–V189 컬럼·제약 |
+| **무결성 필드** | **`v190TransportShuttleIntegrityCheckReady`** — V190 nonempty/flags/FK |
+| **blocker** | **`v189-transport-shuttle-schema-missing`** · **`v190-transport-shuttle-integrity-missing`** |
+| **복구** | Flyway **V186–V190** 적용 후 health 재조회 — **둘 다 `true`** |
+
+| smoke | `curl -s …/api/v1/health \| jq '.v189TransportShuttleSchemaCheckReady,.v190TransportShuttleIntegrityCheckReady,.liveE2eOperationBlockers'` |
+| 관련 | Q764 · Q768 · Q786 · Q770·Q772 |
+
+> 관련: Q764 · Q786 · Q768 · Q765 · Q772 · DEPLOYMENT §1-4 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-14
+
+### Q786. 송영 health가 **V189와 V190을 왜 나눴나요?** (QA-B95, BE `ac59458`)
+
+**A.** **✅ BE Fixed (Q786)** — **진단 속도** 때문입니다. 스키마 미적용과 무결성 CHECK 누락을 **한 blocker로 합치면** 어느 쪽인지 알기 어렵습니다. 이제 IT는 필드를 보고 **Flyway V189까지 vs V190** 을 바로 구분합니다. **현장 배차 화면 변화는 없습니다**.
+
+| 구분 | health 필드 | blocker |
+|------|-------------|---------|
+| **기본 스키마** | `v189TransportShuttleSchemaCheckReady` | `v189-transport-shuttle-schema-missing` |
+| **무결성** | `v190TransportShuttleIntegrityCheckReady` | `v190-transport-shuttle-integrity-missing` |
+
+> 관련: Q771 · Q764 · Q765 · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q772. 차량 **송영 주소**를 지우고 저장했는데 **옛 주소가 남아요**. (QA-B372, FE `a6255a0`)
+
+**A.** **✅ FE Fixed (Q772)** — **수정** 저장 시 비운 주소는 **`shuttleStartAddress`/`shuttleEndAddress`: `""`** 로 전송해야 서버가 **지점 주소**로 되돌립니다. 예전에 `null`을내면 `updateVehicle`가 해당 필드를 **건너뛰어** 기존 값이 유지되었습니다.
+
+| 구분 | 동작 |
+|------|------|
+| **화면** | `/transport/vehicles` → **수정** → 송영 시작/종료 주소 **지우기** → **저장** |
+| **페이로드** | `toVehicleShuttleAddressPayload` → 정규화 후 **빈 문자열 `""`** (null 금지) |
+| **서버** | blank/`""` → **지점(센터) 주소** · `null` → **필드 미변경(skip)** |
+| **신규 등록** | 동일하게 blank → 지점 주소 (Q770) |
+
+> 관련: Q770 · Q768 · Q763 · USER_MANUAL §5-8-4 · CHANGELOG 2026-07-14
+
+### Q773. **주야간보호 평가지표 27**은 목욕인가요, 기능회복훈련인가요? (G17, BE `bd901c4` · FE `bc9389d`)
+
+**A.** **✅ BE+FE Fixed (Q773·Q776)** — **기능회복훈련**입니다. 목욕 일정 compliance는 **청구 시 선택 준수**이며, 주야간 공단평가 **필수 지표가 아닙니다**.
+
+| 구분 | 화면·API | 의미 |
+|------|----------|------|
+| **평가 지표 27 (정본)** | `/programs/functional-recovery` · `GET /api/v1/programs/functional-recovery/compliance` | **지표 25–27** · **`indicator27Code=INDICATOR_27`** · **`indicator27Label=개인별 기능회복훈련 계획`** · **`scopeNote`** · **목욕 링크** (Q776) |
+| **목욕 청구 준수 (선택)** | `/care/bathing-schedules` · `GET …/bathing-schedules/indicator-27-compliance` | **`BATHING_CLAIM_COMPLIANCE`** · `daycareEvaluationRequired=false` · owner **`FUNCTIONAL_RECOVERY`** · 패널 **「목욕 청구 준수」** (Q776) |
+
+| compliance 응답 핵심 (기능회복) | 값 |
+|-------------------------------|-----|
+| **`indicator27Code`** | **`INDICATOR_27`** |
+| **`indicator27Label`** | **개인별 기능회복훈련 계획** |
+| **`daycareEvaluationRequired`** | **`true`** |
+| **`scopeNote`** | 지표 27=기능회복 · 목욕=청구 선택(G-BATHING) |
+
+| compliance 응답 핵심 (목욕) | 값 |
+|----------------------------|-----|
+| **`indicatorCode`** | **`BATHING_CLAIM_COMPLIANCE`** |
+| **`daycareEvaluationRequired`** | **`false`** |
+| **`daycareEvaluationIndicator27Owner`** | **`FUNCTIONAL_RECOVERY`** |
+
+> **왜 경로에 indicator-27이 있나?** 호환을 위해 목욕 API 경로명을 유지했습니다. **패널 제목·`scopeNote`·`indicatorCode`·화면 링크**로 해석하세요 — **공단평가 지표 27 점검은 기능회복훈련 화면** (Q776).
+
+> 관련: Q776 · Q774 · Q705 · Q567 · Q271 · USER_MANUAL §5-26·기능회복훈련 · ADMIN_GUIDE §6-2-16 · CHANGELOG 2026-07-14
+
+### Q774. 목욕 일정 화면에서 **「목욕 청구 준수」** 와 **기능회복훈련** 을 어떻게 구분하나요? (FE `bc9389d`)
+
+**A.** **✅ FE Fixed (Q774·Q776)** — **`/care/bathing-schedules`** 상단 패널 제목은 **「목욕 청구 준수」** 입니다. **표·Alert는 목욕 일정 `COMPLETED` 건**을 집계합니다. 각주 **`scopeNote`** 와 **「기능회복훈련(평가지표 27)로 이동」** 링크로 평가 지표와 구분합니다.
+
+| 화면 요소 | 내용 |
+|----------|------|
+| **패널 제목** | **「목욕 청구 준수」** (이전 「평가지표 27 — 기능회복훈련 준수」에서 정정) |
+| **각주** | 서버 **`scopeNote`** + **기능회복훈련 링크** |
+| **표 열** | **완료 횟수** · **전·후 관찰** · **월 5회** · **청구 준수** — 모두 **목욕 제공** 기준 |
+| **API** | `GET …/indicator-27-compliance` — **`indicatorCode=BATHING_CLAIM_COMPLIANCE`** |
+
+**현장 조치**
+
+1. **목욕 청구**를 챙길 때 — 이 패널에서 **청구 준수 미충족**·**5회 미만**·**관찰 누락**을 확인합니다 (Q705).
+2. **공단평가 지표 27** — 패널 링크 또는 SideNav **기록 → 기능회복훈련** (`/programs/functional-recovery`, Q567·Q271).
+
+> 관련: Q776 · Q773 · Q705 · Q567 · USER_MANUAL §5-26 · CHANGELOG 2026-07-14
+
+### Q775. **직원 급여대장 미리보기**는 어디서 하나요? (M11, BE `5beaffb` · FE `e18ee5c`)
+
+**A.** **✅ BE+FE Fixed (Q775)** — 케어포 **M11 11-1·11-3** 최소 세트입니다. **`/payroll/ledger`** 화면에서 직원·급여 월·기본급·수당·공제를 입력하고 **「미리보기 계산」** 을 누르면 **출근일수**·**지급총액**·**실지급액**이 표시됩니다. **저장·확정·PDF 출력은 아직 없습니다** — 미리보기 전용입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/payroll/ledger`** — SideNav **운영 → 직원 급여대장** · **`StaffContextNav`「직원 급여대장」** |
+| **API** | **`POST /api/v1/staff/payroll/ledger-preview`** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 안내 Alert** |
+| **요청** | `userId`(UUID) · `yearMonth`(yyyy-MM) · `basePay` · `allowances`(선택) · `deductions`(선택) |
+| **응답** | `attendanceDays` · `grossPay` · `netPay` · `relatedSurfaces[]` |
+| **출근 집계** | **`/staff/attendance`** check-in 있는 날을 월별 distinct count |
+| **가드** | 공제>지급총액 **422** · 비직원 역할 **422** · 미배치 지점 **403** |
+| **연계** | **「급여 연계 화면」** 패널 — 출퇴근 · 근로계약 · **간이지급명세서** · **급여기초 설정** · **인건비 지출비율** (Q778·Q779·Q780) |
+
+> 관련: Q778 · Q779 · **Q780** · **Q781** · USER_MANUAL §4-7-0e · ADMIN_GUIDE §6-2-24a · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q778. **간이지급명세서 미리보기**는 어디서 하나요? (M11 11-6, BE `c455145` · FE `585155c`)
+
+**A.** **✅ BE+FE Fixed (Q778)** — 케어포 **M11 11-6 간이지급명세서** 미리보기입니다. **`/payroll/reports`** 에서 급여대장과 **동일 입력**으로 **지급·공제 라인**·**합계**·**실지급액**을 확인합니다. **저장·PDF 출력은 아직 없습니다**.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/payroll/reports`** — SideNav **운영 → 간이지급명세서** · **`StaffContextNav`「간이지급명세서」** |
+| **API** | **`POST /api/v1/staff/payroll/simple-payment-statement-preview`** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 안내 Alert** |
+| **요청** | Q775와 동일 — `userId` · `yearMonth` · `basePay` · `allowances` · `deductions` |
+| **응답** | `documentTitle=간이지급명세서` · `paymentLines[]` · `deductionLines[]` · `paymentTotal` · `deductionTotal` · `netPay` |
+| **라인 예** | `BASE_PAY`(기본급) · `ALLOWANCES`(수당) · `DEDUCTIONS`(공제) |
+| **P1 잔여** | **PDF·인쇄** · **급여 persist** · **M12 SSO 어댑터**(Q782) |
+
+> 관련: Q775 · Q779 · USER_MANUAL §4-7-0f · ADMIN_GUIDE §6-2-24b · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q779. **급여기초 설정(수당/공제 마스터)**는 어디서 보나요? (M11 11-4, BE `eca95e3` · FE `9ea151b`)
+
+**A.** **✅ BE+FE Fixed (Q779)** — 케어포 **M11 11-4 급여기초 설정**입니다. **`/payroll/basis`** 에서 **수당 3종**·**공제 6종** 마스터 목록을 조회합니다. **항목 추가·금액·DB 저장은 아직 없습니다** — 정적 카탈로그 조회 전용입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/payroll/basis`** — SideNav **운영 → 급여기초 설정** · **`StaffContextNav`「급여기초 설정」** |
+| **API** | **`GET /api/v1/staff/payroll/allowance-deduction-catalog`** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **응답** | `documentCode=M11-4` · `allowanceCount=3` · `deductionCount=6` · `entries[]` · `relatedSurfaces[]` |
+| **수당** | 직책수당 · 처우개선수당 · 장기근속수당 |
+| **공제** | 국민연금 · 건강보험 · 장기요양보험 · 고용보험 · 소득세 · 지방소득세 |
+| **P1 잔여** | **마스터 편집·persist** · **대장/명세서 항목 연동** · **퇴직적립 persist**(Q781) |
+
+> 관련: Q775 · Q778 · **Q780** · **Q781** · USER_MANUAL §4-7-0g · ADMIN_GUIDE §6-2-24c · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q780. **인건비 지출비율 60% 준수**를 미리 볼 수 있나요? (M11 11-5, BE `907007e` · FE `aa86734`/`d176581`)
+
+**A.** **✅ BE+FE Fixed (Q780)** — 케어포 **M11 11-5 인건비 지출비율** 준수를 **`/payroll/labor-cost-ratio`** 화면에서 미리 계산합니다. 급여 월·직접인건비·요양수익을 입력하면 **지출비율(%)**·**60% 충족 여부**·**안내 문구**가 표시됩니다. **수익·인건비 자동 집계·저장은 아직 없습니다** — 수동 입력 미리보기입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/payroll/labor-cost-ratio`** — SideNav **운영 → 인건비 지출비율** · **`StaffContextNav`「인건비 지출비율」** |
+| **API** | **`POST /api/v1/staff/payroll/labor-cost-ratio-preview`** |
+| **요청** | `yearMonth`(yyyy-MM) · `totalLaborCost`(직접인건비 합계) · `totalCareRevenue`(요양수익 합계, 0 초과) |
+| **응답** | `laborCostRatioPercent` · `statutoryThresholdPercent=60` · `complianceGapPercent` · `complianceMet` · `riskLevel`(`COMPLIANT`/`ALERT`) · `guidance` · `documentCode=M11-5` |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 403**/화면 안내 |
+| **기준** | **법정 직접인건비 지출비율 60%** — 미만이면 수당·근로계약·급여기초 점검 안내 |
+| **연계** | `relatedSurfaces[]` — 급여대장 · 간이지급명세서 · 급여기초 설정 · 인건비 지출비율 |
+| **접근성** | 월 입력·도움말·계산 중 표시 보강 (`d176581`) |
+| **P1 잔여** | **수익·인건비 자동 집계** · **persist** · **11-2 persist·자동 연동**(Q781) |
+
+> 관련: Q775 · Q778 · Q779 · **Q781** · USER_MANUAL §4-7-0h · ADMIN_GUIDE §6-2-24d · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q781. **퇴직적립금(1/12)**을 미리 계산할 수 있나요? (M11 11-2, BE `ff90532` · FE `02d185a`)
+
+**A.** **✅ BE+FE Fixed (Q781)** — 케어포 **M11 11-2 퇴직적립금**을 **`/payroll/retirement-accrual`** 화면에서 미리 계산합니다. **적립기준 급여의 1/12**를 당월 적립액으로 산정하고, 이전 잔여와 합쳐 **예상 누적**을 표시합니다. **저장·월급액 자동 연동은 아직 없습니다**.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/payroll/retirement-accrual`** — SideNav **운영 → 퇴직적립금** · **`StaffContextNav`「퇴직적립금」** |
+| **API** | **`POST /api/v1/staff/payroll/retirement-accrual-preview`** |
+| **요청** | `yearMonth`(yyyy-MM) · `accrualBasePay`(적립기준 급여) · `priorAccumulatedBalance`(이전 잔여) · `continuousServiceMonths`(근속 개월) |
+| **응답** | `monthlyAccrualAmount` · `projectedAccumulatedBalance` · `accrualEligible` · `eligibilityThresholdMonths=1` · `accrualRateDenominator=12` · `riskLevel`(`ACCRUING`/`INELIGIBLE`) · `guidance` · `documentCode=M11-2` |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 403** |
+| **규칙** | 근속 **1개월 이상**만 당월 적립 · **미만**이면 당월 0원·기존 잔여만 유지 |
+| **연계** | **「급여 연계 화면」** — 급여대장 · 간이지급 · 급여기초 · 인건비비율 · **퇴직적립금** |
+| **P1 잔여** | **persist** · **월급액·근속 자동 연동** · **4대보험(M12 BPO, Q782)** |
+
+> 관련: Q775 · Q778 · Q779 · Q780 · **Q782** · USER_MANUAL §4-7-0i · ADMIN_GUIDE §6-2-24e · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q782. **재무회계(수입·지출)**는 ogada에서 하나요? (M12 BPO, BE `093ac88` · FE `063c269`)
+
+**A.** **✅ BE+FE Fixed (Q782·Q785·Q787)** — **아니요.** 케어포 **M12**와 같이 **수입·지출·결의 등 재무회계는 외부 BPO(수지파인)** 에서 처리합니다. ogada는 **직원 급여(M11)** 를 in-app으로 제공하고, **`/accounting`** 에서 **수지파인 공개 로그인** 또는 **기관 SSO(OTP)** 로만 연결합니다. **ogada에 재무 비밀번호를 입력하지 않습니다**.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/accounting`** — SideNav **청구 → 재무회계 (BPO)** · **`BillingContextNav`「재무회계 (BPO)」** |
+| **로딩** | **`GET …/bpo-launch`** + **`GET /api/v1/health`** 를 함께 조회 — 포털 안내·**운영 준비** 표시 |
+| **포털** | **수지파인** — `portalUrl`(기본 `https://sujifine.co.kr/login`) · **「공개 로그인 열기」** → 새 창 |
+| **API** | **`documentCode=M12-BPO`** · `portalProductName` · `helpTextKo` · `relatedSurfaces[]` |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **SSO** | **env 자격 설정 시 AVAILABLE** — **`POST …/bpo-sso-handoff`** (상세 **Q785**·**Q787**) · 미설정 시 공개 로그인만 |
+| **연계** | 급여대장(`/payroll/ledger`) · 본인부담 청구(`/billing`) |
+
+> 관련: Q775 · Q781 · **Q784** · **Q785** · **Q787** · USER_MANUAL §4-6-5 · ADMIN_GUIDE §6-2-24f · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q785. **`/accounting`에서 SSO 자동 로그인**은 언제 보이나요? (M12, BE `bf96c29` · FE `063c269`)
+
+**A.** **✅ BE+FE Fixed (Q785·Q787·**Q801**)** — **IT가 기관 SSO 자격 env를 넣은 뒤** health가 **`accountingBpoSsoReady=true`** 일 때만 **「SSO 자동 로그인」** 버튼이 나타납니다. **미설정(기본)** 이면 **`ssoAvailability=PLANNED`** · blocker **`sso-otp-credentials-missing`** 이고 **공개 로그인만** 사용합니다. **실제 OTP mint는 본사·지점 관리자만** 가능합니다 (**Q801**).
+
+| 항목 | 내용 |
+|------|------|
+| **공개 로그인** | **「수지파인 공개 로그인 열기」** — 새 창으로 공개 로그인 URL · **`hq_admin`·`branch_admin`·`social_worker`** 가능 |
+| **SSO(자격 설정 후)** | 케어포 parity — BE가 mint한 **usmusid+OTP** 를 **`carefor_login`** 에 POST · **비밀번호 미수집** · **`hq_admin`·`branch_admin`만** |
+| **사회복지사** | **공개 로그인만** — SSO handoff 호출 시 **403** |
+| **운영 준비 표시** | 카드 **「운영 준비 (/health)」** — 카탈로그·공개 진입·SSO 상태 |
+| **설정** | **`ACCOUNTING_BPO_USMUSID`** · **`ACCOUNTING_BPO_OTP_SECRET`** (선택 **`ACCOUNTING_BPO_SSO_PORTAL_URL`**) — **Q787**·**Q801** |
+| **P1 잔여** | **기관(테넌트)별 자격 저장** — 현재는 **배포 단위 env** |
+
+> 관련: Q782 · Q784 · **Q787** · **Q801** · USER_MANUAL §4-6-5 · ADMIN_GUIDE §6-2-24f · DEPLOYMENT §4-9 · CHANGELOG 2026-07-14
+
+### Q787. **재무회계 SSO**를 켜려면 IT가 무엇을 설정하나요? (M12, BE `bf96c29`)
+
+**A.** **✅ BE Fixed (Q787·**Q801**)** — **서버 환경변수 2개**(필수)입니다. 값을 넣고 재기동하면 health·`/accounting` 이 SSO 준비로 바뀝니다. **비밀번호·OTP secret은 Git·화면에 두지 마세요**. 포털 URL은 **수지파인 호스트만** 허용됩니다 (**Q801**).
+
+| 변수 | 필수 | 설명 |
+|------|:----:|------|
+| **`ACCOUNTING_BPO_USMUSID`** | SSO 시 ✅ | 수지파인 기관 SSO 사용자 ID |
+| **`ACCOUNTING_BPO_OTP_SECRET`** | SSO 시 ✅ | OTP mint용 HMAC 시크릿 (요청마다 짧은 OTP 생성) |
+| **`ACCOUNTING_BPO_SSO_PORTAL_URL`** | — | 기본 `https://www.sujifine.co.kr/carefor_login` — **`sujifine.co.kr` / `www.sujifine.co.kr` · https만** |
+| **`ACCOUNTING_BPO_SSO_HANDOFF_ACTOR_RATE_LIMIT_PER_MINUTE`** | — | 기본 **10** (행위자 분당 mint 상한) |
+| **`ACCOUNTING_BPO_SSO_HANDOFF_ORG_RATE_LIMIT_PER_MINUTE`** | — | 기본 **30** (기관 분당 mint 상한) |
+
+| 확인 | 기대 |
+|------|------|
+| **`GET /api/v1/health`** | **`accountingBpoSsoReady=true`** · **`accountingBpoSsoAvailability=AVAILABLE`** · blockers에 **`sso-otp-credentials-missing`·`sso-portal-url-not-allowlisted` 없음** |
+| **`POST /api/v1/billing/accounting/bpo-sso-handoff`** | 200 · **`usmusid`·`otp`·`handoffReady=true`** · **`social_worker`/`caregiver` → 403** · 미설정 시 **422 `BUSINESS_RULE`** · 과다 요청 **429 `RATE_LIMITED`** |
+| **UI `/accounting`** | **「SSO 자동 로그인」** 버튼 노출(자격·allowlist OK) · 클릭 시 새 창 handoff |
+
+> 관련: Q782 · Q785 · Q784 · **Q801** · ADMIN_GUIDE §6-2-24f · DEPLOYMENT §3-3·§4-9 · CHANGELOG 2026-07-14
+
+### Q788. **가정통신문** 준비 상태와 **발송 이력**은 어디서 보나요? (G2, FE `4d1b01c` · BE `bf96c29`)
+
+**A.** **✅ BE+FE Fixed (Q788·Q792·Q793·Q795~Q798)** — SideNav **이용자 → 가정통신문**(`/clients/home-newsletter`)입니다. **운영 준비**(이메일 dispatch)·**작성 미리보기**·**서버 초안(DRAFT)**·**기관 공지·자료실 게시판**·**연계 안내**·**지점별 발송 이력(필터)**을 한 화면에서 확인합니다. **실제 발송**은 여전히 **이용자 상세**의 **보호자 서류 발송**에서 합니다 (Q217).
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`HomeNewsletterLaunchPage`** — `/clients/home-newsletter` · ClientsContextNav·SideNav **「가정통신문」** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** (`caregiver` 불가) |
+| **API** | **`GET …/launch`** · **`GET …/authoring`** · **`POST …/compose-preview`** · **`GET/POST …/facility-notices`** · **`GET …/dispatch-history?branchId=&yearMonth=&status=&q=`** · health 병합 |
+| **작성 미리보기** | **「제목/본문 미리보기」** — 발송 없음 (**Q793**) |
+| **초안 저장** | **「서버 초안(DRAFT) 저장」** — `facility_notices` DRAFT + 세션 메타 (**Q796**·**Q798**) |
+| **기관 공지 게시판** | **공지(NOTICE)·자료실(RESOURCE)** 초안·**수정**·게시·삭제·**복제**·**상세** · 첨부 http(s) (**Q797**·**Q800**·**Q804**·**Q805**) |
+| **지점 스코프** | **지점 관리자·사회복지사** — 로그인 **소속 지점**만 이력·게시판 조회 (**Q792**) |
+| **페이지** | **`page` 0부터** · **`size` 기본 20·최대 100** — FAQ **Q790** |
+| **이력 표시** | 발송 시각·이용자명·센터명·요약·대상 연월·채널·상태 — **연락처 비표시** · 필터 **Q795** |
+| **발송 실행** | `/clients/:id` → **문서 유형「가정통신문」** → **가정통신문 이메일 발송** (Q217) |
+
+> 관련: Q217 · Q517 · **Q789** · **Q790** · **Q791** · **Q792** · **Q793** · **Q795** · **Q796** · **Q797** · **Q798** · **Q800** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q789. 배포 후 **가정통신문** 준비는 health에서 무엇을 보나요? (G2, BE `c558f29`)
+
+**A.** **✅ BE Fixed (Q789·**Q811**)** — **`GET /api/v1/health`** 에 **가정통신문 readiness** 필드가 있습니다. **`homeNewsletterDispatchReady`** 는 **SMTP 설정만**이 아니라 **지금 비긴급 이메일을 보낼 수 있는지**(조용한 시간대 반영)입니다. 야간(22:00~08:00 KST)이면 SMTP가 켜져 있어도 **false**이고 blocker에 **`quiet-hours-active`** 가 붙습니다 (**Q811**). **센터장·사회복지사**는 `/clients/home-newsletter` **운영 준비** 카드에서도 같은 상태를 봅니다 (Q788).
+
+| 항목 | 내용 |
+|------|------|
+| **필드** | **`homeNewsletterCatalogAvailable`** · **`homeNewsletterDispatchReady`** · **`homeNewsletterDispatchAvailability`** · **`homeNewsletterAuthoringAvailability`** · **`homeNewsletterReadinessBlockers[]`** |
+| **알림 채널(health)** | **`notificationLiveEmailDispatchReady`** · **`notificationNonEmergencyEmailDispatchAvailableNow`** · **`notificationQuietHoursActive`** — 설정 vs 지금 발송 구분 (**Q809**·**Q811**) |
+| **blocker 예** | **`email-dispatch-not-ready`** — SMTP live 미준비 · **`quiet-hours-active`** — 야간(SMTP는 준비됨) · 서비스 오류 시 **`home-newsletter-status-error`** |
+| **authoring** | **`AVAILABLE`** — catalog·compose-preview + **FE 작성 미리보기·이력 필터·기관 공지 게시판·DRAFT 영속 ✅** (Q791·**Q793**·**Q795**~**Q798**) · authoring residual blockers **빈 목록**(구 `board-ui-planned` 해제) |
+| **복구** | SMTP 미설정 → DEPLOYMENT §4-8 · 야간만 막힘 → **08:00 이후 재조회**(설정 재작업 불필요, **Q811**) |
+| **smoke** | `curl -s …/api/v1/health \| jq '.homeNewsletterDispatchReady,.homeNewsletterReadinessBlockers,.notificationQuietHoursActive,.notificationNonEmergencyEmailDispatchAvailableNow'` |
+
+> 관련: **Q788** · **Q811** · **Q809** · Q217 · Q783 · **Q790** · **Q791** · **Q793** · **Q797** · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q790. **가정통신문 발송 이력**은 한 번에 몇 건까지 보나요? (G2, BE `9254721`)
+
+**A.** **✅ BE Fixed (Q790)** — **`GET /api/v1/notifications/home-newsletter/dispatch-history`** 는 **페이지 단위**입니다. 화면(`/clients/home-newsletter`)은 기본 **20건**을 조회합니다.
+
+| 파라미터 | 기본 | 상한 | 설명 |
+|----------|------|------|------|
+| **`page`** | `0` | — | 0부터 시작 |
+| **`size`** | `20` | **100** | 한 페이지 행 수 |
+
+| 항목 | 내용 |
+|------|------|
+| **응답** | **`items[]`** · **`totalElements`** · **`totalPages`** · **`page`** · **`size`** |
+| **범위** | 로그인 사용자 **지점 스코프** — **지점 관리자·사회복지사**는 소속 지점만 (FE `61f734d`, **Q792**) · HQ는 `branchId` override 가능 |
+| **PII** | **연락처·이메일 주소 미포함** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 403** |
+
+> 관련: **Q788** · Q789 · Q217 · **Q792** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q791. **가정통신문 작성 catalog**와 **이메일 미리보기** API는 무엇인가요? (G2, BE `ac422cc`)
+
+**A.** **✅ BE+FE Fixed (Q791·Q793)** — 월간 가정통신문 **작성 필드 정의**와 **이메일 제목·본문 초안 미리보기**를 API·화면으로 제공합니다. **실제 발송은 하지 않습니다** — 발송은 이용자 상세 **`POST …/clients/{id}/notifications/home-newsletter`** (Q217)입니다. **화면 조작**은 FAQ **Q793**.
+
+| API | 용도 |
+|-----|------|
+| **`GET /api/v1/notifications/home-newsletter/authoring`** | compose 필드 catalog · 이메일 제목 틀 · **`authoringAvailability=AVAILABLE`** |
+| **`POST /api/v1/notifications/home-newsletter/compose-preview`** | `{ "yearMonth": "2026-07", "summary": "…", "clientName": "…", "centerName": "…" }` → **subject·bodyText** (발송 없음) |
+
+| compose 필드 | 필수 | 제약 |
+|--------------|------|------|
+| **`yearMonth`** | ✅ | `YYYY-MM` |
+| **`summary`** | — | 최대 500자 |
+| **`clientName`·`centerName`** | — | preview placeholder, 각 100자 |
+
+| 항목 | 내용 |
+|------|------|
+| **health** | **`homeNewsletterAuthoringAvailability=AVAILABLE`** (SMTP dispatch 준비와 별개) |
+| **FE** | **`/clients/home-newsletter` → 「가정통신문 작성 미리보기」** (**Q793**, FE `3bd50ac`) |
+| **게시판** | **`/api/v1/notifications/facility-notices`** — 기관 공지·자료실 CRUD (**Q797**) · authoring residual blockers **빈 목록** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 403** |
+| **smoke** | `curl -s …/authoring \| jq '.authoringAvailability,.composeFields,.authoringReadinessBlockers'` · compose-preview POST 200 |
+
+> 관련: **Q788** · **Q789** · **Q793** · **Q795** · **Q796** · **Q797** · **Q798** · Q217 · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q792. **가정통신문 발송 이력**은 다른 지점 것도 보이나요? (G2, FE `61f734d`)
+
+**A.** **✅ FE Fixed (Q792)** — **지점 관리자·사회복지사**는 **`/clients/home-newsletter`** 발송 이력에서 **로그인 소속 지점** 기록만 봅니다. 화면이 **`GET …/dispatch-history?branchId={소속지점}`** 를 자동으로 호출합니다.
+
+| 역할 | 이력 범위 |
+|------|----------|
+| **`branch_admin`·`social_worker`** | **소속 지점만** — `user.branchId` 전달 |
+| **`hq_admin`** | 전체 또는 **`branchId` query** 로 지점 선택 |
+
+| 항목 | 내용 |
+|------|------|
+| **목적** | 다지점 환경에서 **타 지점 PII·발송 기록 혼선 방지** |
+| **발송 실행** | 변경 없음 — 이용자 상세 Q217 |
+| **회귀** | **`HomeNewsletterLaunchPage.test`** — branch_admin `branchId` query lock |
+
+> 관련: **Q788** · **Q790** · Q217 · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · CHANGELOG 2026-07-14
+
+### Q793. **가정통신문 작성 미리보기**는 화면에서 어떻게 쓰나요? (G2, FE `3bd50ac`)
+
+**A.** **✅ FE Fixed (Q793)** — **`/clients/home-newsletter`** 중간 **「가정통신문 작성 미리보기」** 카드에서 합니다. **미리보기만** 생성하며 **이메일을 보내지 않습니다.**
+
+| 단계 | 조작 |
+|------|------|
+| 1 | SideNav **이용자 → 가정통신문** |
+| 2 | **대상 연월**(`YYYY-MM`) 입력 — 필수 |
+| 3 | **요약**(선택, 500자)·**이용자명**·**센터명**(미리보기용 placeholder, 각 100자) |
+| 4 | **「제목/본문 미리보기」** 클릭 → 제목·본문 초안 표시 |
+| 5 | 발송은 **「수급자 목록에서 발송」** → 이용자 상세 (Q217) |
+
+| 항목 | 내용 |
+|------|------|
+| **API** | **`GET …/authoring`** · **`POST …/compose-preview`** (Q791) |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **다음** | 미리보기 후 **「서버 초안(DRAFT) 저장」** (**Q796**·**Q798**) · 이력에서 **작성에 불러오기** (**Q795**) · 기관 공지 게시판 (**Q797**) |
+| **오류** | 연월 형식·글자 수 — **필드 아래** 안내 |
+
+> 관련: **Q788** · **Q791** · **Q795** · **Q796** · **Q797** · **Q798** · Q217 · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q795. **가정통신문 발송 이력**을 연월·상태·키워드로 찾을 수 있나요? (G2, FE `bb48b6c` · BE `24f555d`)
+
+**A.** **✅ BE+FE Fixed (Q795)** — **`/clients/home-newsletter`** 하단 **발송 이력**에서 **대상 연월**·**상태**·**수급자·센터·요약 검색**을 적용하면 **서버가 전체 이력을 필터**합니다(현재 페이지만이 아님). 표에 **센터명·요약**도 보이며, 행을 **작성 폼에 불러오기**할 수 있습니다.
+
+| 필터 | API 파라미터 | 설명 |
+|------|-------------|------|
+| **대상 연월** | `yearMonth` | `YYYY-MM` · 비우면 전체 |
+| **상태** | `status` | **전체(`/ALL`)** · **대기(`PENDING`)** · **발송됨(`SENT`)** · **실패(`FAILED`)** |
+| **검색** | `q` | 수급자명·센터명·요약·clientId 부분검색 · 최대 100자 |
+
+| 항목 | 내용 |
+|------|------|
+| **조작** | 필터 입력 → **「필터 적용」** · **「필터 초기화」** · 이전/다음 페이지 |
+| **표 열** | 시각 · 이용자명 · **센터명** · **요약** · 연월 · 채널 · 상태 · **작성에 불러오기** |
+| **불러오기** | 해당 행의 연월·요약·이용자명·센터명을 **작성 미리보기 폼**에 채움 — **발송 없음** |
+| **권한·지점** | Q788·Q792 동일 · `branchId` 스코프 유지 |
+| **배포** | Flyway **V191** 조회 인덱스 — 다지점·대량 이력에서 필터 성능용 (현장 UI 직접 영향 없음) |
+
+> 관련: **Q788** · **Q790** · **Q792** · **Q793** · **Q796** · Q217 · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q796. **가정통신문 초안**은 어디에 저장되나요? (G2, FE `0210aaa`)
+
+**A.** **✅ FE Fixed (Q796·Q798)** — 미리보기 후 **「서버 초안(DRAFT) 저장」**을 누르면 **기관 공지 DRAFT**로 **서버(DB)** 에 저장됩니다. 작성 폼을 다시 채우기 위한 **연월·이용자명·센터명** 메타는 **브라우저 세션**에도 함께 둡니다. **이메일 발송은 하지 않습니다.**
+
+| 단계 | 조작 |
+|------|------|
+| 1 | **작성 미리보기**로 제목·본문 초안을 만든다 (Q793) |
+| 2 | **「서버 초안(DRAFT) 저장」** — `facility_notices` DRAFT 생성 + 세션 메타(최대 20건) |
+| 3 | **기관 공지 · 자료실 게시판**에서 초안을 확인·**게시**·삭제 (Q797) |
+| 4 | 세션 목록에서 **불러오기**로 작성 폼·미리보기 복원 · **삭제**로 세션 메타만 제거 |
+| 5 | 발송은 **이용자 상세** (Q217) — 초안만으로는 이메일이 나가지 않음 |
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/home-newsletter`** — 서버 초안 저장 · 세션 메타 · 기관 공지 표 |
+| **영속** | ✅ 서버 DRAFT(`facility_notices`) · 세션 메타는 탭 종료 시 삭제 |
+| **PII** | 미리보기 placeholder·요약·본문 — 연락처 미포함 |
+| **배포** | Flyway **V192** |
+
+> 관련: **Q788** · **Q793** · **Q795** · **Q797** · **Q798** · Q217 · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · CHANGELOG 2026-07-14
+
+### Q797. **기관 공지·자료실 게시판**은 어떻게 쓰나요? (G2, FE `fb6ea17` · BE `124915d`)
+
+**A.** **✅ BE+FE Fixed (Q797·**Q800**·**Q804**·**Q805**·**Q807**·**Q808**)** — 케어포 **10-4** 패리티입니다. **`/clients/home-newsletter`** 의 **「기관 공지 · 자료실 게시판」** 카드에서 **초안 작성·수정·필터·게시·삭제·복제·상세**합니다. SideNav **「기관 공지·자료실」** 로 게시판 카드에 바로 갈 수 있습니다 (**Q805**). **보호자 이메일 가정통신문 발송과는 별개**입니다 (발송은 Q217).
+
+| 단계 | 조작 |
+|------|------|
+| 1 | **게시 분류** `NOTICE`(공지) 또는 `RESOURCE`(자료실)만 · 그 외·공백은 저장 전 필드 오류 (**Q808**) · **제목**·**본문** · (선택) **첨부 링크**(`http://`/`https://`만, **Q804**·**Q807**) 입력 |
+| 2 | **초안 저장** → 상태 **DRAFT** |
+| 3 | DRAFT 행 **「수정」** → 고친 뒤 **「초안 수정 저장」** (또는 **수정 취소**) — **Q800** |
+| 4 | 표에서 **게시** → **PUBLISHED** · 또는 **삭제**(초안만) · **게시 후 본문 수정 불가** — 재게시 시 **「초안으로 복제」** → **수정 폼** (**Q804**·**Q807**) |
+| 5 | 게시 행 **「보기」** → 상세 본문·첨부 링크 (**Q805**) · 불안전 링크 **열기 차단** (**Q807**) · **분류·상태·검색** 필터(기본 20건) |
+
+| 항목 | 내용 |
+|------|------|
+| **API** | **`GET/POST /api/v1/notifications/facility-notices`** · **`GET/PATCH/DELETE …/{id}`** · **`POST …/{id}/publish`** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → 403** |
+| **필드** | 제목 최대 200자 · 본문 5000자 · **첨부 링크** 선택(최대 500자 · **http(s)만** · BE 검증) |
+| **지점** | 소속 `branchId` 스코프 (Q792와 동일 원칙) |
+| **메뉴** | **`/clients/home-newsletter#facility-notices`** (**Q805**) |
+| **배포** | Flyway **V192** `facility_notices` |
+| **smoke** | `curl -s …/facility-notices?page=0&size=20 \| jq '.items,.totalElements'` |
+
+> 관련: **Q788** · **Q796** · **Q798** · **Q800** · **Q804** · **Q805** · **Q807** · **Q808** · Q217 · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q798. 가정통신문 **미리보기**를 저장하면 무엇이 생기나요? (G2, FE `0210aaa`)
+
+**A.** **✅ FE Fixed (Q798)** — 미리보기 결과(제목·본문)가 **기관 공지 `NOTICE` DRAFT** 한 건으로 저장됩니다. 동시에 작성 폼 복원용 메타(연월·요약·이용자·센터)가 **세션 초안 목록**에 남습니다.
+
+| 저장 대상 | 내용 | 브라우저 닫으면 |
+|-----------|------|----------------|
+| **서버 DRAFT** | `POST …/facility-notices` — 분류 NOTICE · 제목·본문 | **유지** (게시판에서 확인) |
+| **세션 메타** | 연월·요약·이용자명·센터명 | **삭제** |
+
+| 항목 | 내용 |
+|------|------|
+| **버튼** | **「서버 초안(DRAFT) 저장」** |
+| **발송** | ❌ 이메일 미발송 — Q217에서 실행 |
+| **게시** | 게시판에서 DRAFT → **게시** (Q797) |
+
+> 관련: **Q793** · **Q796** · **Q797** · Q217 · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-14
+
+### Q794. live E2E에서 **effective operation gate**는 무엇인가요? (QA-B95, BE `5d6c007` · FE `5805d68`)
+
+**A.** **✅ BE+FE Fixed (Q794 · Q713 deepen · Q799)** — **`GET /api/v1/health`** 와 **`GET /api/v1/system/live-e2e/probe`** 가 **raw** gate와 별도로 **effective** gate를 내려줍니다. bootstrap만 꺼져 있고(`bootstrap-disabled` / `bootstrap-service-unavailable`) 자격 로그인으로 auth를 복구할 수 있으면 **effective ready=true** 로 suite를 진행합니다. **억제된 bootstrap blocker 목록**은 **Q799**.
+
+| 필드 | 의미 |
+|------|------|
+| **`liveE2eOperationReady`** / **`…Blockers`** | bootstrap 포함 **raw** 판정 |
+| **`liveE2eEffectiveOperationReady`** / **`…Blockers`** / **`…Reason`** | bootstrap-only blocker **제외** 후 harness 판정 |
+| **`liveE2eSuppressedBootstrapOperationBlockers`** | effective에서 뺀 bootstrap-only 라벨 (**Q799**) |
+| **FE** | `liveGlobalSetup` — backend effective 값을 **우선** 사용 (`5805d68`) |
+
+| 확인 | 명령·파일 |
+|------|-----------|
+| smoke | `curl -s …/api/v1/health \| jq '.liveE2eOperationReady,.liveE2eEffectiveOperationReady,.liveE2eEffectiveOperationBlockers,.liveE2eSuppressedBootstrapOperationBlockers'` |
+| harness | **`./scripts/run-live-e2e.sh`** 후 **`.live-backend-state.json`** 의 **`liveE2eEffectiveOperationReady`** |
+
+> 관련: **Q713** · **Q799** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-14 · 현장 사용자 화면 영향 **없음**
+
+### Q799. health에 **`liveE2eSuppressedBootstrapOperationBlockers`** 는 왜 있나요? (QA-B95, BE `0c45e19`)
+
+**A.** **✅ BE Fixed (Q799·**Q810**)** — effective gate가 **준비됨**이어도 raw 쪽에는 bootstrap이 꺼져 있을 수 있습니다. 이 필드는 **effective에서 의도적으로 제외한** `bootstrap-disabled`·`bootstrap-service-unavailable` 만 따로 보여 줍니다. **IT가 「왜 effective만 초록인가」를 바로 진단**할 때 씁니다. **bootstrap 강제 검사가 꺼진(unenforced) 환경에서도 목록이 비지 않습니다** (**Q810**).
+
+| 항목 | 내용 |
+|------|------|
+| **포함 라벨** | **`bootstrap-disabled`** · **`bootstrap-service-unavailable`** |
+| **미포함** | staff/guardian credentials·G21 seed 등 **actionable** blocker |
+| **관련 필드** | **`liveE2eEffectiveOperationBlockers`** = raw blockers − suppressed |
+| **unenforced** | `enforce-bootstrap-readiness=false` 여도 suppressed 진단 **유지** (**Q810**) |
+| **현장 화면** | 영향 없음 — health/probe·live E2E harness용 |
+| **smoke** | `curl -s …/api/v1/health \| jq '.liveE2eSuppressedBootstrapOperationBlockers,.liveE2eEffectiveOperationReady'` |
+
+> 관련: **Q794** · **Q713** · **Q810** · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q800. 기관 공지 **초안을 다시 고치거나 첨부 URL**을 넣을 수 있나요? (G2, FE `71839a6`)
+
+**A.** **✅ FE Fixed (Q800·**Q803**)** — **예.** DRAFT 상태일 때만 **「수정」** 으로 제목·본문·**첨부 URL**을 고친 뒤 **「초안 수정 저장」**(`PATCH`)합니다. **수정**을 누르면 서버 **`GET …/{id}`** 로 최신 본문을 다시 불러옵니다 (**Q803**). **게시(PUBLISHED)된 글은 본문 수정이 불가**하며 UI에도 수정 버튼이 없습니다. 첨부 URL은 **자료실 링크**(선택, 최대 500자)용입니다 — 파일 업로드 스토리지는 없습니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/home-newsletter`** → **「기관 공지 · 자료실 게시판」** |
+| **API** | **`GET …/facility-notices/{id}`**(수정 시작) · **`PATCH …/{id}`** — DRAFT만 · 필드 `title`·`bodyText`·`attachmentUrl` |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** (Q797과 동일) |
+| **취소** | **「수정 취소」** — 폼을 비우고 새 초안 작성으로 복귀 |
+| **게시 후** | 본문 PATCH 불가 — 삭제·재작성 또는 새 초안 |
+
+> 관련: **Q797** · **Q796** · **Q798** · **Q803** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · CHANGELOG 2026-07-14
+
+### Q801. 재무회계 **SSO**가 거절되거나 너무 많이 요청했다고 나오면? (M12, BE `bf96c29` · FE `71839a6`)
+
+**A.** **✅ BE+FE Fixed (Q801·**Q803**)** — SSO handoff는 **보안 가드**가 있습니다. **허용 호스트가 아니면 SSO가 꺼지고**, **분당 횟수를 넘기면 잠시 기다려야** 하며, **사회복지사·요양보호사는 SSO mint를 할 수 없습니다**(공개 로그인은 가능). **`/accounting`** 화면에는 서버 한글 메시지(또는 상태별 안내)가 표시됩니다 (**Q803**).
+
+| 상황 | 응답·표시 | 조치 |
+|------|-----------|------|
+| 포털 URL이 수지파인 아님·http | health **`sso-portal-url-not-allowlisted`** · SSO 미준비 · handoff **422** · 화면에 비허용 URL 안내 | **`ACCOUNTING_BPO_SSO_PORTAL_URL`** 을 **`https://sujifine.co.kr…`** 또는 **`https://www.sujifine.co.kr…`** 로 수정 후 재기동 |
+| 분당 과다 mint | **429 `RATE_LIMITED`** — 「재무회계 SSO 요청이 너무 많습니다…」 | 기본 **행위자 10회/분** · **기관 30회/분** — 잠시 후 재시도 |
+| `social_worker`·`caregiver` | **403** | **본사·지점 관리자**로 SSO · 사회복지사는 **공개 로그인** |
+| 자격 env 없음 | **422 `BUSINESS_RULE`** (기존) | **Q787** env 설정 |
+
+> 관련: **Q785** · **Q787** · **Q782** · **Q803** · USER_MANUAL §4-6-5 · ADMIN_GUIDE §6-2-24f · DEPLOYMENT §4-9 · CHANGELOG 2026-07-14
+
+### Q802. **알림 채널 준비 상태** API 필드 이름이 문서와 화면에서 달라도 되나요? (J03, BE `124915d` · FE `71839a6`)
+
+**A.** **✅ BE+FE Fixed (Q802·**Q809**)** — **예.** **`GET /api/v1/notifications/channel-status`** 는 **구현 키와 API 명세 별칭을 함께** 내려줍니다. 조직 설정·대시보드 **「알림 채널 준비 상태」** 패널은 둘 다 인식합니다. **비밀값(키·시크릿)은 여전히 노출되지 않습니다.** 추가로 **설정상 live 준비**와 **지금(비긴급) 발송 가능** 필드가 분리됩니다 (**Q809**).
+
+| 구현 키 (기존) | API 명세 별칭 (동시 노출) |
+|----------------|---------------------------|
+| `solapiSenderIdConfigured` | `solapiSenderNumberConfigured` |
+| `solapiKakaoPfIdConfigured` | `kakaoChannelIdConfigured` |
+| `templates[]` | `requiredAlimtalkTemplates[]` |
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/organization/settings`** · **`/dashboard`** — **`NotificationChannelReadinessPanel`** (Q318) |
+| **연동** | IT·스모크 스크립트는 **별칭 또는 구현 키** 어느 쪽이든 사용 가능 |
+| **지금 발송** | **`nonEmergency*DispatchAvailableNow`** · blocker **`QUIET_HOURS_ACTIVE`** (**Q809**) |
+| **health** | live 발송 readiness는 기존처럼 **`GET /api/v1/health`** 의 `notificationLive*` 필드 (Q783) |
+
+> 관련: **Q318** · **Q367** · **Q644** · **Q783** · **Q809** · USER_MANUAL §5-5 · ADMIN_GUIDE §10-8 · DEPLOYMENT §4-3 · CHANGELOG 2026-07-15
+
+### Q803. 기관 공지 **수정**이 최신 내용을 반영하나요? SSO 오류는 화면에 어떻게 보이나요? (G2·M12, FE `71839a6`)
+
+**A.** **✅ FE Fixed (Q803)** — **기관 공지**: DRAFT **「수정」** 클릭 시 **`GET …/facility-notices/{id}`** 로 **서버 최신 제목·본문·첨부 URL**을 채웁니다. 이미 **게시된** 글이면 편집을 취소하고 「게시된 공지는 본문을 수정할 수 없습니다」 안내가 납니다. 상세 조회가 실패하면 **목록 값으로 편집을 계속**하며 경고를 표시합니다. **재무회계 SSO**: 실패 시 서버 한글 메시지를 우선 보여 주고, 비어 있으면 **429** → 「재무회계 SSO 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.」 · **422/400**(비허용 URL) → 수지파인 호스트 안내 문구를 표시합니다.
+
+| 기능 | 화면 | 동작 |
+|------|------|------|
+| G2 초안 수정 | **`/clients/home-newsletter`** | **수정** → GET 상세 → 폼 채움 → **초안 수정 저장**(PATCH) |
+| M12 SSO 오류 | **`/accounting`** | handoff 실패 Alert — Q801 상황표와 동일 의미 |
+
+> 관련: **Q800** · **Q801** · **Q797** · **Q804** · USER_MANUAL §4-6-5·§4-7-3a · ADMIN_GUIDE §6-2-24f/h · CHANGELOG 2026-07-14
+
+### Q804. 게시된 기관 공지를 **다시 고치거나** 첨부 링크에 무엇이든 넣어도 되나요? (G2, FE `5b3075f` · BE `7569f1c`)
+
+**A.** **✅ BE+FE Fixed (Q804·Q807)** — **게시(PUBLISHED) 본문은 직접 수정할 수 없습니다.** 내용이 바뀌면 목록·상세의 **「초안으로 복제」** 로 **새 DRAFT**를 만든 뒤 수정·재게시합니다. **첨부 링크**는 **선택**이며 **`http://` 또는 `https://`로 시작**해야 합니다(`javascript:`·`ftp://` 등 거부). **화면과 서버 둘 다** 검사합니다. 복제 원본에 불안전한 첨부가 있으면 **그 링크만 비우고 복제를 이어간 뒤**, 새 초안이 **수정 폼에 바로 열립니다** (**Q807**).
+
+| 항목 | 내용 |
+|------|------|
+| **버튼** | 표·상세 **「초안으로 복제」** → `POST …/facility-notices` (새 DRAFT) → **수정 폼 핸드오프** |
+| **첨부** | 최대 500자 · **http(s)만** · 비우면 첨부 없음 · 저장 시 BE 검증 (**Q807**) |
+| **게시 후** | 본문 PATCH 불가 — 복제 후 재게시 (Q797·Q800·Q805) |
+| **권한** | Q797과 동일 (`hq_admin`·`branch_admin`·`social_worker`) |
+
+> 관련: **Q797** · **Q800** · **Q803** · **Q805** · **Q807** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · CHANGELOG 2026-07-15
+
+### Q805. 기관 공지 **상세**는 어디서 보고, 메뉴는 어디인가요? (G2, FE `5b3075f`)
+
+**A.** **✅ FE Fixed (Q805)** — 게시판 표에서 게시 글 **「보기」** 를 누르면 **`GET …/facility-notices/{id}`** 상세(제목·본문·첨부 링크·게시 시각)가 열립니다. SideNav·이용자 컨텍스트 메뉴 **「기관 공지·자료실」** 은 **`/clients/home-newsletter#facility-notices`** 로 게시판 카드에 스크롤합니다. 첨부 링크가 **http(s)가 아니면 「열기」를 막고** 안내만 표시합니다 (**Q807**).
+
+| 항목 | 내용 |
+|------|------|
+| **상세** | 게시 글 위주 · **닫기** · 게시글에서는 **초안으로 복제** 안내 (**Q804**) · 불안전 첨부 **열기 차단** |
+| **메뉴** | SideNav **이용자 → 기관 공지·자료실** · `ClientsContextNav` 동일 |
+| **앵커** | `#facility-notices` — 가정통신문 화면 내 게시판 카드 |
+| **a11y** | 표 caption · 행 버튼 aria-label · 상태/분류 한글·배지 (UXD FE-16) |
+
+> 관련: **Q797** · **Q804** · **Q807** · **Q788** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · CHANGELOG 2026-07-15
+
+### Q806. live E2E에서 **보호자 env를 비우면** 기본 시드 계정으로 잡히나요? (QA-B95, BE `2e29bc7`)
+
+**A.** **✅ BE Fixed (Q806)** — **아니요.** 보호자 이메일·비밀번호 env가 **비어 있거나 한쪽만 있으면 「기본 시드」가 아니라 「미설정(missing)」** 입니다. 예전에 공백을 default로 치던 동작을 고쳐, health/probe·bootstrap enrichment가 **fail-closed** 합니다. **기본 시드**는 값이 **채워져 있고** 내장 시드 쌍과 **완전히 같을 때**만 표시됩니다.
+
+| 상태 | 의미 | 조치 |
+|------|------|------|
+| **공백·부분만 설정** | **`guardian-credentials-missing`** · staff bootstrap에 보호자 토큰 **미포함**/enrichment **거부** | **`LIVE_E2E_GUARDIAN_EMAIL`·`PASSWORD`** 를 명시하거나 bootstrap-guardian 경로 사용 |
+| **내장 시드와 동일** | **`guardian-credentials-default`** (allow-default 플래그에 따라 blocker) | 스테이징에서는 전용 자격 권장 (Q490·Q551) |
+| **현장 화면** | 영향 없음 — harness·IT 진단용 | |
+
+> 관련: **Q551** · **Q490** · **Q542** · **Q794** · **Q799** · DEPLOYMENT §1-4·§11-3 · CHANGELOG 2026-07-14
+
+### Q807. 기관 공지 첨부 링크는 **서버에서도** 막히나요? 복제·상세에서는? (G2, BE `7569f1c` · FE `5b3075f`)
+
+**A.** **✅ BE+FE Fixed (Q807)** — **예.** 초안 생성·수정 API가 첨부 링크를 **trim** 한 뒤 **`http://`/`https://` 접두·500자**를 검사합니다. 화면 가드만 우회해도 **`422` 계열 업무 규칙 오류**로 저장되지 않습니다. **복제**는 원본 첨부가 불안전하면 **첨부를 비운 채 새 DRAFT를 만들고** 「이어서 수정할 수 있습니다」 안내와 함께 **수정 폼을 엽니다**. **상세 「보기」** 는 불안전 URL에 **링크를 걸지 않고** 차단 문구만 보여 줍니다.
+
+| 경로 | 동작 |
+|------|------|
+| **저장(POST/PATCH)** | FE 필드 오류 + BE `첨부 링크는 http:// 또는 https:// 로 시작해야 합니다.` / 길이 초과 메시지 |
+| **초안으로 복제** | 불안전 첨부 **제거·복제 계속** · 새 초안 **수정 폼** |
+| **상세 보기** | 안전 URL만 **「첨부 자료 열기」** · 그 외 **열기 차단** |
+| **권한** | Q797과 동일 |
+
+> 관련: **Q804** · **Q805** · **Q800** · **Q797** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · API_SPEC §11-13 · CHANGELOG 2026-07-15
+
+### Q808. 기관 공지 **게시 분류**에 아무 값이나 넣어도 되나요? (G2, FE `fb6ea17`)
+
+**A.** **✅ FE Fixed (Q808)** — **아니요.** 저장·수정 가능한 분류는 **`NOTICE`(공지)** 와 **`RESOURCE`(자료실)** 뿐입니다. 필터용 `ALL`·빈 값·알 수 없는 코드(예: `ETC`)는 API를 호출하기 전에 **"게시 분류를 선택하세요."** 필드 오류로 막습니다. **초안으로 복제**할 때 원본 분류가 지원되지 않으면 **`NOTICE`로 보정**한 뒤 새 DRAFT를 만듭니다.
+
+| 항목 | 내용 |
+|------|------|
+| **허용** | `NOTICE` · `RESOURCE` (대소문자 무시·trim) |
+| **거부** | 공백 · `ALL` · 그 외 코드 — 저장 버튼에서 PATCH/POST **미호출** |
+| **화면** | **`/clients/home-newsletter`** → 게시 분류 Select · Field 오류 |
+| **복제** | 비지원 분류 → `NOTICE` · 제목 접두·첨부 sanitize 규칙은 Q804·Q807 |
+
+> 관련: **Q797** · **Q800** · **Q804** · **Q807** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · CHANGELOG 2026-07-15
+
+### Q809. 알림 채널이 **준비됨**인데 밤에 발송이 안 되면? (J03, BE `124915d` · FE `fb6ea17`)
+
+**A.** **✅ BE+FE Fixed (Q809·Q329·**Q811**)** — **설정상 live 준비**(`liveAlimtalkDispatchReady` / `liveEmailDispatchReady`)와 **지금 비긴급 발송 가능**은 다릅니다. **22:00~08:00 (Asia/Seoul) 조용한 시간대**에는 후자가 `false`가 되고, `readinessBlockers`에 **`QUIET_HOURS_ACTIVE`** 가 붙습니다. **긴급(`EMERGENCY`) 알림은 우회**되고, 청구·보호자 **수동 발송**은 기존처럼 서버가 막습니다 (Q329·Q539). **가정통신문 운영 준비**도 같은 기준으로 **후속**이 됩니다 (**Q811**).
+
+| 필드 | 의미 |
+|------|------|
+| **`live*DispatchReady`** | Solapi·SMTP·템플릿 등 **설정 readiness** (야간에도 true일 수 있음) |
+| **`nonEmergencyAlimtalkDispatchAvailableNow`** | 지금 **비긴급 알림톡** 발송 가능 (= live ready **그리고** 조용한 시간대 아님) |
+| **`nonEmergencyEmailDispatchAvailableNow`** | 지금 **비긴급 이메일** 발송 가능 (동일) |
+| **`quietHoursActive`** | 현재가 22:00~08:00 KST 인지 |
+| **`QUIET_HOURS_ACTIVE`** | `readinessBlockers[]` 항목 — 설정 누락과 구분 |
+
+| 항목 | 내용 |
+|------|------|
+| **API** | **`GET /api/v1/notifications/channel-status`** · health에 동일 의미 필드 미러 (**Q811**) |
+| **화면** | **`NotificationChannelReadinessPanel`** — **「비긴급 알림톡/이메일 즉시 발송」** 배지 **가능/제한됨** · **`/clients/home-newsletter` 운영 준비** (**Q811**) · 조용한 시간대 안내 (Q318) · 청구 발송 버튼 비활성 (Q329) |
+| **smoke** | `curl -s …/channel-status \| jq '.liveAlimtalkDispatchReady,.nonEmergencyAlimtalkDispatchAvailableNow,.quietHoursActive,.readinessBlockers'` |
+| **현장** | 「설정은 OK인데 밤에만 막힘」→ 패널 **제한됨**·가정통신문 **후속** 확인 후 **08:00 이후 재시도** (설정 재작업 불필요) |
+
+> 관련: **Q318** · **Q329** · **Q539** · **Q802** · **Q811** · USER_MANUAL §5-5·§4-7-3a · ADMIN_GUIDE §10-8 · DEPLOYMENT §4-3 · CHANGELOG 2026-07-15
+
+### Q810. live E2E **bootstrap 강제 검사가 꺼져 있으면** 억제 blocker가 사라지나요? (QA-B95, BE `0c45e19`)
+
+**A.** **✅ BE Fixed (Q810)** — **아니요.** `ogada.live-e2e.enforce-bootstrap-readiness=false`(unenforced)여도 **`liveE2eSuppressedBootstrapOperationBlockers`** 에 **`bootstrap-disabled`** 또는 **`bootstrap-service-unavailable`** 진단이 **남습니다**. effective gate는 초록이어도 IT가 bootstrap 상태를 놓치지 않도록 합니다. **현장 사용자 화면에는 영향 없습니다.**
+
+| 항목 | 내용 |
+|------|------|
+| **유지 라벨** | `bootstrap-disabled` · `bootstrap-service-unavailable` |
+| **API** | **`GET /api/v1/health`** · **`GET /api/v1/system/live-e2e/probe`** |
+| **관계** | Q799(필드 목적) · Q794(effective vs raw) deepen |
+| **smoke** | unenforced 환경에서 `jq '.liveE2eEffectiveOperationReady,.liveE2eSuppressedBootstrapOperationBlockers'` — ready true여도 suppressed **비어 있지 않음** |
+
+> 관련: **Q799** · **Q794** · **Q713** · DEPLOYMENT §1-4·§11-3 · CHANGELOG 2026-07-15
+
+### Q811. **가정통신문** 화면이 밤에 **준비됨**이 아니라 **후속**으로 보이면? (G2·J03, BE `c558f29` · FE `655aaa7`)
+
+**A.** **✅ BE+FE Fixed (Q811·Q809)** — **정상입니다.** `/clients/home-newsletter` **운영 준비**와 health **`homeNewsletterDispatchReady`** 는 **SMTP live 설정**이 아니라 **지금 비긴급 가정통신문 이메일을 보낼 수 있는지**를 봅니다. **22:00~08:00 (Asia/Seoul)** 이면 SMTP가 켜져 있어도 **후속**·안내 **「조용한 시간대(비긴급 발송 제한)」** 가 보이고, blocker에 **`quiet-hours-active`** 가 붙습니다. **실제 발송**은 이용자 상세에서 시도해도 서버가 **422**로 막습니다 (Q539) — readiness는 그 전에 「밤에 보내면 안 됨」을 미리 보여 줍니다.
+
+| 구분 | 의미 |
+|------|------|
+| **SMTP 설정 OK · 주간** | `homeNewsletterDispatchReady=true` · 안내 「이메일 dispatch가 준비되었습니다…」 |
+| **SMTP 설정 OK · 야간** | `false` · blocker **`quiet-hours-active`** · 안내 「SMTP는 준비되었으나 비긴급 가정통신문 발송이 제한됩니다」 |
+| **SMTP 미설정** | `false` · blocker **`email-dispatch-not-ready`** (야간이면 `quiet-hours-active` 병기 가능) |
+
+| 항목 | 내용 |
+|------|------|
+| **API** | **`GET …/home-newsletter/launch`** · **`GET /api/v1/health`** (`homeNewsletter*` · `notificationNonEmergencyEmailDispatchAvailableNow` · `notificationQuietHoursActive`) |
+| **화면** | **`/clients/home-newsletter`** — 운영 준비 카드 **준비됨/후속** + 조용한 시간대 문구 |
+| **채널 readiness** | 조직 설정·대시보드 **「비긴급 … 즉시 발송」제한됨** 과 동일 정책 (**Q809**) |
+| **현장** | 밤에 **후속**이면 SMTP를 다시 건드릴 필요 없음 → **아침 08:00 이후** 재확인·발송 |
+
+> 관련: **Q788** · **Q789** · **Q809** · **Q539** · **Q217** · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q830. 연계기록지 **대상 기관명**이 200자를 넘으면 입력이 잘리나요? (G-LINKAGE-RECORD, FE `68cd253`)
+
+**A.** **✅ FE Fixed (Q830)** — **아니요.** HTML `maxLength`로 **입력 중 잘리지 않습니다.** 200자를 넘기면 **「초안 저장」** 또는 **「발송」** 시 필드 아래 **「연계 대상 기관명은 200자 이하여야 합니다.」** 안내가 뜹니다. 서버·DB(**Q822**·**V196**)와 **동일 한도**입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/:clientId`** — **「연계기록지」** 탭 · `ClientLinkageRecordForm` |
+| **검증** | JS **`validate()`** — 저장 전 필드 오류 · 서버 422와 문구 정합 |
+| **한도** | 대상 기관 **200자** · 요약(작성일·이용계획 포함) **5000자** (**Q822**) |
+
+> 관련: **Q822** · **Q819** · USER_MANUAL §4-7-3b · CHANGELOG 2026-07-15
+
+### Q829. **연계기록지 리포트** 필터를 바꾸면 바로 조회되나요? (G-LINKAGE-RECORD, FE `a2db731`)
+
+**A.** **✅ FE Fixed (Q829)** — **아니요.** 상태·연계 유형·검색어를 바꿔도 목록은 **그대로**이고, **「조회」** 버튼(또는 Enter)을 눌러 **확정한 조건**으로만 **`GET /api/v1/clients/linkage-records`** 를 호출합니다. 필터를 여러 번 고칠 때 **목록이 깜빡이지 않습니다**.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/linkage-records`** · `ClientLinkageRecordsReportPage` |
+| **동작** | **`filters`**(편집 중) vs **`appliedFilters`**(조회 확정) 분리 |
+| **초기 로드** | 페이지 진입 시 **전체 조건(빈 필터)** 으로 1회 조회 |
+
+> 관련: **Q826** · **Q819** · USER_MANUAL §4-7-3b · CHANGELOG 2026-07-15
+
+### Q828. live E2E **bootstrap detail**에 **`:`·공백 패딩**이 있으면? (QA-B95, BE `34d4968`)
+
+**A.** **✅ BE Fixed (Q828)** — health/probe **상세(detail) 문자열**에서 **`bootstrap : disabled`** · **`bootstrap= disabled`** · **`bootstrap:service-unavailable`** 처럼 **콜론(`:`)·등호(`=`)·앞뒤 공백**이 섞여도 bootstrap blocker로 **인식**합니다. **Q821**·**Q824**의 composite·괄호 파싱 **위에** key/value 정규화 레이어입니다. **객체 `code` 형태**는 **Q833** · **URL 인코딩**은 **Q834**. operation gate가 payload **표기 차이**에 흔들리지 않습니다. **현장 앱 화면 영향 없음**.
+
+| 항목 | 내용 |
+|------|------|
+| **함수** | `LiveE2eOperationReadinessSupport.normalizeKeyValueToken` — `:`→`=` · `\\s*([=:])\\s*` 정규화 |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** — colon·padded disabled/service-unavailable regression |
+| **관련** | bracket/quote (**Q824**) · env·boolean (**Q823**) · 억제 opt-in (**Q820**) · object code (**Q833**) · URL encode (**Q834**) |
+
+> 관련: **Q824** · **Q821** · **Q825** · **Q833** · **Q834** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q827. 배포 후 health에 **연계기록지 V196**이 빠지면? (G-LINKAGE-RECORD, BE `9dff00f`)
+
+**A.** **✅ BE Fixed (Q827)** — Flyway **V196**이 적용되면 health/probe에 **`v196ClientLinkageRecordsIntegrityCheckReady=true`** 가 뜹니다. 미적용·PROBE 실패 시 operation blocker **`v196-client-linkage-records-integrity-missing`** 이 생깁니다. **V195**는 지점 리포트 조회 인덱스, **V196**은 기관·요약 **길이 CHECK(200/5000)** · 수급자×지점 **3-way FK** · org/branch 자동 복사 · 퇴소 purge 인덱스입니다. **퇴소 후 신규 작성은 계속 허용**(전원·퇴소 후 연계 업무). **현장 앱 화면 직접 변화는 없고**, IT·배포·live 게이트용입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **health** | **`v196ClientLinkageRecordsIntegrityCheckReady`** |
+| **blocker** | **`v196-client-linkage-records-integrity-missing`** |
+| **DB** | Flyway **V195**(리포트 인덱스) · **V196**(무결성) · 본 테이블은 **V194** |
+| **현장** | 글자 수·지점 정합이 **DB에서도** 한 번 더 거부됨 (**Q822**와 동일 한도) |
+
+> 관련: **Q826** · **Q822** · **Q819** · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q826. **지점 전체** 연계기록지 발송 현황은 어디서 보나요? (G-LINKAGE-RECORD, BE `cdeb6bf` · FE `8b8095a`)
+
+**A.** **✅ BE+FE Fixed (Q826)** — SideNav·이용자 컨텍스트 **「연계기록지 리포트」** → **`/clients/linkage-records`** 입니다. **상태(초안/발송 완료)** · **연계 유형** · **검색어**를 넣고 **「조회」**(**Q829**)하면 활성 지점(본사는 전 지점) 수급자 기록이 표로 나옵니다. **작성·수정·발송은 이용자 상세 「연계기록지」탭**(Q819)에서 합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/linkage-records`** · `ClientLinkageRecordsReportPage` |
+| **메뉴** | SideNav·`ClientsContextNav` **「연계기록지 리포트」** |
+| **필터** | 상태 · 연계 유형(병원/재가/이관) · 검색(기관·요약 등) — **「조회」 확정 후 반영** (**Q829**) |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **API** | **`GET /api/v1/clients/linkage-records`** — `branchId`·`status`·`linkageType`·`q`·`page`·`size` · 행에 **`clientName`** |
+| **DB** | **V195** 지점 프리픽스 인덱스 (핫패스) |
+| **빈 목록** | 「수급자 상세에서 초안을 작성하세요」 안내 |
+
+> 관련: **Q819** · **Q822** · **Q829** · **Q830** · USER_MANUAL §4-7-3b · API_SPEC §4-2 · CHANGELOG 2026-07-15
+
+### Q825. live E2E **operation blocker**가 JSON 배열·괄호로 오면? (QA-B95, FE `9dbdfc5`)
+
+**A.** **✅ FE Fixed (Q825)** — health/state의 **`liveE2eOperationBlockers`**·**`liveE2eEffectiveOperationBlockers`** 가 **`["bootstrap-disabled"]`** 같은 **JSON 배열 문자열**이거나 **`[bootstrap-disabled]`**·**`'staff-bootstrap-not-ready'`**처럼 **괄호·따옴표로 감싼 토큰**이어도 FE 하네스가 **unwrap 후 정규화**합니다. **`none`·`ok`** 는 중립 토큰으로 제외합니다. BE composite detail 파싱(**Q824**)과 **형태를 맞춰** operation gate가 **fail-closed**로 유지됩니다. **현장 앱 화면 영향 없음**.
+
+| 항목 | 내용 |
+|------|------|
+| **함수** | `normalizeLiveOperationBlockers` · `unwrapLiveOperationBlockerToken` |
+| **적용** | `liveBackendProbe.js` · `liveConfig.js` · `liveGlobalSetup.js` |
+| **smoke** | **`liveE2eHarness.test.js`** — bracket/quote·JSON-array regression |
+
+> 관련: **Q824** · **Q821** · **Q820** · **Q817** · DEPLOYMENT §11-3 · CHANGELOG 2026-07-15
+
+### Q824. live E2E **bootstrap blocker**가 괄호·따옴표로 감싸져 있으면? (QA-B95, BE `e7efe02`)
+
+**A.** **✅ BE Fixed (Q824)** — health/probe **상세(detail) 문자열**에서 **`[bootstrap-disabled]`**·**`{bootstrap=service-unavailable}`**·**`'bootstrap-disabled'`**처럼 **괄호·따옴표로 감싼 토큰**도 bootstrap blocker로 **인식**합니다. **Q821**의 공백·쉼표·세미콜론 composite 파싱 **위에** 형태 보강 레이어입니다. operation gate **억제·우선 blocker** 판정이 payload 형태에 흔들리지 않습니다. **현장 사용자 화면에는 영향 없습니다.**
+
+| 항목 | 내용 |
+|------|------|
+| **대상** | `LiveE2eOperationReadinessSupport` — `normalizeDetailToken` · `tokenMatchesBootstrapPrefix` |
+| **래핑** | `[ ]` · `{ }` · `( )` · `"` · `'` — 앞뒤 반복 strip |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** — bracket/quote composite lock |
+
+> 관련: **Q821** · **Q825** · **Q817** · DEPLOYMENT §1-4·§11-3 · CHANGELOG 2026-07-15
+
+### Q823. live E2E **환경변수·health 불리언**이 공백·대문자면 무시되나요? (QA-B95, FE `9b65529`·`33f59a9`)
+
+**A.** **✅ FE Fixed (Q823)** — **아니요.** `LIVE_E2E`·`LIVE_E2E_WRITE`·`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION` 등은 **앞뒤 공백 trim + 소문자** 후 **`1`/`true`** 이면 켭니다 (` True ` · `TRUE` 허용). health readiness 필드도 **`" True "` / `"1"`** 같은 문자열을 **true**로 읽습니다. **현장 앱 화면 영향 없음** — IT·QA live 게이트만.
+
+| 항목 | 내용 |
+|------|------|
+| **env** | `isTruthyLiveFlag` — trim·lower · **`1`/`true`만** truthy |
+| **health** | `liveBackendProbe.toBoolean` — boolean·`1`/`0`·trim string |
+| **관련** | bootstrap 억제 opt-in (**Q820**) · effective gate (**Q817**) |
+
+> 관련: **Q820** · **Q821** · **Q824** · **Q825** · DEPLOYMENT §11-3 · CHANGELOG 2026-07-15
+
+### Q822. 연계기록지 **대상 기관·요약**이 너무 길면? (G-LINKAGE-RECORD, BE `0e66a38` · FE `c59da8f`)
+
+**A.** **✅ BE+FE Fixed (Q822)** — **대상 기관 최대 200자**, **요약(작성일·이용계획 접기 포함) 최대 5000자**입니다. 화면에서 저장 전 막고, 서버는 **DTO `@Size` + 서비스 계층**에서 다시 거부합니다 (`「연계기관은(는) 200자 이하여야 합니다.」` 등).
+
+| 항목 | 내용 |
+|------|------|
+| **FE** | `LINKAGE_TARGET_INSTITUTION_MAX=200` · `LINKAGE_SUMMARY_MAX=5000` · 필드 오류 표시 |
+| **BE** | Create/Update `@Size` · `ClientLinkageRecordService.requireMaxLength` |
+| **편집** | 초안 재편집 시 접기 마커를 **풀어 필드 복원** — 재저장 시 마커 **중복 없음** (**Q819**) |
+
+> 관련: **Q819** · USER_MANUAL §4-7-3b · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q820. live E2E가 **bootstrap 억제**인데도 스위트가 돌까요? (QA-B95, FE `0448efa`·`9b65529`)
+
+**A.** **✅ FE Fixed (Q820)** — **기본은 아니요.** effective operation gate가 초록이어도 **`liveE2eEffectiveOperationSuppressedByBootstrap=true`**(Q817)이면 FE 하네스는 스위트를 **막고**, skip 사유에 **`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1`** 안내를 남깁니다. **의도적으로** bootstrap 꺼진 환경에서 live를 돌릴 때만 env를 **`1`/`true`**(앞뒤 공백·대소문자 무시, **Q823**)로 켭니다.
+
+| 항목 | 내용 |
+|------|------|
+| **기본** | bootstrap 억제 = **live suite skip** (오탐 통과 방지) |
+| **허용** | **`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1`** (또는 `true` · trim·case-insensitive) |
+| **진단** | health/probe **`liveE2eEffectiveOperationSuppressedByBootstrap`** · **`liveE2eSuppressedBootstrapOperationBlockers`** (Q810·Q817) |
+| **현장** | 사용자 앱 화면 **영향 없음** — IT·QA `./scripts/run-live-e2e.sh` 전용 |
+
+> 관련: **Q817** · **Q810** · **Q799** · **Q823** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q819. **연계기록지**(전원·퇴소 후 외부기관 연계)는 어디서 쓰나요? (G-LINKAGE-RECORD, BE `9dff00f` · FE `8b8095a`)
+
+**A.** **✅ BE+FE Fixed (Q819)** — **이용자 관리 → 수급자명 클릭 → 「연계기록지」탭**에서 초안 작성·수정·발송·삭제·해당 수급자 발송 리포트를 처리합니다. 케어포 **1-10 연계기록지** 패리티로 **병원·재가·이관** 3종 유형·**초안(DRAFT)→발송 완료(DISPATCHED)** 워크플로가 동작합니다. **지점 전체 현황**은 SideNav **「연계기록지 리포트」**(**Q826**)입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **작성 화면** | **`/clients/:clientId`** — 탭 **「연계기록지」** · **`ClientLinkageRecordsPanel`** · **초안 관리** 구역 |
+| **지점 리포트** | **`/clients/linkage-records`** — SideNav **「연계기록지 리포트」** (**Q826**) |
+| **작성** | **연계 유형** · **대상 기관**(최대 **200자**) · **작성일** · **심신기능·급여 요약**(필수, 접기 포함 **5000자**) · **퇴소 후 이용계획**(선택) |
+| **저장 계약** | 작성일·이용계획은 BE **`summary`** 필드에 **접기 마커**로 포함 — 초안 재편집 시 **필드 복원** · 한도 **Q822** · DB **V196** CHECK (**Q827**) |
+| **상태** | **초안(DRAFT)** — 수정·삭제 가능 · **발송 완료(DISPATCHED)** — **수정·삭제 불가** |
+| **리포트(이용자)** | 같은 탭 하단 **「연계기록지 발송 리포트」** — 유형·기관·작성일·발송 시각·상태 |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver`·`guardian` 거부** |
+| **API** | **`GET/POST/PATCH/DELETE /api/v1/clients/{clientId}/linkage-records`** · **`POST …/{recordId}/dispatch`** · 지점 **`GET /api/v1/clients/linkage-records`** (**Q826**) |
+| **DB** | Flyway **V194** 테이블 · **V195** 리포트 인덱스 · **V196** 무결성 — 유형 **HOSPITAL\|HOME_CARE\|TRANSFER** |
+
+> 관련: REQUIREMENTS **G-LINKAGE-RECORD** · **Q822** · **Q826** · **Q827** · USER_MANUAL §4-7-3b · API_SPEC §4-2 · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q821. live E2E **bootstrap blocker**가 composite 상세 문자열에서 누락되면? (QA-B95, BE `d271cc3`)
+
+**A.** **✅ BE Fixed (Q821)** — health/probe **상세(detail) 문자열에 여러 필드가 한 줄에 섞여 있어도** `bootstrap-disabled`·`bootstrap-service-unavailable` blocker를 **토큰 단위로 안정 감지**합니다. **공백·쉼표·세미콜론**으로 이어진 composite(`organization=missing,bootstrap=disabled` 등)도 놓치지 않습니다. **괄호·따옴표 래핑**은 **Q824**(BE)·**Q825**(FE)에서 추가 보강합니다. operation gate **억제·우선 blocker** 판정이 흔들리지 않습니다. **현장 사용자 화면에는 영향 없습니다.**
+
+| 항목 | 내용 |
+|------|------|
+| **대상** | `LiveE2eOperationReadinessSupport` — composite details 파싱 (`[\\s,;]+`) |
+| **진단** | **`liveE2eEffectiveOperationSuppressedByBootstrap`** · **`liveE2eSuppressedBootstrapOperationBlockers`** (Q817·Q810) |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** — space·comma·semicolon composite lock |
+
+> 관련: **Q817** · **Q820** · **Q823** · **Q824** · **Q825** · **Q810** · DEPLOYMENT §1-4·§11-3 · CHANGELOG 2026-07-15
+
+### Q818. 방문일정 **월단위 일괄 확정취소**는 어떻게 하나요? (US-V06, G21, BE `d248916` · FE `074b452`)
+
+**A.** **✅ BE+FE Fixed (Q818)** — SideNav **기록 → 방문 일정**(`/visits`)에서 달력 **표시 월**·**계획/청구 탭**을 맞춘 뒤 **「일괄 확정취소 시작」** 을 누릅니다. 이지케어 **일정확정 → 일괄 확정취소** 패리티로 **4자리 확인번호**·**6-cascade 경고** 확인 후 해당 월 **CONFIRMED** 방문일정을 **DRAFT**로 되돌립니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`VisitBatchUnconfirmPanel`** — 확정 건수 StatCard · **연쇄 초기화 경고 6항목** · **확인번호 표시** · Checkbox **경고 확인** · **4자리 입력** |
+| **접근성** | 시작 버튼 **연월·종류 aria-label** · 확인번호 **만료 `<time dateTime>`** · Modal **`aria-busy`** (UXD-178) |
+| **범위** | **visits-only** — 방문일정만 `CONFIRMED→DRAFT`. **청구서·급여명세서·임금대장·퇴직금 데이터는 물리 삭제하지 않음**(재작업 경고만) |
+| **확인번호** | 미리보기 API가 **4-digit challenge** 발급 · **10분 TTL** · **1회 사용(consume-once)** · 불일치·만료 시 **400** — 실패 후 preview 자동 갱신 |
+| **6-cascade** | 본인부담금청구서 · 급여명세서 · 임금대장 · 퇴직금 · 공단명세 재대조 · 직원일정 재안내 — **`cascadeWarningAcknowledged=true` 필수** |
+| **송영 배차** | **별도** — 이동서비스 **루트 상세「확정 취소」**(`TransportUnconfirmModal`, Q163)만 해당. 월단위 API는 **방문일정 전용** |
+| **권한** | **`branch_admin`·`social_worker`** — **`caregiver` 거부** (일괄확정 Q330과 동일) |
+| **API** | **`GET /api/v1/visits/batch-unconfirm-preview?yearMonth=YYYY-MM`** · **`POST /api/v1/visits/batch-unconfirm`** |
+
+> 관련: **Q330** · **Q479** · USER_MANUAL §5-11 · ADMIN_GUIDE §10-12 · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q817. live E2E **effective가 초록인데 bootstrap 억제**인지 어떻게 알 수 있나요? (QA-B95, BE `cf1dada`·`92d74a9`)
+
+**A.** **✅ BE Fixed (Q817)** — **`GET /api/v1/health`** · **`GET /api/v1/system/live-e2e/probe`** 응답에 **`liveE2eEffectiveOperationSuppressedByBootstrap`**(boolean)이 있습니다. **`true`** 이면 effective operation gate가 **bootstrap-disabled/service-unavailable** 때문에 억제된 상태입니다. **`liveE2eSuppressedBootstrapOperationBlockers`**(Q810)와 함께 보면 IT가 「진짜 준비됨」과 「bootstrap만 꺼짐」을 구분합니다. **현장 사용자 화면에는 영향 없습니다.**
+
+| 항목 | 내용 |
+|------|------|
+| **필드** | **`liveE2eEffectiveOperationSuppressedByBootstrap`** · **`liveE2eSuppressedBootstrapOperationBlockers[]`** |
+| **우선 blocker** | bootstrap 문제 시 **파생 readiness 노이즈 억제** — `bootstrap-disabled`·`bootstrap-service-unavailable` 우선 (`92d74a9`) |
+| **smoke** | unenforced 환경 `jq '.liveE2eEffectiveOperationReady,.liveE2eEffectiveOperationSuppressedByBootstrap,.liveE2eSuppressedBootstrapOperationBlockers'` |
+
+> 관련: **Q810** · **Q799** · **Q794** · DEPLOYMENT §1-4·§11-3 · CHANGELOG 2026-07-15
+
+### Q816. 기관 공지 **첨부 링크**는 DB에서도 막나요? (G2, V193 `e108b25`)
+
+**A.** **✅ BE Fixed (Q816)** — **예.** Flyway **V193** 이 `facility_notices.attachment_url` 에 **http://·https:// 접두**와 **500자 이하** CHECK를 추가했습니다. 앱(`FacilityNoticeService`) 검증과 **동일 계약**이며, raw SQL로 `javascript:`·`ftp://` 등을 넣어도 **DB가 거부**합니다. 정상 http(s) 링크는 **기존과 동일**하게 저장됩니다.
+
+| 항목 | 내용 |
+|------|------|
+| **제약** | `chk_facility_notices_attachment_url_format` — NULL 또는 `^https?://` + `length <= 500` |
+| **화면** | 보호자 대상 공지·자료실 UI — 비-http 스킴 **XSS·피싱** 방어 |
+| **앱 검증** | POST/PATCH 시에도 동일 규칙 (**Q807**) |
+
+> 관련: **Q807** · **Q804** · USER_MANUAL §4-7-3a · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q815. 지점을 바꾼 뒤 **가정통신문** 화면 이력이 안 맞으면? (G2, FE `a772736`)
+
+**A.** **✅ FE Fixed (Q815)** — `/clients/home-newsletter` 는 **발송 이력**·**기관 공지 게시판** 조회 시 **현재 활성 지점(`activeBranchId`)** 을 **프로필 지점보다 우선**해 `branchId`를 넘깁니다. 지점 전환 직후에도 **선택한 지점 데이터만** 불러옵니다.
+
+| 항목 | 내용 |
+|------|------|
+| **대상 API** | **`GET …/dispatch-history?branchId=`** · **`GET …/facility-notices?branchId=`** |
+| **우선순위** | `activeBranchId` → `branchId` → `branchIds[0]` |
+| **현장** | 지점 바꾼 뒤 **새로고침 없이** 올바른 지점 목록·이력이 보여야 함 |
+
+> 관련: **Q792** · **Q790** · **Q788** · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-15
+
+### Q814. 기관 공지 **초안**인데 「게시」 시각으로 보이면? (G2, FE `6dbdd99`)
+
+**A.** **✅ FE Fixed (Q814)** — **DRAFT** 행은 목록·상세에서 **「작성」** 시각(`createdAt`)으로, **PUBLISHED** 행은 **「게시」** 시각(`publishedAt`)으로 라벨을 나눕니다. 초안에 게시 시각이 붙어 보이던 혼동을 막습니다.
+
+| 상태 | 표시 라벨 | 시각 필드 |
+|------|----------|----------|
+| **DRAFT** | **작성** | `createdAt` 우선 |
+| **PUBLISHED** | **게시** | `publishedAt` 우선(없으면 `createdAt`) |
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/clients/home-newsletter` 게시판 목록 **「작성/게시 시각」** 열 · 상세 `<time dateTime>` |
+| **a11y** | UXD-177 — 시각 의미를 라벨·`dateTime`으로 연결 |
+
+> 관련: **Q797** · **Q800** · **Q808** · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-15
+
+### Q844. 알림 채널 패널의 **「문자 발송 참고 단가」** 는 실제 청구 금액인가요? (J03, BE+FE `2f578fb`/`a356083`)
+
+**A.** **✅ BE+FE Fixed (Q844)** — **아닙니다.** **`/organization/settings`**·**`/dashboard`** **`NotificationChannelReadinessPanel`** 에 **「문자 발송 참고 단가」** 표가 있습니다. 값은 **앱 푸시 10원 · SMS 20원 · MMS 50원**이며, 경쟁사(이지케어) 문자 단가와의 **운영 비교 안내**용입니다. **Solapi·이통사 실과금과 다를 수 있고**, **본인부담·직원 급여·정산 청구에는 쓰지 않습니다**.
+
+패널은 **`GET /api/v1/notifications/channel-status`** 의 **`dispatchReferenceUnitRates`** 를 **우선** 사용합니다. API 응답이 없거나 유효한 `rates[]` 가 비어 있으면 **FE 정적 fallback**(동일 10·20·50원)을 표시합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **API** | **`GET /api/v1/notifications/channel-status`** — **`dispatchReferenceUnitRates`** (`source`·`note`·`rates[]`) |
+| **화면** | 조직 설정·대시보드 **알림 채널 준비 상태** — **「문자 발송 참고 단가」** 섹션 |
+| **값** | 앱 푸시 **10원** · SMS **20원** · MMS **50원** |
+| **우선순위** | **BE API → FE static fallback** — 화면·서버 parity |
+| **비청구** | Solapi 실과금·센터 청구와 **독립** — 과금·정산 소스 아님 |
+| **권한** | `hq_admin`(조직 설정) · `branch_admin`(대시보드 패널) |
+| **테스트** | **`NotificationChannelReadinessServiceTest`** · **`notificationDispatchUnitRates.test`** · **`NotificationChannelReadinessPanel.test`** |
+
+> 관련: **Q812** · **Q809** · **Q318** · API_SPEC §11-10 · USER_MANUAL §5-5 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q843. 키보드로 **본문으로 건너뛰기**·RFID 발송 **진행 표시**가 있나요? (UXD-180, FE `eb270ae`)
+
+**A.** **✅ FE Fixed (Q843)** — 로그인·앱 화면 상단에 **「본문으로 건너뛰기」** 링크(**`SkipLink`**)가 있습니다. Tab으로 포커스하면 나타나며, Enter로 **SideNav를 건너뛰고 `#main-content`** 로 이동합니다. **`/visits`** RFID 일괄 발송 중에는 **`ProgressBar`** 로 진행 상태를 표시합니다. 로딩 중에는 **`Skeleton`** 플레이스홀더를 사용합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **SkipLink** | `AppShell` · `PublicAuthLayout` — DESIGN_SYSTEM §5-1 |
+| **ProgressBar** | `VisitRfidDiffComparePanel` — kind 13 일괄 발송 중 |
+| **CalendarDayMarker** | 직원 출근 달력 — **색상+텍스트 라벨** 병행 (WCAG 1.4.1) |
+| **테스트** | **`SkipLink.test`** · **`ProgressBar.test`** · **`Skeleton.test`** · **`CalendarDayMarker.test`** |
+
+> 관련: USER_MANUAL §3-2 · DESIGN_SYSTEM §3-11·§3-12 · CHANGELOG 2026-07-15
+
+### Q842. 연계기록지 **지점 리포트**가 100건 넘으면 어떻게 보나요? (G-LINKAGE-RECORD, FE `fd6b996`)
+
+**A.** **✅ FE Fixed (Q842)** — **`/clients/linkage-records`** 에 **페이지 이동**이 있습니다. 표 아래 **「총 N건 · M/T페이지」** 와 **이전/다음** 버튼으로 넘깁니다. **페이지당 100건**이며, **「조회」** 로 필터를 바꾸면 **1페이지로 돌아갑니다** (FAQ **Q829** 조회 확정 규칙 유지).
+
+| 항목 | 내용 |
+|------|------|
+| **API** | `GET /api/v1/clients/linkage-records?page=&size=` — Spring pageable |
+| **화면** | `ClientLinkageRecordsReportPage` — `Pagination` 컴포넌트 |
+| **권한** | `hq_admin`·`branch_admin`·`social_worker` |
+| **테스트** | **`ClientLinkageRecordsReportPage.test`** — 필터 재조회 시 page=1 lock |
+
+> 관련: **Q819** · **Q826** · **Q829** · USER_MANUAL §4-7-3b · CHANGELOG 2026-07-15
+
+### Q841. live E2E **bootstrap blocker**가 `&AMP;#X2D;` 이중 numeric entity면? (QA-B95, BE `89dc0a6`)
+
+**A.** **✅ BE Fixed (Q841)** — health/probe **상세(detail)** 에 **`&AMP;#X2D;bootstrap&#45;disabled`** 처럼 **named `&amp;` 전개 뒤 numeric entity**가 이어져도, **`&amp;` 디코딩 후 numeric decode를 재실행**해 한 패스에서 bootstrap blocker로 **인식**합니다. **Q839** multi-pass·**Q840** 세미콜론 생략 **위에** BE 단일 패스 보강입니다. operation gate가 **이중 인코딩 표기** 때문에 초록으로 잘못 통과하지 않습니다. **현장 앱 화면 영향 없음**.
+
+| 항목 | 내용 |
+|------|------|
+| **함수** | `LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken` — post-`&amp;` numeric re-run |
+| **예** | `&AMP;#X2D;` → `-` · `&AMP;#45;` → `-` |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** — uppercase double-encoded lock |
+| **관련** | **Q839** · **Q840** · **Q837** · DEPLOYMENT §1-4·§11-3 |
+
+> 관련: **Q840** · **Q839** · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q840. live E2E **bootstrap blocker**가 `&#45` 처럼 **세미콜론 없는** HTML entity면? (QA-B95, FE `a5f4098`)
+
+**A.** **✅ FE Fixed (Q840)** — health/probe·알림 **`readinessBlockers`** 에 **`bootstrap&#45-disabled`** · **`&#x2d`** 처럼 **numeric HTML entity 뒤 세미콜론(`;`)이 생략**되어 있어도 디코딩 후 bootstrap blocker로 **인식**합니다. **Q837**·**Q839** 소문자·대소문자 entity **위에** gateway 표기 차이 레이어입니다. **`/organization/settings`**·**`/dashboard`** 알림 패널도 동일 규칙입니다. **현장 앱 화면 영향 없음**(IT·QA gate·알림 패널 blocker 표시).
+
+| 항목 | 내용 |
+|------|------|
+| **패턴** | `&#([xX][0-9a-fA-F]+|[0-9]+)(?:;|(?=[^0-9a-fA-F]))` — 세미콜론 또는 숫자 종료 |
+| **FE** | `liveConfig.js` · `notificationChannelStatus.js` · `liveGlobalSetup.js` |
+| **smoke** | **`notificationChannelStatus.test`** · **`liveE2eHarness.test`** |
+| **관련** | **Q837** · **Q839** · **Q841**(BE) · DEPLOYMENT §1-4·§11-3 |
+
+> 관련: **Q841** · **Q839** · **Q837** · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q839. live E2E **bootstrap blocker**가 대소문자·이중 HTML entity(`&LT;`·`&AMP;#x2d;`)면? (QA-B95, BE `2768252` · FE `c779ca1`)
+
+**A.** **✅ BE+FE Fixed (Q839)** — health/probe **상세(detail)**·**blockers 배열**·알림 **`readinessBlockers`** 에 **`&LT;bootstrap&#45;disabled&GT;`** · **`&QUOT;QUIET_HOURS&AMP;#x2d;ACTIVE&QUOT;`** 처럼 **대소문자 named HTML entity** 또는 **`&AMP;#x2d;`** **이중 인코딩**이 섞여 있어도 **multi-pass entity 디코딩** 후 bootstrap blocker로 **인식**합니다. **Q837** 소문자 entity · **Q836** nested JSON **위에** gateway wrapper 레이어입니다. operation gate가 **프록시·WAF 이중 이스케이프** 때문에 초록으로 잘못 통과하지 않습니다. **현장 앱 화면 영향 없음**(알림 패널은 이중 entity blocker도 표시).
+
+| 항목 | 내용 |
+|------|------|
+| **예** | `operationBlockers=&LT;bootstrap&#45;disabled&GT;` · `&QUOT;guardian&AMP;#x2d;bootstrap&AMP;#x2d;disabled&QUOT;` |
+| **BE** | `LiveE2eOperationReadinessSupport` — `Pattern.CASE_INSENSITIVE` named entity (`2768252`) |
+| **FE** | `notificationChannelStatus.js` · `liveGlobalSetup.js` — **최대 3회** multi-pass decode (`c779ca1`) |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** · **`notificationChannelStatus.test`** · **`liveE2eHarness.test`** |
+
+> 관련: **Q837** · **Q836** · **Q835** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q838. RFID 비교 **발송 후보**가 snake_case·직렬화 문자열이면 화면에 안 보이나요? (G-RFID, BE `556eeff` · FE `e837185`/`e76e631`)
+
+**A.** **✅ BE+FE Fixed (Q838)** — **아니요.** 비교 API **`dispatchCandidates[]`** 가 **`client_id`·`ltc_cert_no`·`tag_row_count`** snake_case이거나 **`dispatch_candidates`** 키·**JSON 문자열**로 와도 **`VisitRfidDiffComparePanel`** 이 후보 체크박스를 표시합니다. 일괄 발송 API body도 **`branch_id`·`year_month`·`client_ids`** snake_case를 BE가 수용합니다. 발송 성공 건수는 **`dispatchedCount`**·**`dispatched_count`** 모두 읽습니다.
+
+| 항목 | 내용 |
+|------|------|
+| **비교 응답** | camelCase · snake_case · 직렬화 `dispatchCandidates` 문자열 |
+| **발송 API** | `POST …/care-provision-dispatch` — `branchId`/`branch_id` · `yearMonth`/`year_month` · `clientIds`/`client_ids` |
+| **거부** | **주야간보호** · **조용한 시간대** · 비활성 이용자 — **Q832**와 동일 |
+| **테스트** | **`VisitRfidDiffComparePanel.test`** · **`VisitControllerRoutingTest`** snake_case dispatch |
+
+> 관련: **Q832** · **Q452** · USER_MANUAL §5-11 · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q837. live E2E **bootstrap blocker**가 HTML entity(`&#45;`·`&lt;`)면? (QA-B95, BE `956c487`/`556eeff` · FE `e76e631`)
+
+**A.** **✅ BE+FE Fixed (Q837)** — health/probe **상세(detail)**·**blockers 배열**·알림 **`readinessBlockers`** 에 **`bootstrap&#45;disabled`** · **`&#x2d;`** · **`&lt;bootstrap-disabled&gt;`** 처럼 **소문자 HTML entity**가 섞여 있어도 **구분자 분리 전 entity 디코딩** 후 bootstrap blocker로 **인식**합니다. **세미콜론 생략(`&#45`)** 은 **Q840** · **대소문자·이중 인코딩(`&LT;`·`&AMP;#x2d;`)** 은 **Q839**·**Q841**. **Q836** nested JSON · **Q834** URL encode · **Q833** object-form **위에** HTML entity 레이어입니다. operation gate가 **웹·프록시 이스케이프** 때문에 초록으로 잘못 통과하지 않습니다. **현장 앱 화면 영향 없음**(알림 패널은 entity blocker도 표시).
+
+| 항목 | 내용 |
+|------|------|
+| **예** | `operationBlockers=bootstrap&#45;disabled` · `&quot;code&quot;:&quot;bootstrap-disabled&quot;` |
+| **BE** | `LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken` — numeric·named entity |
+| **FE** | `liveGlobalSetup.js` · `notificationChannelStatus.js` — split-before-decode |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** · **`liveE2eHarness.test`** · **`notificationChannelStatus.test`** |
+
+> 관련: **Q839** · **Q836** · **Q835** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q836. live E2E **bootstrap blocker**가 중첩 JSON·`\\u002d` 유니코드면? (QA-B95, BE `27de3a3`)
+
+**A.** **✅ BE Fixed (Q836)** — health/probe **상세(detail)** 가 **`operationBlockers={"nested":{"code":"bootstrap\\u002ddisabled"}}`** 처럼 **중첩 JSON**이거나 **유니코드 이스케이프(`\\u002d`→`-`)** 로 감춰져 있어도, Jackson으로 **leaf 토큰을 펼친 뒤** bootstrap blocker로 **인식**합니다. **URL 인코딩된 중첩 JSON**도 동일합니다. **Q834** URL decode · **Q833** object-form **위에** JSON 전개 레이어입니다. operation gate가 **이스케이프 표기** 때문에 초록으로 잘못 통과하지 않습니다. **현장 앱 화면 영향 없음**.
+
+| 항목 | 내용 |
+|------|------|
+| **함수** | `LiveE2eOperationReadinessSupport.expandJsonDetailToken` — Jackson `JsonNode` leaf·`key=value` 전개 |
+| **예** | `bootstrap\\u002ddisabled` · `%7B%22nested%22%3A%7B%22code%22%3A%22…%22%7D%7D` |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** — nested unicode · percent-encoded nested lock |
+| **관련** | URL encode (**Q834**) · object-form (**Q833**) · HTML entity (**Q837**·**Q839**) · `:`·패딩 (**Q828**) · bracket/quote (**Q824**·**Q825**) |
+
+> 관련: **Q837** · **Q834** · **Q833** · **Q828** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q835. **알림 채널 준비 상태** blocker가 `%` 인코딩으로 오면 패널에 안 보이나요? (J03, FE `3fddccd`)
+
+**A.** **✅ FE Fixed (Q835)** — **아니요.** **`GET /api/v1/notifications/channel-status`** 의 **`readinessBlockers[]`** · **`missingTemplateCodes[]`** · 직렬화 **`templates`** 문자열이 **`%7B%22code%22%3A%22…%22%7D`** 처럼 **URL 인코딩**되어 와도 **`normalizeNotificationChannelStatus`** 가 **최대 2회 디코딩** 후 목록으로 펼칩니다. **`/organization/settings`**·**`/dashboard`** **`NotificationChannelReadinessPanel`** 에서 **누락 원인**이 **조용히 사라지지 않습니다**.
+
+| 항목 | 내용 |
+|------|------|
+| **함수** | `decodeCompositePayload` · `normalizeStringList` — `%` 포함 시 `decodeURIComponent` |
+| **대상 필드** | **`readinessBlockers`** · **`missingTemplateCodes`** · **`missingSolapiConfigKeys`** · **`missingEmailConfigKeys`** · 직렬화 **`templates`** |
+| **관련** | API 별칭 (**Q802**) · 비긴급 즉시 발송 (**Q812**) · HTML entity blocker (**Q837**·**Q839**) · object-form live blocker (**Q833**) |
+
+> 관련: **Q802** · **Q812** · USER_MANUAL §5-5 · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q834. live E2E **bootstrap blocker**가 `%` URL 인코딩으로 오면? (QA-B95, BE `7868384`)
+
+**A.** **✅ BE Fixed (Q834)** — health/probe **상세(detail) 토큰**이 **`%7B%22code%22%3A%22bootstrap-disabled%22%7D`** 처럼 **퍼센트 인코딩**되어 있어도 **디코딩 후** bootstrap blocker로 **인식**합니다. **Q833** object-form · **Q828** `:`·패딩 · **Q824** 괄호 파싱 **앞단**에 URL decode 레이어입니다. **중첩 JSON·유니코드**는 **Q836**. operation gate가 **인코딩 표기** 때문에 초록으로 잘못 통과하지 않습니다. **현장 앱 화면 영향 없음**.
+
+| 항목 | 내용 |
+|------|------|
+| **함수** | `LiveE2eOperationReadinessSupport.decodeUrlEncodedDetailToken` — `%`·`+` 포함 시 `URLDecoder.decode(UTF-8)` |
+| **smoke** | **`LiveE2eOperationReadinessSupportTest`** — percent-encoded object·composite regression |
+| **관련** | nested unicode (**Q836**) · HTML entity (**Q837**) · object-form (**Q833**) · `:`·패딩 (**Q828**) · bracket/quote (**Q824**·**Q825**) · 억제 opt-in (**Q820**) |
+
+> 관련: **Q837** · **Q836** · **Q833** · **Q828** · **Q821** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q833. live E2E **blocker**가 `{"code":"bootstrap-disabled"}` 객체로 오면? (QA-B95, BE `79aa377` · FE `2992fa5`)
+
+**A.** **✅ BE+FE Fixed (Q833)** — health/probe **상세(detail)** 또는 **blockers 배열**에 **`{"code":"bootstrap-disabled"}`** · **`{"code":"bootstrap-service-unavailable"}`** 처럼 **객체·직렬화 JSON**이 들어와도 bootstrap blocker로 **인식**합니다. **Q821**·**Q824**·**Q825**·**Q828**·**Q834**의 composite·괄호·배열·`:`·URL decode 파싱 **위에** object `code` 마커 레이어입니다. **중첩·유니코드 이스케이프**는 **Q836**. operation gate가 payload **형태 차이**로 잘못 초록 통과하지 않습니다. **현장 앱 화면 영향 없음**.
+
+| 항목 | 내용 |
+|------|------|
+| **형태 예** | `operationBlockers=[{"code":"bootstrap-disabled"}]` · nested probe object |
+| **동작** | BE `tokenContainsMarker` · FE probe/state **직렬화 object unwrap** |
+| **관련** | nested unicode (**Q836**) · bracket/quote (**Q824**·**Q825**) · `:`·패딩 (**Q828**) · 억제 opt-in (**Q820**) |
+
+> 관련: **Q836** · **Q828** · **Q825** · **Q821** · DEPLOYMENT §1-4·§11-3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q832. RFID↔공단 비교 후 **급여제공내역 문자**를 일괄로 보낼 수 있나요? (G-RFID, BE `c080529`/`556eeff` · FE `5843845`/`e837185`)
+
+**A.** **✅ BE+FE Fixed (Q832·Q838)** — **방문요양** 지점에서 RFID 태그 전송 vs 공단 급여계획 엑셀을 비교한 뒤, **인정번호로 매칭된 활성 수급자**에게 ezCare **message_kind=13「급여제공내역」** 을 **화면에서 일괄** 보낼 수 있습니다 (이지케어 FAQ **21589** · 평가문항 29·월1회 이상).
+
+| 단계 | 내용 |
+|------|------|
+| **1. 비교** | `/visits` **「RFID 계획·태그 비교」** — 엑셀 비교 후 **`dispatchCandidates[]`** (`clientId`/`client_id`·`clientName`·`ltcCertNo`·`tagRowCount`) — **snake_case·직렬화 문자열 수용** (**Q838**) |
+| **2. 화면 발송** | 동일 패널 **「급여제공내역 SMS 일괄 발송」** — 대상 연월 · 이용자 체크(전체 선택/해제) · 요약(선택) → **「급여제공내역 SMS 발송」** |
+| **API** | `POST /api/v1/visits/imports/rfid/care-provision-dispatch` — `branchId`/`branch_id` · `yearMonth`/`year_month`(YYYY-MM) · `clientIds[]`/`client_ids[]`(1+) · `summary`(선택·500자) |
+| **템플릿** | `CARE_PROVISION_RECORD` · **`ezcareMessageKind=13`** — 이용자 상세 **급여제공내역** 단건 발송과 **동일** |
+| **권한** | **`branch_admin`·`social_worker`** · **`caregiver` 거부** |
+| **거부·빈 후보** | **주야간보호 등 비방문요양** · **퇴소·비활성·타 지점** · **22:00~08:00 KST 조용한 시간대**(J03) · 후보 0명이면 info Alert |
+| **단건** | 이용자 상세 **`GuardianDocumentNotifyPanel`** 급여제공내역 — 비교 후보 없이도 가능 |
+
+> 관련: **Q838** · **Q452** · **Q216** · **Q358** · **Q812** · USER_MANUAL §5-11 · API_SPEC §9 Visits · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q831. **직원 급여명세서** 알림톡(kind 22)은 어디서 보내나요? (G-SMS·M11, BE `7de86eb` · FE `5b9656c`)
+
+**A.** **✅ BE+FE Fixed (Q831·Q813)** — ezCare **message_kind=22「급여명세서」** 를 **알림톡**으로 보냅니다. **두 곳**에서 같은 API를 씁니다.
+
+| 경로 | 절차 |
+|------|------|
+| **`/payroll/reports`** (간이지급명세서) | 직원·급여월·기본급·수당·공제 입력 → **「미리보기 계산」** → **「급여명세서 알림톡 발송」** |
+| **`/staff/:id`** (직원 상세) | **「알림톡·SMS 발송」** 패널 → **발송 종류=급여명세서** → 연월·금액 입력 → **「급여명세서 알림톡 발송」** |
+
+| 항목 | 내용 |
+|------|------|
+| **API** | **`POST /api/v1/staff/notifications/staff-payroll-statement`** — `staffUserId` · `yearMonth`(YYYY-MM) · `basePay` · `allowances`/`deductions`(선택) · `summary`(선택·500자) |
+| **계산** | **간이지급명세서 미리보기와 동일** — 서버가 `netPay`·지급/공제 합계를 payload에 담음 |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **지점 스코프** |
+| **거부** | **퇴사·비활성 직원** · **22:00~08:00 KST 조용한 시간대**(J03, Q329·Q812) |
+| **채널** | 알림톡 우선 · 실패 시 **SMS 폴백**(Solapi 설정 필요) |
+| **카탈로그** | **`GET /notifications/template-catalog`** — **`dispatchImplementedCount=7`** · **`STAFF_PAYROLL_STATEMENT`** **`dispatchImplemented=true`** |
+
+> 관련: **Q813** · **Q778** · **Q812** · USER_MANUAL §4-7-0f·§4-7-4 · ADMIN_GUIDE §6-2-24b · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
+### Q813. 템플릿 카탈로그 **「급여명세서」** 는 발송되나요? (G-SMS, BE `7de86eb` · FE `5b9656c`)
+
+**A.** **✅ BE+FE Fixed (Q813·Q831)** — **예.** ezCare **message_kind=22(급여명세서)** 는 **7종 카탈로그 중 마지막 발송 구현**이 완료됐습니다. **`dispatchImplementedCount=7`** · **`STAFF_PAYROLL_STATEMENT`** **`dispatchImplemented=true`**.
+
+| 항목 | 내용 |
+|------|------|
+| **카탈로그** | **7종 등록 · 발송 구현 7/7** |
+| **코드** | `STAFF_PAYROLL_STATEMENT` · channel `ALIMTALK` · **`ezcareMessageKind=22`** |
+| **화면** | **`/payroll/reports`** · **`/staff/:id`** **`StaffNotificationDispatchPanel`** (**Q831**) |
+| **readiness** | **`dispatchReady=true`** 는 Solapi 템플릿·PF ID·발신번호 등 **채널 자격**까지 충족 시에만 |
+
+> 관련: **Q831** · **Q686** · **Q689** · **Q778** · USER_MANUAL §4-7-0f·§4-7-4 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+
+### Q812. 알림 채널 패널에 **「비긴급 SMS 즉시 발송」** 이 보이면? (J03, BE `adaee26` · FE `6b0f2ae`)
+
+**A.** **✅ BE+FE Fixed (Q812·Q809)** — **3채널(알림톡·이메일·SMS)** 모두 **설정 readiness**와 **지금(비긴급) 발송 가능**을 나눠 표시합니다. **`/organization/settings`**·**`/dashboard`** **`NotificationChannelReadinessPanel`** 에 **「비긴급 SMS 즉시 발송」** 배지가 **가능/제한됨**으로 보입니다. **22:00~08:00 KST** 이면 **제한됨** — 알림톡·이메일과 동일 정책입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **API** | **`GET /notifications/channel-status`** — `liveSmsDispatchReady` · `nonEmergencySmsDispatchAvailableNow` |
+| **health** | **`notificationLiveSmsDispatchReady`** · **`notificationNonEmergencySmsDispatchAvailableNow`** |
+| **SMS 의미** | Solapi **알림톡 실패 시 SMS 폴백** 채널 준비 — 별도 「SMS만」 대량 발송 UI는 없음 |
+| **참고 단가** | 같은 패널 **「문자 발송 참고 단가」** — **`dispatchReferenceUnitRates`**(BE 우선·FE fallback) · 앱 10·SMS 20·MMS 50원(청구 아님, **Q844**) |
+| **현장** | 밤에 **제한됨**이면 설정 재작업 불필요 → **08:00 이후** 재확인 |
+
+> 관련: **Q809** · **Q811** · **Q318** · **Q844** · USER_MANUAL §5-5 · ADMIN_GUIDE §10-8 · DEPLOYMENT §4-3 · CHANGELOG 2026-07-15
+
+### Q784. 배포 후 **재무회계 BPO(수지파인)** 준비는 health에서 무엇을 보내나요? (M12, BE `093ac88` · FE `063c269`)
+
+**A.** **✅ BE+FE Fixed (Q784)** — **`GET /api/v1/health`** 에 **재무회계 BPO readiness** 필드가 있습니다. **IT·배포**는 curl로 확인하고, **센터장·사회복지사**는 **`/accounting`** 카드의 **운영 준비** 줄에서도 같은 상태를 봅니다 (Q785).
+
+| 항목 | 내용 |
+|------|------|
+| **필드** | **`accountingBpoCatalogAvailable`** · **`accountingBpoPortalLaunchReady`** · **`accountingBpoSsoReady`** · **`accountingBpoSsoAvailability`** · **`accountingBpoReadinessBlockers[]`** |
+| **blocker 예** | **`sso-otp-credentials-missing`** — 기관 SSO env 미설정 · 서비스 오류 시 `accounting-bpo-status-error` |
+| **의미(기본)** | **`portalLaunchReady=true`** — 공개 로그인 가능 · **`ssoReady=false`** — SSO 자격 없음 |
+| **의미(자격 설정 후)** | **`ssoReady=true`** · **`ssoAvailability=AVAILABLE`** · blockers 비움 (Q787) |
+| **smoke** | `curl -s …/api/v1/health \| jq '.accountingBpoPortalLaunchReady,.accountingBpoSsoReady,.accountingBpoReadinessBlockers'` |
+
+> 관련: Q782 · Q785 · **Q787** · Q783 · ADMIN_GUIDE §6-2-24g · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+### Q783. 배포 후 **알림톡·이메일 live 발송** 준비는 health에서 무엇을 보나요? (J03, BE `ec7c6cb`)
+
+**A.** **✅ BE Fixed (Q783)** — **`GET /api/v1/health`** 에 **알림 채널 readiness** 필드가 추가되었습니다. Solapi·SMTP 설정이 비어 있으면 **blocker 코드**로 드러납니다. **현장 UI 변화 없음** — **IT·배포 검증**용입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **필드** | **`notificationLiveAlimtalkDispatchReady`** · **`notificationLiveEmailDispatchReady`** · **`notificationReadinessBlockers[]`** |
+| **blocker 예** | `missing-solapi-config` · `missing-smtp-config` · `channel-status-unavailable` |
+| **복구** | DEPLOYMENT §4-3·§4-6 — **`NOTIFICATION_PROVIDER`** · **`SMTP_*`** 설정 후 health 재조회 |
+| **smoke** | `curl -s …/api/v1/health \| jq '.notificationLiveAlimtalkDispatchReady,.notificationReadinessBlockers'` |
+
+> 관련: Q697 · Q699 · ADMIN_GUIDE §1-4 · DEPLOYMENT §4-3 · CHANGELOG 2026-07-14
+
+### Q776. **기능회복훈련**과 **목욕 청구 준수** 화면을 오가는 링크가 있나요? (G17, FE `bc9389d` · BE `bd901c4`)
+
+**A.** **✅ BE+FE Fixed (Q776)** — **예.** 두 화면이 **`scopeNote`** 와 **deep-link** 로 서로 안내합니다.
+
+| 출발 화면 | 링크·안내 |
+|----------|----------|
+| **`/care/bathing-schedules`** | **`scopeNote`** + **「기능회복훈련(평가지표 27)로 이동」** |
+| **`/programs/functional-recovery`** | **`scopeNote`** + **「목욕 청구 준수(G-BATHING) 보기」** |
+
+> 관련: Q773 · Q774 · Q705 · Q567 · USER_MANUAL §5-26·기능회복훈련 · CHANGELOG 2026-07-14
+
+### Q777. **금일 배차 제외** 이용자 명단 행이 다른 잠금 행과 어떻게 다르게 보이나요? (UXD-173, FE `9578aa3`)
+
+**A.** **✅ FE Fixed (Q777)** — **`/transport/runs/new`** · **「명단에서 추가」** 에서 **금일 배차 제외** 이용자 행에 **경고 톤 배경·테두리**가 적용됩니다. **「금일 배차 제외」** Badge가 주 신호입니다 (Q767).
+
+> 관련: Q767 · Q766 · Q763 · USER_MANUAL §5-8 · CHANGELOG 2026-07-14
+
+### Q764. 배포 후 **송영표·금일 배차 제외**가 깨지면 health에서 무엇을 보나요? (V186–V190, BE `ac59458`)
+
+**A.** **✅ BE Fixed (Q764·Q771·Q786)** — Flyway **V186–V190** 컬럼·제약이 빠지면 `GET /api/v1/health` 가 **운영 준비 blocker**로 드러냅니다. 현장 UI 변화는 없고, **IT·배포 검증**용입니다. **스키마(V189)** 와 **무결성(V190)** 은 **별도 필드**입니다 (Q786).
+
+| 항목 | 내용 |
+|------|------|
+| **필드** | **`v189TransportShuttleSchemaCheckReady`** · **`v190TransportShuttleIntegrityCheckReady`** — **둘 다 `true`** |
+| **blocker** | **`v189-transport-shuttle-schema-missing`** · **`v190-transport-shuttle-integrity-missing`** |
+| **검사 대상** | V186–V189 스키마 + V190 nonempty/flags/FK (Q771) |
+| **복구** | 앱 기동·`mvn flyway:migrate` 로 **V186–V190** 적용 후 health 재조회 |
+
+| smoke | `curl -s …/api/v1/health \| jq '.v189TransportShuttleSchemaCheckReady,.v190TransportShuttleIntegrityCheckReady,.liveE2eOperationBlockers'` |
+| 관련 위생 | **V185** 유사 필드 **`v185SafetyCheckRecordsIntegrityCheckReady`** · blocker **`v185-safety-check-records-constraint-missing`** (Q751) |
+
+> 관련: Q762 · Q763 · Q765 · Q771 · **Q786** · DEPLOYMENT §1-4 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-14
+
+### Q765. live E2E에서 **이동·위생 스키마 blocker**가 있으면 전체가 멈추나요? (QA-B95, FE `e48db91`)
+
+**A.** **✅ FE Fixed (Q765)** — **아니요.** V189(이동)·V185(위생) blocker는 **해당 live 스위트만** 건너뛰도록 범위가 분리되었습니다. 직원·청구 등 **무관한 live 스위트는 계속 실행**됩니다.
+
+| 스위트 | 게이트 옵션 | blocker 예 |
+|--------|-------------|------------|
+| **이동 live** (`transportLiveApi.e2e`) | **`requireTransportShuttleReady`** | `v189-transport-shuttle-schema-missing` |
+| **위생 live** (`safetyCheckLiveApi.e2e`) | **`requireSafetyCheckReady`** | `v185-safety-check-records-constraint-missing` |
+| **그 외**(직원·일반) | 위 두 옵션 **off** | 해당 schema blocker **필터(무시)** |
+
+| 운영 팁 | 내용 |
+|---------|------|
+| 배포 직후 | health에서 **V189/V185 ready=true** 확인 후 이동·위생 live를 돌리면 skip 최소화 (Q764) |
+| 단위 테스트 | **`TransportPage.test`** — 금일 배차 제외 토글 회귀 잠금 · 월 경계 fixture는 **현재 달** 기준 (`BillingPage`·`VisitsPage` 등) |
+
+> 관련: Q764 · Q751 · Q753 · DEPLOYMENT §11-3 · CHANGELOG 2026-07-13
+
+### Q762. 이동서비스 **송영표**는 어디서 보나요? (v1.3-C, FE `d873894`)
+
+**A.** **✅ FE+BE Full-stack Fixed (Q762)** — **`/transport/shuttle-sheet`** 에서 당일 **승차/하차** 운행을 **차량별 열 · 출발 회차 · 탑승자 정차 순**으로 한 화면에 표시합니다. **`TransportContextNav` → 「송영표」** 또는 배차 화면에서 이동합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **경로** | `/transport/shuttle-sheet?runDate=YYYY-MM-DD&direction=PICKUP\|DROPOFF` |
+| **조회 조건** | **운행일** `DateInput` · **운행 방향** segmented control · **`BranchScopeNotice`** |
+| **데이터** | `GET /api/v1/transport/roster` + `GET /api/v1/transport/runs` + 확정·DRAFT 루트별 `GET …/runs/{runId}` 상세(경로 legs 병렬) |
+| **표시** | **`TransportShuttleScheduleView`** — 차량 열마다 **N회 운행** · 각 회차 **출발 시각·N차** · 탑승자 카드(이름·반영도착·지연) · **미배정** 이용자 목록 |
+| **권한** | **`hq_admin`** — DRAFT+CONFIRMED 루트 모두 · **그 외 직원** — **CONFIRMED** 만 |
+
+| 운영 팁 | 내용 |
+|---------|------|
+| 인쇄·현장 배부 | 송영표는 **조회 전용** — 배차 수정은 **`/transport`** · 루트 상세에서 수행 |
+| 회차 표시 | 루트에 **`departureRound`** 가 있으면 **「1차」「2차」** 로 표시 (Q763) |
+| 루트 이동 | 각 회차 카드 **「루트 보기」** → `/transport/runs/{runId}` |
+
+> 관련: Q763 · Q159 · USER_MANUAL §5-8 · CHANGELOG 2026-07-13
+
+### Q763. **금일 배차 제외**·**출발 회차**·차량 **송영 주소**는 어떻게 쓰나요? (BE `2b3f3d9` · FE `175c570`)
+
+**A.** **✅ FE+BE Full-stack Fixed (Q763)** — 당일 승차 명단에서 **미이용 이용자를 제외**하고, 같은 차량으로 **다회차 출발**을 저장하며, 차량별 **송영 시작/종료 정류장 주소**를 등록할 수 있습니다. **역할·저장 계약은 회귀 테스트로 고정**되어 있습니다. **제외 우회 차단·전원 제외 안내**는 **Q766·Q767**. **DB 무결성**은 **Q768 (V190)**.
+
+#### 금일 배차 제외 (승차 명단)
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/transport` — **승차(PICKUP)** 방향 · **`hq_admin`·`branch_admin` only** |
+| **열** | 명단 테이블 **「금일 배차 제외」** 체크박스 |
+| **API** | `PATCH /api/v1/transport/roster/{clientId}/day-status` — `{ runDate, direction, absentToday, skipDispatch }` |
+| **권한** | **`hq_admin`·`branch_admin` → 200** · **`caregiver`·`social_worker`·`guardian` → 403** (RBAC lock) |
+| **동작** | UI는 두 플래그를 **동시에** on/off · **자동 배차 제안**에서 **제외** · **수동 UI 잠금+create/update/confirm 거부** (Q766·Q767) · roster 응답 `absentToday`·`skipDispatch` 반영 · **해제(false)** 시 행 clear |
+| **DB** | Flyway **V188/V189** · **V190** flags synced CHECK (Q768) · 배포 후 **Q764** health 확인 |
+
+#### 출발 회차 (같은 차량·같은 날 2·3차)
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/transport/runs/new` — optional **「출발 회차」** · 송영표·운행 목록에 **N차** 표시 |
+| **API** | `POST /api/v1/transport/runs` — optional `departureRound` · **생략 시** 해당 차량·일자·방향의 **다음 회차(1,2,3…)** 자동 |
+| **DB** | Flyway **V186** — `transport_runs.departure_round` · 차량·일자·방향·회차 **UK** |
+
+#### 차량 송영 시작/종료 주소
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/transport/vehicles` — 등록·수정 Modal **「송영 시작 주소」** · **「송영 종료 주소」** |
+| **API** | `POST/PATCH /api/v1/transport/vehicles` — `shuttleStartAddress`·`shuttleEndAddress` · **미입력·공백만** 시 **지점(센터) 주소** · **연속 공백은 한 칸으로** 정규화 (Q768·Q770) |
+| **DB** | Flyway **V187** 컬럼 · **V190** nonempty CHECK (NULL 허용, 공백 거부) · health **9건** (Q771) |
+
+> 관련: Q766 · Q767 · Q768 · Q769 · Q770 · Q771 · Q762 · Q764 · Q765 · Q159 · Q241 · USER_MANUAL §5-8·§5-8-4 · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-4
+
+### Q761. 위생·안전 **최근 기록 「결과」열**은 어떻게 표시되나요? (US-Q01, FE `2704fd8`)
+
+**A.** **✅ FE Fixed (UXD/US-Q01, Q761)** — 일일·정기점검 화면 하단 **최근 기록** 테이블의 「결과」열이 **`StatusBadge` + `SAFETY_CHECK_RESULT`** 로 **한국어 라벨**을 표시합니다. 체크리스트 폼 상단 요약과 **동일 토큰**을 사용합니다 — **색상만으로 의미 전달하지 않습니다** (WCAG 1.4.1).
+
+| 서버 `resultCode` | 화면 표시 | 뱃지 톤 |
+|-------------------|-----------|---------|
+| **`PASS`** | **적합** | success |
+| **`FAIL`** | **부적합** | danger |
+| **`NA`** | **해당 없음** | neutral |
+| **`PARTIAL`** | **일부 미흡** | warning |
+
+| 화면 | 경로 | 비고 |
+|------|------|------|
+| 일일점검 | `/safety/daily-checks` | `SafetyRecentDraftsPanel` 「결과」 column |
+| 정기점검 | `/safety/periodic-checks` | 동일 — **`subFormCode`** 열은 별도 |
+
+| 이전 동작 | 서버 enum(`PASS`/`FAIL` 등) **영문 코드 그대로** 노출 — 현장 혼동 |
+| 현재 | **`SafetyChecklistForm`** 요약 뱃지와 **동일 copy** · raw code **미노출** |
+| 테스트 | **`SafetyDailyChecksPage.test.jsx`** · **`SafetyPeriodicChecksPage.test.jsx`** — localized label·raw code absent |
+
+> 관련: Q745 · Q760 · USER_MANUAL §5-9 · CHANGELOG 2026-07-13
+
+### Q751. **V185**에서 `safety_check_records` DB 무결성이 어떻게 강화되었나요? (US-Q01, BE `7a9ed71`)
+
+**A.** **✅ BE Fixed (`7a9ed71`, V185, Q751)** — V184 테이블에 **앱 단 검증만** 있던 3가지 불변식을 **DB CHECK** 로 미러합니다. **기존 적재 0건** — backfill 불요 · **현장 UI 변화 없음**.
+
+| CHECK | 규칙 |
+|-------|------|
+| **`chk_safety_check_records_payload_json_object`** | **`payload_json`** = JSONB **object** (scalar/array 거부) |
+| **`chk_safety_check_records_sub_form_code_shape`** | **`PERIODIC`** → **`sub_form_code`** 6-enum 필수 · **비-PERIODIC** → **NULL** |
+| **`chk_safety_check_records_result_code_shape`** | **`DAILY`/`PERIODIC`** → **`result_code` NOT NULL** · **`INFECTION`/`OPERATION`** → **NULL** |
+
+| 배포 | Flyway **V185** 자동 적용 — **`mvn flyway:migrate`** 또는 앱 기동 시 migrate |
+| smoke | `SELECT conname FROM pg_constraint WHERE conrelid='safety_check_records'::regclass AND conname LIKE 'chk_safety_check_records_%'` → **3건** |
+
+> 관련: Q745 · Q750 · ADMIN_GUIDE §1-4 · DEPLOYMENT §1-4 · CHANGELOG 400차 · **V184**
+
+### Q752. live E2E fee seed가 **401/403**이면 어떤 힌트가 나오나요? (QA-B355 deepen, FE `dd5571d`)
+
+**A.** **✅ FE Fixed (`dd5571d`·`6dcf7d1`, Q752, Q749 deepen)** — **`ensureLiveFeeSchedules`** 가 **`apply-nhis-seeds`** 호출 전·후 **actionable reason**을 **`feeScheduleSeedReason`** 에 기록합니다.
+
+| 상황 | `feeScheduleSeedReason` (예) |
+|------|------------------------------|
+| **base URL 없음 (`6dcf7d1`)** | `live API base URL missing — set VITE_API_BASE / LIVE_API_BASE or pass baseUrl explicitly` |
+| **network error (`6dcf7d1`)** | `apply-nhis-seeds network error: …` |
+| **401** | `apply-nhis-seeds unauthorized (HTTP 401): … — provide a valid hq_admin LIVE_E2E_ACCESS_TOKEN` |
+| **403** | `apply-nhis-seeds unauthorized (HTTP 403): …` |
+| **404** | `apply-nhis-seeds endpoint missing (404) — deploy billing seed API or set LIVE_E2E_SKIP_FEE_SEED=1` |
+| **422 (미지원 year, Q747)** | `apply-nhis-seeds HTTP 422: 2027년 수가 seed는 지원하지 않습니다. …` |
+
+| IT 조치 | **`scripts/dev-live-e2e.env`** — **`LIVE_E2E_ACCESS_TOKEN`** 또는 staff login creds가 **`hq_admin`** · **`VITE_API_BASE`/`LIVE_API_BASE`** 설정 · **`year=2026`** only |
+| 테스트 | **`liveFeeScheduleSeed.test.js`** — auth hint · **missing base URL** · **network failure** skip reason lock |
+
+> 관련: Q749 · Q747 · DEPLOYMENT §11-3 · CHANGELOG 403차
+
+### Q753. live E2E에서 **M6 위생·안전 API**를 어떻게 검증하나요? (US-Q01, FE `bf9b4b1`)
+
+**A.** **✅ FE Fixed (`bf9b4b1`, Q753)** — **`safetyCheckLiveApi.e2e.test.js`** 가 bootstrap-enabled staging/live backend에 대해 **template catalog + 4 list endpoint** smoke를 실행합니다.
+
+| 테스트 | 검증 |
+|--------|------|
+| **template catalog** | **`fetchSafetyCheckTemplateCatalogApi()`** — **`dailyItems`·`periodicSubForms`·`infectionSymptoms`·`infectionActions`** 배열 · **401 아님** |
+| **4 list endpoints** | **`fetchSafetyDailyChecksApi`** · **`fetchSafetyPeriodicChecksApi`** · **`fetchSafetyInfectionLogsApi`** · **`fetchSafetyOperationLogsApi`** — **`records[]`** · **401/403 아님** |
+
+| 전제 | **`LIVE_E2E=1`** · staff session (**`establishLiveSession`**) · optional **`branchId`** from active branch |
+| skip | bootstrap-disabled · auth missing 시 **`liveDescribe`** skip — **Must 현장 기능 갭 아님** |
+
+> 관련: Q745 · Q750 · DEPLOYMENT §11-3 · CHANGELOG 400차
+
+### Q736. live E2E harness가 **G21 seed 3축 component status code**를 FE에서 어떻게 쓰나요? (QA-B95, FE `3eebddb`)
+
+**A.** **✅ FE Fixed (`3eebddb`, QA-B95, Q733 deepen)** — BE **`59e4e7f`** 가 노출한 **`liveE2eVisitScheduleStatusCode`·`liveE2eBillingVisitScheduleStatusCode`·`liveE2eNhisImportStatusCode`** 를 **`liveBackendProbe.js`·`liveConfig.js`·`liveGlobalSetup.js`** 가 parse·persist합니다. aggregate **`liveE2eG21SeedStatusCode`**(`6009ba7`)와 **병행**해 **어느 seed 축이 missing인지** skip reason에 반영합니다.
+
+| 모듈 | 변경 |
+|------|------|
+| **`liveBackendProbe.js`** | health/probe 3축 code parse → **`.live-backend-state.json`** persist |
+| **`liveConfig.js`** | **`getLiveG21ComponentStatusCodes()`** · **`buildG21ComponentReadinessReasons()`** — **`missing` → component-specific skip** |
+| **`liveGlobalSetup.js`** | probe state에 3축 code 포함 |
+| **`liveE2eHarness.test.js`** | component code present 시 **`visit schedule status code: missing`** 등 reason assert |
+
+| component code | **`requireG21Ready=true`** harness |
+|----------------|-------------------------------------|
+| **`present`** | 해당 축 **ready** — skip reason 없음 |
+| **`missing`** | **`visit-schedule-missing`** · **`billing-visit-schedule-missing`** · **`nhis-import-missing`** (aggregate와 동일 blocker) |
+| **`disabled`·`service-unavailable`·`not-applicable`** | aggregate code와 **동일** — general suite **`requireG21Ready=false`** 시 필터 (Q730) |
+
+**IT 조치**: component code가 health에 있는데 skip reason이 detail substring만이면 **`3eebddb` 미반영 FE** · **`liveE2eHarness.test`** — component code reason 회귀 확인.
+
+> 관련: Q733 · Q732 · Q729 · DEPLOYMENT §11-3 · CHANGELOG 387차
+
+### Q737. live E2E에서 **G21 seed status가 null**이면 health/probe가 어떻게 동작하나요? (QA-B95, BE `1c7064d`)
+
+**A.** **✅ BE Fixed (`1c7064d`, QA-B95, Q733 cluster)** — **`normalizeG21SeedStatus`** 가 null·blank aggregate status를 **`applicable` + component `missing`** 으로 정규화합니다. health/probe **500·불일치 component code** 대신 **일관된 triage code**를 노출합니다.
+
+| 입력 | 정규화 결과 |
+|------|------------|
+| aggregate **`g21SeedStatusCode=null`** (applicable branch) | **`applicable`** · component codes **`missing`** |
+| bootstrap disabled | aggregate·component 모두 **`disabled`** (기존과 동일) |
+
+| 테스트 | **`LiveE2eOperationReadinessSupportTest`** — null normalize · **`LiveE2eControllerTest`** — probe component codes assert |
+
+> 관련: Q733 · Q729 · DEPLOYMENT §11-3 · CHANGELOG 387차
+
+### Q734. **급여제공 변경계약서 일괄 출력** FE에서 **`branchId`·`clientIds`가 정규화**되나요? (G-CLIENT-CONTRACT-BULK-PRINT, FE `d759ade`)
+
+**A.** **✅ FE Fixed (`d759ade`, G-CLIENT-CONTRACT-BULK-PRINT, Q726 deepen)** — **`ClientCarePlanBulkExportPanel`** 이 API 요청 전에 **지점 ID trim** · **이용자 ID dedupe** 를 수행합니다. G38 compliance 목록에서 **앞뒤 공백·중복 UUID**가 전달되어도 **`exportClientCarePlanFormsBulkApi`** 에는 **정규화된 값**만 전송됩니다.
+
+| 입력 | FE 처리 | API 전송 |
+|------|---------|----------|
+| **`branchId="  uuid  "`** | **`String(branchId).trim()`** | **`branchId=uuid`** (또는 빈 문자열이면 생략) |
+| **`clientId=" client-1 "` + `"client-1"` 중복** | **`clientOptions` Map dedupe** — 첫 항목만 표시 | **`clientIds=["client-1"]`** |
+| **공백만 ID (`"   "`)** | 목록에서 **제외** | 전송 안 함 |
+| **「지점 전체 출력」 체크** | — | **`clientIds` 생략(`undefined`)** |
+
+**현장**: 화면 동작은 동일합니다 — **「일괄 다운로드」** 전에 FE가 자동 정리하므로 **Swagger 없이** 사용해도 됩니다. 여전히 **`404`「해당 연도 급여제공계획서가 없습니다.」** 는 **해당 연도 계획서 미저장**일 때 발생합니다 (Q726).
+
+| 테스트 | **`ClientCarePlanBulkExportPanel.test`** — **`normalizes branchId and deduplicates whitespace client ids before export`** · **5/5 PASS** |
+
+> 관련: Q726 · USER_MANUAL §3-3 · ADMIN_GUIDE §6-2-2a · DEPLOYMENT §1-4 · CHANGELOG 386~387차 · **V183 index** (`547c85f`)
+
+### Q728. **위원회·보호자 회의록** 화면 a11y(UXD-166)는 무엇이 바뀌었나요? (FE `4e574ce`)
+
+**A.** **✅ FE Fixed (`4e574ce`, UXD-166, Q723 deepen)** — **`StaffCommitteeMeetingPage`** 의 **회의 유형 FilterChips** 를 일회성 **`.ds-button-group`** 에서 디자인 시스템 **`.ds-segmented`** 로 전환하고, 목록 **회의일**을 **`<time dateTime="YYYY-MM-DD">`** 로 표시합니다. **CRUD·확정·출력 동작은 동일**합니다.
+
+| 변경 | 내용 |
+|------|------|
+| **유형 선택** | **`.ds-segmented`** — **`BillingReportPage`** 와 동일 segmented 패턴 |
+| **회의일** | **`<time dateTime>`** — WCAG **1.3.1** 기계 판독 가능 날짜 |
+| **CSS FE-16** | **`.ds-page-section`·`.ds-form-grid--inline`** — Staff HR 5화면 inline 정의 → **`components.css`** 단일 출처 |
+
+> 관련: Q723 · USER_MANUAL §4-7-0d · CHANGELOG 381차
+
+### Q724. **이동서비스비 parity rules** 패널이 **빈 catalog**일 때 어떻게 표시되나요? (G16, FE `8ed60cb`)
+
+**A.** **✅ FE Fixed (`8ed60cb`, G16 NHIS #44 deepen, Q703)** — **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** 응답 **`rules: []`**(로딩 완료·오류 없음)이면 **섹션 전체를 렌더하지 않습니다** (`return null`).
+
+| 상황 | UI |
+|------|-----|
+| **`rules` 4건** | **「이동서비스비 NHIS 기준 규칙」** heading + `<dl>` 목록 |
+| **`rules: []`** | **패널 미표시** — 빈 heading·빈 목록 **제거** (`8ed60cb`) |
+| **API 오류** | danger Alert + **`STATIC_PARITY_RULES`** 4-rule fallback **유지** (Q703) |
+| **로딩 중** | Spinner — **`aria-busy`** |
+
+> **운영**: 정상 BE는 **`totalCount=4`** — 빈 catalog는 **stub/미배포 환경** 또는 **RBAC 403 후 FE mock** 점검 시나리오. **`/transport/service-fees`** 수가표·청구 기능은 **패널 유무와 무관**합니다.
+
+> 관련: Q703 · Q710 · USER_MANUAL §5-8-1 · DEPLOYMENT §1-4 · CHANGELOG 379차
 
 ### [TWR] Q299. CMS 자동이체 **해지**는 어떻게 하나요?
 
@@ -4621,7 +6742,9 @@ Authorization: Bearer <branch_admin JWT>
 
 > **주의**: 시드는 **누락 셀만** 채웁니다. 이미 다른 금액이 등록된 셀은 **덮어쓰지 않습니다**. 개정 수가는 **수정 모달** 또는 Swagger로 forward-only 적용 (Q48).
 
-> 관련: Q91 · Q210 · Q211 · USER_MANUAL §5-4
+> **연도 제한 (Q747, BE `1f2803c`)**: seed API·UI는 **`Nhis2026DaycareRateCatalog` = 2026년 catalog만** 지원합니다. **`?year=2027`** 등 미지원 연도는 **`422`** — 「공단 수가 seed는 2026년 기준만 지원합니다.」 (Swagger·live E2E fail-fast).
+
+> 관련: Q91 · Q210 · Q211 · Q747 · USER_MANUAL §5-4
 
 ### Q215. CMS 출금 시 「이용자 단건 청구서에서만」 오류가 나요.
 
@@ -4655,19 +6778,20 @@ Authorization: Bearer <branch_admin JWT>
 
 ### Q217. 가정통신문을 보호자에게 **이메일**로 보낼 수 있나요?
 
-**A.** **Fixed (BE `f77a268` + FE `d1149a5`, G2, Q517)** — **`POST /api/v1/clients/{clientId}/notifications/home-newsletter`** 로 **가정통신문** 이메일을 dispatch합니다. **`/clients/:id` → 기본정보** 탭 **`GuardianDocumentNotifyPanel`** 에서 **문서 유형「가정통신문」** 을 선택해 발송합니다 (케어포 10-2 패리티).
+**A.** **Fixed (BE `f77a268` + FE `d1149a5` · deepen `0210aaa`/`82a83e3`, G2, Q517·**Q788**)** — **`POST /api/v1/clients/{clientId}/notifications/home-newsletter`** 로 **가정통신문** 이메일을 dispatch합니다. **`/clients/:id` → 기본정보** 탭 **`GuardianDocumentNotifyPanel`** 에서 **문서 유형「가정통신문」** 을 선택해 발송합니다 (케어포 10-2 패리티). **준비 상태·작성 미리보기·서버 DRAFT·기관 공지 게시판·발송 이력(필터)**은 **`/clients/home-newsletter`** 에서 봅니다 (**Q788**·**Q795**~**Q798**).
 
 | 항목 | 내용 |
 |------|------|
-| 화면 | **`GuardianDocumentNotifyPanel`** — **문서 유형 `Select`** — **가정통신문** · 대상 연월 · 요약(선택) |
-| 권한 | `branch_admin`, `social_worker` |
+| 발송 화면 | **`GuardianDocumentNotifyPanel`** — **문서 유형 `Select`** — **가정통신문** · 대상 연월 · 요약(선택) |
+| 진입·이력 화면 | **`/clients/home-newsletter`** — launch · 미리보기 · DRAFT·기관 공지 · 지점별 발송 이력·필터 (**Q788**·**Q795**·**Q797**) |
+| 권한 | 발송·이력: `branch_admin`, `social_worker` (+ `hq_admin` 이력/진입) |
 | 요청 | `{ "yearMonth": "YYYY-MM", "summary": "통신문 본문 요약" }` |
 | 템플릿 | `HOME_NEWSLETTER` — subject **`[ogada] 가정통신문 안내`** |
 | 본문 | 센터명·이용자명·연월·요약 |
-| 전제 | Q204와 동일 — email preference·등록 이메일 |
-| DB | **신규 마이그레이션 없음** — 기존 `notifications` 테이블·1년 보존 정책 (DATA_RETENTION_POLICY §4-1) |
+| 전제 | Q204와 동일 — email preference·등록 이메일 · live는 SMTP readiness (**Q789**) |
+| DB | **V191** 이력 조회 인덱스 추가(컬럼/테이블 신설 없음) — 기존 `notifications` · 1년 보존 (DATA_RETENTION_POLICY §4-1) |
 
-> 관련: Q204 · Q216 · Q517 · USER_MANUAL §4-7-3 · ADMIN_GUIDE §10-9
+> 관련: Q204 · Q216 · Q517 · **Q788** · **Q789** · **Q795** · **Q796** · USER_MANUAL §4-7-3·§4-7-3a · ADMIN_GUIDE §10-9
 
 ### Q218. 입금 처리에서 **0원·과납**을 입력하면 어떻게 되나요?
 
@@ -6466,8 +8590,8 @@ Authorization: Bearer <branch_admin JWT>
 |------|------|
 | BE catalog | **`Nhis2026DaycareRateCatalog`** — longterm.or.kr 502 표② 인지지원등급 행 (MOHW 제2025-247호) |
 | DB | **Flyway V99** — **`ltc_grade` CHECK 0–5** (`edd2771`) |
-| seed payloads | **`GET /api/v1/billing/fee-schedules/nhis-seed-payloads?year=`** — 미등록 셀 NHIS 참조 payload 목록 |
-| bulk seed | **`POST /api/v1/billing/fee-schedules/apply-nhis-seeds?year=`** — 미등록 **표준+인지지원** 셀 **일괄 등록** (`edd2771`) — UI는 셀별 `POST` 반복과 동일 결과 |
+| seed payloads | **`GET /api/v1/billing/fee-schedules/nhis-seed-payloads?year=`** — 미등록 셀 NHIS 참조 payload 목록 · **`year=2026`만** · 미지원 연도 **`422`** (Q747, `1f2803c`) |
+| bulk seed | **`POST /api/v1/billing/fee-schedules/apply-nhis-seeds?year=`** — 미등록 **표준+인지지원** 셀 **일괄 등록** (`edd2771`) — UI는 셀별 `POST` 반복과 동일 결과 · **`year=2026`만** (Q747) |
 | year-coverage | **`cognitiveRegistered`·`cognitiveExpected`(5)·`cognitiveComplete`** — 표준 25칸과 **분리 집계** |
 | FE matrix | **`FeeScheduleMatrix`** — **6행**(1~5등급 + 인지지원) × 5밴드 = **30칸** · **「공단 2026 수가 시드 (N건)」** |
 | 등록 API | **`POST /billing/fee-schedules`** — **`ltcGrade: 0`** 허용 · **`POST/PATCH /clients`** **`ltcGrade: 0`** (V99) |
@@ -6476,7 +8600,7 @@ Authorization: Bearer <branch_admin JWT>
 
 > **P2**: 인지지원등급 이용자 **전용 onboarding wizard** — FAQ21824 Epic 잔여.
 
-> 관련: Q260 · Q214 · Q228 · USER_MANUAL §5-4 · ADMIN_GUIDE §6-3-1
+> 관련: Q260 · Q214 · Q747 · USER_MANUAL §5-4 · ADMIN_GUIDE §6-3-1
 
 ### [TWR] Q313. **「감경 40%」**와 **본인부담률 9%**가 헷갈려요.
 
@@ -6590,9 +8714,10 @@ Authorization: Bearer <branch_admin JWT>
 | **화면** | **`/organization/settings`** **「알림 채널 준비 상태」** 카드(`hq_admin`) · **`/dashboard`·`/dashboard/hq`** 하단 동일 패널(`hq_admin`·`branch_admin`) — **`NotificationChannelReadinessPanel`** |
 | **접근성 (UXD-97)** | Solapi·SMTP·템플릿 설정 표는 **`.ds-dl-grid`** 레이아웃 · 각 표 앞 **`<h3>` 섹션 제목**(시각 사용자·스크린리더 구분, `76b5ff0`) |
 | API | **`GET /api/v1/notifications/channel-status`** |
-| 응답 | `alimtalkProvider`·`emailProvider` · Solapi **apiKey/secret/senderId/kakaoPfId configured** · **`smtpHostConfigured`** · **`liveAlimtalkDispatchReady`·`liveEmailDispatchReady`** · **`quietHoursActive`**(KST **22:00–08:00**) · 필수 알림톡 템플릿 목록 |
+| 응답 | `alimtalkProvider`·`emailProvider` · Solapi **apiKey/secret/senderId/kakaoPfId configured** · **`smtpHostConfigured`** · **`liveAlimtalkDispatchReady`·`liveEmailDispatchReady`** · **`nonEmergencyAlimtalkDispatchAvailableNow`·`nonEmergencyEmailDispatchAvailableNow`** (**Q809**) · **`quietHoursActive`**(KST **22:00–08:00**) · 필수 알림톡 템플릿 목록 |
+| **필드 별칭 (Q802)** | **`solapiSenderNumberConfigured`** ↔ `solapiSenderIdConfigured` · **`kakaoChannelIdConfigured`** ↔ `solapiKakaoPfIdConfigured` · **`requiredAlimtalkTemplates`** ↔ `templates` — FE 패널이 **둘 다** 인식 (`1f3698d`/`71839a6`) |
 | 보안 | **API 키·시크릿 값 미노출** — configured boolean만 |
-| 조용한 시간대 | **`quietHoursActive=true`** 이면 UI에 **22:00~08:00 (Asia/Seoul)** 안내 — **긴급(`EMERGENCY`) 알림은 발송 우회**(Q147) · **청구 화면 발송 버튼도 동일 시간대 비활성**(Q329, `111f056`) |
+| 조용한 시간대 | **`quietHoursActive=true`** 이면 UI에 **22:00~08:00 (Asia/Seoul)** 안내 · **`QUIET_HOURS_ACTIVE`** blocker · **지금 발송 가능=false** (**Q809**) — **긴급(`EMERGENCY`) 알림은 발송 우회**(Q147) · **청구 화면 발송 버튼도 동일 시간대 비활성**(Q329, `111f056`) |
 | RBAC | **`hq_admin`·`branch_admin`** 조회 · **`sysadmin`·`caregiver`·`guardian` 403** |
 
 | P2 잔여 | **live E2E 발송 검증** — readiness UI는 Fixed |
@@ -10620,6 +12745,67 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-15 | **Q844 갱신** — **channel-status `dispatchReferenceUnitRates` BE+FE · FE BE 우선 fallback** · baseline **`2f578fb`/`a356083`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q844** — **알림 채널 「문자 발송 참고 단가」(앱10/SMS20/MMS50·비청구)** · baseline **`e9f24f7`/`56797a8`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q840~Q843** — **세미콜론 생략 HTML entity · 이중 numeric entity · 연계 리포트 페이지 · SkipLink a11y** · baseline **`89dc0a6`/`a5f4098`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q839 · Q837 갱신** — **대소문자·이중 HTML entity bootstrap blocker** · baseline **`2768252`/`c779ca1`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q837 · Q838 · Q832 갱신** — **HTML entity bootstrap blocker · RFID snake_case·후보 파싱** · baseline **`556eeff`/`e76e631`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q832 갱신 · Q836** — **RFID 급여제공내역 SMS 일괄 UI full-stack · nested JSON·유니코드 bootstrap blocker** · baseline **`27de3a3`/`5843845`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q834 · Q835** — **URL-encoded bootstrap blocker · channel-status readinessBlockers URL decode** · baseline **`7868384`/`3fddccd`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q832 · Q833** — **RFID 급여제공내역 일괄 문자 API · object-form bootstrap blocker** · baseline **`c080529`/`2992fa5`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q831 · Q813 갱신** — **급여명세서 kind 22 발송 7/7 · `/payroll/reports`·직원 상세 패널** · baseline **`7de86eb`/`5b9656c`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q828 · Q829 · Q830** — **bootstrap `:`·패딩 구분자 · 연계기록지 「조회」 확정 · 기관 200자 JS 검증** · baseline **`34d4968`/`68cd253`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q826 · Q827 · Q819 갱신** — **연계기록지 지점 통합 리포트·SideNav · V195/V196 · live E2E V196 게이트** · baseline **`9dff00f`/`8b8095a`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q822 · Q823** — **연계기록지 200/5000자 이중 가드 · live E2E env·boolean 정규화 · bootstrap 쉼표/세미콜론 토큰** · baseline **`d271cc3`/`33f59a9`** · Flyway **V1–V194** |
+| 2026-07-15 | **Q819 full-stack · Q821 · Q820 · Q818 a11y** — **연계기록지 이용자 상세 탭 · bootstrap composite 진단 · bootstrap 억제 opt-in · 일괄 확정취소** · baseline **`a72866f`/`c59da8f`** · Flyway **V1–V194** |
+| 2026-07-15 | **Q818** — **G21 월단위 일괄 확정취소(4-digit·6-cascade·visits-only)** · baseline **`d248916`/`2da7ead`** · Flyway **V1–V193** |
+| 2026-07-15 | **Q811 · Q789·Q809 정정** — **G2 가정통신문 운영 준비=조용한 시간대(비긴급 이메일) · health notificationNonEmergency* 필드** · baseline **`c558f29`/`655aaa7`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-15 | **Q808~Q810** — **G2 게시 분류 NOTICE/RESOURCE · J03 지금 발송 가능·QUIET_HOURS_ACTIVE · live E2E unenforced 억제 bootstrap 유지** · baseline **`124915d`/`fb6ea17`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-15 | **Q804·Q805 정정 · Q807** — **G2 기관 공지 첨부 http(s) 서버 검증 · 복제 시 첨부 제거 후 수정 · 상세 링크 차단** · baseline **`7569f1c`/`5b3075f`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q804~Q806** — **G2 초안 복제·게시 상세·메뉴 · 첨부 http(s) FE · live E2E 보호자 공백=missing** · baseline **`2e29bc7`/`d4e1e68`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q800·Q801 정정 · Q802·Q803** — **J03 channel-status 별칭 · G2 초안 수정 GET 상세 · M12 SSO 화면 오류 문구** · baseline **`1f3698d`/`71839a6`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q785·Q787·Q797 정정 · Q800·Q801** — **G2 초안 PATCH·첨부 URL · M12 SSO allowlist·rate limit·HQ/BRANCH** · baseline **`bf96c29`/`4d1b01c`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q217·Q788·Q789·Q791·Q793·Q796 정정 · Q797~Q799** — **G2 기관 공지·자료실 게시판·DRAFT 영속·V192 · suppressed bootstrap** · baseline **`82a83e3`/`0210aaa`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q217·Q788·Q791·Q793 정정 · Q795·Q796** — **G2 이력 board 필터·세션 초안·V191** · baseline **`24f555d`/`bb48b6c`** · **132 route · 105 page** · Flyway **V1–V191** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q788·Q789·Q791 정정 · Q793·Q794** — **G2 작성 미리보기 UI · live E2E effective gate** · baseline **`5d6c007`/`3bd50ac`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q217 정정 · Q788~Q792** — **G2 가정통신문 authoring API · 지점 이력 · health** · baseline **`ac422cc`/`5805d68`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q217 정정 · Q788·Q789·Q790** — **G2 가정통신문 진입·발송 이력 · health · 페이지 크기** · baseline **`3ea0832`/`b7c9fa4`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q217 정정 · Q788·Q789** — **G2 가정통신문 진입·발송 이력 · health readiness** · baseline **`9254721`/`b7c9fa4`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q782·Q784·Q785 정정 · Q787** — **M12 SSO handoff BE · 자격 env · blocker credentials-missing** · baseline **`093ac88`/`063c269`** · **131 route · 104 page** · 모듈 **~91.9%** |
+| 2026-07-14 | **Q782·Q784·Q771 정정 · Q785·Q786** — **M12 SSO·health FE · 송영 V189/V190 health 분리** · baseline **`ac59458`/`b12f259`** · **131 route · 104 page** |
+| 2026-07-14 | **Q782 정정 · Q784** — **M12 BPO API 연동 · M12 BPO health** · baseline **`54a3e56`/`84b336b`** · **131 route · 104 page** |
+| 2026-07-14 | **Q781 정정 · Q782·Q783** — **M11 퇴직적립 화면 · M12 BPO · J03 health** · baseline **`edaa9e9`/`891231d`** · **129 route · 104 page** |
+| 2026-07-14 | **Q780 정정 · Q781** — **M11 인건비비율 화면** · **퇴직적립금 미리보기 API** · baseline **`ff90532`/`d176581`** · **127 route · 103 page** |
+| 2026-07-14 | **Q780** — **M11 인건비 지출비율 60% 미리보기 API**(초안, 이후 화면 연결로 정정) · baseline **`bd06646`/`10bf059`** · **127 route · 101 page** |
+| 2026-07-14 | **Q778·Q779** — **M11 간이지급 화면 · 급여기초 설정** · Q778 full-stack 정정 · baseline **`eca95e3`/`9ea151b`** · **127 route · 101 page** |
+| 2026-07-14 | **Q775·Q778** — **M11 급여대장 화면 · 간이지급 API** · Q775 full-stack 정정 · baseline **`c455145`/`e18ee5c`** · Flyway **V1–V190** |
+| 2026-07-14 | **Q774** — **목욕 패널 지표 27 UI 문구 · 집계=목욕·평가=기능회복** · Q705·Q773 deepen · baseline **`6e874df`/`95192f5`** · Flyway **V1–V190** |
+| 2026-07-14 | **Q772·Q773** — **송영 주소 비우기 PATCH(`""`) · 주야간 지표 27=기능회복·목욕=청구 준수** · Q705·Q770 정정 · baseline **`c08329a`/`a6255a0`** · Flyway **V1–V190** |
+| 2026-07-14 | **Q770·Q771** — **송영 주소 trim·연속공백 정규화 · V190 health probe 9건 확장** · Q764·Q768 deepen · baseline **`bd43f59`/`654b2c6`** · Flyway **V1–V190** |
+| 2026-07-14 | **Q767·Q768·Q769** — **수동 배차 UI 잠금 · V190 무결성 · 송영표 list a11y** · Q763·Q766 deepen · baseline **`2b3f3d9`/`175c570`** · Flyway **V1–V190** |
+| 2026-07-14 | **Q766** — **금일 배차 제외 수동 배차 거부 · 전원 제외 suggest 안내** · Q763 deepen · baseline **`5366944`/`d285899`** |
+| 2026-07-13 | **Q764·Q765** — **V189 schema health probe · live suite schema gate** · Q763 RBAC deepen · baseline **`41cbc8a`/`e48db91`** |
+| 2026-07-13 | **Q762·Q763** — **이동 송영표·금일 배차 제외·출발 회차·송영 주소** · baseline **`60c4e36`/`d873894`** |
+| 2026-07-13 | **Q761** — **위생·안전 결과 StatusBadge** · baseline **`2f4bfdf`/`2704fd8`** |
+| 2026-07-13 | **Q760** — **위생·안전 현장 체크리스트** · CHANGELOG 형식 정리 · baseline 정합 |
+| 2026-06-27 | **404차** — **Q759 safety required-flag vitest lock · Q758 deepen** · baseline **`2f4bfdf`/`154ebee`** |
+| 2026-06-27 | **403차** — **Q757 required validation · Q758 optional semantics · Q747 deepen** · baseline **`2f4bfdf`/`b10c5bb`** |
+| 2026-06-28 | **396차** — **Q743 parity-rules ONE_PER_DAY 우선 · Q744 bootstrap service-unavailable health lock** · baseline **`7fcdfde`/`e19328a`** |
+| 2026-06-28 | **395차** — **Q743 onePerDayNote static fallback · Q735 zero-import PARTIAL UI lock** · baseline **`eb6dd67`/`aa0559b`** |
+| 2026-06-28 | **394차** — **Q743 G16 parity-rules DTO full-stack · Q742 4-outcome test lock** · baseline **`eb6dd67`/`afbbaa7`** |
+| 2026-06-27 | **393차** — **Q742 FE guidance keyword consume full-stack** · baseline **`331f24b`/`5636508`** |
+| 2026-06-27 | **392차** — **Q742 recovery keyword notes API · Q740 deepen static mirror** · baseline **`331f24b`/`2d9b9d3`** |
+| 2026-06-27 | **391차** — **Q740 outcome counter integrity · Q741 stale branch filter · Q738 deepen 7단계** · baseline **`3d4e58a`/`2d9b9d3`** |
+| 2026-06-27 | **390차** — **Q739 NHIS import 지점 필터 deep-link · Q738 deepen test lock** · baseline **`9b91e0f`/`562560a`** |
+| 2026-06-27 | **389차** — **Q738 G-NHIS import 복구 루프 deepen** — inline recovery · **수급자 찾기** deep-link · **ALL_SKIPPED 분류 정정** · baseline **`ffa57ea`/`cda2a10`** |
+| 2026-06-26 | **387차** — **Q735 G-NHIS-IMPORT-ERROR-STATUS-SURFACE full-stack · Q736·Q737 QA-B95 deepen · V183** · baseline **`c38388d`/`91675f1`** |
+| 2026-06-26 | **386차** — **Q734 G-CLIENT-CONTRACT-BULK-PRINT id normalize · Q726 deepen** · baseline **`9664f29`/`d759ade`** |
+| 2026-06-26 | **385차** — **Q726 G-CLIENT-CONTRACT-BULK-PRINT FE full-stack · Q733 deepen 17th layer** · baseline **`9664f29`/`96196ed`** |
+| 2026-06-26 | **384차** — **Q731 G-NHIS-SCHEDULE-IMPORT FE full-stack · Q733 g21 component status codes** · baseline **`59e4e7f`/`8ceb25c`** |
+| 2026-06-26 | **383차** — **Q731 NHIS visit import guidance · Q732 g21 code FE wire** · baseline **`4567030`/`6009ba7`** |
+| 2026-06-27 | **382차** — **Q729 g21 seed status code · Q730 g21 blocker scoping** · baseline **`0f19767`/`f851a59`** |
+| 2026-06-27 | **381차** — **Q726 G-CLIENT-CONTRACT-BULK-PRINT · Q727 g21-seed probe · Q728 UXD-166** · baseline **`4df9465`/`a727862`** |
+| 2026-06-27 | **380차** — **Q725 V182 integrity · Q723 deepen · Q724 parity empty** · baseline **`b4958f1`/`8ed60cb`** |
 | 2026-06-26 | **377차** — **Q722 recovered-auth readiness hints · Q713 deepen** · baseline **`d06e3f1`/`4bbd54a`** |
 | 2026-06-26 | **376차** — **Q719 G21 seed service-unavailable · Q720 neutral blocker · Q721 V180 · UXD-165** · baseline **`42a369e`/`7e7c296`** |
 | 2026-06-26 | **375차** — **Q717 근무일정표 · Q718 singular blocker · Q713 BE allow-recovered-auth** · baseline **`3342938`/`b7004ca`** |
@@ -12574,18 +14760,20 @@ PUT /api/v1/billing/reports/filters
 
 > 관련: Q666 · Q663 · Q655 · Q652 · REQUIREMENTS §8-13 · ROADMAP 190차 · USER_MANUAL §4-7-0c·§4-7-0d
 
-### Q660. **위생·시설관리(M6)** 화면은 어디까지 사용할 수 있나요? (v3.1 P1 재확인)
+### Q660. **위생·시설관리(M6)** 화면은 어디까지 사용할 수 있나요? (v3.1 P1 · US-Q01 정정)
 
-**A.** **✅ M6 v3.1 P1 재확인 (REQUIREMENTS 190차·BNK-540~541, Q660)** — **신규 core 갭 0**. 식사(6-1)만 LIVE이고, 안전·위생 점검(6-2~6-4)은 후속입니다.
+**A.** **✅ M6 v3.1 P1 + US-Q01 full-stack (397차 정정, Q660·Q745)** — **6-1 식사**와 **6-2~6-4 위생·안전 점검** 모두 LIVE입니다. 이전 「`/safety/*` PLANNED」 문구는 **폐기** — 실제 Route는 아래와 같습니다.
 
 | leaf | 화면 | 상태 | 비고 |
 |------|------|------|------|
 | **6-1 식사** | `/meals` | **✅ LIVE** | 식단·섭취 기록 — USER_MANUAL §5-9 |
-| **6-2 소독·방역** | `/safety/disinfection` *(예정)* | **PLANNED** | Route 없음 |
-| **6-3 시설 점검** | `/safety/facility-check` *(예정)* | **PLANNED** | Route 없음 |
-| **6-4 위생 교육** | `/safety/hygiene-training` *(예정)* | **PLANNED** | Route 없음 |
+| **6-2 일일점검** | `/safety/daily-checks` | **✅ LIVE** | US-Q01 · FAQ Q745 |
+| **6-3 정기점검** | `/safety/periodic-checks` | **✅ LIVE** | 6종 sub-form · US-Q01 |
+| **6-3-1 감염병** | `/safety/infection-control` | **✅ LIVE** | US-Q01 |
+| **6-4 시설운영일지** | `/safety/operation-log` | **✅ LIVE** | US-Q01 |
 
-> 관련: USER_MANUAL §5-9 · REQUIREMENTS M6 · FAQ Q160·Q161 (식사 API)
+> **P3 carry**: PDF 공식 서식 인쇄·LCMS 평가지표 전 항목 parity는 후속 — **입력·저장·조회 API** 는 full-stack ✅.  
+> 관련: Q745 · USER_MANUAL §5-9 · REQUIREMENTS M6 · FAQ Q160·Q161 (식사 API)
 
 ### Q661. 프론트 **`npm test`** 를 동시에 여러 번 돌리면 안 되나요? full-suite 1 FAIL인데 단일 파일은 PASS일 때는? (Vitest 동시 실행 · QA-B266)
 
@@ -13017,9 +15205,9 @@ PUT /api/v1/billing/reports/filters
 
 ---
 
-### Q678. **이동서비스비** 화면의 **「NHIS #44 산정 기준」** 안내는 어디에 있나요? (G16, FE `a531ed6`)
+### Q678. **이동서비스비** 화면의 **「NHIS #44 산정 기준」** 안내는 어디에 있나요? (G16, FE `a531ed6`·`afbbaa7`)
 
-**A.** **✅ FE Fixed (`a531ed6`·`9aeedfe`, G16, Q678·Q703)** — **`/transport/service-fees`** **`TransportServiceFeePanel`** 수가표 아래 **「NHIS #44 산정 기준」** 4항이 표시됩니다. 페이지 로드 시 **`GET /transport/service-fee-parity-rules`** (`e4f83af`) 동적 로드를 시도하나, FE **`description` wire P2** 잔여 시 **static config** fallback을 사용합니다.
+**A.** **✅ FE Fixed (`a531ed6`·`9aeedfe`·`afbbaa7`, G16, Q678·Q703·Q743)** — **`/transport/service-fees`** 에 **① 청구 패널 상단 `onePerDayNote` footnote**(rates API) **② 수가표 아래 `TransportParityRulesPanel` 4-rule catalog**(parity-rules API **`code`·`label`·`description`**) 가 표시됩니다. API 오류 시 **`STATIC_TRANSPORT_PARITY_RULES`** static fallback — **BE catalog 라벨과 동일**합니다.
 
 | 안내 항목 | 내용 |
 |-----------|------|
@@ -13030,7 +15218,7 @@ PUT /api/v1/billing/reports/filters
 
 **접근성 (UXD-159, `0869589`)** — 조회 form **`aria-label="이동서비스비 조회 기간"`** · 수가·청구 표 **`caption`+`captionVisuallyHidden`** · 행별 **「확정」·「편도/왕복 전환」** 버튼에 **`aria-label`**·**`aria-busy`** (Q683).
 
-> 관련: Q239 · Q247 · Q317 · **Q703** · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4
+> 관련: Q239 · Q247 · Q317 · **Q703** · **Q743** · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4
 
 ---
 
@@ -13637,52 +15825,226 @@ GET /api/v1/billing/cms/payment-method-catalog
 
 ---
 
-### [TWR] Q702. live E2E **bootstrap** 환경변수·blocker gating은 무엇이 바뀌었나요? (BE `670756a`·FE `64a7648`·`c3c6272`)
+### [TWR] Q845. **기관 공지 게시판 (G2 id=10-4)** 초안·게시·복제는 어떻게 하나요?
 
-**A.** **✅ BE+FE Fixed (`670756a`·`64a7648`·`c3c6272`, QA-B95 carry)** — 스테이징 live E2E가 bootstrap-disabled 상태에 **불필요하게 stuck** 되거나, auth 복구 후에도 **false skip** 되던 문제를 완화했습니다.
+**A.** **✅ BE+FE Full-stack Fixed (BNK-729·BNK-730, `55b8f84`/`0210aaa`, id=10-4·G2 FULL 1.0)** — **`/clients/home-newsletter`** 게시판에서 **기관 공지·자료실** 내용을 작성·발송할 수 있습니다. **초안 복제·게시·수정·상세·페이지네이션** 전체 완성.
 
-| 변경 | 설명 |
-|------|------|
-| **BE `OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`** | namespaced env toggle path 추가 — bootstrap 활성화 env 이름 불일치 시 **disabled stuck** 방지 |
-| **FE blocker gating** | **auth 이미 준비**된 경우 bootstrap availability blocker **필터** — QA-B95 false skip 완화 |
-| **FE skip reason dedupe (`c3c6272`)** | **`liveConfig.js`** — operation readiness **중복 skip reason** 제거 · harness regression lock |
-| **health contract** | **`liveE2eG21SeedStatusDetail`** — bootstrap disabled 시 **`g21-seed=disabled`** (Q698 carry) |
+| 액션 | 화면·API | 내용 |
+|------|---------|------|
+| **작성 미리보기** | `/clients/home-newsletter` → **「기관 공지」** | **`POST …/compose-preview`** — DRAFT 미저장 |
+| **초안 저장** | **「저장」** → session | **`PATCH …/facility-notices/{id}`** — **DRAFT state** |
+| **게시** | **「게시」** → 이용자 | **`PATCH …/{id}` (status=PUBLISHED)** — 이용자 화면에 노출 |
+| **복제** | **「복제」** → 새 DRAFT | **새 PATCH entity + base** — 첨부·제목·본문 복사 |
+| **상세 조회** | **「제목」** | **`GET …/{id}`** — 게시 상세·메타 |
+| **삭제** | **「...」→「삭제」** | **`DELETE …/{id}`** — DRAFT·PUBLISHED 모두 |
+| **기관명 필드** | 필드 **200자 검증** | **FE JS** + **BE DTO** — 기관 소속 확인 후 저장(기관별 격리) |
+| **요약 필드** | 필드 **5000자 검증** | **V196 이중 가드** — 발송 레코드·기록 무결성 |
+| **첨부** | **http(s)만** | **BE+V193 CHECK** · 불안전 링크(`http://*.` `file://` 등) FE 차단 |
+| **분류** | **NOTICE / RESOURCE** | 게시판 탭 필터 — 「공지」와 「자료실」 분리 display |
+| **조용한 시간대** | health probe | **`notificationQuietHoursActive`** 시 **게시 차단**(Q811·운영 준비) |
+| **발송이력** | **「발송 이력」** 탭 | **`GET …/dispatch-history`** · `branchId` 필터 · `activeBranchId` 우선 · V191 인덱스 · board-style 「기간·상태」 필터 |
 
-> **운영**: live E2E는 **opt-in** — DEPLOYMENT_GUIDE §11-3 env checklist 참고. 현장 사용자 화면 변화 없음.  
-> 관련: Q680 · Q698 · DEPLOYMENT_GUIDE §11-3 · CHANGELOG 356차
+**운영 체크포인트**
+- **기관명**: **20–200자** · 엔터·특수문자 포함 가능 · 실제 법인명 권장
+- **요약**: **최대 5000자** · 발송 이메일 수신자 미리보기 노출
+- **첨부**: **로컬 업로드 안함** — **URL만**(예: `https://...pdf`, `https://...png`)
+- **메뉴 바로가기**: **SideNav** `#facility-notices` — 양쪽 관리자 메뉴에 노출
+
+> 관련: USER_MANUAL §5-9 · ADMIN_GUIDE §1-4 · Q806·Q807·Q808·Q811 · CHANGELOG BNK-730 · **모듈 KPI id=10 1.0 도달** ✅
 
 ---
 
-### [TWR] Q703. **NHIS #44 이동서비스비 parity rules API**는 무엇을 반환하나요? (G16, BE `e4f83af`)
+### [TWR] Q846. **M12 회계 BPO (id=12)** launch 카탈로그와 SSO 자격은 어떻게 확인하나요?
 
-**A.** **✅ BE Fixed (`5a717ac`·`e4f83af`, G16 / v1.3-C, BNK-562 deepen)** — NHIS #44 **러-1~4·편도50%·1일1회·별지 제22호** 안내 문구를 **machine-readable JSON** 으로 제공합니다. **`/transport/service-fees`** 화면은 **`fetchTransportServiceFeeParityRulesApi`** 로 동적 로드를 시도하나, FE **`bodyKo` 매핑 잔여** 시 **static fallback** 을 사용합니다 (P2).
+**A.** **✅ BE+FE Fixed (BNK-716·BNK-717·BNK-720, `edaa9e9`/`84b336b`, id=12 0.7)** — **`/accounting`** 페이지에서 외부 회계 BPO(수지파인·sujifine) **launch 카탈로그** 조회 및 **SSO OTP 핸드오프** 기능을 지원합니다. 환경 자격 여부에 따라 **공개 로그인** 또는 **SSO** 진입.
 
 | 항목 | 값 |
 |------|-----|
-| **API** | **`GET /api/v1/transport/service-fee-parity-rules`** |
-| **RBAC** | **`hq_admin`·`branch_admin` only** · **`social_worker`·`caregiver` 403** (`e4f83af`) |
-| **`totalCount`** | **4** |
-| **`oneWayRatio`** | **0.5** (편도 50%) |
-| **`rules[]`** | **`DISTANCE_BANDS`** · **`ONE_WAY_RATIO`** · **`ONE_PER_DAY`** · **`SERVICE_LOG`** — 각 **`code`·`label`·`description`** |
+| **API** | **`GET /api/v1/billing/accounting/bpo-launch`** · **`POST …/bpo-sso-handoff`** |
+| **RBAC** | **`hq_admin`·`branch_admin` only** — **`platform_admin`·`social_worker` 403** |
+| **availabilityStatus** | **`AVAILABLE`** (지금 진입 가능) · **`PLANNED`** (준비 중) · **`UNAVAILABLE`** (미지원) |
+| **SSO 자격** | **환경변수** `OGADA_ACCOUNTING_BPO_PARTNER_ID` / `PARTNER_SECRET` 설정 여부 · 미설정 → **공개 로그인만** |
+| **진입 방식** | **1) 공개 로그인**: BPO 포털 웹 → 별도 계정 로그인 · **2) SSO(자격 시)**: OTP 검증 후 자동 연결 |
 
-**응답 예 (요약)**
+**health probe**
 
 ```json
 {
-  "totalCount": 4,
-  "oneWayRatio": 0.5,
-  "rules": [
-    { "code": "DISTANCE_BANDS", "label": "거리 구간별 단가", "description": "거리구간 수가는 러-1~러-4 …" },
-    { "code": "ONE_WAY_RATIO", "label": "편도 비율", "description": "편도 이용 시 … 50% …" },
-    { "code": "ONE_PER_DAY", "label": "1일 1회", "description": "… 1일 1회 …" },
-    { "code": "SERVICE_LOG", "label": "서비스 제공기록 연계", "description": "별지 제22호 …" }
-  ]
+  "accountingBpoLaunchReady": true,
+  "accountingBpoSsoAvailable": false,  // 환경 자격 미설정 시
+  "accountingBpoStatus": "AVAILABLE"
 }
 ```
 
-**sysadmin smoke** — JWT **`branch_admin`** 로 호출 → **200** · **`rules[2].description`** 가 **`TransportServiceFeeParityCatalog.ONE_PER_DAY_NOTE`** 와 동일 · JWT **`social_worker`** → **403** (`e4f83af`) · FE **`description` wire P2** (DEPLOYMENT §1-4).
+**FE 렌더**
+- **`availabilityStatus`** → **카드 상태 badge** 표시
+- **new tab** 으로 BPO 포털 오픈 — **a11y announce**
+- **환경 미설정**: **「공개 로그인」** 버튼만 활성화
+- **환경 설정**: **「회계 시스템 진입」** (SSO OTP)
 
-> **잔여**: FE가 API에서 **동적 fetch** 하도록 wire — **P2 후보** (현재 화면 동작 변화 없음).  
-> 관련: Q678 · Q681 · USER_MANUAL §5-8-1 · ADMIN_GUIDE §1-4 · CHANGELOG 356차
+**운영 체크포인트**
+- **기본 자격 미설정 → 공개 로그인** — **ogada 비밀번호 수집 안함**(REQUIREMENTS §11-4)
+- **SSO 자격 추후 추가 시**: **DEPLOYMENT_GUIDE §11-4** 환경변수 설정 → 자동 활성화
+- **BPO 포털 접근**: **같은 탭이 아닌 새 탭**에서 열기(back 간편)
+- **P1 남은 기능**: **기관별(테넌트별) SSO 자격** 관리(현재 org-wide)
+
+> 관련: USER_MANUAL §5-11 · ADMIN_GUIDE §1-4 · Q782·Q784·Q785·Q787·Q801 · DEPLOYMENT §11-4 · **모듈 KPI id=12 0.7 carry**
+
+---
+
+### [TWR] Q847. **live E2E bootstrap blocker** 진단에서 「effective」와 「suppressed」 구분은?
+
+**A.** **✅ BE+FE Fixed (BNK-727, `5d6c007`/`5805d68`, QA-B95)** — **`/api/v1/health`** probe detail에서 **두 가지 bootstrap blocker 상태**를 나눠 노출합니다.
+
+| 상태 | 정의 | 운영 의미 |
+|------|------|----------|
+| **`liveE2eEffectiveOperationReady`** | **진짜 차단** — 보호자/직원 화면 영향 | ⚠️ **반드시 해결 필요** |
+| **`liveE2eSuppressedBootstrapOperationBlockers`** | **bootstrap만 차단** — 환경 override 가능 | ℹ️ **정보용** — opt-in으로 bypass 가능 |
+| **`liveE2eEffectiveOperationSuppressedByBootstrap`** | **bootstrap이 effective을 덮음** | ⚠️ **bootstrap 환경 해제 필요** |
+
+**health 응답 예시**
+
+```json
+{
+  "liveE2eEffectiveOperationReady": false,
+  "liveE2eSuppressedBootstrapOperationBlockers": [
+    { "code": "bootstrap-disabled", "source": "ENVIRONMENT_VARIABLE" }
+  ],
+  "liveE2eEffectiveOperationSuppressedByBootstrap": true,
+  "detail": "bootstrap DISABLED suppress effective blockers …"
+}
+```
+
+**FE 로직**
+- **FE `LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1` 미설정**: **bootstrap-only blocker skip** (Q820·현재 기본값)
+- **env=1 설정 시**: bootstrap blocker도 함께 렌더
+
+**운영 액션**
+1. **`liveE2eEffectiveOperationReady = false`** → **현황판·배포 대기**
+2. **`liveE2eSuppressedByBootstrap = true`** → **Env 체크**: `OGADA_LIVE_E2E_BOOTSTRAP_ENABLED` 값 확인(Q702)
+3. **env 해제 후 재프로브** → **effective 재검증**
+
+**composite blocker 파싱 (Q833~Q841 종합)**
+- **HTML entity**: `&#45;` · `&#x2d;` · `&lt;` · `&GT;` (대소문자·이중·세미콜론 생략)
+- **URL percent**: `%7B%22code%22…%7D`
+- **중첩 JSON**: `{"nested":{"code":"bootstrap\u002d…"}}`
+- **object-form**: `{"code":"bootstrap-disabled"}`
+- **Composite token**: `space,semicolon;padding: key=value(…)`
+
+> 관련: ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §11-3 · Q702·Q820·Q825·Q828·Q833~Q841 · **QA-B95 FULL FE blocker unwrap ✅**
+
+---
+
+### [TWR] Q848. **지점별 연계기록지 리포트** 페이지네이션과 기관명 검증은?
+
+**A.** **✅ BE+FE Fixed (BNK-748, `cdeb6bf`/`353eb7f`, G-LINKAGE-RECORD, Q819·Q826)** — **`/clients/linkage-records`** 에서 **지점 통합 리포트**를 조회합니다. **페이지네이션**(20건/페이지)·**기관명 JS검증**(200자)·**V196 무결성 게이트** 포함.
+
+| 항목 | 내용 |
+|------|------|
+| **조회 API** | **`GET /api/v1/clients/linkage-records`** — `branchId` scope·page/size·sort |
+| **기능** | **지점별 모든 연계기록지**(초안·발송·수정 이력) · **조회·상태 필터** · **client 이름·기관명 검색** |
+| **페이지네이션** | **기본 20건** · size **10–100 범위** · totalElements/totalPages |
+| **기관명 필드** | **최대 200자** · `<20 chars` 경고 · JS 클라이언트 유효성 검사 · BE DTO `@Size(max=200)` |
+| **요약 필드** | **최대 5000자** · V196 이중 가드(발송 직전 재검증) |
+| **status filter** | **DRAFT·PUBLISHED·SENT** · 상태별 카운트 |
+| **무결성 게이트** | health **`v196ClientLinkageRecordsIntegrityCheckReady`** — V196 migration 검증 완료 표시 |
+
+**FE 리포트 페이지**
+
+```jsx
+// /clients/linkage-records
+<ClientLinkageRecordsPage>
+  ├─ BranchFilterControl  // branchId 드롭다운
+  ├─ StatusPaginationPanel  // 상태·검색·페이지
+  └─ DataTable  // clientName·facilityName·status·createdAt·actions
+```
+
+**검증 시 주의점**
+- **기관명**: 공백·특수문자 허용 · **중문자/영문/숫자** 혼합 · **20자 미만 경고**(`⚠️ 짧음` badge)
+- **요약**: **개행 후 저장**(CRLF/LF 혼합 주의) · **마크다운 미지원**
+- **이용자별 탭**: **`/clients/:clientId`** 「연계기록지」탭 · **개별 CRUD**
+
+> 관련: USER_MANUAL §3-5 · ADMIN_GUIDE §1-4 · Q819·Q822·Q826·Q827·Q829·Q830 · V196 · **모듈 KPI id=1-10 1.0 도달** ✅
+
+---
+
+### [TWR] Q849. **live E2E HTML entity·URL·퍼센트 bootstrap blocker** 종합 디코딩 규칙?
+
+**A.** **✅ BE+FE Fixed (BNK-730, QA-B95 FE blocker unwrap, `956c487`/`556eeff`/`2992fa5`, Q833~Q841 종합)** — 운영 블로커 문자열이 **여러 형식으로 인코딩**될 수 있으므로 **정규화·디코딩 → bootstrap `code` 마커 매칭** 규칙.
+
+**BE 디코딩 순서 (Java)**
+
+```java
+// 1. URL percent-decode
+String decoded = URLDecoder.decode(blocker, "UTF-8");  // %7B → {
+
+// 2. 중첩 JSON parse (Jackson nested)
+ObjectMapper.readValue(decoded, Map.class);  // {"nested":{…}}
+
+// 3. HTML entity decode
+decoded = decoded.replace("&#45;", "-")
+    .replace("&#x2d;", "-")
+    .replace("&lt;", "<")
+    .replace("&gt;", ">")
+    .replace("&quot;", "\"")
+    .replaceAll("&[A-Za-z]+;", …)  // 대소문자 대응
+    .replaceAll("&#(?!x?\\d)\\w+", …);  // 세미콜론 생략 대응
+
+// 4. bootstrap marker 추출
+if (decoded.contains("code") && decoded.contains("bootstrap")) {
+    effectiveBlocker.add(…);
+}
+```
+
+**FE 정규화 (JavaScript)**
+
+```javascript
+// liveGlobalSetup.js + notificationChannelStatus.js
+function normalizeLiveOperationBlockers(blockers) {
+  return blockers.map(b => {
+    let s = b;
+    
+    // 1. JSON array/bracket unwrap
+    if (s.startsWith('[') || s.startsWith('{')) {
+      try {
+        let parsed = JSON.parse(s);
+        if (Array.isArray(parsed)) s = JSON.stringify(parsed[0]);
+        else if (parsed.code) s = JSON.stringify(parsed);
+      } catch {}
+    }
+    
+    // 2. URL decode
+    s = decodeURIComponent(s);
+    
+    // 3. HTML entity (소문자·대소문자·이중·생략)
+    s = s.replace(/&#(\d+);?/g, (m, code) => String.fromCharCode(code));
+    s = s.replace(/&#x([0-9a-fA-F]+);?/g, (m, code) => String.fromCharCode(parseInt(code, 16)));
+    s = s.replace(/&[a-zA-Z]+;/g, entities);  // entity catalog
+    
+    return s;  // → bootstrap-disabled ✓
+  });
+}
+```
+
+**테스트 케이스**
+
+| Input | Type | Output | 용도 |
+|-------|------|--------|------|
+| `bootstrap&#45;disabled` | HTML entity (숫자) | `bootstrap-disabled` | probe detail |
+| `bootstrap&#x2d;disabled` | HTML entity (hex) | `bootstrap-disabled` | health |
+| `bootstrap&LT;disabled` | HTML entity (대문자) | `bootstrap<disabled` | channel-status |
+| `&quot;code&quot;` | HTML entity (이중) | `"code"` | nested JSON |
+| `bootstrap-disabled` (no `;`) | 세미콜론 생략 | `bootstrap-disabled` | QA-B95 edge case |
+| `%7B%22…%7D` | URL percent | `{"…"}` → parse | URL-encoded response |
+| `{…json…}` | object form | extract `code` | object-form blocker |
+| `["bootstrap-disabled"]` | JSON array | unwrap[0] | serialized array |
+| `bootstrap\u002ddisabled` | 유니코드 escape | `bootstrap-disabled` | nested JSON |
+
+**운영 체크**
+- **health probe** 이상 → **detail blocker 디코드 후 읽기**
+- **여러 형식 중첩**: **BE 먼저 정규화** → **FE에서 한번 더 normalize** (parity 검증)
+- **false positive**: **「bootstrap」+「code」 동시 존재만** effective로 판정
+
+> 관련: ADMIN_GUIDE §1-4 · Q820·Q821·Q824·Q825·Q828·Q833·Q834·Q836·Q837·Q839·Q840·Q841 · QA-B95 **FULL 1.0** ✅ · API_SPEC §4-3
 
 ---
