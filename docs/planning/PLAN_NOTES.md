@@ -1,4 +1,6 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-14T20:14:51Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T05:48:00Z -->
+<!-- planner-sync: PLN 215차 2026-07-15T05:48 UTC — BNK-742~747·TSR 1585~1597 · ★★★ US-V06 CLOSED · ★★★ G-LINKAGE-RECORD 스펙 · ★★ J03 SMS/kind22 · ★ RFID SMS P2 · ★ lcms 번복 · SYNCED(BE@d248916·FE@0448efa) · residual 653 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 214차 2026-07-15T01:50 UTC — BNK-738~741·TSR 1578~1584 · ★★★ J03 quiet-hours CLOSED · ★★★ sole 진성갭 id=1-10 · ★★ batch-unconfirm P2 · ★ QA-B414 Fixed · SYNCED(BE@c558f29·FE@655aaa7) · residual 647 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 213차 2026-07-14T20:14 UTC — BNK-727~732·TSR 1558~1567b · ★★★ id=1-5 FULL 1.0 + id=10-4 FULL · ★★ QA-B414 Open→Planned · 모듈 93.62% · J03 alias · SYNCED(BE@1f3698d·FE@71839a6) · residual 641 BE+B414 · Planned QA-B414+QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 211차 2026-07-14T11:24 UTC — BNK-720·TSR 1542~1543차 · ★★★ M12 SSO handoff FULL CLOSURE(id=12 0.7·모듈 91.90%)·잔여=ops credentials · ★★★ id=1-5 0→0.5 착지 · ★★ G-ACCOUNTING-IN-APP-LEDGER(v3+) · ★ QA Open 0 · SYNCED(BE@093ac88·FE@063c269) · residual 629 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 208차 2026-07-14T01:33 UTC — BNK-702~706·TSR 1507~1517차 · ★★★ M12=sujifine BPO SSO(BNK-706)·M11 in-app sole P1 · ★★★ G16 shuttle 6-commit CLOSURE(BNK-705) · ★★ 지표27=기능회복훈련(BNK-704) · ★ QA-B344/B373 Fixed · Open 0 · local SYNCED(BE@6e874df·FE@95192f5) · residual origin/test 617 BE · Planned QA-B116+QA-B95 -->
@@ -107,7 +109,85 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-14 (213차 PLN — **자동 기획 동기화** BNK-727~732·TSR 1558~1567b·★★★ id=1-5/10-4 FULL·모듈 93.62%·★★ QA-B414 Open→Planned·J03 alias·SYNCED BE@1f3698d/FE@71839a6·operation BLOCK 641 BE+B414) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-15 (215차 PLN — **자동 기획 동기화** BNK-742~747·TSR 1585~1597·★★★ US-V06 CLOSED·G-LINKAGE-RECORD 스펙·J03 SMS/kind22·RFID SMS P2·lcms 번복·SYNCED BE@d248916/FE@0448efa·operation BLOCK 653 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [PLN] QA 피드백 반영 (2026-07-15, 215차 — BNK-742~747 · TSR 1585~1597차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`d248916`** WT **CLEAN** · post-merge **2182/2182 PASS**(400 suites·TSR1592/1596) · FE develop/test/origin/test **`0448efa` ALL SYNCED+PUSHED** · post-merge **2516/2516 PASS**(466 files·TSR1597) · live default **0/149/0** + opt-in **116/33/0** · origin/test **653 BE + 0 FE** · **132 Route·105 page·V1–V193·BE @Test 2182·FE test 519·모듈 93.62%**(id=11 1.0·id=12 **0.7**·id=1-5 **1.0**·**US-V06 ✅**·id=1-10 **0** sole 진성갭) | ROADMAP CURRENT BASELINE 215차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **653 BE**) + **QA-B95**(operation 승격·QA-B437 opt-in gate) | QA_FEEDBACK · ROADMAP |
+| **QA-B427~B437 Fixed** | V193 attachment·J03 SMS readiness B428~B430·QA-B95 deepen B431~B434/B437·G2 branch-scope B432·**US-V06 B435~B436** | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-747 ★★★** | **US-V06 월단위 batch-unconfirm FULL CLOSURE** — 4-digit+6-cascade+SUPERSET(공단 재대조·직원 재안내) · BNK-739 P2 candidate **제거** · NHIS #44 **481차** zero drift · lcms 503→200 **가정 번복** | REQUIREMENTS · USER_STORIES US-V06 · ROADMAP v2 |
+| **BNK-746 ★★★** | **케어포 Module 1 leaf 11 전수** · **G-LINKAGE-RECORD 스펙 초안**(Entity `client_linkage_records`+3-endpoint+2-route·가정통신문/기관공지 CRUD 재사용·모듈 93.62%→97%+) | REQUIREMENTS · USER_STORIES US-CLIENT-LINKAGE-RECORD · ROADMAP v3 |
+| **BNK-744 ★★** | **J03 3-channel SMS readiness FULL-STACK UI** + kind22「급여명세서」enum-only | REQUIREMENTS · USER_STORIES US-J03 |
+| **BNK-743 ★★** | **RFID compare parity ✅** · **RFID→SMS UI = P2 lever**(FAQ 21589) · duplicate-schedule decommission | REQUIREMENTS G-RFID-CARE-PROVISION-DISPATCH · ROADMAP v2 |
+| **BNK-742/745 ★** | carefor dual menu surface·7-10 SUPERSET · P0/P1 재정렬 carry(closed axes 재오픈 0) | REQUIREMENTS · COMPETITOR_MATRIX carry |
+
+**coder/ops 다음 액션 (215차)**: ① **tester** origin/test push **653 BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials ④ **v2+** G-LINKAGE-RECORD(id=1-10) 스펙 확정 후 착수 ⑤ **v2+** kind22 dispatch / RFID SMS go/no-go.
+
+### 추가 질문 (자동 기획 동기화 215차)
+1. **G-LINKAGE-RECORD MVP scope (★★★ BNK-746)**: authoring+dispatch only vs 발송 리포트+제공대장까지 1차 포함? 평가지표30 SLA(전원/퇴소 N일)?
+2. **RFID SMS P2 (★★ BNK-743)**: 요보사 불일치 문자만 vs 보호자 급여제공내역 문자(FAQ 21589)도 MVP?
+3. **kind22 급여명세서 dispatch (★ BNK-744)**: M11×G-SMS v2+ wire 우선 vs enum-only defer 유지?
+4. ~~**lcms.or.kr 503 decommission (★ BNK-740)**~~ → **BNK-747 200 회복으로 번복** — decommission 격상 **불요**.
+5. **만료일 카운트다운 P3 / CashReceipt 3-way radio / M12 credentials rollout (★ carry)**: 214차 질문 3~5 유지.
+
+### [PLN] QA 피드백 반영 (2026-07-15, 214차 — BNK-738~741 · TSR 1578~1584차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`c558f29`** WT **CLEAN** · post-merge **2170/2170 PASS**(399 suites·TSR1583) · FE develop/test/origin/test **`655aaa7` ALL SYNCED+PUSHED** · post-merge **2499/2499 PASS**(465 files·TSR1584) · live E2E **116/33/0** · origin/test **647 BE + 0 FE** · **132 Route·105 page·V1–V192·BE @Test 2170·FE test 518·모듈 93.62%**(id=11 1.0·id=12 **0.7**·id=1-5 **1.0**·id=1-10 **0** sole 진성갭) | ROADMAP CURRENT BASELINE 214차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **647 BE**) + **QA-B95**(operation 승격) | QA_FEEDBACK · ROADMAP |
+| **QA-B423~B426 Fixed** | J03 quiet-hours full-stack chain — B423 BE channel readiness · B424 FE dispatch-now · B425 BE G2 launch/health · B426 FE home-newsletter launch readiness | QA_FEEDBACK Fixed · ROADMAP v2 · USER_STORIES US-J03 |
+| **QA-B414 Fixed carry** | `@79d4279`(TSR1568) — `AccountingBpoService` `@Autowired` · clean boot · **v1 operation blocker 해소** | ROADMAP v1 · QA_FEEDBACK |
+| **BNK-741 ★★★** | **J03 quiet-hours non-emergency dispatch readiness FULL-STACK CLOSED** — 경쟁 4종 유일 야간 오발송 방지 readiness | REQUIREMENTS · USER_STORIES · ROADMAP v2 |
+| **BNK-738~741 ★★★** | **P0/P1 재정렬** — closed axes 5축 재오픈 0 · sole 진성갭 **id=1-10 연계기록지** · operational levers M12(0.7)+SMS(0.75) | REQUIREMENTS · ROADMAP v3 |
+| **BNK-739 ★★** | **ezCare schedule-fix batch-unconfirm P2** — 월단위 unconfirm + 4-digit + 6-cascade 경고 · **G-VISIT-BATCH-UNCONFIRM-MONTHLY** | REQUIREMENTS · USER_STORIES US-V06 · ROADMAP v2 |
+| **BNK-739/740 ★** | **patient-list 만료일 카운트다운** P3 UX asset · lcms.or.kr 503 transient | USER_STORIES US-H03 · §추가 질문 214 |
+| **BNK-740 ★** | NHIS #44 **475차** zero drift · CMS fee parity 유지 | REQUIREMENTS · COMPETITOR_MATRIX carry |
+
+**coder/ops 다음 액션 (214차)**: ① **tester** origin/test push **647 BE**(QA-B116) ② **QA-B95** operation 승격 ③ **ops** M12 facility credentials ④ **v2+** 연계기록지 scope 확정 ⑤ ~~**v2 P2** G-VISIT-BATCH-UNCONFIRM go/no-go~~ → **✅ CLOSED BNK-747/215차**.
+
+### 추가 질문 (자동 기획 동기화 214차)
+1. ~~**G-VISIT-BATCH-UNCONFIRM scope (★★ BNK-739)**~~ → **[COD] visits-only 확정** — ezCare `schedule-form` 방문일정 중심·transport는 기존 run-level unconfirm 유지.
+2. ~~**lcms.or.kr HTTP 503 지속 (★ BNK-740)**~~ → **BNK-747 200 회복·가정 번복** — decommission 불요.
+3. **만료일 카운트다운 P3 격상 (★ BNK-739)**: 이지케어 `patient-list` 3-line D-day를 US-H03 StatCard에 선반영할지 vs defer 유지?
+4. **M12 credentials rollout vs QA-B116 (★ carry)**: origin/test push 직후 staged pilot vs 전 facility 일괄?
+5. **CashReceipt 3-way radio (patient/protector/xx) UX (★ BNK-739 receipt-list)**: v2 scope에 포함 vs P3 defer?
+
+### [COD] 코더 메모 (2026-07-15 — US-V06 batch-unconfirm FE)
+
+- FE `@2da7ead` `feat(v1.2.1/US-V06): wire monthly visit batch-unconfirm panel` — `VisitBatchUnconfirmPanel` on `/visits` · `fetchVisitBatchUnconfirmPreviewApi` + `batchUnconfirmVisitsApi` · 4-digit challenge 표시/재입력 · 6-cascade ack · visits-only scope note · related panel+services+VisitsPage tests · Open **0** · Planned **QA-B116+QA-B95** · BE parity `@d248916`.
+
+### [COD] 코더 메모 (2026-07-15 — US-V06 batch-unconfirm BE)
+
+- BE `feat(v2/US-V06): add monthly visit batch-unconfirm with challenge` — `GET /api/v1/visits/batch-unconfirm-preview` + `POST /api/v1/visits/batch-unconfirm` · 4-digit challenge(TTL 10분·consume-once) · 6-cascade warning payload · visits-only `CONFIRMED→DRAFT`(청구/급여/임금 물리삭제 아님) · **FE wire CLOSED** · Open **0** · Planned **QA-B116+QA-B95**.
+
+### [COD] 코더 메모 (2026-07-15 — QA-B95 bootstrap suppression FE)
+
+- FE `@7d9dd70` `fix(v1.2.1/QA-B95): surface effective gate bootstrap suppression` — BE `@cf1dada`/`@92d74a9` `liveE2eEffectiveOperationSuppressedByBootstrap` + `liveE2eSuppressedBootstrapOperationBlockers` 파싱·persist · unenforced 모드에서 effective gate green + bootstrap 억제 가시성 warn · related `liveE2eHarness` **125/125 PASS** · WT CLEAN · ahead origin/develop **1**.
+- Open **0** · Planned **QA-B116+QA-B95** · residual = ops M12 credentials · origin/test push **652 BE**(QA-B116) · v2+ id=1-10 연계기록지 scope.
+
+### [COD] 코더 메모 (2026-07-15 — J03/G2 quiet-hours launch·health)
+
+- BE `@c558f29` `feat(v2/J03): honor quiet hours on home-newsletter dispatch readiness` — G2 launch/health `dispatchReady` = `nonEmergencyEmailDispatchAvailableNow` · blocker `quiet-hours-active` · `/api/v1/health` notification quiet-hours/non-emergency fields · related Launch+Health+Readiness **PASS** · WT CLEAN · ahead origin/develop **1**.
+- Open **0** · Planned **QA-B116+QA-B95** · residual = ops M12 credentials · live Solapi E2E · tester FF(BE pending) · origin/test push(QA-B116).
+
+### [COD] 코더 메모 (2026-07-14 — QA-B419 facility-notice attachment sanitize FE)
+
+- FE `@5b3075f` — QA-B418 FE parity: `sanitizeFacilityNoticeAttachmentUrl` · clone이 불안전 첨부 strip 후 DRAFT 생성·수정 폼 handoff · 상세 보기 unsafe href 차단 · 오류 문구 BE verbatim 「첨부 링크는…」 · related **40/40 PASS** · WT CLEAN · ahead origin/develop **1**.
+- Open **0** · Planned **QA-B116+QA-B95** · residual = ops M12 credentials · id=2/8/10 partial · GUARDIAN 공지 열람 §추가 질문 213-2 대기 · 독립 `/facility-notices` route 범위 확인 대기.
+
+### [COD] 코더 메모 (2026-07-14 — QA-B417 facility-notice clone DRAFT)
+
+- FE `@d4e1e68` — PUBLISHED/기존 글 「초안으로 복제」→ `GET /facility-notices/{id}` + `POST` DRAFT · `isSafeFacilityNoticeAttachmentUrl` http(s) · 필터/폼 한국어 라벨 · related **37/37 PASS** · WT CLEAN · ahead origin/develop **1**.
+- Open **0** · Planned **QA-B116+QA-B95** · residual = ops M12 credentials · id=2/8/10 partial · GUARDIAN 공지 열람 §추가 질문 213-2 대기 · 독립 `/facility-notices` route 범위 확인 대기.
+
+### [COD] 코더 메모 (2026-07-14 — QA-B95 guardian blank≠default)
+
+- BE `@2e29bc7` — `usesDefaultGuardianCredentials()` 가 blank/부분 env 를 default seed 로 치지 않음 · staff `bootstrap` 은 guardian token skip · `bootstrapGuardian` 는 `LIVE_E2E_GUARDIAN_BOOTSTRAP_CREDENTIALS_MISSING` fail-closed · related LiveE2e+Health **PASS** · WT CLEAN · ahead origin/develop **1**.
+- Open **0** · Planned **QA-B116+QA-B95** · residual = ops M12 credentials · tester FF + origin/test push(QA-B116) · SEC-D43 org-scoped credential 「장기」 · GUARDIAN 공지 열람 §추가 질문 213-2 대기.
 
 ### [COD] 코더 메모 (2026-07-14 — QA-B416 facility-notice GET detail view)
 
@@ -1148,6 +1228,52 @@
 ---
 
 ---
+
+---
+
+### 문서 작성 질문
+
+### [COD] G-LINKAGE-RECORD FE wire · OTHER=제거 · client-scope list (2026-07-15)
+
+**회신 (TWR Q819 연계)**:
+1. BE V194·`clientlinkage/` 는 **`@5c683af` 커밋됨** — FE wire 완료(ClientDetail `linkage` tab · `services.js` 6-function).
+2. **OTHER 제거** — FE `LINKAGE_TYPE_OPTIONS` = HOSPITAL|HOME_CARE|TRANSFER only (V194 CHECK 정본).
+3. 리포트 API는 **client 스코프 list만** (`GET /clients/{id}/linkage-records`) — org-wide 목록은 v2+ 후속.
+
+---
+
+### [TWR] G-LINKAGE-RECORD BE WIP · FE `OTHER` 정합 (2026-07-15)
+
+문서화는 **커밋된 FE UX 셸**(Q819)과 live E2E opt-in(Q820)까지 반영했습니다. 아래는 coder/planner 확인 전까지 **API_SPEC·USER_MANUAL 조작 절차 확장**을 보류한 항목입니다.
+
+1. **BE `clientlinkage/` · Flyway `V194__client_linkage_records_carefor_1_10.sql`** 가 develop working tree에 **untracked** 로 존재합니다. 커밋·push 전에 ops/API_SPEC에 **V194·엔드포인트**를 「완료」로 올리면 안 되는지?
+2. FE `LINKAGE_TYPE_OPTIONS` 에 **`OTHER`(기타 연계)** 가 있으나, WIP V194 CHECK 는 **`HOSPITAL`/`HOME_CARE`/`TRANSFER`만** 허용합니다. 정본은 **OTHER 포함**(FE·스펙) vs **3종만**(DB) 중 어느?
+3. 리포트 목록 API를 **`GET /api/v1/clients/linkage-records`**(전역)로 둘지, **client 스코프 list만**으로 둘지? (UX 셸 `ClientLinkageRecordsReportPanel` vs 현재 WIP Controller는 `/{clientId}/linkage-records`만)
+
+> 확인되면 Q819를 full-stack Fixed로 승격하고 USER_MANUAL §4-7-3b·API_SPEC·DEPLOYMENT V194 스모크를 확장합니다.
+
+---
+
+### [TWR] G2 첨부 서버 검증·복제 후 수정 문서화 (2026-07-15 — **Q807 · baseline `7569f1c`/`5b3075f`**)
+
+**문서 갱신**: develop HEAD 실측 후 ops·API_SPEC 동기화 · **Flyway V1–V192** · 모듈 **~93.6%**
+
+| 문서 | 변경 | 상태 |
+|------|------|------|
+| **CHANGELOG** | **2026-07-15** 카드 3건 · 「최근 7일 요약」에 첨부 서버 검증·복제 후 수정 반영 | ✅ |
+| **FAQ** | **Q807** 신규 · **Q804·Q805** 정정(복제 strip·상세 차단·BE 검증) · baseline **`7569f1c`/`5b3075f`** | ✅ |
+| **USER_MANUAL** | **§1-3·§1-5·§4-7-3a** 복제 후 수정·첨부 BE+FE | ✅ |
+| **ADMIN_GUIDE** | **§1-4·§6-2-24h** 기관 공지 첨부 서버 검증·테스트 | ✅ |
+| **DEPLOYMENT** | **§1-3·§1-4 스모크** `ftp://` 거부 · FE PASS SHA 갱신 | ✅ |
+| **API_SPEC** | **§11-13** `attachmentUrl` http(s)·BUSINESS_RULE · UI 복제/상세 동작 | ✅ |
+
+**현황 정리**:
+- **P1 CLOSED carry**: M11 in-app 최소 set · M12 SSO handoff · J03 채널 · G2 기관 공지(+첨부 harden)
+- **P1 잔여**: M11 급여 persist · 수익·인건비 자동 집계 · 기관별 SSO 자격(테넌트)
+- **모듈 KPI**: **~93.6%** · **132 route · 105 page**
+- **문서화 상태**: ops + API_SPEC §11-13 **`7569f1c`/`5b3075f` 동기화**
+
+**다음 문서화 우선순위**: **M11 급여 persist** (P1 잔여) · **G-ACCOUNTING-IN-APP-LEDGER** (v3+) · **program reports FE `branchId`** · **7-5 live PG checklist** · **J03 Solapi live dispatch**
 
 ---
 
@@ -7204,6 +7330,18 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 75. **V49 v3 meals/programs + Must billing·attendance 재대조 0건 (2026-06-08, round 75, backend `53a1ffe`)** — Must billing·attendance·NHIS 핵심 제약 7건 SQL `rg` 물리 재확인 — **Must 신규 누락 0건**. **V49** `meal_menus`·`meal_records`·`activity_programs`·`program_participations` 4테이블 신규(API §13·frontend `7ef1083`·`config/meals.js`/`programs.js` enum 정합). agents.yaml `core_entities` `meal_records`·`activity_programs` **V49 충족**. ERD §4-11·§8·DATA_RETENTION §3 갱신. **coder**: `MealService`/`ProgramService`·JPA·`MustApiEndpointRoutingTest` §13·`mvn flyway:migrate` 검증.
 
 ### [DBA] DB 설계 질문
+
+#### #194. G2 facility_notices attachment_url 형식 CHECK V193 신규 (2026-07-15, round 212, backend `c558f29`)
+- **배경**: round 211(#미기재 — ERD round 211 note @ `1f3698d`) → backend HEAD **`c558f29`** 6 commit 전진. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`c558f29`**·branch **develop**·WT CLEAN.
+- **커밋 범위 DDL 대조**: `git diff --name-only 1f3698d..c558f29 -- src/main/resources/db/migration/` = **0파일** · `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일** · `git diff 1f3698d..c558f29 | rg 'CREATE TABLE|ALTER TABLE|@Entity|@Table|@Column|@Index|CREATE INDEX'` = **0건**(신규 `findBy*`/`@Query` 0건 — grep 매치는 테스트 mock 뿐).
+- **커밋 분해** (6): `79d4279` **fix(v2/M12)** 회계 BPO service ctor autowire(앱) · `2e29bc7` **fix(v2/QA-B95)** 공백 guardian credential = missing(앱) · `7569f1c` **facility notice attachment link 검증**(앱) · `0c45e19` **fix(v2/QA-B95)** unenforced 모드 suppressed bootstrap blocker(앱) · `124915d`/`c558f29` **feat(v2/J03)** quiet-hours aware channel availability(`NotificationChannelReadinessService`·`GuardianHomeNewsletterLaunchService` — 인메모리 config·persist 0). J03 quiet-hours 는 DB 컬럼이 아닌 `NotificationConfig`·`NotificationQuietHoursPolicy` 설정 읽기 → 스키마 영향 0.
+- **DB-미러 가능 갭 식별 (`7569f1c`)**: `FacilityNoticeService.normalizeAttachmentUrl` 가 `attachment_url` 에 ① 길이 ≤ `ATTACHMENT_URL_MAX_LENGTH`(500) ② `http://`/`https://` 스킴 접두어를 신규 강제(`BusinessRuleException`). 그러나 V192 DB CHECK 는 `chk_facility_notices_attachment_url_nonempty`(nonempty)만 두어, raw SQL 로 `javascript:alert(1)`·`ftp://…`·`data:…`·500자 초과 값 적재 시 (1) **보호자 대상 board UI 렌더링 시 비-http 스킴 = XSS/피싱 벡터**(rules §3 CRITICAL·의사결정 우선순위 Security) (2) 길이 계약 이탈이 가능. title/body 는 앱이 길이 상한을 강제하지 않는 자유 TEXT(V177 관찰노트 정책) → 제외.
+- **DBA 신규 V193** — `chk_facility_notices_attachment_url_format`(`attachment_url IS NULL OR (attachment_url ~ '^https?://' AND length(attachment_url) <= 500)`). single-additive `ALTER TABLE`-only · 신규 컬럼·트리거·인덱스 0건. immutable regex(`~`)·`length()` 로 표현 가능(V159 cash_receipt identifier_value·V155 WAYPOINT 비공백 defense-in-depth 패턴). 기존 nonempty CHECK 는 다층 방어로 유지.
+- **의도적 제외(P3)**: ① title/body 길이 상한(앱 미강제 자유 TEXT) ② URL host/경로 구조 정합·도달성(immutable CHECK 표현 불가·앱/외부 책임) ③ 스킴 whitelist 확장(현 앱 계약 = http(s) 2종만).
+- **안전성**: V192 round 211 신규 테이블·적재 0건 → backfill 불요·즉시 검증 PASS.
+- **검증 (로컬 PG14.23 scratch `ogada_dba_scratch_r212`, creds `ogada`/`ogada`)**: V1–V193 **193 migrations contiguous** exit=0(갭·중복 0) · **93 BASE 테이블** · `chk_facility_notices_attachment_url_format` `pg_constraint` 실측 · Must billing·attendance·NHIS 핵심 제약(`uq_claim_branch_month`·`uq_billing_claim_items_claim_client`·`chk_billing_claims_amount_sum`·`trg_billing_claims_total_reconciliation`·`chk_attendance_presence_xor_absence`·`uq_nhis_import_rows_org_id`) 전부 존재 · `session_replication_role=replica`(postgres 슈퍼유저) 격리 **NEG 6건**[`javascript:`·`ftp://`·`data:`·스킴 없음·500자 초과·공백 전부 정확히 거부] + **POS 4건**[유효 https·http·NULL·정확히 500자 통과].
+- **검증 한계 (rules §14)**: live `ogada` DB 는 본 워크스페이스에서 미도달 → live `flyway_schema_history` 193 success·`facility_notices` CHECK 존재는 coder/ops 가 배포 시(`mvn flyway:migrate` V192→V193) 확인 권장.
+- **결론**: **V193 추가**. ERD 헤더 HEAD(`1f3698d`→`c558f29`·V192→V193)·`facility_notices` 커버리지 note·round 212 note·PLAN_NOTES #194 갱신. **보류 carry**(전 라운드 동일): V190 P3(`(org,id)` anchor·client×branch sync·`updated_by` NOT NULL)·split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L). **coder 전달**: (1) live `ogada` `mvn flyway:migrate` V192→V193 적용. (2) Entity/Repository 변경 불요(CHECK only). (3) `attachment_url` 은 이제 앱+DB 다층 방어 — board UI 렌더링 시 비-http 스킴 차단.
 
 #### #193. G2 가정통신문 발송이력 조회 인덱스 V191 신규 (2026-07-14, round 210, backend `5d6c007`)
 - **배경**: round 209(#192 — `093ac88`) → backend HEAD **`5d6c007`** 5 commit 전진. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`5d6c007`**·branch **develop**·WT CLEAN.
