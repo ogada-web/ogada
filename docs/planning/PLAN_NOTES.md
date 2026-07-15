@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T10:05:00Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T19:45:55Z -->
+<!-- planner-sync: PLN 218차 2026-07-15T19:45 UTC — BNK-762~770·TSR 1628~1644b · ★★★ G-RFID FE wire FULL-STACK CLOSED · ★★★ M7 11/11+SUPERSET+6(BNK-770) · ★★★ 모듈 97.41% CONFIRMED · ★★ M4/4-doc SUPERSET · ★ QA-B461~B471 Fixed · Open 0 · SYNCED(BE@cf700b9·FE@b4008b0) · residual 671 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 216차 2026-07-15T10:05 UTC — BNK-748~754·TSR 1598~1613 · ★★★ G-LINKAGE FULL CLOSURE · ★★ RFID 평가29 근거 강화(격상 0) · ★ KPI 97.07 REVERT · SYNCED(BE@cdeb6bf·FE@353eb7f) · residual 659 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 215차 2026-07-15T05:48 UTC — BNK-742~747·TSR 1585~1597 · ★★★ US-V06 CLOSED · ★★★ G-LINKAGE-RECORD 스펙 · ★★ J03 SMS/kind22 · ★ RFID SMS P2 · ★ lcms 번복 · SYNCED(BE@d248916·FE@0448efa) · residual 653 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 214차 2026-07-15T01:50 UTC — BNK-738~741·TSR 1578~1584 · ★★★ J03 quiet-hours CLOSED · ★★★ sole 진성갭 id=1-10 · ★★ batch-unconfirm P2 · ★ QA-B414 Fixed · SYNCED(BE@c558f29·FE@655aaa7) · residual 647 BE · Planned QA-B116+QA-B95 -->
@@ -110,7 +111,53 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-15 (216차 PLN — **자동 기획 동기화** BNK-748~754·TSR 1598~1613·★★★ G-LINKAGE FULL CLOSURE·모듈 97.07%·RFID 평가29 근거 강화(격상 0)·org-wide report BE·KPI REVERT·SYNCED BE@cdeb6bf/FE@353eb7f·operation BLOCK 659 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-15 (218차 PLN — **자동 기획 동기화** BNK-762~770·TSR 1628~1644b·★★★ G-RFID care-provision SMS FE wire FULL-STACK CLOSED(BNK-763)·★★★ M7 「본인부담」11-leaf↔`/billing/*`17-route 100%+SUPERSET+6(BNK-770)·★★★ 모듈 97.41% CONFIRMED(BNK-768/769)·★★ M4 간호 6/6(BNK-765)·silverangel 4-doc SUPERSET(BNK-767)·SYNCED BE@cf700b9/FE@b4008b0·operation BLOCK 671 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [PLN] QA 피드백 반영 (2026-07-15, 218차 — BNK-762~770 · TSR 1628~1644b차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`cf700b9`** WT **CLEAN** · post-merge **2226/2226 PASS**(404 suites·TSR1643) · FE develop/test/origin/test **`b4008b0` ALL SYNCED+PUSHED** · post-merge **2573/2573 PASS**(472 files·TSR1644) · live default **0/149/0** · origin/test **671 BE + 0 FE** · **133 Route·106 page·V1–V196·BE @Test 2226·FE test 525·모듈 97.41%**(28.25/29·id=11 1.0·id=12 **0.7**·id=1-5 **1.0**·id=10 **0.85**(kind22+RFID SMS)·id=2/8 **0.85**·id=1-10/4/7* **1.0**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 218차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음(이미 Fixed 본문에 기입) · Planned residual **QA-B116**(origin/test push **671 BE**) + **QA-B95**(operation 승격·B450~B471 blocker parsing harden Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B461~B471 Fixed** | QA-B95 unicode/HTML entity decode harden(B461/B464/B466~B468/B470/B471) · G-RFID FE wire+snake_case(B462~B464) · G-LINKAGE report pagination(B469) · origin/test FE PUSH carry | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-763 ★★★** | **G-RFID-CARE-PROVISION-DISPATCH FULL-STACK CLOSED** — FE `dispatchRfidCareProvisionApi`+`VisitRfidDiffComparePanel` · BE `POST …/rfid/care-provision-dispatch` · HOME_VISIT only · BNK-759~762 P2 residual **제거** · id=10 **0.85**·KPI promote 0 | REQUIREMENTS · USER_STORIES · ROADMAP v2/v3 |
+| **BNK-770 ★★★** | **M7 「본인부담」11-leaf ↔ `/billing/*` 17-route 100%**(BNK-723 STALE 갱신) · SUPERSET +6(공단 import·대사·통계·본인부담률 마스터) · BE billing **68-hit** 케어포 7-x verbatim 코드 앵커 · 리포트 밀도 27.3%↔**29.4%** · id=7* **1.0 재확인** | REQUIREMENTS §M7 · USER_STORIES US-L* · COMPETITOR_MATRIX |
+| **BNK-768/769 ★★★** | **모듈 KPI 97.41%(28.25/29) CONFIRMED** · 가정 번복 0 · closed axes **14-path** LIVE 재오픈 0 · residual PRIMARY=id=12 **0.7**(credentials)→id=2/8/10 **0.85** · 4-doc batch UX v3+ P3 defer | ROADMAP · PLAN_NOTES · baseline |
+| **BNK-765/767 ★★** | M4 간호 주 leaf **6/6**+dual-path 3·L03_M*/view.* **85-hit** 앵커 · silverangel「엔젤에서만」4-doc **부정확**·ogada 4/4 SUPERSET · NHIS #44 **504차** zero drift · charge promo **D-16**(~2026-07-31) | REQUIREMENTS · USER_STORIES · §추가 질문 218 |
+| **BNK-762 ★** | 변경사유 8-col = **audit only** · **승인 FSM 과대구축 금지** · duplicate-schedule 전용 모듈 금지 | ROADMAP v3 · PLAN_NOTES |
+
+**coder/ops 다음 액션 (218차)**: ① **tester** origin/test push **671+ BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable·B450~B471 parsing 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form·SMS 발송단가 in-app(과대구축 금지) ⑤ ~~RFID FE wire~~ → **FULL-STACK CLOSED**(BNK-763).
+
+### 추가 질문 (자동 기획 동기화 218차)
+1. **SMS 발송단가 in-app 노출 (★ BNK-766/769)**: 이지케어 `messageAmt={app:10,sms:20,mms:50}` parity를 채널 readiness UI에 노출할지, 가격·정책 페이지 carry만 할지? → **P2「가정」·진성갭 아님·격상 0**.
+2. **4-doc batch dispatch UX (★ BNK-767)**: 가정통신문+명세서+기록지+납부확인서 개별 dispatch 착지 완료 — **통합 batch UX**는 v3+ P3 defer 유지할지?
+3. **만료일 7-category / M12 credentials / charge promo D-16 (★ carry)**: 217차 유지·격상 0 · 셋팅 33,000원 promo **2026-07-31 만료 후** charge 재실측 필수.
+4. ~~**RFID care-provision SMS FE wire (217-1)**~~ → **FULL-STACK CLOSED**(BNK-763·B455/B462).
+5. ~~**M2 2-6 / kind22 / G-LINKAGE FE Route**~~ → CLOSED/carry(217차).
+
+
+### [PLN] QA 피드백 반영 (2026-07-15, 217차 — BNK-755~761 · TSR 1614~1627차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`7868384`** WT **CLEAN** · post-merge **2219/2219 PASS**(404 suites·TSR1626) · FE develop/test/origin/test **`3fddccd` ALL SYNCED+PUSHED** · post-merge **2560/2560 PASS**(472 files·TSR1627) · live default **0/149/0** · origin/test **665 BE + 0 FE** · **133 Route·106 page·V1–V196·BE @Test 2214·FE test 525·모듈 97.41%**(28.25/29·id=11 1.0·id=12 **0.7**·id=1-5 **1.0**·id=10 **0.85**(kind22)·id=2/8 **0.85**·id=1-10 **1.0**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 217차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **665 BE**) + **QA-B95**(operation 승격·B450~B460 blocker parsing harden Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B450~B460 Fixed** | QA-B95 bootstrap/live blocker payload parsing harden(nested flatten B450·object-form B456/B457·serialized B458·URL-encoded B459/B460) · G-RFID care-provision dispatch B455 · G-SMS kind22 B453/B454 | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-753/754 ★★★** | **G-SMS kind22 급여명세서 dispatch FULL-STACK CLOSED** — BE `POST /staff/notifications/staff-payroll-statement`+catalog **7/7 dispatchImplemented** · FE StaffNotificationDispatchPanel+StaffPayrollReportsPage · id=10 0.75→**0.85** | REQUIREMENTS · USER_STORIES US-J03 · ROADMAP v2/v3 |
+| **BNK-758/759/760 ★★★** | **모듈 KPI 가정 번복** — `97.07%`(BNK-758 undercount) → **`97.41%(28.25/29)`** · 배열 29-entry sum 28.25 실측 · JSDoc grep=30 오염 배제(BNK-753 패턴) · BNK-759/760 교차검증 CONFIRMED | ROADMAP · PLAN_NOTES · baseline |
+| **BNK-761 ★★** | **M2 「이동서비스」10-leaf ↔ ogada Route 1:1 — BNK-425 STALE 정정** · 2-7/2-8(`/reports/transport-monthly`)·2-9(`/reports/client-outings`) △→**✅ CLOSED** · 2-6 △ P3 carry · id=2 **0.85**=form 18/19/20 polish·**KPI promote 0** · demo 시설 셸 transport 0(정본=주야간 func/marketing) | COMPETITOR_MATRIX(BNK) · REQUIREMENTS · ROADMAP v2 |
+| **BNK-759/760 ★★** | **G-RFID care-provision SMS batch dispatch BE 착지** — `POST …/rfid/care-provision-dispatch`(kind13·FAQ 21589·HOME_VISIT only·`@c080529` 상속) · **FE wire 0-hit = P2 residual**(services.js/VisitRfidDiffComparePanel compare-only) · 주간보호 진성갭 아님 · **격상 0** | REQUIREMENTS G-RFID · USER_STORIES · §추가 질문 217 |
+| **BNK-755~757/761 ★** | 규제 백본 11-URL zero drift(NHIS #44 **495차**·CMS 250/300·지표27·law247/longterm/MOHW) · closed axes(G14·dashboard·CMS·payroll·linkage) 재오픈 0 · 만료일 7-category P3「가정」 carry · search_menu 2024-12=2026-06 LOCK | REQUIREMENTS · COMPETITOR_MATRIX carry |
+
+**coder/ops 다음 액션 (217차)**: ① **tester** origin/test push **665+ BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable·B450~B460 blocker parsing 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ P2** RFID care-provision SMS **FE wire**(BE `@c080529` 착지·services.js/panel dispatch 버튼)·org-wide linkage FE Route ⑤ ~~kind22 dispatch~~ → **FULL-STACK CLOSED**(BE+FE·id=10 0.85).
+
+### 추가 질문 (자동 기획 동기화 217차)
+1. **RFID care-provision SMS FE wire (★★ BNK-759/760)**: BE `care-provision-dispatch`(kind13) 착지 완료 · FE `VisitRfidDiffComparePanel`/`services.js` 는 compare-only → **P2 dispatch 버튼 UI go/no-go**? (요보사 불일치 문자 vs 평가29·FAQ 21589 급여제공내역 일괄 — 근거만 강화·격상 0 유지).
+2. **M2 2-6 공단 급여비용 청구 자료 (★ BNK-761)**: NHIS import cluster 로 흡수 vs dedicated report Route 신설? → 현행 △ P3 carry(진성갭 아님·id=2 0.85 promote 0).
+3. **만료일 7-category / CashReceipt 3-way / M12 credentials (★ carry)**: 216/215차 질문 유지·격상 0.
+4. ~~**kind22 급여명세서 dispatch (216-3)**~~ → **FULL-STACK CLOSED**(BE catalog 7/7 + FE panel/reports page·id=10 0.85).
+5. ~~**G-LINKAGE org-wide FE Route (216-1)**~~ → **FE Route CLOSED carry**(`@68cd253` UXD-179) · org-wide report polish P2 잔여.
+
 
 ### [PLN] QA 피드백 반영 (2026-07-15, 216차 — BNK-748~754 · TSR 1598~1613차)
 
@@ -124,12 +171,40 @@
 | **BNK-754 ★★** | Channel.io TOP-10 + V.ez **평가문항 29·월1회** RFID→SMS 근거 강화 · messageAmt 10/20/50 · **P2 격상 0** · org-wide linkage report BE · ~7/31 셋팅비 모니터링 | REQUIREMENTS G-RFID · USER_STORIES · §추가 질문 216 |
 | **BNK-748/750~752 ★** | QA-B95 fail-closed 폐루프 · 이중 일정/RFID/본인부담 = 진성갭 아님 · 만료일 7-category P3「가정」 · 규제 488차 zero drift | REQUIREMENTS · COMPETITOR_MATRIX carry |
 
-**coder/ops 다음 액션 (216차)**: ① **tester** origin/test push **659 BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials ④ **v2+ P2** org-wide linkage FE Route · kind22 dispatch / RFID SMS go/no-go(§216-2).
+**coder/ops 다음 액션 (216차)**: ① **tester** origin/test push **659+ BE**(QA-B116) · kind22 BE 커밋 merge ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials ④ **v2+ P2** org-wide linkage FE Route(✓ FE `@68cd253`) · ~~kind22 BE dispatch~~ → **COD CLOSED** · FE UI / RFID SMS go/no-go(§216-2).
+
+### [COD] 코더 메모 (2026-07-15 — J03 dispatch-reference-unit-rates catalog + health)
+
+- BE develop `feat(v2/J03): expose dispatch reference unit rates catalog` — `GET /api/v1/notifications/dispatch-reference-unit-rates` (HQ/BRANCH · template-catalog 패턴) + `/api/v1/health` `notificationDispatchReferenceUnitRates` (channel-status 임베드와 동일 `NotificationDispatchUnitRatesCatalog.REFERENCE` · 서비스 null/오류와 무관 정적 안내) · API_SPEC §11-10 갱신 · related ReadinessService+Health+routing/RBAC @Test · id=10 **0.85 carry** · KPI promote 0 · residual Open **QA-B476**(tester FF · COD는 test merge 금지) · Planned **QA-B116+QA-B95** · M12 credentials · form 18/19/20 polish.
+
+### [COD] 코더 메모 (2026-07-15 — J03 SMS dispatchReferenceUnitRates FE API wire)
+
+- FE develop `feat(v1.2.1/J03): prefer BE dispatchReferenceUnitRates in channel readiness` @ `a356083` — `GET /notifications/channel-status` 의 `dispatchReferenceUnitRates`(+ FE static fallback) 를 `normalizeNotificationChannelStatus`·`NotificationChannelReadinessPanel`에 wire (API_SPEC · BE `@2f578fb` parity) · related **26/26** PASS · id=10 **0.85 carry** · KPI promote 0 · Open FE **0** · Planned **QA-B116+QA-B95** · residual = tester BE merge(QA-B476) · origin/test push · M12 credentials.
+
+### [COD] 코더 메모 (2026-07-15 — QA-B95 FE end-terminated numeric HTML entity decode)
+
+- FE develop `fix(v1.2.1/QA-B95): decode end-terminated numeric HTML entities` @ `b0b9ace` — numeric entity lookahead `(?=[^…])` → **`(?=$|[^…])`** (BE `@74e90c1` parity) so token-end `&#100`/`&#x64`/`&AMP;#100` decode to close `bootstrap-disabled` · `liveBackendProbe`·`liveConfig`·`liveGlobalSetup`·`notificationChannelStatus` 4-site sync · related **157/157** PASS · Open **0** · Planned **QA-B116+QA-B95** · residual = origin/test push(ops QA-B116) · operation bootstrap enable(QA-B95) · M12 credentials.
+
+### [COD] 코더 메모 (2026-07-15 — QA-B95 FE amp→numeric multi-pass decode)
+
+- FE develop `fix(v1.2.1/QA-B95): multi-pass decode double-encoded HTML entities` — `liveBackendProbe`·`liveConfig`·`liveGlobalSetup`·`notificationChannelStatus` decode를 **named→numeric→&amp; 최대 3-pass** 로 harden (BE `@2768252` recursive expand 패리티) · channel-status는 split 후 재디코드가 없어 **단일 호출에서 `&AMP;#x2d;`→`-`** 필수 · regresses `&LT;`/`&QUOT;`/`&AMP;#x2d;` · related **151/151** PASS · Open **0** · Planned **QA-B116+QA-B95** · residual = origin/test push(ops) · M12 credentials · operation bootstrap enable.
+
+### [COD] 코더 메모 (2026-07-15 — QA-B95 case-insensitive HTML entity decode BE)
+
+- BE develop `@2768252` `fix(v2/QA-B95): decode case-insensitive named HTML entities` — `LiveE2eOperationReadinessSupport` named entities `&quot;`/`&apos;`/`&lt;`/`&gt;`/`&amp;` → **CASE_INSENSITIVE** (FE `liveBackendProbe.js` `/gi` parity) · regresses uppercase gateway wrappers (`&LT;bootstrap&#45;disabled&GT;` · `&QUOT;…&AMP;#x2d;…&QUOT;`) · related `LiveE2eOperationReadinessSupportTest` PASS · Open **0** · Planned **QA-B116+QA-B95** · residual = origin/test push(ops) · M12 credentials · operation bootstrap enable.
+
+### [COD] 코더 메모 (2026-07-15 — G-RFID-CARE-PROVISION-DISPATCH BE)
+
+- BE develop `feat(v2/G-RFID): wire RFID care-provision SMS dispatch` — compare 응답에 `dispatchCandidates[]`(LTC→client) · `POST /api/v1/visits/imports/rfid/care-provision-dispatch` · message_kind=13 `CARE_PROVISION_RECORD` 일괄 · HOME_VISIT only · quiet-hours 기존 notify 경로 · FAQ 21589/평가29 MVP = 보호자 급여제공내역(요보사 불일치-only 아님) · related unit PASS · Open **0** · Planned **QA-B116+QA-B95** · residual = FE UI wire · origin/test push · M12 credentials.
+
+### [COD] 코더 메모 (2026-07-15 — G-SMS kind22 payroll statement BE dispatch)
+
+- BE develop `feat(v2/J03): wire staff payroll statement message kind 22 dispatch` — `POST /api/v1/staff/notifications/staff-payroll-statement` · catalog **7/7 `dispatchImplemented=true`** · quiet-hours 가드 · M11 `previewSimplePaymentStatement` → netPay payload · Alimtalk fallback 「급여명세서」 · related unit PASS · Open **0** · Planned **QA-B116+QA-B95** · residual = FE 발송 UI · RFID SMS · origin/test push · M12 credentials.
 
 ### 추가 질문 (자동 기획 동기화 216차)
-1. **G-LINKAGE org-wide FE Route (★ BNK-754)**: `/clients/linkage-records` 독립 Report Route vs ClientDetail 리포트만 유지?
+1. **G-LINKAGE org-wide FE Route (★ BNK-754)**: `/clients/linkage-records` 독립 Report Route vs ClientDetail 리포트만 유지? → **FE Route CLOSED**(`@68cd253` UXD-179).
 2. **RFID SMS P2 (★★ BNK-743/754)**: 요보사 불일치 문자만 vs 보호자 급여제공내역(평가29·FAQ 21589)도 MVP? — **격상 불요·근거만 강화**.
-3. **kind22 급여명세서 dispatch (★ carry)**: M11×G-SMS v2+ wire 우선 vs enum-only defer 유지?
+3. ~~**kind22 급여명세서 dispatch (★ carry)**~~ → **COD BE wire CLOSED**(enum-only defer 종료·FE UI 잔여).
 4. **만료일 7-category / CashReceipt 3-way / M12 credentials (★ carry)**: 215/214차 질문 유지·격상 0.
 5. ~~**G-LINKAGE MVP scope (215-1)**~~ → **CLOSED BNK-749**(authoring+dispatch+client report) · org-wide FE만 §216-1.
 
@@ -1266,6 +1341,24 @@
 ---
 
 ### 문서 작성 질문
+
+### [TWR] 긴급 문서화 작업 대기 상태 (2026-07-15 21:20 UTC — **모든 ops 문서 최신 동기화 완료**)
+
+**현황**:
+- **최근 작업 반영**: 2026-07-15 CHANGELOG, FAQ, USER_MANUAL, ADMIN_GUIDE, DEPLOYMENT_GUIDE 모두 sync
+- **develop HEAD**: `daf9d8e` (docs(qa): record QA-B450 V195/V196 linkage integrity gate)
+- **backend**: `cf700b9` (fix uppercase hex HTML entities in bootstrap blockers)
+- **frontend**: `b4008b0` (fix uppercase hex HTML entities in readiness blockers)
+- **모듈 KPI**: ~97.4% · **133 route · 106 page** · Flyway **V1–V196**
+
+**대기 중 문서화 우선순위** (P1 잔여 기능 구현 시):
+1. **M11 급여 persist** — 급여 저장·수익·인건비 자동 집계
+2. **G-ACCOUNTING-IN-APP-LEDGER** (v3+) — 회계 장부 in-app
+3. **program reports FE `branchId`** — 프로그램 리포트 지점 필터
+4. **7-5 live PG checklist** — 본인부담 간편결제 PG 통합
+5. **J03 Solapi live dispatch** — 채널 라이브 발송
+
+---
 
 ### [TWR] 연계기록지 길이 가드·live E2E 파싱 문서화 (2026-07-15 — **Q822·Q823 · baseline `d271cc3`/`33f59a9`**)
 
@@ -7379,6 +7472,14 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 75. **V49 v3 meals/programs + Must billing·attendance 재대조 0건 (2026-06-08, round 75, backend `53a1ffe`)** — Must billing·attendance·NHIS 핵심 제약 7건 SQL `rg` 물리 재확인 — **Must 신규 누락 0건**. **V49** `meal_menus`·`meal_records`·`activity_programs`·`program_participations` 4테이블 신규(API §13·frontend `7ef1083`·`config/meals.js`/`programs.js` enum 정합). agents.yaml `core_entities` `meal_records`·`activity_programs` **V49 충족**. ERD §4-11·§8·DATA_RETENTION §3 갱신. **coder**: `MealService`/`ProgramService`·JPA·`MustApiEndpointRoutingTest` §13·`mvn flyway:migrate` 검증.
 
 ### [DBA] DB 설계 질문
+
+#### #195. V195/V196 committed + J03/G-RFID SMS 앱 only 재검증 — 신규 V197 불요 (2026-07-15, round 215, backend `7868384`)
+- **배경**: round 214(ERD — BE `@cdeb6bf` + DBA V195/V196 WIP) → backend HEAD **`7868384`** 6 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`7868384`**·branch **develop**·WT CLEAN·migrations contiguous **V1–V196**(196 files·갭·중복 0).
+- **커밋 범위 DDL 대조**: `git diff --name-only cdeb6bf..HEAD -- src/main/resources/db/migration/` = **V195·V196 2파일**(round 214 DBA 산출 · coder `9dff00f` commit + `V196ClientLinkageRecordsIntegrityReadinessProbe`) · `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일** · `CREATE TABLE|ALTER TABLE|@Entity|@Column|@Index`(V195/V196 제외) = **0건**.
+- **커밋 분해** (6): `9dff00f` **V195/V196 + linkage integrity readiness gate** · `7de86eb` **feat(v2/J03)** 직원 급여명세서 message_kind **22** alimtalk(`StaffPayrollStatementNotificationService` — M11 preview 금액·기존 `notifications` INSERT·catalog 인메모리·신규 테이블 0) · `c080529` **feat(v2/G-RFID)** RFID care-provision SMS batch(FAQ 21589·message_kind **13**·`VisitRfidCareProvisionDispatchService` — 기존 visit/client/notification 재사용·신규 `findBy*`/`@Query`/DDL 0) · `34d4968`/`79aa377`/`7868384` **fix(v2/QA-B95)** bootstrap blocker parse/decode(앱 only).
+- **DB backing 대조 (신규 인덱스 0건)**: kind 22/13 발송 이력 → **V191** `idx_notifications_org_branch_template_created (org, branch_id, template_code, created_at DESC)` · RFID compare/dispatch roster → **V53** `idx_visit_schedules_org_branch_date` + Tenant UK. payroll statement 금액은 M11 인메모리 preview(persist 0) — 컬럼 미러 대상 없음.
+- **Must billing·attendance·NHIS**: 도메인 스키마 변경 **0건**. live `ogada` `pg_constraint`/`pg_trigger` 핵심 7건 + V191/V192 인덱스 실측 존재. **live flyway max = V193** — `client_linkage_records` 미존재(V194–V196 미적용).
+- **결론**: **신규 V197 불요**. ERD 헤더 HEAD(`cdeb6bf`→`7868384`)·§1 Must heading(round 214→215)·round 215 note·DATA_RETENTION 메타·PLAN_NOTES #195 갱신. **보류 carry**(전 라운드 동일): V190 P3·split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L). **coder 전달**: (1) live `ogada` `mvn flyway:migrate` **V193→V194→V195→V196** (operation gate `v196-client-linkage-records-integrity-missing` 해소). (2) J03 kind22 / G-RFID kind13 — Entity/Repository/DDL 추가 불요. (3) Must `core_entities` 11종·billing·attendance 전수 충족 유지.
 
 #### #194. G2 facility_notices attachment_url 형식 CHECK V193 신규 (2026-07-15, round 212, backend `c558f29`)
 - **배경**: round 211(#미기재 — ERD round 211 note @ `1f3698d`) → backend HEAD **`c558f29`** 6 commit 전진. 워크스페이스 submodule 실측 — `git rev-parse --short HEAD` = **`c558f29`**·branch **develop**·WT CLEAN.

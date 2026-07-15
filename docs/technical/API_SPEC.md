@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-06-26T23:00:00+09:00 -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-15T22:47:00+09:00 -->
+<!-- tech_writer-sync: TWR 2026-07-15 — **§4-2 G-LINKAGE-RECORD** CRUD+dispatch+**지점 리포트** · V194–**V196** · Q819·Q822·**Q826**·**Q827** · BE `9dff00f` / FE `8b8095a` -->
 <!-- planner-sync: PLN 197차 2026-06-24T22:30 UTC — BNK-596~599 G2b CMS payment-method-catalog + G16 parity-rules BE API · BE `bd1e87e`/FE `c3c6272` baseline -->
 <!-- tech_writer-sync: TWR 344차 2026-06-24T23:45:00Z — **G2b CMS collection methods closure** · **`POST/GET .../virtual-account`** · **`POST/GET .../multi-account-settlement`** · **V176 integration** · BE `dac8ebd`·FE `c3c6272`·V1–V176·112 route·91 page·**merge gate 778** · **신규 섹션**: CMS 가상계좌·다계좌 정산 API (Q704) · **FAQ Q701·Q704 신규** · **USER_MANUAL §4-6 정정** · **다음**: G16 FE parity-rules wire · G2b CMS FE panel UI (가상계좌·다계좌) P2 -->
 <!-- planner-sync: PLN 196차 2026-06-24T16:00 UTC — BNK-587 G-SMS dispatch response ezcareMessageKind · BE `ef8bb4e`/FE `3f686e3` baseline -->
@@ -8,10 +9,10 @@
 
 > **작성**: planner, tech_writer 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-06-25 (COD 198차 sync — **G-NHIS-ALT-KEY-AUDIT-BADGE** `altKeyMatched` 필드 · **v2/7-5 easy-pay provider catalog** · **BE `56831fc` / FE `892122d`** · V1–V178·112 route·91 page · merge gate 790 · **다음**: Kakao Biz 채널 연동 · easy-pay live PG)
+> **최종 갱신**: 2026-07-15 (TWR — **§4-2 연계기록지** G-LINKAGE-RECORD · Flyway **V194–V196** · Q819·Q822·**Q826**·**Q827** · BE `9dff00f` / FE `8b8095a`)
 > **상태**: 초안 (Draft) — 사용자 승인 전
-> **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자, 출석, 건강, 청구, **대시보드(G21 NHIS·G15 Kakao)**, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, 케이스관리·기능회복훈련·민원상담, **목욕 자동 복사**, 시스템 헬스체크
-> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `56831fc` / **frontend** `892122d`
+> **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자(**연계기록지**), 출석, 건강, 청구, **대시보드(G21 NHIS·G15 Kakao)**, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, 케이스관리·기능회복훈련·민원상담, **목욕 자동 복사**, 시스템 헬스체크
+> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `9dff00f` / **frontend** `8b8095a`
 
 ---
 
@@ -623,6 +624,51 @@
 
 ---
 
+### 4-2. 연계기록지 (G-LINKAGE-RECORD / 케어포 1-10, Q819·Q822·Q826·Q827)
+
+전원·퇴소 후 **외부기관 연계** 기록. Flyway **V194** `client_linkage_records` · **V195** 지점 리포트 인덱스 · **V196** 길이 CHECK·client×branch FK·purge index. UI: **`/clients/:clientId` 「연계기록지」** 탭(작성) · **`/clients/linkage-records`**(지점 리포트, SideNav **「연계기록지 리포트」**).
+
+| 메서드 | 경로 | 설명 | 권한 |
+|--------|------|------|------|
+| GET | `/clients/linkage-records` | **지점·조직 스코프** 발송 리포트 (`branchId`·`status`·`linkageType`·`q`·`page`·`size`) | `hq_admin`, `branch_admin`, `social_worker` |
+| GET | `/clients/{clientId}/linkage-records` | 이용자별 목록 (`status`·`q`·`page`·`size`) | 동일 |
+| GET | `/clients/{clientId}/linkage-records/{recordId}` | 단건 조회 | 동일 |
+| POST | `/clients/{clientId}/linkage-records` | **초안(DRAFT)** 생성 | 동일 |
+| PATCH | `/clients/{clientId}/linkage-records/{recordId}` | **초안만** 수정 | 동일 |
+| POST | `/clients/{clientId}/linkage-records/{recordId}/dispatch` | 발송 완료(**DISPATCHED**) | 동일 |
+| DELETE | `/clients/{clientId}/linkage-records/{recordId}` | **초안만** 삭제 | 동일 |
+
+**Create/Update body**
+
+```json
+{
+  "linkageType": "HOSPITAL",
+  "targetInstitution": "○○병원",
+  "summary": "심신기능·제공 급여 요약"
+}
+```
+
+| 필드 | 제약 |
+|------|------|
+| `linkageType` | **`HOSPITAL`** \| **`HOME_CARE`** \| **`TRANSFER`** (`OTHER` 없음) |
+| `targetInstitution` | 필수 · **max 200** — DTO `@Size` + 서비스 재검증 + **V196 CHECK** (**Q822**·**Q827**) |
+| `summary` | 필수 · **max 5000** — FE는 작성일·퇴소 후 이용계획을 summary에 **접기 마커**로 포함 |
+
+**응답 (`ClientLinkageRecordResponse`)** — `id`·`clientId`·`branchId`·`linkageType`·`targetInstitution`·`summary`·`recordStatus`(`DRAFT`\|`DISPATCHED`)·`dispatchedAt`·`createdBy`·`createdAt`·`updatedAt`.
+
+**지점 리포트 응답 (`ClientLinkageRecordReportResponse`)** — 위 필드 + **`clientName`**. 페이지 래퍼 `items`·`page`·`size`·`totalElements`(구현체 `ClientLinkageRecordReportPageResponse`).
+
+**규칙**
+- **DISPATCHED** 행은 PATCH/DELETE **거부** (`422 BUSINESS_RULE`).
+- 길이 초과: **`422`** — `연계기관은(는) 200자 이하여야 합니다.` / `요약은(는) 5000자 이하여야 합니다.`
+- `caregiver`·`guardian` → **403**.
+- **퇴소 후 INSERT 허용**(active-client 가드 없음 — 전원·퇴소 후 연계 업무).
+- health **`v196ClientLinkageRecordsIntegrityCheckReady`** · blocker **`v196-client-linkage-records-integrity-missing`** (**Q827**).
+
+> 관련: FAQ **Q819**·**Q822**·**Q826**·**Q827** · USER_MANUAL §4-7-3b · DEPLOYMENT §1-4 · BE `9dff00f` · FE `8b8095a`
+
+---
+
 ## 5. 출석 (Attendance) — §3-3
 
 | 메서드 | 경로 | 설명 | 권한 |
@@ -767,7 +813,7 @@
 | 필드 | 의미 |
 |------|------|
 | `templateCode` | Solapi 템플릿 코드 |
-| `ezcareMessageKind` | ezCare `message_kind` 대조용 정수(예: 1·11·12·13·19·21) |
+| `ezcareMessageKind` | ezCare `message_kind` 대조용 정수(예: 1·11·12·13·19·21·**22**) |
 | `channel` | `ALIMTALK` \| `SMS` \| `EMAIL` |
 | `status` | 발송 요청 결과 |
 
@@ -1252,11 +1298,12 @@
 
 ### 11-10. 알림 채널 readiness (US-J03 / J03-readiness) — v2 partial+
 
-> **상태**: backend **`d4acab7`/`fffd355`** — `NotificationChannelReadinessService`·`GET /api/v1/notifications/channel-status`. frontend **`6b1258c`/`d695923`** — `NotificationChannelReadinessPanel`(`DashboardPage`·`OrganizationSettingsPage`) · REQUIREMENTS J03-readiness · USER_STORIES US-J03 · **잔여 P2**: live Solapi E2E·quiet-hours dispatch BE enforce.
+> **상태**: backend develop — `NotificationChannelReadinessService`·`GET /api/v1/notifications/channel-status` + **quiet-hours aware** `nonEmergency*DispatchAvailableNow` · **`GET …/dispatch-reference-unit-rates`** 전용 카탈로그 · `/api/v1/health` `notificationDispatchReferenceUnitRates` 동일 상수. frontend **`a356083`** — readiness panel BE rates prefer + static fallback · REQUIREMENTS J03-readiness · USER_STORIES US-J03 · **닫힘**: quiet-hours·SMS readiness·참고 단가 in-app · **잔여**: live Solapi E2E(ops)·id=10 KPI promote 금지(0.85).
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
-| GET | `/api/v1/notifications/channel-status` | Solapi·SMTP·알림톡 템플릿·live dispatch readiness·quiet-hours | `hq_admin`, `branch_admin` |
+| GET | `/api/v1/notifications/channel-status` | Solapi·SMTP·알림톡 템플릿·live dispatch readiness·quiet-hours·`dispatchReferenceUnitRates` | `hq_admin`, `branch_admin` |
+| GET | `/api/v1/notifications/dispatch-reference-unit-rates` | ezCare `mobile-sendW` messageAmt 참고 단가 전용 카탈로그(app **10** / SMS **20** / MMS **50**원) | `hq_admin`, `branch_admin` |
 
 **응답 필드 (요약, 시크릿 비노출)**:
 
@@ -1265,20 +1312,31 @@
 | `solapiApiKeyConfigured` / `solapiApiSecretConfigured` / `solapiSenderNumberConfigured` / `kakaoChannelIdConfigured` | Solapi 4항 configured boolean |
 | `smtpHostConfigured` / `liveEmailDispatchReady` | SMTP 호스트·이메일 live 발송 준비 |
 | `liveAlimtalkDispatchReady` | 9 필수 알림톡 템플릿 + Solapi 게이트 종합 |
-| `quietHoursActive` | **22:00~08:00 Asia/Seoul** 조용한 시간대 (readiness 표시; dispatch BE enforce **P2**) |
+| `quietHoursActive` | **22:00~08:00 Asia/Seoul** 조용한 시간대 |
+| `nonEmergencyAlimtalkDispatchAvailableNow` / `nonEmergencyEmailDispatchAvailableNow` / `nonEmergencySmsDispatchAvailableNow` | live readiness ∧ ¬quietHours — 비긴급 즉시 발송 가능 여부 |
 | `requiredAlimtalkTemplates[]` | 9 템플릿(출석 입/퇴·일일케어·청구명세·입금·급여제공·가정통신문·학대예방·긴급) — code·configured |
+| `dispatchReferenceUnitRates` | 운영 안내 참고 단가(ezCare `mobile-sendW` messageAmt · app **10** / SMS **20** / MMS **50**원). `source`·`note`·`rates[]`(`id`·`channelKey`·`labelKo`·`amountWon`·`note`). **청구·정산 소스 아님** · Solapi 실과금과 독립(id=10 0.85 carry · FE `notificationDispatchUnitRates` parity) |
+
+**`GET …/dispatch-reference-unit-rates`**: channel-status 에 임베드된 `dispatchReferenceUnitRates` 와 **동일 상수**(`NotificationDispatchUnitRatesCatalog.REFERENCE`). template-catalog 패턴의 전용 조회. `/api/v1/health` 의 `notificationDispatchReferenceUnitRates` 도 동일(서비스 null/오류와 무관·정적 안내).
 
 **semantics**:
 
 - 케어포 func **`10-7.안내발송내역(문자, 이메일)`** — 발송 **이력** 중심(ogada `NotificationHistoryPanel` ✅) · readiness 게이트 **ogada 차별화**
 - `isQuietHoursActive()`: `!now.isBefore(22:00) || now.isBefore(08:00)` (Asia/Seoul) @ `fffd355`
-- FE `fetchNotificationChannelStatusApi` · **`NotificationChannelReadinessPanel`** — configured boolean only(키·시크릿 미노출)
+- FE `fetchNotificationChannelStatusApi` · **`NotificationChannelReadinessPanel`** — configured boolean only(키·시크릿 미노출) · 참고 단가는 BE `dispatchReferenceUnitRates`(+ 전용 catalog) + FE static fallback
 
 ### 11-11. 알림 템플릿 카탈로그 (G-SMS-TEMPLATE-CATALOG) — v1.2.1 ✅ closure @ `ef8bb4e`/`3f686e3`
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/api/v1/notifications/template-catalog` | ezCare `message_kind` ↔ ogada Solapi 템플릿 매핑 상태 노출 | `hq_admin`, `branch_admin` |
+| POST | `/api/v1/staff/notifications/staff-monthly-schedule` | 직원 월간 근무일정표 알림톡 (message_kind=21) | `hq_admin`, `branch_admin`, `social_worker` |
+| POST | `/api/v1/staff/notifications/staff-access-key` | 직원 모바일 접속키 SMS (message_kind=1) | `hq_admin`, `branch_admin`, `social_worker` |
+| POST | `/api/v1/staff/notifications/staff-payroll-statement` | 직원 급여명세서 알림톡 (message_kind=22 · M11×G-SMS) | `hq_admin`, `branch_admin`, `social_worker` |
+
+**`POST …/staff-payroll-statement` 요청 필드**: `staffUserId`(필수) · `yearMonth`(YYYY-MM) · `basePay`(필수) · `allowances`/`deductions`(선택·기본 0) · `summary`(선택·500자).
+
+**응답**: `staffUserId` · `templateCode=STAFF_PAYROLL_STATEMENT` · `yearMonth` · `netPay` · `ezcareMessageKind=22`. quiet-hours 중이면 거부(J03).
 
 **응답 필드**:
 
@@ -1340,11 +1398,11 @@
 | `status` | 발송 상태 |
 | `sentAt` / `createdAt` | 발송·생성 시각 |
 
-**health 필드**: `homeNewsletterCatalogAvailable` · `homeNewsletterDispatchReady` · `homeNewsletterDispatchAvailability` · `homeNewsletterAuthoringAvailability` · `homeNewsletterReadinessBlockers[]`
+**health 필드**: `homeNewsletterCatalogAvailable` · `homeNewsletterDispatchReady`(**quiet-hours aware** = `nonEmergencyEmailDispatchAvailableNow`) · `homeNewsletterDispatchAvailability` · `homeNewsletterAuthoringAvailability` · `homeNewsletterReadinessBlockers[]`(`email-dispatch-not-ready` · `quiet-hours-active`) · notification: `notificationQuietHoursActive` · `notificationNonEmergencyAlimtalkDispatchAvailableNow` · `notificationNonEmergencyEmailDispatchAvailableNow`
 
 ### 11-13. 기관 공지·자료실 (carefor 10-4 / G2 board-ui) — v2
 
-> **상태**: backend develop — Flyway **V192** `facility_notices` · CRUD+publish. frontend develop — launch board CRUD/PATCH/publish/delete + `attachmentUrl` (6-endpoint FE wire).
+> **상태**: backend develop — Flyway **V192** `facility_notices` · CRUD+publish · **`attachmentUrl` http(s) 서버 검증**. frontend develop — launch board CRUD/PATCH/publish/delete · 복제 시 불안전 첨부 strip · 상세 불안전 href 차단 (6-endpoint FE wire).
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
@@ -1355,9 +1413,11 @@
 | POST | `/api/v1/notifications/facility-notices/{noticeId}/publish` | 초안 → 게시 | 동일 |
 | DELETE | `/api/v1/notifications/facility-notices/{noticeId}` | 초안 삭제 (게시본 삭제 불가) | 동일 |
 
-**필드**: `noticeCategory`=`NOTICE`\|`RESOURCE` · `title`≤200 · `bodyText`≤5000 · `attachmentUrl`≤500(optional·자료실 URL) · `recordStatus`=`DRAFT`\|`PUBLISHED` · `publishedAt`.
+**필드**: `noticeCategory`=`NOTICE`\|`RESOURCE` · `title`≤200 · `bodyText`≤5000 · `attachmentUrl`≤500(optional·자료실 URL · **blank→null** · **반드시 `http://` 또는 `https://` 접두** · 위반 시 `BUSINESS_RULE`) · `recordStatus`=`DRAFT`\|`PUBLISHED` · `publishedAt`.
 
 **목록 필터**: `category`/`status`=`ALL`/blank=no filter · `q`≤100(제목·본문) · page size 기본 20·최대 100.
+
+**운영 UI**: 게시본 재발행은 FE **「초안으로 복제」**(`POST` 새 DRAFT) · 원본 첨부가 불안전하면 FE가 **attachmentUrl=null** 로 복제 · 상세 보기에서 비 http(s) href는 **렌더 차단**.
 
 ---
 
@@ -1439,11 +1499,14 @@
 | GET | `/visits/confirm-readiness` | 일괄확정 사전 점검 (`from`, `to`, `scheduleKind`, `branchId`) | `branch_admin`, `social_worker` |
 | GET | `/visits/nhis-comparison` | 일정 수량 vs 최신 NHIS import 명세 사전 비교 (`from`, `to`, `branchId`) | `branch_admin`, `social_worker` |
 | POST | `/visits/batch-confirm` | NHIS 비교·변경이력 확인 후 DRAFT 일괄확정 | `branch_admin`, `social_worker` |
+| GET | `/visits/batch-unconfirm-preview` | 월단위 일괄 확정취소 미리보기(4-digit challenge·6-cascade 경고) | `branch_admin`, `social_worker` |
+| POST | `/visits/batch-unconfirm` | 월단위 CONFIRMED→DRAFT 일괄 확정취소(challenge+cascade ack) | `branch_admin`, `social_worker` |
 | POST | `/visits/{visitId}/cancel` | 일정 취소 | `branch_admin`, `social_worker` |
 | POST | `/visits/{visitId}/check-in` | 체크인 (`method`: `MOBILE` \| `MANUAL`) | `social_worker`, `caregiver` |
 | POST | `/visits/{visitId}/check-out` | 체크아웃·방문 완료 | `social_worker`, `caregiver` |
 | POST | `/visits/imports/nhis` | NHIS 방문일정 엑셀 import (`multipart/form-data`) | `branch_admin`, `social_worker` |
 | POST | `/visits/imports/rfid/compare` | NHIS 계획일정 vs RFID 전송 엑셀 7-code diff 비교 (`multipart/form-data`) | `branch_admin`, `social_worker` |
+| POST | `/visits/imports/rfid/care-provision-dispatch` | RFID 전송분 급여제공내역 SMS 일괄 발송 (FAQ 21589 · message_kind=13) | `branch_admin`, `social_worker` |
 
 **NHIS import (`POST /visits/imports/nhis`)**: `branchId`(UUID), `scheduleKind`(기본 `PLAN`), `createPairedBillingSchedule`(기본 `false`), `file`(엑셀). 응답 `NhisVisitScheduleImportResponse` — 생성·스킵·오류 건수. **`HOME_VISIT` 지점만** 허용 @ `ee3fa3a`. **확정 PLAN 존재 시 import 차단** @ `84f3441` — FE `VisitNhisImportPanel`·확정↔import 가이드 @ `bf3d40d`/`311c7c0`.
 
@@ -1458,6 +1521,13 @@
 - **`POST /visits/batch-confirm`**: 본문 `BatchConfirmVisitSchedulesRequest` — `fromDate`, `toDate`, `scheduleKind`(선택), `branchId`(선택), **`nhisComparisonAcknowledged`**(필수 `true`), **`changeHistoryChecked`**(필수 `true`). 응답 `BatchConfirmVisitSchedulesResponse` — `confirmedCount`, `confirmedVisitIds[]`.
 - **게이트**: `nhisComparisonAcknowledged=false` → `400` 「공단 청구명세서 비교 확인 후…」 · `changeHistoryChecked=false` → `400` 「공단조회 변경이력 확인 후…」 · 페어 PLAN/BILLING 상태 불일치 → `400` · **미배정 draft**(직원 미배정) → not ready·거부 @ `5f710e3` · DRAFT 0건 → `400`.
 
+**월단위 일괄 확정취소 (`GET /visits/batch-unconfirm-preview` + `POST /visits/batch-unconfirm`)** — US-V06 / G-VISIT-BATCH-UNCONFIRM-MONTHLY / ezCare `schedule-fix` `dialog-bill-RESET` 패리티(visits-only):
+
+- **`GET /visits/batch-unconfirm-preview`**: `yearMonth`(필수 `YYYY-MM`), `scheduleKind`(선택), `branchId`(선택). 응답 `VisitBatchUnconfirmPreviewResponse` — `confirmedCount`/`confirmedPlanCount`/`confirmedBillingCount`/`draftCount`, **`challengeCode`**(4-digit·actor/org/branch/yearMonth scoped·TTL 10분), `challengeExpiresAt`, **`cascadeImpacts[6]`**(본인부담금청구서·급여명세서·임금대장·퇴직금·공단명세 재대조·직원일정 재안내), `scopeNote=VISIT_SCHEDULES_ONLY`.
+- **`POST /visits/batch-unconfirm`**: 본문 `BatchUnconfirmVisitSchedulesRequest` — `yearMonth`, `scheduleKind`(선택), `branchId`(선택), **`challengeCode`**(필수 4-digit), **`cascadeWarningAcknowledged`**(필수 `true`). 응답 `BatchUnconfirmVisitSchedulesResponse` — `unconfirmedCount`/`unconfirmedVisitIds[]`/`executedBy`/`executedAt`/`challengeMatched`/`cascadeImpacts`.
+- **동작**: 해당 월 `CONFIRMED` 방문일정(+페어 CONFIRMED)을 `DRAFT`로 되돌리고 `confirmedAt`/`confirmedBy`를 비움. 청구·급여·임금·퇴직 데이터는 **물리 삭제하지 않음**(6-cascade는 재작업 경고).
+- **게이트**: challenge 불일치/만료 → `400` 「확인번호가 일치하지 않거나 만료…」 · `cascadeWarningAcknowledged=false` → `400` 「연쇄 초기화 경고를 확인한 뒤…」 · CONFIRMED 0건 → `400`.
+
 **체크인/체크아웃 가드 (`POST /visits/{visitId}/check-in` · `check-out`)** @ `0db1e68`/`78cfb8a`:
 
 - 배정 직원(`assignedUserId`)이 있으면 **활성·지점 소속** 여부를 검증한다. 비활성/퇴사·타 지점 배정 시 `400` — `ASSIGNED_USER_INACTIVE_MESSAGE` / `ASSIGNED_USER_BRANCH_GUARD_MESSAGE`.
@@ -1466,11 +1536,18 @@
 **RFID diff compare (`POST /visits/imports/rfid/compare`)** @ `eeac205` — ezCare `schedule-rfid` 7-code matrix (BNK-346 · G21 P1):
 
 - **요청** (`multipart/form-data`): `branchId`(UUID), `planFile`(NHIS 계획일정 엑셀), `rfidFile`(RFID 전송 엑셀).
-- **응답** (`VisitRfidDiffCompareResponse`): `branchId`, `planFileName`, `rfidFileName`, `planRowCount`, `tagRowCount`, `comparedRowCount`, `diffCodeCounts`(Map), `rows[]`(`VisitRfidDiffRowResponse`).
+- **응답** (`VisitRfidDiffCompareResponse`): `branchId`, `planFileName`, `rfidFileName`, `planRowCount`, `tagRowCount`, `comparedRowCount`, `diffCodeCounts`(Map), `rows[]`(`VisitRfidDiffRowResponse`), **`dispatchCandidates[]`**(FAQ 21589 · LTC 인정번호→활성 이용자 해석: `clientId`·`clientName`·`ltcCertNo`·`tagRowCount`).
 - **diff 코드** (`COMP_01`~`COMP_09`, `COMP_02` 없음): `COMP_01` 태그없음 · `COMP_03` 종료태그없음 · `COMP_04`/`COMP_05` 시작/종료 60분 초과 · `COMP_06` 인정시간 30분 초과 · `COMP_07` 제공자불일치 · `COMP_08` 직접입력 · `COMP_09` 계획없음.
 - **제약**: `HOME_VISIT` 지점만 허용. 하드웨어 RFID 실시간 연동은 범위 외(엑셀 2-file 비교).
 
-**제약**: `HOME_CARE` 지점(`branches.service_types`)만 허용(가정). RFID 태그 실시간 연동은 **v2 후속**(이지케어 FAQ 21647 — QR/수기 우선).
+**RFID care-provision SMS (`POST /visits/imports/rfid/care-provision-dispatch`)** — FAQ 21589 / G-RFID-CARE-PROVISION-DISPATCH / 평가문항 29(월1회 이상):
+
+- **요청**: `branchId`(UUID), `yearMonth`(`YYYY-MM`), `clientIds[]`(1+), `summary`(선택·≤500자). **snake_case alias 허용** (`branch_id`·`year_month`·`client_ids` · FE `@e837185` 응답 harden 대칭).
+- **동작**: 방문요양 지점만 · 각 이용자에 대해 기존 `CARE_PROVISION_RECORD`(message_kind=13) 가디언 발송을 일괄 호출 · quiet-hours 가드는 document notify 경로와 동일.
+- **응답**: `branchId`, `yearMonth`, `templateCode=CARE_PROVISION_RECORD`, `ezcareMessageKind=13`, `dispatchedCount`, `items[]`(`GuardianDocumentNotifyResponse`).
+- **제약**: `HOME_VISIT` 지점 · 활성·지점 소속 이용자만 · caregiver 역할 거부 · **FE 일괄 발송 UI Present** (`VisitRfidDiffComparePanel` · compare `dispatchCandidates` → batch dispatch).
+
+**하드웨어 RFID**: 태그 실시간 연동은 **v2 후속**(이지케어 FAQ 21647 — QR/수기 우선). 본 절은 **엑셀 2-file 비교 + 가디언 문자**만 다룹니다.
 
 ---
 

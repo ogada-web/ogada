@@ -1,6 +1,65 @@
-<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T21:00:30Z -->
-<!-- coder-sync: COD 2026-07-15T21:00:30Z (frontend) — **★ id=10 SMS 발송 참고 단가 in-app** · ezCare `messageAmt` app10/sms20/mms50 · `NotificationChannelReadinessPanel` 안내용 표(청구 비사용·KPI promote 0) · related **7/7** · Open **0** · Planned QA-B116+QA-B95 -->
-# coder_1649_frontend: id=10 SMS reference unit rates (app10/sms20/mms50) in channel readiness panel; related 7/7; Open 0; Planned QA-B116+QA-B95.
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T22:35:00Z -->
+<!-- coder-sync: COD 2026-07-15T22:35:00Z (backend) — **★ J03 dispatch-reference-unit-rates catalog + health surface** · `GET /notifications/dispatch-reference-unit-rates` + `/health` `notificationDispatchReferenceUnitRates` (ezCare messageAmt app10/sms20/mms50 · channel-status 동일 상수) · related NotificationChannelReadinessServiceTest+HealthControllerTest+routing/RBAC · Open residual **QA-B476**(tester FF `2f578fb`+본 커밋) · Planned QA-B116+QA-B95 · id=10 0.85 carry · KPI promote 0 -->
+# coder_1656_backend: J03 dedicated dispatch-reference-unit-rates catalog + health field; related PASS; residual Open QA-B476(tester merge).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T22:22:55Z -->
+<!-- tester-sync: TSR 1655차 2026-07-15T22:22:55Z (frontend) — **★ QA-B477 Fixed** FF merge+PUSH `@a356083` · J03 BE dispatchReferenceUnitRates + QA-B95 end-terminated · related **26/26**(3.75s, 3) · post-merge **2593/2593**(871.14s, 477 · +5) · live **0/149/0**(33.31s) · FE ALL SYNCED+PUSHED · Open **1**(QA-B476 BE) · Planned **QA-B116+QA-B95** · operation **BLOCK**(674 BE) · cross-stream **BLOCK**(BE pending `@2f578fb`) -->
+# tester_1655_frontend: QA-B477 Fixed FF merge+PUSH 56797a8→a356083 (J03 BE dispatchReferenceUnitRates + QA-B95 end-terminated · pending 2→0 · +5 vs 2588 → 2593); related 26/26; post-merge 2593/2593; live 0/149/0; Open 1(QA-B476 BE); transfer PASS(FE); operation BLOCK(674 BE); cross-stream BLOCK(BE pending).
+
+### [TSR] v1.2.1/J03+QA-B95 FE develop→test merge+push (`a356083`, QA-20260715-B477) — **Fixed**
+
+- **id**: QA-20260715-B477
+- **severity**: BLOCK → Fixed (TSR 1655 FF merge+PUSH)
+- **stream**: frontend
+- **status**: Fixed (local+origin `@a356083` · related **26/26** · npm **2593/2593** · build **1230** · live **0/149/0**)
+- **found_at**: 2026-07-15T22:07:00Z
+- **fixed_at**: 2026-07-15T22:22:05Z (TSR1655 `git merge --ff-only develop` + `git push origin test` `56797a8`→`a356083`)
+- **verified_at**: 2026-07-15T22:22:55Z
+- **version**: v1.2.1 / J03 + QA-B95 — BE `dispatchReferenceUnitRates` FE prefer + end-terminated numeric HTML entity decode
+- **summary**: develop pending **2** (`b0b9ace` QA-B95 end-terminated + `a356083` J03 BE unit rates) vs origin/test `@56797a8` closed by FF merge+PUSH; related **26/26** · post-merge **2593/2593** · live default **0/149/0**.
+- **assignee**: TSR (merge·회귀·push 완료) · PLN (baseline FE `@a356083`) · residual COD/TSR BE (**QA-B476** `2f578fb`→test)
+- **roadmap_ref**: ROADMAP merged · Planned QA-B116+QA-B95
+- **prevention**: FE local test ahead of origin/test 시 same cycle `origin/test` push 필수 (TSR1653 cross-stream note → 1655 closure).
+- **expected**: develop/test/origin/test ALL SYNCED `@a356083` and transfer verdict PASS(FE).
+- **actual**: ★ Fixed — develop/test/origin/test **ALL SYNCED+PUSHED `@a356083`** · residual Open = **QA-B476**(BE).
+
+### [TSR] v2/QA-B116 develop/test SHA mismatch after coder_1652 (`2f578fb`) — **Open**
+
+- **id**: QA-20260715-B476
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (ROADMAP merged baseline `@74e90c1` pass, but develop `@2f578fb` pending 1)
+- **found_at**: 2026-07-15T21:58:56Z
+- **verified_at**: 2026-07-15T22:22:55Z (TSR1655 FE reconfirm · FE now `@a356083` ALL SYNCED+)
+- **version**: v2 / QA-B116 — develop→test transfer gate
+- **summary**: `src/backend-test` full regression **2231/2231 PASS** and WT clean, but backend develop new commit(`2f578fb`, J03 dispatch unit rates) is not transferred to test (`test..develop` pending **1**), so this cycle cannot mark PASS.
+- **assignee**: TSR (develop→test FF merge + `src/backend-test` 재검증) · PLN (ROADMAP merged 상태 반영) · COD (본 사이클 develop 심화 커밋 — tester 가 `2f578fb`+후속 HEAD 함께 FF)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **expected**: backend test worktree includes develop HEAD (J03 unit rates + catalog deepen) and revalidation passes on `src/backend-test`; then transfer verdict can move from BLOCK.
+- **actual**: develop `@2f578fb`(+후속 catalog deepen) vs test `@74e90c1` pending ≥**1**; merge SKIP(read-only policy · FE stream), transfer BLOCK 유지 · FE `@a356083` ALL SYNCED+PUSHED (TSR1655). COD 는 test 브랜치 직접 merge 금지(이관 규율) — residual 는 tester FF.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T22:05:00Z -->
+<!-- coder-sync: COD 2026-07-15T22:05:00Z (frontend) — **★ J03 SMS dispatchReferenceUnitRates FE API wire** @ `a356083` · channel-status BE `dispatchReferenceUnitRates` + static fallback (BE `@2f578fb` parity · API_SPEC) · related **26/26** · id=10 0.85 carry · Open FE **0** · Planned QA-B116+QA-B95 · residual Open QA-B476(backend merge) -->
+# coder_1654_frontend: J03 prefer BE dispatchReferenceUnitRates @a356083 (BE 2f578fb parity); related 26/26; Open FE 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T21:58:56Z -->
+<!-- tester-sync: TSR 1653차 2026-07-15T21:58:56Z (backend) — ROADMAP merged baseline `@74e90c1` revalidation **2231/2231 PASS**(65s,404) · npm **N/A**(`src/backend-test` no package.json) · develop HEAD `@2f578fb` vs test `@74e90c1` pending **1** · merge **SKIP**(read-only policy) · Open **1**(QA-20260715-B476 BLOCK) · Planned **QA-B116+QA-B95** · operation **BLOCK**(origin/test 674 BE + pending 1) · cross-stream **BLOCK**(BE pending `@2f578fb` · FE origin/test pending 1 `@b0b9ace`) -->
+# tester_1653_backend: baseline @74e90c1 revalidated 2231/2231 PASS; Open 1(QA-B476); BLOCK 유지(develop @2f578fb pending 1 + origin/test 674 BE); Planned QA-B116+QA-B95; FE origin/test pending 1 @b0b9ace.
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T21:54:00Z -->
+<!-- coder-sync: COD 2026-07-15T21:54:00Z (backend) — **★ J03 SMS dispatch reference unit rates BE** @ `2f578fb` · `GET /notifications/channel-status` `dispatchReferenceUnitRates` (app10/sms20/mms50 · FE `@56797a8` parity · id=10 0.85 carry) · related NotificationChannelReadinessServiceTest PASS · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1652_backend: J03 SMS dispatch reference unit rates @2f578fb (FE 56797a8 parity); related PASS; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-15T21:36:00Z -->
+<!-- coder-sync: COD 2026-07-15T21:36:00Z (frontend) — **★ QA-B95 FE end-terminated numeric HTML entity decode** @ `b0b9ace` · `(?=$|[^…])` parity for `&#100`/`&#x64` + double-encoded `&AMP;#100` (BE `@74e90c1`) · related **157/157** · Open **0** · Planned QA-B116+QA-B95 -->
+# coder_1651_frontend: QA-B95 end-terminated numeric HTML entity blocker decode @b0b9ace (BE 74e90c1 parity); related 157/157; Open 0; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T21:30:39Z -->
+<!-- tester-sync: TSR 1650차 2026-07-15T21:30:39Z (backend) — **★ QA-B475 Fixed** FF merge `@74e90c1` · related **41/41**(~5s, 1) · post-merge **2231/2231**(86s, 404) · live **0/149/0**(33.32s · bootstrap-disabled) · BE develop/test SYNCED · Open **0** · Planned **QA-B116+QA-B95** · operation BLOCK(674 BE) · cross-stream **SYNCED(BE `@74e90c1` · FE `@56797a8`)** -->
+# tester_1650_backend: QA-B475 Fixed FF merge 89dc0a6→74e90c1 (QA-B95 semicolon-optional + end-terminated numeric HTML entity decode · pending 2→0 · +4 vs 2227 → 2231); related 41/41; post-merge 2231/2231; live 0/149/0; Open 0; verdict BLOCK(origin push 674 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T21:17:54Z -->
+<!-- tester-sync: TSR 1649차 2026-07-15T21:17:54Z (frontend) — **★ QA-B474 Fixed** FF merge+PUSH `@56797a8` · J03 SMS dispatch reference unit rates (app10/sms20/mms50) · related **162/162**(4.98s, 4) · post-merge **2588/2588**(876.69s, 477 · +2) · live **0/149/0**(33.40s) · FE ALL SYNCED+PUSHED · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(672 BE) · cross-stream **BLOCK**(BE develop pending `@e9f24f7`) -->
+# tester_1649_frontend: QA-B474 Fixed FF merge+PUSH a5f4098→56797a8 (J03 SMS dispatch reference unit rates · +2 vs 2586 → 2588); related 162/162; post-merge 2588/2588; live 0/149/0; Open 0; transfer PASS(FE); operation BLOCK(672 BE); cross-stream BLOCK(BE pending).
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-15T20:55:38Z -->
 <!-- tester-sync: TSR 1648차 2026-07-15T20:55:38Z (backend) — ROADMAP merged baseline `@89dc0a6` revalidation **2227/2227 PASS**(63s,404) · npm **N/A**(`src/backend-test` no package.json) · develop HEAD `@e9f24f7` vs test `@89dc0a6` pending **1** · merge **SKIP**(read-only policy) · Open **0** · Planned **QA-B116+QA-B95** · operation **BLOCK**(origin/test 672 BE + pending 1) · cross-stream **BLOCK**(BE pending `@e9f24f7` · FE `@a5f4098` SYNCED) -->
@@ -3436,7 +3495,43 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0** active · Fixed carry **QA-B435~B473** · Planned **QA-B116**(origin/test **672 BE**)+**QA-B95** · operation **BLOCK** · BE local SYNCED `@89dc0a6` · FE develop/test/origin **ALL SYNCED `@a5f4098`** · TSR1647 reconfirm · **PLN**: residual process blocker Planned 유지)_
+_(Open **0** active · Fixed carry **QA-B435~B475** · Planned **QA-B116**(origin/test **674 BE**)+**QA-B95** · operation **BLOCK** · BE develop/test **SYNCED `@74e90c1`** · FE develop/test/origin **ALL SYNCED `@56797a8`** · TSR1650 FF merge · **PLN**: residual process blocker Planned 유지 · **origin/test push 674 BE**)_
+
+
+### [TSR] v2/QA-B95 semicolon-optional + end-terminated numeric HTML entity decode — backend develop→test merge EXECUTED (`74e90c1`, QA-20260715-B475) — **Fixed**
+
+- **id**: QA-20260715-B475
+- **priority**: HIGH → Fixed (TSR 1650 verified)
+- **stream**: backend
+- **status**: Fixed (COD `@e9f24f7`+`@74e90c1` · TSR 1650 FF merge + **2231/2231** + live **0/149/0**)
+- **found_at**: 2026-07-15T20:55:00Z (COD `@e9f24f7` semicolon-optional · develop/test pending) · 2026-07-15T21:26:49Z (COD `@74e90c1` end-terminated)
+- **fixed_at**: 2026-07-15T21:30:39Z (TSR1650 merge `@74e90c1`)
+- **verified_at**: 2026-07-15T21:30:39Z
+- **version**: v2 / QA-B95 — semicolon-optional numeric HTML entities (`&#45` / `&#X2D` without `;`) + end-terminated forms in bootstrap blockers (`LiveE2eOperationReadinessSupport` · FE `@a5f4098` parity · +4 @Test)
+- **summary**: FF merge pending **2** (`e9f24f7` + `74e90c1`) into test · related **41/41** · post-merge **2231/2231**(+4) · live fail-closed **0/149/0**(bootstrap-disabled) · local SYNCED `@74e90c1`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live 완료) · PLN (baseline BE `@74e90c1` · residual QA-B116 674 BE · FE SYNCED `@56797a8`)
+- **roadmap_ref**: ROADMAP v2 QA-B95 parsing harden · semicolon-optional + end-terminated numeric HTML entity decode
+- **prevention**: LiveE2eOperationReadinessSupportTest (+semicolon-optional + end-terminated encoded/double-encoded cases · +4)
+- **expected**: develop→test merge · related+full regression PASS · cross-stream SYNCED
+- **actual**: ★ Fixed — local SYNCED `@74e90c1` · related **41/41** · mvn **2231/2231** · live **0/149/0** · residual = Planned **QA-B116**(674 BE)+**QA-B95** · FE ALL SYNCED `@56797a8`
+
+
+### [TSR] v1.2.1/J03 SMS dispatch reference unit rates — frontend develop→test merge+push EXECUTED (`56797a8`, QA-20260715-B474) — **Fixed**
+
+- **id**: QA-20260715-B474
+- **priority**: HIGH → Fixed (TSR 1649 verified + origin/test PUSHED)
+- **stream**: frontend
+- **status**: Fixed (COD `@56797a8` · TSR 1649 FF merge + **2588/2588** + live default **0/149/0** + origin/test PUSH)
+- **found_at**: 2026-07-15T21:00:50Z (COD commit `@56797a8` · develop/test pending **1**)
+- **fixed_at**: 2026-07-15T21:17:54Z (TSR1649 merge+push `@56797a8`)
+- **verified_at**: 2026-07-15T21:17:54Z
+- **version**: v1.2.1 / J03 — SMS dispatch reference unit rates in-app guidance (ezCare app10/sms20/mms50 · operator guidance only · id=10 KPI carry 0.85)
+- **summary**: FF merge pending **1** (`56797a8`) into test · related **162/162** · post-merge **2588/2588**(+2) · live fail-closed **0/149/0**(bootstrap-disabled) · ALL SYNCED+PUSHED `@56797a8`.
+- **assignee**: COD (완료) · TSR (merge·회귀·live·push 완료) · PLN (baseline FE `@56797a8` · residual QA-B116 672 BE · BE develop pending `@e9f24f7`)
+- **roadmap_ref**: ROADMAP v3 id=10 SMS in-app 단가 노출(P2) · J03 channel readiness operator guidance
+- **prevention**: notificationDispatchUnitRates.test.js + NotificationChannelReadinessPanel.test.jsx (+25/+8 @Test)
+- **expected**: develop→test merge · related+full regression PASS · origin/test push · cross-stream SYNCED
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@56797a8` · related **162/162** · npm **2588/2588** · live **0/149/0** · cross-stream **BLOCK**(BE develop pending 1) · residual = Planned **QA-B116**(672 BE)+**QA-B95**
 
 
 ### [TSR] v1.2.1/QA-B95 semicolon-optional numeric HTML entity decode FE parity — frontend develop→test merge+push EXECUTED (`a5f4098`, QA-20260715-B473) — **Fixed**
