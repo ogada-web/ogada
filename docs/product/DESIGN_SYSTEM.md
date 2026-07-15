@@ -5462,7 +5462,7 @@ RR `NavLink` pathname-only 매칭으로 두 링크가 동시에 `aria-current="p
 
 ## §102. US-V06 batch-unconfirm 접근성·FE-16 + G-LINKAGE-RECORD UX 셸 (178차) [UXD]
 
-> **177차(§101) 이후 coder 신규 커밋 6건**(`6b0f2ae` J03 SMS dispatch readiness · `6dbdd99` G2 draft/publish timestamps · `a772736` G2 branch scope · `2da7ead` US-V06 batch-unconfirm · `7d9dd70`/`0448efa` QA-B95 harness) 미점검 a11y·누락 화면 갭 해소. baseline FE `@0448efa` → UXD-178 HEAD.
+> **177차(§101) 이후 coder 신규 커밋 6건**(`6b0f2ae` J03 SMS dispatch readiness · `6dbdd99` G2 draft/publish timestamps · `a772736` G2 branch scope · `2da7ead` US-V06 batch-unconfirm · `7d9dd70`/`0448efa` QA-B95 harness) 미점검 a11y·누락 화면 갭 해소. baseline FE `@074b452`(UXD-178).
 
 ### 102-1. VisitBatchUnconfirmPanel (US-V06)
 
