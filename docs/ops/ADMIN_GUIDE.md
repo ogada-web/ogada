@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T18:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T23:12:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-16 (Q882: NoBreakSpace legacy alias · baseline `ff80f0b`/`8a05640` · **Flyway V1–V196**)  
+> **최종 갱신**: 2026-07-16 (Q892: 카탈로그 행 헤더 a11y · Q890~Q891: live E2E entity · Q889: 카탈로그 13 · baseline `d247cdf`/`6900a8f` · **Flyway V1–V196**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,11 +50,23 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-07-16 develop HEAD `ff80f0b` / frontend `8a05640`)
+### 1-4. 구현 상태 안내 (2026-07-16 develop HEAD `45e1f00` / frontend `b753586`)
 
-> **이관·QA (TSR)**: BE develop **@ `ff80f0b`** · FE develop **@ `8a05640`** · **cross-stream SYNCED**
+> **이관·QA (TSR)**: BE develop **@ `45e1f00`** · FE develop **@ `b753586`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **템플릿 카탈로그 행 헤더 a11y** ✅ (**Q892**): 13종 catalog 표 **메시지명 `th scope="row"`** (`d3b0f1c`, UXD-185)
+> - **QA-B95 comma HTML entity** ✅ (**Q891**): **`&comma;`** → `,` (`45e1f00`/`b753586`)
+> - **QA-B95 VeryThickSpace alias** ✅ (**Q890**): **`&VeryThickSpace;`** → 공백 (`043f002`/`b28eb45`)
+> - **J03 template-catalog Kakao 필수 6종** ✅ (**Q889**): **`totalCount=13`** · ezCare 7 + Kakao 6 · **`ezcareMessageKind=null` → 「—」** (`54fd8dd`/`ab9e853`)
+> - **QA-B95 figure/punctuation/ideographic space alias** ✅ (**Q883**): **`&figsp;`/`&FigureSpace;`/`&PunctuationSpace;`/`&IdeographicSpace;`** → 공백 (`08cdb87`/`031abef`)
+> - **QA-B95 fractional em space alias** ✅ (**Q884**): **`&emsp2;`~`&emsp5;`·`&TwoPerEmSpace;`~`&FivePerEmSpace;`** → 공백 (`e4123c3`/`73aa6dd`)
+> - **QA-B95 SixPerEm·EnSpace·EmSpace long alias** ✅ (**Q885**): **`&emsp6;`/`&SixPerEmSpace;`/`&EnSpace;`/`&EmSpace;`/`&HairSpace;`/`&NarrowNoBreakSpace;`** → 공백 (`4622896`/`c260baa`)
+> - **QA-B95 MathSpace·WordJoiner long alias** ✅ (**Q886**): **`&MathSpace;`** → 공백 · **`&WordJoiner;`** strip (`6014cca`/`73169a1`)
+> - **QA-B95 VeryVery* space alias** ✅ (**Q887**): **`&VeryVeryThinSpace;`/`&VeryVeryThickSpace;`** → 공백 (`f491ec8`/`3f7db38`)
+> - **QA-B95 comma HTML entity** ✅ (**Q891**): **`&comma;`** → `,` (`45e1f00`/`b753586`)
+> - **QA-B95 VeryThickSpace alias** ✅ (**Q890**): **`&VeryThickSpace;`** → 공백 (`043f002`/`b28eb45`)
+> - **연계·발송 체크박스 a11y** ✅ (**Q888**): **`ds-text-muted`** 초안 없음 안내 · **`ds-checkbox-group`** 발송 체크박스 (`ed48077`, UXD-184)
 > - **QA-B95 NoBreakSpace legacy alias** ✅ (**Q882**): **`&NoBreakSpace;`/`&nobreakspace`** → 공백(BE)·strip(FE) (`ff80f0b`/`8a05640`)
 > - **QA-B95 ZeroWidthNonJoiner/Joiner long alias** ✅ (**Q880**): **`&ZeroWidthNonJoiner;`/`&ZeroWidthJoiner;`** strip (`ba5b0cb`/`61f8f19`)
 > - **QA-B95 bidi long-form HTML entity alias** ✅ (**Q879**): **`&LeftToRightEmbedding;`/`&RightToLeftIsolate;`/`&LeftToRightMark;`** 등 long ↔ short form strip (`53efa0b`/`975aecb`)
@@ -83,13 +95,13 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > - **QA-B95 삼중 HTML entity bootstrap** ✅ (**Q852**): `&AMP;AMP;#45;` multi-pass decode (`33f388d`/`a89a873`)
 > - **J03 문자 발송 참고 단가(임베드)** ✅ (**Q844**): **`GET /notifications/channel-status`** **`dispatchReferenceUnitRates`** — 전용 카탈로그와 **동일 상수**
 > - **G-RFID 급여제공내역 일괄 문자** ✅ BE+FE (**Q832**·**Q838**): **`POST /visits/imports/rfid/compare`** → **`dispatchCandidates[]`**(snake_case·직렬화 수용) · **`POST /visits/imports/rfid/care-provision-dispatch`**(`branch_id`/`client_ids` alias) · kind **13** · **HOME_VISIT only** · FE **`VisitRfidDiffComparePanel` 일괄 발송 폼** · 단건은 이용자 상세 **급여제공내역** (`c080529`/`556eeff`/`e837185`)
-> - **QA-B95 HTML entity bootstrap blocker** ✅ (**Q837**·**Q839**·**Q840**·**Q841**·**Q852**·**Q855**·**Q857**·**Q859**·**Q861**·**Q862**·**Q869**·**Q870**·**Q871**·**Q872**·**Q873**·**Q874**·**Q875**·**Q876**·**Q877**·**Q879**·**Q880**·**Q882**): detail **`bootstrap&#45;disabled`** · **`&#x2d;`·`&lt;`·`&gt;`** · **`&quot;…&quot;`** · **`&num;45;`** · **`&nbsp;`** · **`&shy;`** · **`&zwnj;`·`&Tab;`** · **`&ndash;`·`&NoBreak;`·`&NoBreakSpace;`·`&Wj;`·`&hairsp;`·`&ThinSpace;`·Negative*Space** · **ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace** · **invisible Cf** · **추가 유니코드 공백** · **대소문자·이중·삼중·세미콜론 생략** entity 디코딩 후 bootstrap gate 매칭 · FE **`liveGlobalSetup.js`·`notificationChannelStatus.js`** parity
+> - **QA-B95 HTML entity bootstrap blocker** ✅ (**Q837**·**Q839**·**Q840**·**Q841**·**Q852**·**Q855**·**Q857**·**Q859**·**Q861**·**Q862**·**Q869**·**Q870**·**Q871**·**Q872**·**Q873**·**Q874**·**Q875**·**Q876**·**Q877**·**Q879**·**Q880**·**Q882**·**Q883**·**Q884**·**Q885**·**Q886**·**Q887**): detail **`bootstrap&#45;disabled`** · **`&#x2d;`·`&lt;`·`&gt;`** · **`&quot;…&quot;`** · **`&num;45;`** · **`&nbsp;`** · **`&shy;`** · **`&zwnj;`·`&Tab;`** · **`&ndash;`·`&NoBreak;`·`&NoBreakSpace;`·`&Wj;`·`&WordJoiner;`·`&hairsp;`·`&ThinSpace;`·Negative*Space** · **ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace·figure/fractional em/SixPerEm/MathSpace/VeryVery*** · **invisible Cf** · **추가 유니코드 공백** · **대소문자·이중·삼중·세미콜론 생략** entity 디코딩 후 bootstrap gate 매칭 · FE **`liveGlobalSetup.js`·`notificationChannelStatus.js`** parity
 > - **QA-B95 nested JSON·유니코드 bootstrap blocker** ✅ (**Q836**): detail **`operationBlockers={"nested":{"code":"bootstrap\\u002ddisabled"}}`** · percent-encoded nested JSON Jackson 전개 (`27de3a3`)
 > - **QA-B95 URL-encoded bootstrap blocker** ✅ (**Q834**): health/probe detail **`%7B%22code%22%3A%22bootstrap-disabled%22%7D`** 등 **퍼센트 인코딩** 디코딩 후 bootstrap gate 매칭 (`7868384`)
 > - **J03 channel-status URL decode** ✅ (**Q835**): **`normalizeNotificationChannelStatus`** — **`readinessBlockers`**·직렬화 templates **URL decode** · 패널 blocker **조용한 누락 방지** (`3fddccd`)
 > - **QA-B95 object-form bootstrap blocker** ✅ (**Q833**·**Q856**): detail/payload **`{"code":"bootstrap-disabled"}`** · **`{"code":"bootstrap_disabled"}`** 등 객체·직렬화 JSON 감지 (`79aa377`/`2992fa5`/`1411b54`)
 > - **G-LINKAGE-RECORD 연계기록지** ✅ (**Q819**·**Q822**·**Q826**·**Q827**·**Q829**·**Q830**): **`GET/POST/PATCH/DELETE /clients/{id}/linkage-records`** · **`POST …/dispatch`** · **`GET /clients/linkage-records`**(지점 리포트) · V194–**V196** · **기관 200자·요약 5000자**(DTO+서비스+V196) · FE **`/clients/:id` 「연계기록지」** 탭 · SideNav **`/clients/linkage-records` 「연계기록지 리포트」** · **「조회」 확정 필터**(**Q829**) · **기관명 JS 검증**(**Q830**) · health **`v196ClientLinkageRecordsIntegrityCheckReady`** (`9dff00f`/`68cd253`)
-> - **QA-B95 bootstrap composite blocker** ✅ (**Q821**·**Q824**·**Q828**·**Q833**·**Q834**·**Q836**·**Q837**·**Q839**·**Q840**·**Q841**·**Q852**·**Q855**·**Q856**·**Q857**·**Q869**·**Q870**·**Q871**·**Q872**·**Q873**·**Q874**·**Q875**·**Q876**·**Q877**·**Q879**·**Q880**·**Q882**): composite health detail **공백·NBSP·쉼표·세미콜론** + **괄호·따옴표 래핑** + **`:`·패딩 key/value** + **object `code` 마커(kebab·snake)** + **URL percent-encode** + **중첩 JSON·유니코드** + **HTML entity(소문자·대소문자·이중·삼중·세미콜론 생략·named-num·nbsp·NoBreakSpace·zero-width·tab/newline·dash·NoBreak·word-joiner·named space·ThinSpace/Negative*Space/ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace alias)** 토큰 감지
+> - **QA-B95 bootstrap composite blocker** ✅ (**Q821**·**Q824**·**Q828**·**Q833**·**Q834**·**Q836**·**Q837**·**Q839**·**Q840**·**Q841**·**Q852**·**Q855**·**Q856**·**Q857**·**Q869**·**Q870**·**Q871**·**Q872**·**Q873**·**Q874**·**Q875**·**Q876**·**Q877**·**Q879**·**Q880**·**Q882**·**Q883**·**Q884**·**Q885**·**Q886**·**Q887**): composite health detail **공백·NBSP·쉼표·세미콜론** + **괄호·따옴표 래핑** + **`:`·패딩 key/value** + **object `code` 마커(kebab·snake)** + **URL percent-encode** + **중첩 JSON·유니코드** + **HTML entity(소문자·대소문자·이중·삼중·세미콜론 생략·named-num·nbsp·NoBreakSpace·zero-width·tab/newline·dash·NoBreak·word-joiner·named space·ThinSpace/Negative*Space/ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace·figure/fractional em/SixPerEm/MathSpace/VeryVery* alias)** 토큰 감지
 > - **QA-B95 live E2E operation blocker unwrap** ✅ (**Q825**·**Q833**): FE **`normalizeLiveOperationBlockers`** — JSON-array·bracket/quote·**직렬화 object** unwrap (`9dbdfc5`/`2992fa5`)
 > - **QA-B95 live E2E env·boolean 정규화** ✅ (**Q823**): truthy trim/case · readiness boolean string (`9b65529`/`33f59a9`)
 > - **QA-B95 bootstrap 억제 live opt-in** ✅ (**Q820**): **`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1`** 미설정 시 bootstrap-suppressed 환경 **live skip** (`0448efa`/`9b65529`)
@@ -314,28 +326,29 @@ readiness Q644(placeholder·누락 key)와 별도로 **런타임 발송** 단계
 | templateId == 내부 코드명(placeholder) | **failure** — 무음 발송 방지 |
 | 승인 templateId 매핑됨 | 정상 `messages/v4/send` |
 
-> **sysadmin 체크**: `NOTIFICATION_PROVIDER=solapi` 전환 후 수동 알림 1건 — `notifications` **실패 이력**·Solapi 콘솔 로그 대조 (FAQ **Q679**). **`GET /notifications/template-catalog`** 로 **7종 template `dispatchReady`** 확인 (FAQ **Q686**·**Q831**).
+> **sysadmin 체크**: `NOTIFICATION_PROVIDER=solapi` 전환 후 수동 알림 1건 — `notifications` **실패 이력**·Solapi 콘솔 로그 대조 (FAQ **Q679**). **`GET /notifications/template-catalog`** 로 **13종 template `dispatchReady`** 확인 (FAQ **Q686**·**Q889**·**Q831**).
 
-#### [TWR] G-SMS-TEMPLATE-CATALOG — Solapi 템플릿 카탈로그 (Q686·Q687·Q689·Q690·Q691·Q692·Q699, BE `2f83563`·FE `c7d0982`)
+#### [TWR] G-SMS-TEMPLATE-CATALOG — Solapi 템플릿 카탈로그 (Q686·Q687·Q689·Q690·Q691·Q692·Q699·**Q889**·**Q892**, BE `54fd8dd`·FE `b753586`)
 
 | 항목 | 내용 |
 |------|------|
-| catalog API | **`GET /api/v1/notifications/template-catalog`** — RBAC **`hq_admin`·`branch_admin`** · **`dispatchReadyCount`**·**`dispatchImplementedCount`** 집계 (`fb323ae`) |
+| catalog API | **`GET /api/v1/notifications/template-catalog`** — RBAC **`hq_admin`·`branch_admin`** · **`dispatchReadyCount`**·**`dispatchImplementedCount`** 집계 · **`totalCount=13`** (`54fd8dd`) |
 | client dispatch | **`POST /api/v1/clients/{clientId}/notifications/client-monthly-schedule`** — ezCare **`message_kind=12`** · **`…/care-provision-record`** — **13** · **`…/elder-abuse-prevention-guideline`** — **19** · FE **`GuardianDocumentNotifyPanel`** (`5a6d42c`) |
 | billing dispatch | **`POST /api/v1/billing/claims/{claimId}/notify`** — ezCare **`message_kind=11`** · FE **`BillingDetailPage`** **「본인부담 안내 알림톡 발송」** (`5a6d42c`) |
 | staff schedule dispatch | **`POST /api/v1/staff/notifications/staff-monthly-schedule`** — ezCare **`message_kind=21`** · FE **`StaffNotificationDispatchPanel`** (`9c25d44`) |
 | staff payroll statement dispatch | **`POST /api/v1/staff/notifications/staff-payroll-statement`** — ezCare **`message_kind=22`** · FE **`StaffNotificationDispatchPanel`** · **`StaffPayrollReportsPage`** (`7de86eb`/`5b9656c`) |
 | staff access key dispatch | **`POST /api/v1/staff/notifications/staff-access-key`** — ezCare **`message_kind=1`** · FE **`StaffNotificationDispatchPanel`** (`9c25d44`) |
-| dispatch response | 성공 응답 **`templateCode`·`ezcareMessageKind`** — **7/7 catalog parity** (`7de86eb`/`5b9656c`, Q831) |
+| dispatch response | 성공 응답 **`templateCode`·`ezcareMessageKind`**(Kakao 필수는 `null`) — **13/13 catalog** (`54fd8dd`/`ab9e853`, Q889) |
 | FE success Alert | **`formatGsmDispatchSuccessMessage`** — **`templateCode`** → 한글 라벨 **괄호 suffix** · **`ezcareMessageKind` 숫자 미표시** (`c7d0982`, Q699) |
-| FE readiness | **`NotificationChannelReadinessPanel`** — **「발송 구현 N종 중 M종 발송 가능 · 발송 대기 Y종」** Alert · **발송 대기 템플릿 목록** (`c04968c`) |
+| FE readiness | **`NotificationChannelReadinessPanel`** — 제목 **「알림톡·SMS 템플릿 카탈로그」** · **「발송 구현 N종 중 M종 발송 가능 · 발송 대기 Y종」** · Kakao kind **「—」** · catalog **메시지명 `th scope="row"`** (`ab9e853`/`d3b0f1c`, Q892) |
 | 화면 | **`/organization/settings`** · **`DashboardPage`** · **`/clients/:id`** · **`/staff/:id`** · **`/payroll/reports`** · **`/billing/claims/:id`** |
-| 7종 catalog | **`STAFF_ACCESS_KEY`(1)** · **`BILLING_STATEMENT`(11)** · **`CLIENT_MONTHLY_SCHEDULE`(12)** · **`CARE_PROVISION_RECORD`(13)** · **`ELDER_ABUSE_PREVENTION_GUIDELINE`(19)** · **`STAFF_MONTHLY_SCHEDULE`(21)** · **`STAFF_PAYROLL_STATEMENT`(22)** |
+| ezCare 7종 | **`STAFF_ACCESS_KEY`(1)** · **`BILLING_STATEMENT`(11)** · **`CLIENT_MONTHLY_SCHEDULE`(12)** · **`CARE_PROVISION_RECORD`(13)** · **`ELDER_ABUSE_PREVENTION_GUIDELINE`(19)** · **`STAFF_MONTHLY_SCHEDULE`(21)** · **`STAFF_PAYROLL_STATEMENT`(22)** |
+| Kakao 필수 6종 | **`ATTENDANCE_ARRIVAL`** · **`ATTENDANCE_DEPARTURE`** · **`DAILY_CARE_SUMMARY`** · **`BILLING_PAYMENT_RECEIVED`** · **`HOME_NEWSLETTER`** · **`EMERGENCY_ALERT`** — **`ezcareMessageKind=null`** |
 | `dispatchReady` | **`configured && dispatchImplemented && channel credentials`** — **SMS**: solapi mode + apiKey + apiSecret + senderId · **ALIMTALK**: + **`SOLAPI_KAKAO_PF_ID`** (`fed6f1f`) |
-| dispatchImplemented | **7/7** |
+| dispatchImplemented | **13/13** |
 | 조치 | `dispatchReady=false` → **`KAKAO_TPL_*` env** · **PF ID·발신번호** · **발송 대기** Alert 항목 우선 · live Solapi smoke (DEPLOYMENT §1-4) |
 
-> 관련: FAQ Q686 · Q687 · Q689 · Q690 · Q691 · Q692 · Q699 · **Q831** · **Q813** · API_SPEC §11-11 · DEPLOYMENT_GUIDE §1-4 smoke · USER_MANUAL §4-6·§4-7-3·§4-7-4
+> 관련: FAQ Q686 · **Q889** · Q687 · Q689 · Q690 · Q691 · Q692 · Q699 · **Q831** · **Q813** · API_SPEC §11-11 · DEPLOYMENT_GUIDE §1-4 smoke · USER_MANUAL §4-6·§4-7-3·§4-7-4·§5-5
 
 #### [TWR] M7 본인부담 7-x lifecycle — 신규 Tenant 온보딩 체크 (Q700, BNK-592)
 
@@ -2943,7 +2956,7 @@ Base URL: `/api/v1` | 인증: `Authorization: Bearer <access_token>`
 | **채널 readiness** | **`GET /notifications/channel-status`** — Solapi·SMTP **configured 여부**·**`liveAlimtalkDispatchReady`·`liveEmailDispatchReady`·`liveSmsDispatchReady`**·**`nonEmergencyAlimtalkDispatchAvailableNow`·`nonEmergencyEmailDispatchAvailableNow`·`nonEmergencySmsDispatchAvailableNow`**·**`quietHoursActive`**(KST 22:00–08:00)·blocker **`QUIET_HOURS_ACTIVE`**·필수 템플릿 누락 — **비밀값 미노출** · **API_SPEC 별칭** `solapiSenderNumberConfigured`·`kakaoChannelIdConfigured`·`requiredAlimtalkTemplates` (`124915d`, Q318·**Q802**·**Q809**·**Q812**·Q644) · health 미러 **`notificationNonEmergency*`**·**`notificationLiveSmsDispatchReady`** (**Q811**·**Q812**, `adaee26`) |
 | **조용한 시간대 (quiet hours)** | **`NotificationService.isQuietHoursAt`** — **22:00 ≤ 시각 < 08:00 Asia/Seoul** · **non-emergency dispatch skip** · **`EMERGENCY` bypass** · **지금 발송 가능 필드와 설정 readiness 분리** (**Q809**) · **가정통신문 launch/health `dispatchReady`도 동일 기준** (**Q811**) · 경계 **22:00·07:59** 단위 테스트 (`328874d`·`9a4ab8e`·`c558f29`, Q329) |
 | **청구 UI quiet-hours guard** | **`BillingDetailPage`**·**`OverduePage`** — **`notificationQuietHours.js`** — 발송 버튼 **비활성** + Alert · **`interpretBillingNotifyResult`** (`111f056`, Q329) |
-| **readiness UI** | **`NotificationChannelReadinessPanel`** — **`/organization/settings`**(`hq_admin`) · **`DashboardPage`**(`hq_admin`·`branch_admin`) — **`notificationChannelStatus.js`**(**별칭 정규화 Q802** · **비긴급 즉시 발송 Q809·Q812**) · **「비긴급 … 즉시 발송」가능/제한됨(알림톡·이메일·SMS)** (`6b0f2ae`) · **ezCare template catalog 표 7종·발송 7/7** (`7de86eb`·**Q813**·**Q831**) · **UXD-97** — **`.ds-dl-grid`** · Solapi/SMTP/템플릿 **`<h3>` 섹션 제목** (`76b5ff0`) |
+| **readiness UI** | **`NotificationChannelReadinessPanel`** — **`/organization/settings`**(`hq_admin`) · **`DashboardPage`**(`hq_admin`·`branch_admin`) — **`notificationChannelStatus.js`**(**별칭 정규화 Q802** · **비긴급 즉시 발송 Q809·Q812**) · **「비긴급 … 즉시 발송」가능/제한됨(알림톡·이메일·SMS)** (`6b0f2ae`) · **알림톡·SMS template catalog 표 13종·발송 13/13**(ezCare 7+Kakao 6·kind 「—」, **Q889**) · **UXD-97** — **`.ds-dl-grid`** · Solapi/SMTP/템플릿 **`<h3>` 섹션 제목** (`76b5ff0`) |
 | **RBAC** | **`@PreAuthorize("hasAnyRole('HQ_ADMIN','BRANCH_ADMIN')")`** — `sysadmin` **403** |
 | **템플릿 변수** | **`AlimtalkTemplateVariables`** — `notifications.payload` → Solapi `kakaoOptions.variables` (출석·DAILY_CARE·EMERGENCY·청구·**수납**, Q157·Q159). **`incidentType` → `category`** alias (`ac17ad8`) |
 | **SMS fallback** | **`AlimtalkFallbackText`** — 알림톡 실패 시 **한국어 SMS relay 본문** 생성 — 내부 templateCode·UUID **미노출** (Q158) |
@@ -3934,6 +3947,7 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-16 | **Q883~Q888** — §1-4 **space alias decode · 연계·발송 a11y** · baseline **`f491ec8`/`3f7db38`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-16 | **Q882** — §1-4 **NoBreakSpace legacy alias** · baseline **`ff80f0b`/`8a05640`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-16 | **Q879–Q881** — §1-4 **bidi/zero-width long alias · Must 소통 채널 구분** · baseline **`ba5b0cb`/`61f8f19`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-16 | **Q875–Q878** — §1-4 **ThickSpace·MathML·bidi decode · G2 표 a11y** · baseline **`d911983`/`29fc34f`** · Flyway **V1–V196** · 모듈 **~97.4%** |
