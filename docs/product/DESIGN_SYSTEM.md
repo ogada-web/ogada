@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-15T10:21:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-16T00:00:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-15 (179차 — **G-LINKAGE-RECORD org-wide 발송 리포트 Route·접근성 재점검 + §103** — 178차(§102) 이후 coder 신규 커밋 7건(`d6f7069`/`fae1f34`/`c59da8f` linkage API wire·`9b65529`/`33f59a9`/`9dbdfc5`/`353eb7f` QA-B95) 미점검 a11y·USER_STORIES residual (org-wide `/clients/linkage-records`) 갭 해소. ① **`ClientLinkageRecordsReportPage`** — org-wide `GET /clients/linkage-records`·Field 필터·수급자 링크·ClientsContextNav/SideNav. ② **초안 행 a11y** — 수정/삭제 `aria-label`(유형+기관)·작성일 `<time>`·초안 섹션 `aria-busy`. ③ **ReportPanel** `useId` heading·`linkClients`. ④ **§8-1** PLANNED→AVAILABLE. ⑤ **§103** 신규. `npm test`·build PASS.)
+> **최종 갱신**: 2026-07-16 (181차 — **US-J03-UNIT-RATES 참고 단가 섹션 a11y 점검 + `.ds-notification-channel-panel__unit-rates` FE-16 해소 + §105** — 180차(§104) 이후 coder 신규 커밋 5건(`56797a8`/`a356083`/`79763a3` J03 참고 단가 panel wire·`a5f4098`/`b0b9ace` QA-B95 entity decode) 미점검 a11y·FE-16 갭 해소. ① **`.ds-notification-channel-panel__unit-rates`** — `NotificationChannelReadinessPanel` 참고 단가 섹션이 CSS 미정의 클래스 사용으로 `forced-colors` 경계선을 못 받던 FE-16 결함을 `display:block` + `forced-colors` `.ds-table-wrap` 경계선으로 해소. ② **`<section aria-labelledby>`** · **`<h3 id>`** — 참고 단가 섹션 landmark·제목 계층 표준 준수 확인(변경 불요). ③ **`<data value={amountWon}>`** — 금액 기계 판독(WCAG 1.3.1) 신규·`<th scope="row">` 채널 열·`captionVisuallyHidden` 표 준수 확인. ④ **`role="note"`** — 참고 단가 disclaimer `<p>`에 유효 ARIA 역할·맥락 안내 준수(WCAG 4.1.2). ⑤ **§105** 신규. CSS-only·회귀 없음. `npm run build` PASS.)
+> **이전 갱신**: 2026-07-15 (180차 — **FLOWCHART 대비 DS 원자 보강 + 접근성 재점검 + §104** — 179차(§103) 이후 baseline FE `@b4008b0`·coder RFID/G-LINKAGE polish. USER_STORIES·FLOWCHART 로딩/배치/건너뛰기 갭 해소. ① **`Skeleton`** — 레이아웃 유지 로딩(`role=status`·`aria-busy`·reduced-motion 정적). ② **`ProgressBar`** — 확정/비확정 진행률(`progressbar`·valuetext)·`BatchProgressSteps` 병행 · RFID SMS 발송 indeterminate 배선. ③ **`SkipLink`** — AppShell·PublicAuthLayout 단일 원천 · `--motion-duration` 전환. ④ **`CalendarDayMarker`** — BNK-637 작성 유무(색+패턴+sr-only). ⑤ **§104** FLOWCHART 화면↔DS 매핑. `npm test` 21/21 PASS.)
+> **이전 갱신**: 2026-07-15 (179차 — **G-LINKAGE-RECORD org-wide 발송 리포트 Route·접근성 재점검 + §103** — 178차(§102) 이후 coder 신규 커밋 7건(`d6f7069`/`fae1f34`/`c59da8f` linkage API wire·`9b65529`/`33f59a9`/`9dbdfc5`/`353eb7f` QA-B95) 미점검 a11y·USER_STORIES residual (org-wide `/clients/linkage-records`) 갭 해소. ① **`ClientLinkageRecordsReportPage`** — org-wide `GET /clients/linkage-records`·Field 필터·수급자 링크·ClientsContextNav/SideNav. ② **초안 행 a11y** — 수정/삭제 `aria-label`(유형+기관)·작성일 `<time>`·초안 섹션 `aria-busy`. ③ **ReportPanel** `useId` heading·`linkClients`. ④ **§8-1** PLANNED→AVAILABLE. ⑤ **§103** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-15 (178차 — **US-V06 batch-unconfirm 접근성·FE-16 + G-LINKAGE-RECORD UX 셸 + J03 SMS readiness 재점검 + §102** — VisitBatchUnconfirmPanel·G-LINKAGE UX 셸·§102. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-15 (177차 — **US-J03 quiet-hours·G2 기관 공지 상세/복제 접근성 재점검 + ClientsContextNav hash aria-current + §101** — 176차(§100) 이후 coder 신규 커밋 7건(`23f9e0d`/`387419d`/`d4e1e68`/`5b3075f`/`200515b` G2 상세·복제·카테고리·`fb6ea17`/`655aaa7` J03 quiet-hours non-emergency readiness) 미점검 a11y 갭 해소. ① **타임스탬프 `<time dateTime>`** — 초안·기관 공지 표·상세 게시 시각·발송 이력 평문 라벨을 `HomeNewsletterTimestamp`+`resolveHomeNewsletterTimestampParts` ISO 래핑(WCAG 1.3.1). ② **상세 「초안으로 복제」 `aria-label`** — 제목 포함(WCAG 2.4.6·목록 행 패턴 정합). ③ **`NotificationChannelReadinessPanel` quiet-hours** — `tone=neutral`→`warning`(assertive `role=alert`·G2 launch warning 정합). ④ **`ClientsContextNav` hash deep-link** — `#facility-notices`와 본 경로 aria-current 이중 활성 해소. ⑤ **§101** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-14 (176차 — **US-GUARDIAN-NEWSLETTER G2 가정통신문 접근성 재점검 + `.ds-pre` FE-16 해소 + §100** — `npm test`·build PASS.)
@@ -5556,6 +5558,95 @@ RR `NavLink` pathname-only 매칭으로 두 링크가 동시에 `aria-current="p
 
 - `npm test` — ReportPage · ReportPanel · RecordsPanel · services · ClientsContextNav.
 - `npm run build`.
+
+
+## §104. FLOWCHART 대비 DS 원자 보강 — Skeleton·ProgressBar·SkipLink·CalendarDayMarker (180차) [UXD]
+
+> **179차(§103) 이후** FE `@b4008b0` → UXD-180 `@eb270ae`. USER_STORIES·FLOWCHART §1·§7·§8·§10 대비 로딩/배치/건너뛰기·직원 출퇴근부 작성 상태 갭 해소.
+
+### 104-1. 신규 원자 컴포넌트
+
+| 컴포넌트 | 클래스 | a11y | 용도 |
+| --- | --- | --- | --- |
+| `Skeleton` | `.ds-skeleton*` | `role=status` `aria-busy` | 목록·카드·표 레이아웃 유지 로딩 (PageLoading과 역할 분리) |
+| `ProgressBar` | `.ds-progress*` | `role=progressbar` valuemin/max/now/text | NHIS·RFID SMS 등 연속 진행률 · `BatchProgressSteps` 병행 |
+| `SkipLink` | `.ds-skip-link` | 첫 Tab 노출 | AppShell·PublicAuthLayout 단일 원천 |
+| `CalendarDayMarker` | `.ds-cal-day-marker--*` | 색+패턴+`.ds-sr-only` | BNK-637 `/staff/attendance` 작성 유무 |
+
+### 104-2. 접근성 정합
+
+- SkipLink transition → `var(--motion-duration)` (prefers-reduced-motion 0ms).
+- Skeleton shimmer / ProgressBar indeterminate → reduced-motion 시 정적 표현.
+- forced-colors: skeleton·progress·cal-day-marker ButtonText/Highlight 경계.
+- RFID `VisitRfidDiffComparePanel` 발송 중 indeterminate ProgressBar (색만 busy 금지).
+
+### 104-3. FLOWCHART 화면 ↔ DS 패턴 (요약)
+
+| 화면 | 필수 DS |
+| --- | --- |
+| `/` 로그인 | `PublicAuthLayout`+`SkipLink`+`Field` |
+| `/dashboard*` | `StatCard`+`Skeleton`/`PageLoading` |
+| `/billing*` NHIS | `BatchProgressSteps`+`ProgressBar` |
+| `/visits*` RFID SMS | `ProgressBar`(indeterminate) |
+| `/staff/attendance` | `CalendarDayMarker` |
+| 전역 세션 | `SessionTimeoutProvider`+`Modal` |
+
+### 104-4. coder 전달 메모
+
+1. **Skeleton 일괄 적용 (P2)** — `ClientListPage`·`BillingPage`·대시보드 위젯 그리드에서 Spinner-only → Skeleton 자리표시.
+2. **ProgressBar 확정 %** — NHIS import 행 처리 % API 응답이 오면 `value={pct}` 배선(`BatchProgressSteps`는 단계 유지).
+3. **CalendarDayMarker wire** — `StaffWorkAttendancePage` 달력 셀에 `status=empty|draft|complete` 연결(BNK-637). 빈서식 출력 옵션은 P3.
+4. **US-H03 dashboard expiry** — 간호지시서·수급자계약 만료 StatCard tone=warning (P3·PLN carry).
+5. **Combobox / Icon system** — backlog P3 유지.
+
+### 104-5. 검증
+
+- `npm test` — Skeleton·ProgressBar·SkipLink·CalendarDayMarker·VisitRfidDiffComparePanel **21/21 PASS**.
+- FE commit: `eb270ae` `ux(a11y): add Skeleton, ProgressBar, SkipLink, and calendar day markers (UXD-180)`.
+
+---
+
+## §105. US-J03-UNIT-RATES 참고 단가 섹션 a11y 점검 + FE-16 해소 (181차) [UXD]
+
+> **180차(§104) 이후 coder 신규 커밋 5건**(`56797a8` J03 참고 단가 panel 표시 · `a356083` BE 우선 resolveDispatchReferenceUnitRates · `79763a3` 전용 API wire · `a5f4098`/`b0b9ace` QA-B95 entity decode) 미점검 a11y·FE-16 갭 해소. baseline FE `@79763a3` → UXD-181.
+
+### 105-1. 신규 참고 단가 섹션 a11y 점검
+
+| 항목 | 평가 | 조치 |
+| --- | --- | --- |
+| `<section aria-labelledby="notification-dispatch-unit-rates-heading">` | ✅ 표준 준수 | 변경 불요 |
+| `<h3 id="notification-dispatch-unit-rates-heading">` | ✅ h1→h2(Card)→h3 계층 | 변경 불요 |
+| `<p role="note">` disclaimer | ✅ 유효 ARIA · WCAG 4.1.2 | 변경 불요 |
+| `<Table captionVisuallyHidden>` | ✅ SR 표 이름 제공 | 변경 불요 |
+| `<th scope="col">` / `<th scope="row">` | ✅ 행·열 헤더 명시 | 변경 불요 |
+| `<data value={amountWon}>` | ✅ 금액 기계 판독(WCAG 1.3.1) | 변경 불요 |
+| `ds-notification-channel-panel__unit-rates` | ❌ **FE-16 미정의** | **CSS 추가** (아래 §105-2) |
+| forced-colors 단가 표 | ❌ 경계선 없음 | **CSS 추가** (아래 §105-2) |
+
+### 105-2. CSS 변경 (components.css)
+
+**추가**: `.ds-notification-channel-panel__unit-rates` — `display:block` 명시·섹션 컨테이너.
+
+**추가**: `@media (forced-colors: active)` — `.ds-notification-channel-panel__unit-rates .ds-table-wrap` `border: 1px solid CanvasText` (기존 `__catalog` 규칙과 동일 패턴 병행).
+
+CSS-only 변경·JSX 불변·회귀 없음.
+
+### 105-3. 설계 결정
+
+- **참고 단가 ≠ 청구** — `role="note"` + disclaimer 텍스트로 사용자·SR에 명확히 구분(WCAG 3.3.2·규칙 §2).
+- **`<data>`** — 숫자 금액(`value={amountWon}`)을 기계 판독 가능하게 래핑하면서 한국어 표기(`N원`)를 시각·SR에 함께 제공(WCAG 1.3.1).
+- **static fallback** — BE API 실패 시 FE 상수(`NOTIFICATION_DISPATCH_UNIT_RATES`) 사용·`resolveDispatchReferenceUnitRates` 단일 로직 — 빈 단가 표 방지·접근성 영향 없음.
+
+### 105-4. coder 전달 메모
+
+1. **단가 표 빈 상태** — `unitRateRows.length === 0` 분기가 없어 빈 `<tbody>`가 렌더될 수 있음. static fallback이 항상 3행을 보장하므로 현재 위험 낮음. 향후 BE 카탈로그 확장 시 EmptyState 추가 권장(P3).
+2. **`unitRatesNote` + `unitRatesSource` 동시 빈 문자열** — `<p>` 가 빈 노출됨. `unitRatesNote || unitRatesSource` 조건부 렌더를 P3 polish로 권장.
+3. **forced-colors 시각 검증** — 단가 표가 `__catalog` 표 아래 동일 패턴으로 렌더되므로 사용자 경험 정합.
+
+### 105-5. 검증
+
+- `npm run build` PASS (CSS-only 변경).
+- UXD commit: 181차 `ux(a11y): fix FE-16 unit-rates CSS + forced-colors (UXD-181)`.
 
 ---
 
