@@ -1,9 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-16T00:00:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-16T16:55:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-16 (181차 — **US-J03-UNIT-RATES 참고 단가 섹션 a11y 점검 + `.ds-notification-channel-panel__unit-rates` FE-16 해소 + §105** — 180차(§104) 이후 coder 신규 커밋 5건(`56797a8`/`a356083`/`79763a3` J03 참고 단가 panel wire·`a5f4098`/`b0b9ace` QA-B95 entity decode) 미점검 a11y·FE-16 갭 해소. ① **`.ds-notification-channel-panel__unit-rates`** — `NotificationChannelReadinessPanel` 참고 단가 섹션이 CSS 미정의 클래스 사용으로 `forced-colors` 경계선을 못 받던 FE-16 결함을 `display:block` + `forced-colors` `.ds-table-wrap` 경계선으로 해소. ② **`<section aria-labelledby>`** · **`<h3 id>`** — 참고 단가 섹션 landmark·제목 계층 표준 준수 확인(변경 불요). ③ **`<data value={amountWon}>`** — 금액 기계 판독(WCAG 1.3.1) 신규·`<th scope="row">` 채널 열·`captionVisuallyHidden` 표 준수 확인. ④ **`role="note"`** — 참고 단가 disclaimer `<p>`에 유효 ARIA 역할·맥락 안내 준수(WCAG 4.1.2). ⑤ **§105** 신규. CSS-only·회귀 없음. `npm run build` PASS.)
+> **최종 갱신**: 2026-07-16 (184차 — **QA-B95 NoBreakSpace 6커밋 재점검 + `.ds-muted`·`.ds-checkbox-group` FE-16 승격 + §108** — 183차(§107) 이후 coder 신규 커밋 6건(`a3703a5`/`039cd88`/`29fc34f`/`975aecb`/`61f8f19`/`8a05640` QA-B95 NoBreakSpace·bidi·MathML space entity decode) 미점검. 여섯 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`ClientLinkageRecordsPanel`** — 초안 빈 상태 `<p>`가 CSS **미정의 `ds-muted`**(소비자 단 1곳)를 사용해 `--color-text-muted`·`forced-colors` 승격을 못 받던 FE-16 회귀를 정의된 **`.ds-text-muted`**로 교체(90·97차 `.ds-empty-hint` 패턴). ② **`.ds-checkbox-group`** — `VisitRfidDiffComparePanel`·`BillingStatementDispatchPanel` 발송 대상 Checkbox 스택이 JSX만 있고 CSS 미정의여 세로 `gap`이 0으로 붙던 FE-16 결함을 `flex` column·`gap: var(--space-2)`로 승격(§84 `.ds-form-stack` 패턴). ③ **§108** 신규. `npm test`·build PASS.)
+> **이전 갱신**: 2026-07-16 (183차 — **HomeNewsletterLaunchPage 원시 표 `.ds-table-wrap` 누락 회귀 해소 + §107** — 182차(§106) 이후 coder 신규 커밋 5건(`f5dded2` G2 branch scope fallback·`e45dacb`/`cf8a248`/`f73413d`/`5b69e7a` QA-B95 blocker entity decode) 재점검. 다섯 커밋은 branch scope 로직·HTML entity 정규화 **로직 전용**으로 신규 UI·ARIA 표면 없음. `f5dded2`가 손댄 `HomeNewsletterLaunchPage` 재점검 중 **원시 `<table className="ds-table">` 3종(초안 게시판 6열·기관 공지 5열·발송 이력 8열)이 공용 `Table` 컴포넌트를 우회**해 `.ds-table-wrap`(`overflow-x:auto`)을 못 받던 FE-16·반응형 회귀를 발견 — 특히 8열 발송 이력 표는 좁은 뷰포트에서 카드 밖 가로 오버플로. 세 표를 `Table` 내부와 동일한 `<div class="ds-table-wrap">`로 래핑(caption·scope·`data-testid` 보존, 30개 테스트 회귀 0). §107 신규. `HomeNewsletterLaunchPage.test.jsx` 30/30·`npm run build` PASS.)
+> **이전 갱신**: 2026-07-16 (182차 — **US-ACCOUNTING-M12 SSO blocker·G17 dual-numbering·G2 게시판 페이지네이션 a11y 재점검 + `.ds-dual-numbering-note` FE-16 승격 + §106** — 181차(§105) 이후 coder 신규 커밋 11건(`793a43c` G17 dual-numbering guardrail·`07198a2`/`b42174a` M12 SSO blocker guidance·`483dfe1` G2 notice board page reconcile·QA-B95 blocker decode 8건) 미점검 a11y·FE-16 갭 해소. ① **`AccountingBpoPage` SSO blocker** — `ul.ds-list` bare `<li>`(`.ds-list__item` 누락)·`tone=neutral`→`warning`·`aria-labelledby` 목록 연결(WCAG 1.4.1·FE-16). ② **`BathingScheduleIndicator27Panel`·`FunctionalRecoveryPage`** — dual-numbering guardrail `.ds-dual-numbering-note` callout 승격(forced-colors 경계선·링크 텍스트 병행). ③ **`HomeNewsletterLaunchPage`** — 인라인 이전/다음→표준 `Pagination`(`nav`·`aria-current=page`·로딩 `disabled`·context `aria-label`). ④ **`Pagination`** — `ariaLabel`·`disabled`·`testId` optional props. ⑤ **§106** 신규. `npm test`·build PASS.)
+> **이전 갱신**: 2026-07-16 (181차 — **US-J03-UNIT-RATES 참고 단가 섹션 a11y 점검 + `.ds-notification-channel-panel__unit-rates` FE-16 해소 + §105** — 180차(§104) 이후 coder 신규 커밋 5건(`56797a8`/`a356083`/`79763a3` J03 참고 단가 panel wire·`a5f4098`/`b0b9ace` QA-B95 entity decode) 미점검 a11y·FE-16 갭 해소. ① **`.ds-notification-channel-panel__unit-rates`** — `NotificationChannelReadinessPanel` 참고 단가 섹션이 CSS 미정의 클래스 사용으로 `forced-colors` 경계선을 못 받던 FE-16 결함을 `display:block` + `forced-colors` `.ds-table-wrap` 경계선으로 해소. ② **`<section aria-labelledby>`** · **`<h3 id>`** — 참고 단가 섹션 landmark·제목 계층 표준 준수 확인(변경 불요). ③ **`<data value={amountWon}>`** — 금액 기계 판독(WCAG 1.3.1) 신규·`<th scope="row">` 채널 열·`captionVisuallyHidden` 표 준수 확인. ④ **`role="note"`** — 참고 단가 disclaimer `<p>`에 유효 ARIA 역할·맥락 안내 준수(WCAG 4.1.2). ⑤ **§105** 신규. CSS-only·회귀 없음. `npm run build` PASS.)
 > **이전 갱신**: 2026-07-15 (180차 — **FLOWCHART 대비 DS 원자 보강 + 접근성 재점검 + §104** — 179차(§103) 이후 baseline FE `@b4008b0`·coder RFID/G-LINKAGE polish. USER_STORIES·FLOWCHART 로딩/배치/건너뛰기 갭 해소. ① **`Skeleton`** — 레이아웃 유지 로딩(`role=status`·`aria-busy`·reduced-motion 정적). ② **`ProgressBar`** — 확정/비확정 진행률(`progressbar`·valuetext)·`BatchProgressSteps` 병행 · RFID SMS 발송 indeterminate 배선. ③ **`SkipLink`** — AppShell·PublicAuthLayout 단일 원천 · `--motion-duration` 전환. ④ **`CalendarDayMarker`** — BNK-637 작성 유무(색+패턴+sr-only). ⑤ **§104** FLOWCHART 화면↔DS 매핑. `npm test` 21/21 PASS.)
 > **이전 갱신**: 2026-07-15 (179차 — **G-LINKAGE-RECORD org-wide 발송 리포트 Route·접근성 재점검 + §103** — 178차(§102) 이후 coder 신규 커밋 7건(`d6f7069`/`fae1f34`/`c59da8f` linkage API wire·`9b65529`/`33f59a9`/`9dbdfc5`/`353eb7f` QA-B95) 미점검 a11y·USER_STORIES residual (org-wide `/clients/linkage-records`) 갭 해소. ① **`ClientLinkageRecordsReportPage`** — org-wide `GET /clients/linkage-records`·Field 필터·수급자 링크·ClientsContextNav/SideNav. ② **초안 행 a11y** — 수정/삭제 `aria-label`(유형+기관)·작성일 `<time>`·초안 섹션 `aria-busy`. ③ **ReportPanel** `useId` heading·`linkClients`. ④ **§8-1** PLANNED→AVAILABLE. ⑤ **§103** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-15 (178차 — **US-V06 batch-unconfirm 접근성·FE-16 + G-LINKAGE-RECORD UX 셸 + J03 SMS readiness 재점검 + §102** — VisitBatchUnconfirmPanel·G-LINKAGE UX 셸·§102. `npm test`·build PASS.)
@@ -5647,6 +5650,143 @@ CSS-only 변경·JSX 불변·회귀 없음.
 
 - `npm run build` PASS (CSS-only 변경).
 - UXD commit: 181차 `ux(a11y): fix FE-16 unit-rates CSS + forced-colors (UXD-181)`.
+
+---
+
+## §106. US-ACCOUNTING-M12 SSO blocker·G17 dual-numbering·G2 페이지네이션 a11y 재점검 (182차) [UXD]
+
+> **181차(§105) 이후 coder 신규 커밋 11건**(`793a43c` G17 dual-numbering · `07198a2`/`b42174a` M12 SSO blocker · `483dfe1` G2 notice board page reconcile · QA-B95 blocker decode 8건) 미점검 a11y·FE-16 갭 해소. baseline FE `@f9e1e91` → UXD-182.
+
+### 106-1. AccountingBpoPage (US-ACCOUNTING-M12)
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| SSO blocker `<ul class="ds-list">` | bare `<li>` — `.ds-list__item` 누락(FE-16) | 각 `<li class="ds-list__item">` |
+| blocker Alert `tone` | `neutral` — 운영 차단 신호 약함 | `warning` + `role=status` |
+| 목록 landmark | 제목·목록 SR 연결 없음 | `id` heading + `ul aria-labelledby` |
+
+`describeAccountingBpoReadinessBlocker` 한국어 안내·credentials 코드 미노출(rules §3) — 변경 불요.
+
+### 106-2. G17 dual-numbering guardrail (BNK-776)
+
+| 표면 | 조치 |
+| --- | --- |
+| `BathingScheduleIndicator27Panel` | dual-numbering `<p>` → `.ds-dual-numbering-note` |
+| `FunctionalRecoveryPage` | 동일 callout 클래스 |
+| `.ds-dual-numbering-note` | warning-soft 배경·`--color-warning` 테두리·forced-colors `ButtonText` |
+
+의미는 링크 텍스트(「필수업무 일련27 … 보기」)가 전달 — 색상 단독 금지(WCAG 1.4.1).
+
+### 106-3. HomeNewsletterLaunchPage (G2 · `483dfe1`)
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| 기관 공지·발송 이력 pagination | 인라인 `div.ds-form-actions` — `nav`·`aria-current`·이전/다음 `aria-label` 누락 | 표준 `Pagination` 컴포넌트(33차) |
+| 0-based page state | `Pagination`은 1-based | `page={index+1}` · `onChange(p => handler(p-1))` |
+| 로딩 중 클릭 | — | `Pagination disabled={loading}` |
+
+`reconcileNoticeBoardPageAfterMutation` 로직 변경 없음 — a11y만 정합.
+
+### 106-4. Pagination 확장
+
+| prop | 용도 |
+| --- | --- |
+| `ariaLabel` | context별 nav 이름(기본 「페이지」) |
+| `disabled` | 로딩·비활성 시 이전/다음 차단 |
+| `testId` | E2E·회귀 `data-testid` |
+
+### 106-5. QA-B95 blocker decode (8 commits)
+
+`notificationChannelStatus.js`·live harness — HTML entity 정규화만. UI 마크업·ARIA 변경 없음.
+
+### 106-6. coder 전달 메모
+
+1. **M12 ops credentials** — blocker UI는 안내용. 실환경 `ACCOUNTING_BPO_USMUSID`·`ACCOUNTING_BPO_OTP_SECRET` 등록 후 SSO 버튼 재노출 검증(0.7→1.0).
+2. **G17** — dual-numbering note는 정보 callout. 필수업무 일련27 Route는 BE `essentialDutySerial27Route` 우선.
+3. **G2 pagination** — 삭제 후 마지막 페이지 fallback(`483dfe1`)과 `Pagination` 1-based 변환 병행 시 off-by-one 회귀 주의 — 기존 테스트 유지.
+
+### 106-7. 검증
+
+- `npm test` — `AccountingBpoPage` · `BathingScheduleIndicator27Panel` · `FunctionalRecoveryPage` · `HomeNewsletterLaunchPage`.
+- `npm run build` PASS.
+
+---
+
+## §107. HomeNewsletterLaunchPage 원시 표 `.ds-table-wrap` 누락 회귀 해소 (183차) [UXD]
+
+> **182차(§106) 이후 coder 신규 커밋 5건**(`f5dded2` G2 branch scope fallback · `e45dacb`/`cf8a248`/`f73413d`/`5b69e7a` QA-B95 blocker entity decode) 미점검. 다섯 커밋은 `HomeNewsletterLaunchPage` branch scope 로직·`notificationChannelStatus.js`/live harness HTML entity 정규화 **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). 다만 `f5dded2`가 손댄 `HomeNewsletterLaunchPage`를 재점검하는 과정에서 **원시 `<table className="ds-table">` 3종이 공용 `Table` 컴포넌트(`.ds-table-wrap` 래퍼)를 우회**하던 FE-16·반응형 회귀를 발견·해소. baseline FE `@5b69e7a` → UXD-183.
+
+### 107-1. HomeNewsletterLaunchPage (G2)
+
+| 표 | 열 수 | 문제 | 조치 |
+| --- | --- | --- | --- |
+| 초안 게시판(`home-newsletter-draft-board-table`) | 6 | `.ds-table-wrap` 미적용 | `<div class="ds-table-wrap">` 래핑 |
+| 기관 공지(`facility-notices-table`) | 5(+다중 액션) | 동상 | 동상 |
+| 발송 이력(`home-newsletter-history-table`) | 8 | 동상 — 좁은 뷰포트에서 카드 밖 가로 오버플로 | 동상 |
+
+- **문제**: 세 표는 `Table` 컴포넌트(§US-G06/D02 — `.ds-table-wrap` + `overflow-x:auto`) 대신 원시 `<table className="ds-table">`로 렌더돼, 다른 앱 전 표가 갖는 **가로 오버플로 컨테인먼트를 못 받았다**. 특히 8열 발송 이력 표는 모바일·태블릿에서 카드 경계를 넘어 **페이지 전체 가로 스크롤·콘텐츠 잘림**을 유발.
+- **조치**: 세 표를 `Table` 컴포넌트 내부와 동일한 `<div className="ds-table-wrap">`로 래핑(`overflow-x:auto`). `caption.ds-sr-only`·`<th scope="col">`는 이미 정합이라 유지, `data-testid`(회귀·E2E 조회)도 보존해 최소 침습.
+- **`Table` 컴포넌트 미전환 사유**: 세 표의 `data-testid`를 30개 테스트가 `<table>` 요소에서 직접 조회하나 `Table` 컴포넌트는 `data-testid`를 forward하지 않음 → 래퍼 div만 추가하는 것이 회귀 0·표준 정합(`.ds-table-wrap` 산출물 동일)의 최소 변경.
+
+### 107-2. QA-B95 · G2 branch scope (로직 전용)
+
+`notificationChannelStatus.js`·`liveBackendProbe/Config/GlobalSetup`·`resolveHomeNewsletterBranchId` — 텍스트 정규화·branch id fallback 선택 로직. 렌더 마크업·ARIA 불변이라 a11y 조치 없음(재확인 완료).
+
+### 107-3. coder 전달 메모
+
+1. **표 단일 원천** — 신규 목록 화면은 원시 `<table className="ds-table">` 대신 공용 `Table` 컴포넌트를 사용하면 `.ds-table-wrap`(오버플로)·caption·forced-colors 훅을 자동 확보한다.
+2. **`Table` + `data-testid`** — 표에 E2E `data-testid`가 필요하면 `Table` 컴포넌트에 optional `testId` prop 추가를 고려(Pagination 182차 패턴). 본 회차는 회귀 최소화를 위해 래퍼 div만 적용.
+
+### 107-4. 검증
+
+- `npm test` — `HomeNewsletterLaunchPage.test.jsx` **30/30 PASS**.
+- `npm run build` PASS(마크업 순수 래핑·시각/동작 불변, forced-colors 회귀 없음).
+
+---
+
+## §108. QA-B95 NoBreakSpace 6커밋 재점검 + `.ds-muted`·`.ds-checkbox-group` FE-16 승격 (184차) [UXD]
+
+> **183차(§107) 이후 coder 신규 커밋 6건**(`a3703a5`/`039cd88`/`29fc34f`/`975aecb`/`61f8f19`/`8a05640` QA-B95 space-entity decode layer B511~B524) 미점검 a11y·FE-16 갭 해소. baseline FE `@8a05640` → UXD-184.
+
+### 108-1. QA-B95 blocker decode (6 commits) — 변경 불요
+
+| 파일 | 내용 |
+| --- | --- |
+| `notificationChannelStatus.js` | NoBreakSpace·bidi·MathML invisible space HTML entity decode |
+| `e2e/liveBackendProbe.js`·`liveConfig.js`·`liveGlobalSetup.js` | harness parity |
+| `test/liveE2eHarness.test.js` | 회귀 단언 |
+
+렌더 마크업·ARIA·토큰 불변 — UI 조치 없음(§106-5·§107-2 패턴 연속).
+
+### 108-2. ClientLinkageRecordsPanel — `.ds-muted` → `.ds-text-muted`
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| 초안 빈 상태 `<p>` | **미정의 `ds-muted`** — `components.css`에 규칙 없음 | **`.ds-text-muted`** (`--color-text-muted` 4.76:1·`forced-colors`에서 `--color-text-secondary` 승격) |
+
+§103-2 초안 관리 `aria-busy`·행 `aria-label`·`<time>` 패턴은 유지(변경 불요).
+
+### 108-3. `.ds-checkbox-group` FE-16 승격
+
+| 소비자 | 용도 |
+| --- | --- |
+| `VisitRfidDiffComparePanel` | RFID 급여제공내역 SMS 발송 대상 Checkbox 스택 |
+| `BillingStatementDispatchPanel` | 명세서 발송 대상 이용자 Checkbox 스택 |
+
+- **문제**: 두 패널이 `role="group" aria-label`과 함께 `.ds-checkbox-group`을 쓰나 CSS 미정의여 Checkbox가 세로로 붙음.
+- **조치**: `display:flex; flex-direction:column; gap:var(--space-2)` — `.ds-checkbox` 터치 높이·`accent-color` 토큰은 기존 규칙 상속.
+
+### 108-4. coder 전달 메모
+
+1. **QA-B95** — FE↔BE entity decode lockstep 계속. UI surface 추가 시 decode-only 커밋과 분리 권장.
+2. **빈 상태 문구** — 신규 empty hint는 `.ds-text-muted` 또는 `.ds-empty-hint`만 사용(`ds-muted` 금지).
+3. **Checkbox 다중 선택** — `Field` 하위 세로 목록은 `.ds-checkbox-group` + `role="group"` + `aria-label` 패턴 재사용.
+4. **M10 기관평가** — planner BNK-798: 매뉴얼 정적 UI 신설 금지·실행 5-leaf 유지. UXD 신규 Route 추가 없음.
+
+### 108-5. 검증
+
+- `npm test` — `ClientLinkageRecordsPanel`·`VisitRfidDiffComparePanel`·`BillingStatementDispatchPanel`·`notificationChannelStatus`.
+- `npm run build` PASS.
 
 ---
 
