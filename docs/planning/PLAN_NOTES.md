@@ -1,4 +1,8 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T19:45:55Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-16T12:50:00Z -->
+<!-- planner-sync: PLN 222차 2026-07-16T12:50 UTC — BNK-787~793·TSR 1692~1708 · ★★★ func.php M3 「요양급여 제공 기록」 11-leaf ↔ /care+/nursing 11/11 PARITY + ogada SUPERSET(집중배설·신체구속·욕창 6-route·BNK-793) · ★★★ QA-B95 space-entity sub-family FE↔BE LOCKSTEP 20+ layer(NoBreak·word-joiner·named space·HTML space aliases·BNK-792) · ★★★ 이지케어 계획=안내·청구=정산 dual-track ↔ FAQ 21474 2-step ↔ G-SCHEDULE-FIX SUPERIOR·이중엑셀 RFID 정본(BNK-790) · ★★ 엔젤 lcms CJ프레시웨이 MOU 식단 GTM(P3「가정」·core 갭 아님·BNK-791) · ★★ 모듈 97.41% CONFIRMED·Route 133·Page 106·NHIS 527차 · ★ QA-B508~B510 Fixed · Open 0 · SYNCED(FE@5b69e7a·BE@fde0606) · residual 697 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 221차 2026-07-16T08:43 UTC — BNK-782~786·TSR 1674~1691 · ★★★ FAQ 21474 「일정확정」 2-step 선행조건 ↔ G-SCHEDULE-FIX/US-V06 CLOSED+SUPERIOR(BNK-786) · ★★★ M7 본인부담 11-leaf 1:1+SUPERSET 3축+CMS 9-fn(BNK-785) · ★★★ QA-B95 16+ layer FE↔BE LOCKSTEP·모듈 97.41%(BNK-784) · ★★ 도입 9,436·NHIS 520차 · ★ QA-B489~B500 Fixed · Open 0 · SYNCED(FE@f9e1e91·BE@aa551fb) · residual 691 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 220차 2026-07-16T03:20 UTC — BNK-777~781·TSR 1650~1673 · ★★★ M10 7/9·10-4 CLOSURE 회고 · ★★★ G17 FULL-STACK · ★★★ M12 blocker guidance · ★★ 모듈 97.41%·NHIS 515차 · Open 0 · SYNCED(FE@483dfe1·BE@a8d0af5) · residual 682 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 219차 2026-07-15T23:45 UTC — BNK-771~776·TSR 1645~1650 · ★★★ dual-numbering 정밀화 · ★★★ J03 dispatchReferenceUnitRates CLOSED · ★★★ M8 8-2/8-6 CLOSED · ★★ 평가41·42+NHIS #44 510차 · ★★ 모듈 97.41% CONFIRMED · SYNCED(FE@79763a3·BE@0ad3b07) · residual 676 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 218차 2026-07-15T19:45 UTC — BNK-762~770·TSR 1628~1644b · ★★★ G-RFID FE wire FULL-STACK CLOSED · ★★★ M7 11/11+SUPERSET+6(BNK-770) · ★★★ 모듈 97.41% CONFIRMED · ★★ M4/4-doc SUPERSET · ★ QA-B461~B471 Fixed · Open 0 · SYNCED(BE@cf700b9·FE@b4008b0) · residual 671 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 216차 2026-07-15T10:05 UTC — BNK-748~754·TSR 1598~1613 · ★★★ G-LINKAGE FULL CLOSURE · ★★ RFID 평가29 근거 강화(격상 0) · ★ KPI 97.07 REVERT · SYNCED(BE@cdeb6bf·FE@353eb7f) · residual 659 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 215차 2026-07-15T05:48 UTC — BNK-742~747·TSR 1585~1597 · ★★★ US-V06 CLOSED · ★★★ G-LINKAGE-RECORD 스펙 · ★★ J03 SMS/kind22 · ★ RFID SMS P2 · ★ lcms 번복 · SYNCED(BE@d248916·FE@0448efa) · residual 653 BE · Planned QA-B116+QA-B95 -->
@@ -111,7 +115,115 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-15 (218차 PLN — **자동 기획 동기화** BNK-762~770·TSR 1628~1644b·★★★ G-RFID care-provision SMS FE wire FULL-STACK CLOSED(BNK-763)·★★★ M7 「본인부담」11-leaf↔`/billing/*`17-route 100%+SUPERSET+6(BNK-770)·★★★ 모듈 97.41% CONFIRMED(BNK-768/769)·★★ M4 간호 6/6(BNK-765)·silverangel 4-doc SUPERSET(BNK-767)·SYNCED BE@cf700b9/FE@b4008b0·operation BLOCK 671 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-16 (223차 PLN — **자동 기획 동기화** BNK-794~799·TSR 1709~1722·★★★ QA-B95 space-entity → NoBreakSpace LOCKSTEP FE↔BE 21+ layer(BNK-799·B511~B524)·★★★ M10 「기관평가」 17-leaf ↔ ogada 실행 5-leaf SUPERIOR(실행 50%·매뉴얼 정적 vs 실행 checklist·BNK-798)·★★ Channel 2026 수가·요양보호사 시급 10,320원 P3「가정」·엑셀 포맷 변경 0(BNK-798)·★★ FAQ 21781 인지활동북 시범·격상 금지+21779 지정갱신제(BNK-799)·★★ silverangel/longterm BNK-791 down 가정 번복·canonical IDENTICAL(BNK-795)·★★ 모듈 97.41% CONFIRMED·Route 133·Page 106·NHIS 533차·local SYNCED BE@ff80f0b/FE@8a05640·operation BLOCK 703 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [PLN] QA 피드백 반영 (2026-07-16, 223차 — BNK-794~799 · TSR 1709~1722차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`ff80f0b`** WT **CLEAN** · ahead origin/test **703** vs `598d108` · FE develop/test/origin/test **`8a05640` FULLY SYNCED+PUSHED**(ahead 0) · **133 Route·106 page·V1–V196·BE @Test 2258**(git 실측·BNK-799)/**2278**(TSR1720 post-merge)·**npm 2639/2639**(TSR1721 post-merge)·**FE test 530**·**모듈 97.41%**(28.25/29·id=12 **0.7**·id=10 **0.85**·id=2/8 **0.85**·M3/M7 **1.0**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 223차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **703 BE**) + **QA-B95**(operation 승격·B511~B524 Fixed carry) · QA_FEEDBACK `## Open` 요약행 FE `@8a05640`·703 BE 로 정정 | QA_FEEDBACK · ROADMAP |
+| **QA-B511~B524 Fixed** | QA-B95 space-entity → NoBreakSpace FE↔BE LOCKSTEP 21+ layer — B511/B513 ThickSpace+MathML invisible(`3937fa5`/`a3703a5`)·B515/B516 bidi marks+MathML Positive*Space(`0a8a635`/`039cd88`)·B517/B518 bidi embedding·isolate+NonBreakingSpace(`d911983`/`29fc34f`)·B521/B522 ZeroWidthNonJoiner/Joiner long-alias(`ba5b0cb`/`61f8f19`)·B523/B524 legacy NoBreakSpace named alias(`ff80f0b`/`8a05640`) · B512/B514/B519/B520 develop→test FF merge+push · TSR1709~1722 FF | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-798 ★★★** | **M10 「기관평가」 17-leaf(guide-E100/E200·in-scope 11) ↔ ogada 실행 5-leaf SUPERIOR** — `/compliance/monitoring`+`/compliance/workflow-catalog`+`/staff/training-logs`+`MonitoringIntegratedChecklistPanel` · 실행 5/(11−1)=**50%** · 매뉴얼 정적 vs 실행 checklist 우위 · **브라우저 UI 신설 금지**·KPI promote 0·P3 lever 3「가정」 | REQUIREMENTS §M10 Closure 회고 · ROADMAP v2 · COMPETITOR_MATRIX |
+| **BNK-799/798 ★★** | **QA-B95 = operational hardening(기능 갭 아님)·KPI promote 0** — 계보 triple-encoded(777)→space-entity(792)→bidi/MathML(794~798)→**NoBreakSpace(799)=21+ layer** · 경쟁 4종 in-app live E2E operational gate 「미확인」→ ogada 유일 full-stack fail-closed | REQUIREMENTS §1-5 · ROADMAP v2 · COMPETITOR_MATRIX |
+| **BNK-798 ★★** | **Channel 2026 수가([56906f99](https://docs.channel.io/ezcare/ko/articles/2026%EB%85%84-%EC%9E%A5%EA%B8%B0%EC%9A%94%EC%96%91-%EA%B8%89%EC%97%AC%EB%B9%84%EC%9A%A9-56906f99))·요양보호사 시급 가이드([d466db47](https://docs.channel.io/ezcare/ko/articles/2026%EB%85%84-%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%EC%8B%9C%EA%B8%89-%EA%B0%80%EC%9D%B4%EB%93%9C-d466db47)) 기본시급 10,320원** — `/payroll/*`(5-route)·`/billing/fee-schedules` 인접 P3「가정」·**공단 엑셀 컬럼 포맷 변경 0**·MVP 격상 금지 · RFID 이중엑셀 LOCK·duplicate-schedule NotFound ↔ `ensureNoDuplicateVisitSlot` SUPERIOR·도입 9,435(−1)·셋팅 33,000 D-15 | COMPETITOR_MATRIX(기록) · REQUIREMENTS §M11/M7 |
+| **BNK-799 ★★** | **FAQ [21781](https://ezcare.easyms.co.kr/help/V.ez?rowid=21781) 인지활동북 시범서비스**(하반기 확장 예정) ↔ `/programs/*` 인접 P3「가정」·**MVP/ROADMAP 격상 금지**(경쟁 미완·시범) · FAQ [21779](https://ezcare.easyms.co.kr/help/V.ez?rowid=21779) 지정갱신제 → 10.2 운영메뉴얼 = M10 P3 lever carry·실행 checklist SUPERIOR 유지 · NHIS #44 **533차** zero drift(`c886ff1f`·7,572B) | COMPETITOR_MATRIX(기록) · PLAN_NOTES §추가 질문 223 |
+| **BNK-795/797 ★★** | **가정 번복** — BNK-791 「silverangel HTTP 000 down·longterm shell drift」 → 공개서버 **BACK UP·canonical IDENTICAL**(콘텐츠 변동 0·가용성만 회복) · func.php M7 「본인부담금」 11-leaf ↔ /billing 11/11 **PARITY + SUPERSET 5**(copay-rates·fee-schedules·reports/statistics·imports/nhis) 재앵커(@975aecb) · 케어포 LIVE 3-URL HTTP 000 87-cycle+ carry | COMPETITOR_MATRIX · REQUIREMENTS §M7 |
+
+**coder/ops 다음 액션 (223차)**: ① **tester** origin/test push **703+ BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable·B511~B524 space-entity 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~M10 기관평가~~ → **실행 5-leaf SUPERIOR CONFIRMED**(BNK-798·매뉴얼 UI 신설 금지·격상 0) ⑥ Channel 2026 수가·시급 = **P3「가정」·구축 0**(공단 엑셀 포맷 변경 0 monitor) ⑦ 인지활동북 FAQ 21781 = **P3「가정」·격상 금지**(하반기 확장 후 재실측) ⑧ QA-B95 새 인코딩 변종 방어 지속 ⑨ charge promo **2026-07-31**(D-15) 만료 후 재실측.
+
+### 추가 질문 (자동 기획 동기화 223차)
+1. **QA-B95 space-entity 방어 완결 기준 (★ BNK-799 carry·222-1 재게)**: NoBreakSpace까지 21+ layer 확산 — 새 인코딩 변종 방어를 언제 「완결」로 볼지 기준 필요(비용 대비 한계효용). → operational hardening carry·기능 갭 아님·KPI promote 0.
+2. **M10 기관평가 매뉴얼형 leaf (★★ BNK-798)**: 이지케어 guide-E100/E200 17-leaf 중 정적 매뉴얼 축(사업계획서·운영메뉴얼 등)을 ogada in-app 문서 뷰로 둘지, 실행 checklist(compliance/monitoring) SUPERIOR 유지로 충분할지? → **브라우저 UI 신설 금지·P3 lever carry 권장**.
+3. **Channel 2026 수가·요양보호사 시급 10,320원 (★★ BNK-798)**: 2026 수가표·시급 가이드는 payroll/fee-schedules 인접이나 공단 원천 데이터 = SW core 갭 아님 → **P3「가정」·구축 0 유지**, 공단 엑셀 포맷 변경(0) monitor만 지속할지 확정.
+4. **인지활동북 FAQ 21781 (★★ BNK-799)**: 이지케어 시범·하반기 확장 = 미완 기능 → ogada `/programs/*` 인접만 기록, **MVP 격상 금지** 확정. 하반기 확장 착지 후 재평가.
+5. **M12 credentials / charge promo D-15 (★ carry)**: 222차 유지 · **2026-07-31** 만료 후 charge 재실측 필수.
+
+### [PLN] QA 피드백 반영 (2026-07-16, 222차 — BNK-787~793 · TSR 1692~1708차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`fde0606`** WT **CLEAN** · ahead origin/test **697** vs `598d108` · FE develop/test/origin/test **`5b69e7a` FULLY SYNCED+PUSHED**(ahead 0) · **133 Route·106 page**(git 실측 107→106 정정·BNK-787)·**V1–V196·BE @Test 2274**(TSR1706 post-merge)·**npm 2630/2630**(TSR1707 post-merge)·**모듈 97.41%**(28.25/29·id=12 **0.7**·id=10 **0.85**·id=2/8 **0.85**·M3/M7 **1.0**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 222차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **697 BE**) + **QA-B95**(operation 승격·B508~B510 Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B508~B510 Fixed** | QA-B95 space-entity sub-family FE↔BE LOCKSTEP — B508 FE NoBreak/word-joiner/named-space decode(`f73413d`)·B509 BE word-joiner/named-space develop/test FF merge(`fde0606`)·B510 FE HTML space aliases decode(`&ThinSpace;`/`&VeryThinSpace;`→space·Negative*Space strip·`5b69e7a`·BE `@fde0606` parity) · TSR1704~1708 FF | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-793 ★★★** | **func.php M3 「요양급여 제공 기록」 11-leaf ↔ /care 16-route + /nursing 16-route 11/11 PARITY** · ogada **SUPERSET**(집중배설·신체구속·욕창 6-route full-stack·구강/응급/배설/체중) · id=3-1 「요양 급여제공 기록」+id=4 「간호·물리 급여」 coverage **1.0** 뒷받침 · KPI promote 0·신규 진성갭 0 | REQUIREMENTS M3/M4 · ROADMAP v1 · COMPETITOR_MATRIX |
+| **BNK-792 ★★★** | **QA-B95 fail-closed space-entity sub-family = ogada 유일 20+ layer**(FE 6-file NoBreak/word-joiner/named space + BE `LiveE2eOperationReadinessSupport` HTML space aliases·readiness AND live-harness 양 flow fail-closed) · 계보 triple-encoded→named-num→nbsp→soft-hyphen→zero-width→NoBreak→space-entity · 경쟁 4종 in-app operational gate 「미확인」 carry | REQUIREMENTS §1-5 · ROADMAP v2 · COMPETITOR_MATRIX |
+| **BNK-790 ★★★** | **이지케어 계획=안내·청구=정산 dual-track = 일정확정 lifecycle 정본**(Channel 8d304da8) ↔ FAQ 21474 2-step ↔ ogada **G-SCHEDULE-FIX CLOSED+SUPERIOR** · **schedule-rfid 이중엑셀**(form_plan_upload/form_rfid_upload·grid×4) = ogada RFID compare/SMS CLOSED carry(신규 구축 금지) · duplicate-schedule NotFound ↔ `ensureNoDuplicateVisitSlot` SUPERIOR · 셋팅 33,000(D-15·~2026-07-31)·도입 9,436 STABLE | USER_STORIES US-V06 · REQUIREMENTS 운영 체크리스트 문구 |
+| **BNK-791 ★★** | **엔젤 CMS(lcms) CJ프레시웨이 MOU 식단/영양 부가서비스 = GTM 파트너십 시그널**(식단 3·영양사 1·이동서비스/배차/GPS 0) → 엔젤=식자재/식단 조달 번들 확장 · ogada meal_records 인접하나 **core 갭 아님**(과대구축 금지·P3「가정」) · silverangel HTTP 000·longterm shell drift = 「미확인」 carry | COMPETITOR_MATRIX(기록만) |
+| **BNK-789/787 ★★** | demo-work 시설 셸 IA remap(left_sub2=요양급여 M3) ≠ func/PDF ch.2 M2 이동서비스 10-leaf 정본(transport 0-hit) → ogada id=2 transport 유일 full-stack 차별화 carry · M9 tri-source drift ↔ id=9 coverage 1.0 · Page 107→106 git 실측 정정 · NHIS #44 **527차** zero drift(`c886ff1f`·7,572B) | REQUIREMENTS §M2/M9 · ROADMAP v2 |
+
+**coder/ops 다음 액션 (222차)**: ① **tester** origin/test push **697+ BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~M3 요양급여 11-leaf~~ → **11/11 PARITY+SUPERSET CONFIRMED**(BNK-793·격상 0) ⑥ ~~QA-B95 space-entity~~ → **20+ layer LOCKSTEP**(신규 인코딩 변종 방어 지속) ⑦ P3 `FEE_SCHEDULE_CHANGE_NOTICE` go/no-go(격상 금지) ⑧ 엔젤 CJ프레시웨이 식단 GTM = 시그널만 기록(구축 금지) ⑨ charge promo **2026-07-31**(D-15) 만료 후 재실측.
+
+### 추가 질문 (자동 기획 동기화 222차)
+1. **QA-B95 space-entity 방어 완결 기준 (★ BNK-792 carry)**: NoBreak·word-joiner·named space·HTML space aliases까지 20+ layer 확산 — 새 인코딩 변종 방어를 언제 「완결」로 볼지 기준 필요(비용 대비 한계효용·221-3 재게).
+2. **엔젤 CJ프레시웨이 MOU 식단 GTM (★ BNK-791)**: 식자재/식단 조달 번들은 SW core 갭 아님 확정 — ogada meal_records 인접성만 마케팅 언급할지, 아예 out-of-scope로 둘지? → **P3「가정」·구축 0 유지 권장**.
+3. **demo-work 시설 셸 IA remap 명시 (★ BNK-789/787)**: REQUIREMENTS에 「demo-work 시설 데모=이동서비스 미장착·M2는 func/PDF ch.2 정본」을 명문화할지? → narrative carry(진성갭 0).
+4. **M12 credentials / charge promo D-15 (★ carry)**: 221차 유지 · **2026-07-31** 만료 후 charge 재실측 필수.
+5. ~~**FEE_SCHEDULE_CHANGE_NOTICE**~~ → carry(P3「가정」·격상 0·저비용 유지).
+
+### [PLN] QA 피드백 반영 (2026-07-16, 221차 — BNK-782~786 · TSR 1674~1691차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`aa551fb`** WT **CLEAN** · ahead origin/test **691** vs `598d108` · FE develop/test/origin/test **`f9e1e91` FULLY SYNCED+PUSHED** · **133 Route·107 page·V1–V196·BE @Test 2269·npm 2617/2617·모듈 97.41%**(28.25/29·id=12 **0.7**·id=10 **0.85**·id=2/8 **0.85**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 221차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **691 BE**) + **QA-B95**(operation 승격·B489~B500 Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B489~B500 Fixed** | QA-B95 blocker HTML entity harden — invisible Cf strip(B494)·additional unicode spaces(B495/B496)·separator spaces+unicode-escaped+bare decimal(B497)·8-digit unicode escapes(B499)·equals/colon/backslash entities(B500)·FE unicode-escaped+bare decimal(B498) · FE↔BE LOCKSTEP · TSR1682~1691 FF | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-786 ★★★** | **FAQ 21474 「일정확정」 2-step 선행조건**(공단 청구일정 가져오기→본인부담금 대조→일괄확정)+PGID schedule-fix 17-col → ogada `VisitsPage`/`nhis-comparison`(G21)/`batchConfirmVisitsApi`/copay-rates **parity 확정·진성갭 0** · VisitBatchUnconfirmPanel 4-digit+6-cascade **SUPERIOR** · 도입 9,436(+1·둔화)·NHIS 520차 | USER_STORIES US-V06 인수조건 · ROADMAP v1–v3 |
+| **BNK-785 ★★★** | **func.php M7 「본인부담금」 11-leaf lifecycle ↔ /billing 17-route 1:1 전수**(청구→입금→미납→CMS→간편결제→대장/환불→계산기) · ogada **SUPERSET 3축**(copay-rates·fee-schedules·월별통계)+**CMS 9-fn**(가상계좌·다계좌정산) · id=7-x 전량 coverage=1.0 · KPI promote 0 | REQUIREMENTS M7 · ROADMAP v1 billing baseline |
+| **BNK-784 ★★★** | **QA-B95 fail-closed 16+ layer FE↔BE LOCKSTEP CONFIRMED**(soft-hyphen·en/em/thin space·FE 6-file 확산) · 모듈 **97.41% CONFIRMED**(28.25/29)·closed axes **16-path** LIVE·재오픈 0 · P0/P1 재정렬 residual id=12(0.7)→id=2/8/10(0.85) | REQUIREMENTS §1-5 · ROADMAP v2 · COMPETITOR_MATRIX |
+
+**coder/ops 다음 액션 (221차)**: ① **tester** origin/test push **691+ BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~G-SCHEDULE-FIX/US-V06~~ → **CLOSED+SUPERIOR**(FAQ 21474 2-step 명시) ⑥ ~~M7 본인부담 11-leaf~~ → **1:1+SUPERSET CONFIRMED** ⑦ P3 `FEE_SCHEDULE_CHANGE_NOTICE` go/no-go(격상 금지) ⑧ charge promo **2026-07-31**(D-15) 만료 후 재실측.
+
+### 추가 질문 (자동 기획 동기화 221차)
+1. **FAQ 21474 2-step 안내 UI (★ BNK-786)**: 일정확정 화면에서 「공단 청구일정 가져오기→본인부담금 대조」 순서를 in-app 안내 배너/체크리스트로 노출할지, 아니면 문서(USER_MANUAL) 가이드로 충분할지? → **P3 UX polish「가정」·기능 parity는 이미 확정**.
+2. **M7 SUPERSET 3축 마케팅 (★ BNK-785)**: 본인부담율 마스터·수가표·월별 통계 + CMS 가상계좌/다계좌정산을 경쟁 대비 우위 카피로 명시할지? → **narrative carry·격상 0**.
+3. **QA-B95 16+ layer 계보 (★ carry)**: FE↔BE lockstep 하드닝이 10+ cycle 지속 — 새 인코딩 변종 방어를 언제 「완결」로 볼지 기준 필요(비용 대비 한계효용).
+4. **M12 credentials / charge promo D-15 (★ carry)**: 220차 유지 · **2026-07-31** 만료 후 charge 재실측 필수.
+5. ~~**FEE_SCHEDULE_CHANGE_NOTICE (220-1)**~~ → carry(P3「가정」·격상 0·저비용 유지).
+
+### [PLN] QA 피드백 반영 (2026-07-16, 220차 — BNK-777~781 · TSR 1650~1673차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`a8d0af5`** WT **CLEAN** · ahead origin/test **682** · FE develop/test/origin/test **`483dfe1` FULLY SYNCED+PUSHED** · **133 Route·106 page·V1–V196·BE @Test 2259·npm 2603/2603·모듈 97.41%**(28.25/29·id=12 **0.7**·id=10 **0.85**·id=2/8 **0.85**·M10 실질 **7/9**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 220차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **682 BE**) + **QA-B95**(operation 승격·B476~B488 Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B476~B488 Fixed** | J03 unitRates catalog(B476/B478)·QA-B95 HTML entity/blocker harden(B479~B487)·G17 dual-numbering(B480/B481)·M12 BPO SSO blocker guidance(B483)·G2 notice board recover(B488) · TSR1655~1673 FF | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-781 ★★★** | **M10 9-leaf 재크로스워크** — 실질 **7/9** · **10-4 V192 CLOSURE 회고 확정**(BNK-727→729→781) · 10-2 △→✅ · P3 lever `FEE_SCHEDULE_CHANGE_NOTICE`「가정」 | REQUIREMENTS §M10 · USER_STORIES US-FACILITY-NOTICE / US-FEE-SCHEDULE · ROADMAP v1–v3 |
+| **BNK-779/778 ★★★** | **G17 dual-numbering FULL-STACK CLOSED** — BE+FE · 엔젤 연계 9-hit=내부참조·전용 referral 0 · Channel.io RFID SMS ef3b7e04 | REQUIREMENTS G17 · USER_STORIES US-T06-DUAL-NUMBERING · COMPETITOR_MATRIX |
+| **BNK-780 ★★★** | **M12 SSO blocker KO guidance** · 모듈 **97.41% CONFIRMED** · closed axes **16-path** · id=12 **0.7** residual · KPI promote 0 | REQUIREMENTS M12 · USER_STORIES US-ACCOUNTING-M12 · ROADMAP v2/v3 |
+| **BNK-777 ★★** | tri-source **view.* 정본**(func 3-x / demo L02 display) · M3 11/11 · NHIS #44 **515차**(BNK-781) | REQUIREMENTS · PLAN_NOTES §추가 질문 220 |
+
+**coder/ops 다음 액션 (220차)**: ① **tester** origin/test push **682+ BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~G17 dual-numbering~~ → **FULL-STACK CLOSED** ⑥ ~~10-4 facility-notices~~ → **CLOSED(회고)** ⑦ P3 `FEE_SCHEDULE_CHANGE_NOTICE` go/no-go(격상 금지) ⑧ charge promo **2026-07-31** 만료 후 재실측.
+
+### 추가 질문 (자동 기획 동기화 220차)
+1. **FEE_SCHEDULE_CHANGE_NOTICE (★ BNK-781)**: 수가변경안내 전용 SMS 템플릿을 v3+에 둘지, `HOME_NEWSLETTER` 범용으로 충분할지? → **P3「가정」·격상 0·저비용**.
+2. **10-1 자유작성 SMS 콘솔 (★ carry)**: template-driven 정책상 미착지 — 주간보호 진성갭 아님·과대구축 금지 유지할지?
+3. **M10 △ leaf (10-3/10-6/10-8)**: 보호자 열람내역·앱 관리·평가준비자료 — polish 범위 vs P3 defer?
+4. **M12 credentials / charge promo D-16 (★ carry)**: 219차 유지 · **2026-07-31** 만료 후 charge 재실측 필수.
+5. ~~**G17 FE dual-numbering UI (219-1)**~~ → **FULL-STACK CLOSED**(BNK-779·QA-B481).
+6. ~~**J03 참고단가 (218-1)**~~ → **FULL-STACK CLOSED**(BNK-774).
+
+### [PLN] QA 피드백 반영 (2026-07-15, 219차 — BNK-771~776 · TSR 1645~1650차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop **`0ad3b07`** WT **CLEAN** · ahead origin/test **676** · FE develop/test/origin/test **`79763a3` FULLY SYNCED** · **133 Route·106 page·V1–V196·BE @Test 2232·FE test 530·모듈 97.41%**(28.25/29·id=12 **0.7**·id=10 **0.85**·id=2/8 **0.85**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 219차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **676 BE**) + **QA-B95**(operation 승격·B472~B475 Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B472~B475 Fixed** | QA-B95 HTML entity decode harden(B472 BE·B473/B475 FE) · J03 unitRates FE merge(B474) · TSR1645~1650 FF | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-776 ★★★** | **dual-numbering 정밀화** — 일련27=가족소통 ≠ 공단27=기능회복(G17) · 평가41·42 재확인 · closed axes 14-path 재오픈 0 · 모듈 **97.41% CONFIRMED** | REQUIREMENTS G16/G17 · USER_STORIES US-T06-DUAL-NUMBERING · ROADMAP v2 |
+| **BNK-774 ★★★** | **J03 dispatchReferenceUnitRates FULL-STACK CLOSED** — messageAmt app10/sms20/mms50 · id=10 **0.85**·KPI promote 0 | REQUIREMENTS · USER_STORIES US-J03-UNIT-RATES · ROADMAP v2/v3 |
+| **BNK-773 ★★★** | **M8 13/15=86.7%** — 8-2 `/staff/schedules`·8-6 `/staff/committee-meetings` CLOSED · 잔여 8-3·8-8 P3 defer · id=8 **0.85** | REQUIREMENTS · USER_STORIES US-R08-M8 · ROADMAP v2 |
+| **BNK-775 ★★** | **평가41·42 이동서비스+NHIS #44 510차+lawImg GIF** · 엔젤 ERP 배차 0-hit dual-layer · charge promo **D-16** | REQUIREMENTS G16 · USER_STORIES US-T02-TRANSPORT-EVAL · §추가 질문 219 |
+
+**coder/ops 다음 액션 (219차)**: ① **tester** origin/test push **676+ BE**(QA-B116) ② **QA-B95** operation 승격 ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form·G17/G16 dual-numbering UI copy ⑤ ~~J03 참고단가~~ → **FULL-STACK CLOSED**(BNK-774) ⑥ charge promo **2026-07-31** 만료 후 재실측.
+
+### 추가 질문 (자동 기획 동기화 219차)
+1. **G17/G16 dual-numbering UI copy (★★ BNK-776)**: 필수업무 일련27「가족과의 소통」과 공단「주야간보호 27」기능회복 라벨을 화면·도움말에 어떻게 구분 표기할지? → **guardrail 문서화 완료** · COD polish P2 carry.
+2. **평가 PDF 239p OCR (★ BNK-775)**: 스캔형 [평가 PDF](https://www.silverangel.kr/download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf) 페이지 추출 — essential HTML 정본 우선 · OCR은 후속·격상 0.
+3. **로그인 ERP 이동서비스 화면 (★ carry)**: 엔젤·이지케어 로그인-gated 배차 UI = **「미확인」** 유지 · 과대구축 금지.
+4. **4-doc batch dispatch UX (★ carry)**: 개별 dispatch 착지 완료 — 통합 batch UX v3+ P3 defer 유지.
+5. **M12 credentials / charge promo D-16 (★ carry)**: 218차 유지 · **2026-07-31** 만료 후 charge 재실측 필수.
+6. ~~**SMS 발송단가 in-app 노출 (218-1)**~~ → **FULL-STACK CLOSED**(BNK-774·QA-B474).
 
 ### [PLN] QA 피드백 반영 (2026-07-15, 218차 — BNK-762~770 · TSR 1628~1644b차)
 
@@ -172,6 +284,18 @@
 | **BNK-748/750~752 ★** | QA-B95 fail-closed 폐루프 · 이중 일정/RFID/본인부담 = 진성갭 아님 · 만료일 7-category P3「가정」 · 규제 488차 zero drift | REQUIREMENTS · COMPETITOR_MATRIX carry |
 
 **coder/ops 다음 액션 (216차)**: ① **tester** origin/test push **659+ BE**(QA-B116) · kind22 BE 커밋 merge ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials ④ **v2+ P2** org-wide linkage FE Route(✓ FE `@68cd253`) · ~~kind22 BE dispatch~~ → **COD CLOSED** · FE UI / RFID SMS go/no-go(§216-2).
+
+### [COD] 코더 메모 (2026-07-16 — G17 dual-numbering FE UI wire)
+
+- FE develop `feat(v1.2.1/G17): surface dual-numbering guardrail on indicator-27 UI` — `mapDualNumberingGuardrail` + FunctionalRecoveryPage/BathingScheduleIndicator27Panel footnote·`/staff/committee-meetings` link (BE `@74ae324` · BNK-776 · 공단 지표27≠필수업무 일련27) · related **26/26** · PLAN_NOTES §219「G17 dual-numbering UI copy」 COD polish CLOSED · Open FE **0** · residual TSR FF(pending +1) · QA-B482 BE dirty · Planned QA-B116+QA-B95.
+
+### [COD] 코더 메모 (2026-07-16 — G17/G-BATHING dual-numbering API copy)
+
+- BE develop `feat(v2/G17): expose dual-numbering guardrail on indicator-27 compliance` @ `74ae324` — `FunctionalRecoveryComplianceResponse` + bathing `indicator-27-compliance` 에 `essentialDutySerial27Label/MeetingType/Route`·`dualNumberingNoteKo` 노출 (BNK-776 · 공단 지표27=기능회복 ≠ 필수업무 일련27=가족과의 소통·GUARDIAN) · API_SPEC §9-17 갱신 · catalog/service/routing @Test PASS · WT CLEAN · Open BE **0** · Planned **QA-B116+QA-B95** · residual = FE 화면 라벨 wire → **FE CLOSED**(본 사이클).
+
+### [COD] 코더 메모 (2026-07-15 — J03 dedicated dispatch-reference-unit-rates FE wire)
+
+- FE develop `feat(v1.2.1/J03): wire dedicated dispatch-reference-unit-rates catalog` @ `79763a3` — `fetchNotificationDispatchReferenceUnitRatesApi`(`GET /api/v1/notifications/dispatch-reference-unit-rates`) + `NotificationChannelReadinessPanel` prefer **dedicated catalog → channel-status embed → FE static** (API_SPEC §11-10 · BE `@0ad3b07` parity · soft-fail dedicated 시 embed/static 유지) · related **46/46** PASS · id=10 **0.85 carry** · KPI promote 0 · Open FE **0** · Planned **QA-B116+QA-B95** · residual = tester BE FF(QA-B476) · origin/test push · M12 credentials.
 
 ### [COD] 코더 메모 (2026-07-15 — J03 dispatch-reference-unit-rates catalog + health)
 
@@ -1342,21 +1466,38 @@
 
 ### 문서 작성 질문
 
-### [TWR] 긴급 문서화 작업 대기 상태 (2026-07-15 21:20 UTC — **모든 ops 문서 최신 동기화 완료**)
+### [TWR] 자율 ops meta 동기화 (2026-07-16 18:50 UTC — **버전 정렬 완료**)
+
+**자동 문서 갱신 완료**:
+- **기준 시점**: develop HEAD `82a83e3`(BE)·`0210aaa`(FE) — MathSpace/WordJoiner long alias decode 최신
+- **작업**: CHANGELOG·FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE·README·API_SPEC·ERD 메타 타임스탐프 일괄 갱신(18:50 UTC)
+- **커밋**: 
+  1. `1cf061d` — ops 메타 동기화 (6개 파일)
+  2. `5a60081` — 기술 문서 메타 동기화 (3개 파일)
 
 **현황**:
-- **최근 작업 반영**: 2026-07-15 CHANGELOG, FAQ, USER_MANUAL, ADMIN_GUIDE, DEPLOYMENT_GUIDE 모두 sync
-- **develop HEAD**: `daf9d8e` (docs(qa): record QA-B450 V195/V196 linkage integrity gate)
-- **backend**: `cf700b9` (fix uppercase hex HTML entities in bootstrap blockers)
-- **frontend**: `b4008b0` (fix uppercase hex HTML entities in readiness blockers)
-- **모듈 KPI**: ~97.4% · **133 route · 106 page** · Flyway **V1–V196**
+- 모든 ops 문서 **18:50 UTC 버전 정렬 완료**
+- 대기 중 문서화 우선순위 유지: **M11 급여 persist** · **G-ACCOUNTING-IN-APP-LEDGER** · **program reports FE `branchId`** · **7-5 live PG checklist** · **J03 Solapi live dispatch**
+- 다음 신호: coder M11/M12 구현 start 시 USER_MANUAL §11 신규 작성 개시
 
-**대기 중 문서화 우선순위** (P1 잔여 기능 구현 시):
-1. **M11 급여 persist** — 급여 저장·수익·인건비 자동 집계
+---
+
+### [TWR] 문서화 상태 (2026-07-16 08:13 UTC — **PLN 220차 완전 동기화**)
+
+**현황**:
+- **최근 작업 반영**: 2026-07-16 08:13 CHANGELOG, FAQ, USER_MANUAL, ADMIN_GUIDE, DEPLOYMENT_GUIDE 모두 최신 상태
+- **develop HEAD**: `2b1b66f` (docs(ux): add §105 J03 unit-rates a11y check and FE-16 fix note)
+- **backend**: `a8d0af5` (develop SYNCED, WT CLEAN) — ahead origin/test **682**
+- **frontend**: `483dfe1` (develop/test/origin/test FULLY SYNCED+PUSHED)
+- **모듈 KPI**: **97.41%** (28.25/29) · **133 route · 106 page** · Flyway **V1–V196**
+- **QA 상태**: Open **0** · Planned residual **QA-B116**(origin/test push 682 BE) + **QA-B95**(operation 승격·blocker parsing 정상화)
+
+**대기 중 문서화 우선순위** (P1 잔여 기능 구현 시 반영):
+1. **M11 급여 persist** — 급여 저장·수익·인건비 자동 집계·봉급 대장 저장
 2. **G-ACCOUNTING-IN-APP-LEDGER** (v3+) — 회계 장부 in-app
 3. **program reports FE `branchId`** — 프로그램 리포트 지점 필터
-4. **7-5 live PG checklist** — 본인부담 간편결제 PG 통합
-5. **J03 Solapi live dispatch** — 채널 라이브 발송
+4. **7-5 live PG checklist** — 본인부담 간편결제 PG 통합 (env·smoke·go-live)
+5. **J03 Solapi live dispatch** — 채널 라이브 발송·준비 panel·채널 별칭
 
 ---
 
