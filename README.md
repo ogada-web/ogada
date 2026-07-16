@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=DEV,PLN,UXD,COD,DBA updated=2026-06-26T23:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=DEV,PLN,UXD,COD,DBA updated=2026-07-16T18:50:00Z -->
 
 # ogada — 주간보호센터·요양기관 운영 시스템
 
@@ -9,6 +9,23 @@ ogada는 **전국 주간보호센터·요양기관**을 위한 **B2B SaaS 멀티
 이용자 관리, 출석(수기·QR B방식), 건강 기록, 청구·정산, 다지점 대시보드, 보호자 포털 등 일상 운영 업무를 클라우드 기반으로 지원합니다.
 
 ---
+
+## ✅ 현재 상태 (2026-06-28 TWR 396차 최종 동기화)
+
+| 항목 | 상태 |
+|------|------|
+| **Backend baseline** | **`7fcdfde`** — V1–V183 · 275 test suites · 1999 @Test · Must ✅ |
+| **Frontend baseline** | **`e19328a`** — 118 routes · 93 pages · Module KPI **~80.86%** |
+| **방문일정 import 안내·결과 (G-NHIS-SCHEDULE-IMPORT + G-NHIS-IMPORT-ERROR-STATUS-SURFACE, Q731–Q742)** | ✅ FULL-STACK — PLAN/BILLING 4단계 · outcome Alert · guidance 7단계 · 미매칭 수급자 찾기 · branch filter |
+| **급여제공 변경계약서 일괄 출력 (G-CLIENT-CONTRACT-BULK-PRINT, Q726·Q734)** | ✅ FULL-STACK — `/clients/care-plan-forms/bulk-export` · branchId·clientIds normalize · V183 index |
+| **위원회·보호자 회의록 (G-STAFF-COMMITTEE-MEETING-LOG, Q723–Q725)** | ✅ FULL-STACK — `/staff/committee-meetings` · 3종 유형 · DRAFT→FINALIZED · 확정 plain-text · V182 CHECK |
+| **프로그램 리포트 (G-REPORT-DENSITY M5, Q714–Q715)** | ✅ FULL-STACK — 4 routes · optional branchId · V179 group history |
+| **이동서비스비 parity-rules (G16 Q743)** | ✅ FE wire — **`ONE_PER_DAY.description` 우선** · static cascade · TransportParityRulesPanel |
+| **bootstrap service-unavailable (QA-B95 Q744)** | ✅ health lock — enabled·bean missing matrix · HealthControllerTest +1 |
+| **live E2E G21 seed (QA-B95 Q733·Q736·Q737)** | ✅ — 3축 component code · null normalize · probe state persistence |
+| **Must 갭** | **0** — 기존 Must 완전 안정화 · G16 9단계 parity chain |
+| **P2 Planned** | program reports FE `branchId` · 7-5 live PG · J03 Solapi · M6 `/safety/*` |
+| **Merge gate** | **865+** · cross-stream BLOCK · QA Open 1(active) |
 
 ## 🎯 주요 기능 (MVP v1)
 
@@ -87,204 +104,151 @@ Kubernetes (배포 준비 중)
 
 ---
 
-## 🚀 빠른 시작
+## 🚀 로컬 개발 시작
 
-### 사전 요구사항
-
-- **Git** — `git clone` & 서브모듈 관리
-- **Docker & Docker Compose** — 로컬 DB·Redis 컨테이너
-- **Java 21+** — Spring Boot 3.x 컴파일·실행
-- **Node.js 18+** — React 프론트엔드 번들링
-- **Maven 3.9+** — 백엔드 빌드
-- **npm 9+** — 프론트엔드 패키지 관리
-
-### 로컬 개발 환경 구성
-
-#### 1. 저장소 클론 (서브모듈 포함)
+### 1. 저장소 복제 & 서브모듈 초기화
 
 ```bash
-git clone --recursive https://github.com/yourorg/ogada.git
+git clone https://github.com/ogada/ogada.git
 cd ogada
+git submodule update --init --recursive
 ```
 
-#### 2. 백엔드 설정
+### 2. 환경 설정
+
+```bash
+# .env 파일 생성 (template: .env.example)
+cp .env.example .env
+
+# PostgreSQL, Redis 컨테이너 시작
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+### 3. 백엔드 빌드 & 실행
 
 ```bash
 cd src/backend
-
-# 환경변수 설정 (.env.example 참고)
-cp .env.example .env
-
-# PostgreSQL + Redis 시작 (Docker Compose)
-docker-compose up -d
-
-# Flyway 마이그레이션 + Spring Boot 실행
-./mvnw clean spring-boot:run
-# 또는 IDE에서 `OgadaApplication.main()` 실행
+mvn clean install -DskipTests
+mvn spring-boot:run
 ```
 
-**Backend URL**: `http://localhost:8080`  
-**Health Check**: `GET http://localhost:8080/api/v1/health`
+**백엔드 기본 포트**: `http://localhost:8080`
 
-#### 3. 프론트엔드 설정
+### 4. 프론트엔드 개발 서버 시작
 
 ```bash
 cd src/frontend
-
-# 의존성 설치
 npm install
-
-# 개발 서버 시작 (Vite)
 npm run dev
 ```
 
-**Frontend URL**: `http://localhost:5173` (자동 열림)
+**프론트엔드 개발 서버**: `http://localhost:5173`
 
-#### 4. 테스트 실행
+### 5. 테스트 실행
 
-**백엔드**:
+**백엔드 테스트**
+
 ```bash
 cd src/backend
-./mvnw clean test  # 단위·통합 테스트 (~5min)
+mvn test
 ```
 
-**프론트엔드**:
+**프론트엔드 테스트**
+
 ```bash
 cd src/frontend
-npm run test       # Vitest 단위 테스트
-npm run test:e2e   # Playwright E2E 테스트 (로컬 dev 서버 필요)
+npm test                    # 단위 테스트
+npm run test:e2e           # E2E 테스트
 ```
 
+**⚠️ 주의**: 프론트엔드 Vitest는 한 번에 **1개만** 실행하세요. 자세한 내용은 `docs/qa/VITEST_CONCURRENCY.md`를 참고하세요.
+
 ---
 
-## 📂 프로젝트 구조
+## 🔑 주요 API 엔드포인트
+
+### 인증
+
+- `POST /api/v1/auth/login` — 로그인
+- `POST /api/v1/auth/refresh` — 토큰 갱신
+- `GET /api/v1/auth/me` — 현재 사용자 정보
+
+### 이용자 관리
+
+- `GET /api/v1/clients` — 이용자 목록
+- `POST /api/v1/clients` — 이용자 등록
+- `PATCH /api/v1/clients/{clientId}` — 이용자 수정
+
+### 청구·정산
+
+- `GET /api/v1/billing/claims` — 청구 목록
+- `POST /api/v1/billing/claims` — 청구 생성
+- `GET /api/v1/billing/reports/deposits` — 입금 대장
+
+### 공단 연동
+
+- `GET /api/v1/visits/imports/nhis/guidance` — NHIS import 안내 (Q731)
+- `POST /api/v1/visits/imports/nhis` — NHIS 방문일정 동기화
+- `GET /api/v1/visits/imports/nhis-caregivers/preview` — 요양보호사 excel import 미리보기
+
+전체 API 스펙은 [`docs/technical/API_SPEC.md`](docs/technical/API_SPEC.md)를 참고하세요.
+
+---
+
+## 📊 아키텍처
+
+### 데이터베이스 스키마
+
+- **조직·지점 격리**: `organization_id`, `branch_id` 멀티테넌트
+- **감사 추적**: `created_at`, `created_by`, `updated_at`, `updated_by`
+- **데이터 보존**: PII 암호화, 감사 로그 유지 (자세히: `docs/ops/DATA_RETENTION_POLICY.md`)
+
+Flyway 마이그레이션 이력: `V1–V183` (신규 DB 마이그레이션은 `V184`부터)
+
+### 권한 제어 (RBAC)
+
+| 역할 | 데이터 범위 | 주요 기능 |
+|------|-----------|---------|
+| `platform_admin` | 전국 Tenant 메타 | 신규 고객 등록, `hq_admin` 발급 |
+| `hq_admin` | 자기 Tenant 전체 | 지점·직원·이용자·청구 관리 |
+| `branch_admin` | 자신의 지점만 | 지점 운영, 이용자·출석 관리 |
+| `caregiver` | 배정 이용자만 | 건강 기록, 출석 체크인 |
+| `guardian` | 자신의 이용자만 | 기록 열람, QR 체크인 |
+
+### 개발 워크플로우
 
 ```
-ogada/
-├── README.md (this file)
-├── docs/
-│   ├── README.md
-│   ├── ops/
-│   │   ├── USER_MANUAL.md
-│   │   ├── ADMIN_GUIDE.md
-│   │   ├── FAQ.md
-│   │   ├── DEPLOYMENT_GUIDE.md
-│   │   └── CHANGELOG.md
-│   ├── planning/
-│   │   ├── REQUIREMENTS.md
-│   │   ├── FLOWCHART.md
-│   │   ├── USER_STORIES.md
-│   │   ├── ROADMAP.md
-│   │   └── research/
-│   │       ├── BENCHMARK_REPORT.md
-│   │       └── COMPETITOR_MATRIX.md
-│   ├── technical/
-│   │   ├── API_SPEC.md
-│   │   └── ERD.md
-│   ├── qa/
-│   │   └── QA_FEEDBACK.md
-│   ├── security/
-│   │   └── (보안 정책 & 감시 로그)
-│   └── IMPLEMENTATION_STATUS.md (⭐ 현재 구현 스냅샷)
-├── src/
-│   ├── backend/          # Spring Boot 백엔드 (서브모듈)
-│   │   ├── src/
-│   │   ├── pom.xml
-│   │   ├── Dockerfile
-│   │   └── docker-compose.yml
-│   ├── frontend/         # React 프론트엔드 (서브모듈)
-│   │   ├── src/
-│   │   ├── package.json
-│   │   ├── vite.config.js
-│   │   └── Dockerfile
-│   └── migrations/       # Flyway DB 스크립트 (공유)
-├── scripts/              # 운영 스크립트
-│   ├── run-agent.py      # 에이전트 실행
-│   ├── git_merge_to_test.sh
-│   └── ...
-├── transfer/            # 파일럿 테스트 산출물
-│   ├── backend/
-│   ├── frontend/
-│   └── ...
-├── memory/
-│   └── decisions.md      # 아키텍처·디자인 결정 이력
-├── .agents/             # 에이전트 구성
-│   ├── agents.yaml
-│   ├── rules.md
-│   ├── workspace_baseline.yaml
-│   └── branches.yaml
-└── tests/               # 테스트 리소스
-    └── README.md
+main (stable)
+ ├── origin/main (원격, protected)
+ └── develop (작업 브랜치)
+      ├── src/backend (submodule)
+      ├── src/frontend (submodule)
+      └── docs/ (마크다운 문서)
+
+작업 순서:
+1. develop에서 feature/fix 브랜치 생성
+2. src/backend, src/frontend 각각 develop branch에서 코드 작성
+3. 작업 완료 후 root docs/ 업데이트 (TWR — .agents/rules.md §6)
+4. git commit (root + submodule)
+5. PR → code review → merge to test → merge to main
 ```
 
----
-
-## 👥 역할 & 권한
-
-| 역할 | 코드 | 범위 | 주요 업무 |
-|------|------|------|----------|
-| **플랫폼 관리자** | `platform_admin` | 전국(ogada 내부) | 신규 Tenant 등록, 첫 `hq_admin` 발급 |
-| **통합 관리자** | `hq_admin` | 자기 Tenant | 다지점 통합 관리, 지점·직원·청구 |
-| **지점장** | `branch_admin` | 자기 지점 | 지점 운영 총괄, 이용자·직원 관리 |
-| **사회복지사** | `social_worker` | 자기 지점 | 이용자·건강 기록, 프로그램 관리 |
-| **요양보호사** | `caregiver` | 자기 지점 | 수기 출석, 건강 기록 입력 |
-| **보호자** | `guardian` | 연결 이용자 | 일일 기록 열람, 청구 명세, QR 체크인 |
-| **이용자 본인** | `client_user` | 자신 | 출석 현황, 기록 조회, QR 체크인(옵션) |
-| **시스템 관리자** | `sysadmin` | 자기 Tenant | 기술 설정, 백업, 감시 로그 |
+자세한 git 워크플로우는 `.agents/agents.yaml`과 `.agents/rules.md` §6을 참고하세요.
 
 ---
 
-## 🔒 보안
+## 📞 지원 & 문의
 
-### 핵심 정책
-
-- **테넌트 격리**: 모든 쿼리에 `organization_id` 필수. 테넌트 간 데이터 접근 불가.
-- **역할 기반 접근 제어(RBAC)**: JWT의 `role`, `branch_ids` 검증. 비인증 요청 `401`, 권한 없음 `403`.
-- **민감정보 암호화**: 주민등록번호, 연락처 → 저장 시 암호화, 응답·로그 시 마스킹.
-- **환경변수 관리**: API 키·DB 비밀번호 → `.env` (깃 무시) + 배포 환경 시크릿 주입.
-- **SQL 인젝션 방지**: 파라미터 바인딩·ORM(`JPA`) 우선. 원본 SQL 금지.
-
-자세한 보안 가이드는 [ADMIN_GUIDE.md §2](docs/ops/ADMIN_GUIDE.md)를 참고하세요.
-
----
-
-## 📞 지원 & 피드백
-
-- **문서 오류/개선 제안**: [GitHub Issues](https://github.com/yourorg/ogada/issues)
-- **기술 지원**: [Discord Community](https://discord.gg/yourserver) 또는 ogada 지원팀
-- **보안 취약점 신고**: security@ogada.kr (절대 공개 이슈 금지)
+- **Slack**: #ogada-ops (팀 채널)
+- **이슈 추적**: GitHub Issues
+- **배포 지원**: DEPLOYMENT_GUIDE.md §10
 
 ---
 
 ## 📄 라이선스
 
-Proprietary — ogada 저작권 보유. 허가 없이 복제·수정·배포 금지.
+TBD (조직 내부 정책에 따름)
 
 ---
 
-## 🙏 감사
-
-- **UI/UX**: Tailwind CSS, Recharts, React Router
-- **DB**: PostgreSQL, Flyway
-- **테스트**: JUnit, Vitest, Playwright
-- **CI/CD**: GitHub Actions
-
----
-
-**최종 갱신**: 2026-06-26 (TWR 374차 baseline: `49fe2e7` / `bd3253a`)
-**현재 버전**: v1 (MVP) — **V1–V179 Flyway** · **117 route · 92 page** · **Must 갭 0**
-**개발 branch**: `develop`  
-**배포 branch**: `operation` (→ production)
-
-문서 소유자: `tech_writer` (`TWR`)
-
-### ⭐ 최근 주요 추가 기능 (2026-06-26 기준)
-
-- **QA-B95 string-form operation blocker**: live E2E health blockers string/array uniform parsing (Q716·`normalizeOperationBlockers`)
-- **G-REPORT-DENSITY**: M5 프로그램 5-7~5-10 보고서 full-stack ✅ (Q714·`branchId` filter, Q715)
-- **G-REPORT-DENSITY 5-9 group-history**: membership aggregate V179 (Q714 deepen)
-- **QA-B95 bootstrap probe reason surfacing**: effective operation readiness (Q713 deepen)
-- **G-EASYPAY-PROVIDER-CATALOG**: 결제 수단 카탈로그 API + FE wire (Q709·`pgMode` stub/live)
-- **G-REFUND-FEE-DEDUCTION**: 7-9 환급 수수료 정책 카탈로그 + modal (Q712·`feePolicyCode` validation)
-- **US-O01**: 목욕 스케줄 FE 전·후 관찰 노트 form (Q705·`preObservationNotes` / `postObservationNotes`)
-- **G16 parity-rules**: 이동서비스 수가 규칙 패널 + NHIS 대체 매칭 Badge (Q703·Q707·Q706)
+**최종 갱신**: 2026-06-28 396차 baseline · `BE 7fcdfde` / `FE e19328a` · **Must ✅** · Merge gate **865+**

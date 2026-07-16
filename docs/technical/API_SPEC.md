@@ -1,4 +1,4 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-15T22:47:00+09:00 -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-16T18:50:00Z -->
 <!-- tech_writer-sync: TWR 2026-07-15 — **§4-2 G-LINKAGE-RECORD** CRUD+dispatch+**지점 리포트** · V194–**V196** · Q819·Q822·**Q826**·**Q827** · BE `9dff00f` / FE `8b8095a` -->
 <!-- planner-sync: PLN 197차 2026-06-24T22:30 UTC — BNK-596~599 G2b CMS payment-method-catalog + G16 parity-rules BE API · BE `bd1e87e`/FE `c3c6272` baseline -->
 <!-- tech_writer-sync: TWR 344차 2026-06-24T23:45:00Z — **G2b CMS collection methods closure** · **`POST/GET .../virtual-account`** · **`POST/GET .../multi-account-settlement`** · **V176 integration** · BE `dac8ebd`·FE `c3c6272`·V1–V176·112 route·91 page·**merge gate 778** · **신규 섹션**: CMS 가상계좌·다계좌 정산 API (Q704) · **FAQ Q701·Q704 신규** · **USER_MANUAL §4-6 정정** · **다음**: G16 FE parity-rules wire · G2b CMS FE panel UI (가상계좌·다계좌) P2 -->
@@ -1298,7 +1298,7 @@
 
 ### 11-10. 알림 채널 readiness (US-J03 / J03-readiness) — v2 partial+
 
-> **상태**: backend develop — `NotificationChannelReadinessService`·`GET /api/v1/notifications/channel-status` + **quiet-hours aware** `nonEmergency*DispatchAvailableNow` · **`GET …/dispatch-reference-unit-rates`** 전용 카탈로그 · `/api/v1/health` `notificationDispatchReferenceUnitRates` 동일 상수. frontend **`a356083`** — readiness panel BE rates prefer + static fallback · REQUIREMENTS J03-readiness · USER_STORIES US-J03 · **닫힘**: quiet-hours·SMS readiness·참고 단가 in-app · **잔여**: live Solapi E2E(ops)·id=10 KPI promote 금지(0.85).
+> **상태**: backend develop — `NotificationChannelReadinessService`·`GET /api/v1/notifications/channel-status` + **quiet-hours aware** `nonEmergency*DispatchAvailableNow` · **`GET …/dispatch-reference-unit-rates`** 전용 카탈로그 · `/api/v1/health` `notificationDispatchReferenceUnitRates` 동일 상수. frontend — readiness panel **dedicated `dispatch-reference-unit-rates` → channel-status embed → static fallback** · REQUIREMENTS J03-readiness · USER_STORIES US-J03 · **닫힘**: quiet-hours·SMS readiness·참고 단가 in-app(전용 catalog wire) · **잔여**: live Solapi E2E(ops)·id=10 KPI promote 금지(0.85).
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
@@ -2512,15 +2512,20 @@ form-data:
   "indicator27Label": "개인별 기능회복훈련 계획",
   "daycareEvaluationRequired": true,
   "daycareEvaluationIndicator27Owner": "FUNCTIONAL_RECOVERY",
-  "scopeNote": "주야간보호 공단평가 지표 27은 기능회복훈련입니다. 목욕 제공은 평가 필수 지표가 아니며 청구 선택 축(G-BATHING)입니다."
+  "scopeNote": "주야간보호 공단평가 지표 27은 기능회복훈련입니다. 목욕 제공은 평가 필수 지표가 아니며 청구 선택 축(G-BATHING)입니다.",
+  "essentialDutySerial27Label": "가족과의 소통",
+  "essentialDutySerial27MeetingType": "GUARDIAN",
+  "essentialDutySerial27Route": "/staff/committee-meetings",
+  "dualNumberingNoteKo": "공단 주야간보호 평가 지표27(기능회복훈련·/programs/functional-recovery) ≠ 필수업무 일련27(가족과의 소통·/staff/committee-meetings meetingType=GUARDIAN). 번호만 같아 혼동하지 마세요."
 }
 ```
 
-**semantics** (G17 주야간보호 지표 25–27 · BNK-704/707):
+**semantics** (G17 주야간보호 지표 25–27 · BNK-704/707 · **BNK-776 dual-numbering**):
 
 - **Indicator 25**: 기능회복훈련 계획(급여계획 반영) — `indicator25MetCount`
 - **Indicator 26**: 기능회복훈련 연간 시행·제공 — `indicator26MetCount`
 - **Indicator 27**: 개인별 기능회복훈련 계획 — `indicator27Code=INDICATOR_27` · `daycareEvaluationRequired=true` · owner=`FUNCTIONAL_RECOVERY` (목욕 ≠ 지표 27; bathing API는 `BATHING_CLAIM_COMPLIANCE`)
+- **Dual-numbering guardrail**: 공단「주야간보호 27=기능회복」≠ 필수업무 일련 27「가족과의 소통」 — `essentialDutySerial27*` + `dualNumberingNoteKo` (FE 화면 라벨/툴팁 copy 소스)
 
 ---
 
