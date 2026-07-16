@@ -1,3 +1,44 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T22:16:37Z -->
+<!-- coder-sync: COD 2026-07-16T22:16:37Z (backend) — **★ QA-B95 semi HTML entity delimiter decode** @ develop · `&semi;` → `;` (complements `&comma;` for `[\\s,;]+` list splits) · related LiveE2eOperationReadinessSupportTest PASS(+1) · WT **CLEAN** after commit · Open residual **QA-B538**(BE pending → tester FF) + **QA-B536**(comma `@45e1f00` pending) · Planned QA-B116+QA-B95 · FE lockstep follow-up optional -->
+# coder_1740_backend: QA-B95 semi HTML entity delimiter decode; related LiveE2eOperationReadinessSupportTest PASS(+1); WT CLEAN; Open residual QA-B538(pending merge)+QA-B536(comma); Planned QA-B116+QA-B95.
+
+### [COD] v2/QA-B95 semi HTML entity delimiter decode (QA-20260716-B538) — **Fixed**
+
+- **id**: QA-20260716-B538
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN)
+- **stream**: backend
+- **status**: Fixed (develop commit · related LiveE2eOperationReadinessSupportTest PASS · +1 `@Test`)
+- **found_at**: 2026-07-16T22:09:32Z (Open QA-B536 comma pending · Planned QA-B95 delimiter harden continue · `&semi;` gap after `&comma;`)
+- **fixed_at**: 2026-07-16T22:16:37Z
+- **version**: v2 / QA-B95 — `&semi;` named HTML entity → ASCII `;` delimiter (after `&comma;` · complements `[\\s,;]+` splits)
+- **summary**: ★ Fixed — BE decode normalizes `&semi;` so proxy-encoded semicolon-delimited blocker lists split fail-closed alongside existing `&comma;`/`&equals;`/`&colon;`/`&bsol;` paths.
+- **assignee**: TSR (develop→test FF · related+post-merge 회귀 · Open B536+B538) · PLN (baseline BE after merge) · FE lockstep optional
+- **roadmap_ref**: ROADMAP v2/v3 · Planned QA-B116+QA-B95
+- **expected**: backend develop WT CLEAN with QA-B95 semi delimiter decode committed and related tests PASS.
+- **actual**: ★ Fixed — related LiveE2eOperationReadinessSupportTest PASS · Open residual **QA-B538**(pending merge) + **QA-B536**(comma `@45e1f00`).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T22:09:32Z -->
+<!-- tester-sync: TSR 1739차 2026-07-16T22:09:32Z (frontend) — **★ QA-B537 Fixed** FF merge+PUSH `b28eb45`→`b753586` · related **228/228**(5.41s,+2) · core **207/207** · post-merge **2651/2651**(877.81s,477,+2) · build **1230**(9.35s) · audit **0** · live **0/149/0**(34.53s) · FE develop/test/origin **ALL SYNCED+PUSHED `@b753586`** · Open **1**(QA-B536 BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@45e1f00`)** · backend@8080 **UP/200** · operation **BLOCK**(711 BE) -->
+# tester_1739_frontend: QA-B537 Fixed FF merge+PUSH @b753586 (&comma; · pending 1→0 · +2→2651); related 228/228; live 0/149/0(34.53s); Open 1(B536 BE); transfer PASS(FE); operation BLOCK(711 BE); cross-stream BLOCK(BE).
+
+### [TSR] v1.2.1/QA-B95 FE comma HTML entity decode — develop→test merge+PUSH (`b753586`, QA-20260716-B537) — **Fixed**
+
+- **id**: QA-20260716-B537
+- **priority**: BLOCK → Fixed (TSR 1739 FF merge+PUSH)
+- **severity**: BLOCK → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin/test **ALL SYNCED+PUSHED `@b753586`** · related **228/228** · core QA-B95 **207/207** · npm **2651/2651** · live **0/149/0**)
+- **found_at**: 2026-07-16T21:52:00Z (COD `@b753586` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-16T21:53:30Z (FF `b28eb45`→`b753586`)
+- **verified_at**: 2026-07-16T22:09:32Z (related+post-merge+build+audit+live · origin/test=`b753586`)
+- **version**: v1.2.1 / QA-B95 — `&comma;` named HTML entity → ASCII `,` delimiter (COD `@b753586` · BE `@45e1f00` lockstep)
+- **summary**: FF merge pending **1** into test · related **228/228**(+2 · 4-file gate) · core QA-B95 **207/207**(+2) · post-merge **2651/2651**(+2 vs TSR1737) · live fail-closed **0/149/0**(34.53s · bootstrap-disabled) · ALL SYNCED+PUSHED `@b753586`.
+- **assignee**: TSR (merge·회귀·push·live 완료) · PLN (baseline FE `@b753586`) · residual Open **QA-B536**(BE pending `@45e1f00`) · Planned **QA-B116**(711 BE origin/test push)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (`&comma;` delimiter · count 207/2651)
+- **expected**: develop→test FF merge · related+full regression PASS · origin/test push · FE SYNCED · Open **0**(FE)
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@b753586` · Open **1**(BE B536 only) · cross-stream **BLOCK(BE)** · operation BLOCK(711 BE)
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T21:52:00Z -->
 <!-- coder-sync: COD 2026-07-16T21:52:00Z (frontend) — **★ QA-B95 FE comma HTML entity decode** @ `b753586` · BE `@45e1f00` parity · `&comma;` → `,` (channel-status + live probe/config/setup) · related **207/207**(+2 vs 205) · WT **CLEAN** · Open residual **QA-B537**(FE pending → tester FF) + **QA-B536**(BE pending `@45e1f00`) · Planned QA-B116+QA-B95 -->
 # coder_1739_frontend: QA-B95 comma HTML entity delimiter decode @b753586 (BE 45e1f00 parity); related 207/207; WT CLEAN; Open residual QA-B537(pending merge)+QA-B536(BE); Planned QA-B116+QA-B95.
@@ -5,17 +46,17 @@
 ### [COD] v1.2.1/QA-B95 FE comma HTML entity delimiter decode (`b753586`, QA-20260716-B537) — **Fixed**
 
 - **id**: QA-20260716-B537
-- **priority**: HIGH → Fixed (COD commit · WT CLEAN)
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN) · **verified TSR1739**
 - **stream**: frontend
-- **status**: Fixed (develop `@b753586` WT **CLEAN** · related **207/207** · ahead origin/develop **1** · BE `@45e1f00` lockstep · pending vs test **1**)
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@b753586`** · related **228/228** · npm **2651/2651** · BE `@45e1f00` lockstep) · **verified TSR1739**
 - **found_at**: 2026-07-16T21:46:57Z (BE `&comma;` Fixed @ `45e1f00` · FE lockstep follow-up · QA-B536 Open)
-- **fixed_at**: 2026-07-16T21:52:00Z
+- **fixed_at**: 2026-07-16T21:52:00Z · **verified_at**: 2026-07-16T22:09:32Z (TSR1739 FF+회귀+PUSH+live)
 - **version**: v1.2.1 / QA-B95 — `&comma;` named HTML entity → ASCII `,` delimiter (after InvisibleComma strip)
 - **summary**: ★ Fixed — FE decode normalizes `&comma;` so proxy-encoded blocker lists split fail-closed alongside existing `&equals;`/`&colon;`/`&bsol;` paths (BE `@45e1f00` parity).
-- **assignee**: TSR (develop→test FF pending includes `@b753586` · Open **QA-B537** update) · PLN (baseline FE `@b753586`) · residual Open **QA-B536**(BE pending 1) · Planned **QA-B116**(origin/test BE push)
+- **assignee**: TSR (★ verified FF merge+PUSH `@b753586`) · PLN (baseline FE `@b753586`) · residual Open **QA-B536**(BE pending 1) · Planned **QA-B116**(origin/test BE push)
 - **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
 - **expected**: frontend develop WT CLEAN with QA-B95 comma delimiter decode committed and related tests PASS.
-- **actual**: ★ Fixed — develop `@b753586` WT **CLEAN** · related **207/207**(+2) · Open residual **QA-B537**(merge gate pending 1) + **QA-B536**(BE).
+- **actual**: ★ Fixed+verified — ALL SYNCED+PUSHED `@b753586` · Open **1**(BE B536 only).
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T21:46:57Z -->
 <!-- tester-sync: TSR 1738차 2026-07-16T21:46:57Z (backend) — ROADMAP merged baseline `@043f002` · baseline **CARRY 2282/2282**(TSR1736 · SHA unchanged) · develop pre-merge **71/71 PASS**(1.898s, LiveE2eOperationReadinessSupportTest · +1 vs 70) · pending **1** `@45e1f00` · merge **SKIP**(read-only) · **QA-20260716-B536 Open(BLOCK)** · Open **1** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 · FE ALL SYNCED+PUSHED `@b28eb45`)** · operation **BLOCK**(710 BE) -->
@@ -4223,7 +4264,7 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **1** active · **QA-20260716-B536 BLOCK**(BE pending 1 `@45e1f00`) · Fixed carry **QA-B525~B527+B532~B535** · FE develop/test/origin **ALL SYNCED+PUSHED `@b28eb45`** · Planned **QA-B116**(origin/test **710 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **BLOCK(BE)** · TSR1738)_
+_(Open **2** active · **QA-20260716-B536 BLOCK**(BE `&comma;` pending) + **QA-20260716-B538 BLOCK**(BE `&semi;` pending · COD Fixed code) · **★ QA-B537 Fixed**(FE ALL SYNCED+PUSHED `@b753586` · TSR1739) · Fixed carry **QA-B525~B527+B532~B535+B537+B538(COD)** · Planned **QA-B116**(origin/test **711+ BE**)+**QA-B95** · operation **BLOCK** · cross-stream **BLOCK(BE)** · COD1740)_
 
 
 ### [TSR] v2/QA-B95 comma HTML entity decode — backend develop→test merge pending (`45e1f00`, QA-20260716-B536) — **Open**
@@ -4232,16 +4273,55 @@ _(Open **1** active · **QA-20260716-B536 BLOCK**(BE pending 1 `@45e1f00`) · Fi
 - **priority**: BLOCK
 - **severity**: BLOCK
 - **stream**: backend
-- **status**: Open (develop `@45e1f00` WT **CLEAN** · test `@043f002` · pending **1** · merge **SKIP** this cycle · read-only)
+- **status**: Open (develop includes `@45e1f00` + follow-up `&semi;` · test `@043f002` · pending **≥2** · FE lockstep ★ Fixed `@b753586`)
 - **found_at**: 2026-07-16T21:46:57Z (COD `@45e1f00` · develop vs test pending **1**)
+- **updated**: 2026-07-16T22:16:37Z (COD1740 · `&semi;` follow-up · pending stack grows)
 - **version**: v2 / QA-B95 — `&comma;` named HTML entity → ASCII `,` in live-e2e blocker parser (`LiveE2eOperationReadinessSupport`)
-- **summary**: develop committed `&comma;` decode (+1 @Test → **71/71 PASS**) but **not merged** to test. Baseline `@043f002` CARRY **2282/2282**(TSR1736). Next tester cycle: FF merge `@45e1f00` + post-merge `mvn test` **~2283/2283** + live CARRY/re-run.
-- **assignee**: TSR (develop→test FF `@45e1f00` · post-merge 회귀) · PLN (baseline BE `@45e1f00` after merge) · COD (★ FE `&comma;` lockstep Fixed — QA-B537)
+- **summary**: develop committed `&comma;` decode (+1 @Test) but **not merged** to test. COD1740 added `&semi;` delimiter follow-up (QA-B538). FE lockstep ★ Fixed TSR1739 `@b753586`. Next BE tester cycle: FF merge pending stack + post-merge `mvn test` + live CARRY/re-run.
+- **assignee**: TSR (develop→test FF pending stack · post-merge 회귀) · PLN (baseline BE after merge) · COD (★ FE `&comma;` lockstep Fixed+verified — QA-B537 · ★ BE `&semi;` Fixed — QA-B538)
 - **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
 - **prevention**: LiveE2eOperationReadinessSupportTest (`&comma;` named-entity · +1 @Test vs 70/2282)
-- **expected**: develop→test FF merge `@45e1f00` · related **71/71** + post-merge **~2283/2283** PASS · Open **0**(BE) · FE lockstep optional
-- **actual**: pending **1** · merge SKIP(read-only) · Open **1**(BE) · COD FE lockstep ★ Fixed (QA-B537) · transfer **BLOCK** · operation BLOCK(710 BE)
-- **repro**: `cd src/backend && git rev-list --left-right --count test...develop` → `0 1` · `git log --oneline test..develop` → `45e1f00 fix(v2/QA-B95): decode comma HTML entity in blocker parser` · `mvn -Dtest=LiveE2eOperationReadinessSupportTest test` → **71/71 PASS**
+- **expected**: develop→test FF merge pending stack · related + post-merge PASS · Open **0**(BE)
+- **actual**: pending **≥2** · FE lockstep ★ Fixed+PUSHED `@b753586` · Open **2**(BE B536+B538) · transfer **BLOCK**(BE) · FE transfer **PASS** · operation BLOCK(711+ BE)
+- **repro**: `cd src/backend && git rev-list --left-right --count test...develop` · `git log --oneline test..develop` · `mvn -Dtest=LiveE2eOperationReadinessSupportTest test`
+
+
+### [COD] v2/QA-B95 semi HTML entity decode — backend develop pending merge (QA-20260716-B538) — **Open**
+
+- **id**: QA-20260716-B538
+- **priority**: BLOCK
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (COD Fixed code · develop pending → tester FF · stacks with QA-B536)
+- **found_at**: 2026-07-16T22:16:37Z (COD `&semi;` Fixed · pending merge)
+- **updated**: 2026-07-16T22:16:37Z
+- **version**: v2 / QA-B95 — `&semi;` named HTML entity → ASCII `;` delimiter
+- **summary**: COD Fixed `&semi;` decode (+1 @Test) on develop. Tester FF with QA-B536 comma commit.
+- **assignee**: TSR (FF merge · 회귀) · PLN (baseline after merge)
+- **roadmap_ref**: ROADMAP v2/v3 · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest (`resolveOperationBlockersShouldDecodeSemiHtmlEntityDelimiter`)
+- **expected**: develop→test FF · related+post-merge PASS · Open **0**(BE)
+- **actual**: pending merge · Open **2**(B536+B538)
+
+
+### [TSR] v1.2.1/QA-B95 FE comma HTML entity decode — develop→test merge EXECUTED (`b753586`, QA-20260716-B537) — **Fixed**
+
+- **id**: QA-20260716-B537
+- **priority**: BLOCK → Fixed (TSR 1739 FF merge+PUSH)
+- **severity**: BLOCK → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@b753586`** · related **228/228** · post-merge **2651/2651** · live **0/149/0**)
+- **found_at**: 2026-07-16T21:52:00Z (COD `@b753586` · pending **1**)
+- **fixed_at**: 2026-07-16T21:53:30Z (FF `b28eb45`→`b753586`)
+- **verified_at**: 2026-07-16T22:09:32Z
+- **version**: v1.2.1 / QA-B95 — `&comma;` → `,` (COD `@b753586` · BE `@45e1f00` lockstep)
+- **summary**: FF merge pending **1** · related **228/228** · post-merge **2651/2651**(+2) · live **0/149/0** · ALL SYNCED+PUSHED.
+- **assignee**: PLN (baseline FE `@b753586`) · residual Open **QA-B536**(BE) · Planned **QA-B116**(711 BE)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (`&comma;` · 207/2651)
+- **expected**: develop→test FF · Open **0**(FE)
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@b753586` · Open **1**(BE only)
+- **repro**: `cd src/frontend-test && git log -2 --oneline` → `@b753586`…`@b28eb45` · `npm test` → **2651/2651 PASS**
 
 
 ### [TSR] v2/QA-B95 VeryThickSpace decode — backend develop→test merge EXECUTED (`043f002`, QA-20260716-B534) — **Fixed**
