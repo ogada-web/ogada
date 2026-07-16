@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-16T18:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-16T23:12:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (NoBreakSpace legacy · ZeroWidthNonJoiner/Joiner long · bidi long-form alias · ThickSpace·MathML invisible · bidi marks·Positive*Space · bidi embedding·NonBreakingSpace · HTML space alias · NoBreak/word-joiner · dash/minus/hyphen · zero-width·tab/newline · invisible Unicode Cf · soft-hyphen · M12 SSO demote · G2 branch scope · G2 표 a11y · Must 소통 채널 구분 · 모듈 **~97.4%**)  
-> **최종 갱신**: 2026-07-16 (TWR — Q882 · baseline `ff80f0b`/`8a05640`)
+> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (comma·VeryThickSpace live E2E · 템플릿 카탈로그 행 헤더 a11y · 알림톡 카탈로그 13종 · Must 소통 채널 구분 · 모듈 **~97.4%**)  
+> **최종 갱신**: 2026-07-16 (TWR — Q890~Q892 · baseline `45e1f00`/`b753586`)
 
 ---
 
@@ -30,6 +30,10 @@
 - 백업·복구
 
 **최신 항목** (2026-07-16):
+- **Q890~Q892** — live E2E **`&VeryThickSpace;`·`&comma;`** BE+FE lockstep · **템플릿 카탈로그 행 헤더 a11y** (`043f002`/`45e1f00`/`b28eb45`/`b753586`/`d3b0f1c`, UXD-185)
+- **Q889** — **알림톡·SMS 템플릿 카탈로그 13종**(ezCare 7 + Kakao 필수 6·kind 「—」) (`54fd8dd`/`ab9e853`)
+- **Q883~Q887** — live E2E **figure/fractional em/SixPerEm/MathSpace/VeryVery* space alias** BE+FE lockstep (`08cdb87`~`f491ec8`/`031abef`~`3f7db38`)
+- **Q888** — **연계기록지** 초안 안내·**발송 체크박스** a11y (`ed48077`, UXD-184)
 - **Q882** — live E2E **NoBreakSpace legacy alias** BE+FE lockstep (`ff80f0b`/`8a05640`)
 - **Q880** — live E2E **ZeroWidthNonJoiner/Joiner long alias** BE+FE lockstep (`ba5b0cb`/`61f8f19`)
 - **Q879** — live E2E **bidi long-form HTML entity alias** BE+FE lockstep (`53efa0b`/`975aecb`)
