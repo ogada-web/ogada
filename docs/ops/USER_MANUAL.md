@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-06-26T23:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T16:45:00Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-26 (378차 TWR 자동 동기화 — **Q722 recovered-auth hint · Q719 G21 seed detail · Q720 neutral blocker · Q721 V180 · Q717 staff schedule · Q715 program reports branchId · baseline `d06e3f1`/`4bbd54a`**)  
+> **최종 갱신**: 2026-07-16 (Q882: NoBreakSpace legacy alias · baseline `ff80f0b`/`8a05640` · Flyway **V1–V196**)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -25,15 +25,15 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 역할별 메뉴·권한·업무 절차 | `sysadmin` 기술 설정 상세 (→ `ADMIN_GUIDE.md`) |
 | 보호자 QR 셀프 체크인 (B방식) | `caregiver`·`social_worker` 전용 **식단·일정 등록** (관리자만, §5-9) |
 
-### 1-3. 구현 상태 안내 (2026-06-26 develop HEAD `d06e3f1` / frontend `4bbd54a` 기준 — 377차 baseline)
+### 1-3. 구현 상태 안내 (2026-07-16 develop HEAD `ff80f0b` / frontend `8a05640` 기준)
 
 | 영역 | 상태 | 비고 |
 |------|------|------|
-| 백엔드 API | **Must + … + V180 ✅** @ `d06e3f1` **SYNCED** · **QA-B95 recovered-auth hint ✅** (Q722) · **G21 seed service-unavailable detail ✅** (Q719) · **V180 program group integrity ✅** (Q721) · **G-REPORT-DENSITY M5 program reports ✅+** · **QA-B95 allow-recovered-auth ✅** · **G-REFUND-FEE-DEDUCTION ✅+** · **G-EASYPAY-PROVIDER-CATALOG ✅** · … | BE Test **271 suites** |
-| 데이터베이스 | Flyway **V1–V180** | **V180** 프로그램 그룹 3-way FK·active-client guard · **V179** 프로그램 수급자 그룹·멤버십 · **V178** CMS collection·목욕 CHECK · **V177** 목욕 전·후 관찰 |
-| 프론트엔드 | **118 route · 93 page** @ `4bbd54a` **SYNCED** | **QA-B95 recovered-auth hint wire ✅** (Q722) · **QA-B95 neutral blocker filter ✅** (Q720) · **G-STAFF-MONTHLY-SCHEDULE-FE-WIRE ✅+a11y** (Q717·UXD-165) · **G-REPORT-DENSITY M5 reports ✅** (Q714) · **QA-B95 singular blocker merge ✅** (Q718, IT harness) · **G-EASYPAY-PROVIDER-CATALOG-FE-WIRE ✅** (Q709) · **G-REFUND-FEE-FE-WIRE ✅** (Q712) · **US-O01 bathing FE ✅** (Q705) · **G2b CMS 5/5 ✅** |
-| UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·직원 출퇴근·연차 roster·**연차·유급휴일 대장**·HR cross-link 등 | **M6 6-1 `/meals` LIVE** (Q660) |
-| UI API 갭 | **Must 갭 0** (기존 Must) | **P3**: **G-COMM-CALLER-AUTH** · 카메라 QR · NFC · **7-5 live PG** · **M6 6-2~6-4 `/safety/*`** |
+| 백엔드 API | **Must + … + V196 ✅** @ `ff80f0b` **SYNCED** · **QA-B95 NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | Flyway **V186–V196** · BE Test **~2278** |
+| 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
+| 프론트엔드 | **133 route · 106 page** @ `8a05640` **SYNCED** | **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **G2 branch scope fallback ✅** (**Q868**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **soft-hyphen decode ✅** (**Q859**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · **`/clients/home-newsletter` ✅** · **M11 `/payroll/*` 5화면 ✅** · … |
+| UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·**G2 가정통신문·기관 공지**·**연계기록지**·**RFID 급여제공내역 일괄 SMS**·**M11 급여 5화면+kind22 발송**·**M12 BPO·SSO**·**위원회·보호자 회의록(필수업무 27)** 등 | **모듈 KPI ~97.4%** |
+| UI API 갭 | **P1**: **M11 급여 persist** · **수익·인건비 자동 집계** · **기관(테넌트)별 SSO 자격** · **P2**: **program reports FE `branchId` UI**(Q864·Q715 BE ✅) · **7-5 live PG** | |
 | **P2 Planned** | **L03 간호급여 잔여 5 leaf·7-5 live PG·J03 Solapi live dispatch·LCMS CMS 3-method·G34 SMS live·G-Payroll·G30 live E2E** | **G-STAFF-WELFARE P3**(FAQ21796) · **8-12 PDF 공식 서식**(Q315) · **선임 업무수행일지 템플릿 카탈로그** P3 (Q635 잔여) |
 | JWT 저장 | **access 메모리 + refresh `sessionStorage`** (SEC-005, 결정 96) | **같은 탭** 새로고침·뒤로가기 시 **`restoreSession()`** 으로 유지. **탭 닫기**·로그아웃 시 재로그인. **30분 idle** 시 SessionTimeoutModal (Q112) |
 | 본 매뉴얼 | **연동 UI + Swagger 병기 · Q326~Q329·Q321·Q325·Q320 반영** | **G2/7-5 stub PG** — 실제 카드·카카오 결제는 live PG 후속 |
@@ -53,14 +53,25 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 
 ### [TWR] 1-5. 미문서화 위험 Must 기능 추가 점검 (G17/G32/G42/G21)
 
-아래 5개는 최근 구현이 누적되어 현장 인수 시 누락되기 쉬운 Must 기능입니다.
+아래 5개는 최근 구현이 누적되어 현장 인수 시 누락되기 쉬운 Must 기능입니다. **보호자·기관 소통**은 FAQ **Q881** 표(기관 공지 vs 가정통신문 vs 연계기록지)를 먼저 보고 채널을 고르세요.
 
 | 구분 | 화면(프론트) | 핵심 API(백엔드) | 운영 확인 포인트 |
 |------|--------------|------------------|------------------|
-| 기능회복훈련 (G17) | `/programs/functional-recovery` | `GET/POST/PATCH /api/v1/programs/functional-recovery/plans` · `.../records` · `GET .../compliance` | 계획 수립률·30일 내 시작·월 1회 이상 급여제공 기록 |
+| 기능회복훈련 (G17) | `/programs/functional-recovery` | `GET/POST/PATCH /api/v1/programs/functional-recovery/plans` · `.../records` · `GET .../compliance` | **주야간 평가지표 25–27** 정본 · **`dualNumberingNoteKo`**(평가27≠필수업무27「가족과의 소통」) · 계획 수립률·30일 내 시작·월 1회 이상 급여제공 기록 (Q773·**Q850**) |
 | 사례관리 (G32) | `/case-management/meetings` | `GET/POST/PATCH /api/v1/case-management/meetings` · `GET .../compliance` | 회의/평가 누락, 참석자별 의견 누락, 회의 결과 반영 누락 |
 | 민원상담 (G42) | `/staff/grievance-counselings` | `GET/POST/PATCH /api/v1/staff/grievance-counselings` · `POST .../submit` · `POST .../approve` · `POST .../follow-up` | 결재 대기 건수, 승인 후 60일 내 사후관리 준수율 |
 | 방문요양 NHIS 비교 (G21) | `/visits` (batch-confirm 모달) | `GET /api/v1/visits/confirm-readiness` · `GET /api/v1/visits/nhis-comparison` · `POST /api/v1/visits/batch-confirm` | 동일 월 비교 여부, PLAN/BILLING 분리 readiness, 확인 체크 후 일괄확정 |
+| **방문요양 월단위 일괄 확정취소 (US-V06, Q818)** | `/visits` (`VisitBatchUnconfirmPanel`) | `GET /api/v1/visits/batch-unconfirm-preview` · `POST /api/v1/visits/batch-unconfirm` | **4-digit 확인번호** · **6-cascade 경고 확인** · **CONFIRMED→DRAFT**(visits-only) · **a11y** |
+| **RFID 급여제공내역 SMS 일괄 (G-RFID, Q832)** | `/visits` **「RFID 계획·태그 비교」** | `POST …/imports/rfid/compare` · `POST …/imports/rfid/care-provision-dispatch` | **비교 후 후보 체크** → **kind 13 일괄 발송** · **방문요양만** · 후보 0명 info · **조용한 시간대 거부** |
+| **연계기록지 (G-LINKAGE-RECORD, Q819·Q822·Q826)** | `/clients/:clientId` **「연계기록지」** 탭 · **`/clients/linkage-records`** | `GET/POST/PATCH/DELETE …/clients/{id}/linkage-records` · `POST …/dispatch` · **`GET …/clients/linkage-records`** | **이용자별** 초안·발송 · **지점 통합 리포트(페이지네이션)** · **기관 200자·요약 5000자** |
+| **공단 방문일정 import 안내·결과 상태 (G-NHIS-SCHEDULE-IMPORT + G-NHIS-IMPORT-ERROR-STATUS-SURFACE, Q731·Q735·Q738·Q739·Q740·Q741·Q742)** | `/visits` | `GET /api/v1/visits/imports/nhis/guidance` · `POST …/imports/nhis` | **PLAN/BILLING 4단계** · **`outcomeStatusNotes`·`errorRecoverySteps`(7단계)·`errorRecoveryKeywordNotes`(4종, API consume ✅)** · import 응답 **`outcomeStatus`/`outcomeSummary`** Alert · **인라인 복구 단계** · **미매칭 행 「수급자 찾기」** · **`/clients?branchId=&q=`** · **stale `branchId` → 전체 fallback** (`4567030`/`8ceb25c`/`331f24b`/`5636508`) |
+| **직원 급여대장 미리보기 (M11 US-PAYROLL-M11, Q775)** | `/payroll/ledger` | `POST /api/v1/staff/payroll/ledger-preview` | 직원·급여월·기본급·수당·공제 → **출근일수·실지급액** · **저장 없음** · 급여 연계 패널 |
+| **간이지급명세서 미리보기 (M11 11-6, Q778·Q831)** | `/payroll/reports` | `POST /api/v1/staff/payroll/simple-payment-statement-preview` · **`POST …/staff/notifications/staff-payroll-statement`** | **지급·공제 라인**·합계·실지급액 · **kind 22 알림톡 발송** · **저장·PDF 없음** |
+| **급여기초 설정 (M11 11-4, Q779)** | `/payroll/basis` | `GET /api/v1/staff/payroll/allowance-deduction-catalog` | 수당 3·공제 6 **마스터 조회** · **편집·저장 없음** |
+| **인건비 지출비율 준수 (M11 11-5, Q780)** | `/payroll/labor-cost-ratio` | `POST /api/v1/staff/payroll/labor-cost-ratio-preview` | **직접인건비÷요양수익** → **60% 기준** · **수동 입력 미리보기** · **저장 없음** |
+| **퇴직적립금 미리보기 (M11 11-2, Q781)** | `/payroll/retirement-accrual` | `POST /api/v1/staff/payroll/retirement-accrual-preview` | **적립기준÷12** · 근속 1개월+ · **수동 입력 미리보기** · **저장 없음** |
+| **재무회계 BPO 진입 (M12, Q782·Q784·Q785·Q787·Q801·Q854·Q860)** | `/accounting` | `GET …/bpo-launch` · `POST …/bpo-sso-handoff` · `GET /api/v1/health` | **공개 로그인** · **SSO(env 자격·blocker 없을 때·HQ/BRANCH만)** · **SSO 잔여 블로커 안내·버튼 숨김** · ogada **비밀번호 미수집** |
+| **가정통신문·기관 공지 게시판 (G2, Q788~Q800·Q803~Q808·Q811·Q858·Q868·Q878·Q881)** | `/clients/home-newsletter` · `#facility-notices` | `GET …/launch` · `GET …/authoring` · `POST …/compose-preview` · `GET/POST/PATCH …/facility-notices` · `GET …/{id}` · `GET …/dispatch-history?branchId=&yearMonth=&status=&q=` · `GET /api/v1/health` | **운영 준비**(야간=후속·조용한 시간대, Q811) · **작성 미리보기(발송 없음)** · **서버 DRAFT·수정·복제(후 바로 수정)·상세·첨부 http(s)·분류 NOTICE/RESOURCE만·기관 공지/자료실** · **게시·삭제 후 빈 페이지 자동 복구**(Q858) · **지점 컨텍스트 불안정 시 첫 유효 지점 fallback**(Q868) · **좁은 화면 표 가로 스크롤은 카드 안만**(Q878) · **소속 지점 발송 이력+필터(기본 20건)** · 발송은 이용자 상세 (Q217) |
 | 청구 생성 가드 | `/dashboard`, `/dashboard/hq` | `GET /api/v1/dashboard/branch` · `GET /api/v1/dashboard/hq` | `claimGenerationGuardBlocked=true` 시 전월 미납 해결 전 신규 청구 생성 금지 |
 | 공단 요양보호사 일괄 요청 (G-STAFF-NHIS-EXCEL-IMPORT) | `/staff` | `POST /api/v1/staff/imports/nhis-caregivers/preview` · `POST …/nhis-caregivers` | 미리보기 `APPLIED` 행 체크·선택 등록·`onImported` refresh · 빈 선택 `422` (Q573·Q576) |
 | 은행 입금 형식·dry-run (G-BANK-EXCEL-8) | `/billing/payments` | `GET /api/v1/billing/imports/bank-deposits/formats` · `POST …/preview` · `POST …/bank-deposits` | **「미리보기」→ `APPLIED` 체크→「선택 행 등록」** · 8종 은행 헤더 (Q572·Q576) |
@@ -74,6 +85,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **이용자 당일 출석 roster (G-ATTENDANCE-ROSTER-STATUS)** | `/attendance` · `/attendance/boarding` · `/attendance/on-site` | `GET /api/v1/attendance?transportMode=` | **활성 이용자 전원** · **`clientName`·`status`·`usesTransport`** · pending **`id=null`** · FE **`fetchAttendanceApi` 단일 호출** (`8383f8d`, Q609) |
 | **직원 출퇴근 (G-STAFF-WORK-ATTENDANCE, 8-4)** | `/staff/attendance` | `GET /api/v1/staff/work-attendance` · `POST …/check-in` · `POST …/check-out` | **활성 직원 전원** · **출근 방식 `MANUAL`/`MOBILE`/`NFC`** · **수동 출근/퇴근** · **`BranchScopeNotice`**·**API `surfaceKind`·`relatedSurfaces` cross-link 패널** (Q651·Q653·Q657, `83a26e7`/`949e9bf`) · **당일만** (`5fd468b`/`a6eb8b7`, Q612) |
 | **직원 근무일정표 (G-STAFF-MONTHLY-SCHEDULE-FE-WIRE, 8-2, Q717)** | `/staff/schedules` | `GET /api/v1/visits?from=&to=&branchId=&scheduleKind=PLAN` | **PLAN 방문 일정** 직원별·월별 조회 · **StatCard·Table** · **월간 일정표 알림톡** (`33944e4`) · 일정 CRUD는 **`/visits`** |
+| **위원회·보호자 회의록 (G-STAFF-COMMITTEE-MEETING-LOG, 8-6, Q723·Q725)** | `/staff/committee-meetings` | `GET/POST/PATCH /api/v1/staff/committee-meetings` · `POST …/finalize` · `GET …/export` | **3종 회의 유형** · **DRAFT→FINALIZED** · **확정 후 plain-text 출력** · **V182 DB CHECK** (`68b08b0`/`0342076`/`3ae8098`/`b4958f1`) |
 | **선행입금 입금 순서 (G-BILLING-DEPOSIT-ORDER-GUARD)** | `/billing/payments` | `POST /api/v1/billing/claims/{claimId}/payments` · `POST …/imports/bank-deposits` | **이전 미납 청구 선행** · 은행 import **가장 이른 월 우선** (`a6eb8b7`, Q614) |
 | **청구 대장 필터 저장 (G-BILLING-REPORT-FILTER-PERSISTENCE, Q621)** | `/billing/reports/deposits` · `/receipts` · … | `GET/PUT /api/v1/billing/reports/filters` | **마운트 시 hydrate** · **「조회」PUT persist** · **4-variant** (`77b1ea8`, Q621) |
 | **월별 출석 통계 (G-ATTENDANCE-STATS, US-E05)** | `/attendance/stats` | `GET /api/v1/attendance/stats/monthly?from=&to=&branchId=` | **지점·월 집계** BE+FE ✅ (`dffd726`, Q615) — StatCard·6개월 추이·다지점 표 |
@@ -84,8 +96,18 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **CMS 지점 등록 roster (G2, Q637·Q638·Q662)** | `/billing/cms` **등록 관리** · `/billing/payments` | `GET /api/v1/billing/cms/enrollments?branchId=&status=` | **이용자 미선택** 시 활성 지점 roster · **FilterChips**·**이용자 deep link** · **입금 화면 CMS 등록 열** · **`status` trim·uppercase API 방어** (`f1225b0`, Q662) |
 | **CMS 결제수단 카탈로그 (G2b, Q701)** | `/billing/cms` **등록 관리** 상단 | `GET /api/v1/billing/cms/payment-method-catalog` | **엔젤 5-method** 표 · **수납 5/5 full-stack ✅** · **가상계좌·다계좌 탭** (Q704) |
 | **CMS 가상계좌·다계좌 (G2b, Q704)** | `/billing/cms` **가상계좌·다계좌** 탭 | `POST/GET …/virtual-account` · `POST/GET …/multi-account-settlement` | **`CmsCollectionPanel`** · 입금 은행·상태 조회 · **7-4 선행입금 가드** (`9aeedfe`) |
-| **목욕 평가지표 27 compliance (US-O01, Q705)** | `/care/bathing-schedules` · Swagger | `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=` · `POST/PATCH …/bathing-schedules` **`preObservationNotes`/`postObservationNotes`** | **월 5회+·전후관찰** · **COMPLETED 시 관찰 필수** · **`BathingScheduleIndicator27Panel`·전·후 관찰 폼 ✅** (`3d7f13b`·BE `e12b084`) |
-| **G16 NHIS #44 parity rules (Q703·Q710)** | `/transport/service-fees` | `GET /api/v1/transport/service-fee-parity-rules` | **4-rule catalog** · **`TransportParityRulesPanel` page mount ✅** (`5914b2f`) |
+| **목욕 청구 준수 (US-O01, Q705·Q773·Q776)** | `/care/bathing-schedules` · Swagger | `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=` · `POST/PATCH …/bathing-schedules` **`preObservationNotes`/`postObservationNotes`** | **청구 시** 월 5회+·전후관찰 · **COMPLETED 시 관찰 필수** · 패널 **「목욕 청구 준수」** · **`indicatorCode=BATHING_CLAIM_COMPLIANCE`** · **기능회복 링크** (`bc9389d`) |
+| **M11 직원 급여대장 미리보기 (Q775, US-PAYROLL-M11)** | `/payroll/ledger` | `POST /api/v1/staff/payroll/ledger-preview` | **기본급·수당·공제→출근일·실지급액** 미리보기 · 출퇴근·근로계약·급여 연계 · **저장 없음** |
+| **M11 간이지급명세서 미리보기 (Q778)** | `/payroll/reports` | `POST /api/v1/staff/payroll/simple-payment-statement-preview` | **지급·공제 라인**·합계 · **저장·PDF 없음** |
+| **M11 급여기초 설정 (Q779, 11-4)** | `/payroll/basis` | `GET /api/v1/staff/payroll/allowance-deduction-catalog` | 수당 3·공제 6 마스터 · **편집 없음** |
+| **M11 인건비 지출비율 (Q780, 11-5)** | `/payroll/labor-cost-ratio` | `POST /api/v1/staff/payroll/labor-cost-ratio-preview` | **60% 준수 미리보기** · **수동 입력** · **저장 없음** |
+| **M11 퇴직적립금 (Q781, 11-2)** | `/payroll/retirement-accrual` | `POST /api/v1/staff/payroll/retirement-accrual-preview` | **1/12 적립 미리보기** · **저장 없음** |
+| **M12 재무회계 BPO (Q782·Q785·Q801)** | `/accounting` | `GET …/bpo-launch` · `GET /health` | **수지파인 포털 진입** · **SSO FE 어댑터(HQ/BRANCH)** · **in-app 회계 없음** |
+| **G2 가정통신문·기관 공지 게시판 (Q788~Q800·Q803~Q808·Q811·Q858·Q868)** | `/clients/home-newsletter` · `#facility-notices` | `GET …/launch` · `GET …/authoring` · `POST …/compose-preview` · `GET/POST/PATCH …/facility-notices` · `GET …/{id}` · `GET …/dispatch-history?branchId=&yearMonth=&status=&q=` · `GET /health` | **운영 준비**(야간=후속·조용한 시간대, Q811) · **작성 미리보기** · **서버 DRAFT·수정·복제(후 바로 수정)·상세·첨부 http(s)·분류 NOTICE/RESOURCE만·기관 공지/자료실** · **게시·삭제 후 빈 페이지 자동 복구**(Q858) · **지점 fallback**(Q868) · **소속 지점 발송 이력+필터(기본 20건)** · 발송은 이용자 상세 (Q217) |
+| **위생·안전 점검 (US-Q01, M6 6-2~6-4, Q745·Q748·Q750·Q754·Q756·Q757·Q758·Q759·Q760·Q761)** | `/safety/daily-checks` · `/safety/periodic-checks` · `/safety/infection-control` · `/safety/operation-log` | `GET /api/v1/safety/check-template-catalog` · `GET/POST …/daily-checks` · `…/periodic-checks` · `…/infection-control` · `…/operation-logs` | **4 Route full-stack ✅** · **template catalog API consume ✅** · **item `helpText`·`required` ✅** · **`required: true` 미체크 submit 차단 ✅** (Q757) · **미명시/`false` = optional ✅** (Q758) · **vitest semantics lock ✅** (Q759) · **현장 체크리스트 ✅** (Q760) · **결과 열 StatusBadge ✅** (Q761) · **V184+V185** · **`hq_admin`·`branch_admin`·`social_worker` only** |
+| **G16 NHIS #44 parity rules (Q703·Q710·Q743)** | `/transport/service-fees` | `GET /api/v1/transport/service-fee-parity-rules` · `GET …/service-fee-rates` **`onePerDayNote`** | **4-rule catalog** · **`TransportParityRulesPanel` BE DTO wire ✅** · **1일 1회 footnote ✅** — **`ONE_PER_DAY.description` 우선** · cascade static fallback (`e19328a`) |
+| **이동서비스 송영표 (Q762·Q763·Q769, BE `c08329a`·FE `a6255a0`)** | `/transport/shuttle-sheet` | `GET /api/v1/transport/roster` · `GET …/runs` · `GET …/runs/{runId}` | **차량별·회차별 탑승자** · **`TransportShuttleScheduleView`** · **list a11y** (Q769) · **미배정** 목록 · **`hq_admin` DRAFT+CONFIRMED** · 직원 **CONFIRMED only** |
+| **금일 배차 제외·출발 회차·송영 주소 (Q763·Q764·Q766·Q767·Q768·Q770·Q771·Q772·Q777)** | `/transport` · `/transport/runs/new` · `/transport/vehicles` | `PATCH …/roster/{clientId}/day-status` · `POST …/runs` **`departureRound`** · `POST/PATCH …/vehicles` | **승차 명단 제외** → suggest·**UI 잠금+행 시각**(Q767·Q777)·**서버 422**(Q766) · **송영 주소 trim·비우기**(Q770·Q772) · **V190** + health **9건**(Q771) |
 | **7-5 easy-pay provider catalog (Q709)** | `/billing/easy-pay` · Swagger | `GET /api/v1/billing/easy-pay/provider-catalog` | **CARD·KAKAO_PAY 2종** · **`EasyPayProviderCatalogPanel` FE wire ✅** (`5914b2f`) · **`pgMode` stub/live** |
 | **연차 branchName trim fallback (Q711)** | `/staff/annual-leaves` | `GET /api/v1/staff/annual-leaves/roster` | **`BranchScopeNotice`** — API **공백 `branchName`** 시 **지점 ID fallback** (`58f3858`) |
 | **NHIS 마스킹 이름 alt-key (Q706)** | `/billing/imports/nhis` · `/visits` (방문일정 import) | **`POST /billing/imports/nhis`** · **`POST /visits/imports/nhis`** | **LTC cert 실패 시** 마스킹 이름+생년월일·주민 앞 6자리 **자동 매칭** · **`matchStatusReason` alt-key 안내** (`37416ac`) |
@@ -96,7 +118,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **이용자 주소 검색·등록 (US-D01/D02, Q671·Q676)** | `/clients/new` · `/clients/:id/edit` | `POST/PATCH /api/v1/clients` — **`address`·`addressDetail`** · read **`addressSearch`·`addressDetail`** | **`KoreanAddressFields`** Kakao postcode · **수정 prefill ✅** (Q676) · **거주지 전체 표시** · **픽업 「거주지와 동일」** · **caregiver 수정 ✅** (Q675) |
 | **이용자 등록·수정 RBAC (Q675)** | `/clients/new` · `/clients/:id/edit` | `POST` social_worker+ · `PATCH` caregiver+ | **`clientPermissions.js`** · **요양보호사 수정만** · **등록은 사회복지사 이상** |
 | **이용자 목록 열 필터 (US-D01, Q672)** | `/clients` | `GET /api/v1/clients` (클라이언트 필터) | **`TableColumnFilter`** — 등급·성별·배차·지점 · **「거주지」열** (`7e048c0`) |
-| **ezCare SMS 템플릿 카탈로그 (G-SMS-TEMPLATE-CATALOG, Q686~Q692·Q697·Q699)** | `/organization/settings` · `/dashboard` · `/clients/:id` · `/staff/:id` · `/billing/claims/:id` | `GET /api/v1/notifications/template-catalog` · `POST …/client-monthly-schedule` · `POST …/staff/notifications/*` · `POST …/billing/claims/{id}/notify` | **`NotificationChannelReadinessPanel`** 6종 · **발송 UI** · **성공 Alert 템플릿 라벨** · **fallback 라벨 ezCare parity** · **`dispatchReady` 채널 자격** |
+| **ezCare SMS 템플릿 카탈로그 (G-SMS-TEMPLATE-CATALOG, Q686~Q692·Q697·Q699·Q813·Q831·Q844·Q851)** | `/organization/settings` · `/dashboard` · `/clients/:id` · `/staff/:id` · `/payroll/reports` · `/billing/claims/:id` | `GET /api/v1/notifications/template-catalog` · **`GET …/dispatch-reference-unit-rates`** · `GET /api/v1/notifications/channel-status` · `POST …/staff/notifications/*` · `POST …/billing/claims/{id}/notify` | **`NotificationChannelReadinessPanel`** **7종·발송 7/7** · **kind 22(급여명세서) 발송 UI** · **문자 발송 참고 단가(비청구·전용 카탈로그→channel-status→static)** · **`dispatchReady` 채널 자격** · **SMS 비긴급 즉시 발송(Q812)** · **고대비 표 테두리(Q853)** |
 | **본인부담 7-x lifecycle (M7, Q700)** | `/billing` · `/billing/payments` · `/billing/overdue` · `/billing/cms` · `/billing/easy-pay` · `/billing/reports/*` · `/billing/calculator` | *(Route crosswalk — BNK-592)* | **케어포 7-1~7-10 ↔ ogada 1:1** · **10/10 ✅** · **7-4 CMS 5/5 full-stack ✅** · superset 5 |
 
 ---
@@ -186,13 +208,13 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 |------|----------|:--------------:|:----------:|:-------:|:----------:|
 | **운영** | 대시보드·지점·이용자·**급여계획 통보 (G38)**·**모니터링 자가진단 (G30)**·**운영주기별 워크플로 (G34)**·**정기욕구평가 현황 (G40b)**·보호자·**직원** | ✅ | ✅ | ✅(G38·G30·G34·G40b·보호자 제외) | 포털만 |
 
-> **직원 모듈 in-page 네비 (`StaffContextNav`, UXD-86·UXD-92)**: **직원 관리** · **연차휴가 (US-R03e G-STAFF-ANNUAL-LEAVE)** · **근무일정표 (8-2 G-STAFF-MONTHLY-SCHEDULE-FE-WIRE, Q717)** · **출퇴근 (8-4 G-STAFF-WORK-ATTENDANCE)** · **교육일지 (8-7 G41)** · **보수교육 (8-7-1)** · **건강검진 (8-10)** · **직원현황 리포트 (8-12 US-R02)** · **고충상담 (8-8 G42)** · **선임 업무수행일지** 10화면 상단에서 **서브 탭**으로 전환합니다 (Q639·Q612·Q321·Q294·Q296·Q305·Q308·Q717·`02cbd05`). **연차휴가**는 **`/staff/annual-leaves`** · **근무일정표**는 **`/staff/schedules`** · **출퇴근**은 **`/staff/attendance`** · **교육일지**는 **`/staff/training-logs`** · **직원현황 리포트**는 **`/staff/reports/status`** · **고충상담**은 **`/staff/grievance-counselings`** · **건강검진**은 **`/staff/health-checkups`** · **보수교육**은 **`/staff/training`** · **선임 업무수행일지**는 **`/staff/lead-caregiver-log`** 로 직접 진입합니다.
+> **직원 모듈 in-page 네비 (`StaffContextNav`, UXD-86·UXD-92)**: **직원 관리** · **연차휴가** · **근무일정표** · **위원회·보호자 회의록** · **출퇴근** · **교육일지** · **보수교육** · **건강검진** · **직원 급여대장 (M11, Q775)** · **간이지급명세서 (M11, Q778)** · **급여기초 설정 (M11, Q779)** · **인건비 지출비율 (M11, Q780)** · **퇴직적립금 (M11, Q781)** · **직원현황 리포트** · **고충상담** · **선임 업무수행일지** 등 **17화면** 상단에서 **서브 탭**으로 전환합니다. **직원 급여대장**은 **`/payroll/ledger`** · **간이지급명세서**는 **`/payroll/reports`** · **급여기초 설정**은 **`/payroll/basis`** · **인건비 지출비율**은 **`/payroll/labor-cost-ratio`** · **퇴직적립금**은 **`/payroll/retirement-accrual`** · **연차·유급휴일 대장**은 **`/staff/leave-ledger`** 로 직접 진입합니다.
 | **출석** | 현황·**탑승(차량)**·**현장 출석**·수기 체크인·통계·QR | ✅ | ✅ | ✅ | — |
 | **기록** | 건강·**요양급여 제공기록 (L02_M01)**·**집중배설관찰 (L02_M02)**·**목욕 일정·제공현황 (L02_M03)**·**통합식사도움기록 (L02_M13)**·**간호급여 제공기록 (L02_M14)**·**병의원 진료내역 리포트 (L03_M09)**·**투약제공 리포트 (L03_M10)**·**요양급여 특이사항 (L02_M15)**·**식사 선호도 조사 (L02_M16)**·**신체제재 기록 (L02_M07)**·**요양/식사/화장실 리포트 (L02_M04)**·**목욕도움 리포트 (L02_M05)**·**체위변경 리포트 (L02_M06)**·**집중배설 리포트 (L02_M17)**·**수급자별 급여제공 리포트 (L02_M11)**·**급여제공 서비스 집계 (L02_M12)**·**식사**·**프로그램**·**기능회복훈련**·**급여제공결과 평가**·**방문 일정**·**사례관리 회의록**·**통합 바이탈 (L03_M11)**·**체중 기록 (L03_M14)**·**구강상태 점검 (L03_M13)**·**응급상황 기록 (L03_M04)**·**욕창 케어 (US-O03)**·**선임 업무수행일지** | ✅ | ✅ | ✅(사례관리 제외) | — |
 | **청구** | 청구·NHIS·입금·미납·**간편결제**·CMS·**본인부담 통계 (G26)**·수가표·**청구/입금/수납/환불 대장**·**현금영수증 발급목록 (G-CASH-RECEIPT-LOG)** | ✅ | ✅ | — | — |
 
 > **청구 리포트 in-page 네비 (`BillingReportsContextNav`, G26, Q379·Q380·Q530)**: **청구대장** · **입금대장** · **수납대장** · **현금영수증 발급목록** · **환불대장** · **본인부담 통계** · **간편계산기** 7화면 상단에서 **서브 탭**으로 전환합니다 — SideNav **청구 → 본인부담 통계**(`/billing/reports/statistics`)·**현금영수증 발급목록**(`/billing/cash-receipts`)와 병행합니다.
-| **이동** | **배차·이동경로** · **수칙·계약 (G15)** · **차량 관리** · **이동서비스비 청구** · **외출 관리** · **외출 리포트** (`/transport`, `/transport/compliance`, `/transport/vehicles`, `/transport/service-fees`, `/transport/outings`, `/reports/client-outings`) | ✅ | ✅ | ✅ | — |
+| **이동** | **배차·이동경로** · **송영표** · **수칙·계약 (G15)** · **차량 관리** · **이동서비스비 청구** · **외출 관리** · **외출 리포트** (`/transport`, `/transport/shuttle-sheet`, `/transport/compliance`, `/transport/vehicles`, `/transport/service-fees`, `/transport/outings`, `/reports/client-outings`) | ✅ | ✅ | ✅ | — |
 
 > **기록 모듈 in-page 네비 (`RecordsContextNav`, UXD-75)**: 건강·식사·프로그램·**프로그램 리포트 (5-7~5-10)**·**기능회복훈련**·**급여제공결과 평가**·방문 일정·**사례관리 회의록**·**선임 업무수행일지** 9화면 상단에서 **서브 탭**으로 전환합니다 — SideNav **기록** 그룹과 병행 (Q248·Q262·Q263·Q276·**Q284**·**Q714**). **선임 업무수행일지**는 **`/staff/lead-caregiver-log`** 로 직접 진입합니다 (G34, `6d6b426`).
 
@@ -209,7 +231,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 
 > **간호급여 in-page 네비 (`NursingContextNav`, L03_M11~M04·US-O03)**: **통합 바이탈** · **체중 기록** · **구강상태 점검** · **응급상황 기록** · **위험평가** · **예방계획** · **간호 기록** · **분기 리포트** **8화면** 상단에서 **서브 탭**으로 전환합니다 — SideNav **기록 → 통합 바이탈 (L03_M11)** · **체중 기록 (L03_M14)** · **구강상태 점검 (L03_M13)** · **응급상황 기록 (L03_M04)** · **욕창 케어 (US-O03)** 와 병행 (Q340~Q346·Q336~Q339). **`aria-label="간호급여 하위 메뉴"`**. **`/nursing/pressure-ulcer`** 접속 시 **`/nursing/pressure-ulcer/assessment`** 로 자동 이동합니다.
 
-> **이동 모듈 in-page 네비 (`TransportContextNav`, Q397)**: **배차·이동경로** · **수칙·계약** 2탭(「배차·이동경로」그룹)과 **차량·이동서비스비·외출·외출 리포트** 4탭(「이동서비스 운영」그룹)으로 전환합니다. SideNav **이동** 그룹에도 **「수칙·계약 (G15)」**(`/transport/compliance`)가 등록되어 있습니다 (`84e75ec`).
+> **이동 모듈 in-page 네비 (`TransportContextNav`, Q397)**: **배차·이동경로** · **송영표** · **수칙·계약** 3탭(「배차·이동경로」그룹)과 **차량·이동서비스비·외출·외출 리포트** 4탭(「이동서비스 운영」그룹)으로 전환합니다. SideNav **이동** 그룹에도 **「수칙·계약 (G15)」**(`/transport/compliance`)가 등록되어 있습니다 (`84e75ec`).
 
 > **출석 모듈 in-page 네비 (`AttendanceContextNav`, UXD-73, Q242)**: 출석 현황·탑승·현장·수기 체크인·통계·QR 화면 상단에서 **서브 탭**으로 전환합니다 — SideNav를 다시 열 필요가 없습니다.
 
@@ -223,6 +245,7 @@ ogada 프론트는 WCAG 2.1 AA를 목표로 다음 패턴을 적용합니다. �
 
 | 패턴 | 현장에서의 의미 |
 |------|----------------|
+| **`SkipLink` 본문 건너뛰기** (Q843, UXD-180) | 로그인·앱 화면 **맨 위 Tab 포커스** 시 **「본문으로 건너뛰기」** — SideNav를 건너뛰고 **`#main-content`** 로 이동 (WCAG 2.4.1) |
 | 키보드 포커스 링 | Tab 이동 시 버튼·링크 위치가 보입니다 |
 | Modal ESC·**포커스 트랩** (UXD 12차) | 결석·체크아웃·세션 만료·NHIS 매칭 등 **모든 `Modal`**에서 Tab/Shift+Tab이 다이얼로그 **내부만** 순환합니다. ESC·배경 클릭으로 닫을 수 있습니다 |
 | **`prefers-contrast`·`forced-colors`** (Q115·Q168) | Windows **고대비**·브라우저「색 대비 높임」설정 시 경계선·포커스 링이 강화됩니다. **배차 화면**(UXD-50) — 지도·정차 카드·마커·순번 Badge·강조 정차 **outline**도 동일 규칙 적용 |
@@ -245,6 +268,8 @@ ogada 프론트는 WCAG 2.1 AA를 목표로 다음 패턴을 적용합니다. �
 | **`Field` 필수 입력 `aria-required`** (Q245, FE `1f71335`) | **`required` prop** 시 자식 입력에 **`aria-required="true"`** — 시각 `*`는 `aria-hidden` · **전 폼 일괄 적용** (WCAG 1.3.1·3.3.2) |
 | **L02 care report table·StatCard a11y** (Q377·Q378, FE `25291b3`) | **L02_M11/M12/M17/M06** 리포트 4화면 — 표 **`captionVisuallyHidden`** · StatCard 요약 **`role="group" aria-label`** — 스크린리더 표·요약 탐색 (WCAG 1.3.1) |
 | **G21 청구반영 Badge a11y** (Q376, FE `25291b3`) | **`/visits`** — Badge **텍스트 라벨**(청구반영·미반영·페어 없음) 병행 · Alert에서 **색상만 설명 제거** · **`ds-badge--dark` forced-colors outline** (WCAG 1.4.1·1.4.11) |
+| **`ProgressBar`·`Skeleton` 로딩 표시** (Q843, UXD-180) | RFID **급여제공내역 일괄 발송** 중 **진행 바** · 데이터 로드 중 **Skeleton** 플레이스홀더 — 색상만으로 상태를 전달하지 않음 |
+| **`CalendarDayMarker` 달력 상태** (Q843, UXD-180) | **`/staff/attendance`** 등 달력 셀 — **미작성(empty)·임시저장(draft)·작성완료(complete)** 를 **색+패턴+스크린리더 문구**로 표시 (WCAG 1.4.1) |
 
 ### 3-3. 이용자 상세 (`/clients/:id`)
 
@@ -396,6 +421,35 @@ Must 운영에서 누락이 잦은 두 화면은 아래 순서로 점검하면 �
 > **권한**: **조회** — `hq_admin`·`branch_admin`·`social_worker`·`caregiver`. **작성·저장** — `branch_admin`·`social_worker`만. **퇴소·비활성 이용자**는 **신규 작성** 불가(DB guard) — 기존 연도 **수정**은 가능.
 >
 > **G38 연계**: 통보 모니터링은 **G37 인정기간 첨부**·**본 탭 `notifiedAt`** 과 병행합니다. FAQ **Q277·Q557** · ADMIN_GUIDE §6-2-2·§6-2-2a.
+
+#### 급여제공 변경계약서 일괄 출력 (G-CLIENT-CONTRACT-BULK-PRINT, US-D05, Q726·Q734 · BE `4df9465` · FE `0d0b587`/`96196ed`/`d759ade`)
+
+이지케어 [**FAQ 21507**](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21507&type=web) **「2025년 급여제공 변경계약서 일괄 출력」** demand-signal 대응 — **지점·계획 연도** 기준으로 **저장된 NHIS 10-field 급여계획서**를 **한 파일에 연속 출력**합니다.
+
+> **현재 상태**: **✅ BE+FE Full-stack** — **`/clients/care-plan-notifications`** 화면 **「급여제공 변경계약서 일괄 출력」** 카드에서 다운로드합니다.
+
+1. 각 이용자 **「급여계획서」** 탭에서 **해당 연도 10항목**을 먼저 저장합니다 (위 절차).
+2. SideNav **「급여계획 통보 (G38)」**(`/clients/care-plan-notifications`)로 이동합니다.
+3. compliance StatCard·알림 목록 아래 **「급여제공 변경계약서 일괄 출력」** 카드(`ClientCarePlanBulkExportPanel`)를 확인합니다 — **`BranchScopeNotice`** 로 활성 지점이 표시됩니다.
+4. **계획 연도**(2000–2100)를 입력합니다 — 범위 밖이면 필드 오류가 표시됩니다.
+5. **「지점 전체 출력」**(기본 체크) 또는 해제 후 **출력 대상 수급자**를 선택합니다 — 선택 목록은 G38 **통보 목록 이용자** 기준입니다.
+6. **「일괄 다운로드」** — **`benefit-change-contracts-{연도}.txt`** 가 저장됩니다 · 성공·오류 Alert로 결과를 확인합니다.
+7. IT·연동이 필요하면 동일 API **`GET /api/v1/clients/care-plan-forms/bulk-export?planYear={연도}`** 를 사용할 수 있습니다.
+
+> **FE 자동 정규화 (Q734)**: 화면은 G38 **통보 목록 이용자**를 그대로 표시하지만, 다운로드 요청 전에 **`branchId` 공백 trim** · **중복·공백 이용자 ID 제거**를 수행합니다 — 목록 데이터에 공백 UUID가 섞여 있어도 **일괄 출력 실패를 줄입니다**.
+
+| Query | 필수 | 설명 |
+|-------|:----:|------|
+| **`planYear`** | ✅ | 2000–2100 · 해당 연도 **저장된 계획서**만 포함 |
+| **`branchId`** | — | 생략 시 **활성 지점** · `hq_admin` 타 지점 지정 가능(read scope) |
+| **`clientIds`** | — | 생략 시 **지점·연도 전체**(활성 이용자) |
+
+| 권한 | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` 불가** |
+|------|---------------------------------------------------------------------|
+| 빈 결과 | **`404`「해당 연도 급여제공계획서가 없습니다.」** |
+| P3 잔존 | **PDF 공식 서식**·전자서명 — 현재 **plain-text** only |
+
+> 관련: FAQ **Q726·Q734** · ADMIN_GUIDE §6-2-2a · DEPLOYMENT §1-4 · CHANGELOG 386차
 
 #### 등급 이력 탭 (US-M01, G14 Fixed · G37 US-M01-g)
 
@@ -630,11 +684,13 @@ SideNav **운영 → 「정기욕구평가 현황 (G40b)」** 또는 대시보�
 4. **표시** 드롭다운 — **알림 대상만**(기본) 또는 **전체 이용자**.
 5. 표에서 **알림** Badge·**이용계획서 첨부** 열을 확인하고, **「등급 이력」** 링크로 이용자 상세 **등급 이력** 탭(Q274)에서 PDF/PNG를 업로드합니다.
 6. **`/dashboard`** 에서도 동일 3종 gap 위젯으로 빠르게 확인할 수 있습니다.
+7. **「급여제공 변경계약서 일괄 출력」** 카드(Q726) — compliance 목록 **위**에 표시됩니다. **계획 연도**·**지점 전체/선택 수급자**를 지정한 뒤 **「일괄 다운로드」** 로 **`benefit-change-contracts-{year}.txt`** 를 받습니다. 개별 10항목 입력은 이용자 **「급여계획서」** 탭에서 먼저 완료하세요 (§3-3).
 
 | API | 용도 |
 |-----|------|
 | `GET /api/v1/clients/care-plan-notifications/compliance` | 활성 지점 스코프 compliance 집계 |
 | `GET …/compliance?branchId=` | JWT 스코프 내 **특정 지점** 조회 (BE `03211e6`, Swagger·연동 테스트용) |
+| `GET /api/v1/clients/care-plan-forms/bulk-export?planYear=` | 일괄 plain-text 출력 — FE **`exportClientCarePlanFormsBulkApi`** (Q726) |
 
 > **`hq_admin`**: 지점 선택기로 **활성 지점**을 고른 뒤 조회합니다. **`caregiver`** 는 이 메뉴에 접근할 수 없습니다.
 
@@ -1104,6 +1160,29 @@ POST /api/v1/billing/cms/enrollments
 
 > **Swagger — CMS 출금**: **`POST /api/v1/billing/cms/claims/{claimId}/debit`** — 선행: 이용자 **ACTIVE CMS 등록** · 청구 **CONFIRMED**.
 
+#### 4-6-5. 재무회계 BPO 진입 (M12, Q782·Q785·Q787·Q801·Q803·Q854·Q860, FE `b42174a` · BE `bf96c29`)
+
+케어포 **M12 수입·지출·결의**와 같이 **재무회계는 외부 BPO(수지파인)** 에서 처리합니다. ogada는 **직원 급여(M11)** 를 in-app으로 제공하고, **`/accounting`** 에서 **공개 로그인** 또는 **기관 SSO(OTP)** 를 새 창으로 엽니다.
+
+1. SideNav **청구 → 재무회계 (BPO)** 또는 본인부담 수납 화면 상단 **`BillingContextNav`「재무회계 (BPO)」** 로 **`/accounting`** 에 이동합니다.
+2. 화면이 **`GET /api/v1/billing/accounting/bpo-launch`** 와 **`GET /api/v1/health`** 를 함께 조회해 **제품·URL·SSO 상태·운영 준비**를 표시합니다.
+3. **「수지파인 공개 로그인 열기」** — API **`portalUrl`**(기본 `https://sujifine.co.kr/login`)이 **새 창**으로 열립니다. ogada에 **기관·개인 비밀번호를 입력하지 않습니다**. **`hq_admin`·`branch_admin`·`social_worker`** 모두 사용 가능합니다.
+4. **IT가 SSO 자격을 설정하고 readiness blocker가 비어 있는 환경**에서만 **「SSO 자동 로그인」** 이 보입니다. 클릭 시 **`POST …/bpo-sso-handoff`** 로 받은 usmusid+OTP 만 수지파인 **`carefor_login`** 으로 전달합니다 — **본사·지점 관리자만** (사회복지사는 공개 로그인 사용, FAQ **Q785**·**Q801**·**Q860**).
+5. SSO가 **미설정**이거나 포털 URL이 **허용 호스트가 아니면** **「SSO 잔여 블로커」** 카드에 **한국어 조치 안내**(env 설정·URL 수정)가 표시되고 **SSO 버튼은 숨겨집니다** (**Q854**·**Q860**). **공개 로그인**으로 진행하면 됩니다 (FAQ **Q787**·**Q801**). handoff **실패 시** 화면에 **분당 제한·비허용 URL** 등 한국어 Alert가 표시됩니다 (FAQ **Q803**).
+6. 카드 하단 **연계 화면** 링크로 **직원 급여대장**·**본인부담 청구**로 이동할 수 있습니다.
+7. 수입·지출·결의·4대보험·세무 등 **재무 업무는 수지파인**에서 이어서 진행합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **권한(화면)** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **권한(SSO mint)** | **`hq_admin`·`branch_admin`만** — FAQ **Q801** |
+| **API** | **`GET …/bpo-launch`** · **`POST …/bpo-sso-handoff`** · health BPO 필드 |
+| **SSO 블로커 UI** | **`sso-otp-credentials-missing`** · **`sso-portal-url-not-allowlisted`** — FAQ **Q854** · blocker 있으면 SSO 버튼 숨김 — FAQ **Q860** |
+| **SSO** | env 자격·allowlist·**blocker 없음** 시 **AVAILABLE** · 미설정/비허용 URL/blocker 잔여 시 공개 로그인만 — FAQ **Q785**·**Q787**·**Q801**·**Q803**·**Q860** · health **Q784** |
+| **연계** | **직원 급여대장**(`/payroll/ledger`) · **본인부담 청구**(`/billing`) |
+
+> 관련: FAQ **Q782** · **Q784** · **Q785** · **Q787** · **Q801** · **Q803** · **Q854** · **Q860** · ADMIN_GUIDE §6-2-24f · DEPLOYMENT §1-4·§4-9 · CHANGELOG 2026-07-16
+
 #### 간편결제 (v2, US-L06, G2/7-5, BNK-189)
 
 SideNav **청구** 그룹 — **`/billing/easy-pay`** + 상단 **`BillingContextNav`**(입금↔미납↔CMS↔간편결제, Q203·Q326). **`hq_admin`·`branch_admin`** 전용. 케어포 **7-5**(view.npay_manage)에 대응합니다.
@@ -1432,6 +1511,127 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 
 > **검증**: **월별 사용일수가 0 미만**이면 **`422`「월별 사용일수는 0 이상이어야 합니다.」** (`a45745c`, FAQ Q639). **소수점**(예: 0.5)이면 **`422`「월별 사용일수는 정수여야 합니다.」** (Q641) — Modal **`validateStaffAnnualLeaveForm`** 이 필드별로 먼저 표시합니다 (Q647). **비고(`memo`) 31자 이상**이면 **`422`「비고는 30자 이하여야 합니다.」** (Q642). 월별 사용 합계가 **연차 부여일을 초과**하면 **`422`「월별 사용일 합계가 연차 총 부여일수를 초과할 수 없습니다.」** (FAQ Q639). **다지점 `branch_admin`** 이 지점을 선택하지 않으면 **`branchId` 생략 시 `422`** — FAQ Q639. **Flyway V172** `staff_annual_leave_yearly` + **V173** defense-in-depth CHECK/FK (Q645)에 persist됩니다.
 
+#### 4-7-0e. 직원 급여대장 미리보기 (US-PAYROLL-M11, M11 11-1·11-3, Q775)
+
+케어포 **module 11** **11-1 월별 급여대장**·**11-3 수당/공제**를 **미리보기**로 계산합니다. **DB 저장·확정·명세서 PDF 출력은 아직 없습니다** — 급여 산출 검증용입니다.
+
+**화면 `/payroll/ledger`와 백엔드 API가 연동**되었습니다 (`e18ee5c`/`5beaffb`, Q775).
+
+1. SideNav **운영 → 직원 급여대장** 또는 **`StaffContextNav`「직원 급여대장」** 으로 **`/payroll/ledger`** 에 이동합니다.
+2. 상단 **`BranchScopeNotice`** 로 조회 지점을 확인합니다.
+3. **「월별 급여대장 미리보기」** 카드에서 다음을 입력합니다.
+   - **직원** — 지점 배치된 직원 계정 중 선택
+   - **급여 월** — `yyyy-MM` 형식 (기본값: 당월)
+   - **기본급** · **수당 합계** · **공제 합계** — 0 이상 숫자
+4. **「미리보기 계산」** — **`POST /api/v1/staff/payroll/ledger-preview`** 호출.
+5. **「미리보기 결과」** 카드에서 **출근일수** · **지급총액** · **실지급액**을 확인합니다.
+6. 하단 **「급여 연계 화면」** 패널에서 **출퇴근** · **근로계약** · **간이지급명세서** · **급여기초 설정** 으로 이동할 수 있습니다.
+
+| 항목 | 내용 |
+|------|------|
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** · **`caregiver` → warning Alert** |
+| **출근 집계** | **`/staff/attendance`** 에 해당 월 **check-in** 이 있는 날을 distinct count |
+| **클라이언트 검증** | 공제>지급총액 · 필수값 누락 — 필드별 오류 표시 |
+| **서버 가드** | 공제>지급총액 **422** · 비직원 역할 **422** · 미배치 지점 **403** |
+| **P1 잔여** | **급여 persist** · **수익·인건비 자동 집계** · **기관(테넌트)별 SSO 자격**(Q787) |
+
+> 관련: FAQ **Q775·Q778·Q779** · ADMIN_GUIDE §6-2-24a · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+#### 4-7-0f. 간이지급명세서 미리보기·급여명세서 알림톡 (US-PAYROLL-M11, M11 11-6, Q778·Q831)
+
+케어포 **11-6 간이지급명세서**를 **미리보기**로 확인하고, **동일 금액**으로 직원에게 **급여명세서 알림톡(ezCare message_kind=22)** 을 보낼 수 있습니다. **저장·PDF·인쇄는 아직 없습니다**.
+
+**화면 `/payroll/reports`와 API가 연동**되었습니다 (`585155c`/`c455145` 미리보기 · `5b9656c`/`7de86eb` kind 22 발송).
+
+1. SideNav **운영 → 간이지급명세서** 또는 **`StaffContextNav`「간이지급명세서」** 로 **`/payroll/reports`** 에 이동합니다.
+2. 급여대장과 **동일한 입력**(직원·급여 월·기본급·수당·공제) 후 **「미리보기 계산」**.
+3. **「명세서 미리보기 결과」** 에서 **문서 제목(간이지급명세서)** · **지급 라인** · **공제 라인** · **실지급액**을 확인합니다.
+4. **「급여명세서 알림톡 발송」** — **`POST /api/v1/staff/notifications/staff-payroll-statement`** 호출. 성공 시 **「(급여명세서)」** 안내가 표시됩니다 (FAQ **Q831**).
+5. **22:00~08:00 (KST) 조용한 시간대**에는 서버가 발송을 거부할 수 있습니다 — **08:00 이후 재시도** (Q329·Q812).
+
+| 항목 | 내용 |
+|------|------|
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **미리보기 API** | **`POST /api/v1/staff/payroll/simple-payment-statement-preview`** |
+| **발송 API** | **`POST /api/v1/staff/notifications/staff-payroll-statement`** — 미리보기와 **동일 입력** |
+| **라인** | `BASE_PAY` · `ALLOWANCES` · `DEDUCTIONS` |
+| **대안 경로** | **직원 상세** **`StaffNotificationDispatchPanel`** — **발송 종류=급여명세서** (§4-7-4) |
+| **P1 잔여** | **PDF·인쇄** · **persist** |
+
+> 관련: FAQ **Q778** · **Q831** · **Q813** · ADMIN_GUIDE §6-2-24b · USER_MANUAL §4-7-0e·§4-7-4
+
+#### 4-7-0g. 급여기초 설정 — 수당/공제 마스터 (US-PAYROLL-M11, M11 11-4, Q779)
+
+케어포 **11-4 급여기초 설정**의 **수당·공제 마스터**를 조회합니다. **항목 추가·금액 설정·DB 저장은 아직 없습니다**.
+
+**화면 `/payroll/basis`와 API가 연동**되었습니다 (`9ea151b`/`eca95e3`, Q779).
+
+1. SideNav **운영 → 급여기초 설정** 또는 **`StaffContextNav`「급여기초 설정」** 으로 **`/payroll/basis`** 에 이동합니다.
+2. **「수당/공제 마스터 카탈로그」** 카드에서 **수당 N종**·**공제 N종** 요약을 확인합니다.
+3. 표에서 항목 **코드·명칭·구분(수당/공제)·분류·비고**를 확인합니다.
+
+| 구분 | 항목 (케어포 패리티) |
+|------|----------------------|
+| **수당 (3)** | 직책수당 · 처우개선수당 · 장기근속수당 |
+| **공제 (6)** | 국민연금 · 건강보험 · 장기요양보험 · 고용보험 · 소득세 · 지방소득세 |
+
+| 항목 | 내용 |
+|------|------|
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **API** | **`GET /api/v1/staff/payroll/allowance-deduction-catalog`** |
+| **문서 코드** | **`M11-4`** |
+| **P1 잔여** | **마스터 편집·persist** · **대장/명세서 항목 연동** · **퇴직적립 persist**(Q781) |
+
+> 관련: FAQ **Q779** · ADMIN_GUIDE §6-2-24c · DEPLOYMENT §1-4 · CHANGELOG 2026-07-14
+
+#### 4-7-0h. 인건비 지출비율 준수 미리보기 (US-PAYROLL-M11, M11 11-5, Q780)
+
+케어포 **11-5 인건비 지출비율** — **법정 직접인건비 지출비율 60%** 준수를 **화면에서 미리 계산**합니다. **수익·인건비 자동 집계·DB 저장은 아직 없습니다**.
+
+**화면 제공** (`aa86734`/`d176581`, Q780). 경로: **`/payroll/labor-cost-ratio`**.
+
+1. SideNav **운영 → 인건비 지출비율** 또는 **`StaffContextNav`「인건비 지출비율」** 로 이동합니다.
+2. 다음을 입력합니다.
+   - **급여 월** — `MonthInput` (`yyyy-MM`)
+   - **직접인건비 합계** — `totalLaborCost` (0 이상)
+   - **요양수익 합계** — `totalCareRevenue` (0 초과)
+3. **「미리보기 계산」** 을 누르면 **지출비율(%)** · **60% 기준 대비 차이** · **충족 여부** · **안내 문구**가 표시됩니다.
+
+| 항목 | 내용 |
+|------|------|
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **충족** | `complianceMet=true` · `riskLevel=COMPLIANT` — 「법정 직접인건비 지출비율 60% 이상 기준을 충족했습니다.」 |
+| **미충족** | `complianceMet=false` · `riskLevel=ALERT` — 수당·근로계약·급여기초 항목 점검 안내 |
+| **연계** | **「급여 연계 화면」** — 급여대장 · 간이지급명세서 · 급여기초 설정 |
+| **P1 잔여** | **수익·인건비 자동 집계** · **persist** · **M12 SSO**(Q782) |
+
+> 관련: FAQ **Q780** · ADMIN_GUIDE §6-2-24d · USER_MANUAL §4-7-0e~g · DEPLOYMENT §1-4
+
+#### 4-7-0i. 퇴직적립금 미리보기 (US-PAYROLL-M11, M11 11-2, Q781)
+
+케어포 **11-2 퇴직적립금** — **적립기준 급여의 1/12**를 당월 적립액으로 산정합니다.
+
+**화면 제공** (`02d185a`/`891231d`, Q781). 경로: **`/payroll/retirement-accrual`**.
+
+1. SideNav **운영 → 퇴직적립금** 또는 **`StaffContextNav`「퇴직적립금」** 로 이동합니다.
+2. **「퇴직적립금 미리보기」** 카드에서 다음을 입력합니다.
+   - **급여 월** — `yyyy-MM`
+   - **적립기준 급여** — 0 이상
+   - **이전 잔여 누적** — 0 이상 (기본 0)
+   - **근속 개월** — 0 이상
+3. **「미리보기 계산」** — **`POST /api/v1/staff/payroll/retirement-accrual-preview`** 호출.
+4. **「미리보기 결과」** 에서 **당월 적립액** · **예상 누적** · **적립 가능 여부** · **안내 문구**를 확인합니다.
+
+| 항목 | 내용 |
+|------|------|
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **적립** | 근속 **1개월 이상** — `monthlyAccrualAmount = accrualBasePay ÷ 12` · `riskLevel=ACCRUING` |
+| **미적립** | 근속 **1개월 미만** — 당월 0원 · 잔여만 유지 · `riskLevel=INELIGIBLE` |
+| **연계** | **「급여 연계 화면」** — 급여대장 · 간이지급 · 급여기초 · 인건비비율 |
+| **P1 잔여** | **persist** · **월급액·근속 자동 연동** · **4대보험(M12 BPO, Q782)** |
+
+> 관련: FAQ **Q781** · ADMIN_GUIDE §6-2-24e · USER_MANUAL §4-7-0e~h · DEPLOYMENT §1-4
+
 - **보호자 알림 수신 설정 대리 변경** — §4-7-1 참고 (**API만**, UI 후속, FAQ Q137-1).
 
 #### 4-7-1. 보호자 알림 수신 설정 대리 (B08, API-only)
@@ -1497,6 +1697,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 | **직원인권보호 (알림톡)** | **`GuardianDocumentNotifyPanel`** — 문서 유형 **직원인권보호** | `POST …/notifications/elder-abuse-prevention-guideline` | `ELDER_ABUSE_PREVENTION_GUIDELINE` · **`message_kind=19`** |
 | **수급자 월간 일정표 (알림톡)** | **`GuardianDocumentNotifyPanel`** — 문서 유형 **일정표-수급자** | `POST …/notifications/client-monthly-schedule` | `CLIENT_MONTHLY_SCHEDULE` · **`message_kind=12`** |
 | **직원 월간 일정표 (알림톡)** | **직원 상세** **`StaffNotificationDispatchPanel`** — **일정표-직원** (§4-7-4) | `POST …/staff/notifications/staff-monthly-schedule` | `STAFF_MONTHLY_SCHEDULE` · **`message_kind=21`** |
+| **직원 급여명세서 (알림톡)** | **`/payroll/reports`** · **직원 상세** **`StaffNotificationDispatchPanel`** — **급여명세서** (§4-7-4) | `POST …/staff/notifications/staff-payroll-statement` | `STAFF_PAYROLL_STATEMENT` · **`message_kind=22`** |
 | **직원 접속키 (SMS)** | **직원 상세** **`StaffNotificationDispatchPanel`** — **접속키 발송** (§4-7-4) | `POST …/staff/notifications/staff-access-key` | `STAFF_ACCESS_KEY` · **`message_kind=1`** |
 | **본인부담 안내 (알림톡)** | **`/billing/claims/:id`** — **「본인부담 안내 알림톡 발송」** | `POST …/billing/claims/{id}/notify` | `BILLING_STATEMENT` · **`message_kind=11`** |
 | **납부확인서** | **`/billing/claims/:id`** — **「납부확인서 발송」** (`PAID`+`paidAt`) | `POST …/payment-receipt-notify` | `BILLING_PAYMENT_RECEIVED` · *(catalog 6종 외)* |
@@ -1528,35 +1729,99 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 
 > **본인부담금 명세**는 청구 상세 **「보호자 발송」**(`POST /billing/claims/{id}/notify`, Q196)으로 발송합니다. **납부확인서**는 **「납부확인서 발송」**(Q221) 또는 수납 시 **자동** `BILLING_PAYMENT_RECEIVED`(J03)입니다.
 
+#### 4-7-3a. 가정통신문 진입·작성 미리보기·기관 공지 게시판·발송 이력 (G2, Q788~Q800·Q803~Q808·**Q811**·**Q814**·**Q815**·**Q858**·**Q868**, FE `f5dded2` · BE `431859c`)
+
+케어포 **1-5 / 10-2 / 10-4** 패리티 — **월간 가정통신문**을 보호자 **이메일**로 보내기 전·후에 **준비 상태**·**초안 미리보기**·**서버 DRAFT**·**기관 공지·자료실**·**발송 이력(필터)**을 확인합니다. **실제 발송**은 이용자 상세에서 합니다 (§4-7-3 · Q217).
+
+1. SideNav **이용자 → 가정통신문** 또는 **「기관 공지·자료실」**(`/clients/home-newsletter#facility-notices`) · 이용자 화면 상단 **`ClientsContextNav`** 로 이동합니다 (FAQ **Q805**).
+2. 화면이 **`GET …/launch`** · **`GET …/authoring`** · **`GET …/facility-notices`** · **`GET /api/v1/health`** · **`GET …/dispatch-history?branchId=`** 를 함께 조회합니다. **지점 관리자·사회복지사**는 **현재 활성 지점(`activeBranchId`)** 기준으로 **소속 지점**만 불러옵니다 — 지점을 바꾼 뒤에도 **선택한 지점** 이력·게시판이 맞게 갱신됩니다 (Q792·**Q815**). 활성 지점 값이 stale이면 **첫 유효 지점으로 자동 fallback** 후 다시 조회합니다 (**Q868**).
+3. **운영 준비** 카드에서 이메일 dispatch·작성 API 가 **준비됨/후속**인지 확인합니다. **밤(22:00~08:00 KST)에는 SMTP가 켜져 있어도 「후속」** 과 **「조용한 시간대(비긴급 발송 제한)」** 가 보일 수 있습니다 — SMTP를 다시 고치지 말고 **아침 이후** 재확인합니다 (FAQ **Q789**·**Q811**). SMTP 미설정이면 별도 blocker가 붙습니다.
+4. **「가정통신문 작성 미리보기」** 카드에서 **대상 연월**(필수)·**요약**(선택)·이용자명·센터명(미리보기용)을 넣고 **「제목/본문 미리보기」** 를 누릅니다 — **이메일은 발송되지 않습니다** (FAQ **Q793**).
+5. 미리보기 후 **「서버 초안(DRAFT) 저장」** 하면 **기관 공지 DRAFT**로 DB에 남고, 작성 폼 복원 메타는 세션에도 보관됩니다 (FAQ **Q796**·**Q798**).
+6. **「기관 공지 · 자료실 게시판」**에서 **공지(NOTICE)·자료실(RESOURCE)만** 초안을 만들고(그 외 분류는 **「게시 분류를 선택하세요」**, FAQ **Q808**), 자료실은 **첨부 링크**(선택·**http:// 또는 https://만** · 서버·DB 동일 검증, **Q807**·**Q816**)를 넣을 수 있습니다. 목록 **「작성/게시 시각」** 열에서 **DRAFT=「작성」** · **PUBLISHED=「게시」** 로 구분됩니다 (FAQ **Q814**). DRAFT 행 **「수정」** 시 **서버 상세를 다시 불러** 폼을 채운 뒤 **「초안 수정 저장」** · **게시**·삭제합니다. **게시 후에는 본문을 고칠 수 없고**, 재게시하려면 **「초안으로 복제」** 합니다 — 복제 후 **수정 폼이 바로 열리며**, 원본 첨부가 불안전하면 **첨부를 비운 채** 이어갑니다. 게시 행 **「보기」** 로 상세를 확인하고, 불안전 첨부 링크는 **열기가 차단**됩니다 (FAQ **Q797**·**Q800**·**Q803**·**Q804**·**Q805**·**Q807**·**Q808**). **마지막 행을 게시·삭제해도 목록이 빈 페이지에 머무르지 않고** 이전(마지막 유효) 페이지로 자동 맞춥니다 (FAQ **Q858**). **스마트폰·좁은 창**에서는 표(특히 8열 발송 이력)가 **화면 전체를 밀지 않고** 카드 안에서만 좌우로 스와이프됩니다 (FAQ **Q878**).
+7. **연계 안내**에서 **이용자 목록**(발송 실행)·**알림 채널** 등으로 이동합니다.
+8. 하단 **발송 이력**에서 **대상 연월·상태·검색어**로 필터한 뒤 **「필터 적용」** 합니다 — **서버가 전체 이력을 걸러** 현재 페이지만이 아닙니다 (FAQ **Q795**). 표에 **센터명·요약**이 보이며, 행의 **작성에 불러오기**로 폼을 채울 수 있습니다. **연락처는 표시하지 않습니다.** 기본 **20건**씩 조회합니다 (FAQ **Q790**).
+9. 발송하려면 이용자 상세로 가 **§4-7-3** 절차를 따릅니다. **야간 수동 발송은 서버가 거부**합니다 (FAQ Q539·**Q811**).
+
+| 항목 | 내용 |
+|------|------|
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** |
+| **API** | **`GET …/launch`** · **`GET …/authoring`** · **`POST …/compose-preview`**(미리보기, 발송 없음) · **`GET/POST/PATCH …/facility-notices`** · **`GET …/{id}`**(수정·상세·복제 원본) · **`GET …/dispatch-history?branchId=&yearMonth=&status=&q=&page=&size=`** · health `homeNewsletter*` · `notificationQuietHoursActive` |
+| **지점** | **활성 지점 우선** — `activeBranchId` → `branchId` (**Q815**) |
+| **페이지** | **`size` 기본 20·최대 100** — FAQ **Q790** · **게시·삭제 후 빈 페이지 자동 복구** — FAQ **Q858** |
+| **필터** | 연월 · 상태(전체/대기/발송됨/실패) · 수급자·센터·요약 검색 — FAQ **Q795** |
+| **운영 준비** | **지금 비긴급 이메일 가능 여부**(조용한 시간대 반영) — FAQ **Q811** · SMTP 미설정과 구분 **Q789** |
+| **초안·게시판** | 서버 DRAFT · **NOTICE/RESOURCE만** · **DRAFT PATCH·복제(후 수정)·상세·첨부 http(s) BE+FE** · 세션 메타 병행 — FAQ **Q796**~**Q798**·**Q800**·**Q803**~**Q808**·**Q858** |
+| **메뉴** | **`#facility-notices`** — SideNav·ClientsContextNav **「기관 공지·자료실」** |
+| **발송** | **`POST …/clients/{id}/notifications/home-newsletter`** — FAQ **Q217** · 야간 422 **Q539** |
+| **배포** | Flyway **V192** |
+
+> **채널 선택(Q881)**: 센터 전체 공지·자료실 → **기관 공지** · 보호자 개별 안내장 → **가정통신문(이용자 상세 발송)** · 병원·재가·이관 연계 문서 → **연계기록지**.
+>
+> 관련: FAQ **Q788** · **Q789** · **Q790** · **Q791** · **Q792** · **Q793** · **Q795** · **Q796** · **Q797** · **Q798** · **Q800** · **Q803** · **Q804** · **Q805** · **Q807** · **Q808** · **Q809** · **Q811** · **Q858** · **Q878** · **Q881** · **Q217** · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-16
+
+#### 4-7-3b. 연계기록지 (G-LINKAGE-RECORD, Q819·Q822·Q826·Q842) — **이용자 작성 + 지점 리포트**
+
+전원·퇴소·외부기관 연계용 **케어포 1-10「연계기록지」** 패리티입니다. **작성**은 이용자 상세 탭에서, **지점 전체 현황**은 SideNav **「연계기록지 리포트」**에서 봅니다 (FAQ **Q819**·**Q826**·**Q842**).
+
+**작성 접근**: **이용자 관리** → 수급자명 클릭 → **`/clients/:clientId`** → **「연계기록지」** 탭 (`hq_admin`·`branch_admin`·`social_worker`).
+
+**작성 절차**
+
+1. **연계 유형** 선택 — **병원·진료 의뢰** / **재가·방문 연계** / **기관 이관** (3종, 「기타」 없음).
+2. **대상 기관명**(필수, **최대 200자**) · **작성일** · **심신기능·제공 급여 요약**(필수) · **퇴소 후 이용계획**(선택) 입력. 작성일·이용계획은 서버 **요약**에 함께 저장되며, **요약 전체는 최대 5000자**(FAQ **Q822** · DB **V196**). **기관명은 입력 중 잘리지 않으며**, 200자를 넘기면 **「초안 저장」** 시 필드 아래 안내가 표시됩니다 (FAQ **Q830**).
+3. **「초안 저장」** — 상태 **초안(DRAFT)**. **초안 관리** 목록에서 **수정**·**삭제** 가능. 한도 초과·서버 오류는 **필드별 안내**.
+4. 내용 확인 후 **「발송」** — 상태 **발송 완료(DISPATCHED)**. **발송 후에는 수정·삭제 불가**.
+5. 탭 하단 **「연계기록지 발송 리포트」**에서 해당 수급자 유형·기관·작성일·발송 시각·상태 확인.
+
+**지점 통합 리포트**
+
+1. SideNav 또는 이용자 컨텍스트 **「연계기록지 리포트」** → **`/clients/linkage-records`**.
+2. **상태**(전체/초안/발송 완료) · **연계 유형** · **검색**을 넣습니다. 필터를 바꿔도 목록은 **즉시 바뀌지 않습니다** — **「조회」** 버튼(또는 Enter)으로 **확정한 조건**만 반영됩니다 (FAQ **Q829**).
+3. 표에서 수급자명·유형·기관·상태·발송 시각을 확인. 새 작성은 해당 수급자 상세 탭으로 이동합니다.
+4. 건수가 많으면 표 아래 **「총 N건 · M/T페이지」** 와 **이전/다음** 버튼으로 페이지를 넘깁니다 — **페이지당 100건** (FAQ **Q842**). **「조회」** 로 필터를 다시 확정하면 **1페이지**로 돌아갑니다.
+
+| 항목 | 내용 |
+|------|------|
+| **컴포넌트** | `ClientLinkageRecordsPanel` · `ClientLinkageRecordForm` · `ClientLinkageRecordsReportPanel` · `ClientLinkageRecordsReportPage` |
+| **API** | `GET/POST/PATCH/DELETE /api/v1/clients/{clientId}/linkage-records` · `POST …/{recordId}/dispatch` · **`GET /api/v1/clients/linkage-records?page=&size=`** |
+| **한도** | 대상 기관 **200자** · 요약 **5000자** — FE JS 검증(**Q830**) + BE(DTO·서비스)+**V196** CHECK |
+| **DB** | Flyway **V194** 테이블 · **V195** 지점 인덱스 · **V196** 무결성 (**Q827**) |
+| **메뉴** | SideNav·ClientsContextNav **「연계기록지 리포트」** |
+
+> 관련: FAQ **Q819** · **Q822** · **Q826** · **Q827** · **Q829** · **Q830** · **Q842** · REQUIREMENTS **G-LINKAGE-RECORD** · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+
 ---
 
-#### 4-7-4. 직원 알림톡·SMS 발송 (G-SMS-TEMPLATE-CATALOG, Q689·Q691)
+#### 4-7-4. 직원 알림톡·SMS 발송 (G-SMS-TEMPLATE-CATALOG, Q689·Q691·Q831)
 
-이지케어 **`mobile-sendW`** **`message_kind=1`(접속키)**·**`21`(일정표-직원)** 을 **직원 상세** 화면에서 발송합니다 (`StaffNotificationDispatchPanel`, FE `9c25d44`).
+이지케어 **`mobile-sendW`** **`message_kind=1`(접속키)** · **`21`(일정표-직원)** · **`22`(급여명세서)** 를 **직원 상세** 또는 **간이지급명세서** 화면에서 발송합니다 (`StaffNotificationDispatchPanel` · `StaffPayrollReportsPage`).
 
-**접근**: **운영 → 직원 관리** → 직원명 클릭 → **기본정보** 탭 하단 **「알림톡·SMS 발송 (G-SMS)」** 카드 (`hq_admin`·`branch_admin`·`social_worker`).
+**접근**: **운영 → 직원 관리** → 직원명 클릭 → **기본정보** 탭 하단 **「알림톡·SMS 발송 (G-SMS)」** 카드. **급여명세서**는 **`/payroll/reports`** 미리보기 후에도 발송할 수 있습니다 (`hq_admin`·`branch_admin`·`social_worker`).
 
 | 발송 종류 | 채널 | 선행 조건 |
 |----------|------|----------|
 | **일정표-직원** | ALIMTALK | 해당 월 **대상 직원 배정 확정 PLAN 방문** 1건 이상 |
+| **급여명세서** | ALIMTALK | **활성 직원** · **기본급·연월 입력** · 미리보기와 **동일 계산** |
 | **접속키 발송** | SMS | **활성 직원** · **휴대전화 번호 등록** · **직원 역할 계정** |
 
-**발송 절차**
+**발송 절차 (직원 상세 패널)**
 
-1. **발송 종류**를 선택합니다 — **일정표-직원** 또는 **접속키 발송**.
-2. **일정표-직원** 선택 시 **대상 연월**·선택 **요약**(최대 500자)을 입력합니다.
-3. **일정표 알림톡 발송** 또는 **접속키 SMS 발송** 버튼을 클릭합니다.
-4. 성공 시 초록색 안내가 표시됩니다 — **「(접속키 발송)」**·**「(일정표-직원)」** 등 **괄호 한글명**으로 템플릿을 확인할 수 있습니다 (Q699). **접속키 값은 화면에 표시되지 않습니다** — 직원 휴대폰 SMS로만 전달됩니다.
+1. **발송 종류**를 선택합니다 — **일정표-직원** · **급여명세서** · **접속키 발송**.
+2. **일정표-직원**·**급여명세서** 선택 시 **대상 연월**·(급여명세서) **기본급·수당·공제**·선택 **요약**(최대 500자)을 입력합니다.
+3. **일정표 알림톡 발송** · **급여명세서 알림톡 발송** · **접속키 SMS 발송** 버튼을 클릭합니다.
+4. 성공 시 초록색 안내가 표시됩니다 — **「(접속키 발송)」** · **「(일정표-직원)」** · **「(급여명세서)」** 등 **괄호 한글명**으로 템플릿을 확인할 수 있습니다 (Q699). **접속키 값은 화면에 표시되지 않습니다** — 직원 휴대폰 SMS로만 전달됩니다.
 
-> **접근성 (UXD-161, `4adeb1c`)**: **발송 종류·연월·요약** 필드 간 **수직 간격**이 보장됩니다 (FAQ Q696).
-5. **22:00~08:00 (KST) 조용한 시간대**에는 서버가 발송을 거부할 수 있습니다 — danger Alert 확인 후 **08:00 이후 재시도** (Q329).
+> **접근성 (UXD-161, `4adeb1c`)**: **발송 종류·연월·요약·금액** 필드 간 **수직 간격**이 보장됩니다 (FAQ Q696).
+5. **22:00~08:00 (KST) 조용한 시간대**에는 서버가 발송을 거부할 수 있습니다 — danger Alert 확인 후 **08:00 이후 재시도** (Q329·Q812).
 
 | API | 요청 본문 |
 |-----|----------|
 | `POST /api/v1/staff/notifications/staff-monthly-schedule` | `{ "staffUserId": "uuid", "yearMonth": "2026-06", "summary": "선택" }` |
+| `POST /api/v1/staff/notifications/staff-payroll-statement` | `{ "staffUserId": "uuid", "yearMonth": "2026-06", "basePay": 2500000, "allowances": 0, "deductions": 0, "summary": "선택" }` |
 | `POST /api/v1/staff/notifications/staff-access-key` | `{ "staffUserId": "uuid" }` |
 
-> **readiness**: **`/organization/settings`** 또는 **대시보드** **`NotificationChannelReadinessPanel`** 에서 **발송 구현 6/6**·**발송 대기** 항목을 확인하세요. **`dispatchReady=true`** 는 templateId 설정뿐 아니라 **SMS/알림톡 채널 자격**(Solapi key·secret·sender·PF ID)까지 충족해야 합니다 (FAQ Q686·Q690·`fed6f1f`).
+> **readiness**: **`/organization/settings`** 또는 **대시보드** **`NotificationChannelReadinessPanel`** 에서 **발송 구현 7/7**·**비긴급 SMS 즉시 발송(Q812)** 항목을 확인하세요. **`dispatchReady=true`** 는 templateId 설정뿐 아니라 **SMS/알림톡 채널 자격**(Solapi key·secret·sender·PF ID)까지 충족해야 합니다 (FAQ Q686·Q690·Q813·Q831·`fed6f1f`).
 
 ---
 
@@ -1683,6 +1948,30 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 
 > **데이터 주의**: 이 화면은 **조회·발송 전용**입니다. 일정 변경은 **`/visits`** 에서 PLAN 일정을 등록·수정하세요.  
 > 관련: FAQ **Q717·Q689·Q691** · ADMIN_GUIDE §6-2-21 · DEPLOYMENT §1-4
+
+#### 위원회·보호자 회의록 (8-6, G-STAFF-COMMITTEE-MEETING-LOG, Q723)
+
+케어포 **PDF 8-6** · ezCare 도움말 **FAQ 21601 「직원 회의록 전산 작성/관리」** — **운영위원회·보호자 회의·복지노사위원회** 회의록을 전산 작성·확정·출력합니다.
+
+1. SideNav **운영 → 직원**(`/staff`) 진입 후 **`StaffContextNav`「위원회·보호자 회의록 (8-6)」** 또는 URL **`/staff/committee-meetings`** 로 이동합니다 (`0342076`).
+2. **`BranchScopeNotice`** 로 **활성 지점**을 확인합니다 — 회의록은 **JWT active branch** 에 저장됩니다.
+3. 상단 **회의 유형** — **`.ds-segmented`** FilterChips — **운영위원회** · **보호자 회의** · **복지노사위원회** 중 하나를 선택합니다 (UXD-166 `4e574ce`, Q728). **보호자 회의(`GUARDIAN`)** 는 평가 **필수업무 일련 27「가족과의 소통」** 기록용입니다 — **공단평가 지표 27(기능회복훈련)** 과 번호가 같아도 **다른 업무**입니다 (FAQ **Q850** · `/programs/functional-recovery`).
+4. **조회 기간**(`from`·`to`, 기본 **당해 연도**)을 지정하고 **「다시 조회」** — **`fetchStaffCommitteeMeetingsApi`** → **`GET /api/v1/staff/committee-meetings`**
+5. **「회의록 등록」** — Modal에서 **회의 유형·일자·제목·장소·참석자·회의 내용·회의 결과** 입력 후 저장 — **`POST /api/v1/staff/committee-meetings`** (상태 **`DRAFT`**) — **장소**는 비워 두거나 실제 장소명만 입력(공백만 입력하지 않음 — **V182** DB CHECK, Q725)
+6. 목록 **작성중** 행 — **「수정」** (`PATCH`) · **「확정」** (`POST …/finalize`) — 확정 후 **수정 불가**
+7. 목록 **확정** 행 — **「출력」** — **`GET …/export`** plain-text **`committee-meeting-{id}.txt`** 다운로드
+
+| 권한 | 조회·등록·확정·출력 |
+|------|:-------------------:|
+| `hq_admin` | ✅ |
+| `branch_admin` | ✅ |
+| `social_worker` | ✅ |
+| `caregiver` | ❌ |
+
+> **P3 잔여**: 케어포 **PDF 공식 서식** 일괄 인쇄·전자서명 — 현재는 **plain-text export** (`3ae8098`).  
+> **a11y (UXD-166)**: 회의일 **`<time dateTime>`** · 유형 선택 **`.ds-segmented`** (`4e574ce`, Q728).  
+> **DB**: Flyway **V181** 테이블 + **V182** `location`·`finalized_at` defense-in-depth CHECK (`b4958f1`, Q725).  
+> 관련: FAQ **Q723·Q725·Q728·Q850** · ADMIN_GUIDE §6-2-22 · DEPLOYMENT §1-4 V181·V182
 
 #### 직원 lifecycle — 입사~퇴사 (US-R03, FAQ21825·FAQ21806, Q290·Q298)
 
@@ -1984,7 +2273,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 
 1. **청구·정산** → **수가표 관리**(`/billing/fee-schedules`)로 이동합니다 (`hq_admin` 전용).
 2. 상단 **`FeeScheduleMatrix`** — **등급(1~5 + 인지지원)×이용시간대 2차원 표**(총 **30칸**)에서 셀을 클릭해 등록·수정합니다 (FE `6ef671b`, Q311).
-3. **보기 연도**를 바꾼 뒤, 미등록 셀이 있으면 **「공단 2026 수가 시드 (N건)」** 으로 MOHW 2026 공식 **미등록 셀만** 일괄 등록할 수 있습니다 — **표준·인지지원 모두** 포함 (`2efc557`·`6ef671b`). Swagger·자동화는 **`POST /billing/fee-schedules/apply-nhis-seeds?year=`** 로 동일 일괄 등록 가능 (`edd2771`).
+3. **보기 연도**를 **2026**으로 두고, 미등록 셀이 있으면 **「공단 2026 수가 시드 (N건)」** 으로 MOHW 2026 공식 **미등록 셀만** 일괄 등록할 수 있습니다 — **표준·인지지원 모두** 포함 (`2efc557`·`6ef671b`). Swagger·자동화는 **`POST /billing/fee-schedules/apply-nhis-seeds?year=2026`** 로 동일 일괄 등록 가능 (`edd2771`) — **`hq_admin` JWT만** 허용 · **`branch_admin` → 403** (Q748). **seed API는 2026 catalog만 지원** — 다른 연도는 **`422`** (Q747).
 4. **+ 수가 등록** 또는 목록 행 **수정** — **연도·등급·이용시간대·1일 수가·시행일** (`DurationBandSelect`). **인지지원등급**은 **`ltcGrade=0`** (V99).
 5. 하단 **`FeeScheduleTable`** — 등급·밴드·수가·시행일 (`GET /billing/fee-schedules`, Q91).
 6. **이력 보기** → `FeeRateHistoryPanel` — 연도·등급·**밴드**별 시행 이력 (`GET /billing/fee-schedules/history?year=`).
@@ -2028,7 +2317,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 3. 토글이 **즉시 서버에 저장**됩니다 — `GET /api/v1/organization` 로드 · `PATCH /api/v1/organization/settings` 저장 (FE `f749311`, Q116 **Fixed**).
 4. **「청구·정산」** 카드 — **`BillingSettingsPanel`** 에서 **청구명세서 생성 기준**을 선택하고 **저장**합니다 (FE `ac23529`, Q224). 레거시 DB 값 **`ATTENDANCE`/`NHIS`** 는 화면에서 **`ATTENDANCE_SCHEDULE`/`NHIS_IMPORT`** 로 자동 정규화됩니다.
 5. (기존 ERP 이관 시) 같은 카드 하단 **「청구시작 기준금액 (G33)」** 에서 **도입 전 미납·선납**을 **1회만** 설정합니다 (§5-5-1, Q269).
-6. **「알림 채널 준비 상태」** 카드 — **`NotificationChannelReadinessPanel`** (Q318·Q686~Q692·Q697, `6b1258c`·`15f2195`·`c04968c`·`3f686e3`) — Solapi·SMTP·필수 알림톡 템플릿 **설정 여부**와 **라이브 발송 준비**·**조용한 시간대(22:00~08:00 KST)** 를 확인합니다. **「이지케어 메시지 종류 (템플릿 카탈로그)」** 섹션에서 **발송 구현 N종 중 M종 발송 가능 · 발송 대기 Y종** 요약 Alert(`role="status"`, UXD-160)와 6종 표(**발송 구현·Solapi 설정·발송 가능**)를 확인합니다 — 한글 라벨은 ezCare **본인부담 안내·급여제공내역·직원인권보호** 등과 동일 (Q697). **발송 대기** warning Alert로 **templateId 미설정** 또는 **채널 자격 미충족**(예: PF ID 없음) 항목을 확인하세요 (Q690·`fed6f1f`). API 키 등 **비밀값은 표시되지 않습니다**. **`branch_admin`** 은 **대시보드**(`/dashboard`) 하단 동일 패널에서도 확인할 수 있습니다.
+6. **「알림 채널 준비 상태」** 카드 — **`NotificationChannelReadinessPanel`** (Q318·**Q802**·**Q809**·**Q812**·**Q835**·**Q837**·**Q839**·**Q844**·**Q851**·**Q853**·Q686~Q692·Q697·**Q813**, `6b0f2ae`·`adaee26`·`79763a3`·`9181ca8`) — Solapi·SMTP·필수 알림톡 템플릿 **설정 여부**와 **라이브 발송 준비**·**지금(비긴급) 발송 가능(알림톡·이메일·SMS 3채널)**·**조용한 시간대(22:00~08:00 KST)** 를 확인합니다. 「설정은 됐는데 밤에만 막힘」은 **지금 발송 가능=아니오** + **QUIET_HOURS_ACTIVE** 로 구분합니다 (FAQ **Q809**·**Q812**). API 응답은 **명세 별칭**(`solapiSenderNumberConfigured` 등)과 **구현 키**를 함께 받으며, **`readinessBlockers`** 가 URL 인코딩·**HTML entity(`&#45;`·`&lt;`)**·**대소문자·이중·삼중 entity(`&LT;`·`&AMP;#x2d;`·`&AMP;AMP;#45;`)** 로 와도 패널에 **누락 없이** 표시됩니다 (FAQ **Q835**·**Q837**·**Q839**·**Q852**). **「문자 발송 참고 단가」** 표 — **`GET …/dispatch-reference-unit-rates` 전용 카탈로그**를 **최우선**으로 쓰고, 없으면 channel-status **`dispatchReferenceUnitRates`**, 그래도 없으면 FE 정적 fallback(앱 **10원** · SMS **20원** · MMS **50원**)을 표시합니다 — **운영 비교 안내**이며 **Solapi 실과금·청구에 사용하지 않습니다** (FAQ **Q844**·**Q851**). Windows **고대비**에서도 표 테두리가 보입니다 (**Q853**). **「이지케어 메시지 종류 (템플릿 카탈로그)」** 섹션에서 **발송 구현 7/7 · 발송 가능 M종 · 발송 대기 Y종** 요약 Alert(`role="status"`, UXD-160)와 **7종** 표(**급여명세서 kind 22 포함**, FAQ **Q813**·**Q831**)를 확인합니다 — 한글 라벨은 ezCare **본인부담 안내·급여제공내역·직원인권보호** 등과 동일 (Q697). **발송 대기** warning Alert로 **templateId 미설정**·**채널 자격 미충족**(예: PF ID 없음) 항목을 확인하세요 (Q690·Q813·`fed6f1f`). API 키 등 **비밀값은 표시되지 않습니다**. **`branch_admin`** 은 **대시보드**(`/dashboard`) 하단 동일 패널에서도 확인할 수 있습니다.
 7. **「배차·카카오 API」** 카드 (Q554, FE `138ac26`/`ba74bb5`) — **`TransportKakaoApiStatusPanel`** — **`GET /api/v1/transport/kakao-api-status`** — REST 키 설정 여부 · **Geocode·Directions** 연결 상태 Badge · **「오늘 API 사용량 (ogada 백엔드 기준)」** 테이블 — **좌표(Geocode)·경로(단일)·경로(다중경유)** 각 **오늘 사용·일일 한도·잔여 추정** · **한도 초과** warning · [Kakao Developers 콘솔](https://developers.kakao.com/console/app) 링크 **(새 탭)** (UXD-143). **브라우저 JS SDK·콘솔 Quota와 다를 수 있음** 안내가 표시됩니다.
 
 | 설정 | 기본값 | 설명 |
@@ -2155,10 +2444,11 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 | 화면 | 경로 | 역할 | 조작 |
 |------|------|------|------|
-| 배차 홈 | `/transport` | 직원 4역할 | **운행 방향**(승차/하차) → **운행 루트** → **배차 명단** → **`hq_admin`** 자동(승차만)·수동 배차 |
+| 배차 홈 | `/transport` | 직원 4역할 | **운행 방향**(승차/하차) → **운행 루트** → **배차 명단** → **`hq_admin`** 자동(승차만)·수동 배차 · **`hq_admin`/`branch_admin`** 승차 **금일 배차 제외** (Q763) |
+| **송영표 (Q762)** | `/transport/shuttle-sheet` | 직원 4역할 | **운행일·방향** 선택 → **차량별·회차별** 탑승자 표 · **미배정** 확인 · 루트 **보기** 링크 |
 | **수칙·계약 (G15)** | `/transport/compliance` | 직원 4역할(저장: 관리 3역할) | §5-8-0 — 5항목 수칙·계약서·제18호 안내 |
 | **월간 리포트 (G15 2-7/2-8)** | `/reports/transport-monthly` | `hq_admin`·`branch_admin`·`social_worker` | §5-8-0-2 — 변동현황·입소자·일정·서비스 집계 |
-| **차량 관리** | `/transport/vehicles` | 조회: 직원 4역할 · 등록/수정: `hq_admin`·`branch_admin` | §5-8-3 (G16, Q241·Q402) |
+| **차량 관리** | `/transport/vehicles` | 조회: 직원 4역할 · 등록/수정: `hq_admin`·`branch_admin` | §5-8-4 (G16, Q241·Q402·Q763) |
 | 이동서비스비 청구 | `/transport/service-fees` | `hq_admin`·`branch_admin`·`social_worker` | §5-8-1 (G16, Q239) |
 | 외출 관리 | `/transport/outings` | 직원 4역할 | §5-8-2 (G15, Q240) |
 | 외출 리포트 | `/reports/client-outings` | `hq_admin`·`branch_admin`·`social_worker` | §5-8-2 |
@@ -2170,12 +2460,14 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 3. 상단 **`TransportDisclaimer`** 를 읽습니다 — **운영 편의용**이며 이동서비스비 청구(G16)는 **`/transport/service-fees`** 입니다.
 4. **「운행 방향」** — **승차(PICKUP)** / **하차(DROPOFF)** segmented control로 전환합니다 (Q399). 운행 루트·명단·수동 배차가 **선택한 방향**에 맞게 갱신됩니다. **자동 배차 제안**은 **승차**에서만 표시됩니다.
 5. **「운행 루트」** 카드 — **운행일** `DateInput` 선택 → 당일 **선택 방향**의 **DRAFT/CONFIRMED** 루트 목록(상태·정차 수·차량·확정 시각) · **보기** → `/transport/runs/{runId}`. **`branch_admin`·요양보호사·사회복지사**는 **CONFIRMED** 루트만 표시됩니다.
-6. **「배차 신청 인원 명단」** — 당일 roster · **연락처**(`contact`)·**보호자 연락처**(`guardianContact`, Q398) · **희망 탑승 시각**·**희망 하차 시각** (Q400) · **배차 루트** — 확정 루트에 배정된 이용자는 **「N번 정차」** 링크로 **`/transport/runs/:runId`** 바로가기 (Q433, `e35efb2`) · **계획 픽업**(승차) / **계획 하차**(하차) — 확정 루트 정차의 계획 시각 · **자동 배차 제안 직후**에는 **DRAFT 제안 루트의 반영도착 ETA**도 명단에 **「계획 픽업」** 으로 표시됩니다 (Q553, `acc5933`) · 희망 시각보다 늦으면 **「지연」** Badge (Q433) · **`TransportPickupContact`** — **`hq_admin`** 만 전체 번호·`tel:` 링크, 그 외 **`010-****-5678`** 마스킹 (Q171·Q172).
-7. **`hq_admin` only — 배차 생성 (승차, v1.3-B, Q424)** — 화면 하단 **「배차 생성」** 영역에서 **자동·수동 배차**가 **나란히** 표시됩니다 (`96db8bf`). **승차** 방향일 때만 왼쪽 **「자동 배차 제안」** 카드가 보입니다 — **`TransportSuggestPanel`** 안에 **최적화 설정**(`BranchTransportSettingsPanel` **embedded**) · 픽업 허용 ±분 · OR-Tools 가중치(안정성·공정성·거리) · **필드 tooltip** · **0.1 단위** 입력 · **「설정 저장」** — 빈 가중치는 **저장 전 필드 오류**로 차단됩니다 (`transportSettingsForm.js`, Q424). **「자동 배차 제안」** 클릭 시 버튼·Spinner가 **「자동 배차·경로 계산 중…」** 으로 표시됩니다 (Q553). **`POST /api/v1/transport/runs/suggest`** · **일 10회** 상한 · 제안 DRAFT는 **출발·복귀 지점(BRANCH) 정차 포함** · BE suggest 응답에 **`legDurationsSeconds`·`routePath`·거리·소요** 가 포함되어 FE가 **즉시 ETA·지도 polyline** 을 채웁니다 (Q554, `e2b764b`). **「반영도착」** 열 — 경로 legs가 없으면 **「경로 미확인」** (Q554). **「DRAFT 검토」** 링크는 **경로 미리보기 결과**를 루트 상세로 전달해 **지도·정차 time chip** 을 즉시 채웁니다. **운행 루트**에서 검토 (Q347·Q424).
-8. **`hq_admin` only — 수동 배차** — 오른쪽 **「승차/하차 수동 배차」** 카드 — **「승차/하차 수동 배차 생성」** → `/transport/runs/new` (방향·운행일 state 전달) · 해당 방향에 **이미 확정 배차에 포함된 이용자**는 선택 불가. **하차(DROPOFF)** 방향에서는 **수동 배차 카드만** 표시됩니다.
-8a. **이전 배차 불러오기 (Q550, FE `4681b5a`)** — **`/transport/runs/new`** 상단 **「이전 배차 불러오기」** → **`TransportLoadPreviousRunModal`** — **과거 운행일**·**차량** 선택 → **CONFIRMED/DRAFT** 루트의 **정차 순서·지점·경유지**를 **당일 roster** 기준으로 복원합니다. **퇴소·확정 배차 포함·15명 초과** 이용자는 **건너뛰기 목록**에 표시됩니다 (`buildStopsFromPreviousRun`).
-9. 수동 배차 화면 상단 **「출발 시각」** (`Field` + **`TimeInput`**, Q418·Q422) — 기본값 **08:00** · 5분 단위 시·분 선택 · **`POST /api/v1/transport/runs`** 시 **`plannedDepartureTime`**(HH:mm:ss)로 저장 (**V150**). **DRAFT 루트 상세**에서도 **`PATCH /api/v1/transport/runs/{id}`** 로 **`plannedDepartureTime`** 수정 가능 (Q550, BE `48eea95`).
-10. 수동 배차 화면 **`TransportRouteSplitView`** (Q401·**Q418·Q420·Q421·Q458·Q550**) — **상단 경로 지도** · **하단 정차 목록**(드래그 순서 변경) — **세로 배치** (`fde098f`). **`지점 추가`**(**BRANCH**) · **`경유지 추가`**(**WAYPOINT**, `bf73c4c`) · **DRAFT 루트 상세** — **`명단에서 추가`**(**`TransportAddRosterModal`**, Q550) — 당일 roster에서 **미포함 이용자**를 **다중 선택** 추가 · **이미 확정 배차에 포함된 이용자**는 선택 불가. **공백만 입력한 주소는 저장되지 않습니다** (V155 DB `btrim` guard, Q458). 정차 **time chip** — **희망 탑승/하차** · **예상 도착** · **희망 반영** — 희망보다 늦으면 **지연 강조**. **`legDurationsSeconds`** + 출발 시각 → **`transportMapEtas.js`**.
+6. **「승차/하차 배차 인원 명단」** — **활성 지점**의 **이동서비스 이용(`usesTransport=true`)·활성·미퇴소** 이용자 **전원** · **연락처**(`contact`)·**보호자 연락처**(`guardianContact`, Q398) · **희망 탑승/하차 시각**(선택 방향 1열, Q400) · **차량** · **반영도착** — 확정·제안 루트의 계획 시각 · 희망 시각보다 늦으면 **「지연」** (Q433·Q553) · **배차 상태** — 당일 **CONFIRMED** 루트 포함 시 **「확정」** Badge · 미포함 시 **「미확정」** Badge (결정 97, `7e048c0`) · **`TransportPickupContact`** — **`hq_admin`** 만 전체 번호·`tel:` 링크, 그 외 **`010-****-5678`** 마스킹 (Q171·Q172). **승차(PICKUP)** 방향에서 **`hq_admin`·`branch_admin`** 은 명단 **「금일 배차 제외」** 체크로 당일 미이용 이용자를 표시할 수 있습니다 — **자동 배차 제안**과 **수동 DRAFT 생성·수정·확정**에서 모두 제외·거부됩니다 (Q763·Q766). **전원 제외** 시 자동 배차 카드에 **「제안 대상 0/N명 (금일 배차 제외 반영)」** 경고와 **「자동 배차 제안 대상 이용자가 없습니다. 금일 배차 제외 표시를 확인하세요.」** 가 표시되고 제안 버튼이 비활성화됩니다. **요양보호사·사회복지사는 토글 UI가 없고 API도 403**입니다 (`PATCH …/roster/{clientId}/day-status`). IT는 배포 후 health **`v189TransportShuttleSchemaCheckReady=true`** 를 확인하세요 (Q764).
+6a. **송영표 (Q762·Q769)** — **`TransportContextNav` → 「송영표」** 또는 **`/transport/shuttle-sheet`** — **운행일·방향**을 선택하면 **차량별 열**에 **출발 회차(1·2·3차)**·**탑승자(정차 순)** 가 표시됩니다. **미배정** 이용자는 하단에 별도 목록으로 보입니다. **`hq_admin`** 은 DRAFT·CONFIRMED 루트 모두 반영 · **그 외 직원**은 **확정 루트만** 표시됩니다. 각 회차에서 **「루트 보기」** 로 상세·일지 화면으로 이동합니다. 스크린리더는 차량 열을 **목록**으로 안내합니다 (시각 배치는 동일, Q769).
+7. **`hq_admin` only — 배차 생성 (승차, v1.3-B, Q424)** — 화면 하단 **「배차 생성」** 영역에서 **자동·수동 배차**가 **나란히** 표시됩니다 (`96db8bf`). **승차** 방향일 때만 왼쪽 **「자동 배차 제안」** 카드가 보입니다 — **`TransportSuggestPanel`** 안에 **최적화 설정**(`BranchTransportSettingsPanel` **embedded**) · 픽업 허용 ±분 · OR-Tools 가중치(안정성·공정성·거리) · **필드 tooltip** · **0.1 단위** 입력 · **「설정 저장」** — 빈 가중치는 **저장 전 필드 오류**로 차단됩니다 (`transportSettingsForm.js`, Q424). **「자동 배차 제안」** 클릭 시 버튼·Spinner가 **「자동 배차·경로 계산 중…」** 으로 표시됩니다 (Q553). **`POST /api/v1/transport/runs/suggest`** · **일 10회** 상한 · 제안 DRAFT는 **출발·복귀 지점(BRANCH) 정차 포함** · BE suggest 응답에 **`legDurationsSeconds`·`routePath`·거리·소요** 가 포함되어 FE가 **즉시 ETA·지도 polyline** 을 채웁니다 (Q554, `e2b764b`). **「반영도착」** 열 — 경로 legs가 없으면 **「경로 미확인」** (Q554). **「DRAFT 검토」** 링크는 **경로 미리보기 결과**를 루트 상세로 전달해 **지도·정차 time chip** 을 즉시 채웁니다. **운행 루트**에서 검토 (Q347·Q424). **금일 배차 제외(Q766)** — 제외된 이용자는 제안에서 빠지고, **전원 제외**면 위 6단계 안내·버튼 비활성이 적용됩니다.
+8. **`hq_admin` only — 수동 배차** — 오른쪽 **「승차/하차 수동 배차」** 카드 — **「승차/하차 수동 배차 생성」** → `/transport/runs/new` (방향·운행일 state 전달) · 해당 방향에 **이미 확정 배차에 포함된 이용자**는 선택 불가. **「금일 배차 제외」** 이용자는 화면에서 **체크 잠금·「금일 배차 제외」 Badge**(Q767)되고, 우회 저장 시에도 서버가 **「금일 배차 제외로 표시된 이용자가 포함되어 있습니다: …」** 로 **생성·수정·확정을 거부**합니다 (Q766) — 명단에서 제외를 해제한 뒤 다시 저장하세요. **하차(DROPOFF)** 방향에서는 **수동 배차 카드만** 표시됩니다.
+8a. **이전 배차 불러오기 (Q550·Q767)** — **`/transport/runs/new`** 상단 **「이전 배차 불러오기」** → **`TransportLoadPreviousRunModal`** — **과거 운행일**·**차량** 선택 → **CONFIRMED/DRAFT** 루트의 **정차 순서·지점·경유지**를 **당일 roster** 기준으로 복원합니다. **퇴소·확정 배차 포함·15명 초과·금일 배차 제외** 이용자는 **건너뛰기 목록**에 표시됩니다 (`buildStopsFromPreviousRun` — 제외 사유 **「금일 배차 제외」**).
+8b. **금일 배차 제외 행 시각 (Q777)** — **「명단에서 추가」**·수동 배차 생성에서 **금일 배차 제외** 이용자 행은 **경고 톤 배경**으로 표시됩니다. **「금일 배차 제외」** Badge·체크 잠금이 **주 신호**입니다 (Q767).
+9. 수동 배차 화면 상단 **「출발 시각」** (`Field` + **`TimeInput`**, Q418·Q422) — 기본값 **08:00** · 5분 단위 시·분 선택 · **`POST /api/v1/transport/runs`** 시 **`plannedDepartureTime`**(HH:mm:ss)로 저장 (**V150**). **「출발 회차」**(선택, Q763) — 같은 차량·같은 날 **2·3차** 운행 시 숫자 입력 · **비우면** 서버가 **다음 회차**를 자동 배정합니다 (**V186**). **DRAFT 루트 상세**에서도 **`PATCH /api/v1/transport/runs/{id}`** 로 **`plannedDepartureTime`** 수정 가능 (Q550, BE `48eea95`).
+10. 수동 배차 화면 **`TransportRouteSplitView`** (Q401·**Q418·Q420·Q421·Q458·Q550·Q767**) — **상단 경로 지도** · **하단 정차 목록**(드래그 순서 변경) — **세로 배치** (`fde098f`). **`지점 추가`**(**BRANCH**) · **`경유지 추가`**(**WAYPOINT**, `bf73c4c`) · **DRAFT 루트 상세** — **`명단에서 추가`**(**`TransportAddRosterModal`**, Q550·Q767) — 당일 roster에서 **미포함 이용자**를 **다중 선택** 추가 · **이미 확정 배차에 포함된 이용자**·**금일 배차 제외** 이용자는 선택 불가. **공백만 입력한 주소는 저장되지 않습니다** (V155 DB `btrim` guard, Q458). 정차 **time chip** — **희망 탑승/하차** · **예상 도착** · **희망 반영** — 희망보다 늦으면 **지연 강조**. **`legDurationsSeconds`** + 출발 시각 → **`transportMapEtas.js`**.
 11. **`TransportVehicleSelect`** 로 **지점 차량**을 지정합니다 — 차량 **기본 운전자명**이 라벨에 표시됩니다 (Q402). 정차 수가 차량 **정원(capacity)** 을 초과하면 경고가 표시됩니다 (Q241).
 12. **지도 제외 주소**(geocode `FAILED` 또는 **좌표 미보유**)가 있으면 상단 **경고 Alert**가 표시되고 **임시 저장·순서 저장·배차 확정**이 **차단**됩니다 (QA-B19, Q233).
 13. **퇴소·비활성 이용자**는 roster·수동 배차 명단에 **표시되지 않습니다**. 퇴소 직전에 만든 **DRAFT** 루트에 해당 정차가 남아 있으면 **저장·확정이 거부**됩니다 — 정차를 **삭제**하거나 roster를 갱신하세요 (**V152 Fixed** @ `dd2fa2c`, FAQ **Q423**·**Q235**).
@@ -2200,10 +2492,11 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 | API | 용도 |
 |-----|------|
-| `GET /api/v1/transport/roster?runDate=&direction=PICKUP\|DROPOFF` | 당일 배차 명단 — **`contact`·`guardianContact`·`desiredBoardingTime`·`desiredDropoffTime`** (Q398·Q400, `114411f`) |
-| `POST /api/v1/transport/runs` | DRAFT 루트 생성 (`hq_admin`) — `direction` · optional **`plannedDepartureTime`** (Q418, `0e46b37`, **V150**) · `stops[]` with **`stopKind` CLIENT/BRANCH/WAYPOINT** (US-T02, Q421) — WAYPOINT 시 **`waypointAddress`**(필수)·**`waypointLabel`**(선택) · optional `vehicleId` |
-| `PATCH /api/v1/transport/runs/{id}` | DRAFT 정차 순서·**`plannedDepartureTime`**·차량 수정 (Q550, `48eea95`) — **희망 시각 순서 검증** |
-| `POST /api/v1/transport/runs/{id}/confirm` | 배차 확정 |
+| `GET /api/v1/transport/roster?runDate=&direction=PICKUP\|DROPOFF` | 당일 배차 명단 — **`contact`·`guardianContact`·`desiredBoardingTime`·`desiredDropoffTime`·`absentToday`·`skipDispatch`** (Q398·Q400·Q763, `114411f`) |
+| `PATCH /api/v1/transport/roster/{clientId}/day-status` | **금일 배차 제외** 토글 (`hq_admin`·`branch_admin`, 승차) — `absentToday`·`skipDispatch` (Q763) · suggest·create/update/confirm 거부 (Q766) |
+| `POST /api/v1/transport/runs` | DRAFT 루트 생성 (`hq_admin`) — `direction` · optional **`plannedDepartureTime`** (Q418, `0e46b37`, **V150**) · optional **`departureRound`** (Q763, **V186**) · `stops[]` with **`stopKind` CLIENT/BRANCH/WAYPOINT** (US-T02, Q421) — WAYPOINT 시 **`waypointAddress`**(필수)·**`waypointLabel`**(선택) · optional `vehicleId` · **제외 이용자 포함 시 422** (Q766) |
+| `PATCH /api/v1/transport/runs/{id}` | DRAFT 정차 순서·**`plannedDepartureTime`**·차량 수정 (Q550, `48eea95`) — **희망 시각 순서 검증** · **제외 이용자 포함 시 422** (Q766) |
+| `POST /api/v1/transport/runs/{id}/confirm` | 배차 확정 — **제외 이용자 포함 시 422** (Q766) |
 | `PATCH /api/v1/transport/runs/{id}/unconfirm` | 확정 취소 → DRAFT (`hq_admin`, Q163·Q164) |
 | `DELETE /api/v1/transport/runs/{id}` | **DRAFT 루트 삭제** (`hq_admin`, Q403, `1d1a71f`) — **204** · CONFIRMED 시 **422** |
 | `GET /api/v1/transport/runs/{runId}/service-log` | **별지 제22호 일지 조회** (Q407, `0cfa970`) — 확정·DRAFT 모두 조회 가능 · **`TransportServiceLogResponse`** |
@@ -2223,7 +2516,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 | `GET/POST/PATCH /api/v1/transport/vehicles*` | 차량 마스터 CRUD — **`VehiclesPage`** (Q241) |
 | `GET /api/v1/clients/{id}/care-provision-records/{yearMonth}` | 월간 급여제공·이동서비스·차량 대조 (Q243) |
 
-> **명단이 비어 있을 때**: 이용자 **`usesTransport=true`** (V47)인 경우만 roster에 표시됩니다. **이용자 등록·수정** 화면 **「배차·픽업 정보」**에서 설정하세요 (§4-3, Q166). 저장 후 **`/transport`** 에서 운행일을 새로고침합니다.
+> **명단이 비어 있을 때**: roster는 **활성 지점**의 **`usesTransport=true`·활성·미퇴소** 이용자만 표시합니다. **다른 지점**을 선택 중이면 명단이 비어 보일 수 있습니다 — **`BranchScopeNotice`**·지점 선택기로 조회 지점을 확인하세요 (결정 97). 해당 지점에 이용자가 없으면 **이용자 등록·수정** 화면 **「배차·픽업 정보」**에서 설정하세요 (§4-3, Q166). 저장 후 **`/transport`** 에서 운행일을 새로고침합니다.
 >
 > **지도가 안 보일 때**: (1) **`/organization/settings`·`/settings` → 「배차·카카오 API」** — REST 키·Geocode·Directions 상태 확인 (Q554) (2) 서버 **`KAKAO_REST_KEY`** — geocode·경로 API (3) 프론트 **`VITE_KAKAO_MAP_JS_KEY`** — **`loadKakaoMapSdk`** (4) JS 키 **Web 도메인**에 접속 URL 등록 (FAQ **Q370·Q394·Q395·Q554**, DEPLOYMENT §4-7).
 
@@ -2354,9 +2647,9 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 **케어포 2-5** 대응 — 확정 배차를 기반으로 **이동서비스비 청구 기록**을 생성·확정합니다 (BE `88d4c59` + FE `9dfef92`, BNK-25).
 
 1. **`TransportContextNav`** → **「이동서비스비 청구」** (또는 `/transport/service-fees` 직접 접속).
-2. **조회 기간**(기본: 당월)을 설정하고 **거리구간 수가표**(RU_1 830원 ~ RU_4 6,230원)를 확인합니다. 수가표 아래 **「이동서비스비 NHIS 기준 규칙」** 은 **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** catalog를 **`label`·`description`** 으로 표시합니다 — API 실패 시 **static fallback** 4항(러-1~러-4·편도 50%·1일 1회·별지 제22호 일지)이 유지됩니다 (Q678·**Q703·Q710**, BE `e4f83af` · FE `5914b2f`). **catalog API 직접 호출**은 **`hq_admin`·`branch_admin`** 만 허용 — **`social_worker` 403** (Q703).
+2. **조회 기간**(기본: 당월)을 설정합니다. 패널 상단 **1일 1회 footnote** 는 **`resolveTransportServiceFeeOnePerDayNoteFromRules`** 가 parity catalog **`ONE_PER_DAY.description`을 우선**하고, 없으면 rates API **`onePerDayNote`**, 둘 다 비면 BE catalog와 동일한 **정적 NHIS copy**를 노출합니다 (`e19328a`, Q743). **거리구간 수가표**(RU_1 830원 ~ RU_4 6,230원) 아래 **「이동서비스비 NHIS 기준 규칙」** 은 **`TransportParityRulesPanel`** 이 **`GET /api/v1/transport/service-fee-parity-rules`** catalog를 **`code`·`label`·`description`** 으로 표시합니다 — API 실패 시 **`STATIC_TRANSPORT_PARITY_RULES`** static fallback 4항(러-1~러-4·편도 50%·1일 1회·별지 제22호 일지)이 유지됩니다 (Q678·**Q703·Q710·Q743**, BE `e4f83af` · FE `afbbaa7`/`e19328a`). **catalog API 직접 호출**은 **`hq_admin`·`branch_admin`** 만 허용 — **`social_worker` 403** (Q703).
 
-> **동적 catalog (Q710)**: **`TransportParityRulesPanel`** 이 **`/transport/service-fees`** 에 mount되어 BE **`rules[].description`** 을 **`descriptionKo`** 로 정규화해 표시합니다. **스크린리더** 사용자는 표 **caption**·행별 **「확정」·「편도/왕복 전환」** 버튼 **`aria-label`** 로 이용자·일자 맥락을 확인할 수 있습니다 (Q683, UXD-159).
+> **동적 catalog (Q710·Q743)**: **`TransportParityRulesPanel`** 이 **`normalizeTransportParityRule()`** 로 BE DTO를 정규화해 **`/transport/service-fees`** 에 mount됩니다. **`TransportServiceFeePanel`** 은 parity **`ONE_PER_DAY.description`을 footnote 1순위**로 쓰고, panel과 **동일 copy source**를 공유합니다. **스크린리더** 사용자는 표 **caption**·행별 **「확정」·「편도/왕복 전환」** 버튼 **`aria-label`** 로 이용자·일자 맥락을 확인할 수 있습니다 (Q683, UXD-159).
 3. **`TransportForm18GuidePanel`** — 공단 **별지 제18·19·20호** 선행 절차 5단계·**3분리 신청 유형**·**등록상태 4단**을 읽습니다 (Q237).
 4. **「확정 배차에서 생성」** — 기간 내 **CONFIRMED** 운행의 정차별 **DRAFT** 기록을 만듭니다.
 5. 각 행에서 **거리구간(RU_1~RU_4)** · **왕복/편도**(편도 = 50%)를 조정하고 **「확정」**으로 `CONFIRMED` 상태로 바꿉니다. **다지점** `hq_admin`은 **BranchSwitcher** 작업 지점과 기록 지점이 일치해야 수정됩니다 (Q247).
@@ -2368,7 +2661,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 | API | 용도 |
 |-----|------|
-| `GET /api/v1/transport/service-fee-rates` | BNK-25 거리구간 수가 catalog |
+| `GET /api/v1/transport/service-fee-rates` | BNK-25 거리구간 수가 catalog · **`onePerDayNote`** (1일 1회 안내, Q743 — parity **`ONE_PER_DAY` 없을 때** 2순위 · static cascade) |
 | `GET /api/v1/transport/service-fee-parity-rules` | NHIS #44 **4-rule** 안내 문구 catalog · **`rules[].code`·`label`·`description`** · **`oneWayRatio=0.5`** · **`hq_admin`/`branch_admin` only** (Q703, `e4f83af`) |
 | `GET /api/v1/transport/service-fees?fromDate=&toDate=` | 기간별 청구 기록 |
 | `POST /api/v1/transport/service-fees/generate` | 확정 배차 기반 일괄 생성 |
@@ -2412,22 +2705,22 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 | `POST …/outings/{id}/depart` · `return` · `cancel` | 상태 전이 |
 | `GET /reports/client-outings?branchId=&yearMonth=` | 월간 리포트 (`caregiver` **403**) |
 
-#### 5-8-4. 차량 마스터 (`/transport/vehicles`, G16, Q241·Q402)
+#### 5-8-4. 차량 마스터 (`/transport/vehicles`, G16, Q241·Q402·Q763·Q768·Q770·Q772)
 
-**케어포 2-4** 대응 — 지점별 **차량번호·정원·기본 운전자명**을 등록하고 배차·급여제공 기록에 연결합니다 (BE `114411f` + FE `d3bef42`).
+**케어포 2-4** 대응 — 지점별 **차량번호·정원·기본 운전자명·송영 정류장 주소**를 등록하고 배차·급여제공 기록에 연결합니다 (BE `c08329a` + FE `a6255a0`).
 
 1. **`TransportContextNav`** → **「차량 관리」** (또는 SideNav **이동 → 차량 관리**).
 2. **`BranchScopeNotice`** 로 조회 지점을 확인합니다.
-3. **`hq_admin`·`branch_admin`** — **차량 등록** Modal: **차량번호** · **정원**(1–15) · **별칭**(선택) · **기본 운전자명**(한글 성명, Q402) · **활성** 토글.
-4. 목록에서 **수정** — 동일 필드 편집. 스크린리더는 **`{차량번호} 차량 수정`** 으로 읽습니다 (UXD-76, Q253). **비활성** 차량은 배차 선택 목록(`activeOnly`)에서 제외됩니다.
+3. **`hq_admin`·`branch_admin`** — **차량 등록** Modal: **차량번호** · **정원**(1–15) · **별칭**(선택) · **기본 운전자명**(한글 성명, Q402) · **송영 시작 주소** · **송영 종료 주소**(미입력·**공백만** 시 **지점 주소** · **연속 공백은 한 칸으로** 정리 후 저장, Q763·Q768·Q770) · **활성** 토글.
+4. 목록에서 **수정** — 동일 필드 편집. **주소를 비우고 저장**하면 **지점 주소로 되돌아갑니다**(Q772). 스크린리더는 **`{차량번호} 차량 수정`** 으로 읽습니다 (UXD-76, Q253). **비활성** 차량은 배차 선택 목록(`activeOnly`)에서 제외됩니다.
 5. 등록한 차량은 **수동 배차**·**루트 상세** **`TransportVehicleSelect`** 에 **기본 운전자명**과 함께 표시됩니다 (Q402).
 6. 확정 배차 + `vehicleId` → 이용자 **「급여제공」** 탭 일별 **차량번호** · 이메일 발송 payload (Q243).
 
 | API | 용도 |
 |-----|------|
-| `GET /api/v1/transport/vehicles?activeOnly=true` | 활성 차량 목록 (배차 선택) — **`defaultDriverName`** 포함 |
-| `POST /api/v1/transport/vehicles` | 신규 등록 — `defaultDriverName` |
-| `PATCH /api/v1/transport/vehicles/{vehicleId}` | 수정·비활성 |
+| `GET /api/v1/transport/vehicles?activeOnly=true` | 활성 차량 목록 (배차 선택) — **`defaultDriverName`·`shuttleStartAddress`·`shuttleEndAddress`** 포함 |
+| `POST /api/v1/transport/vehicles` | 신규 등록 — `defaultDriverName` · `shuttleStartAddress` · `shuttleEndAddress` (trim·연속공백 정규화 · 공백→지점, V190·Q770) |
+| `PATCH /api/v1/transport/vehicles/{vehicleId}` | 수정·비활성 · 송영 주소 갱신 — **비우면 `""` 전송 → 지점 주소**(Q772) |
 
 > **중복 차량번호** — Tenant 내 UK 위반 시 **422**. **정차 수 > capacity** — 배차 화면 경고(저장은 API에서 추가 검증 가능).
 
@@ -2435,7 +2728,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 요양보호사·사회복지사가 **일일 식사 섭취량**·**프로그램 참여**를 기록하고, **`hq_admin`·`branch_admin`** 이 식단·일정을 등록하는 화면입니다 (BE `dfd9be2` + FE `1794e1c`, REQUIREMENTS §3-5·§3-6 **Should**). **조회·기록·등록 API FE·BE 연동 완료**(FAQ **Q160**·**Q161 Fixed**).
 
-> **M6 위생·시설관리 (v3.1 P1, Q660)** — **6-1 식사 `/meals`만 LIVE**입니다. **6-2~6-4 안전·위생 점검**(`/safety/*`) Route는 **후속 Planned** — REQUIREMENTS 190차 재확인 · 신규 core 갭 0.
+> **M6 위생·시설관리 (v3.1 P1 + US-Q01, Q660·Q745)** — **6-1 식사 `/meals`** 와 **6-2~6-4 위생·안전 점검 `/safety/*` 4 Route** 가 모두 LIVE입니다. FAQ Q660(정정) · 아래 **위생·안전 점검** 절 참고.
 
 #### 식사 관리 (`/meals`)
 
@@ -2451,6 +2744,42 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 | `POST /api/v1/meals/menus` | 식단 등록 (`hq_admin`·`branch_admin`) |
 | `GET /api/v1/meals/records?date=YYYY-MM-DD` | 섭취 기록 목록 |
 | `POST /api/v1/meals/records` | 섭취 기록 생성·갱신 |
+
+#### 위생·안전 점검 (US-Q01, M6 6-2~6-4, BE `2f4bfdf` · FE `2704fd8`, Q745·Q750·Q754·Q756·Q757·Q758·Q759·Q761)
+
+**`hq_admin`·`branch_admin`·`social_worker`** 가 일일·정기·감염병·시설운영 기록을 **지점 단위**로 저장·조회합니다. **`caregiver`·`guardian`·`client_user`는 API `403`** — 화면 Route도 동일 역할 제한입니다 (FAQ Q745·Q748).
+
+1. SideNav **기록 → 위생·안전 점검** (또는 **`/safety` → `/safety/daily-checks`**)으로 이동합니다.
+2. **`SafetyContextNav`** 에서 **일일점검 · 정기점검 · 감염병 관리 · 시설운영일지** 탭을 선택합니다.
+3. **일일·정기·감염병** 화면은 기동 시 **`GET /api/v1/safety/check-template-catalog`** 로 checklist·코드를 불러옵니다 — **`PageLoading`** 「점검 템플릿 불러오는 중」 후 폼이 표시됩니다 (Q750).
+4. API 응답이 없으면 **info Alert** — 「점검 템플릿 API 응답이 없어 로컬 기본 템플릿을 사용합니다…」 — **로컬 fallback**으로 동일 checklist를 계속 사용할 수 있습니다 (Q754). **네트워크 확인 후 새로고침**하세요.
+5. 각 화면 상단 **안내 Alert** — 「점검·일지 기록은 서버에 저장되며, 같은 지점 권한을 가진 사용자가 조회할 수 있습니다.」
+6. **일일점검** — **`SafetyChecklistForm`** 8항 checklist — 각 항목 **라벨 아래 회색 안내(`helpText`)** · **`required: true` 항목은 「(필수)」** 표시 (Q756·Q757). **필수 항목을 체크하지 않으면** **「필수 점검 항목을 모두 확인하세요.」** 오류로 **저장되지 않습니다** (Q757). **`required` 미명시·`false` 항목은 선택** (Q758). 체크 후 **저장** (`POST /api/v1/safety/daily-checks`).
+7. **정기점검** — **`SafetySubFormPanel`** 에서 **6종 sub-form** 중 하나를 선택해 checklist 작성 — **동일 `helpText`·필수 검증** · **`subFormCode`** 전송 (`POST /api/v1/safety/periodic-checks`).
+8. **감염병 관리** — **`InfectionControlLogForm`** 에 기록일·대상자·증상·조치를 입력 (`POST /api/v1/safety/infection-control`).
+9. **시설운영일지** — **`SafetyOperationLogForm`** 에 운영 특이사항·메모 입력 (`POST /api/v1/safety/operation-logs`) — **catalog 미사용·자유 입력**.
+10. 저장 성공 시 **success Alert** · 하단 **최근 기록** 테이블(`SafetyRecentDraftsPanel`)이 **`GET`** 목록으로 갱신됩니다 — **점검일·기록일** 열은 **`<time dateTime>`** (스크린리더 날짜 해석, Q745 deepen) · **「결과」** 열은 **`StatusBadge`** 로 **적합·부적합·해당 없음·일부 미흡** 한국어 표시 (Q761) — 서버 enum(`PASS`/`FAIL`/`NA`/`PARTIAL`)은 **화면에 노출되지 않습니다**.
+
+> **현장 체크리스트 (Q760)**: (1) 템플릿 info Alert 없는지 확인 → (2) **「(필수)」** 항목 전부 체크 → (3) 저장 후 **최근 기록**에 반영 확인 — **「결과」** 뱃지가 **한국어**로 보이는지 확인 (Q761). **선택 항목**은 비워도 저장됩니다 (Q758). API 장애 시 로컬 fallback으로 **당일 기록은 계속 가능** — IT에 catalog API smoke 요청 (Q754).
+
+| 화면 | 경로 |
+|------|------|
+| 일일점검 (6-2) | `/safety/daily-checks` |
+| 정기점검 (6-3) | `/safety/periodic-checks` |
+| 감염병 관리 (6-3-1) | `/safety/infection-control` |
+| 시설운영일지 (6-4) | `/safety/operation-log` |
+
+| API | 용도 |
+|-----|------|
+| `GET /api/v1/safety/check-template-catalog` | checklist·코드 **템플릿 카탈로그** — **`id`·`label`·`helpText`·`required`** per item (Q756) · **3 화면 마운트 시 자동 조회** · fallback 시 로컬 catalog (Q750·Q754) |
+| `GET/POST /api/v1/safety/daily-checks?branchId=` | 일일점검 목록·등록 |
+| `GET/POST /api/v1/safety/periodic-checks?branchId=` | 정기점검 목록·등록 · **`subFormCode`** |
+| `GET/POST /api/v1/safety/infection-control?branchId=` | 감염병 일지 |
+| `GET/POST /api/v1/safety/operation-logs?branchId=` | 시설운영일지 |
+
+> **결과 코드 (Q761)**: 서버는 checklist 충족도에 따라 **`resultCode`**(`PASS`·`FAIL`·`NA`·`PARTIAL`)를 저장합니다. 화면 **「결과」** 열은 **`SAFETY_CHECK_RESULT` StatusBadge** — **적합·부적합·해당 없음·일부 미흡** — 로 표시합니다 (체크리스트 폼 요약과 동일).  
+> **DB (V185, Q751)**: **`payload_json` object** · **`sub_form_code` PERIODIC-only** · **`result_code` record-type별 shape** — Flyway 자동 적용.  
+> **P3 carry**: PDF 공식 서식 인쇄·LCMS 평가지표 전 항목 parity는 후속 — **입력·저장·조회·catalog 동기화·helpText·required 검증·vitest semantics lock** 는 full-stack ✅ (FAQ Q745·Q750·Q754·Q756·Q757·Q758·Q759).
 
 #### 프로그램 관리 (`/programs`)
 
@@ -2494,6 +2823,8 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 5. **「인쇄」** — 브라우저 인쇄로 현장 보관·점검 자료를 출력합니다.
 6. API 오류 시 **danger Alert** 와 **「다시 시도」** 버튼으로 재조회합니다.
 
+> **지점 필터 (Q715)**: 상단 **BranchSwitcher**로 활성 지점을 바꾸면 **당일 프로그램 입력(`/programs`)** 은 해당 지점 기준입니다. **프로그램 리포트**는 현재 **활성 지점만** 집계합니다 — **다른 지점 리포트**는 Swagger·API `branchId` query(P2, IT용)로만 가능합니다.
+
 | 화면 | 경로 |
 |------|------|
 | 5-7 수급자 참여프로그램 | `/programs/reports/participations` |
@@ -2518,14 +2849,15 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 
 #### 기능회복훈련 (`/programs/functional-recovery`, G17, US-T06)
 
-MOHW **평가 지표 25–27**(기능회복 프로그램·연간 실시·개인별 계획·제공·기록·급여시작 전 수립) 대응 화면입니다 (BE `0048105`·`e820b28` + FE `21b1855`·`7450161`, FAQ **Q262·Q271 Fixed**).
+MOHW **평가 지표 25–27**(기능회복 프로그램·연간 실시·개인별 계획·제공·기록·급여시작 전 수립) 대응 화면입니다 — **주야간보호 공단평가 지표 27의 정본**입니다 (BE `bd901c4`·`74ae324`·`0048105` + FE `bc9389d`, FAQ **Q262·Q271·Q773·Q776·Q850 Fixed**). 목욕 일정 **「목욕 청구 준수」** 패널과 **상호 링크**로 구분합니다 (Q705). **번호만 같은 「필수업무 일련 27 = 가족과의 소통」** 은 **`/staff/committee-meetings`** 로 가며, compliance **`dualNumberingNoteKo`** 로 안내합니다 (Q850).
 
 1. SideNav **기록 → 기능회복훈련 (G17)** 또는 **`RecordsContextNav`** **「기능회복훈련」** 으로 이동합니다.
-2. 상단 **지표 준수 현황** StatCard에서 **지표25**(급여계획 포함)·**지표26**(연 1회 실시)·**지표27**(개인별 계획) · **지표27 — 기능회복훈련 제공·기록** · **지표27 — 급여제공 시작일까지 기능회복훈련 계획 수립**(silverangel verbatim, BNK-102) 을 확인합니다.
-3. StatCard 아래 **`LifecycleWorkflowPanel`** — **기능회복훈련 준수 lifecycle** 단계(지표25~27)를 **완료/지연** Badge와 함께 확인합니다 — 증빙 목록·단계별 설명 제공 (**UI Fixed**, `22bd6b7`, Q287). **선임 업무수행일지(G34) 입력 화면이 아닙니다** (Q284).
-4. 미충족 시 warning **`Alert`** — 「프로그램 참여·기록 없음」·「급여제공 시작일까지 기능회복훈련 계획이 수립되지 않은 이용자가 있습니다」 안내 (Q271).
-5. **조회 연도**를 바꾸면 해당 연도 **계획 목록**이 갱신됩니다.
-6. **`hq_admin`·`branch_admin`·`social_worker`** — 하단 **기능회복훈련 계획 등록** 폼에서 이용자·연도·계획 내용·**급여계획 포함** 여부·**인지활동형 프로그램 제공 여부(G17b)**·실시일을 입력하고 **저장**합니다 (`POST /api/v1/programs/functional-recovery/plans`). **급여시작일이 지난 이용자**는 **신규 등록** 폼이 **비활성**됩니다 (FE 사전 차단, BNK-102).
+2. 상단 **지표 준수 현황** StatCard에서 **지표25**(급여계획 포함)·**지표26**(연 1회 실시)·**지표27**(개인별 계획) · **지표27 — 기능회복훈련 제공·기록** · **지표27 — 급여제공 시작일까지 기능회복훈련 계획 수립**(silverangel verbatim, BNK-102) 을 확인합니다. **「가족과의 소통」** 은 이 화면의 평가 지표가 아닙니다 (Q850).
+3. StatCard 아래 **`scopeNote`** 와 **「목욕 청구 준수(G-BATHING) 보기」** 링크 — **`/care/bathing-schedules`** 로 이동 (Q776).
+4. StatCard 아래 **`LifecycleWorkflowPanel`** — **기능회복훈련 준수 lifecycle** 단계(지표25~27)를 **완료/지연** Badge와 함께 확인합니다 — 증빙 목록·단계별 설명 제공 (**UI Fixed**, `22bd6b7`, Q287). **선임 업무수행일지(G34) 입력 화면이 아닙니다** (Q284).
+5. 미충족 시 warning **`Alert`** — 「프로그램 참여·기록 없음」·「급여제공 시작일까지 기능회복훈련 계획이 수립되지 않은 이용자가 있습니다」 안내 (Q271).
+6. **조회 연도**를 바꾸면 해당 연도 **계획 목록**이 갱신됩니다.
+7. **`hq_admin`·`branch_admin`·`social_worker`** — 하단 **기능회복훈련 계획 등록** 폼에서 이용자·연도·계획 내용·**급여계획 포함** 여부·**인지활동형 프로그램 제공 여부(G17b)**·실시일을 입력하고 **저장**합니다 (`POST /api/v1/programs/functional-recovery/plans`). **급여시작일이 지난 이용자**는 **신규 등록** 폼이 **비활성**됩니다 (FE 사전 차단, BNK-102).
    - **인지활동형 프로그램 제공 (G17b, Q335)** — Switch **「제공」/「미제공」** (기본 **제공**)
    - **미제공** 선택 시 — **「인지활동형 미제공 사유 (G17b)」** Textarea **필수** — placeholder 「장기요양법 제32조 — 인지활동형 프로그램 미제공 사유를 기재하세요」 · 공백만 입력 시 저장 거부
    - **제공**으로 되돌리면 사유 필드가 **자동 비워집니다**
@@ -2540,7 +2872,7 @@ MOHW **평가 지표 25–27**(기능회복 프로그램·연간 실시·개인�
 | `GET /api/v1/programs/functional-recovery/plans?year=` | 연간 계획 목록 |
 | `POST /api/v1/programs/functional-recovery/plans` | 계획 등록 |
 | `PATCH /api/v1/programs/functional-recovery/plans/{planId}` | 계획 수정 (**UI Fixed**, Q279) |
-| `GET /api/v1/programs/functional-recovery/compliance?year=` | 지표 25–27 + **`provisionRecordedMet`** · **`planEstablishedBeforeBenefitStartMet`** 충족 요약 (Q271) |
+| `GET /api/v1/programs/functional-recovery/compliance?year=` | 지표 25–27 + **`indicator27Code`·`scopeNote`** · **`provisionRecordedMet`** · **`planEstablishedBeforeBenefitStartMet`** (Q271·Q776) |
 
 > **중복 등록**: 동일 이용자·연도에 계획이 이미 있으면 서버가 **422** 로 거부합니다.
 
@@ -2993,6 +3325,27 @@ NHIS **청구 일정**과 **계획 일정** 페어가 일치하는지 **일괄�
 
 > **권한**: **`branch_admin`·`social_worker`** — **`caregiver`** 는 batch-confirm **거부** (Q330). **IT/staging**: G21 live E2E는 **`liveG21Describe`** gate로 **operation + PLAN/BILLING/NHIS seed 준비 시에만** 실행됩니다 (Q495~Q497·Q512).
 
+#### 방문일정 일괄 확정취소 (G-VISIT-BATCH-UNCONFIRM-MONTHLY, US-V06, Q818)
+
+이지케어 **「일정확정 → 일괄 확정취소」** 패리티 — 잘못 확정한 달의 **CONFIRMED** 방문일정을 **한 번에 DRAFT**로 되돌립니다 (`VisitBatchUnconfirmPanel`, BE `d248916`·FE `074b452`).
+
+1. **`/visits`** 화면에서 달력 **표시 월**·**계획/청구 탭**(`scheduleKind`)을 되돌릴 대상과 맞춥니다.
+2. **「방문일정 일괄 확정취소」** 영역에서 **「일괄 확정취소 시작」** 을 누릅니다. (스크린리더: 버튼 라벨에 **연월·계획/청구 종류**가 포함됩니다.)
+3. Modal **미리보기**에서 **확정(취소 대상) 건수**·**계획/청구 확정 건수**를 확인합니다. **CONFIRMED 0건**이면 실행할 수 없습니다.
+4. **연쇄 초기화 경고(6항목)** 를 읽습니다 — 본인부담금청구서·급여명세서·임금대장·퇴직금·공단명세 재대조·직원일정 재안내. **실제 청구·급여·임금 데이터는 삭제하지 않으며**, 일정만 되돌린 뒤 **다시 작성·재대조**가 필요할 수 있습니다.
+5. 안내 **「범위는 방문일정만」**(`VISIT_SCHEDULES_ONLY`)을 확인합니다. **송영 배차** 확정 취소는 **이동 → 배차 루트 상세「확정 취소」**(Q163)를 사용하세요.
+6. 화면에 표시된 **4자리 확인번호**를 **입력란에 그대로** 입력합니다. 확인번호는 **10분** 유효하며 **1회만** 사용됩니다. 만료 시각은 **`<time>`** 으로 안내됩니다. 만료·오입력 시 오류 후 **새 확인번호**가 발급됩니다.
+7. **「연쇄 초기화 경고를 확인했습니다」** Checkbox를 체크합니다.
+8. **「일괄 확정취소 실행」** — **`POST /api/v1/visits/batch-unconfirm`** — 해당 월 **CONFIRMED**(+페어 CONFIRMED) 일정이 **DRAFT**로 전환됩니다. 완료 후 달력·목록이 새로고침됩니다.
+9. 이후 **공단 명세 비교**(Q479)·**일괄확정**(Q330) 절차를 **처음부터** 다시 진행하세요.
+
+| API | 용도 |
+|-----|------|
+| `GET /api/v1/visits/batch-unconfirm-preview?yearMonth=YYYY-MM&scheduleKind=&branchId=` | **미리보기** — `confirmedCount`·`confirmedPlanCount`·`confirmedBillingCount`·**`challengeCode`**·**`cascadeImpacts[6]`**·`scopeNote` |
+| `POST /api/v1/visits/batch-unconfirm` | `{ yearMonth, scheduleKind, branchId, challengeCode, cascadeWarningAcknowledged: true }` — 응답 **`unconfirmedCount`·`unconfirmedVisitIds[]`** |
+
+> **권한**: **`branch_admin`·`social_worker`** — **`caregiver` 거부** (일괄확정 Q330과 동일). **주의**: 확정 취소 후에도 **이미 발행·수납된 청구**는 자동으로 되돌리지 않습니다 — §5-11·§5-7 청구·수납 화면에서 별도 확인하세요.
+
 #### 현장 체크인/아웃 (`social_worker`, `caregiver`)
 
 1. 당일 목록에서 **`CONFIRMED`** 일정의 **체크인**을 누릅니다 (`POST …/check-in`, `method: MOBILE`). Swagger 연동 시 **`mobile`/`manual` 소문자**도 허용됩니다 (Q275).
@@ -3010,7 +3363,8 @@ NHIS **청구 일정**과 **계획 일정** 페어가 일치하는지 **일괄�
 | `POST /api/v1/visits/{id}/check-in` | 체크인 |
 | `POST /api/v1/visits/{id}/check-out` | 체크아웃 |
 | `POST /api/v1/visits/{id}/cancel` | 취소 |
-| `POST /api/v1/visits/imports/nhis` | 공단 급여계획·청구일정 xlsx **일괄 import** (**UI Fixed**, Q189) |
+| `GET /api/v1/visits/imports/nhis/guidance` | **PLAN/BILLING 이중 워크플로** 온보딩 JSON — **`outcomeStatusNotes[]`·`errorRecoverySteps[]`** · **`VisitNhisImportGuidePanel`** (Q731·Q735, BE `4567030`/`ffa57ea`·FE `8ceb25c`/`cda2a10`) |
+| `POST /api/v1/visits/imports/nhis` | 공단 급여계획·청구일정 xlsx **일괄 import** — 응답 **`outcomeStatus`·`outcomeSummary`** · **미매칭+건너뜀 혼합 0건 import → `PARTIAL`** (Q735·Q738·Q739, `ffa57ea`/`9b91e0f`/`562560a`) |
 
 #### 공단 방문일정 엑셀 import (US-V04, Q189)
 
@@ -3019,21 +3373,24 @@ NHIS **청구 일정**과 **계획 일정** 페어가 일치하는지 **일괄�
 1. SideNav **기록 → 방문 일정**(`/visits`)으로 이동합니다.
 2. 지점 급여종이 **`HOME_VISIT`** 인지 확인합니다 (Q180).
 3. 달력·목록에 **확정(`CONFIRMED`) 일정**이 1건 이상이면 import 패널이 **비활성**되고 이지케어 FAQ 21473 안내가 표시됩니다 (BNK-26, Q195). 해당 일정을 **취소**한 뒤 재시도하세요.
-4. 화면 하단 **「공단 방문일정 엑셀 import」** 패널에서:
+4. 화면 하단 **「공단 방문일정 엑셀 import」** 패널 **상단** — **`VisitNhisImportGuidePanel`** 에서 **Chrome·Edge 브라우저 안내**, 공단 포털 링크, **계획(PLAN)·청구(BILLING) 각 4단계** 절차, **`scheduleKind` 설명**, **import 결과 상태 5종(`SUCCESS`/`PARTIAL`/…)** , **오류·부분 반영 시 조치 7단계**, CONFIRMED 재업로드 주의, **「방문 일정 · 공단 명세 비교」** 링크를 확인합니다 (Q731·Q735·Q740, FE `cda2a10`/`2d9b9d3`). guidance API가 일시 실패하면 이 안내 블록만 숨겨지고 **아래 import 폼은 그대로** 사용할 수 있습니다.
+5. 같은 패널 **import 폼**에서:
    - **일정 종류** — `PLAN`(계획) 또는 `BILLING`(청구)
    - **방문일정 엑셀** — **`.xlsx` 파일만** 선택 (Chrome·Edge에서 공단 파일 다운로드 권장). **`.xls`·CSV·PDF는 거부**됩니다 (Q278, `3c7b247`·`18e2b4c`). **`application/vnd.ms-excel`** MIME도 허용됩니다.
    - **계획** 선택 시 — **「청구 일정도 함께 생성」** 토글으로 페어 BILLING 자동 생성 여부 선택
-5. **엑셀 import** 를 누르면 업로드 후 **등록·미매칭·건너뜀** 건수가 표시됩니다.
-6. 결과 표에서 행별 **인정번호·방문일·시간·결과 Badge·사유**를 확인합니다.
-7. `IMPORTED` 일정은 **`DRAFT`** 상태 — §5-11 절차대로 **확정**·체크인을 진행합니다.
-8. `UNMATCHED` — ogada에 **동일 인정번호** 이용자가 없음 → 이용자 등록 후 재import.
-9. `SKIPPED` — 제공시간 **1–480분** 범위 밖·퇴소·비활성·**날짜·시간 파싱 실패**(Q200)·**확정 계획일정으로 청구 import 차단**(Q195)·**동일 방문일정 중복**(Q234)·**파일 형식 오류**(`.xlsx` 아님·`Content-Type` 불일치, Q278) 등 — 사유 확인 후 조치. 공단 엑셀의 `20260609`·`년월일`·`오전 930` 형식은 **자동 정규화**됩니다.
+6. **엑셀 import** 를 누르면 업로드 후 **`outcomeStatus` 기반 Alert**(전체 반영·부분 반영·미매칭·전체 건너뜀·빈 파일)와 **등록·미매칭·건너뜀** 건수가 표시됩니다 (Q735). **`PARTIAL`/`UNMATCHED`/`ALL_SKIPPED`/`EMPTY`** 또는 API 오류 시 Alert **바로 아래** **`VisitNhisImportRecoverySteps`** 가 **outcome별 복구 단계**를 보여 줍니다 (Q738, `e4dbe9a`).
+7. Alert **요약**·인라인 복구 단계와 결과 표에서 행별 **인정번호·방문일·시간·결과 Badge·사유·조치**를 확인합니다. **`UNMATCHED`** 행의 **「수급자 찾기」** 를 누르면 **`/clients?branchId={지점}&q={인정번호}`** 로 이동해 목록 **지점 FilterChip·검색**이 prefill 됩니다 (Q738·Q739, `562560a`). **해당 지점에 등록 수급자가 없으면** FilterChip이 **`전체`** 로 reset 되어 **`q` 검색**으로 타 지점 수급자가 보일 수 있습니다 (Q741, `320ba06`). **다지점** 조직에서는 import **지점과 동일**하게 좁혀져 타 지점 수급자 혼선을 줄입니다.
+8. `IMPORTED` 일정은 **`DRAFT`** 상태 — §5-11 절차대로 **확정**·체크인을 진행합니다.
+9. `UNMATCHED` — ogada에 **동일 인정번호** 이용자가 없음 → **「수급자 찾기」** 로 확인 후 **`/clients/new`** 등록 또는 상세에서 인정번호 수정 → **동일 xlsx 재import**.
+10. `SKIPPED` — 제공시간 **1–480분** 범위 밖·퇴소·비활성·**날짜·시간 파싱 실패**(Q200)·**확정 계획일정으로 청구 import 차단**(Q195)·**동일 방문일정 중복**(Q234)·**파일 형식 오류**(`.xlsx` 아님·`Content-Type` 불일치, Q278) 등 — 사유 확인 후 조치. **반영 0건이어도 미매칭 행이 있으면** Alert는 **`PARTIAL`** 로 표시되어 미매칭 건수를 놓치지 않으며, 인라인 복구 단계도 **`ALL_SKIPPED`가 아닌 `PARTIAL` 키워드**로 필터됩니다 (Q738·Q735, `ffa57ea`/`9b91e0f`/`aa0559b`). 공단 엑셀의 `20260609`·`년월일`·`오전 930` 형식은 **자동 정규화**됩니다.
 
 > **IT/Swagger**: 동일 API — `POST /api/v1/visits/imports/nhis` multipart — `branchId`·`scheduleKind`·`createPairedBillingSchedule`·`file`.
 
-#### RFID 전송 엑셀 vs 계획 일정 비교 (G21, Q452·Q456·Q482·Q514, BE `eeac205` / FE `27c9de3`/`4a112fe`/`570912e`/`f232285`/`b881883`, **UI Fixed**)
+> **온보딩·결과·복구 안내 (G-NHIS-SCHEDULE-IMPORT + G-NHIS-IMPORT-ERROR-STATUS-SURFACE, Q731·Q735·Q738·Q739·Q740·Q741·Q742, BE `4567030`/`331f24b`·FE `8ceb25c`/`5636508`)**: **`GET /api/v1/visits/imports/nhis/guidance`** — 공단 포털 URL·브라우저 요구사항·**계획 4단계**·**청구 4단계**·**import 결과 상태 5종**·**오류 복구 7단계**(step 4 **지점 필터 deep-link**)·**`errorRecoveryKeywordNotes[]` 4종**(outcome별 복구 필터 키워드 — **FE API consume ✅**, Q742) · `scheduleKind` 설명·CONFIRMED 재업로드 주의문·**실서버 안내** warning Alert. **`POST …/imports/nhis`** — **`outcomeStatus`/`outcomeSummary`** Alert + **`VisitNhisImportRecoverySteps`** 인라인 복구(**guidance `errorRecoveryKeywordNotes` 우선** · guidance 미로드 시 static fallback) + **미매칭 「수급자 찾기」** **`branchId`+`q` deep-link** + **선택 불가 지점 `branchId` 시 FilterChip `전체` reset** (Q741). FAQ **Q731·Q735·Q738·Q739·Q740·Q741·Q742** · ADMIN_GUIDE §1-4 G21.
 
-이지케어 **schedule-rfid** 매트릭스(COMP_01~09)에 맞춰 **공단 급여계획 엑셀**과 **RFID 전송 엑셀**을 업로드해 **7종 차이 코드**를 한 번에 집계합니다.
+#### RFID 전송 엑셀 vs 계획 일정 비교 (G21, Q452·Q456·Q482·Q514·**Q832**·**Q838**, BE `eeac205`/`c080529`/`556eeff` / FE `27c9de3`/`5843845`/`e837185`, **비교+일괄 문자 UI ✅**)
+
+이지케어 **schedule-rfid** 매트릭스(COMP_01~09)에 맞춰 **공단 급여계획 엑셀**과 **RFID 전송 엑셀**을 업로드해 **7종 차이 코드**를 한 번에 집계합니다. 비교 후 **급여제공내역 문자(kind 13)** 일괄 발송은 **방문요양** 전용입니다 (FAQ **Q832** · 이지케어 FAQ **21589**).
 
 1. SideNav **기록 → 방문 일정**(`/visits`)으로 이동합니다.
 2. 화면 하단 **「RFID 계획·태그 비교 (7-code)」** 패널(`VisitRfidDiffComparePanel`)을 찾습니다.
@@ -3044,15 +3401,22 @@ NHIS **청구 일정**과 **계획 일정** 페어가 일치하는지 **일괄�
 7. **차이 코드**는 **COMP_01~09** 외 **소문자·공백·`COMP_4`/`comp-4` 변형**·**쉼표 구분 문자열**도 **표준 `COMP_04` 등으로 정규화**해 badge·집계 chip에 표시됩니다 (`570912e`, Q456).
 8. **차이가 0건**이면 **초록 success Alert** 「업로드한 급여계획과 RFID 전송 내역 사이에 차이가 없습니다.」가 표시됩니다 (`f232285`, Q482).
 9. **RFID split-view**(Q377)로 화면상 페어를 확인한 뒤, 월말 **엑셀 대조**로 공단 제출 전 오류를 일괄 점검합니다.
+10. **급여제공내역 문자(월 1회 이상)** — 비교 후 **「급여제공내역 SMS 일괄 발송」** 폼이 열립니다.
+    - **대상 연월**(YYYY-MM) 확인 · **발송 대상** 체크(전체 선택/해제) · **요약**(선택·최대 500자)
+    - **「급여제공내역 SMS 발송」** — 성공 시 발송 건수 Alert(`dispatchedCount`/`dispatched_count` 모두 표시). **후보가 없으면** info Alert(인정번호 매칭 활성 이용자 없음).
+    - **주야간보호**·**조용한 시간대(22:00~08:00 KST)**·비활성 이용자는 서버가 거부합니다.
+    - 단건만 보낼 때는 **이용자 상세 → 보호자 서류 → 급여제공내역**(§4-7-3)을 사용합니다 (FAQ **Q832**).
 
 | 항목 | 내용 |
 |------|------|
-| API | **`POST /api/v1/visits/imports/rfid/compare`** — multipart — `branchId`·`planFile`·`rfidFile` |
-| 권한 | **`branch_admin`·`social_worker`** — **`caregiver`** 거부 |
-| 응답 | **`planRowCount`·`tagRowCount`·`comparedRowCount`·`diffCodeCounts`** · 행별 **`diffCodes[]`** |
+| 비교 API | **`POST /api/v1/visits/imports/rfid/compare`** — multipart — `branchId`·`planFile`·`rfidFile` |
+| 일괄 문자 API | **`POST /api/v1/visits/imports/rfid/care-provision-dispatch`** — `branchId`/`branch_id` · `yearMonth`/`year_month` · `clientIds[]`/`client_ids[]` · `summary`(선택) |
+| 권한 | **`branch_admin`·`social_worker`** — **`caregiver`** 거부 · **방문요양 지점만** 일괄 문자 |
+| 비교 응답 | **`planRowCount`·`tagRowCount`·`comparedRowCount`·`diffCodeCounts`** · 행별 **`diffCodes[]`** · **`dispatchCandidates[]`** — camelCase·snake_case·직렬화 문자열 수용 (**Q838**) |
+| 문자 템플릿 | **`CARE_PROVISION_RECORD`** · ezCare **message_kind=13** — 단건 발송과 동일 · **조용한 시간대 가드** |
 | 차이 코드 | **COMP_01** 태그 없음 · **COMP_03** 종료 태그 없음 · **COMP_04~06** 시작·종료·인정시간 불일치 · **COMP_07** 담당 불일치 · **COMP_08** 직접입력 · **COMP_09** 계획 없음 |
 
-> **IT/Swagger**: 동일 API — **`/swagger-ui.html`** → Visits → **compare RFID transmission**.
+> **IT/Swagger**: Visits → **compare RFID transmission** · **dispatch RFID care-provision**. **주야간보호**는 비교·QR 출석 축이 우선이고, 본 일괄 문자는 **방문요양** 전용입니다.
 
 > **페어 일정**: 계획·청구 일정이 연결되면 목록에 **(페어)** 가 표시됩니다. 상세 API는 `pairedScheduleId` 필드를 참고하세요.
 
@@ -3762,21 +4126,20 @@ L03_M01 제공기록을 기반으로 **3종 리포트**를 조회합니다 (FE `
 
 1. **기록** 그룹에서 **「목욕 일정·제공현황 (L02_M03)」** 을 선택합니다.
 2. 상단 **「대상 월」** 을 선택하고 **조회**합니다.
-3. 화면 상단 **「평가지표 27 — 목욕 서비스 준수」** 패널(`BathingScheduleIndicator27Panel`)에서 해당 월 **이용자별 준수 현황**을 확인합니다 (Q705, `3d7f13b`).
+3. 화면 상단 **「목욕 청구 준수」** 패널(`BathingScheduleIndicator27Panel`, Q776)에서 해당 월 **이용자별 목욕 청구 준수**를 확인합니다. 각주 **`scopeNote`** 와 **「기능회복훈련(평가지표 27)로 이동」** 링크로 평가 지표와 구분합니다. **표의 완료 횟수·전·후 관찰·월 5회**는 **목욕 제공** 기준입니다 (Q705·Q773).
 4. **「새 목욕 일정」** 카드에서 **`BathingScheduleForm`** 을 작성합니다.
 5. 이용자·예정일·목욕 유형·제공 상태를 입력하고 **저장**합니다.
 6. 상태를 **제공 완료**로 바꿀 때는 **제공 내용**(`provisionNotes`)·**목욕 전 상태 관찰**(`preObservationNotes`)·**목욕 후 상태 관찰**(`postObservationNotes`)을 **폼에서 모두** 입력합니다 (V177, Q705). 빈 칸이 있으면 저장 시 필드 오류가 표시됩니다.
 7. **취소**·**미제공** 처리 시 **비고(사유)**(`notes`)가 필수입니다 (`47a4e25`).
 
-#### 평가지표 27 준수 확인 (US-O01, Q705)
+#### 목욕 청구 준수 확인 (US-O01, Q705·Q773·Q776)
 
-silverangel **essentialWork 평가지표 27** — **월 5회 이상 목욕 제공** + **매 회 전·후 상태 관찰 기록** — 준수 여부는 **`BathingScheduleIndicator27Panel`** 에서 월별로 표시됩니다 (**G17 기능회복훈련 지표27과 별도**).
+목욕을 **제공할 때** — **월 5회 이상** + **매 회 전·후 상태 관찰 기록** — 준수 여부는 상단 **「목욕 청구 준수」** 패널에서 월별로 표시됩니다 (`indicatorCode=BATHING_CLAIM_COMPLIANCE`, `daycareEvaluationRequired=false`). **공단평가 지표 27** 점검은 패널 링크 또는 **기능회복훈련** 화면(`/programs/functional-recovery`, Q773)입니다.
 
-1. **대상 월**을 선택하면 패널이 **`GET /api/v1/care/bathing-schedules/indicator-27-compliance`** 를 자동 조회합니다.
-2. 상단 Alert에서 **`compliantClientCount` / `clientCount`** 로 지점 전체 준수율을 확인합니다.
-3. 표에서 **`indicator27Met`** 가 **「미충족」** 인 이용자를 우선 점검합니다 — **5회 미만** 또는 **전·후 관찰 누락**이 원인입니다.
+1. **대상 월**을 선택하면 패널이 **`GET /api/v1/care/bathing-schedules/indicator-27-compliance`** 를 자동 조회합니다 (경로명 호환 유지).
+2. 상단 Alert에서 **`compliantClientCount` / `clientCount`** 로 지점 전체 준수율을 확인합니다. **`scopeNote`** · **기능회복 링크**를 참고하세요 (Q776).
+3. 표에서 **청구 준수「미충족」** 인 이용자를 우선 점검합니다 — **5회 미만** 또는 **전·후 관찰 누락**이 원인입니다.
 4. 해당 일정을 **수정**하여 **`COMPLETED`** 건의 관찰 필드를 보완합니다.
-
 #### 전월 일정 복사 (G-BATHING, Q598)
 
 월초에 전월 패턴을 당월로 일괄 생성할 때 사용합니다 (케어포 3-3 전월 일정 불러오기).
@@ -3810,7 +4173,7 @@ silverangel **essentialWork 평가지표 27** — **월 5회 이상 목욕 제�
 | `POST /api/v1/care/bathing-schedules` | 신규 등록 |
 | `PATCH /api/v1/care/bathing-schedules/{recordId}` | 수정 |
 | `POST /api/v1/care/bathing-schedules/copy-from-previous-month` | **전월 `SCHEDULED`/`COMPLETED` → 대상 월 일괄 복사** (Q598) |
-| `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=&clientId=` | **평가지표 27** 월별 준수 집계 — **`indicator27Met`** · **`completedCount`≥5** · **전후관찰** (Q705) |
+| `GET /api/v1/care/bathing-schedules/indicator-27-compliance?yearMonth=&clientId=` | **목욕 청구 준수** 월별 집계 — **`BATHING_CLAIM_COMPLIANCE`** · **`indicator27Met`** · **`completedCount`≥5** · **전후관찰** (Q705·Q773) |
 
 **요청 예 (제공 완료 + 전·후 관찰)**
 
@@ -3826,7 +4189,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 > **L02_M01(`/care/weekly-service-records`)·L03 간호기록과 구분**: L02_M03은 **목욕 일정·제공 현황** 전용입니다.
 
-> 관련: FAQ **Q363·Q598·Q705** · ADMIN_GUIDE §6-2-16 · REQUIREMENTS L02 v3.1 Must
+> 관련: FAQ **Q363·Q598·Q705·Q773·Q776** · ADMIN_GUIDE §6-2-16 · REQUIREMENTS L02 v3.1 Must
 
 ### 5-27. 통합식사도움기록 (L02_M13, v3.1 Must — **화면 연동 완료**)
 
@@ -4627,7 +4990,86 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-16 | **Q882** — §1-3 **NoBreakSpace legacy alias** · baseline **`ff80f0b`/`8a05640`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q879–Q881** — §1-3·§1-5 **bidi/zero-width long alias · 기관 공지·가정통신문·연계기록지 구분** · baseline **`ba5b0cb`/`61f8f19`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q875–Q878** — §1-3·§1-5·§4-7-3a **ThickSpace·MathML·bidi decode · G2 표 모바일 a11y** · baseline **`d911983`/`29fc34f`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q874** — §1-3 **HTML space alias bootstrap decode(IT) · Q872·Q873 FE lockstep 정정** · baseline **`fde0606`/`5b69e7a`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q871–Q873** — §1-3 **dash/minus/hyphen · NoBreak · word-joiner/named space entity(IT)** · Q864 정정 · baseline **`7883a90`/`cf8a248`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q869·Q870** — §1-3 **zero-width·tab/newline named HTML entity(IT)** · baseline **`7102f82`/`e45dacb`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q861·Q862** — §1-3 **invisible Unicode Cf(IT) · 추가 유니코드 공백(IT)** · baseline **`8098f23`/`91aee07`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q859·Q860** — §1-3·§4-6-5 **soft-hyphen bootstrap(IT) · M12 SSO 블로커 시 launch 숨김** · baseline **`c67c7ed`/`83e6296`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q857·Q858** — §1-3·§4-7-3a **NBSP bootstrap(IT) · 기관 공지 게시·삭제 후 빈 페이지 복구** · baseline **`4bf5684`/`483dfe1`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q855·Q856** — §1-3·§3-2·위원회 **named-num·snake_case(IT) · CalendarDayMarker · 보호자 회의=필수업무 27** · baseline **`a8d0af5`/`2cefb1d`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q854** — §1-3·§1-4·§4-6-5 **M12 BPO SSO 잔여 블로커 한국어 안내** · baseline **`97450eb`/`07198a2`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q850–Q853** — §1-3·§1-5·§5-5·기능회복훈련 **지표27 이중번호 · 참고 단가 전용 카탈로그 · 삼중 entity · 고대비** · baseline **`74ae324`/`a89a873`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q844 갱신** — §1-3·§5-5 **channel-status `dispatchReferenceUnitRates` BE+FE · FE BE 우선 fallback** · baseline **`2f578fb`/`a356083`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q844** — §1-3·§5-5 **알림 채널 「문자 발송 참고 단가」(비청구)** · baseline **`e9f24f7`/`56797a8`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q840~Q843** — §1-3·§3-2·§4-7-3b **세미콜론 생략 entity(IT) · 연계 리포트 페이지 · SkipLink·ProgressBar a11y** · baseline **`89dc0a6`/`a5f4098`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q839 · Q837 갱신** — §1-3·§5-5 **대소문자·이중 HTML entity bootstrap(IT) · 알림 채널 패널** · baseline **`2768252`/`c779ca1`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q837 · Q838 · Q832 갱신** — §1-3·§1-5·§5-11 **HTML entity bootstrap(IT) · RFID snake_case·후보 파싱** · baseline **`556eeff`/`e76e631`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q832 갱신 · Q836** — §1-3·§1-5·§5-11 **RFID 급여제공내역 SMS 일괄 UI · nested JSON unicode bootstrap(IT)** · baseline **`27de3a3`/`5843845`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q834 · Q835** — §1-3·§5-5 **URL-encoded bootstrap blocker(IT) · channel-status readinessBlockers decode** · baseline **`7868384`/`3fddccd`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q824·Q825** — §1-3 baseline **`e7efe02`/`9dbdfc5`** (live E2E IT 전용 — 사용자 화면 변경 없음) · Flyway **V1–V194** |
+| 2026-07-15 | **Q829 · Q830** — §1-3·§4-7-3b **연계기록지 「조회」 확정 필터 · 기관 200자 JS 검증** · baseline **`34d4968`/`68cd253`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q826 · Q827 · Q819 갱신** — §1-3·§4-7-3b **연계기록지 지점 리포트·SideNav · V195/V196** · baseline **`9dff00f`/`8b8095a`** · Flyway **V1–V196** |
+| 2026-07-15 | **Q822 · Q823** — §1-3·§4-7-3b **연계기록지 200/5000자 이중 가드 · live E2E env·boolean 정규화** · baseline **`d271cc3`/`33f59a9`** · Flyway **V1–V194** |
+| 2026-07-15 | **Q819 full-stack · Q821 · Q820 · Q818 a11y** — §4-7-3b **연계기록지 이용자 상세 탭** · §5-11 일괄 확정취소 접근성 · baseline **`a72866f`/`c59da8f`** · Flyway **V1–V194** |
+| 2026-07-15 | **Q818** — §5-11 **G21 월단위 일괄 확정취소** · baseline **`d248916`/`2da7ead`** · Flyway **V1–V193** |
+| 2026-07-15 | **Q812~Q817** — §1-3·§4-7-3a·§5-5 **J03 SMS 지금 발송 · kind 22 메타 · V193 · G2 작성/게시 시각 · 활성 지점 스코프** · baseline **`92d74a9`/`a772736`** · Flyway **V1–V193** |
+| 2026-07-15 | **Q811** — §1-3·§4-7-3a **G2 가정통신문 운영 준비=조용한 시간대(비긴급 이메일)** · baseline **`c558f29`/`655aaa7`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-15 | **Q808~Q810** — §1-3·§1-5·§4-7-3a **G2 게시 분류 NOTICE/RESOURCE · J03 지금 발송 가능 · live E2E 억제 bootstrap** · baseline **`124915d`/`fb6ea17`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-15 | **Q807 · Q804·Q805 정정** — §1-3·§1-5·§4-7-3a **G2 첨부 http(s) 서버 검증 · 복제 후 수정 · 상세 링크 차단** · baseline **`7569f1c`/`5b3075f`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q804~Q806** — §1-3·§4-7-3a **G2 복제·상세·메뉴·첨부 http(s) · live E2E 보호자 공백** · baseline **`2e29bc7`/`d4e1e68`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q802·Q803** — §1-3·§4-6-5·§4-7-3a·§5-5 **J03 채널 별칭 · G2 수정 GET 상세 · M12 SSO 오류 문구** · baseline **`1f3698d`/`71839a6`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%**
+| 2026-07-14 | **Q800·Q801** — §1-3·§4-6-5·§4-7-3a **G2 초안 PATCH·첨부 URL · M12 SSO allowlist·HQ/BRANCH** · baseline **`bf96c29`/`4d1b01c`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q797~Q799** — §1-3·§4-7-3a **G2 기관 공지·자료실 게시판·DRAFT 영속·V192 · suppressed bootstrap** · baseline **`82a83e3`/`0210aaa`** · **132 route · 105 page** · Flyway **V1–V192** · 모듈 **~93.6%** |
+| 2026-07-14 | **Q795·Q796** — §1-3·§4-7-3a **G2 이력 board 필터·세션 초안·V191** · baseline **`24f555d`/`bb48b6c`** · **132 route · 105 page** · Flyway **V1–V191** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q793·Q794** — §1-3·§4-7-3a **G2 작성 미리보기 UI · live E2E effective gate** · baseline **`5d6c007`/`3bd50ac`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q791·Q792** — §1-3·§4-7-3a **G2 authoring API · 지점 이력 스코프** · baseline **`ac422cc`/`5805d68`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q788·Q789·Q790** — §1-3·§4-7-3a **G2 가정통신문 · dispatch-history 페이지 · M12 SSO 422** · baseline **`3ea0832`/`b7c9fa4`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q788·Q789** — §1-3·§4-7-3a **G2 가정통신문 진입·발송 이력 · health readiness** · baseline **`9254721`/`b7c9fa4`** · **132 route · 105 page** · 모듈 **~92.4%** |
+| 2026-07-14 | **Q787** — §1-3·§4-6-5 **M12 SSO handoff BE · env 자격 · SSO 버튼** · baseline **`093ac88`/`063c269`** · **131 route · 104 page** · 모듈 **~91.9%** |
+| 2026-07-14 | **Q785·Q786** — §1-3·§4-6-5 **M12 SSO·health FE · 송영 V189/V190 분리(참고)** · baseline **`ac59458`/`b12f259`** · **131 route · 104 page** |
+| 2026-07-14 | **Q782·Q784** — §1-3·§4-6-5 **M12 BPO API·health** · baseline **`54a3e56`/`84b336b`** · **131 route · 104 page** |
+| 2026-07-14 | **Q781 정정 · Q782** — §1-3·§4-6-5·§4-7-0i **M11 퇴직적립 화면 · M12 BPO** · baseline **`edaa9e9`/`891231d`** · **104 page** · **StaffContextNav 17탭** |
+| 2026-07-14 | **Q780 정정 · Q781** — §1-3·§4-7-0h/i **M11 인건비비율 화면 · 퇴직적립 API** · baseline **`ff90532`/`d176581`** · **103 page** |
+| 2026-07-14 | **Q780** — §1-3·§4-7-0h **M11 인건비 지출비율 API**(초안, 이후 화면 연결로 정정) · baseline **`bd06646`/`10bf059`** |
+| 2026-07-14 | **Q778·Q779** — §1-3·§4-7-0e/f/g **M11 간이지급·급여기초 화면** · StaffContextNav **15탭** · baseline **`eca95e3`/`9ea151b`** |
+| 2026-07-14 | **Q775·Q778** — §1-3·§4-7-0e·§6-2-24a/b **M11 급여대장 화면 · 간이지급 API** · baseline **`c455145`/`e18ee5c`** |
+| 2026-07-14 | **Q774** — §1-3·§1-5·§5-26 **목욕 패널 지표 27 문구 · 집계=목욕·평가=기능회복** · baseline **`6e874df`/`95192f5`** |
+| 2026-07-14 | **Q772·Q773** — §1-3·§1-5·§5-8-4·§5-26·기능회복 **송영 주소 비우기 · 지표 27=기능회복·목욕=청구 준수** · baseline **`c08329a`/`a6255a0`** |
+| 2026-07-14 | **Q770·Q771** — §1-3·§1-5·§5-8-4 **송영 주소 trim·연속공백 정규화 · V190 health 9건** · baseline **`bd43f59`/`654b2c6`** |
+| 2026-07-14 | **Q767·Q768·Q769** — §1-3·§1-5·§5-8 **수동 배차 UI 잠금·V190 무결성·송영표 list a11y** · baseline **`2b3f3d9`/`175c570`** |
+| 2026-07-14 | **Q766** — §1-3·§1-5·§5-8 **금일 배차 제외 수동 거부·전원 제외 suggest 안내** · baseline **`5366944`/`d285899`** |
+| 2026-07-13 | **Q764·Q765** — §1-3·§1-5·§5-8 **V189 schema probe · live gate · 금일 배차 제외 RBAC** · baseline **`41cbc8a`/`e48db91`** |
+| 2026-07-13 | **Q762·Q763** — §1-3·§1-5·§5-8 **송영표·금일 배차 제외·출발 회차·송영 주소** · baseline **`60c4e36`/`d873894`** |
 | 2026-06-26 | **377차** — §1-3 **Q722 recovered-auth readiness hints (IT harness)** · baseline **`d06e3f1`/`4bbd54a`** |
+| 2026-07-13 | **Q761** — §5-9 **위생·안전 결과 StatusBadge** · baseline **`2f4bfdf`/`2704fd8`** |
+| 2026-07-13 | **Q760** — §5-9 **위생·안전 현장 체크리스트** · program reports **BranchSwitcher** 안내 |
+| 2026-06-27 | **404차** — **Q759 required-flag vitest lock §5-9** · baseline **`2f4bfdf`/`154ebee`** |
+| 2026-06-27 | **403차** — **Q757 required validation · Q758 optional semantics §5-9** · baseline **`2f4bfdf`/`b10c5bb`** |
+| 2026-06-27 | **402차** — **Q756 template item helpText §5-9 · Q750·Q755 deepen** · baseline **`81e3c11`/`2e35298`** |
+| 2026-06-27 | **401차** — **Q750 FE catalog wire · Q754 local fallback §5-9** · baseline **`fbd403c`/`2e35298`** |
+| 2026-06-27 | **400차** — **Q750 template catalog · Q751 V185 · Q753 safety live harness §5-9** · baseline **`aa9565c`/`bf9b4b1`** |
+| 2026-06-27 | **399차** — **Q748 safety RBAC · Q749 fee seed harness §5-4·§5-9** · baseline **`92770fd`/`d1d0adf`** |
+| 2026-06-27 | **398차** — **Q747 NHIS fee seed year guard §5-4** · baseline **`1f2803c`/`f7061c4`** |
+| 2026-06-27 | **397차** — **Q745 US-Q01 M6 safety §5-9 · Q660 정정 · module KPI 84.31%** · baseline **`ac69919`/`f7061c4`** |
+| 2026-06-28 | **396차** — **Q743 parity-rules ONE_PER_DAY 우선 · §5-8-1 footnote cascade · Q744 deepen** · baseline **`7fcdfde`/`e19328a`** |
+| 2026-06-28 | **395차** — **Q743 onePerDayNote static fallback · §5-11 zero-import PARTIAL UI · Q735 deepen** · baseline **`eb6dd67`/`aa0559b`** |
+| 2026-06-28 | **394차** — **Q743 G16 parity-rules DTO full-stack · §5-8-1 onePerDayNote · Q742 4-outcome test lock** · baseline **`eb6dd67`/`afbbaa7`** |
+| 2026-06-27 | **393차** — **Q742 FE guidance keyword consume full-stack · §5-11 API 우선·static fallback** · baseline **`331f24b`/`5636508`** |
+| 2026-06-27 | **392차** — §1-3·§1-5·§5-11 **Q742 recovery keyword notes API · §5-11 7단계 정정** · baseline **`331f24b`/`2d9b9d3`** |
+| 2026-06-27 | **391차** — §1-3·§1-5·§5-11 **Q740 outcome counter integrity · guidance 7단계 · Q741 stale branch filter** · baseline **`3d4e58a`/`2d9b9d3`** |
+| 2026-06-27 | **390차** — §1-3·§1-5·§5-11 **Q739 NHIS import 지점 필터 deep-link · Q738 deepen** · baseline **`9b91e0f`/`562560a`** |
+| 2026-06-27 | **389차** — §1-3·§1-5·§5-11 **Q738 G-NHIS import 복구 루프 deepen** — inline recovery · **수급자 찾기** · **ALL_SKIPPED 분류 정정** · baseline **`ffa57ea`/`cda2a10`** |
+| 2026-06-26 | **387차** — §1-3·§1-5·§5-11 **Q735 import outcome status · Q736 component code FE wire** · baseline **`c38388d`/`91675f1`** |
+| 2026-06-26 | **386차** — §1-3·§3-3·§4-3 **Q734 bulk export id normalize · Q726 deepen** · baseline **`9664f29`/`d759ade`** |
+| 2026-06-26 | **385차** — §1-3·§3-3·§4-3 **Q726 G-CLIENT-CONTRACT-BULK-PRINT FE full-stack** · baseline **`9664f29`/`96196ed`** |
+| 2026-06-26 | **384차** — §1-3·§1-5·§5-11 **Q731 G-NHIS-SCHEDULE-IMPORT FE full-stack · Q733 g21 component codes** · baseline **`59e4e7f`/`8ceb25c`** |
+| 2026-06-26 | **383차** — §1-3·§1-5·§5-11 **Q731 NHIS visit import guidance · Q732 g21 code FE wire** · baseline **`4567030`/`6009ba7`** |
+| 2026-06-27 | **381차** — §1-3·§3-3 **Q726 bulk export API** · §4-7 **Q728 UXD-166** · baseline **`4df9465`/`a727862`** |
+| 2026-06-27 | **380차** — §1-3·§1-5·위원회 회의록 **Q725 V182 defense-in-depth** · baseline **`b4958f1`/`8ed60cb`** |
+| 2026-06-27 | **379차** — §1-3·§1-5·§4-7-0d **Q723 G-STAFF-COMMITTEE-MEETING-LOG `/staff/committee-meetings`** · **StaffContextNav 12탭** · baseline **`3ae8098`/`8ed60cb`** |
 | 2026-06-26 | **376차** — §1-3·§4-7 **Q719·Q720·Q721 · UXD-165 a11y·refund preview CSS** · baseline **`42a369e`/`7e7c296`** |
 | 2026-06-26 | **375차** — §1-3·§1-5·§4-7-0c **Q717 G-STAFF-MONTHLY-SCHEDULE-FE-WIRE `/staff/schedules`** · **StaffContextNav 10탭** · baseline **`3342938`/`b7004ca`** |
 | 2026-06-25 | **370차** — §1-5·§5-10-0 **Q705 bathing FE closure 정합 · Q712 M7 7-9 refund fee deepen** · baseline **`9f67954`/`5914b2f`** |

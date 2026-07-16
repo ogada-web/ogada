@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-15T23:35:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T16:45:00Z -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-15 (Q845–Q849 신규: G2 기관공지·M12 BPO·live E2E bootstrap · baseline `82a83e3`/`0210aaa` · Flyway **V1–V192** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-07-16 (Q882: NoBreakSpace legacy alias · baseline `ff80f0b`/`8a05640` · Flyway **V1–V196** · 모듈 **~97.4%**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -16,20 +16,20 @@
 ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능별**로 정리했습니다.  
 상세 조작 절차는 [`USER_MANUAL.md`](ops/USER_MANUAL.md), 플랫폼·기술 관리는 [`ADMIN_GUIDE.md`](ops/ADMIN_GUIDE.md), 배포·인프라는 [`DEPLOYMENT_GUIDE.md`](ops/DEPLOYMENT_GUIDE.md)를 참고하세요.
 
-### 구현 상태 안내 (2026-07-15 develop HEAD `82a83e3` / frontend `0210aaa` 기준)
+### 구현 상태 안내 (2026-07-16 develop HEAD `ff80f0b` / frontend `8a05640` 기준)
 
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
-| 백엔드 API | **Must + … + V196 ✅** @ `2f578fb` **SYNCED** · **J03 channel-status 참고 단가 ✅** (**Q844**) · **G-RFID 급여제공내역 일괄 문자 ✅** (**Q832**·**Q838**) · **G-SMS kind 22 ✅** (**Q813**·**Q831**) · **G-LINKAGE-RECORD ✅** (**Q819**·**Q826**·**Q827**) · **live E2E bootstrap ✅** (**Q821**·**Q828**·**Q833**·**Q834**·**Q836**·**Q837**·**Q839**·**Q841**) · **G21 월단위 일괄 확정취소 ✅** (**Q818**) · … | BE Test **~294 suites** · Flyway **V186–V196** |
+| 백엔드 API | **Must + … + V196 ✅** @ `ff80f0b` **SYNCED** · **QA-B95 NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~294 suites** · Flyway **V186–V196** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
-| 프론트엔드 | **133 route · 106 page** @ `a356083` **SYNCED** | **channel-status 참고 단가 BE 우선 ✅** (**Q844**) · **RFID 일괄 SMS 발송 UI ✅** (**Q832**·**Q838**) · **급여명세서 kind 22 발송 UI ✅** (**Q831**) · **연계기록지 이용자 탭+지점 리포트+페이지네이션 ✅** (**Q819**·**Q826**·**Q829**·**Q830**·**Q842**) · **channel-status URL·HTML entity decode ✅** (**Q835**·**Q837**·**Q839**·**Q840**) · **SkipLink·ProgressBar a11y ✅** (**Q843**) · **G21 일괄 확정취소 a11y ✅** (**Q818**) · … |
-| 본 FAQ | **Q217 정정** · **Q788~Q844** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** |
+| 프론트엔드 | **133 route · 106 page** @ `8a05640` **SYNCED** | **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
+| 본 FAQ | **Q217 정정** · **Q788~Q882** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
 ### Q567. 기능회복훈련(G17)은 어디서 확인하나요?
 
-**A.** 화면은 `/programs/functional-recovery`이고, 준수 현황은 `GET /api/v1/programs/functional-recovery/compliance`로 확인합니다. 운영에서는 `plansRecordedCount`, `provisionsRecordedCount`, `gapCount`를 우선 점검하세요. **주야간보호 공단평가 지표 27**(개인별 기능회복훈련 계획)의 정본 화면이 여기입니다 — 목욕 일정 패널과 혼동하지 마세요 (Q773·Q705).
+**A.** 화면은 `/programs/functional-recovery`이고, 준수 현황은 `GET /api/v1/programs/functional-recovery/compliance`로 확인합니다. 운영에서는 `plansRecordedCount`, `provisionsRecordedCount`, `gapCount`를 우선 점검하세요. **주야간보호 공단평가 지표 27**(개인별 기능회복훈련 계획)의 정본 화면이 여기입니다 — 목욕 일정 패널·**위원회 「가족과의 소통」(필수업무 일련 27)** 과 혼동하지 마세요 (Q773·Q705·**Q850**).
 
 ### Q568. 사례관리(G32)에서 누락 여부는 어떻게 보나요?
 
@@ -4514,7 +4514,7 @@ Authorization: Bearer <branch_admin JWT>
 | 항목 | 내용 |
 |------|------|
 | **화면** | **`StaffCommitteeMeetingPage`** — **`StaffContextNav`「위원회·보호자 회의록」** · SideNav **운영 → 직원** |
-| **회의 유형** | **`OPERATING_COMMITTEE`** 운영위원회 · **`GUARDIAN`** 보호자 회의 · **`WELFARE_COMPENSATION`** 복지노사위원회 |
+| **회의 유형** | **`OPERATING_COMMITTEE`** 운영위원회 · **`GUARDIAN`** 보호자 회의(=**필수업무 일련 27「가족과의 소통」**, Q850) · **`WELFARE_COMPENSATION`** 복지노사위원회 |
 | **상태** | **`DRAFT`** 작성중 — 수정 가능 · **`FINALIZED`** 확정 — **수정 불가** · 출력 가능 |
 | **권한** | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` → 403** UI Alert |
 
@@ -5307,14 +5307,15 @@ Authorization: Bearer <branch_admin JWT>
 
 > 관련: Q770 · Q768 · Q763 · USER_MANUAL §5-8-4 · CHANGELOG 2026-07-14
 
-### Q773. **주야간보호 평가지표 27**은 목욕인가요, 기능회복훈련인가요? (G17, BE `bd901c4` · FE `bc9389d`)
+### Q773. **주야간보호 평가지표 27**은 목욕인가요, 기능회복훈련인가요? (G17, BE `bd901c4`·`74ae324` · FE `bc9389d`)
 
-**A.** **✅ BE+FE Fixed (Q773·Q776)** — **기능회복훈련**입니다. 목욕 일정 compliance는 **청구 시 선택 준수**이며, 주야간 공단평가 **필수 지표가 아닙니다**.
+**A.** **✅ BE+FE Fixed (Q773·Q776·Q850)** — **기능회복훈련**입니다. 목욕 일정 compliance는 **청구 시 선택 준수**이며, 주야간 공단평가 **필수 지표가 아닙니다**.
 
 | 구분 | 화면·API | 의미 |
 |------|----------|------|
 | **평가 지표 27 (정본)** | `/programs/functional-recovery` · `GET /api/v1/programs/functional-recovery/compliance` | **지표 25–27** · **`indicator27Code=INDICATOR_27`** · **`indicator27Label=개인별 기능회복훈련 계획`** · **`scopeNote`** · **목욕 링크** (Q776) |
 | **목욕 청구 준수 (선택)** | `/care/bathing-schedules` · `GET …/bathing-schedules/indicator-27-compliance` | **`BATHING_CLAIM_COMPLIANCE`** · `daycareEvaluationRequired=false` · owner **`FUNCTIONAL_RECOVERY`** · 패널 **「목욕 청구 준수」** (Q776) |
+| **필수업무 일련 27 (다른 「27」)** | `/staff/committee-meetings` · `meetingType=GUARDIAN` | **「가족과의 소통」** — 공단 **평가 지표 27이 아님**. compliance 응답 **`dualNumberingNoteKo`**·**`essentialDutySerial27*`** 로 안내 (Q850) |
 
 | compliance 응답 핵심 (기능회복) | 값 |
 |-------------------------------|-----|
@@ -5322,16 +5323,19 @@ Authorization: Bearer <branch_admin JWT>
 | **`indicator27Label`** | **개인별 기능회복훈련 계획** |
 | **`daycareEvaluationRequired`** | **`true`** |
 | **`scopeNote`** | 지표 27=기능회복 · 목욕=청구 선택(G-BATHING) |
+| **`dualNumberingNoteKo`** | 평가 지표27 ≠ 필수업무 일련27(가족과의 소통) |
+| **`essentialDutySerial27Route`** | **`/staff/committee-meetings`** |
 
 | compliance 응답 핵심 (목욕) | 값 |
 |----------------------------|-----|
 | **`indicatorCode`** | **`BATHING_CLAIM_COMPLIANCE`** |
 | **`daycareEvaluationRequired`** | **`false`** |
 | **`daycareEvaluationIndicator27Owner`** | **`FUNCTIONAL_RECOVERY`** |
+| **`dualNumberingNoteKo`** 등 | 기능회복 compliance와 **동일 이중번호 안내** |
 
-> **왜 경로에 indicator-27이 있나?** 호환을 위해 목욕 API 경로명을 유지했습니다. **패널 제목·`scopeNote`·`indicatorCode`·화면 링크**로 해석하세요 — **공단평가 지표 27 점검은 기능회복훈련 화면** (Q776).
+> **왜 경로에 indicator-27이 있나?** 호환을 위해 목욕 API 경로명을 유지했습니다. **패널 제목·`scopeNote`·`indicatorCode`·화면 링크**로 해석하세요 — **공단평가 지표 27 점검은 기능회복훈련 화면** (Q776). **「27」만 보고 위원회(가족과의 소통)로 가지 마세요** (Q850).
 
-> 관련: Q776 · Q774 · Q705 · Q567 · Q271 · USER_MANUAL §5-26·기능회복훈련 · ADMIN_GUIDE §6-2-16 · CHANGELOG 2026-07-14
+> 관련: Q850 · Q776 · Q774 · Q705 · Q567 · Q271 · USER_MANUAL §5-26·기능회복훈련 · ADMIN_GUIDE §6-2-16 · CHANGELOG 2026-07-16
 
 ### Q774. 목욕 일정 화면에서 **「목욕 청구 준수」** 와 **기능회복훈련** 을 어떻게 구분하나요? (FE `bc9389d`)
 
@@ -5453,7 +5457,7 @@ Authorization: Bearer <branch_admin JWT>
 
 ### Q785. **`/accounting`에서 SSO 자동 로그인**은 언제 보이나요? (M12, BE `bf96c29` · FE `063c269`)
 
-**A.** **✅ BE+FE Fixed (Q785·Q787·**Q801**)** — **IT가 기관 SSO 자격 env를 넣은 뒤** health가 **`accountingBpoSsoReady=true`** 일 때만 **「SSO 자동 로그인」** 버튼이 나타납니다. **미설정(기본)** 이면 **`ssoAvailability=PLANNED`** · blocker **`sso-otp-credentials-missing`** 이고 **공개 로그인만** 사용합니다. **실제 OTP mint는 본사·지점 관리자만** 가능합니다 (**Q801**).
+**A.** **✅ BE+FE Fixed (Q785·Q787·**Q801**·**Q854**·**Q860**)** — **IT가 기관 SSO 자격 env를 넣고** health **`accountingBpoSsoReady=true`** 이고 **readiness blocker가 비어 있을 때만** **「SSO 자동 로그인」** 버튼이 나타납니다. **미설정(기본)** 이면 **`ssoAvailability=PLANNED`** · blocker **`sso-otp-credentials-missing`** 이고 **「SSO 잔여 블로커」** 카드에 **env 설정 안내**가 표시됩니다 (**Q854**). **블로커가 남아 있으면 SSO 버튼은 숨겨지고** **공개 로그인만** 사용합니다 (**Q860**). **실제 OTP mint는 본사·지점 관리자만** 가능합니다 (**Q801**).
 
 | 항목 | 내용 |
 |------|------|
@@ -6115,33 +6119,36 @@ Authorization: Bearer <branch_admin JWT>
 
 > 관련: **Q797** · **Q800** · **Q808** · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-15
 
-### Q844. 알림 채널 패널의 **「문자 발송 참고 단가」** 는 실제 청구 금액인가요? (J03, BE+FE `2f578fb`/`a356083`)
+### Q844. 알림 채널 패널의 **「문자 발송 참고 단가」** 는 실제 청구 금액인가요? (J03, BE+FE `0ad3b07`/`79763a3`)
 
-**A.** **✅ BE+FE Fixed (Q844)** — **아닙니다.** **`/organization/settings`**·**`/dashboard`** **`NotificationChannelReadinessPanel`** 에 **「문자 발송 참고 단가」** 표가 있습니다. 값은 **앱 푸시 10원 · SMS 20원 · MMS 50원**이며, 경쟁사(이지케어) 문자 단가와의 **운영 비교 안내**용입니다. **Solapi·이통사 실과금과 다를 수 있고**, **본인부담·직원 급여·정산 청구에는 쓰지 않습니다**.
+**A.** **✅ BE+FE Fixed (Q844·Q851)** — **아닙니다.** **`/organization/settings`**·**`/dashboard`** **`NotificationChannelReadinessPanel`** 에 **「문자 발송 참고 단가」** 표가 있습니다. 값은 **앱 푸시 10원 · SMS 20원 · MMS 50원**이며, 경쟁사(이지케어) 문자 단가와의 **운영 비교 안내**용입니다. **Solapi·이통사 실과금과 다를 수 있고**, **본인부담·직원 급여·정산 청구에는 쓰지 않습니다**.
 
-패널은 **`GET /api/v1/notifications/channel-status`** 의 **`dispatchReferenceUnitRates`** 를 **우선** 사용합니다. API 응답이 없거나 유효한 `rates[]` 가 비어 있으면 **FE 정적 fallback**(동일 10·20·50원)을 표시합니다.
+패널 우선순위는 **(1) `GET /api/v1/notifications/dispatch-reference-unit-rates` 전용 카탈로그** → **(2) `GET …/channel-status` 의 `dispatchReferenceUnitRates` 임베드** → **(3) FE 정적 fallback**(동일 10·20·50원) 입니다 (Q851). health **`notificationDispatchReferenceUnitRates`** 도 동일 상수입니다.
 
 | 항목 | 내용 |
 |------|------|
-| **API** | **`GET /api/v1/notifications/channel-status`** — **`dispatchReferenceUnitRates`** (`source`·`note`·`rates[]`) |
+| **전용 API** | **`GET /api/v1/notifications/dispatch-reference-unit-rates`** — `source`·`note`·`rates[]` |
+| **임베드 API** | **`GET /api/v1/notifications/channel-status`** — **`dispatchReferenceUnitRates`** (동일 상수) |
 | **화면** | 조직 설정·대시보드 **알림 채널 준비 상태** — **「문자 발송 참고 단가」** 섹션 |
 | **값** | 앱 푸시 **10원** · SMS **20원** · MMS **50원** |
-| **우선순위** | **BE API → FE static fallback** — 화면·서버 parity |
+| **우선순위** | **전용 카탈로그 → channel-status 임베드 → FE static** |
 | **비청구** | Solapi 실과금·센터 청구와 **독립** — 과금·정산 소스 아님 |
 | **권한** | `hq_admin`(조직 설정) · `branch_admin`(대시보드 패널) |
+| **a11y** | 고대비 모드에서 표 테두리 표시 (**Q853**, UXD-181) |
 | **테스트** | **`NotificationChannelReadinessServiceTest`** · **`notificationDispatchUnitRates.test`** · **`NotificationChannelReadinessPanel.test`** |
 
-> 관련: **Q812** · **Q809** · **Q318** · API_SPEC §11-10 · USER_MANUAL §5-5 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-15
+> 관련: **Q851** · **Q853** · **Q812** · **Q809** · **Q318** · API_SPEC §11-10 · USER_MANUAL §5-5 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-16
 
 ### Q843. 키보드로 **본문으로 건너뛰기**·RFID 발송 **진행 표시**가 있나요? (UXD-180, FE `eb270ae`)
 
-**A.** **✅ FE Fixed (Q843)** — 로그인·앱 화면 상단에 **「본문으로 건너뛰기」** 링크(**`SkipLink`**)가 있습니다. Tab으로 포커스하면 나타나며, Enter로 **SideNav를 건너뛰고 `#main-content`** 로 이동합니다. **`/visits`** RFID 일괄 발송 중에는 **`ProgressBar`** 로 진행 상태를 표시합니다. 로딩 중에는 **`Skeleton`** 플레이스홀더를 사용합니다.
+**A.** **✅ FE Fixed (Q843)** — 로그인·앱 화면 상단에 **「본문으로 건너뛰기」** 링크(**`SkipLink`**)가 있습니다. Tab으로 포커스하면 나타나며, Enter로 **SideNav를 건너뛰고 `#main-content`** 로 이동합니다. **`/visits`** RFID 일괄 발송 중에는 **`ProgressBar`** 로 진행 상태를 표시합니다. 로딩 중에는 **`Skeleton`** 플레이스홀더를 사용합니다. 직원 출퇴근 달력 셀은 **`CalendarDayMarker`** 로 **색상+패턴+스크린리더 문구**를 함께 씁니다.
 
 | 항목 | 내용 |
 |------|------|
 | **SkipLink** | `AppShell` · `PublicAuthLayout` — DESIGN_SYSTEM §5-1 |
 | **ProgressBar** | `VisitRfidDiffComparePanel` — kind 13 일괄 발송 중 |
-| **CalendarDayMarker** | 직원 출근 달력 — **색상+텍스트 라벨** 병행 (WCAG 1.4.1) |
+| **Skeleton** | 데이터 로드 플레이스홀더 — 색상만으로 상태 전달 금지 |
+| **CalendarDayMarker** | **`/staff/attendance`** 등 달력 셀 — **`empty`(미작성)** · **`draft`(임시저장)** · **`complete`(작성완료)** · glyph 패턴 + `.ds-sr-only` 라벨 (WCAG 1.4.1) |
 | **테스트** | **`SkipLink.test`** · **`ProgressBar.test`** · **`Skeleton.test`** · **`CalendarDayMarker.test`** |
 
 > 관련: USER_MANUAL §3-2 · DESIGN_SYSTEM §3-11·§3-12 · CHANGELOG 2026-07-15
@@ -12745,6 +12752,16 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-16 | **Q882** — **NoBreakSpace legacy alias bootstrap decode(BE+FE)** · baseline **`ff80f0b`/`8a05640`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q879–Q881** — **bidi long-form alias · ZeroWidthNonJoiner/Joiner long alias(BE+FE) · 기관 공지·가정통신문·연계기록지 구분** · baseline **`ba5b0cb`/`61f8f19`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q875–Q878** — **ThickSpace·MathML invisible · bidi marks·Positive*Space · bidi embedding·NonBreakingSpace decode(BE+FE) · G2 표 모바일 a11y** · baseline **`d911983`/`29fc34f`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q874** — **HTML space alias bootstrap decode(BE+FE)** · **Q872·Q873 FE lockstep 정정** · baseline **`fde0606`/`5b69e7a`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q871–Q873** — **dash/minus/hyphen · NoBreak · word-joiner/named space HTML bootstrap decode** · Q864 정정 · baseline **`7883a90`/`cf8a248`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q869·Q870** — **zero-width·tab/newline named HTML bootstrap decode** · baseline **`7102f82`/`e45dacb`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q859·Q860** — **soft-hyphen·whitespace HTML bootstrap decode · M12 BPO SSO 블로커 시 launch 숨김** · baseline **`c67c7ed`/`83e6296`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q857·Q858** — **NBSP(`&nbsp;`) bootstrap blocker · 기관 공지 게시·삭제 후 빈 페이지 복구** · baseline **`4bf5684`/`483dfe1`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q855·Q856** — **named-num (`&num;`) HTML entity · snake_case bootstrap blocker 코드** · Q723·Q843 보강 · baseline **`a8d0af5`/`2cefb1d`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q854 · Q850–Q853** — **M12 SSO 잔여 블로커 · 지표27 이중번호 · 참고 단가 전용 카탈로그 · 삼중 entity · 고대비** · baseline **`97450eb`/`07198a2`** · Flyway **V1–V196** |
 | 2026-07-15 | **Q844 갱신** — **channel-status `dispatchReferenceUnitRates` BE+FE · FE BE 우선 fallback** · baseline **`2f578fb`/`a356083`** · Flyway **V1–V196** |
 | 2026-07-15 | **Q844** — **알림 채널 「문자 발송 참고 단가」(앱10/SMS20/MMS50·비청구)** · baseline **`e9f24f7`/`56797a8`** · Flyway **V1–V196** |
 | 2026-07-15 | **Q840~Q843** — **세미콜론 생략 HTML entity · 이중 numeric entity · 연계 리포트 페이지 · SkipLink a11y** · baseline **`89dc0a6`/`a5f4098`** · Flyway **V1–V196** |
@@ -16044,7 +16061,532 @@ function normalizeLiveOperationBlockers(blockers) {
 - **health probe** 이상 → **detail blocker 디코드 후 읽기**
 - **여러 형식 중첩**: **BE 먼저 정규화** → **FE에서 한번 더 normalize** (parity 검증)
 - **false positive**: **「bootstrap」+「code」 동시 존재만** effective로 판정
+- **삼중 인코딩** (`&AMP;AMP;#45;` 등) — **Q852** (다중 패스 디코드)
 
-> 관련: ADMIN_GUIDE §1-4 · Q820·Q821·Q824·Q825·Q828·Q833·Q834·Q836·Q837·Q839·Q840·Q841 · QA-B95 **FULL 1.0** ✅ · API_SPEC §4-3
+> 관련: ADMIN_GUIDE §1-4 · Q820·Q821·Q824·Q825·Q828·Q833·Q834·Q836·Q837·Q839·Q840·Q841·**Q852** · QA-B95 **FULL 1.0** ✅ · API_SPEC §4-3
+
+---
+
+### [TWR] Q850. **「지표 27」**이 **기능회복**인데 **위원회 「가족과의 소통」**과 헷갈리면? (G17 dual-numbering, BE `74ae324`)
+
+**A.** **✅ BE Fixed (Q850)** — 번호만 같은 **두 체계**가 있습니다. **공단 주야간보호 평가 지표 27**은 **개인별 기능회복훈련 계획**이고, **필수업무 일련 27**은 **「가족과의 소통」**(위원회·보호자 회의, `meetingType=GUARDIAN`)입니다.
+
+| 「27」 | 정본 화면 | 확인 API·필드 |
+|--------|-----------|---------------|
+| **평가 지표 27** | `/programs/functional-recovery` | `GET …/functional-recovery/compliance` — `indicator27Code=INDICATOR_27` · `daycareEvaluationRequired=true` |
+| **필수업무 일련 27** | `/staff/committee-meetings` | compliance **`essentialDutySerial27Label=가족과의 소통`** · **`essentialDutySerial27Route`** · **`dualNumberingNoteKo`** |
+| **목욕(경로명만 27)** | `/care/bathing-schedules` | `BATHING_CLAIM_COMPLIANCE` — **평가 필수 아님** (Q773·Q776) |
+
+**현장 조치**
+1. 공단평가 **지표 27** 점검 → SideNav **기록 → 기능회복훈련**
+2. **가족과의 소통** 회의록 → SideNav **직원 → 위원회·보호자 회의록**
+3. 목욕 패널의 「indicator-27」 경로명은 **호환용** — 패널 제목 **「목욕 청구 준수」** 로 읽기
+
+> 관련: Q773 · Q774 · Q776 · Q567 · Q723 · USER_MANUAL §1-5·기능회복훈련 · API_SPEC §9-17 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q851. **문자 참고 단가**를 channel-status 말고 **전용 API**로도 조회하나요? (J03, BE `0ad3b07` · FE `79763a3`)
+
+**A.** **✅ BE+FE Fixed (Q851)** — **예.** 템플릿 카탈로그와 같은 패턴으로 **`GET /api/v1/notifications/dispatch-reference-unit-rates`** 전용 엔드포인트가 있습니다. channel-status에 임베드된 `dispatchReferenceUnitRates` 와 **동일 상수**(앱 10·SMS 20·MMS 50원)입니다.
+
+| 항목 | 내용 |
+|------|------|
+| **전용 API** | `GET /api/v1/notifications/dispatch-reference-unit-rates` |
+| **health** | `notificationDispatchReferenceUnitRates` — 서비스 오류와 무관·정적 안내 |
+| **FE 우선순위** | **전용 GET → channel-status 임베드 → static fallback** |
+| **권한** | `hq_admin`·`branch_admin` |
+| **비청구** | Solapi·정산과 **독립** (Q844) |
+
+**운영 확인**: 조직 설정 알림 채널 패널 「문자 발송 참고 단가」가 로드되면 전용 API가 우선 호출됩니다. 전용 API만 실패해도 channel-status·static으로 표가 유지됩니다.
+
+> 관련: Q844 · Q853 · Q812 · API_SPEC §11-10 · USER_MANUAL §5-5 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q852. live E2E **bootstrap blocker**가 `&AMP;AMP;#45;` 처럼 **세 번** 감싸져 있으면? (QA-B95, BE `33f388d` · FE `a89a873`)
+
+**A.** **✅ BE+FE Fixed (Q852)** — 게이트웨이 래퍼가 numeric HTML entity를 **이중·삼중**으로 감싸도 **bounded multi-pass decode**(FE 최대 **5패스**)로 `bootstrap-disabled` 등 마커를 추출합니다. 이중(`&AMP;#x2d;`, Q841)보다 한 단계 더 깊은 인코딩을 덮습니다. **`&num;45;` named-num** 형태는 **Q855**를 참고하세요.
+
+| 입력 예 | 의미 |
+|---------|------|
+| `&AMP;AMP;#45;` / `&AMP;AMP;#x2d;` | 삼중 래핑 numeric entity → `-` |
+| `&AMP;#x2d;` | 이중 (Q841) |
+| `&#45` (세미콜론 없음) | Q840 |
+| `&num;45;` | named-num (Q855) |
+
+**현장/IT**: health·probe detail이 깨진 entity로 보여도 **effective gate**가 정상 매칭되는지 확인하세요. 알림 채널 패널 blocker 표시도 동일 디코더를 씁니다.
+
+> 관련: Q855 · Q849 · Q841 · Q840 · Q837 · Q839 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q853. 고대비 모드에서 **문자 참고 단가** 표 테두리가 안 보여요. (UXD-181, FE `9181ca8`)
+
+**A.** **✅ FE Fixed (Q853)** — **`NotificationChannelReadinessPanel`** 「문자 발송 참고 단가」 구간에 **`.ds-notification-channel-panel__unit-rates`** CSS와 **`forced-colors`** 시 `.ds-table-wrap` 경계선이 정의되었습니다. Windows **고대비 테마**에서도 표·섹션을 구분할 수 있습니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | `/organization/settings` · `/dashboard` 알림 채널 패널 |
+| **CSS** | `components.css` — unit-rates 블록 · forced-colors border |
+| **관련** | 템플릿 카탈로그(`.ds-notification-channel-panel__catalog`)와 **동일 패턴** |
+
+> 관련: Q844 · Q851 · Q115 · USER_MANUAL §5-5 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q854. **`/accounting`에서 「SSO 잔여 블로커」**가 보이면 무엇을 하면 되나요? (M12, FE `07198a2`)
+
+**A.** **✅ FE Fixed (Q854·Q860)** — SSO가 아직 **후속(PLANNED)** 상태이거나 **readiness blocker**가 남아 있으면 **`/accounting`** 카드에 **「SSO 잔여 블로커」** 목록이 표시됩니다. 각 항목은 **한국어 조치 안내**와 **blocker 코드**를 함께 보여 줍니다. **블로커가 있으면 「SSO 자동 로그인」 버튼은 숨겨집니다** (**Q860**). **공개 로그인**은 블로커가 있어도 사용할 수 있습니다.
+
+| blocker 코드 | 화면 안내 요지 | 조치 (IT) |
+|--------------|----------------|-----------|
+| **`sso-otp-credentials-missing`** | 시설 SSO(OTP) 자격 env 설정 시 자동 로그인 가능 · **비밀번호 미저장** | **`ACCOUNTING_BPO_USMUSID`** · **`ACCOUNTING_BPO_OTP_SECRET`** 설정 후 재기동 (**Q787**) |
+| **`sso-portal-url-not-allowlisted`** | SSO 포털 URL이 허용 호스트가 아님 | **`ACCOUNTING_BPO_SSO_PORTAL_URL`** 을 **`https://sujifine.co.kr…`** 또는 **`https://www.sujifine.co.kr…`** 로 수정 (**Q801**) |
+| **기타 코드** | 해당 블로커가 해소될 때까지 공개 로그인만 | health **`accountingBpoReadinessBlockers[]`** 확인 (**Q784**) |
+
+**현장 조치**
+1. **센터장** — 안내를 읽고 **「수지파인 공개 로그인 열기」** 로 재무회계 업무를 진행합니다.
+2. **IT** — blocker 코드에 맞춰 env를 수정한 뒤 **`GET /api/v1/health`** 에서 **`accountingBpoSsoReady=true`**·blockers 비움을 확인합니다.
+3. SSO handoff **429·422** 등 런타임 오류는 별도 **한국어 Alert**로 표시됩니다 (**Q801**·**Q803**).
+
+> 관련: Q785 · Q787 · Q801 · Q803 · Q860 · USER_MANUAL §4-6-5 · ADMIN_GUIDE §6-2-24f·24g · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q855. live E2E **bootstrap blocker**가 `&num;45;` 처럼 **named-num** 이면? (QA-B95, BE `a8d0af5` · FE `2cefb1d`)
+
+**A.** **✅ BE+FE Fixed (Q855)** — 일부 게이트웨이는 numeric HTML entity를 `&#45;` 대신 **`&num;45;`**(named `num` + 숫자)로 보냅니다. BE·FE 디코더가 **`&num;` → `#`** 로 정규화한 뒤 기존 multi-pass decode(Q852)로 `bootstrap-disabled` 등을 추출합니다. 대소문자(`&NUM;`)·**세미콜론 생략(`&num;45`)** 도 동일합니다.
+
+| 입력 예 | 의미 |
+|---------|------|
+| `&num;45;` / `&NUM;45;` | named-num → `-` |
+| `&num;45` (세미콜론 없음) | named-num 세미콜론 생략 (`a8d0af5`) |
+| `&#45;` / `&#x2d;` | 일반 numeric (Q837·Q840) |
+| `&AMP;AMP;#45;` | 삼중 래핑 (Q852) |
+
+**현장/IT**: health·probe detail에 `&num;…` 가 보여도 **effective gate**가 fail-closed인지 확인하세요. 알림 채널 패널 blocker 표시도 동일 디코더를 씁니다.
+
+> 관련: Q852 · Q841 · Q840 · Q837 · Q856 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q856. live E2E **blocker 코드**가 `bootstrap_disabled` 처럼 **snake_case** 이면? (QA-B95, BE `1411b54`)
+
+**A.** **✅ BE Fixed (Q856)** — 게이트웨이·직렬화 객체가 kebab-case(`bootstrap-disabled`) 대신 **snake_case(`bootstrap_disabled`)** · **`service_unavailable`** 등을 내도 blocker 정규화가 **동일 마커**로 인식합니다. operation gate는 **fail-closed** 를 유지합니다.
+
+| 입력 코드 예 | 정규화 후 |
+|--------------|-----------|
+| `bootstrap_disabled` | `bootstrap-disabled` |
+| `bootstrap_service_unavailable` / `service_unavailable` | service-unavailable 계열 마커 |
+| `{"code":"bootstrap_disabled"}` | object-form(Q833) + snake_case |
+
+**현장/IT**: health **`liveE2eOperationBlockers`** 가 snake_case여도 suite가 **잘못 PASS하지 않아야** 합니다. 배포 후 `LiveE2eOperationReadinessSupportTest` 회귀를 확인하세요.
+
+> 관련: Q855 · Q857 · Q833 · Q821 · Q837 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q857. live E2E **bootstrap blocker**가 `&nbsp;`·비분리 공백으로 감싸이면? (QA-B95, BE `4bf5684`)
+
+**A.** **✅ BE Fixed (Q857)** — 게이트웨이 래퍼가 detail을 **`&nbsp;bootstrap=disabled&nbsp;`** 또는 **유니코드 NBSP(U+00A0)** 로 감싸도 디코더가 **일반 공백으로 정규화**한 뒤 기존 bootstrap 마커를 추출합니다. named-num(Q855)·삼중 entity(Q852)·snake_case(Q856)와 함께 **fail-closed** 를 유지합니다.
+
+| 입력 예 | 처리 |
+|---------|------|
+| `&nbsp;bootstrap=disabled&nbsp;` | named `&nbsp;` → 공백 후 마커 매칭 |
+| `\u00a0guardian-bootstrap=disabled\u00a0` | 유니코드 NBSP → 공백 |
+| `&nbsp;` 세미콜론 생략(`&nbspbootstrap…`) | named entity 패턴 동일 계열 |
+
+**현장/IT**: health·probe detail에 보이지 않는 공백이 있어도 **effective gate**가 잘못 PASS하지 않는지 확인하세요. 회귀는 `LiveE2eOperationReadinessSupportTest` 입니다.
+
+> 관련: Q855 · Q856 · Q852 · Q837 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q858. 기관 공지 **마지막 건을 게시·삭제**하면 목록이 비어 보이나요? (G2, FE `483dfe1`)
+
+**A.** **✅ FE Fixed (Q858)** — **아니요.** 게시·삭제·초안 저장 직후 목록이 **현재 페이지에 행이 없으면** 자동으로 **마지막 유효 페이지**로 맞춰집니다. 수동 새로고침이나 「이전」 클릭이 필요 없습니다.
+
+| 항목 | 내용 |
+|------|------|
+| **화면** | **`/clients/home-newsletter#facility-notices`** |
+| **시점** | **게시** · **초안 삭제** · **초안 저장(수정 포함)** 직후 |
+| **동작** | 요청 페이지 > `totalPages−1` 이면 **마지막 페이지 재조회** |
+| **권한** | **`hq_admin`·`branch_admin`·`social_worker`** (기존과 동일) |
+| **회귀** | **`HomeNewsletterLaunchPage.test.jsx`** — 마지막 행 삭제 후 페이지 fallback |
+
+**현장 팁**: 필터(공지/자료실·상태·검색어)가 적용된 상태에서도 **같은 필터**로 페이지를 맞춥니다. 전체 건수가 0이면 빈 목록이 **정상**입니다.
+
+> 관련: Q797 · Q800 · Q805 · Q807 · Q808 · USER_MANUAL §4-7-3a · ADMIN_GUIDE §6-2-24h · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q859. live E2E **bootstrap blocker**가 `boot&shy;strap-disabled` 처럼 **soft-hyphen**·공백 entity이면? (QA-B95, BE `c67c7ed` · FE `83e6296`)
+
+**A.** **✅ BE+FE Fixed (Q859)** — 일부 게이트웨이는 토큰 중간에 **soft-hyphen(`&shy;`)** 을 넣거나 **`&ensp;`·`&emsp;`·`&thinsp;`** 등 **공백 HTML entity**로 detail을 감쌉니다. BE·FE 디코더가 soft-hyphen을 제거하고 공백 entity·유니코드 NBSP(U+00A0)·ZWSP를 **일반 공백**으로 정규화한 뒤 기존 multi-pass decode(Q852·Q855·Q857)로 `bootstrap-disabled` 등을 추출합니다. **보이지 않는 format 문자(Cf)** 는 **Q861**, **전각·figure·좁은 NBSP** 등 추가 공백은 **Q862**를 참고하세요.
+
+| 입력 예 | 의미 |
+|---------|------|
+| `boot&shy;strap-disabled` | mid-token soft-hyphen 제거 |
+| `&ensp;guardian-bootstrap-not-ready&thinsp;` | en/thin space → 공백 |
+| `\u00a0bootstrap=disabled\u00a0` | 유니코드 NBSP → 공백 |
+
+**현장/IT**: health·probe detail에 보이지 않는 하이픈·공백이 있어도 **effective gate**가 잘못 PASS하지 않는지 확인하세요. 회귀는 `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js` 입니다.
+
+> 관련: Q861 · Q862 · Q857 · Q855 · Q856 · Q852 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q860. **`/accounting`에서 SSO 블로커가 있으면 「SSO 자동 로그인」이 안 보이나요?** (M12, FE `b42174a`)
+
+**A.** **✅ FE Fixed (Q860)** — **예.** health **`accountingBpoReadinessBlockers[]`** 에 항목이 **1개라도 남아 있으면** **`ssoAvailability`가 PLANNED로 강등**되고 **「SSO 자동 로그인」 버튼이 표시되지 않습니다**. **`canLaunchAccountingBpoSso`** 가 false이면 handoff를 시도할 수 없습니다.
+
+| 상황 | 화면 |
+|------|------|
+| **블로커 있음** | **「SSO 잔여 블로커」** 한국어 안내 표시 · **공개 로그인만** · SSO 버튼 **숨김** |
+| **블로커 해소 + env 설정** | health **`accountingBpoSsoReady=true`** · blocker 비움 · **「SSO 자동 로그인」** 표시 (**Q785**·**Q787**) |
+| **handoff 실패** | 429·422 등 **한국어 Alert** (**Q803**) |
+
+**현장 조치**
+1. **센터장** — **「수지파인 공개 로그인 열기」** 로 재무회계 업무 진행.
+2. **IT** — blocker 코드에 맞춰 env 수정 → health에서 blocker 비움·**`accountingBpoSsoReady=true`** 확인 후 SSO 버튼 재표시.
+
+> 관련: Q854 · Q785 · Q787 · Q801 · USER_MANUAL §4-6-5 · ADMIN_GUIDE §6-2-24f · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q861. live E2E **bootstrap blocker** 토큰 사이에 **보이지 않는 문자**가 끼어 있으면? (QA-B95, BE `20ac77f` · FE `1bc6eab`)
+
+**A.** **✅ BE+FE Fixed (Q861)** — 일부 게이트웨이는 `bootstrap`과 `=disabled` 사이에 **ZWNJ(U+200C)·WJ(U+2060)·ZWJ** 등 **Unicode format(Cf)** 문자를 넣어 토큰을 눈에 띄지 않게 쪼갭니다. BE는 format 카테고리 문자를 제거하고, FE는 `\p{Cf}` 정규식으로 동일하게 제거한 뒤 soft-hyphen·공백 entity(Q859)·NBSP(Q857) 규칙으로 마커를 추출합니다. **`&zwnj;`·`&zwj;`·`&ZeroWidthSpace;` named entity** 는 **Q869**를 참고하세요.
+
+| 입력 예 | 처리 |
+|---------|------|
+| `bootstrap\u200c=disabled` | ZWNJ 제거 → `bootstrap=disabled` |
+| `guardian\u2060-bootstrap=disabled` | WJ 제거 후 guardian blocker 매칭 |
+| soft-hyphen·`&nbsp;`·`&ensp;` 혼용 | Q859·Q857과 함께 multi-pass |
+
+**현장/IT**: health **`liveE2eOperationBlockers`** 가 화면상으로는 정상처럼 보여도 **effective gate**가 잘못 PASS하지 않아야 합니다. 회귀는 `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js` 입니다.
+
+> 관련: Q862 · Q859 · Q857 · Q855 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q862. live E2E **bootstrap blocker**에 **전각·figure·좁은 NBSP** 같은 공백이 있으면? (QA-B95, BE `8098f23` · FE `91aee07`)
+
+**A.** **✅ BE+FE Fixed (Q862)** — NBSP·en/em/thin(Q857·Q859)에 더해 **figure space(U+2007)** · **punctuation space(U+2008)** · **hair space(U+200A)** · **좁은 NBSP(U+202F)** · **전각 공백(U+3000)** 도 **일반 공백**으로 정규화합니다. soft-hyphen·Cf strip(Q859·Q861) 이후 마커 매칭이 이어집니다. FE channel-status·live harness도 BE와 동일합니다.
+
+| 입력 예 | 의미 |
+|---------|------|
+| `bootstrap\u202f=\u2007disabled` | 좁은 NBSP·figure space → 공백 |
+| `\u3000guardian-bootstrap\u200a=\u2008disabled` | 전각·hair·punctuation space → 공백 |
+
+**현장/IT**: 동아시아·PDF·게이트웨이 래퍼가 특수 공백을 넣어도 operation gate는 **fail-closed** 를 유지해야 합니다. 회귀는 `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js` 입니다.
+
+> 관련: Q861 · Q859 · Q857 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q868. 가정통신문·기관 공지에서 지점이 비어 보일 때는 어떻게 확인하나요? (G2, FE `f5dded2`)
+
+**A.** **✅ FE Fixed (`f5dded2`)** — `/clients/home-newsletter`에서 활성 지점 컨텍스트가 비정상(예: stale 선택값, 삭제된 지점, 권한 외 지점)일 때 **첫 번째 유효 지점 스코프**로 자동 fallback 합니다.
+
+| 증상 | 현재 동작 |
+|------|-----------|
+| 진입 직후 목록/카탈로그가 비어 보임 | 유효 지점으로 재선택 후 목록 재조회 |
+| `branchId`가 URL·세션에 남아 있지만 권한 밖 | 권한 내 첫 지점으로 fallback 후 API 재요청 |
+| 마지막 행 게시/삭제 후 페이지 범위 이탈 | Q858 규칙대로 마지막 유효 페이지로 이동 |
+
+**현장 조치**: 문제가 반복되면 상단 지점 선택기를 한 번 변경해 동기화하고, `/clients/home-newsletter#facility-notices`에서 `NOTICE/RESOURCE` 목록이 정상 조회되는지 확인하세요.
+
+> 관련: Q858 · Q815 · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q869. live E2E **bootstrap blocker**에 **`&zwnj;`·`&zwj;`·`&ZeroWidthSpace;`** 같은 zero-width named entity가 있으면? (BE `7102f82` · FE `e45dacb`)
+
+**A.** **✅ BE+FE Fixed (Q869)** — 일부 게이트웨이는 `bootstrap&zwnj;=&zwj;disabled` 처럼 **named HTML entity**로 보이지 않는 문자를 넣어 토큰을 쪼갭니다. BE·FE 디코더가 **`&zwnj;`·`&zwj;`·`&ZeroWidthSpace;`**(세미콜론 생략 포함)를 제거한 뒤, raw Unicode Cf strip(Q861)·공백 entity(Q859) 규칙으로 `bootstrap-disabled` 등을 추출합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&zwnj;=&zwj;disabled` | zero-width named entity 제거 → `bootstrap=disabled` |
+| `guardian-bootstrap&ZeroWidthSpace;=&zwnj;disabled` | 동일 — fail-closed gate 유지 |
+
+> 관련: Q861 · Q870 · Q880 · Q859 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q870. live E2E **bootstrap blocker**에 **`&Tab;`·`&NewLine;`** named entity가 있으면? (BE `431859c` · FE `e45dacb`)
+
+**A.** **✅ BE+FE Fixed (Q870)** — 게이트웨이가 `bootstrap&Tab;=&NewLine;disabled` 처럼 **탭·개행 named HTML entity**로 `=` 주변을 감싸도 fail-closed로 인식합니다. BE·FE가 **`&Tab;`·`&NewLine;`**(세미콜론 생략·대소문자 변형 포함)를 **일반 공백**으로 정규화한 뒤 기존 multi-pass decode(Q852·Q855·Q857·Q859)로 마커를 추출합니다. FE channel-status·live harness도 BE와 동일합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&Tab;=&NewLine;disabled` | tab/newline entity → 공백 → `bootstrap=disabled` |
+| `guardian-bootstrap&Tab;=&NewLine;disabled` | 동일 |
+
+> 관련: Q869 · Q871 · Q861 · Q859 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q871. live E2E **bootstrap blocker**에 **`&ndash;`·`&minus;`**처럼 **대시·하이픈 entity**가 있으면? (BE `7e02d58` · FE `cf8a248`)
+
+**A.** **✅ BE+FE Fixed (Q871)** — 일부 게이트웨이는 `bootstrap&ndash;disabled` · `guardian&minus;bootstrap=disabled` 처럼 ASCII `-` 대신 **named dash/minus/hyphen entity** 또는 Unicode minus/en-dash를 넣습니다. BE·FE 디코더가 **`&ndash;`·`&mdash;`·`&minus;`·`&hyphen;`·`&dash;`**(세미콜론 생략 포함)와 해당 Unicode 코드포인트를 **ASCII `-`로 접은 뒤** 기존 multi-pass decode(Q852·Q855·Q857·Q859)로 마커를 추출합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&ndash;disabled` | dash entity → `-` → `bootstrap-disabled` |
+| `guardian&minus;bootstrap=disabled` | minus entity → `-` → fail-closed 인식 |
+
+> 관련: Q872 · Q873 · Q869 · Q859 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q872. live E2E **bootstrap blocker**에 **`&NoBreak;`·`&ZeroWidthNoBreakSpace;`**가 있으면? (BE `5b59e83` · FE `f73413d`)
+
+**A.** **✅ BE+FE Fixed (Q872)** — 게이트웨이가 `bootstrap&NoBreak;=disabled` 처럼 **NoBreak zero-width named entity**로 토큰을 쪼개도 BE·FE가 **`&NoBreak;`·`&ZeroWidthNoBreakSpace;`**(세미콜론 생략 포함)를 제거한 뒤 Q869·Q861 규칙으로 마커를 추출합니다. FE channel-status·live harness도 BE와 동일합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&NoBreak;=disabled` | NoBreak strip → `bootstrap=disabled` |
+| `guardian&ZeroWidthNoBreakSpace;-bootstrap=disabled` | 동일 |
+
+> 관련: Q869 · Q871 · Q873 · Q874 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q873. live E2E **bootstrap blocker**에 **`&Wj;`·`&hairsp;`** 같은 word-joiner·named space가 있으면? (BE `7883a90` · FE `f73413d`)
+
+**A.** **✅ BE+FE Fixed (Q873)** — 게이트웨이가 `bootstrap&Wj;=disabled` 또는 `bootstrap&hairsp;=disabled` 처럼 **word joiner(`&Wj;`)** · **named space(`&hairsp;`·`&numsp;`·`&puncsp;`·`&nnbsp;`·`&MediumSpace;`·`&emsp13;`·`&emsp14;`)** 로 detail을 감싸도 BE·FE가 word-joiner를 제거하고 named space를 **일반 공백**으로 정규화합니다. Unicode Cf/Zs 경로(Q861·Q862)와 **named entity 경로**를 함께 커버합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&Wj;=disabled` | `&Wj;` strip → `bootstrap=disabled` |
+| `&hairsp;guardian-bootstrap=disabled&nnbsp;` | named space → 공백 → fail-closed |
+
+> 관련: Q862 · Q861 · Q871 · Q872 · Q874 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q874. live E2E **bootstrap blocker**에 **`&ThinSpace;`·`&NegativeMediumSpace;`** 같은 HTML space alias가 있으면? (BE `fde0606` · FE `5b69e7a`)
+
+**A.** **✅ BE+FE Fixed (Q874)** — 일부 게이트웨이는 `bootstrap&ThinSpace;=disabled` · `bootstrap&VeryThinSpace;=disabled` 처럼 **ThinSpace/VeryThinSpace alias**를 공백으로 넣거나, `guardian&NegativeMediumSpace;-bootstrap=disabled` 처럼 **Negative space alias**(`&NegativeThinSpace;`·`&NegativeMediumSpace;`·`&NegativeThickSpace;`)로 토큰을 쪼갭니다. BE·FE 디코더가 alias를 **공백 또는 제거**로 정규화한 뒤 기존 multi-pass decode(Q859·Q873)로 `bootstrap-disabled` 등을 추출합니다. **`&thinsp;`(소문자)와 `&ThinSpace;`(대문자 alias)는 별도 경로**로 처리합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&ThinSpace;=disabled` | ThinSpace → 공백 |
+| `bootstrap&VeryThinSpace;=disabled` | VeryThinSpace → 공백 |
+| `guardian&NegativeMediumSpace;-bootstrap=disabled` | Negative*Space strip |
+| `bootstrap&NegativeThickSpace;-service&NegativeThinSpace;-unavailable` | Negative alias 제거 후 gate |
+
+> 관련: Q859 · Q873 · Q862 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q875. live E2E **bootstrap blocker**에 **`&ThickSpace;`·MathML invisible operator**가 있으면? (BE `3937fa5` · FE `a3703a5`)
+
+**A.** **✅ BE+FE Fixed (Q875)** — Q874의 ThinSpace/VeryThinSpace·Negative*Space에 이어 **`&ThickSpace;`** alias를 **공백**으로 정규화하고, **`&InvisibleTimes;`·`&ApplyFunction;`·`&InvisibleComma;`·`&InvisiblePlus;`** 및 짧은 alias **`&af;`·`&it;`·`&ic;`** 같은 **MathML invisible operator**는 **제거**한 뒤 bootstrap gate를 맞춥니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&ThickSpace;=disabled` | ThickSpace → 공백 |
+| `bootstrap&InvisibleTimes;=disabled` | invisible operator strip |
+| `guardian&af;-bootstrap=disabled` | `&af;` strip → `guardian-bootstrap=disabled` |
+
+> 관련: Q874 · Q873 · Q876 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q876. live E2E **bootstrap blocker**에 **`&lrm;`·`&PositiveThinSpace;`** 가 있으면? (BE `0a8a635` · FE `039cd88`)
+
+**A.** **✅ BE+FE Fixed (Q876)** — 이메일·게이트웨이 래퍼가 **`&lrm;`·`&rlm;`** bidi mark 또는 **`&PositiveThinSpace;`·`&PositiveMediumSpace;`·`&PositiveThickSpace;`·`&PositiveVeryThinSpace;`** · **`&NegativeVeryThinSpace;`** MathML space alias로 토큰을 쪼개도 BE·FE가 mark는 **제거**하고 Positive*Space는 **공백**으로 정규화합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&lrm;=disabled` | LRM strip |
+| `bootstrap&PositiveThinSpace;=disabled` | Positive*Space → 공백 |
+| `guardian&NegativeVeryThinSpace;-bootstrap=disabled` | NegativeVeryThinSpace strip |
+
+> 관련: Q875 · Q877 · Q874 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q877. live E2E **bootstrap blocker**에 **bidi embedding/isolate·`&NonBreakingSpace;`** 가 있으면? (BE `d911983` · FE `29fc34f`)
+
+**A.** **✅ BE+FE Fixed (Q877)** — Q876의 LRM/RLM에 이어 **`&lre;`·`&rle;`·`&lro;`·`&rlo;`·`&lri;`·`&rli;`·`&fsi;`·`&pdi;`·`&pdf;`** HTML5 **bidi embedding/override/isolate** named entity를 **제거**하고, MathML **`&NonBreakingSpace;`** alias는 **`&nbsp;`와 동일하게 공백**으로 정규화합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&lri;=disabled` | LRI strip |
+| `code=bootstrap&NonBreakingSpace;=disabled` | NonBreakingSpace → 공백 |
+| `bootstrap&fsi;=&pdi;disabled` | FSI/PDI strip 후 gate |
+
+> 관련: Q876 · Q879 · Q857 · Q875 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q878. **가정통신문 화면**에서 **스마트폰으로 표가 화면 밖으로 밀립니다.** (G2, UXD-183, FE `d171df6`)
+
+**A.** **✅ FE Fixed (Q878)** — `/clients/home-newsletter` 의 **초안·기관 공지·발송 이력** 3개 표가 공용 `Table` 컴포넌트를 거치지 않아 **8열 발송 이력** 등이 **페이지 전체 가로 스크롤**을 유발했습니다. 각 `<table class="ds-table">` 을 **`.ds-table-wrap`** 으로 감싸 **카드 안에서만** 좌우 스와이프되도록 수정했습니다. caption·scope·`data-testid`는 그대로입니다.
+
+| 증상(이전) | 현재 |
+|------------|------|
+| 좁은 창·모바일에서 **화면 전체**가 옆으로 밀림 | **표 영역만** 가로 스크롤 |
+| 발송 이력 8열 표가 카드 밖으로 넘침 | `.ds-table-wrap` overflow containment |
+
+> 관련: Q788 · Q790 · Q858 · USER_MANUAL §4-7-3a · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q879. live E2E **bootstrap blocker**에 **`&LeftToRightEmbedding;`** 같은 **긴 이름 bidi alias**가 있으면? (BE `53efa0b` · FE `975aecb`)
+
+**A.** **✅ BE+FE Fixed (Q879)** — Q877의 short form(`&lre;`·`&rle;`·`&lri;`·`&lrm;`…)에 더해, 게이트웨이가 HTML5 **long-form bidi named entity**로 토큰을 감싸도 BE·FE가 **동일하게 제거**합니다.
+
+| long-form (예시) | short form 대응 | 처리 |
+|------------------|-----------------|------|
+| `&LeftToRightEmbedding;` / `&RightToLeftEmbedding;` | `&lre;` / `&rle;` | strip |
+| `&LeftToRightOverride;` / `&RightToLeftOverride;` | `&lro;` / `&rlo;` | strip |
+| `&LeftToRightIsolate;` / `&RightToLeftIsolate;` / `&FirstStrongIsolate;` | `&lri;` / `&rli;` / `&fsi;` | strip |
+| `&PopDirectionalFormatting;` / `&PopDirectionalIsolate;` | `&pdf;` / `&pdi;` | strip |
+| `&LeftToRightMark;` / `&RightToLeftMark;` | `&lrm;` / `&rlm;` | strip |
+
+> 관련: Q877 · Q876 · Q880 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q880. live E2E **bootstrap blocker**에 **`&ZeroWidthNonJoiner;`·`&ZeroWidthJoiner;`** 가 있으면? (BE `ba5b0cb` · FE `61f8f19`)
+
+**A.** **✅ BE+FE Fixed (Q880)** — Q869의 짧은 alias **`&zwnj;`·`&zwj;`** 에 이어, **긴 이름** **`&ZeroWidthNonJoiner;`·`&ZeroWidthJoiner;`** 도 제거한 뒤 bootstrap gate를 맞춥니다. FE channel-status·live harness·BE readiness support가 lockstep입니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&ZeroWidthNonJoiner;=disabled` | long ZWNJ strip → `bootstrap=disabled` |
+| `guardian&ZeroWidthJoiner;-bootstrap=disabled` | long ZWJ strip → fail-closed |
+
+> 관련: Q869 · Q879 · Q861 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q881. **기관 공지·가정통신문·연계기록지**는 각각 언제 쓰나요? (G2 · G-LINKAGE Must)
+
+**A.** **✅ 현장 Must 3채널** — 같은 「보호자·기관 소통」이라도 **대상·발송 방식**이 다릅니다. 혼용하면 감사·발송 이력이 갈라집니다.
+
+| 채널 | 화면 | 누구에게 | 무엇을 | 발송 |
+|------|------|----------|--------|------|
+| **기관 공지·자료실** (10-4) | `/clients/home-newsletter#facility-notices` | **센터 전체**(게시판) | NOTICE/RESOURCE 초안→게시 · 첨부 http(s) | **게시만** — 개인 알림톡 아님 |
+| **가정통신문** (1-5) | 같은 화면 작성·이력 + 이용자 상세 발송 | **특정 이용자 보호자** | 초안 작성·미리보기 → 이용자별 발송 | **`POST …/notifications/home-newsletter`** (야간·조용한 시간대 가드) |
+| **연계기록지** (1-10) | `/clients/:id` 탭 · `/clients/linkage-records` | **연계 기관·이관 기록** | HOSPITAL/HOME_CARE/TRANSFER 초안→발송 | **`POST …/linkage-records/{id}/dispatch`** · 지점 리포트 조회 |
+
+**빠른 선택**: 센터 공지·자료 → **기관 공지** · 보호자 개별 안내장 → **가정통신문** · 병원·재가·이관 연계 문서 → **연계기록지**.
+
+> 관련: Q788 · Q217 · Q819 · Q826 · USER_MANUAL §1-5·§4-7-3a · CHANGELOG 2026-07-16
+
+---
+
+### [TWR] Q882. live E2E **bootstrap blocker**에 **`&NoBreakSpace;`**(legacy NBSP alias)가 있으면? (BE `ff80f0b` · FE `8a05640`)
+
+**A.** **✅ BE+FE Fixed (Q882)** — Q872의 **`&NoBreak;`·`&ZeroWidthNoBreakSpace;`**(zero-width strip)와 구분해, 일부 게이트웨이가 쓰는 **비표준 long-form `&NoBreakSpace;`** 도 fail-closed 대상입니다. BE는 **`&nbsp;`·`&NonBreakingSpace;`와 같이 공백**으로, FE channel-status·live harness는 **strip**한 뒤 bootstrap gate를 맞춥니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&NoBreakSpace;=disabled` | legacy alias decode → `bootstrap-disabled` gate |
+| `guardian-bootstrap&NoBreakSpace;=disabled` | 동일 — guardian bootstrap blocker 인식 |
+| `alt&NoBreakSpace;=guardian` | FE strip → `alt=guardian` (non-blocker 토큰 정규화) |
+
+> **Q872와의 차이**: Q872 = **`&NoBreak;`·`&ZeroWidthNoBreakSpace;`** (zero-width) · Q882 = **`&NoBreakSpace;`** (legacy NBSP alias, Q877 `&NonBreakingSpace;` 계열)
+
+> 관련: Q872 · Q877 · Q857 · Q880 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16
+
+---
+
+## 계획·미리보기 (P1 잔여·v2+)
+
+다음 기능들은 **Must v1 사후 계획**에 포함되거나 **현재 미리보기/부분 구현** 상태입니다. 사용 전에 IT·기획과 일정을 확인하세요.
+
+---
+
+### [TWR] Q863. **M11 직원 급여 저장·수익·인건비**는 언제 추가되나요? (M11, US-PAYROLL-M11, v2+)
+
+**A.** **⏳ 계획 중** — 현재 M11은 **미리보기만 가능** (저장 없음):
+- **§4-7-1 급여대장** — 직원·급여월·기본급·수당·공제·출근일·실지급액 미리보기
+- **§4-7-2 간이명세서** — 지급·공제·세금·실지급액 미리보기 + kind 22 알림톡 발송만
+
+**저장·자동 집계는 v2+에 포함**:
+- M11-1: 급여 월별 저장 및 검증
+- M11-3: 수익·인건비 자동 집계 (공단 요양비 ÷ 급여)
+- M11-5: 인건비 60% 기준 준수 확인
+
+**지표**: module ID **11** — 현재 **0.7** (미리보기만) → v2+ **1.0** 계획
+
+> 관련: USER_MANUAL §4-7 · PLAN_NOTES 대기 우선순위 1
+
+---
+
+### [TWR] Q864. **프로그램 리포트에서 지점 필터**가 왜 안 되나요? (program reports FE `branchId`, v2+)
+
+**A.** **⏳ FE UI 미연동 (BE는 ✅)** — 프로그램 리포트(G-REPORT-DENSITY)는 **계층이 갈라져** 있습니다.
+
+| 계층 | 상태 | 내용 |
+|------|------|------|
+| **BE API** | **✅ Fixed (Q715)** | `GET …/programs/reports/{participations,schedules,…}?branchId=` — JWT **read scope** 내 지점만 · 범위 밖 **403** (`49fe2e7`) |
+| **FE 화면** | **⏳ P2** | `/programs/reports/*` BranchSwitcher 선택값이 조회 API에 **아직 미전송** — 활성 JWT 스코프(센터장=자기 지점)로만 조회 |
+
+**우회**:
+- **센터장(`branch_admin`)** — 자기 지점만 보이므로 화면 그대로 사용
+- **통합 관리자(`hq_admin`)** — 특정 지점만 보려면 **Swagger/API**로 `branchId`를 직접 지정하거나, 해당 지점 스코프 계정으로 로그인
+
+**v2+ FE 계획**: BranchSwitcher → `branchId` 쿼리 wire · 필터 persist(`G-BILLING-REPORT-FILTER-PERSISTENCE` 패턴)
+
+> 관련: FAQ **Q715** · USER_MANUAL §1-4 점검표 · DEPLOYMENT_GUIDE §1-4 · PLAN_NOTES 대기 우선순위 3
+
+---
+
+### [TWR] Q865. **본인부담 간편결제 (7-5)**는 어떤 상태인가요? (7-5 live PG, v2+)
+
+**A.** **⏳ 준비 중** — 현재는 **stub PG (가짜 결제화면)**만 연동:
+- **FE**: `/billing/easy-pay` · `/billing/payments` 에서 결제 버튼 표시
+- **BE**: `GET /api/v1/billing/easy-pay/payment-gateway-launch` — **스킵 payload** 반환
+
+**v2+ live PG 구성** (실제 결제):
+1. **카드사 연동** — 현대카드·우리카드·국민카드 등
+2. **PG 설정 checklist** — env·webhook·API key·smoke test
+3. **결제 이력·입금 확인** — 실 결제 취소·환불
+
+**현장 테스트**: 파일럿 센터에서 stub로 **수납 프로세스(검색·확인·이력)만** 검증 중
+
+> 관련: USER_MANUAL §4-8 · DEPLOYMENT_GUIDE §1-4 · PLAN_NOTES 대기 우선순위 4
+
+---
+
+### [TWR] Q866. **실시간 문자 발송 (J03 Solapi)**이 사용되나요? (J03 Solapi live dispatch, v2+)
+
+**A.** **⏳ 준비 중** — 현재 J03은 **템플릿 카탈로그 + 채널 준비 상태**:
+- **FE**: `/organization/settings` 알림 채널 패널 — 문자 발송 준비 상태 표시
+- **BE**: `/api/v1/notifications/template-catalogs` · `/notifications/dispatch-reference-unit-rates` — 발송 단가 조회만
+
+**v2+ live dispatch** (실 발송):
+1. **Solapi 신청** — SMS 발송 API 계약·API key·서명
+2. **발송 API 통합** — `POST /api/v1/notifications/{templateId}/dispatch`
+3. **발송 이력·실패 재시도** — 운영자 콘솔
+
+**현재**: 알림톡(kind 22·급여명세서)은 발송 가능 · SMS(kind 13·기타)는 준비 중
+
+> 관련: USER_MANUAL §5-5 · API_SPEC §11-10 · PLAN_NOTES 대기 우선순위 5
+
+---
+
+### [TWR] Q867. **회계 장부 (G-ACCOUNTING-IN-APP-LEDGER)**는 언제 나오나요? (G-ACCOUNTING-IN-APP-LEDGER, v3+)
+
+**A.** **⏳ 검토 중** — 현재 회계는 **M12 BPO 전담**:
+- **FE**: `/accounting` 카드 — 수지파인(BPO) SSO·공개 로그인으로 외부 시스템 진입
+- **BE**: BPO 자격·세션 · 공개 로그인 fallback · SSO blocker 안내
+
+**v3+ in-app ledger** (사내 통합):
+1. **회계 대장 조회** — 월별·지점별 수입·지출 요약
+2. **원천세·4대보험 현황** — 급여 연계·자동 집계
+3. **PDF 출력·월마감** — 공식 서식
+
+**의사결정**: 중소 센터 회계 **현황 파악 수준** vs BPO **전문 처리**의 균형 검토 중
+
+> 관련: USER_MANUAL §4-6-5 · ADMIN_GUIDE §6-2-24 · REQUIREMENTS M12
 
 ---

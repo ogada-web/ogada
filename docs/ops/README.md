@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-06-26T14:00:00+09:00 -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-16T16:45:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **384차 자동 동기화 완료** (BE `59e4e7f`·FE `8ceb25c`·V1–V182·118 route·94 page·**Q731 G-NHIS-SCHEDULE-IMPORT FE full-stack · Q733 g21 component status codes**)  
-> **최종 갱신**: 2026-06-26 (384차 TWR — **Q731 · Q733 · baseline 정합**)
+> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (NoBreakSpace legacy · ZeroWidthNonJoiner/Joiner long · bidi long-form alias · ThickSpace·MathML invisible · bidi marks·Positive*Space · bidi embedding·NonBreakingSpace · HTML space alias · NoBreak/word-joiner · dash/minus/hyphen · zero-width·tab/newline · invisible Unicode Cf · soft-hyphen · M12 SSO demote · G2 branch scope · G2 표 a11y · Must 소통 채널 구분 · 모듈 **~97.4%**)  
+> **최종 갱신**: 2026-07-16 (TWR — Q882 · baseline `ff80f0b`/`8a05640`)
 
 ---
 
@@ -23,18 +23,68 @@
 
 **포함 내용**:
 - 클라우드 배포 환경 설정 (Docker, PostgreSQL, Spring Boot 실행)
-- 데이터베이스 마이그레이션 (Flyway **V1–V182**, G21 NHIS 비교·G32 케이스관리·**V182 staff committee meeting integrity**·**V181 staff committee meeting logs**·**V180 program group integrity**·**V179 프로그램 그룹**·**V178 CMS·목욕 CHECK**·**V177 목욕 전후관찰**)
+- 데이터베이스 마이그레이션 (Flyway **V1–V196**, **V196 연계기록 무결성**·**V195 지점 리포트 인덱스**·**V194 client_linkage_records**·**V193 첨부 http(s)**·**V192 기관 공지**)
 - 환경 변수·시크릿 관리 (API 키, JWT 시크릿, Kakao 배차 API, CMS 연동)
 - SSL/HTTPS 설정
 - 모니터링·로그 수집
 - 백업·복구
 
-**최신 항목** (2026-06-26, 384차):
-- **Q731** — **G-NHIS-SCHEDULE-IMPORT** — **`VisitNhisImportGuidePanel`** on **`/visits`** · PLAN/BILLING dual workflow (`8ceb25c`/`4567030`) · **full-stack ✅**
-- **Q733** — **QA-B95 g21 component status codes** — **`liveE2eVisitScheduleStatusCode`·`liveE2eBillingVisitScheduleStatusCode`·`liveE2eNhisImportStatusCode`** (`59e4e7f`)
-- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`59e4e7f`/`8ceb25c`**
+**최신 항목** (2026-07-16):
+- **Q882** — live E2E **NoBreakSpace legacy alias** BE+FE lockstep (`ff80f0b`/`8a05640`)
+- **Q880** — live E2E **ZeroWidthNonJoiner/Joiner long alias** BE+FE lockstep (`ba5b0cb`/`61f8f19`)
+- **Q879** — live E2E **bidi long-form HTML entity alias** BE+FE lockstep (`53efa0b`/`975aecb`)
+- **Q881** — **Must** 기관 공지·가정통신문·연계기록지 **채널 구분**
+- **Q877** — live E2E **bidi embedding/isolate·NonBreakingSpace** BE+FE lockstep (`d911983`/`29fc34f`)
+- **Q876** — live E2E **bidi marks·MathML Positive*Space** BE+FE lockstep (`0a8a635`/`039cd88`)
+- **Q875** — live E2E **ThickSpace·MathML invisible operator** BE+FE lockstep (`3937fa5`/`a3703a5`)
+- **Q878** — **G2 가정통신문** draft·notices·history **`.ds-table-wrap` 모바일 overflow** (`d171df6`, UXD-183)
+- **Q874** — live E2E **HTML space alias**(`&ThinSpace;`·Negative*Space) BE+FE lockstep (`fde0606`/`5b69e7a`)
+- **Q872·Q873** — live E2E **NoBreak·word-joiner/named space** FE lockstep 완료 (`f73413d`)
+- **Q871** — live E2E **dash/minus/hyphen** HTML entity → ASCII `-` (`7e02d58`/`cf8a248`)
+- **Q861** — live E2E **invisible Unicode format(Cf)** bootstrap strip (`20ac77f`/`1bc6eab`)
+- **Q862** — live E2E **추가 유니코드 공백**(figure·punctuation·hair·NNBSP·전각) 정규화 (`8098f23`/`91aee07`)
+- **Q859** — live E2E **soft-hyphen(`&shy;`)·whitespace entity** bootstrap decode (`c67c7ed`/`83e6296`)
+- **Q860** — **M12 BPO** SSO **블로커 잔여 시 launch·버튼 숨김** (`b42174a`)
+- **Q858** — **기관 공지·자료실** 게시·삭제 후 **빈 페이지 자동 복구** (`483dfe1`)
+- **Q857** — live E2E **`&nbsp;`·유니코드 NBSP** bootstrap decode (`4bf5684`)
+- **Q855** — live E2E **`&num;` named-num**(세미콜론 생략 포함) HTML entity bootstrap decode (`a8d0af5`/`2cefb1d`)
+- **Q856** — live E2E **snake_case** bootstrap blocker 코드 fail-closed (`1411b54`)
+- **Q854** — **M12 BPO SSO 잔여 블로커** — `/accounting` 한국어 조치 안내 (`07198a2`)
+- **Q850** — **G17 지표27 이중번호** — 평가 지표27(기능회복) ≠ 필수업무 일련27(가족과의 소통) (`74ae324`)
+- **Q851·Q844** — **문자 참고 단가 전용 카탈로그** `GET …/dispatch-reference-unit-rates` · FE 3단 우선순위 (`0ad3b07`/`79763a3`)
+- **Q852** — live E2E **삼중 HTML entity** bootstrap decode (`33f388d`/`a89a873`)
+- **Q853** — 알림 패널 참고 단가 **고대비 CSS** (`9181ca8`)
+- **Q864 정정** — 프로그램 리포트 **BE `branchId` ✅(Q715)** · **FE UI 미연동 P2**
+- **Must 보강** — 위원회 **보호자 회의=필수업무 27** · **CalendarDayMarker** (Q723·Q843)
+- **baseline 정합** — FAQ·USER_MANUAL·ADMIN·DEPLOYMENT·CHANGELOG **`d911983`/`29fc34f`** · Flyway **V1–V196**
 
-**이전 항목** (2026-06-26, 383차):
+**이전 항목** (2026-07-15):
+- **Q807** — **기관 공지 첨부 http(s) 서버 검증 · 복제 후 수정 · 상세 링크 차단** (`7569f1c`/`5b3075f`)
+- **Q804~Q806** — 기관 공지 복제·상세·메뉴 · live E2E 보호자 공백=missing
+- **baseline 정합** — FAQ·USER_MANUAL·ADMIN·DEPLOYMENT·CHANGELOG **`7569f1c`/`5b3075f`** · Flyway **V1–V192**
+
+**이전 항목** (2026-07-13):
+- **Q761** — **위생·안전 최근 기록 「결과」열 StatusBadge** — 적합·부적합·해당 없음·일부 미흡 (`2704fd8`)
+- **Q760** — **위생·안전 현장 운영 체크리스트** — 일일·정기·감염·시설운영 7단계 (Q745~Q759 통합)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`2f4bfdf`/`2704fd8`**
+
+**이전 항목** (2026-06-27, 404차):
+- **Q757** — **US-Q01 M6 required checklist validation** — **`SafetyChecklistForm` submit guard** · **「(필수)」** label (`de12f525`)
+- **Q758** — **optional `required` semantics fix** — **`required === true` only** · unspecified optional (`b10c5bb`)
+- **Q747 deepen** — NHIS seed **year-specific `422` message** (`2f4bfdf`)
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`2f4bfdf`/`b10c5bb`** · **98 page**
+
+**이전 항목** (2026-06-27, 402차):
+- **Q756** — **US-Q01 M6 safety template item schema metadata** — **`helpText`·`required`** per checklist item · **`SafetyChecklistForm` a11y** (`81e3c11`/`2e35298`)
+- **Q750·Q755 deepen** — catalog response 필드·routing jsonPath contract 정정
+- **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`81e3c11`/`2e35298`**
+
+**이전 항목** (2026-06-27, 401차):
+- **Q750 (정정)** — **US-Q01 M6 safety template catalog FE wire** — **`useSafetyCheckTemplateCatalog`** · 3 page API-driven checklist (`cf73ae8`/`2e35298`)
+- **Q754** — **local template fallback Alert** — catalog API fail → info Alert (`db15b56`/`2e35298`)
+- **Q755** — **9-endpoint routing contract lock** (`72924bb`/`fbd403c`)
+
+**이전 항목** (2026-06-27, 400차):
 - **Q731** — **G-NHIS-SCHEDULE-IMPORT** — **`GET /visits/imports/nhis/guidance`** PLAN/BILLING dual workflow (`4567030`) · **FE wire P2**
 - **Q732** — **QA-B95 g21 status code FE wire** — code-first harness parse (`6009ba7`)
 - **baseline 정합** — FAQ·DEPLOYMENT·ADMIN **`4567030`/`6009ba7`**
@@ -494,7 +544,7 @@
 | **백엔드 API** | Must + V180 ✅ | @ `d06e3f1` · **QA-B95 recovered-auth hint ✅** · **G-REPORT-DENSITY M5 reports+** · BE Test **271 suites** |
 | **데이터베이스** | V1–V180 | V180 program group integrity · V179 프로그램 그룹·멤버십 · V178 CMS·목욕 CHECK |
 | **프론트엔드** | 118 route · 93 page | @ `4bbd54a` · **StaffMonthlySchedulePage** · **ProgramReportsPage** · FE test **479+** |
-| **문서화** | Must 갭 0 | **P2**: 5-9 그룹 CRUD UI · program reports FE `branchId` · 7-5 live PG · M6 safety · **P3**: 8-6 PDF 공식 서식 |
+| **문서화** | Must 갭 0 (Q759까지) | **P2**: program reports FE `branchId` · 7-5 live PG · J03 Solapi live · LCMS 3-method · **M11/M12 P1 scope** · **P3**: 8-6 PDF 공식 서식 · G-STAFF-WELFARE |
 
 ---
 
@@ -510,18 +560,19 @@
 - ✅ **Q714 G-REPORT-DENSITY M5** — 프로그램 리포트 4종 + 5-9 group-history shell (`650801b`/`337453d`/`15a3b7f`)
 - ✅ merge gate **827** · cross-stream **SYNCED**
 
-**P2 Planned** (이후 버전) — 운영 주의:
-- **Q726 G-CLIENT-CONTRACT-BULK-PRINT FE wire** — 급여제공변경계약서 일괄 출력 화면 (BE API ready @`4df9465`)
-- **7-5 live PG** — 실제 카드·카카오페이 벤더 연동 (현재 stub) · **`EasyPayPanel` catalog wire P2** (API @`56831fc`)
-- **J03 Solapi live dispatch** — 알림톡·SMS 실발송 (framework ready, credential binding P2)
-- **program reports FE branchId query** — HQ 타 지점 리포트 조회 (API @`49fe2e7` ready)
-- **M6 6-2~6-4 `/safety/*`** — 안전점검 서브폼 (케어포 모듈 6, P2 부분)
-- **L03 간호급여 잔여 5 leaf** — 간호급여 필요 부분
+**P2 Planned** (이후 버전) — 운영 주의 (402차 baseline 기준):
+- **7-5 live PG** — 실제 카드·카카오페이 벤더 연동 (현재 stub) · **`EasyPayProviderCatalogPanel` FE wire ✅** (API `56831fc`, Q709) · **provider-catalog catalog 5/5 완성** (Q709)
+- **J03 Solapi live dispatch** — 알림톡·SMS 실발송 (framework ready, credential binding P2) · **`dispatchReadyCount` API** ✅ (Q574)
+- **LCMS CMS 3-method** — 수납 관리 FCMS 추가 연동 (현재 엔젤 5-method, Q704)
+- **program reports FE branchId query** — HQ 타 지점 리포트 조회 (API `49fe2e7` ready, Q715)
+- **5-9 group-history shell** — 그룹 관리 UI (BE `337453d` ready, Q714)
+- **G34 SMS live** — 케이스관리 SMS 실발송 (API ready, Q574)
 
-**P3 Out-of-scope**:
-- **8-6 회의록 PDF 공식 서식** — 전자서명 workflow (운영 요청 없음)
-- **RFID dispatch** — 장비 호환성 대기
-- **CMS 3-method (가상계좌·다계좌·현금)** — 추가 시스템 연동
+**P3 Out-of-scope** (운영 비필수):
+- **8-6 회의록 PDF 공식 서식** — 전자서명 workflow (운영 요청 없음) · plain-text 출력 ✅ (Q723)
+- **G-STAFF-WELFARE P3** — 복지 관리 모듈 (운영 요청 확인 중, FAQ21796)
+- **선임 업무일지 템플릿 카탈로그** — 다중 템플릿 지원 (현재 정적, Q635)
+- **8-12 PDF 공식 서식** — 공식 양식 준수 (현재 구현·운영 미요청)
 
 **자세히**: [ROADMAP.md](../planning/ROADMAP.md) · **실시간 진행**: [CHANGELOG.md](ops/CHANGELOG.md) 최근 7일 참고
 
@@ -643,7 +694,79 @@
 
 ---
 
-## 🎯 도움말
+## [TWR] 404차 — M6 required-flag vitest lock (2026-06-27)
+
+**배경**: develop HEAD baseline (**BE `2f4bfdf`** / **FE `154ebee`** · 404차) — **QA-B358 safety required-flag unit test sync ✅** · Q758 semantics **회귀 lock ✅**.
+
+**404차 문서 갱신** (이번 호출):
+
+| Q번 | 기능 | 상태 | 변경 |
+|-----|------|------|------|
+| **Q759** | **required-flag vitest lock** | **✅ test** | **`safetyChecks.test.js`·`safetyCheckCatalog.test.js`** — optional default · **`required: false` preserve** (`154ebee`) |
+| **Q758** | **optional semantics** | **✅ deepen** | vitest lock cross-ref · implementation @ `b10c5bb` unchanged |
+
+**운영 영향**:
+- ✅ **현장 UX 변화 없음** — Q757·Q758 동작 유지
+- ✅ **CI 회귀 방지** — catalog **미명시 item optional** semantics lock
+- 📋 **P1 carry**: **M11/M12** payroll/accounting routes (+6.90pp KPI lever)
+
+**자세히**: FAQ.md **Q759·Q758** · USER_MANUAL §5-9 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §11-3 · CHANGELOG 404차
+
+---
+
+## [TWR] 403차 — M6 required 검증·optional semantics·NHIS seed year guidance (2026-06-27)
+
+**배경**: develop HEAD baseline (**BE `2f4bfdf`** / **FE `b10c5bb`** · 403차) — **US-Q01 M6 server-driven required validation ✅** · **optional `required` semantics regression fix ✅** · **NHIS seed year-specific `422` ✅**.
+
+**403차 문서 갱신** (이번 호출):
+
+| Q번 | 기능 | 상태 | 변경 |
+|-----|------|------|------|
+| **Q757** | **required checklist submit guard** | **✅ full-stack** | **`SafetyChecklistForm`** · **「(필수)」** · per-item field errors (`de12f525`) |
+| **Q758** | **optional `required` semantics** | **✅ fix** | **`isSafetyCheckItemRequired === true` only** · unspecified optional (`b10c5bb`) |
+| **Q747** | **NHIS seed year guard** | **✅ deepen** | **`{year}년 수가 seed는 지원하지 않습니다.`** in `422` body (`2f4bfdf`) |
+| **Q752** | **live fee seed preflight** | **✅ deepen** | missing base URL · network error skip reason (`6dcf7d1`) |
+
+**운영 영향**:
+- ✅ **위생·안전 일일·정기점검** — **`required: true`만** 저장 전 필수 · **선택 항목 미체크 허용**
+- ✅ **통합 관리자** — Swagger **`year=2027`** 시 **요청 연도가 오류 본문에 표시**
+- 📋 **P1 carry**: **M11/M12** payroll/accounting routes (+6.90pp KPI lever)
+
+**자세히**: FAQ.md **Q757·Q758·Q747** · USER_MANUAL §5-9 · ADMIN_GUIDE §1-4·§6-3-1 · DEPLOYMENT_GUIDE §1-4·§11-3 · CHANGELOG 403차
+
+---
+
+## [TWR] 402차 — Must 기능 완벽 클로저 & 위생·안전(M6) 전 구현 (2026-06-27)
+
+**배경**: develop HEAD baseline (**BE `81e3c11`** / **FE `2e35298`** · 402차) — **US-Q01 M6 위생·안전 4-route full-stack ✅** · **template catalog FE wire ✅** · **item schema metadata contract lock ✅** · **V185 integrity lock ✅**.
+
+**402차 문서 갱신** (이번 호출):
+
+| Q번 | 기능 | 상태 | 변경 |
+|-----|------|------|------|
+| **Q756** | **template item `helpText`·`required`** | **✅ full-stack** | **`dailyItems[0].helpText` API schema** · **`periodicSubForms[0].items[0].required` routing lock** · **`SafetyChecklistForm` a11y ✅** (`81e3c11`/`2e35298`) |
+| **Q755** | **9-endpoint routing contract** | **✅ lock** | **`MustApiEndpointRoutingTest.SafetyCheckRouting`** · **`SafetyCheckControllerRoutingTest`** · **FE jsonPath alignment ✅** (`72924bb`/`fbd403c`) |
+| **Q750** | **template catalog FE wire** | **✅ full-stack** | **`useSafetyCheckTemplateCatalog` hook** · **3 page API-driven** · **catalog API fail → fallback Alert** (`aa9565c`/`cf73ae8`/`2e35298`) |
+| **모듈 KPI** | **M6 id=6 진행률** | **△→✅ 100%** | **0→1.0** · **KPI 84.31%** · must 갭 0 |
+| **V185** | **DB integrity** | **✅ commit** | **`safety_check_records` 3 CHECK** · **payload_json object·sub_form_code·result_code shape** (`7a9ed71`) |
+
+**운영 영향**:
+- ✅ **모든 Must 기능 full-stack 구현 완료** — 현장 인수 준비 완료
+- ✅ **FAQ Q756까지 완벽 문서화** — 본 가이드 참고
+- ✅ **Flyway V1–V185** — DB integrity defense-in-depth 완료
+- ✅ **123 route · 97 page** — 프론트엔드 네비게이션 완결
+- ✅ **live E2E `safetyCheckLiveApi.e2e.test.js`** — 회귀 테스트 lock
+- 📋 **P2 Planned**: live PG · Solapi live dispatch · LCMS 3-method · program reports branchId
+- 📋 **P3 Out-of-scope**: PDF 공식 서식 · G-STAFF-WELFARE · template catalog multi-support
+
+**coder / tester 다음 액션**:
+1. ✅ BE/FE 병합 준비 — merge gate 875 · cross-stream BLOCK 해제 기다리기
+2. ✅ live E2E full-suite PASS — G21/G32/G42 downstream blocker 없음
+3. ✅ 현장 도입 체크리스트 (USER_MANUAL §1-4~1-5 참고)
+
+**자세히**: FAQ.md **Q756·Q755·Q750·Q751** · USER_MANUAL §1-3·§5-9 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4·§11-3 · CHANGELOG 402차
+
+---
 
 **Q. 어느 문서를 먼저 읽어야 하나요?**
 
@@ -678,4 +801,4 @@
 
 ---
 
-*Last updated: 2026-06-13 by tech_writer (TWR) — ogada v1 개발 중*
+*Last updated: 2026-06-27 by TWR (404차) — ogada v1 develop HEAD `2f4bfdf`/`154ebee` · Must 갭 0 · KPI 84.31%*
