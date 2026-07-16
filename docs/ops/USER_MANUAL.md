@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T18:50:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T23:12:00Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-16 (Q882: NoBreakSpace legacy alias · baseline `ff80f0b`/`8a05640` · Flyway **V1–V196**)
+> **최종 갱신**: 2026-07-16 (Q892: 카탈로그 행 헤더 a11y · Q890~Q891: live E2E entity · Q889: 카탈로그 13 · baseline `d247cdf`/`6900a8f` · Flyway **V1–V196**)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -25,13 +25,13 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 역할별 메뉴·권한·업무 절차 | `sysadmin` 기술 설정 상세 (→ `ADMIN_GUIDE.md`) |
 | 보호자 QR 셀프 체크인 (B방식) | `caregiver`·`social_worker` 전용 **식단·일정 등록** (관리자만, §5-9) |
 
-### 1-3. 구현 상태 안내 (2026-07-16 develop HEAD `ff80f0b` / frontend `8a05640` 기준)
+### 1-3. 구현 상태 안내 (2026-07-16 develop HEAD `45e1f00` / frontend `b753586` 기준)
 
 | 영역 | 상태 | 비고 |
 |------|------|------|
-| 백엔드 API | **Must + … + V196 ✅** @ `ff80f0b` **SYNCED** · **QA-B95 NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | Flyway **V186–V196** · BE Test **~2278** |
+| 백엔드 API | **Must + … + V196 ✅** @ `45e1f00` **SYNCED** · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | Flyway **V186–V196** · BE Test **~2278** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
-| 프론트엔드 | **133 route · 106 page** @ `8a05640` **SYNCED** | **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **G2 branch scope fallback ✅** (**Q868**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **soft-hyphen decode ✅** (**Q859**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · **`/clients/home-newsletter` ✅** · **M11 `/payroll/*` 5화면 ✅** · … |
+| 프론트엔드 | **133 route · 106 page** @ `b753586` **SYNCED** | **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **G2 branch scope fallback ✅** (**Q868**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **soft-hyphen decode ✅** (**Q859**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · **`/clients/home-newsletter` ✅** · **M11 `/payroll/*` 5화면 ✅** · … |
 | UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·**G2 가정통신문·기관 공지**·**연계기록지**·**RFID 급여제공내역 일괄 SMS**·**M11 급여 5화면+kind22 발송**·**M12 BPO·SSO**·**위원회·보호자 회의록(필수업무 27)** 등 | **모듈 KPI ~97.4%** |
 | UI API 갭 | **P1**: **M11 급여 persist** · **수익·인건비 자동 집계** · **기관(테넌트)별 SSO 자격** · **P2**: **program reports FE `branchId` UI**(Q864·Q715 BE ✅) · **7-5 live PG** | |
 | **P2 Planned** | **L03 간호급여 잔여 5 leaf·7-5 live PG·J03 Solapi live dispatch·LCMS CMS 3-method·G34 SMS live·G-Payroll·G30 live E2E** | **G-STAFF-WELFARE P3**(FAQ21796) · **8-12 PDF 공식 서식**(Q315) · **선임 업무수행일지 템플릿 카탈로그** P3 (Q635 잔여) |
@@ -62,8 +62,8 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 민원상담 (G42) | `/staff/grievance-counselings` | `GET/POST/PATCH /api/v1/staff/grievance-counselings` · `POST .../submit` · `POST .../approve` · `POST .../follow-up` | 결재 대기 건수, 승인 후 60일 내 사후관리 준수율 |
 | 방문요양 NHIS 비교 (G21) | `/visits` (batch-confirm 모달) | `GET /api/v1/visits/confirm-readiness` · `GET /api/v1/visits/nhis-comparison` · `POST /api/v1/visits/batch-confirm` | 동일 월 비교 여부, PLAN/BILLING 분리 readiness, 확인 체크 후 일괄확정 |
 | **방문요양 월단위 일괄 확정취소 (US-V06, Q818)** | `/visits` (`VisitBatchUnconfirmPanel`) | `GET /api/v1/visits/batch-unconfirm-preview` · `POST /api/v1/visits/batch-unconfirm` | **4-digit 확인번호** · **6-cascade 경고 확인** · **CONFIRMED→DRAFT**(visits-only) · **a11y** |
-| **RFID 급여제공내역 SMS 일괄 (G-RFID, Q832)** | `/visits` **「RFID 계획·태그 비교」** | `POST …/imports/rfid/compare` · `POST …/imports/rfid/care-provision-dispatch` | **비교 후 후보 체크** → **kind 13 일괄 발송** · **방문요양만** · 후보 0명 info · **조용한 시간대 거부** |
-| **연계기록지 (G-LINKAGE-RECORD, Q819·Q822·Q826)** | `/clients/:clientId` **「연계기록지」** 탭 · **`/clients/linkage-records`** | `GET/POST/PATCH/DELETE …/clients/{id}/linkage-records` · `POST …/dispatch` · **`GET …/clients/linkage-records`** | **이용자별** 초안·발송 · **지점 통합 리포트(페이지네이션)** · **기관 200자·요약 5000자** |
+| **RFID 급여제공내역 SMS 일괄 (G-RFID, Q832)** | `/visits` **「RFID 계획·태그 비교」** | `POST …/imports/rfid/compare` · `POST …/imports/rfid/care-provision-dispatch` | **비교 후 후보 체크** → **kind 13 일괄 발송** · **방문요양만** · 후보 0명 info · **조용한 시간대 거부** · **체크박스 세로 묶음**(Q888) |
+| **연계기록지 (G-LINKAGE-RECORD, Q819·Q822·Q826)** | `/clients/:clientId` **「연계기록지」** 탭 · **`/clients/linkage-records`** | `GET/POST/PATCH/DELETE …/clients/{id}/linkage-records` · `POST …/dispatch` · **`GET …/clients/linkage-records`** | **이용자별** 초안·발송 · **지점 통합 리포트(페이지네이션)** · **기관 200자·요약 5000자** · **초안 없음 안내 가독성**(Q888) |
 | **공단 방문일정 import 안내·결과 상태 (G-NHIS-SCHEDULE-IMPORT + G-NHIS-IMPORT-ERROR-STATUS-SURFACE, Q731·Q735·Q738·Q739·Q740·Q741·Q742)** | `/visits` | `GET /api/v1/visits/imports/nhis/guidance` · `POST …/imports/nhis` | **PLAN/BILLING 4단계** · **`outcomeStatusNotes`·`errorRecoverySteps`(7단계)·`errorRecoveryKeywordNotes`(4종, API consume ✅)** · import 응답 **`outcomeStatus`/`outcomeSummary`** Alert · **인라인 복구 단계** · **미매칭 행 「수급자 찾기」** · **`/clients?branchId=&q=`** · **stale `branchId` → 전체 fallback** (`4567030`/`8ceb25c`/`331f24b`/`5636508`) |
 | **직원 급여대장 미리보기 (M11 US-PAYROLL-M11, Q775)** | `/payroll/ledger` | `POST /api/v1/staff/payroll/ledger-preview` | 직원·급여월·기본급·수당·공제 → **출근일수·실지급액** · **저장 없음** · 급여 연계 패널 |
 | **간이지급명세서 미리보기 (M11 11-6, Q778·Q831)** | `/payroll/reports` | `POST /api/v1/staff/payroll/simple-payment-statement-preview` · **`POST …/staff/notifications/staff-payroll-statement`** | **지급·공제 라인**·합계·실지급액 · **kind 22 알림톡 발송** · **저장·PDF 없음** |
@@ -118,7 +118,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **이용자 주소 검색·등록 (US-D01/D02, Q671·Q676)** | `/clients/new` · `/clients/:id/edit` | `POST/PATCH /api/v1/clients` — **`address`·`addressDetail`** · read **`addressSearch`·`addressDetail`** | **`KoreanAddressFields`** Kakao postcode · **수정 prefill ✅** (Q676) · **거주지 전체 표시** · **픽업 「거주지와 동일」** · **caregiver 수정 ✅** (Q675) |
 | **이용자 등록·수정 RBAC (Q675)** | `/clients/new` · `/clients/:id/edit` | `POST` social_worker+ · `PATCH` caregiver+ | **`clientPermissions.js`** · **요양보호사 수정만** · **등록은 사회복지사 이상** |
 | **이용자 목록 열 필터 (US-D01, Q672)** | `/clients` | `GET /api/v1/clients` (클라이언트 필터) | **`TableColumnFilter`** — 등급·성별·배차·지점 · **「거주지」열** (`7e048c0`) |
-| **ezCare SMS 템플릿 카탈로그 (G-SMS-TEMPLATE-CATALOG, Q686~Q692·Q697·Q699·Q813·Q831·Q844·Q851)** | `/organization/settings` · `/dashboard` · `/clients/:id` · `/staff/:id` · `/payroll/reports` · `/billing/claims/:id` | `GET /api/v1/notifications/template-catalog` · **`GET …/dispatch-reference-unit-rates`** · `GET /api/v1/notifications/channel-status` · `POST …/staff/notifications/*` · `POST …/billing/claims/{id}/notify` | **`NotificationChannelReadinessPanel`** **7종·발송 7/7** · **kind 22(급여명세서) 발송 UI** · **문자 발송 참고 단가(비청구·전용 카탈로그→channel-status→static)** · **`dispatchReady` 채널 자격** · **SMS 비긴급 즉시 발송(Q812)** · **고대비 표 테두리(Q853)** |
+| **알림톡·SMS 템플릿 카탈로그 (G-SMS / US-J03, Q686~Q692·Q697·Q699·Q813·Q831·Q844·Q851·Q889·Q892)** | `/organization/settings` · `/dashboard` · `/clients/:id` · `/staff/:id` · `/payroll/reports` · `/billing/claims/:id` | `GET /api/v1/notifications/template-catalog` · **`GET …/dispatch-reference-unit-rates`** · `GET /api/v1/notifications/channel-status` · `POST …/staff/notifications/*` · `POST …/billing/claims/{id}/notify` | **`NotificationChannelReadinessPanel`** **13종(ezCare 7+Kakao 6)·발송 13/13** · **Kakao kind 「—」** · **메시지명 행 헤더 a11y(Q892)** · **kind 22(급여명세서) 발송 UI** · **문자 발송 참고 단가(비청구)** · **`dispatchReady` 채널 자격** · **SMS 비긴급 즉시 발송(Q812)** · **고대비 표 테두리(Q853)** |
 | **본인부담 7-x lifecycle (M7, Q700)** | `/billing` · `/billing/payments` · `/billing/overdue` · `/billing/cms` · `/billing/easy-pay` · `/billing/reports/*` · `/billing/calculator` | *(Route crosswalk — BNK-592)* | **케어포 7-1~7-10 ↔ ogada 1:1** · **10/10 ✅** · **7-4 CMS 5/5 full-stack ✅** · superset 5 |
 
 ---
@@ -1760,7 +1760,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 >
 > 관련: FAQ **Q788** · **Q789** · **Q790** · **Q791** · **Q792** · **Q793** · **Q795** · **Q796** · **Q797** · **Q798** · **Q800** · **Q803** · **Q804** · **Q805** · **Q807** · **Q808** · **Q809** · **Q811** · **Q858** · **Q878** · **Q881** · **Q217** · ADMIN_GUIDE §6-2-24h · DEPLOYMENT §1-4 · CHANGELOG 2026-07-16
 
-#### 4-7-3b. 연계기록지 (G-LINKAGE-RECORD, Q819·Q822·Q826·Q842) — **이용자 작성 + 지점 리포트**
+#### 4-7-3b. 연계기록지 (G-LINKAGE-RECORD, Q819·Q822·Q826·Q842·**Q888**) — **이용자 작성 + 지점 리포트**
 
 전원·퇴소·외부기관 연계용 **케어포 1-10「연계기록지」** 패리티입니다. **작성**은 이용자 상세 탭에서, **지점 전체 현황**은 SideNav **「연계기록지 리포트」**에서 봅니다 (FAQ **Q819**·**Q826**·**Q842**).
 
@@ -1773,6 +1773,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 3. **「초안 저장」** — 상태 **초안(DRAFT)**. **초안 관리** 목록에서 **수정**·**삭제** 가능. 한도 초과·서버 오류는 **필드별 안내**.
 4. 내용 확인 후 **「발송」** — 상태 **발송 완료(DISPATCHED)**. **발송 후에는 수정·삭제 불가**.
 5. 탭 하단 **「연계기록지 발송 리포트」**에서 해당 수급자 유형·기관·작성일·발송 시각·상태 확인.
+6. **초안이 없을 때** **「수정·삭제 가능한 초안이 없습니다」** 안내가 회색으로 표시됩니다 (Q888).
 
 **지점 통합 리포트**
 
@@ -1821,7 +1822,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 | `POST /api/v1/staff/notifications/staff-payroll-statement` | `{ "staffUserId": "uuid", "yearMonth": "2026-06", "basePay": 2500000, "allowances": 0, "deductions": 0, "summary": "선택" }` |
 | `POST /api/v1/staff/notifications/staff-access-key` | `{ "staffUserId": "uuid" }` |
 
-> **readiness**: **`/organization/settings`** 또는 **대시보드** **`NotificationChannelReadinessPanel`** 에서 **발송 구현 7/7**·**비긴급 SMS 즉시 발송(Q812)** 항목을 확인하세요. **`dispatchReady=true`** 는 templateId 설정뿐 아니라 **SMS/알림톡 채널 자격**(Solapi key·secret·sender·PF ID)까지 충족해야 합니다 (FAQ Q686·Q690·Q813·Q831·`fed6f1f`).
+> **readiness**: **`/organization/settings`** 또는 **대시보드** **`NotificationChannelReadinessPanel`** 에서 **발송 구현 13/13**·**비긴급 SMS 즉시 발송(Q812)** 항목을 확인하세요. **`dispatchReady=true`** 는 templateId 설정뿐 아니라 **SMS/알림톡 채널 자격**(Solapi key·secret·sender·PF ID)까지 충족해야 합니다 (FAQ Q686·**Q889**·Q690·Q813·Q831·`fed6f1f`).
 
 ---
 
@@ -2317,7 +2318,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 3. 토글이 **즉시 서버에 저장**됩니다 — `GET /api/v1/organization` 로드 · `PATCH /api/v1/organization/settings` 저장 (FE `f749311`, Q116 **Fixed**).
 4. **「청구·정산」** 카드 — **`BillingSettingsPanel`** 에서 **청구명세서 생성 기준**을 선택하고 **저장**합니다 (FE `ac23529`, Q224). 레거시 DB 값 **`ATTENDANCE`/`NHIS`** 는 화면에서 **`ATTENDANCE_SCHEDULE`/`NHIS_IMPORT`** 로 자동 정규화됩니다.
 5. (기존 ERP 이관 시) 같은 카드 하단 **「청구시작 기준금액 (G33)」** 에서 **도입 전 미납·선납**을 **1회만** 설정합니다 (§5-5-1, Q269).
-6. **「알림 채널 준비 상태」** 카드 — **`NotificationChannelReadinessPanel`** (Q318·**Q802**·**Q809**·**Q812**·**Q835**·**Q837**·**Q839**·**Q844**·**Q851**·**Q853**·Q686~Q692·Q697·**Q813**, `6b0f2ae`·`adaee26`·`79763a3`·`9181ca8`) — Solapi·SMTP·필수 알림톡 템플릿 **설정 여부**와 **라이브 발송 준비**·**지금(비긴급) 발송 가능(알림톡·이메일·SMS 3채널)**·**조용한 시간대(22:00~08:00 KST)** 를 확인합니다. 「설정은 됐는데 밤에만 막힘」은 **지금 발송 가능=아니오** + **QUIET_HOURS_ACTIVE** 로 구분합니다 (FAQ **Q809**·**Q812**). API 응답은 **명세 별칭**(`solapiSenderNumberConfigured` 등)과 **구현 키**를 함께 받으며, **`readinessBlockers`** 가 URL 인코딩·**HTML entity(`&#45;`·`&lt;`)**·**대소문자·이중·삼중 entity(`&LT;`·`&AMP;#x2d;`·`&AMP;AMP;#45;`)** 로 와도 패널에 **누락 없이** 표시됩니다 (FAQ **Q835**·**Q837**·**Q839**·**Q852**). **「문자 발송 참고 단가」** 표 — **`GET …/dispatch-reference-unit-rates` 전용 카탈로그**를 **최우선**으로 쓰고, 없으면 channel-status **`dispatchReferenceUnitRates`**, 그래도 없으면 FE 정적 fallback(앱 **10원** · SMS **20원** · MMS **50원**)을 표시합니다 — **운영 비교 안내**이며 **Solapi 실과금·청구에 사용하지 않습니다** (FAQ **Q844**·**Q851**). Windows **고대비**에서도 표 테두리가 보입니다 (**Q853**). **「이지케어 메시지 종류 (템플릿 카탈로그)」** 섹션에서 **발송 구현 7/7 · 발송 가능 M종 · 발송 대기 Y종** 요약 Alert(`role="status"`, UXD-160)와 **7종** 표(**급여명세서 kind 22 포함**, FAQ **Q813**·**Q831**)를 확인합니다 — 한글 라벨은 ezCare **본인부담 안내·급여제공내역·직원인권보호** 등과 동일 (Q697). **발송 대기** warning Alert로 **templateId 미설정**·**채널 자격 미충족**(예: PF ID 없음) 항목을 확인하세요 (Q690·Q813·`fed6f1f`). API 키 등 **비밀값은 표시되지 않습니다**. **`branch_admin`** 은 **대시보드**(`/dashboard`) 하단 동일 패널에서도 확인할 수 있습니다.
+6. **「알림 채널 준비 상태」** 카드 — **`NotificationChannelReadinessPanel`** (Q318·**Q802**·**Q809**·**Q812**·**Q835**·**Q837**·**Q839**·**Q844**·**Q851**·**Q853**·Q686~Q692·Q697·**Q813**·**Q889**·**Q892**, `6b0f2ae`·`adaee26`·`79763a3`·`9181ca8`·`ab9e853`·`d3b0f1c`) — Solapi·SMTP·필수 알림톡 템플릿 **설정 여부**와 **라이브 발송 준비**·**지금(비긴급) 발송 가능(알림톡·이메일·SMS 3채널)**·**조용한 시간대(22:00~08:00 KST)** 를 확인합니다. 「설정은 됐는데 밤에만 막힘」은 **지금 발송 가능=아니오** + **QUIET_HOURS_ACTIVE** 로 구분합니다 (FAQ **Q809**·**Q812**). API 응답은 **명세 별칭**(`solapiSenderNumberConfigured` 등)과 **구현 키**를 함께 받으며, **`readinessBlockers`** 가 URL 인코딩·**HTML entity** 로 와도 패널에 **누락 없이** 표시됩니다 (FAQ **Q835**·**Q837**·**Q839**·**Q852**). **「문자 발송 참고 단가」** 표 — **전용 카탈로그→channel-status→static**(앱 **10원** · SMS **20원** · MMS **50원**) — **비청구** (FAQ **Q844**·**Q851**). **「알림톡·SMS 템플릿 카탈로그」** 섹션에서 **발송 구현 13/13 · 발송 가능 M종 · 발송 대기 Y종** 요약과 **13종** 표(**ezCare 7 + Kakao 필수 6**, kind 열이 **「—」** 인 행 = 이지케어 번호 없음, FAQ **Q889**)를 확인합니다 — **메시지명 열은 스크린리더용 행 헤더**로 읽힙니다 (FAQ **Q892**·UXD-185). ezCare 라벨은 **본인부담 안내·급여제공내역·직원인권보호** 등과 동일 (Q697). **발송 대기** warning Alert로 **templateId 미설정**·**채널 자격 미충족** 항목을 확인하세요 (Q690·Q813·`fed6f1f`). API 키 등 **비밀값은 표시되지 않습니다**. **`branch_admin`** 은 **대시보드**(`/dashboard`) 하단 동일 패널에서도 확인할 수 있습니다.
 7. **「배차·카카오 API」** 카드 (Q554, FE `138ac26`/`ba74bb5`) — **`TransportKakaoApiStatusPanel`** — **`GET /api/v1/transport/kakao-api-status`** — REST 키 설정 여부 · **Geocode·Directions** 연결 상태 Badge · **「오늘 API 사용량 (ogada 백엔드 기준)」** 테이블 — **좌표(Geocode)·경로(단일)·경로(다중경유)** 각 **오늘 사용·일일 한도·잔여 추정** · **한도 초과** warning · [Kakao Developers 콘솔](https://developers.kakao.com/console/app) 링크 **(새 탭)** (UXD-143). **브라우저 JS SDK·콘솔 Quota와 다를 수 있음** 안내가 표시됩니다.
 
 | 설정 | 기본값 | 설명 |
@@ -4990,6 +4991,7 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-16 | **Q883~Q888** — §1-3·§1-5·§4-7-3b **space alias decode · 연계·발송 a11y** · baseline **`f491ec8`/`3f7db38`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q882** — §1-3 **NoBreakSpace legacy alias** · baseline **`ff80f0b`/`8a05640`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q879–Q881** — §1-3·§1-5 **bidi/zero-width long alias · 기관 공지·가정통신문·연계기록지 구분** · baseline **`ba5b0cb`/`61f8f19`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q875–Q878** — §1-3·§1-5·§4-7-3a **ThickSpace·MathML·bidi decode · G2 표 모바일 a11y** · baseline **`d911983`/`29fc34f`** · Flyway **V1–V196** |

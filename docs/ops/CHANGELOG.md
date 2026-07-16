@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-16T18:50:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-16T23:12:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`ff80f0b`** · FE **`8a05640`** · **133 route·106 page·Flyway V1–V196** · **모듈 ~97.4%**
+> **기준**: develop 최신 코드 · BE **`d247cdf`** · FE **`6900a8f`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,7 @@
 
 ## 최근 7일 요약
 
-- **2026-07-16** — live E2E **NoBreakSpace legacy alias** · bidi long-form alias · ZeroWidthNonJoiner/Joiner long alias · bidi embedding/isolate·NonBreakingSpace · bidi marks·Positive*Space · ThickSpace·MathML invisible · HTML space alias · **G2 표 모바일 스크롤** · **M12 BPO SSO demote** · **기관 공지 branch scope fallback**
+- **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
 - **2026-07-15** — **channel-status 참고 단가** · 연계기록지 **리포트 페이지네이션** · RFID **급여제공내역 SMS 일괄** · live E2E bootstrap blocker 합성 파싱
 - **2026-07-14** — 기관 공지 첨부 http(s)·복제·상세 · 가정통신문 작성 카탈로그 · M11 급여 미리보기 5화면 · M12 BPO readiness
@@ -22,6 +22,183 @@
 ---
 
 ## 2026-07-16
+
+### 📝 VeryThickSpace·comma entity·템플릿 카탈로그 행 헤더 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E `&VeryThickSpace;`·`&comma;` HTML entity 디코드(BE+FE)** 와 **템플릿 카탈로그 메시지 열 행 헤더 a11y(UXD-185)** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `45e1f00` · FE develop `b753586` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ Q890~Q892 신규 · USER_MANUAL/ADMIN/DEPLOY §1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — comma HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 blocker 목록 구분자를 **`&comma;`** 로 인코딩해도 fail-closed bootstrap marker를 추출하도록 BE·FE 디코드를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — `&comma;` → `,` (`45e1f00`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`b753586`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — VeryThickSpace HTML entity alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: **`&VeryThickSpace;`** MathML space alias를 공백으로 정규화해 Thin→Thick→VeryThick→VeryVery* space ladder의 fail-closed gate를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — VeryThickSpace → 공백 (`043f002`)
+- FE: channel-status·live harness — BE parity (`b28eb45`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ 템플릿 카탈로그 — 메시지 열 행 헤더 a11y (FE)
+- **에이전트**: UXD
+- **한 일**: **「알림톡·SMS 템플릿 카탈로그」** 13종 표에서 **메시지명** 열을 **`<th scope="row">`** 로 승격해 스크린리더가 각 행의 상태 셀 맥락을 읽을 수 있게 했습니다.
+- **내 화면/업무에 영향**: **통합 관리자·센터장** — **조직 설정·대시보드** readiness 패널 **13종 표** 스크린리더·키보드 탐색 개선(시각 변화 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `NotificationChannelReadinessPanel.jsx` — 메시지 열 `td` → `th scope="row"` (`d3b0f1c`, UXD-185)
+- 참고 단가 표(UXD-181)와 동일 WCAG 1.3.1 패턴 · `NotificationChannelReadinessPanel.test.jsx` 회귀
+
+</details>
+
+### 📝 카카오 필수 알림톡 6종·카탈로그 13종 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **템플릿 카탈로그 13종**(이지케어 message_kind 7 + 카카오 필수 알림톡 6·kind 없음 「—」)과 readiness 패널 표기 변경을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `54fd8dd` · FE develop `ab9e853` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ Q889 신규 · Q686·USER_MANUAL/ADMIN/DEPLOY §1-4 카탈로그 건수 정정 · CHANGELOG·ops README
+
+</details>
+
+### ✅ 알림톡·SMS 템플릿 카탈로그 — 카카오 필수 6종 표시 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 조직 설정·대시보드 readiness 패널의 템플릿 카탈로그에 **출석(입소/귀가)·일일 케어 요약·입금 확인·가정통신문·긴급 알림** 등 카카오 필수 알림톡 6종을 추가했습니다. 이지케어 kind가 없는 항목은 **「—」** 로 표시됩니다.
+- **내 화면/업무에 영향**: **통합 관리자·센터장** — **조직 설정·대시보드** 「알림톡·SMS 템플릿 카탈로그」에서 **13종** 매핑·발송 준비 상태를 한눈에 확인
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `GET /api/v1/notifications/template-catalog` — `totalCount`/`dispatchImplementedCount` **13** · `ezcareMessageKind` nullable (`54fd8dd`)
+- FE: `NotificationChannelReadinessPanel` 제목 **「알림톡·SMS 템플릿 카탈로그」** · `formatEzcareMessageKind` · `KAKAO_REQUIRED_TEMPLATE_CODES` (`ab9e853`)
+- 6종: `ATTENDANCE_ARRIVAL` · `ATTENDANCE_DEPARTURE` · `DAILY_CARE_SUMMARY` · `BILLING_PAYMENT_RECEIVED` · `HOME_NEWSLETTER` · `EMERGENCY_ALERT`
+
+</details>
+
+### 📝 VeryVery*·MathSpace·SixPerEm·figure space·연계 a11y ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **figure/punctuation/ideographic·fractional em·SixPerEm·MathSpace·WordJoiner·VeryVery* space alias decode(BE+FE)** · **연계기록지 초안 안내·발송 체크박스 a11y** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `f491ec8` · FE develop `3f7db38` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ Q883~Q888 신규 · USER_MANUAL/ADMIN/DEPLOY §1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ 연계기록지·발송 패널 — 체크박스·안내 문구 a11y (FE)
+- **에이전트**: UXD
+- **한 일**: 연계기록지 **「초안 없음」** 안내에 정의되지 않은 스타일을 **`ds-text-muted`** 로 바꾸고, RFID·명세서 발송 패널에 **`ds-checkbox-group`** 세로 묶음 스타일을 추가했습니다.
+- **내 화면/업무에 영향**: **사회복지사·센터장** — 연계기록지 탭 **초안 없음 안내 가독성** · 발송 대상 **체크박스 세로 정렬·터치 영역** 개선
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `ClientLinkageRecordsPanel.jsx` — `ds-muted` → `ds-text-muted` · `components.css` — `.ds-checkbox-group` (`ed48077`, UXD-184)
+- 적용: `VisitRfidDiffComparePanel` · `BillingStatementDispatchPanel` 체크박스 묶음
+
+</details>
+
+### ✅ live E2E — VeryVery* space entity alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 **`&VeryVeryThinSpace;`·`&VeryVeryThickSpace;`** 로 bootstrap 토큰을 쪼개도 fail-closed로 인식하도록 BE·FE 디코드를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — VeryVeryThinSpace/VeryVeryThickSpace → 공백 (`f491ec8`)
+- FE: `notificationChannelStatus.js` · `liveBackendProbe.js` · `liveConfig.js` · `liveGlobalSetup.js` — BE parity (`3f7db38`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — MathSpace·WordJoiner long alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: **`&MathSpace;`** 계열 MathML space와 **`&WordJoiner;`** long alias가 토큰 중간에 끼어도 bootstrap blocker를 추출하도록 BE·FE를 보강했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — MathSpace family → 공백 · WordJoiner strip (`6014cca`)
+- FE: channel-status·live harness — BE parity (`73169a1`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — SixPerEm·EnSpace·EmSpace long alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: **`&emsp6;`·`&SixPerEmSpace;`·`&EnSpace;`·`&EmSpace;`·`&HairSpace;`·`&NarrowNoBreakSpace;`** 등 long alias가 섞여도 fail-closed로 인식하도록 BE·FE 디코드를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — SixPerEm·EnSpace·EmSpace·HairSpace·NarrowNoBreakSpace (`4622896`)
+- FE: channel-status·live harness — BE parity (`c260baa`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — fractional em space entity alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: **`&emsp2;`~`&emsp5;`·`&TwoPerEmSpace;`~`&FivePerEmSpace;`** 등 fractional em space alias를 공백으로 정규화해 bootstrap gate를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — emsp2~5·TwoPerEm~FivePerEm → 공백 (`e4123c3`)
+- FE: channel-status·live harness — BE parity (`73aa6dd`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — figure/punctuation/ideographic space alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: **`&figsp;`·`&FigureSpace;`·`&PunctuationSpace;`·`&IdeographicSpace;`** named alias를 공백으로 정규화해 bootstrap blocker를 추출하도록 BE·FE를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — figsp/FigureSpace/PunctuationSpace/IdeographicSpace → 공백 (`08cdb87`)
+- FE: channel-status·live harness — BE parity (`031abef`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
 
 ### ✅ live E2E — NoBreakSpace legacy alias 디코드 (BE+FE)
 - **에이전트**: COD

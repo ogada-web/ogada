@@ -1,5 +1,5 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-16T18:50:00Z -->
-<!-- tech_writer-sync: TWR 2026-07-15 — **§4-2 G-LINKAGE-RECORD** CRUD+dispatch+**지점 리포트** · V194–**V196** · Q819·Q822·**Q826**·**Q827** · BE `9dff00f` / FE `8b8095a` -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-16T23:12:00Z -->
+<!-- tech_writer-sync: TWR 2026-07-16 — **§4-2 G-LINKAGE-RECORD** CRUD+dispatch+**지점 리포트** · V194–**V196** · Q819·Q822·**Q826**·**Q827** · BE `d247cdf` / FE `6900a8f` -->
 <!-- planner-sync: PLN 197차 2026-06-24T22:30 UTC — BNK-596~599 G2b CMS payment-method-catalog + G16 parity-rules BE API · BE `bd1e87e`/FE `c3c6272` baseline -->
 <!-- tech_writer-sync: TWR 344차 2026-06-24T23:45:00Z — **G2b CMS collection methods closure** · **`POST/GET .../virtual-account`** · **`POST/GET .../multi-account-settlement`** · **V176 integration** · BE `dac8ebd`·FE `c3c6272`·V1–V176·112 route·91 page·**merge gate 778** · **신규 섹션**: CMS 가상계좌·다계좌 정산 API (Q704) · **FAQ Q701·Q704 신규** · **USER_MANUAL §4-6 정정** · **다음**: G16 FE parity-rules wire · G2b CMS FE panel UI (가상계좌·다계좌) P2 -->
 <!-- planner-sync: PLN 196차 2026-06-24T16:00 UTC — BNK-587 G-SMS dispatch response ezcareMessageKind · BE `ef8bb4e`/FE `3f686e3` baseline -->
@@ -9,10 +9,10 @@
 
 > **작성**: planner, tech_writer 에이전트
 > **최초 작성일**: 2026-06-05
-> **최종 갱신**: 2026-07-15 (TWR — **§4-2 연계기록지** G-LINKAGE-RECORD · Flyway **V194–V196** · Q819·Q822·**Q826**·**Q827** · BE `9dff00f` / FE `8b8095a`)
+> **최종 갱신**: 2026-07-16 (TWR — **§4-2 연계기록지** G-LINKAGE-RECORD · Flyway **V194–V196** · Q819·Q822·**Q826**·**Q827** · BE `d247cdf` / FE `6900a8f`)
 > **상태**: 초안 (Draft) — 사용자 승인 전
 > **범위**: MVP v1 (Must) + v1.1~v2 주요 API — 인증, 플랫폼, 조직·지점, 이용자(**연계기록지**), 출석, 건강, 청구, **대시보드(G21 NHIS·G15 Kakao)**, 선임보호사 일지, 욕구사정, 급여계약 첨부, NHIS 일정 동기화, 이동서비스 기록, 간호 급여, 케이스관리·기능회복훈련·민원상담, **목욕 자동 복사**, 시스템 헬스체크
-> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `9dff00f` / **frontend** `8b8095a`
+> **기준 문서**: `REQUIREMENTS.md`, `USER_STORIES.md`, `CHANGELOG.md` · **backend** `d247cdf` / **frontend** `6900a8f`
 
 ---
 
@@ -1342,7 +1342,8 @@
 
 | 필드 | 의미 |
 |------|------|
-| `entries[]` | 템플릿별 code·라벨·`ezcareMessageKind`·채널(SMS/ALIMTALK)·`dispatchImplemented`(BE 플로우 존재)·`configured`(Solapi templateIds 매핑 완료)·`dispatchReady`(dispatchImplemented && configured) |
+| `entries[]` | 템플릿별 code·라벨·`ezcareMessageKind`(Integer **nullable** — US-J03 Kakao 필수 6종은 `null`)·채널(SMS/ALIMTALK)·`dispatchImplemented`(BE 플로우 존재)·`configured`(Solapi templateIds 매핑 완료)·`dispatchReady`(dispatchImplemented && configured) |
+| `totalCount` | **13** (ezCare mobile-sendW parity **7** + Kakao required Alimtalk **6** · BE `@54fd8dd`) |
 | `configuredCount` / `dispatchImplementedCount` / `dispatchReadyCount` / `totalCount` | 카탈로그 요약 집계 |
 
 **메모**:
