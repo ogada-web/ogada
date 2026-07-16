@@ -1,35 +1,172 @@
-<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T19:24:00Z -->
-<!-- coder-sync: COD 2026-07-16T19:24:00Z (frontend) — **★ QA-B95 FE VeryVery*Space decode** · BE `@f491ec8` parity · `&VeryVeryThinSpace;`/`&VeryVeryThickSpace;` → space (channel-status + live probe/config/setup) · related **203/203**(Δ0·in-place expand) · WT **CLEAN** · Open residual **QA-B527**(FE pending → tester FF) · Planned QA-B116+QA-B95 -->
-# coder_1733_frontend: QA-B95 VeryVery*Space HTML entity decode (BE f491ec8 parity); related 203/203; WT CLEAN; Open residual QA-B527(pending merge); Planned QA-B116+QA-B95.
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T21:52:00Z -->
+<!-- coder-sync: COD 2026-07-16T21:52:00Z (frontend) — **★ QA-B95 FE comma HTML entity decode** @ `b753586` · BE `@45e1f00` parity · `&comma;` → `,` (channel-status + live probe/config/setup) · related **207/207**(+2 vs 205) · WT **CLEAN** · Open residual **QA-B537**(FE pending → tester FF) + **QA-B536**(BE pending `@45e1f00`) · Planned QA-B116+QA-B95 -->
+# coder_1739_frontend: QA-B95 comma HTML entity delimiter decode @b753586 (BE 45e1f00 parity); related 207/207; WT CLEAN; Open residual QA-B537(pending merge)+QA-B536(BE); Planned QA-B116+QA-B95.
 
-### [COD] v1.2.1/QA-B95 FE VeryVery*Space decode (QA-20260716-B531) — **Fixed**
+### [COD] v1.2.1/QA-B95 FE comma HTML entity delimiter decode (`b753586`, QA-20260716-B537) — **Fixed**
+
+- **id**: QA-20260716-B537
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN)
+- **stream**: frontend
+- **status**: Fixed (develop `@b753586` WT **CLEAN** · related **207/207** · ahead origin/develop **1** · BE `@45e1f00` lockstep · pending vs test **1**)
+- **found_at**: 2026-07-16T21:46:57Z (BE `&comma;` Fixed @ `45e1f00` · FE lockstep follow-up · QA-B536 Open)
+- **fixed_at**: 2026-07-16T21:52:00Z
+- **version**: v1.2.1 / QA-B95 — `&comma;` named HTML entity → ASCII `,` delimiter (after InvisibleComma strip)
+- **summary**: ★ Fixed — FE decode normalizes `&comma;` so proxy-encoded blocker lists split fail-closed alongside existing `&equals;`/`&colon;`/`&bsol;` paths (BE `@45e1f00` parity).
+- **assignee**: TSR (develop→test FF pending includes `@b753586` · Open **QA-B537** update) · PLN (baseline FE `@b753586`) · residual Open **QA-B536**(BE pending 1) · Planned **QA-B116**(origin/test BE push)
+- **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
+- **expected**: frontend develop WT CLEAN with QA-B95 comma delimiter decode committed and related tests PASS.
+- **actual**: ★ Fixed — develop `@b753586` WT **CLEAN** · related **207/207**(+2) · Open residual **QA-B537**(merge gate pending 1) + **QA-B536**(BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T21:46:57Z -->
+<!-- tester-sync: TSR 1738차 2026-07-16T21:46:57Z (backend) — ROADMAP merged baseline `@043f002` · baseline **CARRY 2282/2282**(TSR1736 · SHA unchanged) · develop pre-merge **71/71 PASS**(1.898s, LiveE2eOperationReadinessSupportTest · +1 vs 70) · pending **1** `@45e1f00` · merge **SKIP**(read-only) · **QA-20260716-B536 Open(BLOCK)** · Open **1** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 · FE ALL SYNCED+PUSHED `@b28eb45`)** · operation **BLOCK**(710 BE) -->
+# tester_1738_backend: baseline@043f002 CARRY 2282/2282(TSR1736); develop pre-merge 71/71(+1); pending 1 @45e1f00; merge SKIP(read-only); QA-20260716-B536 Open(BLOCK); Open 1; transfer BLOCK; operation BLOCK(710 BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T21:34:46Z -->
+<!-- tester-sync: TSR 1737차 2026-07-16T21:34:46Z (frontend) — **★ QA-B535 Fixed** FF merge+PUSH `ab9e853`→`b28eb45` · related **226/226**(5.43s,Δ0) · core QA-B95 **205/205**(2.65s) · post-merge **2649/2649**(873.45s,477,Δ0) · build **1230**(10.60s) · audit **0** · live **0/149/0**(34.57s) · FE develop/test/origin **ALL SYNCED+PUSHED `@b28eb45`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **LOCAL SYNCED**(BE `@043f002` · FE `@b28eb45`) · backend@8080 **UP/200** · operation **BLOCK**(710 BE) -->
+# tester_1737_frontend: QA-B535 Fixed FF merge+PUSH @b28eb45 (VeryThickSpace+UXD-185 · pending 2→0 · Δ0→2649); related 226/226; live 0/149/0(34.57s); Open 0; transfer PASS(FE); operation BLOCK(710 BE); cross-stream LOCAL SYNCED.
+
+### [TSR] v1.2.1/QA-B95 FE VeryThickSpace decode — develop→test merge+PUSH (`b28eb45`, QA-20260716-B535) — **Fixed**
+
+- **id**: QA-20260716-B535
+- **priority**: BLOCK → Fixed (TSR 1737 FF merge+PUSH)
+- **severity**: BLOCK → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin/test **ALL SYNCED+PUSHED `@b28eb45`** · related **226/226** · core QA-B95 **205/205** · npm **2649/2649** · live **0/149/0**)
+- **found_at**: 2026-07-16T21:16:30Z (COD `@b28eb45` · develop vs test pending **2** incl. UXD-185 `@d3b0f1c`)
+- **fixed_at**: 2026-07-16T21:18:00Z (FF `ab9e853`→`b28eb45`)
+- **verified_at**: 2026-07-16T21:34:46Z (related+post-merge+build+audit+live · origin/test=`b28eb45`)
+- **version**: v1.2.1 / QA-B95 — MathML `&VeryThickSpace;` named HTML entity → ASCII space (COD `@b28eb45` · BE `@043f002` lockstep) + UXD-185 template-catalog row header
+- **summary**: FF merge pending **2** into test · related **226/226**(Δ0 · 4-file gate) · core QA-B95 **205/205**(COD parity) · post-merge **2649/2649**(Δ0 vs TSR1735) · live fail-closed **0/149/0**(34.57s · bootstrap-disabled) · ALL SYNCED+PUSHED `@b28eb45`.
+- **assignee**: TSR (merge·회귀·push·live 완료) · PLN (baseline FE `@b28eb45`) · residual Planned **QA-B116**(710 BE origin/test push)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js + NotificationChannelReadinessPanel.test.jsx + competitorModuleCoverage.test.js (VeryThickSpace · UXD-185 · count 226/2649)
+- **expected**: develop→test FF merge · related+full regression PASS · origin/test push · FE SYNCED · Open **0**
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@b28eb45` · Open **0** · cross-stream **LOCAL SYNCED** · operation BLOCK(710 BE)
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T21:16:30Z -->
+<!-- coder-sync: COD 2026-07-16T21:16:30Z (frontend) — **★ QA-B95 FE VeryThickSpace decode** @ `b28eb45` · BE `@043f002` parity · `&VeryThickSpace;` → space (channel-status + live probe/config/setup) · related **205/205**(+2 vs 203·in-place expand) · WT **CLEAN** · Open residual **QA-B535**(FE pending → tester FF · includes UXD-185 `@d3b0f1c`) · Planned QA-B116+QA-B95 -->
+# coder_1737_frontend: QA-B95 VeryThickSpace HTML entity decode @b28eb45 (BE 043f002 parity); related 205/205; WT CLEAN; Open residual QA-B535(pending merge)+UXD-185; Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/QA-B95 FE VeryThickSpace decode (`b28eb45`, QA-20260716-B535) — **Fixed**
+
+- **id**: QA-20260716-B535
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@b28eb45`** · related **226/226** · npm **2649/2649** · BE `@043f002` lockstep) · **verified TSR1737**
+- **found_at**: 2026-07-16T21:14:01Z (BE VeryThickSpace Fixed+verified @ `043f002` · FE lockstep follow-up)
+- **fixed_at**: 2026-07-16T21:16:30Z · **verified_at**: 2026-07-16T21:34:46Z (TSR1737 FF+회귀+PUSH+live)
+- **version**: v1.2.1 / QA-B95 — MathML `&VeryThickSpace;` named HTML entity → ASCII space (between ThickSpace and VeryVeryThickSpace)
+- **summary**: ★ Fixed — FE decode normalizes `&VeryThickSpace;` so Thin→VeryThick→VeryVery* ladder stays fail-closed in readiness blockers + live-e2e harness (BE `@043f002` parity).
+- **assignee**: TSR (★ verified FF merge+PUSH `@b28eb45`) · PLN (baseline FE `@b28eb45`) · residual Planned **QA-B116**(origin/test BE push)
+- **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
+- **expected**: frontend develop WT CLEAN with QA-B95 VeryThickSpace decode committed and related tests PASS.
+- **actual**: ★ Fixed+verified — ALL SYNCED+PUSHED `@b28eb45` · Open **0**.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T21:14:01Z -->
+<!-- tester-sync: TSR 1736차 2026-07-16T21:14:01Z (backend) — **★ QA-B534 Fixed** FF merge `54fd8dd`→`043f002` · related **70/70**(~5.1s,Δ0) · post-merge **2282/2282**(89s,405,Δ0) · live **0/149/0**(35.11s) · BE develop/test **SYNCED `@043f002`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **BLOCK(FE pending 1 `@d3b0f1c`)** · backend@8080 **UP/200** · operation **BLOCK**(710 BE) -->
+# tester_1736_backend: QA-B534 Fixed FF merge 54fd8dd→043f002 (VeryThickSpace · pending→0 · Δ0→2282); related 70/70; live 0/149/0(35.11s); Open 0; transfer PASS(BE local); operation BLOCK(710 BE); cross-stream BLOCK(FE pending 1).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T21:08:39Z -->
+<!-- coder-sync: COD 2026-07-16T21:08:39Z (backend) — **★ QA-B95 VeryThickSpace decode** @ `043f002` · `&VeryThickSpace;` → space · related LiveE2eOperationReadinessSupportTest PASS · WT **CLEAN** · Open residual **QA-B534**(BE pending → tester FF) · Planned QA-B116+QA-B95 · FE lockstep follow-up optional -->
+# coder_1736_backend: QA-B95 VeryThickSpace HTML entity decode @043f002; related LiveE2eOperationReadinessSupportTest PASS; WT CLEAN; Open residual QA-B534(pending merge); Planned QA-B116+QA-B95.
+
+### [COD] v2/QA-B95 VeryThickSpace HTML entity decode (`043f002`, QA-20260716-B534) — **Fixed**
+
+- **id**: QA-20260716-B534
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN) · **verified TSR1736**
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@043f002`** · related **70/70** · post-merge **2282/2282** · live **0/149/0**)
+- **found_at**: 2026-07-16T20:43:23Z (Open 0 · Planned QA-B95 operation hardening continue · Thin→VeryVery* ladder gap)
+- **fixed_at**: 2026-07-16T21:08:39Z · **verified_at**: 2026-07-16T21:14:01Z (TSR1736 FF merge+회귀+live)
+- **version**: v2 / QA-B95 — MathML `&VeryThickSpace;` named HTML entity → ASCII space (between ThickSpace and VeryVeryThickSpace)
+- **summary**: ★ Fixed — BE decode normalizes `&VeryThickSpace;` so gateway mid-token splits stay fail-closed alongside existing VeryVeryThick/ThickSpace paths.
+- **assignee**: TSR (★ verified FF+회귀 `@043f002`) · PLN (baseline BE `@043f002`) · residual Planned **QA-B116**(origin/test 710 BE) + FE lockstep optional
+- **roadmap_ref**: ROADMAP v2/v3 · Planned QA-B116+QA-B95
+- **expected**: backend develop WT CLEAN with QA-B95 VeryThickSpace decode committed and related tests PASS.
+- **actual**: ★ Fixed+verified — develop/test **SYNCED `@043f002`** · Open **0**.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T20:43:23Z -->
+<!-- tester-sync: TSR 1735차 2026-07-16T20:43:23Z (frontend) — **★ QA-B533 Fixed** local SYNCED+PUSH `3f7db38`→`ab9e853` · related **63/63**(5.16s,+0) · post-merge **2649/2649**(879.36s,477,+2) · build **1230**(9.25s) · audit **0** · live **0/149/0**(35.09s) · FE develop/test/origin **ALL SYNCED+PUSHED `@ab9e853`** · **★ QA-B532 Fixed**(BE local SYNCED `@54fd8dd`) · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **LOCAL SYNCED**(BE `@54fd8dd` · FE `@ab9e853`) · origin/test BE **709** unpushed · backend@8080 **UP/200** · operation **BLOCK**(709 BE) -->
+# tester_1735_frontend: QA-B533 Fixed PUSH @ab9e853 (US-J03 Kakao catalog · pending→0 · +2→2649); related 63/63; live 0/149/0(35.09s); QA-B532 Fixed(BE local @54fd8dd); Open 0; transfer PASS(FE); operation BLOCK(709 BE); cross-stream LOCAL SYNCED.
+
+### [TSR] v1.2.1/US-J03 FE Kakao template-catalog lockstep — develop→test PUSH (`ab9e853`, QA-20260716-B533) — **Fixed**
+
+- **id**: QA-20260716-B533
+- **priority**: BLOCK → Fixed (TSR 1735 verify+PUSH)
+- **severity**: BLOCK → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin/test **ALL SYNCED+PUSHED `@ab9e853`** · related **63/63** · npm **2649/2649** · live **0/149/0**)
+- **found_at**: 2026-07-16T20:16:00Z (COD `@ab9e853` · develop vs origin/test pending **1**)
+- **fixed_at**: 2026-07-16T20:42:00Z (local test already `@ab9e853`) · **verified_at**: 2026-07-16T20:43:23Z (related+full+build+audit+live · origin/test=`ab9e853`)
+- **version**: v1.2.1 / US-J03 — Kakao required 6 + nullable `ezcareMessageKind` catalog panel (COD `@ab9e853` · BE `@54fd8dd` lockstep)
+- **summary**: Local develop/test already SYNCED `@ab9e853` · related **63/63** · post-merge **2649/2649**(+2 vs 2647) · live fail-closed **0/149/0**(35.09s) · origin/test **PUSHED** `3f7db38`→`ab9e853`.
+- **assignee**: TSR (회귀·push·live 완료) · PLN (baseline FE `@ab9e853`) · residual Planned **QA-B116**(709 BE origin/test push)
+- **roadmap_ref**: ROADMAP merged baseline · US-J03 · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + NotificationChannelReadinessPanel.test.jsx + competitorModuleCoverage.test.js (Kakao 6 + null kind · count 63/2649)
+- **expected**: develop→test sync · related+full regression PASS · origin/test push · FE SYNCED · Open **0**(FE)
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@ab9e853` · Open **0** · transfer **PASS**(FE) · operation BLOCK(709 BE)
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T20:16:00Z -->
+<!-- coder-sync: COD 2026-07-16T20:16:00Z (frontend) — **★ US-J03 FE Kakao template-catalog lockstep** @ `ab9e853` · BE `@54fd8dd` parity · catalog 13(ezCare 7 + Kakao 6) · nullable `ezcareMessageKind` · related **63/63** · WT **CLEAN** · Open residual **QA-B533**(FE pending → tester FF) + **QA-B532**(BE pending) · Planned QA-B116+QA-B95 -->
+# coder_1735_frontend: US-J03 Kakao template-catalog FE lockstep @ab9e853 (BE 54fd8dd parity · nullable kind · catalog 13); related 63/63; WT CLEAN; Open residual QA-B533(pending merge)+QA-B532(BE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/US-J03 FE Kakao template-catalog lockstep (`ab9e853`, QA-20260716-B533) — **Fixed**
+
+- **id**: QA-20260716-B533
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN) · **verified TSR1735**
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL `@ab9e853`** · related **63/63** · npm **2649/2649** · BE `@54fd8dd` lockstep)
+- **found_at**: 2026-07-16T20:10:26Z (BE US-J03 Kakao catalog Fixed @ `54fd8dd` · FE lockstep follow-up)
+- **fixed_at**: 2026-07-16T20:16:00Z · **verified_at**: 2026-07-16T20:43:23Z (TSR1735)
+- **version**: v1.2.1 / US-J03 — GET `/notifications/template-catalog` Kakao required 6 + nullable `ezcareMessageKind`
+- **summary**: ★ Fixed — FE readiness panel/catalog constants accept BE 13-entry catalog (ezCare 7 + Kakao 6) and render null `ezcareMessageKind` as "—" so US-J03 template review matches BE `@54fd8dd`.
+- **assignee**: TSR (★ verified+PUSH `@ab9e853`) · PLN (baseline FE `@ab9e853`) · residual Planned **QA-B116**
+- **roadmap_ref**: ROADMAP v1.2.1 · US-J03 · Planned QA-B116+QA-B95
+- **expected**: frontend develop WT CLEAN with US-J03 Kakao catalog lockstep committed and related tests PASS.
+- **actual**: ★ Fixed+verified — ALL SYNCED+PUSHED `@ab9e853` · Open **0**.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T20:10:26Z -->
+<!-- tester-sync: TSR 1734차 2026-07-16T20:10:26Z (backend) — ROADMAP merged baseline `@f491ec8` · `mvn test` **2282/2282 PASS**(~71s) · develop pre-merge **70/70 + 175/175 PASS** · pending **1** `@54fd8dd` · merge **SKIP**(read-only) · **QA-20260716-B532 Open(BLOCK)** · Open **1** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 · FE ALL SYNCED+PUSHED `@3f7db38`)** · operation **BLOCK**(709 BE) -->
+# tester_1734_backend: baseline@f491ec8 mvn 2282/2282(~71s); develop pre-merge 70/70+175/175; pending 1 @54fd8dd; merge SKIP(read-only); QA-20260716-B532 Open(BLOCK); Open 1; transfer BLOCK; operation BLOCK(709 BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T19:41:16Z -->
+<!-- tester-sync: TSR 1733차 2026-07-16T19:41:16Z (frontend) — **★ QA-B527 Fixed** FF merge+PUSH `73169a1`→`3f7db38` · related **203/203**(2.52s,Δ0) · post-merge **2647/2647**(868.54s,477,Δ0) · build **1230**(9.13s) · audit **0** · live **0/149/0**(36.36s) · FE develop/test/origin **ALL SYNCED+PUSHED `@3f7db38`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@f491ec8` · FE `@3f7db38`)** · backend@8080 **UP/200** · operation **BLOCK**(708 BE) -->
+# tester_1733_frontend: QA-B527 Fixed FF merge+PUSH @3f7db38 (VeryVery*Space · pending→0 · Δ0→2647); related 203/203; live 0/149/0(36.36s); Open 0; transfer PASS(FE); operation BLOCK(708 BE); cross-stream SYNCED.
+
+### [TSR] v1.2.1/QA-B95 FE develop→test merge EXECUTED (`3f7db38`, QA-20260716-B527) — **Fixed**
+
+- **id**: QA-20260716-B527
+- **priority**: BLOCK → Fixed (TSR 1733 FF merge+PUSH)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin/test **ALL SYNCED+PUSHED `@3f7db38`** · related **203/203** · npm **2647/2647** · live **0/149/0**)
+- **found_at**: 2026-07-16T19:24:00Z (COD commit `@3f7db38` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-16T19:25:30Z (FF `73169a1`→`3f7db38`) · **verified_at**: 2026-07-16T19:41:16Z (related+post-merge+build+audit+live · origin/test=`3f7db38`)
+- **version**: v1.2.1 / QA-B95 — `&VeryVeryThinSpace;`/`&VeryVeryThickSpace;` named HTML entity alias strip (COD `@3f7db38` · BE `@f491ec8` lockstep)
+- **summary**: FF merge pending **1** into test · related **203/203**(Δ0 · in-place expand) · post-merge **2647/2647**(Δ0 vs TSR1731) · live fail-closed **0/149/0**(36.36s · bootstrap-disabled) · ALL SYNCED+PUSHED `@3f7db38`.
+- **assignee**: TSR (merge·회귀·push·live 완료) · PLN (baseline FE `@3f7db38`) · residual Planned **QA-B116**(708 BE origin/test push)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (VeryVery*Space named-entity · in-place expand · count 203/2647 carry)
+- **expected**: develop→test FF merge · related+full regression PASS · origin/test push · FE SYNCED · Open **0**
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@3f7db38` · Open **0** · cross-stream **SYNCED** · operation BLOCK(708 BE)
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T19:24:00Z -->
+<!-- coder-sync: COD 2026-07-16T19:24:00Z (frontend) — **★ QA-B95 FE VeryVery*Space decode** @ `3f7db38` · BE `@f491ec8` parity · `&VeryVeryThinSpace;`/`&VeryVeryThickSpace;` → space (channel-status + live probe/config/setup) · related **203/203**(Δ0·in-place expand) · WT **CLEAN** · Open residual **QA-B527**(FE pending → tester FF) · Planned QA-B116+QA-B95 -->
+# coder_1733_frontend: QA-B95 VeryVery*Space HTML entity decode @3f7db38 (BE f491ec8 parity); related 203/203; WT CLEAN; Open residual QA-B527(pending merge); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/QA-B95 FE VeryVery*Space decode (`3f7db38`, QA-20260716-B531) — **Fixed**
 
 - **id**: QA-20260716-B531
 - **priority**: HIGH → Fixed (COD commit · WT CLEAN)
 - **stream**: frontend
-- **status**: Fixed (develop WT **CLEAN** · related **203/203** · BE `@f491ec8` lockstep · pending vs test **1**)
+- **status**: Fixed (develop `@3f7db38` WT **CLEAN** · related **203/203** · ahead origin/develop **1** · BE `@f491ec8` lockstep · pending vs test **1**)
 - **found_at**: 2026-07-16T19:18:43Z (BE VeryVery*Space Fixed @ `f491ec8` · FE lockstep follow-up)
 - **fixed_at**: 2026-07-16T19:24:00Z
 - **version**: v1.2.1 / QA-B95 — `&VeryVeryThinSpace;`/`&VeryVeryThickSpace;` named HTML entity alias strip
 - **summary**: ★ Fixed — FE decode normalizes MathML VeryVeryThinSpace/VeryVeryThickSpace entities to ASCII space in readiness blockers + live-e2e harness paths (BE `@f491ec8` parity).
-- **assignee**: TSR (develop→test FF pending · Open **QA-B527**) · PLN (baseline FE update) · residual Planned **QA-B116**(origin/test BE push)
+- **assignee**: TSR (develop→test FF pending includes `@3f7db38` · Open **QA-B527** update) · PLN (baseline FE `@3f7db38`) · residual Planned **QA-B116**(origin/test BE push)
 - **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
 - **expected**: frontend develop WT CLEAN with QA-B95 VeryVery*Space decode committed and related tests PASS.
-- **actual**: ★ Fixed — related **203/203** · Open residual **QA-B527**(merge gate pending 1).
-
-### [TSR] v1.2.1/QA-B95 FE develop→test merge pending (QA-20260716-B527) — **Open**
-
-- **id**: QA-20260716-B527
-- **priority**: BLOCK
-- **stream**: frontend
-- **status**: Open (develop ahead of test by **1** QA-B95 VeryVery*Space commit · tester FF 대기)
-- **found_at**: 2026-07-16T19:24:00Z
-- **version**: v1.2.1 / QA-B95
-- **summary**: FE develop has VeryVery*Space decode lockstep with BE `@f491ec8` — develop→test FF merge required.
-- **assignee**: TSR
-- **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
-- **expected**: develop→test FF merge · related+full regression PASS · origin/test push
-- **actual**: Open — merge pending 1 after COD VeryVery*Space commit.
+- **actual**: ★ Fixed — develop `@3f7db38` WT **CLEAN** · related **203/203** · Open residual **QA-B527**(merge gate pending 1).
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T19:18:43Z -->
 <!-- tester-sync: TSR 1732차 2026-07-16T19:18:43Z (backend) — **★ QA-B525 Fixed** FF merge `ff80f0b`→`f491ec8` · related **70/70**(~5.2s,Δ0) · post-merge **2282/2282**(91s,405,+4) · live **0/149/0**(33.69s) · BE develop/test **SYNCED `@f491ec8`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@f491ec8` · FE ALL SYNCED+PUSHED `@73169a1`)** · backend@8080 **UP/200** · operation **BLOCK**(708 BE) -->
@@ -4086,7 +4223,64 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0** active · **★ QA-20260716-B525 Fixed**(TSR1732 BE local SYNCED `@f491ec8`) · **★ QA-20260716-B526 Fixed**(TSR1731 FE ALL SYNCED+PUSHED `@73169a1`) · Fixed carry **QA-B508~B526**+**B528~B530** · BE develop/test **SYNCED `@f491ec8`** · FE develop/test/origin **ALL `@73169a1`** · post-merge **2282/2282 PASS**(91s) · live **0/149/0** · Planned **QA-B116**(origin/test **708 BE**)+**QA-B95** · operation **BLOCK**(708 BE) · cross-stream **SYNCED** · TSR1732 · residual = origin/test push **708 BE**)_
+_(Open **1** active · **QA-20260716-B536 BLOCK**(BE pending 1 `@45e1f00`) · Fixed carry **QA-B525~B527+B532~B535** · FE develop/test/origin **ALL SYNCED+PUSHED `@b28eb45`** · Planned **QA-B116**(origin/test **710 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **BLOCK(BE)** · TSR1738)_
+
+
+### [TSR] v2/QA-B95 comma HTML entity decode — backend develop→test merge pending (`45e1f00`, QA-20260716-B536) — **Open**
+
+- **id**: QA-20260716-B536
+- **priority**: BLOCK
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (develop `@45e1f00` WT **CLEAN** · test `@043f002` · pending **1** · merge **SKIP** this cycle · read-only)
+- **found_at**: 2026-07-16T21:46:57Z (COD `@45e1f00` · develop vs test pending **1**)
+- **version**: v2 / QA-B95 — `&comma;` named HTML entity → ASCII `,` in live-e2e blocker parser (`LiveE2eOperationReadinessSupport`)
+- **summary**: develop committed `&comma;` decode (+1 @Test → **71/71 PASS**) but **not merged** to test. Baseline `@043f002` CARRY **2282/2282**(TSR1736). Next tester cycle: FF merge `@45e1f00` + post-merge `mvn test` **~2283/2283** + live CARRY/re-run.
+- **assignee**: TSR (develop→test FF `@45e1f00` · post-merge 회귀) · PLN (baseline BE `@45e1f00` after merge) · COD (★ FE `&comma;` lockstep Fixed — QA-B537)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest (`&comma;` named-entity · +1 @Test vs 70/2282)
+- **expected**: develop→test FF merge `@45e1f00` · related **71/71** + post-merge **~2283/2283** PASS · Open **0**(BE) · FE lockstep optional
+- **actual**: pending **1** · merge SKIP(read-only) · Open **1**(BE) · COD FE lockstep ★ Fixed (QA-B537) · transfer **BLOCK** · operation BLOCK(710 BE)
+- **repro**: `cd src/backend && git rev-list --left-right --count test...develop` → `0 1` · `git log --oneline test..develop` → `45e1f00 fix(v2/QA-B95): decode comma HTML entity in blocker parser` · `mvn -Dtest=LiveE2eOperationReadinessSupportTest test` → **71/71 PASS**
+
+
+### [TSR] v2/QA-B95 VeryThickSpace decode — backend develop→test merge EXECUTED (`043f002`, QA-20260716-B534) — **Fixed**
+
+- **id**: QA-20260716-B534
+- **priority**: BLOCK → Fixed (TSR 1736 FF merge)
+- **severity**: BLOCK → Fixed
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@043f002`** · related **70/70** · post-merge **2282/2282 PASS** · live **0/149/0**)
+- **found_at**: 2026-07-16T21:08:39Z (COD `@043f002` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-16T21:12:00Z (FF `54fd8dd`→`043f002`)
+- **verified_at**: 2026-07-16T21:14:01Z (related+post-merge+live)
+- **version**: v2 / QA-B95 — MathML `&VeryThickSpace;` named HTML entity → ASCII space (COD `@043f002`)
+- **summary**: FF merge pending **1** into test · related **70/70**(Δ0 · VeryThickSpace in-place) · post-merge **2282/2282**(Δ0) · live fail-closed **0/149/0**(35.11s · bootstrap-disabled) · SYNCED `@043f002`.
+- **assignee**: TSR (merge·회귀·live 완료) · PLN (baseline BE `@043f002`) · residual Planned **QA-B116**(710 BE origin/test push) + **QA-B95**(FE VeryThickSpace lockstep optional)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest (VeryThickSpace named-entity · in-place expand · count 70/2282 carry)
+- **expected**: develop→test FF merge `@043f002` · related **70/70** + post-merge **2282/2282** PASS · Open **0**
+- **actual**: ★ Fixed — SYNCED `@043f002` · Open **0** · cross-stream **BLOCK(FE pending 1 `@d3b0f1c`)** · operation BLOCK(710 BE)
+- **repro**: `cd src/backend-test && git log -2 --oneline` → `@043f002`…`@54fd8dd` · `mvn test` → **2282/2282 PASS**
+
+
+### [TSR] v2/US-J03 Kakao template-catalog — backend develop→test local SYNCED (`54fd8dd`, QA-20260716-B532) — **Fixed**
+
+- **id**: QA-20260716-B532
+- **priority**: BLOCK → Fixed (local develop/test SYNCED `@54fd8dd` · TSR1735 observe)
+- **severity**: BLOCK → Fixed
+- **stream**: backend
+- **status**: Fixed (develop/test **LOCAL SYNCED `@54fd8dd`** · pending **0** · origin/test still `@598d108` → **QA-B116**)
+- **found_at**: 2026-07-16T20:10:26Z (COD commit `@54fd8dd` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-16T20:43:23Z (git 실측 develop=test=`54fd8dd` · pending **0**)
+- **version**: v2 / US-J03 — `GET /api/v1/notifications/template-catalog` Kakao alimtalk missing-template exposure (+ nullable `ezCare message_kind`)
+- **summary**: ★ Fixed — local merge gate closed (`test..develop` **0**). Pre-merge related **70/70+175/175** (TSR1734). Residual = **origin/test push 709 BE** (Planned QA-B116) · post-merge full `mvn test` reconfirm optional on next BE tester cycle.
+- **assignee**: PLN (baseline BE `@54fd8dd`) · TSR/ops (QA-B116 origin/test push) · residual Planned **QA-B116+QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · US-J03 · Planned QA-B116+QA-B95
+- **prevention**: NotificationSmsTemplateCatalogServiceTest + MustApiEndpointRoutingTest (template-catalog Kakao entries · routing assertions)
+- **expected**: develop→test FF merge `@54fd8dd` · Open **0**(merge gate)
+- **actual**: ★ Fixed — LOCAL SYNCED `@54fd8dd` · Open **0** · operation BLOCK(709 BE origin/test)
+- **repro**: `cd src/backend && git rev-list --left-right --count test...develop` → `0 0` · `git rev-parse --short test develop` → `54fd8dd`
 
 
 ### [TSR] v2/QA-B95 space entity decode (figure/punctuation/ideographic + fractional em + SixPerEm + MathSpace/WordJoiner + VeryVery*) — backend develop→test merge EXECUTED (`f491ec8`, QA-20260716-B525) — **Fixed**
@@ -10941,6 +11135,8 @@ _(TSR 529차 2026-06-13T07:25 UTC — frontend Open **0건**. QA-B68 Fixed @ `db
 
 
 ## Planned
+
+_(**PLN 224차 sync** — Open **0**(이동 대상 없음) · Planned residual **QA-B116**(origin/test push **709 BE**) + **QA-B95**(operation 승격·bootstrap-disabled·B525~B527+B531~B533 Fixed carry) · baseline BE `@54fd8dd`(local SYNCED·origin/test 709 pending)/FE `@ab9e853`(FULLY SYNCED+PUSHED) · BNK-800~806 기획 반영 · **★★★ 이지케어 FAQ 233 crosswalk 급여/근태 34.8% top → M11 FULL 투자 정당화**(BNK-806) · **★★★ US-J03 template-catalog 13 = ezCare 7 미러 + Kakao 6 SUPERSET**(QA-B532/B533 Fixed) · **★★★ QA-B95 VeryVery* FE↔BE LOCKSTEP COMPLETE·모듈 97.41% CONFIRMED·closed band 6 재오픈 0**(BNK-805) · **★★ M8 8-2/8-6/8-13 가정 번복 3건 재앵커**(BNK-801) · 최종 갱신: PLN 224차 2026-07-16T20:50:00Z)_
 
 _(**PLN 222차 sync** — Open **0**(이동 대상 없음) · Planned residual **QA-B116**(origin/test push **697 BE**) + **QA-B95**(operation 승격·bootstrap-disabled·B508~B510 Fixed carry) · baseline BE `@fde0606`/FE `@5b69e7a`(FULLY SYNCED+PUSHED) · BNK-787~793 기획 반영 · **★★★ M3 요양급여 11/11 PARITY+SUPERSET**(BNK-793) · **★★★ QA-B95 space-entity 20+ layer LOCKSTEP**(BNK-792) · **모듈 97.41%** · 최종 갱신: PLN 222차 2026-07-16T12:50:00Z)_
 
