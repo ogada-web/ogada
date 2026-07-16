@@ -1,23 +1,135 @@
-<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T15:37:00Z -->
-<!-- coder-sync: COD 2026-07-16T15:37:00Z (frontend) — **★ QA-B95 FE ZeroWidthNonJoiner/Joiner long-alias decode** @ develop · BE `@ba5b0cb` parity · `&ZeroWidthNonJoiner;`/`&ZeroWidthJoiner;` strip (channel-status + live probe/config/setup) · related **195/195**(+2 vs 193) · WT **CLEAN** · Open FE **0** · Planned QA-B116+QA-B95 -->
-# coder_1719_frontend: QA-B95 ZeroWidthNonJoiner/Joiner HTML entity long-alias decode (BE ba5b0cb parity); related 195/195; WT CLEAN; residual Planned QA-B116+QA-B95.
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T18:05:00Z -->
+<!-- coder-sync: COD 2026-07-16T18:05:00Z (frontend) — **★ QA-B95 FE SixPerEm + long space alias decode** @ `c260baa` · BE `@4622896` parity · `&emsp6;`/`&SixPerEmSpace;` + `&EnSpace;`/`&EmSpace;`/`&HairSpace;`/`&NarrowNoBreakSpace;` → space (channel-status + live probe/config/setup) · related **201/201**(+2 vs 199) · WT **CLEAN** · Open residual **QA-B526**(FE pending → tester FF) · Planned QA-B116+QA-B95 -->
+# coder_1729_frontend: QA-B95 SixPerEm+En/Em/Hair/NarrowNoBreakSpace HTML entity decode @c260baa (BE 4622896 parity); related 201/201; WT CLEAN; Open residual QA-B526(pending merge); Planned QA-B116+QA-B95.
 
-### [COD] v1.2.1/QA-B95 FE ZeroWidthNonJoiner/Joiner long-alias decode (QA-20260716-B522) — **Fixed**
+### [COD] v1.2.1/QA-B95 FE SixPerEm + long space alias decode (`c260baa`, QA-20260716-B528) — **Fixed**
+
+- **id**: QA-20260716-B528
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN)
+- **stream**: frontend
+- **status**: Fixed (develop `@c260baa` WT **CLEAN** · related **201/201** · ahead origin/develop **1** · BE `@4622896` lockstep · pending vs test **4**)
+- **found_at**: 2026-07-16T17:55:00Z (BE SixPerEm Fixed · FE lockstep follow-up)
+- **fixed_at**: 2026-07-16T18:05:00Z
+- **version**: v1.2.1 / QA-B95 — `&emsp6;`/`&SixPerEmSpace;` + MathML `&EnSpace;`/`&EmSpace;`/`&HairSpace;`/`&NarrowNoBreakSpace;` named HTML entity alias strip
+- **summary**: ★ Fixed — FE decode completes fractional em family (six-per-em) and adds MathML long aliases for en/em/hair/narrow-nbsp spaces in readiness blockers + live-e2e harness paths (BE `@4622896` parity).
+- **assignee**: TSR (develop→test FF pending includes `@c260baa` · Open **QA-B526** update) · PLN (baseline FE `@c260baa`) · residual Planned **QA-B116**(origin/test BE push)
+- **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
+- **expected**: frontend develop WT CLEAN with QA-B95 SixPerEm/long-space decode committed and related tests PASS.
+- **actual**: ★ Fixed — develop `@c260baa` WT **CLEAN** · related **201/201**(+2 vs 199) · Open residual **QA-B526**(merge gate pending 4).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:59:24Z -->
+<!-- tester-sync: TSR 1728차 2026-07-16T17:59:24Z (backend) — ROADMAP merged baseline `@ff80f0b` (`src/backend-test`) · `mvn test` **2278/2278 PASS**(64s, 405 suites, BUILD SUCCESS) · npm **N/A** · develop `@4622896` WT **CLEAN** · test/origin/test `@ff80f0b` WT **CLEAN** · pending **3**(`@08cdb87`+`@e4123c3`+`@4622896`) · merge **SKIP**(read-only directive) · **QA-20260716-B525 Open(BLOCK) update**(pending 2→3) · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 3 · FE pending 3)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# tester_1728_backend: baseline@ff80f0b mvn 2278/2278(64s); develop@4622896 WT CLEAN with pending 3 @08cdb87+@e4123c3+@4622896; merge SKIP(read-only); QA-20260716-B525 Open(BLOCK) update; Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK(BE pending 3 + FE pending 3); operation BLOCK(703 BE); post-merge expected ~2279/2279.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T17:55:00Z -->
+<!-- coder-sync: COD 2026-07-16T17:55:00Z (backend) — **★ QA-B95 SixPerEm + long space alias decode** @ `4622896` · `&emsp6;`/`&SixPerEmSpace;` + `&EnSpace;`/`&EmSpace;`/`&HairSpace;`/`&NarrowNoBreakSpace;` → space · related **69/69**(+1 vs 68) · WT **CLEAN** · Open residual **QA-B525**(BE pending 3 `@08cdb87`+`@e4123c3`+`@4622896`) · Planned QA-B116+QA-B95 · FE lockstep follow-up optional -->
+# coder_1727_backend: QA-B95 SixPerEm+En/Em/Hair/NarrowNoBreakSpace HTML entity decode @4622896; related 69/69; WT CLEAN; Open residual QA-B525(pending 3); Planned QA-B116+QA-B95.
+
+### [COD] v2/QA-B95 SixPerEm + long space alias HTML entity decode (`4622896`, QA-20260716-B527) — **Fixed**
+
+- **id**: QA-20260716-B527
+- **priority**: HIGH → Fixed (COD commit · WT CLEAN)
+- **stream**: backend
+- **status**: Fixed (develop `@4622896` WT **CLEAN** · related **69/69** · ahead origin/develop **1** · pending vs test **3**)
+- **found_at**: 2026-07-16T17:48:07Z (Open B525 merge gate · Planned QA-B95 operation hardening continue)
+- **fixed_at**: 2026-07-16T17:55:00Z
+- **version**: v2 / QA-B95 — `&emsp6;`/`&SixPerEmSpace;` + MathML `&EnSpace;`/`&EmSpace;`/`&HairSpace;`/`&NarrowNoBreakSpace;` named HTML entity alias strip
+- **summary**: ★ Fixed — BE decode completes fractional em family (six-per-em) and adds MathML long aliases for en/em/hair/narrow-nbsp spaces so gateway mid-token splits stay fail-closed.
+- **assignee**: TSR (develop→test FF pending includes `@4622896`) · PLN (baseline BE `@4622896`) · residual Planned **QA-B116**(origin/test BE push) + FE lockstep
+- **roadmap_ref**: ROADMAP v2 · Planned QA-B116+QA-B95
+- **expected**: backend develop WT CLEAN with QA-B95 SixPerEm/long-space decode committed and related tests PASS.
+- **actual**: ★ Fixed — develop `@4622896` WT **CLEAN** · related **69/69**(+1 vs 68) · Open residual **QA-B525**(merge gate pending 3).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:40:30Z -->
+<!-- tester-sync: TSR 1726차 2026-07-16T17:40:30Z (frontend) — ROADMAP merged baseline `@8a05640` (`src/frontend-test`) · `npm test` **2643/2643 PASS**(869.55s, 477) · build **1230**(9.17s) · audit **0** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1721) · develop `@73aa6dd` WT **CLEAN** · test/origin/test `@8a05640` WT **CLEAN** · pending **3**(`@ed48077`+`@031abef`+`@73aa6dd`) · merge **SKIP**(read-only directive) · **QA-20260716-B526 Open(BLOCK)** · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 · FE pending 3)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# tester_1726_frontend: baseline@8a05640 npm 2643/2643(869.55s); build 1230(9.17s); audit 0; develop@73aa6dd WT CLEAN with pending 3 @ed48077+@031abef+@73aa6dd; merge SKIP(read-only); QA-20260716-B526 Open(BLOCK); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK(BE pending 2 + FE pending 3); operation BLOCK(703 BE); post-merge expected ~2643/2643.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:19:30Z -->
+<!-- tester-sync: TSR 1726차 2026-07-16T17:48:07Z (frontend) — ROADMAP merged baseline `@8a05640` (`src/frontend-test`) · develop pre-merge **199/199 PASS**(2.56s, 2 · notificationChannelStatus + liveE2eHarness · +4 vs 195 · WT **CLEAN**) · baseline related **195/195**(2.47s,Δ0) · npm **CARRY 2639/2639**(TSR1721 · test SHA unchanged) · build **1230**(10.09s) · audit **0** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1721) · develop `@73aa6dd` WT **CLEAN** · test/origin/test `@8a05640` WT **CLEAN** · pending **3**(`test..develop`: `@ed48077`+`@031abef`+`@73aa6dd`) · merge **SKIP**(read-only directive) · **QA-20260716-B526 Open(BLOCK)** updated(DIRTY→CLEAN·pending 1→3) · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 `@e4123c3` · FE pending 3 `@73aa6dd`)** · backend@8080 **UP/200** · operation **BLOCK**(705 BE) -->
+# tester_1726_frontend: baseline@8a05640 related 195/195(2.47s,Δ0); develop pre-merge 199/199(+4,2.56s,CLEAN @73aa6dd); pending 3 @ed48077+@031abef+@73aa6dd; merge SKIP(read-only); QA-B526 Open(BLOCK,DIRTY cleared); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK; npm CARRY 2639/2639; build 1230(10.09s); post-merge expected ~2643/2643 after TSR FF merge.
+
+<!-- tester-sync: TSR 1725차 2026-07-16T17:19:30Z (backend) — ROADMAP merged baseline `@ff80f0b` (`src/backend-test`) · `mvn test` **2278/2278 PASS**(74s, 405 · BUILD SUCCESS) · develop pre-merge related **68/68 PASS**(1.9s, LiveE2eOperationReadinessSupportTest · +1 vs 67) · npm **N/A** · develop `@e4123c3` WT **CLEAN** · test/origin/test `@ff80f0b` WT **CLEAN** · pending **2**(`test..develop`: `@08cdb87`+`@e4123c3`) + origin/test **703 BE** · merge **SKIP**(read-only directive) · **QA-20260716-B525 Open(BLOCK)** · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 · FE DIRTY 6M + pending 1 `@ed48077`)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# tester_1725_backend: baseline@ff80f0b mvn 2278/2278(74s); develop pre-merge related 68/68(+1 vs 67); pending 2 @08cdb87+@e4123c3; merge SKIP(read-only); QA-20260716-B525 Open(BLOCK); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK(BE pending 2 + FE DIRTY 6M); operation BLOCK(703 BE); post-merge expected ~2280/2280.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:09:14Z -->
+<!-- sec-sync: SEC 30차 2026-07-17T02:20 KST — develop BE `@e4123c3`(+705 vs origin/test·**WT CLEAN**)/FE `@ed48077`(+1·**WT DIRTY 6M**); origin/test `598d108`/`8a05640` P0 유지(SEC-D14·**SEC-D18 비대칭**: BE +37악화 / FE **1 pending**·29차 FULLY SYNCED 회귀); 신규 **QA-B95 HTML/unicode blocker decode harden**(BE `LiveE2eOperationReadinessSupport`·FE `notificationChannelStatus.js` 5-pass bounded decode·fail-closed·SEC-D29 **긍정**) · **J03 dispatch-reference-unit-rates**(`@PreAuthorize` HQ/BRANCH only·정적 catalog·secret 0) · **G17 dual-numbering guardrail**(read-only compliance metadata·RBAC 유지) · FE apiFetch 유지(SEC-D17); **SEC-D35** FE WT DIRTY 6M live-e2e WIP(process·BLOCK 아님); **30차 신규 BLOCK급 audit Open 0건** · **QA Open [SEC] 0건**; SEC-D4(5 파서)·A06-1·D41·D42·D43~D46·D33·D34·D26·D40 carry. 상세 `docs/security/SECURITY_AUDIT.md` §1.32. -->
+<!-- tester-sync: TSR 1724차 2026-07-16T17:09:14Z (frontend) — ROADMAP merged baseline `@8a05640` (`src/frontend-test`) · develop pre-merge **197/197 PASS**(3.25s, 2 · notificationChannelStatus + liveE2eHarness · +2 vs 195 · **includes WT DIRTY 6M WIP**) · npm **CARRY 2639/2639**(TSR1721 · test SHA unchanged) · build **1230**(9.29s) · audit **0** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1721) · develop `@ed48077` WT **DIRTY 6M** · test/origin/test `@8a05640` WT **CLEAN** · pending **1**(`test..develop`: `@ed48077`) + origin/develop `@ed48077` · merge **SKIP**(read-only directive) · **QA-20260716-B526 Open(BLOCK)** · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 `@08cdb87` · FE DIRTY 6M + pending 1 `@ed48077`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# tester_1724_frontend: baseline@8a05640 related 195/195(2.51s,Δ0); develop pre-merge 197/197(+2,3.25s,DIRTY 6M); pending 1 @ed48077; merge SKIP(read-only); QA-20260716-B526 Open(BLOCK); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK; npm CARRY 2639/2639; build 1230(9.29s); post-merge expected ~2641/2641 after COD commit+merge.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:01:14Z -->
+<!-- tester-sync: TSR 1723차 2026-07-16T17:01:14Z (backend) — ROADMAP merged baseline `@ff80f0b` (`src/backend-test`) · `mvn test` **2278/2278 PASS**(63s, 405 · BUILD SUCCESS) · develop pre-merge related **67/67 PASS**(3.5s, LiveE2eOperationReadinessSupportTest · +1 vs 66) · npm **N/A** · develop `@08cdb87` WT **CLEAN** · test/origin/test `@ff80f0b` WT **CLEAN** · pending **1**(`test..develop`: `@08cdb87`) + origin/test **703 BE** · merge **SKIP**(read-only directive) · **QA-20260716-B525 Open(BLOCK)** · Open **1**(backend) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 `@08cdb87` · FE pending 1 `@ed48077`)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# tester_1723_backend: baseline@ff80f0b mvn 2278/2278(63s); develop pre-merge related 67/67(+1); pending 1 @08cdb87; merge SKIP(read-only); QA-20260716-B525 Open(BLOCK); Open 1(backend); transfer BLOCK; cross-stream BLOCK(BE+FE pending 1); operation BLOCK(703 BE); post-merge expected ~2279/2279.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T16:35:40Z -->
+<!-- tester-sync: TSR 1722차 2026-07-16T16:35:40Z (frontend) — revalidation `@8a05640` ALL SYNCED+PUSHED · related **195/195**(2.50s,Δ0) · post-merge **CARRY 2639/2639**(TSR1721) · build **1230**(9.56s) · audit **0** · live **CARRY 0/149/0** · merge **SKIP**(pending 0) · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@ff80f0b` · FE `@8a05640`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# tester_1722_frontend: @8a05640 ALL SYNCED reconfirm; related 195/195(2.50s,Δ0); npm CARRY 2639/2639; build 1230; live CARRY 0/149/0; merge SKIP(pending 0); Open 0; transfer PASS(FE); operation BLOCK(703 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T16:33:40Z -->
+<!-- tester-sync: TSR 1721차 2026-07-16T16:33:40Z (frontend) — **★ QA-B524 Fixed** FF merge+PUSH `61f8f19`→`8a05640` · related **195/195**(2.45s,Δ0) · post-merge **2639/2639**(866.73s,477,Δ0) · build **1230**(10.99s) · audit **0** · live **0/149/0**(33.48s) · FE develop/test/origin **ALL SYNCED+PUSHED `@8a05640`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@ff80f0b` · FE `@8a05640`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# tester_1721_frontend: QA-B524 Fixed FF merge+PUSH @8a05640 (NoBreakSpace · pending 1→0 · Δ0→2639); related 195/195; live 0/149/0(33.48s); Open 0; transfer PASS(FE); operation BLOCK(703 BE); cross-stream SYNCED.
+
+### [TSR] v1.2.1/QA-B95 FE NoBreakSpace decode — develop→test merge+push EXECUTED (`8a05640`, QA-20260716-B524) — **Fixed**
+
+- **id**: QA-20260716-B524
+- **priority**: BLOCK → Fixed (TSR 1721 FF merge+PUSH)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin/test **ALL SYNCED+PUSHED `@8a05640`** · related **195/195** · npm **2639/2639** · live **0/149/0**)
+- **found_at**: 2026-07-16T16:16:40Z (COD commit `@8a05640` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-16T16:18:00Z (FF `61f8f19`→`8a05640` + `git push origin test`)
+- **verified_at**: 2026-07-16T16:33:40Z (related+post-merge+build+audit+live · origin/test=`8a05640`)
+- **version**: v1.2.1 / QA-B95 — legacy `&NoBreakSpace;` named HTML entity alias strip (COD `@8a05640` · BE `@ff80f0b` lockstep)
+- **summary**: FF merge pending **1** into test · related **195/195**(Δ0 · in-place expand) · post-merge **2639/2639**(Δ0) · live fail-closed **0/149/0**(33.48s · bootstrap-disabled) · ALL SYNCED+PUSHED `@8a05640`.
+- **assignee**: TSR (merge·회귀·push 완료) · PLN (baseline FE `@8a05640`) · residual Planned **QA-B116**(703 BE origin/test push)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (NoBreakSpace named-entity · in-place expand · count 195/2639 carry)
+- **expected**: develop→test FF merge · related+full regression PASS · origin/test push · FE SYNCED · Open **0**
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@8a05640` · Open **0** · cross-stream **SYNCED** · operation BLOCK(703 BE)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T16:13:09Z -->
+<!-- tester-sync: TSR 1720차 2026-07-16T16:13:09Z (backend) — **★ QA-B523 Fixed** FF merge `ba5b0cb`→`ff80f0b` · related **66/66**(~1.9s,+1) · post-merge **2278/2278 PASS**(86s, 405 · +1) · npm **N/A** · live **0/149/0**(33.21s · bootstrap-disabled) · BE develop/test **SYNCED `@ff80f0b`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@ff80f0b` · FE ALL SYNCED+PUSHED `@61f8f19`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# tester_1720_backend: QA-B523 Fixed FF merge ba5b0cb→ff80f0b (legacy NoBreakSpace · pending 1→0 · +1→2278); related 66/66; post-merge 2278/2278; live 0/149/0; Open 0; transfer PASS(BE local); operation BLOCK(703 BE); cross-stream SYNCED.
+
+### [TSR] v2/QA-B95 legacy NoBreakSpace decode — backend develop→test merge EXECUTED (`ff80f0b`, QA-20260716-B523) — **Fixed**
+
+- **id**: QA-20260716-B523
+- **priority**: BLOCK → Fixed (TSR 1720 FF merge)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@ff80f0b`** · related **66/66** · post-merge **2278/2278 PASS** · live **0/149/0** · Open **0**)
+- **found_at**: 2026-07-16T16:09:24Z (COD commit `@ff80f0b`)
+- **fixed_at**: 2026-07-16T16:11:00Z (TSR1720 FF `ba5b0cb`→`ff80f0b`)
+- **verified_at**: 2026-07-16T16:13:09Z
+- **version**: v2 / QA-B95 — legacy `&NoBreakSpace;` named HTML entity alias strip in bootstrap blockers (`LiveE2eOperationReadinessSupport`)
+- **summary**: ★ Fixed — BE develop→test FF merge completed at `@ff80f0b` (1 commit). FE remains ALL SYNCED+PUSHED `@61f8f19` (NoBreakSpace lockstep = Planned QA-B95 COD follow-up).
+- **assignee**: TSR (merge·회귀·live 완료) · PLN (baseline BE `@ff80f0b`) · residual Planned **QA-B116**(703 BE origin/test push) + **QA-B95**(FE NoBreakSpace lockstep)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest (+NoBreakSpace named-entity cases · +1 → 66)
+- **expected**: develop→test FF merge · related+full regression PASS · Open 0 · cross-stream SYNCED
+- **actual**: ★ Fixed — SYNCED `@ff80f0b` · **2278/2278 PASS**(86s, 405) · live **0/149/0**(33.21s · bootstrap-disabled) · Open **0** · operation BLOCK(703 BE push only)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T15:54:28Z -->
+<!-- tester-sync: TSR 1719차 2026-07-16T15:54:28Z (frontend) — **★ QA-B522 Fixed** FF merge+PUSH `975aecb`→`61f8f19` · related **195/195**(2.52s,+2) · post-merge **2639/2639**(869.08s,+2) · live **0/149/0**(33.61s) · FE develop/test/origin **ALL SYNCED+PUSHED `@61f8f19`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@ba5b0cb`)** · operation **BLOCK**(702 BE) -->
+# tester_1719_frontend: QA-B522 Fixed FF merge+PUSH @61f8f19 (ZeroWidthNonJoiner/Joiner · pending 1→0 · +2→2639); related 195/195; live 0/149/0(33.61s); Open 0; transfer PASS(FE); operation BLOCK(702 BE); cross-stream SYNCED.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-16T15:37:00Z -->
+<!-- coder-sync: COD 2026-07-16T15:37:00Z (frontend) — **★ QA-B95 FE ZeroWidthNonJoiner/Joiner long-alias decode** @ `61f8f19` · BE `@ba5b0cb` parity · `&ZeroWidthNonJoiner;`/`&ZeroWidthJoiner;` strip (channel-status + live probe/config/setup) · related **195/195**(+2 vs 193) · WT **CLEAN** · Open FE **0** · Planned QA-B116+QA-B95 -->
+# coder_1719_frontend: QA-B95 ZeroWidthNonJoiner/Joiner HTML entity long-alias decode @61f8f19 (BE ba5b0cb parity); related 195/195; WT CLEAN; residual Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/QA-B95 FE ZeroWidthNonJoiner/Joiner long-alias decode (`61f8f19`, QA-20260716-B522) — **Fixed**
 
 - **id**: QA-20260716-B522
 - **priority**: HIGH → Fixed (COD commit · WT CLEAN)
 - **stream**: frontend
-- **status**: Fixed (develop WT **CLEAN** · related **195/195** · ahead origin/develop **1** · BE `@ba5b0cb` lockstep)
+- **status**: Fixed (develop `@61f8f19` WT **CLEAN** · related **195/195** · ahead origin/develop **1** · BE `@ba5b0cb` lockstep)
 - **found_at**: 2026-07-16T15:33:23Z (BE B521 Fixed · FE lockstep follow-up)
 - **fixed_at**: 2026-07-16T15:37:00Z
 - **verified_at**: 2026-07-16T15:37:00Z
 - **version**: v1.2.1 / QA-B95 — `&ZeroWidthNonJoiner;`/`&ZeroWidthJoiner;` named HTML entity long-alias strip
 - **summary**: ★ Fixed — FE decode strips gateway-injected ZeroWidthNonJoiner/Joiner long aliases in readiness + live-harness paths (BE `@ba5b0cb` parity).
-- **assignee**: TSR (develop→test FF + origin/test push) · PLN (baseline FE HEAD) · residual Planned **QA-B116**(702 BE origin/test push)
+- **assignee**: TSR (develop→test FF + origin/test push · pending includes `@61f8f19`) · PLN (baseline FE `@61f8f19`) · residual Planned **QA-B116**(702 BE origin/test push)
 - **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
 - **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (+ZeroWidthNonJoiner/Joiner long-alias · +2)
 - **expected**: frontend develop WT CLEAN with QA-B95 ZeroWidth long-alias decode committed and related tests PASS.
-- **actual**: ★ Fixed — related **195/195**(+2 vs 193) · Open FE **0** · lockstep BE `@ba5b0cb`.
+- **actual**: ★ Fixed — develop `@61f8f19` WT **CLEAN** · related **195/195**(+2 vs 193) · Open FE **0** · lockstep BE `@ba5b0cb`.
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T15:33:23Z -->
 <!-- tester-sync: TSR 1718차 2026-07-16T15:33:23Z (backend) — **★ QA-B521 Fixed** FF merge `53efa0b`→`ba5b0cb` · related **65/65**(~2.0s) · post-merge **2277/2277 PASS**(84s, 405 · Δ0) · npm **N/A** · live **0/149/0**(33.34s · bootstrap-disabled) · BE develop/test **SYNCED `@ba5b0cb`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@ba5b0cb` · FE ALL SYNCED+PUSHED `@975aecb`)** · backend@8080 **UP/200** · operation **BLOCK**(702 BE) -->
@@ -3878,7 +3990,79 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0** active · Fixed carry **QA-B508~B521** · FE develop/test/origin **ALL SYNCED+PUSHED `@975aecb`** · BE develop/test **SYNCED `@ba5b0cb`** · Planned **QA-B116**(origin/test **702 BE**)+**QA-B95** · operation **BLOCK**(702 BE) · cross-stream **SYNCED** · TSR1718 · **PLN**: baseline BE `@ba5b0cb` · residual = origin/test BE push **702**)_
+_(Open **2** active · **QA-20260716-B525** backend BLOCK · **QA-20260716-B526** frontend BLOCK · Fixed carry **QA-B508~B524** + **QA-B527**(COD SixPerEm) · FE develop `@73aa6dd` WT **CLEAN** + pending **3** vs test `@8a05640` · **FF-ready**(related **199/199**) · BE develop `@4622896` vs test `@ff80f0b` pending **3**(`@08cdb87`+`@e4123c3`+`@4622896`) · Planned **QA-B116**(origin/test **703 BE**)+**QA-B95** · operation **BLOCK**(703 BE) · cross-stream **BLOCK** · COD1727 · residual = tester **FF merge unlock** pending **3 BE + 3 FE** + origin/test push **703**)_
+
+
+### [TSR] v1.2.1/QA-B95 FE develop→test pending 3 (`73aa6dd` vs `8a05640`, QA-20260716-B526) — **Open**
+
+- **id**: QA-20260716-B526
+- **priority**: BLOCK
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (develop `@73aa6dd` WT **CLEAN** vs test `@8a05640` · pending **3** committed · **FF-ready** · merge **SKIP** read-only directive)
+- **found_at**: 2026-07-16T17:09:14Z (develop HEAD `@ed48077` pending **1** + dirty WIP) · **updated**: 2026-07-16T17:48:10Z (TSR1727 · develop related **199/199** · COD 추가 작업 불필요)
+- **version**: v1.2.1 / QA-B95 — figure/punctuation/ideographic + fractional em space entity aliases (BE `@e4123c3` lockstep · UXD `@ed48077` a11y)
+- **summary**: COD 측 준비 완료 — develop WT **CLEAN** · related **199/199 PASS**(+4 vs baseline 195) · pending **3**(`@ed48077`+`@031abef`+`@73aa6dd`) · baseline CARRY **2643/2643**. 유일한 차단은 tester read-only로 FF merge 미실행. **다음 사이클 merge write unlock 시 즉시 FF**.
+- **assignee**: **TSR**(다음 사이클: `cd src/frontend-test && git merge --ff-only develop` → post-merge `npm test` → `git push origin test`) · COD **불필요**(HEAD 유지) · PLN(baseline FE `@73aa6dd` 반영·merge unlock 지시)
+- **roadmap_ref**: ROADMAP merged baseline `@8a05640` · Planned QA-B116+QA-B95 · BE lockstep QA-B525
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (QA-B95 space-entity · related 199)
+- **expected**: develop→test FF merge `@73aa6dd` · post-merge npm **~2643/2643** · origin/test push · Open **1**(B525 BE only)
+- **actual**: develop related **199/199 PASS** · baseline CARRY **2643/2643** · pending **3** · merge SKIP(read-only) · transfer **BLOCK**
+- **repro**: `cd src/frontend && git log --oneline 8a05640..73aa6dd` → 3 commits · `npm test -- --run src/config/notificationChannelStatus.test.js src/test/liveE2eHarness.test.js` → **199/199** · `cd src/frontend-test && npm test` → CARRY 2643/2643(TSR1726)
+
+
+### [TSR] v2/QA-B95 space entity decode (figure/punctuation/ideographic + fractional em + SixPerEm) — backend develop→test SHA mismatch (`4622896` vs `ff80f0b`, QA-20260716-B525) — **Open**
+
+- **id**: QA-20260716-B525
+- **priority**: BLOCK
+- **severity**: BLOCK
+- **stream**: backend
+- **status**: Open (develop `@4622896` vs test `@ff80f0b` · pending **3** · merge **SKIP** read-only directive)
+- **found_at**: 2026-07-16T17:01:14Z (COD commit `@08cdb87` · pending **1** → TSR1725 pending **2** `@e4123c3` → COD1727 pending **3** `@4622896`)
+- **version**: v2 / QA-B95 — figure/punctuation/ideographic + fractional em (`&emsp2;`–`&emsp5;`/`&TwoPerEmSpace;`…`&FivePerEmSpace;`) + SixPerEm/long space (`&emsp6;`/`&SixPerEmSpace;`/`&EnSpace;`/`&EmSpace;`/`&HairSpace;`/`&NarrowNoBreakSpace;`) named HTML entity alias strip (`LiveE2eOperationReadinessSupport`)
+- **summary**: develop HEAD `@4622896` 미이관 — pending **3**: `@08cdb87` figure/punctuation/ideographic · `@e4123c3` fractional em · `@4622896` SixPerEm+En/Em/Hair/NarrowNoBreakSpace · develop pre-merge related **69/69 PASS**(+1 vs 68) · test baseline **2278/2278 PASS**(74s, 405) · FF merge는 tester write unlock 필요.
+- **assignee**: TSR (다음 사이클 FF merge `@4622896` + post-merge `mvn test` **~2281/2281** 예상) · COD **불필요**(HEAD 유지 · FE lockstep optional)
+- **roadmap_ref**: ROADMAP merged baseline `@ff80f0b` · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest (+figure/punctuation/ideographic + fractional em + SixPerEm/long space · +3 @Test vs 2278)
+- **expected**: develop→test FF merge `@4622896` · related **69/69** + post-merge **~2281/2281** PASS · Open **1**(B526 FE only)
+- **actual**: baseline 회귀 PASS · develop pre-merge related PASS · pending **3** · merge SKIP · transfer **BLOCK**
+- **repro**: `cd src/backend && git log test..develop --oneline` → `08cdb87` + `e4123c3` + `4622896` · `cd src/backend && mvn test -Dtest=LiveE2eOperationReadinessSupportTest` → 69/69 PASS
+
+
+### [TSR] v2/QA-B95 legacy NoBreakSpace decode — backend develop→test merge EXECUTED (`ff80f0b`, QA-20260716-B523) — **Fixed**
+
+- **id**: QA-20260716-B523
+- **priority**: BLOCK → Fixed (TSR 1720 FF merge)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@ff80f0b`** · related **66/66** · post-merge **2278/2278 PASS** · live **0/149/0**)
+- **found_at**: 2026-07-16T16:09:24Z (COD `@ff80f0b` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-16T16:11:00Z (FF `ba5b0cb`→`ff80f0b`)
+- **verified_at**: 2026-07-16T16:13:09Z (related+post-merge+live)
+- **version**: v2 / QA-B95 — legacy `&NoBreakSpace;` named HTML entity alias strip (COD `@ff80f0b`)
+- **summary**: FF merge pending **1** into test · related **66/66**(+1 vs 65) · post-merge **2278/2278**(+1 vs 2277) · live fail-closed **0/149/0**(33.21s · bootstrap-disabled) · SYNCED `@ff80f0b`.
+- **assignee**: TSR (merge·회귀·live 완료) · PLN (baseline BE `@ff80f0b`) · residual Planned **QA-B116**(703 BE) + **QA-B95**(FE NoBreakSpace lockstep)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest (+NoBreakSpace · +1 @Test vs 2277)
+- **expected**: develop→test FF merge · related+full regression PASS · Open **0**
+- **actual**: ★ Fixed — SYNCED `@ff80f0b` · Open **0** · cross-stream **SYNCED** · operation BLOCK(703 BE)
+
+
+### [TSR] v1.2.1/QA-B95 FE develop→test merge+push EXECUTED (`61f8f19`, QA-20260716-B522) — **Fixed**
+
+- **id**: QA-20260716-B522
+- **severity**: BLOCK → Fixed (TSR 1719 FF merge+PUSH)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin/test **ALL SYNCED+PUSHED `@61f8f19`** · related **195/195** · npm **2639/2639** · live **0/149/0**)
+- **found_at**: 2026-07-16T15:37:00Z (COD commit `@61f8f19` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-16T15:39:00Z (FF `975aecb`→`61f8f19`)
+- **verified_at**: 2026-07-16T15:54:28Z (related+post-merge+build+audit+live · origin/test PUSH)
+- **version**: v1.2.1 / QA-B95 — ZeroWidthNonJoiner/ZeroWidthJoiner named HTML entity long-alias strip (COD `@61f8f19` · BE `@ba5b0cb` lockstep)
+- **summary**: FF merge pending **1** into test · related **195/195**(+2 vs 193) · post-merge **2639/2639**(+2 vs 2637) · live fail-closed **0/149/0**(33.61s · bootstrap-disabled) · ALL SYNCED+PUSHED `@61f8f19`.
+- **assignee**: TSR (merge·회귀·push 완료) · PLN (baseline FE `@61f8f19`) · residual Planned **QA-B116**(702 BE origin/test push)
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (+ZeroWidthNonJoiner/Joiner long-alias · +2 @Test vs 2637)
+- **expected**: develop→test FF merge · related+full regression PASS · origin/test push · FE SYNCED · Open **0**
+- **actual**: ★ Fixed — ALL SYNCED+PUSHED `@61f8f19` · Open **0** · cross-stream **SYNCED** · operation BLOCK(702 BE)
 
 
 ### [TSR] v2/QA-B95 semicolon-optional + end-terminated numeric HTML entity decode — backend develop→test merge EXECUTED (`74e90c1`, QA-20260715-B475) — **Fixed**
