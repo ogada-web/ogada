@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-16T16:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-16T18:50:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  

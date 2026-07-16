@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-16T16:45:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-16T18:50:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  

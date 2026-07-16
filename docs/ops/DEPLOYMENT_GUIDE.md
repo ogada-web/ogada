@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T16:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T18:50:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  

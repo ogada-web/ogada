@@ -1,4 +1,4 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T16:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T18:50:00Z -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
