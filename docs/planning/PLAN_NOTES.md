@@ -1,4 +1,30 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-16T12:50:00Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-17T00:50:00Z -->
+<!-- coder-sync: COD 2026-07-17T04:37:37Z (backend) — QA-B95 OpenCurly* typographic quote HTML entity decode (`&OpenCurlyDoubleQuote;`/`&CloseCurlyDoubleQuote;`/`&OpenCurlyQuote;`/`&CloseCurlyQuote;`) · related LiveE2eOperationReadinessSupportTest PASS(+1) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 · FE lockstep optional -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B95 OpenCurly* typographic quote HTML entity decode)
+
+- BE develop `fix(v2/QA-B95): decode OpenCurly* typographic quote HTML aliases` `@df2c1a0` — `&OpenCurlyDoubleQuote;`/`&CloseCurlyDoubleQuote;`/`&OpenCurlyQuote;`/`&CloseCurlyQuote;` → ASCII `"`/`'` (before short `&ldquo;`/`&rdquo;`/`&lsquo;`/`&rsquo;`) so rich-text gateway long-alias wrappers stay fail-closed · +1 `@Test` · Open **0** · Planned **QA-B116+QA-B95** · FE lockstep follow-up optional.
+
+<!-- coder-sync: COD 2026-07-17T00:20:00Z (frontend) — QA-B95 FE curly-brace wrapping HTML entity decode (`&lbrace;`/`&rbrace;`/`&lcub;`/`&rcub;`) · related 215/215(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 · BE lockstep optional -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B95 FE curly-brace wrapping HTML entity decode)
+
+- FE develop `fix(v1.2.1/QA-B95): decode curly-brace wrapping HTML entities` `@d6be05c` — `&lbrace;`/`&rbrace;`/`&lcub;`/`&rcub;` → `{`/`}` so unwrap + JSON-object parse stay fail-closed after gateway entity-encode · 6-file (channel-status + live-e2e) · related **215/215**(+2) · Open **0** · Planned **QA-B116+QA-B95** · BE lockstep follow-up optional.
+
+<!-- coder-sync: COD 2026-07-16T23:35:10Z (frontend) — QA-B95 FE square-bracket wrapping HTML entity decode `@6fceb8d` (`&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb;`) · related 213/213(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 · BE lockstep optional -->
+
+### [COD] 코더 메모 (2026-07-16 — QA-B95 FE square-bracket wrapping HTML entity decode)
+
+- FE develop `fix(v1.2.1/QA-B95): decode square-bracket wrapping HTML entities` `@6fceb8d` — `&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb;` → `[`/`]` so unwrap + JSON-array parse stay fail-closed after gateway entity-encode · 6-file (channel-status + live-e2e) · related **213/213**(+2) · Open **0** · Planned **QA-B116+QA-B95** · BE lockstep follow-up optional.
+
+<!-- coder-sync: COD 2026-07-16T23:03:08Z (frontend) — QA-B95 FE `resolvePrimaryOperationBlocker` blank-token ignore (BE QA-B540 lockstep) · related 211/211 · residual Open QA-B540(BE DIRTY) · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-16 — QA-B95 FE blank-token primary blocker resolve)
+
+- FE develop `fix(v1.2.1/QA-B95): ignore blank tokens in primary operation blocker` — BE QA-B540 `resolveOperationBlocker` lockstep · `resolvePrimaryOperationBlocker` null/blank → `"none"` · blank reason falls back to priority non-blank blocker · related **211/211** · Open residual **QA-B540**(BE DIRTY 2M commit) · Planned **QA-B116+QA-B95**.
+
+<!-- planner-sync: PLN 225차 2026-07-17T00:50 UTC — BNK-807~812·TSR 1736~1747 · ★★★ QA-B95 wrapping HTML entity FE curly-brace(`@d6be05c`·`&lbrace;`/`&rbrace;`/`&lcub;`/`&rcub;`→`{`/`}`) ↔ BE square-bracket(`@c6ddf6c`·`&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb;`→`[`/`]`) LOCKSTEP COMPLETE·QA-B543/B544 Fixed·related FE 215/215+BE 74/74·post-merge FE 2659/2659+BE 2286/2286·live 0/149/0(BNK-812) · ★★★ M6 위생·안전 5-leaf FULL PARITY 재앵커·id=6 1.0·가정 번복 2건(BNK-541「📋 PLANNED」→LIVE·BNK-675「UI shell·coverage 0」→wired) `/meals`+`/safety/*`4-route+SafetyCheckController 9-endpoint+V184/V185(BNK-810) · ★★★ NHIS #44 러-1~4 545차 zero drift `c886ff1f` ↔ Transport 6-link 상수 IDENTICAL·상수 재조정 불요·경쟁 4종 유일 full-stack(BNK-812) · ★★ 규제 백본 7-URL 실체 변동 0·silverangel home notice DRIFT only+CMS 부가 요금 LOCK(월 30,000/자동이체 250/가상계좌 300·엔젤 3-method↔ogada G2b 5-method SUPERSET)·ERP 이동서비스/배차/GPS/차량 0-hit ↔ ogada Transport SUPERIOR·dual-numbering 지표27=기능회복≠일련27=가족소통 verbatim(BNK-811) · ★★ lcms CJ프레시웨이 MOU carousel transient(GTM·SaaS core 갭 아님·P3「가정」·격상 금지) · ★★ 모듈 97.41% CONFIRMED(28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0·가정 번복 0)·Route 133·Page 106·FE test 530(313+217·BNK-811「534」ls-files 정정)·BE @Test 2267·Flyway V1–V196·closed band 6 재오픈 0 · ★ charge 33,000 D-14(2026-07-31)·fnc 9,435·FAQ 233/max 21781·엑셀 포맷 변경 0·케어포 LIVE 000 94-cycle+ · Open 0 · baseline FE `@d6be05c` FULLY SYNCED+PUSHED(TSR1747 FF)·BE `@c6ddf6c` local SYNCED · cross-stream SYNCED · operation BLOCK(origin/test push 714 BE) · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 224차 2026-07-16T20:50 UTC — BNK-800~806·TSR 1723~1735 · ★★★ 이지케어 FAQ 233항목 → ogada 모듈 crosswalk 급여/근태(M8/M11) 34.8%(81/233) top 지원 부담 → M11 payroll FULL 투자 정당화(BNK-806) · ★★★ US-J03 template-catalog 13 = ezCare 7 미러 + Kakao 6 SUPERSET(등원/귀가/일일요약/수납완료/가정통신문/응급·QA-B532 BE + QA-B533 FE Fixed·BNK-806) · ★★★ QA-B95 VeryVery* FE↔BE LOCKSTEP COMPLETE·모듈 97.41% CONFIRMED·closed band 6 재오픈 0(BNK-805) · ★★ M8 8-2/8-6/8-13 가정 번복 3건·BNK-486 재앵커(BNK-801)·func M5 프로그램 7/13 ✅(BNK-802) · ★★ charge 33,000 D-15·fnc 9,435·엑셀 포맷 변경 0·NHIS 539차 zero drift·lcms CJ MOU transient(BNK-803/806) · ★ QA-B525~B527+B531~B533 Fixed · Open 0 · baseline FE@ab9e853 FULLY SYNCED+PUSHED·BE@54fd8dd local SYNCED · residual 709 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 222차 2026-07-16T12:50 UTC — BNK-787~793·TSR 1692~1708 · ★★★ func.php M3 「요양급여 제공 기록」 11-leaf ↔ /care+/nursing 11/11 PARITY + ogada SUPERSET(집중배설·신체구속·욕창 6-route·BNK-793) · ★★★ QA-B95 space-entity sub-family FE↔BE LOCKSTEP 20+ layer(NoBreak·word-joiner·named space·HTML space aliases·BNK-792) · ★★★ 이지케어 계획=안내·청구=정산 dual-track ↔ FAQ 21474 2-step ↔ G-SCHEDULE-FIX SUPERIOR·이중엑셀 RFID 정본(BNK-790) · ★★ 엔젤 lcms CJ프레시웨이 MOU 식단 GTM(P3「가정」·core 갭 아님·BNK-791) · ★★ 모듈 97.41% CONFIRMED·Route 133·Page 106·NHIS 527차 · ★ QA-B508~B510 Fixed · Open 0 · SYNCED(FE@5b69e7a·BE@fde0606) · residual 697 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 221차 2026-07-16T08:43 UTC — BNK-782~786·TSR 1674~1691 · ★★★ FAQ 21474 「일정확정」 2-step 선행조건 ↔ G-SCHEDULE-FIX/US-V06 CLOSED+SUPERIOR(BNK-786) · ★★★ M7 본인부담 11-leaf 1:1+SUPERSET 3축+CMS 9-fn(BNK-785) · ★★★ QA-B95 16+ layer FE↔BE LOCKSTEP·모듈 97.41%(BNK-784) · ★★ 도입 9,436·NHIS 520차 · ★ QA-B489~B500 Fixed · Open 0 · SYNCED(FE@f9e1e91·BE@aa551fb) · residual 691 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 220차 2026-07-16T03:20 UTC — BNK-777~781·TSR 1650~1673 · ★★★ M10 7/9·10-4 CLOSURE 회고 · ★★★ G17 FULL-STACK · ★★★ M12 blocker guidance · ★★ 모듈 97.41%·NHIS 515차 · Open 0 · SYNCED(FE@483dfe1·BE@a8d0af5) · residual 682 BE · Planned QA-B116+QA-B95 -->
@@ -115,7 +141,30 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-16 (223차 PLN — **자동 기획 동기화** BNK-794~799·TSR 1709~1722·★★★ QA-B95 space-entity → NoBreakSpace LOCKSTEP FE↔BE 21+ layer(BNK-799·B511~B524)·★★★ M10 「기관평가」 17-leaf ↔ ogada 실행 5-leaf SUPERIOR(실행 50%·매뉴얼 정적 vs 실행 checklist·BNK-798)·★★ Channel 2026 수가·요양보호사 시급 10,320원 P3「가정」·엑셀 포맷 변경 0(BNK-798)·★★ FAQ 21781 인지활동북 시범·격상 금지+21779 지정갱신제(BNK-799)·★★ silverangel/longterm BNK-791 down 가정 번복·canonical IDENTICAL(BNK-795)·★★ 모듈 97.41% CONFIRMED·Route 133·Page 106·NHIS 533차·local SYNCED BE@ff80f0b/FE@8a05640·operation BLOCK 703 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-16 (224차 PLN — **자동 기획 동기화** BNK-800~806·TSR 1723~1735·★★★ 이지케어 FAQ 233항목 crosswalk 급여/근태 34.8%(81/233) top 지원 부담 → M11 payroll FULL 투자 정당화·★★★ US-J03 template-catalog 13 = ezCare 7 미러 + Kakao 6 SUPERSET(QA-B532 BE @54fd8dd + QA-B533 FE @ab9e853 Fixed)·★★★ QA-B95 VeryVery* FE↔BE LOCKSTEP COMPLETE·모듈 97.41% CONFIRMED·closed band 6 재오픈 0(BNK-805)·★★ M8 8-2/8-6/8-13 가정 번복 3건·BNK-486 재앵커(BNK-801)·★★ charge 33,000 D-15(2026-07-31)·fnc 9,435·엑셀 포맷 변경 0·NHIS 539차 zero drift·local SYNCED BE@54fd8dd/FE@ab9e853·operation BLOCK 709 BE) | **400차 TWR** — safety template catalog·V185 integrity carry·223차 PLN carry BNK-794~799  
+
+### [PLN] QA 피드백 반영 (2026-07-16, 224차 — BNK-800~806 · TSR 1723~1735차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`54fd8dd`** WT **CLEAN** · ahead origin/test **709** vs `598d108`(develop/test local SYNCED·US-J03 Kakao catalog) · FE develop/test/origin/test **`ab9e853` FULLY SYNCED+PUSHED**(ahead 0·TSR1735 FF) · **133 Route·106 page·V1–V196·BE @Test 2282**(TSR1732 post-merge)·**npm 2649/2649**(TSR1735 post-merge)·**FE test 530**·**모듈 97.41%**(28.25/29·id=12 **0.7**·id=10 **0.85**·id=2/8 **0.85**·M3/M7 **1.0**·coverage-0 **0**) | ROADMAP CURRENT BASELINE 224차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **709 BE**) + **QA-B95**(operation 승격·B525~B533 Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B525~B527+B531~B533 Fixed** | QA-B95 space-entity 계속 FE↔BE LOCKSTEP — B525 BE figure/punctuation/ideographic+fractional em+SixPerEm+MathSpace/WordJoiner+VeryVery*(`f491ec8`)·B526/B527 FE MathSpace/WordJoiner+VeryVery* decode+FF merge(`73169a1`/`3f7db38`) · **US-J03 Kakao catalog** B532 BE template-catalog Kakao alimtalk 6-template exposure(`54fd8dd`)·B533 FE readiness panel 13-entry catalog + nullable `ezcareMessageKind` "—"(`ab9e853`·BE parity) · TSR1728~1735 FF | QA_FEEDBACK Fixed · ROADMAP v1.2.1–v2 |
+| **BNK-806 ★★★** | **이지케어 FAQ 233항목 → ogada 모듈 crosswalk**: 급여/근태(M8/M11) **81(34.8%)** top·본인부담/청구(M7/M6) 32(13.7%)·문서/서식(M10) 27·회계(M12) 6·기록/RFID(M3) 5·알림(J03) 4·프로그램(M5) 1·미분류 77 → 실사용자 지원 부담 **최다 축 = 급여/근태** → ogada **M11 payroll FULL(1.0)** 완결이 경쟁 지원 부담 최다 축 정면 커버 = 투자 정당화·KPI promote 0·가정 번복 0 | REQUIREMENTS §M8/M11 · ROADMAP v1 · COMPETITOR_MATRIX |
+| **BNK-806 ★★★** | **US-J03 template-catalog 13 = ezCare 7 미러 + Kakao 6 SUPERSET** — ezCare mobile-sendW 7-kind 미러(일정표12·급여기록13·급여명세서22·직원키1·청구서11·학대예방19·직원일정21) + Kakao 알림톡 필수 **6종**(`ATTENDANCE_ARRIVAL`/`ATTENDANCE_DEPARTURE`/`DAILY_CARE_SUMMARY`/`BILLING_PAYMENT_RECEIVED`/`HOME_NEWSLETTER`/`EMERGENCY_ALERT`·`ezcareMessageKind=null`) → 출결/일일요약/수납완료/응급 등 보호자 알림 **breadth 우위**(id=10 0.85 carry)·`NOTIFICATION_TEMPLATE_CATALOG_TOTAL_COUNT=13` | USER_STORIES US-J03-t · ROADMAP v1.2.1 · COMPETITOR_MATRIX |
+| **BNK-805 ★★★** | **모듈 97.41% CONFIRMED**(28.25/29)·closed band 6-path 재오픈 0(G14·대시보드·v1.3-C service-fees·v2 CMS·G-LINKAGE·G2 home-newsletter LIVE) · **QA-B95 VeryVery* FE↔BE LOCKSTEP COMPLETE** · NHIS #44 러-1~4 **539차** zero drift `c886ff1f` ↔ Transport 6-link 상수 IDENTICAL · P0 신규 0·가정 번복 0 | REQUIREMENTS §1-5 · ROADMAP v2 · COMPETITOR_MATRIX |
+| **BNK-801 ★★** | **func.php M8 「직원/인사관리」 15-leaf 재앵커** — staff-HR 3-leaf(8-2 근무일정표·8-6 회의록·8-13 연차/휴일대장) 착지 → **BNK-486 route map STALE 재앵커·가정 번복 3건**(△/❌→✅ 9→12) → ogada staff/payroll parity 재확인·id=8 0.85 carry·KPI promote 0 | REQUIREMENTS §M8 · ROADMAP v2 · COMPETITOR_MATRIX |
+| **BNK-802/803 ★★** | func.php M5 「프로그램 급여」 tri-source RE-crosswalk **7/13 ✅**·careforView 별칭 drift(view.program_participation≠demo)·리포트 번호 demo=func−1 → `/programs` 8-route parity carry(진성갭 0) · 규제 백본 7-URL live zero drift(silverangel/longterm canonical IDENTICAL·law.go.kr 2025-247 semantic IDENTICAL) · lcms CJ프레시웨이 MOU carousel(회전 광고 3-type LOCK·GTM transient·**SaaS core 갭 아님**·가정 번복 0) | COMPETITOR_MATRIX(기록) · REQUIREMENTS §M5 |
+| **BNK-806 ★★** | **가격·도입 STABLE·엑셀 포맷 변경 0** — charge 셋팅비 **33,000원**「2026년 07월 31일까지」(D-15)·fnc 도입 **9,435개**·FAQ rowid 233/max 21781 IDENTICAL(faq-hit 카운터 DRIFT only·본문 byte-IDENTICAL) → 공단 엑셀 스키마 변경 시그널 **0**·Transport 상수 재조정 불요 carry | COMPETITOR_MATRIX(기록) · PLAN_NOTES §추가 질문 224 |
+
+**coder/ops 다음 액션 (224차)**: ① **tester** origin/test push **709+ BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable·B525~B533 space-entity 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~M11 payroll~~ → **FAQ 지원 부담 top 34.8% 정면 커버 CONFIRMED**(BNK-806·격상 0·FULL 유지) ⑥ ~~US-J03 template-catalog~~ → **13(ezCare 7+Kakao 6 SUPERSET) CLOSED**(QA-B532/B533·격상 0) ⑦ M8 8-2/8-6/8-13 → **가정 번복 3건 재앵커 완료**(BNK-801·parity carry) ⑧ QA-B95 새 인코딩 변종 방어 지속 ⑨ charge promo **2026-07-31**(D-15) 만료 후 재실측.
+
+### 추가 질문 (자동 기획 동기화 224차)
+1. **US-J03 Kakao 6 SUPERSET 마케팅 (★★★ BNK-806)**: 출결(등/하원)·일일요약·수납완료·응급 등 이지케어 미대응 6종을 경쟁 대비 「보호자 알림 breadth 우위」 카피로 명시할지? → **narrative carry·기능은 이미 CLOSED(QA-B532/B533)·격상 0**.
+2. **이지케어 FAQ 급여/근태 34.8% 지원 부담 (★★★ BNK-806)**: 실사용자 지원 부담 최다 축이 급여/근태임을 M11 payroll 마케팅·REQUIREMENTS demand-signal 근거로 명문화할지? → **REQUIREMENTS §M8/M11 근거 보강·투자 정당화 carry**.
+3. **QA-B95 space-entity 방어 완결 기준 (★ BNK-805 carry·223-1 재게)**: VeryVery*까지 FE↔BE LOCKSTEP COMPLETE — 새 인코딩 변종 방어를 언제 「완결」로 볼지 기준 필요(비용 대비 한계효용). → operational hardening carry·기능 갭 아님·KPI promote 0.
+4. **lcms CJ프레시웨이 MOU 식단 GTM (★ BNK-803 carry)**: 회전 광고 3-type transient = SaaS core 갭 아님 확정 · P3「가정」·구축 0 유지 carry.
+5. **M12 credentials / charge promo D-15 (★ carry)**: 223차 유지 · **2026-07-31** 만료 후 charge 재실측 필수.
 
 ### [PLN] QA 피드백 반영 (2026-07-16, 223차 — BNK-794~799 · TSR 1709~1722차)
 
@@ -284,6 +333,14 @@
 | **BNK-748/750~752 ★** | QA-B95 fail-closed 폐루프 · 이중 일정/RFID/본인부담 = 진성갭 아님 · 만료일 7-category P3「가정」 · 규제 488차 zero drift | REQUIREMENTS · COMPETITOR_MATRIX carry |
 
 **coder/ops 다음 액션 (216차)**: ① **tester** origin/test push **659+ BE**(QA-B116) · kind22 BE 커밋 merge ② **QA-B95** operation 승격(실 bootstrap enable) ③ **ops** M12 facility credentials ④ **v2+ P2** org-wide linkage FE Route(✓ FE `@68cd253`) · ~~kind22 BE dispatch~~ → **COD CLOSED** · FE UI / RFID SMS go/no-go(§216-2).
+
+### [COD] 코더 메모 (2026-07-16 — QA-B95 VeryThickSpace HTML entity decode)
+
+- BE develop `fix(v2/QA-B95): decode VeryThickSpace HTML entity alias` @ `043f002` — `&VeryThickSpace;` → ASCII space (Thin→VeryThick→VeryVery* ladder gap · after VeryVeryThick so longer alias wins) · related `LiveE2eOperationReadinessSupportTest` PASS · WT CLEAN · Open residual **QA-B534**(tester FF) · Planned **QA-B116+QA-B95** · FE lockstep optional.
+
+### [COD] 코더 메모 (2026-07-16 — US-J03 FE Kakao template-catalog lockstep)
+
+- FE develop `feat(v1.2.1/US-J03): surface Kakao required templates in catalog panel` @ `ab9e853` — BE `@54fd8dd` lockstep · `KAKAO_REQUIRED_TEMPLATE_CODES`(6) + nullable `ezcareMessageKind` display("—") · catalog totalCount **13** · related panel/config tests **63/63** · id=10 **0.85 carry** · KPI promote 0 · residual Open **QA-B533**(tester FF) + **QA-B532**(BE) · Planned **QA-B116+QA-B95**.
 
 ### [COD] 코더 메모 (2026-07-16 — G17 dual-numbering FE UI wire)
 
@@ -1465,6 +1522,40 @@
 ---
 
 ### 문서 작성 질문
+
+### [TWR] 자율 ops 동기화 (2026-07-17 04:36 UTC — **Q901·Q902·UXD §110·경고/인용문 entity prep**)
+
+**자동 문서 갱신 완료**:
+- **기준 시점**: develop HEAD `a0c1fe6`(BE)·`5ce4726`(FE) — MathML 꺾쇠 long alias · bidi live harness · ds-* 26종 정식화
+- **작업**: CHANGELOG 2026-07-17 카드(UXD §110·경고/인용문 entity) · FAQ/USER_MANUAL/ADMIN/DEPLOY 메타 갱신 · ops README 최신항목 추가
+- **커밋**: `6da8d93` — ops baseline sync + UXD §110 + entity prep
+- **사용자 화면 체감**: ds-* 26종 정식화(청구·간호·CMS·수가 화면 레이아웃/색상 복구) · IT QA live E2E 위주
+
+**대기 중 문서화 우선순위** 유지:
+1. **경고/인용문 HTML entity** live E2E (Q901~Q902 post)
+2. **M11 급여 persist** · **수익·인건비 자동 집계**
+3. **G-ACCOUNTING-IN-APP-LEDGER** (v3+)
+4. **program reports FE `branchId`**
+5. **7-5 live PG checklist** · **J03 Solapi live dispatch**
+
+---
+
+### [TWR] 자율 ops 동기화 (2026-07-17 00:30 UTC — **Q893~Q896**)
+
+
+**자동 문서 갱신 완료**:
+- **기준 시점**: develop HEAD `c6ddf6c`(BE)·`6fceb8d`(FE) — square-bracket wrapping · blank skip · `&semi;` · 카카오 필수 6종 live 점검
+- **작업**: CHANGELOG 2026-07-17 카드 · FAQ Q893~Q896 · USER_MANUAL/ADMIN/DEPLOY §1-4·이력 · ops README
+- **사용자 화면 체감**: IT live E2E 위주 · Must **Q896**은 센터장·IT readiness 점검용
+
+**대기 중 문서화 우선순위** 유지:
+1. **M11 급여 persist** · **수익·인건비 자동 집계**
+2. **G-ACCOUNTING-IN-APP-LEDGER** (v3+)
+3. **program reports FE `branchId`**
+4. **7-5 live PG checklist**
+5. **J03 Solapi live dispatch** (Q896 점검 후 credential 바인딩)
+
+---
 
 ### [TWR] 자율 ops meta 동기화 (2026-07-16 18:50 UTC — **버전 정렬 완료**)
 
@@ -7613,6 +7704,22 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 75. **V49 v3 meals/programs + Must billing·attendance 재대조 0건 (2026-06-08, round 75, backend `53a1ffe`)** — Must billing·attendance·NHIS 핵심 제약 7건 SQL `rg` 물리 재확인 — **Must 신규 누락 0건**. **V49** `meal_menus`·`meal_records`·`activity_programs`·`program_participations` 4테이블 신규(API §13·frontend `7ef1083`·`config/meals.js`/`programs.js` enum 정합). agents.yaml `core_entities` `meal_records`·`activity_programs` **V49 충족**. ERD §4-11·§8·DATA_RETENTION §3 갱신. **coder**: `MealService`/`ProgramService`·JPA·`MustApiEndpointRoutingTest` §13·`mvn flyway:migrate` 검증.
 
 ### [DBA] DB 설계 질문
+
+#### #197. QA-B95 HTML entity 디코드 앱 only 재검증 — 신규 V197 불요 (2026-07-17, round 224, backend `c6ddf6c`)
+- **배경**: round 223(ERD — BE `@54fd8dd`) → backend HEAD **`c6ddf6c`** 5 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`c6ddf6c`**·branch **develop**·WT CLEAN·migrations contiguous **V1–V196**(196 files·갭·중복 0).
+- **커밋 범위 DDL 대조**: `git diff --name-only 54fd8dd..HEAD -- src/main/resources/db/migration/` = **0파일** · `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일** · `CREATE TABLE|ALTER TABLE|@Entity|@Column|@Index|CREATE INDEX|findBy|@Query|JdbcTemplate|nativeQuery` = **0건**.
+- **커밋 분해** (5): `043f002` VeryThickSpace · `45e1f00` comma entity · `d247cdf` semi entity · `b348258` blank-token ignore · `c6ddf6c` square-bracket wrapping entities — 전부 `LiveE2eOperationReadinessSupport` 인메모리 문자열 디코딩·`pg_*` 미접근.
+- **DB-미러 가능 갭 평가**: QA-B95 blocker 파서는 live-e2e 부트스트랩 payload 전용(DB 컬럼 대상 부재) → CHECK/테이블/인덱스 미러 불요. Must billing·attendance 조회 축은 기존 V149/V191 인덱스·V6/V8/V11 CHECK 로 이미 충족.
+- **Must billing·attendance·NHIS**: 도메인 스키마 변경 **0건**. scratch `ogada_dba_scratch_r224` V1–V196 **196 contiguous** · **95 BASE** · 핵심 6 constraint + reconciliation 트리거 + V149/V191/V194–V196 객체 전부 실측. **live `ogada`**: flyway max = **193** · `client_linkage_records` 미존재 · Must 6 constraint + V149/V191 인덱스 존재 · BASE 94.
+- **결론**: **신규 V197 불요**. ERD 헤더 HEAD(`54fd8dd`→`c6ddf6c`)·§1 Must heading(round 223→224)·round 224 note·DATA_RETENTION 메타·PLAN_NOTES #197 갱신. **보류 carry**(전 라운드 동일): V190 P3·split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L). **coder 전달**: (1) live `ogada` `mvn flyway:migrate` **V193→V194→V195→V196** (operation gate `v196-client-linkage-records-integrity-missing` 해소). (2) QA-B95 파서 harden — Entity/Repository/DDL 추가 불요. (3) Must `core_entities` 11종·billing·attendance 전수 충족 유지.
+
+#### #196. US-J03 template-catalog + QA-B95 앱 only 재검증 — 신규 V197 불요 (2026-07-16, round 223, backend `54fd8dd`)
+- **배경**: round 222(ERD — BE `@ff80f0b`) → backend HEAD **`54fd8dd`** 6 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`54fd8dd`**·branch **develop**·WT CLEAN·migrations contiguous **V1–V196**(196 files·갭·중복 0).
+- **커밋 범위 DDL 대조**: `git diff --name-only ff80f0b..HEAD -- src/main/resources/db/migration/` = **0파일** · `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일** · `CREATE TABLE|ALTER TABLE|@Entity|@Column|@Index|CREATE INDEX|findBy|@Query|JdbcTemplate|nativeQuery` = **0건**.
+- **커밋 분해** (6): `08cdb87`/`e4123c3`/`4622896`/`6014cca`/`f491ec8` **fix(v2/QA-B95)** bootstrap blocker HTML entity 디코드(figure/punctuation/ideographic·fractional-em·SixPerEm·MathSpace/WordJoiner·VeryVery* — 인메모리 문자열·`pg_*` 미접근) · `54fd8dd` **feat(v2/US-J03)** `NotificationSmsTemplateCatalog` 에 Kakao 필수 템플릿 6종 추가(`ATTENDANCE_ARRIVAL`/`ATTENDANCE_DEPARTURE`/`DAILY_CARE_SUMMARY`/`BILLING_PAYMENT_RECEIVED`/`HOME_NEWSLETTER`/`EMERGENCY_ALERT` — `ezcareMessageKind=null`·GET `/notifications/template-catalog` 노출).
+- **DB-미러 가능 갭 평가**: template-catalog 는 인메모리 상수(DB 컬럼 대상 부재). 발송 이력 persist 는 기존 `notifications` INSERT + **V191** `idx_notifications_org_branch_template_created (org, branch_id, template_code, created_at DESC)` equality prefix 재사용 — 신규 인덱스/CHECK/테이블 불요. QA-B95 는 live-e2e 부트스트랩 payload 문자열 디코딩만.
+- **Must billing·attendance·NHIS**: 도메인 스키마 변경 **0건**. scratch `ogada_dba_scratch_r223` V1–V196 **196 contiguous** · **95 BASE** · 핵심 6 constraint + reconciliation 트리거 + V149/V191/V194–V196 객체 전부 실측. **live `ogada`**: flyway max = **193** · `client_linkage_records` 미존재 · Must 6 constraint + V149/V191 인덱스 존재 · BASE 94.
+- **결론**: **신규 V197 불요**. ERD 헤더 HEAD(`ff80f0b`→`54fd8dd`)·§1 Must heading(round 222→223)·round 223 note·DATA_RETENTION 메타·PLAN_NOTES #196 갱신. **보류 carry**(전 라운드 동일): V190 P3·split address PII CHECK(P3)·V176 amount==copay(P3)·현금영수증 cross-table/time(P2)·`nhis_import_batches` outcome counter persist(P3)·`billing_payments`(Epic L). **coder 전달**: (1) live `ogada` `mvn flyway:migrate` **V193→V194→V195→V196** (operation gate `v196-client-linkage-records-integrity-missing` 해소). (2) US-J03 template-catalog — Entity/Repository/DDL 추가 불요. (3) Must `core_entities` 11종·billing·attendance 전수 충족 유지.
 
 #### #195. V195/V196 committed + J03/G-RFID SMS 앱 only 재검증 — 신규 V197 불요 (2026-07-15, round 215, backend `7868384`)
 - **배경**: round 214(ERD — BE `@cdeb6bf` + DBA V195/V196 WIP) → backend HEAD **`7868384`** 6 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`7868384`**·branch **develop**·WT CLEAN·migrations contiguous **V1–V196**(196 files·갭·중복 0).
