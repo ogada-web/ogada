@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-17T04:36:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-17T05:41:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`a0c1fe6`** · FE **`5ce4726`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`a0c1fe6`** · FE **`a364f97`** · **133 route·107 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,7 @@
 
 ## 최근 7일 요약
 
-- **2026-07-17** — live E2E **MathML 꺾쇠 long alias** · **bidi long-alias live harness** · **꺾쇠·소괄호 wrapping** · **중괄호 wrapping** · **청구·간호·CMS ds-* 26종** · **경고/인용문 HTML entity** · 카카오 필수 알림톡 live 전 점검 문서 · DESIGN_SYSTEM §110 업데이트
+- **2026-07-17** — **이용자 등록 동의·브레드크럼 등 ds-* 9종** · live E2E **인용문(typographic)·OpenCurly*·Left*/Right*Quote** · **MathML 꺾쇠** · **bidi live harness** · **꺾쇠·소괄호·중괄호 wrapping** · **청구·간호·CMS ds-* 26종** · 카카오 필수 알림톡 live 전 점검 문서
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
 - **2026-07-15** — **channel-status 참고 단가** · 연계기록지 **리포트 페이지네이션** · RFID **급여제공내역 SMS 일괄** · live E2E bootstrap blocker 합성 파싱
@@ -23,6 +23,73 @@
 ---
 
 ## 2026-07-17
+
+### 📝 인용문 HTML entity·ds-* 9종 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 인용문(typographic)·OpenCurly*·Left*/Right*Quote** 디코드와 **Must 화면 ds-* 텍스트·동의·브레드크럼 9종 정식화**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신(화면 체감은 아래 UXD·COD 카드)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `a9bd7c0` · FE develop `0438a17` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ Q903~Q906 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ 이용자 등록·보호자·배차 화면 — 텍스트·동의·브레드크럼 ds-* 9종 정식화
+- **에이전트**: UXD
+- **한 일**: 화면에 쓰이지만 CSS에 없던 **텍스트·간격·그룹 클래스 9종**을 `components.css`에 올려, 주민번호 수집 동의 묶음·필드 라벨·페이지 브레드크럼·제출 블록·배차 지도 힌트 등이 디자인 시스템대로 보이게 했습니다.
+- **내 화면/업무에 영향**: **이용자 등록·수정**(`/clients/new`·`/clients/:id/edit`) 주민번호 동의 박스·라벨, **보호자 체크인** 제출 버튼 간격, **배차 지도** 경로 갱신 힌트, 상세 화면 상단 브레드크럼 여백이 정리됩니다. 업무 기능·API는 그대로입니다.
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `components.css` — `ds-text-strong` · `ds-card__lede` · `ds-table__meta` · `ds-field-label`/`ds-field__label` · `ds-consent-box`(forced-colors 경계) · `ds-page-breadcrumb` · `ds-submit-block` · `ds-transport-map__refresh-hint` (`0438a17`, UXD-187)
+- 적용 예: `ClientFormPage` · `GuardianCheckinPage` · `KakaoTransportMap` · `AccountingBpoPage` · `BodyRestraintRecordPage`
+
+</details>
+
+### ✅ live E2E — Left*/Right*Quote HTML entity 디코드 (BE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 인용문 래퍼를 HTML5 **`&LeftDoubleQuote;`/`&RightDoubleQuote;`/`&LeftSingleQuote;`/`&RightSingleQuote;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE 디코드를 추가했습니다(OpenCurly*·짧은 ldquo보다 먼저 처리).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만 (FE Left*/Right* lockstep은 후속)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — Left*/Right*Quote → ASCII `"`/`'` then OpenCurly* then ldquo (`a9bd7c0`)
+- 회귀: `LiveE2eOperationReadinessSupportTest`
+
+</details>
+
+### ✅ live E2E — OpenCurly* 인용문 long alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 인용문 래퍼를 HTML5 **`&OpenCurlyDoubleQuote;`/`&CloseCurlyDoubleQuote;`/`&OpenCurlyQuote;`/`&CloseCurlyQuote;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 맞췄습니다(짧은 `&ldquo;`/`&rdquo;`보다 긴 alias 우선).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — Open/CloseCurly* → ASCII quote (`df2c1a0`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`ac3af73`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — typographic 인용문(`&ldquo;` 등) 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 blocker를 **`&ldquo;`/`&rdquo;`/`&lsquo;`/`&rsquo;`**(및 유니코드 굽은 따옴표)로 감싸도 ASCII 따옴표로 풀어 bootstrap gate가 fail-closed로 동작하도록 BE·FE를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — ldquo/rdquo/lsquo/rsquo → `"`/`'` (`a0c1fe6`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`a364f97`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
 
 ### 📝 UXD design system §110 — QA-B95 배치 + ds-* 26종 정식화 문서화
 - **에이전트**: UXD · TWR
@@ -34,19 +101,6 @@
 
 - DESIGN_SYSTEM.md: §110 추가(107줄) — ds-stack--sm·ds-table--compact·ds-form-grid--3·ds-billing-ledger-table·ds-fee-matrix·ds-cms-collection-status·ds-nursing-*·ds-staff-lifecycle-panel·ds-address-fields·ds-date-picker 등 적용 패턴
 - 앞선 UXD-186/FE-16 정규화 FE 커밋 @971c636 확인
-
-</details>
-
-### 📝 경고·인용문 HTML entity live E2E 문서화
-- **에이전트**: TWR
-- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 경고·인용문 래퍼(`&quot;`/`&apos;` 등 quotation HTML entity)** 및 **`&warned;`·`&block;` 등 문의 구분자** 디코드를 반영했습니다.
-- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
-- **상태**: 완료
-
-<details><summary>자세히</summary>
-
-- 실측: BE develop `a0c1fe6` · FE develop `5ce4726` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
-- FAQ 신규 항목 · USER_MANUAL/ADMIN/DEPLOY 갱신
 
 </details>
 
