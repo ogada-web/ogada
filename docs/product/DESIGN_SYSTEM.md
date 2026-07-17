@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-17T11:25:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-17T19:55:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-17 (188차 — **QA-B95 6커밋 재점검 + FE-16 레이아웃 클래스 12종 승격 + 청구 상태 타임라인 `<time>` + §112** — 187차(§111) 이후 coder 신규 커밋 6건(`694266e`/`56fa1c0`/`a280437`/`3f7bb94`/`93f77e1`/`20f6ddc` QA-B95 quote entity decode)은 로직 전용(변경 불요). 정확한 className 감사로 **레이아웃·간격 영향 미정의 12종**(`ds-card--form`·`ds-timeline--compact`·`ds-qr-scan`·`ds-lifecycle__links`/`__link-list`·`ds-billing-report__section-header`·`ds-risk-assessment-panel__period-select`·`ds-staff-hr-files*`·`ds-benefit-contract-files*`·`ds-staff-refresher-certificates*`·`ds-transport-compliance__workflow`) 승격. **`BillingDetailPage` 상태 이력** 평문 시각 → `<time dateTime>`(WCAG 1.3.1). `--color-success-text` 토큰 정합. baseline FE `@20f6ddc` → UXD-188 `@c061494`.)
+> **최종 갱신**: 2026-07-17 (190차 — **SEC-D25·M12·QA-B95 6커밋 재점검 + 직원현황 필터 `screen-only` 정합 + 프로그램 사진 오류 ARIA + §113·§114** — 189차(§113 CSS) 이후 coder 신규 커밋 6건(`9e40c19`/`bc1d343`/`090ac10`/`dc81f6e` QA-B95·`592a483` M12 SSO allowlist·`8e28fe0` SEC-D25 magic bytes) 재점검. QA-B95·M12는 로직 전용(변경 불요). ① **PLAN_NOTES UXD-189 CLOSURE** — `StaffStatusReportPage` 조회 필터 Card의 오용 `ds-staff-status-report-print-zone`(미정의·인쇄 시 필터 잔존 위험)을 본 페이지 기존 패턴 `ds-staff-status-report-screen-only`로 교체(`@media print`에서 필터·출력물 버튼 동시 숨김). ② **`ProgramSchedulePhotoUpload`** — SEC-D25 검증/업로드 오류 `Alert`에 안정 `id`·파일 input `aria-invalid`+`aria-describedby`(WCAG 3.3.1·4.1.2). ③ **§113** 본문 보강(UXD-189 CSS)·**§114** 신규. baseline FE `@dc81f6e` → UXD-190.)
+> **이전 갱신**: 2026-07-17 (189차 — **v3 프로그램 사진 업로드(BNK-834) 2커밋 재점검 + FE-16 `ds-stack--tight` 승격 + §113** — 188차(§112) 이후 coder 신규 커밋 2건(`2e06d5a` v3 프로그램 일정 사진 업로드 wire·`8e74b07` multipart content-type 파라미터 허용)을 hyphen 인식 className 감사로 재점검. `8e74b07`은 백엔드 수용 로직 전용(FE UI 무관·변경 불요). `2e06d5a`가 추가한 **`ProgramSchedulePhotoUpload`** 의 `ds-stack--tight`(상태 라벨+파일 입력+버튼+오류 Alert 마이크로 스택)가 CSS 미정의로 `ds-stack`(space-6) 폴백 없이 gap 0으로 붙던 FE-16 갭을, `ds-stack--sm`(space-3) 패턴에 맞춰 `flex` column·`gap: var(--space-2)`(더 촘촘)로 승격. 컴포넌트 a11y(sr-only label↔`htmlFor` input·`aria-label`·업로드 `aria-busy`·`Spinner label`·오류 `Alert tone=danger`)는 표준 준수 확인(변경 불요). 잔여 미정의 토큰(compliance 페이지 마커·`ds-pressure-ulcer-lifecycle` 패널 패스스루·`ds-copay-calculator`/`ds-needs-assessment-form` 블록·런타임 `ds-badge--${tone}`/`print-only--${id}`)은 §97 시맨틱 컨테이너 관례로 규칙 불요 유지. `ds-staff-status-report-print-zone`(인쇄 시 필터 Card 표시 여부)는 인쇄 동작 확인 필요 → PLAN_NOTES `### UX 설계 질문` 기록. baseline FE `@8e74b07` → UXD-189. CSS-only·`npm run build` PASS.)
+> **이전 갱신**: 2026-07-17 (188차 — **QA-B95 6커밋 재점검 + FE-16 레이아웃 클래스 12종 승격 + 청구 상태 타임라인 `<time>` + §112** — 187차(§111) 이후 coder 신규 커밋 6건(`694266e`/`56fa1c0`/`a280437`/`3f7bb94`/`93f77e1`/`20f6ddc` QA-B95 quote entity decode)은 로직 전용(변경 불요). 정확한 className 감사로 **레이아웃·간격 영향 미정의 12종**(`ds-card--form`·`ds-timeline--compact`·`ds-qr-scan`·`ds-lifecycle__links`/`__link-list`·`ds-billing-report__section-header`·`ds-risk-assessment-panel__period-select`·`ds-staff-hr-files*`·`ds-benefit-contract-files*`·`ds-staff-refresher-certificates*`·`ds-transport-compliance__workflow`) 승격. **`BillingDetailPage` 상태 이력** 평문 시각 → `<time dateTime>`(WCAG 1.3.1). `--color-success-text` 토큰 정합. baseline FE `@20f6ddc` → UXD-188 `@c061494`.)
 > **이전 갱신**: 2026-07-17 (187차 — **QA-B95 6커밋 재점검 + FE-16 텍스트·간격·그룹 클래스 9종 승격 + §111** — 186차(§110) 이후 coder 신규 커밋 6건(`9907725`/`1c84f0f`/`5ce4726`/`40c85df`/`a364f97`/`ac3af73` QA-B95 wrapping/bidi/MathML/typographic quote entity decode)은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). 감사 스크립트 좌측 경계 누락 오탐(`recor`+`ds-heading`·`nee`+`ds-assessment*`)을 정정한 재감사로, 실제 소비되나 CSS 미정의였던 **텍스트·간격·그룹 클래스 9종**(`ds-text-strong`·`ds-card__lede`·`ds-table__meta`·`ds-field-label`·`ds-field__label`·`ds-consent-box`·`ds-page-breadcrumb`·`ds-submit-block`·`ds-transport-map__refresh-hint`)을 승격. `ds-consent-box`(민감정보 동의 묶음)에 `forced-colors` 경계선 보강, 나머지 미정의 ~50종은 자식이 레이아웃 전담하는 시맨틱 컨테이너로 §97 관례상 규칙 불요 유지. baseline FE `@ac3af73` → UXD-187. CSS-only·`npm run build` PASS.)
 > **이전 갱신**: 2026-07-17 (186차 — **QA-B95 6커밋 배치 재점검 + FE-16 미정의 `ds-*` 26종 일괄 승격 + §110** — 185차(§109) 이후 coder 신규 커밋 6건(`b28eb45`/`b753586`/`6900a8f`/`7ee1cf1`/`6fceb8d`/`d6be05c` QA-B95 entity delimiter decode)은 로직 전용(변경 불요). 컴포넌트 대비 `components.css` 미정의 클래스 26종(테이블·그리드·폼·간호 폼 intro 등) 일괄 승격 + `forced-colors` 오버라이드. baseline FE `@d6be05c` → UXD-186. `971c636`.)
 > **이전 갱신**: 2026-07-16 (185차 — **QA-B95 5커밋 재점검 + US-J03 알림톡·SMS 템플릿 카탈로그 표 row header 승격 + §109** — 184차(§108) 이후 coder 신규 커밋 6건(`031abef`/`73aa6dd`/`c260baa`/`73169a1`/`3f7db38` QA-B95 figure/em/SixPerEm/MathSpace/VeryVery* space entity decode + `ab9e853` US-J03 template-catalog Kakao 필수 6종 확장) 미점검. 다섯 decode 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`NotificationChannelReadinessPanel` 카탈로그 표** — `ab9e853`이 13항목(ezCare 7 + Kakao 6·`ezcareMessageKind` nullable `—`)·6열로 재편하며 각 행을 식별하는 「메시지」 열이 `<td>`라 SR이 상태/데이터 5열을 읽을 때 행 컨텍스트를 헤더로 안내받지 못하던 WCAG 1.3.1 갭을, 같은 컴포넌트 「문자 발송 참고 단가」 표(§105)와 정합되게 **`<th scope="row">`** 로 승격(muted 배경·`forced-colors` 상속·`—` placeholder는 §53 관례 유지). ② **§109** 신규. `npm test`(49/49·rowheader 회귀 +2)·build PASS.)
@@ -5983,6 +5985,90 @@ CSS-only 변경·JSX 불변·회귀 없음.
 
 - `BillingDetailPage.test.jsx` 타임라인 `<time>` 회귀 +1.
 - `npm test`(해당 파일)·`npm run build` PASS.
+
+---
+
+## §113. v3 프로그램 사진 업로드 FE-16 `ds-stack--tight` 승격 (189차) [UXD]
+
+> **112차(§112) 이후 coder 신규 커밋 2건** (`2e06d5a` v3 프로그램 일정 사진 업로드·`8e74b07` multipart content-type) 재점검. baseline FE `@8e74b07` → UXD-189 `@bfd171d`.
+
+### 113-1. coder 커밋 분류
+
+| 커밋 | 성격 | UI 조치 |
+|---|---|---|
+| `2e06d5a` | `ProgramSchedulePhotoUpload` 신규 wire | FE-16: `ds-stack--tight` 미정의 → CSS 승격 |
+| `8e74b07` | multipart Content-Type 파라미터 허용(로직) | 변경 불요 |
+
+### 113-2. FE-16 — `.ds-stack--tight`
+
+| 클래스 | 소비처 | 정의 |
+|---|---|---|
+| `ds-stack--tight` | `ProgramSchedulePhotoUpload` | `flex` column · `gap: var(--space-2)` — `ds-stack`(space-6)·`ds-stack--sm`(space-3)보다 촘촘한 마이크로 스택 |
+
+미정의 시 `ds-stack` 폴백 없이 gap 0으로 상태 라벨·파일 입력·Spinner·오류 Alert가 붙던 시각 회귀를 해소.
+
+### 113-3. a11y (189차 — 확인만)
+
+- sr-only `label`↔`htmlFor` · 업로드 `aria-label` · `aria-busy` Spinner · 오류 `Alert tone=danger` 표준 준수(JSX 변경 불요).
+- **잔여(→190차 CLOSURE)**: 필터 Card `ds-staff-status-report-print-zone` 오용 → PLAN_NOTES UXD-189.
+
+### 113-4. coder 전달 메모
+
+1. 상태+파일+버튼 밀착 UI는 `ds-stack ds-stack--tight`를 사용한다(`ds-stack`만 쓰면 space-6).
+2. §97 시맨틱 컨테이너(`ds-needs-assessment-form` base·compliance 마커 등)는 규칙 불요 유지.
+
+### 113-5. 검증
+
+- CSS-only · `npm run build` PASS.
+
+---
+
+## §114. 직원현황 필터 `screen-only` + 프로그램 사진 오류 ARIA (190차) [UXD]
+
+> **113차(§113) 이후 coder 신규 커밋 6건** (`9e40c19`/`bc1d343`/`090ac10`/`dc81f6e` QA-B95 · `592a483` M12 SSO allowlist · `8e28fe0` SEC-D25 magic bytes) 재점검 + PLAN_NOTES UXD-189 CLOSURE. baseline FE `@dc81f6e` → UXD-190.
+
+### 114-1. coder 커밋 분류 — 변경 불요 / 후속 a11y
+
+| 커밋 | 성격 | UI 조치 |
+|---|---|---|
+| QA-B95 4건 | entity decode·live harness | 변경 불요 |
+| `592a483` | M12 SSO portal path allowlist 로직 | 변경 불요(AccountingBpoPage §106·§111 패턴 유지) |
+| `8e28fe0` | SEC-D25 magic-byte 클라이언트 검증 | 오류↔input ARIA 연결 보강(본 절) |
+
+### 114-2. PLAN_NOTES UXD-189 CLOSURE — 직원현황 필터 인쇄
+
+`StaffStatusReportPage` 조회 필터 Card가 **미정의·의미 반전** 클래스 `ds-staff-status-report-print-zone`을 사용해, `@media print`에서 필터 폼이 인쇄물에 남을 수 있던 갭을 해소.
+
+| 변경 | 이유 |
+|---|---|
+| `ds-staff-status-report-print-zone` → `ds-staff-status-report-screen-only` | 본 페이지는 인쇄 본문이 `print-only` 블록·화면 표는 이미 `screen-only`. 필터 Card도 동일 시맨틱으로 인쇄 시 숨김(`components.css` 기존 규칙 재사용). |
+
+`print-zone` = 「인쇄되는 영역」(billing/transport) vs `screen-only` = 「인쇄 시 숨김」(staff status) — 혼용 금지.
+
+### 114-3. `ProgramSchedulePhotoUpload` — SEC-D25 오류 필드 연결
+
+| 항목 | 내용 |
+|---|---|
+| `Alert id={errorId}` | 검증·업로드 실패 메시지에 안정 id |
+| `aria-invalid` | 오류 있을 때 파일 input |
+| `aria-describedby={errorId}` | SR이 파일 컨트롤과 오류 문구를 함께 안내(WCAG 3.3.1·4.1.2·Field error 패턴) |
+
+### 114-4. a11y·접근성 결정
+
+- 색상 의존 없음 — 오류는 `Alert tone=danger` 텍스트 + assertive live region.
+- 인쇄 숨김은 **클래스 시맨틱**으로만 표현(인라인 style 금지·FE-16).
+
+### 114-5. coder 전달 메모
+
+1. **직원현황·유사 리포트**에서 화면 전용 필터/액션 Card는 `*-screen-only`만 사용. `*-print-zone`은 「인쇄되는 본문 래퍼」에만.
+2. **파일 업로드 검증 오류**는 폼 상단 Alert만 두지 말고 input `aria-invalid`+`aria-describedby`를 연결한다.
+3. USER_STORIES **US-H03**(간호지시서·수급자계약 만료 대시보드)은 P3·scope 대기 — UI 셸 미착수(planner 확정 후 UXD 재개).
+4. 잔여 FE-16 시맨틱 컨테이너 5종(`ds-needs-assessment-form`·`ds-lead-caregiver-compliance`·`ds-needs-assessment-compliance`·`ds-periodic-risk-compliance`·`ds-pressure-ulcer-lifecycle`)은 §97 관례 유지.
+
+### 114-6. 검증
+
+- `ProgramSchedulePhotoUpload.test.jsx` · `StaffStatusReportPage.test.jsx` a11y/인쇄 클래스 회귀.
+- `npm test`(해당 파일)·`npm run build`.
 
 ---
 

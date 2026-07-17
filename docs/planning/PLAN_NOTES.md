@@ -1,3 +1,12 @@
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-17T19:42:00Z -->
+<!-- planner-sync: PLN 229차 2026-07-17T19:42 UTC — BNK-835~841·TSR 1793~1801 · ★★★ v3 photo SEC-D25 6-cycle COMPLETE·Page 106 정본·demo-work≠func M2 범위 분리·M7 billing PARITY·HTTP 442 6차·NHIS 573차·Open 0 · SYNCED(BE@c19bfa6·FE@dc81f6e) · residual 738 BE · Planned QA-B116+QA-B95 -->
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T19:00:59Z -->
+<!-- coder-sync: COD 2026-07-17T19:00:59Z (frontend) — QA-B590 FE v1.2.1/QA-B95 semicolon-optional NoBreakSpace marker decode lock (BE QA-B589 `@c19bfa6`) · related 246/246(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B590 FE semicolon-optional NoBreakSpace marker decode lock)
+
+- FE develop `test(v1.2.1/QA-B95): lock semicolon-optional NoBreakSpace marker decode` `@dc81f6e` — BE QA-B589 `@c19bfa6` lockstep · gateway가 `&NoBreakSpace` 세미콜론을 생략해도 mid-token bootstrap marker 재결합 · +2 regression (`notificationChannelStatus` + `liveE2eHarness`) · related **246/246 PASS**(+2) · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF 대기 · decode 소스 동작 불변(현행 strip-empty 경계 lock only).
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T18:01:00Z -->
 <!-- coder-sync: COD 2026-07-17T18:01:00Z (frontend) — QA-B586 FE v3 program schedule photo magic-byte SEC-D25 lockstep `@8e28fe0` (BE QA-B585 `@d1ff63a`) · related 15/15(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
 
@@ -232,30 +241,52 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-17 (228차 PLN — **자동 기획 동기화** BNK-829~834·TSR 1779~1792·★★★ v3 program schedule photo upload FULL-STACK LANDED(QA-B576~B579·silverangel 0-hit ↔ SUPERSET·id=5 1.0)·★★★ audit-first HTTP 441→442 BREAK→442 2차 안정 재현(BNK-833/834·물리 삭제 신설 금지)·★★ Page KPI 106→107 소급 정정(BNK-834·가정 번복 1)·★★ NHIS #44 566차·★★★ closed band 6·모듈 97.41% 동결·cross-stream SYNCED BE@72a6534/FE@8e74b07·operation BLOCK 732 BE) | **400차 TWR** — safety template catalog·V185 integrity carry·226차 PLN carry BNK-817~819  
+> **최종 갱신**: 2026-07-17 (229차 PLN — **자동 기획 동기화** BNK-835~841·TSR 1793~1801·★★★ v3 photo SEC-D25 6-cycle COMPLETE(BNK-833→840·QA-B576~B586·FE+BE magic)·★★★ Page KPI 107→106 재-정정(BNK-835)·★★★ demo-work≠func.php M2 범위 분리(BNK-841)·★★★ M7 billing PARITY+SUPERSET·★★★ audit-first HTTP 442 6차·★★ NHIS #44 573차·★★ M12 SSO SEC-D43 CLOSED·cross-stream SYNCED BE@c19bfa6/FE@dc81f6e·operation BLOCK 738 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [PLN] QA 피드백 반영 (2026-07-17, 229차 — BNK-835~841 · TSR 1793~1801차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`c19bfa6`** WT **CLEAN** · ahead origin/test **738** vs `598d108`(QA-B589 NBSP lockstep) · FE develop/test/origin **`dc81f6e` FULLY SYNCED+PUSHED**(QA-B588+B590·TSR1801) · **133 Route·106 page**(BNK-835 재-정정)·**V1–V196·BE post-merge 2316/2316** · **npm 2706/2706** · **HTTP 442** 6차 · **모듈 97.41%** | ROADMAP CURRENT BASELINE 229차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **738 BE**) + **QA-B95**(operation 승격·B580~B590 Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B576~B586 Fixed (★★★ SEC-D25)** | program photo **6-cycle** — API·wire·normalize·whitespace·**BE magic**·**FE pre-upload magic** · MIME spoof fail-closed · 케어포 plupload vintage↔SUPERIOR · id=5 1.0 · KPI promote 0 | USER_STORIES US-P03 · REQUIREMENTS §229 · ROADMAP v3 |
+| **QA-B580~B584 / B587~B590 Fixed** | QA-B95 named-num/NBSP lockstep · M12 SSO SEC-D43 allowlist+error-copy · **기능 갭 아님** · TSR1793~1801 | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-835 ★★★ (가정 번복)** | **Page KPI 107→106 재-정정** — BNK-834「107」폐기 · `git ls-files` 정본=106 · closed band 6 동결 | ROADMAP · REQUIREMENTS KPI |
+| **BNK-841 ★★★** | demo-work 시설 셸 transport **0-hit = 범위 분리**(기능 부재 단정 금지) · 비교 기준=func.php M2+NHIS #44 · M7 7-x↔`/billing/*` PARITY+SUPERSET · billing Epic 불요 · NHIS #44 **573차** | REQUIREMENTS §1-5 · COMPETITOR_MATRIX · PLAN_NOTES §추가 질문 |
+| **BNK-840 ★★★** | 마케팅 「MIME 위조 방어 — 브라우저에서 즉시 감지」 · 릴리즈 위생 우위(개발자 주석/DEV leaf prod 노출 0) · defense-in-depth 타 첨부 축 재사용 = P3「가정」 | REQUIREMENTS · USER_STORIES US-P03 · PLAN_NOTES §추가 질문 |
+| **BNK-837/838 ★★** | M12 SSO SEC-D43 CLOSED · id=12 0.7 ops residual · in-app ledger Epic 금지 | ROADMAP v3 · REQUIREMENTS §M12 |
+
+**coder/ops 다음 액션 (229차)**: ① **tester** origin/test push **738 BE**(QA-B116) ② **QA-B95** operation 승격(실 bootstrap enable·B580~B590 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~v3 photo SEC-D25~~ → **✅ 6-cycle COMPLETE** ⑥ ~~Page KPI~~ → **106 정본** ⑦ demo-work 비교 문구 「기능 부재」 단정 금지 ⑧ photo 보존/EXIF·타 첨부 재사용 = P3「가정」 ⑨ charge promo **2026-07-31** 만료 후 재실측.
+
+### 추가 질문 (자동 기획 동기화 229차)
+1. **MIME 위조 방어 마케팅 (★★★ BNK-840)**: 「브라우저에서 즉시 감지」 카피를 온보딩/세일즈 자료에 명문화할지? → **narrative carry·id=5 1.0·Epic 불요**.
+2. **사진 보존·EXIF·암호화 (★★ BNK-840 carry)**: 활동사진 PII 인접 — DATA_RETENTION_POLICY 명문화 시점? → **DBA/ops 검토·MVP 기본 정책 재사용**.
+3. **defense-in-depth 재사용 (★ BNK-840)**: ClientPhoto·계약서·간호지시서 첨부에도 FE+BE magic pattern 확장할지? → **P3「가정」·과대구축 금지·SEC-D25 carry**.
+4. **demo-work 비교 문구 (★★★ BNK-841)**: 마케팅에서 「케어포는 이동서비스 없음」 단정 금지 — 「공개 시설 데모에 미노출」로 통일할지? → **기획 반영 완료·카피 가이드 carry**.
+5. **FE test recount (★ BNK-840「가정」)**: header 533 vs 실측 530 Δ-3 — 다음 6–8h ogada 재교차검증으로 정본화할지? → **문서 위생·기능 갭 아님**.
 
 ### [PLN] QA 피드백 반영 (2026-07-17, 228차 — BNK-829~834 · TSR 1779~1792차)
 
 | 항목 | 내용 | 반영 문서 |
 |------|------|-----------|
-| **git baseline** | BE develop/test **`72a6534`** WT **CLEAN** · ahead origin/test **732** vs `598d108`(develop/test local SYNCED·QA-B578 program photo multipart content-type normalize) · FE develop **`8e74b07`** WT **CLEAN**(QA-B579 FE content-type parameter normalize lockstep·ahead origin/test **1**·tester FF 대기·origin/test=`2e06d5a` QA-B577) · **133 Route·107 page**(+1 BNK-834 소급 정정)·**V1–V196·BE @Test 2286**(BNK-834 git 실측)/TSR1791 post-merge **2306/2306** · **npm 2695/2695**(TSR1792 post-merge) · **FE test 533**(219+314·+3 photo) · **@RestController 81** · **HTTP 442** audit-first(GET231/POST**144**/PATCH44/PUT13/DELETE10) · **모듈 97.41%**(28.25/29·비-1.0 id=2/8/10=0.85·id=12=0.7·id=5 1.0·coverage-0 **0**) | ROADMAP CURRENT BASELINE 228차 |
+| **git baseline** | BE develop/test **`72a6534`** WT **CLEAN** · ahead origin/test **732** vs `598d108`(develop/test local SYNCED·QA-B578 program photo multipart content-type normalize) · FE develop **`8e74b07`** WT **CLEAN**(QA-B579 FE content-type parameter normalize lockstep·ahead origin/test **1**·tester FF 대기·origin/test=`2e06d5a` QA-B577) · **133 Route·107 page**(+1 BNK-834 소급 정정 → **후속 BNK-835에서 106 재-정정**)·**V1–V196·BE @Test 2286**(BNK-834 git 실측)/TSR1791 post-merge **2306/2306** · **npm 2695/2695**(TSR1792 post-merge) · **FE test 533**(219+314·+3 photo) · **@RestController 81** · **HTTP 442** audit-first(GET231/POST**144**/PATCH44/PUT13/DELETE10) · **모듈 97.41%**(28.25/29·비-1.0 id=2/8/10=0.85·id=12=0.7·id=5 1.0·coverage-0 **0**) | ROADMAP CURRENT BASELINE 228차 |
 | **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **732 BE**) + **QA-B95**(operation 승격·B568~B579 Fixed carry) | QA_FEEDBACK · ROADMAP |
 | **QA-B576~B579 Fixed (★★★ 신규 기능)** | **v3 program schedule photo upload FULL-STACK** — B576 BE `POST /programs/schedule/{programId}/photo` multipart + `ProgramPhotoStorageService`(`@1b8c764`)·B577 FE `ProgramSchedulePhotoUpload` wire(`@2e06d5a`)·B578 BE content-type parameter normalize `image/jpeg; charset=binary`(`@72a6534`)·B579 FE 동일 정규화 lockstep(`@8e74b07`) · related BE 17/17+FE 8/8·post-merge BE 2306/2306+npm 2695/2695·live 0/149/0 fail-closed | QA_FEEDBACK Fixed · ROADMAP v3 · USER_STORIES US-P03 |
 | **QA-B568~B575 Fixed** | v3 empty leave-ledger readable branch(B568)·UXD-188 layout ds-* + billing timeline timestamp guard(B569)·null/blank operation-blocker filter(B570/B571)·QA-B95 semicolon-optional core/amp quote batch(B572~B575) · TSR1779~1786 FF · **기능 갭 아님** | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
 | **BNK-833/834 ★★★** | **audit-first HTTP 441→442 BREAK**(BNK-823 이후 첫 변동=`ProgramController @PostMapping("/schedule/{programId}/photo")`·POST 143→144)→**442 2차 안정 재현**(BNK-834 byte-exact IDENTICAL·controller당 5.46) · DELETE 2.3% 최소·**물리 삭제 API 신설 금지** carry · content-type normalize = 강한 검증 + 실제 브라우저 헤더 관용 균형 | REQUIREMENTS §1-5·§감사 · ROADMAP v2/v3 · COMPETITOR_MATRIX |
 | **BNK-833/834 ★★★** | **silverangel daycareProgramProvided 재실측 byte-IDENTICAL**(67,987B·`f18e1c7a`·사진/업로드/첨부/photo/upload **0-hit**) ↔ ogada v3 program schedule photo full-stack **SUPERSET** · id=5 **1.0** carry·KPI promote **0** · 마케팅 카피 후보(§추가 질문 228-1) | REQUIREMENTS §M5 · USER_STORIES US-P03 · COMPETITOR_MATRIX |
-| **BNK-834 ★★ (가정 번복 1)** | **Page KPI 106→107 소급 정정** — `find src/pages -name '*Page.jsx' -not -name '*.test.jsx'`=107 정본 · BNK-823 「Page 106 정정 -1」은 undercount 였음 · MATH·Route 133·모듈 97.41% 무영향 · 문서 소급 정정 | ROADMAP CURRENT BASELINE · REQUIREMENTS KPI |
+| **BNK-834 ★★ (가정 번복 1 → 835에서 재-번복)** | **Page KPI 106→107 소급 정정** — 후속 **BNK-835에서 106 정본 복원** | ROADMAP CURRENT BASELINE · REQUIREMENTS KPI |
 | **BNK-834 ★★** | **NHIS #44 566차 zero drift** `c886ff1f` 7,572B ↔ Transport `RU_1~4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` verbatim IDENTICAL · 상수 재조정 불요·id=2 0.85 carry | REQUIREMENTS G16 · ROADMAP v2 · COMPETITOR_MATRIX |
 | **BNK-832 ★★** | func.php 잔여 갭 재검증 — BNK-602 6-gap 중 **5 폐쇄**(1-5·8-2·8-6·10-4·M11 6-leaf) · 잔여 진성 갭 = id=8 8-3 연간일정·8-8 자원봉사 **P3 minor** + M9-4 비품관리대장 **P4** carry · func canonical `6226e6eb` LIVE 000 105-cycle+ | ROADMAP v3 P3 · REQUIREMENTS §M8 · PLAN_NOTES §추가 질문 |
 | **BNK-829/831 ★★** | charge promo 33,000/55,000 **2026-07-31 D-14** STABLE(cachebuster DRIFT hit-only)·엑셀 포맷 스캔 시그널 **0**·closed band 6 App.jsx `@2e06d5a` LIVE 재오픈 0·P0 신규 0·가정 번복 0(Page KPI 정정 제외) | COMPETITOR_MATRIX · ROADMAP v2 |
 
-**coder/ops 다음 액션 (228차)**: ① **tester** origin/test push **732+ BE**(QA-B116) + FE `@8e74b07` FF(B579 lockstep 흡수) ② **QA-B95** operation 승격(실 bootstrap enable·B568~B579 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~v3 program schedule photo~~ → **✅ FULL-STACK LANDED**(QA-B576~B579·content-type normalize·id=5 1.0·SUPERSET) ⑥ ~~audit-first posture~~ → **HTTP 442 2차 안정 재현 CONFIRMED**(program photo POST +1·삭제 API 신설 금지) ⑦ **문서 Page KPI 106→107 소급 정정**(BNK-834·MATH 무영향) ⑧ func 잔여 진성 갭(8-3·8-8 P3·M9-4 P4) 격상 금지 carry ⑨ charge promo **2026-07-31** 만료 후 재실측 ⑩ 엑셀 포맷·가격 시그널 monitor only.
+**coder/ops 다음 액션 (228차)**: ① **tester** origin/test push **732+ BE**(QA-B116) + FE `@8e74b07` FF(B579 lockstep 흡수) ② **QA-B95** operation 승격(실 bootstrap enable·B568~B579 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~v3 program schedule photo~~ → **✅ FULL-STACK LANDED**(QA-B576~B579·content-type normalize·id=5 1.0·SUPERSET) ⑥ ~~audit-first posture~~ → **HTTP 442 2차 안정 재현 CONFIRMED**(program photo POST +1·삭제 API 신설 금지) ⑦ **문서 Page KPI → BNK-835에서 106 재-정정** ⑧ func 잔여 진성 갭(8-3·8-8 P3·M9-4 P4) 격상 금지 carry ⑨ charge promo **2026-07-31** 만료 후 재실측 ⑩ 엑셀 포맷·가격 시그널 monitor only.
 
 ### 추가 질문 (자동 기획 동기화 228차)
-1. **program schedule photo 마케팅 (★★★ BNK-833/834)**: silverangel 공개 제공프로그램에 일정 활동사진 업로드 0 ↔ ogada 는 프로그램 일정 행 단위 사진을 **모바일 카메라 실제 헤더까지 수용해** full-stack 저장 — 이 SUPERSET narrative를 마케팅/REQUIREMENTS에 명문화할지? → **narrative carry·id=5 1.0·KPI promote 0**.
+1. **program schedule photo 마케팅 (★★★ BNK-833/834)**: silverangel 공개 제공프로그램에 일정 활동사진 업로드 0 ↔ ogada 는 프로그램 일정 행 단위 사진을 **모바일 카메라 실제 헤더까지 수용해** full-stack 저장 — 이 SUPERSET narrative를 마케팅/REQUIREMENTS에 명문화할지? → **narrative carry·id=5 1.0·KPI promote 0** · **229차에서 SEC-D25 MIME 위조 방어 카피로 확장**.
 2. **program photo 보존·용량 정책 (★★ BNK-834)**: 활동사진 = PII 인접(입소자 얼굴 가능) — 저장 암호화·보관/파기 주기·최대 용량/포맷(JPEG/PNG/WEBP)·EXIF strip 여부를 DATA_RETENTION_POLICY 에 명문화할지? → **DBA/ops 검토 후보·MVP 기본 정책 재사용 carry**.
-3. **content-type normalize 방어 완결 (★ BNK-834)**: `image/jpeg; charset=binary` 관용까지 착지 — 추가 브라우저 헤더 변종(대문자/공백/이중 파라미터) 방어 「완결」 시점? → **operational hardening carry·QA-B95 계열·기능 갭 아님**.
-4. **Page KPI 소급 정정 (★★ BNK-834·가정 번복 1)**: 107 정본 확정 · 향후 KPI 라인은 `find src/pages` 실측을 단일 소스로 · 재-번복 방지.
+3. **content-type normalize 방어 완결 (★ BNK-834)**: `image/jpeg; charset=binary` 관용까지 착지 — 추가 브라우저 헤더 변종(대문자/공백/이중 파라미터) 방어 「완결」 시점? → **operational hardening carry·QA-B95 계열·기능 갭 아님** · **229차 SEC-D25 magic로 계층 완결**.
+4. **Page KPI 소급 정정 (★★ BNK-834·가정 번복 1)**: 107 정본 확정 · 향후 KPI 라인은 `find src/pages` 실측을 단일 소스로 · 재-번복 방지. → **BNK-835에서 106 재-정정으로 종료**.
 5. **func 잔여 진성 갭 (★★ BNK-832)**: id=8 8-3 연간 일정계획·8-8 자원봉사 활동일지 P3 minor·M9-4 비품관리대장 P4 — 격상 없이 「가정」 유지(과대구축 금지)·go/no-go carry.
 
 ### [PLN] QA 피드백 반영 (2026-07-17, 227차 — BNK-820~828 · TSR 1764~1778차)
@@ -11081,7 +11112,7 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 | UXD-3 | **아이콘 세트** — Lucide vs Phosphor vs 텍스트 유지 | SideNav·액션 버튼 시각 밀도 | v1 **텍스트 라벨 유지**, v1.1 Lucide 검토 |
 | UXD-4 | **수가표 v1 1밴드** — 파일럿 센터 표준 이용시간(예: 8~10h) 라벨 UI | FeeSchedulePage | planner #35 확정값을 `Field` help 텍스트로 표시 |
 | UXD-5 | **파비콘 브랜드** — 문양·색·「o」모노그램 vs 풀워드 | US-UX-01, 탭 32px 가독성 | **§9 확정안** — primary `#2563eb` + 흰색 「o」 원형 모노그램 (COD SVG 생성) |
-| UXD-189 | **직원현황 리포트 필터 Card 인쇄 표시 여부 (`StaffStatusReportPage`)** — 조회 필터 Card(`ds-mb-4 ds-staff-status-report-print-zone`, `StaffStatusReportPage.jsx:341`)가 CSS 미정의 클래스 `ds-staff-status-report-print-zone`를 사용한다. 다른 리포트(`ds-billing-report-print-zone`·`ds-transport-log-print-zone` 등)는 `print-zone` = 「인쇄되는 영역」 시맨틱으로 내부 `.ds-filter-row`를 `@media print`에서 숨기지만, 이 페이지는 인쇄 콘텐츠가 별도 `ds-staff-status-report-print-only` 블록(line 490)이고 결과 Card는 `screen-only`(line 414)로 이미 숨겨진다. 결과적으로 **필터 Card는 인쇄 시 숨김 규칙 대상이 아니어서 인쇄물 상단에 조회 필터 폼이 출력될 가능성**이 있다. `print-zone` 클래스 명은 「숨김」과 반대 의미라 UXD가 임의로 인쇄 동작 규칙을 추가하지 않고 기록한다. 권장: coder가 실제 인쇄 출력 확인 후 ① 필터 Card를 `ds-staff-status-report-screen-only`로 교체(인쇄 시 숨김·본 페이지 기존 패턴 정합)하거나 ② `print-zone` 클래스 오사용을 정리. 확정 시 DESIGN_SYSTEM §113 동기화. | US 직원현황 리포트 인쇄, WCAG 무관(인쇄 출력 정확성) | **coder**: 인쇄 출력 확인 후 `screen-only` 정합(권장 ①) |
+| UXD-189 | **~~직원현황 리포트 필터 Card 인쇄 표시 여부~~ → UXD-190 CLOSURE** — `StaffStatusReportPage` 조회 필터 Card의 오용 `ds-staff-status-report-print-zone`(미정의·인쇄 시 필터 잔존 위험)을 **`ds-staff-status-report-screen-only`로 교체**(본 페이지 기존 `@media print` 규칙 재사용). DESIGN_SYSTEM §113(189차 CSS)·§114 동기화. | US 직원현황 리포트 인쇄 | **✅ UXD-190 closed** — coder 추가 작업 불요 |
 | UXD-6 | **보호자 QR 셀프 체크인 라우트·인가 불일치 (US-E04·FLOWCHART §9)** — `GuardianCheckinPage`는 `App.jsx`에서 `/attendance/checkin/qr`에 마운트되어 있고, `auth/roleNav.js` `allowedRolesForPath("/attendance/*")`가 `branch_admin·social_worker·caregiver·hq_admin`만 허용한다. 결과적으로 **`guardian`/`client_user`가 자신의 QR 셀프 체크인 화면 접근 시 `/forbidden`으로 리다이렉트**되고, SideNav에도 보호자용 진입점이 없다. FLOWCHART §9는 `/guardian 포털 → /guardian/checkin QR 체크인` 흐름을 정의한다. **UX는 라우트/인가 로직(coder)·라우트 확정(planner) 영역이므로 직접 수정하지 않고 기록** — 권장: ① `GuardianCheckinPage`를 `/guardian/checkin`으로 (재)노출하고 인가에 `guardian`/`client_user` 포함, 또는 ② `/attendance/checkin/qr` 인가에 두 역할 추가 + `allow_client_self_checkin` off 시 `client_user` 차단(§3-3). 결정 후 `navConfig.js` 보호자 포털 그룹에 「QR 체크인」 항목·DESIGN_SYSTEM §8-1·§8-2 동기화. **→ 40차 코드 실측 해소 확인**: `App.jsx`에 `/guardian/checkin`(GuardianCheckinPage) 라우트 존재, `roleNav.js` `allowedRolesForPath("/guardian/...")`가 `["guardian","client_user"]` 반환, `navConfig.js` 운영 그룹에 보호자용 「QR 체크인」 항목 노출. DESIGN_SYSTEM §8-1 라우트 표를 실측 정합으로 갱신(권장안 ①·UXD-6 closed). **잔여(coder)**: `allow_client_self_checkin` off 시 `client_user` 차단(§3-3) 백엔드 연동. | US-E04, FLOWCHART §9, ProtectedRoute 가드 | **coder**: `/guardian/checkin` 노출 + guardian/client_user 인가 **✅ 해소**, 셀프 체크인 토글 연동 잔여. **planner**: 라우트 확정 |
 
 ---
