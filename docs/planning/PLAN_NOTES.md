@@ -1,9 +1,9 @@
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T18:01:00Z -->
-<!-- coder-sync: COD 2026-07-17T18:01:00Z (frontend) — QA-B586 FE v3 program schedule photo magic-byte SEC-D25 lockstep (BE QA-B585 `@d1ff63a`) · related 15/15(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+<!-- coder-sync: COD 2026-07-17T18:01:00Z (frontend) — QA-B586 FE v3 program schedule photo magic-byte SEC-D25 lockstep `@8e28fe0` (BE QA-B585 `@d1ff63a`) · related 15/15(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
 
 ### [COD] 코더 메모 (2026-07-17 — QA-B586 FE program photo magic-byte SEC-D25 lockstep)
 
-- FE develop `fix(v1.2.1/v3): verify program photo magic bytes before upload (SEC-D25)` — BE QA-B585 `@d1ff63a` lockstep · `matchesProgramSchedulePhotoMagicBytes` JPEG/PNG/WEBP · MIME spoof/truncate client fail-closed · FileReader 헤더 읽기(jsdom `arrayBuffer` 미구현 호환) · related **15/15 PASS**(+2) · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF 대기.
+- FE develop `fix(v1.2.1/v3): verify program photo magic bytes before upload (SEC-D25)` `@8e28fe0` — BE QA-B585 `@d1ff63a` lockstep · `matchesProgramSchedulePhotoMagicBytes` JPEG/PNG/WEBP · MIME spoof/truncate client fail-closed · FileReader 헤더 읽기(jsdom `arrayBuffer` 미구현 호환) · related **15/15 PASS**(+2) · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF 대기.
 
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T17:55:00Z -->
 <!-- coder-sync: COD 2026-07-17T17:55:00Z (backend) — QA-B585 v3 program schedule photo magic-byte SEC-D25 `@d1ff63a` · related ProgramPhotoStorageServiceTest PASS(+4) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
