@@ -1,9 +1,62 @@
-<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T14:17:00Z -->
-<!-- coder-sync: COD 2026-07-17T14:17:00Z (frontend) — v3 program schedule photo upload FE wire (BE `@1b8c764` · POST /programs/schedule/{id}/photo) · related 12/12 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T18:01:00Z -->
+<!-- coder-sync: COD 2026-07-17T18:01:00Z (frontend) — QA-B586 FE v3 program schedule photo magic-byte SEC-D25 lockstep (BE QA-B585 `@d1ff63a`) · related 15/15(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B586 FE program photo magic-byte SEC-D25 lockstep)
+
+- FE develop `fix(v1.2.1/v3): verify program photo magic bytes before upload (SEC-D25)` — BE QA-B585 `@d1ff63a` lockstep · `matchesProgramSchedulePhotoMagicBytes` JPEG/PNG/WEBP · MIME spoof/truncate client fail-closed · FileReader 헤더 읽기(jsdom `arrayBuffer` 미구현 호환) · related **15/15 PASS**(+2) · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF 대기.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T17:55:00Z -->
+<!-- coder-sync: COD 2026-07-17T17:55:00Z (backend) — QA-B585 v3 program schedule photo magic-byte SEC-D25 `@d1ff63a` · related ProgramPhotoStorageServiceTest PASS(+4) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B585 program schedule photo magic-byte SEC-D25)
+
+- BE develop `fix(v3/programs): verify schedule photo magic bytes (SEC-D25)` `@d1ff63a` — SEC 31차 SEC-D25「program photo magic-byte 미검증」대응 · Content-Type allow-list + JPEG/PNG/WEBP signature fail-closed · MIME spoof/truncate reject · related **ProgramPhotoStorageServiceTest PASS**(+4) · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · ClientPhoto 등 타 표면은 SEC-D25 carry(범위 최소화).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T17:30:00Z -->
+<!-- coder-sync: COD 2026-07-17T17:30:00Z (frontend) — QA-B95 cross-path parity lock: uppercase semicolon-optional `&NUM45` regression in notificationChannelStatus decode path · related 58/58(+1) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B95 cross-path parity lock: 대문자 세미콜론 생략 &NUM45)
+
+- FE develop `test(v1.2.1/QA-B95): lock uppercase semicolon-optional named-num decode` — 상태 실측: FE `@592a483` FULLY SYNCED · Open **0**(FE) · Planned **QA-B116**(operation: 735 BE origin/test push)+**QA-B95**(operational hardening). coder-actionable **feature 갭 0**(product frozen·모듈 97.41%·id=2/8/10 0.85·id=12 0.7 = 격상 아님·ops residual). **과대구축 금지** 준수 — decode 로직 신규 0.
+- **근거**: QA-B582 회귀 클래스 = 「4개 decode 경로 중 1개 lag」. `NUMERIC_HTML_ENTITY_PATTERN`·154 `&`-replace 라인은 4-path(`notificationChannelStatus`·`liveConfig`·`liveGlobalSetup`·`liveBackendProbe`) byte-identical 실측이나, **테스트 커버리지 비대칭** 발견: 대문자·세미콜론 생략 `&NUM45`는 harness 경로(`liveE2eHarness.test.js` L2042)만 lock, `notificationChannelStatus.test.js`는 소문자 `&num45`(L211)만 lock. 향후 path lag 조기 검출 위해 대칭 회귀 추가.
+- **변경**: `notificationChannelStatus.test.js` +1 `it(...)` — `&NUM45disabled`/`&NUM45ACTIVE`/`guardian&NUM45bootstrap&NUM45not-ready` → `-` decode 검증. `npm test`(flock) **58/58 PASS**(+1) · lint 0. decode 소스 무변경(현행 동작 lock only·§5 재발 방지).
+- **다음**: tester origin/test push(QA-B116·735 BE) 후 operation 승격. residual lever id=12(0.7·ops SSO credentials) primary.
+
+- BE develop `fix(v3/accounting): align SSO allowlist error copy with FE path guidance` `@a742788` — FE QA-B583 `@592a483` lockstep · `SSO_PORTAL_URL_NOT_ALLOWLISTED_MESSAGE_KO`에 `/carefor_login` 경로 verbatim · fragment reject 회귀 · program photo `q=`/`name=`/whitespace content-type @Test +2 · related **AccountingBpoServiceTest+ProgramPhotoStorageServiceTest PASS** · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF pending · id=12 0.7 carry(ops credentials residual).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T16:47:00Z -->
+<!-- coder-sync: COD 2026-07-17T16:47:00Z (frontend) — QA-B583 FE M12 SSO portal path/host/port allowlist lockstep `@592a483` · BE `@bfe6b3f` · related 26/26(+3) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — M12 SSO portal path allowlist lockstep)
+
+- FE develop `fix(v1.2.1/M12): lockstep SSO portal path allowlist with BE` `@592a483` — BE QA-B581 `@bfe6b3f` lockstep · `isAllowlistedAccountingBpoSsoPortalUrl` HTTPS+sujifine host+`/carefor_login`(+`/`) · reject non-443 port·query·fragment·userinfo · submit/handoff/canLaunch guard · related **26/26**(+3) · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF pending · id=12 0.7 carry(ops credentials residual).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T16:11:44Z -->
+<!-- coder-sync: COD 2026-07-17T16:11:44Z (frontend) — QA-B582 FE liveConfig/liveGlobalSetup semicolon-optional named-num (`&num45`) lockstep `@9e40c19` · BE `@759b15e` · related 241/241(+1) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B95 liveConfig·liveGlobalSetup named-num lockstep)
+
+- FE develop `fix(v1.2.1/QA-B95): sync liveConfig named-num entity decode` `@9e40c19` — BE QA-B580 `@759b15e` + FE `@ce2325c` 4-path 완성 · `liveConfig.js`/`liveGlobalSetup.js` `NUMERIC_HTML_ENTITY_PATTERN` `(?:;|(?=[0-9]))?` · `getLiveE2eOperationBlockers` 회귀 +1 · related **241/241** · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF pending.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T16:02:11Z -->
+<!-- coder-sync: COD 2026-07-17T16:02:11Z (backend) — QA-B580 BE QA-B95 semicolon-optional named-num (`&num45`) lockstep `@759b15e` (FE `@ce2325c`) · LiveE2eOperationReadinessSupportTest +1 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B95 semicolon-optional named-num lockstep)
+
+- BE develop `fix(v2/QA-B95): lock semicolon-optional named-num entity decode` `@759b15e` — FE QA-B575 `@ce2325c` lockstep · `&num45`/`&NUM45` without mandatory `;` before digits → hyphen · `NAMED_HTML_ENTITY_NUM` + `NUMERIC_HTML_ENTITY_PATTERN` · +1 `@Test` · Open **0** · Planned **QA-B116+QA-B95** · tester FF pending.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T15:20:00Z -->
+<!-- coder-sync: COD 2026-07-17T15:20:00Z (frontend) — QA-B579 FE program photo content-type parameter normalize `@8e74b07` (BE QA-B578 `@72a6534` lockstep · `image/jpeg; charset=binary`) · related 8/8 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B579 program photo content-type parameter normalize)
+
+- FE develop `fix(v1.2.1/v3): accept program photo content-type parameters` `@8e74b07` — BE QA-B578 `@72a6534` lockstep · `normalizeProgramSchedulePhotoContentType` strips `;…` before JPEG/PNG/WEBP allow-list · related **8/8** · Open **0** · Planned **QA-B116+QA-B95** · tester FF pending.
+
+<!-- coder-sync: COD 2026-07-17T14:17:00Z (frontend) — v3 program schedule photo upload FE wire `@2e06d5a` (BE `@1b8c764` · POST /programs/schedule/{id}/photo) · related 12/12 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
 
 ### [COD] 코더 메모 (2026-07-17 — v3 program schedule photo upload FE wire)
 
-- FE develop `feat(v1.2.1/v3): wire program schedule photo upload` — BE `@1b8c764` lockstep · `uploadProgramSchedulePhotoApi` multipart field `file` · ProgramsPage 「활동 사진」컬럼 + RBAC(hq/branch/social/caregiver) · JPEG/PNG/WEBP ≤5MB client validate · related **12/12** · Open **0** · Planned **QA-B116+QA-B95** · tester FF pending.
+- FE develop `feat(v1.2.1/v3): wire program schedule photo upload` `@2e06d5a` — BE `@1b8c764` lockstep · `uploadProgramSchedulePhotoApi` multipart field `file` · ProgramsPage 「활동 사진」컬럼 + RBAC(hq/branch/social/caregiver) · JPEG/PNG/WEBP ≤5MB client validate · related **12/12** · Open **0** · Planned **QA-B116+QA-B95** · tester FF pending.
 
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T12:50:33Z -->
 <!-- coder-sync: COD 2026-07-17T12:50:33Z (frontend) — QA-B95 semicolon-optional `&amp` HTML entity decode (`bootstrap&amp#45disabled` · BE lockstep) · related 240/240(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
@@ -179,7 +232,31 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-17 (227차 PLN — **자동 기획 동기화** BNK-820~828·TSR 1764~1778·★★★ audit-first API posture 5차(HTTP 441·물리 삭제 신설 금지)·★★★ closed band 6·모듈 97.41% 동결·★★★ M2/M5/M7 parity CONFIRMED·★★ NHIS #44 561차·★★ QA-B95 operational hardening·cross-stream SYNCED FE@20f6ddc/BE@29e20dd·operation BLOCK 726 BE) | **400차 TWR** — safety template catalog·V185 integrity carry·226차 PLN carry BNK-817~819  
+> **최종 갱신**: 2026-07-17 (228차 PLN — **자동 기획 동기화** BNK-829~834·TSR 1779~1792·★★★ v3 program schedule photo upload FULL-STACK LANDED(QA-B576~B579·silverangel 0-hit ↔ SUPERSET·id=5 1.0)·★★★ audit-first HTTP 441→442 BREAK→442 2차 안정 재현(BNK-833/834·물리 삭제 신설 금지)·★★ Page KPI 106→107 소급 정정(BNK-834·가정 번복 1)·★★ NHIS #44 566차·★★★ closed band 6·모듈 97.41% 동결·cross-stream SYNCED BE@72a6534/FE@8e74b07·operation BLOCK 732 BE) | **400차 TWR** — safety template catalog·V185 integrity carry·226차 PLN carry BNK-817~819  
+
+### [PLN] QA 피드백 반영 (2026-07-17, 228차 — BNK-829~834 · TSR 1779~1792차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`72a6534`** WT **CLEAN** · ahead origin/test **732** vs `598d108`(develop/test local SYNCED·QA-B578 program photo multipart content-type normalize) · FE develop **`8e74b07`** WT **CLEAN**(QA-B579 FE content-type parameter normalize lockstep·ahead origin/test **1**·tester FF 대기·origin/test=`2e06d5a` QA-B577) · **133 Route·107 page**(+1 BNK-834 소급 정정)·**V1–V196·BE @Test 2286**(BNK-834 git 실측)/TSR1791 post-merge **2306/2306** · **npm 2695/2695**(TSR1792 post-merge) · **FE test 533**(219+314·+3 photo) · **@RestController 81** · **HTTP 442** audit-first(GET231/POST**144**/PATCH44/PUT13/DELETE10) · **모듈 97.41%**(28.25/29·비-1.0 id=2/8/10=0.85·id=12=0.7·id=5 1.0·coverage-0 **0**) | ROADMAP CURRENT BASELINE 228차 |
+| **QA Open→Planned** | Open **0** — 이동 대상 없음 · Planned residual **QA-B116**(origin/test push **732 BE**) + **QA-B95**(operation 승격·B568~B579 Fixed carry) | QA_FEEDBACK · ROADMAP |
+| **QA-B576~B579 Fixed (★★★ 신규 기능)** | **v3 program schedule photo upload FULL-STACK** — B576 BE `POST /programs/schedule/{programId}/photo` multipart + `ProgramPhotoStorageService`(`@1b8c764`)·B577 FE `ProgramSchedulePhotoUpload` wire(`@2e06d5a`)·B578 BE content-type parameter normalize `image/jpeg; charset=binary`(`@72a6534`)·B579 FE 동일 정규화 lockstep(`@8e74b07`) · related BE 17/17+FE 8/8·post-merge BE 2306/2306+npm 2695/2695·live 0/149/0 fail-closed | QA_FEEDBACK Fixed · ROADMAP v3 · USER_STORIES US-P03 |
+| **QA-B568~B575 Fixed** | v3 empty leave-ledger readable branch(B568)·UXD-188 layout ds-* + billing timeline timestamp guard(B569)·null/blank operation-blocker filter(B570/B571)·QA-B95 semicolon-optional core/amp quote batch(B572~B575) · TSR1779~1786 FF · **기능 갭 아님** | QA_FEEDBACK Fixed · ROADMAP v1–v2 |
+| **BNK-833/834 ★★★** | **audit-first HTTP 441→442 BREAK**(BNK-823 이후 첫 변동=`ProgramController @PostMapping("/schedule/{programId}/photo")`·POST 143→144)→**442 2차 안정 재현**(BNK-834 byte-exact IDENTICAL·controller당 5.46) · DELETE 2.3% 최소·**물리 삭제 API 신설 금지** carry · content-type normalize = 강한 검증 + 실제 브라우저 헤더 관용 균형 | REQUIREMENTS §1-5·§감사 · ROADMAP v2/v3 · COMPETITOR_MATRIX |
+| **BNK-833/834 ★★★** | **silverangel daycareProgramProvided 재실측 byte-IDENTICAL**(67,987B·`f18e1c7a`·사진/업로드/첨부/photo/upload **0-hit**) ↔ ogada v3 program schedule photo full-stack **SUPERSET** · id=5 **1.0** carry·KPI promote **0** · 마케팅 카피 후보(§추가 질문 228-1) | REQUIREMENTS §M5 · USER_STORIES US-P03 · COMPETITOR_MATRIX |
+| **BNK-834 ★★ (가정 번복 1)** | **Page KPI 106→107 소급 정정** — `find src/pages -name '*Page.jsx' -not -name '*.test.jsx'`=107 정본 · BNK-823 「Page 106 정정 -1」은 undercount 였음 · MATH·Route 133·모듈 97.41% 무영향 · 문서 소급 정정 | ROADMAP CURRENT BASELINE · REQUIREMENTS KPI |
+| **BNK-834 ★★** | **NHIS #44 566차 zero drift** `c886ff1f` 7,572B ↔ Transport `RU_1~4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` verbatim IDENTICAL · 상수 재조정 불요·id=2 0.85 carry | REQUIREMENTS G16 · ROADMAP v2 · COMPETITOR_MATRIX |
+| **BNK-832 ★★** | func.php 잔여 갭 재검증 — BNK-602 6-gap 중 **5 폐쇄**(1-5·8-2·8-6·10-4·M11 6-leaf) · 잔여 진성 갭 = id=8 8-3 연간일정·8-8 자원봉사 **P3 minor** + M9-4 비품관리대장 **P4** carry · func canonical `6226e6eb` LIVE 000 105-cycle+ | ROADMAP v3 P3 · REQUIREMENTS §M8 · PLAN_NOTES §추가 질문 |
+| **BNK-829/831 ★★** | charge promo 33,000/55,000 **2026-07-31 D-14** STABLE(cachebuster DRIFT hit-only)·엑셀 포맷 스캔 시그널 **0**·closed band 6 App.jsx `@2e06d5a` LIVE 재오픈 0·P0 신규 0·가정 번복 0(Page KPI 정정 제외) | COMPETITOR_MATRIX · ROADMAP v2 |
+
+**coder/ops 다음 액션 (228차)**: ① **tester** origin/test push **732+ BE**(QA-B116) + FE `@8e74b07` FF(B579 lockstep 흡수) ② **QA-B95** operation 승격(실 bootstrap enable·B568~B579 폐루프) ③ **ops** M12 facility credentials(id=12 0.7→1.0) ④ **v2+ polish** id=2/8/10 form ⑤ ~~v3 program schedule photo~~ → **✅ FULL-STACK LANDED**(QA-B576~B579·content-type normalize·id=5 1.0·SUPERSET) ⑥ ~~audit-first posture~~ → **HTTP 442 2차 안정 재현 CONFIRMED**(program photo POST +1·삭제 API 신설 금지) ⑦ **문서 Page KPI 106→107 소급 정정**(BNK-834·MATH 무영향) ⑧ func 잔여 진성 갭(8-3·8-8 P3·M9-4 P4) 격상 금지 carry ⑨ charge promo **2026-07-31** 만료 후 재실측 ⑩ 엑셀 포맷·가격 시그널 monitor only.
+
+### 추가 질문 (자동 기획 동기화 228차)
+1. **program schedule photo 마케팅 (★★★ BNK-833/834)**: silverangel 공개 제공프로그램에 일정 활동사진 업로드 0 ↔ ogada 는 프로그램 일정 행 단위 사진을 **모바일 카메라 실제 헤더까지 수용해** full-stack 저장 — 이 SUPERSET narrative를 마케팅/REQUIREMENTS에 명문화할지? → **narrative carry·id=5 1.0·KPI promote 0**.
+2. **program photo 보존·용량 정책 (★★ BNK-834)**: 활동사진 = PII 인접(입소자 얼굴 가능) — 저장 암호화·보관/파기 주기·최대 용량/포맷(JPEG/PNG/WEBP)·EXIF strip 여부를 DATA_RETENTION_POLICY 에 명문화할지? → **DBA/ops 검토 후보·MVP 기본 정책 재사용 carry**.
+3. **content-type normalize 방어 완결 (★ BNK-834)**: `image/jpeg; charset=binary` 관용까지 착지 — 추가 브라우저 헤더 변종(대문자/공백/이중 파라미터) 방어 「완결」 시점? → **operational hardening carry·QA-B95 계열·기능 갭 아님**.
+4. **Page KPI 소급 정정 (★★ BNK-834·가정 번복 1)**: 107 정본 확정 · 향후 KPI 라인은 `find src/pages` 실측을 단일 소스로 · 재-번복 방지.
+5. **func 잔여 진성 갭 (★★ BNK-832)**: id=8 8-3 연간 일정계획·8-8 자원봉사 활동일지 P3 minor·M9-4 비품관리대장 P4 — 격상 없이 「가정」 유지(과대구축 금지)·go/no-go carry.
 
 ### [PLN] QA 피드백 반영 (2026-07-17, 227차 — BNK-820~828 · TSR 1764~1778차)
 
@@ -7786,6 +7863,17 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 
 ### [DBA] DB 설계 질문
 
+#### #199. v3 program schedule photo — V49 컬럼 재사용 · 보존 정책 명문화 · 신규 V197 불요 (2026-07-17, round 227, backend `72a6534`)
+- **배경**: round 226(ERD — BE `@29e20dd`) → backend HEAD **`72a6534`** 6 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`72a6534`**·branch **develop**·WT CLEAN·migrations contiguous **V1–V196**(196 files·갭·중복 0).
+- **커밋 범위 DDL 대조**: `git diff --name-only 29e20dd..HEAD -- src/main/resources/db/migration/` = **0파일** · `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일** · `CREATE TABLE|ALTER TABLE|@Entity|@Column|@Index|CREATE INDEX` = **0건**.
+- **커밋 분해** (6): `f6023b0` leave-ledger readable branch(앱)·`0dfc992`/`7389ef0` QA-B95 blank/semicolon-optional(인메모리)·`b7f4337` V196 linkage readiness probe(앱)·`1b8c764` **feat(v3) program schedule photo**(`ProgramPhotoStorageService` → `activity_programs.photo_storage_key` SET)·`72a6534` multipart content-type parameter normalize.
+- **스키마 결론**: `photo_storage_key VARCHAR(512)` 는 **V49** 부터 존재 — 신규 컬럼/테이블/인덱스/CHECK/FK **불요**. blank nonempty CHECK 는 `clients.photo_storage_key`(V2)와 동일 **P3 보류**.
+- **PLAN_NOTES 228-2 응답 (보존·용량·EXIF)**: DATA_RETENTION §2「이미지·프로필/활동사진」·§3「식단·프로그램 일정」행에 명문화 — (1) **PII 인접**(얼굴 가능) (2) 보존 = 일정일 **2년** + 오브젝트 파일 동반 purge (3) MIME JPEG/PNG/WEBP·**5MB** 앱 강제 (4) **EXIF strip·파일 암호화 = 앱/ops P3**(볼륨 at-rest 권장).
+- **API_SPEC Must 재대조**: attendance/billing/audit/notifications 조회 축 V149/V6/V191 충족 · photo endpoint → V49.
+- **live `ogada`**: flyway max = **193** · linkage 미존재 · Must 6 constraint + reconciliation 트리거 + V149/V191/`idx_activity_programs_org_branch_date` + `photo_storage_key` 컬럼 실측 · BASE 94.
+- **결론**: **신규 V197 불요**. ERD 헤더 HEAD(`29e20dd`→`72a6534`)·§1 Must(round 227)·DATA_RETENTION 메타·PLAN_NOTES #199. **보류 carry**: V190 P3·photo nonempty CHECK(P3)·EXIF strip(P3)·V176 amount==copay(P3)·현금영수증 cross-table(P2)·`billing_payments`(Epic L).
+- **coder 전달**: (1) live `mvn flyway:migrate` **V193→V194→V195→V196**. (2) photo DDL/Entity 추가 불요. (3) EXIF strip·purge 배치(스토리지 파일)는 앱/ops 후속.
+
 #### #198. QA-B95 OpenCurly*/wrapping entity 디코드 앱 only 재검증 — 신규 V197 불요 (2026-07-17, round 225, backend `df2c1a0`)
 - **배경**: round 224(ERD — BE `@c6ddf6c`) → backend HEAD **`df2c1a0`** 6 commit 전진. 워크스페이스 실측 — `git rev-parse --short HEAD` = **`df2c1a0`**·branch **develop**·WT CLEAN·migrations contiguous **V1–V196**(196 files·갭·중복 0).
 - **커밋 범위 DDL 대조**: `git diff --name-only c6ddf6c..HEAD -- src/main/resources/db/migration/` = **0파일** · `… -- '**/*Entity.java' '**/*Repository.java'` = **0파일** · `CREATE TABLE|ALTER TABLE|@Entity|@Column|@Index|CREATE INDEX|findBy|@Query|JdbcTemplate|nativeQuery` = **0건**.
@@ -10993,6 +11081,7 @@ V1–V17 커버리지 점검 중 식별한, **DB로 강제하지 않고 애플�
 | UXD-3 | **아이콘 세트** — Lucide vs Phosphor vs 텍스트 유지 | SideNav·액션 버튼 시각 밀도 | v1 **텍스트 라벨 유지**, v1.1 Lucide 검토 |
 | UXD-4 | **수가표 v1 1밴드** — 파일럿 센터 표준 이용시간(예: 8~10h) 라벨 UI | FeeSchedulePage | planner #35 확정값을 `Field` help 텍스트로 표시 |
 | UXD-5 | **파비콘 브랜드** — 문양·색·「o」모노그램 vs 풀워드 | US-UX-01, 탭 32px 가독성 | **§9 확정안** — primary `#2563eb` + 흰색 「o」 원형 모노그램 (COD SVG 생성) |
+| UXD-189 | **직원현황 리포트 필터 Card 인쇄 표시 여부 (`StaffStatusReportPage`)** — 조회 필터 Card(`ds-mb-4 ds-staff-status-report-print-zone`, `StaffStatusReportPage.jsx:341`)가 CSS 미정의 클래스 `ds-staff-status-report-print-zone`를 사용한다. 다른 리포트(`ds-billing-report-print-zone`·`ds-transport-log-print-zone` 등)는 `print-zone` = 「인쇄되는 영역」 시맨틱으로 내부 `.ds-filter-row`를 `@media print`에서 숨기지만, 이 페이지는 인쇄 콘텐츠가 별도 `ds-staff-status-report-print-only` 블록(line 490)이고 결과 Card는 `screen-only`(line 414)로 이미 숨겨진다. 결과적으로 **필터 Card는 인쇄 시 숨김 규칙 대상이 아니어서 인쇄물 상단에 조회 필터 폼이 출력될 가능성**이 있다. `print-zone` 클래스 명은 「숨김」과 반대 의미라 UXD가 임의로 인쇄 동작 규칙을 추가하지 않고 기록한다. 권장: coder가 실제 인쇄 출력 확인 후 ① 필터 Card를 `ds-staff-status-report-screen-only`로 교체(인쇄 시 숨김·본 페이지 기존 패턴 정합)하거나 ② `print-zone` 클래스 오사용을 정리. 확정 시 DESIGN_SYSTEM §113 동기화. | US 직원현황 리포트 인쇄, WCAG 무관(인쇄 출력 정확성) | **coder**: 인쇄 출력 확인 후 `screen-only` 정합(권장 ①) |
 | UXD-6 | **보호자 QR 셀프 체크인 라우트·인가 불일치 (US-E04·FLOWCHART §9)** — `GuardianCheckinPage`는 `App.jsx`에서 `/attendance/checkin/qr`에 마운트되어 있고, `auth/roleNav.js` `allowedRolesForPath("/attendance/*")`가 `branch_admin·social_worker·caregiver·hq_admin`만 허용한다. 결과적으로 **`guardian`/`client_user`가 자신의 QR 셀프 체크인 화면 접근 시 `/forbidden`으로 리다이렉트**되고, SideNav에도 보호자용 진입점이 없다. FLOWCHART §9는 `/guardian 포털 → /guardian/checkin QR 체크인` 흐름을 정의한다. **UX는 라우트/인가 로직(coder)·라우트 확정(planner) 영역이므로 직접 수정하지 않고 기록** — 권장: ① `GuardianCheckinPage`를 `/guardian/checkin`으로 (재)노출하고 인가에 `guardian`/`client_user` 포함, 또는 ② `/attendance/checkin/qr` 인가에 두 역할 추가 + `allow_client_self_checkin` off 시 `client_user` 차단(§3-3). 결정 후 `navConfig.js` 보호자 포털 그룹에 「QR 체크인」 항목·DESIGN_SYSTEM §8-1·§8-2 동기화. **→ 40차 코드 실측 해소 확인**: `App.jsx`에 `/guardian/checkin`(GuardianCheckinPage) 라우트 존재, `roleNav.js` `allowedRolesForPath("/guardian/...")`가 `["guardian","client_user"]` 반환, `navConfig.js` 운영 그룹에 보호자용 「QR 체크인」 항목 노출. DESIGN_SYSTEM §8-1 라우트 표를 실측 정합으로 갱신(권장안 ①·UXD-6 closed). **잔여(coder)**: `allow_client_self_checkin` off 시 `client_user` 차단(§3-3) 백엔드 연동. | US-E04, FLOWCHART §9, ProtectedRoute 가드 | **coder**: `/guardian/checkin` 노출 + guardian/client_user 인가 **✅ 해소**, 셀프 체크인 토글 연동 잔여. **planner**: 라우트 확정 |
 
 ---
