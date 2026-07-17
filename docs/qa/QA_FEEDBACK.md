@@ -1,23 +1,219 @@
-<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T12:15:30Z -->
-<!-- coder-sync: COD 2026-07-17T12:15:30Z (frontend) — **★ QA-B95 FE null/blank effective·suppressed blocker filter** @ develop · BE `@0dfc992` lockstep · `resolveEffectiveOperationBlockers`/`resolveSuppressedBootstrapOperationBlockers` + liveGlobalSetup wire · related **182/182 PASS**(+2) · WT **CLEAN** pending commit · Open **0**(FE) · Planned QA-B116+QA-B95 -->
-# coder_frontend: QA-B95 FE null/blank effective/suppressed blocker filter (BE @0dfc992 lockstep); related 182/182(+2); Open 0(FE); Planned QA-B116+QA-B95.
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T14:17:00Z -->
+<!-- coder-sync: COD 2026-07-17T14:17:00Z (frontend) — **★ QA-B577 FE v3 program schedule photo upload wire** · BE `@1b8c764` lockstep (`POST /programs/schedule/{id}/photo`) · related **12/12 PASS** · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B577 FE v3 program schedule photo upload wire (BE @1b8c764 lockstep); related 12/12; ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
 
-### [COD] v1.2.1/QA-B95 FE null/blank effective·suppressed blocker filter — develop commit (QA-20260717-B571) — **Fixed**
+### [COD] v3 program schedule photo upload FE wire — develop (QA-20260717-B577) — **Fixed**
+
+- **id**: QA-B577
+- **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B576 `@1b8c764`)
+- **severity**: HIGH → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop ahead · related **12/12** · tester FF pending)
+- **found_at**: 2026-07-17T14:12:24Z (BE photo API Fixed · FE `/programs` UI 미연동)
+- **fixed_at**: 2026-07-17T14:17:00Z
+- **version**: v1.2.1 / v3 — FE multipart `uploadProgramSchedulePhotoApi` + ProgramsPage 활동 사진 컬럼
+- **summary**: Wire FE schedule photo upload so BE `POST /api/v1/programs/schedule/{programId}/photo` is end-to-end (RBAC hq/branch/social/caregiver · JPEG/PNG/WEBP ≤5MB).
+- **assignee**: TSR (merge·회귀) · PLN (baseline FE) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 · BE `@1b8c764` photo API lockstep
+- **prevention**: programSchedulePhotoServices + ProgramSchedulePhotoUpload + ProgramsPage tests (12/12)
+- **expected**: FE develop photo wire · related PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `uploadProgramSchedulePhotoApi` · ProgramsPage 활동 사진 · related **12/12** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T14:12:24Z -->
+<!-- tester-sync: TSR 1787차 2026-07-17T14:12:24Z (backend) — **★ QA-B576 Fixed** FF merge `b7f4337`→`1b8c764` (pending **1→0**: v3 program schedule photo upload API+storage · FE `@ce2325c` SYNCED) · develop pre-merge related **14/14 PASS**(~3.0s,+1 · ProgramControllerRoutingTest+ProgramServiceTest) · post-merge **2303/2303 PASS**(87s,405,+1) · live **0/149/0**(33.79s · bootstrap-disabled) · BE develop/test **SYNCED `@1b8c764`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@1b8c764` · FE ALL SYNCED+PUSHED `@ce2325c`)** · backend@8080 **UP/200** · operation **BLOCK**(731 BE + QA-B95) -->
+# tester_1787_backend: QA-B576 Fixed FF merge b7f4337→1b8c764 (v3 program schedule photo upload · pending 1→0); related 14/14(~3.0s); post-merge 2303/2303(87s); live 0/149/0(33.79s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(731 BE + QA-B95).
+
+### [TSR] v3 program schedule photo upload API+storage — develop→test FF merge (`1b8c764`, QA-20260717-B576) — **Fixed**
+
+- **id**: QA-20260717-B576
+- **priority**: HIGH → Fixed (TSR 1787 FF merge)
+- **severity**: HIGH → Fixed
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@1b8c764`** · related **14/14** · post-merge **2303/2303 PASS** · live **0/149/0**)
+- **found_at**: 2026-07-17T14:08:17Z (COD `@1b8c764` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T14:10:30Z (FF `b7f4337`→`1b8c764`)
+- **verified_at**: 2026-07-17T14:12:24Z
+- **version**: v3 — program schedule multipart photo upload + storage key persistence
+- **summary**: FF merge pending **1** → **0** · related **14/14**(+1) · post-merge **2303/2303**(+1) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@1b8c764`) · Planned **QA-B116**(731 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: ProgramControllerRoutingTest + ProgramServiceTest (schedule photo upload · 14/2303)
+- **expected**: develop→test FF `@1b8c764` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **14/14** · post-merge **2303/2303** · live **0/149/0** · cross-stream **SYNCED**(FE `@ce2325c`) · operation BLOCK(731 BE + QA-B95)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T13:57:01Z -->
+<!-- tester-sync: TSR 1786차 2026-07-17T13:57:01Z (frontend) — **★ QA-B575 Fixed** FF merge+PUSH `d3e282b`→`ce2325c` (pending **1→0**: semicolon-optional `&num` named-num decode · BE `@b7f4337` lockstep) · related **240/240 PASS**(2.67s,Δ0 · notificationChannelStatus+liveE2eHarness) · post-merge **2686/2686 PASS**(878.83s,477,Δ0) · build **1230**(9.65s) · audit **0** · live **0/149/0**(35.94s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@ce2325c`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@b7f4337` · FE `@ce2325c`)** · backend@8080 **UP/200** · operation **BLOCK**(730 BE + QA-B95) -->
+# tester_1786_frontend: QA-B575 Fixed FF merge+PUSH d3e282b→ce2325c (semicolon-optional named-num · pending 1→0); related 240/240(2.67s); post-merge 2686/2686(878.83s,Δ0); live 0/149/0(35.94s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(730 BE + QA-B95).
+
+### [TSR] v1.2.1/QA-B95 FE semicolon-optional named-num HTML entity decode — develop→test merge+PUSH (`ce2325c`, QA-20260717-B575) — **Fixed**
+
+- **id**: QA-20260717-B575
+- **priority**: HIGH → Fixed (TSR 1786 FF merge+PUSH)
+- **severity**: HIGH → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@ce2325c`** · related **240/240** · post-merge **2686/2686** · live **0/149/0**)
+- **found_at**: 2026-07-17T13:39:59Z (COD `@ce2325c` · develop vs origin/test pending **1**)
+- **fixed_at**: 2026-07-17T13:39:59Z (COD) · merge FF `d3e282b`→`ce2325c`
+- **verified_at**: 2026-07-17T13:57:01Z (related **240/240** · post-merge **2686/2686** · build **1230** · audit **0** · live **0/149/0** · origin/test PUSHED)
+- **version**: v1.2.1 / QA-B95 — FE `&num45` without mandatory `;` before digits · notification + live probe lockstep
+- **summary**: FF merge pending **1** → **0** · related **240/240**(Δ0) · post-merge **2686/2686**(Δ0) · live **0/149/0** · ALL SYNCED+PUSHED.
+- **assignee**: PLN (baseline FE `@ce2325c`) · Planned **QA-B116**(730 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (semicolon-optional `&num45` · 240/2686)
+- **expected**: develop→test FF `@ce2325c` · related+post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **240/240** · post-merge **2686/2686** · live **0/149/0** · Open **0**(FE) · cross-stream **SYNCED** · operation BLOCK(730 BE + QA-B95)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T13:37:31Z -->
+<!-- tester-sync: TSR 1785차 2026-07-17T13:37:31Z (backend) — **★ QA-B574 Fixed** FF merge `7389ef0`→`b7f4337` (pending **1→0**: v196 linkage readiness in live probe · FE `@d3e282b` SYNCED) · develop pre-merge related **38/38 PASS**(1.934s,+1 · LiveE2eControllerTest) · post-merge **2302/2302 PASS**(89s,405,+1) · live **0/149/0**(34.08s · bootstrap-disabled) · BE develop/test **SYNCED `@b7f4337`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@b7f4337` · FE ALL SYNCED+PUSHED `@d3e282b`)** · backend@8080 **UP/200** · operation **BLOCK**(730 BE + QA-B95) -->
+# tester_1785_backend: QA-B574 Fixed FF merge 7389ef0→b7f4337 (v196 linkage readiness · pending 1→0); related 38/38(1.934s); post-merge 2302/2302(89s); live 0/149/0(34.08s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(730 BE + QA-B95).
+
+### [TSR] v2/QA-B95 expose v196 linkage readiness in live probe — develop→test FF merge (`b7f4337`, QA-20260717-B574) — **Fixed**
+
+- **id**: QA-20260717-B574
+- **priority**: HIGH → Fixed (TSR 1785 FF merge)
+- **severity**: HIGH → Fixed
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@b7f4337`** · related **38/38** · post-merge **2302/2302 PASS** · live **0/149/0**)
+- **found_at**: 2026-07-17T13:32:56Z (COD `@b7f4337` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T13:34:46Z (FF `7389ef0`→`b7f4337`)
+- **verified_at**: 2026-07-17T13:37:31Z
+- **version**: v2 / QA-B95 — live-e2e probe에 `v196ClientLinkageRecordsIntegrityCheckReady` 노출 · operation gate schema lockstep
+- **summary**: FF merge pending **1** → **0** · related **38/38**(+1) · post-merge **2302/2302**(+1) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@b7f4337`) · Planned **QA-B116**(730 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eControllerTest#probeShouldBlockOperationWhenV196ClientLinkageRecordsIntegrityCheckIsMissing (38/2302)
+- **expected**: develop→test FF `@b7f4337` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **38/38** · post-merge **2302/2302** · live **0/149/0** · cross-stream **SYNCED**(FE `@d3e282b`) · operation BLOCK(730 BE + QA-B95)
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T13:24:14Z -->
+<!-- tester-sync: TSR 1784차 2026-07-17T13:24:14Z (frontend) — **★ QA-B573 Fixed** FF merge+PUSH `9a48e13`→`d3e282b` (pending **1→0**: semicolon-optional `&amp` decode · BE `@7389ef0` lockstep) · related **240/240 PASS**(2.72s,+2 · notificationChannelStatus+liveE2eHarness) · post-merge **2686/2686 PASS**(883.65s,477,+2) · build **1230**(9.39s) · audit **0** · live **0/149/0**(34.37s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@d3e282b`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@7389ef0` · FE `@d3e282b`)** · backend@8080 **UP/200** · operation **BLOCK**(729 BE + QA-B95) -->
+# tester_1784_frontend: QA-B573 Fixed FF merge+PUSH 9a48e13→d3e282b (semicolon-optional amp · pending 1→0); related 240/240(2.72s); post-merge 2686/2686(883.65s,+2); live 0/149/0(34.37s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(729 BE + QA-B95).
+
+### [TSR] v1.2.1/QA-B95 FE semicolon-optional amp HTML entity decode — develop→test merge+PUSH (`d3e282b`, QA-20260717-B573) — **Fixed**
+
+- **id**: QA-20260717-B573
+- **priority**: HIGH → Fixed (TSR 1784 FF merge+PUSH)
+- **severity**: HIGH → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@d3e282b`** · related **240/240** · post-merge **2686/2686** · live **0/149/0**)
+- **found_at**: 2026-07-17T12:48:00Z (COD `@d3e282b` · BE amp#45 lockstep · develop vs origin/test pending **1**)
+- **fixed_at**: 2026-07-17T12:50:33Z (COD) · merge FF `9a48e13`→`d3e282b`
+- **verified_at**: 2026-07-17T13:24:14Z (related **240/240** · post-merge **2686/2686** · build **1230** · audit **0** · live **0/149/0** · origin/test PUSHED)
+- **version**: v1.2.1 / QA-B95 — FE `&amp` without mandatory `;` at `#`/comma/end-of-token · BE LiveE2eOperationReadinessSupport parity
+- **summary**: FF merge pending **1** → **0** · related **240/240**(+2) · post-merge **2686/2686**(+2) · live **0/149/0** · ALL SYNCED+PUSHED.
+- **assignee**: PLN (baseline FE `@d3e282b`) · Planned **QA-B116**(729 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: notificationChannelStatus.test.js + liveE2eHarness.test.js (semicolon-optional `&amp` · 240/2686)
+- **expected**: develop→test FF `@d3e282b` · related+post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **240/240** · post-merge **2686/2686** · live **0/149/0** · Open **0**(FE) · cross-stream **SYNCED** · operation BLOCK(729 BE + QA-B95)
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T12:50:33Z -->
+<!-- coder-sync: COD 2026-07-17T12:50:33Z (frontend) — **★ QA-B95 FE semicolon-optional &amp entity decode** `@d3e282b` · BE LiveE2eOperationReadinessSupport lockstep (`bootstrap&amp#45disabled`) · related **240/240 PASS**(+2) · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B95 FE semicolon-optional &amp entity decode @d3e282b (BE amp#45 lockstep); related 240/240(+2); ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/QA-B95 FE semicolon-optional amp HTML entity decode — develop (`d3e282b`, QA-20260717-B573) — **Fixed**
+
+- **id**: QA-B573
+- **priority**: HIGH → Fixed (COD FE lockstep · TSR1784 verified)
+- **severity**: HIGH → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@d3e282b`** · TSR1784 verified)
+- **found_at**: 2026-07-17T12:48:00Z (FE `&amp;/gi` mandatory-`;` vs BE semicolon-optional `&amp(?:;|(?=$|[^a-zA-Z0-9]))`)
+- **fixed_at**: 2026-07-17T12:50:33Z
+- **verified_at**: 2026-07-17T13:24:14Z (TSR1784 FF merge+PUSH · related **240/240** · post-merge **2686/2686**)
+- **version**: v1.2.1 / QA-B95 — FE `&amp` without mandatory `;` at `#`/comma/end-of-token · BE LiveE2eOperationReadinessSupport parity
+- **summary**: Lock FE live-readiness decoder so semicolon-optional `&amp` expands before numeric refs (`bootstrap&amp#45disabled` → `bootstrap-disabled`).
+- **assignee**: PLN (baseline FE `@d3e282b`) · Planned **QA-B116**(729 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
+- **repro**: readiness token `bootstrap&amp#45disabled` must normalize to `bootstrap-disabled`
+- **expected**: FE develop `@d3e282b` · related PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `@d3e282b` · related **240/240**(+2) · TSR1784 ALL SYNCED+PUSHED · Open **0**(FE) · operation BLOCK(729 BE + QA-B95)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T12:46:30Z -->
+<!-- tester-sync: TSR 1783차 2026-07-17T12:46:30Z (backend) — **★ QA-B572 Fixed** FF merge `0dfc992`→`7389ef0` (pending **1→0**: semicolon-optional core quote/angle decode · FE `@20f6ddc` lockstep) · baseline `@0dfc992` **2300/2300 PASS**(71s) · develop pre-merge related **88/88 PASS**(3.5s,+1 · LiveE2eOperationReadinessSupportTest) · post-merge **2301/2301 PASS**(107s,405,+1) · live **0/149/0**(33.82s · bootstrap-disabled) · BE develop/test **SYNCED `@7389ef0`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@7389ef0` · FE ALL SYNCED+PUSHED `@9a48e13`)** · backend@8080 **UP/200** · operation **BLOCK**(729 BE + QA-B95) -->
+# tester_1783_backend: QA-B572 Fixed FF merge 0dfc992→7389ef0 (semicolon-optional core quote/angle · pending 1→0); baseline 2300/2300(71s); related 88/88(3.5s); post-merge 2301/2301(107s); live 0/149/0(33.82s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(729 BE + QA-B95).
+
+### [TSR] v2/QA-B95 semicolon-optional core quote/angle entity decode — develop→test FF merge (`7389ef0`, QA-20260717-B572) — **Fixed**
+
+- **id**: QA-20260717-B572
+- **priority**: HIGH → Fixed (TSR 1783 FF merge)
+- **severity**: HIGH → Fixed
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@7389ef0`** · related **88/88** · post-merge **2301/2301 PASS** · live **0/149/0**)
+- **found_at**: 2026-07-17T12:45:00Z (COD `@7389ef0` · develop vs test pending **1** · FE `@20f6ddc` lockstep)
+- **fixed_at**: 2026-07-17T12:43:30Z (FF `0dfc992`→`7389ef0`)
+- **verified_at**: 2026-07-17T12:46:30Z
+- **version**: v2 / QA-B95 — semicolon-optional `&quot`/`&apos`/`&lt`/`&gt` at token boundaries · FE `@20f6ddc` lockstep
+- **summary**: FF merge pending **1** → **0** · related **88/88**(+1) · post-merge **2301/2301**(+1) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@7389ef0`) · Planned **QA-B116**(729 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest (semicolon-optional core quote/angle · 88/2301)
+- **expected**: develop→test FF `@7389ef0` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **88/88** · post-merge **2301/2301** · live **0/149/0** · cross-stream **SYNCED**(FE `@9a48e13`) · operation BLOCK(729 BE + QA-B95)
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T12:45:00Z -->
+<!-- coder-sync: COD 2026-07-17T12:45:00Z (backend) — **★ QA-B95 BE semicolon-optional core quote/angle lockstep** `@7389ef0` · FE `@20f6ddc` parity · related LiveE2eOperationReadinessSupportTest PASS(+1) · WT **CLEAN** · ahead origin/develop **1** · Open **0**(BE) · Planned QA-B116+QA-B95 -->
+# coder_backend: QA-B95 BE semicolon-optional core quote/angle lockstep @7389ef0 (FE @20f6ddc); related +1 @Test PASS; ahead 1; Open 0(BE); Planned QA-B116+QA-B95.
+
+### [COD] v2/QA-B95 BE semicolon-optional core quote/angle entity decode — develop (`7389ef0`, QA-20260717-B572) — **Fixed**
+
+- **id**: QA-20260717-B572
+- **priority**: HIGH → Fixed (COD BE lockstep · TSR1783 verified)
+- **severity**: HIGH → Fixed
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@7389ef0`** · TSR1783 verified)
+- **found_at**: 2026-07-17T11:12:00Z (PLN 227 · BE semicolon-optional lockstep 「가정」 · FE QA-B567 `@20f6ddc`)
+- **fixed_at**: 2026-07-17T12:45:00Z (COD `@7389ef0`)
+- **verified_at**: 2026-07-17T12:46:30Z (TSR1783 FF merge · related **88/88** · post-merge **2301/2301**)
+- **version**: v2 / QA-B95 — semicolon-optional `&quot`/`&apos`/`&lt`/`&gt` at token boundaries · FE `@20f6ddc` lockstep
+- **summary**: Lock BE live-readiness decoder regression so core HTML quote/angle aliases parse without mandatory semicolons at comma/end-of-token boundaries (FE QA-B567 parity).
+- **assignee**: TSR (merge·회귀) · PLN (baseline BE `@7389ef0`) · Planned **QA-B116**(729 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP v2/v3 · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest#resolveOperationBlockersShouldDecodeSemicolonOptionalCoreQuoteAndAngleEntities
+- **expected**: BE develop/test `@7389ef0` · related+post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — `@7389ef0` · related **88/88** · post-merge **2301/2301** · Open **0**(BE) · operation BLOCK(729 BE + QA-B95)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T12:32:57Z -->
+<!-- tester-sync: TSR 1782차 2026-07-17T12:32:57Z (frontend) — **★ QA-B571 Fixed** FF merge+PUSH `420286e`→`9a48e13` (pending **1→0**: null/blank effective operation-blocker filter) · related **182/182 PASS**(1.60s,+2 · liveE2eHarness) · post-merge **2684/2684 PASS**(872.38s,477,+2) · build **1230**(9.44s) · audit **0** · live **0/149/0**(34.59s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@9a48e13`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@0dfc992` · FE `@9a48e13`)** · backend@8080 **UP/200** · operation **BLOCK**(728 BE + QA-B95) -->
+# tester_1782_frontend: QA-B571 Fixed FF merge+PUSH 420286e→9a48e13 (null/blank operation-blocker filter · pending 1→0); related 182/182(1.60s); post-merge 2684/2684(872.38s,+2); live 0/149/0(34.59s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(728 BE + QA-B95).
+
+### [TSR] v1.2.1/QA-B95 FE null/blank effective·suppressed blocker filter — develop→test merge+PUSH (`9a48e13`, QA-20260717-B571) — **Fixed**
+
+- **id**: QA-20260717-B571
+- **priority**: HIGH → Fixed (TSR 1782 FF merge+PUSH)
+- **severity**: HIGH → Fixed
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@9a48e13`** · related **182/182** · post-merge **2684/2684** · live **0/149/0**)
+- **found_at**: 2026-07-17T12:09:10Z (COD `@9a48e13` · BE `@0dfc992` lockstep · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T12:17:00Z (FF `420286e`→`9a48e13`)
+- **verified_at**: 2026-07-17T12:32:57Z (related **182/182** · post-merge **2684/2684** · build **1230** · audit **0** · live **0/149/0** · origin/test PUSHED)
+- **version**: v1.2.1 / QA-B95 — FE `resolveEffectiveOperationBlockers`/`resolveSuppressedBootstrapOperationBlockers` drop null/blank · BE `@0dfc992` parity
+- **summary**: FF merge pending **1** → **0** · related **182/182**(+2) · post-merge **2684/2684**(+2) · live **0/149/0** · ALL SYNCED+PUSHED.
+- **assignee**: PLN (baseline FE `@9a48e13`) · Planned **QA-B116**(728 BE)+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · Planned QA-B116+QA-B95
+- **prevention**: liveE2eHarness.test.js (null/blank effective+suppressed blocker · 182/2684)
+- **expected**: develop→test FF `@9a48e13` · related+post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **182/182** · post-merge **2684/2684** · live **0/149/0** · Open **0**(FE) · cross-stream **SYNCED** · operation BLOCK(728 BE + QA-B95)
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T12:16:00Z -->
+<!-- coder-sync: COD 2026-07-17T12:16:00Z (frontend) — **★ QA-B95 FE null/blank effective·suppressed blocker filter** `@9a48e13` · BE `@0dfc992` lockstep · related **182/182 PASS**(+2) · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B95 FE null/blank effective/suppressed blocker filter @9a48e13 (BE @0dfc992 lockstep); related 182/182(+2); ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/QA-B95 FE null/blank effective·suppressed blocker filter — develop (`9a48e13`, QA-20260717-B571) — **Fixed**
 
 - **id**: QA-20260717-B571
 - **priority**: HIGH → Fixed (COD FE lockstep)
 - **severity**: HIGH → Fixed
 - **stream**: frontend
-- **status**: Fixed (develop commit pending tester FF · related **182/182**)
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@9a48e13`** · TSR1782 verified)
 - **found_at**: 2026-07-17T12:09:10Z (BE QA-B570 `@0dfc992` · FE lockstep pending)
-- **fixed_at**: 2026-07-17T12:15:30Z (COD FE resolveEffective/resolveSuppressed + liveGlobalSetup wire)
+- **fixed_at**: 2026-07-17T12:16:00Z (COD `@9a48e13`)
 - **version**: v1.2.1 / QA-B95 — FE `resolveEffectiveOperationBlockers`/`resolveSuppressedBootstrapOperationBlockers` drop null/blank · BE `@0dfc992` parity
 - **summary**: Export BE-parity helpers · wire liveGlobalSetup computed effective/suppressed paths · +2 regression tests · related **182/182 PASS**.
-- **assignee**: TSR (merge·회귀) · PLN (baseline FE HEAD) · Planned **QA-B116**(728 BE)+**QA-B95**
+- **assignee**: TSR (merge·회귀) · PLN (baseline FE `@9a48e13`) · Planned **QA-B116**(728 BE)+**QA-B95**
 - **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
 - **prevention**: liveE2eHarness null/blank effective+suppressed blocker tests
-- **expected**: FE develop commit · related PASS · Open **0**(FE)
-- **actual**: ★ Fixed — helpers+wire · related **182/182** · Open **0**(FE) · operation BLOCK(728 BE + QA-B95)
+- **expected**: FE develop `@9a48e13` · related PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `@9a48e13` · related **182/182** · Open **0**(FE) · operation BLOCK(728 BE + QA-B95)
 
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T12:09:10Z -->
 <!-- tester-sync: TSR 1781차 2026-07-17T12:09:10Z (backend) — **★ QA-B570 Fixed** FF merge `f6023b0`→`0dfc992` (pending **1→0**: null/blank operation-blocker filter) · develop pre-merge related **87/87 PASS**(2.366s,+2 · LiveE2eOperationReadinessSupportTest) · post-merge **2300/2300 PASS**(88s,405,+2) · live **0/149/0**(33.56s · bootstrap-disabled) · BE develop/test **SYNCED `@0dfc992`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@0dfc992` · FE ALL SYNCED+PUSHED `@420286e`)** · backend@8080 **UP/200** · operation **BLOCK**(728 BE + QA-B95) -->
@@ -5413,7 +5609,7 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ## Open
 
-_(Open **0** active · **QA-20260717-B569** Fixed TSR1780 FF `@420286e` · **QA-20260717-B568** Fixed TSR1779 FF `@f6023b0` · **QA-20260717-B567** Fixed TSR1777 FF `@20f6ddc` · **QA-B559+B561+B563+B566** Fixed TSR1776 `@29e20dd` · BE develop/test **SYNCED `@f6023b0`** · FE develop/test/origin **ALL SYNCED+PUSHED `@420286e`** · Planned **QA-B116**(origin/test **727 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1780)_
+_(Open **0** active · **QA-20260717-B576** Fixed TSR1787 FF `@1b8c764` · **QA-20260717-B575** Fixed TSR1786 FF+PUSH `@ce2325c` · BE develop/test **SYNCED `@1b8c764`** · FE develop/test/origin **ALL SYNCED+PUSHED `@ce2325c`** · Planned **QA-B116**(origin/test **731 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1787)_
 
 _(이전 Open **QA-20260717-B551** — Fixed TSR1759 `@a0c1fe6` · 이관 완료)_
 _(이전 Open residual FE pending — Fixed TSR1760 `@a364f97` QA-B553 · 이관 완료)_
