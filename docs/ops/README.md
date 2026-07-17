@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-16T23:12:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-17T04:36:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (comma·VeryThickSpace live E2E · 템플릿 카탈로그 행 헤더 a11y · 알림톡 카탈로그 13종 · Must 소통 채널 구분 · 모듈 **~97.4%**)  
-> **최종 갱신**: 2026-07-16 (TWR — Q890~Q892 · baseline `45e1f00`/`b753586`)
+> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (MathML 꺾쇠 long alias · bidi live harness · 꺾쇠·소괄호·중괄호 wrapping · Must ds-* 26종 · UXD §110 · 경고/인용문 entity 준비 · 카카오 필수 6종 live 점검 · 알림톡 카탈로그 13종 · Must 소통 채널 구분 · 모듈 **~97.4%**)  
+> **최종 갱신**: 2026-07-17 (TWR — Q901·Q902 + UXD §110 + 경고/인용문 · baseline `a0c1fe6`/`5ce4726`)
 
 ---
 
@@ -29,7 +29,12 @@
 - 모니터링·로그 수집
 - 백업·복구
 
-**최신 항목** (2026-07-16):
+**최신 항목** (2026-07-17):
+- **UXD §110** — DESIGN_SYSTEM **QA-B95 6-commit decode 배치 확인** · **components.css ds-* 26종 정식화**(청구·간호·CMS·수가·직원 lifecycle 등 정적 화면)
+- **Q901·Q902** — live E2E **MathML 꺾쇠 long alias(`&LeftAngleBracket;`/`&RightAngleBracket;`)** BE+FE · **bidi long-alias live harness** · **경고/인용문 HTML entity** 준비중 (`a0c1fe6`/`5ce4726`)
+- **Q898 갱신 · Q900** — live E2E **소괄호 wrapping BE lockstep** · **꺾쇠(angle) wrapping(`&lang;`/`&langle;`)** BE+FE (`bc41ed9`/`20356ed`/`9907725`/`1c84f0f`)
+- **Q897~Q899** — live E2E **중괄호 wrapping(BE+FE)** · **소괄호 wrapping(FE)** · **Must ds-* 26종**(청구·간호·CMS) (`794bfed`/`d6be05c`/`9907725`/`971c636`)
+- **Q893~Q896** — live E2E **`&semi;`·blank skip·대괄호 wrapping** BE+FE lockstep · **카카오 필수 알림톡 6종 live 전 점검** (`d247cdf`/`b348258`/`c6ddf6c`/`6900a8f`/`7ee1cf1`/`6fceb8d`)
 - **Q890~Q892** — live E2E **`&VeryThickSpace;`·`&comma;`** BE+FE lockstep · **템플릿 카탈로그 행 헤더 a11y** (`043f002`/`45e1f00`/`b28eb45`/`b753586`/`d3b0f1c`, UXD-185)
 - **Q889** — **알림톡·SMS 템플릿 카탈로그 13종**(ezCare 7 + Kakao 필수 6·kind 「—」) (`54fd8dd`/`ab9e853`)
 - **Q883~Q887** — live E2E **figure/fractional em/SixPerEm/MathSpace/VeryVery* space alias** BE+FE lockstep (`08cdb87`~`f491ec8`/`031abef`~`3f7db38`)
@@ -60,7 +65,7 @@
 - **Q853** — 알림 패널 참고 단가 **고대비 CSS** (`9181ca8`)
 - **Q864 정정** — 프로그램 리포트 **BE `branchId` ✅(Q715)** · **FE UI 미연동 P2**
 - **Must 보강** — 위원회 **보호자 회의=필수업무 27** · **CalendarDayMarker** (Q723·Q843)
-- **baseline 정합** — FAQ·USER_MANUAL·ADMIN·DEPLOYMENT·CHANGELOG **`d911983`/`29fc34f`** · Flyway **V1–V196**
+- **baseline 정합** — FAQ·USER_MANUAL·ADMIN·DEPLOYMENT·CHANGELOG **`20356ed`/`1c84f0f`** · Flyway **V1–V196**
 
 **이전 항목** (2026-07-15):
 - **Q807** — **기관 공지 첨부 http(s) 서버 검증 · 복제 후 수정 · 상세 링크 차단** (`7569f1c`/`5b3075f`)

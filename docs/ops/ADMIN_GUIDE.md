@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T23:12:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T04:36:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-16 (Q892: 카탈로그 행 헤더 a11y · Q890~Q891: live E2E entity · Q889: 카탈로그 13 · baseline `d247cdf`/`6900a8f` · **Flyway V1–V196**)  
+> **최종 갱신**: 2026-07-17 (Q901·Q902: MathML 꺾쇠·bidi harness · baseline `a0c1fe6`/`5ce4726` · **Flyway V1–V196** · **경고/인용문 entity**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,11 +50,21 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-07-16 develop HEAD `45e1f00` / frontend `b753586`)
+### 1-4. 구현 상태 안내 (2026-07-17 develop HEAD `c1041bb` / frontend `40c85df`)
 
-> **이관·QA (TSR)**: BE develop **@ `45e1f00`** · FE develop **@ `b753586`** · **cross-stream SYNCED**
+> **이관·QA (TSR)**: BE develop **@ `c1041bb`** · FE develop **@ `40c85df`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **QA-B95 MathML 꺾쇠 long alias** ✅ (**Q901**): **`&LeftAngleBracket;`/`&RightAngleBracket;`** → `<`/`>` (`c1041bb`/`40c85df`) — MathML → langle → lang 순
+> - **QA-B95 bidi long-alias live harness** ✅ (**Q902**): live probe·config·globalSetup에 Q879 long alias 전파 (`5ce4726`)
+> - **QA-B95 꺾쇠(angle) wrapping HTML entity** ✅ (**Q900**): **`&lang;`/`&rang;`/`&langle;`/`&rangle;`** → `<`/`>` (`20356ed`/`1c84f0f`) — 긴 alias 우선
+> - **QA-B95 소괄호 wrapping HTML entity** ✅ BE+FE (**Q898**): **`&lpar;`/`&rpar;`** → `(`/`)` (`bc41ed9`/`9907725`)
+> - **Must ds-* 26종 정식화** ✅ (**Q899**): 청구·수가·CMS·간호·직원 lifecycle 등 (`971c636`, UXD-186)
+> - **QA-B95 중괄호 wrapping HTML entity** ✅ (**Q897**): **`&lbrace;`/`&rbrace;`/`&lcub;`/`&rcub;`** → `{`/`}` (`794bfed`/`d6be05c`)
+> - **카카오 필수 알림톡 6종 live 전 점검** ✅ (**Q896**): catalog **13/13** · `KAKAO_TPL_*` · channel-status readiness
+> - **QA-B95 대괄호 wrapping HTML entity** ✅ (**Q895**): **`&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb;`** → `[`/`]` (`c6ddf6c`/`6fceb8d`)
+> - **QA-B95 blank blocker token skip** ✅ (**Q894**): null/blank primary skip (`b348258`/`7ee1cf1`)
+> - **QA-B95 semi HTML entity** ✅ (**Q893**): **`&semi;`** → `;` (`d247cdf`/`6900a8f`)
 > - **템플릿 카탈로그 행 헤더 a11y** ✅ (**Q892**): 13종 catalog 표 **메시지명 `th scope="row"`** (`d3b0f1c`, UXD-185)
 > - **QA-B95 comma HTML entity** ✅ (**Q891**): **`&comma;`** → `,` (`45e1f00`/`b753586`)
 > - **QA-B95 VeryThickSpace alias** ✅ (**Q890**): **`&VeryThickSpace;`** → 공백 (`043f002`/`b28eb45`)
@@ -64,8 +74,6 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > - **QA-B95 SixPerEm·EnSpace·EmSpace long alias** ✅ (**Q885**): **`&emsp6;`/`&SixPerEmSpace;`/`&EnSpace;`/`&EmSpace;`/`&HairSpace;`/`&NarrowNoBreakSpace;`** → 공백 (`4622896`/`c260baa`)
 > - **QA-B95 MathSpace·WordJoiner long alias** ✅ (**Q886**): **`&MathSpace;`** → 공백 · **`&WordJoiner;`** strip (`6014cca`/`73169a1`)
 > - **QA-B95 VeryVery* space alias** ✅ (**Q887**): **`&VeryVeryThinSpace;`/`&VeryVeryThickSpace;`** → 공백 (`f491ec8`/`3f7db38`)
-> - **QA-B95 comma HTML entity** ✅ (**Q891**): **`&comma;`** → `,` (`45e1f00`/`b753586`)
-> - **QA-B95 VeryThickSpace alias** ✅ (**Q890**): **`&VeryThickSpace;`** → 공백 (`043f002`/`b28eb45`)
 > - **연계·발송 체크박스 a11y** ✅ (**Q888**): **`ds-text-muted`** 초안 없음 안내 · **`ds-checkbox-group`** 발송 체크박스 (`ed48077`, UXD-184)
 > - **QA-B95 NoBreakSpace legacy alias** ✅ (**Q882**): **`&NoBreakSpace;`/`&nobreakspace`** → 공백(BE)·strip(FE) (`ff80f0b`/`8a05640`)
 > - **QA-B95 ZeroWidthNonJoiner/Joiner long alias** ✅ (**Q880**): **`&ZeroWidthNonJoiner;`/`&ZeroWidthJoiner;`** strip (`ba5b0cb`/`61f8f19`)
@@ -328,7 +336,7 @@ readiness Q644(placeholder·누락 key)와 별도로 **런타임 발송** 단계
 
 > **sysadmin 체크**: `NOTIFICATION_PROVIDER=solapi` 전환 후 수동 알림 1건 — `notifications` **실패 이력**·Solapi 콘솔 로그 대조 (FAQ **Q679**). **`GET /notifications/template-catalog`** 로 **13종 template `dispatchReady`** 확인 (FAQ **Q686**·**Q889**·**Q831**).
 
-#### [TWR] G-SMS-TEMPLATE-CATALOG — Solapi 템플릿 카탈로그 (Q686·Q687·Q689·Q690·Q691·Q692·Q699·**Q889**·**Q892**, BE `54fd8dd`·FE `b753586`)
+#### [TWR] G-SMS-TEMPLATE-CATALOG — Solapi 템플릿 카탈로그 (Q686·Q687·Q689·Q690·Q691·Q692·Q699·**Q889**·**Q892**·**Q896**, BE `c6ddf6c`·FE `6fceb8d`)
 
 | 항목 | 내용 |
 |------|------|
@@ -340,7 +348,7 @@ readiness Q644(placeholder·누락 key)와 별도로 **런타임 발송** 단계
 | staff access key dispatch | **`POST /api/v1/staff/notifications/staff-access-key`** — ezCare **`message_kind=1`** · FE **`StaffNotificationDispatchPanel`** (`9c25d44`) |
 | dispatch response | 성공 응답 **`templateCode`·`ezcareMessageKind`**(Kakao 필수는 `null`) — **13/13 catalog** (`54fd8dd`/`ab9e853`, Q889) |
 | FE success Alert | **`formatGsmDispatchSuccessMessage`** — **`templateCode`** → 한글 라벨 **괄호 suffix** · **`ezcareMessageKind` 숫자 미표시** (`c7d0982`, Q699) |
-| FE readiness | **`NotificationChannelReadinessPanel`** — 제목 **「알림톡·SMS 템플릿 카탈로그」** · **「발송 구현 N종 중 M종 발송 가능 · 발송 대기 Y종」** · Kakao kind **「—」** · catalog **메시지명 `th scope="row"`** (`ab9e853`/`d3b0f1c`, Q892) |
+| FE readiness | **`NotificationChannelReadinessPanel`** — 제목 **「알림톡·SMS 템플릿 카탈로그」** · **「발송 구현 N종 중 M종 발송 가능 · 발송 대기 Y종」** · Kakao kind **「—」** · catalog **메시지명 `th scope="row"`** · **Kakao 6종 live 전 점검(Q896)** (`ab9e853`/`d3b0f1c`, Q892) |
 | 화면 | **`/organization/settings`** · **`DashboardPage`** · **`/clients/:id`** · **`/staff/:id`** · **`/payroll/reports`** · **`/billing/claims/:id`** |
 | ezCare 7종 | **`STAFF_ACCESS_KEY`(1)** · **`BILLING_STATEMENT`(11)** · **`CLIENT_MONTHLY_SCHEDULE`(12)** · **`CARE_PROVISION_RECORD`(13)** · **`ELDER_ABUSE_PREVENTION_GUIDELINE`(19)** · **`STAFF_MONTHLY_SCHEDULE`(21)** · **`STAFF_PAYROLL_STATEMENT`(22)** |
 | Kakao 필수 6종 | **`ATTENDANCE_ARRIVAL`** · **`ATTENDANCE_DEPARTURE`** · **`DAILY_CARE_SUMMARY`** · **`BILLING_PAYMENT_RECEIVED`** · **`HOME_NEWSLETTER`** · **`EMERGENCY_ALERT`** — **`ezcareMessageKind=null`** |
@@ -3947,6 +3955,12 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-17 | **Q901·Q902** — §1-4 **MathML 꺾쇠 long alias · bidi live harness** · baseline **`c1041bb`/`40c85df`** · Flyway **V1–V196** · 모듈 **~97.4%** |
+| 2026-07-17 | **Q898 갱신 · Q900** — §1-4 **소괄호 wrapping BE lockstep · 꺾쇠 wrapping** · baseline **`20356ed`/`1c84f0f`** · Flyway **V1–V196** · 모듈 **~97.4%** |
+| 2026-07-17 | **Q897~Q899** — §1-4 **중괄호·소괄호 wrapping · Must ds-* 26종** · baseline **`794bfed`/`9907725`** · Flyway **V1–V196** · 모듈 **~97.4%** |
+| 2026-07-17 | **Q893~Q896** — §1-4 **semi·blank·대괄호 wrapping · 카카오 필수 6종 live 전 점검** · baseline **`c6ddf6c`/`6fceb8d`** · Flyway **V1–V196** · 모듈 **~97.4%** |
+| 2026-07-16 | **Q890~Q892** — §1-4 **VeryThickSpace·comma · 카탈로그 행 헤더 a11y** · baseline **`45e1f00`/`b753586`** · Flyway **V1–V196** · 모듈 **~97.4%** |
+| 2026-07-16 | **Q889** — §1-4 **카탈로그 13종(ezCare 7+Kakao 6)** · baseline **`54fd8dd`/`ab9e853`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-16 | **Q883~Q888** — §1-4 **space alias decode · 연계·발송 a11y** · baseline **`f491ec8`/`3f7db38`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-16 | **Q882** — §1-4 **NoBreakSpace legacy alias** · baseline **`ff80f0b`/`8a05640`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-16 | **Q879–Q881** — §1-4 **bidi/zero-width long alias · Must 소통 채널 구분** · baseline **`ba5b0cb`/`61f8f19`** · Flyway **V1–V196** · 모듈 **~97.4%** |

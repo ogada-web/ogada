@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T23:12:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T04:36:00Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-16 (Q892: 카탈로그 행 헤더 a11y · Q890~Q891: live E2E entity · Q889: 카탈로그 13 · baseline `d247cdf`/`6900a8f` · Flyway **V1–V196**)
+> **최종 갱신**: 2026-07-17 (Q901·Q902: MathML 꺾쇠·bidi harness · baseline `a0c1fe6`/`5ce4726` · Flyway **V1–V196** · **경고/인용문 entity 준비**)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -25,13 +25,13 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 역할별 메뉴·권한·업무 절차 | `sysadmin` 기술 설정 상세 (→ `ADMIN_GUIDE.md`) |
 | 보호자 QR 셀프 체크인 (B방식) | `caregiver`·`social_worker` 전용 **식단·일정 등록** (관리자만, §5-9) |
 
-### 1-3. 구현 상태 안내 (2026-07-16 develop HEAD `45e1f00` / frontend `b753586` 기준)
+### 1-3. 구현 상태 안내 (2026-07-17 develop HEAD `a0c1fe6` / frontend `5ce4726` 기준)
 
 | 영역 | 상태 | 비고 |
 |------|------|------|
-| 백엔드 API | **Must + … + V196 ✅** @ `45e1f00` **SYNCED** · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | Flyway **V186–V196** · BE Test **~2278** |
+| 백엔드 API | **Must + … + V196 ✅** @ `c1041bb` **SYNCED** · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | Flyway **V186–V196** · BE Test **~2268** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
-| 프론트엔드 | **133 route · 106 page** @ `b753586` **SYNCED** | **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **G2 branch scope fallback ✅** (**Q868**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **soft-hyphen decode ✅** (**Q859**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · **`/clients/home-newsletter` ✅** · **M11 `/payroll/*` 5화면 ✅** · … |
+| 프론트엔드 | **133 route · 106 page** @ `40c85df` **SYNCED** | **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **G2 branch scope fallback ✅** (**Q868**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **soft-hyphen decode ✅** (**Q859**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · **`/clients/home-newsletter` ✅** · **M11 `/payroll/*` 5화면 ✅** · … |
 | UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·**G2 가정통신문·기관 공지**·**연계기록지**·**RFID 급여제공내역 일괄 SMS**·**M11 급여 5화면+kind22 발송**·**M12 BPO·SSO**·**위원회·보호자 회의록(필수업무 27)** 등 | **모듈 KPI ~97.4%** |
 | UI API 갭 | **P1**: **M11 급여 persist** · **수익·인건비 자동 집계** · **기관(테넌트)별 SSO 자격** · **P2**: **program reports FE `branchId` UI**(Q864·Q715 BE ✅) · **7-5 live PG** | |
 | **P2 Planned** | **L03 간호급여 잔여 5 leaf·7-5 live PG·J03 Solapi live dispatch·LCMS CMS 3-method·G34 SMS live·G-Payroll·G30 live E2E** | **G-STAFF-WELFARE P3**(FAQ21796) · **8-12 PDF 공식 서식**(Q315) · **선임 업무수행일지 템플릿 카탈로그** P3 (Q635 잔여) |
@@ -42,7 +42,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 
 ### [TWR] 1-4. Must API·화면 빠른 점검표 (운영 우선순위)
 
-매일 운영 점검 시 아래 4개만 먼저 확인하면 Must 기능 누락을 빠르게 발견할 수 있습니다.
+매일 운영 점검 시 아래 5개만 먼저 확인하면 Must 기능 누락을 빠르게 발견할 수 있습니다.
 
 | 우선순위 | 화면 | 확인 API | 확인 포인트 |
 |----------|------|----------|-------------|
@@ -50,10 +50,13 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 2 | `/branches` (통합재가 지점) | `GET /api/v1/branches/integrated-home/provider-discovery` | `ltcAdminKindChoiceYn8=Y`·`06/07` 코드 |
 | 3 | `/staff/training-logs` | `GET /api/v1/staff/training-logs/compliance` | 반기/연간 미이수 건수 |
 | 4 | `/billing/easy-pay` | `GET /api/v1/billing/easy-pay/claims/{claimId}/payment` | 전월 미입금 가드·요청 상태 |
+| 5 | `/organization/settings` · `/dashboard` | `GET /api/v1/notifications/template-catalog` · `GET …/channel-status` | **카탈로그 13/13** · Kakao 6종 **`KAKAO_TPL_*`** · **`liveAlimtalkDispatchReady`**(FAQ **Q896**·**Q889**) |
 
 ### [TWR] 1-5. 미문서화 위험 Must 기능 추가 점검 (G17/G32/G42/G21)
 
 아래 5개는 최근 구현이 누적되어 현장 인수 시 누락되기 쉬운 Must 기능입니다. **보호자·기관 소통**은 FAQ **Q881** 표(기관 공지 vs 가정통신문 vs 연계기록지)를 먼저 보고 채널을 고르세요.
+
+> **IT live 전환 참고**: 알림 채널 readiness·live E2E operation gate는 게이트웨이 HTML entity 래퍼(**대괄호·중괄호·소괄호·꺾쇠·MathML 꺾쇠**, FAQ **Q895·Q897·Q898·Q900·Q901**)와 **bidi long-alias live harness(Q902)** 를 BE+FE가 동일 규칙으로 풀어 fail-closed합니다. 현장 업무 화면 조작은 변하지 않습니다. **카카오 필수 6종 live 전 점검(Must)** 은 FAQ **Q896**. **보호자·기관 소통 채널**은 FAQ **Q881**.
 
 | 구분 | 화면(프론트) | 핵심 API(백엔드) | 운영 확인 포인트 |
 |------|--------------|------------------|------------------|
@@ -118,7 +121,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **이용자 주소 검색·등록 (US-D01/D02, Q671·Q676)** | `/clients/new` · `/clients/:id/edit` | `POST/PATCH /api/v1/clients` — **`address`·`addressDetail`** · read **`addressSearch`·`addressDetail`** | **`KoreanAddressFields`** Kakao postcode · **수정 prefill ✅** (Q676) · **거주지 전체 표시** · **픽업 「거주지와 동일」** · **caregiver 수정 ✅** (Q675) |
 | **이용자 등록·수정 RBAC (Q675)** | `/clients/new` · `/clients/:id/edit` | `POST` social_worker+ · `PATCH` caregiver+ | **`clientPermissions.js`** · **요양보호사 수정만** · **등록은 사회복지사 이상** |
 | **이용자 목록 열 필터 (US-D01, Q672)** | `/clients` | `GET /api/v1/clients` (클라이언트 필터) | **`TableColumnFilter`** — 등급·성별·배차·지점 · **「거주지」열** (`7e048c0`) |
-| **알림톡·SMS 템플릿 카탈로그 (G-SMS / US-J03, Q686~Q692·Q697·Q699·Q813·Q831·Q844·Q851·Q889·Q892)** | `/organization/settings` · `/dashboard` · `/clients/:id` · `/staff/:id` · `/payroll/reports` · `/billing/claims/:id` | `GET /api/v1/notifications/template-catalog` · **`GET …/dispatch-reference-unit-rates`** · `GET /api/v1/notifications/channel-status` · `POST …/staff/notifications/*` · `POST …/billing/claims/{id}/notify` | **`NotificationChannelReadinessPanel`** **13종(ezCare 7+Kakao 6)·발송 13/13** · **Kakao kind 「—」** · **메시지명 행 헤더 a11y(Q892)** · **kind 22(급여명세서) 발송 UI** · **문자 발송 참고 단가(비청구)** · **`dispatchReady` 채널 자격** · **SMS 비긴급 즉시 발송(Q812)** · **고대비 표 테두리(Q853)** |
+| **알림톡·SMS 템플릿 카탈로그 (G-SMS / US-J03, Q686~Q692·Q697·Q699·Q813·Q831·Q844·Q851·Q889·Q892·Q896)** | `/organization/settings` · `/dashboard` · `/clients/:id` · `/staff/:id` · `/payroll/reports` · `/billing/claims/:id` | `GET /api/v1/notifications/template-catalog` · **`GET …/dispatch-reference-unit-rates`** · `GET /api/v1/notifications/channel-status` · `POST …/staff/notifications/*` · `POST …/billing/claims/{id}/notify` | **`NotificationChannelReadinessPanel`** **13종(ezCare 7+Kakao 6)·발송 13/13** · **Kakao kind 「—」** · **메시지명 행 헤더 a11y(Q892)** · **Kakao 6종 live 전 점검(Q896)** · **kind 22(급여명세서) 발송 UI** · **문자 발송 참고 단가(비청구)** · **`dispatchReady` 채널 자격** · **SMS 비긴급 즉시 발송(Q812)** · **고대비 표 테두리(Q853)** |
 | **본인부담 7-x lifecycle (M7, Q700)** | `/billing` · `/billing/payments` · `/billing/overdue` · `/billing/cms` · `/billing/easy-pay` · `/billing/reports/*` · `/billing/calculator` | *(Route crosswalk — BNK-592)* | **케어포 7-1~7-10 ↔ ogada 1:1** · **10/10 ✅** · **7-4 CMS 5/5 full-stack ✅** · superset 5 |
 
 ---
@@ -255,7 +258,7 @@ ogada 프론트는 WCAG 2.1 AA를 목표로 다음 패턴을 적용합니다. �
 | 터치 타깃 44px | 보호자·요양보호사 모바일 조작에 맞춘 버튼 크기 |
 | **ThemeToggle** (Q114) | 상단 **라이트/다크** 전환 — 야간 근무·저조도 환경. `aria-pressed`·텍스트 라벨 병행 |
 | **`Switch` 설정 토글** (Q116) | `/settings` **일반** 탭 — **이용자 셀프 QR 체크인 허용** on/off. Checkbox(동의)와 구분 — 즉시 적용 설정용 |
-| **ds-* 레이아웃 유틸리티** (Q140) | `ds-form-row`·`ds-action-bar`·`ds-month-input` — 폼·목록 상단·월 선택 일관 레이아웃 (FE-16) |
+| **ds-* 레이아웃 유틸리티** (Q140·**Q899**) | `ds-form-row`·`ds-action-bar`·`ds-month-input` — 폼·목록 상단·월 선택 일관 레이아웃 (FE-16) · **청구 대장·수가·CMS·간호·직원 lifecycle 등 26종 추가 정식화** (`971c636`, UXD-186) |
 | **정식 Modal·StatusBadge** (Q170) | 청구 확정·비밀번호 변경·플랫폼 Tenant 상세 등 — `window.confirm`·raw 상태코드 대신 **접근성 Modal·Badge** (UXD-51) |
 | **`BranchScopeNotice`** (Q173·Q657) | 출석·출석 통계·QR 생성·배차·**연차휴가·직원 출퇴근** 화면 상단 **「조회 지점: ○○점」** — `role="status"` · `hq_admin`은 **BranchSwitcher** 전환 후 재조회 (UXD-53/54·US-R01 HR roster) |
 | **보호자 명세 인쇄** (Q175) | `/guardian` **`GuardianBillingDetailModal`** — 표 `caption`·`scope=row`·본인부담금 행 텍스트+색 강조 · **「인쇄」** 시 명세만 출력 (`ds-statement-printing`, UXD-55) |
@@ -4991,6 +4994,12 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-17 | **Q901·Q902** — §1-3·§1-5 **MathML 꺾쇠 long alias · bidi live harness(IT)** · baseline **`c1041bb`/`40c85df`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q898 갱신 · Q900** — §1-3 **소괄호 wrapping BE lockstep · 꺾쇠 wrapping(IT)** · baseline **`20356ed`/`1c84f0f`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q897~Q899** — §1-3 **중괄호·소괄호 wrapping(IT) · Must ds-* 26종(청구·간호·CMS)** · baseline **`794bfed`/`9907725`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q893~Q896** — §1-3·§1-5·§5-5 **semi·blank·대괄호 wrapping(IT) · 카카오 필수 6종 live 전 점검** · baseline **`c6ddf6c`/`6fceb8d`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q890~Q892** — §1-3·§5-5 **VeryThickSpace·comma(IT) · 카탈로그 행 헤더 a11y** · baseline **`45e1f00`/`b753586`** · Flyway **V1–V196** |
+| 2026-07-16 | **Q889** — §1-3·§5-5 **카탈로그 13종(ezCare 7+Kakao 6)** · baseline **`54fd8dd`/`ab9e853`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q883~Q888** — §1-3·§1-5·§4-7-3b **space alias decode · 연계·발송 a11y** · baseline **`f491ec8`/`3f7db38`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q882** — §1-3 **NoBreakSpace legacy alias** · baseline **`ff80f0b`/`8a05640`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q879–Q881** — §1-3·§1-5 **bidi/zero-width long alias · 기관 공지·가정통신문·연계기록지 구분** · baseline **`ba5b0cb`/`61f8f19`** · Flyway **V1–V196** |

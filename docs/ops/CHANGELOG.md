@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-16T23:12:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-17T04:36:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`d247cdf`** · FE **`6900a8f`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`a0c1fe6`** · FE **`5ce4726`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,6 +13,7 @@
 
 ## 최근 7일 요약
 
+- **2026-07-17** — live E2E **MathML 꺾쇠 long alias** · **bidi long-alias live harness** · **꺾쇠·소괄호 wrapping** · **중괄호 wrapping** · **청구·간호·CMS ds-* 26종** · **경고/인용문 HTML entity** · 카카오 필수 알림톡 live 전 점검 문서 · DESIGN_SYSTEM §110 업데이트
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
 - **2026-07-15** — **channel-status 참고 단가** · 연계기록지 **리포트 페이지네이션** · RFID **급여제공내역 SMS 일괄** · live E2E bootstrap blocker 합성 파싱
@@ -21,7 +22,225 @@
 
 ---
 
+## 2026-07-17
+
+### 📝 UXD design system §110 — QA-B95 배치 + ds-* 26종 정식화 문서화
+- **에이전트**: UXD · TWR
+- **한 일**: PLN 224차 baseline(FE @d6be05c) 기준으로 **QA-B95 6-commit decode 배치 확인** 및 **components.css 내 26개 미정의 ds-* 클래스 승격 내역과 a11y 결정 사항**을 DESIGN_SYSTEM.md §110에 문서화했습니다.
+- **내 화면/업무에 영향**: 없음 — 디자인 시스템 문서만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- DESIGN_SYSTEM.md: §110 추가(107줄) — ds-stack--sm·ds-table--compact·ds-form-grid--3·ds-billing-ledger-table·ds-fee-matrix·ds-cms-collection-status·ds-nursing-*·ds-staff-lifecycle-panel·ds-address-fields·ds-date-picker 등 적용 패턴
+- 앞선 UXD-186/FE-16 정규화 FE 커밋 @971c636 확인
+
+</details>
+
+### 📝 경고·인용문 HTML entity live E2E 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 경고·인용문 래퍼(`&quot;`/`&apos;` 등 quotation HTML entity)** 및 **`&warned;`·`&block;` 등 문의 구분자** 디코드를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `a0c1fe6` · FE develop `5ce4726` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ 신규 항목 · USER_MANUAL/ADMIN/DEPLOY 갱신
+
+</details>
+
+### 📝 MathML 꺾쇠·bidi live harness ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E MathML 꺾쇠 long alias(`&LeftAngleBracket;`/`&RightAngleBracket;`)** 와 **bidi long-alias의 live harness 경로 보강**을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `c1041bb` · FE develop `40c85df` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ Q901·Q902 신규 · Q900·Q879 교차 갱신 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — MathML 꺾쇠 long alias 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 꺾쇠 래퍼를 MathML **`&LeftAngleBracket;`/`&RightAngleBracket;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다(짧은 `&lang;`/`&langle;`보다 긴 alias를 먼저 처리).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — Left/RightAngleBracket → `<`/`>` then langle/rangle then lang/rang (`c1041bb`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`40c85df`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — bidi long-alias를 live harness 경로에 전파 (FE)
+- **에이전트**: COD
+- **한 일**: channel-status에 있던 HTML5 **bidi long-alias** strip을 live-e2e probe·config·globalSetup에도 맞춰, 게이트웨이 mid-token 분리가 end-to-end로 fail-closed 되도록 했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E harness만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `liveBackendProbe.js` · `liveConfig.js` · `liveGlobalSetup.js` — LeftToRight*/RightToLeft*/PopDirectional*/FirstStrongIsolate long aliases (`5ce4726`)
+- 회귀: `liveE2eHarness.test.js`
+
+</details>
+
+### 📝 꺾쇠·소괄호 wrapping BE lockstep ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 꺾쇠(angle) wrapping(`&lang;`/`&rang;`/`&langle;`/`&rangle;`)** 과 **소괄호 wrapping BE lockstep 완료**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `20356ed` · FE develop `1c84f0f` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ Q898 갱신·Q900 신규 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — 꺾쇠(angle) wrapping HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 blocker 목록의 **`<`/`>`** 래퍼를 **`&lang;`/`&rang;`/`&langle;`/`&rangle;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다(긴 alias를 짧은 alias보다 먼저 처리).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — langle/rangle → `<`/`>` then lang/rang (`20356ed`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`1c84f0f`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — 소괄호 wrapping HTML entity BE lockstep
+- **에이전트**: COD
+- **한 일**: FE에 이어 백엔드 readiness도 **`&lpar;`/`&rpar;`** → `(`/`)` 디코드를 맞춰, health/probe만으로도 소괄호 wrapping이 fail-closed로 동작합니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — lpar/rpar → `(`/`)` (`bc41ed9`)
+- 회귀: `LiveE2eOperationReadinessSupportTest`
+
+</details>
+
+### 📝 중괄호·소괄호 wrapping·ds-* 26종 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 중괄호·소괄호 wrapping HTML entity**와 **청구·간호·CMS·수가·직원 lifecycle 등 Must 화면 ds-* 클래스 26종 정식화**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신(ds-* 정식화 체감은 아래 UXD 카드)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `794bfed` · FE develop `9907725` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ 신규 항목 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — 소괄호 wrapping HTML entity 디코드 (FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 blocker 목록의 **`(`/`)`** 래퍼를 **`&lpar;`/`&rpar;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 FE channel-status·live harness 디코드를 추가했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만 (BE lockstep은 위 카드)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `notificationChannelStatus.js` · live harness — lpar/rpar → `(`/`)` (`9907725`)
+- 회귀: `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ 청구·간호·CMS 등 — 미정의 ds-* 클래스 26종 정식화 (FE)
+- **에이전트**: UXD
+- **한 일**: 청구 대장·수가 매트릭스·CMS·간호 기록·직원 lifecycle·주소·달력 등 Must 화면에서 쓰이던 **미정의 `ds-*` 클래스 26종**을 `components.css`에 올려 레이아웃·고대비·상태 색이 깨지지 않게 했습니다.
+- **내 화면/업무에 영향**: **센터 직원·통합 관리자** — 청구 대장·수가·CMS·간호 활력/구강/응급·직원 휴직 패널·테마 토글 등에서 **간격·표·폼 그리드·배지**가 디자인 시스템대로 표시(기능 변경 없음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `components.css` +236줄 — `ds-stack--sm`·`ds-table--compact`·`ds-form-grid--3`·`ds-billing-ledger-table`·`ds-fee-matrix`·`ds-cms-collection-status`·`ds-nursing-*-form__intro`·`ds-staff-lifecycle-panel__*` 등 (`971c636`, UXD-186 / FE-16)
+- 적용 화면 예: `BillingLedgerTable`·`FeeScheduleMatrix`·`CmsCollectionPanel`·`NursingVitalCheckForm`·`StaffLifecyclePanel`·`KoreanAddressFields`
+
+</details>
+
+### ✅ live E2E — 중괄호 wrapping HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 blocker 목록의 **`{`/`}`** 래퍼를 **`&lbrace;`/`&rbrace;`/`&lcub;`/`&rcub;`** 로 인코딩해도 unwrap·JSON 객체 파싱이 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — lbrace/rbrace/lcub/rcub → `{`/`}` (`794bfed`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`d6be05c`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### 📝 semi·blank·대괄호 entity·카카오 필수 6종 live 점검 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E `&semi;`·빈 토큰 무시·대괄호 wrapping entity(`&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb`)(BE+FE)** 와 **카카오 필수 알림톡 6종 live 전 운영 점검(Must)** 을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신(카카오 live 전 체크리스트는 IT·센터장 readiness 참고)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `c6ddf6c` · FE develop `6fceb8d` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **~97.4%**
+- FAQ Q893~Q896 신규 · USER_MANUAL/ADMIN/DEPLOY §1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — 대괄호 wrapping HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 blocker 목록의 **`[`/`]`** 래퍼를 **`&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb;`** 로 인코딩해도 unwrap·JSON 배열 파싱이 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — lbrack/rbrack/lsqb/rsqb → `[`/`]` (`c6ddf6c`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`6fceb8d`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+---
+
 ## 2026-07-16
+
+### ✅ live E2E — 빈 blocker 토큰 무시 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 운영 readiness가 **null·공백만 있는 blocker 항목**을 건너뛰고, 실제 primary 토큰(또는 없음)을 고르도록 BE·FE를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — blank skip (`b348258`)
+- FE: `liveBackendProbe.js` — `resolvePrimaryOperationBlocker` blank skip (`7ee1cf1`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — semi HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 세미콜론 구분자를 **`&semi;`** 로 인코딩해도 fail-closed bootstrap marker를 추출하도록 BE·FE 디코드를 맞췄습니다 (`&comma;` 와 쌍).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — `&semi;` → `;` (`d247cdf`)
+- FE: channel-status·live harness — BE parity (`6900a8f`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
 
 ### 📝 VeryThickSpace·comma entity·템플릿 카탈로그 행 헤더 ops 문서화
 - **에이전트**: TWR

@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-16T23:12:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T04:36:00Z -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-16 (Q892: 템플릿 카탈로그 행 헤더 a11y · Q891: comma entity · Q890: VeryThickSpace · Q889: 카탈로그 13 · baseline `d247cdf`/`6900a8f` · Flyway **V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-07-17 (Q901·Q902: MathML 꺾쇠·bidi harness · baseline `a0c1fe6`/`5ce4726` · Flyway **V1–V196** · 모듈 **97.41%** · 경고/인용문 entity 준비중)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -16,14 +16,14 @@
 ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능별**로 정리했습니다.  
 상세 조작 절차는 [`USER_MANUAL.md`](ops/USER_MANUAL.md), 플랫폼·기술 관리는 [`ADMIN_GUIDE.md`](ops/ADMIN_GUIDE.md), 배포·인프라는 [`DEPLOYMENT_GUIDE.md`](ops/DEPLOYMENT_GUIDE.md)를 참고하세요.
 
-### 구현 상태 안내 (2026-07-16 develop HEAD `45e1f00` / frontend `b753586` 기준)
+### 구현 상태 안내 (2026-07-17 develop HEAD `a0c1fe6` / frontend `5ce4726` 기준)
 
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
-| 백엔드 API | **Must + … + V196 ✅** @ `45e1f00` **SYNCED** · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~294 suites** · Flyway **V186–V196** |
+| 백엔드 API | **Must + … + V196 ✅** @ `c1041bb` **SYNCED** · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~294 suites** · Flyway **V186–V196** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
-| 프론트엔드 | **133 route · 106 page** @ `b753586` **SYNCED** | **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
-| 본 FAQ | **Q217 정정** · **Q788~Q892** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
+| 프론트엔드 | **133 route · 106 page** @ `40c85df` **SYNCED** | **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi long-alias live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
+| 본 FAQ | **Q217 정정** · **Q788~Q902** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
@@ -12752,6 +12752,10 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-17 | **Q901·Q902** — **MathML 꺾쇠 long alias(BE+FE) · bidi long-alias live harness(FE)** · baseline **`c1041bb`/`40c85df`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q898 갱신 · Q900** — **소괄호 wrapping BE lockstep · 꺾쇠(angle) wrapping(BE+FE)** · baseline **`20356ed`/`1c84f0f`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q897~Q899** — **중괄호 wrapping(BE+FE) · 소괄호 wrapping(FE) · Must ds-* 26종 정식화(청구·간호·CMS)** · baseline **`794bfed`/`9907725`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q893~Q896** — **semi·blank·대괄호 wrapping HTML entity(BE+FE) · 카카오 필수 알림톡 6종 live 전 점검(Must)** · baseline **`c6ddf6c`/`6fceb8d`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q890~Q892** — **VeryThickSpace·comma HTML entity decode(BE+FE) · 템플릿 카탈로그 행 헤더 a11y(UXD-185)** · baseline **`45e1f00`/`b753586`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q889** — **카카오 필수 알림톡 6종·template-catalog 13**(ezCare 7+Kakao 6·kind 「—」) · Q686 갱신 · baseline **`54fd8dd`/`ab9e853`** · Flyway **V1–V196** |
 | 2026-07-16 | **Q883~Q888** — **figure/fractional em/SixPerEm/MathSpace/VeryVery* space alias decode(BE+FE) · 연계·발송 체크박스 a11y** · baseline **`f491ec8`/`3f7db38`** · Flyway **V1–V196** |
@@ -16443,7 +16447,7 @@ function normalizeLiveOperationBlockers(blockers) {
 
 ### [TWR] Q879. live E2E **bootstrap blocker**에 **`&LeftToRightEmbedding;`** 같은 **긴 이름 bidi alias**가 있으면? (BE `53efa0b` · FE `975aecb`)
 
-**A.** **✅ BE+FE Fixed (Q879)** — Q877의 short form(`&lre;`·`&rle;`·`&lri;`·`&lrm;`…)에 더해, 게이트웨이가 HTML5 **long-form bidi named entity**로 토큰을 감싸도 BE·FE가 **동일하게 제거**합니다.
+**A.** **✅ BE+FE Fixed (Q879)** — Q877의 short form(`&lre;`·`&rle;`·`&lri;`·`&lrm;`…)에 더해, 게이트웨이가 HTML5 **long-form bidi named entity**로 토큰을 감싸도 BE·FE가 **동일하게 제거**합니다. **live harness 경로까지 전파**는 **Q902**.
 
 | long-form (예시) | short form 대응 | 처리 |
 |------------------|-----------------|------|
@@ -16649,6 +16653,156 @@ function normalizeLiveOperationBlockers(blockers) {
 
 ---
 
+### [TWR] Q893. live E2E **bootstrap blocker**에 **`&semi;`** 가 있으면? (BE `d247cdf` · FE `6900a8f`)
+
+**A.** **✅ BE+FE Fixed (Q893)** — Q891의 **`&comma;`** 와 쌍으로, 게이트웨이가 세미콜론 구분자를 **`&semi;`** HTML entity로 인코딩해도 fail-closed로 인식합니다. BE readiness support·FE channel-status·live harness가 **`&semi;` → `;`** 로 정규화한 뒤 blocker 목록·bootstrap marker를 파싱합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `bootstrap&semi;disabled&semi;service-unavailable` | semi entity → `;` → 개별 blocker 추출 |
+
+> **Q713·Q891과의 차이**: Q713 = **plain semicolon** split · Q891 = **`&comma;`** · Q893 = **`&semi;` named HTML entity**
+
+> 관련: Q713 · Q891 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16·2026-07-17
+
+---
+
+### [TWR] Q894. live E2E **blocker 목록에 빈 항목**이 섞이면? (BE `b348258` · FE `7ee1cf1`)
+
+**A.** **✅ BE+FE Fixed (Q894)** — 운영 readiness·live harness가 **null·공백만 있는 blocker 토큰을 건너뛰고**, 실제 primary 토큰(또는 없음)을 고릅니다. 빈 문자열 때문에 잘못된 「첫 blocker」가 잡히던 fail-closed 구멍을 막았습니다.
+
+| 입력 | 처리 |
+|------|------|
+| `["", "bootstrap-disabled", " "]` | blank skip → primary **`bootstrap-disabled`** |
+| `["", null]` | blank only → primary **없음**(reason blank fallback 정리) |
+
+> 관련: Q580 · Q713 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-16·2026-07-17
+
+---
+
+### [TWR] Q895. live E2E **bootstrap blocker**에 **대괄호 wrapping entity**가 있으면? (BE `c6ddf6c` · FE `6fceb8d`)
+
+**A.** **✅ BE+FE Fixed (Q895)** — 게이트웨이가 토큰 래퍼 **`[`/`]`** 를 **`&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb;`** 로 인코딩해도 unwrap·JSON 배열 파싱이 fail-closed로 맞습니다. BE·FE channel-status·live harness가 대괄호 ASCII로 복원한 뒤 bootstrap gate를 적용합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `&lbrack;bootstrap-disabled&rbrack;` | → `[bootstrap-disabled]` unwrap |
+| `&lsqb;"bootstrap-disabled"&rsqb;` | → JSON 배열 파싱 경로 |
+
+> 관련: Q833 · Q852 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q896. **카카오 필수 알림톡 6종** live 전에 무엇을 점검하나요? (US-J03 Must, Q889 연계)
+
+**A.** **✅ 운영 점검 체크리스트 (Must)** — catalog **13종**(ezCare 7 + Kakao 6) 중 **이지케어 kind가 「—」인 6행**이 카카오 필수 알림톡입니다. live Solapi 전환 전에 아래 순서만 확인하면 됩니다.
+
+| 순서 | 화면·API | 확인 |
+|------|----------|------|
+| 1 | `/organization/settings` · `/dashboard` → **「알림톡·SMS 템플릿 카탈로그」** | **발송 구현 13/13** · Kakao 6행 kind **「—」** · **발송 대기 Y종=0** 목표 |
+| 2 | `GET /api/v1/notifications/template-catalog` | **`totalCount=13`** · **`dispatchImplementedCount=13`** · Kakao 6 **`ezcareMessageKind=null`** |
+| 3 | 환경·시크릿 | 각 코드 **`KAKAO_TPL_*`** Solapi 승인 templateId · **`KAKAO_PF_ID`** · 발신번호 (Q266·Q679) |
+| 4 | `GET …/channel-status` | **`liveAlimtalkDispatchReady`** · 조용한 시간대면 **지금 발송 가능=아니오**(Q809·Q812) — **긴급(`EMERGENCY_ALERT`)은 별도 정책** |
+
+**6종 코드**: `ATTENDANCE_ARRIVAL` · `ATTENDANCE_DEPARTURE` · `DAILY_CARE_SUMMARY` · `BILLING_PAYMENT_RECEIVED` · `HOME_NEWSLETTER` · `EMERGENCY_ALERT`
+
+> **현장**: catalog는 **매핑·준비 점검**용입니다. 실제 발송은 출석·입금·가정통신문·응급 등 **이벤트 화면**에서 이뤄집니다 (Q889).
+
+> 관련: Q889 · Q892 · Q866 · USER_MANUAL §1-5·§5-5 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §4-3 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q897. live E2E **bootstrap blocker**에 **중괄호 wrapping entity**가 있으면? (BE `794bfed` · FE `d6be05c`)
+
+**A.** **✅ BE+FE Fixed (Q897)** — 게이트웨이가 토큰 래퍼 **`{`/`}`** 를 **`&lbrace;`/`&rbrace;`/`&lcub;`/`&rcub;`** 로 인코딩해도 unwrap·JSON 객체 파싱이 fail-closed로 맞습니다. BE readiness support·FE channel-status·live harness가 중괄호 ASCII로 복원한 뒤 bootstrap gate를 적용합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `&lbrace;bootstrap-disabled&rbrace;` | → `{bootstrap-disabled}` unwrap |
+| `&lcub;"primary"&colon;"…"&rcub;` | → JSON 객체 파싱 경로 |
+
+> **Q895와의 차이**: Q895 = **대괄호 `[`/`]`** (배열) · Q897 = **중괄호 `{`/`}`** (객체)
+
+> 관련: Q895 · Q833 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q898. live E2E **bootstrap blocker**에 **소괄호 wrapping entity**가 있으면? (BE `bc41ed9` · FE `9907725`)
+
+**A.** **✅ BE+FE Fixed (Q898)** — 게이트웨이가 토큰 래퍼 **`(`/`)`** 를 **`&lpar;`/`&rpar;`** 로 인코딩해도 unwrap가 fail-closed로 맞습니다. BE readiness support·FE channel-status·live harness가 소괄호 ASCII로 복원한 뒤 bootstrap gate를 적용합니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `&lpar;bootstrap-disabled&rpar;` | → `(bootstrap-disabled)` unwrap |
+
+> **운영**: health/probe·live E2E·channel-status 패널 모두 동일 규칙. 현장 앱 업무 화면 영향 없음.
+
+> 관련: Q897 · Q895 · Q900 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q899. 청구·간호·CMS 화면에서 **간격·표·폼이 깨져 보이던** 문제는? (UXD-186 / FE-16 Must)
+
+**A.** **✅ FE Fixed (Q899, `971c636`)** — Must 화면 다수가 쓰던 **`ds-*` 유틸리티 클래스 26종**이 CSS에 없어 레이아웃이 어긋날 수 있었습니다. `components.css`에 정식 정의(고대비·상태 색 포함)를 올려 **청구 대장·수가 매트릭스·CMS·간호 기록·직원 lifecycle·주소·달력** 등이 디자인 시스템대로 표시됩니다. **업무 기능·API는 변경 없음**.
+
+| 영역 | 화면·컴포넌트 예 | 보강 클래스 예 |
+|------|------------------|----------------|
+| 청구·수가 | `BillingLedgerTable` · `FeeScheduleMatrix` · `FeeSurchargeGuidePanel` | `ds-billing-ledger-table` · `ds-fee-matrix` · `ds-table--compact` |
+| CMS·입금 | `CmsCollectionPanel` · `BatchProgressSteps` | `ds-cms-collection-status` · `ds-progress-steps__label` |
+| 간호 | `NursingVitalCheckForm` · `NursingOralCareCheckForm` · `NursingEmergencyRecordForm` | `ds-nursing-*-form__intro` |
+| 직원·설정 | `StaffLifecyclePanel` · `KoreanAddressFields` · `ThemeToggle` · `DatePickerCalendar` | `ds-staff-lifecycle-panel__*` · `ds-korean-address__*` · `ds-theme-toggle__label` |
+
+> 관련: Q140 · USER_MANUAL §1-3·§3 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q900. live E2E **bootstrap blocker**에 **꺾쇠(angle) wrapping entity**가 있으면? (BE `20356ed` · FE `1c84f0f`)
+
+**A.** **✅ BE+FE Fixed (Q900)** — 게이트웨이가 토큰 래퍼 **`<`/`>`** 를 **`&lang;`/`&rang;`**(짧은 alias) 또는 **`&langle;`/`&rangle;`**(긴 alias) 로 인코딩해도 unwrap가 fail-closed로 맞습니다. **긴 alias를 짧은 alias보다 먼저** 디코드합니다(`&lang;`이 `&langle;` 일부를 먹지 않도록). **MathML long alias**는 **Q901**.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `&lang;bootstrap-disabled&rang;` | → `<bootstrap-disabled>` unwrap |
+| `&langle;guardian-bootstrap-not-ready&rangle;` | → 긴 alias 우선 디코드 후 unwrap |
+
+> **Q837과의 관계**: Q837의 **`&lt;`/`&gt;`** 는 blocker **본문 문자** 디코드. Q900은 **래퍼 꺾쇠** named entity(`&lang;` 등) unwrap 계층입니다.
+
+> **래퍼 계층 요약**: Q895 대괄호 · Q897 중괄호 · Q898 소괄호 · **Q900·Q901 꺾쇠** — 모두 BE+FE lockstep.
+
+> 관련: **Q901** · Q898 · Q897 · Q895 · Q837 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q901. live E2E **bootstrap blocker**에 MathML **`&LeftAngleBracket;`/`&RightAngleBracket;`** 가 있으면? (BE `c1041bb` · FE `40c85df`)
+
+**A.** **✅ BE+FE Fixed (Q901)** — Q900의 `&lang;`/`&langle;` 계층에 더해, 일부 게이트웨이가 꺾쇠 래퍼를 **MathML long named entity**로 인코딩해도 unwrap가 fail-closed로 맞습니다. 디코드 순서는 **MathML long → `&langle;`/`&rangle;` → `&lang;`/`&rang;`**(가장 긴 alias 우선)입니다.
+
+| 예시 detail | 처리 |
+|-------------|------|
+| `&LeftAngleBracket;bootstrap-disabled&RightAngleBracket;` | → `<bootstrap-disabled>` unwrap |
+| `&LeftAngleBracket;guardian-bootstrap-not-ready&RightAngleBracket;&comma;&LeftAngleBracket;staff-bootstrap-not-ready&RightAngleBracket;` | → 목록 정규화 후 primary bootstrap |
+
+> **현장 영향**: 없음 — 알림 readiness·live E2E operation gate만. **카카오 필수 6종 live 전 점검(Must)** 은 **Q896**.
+
+> 관련: **Q900** · Q898 · Q837 · DEPLOYMENT_GUIDE §1-4 · USER_MANUAL §1-5 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q902. live E2E harness에서도 **bidi long-alias**가 channel-status와 같게 동작하나요? (FE `5ce4726`)
+
+**A.** **✅ FE Fixed (Q902)** — Q879에서 BE·channel-status가 처리하던 HTML5 **bidi long-form alias**(`&LeftToRightEmbedding;`·`&RightToLeftIsolate;`·`&LeftToRightMark;` 등)를 **live-e2e probe·config·globalSetup**에도 동일 규칙으로 전파했습니다. 게이트웨이가 mid-token에 long alias를 끼워 넣어도 harness가 fail-closed로 blocker를 인식합니다.
+
+| 경로 | 상태 |
+|------|------|
+| BE readiness · channel-status | ✅ Q879 (`53efa0b`/`975aecb`) |
+| live harness (`liveBackendProbe`·`liveConfig`·`liveGlobalSetup`) | ✅ Q902 (`5ce4726`) |
+
+> **현장 영향**: 없음 — IT·QA live E2E만. Must 소통 채널(기관 공지·가정통신문·연계기록지) 구분은 **Q881**.
+
+> 관련: **Q879** · Q877 · Q876 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
 ## 계획·미리보기 (P1 잔여·v2+)
 
 다음 기능들은 **Must v1 사후 계획**에 포함되거나 **현재 미리보기/부분 구현** 상태입니다. 사용 전에 IT·기획과 일정을 확인하세요.
@@ -16711,16 +16865,16 @@ function normalizeLiveOperationBlockers(blockers) {
 ### [TWR] Q866. **실시간 문자 발송 (J03 Solapi)**이 사용되나요? (J03 Solapi live dispatch, v2+)
 
 **A.** **⏳ 실발송 credential 바인딩은 준비 중** — 템플릿 카탈로그·채널 readiness는 **이미 운영 점검 가능**합니다.
-- **FE**: `/organization/settings` · `/dashboard` — **`NotificationChannelReadinessPanel`** · **카탈로그 13종**(Q686·**Q889**) · 참고 단가(Q851)
+- **FE**: `/organization/settings` · `/dashboard` — **`NotificationChannelReadinessPanel`** · **카탈로그 13종**(Q686·**Q889**·**Q896**) · 참고 단가(Q851)
 - **BE**: `GET /api/v1/notifications/template-catalog` · `GET …/channel-status` · `GET …/dispatch-reference-unit-rates`
 - **수동 발송 UI**: 본인부담·급여제공·일정표·급여명세서 등 **ezCare kind 계열**은 화면에서 발송 가능(stub/live는 `NOTIFICATION_PROVIDER`)
 
-**live Solapi 전환 체크**:
+**live Solapi 전환 체크** (상세: **Q896**):
 1. Solapi 계약·API key·발신번호 본인인증(Q654)
-2. **`KAKAO_TPL_*`** 승인 templateId 매핑(13종 점검, Q889·Q266)
+2. **`KAKAO_TPL_*`** 승인 templateId 매핑(13종·Kakao 6종 점검, Q889·**Q896**·Q266)
 3. **`NOTIFICATION_PROVIDER=solapi`** + PF ID · channel-status **`liveAlimtalkDispatchReady`**
 
-> 관련: Q686 · **Q889** · Q318 · Q679 · USER_MANUAL §5-5 · DEPLOYMENT_GUIDE §4-3 · PLAN_NOTES 대기 우선순위 5
+> 관련: Q686 · **Q889** · **Q896** · Q318 · Q679 · USER_MANUAL §5-5 · DEPLOYMENT_GUIDE §4-3 · PLAN_NOTES 대기 우선순위 5
 
 ---
 

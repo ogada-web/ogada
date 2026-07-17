@@ -1,11 +1,11 @@
-<!-- doc:owner=DBA doc:audience=COD,PLN,TSR updated=2026-07-16T12:59:00+00:00 -->
+<!-- doc:owner=DBA doc:audience=COD,PLN,TSR updated=2026-07-17T00:50:02Z -->
 # 데이터 보존·파기 정책 (ops/DATA_RETENTION_POLICY.md)
 
 > **작성**: db_architect 에이전트
 > **최초 작성일**: 2026-06-05
 > **상태**: MVP v1 기준 (법령·센터 내부 규정 확정 전 운영 가이드)
 > **근거**: `docs/planning/REQUIREMENTS.md` §3-2-1, §4, 개인정보보호법(PIPA), 노인장기요양보험법
-> **DBA round 221** (BE `@d911983`): round 220 이후 3 commit 전부 QA-B95 blocker HTML entity 디코드(ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace, persist 0) — Must 도메인(출석·청구·감사·알림) 보존 cohort 변경 없음. V149/V153/V171/V191 인덱스 및 기존 CHECK/FK로 retention·purge 경로 충족. `client_linkage_records` 보존(§2·§3 V194–V196)도 불변 — **live `ogada` flyway max=V193** 이므로 V194–V196 migrate 후 purge index `idx_client_linkage_records_client_purge` 가 실효.
+> **DBA round 224** (BE `@c6ddf6c`): round 223(`54fd8dd`) 이후 5 commit — QA-B95 bootstrap blocker HTML entity 디코드 harden만(persist 0) — Must 도메인(출석·청구·감사·알림) 보존 cohort 변경 없음. V149/V153/V171/V191 인덱스 및 기존 CHECK/FK로 retention·purge 경로 충족. `client_linkage_records` 보존(§2·§3 V194–V196)도 불변 — **live `ogada` flyway max=V193** 이므로 V194–V196 migrate 후 purge index `idx_client_linkage_records_client_purge` 가 실효.
 
 ---
 
