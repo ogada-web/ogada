@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-17T05:41:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-17T20:00:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`a0c1fe6`** · FE **`a364f97`** · **133 route·107 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`c19bfa6`** · FE **`dc81f6e`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,7 @@
 
 ## 최근 7일 요약
 
-- **2026-07-17** — **이용자 등록 동의·브레드크럼 등 ds-* 9종** · live E2E **인용문(typographic)·OpenCurly*·Left*/Right*Quote** · **MathML 꺾쇠** · **bidi live harness** · **꺾쇠·소괄호·중괄호 wrapping** · **청구·간호·CMS ds-* 26종** · 카카오 필수 알림톡 live 전 점검 문서
+- **2026-07-17** — **활동 사진 magic-byte 검증(SEC-D25)** · **NoBreakSpace mid-token strip BE+FE** · M12 SSO `/carefor_login` allowlist · 대문자 `&NUM` · Content-Type · 활동 사진·V196
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
 - **2026-07-15** — **channel-status 참고 단가** · 연계기록지 **리포트 페이지네이션** · RFID **급여제공내역 SMS 일괄** · live E2E bootstrap blocker 합성 파싱
@@ -23,6 +23,452 @@
 ---
 
 ## 2026-07-17
+
+### 📝 활동 사진 magic-byte·NoBreakSpace mid-token ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **프로그램 활동 사진 magic-byte 검증(SEC-D25)** · **`&NoBreakSpace;` mid-token strip BE+FE lockstep** · baseline **`c19bfa6`/`dc81f6e`** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `c19bfa6` · FE develop `dc81f6e` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q924·Q925 신규 · Q882·Q917·Q920 교차 갱신 · USER_MANUAL §5-9 · ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ 프로그램 활동 사진 — 파일 서명(magic-byte) 검증 (BE+FE)
+- **에이전트**: COD
+- **한 일**: Content-Type만 JPEG/PNG/WEBP로 위장한 파일을 막기 위해, 업로드 전·저장 전에 **파일 앞부분 서명**이 MIME과 일치하는지 BE·FE가 함께 검사합니다. 불일치 시 동일 안내 문구로 거부합니다.
+- **내 화면/업무에 영향**: **`/programs` 「활동 사진」** — 확장자·MIME만 맞추고 **실제 내용이 이미지가 아닌 파일**은 「JPEG, PNG, WEBP 형식의 프로그램 사진만…」으로 거부. 정상 사진은 그대로 업로드
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `ProgramPhotoStorageService` — JPEG `FF D8 FF` · PNG `89 50 4E 47…` · WEBP `RIFF….WEBP` (`d1ff63a`)
+- FE: `validateProgramSchedulePhotoFile` async magic-byte (`8e28fe0`) — BE lockstep
+- 오류 문구 BE/FE 동일: 「JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.」
+- 회귀: `ProgramPhotoStorageServiceTest` · `programsPhoto.test.js`
+
+</details>
+
+### ✅ live E2E — mid-token `&NoBreakSpace;` strip lockstep (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 **`guardian&NoBreakSpace;-bootstrap`** 처럼 토큰 한가운데에 legacy `&NoBreakSpace;`를 넣어도, BE·FE가 **공백이 아니라 빈 문자열로 제거**해 `guardian-bootstrap` 마커가 다시 붙도록 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate·알림 패널 blocker 표시만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — `&nobreakspace` → `""` (`63227d7`) · 세미콜론 생략 회귀 lock (`c19bfa6`) · 이전 공백 치환에서 strip으로 정정
+- FE: channel-status·live harness mid-token strip + 테스트 lock (`090ac10`)
+- Q882 후속 — BE·FE 모두 strip(empty)로 통일
+
+</details>
+
+### 📝 M12 SSO 경로 allowlist·대문자 `&NUM` ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **M12 SSO `/carefor_login` 경로 allowlist BE+FE lockstep** · **대문자 세미콜론 생략 `&NUM` decode 테스트 lock** · baseline **`a742788`/`bc1d343`** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `a742788` · FE develop `bc1d343` — **133 route** · **107 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q922·Q923 신규 · Q787·Q801·Q919 교차 갱신 · USER_MANUAL §4-6-5 · ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ M12 재무회계 SSO — `/carefor_login` 경로 allowlist (BE+FE)
+- **에이전트**: COD
+- **한 일**: SSO OTP handoff가 **수지파인 HTTPS 호스트의 `/carefor_login` 경로**로만 POST되도록 BE·FE를 강화했습니다. 쿼리·프래그먼트·비표준 포트·userinfo가 있는 URL은 거부하고, 오류 문구에 **허용 경로**를 명시합니다.
+- **내 화면/업무에 영향**: **`/accounting` SSO** — 잘못된 포털 URL env 설정 시 **「/carefor_login 경로만」** 안내와 함께 SSO 버튼 숨김(기존과 동일, 검증·문구 강화)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `AccountingBpoSupport.isAllowlistedPortalUrl` — host·path·443·query/fragment/userinfo 검증 (`bfe6b3f`/`a742788`)
+- FE: `isAllowlistedAccountingBpoSsoPortalUrl` — BE lockstep (`592a483`)
+- 허용: `https://sujifine.co.kr/carefor_login` · `https://www.sujifine.co.kr/carefor_login`
+- 회귀: `AccountingBpoServiceTest` · `accountingBpo.test.js`
+
+</details>
+
+### ✅ live E2E — 대문자 세미콜론 생략 `&NUM` decode 테스트 lock (FE)
+- **에이전트**: COD
+- **한 일**: **`&NUM45`** 처럼 대문자 named-num 뒤 세미콜론이 없어도 channel-status decode가 `#`로 전개하는 동작을 **notificationChannelStatus 테스트**에 추가해 live harness와 경로 간 회귀 격차를 닫았습니다. 디코드 로직 변경 없음.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `notificationChannelStatus.test.js` — uppercase semicolon-optional `&NUM` (`bc1d343`)
+- Q919·Q855와 lockstep — four live-readiness decode paths byte-identical
+
+</details>
+
+### 📝 활동 사진 간격·`&num` BE+FE lock ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **프로그램 활동 사진 업로드 세로 간격** · **세미콜론 생략 `&num` BE·liveConfig lockstep** · baseline **`759b15e`/`9e40c19`** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `759b15e` · FE develop `9e40c19` — **133 route** · **107 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q921 신규 · Q919 BE+FE 교차 갱신 · USER_MANUAL §5-9 · ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ 프로그램 활동 사진 — 업로드 세로 간격 (FE)
+- **에이전트**: UXD
+- **한 일**: 프로그램 일정 **활동 사진** 업로드 칸이 쓰던 **밀착 세로 스택** 스타일(`ds-stack--tight`)을 디자인 시스템에 정식으로 넣었습니다. 상태 라벨·파일 선택·버튼·오류 안내가 서로 붙지 않고 읽히게 됩니다.
+- **내 화면/업무에 영향**: **`/programs` 「활동 사진」** — 업로드 칸 간격이 정상적으로 벌어짐
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `components.css` §113 — `.ds-stack--tight` (gap `space-2`) · `ProgramSchedulePhotoUpload` 소비 (`bfd171d`)
+- 형제: `ds-stack`(space-6) · `ds-stack--sm`(space-3)
+
+</details>
+
+### ✅ live E2E — 세미콜론 생략 `&num` BE·liveConfig lockstep (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 **`&num45`** 처럼 named-num 뒤 세미콜론 없이 숫자를 이어 붙여도, BE readiness와 FE liveConfig·globalSetup이 channel-status와 동일하게 `#`로 전개한 뒤 fail-closed로 맞춥니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate·알림 패널 blocker 표시만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — `&num` optional `;` at token boundary (`759b15e`)
+- FE: `liveConfig.js` · `liveGlobalSetup.js` — channel-status/`ce2325c` lockstep (`9e40c19`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `liveE2eHarness.test.js`
+
+</details>
+
+### 📝 프로그램 활동 사진 Content-Type·baseline ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **프로그램 활동 사진 Content-Type 파라미터 정규화** · baseline **`72a6534`/`8e74b07`** · **107 page** KPI를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `72a6534` · FE develop `8e74b07` — **133 route** · **107 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q920 신규 · Q917 교차 갱신 · USER_MANUAL §5-9 · ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ 프로그램 일정 활동 사진 — Content-Type 파라미터 정규화 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 일부 브라우저·모바일이 **`image/jpeg; charset=binary`** 처럼 Content-Type 뒤에 파라미터를 붙여 보내도, **`;` 이후를 제거**한 뒤 JPEG·PNG·WEBP를 판별하도록 BE·FE를 맞췄습니다.
+- **내 화면/업무에 영향**: **`/programs`** 활동 사진 업로드 — 이전에 「형식 오류」로 거부되던 **정상 JPEG·PNG·WEBP**가 올라갈 수 있음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `ProgramPhotoStorageService.normalizeContentType` · `ProgramPhotoStorageServiceTest` (`72a6534`)
+- FE: `normalizeProgramSchedulePhotoContentType` · `programsPhoto.test.js` (`8e74b07`)
+- Q917 multipart 업로드와 lockstep — media type만 비교
+
+</details>
+
+### 📝 프로그램 활동 사진·V196 probe·세미콜론 생략 num ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **프로그램 일정 활동 사진 업로드** · **live probe V196 연계 무결성 플래그** · **세미콜론 생략 `&num` named-num** 을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `1b8c764` · FE develop `2e06d5a` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q917~Q919 신규 · Q855·Q827·Q161 교차 갱신 · USER_MANUAL §5-9 · ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ 프로그램 일정 — 활동 사진 업로드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 당일 프로그램 일정 행에 **활동 증거 사진**을 올릴 수 있게 했습니다. JPEG·PNG·WEBP(최대 5MB)만 허용하며, 본사·센터장·사회복지사·요양보호사가 업로드할 수 있습니다.
+- **내 화면/업무에 영향**: **`/programs`** 일정 표 **「활동 사진」** 열 — **등록됨/미등록** 표시와 파일 선택 업로드
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `POST /api/v1/programs/schedule/{programId}/photo` multipart `file` · `ProgramPhotoStorageService` · `photoStorageKey` (`1b8c764`)
+- FE: `ProgramSchedulePhotoUpload` · `uploadProgramSchedulePhotoApi` · ProgramsPage 「활동 사진」 (`2e06d5a`)
+- 저장 경로 기본값: `ogada.storage.program-photos.storage-dir=./data/program-photos`
+- 역할: `hq_admin` · `branch_admin` · `social_worker` · `caregiver`
+
+</details>
+
+### ✅ live E2E — V196 연계기록 무결성 probe 노출 (BE)
+- **에이전트**: COD
+- **한 일**: live E2E probe 응답에 **연계기록지 V196 무결성 준비 플래그**를 넣어 health·operation gate와 스키마를 맞췄습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `GET /api/v1/system/live-e2e/probe` — `v196ClientLinkageRecordsIntegrityCheckReady` (`b7f4337`)
+- health의 동일 플래그·blocker `v196-client-linkage-records-integrity-missing` 과 lockstep
+- 회귀: `LiveE2eControllerTest`
+
+</details>
+
+### ✅ live E2E — 세미콜론 생략 `&num` named-num (FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 **`&num` 뒤 세미콜론 없이** 숫자 entity를 이어 붙여도 channel-status·live harness가 `#`로 정규화한 뒤 fail-closed로 디코드하도록 FE를 보강했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate·알림 패널 blocker 표시만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `notificationChannelStatus.js` · `liveBackendProbe.js` — `&num` optional `;` at token boundary (`ce2325c`)
+- 회귀: `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### 📝 blank blocker FE·세미콜론 생략 amp·core quote BE lock ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **blank operation blocker FE lockstep** · **세미콜론 생략 `&amp`** · **core quote/angle BE 회귀 lock** 을 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `7389ef0` · FE develop `d3e282b` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q916 신규 · Q911·Q912 BE+FE 교차 갱신 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — 세미콜론 생략 `&amp` entity (FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 **`bootstrap&amp#45-disabled`** 처럼 **`&amp` 뒤 세미콜론(`;`) 없이** numeric entity를 이어도 channel-status·live harness가 BE와 동일하게 fail-closed로 디코드하도록 FE를 보강했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate·알림 패널 blocker 표시만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `notificationChannelStatus.js` · `liveBackendProbe.js` · `liveConfig.js` · `liveGlobalSetup.js` — `&amp` optional `;` at token boundary, **numeric decode 전에** 처리 (`d3e282b`)
+- 회귀: `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — blank operation blocker 목록 FE lockstep (FE)
+- **에이전트**: COD
+- **한 일**: live readiness helper가 **effective·suppressed bootstrap blocker 목록**에서 **null·공백 토큰을 제거**하도록 BE `@0dfc992` 와 맞췄습니다. `liveGlobalSetup`이 동일 helper를 재사용합니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate·health blocker 표시만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `liveBackendProbe.js` — `resolveEffectiveOperationBlockers` · `resolveSuppressedBootstrapOperationBlockers` (`9a48e13`)
+- FE: `liveGlobalSetup.js` — helper 재사용 wire
+- 회귀: `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — core quote/angle 세미콜론 생략 BE 회귀 lock (BE)
+- **에이전트**: COD
+- **한 일**: **`&quot`/`&apos`/`&lt`/`&gt`** 세미콜론 생략 디코드에 대한 **BE 회귀 테스트**를 추가해 FE `@20f6ddc` lockstep을 고정했습니다(Q911 후속).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupportTest` — semicolon-optional core quote/angle cases (`7389ef0`)
+- BE: `LiveE2eOperationReadinessSupport` — javadoc lockstep note only
+
+</details>
+
+### 📝 blank blocker·대장 scope·UXD-188·청구 이력 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **blank operation blocker 필터(Q912)** · **연차·유급휴일 대장 empty 지점 scope(Q913)** · **UXD-188 ds-* 레이아웃 12종(Q914)** · **청구 상태 이력 타임스탬프(Q915)** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `0dfc992` · FE develop `420286e` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q912~Q915 신규 · Q894·Q674·Q906 교차 갱신 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — blank operation blocker 목록 정리 (BE)
+- **에이전트**: COD
+- **한 일**: readiness helper가 **effective·bootstrap operation blocker 목록**에서도 **null·공백 토큰을 제거**하도록 보강했습니다(Q894 primary skip의 후속).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate·health blocker 표시만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — `resolveEffectiveOperationBlockers` · `resolveBootstrapOperationBlockers` (`0dfc992`)
+- 회귀: `LiveE2eOperationReadinessSupportTest`
+
+</details>
+
+### ✅ 연차·유급휴일 대장 — empty 응답 지점 scope (BE)
+- **에이전트**: COD
+- **한 일**: **대장 행이 0건**인 직원 조회에서 **비-HQ** 호출자에게 **권한 밖 지점**이 노출되던 문제를 막았습니다. 호출자 read scope 내 지점만 반환합니다.
+- **내 화면/업무에 영향**: **`/staff/leave-ledger`** 직원별 조회·**BranchScopeNotice** 지점명이 **내 지점과 일치**하게 표시
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `StaffLeaveLedgerService.listForUser` — `resolveReadableBranchIdForUser` (`f6023b0`)
+- 회귀: `StaffLeaveLedgerServiceTest`
+- API: `GET /api/v1/staff/leave-ledger/users/{userId}?year=`
+
+</details>
+
+### ✅ Must ds-* 레이아웃 12종·청구 이력 시각 a11y (FE)
+- **에이전트**: UXD
+- **한 일**: 간호·요양 등록 Card·QR 체크인·HR 파일·청구 대장·송영 준수 등에 쓰이던 **레이아웃 `ds-*` 12종**을 CSS에 정식 정의하고, 청구 상세 **상태 변경 이력**에 **`time[dateTime]`** 을 적용했습니다(UXD-188).
+- **내 화면/업무에 영향**: **간호·요양 기록 등록**·**보호자 QR 체크인**·**직원 서류·보수교육**·**청구 상세 상태 이력** 레이아웃·시각 표시 개선
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `components.css` §112 — `ds-card--form`·`ds-timeline--compact`·`ds-qr-scan`·`ds-lifecycle__*`·`ds-staff-hr-files`·`ds-benefit-contract-files`·`ds-staff-refresher-certificates`·`ds-billing-report__section-header`·`ds-transport-compliance__workflow` 등 (`c061494`)
+- FE: `BillingDetailPage` — `ClaimStatusTimeline` (`c061494`)
+
+</details>
+
+### ✅ 청구 상세 — 상태 이력 타임스탬프 가드 (FE)
+- **에이전트**: COD
+- **한 일**: **`changedAt` 누락·파싱 불가**일 때 청구 상세 **상태 변경 이력**에 **깨진 날짜 대신 「—」** 를 표시하도록 보강했습니다.
+- **내 화면/업무에 영향**: **`/billing/claims/:id`** 상태 이력 — 잘못된 API 시각 데이터에도 **읽기 가능한 타임라인** 유지
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `BillingDetailPage.jsx` — `ClaimStatusTimeline` invalid `changedAt` guard (`420286e`)
+- 회귀: `BillingDetailPage.test.jsx`
+
+</details>
+
+### 📝 확장 prime·세미콜론 생략 quote ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E 확장 prime(`&bprime;`/`&tprime;`/`&qprime;`/`&backprime;`)** 와 **세미콜론 생략 core quote/angle(`&quot`/`&apos`/`&lt`/`&gt`)** 디코드를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `29e20dd` · FE develop `20f6ddc` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q910·Q911 신규 · Q909·Q840 교차 갱신 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — 세미콜론 생략 core quote/angle entity (FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 **`&quot`/`&apos`/`&lt`/`&gt`** 처럼 **세미콜론 없이** 인용·꺾쇠 entity를 끊어도 channel-status·live harness unwrap가 fail-closed로 맞도록 FE 디코드를 보강했습니다(Q840 numeric 세미콜론 생략의 named 확장).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate·알림 패널 blocker 표시만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `notificationChannelStatus.js` · `liveBackendProbe.js` · `liveConfig.js` · `liveGlobalSetup.js` — quot/apos/lt/gt optional `;` (`20f6ddc`)
+- 회귀: `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — 확장 prime(bprime/tprime/qprime/backprime) HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 인용문 래퍼를 HTML5 **`&bprime;`/`&tprime;`/`&qprime;`/`&backprime;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다(Q909 Triple/Double/Prime 뒤에 처리·짧은 `&Prime;`/`&prime;`보다 먼저).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — bprime/qprime→`"` · tprime/backprime→`'` (`31b10d5`) · 회귀 테스트 분리 (`29e20dd`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`93f77e1`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### 📝 prime/double-prime 인용문 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E prime/double-prime(`&Prime;`/`&prime;`/`&DoublePrime;`/`&TriplePrime;`) 인용문 디코드**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `34c16cd` · FE develop `3f7bb94` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q909 신규 · Q905·Q908 교차 갱신 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — prime/double-prime 인용문 HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 인용문 래퍼를 **`&TriplePrime;`/`&DoublePrime;`/`&Prime;`/`&prime;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다(guillemet 뒤·짧은 ldquo 앞; `Prime`/`prime` 대소문자 구분).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — Triple/Double/Prime/prime → ASCII quote (`34c16cd`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`3f7bb94`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### 📝 guillemet·low-9 인용문·Left*/Right* FE lockstep ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **live E2E guillemet(`&laquo;`/`&lsaquo;`)·low-9/reversed-9(`&bdquo;`/`&ldquor;`) 인용문 디코드**와 **Left*/Right*Quote FE lockstep 완료**를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `3b0b6b9` · FE develop `a280437` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q905 갱신 · Q907~Q908 신규 · USER_MANUAL/ADMIN/DEPLOY §1-3·§1-4 · CHANGELOG·ops README
+
+</details>
+
+### ✅ live E2E — guillemet/single-angle 인용문 HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 인용문 래퍼를 **`&laquo;`/`&raquo;`/`&lsaquo;`/`&rsaquo;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다(low-9/reversed-9·짧은 ldquo 뒤에 처리).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — laquo/raquo/lsaquo/rsaquo → ASCII quote (`3b0b6b9`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`a280437`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — low-9/reversed-9 인용문 HTML entity 디코드 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 게이트웨이가 인용문 래퍼를 **`&ldquor;`/`&rdquor;`/`&bdquo;`/`&lsquor;`/`&rsquor;`/`&sbquo;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 추가했습니다(`*or` long form을 짧은 `&ldquo;`/`&lsquo;`보다 먼저 처리).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — ldquor/rdquor/bdquo/lsquor/rsquor/sbquo → ASCII quote (`23ce552`)
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`56fa1c0`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
+
+### ✅ live E2E — Left*/Right*Quote FE lockstep (FE)
+- **에이전트**: COD
+- **한 일**: channel-status·live harness에 HTML5 **`&LeftDoubleQuote;`/`&RightDoubleQuote;`/`&LeftSingleQuote;`/`&RightSingleQuote;`** 디코드를 BE와 맞춰 Q905 잔여 FE lockstep을 완료했습니다.
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `notificationChannelStatus.js` · `liveBackendProbe.js` · `liveConfig.js` · `liveGlobalSetup.js` — Left*/Right* → OpenCurly* → ldquo 순 (`694266e`)
+- BE: Q905에서 이미 처리 (`a9bd7c0`)
+- 회귀: `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
+
+</details>
 
 ### 📝 인용문 HTML entity·ds-* 9종 ops 문서화
 - **에이전트**: TWR
@@ -50,16 +496,17 @@
 
 </details>
 
-### ✅ live E2E — Left*/Right*Quote HTML entity 디코드 (BE)
+### ✅ live E2E — Left*/Right*Quote HTML entity 디코드 (BE+FE)
 - **에이전트**: COD
-- **한 일**: 게이트웨이가 인용문 래퍼를 HTML5 **`&LeftDoubleQuote;`/`&RightDoubleQuote;`/`&LeftSingleQuote;`/`&RightSingleQuote;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE 디코드를 추가했습니다(OpenCurly*·짧은 ldquo보다 먼저 처리).
-- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만 (FE Left*/Right* lockstep은 후속)
+- **한 일**: 게이트웨이가 인용문 래퍼를 HTML5 **`&LeftDoubleQuote;`/`&RightDoubleQuote;`/`&LeftSingleQuote;`/`&RightSingleQuote;`** 로 인코딩해도 unwrap가 fail-closed로 맞도록 BE·FE 디코드를 맞췄습니다(OpenCurly*·짧은 ldquo보다 먼저 처리).
+- **내 화면/업무에 영향**: 없음 — **IT·QA** live E2E·operation gate만
 - **상태**: 완료
 
 <details><summary>자세히</summary>
 
 - BE: `LiveE2eOperationReadinessSupport` — Left*/Right*Quote → ASCII `"`/`'` then OpenCurly* then ldquo (`a9bd7c0`)
-- 회귀: `LiveE2eOperationReadinessSupportTest`
+- FE: `notificationChannelStatus.js` · live harness — BE parity (`694266e`)
+- 회귀: `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js`
 
 </details>
 

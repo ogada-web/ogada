@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-17T04:36:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-17T20:00:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (MathML 꺾쇠 long alias · bidi live harness · 꺾쇠·소괄호·중괄호 wrapping · Must ds-* 26종 · UXD §110 · 경고/인용문 entity 준비 · 카카오 필수 6종 live 점검 · 알림톡 카탈로그 13종 · Must 소통 채널 구분 · 모듈 **~97.4%**)  
-> **최종 갱신**: 2026-07-17 (TWR — Q901·Q902 + UXD §110 + 경고/인용문 · baseline `a0c1fe6`/`5ce4726`)
+> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (활동 사진 magic-byte · NoBreakSpace mid-token · M12 SSO allowlist · 모듈 **97.41%**)  
+> **최종 갱신**: 2026-07-17 (TWR — Q924 · Q925 · baseline `c19bfa6`/`090ac10`)
 
 ---
 
@@ -30,11 +30,30 @@
 - 백업·복구
 
 **최신 항목** (2026-07-17):
+- **Q924** — **프로그램 활동 사진 magic-byte 검증(SEC-D25)** BE+FE · MIME 위장 거부 (`d1ff63a`/`8e28fe0`) — Q917·Q920 후속
+- **Q925** — live E2E **`&NoBreakSpace;` mid-token strip** BE+FE lockstep (`c19bfa6`/`090ac10`) — Q882 정정
+- **Q922** — **M12 SSO `/carefor_login` path allowlist** BE+FE lockstep · query/fragment/userinfo/non-443 reject (`bfe6b3f`/`a742788`/`592a483`) — Q801·Q787 확장
+- **Q923** — live E2E **uppercase semicolon-optional `&NUM`** decode test lock (`bc1d343`) — Q919 확장
+- **Q921** — **프로그램 활동 사진 업로드 간격** — `ds-stack--tight` (`bfd171d`, UXD-189) — Q917 UI 후속
+- **Q919 갱신** — live E2E **세미콜론 생략 `&num`** BE+FE lockstep · BE `@759b15e` · FE `@ce2325c`/`@9e40c19` — Q855 확장
+- **Q920** — **프로그램 활동 사진 Content-Type 파라미터** — `image/jpeg; charset=binary` 등 strip 후 검증 (`72a6534`/`8e74b07`) — Q917 후속
+- **Q917** — **프로그램 일정 활동 사진** `/programs` · `POST …/schedule/{id}/photo` · JPEG/PNG/WEBP ≤5MB
+- **Q918** — live E2E **probe V196 연계 무결성** `v196ClientLinkageRecordsIntegrityCheckReady` (`b7f4337`) — Q827 lockstep
+- **Q916** — live E2E **세미콜론 생략 `&amp`** BE lockstep · FE `@d3e282b` — Q840·Q841 확장
+- **Q912** — live E2E **blank operation blocker 목록** null/blank drop BE+FE (`0dfc992`/`9a48e13`) — Q894 후속
+- **Q913** — **연차·유급휴일 대장 empty scope** — read scope 내 지점만 (`f6023b0`)
+- **Q914** — **Must ds-* 레이아웃 12종**(UXD-188) — 간호·QR·HR·청구·송영 (`c061494`)
+- **Q915** — **청구 상세 상태 이력** invalid `changedAt` guard · `time[dateTime]` (`420286e`/`c061494`)
+- **Q910** — live E2E **확장 prime(`&bprime;`/`&tprime;`/`&qprime;`/`&backprime;`)** (`31b10d5`/`29e20dd`/`93f77e1`)
+- **Q911** — live E2E **세미콜론 생략 core quote/angle(`&quot`/`&apos`/`&lt`/`&gt`)** (`20f6ddc`) — Q840 numeric 확장
+- **Q909** — live E2E **prime/double-prime(`&Prime;`/`&prime;`/`&DoublePrime;`/`&TriplePrime;`) 인용문** (`34c16cd`/`3f7bb94`)
+- **Q905~Q908** — live E2E **guillemet(`&laquo;`/`&lsaquo;`)·low-9/reversed-9(`&bdquo;`/`&ldquor;`) 인용문** · **Left*/Right*Quote FE lockstep 완료** (`3b0b6b9`/`a280437`/`694266e`)
+- **Q903~Q906** — live E2E **typographic·OpenCurly*·Left*/Right*Quote 인용문** · **Must ds-* 동의·라벨·브레드크럼 9종** (`a9bd7c0`/`0438a17`)
 - **UXD §110** — DESIGN_SYSTEM **QA-B95 6-commit decode 배치 확인** · **components.css ds-* 26종 정식화**(청구·간호·CMS·수가·직원 lifecycle 등 정적 화면)
-- **Q901·Q902** — live E2E **MathML 꺾쇠 long alias(`&LeftAngleBracket;`/`&RightAngleBracket;`)** BE+FE · **bidi long-alias live harness** · **경고/인용문 HTML entity** 준비중 (`a0c1fe6`/`5ce4726`)
+- **Q901·Q902** — live E2E **MathML 꺾쇠 long alias(`&LeftAngleBracket;`/`&RightAngleBracket;`)** BE+FE · **bidi long-alias live harness** (`c1041bb`/`40c85df`/`5ce4726`)
 - **Q898 갱신 · Q900** — live E2E **소괄호 wrapping BE lockstep** · **꺾쇠(angle) wrapping(`&lang;`/`&langle;`)** BE+FE (`bc41ed9`/`20356ed`/`9907725`/`1c84f0f`)
 - **Q897~Q899** — live E2E **중괄호 wrapping(BE+FE)** · **소괄호 wrapping(FE)** · **Must ds-* 26종**(청구·간호·CMS) (`794bfed`/`d6be05c`/`9907725`/`971c636`)
-- **Q893~Q896** — live E2E **`&semi;`·blank skip·대괄호 wrapping** BE+FE lockstep · **카카오 필수 알림톡 6종 live 전 점검** (`d247cdf`/`b348258`/`c6ddf6c`/`6900a8f`/`7ee1cf1`/`6fceb8d`)
+- **Q893~Q896** — live E2E **`&semi;`·blank skip·대괄호 wrapping** BE+FE lockstep · **카카오 필수 알림톡 6종 live 전 점검** (`d247cdf`/`b348258`/`c6ddf6c`/`6900a8f`/`7ee1cf1`/`6fceb8d`) · **`HOME_NEWSLETTER`≠기관 공지**(Q881)
 - **Q890~Q892** — live E2E **`&VeryThickSpace;`·`&comma;`** BE+FE lockstep · **템플릿 카탈로그 행 헤더 a11y** (`043f002`/`45e1f00`/`b28eb45`/`b753586`/`d3b0f1c`, UXD-185)
 - **Q889** — **알림톡·SMS 템플릿 카탈로그 13종**(ezCare 7 + Kakao 필수 6·kind 「—」) (`54fd8dd`/`ab9e853`)
 - **Q883~Q887** — live E2E **figure/fractional em/SixPerEm/MathSpace/VeryVery* space alias** BE+FE lockstep (`08cdb87`~`f491ec8`/`031abef`~`3f7db38`)
@@ -65,7 +84,7 @@
 - **Q853** — 알림 패널 참고 단가 **고대비 CSS** (`9181ca8`)
 - **Q864 정정** — 프로그램 리포트 **BE `branchId` ✅(Q715)** · **FE UI 미연동 P2**
 - **Must 보강** — 위원회 **보호자 회의=필수업무 27** · **CalendarDayMarker** (Q723·Q843)
-- **baseline 정합** — FAQ·USER_MANUAL·ADMIN·DEPLOYMENT·CHANGELOG **`20356ed`/`1c84f0f`** · Flyway **V1–V196**
+- **baseline 정합** — FAQ·USER_MANUAL·ADMIN·DEPLOYMENT·CHANGELOG **`a742788`/`bc1d343`** · Flyway **V1–V196**
 
 **이전 항목** (2026-07-15):
 - **Q807** — **기관 공지 첨부 http(s) 서버 검증 · 복제 후 수정 · 상세 링크 차단** (`7569f1c`/`5b3075f`)

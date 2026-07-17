@@ -1,4 +1,5 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-16T23:12:00Z -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-17T20:00:00Z -->
+<!-- planner-sync: PLN 228차 2026-07-17T15:40 UTC — v3 program schedule photo upload endpoint 추가 `POST /programs/schedule/{programId}/photo`(multipart·JPEG/PNG/WEBP·content-type parameter normalize·QA-B576~B579·BE @72a6534/FE @8e74b07) · silverangel 사진 0-hit ↔ SUPERSET·id=5 1.0 -->
 <!-- tech_writer-sync: TWR 2026-07-16 — **§4-2 G-LINKAGE-RECORD** CRUD+dispatch+**지점 리포트** · V194–**V196** · Q819·Q822·**Q826**·**Q827** · BE `d247cdf` / FE `6900a8f` -->
 <!-- planner-sync: PLN 197차 2026-06-24T22:30 UTC — BNK-596~599 G2b CMS payment-method-catalog + G16 parity-rules BE API · BE `bd1e87e`/FE `c3c6272` baseline -->
 <!-- tech_writer-sync: TWR 344차 2026-06-24T23:45:00Z — **G2b CMS collection methods closure** · **`POST/GET .../virtual-account`** · **`POST/GET .../multi-account-settlement`** · **V176 integration** · BE `dac8ebd`·FE `c3c6272`·V1–V176·112 route·91 page·**merge gate 778** · **신규 섹션**: CMS 가상계좌·다계좌 정산 API (Q704) · **FAQ Q701·Q704 신규** · **USER_MANUAL §4-6 정정** · **다음**: G16 FE parity-rules wire · G2b CMS FE panel UI (가상계좌·다계좌) P2 -->
@@ -1481,6 +1482,9 @@
 | GET | `/programs/schedules` | 당일 프로그램 일정 | 동일 |
 | GET | `/programs/participations` | 참여·만족도 기록 | 동일 |
 | POST | `/programs/participations` | 참여·만족도 등록 | `branch_admin`, `social_worker`, `caregiver` |
+| POST | `/programs/schedule/{programId}/photo` | 프로그램 일정 활동사진 업로드 (multipart · JPEG/PNG/WEBP·content-type parameter 관용·**magic-byte**) | `branch_admin`, `social_worker`, `hq_admin` |
+
+> **상태 (v3 · BNK-833/834 · QA-B576~B579 · QA-B585 SEC-D25 · Fixed)**: `POST /programs/schedule/{programId}/photo` = **LANDED** — BE `ProgramController` `@PostMapping(consumes=MULTIPART_FORM_DATA_VALUE)` + `ProgramPhotoStorageService`(`@d1ff63a`). 허용 MIME = `image/jpeg`·`image/png`·`image/webp` allow-list, **content-type parameter normalize**(`trim`→`;` split→`toLowerCase(Locale.ROOT)`→empty→null → `image/jpeg; charset=binary` 등 실제 브라우저 헤더 수용) + **magic-byte fail-closed**(JPEG `FF D8 FF` · PNG `89 50 4E 47…` · WEBP `RIFF….WEBP` · MIME/서명 불일치·truncated reject). reject 시 `BusinessRuleException`「JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.」. FE `services.js` `uploadProgramSchedulePhotoApi(programId, file)` + `ProgramSchedulePhotoUpload`. 보존/파기·용량·EXIF strip 정책 = PLAN_NOTES §추가 질문 228-2.
 
 > **가정**: 엔드포인트는 frontend `services.js` 클라이언트와 정합 — DBA·BE 구현 시 본 절 확정.
 
@@ -2875,7 +2879,7 @@ form-data:
 |------|------|
 | `ACCOUNTING_BPO_USMUSID` | 시설 SSO 사용자 id (`ogada.accounting-bpo.usmusid`) |
 | `ACCOUNTING_BPO_OTP_SECRET` | OTP 민트용 HMAC 시크릿 (`ogada.accounting-bpo.otp-secret`) |
-| `ACCOUNTING_BPO_SSO_PORTAL_URL` | 선택 — 기본 `https://www.sujifine.co.kr/carefor_login` · **호스트 allowlist**=`sujifine.co.kr`\|`www.sujifine.co.kr` (https only·SEC-D43) |
+| `ACCOUNTING_BPO_SSO_PORTAL_URL` | 선택 — 기본 `https://www.sujifine.co.kr/carefor_login` · **allowlist**=host `sujifine.co.kr`\|`www.sujifine.co.kr` + path `/carefor_login`(+trailing `/`) · https only · port 443 또는 생략 · query/fragment/userinfo 거부(SEC-D43) |
 | `ACCOUNTING_BPO_SSO_HANDOFF_ACTOR_RATE_LIMIT_PER_MINUTE` | 선택 — actor handoff throttle 기본 10 (SEC-D43) |
 | `ACCOUNTING_BPO_SSO_HANDOFF_ORG_RATE_LIMIT_PER_MINUTE` | 선택 — org handoff throttle 기본 30 (SEC-D43) |
 

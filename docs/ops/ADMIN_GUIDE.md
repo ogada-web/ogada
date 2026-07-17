@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T04:36:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T20:00:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-17 (Q901·Q902: MathML 꺾쇠·bidi harness · baseline `a0c1fe6`/`5ce4726` · **Flyway V1–V196** · **경고/인용문 entity**)  
+> **최종 갱신**: 2026-07-17 (Q924: 활동 사진 magic-byte SEC-D25 · Q925: NoBreakSpace mid-token strip · baseline `c19bfa6`/`090ac10` · **Flyway V1–V196**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,20 +50,40 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-07-17 develop HEAD `c1041bb` / frontend `40c85df`)
+### 1-4. 구현 상태 안내 (2026-07-17 develop HEAD `c19bfa6` / frontend `090ac10`)
 
-> **이관·QA (TSR)**: BE develop **@ `c1041bb`** · FE develop **@ `40c85df`** · **cross-stream SYNCED**
+> **이관·QA (TSR)**: BE develop **@ `c19bfa6`** · FE develop **@ `090ac10`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
+> - **v3 프로그램 일정 활동 사진** ✅ (**Q917**·**Q920**·**Q921**·**Q924**): **`POST /programs/schedule/{id}/photo`** multipart · JPEG/PNG/WEBP ≤5MB · **Content-Type 파라미터 strip** · **magic-byte 서명 검증(SEC-D25)** · FE **`/programs` 「활동 사진」** · **`ds-stack--tight`** (`d1ff63a`/`8e28fe0`/`72a6534`/`8e74b07`/`bfd171d`) · 저장 디렉터리 `ogada.storage.program-photos.storage-dir`
+> - **QA-B95 NoBreakSpace mid-token strip** ✅ (**Q925**·**Q882**): **`&NoBreakSpace;` → strip(empty)** BE+FE — mid-token 마커 재결합 · 세미콜론 생략 lock (`63227d7`/`c19bfa6`/`090ac10`)
+> - **live probe V196 연계 무결성** ✅ (**Q918**): probe **`v196ClientLinkageRecordsIntegrityCheckReady`** health lockstep (`b7f4337`) — Q827 후속
+> - **M12 SSO `/carefor_login` path allowlist** ✅ (**Q922**): HTTPS + sujifine host + **`/carefor_login` only** — query/fragment/userinfo/non-443 reject — BE **`bfe6b3f`/`a742788`** · FE **`592a483`**
+> - **QA-B95 세미콜론 생략 `&num`** ✅ (**Q919**·**Q923**): **`&num`/`&NUM`** (세미콜론 선택) → `#` 후 numeric decode — BE **`759b15e`** · FE channel-status **`ce2325c`** · liveConfig **`9e40c19`** · uppercase test lock **`bc1d343`**
+> - **Must 활동 사진 업로드 간격** ✅ (**Q921**): **`ds-stack--tight`** (`bfd171d`, UXD-189) — Q917 UI 후속
+> - **QA-B95 blank operation blocker 목록** ✅ (**Q912**): effective·bootstrap blocker 목록에서 null/blank drop (`0dfc992`/`9a48e13`) — Q894 후속 · **BE+FE lockstep**
+> - **QA-B95 세미콜론 생략 amp** ✅ (**Q916**): **`&amp`/`&AMP`** (세미콜론 선택) → `&` 후 numeric decode (`d3e282b`) — Q840·Q841 확장
+> - **US-R01-c leave-ledger empty scope** ✅ (**Q913**): empty 행 직원 조회 시 read scope 내 지점만 (`f6023b0`)
+> - **Must ds-* 레이아웃 12종** ✅ (**Q914**): `ds-card--form`·`ds-timeline--compact`·`ds-qr-scan`·HR·송영 등 (`c061494`, UXD-188)
+> - **청구 상태 이력 타임스탬프** ✅ (**Q915**): `ClaimStatusTimeline` invalid `changedAt` guard · `time[dateTime]` (`420286e`/`c061494`)
+> - **QA-B95 core quote/angle 세미콜론 생략 BE lock** ✅ (**Q911**): **`&quot`/`&apos`/`&lt`/`&gt`** FE `@20f6ddc` · BE 회귀 `@7389ef0` — Q840 numeric 확장
+> - **QA-B95 확장 prime** ✅ (**Q910**): **`&bprime;`/`&tprime;`/`&qprime;`/`&backprime;`** → ASCII quote (`31b10d5`/`29e20dd`/`93f77e1`) — Q909 앞단
+> - **Must ds-* 텍스트·동의·브레드크럼 9종** ✅ (**Q906**): `ds-consent-box`·`ds-field-label`·`ds-page-breadcrumb` 등 (`0438a17`, UXD-187)
+> - **QA-B95 prime/double-prime 인용문** ✅ (**Q909**): **`&TriplePrime;`/`&DoublePrime;`/`&Prime;`/`&prime;`** → ASCII quote (`34c16cd`/`3f7bb94`)
+> - **QA-B95 guillemet/single-angle 인용문** ✅ (**Q908**): **`&laquo;`/`&raquo;`/`&lsaquo;`/`&rsaquo;`** → ASCII quote (`3b0b6b9`/`a280437`)
+> - **QA-B95 low-9/reversed-9 인용문** ✅ (**Q907**): **`&ldquor;`/`&rdquor;`/`&bdquo;`/`&lsquor;`/`&rsquor;`/`&sbquo;`** → ASCII quote (`23ce552`/`56fa1c0`)
+> - **QA-B95 Left*/Right*Quote HTML entity** ✅ BE+FE (**Q905**): **`&LeftDoubleQuote;`/`&RightDoubleQuote;`/`&LeftSingleQuote;`/`&RightSingleQuote;`** → ASCII quote (`a9bd7c0`/`694266e`)
+> - **QA-B95 OpenCurly* 인용문 long alias** ✅ (**Q904**): **`&OpenCurlyDoubleQuote;`/`&CloseCurlyDoubleQuote;`/`&OpenCurlyQuote;`/`&CloseCurlyQuote;`** → ASCII quote (`df2c1a0`/`ac3af73`)
+> - **QA-B95 typographic 인용문** ✅ (**Q903**): **`&ldquo;`/`&rdquo;`/`&lsquo;`/`&rsquo;`** → ASCII quote (`a0c1fe6`/`a364f97`)
 > - **QA-B95 MathML 꺾쇠 long alias** ✅ (**Q901**): **`&LeftAngleBracket;`/`&RightAngleBracket;`** → `<`/`>` (`c1041bb`/`40c85df`) — MathML → langle → lang 순
 > - **QA-B95 bidi long-alias live harness** ✅ (**Q902**): live probe·config·globalSetup에 Q879 long alias 전파 (`5ce4726`)
 > - **QA-B95 꺾쇠(angle) wrapping HTML entity** ✅ (**Q900**): **`&lang;`/`&rang;`/`&langle;`/`&rangle;`** → `<`/`>` (`20356ed`/`1c84f0f`) — 긴 alias 우선
 > - **QA-B95 소괄호 wrapping HTML entity** ✅ BE+FE (**Q898**): **`&lpar;`/`&rpar;`** → `(`/`)` (`bc41ed9`/`9907725`)
 > - **Must ds-* 26종 정식화** ✅ (**Q899**): 청구·수가·CMS·간호·직원 lifecycle 등 (`971c636`, UXD-186)
 > - **QA-B95 중괄호 wrapping HTML entity** ✅ (**Q897**): **`&lbrace;`/`&rbrace;`/`&lcub;`/`&rcub;`** → `{`/`}` (`794bfed`/`d6be05c`)
-> - **카카오 필수 알림톡 6종 live 전 점검** ✅ (**Q896**): catalog **13/13** · `KAKAO_TPL_*` · channel-status readiness
+> - **카카오 필수 알림톡 6종 live 전 점검** ✅ (**Q896**): catalog **13/13** · `KAKAO_TPL_*` · channel-status readiness · **`HOME_NEWSLETTER`≠기관 공지**(Q881)
 > - **QA-B95 대괄호 wrapping HTML entity** ✅ (**Q895**): **`&lbrack;`/`&rbrack;`/`&lsqb;`/`&rsqb;`** → `[`/`]` (`c6ddf6c`/`6fceb8d`)
-> - **QA-B95 blank blocker token skip** ✅ (**Q894**): null/blank primary skip (`b348258`/`7ee1cf1`)
+> - **QA-B95 blank blocker token skip** ✅ (**Q894**): null/blank primary skip (`b348258`/`7ee1cf1`) · **목록 blank drop** (**Q912**, `0dfc992`/`9a48e13`)
 > - **QA-B95 semi HTML entity** ✅ (**Q893**): **`&semi;`** → `;` (`d247cdf`/`6900a8f`)
 > - **템플릿 카탈로그 행 헤더 a11y** ✅ (**Q892**): 13종 catalog 표 **메시지명 `th scope="row"`** (`d3b0f1c`, UXD-185)
 > - **QA-B95 comma HTML entity** ✅ (**Q891**): **`&comma;`** → `,` (`45e1f00`/`b753586`)
@@ -75,7 +95,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > - **QA-B95 MathSpace·WordJoiner long alias** ✅ (**Q886**): **`&MathSpace;`** → 공백 · **`&WordJoiner;`** strip (`6014cca`/`73169a1`)
 > - **QA-B95 VeryVery* space alias** ✅ (**Q887**): **`&VeryVeryThinSpace;`/`&VeryVeryThickSpace;`** → 공백 (`f491ec8`/`3f7db38`)
 > - **연계·발송 체크박스 a11y** ✅ (**Q888**): **`ds-text-muted`** 초안 없음 안내 · **`ds-checkbox-group`** 발송 체크박스 (`ed48077`, UXD-184)
-> - **QA-B95 NoBreakSpace legacy alias** ✅ (**Q882**): **`&NoBreakSpace;`/`&nobreakspace`** → 공백(BE)·strip(FE) (`ff80f0b`/`8a05640`)
+> - **QA-B95 NoBreakSpace legacy alias** ✅ (**Q882**·**Q925**): **`&NoBreakSpace;`/`&nobreakspace`** → **strip(empty)** BE+FE · mid-token 마커 재결합 (`63227d7`/`c19bfa6`/`090ac10`) — 구 「BE 공백」 서술 폐기
 > - **QA-B95 ZeroWidthNonJoiner/Joiner long alias** ✅ (**Q880**): **`&ZeroWidthNonJoiner;`/`&ZeroWidthJoiner;`** strip (`ba5b0cb`/`61f8f19`)
 > - **QA-B95 bidi long-form HTML entity alias** ✅ (**Q879**): **`&LeftToRightEmbedding;`/`&RightToLeftIsolate;`/`&LeftToRightMark;`** 등 long ↔ short form strip (`53efa0b`/`975aecb`)
 > - **Must 소통 채널 구분** ✅ (**Q881**): 기관 공지(게시판) · 가정통신문(보호자 발송) · 연계기록지(이관·연계)
@@ -95,7 +115,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > - **M12 BPO SSO 블로커 시 launch 숨김** ✅ (**Q860**): blocker 잔여 시 **`ssoAvailability=PLANNED`** · **「SSO 자동 로그인」 버튼 숨김** (`b42174a`)
 > - **QA-B95 NBSP bootstrap blocker** ✅ (**Q857**): detail **`&nbsp;bootstrap=disabled&nbsp;`** · **U+00A0** → 공백 정규화 후 gate (`4bf5684`)
 > - **G2 기관 공지 빈 페이지 복구** ✅ (**Q858**): 게시·삭제·저장 후 **`totalPages` fallback** (`483dfe1`)
-> - **QA-B95 named-num HTML entity** ✅ (**Q855**): detail **`&num;45;`** · **`&num;45`**(세미콜론 생략) · **`&NUM;`** → numeric 정규화 후 bootstrap gate (`a8d0af5`/`2cefb1d`)
+> - **QA-B95 named-num HTML entity** ✅ (**Q855**·**Q919**): detail **`&num;45;`** · **`&num;45`** · **`&num45;`** · **`&NUM;`** → numeric 정규화 후 bootstrap gate (`a8d0af5`/`2cefb1d`/`ce2325c`/`759b15e`/`9e40c19`)
 > - **QA-B95 snake_case bootstrap blocker 코드** ✅ (**Q856**): **`bootstrap_disabled`** · **`service_unavailable`** fail-closed (`1411b54`)
 > - **G17 지표 27 이중번호 안내** ✅ (**Q850**): compliance **`dualNumberingNoteKo`** · **`essentialDutySerial27*`** — 평가 지표27(기능회복) ≠ 필수업무 일련27(가족과의 소통·`/staff/committee-meetings`) (`74ae324`)
 > - **J03 문자 발송 참고 단가 전용 카탈로그** ✅ (**Q851**·**Q844**): **`GET /notifications/dispatch-reference-unit-rates`** + health **`notificationDispatchReferenceUnitRates`** · FE **전용→channel-status→static** (`0ad3b07`/`79763a3`) — 앱 **10**·SMS **20**·MMS **50**원 · **비청구**
@@ -103,12 +123,12 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > - **QA-B95 삼중 HTML entity bootstrap** ✅ (**Q852**): `&AMP;AMP;#45;` multi-pass decode (`33f388d`/`a89a873`)
 > - **J03 문자 발송 참고 단가(임베드)** ✅ (**Q844**): **`GET /notifications/channel-status`** **`dispatchReferenceUnitRates`** — 전용 카탈로그와 **동일 상수**
 > - **G-RFID 급여제공내역 일괄 문자** ✅ BE+FE (**Q832**·**Q838**): **`POST /visits/imports/rfid/compare`** → **`dispatchCandidates[]`**(snake_case·직렬화 수용) · **`POST /visits/imports/rfid/care-provision-dispatch`**(`branch_id`/`client_ids` alias) · kind **13** · **HOME_VISIT only** · FE **`VisitRfidDiffComparePanel` 일괄 발송 폼** · 단건은 이용자 상세 **급여제공내역** (`c080529`/`556eeff`/`e837185`)
-> - **QA-B95 HTML entity bootstrap blocker** ✅ (**Q837**·**Q839**·**Q840**·**Q841**·**Q852**·**Q855**·**Q857**·**Q859**·**Q861**·**Q862**·**Q869**·**Q870**·**Q871**·**Q872**·**Q873**·**Q874**·**Q875**·**Q876**·**Q877**·**Q879**·**Q880**·**Q882**·**Q883**·**Q884**·**Q885**·**Q886**·**Q887**): detail **`bootstrap&#45;disabled`** · **`&#x2d;`·`&lt;`·`&gt;`** · **`&quot;…&quot;`** · **`&num;45;`** · **`&nbsp;`** · **`&shy;`** · **`&zwnj;`·`&Tab;`** · **`&ndash;`·`&NoBreak;`·`&NoBreakSpace;`·`&Wj;`·`&WordJoiner;`·`&hairsp;`·`&ThinSpace;`·Negative*Space** · **ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace·figure/fractional em/SixPerEm/MathSpace/VeryVery*** · **invisible Cf** · **추가 유니코드 공백** · **대소문자·이중·삼중·세미콜론 생략** entity 디코딩 후 bootstrap gate 매칭 · FE **`liveGlobalSetup.js`·`notificationChannelStatus.js`** parity
+> - **QA-B95 HTML entity bootstrap blocker** ✅ (**Q837**·**Q839**·**Q840**·**Q841**·**Q852**·**Q855**·**Q857**·**Q859**·**Q861**·**Q862**·**Q869**·**Q870**·**Q871**·**Q872**·**Q873**·**Q874**·**Q875**·**Q876**·**Q877**·**Q879**·**Q880**·**Q882**·**Q883**·**Q884**·**Q885**·**Q886**·**Q887**·**Q916**·**Q919**): detail **`bootstrap&#45;disabled`** · **`&#x2d;`·`&lt;`·`&gt;`** · **`&quot;…&quot;`** · **`&num;45;`·`&num45;`** · **`&nbsp;`** · **`&shy;`** · **`&zwnj;`·`&Tab;`** · **`&ndash;`·`&NoBreak;`·`&NoBreakSpace;`·`&Wj;`·`&WordJoiner;`·`&hairsp;`·`&ThinSpace;`·Negative*Space** · **ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace·figure/fractional em/SixPerEm/MathSpace/VeryVery*** · **invisible Cf** · **추가 유니코드 공백** · **대소문자·이중·삼중·세미콜론 생략** entity 디코딩 후 bootstrap gate 매칭 · FE **`liveGlobalSetup.js`·`notificationChannelStatus.js`** parity
 > - **QA-B95 nested JSON·유니코드 bootstrap blocker** ✅ (**Q836**): detail **`operationBlockers={"nested":{"code":"bootstrap\\u002ddisabled"}}`** · percent-encoded nested JSON Jackson 전개 (`27de3a3`)
 > - **QA-B95 URL-encoded bootstrap blocker** ✅ (**Q834**): health/probe detail **`%7B%22code%22%3A%22bootstrap-disabled%22%7D`** 등 **퍼센트 인코딩** 디코딩 후 bootstrap gate 매칭 (`7868384`)
 > - **J03 channel-status URL decode** ✅ (**Q835**): **`normalizeNotificationChannelStatus`** — **`readinessBlockers`**·직렬화 templates **URL decode** · 패널 blocker **조용한 누락 방지** (`3fddccd`)
 > - **QA-B95 object-form bootstrap blocker** ✅ (**Q833**·**Q856**): detail/payload **`{"code":"bootstrap-disabled"}`** · **`{"code":"bootstrap_disabled"}`** 등 객체·직렬화 JSON 감지 (`79aa377`/`2992fa5`/`1411b54`)
-> - **G-LINKAGE-RECORD 연계기록지** ✅ (**Q819**·**Q822**·**Q826**·**Q827**·**Q829**·**Q830**): **`GET/POST/PATCH/DELETE /clients/{id}/linkage-records`** · **`POST …/dispatch`** · **`GET /clients/linkage-records`**(지점 리포트) · V194–**V196** · **기관 200자·요약 5000자**(DTO+서비스+V196) · FE **`/clients/:id` 「연계기록지」** 탭 · SideNav **`/clients/linkage-records` 「연계기록지 리포트」** · **「조회」 확정 필터**(**Q829**) · **기관명 JS 검증**(**Q830**) · health **`v196ClientLinkageRecordsIntegrityCheckReady`** (`9dff00f`/`68cd253`)
+> - **G-LINKAGE-RECORD 연계기록지** ✅ (**Q819**·**Q822**·**Q826**·**Q827**·**Q829**·**Q830**·**Q918**): **`GET/POST/PATCH/DELETE /clients/{id}/linkage-records`** · **`POST …/dispatch`** · **`GET /clients/linkage-records`**(지점 리포트) · V194–**V196** · **기관 200자·요약 5000자**(DTO+서비스+V196) · FE **`/clients/:id` 「연계기록지」** 탭 · SideNav **`/clients/linkage-records` 「연계기록지 리포트」** · **「조회」 확정 필터**(**Q829**) · **기관명 JS 검증**(**Q830**) · health·**probe** **`v196ClientLinkageRecordsIntegrityCheckReady`** (`9dff00f`/`68cd253`/`b7f4337`)
 > - **QA-B95 bootstrap composite blocker** ✅ (**Q821**·**Q824**·**Q828**·**Q833**·**Q834**·**Q836**·**Q837**·**Q839**·**Q840**·**Q841**·**Q852**·**Q855**·**Q856**·**Q857**·**Q869**·**Q870**·**Q871**·**Q872**·**Q873**·**Q874**·**Q875**·**Q876**·**Q877**·**Q879**·**Q880**·**Q882**·**Q883**·**Q884**·**Q885**·**Q886**·**Q887**): composite health detail **공백·NBSP·쉼표·세미콜론** + **괄호·따옴표 래핑** + **`:`·패딩 key/value** + **object `code` 마커(kebab·snake)** + **URL percent-encode** + **중첩 JSON·유니코드** + **HTML entity(소문자·대소문자·이중·삼중·세미콜론 생략·named-num·nbsp·NoBreakSpace·zero-width·tab/newline·dash·NoBreak·word-joiner·named space·ThinSpace/Negative*Space/ThickSpace·MathML invisible·bidi·Positive*Space·NonBreakingSpace·figure/fractional em/SixPerEm/MathSpace/VeryVery* alias)** 토큰 감지
 > - **QA-B95 live E2E operation blocker unwrap** ✅ (**Q825**·**Q833**): FE **`normalizeLiveOperationBlockers`** — JSON-array·bracket/quote·**직렬화 object** unwrap (`9dbdfc5`/`2992fa5`)
 > - **QA-B95 live E2E env·boolean 정규화** ✅ (**Q823**): truthy trim/case · readiness boolean string (`9b65529`/`33f59a9`)
@@ -213,7 +233,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 
 | 계층 | 계약·구현 |
 |------|----------|
-| BE 대장 API | **`GET/POST/PUT/DELETE /staff/leave-ledger*`** · **V174** · **V175 integrity** (`c4e6bcb`, Q668) · **`surfaceKind=CANONICAL_LEAVE_LEDGER`** (`bb9df48`, Q663) · **RBAC test deepen** (`62fce23`, Q665) |
+| BE 대장 API | **`GET/POST/PUT/DELETE /staff/leave-ledger*`** · **V174** · **V175 integrity** (`c4e6bcb`, Q668) · **empty user lookup scope** (`f6023b0`, Q913) · **`surfaceKind=CANONICAL_LEAVE_LEDGER`** (`bb9df48`, Q663) · **RBAC test deepen** (`62fce23`, Q665) |
 | BE 연차 API | roster·yearly GET/PUT — **`surfaceKind`·`relatedSurfaces[]`** · leave-ledger **`AVAILABLE`** (`bb9df48`) |
 | BE 출퇴근 API | **`GET /staff/work-attendance`** — **`relatedSurfaces[1].availability=AVAILABLE`** (`bb9df48`) |
 | FE 대장 | **`StaffLeaveLedgerPage`**(`/staff/leave-ledger`) — CRUD·**`StaffLeaveLedgerTable`**·**`StaffLeaveLedgerDeleteModal`** (UXD-157) · **`StaffLeaveLedgerRelatedSurfacesPanel`** · **`fetchStaffLeaveLedgerApi`** · **`pilotChecklist` R01c-a/b/c/d** (`8057c1e`/`bd1d0ad`, Q666·Q667) |
@@ -221,7 +241,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 | FE 출퇴근 | **`normalizeStaffWorkAttendanceResponse`** (`95f55aa`, Q653) · **`BranchScopeNotice`** (`949e9bf`, Q657) · **leave-ledger link AVAILABLE** |
 | FE scope | **`StaffAnnualLeavePage`·`StaffLeaveLedgerPage`** — API **`branchName`/`resolvedBranchId`** → **`BranchScopeNotice`** (`64584f4`, Q674) |
 
-> **운영 점검**: `/staff/annual-leaves` ↔ `/staff/attendance` ↔ **`/staff/leave-ledger`** **삼방향 링크** smoke (DEPLOYMENT_GUIDE §11-3, Q652·Q653·Q666). **지점 안내** — API **`branchName`** 과 **BranchScopeNotice** 일치 확인 (Q674).
+> **운영 점검**: `/staff/annual-leaves` ↔ `/staff/attendance` ↔ **`/staff/leave-ledger`** **삼방향 링크** smoke (DEPLOYMENT_GUIDE §11-3, Q652·Q653·Q666). **지점 안내** — API **`branchName`** 과 **BranchScopeNotice** 일치 확인 (Q674·**Q913** empty scope).
 
 #### [TWR] 이용자 PATCH 주소 분리·상세만 수정 (Q676·Q677, BE `deda5b4`·`2cae74c`)
 
@@ -1859,14 +1879,14 @@ ogada 영업·운영 직원이 **신규 고객 센터를 개통**하고 **직원
 | FE 화면 | **`AccountingBpoPage`** — **`/accounting`** · **`bpo-launch` + `/health`** · SSO OTP handoff · **「SSO 잔여 블로커」 한국어 안내** · **blocker 잔여 시 SSO 버튼 숨김** · **handoff 429/422 Alert** · **`BillingContextNav`** 5탭 (`b42174a`) |
 | 응답(launch) | `documentCode=M12-BPO` · `portalUrl=https://sujifine.co.kr/login` · `ssoAvailability`=`PLANNED`\|`AVAILABLE` · `relatedSurfaces[]` |
 | 응답(handoff) | `usmusid` · `otp`(5분 창 HMAC) · `ssoPortalUrl` · `handoffReady` — **비밀번호 없음** |
-| 보안 | **재무 비밀번호 미수집** · SSO 자격 **env만** · **sujifine 호스트 allowlist** · **행위자 10/분·기관 30/분 rate limit** · **HQ/BRANCH만 mint** (`Q801`·`Q803`) |
+| 보안 | **재무 비밀번호 미수집** · SSO 자격 **env만** · **sujifine 호스트 + `/carefor_login` path allowlist** (**Q922**) · **행위자 10/분·기관 30/분 rate limit** · **HQ/BRANCH만 mint** (`Q801`·`Q803`) |
 | RBAC(화면) | **`hq_admin`·`branch_admin`·`social_worker`** — 공개 로그인 |
 | RBAC(SSO) | **`hq_admin`·`branch_admin`만** — `social_worker`/`caregiver` → **403** |
 | cross-link | **`/payroll/ledger`** · **`/billing`** · **`/accounting`** AVAILABLE |
 | 테스트 | **`AccountingBpoServiceTest`** · **`AccountingBpoControllerTest`** · **`AccountingBpoPage.test`** · **`accountingBpo.test`** · **`MustApiEndpointRoutingTest`** |
 | P1 잔여 | **기관(테넌트)별 자격 저장** · 수지파인 org context UI |
 
-> 현장: FAQ **Q782** · **Q785** · **Q787** · **Q801** · **Q803** · **Q854** · **Q860** · USER_MANUAL §4-6-5 · DEPLOYMENT §3-3·§4-9 · REQUIREMENTS M12 BPO
+> 현장: FAQ **Q782** · **Q785** · **Q787** · **Q801** · **Q803** · **Q854** · **Q860** · **Q922** · USER_MANUAL §4-6-5 · DEPLOYMENT §3-3·§4-9 · REQUIREMENTS M12 BPO
 
 ### 6-2-24g. M12 재무회계 BPO readiness health (US-ACCOUNTING-M12, BE+FE Fixed)
 
@@ -3955,6 +3975,14 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-17 | **Q924 · Q925** — §1-4 **활동 사진 magic-byte · NoBreakSpace mid-token strip** · baseline **`c19bfa6`/`090ac10`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q922 · Q923** — §1-4·§6-2-24f **M12 SSO `/carefor_login` allowlist · uppercase `&NUM` decode test lock** · baseline **`a742788`/`bc1d343`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q921 · Q919 갱신** — §1-4 **활동 사진 `ds-stack--tight` · 세미콜론 생략 `&num` BE+liveConfig** · baseline **`759b15e`/`9e40c19`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q912~Q920** — §1-4 **blank blocker·leave-ledger scope·UXD-188·청구 이력·amp·활동 사진·V196·`&num`·Content-Type** · baseline **`72a6534`/`8e74b07`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q910·Q911** — §1-4 **확장 prime · 세미콜론 생략 core quote/angle · Must HOME_NEWSLETTER≠기관 공지** · baseline **`29e20dd`/`20f6ddc`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q909** — §1-4 **prime/double-prime 인용문** · baseline **`34c16cd`/`3f7bb94`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q905~Q908** — §1-4 **guillemet·low-9 인용문 · Left*/Right* FE lockstep** · baseline **`3b0b6b9`/`a280437`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q903~Q906** — §1-4 **typographic·OpenCurly*·Left*/Right*Quote 인용문 · Must ds-* 동의·라벨 9종** · baseline **`a9bd7c0`/`0438a17`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-17 | **Q901·Q902** — §1-4 **MathML 꺾쇠 long alias · bidi live harness** · baseline **`c1041bb`/`40c85df`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-17 | **Q898 갱신 · Q900** — §1-4 **소괄호 wrapping BE lockstep · 꺾쇠 wrapping** · baseline **`20356ed`/`1c84f0f`** · Flyway **V1–V196** · 모듈 **~97.4%** |
 | 2026-07-17 | **Q897~Q899** — §1-4 **중괄호·소괄호 wrapping · Must ds-* 26종** · baseline **`794bfed`/`9907725`** · Flyway **V1–V196** · 모듈 **~97.4%** |
