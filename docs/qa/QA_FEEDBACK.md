@@ -1,22 +1,22 @@
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T02:34:00Z -->
-<!-- coder-sync: COD 2026-07-17T02:34:00Z (frontend) — **★ QA-B549 Fixed** bidi long-alias HTML entity decode live-e2e parity @ pending · `&LeftToRightMark;`/`&RightToLeftEmbedding;`/`&PopDirectional*`/`&FirstStrongIsolate;` strip · channel-status `@975aecb` → liveBackendProbe/liveConfig/liveGlobalSetup · related **220/220**(+1) · WT **CLEAN** · Open residual **0**(FE) · Planned QA-B116+QA-B95 -->
-# coder_1754_frontend: QA-B549 Fixed bidi long-alias live-e2e parity; related 220/220(+1); WT CLEAN; Open 0(FE); Planned QA-B116+QA-B95.
+<!-- coder-sync: COD 2026-07-17T02:34:00Z (frontend) — **★ QA-B549 Fixed** bidi long-alias HTML entity decode live-e2e parity @ `5ce4726` · `&LeftToRightMark;`/`&RightToLeftEmbedding;`/`&PopDirectional*`/`&FirstStrongIsolate;` strip · channel-status `@975aecb` → liveBackendProbe/liveConfig/liveGlobalSetup · related **220/220**(+1) · WT **CLEAN** · Open residual **0**(FE) · Planned QA-B116+QA-B95 -->
+# coder_1754_frontend: QA-B549 Fixed bidi long-alias live-e2e parity @5ce4726; related 220/220(+1); WT CLEAN; Open 0(FE); Planned QA-B116+QA-B95.
 
-### [COD] v1.2.1/QA-B95 FE bidi long-alias live-e2e parity (`pending`, QA-20260717-B549) — **Fixed**
+### [COD] v1.2.1/QA-B95 FE bidi long-alias live-e2e parity (`5ce4726`, QA-20260717-B549) — **Fixed**
 - **id**: QA-B549
 - **priority**: HIGH → Fixed (COD commit · WT CLEAN)
 - **severity**: HIGH → Fixed
 - **stream**: frontend
-- **status**: Fixed (develop pending commit · related **220/220** · WT **CLEAN**)
+- **status**: Fixed (develop `@5ce4726` · related **220/220** · WT **CLEAN**)
 - **found_at**: 2026-07-17T02:28:40Z (Open 0 FE · Planned QA-B95 harden continue · channel-status `@975aecb` had long-alias · live-e2e 3-file gap)
 - **fixed_at**: 2026-07-17T02:34:00Z
 - **version**: v1.2.1 / QA-B95 — HTML5 bidi long aliases strip on live-e2e paths (parity with channel-status `@975aecb` + BE)
 - **summary**: ★ Fixed — propagate `&LeftToRightMark;`/`&RightToLeftMark;`/`&LeftToRightEmbedding;`/`&RightToLeftEmbedding;`/`&PopDirectionalFormatting;`/`&LeftToRightOverride;`/`&RightToLeftOverride;`/`&LeftToRightIsolate;`/`&RightToLeftIsolate;`/`&FirstStrongIsolate;`/`&PopDirectionalIsolate;` strip from `notificationChannelStatus.js` into `liveBackendProbe.js`/`liveConfig.js`/`liveGlobalSetup.js` so gateway long-alias bidi mid-token splits stay fail-closed on live-e2e. +1 harness test.
-- **assignee**: TSR (develop→test FF) · PLN (baseline FE) · Planned **QA-B116+QA-B95**
+- **assignee**: TSR (develop→test FF `@5ce4726`) · PLN (baseline FE `@5ce4726`) · Planned **QA-B116+QA-B95**
 - **roadmap_ref**: ROADMAP v1.2.1 · Planned QA-B116+QA-B95
 - **reproduce**: N/A (parity harden)
 - **expected**: frontend develop WT CLEAN with QA-B95 bidi long-alias live-e2e decode committed and related tests PASS.
-- **actual**: ★ Fixed — related **220/220** · Open residual **0**(FE) · Planned **QA-B116+QA-B95**.
+- **actual**: ★ Fixed — develop `@5ce4726` · related **220/220** · Open residual **0**(FE) · Planned **QA-B116+QA-B95**.
 
 <!-- tester-sync: TSR 1753차 2026-07-17T02:28:40Z (backend) — **★ QA-B548 Fixed** FF merge `bc41ed9`→`20356ed` · related **77/77 PASS**(2.042s,+1) · post-merge **2289/2289 PASS**(92s,405,+1) · live **0/149/0**(35.31s) · BE develop/test **SYNCED `@20356ed`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@20356ed` · FE ALL SYNCED+PUSHED `@1c84f0f`)** · backend@8080 **UP/200** · operation **BLOCK**(717 BE) -->
 # tester_1753_backend: QA-B548 Fixed FF merge bc41ed9→20356ed (angle-wrap · pending 1→0 · +1→2289); related 77/77(2.042s); live 0/149/0; Open 0; transfer PASS(BE local); operation BLOCK(717 BE); cross-stream SYNCED.
