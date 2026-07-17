@@ -1,6 +1,6 @@
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T22:02:22Z -->
-<!-- coder-sync: COD 2026-07-17T22:02:22Z (frontend) — **★ QA-B597 Fixed** FE refresher-certificate page upload test SEC-D25 magic-byte sync · `StaffRefresherTrainingPage.test.jsx` PDF `%PDF` payload + MIME spoof reject lock · related **13/13 PASS**(page 5 + panel 4 + config 4) · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR FF 대기 -->
-# coder_frontend: QA-B597 Fixed StaffRefresherTrainingPage upload test magic-byte sync; related 13/13; Open 0(FE); Planned QA-B116+QA-B95; TSR FF pending.
+<!-- coder-sync: COD 2026-07-17T22:02:22Z (frontend) — **★ QA-B597 Fixed** FE refresher-certificate page upload test SEC-D25 magic-byte sync `@4691856` · `StaffRefresherTrainingPage.test.jsx` PDF `%PDF` payload + MIME spoof reject lock · related **13/13 PASS**(page 5 + panel 4 + config 4) · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR FF 대기 -->
+# coder_frontend: QA-B597 Fixed StaffRefresherTrainingPage upload test magic-byte sync @4691856; related 13/13; ahead 1; Open 0(FE); Planned QA-B116+QA-B95; TSR FF pending.
 
 ### [COD] v1.2.1/v3 FE refresher-certificate page upload regression (SEC-D25 magic fixture) — develop (QA-20260717-B597) — **Fixed**
 
@@ -8,17 +8,17 @@
 - **priority**: HIGH → Fixed (COD FE · TSR 1807 Open(BLOCK) 회귀 해소)
 - **severity**: High → Fixed (page 업로드 테스트가 SEC-D25 pre-upload 검증과 동기화 · API call count 0 해소)
 - **stream**: frontend
-- **status**: Fixed (develop pending commit · related **StaffRefresherTrainingPage + Panel + config 13/13 PASS** · Open **0**(FE))
+- **status**: Fixed (develop `@4691856` · related **StaffRefresherTrainingPage + Panel + config 13/13 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
 - **found_at**: 2026-07-17T21:21:09Z (TSR 1807 · `npm test` 2726/2727 · page upload call count 0)
 - **fixed_at**: 2026-07-17T22:02:22Z
 - **verified_at**: 2026-07-17T22:02:22Z (`npm test -- src/pages/StaffRefresherTrainingPage.test.jsx src/components/staff/StaffRefresherCertificatePanel.test.jsx src/config/staffRefresherTrainingCertificates.test.js` **13/13 PASS**)
 - **version**: v1.2.1 / v3 SEC-D25 — grade-history + refresher-certificate FE pre-upload magic-byte 후속 회귀
 - **summary**: QA-B596 이후 page 테스트가 `new File(["pdf"], …)` 로 magic 없는 payload를 올려 pre-upload `validateStaffRefresherCertificateFile` 가 거부 → upload API **0회**. fixture를 `%PDF-1.4 mock` 으로 정합 + MIME spoof reject 회귀 1건 추가. 제품 코드 변경 없음(테스트·fixture 동기화).
-- **assignee**: TSR (develop→test FF + full suite post-merge) · PLN (baseline FE HEAD) · Planned **QA-B116**+**QA-B95**
+- **assignee**: TSR (develop→test FF + full suite post-merge) · PLN (baseline FE `@4691856`) · Planned **QA-B116**+**QA-B95**
 - **roadmap_ref**: ROADMAP v1.2.1 / v3 SEC-D25 · TSR 1807 QA-B597 · COD QA-B596 `@8b164c3` follow-up
 - **prevention**: page 업로드 테스트는 Panel/config 와 동일하게 PDF/PNG/JPEG magic fixture 사용 · spoof reject lock 유지
 - **expected**: related PASS · Open **0**(FE) · merge gate unblock(FE)
-- **actual**: ★ Fixed — related **13/13** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95 · BE push) · TSR FF 대기
+- **actual**: ★ Fixed — `@4691856` · related **13/13** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95 · BE push) · TSR FF 대기
 
 ---
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:00:08Z -->
