@@ -1,5 +1,26 @@
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-17T19:42:00Z -->
 <!-- planner-sync: PLN 229차 2026-07-17T19:42 UTC — BNK-835~841·TSR 1793~1801 · ★★★ v3 photo SEC-D25 6-cycle COMPLETE·Page 106 정본·demo-work≠func M2 범위 분리·M7 billing PARITY·HTTP 442 6차·NHIS 573차·Open 0 · SYNCED(BE@c19bfa6·FE@dc81f6e) · residual 738 BE · Planned QA-B116+QA-B95 -->
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T20:35:15Z -->
+<!-- coder-sync: COD 2026-07-17T20:35:15Z (backend) — QA-B593 BE v3/SEC-D25 benefit-contract + staff-HR file magic-byte + content-type normalize `@324da07` · related 14/14 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B593 benefit-contract + staff-HR magic-byte SEC-D25)
+
+- BE develop `fix(v3/SEC-D25): verify benefit-contract and staff-HR file magic bytes` `@324da07` — `BenefitContractAttachmentStorageService`(PDF/PNG) + `StaffHrFileStorageService`(PDF/PNG/JPEG) 에 photo 계열과 동일 magic-byte + Content-Type `;param` normalize · MIME spoof/truncate fail-closed · `Files.write(payload)` · related **14/14 PASS** · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · endpoint 신설 0(audit-first 442 유지) · 보수교육·등급이력 첨부는 SEC-D25 carry.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T20:07:58Z -->
+<!-- coder-sync: COD 2026-07-17T20:07:58Z (frontend) — QA-B592 FE v3/SEC-D25 client profile photo pre-upload magic-byte + ClientDetail wire `@e16f432` · BE QA-B591 `@cdba083` lockstep · related 9/9 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B592 FE client profile photo magic-byte SEC-D25 lockstep)
+
+- FE develop `fix(v1.2.1/v3): verify client photo magic bytes before upload (SEC-D25)` `@e16f432` — BE QA-B591 `@cdba083` lockstep · `clientPhotos.js` JPEG/PNG/WEBP magic + Content-Type `;param` normalize · `uploadClientPhotoApi` · `ClientPhotoUpload` · `ClientDetailPage` 기본정보 와이어 · related **9/9 PASS** · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF 대기(UXD-190 `@b2eb059` + `@e16f432`) · HR/계약서 첨부는 SEC-D25 carry.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T19:57:46Z -->
+<!-- coder-sync: COD 2026-07-17T19:57:46Z (backend) — QA-B591 BE v3/SEC-D25 client profile photo magic-byte + content-type normalize `@cdba083` · ProgramPhoto lockstep · ClientPhotoStorageServiceTest 8/8 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B591 client profile photo magic-byte SEC-D25)
+
+- BE develop `fix(v3/clients): verify client photo magic bytes (SEC-D25)` `@cdba083` — `ClientPhotoStorageService` 에 program photo 와 동일 JPEG/PNG/WEBP magic-byte + Content-Type `;param` normalize · MIME spoof/truncate fail-closed · `Files.write(payload)` 저장 · related **ClientPhotoStorageServiceTest 8/8 PASS** · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · PLAN_NOTES 229-3 최소 범위(ClientPhoto only·HR/계약서 carry) · endpoint 신설 0(audit-first 442 유지).
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T19:00:59Z -->
 <!-- coder-sync: COD 2026-07-17T19:00:59Z (frontend) — QA-B590 FE v1.2.1/QA-B95 semicolon-optional NoBreakSpace marker decode lock (BE QA-B589 `@c19bfa6`) · related 246/246(+2) · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
 
@@ -1711,6 +1732,29 @@
 ---
 
 ### 문서 작성 질문
+
+### [TWR] 자율 ops 상태 점검 (2026-07-17 20:57 UTC — **baseline 재확인·P1 문서화 대기 상태**)
+
+**현황**:
+- **develop HEAD**: BE `63227d7` · FE `cf28a2ef` — **baseline과 정확히 일치** (신규 변경 없음)
+- **ops 문서**: 모든 파일(CHANGELOG·FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE·README) **2026-07-17 20:00:00Z 최신 상태** ✅
+- **Flyway**: **V1–V196** · **모듈 97.41%** · **133 route · 106 page**
+- **QA 상태**: Open **0** · Planned **QA-B116**(operation) + **QA-B95**(operational hardening)
+- **미문서 갭**: **0** (Must 기능 모두 문서화)
+
+**대기 중**:
+- **P1 기능 구현 신호 대기** (아래 우선순위 순서):
+  1. **M11 급여 persist** · **수익·인건비 자동 집계** → USER_MANUAL §11 신규 작성
+  2. **G-ACCOUNTING-IN-APP-LEDGER** (v3+) → ADMIN_GUIDE §7-3 신규 작성
+  3. **program reports FE `branchId`** → USER_MANUAL §8-4 강화 + FAQ 신규
+  4. **7-5 live PG checklist** (본인부담 간편결제) → DEPLOYMENT_GUIDE §4-10 신규
+  5. **J03 Solapi live dispatch** → FAQ + DEPLOYMENT_GUIDE 강화
+
+**다음 액션**:
+- coder M11/M12/G-ACCOUNTING 구현 start 신호 → 즉시 USER_MANUAL §11 초안 작성
+- 그 외 모든 대기 기능은 완성 시점(develop branch test/merge gate PASS) 확인 후 CHANGELOG 카드 + 해당 가이드 갱신
+
+---
 
 ### [TWR] 자율 ops 동기화 (2026-07-17 04:36 UTC — **Q901·Q902·UXD §110·경고/인용문 entity prep**)
 
