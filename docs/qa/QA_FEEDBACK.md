@@ -1,3 +1,488 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T22:02:22Z -->
+<!-- coder-sync: COD 2026-07-17T22:02:22Z (frontend) — **★ QA-B597 Fixed** FE refresher-certificate page upload test SEC-D25 magic-byte sync · `StaffRefresherTrainingPage.test.jsx` PDF `%PDF` payload + MIME spoof reject lock · related **13/13 PASS**(page 5 + panel 4 + config 4) · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR FF 대기 -->
+# coder_frontend: QA-B597 Fixed StaffRefresherTrainingPage upload test magic-byte sync; related 13/13; Open 0(FE); Planned QA-B116+QA-B95; TSR FF pending.
+
+### [COD] v1.2.1/v3 FE refresher-certificate page upload regression (SEC-D25 magic fixture) — develop (QA-20260717-B597) — **Fixed**
+
+- **id**: QA-20260717-B597
+- **priority**: HIGH → Fixed (COD FE · TSR 1807 Open(BLOCK) 회귀 해소)
+- **severity**: High → Fixed (page 업로드 테스트가 SEC-D25 pre-upload 검증과 동기화 · API call count 0 해소)
+- **stream**: frontend
+- **status**: Fixed (develop pending commit · related **StaffRefresherTrainingPage + Panel + config 13/13 PASS** · Open **0**(FE))
+- **found_at**: 2026-07-17T21:21:09Z (TSR 1807 · `npm test` 2726/2727 · page upload call count 0)
+- **fixed_at**: 2026-07-17T22:02:22Z
+- **verified_at**: 2026-07-17T22:02:22Z (`npm test -- src/pages/StaffRefresherTrainingPage.test.jsx src/components/staff/StaffRefresherCertificatePanel.test.jsx src/config/staffRefresherTrainingCertificates.test.js` **13/13 PASS**)
+- **version**: v1.2.1 / v3 SEC-D25 — grade-history + refresher-certificate FE pre-upload magic-byte 후속 회귀
+- **summary**: QA-B596 이후 page 테스트가 `new File(["pdf"], …)` 로 magic 없는 payload를 올려 pre-upload `validateStaffRefresherCertificateFile` 가 거부 → upload API **0회**. fixture를 `%PDF-1.4 mock` 으로 정합 + MIME spoof reject 회귀 1건 추가. 제품 코드 변경 없음(테스트·fixture 동기화).
+- **assignee**: TSR (develop→test FF + full suite post-merge) · PLN (baseline FE HEAD) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 / v3 SEC-D25 · TSR 1807 QA-B597 · COD QA-B596 `@8b164c3` follow-up
+- **prevention**: page 업로드 테스트는 Panel/config 와 동일하게 PDF/PNG/JPEG magic fixture 사용 · spoof reject lock 유지
+- **expected**: related PASS · Open **0**(FE) · merge gate unblock(FE)
+- **actual**: ★ Fixed — related **13/13** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95 · BE push) · TSR FF 대기
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:00:08Z -->
+<!-- tester-sync: TSR 1808차 2026-07-17T22:00:08Z (backend) — **★ QA-B598 Fixed** FF merge `ed94521`→`be64fda` (pending **1→0**: v3/SEC-D34 caregiver NHIS import ext+MIME+excel magic-byte · COD `@be64fda`) · develop pre-merge related **9/9 PASS**(~2.6s) · post-merge **2351/2351 PASS**(95s,408,+5) · live **0/149/0**(34.67s · bootstrap-disabled) · BE develop/test **SYNCED `@be64fda`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **BLOCK**(FE pending 1 `@8b164c3` · Open QA-B597) · backend@8080 **UP/200** · operation **BLOCK**(742 BE + QA-B95 + QA-B597) -->
+# tester_1808_backend: QA-B598 Fixed FF merge ed94521→be64fda (SEC-D34 caregiver NHIS import magic-byte · pending 1→0); related 9/9(~2.6s); post-merge 2351/2351(95s); live 0/149/0(34.67s); Open 0(BE); transfer PASS(BE local); cross-stream BLOCK(FE QA-B597); operation BLOCK(742 BE + QA-B95 + QA-B597).
+
+### [TSR] v3/SEC-D34 BE caregiver NHIS import excel magic-byte — develop→test FF merge (`be64fda`, QA-20260717-B598) — **Fixed**
+
+- **id**: QA-20260717-B598
+- **priority**: HIGH → Fixed (TSR 1808 FF merge)
+- **severity**: Medium → Fixed (WorkbookFactory-only → extension/MIME/signature fail-closed · SEC-D34 Mitigated)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@be64fda`** · related **9/9 PASS** · post-merge **2351/2351 PASS**(+5) · live **0/149/0** · Open **0**(BE))
+- **found_at**: 2026-07-17T21:54:52Z (COD BE `@be64fda` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T21:58:30Z (FF `ed94521`→`be64fda`)
+- **verified_at**: 2026-07-17T22:00:08Z
+- **version**: v3 / SEC-D34 — G-STAFF-NHIS-EXCEL-IMPORT pre-parse gate (VisitService/NhisImportService lockstep)
+- **summary**: FF merge pending **1** → **0** · `StaffNhisCaregiverImportService.readAndValidateImportFile` — `.xlsx`/`.xls` · Content-Type allowlist + `;param` normalize · OOXML/OLE magic fail-closed · related **9/9** · post-merge **2351/2351**(+5) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@be64fda`) · SEC (SEC-D34 Mitigated 재평가) · Planned **QA-B116**+**QA-B95** · FE Open **QA-B597** carry → **COD Fixed** (TSR FF 대기)
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · COD QA-B598 `@be64fda` · Planned QA-B116+QA-B95
+- **prevention**: `StaffNhisCaregiverImportServiceTest` extension/MIME/charset/spoof/truncate locks
+- **expected**: develop→test FF `@be64fda` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **9/9** · post-merge **2351/2351** · live **0/149/0** · cross-stream **BLOCK**(FE QA-B597) · operation BLOCK(742 BE + QA-B95 + QA-B597)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T21:36:57Z -->
+<!-- tester-sync: TSR 1807차 2026-07-17T21:36:57Z (frontend) — ROADMAP merged baseline `@cf28a2e` 회귀 `npm test` **2726/2727 PASS(1 FAIL)** + 단건 `StaffRefresherTrainingPage.test.jsx` **3/4 PASS(1 FAIL)** 재현 · develop `@8b164c3` pending **1**(`test..develop`) · merge SKIP · Open **1**(QA-20260717-B597 HIGH/BLOCK) · transfer **BLOCK**(FE) · operation **BLOCK**(741 BE + QA-B95 + QA-B597) · ★ COD Fixed 2026-07-17T22:02:22Z (magic fixture sync · related 13/13 · TSR FF 대기) -->
+# tester_1807_frontend: baseline@test cf28a2e; develop@8b164c3 pending 1; npm 2726/2727(1 FAIL) + targeted 3/4(1 FAIL) repro; Open 1(QA-20260717-B597 HIGH/BLOCK) → COD Fixed (magic fixture · TSR FF pending).
+
+### [TSR] Open — v1.2.1/v3 FE refresher-certificate upload regression + develop→test pending (`8b164c3`, QA-20260717-B597) — **Fixed (COD)**
+
+- **id**: QA-20260717-B597
+- **priority**: HIGH → Fixed (COD · TSR 1807 Open 회귀 해소 · FF 재검증 대기)
+- **severity**: High → Fixed (page 테스트 SEC-D25 magic fixture 동기화)
+- **stream**: frontend
+- **status**: Fixed (COD) — related **13/13 PASS** · Open **0**(FE) · develop→test FF·full suite post-merge는 TSR
+- **found_at**: 2026-07-17T21:21:09Z (`npm test` locked run 시작)
+- **fixed_at**: 2026-07-17T22:02:22Z (COD magic fixture sync)
+- **verified_at**: 2026-07-17T22:02:22Z (COD related 13/13) · TSR post-merge 재검증 대기
+- **version**: v1.2.1 / v3 SEC-D25 — grade-history + refresher-certificate FE pre-upload magic-byte 후속 회귀 검증
+- **summary**: `StaffRefresherTrainingPage` 업로드 시나리오 call count **0** — 원인: `new File(["pdf"])` 가 SEC-D25 magic 검증 실패. fixture `%PDF-1.4 mock` + spoof reject lock으로 해소.
+- **assignee**: TSR (FF merge 및 post-merge 재검증) · PLN (ROADMAP baseline/pending 반영)
+- **roadmap_ref**: ROADMAP CURRENT BASELINE(frontend test `@cf28a2e`) · coder FE QA-B596 follow-up · COD QA-B597 Fixed
+- **prevention**: `src/pages/StaffRefresherTrainingPage.test.jsx` magic fixture + spoof reject · TSR full suite 재통과 확인
+- **expected**: develop related PASS + full suite PASS + develop→test pending **→0**
+- **actual**: ★ COD Fixed — related **13/13** · Open **0**(FE) · TSR FF·full suite 대기
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T21:54:52Z -->
+<!-- coder-sync: COD 2026-07-17T21:54:52Z (backend) — **★ QA-B598 BE SEC-D34 요양보호사 NHIS import 확장자+Content-Type+OOXML/OLE magic-byte** `@be64fda` · related StaffNhisCaregiverImportServiceTest **9/9 PASS** · WT CLEAN · ahead origin/develop **1** · Open 0(BE) · Planned QA-B116+QA-B95 · FE Open QA-B597 carry -->
+# coder_backend: QA-B598 BE SEC-D34 caregiver NHIS import ext+MIME+excel magic @be64fda; related 9/9; ahead 1; Open 0(BE); Planned QA-B116+QA-B95; FE Open QA-B597.
+
+### [COD] v3/SEC-D34 BE 요양보호사 NHIS import 확장자·Content-Type·excel magic-byte — develop (`be64fda`, QA-20260717-B598) — **Fixed**
+
+- **id**: QA-20260717-B598
+- **priority**: HIGH → Fixed (COD BE · SEC-D34 Open(Monitor) 장기 carry 해소 · VisitService/NhisImportService lockstep)
+- **severity**: Medium → Fixed (WorkbookFactory 자동판별만 의존 → 확장자/MIME/시그니처 fail-closed)
+- **stream**: backend
+- **status**: Fixed (develop `@be64fda` · related **StaffNhisCaregiverImportServiceTest 9/9 PASS**(+5) · WT **CLEAN** · ahead origin/develop **1** · Open **0**(BE))
+- **found_at**: 2026-06-20 (SEC 20차 SEC-D34 Open · SECURITY_AUDIT)
+- **fixed_at**: 2026-07-17T21:54:52Z
+- **verified_at**: 2026-07-17T21:54:52Z (`mvn -Dtest=StaffNhisCaregiverImportServiceTest` **9/9 PASS**)
+- **version**: v3 SEC-D34 / SEC-D25 xlsx 표면 — G-STAFF-NHIS-EXCEL-IMPORT pre-parse gate
+- **summary**: `StaffNhisCaregiverImportService.readAndValidateImportFile` — `.xlsx`/`.xls` 확장자 · Content-Type allowlist + `;param` normalize · OOXML `PK\x03\x04` / OLE CFB magic fail-closed · MIME spoof/truncate reject · endpoint 신설 0(audit-first 442 유지).
+- **assignee**: TSR (develop→test FF) · PLN (baseline BE `@be64fda`) · SEC (SEC-D34 Mitigated 재평가) · Planned **QA-B116**+**QA-B95** · FE Open **QA-B597** carry
+- **roadmap_ref**: ROADMAP v3 · SEC-D34 · PLAN_NOTES 229 defense-in-depth · Planned QA-B116+QA-B95
+- **prevention**: `StaffNhisCaregiverImportServiceTest` extension/MIME/charset/spoof/truncate locks
+- **expected**: BE develop `@be64fda` · caregiver import pre-parse PASS · Open **0**(BE)
+- **actual**: ★ Fixed — `@be64fda` · related **9/9** · Open **0**(BE) · operation BLOCK(QA-B116+QA-B95) · FE Open QA-B597(stream=frontend)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T21:19:30Z -->
+<!-- coder-sync: COD 2026-07-17T21:19:30Z (frontend) — **★ QA-B596 FE v3/SEC-D25 grade-history + refresher-certificate pre-upload magic-byte** `@8b164c3` · BE QA-B595 `@ed94521` lockstep · related **18/18 PASS** · WT CLEAN · ahead origin/develop **1** · Open 0(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B596 FE grade-history+refresher magic-byte SEC-D25 @8b164c3 (BE @ed94521); related 18/18; ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/v3 FE grade-history + refresher-certificate pre-upload magic-byte — develop (`8b164c3`, QA-20260717-B596) — **Fixed**
+
+- **id**: QA-20260717-B596
+- **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B595 `@ed94521` · SEC-D25 등급이력·보수교육 defense-in-depth)
+- **severity**: Medium → Fixed (MIME spoof fail-closed before upload; mobile `;charset=` Content-Type accepted client-side)
+- **stream**: frontend
+- **status**: Fixed (develop `@8b164c3` · related **18/18 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
+- **found_at**: 2026-07-17T21:14:28Z (TSR 1806 QA-B595 note · FE pre-upload lockstep 후보)
+- **fixed_at**: 2026-07-17T21:19:30Z
+- **verified_at**: 2026-07-17T21:19:10Z (related **18/18 PASS** · 5.20s)
+- **version**: v1.2.1 / v3 SEC-D25 — grade-history PDF/PNG + refresher-certificate PDF/PNG/JPEG FE FileReader 8-byte magic + Content-Type `;param` normalize
+- **summary**: BE `@ed94521` lockstep · FE FileReader 8-byte magic + Content-Type `;param` normalize · MIME spoof/truncate/empty-MIME reject · `GradeHistoryAttachmentPanel`·`StaffRefresherCertificatePanel`·`StaffRefresherTrainingPage` await validate · Open **0**(FE).
+- **assignee**: TSR (develop→test FF) · PLN (baseline FE `@8b164c3`) · SEC (SEC-D25 등급이력·보수교육 Mitigated FE layer) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 / v3 SEC-D25 · BE QA-B595 `@ed94521` lockstep · PLAN_NOTES 229-3 defense-in-depth
+- **prevention**: `gradeHistoryAttachments.test.js` · `staffRefresherTrainingCertificates.test.js` · `GradeHistoryAttachmentPanel.test.jsx` · `StaffRefresherCertificatePanel.test.jsx`
+- **expected**: FE develop `@8b164c3` · magic + UI wire · related PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `@8b164c3` · related **18/18** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95) · SEC-D25 핵심 첨부 표면(program/client photo·계약·HR·등급이력·보수교육) FE+BE magic 착지
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T21:14:28Z -->
+<!-- tester-sync: TSR 1806차 2026-07-17T21:14:28Z (backend) — **★ QA-B595 Fixed** FF merge `324da07`→`ed94521` (pending **1→0**: v3/SEC-D25 grade-history + refresher-certificate file magic-byte + content-type normalize · FE ALL SYNCED+PUSHED `@cf28a2e`) · develop pre-merge related **14/14 PASS**(~3.4s) · post-merge **2346/2346 PASS**(89s,408,+10) · live **0/149/0**(34.71s · bootstrap-disabled) · BE develop/test **SYNCED `@ed94521`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@ed94521` · FE `@cf28a2e`)** · backend@8080 **UP/200** · operation **BLOCK**(741 BE + QA-B95) -->
+# tester_1806_backend: QA-B595 Fixed FF merge 324da07→ed94521 (grade-history+refresher magic-byte SEC-D25 · pending 1→0); related 14/14(~3.4s); post-merge 2346/2346(89s); live 0/149/0(34.71s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(741 BE + QA-B95).
+
+### [TSR] v3/SEC-D25 BE grade-history + refresher-certificate file magic-byte — develop→test FF merge (`ed94521`, QA-20260717-B595) — **Fixed**
+
+- **id**: QA-20260717-B595
+- **priority**: HIGH → Fixed (TSR 1806 FF merge)
+- **severity**: Medium → Fixed (MIME spoof / truncated magic fail-closed; mobile `;charset=` headers accepted)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@ed94521`** · related **14/14 PASS** · post-merge **2346/2346 PASS**(+10) · live **0/149/0** · Open **0**(BE))
+- **found_at**: 2026-07-17T21:09:43Z (COD BE `@ed94521` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T21:12:30Z (FF `324da07`→`ed94521`)
+- **verified_at**: 2026-07-17T21:14:28Z
+- **version**: v3 / SEC-D25 — grade-history PDF/PNG + refresher-certificate PDF/PNG/JPEG magic + Content-Type `;param` normalize
+- **summary**: FF merge pending **1** → **0** · related **14/14** · post-merge **2346/2346**(+10) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@ed94521`) · SEC (SEC-D25 보수교육·등급이력 Mitigated 재평가) · FE pre-upload lockstep 후보 · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D25 · BE QA-B593 BenefitContract/StaffHr lockstep · Planned QA-B116+QA-B95
+- **prevention**: `LtcGradeHistoryAttachmentStorageServiceTest` · `StaffRefresherTrainingCertificateStorageServiceTest`
+- **expected**: develop→test FF `@ed94521` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **14/14** · post-merge **2346/2346** · live **0/149/0** · cross-stream **SYNCED**(FE `@cf28a2e`) · operation BLOCK(741 BE + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T21:09:43Z -->
+<!-- coder-sync: COD 2026-07-17T21:09:43Z (backend) — **★ QA-B595 BE v3/SEC-D25 grade-history + refresher-certificate file magic-byte + content-type normalize** `@ed94521` · BenefitContract/StaffHr lockstep · LtcGradeHistory 7/7 + StaffRefresher 7/7 PASS · WT CLEAN · ahead origin/develop **1** · Open 0(BE) · Planned QA-B116+QA-B95 -->
+# coder_backend: QA-B595 BE grade-history+refresher magic-byte SEC-D25 @ed94521; related 14/14; ahead 1; Open 0(BE); Planned QA-B116+QA-B95.
+
+### [COD] v3/SEC-D25 BE grade-history + refresher-certificate file magic-byte — develop (`ed94521`, QA-20260717-B595) — **Fixed**
+
+- **id**: QA-20260717-B595
+- **priority**: HIGH → Fixed (COD BE · SEC-D25 보수교육·등급이력 residual · QA-B593 BenefitContract/StaffHr lockstep)
+- **severity**: Medium → Fixed (MIME spoof / truncated magic fail-closed; mobile `;charset=` headers accepted)
+- **stream**: backend
+- **status**: Fixed (develop `@ed94521` · related **LtcGradeHistoryAttachmentStorageServiceTest 7/7** + **StaffRefresherTrainingCertificateStorageServiceTest 7/7 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(BE))
+- **found_at**: 2026-07-17T20:35:15Z (COD QA-B593 note · 보수교육·등급이력 SEC-D25 carry) / SEC 31차 SEC-D25 Open(Monitor)
+- **fixed_at**: 2026-07-17T21:09:43Z
+- **verified_at**: 2026-07-17T21:09:43Z (COD related **14/14 PASS**)
+- **version**: v3 / SEC-D25 — grade-history PDF/PNG + refresher-certificate PDF/PNG/JPEG magic + Content-Type `;param` normalize
+- **summary**: `LtcGradeHistoryAttachmentStorageService`·`StaffRefresherTrainingCertificateStorageService` 가 BenefitContract/StaffHr 와 동일하게 Content-Type `;param` normalize + signature fail-closed · MIME spoof/truncate reject · `Files.write(payload)` · 신규/확장 14-@Test · Open **0**(BE) · SEC-D25 핵심 첨부 표면(program/client photo·계약·HR·등급이력·보수교육) BE magic 착지.
+- **assignee**: TSR (develop→test FF) · PLN (baseline BE `@ed94521`) · SEC (SEC-D25 보수교육·등급이력 Mitigated 재평가) · FE lockstep 후보 · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D25 · PLAN_NOTES 229-3 defense-in-depth · Planned QA-B116+QA-B95
+- **prevention**: `LtcGradeHistoryAttachmentStorageServiceTest` · `StaffRefresherTrainingCertificateStorageServiceTest`
+- **expected**: BE develop `@ed94521` · 등급이력/보수교육 magic-byte PASS · Open **0**(BE)
+- **actual**: ★ Fixed — `@ed94521` · related **14/14** · Open **0**(BE) · operation BLOCK(QA-B116+QA-B95) · FE pre-upload lockstep 후보(등급이력·보수교육)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T21:01:28Z -->
+<!-- tester-sync: TSR 1805차 2026-07-17T21:01:28Z (frontend) — **★ QA-B594 Fixed** FF merge+PUSH `e16f432`→`cf28a2e` (pending **1→0**: SEC-D25 benefit-contract + staff-HR magic-byte FE · BE QA-B593 `@324da07`) · related **22/22 PASS**(6.10s,+9) · post-merge **2723/2723 PASS**(886.76s,485,+8) · build **1233**(9.32s) · audit **0** · live **0/149/0**(34.16s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@cf28a2e`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@324da07` · FE `@cf28a2e`)** · backend@8080 **UP/200** · operation **BLOCK**(740 BE + QA-B95) -->
+# tester_1805_frontend: QA-B594 Fixed FF merge+PUSH e16f432→cf28a2e (SEC-D25 benefit-contract+staff-HR magic-byte FE · pending 1→0); related 22/22(6.10s); post-merge 2723/2723(886.76s); live 0/149/0(34.16s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(740 BE + QA-B95).
+
+### [TSR] v1.2.1/v3 FE benefit-contract + staff-HR magic-byte — develop→test FF merge+PUSH (`cf28a2e`, QA-20260717-B594) — **Fixed**
+
+- **id**: QA-20260717-B594
+- **priority**: HIGH → Fixed (TSR 1805 FF merge+PUSH)
+- **severity**: Medium → Fixed (SEC-D25 MIME spoof fail-closed FE defense-in-depth; mobile `;charset=` Content-Type accepted client-side)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@cf28a2e`** · related **22/22 PASS** · post-merge **2723/2723 PASS**(+8) · live **0/149/0** · Open **0**(FE))
+- **found_at**: 2026-07-17T20:43:40Z (COD FE `@cf28a2e` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T21:01:00Z (FF `e16f432`→`cf28a2e` · PUSH origin/test)
+- **verified_at**: 2026-07-17T21:01:28Z
+- **version**: v1.2.1 / v3 SEC-D25 — benefit-contract PDF/PNG + staff-HR PDF/PNG/JPEG pre-upload magic + Content-Type `;param` normalize
+- **summary**: FF merge pending **1** → **0** · related **22/22**(+9) · post-merge **2723/2723**(+8) · live **0/149/0** · Open **0**(FE).
+- **assignee**: PLN (baseline FE `@cf28a2e`) · SEC (SEC-D25 HR/계약서 Mitigated FE layer) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 / v3 SEC-D25 · BE QA-B593 `@324da07` lockstep · PLAN_NOTES 229-3 defense-in-depth
+- **prevention**: `benefitContractAttachments.test.js` · `staffHrFiles.test.js` · StaffHrFilePanel/StaffDocumentRepositoryPanel tests
+- **expected**: develop→test FF+PUSH `@cf28a2e` · post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **22/22** · post-merge **2723/2723** · live **0/149/0** · cross-stream **SYNCED**(BE `@324da07`) · operation BLOCK(740 BE + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T20:43:40Z -->
+<!-- coder-sync: COD 2026-07-17T20:43:40Z (frontend) — **★ QA-B594 FE v3/SEC-D25 benefit-contract + staff-HR pre-upload magic-byte** `@cf28a2e` · BE QA-B593 `@324da07` lockstep · related **18/18 PASS** · WT CLEAN · ahead origin/develop **1** · Open 0(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B594 FE benefit-contract+staff-HR magic-byte SEC-D25 @cf28a2e (BE @324da07); related 18/18; ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/v3 FE benefit-contract + staff-HR pre-upload magic-byte — develop (`cf28a2e`, QA-20260717-B594) — **Fixed**
+
+- **id**: QA-20260717-B594
+- **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B593 `@324da07` · SEC-D25 HR/계약서 defense-in-depth)
+- **severity**: Medium → Fixed (MIME spoof fail-closed before upload; mobile `;charset=` Content-Type accepted client-side)
+- **stream**: frontend
+- **status**: Fixed (develop `@cf28a2e` · related **18/18 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
+- **found_at**: 2026-07-17T20:07:58Z (COD QA-B592 note · HR/계약서 SEC-D25 carry) / BE QA-B593 `@324da07`
+- **fixed_at**: 2026-07-17T20:43:40Z
+- **verified_at**: 2026-07-17T20:43:40Z (COD related **18/18 PASS**)
+- **version**: v1.2.1 / v3 SEC-D25 — benefit-contract PDF/PNG + staff-HR PDF/PNG/JPEG FileReader magic + Content-Type `;param` normalize
+- **summary**: BE `@324da07` lockstep · FE FileReader 8-byte magic + Content-Type `;param` normalize · MIME spoof/truncate reject · `ClientBenefitContractAttachmentPanel`·`StaffHrFilePanel`·`StaffDocumentRepositoryPanel` await validate · Open **0**(FE).
+- **assignee**: TSR (develop→test FF) · PLN (baseline FE `@cf28a2e`) · SEC (SEC-D25 HR/계약서 Mitigated FE layer) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 / v3 SEC-D25 · BE QA-B593 · PLAN_NOTES 229-3 defense-in-depth
+- **prevention**: `benefitContractAttachments.test.js` · `staffHrFiles.test.js` · StaffHrFilePanel/StaffDocumentRepositoryPanel tests
+- **expected**: FE develop `@cf28a2e` · contract/HR magic + UI wire · related PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `@cf28a2e` · related **18/18** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95) · 보수교육·등급이력 첨부는 SEC-D25 carry
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T20:39:39Z -->
+<!-- tester-sync: TSR 1804차 2026-07-17T20:39:39Z (backend) — **★ QA-B593 Fixed** FF merge `cdba083`→`324da07` (pending **1→0**: v3/SEC-D25 benefit-contract + staff-HR file magic-byte + content-type normalize · FE ALL SYNCED+PUSHED `@e16f432`) · develop pre-merge related **14/14 PASS**(~3.4s) · post-merge **2336/2336 PASS**(87s,408,+12) · live **0/149/0**(34.07s · bootstrap-disabled) · BE develop/test **SYNCED `@324da07`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@324da07` · FE `@e16f432`)** · backend@8080 **UP/200** · operation **BLOCK**(740 BE + QA-B95) -->
+# tester_1804_backend: QA-B593 Fixed FF merge cdba083→324da07 (benefit-contract+staff-HR magic-byte SEC-D25 · pending 1→0); related 14/14(~3.4s); post-merge 2336/2336(87s); live 0/149/0(34.07s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(740 BE + QA-B95).
+
+### [TSR] v3/SEC-D25 BE benefit-contract + staff-HR file magic-byte — develop→test FF merge (`324da07`, QA-20260717-B593) — **Fixed**
+
+- **id**: QA-20260717-B593
+- **priority**: HIGH → Fixed (TSR 1804 FF merge)
+- **severity**: Medium → Fixed (MIME spoof / truncated magic fail-closed; mobile `;charset=` headers accepted)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@324da07`** · related **14/14 PASS** · post-merge **2336/2336 PASS**(+12) · live **0/149/0** · Open **0**(BE))
+- **found_at**: 2026-07-17T20:35:15Z (COD BE `@324da07` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T20:37:30Z (FF `cdba083`→`324da07`)
+- **verified_at**: 2026-07-17T20:39:39Z
+- **version**: v3 / SEC-D25 — benefit-contract PDF/PNG + staff-HR PDF/PNG/JPEG magic + Content-Type `;param` normalize
+- **summary**: FF merge pending **1** → **0** · related **14/14** · post-merge **2336/2336**(+12) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@324da07`) · SEC (SEC-D25 HR/계약서 Mitigated 재평가) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D25 · BE QA-B591 ClientPhoto lockstep · Planned QA-B116+QA-B95
+- **prevention**: `BenefitContractAttachmentStorageServiceTest` · `StaffHrFileStorageServiceTest`
+- **expected**: develop→test FF `@324da07` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **14/14** · post-merge **2336/2336** · live **0/149/0** · cross-stream **SYNCED**(FE `@e16f432`) · operation BLOCK(740 BE + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T20:35:15Z -->
+<!-- coder-sync: COD 2026-07-17T20:35:15Z (backend) — **★ QA-B593 BE v3/SEC-D25 benefit-contract + staff-HR file magic-byte + content-type normalize** `@324da07` · ClientPhoto/ProgramPhoto lockstep · BenefitContract 7/7 + StaffHrFile 7/7 PASS · WT CLEAN · ahead origin/develop **1** · Open 0(BE) · Planned QA-B116+QA-B95 -->
+# coder_backend: QA-B593 BE benefit-contract+staff-HR magic-byte SEC-D25 @324da07; related 14/14; ahead 1; Open 0(BE); Planned QA-B116+QA-B95.
+
+### [COD] v3/SEC-D25 BE benefit-contract + staff-HR file magic-byte — develop (`324da07`, QA-20260717-B593) — **Fixed**
+
+- **id**: QA-20260717-B593
+- **priority**: HIGH → Fixed (COD BE · SEC-D25 HR/계약서 residual · ClientPhoto QA-B591 lockstep)
+- **severity**: Medium → Fixed (MIME spoof / truncated magic fail-closed; mobile `;charset=` headers accepted)
+- **stream**: backend
+- **status**: Fixed (develop `@324da07` · related **BenefitContractAttachmentStorageServiceTest 7/7** + **StaffHrFileStorageServiceTest 7/7 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(BE))
+- **found_at**: 2026-07-17T19:57:46Z (COD QA-B591 note · HR/계약서 SEC-D25 carry) / SEC 31차 SEC-D25 Open(Monitor)
+- **fixed_at**: 2026-07-17T20:35:15Z
+- **verified_at**: 2026-07-17T20:35:15Z (COD related **14/14 PASS**)
+- **version**: v3 / SEC-D25 — benefit-contract PDF/PNG + staff-HR PDF/PNG/JPEG magic + Content-Type `;param` normalize
+- **summary**: `BenefitContractAttachmentStorageService`·`StaffHrFileStorageService` 가 photo 계열과 동일하게 Content-Type `;param` normalize + signature fail-closed · MIME spoof/truncate reject · `Files.write(payload)` · 신규/확장 14-@Test · Open **0**(BE).
+- **assignee**: TSR (develop→test FF) · PLN (baseline BE `@324da07`) · SEC (SEC-D25 HR/계약서 Mitigated 재평가) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D25 · PLAN_NOTES 229-3 defense-in-depth · Planned QA-B116+QA-B95
+- **prevention**: `BenefitContractAttachmentStorageServiceTest` · `StaffHrFileStorageServiceTest`
+- **expected**: BE develop `@324da07` · HR/계약서 magic-byte PASS · Open **0**(BE)
+- **actual**: ★ Fixed — `@324da07` · related **14/14** · Open **0**(BE) · operation BLOCK(QA-B116+QA-B95) · 보수교육·등급이력 첨부는 SEC-D25 carry
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T20:27:30Z -->
+<!-- tester-sync: TSR 1803차 2026-07-17T20:27:30Z (frontend) — **★ QA-B592+UXD-190 Fixed** FF merge+PUSH `dc81f6e`→`e16f432` (pending **2→0**: SEC-D25 client photo magic-byte FE + UXD-190 a11y · BE QA-B591 `@cdba083`) · related **25/25 PASS**(13.37s,+16) · post-merge **2715/2715 PASS**(886.31s,483,+9) · build **1233**(9.23s) · audit **0** · live **0/149/0**(34.38s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@e16f432`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@cdba083` local · FE `@e16f432`)** · backend@8080 **UP/200** · operation **BLOCK**(739 BE + QA-B95) -->
+# tester_1803_frontend: QA-B592+UXD-190 Fixed FF merge+PUSH dc81f6e→e16f432 (SEC-D25 client photo FE+UXD-190 a11y · pending 2→0); related 25/25(13.37s); post-merge 2715/2715(886.31s); live 0/149/0(34.38s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(739 BE + QA-B95).
+
+### [TSR] v1.2.1/v3 FE client profile photo magic-byte + UXD-190 a11y — develop→test FF merge+PUSH (`e16f432`, QA-20260717-B592+UXD-190) — **Fixed**
+
+- **id**: QA-20260717-B592 · UXD-190
+- **priority**: HIGH → Fixed (TSR 1803 FF merge+PUSH)
+- **severity**: Medium → Fixed (SEC-D25 MIME spoof fail-closed FE defense-in-depth; UXD-190 print hide + photo error ARIA)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@e16f432`** · related **25/25 PASS** · post-merge **2715/2715 PASS**(+9) · live **0/149/0** · Open **0**(FE))
+- **found_at**: 2026-07-17T20:07:58Z (COD FE `@e16f432` · develop vs test pending **2**)
+- **fixed_at**: 2026-07-17T20:27:00Z (FF `dc81f6e`→`e16f432` · PUSH origin/test)
+- **verified_at**: 2026-07-17T20:27:30Z
+- **version**: v1.2.1 / v3 SEC-D25 — client profile photo JPEG/PNG/WEBP pre-upload magic + POST `/clients/{id}/photo` wire · UXD-190 print CSS + ARIA
+- **summary**: FF merge pending **2** → **0** · related **25/25**(+16) · post-merge **2715/2715**(+9) · live **0/149/0** · Open **0**(FE).
+- **assignee**: PLN (baseline FE `@e16f432`) · SEC (SEC-D25 ClientPhoto Mitigated FE layer) · UXD (UXD-190 absorbed) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 photo SEC-D25 · BE QA-B591 `@cdba083` lockstep · UXD-190
+- **prevention**: `clientPhotos.test.js` · `ClientPhotoUpload.test.jsx` · `clientPhotoServices.test.js` · `ProgramSchedulePhotoUpload.test.jsx` · `StaffStatusReportPage.test.jsx`
+- **expected**: develop→test FF+PUSH `@e16f432` · post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **25/25** · post-merge **2715/2715** · live **0/149/0** · cross-stream **SYNCED**(BE `@cdba083`) · operation BLOCK(739 BE + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T20:07:58Z -->
+<!-- coder-sync: COD 2026-07-17T20:07:58Z (frontend) — **★ QA-B592 FE v3/SEC-D25 client profile photo pre-upload magic-byte + wire** `@e16f432` · BE QA-B591 `@cdba083` lockstep · related **9/9 PASS** · WT CLEAN · ahead origin/develop **1** · Open 0(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B592 FE client photo magic-byte SEC-D25 + ClientDetail wire @e16f432 (BE @cdba083); related 9/9; ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/v3 FE client profile photo magic-byte + upload wire — develop (`e16f432`, QA-20260717-B592) — **Fixed**
+
+- **id**: QA-20260717-B592
+- **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B591 `@cdba083` · SEC-D25 ClientPhoto defense-in-depth)
+- **severity**: Medium → Fixed (MIME spoof fail-closed before upload; mobile `;charset=` Content-Type accepted client-side)
+- **stream**: frontend
+- **status**: Fixed (develop `@e16f432` · related **9/9 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
+- **found_at**: 2026-07-17T19:57:46Z (COD BE QA-B591 · ClientPhoto SEC-D25 BE-only residual · PLAN_NOTES 229-3)
+- **fixed_at**: 2026-07-17T20:07:58Z (COD FE `@e16f432` `clientPhotos.js` + `ClientPhotoUpload` + `ClientDetailPage` wire)
+- **verified_at**: 2026-07-17T20:07:58Z (related Vitest **9/9 PASS**)
+- **version**: v1.2.1 / v3 SEC-D25 — client profile photo JPEG/PNG/WEBP pre-upload magic + POST `/clients/{id}/photo` wire
+- **summary**: BE `@cdba083` lockstep · FE FileReader 12-byte magic + Content-Type `;param` normalize · MIME spoof/truncate reject · `uploadClientPhotoApi` · `ClientDetailPage` 기본정보 프로필 사진 · Open **0**(FE).
+- **assignee**: TSR (develop→test FF · UXD-190 `@b2eb059` + QA-B592 `@e16f432`) · PLN (baseline FE `@e16f432`) · SEC (SEC-D25 ClientPhoto Mitigated) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 photo SEC-D25 · BE QA-B591 · PLAN_NOTES 229-3
+- **prevention**: `clientPhotos.test.js` · `ClientPhotoUpload.test.jsx` · `clientPhotoServices.test.js`
+- **expected**: FE develop `@e16f432` · client photo magic + UI wire · related PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `@e16f432` · related **9/9** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95) · HR/계약서 첨부는 SEC-D25 carry
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T20:03:22Z -->
+<!-- tester-sync: TSR 1802차 2026-07-17T20:03:22Z (backend) — **★ QA-B591 Fixed** FF merge `c19bfa6`→`cdba083` (pending **1→0**: v3/SEC-D25 client profile photo magic-byte + content-type normalize · FE pending **1** `@b2eb059` UXD-190) · develop pre-merge related **17/17 PASS**(~3.4s,+8) · post-merge **2324/2324 PASS**(88s,407,+8) · live **0/149/0**(34.94s · bootstrap-disabled) · BE develop/test **SYNCED `@cdba083`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **BLOCK(BE `@cdba083` · FE pending 1 `@b2eb059`)** · backend@8080 **UP/200** · operation **BLOCK**(739 BE + QA-B95) -->
+# tester_1802_backend: QA-B591 Fixed FF merge c19bfa6→cdba083 (client photo magic-byte SEC-D25 · pending 1→0); related 17/17(~3.4s); post-merge 2324/2324(88s); live 0/149/0(34.94s); Open 0(BE); transfer PASS(BE local); cross-stream BLOCK(FE pending 1); operation BLOCK(739 BE + QA-B95).
+
+### [TSR] v3/SEC-D25 BE client profile photo magic-byte — develop→test FF merge (`cdba083`, QA-20260717-B591) — **Fixed**
+
+- **id**: QA-20260717-B591
+- **priority**: HIGH → Fixed (TSR 1802 FF merge)
+- **severity**: Medium → Fixed (MIME spoof / truncated magic fail-closed; mobile `;charset=` headers accepted)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@cdba083`** · related **17/17 PASS** · post-merge **2324/2324 PASS**(+8) · live **0/149/0** · Open **0**(BE))
+- **found_at**: 2026-07-17T19:57:46Z (COD BE `@cdba083` · develop vs test pending **1**)
+- **fixed_at**: 2026-07-17T20:03:00Z (FF `c19bfa6`→`cdba083`)
+- **verified_at**: 2026-07-17T20:03:22Z
+- **version**: v3 / SEC-D25 — client profile photo JPEG/PNG/WEBP magic-byte + Content-Type parameter strip
+- **summary**: FF merge pending **1** → **0** · related **17/17**(+8 ClientPhoto) · post-merge **2324/2324**(+8) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@cdba083`) · SEC (SEC-D25 ClientPhoto Mitigated 재평가) · FE tester (`@b2eb059` UXD-190 pending) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 photo SEC-D25 · Planned QA-B116+QA-B95
+- **prevention**: `ClientPhotoStorageServiceTest` 8-@Test · ProgramPhotoStorageServiceTest regress
+- **expected**: develop→test FF `@cdba083` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **17/17** · post-merge **2324/2324** · live **0/149/0** · cross-stream **BLOCK**(FE pending `@b2eb059`) · operation BLOCK(739 BE + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T19:57:46Z -->
+<!-- coder-sync: COD 2026-07-17T19:57:46Z (backend) — **★ QA-B591 BE v3/SEC-D25 client profile photo magic-byte + content-type normalize** `@cdba083` · ProgramPhotoStorageService lockstep · ClientPhotoStorageServiceTest 8/8 PASS · WT CLEAN · ahead origin/develop **1** · Open 0(BE) · Planned QA-B116+QA-B95 -->
+# coder_backend: QA-B591 BE client photo magic-byte SEC-D25 + content-type normalize @cdba083; related ClientPhotoStorageServiceTest 8/8; ahead 1; Open 0(BE); Planned QA-B116+QA-B95.
+
+### [COD] v3/SEC-D25 BE client profile photo magic-byte + content-type normalize — develop (`cdba083`, QA-20260717-B591) — **Fixed**
+
+- **id**: QA-20260717-B591
+- **priority**: HIGH → Fixed (COD BE · SEC-D25 ClientPhoto residual · ProgramPhoto QA-B585 lockstep)
+- **severity**: Medium → Fixed (MIME spoof / truncated magic fail-closed; mobile `;charset=` headers accepted)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@cdba083`** · TSR 1802 verified · related **ClientPhotoStorageServiceTest 8/8 PASS** · post-merge **2324/2324 PASS** · WT **CLEAN** · Open **0**(BE))
+- **found_at**: 2026-07-17T17:55:00Z (COD QA-B585 note · ClientPhoto SEC-D25 carry) / SEC 31차 SEC-D25 Open(Monitor)
+- **fixed_at**: 2026-07-17T19:57:46Z (COD BE `@cdba083` ClientPhotoStorageService magic-byte + normalize)
+- **verified_at**: 2026-07-17T20:03:22Z (TSR 1802 FF + `mvn test` 2324/2324)
+- **version**: v3 / SEC-D25 — client profile photo JPEG/PNG/WEBP magic-byte + Content-Type parameter strip
+- **summary**: `ClientPhotoStorageService` 가 program photo 와 동일하게 Content-Type `;param` normalize + JPEG/PNG/WEBP signature fail-closed · MIME spoof/truncate reject · 신규 8-@Test · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@cdba083`) · SEC (SEC-D25 ClientPhoto Mitigated 재평가) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 photo SEC-D25 · PLAN_NOTES 229-3 defense-in-depth reuse · Planned QA-B116+QA-B95
+- **prevention**: `ClientPhotoStorageServiceTest` — content-type param/whitespace · MIME spoof · truncated magic · positive PNG
+- **expected**: BE develop `@cdba083` · ClientPhoto magic-byte PASS · Open **0**(BE)
+- **actual**: ★ Fixed — `@cdba083` · TSR 1802 FF verified · related **8/8** · post-merge **2324/2324** · Open **0**(BE) · operation BLOCK(QA-B116+QA-B95) · HR/계약서 등 타 첨부는 SEC-D25 carry
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T19:36:13Z -->
+<!-- tester-sync: TSR 1801차 2026-07-17T19:36:13Z (frontend) — **★ QA-B588+B590 Fixed** FF merge+PUSH `8e28fe0`→`dc81f6e` (pending **2→0**: mid-token NoBreakSpace + semicolon-optional NoBreakSpace · BE QA-B589 `@c19bfa6`) · related **246/246 PASS**(3.11s,+4) · post-merge **2706/2706 PASS**(884.25s,480,+4) · build **1231**(10.33s) · audit **0** · live **0/149/0**(35.77s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@dc81f6e`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@c19bfa6` local · FE `@dc81f6e`)** · backend@8080 **UP/200** · operation **BLOCK**(738 BE + QA-B95) -->
+# tester_1801_frontend: QA-B588+B590 Fixed FF merge+PUSH 8e28fe0→dc81f6e (NoBreakSpace mid-token+semicolon-optional · pending 2→0); related 246/246(3.11s); post-merge 2706/2706(884.25s); live 0/149/0(35.77s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(738 BE + QA-B95).
+
+### [TSR] v1.2.1/QA-B95 FE NoBreakSpace mid-token + semicolon-optional — develop→test FF merge (`dc81f6e`, QA-20260717-B588+B590) — **Fixed**
+
+- **id**: QA-20260717-B588 · QA-20260717-B590
+- **priority**: HIGH → Fixed
+- **severity**: Medium → Fixed (mid-token + semicolon-optional NoBreakSpace bootstrap markers remain fail-closed)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@dc81f6e`** · related **246/246 PASS** · post-merge **2706/2706 PASS**(+4) · live **0/149/0** · Open **0**(FE))
+- **found_at**: 2026-07-17T18:37:44Z (COD `@090ac10` mid-token) / 2026-07-17T19:00:59Z (COD `@dc81f6e` semicolon-optional)
+- **fixed_at**: 2026-07-17T19:36:13Z (TSR FF merge+PUSH `8e28fe0`→`dc81f6e`)
+- **verified_at**: 2026-07-17T19:36:13Z (`src/frontend-test` related **246/246** · full **2706/2706** · build **1231** · live **0/149/0**)
+- **version**: v1.2.1 / QA-B95 — mid-token `&NoBreakSpace;` + semicolon-optional `&NoBreakSpace-` decode
+- **summary**: FF merge pending **2** → **0** · related **246/246**(+4) · post-merge **2706/2706**(+4) · build **1231** · audit **0** · live **0/149/0** · Open **0**(FE).
+- **assignee**: PLN (baseline FE `@dc81f6e`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 · QA-B95 NoBreakSpace FE↔BE lockstep · BE QA-B589 `@c19bfa6`
+- **prevention**: `notificationChannelStatus.test.js` + `liveE2eHarness.test.js` mid-token/semicolon-optional NoBreakSpace lock (246/2706)
+- **expected**: develop→test FF+PUSH `@dc81f6e` · post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **246/246** · post-merge **2706/2706** · live **0/149/0** · cross-stream **SYNCED**(BE `@c19bfa6`) · operation BLOCK(738 BE + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T19:00:59Z -->
+<!-- coder-sync: COD 2026-07-17T19:00:59Z (frontend) — **★ QA-B590 FE v1.2.1/QA-B95 semicolon-optional NoBreakSpace marker decode lock** `@dc81f6e` · BE QA-B589 `@c19bfa6` lockstep · related **246/246 PASS**(+2) · WT CLEAN · ahead origin/develop **1** · Open 0(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B590 FE semicolon-optional NoBreakSpace marker decode lock @dc81f6e (BE @c19bfa6); related 246/246(+2); ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/QA-B95 FE semicolon-optional NoBreakSpace marker decode lock — develop (`dc81f6e`, QA-20260717-B590) — **Fixed**
+
+- **id**: QA-20260717-B590
+- **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B589 `@c19bfa6`)
+- **severity**: Medium → Fixed (gateway payloads dropping `&NoBreakSpace` semicolon inside blocker tokens remain fail-closed)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@dc81f6e`** · TSR 1801 verified · related **246/246 PASS**(+2) · post-merge **2706/2706 PASS**(+4) · WT **CLEAN** · Open **0**(FE))
+- **found_at**: 2026-07-17T18:57:09Z (BE QA-B589 semicolon-optional NoBreakSpace · FE explicit regression lock pending)
+- **fixed_at**: 2026-07-17T19:00:59Z (COD FE `@dc81f6e`)
+- **verified_at**: 2026-07-17T19:36:13Z (TSR 1801 FF+PUSH · related **246/246** · full **2706/2706**)
+- **version**: v1.2.1 / QA-B95 — semicolon-optional `&NoBreakSpace-` / `&NOBREAKSPACE-` mid-token bootstrap marker decode
+- **summary**: BE `@c19bfa6` lockstep · FE decoder already strip-empty at non-alnum boundary · +2 regression tests (PascalCase/UPPERCASE semicolon-optional mid-token) · Open **0**(FE).
+- **assignee**: PLN (baseline FE `@dc81f6e`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 · QA-B95 operational harden · BE QA-B589
+- **prevention**: `notificationChannelStatus.test.js` + `liveE2eHarness.test.js` semicolon-optional NoBreakSpace lock (246/246)
+- **expected**: FE develop `@dc81f6e` · semicolon-optional mid-token NoBreakSpace PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `@dc81f6e` · TSR 1801 FF+PUSH verified · related **246/246**(+2) · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T18:57:09Z -->
+<!-- tester-sync: TSR 1800차 2026-07-17T18:57:09Z (backend) — **★ QA-B589 Fixed** FF merge `63227d7`→`c19bfa6` (pending **1→0**: QA-B95 semicolon-optional NoBreakSpace marker decode lockstep · FE `@090ac10` SYNCED) · develop pre-merge related **91/91 PASS**(~3.0s,+1) · post-merge **2316/2316 PASS**(105s,406,+1) · live **0/149/0**(34.39s · bootstrap-disabled) · BE develop/test **SYNCED `@c19bfa6`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@c19bfa6` · FE ALL SYNCED `@090ac10`)** · backend@8080 **UP/200** · operation **BLOCK**(738 BE + QA-B95) -->
+# tester_1800_backend: QA-B589 Fixed FF merge 63227d7→c19bfa6 (QA-B95 semicolon-optional NoBreakSpace lockstep · pending 1→0); related 91/91(~3.0s); post-merge 2316/2316(105s); live 0/149/0(34.39s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(738 BE + QA-B95).
+
+### [TSR] v2/QA-B95 BE semicolon-optional NoBreakSpace marker decode — develop→test FF merge (`c19bfa6`, QA-20260717-B589) — **Fixed**
+
+- **id**: QA-20260717-B589
+- **priority**: HIGH → Fixed
+- **severity**: Medium → Fixed (gateway payloads dropping `&NoBreakSpace;` semicolon inside blocker tokens remain fail-closed)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@c19bfa6`** · related **91/91 PASS** · post-merge **2316/2316 PASS**(+1) · live **0/149/0** · Open **0**(BE))
+- **found_at**: 2026-07-17T18:48:27Z (COD `@c19bfa6` · FE QA-B588 `@090ac10` lockstep)
+- **fixed_at**: 2026-07-17T18:57:09Z (TSR FF merge `63227d7`→`c19bfa6`)
+- **verified_at**: 2026-07-17T18:57:09Z (`src/backend-test` `mvn test` **2316/2316** · live **0/149/0**)
+- **version**: v2 / QA-B95 — semicolon-optional `&NoBreakSpace` mid-token bootstrap marker decode
+- **summary**: FF merge pending **1** → **0** · related **91/91**(+1) · post-merge **2316/2316**(+1) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@c19bfa6`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · QA-B95 NoBreakSpace FE lockstep · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest semicolon-optional NoBreakSpace mid-token marker (91/2316)
+- **expected**: develop→test FF `@c19bfa6` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **91/91** · post-merge **2316/2316** · live **0/149/0** · cross-stream **SYNCED**(FE `@090ac10`) · operation BLOCK(738 BE + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T18:37:44Z -->
+<!-- coder-sync: COD 2026-07-17T18:37:44Z (frontend) — **★ QA-B588 FE v1.2.1/QA-B95 mid-token NoBreakSpace marker decode lock** `@090ac10` · BE QA-B587 `@63227d7` lockstep · related **244/244 PASS**(+2) · WT CLEAN · ahead origin/develop **1** · Open 0(FE) · Planned QA-B116+QA-B95 -->
+# coder_frontend: QA-B588 FE mid-token NoBreakSpace marker decode lock @090ac10 (BE @63227d7); related 244/244(+2); ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/QA-B95 FE mid-token NoBreakSpace marker decode lock — develop (`090ac10`, QA-20260717-B588) — **Fixed**
+
+- **id**: QA-20260717-B588
+- **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B587 `@63227d7`)
+- **severity**: Medium → Fixed (legacy `&NoBreakSpace;` strip keeps mid-token bootstrap markers intact)
+- **stream**: frontend
+- **status**: Fixed (develop `@090ac10` · related **244/244 PASS**(+2) · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
+- **found_at**: 2026-07-17T18:35:16Z (BE QA-B587 strip-empty NoBreakSpace · FE mid-token regression lock pending)
+- **fixed_at**: 2026-07-17T18:37:44Z (COD FE `@090ac10`)
+- **verified_at**: 2026-07-17T18:37:44Z (`npm test` notificationChannelStatus+liveE2eHarness **244/244**)
+- **version**: v1.2.1 / QA-B95 — mid-token `&NoBreakSpace;` strip (not space) so `guardian&NoBreakSpace;-bootstrap` rejoins
+- **summary**: BE `@63227d7` lockstep · FE decoder already strip-empty · +2 regression tests (case/semicolon-optional mid-token) · Open **0**(FE).
+- **assignee**: TSR (develop→test FF) · PLN (baseline FE `@090ac10`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 · QA-B95 operational harden · BE QA-B587
+- **prevention**: `notificationChannelStatus.test.js` + `liveE2eHarness.test.js` mid-token NoBreakSpace lock (244/244)
+- **expected**: FE develop `@090ac10` · mid-token NoBreakSpace PASS · Open **0**(FE)
+- **actual**: ★ Fixed — `@090ac10` · related **244/244**(+2) · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95)
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T18:35:16Z -->
+<!-- tester-sync: TSR 1799차 2026-07-17T18:35:16Z (backend) — **★ QA-B587 Fixed** FF merge `d1ff63a`→`63227d7` (pending **1→0**: QA-B95 NoBreakSpace marker decoding lockstep · FE `@8e28fe0` SYNCED) · develop pre-merge related **90/90 PASS**(~5.3s,+1) · post-merge **2315/2315 PASS**(92s,406,+1) · live **0/149/0**(34.67s · bootstrap-disabled) · BE develop/test **SYNCED `@63227d7`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@63227d7` · FE ALL SYNCED+PUSHED `@8e28fe0`)** · backend@8080 **UP/200** · operation **BLOCK**(737 BE + QA-B95) -->
+# tester_1799_backend: QA-B587 Fixed FF merge d1ff63a→63227d7 (QA-B95 NoBreakSpace lockstep · pending 1→0); related 90/90(~5.3s); post-merge 2315/2315(92s); live 0/149/0(34.67s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(737 BE + QA-B95).
+
+### [TSR] v2/QA-B95 BE NoBreakSpace marker decoding lockstep — develop→test FF merge (`63227d7`, QA-20260717-B587) — **Fixed**
+
+- **id**: QA-20260717-B587
+- **priority**: HIGH → Fixed
+- **severity**: Medium → Fixed (mid-token bootstrap markers remain detectable after legacy `&NoBreakSpace;` strip)
+- **stream**: backend
+- **status**: Fixed (develop/test **SYNCED `@63227d7`** · related **90/90 PASS** · post-merge **2315/2315 PASS**(+1) · live **0/149/0** · Open **0**(BE))
+- **found_at**: 2026-07-17T18:30:36Z (COD `@63227d7` · FE QA-B95 NoBreakSpace lockstep)
+- **fixed_at**: 2026-07-17T18:35:16Z (TSR FF merge `d1ff63a`→`63227d7`)
+- **verified_at**: 2026-07-17T18:35:16Z (`src/backend-test` `mvn test` **2315/2315** · live **0/149/0**)
+- **version**: v2 / QA-B95 — strip legacy `&NoBreakSpace;` aliases during blocker decoding
+- **summary**: FF merge pending **1** → **0** · related **90/90**(+1) · post-merge **2315/2315**(+1) · live **0/149/0** · Open **0**(BE).
+- **assignee**: PLN (baseline BE `@63227d7`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP merged baseline · QA-B95 NoBreakSpace FE lockstep · Planned QA-B116+QA-B95
+- **prevention**: LiveE2eOperationReadinessSupportTest NoBreakSpace mid-token marker decode (90/2315)
+- **expected**: develop→test FF `@63227d7` · post-merge PASS · Open **0**(BE)
+- **actual**: ★ Fixed — FF merge · related **90/90** · post-merge **2315/2315** · live **0/149/0** · cross-stream **SYNCED**(FE `@8e28fe0`) · operation BLOCK(737 BE + QA-B95)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T18:22:35Z -->
+<!-- tester-sync: TSR 1798차 2026-07-17T18:22:35Z (frontend) — **★ QA-B586 Fixed** FF merge+PUSH `bc1d343`→`8e28fe0` (pending **1→0**: v3 program schedule photo magic-byte SEC-D25 · BE QA-B585 `@d1ff63a`) · related **15/15 PASS**(9.27s,+2) · post-merge **2702/2702 PASS**(885.10s,480,+3) · build **1231**(11.08s) · audit **0** · live **0/149/0**(34.29s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@8e28fe0`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@d1ff63a` local · FE `@8e28fe0`)** · backend@8080 **UP/200** · operation **BLOCK**(736 BE + QA-B95) -->
+# tester_1798_frontend: QA-B586 Fixed FF merge+PUSH bc1d343→8e28fe0 (program photo magic-byte SEC-D25 · pending 1→0); related 15/15(9.27s); post-merge 2702/2702(885.10s); live 0/149/0(34.29s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(736 BE + QA-B95).
+
+### [TSR] v1.2.1/v3 FE program schedule photo magic-byte — develop→test FF merge (`8e28fe0`, QA-20260717-B586) — **Fixed**
+
+- **id**: QA-20260717-B586
+- **priority**: HIGH → Fixed
+- **severity**: Medium → Fixed (MIME spoof fail-closed before upload)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@8e28fe0`** · related **15/15 PASS** · post-merge **2702/2702 PASS**(+3) · live **0/149/0** · Open **0**(FE))
+- **found_at**: 2026-07-18T02:21 KST (SEC 31차 · FE Content-Type-only · BE magic-byte already Fixed)
+- **fixed_at**: 2026-07-17T18:01:00Z (COD FE `@8e28fe0`)
+- **verified_at**: 2026-07-17T18:22:35Z (TSR 1798 FF+PUSH)
+- **version**: v1.2.1 / v3 programs — FE `validateProgramSchedulePhotoFile` JPEG/PNG/WEBP magic · BE QA-B585 lockstep
+- **summary**: FF merge pending **1** → **0** · related **15/15**(+2) · post-merge **2702/2702**(+3) · build **1231** · audit **0** · live **0/149/0** · Open **0**(FE).
+- **assignee**: PLN (baseline FE `@8e28fe0`) · SEC (SEC-D25 program-photo Mitigated 재평가) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1/v3 program schedule photo · SEC-D25 · BE QA-B585 · Planned QA-B116+QA-B95
+- **prevention**: `programsPhoto.test.js` spoof/truncate + `ProgramSchedulePhotoUpload.test.jsx` MIME-spoof UI lock (15/2702)
+- **expected**: develop→test FF+PUSH `@8e28fe0` · post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **15/15** · post-merge **2702/2702** · live **0/149/0** · cross-stream **SYNCED**(BE `@d1ff63a`) · operation BLOCK(736 BE + QA-B95)
+
+---
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T18:01:00Z -->
 <!-- coder-sync: COD 2026-07-17T18:01:00Z (frontend) — **★ QA-B586 FE v3 program schedule photo magic-byte SEC-D25 lockstep** `@8e28fe0` (BE QA-B585 `@d1ff63a`) · JPEG/PNG/WEBP signature client fail-closed · related **15/15 PASS**(+2) · WT CLEAN · ahead origin/develop **1** · Open 0(FE) · Planned QA-B116+QA-B95 -->
 # coder_frontend: QA-B586 FE program schedule photo magic-byte SEC-D25 lockstep @8e28fe0 (BE @d1ff63a); related 15/15(+2); ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
@@ -8,16 +493,16 @@
 - **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B585 `@d1ff63a` · SEC-D25)
 - **severity**: Medium → Fixed (MIME spoof fail-closed before upload)
 - **stream**: frontend
-- **status**: Fixed (develop `@8e28fe0` · related **15/15 PASS**(+2) · WT **CLEAN** · Open **0**(FE) · tester FF pending)
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@8e28fe0`** · TSR 1798 verified · related **15/15 PASS**(+2) · post-merge **2702/2702 PASS**(+3) · WT **CLEAN** · Open **0**(FE))
 - **found_at**: 2026-07-18T02:21 KST (SEC 31차 · FE Content-Type-only · BE magic-byte already Fixed)
 - **fixed_at**: 2026-07-17T18:01:00Z (COD FE `@8e28fe0`)
 - **version**: v1.2.1 / v3 programs — FE `validateProgramSchedulePhotoFile` + JPEG/PNG/WEBP magic · BE QA-B585 lockstep
 - **summary**: MIME spoof(jpeg 헤더+PNG payload)·truncated magic·비서명 바이트를 업로드 전 거부 · FileReader 헤더 읽기(jsdom 호환) · Open **0**(FE).
-- **assignee**: TSR (develop→test FF) · PLN (baseline FE `@8e28fe0`) · Planned **QA-B116**+**QA-B95**
+- **assignee**: PLN (baseline FE `@8e28fe0`) · SEC (SEC-D25 program-photo Mitigated 재평가) · Planned **QA-B116**+**QA-B95**
 - **roadmap_ref**: ROADMAP v1.2.1/v3 program schedule photo · SEC-D25 · BE QA-B585
 - **prevention**: `programsPhoto.test.js` spoof/truncate + `ProgramSchedulePhotoUpload.test.jsx` MIME-spoof UI lock
 - **expected**: FE develop `@8e28fe0` · related PASS · Open **0**(FE)
-- **actual**: ★ Fixed — `@8e28fe0` · related **15/15**(+2) · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95)
+- **actual**: ★ Fixed — `@8e28fe0` · related **15/15**(+2) · TSR 1798 FF+PUSH verified · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95)
 
 ---
 
@@ -5963,6 +6448,18 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 <!-- planner-sync: PLN 227차 2026-07-17T11:12 UTC — Open 0(이동 없음) · Planned residual QA-B116(origin/test 726 BE)+QA-B95 · Fixed carry QA-B556~B567 · BNK-820~828 → ROADMAP/REQUIREMENTS/USER_STORIES/PLAN_NOTES · ★★★ audit-first API posture 5차 · ★★★ 모듈 97.41% 동결 · baseline BE@29e20dd·FE@20f6ddc SYNCED -->
 
 ## Open
+
+_(Open **0** active · **QA-20260717-B595** Fixed TSR1806 FF `@ed94521` · BE develop/test **SYNCED `@ed94521`** · FE develop/test/origin **ALL SYNCED+PUSHED `@cf28a2e`** · Planned **QA-B116**(origin/test **741 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1806)_
+
+_(Open **0** active · **QA-20260717-B593** Fixed TSR1804 FF `@324da07` · BE develop/test **SYNCED `@324da07`** · FE develop/test/origin **ALL SYNCED+PUSHED `@e16f432`** · Planned **QA-B116**(origin/test **740 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1804 · superseded by TSR1806 BE `@ed94521`)_
+
+_(Open **0** active · **QA-20260717-B592+UXD-190** Fixed TSR1803 FF+PUSH `@e16f432` · FE develop/test/origin **ALL SYNCED+PUSHED `@e16f432`** · BE develop/test **SYNCED `@cdba083`** local · Planned **QA-B116**(origin/test **739 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1803 · superseded by TSR1804 BE `@324da07`)_
+
+_(Open **0** active(BE) · **QA-20260717-B591** Fixed TSR1802 FF `@cdba083` · BE develop/test **SYNCED `@cdba083`** · FE pending **1** `@b2eb059`(UXD-190)·test `@dc81f6e` · Planned **QA-B116**(origin/test **739 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **BLOCK**(FE pending) · TSR1802 · superseded by TSR1803 `@e16f432`)_
+
+_(Open **0** active · **QA-20260717-B588+B590** Fixed TSR1801 FF+PUSH `@dc81f6e` · FE develop/test/origin **ALL SYNCED+PUSHED `@dc81f6e`** · BE develop/test **SYNCED `@c19bfa6`** local · Planned **QA-B116**(origin/test **738 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1801 · superseded by TSR1802 BE `@cdba083`)_
+
+_(Open **0** active · **QA-20260717-B589** Fixed TSR1800 FF `@c19bfa6` · BE develop/test **SYNCED `@c19bfa6`** · FE develop/test/origin **ALL SYNCED `@090ac10`** · Planned **QA-B116**(origin/test **738 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1800 · superseded by TSR1801 `@dc81f6e`)_
 
 _(Open **0** active · **QA-20260717-B585** Fixed TSR1797 FF `@d1ff63a` · BE develop/test **SYNCED `@d1ff63a`** · FE develop/test/origin **ALL SYNCED+PUSHED `@bc1d343`** · Planned **QA-B116**(origin/test **736 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1797)_
 
@@ -12964,6 +13461,8 @@ _(TSR 529차 2026-06-13T07:25 UTC — frontend Open **0건**. QA-B68 Fixed @ `db
 
 
 ## Planned
+
+_(**PLN 229차 sync** — Open **0**(이동 대상 없음) · Planned residual **QA-B116**(origin/test push **738 BE**) + **QA-B95**(operation 승격·NBSP FE↔BE lockstep COMPLETE·bootstrap-disabled·B580~B590 Fixed carry) · baseline BE `@c19bfa6`(local SYNCED·origin/test 738 pending)/FE `@dc81f6e`(FULLY SYNCED+PUSHED) · BNK-835~841 기획 반영 · **★★★ v3 photo SEC-D25 6-cycle COMPLETE**(BNK-833→840) · **★★★ Page 106 정본**(BNK-835) · **★★★ demo-work≠func.php M2 범위 분리**(BNK-841) · **★★★ audit-first HTTP 442 6차** · **★★ NHIS #44 573차** · 최종 갱신: PLN 229차 2026-07-17T19:42:00Z)_
 
 _(**PLN 227차 sync** — Open **0**(이동 대상 없음) · Planned residual **QA-B116**(origin/test push **726 BE**) + **QA-B95**(operation 승격·bootstrap-disabled·B556~B567 Fixed carry) · baseline BE `@29e20dd`(local SYNCED·origin/test 726 pending)/FE `@20f6ddc`(FULLY SYNCED+PUSHED) · BNK-820~828 기획 반영 · **★★★ audit-first API posture 5차**(HTTP 441·물리 삭제 신설 금지·BNK-828) · **★★★ closed band 6·모듈 97.41% 동결** · **★★★ M2/M5/M7 parity CONFIRMED**(BNK-821/822/825) · **★★ NHIS #44 561차** · 최종 갱신: PLN 227차 2026-07-17T11:12:00Z)_
 
