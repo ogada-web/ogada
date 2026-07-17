@@ -1,9 +1,12 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-17T00:51:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-17T11:25:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-16 (185차 — **QA-B95 5커밋 재점검 + US-J03 알림톡·SMS 템플릿 카탈로그 표 row header 승격 + §109** — 184차(§108) 이후 coder 신규 커밋 6건(`031abef`/`73aa6dd`/`c260baa`/`73169a1`/`3f7db38` QA-B95 figure/em/SixPerEm/MathSpace/VeryVery* space entity decode + `ab9e853` US-J03 template-catalog Kakao 필수 6종 확장) 미점검. 다섯 decode 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`NotificationChannelReadinessPanel` 카탈로그 표** — `ab9e853`이 13항목(ezCare 7 + Kakao 6·`ezcareMessageKind` nullable `—`)·6열로 재편하며 각 행을 식별하는 「메시지」 열이 `<td>`라 SR이 상태/데이터 5열을 읽을 때 행 컨텍스트를 헤더로 안내받지 못하던 WCAG 1.3.1 갭을, 같은 컴포넌트 「문자 발송 참고 단가」 표(§105)와 정합되게 **`<th scope="row">`** 로 승격(muted 배경·`forced-colors` 상속·`—` placeholder는 §53 관례 유지). ② **§109** 신규. `npm test`(49/49·rowheader 회귀 +2)·build PASS.)
+> **최종 갱신**: 2026-07-17 (188차 — **QA-B95 6커밋 재점검 + FE-16 레이아웃 클래스 12종 승격 + 청구 상태 타임라인 `<time>` + §112** — 187차(§111) 이후 coder 신규 커밋 6건(`694266e`/`56fa1c0`/`a280437`/`3f7bb94`/`93f77e1`/`20f6ddc` QA-B95 quote entity decode)은 로직 전용(변경 불요). 정확한 className 감사로 **레이아웃·간격 영향 미정의 12종**(`ds-card--form`·`ds-timeline--compact`·`ds-qr-scan`·`ds-lifecycle__links`/`__link-list`·`ds-billing-report__section-header`·`ds-risk-assessment-panel__period-select`·`ds-staff-hr-files*`·`ds-benefit-contract-files*`·`ds-staff-refresher-certificates*`·`ds-transport-compliance__workflow`) 승격. **`BillingDetailPage` 상태 이력** 평문 시각 → `<time dateTime>`(WCAG 1.3.1). `--color-success-text` 토큰 정합. baseline FE `@20f6ddc` → UXD-188.)
+> **이전 갱신**: 2026-07-17 (187차 — **QA-B95 6커밋 재점검 + FE-16 텍스트·간격·그룹 클래스 9종 승격 + §111** — 186차(§110) 이후 coder 신규 커밋 6건(`9907725`/`1c84f0f`/`5ce4726`/`40c85df`/`a364f97`/`ac3af73` QA-B95 wrapping/bidi/MathML/typographic quote entity decode)은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). 감사 스크립트 좌측 경계 누락 오탐(`recor`+`ds-heading`·`nee`+`ds-assessment*`)을 정정한 재감사로, 실제 소비되나 CSS 미정의였던 **텍스트·간격·그룹 클래스 9종**(`ds-text-strong`·`ds-card__lede`·`ds-table__meta`·`ds-field-label`·`ds-field__label`·`ds-consent-box`·`ds-page-breadcrumb`·`ds-submit-block`·`ds-transport-map__refresh-hint`)을 승격. `ds-consent-box`(민감정보 동의 묶음)에 `forced-colors` 경계선 보강, 나머지 미정의 ~50종은 자식이 레이아웃 전담하는 시맨틱 컨테이너로 §97 관례상 규칙 불요 유지. baseline FE `@ac3af73` → UXD-187. CSS-only·`npm run build` PASS.)
+> **이전 갱신**: 2026-07-17 (186차 — **QA-B95 6커밋 배치 재점검 + FE-16 미정의 `ds-*` 26종 일괄 승격 + §110** — 185차(§109) 이후 coder 신규 커밋 6건(`b28eb45`/`b753586`/`6900a8f`/`7ee1cf1`/`6fceb8d`/`d6be05c` QA-B95 entity delimiter decode)은 로직 전용(변경 불요). 컴포넌트 대비 `components.css` 미정의 클래스 26종(테이블·그리드·폼·간호 폼 intro 등) 일괄 승격 + `forced-colors` 오버라이드. baseline FE `@d6be05c` → UXD-186. `971c636`.)
+> **이전 갱신**: 2026-07-16 (185차 — **QA-B95 5커밋 재점검 + US-J03 알림톡·SMS 템플릿 카탈로그 표 row header 승격 + §109** — 184차(§108) 이후 coder 신규 커밋 6건(`031abef`/`73aa6dd`/`c260baa`/`73169a1`/`3f7db38` QA-B95 figure/em/SixPerEm/MathSpace/VeryVery* space entity decode + `ab9e853` US-J03 template-catalog Kakao 필수 6종 확장) 미점검. 다섯 decode 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`NotificationChannelReadinessPanel` 카탈로그 표** — `ab9e853`이 13항목(ezCare 7 + Kakao 6·`ezcareMessageKind` nullable `—`)·6열로 재편하며 각 행을 식별하는 「메시지」 열이 `<td>`라 SR이 상태/데이터 5열을 읽을 때 행 컨텍스트를 헤더로 안내받지 못하던 WCAG 1.3.1 갭을, 같은 컴포넌트 「문자 발송 참고 단가」 표(§105)와 정합되게 **`<th scope="row">`** 로 승격(muted 배경·`forced-colors` 상속·`—` placeholder는 §53 관례 유지). ② **§109** 신규. `npm test`(49/49·rowheader 회귀 +2)·build PASS.)
 > **이전 갱신**: 2026-07-16 (184차 — **QA-B95 NoBreakSpace 6커밋 재점검 + `.ds-muted`·`.ds-checkbox-group` FE-16 승격 + §108** — 183차(§107) 이후 coder 신규 커밋 6건(`a3703a5`/`039cd88`/`29fc34f`/`975aecb`/`61f8f19`/`8a05640` QA-B95 NoBreakSpace·bidi·MathML space entity decode) 미점검. 여섯 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`ClientLinkageRecordsPanel`** — 초안 빈 상태 `<p>`가 CSS **미정의 `ds-muted`**(소비자 단 1곳)를 사용해 `--color-text-muted`·`forced-colors` 승격을 못 받던 FE-16 회귀를 정의된 **`.ds-text-muted`**로 교체(90·97차 `.ds-empty-hint` 패턴). ② **`.ds-checkbox-group`** — `VisitRfidDiffComparePanel`·`BillingStatementDispatchPanel` 발송 대상 Checkbox 스택이 JSX만 있고 CSS 미정의여 세로 `gap`이 0으로 붙던 FE-16 결함을 `flex` column·`gap: var(--space-2)`로 승격(§84 `.ds-form-stack` 패턴). ③ **§108** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-16 (183차 — **HomeNewsletterLaunchPage 원시 표 `.ds-table-wrap` 누락 회귀 해소 + §107** — 182차(§106) 이후 coder 신규 커밋 5건(`f5dded2` G2 branch scope fallback·`e45dacb`/`cf8a248`/`f73413d`/`5b69e7a` QA-B95 blocker entity decode) 재점검. 다섯 커밋은 branch scope 로직·HTML entity 정규화 **로직 전용**으로 신규 UI·ARIA 표면 없음. `f5dded2`가 손댄 `HomeNewsletterLaunchPage` 재점검 중 **원시 `<table className="ds-table">` 3종(초안 게시판 6열·기관 공지 5열·발송 이력 8열)이 공용 `Table` 컴포넌트를 우회**해 `.ds-table-wrap`(`overflow-x:auto`)을 못 받던 FE-16·반응형 회귀를 발견 — 특히 8열 발송 이력 표는 좁은 뷰포트에서 카드 밖 가로 오버플로. 세 표를 `Table` 내부와 동일한 `<div class="ds-table-wrap">`로 래핑(caption·scope·`data-testid` 보존, 30개 테스트 회귀 0). §107 신규. `HomeNewsletterLaunchPage.test.jsx` 30/30·`npm run build` PASS.)
 > **이전 갱신**: 2026-07-16 (182차 — **US-ACCOUNTING-M12 SSO blocker·G17 dual-numbering·G2 게시판 페이지네이션 a11y 재점검 + `.ds-dual-numbering-note` FE-16 승격 + §106** — 181차(§105) 이후 coder 신규 커밋 11건(`793a43c` G17 dual-numbering guardrail·`07198a2`/`b42174a` M12 SSO blocker guidance·`483dfe1` G2 notice board page reconcile·QA-B95 blocker decode 8건) 미점검 a11y·FE-16 갭 해소. ① **`AccountingBpoPage` SSO blocker** — `ul.ds-list` bare `<li>`(`.ds-list__item` 누락)·`tone=neutral`→`warning`·`aria-labelledby` 목록 연결(WCAG 1.4.1·FE-16). ② **`BathingScheduleIndicator27Panel`·`FunctionalRecoveryPage`** — dual-numbering guardrail `.ds-dual-numbering-note` callout 승격(forced-colors 경계선·링크 텍스트 병행). ③ **`HomeNewsletterLaunchPage`** — 인라인 이전/다음→표준 `Pagination`(`nav`·`aria-current=page`·로딩 `disabled`·context `aria-label`). ④ **`Pagination`** — `ariaLabel`·`disabled`·`testId` optional props. ⑤ **§106** 신규. `npm test`·build PASS.)
@@ -5890,6 +5893,96 @@ CSS-only 변경·JSX 불변·회귀 없음.
 
 - `comm -23` diff 재실행 후 잔여 미정의 클래스 0 확인.
 - `npm run build` 실행 예정 (coder 또는 tester).
+
+---
+
+## §111. QA-B95 6커밋 배치 재점검 + FE-16 텍스트·간격·그룹 클래스 9종 승격 (187차) [UXD]
+
+> **110차(§110) 이후 coder 신규 커밋 6건** (`9907725`/`1c84f0f`/`5ce4726`/`40c85df`/`a364f97`/`ac3af73` QA-B95 wrapping/bidi/MathML/typographic quote entity decode 6계층) 재점검 + 경계 안전 재감사로 발견한 미정의 `ds-*` 클래스 9종 승격. baseline FE `@ac3af73` → UXD-187.
+
+### 111-1. QA-B95 decode (6 commits) — 변경 불요
+
+`9907725`(parenthesis)·`1c84f0f`(angle)·`5ce4726`(bidi long-alias)·`40c85df`(MathML long angle-bracket)·`a364f97`(typographic quote)·`ac3af73`(OpenCurly* quote)는 모두 `notificationChannelStatus.js` + live E2E harness(`liveBackendProbe`/`liveConfig`/`liveGlobalSetup`) **로직 전용** decode 커밋. 렌더 마크업·ARIA·토큰 불변 — UI 조치 없음(§106-5·§107-2·§108-1·§109-1·§110-1 패턴 연속).
+
+### 111-2. FE-16 승격 — 미정의 `ds-*` 클래스 9종 → `components.css`
+
+컴포넌트 대비 감사 스크립트의 **좌측 경계 누락 오탐**(`recor`+`ds-heading`, `nee`+`ds-assessment*` 등)을 정정한 재감사로, 실제 소비되나 CSS 미정의였던 텍스트·간격·그룹 클래스만 선별해 정의했다.
+
+| 클래스 | 소비처 | 정의 |
+|---|---|---|
+| `ds-text-strong` | AccountingBpoPage(SSO 블로커 제목) | semibold + `--color-text` 강조 문단 |
+| `ds-card__lede` | StaffStatusReportPage | Card 헤더 아래 전폭 소개문(space-between 밀림 방지·secondary sm) |
+| `ds-table__meta` | BodyRestraintRecordPage·IntensiveExcretionObservationPage | 표 셀 보조 메타(block·xs·muted) |
+| `ds-field-label` | CarePlanNotificationPage·NeedsAssessmentStatusPage·PeriodicRiskAssessmentStatusPage·ClientCarePlanBulkExportPanel | 필터·출력 대상 독립 라벨/legend(`.ds-label` 블록화) |
+| `ds-field__label` | BranchesPage | 행정구역 pseudo-라벨(`.ds-label` 블록화) |
+| `ds-consent-box` | ClientFormPage | 주민번호 수집 동의 묶음 박스(soft 배경·경계선·간격) |
+| `ds-page-breadcrumb` | GuardianDetailPage | 상세 뒤로가기 내비 행 하단 리듬 |
+| `ds-submit-block` | GuardianCheckinPage | 전폭 제출 버튼 블록 상단 여백 |
+| `ds-transport-map__refresh-hint` | KakaoTransportMap | 배차 지도 경로 갱신 상태 힌트 여백/sm(색은 `.ds-text-secondary` 병행) |
+
+### 111-3. a11y·접근성 결정
+
+- **`ds-consent-box`** — 민감정보(주민등록번호) 수집 동의를 시각적으로 묶어 오조작을 방지하고, `@media (forced-colors: active)`에서 `border-color: ButtonText`로 고대비 모드에서도 경계가 유지되도록 보강.
+- **`ds-field-label`/`ds-field__label`** — 필터·검색용 독립 `<label htmlFor>`/`<legend>`/pseudo-`<p>`가 CSS 미정의로 `.ds-label`의 weight·color·간격을 못 받던 갭 해소. 라벨-컨트롤 연결(`htmlFor`·`legend`)은 이미 구현되어 있어 시각 정합만 보강(WCAG 1.3.1·3.3.2).
+- **`ds-text-strong`/`ds-card__lede`/`ds-table__meta`** — 색상 단독이 아닌 **글자 굵기·크기 대비**로 위계를 전달(색상 의존 ×·WCAG 1.4.1).
+- 나머지 미정의 `ds-*`(약 50종: `ds-copay-calculator`·`ds-billing-settings-panel`·`ds-nursing-*-form`·`ds-pressure-ulcer-form`·`ds-transport-shuttle-sheet`·`ds-shuttle-grid-page` 등)는 **자식 요소가 레이아웃을 전담하는 시맨틱 컨테이너**로, §97 관례대로 규칙 불요(FE-16 아님)로 유지.
+
+### 111-4. coder 전달 메모
+
+1. **`ds-card__lede`** 는 `.ds-card__header`(flex·space-between) 내부에 두면 자동으로 전폭 다음 줄로 내려간다(`flex-basis:100%`). 헤더 밖에 두면 일반 문단처럼 렌더된다.
+2. **`ds-field-label`/`ds-field__label`** 는 `Field` render-prop을 쓰지 않는 **독립 필터 라벨** 전용. 폼 필드는 기존대로 `Field`(label·id 자동 연결)를 우선 사용한다.
+3. **`ds-table__meta`** 는 셀 내 2차 정보를 다음 줄에 표시(block). 배지/1차 텍스트 뒤에 배치한다.
+4. 신규 token 추가 없음 — 모든 클래스는 기존 토큰 참조.
+
+### 111-5. 검증
+
+- 경계 안전 감사 재실행 후 승격 9종 정의 확인, `ReadLints` 0.
+- `npm run build` **PASS**(9.30s). CSS-only 변경으로 렌더·테스트 회귀 표면 없음(§97·§105·§107 CSS-only 사이클 관례).
+
+---
+
+## §112. QA-B95 6커밋 재점검 + FE-16 레이아웃 클래스 12종 승격 + 청구 타임라인 `<time>` (188차) [UXD]
+
+> **111차(§111) 이후 coder 신규 커밋 6건** (`694266e`/`56fa1c0`/`a280437`/`3f7bb94`/`93f77e1`/`20f6ddc` QA-B95 Left/Right·low-9·guillemet·prime·semicolon-optional quote entity decode) 재점검 + 정확한 `className` 리터럴 감사로 레이아웃 영향 FE-16 갭 해소. baseline FE `@20f6ddc` → UXD-188.
+
+### 112-1. QA-B95 decode (6 commits) — 변경 불요
+
+여섯 커밋은 `notificationChannelStatus.js` + live E2E harness **로직 전용**. 렌더 마크업·ARIA·토큰 불변 — UI 조치 없음(§106~§111 패턴 연속).
+
+### 112-2. FE-16 승격 — 미정의 `ds-*` 레이아웃 클래스 → `components.css`
+
+| 클래스 | 소비처 | 정의 |
+|---|---|---|
+| `ds-card--form` | 목욕·간호·요양 기록 등록 Card 14+ | `max-width: 48rem` 가독 폭 + `forced-colors` 경계 |
+| `ds-timeline--compact` | BillingDetailPage 상태 이력 | 항목·마커 밀집 간격 |
+| `ds-qr-scan` | GuardianCheckinPage | `max-width: 36rem` + `forced-colors` |
+| `ds-lifecycle__links` / `__link-list` | ClientFaq21824LifecyclePanel | 관련 화면 nav 여백·세로 gap |
+| `ds-billing-report__section-header` | BillingStatisticsReportPage | 제목+액션 `space-between` |
+| `ds-risk-assessment-panel__period-select` | ClientDetailPage G40b | 기간 필터 하단 리듬 |
+| `ds-staff-hr-files` / `__checklist` / `__upload` | StaffHrFilePanel | column stack·checklist 제목 |
+| `ds-benefit-contract-files` / `__upload` | ClientBenefitContractAttachmentPanel | column stack·h3 타이포 |
+| `ds-staff-refresher-certificates` / `__upload` | StaffRefresherCertificatePanel | column stack·h3 타이포 |
+| `ds-transport-compliance__workflow` | TransportCompliancePanel | 단계 ol 세로 gap |
+
+**§97 유지(규칙 불요)**: `ds-lead-caregiver-compliance`·`ds-periodic-risk-compliance`·`ds-needs-assessment-compliance`·`ds-pressure-ulcer-lifecycle`·`ds-needs-assessment-form`(base)·`ds-staff-status-report-print-zone` — 자식/인쇄 마커가 레이아웃 전담.
+
+### 112-3. a11y·접근성 결정
+
+- **`BillingDetailPage` `ClaimStatusTimeline`** — `statusHistory[].changedAt` 평문 → **`<time dateTime>`**(WCAG 1.3.1·StaffDetailPage·Safety 패턴).
+- **`.ds-risk-assessment-panel__admission-ok`** — raw `#15803d`/`font-weight:600` → `--color-success-text` / `--font-weight-semibold`(토큰 단일 원천·다크모드 대비).
+- **`ds-card--form`/`ds-qr-scan`** — `forced-colors`에서 `ButtonText` 경계선으로 카드 윤곽 유지(WCAG 1.4.11).
+
+### 112-4. coder 전달 메모
+
+1. **기록 등록 Card**는 `className="ds-card--form"`을 유지해 와이드 모니터에서 폼 줄 길이를 제한한다. 표·리포트 Card에는 적용하지 않는다.
+2. **상태 이력** API는 ISO-8601 `changedAt`을 내려야 `<time dateTime>`이 유효하다(이미 DTO 관례).
+3. 신규 token 없음 — 기존 `--space-*`·`--font-*`·`--color-*`만 참조.
+4. USER_STORIES **US-H03**(간호지시서·수급자계약 만료 대시보드)은 P3·scope 대기 — UI 셸 미착수(planner 확정 후 UXD 재개).
+
+### 112-5. 검증
+
+- `BillingDetailPage.test.jsx` 타임라인 `<time>` 회귀 +1.
+- `npm test`(해당 파일)·`npm run build` PASS.
 
 ---
 
