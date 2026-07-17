@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-16T16:55:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-17T00:51:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-16 (184차 — **QA-B95 NoBreakSpace 6커밋 재점검 + `.ds-muted`·`.ds-checkbox-group` FE-16 승격 + §108** — 183차(§107) 이후 coder 신규 커밋 6건(`a3703a5`/`039cd88`/`29fc34f`/`975aecb`/`61f8f19`/`8a05640` QA-B95 NoBreakSpace·bidi·MathML space entity decode) 미점검. 여섯 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`ClientLinkageRecordsPanel`** — 초안 빈 상태 `<p>`가 CSS **미정의 `ds-muted`**(소비자 단 1곳)를 사용해 `--color-text-muted`·`forced-colors` 승격을 못 받던 FE-16 회귀를 정의된 **`.ds-text-muted`**로 교체(90·97차 `.ds-empty-hint` 패턴). ② **`.ds-checkbox-group`** — `VisitRfidDiffComparePanel`·`BillingStatementDispatchPanel` 발송 대상 Checkbox 스택이 JSX만 있고 CSS 미정의여 세로 `gap`이 0으로 붙던 FE-16 결함을 `flex` column·`gap: var(--space-2)`로 승격(§84 `.ds-form-stack` 패턴). ③ **§108** 신규. `npm test`·build PASS.)
+> **최종 갱신**: 2026-07-16 (185차 — **QA-B95 5커밋 재점검 + US-J03 알림톡·SMS 템플릿 카탈로그 표 row header 승격 + §109** — 184차(§108) 이후 coder 신규 커밋 6건(`031abef`/`73aa6dd`/`c260baa`/`73169a1`/`3f7db38` QA-B95 figure/em/SixPerEm/MathSpace/VeryVery* space entity decode + `ab9e853` US-J03 template-catalog Kakao 필수 6종 확장) 미점검. 다섯 decode 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`NotificationChannelReadinessPanel` 카탈로그 표** — `ab9e853`이 13항목(ezCare 7 + Kakao 6·`ezcareMessageKind` nullable `—`)·6열로 재편하며 각 행을 식별하는 「메시지」 열이 `<td>`라 SR이 상태/데이터 5열을 읽을 때 행 컨텍스트를 헤더로 안내받지 못하던 WCAG 1.3.1 갭을, 같은 컴포넌트 「문자 발송 참고 단가」 표(§105)와 정합되게 **`<th scope="row">`** 로 승격(muted 배경·`forced-colors` 상속·`—` placeholder는 §53 관례 유지). ② **§109** 신규. `npm test`(49/49·rowheader 회귀 +2)·build PASS.)
+> **이전 갱신**: 2026-07-16 (184차 — **QA-B95 NoBreakSpace 6커밋 재점검 + `.ds-muted`·`.ds-checkbox-group` FE-16 승격 + §108** — 183차(§107) 이후 coder 신규 커밋 6건(`a3703a5`/`039cd88`/`29fc34f`/`975aecb`/`61f8f19`/`8a05640` QA-B95 NoBreakSpace·bidi·MathML space entity decode) 미점검. 여섯 커밋은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`ClientLinkageRecordsPanel`** — 초안 빈 상태 `<p>`가 CSS **미정의 `ds-muted`**(소비자 단 1곳)를 사용해 `--color-text-muted`·`forced-colors` 승격을 못 받던 FE-16 회귀를 정의된 **`.ds-text-muted`**로 교체(90·97차 `.ds-empty-hint` 패턴). ② **`.ds-checkbox-group`** — `VisitRfidDiffComparePanel`·`BillingStatementDispatchPanel` 발송 대상 Checkbox 스택이 JSX만 있고 CSS 미정의여 세로 `gap`이 0으로 붙던 FE-16 결함을 `flex` column·`gap: var(--space-2)`로 승격(§84 `.ds-form-stack` 패턴). ③ **§108** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-16 (183차 — **HomeNewsletterLaunchPage 원시 표 `.ds-table-wrap` 누락 회귀 해소 + §107** — 182차(§106) 이후 coder 신규 커밋 5건(`f5dded2` G2 branch scope fallback·`e45dacb`/`cf8a248`/`f73413d`/`5b69e7a` QA-B95 blocker entity decode) 재점검. 다섯 커밋은 branch scope 로직·HTML entity 정규화 **로직 전용**으로 신규 UI·ARIA 표면 없음. `f5dded2`가 손댄 `HomeNewsletterLaunchPage` 재점검 중 **원시 `<table className="ds-table">` 3종(초안 게시판 6열·기관 공지 5열·발송 이력 8열)이 공용 `Table` 컴포넌트를 우회**해 `.ds-table-wrap`(`overflow-x:auto`)을 못 받던 FE-16·반응형 회귀를 발견 — 특히 8열 발송 이력 표는 좁은 뷰포트에서 카드 밖 가로 오버플로. 세 표를 `Table` 내부와 동일한 `<div class="ds-table-wrap">`로 래핑(caption·scope·`data-testid` 보존, 30개 테스트 회귀 0). §107 신규. `HomeNewsletterLaunchPage.test.jsx` 30/30·`npm run build` PASS.)
 > **이전 갱신**: 2026-07-16 (182차 — **US-ACCOUNTING-M12 SSO blocker·G17 dual-numbering·G2 게시판 페이지네이션 a11y 재점검 + `.ds-dual-numbering-note` FE-16 승격 + §106** — 181차(§105) 이후 coder 신규 커밋 11건(`793a43c` G17 dual-numbering guardrail·`07198a2`/`b42174a` M12 SSO blocker guidance·`483dfe1` G2 notice board page reconcile·QA-B95 blocker decode 8건) 미점검 a11y·FE-16 갭 해소. ① **`AccountingBpoPage` SSO blocker** — `ul.ds-list` bare `<li>`(`.ds-list__item` 누락)·`tone=neutral`→`warning`·`aria-labelledby` 목록 연결(WCAG 1.4.1·FE-16). ② **`BathingScheduleIndicator27Panel`·`FunctionalRecoveryPage`** — dual-numbering guardrail `.ds-dual-numbering-note` callout 승격(forced-colors 경계선·링크 텍스트 병행). ③ **`HomeNewsletterLaunchPage`** — 인라인 이전/다음→표준 `Pagination`(`nav`·`aria-current=page`·로딩 `disabled`·context `aria-label`). ④ **`Pagination`** — `ariaLabel`·`disabled`·`testId` optional props. ⑤ **§106** 신규. `npm test`·build PASS.)
 > **이전 갱신**: 2026-07-16 (181차 — **US-J03-UNIT-RATES 참고 단가 섹션 a11y 점검 + `.ds-notification-channel-panel__unit-rates` FE-16 해소 + §105** — 180차(§104) 이후 coder 신규 커밋 5건(`56797a8`/`a356083`/`79763a3` J03 참고 단가 panel wire·`a5f4098`/`b0b9ace` QA-B95 entity decode) 미점검 a11y·FE-16 갭 해소. ① **`.ds-notification-channel-panel__unit-rates`** — `NotificationChannelReadinessPanel` 참고 단가 섹션이 CSS 미정의 클래스 사용으로 `forced-colors` 경계선을 못 받던 FE-16 결함을 `display:block` + `forced-colors` `.ds-table-wrap` 경계선으로 해소. ② **`<section aria-labelledby>`** · **`<h3 id>`** — 참고 단가 섹션 landmark·제목 계층 표준 준수 확인(변경 불요). ③ **`<data value={amountWon}>`** — 금액 기계 판독(WCAG 1.3.1) 신규·`<th scope="row">` 채널 열·`captionVisuallyHidden` 표 준수 확인. ④ **`role="note"`** — 참고 단가 disclaimer `<p>`에 유효 ARIA 역할·맥락 안내 준수(WCAG 4.1.2). ⑤ **§105** 신규. CSS-only·회귀 없음. `npm run build` PASS.)
@@ -5787,6 +5788,108 @@ CSS-only 변경·JSX 불변·회귀 없음.
 
 - `npm test` — `ClientLinkageRecordsPanel`·`VisitRfidDiffComparePanel`·`BillingStatementDispatchPanel`·`notificationChannelStatus`.
 - `npm run build` PASS.
+
+---
+
+## §109. US-J03 알림톡·SMS 템플릿 카탈로그 표 row header 승격 (185차) [UXD]
+
+> **184차(§108) 이후 coder 신규 커밋 6건**(`031abef`/`73aa6dd`/`c260baa`/`73169a1`/`3f7db38` QA-B95 space-entity decode layer + `ab9e853` US-J03 template-catalog Kakao required templates) 미점검 a11y 갭 해소. baseline FE `@ab9e853` → UXD-185.
+
+### 109-1. QA-B95 blocker decode (5 commits) — 변경 불요
+
+`031abef`/`73aa6dd`/`c260baa`/`73169a1`/`3f7db38`은 `notificationChannelStatus.js`·live E2E harness의 figure/punctuation/ideographic·fractional em·SixPerEm·MathSpace/WordJoiner·VeryVery* 공백 엔티티 decode **로직 전용**. 렌더 마크업·ARIA·토큰 불변 — UI 조치 없음(§106-5·§107-2·§108-1 패턴 연속).
+
+### 109-2. `NotificationChannelReadinessPanel` 카탈로그 표 — message 열 `<td>` → `<th scope="row">`
+
+`ab9e853`이 카탈로그 표를 13항목(ezCare 7 + US-J03 Kakao 필수 6, `ezcareMessageKind` nullable·`formatEzcareMessageKind`로 `—` 표기)으로 확장하며 6열 구조로 재편했다. 재점검 중 발견한 결함:
+
+| 항목 | 문제 | 조치 |
+| --- | --- | --- |
+| 카탈로그 표 「메시지」 열 | 각 행을 식별하는 메시지명이 `<td>`라 6열 13행에서 SR이 상태/데이터 5열(ezCare kind·채널·발송 구현·Solapi 설정·발송 가능)을 읽을 때 **행 컨텍스트(메시지명)를 헤더로 안내받지 못함**(WCAG 1.3.1) | 「메시지」 셀을 **`<th scope="row">`** 로 승격 |
+
+- 같은 컴포넌트의 **「문자 발송 참고 단가」 표**(§105)가 이미 채널 열을 `<th scope="row">`로 렌더 — 카탈로그 표만 정합에서 벗어나 있던 회귀를 해소.
+- 시각: `.ds-table th`(muted 배경·semibold) 규칙을 상속해 행 헤더 열이 행 식별자로 구분됨(단가 표와 동일 처리·`forced-colors` 경계선 상속).
+- `formatEzcareMessageKind`의 Kakao 전용 `—`(kind 없음)는 코드베이스 전역 빈 셀 placeholder 관례(§53 `ds-text-muted 「—」`·`HomeNewsletterLaunchPage`·`StaffPayrollReportsPage`)와 정합 — `<th scope="col">ezCare kind</th>` 헤더·상단 `role="note"`(「kind 없음·표기 —」)가 의미 제공(변경 불요).
+
+### 109-3. coder 전달 메모
+
+1. **다열 데이터 표** — 행을 식별하는 첫 열(명칭·라벨)은 `<th scope="row">`로 렌더해 상태/데이터 열에 행 컨텍스트를 제공한다(단가 표·카탈로그 표 패턴 통일).
+2. **빈 셀 placeholder** — nullable 값의 `—`(em-dash)는 열 헤더+`role="note"` 설명과 병행 시 유효(별도 sr-only 불요). 신규 컬럼 도입 시 이 관례 유지.
+3. **QA-B95** — FE↔BE entity decode lockstep 계속. UI surface 추가 커밋(`ab9e853`)과 decode-only 커밋 분리 권장(§108-4 연속).
+
+### 109-4. 검증
+
+- `npm test src/components/ui/NotificationChannelReadinessPanel.test.jsx src/config/notificationChannelStatus.test.js` — 49/49 PASS(카탈로그 표 `rowheader` 회귀 +2).
+- `npm run build` PASS.
+
+---
+
+---
+
+## §110. QA-B95 6커밋 배치 재점검 + FE-16 일괄 승격 (224차) [UXD]
+
+> **109차(§109) 이후 coder 신규 커밋 6건** (`b28eb45`/`b753586`/`6900a8f`/`7ee1cf1`/`6fceb8d`/`d6be05c` QA-B95 entity delimiter decode 6계층) 재점검 + 컴포넌트 대비 `components.css` 미정의 클래스 26종 일괄 승격. baseline FE `@d6be05c` → UXD-186.
+
+### 110-1. QA-B95 decode (6 commits) — 변경 불요
+
+`b28eb45`/`b753586`/`6900a8f`/`7ee1cf1`/`6fceb8d`/`d6be05c`는 `notificationChannelStatus.js`의 VeryThickSpace·comma·semi delimiter·blank token·square-bracket·curly-brace 래핑 엔티티 decode **로직 전용**. 렌더 마크업·ARIA·토큰 불변 — UI 조치 없음(§106-5·§107-2·§108-1·§109-1 패턴 연속).
+
+### 110-2. FE-16 일괄 승격 — 26개 미정의 `ds-*` 클래스 → `components.css`
+
+컴포넌트 파일 대비 `components.css` diff를 통해 발견한 미정의 클래스를 그룹별로 정의했다.
+
+| 클래스 | 추가 위치 | 비고 |
+|---|---|---|
+| `ds-stack--sm` | 전역 레이아웃 | gap space-3 촘촘 스택 |
+| `ds-theme-toggle__label` | ThemeToggle | 라이트/다크 텍스트 레이블 sm |
+| `ds-table--compact` | FeeSurchargeGuidePanel | 셀 패딩 축소 |
+| `ds-form-grid--3` | FeeSurchargeGuidePanel | 3열 그리드 |
+| `ds-progress-steps__label` | BatchProgressSteps | 단계 텍스트 + 상태 색상 |
+| `ds-inline-cluster__item` | NhisReconciliationTable | flex-shrink 0 아이템 |
+| `ds-billing-ledger-table` | BillingLedgerTable | 레저 테이블 래퍼 |
+| `ds-billing-ledger-table__opening-balance` | BillingLedgerTable | 이월 잔액 행 italic/muted |
+| `ds-billing-claim-print-table--wide` | BillingStatementPrintPanel | 넓은 인쇄 명세 테이블 |
+| `ds-fee-matrix` | FeeScheduleMatrix | 수가 매트릭스 min-width |
+| `ds-fee-surcharge-guide__calc` | FeeSurchargeGuidePanel | 가산 계산기 섹션 |
+| `ds-fee-surcharge-guide__result` | FeeSurchargeGuidePanel | 결과 live-region |
+| `ds-fee-surcharge-guide__details` | FeeSurchargeGuidePanel | 상세 collapsible |
+| `ds-health-alert-list__badge` | HealthAlertList | 배지 인라인 정렬 |
+| `ds-cms-collection-status` | CmsCollectionPanel | CMS 상태 섹션 |
+| `ds-date-picker__clear` | DatePickerCalendar | 선택 해제 버튼 영역 |
+| `ds-calendar__day-num` | VisitCalendar | 날짜 번호 typo |
+| `ds-korean-address__zonecode` | KoreanAddressFields | 우편번호 max-width |
+| `ds-korean-address__base` | KoreanAddressFields | 기본 주소 flex |
+| `ds-korean-address__detail` | KoreanAddressFields | 상세 주소 flex |
+| `ds-staff-lifecycle-panel__progress` | StaffLifecyclePanel | 진행률 요약 섹션 |
+| `ds-staff-lifecycle-panel__form` | StaffLifecyclePanel | 폼 gap 조절 |
+| `ds-staff-lifecycle-panel__meta` | StaffLifecyclePanel | 메타 2열 그리드 |
+| `ds-staff-lifecycle-panel__flags` | StaffLifecyclePanel | 플래그 flex-wrap 행 |
+| `ds-nursing-emergency-form__intro` | NursingEmergencyRecordForm | intro Alert 하단 여백 |
+| `ds-nursing-oral-care-form__intro` | NursingOralCareCheckForm | intro Alert 하단 여백 |
+| `ds-nursing-vital-form__intro` | NursingVitalCheckForm | intro Alert 하단 여백 |
+
+#### a11y·접근성 결정
+
+- `ds-fee-surcharge-guide__result`에 `forced-colors` 오버라이드 추가 — 고대비 모드에서 배경색 제거 후 `ButtonText`/`Canvas`로 보장.
+- `ds-calendar__day-num`에 `.ds-calendar__day--today` 및 `--muted` 상태 색상 연동 — 날짜 번호 의미 시각화.
+- `ds-progress-steps__label`에 done/failed/active 상태별 색상 지정 — 텍스트만으로도 단계 상태 인식 가능(색상 의존 ×).
+
+#### coder 전달 메모
+
+1. **`ds-table--compact`** — `ds-table` 기반 위에 적용해야 함(`<table className="ds-table ds-table--compact">`). `ds-table` 없이 단독 사용 금지.
+2. **`ds-form-grid--3`** — 모바일(`≤40em`)에서 단열 자동 축소. 3열이 필요한 날짜·시각 폼(FeeSurchargeGuidePanel G11)에 적합.
+3. **`ds-stack--sm`** — `ds-stack`과 달리 section 구분선 없음. heading 없이 필드만 묶을 때 사용.
+4. **`ds-staff-lifecycle-panel__meta`** — `ds-form-grid`와 조합: `className="ds-form-grid ds-staff-lifecycle-panel__meta"`.
+5. **`ds-fee-surcharge-guide__result`** 는 `:empty` 시 `display: none` — 계산 전 레이아웃 점프 방지.
+
+### 110-3. tokens.css — 변경 없음
+
+새 token 추가 없음; 모든 추가 클래스는 기존 토큰 참조.
+
+### 110-4. 검증
+
+- `comm -23` diff 재실행 후 잔여 미정의 클래스 0 확인.
+- `npm run build` 실행 예정 (coder 또는 tester).
 
 ---
 
