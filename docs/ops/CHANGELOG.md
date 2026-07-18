@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-18T10:42:58Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-18T21:55:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`924b8d8`** · FE **`23b47ea`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`68c2378`** · FE **`ab9ef17`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,7 @@
 
 ## 최근 7일 요약
 
-- **2026-07-18** — **픽업 배차 「회차」 입력 사전 검증**(1 이상 정수만 허용 — 잘못된 값은 저장 전 회차 칸에 바로 안내) · **배차 정차 상한(17개) 초과 시 사유 안내**(지점·경유지 추가가 막힐 때 「정차 순서는 최대 17개까지 가능합니다.」 표시) · **엑셀 일괄등록 안내 문구를 코드 한 곳(상수)으로 정리**(「업로드할 엑셀 파일이 없습니다.」·「엑셀 파일을 읽을 수 없습니다.」 — 화면·문구 변화 없는 내부 정리, SEC-D34) · **리포트 인쇄에서 좌측/상단 메뉴 숨김**(청구·청구통계·이용자 외출·교통 월간 리포트 — 인쇄물에 앱 메뉴 미출력, UXD-192) · **엑셀 일괄등록 빈/없는 파일 안내 문구 통일**(방문·청구 NHIS도 「업로드할 엑셀 파일이 없습니다.」로 5개 화면 동일) · **손상된 엑셀(내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」, SEC-D34 fail-closed) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙, SEC-D34) · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트, SEC-D34)
+- **2026-07-18** — **공단 대사 엑셀 급여일수 `15일` 표기 정상 인식**(공단 export가 붙이는 「일」 접미사 때문에 값이 비어 대사가 틀어지던 것을 「일」을 떼어 정확히 읽음, SEC-D34) · **이동서비스비 기간 오류 시 지난 목록 즉시 비움**(빈·역방향 기간으로 조회가 막힐 때 이전 기간 청구표가 남아 오류와 모순되던 것을 목록을 비워 EmptyState로 정리, G16) · **은행 입금 엑셀 금액의 공백 천 단위 구분·「원」 표기 정상 인식**(`1 250 000원` 처럼 띄어 쓴 금액이 조용히 빠져 미매칭·건너뜀이 늘던 것을 공백·「원」을 떼어 행을 살려 대사·자동 수납 정확도 향상, SEC-D34) · **이동서비스비 청구 기간(시작일·종료일) 미입력 즉시 차단**(예전엔 서버까지 보낸 뒤 400이 뜨던 것을 「조회 기간의 시작일과 종료일이 필요합니다.」로 조회·생성 전 바로 안내, G16) · **공단·RFID 엑셀에서 셀 하나가 깨져도 그 행만 건너뛰지 않고 전체가 멈추지 않도록 개선**(방문일정 엑셀의 서비스 시간이 지나치게 큰 값이면 시각 차이로 다시 계산해 행을 살리고, RFID 전송 엑셀의 태그 시각이 범위를 벗어나면 그 시각만 비워 행은 등록, SEC-D34) · **공단 대사 엑셀 금액·급여일수의 「원」·공백 표기 정상 인식**(`765,000원`·`  15  ` 처럼 표시서식이 붙어 예전엔 값이 비어 대사 상태가 「불일치·보류」로 잘못 잡히던 것을, 「원」·공백을 떼어 정확히 읽어 대사 정확도 향상) · **이동서비스비 청구 기간(시작일>종료일) 역방향 즉시 차단**(예전엔 서버까지 보낸 뒤에야 오류가 뜨던 것을 「시작일은 종료일보다 이후일 수 없습니다.」로 조회·생성 전 바로 안내, G16) · **이동서비스비 결과 안내(성공·건너뜀) 재조회 시 갱신**(기간을 바꾸거나 다시 조회하면 지난 결과 안내가 남아 있던 것을 최신 결과만 보이도록 정리) · **이동서비스비 이용자 이름 정상 표시**(목록 응답 형식이 달라 이름이 안 나오던 경우 보정) · **배차 「회차」 칸 위 마우스 휠 스크롤로 값이 몰래 바뀌던 문제 차단**(회차 칸에 커서가 있을 때 페이지를 스크롤하면 회차 숫자가 조용히 바뀌어 엉뚱한 회차로 저장될 수 있던 것을, 스크롤 시 회차 칸에서 커서를 떼어 페이지만 스크롤되도록 수정) · **배차 회차 오류 안내 중복 읽힘 정리**(서버가 회차 오류를 돌려줄 때 같은 안내가 화면 상단과 회차 칸에 두 번 뜨며 스크린리더가 두 번 읽던 것을 회차 칸 한 곳으로 정리, UXD-194) · **RFID 전송 엑셀 헤더·필수열·데이터행 누락 안내 문구 FAQ화**(방문 RFID 비교 — 잘못된 파일 형식 시 원인별 안내, Q938) · **픽업 배차 「회차」 입력 사전 검증**(1 이상 정수만 허용 — 잘못된 값은 저장 전 회차 칸에 바로 안내) · **회차 「1e2·0x1f」 같은 지수/16진수 입력 거부**(예전에는 100·31로 잘못 저장되던 것을 저장 전 오류로 차단) · **회차에 지나치게 큰 수 입력 거부**(9999999999 같은 값은 서버 한도를 넘어 원인 불명 오류가 나던 것을 「회차 값이 너무 큽니다. 다시 확인하세요.」로 사전 차단) · **회차 오류 시 회차 칸으로 커서 자동 이동**(키보드·스크린리더 사용자가 문제 칸을 바로 찾음) · **배차 정차 상한(17개) 초과 시 사유 안내**(지점·경유지 추가가 막힐 때 「정차 순서는 최대 17개까지 가능합니다.」 표시) · **엑셀 일괄등록 안내 문구를 코드 한 곳(상수)으로 정리**(「업로드할 엑셀 파일이 없습니다.」·「엑셀 파일을 읽을 수 없습니다.」 — 화면·문구 변화 없는 내부 정리, SEC-D34) · **리포트 인쇄에서 좌측/상단 메뉴 숨김**(청구·청구통계·이용자 외출·교통 월간 리포트 — 인쇄물에 앱 메뉴 미출력, UXD-192) · **엑셀 일괄등록 빈/없는 파일 안내 문구 통일**(방문·청구 NHIS도 「업로드할 엑셀 파일이 없습니다.」로 5개 화면 동일) · **손상된 엑셀(내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」, SEC-D34 fail-closed) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙, SEC-D34) · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트, SEC-D34)
 - **2026-07-17** — **업로드 파일 서명 검증 확대**(이용자 사진·급여계약·HR·등급이력·보수교육·요양보호사 엑셀) · **직원현황 인쇄·활동 사진 오류 ARIA** · 활동 사진 magic-byte · NoBreakSpace mid-token · M12 SSO allowlist
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
@@ -25,6 +25,229 @@
 
 ## 2026-07-18
 
+### 📝 baseline 동기화 — SEC-D34·UXD-195 사후 작업 완료 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG baseline을 **BE `68c2378` · FE `ab9ef17`** 로 갱신했습니다. **공단 급여일수·은행 입금 금액 정규화**(SEC-D34) 및 **이동서비스비 기간 검증·a11y 개선**(G16·UXD-195)의 회귀 테스트와 a11y 사후 작업이 완료되어 baseline을 진전시켰습니다.
+- **내 화면/업무에 영향**: 없음 — 문서만 갱신, 사용자 화면 변화 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE `68c2378`: `test(v3/SEC-D34): lock day-marker NHIS days and whitespace-grouped bank amount normalization` — 공단·은행 엑셀 정규화 회귀 lock
+- FE `ab9ef17`: `fix(a11y/transport): focus first invalid service-fee date field on blocked 조회/생성 (UXD-195 follow-up)` — service-fee 기간 오류 시 포커스 관리(키보드·스크린리더)
+- FE `32b7ae3`: `fix(a11y/transport): route service-fee date-range error to date fields (UXD-195)` — service-fee date-range 오류를 date 필드로 라우팅
+</details>
+
+### 📝 공단 급여일수 「일」 표기·이동서비스비 기간 오류 시 목록 FAQ·매뉴얼 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `ec7a1ce` · FE `6c280d0`** 로 맞추고, **공단 대사 엑셀 급여일수 `15일` 표기 정규화**를 **Q939** 보강으로, **이동서비스비 기간 오류 시 지난 청구 목록 즉시 비움**을 **Q940** 보강으로 정리했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FAQ Q939·Q940 보강 · USER_MANUAL §4-6-1·§5-8-1 보강 · baseline 동기화(BE `ec7a1ce` / FE `6c280d0`)
+</details>
+
+### ✅ 공단 대사 엑셀 급여일수 `15일` 표기 정상 인식 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 공단 명세(NHIS) 대사 엑셀의 **급여일수** 칸이 `15일` 처럼 공단 export가 흔히 붙이는 **「일」 접미사**가 있으면, 예전에는 숫자로 못 읽어 **값이 조용히 비워지고(null)** 실제로는 일치하는데 **「불일치」·「보류」로 잘못** 잡힐 수 있었습니다. 이제 「일」·「원」·공백·콤마를 함께 떼어 **정확한 일수로 읽어** 대사 결과가 맞게 나옵니다(금액 칸에는 「일」이 없어 동작 변화 없음).
+- **내 화면/업무에 영향**: **`/billing/imports/nhis` 대사 화면** — `15일`·`  15  `·`765,000원` 등 **표시서식이 붙은 공단 엑셀에서도 일치/불일치 판정이 정확**해짐
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `NhisExcelParser.normalizeNumeric` — `replace("일", "")` 추가(「원」·공백 정규화 lockstep). 회귀 `@Test` +1 (`ec7a1ce`)
+</details>
+
+### ✅ 이동서비스비 기간 오류 시 지난 청구 목록 즉시 비움 (FE, G16)
+- **에이전트**: COD
+- **한 일**: **이동서비스비 청구**(`/transport/service-fees`)에서 **빈 기간·역방향 기간**으로 조회가 화면에서 막힐 때, 예전에는 **오류 안내만 뜨고 이전에 조회했던 청구 목록이 그대로** 남아 혼란을 줄 수 있었습니다. 이제 기간 검증에 걸리면 **목록도 함께 비워** EmptyState로 돌아가, 오류와 표 내용이 모순되지 않습니다(정상 기간 조회·생성 동작은 동일).
+- **내 화면/업무에 영향**: **`/transport/service-fees`** — 잘못된 기간 입력 후 **지난 조회 결과가 남지 않음**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `TransportServiceFeePanel.load` — pre-block 분기(빈·역방향 기간)에서 `records` 초기화 추가(성공·건너뜀 배너 clear와 동일 계열, `9b0481d` lineage). 회귀 테스트 추가 (`6c280d0`)
+</details>
+
+### 📝 은행 입금 금액 정규화·이동서비스비 빈 기간 FAQ·매뉴얼 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `dc261ed` · FE `171075f`** 로 맞추고, **은행 입금 엑셀의 공백 천 단위·「원」 금액 정규화**를 **Q941** 로, **이동서비스비 청구의 빈 기간(시작일·종료일 미입력) 사전 차단**을 **Q940** 보강으로 정리했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FAQ Q941 신설·Q940 빈 기간 행 추가·USER_MANUAL §4-6·§5-8-1 보강·baseline 동기화(BE `dc261ed` / FE `171075f`)
+</details>
+
+### ✅ 은행 입금 엑셀의 공백·「원」 붙은 입금액 정상 인식 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: **은행 입금 엑셀**의 **입금액** 칸이 `1 250 000원` 처럼 **공백으로 천 단위를 띄우거나 「원」이 붙어** 있으면, 예전에는 숫자로 못 읽어 **값이 조용히 비워지고(null)** 그 입금 행이 **자동 매칭·수납에서 빠질** 수 있었습니다. 이제 콤마·「원」·**모든 공백**을 떼어 **정확한 금액으로 읽어** 미리보기·일괄 등록에 반영합니다(공단 대사 엑셀과 동일한 정규화 방식).
+- **내 화면/업무에 영향**: **`/billing/payments` 은행 입금 엑셀** — 표시서식이 붙은 은행 엑셀에서도 **금액 매칭·자동 수납이 정확**해짐
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `BankDepositExcelParser.parseAmount` — `replaceAll("\\s+", "")` 로 내부 공백 제거·`NhisExcelParser.normalizeNumeric` lockstep. 회귀 `@Test` +1 (`dc261ed`)
+</details>
+
+### ✅ 이동서비스비 청구 기간을 비워 두면 바로 안내 (FE, G16)
+- **에이전트**: COD
+- **한 일**: **이동서비스비 청구**(`/transport/service-fees`)에서 **시작일 또는 종료일이 비어 있는** 상태로 조회·생성하면, 예전에는 **서버까지 요청을 보낸 뒤** 400 오류가 떴습니다. 이제 **조회·생성 전에 화면에서 바로** 「조회 기간의 시작일과 종료일이 필요합니다.」로 안내하고 서버 왕복을 건너뜁니다(역방향 기간 안내와 같은 방식).
+- **내 화면/업무에 영향**: **`/transport/service-fees`** — 기간 미입력을 **즉시** 안내, 불필요한 서버 오류 대기 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `TransportServiceFeePanel.jsx` — `resolveTransportServiceFeeDateRangeError`(신규 `config/transportServiceFee.js`)로 필수→순서 단일 검증·BE `TransportServiceFeeService.validateDateRange` 문구 lockstep. 회귀 테스트 추가 (`171075f`)
+</details>
+
+### 📝 엑셀 import 셀 복원·대사 금액 정규화·이동서비스비 폼 FAQ·매뉴얼 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `ad2c0b1` · FE `3b903c8`** 로 맞추고, **공단·RFID 엑셀의 깨진 셀 복원**(방문 시간·RFID 태그 시각)·**대사 엑셀 금액/급여일수 「원」·공백 정규화**를 **Q939** 로, **이동서비스비 청구 폼의 역방향 기간 차단·결과 안내 갱신·이용자 이름 표시**를 **Q940** 으로 정리했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FAQ Q939·Q940 신설·USER_MANUAL §4-6/§4-6-1·이동서비스비 섹션 보강·baseline 동기화(BE `ad2c0b1` / FE `3b903c8`)
+</details>
+
+### ✅ 공단 대사 엑셀의 「원」·공백 붙은 금액·급여일수 정상 인식 (BE)
+- **에이전트**: COD
+- **한 일**: 공단 명세(NHIS) 대사 엑셀에서 **공단부담금**이 `765,000원` 처럼 「원」이 붙거나 **급여일수**가 `  15  ` 처럼 공백이 섞여 있으면, 예전에는 숫자로 못 읽어 **값이 조용히 비워지고(null)** 그 결과 대사 상태가 실제로는 일치하는데도 **「불일치」·「보류」로 잘못** 잡힐 수 있었습니다. 이제 「원」 표시와 앞뒤 공백을 떼어내 **정확한 금액·일수로 읽어** 대사 결과가 맞게 나옵니다. (숫자로 볼 수 없는 셀은 종전처럼 비워 두어 행 자체는 계속 등록됩니다.)
+- **내 화면/업무에 영향**: **`/billing/imports/nhis` 대사 화면** — 표시서식이 붙은 공단 엑셀에서도 **일치/불일치 판정이 정확**해짐
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `NhisExcelParser` — `parseAmount`/`parseInteger` 를 공용 `normalizeNumeric()` 로 통합(콤마 + `원` 통화 마커 + 공백 제거·`BankDepositExcelParser` lockstep). 행 단위 복원 유지(비숫자 셀은 null degrade). 회귀 `@Test` +2 (9→11) (`ad2c0b1`)
+</details>
+
+### ✅ RFID 전송 엑셀의 범위 밖 태그 시각 때문에 전체가 거부되던 문제 개선 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: **RFID 전송 엑셀**의 태그 시각 칸에 `9999`(→99:99)·`060`(→00:60) 처럼 **시·분 범위를 벗어난 값**이 하나라도 있으면, 예전에는 **파일 전체**가 「엑셀 파일을 읽을 수 없습니다.」로 거부됐습니다. 이제 이런 셀은 **그 시각만 비워 두고 해당 행은 계속 등록**되어, 셀 하나 때문에 전체 업로드가 막히지 않습니다(방문일정 엑셀과 동일한 방식).
+- **내 화면/업무에 영향**: **`/visits` RFID 계획·태그 비교** — 태그 시각이 일부 깨진 파일도 **정상 행은 비교에 반영**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `RfidTransmissionExcelParser.parseTime` — compact(3~4자리 숫자) 시각 분기를 예외 가드 안으로 이동해 out-of-range 값이 file-level 실패 대신 null tag time 으로 degrade. 회귀 `@Test` +1 (5→6) (`6329323`)
+</details>
+
+### ✅ 방문일정 엑셀의 지나치게 큰 서비스 시간 때문에 전체가 거부되던 문제 개선 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: **NHIS 방문일정 엑셀**의 **서비스 시간(분)** 칸에 처리할 수 없을 만큼 **큰 값**이 하나라도 있으면 예전에는 파일 전체 등록이 실패했습니다. 이제 그런 셀은 **시작·종료 시각의 차이로 다시 계산**해 행을 살리므로, 셀 하나 때문에 전체 업로드가 막히지 않습니다.
+- **내 화면/업무에 영향**: **방문 관리 NHIS 방문일정 업로드** — 시간 값이 일부 깨진 파일도 **정상 행은 등록**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `NhisVisitScheduleExcelParser` — 서비스 시간 파싱 `NumberFormatException` 가드 후 time-diff fallback. 회귀 `@Test` +14 (`13eb863`)
+</details>
+
+### ✅ 이동서비스비 청구 기간을 거꾸로(시작일>종료일) 넣으면 바로 안내 (FE, G16)
+- **에이전트**: COD
+- **한 일**: **이동서비스비 청구**(`/transport/service-fees`)에서 **시작일이 종료일보다 뒤**인 기간으로 조회·생성하면, 예전에는 서버까지 요청을 보낸 뒤에야 오류가 떴습니다. 이제 **조회·생성 전에 화면에서 바로** 「시작일은 종료일보다 이후일 수 없습니다.」로 안내하고 서버 왕복을 건너뜁니다. 또한 조회할 때마다 **지난 결과 안내(성공·건너뜀)** 가 남지 않고 최신 결과만 보이며, 목록 응답 형식 차이로 **이용자 이름이 비어 보이던** 경우도 바로잡았습니다.
+- **내 화면/업무에 영향**: **`/transport/service-fees`** — 잘못된 기간을 **즉시** 안내, 지난 결과가 헷갈리게 남지 않고, **이용자 이름 정상 표시**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `TransportServiceFeePanel.jsx` — 조회/생성 전 `isTransportServiceFeeDateRangeInOrder`(신규 `config/transportServiceFee.js`)로 역방향 기간 사전 검사(BE `TransportServiceFeeService.validateDateRange` 문구 lockstep) · `load()` 가 success/skipped 배너까지 초기화 · client 목록을 정규화된 `services` 형태로 파싱해 이름 resolve. 회귀 테스트 추가 (`9f12482`·`9b0481d`·`3b903c8`)
+</details>
+
+### 📝 배차 「회차」 휠 스크롤·오류 중복 읽힘 FAQ·매뉴얼 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `417e2ff` · FE `5aaee88`** 로 맞추고, **`/transport/runs/new`** 회차 칸의 **마우스 휠 스크롤 값 변경 차단**과 **서버 회차 오류 중복 읽힘 정리**(UXD-194)를 **Q936**·§5-8에 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FAQ Q936 보강(휠 스크롤·중복 announcement 행 추가)·USER_MANUAL §5-8 보강·baseline 동기화(BE `417e2ff` / FE `5aaee88`)
+</details>
+
+### ✅ 배차 「회차」 칸에서 마우스 휠로 값이 몰래 바뀌던 문제 차단 (FE)
+- **에이전트**: COD
+- **한 일**: **새 픽업 배차**(`/transport/runs/new`)의 **회차** 칸(숫자 입력)에 커서가 놓인 상태로 **마우스 휠로 페이지를 스크롤**하면, 브라우저 기본 동작 때문에 회차 숫자가 **조용히 오르내려** 사용자가 눈치채지 못한 채 엉뚱한 회차로 저장될 수 있었습니다. 이제 회차 칸 위에서 휠을 굴리면 **커서가 회차 칸에서 떨어지고 페이지만 스크롤**되어, 값이 몰래 바뀌지 않습니다.
+- **내 화면/업무에 영향**: **`/transport/runs/new`** — 회차를 입력하다 스크롤할 때 **회차 값이 실수로 바뀌는 사고 방지**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `TransportRunNewPage.jsx` — 회차 `<input type="number">` 에 `onWheel` → `event.currentTarget.blur()` 추가로 브라우저의 wheel-step 값 변경 차단. BE `@Min(1)` Integer 계약과 lockstep 유지. `TransportRunNewPage.test.jsx` 회귀 추가(휠 시 포커스 해제 검증) (`5aaee88`)
+</details>
+
+### ✅ 배차 회차 오류 안내가 두 번 읽히던 문제 정리 (FE, 접근성)
+- **에이전트**: COD
+- **한 일**: **새 픽업 배차**(`/transport/runs/new`)에서 서버가 **회차 관련 오류**를 돌려줄 때, 같은 안내가 **화면 상단 알림**과 **회차 칸** 두 곳에 동시에 떠서 스크린리더가 **같은 내용을 두 번** 읽어 주었습니다. 이제 회차 관련 오류는 **회차 칸 한 곳에만** 표시하고(커서도 그 칸으로 이동), 상단 알림은 **회차와 무관한 오류일 때만** 뜹니다.
+- **내 화면/업무에 영향**: **`/transport/runs/new`** — 회차 오류 시 **안내가 한 번만** 표시·읽힘(스크린리더 사용자 편의)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `TransportRunNewPage.jsx` — `createTransportRunApi` catch 블록에서 `fieldErrors.departureRound` 는 필드 오류(`role="alert"`)로만 라우팅하고 일반 상단 `actionError` 는 비필드 오류에만 노출(중복 `role="alert"` 동시 announcement 제거). WCAG 3.3.1 / 4.1.3. `TransportRunNewPage.test.jsx` 상단 배너 미노출 assert 추가 (`eca424f`, UXD-194)
+</details>
+
+### 📝 방문일정 공단 엑셀 파서 검증 분기 회귀 고정 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 방문 관리에서 쓰는 **NHIS 방문일정 엑셀 파서**의 **헤더·필수 열·유효 데이터 행 없음** 안전 거부 동작을, 다른 엑셀 파서들과 같은 방식으로 **회귀 테스트로 고정**했습니다. 실제 동작·안내 문구 변화는 없습니다.
+- **내 화면/업무에 영향**: 없음 — 테스트 전용(동작 그대로)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `NhisVisitScheduleExcelParserTest` +58L — fail-closed 검증 분기(`BusinessRuleException`) lock (`417e2ff`)
+</details>
+
+### 📝 RFID 전송 엑셀 파서 검증 분기 회귀 고정 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 방문 RFID 비교에서 쓰는 **RFID 전송 엑셀 파서**에 대해 **헤더 줄 누락·필수 열(장기요양인정번호/방문일) 누락·유효 데이터 행 없음** 세 가지를 안전하게 거부하던 동작을, 요양보호사·NHIS 파서와 같은 방식으로 **회귀 테스트로 고정**했습니다. 실제 동작·안내 문구 변화는 없습니다.
+- **내 화면/업무에 영향**: 없음 — 테스트 전용(동작 그대로)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `RfidTransmissionExcelParserTest` +59L — 3개 fail-closed 분기(`BusinessRuleException`) lock: 「엑셀 헤더 행이 없습니다.」·「RFID 전송 엑셀에 장기요양인정번호·방문일 컬럼이 필요합니다.」·「엑셀에서 유효한 RFID 전송 행을 찾을 수 없습니다.」 (`4dcf60d`)
+</details>
+
+### 📝 RFID 전송 엑셀 검증 안내 FAQ·매뉴얼 반영 (TWR)
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG·FAQ·USER_MANUAL baseline을 **BE `4dcf60d` · FE `b115ae0`** 로 맞추고, **`/visits` RFID 비교**에서 RFID 전송 엑셀 형식 오류 시 표시되는 **헤더·필수열·데이터행 안내**를 **Q938**·§5-11에 정리했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영 문서만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FAQ Q938 신설 · USER_MANUAL §5-8·§5-11 보강 · baseline 동기화
+</details>
+
+### ✅ 픽업 배차 「회차」에 지나치게 큰 수 입력 거부 (FE)
+- **에이전트**: COD
+- **한 일**: **새 픽업 배차**(`/transport/runs/new`) 회차 칸에 **`9999999999`** 처럼 아주 큰 수를 넣으면, 값 자체는 정수라 화면 검증은 통과했지만 서버가 다룰 수 있는 한도를 넘어 **원인을 알 수 없는 오류**가 화면 상단에만 떴습니다. 이제 이런 값은 **저장 전에 회차 칸 아래에 「회차 값이 너무 큽니다. 다시 확인하세요.」** 로 바로 안내합니다. 일반 회차(1·2·3…) 입력과 비워 두면 자동 배정되는 동작은 그대로입니다.
+- **내 화면/업무에 영향**: **`/transport/runs/new`** — 회차에 실수로 아주 큰 수를 넣었을 때 **원인 불명 오류 대신 명확한 사유**로 안내
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `4dcf60d` · FE develop `b115ae0` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FE: `config/transport.js` — `MAX_DEPARTURE_ROUND`(2147483647) 상수·`DEPARTURE_ROUND_TOO_LARGE_MESSAGE` 추가, `parseDepartureRoundInput()`에서 32비트 `Integer` 상한 초과 값을 별도 사유로 사전 차단. BE `CreateTransportRunRequest.departureRound` `@Min(1)` Integer 계약과 lockstep. `config/transport.test.js` 회귀 추가 (`b115ae0`)
+</details>
+
+### 📝 라이브 E2E 준비상태 판정 관문 보강 (BE, QA-B95)
+- **에이전트**: COD
+- **한 일**: 라이브 E2E 점검에서 게이트웨이가 신호 문자를 **`&x2d;`** 처럼 `#` 없는 형태로 바꿔 보내도 **준비 미완료 표시를 정확히 인식**하도록 내부 판정 규칙을 보강했습니다. 실제 앱 화면·운영 동작에는 변화가 없는 **테스트·점검 인프라** 개선입니다.
+- **내 화면/업무에 영향**: 없음 — 내부 점검(라이브 E2E) 전용, 제품 흐름 변화 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LiveE2eOperationReadinessSupport` — bare-hex HTML entity(`&x2d;` 등) 디코딩 분기 추가로 gateway-trimmed payload에서도 bootstrap-disabled marker를 fail-closed로 해석, readiness gate 우회 차단. `LiveE2eOperationReadinessSupportTest` 회귀 추가 (`ae1c6a1`)
+</details>
+
 ### ✅ 픽업 배차 「회차」 입력, 저장 전에 바로 확인 (FE)
 - **에이전트**: COD
 - **한 일**: **새 픽업 배차**(`/transport/runs/new`) 화면의 **회차** 칸에 **0·음수·소수** 같은 잘못된 값을 넣고 임시 저장하면, 이전에는 값이 서버까지 갔다가 되돌아온 뒤에야 화면 상단 알림으로만 안내됐습니다. 이제 **저장을 누르는 즉시 회차 칸 아래에 「회차는 1 이상의 정수를 입력하세요.」** 로 안내하고, 서버가 회차 관련 오류를 돌려줄 때도 같은 칸에 표시합니다. 비워 두면 예전처럼 **다음 회차로 자동 배정**됩니다.
@@ -35,6 +258,28 @@
 
 - 실측: BE develop `924b8d8` · FE develop `23b47ea` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
 - FE: `TransportRunNewPage.jsx` — 저장 전 회차 값이 있으면 `Number.isInteger` && `>= 1` 검증 후 차단, `Field error`로 필드 단위 표시, 서버 `fieldErrors.departureRound` 매핑, 입력 변경 시 오류 초기화
+</details>
+
+### ✅ 픽업 배차 「회차」에 `1e2·0x1f` 같은 지수/16진수 입력 거부 (FE)
+- **에이전트**: COD
+- **한 일**: **새 픽업 배차**(`/transport/runs/new`) 회차 칸은 숫자 입력이라 브라우저가 **`1e2`(지수) · `0x1f`(16진수)** 같은 표기도 받아들였는데, 예전에는 이를 각각 **100·31로 조용히 바꿔** 엉뚱한 회차로 저장했습니다. 이제는 **오타로 이런 값을 넣으면 저장 전에 「회차는 1 이상의 정수를 입력하세요.」** 로 막습니다. 일반 정수(1·2·3…) 입력과 비워 두면 자동 배정되는 동작은 그대로입니다.
+- **내 화면/업무에 영향**: **`/transport/runs/new`** — 회차에 잘못된 숫자 표기를 넣었을 때 **엉뚱한 회차로 저장되는 사고 방지**
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `config/transport.js` `parseDepartureRoundInput()` — `Number()`(지수/16진수 무음 강제변환) 대신 **평문 10진 정수**만 허용하도록 검증, BE `@Min(1)` Integer 계약과 일치. `config/transport.test.js` 회귀 추가
+</details>
+
+### ✅ 배차 회차 오류 시 회차 칸으로 커서 자동 이동 (FE, 접근성)
+- **에이전트**: COD
+- **한 일**: **새 픽업 배차**(`/transport/runs/new`)에서 회차 입력이 막혀 오류가 뜰 때(브라우저 사전 검증·서버 반환 오류 모두), 예전에는 오류 안내만 읽히고 **커서는 저장 버튼에 남아 있어** 키보드·스크린리더 사용자가 문제 칸을 직접 찾아 올라가야 했습니다. 이제 **오류가 나면 커서가 회차 칸으로 바로 이동**합니다.
+- **내 화면/업무에 영향**: **`/transport/runs/new`** — 회차 오류 시 **어느 칸을 고쳐야 하는지 커서로 바로 안내**(키보드·스크린리더 편의)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `TransportRunNewPage.jsx` — `handleSaveDraft` 차단(FE 사전 검증·BE `departureRound` 필드 오류) 시 회차 input에 포커스 이동. WCAG 2.4.3 Focus Order / 3.3.1 Error Identification. `TransportRunNewPage.test.jsx` `toHaveFocus` 회귀 추가
 </details>
 
 ### ✅ 배차 정차 상한 초과 시 사유 안내 (FE)
@@ -61,6 +306,17 @@
 - BE: `BankDepositImportService` · `StaffNhisCaregiverImportService` 를 `MISSING_EXCEL_MESSAGE` 상수로 통일(4개 import service 단일 상수 참조) · 「엑셀 파일을 읽을 수 없습니다.」도 5개 파서·4개 import service의 `UNREADABLE_EXCEL_MESSAGE` 상수로 통일
 - FE: `excelImportFiles.js` — pre-upload 헤더 읽기 실패 문구를 `EXCEL_IMPORT_UNREADABLE_MESSAGE` 상수로 추출, BE house-style 문구와 verbatim lockstep
 
+</details>
+
+### 📝 요양보호사 공단 엑셀 파서 안전 거부 분기 회귀 고정 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 요양보호사 공단 엑셀 업로드 파서에서 **헤더 줄 누락·필수 열(급여제공자인력번호/성명) 누락·유효 데이터 행 없음** 세 가지 상황을 안전하게 거부(안내 후 중단)하던 동작을, 앞으로도 깨지지 않도록 **회귀 테스트로 고정**했습니다. 실제 동작·문구 변화는 없습니다.
+- **내 화면/업무에 영향**: 없음 — 테스트 전용(동작 그대로)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `StaffNhisCaregiverExcelParserTest` +60L — 3개 미검증 fail-closed 분기(`BusinessRuleException`) lock, `NhisExcelParser` parser-layer 회귀와 동일 패턴 (`5df9999`)
 </details>
 
 ### 📝 SEC-D34 엑셀 import 보강 테스트·정정 
