@@ -1,3 +1,388 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T23:55:00Z -->
+<!-- tester-sync: TSR 1873차 2026-07-18T23:55:00Z (frontend) — **★ L02_M12 care-report service-summary reversed date-range FE pre-block MERGED** develop→test FF merge `ab9ef17`→`cf360d7` (pending **1→0**) · post-merge full suite `npm test` **2778/2778 PASS**(892.51s·489 files·+5 vs TSR1871) · build **1234 PASS**(9.31s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@cf360d7`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@1d067d9` pending 4=QA-B615+QA-B616+QA-B617+QA-B618 + FE `@cf360d7` SYNCED) · operation **BLOCK**(BE origin/test + 26 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 + QA-B95). -->
+# tester_1873_frontend: L02_M12 care-report service-summary reversed date-range FE pre-block MERGED ab9ef17→cf360d7 (pending 1→0); commit cf360d7 fix(v1.2.1/care-reports) pre-block reversed date range before service-summary round-trip; post-merge full suite npm test 2778/2778 PASS(892.51s·489 files·+5 vs TSR1871 2773); build 1234 PASS(9.31s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry·liveE2eBootstrapEnabled=false); SYNCED @cf360d7 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE @1d067d9 pending 4=QA-B615+QA-B616+QA-B617+QA-B618 + FE @cf360d7 SYNCED); operation BLOCK(BE origin/test + 26 FE push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 + QA-B95).
+
+### [TSR] TSR1873 frontend — L02_M12 ServiceSummaryReportPage reversed date-range FE pre-block MERGED
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **+1** (`ab9ef17`→`cf360d7`) |
+| merge | **PASS** · FF merge `ab9ef17`→`cf360d7` (1 commit) |
+| pending | **0** |
+| regression `npm test` | **2778/2778 PASS** (892.51s · 489 files · +5 vs TSR1871 · 0F) |
+| build | **1234 modules PASS** (9.31s) |
+| audit high | **0** |
+| live E2E | **SKIP** (QA-B95 carry: `liveE2eBootstrapEnabled=false`) |
+| develop / test | **SYNCED `@cf360d7`** (WT CLEAN) |
+| Open(FE) | **0** |
+| origin/test push | **미실행** (+26 local · Planned QA-B116) |
+| transfer | **PASS** (FE local) |
+| cross-stream | **BLOCK** (BE develop `@1d067d9` pending 4=QA-B615+B616+B617+B618 미이관) |
+| operation | **BLOCK** (QA-B116 + QA-B615+B616+B617+B618 + QA-B95) |
+
+**변경 요약**: `ServiceSummaryReportPage`(L02_M12 급여제공 서비스 집계 리포트)에서 역방향 조회 기간(시작일 > 종료일)을 BE `CareReportService.resolveDateWindow` 왕복 없이 FE에서 사전 차단. 공용 헬퍼 `resolveCareReportDateRangeError` + `CARE_REPORT_DATE_RANGE_INVALID_MESSAGE`(BE 문구 verbatim lockstep) 를 신규 `src/config/careReports.js`에 분리하고 load 가드에 연결. 오류는 종료일 필드에 anchor(`role="alert"` + `aria-invalid`), stale 집계 제거. 결측값은 BE 기본 기간 대체(사전 차단 대상 아님). TransportServiceFeePanel id=2 form polish 계보 동일 패턴. +5 신규 테스트(careReports.test.js +34/4케이스 + ServiceSummaryReportPage.test.jsx +42/1케이스).
+
+---
+
+<!-- tester-sync: TSR 1872차 2026-07-18T22:35:00Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(66s·408 suites·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@1d067d9`(WT CLEAN·origin/develop SYNCED) / test `@ad2c0b1` pending **4**(`dc261ed`+`ec7a1ce`+`68c2378`+`1d067d9`) · merge **SKIP**(auto-merge 미발화: v3 `merge_status`≠`ready` · tester 수동 merge 금지 `run_agent.py`:1638) · **QA-20260718-B615+B616+B617+B618 Open(HIGH/BLOCK)** · Open(BE) **4** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 4 + FE `@ab9ef17` SYNCED) · operation **BLOCK**(QA-B615+B616+B617+B618+QA-B116+QA-B95). -->
+# tester_1872_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(66s,408 suites,0F/0E/0S); develop@1d067d9 pending 4(dc261ed+ec7a1ce+68c2378+1d067d9); merge SKIP(auto-merge NOT fired: v3 merge_status!=ready · tester manual merge forbidden run_agent.py:1638); Open(BE) 4(QA-B615+B616+B617+B618 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 4 + FE @ab9ef17 SYNCED); operation BLOCK(QA-B615+B616+B617+B618+QA-B116+QA-B95); ROOT CAUSE develop clean+pushed but v3 merge_status not ready → auto-merge never fires; ACTION COD/PLN set v3 backend merge_status: ready.
+
+### [TSR] TSR1872 backend — ROADMAP merged baseline `@ad2c0b1` 재검증 (develop→test pending 4)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — merge 미수행(auto-merge 미발화·수동 merge 금지) |
+| merge | **SKIP** (auto-merge NOT fired: v3 `merge_status`≠`ready` · tester 수동 merge 금지 `run_agent.py`:1638) |
+| pending | **4** (`rev-list --left-right --count test...develop`=`0 4` · `dc261ed`,`ec7a1ce`,`68c2378`,`1d067d9` · develop=`1d067d9`, test=`ad2c0b1`) |
+| regression `mvn -o test` | **2410/2410 PASS** (66s · 408 suites · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · `src/backend-test@test`) |
+| npm | **N/A** (backend stream) |
+| develop / test | develop=`@1d067d9`(WT CLEAN·origin/develop SYNCED) / test=`@ad2c0b1` |
+| Open(BE) | **4** (QA-20260718-B615+B616+B617+B618 · HIGH/BLOCK) |
+| origin/test push | **미실행** (765 BE + 25 FE unpushed · Planned QA-B116) |
+| transfer | **BLOCK** (BE · pending 4 미이관) |
+| cross-stream | **BLOCK** (BE pending 4 + FE develop/test SYNCED `@ab9ef17` pending 0) |
+| operation | **BLOCK** (QA-B615+B616+B617+B618+QA-B116+QA-B95) |
+
+**변경 요약**: SEC-D34 엑셀 import 금액/일수 정규화 4커밋(`dc261ed` 은행 입금 공백 그룹 금액 · `ec7a1ce` NHIS 급여일수 `일` 마커 · `68c2378` lockstep 회귀 테스트 · `1d067d9` 금액 `₩`(U+20A9) 원화 기호). 모두 row-level resilience·behavior-neutral·저위험. baseline 회귀 green이나 test 미이관으로 BLOCK.
+
+**★ escalation (COD/PLN 조치 필요)**: develop은 clean·origin/develop SYNCED로 coder 작업 완료 상태이나 ROADMAP v3 `merge_status`가 `ready`가 아니어서 빌드 auto-merge(`maybe_merge_version_to_test`)가 발화하지 않아 SEC-D34 4커밋이 적체(QA-B615 이후 다수 사이클 carry). tester는 test 브랜치 수동 merge 금지(`run_agent.py`:1638). **COD/PLN이 v3 backend 완료 기준 확인 후 `merge_status: ready`로 설정**하면 다음 빌드에서 FF 이관·post-merge 재검증(예상 2412~2413 PASS)·QA-B615~B618 Fixed & Verified 전환.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T21:55:00Z -->
+<!-- tester-sync: TSR 1871차 2026-07-18T21:55:00Z (frontend) — **★ UXD-195 service-fee date-range a11y focus MERGED** develop→test FF merge `6c280d0`→`ab9ef17` (pending **2→0**) · post-merge full suite `npm test` **2773/2773 PASS**(893.86s·488 files·+4 vs TSR1869) · build **1234 PASS**(9.23s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: backend `/health=200` UP 이나 `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@ab9ef17`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@68c2378` pending 3=QA-B615+QA-B616+QA-B617 + FE `@ab9ef17` SYNCED) · operation **BLOCK**(BE origin/test + 25 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B95). -->
+# tester_1871_frontend: UXD-195 service-fee date-range a11y focus/error-routing MERGED 6c280d0→ab9ef17 (pending 2→0); 2 commits(32b7ae3 route date-range error to date fields + ab9ef17 focus first invalid date field on blocked 조회/생성); post-merge full suite npm test 2773/2773 PASS(893.86s·488 files·+4 vs TSR1869 2769); build 1234 PASS(9.23s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry·/health=200 UP·liveE2eBootstrapEnabled=false); SYNCED @ab9ef17 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE @68c2378 pending 3=QA-B615+QA-B616+QA-B617 + FE @ab9ef17 SYNCED); operation BLOCK(BE origin/test + 25 FE push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B95).
+
+### [TSR] TSR1871 frontend — UXD-195 service-fee date-range a11y focus/error-routing MERGED (develop→test FF `6c280d0`→`ab9ef17`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **2** — FF merge `6c280d0`→`ab9ef17` (32b7ae3 + ab9ef17) |
+| merge | **PASS** (FF merge · `6c280d0..ab9ef17` · pending 2→0) |
+| pending | **0** (`rev-list --count test..develop`=0 · develop=test=`ab9ef17`) |
+| full suite `npm test` | **2773/2773 PASS** (893.86s · 488 files · +4 vs TSR1869 2769 · `src/frontend-test@test`) |
+| targeted (changed) | **PASS** — TransportServiceFeePanel.test.jsx(+96 a11y focus/error-routing) + transportServiceFee.test.js(+14 config) |
+| `npm run build` | **1234 modules PASS** (9.23s) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| live E2E (결정 96) | **SKIP** — QA-B95 carry(backend `/api/v1/health=200` UP 이나 `liveE2eBootstrapEnabled=false`) |
+| develop / test | develop=test=`@ab9ef17` WT CLEAN (SYNCED) |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (local `test` +25 vs origin/test `b23711f` · Planned QA-B116) |
+| transfer | **PASS** (FE local · develop/test SYNCED · pending 0) |
+| cross-stream | **BLOCK** (BE develop `@68c2378` / test `@ad2c0b1` pending 3=QA-B615+QA-B616+QA-B617) |
+| operation | **BLOCK** (QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B95) |
+
+**변경 요약**: UXD-195 a11y follow-up 2-commit. `TransportServiceFeePanel`(이용서비스비 id=2) 기간(빈/역방향) 검증 오류를 **날짜 필드 단위로 라우팅**하고, 차단된 조회/생성 시 **첫 번째 무효 날짜 필드로 focus 이동** — 키보드/스크린리더 사용자 오류 인지 개선(WCAG 2.1 AA). 신규 `src/config/transportServiceFee.js` config 로 필드 매핑 상수 분리. 정상 기간 load/generate 동작·기존 stale-clear(TSR1869) 계보 불변.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T21:36:11Z -->
+<!-- tester-sync: TSR 1870차 2026-07-18T21:36:11Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(66s·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@68c2378` / test `@ad2c0b1` pending **3**(`dc261ed`+`ec7a1ce`+`68c2378`) · merge **SKIP**(src read-only 지시) · **QA-20260718-B615+B616+B617 Open(HIGH/BLOCK)** · Open(BE) **3** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 3 + FE develop `@32b7ae3` / test `@6c280d0` pending 1 + origin/test 765 BE + 23 FE push=QA-B116) · operation **BLOCK**(QA-B615+QA-B616+QA-B617+QA-B116+QA-B95). -->
+# tester_1870_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(66s,0F/0E/0S); develop@68c2378 pending 3(dc261ed+ec7a1ce+68c2378); merge SKIP(read-only); Open(BE) 3(QA-B615+B616+B617 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 3 + FE develop@32b7ae3 pending 1 vs test@6c280d0 + 765 BE + 23 FE push=QA-B116); operation BLOCK(QA-B615+QA-B616+QA-B617+QA-B116+QA-B95).
+
+### [TSR] TSR1870 backend — ROADMAP merged baseline `@ad2c0b1` 재검증 (develop→test pending 3)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — merge 미수행(지시 준수) |
+| merge | **SKIP** (`src/` read-only 지시 준수 · `test..develop` pending **3**) |
+| pending | **3** (`rev-list --left-right --count test...develop`=`0 3` · `dc261ed`,`ec7a1ce`,`68c2378` · develop=`68c2378`, test=`ad2c0b1`) |
+| regression `mvn -o test` | **2410/2410 PASS** (66s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · `src/backend-test@test`) |
+| npm | **N/A** (backend stream) |
+| develop / test | test=`@ad2c0b1` WT CLEAN · develop=`@68c2378` (ahead 3) |
+| Open(BE) | **3** (QA-20260718-B615 + QA-20260718-B616 + QA-20260718-B617 · HIGH/BLOCK) |
+| origin/test push | **미실행** (765 BE + 23 FE pending · Planned QA-B116) |
+| transfer | **BLOCK** (develop→test pending 3, post-merge 재검증 미완료) |
+| cross-stream | **BLOCK** (BE pending 3 + FE develop/test pending 1) |
+| operation | **BLOCK** (QA-B615 + QA-B616 + QA-B617 + QA-B116 + QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T20:42:00Z -->
+<!-- tester-sync: TSR 1869차 2026-07-18T20:42:00Z (frontend) — **★ G16 service-fee stale-records clear on rejected date-range MERGED** develop→test FF merge `171075f`→`6c280d0` (pending **1→0**) · post-merge full suite `npm test` **2769/2769 PASS**(900.28s·488 files·+1 vs TSR1867) · build **1234 PASS**(10.91s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: backend `/health=200` UP 이나 `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@6c280d0`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@ec7a1ce` pending 2=QA-B615+QA-B616 + FE `@6c280d0` SYNCED) · operation **BLOCK**(765 BE + 23 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B95). -->
+# tester_1869_frontend: G16 service-fee stale-records clear on rejected date-range MERGED 171075f→6c280d0 (pending 1→0); post-merge full suite npm test 2769/2769 PASS(900.28s·488 files·+1 vs TSR1867 2768); build 1234 PASS(10.91s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @6c280d0 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE @ec7a1ce pending 2=QA-B615+QA-B616 + FE @6c280d0 SYNCED); operation BLOCK(765 BE + 23 FE push=QA-B116 + QA-B615 + QA-B616 + QA-B95).
+
+### [TSR] TSR1869 frontend — G16 service-fee stale-records clear on rejected date-range MERGED (develop→test FF `171075f`→`6c280d0`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** (`171075f`→`6c280d0` · FF merge 완료) |
+| merge | **PASS** (FF · merge-base==test HEAD `171075f` · 충돌 없음) |
+| pending (post-merge) | **0** (`rev-list --left-right --count test...develop`=`0 0` · develop=test=`6c280d0`) |
+| full suite `npm test` | **2769/2769 PASS** (488 files · 900.28s · +1 vs TSR1867 2768 · locked flock) |
+| targeted | `TransportServiceFeePanel.test.jsx` — stale-records clear 신규 회귀 포함 전체 PASS |
+| `npm run build` | **1234 modules PASS** (10.91s) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| live E2E (결정 96) | **SKIP** (QA-B95 carry · backend `/health=200` UP 이나 `liveE2eBootstrapEnabled=false`) |
+| develop / test | develop=test=`@6c280d0` WT CLEAN SYNCED |
+| origin/test push | **미실행** (765 BE + 23 FE pending · Planned QA-B116 · tester/merge 전담) |
+| Open(FE) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | **BLOCK** (BE develop `@ec7a1ce` pending 2=QA-B615+QA-B616 HIGH/BLOCK · FE `@6c280d0` SYNCED Open 0) |
+| operation | **BLOCK** (QA-B116 + QA-B615 + QA-B616 + QA-B95) |
+
+**요지**: coder `@6c280d0` 는 `TransportServiceFeePanel.load` 가 빈/역방향 조회기간을 사전 차단할 때 `success`/`skipped` 배너만 비우고 직전 유효 기간의 `records` 를 남겨 두어, 오류 배너와 어긋나는 stale 청구 목록이 테이블에 잔존하던 문제를 사전 차단 분기의 `setRecords([])` 추가로 해소(EmptyState "청구 기록 없음" 전환·정상 기간 load/generate 동작 불변·`9b0481d` stale-banner-clear 계보 연장). FE-only·저위험. post-merge 전체 회귀 green. Merge diff: `transfer/frontend/packages/develop-test-diff-20260718-TSR1869.md`.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T20:16:19Z -->
+<!-- tester-sync: TSR 1868차 2026-07-18T20:16:19Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(65s·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@ec7a1ce` / test `@ad2c0b1` pending **2**(`dc261ed`+`ec7a1ce`) · merge **SKIP**(src read-only 지시) · **QA-20260718-B615+B616 Open(HIGH/BLOCK)** · Open(BE) **2** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 2 + FE `@171075f` SYNCED + origin/test 765 BE + 22 FE push=QA-B116) · operation **BLOCK**(QA-B615+QA-B616+QA-B116+QA-B95). -->
+# tester_1868_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(65s,0F/0E/0S); develop@ec7a1ce pending 2(dc261ed+ec7a1ce); merge SKIP(read-only); Open(BE) 2(QA-B615+B616 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 2 + FE @171075f SYNCED + 765 BE + 22 FE push=QA-B116); operation BLOCK(QA-B615+QA-B616+QA-B116+QA-B95).
+
+### [TSR] TSR1868 backend — ROADMAP merged baseline `@ad2c0b1` 재검증 (develop→test pending 2)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — merge 미수행(지시 준수) |
+| merge | **SKIP** (`src/` read-only 지시 준수 · `test..develop` pending **2**) |
+| pending | **2** (`rev-list --left-right --count test...develop`=`0 2` · `dc261ed`, `ec7a1ce` · develop=`ec7a1ce`, test=`ad2c0b1`) |
+| regression `mvn -o test` | **2410/2410 PASS** (65s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · `src/backend-test@test`) |
+| npm | **N/A** (backend stream) |
+| develop / test | test=`@ad2c0b1` WT CLEAN · develop=`@ec7a1ce` (ahead 2) |
+| Open(BE) | **2** (QA-20260718-B615 + QA-20260718-B616 · HIGH/BLOCK) |
+| origin/test push | **미실행** (765 BE + 22 FE pending · Planned QA-B116) |
+| transfer | **BLOCK** (develop→test pending 2, post-merge 재검증 미완료) |
+| cross-stream | **BLOCK** (BE pending 2 + FE develop/test SYNCED `@171075f` Open 0) |
+| operation | **BLOCK** (QA-B615 + QA-B616 + QA-B116 + QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T20:05:00Z -->
+<!-- tester-sync: TSR 1867차 2026-07-18T20:05:00Z (frontend) — **★ G16 service-fee missing date-range FE pre-block MERGED** develop→test FF merge `3b903c8`→`171075f` (pending **1→0**) · post-merge full suite `npm test` **2768/2768 PASS**(896.27s·488 files·+3 vs TSR1865) · build **1234 PASS**(9.41s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: backend UP `/health=200` 이나 `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@171075f`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE develop `@dc261ed` pending 1 = QA-B615 + FE `@171075f` SYNCED) · operation **BLOCK**(765 BE + 22 FE origin/test push=QA-B116 + QA-B615 + QA-B95). -->
+# tester_1867_frontend: G16 service-fee missing date-range FE pre-block MERGED 3b903c8→171075f (pending 1→0); TransportServiceFeePanel reject empty start-or-end range before API round-trip(isTransportServiceFeeDateRangePresent + TRANSPORT_SERVICE_FEE_DATE_RANGE_REQUIRED_MESSAGE + resolveTransportServiceFeeDateRangeError single entry point·BE validateDateRange lockstep); post-merge full suite 2768/2768 PASS(896.27s·488 files·+3 vs TSR1865 2765); build 1234 PASS(9.41s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @171075f WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE @dc261ed pending 1=QA-B615 + FE @171075f SYNCED); operation BLOCK(765 BE + 22 FE push=QA-B116 + QA-B615 + QA-B95).
+
+### [TSR] TSR1867 frontend — G16 service-fee missing date-range FE pre-block MERGED (develop→test FF `3b903c8`→`171075f`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `171075f` |
+| merge | **FF `3b903c8`→`171075f`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `171075f`: G16 `TransportServiceFeePanel` 조회/생성이 시작일 또는 종료일이 **비어 있는** 기간을 서버에 보낸 뒤에야 BE 400 을 표면화하던 문제 사전 차단. `isTransportServiceFeeDateRangePresent` 헬퍼 + `TRANSPORT_SERVICE_FEE_DATE_RANGE_REQUIRED_MESSAGE`(BE `validateDateRange` 필수검사 문구 verbatim `"조회 기간의 시작일과 종료일이 필요합니다."` lockstep) + `resolveTransportServiceFeeDateRangeError`(필수→순서 단일 진입점) 추가, `load`/`handleGenerate` 가드를 새 진입점으로 통일. 정상 기간 동작 불변. `transportServiceFee.js` +40/-1 · `TransportServiceFeePanel.jsx` +9/-8 · `TransportServiceFeePanel.test.jsx` +32/-1 · `transportServiceFee.test.js` +31 |
+| pending | **0** (FF merge 후 · develop=test SYNCED `@171075f`) |
+| post-merge full suite `npm test` | **2768/2768 PASS** (488 files · 896.27s · +3 vs TSR1865 2765 · `src/frontend-test`→locked wrapper) |
+| targeted | `TransportServiceFeePanel.test.jsx` + `transportServiceFee.test.js` — 신규 케이스(빈 기간 차단 통합·`isTransportServiceFeeDateRangePresent`/`resolveTransportServiceFeeDateRangeError` 단위) 포함 full suite 488 files green |
+| `npm run build` | **PASS** (1234 modules · 9.41s) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| live E2E (결정 96) | **SKIP** (QA-B95 carry: backend UP `/api/v1/health=200` 이나 `liveE2eBootstrapEnabled=false` · 실행 로그 guardian bootstrap HTTP 500 / staff ECONNREFUSED = live suites SKIP) |
+| develop / test | **SYNCED `@171075f`** · WT CLEAN |
+| Open(FE) | **0** (신규 없음) |
+| origin/test push | **미실행** (tester/merge 스크립트 전담 · local `test`는 origin/test `b23711f` 대비 **+22** = QA-B116) |
+| transfer | **PASS** (FE local · develop→test pending 0 · post-merge 재검증 완료) |
+| cross-stream | **BLOCK** (BE develop `@dc261ed` pending 1 = QA-B615 · FE develop/test SYNCED `@171075f` Open 0) |
+| operation | **BLOCK** (765 BE + 22 FE origin/test push=QA-B116 + QA-B615 + QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T19:40:00Z -->
+<!-- tester-sync: TSR 1866차 2026-07-18T19:40:00Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(65s·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@dc261ed` / test `@ad2c0b1` pending **1**(`test..develop`) 확인 · merge **SKIP**(src read-only 지시) · **QA-20260718-B615 Open(HIGH/BLOCK)** · Open(BE) **1** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 1 + FE `@3b903c8` SYNCED + origin/test 765 BE + 21 FE push=QA-B116) · operation **BLOCK**(QA-B615 + QA-B116 + QA-B95). -->
+# tester_1866_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(65s,0F/0E/0S); develop@dc261ed pending 1(test..develop); merge SKIP(read-only); Open(BE) 1(QA-B615 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 1 + FE SYNCED + 765 BE + 21 FE push=QA-B116); operation BLOCK(QA-B615+QA-B116+QA-B95).
+
+### [TSR] TSR1866 backend — ROADMAP merged baseline `@ad2c0b1` 재검증 (develop→test pending 1)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — merge 미수행(지시 준수) |
+| merge | **SKIP** (`src/` read-only 지시 준수 · `test..develop` pending **1**) |
+| pending | **1** (`rev-list --left-right --count test...develop`=`0 1` · develop=`dc261ed`, test=`ad2c0b1`) |
+| regression `mvn -o test` | **2410/2410 PASS** (65s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · `src/backend-test@test`) |
+| npm | **N/A** (backend stream) |
+| develop / test | test=`@ad2c0b1` WT CLEAN · develop=`@dc261ed` (ahead 1) |
+| Open(BE) | **1** (신규 **QA-20260718-B615**, HIGH/BLOCK) |
+| origin/test push | **미실행** (765 BE + 21 FE pending · Planned QA-B116) |
+| transfer | **BLOCK** (develop→test pending 1, post-merge 재검증 미완료) |
+| cross-stream | **BLOCK** (BE pending 1 + FE develop/test SYNCED `@3b903c8`) |
+| operation | **BLOCK** (QA-B615 + QA-B116 + QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T19:35:00Z -->
+<!-- tester-sync: TSR 1865차 2026-07-18T19:35:00Z (frontend) — **★ G16 date-range FE pre-block MERGED** develop→test FF merge `9b0481d`→`3b903c8` (pending **1→0**) · post-merge full suite `npm test` **2765/2765 PASS**(890.96s·488 files·+2 vs TSR1863) · build **1234 PASS**(11.04s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@3b903c8`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(BE `@ad2c0b1` + FE `@3b903c8` SYNCED·both Open 0) · operation **BLOCK**(765 BE + 21 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1865_frontend: G16 date-range FE pre-block MERGED 9b0481d→3b903c8 (pending 1→0); TransportServiceFeePanel reject reversed date range before API round-trip(isTransportServiceFeeDateRangeInOrder+TRANSPORT_SERVICE_FEE_DATE_RANGE_INVALID_MESSAGE·BE lockstep·+26lines transportServiceFee.js·new config); post-merge full suite 2765/2765 PASS(890.96s·488 files·+2 vs TSR1863); build 1234 PASS(11.04s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @3b903c8 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream SYNCED local(BE @ad2c0b1 + FE @3b903c8 SYNCED·both Open 0); operation BLOCK(765 BE + 21 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1865 frontend — G16 date-range FE pre-block MERGED (develop→test FF `9b0481d`→`3b903c8`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `3b903c8` |
+| merge | **FF `9b0481d`→`3b903c8`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `3b903c8`: G16 `TransportServiceFeePanel` 조회/생성이 역방향 기간(시작일>종료일)을 서버에 보내던 문제 사전 차단. `isTransportServiceFeeDateRangeInOrder` FE 검사 → BE `validateDateRange` 와 동일 문구(`"시작일은 종료일보다 이후일 수 없습니다."`) 즉시 노출·목록/생성 왕복 건너뜀. 신규 config `transportServiceFee.js` +26L · `TransportServiceFeePanel.jsx` +22/-2 · `TransportServiceFeePanel.test.jsx` +46/-1 · `transportServiceFee.test.js` +15 |
+| pending | **0** (FF merge 후 · develop=test SYNCED `@3b903c8`) |
+| post-merge full suite `npm test` | **2765/2765 PASS** (488 files · 890.96s · +2 vs TSR1863 2763 · `src/frontend-test`→locked wrapper) |
+| targeted | `TransportServiceFeePanel.test.jsx` + `transportServiceFee.test.js` — 신규 2케이스(역방향 차단 통합·단위) 포함 full suite 488 files green |
+| `npm run build` | **PASS** (1234 modules · 11.04s) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| live E2E (결정 96) | **SKIP** (QA-B95 carry: backend UP 이나 `liveE2eBootstrapEnabled=false`) |
+| develop / test | **SYNCED `@3b903c8`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (765 BE + 21 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@ad2c0b1` + FE `@3b903c8` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (765 BE + 21 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T18:15:33Z -->
+<!-- tester-sync: TSR 1865차 2026-07-18T18:15:33Z (backend) — **★ SEC-D34 NHIS currency-suffixed amount/days normalize MERGED** develop→test FF merge `6329323`→`ad2c0b1` (pending **1→0** · `ad2c0b1` `NhisExcelParser` currency-suffixed 공단부담금/급여일수 `normalizeNumeric()` (**product code +20/-4·row-level resilience·저위험**) + `NhisExcelParserTest` +39L(+2 `@Test` 9→11)) · FF-safe(merge-base==test HEAD) · post-merge `mvn -o test` **2410/2410 PASS**(88s·0F/0E/0S·BUILD SUCCESS·EXIT 0·+2 vs 2408) · develop/test **SYNCED `@ad2c0b1`** WT CLEAN · **신규 Open 없음**(Open(BE) **0**) · transfer **PASS**(BE local) · cross-stream **SYNCED local**(BE `@ad2c0b1` + FE `@9b0481d` develop/test SYNCED·both Open 0) · operation **BLOCK**(765 BE + 20 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1865_backend: SEC-D34 NHIS currency-suffixed amount/days normalize MERGED 6329323→ad2c0b1 (pending 1→0); NhisExcelParser normalizeNumeric currency-suffixed amount/days(product code +20/-4·row-level resilience·low-risk)+NhisExcelParserTest +39L(+2 @Test); FF-safe; post-merge mvn -o test 2410/2410 PASS(88s·0F/0E/0S·BUILD SUCCESS·+2 vs 2408); SYNCED @ad2c0b1 WT CLEAN; no new Open(Open(BE) 0); transfer PASS(BE local); cross-stream SYNCED local(BE @ad2c0b1 + FE @9b0481d SYNCED·both Open 0); operation BLOCK(765 BE + 20 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1865 backend — SEC-D34 NHIS currency-suffixed amount/days normalize MERGED (develop→test FF `6329323`→`ad2c0b1`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `ad2c0b1` |
+| merge | **FF `6329323`→`ad2c0b1`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `ad2c0b1`: `NhisExcelParser.parseAmount/parseInteger` 가 `"765,000원"`·`" 15 "` 등 currency-suffixed/공백 셀을 `NumberFormatException`→null degrade 하던 문제를 `normalizeNumeric()`(원·공백 strip·`BankDepositExcelParser` lockstep)로 수정 → `NhisReconciliationMatcher` 오매칭(DISCREPANCY/PENDING) 방지 + `NhisExcelParserTest` +39L(+2 `@Test` 9→11) |
+| pending | **0** (`rev-list --count test..develop`=0 · merge 후) |
+| post-merge regression `mvn -o test` | **2410/2410 PASS** (88s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · +2 vs 2408 · `src/backend-test@test`) |
+| npm | **N/A** (backend stream) |
+| develop / test | **SYNCED `@ad2c0b1`** · WT CLEAN |
+| Open(BE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (765 BE + 20 FE pending · Planned QA-B116) |
+| transfer | **PASS** (BE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@ad2c0b1` + FE `@9b0481d` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (765 BE + 20 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T18:10:00Z -->
+<!-- tester-sync: TSR 1864차 2026-07-18T18:10:00Z (frontend) — **re-verify no-op** TSR1863 이후 develop 신규 커밋 **0** · develop=test=origin/develop **SYNCED `@9b0481d`** WT CLEAN · pending **0**(`rev-list --left-right origin/develop...HEAD`=0/0) · merge **SKIP**(신규 commit 없음) · full suite **미재실행**(peer `vitest run` active PID1374786 src/frontend + zero-change carry TSR1863 2763/2763 PASS @동일 SHA) · `npm run build` **1234 PASS**(fresh·10.78s) · `npm audit high` **0**(fresh·0 vulnerabilities) · **신규 Open 없음**(Open(FE) **0** carry) · transfer **PASS**(carry) · cross-stream **SYNCED local**(BE `@6329323` + FE `@9b0481d` SYNCED·both Open 0) · operation **BLOCK**(764 BE + 20 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1864_frontend: re-verify no-op — no new develop commit since TSR1863; develop=test=origin/develop SYNCED @9b0481d WT CLEAN; pending 0(origin/develop...HEAD=0/0); merge SKIP(no new commit); full suite NOT re-run(peer vitest run active PID1374786 src/frontend + zero-change carry TSR1863 2763/2763 PASS @same SHA); npm run build 1234 PASS(fresh·10.78s); npm audit high 0(fresh·0 vulnerabilities); no new Open(Open(FE) 0 carry); transfer PASS(carry); cross-stream SYNCED local(BE @6329323 + FE @9b0481d SYNCED·both Open 0); operation BLOCK(764 BE + 20 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1864 frontend — re-verify no-op (develop=test=origin/develop SYNCED `@9b0481d`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — TSR1863 이후 신규 커밋 없음 |
+| merge | **SKIP** (신규 commit 없음 · develop=test SYNCED `@9b0481d`) |
+| pending | **0** (`rev-list --left-right origin/develop...HEAD`=0/0) |
+| full suite `npm test` | **CARRY 2763/2763 PASS** (488 files·893.80s·TSR1863 @동일 SHA) — 미재실행: peer `vitest run` active(PID1374786 src/frontend)로 동시 실행 금지 + zero-change |
+| `npm run build` | **PASS** (1234 modules · fresh · 10.78s) |
+| `npm audit` high | **0** (fresh · 0 vulnerabilities) |
+| live E2E (결정 96) | **SKIP** (QA-B95 carry · merge 없음) |
+| develop / test | **SYNCED `@9b0481d`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (764 BE + 20 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · carry) |
+| cross-stream | **SYNCED local** (BE `@6329323` + FE `@9b0481d` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (764 BE + 20 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+### [TSR] TSR1863 frontend — G16 service-fee stale-banner clear MERGED (develop→test FF `9f12482`→`9b0481d`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `9b0481d` |
+| merge | **FF `9f12482`→`9b0481d`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `9b0481d`: G16 `TransportServiceFeePanel.load()` 가 `error` 뿐 아니라 `success`/`skipped` 도 비우고, `handleGenerate`/`handleConfirm` 이 `load()` 이후 성공 배너를 재설정 → 청구 생성·확정 후 기간 변경/`조회` 시 stale 배너 잔존 제거(id=2 form polish · product +10/-2·기존 동작 불변) + `TransportServiceFeePanel.test.jsx` +30(신규 회귀 1건) |
+| pending | **0** (`rev-list --left-right develop...test`=0/0 · merge 후) |
+| post-merge full suite `npm test` | **2763/2763 PASS** (488 files · 893.80s · +1 vs TSR1860 2762 · `src/frontend-test`→locked wrapper) |
+| targeted | `TransportServiceFeePanel.test.jsx` **PASS** (full suite 488 files 전수 green 포함) |
+| `npm run build` | **PASS** (1234 modules · 10.63s) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| live E2E (결정 96) | **SKIP** (QA-B95 carry: backend UP `/api/v1/health`=200 이나 `liveE2eBootstrapEnabled=false`) |
+| develop / test | **SYNCED `@9b0481d`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (764 BE + 20 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@6329323` + FE `@9b0481d` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (764 BE + 20 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T17:27:00Z -->
+<!-- tester-sync: TSR 1862차 2026-07-18T17:27:00Z (backend) — **★ SEC-D34 RFID tag time row-resilience MERGED** develop→test FF merge `13eb863`→`6329323` (pending **1→0** · `6329323` `RfidTransmissionExcelParser` out-of-range compact RFID tag time `DateTimeException` guard→null degrade(**product code +11/-1·row-level resilience·저위험**) + test +21) · FF-safe(merge-base==test HEAD) · post-merge `mvn -o test` **2408/2408 PASS**(89s·0F/0E/0S·BUILD SUCCESS·EXIT 0·+1 vs 2407) · develop/test **SYNCED `@6329323`** WT CLEAN · **신규 Open 없음**(Open(BE) **0**) · transfer **PASS**(BE local) · cross-stream **SYNCED local**(BE `@6329323` + FE `@9f12482` SYNCED·both Open 0) · operation **BLOCK**(764 BE + 19 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1862_backend: SEC-D34 RFID tag time row-resilience MERGED 13eb863→6329323 (pending 1→0); RfidTransmissionExcelParser out-of-range compact tag time DateTimeException guard→null degrade(product code +11/-1·row-level resilience·low-risk)+test +21; FF-safe; post-merge mvn -o test 2408/2408 PASS(89s·0F/0E/0S·BUILD SUCCESS·+1 vs 2407); SYNCED @6329323 WT CLEAN; no new Open(Open(BE) 0); transfer PASS(BE local); cross-stream SYNCED local(BE @6329323 + FE @9f12482 SYNCED·both Open 0); operation BLOCK(764 BE + 19 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1862 backend — SEC-D34 RFID tag time row-resilience MERGED (develop→test FF `13eb863`→`6329323`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `6329323` |
+| merge | **FF `13eb863`→`6329323`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `6329323`: `RfidTransmissionExcelParser` out-of-range compact RFID tag time(`9999`→99:99 등) `DateTimeException` → 파일 전체 fail 대신 **null tag time degrade**(row-level resilience·`NhisVisitScheduleExcelParser` oversized-minutes 패턴 대칭) + `RfidTransmissionExcelParserTest` +21L(+1 `@Test` 5→6) |
+| pending | **0** (`rev-list --count test..develop`=0 · merge 후) |
+| post-merge regression `mvn -o test` | **2408/2408 PASS** (89s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · +1 vs 2407 · `src/backend-test@test`) |
+| npm | **N/A** (backend stream) |
+| develop / test | **SYNCED `@6329323`** · WT CLEAN |
+| Open(BE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (764 BE + 19 FE pending · Planned QA-B116) |
+| transfer | **PASS** (BE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@6329323` + FE `@9f12482` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (764 BE + 19 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T17:13:48Z -->
+<!-- tester-sync: TSR 1861차 2026-07-18T17:13:48Z (frontend) — **re-verify no-op** TSR1860 이후 develop 신규 커밋 **0** · develop=test=origin/develop **SYNCED `@9f12482`** WT CLEAN · pending **0** · full suite **미재실행**(peer locked vitest PID1351427 active + zero-change carry TSR1860 2762/2762 PASS @동일 SHA) · Open(FE) **0** carry · transfer **PASS**(carry) · operation **BLOCK**(763 BE + 19 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1861_frontend: re-verify no-op — no new develop commit since TSR1860; develop=test=origin/develop SYNCED @9f12482 WT CLEAN; pending 0(develop...test=0/0); full suite NOT re-run(peer locked vitest PID1351427 active /tmp/ogada-vitest.lock + zero-change carry TSR1860 2762/2762 PASS @same SHA); Open(FE) 0 carry; transfer PASS(carry); cross-stream SYNCED local(BE @13eb863 + FE @9f12482 SYNCED·both Open 0); operation BLOCK(763 BE + 19 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1861 frontend — re-verify no-op (`@9f12482` SYNCED · pending 0)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — TSR1860 이후 develop 신규 커밋 없음 |
+| develop / test / origin/develop | **SYNCED `@9f12482`** · WT CLEAN |
+| pending | **0** (`rev-list --left-right develop...test`=0/0) |
+| full suite `npm test` | **미재실행** — peer locked vitest PID1351427(`/tmp/ogada-vitest.lock`, elapsed 12min+) active + zero-change carry(TSR1860 **2762/2762 PASS** @동일 SHA); 병행 실행 금지(§5) 준수 |
+| Open(FE) | **0** carry |
+| origin/test push | **미실행** (763 BE + 19 FE pending · QA-B116 · tester/merge 스크립트 전담) |
+| transfer | **PASS** (carry — FE local SYNCED · pending 0) |
+| cross-stream | **SYNCED local** (BE `@13eb863` + FE `@9f12482`·both Open 0) |
+| operation | **BLOCK** (QA-B116 origin/test push + QA-B95 live bootstrap-disabled) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T17:00:34Z -->
+<!-- tester-sync: TSR 1860차 2026-07-18T17:00:34Z (frontend) — **★ G16 service-fee client payload normalize MERGED** develop→test FF merge `5aaee88`→`9f12482` (pending **1→0**) · post-merge full suite `npm test` **2762/2762 PASS**(897.38s·488 files·+1 vs TSR1858) · build **1234 PASS**(9.66s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: bootstrap disabled) · develop/test **SYNCED `@9f12482`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(BE `@13eb863` + FE `@9f12482` SYNCED·both Open 0) · operation **BLOCK**(763 BE + 19 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1860_frontend: G16 service-fee client payload normalize MERGED 5aaee88→9f12482 (pending 1→0); post-merge full suite npm test 2762/2762 PASS(897.38s·488 files·+1 vs TSR1858); targeted TransportServiceFeePanel.test.jsx 7/7 PASS; build 1234 PASS(9.66s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @9f12482 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream SYNCED local(BE @13eb863 + FE @9f12482 SYNCED·both Open 0); operation BLOCK(763 BE + 19 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1860 frontend — G16 service-fee client payload normalize MERGED (develop→test FF `5aaee88`→`9f12482`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `9f12482` |
+| merge | **FF `5aaee88`→`9f12482`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `9f12482`: `TransportServiceFeePanel` 이 `fetchClientsApi` 응답을 배열 또는 `{ items: [...] }` paginated shape 모두에서 정규화해 G16 이동서비스비 기록의 client name 매핑 회귀 해소 |
+| pending | **0** (`rev-list --left-right develop...test`=0/0 · merge 후) |
+| targeted `src/components/transport/TransportServiceFeePanel.test.jsx` | **7/7 PASS** |
+| full suite `npm test` | **2762/2762 PASS** (897.38s · 488 files · +1 vs TSR1858 2761 · `src/frontend-test@test`) |
+| build | **`npm run build` 1234 modules PASS** (9.66s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** |
+| live E2E (결정 96) | **SKIP** — QA-B95 carry(bootstrap-disabled) |
+| develop / test | **SYNCED `@9f12482`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (763 BE + 19 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · full suite green) |
+| cross-stream | **SYNCED local** (BE `@13eb863` + FE `@9f12482` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (763 BE + 19 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T16:41:00Z -->
+<!-- tester-sync: TSR 1859차 2026-07-18T16:41:00Z (backend) — **★ SEC-D34 NHIS visit schedule parser fail-closed lock + oversized-minutes row-resilience MERGED** develop→test FF merge `4dcf60d`→`13eb863` (pending **2→0**) · post-merge `mvn -o test` **2407/2407 PASS**(90s·0F/0E/0S·BUILD SUCCESS·EXIT 0·+5 vs 2402) · develop/test **SYNCED `@13eb863`** WT CLEAN · **QA-20260718-B614 Fixed & Verified** · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **SYNCED local**(BE `@13eb863` + FE `@5aaee88` SYNCED·both Open 0) · operation **BLOCK**(763 BE + 18 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1859_backend: SEC-D34 NHIS visit schedule parser fail-closed lock + oversized-minutes row-resilience MERGED 4dcf60d→13eb863 (pending 2→0); post-merge mvn -o test 2407/2407 PASS(90s·0F/0E/0S·BUILD SUCCESS·+5 vs 2402); SYNCED @13eb863 WT CLEAN; QA-B614 Fixed & Verified; Open(BE) 0; transfer PASS(BE local); cross-stream SYNCED local(BE @13eb863 + FE @5aaee88 SYNCED·both Open 0); operation BLOCK(763 BE + 18 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1859 backend — SEC-D34 NHIS visit schedule parser fail-closed lock + oversized-minutes row-resilience MERGED (develop→test FF `4dcf60d`→`13eb863`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **2** — `417e2ff` + `13eb863` |
+| merge | **FF `4dcf60d`→`13eb863`** (FF-safe: merge-base==test HEAD · pending **2→0**) |
+| 커밋 요지 | ① `417e2ff`: `NhisVisitScheduleExcelParserTest` +58L — 헤더 행 없음/장기요양인정번호 열 없음/방문일 열 없음/유효 데이터행 0 fail-closed 회귀(**test-only**) ② `13eb863`: `NhisVisitScheduleExcelParser` oversized service-minutes `NumberFormatException` guard→time-diff fallback(**product code +7/-1·row-level resilience·저위험** + test +14) |
+| pending | **0** (`rev-list --count test..develop`=0 · merge 후) |
+| post-merge regression `mvn -o test` | **2407/2407 PASS** (90s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · +5 vs 2402 · `src/backend-test@test`) |
+| npm | **N/A** (backend stream) |
+| develop / test | **SYNCED `@13eb863`** · WT CLEAN |
+| QA-20260718-B614 | **Fixed & Verified** |
+| Open(BE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (763 BE + 18 FE pending · Planned QA-B116) |
+| transfer | **PASS** (BE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@13eb863` + FE `@5aaee88` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (763 BE + 18 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T16:26:04Z -->
 <!-- tester-sync: TSR 1858차 2026-07-18T16:26:04Z (frontend) — **★ id=2 a11y+wheel-blur MERGED** develop→test FF merge `b115ae0`→`5aaee88` (pending **2→0**) · post-merge full suite `npm test` **2761/2761 PASS**(898.94s·488 files·+1 vs TSR1856) · build **1234 PASS**(10.79s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: bootstrap disabled) · develop/test **SYNCED `@5aaee88`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE pending 1=QA-B614) · operation **BLOCK**(761 BE + 18 FE origin/test push=QA-B116 + QA-B95). -->
 # tester_1858_frontend: id=2 a11y+wheel-blur MERGED b115ae0→5aaee88 (pending 2→0); 2 commits(eca424f a11y departureRound field-error routing + 5aaee88 wheel blur guard); post-merge full suite npm test 2761/2761 PASS(898.94s·488 files·+1 vs TSR1856); build 1234 PASS(10.79s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @5aaee88 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE pending 1=QA-B614 HIGH/BLOCK); operation BLOCK(761 BE + 18 FE push=QA-B116 + QA-B95).
