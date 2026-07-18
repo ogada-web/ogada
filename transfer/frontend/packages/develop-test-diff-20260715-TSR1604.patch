@@ -1,0 +1,110 @@
+diff --git a/src/e2e/liveConfig.js b/src/e2e/liveConfig.js
+index 84a674c..c3cb39d 100644
+--- a/src/e2e/liveConfig.js
++++ b/src/e2e/liveConfig.js
+@@ -51,14 +51,19 @@ export function isUsableAccessToken(value) {
+ }
+ 
+ export function isLiveE2eEnabled() {
+-  return process.env.LIVE_E2E === "1" || process.env.LIVE_E2E === "true";
++  return isTruthyLiveFlag(process.env.LIVE_E2E);
+ }
+ 
+ function isLiveBootstrapSuppressionAllowed() {
+-  return (
+-    process.env.LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION === "1" ||
+-    process.env.LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION === "true"
+-  );
++  return isTruthyLiveFlag(process.env.LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION);
++}
++
++function isTruthyLiveFlag(value) {
++  if (typeof value !== "string") {
++    return false;
++  }
++  const normalized = value.trim().toLowerCase();
++  return normalized === "1" || normalized === "true";
+ }
+ 
+ function readLiveBackendProbeState() {
+@@ -1047,8 +1052,7 @@ export function getLiveE2eSkipReasons({
+ 
+   if (
+     requireWriteFlag &&
+-    process.env.LIVE_E2E_WRITE !== "1" &&
+-    process.env.LIVE_E2E_WRITE !== "true"
++    !isTruthyLiveFlag(process.env.LIVE_E2E_WRITE)
+   ) {
+     reasons.push("LIVE_E2E_WRITE is disabled");
+   }
+diff --git a/src/test/liveE2eHarness.test.js b/src/test/liveE2eHarness.test.js
+index 2da3bb0..c0e38c5 100644
+--- a/src/test/liveE2eHarness.test.js
++++ b/src/test/liveE2eHarness.test.js
+@@ -46,6 +46,7 @@ function clearLiveBackendStateFile() {
+ const LIVE_E2E_CREDENTIAL_ENV_KEYS = [
+   "LIVE_E2E",
+   "LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION",
++  "LIVE_E2E_WRITE",
+   "LIVE_E2E_ACCESS_TOKEN",
+   "LIVE_E2E_REFRESH_TOKEN",
+   "LIVE_E2E_EMAIL",
+@@ -1517,6 +1518,58 @@ describe("liveConfig skip diagnostics", () => {
+     ).toBe(false);
+   });
+ 
++  it("allows bootstrap-suppressed readiness when override flag has whitespace and uppercase", () => {
++    mkdirSync(dirname(LIVE_BACKEND_STATE_FILE), { recursive: true });
++    writeFileSync(
++      LIVE_BACKEND_STATE_FILE,
++      JSON.stringify({
++        reachable: true,
++        ready: true,
++        skipped: false,
++        checkedAt: new Date().toISOString(),
++        staffAuthReady: true,
++        liveE2eOperationReady: false,
++        liveE2eOperationBlockers: ["bootstrap-disabled"],
++        liveE2eSuppressedBootstrapOperationBlockers: ["bootstrap-disabled"],
++        liveE2eEffectiveOperationSuppressedByBootstrap: true
++      })
++    );
++    vi.stubEnv("LIVE_E2E_ACCESS_TOKEN", "staff-token");
++    vi.stubEnv("LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION", " TRUE ");
++
++    const reasons = getLiveE2eSkipReasons({
++      requireStaffAuth: true,
++      requireOperationReady: true
++    });
++
++    expect(
++      reasons.some((reason) =>
++        reason.includes("operation readiness suppressed by bootstrap blockers")
++      )
++    ).toBe(false);
++  });
++
++  it("treats LIVE_E2E_WRITE true flag case-insensitively", () => {
++    mkdirSync(dirname(LIVE_BACKEND_STATE_FILE), { recursive: true });
++    writeFileSync(
++      LIVE_BACKEND_STATE_FILE,
++      JSON.stringify({
++        reachable: true,
++        ready: true,
++        skipped: false,
++        checkedAt: new Date().toISOString()
++      })
++    );
++    vi.stubEnv("LIVE_E2E", " TRUE ");
++    vi.stubEnv("LIVE_E2E_WRITE", " TRUE ");
++
++    const reasons = getLiveE2eSkipReasons({
++      requireWriteFlag: true
++    });
++
++    expect(reasons).not.toContain("LIVE_E2E_WRITE is disabled");
++  });
++
+   it("ignores bootstrap-unavailable blocker when staff auth is already recovered", () => {
+     mkdirSync(dirname(LIVE_BACKEND_STATE_FILE), { recursive: true });
+     writeFileSync(

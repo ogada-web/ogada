@@ -1,0 +1,474 @@
+diff --git a/src/components/clients/ClientLinkageRecordsPanel.jsx b/src/components/clients/ClientLinkageRecordsPanel.jsx
+index abaa43b..a263279 100644
+--- a/src/components/clients/ClientLinkageRecordsPanel.jsx
++++ b/src/components/clients/ClientLinkageRecordsPanel.jsx
+@@ -154,8 +154,12 @@ function ClientLinkageRecordsPanel({ clientId, clientName = "" }) {
+         linkageType: editing.linkageType || "HOSPITAL",
+         targetInstitution: editing.targetInstitution || "",
+         recordDate: editing.recordDate || "",
+-        summary: editing.summary || "",
+-        carePlanAfterDischarge: "",
++        // Always prefer unfolded summaryCore (may be "") to avoid marker duplication.
++        summary:
++          typeof editing.summaryCore === "string"
++            ? editing.summaryCore
++            : editing.summary || "",
++        carePlanAfterDischarge: editing.carePlanAfterDischarge || "",
+         status: editing.status || "DRAFT"
+       }
+     : null;
+@@ -195,6 +199,7 @@ function ClientLinkageRecordsPanel({ clientId, clientName = "" }) {
+           key={formKey}
+           clientName={clientName}
+           initialValues={formInitialValues}
++          suppressInlineSuccess
+           onSubmit={handleSubmit}
+           onDispatch={handleDispatch}
+         />
+diff --git a/src/components/clients/ClientLinkageRecordsPanel.test.jsx b/src/components/clients/ClientLinkageRecordsPanel.test.jsx
+index 644fb95..af51178 100644
+--- a/src/components/clients/ClientLinkageRecordsPanel.test.jsx
++++ b/src/components/clients/ClientLinkageRecordsPanel.test.jsx
+@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { beforeEach, describe, expect, it, vi } from "vitest";
+ import * as services from "../../api/services";
++import { buildLinkageRecordWritePayload } from "../../config/linkageRecords";
+ import ClientLinkageRecordsPanel from "./ClientLinkageRecordsPanel";
+ 
+ vi.mock("../../api/services", async () => {
+@@ -150,4 +151,67 @@ describe("ClientLinkageRecordsPanel (G-LINKAGE-RECORD wire)", () => {
+     expect(within(table).getByText("기관 이관")).toBeInTheDocument();
+     expect(within(table).getByText("발송 완료")).toBeInTheDocument();
+   });
++
++  it("rehydrates folded 작성일·이용계획 when editing a draft", async () => {
++    const user = userEvent.setup();
++    const foldedSummary = buildLinkageRecordWritePayload({
++      linkageType: "HOME_CARE",
++      targetInstitution: "우리재가센터",
++      recordDate: "2026-07-08",
++      summary: "인지·일상생활 저하",
++      carePlanAfterDischarge: "전원 후 주 2회 방문간호"
++    }).summary;
++    services.fetchClientLinkageRecordsApi.mockResolvedValue({
++      items: [
++        {
++          id: "lr-draft",
++          clientId: "c1",
++          linkageType: "HOME_CARE",
++          targetInstitution: "우리재가센터",
++          summary: foldedSummary,
++          recordStatus: "DRAFT",
++          createdAt: "2026-07-15T01:00:00.000Z"
++        }
++      ],
++      page: 0,
++      size: 50,
++      totalElements: 1,
++      totalPages: 1
++    });
++    services.updateClientLinkageRecordApi.mockResolvedValue({
++      id: "lr-draft",
++      recordStatus: "DRAFT"
++    });
++
++    render(<ClientLinkageRecordsPanel clientId="c1" clientName="이수급" />);
++
++    await waitFor(() => {
++      expect(services.fetchClientLinkageRecordsApi).toHaveBeenCalled();
++    });
++
++    await user.click(screen.getByRole("button", { name: "수정" }));
++
++    expect(screen.getByLabelText(/연계 대상 기관/)).toHaveValue("우리재가센터");
++    expect(screen.getByLabelText(/작성일/)).toHaveTextContent(/2026\.07\.08/);
++    expect(screen.getByLabelText(/심신기능·제공 급여 요약/)).toHaveValue(
++      "인지·일상생활 저하"
++    );
++    expect(screen.getByLabelText(/퇴소 후 이용계획/)).toHaveValue(
++      "전원 후 주 2회 방문간호"
++    );
++
++    await user.click(screen.getByRole("button", { name: "초안 저장" }));
++
++    await waitFor(() => {
++      expect(services.updateClientLinkageRecordApi).toHaveBeenCalledWith(
++        "c1",
++        "lr-draft",
++        expect.objectContaining({
++          linkageType: "HOME_CARE",
++          targetInstitution: "우리재가센터",
++          summary: foldedSummary
++        })
++      );
++    });
++  });
+ });
+diff --git a/src/components/ui/ClientLinkageRecordForm.jsx b/src/components/ui/ClientLinkageRecordForm.jsx
+index aaa3358..0daa0db 100644
+--- a/src/components/ui/ClientLinkageRecordForm.jsx
++++ b/src/components/ui/ClientLinkageRecordForm.jsx
+@@ -1,7 +1,11 @@
+ import { useId, useState } from "react";
++import { applyApiErrorToForm } from "../../api/formErrors";
+ import {
+   LINKAGE_RECORD_STATUS,
+-  LINKAGE_TYPE_OPTIONS
++  LINKAGE_TARGET_INSTITUTION_MAX,
++  LINKAGE_TYPE_OPTIONS,
++  LINKAGE_SUMMARY_MAX,
++  isLinkageSummaryTooLong
+ } from "../../config/linkageRecords";
+ import Alert from "./Alert";
+ import Button from "./Button";
+@@ -31,6 +35,7 @@ function currentDateString() {
+  *   onSubmit?: (payload: object) => Promise<void>|void,
+  *   onDispatch?: (payload: object) => Promise<void>|void,
+  *   disabled?: boolean,
++ *   suppressInlineSuccess?: boolean,
+  *   className?: string,
+  * }} props
+  */
+@@ -40,6 +45,7 @@ function ClientLinkageRecordForm({
+   onSubmit,
+   onDispatch,
+   disabled = false,
++  suppressInlineSuccess = false,
+   className = ""
+ }) {
+   const headingId = useId();
+@@ -74,12 +80,22 @@ function ClientLinkageRecordForm({
+     }
+     if (!targetInstitution.trim()) {
+       next.targetInstitution = "연계 대상 기관명을 입력하세요.";
++    } else if (targetInstitution.trim().length > LINKAGE_TARGET_INSTITUTION_MAX) {
++      next.targetInstitution = `연계 대상 기관명은 ${LINKAGE_TARGET_INSTITUTION_MAX}자 이하여야 합니다.`;
+     }
+     if (!recordDate) {
+       next.recordDate = "작성일을 입력하세요.";
+     }
+     if (!summary.trim()) {
+       next.summary = "심신기능·제공 급여 요약을 입력하세요.";
++    } else if (
++      isLinkageSummaryTooLong({
++        recordDate,
++        summary,
++        carePlanAfterDischarge
++      })
++    ) {
++      next.summary = `본문(작성일·요약·이용계획 합계)은 ${LINKAGE_SUMMARY_MAX}자 이하여야 합니다.`;
+     }
+     return next;
+   }
+@@ -110,9 +126,15 @@ function ClientLinkageRecordForm({
+     try {
+       await onSubmit?.(buildPayload());
+       setStatus("DRAFT");
+-      setSuccessMessage("연계기록지 초안을 저장했습니다.");
++      if (!suppressInlineSuccess) {
++        setSuccessMessage("연계기록지 초안을 저장했습니다.");
++      }
+     } catch (err) {
+-      setError(err?.message || "연계기록지 저장에 실패했습니다.");
++      applyApiErrorToForm(err, {
++        setFormError: setError,
++        setFieldErrors,
++        fallbackMessage: "연계기록지 저장에 실패했습니다."
++      });
+     } finally {
+       setSubmitting(false);
+     }
+@@ -132,9 +154,15 @@ function ClientLinkageRecordForm({
+     try {
+       await onDispatch?.(buildPayload());
+       setStatus("DISPATCHED");
+-      setSuccessMessage("연계기록지를 발송 완료로 기록했습니다.");
++      if (!suppressInlineSuccess) {
++        setSuccessMessage("연계기록지를 발송 완료로 기록했습니다.");
++      }
+     } catch (err) {
+-      setError(err?.message || "연계기록지 발송에 실패했습니다.");
++      applyApiErrorToForm(err, {
++        setFormError: setError,
++        setFieldErrors,
++        fallbackMessage: "연계기록지 발송에 실패했습니다."
++      });
+     } finally {
+       setDispatching(false);
+     }
+diff --git a/src/components/ui/ClientLinkageRecordForm.test.jsx b/src/components/ui/ClientLinkageRecordForm.test.jsx
+index aeb0318..39e87fc 100644
+--- a/src/components/ui/ClientLinkageRecordForm.test.jsx
++++ b/src/components/ui/ClientLinkageRecordForm.test.jsx
+@@ -1,6 +1,10 @@
+ import { render, screen } from "@testing-library/react";
+ import userEvent from "@testing-library/user-event";
+ import { describe, expect, it, vi } from "vitest";
++import { ApiError } from "../../api/http";
++import {
++  LINKAGE_TARGET_INSTITUTION_MAX
++} from "../../config/linkageRecords";
+ import ClientLinkageRecordForm from "./ClientLinkageRecordForm";
+ 
+ describe("ClientLinkageRecordForm (G-LINKAGE-RECORD shell)", () => {
+@@ -58,4 +62,66 @@ describe("ClientLinkageRecordForm (G-LINKAGE-RECORD shell)", () => {
+     render(<ClientLinkageRecordForm onSubmit={vi.fn()} />);
+     expect(screen.getByRole("button", { name: "발송 확정" })).toBeDisabled();
+   });
++
++  it("blocks institution names over BE max length", async () => {
++    const user = userEvent.setup();
++    const onSubmit = vi.fn();
++    render(<ClientLinkageRecordForm onSubmit={onSubmit} />);
++
++    await user.type(
++      screen.getByLabelText(/연계 대상 기관/),
++      "기".repeat(LINKAGE_TARGET_INSTITUTION_MAX + 1)
++    );
++    await user.type(screen.getByLabelText(/심신기능·제공 급여 요약/), "요약");
++    await user.click(screen.getByRole("button", { name: "초안 저장" }));
++
++    expect(
++      screen.getByText(
++        `연계 대상 기관명은 ${LINKAGE_TARGET_INSTITUTION_MAX}자 이하여야 합니다.`
++      )
++    ).toBeInTheDocument();
++    expect(onSubmit).not.toHaveBeenCalled();
++  });
++
++  it("maps server fieldErrors onto form fields", async () => {
++    const user = userEvent.setup();
++    const onSubmit = vi.fn().mockRejectedValue(
++      new ApiError("입력값을 확인하세요.", {
++        status: 422,
++        fieldErrors: {
++          targetInstitution: "대상 기관명이 너무 깁니다.",
++          summary: "요약 본문이 너무 깁니다."
++        }
++      })
++    );
++    render(<ClientLinkageRecordForm onSubmit={onSubmit} />);
++
++    await user.type(screen.getByLabelText(/연계 대상 기관/), "병원");
++    await user.type(screen.getByLabelText(/심신기능·제공 급여 요약/), "요약");
++    await user.click(screen.getByRole("button", { name: "초안 저장" }));
++
++    expect(await screen.findByText("대상 기관명이 너무 깁니다.")).toBeInTheDocument();
++    expect(screen.getByText("요약 본문이 너무 깁니다.")).toBeInTheDocument();
++    expect(screen.getByText("입력값을 확인하세요.")).toBeInTheDocument();
++  });
++
++  it("suppresses inline success when parent panel owns feedback", async () => {
++    const user = userEvent.setup();
++    const onSubmit = vi.fn().mockResolvedValue(undefined);
++    render(
++      <ClientLinkageRecordForm
++        onSubmit={onSubmit}
++        suppressInlineSuccess
++      />
++    );
++
++    await user.type(screen.getByLabelText(/연계 대상 기관/), "병원");
++    await user.type(screen.getByLabelText(/심신기능·제공 급여 요약/), "요약");
++    await user.click(screen.getByRole("button", { name: "초안 저장" }));
++
++    expect(onSubmit).toHaveBeenCalled();
++    expect(
++      screen.queryByText("연계기록지 초안을 저장했습니다.")
++    ).not.toBeInTheDocument();
++  });
+ });
+diff --git a/src/config/linkageRecords.js b/src/config/linkageRecords.js
+index 660cb2a..93aad32 100644
+--- a/src/config/linkageRecords.js
++++ b/src/config/linkageRecords.js
+@@ -23,6 +23,54 @@ export const LINKAGE_SUMMARY_MAX = 5000;
+ export const LINKAGE_TARGET_INSTITUTION_MAX = 200;
+ 
+ const CARE_PLAN_SECTION_MARKER = "[퇴소 후 이용계획]";
++const RECORD_DATE_SECTION_MARKER = "[작성일]";
++const RECORD_DATE_LINE_RE = new RegExp(
++  `^\\s*${RECORD_DATE_SECTION_MARKER.replace(/[[\]]/g, "\\$&")}\\s+(\\d{4}-\\d{2}-\\d{2})\\s*$`,
++  "m"
++);
++
++/**
++ * Unfolds FE fold markers written by {@link buildLinkageRecordWritePayload}
++ * so draft edit rehydrates 작성일 / 본문 요약 / 퇴소 후 이용계획 without
++ * duplicating markers on the next save.
++ *
++ * @param {string|null|undefined} foldedSummary
++ * @returns {{
++ *   recordDate: string,
++ *   summary: string,
++ *   carePlanAfterDischarge: string
++ * }}
++ */
++export function parseLinkageSummaryFold(foldedSummary) {
++  const raw = String(foldedSummary || "").trim();
++  if (!raw) {
++    return { recordDate: "", summary: "", carePlanAfterDischarge: "" };
++  }
++
++  let working = raw;
++  let recordDate = "";
++  const dateMatch = working.match(RECORD_DATE_LINE_RE);
++  if (dateMatch) {
++    recordDate = dateMatch[1];
++    working = working.replace(dateMatch[0], "").trim();
++  }
++
++  let carePlanAfterDischarge = "";
++  const markerIndex = working.indexOf(CARE_PLAN_SECTION_MARKER);
++  if (markerIndex >= 0) {
++    carePlanAfterDischarge = working
++      .slice(markerIndex + CARE_PLAN_SECTION_MARKER.length)
++      .replace(/^\s*\n?/, "")
++      .trim();
++    working = working.slice(0, markerIndex).trim();
++  }
++
++  return {
++    recordDate,
++    summary: working,
++    carePlanAfterDischarge
++  };
++}
+ 
+ /**
+  * @param {string|null|undefined} code
+@@ -64,6 +112,27 @@ export function resolveLinkageTimestampParts(value) {
+  * }} form
+  * @returns {{ linkageType: string, targetInstitution: string, summary: string }}
+  */
++/**
++ * @param {Parameters<typeof buildLinkageRecordWritePayload>[0]} form
++ * @returns {boolean}
++ */
++export function isLinkageSummaryTooLong(form = {}) {
++  const parts = [];
++  const recordDate = String(form.recordDate || "").trim();
++  if (recordDate) {
++    parts.push(`[작성일] ${recordDate}`);
++  }
++  const summaryCore = String(form.summary || "").trim();
++  if (summaryCore) {
++    parts.push(summaryCore);
++  }
++  const carePlan = String(form.carePlanAfterDischarge || "").trim();
++  if (carePlan) {
++    parts.push(`${CARE_PLAN_SECTION_MARKER}\n${carePlan}`);
++  }
++  return parts.join("\n\n").length > LINKAGE_SUMMARY_MAX;
++}
++
+ export function buildLinkageRecordWritePayload(form = {}) {
+   const linkageType = String(form.linkageType || "").trim();
+   const targetInstitution = String(form.targetInstitution || "").trim();
+@@ -103,8 +172,10 @@ export function normalizeLinkageRecord(raw, opts = {}) {
+     return null;
+   }
+   const createdAt = raw.createdAt || null;
++  const folded = parseLinkageSummaryFold(raw.summary);
+   const recordDate =
+     raw.recordDate ||
++    folded.recordDate ||
+     (typeof createdAt === "string" && createdAt.length >= 10
+       ? createdAt.slice(0, 10)
+       : null);
+@@ -115,7 +186,11 @@ export function normalizeLinkageRecord(raw, opts = {}) {
+     clientName: opts.clientName || raw.clientName || null,
+     linkageType: raw.linkageType || null,
+     targetInstitution: raw.targetInstitution || "",
++    /** Raw BE summary (may include FE fold markers). */
+     summary: raw.summary || "",
++    /** Unfolded body for form edit rehydration. */
++    summaryCore: folded.summary,
++    carePlanAfterDischarge: folded.carePlanAfterDischarge,
+     status: raw.recordStatus || raw.status || "DRAFT",
+     recordStatus: raw.recordStatus || raw.status || "DRAFT",
+     recordDate,
+diff --git a/src/config/linkageRecords.test.js b/src/config/linkageRecords.test.js
+index 4f1265b..d4f3c57 100644
+--- a/src/config/linkageRecords.test.js
++++ b/src/config/linkageRecords.test.js
+@@ -2,8 +2,12 @@ import { describe, expect, it } from "vitest";
+ import {
+   LINKAGE_RECORD_STATUS,
+   LINKAGE_TYPE_OPTIONS,
++  LINKAGE_SUMMARY_MAX,
++  LINKAGE_TARGET_INSTITUTION_MAX,
+   buildLinkageRecordWritePayload,
++  isLinkageSummaryTooLong,
+   normalizeLinkageRecord,
++  parseLinkageSummaryFold,
+   resolveLinkageTimestampParts,
+   resolveLinkageTypeLabel
+ } from "./linkageRecords";
+@@ -59,14 +63,52 @@ describe("linkageRecords config (G-LINKAGE-RECORD)", () => {
+     expect(body.summary).toContain("주 2회 방문");
+   });
+ 
+-  it("normalizes BE recordStatus into UI status + recordDate", () => {
++  it("detects folded summary length over BE max", () => {
++    const longSummary = "가".repeat(LINKAGE_SUMMARY_MAX);
++    expect(
++      isLinkageSummaryTooLong({
++        recordDate: "2026-07-15",
++        summary: longSummary,
++        carePlanAfterDischarge: "추가"
++      })
++    ).toBe(true);
++    expect(
++      isLinkageSummaryTooLong({
++        summary: "짧은 요약"
++      })
++    ).toBe(false);
++  });
++
++  it("parses folded summary back into form fields (draft edit round-trip)", () => {
++    const folded = buildLinkageRecordWritePayload({
++      linkageType: "HOSPITAL",
++      targetInstitution: "요양병원",
++      recordDate: "2026-07-12",
++      summary: "인지저하·외래의뢰",
++      carePlanAfterDischarge: "전원 후 주 3회 방문간호"
++    }).summary;
++    const parts = parseLinkageSummaryFold(folded);
++    expect(parts.recordDate).toBe("2026-07-12");
++    expect(parts.summary).toBe("인지저하·외래의뢰");
++    expect(parts.carePlanAfterDischarge).toBe("전원 후 주 3회 방문간호");
++
++    const rebuilt = buildLinkageRecordWritePayload({
++      linkageType: "HOSPITAL",
++      targetInstitution: "요양병원",
++      ...parts
++    });
++    expect(rebuilt.summary).toBe(folded);
++  });
++
++  it("normalizes BE recordStatus into UI status + unfolded summary fields", () => {
+     const row = normalizeLinkageRecord(
+       {
+         id: "lr1",
+         clientId: "c1",
+         linkageType: "HOSPITAL",
+         targetInstitution: "병원",
+-        summary: "요약",
++        summary:
++          "[작성일] 2026-07-09\n\n심신기능 요약\n\n[퇴소 후 이용계획]\n재가 연계",
+         recordStatus: "DISPATCHED",
+         dispatchedAt: "2026-07-11T01:30:00.000Z",
+         createdAt: "2026-07-10T08:00:00.000Z"
+@@ -74,7 +116,9 @@ describe("linkageRecords config (G-LINKAGE-RECORD)", () => {
+       { clientName: "홍길동" }
+     );
+     expect(row.status).toBe("DISPATCHED");
+-    expect(row.recordDate).toBe("2026-07-10");
++    expect(row.recordDate).toBe("2026-07-09");
++    expect(row.summaryCore).toBe("심신기능 요약");
++    expect(row.carePlanAfterDischarge).toBe("재가 연계");
+     expect(row.clientName).toBe("홍길동");
+   });
+ });

@@ -1,0 +1,22 @@
+# develop→test diff · TSR1659 · FF merge+PUSH EXECUTED
+
+- range: `a356083..79763a3` (FF · pending **1→0**)
+- commits:
+  - `79763a3` feat(v1.2.1/J03): wire dedicated dispatch-reference-unit-rates catalog
+- files:
+  - `src/api/services.js`
+  - `src/api/settingsServices.test.js`
+  - `src/components/ui/NotificationChannelReadinessPanel.jsx`
+  - `src/components/ui/NotificationChannelReadinessPanel.test.jsx`
+  - `src/config/competitorModuleCoverage.js`
+  - `src/config/notificationDispatchUnitRates.js`
+- diffstat: `6 files changed, 100 insertions(+), 10 deletions(-)`
+- merge: **★ FF EXECUTED** (`git_merge_to_test.sh frontend` · test WT)
+- related: **46/46 PASS** (settingsServices + NotificationChannelReadinessPanel + notificationDispatchUnitRates + notificationChannelStatus · 4.85s, 4)
+- post-merge: `npm test` **2595/2595 PASS** (865.26s, 477 files)
+- build/audit: `npm run build` **1230 modules PASS** (9.35s) · `npm audit --omit=dev` **0 vulnerabilities**
+- live: default **0/149/0** (33.31s fail-closed · bootstrap-disabled) · opt-in **SKIP**(carry TSR1597)
+- origin/test: **★ PUSHED** `a356083`→`79763a3`
+- Open: **1** (QA-B476 BE carry · **QA-B478 Fixed**)
+- cross-stream: BLOCK (BE develop `@0ad3b07` pending 2 vs test `@74e90c1` · FE `@79763a3` ALL SYNCED+PUSHED)
+- operation: BLOCK (origin/test **676 BE** 실측 + QA-B116 + QA-B95 · BE merge pending 2)

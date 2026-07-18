@@ -1,8 +1,457 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T08:29:16Z -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T16:26:04Z -->
+<!-- tester-sync: TSR 1858차 2026-07-18T16:26:04Z (frontend) — **★ id=2 a11y+wheel-blur MERGED** develop→test FF merge `b115ae0`→`5aaee88` (pending **2→0**) · post-merge full suite `npm test` **2761/2761 PASS**(898.94s·488 files·+1 vs TSR1856) · build **1234 PASS**(10.79s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: bootstrap disabled) · develop/test **SYNCED `@5aaee88`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE pending 1=QA-B614) · operation **BLOCK**(761 BE + 18 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1858_frontend: id=2 a11y+wheel-blur MERGED b115ae0→5aaee88 (pending 2→0); 2 commits(eca424f a11y departureRound field-error routing + 5aaee88 wheel blur guard); post-merge full suite npm test 2761/2761 PASS(898.94s·488 files·+1 vs TSR1856); build 1234 PASS(10.79s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @5aaee88 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE pending 1=QA-B614 HIGH/BLOCK); operation BLOCK(761 BE + 18 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1858 frontend — id=2 a11y+wheel-blur MERGED (develop→test FF `b115ae0`→`5aaee88`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **2** — `eca424f` + `5aaee88` |
+| merge | **FF `b115ae0`→`5aaee88`** (FF-safe: merge-base==test HEAD · pending **2→0**) |
+| 커밋 요지 | ① `eca424f`: `TransportRunNewPage` 서버 `departureRound` 필드 오류를 필드 단위로 라우팅(UXD-194 a11y) ② `5aaee88`: `onWheel` 핸들러로 포커스 중 마우스 휠이 회차 값을 조용히 변경하는 데이터 무결성 문제 차단(`event.currentTarget.blur()`) |
+| pending | **0** (`rev-list --left-right develop...test`=0/0 · merge 후) |
+| targeted `src/pages/TransportRunNewPage.test.jsx` | **9/9 PASS** |
+| full suite `npm test` | **2761/2761 PASS** (898.94s · 488 files · +1 vs TSR1856 2760 · `src/frontend-test@test`) |
+| build | **`npm run build` 1234 modules PASS** (10.79s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** |
+| live E2E (결정 96) | **SKIP** — QA-B95 carry(bootstrap-disabled) |
+| develop / test | **SYNCED `@5aaee88`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (761 BE + 18 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · full suite green) |
+| cross-stream | **BLOCK** (BE develop `@417e2ff`/test `@4dcf60d` pending 1 = QA-B614 HIGH/BLOCK) |
+| operation | **BLOCK** (761 BE + 18 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- tester-sync: TSR 1857차 2026-07-18T15:48:51Z (backend) — ROADMAP merged baseline `@4dcf60d` 재검증 · `src/backend-test@test` `mvn -o test` **2402/2402 PASS**(65s·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@417e2ff` / test `@4dcf60d` pending **1**(`test..develop`) 확인 · merge **SKIP**(src read-only 지시) · **QA-20260718-B614 Open(HIGH/BLOCK)** · Open(BE) **1** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 1 + FE `@b115ae0` SYNCED + origin/test 761 BE + 16 FE push=QA-B116) · operation **BLOCK**(QA-B614 + QA-B116 + QA-B95). -->
+# tester_1857_backend: roadmap-baseline@4dcf60d mvn -o test 2402/2402 PASS(65s,0F/0E/0S); develop@417e2ff pending 1(test..develop); merge SKIP(read-only); Open(BE) 1(QA-B614 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 1 + FE SYNCED + 761 BE + 16 FE push=QA-B116); operation BLOCK(QA-B614+QA-B116+QA-B95).
+
+### [TSR] TSR1857 backend — ROADMAP merged baseline `@4dcf60d` 재검증 (develop→test pending 1)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1 pending** — `417e2ff` `test(v3/SEC-D34): lock NHIS visit schedule excel parser validation fail-closed branches` |
+| merge | **SKIP** (src read-only 지시 준수 · `test..develop=1`) |
+| pending | **1** (`rev-list --left-right test...develop`=0/1) |
+| regression `mvn -o test` | **2402/2402 PASS** (65s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · `src/backend-test@test`) |
+| 변경 범위(개발 브랜치) | `NhisVisitScheduleExcelParserTest.java` **+58L** (test-only · 제품 코드 무변경) |
+| develop / test | develop `@417e2ff` / test `@4dcf60d` |
+| Open(BE) | **1** — QA-20260718-B614 (**HIGH/BLOCK**) |
+| transfer | **BLOCK** (develop→test pending 1) |
+| cross-stream | **BLOCK** (BE pending 1 + FE `@b115ae0` SYNCED + origin/test 761 BE + 16 FE pending push=QA-B116) |
+| operation | **BLOCK** (QA-B614 + QA-B116 + QA-B95) |
+
+---
+
+<!-- tester-sync: TSR 1856차 2026-07-18T15:16:57Z (frontend) — **★ id=2 transport departure-round upper-bound lockstep follow-up MERGED** develop→test FF merge `8766331`→`b115ae0` (pending **1→0**) · post-merge full suite `npm test` **2760/2760 PASS**(888.61s·488 files·+1 vs TSR1854) · targeted `src/pages/TransportRunNewPage.test.jsx` **8/8** · build **1234 PASS**(9.40s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: bootstrap disabled) · develop/test **SYNCED `@b115ae0`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(FE `@b115ae0` + BE `@4dcf60d` develop/test SYNCED·both Open 0) · operation **BLOCK**(761 BE + 16 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1856_frontend: id=2 transport departure-round upper-bound lockstep follow-up MERGED 8766331→b115ae0 (pending 1→0); post-merge full suite npm test 2760/2760 PASS(888.61s·488 files·+1 vs TSR1854); targeted TransportRunNewPage.test.jsx 8/8 PASS; build 1234 PASS(9.40s); audit high 0; live E2E SKIP(QA-B95 carry); SYNCED @b115ae0 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream SYNCED local(FE @b115ae0 + BE @4dcf60d SYNCED, both Open 0); operation BLOCK(761 BE + 16 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1856 frontend — id=2 transport departure-round upper-bound lockstep follow-up MERGED (develop→test FF `8766331`→`b115ae0`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `b115ae0` `fix(v1.2.1/transport): bound departure-round input to BE Integer max (id=2 form polish)` |
+| merge | **FF `8766331`→`b115ae0`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `TransportRunNewPage` 에서 회차(`departureRound`) 상한을 BE `Integer.MAX_VALUE` 계약과 lockstep으로 맞추는 follow-up 검증/회귀 보강 |
+| pending | **0** (`rev-list --left-right develop...test`=0/0 · merge 후) |
+| targeted `src/pages/TransportRunNewPage.test.jsx` | **8/8 PASS** |
+| full suite `npm test` | **2760/2760 PASS** (888.61s · 488 files · +1 vs TSR1854 2759 · `src/frontend-test@test`) |
+| build | **`npm run build` 1234 modules PASS** (9.40s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** |
+| live E2E (결정 96) | **SKIP** — QA-B95 carry(bootstrap-disabled) |
+| develop / test | **SYNCED `@b115ae0`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (761 BE + 16 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · full suite green) |
+| cross-stream | **SYNCED local** (FE `@b115ae0` + BE `@4dcf60d` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (761 BE + 16 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T14:55:00Z -->
+<!-- tester-sync: TSR 1855차 2026-07-18T14:55:00Z (backend) — **★ SEC-D34 RFID transmission excel parser fail-closed test lock MERGED** develop→test FF merge `ae1c6a1`→`4dcf60d` (pending **1→0** · `4dcf60d` `RfidTransmissionExcelParserTest` +59L: missing header-row·required-column·empty-data-row fail-closed 회귀 · **test-only · 제품 코드 무변경**) · FF-safe(merge-base==test HEAD) · post-merge full `mvn -o test` **2402/2402 PASS**(83s·0F/0E/0S·BUILD SUCCESS·EXIT 0·+3 vs 2399) · develop/test **SYNCED `@4dcf60d`** WT CLEAN · **신규 Open 없음**(Open(BE) **0**) · transfer **PASS**(BE local) · cross-stream **SYNCED local**(BE `@4dcf60d` + FE `@8766331` develop/test SYNCED·both Open 0) · operation **BLOCK**(761 BE + 15 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1855_backend: SEC-D34 RFID transmission excel parser fail-closed test lock MERGED ae1c6a1→4dcf60d (pending 1→0); RfidTransmissionExcelParserTest +59L missing header-row/required-column/empty-data-row fail-closed regression; test-only product code unchanged; FF-safe; post-merge mvn -o test 2402/2402 PASS(83s,0F/0E/0S,BUILD SUCCESS,+3 vs 2399); SYNCED @4dcf60d WT CLEAN; no new Open(Open(BE) 0); transfer PASS(BE local); cross-stream SYNCED local(BE @4dcf60d + FE @8766331 SYNCED, both Open 0); operation BLOCK(761 BE + 15 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1855 backend — SEC-D34 RFID transmission excel parser fail-closed test lock MERGED (develop→test FF `ae1c6a1`→`4dcf60d`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `4dcf60d` `test(v3/SEC-D34): lock RFID transmission excel parser validation fail-closed branches` |
+| merge | **FF `ae1c6a1`→`4dcf60d`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `RfidTransmissionExcelParserTest` 에 missing header-row·required-column·empty-data-row fail-closed 회귀 +3 `@Test` 추가 — `NhisExcelParser`/`StaffNhisCaregiverExcelParser` parser-level lock 대칭 · VisitService `compareRfidTransmission` SEC-D34 parser 가드 회귀 보강 |
+| product code | **변경 없음** (test-only · 제품 코드 무변경) |
+| pending | **0** (`rev-list --left-right test...develop`=0/0 · merge 후) |
+| regression `mvn -o test` | **2402/2402 PASS** (83s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · +3 vs 2399 · `src/backend-test@test`) |
+| develop / test | **SYNCED `@4dcf60d`** · WT CLEAN |
+| Open(BE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (761 BE + 15 FE pending · Planned QA-B116) |
+| transfer | **PASS** (BE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@4dcf60d` + FE `@8766331` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (761 BE + 15 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T14:40:22Z -->
+<!-- tester-sync: TSR 1854차 2026-07-18T14:40:22Z (frontend) — **★ id=2 transport departure-round out-of-range reject MERGED** develop→test FF merge `d6f3889`→`8766331` (pending **1→0**) · post-merge full suite `npm test` **2759/2759 PASS**(892.12s·488 files·+3 vs TSR1852) · targeted `src/config/transport.test.js` **13/13** · build **1234 PASS**(9.52s) · audit high **0** · live E2E **SKIP**(backend UP `/api/v1/health`=200 but `liveE2eBootstrapEnabled=false`=QA-B95) · develop/test **SYNCED `@8766331`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(FE `@8766331` + BE `@ae1c6a1` develop/test SYNCED·both Open 0) · operation **BLOCK**(760 BE + 15 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1854th_frontend: FF merge d6f3889→8766331 (pending 1→0); commit 8766331 fix id=2 transport reject out-of-range departure-round input(32-bit Integer 상한 2147483647 초과 값 사전 차단 + DEPARTURE_ROUND_TOO_LARGE_MESSAGE, BE CreateTransportRunRequest.departureRound @Min(1) Integer 계약 lockstep, +회귀 테스트); post-merge full suite 2759/2759 PASS(892.12s·488 files·+3 vs TSR1852); targeted transport.test.js 13/13 PASS; build 1234 PASS(9.52s); audit high 0; live E2E SKIP(backend UP /health=200 but liveE2eBootstrapEnabled=false=QA-B95); SYNCED @8766331 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream SYNCED local(FE @8766331 + BE @ae1c6a1 SYNCED·both Open 0); operation BLOCK(760 BE + 15 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1854 frontend — id=2 transport departure-round out-of-range reject MERGED (develop→test FF `d6f3889`→`8766331`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `8766331` `fix(v1.2.1/transport): reject out-of-range departure-round input (id=2 form polish)` |
+| merge | **FF `d6f3889`→`8766331`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `parseDepartureRoundInput()`에 `MAX_DEPARTURE_ROUND=2147483647` 가드를 추가해 순수 정수라도 32비트 Integer 범위를 넘는 값(예: `9999999999`)을 저장 전에 차단하고, `DEPARTURE_ROUND_TOO_LARGE_MESSAGE`로 필드 단위 오류를 노출. BE `CreateTransportRunRequest.departureRound` 계약과 lockstep 유지 |
+| pending | **0** (`rev-list --left-right develop...test`=0/0 · merge 후) |
+| targeted `src/config/transport.test.js` | **13/13 PASS** (1.01s) |
+| full suite `npm test` | **2759/2759 PASS** (892.12s · 488 files · +3 vs TSR1852 2756 = 상한 초과 reject 회귀 테스트 3건 추가 · `src/frontend-test@test`) |
+| build | **`npm run build` 1234 modules PASS** (9.52s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** |
+| live E2E (결정 96) | **SKIP** — backend UP(`/api/v1/health`=200) but `liveE2eBootstrapEnabled=false` → seed/login 불가 = QA-B95 |
+| develop / test | **SYNCED `@8766331`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (760 BE + 15 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · full suite green) |
+| cross-stream | **SYNCED local** (FE `@8766331` + BE `@ae1c6a1` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (760 BE + 15 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T13:40:00Z -->
+<!-- tester-sync: TSR 1853차 2026-07-18T13:40:00Z (backend) — **★ v2/QA-B95 bare-hex blocker entity decode fail-closed MERGED** develop→test FF merge `5df9999`→`ae1c6a1` (pending **1→0**) · post-merge `mvn -o test` **2399/2399 PASS**(87s·0F/0E/0S·BUILD SUCCESS·EXIT 0·+1 vs 2398) · develop/test **SYNCED `@ae1c6a1`** WT CLEAN · **신규 Open 없음**(Open(BE) **0**) · transfer **PASS**(BE local) · cross-stream **SYNCED local**(BE `@ae1c6a1` + FE `@d6f3889` develop/test SYNCED·both Open 0) · operation **BLOCK**(760 BE + 14 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1853th_backend: v2/QA-B95 bare-hex blocker entity decode fail-closed MERGED 5df9999→ae1c6a1 (pending 1→0); commit ae1c6a1 fix(v2/QA-B95) LiveE2eOperationReadinessSupport bare-hex 엔티티(&x2d; # 누락) 정규식+디코드 group(4) 분기 추가로 gateway-trimmed 페이로드가 readiness 게이트 우회 대신 bootstrap-disabled 마커로 fail-closed 해석 + LiveE2eOperationReadinessSupportTest +1 @Test; product code 변경 있음(저위험·live-e2e operation blocker 파싱 한정); FF-safe(merge-base==test HEAD); post-merge mvn -o test 2399/2399 PASS(87s·0F/0E/0S·BUILD SUCCESS·EXIT 0·+1 vs 2398); SYNCED @ae1c6a1 WT CLEAN; Open(BE) 0; transfer PASS(BE local); cross-stream SYNCED local(BE @ae1c6a1 + FE @d6f3889 SYNCED·both Open 0); operation BLOCK(760 BE + 14 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1853 backend — v2/QA-B95 bare-hex blocker entity decode fail-closed MERGED (develop→test FF `5df9999`→`ae1c6a1`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `ae1c6a1` `fix(v2/QA-B95): decode bare-hex blocker entities fail-closed` |
+| merge | **FF `5df9999`→`ae1c6a1`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | 게이트웨이가 `#` 를 잘라내 bare hex 엔티티(`&x2d;`·`&x2D;`)를 흘려보낼 때도 `LiveE2eOperationReadinessSupport` 가 하이픈으로 정규화하도록 `NUMERIC_HTML_ENTITY_PATTERN` bare-hex 대안 + `decodeNumericHtmlEntities` group(4) 16진 분기 추가 → `bootstrap&x2d;disabled` 류가 readiness 게이트 우회 대신 `bootstrap-disabled` 마커로 **fail-closed** 해석. 회귀 테스트 동반 |
+| product code | **변경 있음** (저위험 · live-e2e operation blocker 파싱 한정 · 마커 미해석 우회 차단 = fail-closed 강화) |
+| pending | **0** (`rev-list --left-right test...develop`=0/0 · merge 후) |
+| regression `mvn -o test` | **2399/2399 PASS** (87s · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · +1 vs 2398 · `src/backend-test@test`) |
+| develop / test | **SYNCED `@ae1c6a1`** · WT CLEAN |
+| Open(BE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (760 BE + 14 FE pending · Planned QA-B116) |
+| transfer | **PASS** (BE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@ae1c6a1` + FE `@d6f3889` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (760 BE + 14 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T13:24:00Z -->
+<!-- tester-sync: TSR 1852차 2026-07-18T13:24:00Z (frontend) — **★ id=2 transport departure-round exponent/hex reject MERGED** develop→test FF merge `af1d4f6`→`d6f3889` (pending **1→0**) · post-merge full suite `npm test` **2756/2756 PASS**(905.24s·488 files·+1 vs TSR1848) · targeted `src/config/transport.test.js` **10/10** · build **1234 PASS**(10.71s) · audit high **0** · live E2E **SKIP**(backend UP `/api/v1/health`=200 but `liveE2eBootstrapEnabled=false`=QA-B95) · develop/test **SYNCED `@d6f3889`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(FE `@d6f3889` + BE `@5df9999` develop/test SYNCED·both Open 0) · operation **BLOCK**(759 BE + 14 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1852th_frontend: FF merge af1d4f6→d6f3889 (pending 1→0); commit d6f3889 fix id=2 transport reject exponent/hex/signed departure-round input(Number() coercion "1e2"→100/"0x1f"→31 우회 차단, /^\d+$/ 순수정수만, BE @Min(1) Integer 계약 일치, +회귀 테스트); post-merge full suite 2756/2756 PASS(905.24s·488 files·+1 vs TSR1848); targeted transport.test.js 10/10 PASS; build 1234 PASS(10.71s); audit high 0; live E2E SKIP(backend UP /health=200 but liveE2eBootstrapEnabled=false=QA-B95); SYNCED @d6f3889 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream SYNCED local(FE @d6f3889 + BE @5df9999 SYNCED·both Open 0); operation BLOCK(759 BE + 14 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1852 frontend — id=2 transport departure-round exponent/hex reject MERGED (develop→test FF `af1d4f6`→`d6f3889`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **1** — `d6f3889` `fix(v1.2.1/transport): reject exponent/hex departure-round input` |
+| merge | **FF `af1d4f6`→`d6f3889`** (FF-safe: merge-base==test HEAD · pending **1→0**) |
+| 커밋 요지 | `parseDepartureRoundInput()`의 `Number()` 관용 변환이 `"1e2"→100`·`"0x1f"→31` 지수/16진 표기를 조용히 큰 회차로 왕복(type=number 는 지수 입력 허용) → `/^\d+$/` 순수 10진 정수만 허용해 FE 의도·BE `@Min(1) Integer` 계약 일치. 지수/16진/부호 거부 회귀 테스트 동반 |
+| pending | **0** (`rev-list --left-right develop...test`=0/0 · merge 후) |
+| targeted `src/config/transport.test.js` | **10/10 PASS** (1.01s) |
+| full suite `npm test` | **2756/2756 PASS** (905.24s · 488 files · +1 vs TSR1848 2755 = 신규 회귀 테스트 · `src/frontend-test@test`) |
+| build | **`npm run build` 1234 modules PASS** (10.71s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** |
+| live E2E (결정 96) | **SKIP** — backend UP(`/api/v1/health`=200) but `liveE2eBootstrapEnabled=false` → seed/login 불가 = QA-B95 |
+| develop / test | **SYNCED `@d6f3889`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (759 BE + 14 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · full suite green) |
+| cross-stream | **SYNCED local** (FE `@d6f3889` + BE `@5df9999` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (759 BE + 14 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T13:00:00Z -->
+<!-- tester-sync: TSR 1851차 2026-07-18T13:00:00Z (backend) — **re-verify no-op** · TSR1847 이후 develop 전진 **0**: develop=test=origin/develop **SYNCED `@5df9999`** WT CLEAN · pending **0**(0/0) · merge **SKIP** · `mvn -o test` **2398/2398 PASS**(69s·408 classes·0F/0E/0S) · Open(BE) **0** · transfer **PASS**(carry) · cross-stream **SYNCED local**(BE `@5df9999` + FE `@af1d4f6`·both Open 0) · operation **BLOCK**(759 BE + 13 FE=QA-B116 + QA-B95). -->
+# revalidation_1851th_backend: re-verify no-op — no new develop commit since TSR1847; develop=test=origin/develop SYNCED @5df9999 WT CLEAN; pending 0(0/0); merge SKIP; mvn -o test 2398/2398 PASS(69s·408 classes·0F/0E/0S); Open(BE) 0; transfer PASS(carry); cross-stream SYNCED local(BE @5df9999 + FE @af1d4f6·both Open 0); operation BLOCK(759 BE + 13 FE=QA-B116 + QA-B95).
+
+### [TSR] TSR1851 backend — re-verify no-op (develop 전진 0 · develop=test SYNCED `@5df9999`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — TSR1847 이후 develop 신규 커밋 없음 · develop=test=origin/develop **SYNCED `@5df9999`** |
+| pending | **0** (`rev-list --left-right test...develop`=0/0) |
+| merge | **SKIP** (신규 commit 없음) |
+| regression `mvn -o test` | **2398/2398 PASS** (69s · 408 classes · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · `src/backend-test@test` · = TSR1847 @동일 SHA) |
+| develop / test | **SYNCED `@5df9999`** · WT CLEAN |
+| Open(BE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (759 BE + 13 FE pending · Planned QA-B116) |
+| transfer | **PASS** (carry · BE local SYNCED · pending 0) |
+| cross-stream | **SYNCED local** (BE `@5df9999` + FE `@af1d4f6` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (759 BE + 13 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T12:47:00Z -->
+<!-- tester-sync: TSR 1850차 2026-07-18T12:47:00Z (frontend) — **re-verify no-op** · TSR1848 이후 develop 전진 **0**: develop=test=origin/develop **SYNCED `@af1d4f6`** WT CLEAN · develop→test pending **0**(0/0) · **신규 Open 없음**(Open(FE) **0** carry) · full suite 미재실행(peer `vitest run` active src/frontend PID1237103 + zero-change carry TSR1848 **2755/2755 PASS** @동일 SHA) · `npm run build` **1234 modules PASS**(10.93s·fresh) · `npm audit high` **0**(fresh·0 vulnerabilities) · transfer **PASS**(carry) · cross-stream **SYNCED local**(FE `@af1d4f6` + BE `@5df9999` SYNCED·both Open 0) · operation **BLOCK**(759 BE + 13 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1850th_frontend: re-verify no-op — no new develop commit since TSR1848; develop=test=origin/develop SYNCED @af1d4f6 WT CLEAN; pending 0(0/0); no new Open(Open(FE) 0 carry); full suite NOT re-run(peer vitest active PID1237103 src/frontend + zero-change carry TSR1848 2755/2755 @same SHA); build 1234 modules PASS(10.93s fresh); audit high 0(fresh); transfer PASS(carry); cross-stream SYNCED local(FE @af1d4f6 + BE @5df9999 SYNCED·both Open 0); operation BLOCK(759 BE + 13 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1850 frontend — re-verify no-op (develop 전진 0 · develop=test SYNCED `@af1d4f6`)
+
+| item | result |
+|------|--------|
+| develop→test 전진 | **0** — TSR1848 이후 develop 신규 커밋 없음 · develop=test=origin/develop **SYNCED `@af1d4f6`** |
+| pending | **0** (`rev-list --left-right develop...test`=0/0) |
+| merge | **SKIP** (신규 commit 없음) |
+| full suite `npm test` | **미재실행** — peer `vitest run` active(src/frontend PID1237103·CRITICAL 동시 실행 금지) + zero-change carry TSR1848 **2755/2755 PASS**(488 files) @동일 SHA `af1d4f6` |
+| build | **`npm run build` 1234 modules PASS** (10.93s · fresh · src/frontend-test) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** (fresh) |
+| live E2E (결정 96) | **SKIP** — merge 없음(no-op) + backend `liveE2eBootstrapEnabled=false`=QA-B95 |
+| develop / test | **SYNCED `@af1d4f6`** · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (759 BE + 13 FE pending · Planned QA-B116) |
+| transfer | **PASS** (carry · FE local SYNCED · pending 0) |
+| cross-stream | **SYNCED local** (FE `@af1d4f6` + BE `@5df9999` develop/test SYNCED · both Open 0) |
+| operation | **BLOCK** (759 BE + 13 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T12:40:00Z -->
+<!-- tester-sync: TSR 1848차 2026-07-18T12:40:00Z (frontend) — **★ id=2 transport departure-round focus-on-error (WCAG 2.4.3/3.3.1) MERGED** develop→test FF merge `23b47ea`→`af1d4f6` (pending **1→0**) · post-merge full suite `npm test` **2755/2755 PASS**(892.80s·488 files·carry·`toHaveFocus` 단언만 추가·신규 케이스 0) · `npm run build` **1234 PASS**(9.27s) · `npm audit high` **0** · live E2E **SKIP**(backend UP `/api/v1/health`=200 but `liveE2eBootstrapEnabled=false`=QA-B95) · develop/test **SYNCED `@af1d4f6`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(FE `@af1d4f6` + BE `@5df9999` SYNCED·both Open 0) · operation **BLOCK**(759 BE + 13 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1848th_frontend: id=2 transport departure-round focus-on-error(WCAG 2.4.3/3.3.1) MERGED 23b47ea→af1d4f6 (pending 1→0); post-merge full suite npm test 2755/2755 PASS(892.80s·488 files·carry·toHaveFocus 단언만 추가); build 1234 PASS(9.27s); audit high 0; live E2E SKIP(backend UP /health=200 but liveE2eBootstrapEnabled=false=QA-B95); develop/test SYNCED @af1d4f6 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream SYNCED local(FE @af1d4f6 + BE @5df9999 SYNCED·both Open 0); operation BLOCK(759 BE + 13 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1848 frontend — id=2 transport departure-round focus-on-error (WCAG 2.4.3/3.3.1) develop→test FF MERGED (pending 1→0)
+
+| item | result |
+|------|--------|
+| merge | **develop→test FF merge `23b47ea`→`af1d4f6`** (`git_merge_to_test.sh frontend`, Fast-forward, pending **1→0**) · FF-safe(merge-base==test HEAD) |
+| 이관 커밋 | `af1d4f6` `fix(v1.2.1/transport): focus departure-round field when dispatch save is blocked (id=2 form polish)` |
+| 변경 파일 | `TransportRunNewPage.jsx`(+7/-1 · `useRef` `roundInputRef` → 회차 input `ref` 연결 · FE `parseDepartureRoundInput` 사전 검증 실패 + BE `fieldErrors.departureRound` 응답 양쪽에서 `roundInputRef.current?.focus()`) · `TransportRunNewPage.test.jsx`(+2 · 기존 회귀 2건 `toHaveFocus()` 단언 추가) |
+| 성격 | 접근성(WCAG 2.4.3 Focus Order / 3.3.1 Error Identification) · **동작 additive**(포커스 이동만 추가·상태 로직 무변) |
+| post-merge (`src/frontend-test@test`) | **`npm test` 2755/2755 PASS** (488 files · 892.80s · 0 FAIL · 직전 TSR1846 2755 → carry·신규 케이스 0) |
+| build | **`npm run build` 1234 modules PASS** (9.27s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** (high 0·fresh) |
+| live E2E (post-merge·결정 96) | **SKIP** — backend `localhost:8080` UP(`/api/v1/health`=200)이나 `liveE2eBootstrapEnabled=false`(hint=`Set OGADA_LIVE_E2E_BOOTSTRAP_ENABLED=true`) → seed/login 불가 = QA-B95 |
+| develop / test | **SYNCED `@af1d4f6`** · pending **0**(`rev-list --left-right develop...test`=0/0) · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (759 BE + 13 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (FE `@af1d4f6` + BE `@5df9999` local SYNCED · both Open 0 · origin/test 759 BE + 13 FE unpushed=QA-B116) |
+| operation | **BLOCK** (759 BE + 13 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T12:13:00Z -->
+<!-- tester-sync: TSR 1847차 2026-07-18T12:13:00Z (backend) — **★ SEC-D34 unreadable/caregiver-parser fail-closed test lock MERGED** develop→test FF merge `b8facfc`→`5df9999` (pending **2→0**: `924b8d8` unreadable NHIS import fail-closed(QA-B613·`NhisImportServiceTest` +16) + `5df9999` caregiver excel parser fail-closed(`StaffNhisCaregiverExcelParserTest` +60) · both test-only · 제품 코드 무변경) · post-merge full `mvn -o test` **2398/2398 PASS**(83s·0F/0E/0S·BUILD SUCCESS·EXIT 0·+4 vs 2394) · develop/test **SYNCED `@5df9999`** WT CLEAN · **QA-20260718-B613 Fixed & Verified** · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **SYNCED local**(BE `@5df9999` + FE `@23b47ea` local SYNCED·both Open 0) · operation **BLOCK**(759 BE + 12 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1847th_backend: SEC-D34 unreadable/caregiver-parser fail-closed test lock MERGED b8facfc→5df9999 (pending 2→0: 924b8d8 unreadable NHIS import fail-closed(QA-B613·NhisImportServiceTest +16) + 5df9999 caregiver excel parser fail-closed(StaffNhisCaregiverExcelParserTest +60); both test-only, product code unchanged); post-merge mvn -o test 2398/2398 PASS(83s,0F/0E/0S,BUILD SUCCESS,+4 vs 2394); develop/test SYNCED @5df9999 WT CLEAN; QA-B613 Fixed & Verified; Open(BE) 0; transfer PASS(BE local); cross-stream SYNCED local(BE @5df9999 + FE @23b47ea local SYNCED, both Open 0); operation BLOCK(759 BE + 12 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1847 backend — SEC-D34 unreadable/caregiver-parser fail-closed test lock develop→test FF MERGED (pending 2→0)
+
+| item | result |
+|------|--------|
+| merge | **develop→test FF merge `b8facfc`→`5df9999`** (`git merge --ff-only develop`, Fast-forward, pending **2→0**) · FF-safe(merge-base==test HEAD) |
+| 이관 커밋 (test-only ×2) | `924b8d8` `test: lock unreadable NHIS import payload (QA-B613)`(`NhisImportServiceTest` +16 · `getBytes()` `IOException` → `BusinessRuleException "엑셀 파일을 읽을 수 없습니다."` fail-closed) · `5df9999` `test(v3/SEC-D34): lock caregiver excel parser validation fail-closed branches`(`StaffNhisCaregiverExcelParserTest` +60) |
+| 제품 코드 | **무변경** (2 files 모두 `src/test/**` · +76) |
+| post-merge (`src/backend-test@test`) | **`mvn -o test` 2398/2398 PASS** (83s · 0 Failures/0 Errors/0 Skipped · BUILD SUCCESS · EXIT 0 · 직전 TSR1843 2394 → +4) |
+| BE @Test | strict grep **2378** · Test.java **296** (실행 2398) |
+| develop / test | **SYNCED `@5df9999`** · pending **0**(`rev-list --count test..develop`=0) · WT CLEAN |
+| QA-B613 | **Fixed & Verified** (미커밋 coder WIP → 정식 커밋 → 이관·회귀 green) |
+| Open(BE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (759 BE + 12 FE pending · Planned QA-B116) |
+| transfer | **PASS** (BE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (BE `@5df9999` + FE `@23b47ea` local SYNCED · both Open 0 · origin/test 759 BE + 12 FE unpushed=QA-B116) |
+| operation | **BLOCK** (759 BE + 12 FE origin/test push=QA-B116 · live-e2e bootstrap-disabled=QA-B95) |
+
+---
+
+<!-- tester-sync: TSR 1846차 2026-07-18T11:56:00Z (frontend) — **★ id=2 transport departure-round validation shared-helper refactor MERGED** develop→test FF merge `93f4932`→`23b47ea` (pending **1→0**) · post-merge full suite `npm test` **2755/2755 PASS**(893.05s·488 files·+4 vs TSR1844) · `npm run build` **1234 PASS**(9.28s) · `npm audit high` **0** · live E2E **SKIP**(backend UP `/api/v1/health`=200 but `probe.bootstrapEnabled=false`=QA-B95) · develop/test **SYNCED `@23b47ea`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(FE `@23b47ea` + BE `@b8facfc` SYNCED·BE Open 1=QA-B613) · operation **BLOCK**(757 BE + 12 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1846th_frontend: id=2 transport departure-round validation shared-helper refactor MERGED 93f4932→23b47ea (pending 1→0); post-merge full suite npm test 2755/2755 PASS(893.05s·488 files·+4 vs TSR1844); build 1234 PASS(9.28s); audit high 0; live E2E SKIP(backend UP /health=200 but probe.bootstrapEnabled=false=QA-B95); develop/test SYNCED @23b47ea WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream SYNCED local(FE @23b47ea + BE @b8facfc SYNCED·BE Open 1=QA-B613); operation BLOCK(757 BE + 12 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1846 frontend — id=2 transport departure-round validation shared-helper refactor develop→test FF MERGED (pending 1→0)
+
+| item | result |
+|------|--------|
+| merge | **develop→test FF merge `93f4932`→`23b47ea`** (`git_merge_to_test.sh frontend`, Fast-forward, pending **1→0**) |
+| pending commit | `23b47ea` `refactor(v1.2.1/transport): extract departure-round validation to shared helper (id=2 form polish)` — 인라인 회차 검증을 `config/transport.js` `parseDepartureRoundInput` + `DEPARTURE_ROUND_INVALID_MESSAGE` 로 추출(제품 `TransportRunNewPage.jsx` 16줄 정리) + config 단위 테스트(`transport.test.js` +33) |
+| post-merge (`src/frontend-test@test`) | **`npm test` 2755/2755 PASS** (893.05s, 488 test files, 0 FAIL · 직전 TSR1844 2751 → +4) |
+| targeted | `config/transport.test.js`·`TransportRunNewPage.test.jsx` — 전체 스위트에 포함·PASS |
+| build | **`npm run build` 1234 modules PASS** (9.28s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** (fresh) |
+| live E2E (결정 96) | **SKIP** — backend `localhost:8080` **UP**(`/api/v1/health`=200)이나 `probe.bootstrapEnabled=false`(`detail=bootstrap=disabled`·`OGADA_LIVE_E2E_BOOTSTRAP_ENABLED` 미설정) → seed/login 불가 = **QA-B95** |
+| develop / test | **SYNCED `@23b47ea`** · pending **0**(`rev-list --left-right develop...test`=0/0) · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (757 BE + 12 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED local** (FE `@23b47ea` + BE `@b8facfc` local SYNCED · BE Open 1=QA-B613 MEDIUM · origin/test 757 BE + 12 FE unpushed=QA-B116) |
+| operation | **BLOCK** (QA-B116 push + QA-B95 live bootstrap disabled) |
+
+TSR1844(`@93f4932` merge green) 이후 FE develop 이 `23b47ea`(1 commit)로 전진했다. `src/frontend-test@test` 에서 FF merge `93f4932`→`23b47ea`(Fast-forward, pending **1→0**) 후 post-merge 전체 스위트 `npm test` **2755/2755 PASS**(893.05s·488 files·0 FAIL)·build **1234 PASS**·audit high **0**. 이번 커밋은 `TransportRunNewPage` 인라인 회차(`departureRound`) 검증을 `config/transport.js` 의 `parseDepartureRoundInput` 헬퍼 + `DEPARTURE_ROUND_INVALID_MESSAGE` 상수로 추출한 **동작 중립 refactor**(BE `@Min(1) Integer departureRound` 제약 verbatim 정합 불변) + config 단위 테스트 순증(+4) → 회귀 없음, Open(FE) 0, **FE transfer PASS**. live E2E 는 backend 기동(`/api/v1/health`=200) 확인했으나 `probe.bootstrapEnabled=false`(bootstrap 비활성)로 seed/login 이 불가 → **QA-B95**(ops 환경변수 `OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`) 선결 필요·SKIP 유지(FE 코드 이슈 아님). origin/test push(757 BE + 12 FE)는 Planned **QA-B116**, operation 승격은 QA-B116→QA-B95(BLOCK 유지).
+
+---
+
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T11:32:00Z -->
+<!-- tester-sync: TSR 1845차 2026-07-18T11:32:00Z (backend) — **re-verify green + develop WT DIRTY(coder WIP)** · TSR1843 이후 develop 커밋 전진 **0**: develop=test **SYNCED `@b8facfc`** · pending **0**(`test..develop`=0/0) · 그러나 develop WT **DIRTY**(`NhisImportServiceTest.java` +16 미커밋 = 신규 `@Test importShouldRejectUnreadableMultipartPayloadWhenFileReadFails` SEC-D34 unreadable multipart fail-closed) · `src/backend-test@test` `mvn -o test` **2394/2394 PASS**(64s,0F/0E/0S,BUILD SUCCESS,EXIT 0) · merge **SKIP**(신규 commit 없음·미커밋 test 는 이관 대상 아님) · **신규 Open QA-20260718-B613**(coder: 미커밋 test 커밋 요청·MEDIUM) · Open(BE) **1** · transfer **PASS**(committed BE `@b8facfc` local SYNCED green·미커밋분 제외) · cross-stream **BLOCK**(BE `@b8facfc` SYNCED local + develop WT DIRTY · FE `@93f4932` SYNCED local · origin/test 757 BE + 11 FE unpushed=QA-B116) · operation **BLOCK**(QA-B116 + QA-B95). -->
+# revalidation_1845th_backend: re-verify green + develop WT DIRTY(coder WIP) — no new develop commit since TSR1843; develop=test SYNCED @b8facfc pending 0; BUT develop WT DIRTY(NhisImportServiceTest.java +16 uncommitted = new @Test importShouldRejectUnreadableMultipartPayloadWhenFileReadFails SEC-D34 unreadable multipart fail-closed); src/backend-test@test mvn -o test 2394/2394 PASS(64s,0F/0E/0S,BUILD SUCCESS,EXIT 0); merge SKIP(no new commit·uncommitted test not transferable); new Open QA-20260718-B613(coder: commit uncommitted test·MEDIUM); Open(BE) 1; transfer PASS(committed BE @b8facfc local SYNCED green); cross-stream BLOCK(BE @b8facfc SYNCED local + develop WT DIRTY · FE @93f4932 SYNCED local · origin/test 757 BE + 11 FE unpushed=QA-B116); operation BLOCK(QA-B116 + QA-B95).
+
+### [TSR] TSR1845 backend — merged baseline `@b8facfc` 재검증 green + develop WT DIRTY(미커밋 coder WIP)
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@b8facfc`** · pending **0**(`rev-list --left-right develop...test`=0/0) — TSR1843 이후 신규 commit **0** |
+| develop WT | **DIRTY** — `src/test/java/com/ogada/backend/billing/domain/NhisImportServiceTest.java` +16 미커밋(신규 `@Test importShouldRejectUnreadableMultipartPayloadWhenFileReadFails` · SEC-D34 unreadable multipart `getBytes()` IOException → `BusinessRuleException "엑셀 파일을 읽을 수 없습니다."` fail-closed 회귀) |
+| test WT | **CLEAN** (`src/backend-test@test`) |
+| regression (`src/backend-test@test`) | **`mvn -o test` 2394/2394 PASS** (64s, 0 Failures/0 Errors/0 Skipped, BUILD SUCCESS, EXIT 0) |
+| npm | **N/A** (backend stream) |
+| merge | **SKIP** — 신규 committed develop 커밋 없음(pending 0). 미커밋 test 는 이관 대상 아님(committed `@b8facfc` 만 검증) |
+| Open(BE) | **1** — 신규 **QA-20260718-B613**(coder: 미커밋 `NhisImportServiceTest.java` 커밋 요청 · MEDIUM · push discipline) |
+| origin/test push | **미실행** (757 BE + 11 FE pending · Planned QA-B116) |
+| transfer | **PASS** (committed BE `@b8facfc` local SYNCED · pending 0 · regression green · 미커밋 WIP 제외) |
+| cross-stream | **BLOCK** (BE `@b8facfc` SYNCED local + develop WT DIRTY · FE `@93f4932` SYNCED local · origin/test 757 BE + 11 FE unpushed=QA-B116) |
+| operation | **BLOCK** (QA-B116 push + QA-B95 live bootstrap) |
+
+TSR1843(`@b8facfc` merge green) 이후 backend develop 에 **committed 전진은 0**이나, coder 가 `NhisImportServiceTest.java` 에 SEC-D34 unreadable-multipart fail-closed 회귀 `@Test` +16줄을 **미커밋(WT DIRTY)** 상태로 남겼다. 미커밋 산출물은 submodule 재 clone 시 유실되고 이관 대상이 아니므로, coder 에게 **즉시 커밋**을 요청하는 신규 Open **QA-20260718-B613(MEDIUM)** 를 등록했다. committed `@b8facfc` 는 `src/backend-test@test` 에서 재검증 `mvn -o test` **2394/2394 PASS**(0F/0E/0S)로 green·pending 0 유지 → **BE local transfer PASS**. origin/test push(757 BE + 11 FE)는 Planned **QA-B116**, live E2E 는 **QA-B95** backend bootstrap 선행(operation BLOCK 유지).
+
+---
+
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T11:15:00Z -->
+<!-- tester-sync: TSR 1844차 2026-07-18T11:15:00Z (frontend) — **★ id=2 transport load-prior-run round error clear MERGED** develop→test FF merge `0d37788`→`93f4932` (pending **1→0**) · post-merge full suite `npm test` **2751/2751 PASS**(894.42s·488 files·+4 vs TSR1840) · targeted `TransportRunNewPage.test.jsx` full suite 포함 PASS(peer vitest PID1203049 lock·별도 재실행 생략) · `npm run build` **1234 PASS**(10.79s) · `npm audit high` **0** · develop/test **SYNCED `@93f4932`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED**(FE `@93f4932` + BE `@b8facfc` local SYNCED·Open 0) · operation **BLOCK**(757 BE + 11 FE origin/test push=QA-B116 + QA-B95). -->
+# revalidation_1844th_frontend: id=2 transport load-prior-run round error clear MERGED 0d37788→93f4932 (pending 1→0); post-merge full suite npm test 2751/2751 PASS(894.42s·488 files·+4 vs TSR1840); targeted TransportRunNewPage.test.jsx in full suite PASS(peer vitest PID1203049 lock, skip separate re-run); build 1234 PASS(10.79s); audit high 0; develop/test SYNCED @93f4932 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream SYNCED(FE+BE local SYNCED Open 0); operation BLOCK(757 BE + 11 FE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1844 frontend — id=2 transport load-prior-run round error clear develop→test FF MERGED (pending 1→0)
+
+| item | result |
+|------|--------|
+| merge | **develop→test FF merge `0d37788`→`93f4932`** (`git_merge_to_test.sh frontend`, Fast-forward, pending **1→0**) |
+| pending commit | `93f4932` `fix(v1.2.1/transport): clear stale round error after loading prior run`(제품 `TransportRunNewPage.jsx` + 회귀 test `TransportRunNewPage.test.jsx`) |
+| post-merge (`src/frontend-test@test`) | **`npm test` 2751/2751 PASS** (894.42s, 488 test files, 0 FAIL · 직전 TSR1840 2747 → +4) |
+| targeted | `TransportRunNewPage.test.jsx` — 전체 스위트에 포함·PASS (peer `vitest run` PID1203049 flock 보유 → 경쟁 실행 금지·별도 재실행 생략) |
+| build | **`npm run build` 1234 modules PASS** (10.79s) |
+| audit | **`npm audit --audit-level=high` 0 vulnerabilities** (fresh) |
+| develop / test | **SYNCED `@93f4932`** · pending **0**(`rev-list --left-right develop...test`=0/0) · WT CLEAN |
+| Open(FE) | **0** (신규 Open 없음) |
+| origin/test push | **미실행** (757 BE + 11 FE pending · Planned QA-B116) |
+| transfer | **PASS** (FE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **SYNCED** (FE `@93f4932` + BE `@b8facfc` local SYNCED · Open 0 양측 · origin/test 757 BE + 11 FE unpushed=QA-B116) |
+| operation | **BLOCK** (QA-B116 push + QA-B95 live bootstrap) |
+
+TSR1841(no-op `@f72af3f`) 이후 frontend develop 이 2커밋 전진했고(`0d37788` route-stop limit 상수화·`93f4932` 이전 운행 불러오기 시 잔존 회차 검증 오류 초기화), 그 중 `0d37788`은 직전 사이클에 test 로 이관되어 이번 사이클 시작 시 `test..develop=1`(`93f4932`)이었다. `93f4932`는 이전 운행 불러오기(load prior run)가 현재 회차 상태를 end-to-end 로 교체하도록 하여 로드 후에도 남던 `departureRound` 검증 오류(aria-invalid/role=alert)를 해소하는 제품 수정 + 회귀 test 이다. FF merge 후 post-merge 전체 스위트 **2751/2751 PASS**(+4)로 pending 0·Open(FE) 0 유지 → FE local transfer **PASS**. origin/test push(757 BE + 11 FE)는 Planned **QA-B116**(operation BLOCK 유지·live E2E 는 QA-B95 backend bootstrap 선행).
+
+---
+
+
+### [TSR] TSR1843 backend — SEC-D34 unreadable-excel copy 상수화 + NHIS parser fail-closed test MERGED (pending 2→0)
+
+| item | result |
+|------|--------|
+| merge | **develop→test FF merge `913b9d2`→`b8facfc`** (`git merge --ff-only develop`, merge-base==test HEAD → FF-safe, pending **2→0**) |
+| pending commits | `2ad9b05` `refactor(v3/SEC-D34): unify unreadable-excel copy via UNREADABLE_EXCEL_MESSAGE constant`(제품·8 parser/service) + `b8facfc` `test(v3/SEC-D34): lock NHIS excel parser validation fail-closed branches`(test +3) |
+| post-merge (`src/backend-test@test`) | **`mvn -o test` 2394/2394 PASS** (85s, 0 Failures/0 Errors/0 Skipped, BUILD SUCCESS, EXIT 0 · +3 vs 2391) |
+| develop / test | **SYNCED `@b8facfc`** · pending **0**(`test..develop`) · WT CLEAN |
+| npm | **N/A** (backend stream, no package.json) |
+| Open(BE) | **0** (`QA-20260718-B612` Fixed & Verified) |
+| origin/test push | **미실행** (757 BE + 10 FE pending · Planned QA-B116) |
+| transfer | **PASS** (BE local SYNCED · pending 0 · post-merge green) |
+| cross-stream | **BLOCK** (BE `@b8facfc` SYNCED local + FE `@0d37788` SYNCED local · origin/test 757 BE + 10 FE unpushed=QA-B116) |
+| operation | **BLOCK** (QA-B116 + QA-B95) |
+
+TSR1842 이후 backend develop 이 `b8facfc`(=`2ad9b05` 제품 refactor + `b8facfc` 테스트 lock)까지 2커밋 전진해 `test..develop=2`가 되었다. `2ad9b05`는 8개 parser/import service 의 `"엑셀 파일을 읽을 수 없습니다."` 리터럴을 `UNREADABLE_EXCEL_MESSAGE` 상수로 통일(메시지·예외 타입·차단 시점 불변)하는 저위험 product 변경, `b8facfc`는 `NhisExcelParser` header 누락·인정번호 열 누락·유효 데이터 행 없음 fail-closed 회귀 3건을 추가한다. FF merge 후 post-merge full `mvn -o test` **2394/2394 PASS**(+3)로 pending 0·Open(BE) 0 복귀 → BE local transfer **PASS**. origin/test push(757 BE + 10 FE)는 Planned **QA-B116**(operation BLOCK 유지).
+
+---
+
+### [TSR] TSR1842 backend — roadmap baseline pass + develop pending 1(BLOCK)
+
+| item | result |
+|------|--------|
+| baseline (`src/backend-test@test`) | **`mvn -o test` 2391/2391 PASS** (66s, 0 Failures/0 Errors/0 Skipped, BUILD SUCCESS, EXIT 0) |
+| develop / test | **NOT SYNCED** — develop `@2ad9b05` / test `@913b9d2` · pending **1** |
+| pending commit | `2ad9b05` `refactor(v3/SEC-D34): unify unreadable-excel copy via UNREADABLE_EXCEL_MESSAGE constant` |
+| merge | **SKIP** (src read-only 정책, 이관 미수행) |
+| npm | **N/A** (backend stream, no package.json) |
+| Open(BE) | **1** (`QA-20260718-B612`, HIGH/BLOCK · pending 1) |
+| origin/test push | **미실행** (755 BE pending, FE 9 pending · Planned QA-B116) |
+| transfer | **BLOCK** (pending 1 해소 전 PASS 금지) |
+| cross-stream | **BLOCK** (BE pending 1 + FE develop/test SYNCED `@f72af3f` · 755 BE + 9 FE push=QA-B116) |
+| operation | **BLOCK** (QA-B612 + QA-B116 + QA-B95) |
+
+TSR1839 이후 backend develop HEAD가 `2ad9b05`로 1커밋 전진해 `test..develop=1`이 재발했다. baseline(`913b9d2`) 회귀는 green이지만 이관 게이트 미충족이라 transfer PASS를 유지할 수 없다. pending 커밋은 SEC-D34 unreadable-excel 오류 copy 상수화 리팩터링으로 영향 범위가 import 오류 응답 경로에 걸리므로, develop→test 이관 후 post-merge full `mvn -o test` 재실측이 필요하다.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T09:31:00Z -->
+<!-- tester-sync: TSR 1841차 2026-07-18T09:31:00Z (frontend) — **re-verify no-op** · TSR1840 이후 develop 전진 **0**: develop=test=origin/develop **SYNCED `@f72af3f`** WT CLEAN · develop→test pending **0**(`rev-list --left-right develop...test`=0/0) · **신규 Open 없음**(Open(FE) **0** carry) · full suite 미재실행(peer `vitest run` active src/frontend PID1157731 + zero-change carry TSR1840 **2747/2747 PASS** @동일 SHA) · `npm audit high` **0**(fresh) · transfer **PASS**(carry) · cross-stream **SYNCED**(FE `@f72af3f` + BE `@913b9d2` local SYNCED·Open 0) · operation **BLOCK**(755 BE + 9 FE origin/test push=QA-B116 + QA-B95). -->
+# tester_1841_frontend: re-verify no-op — no new develop commit since TSR1840; develop=test=origin/develop SYNCED @f72af3f WT CLEAN; pending 0(0/0); no new Open(Open(FE) 0 carry); full suite NOT re-run(peer vitest active PID1157731 + zero-change carry TSR1840 2747/2747 @same SHA); audit high 0(fresh); transfer PASS(carry); cross-stream SYNCED(FE+BE local SYNCED Open 0); operation BLOCK(QA-B116+QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T09:19:23Z -->
+<!-- tester-sync: TSR 1840차 2026-07-18T09:19:23Z (frontend) — **★ id=2 transport form polish MERGED** develop→test FF merge `5e816e6`→`f72af3f` (pending **1→0**: `f72af3f` TransportRunNewPage departureRound client validation + field-level error + 2 regression tests) · post-merge full suite `npm test` **2747/2747 PASS**(893.26s·488 files·+2 vs TSR1838) · targeted TransportRunNewPage.test.jsx **6/6 PASS**(6.47s) · `npm run build` **1234 PASS**(9.27s) · `npm audit high` **0** · develop/test/origin-develop **SYNCED `@f72af3f`** WT CLEAN · Open(FE) **0** · transfer **PASS**(FE local) · cross-stream **SYNCED**(FE+BE local SYNCED·Open 0) · operation **BLOCK**(755 BE + 9 FE origin/test push=QA-B116 + QA-B95). product code 변경 있음(회차 필드 검증·동작 개선). -->
+# revalidation_1840th_frontend: id=2 transport form polish MERGED 5e816e6→f72af3f (pending 1→0: f72af3f TransportRunNewPage departureRound validation+field error+2 tests); post-merge npm test 2747/2747 PASS(893.26s,488 files,+2 vs TSR1838); targeted 6/6 PASS(6.47s); build 1234 PASS(9.27s); audit high 0; develop/test SYNCED @f72af3f WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream SYNCED(FE+BE local SYNCED Open 0); operation BLOCK(755 BE+9 FE push=QA-B116+QA-B95).
+
+### [TSR] TSR1840 frontend — id=2 transport departure-round field validation FF MERGED + post-merge 2747/2747 PASS
+
+| item | result |
+|------|--------|
+| develop / test | FF merge `5e816e6`→`f72af3f` · **SYNCED `@f72af3f`** · WT CLEAN · pending **0** (`test..develop`) |
+| develop→test merge | **FF-safe** (merge-base==test HEAD `5e816e6`) · `Updating 5e816e6..f72af3f` · pending **1→0** |
+| post-merge `npm test` | **2747/2747 PASS** (893.26s · 488 files · 0 FAIL) · +2 vs TSR1838 2745 |
+| targeted | `TransportRunNewPage.test.jsx` **6/6 PASS** (6.47s) |
+| `npm run build` | **1234 modules PASS** (9.27s) |
+| `npm audit` high | **0 vulnerabilities** |
+| Open(FE) | **0** |
+| origin/test push | 미실행 (local test origin/test `b23711f` 대비 **+9 FE** · Planned QA-B116) |
+| transfer | **PASS**(FE local) — pending 0 · Open(FE) 0 · post-merge green |
+| cross-stream | **SYNCED** — FE `@f72af3f` + BE `@913b9d2` local SYNCED · Open 0 · origin/test 미푸시 755 BE + 9 FE=**QA-B116** |
+| operation | **BLOCK** — QA-B116(755 BE + 9 FE unpushed) + QA-B95 |
+
+**요약**: TSR1838 이후 develop `@f72af3f`(id=2 transport form polish — `TransportRunNewPage` 회차 1 이상 정수 클라이언트 검증 + 서버 fieldErrors 필드 단위 오류)를 `src/frontend-test@test` 에 FF merge(pending 1→0)하고 post-merge full suite **2747/2747 PASS** 확인. BE 는 TSR1839 에서 `@913b9d2` SYNCED · Open 0. cross-stream **SYNCED**. operation 승격은 origin/test push(QA-B116)·QA-B95 로 BLOCK.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T08:55:00Z -->
+<!-- tester-sync: TSR 1839차 2026-07-18T08:55:00Z (backend) — **★ SEC-D34 missing-excel copy 통일 후속 MERGED** develop→test FF merge `73a3a63`→`913b9d2` (pending **2→0**: `49349e4` refactor copy 상수화(제품) + `913b9d2` test-only) · post-merge full `mvn -o test` **2391/2391 PASS**(94s,0F/0E/0S,BUILD SUCCESS,EXIT 0·+2 empty-file 회귀) · develop/test **SYNCED `@913b9d2`** WT CLEAN · **QA-20260718-B611 Fixed & Verified** · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **BLOCK**(origin/test 755 BE + 7 FE push=QA-B116) · operation **BLOCK**(QA-B116 + QA-B95). product code 변경 있음(오류 copy 상수화·동작 불변). -->
+# revalidation_1839th_backend: SEC-D34 missing-excel copy 통일 후속 MERGED 73a3a63→913b9d2 (pending 2→0: 49349e4 refactor copy 상수화(product) + 913b9d2 test-only); post-merge mvn -o test 2391/2391 PASS(94s,0F/0E/0S,BUILD SUCCESS); develop/test SYNCED @913b9d2 WT CLEAN; QA-B611 Fixed & Verified; Open(BE) 0; transfer PASS(BE local); cross-stream BLOCK(origin/test 755 BE + 7 FE push=QA-B116); operation BLOCK(QA-B116+QA-B95).
+
+### [TSR] TSR1839 backend — SEC-D34 missing-excel copy 통일 후속 FF MERGED + post-merge 2391/2391 PASS
+
+| item | result |
+|------|--------|
+| develop / test | FF merge `73a3a63`→`913b9d2` · **SYNCED `@913b9d2`** · WT CLEAN · pending **0** (`test..develop`) |
+| develop→test merge | **FF-safe** (merge-base==test HEAD `73a3a63`) · `Updating 73a3a63..913b9d2` · pending **2→0** (`49349e4` refactor copy 상수화 제품 + `913b9d2` test-only) |
+| post-merge `mvn -o test` | **2391/2391 PASS** (94s, 0 Failures/0 Errors/0 Skipped, BUILD SUCCESS, EXIT 0) · +2 vs TSR1834 2389(empty-file 회귀 2건) |
+| BE @Test (raw) | **2372** |
+| npm | **N/A** (backend stream, no package.json) |
+| Open(BE) | **0** — **QA-20260718-B611 Fixed & Verified** |
+| origin/test push | 미실행 (local test origin/test `598d108` 대비 **+755 BE** · Planned QA-B116) |
+| transfer | **PASS**(BE local) — pending 0 · Open(BE) 0 · post-merge green |
+| cross-stream | **BLOCK** — origin/test 미푸시 755 BE + 7 FE=**QA-B116** (FE 로컬 SYNCED `@5e816e6`, Open(FE) 0) |
+| operation | **BLOCK** — QA-B116(755 BE + 7 FE unpushed) + QA-B95 |
+
+**요약**: TSR1837 에서 Open(BLOCK)으로 기록한 **QA-B611**(develop 미이관)을 해소. develop `@913b9d2`(=`49349e4` refactor + `913b9d2` test)를 `src/backend-test@test` 에 FF merge(pending 2→0)하고 post-merge full `mvn -o test` **2391/2391 PASS** 확인. `49349e4` 는 `StaffNhisCaregiverImportService`·`BankDepositImportService` 의 빈파일 오류 copy 리터럴을 `MISSING_EXCEL_MESSAGE` 상수로 통일한 **behavior-preserving 저위험 제품 변경**(메시지·예외 타입·차단 시점 불변). operation 승격은 origin/test push(QA-B116)·QA-B95 로 BLOCK 유지.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T08:39:00Z -->
+<!-- tester-sync: TSR 1838차 2026-07-18T08:39:00Z (frontend) — **re-verify no-op**: TSR1837 이후 develop 전진 **0** · develop=test=origin/develop **SYNCED `@5e816e6`** WT CLEAN · develop→test pending **0** · Open(FE) **0** · full suite **미재실행**(peer `vitest run` active src/frontend PID1134473 + zero-change carry TSR1837 **2745/2745 PASS** @동일 SHA) · `npm audit high` **0**(fresh) · transfer **PASS**(carry) · cross-stream **BLOCK**(BE develop `@49349e4`/test `@73a3a63` pending 1=QA-B611) · operation **BLOCK**(QA-B611 + 753 BE + 8 FE origin/test push=QA-B116 + QA-B95). -->
 <!-- tester-sync: TSR 1837차 2026-07-18T08:29:16Z (frontend) — SEC-D34 FE unreadable-excel copy constant develop→test FF **MERGED** `495040f`→`5e816e6` (pending **1→0**) · post-merge full suite `npm test` **2745/2745 PASS**(891.13s·488 files·+1 test) · `npm run build` **1234 PASS**(9.87s) · `npm audit high` **0** · Open(FE) **0** · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE pending 1=QA-B611) · operation **BLOCK**(QA-B611 + 753 BE + 8 FE origin/test push=QA-B116 + QA-B95). -->
 <!-- tester-sync: TSR 1837차 2026-07-18T07:50:30Z (backend) — ROADMAP merged baseline `@73a3a63` 재검증 · `mvn -o test` **2389/2389 PASS**(69s,0F/0E/0S,BUILD SUCCESS,EXIT 0) · npm **N/A**(backend stream) · develop `@49349e4` / test `@73a3a63` pending **1**(`test..develop`) 확인 · merge **SKIP**(src read-only) · **QA-20260718-B611 Open(HIGH/BLOCK)** · Open(BE) **1** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 1 + FE `@495040f` SYNCED + 753 BE push + 7 FE push=QA-B116) · operation **BLOCK**(QA-B611 + QA-B116 + QA-B95). -->
+# revalidation_1838th_frontend: re-verify no-op — no new develop commit since TSR1837; develop=test=origin/develop SYNCED @5e816e6 WT CLEAN; pending 0; Open(FE) 0; full suite NOT re-run(peer vitest active PID1134473 + zero-change carry TSR1837 2745/2745 @same SHA); audit high 0(fresh); transfer PASS(carry); cross-stream BLOCK(BE pending 1=QA-B611); operation BLOCK(QA-B611+QA-B116+QA-B95).
 # revalidation_1837th_frontend: SEC-D34 FE unreadable-excel copy constant FF MERGED 495040f→5e816e6 (pending 1→0); post-merge npm test 2745/2745 PASS(891.13s,488 files,+1 test); build 1234 PASS(9.87s); audit high 0; Open(FE) 0; transfer PASS(FE local); cross-stream BLOCK(BE pending 1=QA-B611); operation BLOCK(QA-B611+QA-B116+QA-B95).
 # revalidation_1837th: roadmap-merged@73a3a63 mvn -o test 2389/2389 PASS(69s,0F/0E/0S); develop@49349e4 pending 1(test..develop); merge SKIP(read-only); Open(BE) 1(QA-B611 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 1 + FE SYNCED + 753 BE + 7 FE push=QA-B116); operation BLOCK(QA-B611+QA-B116+QA-B95).
+
+### [TSR] TSR1838 frontend — re-verify no-op (develop 전진 0 · pending 0 · Open(FE) 0)
+
+| item | result |
+|------|--------|
+| develop / test / origin/develop | **SYNCED `@5e816e6`** · WT CLEAN · pending **0** (TSR1837 이후 신규 develop 커밋 0) |
+| develop→test merge | **N/A** (no-op · merge 대상 없음) |
+| full suite `npm test` | **미재실행(CARRY)** — peer `vitest run` active(src/frontend PID1134473) + 동일 SHA 이미 green(TSR1837 **2745/2745 PASS**) |
+| `npm audit` high | **0 vulnerabilities** (fresh TSR1838 · `src/frontend-test`) |
+| `npm run build` | CARRY — TSR1837 1234 modules PASS(9.87s) @동일 SHA |
+| Open(FE) | **0** |
+| origin/test push | 미실행 (local test origin/test `b23711f` 대비 **+8** · Planned QA-B116) |
+| transfer | **PASS**(carry) — pending 0 · Open(FE) 0 · green carry |
+| cross-stream | **BLOCK** — BE develop `@49349e4`/test `@73a3a63` pending 1=**QA-B611** (backend stream) |
+| operation | **BLOCK** — QA-B611 + 753 BE + 8 FE origin/test push=QA-B116 + QA-B95 |
+
+**요약**: TSR1837 FF merge 이후 develop 전진 0. vitest 동시 실행 금지(CRITICAL) + 동일 SHA green 이므로 full suite 재실행 생략, `npm audit high 0`만 fresh 재확인. FE transfer PASS(carry) 유지 · operation 은 BE QA-B611 등으로 BLOCK.
+
+---
 
 ### [TSR] TSR1837 frontend — SEC-D34 FE EXCEL_IMPORT_UNREADABLE_MESSAGE constant FF MERGED + post-merge 2745/2745 PASS
 
