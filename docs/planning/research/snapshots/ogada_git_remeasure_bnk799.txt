@@ -1,0 +1,118 @@
+=== BNK-799 ogada git 실측 6–8h crosswalk (2026-07-16T16:36:04Z) ===
+작성: benchmark_researcher [BNK] | rotation: 6–8h ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정
+직전 동일 rotation: BNK-792(2026-07-16T11:58Z ogada git 실측) → ~4.6h 후
+직전 사이클: BNK-798(2026-07-16T16:02Z 이지케어 역공학 2–4h) → ~34분 후 재실측
+
+────────────────────────────────────────────────────────────────────
+1. SUBMODULE develop HEAD 실측 (git rev-parse / status)
+────────────────────────────────────────────────────────────────────
+FE src/frontend  develop @8a05640  (full 8a0564020b24a3cad4c170022593577597250bc1)
+  · 커밋: fix(v1.2.1/QA-B95): decode NoBreakSpace HTML entity in FE readiness paths
+  · WT: CLEAN (git status --porcelain = 0)
+  · BNK-798 `@61f8f19` → +1
+  · ahead origin/test: 0 = FULLY SYNCED (origin/test=8a05640 · tester FF 흡수)
+  · 최근: 8a05640(NoBreakSpace) ← 61f8f19(ZeroWidthNonJoiner/Joiner) ← 975aecb(bidi long-alias)
+
+BE src/backend   develop @ff80f0b  (full ff80f0b5d67cbcb826626ddca823ebe1ddfd0c19)
+  · 커밋: fix(v2/QA-B95): decode legacy NoBreakSpace blocker alias
+  · WT: CLEAN (git status --porcelain = 0)
+  · BNK-798 `@ba5b0cb` → +1
+  · ahead: 703 vs 598d108 (= origin/test..develop 703) = merge gate
+  · 최근: ff80f0b(NoBreakSpace legacy alias) ← ba5b0cb(zero-width long aliases) ← 53efa0b(bidi long-alias)
+
+────────────────────────────────────────────────────────────────────
+2. Route / Page / Test KPI 실측
+────────────────────────────────────────────────────────────────────
+Route   133  = App.jsx <Route\b 132 + <Routes> 1
+Page    106  = find src/pages -name '*Page.jsx' (!*.test.*)
+FE test 530  = 313 *.test.jsx + 217 *.test.js
+BE Test 294  = 293 *Test.java + 1 *Tests.java
+BE @Test 2258 = grep -rE '@Test\b' (BNK-798 header 2257 → +1 · NoBreakSpace named-alias @Test 추가)
+Flyway  V1–V196 (max V196 · 신규 0)
+
+모듈 route 분포(App.jsx path=):
+  billing 17 · care 16 · nursing 16 · staff 13 · transport 9 · payroll 5 · accounting 1 · compliance 2
+
+closed band App.jsx LIVE 재확인(@8a05640):
+  /dashboard L164 · /dashboard/hq L173 · /clients/home-newsletter L209 ·
+  /clients/:clientId/care-plan-form L245 · /billing/cms L389 · /transport/service-fees L628
+  → 재오픈 0
+
+npm test / mvn test: 집계(파일·@Test 수) 실측 · full suite 미실행(vitest 동시 0·사이클 집계 우선)
+  확인: `ps aux | grep -E '[v]itest run'` = 0
+
+────────────────────────────────────────────────────────────────────
+3. 모듈 커버리지 KPI (CONFIRMED · 가정 번복 0)
+────────────────────────────────────────────────────────────────────
+competitorModuleCoverage.js 배열 29-entry · sum 28.25 · pct **97.41%**
+  25×1.0 + 3×0.85(id=2/8/10) + 1×0.7(id=12 M12 credentials)
+coverage-0: 0건
+residual PRIMARY: id=12 0.7 → id=2/8/10 0.85 form polish
+merge gate **703** (FE 0 FULLY SYNCED + BE 703 · BE-heavy → tester FF)
+
+────────────────────────────────────────────────────────────────────
+4. QA-B95 NoBreakSpace LOCKSTEP FE↔BE (메뉴/필드/워크플로 · fail-closed)
+────────────────────────────────────────────────────────────────────
+FE @8a05640 diff (61f8f19..8a05640): 6-file · +11/−6
+  · notificationChannelStatus.js(+1) + .test.js(+7/−3)
+  · liveBackendProbe.js(+1) · liveConfig.js(+1) · liveGlobalSetup.js(+1)
+  · liveE2eHarness.test.js(+6/−3)
+  = `&NoBreakSpace;` / `&nobreakspace` / `&zerowidthnobreakspace` strip
+    readiness AND live-harness 양 flow fail-closed
+
+BE @ff80f0b diff (ba5b0cb..ff80f0b): 2-file · +60/−1
+  · LiveE2eOperationReadinessSupport.java(+10) — legacy `&NoBreakSpace;` → space
+  · LiveE2eOperationReadinessSupportTest.java(+51)
+    · resolveOperationBlockersShouldDecodeNoBreakSpaceNamedHtmlEntityAlias()
+  = blocker parser NoBreakSpace named-alias decode
+
+계보(HTML entity decode fail-closed):
+  triple-encoded(777) → named-num(780) → nbsp(783) → soft-hyphen(784) →
+  zero-width(789) → NoBreak(791) → space-entity(792) → bidi/MathML(794–798) →
+  **NoBreakSpace legacy alias(BNK-799) = 21+ layer**
+경쟁 4종 in-app live E2E operational gate = 「미확인」 carry → ogada 유일 full-stack fail-closed.
+
+────────────────────────────────────────────────────────────────────
+5. 신규 증거 URL + 기존 URL 재실측
+────────────────────────────────────────────────────────────────────
+★★★ NEW [FAQ 21781](https://ezcare.easyms.co.kr/help/V.ez?rowid=21781)
+  「인지활동지를 출력하여 수급자 어르신께 활용하고 싶어요!」
+  HTTP 200 · 3,991B · md5 da4ab8d0a108e8f1dbd5e179b923527d
+  · 인용: 「인지활동북은 시범서비스 운영중이며 좌측 인지활동북에서 인지맞춤형 학습지 및 낱장으로 출력이 가능합니다.」
+  · 인용: 「시범 서비스 메뉴로 계회표 및 표지등 세부 기능은 하반기에 확장하여 서비스 예정입니다.」
+  · ↔ ogada `/programs/*` 인접 P3「가정」·MVP 격상 금지(시범·하반기 확장 = 경쟁 미완)
+  snapshot: ezcare_help_faq_21781_bnk799.html
+
+★ FAQ 21779 지정갱신제 (교차 · BNK-798 M10 P3 lever 보강)
+  [V.ez?rowid=21779](https://ezcare.easyms.co.kr/help/V.ez?rowid=21779) 200·3,894B · md5 646b43081ef377328cc1ea0b605f23eb
+  · 「10 기관평가 > 10.2 운영메뉴얼 > 지정갱신제에서 확인 및 관련 서식자료를 다운로드」
+  · ↔ ogada 실행 checklist SUPERIOR carry · 지정갱신제 브라우저 UI 신설 금지
+  snapshot: ezcare_help_faq_21779_bnk799.html
+
+★ NHIS #44 러-1~4 — **533차** zero drift
+  [live](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = IDENTICAL(BNK-798 532차→+1)
+  grep: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)·50%(11)
+  ↔ TransportServiceFeeService 6-link(id=2 0.85) · 상수 재조정 불요
+  snapshot: nhis_jo44_live_bnk799.html
+
+★ 가격·도입 STABLE
+  [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) 200 · md5 338d7701e7feb532a9bd2597abb0cfc4
+    (BNK-798 a8a65aa7→cachebuster DRIFT · SIZE 20,747 IDENTICAL · 33,000×2·9,435×1 semantic IDENTICAL)
+  [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) 200 · md5 82a0f9751b9e51937522d3a1e720a71c · 도입 **9,435개** STABLE
+  snapshots: ezcare_charge_live_bnk799.html · ezcare_fnc_live_bnk799.html
+
+────────────────────────────────────────────────────────────────────
+6. 갭·우선순위 (planner 반영)
+────────────────────────────────────────────────────────────────────
+· P0 신규 0 · 가정 번복 0 · closed band 재오픈 0 · KPI promote 0
+· residual PRIMARY id=12 0.7(M12 credentials) → id=2/8/10 0.85 form polish
+· FAQ 21781 인지활동북 시범 = P3「가정」·하반기 확장 대기 = MVP 격상 금지
+· FAQ 21779 지정갱신제 = M10 P3 lever 3 carry(BNK-798)·실행 checklist 축 유지
+· merge gate BE-heavy 703 → tester FF 대상(FE FULLY SYNCED)
+
+per-cycle minimum 4종 충족:
+  증거 URL(FAQ 21781 NEW + NHIS 533차 재실측) · 메뉴/필드/워크플로(§4 NoBreakSpace LOCKSTEP + §5 인지활동북)
+  · COMPETITOR_MATRIX 3행 @HEAD 갱신 · BENCHMARK_REPORT §799 소절.
+신규 snapshot 6(본 crosswalk·faq 21781/21779·nhis·charge·fnc). 덮어쓰기 0.
+zero drift IDENTICAL 2(NHIS 533차·charge/fnc semantic). 가정 번복 0.

@@ -1,0 +1,90 @@
+BNK-737 — ogada git 실측 6–8h rotation (2026-07-14T22:25Z / KST 2026-07-15 07:25)
+================================================================================
+직전 동일 rotation: BNK-732(2026-07-14T19:32Z·ogada git 실측) → ~2.9h 후
+직전 사이클: BNK-736(2026-07-14T21:44Z·엔젤·롱텀·규제 4–6h) → ~41분 후
+
+[git HEAD 실측]
+- FE develop HEAD: d4e1e68ca83c7e229ea7db85ff8239cc16c0dfd7 (d4e1e68)
+    · git -C src/frontend rev-parse develop
+    · WT: CLEAN (git status --short = 0 line · develop...origin/develop)
+    · BNK-736 `@387419d` → **+1 commit**: d4e1e68 feat(v1.2.1/G2): clone facility notices to DRAFT and guard attachment URLs
+      (2026-07-14 22:15:16Z·5-file·+294/−14·Co-authored-by Cursor)
+    · ahead origin/test: **1** (origin/test=387419d · BNK-736 FULLY SYNCED 0 → +1 재적체)
+    · HEAD msg: Operators can re-issue PUBLISHED/existing board posts as new DRAFTs,
+      with http(s)-only attachment validation and Korean category/status labels.
+- BE develop HEAD: 2e29bc767e028226c531dc80e6bd1cffbe201e22 (2e29bc7)
+    · git -C src/backend rev-parse develop
+    · WT: CLEAN (git status --short = 0 line · develop...origin/develop)
+    · BNK-736 `@79d4279` → **+1 commit**: 2e29bc7 fix(v2/QA-B95): treat blank guardian credentials as missing
+      (2026-07-14 22:01:17Z·2-file·+50/−18·Co-authored-by Cursor)
+    · ahead origin/test: **643** (BNK-736 642 → +1 · origin/test=598d108)
+
+[merge gate]
+- FE 1 + BE 643 = **644** (BE-heavy·양쪽 WT CLEAN·신규 마이그레이션 0 → tester FF 가능)
+- BNK-736 642(FE 0 FULLY SYNCED+BE 642) → FE re-ahead 1 + BE +1 = 644
+
+[KPI 실측 — 표준 measure]
+- Route: **132** = 131 `<Route\b`(src/App.jsx) + 1 `<Routes>`   (carry)
+- Page:  **105** *Page.jsx (git ls-files '*Page.jsx')               (carry)
+- FE test: **518** = 214 .test.js + 304 .test.jsx                   (carry)
+- BE Test files: **289** = 288 *Test.java + 1 *Tests.java           (carry)
+- BE @Test: **2161**  (git grep -hoE '@Test\b' develop -- '*.java' | wc -l)
+    · BNK-736 `@79d4279` = 2160 → `@2e29bc7` = **2161** (+1)
+    · 신규: `bootstrapGuardianShouldFailWhenGuardianCredentialsAreMissing` @Test
+      + blank-credentials 동축 assertion 강화 (`usesDefault…FalseWhen…Missing`·`bootstrapShouldSkip…`)
+- Flyway: **V1–V192** (max V192·신규 0·carry)
+- accounting route **1** · payroll route **5** (App.jsx path=) carry
+- 모듈 커버리지: 27.15/29 = **93.62%** (carry · KPI promote 없음)
+    · competitorModuleCoverage.js id=1-5 comment deepen:
+      「…compose→DRAFT + PUBLISHED clone→DRAFT + http(s) attachment guard」
+    · coverage 값 1.0 유지 (심화 ≠ promote)
+    · non-1.0: id=1-10 0 · id=2 0.85 · id=8 0.85 · id=10 0.75 · id=12 0.7
+
+[★★★ 메뉴/필드/워크플로 블록 #1 — carefor 10-4 · PUBLISHED→DRAFT clone + attachment URL guard]
+FE `@d4e1e68` 확정 워크플로 (확인·git+소스 verbatim):
+
+| step | 동작 | 구현 | 비고 |
+|---|---|---|---|
+| 1 | 게시판 행/상세에서 「초안 복제」 | `HomeNewsletterLaunchPage` → `buildFacilityNoticeClonePayload(source)` | PUBLISHED 또는 기존 DRAFT fork |
+| 2 | 제목 접두 | `FACILITY_NOTICE_CLONE_TITLE_PREFIX = "[복제] "` | 중복 접두 방지(startsWith guard) |
+| 3 | 분류·본문·첨부 복사 | noticeCategory NOTICE\|RESOURCE · title≤200 · body≤5000 · attachmentUrl | BE V192 길이 CHECK 정합 |
+| 4 | 첨부 URL 안전성 | `isSafeFacilityNoticeAttachmentUrl` — http:/https: only | **javascript:/data: 차단**(새 탭 XSS 방지) |
+| 5 | POST create DRAFT | `createFacilityNoticeApi(payload)` → DRAFT 신규 행 | 기존 PUBLISHED immutable 유지 |
+| 6 | UI 라벨 KO | `FACILITY_NOTICE_CATEGORY_LABEL`(공지/자료)·`FACILITY_NOTICE_STATUS_LABEL`(초안/게시됨)·`FACILITY_NOTICE_STATUS_BADGE` | WCAG 1.4.1 색+텍스트 |
+
+경쟁 대비 (확인):
+- 케어포 func.php 10-4 「기관 공지사항, 자료실」: 정적 leaf · LIVE HTTP **000** 77-cycle+ 「미확인」 · disk `6226e6eb` carry
+- 이지케어 `notice.ez`: 로그인-gated · clone/fork 워크플로 「미확인」
+- 엔젤 `noticeList.do`: shell-only
+- 롱텀: N/A
+→ ogada = **DRAFT/PUBLISHED + clone-to-DRAFT + http(s) attachment guard** full-stack 심화 우위 (경쟁 4종 미확인/정적)
+
+[★★ 메뉴/필드/워크플로 블록 #2 — QA-B95 blank guardian credentials fail-closed]
+BE `@2e29bc7` (확인·git+소스 verbatim):
+
+| 함수 | 동작 변경 | 효과 |
+|---|---|---|
+| `hasConfiguredGuardianCredentials()` | blank/whitespace → empty (normalizeCredential) | blank env ≠ configured |
+| `usesDefaultGuardianCredentials()` | blank/partial → **false** (defaults only when both non-blank == seed) | blank ≠ default seed |
+| `isUsableGuardianCredentialsConfigured()` | hasConfigured \|\| usesDefault | fail-closed for token enrichment |
+| staff bootstrap | blank guardian → skip guardian tokens | operation-gate / bootstrap enrichment 오차단 방지 |
+| `bootstrapGuardian` | blank → fail | fail-closed |
+
+= live-e2e operation gate readiness 명확화 (QA-B95) · 모듈 KPI 무관 · 보안 readiness 심화.
+
+[기존 URL 재실측]
+- NHIS #44 이동서비스비: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  · HTTP **200** · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = disk bnk736 **IDENTICAL**
+  · **471차** zero drift (BNK-736 470차→+1)
+  · verbatim grep -oE: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+  · ↔ ogada `TransportServiceFeeService` RU_1~4·ONE_WAY_RATIO=0.5·1일1회 6-link (id=2 0.85) carry
+- carefor LIVE 3-URL: func.php / demo-work / loadPage.php → HTTP **000** 12–25s timeout **77-cycle+** 「미확인」 (disk canonical 우선)
+
+[퍼-cycle minimum]
+1. 증거 URL: NHIS #44 재실측(+carefor 3-URL probe) ✅
+2. 메뉴/필드/워크플로: clone→DRAFT + attachment guard (+ QA-B95 blank credentials) ✅
+3. COMPETITOR_MATRIX @d4e1e68/@2e29bc7 행 갱신 ✅
+4. BENCHMARK_REPORT §737 ✅
+
+덮어쓰기 0 · 가정 번복 0 · 신규 core 갭 0 · closure 0(KPI promote 없음·심화 2) · @Test +1
+)

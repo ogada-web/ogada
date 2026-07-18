@@ -1,0 +1,60 @@
+BNK-851 엔젤·롱텀·규제 역공학 4–6h — live 재실측 md5/SIZE 비교
+================================================================================
+조사일: 2026-07-18T00:51Z | UA: Chrome/120 | 방법: curl -sS -m 40 → wc -c + md5sum
+
+[규제 백본 8-URL live 재실측]
+--------------------------------------------------------------------------------
+# | target                     | HTTP | SIZE     | md5(raw)   | 판정
+--+----------------------------+------+----------+------------+---------------------------
+1 | NHIS #44 이동서비스비       | 200  |  7,572B  | c886ff1f   | 580차 byte-IDENTICAL zero drift
+2 | silverangel system_feature | 200  | 45,601B  | c9507190   | byte-IDENTICAL (BNK-795 canonical)
+3 | silverangel extraService   | 200  | 81,637B  | f9c5d877   | byte-IDENTICAL (CMS fee LOCK)
+4 | silverangel feeService     | 200  | 44,513B  | eab352a8   | byte-IDENTICAL
+5 | silverangel home           | 200  | 101,220B | 66382835   | byte-IDENTICAL
+6 | longterm 502 월한도액       | 200  | 89,171B  | a71379de   | full-shell 복귀 (BNK-842 lean 56185735/89,162B → +9B 오실레이션)
+7 | longterm 610 통합재가       | 200  | 88,408B  | 6b10f426   | full-shell 복귀 (BNK-842 lean fad1ce61/88,399B → +9B 오실레이션)
+8 | law 2025-247 canonical     | 200  | 78,450B  | af1d2b46(raw) / a913639a(strip Time=) | semantic IDENTICAL
+
+URL:
+1 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+2 https://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+3 https://www.silverangel.kr/newSilverangel/service/extraService.do
+4 https://www.silverangel.kr/newSilverangel/service/feeService.do
+5 https://www.silverangel.kr/
+6 https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+7 https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+8 https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110
+
+[verbatim grep 근거]
+--------------------------------------------------------------------------------
+NHIS #44 (fetch_nhis_jo44):
+  "이동서비스비"×9 · "러-1"×1 · "러-4"×1 · "편도"×2 → 러-1~4 이동서비스비 정액/편도 구조 verbatim carry.
+  ↔ ogada Transport 상수 RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY IDENTICAL → 상수 재조정 불요.
+
+law 2025-247 (fetch_law2025_247):
+  strip 's/Time=[0-9]+//g' → md5 a913639a = BNK-835/837 strip IDENTICAL (Time= epoch 캐시버스터-only DRIFT).
+  verbatim: "제2025-247호" · "장기요양급여 제공기준 및 급여비용" carry. → 2025 수가 고시 본문 semantic IDENTICAL.
+
+silverangel extraService CMS 부가서비스 (fetch_sa_extraService):
+  "CMS"×12 · "자동이체"×6 · "가상계좌"×7 · "30,000"×1 · "250"×3 · "300"×3
+  → CMS 월 이용료 30,000원 / 자동이체 건당 250원 / 가상계좌 건당 300원 LOCK (엔젤 3-method).
+  ↔ ogada G2b payment-method-catalog 5-method SUPERSET carry.
+
+silverangel system_feature 9th 카테고리 (fetch_sa_system_feature):
+  "교육"×27 · "회의"×7 · "만족도"×4 · "전자결재"×2 · "월마감"×1
+  → 9th 「회의·교육·만족도」 카테고리 + 전자결재/월마감 leaf 재확인 (BNK-843 ~93-leaf).
+  "이동서비스"·"배차"·"GPS"·"차량" 0-hit → ogada Transport(id=2 full-stack) SUPERIOR carry.
+
+longterm 502/610 (fetch_longterm502/610):
+  <title></title> 공백 · 본문 SPA JS-load (단기보호 74,060 / 통합재가 월한도 정액은 정적 HTML 미포함).
+  502: "월 한도액"·"급여비용"·"민원 상담실"(미사용 lnb 복귀) → BNK-826/837 full-shell 복귀.
+  610: "통합재가서비스" 메뉴 label carry.
+  → SPA shell 사이드바 lnb 토글 오실레이션(±9B) = 비실체 DRIFT. canonical 메뉴 백본 carry.
+
+[결론]
+  · NHIS #44 러-1~4 580차 zero drift → Transport 상수 재조정 불요·경쟁 4종 유일 full-stack carry.
+  · silverangel 4-URL(home/system_feature/extraService/feeService) byte-IDENTICAL·CMS 3-method LOCK.
+  · longterm 502/610 ±9B lnb 오실레이션(BNK-842 lean → BNK-826/837 full-shell 복귀) = 비실체.
+  · law 2025-247 Time= epoch-only DRIFT·strip a913639a semantic IDENTICAL.
+  · 이동서비스/배차/GPS/차량 엔젤 0-hit 재확인 → ogada Transport SUPERIOR.
+  · 엔젤 엑셀 매직바이트/파일 시그니처 검증 근거 0건 「미확인」 → ogada SEC-D34 4-경로 SUPERIOR.

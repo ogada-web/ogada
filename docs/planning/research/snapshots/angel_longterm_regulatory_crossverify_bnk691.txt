@@ -1,0 +1,126 @@
+# BNK-691 — 엔젤·롱텀·규제 4–6h · cross-verify (2026-06-27T10:25Z)
+
+## 0. ogada git 실측 (작업자: BNK / 후속: tester FF merge 889)
+
+| 축 | BNK-690 | BNK-691 | delta |
+|---|---|---|---|
+| FE HEAD develop | `@6dcf7d1`(WT CLEAN) | **`@de12f525`**(WT **CLEAN** · +1 commit) | +1 · M6 stage9 required metadata wire |
+| BE HEAD develop | `@16e8ce0`(WT CLEAN) | `@16e8ce0`(WT **DIRTY 2M** `BillingService`+test) | HEAD carry · dirty-tree recurrence |
+| FE ahead `origin/test` | 283 | **284** | +1 |
+| BE ahead `origin/test` | 605 | 605 | carry |
+| merge gate | 888 | **889** | +1 FE-only |
+| Route(`<Route\b`) | 123 | 123 | IDENTICAL |
+| page(`*Page.jsx`) | 97 | 97 | IDENTICAL |
+| Migration | V1–V185 | V1–V185 | IDENTICAL |
+| BE `@Test\b` | 2047 | 2047 | IDENTICAL |
+| FE test files | 500 | **504** | +4 |
+| 모듈 coverage | 84.31% | 84.31% | IDENTICAL |
+| reports route | 28 | 28 | IDENTICAL |
+
+→ **3/9축 KPI delta**(FE HEAD·merge gate·FE test files) · BE WT CLEAN→**DIRTY 2M** 상태 변경.
+
+## 1. FE `@de12f525` commit (확인 · ogada git 실측)
+
+```
+feat(v1.2.1/US-Q01): wire server template required metadata into checklist forms
+
+Map required/helpText from the safety template catalog API and block submit when
+mandatory checklist items are unchecked, with regression tests for catalog mapping
+and form validation.
+```
+
+6-file +142/-14L — `SafetyChecklistForm.jsx` catalog `required`/`helpText` 매핑 · 미체크 필수항목 submit 차단 · 회귀 테스트 4-file.
+
+**판정**: M6 narrative stage8 unit test lock(`16e8ce0`) → **stage9 FE form validation wire** — server-driven field metadata 가 UI validation 까지 end-to-end. 경쟁 4종 safety checklist required-field contract 공개 0.
+
+## 2. NHIS #44 이동서비스비 러-1~4 — 428차 zero drift (확인 · 재실측 · PLAN_NOTES #44)
+
+**URL**: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+**HTTP** 200 · **7,572B** · md5 **`c886ff1f`** = disk IDENTICAL (BNK-690 427차→+1)
+
+verbatim (인용):
+- ① 이동서비스비 = 수급자 실거주지↔기관 최단거리(편도) 표(러-1~4 이미지)
+- ② **1일 1회**만 산정 · **편도만** 이용 시 러-1~4 **50%**
+- ③ 수급자 **부담하지 아니함**
+- ④ 이동서비스 **일지** 작성·보관 의무
+
+**판정**: law247 SSR ↔ NHIS #44 ↔ `CATALOG_YEAR=2026` ↔ HTTP contract ↔ V185 readiness probe **5-link regulatory chain** carry · 변동 없음.
+
+## 3. silverangel 7-URL backbone — 7/7 zero drift (확인 · 재실측)
+
+| URL | HTTP | size | md5 | vs BNK-685 |
+|---|---|---|---|---|
+| daycareEssentialWork.do | 200 | 131,664B | `c79c1be3` | IDENTICAL |
+| daycareAngelSystemSummary.do | 200 | 51,943B | `a6ee5694` | IDENTICAL |
+| daycareProgramProvided.do | 200 | 67,987B | `f18e1c7a` | IDENTICAL |
+| service/mainService.do | 200 | 59,002B | `bcf6df41` | IDENTICAL |
+| service/feeService.do | 200 | 44,513B | `eab352a8` | IDENTICAL |
+| service/extraService.do | 200 | 81,637B | `f9c5d877` | IDENTICAL |
+| fcltySlry/essentialWork.do | 200 | 166,023B | `80517b18` | IDENTICAL |
+
+## 4. silverangel notice 221564 — leak persists · text semantic IDENTICAL (확인 · 재실측)
+
+**URL**: https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564&Tmp_thread=1&Tmp_depth=0
+**HTTP** 200 · **1,812,677B** · md5 **`8e758f81`**(BNK-686 `0b5d9aa0` → md5-only DRIFT)
+
+text-normalized md5 **`ba3c38d8`** = BNK-685/686/691 **IDENTICAL** · 제목 `작성중 - [필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)` carry.
+
+**판정**: HTML wrapper/cachebuster DRIFT only · release notes 16항목 본문 semantic 불변 · D-day leak monitor carry · ogada `NoticeViewPage` SSR draft 게이팅 우위 framing 유지.
+
+## 5. lcms.or.kr — type1→type3 rotation back (확인 · 재실측 · 신규 evidence)
+
+**URL**: https://www.lcms.or.kr/
+**HTTP** 200 · **50,498B** · md5 **`6b750291`**
+
+BNK-685/686 type1 디자인 샘플(`c0c66076` 50,740B) → **BNK-691 type3 CJ MOU**(`6b750291` 50,498B) = BNK-681 패턴 재현.
+
+verbatim (인용):
+- `엔젤시스템 & CJ프레시웨이 업무협약(MOU) 체결`
+- `CJ프레시웨이와 MOU 체결을 통해 노인식단 전문영양사가 작성한 식단표 활용`
+- `식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다`
+
+**판정**: 18-cycle rotation pattern carry(type1↔type3) · silverangel `extraService.do` CMS+CJ MOU carousel 과 cross-promo 정합.
+
+## 6. MOHW 제2026-126호 — zero drift · bid=0026 정본 (확인 · 재실측)
+
+**정본 URL**: https://www.mohw.go.kr/board.es?mid=a10409020000&bid=**0026**&act=view&list_no=1488862
+**HTTP** 200 · **103,139B** · md5 **`d702b54c`** = disk IDENTICAL
+
+**함정 URL**(가정 번복 방지): 동일 `list_no=1488862` + `bid=**0027**` → 완전히 다른 게시물(의사인력 정책) 반환 — **bid=0026 필수**.
+
+**판정**: 2026 수가·평가 고시 본문 불변 carry · 단기보호·통합재가 키워드는 본 고시 범위 외(별도 longterm endpoint 의존).
+
+## 7. law247 admRulSeq=2100000271110 — Time= md5-only DRIFT (확인 · 재실측)
+
+**URL**: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+**HTTP** 200 · 78,450B · md5 `66ab12c2`(BNK-685 `ba2383ce` DRIFT)
+`sed s/Time=[0-9]*//g` 후 semantic md5 **`a913639a`** = disk IDENTICAL
+
+## 8. longterm 502/610 — HTTP 404 ~130-cycle persist (미확인 · 재실측)
+
+| endpoint | HTTP | size | body |
+|---|---|---|---|
+| `/npbs/r/502/selectLtcareInsttList.web` | **404** | 861B | `오류안내` shell |
+| `/npbs/r/610/selectIntgrHomeCareInsttList.web` | **404** | 861B | 동일 |
+| alt `/r/500/...` `/r/600/...` | **404** | 861B | 동일 |
+
+**판정**: 단기보호(502)·통합재가(610) 공단 공개 명단 — disk canonical(`longterm_502_live_partial_shell_bnk556.html`·`longterm_610_live_partial_shell_bnk560.html`) 우선 · ogada G18-SHORT 영향 0.
+
+## 9. 엔젤 extraService CMS 워크플로 (확인 · 메뉴/필드/워크플로 블록)
+
+**URL**: https://www.silverangel.kr/newSilverangel/service/extraService.do (200·`f9c5d877`)
+
+| 기능 블록 | 필드·워크플로 (verbatim 요약) | ogada 대응 |
+|---|---|---|
+| 본인부담금 CMS | 자동이체(CMS)·가상계좌·카드결제 · 효성 CMS 연동정보 입력 필수 · 계좌분리 정산 | ✅ `/billing/cms` payment-method-catalog · G2b parity |
+| CJ MOU 식단 | 노인식단 영양사 식단표 무상 · CJ 식재료 구매계약 | △ P3 `G-MEAL-PLAN-TEMPLATE` carry |
+| 평가 PDF | `LongTermCare_Appraisal_Indicator(daycare).pdf` download | △ daycareEssentialWork 평가지표 정적 |
+| LCMS 통신문 | 가정통신문·안내장·SMS(본인부담금·프로그램·바이탈) | ✅ J03 SMS/ALIMTALK superset |
+
+## 10. BE WT DIRTY — BillingService year message (확인 · ogada git 실측)
+
+`validateNhisSeedCatalogYear` 오류문구: `"{year}년 수가 seed는 지원하지 않습니다..."` — regulatory UX deepen(WIP uncommitted).
+
+---
+
+**per-cycle minimum**: 신규 evidence URL 1+(lcms type3 rotation) · 메뉴/블록 1+(extraService CMS) · COMPETITOR_MATRIX 1+ · BENCHMARK_REPORT §691 1+ · 4종 충족.

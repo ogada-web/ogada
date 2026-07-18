@@ -1,0 +1,12 @@
+# 케어포 주야간보호 사용매뉴얼 PDF live refetch (BNK-687)
+# URL: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+# 조사일: 2026-06-27T06:30:00Z | HTTP: 200 | SIZE: 9,992,772B | md5: 96f7d45eaca91525068ec9bfb626fb18
+# on-disk BNK-490 prefix md5: 96f7d45e — IDENTICAL · 425-cycle PDF baseline zero drift
+
+== p87–92 module 7 field anchors (재인용 · ogada cross-walk in carefor_m7_pdf_p87_field_crosswalk_bnk687.txt) ==
+p87: 7-1 명세서 4채널 발송(우편·문자·이메일·직접수령) · 우편 발송일 수정 가능 / 문자·이메일 수정 불가
+p88: 7-2 입금관리 · 납부확인서 · 은행 엑셀 일괄(국민·우리·농협·신한·KEB하나·부산·대구·광주)
+p89: 7-3 미납관리 · 독려기록 · 미납 조정·삭제 · 미납 문자안내
+p90: 7-3† 청구시작 기준금액(도입 전 미납/선납) · 1회 잠금
+p91: 7-6~7-8 리포트 3종(청구대장·입금대장·수납대장) · PDF 구번호 −1 drift
+p92: 7-2-1 의료비공제 엑셀 · 7-8 본인부담금 통계

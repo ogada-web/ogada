@@ -1,0 +1,141 @@
+# BNK-839 · ogada git 실측 6–8h
+# 작성자: BNK · updated: 2026-07-17T17:51:00Z
+# rotation: agents.yaml > reverse_engineering.rotation_30min "6-8h": ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정
+# 초점: src/backend·src/frontend develop HEAD 재실측 · v3 program photo SEC-D25 magic-byte 검증 full-stack 착지 · NHIS #44 571차
+
+## 0. ogada baseline (git 실측)
+
+- FE `@bc1d343` (`test(v1.2.1/QA-B95): lock uppercase semicolon-optional named-num decode`) · WT CLEAN · BNK-838 동일 HEAD · **zero advance** · ahead origin/test **0** = **FULLY SYNCED**(origin/test=`bc1d343` carry)
+- BE `@d1ff63a` (`fix(v3/programs): verify schedule photo magic bytes (SEC-D25)`) · WT CLEAN · BNK-838 `@a742788` → **+1** · ahead **736** vs `598d108`
+- merge gate **736** (FE 0 FULLY SYNCED + BE 736 · **BE-only** → tester FF · 신규 마이그레이션 0 · Flyway V1–V196)
+- Route **133** (`<Route\b` 132 + `<Routes>` 1 · App.jsx grep 실측 · carry)
+- Page **106** (git ls-files 실측 · BNK-838 정본 유지)
+- Flyway **V1–V196** (max V196 · 신규 0)
+- BE Test **295** (294 *Test.java + 1 *Tests.java · carry)
+- BE @Test **2294** (`@Test` 정밀 카운트 = raw 2295 − `@TestPropertySource` 1 · BNK-838 2290 → **+4** · d1ff63a SEC-D25 magic-byte 4-@Test)
+- HTTP **442** (GET **231**·POST **144**·PATCH **44**·PUT **13**·DELETE **10**) — a742788→d1ff63a byte-exact IDENTICAL = **audit-first posture 5차 안정 재현** (BNK-834~839 무변동·controller endpoint 신설 0·service-layer 하드닝 only)
+- @RestController **81** (Δ0)
+- FE test **533** (219 .test.js + 314 .test.jsx · in-place carry)
+- 모듈 **97.41%** (`competitorModuleCoverage.js` 29-entry·sum 28.25·비-1.0 id=2/8/10=0.85·id=12=0.7·진성갭 0·residual primary = id=12 회계 BPO SSO)
+
+## 1. ★★★ SEC-D25 프로그램 일정 사진 magic-byte 검증 — MIME spoofing full-stack 방어 「확인」 (메뉴/필드/워크플로)
+
+BNK-833(BE `@1b8c764`) → BNK-834(BE `@72a6534` normalize) → BNK-835(FE `@8e74b07` lockstep) → BNK-838(BE `@a742788` whitespace/multi-param) → **BNK-839(BE `@d1ff63a` magic-byte 검증)** 로 v3 program photo 업로드 파이프라인이 다층 하드닝을 완료했다. 4-cycle full-stack.
+
+### 1-a. d1ff63a diff (git 실측)
+
+```
+ .../programs/domain/ProgramPhotoStorageService.java     |  73 ++/-18   ← magic-byte 검증 로직 신설
+ .../programs/domain/ProgramPhotoStorageServiceTest.java | 109 ++/-14   ← 4 신규 @Test + payload 픽스처
+ 2 files changed, 164 insertions(+), 18 deletions(-)
+```
+
+`ProgramPhotoStorageService.java` 주요 신설 상수·메서드:
+
+```
+private static final byte[] JPEG_MAGIC = {0xFF, 0xD8, 0xFF};
+private static final byte[] PNG_MAGIC  = {0x89, 'P', 'N', 'G', 0x0D, 0x0A, 0x1A, 0x0A};
+private static final byte[] RIFF_MAGIC = "RIFF"; // ASCII
+private static final byte[] WEBP_MAGIC = "WEBP"; // ASCII (offset 8..12)
+private static final String UNSUPPORTED_PHOTO_FORMAT_MESSAGE =
+    "JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.";
+
+matchesMagicBytes(byte[] payload, String contentType) → switch
+  "image/jpeg" → startsWith(payload, JPEG_MAGIC)
+  "image/png"  → startsWith(payload, PNG_MAGIC)
+  "image/webp" → RIFF at [0..4] AND WEBP at [8..12]  (12B 최소)
+  default      → false
+```
+
+`validate(...)` 순서: Content-Type allowlist 통과 → payload 매직바이트 매치 실패 시 동일 오류 문구로 fail-closed (spoofing 노출 방지·정보 노출 최소화 = PIPA 정합).
+
+### 1-b. 신규 4-@Test (magic-byte 하드닝 lock)
+
+| 순번 | @Test 이름 | 시나리오 | 결과 |
+|------|-----------|----------|------|
+| 1 | `storeShouldRejectJpegContentTypeWhenMagicBytesArePng` | Content-Type=`image/jpeg`, payload=PNG 매직바이트 | **reject** (MIME spoofing) |
+| 2 | `storeShouldRejectWebpContentTypeWhenMagicBytesAreMissing` | Content-Type=`image/webp`, payload=`"not-a-webp"` ASCII | **reject** (RIFF/WEBP 부재) |
+| 3 | `storeShouldRejectTruncatedJpegMagicBytes` | Content-Type=`image/jpeg`, payload=`{0xFF, 0xD8}` (2B) | **reject** (3B 최소 미달) |
+| 4 | `storeShouldAcceptRealPngMagicBytes` | Content-Type=`image/png`, payload=진짜 PNG magic | **accept** (positive path) |
+
+기존 3-@Test(BNK-834·834 whitespace)는 payload 픽스처를 `jpegPayload()`/`pngPayload()`/`webpPayload()` helper 로 리팩터·매직바이트 정합 유지(회귀 lock).
+
+### 1-c. 경쟁 crosswalk — 사진 업로드 정합성 검증
+
+| 경쟁사 | 사진 업로드 노출 | MIME/magic 검증 | 판정 |
+|--------|------------------|------------------|------|
+| **케어포** | 시설 셸 demo 미노출 (`daycare/func.php` M5 프로그램 급여 leaf 사진/upload/첨부 0-hit) | 「미확인」(로그인 gated) | ⚪ |
+| **이지케어** | Channel.io 파일 첨부·이지케어 자체 사진 업로드 UI 「미확인」(demo 로그인 gated) | 「미확인」 | ⚪ |
+| **엔젤시스템** | `daycareProgramProvided.do` `f18e1c7a` 프로그램뱅크·계획·일지 leaf만 노출·사진/업로드/첨부/photo/upload **0-hit** carry | 축 부재 | ❌ |
+| **롱텀(공단)** | 규제 백본 | out-of-scope | ⚪ |
+| **ogada `@d1ff63a`** | ✅ `POST /programs/schedule/{id}/photo` multipart + FE `ProgramSchedulePhotoUpload` + SEC-D25 magic-byte 검증 | ✅ Content-Type allowlist + JPEG(0xFFD8FF)/PNG(0x89504E47)/WEBP(RIFF+WEBP@offset8) 3중 lock | **SUPERIOR (4-cycle full-stack)** |
+
+**판정**: v3 program photo = 경쟁 4종 유일 SEC-D25 하드닝 SUPERIOR. 브라우저 관용 헤더 수용(BNK-834 normalize·BNK-838 whitespace/multi-param) + MIME spoofing 방어(BNK-839 magic-byte) = **감사 우선 + 실제 브라우저 헤더 관용 + 저장소 무결성 3-축 균형** 완성. id=5 「프로그램 급여」 **1.0 carry**·KPI promote 0(이미 최대치)·마케팅 카피 확장: 「MIME 위조 방어 이미지 업로드」.
+
+## 2. ★★★ audit-first HTTP 442 posture 5차 안정 재현 byte-exact
+
+`src/main` grep 실측 (`@d1ff63a`):
+
+| verb | 개수 | 비율 | BNK-834 IDENTICAL | 판정 |
+|------|------|------|---------------------|------|
+| @GetMapping | **231** | 52.3% | ✅ | 조회 우세 |
+| @PostMapping | **144** | 32.6% | ✅ | 증거 축적 |
+| @PatchMapping | **44** | 10.0% | ✅ | 부분정정 우선 |
+| @PutMapping | **13** | 2.9% | ✅ | 전체교체 최소 |
+| @DeleteMapping | **10** | 2.3% | ✅ | 물리삭제 최소(soft-delete/감사 보관) |
+| **합계** | **442** | 100% | ✅ 5차 byte-exact | audit-first |
+
+- BNK-834(+1 commit 72a6534)→BNK-835(carry)→BNK-836(+1 commit 759b15e)→BNK-837(+1 commit bfe6b3f)→BNK-838(+1 commit a742788)→**BNK-839(+1 commit d1ff63a)** = 5-BE-commit / 5-cycle 동안 HTTP verb 분포 무변동 = controller endpoint 신설 0·service-layer 하드닝 dominant = **감사 우선 read-create dominant API 설계 재확정**.
+- d1ff63a 는 `ProgramPhotoStorageService` 내부 `matchesMagicBytes(...)`·`isWebp(...)`·`startsWith(...)` private helper 3-메서드만 확장·기존 `POST /schedule/{id}/photo` 엔드포인트 재사용 = 신규 라우트 0·삭제 라우트 0.
+- PATCH>PUT(44>13) 부분정정 우선·DELETE 2.3% 최소 = **PIPA 감사 보관 정합·물리 삭제 API 신설 금지 posture carry**.
+
+## 3. NHIS #44 이동서비스비 러-1~4 재실측 — 571차 IDENTICAL
+
+**확인** — [NHIS #44 joHistoryContent](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = BNK-838 570차 → **571차 byte-IDENTICAL**.
+
+verbatim grep -oE (BNK-839 재실측):
+
+| 토큰 | 카운트 |
+|------|--------|
+| 러-1 | 1 |
+| 러-4 | 1 |
+| 편도 | 2 |
+| 1일 1회 | 1 |
+| 수급자가 부담 | 1 |
+| 이동서비스 | 13 |
+
+↔ BE `@d1ff63a` `TransportDistanceBand.RU_1~4`(5/10/20/999km)·`TransportServiceFeeParityCatalog.ONE_WAY_RATIO=0.5`·`ONE_PER_DAY_LABEL="1일 1회"`·`baseAmount×0.5 HALF_UP` 상수 verbatim IDENTICAL → **상수 재조정 불요 · id=2 「이동서비스」 0.85 carry · 경쟁 4종 유일 full-stack SUPERIOR**.
+
+## 4. HEAD 진행·KPI delta 요약
+
+| 항목 | BNK-838 | BNK-839 | 번복 |
+|------|---------|---------|------|
+| FE HEAD | `@bc1d343` FULLY SYNCED | `@bc1d343` (zero advance) FULLY SYNCED carry | 0 |
+| BE HEAD | `@a742788` ahead 735 | `@d1ff63a` (+1 SEC-D25 magic-byte) ahead **736** | 0 |
+| merge gate | 735 (FE0+BE735·BE-only) | **736**(FE 0+BE 736·**BE-only**) | 0 |
+| BE @Test | 2290 | **2294**(+4 SEC-D25 magic-byte lock) | 0 |
+| BE Test | 295(294+Tests 1) | **295** carry | 0 |
+| HTTP verb | 442 (4차 IDENTICAL) | **442** (**5차 byte-exact IDENTICAL**) | 0 |
+| @RestController | 81 | 81 carry | 0 |
+| Route | 133 | 133 carry | 0 |
+| Page | 106 | 106 carry | 0 |
+| FE test | 533(314+219) | 533(314+219) carry | 0 |
+| Flyway | V1–V196 | V1–V196 (신규 0) | 0 |
+| NHIS #44 | 570차 | **571차** byte-IDENTICAL | 0 |
+| 모듈 | 97.41% | 97.41% carry | 0 |
+| v3 photo | Content-Type normalize + whitespace | **+ SEC-D25 magic-byte (MIME spoofing 방어)** | 0(SUPERSET leg 추가) |
+
+**가정 번복 0** · 신규 core 갭 0 · SUPERSET leg 1 (v3 photo SEC-D25 magic-byte) · **audit-first 442 posture 5차 안정 재현 확정**.
+
+## 5. per-cycle minimum 4종 충족
+
+1. **신규 증거 URL/재실측**: NHIS #44 571차 byte-IDENTICAL (기존 URL 재실측 + 변동 0 기록)
+2. **메뉴/필드/워크플로 1블록+**: §1 SEC-D25 magic-byte 검증 full-stack (BE diff·4-@Test 시나리오·경쟁 crosswalk)
+3. **COMPETITOR_MATRIX 1행+ `@HEAD`**: v3 program photo 사진 무결성 행 `@bc1d343`/`@d1ff63a` 갱신
+4. **BENCHMARK_REPORT §839 소절**
+
+**근거 파일**:
+- 본 txt (`ogada_git_remeasure_bnk839.txt`)
+- `nhis_jo44_live_bnk839.html` (7,572B·`c886ff1f`·571차)
+- BE `ProgramPhotoStorageService.java`(d1ff63a) · `ProgramPhotoStorageServiceTest.java`(d1ff63a)
+- git 실측: `git -C src/backend rev-parse develop`=d1ff63a · `git -C src/frontend rev-parse develop`=bc1d343

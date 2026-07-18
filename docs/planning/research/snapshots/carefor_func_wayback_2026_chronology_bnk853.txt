@@ -1,0 +1,73 @@
+# carefor daycare/func.php Wayback 2026 chronology (BNK-853 · 케어포 역공학 0-2h)
+
+## 조사일: 2026-07-18T02:15Z  (BNK-853)
+
+## fetch summary
+| # | Wayback URL | HTTP | SIZE (WBM) | md5 (WBM) | 조사일 |
+|---|---|---|---|---|---|
+| 1 | https://web.archive.org/web/20260117043822id_/https://www.carefor.co.kr/daycare/func.php | 200 | 97,698B | `159e0c5c` | 2026-07-18T02:15Z |
+| 2 | https://web.archive.org/web/20260119032823id_/https://carefor.co.kr/daycare/func.php | (CDX only) | 23,797B(compressed) | digest Q3EWX2QGGGVQABLGZCX5233HH5PJWZIN | — |
+| 3 | https://web.archive.org/web/20260212171440id_/https://carefor.co.kr/daycare/func.php | 200 | 97,692B | `ed56554f` | 2026-07-18T02:15Z |
+| 4 | https://web.archive.org/web/20260511070415id_/https://carefor.co.kr/daycare/func.php | 200 | 98,324B | `dd5f6679` | 2026-07-18T02:15Z |
+| 5 | https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php | 200 | 98,328B | `6226e6eb` | 2026-07-18T02:15Z (BNK-845 disk canonical IDENTICAL) |
+
+Live `https://www.carefor.co.kr/daycare/func.php` = **HTTP 000** (연결 타임아웃 8s) 112차 carry — 접근 봉쇄 지속.
+
+## substantive delta (asset cache-buster `date=v_20*` strip 후)
+
+### 20260117 → 20260212 (2 leaf-label edit)
+- `3-1-2.간호급여 제공기록(요양보호사)` → `3-1-2.간호급여 제공기록(바이탈,투약)`
+  * 재분류: 요양보호사(역할)→시술(콘텐츠) 축 label rebrand
+- `8-8.자원봉사자 활동일지(삭제예정)` → `8-8.자원봉사자 활동일지(필요시)`
+  * relegate 확정: 삭제 대신 「필요시」 optional 유지
+
+### 20260212 → 20260511 (★★★ BIG substantive rebrand + 신규 축)
+1. **Inzi(인지케어) SSO 브릿지 신규** — `linkInzi()` 함수 신규
+   * `/share/exe/inzi/link.inzi.exe.php` (linkage exe)
+   * `/share/exe/inzi/login.inzi.exe.php` (session exchange)
+   * `<form id="openInziFrm" action="https://inzi.carefor.co.kr/webapi/carefor_mamber_login" method="POST" target="_blank">` — hidden params: `center_mgno`, `center_manager_yn`, `auth_key`
+   * 카테고리 「부가서비스 › 놀이마당」 → 인지케어 강사매칭 SSO handoff
+2. **kakaocdn.net 이관** — `t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js` → `t1.kakaocdn.net/mapjsapi/...` (Daum 브랜드 최종 폐기·다음 우편번호 API)
+3. **모니터링 지원 leaf 폐지** (7-hit → 3-hit · -4)
+   * 상단 nav 3-hit(intro_si / daycare / intro_visit) `<li onClick="location.href='.../monitoring.php'">모니터링 지원</li>` **HTML 주석 처리**
+   * 하단 footer 3-hit `<a href=".../monitoring.php">모니터링 지원</a>` **HTML 주석 처리**
+   * 잔여 3-hit 은 상세 페이지 URL·기존 anchor 만 남아 사실상 폐지
+4. **상단 nav 「본인부담금 자동이체(CMS)」·「본인부담금 간편결제」 노출 축소** (6-hit → 4-hit)
+   * `<li>본인부담금 자동이체(CMS)</li>`·`<li>본인부담금 간편결제</li>` 상단 nav 주석 처리(2-hit)
+   * 하단 footer anchor 주석 처리(2-hit)
+   * 기능 URL(`/addservice/info_cms.php`·`/addservice/info_npay.php`)은 유지 — marketing surface 축소만
+5. **신규 「놀이마당」 부가서비스** (3-hit → 11-hit · +8)
+   * `<li onClick="location.href='/addservice/inzicare.php'">놀이마당</li>`
+   * `<li onClick="location.href='/addservice/recruit_inzicare.php'">놀이마당 강사모집</li>`
+   * 하단 footer `<a href="/addservice/inzicare.php">놀이마당</a>`
+   * dropdown menu `<a href="/addservice/inzicare.php">부가서비스</a>`
+6. **신규 온보딩 leaf 「처음사용안내」** — `<li onClick="location.href='/cs/getting_started.php'">처음사용안내</li>` (customer-service 카테고리 신규 안내 페이지)
+7. **「프로그램 이용흐름도」 → 「프로그램 사용안내」 rebrand** (8-hit 텍스트 label 변경)
+   * intro_si / daycare / intro_visit 3-축 상단 nav + 하단 footer + dropdown 전량 rebrand
+   * URL(`/flowchart.php`)은 유지 — display label 만 변경
+
+### 20260511 → 20260519 (cosmetic only)
+- `document.domain = "carefor.co.kr";` → `document.domain = "www.carefor.co.kr";` (1-line · sub-domain scoping 조정)
+
+## net leaf count (`\s*[0-9]+-[0-9]+` 정규식)
+| snapshot | leaf ct | monitoring hits | inzi hits | CMS/간편결제 hits |
+|---|---|---|---|---|
+| 20260117 | 107 | 7 | 3 | 6 |
+| 20260212 | 107 | 7 | 3 | 6 |
+| 20260511 | 107 | 3 | 11 | 4 |
+| 20260519 | 107 | 3 | 11 | 4 |
+
+**핵심**: **leaf ct 107 IDENTICAL** — Inzi 축 8-leaf 신규 · 모니터링 축 4-leaf 폐지 · CMS 상단 축 2-hit 폐지(URL 유지) · 처음사용안내 1-leaf 신규 · 「프로그램 사용안내」 rebrand → 카테고리 재편이지 leaf 개수 순증가 아님(BNK-845 「func 107-leaf(88+19)」 IDENTICAL).
+
+## ogada 대응 gap check
+- Inzi(인지케어) SSO 브릿지 축(`carefor_mamber_login` 핸드오프) — ogada `/accounting` M12 회계 BPO(sujifine SSO OTP) 축과 **패턴 동일**(id=12·0.7 · BNK-717/720). 강사매칭 도메인 자체는 ogada 프로그램(id=5·1.0) SUPERSET 하위 P4~P5「가정」lever.
+- 「처음사용안내」 온보딩 leaf — ogada 는 `/onboarding` route 부재「가정」 · 신규 유저 first-run tour lever P4「가정」 candidate.
+- CMS/간편결제 상단 nav 축소 = 케어포 marketing focus 이동(자동이체·간편결제 → 「놀이마당」 강사매칭) → ogada CMS 5-method SUPERSET carry(BNK-596/597) → **우선순위 재조정 불요**(기능 부재가 아니라 카테고리 노출 축소).
+- 「모니터링 지원」 4-leaf 폐지 → 케어포 자체 모니터링 서비스 축소 확인 → ogada 대시보드(id=8·0.85) 갭 아님 재확인.
+- 「3-1-2 간호급여 제공기록(바이탈,투약)」 label rebrand — ogada `/nursing/*` 13-route·`VitalSignService`·`MedicationService` 이미 「바이탈 · 투약」 axis 분리 착지 → semantic 대응.
+
+## 판정
+- func.php canonical `6226e6eb` (BNK-845→853 8-cycle 안정) LOCK carry.
+- 2026 시작~중반(1월→5월)에 케어포 부가서비스 축이 **자동이체/간편결제 marketing focus → Inzi(인지케어) 강사매칭 도메인 확장**으로 이동.
+- ogada 우선순위 반영: closed band 재오픈 0 · P0 신규 0 · P4 온보딩 lever「가정」 신규 관찰 · P4~P5 강사매칭「가정」 잠재 lever(과대구축 회피).
+- 신규 감사 근거 URL 4건 획득(Wayback 20260117/20260212/20260511 + `inzi.carefor.co.kr/webapi/carefor_mamber_login`) — 미확인/추측 아님(HTTP 200 verbatim).

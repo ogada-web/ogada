@@ -1,0 +1,213 @@
+ezcare 역공학 2–4h — 채택률·FAQ·모듈 3/4/5/6/9 leaf ↔ ogada crosswalk (BNK-782)
+=================================================================================
+
+조사일 (KST): 2026-07-16 12:22 (UTC 03:22)
+Rotation: ezcare 역공학 2–4h (agents.yaml `rotation_30min`)
+ogada baseline: FE `483dfe1` · BE `a8d0af5` · merge gate 682
+BNK 사이클 카운터: 782 (직전 BNK-781 케어포 M10 → +26분)
+
+--------------------------------------------------------------------------
+0. 실측 소스 · md5 · 상태
+--------------------------------------------------------------------------
+
+  URL / 경로                                                    STATUS SIZE     MD5             DRIFT vs 직전
+  https://ezcare.easyms.co.kr/new/ezCare_change_work.html       200    26,157   e2f9b8e14110f33ad2f881b6292a4e28   DRIFT (adoption counter + cachebuster ↑)
+  https://ezcare.easyms.co.kr/help/faq.ez                       200    80,057   b67f1605509567ee0a1881e86379e18c   DRIFT hit-count-only (rowid SETS IDENTICAL)
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?SEQ=1637&SEQ_CONTENTS=3281769  200 7,572 c886ff1fd1d5ca2cb5dc76d30adde8ba  IDENTICAL 516차 (BNK-781 515차→+1)
+  https://ezcare.easyms.co.kr/new.ez (demo 로그인 후)              200   138,666  7d9a04ccd8018b6ffdf5b305f287cede   ±17B DRIFT (nonce·semantic IDENTICAL)
+  https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428 200   25,470   95286775000f06c8ad13688fcb0d6dbb   IDENTICAL 7주+ zero drift
+  demo login (POST /page/login.php oCode=DEMO)                  200    (json)   {"code":"0000"}                     로그인 성공 (admin/g8317)
+
+  로컬 스냅샷 신규 (bnk782 태그):
+    docs/planning/research/snapshots/ezcare_change_work_live_bnk782.html    (26,157B · e2f9b8e1)
+    docs/planning/research/snapshots/ezcare_help_faq_list_live_bnk782.html  (80,057B · b67f1605)
+    docs/planning/research/snapshots/nhis_jo44_live_bnk782.html             (7,572B  · c886ff1f)
+    docs/planning/research/snapshots/ezcare_adoption_counter_bnk782.txt     (본 문서)
+
+--------------------------------------------------------------------------
+1. ★★★ 이지케어 도입 counter 계단식 성장 실측 (BNK-663 → BNK-782)
+--------------------------------------------------------------------------
+
+change_work.html verbatim:
+
+  <div id="headstatus2"><span class="st1">업계 1위!! 이지케어 이용현황:</span>
+       전국 <span class="st2">9,435개</span> 기관 사용중</div>
+
+  ...5004건의 도입효과(사용기) 더 보러 가기...
+  이지케어 사용자가 직접 올려주신 5004건의 업무변화(후기/경험기)를 더 보실 수 있습니다.
+
+  차수     조사일 (KST)          도입기관     Δ orgs      후기      Δ reviews    출처 스냅샷
+  BNK-663  2026-06 (근사)         (n/a)      —          (n/a)    —            ezcare_adoption_counter_drift_bnk663.txt
+  BNK-762  2026-07-14 근처        9,359     baseline    4,964    baseline     disk canonical ezcare_change_work.html
+  BNK-782  2026-07-16T03:22Z      9,435    +76 (+0.81%) 5,004   +40 (+0.81%) live change_work_live_bnk782.html
+
+해석:
+- **~48시간 사이 +76 개소 신규 등록** — 이지케어 (재가·주간보호 통합) 는 2026-07 기준 **일평균 ≈38 신규 기관** 페이스로 계단식 성장.
+- 후기 (도입효과·업무변화) 도 40건 증가 = **동일 사용자 커뮤니티 (기관 : 후기 ≈ 1.88 : 1) 활성 상태**.
+- ogada 대비 TAM 압박: 재가·방문 세그먼트에서 이지케어가 카테고리 리더로 lock-in 심화 중 → ogada는 **주간보호 특화 3-source-view + G-LINKAGE (연계기록지) + G17 dual-numbering guardrail** 4-축 차별화 유지 필요.
+
+--------------------------------------------------------------------------
+2. ★★★ ezcare Module 3 방문일정 (13-leaf) ↔ ogada crosswalk
+--------------------------------------------------------------------------
+
+ezcare_menu_catalog.json (2026-07-16T00:41Z) · 모듈 3 "방문일정" 13-leaf verbatim:
+
+  leaf                                    URL / PGID                              ogada 대응 (`@483dfe1`)          상태
+  수급자-일정관리                          /schedule_plan/                          `/programs/schedule` + G34 lead-caregiver 근무일지           ✅
+  관리자-일정관리                          /social_worker/schedule.html            `/staff/schedules` + `/staff/attendance`                    ✅
+  일정표 출력 및 문자발송                    schedule-p100                            `/programs/reports/schedules` + `printLabel`(carefor verbatim) ✅
+  수급자 일정표(제공기록지)                  schedule-p100#tab0                       `/programs/reports/schedules` (수급자 view)                   ✅
+  요양보호사 일정표(근무현황표)               schedule-p100#tab1                       `/staff/schedules` + G34 근무일지                            ✅
+  연간 서비스제공 명단                       schedule-p300                            `/programs/reports/annual` (G39 4-축 연간)                     ✅
+  수급자 (연간)                            schedule-p300#tab0                       G39 지표 44 4-축 (연간·월간·주간·30일)                        ✅
+  요양보호사 (연간)                         schedule-p300#tab1                       G34 lead-caregiver + `/staff/attendance/stats`                 ✅
+  방문현황(일일, 주간, 월간)                 schedule-p500                            `/attendance/stats` + `/reports/transport-monthly`             ✅
+  중증수당 일정 집계                        schedule-s100                            (재가 특화 · 주간보호 out-of-scope · 폐지 예정 항목)         ❌ (의도적 미착지)
+  요양보호사 중증수당 기준                   schedule-s100#tab0                       ❌ 상동                                                       ❌
+  수급자 중증수당 기준                       schedule-s100#tab1                       ❌ 상동                                                       ❌
+  방문현황 print                          /schedule_print/statusTable.html         PDF/print 서식 자동생성                                        ✅
+
+총계: ✅ 10 / ❌ 3 (재가 중증수당 3-leaf 의도적 out-of-scope · 주간보호 정본 아님).
+경쟁 우위: ezcare 는 방문·재가 특화 · ogada 는 **주간보호 정본 + 연간 4-축 G39 지표 44** 심화 (BNK-735 §M5 확정).
+
+--------------------------------------------------------------------------
+3. ★★★ ezcare Module 4 RFID점검 (3-leaf) — "이중 일정" & "일정확정" workflow
+--------------------------------------------------------------------------
+
+  leaf                                    URL / PGID                              ogada 대응                                              상태
+  RFID태그 내역 ↔ 공단계획 비교              schedule-rfid                            `/attendance/checkin/qr` + `/attendance/on-site`         ✅ (QR/RFID 3-mode 심화)
+  RFID태그 내역 ↔ 공단계획 비교 (window)     /schedule_plan/rfid_compare.html         `AttendanceController` 공단 계획 vs 실 태그 diff view      ✅
+  일정확정                                schedule-fix                             `VisitService.ensureNoDuplicateVisitSlot` (svc 레이어 사전 방지) ✅ SUPERIOR
+
+ezcare 는 "일정확정" 을 **버튼 workflow (수동 확정 · 후행 감사 리포트)** 로 노출 · ogada 는 **BE 서비스 레이어 `ensureNoDuplicateVisitSlot`** 로 **저장 전 사전 방지** = ★★★ **아키텍처 우위** (ezcare 는 이미 중복 등록된 것을 리포트로 발견 · ogada 는 애초에 저장 실패).
+
+관련 ogada 소스:
+  src/backend/src/main/java/com/ogada/backend/visits/domain/VisitService.java  → private void ensureNoDuplicateVisitSlot(...)   ×4 호출
+  src/backend/src/main/java/com/ogada/backend/transport/domain/TransportService.java → validateNoConfirmedDuplicateClients ×3
+  src/frontend/src/pages/CaseManagementPage.jsx → buildDuplicateAttendeeNamesError
+
+ezcare `duplicate-schedule` PGID (93,393B live · ±8B DRIFT vs disk canonical 93,401B · semantic IDENTICAL) 는
+**"이중 일정 조회" 리포트 페이지** 로 사후 발견 UX = ogada 대비 semantically 낮은 데이터 신뢰도.
+
+--------------------------------------------------------------------------
+4. ★★ ezcare Module 5 본인부담 (13-leaf) ↔ ogada 7-x lifecycle 심화 확인
+--------------------------------------------------------------------------
+
+  leaf                                    PGID                            ogada 대응 (`@483dfe1`)                              상태
+  청구내역 및 명세서                        pAmt-a100                        `/billing/copay-rates` + `V184~V190` 청구 명세서 chain      ✅
+  전체(합산)                               pAmt-a100#tab0                   BillingService copay-total                              ✅
+  방문요양                                 pAmt-a100#tab1                   (재가 · 주간보호 out-of-scope)                          ❌ 의도적
+  방문목욕                                 pAmt-a100#tab2                   `/care/bathing-schedules` + G-BATHING FULL              ✅ (주간보호 통합)
+  방문간호                                 pAmt-a100#tab3                   (재가 방문간호 · 주간보호 out-of-scope)                  ❌ 의도적
+  납부내역                                 pAmt-a200                        `/billing/cash-receipts` + `/billing/cms`                ✅
+  월간 수납내역                            pAmt-a200#tab0                   BillingService monthly-payment-report                    ✅
+  연간 수납내역                            pAmt-a200#tab1                   BillingService yearly-payment-report                     ✅
+  장기요양급여비 납부확인서                  pAmt-a200#tab2                   `V186__ltc_payment_confirmation.sql` (BNK-6xx 앵커)       ✅
+  미납내역                                 pAmt-a400                        `/billing/copay-rates` 미납 뷰 + `V189/V190` 인덱스         ✅
+  청구월별 미납금                          pAmt-a400#tab0                   BillingService unpaid-by-month                            ✅
+  수급자별 누적 미납금                       pAmt-a400#tab1                   BillingService unpaid-cumulative-by-client               ✅
+  청구내역 및 명세서(w4c)                   pAmt-a100.w4c                    NHIS w4c 자격조회 웹서비스 연동 (id=2 부분 · 0.85)         △
+
+총계: ✅ 9 · △ 1 · ❌ 3 (재가 방문요양/방문간호 out-of-scope 의도적).
+경쟁 우위: ogada 는 **주간보호 특화** + **G-LINKAGE 연계기록지 full-stack** = ezcare 재가와 세그먼트 겹치지 않음.
+
+--------------------------------------------------------------------------
+5. ★★ ezcare FAQ 카테고리 분포 (rowid 233 · 카테고리 122 태그 · Top-10)
+--------------------------------------------------------------------------
+
+  순위  카테고리          문의 수    비율 (of tagged)   → ogada 갭 노출
+  1    수당/급여관리       37       30.3%              ogada M11 FULL (1.0) · labor-cost-ratio 60% 활성 판정 (BNK-714)
+  2    서식출력/설정       14       11.5%              ogada 서식자동생성 (V93~V98 careplan) · 이지케어 페인포인트 대응
+  3    본인부담금         12        9.8%              ogada 7-x lifecycle (V184~V190 chain) FULL
+  4    수급자관리         12        9.8%              ogada 수급자 마스터·연계기록지 (id=1-10 1.0)
+  5    일정관리          11        9.0%              ogada 방문 duplicate 사전 방지 (§3 상세)
+  6    기타              9        7.4%              catchall
+  7    세무             7        5.7%              ogada M12 = 수지파인 외부 BPO 진입 (id=12 0.7)
+  8    직원관리          7        5.7%              ogada 직원 lifecycle (V86/V87) FULL
+  9    재무회계          6        4.9%              ogada M12 BPO SSO OTP (0.7 residual)
+  10   이용료/요금        3        2.5%              -
+  11   문자발송           2        1.6%              ogada 3-channel 알림 J03 quiet-hours FULL
+  12   모바일앱          2        1.6%              ogada 보호자 앱 (id=10-6 guardian invitation)
+
+Top-3 (수당/급여·서식·본인부담) = **63/122 = 51.6% of tagged FAQ** = ezcare 사용자 페인 포인트 top-3.
+ogada 는 M11(수당/급여), 서식자동생성, 7-x 본인부담 3-축 모두 FULL(1.0) 코드 착지 = **경쟁사 사용자 스트레스를 우리 완결 축으로 커버 가능** 마케팅 카피 후보.
+
+Top 6 최신 rowid (2026-07-16 기준):
+  rowid=21781  인지활동지를 출력하여 수급자 어르신께 활용하고 싶어요!            (hit=2,600)
+  rowid=21779  지정갱신제 사업계획서 등 자료를 출력하고 싶어요!                  (hit=2,792)
+  rowid=21778  공단과 본인부담금이 다를때 조치방법                             (hit=2,805 · 본인부담금 카테고리)
+  rowid=21768  근로자의 날 근무하고 다른날 대체휴무가 가능한가요?              (hit=681  · 수당/급여관리)
+  rowid=21766  근로자의 날 수당을 추가로 지급하고 싶어요.                       (hit=1,697 · 수당/급여관리)
+  rowid=21765  (미확인 rowid gap 21762→21765 신규 콘텐츠)                    (—)
+
+hit_sum: 3,648,895 (BNK-778 3,648,740 → +155 hits · ~48h · 안정 접근 페이스).
+
+--------------------------------------------------------------------------
+6. ★ 규제 백본 재실측 (NHIS 러-1~4 이동서비스비 · 516차)
+--------------------------------------------------------------------------
+
+  URL                          MD5              SIZE   차수   러-1 러-4 편도 1일1회 수급자부담 이동서비스 grep
+  NHIS #44 (SEQ=1637)          c886ff1f...      7,572  516차  1    1    2    1     1        13
+
+  ogada 대응: `TransportServiceFeeService` 6-link chain (RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY) · id=2 이동서비스 0.85 (form polish lever) carry.
+  상수 재조정 불요 · zero drift IDENTICAL · BNK-780 (514차) → BNK-781 (515차) → BNK-782 (516차) +1/cycle.
+
+--------------------------------------------------------------------------
+7. ★ ogada baseline 실측 (git · 2026-07-16T03:20Z)
+--------------------------------------------------------------------------
+
+  FE develop:   483dfe1  "fix(v1.2.1/G2): recover notice board page after mutations"
+                WT CLEAN · ahead origin/test=483dfe1 → 0 = FULLY SYNCED (tester FF 흡수)
+                BNK-781 `@2cefb1d` → +1 (`fix(v1.2.1/G2): recover notice board page after mutations`)
+
+  BE develop:   a8d0af5  "fix(v2/QA-B95): decode semicolon-optional named blocker entities"
+                WT CLEAN · ahead 682 vs origin/test=598d108
+                BNK-781 `@777b5a7` → +1 (`fix(v2/QA-B95): decode semicolon-optional named blocker entities`)
+
+  Route:        133 (<Route\b 132 App.jsx + <Routes> 1)
+  Page:         106 (*Page.jsx · git ls-files)
+  FE test:      530 (217 .test.js + 313 .test.jsx · in-place expand)
+  BE Test:      294 (293 *Test.java + 1 *Tests.java)
+  BE @Test:     2240 (grep -rE @Test · +1 vs BNK-781 2239 · G2 notice board recovery @Test)
+  Flyway:       V1–V196 (carry · 신규 0)
+  모듈 커버리지:  97.41% (28.25/29 · CONFIRMED · BNK-753 grep 오염 회피 · JSDoc line 5 배제)
+  merge gate:   682 (FE 0 FULLY SYNCED + BE 682 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+  Δ from BNK-781:
+    FE: `2cefb1d` → `483dfe1` (+1 commit · WT CLEAN carry · ahead 0 carry)
+    BE: `777b5a7` → `a8d0af5` (+1 commit · WT CLEAN carry · ahead 681→682 +1)
+    BE @Test: 2239 → 2240 (+1 · G2 notice board mutation recovery)
+    merge gate: 681 → 682 (+1)
+    NHIS 차수: 515 → 516 (+1)
+    모듈 커버리지: 97.41% CARRY (가정 번복 0)
+    상태 변경: 3 (FE +1 · BE +1 · NHIS 차수 +1)
+    KPI 변경: 3 (FE SHA · BE SHA · BE @Test 2240)
+
+--------------------------------------------------------------------------
+8. per-cycle minimum 충족 판정 (agents.yaml `reverse_engineering.per_cycle_minimum`)
+--------------------------------------------------------------------------
+
+  ☑ 신규 증거 URL 1건 이상  → 4건 (change_work_live·faq_live·nhis_live·demo shell·top-nav-js)
+  ☑ 경쟁사 메뉴/필드/워크플로 1블록 이상  → 3블록 (ezcare M3 13-leaf · M4 3-leaf · M5 13-leaf · FAQ 12-category)
+  ☑ COMPETITOR_MATRIX 1행 이상 @HEAD 갱신  → §참조 (ogada @483dfe1/@a8d0af5 갱신)
+  ☑ BENCHMARK_REPORT §신규 소절 1건 이상  → §782 신설 (본 항목)
+
+--------------------------------------------------------------------------
+9. Planner 제안 (planner 가 읽을 수 있게)
+--------------------------------------------------------------------------
+
+- **baseline 갱신**: FE `@483dfe1` · BE `@a8d0af5` · merge gate 682 · 모듈 97.41% CARRY (가정 번복 0)
+- **차별화 카피 후보 (마케팅)**:
+  1. "ogada는 방문 이중일정을 저장 전 서비스 레이어에서 사전 방지합니다 (이지케어는 사후 리포트로 발견)"
+     · 근거: `VisitService.ensureNoDuplicateVisitSlot` × 4 호출 (BE)
+  2. "이지케어 사용자 문의 top-3 (수당/급여·서식·본인부담) 은 ogada가 모두 완결 코드로 착지되어 있습니다"
+     · 근거: M11 FULL(1.0) + 서식자동생성 (V93~V98) + 7-x lifecycle (V184~V190)
+  3. "이지케어 재가 특화 (방문요양·방문간호·중증수당) 는 주간보호 정본이 아닙니다 — ogada는 주간보호 정본 + G-LINKAGE 연계기록지 유일 full-stack"
+- **P3 candidate 유지** (격상 아님):
+  - id=2 이동서비스 form polish (0.85) · id=8 직원 form polish (0.85) · id=10 부가서비스 (0.85) · id=12 M12 SSO credentials (0.7) — 실환경 credentials 이슈 · KPI promote 금지
+- **미확인 carry**:
+  - carefor LIVE (`daycare/func.php`·`demo-work.carefor.co.kr`) HTTP 000 92-cycle+ (disk canonical `6226e6eb` 우선)
+  - longterm npbs 502/610 login-gated · silverangel notice ~18일+ pause
+- **다음 조사 우선순위** (rotation_30min):
+  - 다음 사이클 (4–6h) → 엔젤·롱텀·규제 4–6h 로테이션 (silverangel/lcms · law.go.kr 이동서비스비 재실측)
+  - 8h+ → 교차검증 · 이전 가정 번복 확인 · 갭 우선순위 재산정

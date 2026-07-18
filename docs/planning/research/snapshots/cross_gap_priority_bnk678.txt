@@ -1,0 +1,77 @@
+BNK-678 cross-gap priority extract
+Rotation: 교차검증·갭 우선순위 8h+ (2026-06-27T01:00:00Z)
+ogada @HEAD: FE f7061c4 (WT CLEAN, ahead 275) / BE ac699192 (WT CLEAN, ahead 597)
+merge gate 872 (+3 vs BNK-677 869)
+
+=== ★★★ US-Q01 stage3+stage4 FULL CLOSURE — BNK-677 stage2.5 localStorage 가정 번복 ===
+
+BNK-677 (2026-06-27T00:15Z): stage2.5 pilot localStorage · stage3 BE API pending · id=6 coverage △
+BNK-678 (2026-06-27T01:00Z): stage3 BE API landed + FE server wire + id=6 coverage 1.0 · localStorage REMOVED
+
+BE @ac699192 feat(v2/US-Q01): SafetyCheckController + V184 (23 files +1401L)
+  SafetyCheckController @RequestMapping("/api/v1/safety")
+  GET/POST /daily-checks
+  GET/POST /periodic-checks
+  GET/POST /infection-control
+  GET/POST /operation-logs
+  RBAC: HQ_ADMIN, BRANCH_ADMIN, SOCIAL_WORKER
+  V184 safety_check_records: record_type DAILY|PERIODIC|INFECTION|OPERATION
+    result_code PASS|FAIL|PARTIAL|NA · payload_json JSONB · branch-scoped
+
+FE commits since @47a068c (2):
+  01f32dc wire safety pages to server SafetyCheck API
+  f7061c4 close M6 module coverage and safety page tests
+    - competitorModuleCoverage.js id=6 coverage 0→1
+    - safetyDraftStorage.js DELETED (-65L)
+    - useSafetyServerRecords hook NEW
+    - 4 safety page tests NEW + hook test
+
+SafetyPilotNotice text change (BNK-677→678):
+  OLD: 「브라우저 초안→서버 API 연동 후 지점 공유 저장」
+  NEW: 「점검·일지 기록은 서버에 저장되며, 같은 지점 권한을 가진 사용자가 조회할 수 있습니다.」
+
+Daily workflow (server):
+  SafetyDailyChecksPage → useSafetyServerRecords(fetchSafetyDailyChecksApi)
+  → handleSubmit → createDailySafetyCheckApi(buildDailySafetyCheckRequest)
+  → reload() → SafetyRecentDraftsPanel (server records)
+
+Module coverage: 80.86% → 84.31% (+3.45pp) — BNK-675/677 projection EXACT MATCH
+
+=== ★★★ 4축+leave-ledger 7/7 route LIVE @f7061c4 — P0/P1 재정렬 ===
+
+| axis | route | status |
+| G14 care-plan-form | /clients/:clientId/care-plan-form | ✅ |
+| dashboard | /dashboard, /dashboard/hq | ✅ |
+| v1.3-C G16 | /transport/service-fees | ✅ |
+| v2 CMS | /billing/cms | ✅ |
+| leave-ledger | /staff/leave-ledger | ✅ |
+| M11 payroll | /payroll/* | ❌ 0 route |
+| M12 accounting | /accounting/* | ❌ 0 route |
+
+P0: unchanged (7/7 ✅)
+P1 sole lever: M11/M12 (+6.9pp → 91.21% projection)
+
+=== ★★ cross-verify snapshots (6 URL 재실측) ===
+
+NHIS #44: HTTP 200 7572B md5 c886ff1f — 417-cycle zero drift IDENTICAL
+ezCare FAQ list: HTTP 200 80057B md5 9ecaf01b (vs bnk674 081a692c cachebuster DRIFT)
+  rowid 233 · hit sum 3637278 (+14 vs bnk676 3637264)
+ezCare FAQ 21844 excel: HTTP 200 14474B md5 d0aa760c — zero drift (엑셀 포맷 변경 0)
+silverangel notice list: HTTP 200 3594181B md5 52c9457f — zero drift (221564 keywords carry)
+lcms.or.kr: HTTP 200 50554B md5 6c0d22b4 — type2 CMS+CJ MOU zero drift
+law247 seq271110: HTTP 200 78450B md5 4a01b331 (vs bnk674 af7d7b40 md5-only DRIFT, size identical)
+  content: 제2025-247호 · 시행 2026. 1. 1. SSR verbatim carry
+
+=== ogada KPI delta BNK-677→678 ===
+
+Route 123→123 (0) · Page 97→97 (0)
+FE test 491→496 (+5) · BE @Test 2000→2008 (+8) · BE Test files 275→277 (+2)
+Module 80.86%→84.31% (+3.45pp) · merge gate 869→872 (+3)
+양쪽 WT CLEAN → tester FF merge 872 가속 가능
+
+=== planner proposals ===
+
+1. M6 P1 2nd lever CLOSED — id=6 ✅ · next focus M11/M12 sole P1 (+6.9pp)
+2. BNK-677 stage2.5 localStorage docs = historical only; stage3 server persistence is canonical
+3. G-NHIS 14-stage + NHIS #44 417-cycle + ezCare 21844 excel zero drift = competitive moat carry
+4. silverangel 221564 notice keywords persist — security/compliance monitoring carry (no new leak)

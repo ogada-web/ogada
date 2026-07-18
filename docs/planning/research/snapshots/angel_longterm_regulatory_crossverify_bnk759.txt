@@ -1,0 +1,111 @@
+BNK-759 — 엔젤·롱텀·규제 4–6h 교차검증 (주력 extract)
+조사일: 2026-07-15T12:55:21Z (KST 2026-07-15 21:55)
+직전 동일 rotation: BNK-755 (2026-07-15T10:16Z) → ~2.65h 후
+직전 사이클: BNK-758 (2026-07-15T12:14Z·이지케어 2–4h) → ~41분 후
+
+============================================================
+0. ogada git 실측 (baseline)
+============================================================
+FE develop = 5b9656c  feat(v1.2.1/G-SMS): wire staff payroll statement kind22 dispatch UI
+  · WT CLEAN · BNK-758 동일 HEAD · ahead origin/test 0 = FULLY SYNCED
+  · ★ id=10 coverage 0.85 (kind22 주석) — BNK-758 header 가 carry 한 0.75/97.07% 는
+    동일 commit `5b9656c` 내 상향을 미반영 → BNK-759 KPI 정정
+BE develop = c080529  feat(v2/G-RFID): wire RFID care-provision SMS batch dispatch
+  · WT CLEAN · BNK-758 @7de86eb → +1 · ahead 663 vs origin/test=598d108
+  · 15-file +613/−11 · POST /api/v1/visits/imports/rfid/care-provision-dispatch
+  · FAQ 21589 / message_kind=13 · HOME_VISIT branch only 가드
+  · FE services.js/VisitRfidDiffComparePanel 에 care-provision-dispatch wire **0-hit** = P2 residual
+
+KPI 실측:
+  Route 133 (<Route\b 132 + <Routes> 1 · App.jsx)
+  Page 106 (*Page.jsx)
+  FE test 525 (216 .test.js + 309 .test.jsx)
+  BE Test 294 (293 *Test.java + 1 *Tests.java)
+  BE @Test 2212 (^\s*@Test · +7 vs BNK-758 2205)
+  Flyway V1–V196 (committed · 신규 0)
+  accounting route 1 · payroll route 5
+  모듈 커버리지 **97.41%** (28.25/29) — 실측:
+      COMPETITOR_FEATURE_COVERAGE 29-entry sum 28.25
+      residual: id=2 0.85 · id=8 0.85 · id=10 0.85 · id=12 0.7
+      BNK-758 carry 97.07%(28.15/29·id=10=0.75) = **KPI undercount 정정**(가정 번복 아님·동일 FE commit 미반영)
+  merge gate 663 (FE 0 FULLY SYNCED + BE 663 · BE-heavy → tester FF)
+
+============================================================
+1. 규제 백본 live 재실측 = 실체 변동 0 (Time=/shell token only)
+============================================================
+| 대상 | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent (SEQ=1637·SEQ_CONTENTS=3281769) | 200 | 7,572B | c886ff1f | **493차** IDENTICAL (BNK-758 492차→+1) |
+| silverangel extraService.do | 200 | 81,637B | f9c5d877 | IDENTICAL — 효성CMS 250/300/별도문의 |
+| silverangel daycareEssentialWork.do | 200 | 131,664B | c79c1be3 | IDENTICAL — 지표27 기능회복 6-hit |
+| silverangel mainService.do | 200 | 59,002B | bcf6df41 | IDENTICAL (=bnk704/disk) |
+| silverangel noticeList.do | 404 | 1,028B | 3c93af54 | dual-IA carry (canonical ea7d6b3d disk) |
+| silverangel systemFeature.do | 404 | 1,028B | 3c93af54 | 404 carry |
+| lcms.or.kr / | 200 | 50,554B | 6c0d22b4 | type2 IDENTICAL (=BNK-755 · 신규 배너 회전 없음) |
+| law.go.kr admRulInfoP (247호·2100000271110) | 200 | 78,450B | e8473f63 | size-lock · Time= only (strip=bnk755 IDENTICAL) |
+| longterm 502 npeb502m01.web | 200 | 89,162B | 56185735 | =bnk740 shell IDENTICAL · 로그인×26·세션×7 · 수가 disk carry |
+| longterm 610 npeb610m01.web | 200 | 88,399B | fad1ce61 | =bnk740 shell IDENTICAL · 「통합재가」1 · 수가 disk carry |
+| MOHW list1488862 (bid=0026) | 200 | 103,113B | d5902718 | =bnk705/bnk751 live IDENTICAL |
+
+NHIS #44 러-1~4 verbatim grep (493차 zero drift):
+  러-1 : 1 | 러-4 : 1 | 편도 : 2 | 1일 1회 : 1 | 수급자가 부담 : 1 | 이동서비스 : 13 | 50% : 11
+  ↔ ogada TransportDistanceBand RU_1~4 · TransportServiceFeeParityCatalog ONE_WAY_RATIO=0.5 · ONE_PER_DAY
+
+silverangel 효성CMS rate card verbatim (extraService):
+  자동이체 250원/1건(1) · 가상계좌 300원/1건(1) · 카드결제 별도문의(2)
+  ↔ CmsPaymentMethodCatalog AUTO_DEBIT_CMS「250원/1건」·VIRTUAL_ACCOUNT「300원/1건」
+
+silverangel daycareEssentialWork: 기능회복(6)·27(9)·목욕(2) = 「주야간보호 27=기능회복훈련」 정본 carry
+  ↔ ogada G17 지표27 ownership · bathing≠eval27
+
+longterm 수가 (login-gated shell → disk canonical carry 「미확인」live / 「확인」disk):
+  단기보호 1일 1등급 **74,060** (`longterm_502.html`)
+  통합재가 주야간보호형 **월 10만원** (`longterm_610.html`)
+
+law247: Time=1784110621(bnk755)→1784120068(bnk759) · stripped md5 IDENTICAL `12b9d1c777c90470`
+  제2025-247호 · 시행 2026. 1. 1. verbatim 불변
+
+============================================================
+2. ★★★ 메뉴/필드/워크플로 블록 — NHIS #44 ↔ Transport + RFID SMS BE 착지 + CMS/지표27
+============================================================
+A) NHIS #44 이동서비스비 러-1~4 ↔ ogada (PLAN_NOTES #44 1차 확인 carry · 상수 재조정 불요)
+
+| NHIS #44 규정 요소 | ogada 코드 앵커 (git 실측) | 판정 |
+|---|---|---|
+| 러-1 (5km 미만) ~ 러-4 (20km+) | `TransportDistanceBand` RU_1~RU_4 | ✅ 4-band 1:1 |
+| 편도 50% | `ONE_WAY_RATIO = 0.5` | ✅ |
+| 1일 1회만 산정 | `ONE_PER_DAY` / ONE_PER_DAY_NOTE | ✅ |
+| 수급자 부담 아님 | SERVICE_LOG / parity catalog notes | ✅ |
+| 급여제공기록지 ④ | care-provision daily transport linkage | ✅ |
+
+B) BE RFID → 급여제공내역 SMS batch (BNK-754 Channel.io/V.ez FAQ 21589 후속)
+
+| 축 | 실측 | 판정 |
+|---|---|---|
+| BE API | `POST /api/v1/visits/imports/rfid/care-provision-dispatch` (@c080529) | ✅ BE 착지 |
+| template | CARE_PROVISION_RECORD · message_kind=13 | ✅ ezCare parity |
+| 가드 | HOME_VISIT branch only · inactive client 거부 | ✅ 도메인 경계 |
+| FE wire | services.js / VisitRfidDiffComparePanel 0-hit | ❌ P2 residual |
+| id=10 | coverage 0.85 (kind22 상향) · RFID SMS UI 잔여 | △ residual |
+
+→ 주간보호 도메인: RFID SMS 는 방문요양 전용 가드 → **진성갭 과대반영 금지**(BNK-758 가정 carry).
+→ HOME_VISIT 다지점 운영 시 FE wire = P2 operational lever (격상 0·근거 강화).
+
+C) CMS 250/300 + 지표27 = zero drift (id=7-4 1.0 · G17 1.0)
+
+============================================================
+3. 갭 우선순위 (carry)
+============================================================
+- coverage-0 진성갭: 0건
+- residual lever: id=12 M12 credentials(0.7) → id=2/8/10(0.85) · RFID SMS FE wire = id=10 잔여
+- closed axes 재오픈 0 · P3 만료일 「가정」 격상 0
+- KPI: **97.41%**(28.25/29) — BNK-758 97.07% undercount 정정
+
+============================================================
+per-cycle minimum 4종 충족
+============================================================
+- 신규 증거 URL/재실측+변동: NHIS 493차·law247 Time=·longterm 502/610 shell 재실측(=bnk740)·MOHW126 IDENTICAL·BE RFID SMS 신규 commit 관찰
+- 메뉴/필드/워크플로 블록: NHIS↔Transport 6-link + RFID care-provision-dispatch BE + CMS/지표27 crosswalk
+- COMPETITOR_MATRIX 1행+ @5b9656c/@c080529
+- BENCHMARK_REPORT §759 소절
+덮어쓰기 0 · zero drift IDENTICAL 8+ · Time=/shell DRIFT semantic 0 · 가정 번복 0 · closure 0(BE partial) · 신규 core 갭 0 · 상태 변경 2(BE +1 RFID SMS·모듈 KPI 정정 97.41%) · FE FULLY SYNCED

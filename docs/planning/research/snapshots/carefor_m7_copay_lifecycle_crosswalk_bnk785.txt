@@ -1,0 +1,78 @@
+=============================================================================
+BNK-785 케어포 역공학 0–2h — func.php Module 7 「본인부담금」 11-leaf lifecycle
+            ↔ ogada /billing 라우트 1:1 크로스워크 (전수 재앵커)
+=============================================================================
+조사일: 2026-07-16T05:26Z (KST 14:26)
+rotation: 케어포 역공학 (func.php 109항목·본인부담 7-x 번호식 흐름 ↔ ogada Route 1:1)
+
+-----------------------------------------------------------------------------
+[1] LIVE 재실측 — 케어포 3-URL HTTP 000 (83-cycle+ down) · disk canonical LOCK
+-----------------------------------------------------------------------------
+확인 — curl --max-time 12:
+  https://daycare.carefor.co.kr/daycare/func.php   -> HTTP 000 (연결 불가)
+  http://daycare.carefor.co.kr/daycare/func.php    -> HTTP 000 (연결 불가)
+  https://demo-work.carefor.co.kr/                 -> HTTP 000 (연결 불가)
+disk canonical (Wayback id_ 사본):
+  carefor_func.php            md5=6226e6eb92fdd25ed3e50842a5e8a00b  98,328B  (LOCK·zero drift)
+  carefor_func_menu_catalog.json md5=3c44ac2eb27680e6b3fdfda8f1cf48f1  39,797B  (107-leaf)
+→ live 재실측 DRIFT=N/A (사이트 다운)·disk canonical carry. 덮어쓰기 0.
+
+-----------------------------------------------------------------------------
+[2] func.php Module 7 「본인부담금」 11-leaf (menu_catalog.json verbatim)
+-----------------------------------------------------------------------------
+케어포 leaf                         ogada Route (App.jsx grep 실측 @83e6296)      매핑
+7-1  본인부담금 청구관리            /billing  +  /billing/claims/:claimId          ✅ 청구
+7-2  본인부담금 입금관리            /billing/payments                              ✅ 입금
+7-2-1 의료비공제(연말정산)          /billing/cash-receipts                         ✅ 현금영수증·연말정산
+7-3  본인부담금 미납관리            /billing/overdue                               ✅ 미납
+7-4  본인부담금 자동이체(CMS)        /billing/cms                                   ✅ CMS 자동이체
+7-5  본인부담금 간편결제            /billing/easy-pay                              ✅ 간편결제
+7-6  본인부담금 청구대장 리포트      /billing/reports/charges                       ✅ 청구대장
+7-7  본인부담금 입금대장 리포트      /billing/reports/deposits                      ✅ 입금대장
+7-8  본인부담금 수납대장 리포트      /billing/reports/receipts                      ✅ 수납대장
+7-9  본인부담금 수납,환불내역        /billing/reports/refunds                       ✅ 환불내역
+7-10 본인부담금 간편계산기          /billing/calculator                            ✅ 간편계산기
+=> 11/11 leaf 전수 1:1 매핑 (ogada 우위 없음/열위 없음 = 기능 parity)
+
+ogada 추가 라우트 (케어포 7-x 초과 = ogada 우위):
+  /billing/copay-rates       본인부담율 마스터 (upsertCopayRateApi)      SUPERSET
+  /billing/fee-schedules     수가표 관리                                 SUPERSET
+  /billing/reports/statistics 본인부담 월별 통계 (fetchCopayMonthlyStatisticsApi) SUPERSET
+=> ogada billing 라우트 17개(App.jsx grep) ⊃ 케어포 M7 11-leaf
+
+-----------------------------------------------------------------------------
+[3] ogada 서비스 함수 근거 (src/frontend/src/api/services.js grep 실측)
+-----------------------------------------------------------------------------
+CMS 계열 9-fn: fetchCmsEnrollmentsApi·createCmsEnrollmentApi·cancelCmsEnrollmentApi·
+  requestCmsDebitApi·fetchCmsDebitStatusApi·fetchCmsPaymentMethodCatalogApi·
+  requestCmsVirtualAccountApi·fetchCmsVirtualAccountStatusApi·
+  requestCmsMultiAccountSettlementApi (+status) = 케어포 7-4 단일 leaf 대비 심화
+간편결제: requestEasyPayPaymentApi·fetchEasyPayProviderCatalogApi·fetchEasyPayStatusApi (7-5)
+미납: fetchOverdueManagementRecordsApi·createOverdueManagementRecordApi·
+  fetchOverdueAdjustmentsApi·createOverdueAdjustmentApi·fetchBillingOverduesApi (7-3)
+현금영수증: fetchCashReceiptIssuancesApi·fetchPendingCashReceiptIssuancesApi·
+  fetchClientCashReceiptProfileApi·createCashReceiptIssuanceApi (7-2-1)
+환불: fetchCopayRefundFeePolicyCatalogApi·previewCopayRefundFeeApi·
+  recordBillingClaimRefundApi (7-9)
+통계: fetchCopayMonthlyStatisticsApi (7-8 초과 SUPERSET)
+
+-----------------------------------------------------------------------------
+[4] 모듈 커버리지 config 정합 (competitorModuleCoverage.js @83e6296 grep 실측)
+-----------------------------------------------------------------------------
+  { id: "7-1",  label: "본인부담 청구",       coverage: 1 }
+  { id: "7-2",  label: "입금 처리",           coverage: 1 }
+  { id: "7-2-1",label: "의료비공제(연말정산)", coverage: 1 }
+  { id: "7-3",  label: "미납 관리",           coverage: 1 }
+  { id: "7-4",  label: "CMS·간편결제",        coverage: 1 }
+  { id: "7-6",  label: "수납대장",            coverage: 1 }
+  { id: "7-10", label: "본인부담 간편계산기",  coverage: 1 }
+→ id=7-x 전량 coverage=1.0 → 크로스워크 11/11 매핑이 KPI 값을 뒷받침 (가정 번복 0)
+
+-----------------------------------------------------------------------------
+[5] 결론 (planner)
+-----------------------------------------------------------------------------
+- 케어포 본인부담 lifecycle(청구→입금→미납→자동이체→간편결제→대장/환불 리포트→계산기)
+  11-leaf 전수가 ogada /billing 17-라우트에 1:1 이상 착지 = 본인부담 축 기능 parity 확정.
+- ogada 우위 3축: 본인부담율 마스터(copay-rates)·수가표(fee-schedules)·월별 통계
+  (케어포 M7 leaf 미대응) + CMS 가상계좌/다계좌정산 심화(9-fn).
+- 신규 진성갭 0 · P0/P1 격상 0 · id=7 축 CLOSED carry.

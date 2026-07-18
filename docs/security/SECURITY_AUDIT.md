@@ -1,14 +1,368 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-25T17:30:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-18T02:21:00+09:00 -->
 # 보안 감사 보고서 (security/SECURITY_AUDIT.md)
 
 > **작성**: security_auditor (`SEC`)  
-> **감사일**: 2026-06-25 (25차 일일 재점검)  
-> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `49fe2e7`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `2c9abd6`**, **WT CLEAN**), PostgreSQL  
-> **baseline**: workspace **git 실측** — backend develop **`49fe2e7`**(+572 vs origin/test · **local test `49fe2e7` SYNCED** ← 24차 `88a58d9`+1behind → 25차 **SYNCED·BE TSR 1408차 merge EXECUTED**) · origin/test **`598d108`**(**572 unpushed**) · frontend develop **`2c9abd6`**(+241 vs origin/test · local test **`75c0f51`** +2 behind develop) · origin/test **`ab4de83`**(**241 unpushed**)  
-> **원격 test**: backend **`origin/test` `598d108`** · frontend **`origin/test` `ab4de83`** — **P0 전부 포함**(SEC-D14 Fixed 유지) · develop **572+241 ahead**(신규 기능·보안 통제 누락 아님·origin push 미실행·SEC-D18 더 악화 +21 BE/+23 FE vs 24차)  
-> **워킹트리**: backend **CLEAN** · frontend **CLEAN** — 25차에도 CLEAN 유지(SEC-D35 closure carry)  
+> **감사일**: 2026-07-18 (31차 일일 재점검)  
+> **범위**: `src/backend` (Spring Boot 3.3.1, **develop HEAD `a742788`**, **WT CLEAN**), `src/frontend` (React 18 + Vite 6.4.3, **develop HEAD `592a483`**, **WT CLEAN**), PostgreSQL  
+> **baseline**: workspace **git 실측** — backend develop **`a742788`**(+735 vs origin/test · 30차 `e4123c3` → 31차 **`a742788`** +30 commit) · origin/test **`598d108`**(**735 unpushed**·불변) · frontend develop **`592a483`**(+0 vs origin/test · 30차 `ed48077` → 31차 **`592a483`** +37 commit) · origin/test **`592a483`**(**★ FULLY SYNCED**)  
+> **원격 test**: backend **`origin/test` `598d108`** · frontend **`origin/test` `592a483`** — **P0 전부 포함**(SEC-D14 Fixed 유지) · develop **735+0 ahead**(BE +30 · FE **★ sync 종결**·SEC-D18 **비대칭**: BE 악화 / FE **0**)  
+> **워킹트리**: backend **CLEAN** · frontend **CLEAN**(SEC-D35 **★ Fixed**)  
 > **기준**: OWASP Top 10 (2021), 개인정보보호법(PIPA), `docs/ops/DATA_RETENTION_POLICY.md`, `docs/technical/API_SPEC.md`  
 > **코드 변경**: 없음 (읽기 전용 점검)
+
+---
+
+## 1.33 일일 재점검 델타 (2026-07-18 31차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `a742788` · `git -C src/frontend rev-parse HEAD` → `592a483` · `git log e4123c3..a742788`(+30) / `git log ed48077..592a483`(+37) · `git status`(양 스트림 **WT CLEAN**) · `npm audit --omit=dev`(**0건**) · `npm audit`(**1 HIGH dev-only form-data GHSA-hmw2-7cc7-3qxx — SEC-D26 불변**) · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `ProgramPhotoStorageService`/`ProgramController` upload · `AccountingBpoSupport.isAllowlistedPortalUrl` path+query/fragment 봉인 · `NotificationSmsTemplateCatalog` Kakao required · FE `uploadProgramSchedulePhotoApi` apiFetch)를 30차 `e4123c3`/`ed48077` 기준선과 대조.
+
+### (A) 상태 변화
+
+| 스트림 | 30차 develop | 31차 develop HEAD | origin/test | WT |
+|--------|--------------|-------------------|--------------|----|
+| backend | `e4123c3` | **`a742788`**(+735 vs origin/test: QA-B95 entity decode 지속·**v3 program schedule photo upload**·**SEC-D43 SSO path allowlist**·J03 Kakao template-catalog·leave-ledger branch) | `598d108`(불변·**735 unpushed**·+30 vs 30차) | **CLEAN** |
+| frontend | `ed48077` | **`592a483`**(+0 vs origin/test: photo upload UI·SSO path lockstep·QA-B95 decode·a11y UXD-185~189·template-catalog) | **`592a483`**(**★ FULLY SYNCED**·30차 1 → **0**) | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. FE origin/test **완전 sync**(SEC-D18 FE **종결**·30차 1 pending 해소). BE origin/test **735 unpushed**(SEC-D18 BE **더 악화** +30). **SEC-D35 ★ Fixed**(양 스트림 WT CLEAN). **31차 신규 BLOCK급 audit Open 0** · **QA Open [SEC] 0**.
+
+### (B) ✅ 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **v3 program schedule photo upload** (`1b8c764`·`72a6534`·FE `2e06d5a`·`8e74b07`) | **Pass · ⚠ SEC-D25 표면 +1** | `POST /programs/schedule/{id}/photo` `@PreAuthorize(HQ/BRANCH/SOCIAL/CAREGIVER)` · `findByIdAndOrganizationId`+`validateBranchWriteScope` · 크기 ≤5MB · Content-Type allowlist(jpeg/png/webp)·`;param` strip · storage key **서버 UUID**(`programs/{org}/{program}/{uuid}.ext`) · 클라이언트 파일명 미사용(path traversal 없음) · FE `apiFetch`+FormData. **잔여**: magic-byte/Image decode 미검증(기존 ClientPhoto·HR 동일 패턴·SEC-D25) · 공개 serve endpoint 아직 없음(XSS/폴리글롯 위험 유예) · Spring multipart max 10MB vs app 5MB(이중 한도 OK) |
+| **SEC-D43 SSO portal path allowlist deepen** (`bfe6b3f`·`a742788`·FE `592a483`) | **★ Mitigated 강화** | host allowlist 유지 + **path `/carefor_login`(trailing slash)** only · **query/fragment/userInfo 거부** · non-443 port 거부 · https only · FE lockstep 에러 카피. **잔여 불변**: process-wide env credential(org-scope 아님) → Residual Low Monitor |
+| **US-J03 Kakao required template-catalog** (`54fd8dd`·FE `ab9e853`) | **Pass** | 정적 catalog 엔트리 확장만 · Health/status secret 0 · 기존 `@PreAuthorize`·credential gate 유지 |
+| **leave-ledger empty branch enforce** (`f6023b0`) | **Pass · tenant** | 빈 응답에도 readable branch 강제 — IDOR/스코프 누락 방지 |
+| **QA-B95 HTML entity decode 지속** (다수) | **Pass — SEC-D29/D40 lineage 긍정** | semicolon-optional·quote/space/MathML alias · blank blocker filter · fail-closed · 인증 우회 없음 |
+| **FE a11y UXD-185~189** | **Pass — 표면 없음** | ds-* layout/a11y only |
+| **FE 신규 API 배선** | **Pass — SEC-D17 Fixed 유지** | photo upload·SSO·template-catalog 전부 `apiFetch` |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **31차 신규 BLOCK급 audit Open 0건** | — | — | photo·SSO path·catalog 전부 RBAC/tenant Pass · prod audit 0 · **QA Open [SEC] 0** |
+| SEC-D25 | 첨부 magic-byte | Low~Medium | **Open(Monitor)·표면 +1** | **program schedule photo**가 Content-Type-only 업로드 표면에 합류(ClientPhoto·HR·보수교육·급여계약·등급이력과 동일). 권장: JPEG/PNG/WEBP magic 또는 `ImageIO` decode fail-closed |
+| SEC-D35 | FE WT DIRTY | Low(process) | **★ Fixed** | 30차 6M → 31차 **양 스트림 CLEAN** |
+| SEC-D43 | BPO SSO | Low(잔여) | **Mitigated(강화)** | path+query/fragment 봉인 착지 · 잔여 org-scoped credential만 |
+| SEC-D18 | origin/test push | Low | **Monitor(비대칭)** | BE **735** unpushed(+30) · FE **0**(**★ 종결**) |
+| SEC-D44~D46 | carry | Low | **Open(Monitor)/Mitigated** | 불변 |
+| SEC-D41 | Safety GET 무제한 응답 | Low~Medium | **Open(Monitor)** | carry |
+| SEC-D42 | safety payload_json PII | Low | **Open(Monitor)** | carry |
+| SEC-D40 | allow-recovered-auth | Low | **Open(Monitor)** | carry |
+| SEC-D4 | poi-ooxml 5.3.0 — 5 파서 | **Medium** | **Open** | 불변 |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | 불변 |
+| SEC-D33·D34·D36·D37·D38·D39·D32 | carry | Low | **Open(Monitor)** | 불변 |
+| SEC-D26 | npm audit dev form-data | High(dev-only) | **Open(dev)** | prod **0건** · dev **1 HIGH** |
+| SEC-D22·D29 | Mitigated | Low | **Mitigated** | carry · QA-B95 decode 지속 긍정 |
+
+### (D) ✅ 유지 — Fixed/Pass/Mitigated 재확인
+
+| 항목 | 31차 재확인 |
+|------|-------------|
+| SEC-D43 BPO SSO | **Mitigated 강화** — HQ/BRANCH · rate limit · host+**path** allowlist |
+| SEC-D35 WT | **★ Fixed** — 양 스트림 CLEAN |
+| SEC-D17 raw fetch | **Fixed 유지** — photo multipart도 `apiFetch` |
+| SEC-D19 error handler | **Fixed 유지** |
+| SEC-D14 origin/test P0 | **Fixed 유지** — BE `598d108` / FE `592a483` P0 포함 |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(31차 실측) |
+| SEC-D24 SecurityConfig | **Fixed 유지** — 신규 photo API 인증 후 TenantContext |
+
+### (E) 우선순위 (31차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 5 파서 |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 |
+| 3 | SEC-D41 | Safety GET date range |
+| 4 | SEC-D25 | magic-byte — **program photo 표면 +1** |
+| 5 | SEC-D33·D34 | CSV 수식·요양보호사 import |
+| 6 | SEC-D26 | form-data dev 1 HIGH |
+| 7 | SEC-D18 | BE origin/test push **735**(FE sync 완료) |
+| 8 | SEC-D44 | batch-unconfirm challenge entropy |
+| 기타 | D43 residual·D45·D46·D36·D37·D38·D39·D40·D42·D32 | Low/Monitor carry |
+
+---
+
+## 1.32 일일 재점검 델타 (2026-07-17 30차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `e4123c3` · `git -C src/frontend rev-parse HEAD` → `ed48077` · `git log 556eeff..e4123c3`(+37) / `git log e76e631..ed48077`(+34) · `git status`(BE **CLEAN** · FE **DIRTY 6M**) · `npm audit --omit=dev`(**0건**) · `npm audit`(**1 HIGH dev-only form-data GHSA-hmw2-7cc7-3qxx — SEC-D26 불변**) · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `LiveE2eOperationReadinessSupport`·`notificationChannelStatus.js` HTML entity decode parity · `NotificationChannelStatusController` dispatch-reference-unit-rates · `FunctionalRecoveryController`/`BathingScheduleController` dual-numbering · FE `services.js` apiFetch 배선)를 29차 `556eeff`/`e76e631` 기준선과 대조.
+
+### (A) 상태 변화
+
+| 스트림 | 29차 develop | 30차 develop HEAD | origin/test | WT |
+|--------|--------------|-------------------|--------------|----|
+| backend | `556eeff` | **`e4123c3`**(+705 vs origin/test: QA-B95 HTML/unicode blocker decode 37커밋·J03 dispatch-reference-unit-rates·G17 dual-numbering guardrail) | `598d108`(불변·**705 unpushed**·+37 vs 29차) | **CLEAN** |
+| frontend | `e76e631` | **`ed48077`**(+1 vs origin/test: QA-B95 FE decode parity·J03 unit-rates UI·G17 indicator-27·a11y UXD-180~184) | **`8a05640`**(**1 unpushed**·29차 0 → **회귀**·QA-B95 NoBreakSpace 등 push됨) | **DIRTY 6M** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. FE origin/test **QA-B95 decode push 진행**(`e76e631`→`8a05640`)·develop **1 pending**. BE origin/test **705 unpushed**(SEC-D18 BE **더 악화** +37). FE WT **DIRTY 6M**(SEC-D35 Monitor·live-e2e WIP·보안 BLOCK 아님). **30차 신규 BLOCK급 audit Open 0** · **QA Open [SEC] 0**.
+
+### (B) ✅ 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **QA-B95 HTML/unicode blocker decode** (`e4123c3`·`ed48077` 외 37+34커밋) | **Pass — SEC-D29/D40 lineage 긍정** | `LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken`·FE `notificationChannelStatus.js`/`liveBackendProbe.js` **5-pass bounded decode** — bidi/mark strip·numeric entity bounds(0–0x10ffff)·triple-encoding(`&AMP;AMP;#x2d;`) 정규화. **목적**: proxy/gateway HTML-escape로 **가짜 operationReady** 우회 방지(fail-closed 강화). prod `@ConditionalOnProperty`+`ProductionSecretValidator` 유지 · 인증 우회 없음 |
+| **J03 dispatch-reference-unit-rates** (`2f578fb`·`56797a8`·`79763a3`) | **Pass · least-privilege** | `GET /notifications/dispatch-reference-unit-rates` `@PreAuthorize(HQ_ADMIN,BRANCH_ADMIN)` only · `NotificationDispatchUnitRatesCatalog.REFERENCE` **정적 참고 단가**(앱10/SMS20/MMS50)·비밀·실청구 아님 · Health `notificationDispatchReferenceUnitRates` 동일 surface · FE `apiFetch`+static fallback |
+| **G17 dual-numbering guardrail** (`74ae324`·`793a43c`) | **Pass · read-only** | `FunctionalRecoveryComplianceResponse`/`BathingScheduleIndicator27ComplianceResponse`에 `dualNumberingNoteKo`·`essentialDutySerial27Label` 추가 — daycare eval indicator 27 ≠ essential duty serial 27 혼동 방지. `@PreAuthorize(HQ/BRANCH/SOCIAL/CAREGIVER)` 기존 유지 · tenant scope 불변 |
+| **FE a11y UXD-180~184** | **Pass — 표면 없음** | Skeleton·SkipLink·ds-table-wrap·M12 SSO blocker guidance·G2 pagination — UI/a11y only |
+| **FE 신규 API 배선** | **Pass — SEC-D17 Fixed 유지** | unit-rates·indicator-27 compliance 전부 `apiFetch` · prod raw `fetch`는 `http.js`+live-e2e probe만 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **30차 신규 BLOCK급 audit Open 0건** | — | — | decode harden·unit-rates·dual-numbering 전부 RBAC/tenant Pass · prod audit 0 · **QA Open [SEC] 0** |
+| SEC-D35 | FE WT DIRTY (live-e2e WIP) | Low(process) | **Open(Monitor)** | 29차 CLEAN → 30차 **6M**(`notificationChannelStatus`·`liveE2eHarness`·`liveGlobalSetup` 등). 미커밋 WIP — TSR QA-B526 동일 원인 · **보안 BLOCK 아님** |
+| SEC-D18 | origin/test push | Low | **Monitor(비대칭)** | BE **705** unpushed(+37) · FE **1** unpushed(29차 0 → 회귀) |
+| SEC-D43~D46 | carry | Low | **Mitigated/Monitor** | 불변 |
+| SEC-D41 | Safety GET 무제한 응답 | Low~Medium | **Open(Monitor)** | carry |
+| SEC-D42 | safety payload_json PII | Low | **Open(Monitor)** | carry |
+| SEC-D40 | allow-recovered-auth | Low | **Open(Monitor)** | carry |
+| SEC-D4 | poi-ooxml 5.3.0 — 5 파서 | **Medium** | **Open** | 불변 |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | 불변 |
+| SEC-D33·D34·D36·D37·D38·D39·D32 | carry | Low | **Open(Monitor)** | 불변 |
+| SEC-D26 | npm audit dev form-data | High(dev-only) | **Open(dev)** | prod **0건** · dev **1 HIGH** |
+| SEC-D22·D29 | Mitigated | Low | **Mitigated** | carry · QA-B95 decode는 SEC-D29 **긍정 진전** |
+
+### (D) ✅ 유지 — Fixed/Pass/Mitigated 재확인
+
+| 항목 | 30차 재확인 |
+|------|-------------|
+| QA-B95 HTML decode | **Pass** — fail-closed blocker 정규화·인증 우회 없음 |
+| J03 unit-rates | **Pass** — HQ/BRANCH only·정적 catalog·secret 0 |
+| SEC-D43 BPO SSO 3통제 | **Mitigated** 유지 |
+| SEC-D17 raw fetch | **Fixed 유지** — 신규 FE API 전부 `apiFetch` |
+| SEC-D19 error handler | **Fixed 유지** |
+| SEC-D14 origin/test P0 | **Fixed 유지** — BE `598d108` / FE `8a05640` P0 포함 |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(30차 실측) |
+| SEC-D24 SecurityConfig | **Fixed 유지** |
+
+### (E) 우선순위 (30차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 5 파서 |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 |
+| 3 | SEC-D41 | Safety GET date range |
+| 4 | SEC-D33·D34 | CSV 수식·요양보호사 import |
+| 5 | SEC-D26 | form-data dev 1 HIGH |
+| 6 | SEC-D18 | BE origin/test push **705** · FE **1** |
+| 7 | SEC-D35 | FE WT DIRTY 6M 커밋·정리 |
+| 8 | SEC-D44 | batch-unconfirm challenge entropy |
+| 기타 | D43 residual·D45·D46·D36·D37·D38·D39·D40·D42·D32 | Low/Monitor carry |
+
+---
+
+## 1.31 일일 재점검 델타 (2026-07-16 29차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `556eeff` · `git -C src/frontend rev-parse HEAD` → `e76e631` · `git log 24f555d..556eeff`(+31) / `git log bb48b6c..e76e631`(+38) · `git status`(양 스트림 **WT CLEAN**) · `npm audit --omit=dev`(**0건**) · `npm audit`(**1 HIGH dev-only form-data GHSA-hmw2-7cc7-3qxx — SEC-D26 불변**) · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `AccountingBpo*`(`bf96c29` SEC-D43 harden) · `FacilityNotice*`+V192/V193 · `ClientLinkage*`+V194~V196 · `VisitBatchUnconfirmChallengeStore` · `VisitRfidCareProvisionDispatch*` · `StaffPayrollStatementNotificationService` · FE `services.js` apiFetch 배선)를 28차 `24f555d`/`bb48b6c` 기준선과 대조.
+
+### (A) 상태 변화
+
+| 스트림 | 28차 develop | 29차 develop HEAD | origin/test | WT |
+|--------|--------------|-------------------|--------------|----|
+| backend | `24f555d` | **`556eeff`**(+668 vs origin/test: SEC-D43 BPO harden·G2 FacilityNotice V192/V193·G-LINKAGE V194~V196·US-V06 batch-unconfirm challenge·G-RFID care-provision SMS·kind22 payroll statement·QA-B95 HTML/unicode blocker decode) | `598d108`(불변·**668 unpushed**·+31 vs 28차) | **CLEAN** |
+| frontend | `bb48b6c` | **`e76e631`**(+0 vs origin/test: FacilityNotice board·linkage CRUD·RFID dispatch UI·kind22 FE·batch-unconfirm·QA-B95 entity decode) | **`e76e631`**(**★ FULLY SYNCED**·28차 +3 → **0**) | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. FE origin/test **완전 sync**(SEC-D18 FE **종결**). BE origin/test **668 unpushed**(SEC-D18 BE **더 악화** +31). **29차 신규 BLOCK급 audit Open 0** · **QA Open [SEC] 0**.
+
+### (B) ✅ 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **SEC-D43 Accounting BPO SSO harden** (`bf96c29`) | **★ Mitigated** | `@PreAuthorize` **HQ/BRANCH only**(SOCIAL_WORKER 제거) · `AccountingBpoSsoHandoffRateLimiter` actor 10/min·org 30/min · portal URL **https + sujifine.co.kr/www allowlist** · `BusinessRuleException` fail-closed · rate-limit → 전용 exception+GlobalExceptionHandler. **잔여**: process-wide env credential(org-scope 아님) → **SEC-D43 Residual Low Monitor** |
+| **G2 FacilityNotice board CRUD** (`55b8f84`·V192·V193·FE) | **Pass · ★ pagination+URL 방어** | 6 endpoint `@PreAuthorize(HQ/BRANCH/SOCIAL_WORKER)` · page 기본20·max100 · `normalizeAttachmentUrl` http(s) only+≤500 · V193 DB `^https?://`+length CHECK · DRAFT/PUBLISHED workflow · org+branch Tenant FK. **잔여**: host allowlist 없음(인사이더 phishing URL) → **SEC-D46 Low Monitor** |
+| **G-LINKAGE-RECORD** (`5c683af`·V194~V196·FE) | **Pass · ★ DB defense-in-depth** | CRUD+dispatch+report `@PreAuthorize(HQ/BRANCH/SOCIAL_WORKER)` · page max100 · `@Size`+service length · V196 length CHECK·3-way client×branch FK·org/branch sync trigger · FE 전부 `apiFetch` |
+| **US-V06 batch-unconfirm challenge** (`d248916`·FE) | **Pass · ⚠ SEC-D44 Monitor** | `@PreAuthorize(BRANCH/SOCIAL)` · preview 발행·POST consume · **actor+org+branch+yearMonth 스코프** · TTL 10분 · 1회 소모 · cascade ack 필수. **잔여**: 4-digit(10⁴)·in-memory — JWT 탈취 시 brute 가능 공간 → **SEC-D44** |
+| **G-RFID care-provision SMS batch** (`c080529`·FE) | **Pass · Tenant-safe** | `@PreAuthorize(BRANCH/SOCIAL)` · `validateBranchWriteScope` · `findByIdAndOrganizationId` · home-visit branch only · inactive/discharged 거부 · 기존 `GuardianDocumentNotificationService` 재사용 · FE `apiFetch` |
+| **J03 kind22 staff payroll statement** (`7de86eb`·FE) | **Pass · ⚠ SEC-D45/D37 family** | `@PreAuthorize(HQ/BRANCH/SOCIAL)` · org+branch scope · inactive staff 거부 · request preview 금액(DB 급여 평문 아님). **잔여**: `notifications.payload_json`에 paymentTotal/deductionTotal/**netPay** 평문 → **SEC-D45**(SEC-D37 family) |
+| **QA-B95 HTML/unicode blocker decode** (`556eeff` 외) | **Pass — SEC-D29/D40 lineage** | bootstrap blocker 파싱 강화만 · 인증 우회 없음 · prod `@ConditionalOnProperty`+`ProductionSecretValidator` 유지 |
+| **FE 신규 API 배선** | **Pass — SEC-D17 Fixed 유지** | facility-notices·linkage·RFID dispatch·payroll-statement·batch-unconfirm 전부 `apiFetch` · prod raw `fetch`는 `http.js`만 · e2e probe raw fetch는 테스트 전용 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **29차 신규 BLOCK급 audit Open 0건** | — | — | RBAC·tenant·V193/V196 Pass · prod audit 0 · **QA Open [SEC] 0** |
+| **SEC-D43** | BPO SSO least-privilege·rate limit·portal allowlist | Low(잔여) | **Mitigated** | `bf96c29`로 권고 ①~③ 착지. **잔여만** org-scoped credential(장기) |
+| **SEC-D44** | US-V06 batch-unconfirm **4-digit** challenge 키스페이스 | **Low** | **Open(Monitor)** | SecureRandom·actor-scope·TTL10m·consume-once·JWT+branch write 필수. 권장: 6~8 digit 또는 alphanumeric(SEC-D36 정렬) · (선택) per-actor fail throttle |
+| **SEC-D45** | kind22 payroll `payload_json` 급여액(netPay 등) 평문 | **Low** | **Open(Monitor)** | 알림톡 변수 필요 범위. SEC-D37 family — redact/TTL purge 정책 검토 |
+| **SEC-D46** | facility notice `attachment_url` host allowlist 부재 | **Low** | **Open(Monitor)** | scheme http(s)+length는 app+V193 강제. 인사이더가 외부 phishing URL 게시 가능 — 센터 allowlist 또는 내부 스토리지 첨부 전환 검토 |
+| SEC-D18 | origin/test push | Low | **Monitor(비대칭 극단)** | BE **668** unpushed(+31) · FE **0**(**★ 종결**) |
+| SEC-D41 | Safety GET 무제한 응답 | Low~Medium | **Open(Monitor)** | carry — FacilityNotice/Linkage/newsletter pagination Pass(긍정 대조) |
+| SEC-D42 | safety payload_json PII | Low | **Open(Monitor)** | carry |
+| SEC-D40 | allow-recovered-auth | Low | **Open(Monitor)** | carry |
+| SEC-D4 | poi-ooxml 5.3.0 — 5 파서 | **Medium** | **Open** | 불변 |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | 불변 |
+| SEC-D33·D34·D36·D37·D38·D39·D32 | carry | Low | **Open(Monitor)** | 불변 |
+| SEC-D26 | npm audit dev form-data | High(dev-only) | **Open(dev)** | prod **0건** · dev **1 HIGH** |
+| SEC-D22·D29 | Mitigated | Low | **Mitigated** | carry |
+
+### (D) ✅ 유지 — Fixed/Pass/Mitigated 재확인
+
+| 항목 | 29차 재확인 |
+|------|-------------|
+| SEC-D43 BPO SSO 3통제 | **Mitigated** — HQ/BRANCH · rate limit · portal allowlist |
+| SEC-D17 raw fetch | **Fixed 유지** — 신규 FE API 전부 `apiFetch` |
+| SEC-D19 error handler | **Fixed 유지** — BPO rate-limit·FacilityNotice·Linkage 표준 예외 경로 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — BE `598d108` / FE `e76e631` P0 포함 |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(29차 실측) |
+| SEC-D24 SecurityConfig | **Fixed 유지** — 신규 API 인증 후 TenantContext |
+| SEC-D35 WT CLEAN | **유지** — 양 스트림 CLEAN |
+
+### (E) 우선순위 (29차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 5 파서 |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 |
+| 3 | SEC-D41 | Safety GET date range |
+| 4 | SEC-D33·D34 | CSV 수식·요양보호사 import |
+| 5 | SEC-D26 | form-data dev 1 HIGH |
+| 6 | SEC-D18 | BE origin/test push **668**(FE sync 완료) |
+| 7 | SEC-D44 | batch-unconfirm challenge entropy |
+| 8 | SEC-D43 residual | 장기 org-scoped BPO credential |
+| 기타 | D45·D46·D36·D37·D38·D39·D40·D42·D32 | Low/Monitor carry |
+
+---
+
+## 1.30 일일 재점검 델타 (2026-07-15 28차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `24f555d` · `git -C src/frontend rev-parse HEAD` → `bb48b6c` · `git log 2f4bfdf..24f555d`(+31) / `git log 154ebee..bb48b6c`(+33) · `git status`(양 스트림 **WT CLEAN**) · `npm audit --omit=dev`(**0건**) · `npm audit`(**1 HIGH dev-only form-data GHSA-hmw2-7cc7-3qxx — SEC-D26 불변**) · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `AccountingBpoController/Service`·`StaffPayrollController/LedgerService`·`NotificationChannelStatusController`·`GuardianHomeNewsletter*Service`·`V186~V191`·`HealthController` accounting/newsletter readiness · FE `services.js`/`accountingBpo.js`/`AccountingBpoPage.jsx`)를 27차 `2f4bfdf`/`154ebee` 기준선과 대조. backend develop **+31 커밋** · frontend develop **+33 커밋** 전진. **양 스트림 WT CLEAN** 유지. **★ FE `origin/test` push 대량 진전**(286→3 unpushed).
+
+### (A) 상태 변화
+
+| 스트림 | 27차 develop | 28차 develop HEAD | origin/test | WT |
+|--------|--------------|-------------------|--------------|----|
+| backend | `2f4bfdf` | **`24f555d`**(+637 vs origin/test: M12 Accounting BPO SSO OTP·M11 payroll preview 5 API·G2 home newsletter launch/authoring/history+V191·transport V186~V190 shuttle/roster integrity·QA-B95 effective operation gate) | `598d108`(불변·**637 unpushed**·+31 vs 27차) | **CLEAN** |
+| frontend | `154ebee` | **`bb48b6c`**(+3 vs origin/test: M12 BPO UI+SSO adapter·M11 payroll pages·G2 newsletter launch/history/board·a11y·live-e2e gate honor) | **`3bd50ac`**(**★ push 진전**·**3 unpushed**·27차 `ab4de83`/+286 → **−283**) | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. FE origin/test **거의 sync**(SEC-D18 FE **완화**). BE origin/test **637 unpushed**(SEC-D18 BE **더 악화** +31). QA Open **0** active — **보안 BLOCK 없음**.
+
+### (B) ✅ 신규 기능 보안 검토
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **M12 Accounting BPO launch + SSO OTP handoff** (`edaa9e9`·`093ac88`·`3ea0832`·FE `891231d`~`2b03b5c`) | **Pass · ⚠ SEC-D43 Monitor** | `GET /bpo-launch`·`POST /bpo-sso-handoff` 전부 `@PreAuthorize(HQ/BRANCH/SOCIAL_WORKER)` · **비밀번호 미저장·미반환**(usmusid+OTP only·carefor parity) · OTP=`HmacSHA256(usmusid\|window)` 300s·hex16 · env 공백 시 `BusinessRuleException` fail-closed · Health는 readiness bool/blocker만(secret 0) · FE `apiFetch` + hidden-form POST to sujifine(raw fetch 0·SEC-D17 유지). **잔여**: ① process-wide env credential(org-scope 아님) ② SOCIAL_WORKER가 시설 SSO mint 가능 ③ handoff rate limit 없음 ④ `ACCOUNTING_BPO_SSO_PORTAL_URL` allowlist 없음 → **SEC-D43** |
+| **M11 Staff payroll preview 5 API** (`5beaffb`·`c455145`·`eca95e3`·`907007e`·`ff90532`·FE `e18ee5c`~`02d185a`) | **Pass · Tenant-safe** | `/api/v1/staff/payroll/**` 전부 `@PreAuthorize(HQ/BRANCH/SOCIAL_WORKER)` · `requireOrganizationId` · `findByIdAndOrganizationId` cross-tenant 차단 · `validateBranchReadScope`+`validateStaffBranchAssignment` · basePay/allowances/deductions는 **요청 입력 preview**(DB 급여 평문 저장 아님) · displayName·attendanceDays만 staff PII · catalog/labor/retirement는 정적·산술 |
+| **G2 Home newsletter launch/authoring/dispatch-history** (`6ab4d67`·`9254721`·`ac422cc`·`944b18f`·`b054ca6`·`24f555d`·FE `b7c9fa4`~`bb48b6c`) | **Pass · ★ pagination 긍정**(SEC-D41 대조) | 4 endpoint `@PreAuthorize(HQ/BRANCH/SOCIAL_WORKER)` · history: `requireOrganizationId`+`resolveBranchScope` · **page 기본20·max100** · yearMonth `YYYY-MM`·query max100 검증 · V191 `(org,branch,template_code,created_at DESC)` index · clientName/centerName/summary는 payload 파생(기존 notifications PII 패턴·SEC-D42 family) · compose-preview는 서버측 템플릿만·dispatch 없음 · FE `apiFetch` |
+| **Transport shuttle + roster day-status V186~V190** (`60c4e36`~`ac59458`) | **Pass · ★ DB defense-in-depth** | V190: shuttle address nonempty CHECK · roster `absent_today=skip_dispatch` CHECK · `(org,updated_by)→users` Tenant FK · day-status excluded client mutate 거부(앱) · schema readiness probe(QA-B95) |
+| **QA-B95 effective live-e2e operation gate** (`5d6c007`·FE `5805d68`) | **Pass — SEC-D29/D38/D40 lineage** | effective gate 노출만 · 인증 우회 없음 · recovered-auth 기본 true는 bootstrap `@ConditionalOnProperty`로 prod 실효 차단 유지(SEC-D40 carry) |
+| **FE 신규 API(payroll·BPO·newsletter)** | **Pass — SEC-D17 Fixed 유지** | 전부 `apiFetch` 경유 · `http.js` 래퍼 외 raw `fetch()` 0건 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **28차 신규 BLOCK급 audit Open 0건** | — | — | M12/M11/G2/transport 전부 RBAC·tenant-safe Pass · V190/V191 보안 긍정 · prod audit 0 · **QA Open [SEC] 0** |
+| **SEC-D43** | **Accounting BPO SSO: 시설 전역 credential·SOCIAL_WORKER mint·rate limit 부재·portal URL 미검증** | **Low~Medium** | **Open(Monitor)** | `ACCOUNTING_BPO_USMUSID`/`OTP_SECRET`는 **프로세스 전역**(org별 아님) — multi-tenant 공유 배포 시 A org staff가 동일 SSO mint. `POST /bpo-sso-handoff`에 **per-actor rate limit 없음**. `@PreAuthorize`에 **SOCIAL_WORKER** 포함(재무 SSO least-privilege 과다 가능). `sso-portal-url` env override **host allowlist 없음**(오설정 시 OTP phishing). 단: password 미저장·HMAC window·env 공백 fail-closed·JWT 필수 → **BLOCK 아님**. **권장**: ① HQ/BRANCH only로 PreAuthorize 축소 ② AuthRateLimit식 handoff throttle ③ portal URL `sujifine.co.kr` allowlist ④ 장기 org-scoped credential |
+| SEC-D18 | origin/test push | Low | **Monitor(비대칭)** | BE **637** unpushed(+31·악화) · FE **3** unpushed(**★ 완화** 286→3) |
+| SEC-D41 | Safety GET 무제한 응답 | Low~Medium | **Open(Monitor)** | carry — newsletter history는 pagination Pass(긍정 대조) |
+| SEC-D42 | safety payload_json PII | Low | **Open(Monitor)** | carry — newsletter history `clientName` 동일 family |
+| SEC-D40 | allow-recovered-auth | Low | **Open(Monitor)** | carry |
+| SEC-D4 | poi-ooxml 5.3.0 — 5 파서 | **Medium** | **Open** | 불변 |
+| A06-1 | Spring Boot 3.3.1 | **Medium** | **Open** | 불변 |
+| SEC-D33·D34·D36·D37·D38·D39·D32 | carry | Low | **Open(Monitor)** | 불변 |
+| SEC-D26 | npm audit dev form-data | High(dev-only) | **Open(dev)** | prod **0건** · dev **1 HIGH** |
+| SEC-D22·D29 | Mitigated | Low | **Mitigated** | carry |
+
+### (D) ✅ 유지 — Fixed/Pass 재확인
+
+| 항목 | 28차 재확인 |
+|------|-------------|
+| SEC-D17 raw fetch | **Fixed 유지** — payroll/BPO/newsletter API 전부 `apiFetch` |
+| SEC-D19 error handler | **Fixed 유지** — BPO missing cred → `BusinessRuleException` 고정 메시지 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — BE `598d108` / FE `3bd50ac` P0 포함 |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(28차 실측) |
+| SEC-D24 SecurityConfig | **Fixed 유지** — 신규 API도 인증 후 TenantContext |
+| SEC-D35 WT CLEAN | **유지** — 양 스트림 CLEAN |
+
+### (E) 우선순위 (28차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 5 파서 |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 |
+| 3 | **SEC-D43** | BPO SSO least-privilege·rate limit·portal allowlist |
+| 4 | SEC-D41 | Safety GET date range |
+| 5 | SEC-D33·D34 | CSV 수식·요양보호사 import |
+| 6 | SEC-D26 | form-data dev 1 HIGH |
+| 7 | SEC-D18 | BE origin/test push 637(FE는 거의 sync) |
+| 기타 | D36·D37·D38·D39·D40·D42·D22·D32 | Low/Monitor carry |
+
+---
+
+## 1.29 일일 재점검 델타 (2026-07-13 27차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD` → `2f4bfdf` · `git -C src/frontend rev-parse HEAD` → `154ebee` · `git log 3d4e58a..2f4bfdf`(+14) / `git log 2d9b9d3..154ebee`(+20) · `git status`(양 스트림 **WT CLEAN**) · `npm audit --omit=dev`(**0건**) · `npm audit`(**1 HIGH dev-only form-data GHSA-hmw2-7cc7-3qxx — SEC-D26 불변**) · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `SafetyCheckController.java`·`SafetyCheckRecordService.java`·`V184__safety_check_records.sql`·`V185__safety_check_records_integrity_us_q01.sql`·`SafetyCheckTemplateCatalog.java`·`SafetyChecklistTemplateItemResponse.java`·FE `services.js`(safety 9개 API) · safety pages/components 17파일)를 26차 `3d4e58a`/`2d9b9d3` 기준선과 대조. backend develop **+14 커밋** · frontend develop **+20 커밋** 전진. **양 스트림 WT CLEAN** 유지.
+
+### (A) 상태 변화
+
+| 스트림 | 26차 develop | 27차 develop HEAD | origin/test | WT |
+|--------|--------------|-------------------|--------------|----|
+| backend | `3d4e58a` | **`2f4bfdf`**(+606 vs origin/test: US-Q01 SafetyCheckController+V184+V185·safety template catalog API·QA-B95 test locks·NHIS seed year fix·safety routing test locks) | `598d108`(불변·**606 unpushed**·+14 vs 26차) | **CLEAN** |
+| frontend | `2d9b9d3` | **`154ebee`**(+286 vs origin/test: US-Q01 safety module pages(DailyChecks·PeriodicChecks·InfectionControl·OperationLog)·a11y·safety template catalog wire·fee-schedule seed harness hardening·QA-B358 optional required-flag fix) | `ab4de83`(불변·**286 unpushed**·+20 vs 26차) | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. develop↔origin/test 격차 **606+286**(신규 기능·보안 통제 누락 아님) → **BLOCK 아님**(SEC-D18 더 악화: +14 BE/+20 FE vs 26차). QA Open BLOCK: **QA-B344·QA-B359** — **보안 BLOCK 없음**.
+
+### (B) ✅ 신규 기능 보안 검토 — US-Q01 안전점검 모듈
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **SafetyCheckController 8 endpoint** (`ac69919`·`aa9565c`·`81e3c11`) | **Pass · RBAC·Tenant Pass** | `/api/v1/safety/` 하위 8 endpoint 전부 `@PreAuthorize("hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')")` · `caregiver`/`guardian`/`client_user` 접근 차단 · 4 GET + 4 POST · GET은 `validateBranchReadScope`, POST는 `validateBranchWriteScope` 경유 · `requireOrganizationId()`로 org 격리 · `branchId=null` 시 `TenantContext.activeBranchId()` fallback + scope 재검증 → `ScopeAccessException` fail-safe |
+| **V184 safety_check_records** (`ac69919`) | **Pass · ★ DB-level defense-in-depth** | `organization_id NOT NULL REF organizations` · `branch_id NOT NULL REF branches` · `fk_..._branch_org`(org+branch 복합 FK·cross-branch raw SQL 차단) · `fk_..._created_by_org`(org+created_by 복합 FK) · `uq_..._org_id`(org+id anchor UK) · `chk_..._record_type` enum CHECK(`DAILY/PERIODIC/INFECTION/OPERATION`) · `chk_..._result_code` enum CHECK(`PASS/FAIL/PARTIAL/NA/NULL`) · `chk_..._updated_after_created` 시간성 · `trg_set_created_by` actor backstop · `trg_touch_updated_at` 변경시간 자동갱신 |
+| **V185 safety_check_records defense-in-depth** (`7a9ed71`) | **Pass · ★ DB-level defense-in-depth** | `chk_..._payload_json_object`(`jsonb_typeof(payload_json)='object'` — V157 패턴·scalar/array 적재 차단) · `chk_..._sub_form_code_shape`(PERIODIC=sub_form_code NOT NULL·6-enum allowlist(HYGIENE/NURSING_SUPPLIES/MEAL_SERVICE/FIRE_SAFETY/MEDICATION/DISINFECTION)·비-PERIODIC=NULL 쌍 · 앱 `SafetyPeriodicSubFormCode` enum 미러) · `chk_..._result_code_shape`(DAILY/PERIODIC=result_code NOT NULL·INFECTION/OPERATION=NULL 쌍 · 앱 `summarizeChecklistResult`·infection/operation 경로 미러) |
+| **SafetyCheckRecordService — 입력 검증** (`ac69919`) | **Pass · 다층 검증** | `sanitizeChecklistItems` — null/empty key 차단 + `allowedItemIds` Set 허용목록 강제(unknown item ID 거부) · `normalizeSubFormCode`/`normalizeSymptomCode`/`normalizeActionCode` — enum `valueOf` allowlist + `BusinessRuleException` · `requireDate` null 차단 · `requireNonBlank` trim+blank 차단 · `trimToEmpty` null safe · `normalizeVisitorCount` 음수 차단 · 체크리스트 결과(`PASS/FAIL/PARTIAL`) 서버 계산 — 클라이언트 조작 불가 |
+| **FE safety module 9 API (services.js)** (`bf9b4b1`·`cf73ae8`·`01f32dc`·`47a068c`) | **Pass — SEC-D17 Fixed 유지** | 전부 `apiFetch` 경유(Bearer·refresh 자동·raw `fetch()` 0건) · safety 페이지 4종 전부 `ProtectedRoute` 포함(역할 가드 적용) |
+| **QA-B358 allow optional safety template flags** (`b10c5bb`·`154ebee`) | **Pass(보안 표면 없음)** | FE safety template `required` 플래그를 optional로 변경(서버 template catalog의 `required` 필드 기본값 처리) — 인증/인가/PII 표면 변동 0 |
+| **NHIS seed year 오류 메시지 개선** (`1f2803c`·`2f4bfdf`) | **Pass(보안 표면 없음)** | `BillingService` 에러 메시지 문자열 변경만 — 스택/스키마 미노출·내부 구조 변동 없음 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **27차 신규 BLOCK급 audit Open 0건** | — | — | 신규 Safety API/migration 전부 RBAC·tenant-safe Pass · V184/V185 DB-level defense-in-depth · 신규 prod 의존성 0(pom.xml·package.json prod 표면 불변·prod audit 0건 유지) |
+| **SEC-D41** | **SafetyCheck GET endpoint 무제한 응답 (pagination·날짜범위 없음)** | **Low~Medium** | **Open(Monitor)** | `SafetyCheckController` 4개 GET endpoint(`/daily-checks`·`/periodic-checks`·`/infection-control`·`/operation-logs`)가 `branchId`만 필터링하고 **날짜범위·페이지네이션 없음** — `repository.findBy…OrderByRecordedOnDesc…` 가 org+branch+type 전체 행 반환. 현재 파일럿 초기 데이터 건수 적어 실질 위험 낮음. 기록이 축적되면 ① 대용량 payload_json 직렬화(memory 부하·DoS) ② `clientName`·`inspectorName`·`authorName` 포함 다수 PII 일괄 노출. 기존 `staff_leave_ledger`·`case_management_meetings` GET도 유사 패턴이나 안전점검 로그는 daily 누적 특성상 성장 속도 빠름. **권장**: ① `?from=DATE&to=DATE` query param + 서버 30일 기본 범위 설정(BNK carry 권고) ② 또는 응답 건수 상한(e.g. 200) |
+| **SEC-D42** | **safety_check_records.payload_json 내 PII 평문 저장** | **Low** | **Open(Monitor)** | `InfectionControlPayload.clientName`(케어 수급자 이름) · `DailyCheckPayload.inspectorName`(직원 이름) · `PeriodicCheckPayload.inspectorName` · `OperationLogPayload.authorName`(직원 이름)이 `payload_json` JSONB에 평문 저장. DB 침해 시 노출 가능. `clientName`은 이름만(생년월일·RRN 없음)이며 RBAC+branch scope로 가시성 제어. 기존 `staff_committee_meeting_logs.attendee_names` 등 동일 패턴 carry. **권장**: `clientName` → client UUID 참조 전환 또는 DB-level 암호화 장기 검토(P3). `inspectorName`/`authorName`은 직원 성명 — 낮은 위험 |
+| SEC-D18 | origin/test push 미실행 | Low | **Monitor(더 악화)** | origin/test **606 BE/286 FE unpushed**(26차 592/266 → 27차 606/286·**+14 BE/+20 FE**·27-cycle carry) |
+| SEC-D40 | `allow-recovered-auth=true` 기본·`ProductionSecretValidator` 미통합 | Low | **Open(Monitor)** | 26차와 동일 carry — `@ConditionalOnProperty(bootstrap-enabled)` 게이트로 prod 실효 차단 유지 · `application.yml` 불변 |
+| SEC-D4 | poi-ooxml **5.3.0** — **5 파서** | **Medium** | **Open** | `pom.xml` 5.3.0 불변 · CVE-2025-31672 미해소 · 5 파서 carry |
+| A06-1 | Spring Boot **3.3.1** | **Medium** | **Open** | 불변 carry |
+| SEC-D33 | CSV export 수식 인젝션 | **Low** | **Open(Monitor)** | carry |
+| SEC-D34 | 요양보호사 import 확장자 미검증 | **Low** | **Open(Monitor)** | carry |
+| SEC-D36 | staff access key 6-digit 키스페이스 | **Low** | **Open(Monitor)** | carry |
+| SEC-D37 | `notifications.payload_json` 평문 access key | **Low** | **Open(Monitor)** | carry |
+| SEC-D32 | 현금영수증 식별자 at-rest 평문 | **Low** | **Open(Monitor)** | carry |
+| SEC-D26 | npm audit dev form-data CRLF | High(dev-only) | **Open(dev)** | prod **0건**(27차 실측 불변) · dev **1 HIGH** GHSA-hmw2-7cc7-3qxx 불변 |
+| SEC-D38 | `enforce-bootstrap-readiness=false` 오설정 | Low | **Open(Monitor)** | carry |
+| SEC-D39 | CMS 가상계좌 번호 guardian 확장 | Low | **Open(Monitor)** | carry |
+| SEC-D22 | `scripts/*.env` gitignore parent HEAD | Low | **Mitigated** | carry |
+| SEC-D29 | live-e2e bootstrap | Low~Medium | **Mitigated → carry** | carry |
+
+### (D) ✅ 유지 — Fixed/Pass 재확인
+
+| 항목 | 27차 재확인 |
+|------|-------------|
+| SEC-D17 raw fetch | **Fixed 유지** — safety module 9개 API 전부 `apiFetch` 경유 · raw `fetch()` 0건(27차 실측) |
+| SEC-D19 error handler | **Fixed 유지** — `SafetyCheckRecordService` 예외도 `BusinessRuleException`/`ScopeAccessException`/`IllegalStateException` 표준 경로 → `GlobalExceptionHandler` 고정 응답 · 스택 미노출 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — `598d108`/`ab4de83` P0 포함(unpushed gap은 SEC-D18) |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(27차 실측) |
+| SEC-D24 SecurityConfig 필터 | **Fixed 유지** — `/api/v1/safety/**` 신규 endpoint도 인증 후 TenantContext 적용 |
+| SEC-D35 WT CLEAN | **유지** — 양 스트림 CLEAN |
+
+### (E) 우선순위 (27차)
+
+| 순위 | ID | 근거 |
+|------|-----|------|
+| 1 | SEC-D4 | poi-ooxml 5.3.0 CVE-2025-31672 · 5 파서 표면 |
+| 2 | A06-1 | Spring Boot 3.3.1 패치 라인 |
+| 3 | SEC-D41 | Safety GET 무제한 응답 — 데이터 누적 대비 date range 가드 권고 |
+| 4 | SEC-D33 | CSV 수식 인젝션 |
+| 5 | SEC-D34 | 요양보호사 import 확장자 미검증 |
+| 6 | SEC-D26 | form-data dev 1 HIGH |
+| 7 | SEC-D42 | payload_json PII 평문(clientName·inspectorName) |
+| 8 | SEC-D18 | origin/test push 606+286 — 지속 악화 |
+| 기타 | SEC-D36·D37·D38·D39·D40·D22·D32 | Low/Monitor carry |
 
 ---
 
@@ -16,10 +370,10 @@
 
 | 구분 | 결과 |
 |------|------|
-| 전체 위험도 | **Low~Medium (develop)** — develop `49fe2e7`/`2c9abd6` 기준 **P0 통제 유지** · 양 스트림 **WT CLEAN** · BE local test **`49fe2e7` SYNCED**(BE TSR 1408차 merge EXECUTED·24차 `88a58d9`+1behind → SYNCED 진전) · FE local test `75c0f51` +2 behind(24차 +1 → 25차 +2·QA-B95 FE 2커밋 미이관) · `origin/test` push 미실행(572 BE/241 FE unpushed·SEC-D18 더 악화 +21/+23 vs 24차). **운영 API 전부 RBAC·tenant-safe Pass**. **★ 25차 신규 BLOCK급 audit Open 0건** · **★ 신규 SEC-D38**(Low·`enforce-bootstrap-readiness=false` 시 probe `operationReady=true`·인증 우회 없음·운영 설정 권고)·**★ 신규 SEC-D39**(Low·CMS 가상계좌 번호 응답·HQ/BRANCH만·guardian 확장 시 last4 권고). **★ 25차 보안 긍정**: ① BE local test SYNCED(TSR 1408차 merge) ② NhisClientResolver `matched.size()==1` 단일후보 강제(masked-name fallback PII reveal 차단) ③ V178 9종 CHECK(amount>0·시간성 3종·텍스트 4종 nonempty·lifecycle·SUCCEEDED↔tx·FAILED↔reason·VIRTUAL↔bank_code·MULTI↔split_count) ④ ProductionSecretValidator 3-form env fail-fast(4표면: ogada.live-e2e.bootstrap-enabled·OGADA_LIVE_E2E_BOOTSTRAP_ENABLED·LIVE_E2E_BOOTSTRAP_ENABLED·LIVE_E2E·SEC-D29 한 단계 더 진전) ⑤ G16 transport parity-rules RBAC HQ/BRANCH fix ⑥ FE 신규 7종+ API 전부 `apiFetch` 경유(SEC-D17 Fixed 유지·raw `fetch()` 0). **유지**: SEC-D33·D34(Low)·SEC-D4(**4 파서**·poi 5.3.0·신규 파서 추가 없음)·SEC-D32 at-rest 평문·SEC-D36/D37 carry·SEC-D26 dev 1 HIGH·SEC-D22(WT만)·SEC-D28·D25·D30·D31. |
-| OWASP Top 10 | develop HEAD: **0건 High**(prod 배포 경로), **5건 Medium**, **나머지 Pass/Low**. `origin/test`: P0 포함(develop 기능 572+241 behind) |
-| 의존성 취약점 | Backend: Boot **3.3.1**(A06-1·25차 불변·pom diff 0), poi-ooxml **5.3.0**(CVE-2025-31672 — **NHIS·은행입금·RFID·요양보호사 4 파서 표면**, 미해소·신규 파서 추가 없음·G-NHIS-MASKED-NAME-FALLBACK·G2b 가상계좌는 POI 미사용). OWASP dependency-check **NVD 429 rate-limit으로 미실행**(pom 버전 실측). Frontend: npm audit prod **0건**(25차 실측 불변) · dev **1건 HIGH**(form-data CRLF GHSA-hmw2-7cc7-3qxx — SEC-D26 carry, dev-only) |
-| 즉시 조치 | ① poi-ooxml 5.4.0+(SEC-D4·**4 파서** 회귀) ② Spring Boot 3.3.x 패치(A06-1) ③ CSV export 수식 prefix sanitize(SEC-D33) ④ 요양보호사 import 확장자/Content-Type 검증(SEC-D34) ⑤ parent repo `.gitignore` `*.env`/`scripts/*.env` **커밋**(SEC-D22 WT-only) ⑥ 첨부 magic-byte(SEC-D25) ⑦ form-data `npm audit fix`(SEC-D26) ⑧ **`origin/test` push**(572 BE/241 FE unpushed·SEC-D18 악화) ⑨ prod 간편결제 실 PG(SEC-D28)·prod FCMS provider 실 connector ⑩ prod `application-prod.yml`(SEC-D5)·health 마스킹(SEC-D30) ⑪ Kakao Maps appkey 도메인 제한(SEC-D31) ⑫ 현금영수증 식별자 at-rest 암호화 검토(SEC-D32) ⑬ staff access key payload purge·redact(SEC-D37·Low·Monitor) ⑭ access key 키 길이 8자리+영숫자 확장 검토(SEC-D36·Low·Monitor) ⑮ prod 환경 `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS` 미설정 또는 `true` 명시(SEC-D38·Low·Monitor) ⑯ CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토(SEC-D39·Low·Monitor) |
+| 전체 위험도 | **Low~Medium (develop)** — develop `24f555d`/`bb48b6c` 기준 **P0 통제 유지** · 양 스트림 **WT CLEAN** · origin/test **비대칭**(BE 637 unpushed·FE **3** unpushed·SEC-D18 FE 완화/BE 악화). **운영 API 전부 RBAC·tenant-safe Pass**. **★ 28차 신규 BLOCK급 audit Open 0건** · **★ 신규 SEC-D43**(Low~Medium·M12 BPO SSO facility-wide credential·SOCIAL_WORKER mint·rate limit/portal allowlist 부재·Monitor). **★ 28차 보안 긍정**: ① BPO password 미저장·HMAC OTP·env fail-closed ② M11 payroll org+branch tenant-safe(금액은 request preview) ③ G2 newsletter history **pagination max100**(SEC-D41 대조 긍정) ④ V190 transport Tenant FK·flag CHECK ⑤ FE origin/test 대량 push. **유지**: SEC-D41·D42·D4(**5 파서**)·D33·D34·D40·SEC-D26 dev 1 HIGH. |
+| OWASP Top 10 | develop HEAD: **0건 High**(prod 배포 경로), **5건 Medium**, **나머지 Pass/Low**. `origin/test`: P0 포함(BE 637 behind · FE 3 behind) |
+| 의존성 취약점 | Backend: Boot **3.3.1**(A06-1·28차 불변), poi-ooxml **5.3.0**(CVE-2025-31672 — **5 파서 표면** 미해소). OWASP dependency-check NVD rate-limit 미실행. Frontend: npm audit prod **0건**(28차 실측) · dev **1건 HIGH**(form-data CRLF GHSA-hmw2-7cc7-3qxx — SEC-D26·dev-only) |
+| 즉시 조치 | ① poi-ooxml 5.4.0+(SEC-D4·5 파서) ② Spring Boot 3.3.x 패치(A06-1) ③ **BPO SSO least-privilege·rate limit·portal allowlist**(SEC-D43) ④ Safety GET date range(SEC-D41) ⑤ CSV 수식 sanitize(SEC-D33) ⑥ 요양보호사 import 확장자(SEC-D34) ⑦ form-data `npm audit fix`(SEC-D26) ⑧ **BE `origin/test` push**(637·SEC-D18) ⑨ FE origin 잔여 3 push ⑩ prod `OGADA_LIVE_E2E_ALLOW_RECOVERED_AUTH=false`(SEC-D40) ⑪ carry: D25·D5·D30·D31·D32·D37·D36·D38·D39·D22·D42 |
 
 ### 긍정적 통제 (이미 구현됨)
 
@@ -30,6 +384,92 @@
 - `GlobalExceptionHandler` — 500 응답에 스택 트레이스 미노출
 - `@PreAuthorize` + `JwtScopeResolver` 멀티테넌트·지점 스코프
 - 로그인 실패·비밀번호 재설정 응답 통일 (계정 열거 완화)
+
+---
+
+## 1.28 일일 재점검 델타 (2026-06-26 26차) [SEC]
+
+> 이번 호출에서 **workspace 실측**(`git -C src/backend rev-parse HEAD/test/origin/test` · `git -C src/frontend …` · `git log 49fe2e7..3d4e58a`(+20) / `git log 2c9abd6..2d9b9d3`(+25) · `git status`(양 스트림 **WT CLEAN** 5-cycle carry) · `npm audit`/`npm audit --omit=dev` · `pom.xml`(poi 5.3.0 · Boot 3.3.1 불변) · `StaffCommitteeMeetingController/Service.java`·`StaffCommitteeMeetingLogEntity.java`·`V181/V182__staff_committee_meeting_logs*.sql`·`ClientCarePlanFormService.java`(`exportBulkChangeContractsText` 추가)·`ClientController.exportBulkCarePlanForms`·`V183__client_care_plan_forms_branch_plan_year_index.sql`·`V180__program_client_groups_integrity_us_p01.sql`·`NhisVisitScheduleImportOutcome.java`·`NhisVisitScheduleImportGuidance.java`·`VisitController.nhisImportGuidance`·`VisitService` outcome resolver·`LiveE2eController.java`·`LiveE2eOperationReadinessSupport.java`·`HealthController.java`·`ProductionSecretValidator.java`·`application.yml`(`allow-recovered-auth` 추가)·FE `services.js`(committee meeting 6 + bulk export + visit NHIS guidance)·`StaffCommitteeMeetingPage.jsx`·`ClientCarePlanBulkExportPanel.jsx`·`VisitNhisImportGuidePanel.jsx`·`VisitNhisImportRecoverySteps.jsx`·`clientListFilters.js`(`buildClientListSearchHref(query, branchId)`+`readClientListBranchFromQuery`))를 25차 `49fe2e7`/`2c9abd6` 기준선과 대조. backend develop **+20 커밋** · frontend develop **+25 커밋** 전진. **양 스트림 WT CLEAN** 5-cycle 유지.
+
+### (A) 상태 변화 — develop 추가 전진 · WT CLEAN 5-cycle · BE local test +10 behind(QA-B344) · FE local test SYNCED · origin/test stale 더 악화
+
+| 스트림 | 25차 develop | 26차 develop HEAD | local test / origin/test | WT |
+|--------|--------------|-------------------|--------------------------|----|
+| backend | `49fe2e7` | **`3d4e58a`**(+592 vs origin/test: V180 program_client_groups defense-in-depth·V181/V182 staff_committee_meeting_logs CRUD+integrity·V183 care_plan_forms branch_plan_year index·G-CLIENT-CONTRACT-BULK-PRINT bulk export·G-STAFF-COMMITTEE-MEETING-LOG CRUD+finalize+print export·G-NHIS-IMPORT-ERROR-STATUS-SURFACE 5-state outcome + validateCounts integrity·G-NHIS-SCHEDULE-IMPORT guidance API·QA-B95 recovered-auth/g21-seed code 8-layer hardening) | local **`4567030`**(+10 behind develop — QA-B344 BLOCK pending 10·기능 이관 게이트·**보안 BLOCK 아님**) / origin **`598d108`**(불변·**592 unpushed**·+20 vs 25차) | **CLEAN** |
+| frontend | `2c9abd6` | **`2d9b9d3`**(+266 vs origin/test: G-STAFF-COMMITTEE-MEETING-LOG page·G-CLIENT-CONTRACT-BULK-PRINT panel·G-NHIS-IMPORT-ERROR-STATUS-SURFACE inline recovery + deep-link branch persistence·QA-B350 reset stale branch filter·QA-B95 FE wire) | local **`320ba06`**(SYNCED with FE TSR 1448 read-only — 25차 `75c0f51` +2 behind → 26차 SYNCED**·진전**) / origin **`ab4de83`**(불변·**266 unpushed**·+25 vs 25차) | **CLEAN** |
+
+→ **판정**: `origin/test` 양 스트림 P0 통제 유지(SEC-D14 Fixed) — **원격 배포 산출물 보안 회귀 없음**. develop↔origin/test 격차 **592+266**(신규 기능·보안 통제 누락 아님) → **BLOCK 아님**(SEC-D18 더 악화: +20 BE/+25 FE vs 25차 572/241). **★ FE local test 진전**(25차 +2 behind → 26차 SYNCED·FE TSR 1448차 baseline 갱신). **★ BE local test +10 behind**(25차 SYNCED → 26차 +10·QA-B344 BLOCK pending 10·기능 이관 게이트·보안 BLOCK 아님). QA Open BLOCK은 **QA-B344(BE pending 10)·QA-B350(planned·이관 게이트)** — **보안 BLOCK 없음**.
+
+### (B) ✅ 신규 기능 보안 검토 — 전부 RBAC·tenant-safe Pass · ★ 신규 DB defense-in-depth 다수
+
+| 기능 (커밋) | 판정 | 근거 |
+|-------------|------|------|
+| **G-STAFF-COMMITTEE-MEETING-LOG CRUD + finalize + print export** (`68b08b0`·`3ae8098`·`b4958f1` V182·FE `0342076`) | **Pass · ★ 보안 긍정 다중** | `StaffCommitteeMeetingController` 6 endpoint(GET list·GET {id}·POST·PATCH {id}·POST {id}/finalize·GET {id}/export) **전부 `@PreAuthorize(HQ_ADMIN, BRANCH_ADMIN, SOCIAL_WORKER)`** · `requireOrganizationId` + `resolveBranchScope(null)` = `TenantContext.activeBranchId` + `validateBranchReadScope` · `requireMeeting(organizationId, meetingId)`로 cross-tenant 조회 차단(`findByIdAndOrganizationId`) · 수정/확정은 `ensureDraftStatus` + `validateBranchWriteScope` · **export는 `ensureFinalizedStatus` 게이트**(`DRAFT` 회의록 직접 조회·출력 차단) · `meetingType` allowlist 3종(`OPERATING_COMMITTEE`/`GUARDIAN`/`WELFARE_COMPENSATION`) `normalizeMeetingType` upperCase + Set membership · `applyWritableFields`가 모든 텍스트 필드 trim · `requireActorUserId` → `dbSessionContext.setActorUserId`로 V181 actor backstop trigger와 정합 · Export: `Content-Type: text/plain; charset=UTF-8`·`Content-Disposition: attachment` 정합·`getBytes(UTF-8)` 안전 인코딩 |
+| **V181 staff_committee_meeting_logs** (`68b08b0`) | **Pass · ★ DB-level defense-in-depth** | meeting_type/record_status enum CHECK · title/meeting_content/meeting_result/attendee_names nonempty CHECK(`length(trim(...))>0`) · **record_status↔finalized_at pair CHECK**(`DRAFT AND finalized_at IS NULL` OR `FINALIZED AND finalized_at IS NOT NULL`) · updated_after_created · **org+branch · org+created_by 복합 Tenant FK pair** · org+id anchor UK · `trg_set_created_by` actor backstop · 2개 조회 index — raw SQL·향후 일괄 import cross-tenant/empty/lifecycle 위반 적재 차단 |
+| **V182 staff_committee_meeting_logs defense-in-depth** (`b4958f1`) | **Pass · ★ DB-level defense-in-depth** | location nonempty CHECK(`NULL OR length(btrim(...))>0` — V155/V165/V175 패턴 mirror·`normalizeOptionalText` DB mirror) · **finalized_at≥created_at 시간성 CHECK**(`NULL OR finalized_at>=created_at` — V117/V125/V178 패턴 mirror·앱은 `OffsetDateTime.now(KST)` 강제하나 raw SQL/향후 import 회귀 방지) · single-additive ALTER·round 200 신규 테이블·적재 0건·backfill 불요 · 의도적 제외 3종 모두 명시(3-way FK는 hq_admin 본부 회의 차단 우려·`CURRENT_DATE` non-immutable·attendee_names JSONB ROI low — V169/V175와 다른 「본부 회의 lifecycle」 정책 명문화·**SEC 추적**) |
+| **G-CLIENT-CONTRACT-BULK-PRINT 급여제공 변경계약서 일괄 출력** (`4df9465`·`547c85f`·FE `0d0b587`·`d759ade`) | **Pass · 보안 긍정** | `GET /api/v1/clients/care-plan-forms/bulk-export` `@PreAuthorize(HQ_ADMIN, BRANCH_ADMIN, SOCIAL_WORKER)` · `exportBulkChangeContractsText(planYear, requestedBranchId, clientIds)`:`requireOrganizationId` + `resolveBranchScope`(요청 branchId 검증 또는 active branch fallback·둘 다 `validateBranchReadScope`) + **plan year 2000~2100 가드**(`validatePlanYear`) + **명시적 clientIds 시 각 client `requireReadableClient` 호출**(cross-tenant·branch leak 차단) + 비활성 client 자동 filter(`isActiveClient` — `findByIdAndOrganizationIdAndActiveTrue`) · 응답: `text/plain` plain-text export·`Content-Disposition: attachment`·`getBytes(UTF-8)` 안전 인코딩 · **PII 표면**: clientNameSnapshot 등 계약서 항목(이름·작성일·세부목표·필요내용 등 NHIS 10필드 verbatim) — `@PreAuthorize` + branch scope으로 가시성 제어·기존 G14 detail 표면과 동일 수준·SEC-D 신규 표면 없음 · V183 `(org, branch, plan_year)` index — cohort 스캔 성능·보안 표면 변동 0 |
+| **G-NHIS-IMPORT-ERROR-STATUS-SURFACE 5-state outcome + counter integrity** (`c38388d`·`97b94e7`·`ffa57ea`·`9b91e0f`·`45acb75`·`3d4e58a`·FE `91675f1`·`e4dbe9a`·`cda2a10`·`562560a`·`2d9b9d3`) | **Pass · ★ 보안 긍정(counter integrity)** | `NhisVisitScheduleImportOutcome.resolve(totalRows, imported, unmatched, skipped)` — **`validateCounts` invariant**: ① counter 음수 차단(`IllegalArgumentException`) ② `totalRows=0 AND (imported|unmatched|skipped)>0` 차단 ③ `imported+unmatched+skipped > totalRows` 차단 — raw count·향후 batch import 로직 회귀 시 응답 신뢰성·downstream FE 분기 안전성 lock · 5-state 분류(`SUCCESS/PARTIAL/UNMATCHED/ALL_SKIPPED/EMPTY`)·**0-imported + (unmatched>0 AND skipped=0)** → `UNMATCHED`·**0-imported + skipped>0 AND unmatched=0** → `ALL_SKIPPED`·**0-imported + 둘 다 존재** → `PARTIAL`(actionable 인정번호·성명 수정 누락 방지) · FE deep-link: `buildClientListSearchHref(ltcCertNo, branchId)`로 인정번호+지점 동시 전달(다른 지점 PII reveal 차단)·`readClientListBranchFromQuery`로 ClientListPage 초기화·QA-B350 reset stale branch query filter(`320ba06`) 회귀 가드 |
+| **G-NHIS-SCHEDULE-IMPORT guidance API** (`4567030`·FE `8ceb25c`) | **Pass — 안전(정적 카피)** | `GET /api/v1/visits/imports/nhis/guidance` `@PreAuthorize(BRANCH_ADMIN, SOCIAL_WORKER)` · `NhisVisitScheduleImportGuidance.toResponse()` 정적 immutable payload — PORTAL_URL·BROWSER_REQUIREMENT·PLAN/BILLING_IMPORT_STEPS·CONFIRMED_SCHEDULE_RESET_NOTE·SCHEDULE_KIND_NOTE·LIVE_GUIDANCE_MESSAGE·ERROR_RECOVERY_STEPS·OUTCOME_STATUS_NOTES · **PII·secret·테넌트 데이터 0** — 정적 카피만 노출 |
+| **V180 program_client_groups defense-in-depth** (`42a369e`) | **Pass · ★ DB-level defense-in-depth** | V179(coder round 199) 위 6-항목 적층: ① `(org, branch_id, id)` 3-way UK(V169 패턴) ② `fk_..._group_branch_org` 3-way FK **cross-branch raw SQL 적재 차단**(member.branch_id ≠ group.branch_id 허용 갭 봉합) ③ `trg_set_org_branch`(V74·client_id → org/branch 자동 복사) ④ `trg_guard_active_client`(V49·`is_active=true AND discharged_at IS NULL`·**퇴소·비활성 INSERT 차단**) ⑤ `trg_set_created_by`(V49 actor backstop·`ogada.actor_user_id` GUC) ⑥ purge backing index(DATA_RETENTION §4-1) · 의도적 제외 3종 명시(멤버십 overlap·active=false 신규·created_by NOT NULL) |
+| **V183 client_care_plan_forms (org, branch, plan_year) index** (`547c85f`) | **Pass(no security surface)** | bulk export cohort 스캔용 단일 index — RLS/scope·CHECK 변동 0·보안 표면 동일 |
+| **QA-B95 readiness 8-layer hardening (g21-seed codes·recovered-auth)** (`14964f6`·`0f19767`·`42a369e`·`d06e3f1`·`59e4e7f`·`9664f29`·`1c7064d`·`3342938`·FE `bd3253a`·`7e7c296`·`fcc16ca`·`4bbd54a`·`a8f4e8e`·`a727862`·`f851a59`·`6009ba7`·`3eebddb`) | **Pass · ⚠ SEC-D40 신규 Monitor** | `application.yml` 신규 `allow-recovered-auth: ${OGADA_LIVE_E2E_ALLOW_RECOVERED_AUTH:${LIVE_E2E_ALLOW_RECOVERED_AUTH:true}}`(line 90) — 기본 `true` · `LiveE2eController.probe()`에서 `recoveredAuthAllowed = allowRecoveredAuth && bootstrapService != null` 평가 · **bootstrapService는 `@ConditionalOnProperty(prefix="ogada.live-e2e", name="bootstrap-enabled")`로 게이트**(prod에서 bootstrap-enabled=false 강제 시 `bootstrapService==null` → `recoveredAuthAllowed=false`·`@Profile("prod") ProductionSecretValidator`가 4표면 env 검사로 bootstrap-enabled=true 즉시 기동 중단·SEC-D29 lineage) → **prod 실효 차단** · 단 `ALLOW_RECOVERED_AUTH` 4표면 env(`ogada.live-e2e.allow-recovered-auth`·`OGADA_LIVE_E2E_ALLOW_RECOVERED_AUTH`·`LIVE_E2E_ALLOW_RECOVERED_AUTH`)는 `ProductionSecretValidator`에 미통합 → SEC-D40 Monitor(P3·운영 명시 권고) · g21-seed status code 분리(`disabled`/`service-unavailable`/`ready`/`unavailable` enum)·`HealthController`/`LiveE2eController` operationReady 게이트 정합 |
+| **FE QA-B350 reset stale branch query filter** (`320ba06`) | **Pass · 보안 긍정(stale state 차단)** | URL `branchId` query param이 사용자의 현 active branch와 불일치하면 reset — NHIS import deep-link 후 branch context 잘못 이관 시 다른 지점 client 목록 노출 차단 · `clientListFilters.js`의 `readClientListBranchFromQuery` 정합·기존 BranchScopeNotice/`@PreAuthorize` final defense 직교 |
+| **FE Staff Monthly Schedule page** (`33944e4`) | **Pass(no new surface)** | `StaffMonthlySchedulePage.jsx` — 기존 staff schedule 조회 API 재사용·신규 endpoint·permission 없음·`apiFetch` 경유 · UXD-165 a11y + components.css 승격(BNK-635 carry) |
+| **FE 신규 API 9종+**(`fetchStaffCommitteeMeetingsApi`·`fetchStaffCommitteeMeetingApi`·`createStaffCommitteeMeetingApi`·`updateStaffCommitteeMeetingApi`·`finalizeStaffCommitteeMeetingApi`·`downloadStaffCommitteeMeetingExportApi`·`exportClientCarePlanFormsBulkApi`·`fetchVisitNhisImportGuidanceApi` 등) | **Pass — SEC-D17 Fixed 유지** | 전부 `apiFetch`/`apiFetchBlob` 경유(Bearer·refresh·raw `fetch()` 0건) · `rg` 실측: `src/api/services.js` `apiFetch(` 360 occurrence·raw `fetch(` 0건 |
+
+### (C) 신규·갱신 이슈
+
+| ID | 항목 | Severity | 상태 | 근거 |
+|----|------|----------|------|------|
+| — | **26차 신규 BLOCK급 audit Open 0건** | — | — | 신규 API/migration 전부 RBAC·tenant-safe Pass · V180/V181/V182 DB-level defense-in-depth · 5-state outcome + counter integrity invariant · 신규 prod 의존성 0(pom.xml·package.json prod 표면 불변·prod audit 0건 유지) |
+| **SEC-D40** | **`allow-recovered-auth=true` 기본·`ProductionSecretValidator` 미통합** | **Low** | **Open(Monitor)** | `application.yml:90`에 신규 `ogada.live-e2e.allow-recovered-auth: ${OGADA_LIVE_E2E_ALLOW_RECOVERED_AUTH:${LIVE_E2E_ALLOW_RECOVERED_AUTH:true}}` — 기본 `true`. `LiveE2eController.probe()`는 `recoveredAuthAllowed = allowRecoveredAuth && bootstrapService != null`로 평가하며, bootstrapService는 `@ConditionalOnProperty(bootstrap-enabled)` 게이트로 `false`/미설정 시 `null` → prod에서 `ProductionSecretValidator`가 4표면 bootstrap env(`ogada.live-e2e.bootstrap-enabled`·`OGADA_LIVE_E2E_BOOTSTRAP_ENABLED`·`LIVE_E2E_BOOTSTRAP_ENABLED`·`LIVE_E2E`) 중 어느 하나라도 true이면 즉시 기동 중단(SEC-D29 lineage) → **prod 실효 인증 우회 없음**. 그러나 `ALLOW_RECOVERED_AUTH` 3표면 env는 validator에 미통합 → prod에서 명시적으로 `false`로 강제하는 가드 부재. **권장**: ① prod env `OGADA_LIVE_E2E_ALLOW_RECOVERED_AUTH=false` 명시(운영 가이드 문서화) ② SEC-D29 lineage carry: `ProductionSecretValidator.collectViolations`에 `allowRecoveredAuth=true AND bootstrapEnabled=any` 거부 표면 5번째 추가 검토(P3) |
+| SEC-D38 | `enforce-bootstrap-readiness=false` 시 probe `operationReady` 오보 | Low | **Open(Monitor)** | 25차와 동일 carry — `LiveE2eController` `resolveBootstrapDisabledOperationGate()`에서 `enforceBootstrapReadiness=false` 시 `OperationGateSnapshot.unenforced()`(operationReady=true)·인증 우회 없음·운영 가시성 오보 표면만 |
+| SEC-D39 | CMS 가상계좌·다계좌 응답 `virtualAccountNumber`/`accountReference` 표시 | Low | **Open(Monitor)** | 25차와 동일 carry — HQ/BRANCH only + `validateBranchReadScope` |
+| SEC-D18 | origin/test push 미실행 | Low | **Monitor(더 악화)** | origin/test **592 BE/266 FE unpushed**(25차 572/241 → 26차 592/266·**+20 BE/+25 FE**·26-cycle carry) |
+| SEC-D4 | poi-ooxml **5.3.0** — **5 파서**(25차 「4」 정정) | **Medium** | **Open** | `pom.xml` 5.3.0 불변 — CVE-2025-31672 미해소 · **표면 5종**: `NhisExcelParser`(청구)·`BankDepositExcelParser`(은행입금)·`RfidTransmissionExcelParser`(RFID)·`StaffNhisCaregiverExcelParser`(요양보호사)·`NhisVisitScheduleExcelParser`(방문일정·`ee3fa3a`/`7fbd219`/`3f444a1` lineage·이전 audit 누락 표기) · 신규 파서 추가 없음(G-CLIENT-CONTRACT-BULK-PRINT·G-STAFF-COMMITTEE-MEETING-LOG·G-NHIS-SCHEDULE-IMPORT guidance·outcome resolver 모두 POI 미사용) |
+| A06-1 | Spring Boot **3.3.1** | **Medium** | **Open** | `pom.xml` 3.3.1 불변 — 패치 라인 업그레이드 검토 |
+| SEC-D33 | 명세·NTS CSV export 수식 인젝션 | **Low** | **Open(Monitor)** | 25차와 동일 — bulk export는 `text/plain` 평문(스프레드시트 import 표면 아님)·CSV 표면 변동 0 |
+| SEC-D34 | 요양보호사 import 확장자 미검증 | **Low** | **Open(Monitor)** | 25차와 동일 |
+| SEC-D36 | staff access key 6-digit 키스페이스 | **Low** | **Open(Monitor)** | 24차와 동일 · rate limit 의존 유지 |
+| SEC-D37 | `notifications.payload_json` 내 평문 access key 잔존 | **Low** | **Open(Monitor)** | 24차와 동일 · purge/redact 정책 미정의 |
+| SEC-D32 | 현금영수증 식별자 at-rest 평문 | **Low** | **Open(Monitor)** | 25차와 동일 |
+| SEC-D26 | npm audit dev form-data CRLF | High(dev-only) | **Open(dev)** | prod **0건**(26차 실측 불변) · dev **1 HIGH** GHSA-hmw2-7cc7-3qxx(불변·`form-data 4.0.0-4.0.5`) |
+| SEC-D29 | live-e2e bootstrap | Low~Medium | **Mitigated → carry** | 26차 ProductionSecretValidator 4표면 봉인 carry(추가 진전 없음·SEC-D40 신규 표면 별도 Monitor) |
+| SEC-D22 | `scripts/*.env` gitignore parent HEAD | Low | **Mitigated** | 25차와 동일(parent repo 커밋 대기) |
+
+### (D) ✅ 유지 — Fixed/Pass 재확인
+
+| 항목 | 26차 재확인 |
+|------|-------------|
+| SEC-D17 raw fetch | **Fixed 유지** — 신규 FE API 9+ 종(committee meeting 6 + care plan bulk export + visit NHIS guidance) 전부 `apiFetch`/`apiFetchBlob` 경유 · raw `fetch()` 0건(`services.js` 실측: `apiFetch(` 360 occurrence·raw `fetch(` 0건) |
+| SEC-D19 error handler | **Fixed 유지** — 신규 `StaffCommitteeMeetingService`·`ClientCarePlanFormService` 예외도 `BusinessRuleException`/`ResourceNotFoundException`/`ScopeAccessException` 표준 경로 → `GlobalExceptionHandler` 고정 응답 · 스택 미노출 |
+| SEC-D23 PilotFixturePanel | **Fixed 유지** |
+| SEC-D24 SecurityConfig 필터 | **Fixed 유지** — 신규 committee-meetings·care-plan-forms/bulk-export·visits/imports/nhis/guidance 엔드포인트도 인증 후 TenantContext 적용 |
+| SEC-D14 origin/test P0 | **Fixed 유지** — `598d108`/`ab4de83` P0 포함(unpushed gap은 SEC-D18) |
+| SEC-008 npm audit prod | **Fixed 유지** — prod **0건**(26차 실측) |
+| JWT session (SEC-005) | **Pass** — access 메모리 + refresh `sessionStorage` |
+| SEC-D15 Solapi config-time fail-closed | **Pass 유지** — 신규 알림 표면 없음 |
+| SEC-D35 WT CLEAN | **Mitigated 유지** — 양 스트림 24차 → 25차 → 26차 CLEAN carry(**5-cycle carry**) |
+
+### (E) 우선순위 (26차)
+
+| 순위 | ID | Severity | 조치 |
+|------|-----|----------|------|
+| P1 | SEC-D4 | Medium | poi-ooxml 5.4.0+ — **5 파서** 회귀(25차 「4 파서」 정정·신규 파서 추가 없음·현행 유지) |
+| P1 | A06-1 | Medium | Spring Boot 3.3.x 패치 라인 |
+| P2 | SEC-D18 | Low(더 악화) | **origin/test push**(592 BE/266 FE·+20/+25 vs 25차) |
+| P2 | SEC-D40 | Low | **(NEW)** prod `OGADA_LIVE_E2E_ALLOW_RECOVERED_AUTH=false` 명시·`ProductionSecretValidator` 5번째 표면(allow-recovered-auth 3-form env) 통합 검토(P3) |
+| P2 | SEC-D38 | Low | prod `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 명시 강제(carry) |
+| P2 | SEC-D39 | Low | CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계(carry) |
+| P2 | SEC-D36 | Low | staff access key 키 길이/charset 확장(carry) |
+| P2 | SEC-D37 | Low | `notifications.payload_json` 평문 access key purge·redact(carry) |
+| P2 | SEC-D33 | Low | CSV export 수식 prefix sanitize |
+| P2 | SEC-D34 | Low | 요양보호사 import 확장자/Content-Type 검증 |
+| P2 | SEC-D26 | High(dev·1건) | form-data `npm audit fix` |
+| P2 | SEC-D22 | Low | parent repo `.gitignore` `*.env` 커밋 |
+| P2 | SEC-D25 | Low~Medium | 첨부 magic-byte |
+| P2 | SEC-D32 | Low | identifier at-rest 암호화 검토 |
+| ✅ | V180·V181·V182·V183 DB defense-in-depth(3-way FK·trg_guard_active_client·trg_set_org_branch·trg_set_created_by·location nonempty·finalized_at≥created_at·care plan branch_plan_year index)·G-STAFF-COMMITTEE-MEETING-LOG(6 endpoint RBAC·DRAFT↔FINALIZED lifecycle·`ensureFinalizedStatus` export 게이트)·G-CLIENT-CONTRACT-BULK-PRINT(`requireReadableClient` per-id loop·plan year 가드·비활성 자동 filter)·NhisVisitScheduleImportOutcome counter integrity invariant·QA-B350 stale branch filter reset·SEC-D17/D19/D24/D14/D35(5-cycle CLEAN) | — | 26차 Pass/Fixed/보안 긍정 |
 
 ---
 

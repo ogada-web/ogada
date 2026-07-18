@@ -1,0 +1,114 @@
+BNK-674 교차검증·갭 우선순위 8h+ — 2026-06-26T22:00Z (KST 07:00)
+=============================================================================
+rotation: 교차검증·갭 우선순위 (cross-verify · gap priority · P0/P1 재정렬)
+초점: BNK-673 가정 번복(law247 wrong admRulSeq) · G14·dashboard·v1.3-C·v2 CMS 7/7 route LIVE
+      · ogada cross-stream HEAD +2 · M11/M12 P1 carry · 엑셀 포맷·공지 스캔
+
+=============================================================================
+1. ogada baseline git 실측 (확인)
+=============================================================================
+FE develop : aa0559b  WT CLEAN  (BNK-673 `@afbbaa7` **HEAD +1**)
+             fix(v1.2.1/G16): fallback onePerDayNote and lock zero-import PARTIAL UI
+             ahead 270 vs origin/test=ab4de83
+BE develop : 7fcdfde  WT CLEAN  (BNK-673 `@eb6dd67` **HEAD +1** · BNK-673 WT DIRTY **closure**)
+             test(v2/QA-B95): lock bootstrap service-unavailable health probe outcomes
+             ahead 595 vs origin/test=598d108
+merge gate : **865** (FE 270 + BE 595) · +2 vs BNK-673 **863**
+
+KPI 실측 @aa0559b / @7fcdfde:
+  - <Route\b>        : 118 (+ <Routes> 1 = 119 total)
+  - *Page.jsx        : 93
+  - Flyway           : V1–V183 (183 files)
+  - BE Test.java     : 274 + Tests.java 1 = 275? → 실측 274 Test.java + 1 Tests.java = 274 carry (find *Test.java=274)
+  - BE @Test         : **1999** (+1 vs BNK-673 develop 1998 · HealthControllerTest +1 @Test committed)
+  - BE @ParameterizedTest : 3 (별도)
+  - FE test          : **489** (203 .test.js + 286 .test.jsx · +4 vs BNK-673 485)
+  - 모듈 커버리지     : **80.86%** (23.45/29 · ✅21/△3/❌5 · competitorModuleCoverage.js 실측)
+  - reports route    : 28
+
+FE HEAD +1 delta (aa0559b · 5-file +81/-3):
+  - `resolveTransportServiceFeeOnePerDayNote()` — BE rates API `onePerDayNote` 우선·비어 있으면 catalog 정적 문구 fallback (G16 NHIS copy gap closure)
+  - `VisitNhisImportPanel.test.jsx` — importedCount=0 **PARTIAL vs ALL_SKIPPED** boundary regression lock (+42L)
+  - `TransportServiceFeePanel.test.jsx` + `transportServiceFee.test.js` — onePerDayNote fallback tests (+26L)
+
+BE HEAD +1 delta (7fcdfde · 1-file +42L):
+  - `HealthControllerTest.java` — QA-B95 bootstrap service-unavailable health probe outcomes (+1 @Test)
+  - BNK-673 WT DIRTY 1M **closure** → 양쪽 WT CLEAN → tester FF merge 865 가속 가능
+
+=============================================================================
+2. ★★★ cross-verify — 4축+leave-ledger 7/7 route LIVE @aa0559b (확인 · P0/P1 재정렬)
+=============================================================================
+| 축 | Route | ogada @aa0559b | 경쟁사 벤치 | P | 판정 |
+|---|---|---|---|---|---|
+| G14 care-plan-form | `/clients/:clientId/care-plan-form` | ✅ ClientCarePlanFormPage | △ carefor M5 | P0 carry | **변동 0** · BNK-643 93-cycle |
+| dashboard | `/dashboard` + `/dashboard/hq` | ✅ DashboardPage variant hq | ✅ ezCare·carefor | P0 carry | **변동 0** |
+| v1.3-C transport/G16 | `/transport/service-fees` + G16 panel | ✅ + onePerDayNote fallback NEW | ✅ func M2·NHIS #44 | P0 carry | **stage11 deepen** (FE aa0559b) |
+| v2 CMS | `/billing/cms` | ✅ CmsPage lazy | ✅ silverangel 5-method | P0 carry | **변동 0** · 5/5 FULL PARITY |
+| leave-ledger | `/staff/leave-ledger` | ✅ StaffLeaveLedgerPage | ✅ carefor 8-13 | P1 carry | **변동 0** |
+| guardian | `/guardians`·`/guardian/*` | ✅ | △ | P1 carry | **변동 0** |
+| M11/M12 payroll/accounting | `/payroll/*`·`/accounting/*` | ❌ 0 route | ✅ carefor 11-x·ezCare K008/K012~K014 | **P1** | **단일 최대 KPI lever carry** (+6.9pp) |
+
+판정(확인): **가정 번복 0 · P0/P1 재정렬 없음** — G16 onePerDayNote fallback = v1.3-C micro-hardening only · M11/M12 remains sole P1 gap lever.
+
+=============================================================================
+3. ★★★ law247 admRulSeq URL correction — BNK-673 「site refactor −92%」 가정 번복 (확인 · 신규 evidence)
+=============================================================================
+BNK-673 used wrong URL:
+  - `admRulInfoP.do?admRulSeq=2100000252389` → HTTP 200 · **6,217B** empty shell (md5 drift d5665e43→bba00bdf)
+  - 판정: 「site refactor −92%」 **가정 오류** — wrong seq
+
+Correct URL (canonical 제2025-247호 · README BNK-594~654 historical seq):
+  - `admRulInfoP.do?admRulSeq=**2100000271110**` → HTTP 200 · **78,450B** · md5 `af7d7b40`
+  - title: 「장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시」
+  - verbatim: `[시행 2026. 1. 1.] [보건복지부고시 제2025-247호, 2025. 12. 30., 일부개정]`
+  - hidden: `prmlNo=2025-247` · `efYd=20260101` · `prmlYd=20251230`
+  - snapshot: `law247_admRulInfoP_seq271110_bnk674.html`
+
+Wrong seq cross-check (확인):
+  - `2100000247886` → 78,100B · **외교부 공무직 관리규정** (stale disk seq · NOT 장기요양)
+  - `2100000252389` → 6,217B · empty shell (BNK-673 false alarm source)
+
+신규 endpoint 시도 (미확인 carry):
+  - `admRulSc.do?admRulSeq=2100000252389` → 278,976B generic search portal (NOT rule body)
+  - snapshot: `law247_admRulSc_bnk674.html` · body still Ajax-loaded · direct body fetch 「미확인」
+
+판정(확인): **가정 번복 1** — BNK-673 law247 site refactor → **wrong admRulSeq** · correct seq restores full 78,450B SSR · canonical disk `law_mohw_2025_247_admRulInfoP.html`(seq 247886=외교부 drift) → **인용 URL 정정 to 2100000271110** 권장.
+
+=============================================================================
+4. backbone evidence URL 재실측 (확인)
+=============================================================================
+zero drift IDENTICAL:
+  - NHIS #44 이동서비스비    c886ff1f  7,572B  (415차 · BNK-673 414차→+1)
+  - ezCare FAQ 21845 공단엑셀 5b78c947  13,915B (incident 사후·수동 · 5-cycle+)
+  - ezCare FAQ 21844 엑셀포맷 d0aa760c  14,474B (**엑셀 포맷 변경 0** · BNK-608 G-NHIS-MASKED-NAME carry)
+  - ezCare e01 이용시설       bbeb37eb  47,089B (9,356·53.50%·17,489 **값 zero drift**)
+  - silverangel 221564 draft  8437f255  51,765B (**6-cycle+ HOLD** · leak CLOSED carry)
+
+counter/cachebuster DRIFT (content stable):
+  - ezCare FAQ list           a08c69f4  80,057B (233 rowid·14 cat·finance cluster **123** · hit sum **3,637,258** · BNK-672 3,637,250→**+8**)
+
+=============================================================================
+5. ezCare 결제·재무 demand-signal 재입증 (확인 · taxonomy carry)
+=============================================================================
+14-카테고리 빈도 (BNK-672 IDENTICAL · 233 rowid):
+  수당/급여 64 · 직원 47 · 서식 35 · 수급자 28 · 일정 26 · 본인부담 26 · 기타 20
+  4대보험 15 · 문자 8 · 공단 7 · 세무 7 · 재무 6 · 이용료 5 · 모바일 3
+  결제·재무 클러스터 = **123** → ogada M11/M12 ❌ = **P1 단일 lever** (+6.9pp 80.86%→87.76%)
+
+=============================================================================
+6. 보고 종합
+=============================================================================
+가정 번복     : **1** (BNK-673 law247 site refactor → wrong admRulSeq 2100000252389)
+신규 core 갭  : 0
+candidate     : 0 (G-MEAL-PLAN-TEMPLATE P2/P3 · M11/M12 P1 carry only)
+상태 변경     : **3** — ① FE HEAD +1(G16 onePerDayNote + G-NHIS PARTIAL boundary) ② BE HEAD +1(QA-B95 HealthControllerTest · WT DIRTY→CLEAN) ③ law247 URL seq correction
+KPI 변경      : **3** — BE @Test 1998→1999 · FE test 485→489 · merge gate 863→865
+미확인        : **1** — law247 admRulSc.do direct body Ajax (correct seq 271110 body = SSR shell+JS load · admRulSc portal ≠ body)
+엑셀 포맷 변경: **0** (FAQ 21844 zero drift)
+per-cycle minimum 4종 충족
+
+planner 제안:
+  - law247 인용 URL → admRulSeq=**2100000271110** 정본 (BNK-673 2100000252389 폐기)
+  - tester FF merge **865** (양쪽 WT CLEAN · 선행 commit 불필요)
+  - M11/M12 P1 scope 결정 question carry (in-app vs BPO · FAQ finance cluster 123)
+  - G16 stage11 onePerDayNote fallback = v1.3-C NHIS copy resilience (marketing micro-lever)

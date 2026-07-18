@@ -1,0 +1,83 @@
+# BNK-786 — 이지케어 역공학 2–4h crosswalk
+# 조사일: 2026-07-16T08:15:00Z (KST 2026-07-16 17:15)
+# rotation: 이지케어 역공학 2–4h
+# 직전 동일 rotation: BNK-782 (2026-07-16T03:22:00Z) → ~4.9h 후
+# 직전 사이클: BNK-785 (케어포 0–2h · 2026-07-16T05:26:00Z) → ~2.8h 후
+# ogada FE @f9e1e91 (WT CLEAN · BNK-785 @83e6296 → +1 QA-B95 unicode-escaped/bare decimal · ahead origin/test 1)
+# ogada BE @aa551fb (WT CLEAN · BNK-785 @20ac77f → +6 QA-B95 hardening · ahead 691 vs 598d108)
+# Route 133 · Page 107 · FE test 530(217+313) · BE Test 293 · BE @Test 2250(+7 vs BNK-785 2243)
+# 모듈 97.41%(28.25/29) · merge gate 692(FE 1+BE 691 · BE-heavy → tester FF)
+# npm test 미실행(vitest 동시 실행 금지)
+
+## 1. ★★★ 신규 증거 URL — FAQ rowid=21474 「일정확정은 언제해야 하나요?」
+
+- URL: https://ezcare.easyms.co.kr/help/V.ez?rowid=21474
+- HTTP 200 · 5,353B · md5 797439bf · snapshot: ezcare_faq_21474_live_bnk786.html
+- 확인(인용):
+  · 「일정확정은 매월 공단 청구완료 후 본인부담금이 공단과 일치하는지 확인 후 진행」
+  · Step1: `3. 방문일정관리` → **공단 청구일정 가져오기**
+  · Step2: `4. 일정확정` → 본인부담금 일치 시 **일정 일괄확정하기** 클릭
+  · 주의: 공단 엑셀 오류·월중 본인부담률 변경·계획일정 선등록·청구전 선확정 시 금액 불일치 가능 → **반드시 4.일정확정에서 공단↔이지케어 본인부담금 대조**
+  · 본인부담률 변경 시: 일정확정 화면 본인부담률 클릭 → **본인부담률 이력 등록**
+  · 공단 확인 경로: 급여비용청구 화면 본인부담금·본인부담률 (스크린샷 `/help/file/공단에서 부담률 확인_1.png`)
+
+### PGID schedule-fix 교차 (demo ERP · 기존 URL 재실측)
+
+- URL: https://ezcare.easyms.co.kr/new.ez?PGID=schedule-fix (demo login via scripts/ezcare-demo-fetch.sh)
+- HTTP 200 · 149,568B · md5 8e2a5303 (−8B vs disk canonical 149,576B · semantic IDENTICAL)
+- snapshot: ezcare_new_ez_pgid_schedule-fix.html (덮어쓰기)
+- 확인 — UI/필드/워크플로:
+  · 제목 `4. 일정확정` · 필터 `fixed`(fix/noFix) · `pRate_type` · `keyword`
+  · 집계 grid `#grid-schedule-p500` 17-col: sName·pRate_type·name·pRate·tAmount_noExt·rAmount·pAmt·pAmt_ext·pAmount·tAmount·inji_cnt·inji_amount·severe_amount·sch
+  · Ajax: `/page/schedule/json-schedule.php?data=schedule_fix`
+  · 버튼 5종: 일괄 확정취소(help 4202)·집계표 출력·본인부담금 관리(PGID=pAmt-a100)·급여관리창 열기·**일정 일괄확정하기**(help 4203)
+  · 확정 다이얼로그: chk-ltm-fix 「일정 확정 전, 공단 청구명세서와 비교하기」→ `comp_ltm_fix_data()` 공단↔이지케어 비교
+  · 확정취소: `dialog-bill-RESET` 6-cascade 경고 + **4-digit confirmNum** challenge
+  · 인라인 FAQ 링크: rowid 21778(공단 본인부담금 불일치)·21208(10원 차이)
+
+### ogada 패리티 (확인 · G-SCHEDULE-FIX CLOSED carry + SUPERIOR)
+
+| 이지케어 | ogada | 판정 |
+|---|---|---|
+| FAQ 21474 2-step(청구일정 가져오기→일정확정) | VisitsPage NHIS import + batch confirm flow | ✅ |
+| chk-ltm-fix 공단↔이지케어 비교 | `GET /visits/nhis-comparison` + VisitNhisComparisonDetail (G21) | ✅ |
+| 일정 일괄확정하기 | `batchConfirmVisitsApi` | ✅ |
+| dialog-bill-RESET 4-digit + 6-cascade | VisitBatchUnconfirmPanel (4-digit challenge + cascade warning) | ✅ SUPERIOR |
+| 본인부담률 이력(pRate dialog) | `/billing/copay-rates` + client copay history | ✅ |
+| 확정 후 일정 잠금 | visit confirm lock + billing claim guard | ✅ |
+
+→ FAQ 21474 가 **일정확정 선행조건(공단 청구완료·본인부담금 대조)** 을 명시 = ogada G-SCHEDULE-FIX 설계 정합 재확인 · 진성갭 0
+
+## 2. ★★ 메뉴/필드/워크플로 — 도입·가격 재실측
+
+| URL | bytes | md5 | vs BNK-782 | 핵심 값 |
+|---|---|---|---|---|
+| change_work.html | 26,157 | 5f5fe354 | DRIFT(counter-only) | **9,436** 기관(BNK-782 9,435 → +1·~5h) · 후기 **5,003**(BNK-782 5,004 → −1·텍스트 drift) |
+| fnc.html | 17,870 | 62bc3d86 | STABLE header | headstatus **9,436** |
+| charge.html | 22,979 | 0d967dee | STABLE | 셋팅비 **33,000원**(40%할인·~2026-07-31) |
+| home / | 69,363 | 2d7dd5f1 | DRIFT | 53.2%·9298·**4674**(BNK-778 4672 → +2) |
+| faq.ez | 80,057 | a8f700d5 | DRIFT hit-only | rowid SETS **233 IDENTICAL** |
+
+## 3. ★ demo ERP LOCK + PGID batch 재실측
+
+- login code 0000 · title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」
+- top-nav `95286775` 25,470B LOCK (7주+ zero drift)
+- menu catalog: module 10 / leaf 148 / PGID 59 IDENTICAL
+- PGID bytes/md5:
+  · schedule-fix 149,568 `8e2a5303` (덮어쓰기)
+  · duplicate-schedule 93,393 `498ef3ab` (shell only·grid 미로드·BNK-782 NotFound → 본 사이클 shell 로드)
+  · change-list 100,270 `9643fead` (+8B vs BNK-778)
+  · receipt-list 108,582 `2a689b4c` (carry)
+  · patient-list 408,388 `d7d3c740` (신규 batch fetch)
+
+## 4. ★ NHIS #44 520차 zero drift
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = BNK-785 519차 → +1 = **520차 IDENTICAL**
+
+## 5. planner 제안
+
+- REQUIREMENTS G-SCHEDULE-FIX: FAQ 21474 2-step 선행조건을 USER_STORIES acceptance criteria 로 명시(공단 청구완료·본인부담금 대조 후 확정)
+- ogada VisitBatchUnconfirmPanel 4-digit + 6-cascade = 이지케어 대비 **운영 안전장치 우위** 유지 · KPI promote 0
+- 이지케어 재가 ERP 중심(방문요양/목욕) — ogada 주간보호 정본 차별화 narrative carry
+- residual: id=12 M12 SSO credentials(0.7) · id=2/8/10 form polish(0.85)

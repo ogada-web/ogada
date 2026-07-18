@@ -1,0 +1,233 @@
+# ezCare 도움말 FAQ 워크플로 deep-dive 재실측 — BNK-676 (이지케어 역공학 2–4h)
+
+조사일: 2026-06-26T23:25:00Z (KST 08:25)
+rotation: 이지케어 역공학 2–4h
+소스: https://ezcare.easyms.co.kr — `/help/faq.ez` (목록·신규 fetch) + `/help/faq.ez?rowid=21474/21778/21614` (워크플로 본문 신규 fetch)
+
+---
+
+## 1. FAQ 목록 누적조회 counter 재측정 (재실측 + 변동)
+
+| 측정 | BNK-672 | BNK-674 | BNK-676 | Δ vs BNK-674 |
+|---|---:|---:|---:|---:|
+| faq-hit 합계 | 3,637,250 | 3,637,258 | **3,637,264** | **+6** |
+| rowid 수 | 233 | 233 | **233** | 0 |
+| 14 카테고리 태그 출현 (multi-tag split) | 297 | 297 | **297** | 0 |
+| size | 80,057B | 80,057B | **80,057B** | 0 |
+| md5 (cachebuster) | 18eac71c | a08c69f4 | **081a692c** | DRIFT |
+
+* 4-cycle 만에 +14 누적 (BNK-672→676 51분·평균 0.27 hit/min·BNK-674→676 +6 / 85분 = 0.07 hit/min)
+* size·rowid·카테고리·태그 출현 빈도 IDENTICAL → content 안정·counter 지속 증가 only
+* 결제·재무 클러스터 123 출현 IDENTICAL (수당/급여 64 + 본인부담 26 + 4대보험 15 + 세무 7 + 재무회계 6 + 이용료 5)
+
+## 2. ★★★ NEW 워크플로 deep-dive — FAQ 21474 일정확정 4-step 운영 절차 (확인 · 신규 evidence · 메뉴/필드/워크플로 블록)
+
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21474&type=web (HTTP 200·15,369B·md5 **e7a6fa1c**)
+제목: 「일정확정은 언제해야 하나요?」 (카테고리: 일정관리, 본인부담금, 공단연동 = 3-tag triple-cluster · hit 16,573)
+
+### verbatim 본문 (HTML stripped):
+```
+일정확정은 매월 공단 청구완료 후 본인부담금이 공단과 일치하는지 확인 후 진행하셔야 합니다.
+다음 순서로 업무 진행 후 일정확정 해 주세요.
+
+  1   3. 방문일정관리 에서 공단 청구일정 가져오기 를 진행합니다.
+  2   4. 일정확정 화면에서 본인부담금이 공단과 일치한다면 일정 일괄확정하기 클릭 합니다.
+
+공단 연동으로 청구일정을 업로드하더라도 공단 엑셀(Excel)자료의 오류, 월중 본인부담률의 변경,
+이지케어에 최종 계획일정으로 등록한 경우, 청구전에 일정확정을 미리 한 경우에는
+공단과 본인부담금이 다를 수 있으므로 반드시 4.일정확정 에서 공단과 본인부담금이 일치하는지
+확인 후 일정확정을 하시기 바랍니다.
+
+주의   청구일정 업로드 후에도 본인부담금이 다르다면 본인부담률이 변경되었는지 확인 후 수정합니다.
+       (일정확정 화면의 본인부담률을 클릭하여 변경된 본인부담률 이력을 등록합니다)
+* 공단에서 본인부담금 확인 경로 > 급여비용청구 화면에서 본인부담금, 본인부담률 확인
+```
+
+### ezCare 4-step 운영 워크플로 매트릭스:
+| step | 화면 (메뉴 번호) | 작업 | 시점 |
+|---|---|---|---|
+| 1 | 3. 방문일정관리 | 공단 청구일정 가져오기 (NHIS 엑셀 → 일정 upload) | 매월 공단 청구완료 후 |
+| 2 | 4. 일정확정 | 본인부담금 ↔ 공단 일치 확인 (UI 검토) | 1 후 |
+| 3 | 4. 일정확정 | 본인부담률 클릭 → 변경 이력 등록 (불일치 시) | 불일치 발견 시 |
+| 4 | 4. 일정확정 | 일정 일괄확정하기 클릭 | 일치 확인 후 |
+
+### ★★ 가정 (운영 risk surface):
+* "공단 엑셀의 오류·월중 본인부담률 변경·최종 계획일정 등록·청구전 일정확정 미리 한 경우" 4가지 risk surface 모두 사후 수동 확인 필요
+* `이지케어에 최종 계획일정으로 등록한 경우` = 모바일 직원 출퇴근 등록과 NHIS 청구 일정 mismatch 가능성
+* `청구전에 일정확정을 미리 한 경우` = 일정확정 시점 강제 ordering rule 부재 → 사후 수동 일치 검증 필수
+
+### ★★★ ogada G-NHIS 14-stage chain cross-walk (확인 · ogada `@47a068c`/`@8342f92`):
+| ezCare FAQ 21474 step | ezCare in-app 상태 | ogada 매핑 (`NhisVisitScheduleImportOutcome`+`errorRecoveryKeywordNotes`) |
+|---|---|---|
+| 1 공단 청구일정 가져오기 | UI 버튼 + 사후 FAQ 안내 | `VisitNhisImportPanel` + `POST /api/v1/visits/nhis-import` + `NhisVisitScheduleImportGuidance`(in-app inline) |
+| 2 본인부담금 일치 확인 (사후 수동) | **in-app 0** (FAQ 사후 수동) | `NhisVisitScheduleImportOutcome` 4-state (SUCCESS·PARTIAL·ALL_SKIPPED·EMPTY) + `errorRecoveryKeywordNotes` 4-key map → 실시간 상태 + 복구 키워드 매핑 |
+| 3 본인부담률 클릭→변경 이력 등록 | UI 수동 | `BillingCopayRateService` + `billing/copay-rates` route ✅ |
+| 4 일정 일괄확정 | UI 버튼 | `confirmVisitSchedules` API ✅ (확정 시점 ordering rule guard) |
+
+→ ezCare 4-step 사후 수동 워크플로 vs ogada **stage1~14 in-app 실시간 복구 loop**(BNK-661 9-stage chain → BNK-670 13-stage chain → BNK-672 14-stage chain) **경쟁 4종 유일** full-stack 우위 deepen.
+
+## 3. ★★★ NEW 워크플로 deep-dive — FAQ 21778 본인부담금 ↔ 공단 차이 사후 조치 (확인 · 신규 evidence)
+
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21778&type=web (HTTP 200·14,566B·md5 **8ed0cf75**)
+제목: 「공단과 본인부담금이 다를때 조치방법」 (카테고리: 본인부담금 · hit 2,564)
+
+### verbatim 본문:
+```
+공단과 본인부담금이 다를 경우 다음 사항을 꼭 확인해 주세요!!
+
+3. 방문일정 관리 에서 청구일정 가져오기 로 반영되었는지 확인해 주세요.
+청구일정이 미반영되었다면 확정취소 후 청구일정을 업로드 해주세요.
+
+청구일정으로 반영되었는지 확인방법
+공단청구 금액이 진한 숫자로 반영 되었는지 확인해주세요.
+공단청구가 적색으로 나올경우 공단 청구자료를 다시 올려 주어야 합니다.
+
+주의   일정확정 상태에서는 청구일정을 등록해도 반영이 안되니 확정 취소후 진행해 주세요.
+```
+
+### ezCare 사후 조치 워크플로:
+| step | 화면 | 색상 신호 (UI 단서) | 조치 |
+|---|---|---|---|
+| 1 | 3. 방문일정관리 | 공단청구 금액 「진한 숫자」 | 정상 반영 확인 |
+| 2 | 3. 방문일정관리 | 공단청구 「적색」 | 공단 청구자료 재업로드 |
+| 3 | 4. 일정확정 | 「일정확정 상태」 | 확정취소 → 청구일정 재업로드 |
+
+### ★★★ ogada 대응 cross-walk:
+* ezCare는 **색상(진한/적색) UI 단서만** 제공 = 운영자가 dashboard 시각으로 판독 필요
+* ogada `NhisVisitScheduleImportOutcome` PARTIAL + `errorRecoveryKeywordNotes` (UNMATCHED·PARTIAL·ALL_SKIPPED·EMPTY) **4-key 텍스트 매핑** = 시각 판독 부담 0·복구 키워드 직접 전달
+* "일정확정 상태 → 확정취소 후 재업로드" = ogada `confirmVisitSchedules` reverse-API 필요 가능성 → P3「가정」 candidate `G-NHIS-IMPORT-RESET-AFTER-CONFIRM` (확정 후 재import 시 자동 unconfirm + 재import + reconfirm flow)
+
+## 4. ★★ NEW 워크플로 deep-dive — FAQ 21614 2025년 수가 재산정 (확인 · 신규 evidence)
+
+URL: https://ezcare.easyms.co.kr/help/faq.ez?rowid=21614&type=web (HTTP 200·14,681B·md5 **5e4062ee**)
+제목: 「공단일정 가져오기시 25년 수가로 적용이 안돼요.(공단수가 재산정)」 (카테고리: 일정관리 · hit 16,231)
+
+### verbatim 본문:
+```
+공단수가를 2025년 수가로 재산정 진행 하셔야 합니다.
+현재는 공단에서 2024년도 수가로 2025년도 1월 일정을 등록한 상태일수도 있습니다.
+공단일정에서 2025년 수가반영 이후 > 월금액 재산정 클릭 > 저장 및 통보 >
+이지케어에 일정을 다시 업로드 해주세요.
+
+  1   공단의 "급여계약내용 등록" > 해당월을 확인
+  2   "월금액 재산정"
+  3   저장 및 통보  > 이후 이지케어 3.방문일정 관리 (수급자 일정관리) 에서 다시 공단일정을 업로드 해주세요.
+```
+
+### ezCare 운영 워크플로 (수가 변경 시):
+| step | 화면 | 작업 | 시스템 |
+|---|---|---|---|
+| 1 | 공단「급여계약내용 등록」 | 해당월 확인 | NHIS 외부 (희망이음) |
+| 2 | 공단 | 월금액 재산정 클릭 | NHIS 외부 |
+| 3 | 공단 | 저장 및 통보 | NHIS 외부 |
+| 4 | 이지케어 3.방문일정관리 | 공단일정 재업로드 | ezCare in-app |
+
+### ★ ogada cross-walk:
+* 수가 변경은 NHIS 외부 절차(공단 「급여계약내용 등록」+ 월금액 재산정 + 저장 및 통보)가 **선행**되어야 함 → 외부 dependency
+* ogada `TransportServiceFeeParityCatalog`(러-1~4·`ONE_WAY_RATIO=0.5`) + `applyTransportRateUpdate` (G16 BE catalog)는 in-app 수가 lookup ✅
+* 수가 재산정 후 재import = ezCare와 ogada 동일 흐름 (재import API 호출)·차별화 영역 아님
+* 비고: 이지케어는 2024→2025 수가 전환을 6개월+ 시점에도 FAQ로만 안내 (in-app pre-flight check 0) — ogada `applyTransportRateUpdate` 정기 schedule guard 차별화 candidate
+
+## 5. ezCare 도움말 「공단연동」 7-FAQ 클러스터 재실측 (재실측 · 카테고리 단위 cross-walk)
+
+| rowid | hit | 카테고리 | 제목 | ezCare 워크플로 | ogada 매핑 |
+|---|---:|---|---|---|---|
+| 21473 | 22,017 | 본인부담금, 공단연동 | 본인부담금이 공단과 달라요! | (포괄 상위) | `/billing/copay-rates` ✅ |
+| 21298 | 19,394 | 일정관리, 공단연동 | 공단에 등록한 일정을 이지케어에 업로드하는 방법 | UI 4-step | `VisitNhisImportPanel` ✅ |
+| 21475 | 17,567 | 직원관리, 일정관리, 공단연동 | 희망이음 시군구 승인지연 신규직원 방문일정 직접등록 | UI 수동 | `/visits/manual` + `/staff/onboarding` ✅ |
+| 21647 | 16,982 | 일정관리, 공단연동 | 사회복지사 방문(태그전송)내역을 반영 | UI 수동 | `/visits/care-manager` △ |
+| 21474 | 16,573 | 일정관리, 본인부담금, 공단연동 | **일정확정은 언제해야 하나요? (4-step)** | **4-step UI** | **G-NHIS 14-stage in-app 우위 ✅** |
+| 21172 | 15,340 | 일정관리, 공단연동 | 공단일정 이지케어 가져올때 시점 | UI 안내 | `nhisImportEligibilityCheck` ✅ |
+| 21675 | 15,121 | 수급자관리, 본인부담금, 공단연동 | 수급자 변경정보를 공단에서 가져오기 | UI 수동 | `/clients/sync-nhis` △ |
+| 21258 | 14,916 | 직원관리, 수당/급여관리 | 사회보험료 금액이 공단과 달라요! (M11 연관) | UI 수동 | ❌ M11 P1 |
+| 21778 | 2,564 | 본인부담금 | **공단과 본인부담금 다를때 조치방법 (색상 UI)** | **사후 색상 안내** | **G-NHIS recovery keyword 4-key 우위 ✅** |
+
+* 「공단연동」 카테고리 7건 동일 (BNK-672 carry) — 단 21778은 「본인부담금」 단독 태그로 분류 (cross-cluster sub-flow)
+* 21474는 3-tag triple-cluster (workflow hub) → ezCare는 「일정확정」 = 일정/본인부담/공단 통합 surface → ogada도 `VisitScheduleConfirmPage` 동일 통합 surface 필요 가능성
+
+## 6. RFID / 이중·중복 일정 FAQ 재확인 (BNK-672 carry)
+
+| rowid | hit | 카테고리 | 제목 |
+|---|---:|---|---|
+| 21589 | 22,763 | 문자발송 | 급여제공기록지 RFID 전송분을 문자로 발송하고 싶어요. |
+| 21193 | 23,902 | 일정관리, 문자발송 | 일정표를 문자로 보내고 싶어요 |
+
+* `RFID` 키워드 직접 언급 도움말 1건 (BNK-672 carry · IDENTICAL)
+* `중복·듀얼·이중` 키워드 도움말 0건 (마케팅 page `/new/ezCare_change_work.html` 에서만 노출)
+
+## 7. 가격·도입 zero drift 재실측 (재실측 + cachebuster only)
+
+| 측정 | 값 (verbatim) | BNK-672 → BNK-676 변동 |
+|---|---|---|
+| `/?PG=e01` 이용시설 | 9,356개 | zero drift VALUE |
+| `/?PG=e01` 점유율 | 53.50% | zero drift VALUE |
+| `/?PG=e01` 전국재가 | 17,489개 | zero drift VALUE |
+| `/?PG=e01` 집계일 | 2026.06.26 | zero drift |
+| `/new/ezCare_fnc.html` 도입 | 9,359개 | zero drift VALUE |
+| `/new/ezCare_charge.html` 셋팅비 정가 | 55,000원 | zero drift |
+| `/new/ezCare_charge.html` 셋팅비 할인 (~6/30) | 33,000원 (40% 할인) | zero drift |
+| `/new/ezCare_charge.html` 월 기본료 | 10,000원 (10인 이하) | zero drift |
+| `/new/ezCare_charge.html` 월 추가요금 | (수급자-10) × 500원 + VAT | zero drift |
+| `/new/ezCare_charge.html` 37명 예시 | 25,850원 = (37-10)*500+2,350+10,000 | zero drift |
+| `/new/ezCare_charge.html` 가입 혜택 | 30일 무료 + 무료 문자 1000p | zero drift |
+| `/new/ezCare_change_work.html` 키워드 | RFID·중복일정·듀얼·트리플 | zero drift verbatim |
+| `/` (home) mCnt | {1:9286, 2:4608, 3:2353, 4:1820} | zero drift (BNK-672 carry) |
+| `/` (home) banner | [추천 이벤트] | zero drift |
+| `/` (home) cachebuster | `home.js?1782516574` | DRIFT only |
+
+* cachebuster md5만 갱신 (faq_list `18eac71c`→`081a692c`·e01 `7765b62f`→`e2f4c6e8`·fnc `f62f51f3`→`355b191e`·charge `ae4173d3`→`2e289cff`·change_work `cb1aae2e`→`e5b024d6`·home `6444d6f6`→`4a092298`) — 본문 값 IDENTICAL
+* BNK-672 「옵션 45,000·10,000」 → 실측은 옵션 단가 부재·45,000은 80명대 월 이용료 매트릭스 row(`80    45,000`) → BNK-672 표현 정정 carry
+
+## 8. ogada git 실측 baseline (BNK-675 → BNK-676)
+
+* FE `src/frontend` develop `@47a068c` `feat(v1.2.1/US-Q01): wire safety module routes and pilot draft pages` (BNK-675 `@724f4a9` → **+1 commit**) · WT **CLEAN** · ahead **273** vs `origin/test=ab4de83`
+* BE `src/backend` develop `@8342f92` `test(v2/QA-B95): lock null g21 seed health probe parity with live-e2e` (BNK-675 동일 SHA · **HEAD zero advance 1-cycle**) · WT **CLEAN** · ahead **596** vs `origin/test=598d108`
+* merge gate **869** (FE 273 + BE 596 · +1 vs BNK-675 868)
+
+### KPI delta (BNK-675 → BNK-676)
+
+| 축 | BNK-675 | BNK-676 | Δ |
+|---|---|---|---|
+| FE HEAD | `724f4a9` | **`47a068c`** | +1 |
+| BE HEAD | `8342f92` | `8342f92` | zero advance |
+| FE ahead | 272 | **273** | +1 |
+| BE ahead | 596 | 596 | 0 |
+| merge gate | 868 | **869** | +1 |
+| FE Route(App.jsx `<Route\b`) | 118 | **123** | **+5** (US-Q01 stage2 4-route 배선 + pilot draft page route) |
+| FE Page `*Page.jsx` | 93 | **97** | **+4** (US-Q01 4 pilot draft page) |
+| Flyway V1–V183 | 183 | **183** | 0 |
+| BE Test.java | 274 | **274** | 0 |
+| BE @Test | 2000 | **2000** | 0 |
+| FE test (.test.{js,jsx}) | 489 (200+289) | **491** (201+290) | +2 |
+| 모듈 coverage % | 80.86% | **80.86%** (matrix 미반영) | 0 |
+| reports route | 28 | **28** | 0 |
+| FE WT | CLEAN | **CLEAN** | carry |
+| BE WT | CLEAN | **CLEAN** | carry |
+
+* US-Q01 stage1(BNK-675 UI shell) → **stage2 route 배선 closure** in BNK-676 (Route +5·Page +4)
+* `safetyChecks.js` 4-route(`/safety/daily-checks`·`/safety/periodic-checks`·`/safety/infection-control`·`/safety/operation-log`)가 `App.jsx` 에 배선됨 → 「stage2 미반영」 가정 1-cycle 만에 closure
+* M6 ❌→△→ progress (BE controller·Flyway·matrix 갱신 = stage3~4 carry)
+
+## 9. 보고 — 변경/검증 종합
+
+* 가정 번복: **0** (BNK-672 「옵션 45,000」 표현은 carry-정정 — 가정 번복 아님)
+* 신규 core 갭: **0**
+* candidate: **1 NEW P3「가정」** — `G-NHIS-IMPORT-RESET-AFTER-CONFIRM` (확정 후 재import 시 자동 unconfirm+재import+reconfirm flow · FAQ 21778 「일정확정 상태에서는 청구일정을 등록해도 반영 안됨」 사후 수동 가이드 → ogada 자동 reset API 차별화)
+* 상태 변경: **2** — FE HEAD +1 (US-Q01 stage2 route 배선 closure) · BE HEAD zero advance
+* KPI 변경: **5** — Route 118→**123**(+5)·Page 93→**97**(+4)·FE test 489→**491**(+2)·merge gate 868→**869**(+1)·M6 △ stage1→stage2(route 배선 closure)
+* 미확인: **0**
+* per-cycle minimum **4종 충족**:
+  - 신규 evidence URL **3건** (`faq.ez?rowid=21474/21778/21614` deep workflow 본문 신규 fetch) + 6 URL 재실측 (`faq.ez`·`/?PG=e01`·`/new/ezCare_fnc`·`/new/ezCare_charge`·`/new/ezCare_change_work`·`/`)
+  - 메뉴/필드/워크플로 1블록+ — FAQ 21474 일정확정 4-step ezCare workflow + 21778 색상 UI 사후 조치 + 21614 2025년 수가 재산정 4-step (3-block)
+  - COMPETITOR_MATRIX 4행+ `@47a068c`/`@8342f92` 갱신
+  - BENCHMARK_REPORT §676 신규 소절
+
+## 10. planner 제안 (BNK-676)
+
+1. **★★★ G-NHIS 14-stage chain 우위 deepen** — 이지케어 FAQ 21474 「일정확정 4-step」 + 21778 「색상 UI 사후 조치」 + 21614 「수가 재산정 4-step」 = **사후 수동 안내 4-FAQ 클러스터** vs ogada `NhisVisitScheduleImportOutcome` 4-state + `errorRecoveryKeywordNotes` 4-key map **in-app 실시간 복구 14-stage** chain. 마케팅 카피 핵심 lever: 「ogada는 공단 일정 import 시 색상 단서가 아니라 4-state 복구 키워드를 직접 제공합니다 — 운영자는 화면을 해석하지 않고 다음 액션만 클릭합니다」.
+2. **★★ 신규 P3「가정」 candidate `G-NHIS-IMPORT-RESET-AFTER-CONFIRM`** — FAQ 21778 「일정확정 상태에서는 청구일정을 등록해도 반영 안됨」 사후 수동 가이드 → ogada 자동 reset API(unconfirm → 재import → reconfirm) 차별화 candidate. ROADMAP candidate 등재 검토 (KPI 영향 0·이지케어 동등 surface).
+3. **★ US-Q01 M6 stage2 route 배선 closure** — `App.jsx` 4-route 배선(`/safety/daily-checks`·`/safety/periodic-checks`·`/safety/infection-control`·`/safety/operation-log`) + pilot draft page 4 → Route 118→**123**·Page 93→**97**. M6 closure stage3(BE controller)·stage4(matrix coverage 0→1.0) coder/dba 핸드오프 carry.
+4. **★ baseline FE `@47a068c`/BE `@8342f92`·merge gate 869** — 양쪽 WT CLEAN · tester FF 가속 가능. M11/M12 + M6 dual P1 lever +10.41pp projection carry.
+
+---
+산출: BNK-676 evidence chain — `ezcare_faq_workflow_remeasure_bnk676.txt`(주력 extract) + `ezcare_faq_21474_workflow_bnk676.html`(15,369B `e7a6fa1c` NEW) + `ezcare_faq_21778_workflow_bnk676.html`(14,566B `8ed0cf75` NEW) + `ezcare_faq_21614_workflow_bnk676.html`(14,681B `5e4062ee` NEW) + 6-URL cachebuster DRIFT 덮어쓰기.

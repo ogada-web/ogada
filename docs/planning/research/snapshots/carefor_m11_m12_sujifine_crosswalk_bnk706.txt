@@ -1,0 +1,68 @@
+BNK-706 케어포 역공학 0–2h — M11 직원급여 in-app 6-leaf FULL · M12=수지파인(sujifine) 외부 BPO · menu depth·리포트·M7 재확인 · ogada Route 1:1
+조사일: 2026-07-14T00:59:00Z | rotation: 케어포 func.php·PDF·demo-work · ogada FE @0c6950a / BE @6e874df
+
+== live 재실측 ==
+carefor func.php LIVE (www.carefor.co.kr/daycare/func.php) : HTTP 000 timeout 15s = **66+ cycle** 「미확인」 carry
+demo-work LIVE (demo-work.carefor.co.kr)                  : HTTP 000 timeout 15s = **66+ cycle** 「미확인」 carry
+carefor addservice LIVE                                 : HTTP 000 timeout 「미확인」
+carefor manual PDF LIVE                                 : HTTP 000 timeout
+Wayback id_ func.php (20260519)                         : HTTP 200 · 98,328B md5 **6226e6eb** = 291+cycle IDENTICAL
+Wayback id_ demo-work (2id_)                            : HTTP 200 · 71,742B md5 **ebee4d47** IDENTICAL
+Wayback marketing func (20240515id_)                    : HTTP 200 · 92,723B md5 **00992037** IDENTICAL (BNK-703)
+Wayback PDF Dov8rzFqBv                                  : HTTP 200 · 9,992,772B md5 **96f7d45e** = 450+cycle IDENTICAL
+★★★ NEW evidence URL: https://sujifine.co.kr/login → `/carefor_login` · HTTP 200 · 3,974B · md5 **8e6e2744** · <title>장기요양 재무회계 관리프로그램</title>
+
+== ★★★ M11 직원급여 — func 6-leaf ↔ demo L11_* ↔ PDF p123–126 ↔ ogada 0 (확인 · 메뉴/필드/워크플로 블록) ==
+
+| # | func leaf (catalog 6226e6eb) | demo pamcode · view | PDF 메뉴위치 | ogada Route @0c6950a | 판정 |
+|---|------------------------------|---------------------|--------------|----------------------|------|
+| 11-1 | 월별 급여대장 | L11_M01 `view.salary_register` | p125 「11-1.월별 급여대장」 | `/(payroll\|salary)` **0** | ❌ GAP |
+| 11-1-1 | (PDF only) 월별급여내역 안내문자 | (demo SMS 하위「미확인」) | p126 「11-1-1」 | `/notifications` △ | △ PDF-only |
+| 11-2 | 퇴직적립금 관리 | L11_M09 `view.salary_retire` | p123 흐름도 | ❌ | ❌ GAP |
+| 11-3 | 직원 급여계약 설정 | L11_M03 `view.salary_setting` | p124 월급제/시급제 | ❌ | ❌ GAP |
+| 11-4 | 급여기초 설정(수당/공제) | L11_M04 `view.extra_deduct` | p123 | ❌ | ❌ GAP |
+| 11-5 | 인건비 지출비율 참고자료 | L11_M08 `view.salary_rate_reference` | p123 | ❌ | ❌ GAP |
+| 11-6 | 직원 급여대장 리포트(간이지급명세서) | L11_M06 `view.salary_report` class=rpt | p123 연간 급여대장 | ❌ | ❌ GAP |
+
+PDF p124 verbatim (확인): 「직원급여는 직원별 급여계약 설정이 가능하며, 월급제, 시급제 방식으로 제공」 · 「월별 명세서 일괄 생성」(p125) · 「급여대장 엑셀 다운로드」.
+→ **케어포 M11 = in-app ERP**(시설 셸 demo에도 L11 **6 nav FULL**) · ogada coverage id=`11` **0.0** · staff routes 13종은 근태·교육·회의록(8모듈)만.
+
+== ★★★ M12 수입지출 = 수지파인(sujifine) 외부 BPO — in-app leaf 0 (확인 · 신규 evidence · 가정 축소) ==
+
+demo-work raw (`ebee4d47`) JS verbatim:
+  - `open_sujifine()`: demo gate `if('1' == '1') alert("체험하기에서는 재무회계 서비스 접근이 불가능합니다.");`
+  - Ajax POST `/share/exe/sujifine/get.sujifine_id.exe.php` data `{stmmgno:'588'}` → `usmusid`+`otp`
+  - form `#openSujifineForm` **action=`https://www.sujifine.co.kr/carefor_login`** method=POST target=`sujifineLogin`
+  - fail path: `alert("재무회계 서비스에 등록되지 않은 사용자입니다.")`
+  - `income_expense_expire()` → modal `view.income_expense_expire.php` (구독/만료 레이어)
+  - pamcode **L12_*** = **0** · title 「12-」 = **0** · func.php comment `<!--12-` = **0**(BNK-683~705 carry)
+
+live NEW URL: [sujifine.co.kr/login](https://sujifine.co.kr/login) HTTP 200 · title「장기요양 재무회계 관리프로그램」 · md5 `8e6e2744` 3,974B
+  (www.sujifine.co.kr/login 동일 product · 4,014B `622b755f`)
+
+→ **정리**: PDF p2 「12.수입지출관리」는 **케어포 in-app 메뉴가 아니라 수지파인 SSO 부가서비스**.
+→ ogada `id=12` coverage 0 = 케어포와 동일하게 **외부 재무회계 BPO 분기 가능**(이지케어 홈「재무회계 대행」·케어포 sujifine 동일 패턴).
+→ **sole P1 재정의 권고**: (1) **M11 in-app 6-leaf** = 제품 직접 갭(+가중치 → 84.31%↑) 최우선 · (2) **M12** = in-app 최소 vs **수지파인/BPO 어댑터** vs 미추종 — 경쟁사도 in-app 회피.
+
+== menu depth · 리포트 밀도 · M7 (재실측 IDENTICAL · BNK-703 carry) ==
+catalog leaf **107** · depth `{2:88, 3:19}` · 리포트 title exact **21/107=19.6%** · broad **25/107=23.4%**
+demo loadPage li **112** · class=rpt **34**(30.4%) · `view.transport.*`/이동·송영·배차·탑승 **0** → 시설 셸≠주야간 M2
+M7 7-x ↔ billing 17-route **1:1 FULL + calculator superset** carry @0c6950a (경로 불변)
+agents.yaml「109항목」= PC **107** + APP drift · marketing shell 103(7-10❌) carry
+
+== ogada git 실측 ==
+FE @0c6950a WT CLEAN · ahead origin/develop=0 · ahead origin/test=**1** · +1 vs BNK-705 a6255a0
+  `fix(v1.2.1/QA-B95): enforce explicit live schema readiness flags`
+BE @6e874df WT CLEAN · ahead origin/test=**617** · +2 vs BNK-705 edfb55d
+  `c08329a fix(v2/G17): clarify daycare indicator 27 owns functional recovery` ← BNK-704 지표27 정본 반영
+  `6e874df test(v2/G-BATHING): lock indicator27 compliance response`
+Route **124** · Page **98** · FE test **507**(210+297) · BE Test 280 · BE @Test **2079**(+2) · V1–V190 · 모듈 **84.31%**(24.45/29)
+ZERO coverage: 1-5 가정통신문 · 1-10 연계기록지 · **11 직원급여** · **12 수입지출**
+merge residual = FE1 + BE617 = **618** (FE not fully SYNCED)
+
+== 부수 재실측 ==
+NHIS #44: 200·7,572B·`c886ff1f` = **442차** zero drift IDENTICAL
+ezCare FAQ: 200·80,057B(**size-lock 20-cycle**)·md5 `81b1e8d3`·233 rowid·hit_sum **3,646,375**(+17 vs BNK-705)·Top-1 21601=83,903
+
+증거 URL(신규): https://sujifine.co.kr/login (± www · carefor_login SSO)
+증거 URL(재실측): Wayback func id_ · demo id_ · PDF · NHIS #44 · ezCare FAQ · marketing 00992037

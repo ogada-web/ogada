@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-17T20:00:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-18T04:31:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`c19bfa6`** · FE **`dc81f6e`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`0a97b22`** · FE **`1f9d49c`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,8 @@
 
 ## 최근 7일 요약
 
-- **2026-07-17** — **활동 사진 magic-byte 검증(SEC-D25)** · **NoBreakSpace mid-token strip BE+FE** · M12 SSO `/carefor_login` allowlist · 대문자 `&NUM` · Content-Type · 활동 사진·V196
+- **2026-07-18** — **손상된 엑셀(서명만 맞고 내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙) · **SEC-D34 엑셀 import 4경로 full-stack**(방문·청구 NHIS·요양보호사 FE 사전검증 · 은행 입금 BE OOXML) · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트 고정) · **.xls(OLE)·잘린 서명 위장 파일 거부 회귀 테스트 보강** · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **form-data 보안 취약점(npm audit high) 해소** · ops FAQ·매뉴얼 갱신
+- **2026-07-17** — **업로드 파일 서명 검증 확대**(이용자 사진·급여계약·HR·등급이력·보수교육·요양보호사 엑셀) · **직원현황 인쇄·활동 사진 오류 ARIA** · 활동 사진 magic-byte · NoBreakSpace mid-token · M12 SSO allowlist
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
 - **2026-07-15** — **channel-status 참고 단가** · 연계기록지 **리포트 페이지네이션** · RFID **급여제공내역 SMS 일괄** · live E2E bootstrap blocker 합성 파싱
@@ -22,7 +23,241 @@
 
 ---
 
+## 2026-07-18
+
+### 📝 손상 엑셀 안전 거부·은행 입금 사전검증 ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 CHANGELOG 기준(BE `0a97b22` · FE `1f9d49c`)을 갱신하고, **서명만 맞고 내용이 깨진 엑셀 파일의 안전 거부**와 **은행 입금 엑셀 브라우저 사전검증 추가**를 변경 기록·FAQ에 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드·FAQ만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `0a97b22` · FE develop `1f9d49c` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q932 갱신(은행 입금 FE 사전검증 추가) · Q934 신설(손상 엑셀 fail-closed) · Q931~Q933 유지
+
+</details>
+
+### ✅ 손상된 엑셀(내용이 깨진 파일) 안전 거부 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 앞부분 서명(`PK\x03\x04`)은 엑셀처럼 보이지만 **실제 내용이 깨진 파일**을 올리면 이전에는 화면에 시스템 오류가 그대로 노출될 수 있었습니다. 이제 은행 입금·청구 NHIS·요양보호사 NHIS·공단 방문일정·RFID 비교 **5개 엑셀 일괄등록**에서 이런 파일을 항상 **「엑셀 파일을 읽을 수 없습니다.」** 로 안전하게 거부합니다.
+- **내 화면/업무에 영향**: 정상 엑셀 업로드는 그대로. **손상·위장 파일**을 올려도 내부 오류 대신 알기 쉬운 안내 문구가 표시됨
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `BankDepositExcelParser` · `NhisExcelParser` · `StaffNhisCaregiverExcelParser` · `NhisVisitScheduleExcelParser` · `RfidTransmissionExcelParser` — POI `NotOfficeXmlFileException`(POIXMLException) 등 parse-time `IOException`/`RuntimeException`을 `BusinessRuleException("엑셀 파일을 읽을 수 없습니다.")` 로 변환, 파서 자체 검증 문구는 그대로 재전파 (`0a97b22`)
+- 회귀: 파서·import-service 양 계층에서 corrupt-body 브랜치 고정
+- 서명 검사(magic-byte, Q931~Q932) 통과 이후 단계의 방어 — 제품 정상 흐름 변화 없음
+
+</details>
+
+### ✅ 은행 입금 엑셀 — 브라우저 사전검증 추가 (FE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: **`/billing/payments` 「은행 입금 엑셀 일괄 등록」** 에서 이전에는 서버(BE)만 파일 서명을 검사했는데, 이제 **업로드(미리보기) 버튼을 누르기 전에 브라우저가 먼저** 확장자·형식·서명·0바이트를 검사해 위장·손상·빈 파일을 즉시 막습니다. 첨부 허용 형식도 **`.xlsx` 전용**으로 좁혔습니다.
+- **내 화면/업무에 영향**: **`/billing/payments`** — 정상 은행 xlsx는 그대로, 잘못된 파일은 API 호출 없이 화면에서 바로 안내
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `BankDepositImportPanel.jsx` — `validateBankDepositExcelImportFile` 연결, accept `.xlsx` 로 축소 (`1f9d49c`)
+- FE: `excelImportFiles.js` — 은행 입금 전용 xlsx-only 사전검증 규칙 추가 (BE `BankDepositImportService` OOXML-only lockstep)
+- 회귀: `BankDepositImportPanel.test.jsx` · `excelImportFiles.test.js`
+
+</details>
+
+### ✅ 빈(0바이트)·빈 헤더 엑셀 업로드 거부 (FE·BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 방문·요양보호사·청구 NHIS·은행 입금 엑셀 일괄 등록에서, **내용이 전혀 없는 0바이트 파일**과 **읽었을 때 헤더가 비어 있는 파일**도 항상 「업로드할 엑셀 파일이 필요합니다/없습니다」로 거부되도록 화면(FE)과 서버(BE) 양쪽에 방어를 넣고 **회귀 테스트로 고정**했습니다.
+- **내 화면/업무에 영향**: 없음 — 정상 엑셀 업로드는 그대로. 빈 파일을 실수로 올려도 미리보기·등록 단계에서 안내 메시지로 즉시 막힘
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `excelImportFiles.js` — FileReader가 빈 배열을 반환하는 경우까지 `EXCEL_IMPORT_REQUIRED_MESSAGE`로 fail-closed, 0바이트 사전 거부 회귀 테스트 추가 (`b23711f`, `2789553`)
+- BE: `VisitServiceTest` · `StaffNhisCaregiverImportServiceTest` · `BankDepositImportServiceTest` · `NhisImportServiceTest` — 0바이트 및 `payload.length == 0` 방어(미리보기 경로 포함) 회귀 테스트 고정 (`9449e1f`)
+- 제품 동작 변화 없음(빈 파일 방어·테스트 전용)
+
+</details>
+
+### ✅ 위장 엑셀(.xls·잘린 서명) 거부 회귀 테스트 보강 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 방문·요양보호사 NHIS·은행 입금 엑셀 일괄 등록에서, 확장자만 `.xls`인 위장 파일과 **서명이 잘린(2바이트) 손상 파일**도 항상 「엑셀 파일 시그니처가 올바르지 않습니다.」로 거부되는지 **회귀 테스트로 고정**했습니다. 미리보기 단계까지 동일하게 막히도록 검증했습니다.
+- **내 화면/업무에 영향**: 없음 — 정상 엑셀 업로드는 그대로. 위장·손상 파일에 대한 서버 방어가 테스트로 굳어짐
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `VisitServiceTest` · `StaffNhisCaregiverImportServiceTest` — `.xls`(OLE) 위장·잘린 서명 fail-closed 브랜치 커버 (`2f3be17`)
+- BE: `BankDepositImportServiceTest` — `payload.length < magic.length` 단락(importDeposits·previewDeposits) 커버 (`efbdbec`, QA-B604)
+- 제품 동작 변화 없음(테스트 전용)
+
+</details>
+
+### ✅ form-data 개발용 보안 취약점 해소 (FE, QA-B606)
+- **에이전트**: COD
+- **한 일**: `npm audit`에서 보고된 `form-data`의 CRLF 인젝션 취약점(high)을 해소하기 위해 잠금 버전을 **4.0.5 → 4.0.6(패치)** 으로 올렸습니다. `npm audit` 결과가 **0건**이 되었습니다.
+- **내 화면/업무에 영향**: 없음 — 테스트 환경(jsdom)에서만 쓰이는 개발용 의존성으로, 운영 번들에는 포함되지 않아 실사용 노출은 처음부터 없었습니다
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `package-lock.json` — `form-data` 4.0.5→4.0.6, `jsdom@22.1.0` 경유 dev 전용 transitive 의존성 (`637bad8`)
+- GHSA-hmw2-7cc7-3qxx · Vite 운영 번들 미포함
+
+</details>
+
+### ✅ 사진 업로드 성공을 스크린리더로 안내 (FE, UXD-191)
+- **에이전트**: UXD
+- **한 일**: 이용자 사진·프로그램 일정 활동 사진 업로드가 성공하면 화면에서는 **「미등록 → 등록됨」** 으로만 바뀌어 스크린리더 사용자에게 알림이 없었습니다. 이제 두 화면 모두 **소리 없는 상태 안내 영역(role="status")** 으로 등록 성공을 읽어줍니다.
+- **내 화면/업무에 영향**: **`/clients/:id` 사진 · `/programs` 「활동 사진」** — 눈으로 보는 화면은 그대로, **스크린리더 사용자**는 업로드 성공을 소리로 확인 (표에 배너는 추가되지 않음)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `ClientPhotoUpload.jsx` · `ProgramSchedulePhotoUpload.jsx` — `ds-sr-only` `role="status"` polite live region (WCAG 4.1.3, `194823b`)
+- 오류 안내는 기존 접근성 경로(Alert `role="alert"` · FileUpload `aria-invalid`)를 그대로 사용 (Q930)
+
+</details>
+
+### ✅ 엑셀 일괄 등록 — 빈(null) 파일 fail-closed 보강 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 방문·청구 NHIS·요양보호사·은행 입금 4개 엑셀 import 경로에서 **내용이 비어 있는(null) 파일**이 들어와도 오류 없이 처리되던 경계 상황을 막아, 항상 「엑셀 파일 시그니처가 올바르지 않습니다.」로 **안전하게 거부(fail-closed)** 하도록 다졌습니다.
+- **내 화면/업무에 영향**: 없음 — 정상 업로드는 그대로. 비정상(빈) 파일에 대한 서버 방어만 견고해짐
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `NhisImportService` · `BankDepositImportService` · `VisitService` · `StaffNhisCaregiverImportService` — `payload == null` 가드 추가 (`f28e3d9`, QA-B604)
+- FE 회귀 픽스처를 실제 OOXML 서명 바이트로 맞춰 사전검증 테스트가 API까지 도달하도록 정렬 (QA-B602·QA-B605, 제품 동작 변화 없음)
+
+</details>
+
+### ✅ 은행 입금 엑셀 — OOXML 서명 검증 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: **`/billing/payments`** 은행 입금 일괄등록 미리보기·등록 전에 **xlsx(OOXML) 파일 서명**을 서버에서 검사합니다. 확장자·Content-Type만 맞춘 위장 파일은 「엑셀 파일 시그니처가 올바르지 않습니다.」로 거부합니다.
+- **내 화면/업무에 영향**: **`/billing/payments` 「은행 입금 엑셀 일괄 등록」** — 정상 은행 xlsx는 그대로, 위장·손상 파일은 미리보기 전에 거부
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `BankDepositImportService` — OOXML `PK\x03\x04` only · `.xls` 미지원 (`f6e4d88`)
+- 회귀: `BankDepositImportServiceTest`
+- FE: 은행 입금은 **BE 검증만**(미리보기 API 호출 시) — Q932 참고
+
+</details>
+
+### ✅ 방문·청구 NHIS 엑셀 — 서버 서명 검증 확대 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: **공단 방문일정 import**와 **청구내역상세 NHIS import**에도 확장자·Content-Type(;param strip) + **OOXML/OLE magic-byte** 검사를 서버에 추가했습니다. 방문·요양보호사는 `.xlsx`|`.xls`, 청구는 **`.xlsx` only**입니다.
+- **내 화면/업무에 영향**: **`/visits` 공단 방문일정 · `/billing/imports/nhis`** — MIME만 맞춘 가짜 엑셀은 업로드 API에서 거부
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `VisitService` · `NhisImportService` (`a788e6d`) — `StaffNhisCaregiverImportService`와 lockstep
+- 회귀: `VisitServiceTest` · `NhisImportServiceTest`
+- 오류: 「엑셀 파일 시그니처가 올바르지 않습니다.」
+
+</details>
+
+### ✅ 공단 엑셀 import — 브라우저 사전 서명 검증 (FE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 방문일정·청구내역상세·요양보호사 엑셀 업로드 **전**에 브라우저에서 **파일 서명**을 검사합니다. BE와 **동일 오류 문구**로 API 호출 전에 거부합니다.
+- **내 화면/업무에 영향**: **`/visits` 방문일정 · `/billing/imports/nhis` · `/staff` 요양보호사 엑셀 · RFID 비교 plan/rfid 파일** — 위장 파일은 즉시 거부, 정상 공단 엑셀은 그대로
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `src/config/excelImportFiles.js` — `validateVisitNhisExcelImportFile` · `validateBillingNhisExcelImportFile` · `validateStaffNhisCaregiverExcelImportFile` (`3042a53`)
+- 소비: `VisitNhisImportPanel` · `VisitRfidDiffComparePanel` · `NHISImportPage` · `StaffNhisCaregiverImportPanel`
+- 회귀: `excelImportFiles.test.js`
+
+</details>
+
+---
+
 ## 2026-07-17
+
+### 📝 업로드 magic-byte 확대·인쇄 a11y ops 문서화
+- **에이전트**: TWR
+- **한 일**: develop HEAD 실측 후 FAQ·매뉴얼·관리/배포 가이드에 **이용자 사진·급여계약·직원 HR·등급 이력·보수교육 이수증·공단 요양보호사 엑셀** 파일 서명 검증과 **직원현황 인쇄/활동 사진 오류 ARIA** 를 반영했습니다.
+- **내 화면/업무에 영향**: 없음 — 운영·배포 가이드만 갱신
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `be64fda` · FE develop `8b164c3` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ·USER_MANUAL·ADMIN/DEPLOY·CHANGELOG·ops README 교차 갱신
+
+</details>
+
+### ✅ 공단 요양보호사 엑셀 — OOXML/OLE 서명 검증
+- **에이전트**: COD
+- **한 일**: `/staff` 공단 요양보호사 엑셀 업로드에서 확장자·Content-Type만 맞춘 위장 파일을 막기 위해, **xlsx(ZIP)·xls(OLE)** 파일 앞부분 서명을 서버에서 검사합니다. 불일치 시 「xlsx 또는 xls 형식의 엑셀 파일만…」으로 거부합니다.
+- **내 화면/업무에 영향**: **`/staff` 「공단 요양보호사 엑셀」** — 정상 엑셀은 그대로, 위장·손상 파일은 미리보기 전에 거부
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `StaffNhisCaregiverImportService` — OOXML `PK…` · OLE CFB magic · Content-Type 파라미터 strip (`be64fda`)
+- 회귀: `StaffNhisCaregiverImportServiceTest`
+
+</details>
+
+### ✅ 등급 이력·보수교육 이수증 — 파일 서명 검증 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 이용자 **등급 이력 첨부**와 직원 **보수교육 이수증**도 MIME 위장을 막기 위해 업로드 전·저장 전에 **PDF/PNG(또는 JPEG)** 서명을 BE·FE가 함께 검사합니다.
+- **내 화면/업무에 영향**: **`/clients/:id` 「등급 이력」** · **`/staff/training` 이수증** — 확장자만 바꾼 파일은 거부, 정상 스캔본은 그대로
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `LtcGradeHistoryAttachmentStorageService` · `StaffRefresherTrainingCertificateStorageService` (`ed94521`)
+- FE: `gradeHistoryAttachments.js` · `staffRefresherTrainingCertificates.js` (`8b164c3`)
+- 안내: 등급 이력 「PDF 또는 PNG…」 · 이수증 「PDF 또는 이미지(PNG/JPEG)…」
+
+</details>
+
+### ✅ 급여계약서·직원 HR 파일 — 파일 서명 검증 (BE+FE)
+- **에이전트**: COD
+- **한 일**: **급여계약서 파일함**과 **직원 HR 서류함** 업로드에도 PDF/이미지 서명 검사를 넣었습니다. Content-Type 파라미터는 strip 후 비교합니다.
+- **내 화면/업무에 영향**: **`/clients/:id` 「급여계약」** · **직원 상세 「HR 파일함」** — MIME만 맞춘 가짜 파일 거부
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `BenefitContractAttachmentStorageService` · `StaffHrFileStorageService` (`324da07`)
+- FE: `benefitContractAttachments.js` · `staffHrFiles.js` (`cf28a2e`)
+- 급여계약: PDF/PNG · HR: PDF/PNG/JPEG · ≤10MB
+
+</details>
+
+### ✅ 이용자 프로필 사진 — 파일 서명 검증 (BE+FE)
+- **에이전트**: COD
+- **한 일**: 이용자 상세 **프로필 사진**도 프로그램 활동 사진과 같이 JPEG/PNG/WEBP **파일 서명**을 브라우저·서버에서 이중 검사합니다.
+- **내 화면/업무에 영향**: **`/clients/:id` 프로필 사진** — 위장 파일은 「JPEG, PNG, WEBP 형식의 이미지만…」으로 거부
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `ClientPhotoStorageService` (`cdba083`)
+- FE: `ClientPhotoUpload` · `clientPhotos.js` (`e16f432`)
+- 프로그램 활동 사진과 lockstep (동일 magic family)
+
+</details>
+
+### ✅ 직원현황 인쇄·활동 사진 오류 ARIA
+- **에이전트**: UXD
+- **한 일**: 직원현황 리포트 **조회 필터**가 인쇄물에 나오지 않도록 화면 전용으로 바꾸고, 활동 사진 업로드 오류를 **aria-invalid·aria-describedby**로 파일 입력과 연결했습니다.
+- **내 화면/업무에 영향**: **`/staff/status-report` 인쇄** — 필터 카드 미출력 · **`/programs` 활동 사진** — 오류 시 스크린리더가 안내 문구를 읽음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `StaffStatusReportPage` screen-only filter · `ProgramSchedulePhotoUpload` ARIA (`b2eb059`)
+
+</details>
 
 ### 📝 활동 사진 magic-byte·NoBreakSpace mid-token ops 문서화
 - **에이전트**: TWR

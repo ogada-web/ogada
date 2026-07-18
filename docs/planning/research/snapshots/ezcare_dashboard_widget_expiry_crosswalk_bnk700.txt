@@ -1,0 +1,138 @@
+BNK-700 — 이지케어 /new.ez 데모 대시보드 위젯·7-bucket 만료 알림 catalog ↔ ogada dashboardSummary crosswalk
+===================================================================================================
+조사일: 2026-07-13T20:23Z (KST 2026-07-14 05:23)
+rotation: 이지케어 역공학 2–4h
+source(live): https://ezcare.easyms.co.kr/new.ez  (demo POST /page/login.php oCode=DEMO → 세션)
+snapshot: docs/planning/research/snapshots/ezcare_new_ez_demo_live_bnk700.html
+  bytes: 139,949 · md5: a9d550d2bfa7f6a2901f4e857f6efc4e
+  prev (BNK-694, 6/27): 138,122B · md5: 32964c2b0678b438ae5c1a1b998dfcc1  → delta +1,827B / 16-day rotation
+top-nav asset(live): https://ezcare.easyms.co.kr/assets/top-nav-item-V2.js?20260428
+  bytes: 25,470 · md5: 95286775000f06c8ad13688fcb0d6dbb → **zero drift** (BNK-540~700, ~7-week size-lock)
+
+1) 대시보드 위젯 catalog (h3 title from live shell) — 정본 7 widget
+----------------------------------------------------------------
+  EC000010: "오늘의 업무 [MM월DD일]"       (일별 rotation)
+  EC000010: "인정만료일"                    (수급자 인정 만료 alert)
+  EP000010: "일정관리 현황"                 (월별 이용자/직원 수 카운터)
+  EP000030: "최근 12개월 서비스제공 수급자수" (line chart)
+  EP000060: (h3 empty · 상태별 알림 카운터 — state 01=수급중·2346=기타)
+  ES000020: "일일 방문일정 (오늘)"           (jqGrid + 프린트 버튼)
+  ES000040: "가족케어 [YYYY-MM]"            (월별 카운터)
+  EW000010: (h3 empty · 서비스 위젯 미확인)
+
+  live-embedded schedule_data (2026-07-14 데모):
+    · dateInfo: cd_sgi=4359·hyganjee=丙午·hmganjee=乙未·hdganjee=己丑·hweek=火(요일)
+    · pat_birthdate: 1건 — 최혁0 남 1948-07-14 대구 광역시 달서구 달구벌대로 1007, LTC=L1910037331
+    · social_worker_schedule[2026-07-14]: 3 방문 슬롯 (rowid 2924/2923/2922 · pCode 23-DEMO0002/17-DEMO0003/23-DEMO0008 · 1300-1600/1300-1600/0900-1200 · wCode DEMO220004)
+    · widget_data (일정관리 현황): 5-month pCnt=28 / wCnt=27 lock (2026-04~08) — pCnt(수급자)=28명·wCnt(직원)=27명 조직 규모 데모
+    · full_data (상태별 알림 코드): "01"(수급중, p_cnt=28) → naksang=35·yokchang=35·yokgu=28·inji=27
+                              "2346"(기타, p_cnt=2) → naksang=2·yokgu=2
+    · category_color: 2 rowid(103/104) empty color slots
+
+2) 7-bucket 만료(expire) 알림 catalog ↔ ogada dashboardSummary crosswalk
+-------------------------------------------------------------------
+  ezCare "expire" JSON key(verbatim):
+    "간호지시서":[]  · "낙상위험":[]  · "인지기능":[]  · "욕창위험":[]
+    "욕구사정":[]    · "수급자계약":[] · "수급자인정":[]
+
+  ogada dashboardSummary export map (src/frontend @e48db91):
+    · countCarePlanElevenMonthWarnings / countCarePlanFiveMonthWarnings / countCarePlanReissueGaps
+      → 급여계획서 만료(carePlan) 알림 3-스테이지
+    · countCaseManagementAttendeeOpinionGaps / countCaseManagementEvaluationGaps / countCaseManagementReflectionGaps
+      → 사례관리(caseManagement) 3-스테이지
+    · countFunctionalRecoveryBenefitStartPlanGaps / countFunctionalRecoveryProvisionGaps
+      → 기능회복(functionalRecovery) 2-스테이지
+    · countProvisionResultAnnualEvaluationGaps / countProvisionResultMonthlyRecordGaps
+      · countProvisionResultReflectionGaps / countProvisionResultWeeklyStateChangeGaps
+      → 급여제공결과(provisionResult) 4-스테이지
+    · countAdmissionRiskAssessmentGaps               → 입소 위험사정 gap
+    · countPeriodicRiskAssessmentGaps                → 정기 위험사정 gap
+    · countNeedsAssessmentGaps · countGradeChangeReassessmentDue → 욕구사정+등급변경 재사정 due
+
+  Crosswalk 판정:
+  | ezCare bucket       | ogada equivalent                                          | 판정 |
+  |---------------------|-----------------------------------------------------------|------|
+  | 간호지시서          | (dashboardSummary export 미포함 · nursing directive expiry 알림 미확인) | **gap 후보 G-NURSING-DIRECTIVE-EXPIRY** |
+  | 낙상위험            | countAdmissionRiskAssessmentGaps + PeriodicRiskAssessment fall-risk | ✅ full parity |
+  | 인지기능            | (V99 g9 cognitive_support_ltc_grade migration LIVE · 인지기능 만료 알림은 미확인) | △ partial |
+  | 욕창위험            | pressureUlcerRiskAssessment (BNK-693 5-route carry) + PressureUlcerAssessmentForm | ✅ full parity |
+  | 욕구사정            | countNeedsAssessmentGaps + countGradeChangeReassessmentDue + (BNK-695 엔젤 AI 총평 candidate) | ✅ full parity + AI candidate carry |
+  | 수급자계약(서비스계약)| (careAgreement/serviceContract expiry 별도 알림 미확인) | **gap 후보 G-CLIENT-CARE-AGREEMENT-EXPIRY** |
+  | 수급자인정(LTC 인정)| countGradeChangeReassessmentDue + carePlan 11-month/5-month warnings | ✅ 등급 재사정 due carry (인정만료 explicit label 미확인) |
+
+3) Menu catalog 재추출 (ezcare_menu_catalog.json)
+-------------------------------------------------
+  parsed from top-nav-item-V2.js `main_nav_item`:
+    module_count: 10 · leaf_item_count: 148 · unique_pgid_count: 59
+  10 모듈: 직원(25 leaf)·수급자(20)·방문일정(13)·RFID점검(3)·본인부담(13)·직원급여(15)·재무회계(10)·세무/사회보험(12)·기관관리(20)·기관평가(17)
+  → BNK-694 149·58 → BNK-700 148·59(leaf −1, PGID +1) semantic IDENTICAL scope (기능 추가 없음, tab#/dialog 재배치)
+
+4) FAQ hit_sum · size-lock 14-cycle
+------------------------------------
+  live URL: https://ezcare.easyms.co.kr/help/faq.ez
+  snapshot: ezcare_help_faq_list_live_bnk700.html — HTTP 200, 80,057B, md5 ce70e1121f307c99c50063d9becb0583
+  rowid unique: 233 (carry)
+  hit_sum: 3,646,310 (BNK-699 3,646,306 → **+4** in 40min)
+  top-3 rowid (본문 조회수 desc):
+    21601 (직원 회의록 전산 작성/관리)      : 83,903  (BNK-699 IDENTICAL)
+    21274 (M11/M12 재무·급여 demand-signal) : 44,153
+    21529 (본인부담·CMS demand-signal)      : 37,213
+
+5) 이지케어 홈 통계 zero drift + review-card 로테이션
+---------------------------------------------------
+  snapshot: ezcare_home_live_bnk700.html — HTTP 200, 69,531B, md5 fc48cf4dccea43968b00f6354d205f9b
+  prev (BNK-696): 68,963B, md5 2ced610a89eec1936d6cb0da953ac00f → +568B (cachebuster 1783964333→1783974196 + review-card 로테이션)
+  data-count 5축 (BNK-696 IDENTICAL zero drift):
+    · 방문요양 ERP 시장점유율    : 53.2%
+    · 이지케어 이용기관         : 9,298 개
+    · 재무회계 대행 이용기관    : 4,663 개
+    · 월 공단 청구 처리         : 2,353 억 원
+    · 종사자 급여 처리          : 1,820 억 원
+  집계일 : 2026.06.30 (verbatim)
+  review-card 20건 전면 로테이션 (샘플 first 5):
+    - 경기 해피안방문복지센터 성남점 (2023-03-01)
+    - 경남 하나노인돌봄센터 (2019-10-14)
+    - 경남 가정재가노인복지센터 (2023-03-05)
+    - 울산 동원노인재가복지센터 (2025-08-19)
+    - 대구 다온*** (2024-12-30)
+
+6) 이지케어 가격 페이지 semantic IDENTICAL
+------------------------------------------
+  live URL: https://ezcare.easyms.co.kr/index.html?PG=price
+  snapshot: ezcare_price_live_bnk700.html — HTTP 200, 52,025B, md5 ef20345b9279876b64e4051150295195
+  prev (BNK-696): 52,025B, md5 bafcc3a778... → size-lock, md5 DRIFT (cachebuster only)
+  verbatim carry: 셋팅비 33,000원부터·「~7월 31일까지 신청 시」 (BNK-696 promo extension 유지)
+
+7) ogada baseline 실측 (2026-07-13T20:23Z)
+------------------------------------------
+  submodule       | HEAD    | prev(BNK-699) | +commit                                                                   | ahead vs origin/test
+  ----------------|---------|---------------|---------------------------------------------------------------------------|---------------------
+  src/frontend    | e48db91 | c012ed0       | fix(v1.2.1/QA-B95): gate transport and safety live suites on schema blockers | 290 (BNK-699 289 +1)
+  src/backend     | 41cbc8a | c183d84       | test(v2/QA-B95): lock V189 transport shuttle schema readiness probe          | 609 (BNK-699 608 +1)
+  merge gate: 899 (BNK-699 897 +2 · cross-stream)
+  Route(<Route\b): 124 · Route(<Routes\b): 1 · Page.jsx strict: 98 · Page.jsx broader: 187
+  FE test: 208(*.test.js) + 296(*.test.jsx) = 504 (carry)
+  BE test: Test.java 279 + Tests.java 1 = 280 (BNK-699 279 +1) · @Test 총 2,068 (BNK-699 2,061 +7)
+  V-migration: V1–V189 carry
+  모듈: 84.31% (24.45/29) carry · reports 28 carry · /(payroll|accounting) 0 route sole P1 lever carry (+6.90pp→91.21% 잠재)
+  WT status: 양쪽 CLEAN → tester FF merge 899 (선행 commit 불필요)
+
+8) NHIS #44 436차 zero drift IDENTICAL
+--------------------------------------
+  live URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  snapshot: nhis_jo44_live_bnk700.html — HTTP 200, 7,572B, md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  BNK-699 c886ff1f zero drift 436차 IDENTICAL (러-1~4·편도 50%·1일 1회·수급자 부담X verbatim 불변)
+
+Planner 요약 반영 사항
+=====================
+  ★★★ ezCare /new.ez 데모 대시보드 = 7 widget · 7-bucket 만료 알림 = **경쟁 4종 유일 dashboard alert catalog** — ogada dashboardSummary는 5/7 bucket parity·2/7 gap
+    → 신규 candidate:
+      · G-NURSING-DIRECTIVE-EXPIRY (P3, 「가정」)
+      · G-CLIENT-CARE-AGREEMENT-EXPIRY (P3, 「가정」)
+    → **ogada superset**: carePlan 3-stage warnings·사례관리 3-stage·기능회복 2-stage·급여제공결과 4-stage·admissionRisk·periodicRisk·gradeChangeReassessmentDue — ezCare 7-bucket 단순 boolean expire 대비 ogada는 **stage-gap 카운트 세분화**로 우위
+
+  ★★ 이지케어 홈 통계 lock 4-cycle (BNK-696~700) — 시장점유율 53.2%·9,298 기관·2,353억(월 공단청구)·1,820억(직원급여)·재무회계 대행 4,663 기관 → 다음 refresh 예상 시점=**6/30 집계 기준**(2026.06.30 verbatim) · 「9월 3분기 결산 refresh」 「가정」
+
+  ★★ 이지케어 가격 페이지 semantic IDENTICAL — 셋팅비 33,000·프로모션 ~7/31 verbatim carry
+
+  ★ ogada baseline: FE @e48db91·BE @41cbc8a · merge gate 899 · BE Test 280 · BE @Test 2068 · Route 124·Page 98·FE test 504 · V1–V189 carry

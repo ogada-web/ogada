@@ -1,0 +1,56 @@
+# 케어포 M9 기초설정·운영관리 tri-source numbering drift + demo-work wayback 재실측 (BNK-667)
+# 조사일: 2026-06-26T18:10:00Z (KST 03:10)
+# 작성: benchmark_researcher [BNK]
+
+## 신규 evidence URL (확인)
+1. [Wayback demo-work 20260519 wrapped](https://web.archive.org/web/20260519072235/https://demo-work.carefor.co.kr/) HTTP **200** · **75,585B** · md5 **`6704ddda`** (BNK-667 live 재실측 · disk `carefor_demo_work.html` 75,587B `b2e8e5c8` wrapper DRIFT · loadPage **114** semantic IDENTICAL)
+2. [Wayback func.php id_ raw](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) HTTP **200** · **98,328B** · md5 **`6226e6eb`** = canonical disk byte-identical (BNK-666 carry 재확인)
+3. on-disk tri-source M9: `carefor_func.php`(daycare marketing) vs `carefor_intro_si_func.html`(시설 intro) vs `carefor_demo_work.html`(demo L09) — **NEW negative drift**
+4. carefor LIVE HTTP **000 timeout 55-cycle** (func.php + demo-work + intro/si/func.php 양쪽 8s timeout · BNK-662 54 → +1)
+
+## M9 tri-source numbering drift NEW (확인)
+
+| # | daycare `func.php` (6-leaf) | `intro_si_func` + demo L09 (7-leaf) | demo `view` | ogada Route | 상태 |
+|---|---|---|---|---|---|
+| 9-1 | 시설정보설정 | 시설정보설정 | `view.center_master` | `/organization/settings` · `/settings/billing`(US-M03·PDF p86 청구명세서 생성기준) | ✅ |
+| 9-1-1 | 기초작업 및 기초설정 | 기초작업 및 기초설정 | `view.basic_set` | `/settings`(sysadmin) | △ |
+| **9-2** | **요양급여 수가설정** | **건물 및 생활실 설정** | `view.center_room` | `/branches` | **△ drift** — func marketing **stale** |
+| **9-3** | **이용요금 결제 및 연장** | **요양급여 수가설정** | `view.service_cost` | `/billing/fee-schedules` | **△ −1 번호 시프트** |
+| **9-4** | **비품관리대장** | **이용요금 결제 및 연장** | `view.service_pay` | N/A(SaaS 자체 과금) | N/A |
+| **9-5** | **연간 부담금현황** | **운영관리 (차량/비품/CCTV/고충/특별침실)** | `view.operational_manage` | `/transport/vehicles` · `/staff/grievance-counselings` | **△ split** — ogada 차량만·비품/CCTV/특별침실 ❌ |
+| **9-6** | *(없음)* | **연간 부담금현황** (rpt) | `view.sales_amount` | `/billing/reports/statistics` | **△ demo-only leaf** |
+
+### stale HTML comment (확인)
+- demo `L09_M07` title=`9-6.연간 부담금현황` · HTML comment=`<!--9-7.연간 부담금현황-->` → **+1 stale comment drift** (M7 L07_M10 패턴 대칭)
+
+### quadruple-source 정본 우선순위 (가정)
+1. **demo-work loadPage title + view** (운영 UI 정본)
+2. **intro_si_func.html** (시설 마케팅 — demo 7-leaf와 **일치**)
+3. **daycare func.php** (주야간 마케팅 — **6-leaf stale** · 건물/생활실·운영관리 merge 누락)
+4. PDF p86 「9-1.시설정보설정-본인부담금정보-청구명세서생성기준」— M7↔M9 cross-link only
+
+→ **결정**: M9 역공학 시 `daycare/func.php` 단독 인용 금지 — **demo L09 + intro_si_func** 병행. M5/M7 tri-source −1 drift 패턴의 **모듈 9 변형**(func marketing lag).
+
+## demo-work 시설 셸 — 이동서비스 없음 (확인 · carry)
+- loadPage **114** · `class="rpt"` **34**(29.8%) · M7 10-leaf(7-10 nav 0) · M2 demo **0** · `이동서비스`/`view.transport`/`배차` grep **0**
+- L09_M05 `view.operational_manage` 에 차량만 잔존(이동서비스 모듈 M2 전체 미노출)
+
+## M7 7-x demo loadPage ↔ ogada Route 1:1 (재확인 · carry)
+7-1→`/billing` · 7-2→`/billing/payments` · 7-2-1→`/billing/reports/statistics` · 7-3→`/billing/overdue` · 7-4→`/billing/cms` · 7-5→`/billing/easy-pay` · 7-6~7-8 rpt → charges/deposits/receipts · 7-9→`/billing/reports/refunds` · 7-10→`/billing/calculator`(superset) · G33 청구시작 숨은화면 ✅ — module 7 **1.0** carry
+
+## ogada baseline (2026-06-26T18:10Z git 실측)
+- FE `@2d9b9d3` WT **CLEAN** · ahead **266** (BNK-666 동일 SHA · HEAD zero advance 1-cycle)
+- BE `@331f24b` WT **CLEAN** · ahead **593** (BNK-666 `@3d4e58a` **HEAD +1** `feat(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): expose recovery keyword notes in guidance API` 6-file +114L · `NhisVisitScheduleImportRecoveryKeywordAlignmentTest` NEW 52L)
+- merge gate **859**(FE 266+BE 593 · +1 BE-only vs BNK-666 858)
+- **118 Route·93 page·V1–V183·BE Test 274·BE @Test 1996(+2)·FE test 485·모듈 80.86%·reports 28** — 7/8축 BNK-666 IDENTICAL · BE @Test +2 only
+
+## G-NHIS stage8 — BE guidance API recovery keyword notes expose (확인)
+- `NhisVisitScheduleImportGuidanceResponse.errorRecoveryKeywordNotes` — 4-state별 keyword list API 노출
+- `NhisVisitScheduleImportRecoveryKeywordAlignmentTest` — FE `VISIT_IMPORT_RECOVERY_KEYWORDS` ↔ BE notes 정합 lock
+- **12-stage BNK→COD chain** stage8 (stage7 FE keyword 정합 BNK-665 carry)
+
+## planner 제안 (요약)
+1. **G-M9-OPERATIONAL-MANAGE** P2: `view.operational_manage` parity — 비품대장·CCTV·특별침실·고충(8-9→9-5 merge) 통합 화면 또는 분리 Route
+2. **G-M9-CENTER-ROOM** P2: `view.center_room` → `/branches` 생활실·건물 floor/room 설정 심화
+3. M9 func.php stale 인용 금지 — demo+intro_si authoritative carry
+4. M7 1.0 FULL PARITY 유지 — 추가 구현 불요

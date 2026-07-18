@@ -1,0 +1,122 @@
+# BNK-662 — 케어포 M7 본인부담 7-x quadruple-source numbering drift · demo loadPage semantic 재실측 · 시설 셸 이동서비스 0
+# 조사일: 2026-06-26T15:25:00Z (KST 00:25) | rotation: 케어포 역공학 0–2h
+# 작성: benchmark_researcher [BNK]
+
+## 신규·재실측 evidence URL (확인)
+
+1. [Wayback demo-work 20260519](https://web.archive.org/web/20260519072235/https://demo-work.carefor.co.kr/) — HTTP **200** · 75,583B · md5 **`c78b702d`** (wrapper DRIFT vs disk `b2e8e5c8` 75,587B · **loadPage 114-line semantic md5 `e7e1cb32` 100% IDENTICAL**)
+2. [Wayback func.php 20260519](https://web.archive.org/web/20260519072235/https://www.carefor.co.kr/daycare/func.php) — HTTP **200** · 104,181B · md5 **`8403b7cf`** (wrapper DRIFT vs BNK-651 `bfcbd2b2` · **numbered comment tags 109건 semantic IDENTICAL**)
+3. [매뉴얼 PDF p.91 리포트 안내](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=91) — HTTP **200** · 9,992,772B · **★ BNK-662 신규 quadruple-source 축** — PDF 구번호 7-5/7-6/7-7 리포트 vs func/demo 현행 7-6/7-7/7-8
+4. https://www.carefor.co.kr/daycare/func.php LIVE HTTP **000 timeout 54-cycle** (BNK-658 53 → +1 · 2026-06-26T15:22Z)
+5. https://demo-work.carefor.co.kr/ LIVE HTTP **000 timeout 54-cycle** (동시)
+
+## §1 func.php 「109항목」전수 재확인 (확인 · wayback 20260519)
+
+| 구성 | 수 | 근거 |
+|---|---:|---|
+| operational numbered leaf (`<!--N-N.`) | **107** | M1:11·M2:10·M3:11·M4:10·M5:13·M6:5·M7:11·M8:15·M9:6·M10:9·M11:6 |
+| 삭제예정 leaf | **+1** | func `8-11.질향상노력(삭제예정)` |
+| demo `noready2` 주석 잔존 | **+2** | L02_M09·L03_M08 리포트 — HTML 주석·체험 미노출 |
+| **마케팅 합계** | **109** | wayback numbered tags **109** = on-disk `carefor_func.php` `6226e6eb` IDENTICAL |
+
+## §2 demo-work 시설 셸 — 이동서비스 없음 (54-cycle 재확인)
+
+- `obj-type="loadPage"` **114** · `class="rpt"` **34** (M1:5·M2:6·M3:5·M4:2·M5:5·M7:4·M8:3·M9:1·M10:2·M11:1)
+- grep `이동서비스|view.transport|배차` **0** · `차량` **4** (= 9-5 시설 비품/CCTV 수준 only)
+- func M2 이동서비스 10-leaf · demo **0 hit** carry → ogada `/transport/*`+NHIS #44 = 경쟁 대비 차별화
+
+## §3 ★★★ M7 quadruple-source numbering drift — func vs demo vs PDF p84 vs PDF p91 (BNK-662 신규 workflow block)
+
+### 3-1 authoritative axis = func.php + demo param-info `title` (확인)
+
+| func # | func 명칭 | demo pamcode | view endpoint | ogada Route |
+|---|---|---|---|---|
+| 7-1 | 청구관리 | L07_M01 | view.cost_master | `/billing` · `/billing/claims/:id` |
+| 7-2 | 입금관리 | L07_M02 | view.cost_receipt | `/billing/payments` |
+| 7-2-1 | 의료비공제 | L07_M09 | view.cost_master_statistic | `/billing/reports/statistics` |
+| 7-3 | 미납관리 | L07_M03 | view.cost_nopay | `/billing/overdue` |
+| 7-4 | CMS | L07_M11 | view.cms_manage | `/billing/cms` |
+| 7-5 | 간편결제 | L07_M12 | view.npay_manage | `/billing/easy-pay` |
+| 7-6 | 청구대장 rpt | L07_M05 rpt | view.cost_master_report | `/billing/reports/charges` |
+| 7-7 | 입금대장 rpt | L07_M06 rpt | view.cost_deposit_report | `/billing/reports/deposits` |
+| 7-8 | 수납대장 rpt | L07_M07 rpt | view.cost_receipt_report | `/billing/reports/receipts` |
+| 7-9 | 수납·환불 rpt | L07_M10 rpt | view.cost_receipt_apply_yearly | `/billing/reports/refunds` |
+| 7-10 | 간편계산기 | — | — demo **0** | `/billing/calculator` ✅ ogada superset |
+
+demo nav **10** / func **11** = 7-10 calculator demo 미노출 carry.
+
+### 3-2 demo HTML comment stale drift (확인 · BNK-651 carry 재입증)
+
+| pamcode | param-info title (nav 표시) | HTML comment (내부 잔존) |
+|---|---|---|
+| L07_M11 | 7-4.CMS | `<!-- 7-5.본인부담금 자동이체 (CMS) -->` |
+| L07_M12 | 7-5.간편결제 | `<!-- 7-6.본인부담금 간편결제 -->` |
+| L07_M05 | 7-6.청구대장 rpt | `<!-- 7-7.연간 본인부담금 청구대장 리포트 -->` |
+| L07_M06 | 7-7.입금대장 rpt | `<!-- 7-8.월별 본인부담금 입금대장 리포트 -->` |
+| L07_M07 | 7-8.수납대장 rpt | `<!-- 7-9.월별 본인부담금 수납대장 리포트 -->` |
+| L07_M10 | 7-9.수납,환불내역 | `<!-- 7-10.본인부담금 수납내역 -->` |
+
+→ **운영자 UI·func.php `title` = authoritative** · HTML comment = renumber 잔존.
+
+### 3-3 PDF p84 TOC — 8-block 무번호 흐름 (확인 · on-disk `carefor_manual_p84_module7_toc_bnk478.txt`)
+
+1. 본인부담금 업무흐름도
+2. 청구내역 생성하기 → **7-1**
+3. 본인부담금 각종 명세서 및 발송내역 → **7-1** (p.87)
+4. 본인부담금 입금관리 및 입금처리 → **7-2** (p.88)
+5. 본인부담금 미납관리 → **func 7-3** (p.89)
+6. **청구시작 기준금액 설정** → **PDF p.90 only · L07 nav 0** (ogada G33 ✅)
+7. 각종 입금·수납 리포트 → **7-6~7-8** (func 기준)
+8. 의료비 공제 및 본인부담금 통계 → **7-2-1** (func) / PDF p.92 「7-8」충돌 carry
+
+### 3-4 ★ PDF p.91 구번호 리포트 축 — BNK-662 신규 negative (확인)
+
+verbatim (PDF p.91): 「메뉴위치 : **7-5**.연간 본인부담금 청구대장 리포트, **7-6**.월별 본인부담금 입금대장 리포트, **7-7**.월별 본인부담금 수납대장 리포트」
+
+| PDF p.91 구번호 | PDF 의미 | func/demo 현행 # | drift |
+|---|---|---|---|
+| **7-5** | 연간 청구대장 | **7-6** 청구대장 rpt | **−1** |
+| **7-6** | 월별 입금대장 | **7-7** 입금대장 rpt | **−1** |
+| **7-7** | 월별 수납대장 | **7-8** 수납대장 rpt | **−1** |
+
+→ **quadruple-source 정본**: func.php+demo `param-info title` > PDF p91 구번호 > demo HTML comment > PDF p90 「7-3」충돌(청구시작 vs 미납).
+
+### 3-5 PDF p.87–89 필드·워크플로 힌트 ↔ ogada (확인)
+
+**p.87 명세서 발송 (7-1)** — 필드/액션: 우편·문자·이메일·직접수령 일괄발송 · 주소라벨·급여비용명세서·영수증·청구리스트 출력 · 발송내역 엑셀 · 우편발송일 수정 가능·문자/이메일 자동기록 불변
+→ ogada `/billing` claim dispatch △ (부분)
+
+**p.88 입금 (7-2)** — 입금처리 년월목록 · 납부확인서 · 청구이력/입금내역 조회 · **은행 엑셀 8종** 일괄입금(국민·우리·농협·신한·KEB하나·부산·대구·광주)
+→ ogada `/billing/payments` + deposit import △
+
+**p.89 미납 (func 7-3)** — 미납개월/총액 · 독려 기록 · 조정처리(일부/전체) · 미납대상자 문자안내
+→ ogada `/billing/overdue` ✅
+
+**p.90 청구시작 (숨김)** — 「본인부담금 1회 이상 생성 시 설정 변경 불가 · 전체 삭제 시 초기화」
+→ ogada G33 `POST /settings/billing/start-balance` 1회 잠금 ✅
+
+## §4 M7 리포트 밀도 (확인)
+
+| 축 | M7 rpt 수 | 비고 |
+|---|---:|---|
+| demo `class="rpt"` | **4** | 7-6~7-9 (청구·입금·수납·환불) |
+| func.php | **4** rpt + 7 operational | 7-10 calculator = non-rpt |
+| PDF p.91 | **3** rpt (구번호) | 7-9 환불 rpt = PDF 미언급 · ogada `/billing/reports/refunds` superset |
+| ogada reports route | **5** | charges·deposits·receipts·refunds·statistics |
+
+전체 demo rpt **34** / loadPage **114** = **29.8%** report density carry (BNK-620 G-REPORT-DENSITY).
+
+## §5 ogada cross-walk @HEAD (BNK-662 git 실측)
+
+- FE `@562560a` WT **CLEAN** · ahead **264** (BNK-661 동일 SHA · **HEAD zero advance 1-cycle**)
+- BE `@9b91e0f` WT **CLEAN** · ahead **590** (BNK-661 동일 SHA · **HEAD zero advance 1-cycle**)
+- 118 Route · 93 page · V1–V183 · BE Test 274 · @Test **1991** · FE test 485 · 모듈 **80.86%** · reports 28 · merge gate **854** carry
+
+**M7 ogada 판정**: **10✅ + 1△(7-10 demo hidden)** + **G33 숨은 화면 ✅** + **refunds rpt superset** = module 7 **1.0** carry
+
+## planner 제안 (요약)
+
+1. M7 **FULL PARITY 유지** — quadruple-source 번호 drift footnote만 문서화(func authoritative)
+2. P2 gap deepen: p.87 명세서 다채널 발송 · p.88 은행엑셀 8종 일괄입금 = ogada △ → MVP 이후 billing import 확장
+3. LIVE **54-cycle** timeout · wayback 20260519 semantic IDENTICAL baseline 유지
+4. 시설 셸(이동서비스 0) framing — ogada `/transport/*` 차별화 carry

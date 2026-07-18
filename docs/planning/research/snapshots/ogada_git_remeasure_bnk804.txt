@@ -1,0 +1,88 @@
+BNK-804 ogada git 실측 6–8h — baseline KPI 재산정 crosswalk
+조사일: 2026-07-16T19:19Z
+직전 동일 rotation: BNK-799(2026-07-16T16:36Z·ogada git 실측 6–8h) → ~2.7h 후
+직전 사이클: BNK-803(2026-07-16T18:36Z·엔젤·롱텀·규제 4–6h) → ~43분 후
+
+========================================================================
+1. Git HEAD 실측 (submodule develop)
+========================================================================
+FE develop  : 73169a1  fix(v1.2.1/QA-B95): decode MathSpace and WordJoiner long aliases
+              2026-07-16 18:48:46 +0000 · WT CLEAN
+              BNK-803 @c260baa → advanced
+              origin/test = 73169a1 → ahead 0 = FULLY SYNCED (tester FF 흡수)
+BE develop  : f491ec8  fix(v2/QA-B95): decode VeryVery* space entity aliases
+              2026-07-16 19:15:05 +0000 · WT CLEAN
+              BNK-803 @4622896 → advanced
+              origin/test = 598d108 → ahead 708 vs 598d108
+merge gate  : 708 (FE 0 FULLY SYNCED + BE 708 · BE-heavy → tester FF)
+
+델타 vs BNK-803:
+  FE @c260baa → @73169a1 (advanced · FE tester FF → origin/test 4 → 0 FULLY SYNCED)
+  BE @4622896 → @f491ec8 (ahead 706 → 708 = +2 commit · QA-B95 space alias decode)
+  BE @Test 2261 → 2263 (+2)
+  FE test 534 → 530 (.test.js 221 → 217 = -4 recount·in-place)
+  NHIS #44 537차 → 538차
+
+========================================================================
+2. Route / Page / Test / Migration 실측
+========================================================================
+FE Route      : 133  (<Route\b 132 [App.jsx 단일] + <Routes> 1)
+FE Page       : 106  (git ls-files src/**/*Page.jsx)
+FE test       : 530  (.test.jsx 313 + .test.js 217)
+BE Test class : 294  (Test.java 293 + Tests.java 1)
+BE @Test      : 2263 (grep -rE "@Test" src/backend/src/test)
+Flyway        : V1–V196 (196 migration · 최고 V196 · 신규 0)
+BE controller : 81  (@RestController grep)
+BE entity     : 92  (@Entity grep)
+
+라우트 도메인 분해 (App.jsx path= grep):
+  billing     17
+  care        16
+  nursing     16
+  staff       13
+  transport    9
+  programs     8 (BNK-802 carry)
+  payroll      5 (basis/labor-cost-ratio/ledger/reports/retirement-accrual)
+  reports     29
+  compliance   2 (monitoring/workflow-catalog)
+  accounting   1 (sujifine BPO 진입)
+
+========================================================================
+3. 모듈 커버리지 KPI (config/competitorModuleCoverage.js)
+========================================================================
+29-entry 배열 · sum 28.25 · 28.25/29 = 97.41% CONFIRMED
+비-1.0 4개: id=2(0.85 이동서비스)·id=8(0.85 직원·근태)·id=10(0.85)·id=12(0.7 M12 SSO OTP)
+나머지 25 = 1.0 · coverage-0 진성갭 0건 · 가정 번복 0
+(grep coverage: 30-32 raw hit = JSDoc/주석 오염 포함 → 29 canonical entry로 정정·BNK-753 패턴)
+
+========================================================================
+4. 규제 백본 zero drift — NHIS #44 이동서비스비 (538차)
+========================================================================
+URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP : 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+      = BNK-803 nhis_jo44_live_bnk803.html byte-IDENTICAL (538차 zero drift·537차→+1)
+grep -oF verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·이동서비스(13)
+
+ogada src 교차검증 (rg src/backend/src/main/java):
+  TransportDistanceBand.RU_1  = RU_1("RU_1", "러-1 (5km 미만)", new BigDecimal("5"))
+  TransportDistanceBand.RU_4  = RU_4("RU_4", "러-4 (20km 이상)", new BigDecimal("999"))
+  TransportServiceFeeParityCatalog.ONE_WAY_RATIO = 편도 비율(0.5)
+  TransportServiceFeeService:287 = baseAmount.multiply(ONE_WAY_RATIO).setScale(0, RoundingMode.HALF_UP)
+  ONE_PER_DAY_NOTE / ONE_PER_DAY_LABEL = "1일 1회"
+→ IDENTICAL 6-link chain · 상수 재조정 불요 · id=2 0.85 carry
+→ 경쟁 4종 유일 full-stack 이동서비스비(케어포 시설 셸 0·이지케어 로그인-gated 미확인·엔젤 canonical 0-hit·롱텀 공단 원천만)
+
+========================================================================
+5. closed band 재오픈 0 (App.jsx grep LIVE)
+========================================================================
+G14 /clients/:clientId/care-plan-form · 대시보드 /dashboard(+hq) · v1.3-C /transport/service-fees
+v2 CMS /billing/cms · G-LINKAGE /clients/linkage-records · G2 /clients/home-newsletter
+→ 6-band CLOSED carry · P0 신규 0 · 재오픈 0
+
+========================================================================
+6. per-cycle minimum (agents.yaml reverse_engineering)
+========================================================================
+[x] 신규 증거 URL 1건+ : NHIS #44 재실측 538차 (nhis_jo44_live_bnk804.html 신규 저장)
+[x] 메뉴/필드/워크플로 1블록+ : ogada 라우트 도메인 분해 10-domain + Transport 6-link 교차검증
+[x] COMPETITOR_MATRIX 1행+ @HEAD : @73169a1/@f491ec8 3-row delta
+[x] BENCHMARK_REPORT §소절+ : §804 (git 실측 baseline 재산정)

@@ -1,0 +1,158 @@
+BNK-715 — 교차검증·갭 우선순위 8h+ · 조사일 2026-07-14 (UTC ~07:41)
+직전 사이클 BNK-714(2026-07-14T06:19Z·이지케어 2–4h) → 재실측
+rotation(8h+): 교차검증 · 이전 BNK 가정/KPI 번복 여부 · 미확인 축소 · 갭 우선순위 재산정
+※ 본 파일은 07:07 partial(FE WT DIRTY 중간 상태)을 **committed 최종 상태로 supersede** — KPI 정정 포함
+
+================================================================
+0. ★★★ 핵심 정정 (이전 사이클/partial 번복)
+================================================================
+[정정-1] 모듈 커버 denominator = **29 entries (sum 25.45 = 87.76%)** 확정.
+  - 07:07 partial 이 주장한 「30 entries / 26.45 / 88.17%」는 **오류**.
+  - 원인: `competitorModuleCoverage.js` 주석 라인
+      `* coverage: 1 = ✅ 완전, 0.6 = △ 부분, 0 = ❌ 갭`
+    이 `coverage: [0-9.]+` grep 에 **false-positive 1건(coverage:1)** 로 잡혀 30/26.45 로 과대계상.
+  - 실측(id: "..." 라인 한정): `git show develop:src/config/competitorModuleCoverage.js
+      | grep -E 'id: "' | grep -oE 'coverage: [0-9.]+'` = **29 entries · sum 25.45**.
+  - ∴ BNK-714 header 「25.45/29 = 87.76%」가 **정답** — partial 의 「29 over-count」 주장은 틀림.
+
+[정정-2] 11-2 퇴직적립 = **committed full-stack CLOSURE** (partial 의 「FE WT DIRTY △」 → 최종 ✅).
+  - FE 페이지·route·nav·coverage(id=11 0.85→1.0) 전부 commit 완료·FULLY SYNCED.
+
+================================================================
+1. SUBMODULE HEAD (git 실측 · committed)
+================================================================
+FE develop @02d185a  feat(v1.2.1/M11): wire retirement accrual preview page
+  - BNK-714 @aa86734 → +2 commit
+      d176581 ux(a11y/FE-16): harden US-PAYROLL-M11 payroll preview surfaces (UXD-174)
+      02d185a feat(v1.2.1/M11): wire retirement accrual preview page
+  - WT: **CLEAN**
+  - ahead origin/test 0  →  **FULLY SYNCED** (develop = origin/test = 02d185a)
+
+BE develop @ec7c6cb  fix(v2/J03): surface notification channel readiness in health
+  - BNK-714 @bd06646 → +2 commit
+      ff90532 feat(v2/M11): add retirement accrual preview API
+      ec7c6cb fix(v2/J03): surface notification channel readiness in health
+  - WT: **CLEAN**
+  - ahead origin/test 625 (BNK-714 623 → +2)
+
+merge gate = FE 0 (FULLY SYNCED) + BE 625 = **625** (BE-only → tester FF 가속)
+
+================================================================
+2. KPI 카운트 (committed HEAD 기준)
+================================================================
+FE Route     130  = <Route\b 129 + <Routes> 1   (BNK-714 129 → +1 /payroll/retirement-accrual)
+FE *Page.jsx 103  (BNK-714 102 → +1 StaffPayrollRetirementAccrualPage.jsx)
+FE test      514  = .test.js 212 + .test.jsx 302  (BNK-714 513 → +1)
+BE *Test.java 282 + *Tests.java 1 = 283  (carry)
+BE @Test     2098 (BNK-714 2093 → +5; retirement accrual + J03 notification readiness)
+Flyway       V1–V190  (carry)
+payroll route 5 committed: ledger(11-1)·reports(11-6)·basis(11-4)·labor-cost-ratio(11-5)·retirement-accrual(11-2)
+reports route 29 (carry)
+모듈        25.45 / 29 = **87.76%**  (id=11 0.85→1.0·+0.52pp vs BNK-714 87.24%)
+
+================================================================
+3. ★★★ M11 residual 11-2 퇴직적립 full-stack CLOSURE → M11 FULL CLOSURE
+================================================================
+BE @ff90532 `feat(v2/M11): add retirement accrual preview API`
+Endpoint: POST /api/v1/staff/payroll/retirement-accrual-preview
+  @PreAuthorize hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')
+
+Request DTO StaffPayrollRetirementAccrualPreviewRequest (record):
+  yearMonth               @Pattern ^\d{4}-(0[1-9]|1[0-2])$
+  accrualBasePay          @DecimalMin("0.00") @Digits(12,2)
+  priorAccumulatedBalance @DecimalMin("0.00") @Digits(12,2)
+  continuousServiceMonths @Min(0)
+
+Response DTO StaffPayrollRetirementAccrualPreviewResponse (record):
+  yearMonth, accrualBasePay, priorAccumulatedBalance, continuousServiceMonths,
+  accrualRateDenominator, monthlyAccrualAmount, projectedAccumulatedBalance,
+  accrualEligible, eligibilityThresholdMonths, riskLevel, guidance,
+  documentCode, surfaceKind, relatedSurfaces[]
+
+Constants (StaffPayrollSupport):
+  RETIREMENT_ACCRUAL_RATE_DENOMINATOR = 12   // 적립율 1/12 (근로자퇴직급여보장법 통상 산정)
+  RETIREMENT_ACCRUAL_ELIGIBILITY_THRESHOLD_MONTHS = 1  // 근속 1개월 미만 → 당월 0원
+  DOCUMENT_CODE_RETIREMENT_ACCRUAL = "M11-2"
+  ROUTE_PAYROLL_RETIREMENT_ACCRUAL = "/payroll/retirement-accrual"
+
+riskLevel: "ACCRUING" (accrualEligible) / "INELIGIBLE"
+guidance verbatim (2종):
+  [ACCRUING]   "근속 1개월 이상 대상으로 적립기준 급여의 1/12를 당월 퇴직적립금으로 산정했습니다."
+  [INELIGIBLE] "근속 1개월 미만입니다. 당월 퇴직적립금은 0원이며 기존 잔여 누적만 유지됩니다."
+
+FE @02d185a `wire retirement accrual preview page`
+  - src/pages/StaffPayrollRetirementAccrualPage.jsx (committed)
+      import previewStaffPayrollRetirementAccrualApi from ../api/services
+      제목 "퇴직적립금 미리보기"
+      본문 "적립기준 급여와 근속 개월을 입력하면 당월 퇴직적립금(1/{rateDenominator})과…"
+      label: 대상 월 / 적립기준 급여 / 이전 잔여 누적 / 근속 개월
+      riskLevel 배지 ACCRUING/INELIGIBLE · RBAC gate(본사·지점 관리자·사회복지사만)
+  - App.jsx Route path="/payroll/retirement-accrual" (committed)
+  - competitorModuleCoverage.js id=11 「직원 급여」 = 1 (committed)
+
+가정 번복: 11-2 퇴직적립 residual-P1 → **✅ full-stack LIVE**
+→ M11 6-leaf 전부 착지 = **M11 FULL CLOSURE**
+  11-1 ledger △preview · 11-2 retirement ✅ · 11-3 △(계약/basis) · 11-4 basis ✅ · 11-5 labor-cost-ratio ✅ · 11-6 reports △preview
+  id=11 「직원 급여」 coverage = **1.0** (0.85→1.0)
+
+================================================================
+4. ★★ 경쟁 4종 M11 급여 6-leaf 교차검증 (carefor func.php 정본 실측)
+================================================================
+carefor daycare/func.php (disk canonical 6226e6eb·98,328B·11-prefix grep 실측):
+  11-1. 월별 급여대장
+  11-2. 퇴직적립금 관리          ← ogada 11-2 매칭 (static menu leaf only)
+  11-3. 직원 급여계약 설정
+  11-4. 급여기초 설정(수당/공제)
+  11-5. 인건비 지출비율 참고자료
+  11-6. 직원 급여대장 리포트(간이지급명세서)
+
+퇴직적립(11-2) 교차검증:
+  케어포  △  「11-2. 퇴직적립금 관리」 정적 menu leaf 존재 (func.php) · 1/12 자동 산정 gate 미확인(로그인 gated)
+  이지케어 △  FAQ K008 수당/급여관리 사후 안내만 (in-app 미노출) · live faq.ez HTTP 000 이번 사이클 미확인
+  엔젤    ❌  silverangel systemFeature 404 carry
+  롱텀    ✅  규제 원천(근로자퇴직급여보장법)만 · 시스템 X
+  → ogada = **근속 1개월 게이트 + 1/12 자동 산정 + ACCRUING/INELIGIBLE guidance in-app preview** = 경쟁 4종 유일 (in-app 자동 산정)
+
+================================================================
+5. ★★ J03 알림 채널 readiness → /api/v1/health (신규 evidence)
+================================================================
+BE @ec7c6cb `fix(v2/J03): surface notification channel readiness in health`
+  HealthController.java +27L · HealthControllerTest.java +66L
+  /api/v1/health payload 추가 필드:
+    notificationChannelStatusAvailable        (boolean)
+    notificationLiveAlimtalkDispatchReady      (boolean)  ← 카카오 알림톡
+    notificationLiveEmailDispatchReady         (boolean)  ← SMTP
+    notificationReadinessBlockers              (List; e.g. "channel-status-unavailable")
+  근거: NotificationChannelReadinessService.getChannelStatus() → NotificationChannelStatusResponse
+  효과: 운영 점검이 알림톡/SMTP 구성 blocker 를 live-e2e 상태와 함께 감지 → id=10 부가서비스(SMS·알림) operational surface deepen(0.75 carry)
+  경쟁 비교: 이지케어=Channel.io 도움말+알림 발송(운영), 케어포=SMS 발송 언급 — 단 **알림 채널 readiness 헬스 프로브 공개는 경쟁 미확인** → ogada operational 우위 후보
+
+================================================================
+6. ★ 규제 백본 재실측 — NHIS #44 러-1~4 (450차) zero drift
+================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = disk canonical IDENTICAL
+450차 연속 zero drift (BNK-714 449차 → +1)
+verbatim grep: 러-1(1), 러-4(1), 편도(2), 1일 1회(1), 수급자(7)
+신규 규제/엑셀 포맷 변경 0 · 덮어쓰기 0
+↔ ogada TransportServiceFeeService 6-link chain (id=2 이동서비스 0.85) 경쟁 4종 유일 full-stack carry
+
+================================================================
+7. 갭 우선순위 재산정 (교차검증 결과)
+================================================================
+- M11 FULL CLOSURE (6-leaf 전부 착지·id=11 1.0) → **M11 sole-P1 소멸**
+- 잔여 core 갭 (P1 후보):
+    id=12 수입지출·회계 0  → 수지파인 외부 BPO SSO (in-app 미추종·BPO 어댑터 분기 결정 대기·BNK-706 carry)
+       착지 시 26.45/29 = 91.21%(+3.45pp)
+- 잔여 non-P1 갭:
+    id=1-5  가정통신문 0
+    id=1-10 연계기록지 0
+    id=2    이동서비스 0.85 (러-1~4 full-stack·잔여 UI polish)
+    id=8    직원·근태 0.85
+    id=10   부가서비스(SMS·알림) 0.75 (J03 health readiness 로 operational deepen)
+- P3 dashboard 2건(G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY)「가정」 유지
+- ★ 다음 사이클: M12(수입지출·회계) in-app vs BPO 분기 결정이 유일 KPI lever (87.76% → 91.21%)
+
+미확인(이번 사이클):
+- 이지케어 live faq.ez / 데모 셸 HTTP 000 (호스트 연결 실패·transient) → BNK-714 측정(80,057B·e068efea·rowid 233·인건비/지출비율 0-hit) carry
+- carefor LIVE func.php HTTP 000 carry (disk canonical 우선)

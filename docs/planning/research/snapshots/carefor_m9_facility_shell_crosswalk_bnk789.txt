@@ -1,0 +1,100 @@
+BNK-789 — 케어포 역공학 0–2h (2026-07-16T10:08:00Z)
+rotation: daycare/func.php 107-leaf 정본·매뉴얼 PDF ch.9·demo-work loadPage/view·시설 셸=이동서비스 없음·리포트 밀도·M7 view.*·M9 tri-source
+
+================================================================
+1. ogada git 실측
+================================================================
+FE develop  e45dacb  fix(v1.2.1/QA-B95): decode zero-width and tab/newline named HTML entities
+            WT CLEAN · BNK-788 `@f5dded2` → +1 commit · ahead origin/test **1** vs `f5dded2` · tester FF 대기
+            Route 133 (<Route\b 132 + <Routes> 1) · Page 106 · FE test 530 (217+313)
+BE develop  7102f82  fix(v2/QA-B95): decode zero-width named HTML entities in blockers
+            WT CLEAN · BNK-788 `@431859c` → +1 commit · ahead **693** vs `598d108`
+            BE Test 293 · BE @Test **2252** (+2 vs BNK-788 2250)
+            Flyway V1–V196 (top V196 · 신규 0)
+모듈 coverage 97.41% (28.25/29 · competitorModuleCoverage.js 29-entry · 가정 번복 0)
+merge gate **694** (FE 1 + BE 693 · BE-heavy → tester FF)
+
+================================================================
+2. live / Wayback 재실측 (증거 URL)
+================================================================
+LIVE  https://www.carefor.co.kr/daycare/func.php (http/https)     HTTP **000** 25s timeout · **84-cycle+** carry
+LIVE  https://demo-work.carefor.co.kr/                            HTTP **000** · **84-cycle+** carry
+disk  carefor_func.php (Wayback id_ 6226e6eb)                      98,328B · LOCK · 덮어쓰기 0
+
+★ 기존 URL 재실측 (Wayback demo-work id_ 20250712)
+URL   https://web.archive.org/web/20250712000000id_/https://demo-work.carefor.co.kr/
+HTTP  200 · SIZE 71,742B · md5 `ebee4d4724cd5e633696268067a4d85f`
+판정  = carefor_demo_work_wb_20250712_id_bnk777.html **byte IDENTICAL** (BNK-777→789 재확인 · 84-cycle+ LIVE 000 carry)
+
+★ 규제 NHIS #44
+URL   https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP  200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = **523차** IDENTICAL (BNK-788 522차→+1)
+저장  nhis_jo44_live_bnk789.html
+
+================================================================
+3. ★★★ func.php M2 「이동서비스관리」10-leaf vs demo-work 시설 셸 = 이동서비스 미장착 (메뉴/필드/워크플로)
+================================================================
+func.php catalog (6226e6eb · module 2 · 10-leaf — PDF ch.2「이동서비스관리」):
+  2-1 일정관리(공단연동) · 2-1-1 외출관리 · 2-2 탑승관리(차량 이용)
+  2-3 출석관리(차량 미이용) · 2-4 차량관리 · 2-5 청구내역상세(공단연동)
+  2-6 공단 급여비용 청구 자료 · 2-7 월간 서비스 변동현황 · 2-8 월간 입소자 현황 · 2-9 수급자 외출 리포트
+
+demo-work 시설 셸 (ebee4d47 · 71,742B):
+  loadPage li: **114** · class="rpt": **34** → report UI density **29.8%**
+  grep -oF: 이동서비스 **0** · 배차 **0** · transport **0** · view.transport.* **0**
+  left_sub2 = 「2.요양급여제공」(func **M3** 3-x) — func M2 전용 nav **부재**
+  유일 「차량」 hit: 9-5 운영관리(차량/비품/CCTV/고충) = **시설 자산 관리** · dispatch/탑승/송영 **아님**
+
+→ **확인**: 주야간 func.php M2(이동서비스 10-leaf) ≠ demo-work 시설 셸(이동서비스 0) = **시설(facility) 데모는 이동서비스 모듈 미장착 명시**
+→ ogada id=2 주간보호 이동서비스(TransportController 9-route + NHIS #44 6-link · coverage 0.85) = 케어포 **func 정본**·demo **0**·엔젤 공개 0 대비 **유일 full-stack 차별화** carry
+
+================================================================
+4. ★★★ M9 「기초설정 및 운영관리」tri-source drift (func · demo · PDF · ogada)
+================================================================
+PDF 목차 (carefor_manual_pdf_toc_extract_bnk690): ch.9「기초설정및운영관리」
+
+| leaf | func.php catalog (authoritative) | demo-work left_sub9 (시설 셸) | ogada `@e45dacb` | 판정 |
+|------|----------------------------------|-------------------------------|------------------|------|
+| 9-1 | 시설정보설정 | 9-1 시설정보설정 · view.center_master | `/settings` · `/branches` | ✅ |
+| 9-1-1 | 기초작업 및 기초설정 | 9-1-1 · view.basic_set | `/settings` (tenant/branch) | ✅ |
+| 9-2 | 요양급여 수가설정 | **9-2 건물 및 생활실 설정** · view.center_room | `/billing/fee-schedules` | △ func=수가 · demo=건물/생활실 **번호 재사용 drift** |
+| 9-3 | 이용요금 결제 및 연장 | 9-3 요양급여 수가설정 · view.service_cost | `/billing/fee-schedules` | △ func=케어포 SaaS 구독 · ogada N/A |
+| 9-4 | 비품관리대장 | 9-4 이용요금 결제 및 연장 · view.service_pay(kcpFlag) | N/A (SaaS billing) | ❌ ogada out-of-scope |
+| 9-5 | 연간 부담금현황 | **9-5 운영관리(차량/비품/CCTV/고충/특별침실)** · view.operational_manage | `/billing/reports/statistics` (연간 통계) | △ func=연간부담 · demo=운영관리 **통합 drift** |
+| 9-6 | — | 9-6 연간 부담금현황 · view.sales_amount (rpt) | `/billing/reports/statistics` | ✅ demo-only leaf |
+
+해석(확인):
+  · func 6-leaf vs demo 7-leaf = **번호·라벨 tri-source drift**(BNK-683 M7 L07 stale comment carry와 동일 패턴)
+  · demo 9-5「차량」= 시설 자산/CCTV/고충 **운영관리** · ogada transport dispatch(id=2)와 **별 축**
+  · id=9 「기초설정·수가」 coverage **1.0** carry · KPI promote 0
+
+================================================================
+5. ★★ M7 본인부담 7-x view.* ↔ ogada /billing 17-route (재앵커 carry)
+================================================================
+demo L07_M* view paths (ebee4d47 · BNK-785 carry 재확인):
+  7-1 view.cost_master → `/billing` · 7-2 view.cost_receipt → `/billing/payments`
+  7-2-1 view.cost_master_statistic → `/billing/cash-receipts` + statistics
+  7-3 view.cost_nopay → `/billing/overdue` · 7-4 view.cms_manage → `/billing/cms`
+  7-5 view.npay_manage → `/billing/easy-pay`
+  7-6~7-9 view.cost_*_report → `/billing/reports/{charges,deposits,receipts,refunds}`
+  L07_M11 nav title「7-4.CMS」 comment stale「7-5」 → **func.php comment authoritative** (BNK-683)
+
+ogada SUPERSET 3축 carry: `/billing/copay-rates` · `/billing/fee-schedules` · `/billing/reports/statistics`
+11/11 lifecycle parity · id=7-x 7-entry coverage 1.0
+
+================================================================
+6. ★★ 리포트 밀도 (catalog · demo · ogada)
+================================================================
+carefor func.php 107-leaf: title「리포트」exact 21/107=19.6% · broad 25/107=23.4%
+demo-work 시설 셸: rpt 34/114 loadPage=**29.8%**
+ogada `@e45dacb`: App.jsx report-related path ~29 / Route 133 ≈ **21.8%** · Report*Page 15+ · care/nursing/programs/billing/staff/transport reports
+
+→ ogada flat Route graph로 리포트 표면 **분산·확장**(케어포 depth-2 ERP 대비)
+
+================================================================
+7. planner 제안
+================================================================
+- REQUIREMENTS: demo-work 시설 셸 ≠ func.php 주야간 정본 — **M2 이동서비스는 func/PDF ch.2 정본** · demo는 시설(주야간) IA remap 명시
+- ROADMAP: id=2 transport 차별화 narrative 유지 · id=9 tri-source drift는 settings/fee-schedules로 **parity 확정**(coverage 1.0)
+- P3 lever(격상 X): demo 9-2 건물/생활실(view.center_room) · demo 9-5 운영관리(CCTV/고충) = ogada 미대응 leaf 「가정」
+- QA-B95: zero-width `\u200b`/`\u200c`/`\u200d` + tab/newline named entities = **18+ layer** 계보 (BNK-788 17+ → +1)

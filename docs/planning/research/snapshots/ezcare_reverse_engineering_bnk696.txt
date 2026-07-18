@@ -1,0 +1,95 @@
+BNK-696 — 이지케어 역공학 2–4h (2026-07-13, rotation: ezCare ERP·FAQ·가격·홈)
+====================================================================================
+
+[조사일] 2026-07-13 (UTC) | 직전 cycle BNK-695 동일일(2026-07-13T16:52Z) → 단시간 재실측
+[방법] HTTP fetch + HTML 파싱 (curl --max-time 40, md5sum, python3 정규식) + ogada git 실측
+
+------------------------------------------------------------------------------------
+0. ogada 실측 baseline (@HEAD)
+------------------------------------------------------------------------------------
+- FE develop `@2704fd8` (BNK-695 `@154ebee` → +N commit, 최신 `feat(UXD/US-Q01): localize safety result column via StatusBadge`)
+  · WT DIRTY 29 files — transport 셔틀/로스터 WIP 지속
+  · 신규(??): TransportShuttleScheduleView(.jsx+test) · TransportShuttleSheetView(.jsx+test)
+             · lib/transportShuttleSheet(.js+test) · pages/TransportShuttleSheetPage(.jsx+test)
+- BE develop `@2f4bfdf` (BNK-695 동일 SHA · HEAD zero advance) — 최신 `fix: surface unsupported nhis seed year`
+  · WT DIRTY 34 files — transport WIP + BillingServiceTest carry
+  · 신규(??): TransportRosterDayStatusResponse·UpdateTransportRosterDayStatusRequest
+             · TransportRosterDayStatusEntity+Repository
+             · V186__transport_runs_departure_round.sql · V187__vehicles_shuttle_addresses.sql
+             · V188__transport_roster_day_status.sql · V189__transport_roster_day_status_unify.sql
+- KPI (develop show/ls-tree 실측): Route path= 123 · *Page.jsx strict 97 · FE test 500 · BE @Test 2046
+- `grep path="/(payroll|accounting)` = 0 → M11/M12 sole P1 lever carry (+6.90pp→91.21%)
+- ahead vs origin/main: FE 785 · BE 633 (historical "merge gate" 지표는 별도 base 사용 — 정합 미확인, 수치 fabricate 금지)
+- 판정: BNK-695 감지 V186~V189 셔틀 배차표/로스터 WIP 여전히 미커밋 · FE HEAD만 전진(StatusBadge 지역화) · rules §6 손실 위험 carry → coder commit closure 권장
+
+------------------------------------------------------------------------------------
+1. ★★★ 이지케어 홈(/) 전면 리디자인 — "플랫폼 에코시스템" 랜딩 (신규 evidence)
+------------------------------------------------------------------------------------
+- URL https://ezcare.easyms.co.kr/  HTTP 200
+- size 68,963B  md5 2ced610a89eec1936d6cb0da953ac00f
+- 직전 BNK-693/694 홈 106,104~106,145B(md5 9c38680e) banner-중심 구조 → **−37KB DRIFT = 구조 재설계 확인**
+- 제목 <title>이지케어 재가장기요양기관 업무관리 프로그램</title>
+- 구 banner 「/?PG=b01&rowid=434 재무회계 처리방침」·「/?PG=e01 도입기관 수」 구조 소멸
+- 신규 nav (PG=): about · price · daycare · joo · visit · addition · w4c · contact · signup_select
+  · 가격 진입: location.href='/index.html?PG=price' (구 e01/charge → price 로 이전)
+
+[통계 섹션 5종 — 헤드라인 지표(값은 JS 카운터 애니메이션 → 정적 HTML 상 "0", 실값 미확인)]
+  1. 방문요양 ERP 시장점유율 (단위 %)
+  2. 이지케어 이용기관 (단위 개)
+  3. 재무회계 대행 이용기관 (단위 개)      ← BPO 채택 규모를 헤드라인 KPI로 노출
+  4. 월 공단 청구 처리 (단위 억 원)
+  5. 종사자 급여 처리 (단위 억 원)          ← 급여 처리 규모를 헤드라인 KPI로 노출
+
+[feature-card 9종 — 제품 라인업]
+  1. 방문요양 ERP
+  2. 주야간보호 ERP                          ← ogada 정면 경쟁 축
+  3. 구인구직                                ← 신규 관측: 채용/구인 마켓플레이스
+  4. 인지활동북                              ← 신규 관측: 인지활동 콘텐츠(프로그램 자료)
+  5. 재무회계 대행                           ← BPO
+  6. 공동구매                                ← 신규 관측: 소모품 공동구매 마켓
+  7. 현금영수증 발급                         ← 신규 관측: 결제/영수증
+  8. 본인부담금 수납                         ← 신규 관측: 수납(fintech)
+  9. 통장거래내역 조회                       ← 신규 관측: 계좌 연동 조회
+
+[quick-link 6종] 방문요양 ERP · 주야간 ERP · 재무회계 · 이용요금 · 원격지원 · 방문요양
+[review-card] 고객 후기 카드 17개 + review-list 20 — 소셜 프루프 UI 신규 도입
+
+판정: BNK-684 「SaaS + 재무회계 BPO + 노무법인 위탁 + 고용지원금 대행」 3-layer 모델을
+      **6+ 부가서비스 에코시스템**(구인구직·인지활동북·공동구매·현금영수증·본인부담금 수납·통장조회)으로
+      확장한 것이 홈 리디자인으로 명시적으로 노출됨. 급여/재무회계 처리규모를 헤드라인 KPI로 내세운 것은
+      M11(직원급여)/M12(회계) 수요신호의 강한 재확인. ogada 는 ERP 단일 SaaS(부가서비스 0) →
+      planner: (a) M11/M12 in-app 최소 커버 우선 vs (b) 외부 BPO 어댑터 vs (c) 에코시스템 미추종(핵심 ERP 집중)
+      3택 결정 분기점 재확인.
+
+------------------------------------------------------------------------------------
+2. ★★ 이지케어 가격 페이지 이전 — /index.html?PG=price (신규 URL)
+------------------------------------------------------------------------------------
+- URL https://ezcare.easyms.co.kr/index.html?PG=price  HTTP 200
+- size 52,025B  md5 bafcc3a77a32784791a05304a4cbb4e1
+- verbatim: 「초기 셋팅비」 기준가 55,000원 → **33,000원 부터** (VAT 별도)
+- verbatim: 「~7월 31일까지 신청 시」 ← BNK-694 「~6/30」 → **프로모션 7/31로 연장 확인**
+- verbatim: 「기관에 맞는 서비스와 월 이용요금을 한눈에」·「ERP 기본 이용부터 재무회계, 수납관리…」
+- verbatim: 「가입전 무료 체험이나 도입 상담이 가능」·「체험판(DEMO) 무료 제공」
+- 판정: 구 /?PG=e01(도입기관 수)·/new/ezCare_charge.html(요금표) → PG=price 단일 페이지로 통합.
+        셋팅비 33,000 프로모션은 6/30→7/31 연장 (BNK-694 대비 상태 변경).
+
+------------------------------------------------------------------------------------
+3. ★ 백본 재실측 (기존 URL)
+------------------------------------------------------------------------------------
+- NHIS #44 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f · **432차 zero drift IDENTICAL** (러-1~4·편도50%·1일1회·수급자부담X 불변)
+- ezCare /help/faq.ez  HTTP 200 · 80,057B(size-lock 지속) · md5 e5e8504f(cachebuster DRIFT)
+  · 233 rowid · 누적 hit_sum **3,646,330** (BNK-695 3,646,277 → +53)
+  · Top: rowid=21601 직원 회의록 83,903 · 21274 44,153 · 21529 37,213 · 21723 시급 25,114
+
+------------------------------------------------------------------------------------
+per-cycle minimum 충족 체크
+------------------------------------------------------------------------------------
+[o] 신규 증거 URL: /index.html?PG=price (신규 URL) + / 홈 리디자인 재실측
+[o] 메뉴/필드/워크플로 1블록+: 홈 feature-card 9 + 통계 5 + nav PG 9 (§1)
+[o] COMPETITOR_MATRIX 1행+ @HEAD 갱신: BNK-696 delta 행 (에코시스템·가격·transport WIP·백본)
+[o] BENCHMARK_REPORT §소절: §696-1~4
+신규 snapshot 4건: ezcare_home_live_bnk696.html · ezcare_price_live_bnk696.html
+                 · ezcare_help_faq_list_live_bnk696.html · nhis_jo44_live_bnk696.html + 본 txt
+덮어쓰기 0 · zero drift IDENTICAL 1(NHIS 432차) · 구조 DRIFT 1(home 재설계) · cachebuster DRIFT 1(FAQ)
+· 상태 변경 2(가격 6/30→7/31 연장 · 홈 에코시스템 노출) · 미확인 carry: home 통계 실값(JS 카운터)

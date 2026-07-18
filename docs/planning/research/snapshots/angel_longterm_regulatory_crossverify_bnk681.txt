@@ -1,0 +1,108 @@
+# BNK-681 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-27T02:17Z)
+
+## 작성자/메타
+- [BNK] benchmark_researcher · rotation 4–6h(엔젤·롱텀·규제)
+- ogada baseline: FE `@f7061c4`(WT **DIRTY 1M + 1 untracked** — `src/e2e/liveFeeScheduleSeed.js` +39/-7L + `src/test/liveFeeScheduleSeed.test.js` NEW 58L · BNK-680 동일 SHA · **HEAD zero advance 2-cycle** · ahead **275** vs `origin/test=ab4de83`) / BE `@1f2803c`(WT CLEAN · BNK-680 동일 SHA · **HEAD zero advance 2-cycle** · ahead **598** vs `origin/test=598d108`) · merge gate **874**(FE 275+BE 599 · FE WT DIRTY → 선행 coder commit 필요).
+
+## ★★★ §681-1 NHIS #44 420차 zero drift IDENTICAL (확인 · 규제 베이스라인)
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 (HTTP 200)
+- 라이브: 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` — disk `nhis_jo44_live_bnk680.html` byte-identical · **420차 zero drift**
+- verbatim 인용:
+  - `<div class="article">제 34 조 (주 · 야간보호급여 이동서비스비용 등)</div>`
+  - 「수급자별 1일 1회에 한하여 산정」「최단거리(편도)」「이동서비스 일지 작성·보관」(별지 제22호)·러-1·러-4
+- 신규 snapshot: `nhis_jo44_live_bnk681.html` (7,572B `c886ff1f`)
+
+판정(확인): NHIS 제34조 규제 베이스라인 420-cycle 불변. 러-1~4 수가 금액(830/2,630/5,230/8,630) carry. `Nhis2026DaycareRateCatalog.CATALOG_YEAR=2026` BE year-gate 유효.
+
+## ★★ §681-2 law247 seq271110 Time= cachebuster DRIFT (확인 · semantic IDENTICAL)
+
+- URL: https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110 (HTTP 200)
+- 라이브: 78,450B · md5 `e695a2414f05a5c2b6833a88aaba2549` — disk BNK-680 `355fd315` → **md5-only DRIFT**
+- Time= 변동: BNK-680 `1782525994` → BNK-681 `1782526511` (cachebuster +517초)
+- semantic 불변:
+  - `[시행 2026. 1. 1.] [보건복지부고시 제2025-247호, 2025. 12. 30., 일부개정]`
+  - `prmlNo=2025-247`
+- 신규 snapshot: `law247_admRulInfoP_seq271110_bnk681.html` (78,450B `e695a241`)
+
+판정(확인): Time= cachebuster-only DRIFT(semantic IDENTICAL) · 본문 zero drift · BNK-674 canonical URL `admRulSeq=2100000271110` carry.
+
+## ★★★ §681-3 lcms.or.kr TYPE DRIFT type2→type3 (확인 · 신규 evidence · 경쟁사 사업 확장 패턴)
+
+- URL: https://www.lcms.or.kr/ (HTTP 200)
+- 라이브: 50,498B · md5 `6b7502914de15aa75cabe04740dfca2c` — disk BNK-680 50,554B `6c0d22b4` → **SIZE −56B + md5 DRIFT → type 변경**
+- 신규 snapshot: `lcms_or_kr_live_bnk681.html` (50,498B `6b7502914`)
+- verbatim 인용:
+  - `<section class="ad_cont type3">`
+  - `<p>엔젤시스템 & CJ프레시웨이<br>업무협약(MOU) 체결</p>`
+  - `<i>CJ프레시웨이와 MOU 체결을 통해 노인식단 전문영양사가 작성한 식단표 활용</i>`
+  - `<span>노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로<br> 식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다.</span>`
+  - 링크: `silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864`
+
+type rotation 시퀀스(확인):
+- BNK-668: type3(CJ MOU) 50,554B
+- BNK-669: type1(홈페이지)
+- BNK-673: type2(CMS 자동이체) 50,554B `6c0d22b4`
+- BNK-678: type2 carry
+- BNK-680: type2 carry (×3)
+- **BNK-681: type3(CJ MOU) 50,498B `6b7502914` — SIZE −56B 변동**
+
+판정(확인): type3 재등장 · SIZE 불변 carry(BNK-668 type3 50,554B ≠ BNK-681 50,498B · −56B delta = 동적 timestamp 또는 광고 ID 교체 추정). **엔젤시스템/LCMS가 SaaS software 외 식재료 B2B 파트너십으로 서비스 확장 중** — CJ프레시웨이 협약으로 「식단표 무상제공 + 신선 식재료 구매계약」. ogada 기획 관련(§ 아래).
+
+ogada 비교:
+- ogada `/care/meal-assistance-records`·`/care/meal-preference-surveys` — 식사 제공 기록·선호도 관리 ✅
+- ogada 식재료 조달/구매계약 모듈 ❌ (scope 외·P3 후보 이하)
+- 경쟁 차별: 엔젤/LCMS는 software+식재료 묶음 가치제안 → SaaS 단독 ogada와 사업모델 차별화 구간
+
+## ★ §681-4 silverangel backbone 2/2 zero drift IDENTICAL (확인 · 재실측)
+
+| URL | live md5 | size | disk 매핑 | 판정 |
+|---|---|---|---|---|
+| `/newSilverangel/daycare/daycareEssentialWork.do` | `c79c1be3` | 131,664B | `silverangel_daycareEssentialWork_live_bnk677.html` | **IDENTICAL** |
+| `/newSilverangel/daycare/daycareAngelSystemSummary.do` | `a6ee5694` | 51,943B | `silverangel_daycareAngelSystemSummary_bnk649.html` | **IDENTICAL** |
+
+추가 확인 — 404 URL:
+- `/newSilverangel/service/businessSupport.do` → HTTP 404 1028B `3c93af54` — **URL 폐기 확정** (disk `silverangel_businessSupport_live_bnk641.html` 75,878B `a13cb5ac` 보존)
+- `/silverangel/system_feature.do` → HTTP 404 1028B `3c93af54` — **404 carry**
+
+판정(확인): daycareEssentialWork 107/107 평가지표 정본(131KB) zero drift · daycareAngelSystemSummary zero drift. businessSupport URL 폐기(BNK-641 이후 404 확정).
+
+신규 snapshot: `silverangel_daycareEssentialWork_live_bnk681.html` (131,664B `c79c1be3`)
+
+## ★ §681-5 ogada git 실측 — HEAD zero advance 2-cycle · FE WT DIRTY 지속 (확인)
+
+- FE `@f7061c4` — WT DIRTY 1M (`src/e2e/liveFeeScheduleSeed.js`) + 1 untracked (`src/test/liveFeeScheduleSeed.test.js`) · **HEAD zero advance 2-cycle** (BNK-680/681) · ahead 275
+- BE `@1f2803c` — WT CLEAN · **HEAD zero advance 2-cycle** (BNK-680/681) · ahead 598
+
+KPI 8축 (확인 · BNK-680 IDENTICAL):
+- **123 Route** (`<Route\b` App.jsx grep)
+- **97 page** (`*Page.jsx`)
+- **V1–V184** migrations
+- **BE @Test 2010** (year-gate regression +2 carry)
+- **FE test 497** (develop ref)
+- **모듈 84.31%**(24.45/29)
+- **reports route 28**
+- **merge gate 874**(FE 275+BE 599 · FE WT DIRTY → coder commit 선행 필요)
+
+판정(확인): **8/8축 BNK-680 IDENTICAL** — HEAD zero advance 2-cycle. FE WT DIRTY 미해소(rules §6 CRITICAL).
+
+## 변경/검증 종합
+
+- 가정 번복: **0**
+- 신규 core 갭: **0**
+- 상태 변경: **1** — lcms type2→type3 DRIFT(SIZE −56B · 신규 evidence)
+- candidate 변동: 0 (carry)
+- 미확인: **1** carry — longterm 502/610 신규 URL 장애
+- KPI 변경: **0** (BNK-680 IDENTICAL)
+- 신규 snapshot: **4건** — `nhis_jo44_live_bnk681.html`(c886ff1f 7,572B 420차) · `lcms_or_kr_live_bnk681.html`(6b7502914 50,498B type3 DRIFT) · `law247_admRulInfoP_seq271110_bnk681.html`(e695a241 78,450B Time= DRIFT) · `silverangel_daycareEssentialWork_live_bnk681.html`(c79c1be3 131,664B)
+- zero drift IDENTICAL: **3** (NHIS #44 420차 · silverangel daycareEssential · daycareAngel)
+- semantic IDENTICAL (md5-only): **1** (law247 seq271110 Time= cachebuster)
+- 엑셀 포맷 변경: 0
+- per-cycle minimum 4종: ✅ 신규 evidence URL (lcms type3 DRIFT 1건 + NHIS 420차 재실측) · 메뉴/필드/워크플로 1블록 (§681-3 CJ MOU 식단표+식재료 구매계약 상세) · COMPETITOR_MATRIX `@f7061c4`/`@1f2803c` 행 갱신 · BENCHMARK_REPORT §681 신규 소절
+
+## 즉시 action
+
+- **즉시(coder)**: FE WT 1M + 1 untracked `liveFeeScheduleSeed.js` + `liveFeeScheduleSeed.test.js` commit closure → develop push (rules §6 CRITICAL · 2-cycle 미해소 · tester FF merge BLOCK).
+- **즉시(tester)**: merge **874**(FE 275+BE 599) — 선행 coder commit 후 FF merge (BE WT CLEAN · @Test 2010 · year-gate regression carry).
+- **planner**: lcms type3 CJ프레시웨이 MOU = 엔젤/LCMS 식재료 B2B 확장 패턴 문서화 — ogada SaaS-only 모델 vs 경쟁사 bundled (software+식재료) 차별화 carry. meal-preference-surveys(`/care/meal-preference-surveys`) ✅ ogada side vs 조달 파트너십 scope 외.
+- **다음 rotation 후보**: ogada git 실측 6–8h(FE commit closure 직후 merge gate 875+ 재측정) 또는 이지케어 역공학 2–4h(FAQ 21614 NHIS 외부 4-step deepen).

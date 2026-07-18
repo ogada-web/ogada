@@ -1,0 +1,75 @@
+이지케어 역공학 — Module 6 「직원급여」 leaf ↔ ogada M11 /payroll/* 크로스워크 (BNK-758 · 2026-07-15 · 2–4h 이지케어 rotation)
+======================================================================================================
+
+[출처·근거]
+- 이지케어 데모 로그인 LIVE: `./scripts/ezcare-demo-fetch.sh --menu-catalog` (2026-07-15T12:14:00Z)
+  · login code=0000 (oCode=DEMO) · title="[DEMO 이지케어] 체험 이지케어 재가복지센터"
+  · base=https://ezcare.easyms.co.kr · demo shell 138,603B · nav JS `top-nav-item-V2.js?20260428` 25,470B md5 95286775000f06c8ad13688fcb0d6dbb (committed IDENTICAL = 메뉴 백본 zero drift)
+- 파싱 산출: ezcare_menu_catalog.json — module 10 · leaf_item 148 · unique PGID 59
+- ogada 실측: FE develop 5b9656c (`git -C src/frontend rev-parse develop`) · App.jsx grep
+
+[메뉴 백본 재실측 — 이지케어 top-nav 10 모듈 (LIVE 2026-07-15)]
+  1:직원   2:수급자   3:방문일정   4:RFID점검   5:본인부담
+  6:직원급여   7:재무회계   8:세무·사회보험   9:기관관리   10:기관평가
+  → 「재가복지센터」 데모 = 방문요양/방문목욕/방문간호 축. RFID점검·본인부담 방문3종 tab.
+  → 주간보호(ogada) 와 도메인 상이 = RFID점검(공단 태그) top-level 은 재가-specific.
+
+======================================================================================================
+[★★★ 핵심 크로스워크 — Module 6 「직원급여」 leaf ↔ ogada /payroll/* 5-route 1:1]
+
+이지케어 Module 6 leaf (PGID·url)                          | ogada M11 route / page                         | 판정
+----------------------------------------------------------|------------------------------------------------|------
+급여명세서 작성 및 관리 (/worker_allowance_V6/load.ez)     | 급여명세서 + G-SMS kind22 dispatch(5b9656c)     | ✅ SUPERSET
+연간 급여 및 사회보험 누계 (wAllowance-a100                | /payroll/ledger (StaffPayrollLedgerPage)        | ✅ FULL
+  · 월별 합산#tab0 · 직원별 합산#tab1)                     |   + /payroll/reports (StaffPayrollReportsPage) |
+퇴직금 적립 (wAllowance-severance                         | /payroll/retirement-accrual                     | ✅ 1:1
+  · /worker_allowance_V5/severance_pay.html)              |   (StaffPayrollRetirementAccrualPage)          |
+인건비 지급 비율 참고자료 (wAllowance-payrollcost         | /payroll/labor-cost-ratio                       | ✅ 1:1
+  · /worker_allowance_V5/payroll_cost_rate.html)          |   (StaffPayrollLaborCostRatioPage)             |
+급여기초자료 설정 (wAllowance-awData                       | /payroll/basis (StaffPayrollBasisPage)          | ✅ 1:1
+  · 수당산정방식 및 분개값#tab0                            |                                                |
+  · 사회보험 현황 관리#tab1 · 월급제 수당 관리#tab2)       |                                                |
+목욕/간호 건별수당 설정 (wAllowance-a200)                  | (방문목욕/간호 건별수당 = 재가-specific)         | ⚪ N/A(주간보호 out-of-scope)
+
+판정 요약: Module 6 핵심 5 leaf 중 ogada /payroll 5-route 가 4 leaf FULL 1:1 대응
+  (severance→retirement-accrual · payrollcost→labor-cost-ratio · awData→basis · a100→ledger/reports)
+  + 급여명세서는 ogada 가 SMS(kind22) 발송까지 착지 = SUPERSET.
+  잔여 1 leaf(a200 목욕/간호 건별수당)은 재가 방문서비스 전용 = 주간보호 도메인 out-of-scope.
+
+======================================================================================================
+[★★ SUPERSET 근거 — ogada 급여명세서 SMS 발송(kind22) 최신 착지]
+- FE develop 5b9656c "feat(v1.2.1/G-SMS): wire staff payroll statement kind22 dispatch UI"
+- BE develop 7de86eb "feat(v2/J03): wire staff payroll statement message kind 22 dispatch"
+- 이지케어는 급여명세서 「작성 및 관리」(worker_allowance_V6) + 별도 mobile-sendW 문자(messageAmt app10/sms20/mms50·BNK-754)로 분리.
+  ogada 는 급여명세서 자체에 kind22 메시지 발송 파이프라인을 in-app 통합 → 별도 문자 모듈 왕복 불요.
+
+[★ RFID점검(Module 4) = 재가-specific 차별화(진성갭 아님)]
+- 이지케어 Module 4 top-level: schedule-rfid「RFID태그 내역 ↔ 공단계획 비교」 + schedule-fix「일정확정」.
+  방문요양은 공단 RFID 태그로 방문 실적을 검증 → 태그↔공단계획 diff 가 top-level 모듈.
+- ogada 는 주간보호(day-care) = QR/출석 체크인 축. RFID compare 는 `VisitRfidDiffComparePanel`(id=10 0.75 residual·BNK-754) 로 이미 대응.
+  → 주간보호 도메인에서 RFID top-level 모듈은 과대반영 금지(가정).
+
+======================================================================================================
+[규제 백본 zero drift — NHIS #44 이동서비스비 492차]
+- NHIS #44 live https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba (bnk757 IDENTICAL = 492차)
+  verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+  ↔ ogada TransportServiceFeeService 6-link chain(id=2 0.85) carry
+
+[FAQ list 재실측 — hit-only DRIFT]
+- https://ezcare.easyms.co.kr/help/faq.ez HTTP 200 · 80,057B · md5 0810f9fb146e9a2ea8e186128bb63923
+  (bnk754 fee8dae5 → 변경) · rowid SETS IDENTICAL 233 · max 21781
+  실 변동 = FAQ 2건 순서 재배치(hit-count/인기순)뿐 → 신규 FAQ 0 · 엑셀 포맷 변경 0
+
+[ogada baseline 실측 (BNK-758)]
+- FE develop 5b9656c · BE develop 7de86eb
+- Route 133(<Route\b 132 + <Routes> 1) · Page 106 · FE test 525(216+309)
+- BE Test 293 · BE @Test 2205(^\s*@Test) · Flyway V1–V196
+- accounting route 1 · payroll route 5 · 모듈 97.07%(28.15/29 carry)
+- ahead of test: FE 1 · BE 662 · merge gate 663
+
+[per-cycle minimum 충족]
+- 신규 증거: 이지케어 demo login LIVE 2026-07-15(code 0000·nav 10/148/59) + FAQ list 재실측 DRIFT + NHIS 492차 재실측
+- 메뉴/필드/워크플로 블록: Module 6 직원급여 leaf ↔ ogada /payroll 5-route 1:1 크로스워크
+- COMPETITOR_MATRIX: BNK-758 rows @5b9656c/@7de86eb
+- BENCHMARK_REPORT: §BNK-758 소절

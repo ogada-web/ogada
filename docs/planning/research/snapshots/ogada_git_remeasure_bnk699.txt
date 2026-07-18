@@ -1,0 +1,50 @@
+BNK-699 ogada git 실측 6–8h + 백본 재실측 (2026-07-13)
+=====================================================
+
+ogada submodule git HEAD 실측 (git develop)
+-------------------------------------------
+FE develop: c012ed0  test(v1.2.1/QA-B361): stabilize month-boundary fixtures across five suites
+  - WT CLEAN · ahead 289 vs origin/test=ab4de83 (BNK-698 @d873894 288 → +1 commit)
+BE develop: c183d84  test(v2/transport): lock roster day-status HTTP RBAC and service contracts
+  - WT CLEAN · ahead 608 vs origin/test=598d108 (BNK-698 @60c4e36 607 → +1 commit)
+merge gate: 897 (FE 289 + BE 608 · BNK-698 895 → +2 cross-stream · 양쪽 WT CLEAN → tester FF 가속 가능)
+
+KPI 실측 (@c012ed0 / @c183d84)
+-----------------------------
+- Route: 124 (git grep '<Route\b' src/App.jsx = 124 · BNK-698 carry)
+- Page: 98 (*Page.jsx ls-files · BNK-698 carry)
+- FE test: 504 (.test.{js,jsx} ls-tree · BNK-698 carry)
+- BE Test: 279 (278 *Test.java + 1 *Tests.java · BNK-698 278 → +1 Test.java)
+- BE @Test: 2061 (git grep -hoE '@Test\b' develop -- '*.java' · BNK-698 2052 → +9)
+- Flyway: V189 max (V186~V189 shuttle-sheet carry)
+- 모듈: 84.31% (24.45/29 · competitorModuleCoverage.js @c012ed0 미변경 carry)
+- reports route: 28 carry
+
+FE +1 commit (d873894..c012ed0)
+  c012ed0 test(v1.2.1/QA-B361): stabilize month-boundary fixtures across five suites (테스트 fixture 월경계 안정화 · Route/Page/test 순증 0)
+BE +1 commit (60c4e36..c183d84)
+  c183d84 test(v2/transport): lock roster day-status HTTP RBAC and service contracts (배차 roster day-status HTTP RBAC + service contract 잠금 · @Test +9)
+
+백본 live 재실측
+----------------
+- NHIS #44 이동서비스비 러-1~4 435차 zero drift IDENTICAL
+    URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+    HTTP 200 · 7,572B · md5 c886ff1f (canonical nhis_jo44.html IDENTICAL · BNK-698 434차 → +1)
+    러-1 ×1 · 러-4 ×1 · 편도 ×2 · 이동서비스 ×13 · 최단거리 ×1 verbatim 불변
+    ※ admRulBylInfoP.do / joHistoryContent.do(무date param)는 gated shell(5,738B/2,808B) 반환 → full date param 필수(재현 노트)
+- ezCare 도움말 FAQ list — size-lock 13-cycle · counter DRIFT
+    URL: https://ezcare.easyms.co.kr/help/faq.ez · HTTP 200 · 80,057B(BNK-633~699 size-lock)
+    md5 9a9ac670 (BNK-698 1cd1c5d3 → cachebuster/counter DRIFT)
+    233 rowid stable · 누적 faq-hit sum 3,646,306 (BNK-698 3,646,297 → +9)
+    Top-1 rowid=21601 「직원 회의록 전산 작성/관리」 83,903 (BNK-698 83,903 = zero) · rowid=21274 44,153 · 21529 37,213
+- carefor func.php / demo-work LIVE: HTTP 000 timeout 25s (60+ cycle 「미확인」 carry · canonical 6226e6eb 98,328B disk 우선)
+
+zero drift IDENTICAL: 2 (NHIS #44 435차 · carefor func.php canonical disk)
+counter DRIFT: 1 (ezCare FAQ list +9 · size-lock)
+가정 번복: 0
+상태 변경: 2 (FE +1 commit · BE +1 commit · 양쪽 WT CLEAN)
+KPI 변경: 3 (FE ahead 289 · BE ahead 608 · merge gate 897 · BE Test 279 · @Test 2061 = 5축)
+미확인 carry: 2 (carefor LIVE 60+ cycle · longterm 502/610)
+신규 snapshot: 4 (ogada_git_remeasure_bnk699.txt · nhis_jo44_live_bnk699.html · ezcare_help_faq_list_live_bnk699.html · carefor_m3_care_record_crosswalk_bnk699.txt)
+덮어쓰기: 0
+per-cycle minimum: 4종 충족 (재실측+변동 3-URL · Module 3 11-leaf crosswalk 1블록 · COMPETITOR_MATRIX @c012ed0/@c183d84 1행+ · BENCHMARK_REPORT §699)

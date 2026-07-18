@@ -1,0 +1,129 @@
+BNK-763 — 엔젤·롱텀·규제 4–6h 교차검증 (주력 extract)
+조사일: 2026-07-15T15:20:19Z (KST 2026-07-16 00:20)
+직전 동일 rotation: BNK-759 (2026-07-15T12:55Z) → ~2.4h 후
+직전 사이클: BNK-762 (2026-07-15T14:45Z·이지케어 2–4h) → ~35분 후
+
+============================================================
+0. ogada git 실측 (baseline)
+============================================================
+FE develop = 5843845  feat(v1.2.1/G-RFID): wire care-provision SMS batch dispatch UI
+  · WT CLEAN · BNK-762 `@3fddccd` → +2 (`2450662` Toast/UXD + `5843845` RFID FE wire)
+  · ahead origin/test **2** (origin/test=`3fddccd`)
+  · ★★★ RFID FE wire CLOSED — `dispatchRfidCareProvisionApi` + VisitRfidDiffComparePanel
+    yearMonth·clientIds·summary → POST /api/v1/visits/imports/rfid/care-provision-dispatch
+    (FAQ 21589 · message_kind=13) · BNK-759/760/762 「FE wire 0-hit = P2」 **CLOSED**
+  · id=10 coverage **0.85 유지**(comment만 kind13 FE wire 반영·수치 promote 0 · KPI 97.41% 유지)
+BE develop = 27de3a3  fix(v2/QA-B95): parse nested JSON unicode bootstrap blocker payloads
+  · WT CLEAN · BNK-762 `@7868384` → +1 · ahead **666** vs origin/test=`598d108`
+  · RFID care-provision-dispatch BE 상속 유지(HOME_VISIT only 가드)
+
+KPI 실측:
+  Route 133 (<Route\b 132 + <Routes> 1 · App.jsx)
+  Page 106 (*Page.jsx)
+  FE test 525 (216 .test.js + 309 .test.jsx)
+  BE Test 294 (293 *Test.java + 1 *Tests.java)
+  BE @Test 2216 (^\s*@Test · +1 vs BNK-762 2215)
+  Flyway V1–V196 (committed · 신규 0)
+  accounting route 1 · payroll route 5
+  모듈 커버리지 **97.41%** (28.25/29) — residual id=2/8/10 **0.85** · id=12 **0.7**
+  merge gate **668** (FE 2 + BE 666 · BE-heavy → tester FF)
+
+============================================================
+1. 규제 백본 live 재실측 (기존 URL + feeService 재실측)
+============================================================
+| 대상 | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent (SEQ=1637·SEQ_CONTENTS=3281769) | 200 | 7,572B | c886ff1f | **497차** IDENTICAL (BNK-762 496차→+1) |
+| silverangel extraService.do | 200 | 81,637B | f9c5d877 | IDENTICAL — 효성CMS 250/300/별도문의 |
+| silverangel daycareEssentialWork.do | 200 | 131,664B | c79c1be3 | IDENTICAL — 지표27 기능회복 6-hit |
+| silverangel mainService.do | 200 | 59,002B | bcf6df41 | IDENTICAL (=bnk704/disk) |
+| silverangel feeService.do | 200 | 44,513B | eab352a8 | IDENTICAL (=bnk704/disk service_fee_service) **재실측** |
+| silverangel noticeList.do | 404 | 1,028B | 3c93af54 | dual-IA carry (canonical ea7d6b3d disk) |
+| silverangel systemFeature.do | 404 | 1,028B | 3c93af54 | 404 carry |
+| lcms.or.kr / | 200 | 50,498B | 6b750291 | **DRIFT** type2→type3 (=BNK-751 · banner 회전 · decommission 불요) |
+| law.go.kr admRulInfoP (247호·2100000271110) | 200 | 78,450B | aebbb21d | size-lock · Time= only (strip≡bnk759/bnk755 `733af931d018`) |
+| longterm 502 npeb502m01.web | 200 | 89,162B | 56185735 | =bnk759/bnk740 shell IDENTICAL · 수가 disk carry |
+| longterm 610 npeb610m01.web | 200 | 88,399B | fad1ce61 | =bnk759/bnk740 shell IDENTICAL · 「통합재가」1 · 수가 disk carry |
+| MOHW list1488862 (bid=0026) | 200 | 103,113B | d5902718 | =bnk705/bnk751/bnk759 IDENTICAL |
+
+NHIS #44 러-1~4 verbatim grep (497차 zero drift):
+  러-1 : 1 | 러-4 : 1 | 편도 : 2 | 1일 1회 : 1 | 수급자가 부담 : 1 | 이동서비스 : 13 | 50% : 11
+  인용: 「‘러-1’부터 ‘러-4’까지 비용의 50%」·「1일 1회만 산정」·「수급자가 부담하지 아니한다」·「이동서비스 일지를 작성」
+  ↔ ogada TransportDistanceBand RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY · 일지④ linkage
+
+silverangel 효성CMS rate card (extraService · feeService):
+  자동이체 250원/1건 · 가상계좌 300원/1건 · 카드결제 별도문의
+  ↔ CmsPaymentMethodCatalog / CmsCollectionMethod AUTO_DEBIT·VIRTUAL_ACCOUNT
+
+silverangel daycareEssentialWork: 기능회복(6)·27(9)·목욕(2) = 「주야간보호 27=기능회복훈련」 carry
+  ↔ ogada G17 지표27 ownership · bathing≠eval27
+
+longterm 수가 (login-gated shell → disk canonical carry 「미확인」live / 「확인」disk):
+  단기보호 1일 1등급 **74,060** (`longterm_502.html`)
+  통합재가 주야간보호형 **월 10만원** (`longterm_610.html`)
+
+law247: Time=1784120068(bnk759)→1784128787(bnk763) · stripped md5 IDENTICAL `733af931d018`
+  제2025-247호 · 시행 2026. 1. 1. verbatim 불변
+
+lcms DRIFT: type2(`6c0d22b4`·50,554B·img_banner2) → type3(`6b750291`·50,498B) = BNK-751 회귀
+  semantic IDENTICAL · HTTP 200 · decommission 「가정」 번복 유지(BNK-747) · 신규 배너 실체 0
+
+============================================================
+2. ★★★ 메뉴/필드/워크플로 블록 — RFID FE wire CLOSURE + NHIS #44 6-link + CMS/지표27
+============================================================
+A) RFID→급여제공내역 SMS full-stack CLOSURE (BNK-762/760/759 P2 residual)
+
+| 계층 | 앵커 | 판정 |
+|---|---|---|
+| BE | POST `/api/v1/visits/imports/rfid/care-provision-dispatch` · CARE_PROVISION_RECORD(kind13) · HOME_VISIT only | ✅ (c080529 이후 상속) |
+| FE services | `dispatchRfidCareProvisionApi` → apiFetch care-provision-dispatch | ✅ **NEW** `@5843845` |
+| FE Panel | VisitRfidDiffComparePanel: yearMonth·clientIds multi-select·summary·발송 UI | ✅ **NEW** |
+| 도메인 가드 | 「방문요양 지점에서만 동작」 FE copy + BE BusinessRuleException | ✅ |
+| coverage id=10 | 0.85 (comment만 갱신·수치 promote 0) | △ residual polish carry |
+| 주간보호 | QR/출석 축 — RFID top-level 과대반영 금지 | 가정 carry |
+
+→ BNK-762 COMPETITOR_MATRIX 「FE wire 0-hit = P2」 **번복(closure)** · 격상(P1) 불요(HOME_VISIT only·주간보호 진성갭 아님).
+
+B) NHIS #44 이동서비스비 러-1~4 ↔ ogada (PLAN_NOTES #44 1차 확인 · 상수 재조정 불요)
+
+| NHIS #44 규정 요소 | ogada 코드 앵커 | 판정 |
+|---|---|---|
+| 러-1~4 거리 구간 | TransportDistanceBand RU_1~RU_4 · V68 seed | ✅ |
+| 편도 50% | ONE_WAY_RATIO = 0.5 | ✅ |
+| 1일 1회만 산정 | ONE_PER_DAY / ONE_PER_DAY_NOTE | ✅ |
+| 수급자 부담 아님 · 일지④ | parity catalog + care-provision transport | ✅ |
+
+C) CMS·지표27 — extraService/feeService 250/300 ↔ CmsPaymentMethodCatalog · essential 「기능회복」6-hit ↔ G17
+
+============================================================
+3. 가정 번복 / closure / 신규 갭
+============================================================
+가정 번복: 1건 — BNK-762/760/759 「RFID FE wire 0-hit = P2 residual」 → **CLOSED** `@5843845`
+closure: 1건 (RFID FE care-provision SMS full-stack)
+신규 core 갭: 0
+규제 상수 재조정: 불요 (NHIS 497차 zero drift · CMS/지표27 IDENTICAL)
+KPI promote: 0 (모듈 97.41% 유지 · id=10 0.85)
+
+============================================================
+4. planner 우선순위
+============================================================
+1. ★★★ 규제 상수 고정 — 러-1~4·편도50%·1일1회·CMS 250/300·지표27=기능회복
+2. ★★★ RFID care-provision SMS = FULL-STACK CLOSED — P2 residual 제거 · 주간보호 과대반영 금지
+3. ★★ lcms type3 배너 DRIFT = semantic IDENTICAL · decommission 불요
+4. ★ tester FF — merge gate 668 BE-heavy · FE ahead 2(RFID+Toast)
+5. ★ id=10 0.85 residual — coder coverage bump은 별도 판단(SMS quiet-hours 등 polish)
+
+snapshot 산출:
+  nhis_jo44_live_bnk763.html
+  silverangel_extraService_live_bnk763.html
+  silverangel_daycareEssentialWork_live_bnk763.html
+  silverangel_mainService_live_bnk763.html
+  silverangel_feeService_live_bnk763.html
+  silverangel_noticeList_live_bnk763.html
+  silverangel_systemFeature_live_bnk763.html
+  lcms_home_live_bnk763.html
+  law247_admRul_live_bnk763.html
+  longterm_502_live_bnk763.html
+  longterm_610_live_bnk763.html
+  mohw_list1488862_live_bnk763.html
+  angel_longterm_regulatory_crossverify_bnk763.txt (본 파일)

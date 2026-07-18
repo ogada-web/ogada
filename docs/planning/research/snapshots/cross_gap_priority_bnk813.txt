@@ -1,0 +1,129 @@
+=== BNK-813 cross-gap priority · 2026-07-17T00:56:38Z ===
+rotation: 교차검증·갭 우선순위 8h+
+prev_same_rotation: BNK-809 (2026-07-16T22:27Z) → ~2.5h 후
+prev_cycle: BNK-812 (2026-07-17T00:21Z·ogada git 실측 6–8h) → ~35분 후
+
+--- FE ---
+HEAD=d6be05c5ee20467722395212fdd8f39634573efe
+SHORT=d6be05c
+MSG=fix(v1.2.1/QA-B95): decode curly-brace wrapping HTML entities
+WT=0 dirty_files CLEAN
+ahead_origin_test=0
+origin_test=d6be05c
+FULLY_SYNCED=YES
+BNK812_delta=0 HEAD (ahead 1 → 0 = tester FF 흡수)
+
+--- BE ---
+HEAD=c6ddf6cc16797e390932823f9c2decc61fef35d0
+SHORT=c6ddf6c
+MSG=fix(v2/QA-B95): decode square-bracket wrapping HTML entities
+WT=0 dirty_files CLEAN
+ahead_vs_598d108=714
+BNK812_delta=0 HEAD (ahead 714 carry)
+
+--- Route/Page/Tests ---
+<Route\b=132
+<Routes>=1
+Route_total=133
+Page=106
+test_jsx=313
+test_js=217
+FE_test_sum=530
+BE_Test=293
+BE_Tests=1
+BE_Test_sum=294
+BE_atTest=2266 (BNK-812 header「2267」→rg @Test recount 정정·동일 HEAD)
+Flyway_max=V196
+Flyway_new=0
+
+--- domain routes (App.jsx path roots) ---
+billing=17
+care=16
+nursing=16
+transport=9
+staff=13
+programs=8
+payroll=5
+accounting=1
+compliance=2
+dashboard=2
+safety=5
+meals=1
+
+--- closed band 6 (App.jsx LIVE · 재오픈 0) ---
+G14 care-plan-form: L245 path="/clients/:clientId/care-plan-form"
+dashboard: L164 path="/dashboard"
+dashboard/hq: L173 path="/dashboard/hq"
+v1.3-C service-fees: L628 path="/transport/service-fees"
+v2 CMS: L389 path="/billing/cms"
+G-LINKAGE: L236 path="/clients/linkage-records"
+G2 home-newsletter: L209 path="/clients/home-newsletter"
+CLOSED_BAND_REOPEN=0
+P0_NEW=0
+ASSUMPTION_REVERSAL=0
+
+--- module coverage (competitorModuleCoverage.js · 29-entry canonical) ---
+sum=28.25
+pct=97.41%
+non-1.0: id=2(0.85) id=8(0.85) id=10(0.85) id=12(0.7)
+coverage-0_진성갭=0
+PRIORITY_RESIDUAL: PRIMARY id=12 0.7 → id=2/8/10 0.85
+KPI_PROMOTE=0
+
+--- merge gate ---
+FE_ahead=0 FULLY_SYNCED
+BE_ahead=714
+merge_gate=714 (BE-heavy → tester FF)
+
+--- NHIS #44 재실측 ---
+URL=https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP=200
+SIZE=7572
+md5_8=c886ff1f
+vs_BNK812=IDENTICAL (545차 → 546차)
+grep: 러-1=1 러-4=1 편도=2 1일 1회=1 수급자가 부담=1 이동서비스=13
+Transport_6link_IDENTICAL:
+  TransportDistanceBand.RU_1~4 = 5/10/20/999km
+  ONE_WAY_RATIO=0.5 label="편도 비율"
+  ONE_PER_DAY_LABEL="1일 1회"
+  TransportServiceFeeService:287 baseAmount×0.5 HALF_UP
+상수_재조정=불요
+id=2 coverage=0.85 carry
+
+--- 신규 공지·엑셀 포맷 변경 스캔 ---
+[FAQ] https://ezcare.easyms.co.kr/help/faq.ez
+  HTTP=200 SIZE=80057 md5_8=3da3426f
+  rowid_count=233 max=21781 IDENTICAL
+  strip(faq-hit) vs BNK-809/806 = byte-IDENTICAL
+  엑셀 관련 라인=2 (엣지/크롬 다운로드 도움말 ONLY · 포맷/컬럼/양식변경 0)
+[charge] https://ezcare.easyms.co.kr/new/ezCare_charge.html
+  HTTP=200 SIZE=22979 md5_8=c828e14d (≠BNK-812 aebf7465 · cachebuster style.css?ts 3-byte DRIFT)
+  biz semantic vs BNK-812 = IDENTICAL
+  셋팅 33,000원 · 「2026년 07월 31일까지」 STABLE
+[fnc] https://ezcare.easyms.co.kr/new/ezCare_fnc.html
+  HTTP=200 SIZE=17870 md5_8=ece2b21c
+  도입 9,435개 STABLE (biz vs BNK-809/806 IDENTICAL)
+[FAQ 21781] https://ezcare.easyms.co.kr/help/V.ez?rowid=21781
+  HTTP=200 SIZE=3991 md5_8=da4ab8d0 IDENTICAL vs BNK-799/805/809
+  인지활동북 시범 · P3「가정」 carry · 엑셀 0
+[Channel hub] https://docs.channel.io/ezcare/ko
+  HTTP=200 SIZE=220250 md5_8=210a2da9 (=BNK-809 IDENTICAL)
+  excel hits=3 (브라우저 DL 도움말) · 엑셀 포맷/양식 변경 타이틀 0
+[carefor func.php] https://www.carefor.co.kr/daycare/func.php → HTTP 000 (timeout)
+[carefor demo-work] https://demo-work.carefor.co.kr/ → HTTP 000 (timeout)
+  LIVE 000 = 95-cycle+ · disk canonical 6226e6eb LOCK carry
+
+--- QA-B95 ---
+FE curly-brace wrapping (@d6be05c) ↔ BE square-bracket wrapping (@c6ddf6c) LOCKSTEP carry
+operational_hardening_only · KPI_promote=0
+
+--- 교차검증 결론 ---
+가정_번복=0
+P0_신규=0
+closed_band_6_재오픈=0
+모듈_97.41%_CONFIRMED
+엑셀_포맷_변경_시그널=0
+공단_스키마_변경_시그널=0
+Transport_상수_재조정=불요
+FE_FULLY_SYNCED=YES (BNK-812 ahead1 → tester FF)
+planner: residual PRIMARY id=12(M12 SSO OTP)·id=2/8/10 0.85 · 다음 rotation 케어포 0–2h

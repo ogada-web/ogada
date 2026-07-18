@@ -1,0 +1,116 @@
+# carefor_m10_guardian_notice_crosswalk_bnk781.txt
+# BNK-781 | 2026-07-16T02:35:00Z | 케어포 역공학 0-2h
+# 초점: func.php Module 10 「기관관리 / 알림·보호자 소통」 9-leaf(8 top + 1 sub) ↔ ogada
+#       notification·guardian·facility-notice leaf-level 1:1 재크로스워크
+#       — BNK-727(~54 cycle 前·2026-07-14T15:49Z) STALE 갱신
+#       — BNK-727 이 「신규 P2 진성갭」으로 지목한 10-4 기관 공지사항 게시판이 그 후 BNK-729 에
+#         FULL-STACK 착지(FacilityNotice CRUD·V192)한 사실을 git 실측으로 CLOSURE 확정.
+#
+# === Source (역공학 근거) ===
+# 케어포: func.php disk canonical 6226e6eb92fdd25ed3e50842a5e8a00b (98,328B)
+#   - LIVE https://www.carefor.co.kr/daycare/func.php = HTTP 000 timeout 25s (92-cycle+ 「미확인」·IP/CDN 차단 추정)
+#   - LIVE https://demo-work.carefor.co.kr/ = HTTP 000 timeout 25s (92-cycle+ carry)
+#   - disk canonical 우선 원칙(snapshots/README) — M10 leaf verbatim grep -oE '10-[0-9]+(-[0-9]+)?\.' = 9-hit:
+#       10-1 문자메시지 발송 · 10-2 급여제공내역 안내 발송 · 10-2-1 수가변경안내 발송 ·
+#       10-3 보호자 급여기록 열람내역 · 10-4 기관 공지사항, 자료실 · 10-5 홈페이지 서비스 ·
+#       10-6 보호자 앱 관리 · 10-7 안내발송내역(문자, 이메일) · 10-8 평가항목 및 사전 준비자료 출력
+# ogada: git 실측 FE develop @2cefb1d / BE develop @777b5a7 (WT CLEAN·아래 KPI 블록)
+#
+# === carefor func.php Module 10 「기관관리 / 알림·보호자 소통」 (9-leaf·주야간보호 daycare) ===
+#   10-1.   문자메시지 발송
+#   10-2.   급여제공내역 안내 발송
+#   10-2-1. 수가변경안내 발송
+#   10-3.   보호자 급여기록 열람내역
+#   10-4.   기관 공지사항, 자료실
+#   10-5.   홈페이지 서비스
+#   10-6.   보호자 앱 관리
+#   10-7.   안내발송내역(문자, 이메일)
+#   10-8.   평가항목 및 사전 준비자료 출력
+#
+# === leaf-level 1:1 crosswalk (ogada @2cefb1d FE / @777b5a7 BE) ===
+#
+# | carefor M10 leaf              | ogada 대응 (route / API / anchor)                                            | 상태 | BNK-727 대비 |
+# |-------------------------------|------------------------------------------------------------------------------|------|--------------|
+# | 10-1 문자메시지 발송           | 알림 3-channel(SMTP+알림톡 J03+SMS)·NotificationTemplateCodes 13종·           | ❌   | ❌ carry     |
+# |                               |   template-catalog·channel-status — **관리자 자유작성 SMS 콘솔 전용 route 0-hit** |      |              |
+# | 10-2 급여제공내역 안내 발송     | POST /api/v1/notifications/care-provision-record·dispatchRfidCareProvisionApi· | ✅   | △→✅ 격상     |
+# |                               |   CARE_PROVISION_RECORD template·RFID 연동(FAQ 21589·kind13·BNK-763/778)      |      |              |
+# | 10-2-1 수가변경안내 발송        | ❌ 전용 fee-change 템플릿 부재(13-code 중 無)·HOME_NEWSLETTER 범용 커버 가능    | ❌   | ❌ carry(P3) |
+# | 10-3 보호자 급여기록 열람내역    | fetchGuardianNotificationHistoryApi(/api/v1/guardian/notifications)·          | △    | △ carry      |
+# |                               |   fetchGuardianClientBillingApi(보호자 청구/명세 열람) — 수신·열람 이력 인접 커버 |      |              |
+# | 10-4 기관 공지사항, 자료실       | FacilityNoticeController /api/v1/notifications/facility-notices CRUD+publish· | ✅   | ❌→✅ CLOSURE |
+# |                               |   **V192__facility_notices_carefor_10_4.sql**(verbatim anchor)·V193 첨부URL·   | FULL |  ★★★         |
+# |                               |   DRAFT/PUBLISHED·org+branch 멀티테넌트·감사 트리거(BNK-729)                   | STACK|              |
+# | 10-5 홈페이지 서비스            | /clients/home-newsletter(가정통신문)·GET launch/authoring·POST /home-newsletter· | ✅   | ✅ 심화(1.0)  |
+# |                               |   POST /compose-preview·GET /dispatch-history(id=1-5 1.0·BNK-730)             |      |              |
+# | 10-6 보호자 앱 관리            | createGuardianInvitationApi·acceptGuardianInvitationApi·/guardian/checkin·    | △    | ✅→△ 정밀화   |
+# |                               |   notification-preferences — 웹 포털/초대/알림설정(네이티브 앱 배포관리 아님)   |      |              |
+# | 10-7 안내발송내역(문자, 이메일)  | GET /api/v1/notifications/home-newsletter/dispatch-history·                   | ✅   | ✅ carry      |
+# |                               |   fetchHomeNewsletterDispatchHistoryApi·V191 조회 인덱스(BNK-723/728)          |      |              |
+# | 10-8 평가항목 및 사전 준비자료    | /compliance/monitoring·/compliance/workflow-catalog·                          | △    | ❌→△ 정밀화   |
+# |                               |   /programs/provision-result-evaluations(G17 지표27·G39 평가지표 44)          |      |              |
+#
+# => 9-leaf 중 홈페이지 서비스(10-5)는 in-scope(가정통신문 대응)·평가문항 대응 포함:
+#    ✅ 4(10-2·10-4·10-5·10-7) + △ 3(10-3·10-6·10-8) + ❌ 2(10-1 SMS 콘솔·10-2-1 수가변경안내)
+#    = 실질 대응 7/9(✅4 완전 + △3 부분) · BNK-727(✅3/△2/❌4·55.5%) 대비 대폭 상승
+#    (10-4 ❌→✅ FULL-STACK closure + 10-2 △→✅ RFID SMS 격상)
+#
+# === ★★★ BNK-727 진성갭 CLOSURE 확정 (핵심 finding) ===
+# BNK-727(2026-07-14): "신규 P2 candidate — id=10-4 「기관 공지사항, 자료실 게시판」:
+#                       경쟁 3종(케어포·이지케어·엔젤) 모두 대응 · ogada 미착지(route notice/board 0-hit)"
+# BNK-781(2026-07-16): git 실측 FULL-STACK 착지 확인 →
+#   - BE: FacilityNoticeController(/api/v1/notifications/facility-notices) GET list·GET /{id}·
+#         POST create·PUT update·POST /{id}/publish·DELETE /{id} + FacilityNoticeService/Support/
+#         Entity/Repository + **V192__facility_notices_carefor_10_4.sql** 신규 테이블(파일명이
+#         carefor 10-4 를 verbatim 앵커) + V193 첨부 URL 포맷 CHECK
+#   - workflow: DRAFT → PUBLISHED FSM · org+branch 멀티테넌트 · 감사 트리거
+#   - FE: createFacilityNoticeApi·fetchFacilityNoticesApi·fetchFacilityNoticeApi·
+#         updateFacilityNoticeApi·publishFacilityNoticeApi·deleteFacilityNoticeApi(services.js)
+#   => BNK-727 「P2 진성갭」 → BNK-729 착지 → BNK-781 CLOSURE 확정 (회고·재오픈 0)
+#
+# === 코드 앵커 (케어포 leaf ID → ogada 소스 직접 참조) ===
+# - Flyway V192 파일명 「facility_notices_carefor_10_4」 = carefor func.php 10-4 verbatim 앵커
+#   (BNK-770 billing 7-x·BNK-735 programReports careforView·BNK-773 staff 8-x 패턴 동일)
+# - NotificationTemplateCodes 13-code: ATTENDANCE_ARRIVAL/DEPARTURE·DAILY_CARE_SUMMARY·
+#   BILLING_STATEMENT·BILLING_PAYMENT_RECEIVED·CARE_PROVISION_RECORD·HOME_NEWSLETTER·
+#   ELDER_ABUSE_PREVENTION_GUIDELINE·EMERGENCY_ALERT·STAFF_ACCESS_KEY·CLIENT_MONTHLY_SCHEDULE·
+#   STAFF_MONTHLY_SCHEDULE·STAFF_PAYROLL_STATEMENT (10-1·10-2 커버·수가변경안내 전용 code 無)
+#
+# === 리포트/열람 밀도 ===
+# carefor M10 조회/이력 leaf = 10-3 열람내역 + 10-7 발송내역 = 2/9 ≈ 22.2%
+# ogada 대응: dispatch-history(GET) + guardian notification history(GET) = 조회형 2 + billing 열람 = comparable
+#
+# === 신규 갭/lever 후보 (planner) ===
+# - P3 candidate — 10-2-1 「수가변경안내 발송」 전용 SMS 템플릿:
+#   공단 수가 연 개정 시 보호자 일괄 안내. ogada NotificationTemplateCodes 13종 중 전용 code 부재.
+#   HOME_NEWSLETTER 범용으로 대체 가능하나 전용 FEE_SCHEDULE_CHANGE_NOTICE 템플릿 추가 = 저비용 lever.
+#   「가정」·격상 아님·MVP out-of-scope 후보.
+# - P3 carry — 10-1 「관리자 자유작성 SMS 콘솔」: ogada 알림은 전량 template-driven(13-code).
+#   이지케어 mobile-notice free-form 대비 미착지(BNK-727 carry·주간보호 진성갭 아님·과대구축 금지).
+#
+# === ogada git 실측 KPI (@2cefb1d / @777b5a7) ===
+# FE develop HEAD: 2cefb1d  fix(v1.2.1/QA-B95): decode named-num HTML blocker entities · WT CLEAN
+#   - BNK-780 @07198a2 → advance · ahead origin/test(2cefb1d) 0 = FULLY SYNCED (tester FF 흡수)
+# BE develop HEAD: 777b5a7  fix(v2/QA-B95): decode named-num HTML blockers in gate parsing · WT CLEAN
+#   - BNK-780 @97450eb → advance · ahead origin/test(598d108) 681
+# Route: 133 (<Route\b 132 + <Routes> 1·carry)   Page: 106 (*Page.jsx ls-files·carry)
+# FE test: 530 (217 .test.js + 313 .test.jsx·carry)
+# BE Test files: 294 (293 *Test.java + 1 *Tests.java·carry)   BE @Test: 2239 (grep -rE·+3 vs BNK-780 2236)
+# Flyway: V1–V196 (max V196·신규 0·carry)   accounting route 1  payroll route 5  billing 17
+# 모듈 커버리지: 97.41% (28.25/29·carry) — id=1-5 가정통신문 1.0·id=10 SMS/부가 0.85 carry
+#   (M10 crosswalk 은 여러 coverage 축 교차 — KPI promote 0)
+# merge gate: FE ahead 0(FULLY SYNCED) + BE ahead 681 = 681 (BE-heavy → tester FF)
+#
+# === 규제 백본 재실측 (NHIS #44·515차) ===
+# 확인 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+#   HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 515차 zero drift (BNK-780 514차 → +1) · live=disk IDENTICAL
+#   verbatim grep -oF: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+#   snapshot: nhis_jo44_live_bnk781.html (신규 차수 파일·IDENTICAL carry·덮어쓰기 아님)
+#   ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회 guard) 6-link chain(id=2 0.85) carry
+#
+# 덮어쓰기 0 · 가정 번복 0 · 신규 core 갭 0 · closure(회고 확정) 1 (M10 10-4 기관 공지사항 ❌→✅ FULL-STACK)
+# per-cycle minimum 4종 충족:
+#   재실측 URL — carefor func.php/demo-work HTTP 000(92차)·NHIS #44 515차 200 IDENTICAL
+#   워크플로 블록 — M10 9-leaf ↔ notification/guardian/facility-notice crosswalk (BNK-727 STALE 갱신)
+#   MATRIX 1행+ — @2cefb1d/@777b5a7 갱신 (보호자 포털·공지·알림 행)
+#   BENCHMARK §BNK-781 신규 소절

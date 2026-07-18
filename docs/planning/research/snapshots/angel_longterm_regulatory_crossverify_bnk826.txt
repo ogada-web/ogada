@@ -1,0 +1,74 @@
+BNK-826 — 엔젤·롱텀·규제 역공학 4–6h — 규제 백본 9-URL live 재실측 + DRIFT 특성화
+조사일: 2026-07-17T09:39:00Z (approx)
+rotation: 엔젤·롱텀·규제 4–6h (직전 동일 rotation BNK-815 2026-07-17T02:17Z → ~7.4h 후)
+방법: curl live 재실측 → md5/SIZE 비교 → DRIFT 시 diff 특성화(cache-buster/shell JS 여부) → snapshot carry
+
+ogada baseline 실측 (git):
+  FE develop = 93f77e1 "fix(v1.2.1/QA-B95): decode long prime HTML entity aliases" · WT CLEAN · ahead origin/test 1 (origin/test=3f7bb94)
+  BE develop = 31b10d5 "fix(v2/QA-B95): decode extended prime quote HTML aliases" · WT CLEAN · ahead origin/test 725 (origin/test=598d108)
+  Route 133 (App.jsx <Route\b 132 + <Routes> 1) · Page 106 (git ls-files '*Page.jsx') · FE test 530 (313 .test.jsx + 217 .test.js)
+  BE Test 294 (293 Test.java + 1 Tests.java) · BE @Test 2277 (BNK-825 2277 carry·직전 34c16cd 대비 +0/HEAD advance) · @RestController 81 · Flyway V1–V196
+  merge gate 726 (FE 1 + BE 725 · BE-heavy → tester FF)
+
+=====================================================================
+규제 백본 9-URL live 재실측 (md5 · SIZE · 판정)
+=====================================================================
+URL                                                                        new md5    prior md5  판정        SIZE
+NHIS #44 joHistoryContent.do (SEQ_CONTENTS=3281769)                        c886ff1f   c886ff1f   IDENTICAL   7,572
+silverangel system_feature.do                                             c9507190   c9507190   IDENTICAL  45,601
+silverangel daycareEssentialWork.do                                      c79c1be3   c79c1be3   IDENTICAL 131,664
+silverangel extraService.do                                               f9c5d877   f9c5d877   IDENTICAL  81,637
+silverangel feeService.do                                                eab352a8   eab352a8   IDENTICAL  44,513
+silverangel (home) /                                                       66382835   66382835   IDENTICAL 101,220
+longterm 502 npeb502m01.web (menuId=npe0000000500)                       a71379de   56185735   DRIFT      89,171 (+9B)
+longterm 610 npeb610m01.web (menuId=npe0000000650)                       6b10f426   fad1ce61   DRIFT      88,408 (+9B)
+law.go.kr 2025-247 admRulInfoP.do (admRulSeq=2100000271110)             d18f3647   5b97b760   DRIFT      78,450 (=size)
+
+전체 200 OK. silverangel 5-URL + NHIS = byte-IDENTICAL (콘텐츠 변동 0).
+
+=====================================================================
+DRIFT 특성화 (변동 기록 — 실체/비실체 판정)
+=====================================================================
+[longterm 502 / 610] — 비실체 (shell JS)
+  diff (unified): 120a121 > var s16;
+  = line 121 에 `var s16;` JS 변수 선언 1줄 추가(+9B 정확히 일치). 콘텐츠·문안·수치 변동 0.
+  content 확인: 502 「월 한도액 및 급여비용」·「재가급여」 intact · 610 「통합재가서비스」·「2026년 1월 16일 개편」 intact.
+  판정: shell JS 카운터/상태 변수 증가로 인한 non-substantive drift. 단기보호 74,060·통합재가 월 10만원 canonical 수치는 하위 페이지 정본(shell 미인라인)·불변 carry.
+
+[law.go.kr 2025-247] — 비실체 (cache-buster)
+  size 78,450 (prior IDENTICAL) 이나 md5 변동. diff 결과 변동 라인 전량 `?Time=<epoch>` script-src 캐시버스터 토큰.
+  non-Time 변동 라인 = 0 (grep -vE 'Time=[0-9]+' 후 0건).
+  title: "행정규칙 > 장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시 | 국가법령정보센터" · 보건복지부고시 제2025-247호.
+  판정: 순수 캐시버스터 = semantically IDENTICAL.
+
+=====================================================================
+NHIS #44 이동서비스비 러-1~4 (559차·grep 실측)
+=====================================================================
+grep -oF 카운트 (nhis_jo44_live_bnk826.html):
+  러-1: 1 · 러-4: 1 · 러-2: 0 · 러-3: 0 · 편도: 2 · "1일 1회": 1 · "수급자가 부담": 1 · 이동서비스: 13
+= BNK-825(558차) byte-IDENTICAL → 559차 zero drift.
+↔ ogada BE `@31b10d5` TransportDistanceBand.RU_1~4 (5/10/20/999km) · ONE_WAY_RATIO=0.5 · ONE_PER_DAY · baseAmount×0.5 HALF_UP = NHIS verbatim IDENTICAL · 상수 재조정 불요 · id=2 0.85 carry.
+
+=====================================================================
+엔젤(silverangel) 기능 커버리지 grep 실측 (역공학 — 메뉴/필드/워크플로)
+=====================================================================
+[system_feature.do] transport-absence (ogada 차별 근거):
+  이동서비스: 0 · 배차: 0 · GPS: 0 · 차량: 0 · 연계: 9(내부 상호참조) · 기능회복: 1
+  → 엔젤 ERP canonical 공개 기능에 배차/이동서비스/GPS/차량 관리 UI 0-hit.
+  ↔ ogada TransportController 9-route + Attendance boarding + NHIS #44 6-link = 경쟁 4종 유일 full-stack SUPERIOR carry.
+
+[extraService.do / feeService.do] CMS 부가서비스 (본인부담금 납부):
+  본인부담금 자동이체(CMS)·가상계좌·카드결제 3-method 명시:
+    "약제비) 등 장기요양기관의 이용료를 자동이체, 가상계좌, 카드결제 등"
+    "본인부담금 자동관리(CMS)" · "보호자의 통장에서 매달 자동이체(CMS)로 수납"
+  = 엔젤 = 납부 3-method(자동이체/가상계좌/카드).
+  ↔ ogada G2b CMS payment-method-catalog 5-method (자동이체·가상계좌·카드·간편결제·계좌이체) = SUPERSET carry.
+  요금(월 30,000/자동이체 250/가상계좌 300) prior LOCK — feeService md5 IDENTICAL(eab352a8)로 불변 carry.
+
+=====================================================================
+결론 / 기획 반영
+=====================================================================
+- 규제 백본 실체 변동 0: NHIS #44 559차 zero drift·silverangel 콘텐츠 불변·longterm/law DRIFT 전량 비실체(shell JS `var s16;` + cache-buster).
+- ogada Transport full-stack SUPERIOR·CMS 5-method SUPERSET·NHIS 6-link 상수 verbatim = 재조정 불요·신규 진성갭 0·가정 번복 0.
+- KPI promote 0 · closed band 재오픈 0 · 과대구축 금지.
+- 다음 rotation: ogada git 실측 6–8h 또는 케어포 0–2h.

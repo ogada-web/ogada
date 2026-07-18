@@ -1,0 +1,81 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-27T08:20:00Z -->
+BNK-689 — 교차검증·갭 우선순위 8h+ (cross-verify / gap priority)
+조사일: 2026-06-27T08:20Z | rotation: 8h+ 교차검증 (이전 BNK 가정 번복 여부·미확인 축소·P0/P1 재정렬)
+
+================================================================
+1. ogada git 실측 (확인 · HEAD zero advance vs BNK-688)
+================================================================
+FE develop @2e35298  test(v1.2.1/US-Q01): lock template fallback alerts on safety pages
+  · WT DIRTY 2M  — src/e2e/liveFeeScheduleSeed.js · src/test/liveFeeScheduleSeed.test.js (QA-B355 재발 persist 2-cycle: BNK-688 re-dirty → 689 persist)
+  · ahead 282 vs origin/test
+BE develop @81e3c11  feat(v2/US-Q01): deepen safety template catalog schema metadata
+  · WT CLEAN
+  · ahead 604 vs origin/test
+merge gate = 886 (FE 282 + BE 604) — BNK-688 IDENTICAL
+
+KPI (git 실측, develop):
+  · Route 123 (`<Route\b` 123 + `<Routes>` 1)
+  · page 98 (non-test src/pages/*.jsx)
+  · Flyway V1–V185
+  · BE Test 279 (278 *Test.java + 1 *Tests.java)
+  · BE @Test 2043 (`git grep -hoE '@Test\b' develop -- '*.java' | wc -l`)
+  · FE test 500 (207 .test.js + 293 .test.jsx)
+  · 모듈 84.31% (24.45 / 29 — competitorModuleCoverage.js 실측 재검산)
+  · reports 28
+→ 9/9 축 BNK-688 IDENTICAL (HEAD zero advance·FE WT DIRTY 2M carry·BE WT CLEAN carry)
+
+모듈 84.31% 재검산 (24.45/29):
+  완전(1.0) 22종 + 부분 3종(2 이동 0.85·8 직원근태 0.85·10 부가 0.75) + 갭 2종(11 직원급여 0·12 회계 0)
+  합계 = 22 + 0.85 + 0.85 + 0.75 = 24.45 ; 24.45/29 = 0.8431
+
+================================================================
+2. 11-route LIVE 교차검증 (확인 · @2e35298 App.jsx grep) — P0/P1 재정렬 없음
+================================================================
+4-axis + leave-ledger + M6 = 11 route 전부 LIVE:
+  G14 care-plan-form  → path="/clients/:clientId/care-plan-form"        ✅ LIVE
+  G26 dashboard       → path="/dashboard" · path="/dashboard/hq"         ✅ LIVE
+  v1.3-C G16 transport→ /transport · /transport/{auto-dispatch,compliance,outings,
+                        runs/:runId,runs/new,service-fees,vehicles}      ✅ LIVE
+  v2 CMS              → path="/billing/cms"                              ✅ LIVE
+  leave-ledger        → path="/staff/leave-ledger" · /staff/annual-leaves ✅ LIVE
+  M6 safety           → /safety · /safety/{daily-checks,periodic-checks,
+                        infection-control,operation-log}                 ✅ LIVE (5 route)
+→ P0/P1 재오픈 0 (BNK-549~689 carry). 가정 번복 0.
+
+M11/M12 sole P1 lever (확인 · 재검증):
+  `path="/(payroll|accounting)`  grep = 0 → /payroll/* · /accounting/* 0 route 재확인
+  id=11 직원급여 0 · id=12 회계 0 = 유일 P1 lever
+  closure 시 84.31% → 91.21% (+6.90pp) carry (BNK-679~688 불변)
+
+================================================================
+3. 백본 재실측 zero drift (확인 · live HTTP 200 = disk md5)
+================================================================
+NHIS #44 이동서비스비 (러-1~4) — 427차 zero drift IDENTICAL
+  URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f (= BNK-688 426차) → +1 = 427차
+  ↔ ogada Nhis2026DaycareRateCatalog.CATALOG_YEAR=2026 year-gate + TransportServiceFeeService
+  5-link full-stack regulatory chain carry (law247 SSR ↔ NHIS #44 ↔ CATALOG_YEAR ↔ HTTP contract ↔ V185 readiness probe)
+
+ezCare 도움말 FAQ list — counter(cachebuster) DRIFT, content stable
+  URL: https://ezcare.easyms.co.kr/help/faq.ez
+  HTTP 200 · 80,057B (size lock 9-cycle BNK-633→689) · md5 dbe60442 (BNK-688 fd1fc431 cachebuster DRIFT)
+  233 rowid · 14 카테고리 · 누적 hit sum 3,637,363 (BNK-688 3,637,353 → +10)
+  결제·재무 클러스터(수당/급여+본인부담+4대보험+세무+재무회계+이용료) 37%대 carry
+  → ogada M11/M12 P1 demand-signal carry (in-app vs BPO 어댑터 결정 question 보류)
+
+================================================================
+4. per-cycle minimum 4종 충족
+================================================================
+  ① 재실측 + 변동 기록: NHIS #44 427차(zero drift) + ezCare FAQ list(counter DRIFT +10)
+  ② 메뉴/필드/워크플로 1블록: 11-route LIVE cross-walk + 모듈 84.31% 재검산
+  ③ COMPETITOR_MATRIX 1행+ @2e35298/@81e3c11 갱신
+  ④ BENCHMARK_REPORT §BNK-689 메모
+
+상태 변경 0 (HEAD zero advance). KPI 변경 0 (9/9축 IDENTICAL).
+가정 번복 0. 신규 core 갭 0. candidate 변동 0. 덮어쓰기 0.
+zero drift IDENTICAL 1(NHIS #44 427차). counter DRIFT 1(ezCare FAQ list).
+미확인 carry 1(longterm 502/610 npbs 26.1.16 마이그).
+
+즉시(coder): FE WT DIRTY 2M `liveFeeScheduleSeed.{js,test.js}` commit+push (QA-B355 persist 2-cycle·rules §6 push 누락 위험).
+즉시(tester): merge gate 886 (FE 282 + BE 604·BE WT CLEAN·FE WT 선행 closure 권장 후 FF).
+planner: baseline FE `@2e35298`/BE `@81e3c11` carry·merge 886 carry·11-route LIVE P0/P1 재정렬 없음·M11/M12 sole P1 lever(+6.90pp) carry.

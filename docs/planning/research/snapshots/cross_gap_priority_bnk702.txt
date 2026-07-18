@@ -1,0 +1,86 @@
+# BNK-702 교차검증·갭 우선순위 (8h+) — 2026-07-13T21:53Z
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-13T21:53:00Z -->
+
+rotation: 교차검증·갭 우선순위 8h+
+직전: BNK-701 (2026-07-13T21:14Z, ogada git 실측 6–8h) → ~39분 후 재실측
+ogada: FE @bd12f28 / BE @5366944 (HEAD zero advance vs BNK-701)
+
+================================================================================
+## 1. ogada git 실측 KPI (확인)
+================================================================================
+| 항목 | BNK-701 | BNK-702 | delta |
+|---|---|---|---|
+| FE HEAD | @bd12f28 | @bd12f28 | HEAD zero advance |
+| BE HEAD | @5366944 | @5366944 | HEAD zero advance |
+| FE WT | CLEAN | **DIRTY 2M** TransportShuttle{Schedule,Sheet}View.jsx a11y role table→list | **상태 변경** |
+| BE WT | CLEAN | **DIRTY ??** untracked V190__transport_shuttle_and_roster_day_status_integrity.sql | **상태 변경 (rules §6)** |
+| FE origin/test..develop | 292 | **0** (develop=origin/test=origin/develop=@bd12f28) | **FE stream FULLY SYNCED** |
+| BE origin/test..develop | 611 | **611** | carry |
+| merge residual | 903 (292+611) | **611 BE-only** | FE FF+push 완료 (PLAN_NOTES QA-B352 Fixed 정합) |
+| Route / Page | 124 / 98 | 124 / 98 | carry |
+| FE test | 506 (209+297) | 506 | carry |
+| BE Test / @Test | 280 / 2073 | 280 / 2073 | carry |
+| Flyway tracked | V1–V189 | V1–V189 (+V190 untracked) | V190 WIP |
+| /(payroll\|accounting) | 0 | 0 | sole P1 lever carry |
+| 모듈 % | 84.31% (24.45/29) | 84.31% | carry |
+
+================================================================================
+## 2. 4축+leave+safety 17(+)-route LIVE 교차검증 (메뉴/필드/워크플로 블록)
+================================================================================
+App.jsx @bd12f28 LIVE 재확인 (P0/P1 기능 재오픈 0 · BNK-549~702 ~154-cycle carry):
+
+| 축 | Route | 판정 |
+|---|---|---|
+| G14 | /clients/:clientId/care-plan-form | ✅ LIVE |
+| G26 | /dashboard + /dashboard/hq | ✅ LIVE |
+| v1.3-C 이동서비스 | /transport + shuttle-sheet + compliance + auto-dispatch + service-fees + vehicles + runs/new + runs/:runId + outings = **9** | ✅ LIVE + BNK-701 day-status 5-stage |
+| v2 CMS | /billing/cms | ✅ LIVE |
+| leave-ledger | /staff/annual-leaves + /staff/leave-ledger | ✅ LIVE |
+| M6 safety | /safety + daily/periodic/infection/operation = **5** | ✅ LIVE |
+
+→ **기능 P0/P1 재정렬 권고 없음**. sole product P1 lever = M11/M12 (0 route → +6.90pp→91.21%).
+
+### dashboardSummary ↔ ezCare 7-bucket (BNK-700 가정 재검증)
+dashboardSummary.js export count* = carePlan 3 + caseManagement 3 + functionalRecovery 2 + provisionResult 4 + admissionRisk + periodicRisk + needsAssessment + gradeChange = **15 stage-gap** carry.
+- nursing directive expiry / client care-agreement expiry export: **0** (git grep App.jsx nursing* routes exist but **대시보드 만료 알림 필드 없음**)
+- employmentContractRenewal/Retention* = **직원** 근로계약 만료 (수급자계약과 별개) — 혼동 금지 「확인」
+→ G-NURSING-DIRECTIVE-EXPIRY · G-CLIENT-CARE-AGREEMENT-EXPIRY = **P3 「가정」 유지** (격상 근거 0 · 번복 0)
+
+================================================================================
+## 3. 경쟁사 재실측 · 신규 공지·엑셀 포맷 스캔
+================================================================================
+| URL | HTTP | SIZE | md5 | 상태 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent(full date) | 200 | 7,572B | c886ff1f | **438차 zero drift IDENTICAL** · 러-1~4·편도50%·1일1회·수급자부담X |
+| ezCare /help/faq.ez | 200 | 80,057B | 8acc9415 | size-lock **16-cycle** · 233 rowid · hit_sum **3,646,322**(+7 vs BNK-701) · Top-1 21601=83,903 |
+| ezCare home / | 200 | 69,580B | 66927151 | 통계 5축 **5-cycle lock**(BNK-696~702): 53.2·9298·4663·2353·1820 · 집계일 2026.06.30 |
+| silverangel notice list | 200 | 5,707,602B | ea7d6b3d | BNK-697 IDENTICAL · 최신 writer=221572(AI 총평)·신규 Tmp_idx≥221573 **0** |
+| FAQ 21844 마스킹(*) 엑셀 | 200 | 14,474B | d0aa760c | **= BNK-694 IDENTICAL** · 신규 포맷 변경 0 |
+| FAQ 21845 공단 엑셀 정상 조치 | 200 | 13,915B | 5b78c947 | **= BNK-694 IDENTICAL** |
+| FAQ 21474/21778/21589 | 200 | — | = BNK-694 | 일정확정·공단차이·RFID 문자 **zero drift** |
+
+엑셀 포맷 스캔 결론: 2026-06-24/26 공단 마스킹(*) 조치 이후 **~19일 zero drift** — 추가 import adapter 긴급 작업 불필요.
+
+================================================================================
+## 4. P0/P1 재정렬 권고 (planner)
+================================================================================
+| ID | 유형 | 우선순위 | 비고 |
+|---|---|---|---|
+| M11/M12 payroll·accounting | product P1 sole lever | **P1 유지** | +6.90pp; ezCare BPO 4,663 기관 demand-signal carry |
+| BE V190 integrity SQL untracked | ops / rules §6 | **ops P0** | DBA ALTER CHECK·Tenant FK · coder commit+push 권장 |
+| FE shuttle a11y role dirty 2M | ops / rules §6 | **ops P0** | role=list/listitem · 기능 delta 없음 · commit 권장 |
+| G-NURSING-DIRECTIVE-EXPIRY | product gap | **P3 가정 유지** | 대시보드 export 0 · 격상 근거 없음 |
+| G-CLIENT-CARE-AGREEMENT-EXPIRY | product gap | **P3 가정 유지** | 직원 employmentContract*와 별개 |
+| G-AI-NEEDS-ASSESSMENT-SUMMARY | product gap | **P2/P3 carry** | silverangel 221572 still top · 신규 공지 0 |
+| G14/G26/v1.3-C/v2 CMS | closed axes | **재오픈 0** | 17-route LIVE |
+
+가정 번복: **0** (제품 갭). 상태 변경: WT CLEAN→DIRTY(양쪽)·FE ahead 292→0.
+미확인 축소: 엑셀 포맷 긴급성 「미확인」→「확인: 변경 0」; 수급자계약 vs 직원계약 혼동 여지 명시 해소.
+
+================================================================================
+## 5. per-cycle minimum checklist
+================================================================================
+[x] 신규/재실측 증거 URL 1+ (NHIS·FAQ·home·SA list·FAQ 5종 excel)
+[x] 메뉴/필드/워크플로 1블록 (17-route LIVE + P0/P1 표 + excel scan)
+[x] COMPETITOR_MATRIX 1행+ @bd12f28/@5366944
+[x] BENCHMARK_REPORT §702

@@ -1,0 +1,5 @@
+96f7d45eaca91525068ec9bfb626fb18  carefor_manual_pdf_bnk690.pdf
+PDF disk size 9992772
+조사일 2026-07-13T22:29:48Z
+LIVE www.carefor.co.kr timeout HTTP 000 (65+ cycle)
+비교 canonical md5 96f7d45eaca91525068ec9bfb626fb18 expected from BNK-690

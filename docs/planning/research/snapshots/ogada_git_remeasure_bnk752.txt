@@ -1,0 +1,76 @@
+BNK-752 — ogada git 실측 6–8h (2026-07-15T08:20:00Z / KST 17:20)
+================================================================
+
+[rotation] ogada git 실측 — src/backend·src/frontend develop HEAD·Route·Page·@Test·Flyway·모듈 커버 % 재산정
+직전 동일 rotation BNK-748(2026-07-15T05:46Z) → ~2.5h 후
+직전 사이클 BNK-751(2026-07-15T07:47Z·엔젤·롱텀·규제 4–6h) → ~33분 후
+
+[1] git HEAD 실측
+- FE develop HEAD = 33f59a9 (33f59a9a2a61e6440f4e8ee472a53f5054d5258d)
+    · BNK-751 @9b65529 → +1 : fix(v1.2.1/QA-B95): harden live readiness boolean parsing
+    · WT CLEAN · ahead origin/test 1 (vs c59da8f)
+    · files: src/e2e/liveBackendProbe.js (+14) · src/test/liveE2eHarness.test.js (+24)
+- BE develop HEAD = d271cc3 (d271cc3388bef12e6bc5aa04a4f7c229b2e0fc8a)
+    · BNK-751 @0e66a38 → +1 : fix(v2/QA-B95): harden bootstrap blocker token parsing
+    · WT CLEAN · ahead 657 (vs 598d108)
+    · files: LiveE2eOperationReadinessSupport.java (±2) · LiveE2eOperationReadinessSupportTest.java (+51)
+- merge gate = FE 1 + BE 657 = 658 (BE-heavy → tester FF)
+
+[2] KPI 실측 (기존 방법론)
+- Route     = 132   (App.jsx <Route\b 131 + <Routes> 1)
+- Page      = 105   (src/pages *Page.(jsx|tsx))
+- FE test   = 524   (src/**/*.test.js* files · carry)
+- BE Test   = 291   (*Test.java + *Tests.java files · carry)
+- BE @Test  = 2187  (grep -rE @Test src/test · BNK-751 2186 → +1)
+- Flyway    = V1–V194 (194 migrations · 신규 0)
+- accounting route 1 · payroll route 5
+
+[3] ★★★ 모듈 커버리지 실측 재산정 = 97.17% (29.15/30) — KPI 정정
+- src/frontend/src/config/competitorModuleCoverage.js 전수 실측
+- 모듈 count = 30 (BNK-749~751 header carry '29' 는 undercount)
+- coverage sum = 29.15
+- 가중 평균 = 29.15 / 30 = 97.1667% = 97.17%
+- 비-1.0 축 (4):
+    · id=2  이동서비스            0.85
+    · id=8  직원·근태             0.85
+    · id=10 부가서비스(SMS·알림)   0.75
+    · id=12 수입지출·회계          0.70
+- 1.0 축 (26): 1-1·1-3·1-5·1-7·1-9·1-10(연계기록지)·3-1·4·5·26·43·6·
+              7-1·7-2·7-2-1·7-3·7-4·7-6·7-10·9·11·nhis·qr·hq·platform
+- coverage-0 = 0건 (G-LINKAGE CLOSED 이후 carry)
+- 정정 근거: rules §Baseline 「문서와 코드 HEAD 불일치 시 git 실측 우선」
+  BNK-749 closure 시 id=1-10 이 0→1.0 승격, 실제 엔트리 30개.
+  이후 headers 가 28.15/29=97.07% carry → git 실측 29.15/30=97.17% 로 정정.
+  (가정 번복 아님 = 실측 우선 KPI 정정 · 상수/코드 변경 불요 · v1.2 KPI ≥60% 충족 유지)
+- 검증: `git show 9b65529:...competitorModuleCoverage.js | awk` = sum 29.15 count 30 (33f59a9 동일·해당 커밋 파일 무변경)
+
+[4] ★★ QA-B95 live-e2e gate 파싱 하드닝 FE↔BE 폐루프 (워크플로 블록)
+- FE @33f59a9 : liveBackendProbe.js — live health readiness boolean 을 trim·대소문자 무시 파싱
+    → 백엔드 payload 포맷 변형에도 QA-B95 gating 안정 (liveE2eHarness.test.js +24)
+- BE @d271cc3 : LiveE2eOperationReadinessSupport — comma/semicolon-delimited live-e2e detail token 파싱
+    → composite status 문자열에도 effective operation gate fail-closed 유지 (SupportTest +51)
+- 맥락: BNK-745~747 BE operation gate(bootstrap↔effective 분리) + BNK-748 FE fail-closed default
+        흐름의 파싱 견고화 연장. coverage 무관·KPI promote 0.
+- 경쟁 4종 중 in-app live operational readiness gate = ogada 유일 (carefor/ezcare/angel/longterm 「미확인」)
+
+[5] ★ 규제 백본 재실측 (기존 URL)
+- NHIS #44 이동서비스비 (joHistoryContent SEQ=1637)
+    HTTP 200 · 7,572B · md5 c886ff1f · 486차 IDENTICAL (BNK-751 485차 → +1)
+    grep -oE: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13) = zero drift
+- carefor func.php LIVE : HTTP 000 (connect timeout 20s) · 81-cycle+ 「미확인」 · disk canonical 6226e6eb
+
+[6] per-cycle minimum 충족
+- 재실측 URL: NHIS #44 486차 (재실측+변동 기록) + carefor 000
+- 워크플로 블록: 모듈 커버리지 30-module 재산정 + QA-B95 파싱 하드닝 FE↔BE
+- MATRIX 1행+: @33f59a9 / @d271cc3
+- BENCHMARK §752 소절 3 + 신규 snapshot 2
+
+[7] residual operational (carry)
+- id=12 credentials(0.7) → id=10 SMS dispatch/template·RFID SMS P2(0.75) → id=2/8(0.85) polish
+- P3 만료일 카운트다운 위젯 「가정」 격상 0
+
+[8] planner 반영 요약
+1. ★★★ 모듈 커버리지 표기 정정: ROADMAP/PLAN_NOTES 의 97.07%(28.15/29) → 97.17%(29.15/30)
+2. ★★ QA-B95 파싱 하드닝 착지 (composite status 대응 완료·경쟁 유일 gate 심화)
+3. ★ 규제 486-cycle zero drift → 상수 긴급 변경 불요
+4. baseline FE @33f59a9 / BE @d271cc3 · merge gate 658

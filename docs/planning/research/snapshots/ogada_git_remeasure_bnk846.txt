@@ -1,0 +1,44 @@
+BNK-846 ogada git 실측 (2026-07-17T21:50Z 이후)
+================================================
+FE develop = 8b164c3  fix(v1.2.1/v3): verify grade-history and refresher magic bytes before upload (SEC-D25)
+FE origin/test = cf28a2e  (BNK-846 ahead 1 · tester FF 대기)
+FE WT: clean
+FE Route: 133 (<Route\b 132 + <Routes> 1)
+FE Page (*Page.jsx not test): 106
+FE test .test.js: 224
+FE test .test.jsx: 315
+FE test total: 539  (BNK-840 baseline 530 → +9 · v3 magic-byte 3-cluster 확장)
+
+BE develop = ed94521  fix(v3/SEC-D25): verify grade-history and refresher-certificate magic bytes
+BE origin/test = 598d108  (BNK-846 ahead 741)
+BE WT: clean
+BE Test.java: 296
+BE Tests.java: 1
+BE Test 파일 합계: 297
+BE @Test grep -rE '^\s*@Test\b' --include='*.java' src/test | wc -l = 2326  (BNK-840 baseline 2295 → +31)
+BE @RestController: 81 (Δ0)
+BE Flyway V1..V196 (신규 0)
+BE HTTP verbs — audit-first posture 8차 IDENTICAL (BNK-833/834/835/836/837/838/839/840 → 846):
+  @GetMapping: 231 (52.3%)
+  @PostMapping: 144 (32.6%)
+  @PatchMapping: 44  (10.0%)
+  @PutMapping: 13  (2.9%)
+  @DeleteMapping: 10  (2.3%)
+  합계 442 · controller당 5.46
+
+merge gate = 742 (FE 1 tester FF 대기 + BE 741 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+v3 SEC-D25 magic-byte 방어 defense-in-depth full-stack — 6 시나리오
+  (BNK-840→846·6-cluster full-stack byte-lockstep):
+    1. program schedule photo (BNK-839/840) — FE+BE JPEG/PNG/WEBP
+    2. client photo (cdba083 / e16f432)
+    3. benefit-contract 문서 (324da07 / cf28a2e)
+    4. staff-HR 문서 (324da07 / cf28a2e)
+    5. LTC grade-history (ed94521 / 8b164c3)
+    6. staff refresher-training certificate (ed94521 / 8b164c3)
+  Content-Type allowlist + payload 매직바이트 검증 이중 방어 · MIME 스푸핑 방어 완전 방어층 · verbatim「JPEG/PNG/PDF … 형식만 업로드할 수 있습니다.」fail-closed
+
+모듈 커버리지: 97.41% (28.25/29) carry
+  - 비-1.0 실 id 2 · 8 · 10 = 0.85
+  - id 12 = 0.7
+  - 진성갭 0 (residual = SUPERIOR bandwidth over 케어포/이지케어/엔젤/롱텀)

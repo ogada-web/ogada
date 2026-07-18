@@ -1,0 +1,63 @@
+BNK-711 — 엔젤·롱텀·규제 4–6h 교차검증 (rotation 4–6h)
+조사일: 2026-07-14T04:10:00Z (KST 2026-07-14 13:10) | 직전 동일 rotation: BNK-707(2026-07-14T01:34Z) → ~2.6h 후
+방법: law.go.kr/nhis.or.kr/silverangel/lcms/longterm 라이브 재실측 md5·SIZE 비교 + ogada FE/BE @HEAD git 실측.
+
+============================================================
+1. 규제 백본 라이브 재실측 (HTTP 200 · md5/SIZE 대조)
+============================================================
+| 소스 | URL | HTTP | SIZE(B) | md5 | 판정 |
+|------|-----|------|---------|-----|------|
+| NHIS #44 이동서비스비 | nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769 | 200 | 7,572 | c886ff1f | 446차 zero drift IDENTICAL |
+| silverangel 필수업무(지표) | silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do | 200 | 131,664 | c79c1be3 | zero drift IDENTICAL |
+| silverangel 부가(CMS) | silverangel.kr/newSilverangel/service/extraService.do | 200 | 81,637 | f9c5d877 | zero drift IDENTICAL |
+| silverangel 공지목록 | silverangel.kr/silverangel/support/notice/list.do | 200 | 5,707,602 | ea7d6b3d | zero drift IDENTICAL · ≥221573 신규 0 (~18일 pause) |
+| lcms | lcms.or.kr/ | 200 | 50,740 | c0c66076 | zero drift IDENTICAL |
+| law247 제2025-247호 | law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110 | 200 | 78,450 | 786bb404 | size-lock · Time= 토큰 md5-only DRIFT · semantic IDENTICAL |
+
+NHIS #44 verbatim(러-1~4 6/6 불변): 「‘러-1’부터 ‘러-4’까지 비용의 50%」·「1일 1회만 산정」·
+「수급자가 부담하지 아니한다」·편도 최단거리 산정. ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회) 6-link chain 경쟁 4종 유일 full-stack.
+
+============================================================
+2. ★ NEW 상태 변경 — longterm npeb502/610 404/302 → HTTP 200 (login-gated shell)
+============================================================
+직전 ~130-cycle 「미확인」(BNK-707 502 HTTP 302·BNK-706 이전 404). 이번 사이클:
+| URL | HTTP | SIZE(B) | md5 | body 마커 |
+|-----|------|---------|-----|-----------|
+| longtermcare.or.kr/npbs/e/b/502/npeb502m01.web (단기보호 급여비용) | 200 | 71,008 | d9ec1f8e | title 공백 · 로그인×26 · 세션×7 · ERROR×2 · location.href×14 · 「월 한도액/재가급여」 nav 라벨만 |
+| longtermcare.or.kr/npbs/e/b/610/npeb610m01.web (통합재가) | 200 | 70,237 | 21598558 | title 공백 · 동일 login-gated SPA shell |
+
+판정: HTTP 상태 302/404 → 200 으로 변동했으나 body = 로그인/세션 게이트 SPA shell.
+실제 단기보호(74,060)·통합재가(월 10만원) 수가 데이터는 여전히 로그인 필요 = **「미확인」 carry**.
+→ 가정 번복 아님(미확인→미확인). canonical 수가 수치는 별도 law/gosi 소스(BNK-192 502 canonical) 유지·npbs 페이지 인용 금지.
+
+============================================================
+3. ogada @HEAD git 실측 — M11 residual 11-6 간이지급명세서 CLOSURE
+============================================================
+FE develop @585155c  feat(v1.2.1/M11): wire simple payment statement reports page  (WT CLEAN · ahead origin/test 0 = FULLY SYNCED)
+BE develop @c455145  feat(v2/M11): add simple payment statement preview API        (WT CLEAN · ahead origin/test 620)
+직전 BNK-710: FE @e18ee5c / BE @5beaffb.
+
+신규 커밋 2 (M11 11-6 간이지급명세서 full-stack):
+| # | stream | SHA | 레이어 |
+|---|--------|-----|--------|
+| ① | BE | c455145 | StaffPayrollController + StaffPayrollSimplePaymentStatementPreviewResponse + StaffPayrollStatementLineResponse + StaffPayrollLedgerService(reuse ledger calc) + LedgerServiceTest(+106) |
+| ② | FE | 585155c | /payroll/reports → POST simple-payment-statement-preview · StaffPayrollReportsPage(411줄)+test(145) · navConfig · competitorModuleCoverage id=11 0.35→0.52 |
+
+coverage id=11「직원 급여」: 0.35 → **0.52** (11-1 ledger + 11-3 수당/공제 + 11-6 간이지급명세서 preview FE wire · 11-2/4/5 residual).
+모듈 가중 커버리지: 24.80/29(85.52%) → **24.97/29 = 86.10%** (+0.58pp).
+KPI lever: M11 residual(11-2/4/5) 0.52→1.0(+0.48) = 25.45/29 = **87.76%** · +M12(0→1.0) = 26.45/29 = **91.21%**.
+
+KPI 스냅샷: Route 127(<Route\b 126+<Routes> 1)·Page 100·FE test 511(212 .test.js+299 .test.jsx)·BE Test 282(281+1)·BE @Test 2086(+3)·V1–V190·merge gate **620**(FE 0 + BE 620).
+
+============================================================
+4. planner 반영 제안
+============================================================
+- baseline FE `@585155c`(FULLY SYNCED)·BE `@c455145`(ahead 620) · 모듈 86.10% · merge gate 620(BE-only).
+- M11 sole P1 = residual 11-2(퇴직적립금)·11-4(수당/공제 마스터)·11-5(인건비 지출비율 compliance) — 11-1/11-3/11-6 preview LANDED.
+- 11-5 인건비 지출비율 = 장기요양 법정 직접인건비 지출비율 60%+ 실시간 경보 = 규제 compliance 차별화 후보(경쟁 4종 정적 참고/사후 대비 유일 우위·BNK-682 carry).
+- longterm npbs 502/610 상태 302/404→200(login shell) — 수가 인용은 계속 law/gosi canonical 사용, npbs 페이지 데이터 인용 금지(미확인 carry).
+- NHIS #44 러-1~4 446차 zero drift → v1.3-C parity 문구 「러-1~4·편도50%·1일1회·일지④」 고정 carry.
+- tester: FF merge 620(BE-only·양쪽 WT CLEAN).
+- 다음 rotation: 케어포 0–2h(M11 11-6 landing 후 6-leaf residual gap) 또는 이지케어 2–4h(재무 FAQ 클러스터).
+
+per-cycle minimum 4종 충족: 신규 증거(longterm 502/610 status change) · 메뉴/필드 블록(M11 11-6 field map §3) · COMPETITOR_MATRIX 1행+ @585155c/@c455145 갱신 · BENCHMARK_REPORT §711 소절.

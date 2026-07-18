@@ -1,0 +1,130 @@
+# BNK-744 — ogada git 실측 6–8h (2026-07-15T03:06:00Z)
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-15T03:06:00Z -->
+
+## 0. KPI summary (확인 · git 실측)
+
+| 축 | BNK-743 | BNK-744 | Δ |
+|---|---|---|---|
+| FE develop | `@6dbdd99` FULLY SYNCED(ahead 0) | `@6b0f2ae` ahead **1** vs `origin/test=6dbdd99` | **+1** `feat(v1.2.1/J03): surface SMS dispatch readiness in channel panel` |
+| BE develop | `@adaee26` ahead 649 | `@93f33af` ahead **650** vs `origin/test=598d108` | **+1** `feat(v2/J03): extend template catalog with message kind 22` |
+| WT | CLEAN/CLEAN | CLEAN/CLEAN | 0 |
+| Route | 132 (131 `<Route`+1 `<Routes>`) | **132** | carry |
+| Page | 105 | **105** | carry |
+| FE test files | 518 (214.js+304.jsx) | **518** | in-place expand (panel/normalizer tests) |
+| BE Test.java | 289 (288+1) | **289** | carry |
+| BE @Test | 2166 (BNK-743 header) | **2165**(rg `@Test\b`) | recount −1 · 93f33af = 기존 @Test 본문 확장(신규 annotation 0) |
+| Flyway | V1–V193 | **V1–V193** | carry(신규 0) |
+| accounting / payroll Route | 1 / 5 | **1 / 5** | carry |
+| billing path | 17 | **17** | carry |
+| report path | 29/132≈22.0% | **29**/132≈22.0% | carry |
+| 모듈 coverage | 93.62%(27.15/29) | **93.62%**(27.15/29) | id=10 **0.75 carry**(KPI promote 0) |
+| merge gate | 649 (FE 0+BE 649) | **651**(FE 1+BE 650) | FE ahead 재등장 · BE-heavy |
+
+**확인 명령**:
+```
+git -C src/frontend rev-parse --short develop   # 6b0f2ae
+git -C src/backend  rev-parse --short develop   # 93f33af
+git -C src/frontend rev-list --count origin/test..develop  # 1
+git -C src/backend  rev-list --count origin/test..develop  # 650
+rg -cE '<Route\b' src/frontend/src/App.jsx       # 131 (+Routes 1 = 132)
+find src/frontend/src -name '*Page.jsx' | wc -l  # 105
+find src/frontend -path '*/node_modules' -prune -o \( -name '*.test.js' -o -name '*.test.jsx' \) -print | wc -l  # 518
+rg -c '@Test\b' src/backend/src/test --glob '*.java' | awk -F: '{s+=$2} END{print s}'  # 2165
+ls src/backend/src/main/resources/db/migration/V*.sql | wc -l  # 193
+```
+
+**npm test / mvn test**: vitest 이미 실행 중(`ps` 2026-07-15T02:56Z~) → `docs/qa/VITEST_CONCURRENCY.md` 규칙상 **신규 `npm test` 미실행**. 파일·어노테이션 집계로 KPI 재산정. mvn 전체 미실행(문서 사이클·시간 예산).
+
+---
+
+## 1. ★★★ 메뉴/필드/워크플로 블록 — J03 3-channel SMS readiness FULL-STACK UI + kind 22 enum
+
+### 1-a FE `@6b0f2ae` — SMS dispatch readiness in channel panel (6-file·+92/−7)
+
+**확인** — `NotificationChannelReadinessPanel.jsx`:
+- Alert `liveSmsDispatchReady` — 「라이브 SMS(폴백) 발송 준비가 완료/아직 준비되지 않았습니다」
+- quiet-hours copy: 「알림톡·이메일·SMS」3채널 명시
+- dt/dd 「비긴급 SMS 즉시 발송」 + `ReadinessStatusBadge(nonEmergencySmsDispatchAvailableNow)`
+
+**확인** — `notificationChannelStatus.js normalizeNotificationChannelStatus`:
+- `liveSmsDispatchReady` = BE boolean ?? Solapi(apiKey+apiSecret+senderId) fallback
+- `nonEmergencySmsDispatchAvailableNow` = BE boolean ?? `liveSmsDispatchReady && !quietHoursActive`
+- `EZCARE_MESSAGE_KIND_BY_TEMPLATE` + label에 **kind 22 `STAFF_PAYROLL_STATEMENT`「급여명세서」** 추가
+- 주석 verbatim: 「kind 22는 enum/카탈로그 메타만 — 발송 UI 미연동(v2+)」
+
+→ BNK-743 BE `@adaee26` `liveSmsDispatchReady`/`nonEmergencySmsDispatchAvailableNow` **FE Panel 노출 완료** = 3-channel(SMTP+알림톡+SMS) quiet-hours readiness **in-app FULL-STACK**.
+
+### 1-b BE `@93f33af` — message_kind 22 catalog (4-file·+18/−5)
+
+**확인** — `NotificationSmsTemplateCatalog.EZCARE_PARITY_ENTRIES` **7-entry**:
+
+| kind | templateCode | labelKo | channel | dispatchImplemented |
+|---|---|---|---|---|
+| 1 | STAFF_ACCESS_KEY | 접속키 발송 | SMS | true |
+| 11 | BILLING_STATEMENT | 본인부담 안내 | ALIMTALK | true |
+| 12 | CLIENT_MONTHLY_SCHEDULE | 일정표-수급자 | ALIMTALK | true |
+| 13 | CARE_PROVISION_RECORD | 급여제공내역 | ALIMTALK | true |
+| 19 | ELDER_ABUSE_PREVENTION_GUIDELINE | 직원인권보호 | ALIMTALK | true |
+| 21 | STAFF_MONTHLY_SCHEDULE | 일정표-직원 | ALIMTALK | true |
+| **22** | **STAFF_PAYROLL_STATEMENT** | **급여명세서** | ALIMTALK | **false (enum-only)** |
+
+`NotificationTemplateCodes.STAFF_PAYROLL_STATEMENT` 신규 · `MustApiEndpointRoutingTest`/`NotificationSmsTemplateCatalogServiceTest` 기존 @Test 본문 확장.
+
+### 1-c 경쟁 교차 — ezCare `PGID=mobile-sendW` message_kind select verbatim
+
+**증거 URL**: [`https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendW`](https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendW)
+**disk**: `snapshots/ezcare_new_ez_pgid_mobile-sendW.html` · 133,272B · md5 `10239e59edba350e3db376fd0375c4ed` (재실측 carry·라이브 re-fetch 생략·vitest 병행).
+
+```
+<select name="message_kind_smsLog">
+  <option value="1">접속키 발송</option>
+  <option value="11">본인부담</option>
+  <option value="12">일정표-수급자</option>
+  <option value="13">급여제공내역</option>
+  <option value="19">직원인권보호</option>
+  <option value="21">일정표-직원</option>
+  <option value="22">급여명세서</option>
+</select>
+```
+
+**결론(확인)**: ogada catalog **7/7 kind parity**(이지케어 select 전수) · **6/7 dispatchImplemented** · kind 22=`급여명세서` enum-only = **id=10 0.75 잔여 lever**(급여명세서 발송 UI·M11 payroll→SMS wire·v2+) · KPI promote **아님**.
+
+경쟁 4종 대비: ogada만 알림톡·이메일·SMS **3-channel quiet-hours readiness**를 `/api/v1/health`+`NotificationChannelReadinessPanel`에 in-app 표시(이지케어 2-channel SMS+쪽지·알림톡/이메일 readiness 「미확인」·케어포 문자중심 LIVE 000·엔젤 LCMS 위탁·롱텀 규제원천).
+
+---
+
+## 2. 모듈 coverage 재산정 (확인)
+
+`competitorModuleCoverage.js` 29-entry sum **27.15/29 = 93.62%** IDENTICAL vs BNK-743.
+
+| id | label | coverage | 비고 |
+|---|---|---|---|
+| 1-10 | 연계기록지 | **0** | sole coverage-0 진성갭(v2+) |
+| 12 | 수입지출·회계 | 0.7 | M12 credentials lever |
+| 10 | SMS·알림 | **0.75** | 3-channel readiness UI FULL · kind 22 enum · dispatch UI 잔여 |
+| 2 | 이동서비스 | 0.85 | TransportServiceFeeService 6-link carry |
+| 8 | 직원·근태 | 0.85 | carry |
+
+---
+
+## 3. 규제·경쟁 URL 재실측
+
+| URL | HTTP·SIZE·md5 | 변동 |
+|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200·7,572B·`c886ff1f` | **478차** IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)) |
+| carefor `daycare/func.php` · demo-work · loadPage | **000** | 82-cycle+ 「미확인」·disk `6226e6eb` carry |
+| ezCare mobile-sendW (disk) | `10239e59`·133,272B | kind 22「급여명세서」verbatim · live re-fetch skip |
+
+저장: `nhis_jo44_live_bnk744.html`(=bnk743 byte-identical).
+
+---
+
+## 4. planner 반영 제안
+
+1. baseline FE `@6dbdd99`→**`@6b0f2ae`**(ahead 1)·BE `@adaee26`→**`@93f33af`**(ahead 650)·merge gate **651**.
+2. ★★★ J03 3-channel SMS readiness **FE Panel CLOSED** — 마케팅 카피 「ogada는 알림톡·이메일·SMS 비긴급 발송을 quiet-hours readiness로 3채널 모두 in-app 표시」.
+3. ★★ kind 22「급여명세서」enum 착지 — M11 payroll × G-SMS wire는 v2+ · id=10 0.75 유지(촉진 금지).
+4. 잔여 lever: id=1-10 0 · id=12 0.7 · id=10 0.75(kind 22 dispatch)·RFID SMS(BNK-743)·batch-unconfirm(BNK-739)·P3 만료일 위젯.
+5. tester: merge gate **651**(FE 1 ahead 재등장+BE 650·양쪽 WT CLEAN → FF).
+
+가정 번복 0 · 신규 core 갭 0 · closure 1(FE SMS readiness Panel) · KPI promote 0.

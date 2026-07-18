@@ -1,0 +1,127 @@
+# BNK-837 · 엔젤·롱텀·규제 역공학 4–6h 교차검증
+# 작성자: BNK · updated: 2026-07-17T17:00:00Z
+# rotation: agents.yaml > reverse_engineering.rotation_30min "4-6h": 엔젤·롱텀·규제
+# 초점: M12 재무회계 외부 BPO(수지파인) SSO 포털 allowlist 하드닝 ↔ 케어포 open_sujifine 교차검증 · NHIS #44 이동서비스비 러-1~4 재실측
+
+## 0. ogada baseline (git 실측)
+
+- FE `@592a483` (`fix(v1.2.1/M12): lockstep SSO portal path allowlist with BE`) · WT CLEAN · BNK-836 `@9e40c19` → **+1** · ahead origin/test **1** · tester FF 대기
+- BE `@bfe6b3f` (`fix(v3/accounting): tighten SSO portal allowlist validation`) · WT CLEAN · BNK-836 `@759b15e` → **+1** · ahead **734** vs `598d108`
+- merge gate **735** (FE 1 + BE 734 · BE-heavy → tester FF · 신규 마이그레이션 0 · Flyway V1–V196)
+- Route **133** (`<Route\b` 132 + `<Routes>` 1) · Page **106**(git ls-files 실측)
+- BE Test 294(Test.java) · BE @Test **2287** (carry vs BNK-836) · @RestController **81**
+- FE test **533** (314 .test.jsx + 219 .test.js) — ★ **KPI 정정**: BNK-836 header 「537(314+223)」 = **over-count**. `git ls-tree -r 9e40c19`(BNK-836 HEAD) 및 `develop` 양쪽 실측 **314+219=533** IDENTICAL(BNK-835 정합). BNK-836 「+4」 번복 · Route/모듈 무영향.
+- 모듈 **97.41%** (`competitorModuleCoverage.js` 29-entry·sum 28.25·비-1.0 id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+## 1. ★★★ M12 재무회계 외부 BPO — 케어포 open_sujifine ↔ ogada SSO handoff SEC-D43 SUPERSET (메뉴/필드/워크플로)
+
+### 1-a. 케어포 open_sujifine 정본 (역공학 — HTML/JS)
+
+**확인** — `docs/planning/research/snapshots/carefor_demo_work.html` verbatim grep:
+```
+open_sujifine(
+SujifineForm
+sujifine.co.kr/carefor_login
+sujifine/get.sujifine_id.exe
+sujifine/view.apply_sujifine
+sujifineLogin        ← 새 창(window.name)
+sujifine.php
+```
+→ 케어포 M12 = `open_sujifine()` JS 함수가 `SujifineForm`(usmusid+otp)을 **`www.sujifine.co.kr/carefor_login`** 로 POST, 새 창 `sujifineLogin`. 재무회계(수입·지출·결의)는 자체 구현이 아니라 **외부 BPO(수지파인 「장기요양 재무회계 관리프로그램」) 링크/SSO 위임**.
+
+### 1-b. ogada M12 `@592a483`/`@bfe6b3f` — full-stack lockstep
+
+BE `AccountingBpoSupport.java`(`@bfe6b3f`):
+- `SSO_PORTAL_URL = "https://www.sujifine.co.kr/carefor_login"` · `PORTAL_PRODUCT_NAME="수지파인"` · `PORTAL_TITLE="장기요양 재무회계 관리프로그램"`
+- ★ 신규 **SEC-D43 portal allowlist** `isAllowlistedPortalUrl()`:
+  · `https` scheme 강제 · host ∈ {`sujifine.co.kr`,`www.sujifine.co.kr`} · port −1/443만 · path ∈ {`/carefor_login`,`/carefor_login/`}
+  · **reject** query(`?`)·fragment(`#`)·userInfo(`user@`)·비-443 포트 = phishing/URL 변조 방어
+- `ssoReadinessBlockers(credentialsReady, portalUrlAllowlisted)` 2-arg overload — blocker `sso-portal-url-not-allowlisted` 신설
+- rate-limit(SEC-D43): actor **10**/min · org **30**/min · HMAC OTP window **300s**·hex 16 · 비밀번호 ogada 미저장(일회용 OTP만 전달)
+
+FE `src/utils/accountingBpo.js`(`@592a483`):
+- `isAllowlistedAccountingBpoSsoPortalUrl()` = BE `isAllowlistedPortalUrl` **미러**(HTTPS+host+`/carefor_login`+port 443·query/fragment/userinfo reject)
+- `ACCOUNTING_BPO_SSO_WINDOW_NAME = "sujifineLogin"` ← 케어포 window.name **verbatim IDENTICAL**
+- `accountingBpo.test.js` 19 it/test(+SEC-D43 allowlist 케이스) · `AccountingBpoPage.jsx`/`.test.jsx`
+
+### 1-c. 경쟁 3종 대비 판정
+
+| 항목 | 케어포 | 엔젤(silverangel) | 이지케어 | ogada `@bfe6b3f` |
+|------|--------|-------------------|----------|-------------------|
+| 외부 회계 BPO 링크 | ✅ `open_sujifine` POST | ❌ 0-hit | 회계/재무/세무 메뉴 3/1/1 | ✅ `/accounting` |
+| SSO OTP handoff | △ form POST(usmusid+otp) | ❌ | 「미확인」(로그인 ERP) | ✅ HMAC OTP 300s |
+| 포털 URL allowlist(phishing 방어) | ❌ (하드코드 form) | ❌ | 「미확인」 | ✅ **SEC-D43 신규** |
+| rate-limit(actor/org) | ❌ | ❌ | 「미확인」 | ✅ 10/30 per-min |
+| 비밀번호 미저장 | ✅ | — | 「미확인」 | ✅ |
+
+**판정**: ogada M12 = 케어포 `open_sujifine` **PARITY + SUPERSET**(allowlist·rate-limit·no-password OTP). silverangel 공개 4-URL 전량 **외부 회계 BPO 0-hit** — 경쟁 공개면 대비 유일한 보안-하드닝 SSO handoff. id=12 residual **0.7 carry**(SSO 활성화는 시설 자격 env 설정 대기 = PLANNED 게이팅·기능 갭 아님·「가정」 격상 금지).
+
+**확인** — silverangel grep(system_feature·extraService·home·essential): `수지파인`0·`BPO`0·`외부회계`0·`세무대행`0·`SSO`0·`OTP`0·`자동로그인`0 (4-URL 전수).
+
+## 2. NHIS #44 이동서비스비 러-1~4 재실측 — 569차 IDENTICAL
+
+**확인** — [NHIS #44 joHistoryContent](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1f` = BNK-836 568차 → **569차 byte-IDENTICAL**.
+- verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+- 제34조 「주·야간보호급여 이동서비스비용 등」·편도 50%·수급자 부담하지 아니한다·이동서비스 일지
+↔ BE `@bfe6b3f` Transport: `RU_1~4`(5/10/20/999km)·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` 상수 IDENTICAL → **상수 재조정 불요** · id=2 0.85 carry · 경쟁 4종 유일 full-stack SUPERIOR.
+
+## 3. 규제 백본 10-URL live 재실측
+
+| # | URL | HTTP | size | md5 (BNK-837) | baseline | 판정 |
+|---|-----|------|------|---------------|----------|------|
+| 1 | NHIS #44 joHistoryContent | 200 | 7,572 | `c886ff1f` | BNK-836 `c886ff1f` | **569차 IDENTICAL ✅** |
+| 2 | silverangel home | 200 | 101,220 | `66382835` | BNK-833 | IDENTICAL |
+| 3 | silverangel system_feature.do | 200 | 45,601 | `c9507190` | BNK-833 | IDENTICAL · 이동서비스/배차/GPS/차량·수지파인/BPO/SSO **0-hit** |
+| 4 | silverangel extraService.do | 200 | 81,637 | `f9c5d877` | BNK-833 | IDENTICAL · CMS 월 30,000/자동이체 250/가상계좌 300 LOCK |
+| 5 | silverangel feeService.do | 200 | 44,513 | `eab352a8` | BNK-833 | IDENTICAL |
+| 6 | silverangel daycareEssentialWork.do | 200 | 131,664 | `c79c1be3` | BNK-833 | IDENTICAL · dual-numbering 27/41/42 |
+| 7 | silverangel daycareProgramProvided.do | 200 | 67,987 | `f18e1c7a` | BNK-833 | IDENTICAL · 사진/업로드/첨부 0-hit carry |
+| 8 | longterm 502 (월 한도액 및 급여비용) | 200 | 89,171 | `a71379de` | BNK-833 71,008 `d9ec1f8e` | **DRIFT 비실체** (트림 셸→풀 셸 복원·BNK-826 `a71379de` 89,171 재현·SPA lnb 오실레이션·본문 h2 「월 한도액 및 급여비용」 verbatim) |
+| 9 | longterm 610 (통합재가서비스) | 200 | 88,408 | `6b10f426` | BNK-833 70,237 `21598558` | **DRIFT 비실체** (동일 오실레이션·BNK-826 `6b10f426` 88,408 재현·본문 「통합재가서비스」 verbatim) |
+| 10 | law.go.kr admRulSeq=2100000271110 (2025-247) | 200 | 78,450 | `c83cd847` | strip 실측 | **semantic IDENTICAL** (size 78,450 고정·「고시 제2025-247호」 verbatim·md5 drift = 동적 토큰 Time=/csrf) |
+| 11 | lcms.or.kr | 200 | 50,740 | `c0c66076` | BNK-833 50,554 `6c0d22b4` | **carousel 회전** (type2→**type1** `c0c66076`·BNK-787/779 type1 재현·CJ/식단/MOU 0-hit·비실체) |
+
+## 4. CMS 부가 요금 LOCK (extraService `f9c5d877`)
+
+verbatim grep(재확인):
+- 월 이용료 **30,000원** · 자동이체 **250원/건**(6-hit) · 가상계좌 **300원/건**(7-hit) · 카드결제 별도문의(4-hit)
+↔ ogada G2b `/billing/cms` = **5-method SUPERSET** carry · id=7-4 1.0.
+
+## 5. longterm 셸 오실레이션 확정 — 실체 변동 아님
+
+BNK-826(풀 89KB) → BNK-833(트림 71KB) → **BNK-837(풀 89KB 복원)**:
+- 502: `a71379de` 89,171 ↔ 610: `6b10f426` 88,408 = BNK-826 md5·size와 **byte-exact 재현**
+- 좌측 lnb 「민원 상담실(미사용)」 1,220-line 위생 블록의 로드 여부에 따른 SPA shell 오실레이션(±18KB) = **동적 셸·비실체**
+- 본문 pageTitle(월 한도액/통합재가) 유지 · 단기보호 74,060·통합재가 월 10만 canary 「가정 유지·번복 아님」 · 규제 상수 재조정 불요.
+
+## 6. dual-numbering(essential `c79c1be3`) 재확인
+
+- 지표27 = 「주야간보호 27 기능회복훈련」 ≠ 일련27 「가족과의 소통」
+- 평가41 = 「이동서비스 수칙…」 · 평가42 = 「운전자 외 … 동승」
+↔ ogada G17 dual-numbering guardrail full-stack carry(id=26 1.0).
+
+## 7. 상태 변경 요약
+
+| 항목 | BNK-836 | BNK-837 | 번복 |
+|------|---------|---------|------|
+| FE HEAD | `@9e40c19` ahead 2 | `@592a483` (+1 SSO allowlist) ahead 1 | 0 |
+| BE HEAD | `@759b15e` ahead 733 | `@bfe6b3f` (+1 SSO allowlist) ahead 734 | 0 |
+| merge gate | 735 | **735**(FE1+BE734) | 0 |
+| FE test | 「537(314+223)」 | **533(314+219)** git 실측 | ★ **KPI 정정 1**(BNK-836 over-count 번복) |
+| BE @Test | 2287 | 2287 carry | 0 |
+| NHIS #44 | 568차 | **569차** | 0 |
+| M12 SSO allowlist | (없음) | **SEC-D43 full-stack 착지** | 0(신규 SUPERSET) |
+| 모듈 | 97.41% | 97.41% | 0 |
+| longterm 502/610 | (트림·carry) | **풀 셸 복원**(비실체) | 0 |
+| lcms | type2 | **type1**(carousel) | 0(비실체) |
+
+**가정 번복: KPI 정정 1(FE test 537→533)** · 신규 core 갭 0 · SUPERSET 1(M12 SSO allowlist SEC-D43) · silverangel 외부회계 0-hit carry.
+
+## 8. per-cycle minimum 4종 충족
+
+1. **신규 증거 URL/재실측**: NHIS #44 569차 · silverangel 6-URL + carefor `open_sujifine` JS 역공학 · longterm 502/610 풀셸 복원 DRIFT 기록 · lcms type 회전 · law strip
+2. **메뉴/필드/워크플로 1블록+**: §1 M12 open_sujifine ↔ SEC-D43 allowlist full-stack crosswalk(FE↔BE 미러·rate-limit·OTP)
+3. **COMPETITOR_MATRIX 1행+ `@HEAD`**: 재무회계 BPO 행 `@592a483`/`@bfe6b3f` 갱신
+4. **BENCHMARK_REPORT §837 소절**
+
+**근거 파일**: 본 txt · `nhis_jo44_live_bnk837.html` · `silverangel_extraService_live_bnk837.html` · `longterm_502_live_bnk837.html` · `longterm_610_live_bnk837.html` · `lcms_home_live_bnk837.html` · `carefor_demo_work.html`(open_sujifine anchor) · BE `AccountingBpoSupport.java` · FE `accountingBpo.js`

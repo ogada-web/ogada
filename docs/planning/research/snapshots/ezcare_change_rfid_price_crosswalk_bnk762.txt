@@ -1,0 +1,118 @@
+이지케어 역공학 — 변경사유 8-col · RFID 이중엑셀 · 이중 일정 · 가격/도입 재실측 (BNK-762 · 2026-07-15 · 2–4h 이지케어 rotation)
+====================================================================================================
+조사일: 2026-07-15T14:45:35Z (KST 2026-07-15 23:45)
+방법: ./scripts/ezcare-demo-fetch.sh --menu-catalog --batch schedule-rfid,schedule-form,duplicate-schedule,change-list,mobile-sendW,patient-list
+     + curl 재실측 FAQ/home/fnc/charge/Channel.io TOP-10/NHIS #44
+직전 동일 rotation: BNK-758(2026-07-15T12:14Z) → ~2.5h 후
+직전 사이클: BNK-761(2026-07-15T14:11Z·케어포 0–2h) → ~34분 후
+
+[출처·근거]
+- 데모 LIVE: POST /page/login.php oCode=DEMO → code "0000"
+  title: "[DEMO 이지케어] 체험 이지케어 재가복지센터"
+  demo shell 138,589B md5 3ab73d64… (session/date-only vs canonical → 덮어쓰기 0 · cycle copy `ezcare_new_ez_demo_bnk762.html`)
+  top-nav `top-nav-item-V2.js?20260428` 25,470B md5 95286775000f06c8ad13688fcb0d6dbb = **committed IDENTICAL**(메뉴 백본 zero drift)
+  catalog: module 10 · leaf 148 · unique PGID 59 (구조 IDENTICAL · `ezcare_menu_catalog_bnk762.json`)
+- PGID cycle copies: schedule-rfid / change-list / duplicate-schedule / mobile-sendW (*_bnk762.html)
+- 공개: help/faq.ez · / · new/ezCare_fnc.html · new/ezCare_charge.html
+- Channel.io: https://docs.channel.io/ezcare/ko/articles/자주-묻는-질문-TOP-10-79c05b96 (URL-encoded)
+- NHIS #44 joHistoryContent SEQ=1637
+- ogada: FE @3fddccd / BE @7868384
+
+====================================================================================================
+[★★★ 1] PGID=change-list 「2.10 변경사유 조회」 8-col 엑셀 — 처리상태 필드 0 (메뉴/필드/워크플로 블록)
+====================================================================================================
+확인: `#grid_change_reason` ezGrid download="{Ym} 변경사유" · excel 컬럼 8종 verbatim:
+
+| # | name        | label   | excel width | 비고 |
+|---|-------------|---------|-------------|------|
+| 1 | sDate       | 변경일  | —           | 일자 키 |
+| 2 | pName       | 수급자  | —           | |
+| 3 | pCode       | 정보    | —           | 수급자코드/부가 |
+| 4 | chg_what    | 변경사유| 15          | 카테고리 |
+| 5 | memo        | 변경내용| —           | 자유텍스트 |
+| 6 | chg_before  | 변경 전 | —           | before 스냅샷 |
+| 7 | chg_after   | 변경 후 | —           | after 스냅샷 |
+| 8 | mName       | 작성자  | —           | |
+
+이중 뷰: tabs `change_schedule_reason`(그리드) ↔ `test`(변경사유 캘린더 버전) — 캘린더에 `change_memo` li append.
+처리상태(승인/반려/완료) 컬럼·FSM grep **0** → 변경사유 = **감사(audit) 로그·엑셀 내보내기** 축이지 승인 워크플로가 아님(확인).
+→ ogada Visits/schedule change history 설계 시 **승인 FSM 과대구축 금지** · 8-col before/after+사유+작성자 audit parity 충분(가정·P3 polish).
+
+중복 일정: `PGID=duplicate-schedule` → **Page Not Found** shell 재확인(BNK-743/754 carry) · nav 토큰 실체 0 · 마케팅「일정중복 방지」claim만(확인).
+
+====================================================================================================
+[★★★ 2] Module 3 이중 일정 + Module 4 RFID 이중엑셀 ↔ ogada (메뉴/필드/워크플로 블록)
+====================================================================================================
+A. 이중 일정(M3 13-leaf · catalog IDENTICAL)
+  수급자-일정관리(/schedule_plan/) ↔ 관리자-일정관리(/social_worker/schedule.html)
+  schedule-p100#tab0 수급자 일정표 ↔ #tab1 요양보호사 근무현황표
+  schedule-p300#tab0/#tab1 · schedule-s100#tab0 요양보호사 기준 ↔ #tab1 수급자 기준
+  → ogada VisitsPage + StaffMonthlySchedulePage ✅(BNK-750 carry · 진성갭 아님)
+
+B. RFID점검(M4) `PGID=schedule-rfid` LIVE 150,501B
+  이중 엑셀 업로드(비실시간):
+    1) 계획일정 엑셀 (form_plan_upload mode=plan)
+    2) RFID전송내역 엑셀 (form_rfid_upload mode=rfid_upload)
+  비교 그리드 4종: grid_match_list · grid_match_list_worker · grid_tag_time · grid_send_tag_time
+  불일치 축(comp_*): 모두/시작/종료/30분/제공자 다름/계획 없음/직접입력
+  RFID 태그 본문 11-field: 신체·인지자극·일상생활함께하기·인지행동변화·정서지원·가사·신체/식사/인지기능·대·소변실수·특이사항
+  문자: btn_sms_all「선택 급여제공자 문자보내기」+ grid sms 컬럼 · help FAQ rowid 21450/21589
+  주의 verbatim: 「급여제공내역은 방문요양만 지원」·「태그내역 비교는 실시간이 아닙니다」
+
+C. ogada `@3fddccd`/`@7868384` 대응
+  compare: VisitRfidDiffComparePanel + compareVisitsRfidApi → POST /visits/imports/rfid/compare ✅
+  SMS batch: BE POST /visits/imports/rfid/care-provision-dispatch **상속**(HOME_VISIT only · FAQ 21589)
+  FE services.js / VisitRfidDiffComparePanel grep `care-provision-dispatch` **0-hit** = **P2 residual**(BNK-760 재확인 · 격상 0)
+  주간보호 QR/출석 축 → RFID top-level 과대반영 금지(가정 carry)
+
+D. mobile-sendW messageAmt={"app":10,"sms":20,"mms":50} IDENTICAL ↔ 가격「문자 20~50원」정합
+
+====================================================================================================
+[★★ 3] 가격·도입 재실측 — VALUE STABLE · 셋팅비 프로모 ~7/31 임박 (기존 URL 재실측)
+====================================================================================================
+| 지표 | URL | BNK-760/754 | BNK-762 | 판정 |
+|------|-----|-------------|---------|------|
+| 시장점유율 | home data-count1 | 53.2% | **53.2%** | IDENTICAL |
+| 이용기관 | data-count2 | 9,298 | **9,298** | IDENTICAL |
+| 재무회계 대행 BPO | data-count3 | 4,673 | **4,673** | IDENTICAL(BNK-760 +1 이후 STABLE) |
+| 종사자 급여 처리액 | data-count4 | 2,353억 / 1,820억 | **2,353 / 1,820** | IDENTICAL |
+| fnc 도입 | ezCare_fnc.html headstatus | 9,433개 | **9,433개** | IDENTICAL |
+| 월 기본료 | charge | 10,000원+초과 500원/인 | 동일 · 37명例 25,850원 | VALUE IDENTICAL |
+| 셋팅비(가입비) | charge | 55,000→**33,000**(40%·~7/31) | 동일 | **프로모 D-16**(2026-07-15→07-31) |
+| 문자 | charge / mobile-sendW | 20~50원 · 1000p | IDENTICAL | |
+
+home HTML SIZE 69,642→69,202(−440B) = 연혁 연도 마케팅 카피 교체(2015/2019/2024↔2013/2017/2018/2020) · **카운터 VALUE 불변**.
+charge md5 `3ea506da…`(BNK-754 `fcfddfc9…`) same SIZE 22,979B · VALUE IDENTICAL(cache/markup noise).
+
+====================================================================================================
+[★ 4] FAQ · Channel.io · NHIS 재실측
+====================================================================================================
+- FAQ https://ezcare.easyms.co.kr/help/faq.ez 200·80,057B·md5 `49685713…`(BNK-760 `976ce76a…`)
+  · diff 8-line · digit-norm struct_diffs **0** = **hit-only DRIFT**(faq-hit view count↑)
+  · rowid SETS IDENTICAL **233** · min 21131 · max **21781** · 신규 FAQ 0 · **엑셀 포맷 변경 0**
+  · 엑셀 FAQ 2건 = 브라우저 다운로드 이슈(Edge/Chrome)만 · RFID FAQ「급여제공기록지 RFID 전송분을 문자로」carry
+- Channel.io TOP-10 [docs](https://docs.channel.io/ezcare/ko/articles/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96)
+  200·238,819B·md5 `f883d336…`(BNK-754 `80ab1198…`) · SIZE IDENTICAL · 본문 토픽 카운트(RFID7/본인부담62/문자3) IDENTICAL = **번들/해시 noise DRIFT · semantic LOCK**
+- NHIS #44 200·7,572B·md5 `c886ff1f…` = **496차** zero drift(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13))
+
+====================================================================================================
+[★ 5] ogada git KPI (BNK-762 실측)
+====================================================================================================
+FE develop @3fddccd (BNK-761 동일 HEAD · ahead origin/test **0** = **FULLY SYNCED** ← BNK-761 ahead1 tester 흡수)
+  WT **DIRTY** 3M+1U: components.css · tokens.css · index.js + ?? Toast.jsx (coder UX in-progress · 이관 전)
+BE develop @7868384 (BNK-761 동일 · ahead **665** vs 598d108 · WT CLEAN)
+Route **133**(<Route\b 132+<Routes> 1) · Page **106** · FE test **525**(216+309)
+BE Test **294**(293 Test.java+1 Tests.java) · BE @Test **2215**(BNK-761 header 2214 → +1 recount · same HEAD)
+Flyway **V1–V196** · accounting 1 · payroll 5 · 모듈 **97.41%**(28.25/29)
+merge gate **665**(FE 0 FULLY SYNCED+BE 665 · BE-heavy → tester FF · FE WT DIRTY → coder 정리 선행)
+
+====================================================================================================
+[planner 우선순위]
+1. ★★★ 변경사유 = audit 8-col · 처리상태/승인 FSM 과대구축 금지 · Visits change history P3 polish only
+2. ★★★ RFID FE care-provision-dispatch wire = **P2 residual carry**(격상 0) · HOME_VISIT only · 주간보호 진성갭 아님
+3. ★★ 셋팅비 33,000원 프로모 **~7/31 D-16** 모니터링 · 만료 후 가격 페이지 재실측 필수
+4. ★ 도입 카운터 STABLE(BPO 4673)·가격 VALUE IDENTICAL · FAQ/엑셀 포맷 변경 0 · import adapter 긴급 불요
+5. ★ duplicate-schedule NotFound = 마케팅 claim only · ogada「일정중복」전용 모듈 금지
+6. ★ FE WT DIRTY Toast/css → coder 커밋 후 tester FF(merge gate 665)
+
+가정 번복 0 · 신규 core 갭 0 · closure 0 · per-cycle minimum 4종 충족

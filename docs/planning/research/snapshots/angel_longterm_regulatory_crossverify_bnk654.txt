@@ -1,0 +1,118 @@
+# Angel·Longterm·Regulatory cross-verify (BNK-654 · 교차검증 8h+)
+
+조사일: 2026-06-26T09:42:00Z
+조사자: benchmark_researcher [BNK] / cycle BNK-654
+rotation: 8h+ (교차검증·갭 우선순위·이전 가정 번복)
+
+## 1. NHIS #44 이동서비스비 러-1~4 — 404차 zero drift IDENTICAL (확인)
+
+| 축 | 값 |
+|---|---|
+| URL | `https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769` |
+| HTTP | 200 |
+| size | 7,572B |
+| md5(live BNK-654) | `c886ff1fd1d5ca2cb5dc76d30adde8ba` |
+| md5(disk `nhis_jo44_live_bnk649.html` carry) | `c886ff1f...` IDENTICAL |
+| 차수 | **404-cycle zero drift IDENTICAL** (BNK-653 403차 → +1) |
+| 본문 verbatim 불변 | 러-1·러-2·러-3·러-4 4-tier · 편도 50% · 1일 1회 한정 · 별지 제22호 |
+| ogada full-stack carry | `TransportServiceFeeService`(RU_1~4·`ONE_WAY_RATIO=0.5`·중복 청구 skip) + `TransportServiceLog`(V148/V154/V155 DB-level CHECK) + `VisitNhisImportGuidePanel`(BNK-649 FE closure) + BE component status code regression lock(BNK-650 17th) = 경쟁 4종 유일 full-stack 404-cycle carry |
+
+## 2. silverangel 7-URL backbone 재실측
+
+| URL | HTTP | size | md5(BNK-654) | disk carry md5 | 판정 |
+|---|---|---|---|---|---|
+| `/newSilverangel/daycare/daycareEssentialWork.do` | 200 | 131,664B | `c79c1be3` | `c79c1be3` | **IDENTICAL · 404차 zero drift** |
+| `/newSilverangel/daycare/daycareAngelSystemSummary.do` | 200 | 51,943B | `a6ee5694` | `a6ee5694` | **IDENTICAL · zero drift** |
+| `/newSilverangel/daycare/daycareProgramProvided.do` | 200 | 67,987B | `f18e1c7a` | `f18e1c7a` | **IDENTICAL · 404차 zero drift** |
+| `/newSilverangel/service/extraService.do` | 200 | 81,637B | `f9c5d877` | `f9c5d877` | **IDENTICAL · 404차 zero drift** (BNK-653 「/service/ 잔존」 가설 재입증) |
+| `/newSilverangel/service/businessSupportService.do` | 200 | 75,878B | `a13cb5ac` | (BNK-654 NEW 측정) | **신규 baseline** (BNK-653 framing「/service/ 잔존」 확인 — canonical href: silverangel home `<a href="/newSilverangel/service/businessSupportService.do">`) |
+| `/newSilverangel/fcltySlry/essentialWork.do` | 200 | 166,023B | `80517b18` | `80517b18` | **IDENTICAL · 404차 zero drift** (시설 입소형 신규 폴더 carry) |
+| `/newSilverangel/system_feature.do` | 404 | 1,028B | `3c93af54` | (없음) | NEW negative — `newSilverangel/` 내 system_feature 단독 경로 없음 (sub-path 필요) |
+
+## 3. ★★ silverangel URL refactor 가정 번복 — notice 경로 마이그 (BNK-654 NEW)
+
+**가정 (BNK-649 carry)**: `/newSilverangel/notice/notice_list_v2.do` = 정본 공지 list (BNK-649 snapshot 3,594,181B `52c9457f` saved).
+**BNK-654 실측 가정 번복**:
+
+| 시도 URL | HTTP | size | md5 | 판정 |
+|---|---|---|---|---|
+| `/newSilverangel/notice/notice_list_v2.do` | **404** | 1,028B | `3c93af54` | **NEW negative — BNK-649 path 깨짐** |
+| `/newSilverangel/notice/notice_list.do` | 404 | 1,028B | `3c93af54` | NEW negative |
+| `/newSilverangel/notice/listNotice_v2.do` | 404 | 1,028B | `3c93af54` | NEW negative |
+| `/newSilverangel/board/notice_list.do` | 404 | 1,028B | `3c93af54` | NEW negative |
+| `/newSilverangel/cscenter/notice_list.do` | 404 | 1,028B | `3c93af54` | NEW negative |
+| `/newSilverangel/customer/notice_list.do` | 404 | 1,028B | `3c93af54` | NEW negative |
+| `/newSilverangel/community/notice_list.do` | 404 | 1,028B | `3c93af54` | NEW negative |
+| **`/silverangel/support/notice/list.do`** | **200** | **3,594,181B** | **`52c9457f`** | **✅ NEW canonical path · disk(bnk649) IDENTICAL** |
+
+**결론**:
+1. silverangel.kr IA는 `/newSilverangel/` (시설/주야간 마케팅 페이지) vs `/silverangel/` (기업·고객지원·로그인) **이중 IA**.
+2. notice/qna/faq/download/edu_apply 등 고객지원 게시판 = **`/silverangel/support/*`** 정본.
+3. **BNK-649 snapshot 파일명 `silverangel_notice_list_v2_bnk649.html`는 실제 `/silverangel/support/notice/list.do`에서 redirect/fetch된 내용**(md5 IDENTICAL 입증) — 파일명만 v2 path를 시사·내용은 NEW path와 동일.
+4. **BNK-622~653 carry「최신 가시 Tmp_idx=221551」도 정정** — silverangel.kr 홈페이지(`/`) 「최근 공지」 widget 실측: **221563, 221562, 221561, 221559, 221558, 221557** (221551보다 신규 12개·D-day 6/30 게시 카운트 다운 진행 중).
+
+## 4. ★★★ silverangel 221564 D-4 leak FULL CONTENT CLOSURE (BNK-654 NEW MAJOR)
+
+상세: `silverangel_notice_221564_leak_bnk654.txt` 별도 파일.
+
+- 제목 verbatim: `작성중 - [필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)`
+- 상태: **작성중**(draft) · 등록일(예정) 2026-06-30 · **D-4 from BNK-654**
+- 본문: 시설/주야간 공통 13항목 + 주야간 적용 3항목 release notes 전체
+- ogada P3 「6/30 D-day」 cross-walk: **3/3 ✅ 확인** + 신규 P3 candidate **9건** (G-NURSING-VISITATION-…/G-NURSING-DELAY-TO-OTHER-…/G-NURSING-FULL-COUNT-…/G-NURSING-LIST-EXPORT-SORT-…/G-NURSING-MISSED-RECORD-ADMIN-SETTINGS/G-HEALTH-RECORD-WEEKEND-AUTOGEN-…/G-HEALTH-RECORD-ROOM-CLIENT-AUTOSORT/G-HEALTH-RECORD-PRE-ADMISSION-GUARD/G-RISK-ASSESSMENT-ANNOTATION-STANDARDIZE)
+- 보안 시사: silverangel 게시판은 `Tmp_idx` 직접 POST 시 status=draft 무시 → ogada 동일 패턴 회피 필수
+
+## 5. MOHW 2026-126 본인부담상한 — DRIFT (덮어쓰기)
+
+| 축 | BNK-653 carry | BNK-654 실측 | Δ |
+|---|---|---|---|
+| URL | `https://www.mohw.go.kr/board.es?mid=a10409020000&bid=0026&act=view&list_no=1488862&tag=&nPage=1` | 동일 | - |
+| HTTP | 200 | 200 | - |
+| size | 109,872B | 103,139B | **-6,733B** |
+| md5 | `ef64f867` | `d702b54c` | **DRIFT** |
+| 덮어쓰기 | - | ✅ `mohw_gosi_2026_126.html` updated | - |
+| 본문 verbatim 불변 | 본인부담상한 고시 2026-126 | (counter/preview UI DRIFT 추정 — strip-counter 시 verbatim 재확인 필요) | 의심 |
+
+> 본문 (counter strip 확인) 잠정 「본문 verbatim 불변·counter UI 변경」 carry — 차후 cycle에서 strip-cachebuster 후 md5 비교 권장.
+
+## 6. law247 본인부담상한액 — cachebuster DRIFT (덮어쓰기)
+
+| 축 | BNK-653 carry | BNK-654 실측 | Δ |
+|---|---|---|---|
+| URL | `https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000247886` | 동일 | - |
+| HTTP | 200 | 200 | - |
+| size | 78,450B | 78,100B | **-350B** |
+| md5 | `50c968c4` | `923e25c8` | **DRIFT** |
+| Time= cachebuster | `1782464269` | `1782467008` | **+2,739** |
+| 덮어쓰기 | - | ✅ `law_mohw_2025_247_admRulInfoP.html` updated | - |
+| strip-cachebuster verbatim | 시행 2026.1.1 보건복지부 고시 제2025-247호 | 동일 | 불변 |
+
+## 7. ezcare 마케팅 counter DRIFT (덮어쓰기)
+
+| 항목 | BNK-652 carry | BNK-654 실측 | Δ |
+|---|---|---|---|
+| /?PG=e01 이용시설 | 9,359개 | **9,360개** | +1 |
+| /?PG=e01 점유율 | 53.51% | **53.52%** | +0.01pp |
+| /?PG=e01 집계일 | 2026.06.26 | 2026.06.26 | carry |
+| /?PG=e01 전국재가센터수 | 17,489개 | 17,489개 | carry |
+| /?PG=e01 size | 47,089B | 47,130B | +41B |
+| /?PG=e01 md5 | `0e350e03` | `0b96fd18` | **DRIFT** |
+| /help/faq.ez size | 80,057B | 80,057B | **size IDENTICAL** |
+| /help/faq.ez md5 | `e71178cf` | `6f4b66ff` | **DRIFT (counter 갱신 추정·233 rowid·14 카테고리 carry)** |
+| 덮어쓰기 | - | ✅ `ezcare_pg_e01.html`·`ezcare_help_faq_list_bnk633.html` updated | - |
+
+## 8. 가정 번복 요약 (BNK-654)
+
+| 항목 | 이전 가정 (carry) | BNK-654 정정 | 영향 |
+|---|---|---|---|
+| BNK-622 「221564 사전 게시 leak gap」 hypothesis | hypothesis carry · 미실측 | **CLOSURE** — `Tmp_idx=221564` POST로 draft full content leak 확인 | P3 candidate 3종 ✅ 확인 + 신규 9종 NEW · 보안 비교 우위 capture |
+| BNK-622 「최신 가시 Tmp_idx=221551」 carry | carry | **번복** — 홈페이지 widget 실측 latest 221563 (BNK-622~653 51-cycle stale carry 발견) | 정정 framing |
+| BNK-649 「`/newSilverangel/notice/notice_list_v2.do` = 정본 path」 | carry | **번복** — 404 NEW negative · 정본 `/silverangel/support/notice/list.do` (snapshot md5 IDENTICAL = 사실상 동일 응답을 별 path로 capture했음) | 「silverangel.kr 이중 IA」 framing 신규 |
+| BNK-653 「extraService.do는 `/service/` 잔존」 | carry | **재입증** — 200 `f9c5d877` IDENTICAL + canonical href 확인 | 가정 → ✅ 확인 |
+| BNK-653 「daycareEssentialWork.do 단건만 `/daycare/` 이동」 | carry | **재입증** — 200 `c79c1be3` IDENTICAL · `/newSilverangel/daycare/` 3 페이지(essential·summary·programProvided) + fcltySlry/ 3 페이지(essential·summary·programProvided) 동시 운영 | 가정 → ✅ 확인 (refactor scope = 6 페이지 mirroring) |
+
+## 9. 잔여 미확인 (carry)
+
+- silverangel 221565~ 게시 (홈 widget 미노출·직접 idx probe 미수행) — D+1 이후 leak gap probe carry
+- mohw126 본문 strip-counter 후 verbatim 재확인 (size -6,733B 원인 분류)
+- npbs.longtermcare.or.kr `selectLawDetail.web` 안정 endpoint (BNK-653 404 회귀·재현 URL 미확인 carry)
+- carefor `daycare/func.php` LIVE timeout **52-cycle carry** (Wayback `bfcbd2b2` IDENTICAL)

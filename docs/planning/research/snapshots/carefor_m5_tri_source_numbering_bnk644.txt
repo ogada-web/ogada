@@ -1,0 +1,81 @@
+# BNK-644 — 케어포 M5 프로그램 급여 tri-source 번호·loadPage·리포트 밀도 ↔ ogada /programs cross-walk
+# 조사일: 2026-06-26T03:05:00Z (KST 12:05) | rotation: 케어포 역공학 0–2h
+# 작성: benchmark_researcher [BNK]
+
+## 신규 evidence URL (확인 · 변동 기록)
+1. [Wayback 매뉴얼 PDF id_ fetch](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) HTTP **500** · 144,845B partial body · md5 `71d90353` — **transient 399차** · canonical on-disk `96f7d45e`(9,992,772B) carry
+2. [Wayback 매뉴얼 PDF non-id](https://web.archive.org/web/20260528120000/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf) HTTP **302** redirect only — id_ variant 재시도 권장 carry
+3. https://www.carefor.co.kr/daycare/func.php LIVE HTTP **000 timeout 46-cycle** (2026-06-26T03:00Z)
+4. https://demo-work.carefor.co.kr/ LIVE HTTP **000 timeout 46-cycle** (2026-06-26T03:00Z)
+
+## on-disk canonical (zero drift 399차)
+| 파일 | md5 | SIZE | 비고 |
+|---|---|---|---|
+| `carefor_func.php` | `6226e6eb` | 98,328B | M5 14-leaf 정본 |
+| `carefor_demo_work.html` | `b2e8e5c8` | 75,587B | L05 15 loadPage |
+| `carefor_manual_daycare_onboard.txt` | (txt) | — | 5-3 그룹 설정 워크플로 |
+
+## §1 tri-source leaf 카운트 (확인)
+| 축 | M5 leaf 수 | 비고 |
+|---|---|---|
+| func.php 정본 | **14** operational leaf | 5-1~5-10 + 5-1-1·5-3-1·5-5-1 |
+| demo-work L05 loadPage | **15** | func 대비 +1(5-1-2) · 리포트 번호 +1 drift |
+| demo `class="rpt"` | **5** | L05_M06~M09 + M09 duplicate(5-9·5-10) |
+| ogada program report Route | **4** | `/programs/reports/{participations,provision-records,group-history,schedules}` |
+| ogada `competitorModuleCoverage` id=5 | **1.0** ✅ | 14-leaf core parity 재확인 |
+
+마케팅 「109항목」= 107 operational + 삭제예정 8-11 + demo noready 2건 「가정」(BNK-640 carry).
+
+## §2 ★★★ M5 리포트 번호 tri-source drift (확인 · BNK-644 신규 상세)
+
+func.php(마케팅 정본) ↔ demo-work(운영 셸) ↔ ogada `programReports.js`(func 정본 채택):
+
+| func # | func 명칭 | demo # | demo view (pamcode) | ogada Route / config | 판정 |
+|---|---|---|---|---|---|
+| 5-1 | 프로그램 제공기록 | 5-1 | `view.program_service_daily` L05_M01 | `/programs` ProgramsPage | ✅ |
+| 5-1-1 | 외부강사/자원봉사자 | 5-1-1 | `view.outside_lecturer_manage` L05_M11 | △ 8-8 자원봉사 도메인 인접 | △ P3 |
+| — | (func 미노출) | **5-1-2** | `view.family_region_exchange` L05_M12 | ❌ | ❌ demo-only · HTML주석 내부 `5-6-1` |
+| 5-2 | 프로그램 일정관리 | 5-2 | `view.program_service` L05_M02 | ProgramScheduleForm | ✅ |
+| 5-3 | 수급자 그룹 설정 | 5-3 | `view.program_plan` L05_M03 | V179 `program_client_groups` BE + △ FE 전용 UI | △→✅ BE |
+| 5-3-1 | 프로그램 그룹 관리 | 5-3-1 | `view.program_group` L05_M05 | 동상 | △→✅ BE |
+| 5-4 | 프로그램 정보관리 | 5-4 | `view.program_item` L05_M04 | ProgramsPage 마스터 | ✅ |
+| 5-5 | 의견수렴 및 반영 | 5-5 | `view.program_evaluation` L05_M10 | satisfaction 5-scale + `/programs/provision-result-evaluations` | ✅ 우위 |
+| 5-5-1 | 프로그램관리자 업무수행일지 | 5-5-1 | `view.social_worker_report` L05_M14 **(치매)** | ❌ 전용 leaf 0 | ❌ P3 |
+| **5-6** | **프로그램 계획**(운영) | **5-10** | `view.program_plan_ltcare` L05_M09 **rpt** | △ 계획 입력 UI 미노출 · 리포트만 demo | △ |
+| **5-7** | 수급자 참여 리포트 | **5-6** | `view.program_record` L05_M06 rpt | `/programs/reports/participations` label **5-7** | ✅ func# 정합 |
+| **5-8** | 제공기록 리포트(운영기록지) | **5-7** | `view.program_service_yearly` L05_M07 rpt | `/programs/reports/provision-records` label **5-8** | ✅ |
+| **5-9** | 그룹 설정 이력 리포트 | **5-8** | `view.program_plan_state` L05_M08 rpt | `/programs/reports/group-history` label **5-9** | ✅ G-REPORT-DENSITY |
+| **5-10** | 일정 리포트 | **5-9** | `view.program_service_rpt` L05_M09 rpt | `/programs/reports/schedules` label **5-10** | ✅ |
+
+**해석**: demo IA는 리포트 구간을 **func 대비 −1 번호로 표기**(M7 7-x 리포트 +1 drift와 대칭 패턴). ogada `programReports.js`는 **func.php 마케팅 정본 번호(5-7~5-10)** 를 label 로 채택 — demo shell 과 직접 1:1 매핑 시 혼동 주의.
+
+**careforView 명칭 drift (가정)**: ogada config `view.program_participation` ↔ demo 실측 `view.program_record` — 내부 PHP view alias 가능성 · 화면 타이틀은 동일.
+
+## §3 PDF·온보딩 tri-source (확인 · PDF transient carry)
+- `carefor_manual_daycare_onboard.txt` L115: 「[필요시]5-3. 프로그램 수급자 그룹 설정 > 수급자 프로그램 그룹 신규등록」 — 그룹은 **선택적 온보딩** 단계
+- `carefor_manual_p45_p50_care_bnk581.txt`: 급여제공 기록지 = 신체활동(3-1)+간호(4-1)+기능회복(5-1·4-2·3-1) **한 장** — ogada `/care/weekly-records` 통합 기록 superset narrative
+- PDF module 5 전용 목차(p.58~62) — Wayback 500으로 **미재추출** · onboard+func+demo tri-source 로 대체
+
+## §4 demo 시설 셸 — 이동서비스 없음 (재확인)
+- demo L05 grep `이동서비스` **0 hit** · func M2 10-leaf demo 0 hit (BNK-640 carry)
+- M5 rpt 5건 = demo 전체 rpt 34 중 14.7% (BNK-620 carry)
+
+## §5 ogada cross-walk @HEAD (BNK-644 git 실측)
+- FE `@a8f4e8e` QA-B95 **14th layer** `g21SeedStatusDetail` FE wire · WT **CLEAN** · ahead **252**
+- BE `@4df9465` `G-CLIENT-CONTRACT-BULK-PRINT` `GET /api/v1/clients/care-plan-forms/bulk-export` · WT **CLEAN** · ahead **580**
+- 118 Route · 93 page · V1–V182 · BE Test 272 · @Test 1974 · FE test 486(202+284) · 모듈 **81.5%**(24.45/30) · reports 28 · merge gate **832**
+
+### M5 micro-gap 잔여 (P3 carry · core 0)
+| 항목 | 케어포 | ogada | 우선순위 |
+|---|---|---|---|
+| 5-1-2 가족·지역사회 교류 | demo-only | ❌ | P3 |
+| 5-5-1 프로그램관리자 업무일지(치매) | func+demo | ❌ | P3 |
+| 5-6 프로그램 계획 입력 | func 운영 leaf | △ 리포트만 | P3 |
+| 5-1-1 외부강사 | func leaf | △ 8-8 인접 | P3 |
+
+**G-PROGRAM-GROUP-CONFIG**: BNK-577 P3「가정」→ V179/V180 `program_client_groups` BE landed → **△→✅ BE-only** · FE 그룹 설정 전용 UI = P3 carry.
+
+## planner 제안 (요약)
+1. `programReports.js` label 은 func 정본 유지 — demo 번호 drift 는 기획 문서 footnote 로만 표기
+2. 리포트 cross-walk QA: demo `view.program_record` ↔ ogada participations API 필드명 정합 검증 (coder)
+3. M5 core ✅ 유지 — P1 lever 는 M11/M12 (+6.9pp) carry

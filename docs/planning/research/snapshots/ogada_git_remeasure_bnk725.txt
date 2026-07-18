@@ -1,0 +1,89 @@
+# BNK-725 — ogada git 실측 6–8h (2026-07-14T14:42:00Z)
+# rotation: agents.yaml reverse_engineering.rotation_30min "6-8h"
+# 직전 동일 rotation: BNK-718(2026-07-14T09:55Z) → ~4.8h 후
+# 직전 사이클: BNK-724(2026-07-14T13:56Z·이지케어 역공학) → ~46분 후
+
+## 1. HEAD / merge gate (확인 · git 실측)
+
+| submodule | develop HEAD | short | WT | ahead origin/test | origin/test | BNK-724 대비 |
+|---|---|---|---|---|---|---|
+| FE | `5805d68a09c9996470008c28e3ade2c8da6a5911` | `@5805d68` | **CLEAN** | **1** vs `61f734d` | `61f734d` | `@b7c9fa4` → **+2** (`61f734d` G2 branch scope + `5805d68` QA-B95 live-e2e) |
+| BE | `ac422cc264acbc183e81524fb7572ff0e2873e48` | `@ac422cc` | **DIRTY 5M** Health/LiveE2e WIP | **633** vs `598d108` | `598d108` | **HEAD zero advance**(BNK-724 동일 SHA) |
+
+merge gate = FE 1 + BE 633 = **634**(BE-heavy·BE WT DIRTY → coder 커밋 선행 권장 후 tester FF)
+
+## 2. KPI 재산정 (확인)
+
+| KPI | BNK-724 | BNK-725 | delta |
+|---|---|---|---|
+| Route (`<Route\b`+`<Routes>` App.jsx) | 132 (131+1) | **132** (131+1) | carry |
+| `*Page.jsx` | 105 | **105** | carry |
+| FE test (.test.js / .test.jsx ls-tree develop) | 518 (214+304) | **518** (214+304) | carry(`liveE2eHarness.test.js` in-place expand) |
+| BE Test (*Test.java + *Tests.java) | 288 (287+1) | **288** | carry |
+| BE @Test | 2135 | **2135** | carry(WT DIRTY 테스트 +16L 미커밋·HEAD 카운트 불변) |
+| Flyway | V1–V190 | V1–V190 | carry |
+| accounting route | 1 `/accounting` | 1 | carry |
+| payroll route | 5 | 5 (ledger/reports/basis/labor-cost-ratio/retirement-accrual) | carry |
+| 모듈 coverage (competitorModuleCoverage.js id 라인) | 92.41% (26.80/29) | **92.41%** (26.80/29) | carry · id=1-5 **0.65** carry |
+| id=1-5 | 0.65 | 0.65 | authoring FE 미착지 · history branch-scope 만 deepen |
+| id=1-10 / 2 / 8 / 10 / 12 | 0 / 0.85 / 0.85 / 0.75 / 0.7 | same | carry |
+
+## 3. ★★★ FE `@61f734d` — id=1-5 G2 dispatch-history **branch scope** LANDING (메뉴/필드/워크플로 블록)
+
+**commit**: `fix(v1.2.1/G2): scope newsletter history by active branch` (2-file · +25/−2)
+**흡수**: BNK-724 보고 WT DIRTY 2M(`HomeNewsletterLaunchPage.jsx`+`.test.jsx`) → **committed** (tester origin/test=61f734d까지 FF 완료)
+
+**워크플로 (확인)**:
+1. `/clients/home-newsletter` `HomeNewsletterLaunchPage` mount
+2. `Promise.all` 3-parallel: `fetchHomeNewsletterLaunchApi()` + `fetchSystemHealthApi()` + `fetchHomeNewsletterDispatchHistoryApi({branchId?, page:0, size:20})`
+3. `const branchId = user?.branchId` — 존재 시 query `branchId` 전달 → 지점 관리자는 in-scope 이력만 로드
+4. regression: 「scopes history by active branch when available」(`branch_admin` + `branchId=branch-123` → `objectContaining({ branchId })`)
+
+**services.js 정합 (확인)**:
+```
+fetchHomeNewsletterDispatchHistoryApi({ branchId, page=0, size=20 })
+→ GET /api/v1/notifications/home-newsletter/dispatch-history?branchId=&page=&size=
+```
+
+**해석**:
+- id=1-5 계층 = dispatch → catalog/health → launch+history → authoring API(BE `@ac422cc`) → **history branch-scope FE(BNK-725)** 
+- coverage **0.65 carry**(authoring compose UI 미착지 · `board-ui-planned` 잔여) — branch-scope 는 KPI promote 아님(보안/다지점 정합 deepen)
+- **「가정」**: `user?.branchId` vs 타 화면 `user?.activeBranchId` 혼용 — HQ/멀티브랜치 세션에서 branchId 공백 시 unscoped history 가능성 → tester/UX 점검 후보
+
+## 4. ★ FE `@5805d68` — QA-B95 live-e2e **effective operation gate** (운영 readiness deepen)
+
+**commit**: `fix(v1.2.1/QA-B95): honor effective live-e2e operation gate` (3-file · +105/−4)
+- `liveBackendProbe.js` + `liveGlobalSetup.js` + `liveE2eHarness.test.js`
+- `liveE2eEffectiveOperationReady` / `EffectiveOperationBlockers` / `EffectiveOperationReason` 파싱
+- bootstrap-only blockers 가 suite readiness 를 오차단하지 않도록 BE effective 필드 prefer
+
+**교차**: BE WT DIRTY 5M(`HealthController`+`LiveE2eController`+`LiveE2eProbeResponse`+tests · +140/−4) = **동일 QA-B95/health effective-operation 축 WIP**(HEAD 미커밋). dirty peek: `homeNewsletterAuthoringAvailability` health 필드 추가 진행 중(authoring readiness surface deepen 「가정」·커밋 후 BNK 재실측).
+
+## 5. 규제·경쟁사 URL 재실측 (확인)
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | `c886ff1f` | **460차** live=disk IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담하지(1)·이동서비스(13)) |
+| [silverangel essential](https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do) | 200 | 131,664B | `c79c1be3` | IDENTICAL(기능회복 6·목욕 2) |
+| [ezcare home](https://ezcare.easyms.co.kr/) | 200 | 69,826B | `c52d5c18` | size **−1,239B** vs BNK-724 71,065B · data-count 5종 IDENTICAL(53.2/9298/4668/2353/1820·집계일 2026.06.30) · testimonial rotation reverse(~BNK-722 69,798B 근접) · **가정 번복 아님** |
+| [sujifine login](https://sujifine.co.kr/login) | 200 | 3,974B | `d2877dbd` | size-lock · CSRF md5 DRIFT(vs BNK-722 `be7819c1`) · `<title>장기요양 재무회계 관리프로그램</title>` IDENTICAL |
+| carefor `func.php` / demo-work | **000** | 0 | — | timeout 70-cycle+ 「미확인」 · disk `6226e6eb` 98,328B canonical 우선 |
+
+## 6. 갭·MVP 우선순위 (planner)
+
+잔여 in-app lever(BNK-722/724 carry 유지 · 재오픈 0):
+1. **id=1-5 authoring compose FE**(0.65→0.85·잔여 board→1.0) — BE `@ac422cc` AVAILABLE API 대기 중
+2. **M12 실환경 credentials**(0.7→1.0)
+3. **id=1-10 연계기록지** 진성 0 갭(v2+·평가지표 30)
+4. P3 dashboard expiry 2건 「가정」 유지
+
+신규 관찰:
+- G2 **다지점 history scope** = SaaS multipoint 차별화 축 deepen(경쟁 케어포/이지케어 로그인-gated 미확인)
+- BE health `homeNewsletterAuthoringAvailability` WIP = operational readiness QUAD 후보(기존 TRIPLE+authoring) 「가정」
+
+## 7. per-cycle minimum
+
+- 신규/재실측 evidence URL: NHIS #44·silverangel essential·ezcare home·sujifine login (+ carefor 000 변동 기록)
+- 메뉴/필드/워크플로 블록: §3 G2 branch-scoped dispatch-history
+- COMPETITOR_MATRIX 1행+ `@5805d68`/`@ac422cc` 갱신
+- BENCHMARK_REPORT §725

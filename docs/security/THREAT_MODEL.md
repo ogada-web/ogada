@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-25T17:30:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-18T02:21:00+09:00 -->
 # 위협 모델 (security/THREAT_MODEL.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **방법**: STRIDE + 데이터 흐름 기반  
 > **시스템**: ogada — 주간보호센터 B2B SaaS (멀티테넌트)  
 > **스택**: React SPA ↔ Spring Boot API ↔ PostgreSQL  
-> **2026-06-25 25차 갱신**: develop **`49fe2e7`/`2c9abd6`**(양 스트림 **WT CLEAN**·BE local test **SYNCED**·TSR 1408차 merge) · `origin/test`=`598d108`/`ab4de83`(P0·SEC-D14·572+241 unpushed·SEC-D18 더 악화 +21/+23 vs 24차). 신규: **G-NHIS-MASKED-NAME-FALLBACK**(§2-3 확장·`NhisClientResolver`·`matched.size()==1` 단일후보·org+branch scope·PII reveal 차단·SEC-D40 신규 — 복수 매칭 skip으로 안전 측 동작) · **G-REPORT-DENSITY M5 branch filter**(§2-20 신규·`ProgramReportController`·HQ/BRANCH/SOCIAL_WORKER·`resolveBranchScope`·org scope) · **G2b CMS 가상계좌·다계좌**(§2-7 확대·`requestClaimVirtualAccount`/`requestClaimMultiAccountSettlement`·HQ/BRANCH·SUCCEEDED 멱등·V178 CHECK·SEC-D39) · **V178 9종 CHECK DB-level**(CMS collection + bathing defense-in-depth) · **ProductionSecretValidator 3-form env 봉인**(§3-6 T-E5 SEC-D29 진전) · **QA-B95 enforce-bootstrap-readiness 토글**(SEC-D38 신규 Monitor·false 시 operationReady=true 오보·인증 우회 없음). **25차 신규 BLOCK급 audit Open 0건** · **신규 SEC-D38**(Low·Monitor·enforce-readiness 오설정)·**신규 SEC-D39**(Low·Monitor·CMS 가상계좌 번호 노출 범위). SEC-D33·D34·D4(4 파서)·SEC-D32·D36·D37 유지. 상세 `SECURITY_AUDIT.md` §1.27.
+> **2026-07-18 31차 갱신**: develop **`a742788`/`592a483`**(양 스트림 **CLEAN** · SEC-D35 Fixed) · `origin/test`=`598d108`/`592a483`(P0·SEC-D14·**735 BE + 0 FE** unpushed·SEC-D18: BE +30 · FE **★ FULLY SYNCED**). **★ v3 program schedule photo**(§2.25) · **★ SEC-D43 path allowlist deepen** · J03 Kakao template-catalog · **31차 신규 BLOCK급 audit Open 0건**. SEC-D4·D25(+1)·D41·D42·D44~D46 carry. 상세 `SECURITY_AUDIT.md` §1.33.
 
 ---
 
@@ -350,6 +350,161 @@ flowchart TB
 - 키 재발급 race(이전 키 사용 중 신규 발급으로 잘못된 키 적용) — `invalidateActiveTokensForUser`로 단일활성 강제(한 직원에 활성 토큰 1건만 유효)
 - 야간 무차별 발송으로 인한 직원 SMS 폭주 — `NotificationQuietHoursPolicy`(22:00~08:00 KST) 서버 거부 + 운영 정책
 
+### 2-20. 안전점검·감염관리·시설운영일지 (v2 US-Q01, carefor M6)
+
+```
+[HQ/BRANCH/사회복지사] --Bearer JWT--> [SafetyCheckController @PreAuthorize(HQ/BRANCH/SOCIAL_WORKER)]
+    GET /api/v1/safety/{daily-checks|periodic-checks|infection-control|operation-logs}?branchId=
+        --> [SafetyCheckRecordService] requireOrganizationId · resolveBranchScope(write=false)
+        --> validateBranchReadScope(branchId 또는 TenantContext.activeBranchId)
+        --> repository.findByOrg+Branch+RecordType (ALL rows — ⚠ SEC-D41 pagination 없음)
+        --> payload_json 역직렬화 → DTO 응답(inspectorName/authorName/clientName 포함)
+
+    POST /api/v1/safety/{daily-checks|periodic-checks|infection-control|operation-logs}
+        --> [SafetyCheckRecordService] requireOrganizationId · resolveBranchScope(write=true)
+        --> validateBranchWriteScope · sanitizeChecklistItems(allowedItemIds allowlist)
+        --> normalizeSubFormCode/normalizeSymptomCode/normalizeActionCode(enum valueOf allowlist)
+        --> requireDate · requireNonBlank · trimToEmpty · normalizeVisitorCount(≥0)
+        --> saveRecord → dbSessionContext.setActorUserId(V184 trg_set_created_by)
+        --> [safety_check_records] (V184: org+branch 복합 FK · org+created_by 복합 FK
+                                        record_type/result_code enum CHECK · actor backstop trigger)
+                                   (V185: payload_json object · sub_form_code PERIODIC enum shape
+                                        result_code DAILY/PERIODIC NOT NULL shape)
+    
+    GET /api/v1/safety/check-template-catalog
+        --> [SafetyCheckTemplateCatalog.catalog()] 정적 immutable payload — PII·secret 0
+```
+
+**위협**:
+- 크로스테넌트 안전점검 기록 열람 — `requireOrganizationId`+`validateBranchReadScope`로 차단
+- 권한 없는 caregiver/guardian 기록 — `@PreAuthorize` HQ/BRANCH/SOCIAL_WORKER 전용
+- 알 수 없는 체크리스트 항목 ID 주입 — `sanitizeChecklistItems(allowedItemIds)` 허용목록 차단
+- sub_form_code 임의 문자열 주입 — `SafetyPeriodicSubFormCode.valueOf` + V185 enum CHECK
+- 음수 방문자 수·null 날짜·빈 점검자명 — 서버 검증 레이어 차단
+- payload_json scalar/array 적재(raw SQL) — V185 `jsonb_typeof='object'` CHECK
+- **무제한 GET 응답(데이터 누적 시 DoS/bulk PII 노출)** — **SEC-D41 Low~Medium · date range 가드 권고**
+- **payload_json 내 clientName(수급자 이름)·inspectorName/authorName(직원명) 평문 저장** — **SEC-D42 Low · RBAC+scope 가시성 제어 · P3 UUID 전환 검토**
+
+### 2-21. 재무회계 BPO SSO OTP handoff (v2 US-ACCOUNTING-M12 / carefor open_sujifine)
+
+```
+[HQ/BRANCH만] --Bearer JWT--> [AccountingBpoController]
+    GET /api/v1/billing/accounting/bpo-launch  @PreAuthorize(HQ/BRANCH/SOCIAL_WORKER)
+        --> catalog + ssoAvailability (secret 0)
+
+    POST /api/v1/billing/accounting/bpo-sso-handoff  @PreAuthorize(HQ/BRANCH only)  ★ SEC-D43
+        --> AccountingBpoSsoHandoffRateLimiter(actor 10/min · org 30/min)
+        --> portalUrlAllowlisted? https + sujifine.co.kr|www.sujifine.co.kr
+        --> hasCredentials? ACCOUNTING_BPO_USMUSID + OTP_SECRET
+            공백/비허용 → BusinessRuleException fail-closed
+        --> mintOtp = HmacSHA256(otpSecret, usmusid + "|" + floor(epoch/300)) hex[0..16]
+        --> { usmusid, otp, ssoPortalUrl } — password 0
+[브라우저] --hidden form POST--> [sujifine carefor_login]
+```
+
+**위협**:
+- 시설 비밀번호 탈취/저장 — **비밀번호 미수집·미저장·미반환**으로 차단(설계 긍정)
+- OTP 재사용/예측 — HMAC + 300s window · secret 없이 OTP 위조 불가
+- 인사이더/과다 권한 — **SEC-D43 Mitigated**: SOCIAL_WORKER handoff 제거
+- handoff flood — **SEC-D43 Mitigated**: per-actor/org sliding window
+- portal URL phishing — **SEC-D43 Mitigated 강화**: https host + **path `/carefor_login`** + query/fragment/userInfo 거부(`bfe6b3f`)
+- **시설 전역 env credential**: multi-tenant JVM 공유 시 A org→동일 SSO — **SEC-D43 Residual**(장기 org-scope)
+- Health 정보 노출 — `accountingBpoSsoReady` bool only(secret 0)
+
+### 2-22. 직원 급여 preview · 가정통신문 발송 이력 (v2 M11 / G2)
+
+```
+[HQ/BRANCH/사회복지사] --Bearer JWT--> [StaffPayrollController]
+    POST /api/v1/staff/payroll/{ledger|simple-payment|labor-cost|retirement}-preview
+        --> requireOrganizationId · findByIdAndOrganizationId(userId)
+        --> validateStaffBranchAssignment + validateBranchReadScope
+        --> basePay/allowances/deductions = request body preview(DB 급여 평문 저장 아님)
+
+[HQ/BRANCH/사회복지사] --Bearer JWT--> [NotificationChannelStatusController]
+    GET /api/v1/notifications/home-newsletter/dispatch-history?page&size&yearMonth&status&q
+        --> requireOrganizationId · resolveBranchScope
+        --> PageRequest(default 20, max 100) — ★ SEC-D41 대조 긍정
+        --> payload_json → clientName/centerName/summary (SEC-D42 family PII)
+```
+
+**위협**:
+- 크로스테넌트 급여 preview — org+branch+staff assignment 검증으로 차단
+- 대용량 history — pagination max100
+- payload PII — SEC-D42 family
+
+### 2-23. FacilityNotice · 연계기록 · 월단위 확정취소 · RFID/급여명세 발송 (v2+ 29차)
+
+```
+[HQ/BRANCH/사회복지사] --Bearer JWT--> [FacilityNoticeController]
+    CRUD /api/v1/notifications/facility-notices
+        --> page max100 · attachment_url http(s)+≤500 · V193 DB CHECK
+        --> DRAFT 수정/삭제 · PUBLISHED 본문 불변
+
+[HQ/BRANCH/사회복지사] --Bearer JWT--> [ClientLinkageRecordController|/report]
+    CRUD+dispatch · report page max100
+        --> V196 length CHECK · 3-way client×branch FK · org/branch sync trigger
+
+[BRANCH/사회복지사] --Bearer JWT--> [VisitController]
+    GET /batch-unconfirm-preview → 4-digit challenge(actor-scope·TTL10m)
+    POST /batch-unconfirm → consume-once + cascade ack
+    POST /imports/rfid/care-provision-dispatch → home-visit only · org/branch/client 검증 → SMS kind13
+
+[HQ/BRANCH/사회복지사] --Bearer JWT--> [StaffNotificationController]
+    POST /staff/notifications/staff-payroll-statement → preview 금액 → alimtalk kind22
+        --> notifications.payload_json에 netPay 등 평문 (SEC-D45)
+```
+
+**위협**:
+- attachment `javascript:`/`ftp:` — app+V193 차단 · **SEC-D46**: host allowlist 부재(인사이더 phishing)
+- linkage summary PII — RBAC+tenant · length 상한
+- **batch-unconfirm 4-digit brute** — JWT+branch+TTL+consume · **SEC-D44** entropy 권고
+- RFID/SMS flood · payroll 금액 at-rest — quiet-hours·scope · **SEC-D45** redact/purge
+
+### 2-24. J03 dispatch 단가 참고 · QA-B95 HTML decode · G17 dual-numbering (v1.2.1+ 30차)
+
+```
+[HQ/BRANCH] --Bearer JWT--> [NotificationChannelStatusController]
+    GET /dispatch-reference-unit-rates
+        --> NotificationDispatchUnitRatesCatalog.REFERENCE (정적 app10/SMS20/MMS50)
+        --> Health notificationDispatchReferenceUnitRates 동일 surface · secret 0
+
+[Health/live-e2e probe] --GET /health|bootstrap blockers-->
+    [LiveE2eOperationReadinessSupport.decodeHtmlEntityDetailToken]
+        --> 5-pass bounded HTML entity decode · bidi/mark strip · numeric bounds
+        --> FE notificationChannelStatus.js / liveBackendProbe.js parity
+        --> 목적: gateway HTML-escape로 operationReady 우회 방지 (fail-closed)
+
+[HQ/BRANCH/사회복지사/요양보호사] --Bearer JWT-->
+    [FunctionalRecoveryController|BathingScheduleController]
+        --> dualNumberingNoteKo / essentialDutySerial27Label (read-only guardrail)
+        --> indicator 27 혼동 방지 · tenant scope 불변
+```
+
+**위협**:
+- unit-rates 정보 노출 — HQ/BRANCH only · 비밀·실청구 아님 · **Low**
+- HTML decode ReDoS/우회 — bounded 5-pass·codePoint 상한 · **Low** — SEC-D29 **긍정**
+- dual-numbering — read-only metadata · RBAC 유지 · **Pass**
+
+### 2-25. 프로그램 일정 활동 사진 업로드 · SSO path allowlist (v3 31차)
+
+```
+[HQ/BRANCH/사회복지사/요양보호사] --Bearer JWT + multipart-->
+    [ProgramController POST /programs/schedule/{programId}/photo]
+        --> findByIdAndOrganizationId + validateBranchWriteScope
+        --> ProgramPhotoStorageService: ≤5MB · jpeg/png/webp Content-Type(+;param strip)
+        --> storage key = programs/{orgId}/{programId}/{uuid}.ext (서버 생성)
+        --> activity_programs.photo_storage_key 갱신 · 공개 serve endpoint 없음
+
+[HQ/BRANCH] --Bearer JWT--> [AccountingBpoService.createSsoHandoff]
+        --> isAllowlistedPortalUrl: https · sujifine hosts · path=/carefor_login
+        --> query/fragment/userInfo/non-443 거부 (SEC-D43 deepen)
+```
+
+**위협**:
+- MIME 위장 악성 업로드 — Content-Type allowlist·크기·UUID key · **magic-byte 미검증** → **SEC-D25 표면 +1** · 공개 serve 없어 XSS 유예
+- 크로스테넌트/타지점 사진 덮어쓰기 — org+branch write scope 차단
+- SSO phishing URL 오설정 — path allowlist deepen으로 완화 · **잔여**: process-wide env credential(SEC-D43 Residual)
+
 ---
 
 ## 3. STRIDE 위협 분석
@@ -403,7 +558,7 @@ flowchart TB
 | T-I11 | 계좌·예금주명 유출 | DB 침해·로그 | last4만 저장·payer_name 평문 | **Low** — 전체 계좌번호 미저장(SEC-D21 payer_name 암호화 검토) |
 | T-I12 | dev 시크릿 파일 Git 유출 | `git add .` → `dev-backend.env` 커밋 | WT `.gitignore` `*.env`/`scripts/*.env` 무시 | **Low** — SEC-D22 완화 · `git check-ignore` 통과 · parent repo 커밋 대기 |
 | T-I13 | pilot 더미 데이터 prod 시딩 | hq_admin이 prod에서 PilotFixturePanel 실행 | `import.meta.env.DEV` 게이트 커밋 | **Low** — SEC-D23 **Fixed** · prod 빌드 미렌더 |
-| T-I14 | 첨부 파일 위장(확장자/MIME 위조) | png/pdf 위장한 악성 파일 업로드 | Content-Type 화이트리스트+크기·저장 키 UUID 서버 생성 | **Low~Medium** — SEC-D25 · HR·보수교육 증명서 표면 추가 · magic-byte 미검증 |
+| T-I14 | 첨부 파일 위장(확장자/MIME 위조) | png/pdf/webp 위장한 악성 파일 업로드 | Content-Type 화이트리스트+크기·저장 키 UUID 서버 생성 | **Low~Medium** — SEC-D25 · HR·보수교육·**프로그램 일정 사진(v3)** 표면 추가 · magic-byte 미검증 |
 | T-I15 | dev 빌드 체인 RCE | 악의적 NPM registry로 esbuild binary 치환 | overrides `esbuild ^0.25.0` | **Low(dev)** — SEC-D26 GHSA-gv7w-rqvm-qjhr · prod 0건 · CI 격리 권고 |
 | T-I16 | health·live-e2e 상태 정보 노출 | `GET /api/v1/health`로 activeProfiles·DB 장애 유형·live-e2e readiness 추론 | permitAll health · DB probe detail sanitize | **Low** — SEC-D30 · prod profile 마스킹 권고 |
 | T-I17 | CSV/수식 인젝션 | 이용자명·보호자명에 `=`/`+`/`-`/`@` 삽입 → 명세·NTS export CSV를 Excel로 열 때 수식·DDE 실행 | org+branch RBAC export · `csvEscape` quote(`"`/`,`/`\n`) | **Low** — SEC-D33 · 수식 prefix sanitize(`'` escape) 권고(CWE-1236) |
@@ -421,6 +576,8 @@ flowchart TB
 | T-D2 | 대용량 업로드 | 10MB×N 동시 | multipart limit | Medium | WAF·conn limit |
 | T-D3 | xlsx 파싱 CPU | zip bomb xlsx (NHIS·은행입금·RFID·요양보호사 4표면) | multipart limit | Medium | POI 5.4.0+ 업그레이드(SEC-D4 상향) |
 | T-D4 | staff access key SMS flood | 인사이더가 직원 N명에게 반복 발송으로 Solapi 비용·SMS 폭주 유발 | `NotificationQuietHoursPolicy`(KST 22:00~08:00 거부) · branch write scope · `@PreAuthorize` HQ/BRANCH/SOCIAL_WORKER만 · `invalidateActiveTokensForUser`로 신규 발급 시 이전 무효화(중복 가치 감소) · audit_logs | **Low** — 추가 rate limit(per-actor·per-staff) 권고(현행 미적용·24차 carry) |
+| T-D5 | Accounting BPO SSO handoff flood | 인증된 직원이 handoff 반복 호출로 OTP harvesting·외부 POST | JWT+**HQ/BRANCH only**·`AccountingBpoSsoHandoffRateLimiter`(actor 10/min·org 30/min)·300s OTP window | **Low** — SEC-D43 **Mitigated** |
+| T-D6 | US-V06 batch-unconfirm challenge brute | JWT 탈취자가 4-digit challenge를 TTL 내 대량 시도 | actor+org+branch+yearMonth scope·TTL10m·consume-once·SecureRandom · JWT+branch write | **Low** — SEC-D44 entropy 상향 권고 |
 
 ### 3-6. Elevation of Privilege (권한 상승)
 
@@ -432,6 +589,8 @@ flowchart TB
 | T-E4 | 직원 생성 시 상위 역할 부여 | account-request role=ogada_*/hq_admin | `enforceRolePolicy` allowlist(submit+approve 이중)·`createUser` 봉인·`@PreAuthorize` | **Low** — ogada_*/sysadmin/hq_admin 차단·branch_admin allowlist·V161 hq_admin UNIQUE (US-R03·account-request 20차) |
 | T-E5 | live-e2e bootstrap 무인증 hq_admin | `LIVE_E2E_BOOTSTRAP_ENABLED=true` 노출 환경 | `@ConditionalOnProperty` 기본 off · `ProductionSecretValidator` prod 거부 · password 필드 0 · blank credential fail-fast · probe default cred 허용(QA-B95) · 24차 HealthControllerTest G21 seed detail lock 추가 | **Low** — SEC-D29 **Mitigated** |
 | T-E6 | staff access key brute force | 직원 휴대전화 미보유 공격자가 `/auth/password/reset`에 6-digit 키 시도 | `AuthRateLimitService` ip 20/min·token 8/min · `PasswordResetTokenEntity` 단일활성(invalidateActiveTokensForUser) · 60분 TTL · SHA-256 hash 비교 · 키스페이스 10^6 | **Low** — SEC-D36 Monitor(키 길이/charset 확장 검토·현행 rate limit으로 P(match)≈0.05%/60분/토큰) |
+| T-E7 | Accounting BPO SSO 과다 권한·공유 credential | SOCIAL_WORKER·타 org이 동일 시설 SSO mint | **HQ/BRANCH only** · portal **host+path** allowlist · rate limit · JWT·password 미저장·env fail-closed | **Low** — SEC-D43 **Mitigated 강화**(잔여: process-wide env · org-scope 장기) |
+| T-E8 | FacilityNotice 첨부 URL 피싱 | 권한 직원이 https://evil.com 게시 → 클릭 유도 | scheme http(s)+≤500 app+V193 · RBAC | **Low** — SEC-D46 host allowlist/내부첨부 권고 |
 
 ---
 
@@ -491,7 +650,7 @@ flowchart TB
 | 운영 시크릿은 시크릿 매니저 | **부분 충족** (develop prod: `ProductionSecretValidator` / test stale) | test merge + 시크릿 매니저 |
 | 파일럿 사용자 기기 무악성 | 낮음 | 보호자 모바일 고려 |
 | Spring Boot 단일 JVM 또는 키 공유 | **부분 충족** (develop prod 키 필수; test stale) | test merge |
-| 검증 코드 = 배포 산출물 | **충족** — `origin/test`=`598d108`/`ab4de83` P0 포함 · v2/v1.2.1/v1.3 feature merge 잔여(551+218·SEC-D18 더 악화 +21/+31) | SEC-D18 develop→test TSR merge + origin push |
+| 검증 코드 = 배포 산출물 | **충족** — `origin/test`=`598d108`/`ab4de83` P0 포함 · v2/v1.2.1/v1.3 feature merge 잔여(606+286·SEC-D18 더 악화 +14/+20 vs 26차) | SEC-D18 develop→test TSR merge + origin push |
 
 ---
 
@@ -510,7 +669,7 @@ flowchart TB
 |------|-----------|--------------|-----------|
 | 1 | T-T2/T-D3 / SEC-D4 | 6 | POI 5.4.0+ — **NHIS·은행입금·RFID·요양보호사** 4 파서 회귀 테스트 |
 | 2 | T-E3 / A06-1 | 5 | Spring Boot 패치 라인 업그레이드 |
-| 3 | T-I14 / SEC-D25 | 4 | 첨부 magic-byte(HR·보수교육·사진·xlsx·급여계약서·등급이력·요양보호사) |
+| 3 | T-I14 / SEC-D25 | 4 | 첨부 magic-byte(HR·보수교육·사진·**프로그램 일정 사진**·xlsx·급여계약서·등급이력·요양보호사) |
 | 4 | T-I17 / SEC-D33 | 3 | CSV export 수식 prefix sanitize(명세·NTS) |
 | 5 | T-T2 / SEC-D34 | 3 | 요양보호사 import 확장자/Content-Type 검증 |
 | 6 | T-I15 / SEC-D26 | 3 | form-data dev 패치 또는 CI 격리(1 HIGH) |
@@ -523,9 +682,14 @@ flowchart TB
 | 13 | SEC-D36 | 2 | staff access key 키 길이/charset 확장 검토(현행 rate limit 의존·24차 carry) |
 | 14 | SEC-D38 | 2 | **(NEW 25차)** prod `OGADA_LIVE_E2E_ENFORCE_BOOTSTRAP_READINESS=true` 명시·운영 가이드 문서화 |
 | 15 | SEC-D39 | 2 | **(NEW 25차)** CMS 가상계좌 번호 guardian 확장 시 last4 마스킹 설계 사전 검토 |
-| 16 | SEC-D18 (악화) | 2 | **origin/test push**(572 BE/241 FE·+21/+23 vs 24차·BE local test SYNCED는 부분 완화) |
-| 17 | SEC-D35 (closed) | 1 | WT CLEAN·V175 커밋(24차 closure·25차 유지) |
-| ✅ | G-NHIS-MASKED-NAME-FALLBACK(단일후보 강제·PII reveal 차단)·V178 9종 CHECK(DB-level defense-in-depth)·G-REPORT-DENSITY branch filter(org+branch scope)·G16 RBAC fix·ProductionSecretValidator 3-form 봉인(SEC-D29 진전)·G2b CMS 가상계좌·다계좌(RBAC+멱등)·BE TSR local test SYNCED·FE 7종+ API apiFetch(SEC-D17 유지)·G-SMS/dispatchReady/HealthControllerTest/V172~V175·SEC-D17·D19·D14·D23·D24 | ↓ | develop `49fe2e7`/`2c9abd6` Pass/보안 긍정 |
+| 16 | SEC-D18 (비대칭) | 2 | **origin/test**: BE **735** push · FE **0**(**★ FULLY SYNCED**) |
+| 17 | **SEC-D41** | 3 | SafetyCheck GET date range 가드 |
+| 18 | **SEC-D42** | 2 | safety `payload_json` PII 평문 — P3 UUID/암호화 |
+| 19 | SEC-D43 residual | 2 | **Mitigated 강화** — path allowlist 착지 · 잔여 org-scoped BPO credential 장기 |
+| 20 | **SEC-D44** | 2 | US-V06 batch-unconfirm 4-digit → 6~8 digit/alphanumeric |
+| 21 | **SEC-D45** | 2 | kind22 payroll netPay payload redact/purge(SEC-D37 family) |
+| 22 | **SEC-D46** | 2 | FacilityNotice attachment host allowlist |
+| ✅ | SEC-D35 WT CLEAN · program photo Pass · SEC-D43 path · QA-B95 decode · SEC-D17·D19·D14·D23·D24 | ↓ | develop `a742788`/`592a483` Pass/Mitigated/Fixed |
 
 ---
 
@@ -550,4 +714,4 @@ flowchart TB
 3. 파일럿 배포 시 MFA 요구 여부
 
 ---
-*다음 갱신: origin/test push(SEC-D18 572+241·악화)·enforce-bootstrap-readiness prod 설정(SEC-D38)·CMS 가상계좌 guardian 확장 설계(SEC-D39)·staff access key payload redact·purge 정책(SEC-D37)·access key 키 길이/charset 확장 검토(SEC-D36)·poi-ooxml 상향(SEC-D4·4 파서)·CSV export 수식 sanitize(SEC-D33)·요양보호사 import 검증(SEC-D34)·Spring Boot 패치(A06-1)·첨부 magic-byte(SEC-D25)·form-data dev 패치(SEC-D26)·`.gitignore` `*.env` 커밋(SEC-D22) 또는 신규 src 변경 후*
+*다음 갱신: BE origin/test push(SEC-D18 **735**)·Safety GET date range(SEC-D41)·magic-byte(SEC-D25·program photo 포함)·batch-unconfirm entropy(SEC-D44)·payroll payload redact(SEC-D45)·FacilityNotice host allowlist(SEC-D46)·org-scoped BPO credential(SEC-D43 residual)·safety payload_json PII(SEC-D42·P3)·poi-ooxml 상향(SEC-D4)·CSV 수식 sanitize(SEC-D33)·요양보호사 import(SEC-D34)·Spring Boot 패치(A06-1)·form-data dev(SEC-D26)·`.gitignore` `*.env`(SEC-D22) 또는 신규 src 변경 후*

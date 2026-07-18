@@ -1,0 +1,75 @@
+BNK-669 cross-verify — 엔젤·롱텀·규제 4–6h
+조사일: 2026-06-26T19:30:00Z (KST 04:30)
+rotation: silverangel public URL IA · lcms banner · NHIS #44 · MOHW126 · longterm 502/610 · ogada @HEAD
+
+=== ogada git 실측 ===
+FE develop @5636508 WT CLEAN ahead 268 vs origin/test
+  HEAD +1 vs BNK-668 @2cf47a8
+  commit: feat(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): consume guidance recovery keyword notes
+  4 files +76/-6 (VisitNhisImportPanel.jsx·visits.js resolveVisitImportRecoveryKeywords API consume)
+BE develop @331f24b WT CLEAN ahead 593 (zero advance vs BNK-668)
+merge gate 861 (FE 268+BE 593, +1 FE-only vs BNK-668 860)
+KPI carry: 118 Route(App.jsx) · 93 page · BE @Test 1996 · FE test 489(203 .test.js+286 .test.jsx) · 모듈 80.86% · reports 28
+
+=== ★★★ 신규 evidence #1 — silverangel public marketing URL IA drift (확인) ===
+OLD /silverangel/ prefix → HTTP 404 (1028B 3c93af54 shell)
+NEW /newSilverangel/ prefix → HTTP 200 canonical
+
+| 기능 페이지 | OLD /silverangel/... | NEW /newSilverangel/... | md5(live) | size |
+|---|---|---|---|---|
+| 부가서비스 extraService | 404 | 200 | f9c5d877 | 81,637B = disk IDENTICAL |
+| 주야간 평가지표 daycareEssentialWork | 404 | 200 | c79c1be3 | 131,664B (BNK-645 carry) |
+
+판정: 1-cycle 내 silverangel 공개 마케팅 URL이 `/silverangel/`→`/newSilverangel/`로 이관 완료(구경로 404). 벤치마크 인용 시 `/newSilverangel/` 정본.
+
+=== ★★★ 메뉴/필드/워크플로 블록 — extraService.do 부가서비스 carousel (확인) ===
+URL: https://www.silverangel.kr/newSilverangel/service/extraService.do (200·f9c5d877)
+
+슬라이드 A — 본인부담 CMS (type_b):
+  h_text: 본인부담금 자동이체(CMS) 서비스
+  s_text: 보호자계좌 자동출금·카드 자동결제·가상계좌 입금
+  m_text: 가입문의 1600-6859
+  CTA: /newSilverangel/service/extraService.do
+
+슬라이드 B — CJ프레시웨이 MOU (type_a):
+  h_text: CJ프레시웨이 MOU → 노인식단 전문영양사 식단표 활용
+  s_text: 식단표 무상제공 + CJ 신선 식재료 구매계약
+  CTA: angel_news_view.do?Tmp_idx=139864
+
+system_feature.do in-app 기능(확인·c9507190 zero drift):
+  · 식단표 · 식단/간식/식단이미지 관리 · 주단위 출력
+  · 본인부담금 자동계산·수납대장 법정서식
+  · footer PDF: LongTermCare_Appraisal_Indicator(daycare).pdf (주야간 평가지표)
+
+ogada 갭: meal_records 실적 ✅ · 주간 식단표·영양사 생성·보호자 게시 ❌ → G-MEAL-PLAN-TEMPLATE P2/P3
+
+=== ★★ 신규 evidence #2 — angel_news_view.do?Tmp_idx=139864 (확인 · SSR shell) ===
+GET https://www.silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864
+HTTP 200 · 47,742B · md5 2eb202bc
+board_tit/board_cont/첨부파일 = empty (SSR shell+AJAX 패턴 · notice view.do와 동형)
+본문 CJ MOU 카피는 extraService carousel·lcms 배너(회전)에서만 노출 — 뉴스 상세 비로그인 본문 미확인
+
+=== ★★ lcms.or.kr 배너 DRIFT reversal (확인 · 1-cycle 회전) ===
+BNK-668: 50,498B 6b750291 type3 CJ MOU
+BNK-669: 50,740B c0c660760 type1 요양기관 홈페이지 제작 샘플 3종
+  ad_tit: 요양기관 홈페이지! 고민하지 마세요! 엔젤에서 쉽고 빠르게
+  CTA: newSilverangel/webSite/websiteProvided.do 체험하기
+판정: lcms 로그인 배너는 type1↔type2(CMS)↔type3(CJ MOU) 고속 회전 — 부가서비스 라인업 ①CMS ②식단 ③홈페이지 제작 carry
+
+=== ★★ NHIS #44 이동서비스비 러-1~4 — 412차 zero drift IDENTICAL (확인 · BNK-668 transient 번복) ===
+GET nhis.or.kr/...SEQ_CONTENTS=3281769 HTTP 200 · 7,572B · c886ff1f = disk IDENTICAL
+러-1·러-4 grep hit · 편도50%·1일1회·별지 제22호·수급자 부담 X verbatim
+BNK-668 live shell(2,808B 5675d51c 러-1~4 0 hit) → BNK-669 full render 복구 = transient SSR 미렌더 확정
+
+=== MOHW126 · longterm carry ===
+MOHW list_no=1488862 mid=a10409010000: 200·103,127B·7a55ce14 (disk bnk649 6310a827·board 경로 variant·body 미대조)
+longterm 502/610: HTTP 200·324B Nexacro XML ErrorCode=-1 "No handler found for GET /npbs/r/502/selectPageList.do" — 공개 수가 페이지 미확인 carry
+
+=== G-NHIS stage9 — FE consume guidance recovery keyword notes (확인) ===
+FE @5636508: resolveVisitImportRecoveryKeywords()가 guidance API errorRecoveryKeywordNotes[] 우선 consume
+13-stage BNK→COD chain stage9 (BE @331f24b expose → FE @5636508 consume)
+
+=== 산출물 ===
+신규 snapshot: angel_longterm_regulatory_crossverify_bnk669.txt (본 파일)
+덮어쓰기: lcms_or_kr_live_bnk669.html (type1 reversal)
+NHIS disk canonical: nhis_jo44_live_bnk669.html (live=disk, 참고용·c886ff1f)

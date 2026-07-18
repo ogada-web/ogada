@@ -1,0 +1,163 @@
+BNK-729 ogada git 실측 6–8h · 2026-07-14T17:26Z (KST 2026-07-15 02:26)
+================================================================
+
+Rotation: 6–8h ogada git 실측 — src/backend·src/frontend develop HEAD · npm test/mvn test 집계 · Route·page·모듈 커버 % 재산정 · COMPETITOR_MATRIX ogada 열 `@HEAD` SHA 일괄 갱신.
+Prev cycle: BNK-728 (2026-07-14T16:38Z · 엔젤·롱텀·규제) → ~48분 후.
+Prev same-rotation: BNK-725 (2026-07-14T14:42Z · ogada git 실측) → ~2.7h 후.
+
+────────────────────────────────────────────────────────────────
+[1] ogada submodule git 실측 (primary)
+────────────────────────────────────────────────────────────────
+
+FE develop = `bb48b6c` — `feat(v1.2.1/G2): add session draft board and history reuse`
+    · WT CLEAN · ahead 3 vs `origin/test=3bd50ac`
+    · BNK-728 `@6706f65` → **+2 commit**:
+        · `fcbc419 feat(v1.2.1/G2): wire newsletter history filters to server API`
+        · `bb48b6c feat(v1.2.1/G2): add session draft board and history reuse`
+    · diff bb48b6c: +480/−15 (5 files) — HomeNewsletterLaunchPage +252L·homeNewsletter.js +73L·competitorModuleCoverage.js·tests +166L
+    · diff fcbc419: +294/−81 (6 files) — services.js +18L·HomeNewsletterLaunchPage +211L(server-side filter wire)·homeNewsletter.js +10L·tests +133L
+
+BE develop = `55b8f84` — `feat(v2/G2): add carefor 10-4 facility notice board CRUD`
+    · WT CLEAN · ahead 638 vs `origin/test=598d108`
+    · BNK-728 `@b054ca6` → **+2 commit**:
+        · `24f555d feat(v2/G2): add board-style filters to home newsletter dispatch history`
+        · `55b8f84 feat(v2/G2): add carefor 10-4 facility notice board CRUD`
+    · diff 55b8f84: +1164/−6 (16 files) — 신규 facilitynotice 패키지 8-file(Controller·Service·Support·Entity·Repository·3 DTO) + V192 마이그레이션 + Test 205L + routing/security regression +180L
+    · diff 24f555d: +276/−12 (6 files) — DispatchHistoryService +94L(board-style server-side filter)·NotificationRepository +70L(count/paginate)·Test +83L·routing/security regression
+
+Route: 131 `<Route\b` + 1 `<Routes>` = **132** (App.jsx · carry)
+Page: **105** `*Page.jsx` (carry)
+FE test: 214 `.test.js` + 304 `.test.jsx` = **518** (carry · in-place expand)
+BE Test: **289** = 288 `*Test.java` + 1 `*Tests.java` (**+1 vs BNK-728 288**: `FacilityNoticeServiceTest.java` 신규)
+BE @Test method: **2154** (+17 vs BNK-728 2137 — `FacilityNoticeServiceTest` +12·`DispatchHistoryServiceTest` +5·security/routing regression +@)
+Flyway: **V1–V192** (192 files · **+1 신규 V192** `facility_notices_carefor_10_4.sql`)
+accounting route: 1 (`/accounting` carry)
+payroll route: 5 (basis/labor-cost-ratio/ledger/reports/retirement-accrual · carry)
+
+module coverage % 재산정 (`src/frontend/src/config/competitorModuleCoverage.js`):
+    · id=1-5 「가정통신문」 0.65 → **0.85** (+0.20 · FE session draft board + history filters + server-side wire)
+        residual = 「board-ui-planned = 서버 10-4 기관 공지 CRUD → 1.0 lever」 (BE `@55b8f84` V192 landing 후 FE wire 대기)
+    · 그 외 28-entry carry
+    · sum = 27.00 / 29 = **93.10%** (BNK-728 92.41% · +0.69pp)
+    · V12 target 60% 이미 초과 (33.10pp 여유)
+
+merge gate: FE 3 + BE 638 = **641** (BNK-728 637 → **+4**·양쪽 WT CLEAN·BE-heavy → tester FF 가속·선행 commit 불필요)
+
+────────────────────────────────────────────────────────────────
+[2] ★★★ carefor 10-4 「기관 공지사항, 자료실」 P2 candidate CLOSED — BE Full-Stack CRUD Landing (신규 필드/워크플로 블록)
+────────────────────────────────────────────────────────────────
+
+BNK-727 §727-3 신규 P2 candidate (id=10-4 기관 공지 게시판) → BNK-729 BE 착지 = **2-cycle inflight closure**.
+
+**func.php disk canonical `6226e6eb` 98,328B M10 leaf 정본 grep**:
+    · 10-1 문자메시지 발송 ❌
+    · 10-2 급여제공내역 안내 발송 △ (BE 3-kind endpoint)
+    · 10-2-1 수가변경안내 발송 ❌
+    · 10-3 보호자 급여기록 열람내역 △
+    · **10-4 기관 공지사항, 자료실** — carefor func.php leaf verbatim
+    · 10-5 홈페이지 서비스 ✅ (가정통신문)
+    · 10-6 보호자 앱 관리 ✅
+    · 10-7 안내발송내역(문자, 이메일) ✅
+    · 10-8 평가항목 및 사전 준비자료 출력 ❌
+
+**ogada BE `@55b8f84` FacilityNotice CRUD Landing 실측** (신규 패키지 `com.ogada.backend.facilitynotice`):
+
+| ogada 필드/필드값 | 정의 | carefor 10-4 대응 |
+|---|---|---|
+| `DOCUMENT_CODE` | `G2-FACILITY-NOTICE-10-4` | 10-4 leaf 코드 verbatim 매핑 |
+| `SURFACE_KIND` | `FACILITY_NOTICE_BOARD` | 게시판 표면 kind |
+| `notice_category` | `NOTICE` \| `RESOURCE` | 10-4 「공지사항」 = NOTICE · 「자료실」 = RESOURCE (leaf verbatim 「기관 공지사항, 자료실」 2-축 반영) |
+| `record_status` | `DRAFT` \| `PUBLISHED` | 초안·게시 workflow(carefor 정적 목록보다 심화) |
+| `published_at` | TIMESTAMPTZ | DRAFT=NULL·PUBLISHED=non-null CHECK 강제 |
+| `title` / `body_text` | NOT NULL · btrim > 0 | 공백 거부 defense-in-depth |
+| `attachment_url` | NULLABLE · btrim > 0 if set | 자료실 첨부 URL |
+| `organization_id` + `branch_id` | 복합 FK (multi-tenant + 다지점 scope) | ogada SaaS 다지점 우위 |
+| RBAC | HQ_ADMIN·BRANCH_ADMIN·SOCIAL_WORKER | 6-endpoint 전부 `@PreAuthorize` |
+
+**REST endpoints (`/api/v1/notifications/facility-notices`)**:
+    · `GET /` — list (page·size·branchId·noticeCategory·recordStatus 필터)
+    · `GET /{noticeId}` — detail
+    · `POST /` — 초안 생성 (DRAFT)
+    · `PATCH /{noticeId}` — 초안 수정 (DRAFT·PUBLISHED 게시 후 본문 수정 불가 = `contract` verbatim `초안(DRAFT)은 수정·삭제 가능하며, 게시(PUBLISHED) 후 본문 수정은 불가합니다.`)
+    · `POST /{noticeId}/publish` — 게시 (DRAFT → PUBLISHED · published_at NOW)
+    · `DELETE /{noticeId}` — 초안 삭제 (DRAFT 만)
+
+**V192 Flyway (`facility_notices_carefor_10_4.sql`)** 실측:
+    · 테이블 `facility_notices` — org+branch 복합 FK·8-CHECK·2 인덱스(created DESC·category+status)
+    · CHECK constraints: notice_category IN (NOTICE|RESOURCE)·record_status IN (DRAFT|PUBLISHED)·title/body 공백 거부·published_after_created·updated_after_created
+    · trigger `trg_facility_notices_set_created_by` — BEFORE INSERT 시 `ogada_read_actor_user_id()` 로 감사 로그 무결성
+
+**crosswalk 판정**:
+    · carefor 10-4 = 정적 leaf 목록 (LIVE 000·「미확인」 carry)
+    · 이지케어 `notice.ez` = 로그인-gated · 「가정」 carry (BNK-727 crosswalk)
+    · 엔젤 silverangel `noticeList.do` = shell-only (BNK-654 dual-IA)
+    · **ogada `@55b8f84`** = **BE full CRUD + Draft/Publish workflow + org+branch multi-tenant + 감사 트리거** = **경쟁 4종 대비 심화 우위** (BE 착지 · FE 미착지 = `board-ui-planned` 잔여)
+
+**id=1-5 「가정통신문」 config 이력** (BNK-719 → BNK-729):
+    · BNK-719/720: dispatch full-stack LIVE (0 → 0.5)
+    · BNK-722: launch page + dispatch-history UI (0.5 → 0.65)
+    · BNK-724: authoring/compose API BE (0.65 carry)
+    · BNK-727: FE compose UI CLOSED (0.65 carry · KPI 미갱신 「가정 유지」)
+    · BNK-728: board-style history + V191 + centerName/summary (0.65 carry)
+    · **BNK-729: FE session draft board + server-side history filters (0.65 → 0.85) + BE V192 FacilityNotice CRUD (10-4)**
+    · 잔여 lever → 1.0 = FE 가 BE FacilityNotice API wire (session draft → server DRAFT/PUBLISHED consumption).
+
+────────────────────────────────────────────────────────────────
+[3] ★ 규제 백본 zero drift — NHIS #44 이동서비스비 러-1~4 **463차** IDENTICAL
+────────────────────────────────────────────────────────────────
+
+`nhis_jo44_live_bnk729.html` — https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+    · HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` (short `c886ff1f`)
+    · BNK-728 462차 → 463차 · zero drift IDENTICAL
+    · verbatim grep -o (6/6 IDENTICAL):
+        · 러-1: 1 · 러-4: 1 · 편도: 2 · 1일 1회: 1 · 수급자가 부담: 1 · 이동서비스: 13
+    · ↔ ogada `TransportServiceFeeService` 6-link chain (RU_1~4·ONE_WAY_RATIO=0.5·1일1회 부담) · id=2 이동서비스 0.85 carry
+    · 경쟁 4종 이동서비스 대응: 케어포 N/A(이동서비스 제외 명시)·이지케어 N/A·엔젤 △·롱텀 규제 원천만 → ogada full-stack 우위 carry
+
+carefor LIVE 3-URL (func.php·demo-work·root) HTTP **000** timeout 25s → disk canonical `6226e6eb` 98,328B (73-cycle+ 「미확인」) M10 leaf grep IDENTICAL.
+
+────────────────────────────────────────────────────────────────
+[4] per-cycle minimum 4종 충족 요약
+────────────────────────────────────────────────────────────────
+
+(a) 신규 evidence URL: **1건** — NHIS #44 (463차 재실측 zero drift + BE FacilityNotice CRUD 신규 landing) ✅
+(b) 경쟁사 메뉴/필드/워크플로 상세 블록: **1건** — carefor func.php M10 「기관 공지사항, 자료실」 10-4 leaf ↔ ogada `/api/v1/notifications/facility-notices` 6-endpoint + V192 8-CHECK crosswalk ✅
+(c) COMPETITOR_MATRIX ogada 열 `@HEAD` SHA 갱신: **1행+** — `@bb48b6c`/`@55b8f84` (BNK-729 delta 3-row) ✅
+(d) BENCHMARK_REPORT §신규 소절 / 차수 메모: **§729 subsection 3-block** (§729-1 ogada git 실측 · §729-2 10-4 P2 candidate CLOSED · §729-3 규제 백본) ✅
+
+가정 번복: 0 (id=1-5 config 0.65→0.85 는 coder KPI 갱신 반영·번복 아님).
+신규 P2 candidate CLOSED: 1 (BNK-727 §727-3 → BNK-729 BE 착지, 2-cycle inflight closure).
+덮어쓰기: 0.
+
+────────────────────────────────────────────────────────────────
+[5] 결정(제안) 요약
+────────────────────────────────────────────────────────────────
+
+planner:
+    · baseline FE `@6706f65` → **`@bb48b6c`** (+2 commit · WT CLEAN)
+    · baseline BE `@b054ca6` → **`@55b8f84`** (+2 commit · WT CLEAN · **V192 신규 마이그레이션 포함**)
+    · merge gate **641** (FE 3 + BE 638 · 양쪽 WT CLEAN · 선행 commit 불필요 · tester FF 가속)
+    · **id=10-4 「기관 공지사항, 자료실」 신규 진성 갭 CLOSED (2-cycle inflight)** — REQUIREMENTS §G2 확장 검토 (facility_notices 도메인 · DRAFT/PUBLISHED workflow · org+branch multi-tenant) · USER_STORIES 신규 US-FACILITY-NOTICE-BOARD candidate
+    · **id=1-5 「가정통신문」 board-ui-planned 잔여 lever** = FE session draft board (0.85 landed) → 서버 FacilityNotice API wire (→ 1.0 lever)
+    · 마케팅 카피 후보 추가: 「ogada는 기관 공지·자료실을 초안(DRAFT)/게시(PUBLISHED) 2-단계 workflow + 다지점 branch scope + 감사 로그 트리거로 지원합니다」 (경쟁 4종 정적/미확인 대비 심화 우위)
+
+coder:
+    · FE FacilityNotice API wire — `HomeNewsletterLaunchPage` session draft 저장을 `POST /api/v1/notifications/facility-notices` (DRAFT) 로 승격 · `/notices` or `/facility-notices` 신규 route 검토 (planner 우선순위 결정 후) · id=1-5 config 0.85 → 1.0 promote lever
+    · rules §11 준수 (요청 범위 초과 리팩터 금지)
+
+security_auditor:
+    · V192 `facility_notices` 테이블 8-CHECK + trigger `set_created_by` 무결성 검토 · `ogada_read_actor_user_id()` 헬퍼 감사 로그 chain
+    · `PATCH /{noticeId}` PUBLISHED 상태 본문 수정 차단 CHECK verbatim(`초안(DRAFT)은 수정·삭제 가능하며, 게시(PUBLISHED) 후 본문 수정은 불가합니다.`)
+    · RBAC 6-endpoint HQ_ADMIN·BRANCH_ADMIN·SOCIAL_WORKER · GUARDIAN 접근 여부 확인 (보호자 공지 열람 필요 시)
+
+tester:
+    · merge gate **641** (FE 3 CLEAN + BE 638 CLEAN · BE-heavy · 선행 commit 불필요 · FF 가속)
+    · V192 마이그레이션 회귀 (Flyway 순차) · `FacilityNoticeServiceTest` 205L 회귀 (DRAFT/PUBLISHED transition · organization_id + branch_id FK 강제) 포함
+
+────────────────────────────────────────────────────────────────
+[6] Snapshots checksum reference
+────────────────────────────────────────────────────────────────
+
+`nhis_jo44_live_bnk729.html`                    · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · 7,572B · 463차 zero drift
+`carefor_func.php` (disk canonical carry)        · md5 `6226e6eb92fdd25ed3e50842a5e8a00b` · 98,328B · 73-cycle+ IDENTICAL
+`ogada_git_remeasure_bnk729.txt` (this file)     · BNK-729 주력 extract

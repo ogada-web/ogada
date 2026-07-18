@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=1200, initial-scale=0.3">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="Title" content="">
+    <meta name="Subject" content="">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="방문일정관리, 수급자관리, 요양보호사급여관리, 재가센터 업무서식제공, 가산수가계산, 재가기관 업무관리프로그램">
+    <meta name="reply-to" content="">
+    <meta name="Robots" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="이지케어">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="https://ezcare.easyms.co.kr/">
+    <meta name="twitter:card" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:domain" content="">
+    <meta name="google-site-verification" content="">
+    <meta name="naver-site-verification" content="">
+    <title>이지케어 재가장기요양기관 업무관리 프로그램</title>
+    <link rel="icon" href="/homepage2/assets/images/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/homepage2/assets/images/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/homepage2/assets/images/favicon/apple-touch-icon.png">
+    <!-- jquery -->
+    <script src="/homepage/js/vendor/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.number.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.cookie.js"></script>
+    <!-- 이지케어 유입분석 -->
+    <script src="/assets/accessClick.log.js?20230308" type="text/javascript"></script>
+    <!-- assets -->
+    <link rel="stylesheet" href="/homepage2/assets/css/reset.css?1784141495" />
+    <link rel="stylesheet" href="/homepage2/assets/css/base.css?1784141495" />
+    <link rel="stylesheet" href="/homepage2/assets/css/layout.css?1784141495" />
+    <link rel="stylesheet" href="/homepage2/assets/css/ez_alert.css?1784141495" />
+    <!-- <link rel="stylesheet" href="/homepage2/assets/css/responsive.css" /> -->
+    <script src="/homepage2/assets/js/common.js?1784141495"></script>
+    <script src="/homepage2/assets/js/ez_alert.js?1784141495"></script>
+    <script src="/homepage2/assets/js/home.js?1784141495"></script>
+    <link rel="stylesheet" href="/homepage2/assets/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/homepage2/assets/vendor/aos/aos.css">
+</head>
+<script>
+var PGID = 'main'; // 2022.08.26 주팀장추가  accessClick
+var loginCheck = 0;
+var chk = 0;
+
+$(function() {
+    dep1 = 0,
+        dep2 = 0;
+});
+
+var _NGUL = "wcs.naver.net/wcslog.js";
+if (location.protocol == "https:") { var nUrl = "https://" + _NGUL; } else { var nUrl = "http://" + _NGUL; }
+document.write("<scr" + "ipt type='text/javascript' src='" + nUrl + "'></scr" + "ipt>");
+</script>
+
+<body>
+    <style>
+</style>
+
+<header class="header" id="header">
+	<div class="inner">
+		<div class="logo">
+			<a href="/index.html">
+				<img src="/homepage2/assets/images/logo_easycare_60h.svg" alt="재가장기요약기관 업무통합 ERP 이지케어" style="height:55px">	
+			</a>
+		</div>
+
+		<button type="button" class="menu-toggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+	  </button>
+
+		<nav class="nav">
+			<ul class="gnb">
+				<li><a class="" href="/index.html?PG=about">이지케어 소개</a></li>
+				<li><a class="" href="/index.html?PG=visit">방문요양 </a></li>
+				<li><a class="" href="/index.html?PG=daycare">주야간보호 </a></li>
+				<li><a class="" href="/index.html?PG=w4c">재무회계 대행</a></li>
+				<li><a class="" href="/index.html?PG=addition">부가서비스</a></li>
+				<li><a class="" href="/index.html?PG=price">요금안내</a></li>
+				<li><a class="" href="/index.html?PG=signup_select">이용신청</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>						<link rel="stylesheet" href="/homepage2/assets/css/main.css" />
+<!-- 히어로 시작 -->
+<section class="hero">
+    <div class="inner">
+        <!-- 히어로 왼쪽 시작 -->
+        <div class="swiper hero-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide hero-slide hero-slide01">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <p class="hero-title">
+                                기관 운영에 필요한 핵심 업무를<br />이지케어 안에서 한 번에 관리하세요.
+                            </p>
+                            <p class="hero-desc">
+                                방문요양, 주야간보호 업무관리 프로그램내에서<br>
+                                재무회계, 요양보호사 구인, 인지활동 계획 업무까지<br />
+                                한 곳에서 관리 할 수 있습니다.
+                            </p>
+                        </div>
+                        <div class="hero-image">
+                            <img src="/homepage2/assets/images/hero-bn-img01.png" alt="이지케어 서비스 소개">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide hero-slide hero-slide02">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <p class="hero-title">
+                                기관 운영에 필요한 핵심 업무를<br class="">
+                                이지케어 안에서 한 번에 관리하세요.
+                            </p>
+                            <p class="hero-desc">
+                                일정관리부터 청구 · 수납, 명세서 발송, 평가 준비까지<br />
+                                반복되는 센터 업무를 체계적으로 줄여드립니다.
+                            </p>
+                        </div>
+                        <div class="hero-image">
+                            <img src="/homepage2/assets/images/hero-bn-img02.png" alt="이지케어 서비스 소개">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide hero-slide hero-slide03">
+                    <div class="hero-content">
+                        <p class="hero-title">
+                            기관 운영에 필요한 핵심 업무를<br />
+                            이지케어 안에서 한 번에 관리하세요.
+                        </p>
+                        <p class="hero-desc">
+                            ERP 업무와 재무회계 대행까지<br />
+                            이지케어에서 하나의 흐름으로 연결됩니다.
+                        </p>
+                        <div class="hero-image">
+                            <img src="/homepage2/assets/images/hero-bn-img03.png" alt="이지케어 서비스 소개">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination hero-pagination">
+                <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
+                <span class="swiper-pagination-bullet"></span>
+                <span class="swiper-pagination-bullet"></span>
+            </div>
+        </div>
+        <!-- 히어로 왼쪽 끝 -->
+        <!-- 히어로 오른쪽 시작 -->
+        <aside class="hero-side">
+            <div class="side-card">
+                <!-- 로그인 전 상태 -->
+                <div class="run-area login off">
+                    <p class="run-text">
+                        이지케어 이용기관은<br />
+                        아래 버튼을 눌러 프로그램을 실행해 주세요.
+                    </p>
+                    <a class="run-btn run-btn-primary" onclick="openEzMain('/login.html');" hit-id="54830">
+                        <img src="/homepage2/assets/images/main-login-simbol.svg" />
+                        <span>이지케어 실행하기</span>
+                    </a>
+                </div>
+                <!-- 로그인 후 상태 -->
+                <div class="run-area is-login login on" style="display:none;">
+                    <p class="run-text">
+                        <strong id="oInfo-name"></strong> <b id="login_User_Name"></b><br/>
+                        로그인되어 있습니다.
+                    </p>
+                    <div class="run-btn-group">
+                        <a class="run-btn run-btn-primary" onclick="openEzMain('/login.html');">
+                            <span>재실행하기</span>
+                        </a>
+                        <a class="run-btn run-btn-secondary" href="javascript:logout();">
+                            <span>로그아웃</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="line">
+                </div>
+
+                <div class="notice-area">
+                    <div class="notice-label">
+                        <div class="notice-text">
+                            <img src="/homepage2/assets/images/main-noti-icon.svg" />
+                            <span>이지케어에서 알려드립니다</span>
+                        </div>
+                    </div>
+                    <ul class="notice-list">
+                                                    <li class="notice-item" hit-id="54450">
+                                <a onclick="noticeDetail('21849')">
+                                    <p class="notice-title">
+                                        2026년 4월 인지활동 업데이트 안내                                    </p>
+                                </a>
+                            </li>
+                                                    <li class="notice-item" hit-id="54450">
+                                <a onclick="noticeDetail('21847')">
+                                    <p class="notice-title">
+                                        2026년 4월 이지케어 업데이트 안내                                    </p>
+                                </a>
+                            </li>
+                                                    <li class="notice-item" hit-id="54450">
+                                <a onclick="noticeDetail('21850')">
+                                    <p class="notice-title">
+                                        2026년 3월 이지케어 업데이트 안내                                    </p>
+                                </a>
+                            </li>
+                                            </ul>
+                </div>
+            </div>
+        </aside>
+        <!-- 히어로 오른쪽 끝 -->
+    </div>
+</section>
+<!-- 히어로 영역 끝 -->
+<!-- 이용현황 영역 시작 -->
+<section class="stats">
+    <div class="inner">
+        <div class="stats-title-wrap">
+            <h2 class="stats-title">
+                숫자로 보는 이지케어 이용 현황
+            </h2>
+            <p class="stats-date">이지케어 내부 운영 데이터 (집계일 : 2026.06.30)</p>
+        </div>
+        <ul class="stats-list">
+            <li class="stats-item">
+                <strong class="stats-value-lg">
+                    <span class="count" id="data-count1" data-count="53.2">0</span><span class="unit">%</span>
+                </strong>
+                <p class="stats-label">
+                    방문요양 ERP 시장점유율
+                </p>
+            </li>
+            <li class="stats-item">
+                <strong class="stats-value">
+                    <span class="count" id="data-count2" data-count="9298">0</span><span class="unit">개</span>
+                </strong>
+                <p class="stats-label">
+                    이지케어 이용기관
+                </p>
+            </li>
+            <li class="stats-item">
+                <strong class="stats-value">
+                    <span class="count" id="data-count3" data-count="4673">0</span><span class="unit">개</span>
+                </strong>
+                <p class="stats-label">
+                    재무회계 대행 이용기관
+                </p>
+            </li>
+            <li class="stats-item">
+                <strong class="stats-value">
+                    <span class="count" id="data-count4" data-count="2353">0</span><span class="unit">억 원</span>
+                </strong>
+                <p class="stats-label">
+                    월 공단 청구 처리
+                </p>
+            </li>
+            <li class="stats-item">
+                <strong class="stats-value">
+                    <span class="count" id="data-count4" data-count="1820">0</span><span class="unit">억 원</span>
+                </strong>
+                <p class="stats-label">
+                    종사자 급여 처리
+                </p>
+            </li>
+        </ul>
+    </div>
+</section>
+<!-- 이용현황 영역 끝 -->
+<!-- 퀵메뉴 영역 시작 -->
+<section class="quick-menu">
+    <div class="inner">
+        <ul class="quick-list" data-aos="fade-up" data-aos-delay="50">
+            <li class="quick-item homecare">
+                <a onclick="demoAction('quickmenu');" hit-id="54740">
+                    <span class="quick-icon"></span>
+                    <span class="quick-text">방문요양 ERP<br />체험하기</span>
+                </a>
+            </li>
+            <li class="quick-item daycare">
+                <a onclick="demoDaycare();" hit-id="54750">
+                    <span class="quick-icon"></span>
+                    <span class="quick-text">주야간 ERP<br />체험하기</span>
+                </a>
+            </li>
+            <li class="quick-item accounting">
+                <a onclick="demoW4c();" hit-id="54760">
+                    <span class="quick-icon"></span>
+                    <span class="quick-text">재무회계<br />체험하기</span>
+                </a>
+            </li>
+            <li class="quick-item pricing">
+                <a onclick="location.href='/index.html?PG=price';" hit-id="54770">
+                    <span class="quick-icon"></span>
+                    <span class="quick-text">이용요금<br />확인하기</span>
+                </a>
+            </li>
+            <li class="quick-item support">
+                <a href="https://939.co.kr/downloadsupport.php?userid=easyms" download hit-id="54780">
+                    <span class="quick-icon"></span>
+                    <span class="quick-text">원격지원<br />시작하기</span>
+                </a>
+            </li>
+            <li class="quick-item manual">
+                <a onclick="window.open('https://ezcare.easyms.co.kr/LTMG.ez?rowid=21523','운영매뉴얼','width=900, height=1100')" hit-id="54790">
+                    <span class="quick-icon"></span>
+                    <span class="quick-text">방문요양<br />업무매뉴얼</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+<!-- 퀵메뉴 영역 끝 -->
+<!-- 주요기능 영역 시작 -->
+<section class="feature">
+    <div class="inner">
+        <div class="feature-title-wrap">
+            <p class="feature-title contents-title">
+                장기요양기관 운영에 필요한<br />주요 기능을 한눈에 확인하세요.
+            </p>
+            <p class="feature-desc contents-desc">
+                방문요양 · 주야간보호 ERP부터 재무회계, 구인구직, 인지활동, 수납 업무까지<br />센터 운영에 필요한 기능을 업무 흐름별로 살펴볼 수 있습니다.
+            </p>
+        </div>
+        <div class="feature-wrap">
+            <!-- 상단 -->
+            <div class="feature-grid feature-grid-top" data-aos="fade-up" data-aos-delay="50">
+                <a href="javascript:void(0);" class="feature-card feature-card-lg homecare">
+                    <div class="feature-body">
+                        <span class="feature-badge">ERP</span>
+                        <strong class="feature-card-title">방문요양 ERP</strong>
+                        <p class="feature-card-desc">
+                            수급자 · 직원 · 일정 · 급여 · 청구까지 한곳에서 관리합니다.
+                        </p>
+                        <span class="feature-card-more"></span><!-- 자세히 보기 → -->
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-homecare.svg" alt="방문요양 ERP">
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="feature-card feature-card-lg daycare">
+                    <div class="feature-body">
+                        <span class="feature-badge">ERP</span>
+                        <strong class="feature-card-title">주야간보호 ERP</strong>
+                        <p class="feature-card-desc">
+                            프로그램 · 송영 · 투약 · 급여기록 · 청구까지 통합 관리합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-daycare.svg" alt="주야간보호 ERP">
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="feature-card feature-card-sm recruit">
+                    <div class="feature-body">
+                        <strong class="feature-card-title">구인구직</strong>
+                        <p class="feature-card-desc">
+                            기관 채용 공고와 지원자 확인을 지원합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-recruit.svg" alt="구인구직">
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="feature-card feature-card-sm cognitive">
+                    <div class="feature-body">
+                        <strong class="feature-card-title">인지활동북</strong>
+                        <p class="feature-card-desc">
+                            인지활동지를 선택 · 출력해 바로 활용합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-cognitive.svg" alt="인지활동북">
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <!-- 하단 -->
+            <div class="feature-grid feature-grid-bottom" data-aos="fade-up" data-aos-delay="100">
+                <a href="javascript:void(0);" class="feature-card feature-card-lg accounting">
+                    <div class="feature-body">
+                        <span class="feature-badge">업무대행</span>
+                        <strong class="feature-card-title">재무회계 대행</strong>
+                        <p class="feature-card-desc">
+                            회계 · 수납 · 정산 · 세무 업무까지 안정적으로 지원합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-accounting.svg" alt="재무회계 대행">
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="feature-card feature-card-sm purchase">
+                    <div class="feature-body">
+                        <strong class="feature-card-title">공동구매</strong>
+                        <p class="feature-card-desc">
+                            운영 물품, 판촉물을 합리적인 가격으로 제공합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-purchase.svg" alt="공동구매">
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="feature-card feature-card-sm receipt">
+                    <div class="feature-body">
+                        <strong class="feature-card-title">현금영수증 발급</strong>
+                        <p class="feature-card-desc">
+                            현금영수증 발급 업무를 간편하게 처리합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-receipt.svg" alt="현금영수증 발급">
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="feature-card feature-card-sm payment">
+                    <div class="feature-body">
+                        <strong class="feature-card-title">본인부담금 수납</strong>
+                        <p class="feature-card-desc">
+                            보호자 청구와 수납 현황을 편리하게 관리합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-payment.svg" alt="본인부담금 수납">
+                        </div>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="feature-card feature-card-sm bank">
+                    <div class="feature-body">
+                        <strong class="feature-card-title">통장거래내역 조회</strong>
+                        <p class="feature-card-desc">
+                            입출금 내역을 조회하고 회계와 연계합니다.
+                        </p>
+                        <span class="feature-card-more"></span>
+                        <div class="feature-image">
+                            <img src="/homepage2/assets/images/main-feature-bank.svg" alt="통장거래내역 조회">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 주요기능 영역 끝 -->
+<!-- 리뷰 영역 시작 -->
+<section class="review">
+    <div class="inner">
+        <div class="review-title-wrap">
+            <p class="review-title contents-title">
+                오늘도 많은 장기요양기관이<br />
+                이지케어로 업무를 처리하고 있습니다.
+            </p>
+            <p class="review-desc contents-desc">
+                실제 기관의 활용 사례와 이용 후기를 통해<br class="m-br" />
+                이지케어가 센터 운영에 어떻게 도움이 되는지 확인해 보세요.
+            </p>
+        </div>
+        <!-- 텍스트 후기 -->
+        <div class="review-ticker">
+            <ul class="review-list">
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                체계적으로 업무를 볼 수 있어서 좋았음.                            </p>
+                            <div class="review-list-info">
+                                <strong>인천 좋은***</strong>
+                                <span>2024-09-02 13:36</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                본인부담금  및 수가액을 계산하는 번거로움이 없어 시간적으로 업무가 효율적입니다
+요양보호사 급여계산이 간단하여 업무시간이 많이 단축외었습니다                            </p>
+                            <div class="review-list-info">
+                                <strong>경남 동진***</strong>
+                                <span>2022-02-24 16:13</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                본인부담금 및 수가액을 계산하는 번거로움이 줄어들었습니다.
+일정배정을 하고나니 일정표가 자동으로 생성되어 편리했습니다.
+요양보호사 급여계산이 간단해졌습니다.                            </p>
+                            <div class="review-list-info">
+                                <strong>인천 평강효장기요양센터</strong>
+                                <span>2017-02-08 14:46</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                일일이 본인부담금 및 수가액을 계산하는 번거로움 줄어듬                            </p>
+                            <div class="review-list-info">
+                                <strong>서울 21***</strong>
+                                <span>2014-04-04 15:51</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                수급자 관리기록, 일정관리, 
+모바일기능 너무 편해요                            </p>
+                            <div class="review-list-info">
+                                <strong>경기 경기도사회서비스원 남양주종합재가센터</strong>
+                                <span>2020-10-14 17:58</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                요양사, 수급자의 정보 관리가 쉬어졌습니다.                            </p>
+                            <div class="review-list-info">
+                                <strong>인천 제일재가복지센타</strong>
+                                <span>2014-03-19 17:05</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                요양보호사 급여계산이 쉬워졌습니다.
+요양보호사 일정표 배정 및 출력이 편합니다.
+본인부담금 및 수가액 계산이 편리합니다.                            </p>
+                            <div class="review-list-info">
+                                <strong>서울 다사랑방문요양센터</strong>
+                                <span>2020-07-02 15:54</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                서류업무가 깔끔해졌습니다.                            </p>
+                            <div class="review-list-info">
+                                <strong>전북 금강***</strong>
+                                <span>2020-06-29 11:49</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                본인부담금 등 수가계산시 번거로움이줄어듬                            </p>
+                            <div class="review-list-info">
+                                <strong>대구 효그린 재가노인복지센터</strong>
+                                <span>2026-04-28 11:03</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                이지케어가 있어  든든합니다
+제가몸이 아파도 집에서  일정배정을 할수 있어 좋습니다                            </p>
+                            <div class="review-list-info">
+                                <strong>경북 하나***</strong>
+                                <span>2022-10-27 10:20</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                전에는 실수한 부분이 있어 착오청구 등으로 추가신청을 하는 경우가 있었으나 이제는 착오할 걱정이 없습니다.                            </p>
+                            <div class="review-list-info">
+                                <strong>경기 섬김복지센터</strong>
+                                <span>2018-03-03 19:46</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                4대보험,퇴직금적립등 재무회계 업무에 많은 시간 단축이 됨.                            </p>
+                            <div class="review-list-info">
+                                <strong>서울 좋은***</strong>
+                                <span>2026-05-11 10:08</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                수가액을 계산하는 번거러움과 급여계산이 빨리되니 편리하다                            </p>
+                            <div class="review-list-info">
+                                <strong>경기 효***</strong>
+                                <span>2017-02-27 17:41</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                업무의 번거러움이 줄어들었고 편리하게 사용중입니다                            </p>
+                            <div class="review-list-info">
+                                <strong>전북 큰***</strong>
+                                <span>2017-12-19 11:39</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                공단과 연동화
+일정표관리 편리성                            </p>
+                            <div class="review-list-info">
+                                <strong>경북 케어원방문요양센터</strong>
+                                <span>2015-10-27 13:32</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                이지케어 도움으로 재가 업무가 효율적으로 이루어지면서류에대한 스트레스가 해소됨.                            </p>
+                            <div class="review-list-info">
+                                <strong>경북 해오름복지센터</strong>
+                                <span>2024-08-05 10:44</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                먼저 시간이 무척 단축 되었고 재가 업무에 빈 틈이 없어졌다.                            </p>
+                            <div class="review-list-info">
+                                <strong>경기 한결같은방문요양센터</strong>
+                                <span>2011-06-26 19:44</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                시간절약 서식사용에 편리 급여계산이정확함                            </p>
+                            <div class="review-list-info">
+                                <strong>부산 수영남천 재가장기요양기관</strong>
+                                <span>2021-09-02 17:27</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                일일이 본인부담금 및 수가액을 계산하는 번거로움이 줄어 들었습니다.
+일정배정을 하고난 후 일정표가 자동으로 생성되어 편리합니다.                            </p>
+                            <div class="review-list-info">
+                                <strong>경남 민들레재가복지센터</strong>
+                                <span>2011-09-21 11:09</span>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="review-list-conts">
+                            <p class="review-list-text">
+                                편리성.신속성. 전문성. 정확성.체계성 등 많아용                            </p>
+                            <div class="review-list-info">
+                                <strong>경남 효사랑재가복지센터</strong>
+                                <span>2021-10-01 21:15</span>
+                            </div>
+                        </div>
+                    </li>
+                            </ul>
+        </div>
+        <!-- 인터뷰 카드 -->
+        <div class="review-slider">
+            <button type="button" class="review-prev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+                    <path d="M9 17L1 9L9 1" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <div class="swiper review-swiper">
+                <div class="swiper-wrapper">
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('38')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview09_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    이레재가복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 미공개</span>
+                            </div>
+                            <p class="review-card-desc">
+                                이지케어로 확연히 단축된 업무시간.
+매일 야근에서 이제는 매일 '칼퇴'합니다.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('33')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview04_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    돌봄방문요양센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 25인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                저렴한 비용에 다양한 기능까지
+이지케어는 최고의 가성비 프로그램입니다.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('41')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview12_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    효원재가방문요양센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 30인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                업무를 하며 궁금한 내용들을 바로 해결해 주니깐
+이지케어를 만나고 답답함이 사라졌어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('35')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview06_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    진효재가노인복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 30인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                이지케어는 업무를 도와주는 수많은 기능이 있어서
+쓰면 쓸수록 업무가 수월해지더라고요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('48')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/thumb_성모노인복지센터.jpg')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    성모노인복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자:  50인 이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                실무에 적합한 구성과 폭넓은 정보 연동으로
+이지케어만 실행시키면 모든 업무가 착착 진행돼요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('47')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/thumb_바른돌봄재가노인복지센터_1.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    바른돌봄재가복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 70인 이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                내 일처럼 정확하고 효율적으로 처리해주니까,
+믿고 맡길 수 있어요!                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('32')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview03_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    해피데이노인복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 25인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                수급자가 증가하면서 많아진 업무도 이지케어로 해결하니
+저희 센터의 새로운 직원이나 다름없어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('40')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview11_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    참조은노인복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 20인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                노인장기요양제도와 함께 시작한 이지케어
+가장 많은 기관이 사용한다는 점에서 신뢰가 갑니다.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('27')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview02_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    효사랑방문요양센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 30인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                이지케어의 수많은 기능에 도움을 받아서
+이지케어 없는 센터는 상상이 안돼요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('34')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview05_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    신은숙재가방문요양센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 30인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                이지케어의 전문적이고 체계적인 시스템을 보면
+괜히 업계 1위가 아니라는 생각이 들어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('39')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview10_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    돌봄천사재가요양센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 30인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                이지케어 덕분에 단축된 업무시간으로
+어르신들에게 더욱 신경 쓸 수 있게 됐어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('50')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview_thumb_1755049799.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    지니방문요양센터</strong>
+                                <span class="review-card-badge">
+                                    수급자:  50인 이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                신규센터를 시작하는 분들, 행정이 어려운 분들께 꼭 추천드리고 싶어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('36')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview07_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    라온재가복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 5인미만</span>
+                            </div>
+                            <p class="review-card-desc">
+                                초보 센터장에게는 낯설기만 한 업무
+이지케어 하나로 업무 흐름을 파악했어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('45')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/thumb_hansol_1.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    요양센터 한솔</strong>
+                                <span class="review-card-badge">
+                                    수급자: 40인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                이지케어를 사용하고 업무시간이 여유로워져
+일과 삶의 균형이 보장됐어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('46')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/thumb_urs.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    어르신방문요양센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 10인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                저렴한 가격으로 혼자서도 센터 운영을
+간편하고 원활하게 할 수 있어요.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('37')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/interview08_thumb.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    AAA+광진효나눔센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 25인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                눈에 띄게 줄어드는 업무량과 정확한 업무처리.
+이지케어를 좋아하는 가장 큰 이유죠.                            </p>
+                        </div>
+                    </a>
+                                        <a class="swiper-slide review-card" onclick="interviewDetail('26')" hit-id="54800">
+                        <div class="review-card-thumb" style="background-size:cover;background-image:url('https://ezcare.easyms.co.kr/homepage/file/interview/thumb01(A)나눔복지센터.png')"></div>
+                        <div class="review-card-body">
+                            <div class="review-card-top">
+                                <strong class="review-card-title">
+                                    (A)나눔복지센터</strong>
+                                <span class="review-card-badge">
+                                    수급자: 80인이상</span>
+                            </div>
+                            <p class="review-card-desc">
+                                이지케어가 직원 1명 이상의 역할을 해주니까,
+월급 부담 없이 일 잘하는 유능한 직원을 둔거 같아요.                            </p>
+                        </div>
+                    </a>
+                                    </div>
+            </div>
+            <button type="button" class="review-next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+                    <path d="M1 17L9 9L1 1" stroke="#212529" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+        <div class="review-more-wrap">
+            <a href="javascript:void(0);" onclick="openReview();" class="review-more-btn" hit-id="54700">
+                이용후기 5,004건 더보기 →
+            </a>
+        </div>
+    </div>
+</section>
+<!-- 리뷰 영역 끝 -->
+<!-- CTA 영역 시작 -->
+<section class="cta">
+    <div class="inner" data-aos="fade-up" data-aos-delay="100">
+        <div class="cta-title-wrap">
+            <p class="cta-title contents-title">
+                이지케어로 더 효율적인<br />
+                장기요양기관 운영을 시작해보세요.
+            </p>
+        </div>
+        <div class="cta-btn-wrap">
+            <a onclick="demoAction();" class="cta-btn" hit-id="54710">
+                방문요양 ERP 체험하기 →
+            </a>
+            <a onclick="demoDaycare();" class="cta-btn" hit-id="54720">
+                주야간보호 ERP 체험하기 →
+            </a>
+            <a href="/index.html?PG=price" class="cta-btn" hit-id="54730">
+                요금 안내 보기 →
+            </a>
+        </div>
+    </div>
+</section>
+<!-- CTA 영역 끝 -->
+
+<link rel="stylesheet" href="/homepage2/assets/css/popup/modal.css" />
+<link rel="stylesheet" href="/homepage2/assets/css/popup/alert.css" />
+<link rel="stylesheet" href="/landing/page/review_v1/css/interview.css" />
+
+<section class="layer-section" id="interview-detail-modal">
+	<div class="modal modal-lg">
+		<div class="modal-header">
+			<h2 class="modal-title" id="interview-modal-title">title</h2>
+			<button type="button" class="modal-close" onclick="">
+				<img src="/homepage2/assets/images/icon-close.svg" alt="닫기" onclick="closeInterviewModal()">
+			</button>
+		</div>
+		<div class="modal-body" id="interview-modal-body">
+			<div class="modal-content" id="interview-modal-content">content html</div>
+		</div>
+		<div class="modal-footer">
+			<div>
+			</div>
+			<div class="modal-footer-buttons">
+				<button type="button" class="modal-btn btn-secondary" onclick="closeInterviewModal()">닫기</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="layer-section" id="notice-detail-modal">
+	<div class="modal modal-md">
+		<div class="modal-header">
+			<h2 class="modal-title" id="notice-modal-title">title</h2>
+			<button type="button" class="modal-close" onclick="">
+				<img src="/homepage2/assets/images/icon-close.svg" alt="닫기" onclick="closeNoticeModal()">
+			</button>
+		</div>
+		<div class="modal-body" id="notice-modal-body">
+			<div class="modal-content" id="notice-modal-content">content html</div>
+		</div>
+		<div class="modal-footer">
+			<div>
+			</div>
+			<div class="modal-footer-buttons">
+				<button type="button" class="modal-btn btn-secondary" onclick="closeNoticeModal()">닫기</button>
+			</div>
+		</div>
+	</div>
+</section>
+<script src="/homepage2/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/homepage2/assets/vendor/aos/aos.js"></script>
+<script src="/homepage2/assets/js/main.js"></script>
+<!-- <script src="/homepage2/assets/js/modal.js"></script> -->
+
+<div class="float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <a onclick="demoAction();">방문요양 ERP 체험</a>
+        <a onclick="demoDaycare();">주야간보호 ERP 체험</a>
+        <a onclick="demoW4c();">재무회계 체험</a>
+    </div>
+    <div class="horiz-line"></div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review">이용기관 사용기</a>
+        <a onclick="openEzMain('/login.html');" class="float-run-btn">
+            이지케어<br>
+            실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    <!-- <div class="d-flex">
+        <a href="?PG=joo-price">Link 1</a>
+        <a href="?PG=joo-signup-agree">Link 2</a>
+    </div> 주상무님 요금안내&이용신청-->
+    <button type="button" class="">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>
+<!--button type="button" class="float-top-btn">
+    <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+</button> 우하단 버튼이었음 -->
+<!-- 260706 플로팅 메뉴 수정
+<div class="new-float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <ul>
+            <li hit-id="54340"><a onclick="demoAction();">방문요양 ERP<br>체험</a></li>
+            <li hit-id="54410"><a onclick="demoDaycare();">주야간보호 ERP<br>체험</a></li>
+            <li hit-id="54420"><a onclick="demoW4c();">재무회계<br>체험</a></li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이용기관<br>사용기</a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입문의</a>
+		
+        <a onclick="openEzMain('/login.html');" class="float-run-btn" hit-id="54360">
+            이지케어 실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>-->
+<!-- 260709 플로팅 메뉴 수정-->
+<div class="float-menu-ver2">
+    <div class="float-top">
+        <ul class="float-exp-list">
+            <li hit-id="54340">
+                <a onclick="demoAction();">방문요양 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54410">
+                <a onclick="demoDaycare();">주야간보호 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54420">
+                <a onclick="demoW4c();">재무회계<span class="exp-badge">체험</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이지케어 <strong>이용후기</strong></a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입상담</a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div> 
+<script>
+document.querySelector('.float-top-btn').addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+</script><!-- if ($PG !== 'main') -->
+<footer id="footer" class="footer">
+	<div class="inner">
+		<div class="footer-top">
+			<ul>
+				<li class="accent">
+					<a onclick="openFooterModal('T1');">개인정보처리방침</a>
+				</li>
+				<li>
+					<a onclick="openFooterModal('T2');">이용약관</a>
+				</li>
+				<li>
+					<a href="/index.html?PG=contact">제휴문의</a>
+				</li>
+			</ul>
+		</div>
+		<div class="footer-bottom">
+			<div class="footer-bottom-wrap">
+				<div class="footer-company">
+					<p>
+						<span>법인명</span>
+						<strong>주식회사 이지엠소프트</strong>
+						<span>대표자명</span>
+						<strong>최병인</strong>
+					</p>
+					<p>
+						<span>주소</span>
+						<strong>대구광역시 수성구 알파시티2로 18, 4층(시지동 583-2, 에이스빌딩)</strong>
+					</p>
+					<p>
+						<span>사업자등록번호</span>
+						<strong>502-86-19289</strong>
+						<span>통신판매업 신고번호</span>
+						<strong>2012-대구수성구-0396</strong>
+					</p>
+					<p>
+						<span>개인정보관리책임자</span>
+						<strong>최병인</strong>
+					</p>
+				</div>
+				<div class="footer-cs">
+					<p class="footer-cs-title">고객센터</p>
+					<a href="tel:16440340" class="footer-cs-tel">
+						1644-0340
+					</a>
+					<p class="footer-cs-time">
+						09:30~17:30 (평일) 주말·공휴일 휴무
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<link rel="stylesheet" href="/homepage2/assets/css/popup/modal.css" />
+
+<section class="layer-section" id="footer-modal" onclick="closeFooterModalOnDim(event)">
+	<div class="modal modal-lg">
+		<div class="modal-header">
+			<h2 class="modal-title" id="footer-modal-title">안내</h2>
+			<button type="button" class="modal-close" onclick="closeFooterModal()">
+				<img src="/homepage2/assets/images/icon-close.svg" alt="닫기">
+			</button>
+		</div>
+		<div class="modal-body" id="footer-modal-body">
+			<div class="modal-content" id="footer-modal-content">content html</div>
+		</div>
+		<div class="modal-footer">
+			<div>
+			</div>
+			<div class="modal-footer-buttons">
+				<button type="button" class="modal-btn btn-secondary" onclick="closeFooterModal()">닫기</button>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+
+function closeFooterModal() {
+  document.body.style.overflow = 'initial';
+  document.body.style.paddingRight = 'initial';
+  var modal = document.getElementById('footer-modal');
+  if (!modal) return null;
+  modal.style.display = 'none';
+}
+
+function closeFooterModalOnDim(event) {
+  if (event.target === event.currentTarget) {
+    closeFooterModal();
+  }
+}
+
+async function openFooterModal(termType) {
+  const modal = document.getElementById('footer-modal');
+  const contentBody = document.getElementById('footer-modal-body');
+  const modalContent = document.getElementById('footer-modal-content');
+
+  if (!modal || !modalContent) return null;
+
+  const termMap = {
+    T1: {
+      title: '이지엠소프트(이지케어) <b>개인정보 처리방침</b>',
+      url: '/homepage2/assets/html/term_visit_privacy.html',
+    },
+    T2: {
+      title: '이지케어 서비스 <b>이용약관</b>',
+      url: '/homepage2/assets/html/term_visit_service.html',
+    },
+  };
+
+  const footer = termMap[termType];
+  const modalTitle = document.getElementById('footer-modal-title');
+
+  document.body.style.overflow = 'hidden';
+  document.body.style.paddingRight = '17px';
+  modal.style.display = 'flex';
+  if (contentBody) contentBody.scrollTop = 0;
+
+  if (!footer) {
+    if (modalTitle) modalTitle.innerHTML = '약관';
+    modalContent.innerHTML = '<p>약관 정보를 찾을 수 없습니다.</p>';
+    return null;
+  }
+
+  if (modalTitle) modalTitle.innerHTML = footer.title;
+  modalContent.innerHTML = '<p>약관을 불러오는 중입니다.</p>';
+
+  try {
+    const response = await fetch(footer.url, {
+      method: 'GET',
+      credentials: 'same-origin',
+      cache: 'no-cache',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to load footer html.');
+    }
+
+    modalContent.innerHTML = await response.text();
+    if (contentBody) contentBody.scrollTop = 0;
+  } catch (error) {
+    console.error(error);
+    modalContent.innerHTML = '<p>약관을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>';
+  }
+}
+</script>
+    <script>
+    function pop_calc() {
+        var cw = screen.availWidth;
+        var ch = screen.availHeight;
+        sw = 800;
+        sh = 760;
+        mw = (cw - sw) / 2;
+        mh = (ch - sh) / 2;
+        window.open('/page/landing/daycare.t1.202404/chargecalc.html', 'popup', 'width=' + sw + ', height=' + sh + ',left=' + mw + ',top=' + mh + ',toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no');
+    }
+
+    function popup_daycare_intro() {
+        var url = "/landing.ez?type=daycare.t1.202404&route=47540";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    function popup_event() {
+        var url = "/landing.ez?type=event.202307&route=2954";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    setInterval(function() {
+        // console.log('login check interval (homepage2)', loginCheck, $.cookie('login_uid'));
+        if (!loginCheck && $.cookie("login_uid")) {
+            console.log('login 안 되어있음');
+            ezAjax({
+                type: "POST",
+                async: false,
+                url: "/?mode=login_check",
+                dataType: "json",
+                success: function(data) {
+                    loginCheck = 1;
+                    $("#oInfo-name").text(data.organ);
+                    $("#login_User_Name").text(data.User_Name);
+                    $(".login.on").show();
+                    $(".login.off").hide();
+                }
+            });
+        } else if (loginCheck && !$.cookie("login_uid")) {
+            loginCheck = 0;
+            $(".login.on").hide();
+            $(".login.off").show();
+        }
+    }, 1000);
+
+    if (loginCheck) {
+        $('.login.on').show();
+        $('.login.off').hide();
+    } else {
+        $('.login.on').hide();
+        $('.login.off').show();
+    }
+    </script>
+
+
+
+<!-- 이지케어 분석 , 리뉴얼 홈페이지 2026.07.06 추가 -->
+<script type="text/javascript">
+var _route = "";
+if(_route && _route!="2100") accessClick.hit(_route, "_route");
+accessClick.hit(1100);
+</script>
+
+<script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+<script type="text/javascript">
+    if(!wcs_add) var wcs_add = {};
+    wcs_add["wa"] = "11a756aafdf88e0";
+    if(window.wcs) {
+      wcs_do();
+    }
+</script>
+
+</body>
+
+</html>

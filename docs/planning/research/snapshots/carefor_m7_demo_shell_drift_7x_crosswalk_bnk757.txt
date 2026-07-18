@@ -1,0 +1,162 @@
+BNK-757 — 케어포 역공학 0–2h (2026-07-15T11:38:07Z)
+rotation: daycare/func.php 109항목(=PC catalog 107 정본)·매뉴얼 PDF 목차·demo-work loadPage/view
+          · 메뉴 depth·리포트 밀도·본인부담 7-x ↔ ogada Route `@68cd253`/`@34d4968` 1:1
+          · ★ NEW: Wayback demo-work 2024-12↔2025-07 셸 chronological DRIFT + search_menu.js
+
+================================================================
+1. ogada git 실측
+================================================================
+FE develop  68cd253  fix(v1.2.1/QA-B451): restore soft max-length validation path
+            WT CLEAN · ahead origin/test **3** (vs BNK-756 `@a2db731` → +1)
+            Route 133 (<Route\b 132 + <Routes> 1) · 106 *Page.jsx
+            FE test 525 (216 .test.js + 309 .test.jsx)
+BE develop  34d4968  fix(v2/QA-B95): normalize bootstrap detail delimiter variants
+            WT CLEAN · ahead **661** vs 598d108 (BNK-756 `@9dff00f` → +1)
+            BE Test 292 · BE @Test **2199** (+2 vs BNK-756 2197)
+            Flyway V1–V196
+모듈 coverage 97.07% (28.15/29 · residual id=2/8 0.85·id=10 0.75·id=12 0.7 · id=1-10=1.0)
+merge gate 664 (FE 3 + BE 661 · BE-heavy → tester FF)
+
+================================================================
+2. live / Wayback 재실측 (증거 URL)
+================================================================
+LIVE  https://www.carefor.co.kr/daycare/func.php          HTTP **000** 15–25s timeout · 83-cycle+ 「미확인」
+LIVE  https://demo-work.carefor.co.kr/                    HTTP **000** · 「미확인」
+LIVE  https://demo-work.carefor.co.kr/loadPage.php        HTTP **000** · 「미확인」
+LIVE  https://www.carefor.co.kr/                         HTTP **000** · 「미확인」
+→ disk canonical 우선: carefor_func.php md5 `6226e6eb` 98,328B IDENTICAL
+
+★ NEW evidence URL #1 — Wayback demo facility shell (id_ strip·2025-07-12)
+URL   https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/
+HTTP  200 · SIZE 71,742B · md5 `ebee4d4724cd5e633696268067a4d85f`
+판정  disk `carefor_demo_work_raw_remeasure_bnk706.html` 과 **byte IDENTICAL**
+      = LIVE 000 지속 중에도 disk raw 정본이 2025-07-12 IA 캡처와 LOCK 재확인
+chrome https://web.archive.org/web/20250712220444/https://demo-work.carefor.co.kr/
+      200 · 75,590B · md5 `5bf5c1f5` (Wayback toolbar 포함 · 저장 chrome 스냅샷)
+
+★ NEW evidence URL #2 — Wayback demo facility shell (id_ strip·2024-12-06) = chronological DRIFT 원천
+URL   https://web.archive.org/web/20241206004828id_/https://demo-work.carefor.co.kr/
+HTTP  200 · SIZE 74,619B · md5 `af9dd4dd6810f8d594c0fd1cbbaa14a0`
+저장  carefor_demo_work_wb_20241206_id_bnk757.html
+CDX   carefor_demo_wayback_cdx_bnk757.json (homepage 9 captures 2023-06→2025-07 + search_menu.js 2026-06)
+
+★ NEW evidence URL #3 — demo-work search_menu.js (Wayback 2026-06-09 id_)
+URL   https://web.archive.org/web/20260609231630id_/https://demo-work.carefor.co.kr/js/search_menu.js
+HTTP  200 · SIZE 47,738B · md5 `c1c490ebe783503645a12ea8516f5944`
+저장  carefor_demo_search_menu_wb_202606_id_bnk757.js
+내용  목록 filter/검색조건 유지 헬퍼 · 메뉴 catalog 아님
+      주석 verbatim: 「재가급여 '5-1. 본인부담금 청구관리' 참조」(재가 번호식 ≠ 주야간 7-1)
+      송영/배차/transport **0-hit** · 이동 = 페이지 이동 의미 1-hit only
+
+NHIS #44 live md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` 7,572B = **491차** zero drift IDENTICAL
+  verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+
+================================================================
+3. ★★★ NEW — demo-work 시설 셸 2024-12 → 2025-07 chronological DRIFT (메뉴/필드 블록)
+================================================================
+| 지표 | 2024-12-06 id_ | 2025-07-12 id_ (=disk raw) | Δ |
+|---|---|---|---|
+| SIZE / md5 | 74,619 / `af9dd4dd` | 71,742 / `ebee4d47` | −2,877B |
+| loadPage str / obj-type | 115 / 114 | 115 / 114 | 0 |
+| class="rpt" | 34 | 34 | 0 → report UI density **30.4%**(34/112-ish) carry |
+| unique view.* | 125 | 119 | −6 net |
+| cost/CMS/npay views | 13 | 13 | **IDENTICAL** (M7 surface 안정) |
+| transport/송영/배차/탑승 | 0 | 0 | **이동서비스 미장착** 재확인 |
+| `<li` count | 153 | 147 | −6 |
+| asset cachebuster | `v_20241128_1` | `v_20250711` | 자산 bump |
+| Chart.js CDN | 없음 | jsdelivr chart.js + datalabels | 대시보드/차트 확장 |
+
+ONLY_202412 (2025-07 셸에서 제거·11 view):
+  account_document · base_setting · budget · income_expense · income_expense_all
+  · patient_level_report · resolution · round_robin · settlement · special_room_record · supp_budget
+  → 시설 demo에서 **수지/회계·의결·정산** 계열이 축소(로그인-gated ERP 본편으로 이전 「가정」)
+
+ONLY_202507 (신규·5 view):
+  meal_satisfaction · nursing_weight_manage · oral_care_check
+  · patient_improvement_status · provide_YC_nursing
+  → **식사만족·체중·구강·개선현황·YC간호** 관찰 축 확장 = 케어/간호 리포트 밀도 강화
+
+해석(확인):
+  · demo-work = **시설 셸**(이동서비스 없음) 명제 2개 timestamp 모두 성립
+  · M7 cost_* / cms_manage / npay_manage **13 view 불변** = 본인부담 표면은 셸 개편과 독립
+  · 리포트 class rpt=34 불변 · 「리포트」 문자열 82→89(+7) = 라벨 카피 증가(구조 밀도 ≠ 문자열)
+  · agents.yaml「시설 셸=이동서비스 없음 명시」 LIVE 000 우회 재입증(IA 2024-12 + 2025-07)
+
+================================================================
+4. 메뉴 depth · 리포트 밀도 (catalog 107 + demo + ogada `@68cd253`)
+================================================================
+carefor catalog (6226e6eb · 107-leaf · module_counts 1..11):
+  depth {2: 88 (82.2%), 3: 19 (17.8%)}
+  title 「리포트」 exact: 21/107 = **19.6%**
+  title 리포트|대장|통계|집계 broad: 25/107 = **23.4%**
+  agents.yaml「109항목」= PC **107** + APP/문서 drift carry
+
+demo-work 2025-07 시설 셸 (ebee4d47 · LIVE 000 · Wayback LOCK):
+  loadPage 115 · obj-type 114 · class="rpt" **34** → report UI density **≈30%**
+  view.transport.* / 송영/배차/탑승: **0**
+  = 주야간 func M2(이동서비스 10-leaf) ≠ demo-work 시설 셸
+
+ogada `@68cd253`:
+  App.jsx reportish path: **29** / path 132 ≈ **22.0%** (carefor exact 19.6% 대비 +2.4pp)
+  billing Route **17** · linkage `/clients/linkage-records` (BNK-756 END-TO-END 착지)
+  → depth-2 heavy ERP 대비 flat Route graph + 도메인별 /reports/* 분산
+
+================================================================
+5. ★★★ 본인부담 7-x 번호식 lifecycle ↔ `/billing/*` 1:1 (`@68cd253`/`@34d4968`)
+================================================================
+tri-source: func catalog(11) · demo view(13 cost-ish·양쪽 timestamp IDENTICAL) · PDF TOC p83–92
+
+| # | func leaf (catalog) | demo view (양쪽 IDENTICAL) | PDF 목차/본문 번호 | ogada Route | 판정 |
+|---|---------------------|----------------------------|-------------------|-------------|------|
+| 7-1 | 본인부담금 청구관리 | view.cost_master | p85–87 「7-1」 | /billing · /billing/claims/:claimId | ✅ |
+| 7-2 | 본인부담금 입금관리 | view.cost_receipt | (입금 흐름) | /billing/payments | ✅ |
+| 7-2-1 | 의료비공제(연말정산) | view.cost_receipt_apply_yearly | p92 「7-8」† | MedicalExpenseDeduction + /billing/reports/statistics | ✅ |
+| 7-3 | 본인부담금 미납관리 | view.cost_nopay | 미납 | /billing/overdue | ✅ |
+| G33 | 청구시작 금액설정 | demo 0 | p90 「7-3」†† | BillingSettingsPanel / settings API | ✅ API |
+| 7-4 | 자동이체 (CMS) | view.cms_manage | 부가 | /billing/cms | ✅ |
+| 7-5 | 간편결제 | view.npay_manage | 부가 | /billing/easy-pay | ✅ |
+| 7-6 | 청구대장 리포트 | view.cost_master_report | PDF p91 「7-5」‡ | /billing/reports/charges | ✅ |
+| 7-7 | 입금대장 리포트 | view.cost_deposit_report | PDF p91 「7-6」‡ | /billing/reports/deposits | ✅ |
+| 7-8 | 수납대장 리포트 | view.cost_receipt_report | PDF p91 「7-7」‡ | /billing/reports/receipts | ✅ |
+| 7-9 | 수납,환불내역 | view.cost_master_statistic | p92 통계축 | /billing/reports/refunds · /statistics | ✅ |
+| 7-10 | 간편계산기 | **0** (func-only·demo 양쪽 0) | marketing 0 | /billing/calculator | ✅ SUPERSET |
+
+†‡†† PDF↔func **번호 충돌 carry**(BNK-292/690/742):
+  · PDF p91 리포트=7-5~7-7 · func=7-6~7-8
+  · PDF p90 「7-3.청구시작」 · func 7-3=미납 · G33=청구시작
+  · PDF p92 「7-8.의료비/통계」 · func 의료비=7-2-1 · 통계·환불=7-9
+  **정본 = func.php HTML comment / catalog 6226e6eb**. PDF는 교육용 번호 drift.
+
+ogada billing **17 Route** = M7 11-leaf 1:1 + superset 6
+  (/billing/fee-schedules·copay-rates·cash-receipts·imports/nhis×2·claims/:id)
++ Module1 SUPERSET `/clients/linkage-records` (BNK-746 진성갭 → BNK-749/756 FULL CLOSED)
+
+id=7* 본인부담 axes **1.0** reconfirm · KPI promote 불요 · 신규 core 갭 0
+
+search_menu.js 주석 「재가급여 5-1.본인부담금 청구관리」:
+  → 동일 벤더 재가 제품은 본인부담을 **Module 5**로 번호 · 주야간(func)은 **Module 7**
+  → ogada `/billing/*` 단일 IA 가 제품군 번호 drift 를 흡수 = 차별화 카피 가능
+
+================================================================
+6. PDF 목차 재실측 (pypdf · disk 96f7d45e · 132p · 9,992,772B)
+================================================================
+p5 TOC: 「7.본인부담금관리」 verbatim
+p84 모듈扉: 업무흐름도·청구생성·명세서발송·입금·미납·청구시작·리포트·의료비/통계 (번호 없음)
+p85: 「※7-1.월별청구서발행시…」 선행입금 가드 verbatim
+p86–87: 메뉴위치 「7-1.본인부담금청구관리」
+p90: 「7-3.청구시작금액설정」 (func 번호와 충돌)
+p91: 「7-5/7-6/7-7」 대장 리포트 (func 7-6/7-7/7-8와 충돌)
+p92: 「7-8.의료비공제및본인부담금통계」
+→ LIVE PDF HTTP 000 · disk IDENTICAL 440+cycle
+
+================================================================
+7. per-cycle minimum
+================================================================
+✅ 신규 증거 URL 3건 (demo 20250712 LOCK · demo 20241206 DRIFT 원천 · search_menu.js 20260609)
+✅ 메뉴/필드/워크플로 블록 1+ (셸 chronological DRIFT + M7 7-x 1:1 @HEAD)
+✅ COMPETITOR_MATRIX 1행+ @68cd253/@34d4968
+✅ BENCHMARK_REPORT §757
+✅ NHIS #44 491차 zero drift · carefor LIVE 000 83-cycle+
+덮어쓰기 0(disk func/demo raw IDENTICAL) · 가정 번복 0 · 신규 core 갭 0
+상태 변경 2(FE +1 QA-B451 · BE +1 QA-B95 delimiter)
+)

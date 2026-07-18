@@ -1,0 +1,121 @@
+BNK-750 이지케어 역공학 2–4h — 이중 일정(방문일정 M3) · RFID점검(M4) · 본인부담(M5) ↔ ogada crosswalk
+====================================================================================================
+조사일: 2026-07-15T07:05Z (KST 2026-07-15 16:05)
+방법: scripts/ezcare-demo-fetch.sh --menu-catalog (demo 로그인 code=0000·oCode=DEMO) + curl 재실측
+근거 파일: docs/planning/research/snapshots/ezcare_new_ez_demo.html (canonical·session drift 무시)
+          docs/planning/research/snapshots/ezcare_menu_catalog.json (10 module·148 leaf·59 PGID)
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[1] 데모 셸 재실측 — 로그인·타이틀·nav 10 module (확인)
+────────────────────────────────────────────────────────────────────────────────────────────────
+POST /page/login.php oCode=DEMO → code "0000" (인증 성공)
+title: "[DEMO 이지케어] 체험 이지케어 재가복지센터"
+demo_shell: 138,603B md5 b54c6d378f91445c14784b7e6271b558 (session/date-only DRIFT vs HEAD 0bc59733)
+top_nav_js: 25,470B md5 95286775000f06c8ad13688fcb0d6dbb (top-nav-item-V2.js?20260428 · IDENTICAL)
+menu_catalog: module_count 10 · leaf_item_count 148 · unique_pgid_count 59 (구조 IDENTICAL)
+
+nav 10 module: 1직원 · 2수급자 · 3방문일정 · 4RFID점검 · 5본인부담 · 6직원급여 ·
+               7재무회계 · 8세무·사회보험 · 9기관관리 · 10기관평가
+
+demo_shell DRIFT 성격 = 세션/날짜 전용:
+  - common.js?20260324234 → ?20260629 (자산 캐시버스터 bump)
+  - widget id EC000010-4344088 → EC000010-17893570 (세션 렌덤 id)
+  - "오늘의 업무 [06월26일]" → "[07월15일]" (오늘 날짜)
+  - schedule_data dateInfo cd_sd 26→15 (당일 데이터)
+→ 구조·nav·메뉴 IDENTICAL → 덮어쓰기 0 (canonical 유지, git checkout 복원)
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[2] Module 3 「방문일정」 13-leaf 전수 — 이중 일정 축 (확인·nav catalog verbatim)
+────────────────────────────────────────────────────────────────────────────────────────────────
+  수급자-일정관리                       /schedule_plan/                     popup   ← 수급자 기준 일정
+  관리자-일정관리                       /social_worker/schedule.html        popup   ← 요양보호사 기준 일정
+  일정표 출력 및 문자발송               schedule-p100                       link
+  수급자 일정표(제공기록지)             schedule-p100#tab0                  link
+  요양보호사 일정표(근무현황표)         schedule-p100#tab1                  link
+  연간 서비스제공 명단                  schedule-p300                       link
+    수급자 / 요양보호사                 schedule-p300#tab0/#tab1            link
+  방문현황(일일, 주간, 월간)            schedule-p500                       link
+  중증수당 일정 집계                    /PU.ez?PGID=schedule-s100           popup
+    요양보호사 기준 / 수급자 기준       schedule-s100#tab0/#tab1            popup
+  방문현황(일일, 주간, 월간)            /schedule_print/statusTable.html    link
+
+★ 이중 일정 축 확인 — ezcare 는 모든 일정 화면이 [수급자 기준 tab0] ↔ [요양보호사 기준 tab1] 쌍으로 구성.
+  데모 셸 schedule_data 에서 social_worker_schedule 2926/2925 (요양보호사 DEMO220004 기준 일 2건) verbatim 관찰.
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[3] Module 4 「RFID점검」 3-leaf — RFID↔공단계획 비교·일정확정 (확인)
+────────────────────────────────────────────────────────────────────────────────────────────────
+  RFID태그 내역 ↔ 공단계획 비교        schedule-rfid                       link
+  RFID태그 내역 ↔ 공단계획 비교        /schedule_plan/rfid_compare.html    popup
+  일정확정                             schedule-fix                        link
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[4] Module 5 「본인부담」 13-leaf — 4-급여 tab (확인)
+────────────────────────────────────────────────────────────────────────────────────────────────
+  청구내역 및 명세서 pAmt-a100 · 전체(합산)/방문요양/방문목욕/방문간호 #tab0~3
+  납부내역 pAmt-a200 · 월간/연간/장기요양급여비 납부확인서 #tab0~2
+  미납내역 pAmt-a400 · 청구월별/수급자별 누적 #tab0~1
+  청구내역 및 명세서(w4c) pAmt-a100.w4c
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[5] ogada 대응 crosswalk (git 실측 FE @d6f7069 / BE @a72866f)
+────────────────────────────────────────────────────────────────────────────────────────────────
+ezcare leaf                                   | ogada                                              | 판정
+----------------------------------------------|----------------------------------------------------|-----
+M3 수급자-일정관리(schedule_plan)             | VisitsPage.jsx (수급자 방문일정)                   | ✅
+M3 관리자-일정관리(social_worker/schedule)    | StaffMonthlySchedulePage.jsx (요양보호사 근무현황) | ✅ 이중 일정
+M3 일정표 출력·문자발송(schedule-p100)        | Visit/Staff schedule + 알림 dispatch               | △ (통합 출력 UX P3)
+M3 방문현황 일일/주간/월간(schedule-p500)     | AttendancePage/AttendanceStatsPage                 | △
+M3 중증수당 일정 집계(schedule-s100)          | — (dedicated 없음)                                 | △ 「가정」 v2+ P3
+M4 RFID↔공단계획 비교(schedule-rfid)          | VisitsPage `VisitRfidDiffComparePanel`             | ✅ (BNK-743 carry)
+                                              |   compareVisitsRfidApi POST /visits/imports/rfid/compare |
+M4 일정확정(schedule-fix)                     | US-V06 visit confirm/batch-unconfirm workflow      | ✅ (BNK-747 CLOSED)
+M5 청구내역/명세서 4-tab(pAmt-a100)           | /billing/* (id=7 1.0)                              | ✅
+home 만료일 위젯 7-category                   | DashboardWidgetGrid (US-M02 generic widgets)       | △ dedicated 없음·P3「가정」
+
+★ 결론(확인): ezcare 방문일정(M3)·RFID점검(M4)·본인부담(M5) 핵심 축은 ogada 에 실질 대응.
+  - 이중 일정(수급자↔요양보호사 기준) = ogada VisitsPage + StaffMonthlySchedulePage 로 커버 ✅
+  - RFID↔공단계획 비교 = ogada compareVisitsRfidApi + VisitRfidDiffComparePanel ✅ (경쟁 4종 유일 in-app 이중 엑셀 비교)
+  - 일정확정 = US-V06 월단위 확정취소 4자리 확인번호 + 6-cascade SUPERSET ✅
+  진성갭 아님. 잔여 △ = 통합 일정표 출력 UX·중증수당 집계·만료일 위젯 = 모두 P3「가정」(격상 0).
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[6] home 대시보드 만료일(expire) 위젯 7-category — P3「가정」 근거 (확인·데모 셸 verbatim)
+────────────────────────────────────────────────────────────────────────────────────────────────
+데모 셸 schedule_data.expire 키 7종 verbatim:
+  간호지시서 · 낙상위험 · 인지기능 · 욕창위험 · 욕구사정 · 수급자계약 · 수급자인정
+07/15 셸 실데이터: expire.간호지시서 = [{code:"18-DEMO0001", name:"구영0", expire_sDate:"2026-07-15"}]
+insurance_expire: [] (보험 만료 별도 축)
+→ ogada DashboardWidgetGrid 는 US-M02 범용 위젯(id·label·value·href)만 지원 — 7-category 만료 트래커 dedicated 부재.
+→ P3 dashboard 만료일 위젯 「가정」 유지 (coverage-0 진성갭 아님·격상 0·v2+ 후보).
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[7] 기존 URL 재실측 — 엑셀/공지/규제 변경 0
+────────────────────────────────────────────────────────────────────────────────────────────────
+ezcare FAQ list https://ezcare.easyms.co.kr/help/faq.ez
+  200 · 80,057B · md5 bb94b142e43a4530884769b2c82bcc2e (BNK-749 00bfbc95 → hit-only DRIFT)
+  rowid unique 233 · max 21781 · rowid SETS IDENTICAL (diff vs bnk749 = 0) → 엑셀 포맷 변경 0
+  엑셀 키워드 2-hit · 청구 2 · RFID 1 · 일정 48 · 본인부담 47 (안정)
+
+NHIS #44 이동서비스비 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = disk nhis_jo44_live_bnk749.html IDENTICAL → 484차 zero drift
+  키워드: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+  ↔ ogada TransportServiceFeeService 6-link chain (id=2 0.85) carry — 상수 변경 불요
+
+carefor LIVE 3-URL (daycare/func.php · demo-work · loadPage.php) HTTP 000 carry — disk canonical 6226e6eb 우선
+
+────────────────────────────────────────────────────────────────────────────────────────────────
+[8] ogada git 실측 (BNK-749 → BNK-750 delta)
+────────────────────────────────────────────────────────────────────────────────────────────────
+FE develop @d6f7069 (BNK-749 동일 HEAD·ahead origin/test 0 = FULLY SYNCED·tester FF 흡수)
+BE develop @a72866f fix(v2/QA-B95): robustly detect bootstrap blockers in composite details
+  (BNK-749 @5c683af → +1 commit · ahead 655 vs 598d108)
+Route 132 (<Route\b 131 + <Routes> 1) · Page 105 · FE test 524 (216 .test.js + 308 .test.jsx)
+BE Test 291 · BE @Test 2184 (+1 vs BNK-749 2183) · Flyway V1–V194 (carry)
+accounting route 1 · payroll route 5 · 모듈 97.07% (28.15/29·carry) · merge gate 655 (FE 0 + BE 655)
+
+per-cycle minimum 4종 충족:
+  ① 재실측 URL: ezcare demo shell(code 0000)·FAQ list 484? (FAQ hit-only DRIFT)·NHIS 484차·carefor 000
+  ② 메뉴/필드/워크플로 블록: M3 이중 일정 13-leaf + M4 RFID 3-leaf + M5 본인부담 13-leaf ↔ ogada crosswalk
+  ③ COMPETITOR_MATRIX 1행+ @d6f7069/@a72866f 갱신
+  ④ BENCHMARK_REPORT §750 신규 소절

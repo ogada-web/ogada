@@ -1,0 +1,160 @@
+# BNK-840 · ogada baseline delta (부수 산출·케어포 rotation 중 실측)
+# 작성자: BNK · updated: 2026-07-17T18:42:00Z
+# rotation: 케어포 역공학 0–2h (주력=`carefor_m5_plupload_photo_axis_recross_bnk840.txt`)
+# 초점: SEC-D25 v3 사진 축 FE lockstep 착지 감지 + BE QA-B95 NoBreakSpace lockstep
+
+## baseline (git 실측)
+
+```
+$ git -C src/frontend rev-parse develop
+8e28fe0f50d8b9155c9da569543ed6e27a3800cc
+
+$ git -C src/backend rev-parse develop
+63227d78b79e2975577383d3568bfeb67f5a46bf
+
+$ git -C src/frontend log -1 --oneline develop
+8e28fe0 fix(v1.2.1/v3): verify program photo magic bytes before upload (SEC-D25)
+
+$ git -C src/backend log -1 --oneline develop
+63227d7 fix(v2/QA-B95): keep NoBreakSpace marker decoding lockstep
+
+$ git -C src/frontend status --short
+(WT CLEAN)
+
+$ git -C src/backend status --short
+(WT CLEAN)
+
+$ git -C src/frontend rev-list --count origin/test..develop
+0
+
+$ git -C src/backend rev-list --count origin/test..develop
+737
+```
+
+- **FE `@8e28fe0`** `fix(v1.2.1/v3): verify program photo magic bytes before upload (SEC-D25)` · WT CLEAN · BNK-839 `@bc1d343` → **+1 commit** · **ahead origin/test 0 = FULLY SYNCED** (origin/test=`8e28fe0` · tester FF 흡수)
+- **BE `@63227d7`** `fix(v2/QA-B95): keep NoBreakSpace marker decoding lockstep` · WT CLEAN · BNK-839 `@d1ff63a` → **+1 commit** · ahead **737** vs `598d108`
+- merge gate **737** (FE 0 FULLY SYNCED + BE 737 · **BE-only** → tester FF · 신규 마이그레이션 0 · Flyway V1–V196)
+
+## FE 8e28fe0 diff — SEC-D25 pre-upload magic-byte (5 files · +189/-21)
+
+```
+ .../programs/ProgramSchedulePhotoUpload.jsx        |   2 +-
+ .../programs/ProgramSchedulePhotoUpload.test.jsx   |  26 ++++-
+ src/config/programs.js                             | 105 ++++++++++++++++++++-
+ src/config/programsPhoto.test.js                   |  74 ++++++++++++---
+ src/pages/ProgramsPage.test.jsx                    |   3 +-
+ 5 files changed, 189 insertions(+), 21 deletions(-)
+```
+
+Commit body:
+
+> Reject MIME-spoofed JPEG/PNG/WEBP uploads client-side to lockstep with BE ProgramPhotoStorageService magic-byte checks.
+
+### 신규 상수 (verbatim from programs.js)
+
+```js
+/** SEC-D25 — BE `ProgramPhotoStorageService` JPEG/PNG/WEBP magic lockstep. */
+const JPEG_MAGIC = new Uint8Array([0xff, 0xd8, 0xff]);
+const PNG_MAGIC  = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const RIFF_MAGIC = new TextEncoder().encode("RIFF");
+const WEBP_MAGIC = new TextEncoder().encode("WEBP");
+const PROGRAM_SCHEDULE_PHOTO_MAGIC_HEADER_BYTES = 12;
+```
+
+### 신규 helper 함수
+
+- `startsWithMagic(payload, magic)` — byte-by-byte 비교 (매직바이트 prefix 검증)
+- `matchesProgramSchedulePhotoMagicBytes(payload, contentType)` — Content-Type switch → JPEG(startsWith)/PNG(startsWith)/WEBP(RIFF@0..4 AND WEBP@8..12·12B 최소) · **BE `ProgramPhotoStorageService.matchesMagicBytes` SEC-D25 lockstep (JSDoc verbatim)**
+- `readFileHeaderBytes(file, maxBytes)` — Promise-wrapped FileReader (`file.slice(0, maxBytes)` + `readAsArrayBuffer` → `Uint8Array`)
+
+### 신규 검증 (`validateProgramSchedulePhotoFile(file)`)
+
+```js
+export async function validateProgramSchedulePhotoFile(file) {
+  if (!file) return "업로드할 프로그램 사진 파일이 없습니다.";
+  if (file.size > PROGRAM_SCHEDULE_PHOTO_MAX_BYTES)
+    return "프로그램 사진 파일 크기는 5MB 이하여야 합니다.";
+  const contentType = normalizeProgramSchedulePhotoContentType(file.type);
+  if (!contentType || !PROGRAM_SCHEDULE_PHOTO_ALLOWED_TYPES.has(contentType))
+    return PROGRAM_SCHEDULE_PHOTO_UNSUPPORTED_FORMAT_MESSAGE;
+  let header;
+  try {
+    header = await readFileHeaderBytes(file, PROGRAM_SCHEDULE_PHOTO_MAGIC_HEADER_BYTES);
+  } catch {
+    return PROGRAM_SCHEDULE_PHOTO_UNSUPPORTED_FORMAT_MESSAGE;
+  }
+  if (!matchesProgramSchedulePhotoMagicBytes(header, contentType))
+    return PROGRAM_SCHEDULE_PHOTO_UNSUPPORTED_FORMAT_MESSAGE;
+  return null;
+}
+```
+
+### 신규 4-test block (`programsPhoto.test.js`)
+
+| # | test | 시나리오 |
+|---|------|----------|
+| 1 | `accepts jpeg/png/webp under 5MB with matching magic bytes` | positive JPEG/PNG/WEBP (5MB 이하·매직 매치) |
+| 2 | `accepts content types with multipart parameters (BE QA-B578 lockstep)` | `image/jpeg; charset=binary`·`IMAGE/PNG; name=photo.png`·`  image/webp ;q=0.9  ` normalize |
+| 3 | `rejects missing, oversized, and unsupported types` | null·5MB+1·`image/gif`·`image/gif; charset=binary` |
+| 4 | `rejects MIME spoof and truncated magic bytes (BE QA-B585 SEC-D25 lockstep)` | PNG-in-JPEG spoof·not-a-webp ASCII·truncated 2B JPEG·`matchesProgramSchedulePhotoMagicBytes` unit assertion |
+
+### 판정
+
+- **FE SEC-D25 pre-upload magic-byte check** = BNK-839 BE-side SEC-D25 완성한 뒤 **FE-side lockstep** 착지 = **BNK-833→834→835→838→839→840 = v3 photo 6-cycle full-stack 완성**
+- Defense-in-depth: FE reject(client-side, bandwidth 절감·즉시 UX 피드백) + BE reject(storage-layer, 최종 보루) = **감사 우선 3-축 + defense-in-depth**
+- id=5 「프로그램 급여」 **1.0 carry** · KPI promote 0 (이미 최대치)
+- 마케팅 카피 확장: 「MIME 위조 방어 이미지 업로드 — 브라우저에서 즉시 감지」
+
+## BE 63227d7 diff — QA-B95 NoBreakSpace marker lockstep (2 files · +56/-3)
+
+```
+ .../system/LiveE2eOperationReadinessSupport.java   |  6 +--
+ .../LiveE2eOperationReadinessSupportTest.java      | 53 ++++++++++++++++++++++
+ 2 files changed, 56 insertions(+), 3 deletions(-)
+```
+
+Commit body:
+
+> Strip legacy `&NoBreakSpace;` aliases during blocker decoding so mid-token bootstrap markers remain detectable, matching frontend QA-B95 behavior.
+
+**판정**: 
+- BE `LiveE2eOperationReadinessSupport` 이 `&NoBreakSpace;` (HTML 4.01·legacy alias) 를 `\u00A0`(NBSP·`&nbsp;`) 으로 정규화 → 이후 처리 단계에서 mid-token bootstrap marker(예: `bootstrap` 문자열 앞·뒤에 NBSP 삽입된 blocker) 가 정상 감지.
+- FE QA-B95 decoder 는 이미 `&NoBreakSpace;` 처리(BNK-829~831 semicolon-optional 등) → BE `@63227d7` 이 lockstep 정합.
+- Operational hardening only · 기능 갭 아님 · KPI promote 0 · 모듈 97.41% carry.
+
+## KPI 요약 (`@8e28fe0`/`@63227d7`)
+
+| KPI | 값 | 델타 (vs BNK-839) |
+|-----|-----|--------------------|
+| Route | **133** (`<Route\b` 132 + `<Routes>` 1) | 0 |
+| Page (`*Page.jsx` non-test) | **106** | 0 |
+| Flyway | **V1–V196** | 0 (신규 0) |
+| BE Test (`*Test.java`+`*Tests.java`) | 294 + 1 = **295** | 0 |
+| BE `@Test` (raw grep · loose) | **2295** | +1 vs BNK-839 raw 2295 = 0 (raw already 2295 · strict 2294) |
+| BE `@Test` strict (raw − `@TestPropertySource`=1) | **2294** | 0 (BNK-839 strict 2294 IDENTICAL) — BE 63227d7 은 신규 `@Test` 0 개(53-line add 는 helper/픽스처)·기존 test method 본문 확장만·**strict 재실측 필요** |
+| @RestController | **81** | 0 |
+| HTTP 총 | **442** (GET 231 · POST 144 · PATCH 44 · PUT 13 · DELETE 10) | 0 = **6차 byte-exact IDENTICAL** (BNK-834~840 무변동) |
+| FE test | .test.js **216** + .test.jsx **314** = **530** | BNK-839 header 「533(314+219)」 → 실측 recount 530 · Δ-3 (post-cycle 재교차검증 필요·「가정」 유지) |
+| 모듈 커버리지 | **97.41%** (28.25/29) | 0 (id=2/8/10=0.85·id=12=0.7·진성갭 0·residual primary=id=12) |
+
+## audit-first HTTP 442 posture 6차 byte-exact IDENTICAL (BNK-834~840)
+
+`src/main` `@63227d7` grep 실측:
+
+| verb | count | ratio |
+|------|-------|-------|
+| @GetMapping | 231 | 52.3% |
+| @PostMapping | 144 | 32.6% |
+| @PatchMapping | 44 | 10.0% |
+| @PutMapping | 13 | 2.9% |
+| @DeleteMapping | 10 | 2.3% |
+| **합계** | **442** | 100% |
+
+- BNK-834(72a6534) → 835(carry) → 836(759b15e) → 837(bfe6b3f) → 838(a742788) → 839(d1ff63a) → **840(63227d7)** = **6-cycle byte-exact IDENTICAL** = **BE +6 commit(program photo normalize/whitespace/multi-param/magic-byte + accounting SSO validation/error-copy + QA-B95 NBSP) 동안 controller endpoint 신설 0** = service-layer 하드닝 dominant · 감사 우선 read-create dominant API 설계 6차 안정 재확정.
+- PATCH 44 > PUT 13 부분정정 우선 · DELETE 2.3% 최소 = soft-delete/감사 보관 (PIPA 정합) · **물리 삭제 API 신설 금지 posture 재확정**.
+
+## 다음 우선순위
+
+- FE test recount 재교차검증 (다음 6–8h ogada 사이클: 219 vs 216 「가정」 해결)
+- id=12 회계 BPO SSO 활성화 조건(시설 env 대기·PLANNED)
+- v3 program photo SEC-D25 6-cycle full-stack narrative 를 REQUIREMENTS §M5·마케팅 카피에 통합

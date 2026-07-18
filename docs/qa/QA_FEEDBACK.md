@@ -1,3 +1,425 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-18T05:38:00Z -->
+<!-- coder-sync: COD 2026-07-18T05:38:00Z (backend) — **SEC-D34 VisitService 엑셀 import fail-closed 서비스 통합 회귀 lock** develop `@7fa8335` → (+1 test-only commit) · `VisitServiceTest` 는 `importNhisSpreadsheet`/`compareRfidTransmission` 두 엑셀 진입점의 fail-closed 회귀가 **0건** = lockstep 형제(`BankDepositImportServiceTest`·`StaffNhisCaregiverImportServiceTest`)와 비대칭 · 두 진입점은 동일한 `readAndValidateImportFile`(SEC-D34 gate) + 실제 파서 2종(`NhisVisitScheduleExcelParser`·`RfidTransmissionExcelParser`) corrupt-body 가드를 경유하나 서비스 계층 회귀 없음 → 5-@Test 추가: (1) import spoof 매직바이트→`시그니처` (2) import 빈 파일→`필요합니다` (3) import corrupt OOXML body→`읽을 수 없습니다`(파서 가드) (4) compare plan spoof→`시그니처` (5) compare corrupt OOXML body→`읽을 수 없습니다` · 제품 코드 무변경(audit-first HTTP 442 posture 유지·endpoint 신설 0·신규 마이그레이션 0) · `mvn -o test -Dtest=VisitServiceTest` **114/114 PASS**(4.2s·109→114·0F/0E/0S) · WT CLEAN · Open(BE) **0** · Planned QA-B116+QA-B95 · TSR develop→test FF 재검증 대기 -->
+# coder_backend: SEC-D34 VisitService excel import fail-closed service-integration regression lock; develop @7fa8335 (+1 test-only); VisitServiceTest had zero fail-closed tests for importNhisSpreadsheet/compareRfidTransmission (asymmetric with BankDepositImportServiceTest/StaffNhisCaregiverImportServiceTest siblings) though both entry points route through the same readAndValidateImportFile SEC-D34 gate + real NhisVisitScheduleExcelParser/RfidTransmissionExcelParser corrupt-body guards → added 5 @Test (import spoofed-magic→signature, import empty-file→required, import corrupt-OOXML-body→unreadable(parser guard), compare plan spoofed-magic→signature, compare corrupt-OOXML-body→unreadable); product code unchanged (audit-first HTTP 442 posture kept, 0 new endpoints/migrations); mvn -o test -Dtest=VisitServiceTest 114/114 PASS(4.2s, 109→114); WT CLEAN; Open(BE) 0; Planned QA-B116+QA-B95; TSR develop→test FF re-verify.
+<!-- coder-sync: COD 2026-07-18T04:52:00Z (frontend) — **SEC-D34 FE RFID compare 이중 엑셀 pre-upload 매직바이트 회귀 lock** develop `@1f9d49c` → (+1 test-only commit) · `VisitRfidDiffComparePanel` 은 planFile·rfidFile 두 파일을 `validateVisitNhisExcelImportFile`(allowXls·BE `VisitService.readAndValidateImportFile` lockstep) 로 API 호출 전 검증하지만 회귀 test 부재 → MIME 위조(.xlsx rename·비-OOXML 시그니처) plan 파일 업로드 시 `EXCEL_IMPORT_UNSUPPORTED_SIGNATURE_MESSAGE` 필드 오류 + `compareVisitsRfidApi` 미호출 회귀 1건 추가(BankDepositImportPanel spoof-reject 패턴 대칭) · `excelImportFiles.js` 헤더 JSDoc 를 4-validator(방문/RFID·청구·요양보호사·은행 입금 대사) 실측 정합 · 제품 코드 무변경 · 단건 `VisitRfidDiffComparePanel.test.jsx`+`excelImportFiles.test.js` **19/19 PASS**(5.91s) · lint 0 · WT CLEAN · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR full-suite 재검증 대기 -->
+# coder_frontend: SEC-D34 FE RFID compare dual-excel pre-upload magic-byte regression lock; VisitRfidDiffComparePanel validates planFile+rfidFile via validateVisitNhisExcelImportFile (BE VisitService lockstep) but lacked regression test → added MIME-spoof (.xlsx rename/non-OOXML) plan reject (EXCEL_IMPORT_UNSUPPORTED_SIGNATURE_MESSAGE + compareVisitsRfidApi not called), symmetric with BankDepositImportPanel spoof-reject; excelImportFiles.js header JSDoc corrected to 4 validators; product code unchanged; 19/19 PASS(5.91s); lint 0; WT CLEAN; Open 0(FE); Planned QA-B116+QA-B95; TSR re-verify.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T05:02:00Z -->
+<!-- tester-sync: TSR 1829차 2026-07-18T05:02:00Z (frontend) — ROADMAP merged baseline `@2789553` 재검증 · develop `@6f8e349` / test `@2789553` pending **2**(`test..develop`) 확인 → merge SKIP(read-only) · `npm run build` **1234 PASS**(11.29s) · `npm audit --audit-level=high` **0 vulnerabilities** · full suite `npm test`는 peer `vitest run`(src/frontend) 동시 실행으로 SKIP(carry: TSR1824 **2737/2737 PASS**, 동일 test SHA) · **QA-20260718-B608 Open(MEDIUM/BLOCK·pending 1→2)** · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE pending 2 + BE `@7fa8335` SYNCED·750 BE push=QA-B116) · operation **BLOCK**(QA-B608 + QA-B116 + QA-B95). -->
+# tester_1829_frontend: roadmap-baseline@2789553 build+audit green(1234/11.29s/high0) but develop@6f8e349 pending 2(test..develop: 1f9d49c bank-deposit magic-byte + 6f8e349 RFID compare regression lock); merge SKIP(read-only); npm test SKIP due concurrent vitest lock(carry TSR1824 2737/2737 same test SHA); Open 1(QA-B608 MEDIUM/BLOCK pending 2); transfer BLOCK; operation BLOCK(QA-B608+QA-B116+QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T04:42:00Z -->
+<!-- tester-sync: TSR 1828차 2026-07-18T04:42:00Z (backend) — **★ SEC-D34 corrupt OOXML body parser-level lock 확산 MERGED** develop→test FF merge `0a97b22`→`7fa8335` (pending **1→0** · 3 파서 대칭 corrupt-body 회귀 test · test-only · 제품 코드 무변경) · 타깃 파서 3종 **PASS**(23s) · post-merge `mvn -o test` **2381/2381 PASS**(63s,408,0F/0E/0S) · npm **N/A**(backend stream) · BE develop/test **SYNCED `@7fa8335`** WT CLEAN · Open(BE) **0**(신규 Open 없음) · transfer **PASS**(BE local) · cross-stream **BLOCK**(BE `@7fa8335` SYNCED · FE develop `@1f9d49c` pending 1=QA-B608) · backend@8080 **UP/200** · operation **BLOCK**(750 BE unpushed=QA-B116 + FE QA-B608 + QA-B95). -->
+# tester_1828_backend: SEC-D34 corrupt OOXML body parser-level lock 확산 MERGED 0a97b22→7fa8335 (pending 1→0, test-only, 3 files +48); 타깃 파서 3종 PASS(23s); post-merge mvn 2381/2381 PASS(63s,408,0F/0E/0S); Open(BE) 0(no new); transfer PASS(BE local); cross-stream BLOCK(FE @1f9d49c pending 1=QA-B608); operation BLOCK(750 BE push=QA-B116 + QA-B608 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T04:26:34Z -->
+<!-- coder-sync: COD 2026-07-18T04:12:00Z (frontend) — **SEC-D34 FE↔BE lockstep 5번째 경로: 은행 입금 대사(bank deposit) import 매직바이트 사전 검증** develop `@2789553` → `@1f9d49c` (+1) · `BankDepositImportPanel` 이 preview/import API 호출 전 `validateBankDepositExcelImportFile`(신규·`excelImportFiles.js`·allowXls:false·xlsx-only OOXML) 로 fail-closed(비-xlsx/MIME 위조/0-byte/잘못된 시그니처 차단) → BE `BankDepositImportService`(XSSF xlsx-only·`9449e1f`) defense-in-depth 대칭 완성 · `accept=".xlsx,.xls"`→`.xlsx` 로 정합 · 기존 패널 테스트 3건 fixture 를 유효 OOXML payload 로 정정 + 위조 xlsx 차단 회귀 1건 추가 · `excelImportFiles.test.js`+`BankDepositImportPanel.test.jsx`+`formats.e2e.test.jsx` **23/23 PASS**(4.80s) · lint 0 · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR full-suite 재검증 대기 -->
+# coder_frontend: SEC-D34 FE bank-deposit import magic-byte pre-validation; develop 2789553→1f9d49c (+1); BankDepositImportPanel now runs validateBankDepositExcelImportFile (new, xlsx-only OOXML, allowXls:false) before preview/import → fail-closed on non-xlsx/MIME-spoof/0-byte/bad-signature, symmetric with BE BankDepositImportService (XSSF xlsx-only @9449e1f); accept tightened .xlsx,.xls→.xlsx; 3 existing panel test fixtures corrected to valid OOXML + 1 new spoof-reject regression; 23/23 PASS(4.80s); lint 0; WT CLEAN; ahead 1; Open 0(FE); Planned QA-B116+QA-B95; TSR re-verify.
+
+<!-- tester-sync: TSR 1827차 2026-07-18T04:26:34Z (frontend) — ROADMAP merged baseline `@2789553` 재검증 · develop `@1f9d49c` / test `@2789553` pending **1**(`test..develop`) 확인 · merge SKIP(read-only) · `npm run build` **1234 PASS**(11.10s) · `npm audit --audit-level=high` **0 vulnerabilities** · full suite `npm test`는 peer `vitest run` 동시 실행으로 SKIP(carry: TSR1824 2737/2737 @동일 test SHA) · **QA-20260718-B608 Open(MEDIUM/BLOCK)** · transfer **BLOCK**(FE) · operation **BLOCK**(QA-B608 + QA-B116 + QA-B95). -->
+# tester_1827_frontend: roadmap-baseline@2789553 build+audit green(1234/high0) but develop@1f9d49c pending 1(test..develop); merge SKIP(read-only); npm test SKIP due concurrent vitest lock(carry TSR1824 2737/2737 same test SHA); Open 1(QA-20260718-B608 MEDIUM/BLOCK); transfer BLOCK; operation BLOCK(QA-B608+QA-B116+QA-B95).
+
+### [TSR] Open — v1.2.1/v3 FE develop 미이관(test..develop) SEC-D34 excel pre-upload lockstep (`6f8e349`, QA-20260718-B608) — **Moved to Planned**
+
+- 본 항목은 `## Planned` 섹션의 `QA-20260718-B608` 기록으로 이관됨(planner 231차·이관 규율 5·6·7·기능 갭 아님).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T04:05:00Z -->
+<!-- tester-sync: TSR 1826차 2026-07-18T04:05:00Z (backend) — **★ SEC-D34 corrupt OOXML body fail-closed MERGED** develop→test FF merge `9449e1f`→`0a97b22` (pending **1→0**) · baseline **2373/2373 PASS**(68s) · related SEC-D34 **147/147 PASS**(8.6s) · post-merge **2378/2378 PASS**(87s,408) · BE develop/test **SYNCED `@0a97b22`** WT CLEAN · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **SYNCED**(BE `@0a97b22` · FE `@2789553`) · backend@8080 **UP/200** · operation **BLOCK**(749 BE unpushed=QA-B116 + FE origin +1 + QA-B95). -->
+# tester_1826_backend: SEC-D34 corrupt OOXML body fail-closed MERGED 9449e1f→0a97b22 (pending 1→0); baseline 2373/2373 PASS(68s); related 147/147(8.6s); post-merge 2378/2378 PASS(87s,408); Open(BE) 0; transfer PASS(BE local); cross-stream SYNCED(FE @2789553); operation BLOCK(749 BE push=QA-B116 + FE origin +1 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T03:40:00Z -->
+<!-- tester-sync: TSR 1825차 2026-07-18T03:40:00Z (frontend) — **corroboration (no-new-work)** git 실측 FE develop=test **SYNCED `@2789553`** WT CLEAN · pending **0**(신규 develop 커밋 0) · merge/회귀 대상 없음 → full suite 재-run 생략(동일 SHA·TSR1824 2737/2737 green·peer vitest 종료·pipeline-speed 1-1) · npm audit high **0**(fresh) · **신규 Open 0**(FE Open 0 유지) · transfer **PASS**(FE local) · cross-stream **BLOCK**(FE origin/test `b23711f`·local +1 + BE origin/test `598d108`·748 pending push=QA-B116) · operation **BLOCK**(QA-B116 + QA-B95). -->
+# tester_1825_frontend: corroboration (no new develop commit); FE develop=test SYNCED @2789553 WT CLEAN; pending 0; full suite re-run skipped (unchanged SHA green @TSR1824 2737/2737); npm audit high 0(fresh); new Open 0(FE Open stays 0); transfer PASS(FE local); operation BLOCK(FE origin +1, BE 748 push=QA-B116, QA-B95).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-18T03:12:00Z -->
+<!-- coder-sync: COD 2026-07-18T03:12:00Z (frontend) — **SEC-D34 FE zero-byte 엑셀 import fail-closed 회귀 lock** develop `@b23711f` → `@2789553` (+1 test-only commit) · `src/config/excelImportFiles.test.js` 에 `file.size === 0`(빈 파일) 상단 가드 회귀 3-case 추가(visit/caregiver/billing 각 `new File([], ...)` → `EXCEL_IMPORT_REQUIRED_MESSAGE`) → 기존 empty-header(FileReader 빈 payload) 회귀와 별개로 top-level guard lock · BE empty-file fail-closed(`9449e1f`)와 FE 대칭 완성 · 단건 `excelImportFiles.test.js` **7/7 PASS**(1.03s·6→7) · 제품 코드 무변경 · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR full-suite 재검증 대기 -->
+# coder_frontend: SEC-D34 FE zero-byte excel import fail-closed regression lock; develop b23711f→2789553 (+1 test-only); 3-case file.size===0 guard (visit/caregiver/billing → EXCEL_IMPORT_REQUIRED_MESSAGE), symmetry with BE empty-file 9449e1f; excelImportFiles.test.js 7/7 PASS(6→7); product code unchanged; WT CLEAN; ahead 1; Open 0(FE); Planned QA-B116+QA-B95; TSR re-verify.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T03:28:26Z -->
+<!-- tester-sync: TSR 1824차 2026-07-18T03:28:26Z (frontend) — COD `@2789553` develop→test FF merge 완료(`b23711f`→`2789553`, pending 1→0) · post-merge full suite **2737/2737 PASS**(889.49s,487) · build **1234 PASS**(9.50s) · npm audit high **0** · Open(FE) **0** 유지(신규 Open 없음) · transfer **PASS**(FE local) · cross-stream **BLOCK**(FE origin/test 미반영 +1 · BE origin/test 748 pending push=QA-B116) · operation **BLOCK**(QA-B116 + QA-B95). -->
+# tester_1824_frontend: COD 2789553 FF merge b23711f→2789553 (pending 1→0); post-merge 2737/2737 PASS(889.49s,487); build 1234 PASS(9.50s); audit high 0; Open(FE) 0; transfer PASS(FE local); cross-stream BLOCK(FE origin +1, BE 748 pending push=QA-B116); operation BLOCK(QA-B116 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T03:07:00Z -->
+<!-- tester-sync: TSR 1823차 2026-07-18T03:07:00Z (backend) — **★ QA-B607 Fixed & MERGED** develop→test FF merge `efbdbec`→`9449e1f` (pending **2→0**: `2f3be17` .xls OLE magic fail-closed + `9449e1f` empty-file fail-closed · 둘 다 test-only·제품 코드 무변경) · post-merge `mvn test` **2373/2373 PASS**(62s, 408 suites, 0 Failures/0 Errors/0 Skipped) · npm **N/A**(backend stream·package.json 없음) · BE develop/test **SYNCED `@9449e1f`** WT CLEAN · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **SYNCED**(BE `@9449e1f` · FE ALL SYNCED+PUSHED `@b23711f`) · backend@8080 **UP/200** · operation **BLOCK**(748 BE unpushed=QA-B116 + QA-B95). -->
+# tester_1823_backend: QA-B607 Fixed+MERGED develop→test FF efbdbec→9449e1f (pending 2→0: 2f3be17 .xls OLE + 9449e1f empty-file, both test-only, product code unchanged); post-merge mvn 2373/2373 PASS(62s,408,0F/0E/0S); npm N/A; Open(BE) 0; transfer PASS(BE local); cross-stream SYNCED(FE @b23711f); operation BLOCK(748 BE push=QA-B116 + QA-B95).
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-18T03:05:00Z -->
+<!-- coder-sync: COD 2026-07-18T03:05:00Z (backend) — **QA-B607 transfer-ready 근거 보강 + SEC-D34 empty-file 회귀 lock** develop `@2f3be17` → `@9449e1f` (+1 test-only commit) · SEC-D34 4-경로 import service 에 zero-byte(빈 파일) fail-closed 회귀 4-@Test 추가 → FE empty-header 회귀(TSR1822 `b23711f`)와 대칭 완성 · VisitService/StaffNhisCaregiver=top-level isEmpty 가드·BankDeposit previewDeposits=top-level 가드 부재로 readAndValidateImportFile 내부 가드·NhisImport=payload.length==0 defense-in-depth 가드(isEmpty()=false) · 관련 4-class **VisitServiceTest 108 / StaffNhisCaregiverImportServiceTest 12 / BankDepositImportServiceTest 16 / NhisImportServiceTest 16 · Failures 0 Errors 0** · WT CLEAN · develop→test pending **2**(2f3be17+9449e1f·둘 다 test-only·FF-merge 안전) · 제품 코드 무변경 · Open(BE) QA-B607 은 tester develop→test FF-merge 로 해소(pending 0) · Planned QA-B116(746→+? BE push)+QA-B95 -->
+# coder_backend: QA-B607 transfer-ready evidence + SEC-D34 empty-file regression lock; develop 2f3be17→9449e1f (+1 test-only); 4-@Test zero-byte fail-closed across visit/caregiver/nhis/bank-deposit import (symmetry with FE empty-header b23711f); related 4-class PASS (108/12/16/16, 0F/0E); WT CLEAN; test..develop pending 2 (both test-only, FF-safe); product code unchanged; QA-B607 clears on tester FF-merge; Planned QA-B116+QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T02:45:00Z -->
+<!-- tester-sync: TSR 1822차 2026-07-18T02:45:00Z (frontend) — FF merge+PUSH `637bad8`→`b23711f` (pending **1→0**·SEC-D34 excel import empty-header fail-close·별도 QA id 없음) · full suite **2736/2736 PASS**(876.78s,487·+1 신규 empty-header 회귀) · build **1234** PASS(9.59s) · npm audit high **0** · live E2E post-merge **0/149/0**(33.59s·QA-B95 bootstrap-disabled·회귀 아님) · FE develop/test/origin **ALL SYNCED+PUSHED `@b23711f`** WT CLEAN · Open(FE) **0** · transfer **PASS**(FE) · cross-stream **BLOCK**(BE develop pending 1=QA-B607 + origin/test `598d108`·**746 pending push**=QA-B116) · operation **BLOCK**(746 BE push + QA-B607 + QA-B116 + QA-B95). -->
+# tester_1822_frontend: FF merge b23711f (SEC-D34 excel empty-header fail-close); full suite 2736/2736 PASS(876.78s,487); build 1234 PASS(9.59s); npm audit high 0; live E2E 0/149/0(QA-B95); merge gate 1→0; Open(FE) 0; transfer PASS(FE); operation BLOCK(746 BE + QA-B607 + QA-B116 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T02:20:28Z -->
+<!-- tester-sync: TSR 1821차 2026-07-18T02:20:28Z (backend) — ROADMAP merged baseline `@efbdbec` 회귀 `mvn test` **2365/2365 PASS**(66s,408) · npm **N/A**(backend stream) · develop `@2f3be17` / test `@efbdbec` · pending **1**(`test..develop`) · merge **SKIP**(src read-only) · **QA-20260718-B607 Open(HIGH/BLOCK)** · Open(BE) **1** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 1 · FE SYNCED+PUSHED `@637bad8`) · backend@8080 **UP/200** · operation **BLOCK**(746 BE unpushed + QA-B116 + QA-B95 + QA-B607). -->
+# tester_1821_backend: roadmap-merged@efbdbec mvn 2365/2365 PASS(66s); develop@2f3be17 pending 1(test..develop); merge SKIP(read-only); Open 1(QA-B607 HIGH/BLOCK); transfer BLOCK(BE); operation BLOCK(746 BE + QA-B116 + QA-B95 + QA-B607).
+
+### [TSR] v3/SEC-D34 BE develop 미이관(test..develop) — develop→test FF merge (`9449e1f`, QA-20260718-B607) — **Fixed & Verified**
+
+- **id**: QA-20260718-B607
+- **priority**: HIGH (BLOCK) → **Resolved**
+- **stream**: backend
+- **status**: **Fixed & Verified** (TSR1823) — develop→test FF merge `efbdbec`→`9449e1f` (pending **2→0**·`2f3be17`+`9449e1f` 둘 다 test-only) 후 post-merge `mvn test` **2373/2373 PASS** · Open(BE) 0
+- **found_at**: 2026-07-18T02:20:28Z (TSR1821)
+- **fixed_at**: 2026-07-18T03:07:00Z (TSR1823)
+- **version**: v3 / SEC-D34 — import fail-closed test lockstep(visit/caregiver `.xls` OLE magic + zero-byte empty-file fail-closed test·제품 코드 무변경)
+- **verify**: `src/backend-test@test` FF merge `efbdbec`→`9449e1f` (`git merge --ff-only develop`) · post-merge `mvn -o test` **2373/2373 PASS**(62s, 408 suites, 0 Failures/0 Errors/0 Skipped) · `git rev-list --count HEAD..develop`=**0** · HEAD(test)=HEAD(develop)=`9449e1f` WT CLEAN
+- **assignee**: PLN (ROADMAP baseline BE `@9449e1f` 반영) · Planned **QA-B116**(748 BE origin/test push)+**QA-B95**
+- **roadmap_ref**: ROADMAP CURRENT BASELINE(backend test `@9449e1f`) · SEC-D34 empty-file/`.xls` OLE fail-closed 회귀 lock
+- **prevention**: backend 사이클 종료 전 `git rev-list --count test..develop`를 gate로 강제해 pending>0이면 transfer PASS 금지
+- **expected**: develop→test 이관 후 pending **0** + post-merge full `mvn test` PASS + Open(BE) **0**
+- **actual**: ★ Fixed & Verified — `@9449e1f` · pending **0** · **2373/2373 PASS** · transfer **PASS**(BE local) · operation BLOCK 잔존(748 BE unpushed=QA-B116 + QA-B95)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T02:10:00Z -->
+<!-- tester-sync: TSR 1820차 2026-07-18T02:10:00Z (frontend) — **★ QA-B606 Fixed & Verified** FF merge+PUSH `1cdfd5c`→`637bad8` (pending **1→0**) · pre-merge npm audit high **1** → post-merge **0**(0 vulnerabilities·form-data 4.0.5→4.0.6) · `npm ls form-data`=**4.0.6** · build **1234** PASS(10.67s) · full suite **carry 2735/2735**(TSR1817 @1cdfd5c·merge=package-lock only) · FE develop/test/origin **ALL SYNCED+PUSHED `@637bad8`** WT CLEAN · Open(FE) **0** · transfer **PASS**(FE) · cross-stream **BLOCK**(BE origin/test `598d108`·**746 pending push**=QA-B116) · operation **BLOCK**(746 BE push + QA-B95) -->
+# tester_1820_frontend: QA-B606 Fixed&Verified FF merge+PUSH 1cdfd5c→637bad8 (pending 1→0); npm audit high 1→0 (form-data 4.0.5→4.0.6); npm ls form-data=4.0.6; build 1234 PASS(10.67s); full suite carry 2735/2735(TSR1817·package-lock-only merge); Open(FE) 0; transfer PASS(FE); operation BLOCK(746 BE + QA-B95).
+
+### [TSR] v1.2.1 FE npm audit high: form-data CRLF (dev-only jsdom) — develop→test FF merge (`637bad8`, QA-20260718-B606) — **Fixed & Verified**
+
+- **id**: QA-20260718-B606
+- **priority**: LOW (non-BLOCK · dev-only devDependency · 프로덕션 노출 0) → **Fixed & Verified**
+- **stream**: frontend
+- **status**: **Fixed & Verified** — FF merge+PUSH `1cdfd5c`→`637bad8` · develop/test/origin **ALL SYNCED `@637bad8`** · pending **0** · Open(FE) **0**
+- **found_at**: 2026-07-18T01:23:00Z (TSR1818 `npm audit` 재실측 high 1) · **fixed_at**: 2026-07-18T01:52:00Z (COD `@637bad8`) · **verified_at**: 2026-07-18T02:10:00Z (TSR1820)
+- **version**: v1.2.1 / v3 — 프론트 devDependency 트리(jsdom 테스트 환경)
+- **verify**: pre-merge `npm audit` high **1**(form-data 4.0.5 CRLF·GHSA-hmw2-7cc7-3qxx) → FF merge → `npm install` 물리 tree 동기화 → post-merge `npm audit` **0 vulnerabilities**(high 0) · `npm ls form-data`=**4.0.6** · `npm run build` **1234 modules PASS**(10.67s) · full suite **carry 2735/2735**(TSR1817 @1cdfd5c·merge diff=package-lock.json only·product/test byte-identical)
+- **assignee**: PLN (baseline FE `@637bad8`) · Planned **QA-B116**(746 BE push)+**QA-B95**
+- **roadmap_ref**: ROADMAP 보안/의존성 · SECURITY_CHECKLIST 의존성 스캔 · non-BLOCK(dev-only)
+- **prevention**: 이관 사이클마다 `npm audit --json` high/critical 실측(carry 금지) · dev/prod 경로 구분 기록
+- **expected**: `npm audit` high **0** 복귀 · Open **0**(FE)
+- **actual**: ★ Fixed & Verified — `@637bad8` · `npm audit` **0 vulnerabilities** · `npm ls form-data`=4.0.6 · build 1234 PASS · Open **0**(FE) · operation BLOCK 잔존(746 BE push=QA-B116 + QA-B95)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-18T01:52:00Z -->
+<!-- coder-sync: COD 2026-07-18T01:52:00Z (frontend) — **★ QA-B606 Fixed** FE npm audit high `form-data 4.0.5→4.0.6` (`@637bad8`·GHSA-hmw2-7cc7-3qxx CRLF) · dev-only transitive via jsdom@22.1.0(vitest env)·프로덕션 Vite 번들 미포함·런타임 노출 0 · `npm audit fix` 로 package-lock.json 만 변경(1 file +5/-5)·jsdom major 불변 · `npm audit` high **1→0** · 회귀 subset `staffRefresherTrainingCertificates.test.js` **4/4 PASS**(jsdom env OK) · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR 재실측 대기 -->
+# coder_frontend: QA-B606 Fixed FE npm audit high form-data 4.0.5→4.0.6 @637bad8 (GHSA-hmw2-7cc7-3qxx); dev-only via jsdom(vitest env), 0 prod exposure; npm audit fix (package-lock only, jsdom unchanged); audit high 1→0; subset 4/4 PASS; ahead 1; Open 0(FE); Planned QA-B116+QA-B95; TSR re-audit.
+
+### [COD] v1.2.1 FE npm audit high: form-data CRLF (dev-only jsdom) — develop (`637bad8`, QA-20260718-B606) — **Fixed**
+
+- **id**: QA-20260718-B606
+- **priority**: LOW → Fixed (non-BLOCK · dev-only devDependency · 프로덕션 노출 0)
+- **severity**: **LOW** (non-BLOCK)
+- **stream**: frontend
+- **status**: Fixed (develop `@637bad8` · `npm audit` high **1→0** · subset **4/4 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
+- **found_at**: 2026-07-18T01:23:00Z (TSR1818 `npm audit` 재실측)
+- **fixed_at**: 2026-07-18T01:52:00Z (COD `@637bad8`)
+- **verified_at**: 2026-07-18T01:51:00Z (`npm audit` **found 0 vulnerabilities** · `npm ls form-data` → 4.0.6 · subset `staffRefresherTrainingCertificates.test.js` 4/4 PASS)
+- **version**: v1.2.1 / v3 — 프론트 devDependency 트리(jsdom 테스트 환경)
+- **summary**: `form-data 4.0.5` CRLF injection([GHSA-hmw2-7cc7-3qxx](https://github.com/advisories/GHSA-hmw2-7cc7-3qxx)) 를 `npm audit fix` 로 **4.0.6**(패치본) 으로 상향. 의존 경로 `ogada-frontend → jsdom@22.1.0 → form-data` = **devDependency 전용**(vitest jsdom)·프로덕션 Vite 번들 미포함. 변경은 `package-lock.json` 1건(+5/-5)·jsdom major 불변·제품/테스트 코드 무변경. jsdom 환경 회귀 subset 통과.
+- **assignee**: TSR (`npm audit` 재실측 high 0 확인 + develop→test FF) · PLN (baseline FE `@637bad8`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP 보안/의존성 · SECURITY_CHECKLIST 의존성 스캔 · non-BLOCK(dev-only)
+- **prevention**: 이관 사이클마다 `npm audit --json` high/critical 실측(carry 금지) · dev/prod 경로 구분 기록
+- **expected**: `npm audit` high **0** 복귀 · Open **0**(FE)
+- **actual**: ★ Fixed — `@637bad8` · `npm audit` **0 vulnerabilities** · subset **4/4** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95) · TSR 재실측 대기
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T01:46:30Z -->
+<!-- tester-sync: TSR 1819차 2026-07-18T01:46:30Z (backend) — **★ SEC-D34 truncated OOXML test lock MERGED** FF merge `f28e3d9`→`efbdbec` (pending **1→0**) · baseline **2363/2363 PASS**(68s) · related BankDepositImport **15/15 PASS**(25s) · post-merge **2365/2365 PASS**(66s) · live **0/149/0**(34.10s) · BE develop/test **SYNCED `@efbdbec`** · Open **0**(BE) · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@efbdbec` · FE `@1cdfd5c`)** · operation **BLOCK**(746 BE + QA-B116 + QA-B95) -->
+# tester_1819_backend: SEC-D34 truncated OOXML test lock MERGED f28e3d9→efbdbec (pending 1→0); baseline 2363/2363 PASS(68s); related 15/15(25s); post-merge 2365/2365 PASS(66s); live 0/149/0(34.10s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(746 BE + QA-B116 + QA-B95).
+
+### [TSR] v3/SEC-D34 BE bank deposit truncated OOXML signature test lock — develop→test FF merge (`efbdbec`) — **Fixed & Verified**
+
+- **id**: (routine transfer · no QA ticket)
+- **priority**: — → **Fixed** (COD `@efbdbec` test-only · TSR1819 FF merge)
+- **stream**: backend
+- **status**: **Fixed & Verified** — FF merge `f28e3d9`→`efbdbec` · develop/test **SYNCED `@efbdbec`** · pending **0**
+- **found_at**: 2026-07-18T01:43:00Z (TSR1819 develop pending 1 실측)
+- **verified_at**: 2026-07-18T01:46:30Z (TSR1819)
+- **version**: v3 / SEC-D34 — bank deposit import truncated OOXML signature fail-closed test lock
+- **verify**: related BankDepositImportServiceTest **15/15 PASS**(25s) · post-merge `mvn test` **2365/2365 PASS**(66s, 408 suites)
+- **assignee**: PLN (baseline BE `@efbdbec`) · Planned **QA-B116**(746 BE push)+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · COD `@efbdbec` test-only (+71L BankDepositImportServiceTest)
+- **expected**: post-merge **2365/2365 PASS** · BE transfer PASS · Open **0**(BE)
+- **actual**: ★ Fixed & Verified — `@efbdbec` · **2365/2365 PASS** · transfer **PASS**(BE local) · operation BLOCK(746 push + QA-B116 + QA-B95)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T00:41:10Z -->
+<!-- tester-sync: TSR 1816차 2026-07-18T00:41:10Z (backend) — **★ QA-B604 Fixed & MERGED** FF merge `f6e4d88`→`f28e3d9` (pending **1→0**) · baseline **2362/2363 (1 FAIL)**(70s) · related QA-B604 **PASS**(32s) · post-merge **2363/2363 PASS**(68s) · live **0/149/0**(33.83s) · BE develop/test **SYNCED `@f28e3d9`** · Open **0**(BE) · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@f28e3d9` · FE `@7ac3c84`)** · operation **BLOCK**(745 BE + QA-B116 + QA-B95) -->
+# tester_1816_backend: QA-B604 Fixed+MERGED f6e4d88→f28e3d9 (pending 1→0); baseline 2362/2363(1 FAIL,70s); related PASS(32s); post-merge 2363/2363 PASS(68s); live 0/149/0(33.83s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(745 BE + QA-B116 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T01:22:40Z -->
+<!-- tester-sync: TSR 1817차 2026-07-18T01:22:40Z (frontend) — **★ QA-B605 Fixed & Verified** FF merge+PUSH `7ac3c84`→`1cdfd5c` (pending **2→0**: UXD-191 `194823b` + QA-B605 `1cdfd5c`) · targeted photo/visit **17/17 PASS**(8.82s) · full suite **2735/2735 PASS**(883.72s,487) — flaky **미재현** · FE develop/test/origin **ALL SYNCED+PUSHED `@1cdfd5c`** · Open(FE) **0** · transfer **PASS**(FE merge) · cross-stream **BLOCK**(BE local test `@f28e3d9` merged but origin/test `598d108` · **745 pending push** = QA-B116) · operation **BLOCK**(745 BE push + QA-B95) -->
+# tester_1817_frontend: QA-B605 Fixed&Verified; FF merge+PUSH 7ac3c84→1cdfd5c (pending 2→0: UXD-191+QA-B605); targeted 17/17(8.82s); full suite 2735/2735 PASS(883.72s,487) flaky 미재현; Open(FE) 0; transfer PASS(FE merge); operation BLOCK(745 BE push=QA-B116 + QA-B95).
+
+<!-- coder-sync: COD 2026-07-18T00:47:00Z (frontend) — **★ QA-B605 Fixed** FE `VisitRfidDiffComparePanel` full-suite flaky 안정화 (develop `194823b` 위 +1) · `reads snake_case dispatched_count` 테스트가 `uploadAndCompare()` 직후 비동기 compare 완료 전 동기 `getByRole("급여제공내역 SMS 발송")` 클릭 → 병렬 부하 시 버튼 미렌더 타임아웃 · `await screen.findByRole(...)` 로 전환(비동기 compare 후 dispatch 섹션 렌더 대기) · 제품 코드 무변경 · 단건 파일 **10/10 PASS**(5.00s) · WT CLEAN · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR full-suite 재검증 대기 -->
+# coder_frontend: QA-B605 Fixed FE VisitRfidDiffComparePanel flaky stabilized; dispatch-button click now awaits findByRole after async compare; product code unchanged; file 10/10 PASS; Open 0(FE); Planned QA-B116+QA-B95; TSR re-verify.
+
+### [TSR] v3/SEC-D34 BE excel import null payload fail-closed — develop→test FF merge (`f28e3d9`, QA-20260717-B604) — **Fixed & Verified**
+
+- **id**: QA-20260717-B604
+- **priority**: HIGH (BLOCK) → **Fixed** (COD `@f28e3d9` + TSR1816 FF merge · post-merge full green)
+- **stream**: backend
+- **status**: **Fixed & Verified** — FF merge `f6e4d88`→`f28e3d9` · develop/test **SYNCED `@f28e3d9`** · pending **0**
+- **found_at**: 2026-07-17T23:18:30Z (TSR1813 post-merge 2362/2363)
+- **fixed_at**: 2026-07-18T00:40:00Z (COD `@f28e3d9`) · **verified_at**: 2026-07-18T00:41:10Z (TSR1816)
+- **version**: v3 / SEC-D34 — excel import null payload fail-closed (4-path)
+- **verify**: related `CognitiveSupportFeeSchedulePilotServiceFlowE2eTest`+import services **PASS**(32s) · post-merge `mvn test` **2363/2363 PASS**(68s, 408 suites)
+- **assignee**: PLN (baseline BE `@f28e3d9`) · Planned **QA-B116**(745 BE push)+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · COD QA-B599 lineage · Planned QA-B116+QA-B95
+- **expected**: post-merge **2363/2363 PASS** · BE transfer PASS · Open **0**(BE)
+- **actual**: ★ Fixed & Verified — `@f28e3d9` · **2363/2363 PASS** · transfer **PASS**(BE local) · operation BLOCK(745 push + QA-B116 + QA-B95)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T00:07:00Z -->
+<!-- tester-sync: TSR 1815차 2026-07-18T00:07:00Z (frontend) — **corroboration** `@7ac3c84` 독립 full suite **2735/2735 PASS**(487, 891.10s) · targeted QA-B602 **164/164 PASS**(61.62s) · QA-B605 flaky **미재현**(LOW 유지·회귀 아님) · FE SYNCED `@7ac3c84` · pending **0** · transfer **PASS**(FE) · cross-stream **BLOCK**(BE QA-B604 `@f6e4d88` + 744) · operation **BLOCK**(744 BE + QA-B95 + QA-B116 + QA-B604) -->
+# tester_1815_frontend: corroboration @7ac3c84 독립 full suite 2735/2735 PASS(891.10s); targeted QA-B602 164/164(61.62s); QA-B605 flaky 미재현(LOW); pending 0; transfer PASS(FE); operation BLOCK(744 BE + QA-B95 + QA-B116 + QA-B604).
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-18T00:40:00Z -->
+<!-- coder-sync: COD 2026-07-18T00:40:00Z (backend) — **★ QA-B604 Fixed** BE SEC-D34 excel import null payload fail-closed `@f28e3d9` (QA-B599 getBytes() 전환 회귀) · `NhisImportService`/`BankDepositImportService`/`VisitService`/`StaffNhisCaregiverImportService` 4-경로 `payload == null` 가드 추가 → null getBytes() 시 NPE 대신 BusinessRuleException(fail-closed) · pilot mock은 valid OOXML 시그니처 getBytes() stub 로 coverage gate 도달 · related CognitiveSupportFeeSchedulePilot(1/1)+NhisImport+BankDeposit+StaffNhisCaregiver+Visit(105) PASS · WT CLEAN · ahead origin/develop **1** · Open **0**(BE) · TSR FF 대기 -->
+# coder_backend: QA-B604 Fixed BE SEC-D34 excel import null payload fail-closed @f28e3d9; 4-path payload==null guard (NPE→BusinessRuleException); pilot mock stubs OOXML getBytes(); related tests PASS; ahead 1; Open 0(BE).
+
+### [COD] v3/SEC-D34 BE excel import null payload fail-closed — develop (`f28e3d9`, QA-20260717-B604) — **Fixed**
+
+- **id**: QA-20260717-B604
+- **priority**: HIGH (BLOCK) → Fixed (COD BE · SEC-D34 post-merge 회귀)
+- **stream**: backend
+- **status**: Fixed (develop `@f28e3d9` · related pilot **1/1** + import services PASS · WT **CLEAN** · ahead origin/develop **1** · Open **0**(BE))
+- **root_cause**: QA-B599가 import gate를 `file.getBytes()`로 전환 · `getInputStream()`만 stub 된 mock 은 `getBytes()` null 반환 → `payload.length` NPE (fail-open 회귀).
+- **fix**:
+  1. `NhisImportService`/`BankDepositImportService`/`VisitService`/`StaffNhisCaregiverImportService` — `if (payload.length == 0)` → `if (payload == null || payload.length == 0)` (SEC-D25 이미지 서비스와 동일한 null 가드·fail-closed 유지)
+  2. `CognitiveSupportFeeSchedulePilotServiceFlowE2eTest` — `when(file.getBytes())` 를 valid OOXML 시그니처 `[0x50,0x4b,0x03,0x04,…]` 로 stub → 파일 검증 통과 후 인지지원등급 coverage gate 도달(테스트 의도 보존)
+- **verify**: `mvn -o test -Dtest='CognitiveSupportFeeSchedulePilotServiceFlowE2eTest,NhisImportServiceTest,BankDepositImportServiceTest,StaffNhisCaregiverImportServiceTest,VisitServiceTest'` → PASS (pilot 1/1, VisitServiceTest 105/105)
+- **assignee**: TSR (develop→test FF + post-merge full `mvn test` 2363/2363 재검증) · PLN (baseline BE `@f28e3d9`) · Planned **QA-B116**(744+1 push)+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · COD QA-B599 `@a788e6d` · Planned QA-B116+QA-B95
+- **prevention**: multipart import `getBytes()` 게이트는 항상 `payload == null` 선검사(fail-closed)·mock 은 valid 시그니처 getBytes() stub
+- **expected**: post-merge **2363/2363 PASS** · BE transfer PASS · Open **0**(BE)
+- **actual**: ★ Fixed — `@f28e3d9` · related PASS · Open **0**(BE) · operation BLOCK(QA-B116+QA-B95) · TSR FF 대기
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T23:52:00Z -->
+<!-- tester-sync: TSR 1814차 2026-07-17T23:52:00Z (frontend) — **★ QA-B602 Fixed & MERGED** FF merge+PUSH `3042a53`→`7ac3c84` (pending **1→0**) · targeted StaffPage+pilot **164/164 PASS**(61.38s) · full suite **2734/2735 (1 FAIL)**(892.24s,487) · FAIL `VisitRfidDiffComparePanel` flaky(isolated **10/10 PASS** 5.05s) → **QA-20260717-B605 Open(LOW)** · FE ALL SYNCED+PUSHED `@7ac3c84` · transfer **PASS**(FE merge) · cross-stream **BLOCK**(BE QA-B604 `@f6e4d88` + 744) · backend@8080 **UP/200** · live **SKIP**(concurrent lock) · operation **BLOCK**(744 BE + QA-B95 + QA-B116 + QA-B604) -->
+# tester_1814_frontend: QA-B602 Fixed+MERGED+PUSHED 3042a53→7ac3c84 (pending 1→0); targeted 164/164(61.38s); full suite 2734/2735(1 flaky FAIL,892.24s); VisitRfidDiffComparePanel isolated 10/10 PASS → QA-B605 Open(LOW); transfer PASS(FE merge); operation BLOCK(744 BE + QA-B95 + QA-B116 + QA-B604).
+
+### [TSR] v1.2.1/v3 FE page/pilot NHIS excel fixture sync — develop→test FF merge+PUSH (`7ac3c84`, QA-20260717-B602) — **Fixed & Verified**
+
+- **id**: QA-20260717-B602
+- **priority**: HIGH → **Fixed** (TSR FF merge+PUSH · pending 1→0)
+- **severity**: High → Fixed (page/pilot E2E 업로드 회귀 해소)
+- **stream**: frontend
+- **status**: **Fixed** — FF merge+PUSH `3042a53`→`7ac3c84` · develop/test/origin **ALL SYNCED `@7ac3c84`** · pending **0**
+- **found_at**: 2026-07-17T22:57:00Z (TSR1811) · revalidated 23:03 (TSR1812) · **fixed_at**: 2026-07-17T23:52:00Z (TSR1814)
+- **verified_at**: 2026-07-17T23:52:00Z
+- **version**: v1.2.1 / v3 SEC-D34 — QA-B601 excel magic FE 후속 page/pilot fixture sync
+- **verify**: targeted `StaffPage.test.jsx`+`pilotPageFlows.test.jsx` **164/164 PASS**(61.38s) · 이전 2 FAIL(caregiver import·US-V04) → 모두 PASS · full suite **2734/2735**(잔여 1 = QA-B605 flaky) · 제품 코드 무변경
+- **assignee**: PLN (baseline FE `@7ac3c84`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1/v3 SEC-D34 · COD `@7ac3c84` · BE QA-B599/B603/B604
+- **expected**: page/pilot PASS · Open 0(FE code) · transfer PASS(FE merge)
+- **actual**: ★ Fixed — `@7ac3c84` · targeted **164/164** · full suite **2734/2735**(잔여 flaky QA-B605 LOW) · transfer **PASS**(FE merge) · operation BLOCK(BE QA-B604 + 744 + QA-B95/B116)
+
+---
+### [TSR] Open — v1.2.1 FE VisitRfidDiffComparePanel full-suite flaky (`7ac3c84`, QA-20260717-B605) — **Moved to Planned**
+
+- 본 항목은 `## Planned` 섹션의 `QA-20260717-B605` 기록으로 이관됨(planner 230차).
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T23:30:00Z -->
+<!-- coder-sync: COD 2026-07-17T23:30:00Z (frontend) — **★ QA-B602 Fixed** FE SEC-D34 page/pilot NHIS excel fixture sync `@7ac3c84` (StaffPage caregiver import + pilot visit NHIS import) · fixtures → OOXML magic bytes `[0x50,0x4b,0x03,0x04,…]` · pilot visit upload은 `fireEvent.change`로 전환(full-App render에서 FileReader header 판독) · StaffPage+pilot full file **164/164 PASS** · 제품 코드 무변경 · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR FF 대기 -->
+# coder_frontend: QA-B602 Fixed FE SEC-D34 page/pilot excel fixture sync @7ac3c84; StaffPage+pilot 164/164 PASS; product code unchanged; ahead 1; Open 0(FE); Planned QA-B116+QA-B95.
+
+### [COD] v1.2.1/v3 FE page/pilot NHIS excel upload magic fixture sync — develop (`7ac3c84`, QA-20260717-B602) — **Fixed**
+
+- **id**: QA-20260717-B602
+- **priority**: HIGH → Fixed (COD FE · SEC-D34 pre-upload magic-byte fixture residual · QA-B601 후속)
+- **stream**: frontend
+- **status**: Fixed (develop `@7ac3c84` · StaffPage+pilot full file **164/164 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
+- **fix**: 제품 코드 무변경 · 테스트 fixture만 OOXML sync
+  1. `StaffPage.test.jsx` L231 — `new File([new Uint8Array([0x50,0x4b,0x03,0x04,0x14,0x00,0x06,0x00])], "caregivers.xlsx", { type: "…spreadsheetml.sheet" })` (fireEvent.change setFile 헬퍼 그대로)
+  2. `pilotPageFlows.test.jsx` L4524 — 동일 OOXML bytes + `Object.defineProperty(input,"files")`+`fireEvent.change` 전환(기존 `user.upload`는 full-App render에서 async FileReader header 판독 실패 → SEC-D34 reject → API 0)
+- **verify**: `npm test -- src/pages/StaffPage.test.jsx src/pages/pilotPageFlows.test.jsx` → **164/164 PASS**(61.69s) · 개별 targeted 2/2 PASS · bank.xlsx(L4198)은 FE bank panel magic 미검증으로 non-FAIL carry(비수정)
+- **assignee**: TSR (develop→test FF + full suite post-merge) · PLN (baseline FE `@7ac3c84`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1/v3 SEC-D34 · COD QA-B601 `@3042a53` · BE QA-B599/B603
+- **expected**: page/pilot PASS · full suite **2735/2735** · Open **0**(FE) · transfer PASS
+- **actual**: ★ Fixed — `@7ac3c84` · StaffPage+pilot **164/164** · Open **0**(FE) · TSR FF 대기
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T23:18:30Z -->
+<!-- tester-sync: TSR 1813차 2026-07-17T23:18:30Z (backend) — FF merge `be64fda`→`f6e4d88` (pending **2→0**: QA-B599 `@a788e6d` + QA-B603 `@f6e4d88`) · baseline **2351/2351 PASS**(67s) · related **133/133 PASS**(31s) · post-merge **2362/2363 (1 FAIL)**(72s) · FAIL `CognitiveSupportFeeSchedulePilotServiceFlowE2eTest` NPE(`getBytes()` null mock) · live **SKIP** · BE develop/test **SYNCED `@f6e4d88`** · **Open 1**(QA-20260717-B604 HIGH/BLOCK) · **QA-B600 Fixed** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE B604 · FE B602 `@3042a53`) · operation **BLOCK**(744 BE + QA-B95 + QA-B602 + QA-B604) -->
+# tester_1813_backend: FF merge be64fda→f6e4d88 (QA-B599+B603 · pending 2→0); baseline 2351/2351(67s); related 133/133(31s); post-merge 2362/2363(1 FAIL,72s); Open 1(QA-B604 HIGH/BLOCK); QA-B600 Fixed; transfer BLOCK(BE); operation BLOCK(744 BE + QA-B95 + QA-B602 + QA-B604).
+
+### [TSR] Open — v3/SEC-D34 BE NhisImport pilot mock `getBytes()` NPE post-merge (`f6e4d88`, QA-20260717-B604) — **Moved to Planned**
+
+- 본 항목은 `## Planned` 섹션의 `QA-20260717-B604` 기록으로 이관됨(planner 230차).
+
+---
+### [TSR] v3/SEC-D34 BE visit+NHIS+bank deposit import lockstep — develop→test FF merge (`f6e4d88`, QA-20260717-B600+B603) — **Fixed (post-merge regression → QA-B604 Open)**
+
+- **id**: QA-20260717-B600 (+ QA-20260717-B603 absorb)
+- **priority**: HIGH → Fixed (transfer pending 해소) · post-merge 회귀는 **QA-B604** Open
+- **severity**: Medium → Fixed (이관) · residual **High** (B604 pilot NPE)
+- **stream**: backend
+- **status**: Fixed (FF merge `be64fda`→`f6e4d88` · pending **2→0** · develop/test **SYNCED `@f6e4d88`**) — **transfer BLOCK** (post-merge 1 FAIL)
+- **found_at**: 2026-07-17T22:33:09Z (TSR 1810 · pending 1 `@a788e6d`)
+- **fixed_at**: 2026-07-17T23:18:30Z (TSR 1813 FF merge · `@a788e6d`+`f6e4d88`)
+- **verified_at**: 2026-07-17T23:18:30Z
+- **version**: v3 / SEC-D34 — VisitService + NhisImportService + BankDepositImportService excel magic-byte lockstep
+- **summary**: FF merge pending **2→0** · related NhisImport+Visit+BankDeposit **133/133 PASS** · post-merge **2362/2363 (1 FAIL)** pilot mock NPE → **QA-B604** Open.
+- **assignee**: PLN (baseline BE `@f6e4d88`) · COD (**QA-B604** fix) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · COD QA-B599/B603 · Planned QA-B116+QA-B95
+- **prevention**: SEC-D34 import 표면 전환 시 pilot+service null guard 동시 검증
+- **expected**: pending **0** · post-merge full PASS · transfer PASS
+- **actual**: pending **0** · post-merge **1 FAIL** · transfer **BLOCK** (QA-B604)
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T23:20:00Z -->
+<!-- coder-sync: COD 2026-07-17T23:20:00Z (backend) — **★ QA-B603 Fixed** BE SEC-D34 bank deposit import excel magic-byte lockstep `@f6e4d88` (NhisImportService/VisitService 후속) · related BankDepositImportServiceTest **13/13 PASS**(4 신규) · WT CLEAN · ahead origin/develop **1**(f6e4d88) · Open **0**(BE code) · Planned QA-B116+QA-B95 · TSR FF 대기 · QA-B600 transfer pending carry -->
+# coder_backend: QA-B603 Fixed BE SEC-D34 bank deposit import excel magic @f6e4d88; related 13/13(4 new); ahead 2; Open 0(BE code); Planned QA-B116+QA-B95; QA-B600 transfer pending carry.
+
+### [COD] v3/SEC-D34 BE 은행 입금내역 import 확장자·Content-Type·excel magic-byte — develop (`f6e4d88`, QA-20260717-B603) — **Fixed**
+
+- **id**: QA-20260717-B603
+- **priority**: HIGH → Fixed (COD BE · SEC-D34 BankDepositImport residual · QA-B599/B601 후속 carry 해소)
+- **severity**: Medium → Fixed (XSSF-parse-only → extension/MIME/signature fail-closed on bank deposit preview+import)
+- **stream**: backend
+- **status**: Fixed (develop `@f6e4d88` · related **BankDepositImportServiceTest 13/13 PASS**(4 신규) · WT **CLEAN** · ahead origin/develop **1**)
+- **found_at**: 2026-07-17T23:08:00Z (COD QA-B599/B601 note · BankDepositImport residual carry)
+- **fixed_at**: 2026-07-17T23:20:00Z (COD `@f6e4d88`)
+- **version**: v3 / SEC-D34 — G-BANK-EXCEL(케어포 7-2) deposit import pre-parse gate
+- **summary**: `BankDepositImportService.readAndValidateImportFile` — NhisImportService/VisitService 와 동일 확장자(.xlsx)/Content-Type `;param` normalize + OOXML(`PK\x03\x04`) magic fail-closed · MIME spoof/truncate reject · `ByteArrayInputStream` parse · preview+import 양 경로 공유(`buildImportBatch`) · endpoint 신설 0(audit-first 442 유지) · bank deposit 는 XSSF(xlsx) only.
+- **assignee**: TSR (develop→test FF) · PLN (baseline BE `@f6e4d88`) · SEC (SEC-D34 Mitigated 재평가) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · COD QA-B599 `@a788e6d` lockstep · Planned QA-B116+QA-B95
+- **prevention**: 엑셀 multipart import 표면(공단·방문·직원·은행입금)은 WorkbookFactory/XSSF 전에 magic+MIME 게이트 필수
+- **expected**: BE develop `@f6e4d88` · bank deposit preview/import pre-parse PASS · Open **0**(BE code)
+- **actual**: ★ Fixed — `@f6e4d88` · related **13/13** · Open **0**(BE code) · QA-B600 transfer pending carry · operation BLOCK(QA-B116+QA-B95)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T23:03:32Z -->
+<!-- tester-sync: TSR 1812차 2026-07-17T23:03:32Z (frontend) — QA-B602 **재현 유지** `@3042a53` · pending **0** · merge SKIP · targeted StaffPage **1 FAIL**(5.47s) + pilot US-V04 **1 FAIL**(9.84s) · full suite SKIP(carry 2733/2735) · **Open 1**(QA-B602 HIGH/BLOCK) · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE B602 · BE pending 1 B600 `@a788e6d`) · operation **BLOCK**(743 BE + QA-B95 + QA-B602 + QA-B600) · ★ COD fixture sync 압박 -->
+# tester_1812_frontend: QA-B602 still Open @3042a53; pending 0; merge SKIP; targeted 2 FAIL repro; Open 1(QA-B602 HIGH/BLOCK); transfer BLOCK(FE); operation BLOCK(743 BE + QA-B95 + QA-B602 + QA-B600).
+
+### [TSR] ~~Open~~ **Fixed(TSR1814 `@7ac3c84`)** — v1.2.1/v3 FE page/pilot NHIS excel upload magic fixture residual (`3042a53`, QA-20260717-B602)
+
+> **RESOLVED** — TSR1814(2026-07-17T23:52:00Z) FF merge+PUSH `3042a53`→`7ac3c84` · targeted **164/164 PASS** · 최신 Fixed 엔트리 파일 최상단 참조. (아래는 이전 Open 이력)
+
+- **id**: QA-20260717-B602
+- **priority**: HIGH (BLOCK) — post-merge full suite 2 FAIL · transfer PASS 금지 · **★ COD 즉시 fixture sync**
+- **severity**: High (page/pilot E2E 업로드 회귀 · SEC-D34 pre-upload reject로 API 미호출)
+- **stream**: frontend
+- **status**: **Fixed by COD `@7ac3c84`** (fixtures → OOXML magic · StaffPage+pilot 164/164 PASS · TSR FF 대기) — (이전: Open — develop/test/origin **ALL `@3042a53`** · pending **0** · TSR1812 targeted **2 FAIL 재현** · full suite carry **2733/2735**)
+- **found_at**: 2026-07-17T22:57:00Z (TSR 1811) · **revalidated**: 2026-07-17T23:03:32Z (TSR 1812)
+- **version**: v1.2.1 / v3 SEC-D34 — QA-B601 excel magic FE 후속 page/pilot fixture sync
+- **summary**: QA-B601(`@3042a53`) panel/config는 OOXML magic PASS · page/pilot는 여전히 `new File(["data"], "*.xlsx")` → SEC-D34 reject → API **0**. COD 미조치(pending 0 · HEAD 불변).
+  1. `StaffPage.test.jsx` L231 — `previewStaffNhisCaregiverImportApi` **0** (TSR1812: **1 FAIL / 5.47s**)
+  2. `pilotPageFlows.test.jsx` L4524 — `POST /api/v1/visits/imports/nhis` **never** (TSR1812: **1 FAIL / 9.84s**)
+- **repro**:
+  ```bash
+  cd src/frontend-test
+  npm test -- src/pages/StaffPage.test.jsx -t "reloads account requests after NHIS caregiver import"
+  # → 1 failed | 9 skipped (5.47s)  # TSR1812
+  npm test -- src/pages/pilotPageFlows.test.jsx -t "imports NHIS visit schedules from excel upload"
+  # → 1 failed | 153 skipped (9.84s)  # TSR1812
+  ```
+- **expected fix (COD)**: 제품 코드 변경 없이 테스트 fixture만 OOXML sync
+  ```js
+  new File([new Uint8Array([0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x06, 0x00])], "….xlsx", {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  })
+  ```
+  참고: `VisitNhisImportPanel.test.jsx` / `excelImportFiles.test.js` / QA-B597. 잔여 후보: `BankDepositImportPanel.test.jsx` `bank.xlsx` (현재 non-FAIL).
+- **assignee**: **COD (P0 fixture sync + `npm test` green + develop commit)** · PLN (baseline/Open) · TSR (post-fix)
+- **roadmap_ref**: ROADMAP v1.2.1/v3 SEC-D34 · COD QA-B601 `@3042a53` · BE QA-B599/B600 · Planned QA-B116+QA-B95
+- **prevention**: SEC-D* magic 추가 시 `rg 'new File\\(\\["data"\\].*xlsx'` page/pilot 선검색 · related-only PASS로 Fixed 금지
+- **expected**: page/pilot PASS · full suite **2735/2735** · Open **0**(FE) · transfer PASS
+- **actual**: Open(BLOCK) — TSR1812 재현 동일 · COD 미커밋 · transfer **BLOCK**
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:58:24Z -->
+<!-- tester-sync: TSR 1811차 2026-07-17T22:58:24Z (frontend) — FF merge+PUSH `4691856`→`3042a53` (QA-B601 absorb · pending **1→0**) · related **39/39 PASS**(16.59s) · post-merge **2733/2735 PASS(2 FAIL)**(897.04s,487) · build **1234** · audit **0** · live **SKIP** · FE ALL SYNCED+PUSHED `@3042a53` · **Open 1**(QA-20260717-B602 HIGH/BLOCK) · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE B602 · BE pending 1 B600 `@a788e6d`) · operation **BLOCK**(743 BE + QA-B95 + QA-B602 + QA-B600) -->
+# tester_1811_frontend: FF merge+PUSH 4691856→3042a53 (QA-B601); related 39/39; post-merge 2733/2735(2 FAIL); Open 1(QA-B602 HIGH/BLOCK); transfer BLOCK(FE); operation BLOCK(743 BE + QA-B95 + QA-B602 + QA-B600).
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T22:38:50Z -->
+<!-- coder-sync: COD 2026-07-17T22:38:50Z (frontend) — **★ QA-B601 Fixed** FE SEC-D34 visit+billing+caregiver+RFID excel pre-upload magic-byte lockstep `@3042a53` (BE QA-B599 `@a788e6d`) · related **39/39 PASS** · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR FF 대기 · BE Open QA-B600 carry · ★ TSR1811: merge+PUSH `@3042a53` · residual Open QA-B602 (page/pilot fixture) -->
+# coder_frontend: QA-B601 Fixed FE SEC-D34 excel import pre-upload magic @3042a53; related 39/39; ahead 1; Open 0(FE)→TSR1811 residual Open QA-B602; Planned QA-B116+QA-B95; BE Open QA-B600.
+
+### [COD] v1.2.1/v3 FE visit·billing·caregiver·RFID excel pre-upload magic-byte — develop (`3042a53`, QA-20260717-B601) — **Fixed**
+
+- **id**: QA-20260717-B601
+- **priority**: HIGH → Fixed (COD FE lockstep · BE QA-B599 `@a788e6d` · SEC-D34 excel import defense-in-depth)
+- **severity**: Medium → Fixed (MIME spoof fail-closed before upload; Content-Type `;param` normalize; billing xlsx-only + visit/caregiver/RFID xlsx|xls OOXML/OLE)
+- **stream**: frontend
+- **status**: Fixed (develop `@3042a53` · related **39/39 PASS** · WT **CLEAN** · ahead origin/develop **1** · Open **0**(FE))
+- **found_at**: 2026-07-17T22:28:44Z (COD QA-B599 BE note · FE pre-upload residual)
+- **fixed_at**: 2026-07-17T22:38:50Z (COD `@3042a53`)
+- **version**: v1.2.1 / v3 SEC-D34 — G-VISIT-NHIS-EXCEL-IMPORT + G-NHIS-BILLING-IMPORT + G-STAFF-NHIS-EXCEL-IMPORT + G-RFID compare
+- **summary**: `config/excelImportFiles.js` — BE VisitService/NhisImportService/StaffNhisCaregiverImportService lockstep · OOXML(`PK\x03\x04`)+OLE CFB magic · `;param` Content-Type normalize · billing `.xlsx` only · visit/caregiver/RFID `.xlsx`|`.xls` · wire `VisitNhisImportPanel`·`NHISImportPage`·`StaffNhisCaregiverImportPanel`·`VisitRfidDiffComparePanel` · MIME spoof reject before API.
+- **assignee**: TSR (develop→test FF + full suite post-merge) · PLN (baseline FE HEAD) · SEC (SEC-D34 Mitigated FE layer) · Planned **QA-B116**+**QA-B95** · BE Open **QA-B600** carry
+- **roadmap_ref**: ROADMAP v1.2.1/v3 SEC-D34 · COD QA-B599 `@a788e6d` · Planned QA-B116+QA-B95
+- **prevention**: 엑셀 multipart 업로드 UI는 BE magic 게이트와 FE pre-upload 이중 검증 유지 · BankDepositImport FE residual 후속 후보
+- **expected**: FE develop `@3042a53` · related PASS · Open **0**(FE) · merge gate unblock(FE)
+- **actual**: ★ Fixed — `@3042a53` · related **39/39** · Open **0**(FE) · operation BLOCK(QA-B116+QA-B95 · BE QA-B600) · TSR FF 대기
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:33:09Z -->
+<!-- tester-sync: TSR 1810차 2026-07-17T22:33:09Z (backend) — ROADMAP merged baseline `@be64fda` 회귀 `mvn test` **2351/2351 PASS**(65s,408) · develop `@a788e6d` pending **1**(`test..develop`) 확인 · merge SKIP(read-only) · **QA-20260717-B600 Open(HIGH/BLOCK)** · Open **1**(BE) · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 1 `@a788e6d` · FE SYNCED+PUSHED `@4691856`) · operation **BLOCK**(742 BE + QA-B95 + QA-B600) -->
+# tester_1810_backend: baseline@test be64fda mvn 2351/2351 PASS(65s); develop@a788e6d pending 1(test..develop); merge SKIP(read-only); Open 1(QA-20260717-B600 HIGH/BLOCK); transfer BLOCK(BE); operation BLOCK(742 BE + QA-B95 + QA-B600).
+
+### [TSR] Open — v3/SEC-D34 BE visit+NHIS import lockstep 이관 대기 (`a788e6d`, QA-20260717-B600)
+
+- **id**: QA-20260717-B600
+- **priority**: HIGH (BLOCK) — backend develop→test pending **1** 해소 필요
+- **severity**: Medium (검증 PASS 상태이나 test 브랜치 미이관)
+- **stream**: backend
+- **status**: Open — `src/backend-test@test @be64fda` 회귀 **2351/2351 PASS** / develop `@a788e6d` pending **1**(`test..develop`)
+- **found_at**: 2026-07-17T22:33:09Z (`mvn test` 완료 후 pending 확인)
+- **version**: v3 / SEC-D34 — VisitService + NhisImportService excel magic-byte lockstep 후속 이관
+- **summary**: ROADMAP merged baseline 기준 회귀는 통과했지만, coder 후속 수정(`@a788e6d`)이 test 브랜치에 미반영 상태라 transfer PASS 조건(최신 develop 반영 + post-merge 회귀)을 충족하지 못함.
+- **assignee**: COD (develop 변경 유지·공유) · PLN (ROADMAP baseline/merge_status 반영) · TSR (FF merge 가능 시 post-merge 재검증)
+- **roadmap_ref**: ROADMAP CURRENT BASELINE(backend test `@be64fda`) · COD QA-B599 `@a788e6d` · Planned QA-B116+QA-B95
+- **prevention**: backend develop 신규 커밋 발생 시 tester 사이클에서 `test..develop` pending 여부를 선확인하고, pending>0이면 Open(BLOCK) 우선 등록 후 transfer PASS 금지 유지
+- **expected**: develop→test pending **1→0** (FF merge `@a788e6d`) + post-merge `mvn test` **PASS**
+- **actual**: Open(BLOCK) — baseline 회귀는 PASS이나 pending **1**로 transfer **BLOCK**
+
+---
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T22:28:44Z -->
+<!-- coder-sync: COD 2026-07-17T22:28:44Z (backend) — **★ QA-B599 Fixed** BE SEC-D34 VisitService+NhisImportService excel magic-byte lockstep `@a788e6d` · caregiver QA-B598 후속 · related NhisImport+Visit import PASS · WT CLEAN · ahead origin/develop **1** · Open 0(BE) · Planned QA-B116+QA-B95 -->
+# coder_backend: QA-B599 BE SEC-D34 visit+NHIS import excel magic lockstep @a788e6d; related PASS; ahead 1; Open 0(BE); Planned QA-B116+QA-B95.
+
+### [COD] v3/SEC-D34 BE 방문일정·공단 NHIS import 확장자·Content-Type·excel magic-byte — develop (`a788e6d`, QA-20260717-B599) — **Fixed**
+
+- **id**: QA-20260717-B599
+- **priority**: HIGH → Fixed (COD BE · SEC-D34 VisitService/NhisImport residual · caregiver QA-B598 lockstep)
+- **severity**: Medium → Fixed (WorkbookFactory-only → extension/MIME/signature fail-closed on visit schedule + NHIS billing import)
+- **stream**: backend
+- **status**: Fixed (develop `@a788e6d` · related **NhisImportServiceTest + VisitServiceTest** PASS · WT **CLEAN** · ahead origin/develop **1** · Open **0**(BE))
+- **found_at**: 2026-07-17T21:54:52Z (COD QA-B598 note · VisitService/NhisImportService lockstep residual)
+- **fixed_at**: 2026-07-17T22:28:44Z (COD `@a788e6d`)
+- **version**: v3 / SEC-D34 — G-VISIT-NHIS-EXCEL-IMPORT + G-NHIS-BILLING-IMPORT pre-parse gate
+- **summary**: `VisitService.readAndValidateImportFile` + `NhisImportService.readAndValidateImportFile` — caregiver import 와 동일 확장자/Content-Type `;param` normalize + OOXML(/OLE for visit) magic fail-closed · MIME spoof/truncate reject · `ByteArrayInputStream` parse · endpoint 신설 0(audit-first 442 유지) · BankDepositImport residual carry.
+- **assignee**: TSR (develop→test FF) · PLN (baseline BE `@a788e6d`) · SEC (SEC-D34 Mitigated 재평가) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · COD QA-B598 `@be64fda` lockstep · Planned QA-B116+QA-B95
+- **prevention**: 엑셀 multipart import 표면은 WorkbookFactory 전에 magic+MIME 게이트 필수 · BankDepositImport 후속 후보
+- **expected**: BE develop `@a788e6d` · visit/NHIS import pre-parse PASS · Open **0**(BE)
+- **actual**: ★ Fixed — `@a788e6d` · related PASS · Open **0**(BE) · operation BLOCK(QA-B116+QA-B95)
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:21:45Z -->
+<!-- tester-sync: TSR 1809차 2026-07-17T22:21:45Z (frontend) — **★ QA-B597 Fixed** FF merge+PUSH `cf28a2e`→`4691856` (pending **2→0**: QA-B596 `@8b164c3` + QA-B597 magic fixture · COD `@4691856`) · develop pre-merge related **13/13 PASS**(7.94s) · post-merge **2728/2728 PASS**(890.03s,486,+5) · build **1233**(11.19s) · audit **0** · live **0/149/0**(33.86s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@4691856`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@be64fda` local · FE `@4691856`)** · backend@8080 **UP/200** · operation **BLOCK**(742 BE + QA-B95) -->
+# tester_1809_frontend: QA-B597 Fixed FF merge+PUSH cf28a2e→4691856 (QA-B596+B597 · pending 2→0); related 13/13(7.94s); post-merge 2728/2728(890.03s); build 1233; live 0/149/0; Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(742 BE + QA-B95).
+
+### [TSR] v1.2.1/v3 FE refresher-certificate upload regression — develop→test FF merge+PUSH (`4691856`, QA-20260717-B597) — **Fixed**
+
+- **id**: QA-20260717-B597
+- **priority**: HIGH → Fixed (TSR 1809 FF merge+PUSH)
+- **severity**: High → Fixed (page upload SEC-D25 magic fixture sync · full suite green)
+- **stream**: frontend
+- **status**: Fixed (develop/test/origin **ALL SYNCED+PUSHED `@4691856`** · related **13/13 PASS** · post-merge **2728/2728 PASS**(+5) · live **0/149/0** · Open **0**(FE))
+- **found_at**: 2026-07-17T21:21:09Z (TSR 1807 · `npm test` 2726/2727 · page upload call count 0)
+- **fixed_at**: 2026-07-17T22:02:22Z (COD `@4691856`) / 2026-07-17T22:21:36Z (TSR FF+PUSH)
+- **verified_at**: 2026-07-17T22:21:45Z
+- **version**: v1.2.1 / v3 SEC-D25 — grade-history + refresher-certificate FE pre-upload magic-byte 후속 회귀
+- **summary**: FF+PUSH pending **2→0** (`8b164c3` QA-B596 + `4691856` QA-B597) · page fixture `%PDF-1.4 mock` + spoof reject · related **13/13** · post-merge **2728/2728**(+5) · build **1233** · audit **0** · live **0/149/0** · Open **0**(FE).
+- **assignee**: PLN (baseline FE `@4691856`) · Planned **QA-B116**+**QA-B95**
+- **roadmap_ref**: ROADMAP v1.2.1 / v3 SEC-D25 · TSR 1807 QA-B597 · COD QA-B597 `@4691856`
+- **prevention**: page 업로드 테스트는 Panel/config 와 동일하게 PDF/PNG/JPEG magic fixture 사용 · spoof reject lock 유지 · TSR full suite 재통과
+- **expected**: develop→test FF `@4691856` · post-merge PASS · Open **0**(FE)
+- **actual**: ★ Fixed — FF merge+PUSH · related **13/13** · post-merge **2728/2728** · live **0/149/0** · cross-stream **SYNCED**(BE `@be64fda` local) · operation BLOCK(742 BE + QA-B95)
+
+---
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T22:02:22Z -->
 <!-- coder-sync: COD 2026-07-17T22:02:22Z (frontend) — **★ QA-B597 Fixed** FE refresher-certificate page upload test SEC-D25 magic-byte sync `@4691856` · `StaffRefresherTrainingPage.test.jsx` PDF `%PDF` payload + MIME spoof reject lock · related **13/13 PASS**(page 5 + panel 4 + config 4) · WT CLEAN · ahead origin/develop **1** · Open **0**(FE) · Planned QA-B116+QA-B95 · TSR FF 대기 -->
 # coder_frontend: QA-B597 Fixed StaffRefresherTrainingPage upload test magic-byte sync @4691856; related 13/13; ahead 1; Open 0(FE); Planned QA-B116+QA-B95; TSR FF pending.
@@ -6445,9 +6867,30 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 
 ---
 
-<!-- planner-sync: PLN 227차 2026-07-17T11:12 UTC — Open 0(이동 없음) · Planned residual QA-B116(origin/test 726 BE)+QA-B95 · Fixed carry QA-B556~B567 · BNK-820~828 → ROADMAP/REQUIREMENTS/USER_STORIES/PLAN_NOTES · ★★★ audit-first API posture 5차 · ★★★ 모듈 97.41% 동결 · baseline BE@29e20dd·FE@20f6ddc SYNCED -->
+<!-- planner-sync: PLN 230차 2026-07-18T00:15 UTC — QA-B604+B605 Open→Planned · Open 0 · Planned QA-B604(COD P0)+QA-B605(P2 LOW)+QA-B116(744 BE)+QA-B95 · BNK-848~849 → ROADMAP/REQUIREMENTS/USER_STORIES/PLAN_NOTES · ★★★ SEC-D34 4-path COMPLETE · baseline BE@f6e4d88·FE@7ac3c84 -->
 
 ## Open
+
+_(**PLN 231차** — Open **0** active(QA-B608 → Planned) · **QA-20260718-B608** develop `@6f8e349` / test `@2789553` pending **2**(`1f9d49c`+`6f8e349`·SEC-D34 excel pre-upload lockstep·MEDIUM/BLOCK) → **Planned**(COD develop→test FF 이관 대기) · BE develop/test **SYNCED `@7fa8335`** Open 0 · BE origin/test `598d108`·**750 pending push**=QA-B116 · FE origin/test `b23711f`·local +1 · operation **BLOCK**(QA-B608 + 750 BE push → QA-B116 → QA-B95) · cross-stream **BLOCK**(FE pending 2 + BE SYNCED) · TSR1829)_
+
+_(Open **1** active(FE·LOW) · **QA-20260718-B606** npm audit high(dev-only `form-data` via jsdom·non-BLOCK) · **QA-20260717-B605** Fixed & Verified(TSR1817 `@1cdfd5c`) · FE develop/test/origin **ALL SYNCED `@1cdfd5c`** WT CLEAN · BE develop/test **SYNCED `@efbdbec`** Open 0 · BE origin/test `598d108`·**746 pending push**=QA-B116 · operation **BLOCK**(746 push → QA-B116 → QA-B95) · cross-stream **SYNCED(BE+FE local)** · TSR1819)_
+
+### [TSR] ~~Open~~ **Fixed(COD `@637bad8`)** — v1.2.1 FE npm audit high: form-data CRLF (dev-only jsdom) (`1cdfd5c`, QA-20260718-B606)
+
+> **RESOLVED** — COD(2026-07-18T01:52:00Z) `npm audit fix` 로 `form-data 4.0.5→4.0.6` 상향(`@637bad8`) · `npm audit` high **1→0** · 상단 `[COD] ... Fixed` 엔트리 참조. TSR `npm audit` 재실측 + develop→test FF 대기. (아래는 이전 Open 이력)
+
+- **id**: QA-20260718-B606
+- **severity**: **LOW** (non-BLOCK · 프로덕션 노출 0)
+- **stream**: frontend
+- **status**: **Fixed by COD `@637bad8`** (`npm audit` high 1→0 · TSR 재실측 대기) — (이전: Open — coder 조치 대기)
+- **found_at**: 2026-07-18T01:23:00Z (TSR1818 `npm audit` 재실측 · `src/frontend-test @1cdfd5c`)
+- **version**: v1.2.1 / v3 — 프론트 devDependency 트리(jsdom 테스트 환경)
+- **summary**: `npm audit` high **1** = `form-data 4.0.0-4.0.5` CRLF injection([GHSA-hmw2-7cc7-3qxx](https://github.com/advisories/GHSA-hmw2-7cc7-3qxx)·advisory 자체는 HIGH). 의존 경로 `ogada-frontend → jsdom@22.1.0 → form-data@4.0.5` = **devDependency 전용**(vitest jsdom 테스트 환경). 프로덕션 Vite 번들(`npm run build` 1234 modules)에는 jsdom/form-data 미포함 → **런타임/프로덕션 노출 0**. 직전 manifest `audit_high: 0` → 재실측 **1**(carry 값이 미재실측). merge/operation BLOCK 아님.
+- **assignee**: **COD** — `src/frontend` 에서 `npm audit fix`(form-data>=4.0.6) 또는 jsdom 상위 버전/override 로 해소 후 커밋+PUSH. TSR 재실측 시 high 0 복귀 확인.
+- **roadmap_ref**: ROADMAP 보안/의존성 · SECURITY_CHECKLIST 의존성 스캔 · non-BLOCK(dev-only)
+- **prevention**: 이관 사이클마다 `npm audit --json` high/critical 실측(carry 금지) · dev/prod 경로 구분 기록
+- **expected**: `npm audit` high **0** 복귀(프로덕션 무영향이므로 우선순위 LOW)
+- **actual**: Open(LOW) — high **1**(dev-only) · 프로덕션 번들 미포함 · transfer FE **PASS**(non-BLOCK)
 
 _(Open **0** active · **QA-20260717-B595** Fixed TSR1806 FF `@ed94521` · BE develop/test **SYNCED `@ed94521`** · FE develop/test/origin **ALL SYNCED+PUSHED `@cf28a2e`** · Planned **QA-B116**(origin/test **741 BE**)+**QA-B95** · operation **BLOCK** · cross-stream **SYNCED** · TSR1806)_
 
@@ -13461,6 +13904,60 @@ _(TSR 529차 2026-06-13T07:25 UTC — frontend Open **0건**. QA-B68 Fixed @ `db
 
 
 ## Planned
+
+_(**PLN 231차 sync** — Open **0**(QA-B608 → Planned) · Planned residual **QA-B608**(FE develop→test FF 이관·pending 2·MEDIUM/BLOCK·COD FF·기능 갭 아님) + **QA-B116**(origin/test push **750 BE**) + **QA-B95**(operation 승격·B604~B607 Fixed carry) · baseline BE `@7fa8335`(develop/test SYNCED·origin/test 750 pending)/FE develop `@6f8e349`·test `@2789553`(pending 2·tester FF 대기) · BNK-850~857 기획 반영 · **★★★ SEC-D34 fail-closed 8-축 COMPLETE**(매직 4-경로 + null-safe + truncated + .xls OLE + empty-file + 0-byte + empty-header + corrupt OOXML body) · **★★★ FE RFID compare 이중엑셀 pre-upload = 경쟁 4종 유일 SUPERIOR**(BNK-857·ezCare FAQ 21589 verbatim) · **★★ npm audit high 0**(form-data 4.0.6·QA-B606) · **★★ NHIS #44 581차** · cross-stream **BLOCK**(FE pending 2) · 최종 갱신: PLN 231차 2026-07-18T05:12:00Z)_
+
+### [PLN] v1.2.1/v3 FE develop 미이관(test..develop) — SEC-D34 excel pre-upload lockstep (`6f8e349`, QA-20260718-B608)
+
+- **id**: QA-20260718-B608
+- **severity**: MEDIUM (BLOCK)
+- **stream**: frontend
+- **status**: **Planned** — `src/frontend-test@test` 기준 `test..develop = 2`(`1f9d49c`+`6f8e349` 미이관) · merge 미수행(read-only 정책) · COD/tester develop→test FF 이관 대기
+- **planned_at**: 2026-07-18T05:12:00Z (PLN 231차 · Open→Planned·이관 규율 5·6·7)
+- **found_at**: 2026-07-18T04:26:34Z (TSR1827·pending 1) · **갱신**: 2026-07-18T05:02:00Z (TSR1829·pending 1→2)
+- **version**: v1.2.1 / v3 — SEC-D34 excel import pre-upload magic-byte(은행 입금 대사 `1f9d49c` + RFID compare 이중엑셀 spoof-reject `6f8e349`·test-only)
+- **summary**: FE develop `@6f8e349`가 test `@2789553` 대비 2 commit 앞섬(`1f9d49c` BankDepositImportPanel pre-upload magic + `6f8e349` VisitRfidDiffComparePanel dual-excel spoof-reject 회귀 lock·test-only) · baseline(test)에서 build **1234 PASS**·audit high **0** green이나 pending>0 → transfer BLOCK. 제품 코드 무변경(회귀 lock)·기능 갭 아님.
+- **assignee**: **COD/tester** (develop→test FF 이관) · PLN (ROADMAP baseline/QA 반영·231차 완료)
+- **roadmap_ref**: ROADMAP CURRENT BASELINE 231차 · USER_STORIES US-SEC-D34 · PLAN_NOTES 231차 · **선행** → QA-B116(750 BE) → QA-B95
+- **prevention**: frontend 사이클 gate에 `test..develop == 0` 강제 · pending>0이면 transfer PASS 금지
+- **expected**: `1f9d49c`+`6f8e349` develop→test FF 이관 후 pending **0** + post-merge full suite `npm test` 재실측 PASS + Open(FE) **0**
+- **actual**: Planned(BLOCK) — pending **2** 유지·transfer **BLOCK** · full suite 재실행 대기(peer `vitest run` 동시 실행·TSR1824 **2737/2737 PASS** carry)
+
+_(**PLN 230차 sync** — Open **0**(QA-B604·QA-B605 → Planned) · Planned residual **QA-B604**(COD P0 BLOCK·pilot mock NPE·post-merge 2363/2363 목표) + **QA-B605**(P2 LOW flaky·non-BLOCK·optional) + **QA-B116**(origin/test push **744 BE**) + **QA-B95**(operation 승격·B580~B603 Fixed carry) · baseline BE `@f6e4d88`(local SYNCED·origin/test 744 pending)/FE `@7ac3c84`(FULLY SYNCED+PUSHED) · BNK-848~849 기획 반영 · **★★★ SEC-D34 4-path excel magic COMPLETE**(QA-B598~B603) · **★★★ audit-first HTTP 442 IDENTICAL** · **★★ NHIS #44 579차** · **★ QA-B602 Fixed+MERGED** · cross-stream **BLOCK**(BE QA-B604) · 최종 갱신: PLN 230차 2026-07-18T00:15:00Z)_
+
+### [PLN] v3/SEC-D34 BE pilot mock `getBytes()` NPE — post-merge regression (`f6e4d88`, QA-20260717-B604)
+
+- **id**: QA-20260717-B604
+- **severity**: HIGH (BLOCK)
+- **stream**: backend
+- **status**: **Fixed by COD `@f28e3d9`** (payload==null fail-closed 4-path + pilot getBytes() OOXML stub · 파일 최상단 [COD] Fixed 엔트리 참조) — (이전: Planned · COD P0 · BE transfer BLOCK until Fixed)
+- **planned_at**: 2026-07-18T00:15:00Z (PLN 230차 · Open→Planned)
+- **fixed_at**: 2026-07-18T00:40:00Z (COD `@f28e3d9` develop)
+- **found_at**: 2026-07-17T23:18:30Z (TSR 1813 FF merge+post-merge `mvn test`)
+- **version**: v3 / SEC-D34 — NhisImportService.readAndValidateImportFile `getBytes()` gate (`@a788e6d`)
+- **summary**: QA-B599가 import gate를 `getBytes()`로 전환 · `CognitiveSupportFeeSchedulePilotServiceFlowE2eTest` mock은 `getInputStream()`만 stub → `getBytes()` null → NPE. 기대: empty file → `BusinessRuleException`. post-merge **2362/2363 (1 FAIL)**.
+- **assignee**: **COD (P0)** — (a) service null fail-closed 권장 **또는** (b) pilot mock `getBytes()` stub · TSR post-fix FF 재검증
+- **roadmap_ref**: ROADMAP v3 SEC-D34 · USER_STORIES US-SEC-D34 · PLAN_NOTES 230차 · **선행 BLOCK** → QA-B116(744 BE) → QA-B95
+- **prevention**: multipart import `getBytes()` 전환 시 pilot/mock `getBytes()` stub 선검색 · null payload fail-closed
+- **expected**: post-merge **2363/2363 PASS** · BE transfer PASS · Open **0**(BE)
+- **actual**: Planned(BLOCK) — develop/test SYNCED `@f6e4d88` · **2362/2363** · transfer **BLOCK**
+
+### [PLN] v1.2.1 FE VisitRfidDiffComparePanel full-suite flaky (`7ac3c84`, QA-20260717-B605)
+
+- **id**: QA-20260717-B605
+- **severity**: LOW (non-BLOCK)
+- **stream**: frontend
+- **status**: **Fixed & Verified** (COD `194823b`+`1cdfd5c` · TSR1817 FF merge+PUSH `7ac3c84`→`1cdfd5c` · develop/test/origin **ALL SYNCED `@1cdfd5c`** · full suite **2735/2735 PASS** flaky 미재현) — (이전: Fixed by COD → TSR 재검증 대기)
+- **planned_at**: 2026-07-18T00:15:00Z (PLN 230차 · Open→Planned)
+- **fixed_at**: 2026-07-18T00:47:00Z (COD frontend develop `1cdfd5c`) · **verified_at**: 2026-07-18T01:22:40Z (TSR1817 full suite 2735/2735)
+- **found_at**: 2026-07-17T23:48:32Z (TSR1814 full suite 2734/2735)
+- **version**: v1.2.1 / v3 — RFID diff compare panel 급여제공내역 SMS 발송
+- **summary**: full suite 병렬 부하 시 `uploadAndCompare()` 후 동기 `getByRole` 타임아웃 · isolated **10/10 PASS** · QA-B602 미변경 → 병합 회귀 아님. COD: `reads snake_case dispatched_count` 테스트만 비동기 compare 완료 전 동기 클릭 → `await findByRole` 로 전환. TSR1817 FF merge 후 full suite **2735/2735 PASS**(883.72s,487) flaky 미재현 → 확정.
+- **assignee**: **완료** — COD 수정(`1cdfd5c`) + TSR1817 merge+PUSH+full-suite 재검증
+- **roadmap_ref**: ROADMAP v1.2.1/v3 · USER_STORIES US-SEC-D34 · non-BLOCK
+- **prevention**: 업로드→비동기 compare 후 `findBy*`/`waitFor` 사용
+- **expected**: full suite **2735/2735** 안정화(optional)
+- **actual**: ★ Fixed & Verified — TSR1817 FF merge+PUSH `@1cdfd5c` · targeted **17/17 PASS**(8.82s) · full suite **2735/2735 PASS**(883.72s,487) flaky 미재현 · 제품 코드 무변경 · Open(FE) **0**
 
 _(**PLN 229차 sync** — Open **0**(이동 대상 없음) · Planned residual **QA-B116**(origin/test push **738 BE**) + **QA-B95**(operation 승격·NBSP FE↔BE lockstep COMPLETE·bootstrap-disabled·B580~B590 Fixed carry) · baseline BE `@c19bfa6`(local SYNCED·origin/test 738 pending)/FE `@dc81f6e`(FULLY SYNCED+PUSHED) · BNK-835~841 기획 반영 · **★★★ v3 photo SEC-D25 6-cycle COMPLETE**(BNK-833→840) · **★★★ Page 106 정본**(BNK-835) · **★★★ demo-work≠func.php M2 범위 분리**(BNK-841) · **★★★ audit-first HTTP 442 6차** · **★★ NHIS #44 573차** · 최종 갱신: PLN 229차 2026-07-17T19:42:00Z)_
 

@@ -1,0 +1,69 @@
+BNK-652 이지케어 역공학 2–4h — 마케팅 지표·FAQ 카탈로그 재실측 (2026-06-26T08:16Z / KST 17:16)
+=============================================================================================
+
+[0] ogada baseline git 실측 (확인 · HEAD zero advance 양쪽)
+- FE develop @0d0b587 (WT CLEAN · BNK-651 동일 SHA · HEAD zero advance 1-cycle · ahead 257 vs origin/test=ab4de83)
+    last: feat(v2/G-CLIENT-CONTRACT-BULK-PRINT): wire care plan bulk export panel
+- BE develop @9664f29 (WT CLEAN · BNK-650/651 동일 SHA · HEAD zero advance 2-cycle · ahead 584 vs origin/test=598d108)
+    last: test(v2/QA-B95): lock g21 seed component status code resolution
+- KPI (전부 BNK-651 IDENTICAL): 118 Route(App.jsx <Route\b=118 +1 <Routes>=119 total) · 93 *Page.jsx
+    · V1–V182 · BE Test 273(272 Test.java + 1 Tests.java) · BE @Test 1980(git grep -hoE '@Test\b' occurrence)
+    · FE test 485(199 .test.js + 286 .test.jsx) · 모듈 80.86%(✅21·△3·❌5) · reports route 28
+- merge gate 841 carry (FE 257 + BE 584 · 양쪽 WT CLEAN · 선행 commit 불필요) — BNK-651 동일
+
+[1] 이지케어 마케팅 지표 5-URL live 재실측 (확인 · HTTP 200 · 전부 DRIFT)
+URL                                            on-disk(BNK-648)  → live(BNK-652)   판정
+/ (home)                4aada1f0 106,109B   → 76755572 106,133B  counter DRIFT (+24B)
+/new/ezCare_fnc.html    17ebe880 17,870B    → 4507d164 17,870B   counter DRIFT
+/?PG=e01                e5469a13 47,130B    → 0e350e03 47,089B   counter DRIFT (-41B)
+/new/ezCare_charge.html 088c5238 22,979B    → 909efeaf 22,979B   cachebuster DRIFT
+/new/ezCare_change_work 5212b145 26,157B    → 9b5ea9b4 26,157B   cachebuster DRIFT
+→ 덮어쓰기 5건 · 본문 verbatim 검증 결과 아래
+
+[1-1] home mCnt (재가센터 카운터) — verbatim block
+    var mCnt = { 1: 9285, 2: 4606, 3: 2353, 4: 1820 };
+    Δ vs BNK-648: mCnt[1] 9287→9285 (-2) · mCnt[2] 4607→4606 (-1) · mCnt[3]/[4] 불변
+    banner: [추천 이벤트] (BNK-648 BPO→cafe reversal 이후 referral 유지 — oscillation)
+
+[1-2] fnc 도입현황 (확인)
+    "전국 9,362개 기관 사용중"  ← BNK-648 9,364 → 9,362 (-2)
+    도입효과/사용후기 nav 구조 verbatim 불변
+
+[1-3] ?PG=e01 이용현황 (확인 · verbatim)
+    "단위: 개소 / 전국재가센터수(방문요양 기준): 17,489개 / 이용시설수: 9,359개 / 점유율: 53.51% / 집계일: 2026.06.26"
+    Δ vs BNK-648: 이용시설수 9,361→9,359 (-2) · 점유율 53.74%→53.51% (-0.23pp) · 전국재가 17,489 불변 · 집계일 2026.06.26 동일
+
+[1-4] charge 가격표 (확인 · verbatim 불변)
+    셋팅비 33,000 · 37명 25,850 · 구독 55,000 verbatim 불변 (cachebuster only)
+    → ogada 가격 모델 미정(SaaS) · 경쟁 단가 기준선 carry
+
+[1-5] change_work (확인 · verbatim 불변)
+    RFID · 후기 4,965 verbatim 불변 (cachebuster only)
+
+[2] 이지케어 /help/faq.ez 카탈로그 재실측 (확인 · DRIFT 누적조회 +87)
+- URL https://ezcare.easyms.co.kr/help/faq.ez
+- on-disk df3cee86 80,057B → live e71178cf 80,057B → 덮어쓰기
+- 14 카테고리 K001~K014 (전부 안정) · 233 rowid (안정) · rowid 범위 21131~21781
+- 누적 조회수 합계: 3,637,033 (disk) → 3,637,120 (live) = +87 (자연 누적 drift)
+- BNK-633 첫 정적 추출(e14be4df 3,636,833) 대비 +287 누적
+- 결제·재무 클러스터(K008 결제 + K012~K014) 37.6% = ogada M11/M12 P1 demand-signal carry 재확인
+
+[3] /new.ez 비로그인 redirect stub (확인 · zero drift · RE 금지 확인)
+- https://ezcare.easyms.co.kr/new.ez → 70B md5 e1d52bd5 IDENTICAL
+    <meta http-equiv="refresh" content="0; url=/logout_msg.html?code=001">
+- agents.yaml reverse_engineering: 비로그인 /new.ez 직접 fetch=70B redirect stub → 역공학 금지 재확인
+    (데모 진입은 ./scripts/ezcare-demo-fetch.sh oCode=DEMO 세션 필요 · 본 사이클 미수행)
+
+[4] NHIS #44 backbone (carry · 재실측 보류)
+- canonical disk nhis_jo44.html c886ff1f 7,572B 보존
+- 본 사이클 endpoint 재현 URL 불일치(12,923B 타 페이지 반환) → 「zero drift」 미주장 · canonical carry
+- ogada TransportServiceFeeService+TransportServiceLog 경쟁 4종 유일 full-stack 우위 carry
+
+[요약] 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · closure 0
+       상태 변경 0 (HEAD zero advance 양쪽 · WT CLEAN)
+       KPI 변경 0 (전부 BNK-651 IDENTICAL · merge gate 841 carry)
+       재실측 DRIFT 6건(home/fnc/e01/charge/change_work counter·cachebuster + faq list 누적조회 +87) → 덮어쓰기 6건
+       zero drift 1건(/new.ez stub e1d52bd5) · 엑셀 포맷 변경 0
+       per-cycle minimum 4종 충족(신규 evidence URL: faq.ez 누적조회 +87 재실측 · 메뉴/필드 블록: home/fnc/e01 counter + faq 카탈로그 · COMPETITOR_MATRIX @HEAD 1행+ · BENCHMARK_REPORT §652)
+       즉시(tester): merge 841(FE257+BE584·양쪽 WT CLEAN)
+       planner: baseline FE @0d0b587 / BE @9664f29 carry · M11/M12 P1 BPO 어댑터(+6.9pp) carry · 가격 33,000/25,850/55,000 기준선 carry

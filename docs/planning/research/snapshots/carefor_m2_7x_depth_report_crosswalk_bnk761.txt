@@ -1,0 +1,140 @@
+BNK-761 — 케어포 역공학 0–2h (2026-07-15T14:11:42Z)
+rotation: daycare/func.php 109항목(=PC catalog 107 정본)·매뉴얼 PDF 목차·demo-work loadPage/view
+          · 메뉴 depth·리포트 밀도·본인부담 7-x ↔ ogada Route `@3fddccd`/`@7868384` 1:1
+          · ★ NEW: Wayback marketing func.php 2025-11-11 + M2 leaf map BNK-425 STALE 갱신
+            (2-7/2-8/2-9 dedicated Route FULL 착지 · id=2 0.85 = form 18/19/20 polish)
+
+================================================================
+1. ogada git 실측
+================================================================
+FE develop  3fddccd  fix(v1.2.1/QA-B95): decode encoded readiness payload aliases
+            WT CLEAN · ahead origin/test **1** · ahead origin/develop **0**
+            (BNK-760 `@2c5bb2a` → +2 QA-B95: 2992fa5 + 3fddccd)
+            Route 133 (<Route\b 132 + <Routes> 1) · 106 *Page.jsx
+            FE test 525 (216 .test.js + 309 .test.jsx)
+BE develop  7868384  fix(v2/QA-B95): decode URL-encoded bootstrap blocker payloads
+            WT CLEAN · ahead **665** vs 598d108 (BNK-760 `@79aa377` → +1)
+            BE Test 294 · BE @Test **2214** (src/test `^\s*@Test`)
+            Flyway V1–V196
+모듈 coverage 97.41% (28.25/29 · residual id=2/8/10 0.85·id=12 0.7)
+merge gate 666 (FE 1 + BE 665 · BE-heavy → tester FF)
+
+================================================================
+2. live / Wayback 재실측 (증거 URL)
+================================================================
+LIVE  https://www.carefor.co.kr/daycare/func.php          HTTP **000** 12–25s timeout · 85-cycle+ 「미확인」
+LIVE  https://demo-work.carefor.co.kr/                    HTTP **000** · 「미확인」
+LIVE  https://www.carefor.co.kr/                         HTTP **000** · 「미확인」
+LIVE  https://www.carefor.co.kr/manual/carefor_manual.pdf HTTP **000** · 「미확인」
+→ disk canonical 우선: carefor_func.php md5 `6226e6eb` 98,328B IDENTICAL
+
+★ NEW evidence URL #1 — Wayback marketing func.php (id_ strip·2025-11-11)
+URL   https://web.archive.org/web/20251111172825id_/https://www.carefor.co.kr/daycare/func.php
+HTTP  200 · SIZE 96,780B · md5 `c069d5c804319967dae93b1a08dbfe22`
+저장  carefor_func_wayback_mkt_20251111_bnk761.html
+판정  leaf extract **103** vs catalog **107** · ONLY_CANON 8(含 7-10)·ONLY_MKT 4(4-7/8/9·5-11)
+      = BNK-742 marketing shell 패턴 carry · SIZE 96,780 ≠ disk 98,328 (marketing≠catalog)
+
+★ NEW evidence URL #2 — CDX chronology from=20200101 (func.php)
+URL   https://web.archive.org/cdx/search/cdx?url=carefor.co.kr/daycare/func.php&matchType=prefix&output=json&limit=40&fl=timestamp,original,statuscode,mimetype,length,digest&from=20200101
+HTTP  200 · SIZE 4,991B · md5 `248305f5480066355a517b246e89cff6`
+저장  carefor_func_cdx_from2020_bnk761.json
+판정  40 rows · 최근 `20251111172825` 23,427B(chrome-toolbar length) · 2024-05 LENGTH jump ~7k→~23k
+      = marketing IA length≠id_ body size(96,780) — CDX length=아카이브 메타
+
+★ NEW evidence URL #3 — search_menu.js 2024-12 id_ (=2026-06 LOCK)
+URL   https://web.archive.org/web/20241206004828id_/https://demo-work.carefor.co.kr/js/search_menu.js
+HTTP  200 · SIZE 47,738B · md5 `c1c490ebe783503645a12ea8516f5944`
+저장  carefor_demo_search_menu_wb_202412_bnk761.js
+판정  BNK-757 2026-06 id_ **byte IDENTICAL** — facility shell HTML DRIFT(2024-12→2025-07) 기간에도
+      search_menu.js **zero drift LOCK** · 재가「5-1.본인부담」주석·transport 0-hit carry
+
+기존 URL 재실측:
+  demo-work 2025-07 id_ https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/
+    200 · 71,742B · `ebee4d47` = disk raw **LOCK IDENTICAL**
+  PDF Wayback https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+    200 · 9,992,772B · `96f7d45e` = bnk690 **LOCK** (저장 생략·중복 방지)
+  NHIS #44 live 200 · 7,572B · `c886ff1f` = **495차** zero drift
+    러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+
+================================================================
+3. ★★★ M2 「이동서비스」10-leaf ↔ ogada Route 1:1 — BNK-425 STALE 갱신 (메뉴/필드/워크플로 블록)
+================================================================
+근거: func catalog(6226e6eb)·marketing mkt202511(c069d5c8)·PDF p32–42(bnk425)·
+      demo-work 시설 셸(ebee4d47 · transport **0**)·ogada `@3fddccd` Route/JSDoc
+
+| # | func leaf (확인·양쪽 mkt/catalog IDENTICAL) | ogada Route / API (`@3fddccd`) | BNK-425 | BNK-761 | 판정 |
+|---|---------------------------------------------|-------------------------------|---------|---------|------|
+| 2-1 | 일정관리(공단연동) | `/visits` · `/billing/imports/nhis` | ✅ | ✅ | 유지 |
+| 2-1-1 | 외출 관리 | `/transport/outings` · ClientOutingsPage (G15 2-1-1) | ✅ | ✅ | 유지 |
+| 2-2 | 탑승관리(차량 이용) | `/attendance/boarding` · `/transport/runs/*` | ✅ | ✅ | 유지 |
+| 2-3 | 출석관리(차량 미이용) | `/attendance/on-site` | ✅ | ✅ | 유지 |
+| 2-4 | 차량관리 | `/transport/vehicles` | ✅ | ✅ | 유지 |
+| 2-5 | 청구내역상세(공단연동) | `/billing/imports/nhis` · VisitNhisComparisonPanel | ✅+ | ✅+ | superset |
+| 2-6 | 공단 급여비용 청구 자료 | NHIS import cluster (dedicated page ❌) | △ P3 | △ P3 | **carry** |
+| 2-7 | 월간 서비스 변동현황 | `/reports/transport-monthly` · `fetchTransportMonthlyServiceVariationApi` | △ | ✅ | **CLOSED** |
+| 2-8 | 월간 입소자 현황 | `/reports/transport-monthly` · `fetchTransportMonthlyResidentStatusApi` | △ | ✅ | **CLOSED** |
+| 2-9 | 수급자 외출 리포트 | `/reports/client-outings` · ClientOutingReportPage (JSDoc「G15 2-9 · 케어포 2-9」) | △ | ✅ | **CLOSED** |
+
+leaf 판정 요약: ✅ **8** · ✅+ **1** · △ **1**(2-6) · ❌ **0**
+→ BNK-425「✅5 · △4」는 **STALE**. 2-7/2-8/2-9 전용 report Route·API·live-e2e 착지로 **△→✅**.
+
+demo-work 시설 셸: loadPage 115 · view.transport.* / 송영/배차/탑승 **0** · cost/CMS/npay **12–13** view
+= agents.yaml「시설 셸=이동서비스 없음」재입증 · **M2 정본은 주야간 func/marketing 이지 demo**.
+
+id=2 coverage **0.85 유지** (가정 번복 0 · KPI promote 금지):
+  competitorModuleCoverage.test.js verbatim
+  「transport module partial coverage after G15 form 18/19/20 workflow guide」
+  → residual = 별지 제18/19/20 워크플로 polish · **leaf Route 부족 아님**.
+  제22호 service-log API(`GET/PUT …/service-log`)·제18호 fee panel·NHIS #44 6-link 이미 착지.
+
+marketing 2-9 라벨 DRIFT (확인):
+  mkt202405 title「외출 현황 리포트」 → mkt202511/catalog「수급자 외출 리포트」
+  ogada `ClientOutingReportPage` title「외출 리포트」= semantic 정합.
+
+================================================================
+4. 메뉴 depth · 모듈별 리포트 밀도 · 7-x ↔ `/billing/*`
+================================================================
+carefor catalog (6226e6eb · 107-leaf · module_counts 1..11 sum 107):
+  agents.yaml「109항목」= PC **107** + APP/문서 drift carry (M12는 PDF 12분할·func PC 미포함)
+  depth {2: 88 (82.2%), 3: 19 (17.8%)}
+  title 「리포트」 exact: 21/107 = **19.6%**
+  title 리포트|대장|통계|집계 broad: 25/107 = **23.4%**
+
+모듈별 broad 리포트 밀도 (NEW · planner IA hint):
+  M1 27% · **M2 10%** · M3 36% · **M4 50%**(최고) · M5 31% · M6 0% · M7 27% · M8 13% · M9 17% · M10 0% · M11 33%
+  → M2는 leaf 기능형(일정/탑승/차량) 중심·리포트 비율 낮음 · ogada 가 2-7/2-8/2-9 report Route로
+    carefor 대비 **report surface SUPERSET on M2 residual axis**
+
+demo-work 2025-07: class="rpt" **34** ≈30% UI density · transport 0
+ogada `@3fddccd`: path 130 unique · reportish **37** ≈ **28.5%** · billing Route **17** ·
+  transport+outing reportish surfaces 11 (incl. `/reports/client-outings`·`/reports/transport-monthly`)
+
+본인부담 7-x (BNK-757 carry · HEAD 재확인):
+  func 11-leaf · demo cost_* 13 view IDENTICAL · PDF p83–92 번호 drift
+  ↔ `/billing/*` **17** Route · id=7-1/7-2/7-2-1/7-3/7-4/7-6/7-10 **1.0** · 진성갭 아님
+  7-10 calculator = marketing ONLY_CANON (mkt202511 재확인 · func/catalog only)
+
+================================================================
+5. planner 우선순위
+================================================================
+1. ★★★ M2 leaf map STALE 갱신 — ROADMAP/PLAN_NOTES/COMPETITOR_MATRIX 의 BNK-425「2-7/2-8/2-9 △」를
+   **✅ CLOSED** 로 정정. id=2 0.85 residual = form 18/19/20 polish only · leaf 신규 스펙 불요.
+2. ★★ demo≠주야간 M2 — 마케팅/온보딩「시설 demo 이동서비스 없음」유지 · 제품 로드맵은
+   func/marketing M2 10-leaf(+ogada report SUPERSET) 기준.
+3. ★ 2-6 P3 carry — 공단 급여비용 청구 자료 dedicated UI · NHIS import cluster로 부분 흡수 · 격상 0.
+4. ★ tester FF — merge gate **666** BE-heavy · FE ahead origin/test **1**.
+5. ★ 규제 — NHIS #44 **495차** zero drift · Transport 6-link 상수 변경 금지.
+
+================================================================
+6. 산출 파일
+================================================================
+carefor_m2_7x_depth_report_crosswalk_bnk761.txt          (본 파일 · 주력)
+carefor_func_wayback_mkt_20251111_bnk761.html            (NEW URL #1)
+carefor_func_cdx_from2020_bnk761.json                    (NEW URL #2)
+carefor_demo_search_menu_wb_202412_bnk761.js             (NEW URL #3 · =757 LOCK)
+carefor_func_wayback_mkt_20240529_bnk761.html            (2-9 라벨 DRIFT 대조)
+carefor_demo_work_wb_20250712_id_remeasure_bnk761.html   (demo LOCK remeasure)
+carefor_func_cdx_bnk761.json                             (early CDX carry)
+nhis_jo44_live_bnk761.html                               (495차)
+덮어쓰기 0 · PDF 중복 저장 생략(md5 LOCK만 기록)

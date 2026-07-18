@@ -1,0 +1,9 @@
+BNK-821 Carefor manual PDF meta (2026-07-17T06:22:00Z)
+URL: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+HTTP: 200
+SIZE: 9,992,772 bytes
+MD5: 96f7d45eaca91525068ec9bfb626fb18
+PAGES: 132
+DRIFT: byte-IDENTICAL vs BNK-690/BNK-687 disk (zero drift carry)
+EXTRACT: p84–92 M7 본인부담금 workflow (pypdf) → carefor_m7_pdf_workflow_tri_source_bnk821.txt
+NOTE: full PDF 10MB — workspace stores meta only; re-fetch via URL above

@@ -1,0 +1,68 @@
+BNK-808 — ogada git 실측 6–8h rotation (2026-07-16T21:48Z)
+================================================================
+목적: src/backend·src/frontend develop HEAD·테스트·Route·Page·모듈 커버 % 재산정
+      → COMPETITOR_MATRIX ogada @HEAD 열 일괄 갱신. rules.md §Baseline(문서 SHA보다 git 실측 우선).
+
+[1] git HEAD 실측 (git -C src/{backend,frontend} rev-parse develop)
+----------------------------------------------------------------
+FE develop = b28eb45  fix(v1.2.1/QA-B95): decode VeryThickSpace HTML entity alias
+   BNK-807 @d3b0f1c → +1 (d3b0f1c ux(a11y) UXD-185 → b28eb45)
+   WT CLEAN · ahead origin/test 0 (origin/test=b28eb45) = FULLY SYNCED (tester FF 흡수)
+BE develop = 45e1f00  fix(v2/QA-B95): decode comma HTML entity in blocker parser
+   BNK-807 @043f002 → +1 (043f002 VeryThickSpace → 45e1f00 comma entity)
+   WT CLEAN · ahead origin/test 711 (origin/test=598d108)
+merge gate = 711 (FE 0 FULLY SYNCED + BE 711·BE-heavy → tester FF)
+
+[2] Route / Page 실측 (src/frontend/src/App.jsx)
+----------------------------------------------------------------
+<Route\b (rg -o) = 132 · <Routes> = 1 → Route 총 133 (carry BNK-804~807)
+*Page.jsx (non-test, find src/frontend/src/pages) = 106 (carry)
+도메인 분해 (rg -o path="/<prefix>[/"] App.jsx):
+  billing 17 · care 16 · nursing 16 · staff 13 · transport 9 · programs 8
+  payroll 5 · accounting 1 · reports 29(carry·중첩 라우트 /programs/reports·/staff/payroll/reports 등 포함)
+  compliance 2
+
+[3] 테스트 실측
+----------------------------------------------------------------
+FE test 530  = 313 *.test.jsx + 217 *.test.js (carry BNK-804~807)
+BE Test 294  = 293 *Test.java + 1 *Tests.java
+BE @Test 2264 = rg -c "@Test" src/backend/src/test (BNK-806/807 carry 2263 → +1·comma HTML entity blocker probe)
+Flyway 마이그레이션 = V1–V196 (max V196·신규 0 vs BNK-804~807)
+* npm test / mvn test full suite 미실행 — 집계(rg/find) 우선·vitest 동시 실행 0 (rules.md §5 CRITICAL 준수)
+
+[4] 모듈 커버리지 실측 (src/frontend/src/config/competitorModuleCoverage.js)
+----------------------------------------------------------------
+canonical 29-entry · sum 28.25 · 비-1.0 4개: id=2 이동서비스 0.85 · id=8 직원·근태 0.85 ·
+   id=10 부가서비스(SMS·알림) 0.85 · id=12 수입지출·회계 0.7 · 나머지 25 = 1.0
+모듈 = 28.25 / 29 = 97.41% CONFIRMED
+* grep raw 'coverage:' = 30 매치·sum 29.25 → line-5 JSDoc 주석(`coverage: 1 = ✅`) 1건 오염 배제 후
+  29 canonical·28.25 (BNK-753/804 패턴). coverage-0 진성갭 0건.
+
+[5] 규제 백본 재실측 (기존 URL 재실측·per-cycle minimum)
+----------------------------------------------------------------
+NHIS #44 이동서비스비 (https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do
+   ?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+   HTTP 200 · 7,572B · md5 c886ff1f · 541차 IDENTICAL (BNK-807 540차 → +1)
+   verbatim: 러-1(1)·러-4(1)·편도(2)·이동서비스(13)
+   ↔ ogada src @45e1f00 실측:
+     TransportDistanceBand.RU_1~4 (5/10/20/999km)
+     TransportServiceFeeParityCatalog.ONE_WAY_RATIO=0.5 · ONE_WAY_RATIO_LABEL="편도 비율" · ONE_PER_DAY_LABEL="1일 1회"
+     TransportServiceFeeService baseAmount×ONE_WAY_RATIO setScale(0, HALF_UP)
+   → NHIS verbatim IDENTICAL · 상수 재조정 불요 · id=2 0.85 carry · 경쟁 4종 유일 full-stack
+   snapshot: nhis_jo44_live_bnk808.html (c886ff1f)
+
+[6] closed band 6-path LIVE 재확인 (App.jsx @b28eb45)
+----------------------------------------------------------------
+G14 /clients/:clientId/care-plan-form · 대시보드 /dashboard(+/dashboard/hq) ·
+v1.3-C /transport/service-fees · v2 CMS /billing/cms · G-LINKAGE /clients/linkage-records ·
+G2 /clients/home-newsletter → 전부 LIVE · 재오픈 0 · P0 신규 0 · 가정 번복 0
+
+[7] planner 반영 요약
+----------------------------------------------------------------
+- baseline SHA: FE @d3b0f1c→@b28eb45 · BE @043f002→@45e1f00 (.agents/workspace_baseline.yaml
+  develop 필드 BNK-730 82a83e3/0210aaa STALE → git 실측 우선)
+- 모듈 97.41% CONFIRMED·진성갭 0·closed band 6 재오픈 0
+- residual PRIMARY id=12 0.7 (M12 SSO OTP credentials) → id=2/8/10 0.85 form polish
+- P0 ops = BE origin/test push 711 → tester FF (BE-heavy merge gate)
+- 규제 백본 541차 zero drift · Transport 상수 재조정 불요
+- 다음 rotation: 8h+ 교차검증 (이전 가정 번복 여부·미확인 축)

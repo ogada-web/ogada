@@ -1,0 +1,4 @@
+BNK-706 PDF Wayback refetch
+URL: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+HTTP 200 · SIZE 9992772B · md5 96f7d45e = disk bnk690 IDENTICAL (450+cycle zero drift)
+LIVE www.carefor.co.kr timeout 66+ cycle 「미확인」

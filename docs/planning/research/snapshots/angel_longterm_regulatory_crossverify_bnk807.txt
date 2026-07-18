@@ -1,0 +1,91 @@
+BNK-807 — 엔젤·롱텀·규제 역공학 4–6h 교차검증 (2026-07-16T21:12Z)
+================================================================================
+rotation: 엔젤·롱텀·규제 (silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4)
+직전 동일 rotation: BNK-803 (2026-07-16T18:36Z) → ~2.6h 후
+직전 사이클: BNK-806 (2026-07-16T20:30Z·이지케어 2–4h) → ~42분 후
+ogada baseline: FE @d3b0f1c / BE @043f002 (둘 다 WT CLEAN)
+
+--------------------------------------------------------------------------------
+0. ogada @HEAD 실측 (git 실측)
+--------------------------------------------------------------------------------
+FE develop @d3b0f1c  WT CLEAN  — `ux(a11y): promote template-catalog message column to row header (UXD-185)`
+    (BNK-806 @ab9e853 → advanced·tester FF 흡수)
+BE develop @043f002  WT CLEAN  — `fix(v2/QA-B95): decode VeryThickSpace HTML entity alias`
+    (BNK-806 @54fd8dd → advanced·QA-B95 space-entity alias 계보 연장)
+Route 133 (App.jsx <Route\b 132 + <Routes> 1)  [실측]
+Page  106 (*Page.jsx)                          [실측]
+FE test 530 (313 .test.jsx + 217 .test.js)     [실측]
+module coverage: 배열 29-entry / sum 28.25 (grep -oE 'coverage:'=30 은 line-5 JSDoc `coverage: 1` 오염·BNK-753 패턴 배제)
+    → 28.25/29 = 97.41% CONFIRMED (비-1.0 4개: id=2/8/10=0.85·id=12=0.7·나머지 25=1.0·coverage-0 진성갭 0)
+
+--------------------------------------------------------------------------------
+1. 규제 백본 7-URL live 재실측 = 실체 변동 0 (기존 URL 재실측)
+--------------------------------------------------------------------------------
+URL                                              HTTP  size(B)   md5(prefix)  결과
+NHIS #44 이동서비스비 (joHistoryContent.do)      200   7,572     c886ff1f     540차 zero drift (BNK-805 539차→+1)
+silverangel system_feature.do                    200   45,601    c9507190     BNK-803 IDENTICAL
+silverangel daycareEssentialWork.do              200   131,664   c79c1be3     BNK-803 IDENTICAL
+lcms.or.kr (home)                                200   50,740    c0c66076     type1 canonical (carousel rotation·아래 §3)
+longterm 502 (npeb502m01.web)                    200   89,162    56185735     shell IDENTICAL
+longterm 610 (npeb610m01.web)                    200   88,399    fad1ce61     shell IDENTICAL
+law.go.kr 2025-247 (admRulInfoP.do)              200   78,450    985782ed(raw) strip Time= → a913639a = BNK-767 semantic IDENTICAL
+
+NHIS #44 verbatim grep -oF (BNK-803/805 IDENTICAL):
+  러-1: 1 · 러-4: 1 · 편도: 2 · 1일 1회: 1 · 수급자가 부담: 1 · 이동서비스: 13
+law247 grep: 2025-247: 4 · 장기요양급여 제공기준: 3 · 20260101: 2 · efYd: 11
+  → 「장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시」 고시 제2025-247호·efYd=20260101 verbatim
+  → raw md5 DRIFT = Time= cachebuster only·semantic IDENTICAL (strip 후 a913639a lineage BNK-767/759/755/751)
+
+--------------------------------------------------------------------------------
+2. silverangel dual-view 재확인 — ERP 0-hit vs 법정 필수업무 이동서비스 6/동승 2
+--------------------------------------------------------------------------------
+system_feature.do (엔젤 ERP 공개 기능 소개·45,601B·c9507190) grep -oiF:
+  이동서비스: 0 · 배차: 0 · GPS: 0 · 차량: 0 · referral: 0 · 연계: 9 (전량 내부 모듈 상호참조) · 기능회복: 1
+  → 엔젤 ERP canonical 에 주간보호 이동서비스/배차/GPS/차량 전용 기능 0-hit (BNK-771/787/795/803 LOCK 재확인)
+
+daycareEssentialWork.do (공단 법정 필수업무·131,664B·c79c1be3) grep -oiF:
+  이동서비스: 6 · 동승: 2 · 수칙: 8 · 기능회복: 6 · 지표: 4 · 주야간: 82
+  → 평가 41·42 이동서비스 수칙/동승 + 지표27 기능회복훈련 (dual-numbering carry·BNK-775/779 G17 FULL-STACK CLOSED)
+
+결론: 엔젤은 「법정 필수업무 안내(법)」에는 이동서비스 6-hit 이 있으나 「ERP 실기능(system_feature)」에는 0-hit
+  = 이동서비스 배차/거리밴드/편도요금 SW 기능 미제공. ogada id=2 TransportController 9-route + NHIS #44 6-link
+  (RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) full-stack = 경쟁 4종(케어포 시설 셸 0·이지케어 로그인-gated 미확인·엔젤 ERP 0·롱텀 원천만) 유일 차별화.
+
+--------------------------------------------------------------------------------
+3. lcms 배너 carousel type3(CJ MOU) → type1 canonical 회전 (carousel DRIFT)
+--------------------------------------------------------------------------------
+lcms.or.kr home 50,740B·c0c66076 grep -oiF:
+  CJ프레시웨이: 0 · 식단: 0 · MOU: 0 · 업무협약: 0 · 영양사: 0 · 이동서비스: 0 · 홈페이지: 1 · 무상제공: 0
+  → BNK-803 은 type3 (`6b750291` 50,498B·CJ프레시웨이 MOU 식단 배너) 였으나 BNK-807 는 type1 canonical
+    (`c0c66076` 50,740B·홈페이지 제작 promo·BNK-787/779/747 LOCK) 로 회전.
+  → 3-type 회전 광고 carousel 확인 (type1 홈페이지 promo / type2 6c0d22b4 extraService / type3 6b750291 CJ MOU)
+  → CJ프레시웨이 식단/영양 = GTM 파트너십 transient 배너 = SaaS core 갭 아님 재확정 (BNK-791/795/803 「가정」 유지·구축 0).
+  가정 번복 0 (배너 회전은 「가정 번복」이 아님·carousel DRIFT signature 로 분류).
+
+--------------------------------------------------------------------------------
+4. NHIS #44 verbatim ↔ ogada TransportServiceFee 6-link 상수 IDENTICAL 재교차검증 (SUPERIOR)
+--------------------------------------------------------------------------------
+ogada src @043f002 실측:
+  TransportDistanceBand.java:
+    RU_1 "러-1 (5km 미만)"  new BigDecimal("5")
+    RU_2 "러-2 (5~10km)"   new BigDecimal("10")
+    RU_3 "러-3 (10~20km)"  new BigDecimal("20")
+    RU_4 "러-4 (20km 이상)" new BigDecimal("999")
+  TransportServiceFeeParityCatalog.java:
+    ONE_WAY_RATIO = new BigDecimal("0.5")
+    ONE_WAY_RATIO_LABEL = "편도 비율"
+    ONE_PER_DAY_LABEL   = "1일 1회"
+  TransportServiceFeeService.java:
+    ONE_PER_DAY_NOTE / ONE_WAY_RATIO 상속 · baseAmount × ONE_WAY_RATIO setScale(0, HALF_UP)
+  → NHIS #44 러-1~4·편도·1일 1회 verbatim IDENTICAL = 상수 재조정 불요·id=2 0.85 carry.
+
+--------------------------------------------------------------------------------
+5. per-cycle minimum 충족 요약
+--------------------------------------------------------------------------------
+[o] 신규 증거 URL / 기존 URL 재실측 변동 기록: 규제 백본 7-URL live 재실측 (NHIS 540차·lcms type3→type1 carousel DRIFT)
+[o] 경쟁사 메뉴/필드/워크플로 1블록+: silverangel dual-view (ERP 0-hit vs 법정 이동서비스 6/동승 2) + lcms carousel 3-type
+[o] COMPETITOR_MATRIX 1행+ @HEAD 갱신: FE @d3b0f1c / BE @043f002
+[o] BENCHMARK_REPORT §807 신규 소절
+신규 snapshot 7 (nhis·silverangel×2·lcms·longterm×2·law247) + 1 (this txt). 덮어쓰기 0.
+zero drift IDENTICAL 5 (NHIS·silverangel×2·longterm×2). semantic IDENTICAL 1 (law247 Time= strip).
+carousel DRIFT 1 (lcms type3→type1). 가정 번복 0.

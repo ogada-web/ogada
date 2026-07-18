@@ -1,0 +1,105 @@
+# BNK-849 — ogada git 실측 + 교차검증·갭 우선순위 (8h+ rotation)
+# 조사일: 2026-07-17 (BNK-848 ~44분 후 재실측)
+# 방법: git -C src/{backend,frontend} rev-parse/log·grep src/main·live curl 재실측
+
+=== ogada submodule git HEAD (develop) 실측 ===
+backend  develop = f6e4d88  fix(v3/SEC-D34): verify bank deposit import excel magic bytes
+frontend develop = 3042a53  fix(v1.2.1/v3): verify NHIS excel magic bytes before upload (SEC-D34)
+
+submodule status:
++f6e4d889f87e649341a7efd47e0d705b67312fea src/backend  (transport-dispatch-20260617-376-gf6e4d88)
++3042a5385a4f37a4a2ba1d9f1a6e918cf07afa06 src/frontend (transport-dispatch-20260617-439-g3042a53)
+
+=== BE 실측 (@f6e4d88) ===
+WT: CLEAN
+ahead vs origin/test(598d108): 744  (BNK-848 743 → +1 commit f6e4d88)
+BNK-848 @a788e6d → +1 commit (f6e4d88 bank deposit import excel magic bytes)
+
+HTTP verb 분포 (src/main grep):
+  @GetMapping    231  (52.3%)
+  @PostMapping   144  (32.6%)
+  @PatchMapping   44  (10.0%)
+  @PutMapping     13  ( 2.9%)
+  @DeleteMapping  10  ( 2.3%)
+  = 442  IDENTICAL (BNK-836~848 → 849 · SEC-D34 4번째 엑셀 commit 후에도 endpoint 신설 0)
+@RestController: 81 (Δ0) · controller당 5.46
+BE @Test strict(^\s*@Test\b): 2343  (BNK-848 2339 → +4 bank deposit magic-byte @Test)
+BE Test 파일(*Test.java): 296 (+1 Tests.java = 297)
+Flyway: V1–V196 (신규 0)
+
+=== FE 실측 (@3042a53) ===
+WT: DIRTY 2M (src/pages/StaffPage.test.jsx · src/pages/pilotPageFlows.test.jsx — coder in-progress test-only·HEAD zero advance)
+ahead vs origin/test(3042a53): 0 = FULLY SYNCED (BNK-848 ahead 1 → tester FF 흡수)
+App.jsx <Route\b: 132 · <Routes>: 1 = Route 133 (IDENTICAL)
+Page(*Page.jsx): 106 (IDENTICAL)
+FE test: .test.js 225 + .test.jsx 315 = 540 (IDENTICAL·WT dirty 는 in-place 수정·신규 0)
+
+closed band 6 App.jsx grep LIVE (재오픈 0):
+  L164 /dashboard · L173 /dashboard/hq (대시보드)
+  L209 /clients/home-newsletter (G2)
+  L236 /clients/linkage-records (G-LINKAGE)
+  L245 /clients/:clientId/care-plan-form (G14)
+  L389 /billing/cms (v2 CMS)
+  L628 /transport/service-fees (v1.3-C)
+
+merge gate: FE 0 (FULLY SYNCED) + BE 744 = 744  (BE-heavy → tester FF·신규 마이그레이션 0)
+
+=== SEC-D34 엑셀 import 매직바이트 — 4번째 경로 착지 (bank deposit) ===
+BE diff a788e6d..f6e4d88 = 2 files, +248/-9:
+  billing/domain/BankDepositImportService.java       +95/-9
+  billing/domain/BankDepositImportServiceTest.java   +162  (in-place expand)
+
+BankDepositImportService (SEC-D34):
+  OOXML_ZIP_MAGIC = {0x50, 0x4B, 0x03, 0x04}   (xlsx / ZIP local file header)
+  주석 verbatim: "NhisImportService / VisitService lockstep — SEC-D34 Content-Type allow-list."
+  주석 verbatim: "OOXML / ZIP local file header (SEC-D25/D34 xlsx magic). BankDeposit parses xlsx (XSSF) only."
+  → bank deposit import 은 xlsx ONLY (XSSFWorkbook 파서) — .xls(OLE) 미허용
+     (visit/staff-caregiver 는 allowXls·billing NHIS + bank deposit 은 xlsx-only OOXML)
+  readAndValidateImportFile() 4-step fail-closed:
+    1) 필수     → "업로드할 엑셀 파일이 없습니다."
+    2) 확장자    → !endsWith(".xlsx") → "xlsx 형식의 엑셀 파일만 업로드할 수 있습니다."
+    3) Content-Type allowlist → "엑셀 파일 콘텐츠 타입만 업로드할 수 있습니다."
+    4) magic    → !startsWithMagic(payload, OOXML_ZIP_MAGIC) → "엑셀 파일 시그니처가 올바르지 않습니다."
+    (읽기 실패 → "엑셀 파일을 읽을 수 없습니다.")
+  payload → BankDepositExcelParser.parseWithFormat(ByteArrayInputStream) (검증된 바이트만 파싱)
+
+SEC-D34 엑셀 import 매직바이트 검증 경로 누적 (BNK-848 → 849):
+  1. VisitService                     (방문 실적 import · allowXls)      — BNK-848
+  2. NhisImportService                (공단 청구 import · billing OOXML) — BNK-848
+  3. StaffNhisCaregiverImportService  (요양보호사 공단 import · allowXls) — BNK-848
+  4. BankDepositImportService         (은행 입금 대사 import · xlsx-only) — BNK-849 ★신규
+  = SEC-D25(이미지) → SEC-D34(엑셀/OLE 바이너리) 축 확산 · 입금 대사(reconciliation) 축 포함
+
+=== 경쟁 crosswalk — bank deposit / 입금 엑셀 import 서명 검증 ===
+ogada 는 은행 입금 대사 엑셀 import 까지 OOXML 서명 검증 (경쟁 4종 유일):
+- 케어포 M7 7-2 「입금관리」 lifecycle 존재하나 엑셀 서명 검증 공개 근거 0 「미확인」 (func LIVE 000)
+- 이지케어 FAQ 자동이체/입금/CMS 워크플로 문서화 but 매직/시그니처 0 「미확인」 (아래 재실측)
+- 엔젤 system_feature 요양비 8-leaf 입금/CMS but 파일 서명 검증 0-hit
+- 롱텀(공단) 청구 엑셀 포맷 제공하나 서명 검증은 벤더 몫
+
+=== live 재실측 (drift 기록) ===
+NHIS #44 러-1~4 이동서비스비 고시:
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba  = 579차 IDENTICAL (BNK-848 578차 → +1)
+  verbatim grep -oF: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+  ↔ BE @f6e4d88 TransportServiceFeeParityCatalog RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY IDENTICAL
+  → 상수 재조정 불요 · id=2 0.85 carry
+
+이지케어 FAQ (입금/엑셀 서명 근거 교차검증):
+  https://ezcare.easyms.co.kr/help/faq.ez
+  HTTP 200 · 80,057B · md5 1c77002005919481595cf3f6457dc3bf
+  = DRIFT hit-only (BNK-828 7369b673 → 변동·size 80,057B 불변 — 콘텐츠 오실레이션)
+  grep -oF: 엑셀(2)·입금(1)·자동이체(2)·CMS(2)·가상계좌(0)·매직(0)·서명(2)·시그니처(0)
+  → 엑셀 import 매직바이트/파일 시그니처 검증 근거 0건 「미확인」 (서명 2건은 파일 서명 아님·별개 문맥)
+  → ogada bank deposit + NHIS + visit + staff-caregiver 엑셀 4-경로 서명 검증 SUPERIOR 재확인
+
+=== 사이클 산출 요약 ===
+신규 snapshot 3: ogada_git_remeasure_bnk849.txt(주력)·nhis_jo44_live_bnk849.html·ezcare_faq_live_bnk849.html
+덮어쓰기 0
+zero drift IDENTICAL 1 (NHIS 579차) · DRIFT hit-only 1 (ezcare FAQ)
+가정 번복 0 · KPI promote 0
+per-cycle minimum 4종 충족:
+  · 신규/재실측 증거 URL: NHIS #44 579차 재실측 + ezcare FAQ 재실측(2)
+  · 메뉴/필드/워크플로 상세: SEC-D34 bank deposit 4-step + 4-경로 누적 블록
+  · COMPETITOR_MATRIX 1행+ @HEAD 갱신: BNK-849 delta block (@3042a53/@f6e4d88)
+  · BENCHMARK_REPORT §신규 소절: BNK-849

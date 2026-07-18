@@ -1,0 +1,116 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-15T07:47:07Z -->
+# BNK-751 엔젤·롱텀·규제 4–6h 교차검증 (주력 스냅샷)
+
+조사일: 2026-07-15T07:47:07Z | rotation: 엔젤·롱텀·규제 4–6h
+직전 동일 rotation: BNK-747 (2026-07-15T05:10Z) → ~2.6h 후
+직전 사이클: BNK-750 (2026-07-15T07:05Z·이지케어 2–4h) → ~42분 후
+
+## 1. ogada @HEAD (git 실측)
+
+| 축 | 값 |
+|---|---|
+| FE develop | `9b65529` `fix(v1.2.1/QA-B95): normalize live-e2e truthy env parsing` |
+| FE status | WT **CLEAN** · ahead origin/test **1** vs `c59da8f` |
+| BE develop | `0e66a38` `fix(v2/G21): enforce linkage payload length limits in service` |
+| BE status | WT **CLEAN** · ahead **656** vs origin/test=`598d108` |
+| vs BNK-750 | FE `d6f7069`→`9b65529`(+3: G-LINKAGE length/rehydrate + QA-B95 env)·BE `a72866f`→`0e66a38`(+1 linkage length) |
+| Route | **132** (`<Route\b` 131 + `<Routes>` 1) |
+| Page | **105** `*Page.jsx` |
+| FE test | **524**(216+308·carry) |
+| BE Test | **291**(290 Test.java + 1 Tests.java·carry) |
+| BE @Test | **2186**(+2 vs BNK-750 2184) |
+| Flyway | V1–V194 (신규 0) |
+| 모듈 KPI | **97.07%**(28.15/29·carry·coverage-0=0 · residual id=12 0.7·id=10 0.75·id=2/8 0.85) |
+| merge gate | **657**(FE 1 + BE 656·BE-heavy → tester FF) |
+
+## 2. 규제·경쟁 live 재실측 (확인)
+
+| # | 대상 | URL | HTTP | SIZE | md5 | vs prior | 판정 |
+|---|---|---|---|---|---|---|---|
+| 1 | NHIS #44 이동서비스비 러-1~4 | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | 200 | 7,572B | `c886ff1f…` | BNK-750 IDENTICAL | **485차 zero drift** |
+| 2 | silverangel 효성CMS extraService | https://www.silverangel.kr/newSilverangel/service/extraService.do | 200 | 81,637B | `f9c5d877…` | BNK-747 IDENTICAL | CMS 3-method 요금 불변 |
+| 3 | silverangel daycareEssentialWork | https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do | 200 | 131,664B | `c79c1be3…` | BNK-747 IDENTICAL | 지표27=기능회복훈련 |
+| 4 | silverangel notice | https://www.silverangel.kr/silverangel/support/notice/list.do | 200 | 5,707,602B | `ea7d6b3d…` | BNK-747+ IDENTICAL | ≥221573 신규 공지 0 |
+| 5 | lcms.or.kr | https://www.lcms.or.kr/ | **200** | 50,498B | `6b750291…` | BNK-747 `c0c66076` 50,740B → **DRIFT** | `ad_cont type1→type3` 배너 로테이션(semantic IDENTICAL·BNK-736 패턴 회귀) |
+| 6 | longterm 502 단기보호 | https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500 | 200 | 89,171B | `a71379de…` | shell token DRIFT | login-gated JS shell · 수치 disk carry |
+| 7 | longterm 610 통합재가 | https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650 | 200 | 88,408B | `6b10f426…` | shell token DRIFT | 동상 · 월 10만원 disk carry |
+| 8 | law.go.kr 제2025-247호 | https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110 | 200 | 78,450B | live raw `5ce92b66…` | BNK-747 Time= only | **norm IDENTICAL** (`5f7a487b`) |
+| 9 | silverangel systemFeature | https://www.silverangel.kr/newSilverangel/service/systemFeature.do | **404** | 1,028B | `3c93af54…` | carry | 공개 기능 URL decommission 유지 |
+| 10 | MOHW list1488862 | https://www.mohw.go.kr/board.es?mid=a10409020000&bid=0026&act=view&list_no=1488862 | 200 | 103,113B | `d5902718…` | token/layout DRIFT | 수가 본문 교차 「미확인」유지 |
+
+### NHIS #44 verbatim markers (grep -oE) — PLAN_NOTES #44 1차 확인 지속
+러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+
+인용(확인):
+- 「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다」
+- 「이용 횟수에 관계없이 1일 1회만 산정」
+- 「그 비용은 수급자가 부담하지 아니한다」
+
+↔ ogada `TransportServiceFeeParityCatalog` / `TransportDistanceBand` / `TransportServiceFeeService` (id=2 0.85) 6-link chain carry
+
+### silverangel CMS fee verbatim (extraService)
+「자동이체 : 250원/1 건」「가상계좌 : 300원/1 건」「카드결제 : 별도문의」
+↔ ogada `CmsPaymentMethodCatalog`: AUTO_DEBIT_CMS `250원/1건` · VIRTUAL_ACCOUNT `300원/1건` · CARD/MULTI/CASH_RECEIPT (5-method superset) · **코드 drift 불요** · id=7-4 1.0
+
+### silverangel 평가지표 #27 verbatim
+「주야간보호 27 기능회복훈련」×3 · 기능회복(6) · 목욕(2)
+↔ ogada G17/`BathingScheduleIndicator27Panel` 「지표27=기능회복훈련 · 목욕=비필수」 carry
+
+### longterm 수가 (disk canonical carry — live shell 수치 0)
+단기보호 1일 **74,060** (`longterm_502.html`) · 통합재가 주야간보호형 **월 10만원** (`longterm_610.html`)
+live npbs = login-gated shell(로그인 키워드 다수·수가 0-hit) → 수치 「미확인」·disk 인용만
+
+### lcms ad_cont type 로테이션 (실체 변동 0)
+BNK-747: `ad_cont type1` · md5 `c0c66076` · 50,740B (홈페이지 제작 CTA)
+BNK-751: `ad_cont type3` · md5 `6b750291` · 50,498B (CJ프레시웨이 MOU·식단표 배너) = BNK-736 동일 md5 회귀
+→ 마케팅 셸 배너 로테이션 · HTTP 200 유지 · decommission **불요**(BNK-747 가정 번복 유지)
+
+### carefor LIVE
+func.php / demo-work / home 3-URL HTTP **000** (connect timeout 8s) **80-cycle+** 「미확인」 · disk `6226e6eb` 우선
+
+## 3. 메뉴/필드/워크플로 블록 — NHIS #44 러-1~4 ↔ ogada parity catalog (G16)
+
+| 규제 규칙 (NHIS #44 live) | ogada 상수/코드 | Route/API | 판정 |
+|---|---|---|---|
+| 거리구간 러-1~4 | `TransportDistanceBand` RU_1(<5km)·RU_2(5~10)·RU_3(10~20)·RU_4(≥20) | `GET /transport/service-fee-rates` | ✅ |
+| 편도 50% | `ONE_WAY_RATIO=0.5` · `ONE_WAY_RATIO_NOTE` | parity-rules + generate | ✅ |
+| 1일 1회 | `ONE_PER_DAY_NOTE` · CONFIRMED run 생성 시 per-client guard | `TransportServiceFeeService` | ✅ |
+| 수급자 부담 없음 | 기관 청구·별도 본인부담 미부과 패리티 문구 | parity-rules | ✅ |
+| 일지④(별지 제22호) | `SERVICE_LOG_NOTE` | G16 deepen · 일지 연계 | ✅ |
+| 효성CMS 250/300 | `CmsPaymentMethodCatalog` AUTO_DEBIT/VIRTUAL | `/billing/cms` id=7-4 **1.0** | ✅ |
+| 지표27 기능회복 | `functionalRecoveryCompliance` + Bathing≠27 | `/programs/functional-recovery/*` | ✅ |
+
+**결론(확인)**: PLAN_NOTES #44 이동서비스비 러-1~4·2026 평가 #27·CMS 요금·법정서식 백본 **실체 변동 0**(NHIS **485차**). ogada `TransportServiceFee*`·`CmsPaymentMethodCatalog`·지표27 하드코딩 상수 **긴급 재조정 불요**. 잔여 operational = id=12 credentials → id=10 SMS/RFID SMS → id=2/8 polish.
+
+## 4. 갭·우선순위 Δ
+
+| id/축 | BNK-750 | BNK-751 | 판정 |
+|---|---|---|---|
+| coverage-0 진성갭 | 0 | **0 carry** | G-LINKAGE CLOSED 유지 |
+| G-LINKAGE harden | CLOSED | FE+BE length/rehydrate harden | operational polish(갭 아님) |
+| NHIS #44 | 484차 | **485차** IDENTICAL | 상수 불변 |
+| CMS / 지표27 | IDENTICAL | IDENTICAL | monitoring |
+| lcms | 200 type1 | 200 type3 배너 DRIFT | semantic IDENTICAL · 위협도 0 |
+| id=10/12/2/8 | 0.75/0.7/0.85/0.85 | carry | residual operational |
+| P3 만료일 위젯 | 「가정」 | 「가정」 | 격상 0 |
+
+## 5. per-cycle minimum checklist
+
+- [x] 신규/재실측 증거 URL 10건 (NHIS 485차+extraService+essential+notice+lcms type DRIFT+502+610+law247+systemFeature 404+mohw)
+- [x] 메뉴/필드/워크플로 블록 1 (NHIS #44 러-1~4 ↔ TransportServiceFeeParityCatalog 4-rule + CMS/지표27)
+- [x] COMPETITOR_MATRIX 1행+ `@9b65529`/`@0e66a38`
+- [x] BENCHMARK_REPORT §751
+
+## 6. 산출 스냅샷 파일
+
+- `nhis_jo44_live_bnk751.html`
+- `silverangel_extraService_live_bnk751.html`
+- `silverangel_daycareEssentialWork_live_bnk751.html`
+- `silverangel_notice_list_live_bnk751.html`
+- `lcms_home_live_bnk751.html` / `lcms_or_kr_live_bnk751.html` (type3 배너 DRIFT)
+- `longterm_502_live_shell_bnk751.html`
+- `longterm_610_live_shell_bnk751.html`
+- `law_247_admRulInfoP_live_bnk751.html`
+- `silverangel_systemFeature_live_bnk751.html` (404)
+- `mohw_gosi_2026_126_list_live_bnk751.html`
+- `angel_longterm_regulatory_crossverify_bnk751.txt` (본 파일)

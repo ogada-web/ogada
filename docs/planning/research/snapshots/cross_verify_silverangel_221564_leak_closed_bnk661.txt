@@ -1,0 +1,252 @@
+# BNK-661 교차검증·갭 우선순위 8h+ — silverangel 221564 D-3 leak CLOSED + 9th BNK→COD pattern 후속 + NHIS #44 409차 zero drift
+
+**측정 시각**: 2026-06-26T14:40:00Z (KST 23:40) | **에이전트**: benchmark_researcher (BNK) | **rotation**: 8h+ 교차검증·갭 우선순위
+
+---
+
+## 1. ★★★ silverangel `view.do` shell-only refactor — 221564 D-3 leak CLOSED (가정 번복 · 4-cycle 보안 finding 반전)
+
+### 1-1. 4-cycle BNK→silverangel security finding 진행 사항
+
+| 차수 | 시각 | 방법 | 응답 | 본문 |
+|---|---|---|---|---|
+| BNK-622 | T(2026-06-22~) | 「가정」 hypothesis | (probe 미실행) | draft 누출 가설 |
+| BNK-654 | 2026-06-26T09:50Z | POST body=`Tmp_idx=221564&...` | HTTP 200 · **1,812,676B** · `b2460e88` | 「작성중 - [필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)」 full draft body leak · 시설/주야간 공통 **13항목** + 주야간 적용 **3항목** release notes |
+| BNK-656 | 2026-06-26T11:12Z | GET `view.do?Tmp_idx=221564&...` | HTTP 200 · **1,812,677B**(+1B) · `fe423bf1` | 동일 본문 leak · GET/POST 양방향 노출 NEW security finding |
+| **BNK-661** | 2026-06-26T**14:42Z** | GET·POST·`?Tmp_idx=221564` | HTTP 200 · **51,765B**(−1,760,912B) · **`8437f255`** | **빈 shell만 반환** — `board_tit/board_info/board_cont` 모두 empty · 메뉴/푸터 chrome만 |
+
+### 1-2. 실측 evidence
+
+```
+$ curl -s -o /tmp/bnk661/sa_221564_simple.html -w "HTTP=%{http_code} SIZE=%{size_download}\n" \
+    --max-time 25 \
+    "https://www.silverangel.kr/silverangel/support/notice/view.do?Tmp_idx=221564"
+HTTP=200 SIZE=51765
+md5: 8437f255b4eaf22e9844d1d260554093
+
+$ curl -s -o /tmp/bnk661/sa_221564_post.html -w "HTTP=%{http_code} SIZE=%{size_download}\n" \
+    -X POST "https://www.silverangel.kr/silverangel/support/notice/view.do" \
+    --data "Tmp_idx=221564&pageIndex=1&searchCl=01&searchKey=&backType="
+HTTP=200 SIZE=51765
+md5: 8437f255b4eaf22e9844d1d260554093
+
+$ grep -A4 "board_view" /tmp/bnk661/sa_221564_simple.html
+<div class="board_view" style="margin-top: 0px;">
+    <div class="board_tit">
+        <strong></strong>            # ← 비어 있음
+    </div>
+    <dl class="board_info">
+        <dt>작성자</dt>
+        <dd>                          # ← 비어 있음
+        <dt>등록일</dt>
+        <dd></dd>                     # ← 비어 있음
+        <dt>조회</dt>
+        <dd></dd>                     # ← 비어 있음
+        <dt>번호</dt>
+        <dd></dd>                     # ← 비어 있음
+    </dl>
+    <dl class="board_info">
+        <dt>첨부파일</dt>
+        <dd>... 첨부파일이 없습니다.
+    </dl>
+    <div class="board_cont">
+                                      # ← 비어 있음
+    </div>
+</div>
+```
+
+### 1-3. 교차 확인 (이미 published 221551 도 동일 shell)
+
+```
+$ curl -s -o /tmp/bnk661/sa_221551.html -w "HTTP=%{http_code} SIZE=%{size_download}\n" \
+    "https://www.silverangel.kr/silverangel/support/notice/view.do?Tmp_idx=221551"
+HTTP=200 SIZE=51765        # ★ 221564 와 byte 단위 동일
+md5: 8437f255b4eaf22e9844d1d260554093   # ★ md5 도 동일
+```
+
+→ 이미 published된 221551(BNK-622~656 47-cycle carry 「최신 가시」)도 동일 51,765B `8437f255` 셸만 반환. 즉 `view.do` 엔드포인트가 전면 refactor되어 **server-side render에서 본문을 빼고 → AJAX 후로딩**(추정) 으로 전환.
+
+### 1-4. 가정 번복 (BNK-622 → BNK-661)
+
+| 가정 | BNK-622 | BNK-654/656 | BNK-661 |
+|---|---|---|---|
+| 「Tmp_idx 직접 호출 시 draft body 누출 가능」 | hypothesis | ✅ 확인 (POST 1.8MB·GET 1.8MB) | ❌ **반전** (51,765B shell only) |
+| 「silverangel notice/view.do 는 status 게이팅 미적용」 | hypothesis | ✅ 확인 (draft·hidden·future 무관 본문 반환) | ❌ **반전** (모든 idx empty shell) |
+| 「ogada notice/공지 draft 게이팅 P2 보안 차별화」 | 「가정」 | ✅ 확인 (실측 비교 우위) | △ 차별화 가능성 carry — silverangel approach 도 동일 결과 달성(shell + AJAX) |
+
+→ **4-cycle BNK→COD 보안 finding 의 일부 가정 반전**. ogada P2 「notice/공지 draft 게이팅」 자체는 여전히 보안 best practice — 다만 silverangel 비교 우위 framing 은 약화. silverangel 의 신규 접근(empty shell + AJAX)도 동등 보안 효과. ogada 도 SSR 단계에서 draft body 제외 + 클라이언트 권한 검증 후 fetch 가능.
+
+### 1-5. 시사점
+
+1. **silverangel deployed hotfix 2026-06-26 14:00Z 직전** (BNK-656 11:12Z 까지는 leak·BNK-661 14:42Z 부터는 closed) — 6/30 D-day(릴리스 예정일) 직전 보안 패치 추정.
+2. ogada `NoticeViewPage`(if any) / 「공지 view」 화면 구현 시 **두 가지 가능 접근** 모두 차별화 안 됨:
+   - SSR-단계 draft 게이팅(404/403) → safe
+   - SSR shell + client-side fetch + RBAC → safe(silverangel 신규 접근)
+   - choice 는 SEO·접근성·서버 부하 기준으로 결정.
+3. 6/30 release notes 16항목(BNK-654 leak 본문) 은 이미 ogada `decisions.md`·`PLAN_NOTES.md` 에 carry 됨 → planner P3 candidate 9건 검토는 **calibration 데이터 손실 없이 유지**.
+
+---
+
+## 2. ★★★ 9th BNK→COD 후속 hardening — G-NHIS-IMPORT-ERROR-STATUS-SURFACE 4-stage 확장 (확인 · ogada @HEAD git show)
+
+### 2-1. 신규 commits (BNK-660 → BNK-661)
+
+| Side | SHA | 시각 | 메시지 | files | 핵심 |
+|---|---|---|---|---|---|
+| FE | `562560a` | 2026-06-26 14:20:36Z | `feat: keep branch filter on NHIS import links` | 6 +67/-9 | `buildClientListSearchHref(인정번호, branchId)` · `readClientListBranchFromQuery` · `ClientListPage` `branchFilter` URL 초기화 |
+| BE | `9b91e0f` | 2026-06-26 14:07:43Z | `test(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): lock zero-import partial outcome at service layer` | 4 +129/-1 | `VisitServiceTest` +1 @Test 61L · `VisitControllerRoutingTest` +1 @Test 64L · `NhisVisitScheduleImportGuidance` +2 line · `NhisVisitScheduleImportGuidanceTest` +1 line |
+
+### 2-2. stage4 NEW — FE branch filter persistence (FE `@562560a`)
+
+`utils/clientListFilters.js`:
+```js
+export const CLIENT_LIST_BRANCH_QUERY_PARAM = "branchId";   // NEW
+
+export function buildClientListSearchHref(query, branchId) {  // ← 시그니처에 branchId 추가
+  const trimmed = String(query ?? "").trim();
+  const branch = String(branchId ?? "").trim();
+  const params = new URLSearchParams();
+  if (branch) {
+    params.set(CLIENT_LIST_BRANCH_QUERY_PARAM, branch);
+  }
+  if (trimmed) {
+    params.set(CLIENT_LIST_SEARCH_QUERY_PARAM, trimmed);
+  }
+  const queryString = params.toString();
+  return queryString ? `/clients?${queryString}` : "/clients";
+}
+
+export function readClientListBranchFromQuery(searchParams) {  // NEW
+  const raw =
+    typeof searchParams?.get === "function"
+      ? searchParams.get(CLIENT_LIST_BRANCH_QUERY_PARAM)
+      : "";
+  return String(raw ?? "").trim() || CLIENT_LIST_FILTER_ALL;
+}
+```
+
+`components/visits/VisitNhisImportPanel.jsx`:
+```jsx
+<Link
+  to={buildClientListSearchHref(ltcCertNo, branchId)}   // ← branchId 추가
+  className="ds-link"
+  aria-label={`인정번호 ${ltcCertNo} 수급자 목록에서 찾기`}
+>
+```
+
+`pages/ClientListPage.jsx`:
+```jsx
+const [branchFilter, setBranchFilter] = useState(() =>
+  readClientListBranchFromQuery(searchParams)            // ← URL 초기값
+);
+
+useEffect(() => {
+  const nextBranch = readClientListBranchFromQuery(searchParams);
+  setBranchFilter((current) => (current === nextBranch ? current : nextBranch));
+}, [searchParams]);
+
+useEffect(() => {                                        // ← 잔류 branch 정합성 guard
+  if (!branches.length) return;
+  if (branchFilter === CLIENT_LIST_FILTER_ALL) return;
+  if (!branches.some((branch) => branch.id === branchFilter)) {
+    setBranchFilter(CLIENT_LIST_FILTER_ALL);
+  }
+}, [branchFilter, branches]);
+```
+
+→ **stage3 deep-link**(BNK-660·`?q=<ltc cert>`)에 **stage4 branch context persistence**(BNK-661·`?branchId=<branch>&q=<ltc cert>`) 추가 = **NHIS import 시 운영자가 보던 지점 필터가 수급자 목록 진입 시도 유지** → 다지점 운영 시 잘못된 지점 데이터를 보지 않음.
+
+### 2-3. service-layer regression lock (BE `@9b91e0f`)
+
+`NhisVisitScheduleImportGuidance.java` 본문에 다음 한 줄 추가 (운영자 guidance copy 강화):
+```
+"반영 0건이어도 미매칭·건너뜀이 함께 있으면 outcomeStatus=PARTIAL입니다. "
+        + "ALL_SKIPPED가 아니므로 인정번호·성명 수정이 필요할 수 있습니다.",
+```
+
+`VisitServiceTest.java` 신규 @Test (61L):
+- `importNhisShouldReturnPartialOutcomeWhenZeroImportedWithUnmatchedAndSkippedRows`
+- 시나리오: 2-row import (1 UNMATCHED + 1 SKIPPED) → expected outcomeStatus=PARTIAL · summary `"반영 0건 / 전체 2건 (미매칭 1, 건너뜀 1)"`.
+
+`VisitControllerRoutingTest.java` 신규 @Test (64L):
+- `nhisImportRouteShouldExposePartialOutcomeWhenZeroImportedWithUnmatchedAndSkipped`
+- HTTP layer 까지 `outcomeStatus=PARTIAL` + summary 일관성 검증.
+
+기존 ALL_SKIPPED 시나리오 3개(`importNhisShouldSkip*`)에 `assertEquals(NhisVisitScheduleImportOutcome.ALL_SKIPPED, response.outcomeStatus())` 추가 = ALL_SKIPPED와 PARTIAL 경계 회귀 안전망 강화.
+
+### 2-4. 9-stage BNK→COD 진행 chain (cross-verify 누적)
+
+| stage | 차수 | 시각 | side | SHA | 핵심 |
+|---|---|---|---|---|---|
+| P3 candidate 제안 | BNK-655 | T10:35Z | — | — | ezCare FAQ 21845 사후·수동 incident 공지 패턴 → G-NHIS-IMPORT-ERROR-STATUS-SURFACE candidate |
+| stage1 BE 분류 | BNK-656 | T11:05Z | BE | `c38388d` | `NhisVisitScheduleImportOutcome.classify` 4-state OK/PARTIAL/UNMATCHED/SKIPPED (13-file +193L) |
+| stage2 FE inline guidance | BNK-656 | T11:15Z | FE | `91675f1` | `VisitNhisImportGuidePanel` outcome notes + error recovery steps (7-file +210L) |
+| follow-up: controller routing test | BNK-658 | T12:30Z | BE | `97b94e7` | `VisitControllerRoutingTest` +19L (auto-coder follow-up) |
+| follow-up: keep unmatched rows | BNK-659 | T13:24Z(carry) | BE | `ffa57ea` | `NhisVisitScheduleImportOutcome` +5L: ALL_SKIPPED을 skip-only(`unmatched==0`)로 제한 → mixed 0-import는 PARTIAL fall-through |
+| stage3 FE deep-link 복구 | BNK-659 | T13:24Z(carry) | FE | `cda2a10` | `clientListFilters.js` NEW 31L `buildClientListSearchHref(인정번호)`→`/clients?q=` · `ClientListPage.readClientListSearchFromQuery` |
+| git-grounded 완성 재입증 | BNK-660 | T14:02Z | — | (carry) | 3-stage full-stack loop git-grounded |
+| **stage4 FE branch persistence** | **BNK-661** | **T14:20Z(carry)** | **FE** | **`562560a`** | `buildClientListSearchHref(인정번호, branchId)` · `readClientListBranchFromQuery` · `ClientListPage branchFilter` URL 초기화 |
+| **service-layer test lock** | **BNK-661** | **T14:07Z(carry)** | **BE** | **`9b91e0f`** | `VisitServiceTest` + `VisitControllerRoutingTest` 신규 @Test 2건 PARTIAL/ALL_SKIPPED 경계 lock + guidance copy +1 |
+
+→ **9-stage end-to-end 복구 루프 + regression-safe contract lock**(역대 최장). 「auto-coder follow-up test coverage」 + 「BNK→COD 1-cycle full-stack closure」 패턴 입증 누적 (BNK-650 17th layer → BNK-658 controller routing → BNK-660 git-grounded → BNK-661 branch persistence + service-layer lock).
+
+---
+
+## 3. ★★★ NHIS #44 이동서비스비 러-1~4 — 409차 zero drift IDENTICAL (확인 · 기존 URL 재실측)
+
+```
+$ curl -s -o /tmp/bnk661/nhis_jo44.html -w "HTTP=%{http_code} SIZE=%{size_download}\n" \
+    "https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769"
+HTTP=200 SIZE=7572
+md5: c886ff1fd1d5ca2cb5dc76d30adde8ba   # ★ disk와 IDENTICAL
+```
+
+verbatim 불변: 러-1~4·편도(50%)·1일 1회·별지 제22호·수급자 부담 X. ogada `@HEAD` `TransportServiceFeeParityCatalog`(RU_1~4·`ONE_WAY_RATIO=new BigDecimal("0.5")`)·`TransportServiceFeeService`(1일1회 guard)·`NhisVisitScheduleImportOutcome` 4-state(+`ALL_SKIPPED` 경계 정정 BNK-659/661) full-stack **409-cycle carry**.
+
+---
+
+## 4. ★ ezCare 마케팅 3-URL 재실측 — value zero drift carry (확인)
+
+| URL | HTTP | size (Δ vs BNK-659) | md5 disk→live | 값 변동 |
+|---|---|---|---|---|
+| `/help/faq.ez?rowid=21845` | 200 | 13,915 (=) | `5b78c947` IDENTICAL | 공단 엑셀 incident 공지 zero drift (게시 이래 5-cycle 불변) |
+| `/?PG=e01` | 200 | 47,130 (+41B 재진입) | `168e851c`→`fbab23f0` | 이용시설 **9,360** · 점유율 **53.52%** · 전국재가 17,489 zero drift (BNK-659 동일) |
+| `/new/ezCare_fnc.html` | 200 | 17,870 (=) | `6fb93bb2`→`831d9e18` | 도입 **9,363**개 기관 zero drift (BNK-659 동일) |
+
+→ 5-cycle carry 가격(33,000/25,850/55,000+옵션 45,000·10,000) verbatim 불변(미측정·동일 cachebuster 패턴 추정). 본 사이클은 cachebuster/counter DRIFT 만 발생 → `덮어쓰기 0건`(미측정 또는 추가 carry 없음·BNK-659 disk 보존).
+
+---
+
+## 5. ★ ogada baseline git 실측 — FE+1·BE+1 advance · merge gate 854 (확인)
+
+| 축 | SHA | Δ vs BNK-660 | 비고 |
+|---|---|---|---|
+| FE develop | `@562560a` | **HEAD +1** | `feat: keep branch filter on NHIS import links` · WT **CLEAN** · ahead **264** vs `origin/test=ab4de83` |
+| BE develop | `@9b91e0f` | **HEAD +1** | `test(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): lock zero-import partial outcome at service layer` · WT **CLEAN** · ahead **590** vs `origin/test=598d108` |
+| KPI | 118 Route(`<Route\b` 118+`<Routes>` 1=119)·93 page(`*Page.jsx`)·V1–V183·BE Test 274(273 `Test.java`+1 `Tests.java`)·BE @Test **1991**(+2 vs BNK-660 1989·`@ParameterizedTest` 3 별도)·FE test 485(199 .test.js+286 .test.jsx)·모듈 80.86%(carry·`23.45/29`·✅21/△3/❌5)·reports 28 | 6/8축 IDENTICAL · BE @Test +2 · ahead FE+1/BE+1 | merge gate **854**(FE 264+BE 590·+2 cross-stream vs BNK-660 852·양쪽 WT **CLEAN** → tester FF 가속 가능) |
+
+---
+
+## 6. per-cycle minimum 4종 (확인)
+
+- 신규 evidence URL **1건** (silverangel `view.do` shell-only refactor 신규 측정 — 가정 번복 4-cycle 보안 finding 반전)
+- 메뉴/필드/워크플로 1블록 (9-stage BNK→COD chain + G-NHIS-IMPORT-ERROR-STATUS-SURFACE stage4 branch persistence + service-layer test lock)
+- COMPETITOR_MATRIX 1행 이상 ogada `@562560a`/`@9b91e0f` 갱신
+- BENCHMARK_REPORT §661 신규 소절
+
+## 7. 카운트 요약
+
+- 신규 snapshot: 1건 (이 파일)
+- 덮어쓰기: 0건
+- zero drift IDENTICAL: 2건 (NHIS #44 409차 · ezCare FAQ 21845)
+- 가정 번복: **3건** (silverangel 221564 leak/POST/GET 모두 closed = 4-cycle finding 반전)
+- 상태 변경: 2건 (silverangel `view.do` shell-only refactor · ogada FE+1/BE+1)
+- KPI 변경: 2건 (BE @Test 1989→1991·merge gate 852→854)
+- 엑셀 포맷 변경: 0
+
+## 8. tester / planner / coder 다음 액션
+
+→ **tester**: merge **854**(FE 264 + BE 590·양쪽 WT CLEAN → FF 가속 가능·선행 commit 불필요·QA-B95 17th·G-NHIS-IMPORT-ERROR-STATUS-SURFACE 9-stage 모두 포함).
+→ **planner**: silverangel 보안 비교 우위 framing 약화 인지 — ogada `notice draft 게이팅` P2 candidate 는 보안 best practice 로 유지 가능하나, silverangel 동등 접근(empty shell + AJAX) 도 안전 → 차별화 메시지 조정 권장. 6/30 D-day release notes 16항목(BNK-654 leak 본문)은 carry 유지 — P3 candidate 9건 검토 일정 유지 가능.
+→ **coder**: 추가 액션 불요 (양쪽 WT CLEAN·미커밋 carry 0·BE/FE 양쪽 auto-coder follow-up 자율 완료).
+→ **security_auditor**: ogada `NoticeViewPage`(if any) 또는 신규 「공지 view」 화면 구현 시 두 가지 안 — SSR draft 게이팅 vs SSR shell + client fetch — 모두 동등 안전 (silverangel 사례 carry).

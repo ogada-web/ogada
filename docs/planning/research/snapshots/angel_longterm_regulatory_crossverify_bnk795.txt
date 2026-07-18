@@ -1,0 +1,90 @@
+# BNK-795 엔젤·롱텀·규제 교차검증 crosswalk (2026-07-16T13:58:00Z)
+# rotation: 엔젤·롱텀·규제 역공학 4–6h
+# 직전 동일 rotation: BNK-791 (2026-07-16T11:18Z) → ~2.7h 후
+# 직전 사이클: BNK-794 (2026-07-16T13:25Z·이지케어 2–4h) → ~33분 후
+# ogada 실측: FE develop @039cd88 (ahead origin/test 0 = FULLY SYNCED)
+#            BE develop @0a8a635 (ahead 699 vs origin/test 598d108)
+# Route 132(<Route\b)·Page 106·FE test 530·BE @Test 2257(files 293)·Flyway V1–V99(submodule 실측)·모듈 97.41%
+
+================================================================================
+## §795-1 ★★★ silverangel(엔젤) 공개 서버 BACK UP — BNK-791 「HTTP 000 down」 가정 번복
+================================================================================
+BNK-791(2026-07-16T11:18Z) 는 silverangel system_feature/essentialWork 를
+HTTP 000(down) 「미확인」 으로 carry 했다. BNK-795 재실측 = **HTTP 200 IDENTICAL 회복**.
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| system_feature.do  | 200 | 45,601 | c950719098eecaf748bbdeea5deb93da | BNK-787 canonical IDENTICAL |
+| daycareEssentialWork.do | 200 | 131,664 | c79c1be37f947aab04ab7ba35cc7814d | BNK-787 canonical IDENTICAL |
+
+- system_feature.do (canonical 109-leaf) grep -oiF 재확인:
+    이동서비스 0 · 배차 0 · GPS 0 · 차량 0 · referral(연계 전용 leaf) 0 · 연계 9(전량 내부 모듈 상호참조) · 기능회복 1
+  → 엔젤 ERP 공개 기능 카탈로그에 **주간보호 이동서비스/배차/GPS 0-hit** 재확인.
+    ogada id=2 TransportController 9-route + NHIS #44 6-link(RU_1~4) = 경쟁 4종 유일 full-stack 차별화 carry.
+- daycareEssentialWork.do (필수업무) grep -oiF:
+    이동서비스 6 · 동승 2 · 수칙 8 · 기능회복 6 · 지표 4
+  → 평가 41·42 이동서비스 수칙/동승(BNK-775 확정) + 지표27 기능회복(dual-numbering·G17 CLOSED) carry.
+- 결론: **가정 번복 1** — BNK-791 「down/미확인」 → BNK-795 「확인: 200 IDENTICAL」.
+  실체(콘텐츠) 변동 0 — 서버 가용성만 회복. ogada 차별화 프레이밍 강화(다시 verifiable).
+
+================================================================================
+## §795-2 ★★★ longterm(공단) 502/610 canonical shell 회복 — BNK-791 shell-drift 「미확인」 가정 번복
+================================================================================
+BNK-791 은 longterm 502(71,008B d9ec1f8e)/610(70,237B 21598558) 를
+세션-의존 shell DRIFT 「미확인」 으로 carry 했다. BNK-795 재실측 = **canonical shell 회복**.
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| npeb502m01.web (재가급여 월 한도) | 200 | 89,162 | 5618573525680a407975cbbafe93ccd1 | BNK-787/767 canonical IDENTICAL |
+| npeb610m01.web (통합재가)         | 200 | 88,399 | fad1ce6115bad27169c248b8d7a1089b | BNK-787/767 canonical IDENTICAL |
+
+- 502 shell grep: 「재가급여」「월 한도」 marker 정상 노출 (BNK-763/767 shell IDENTICAL).
+- 610 shell grep: 「통합재가」 marker 정상 노출.
+- 단기보호 74,060 / 통합재가 월 10만원 canonical 수치는 law/NHIS 근거(BNK-553/556)로 carry — shell 은 로그인 게이트.
+- 결론: **가정 번복 1** — BNK-791 shell-drift 「미확인」 → BNK-795 「확인: canonical shell 200 IDENTICAL」.
+
+================================================================================
+## §795-3 ★★ lcms(엔젤 CMS) 배너 rotation type3(CJ프레시웨이 MOU) → type2 canonical
+================================================================================
+BNK-791 은 lcms home 배너를 type3 「엔젤시스템 & CJ프레시웨이 업무협약(MOU)」
+(md5 6b750291·50,498B) SEMANTIC DRIFT 로 기록하고 GTM 식단/영양 파트너십 시그널로 carry했다.
+BNK-795 재실측 = **type2 canonical 회귀**.
+
+| 사이클 | 배너 | md5 | SIZE | 링크 |
+|---|---|---|---|---|
+| BNK-787/767/771 | type1/type2 | c0c66076 / 6c0d22b4 | 50,740 / 50,554 | 홈페이지 제작 / extraService.do |
+| BNK-791 | **type3** CJ MOU | 6b750291 | 50,498 | angel_news_view.do?Tmp_idx=139864 |
+| **BNK-795** | **type2** canonical | **6c0d22b4** | **50,554** | extraService.do(효성CMS 부가서비스) |
+
+- diff(BNK-791 → BNK-795) 실측:
+    - `ad_cont type3` (CJ MOU 「노인식단 전문영양사 식단표」「무상제공+신선 식재료 구매계약」) **제거**
+    - `ad_cont type2` `img_banner2.png` + `자세히보기 → /newSilverangel/service/extraService.do` **복귀**
+- 결론: CJ프레시웨이 MOU 배너 = **3-type 회전 광고 carousel 의 transient 배너**(type1↔type2↔type3).
+  BNK-791 「GTM 식단 파트너십 시그널」 = 「확인: 회전 광고·상시 기능 아님」으로 정밀화.
+  → ogada meal_records/식사기록 인접 참고만·**core 갭 아님 재확정**(과대구축 금지·P3「가정」 강등 유지).
+
+================================================================================
+## §795-4 ★ NHIS #44 이동서비스비 러-1~4 — 529차 zero drift IDENTICAL
+================================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 본문 IDENTICAL (BNK-794 528차 → +1 = **529차**)
+
+grep -oE verbatim:
+  러-1(1) · 러-4(1) · 편도(2) · 최단거리(1) · 50%(11) · 1일 1회(1) · 수급자가 부담(1)
+
+핵심 문구(불변):
+  「‘러-1’부터 ‘러-4’까지 비용의 50%」 · 「1일 1회만 산정」 · 「수급자가 부담하지 아니한다」 · 편도 최단거리
+
+ogada 정합: TransportServiceFeeService
+  RU_1~RU_4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY · 6-link chain(id=2 0.85)
+  → 규제 상수 재조정 불요. 경쟁 4종 유일 full-stack.
+
+================================================================================
+## per-cycle minimum 충족 요약 (BNK-795)
+================================================================================
+- 신규 증거 URL / 재실측: 6-URL 재실측 (silverangel 2·longterm 2·lcms 1·nhis 1) + 변동 기록.
+- 메뉴/필드/워크플로 상세: §795-1 system_feature 0-hit + essential 평가지표 grep 블록.
+- COMPETITOR_MATRIX @HEAD 갱신: FE @039cd88 / BE @0a8a635 3-row.
+- BENCHMARK_REPORT §795 신규 소절 4개.
+- 가정 번복 2 (silverangel down→up · longterm shell-drift→canonical).
+- 신규 core 갭 0 · closure 0 · KPI promote 0.

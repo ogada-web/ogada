@@ -1,0 +1,117 @@
+BNK-659 — 이지케어 역공학 2–4h rotation · 2026-06-26T13:24:00Z (KST 22:24)
+================================================================================
+owner=BNK audience=PLN
+rotation: 이지케어 역공학 — /help/faq.ez FAQ rowid 전수·14 카테고리 taxonomy·누적조회
+          + ezCare_charge 가격 + ?PG=e01 점유율 + ezCare_fnc 도입 기관 수 재실측
+          + FAQ 21845 공단 엑셀 incident 공지 + ogada @HEAD git 실측
+
+[1] ogada baseline git 실측 (확인 · FE HEAD +2 · BE HEAD +1 · 양쪽 WT CLEAN)
+--------------------------------------------------------------------------------
+FE develop : cda2a10960dd21a7be01fc700404743c0ccb0ae2  (@cda2a10)
+  - feat(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): link unmatched import rows to client search
+  - 2026-06-26 13:19:48 +0000
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 263 vs origin/test=ab4de83
+  - BNK-658 @91675f1 → HEAD +2 (e4dbe9a surface inline import recovery steps + cda2a10 link unmatched rows)
+
+BE develop : ffa57ea514d59edec9967206f67164532838189e  (@ffa57ea)
+  - fix(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): keep unmatched rows visible on zero-import outcome
+  - 2026-06-26 13:12:15 +0000
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 589 vs origin/test=598d108
+  - BNK-658 @97b94e7 → HEAD +1
+
+merge gate : 852 (FE 263 + BE 589) — BNK-658 849 → +3 · 양쪽 WT CLEAN → tester FF 가속 가능
+
+[2] KPI 실측 (Δ vs BNK-658: BE @Test +1 · ahead FE +2/BE +1 · 나머지 IDENTICAL)
+--------------------------------------------------------------------------------
+Route        : 118  (App.jsx `<Route\b`=118 + `<Routes>`=1 → 119 total)  IDENTICAL
+page         : 93   (`*Page.jsx` git ls-tree develop)                     IDENTICAL
+migration    : V1–V183 (183 files)                                        IDENTICAL
+BE Test 파일 : 274  (273 `Test.java` + 1 `Tests.java`)                    IDENTICAL
+BE @Test     : 1989 (`git grep -hoE '@Test\b' develop -- '*.java'`)       +1 vs BNK-658 1988
+               · BE @ffa57ea diff: NhisVisitScheduleImportOutcomeTest.java +9L = +1 @Test
+               · @ParameterizedTest 3 별도
+FE test 파일 : 485  (199 `.test.js` + 286 `.test.jsx`)                    IDENTICAL
+               · FE HEAD +2 는 기존 test 파일 확장·신규 component (VisitNhisImportRecoverySteps.jsx)
+모듈 커버리지: 80.86% (23.45/29 · competitorModuleCoverage.js 29-feature)  IDENTICAL
+               ✅완전 21 · △부분 3(2 이동 0.85·8 직원근태 0.85·10 부가 0.75) · ❌갭 5(1-5·1-10·6·11·12)
+reports route: 28                                                          IDENTICAL
+
+[3] 이지케어 마케팅·FAQ 5-URL 재실측 (확인 · live HTTP 200 · md5/size 비교)
+--------------------------------------------------------------------------------
+UA: Chrome/124 데스크톱 · 조사일 2026-06-26T13:24Z
+
+| URL | HTTP | size (Δ) | md5 disk→live | 값 변동 |
+|-----|------|----------|---------------|---------|
+| /help/faq.ez                       | 200 | 80,057 (=)    | 87f3c3d3→87a7947f | 누적조회 +28 (DRIFT 덮어쓰기) |
+| /new/ezCare_charge.html            | 200 | 22,979 (=)    | 4cb53227→bbb31a22 | 가격 verbatim 불변 (cachebuster 덮어쓰기) |
+| /?PG=e01                           | 200 | 47,089 (−41B) | 08dbea2b→168e851c | 이용시설·점유율 zero drift (DRIFT 덮어쓰기) |
+| /new/ezCare_fnc.html               | 200 | 17,870 (=)    | fa474e63→6fb93bb2 | 도입 9,363 zero drift (cachebuster 덮어쓰기) |
+| /help/faq.ez?rowid=21845&type=web  | 200 | 13,915 (=)    | 5b78c947 IDENTICAL | 공단 엑셀 incident 공지 zero drift |
+
+값 상세:
+  - 가격(ezCare_charge): 33,000 / 25,850 / 55,000 (월 이용료 3-tier) + 옵션 45,000 · 10,000 — verbatim 불변 (BNK-589 이래 carry)
+  - 점유율(?PG=e01): 이용시설 9,360 · 점유율 53.52% · 전국재가 17,489 · 집계 2026.06.26 — BNK-655 동일 (value zero drift, 4-cycle carry)
+  - 도입(ezCare_fnc): "업계 1위!! 이지케어 이용현황: 전국 9,363개 기관 사용중" — BNK-655 동일 (zero drift)
+  - 누적조회(faq.ez): 233 rowid faq-hit 합계 3,637,171(BNK-655) → 3,637,199 (+28)
+
+[4] ★ NEW BLOCK — /help/faq.ez 14-카테고리 taxonomy 전수 + top-viewed FAQ
+--------------------------------------------------------------------------------
+233 rowid · 14 카테고리(K001~K014) · 누적조회 3,637,199 (2026-06-26T13:24Z 실측)
+
+카테고리 라벨(전수):
+  K001 이용료/요금      K002 직원관리        K003 수급자관리
+  K004 일정관리         K005 서식출력/설정   K006 본인부담금
+  K007 공단연동         K008 수당/급여관리   K009 모바일앱
+  K010 문자발송         K011 기타            K012 재무회계
+  K013 세무             K014 4대보험
+
+top-viewed FAQ rowid (faq-hit 내림차순 top8):
+  rowid=21601  83,877  (최다 조회 = 운영자 최대 pain-point)
+  rowid=21274  44,143
+  rowid=21529  36,706
+  rowid=21723  25,068
+  rowid=21356  24,252
+  rowid=21668  23,936
+  rowid=21193  23,902
+  rowid=21574  22,873
+
+→ ogada cross-walk (14 카테고리 ↔ ogada 모듈):
+  K001 이용료/요금   ↔ /billing/*·calculator           ✅
+  K002 직원관리      ↔ /staff/*                         △0.85 (8 직원근태)
+  K003 수급자관리    ↔ /clients/*                       ✅ (1-1)
+  K004 일정관리      ↔ /visits·schedule·NHIS import     ✅ (nhis·G-NHIS-SCHEDULE-IMPORT)
+  K005 서식출력/설정 ↔ care-plan-forms·bulk-print       ✅ (G-CLIENT-CONTRACT-BULK-PRINT)
+  K006 본인부담금    ↔ /billing(7-x lifecycle)          ✅
+  K007 공단연동      ↔ NHIS import outcome 4-state       ✅ (G-NHIS-IMPORT-ERROR-STATUS-SURFACE FE/BE @HEAD)
+  K008 수당/급여관리 ↔ wAllowance                        △ (11 직원급여 ❌ 갭)
+  K009 모바일앱      ↔ (ogada SPA 반응형·전용 앱 없음)   △ 가정
+  K010 문자발송      ↔ SMS·알림톡(NotificationTemplate) △0.75 (10 부가)
+  K011 기타          ↔ -
+  K012 재무회계      ↔ (12 수입지출·회계 ❌ 갭)          ❌
+  K013 세무          ↔ 7-2-1 의료비공제(연말정산) ✅ 부분
+  K014 4대보험       ↔ (직원 급여 연계 ❌ 갭)            ❌
+
+→ ezCare FAQ taxonomy 가 노출하는 운영자 수요: K012 재무회계·K014 4대보험·K008 수당/급여 클러스터가
+  ogada 현행 갭(11 직원급여·12 회계) 과 정확히 일치 → M11/M12 P1 demand-signal 재입증 (BNK-652/654 carry).
+
+[5] per-cycle minimum (4종 충족)
+--------------------------------------------------------------------------------
+1. 신규 증거 URL/재실측+변동 : 5-URL 재실측 (faq 누적조회 +28·e01 −41B·charge/fnc cachebuster·FAQ21845 zero drift)
+2. 메뉴/필드/워크플로 1블록   : [4] /help/faq.ez 14-카테고리 taxonomy 전수 + top8 viewed + ogada cross-walk (NEW)
+3. COMPETITOR_MATRIX 1행+@HEAD: @cda2a10/@ffa57ea row 갱신
+4. BENCHMARK_REPORT §소절      : §659
+
+가정 번복 0 · 신규 core 갭 0 · closure 0 · 상태 변경 1(ogada HEAD FE+2/BE+1)
+KPI 변경 2(BE @Test 1988→1989·merge gate 849→852) · 재실측 zero drift 1(FAQ 21845)
+신규 snapshot 1건(본 파일) · 덮어쓰기 4건(faq_list·charge·pg_e01·ezCare_fnc) · 엑셀 포맷 변경 0
+
+[6] 다음 액션
+--------------------------------------------------------------------------------
+→ tester  : merge 852 (FE 263 + BE 589 · 양쪽 WT CLEAN · FF 가속 가능)
+→ planner : baseline FE @cda2a10 / BE @ffa57ea (HEAD FE+2/BE+1 · G-NHIS-IMPORT-ERROR-STATUS-SURFACE 후속)
+            · ezCare FAQ taxonomy 재무회계(K012)·4대보험(K014)·수당급여(K008) = ogada M11/M12 갭과 일치
+            · 도입 9,363·점유율 53.52%·가격 33,000/25,850/55,000 carry (변동 0)
+→ coder/dba : 추가 액션 불요 (양쪽 WT CLEAN)
+→ 다음 조사 우선순위: 4–6h 엔젤·롱텀·규제(NHIS #44 408차·silverangel 7-URL·MOHW126/law247)

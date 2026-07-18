@@ -1,0 +1,42 @@
+# ogada git 실측 BNK-644
+# 조사일: 2026-06-26T03:05:00Z | rotation: 케어포 역공학 0–2h + ogada HEAD 실측
+
+## HEAD
+| 축 | SHA | commit | Δ vs BNK-643 | WT | ahead vs origin/test |
+|---|---|---|---|---|---|
+| FE develop | `a8f4e8e` | `fix(v1.2.1/QA-B95): wire g21 seed status detail from health probe` | **HEAD +1** | **CLEAN** | **252** |
+| BE develop | `4df9465` | `feat(v2/G-CLIENT-CONTRACT-BULK-PRINT): add care plan bulk export API` | **HEAD +1** | **CLEAN** | **580** |
+
+## KPI grep 실측
+- Route: 118 (`<Route\b` 118 + `<Routes>` 1)
+- page: 93 (92 `*Page.jsx` + RootRedirect)
+- Flyway: V1–V182 (latest `V182__staff_committee_meeting_logs_integrity_us_r08.sql`)
+- BE Test files: 272 (271 `*Test.java` + 1 `*Tests.java`)
+- BE @Test: 1974
+- FE test: 486 (202 `.test.js` + 284 `.test.jsx`)
+- reports path grep: 28
+- 모듈 coverage: 24.45/30 = **81.5%** (`competitorModuleCoverage.js`)
+
+## merge gate
+252 + 580 = **832** (+2 cross-stream vs BNK-643 830)
+
+## cross-stream closures (BNK-643 → 644)
+1. **QA-B95 14th layer FE CLOSURE** — BNK-643 candidate「FE `g21SeedStatusDetail` parse 0 hit」→ `@a8f4e8e` `liveBackendProbe.js` picks `g21SeedStatusDetail` + `liveConfig.js` diagnostics + `liveE2eHarness.test.js` regression = **13th BE→14th FE end-to-end 완결**
+2. **G-CLIENT-CONTRACT-BULK-PRINT BE LANDED** — `GET /api/v1/clients/care-plan-forms/bulk-export` text/plain · `ClientCarePlanFormService.exportBulkChangeContractsText` · US-D05 · 케어포 1-x 급여이용계약/변경계약서 bulk 출력 demand-signal
+
+## 백본 md5 (399차 · network-independent)
+| 파일 | md5 | 판정 |
+|---|---|---|
+| `carefor_func.php` | `6226e6eb` | IDENTICAL |
+| `carefor_demo_work.html` | `b2e8e5c8` | IDENTICAL |
+| `nhis_jo44_live_bnk643.html` | `c886ff1f` | IDENTICAL |
+| silverangel essential (on-disk) | `c79c1be3` | IDENTICAL carry |
+| silverangel extra (on-disk) | `f9c5d877` | IDENTICAL carry |
+
+## LIVE 재실측
+- carefor func.php: HTTP 000 (46-cycle)
+- demo-work: HTTP 000 (46-cycle)
+- Wayback PDF id_: HTTP 500 transient
+
+## tester 권장
+FF merge **832** 가속

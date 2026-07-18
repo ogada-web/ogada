@@ -1,0 +1,132 @@
+BNK-704 — 엔젤·롱텀·규제 4–6h 역공학 벤치마크 (주력 extract)
+조사일: 2026-07-13T23:08:00Z (KST 2026-07-14 08:08)
+직전: BNK-703(2026-07-13T22:32Z, 케어포 역공학) · rotation=엔젤·롱텀·규제 4–6h
+방법: live curl 재실측 + md5/SIZE·semantic norm 비교 + HTML 메뉴/필드 파싱 + ogada git 실측
+     (docs/·memory/ 만 갱신, src/ 변경 금지)
+
+================================================================
+1. 규제 backbone · NHIS #44 이동서비스비 러-1~4 (PLAN_NOTES #44 · 440차)
+================================================================
+| # | URL | HTTP | size(B) | md5(8) | 직전 대비 | 판정 |
+|---|-----|-----:|--------:|--------|----------|------|
+| 1 | NHIS #44 joHistoryContent (DATE_START/END + SEQ=1637 SEQ_CONTENTS=3281769) | 200 | 7,572 | c886ff1f | BNK-703 IDENTICAL | **440차** zero drift 「확인」 |
+| 2 | law.go.kr admRulInfoP admRulSeq=2100000271110 (제2025-247호) | 200 | 78,450 | d4fc8eb4 | md5 DRIFT vs BNK-702 | **semantic IDENTICAL**(Time= 토큰만) |
+| 3 | MOHW 고시 bid=0026 list_no=1488862 (2026-126호) | 200 | 103,139 | d702b54c | vs BNK-697 103,113 | **semantic IDENTICAL**(norm_eq=True) |
+| 4 | longtermcare 502(단기보호) bbsId=BBSMSTR_000000000502 | 404 | 861 | fcadfbfe | persist | 「미확인」130+ cycle |
+| 5 | longtermcare 610(통합재가) bbsId=BBSMSTR_000000000610 | 404 | 861 | fcadfbfe | persist | 「미확인」130+ cycle |
+
+NHIS #44 verbatim (제34조 · 주·야간보호급여 이동서비스비용 등) — 확인 · 2026-07-13:
+  ① 실 거주지↔기관, 신고 차량, 최단거리(**편도**)에 따라 산정
+  ② 이용 횟수 무관 **1일 1회** · 편도만 이용 시 ‘러-1’~‘러-4’ 비용의 **50%**
+  ③ 기관 신청 · **수급자가 부담하지 아니한다**
+  ④ 이동서비스 일지 작성·보관
+  ⑤ 세부사항은 공단 이사장이 정함
+→ PLAN_NOTES #44 1차 확인 carry · BNK-703 439차 → **440차** zero drift.
+
+ogada G16 6-link chain (git 실측, 경쟁 4종 유일 full-stack):
+  BE TransportServiceFeeParityCatalog(DISTANCE_BANDS·ONE_WAY_RATIO·ONE_PER_DAY·SERVICE_LOG)
+  → GET /transport/service-fee-parity-rules
+  → FE TransportParityRulesPanel + TransportServiceFeePanel(`/transport/service-fees`)
+  → generate/update fees · ONE_WAY_RATIO=0.5
+  → FE `@654b2c6` VehiclesPage address normalize ↔ BE V190 shuttle integrity
+  → BE `@bd43f59` V190 integrity probe (QA-B95)
+
+================================================================
+2. silverangel 공개 기능 · CMS 부가 · 평가(필수업무) — 메뉴/필드/워크플로 블록
+================================================================
+| # | URL | HTTP | size | md5(8) | 판정 |
+|---|-----|-----:|-----:|--------|------|
+| A | /newSilverangel/service/extraService.do (부가·CMS) | 200 | 81,637 | f9c5d877 | BNK-691~704 IDENTICAL |
+| B | /newSilverangel/daycare/daycareEssentialWork.do (필수업무) | 200 | 131,664 | c79c1be3 | IDENTICAL |
+| C | /newSilverangel/service/mainService.do | 200 | 59,002 | bcf6df41 | IDENTICAL |
+| D | /newSilverangel/service/feeService.do | 200 | 44,513 | eab352a8 | IDENTICAL |
+| E | /newSilverangel/daycare/daycareProgramProvided.do | 200 | 67,987 | f18e1c7a | IDENTICAL |
+| F | /newSilverangel/daycare/daycareAngelSystemSummary.do | 200 | 51,943 | a6ee5694 | = BNK-691 AngelSummary IDENTICAL |
+| G | /newSilverangel/fcltySlry/essentialWork.do (입소 필수업무) | 200 | 166,023 | 80517b18 | = BNK-691 IDENTICAL |
+| H | /newSilverangel/service/systemFeature.do | 404 | 1,028 | 3c93af54 | migrated→daycare/ carry |
+| I | /silverangel/support/notice/list.do | 200 | 5,707,602 | ea7d6b3d | BNK-697~704 IDENTICAL · 최신 221572 · ≥221573 **0** |
+
+### 2-1 ★★★ CMS 부가 워크플로 (extraService.do · 확인)
+
+마케팅 leaf 「본인부담금 자동관리(CMS)」 verbatim:
+  · 자동이체(CMS) — 보호자 통장 매달 출금 · **250원/1건** · 이용요금은 **효성CMS**에 납부
+  · 가상계좌 — 대표 1인 부여 · 타 가족 입금 가능 · **300원/1건**
+  · 카드결제 — 신용카드 자동납부 · 요금 **별도문의**
+  · 계좌분리 정산 — 효성 CMS 별도문의
+  · 가입: 효성 CMS 담당자 · 「효성 CMS 연동정보 입력 필수」
+  · 외부 CTA: https://newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS
+    → **신규 evidence URL** HTTP 200 · 24,073B · `438f9ced` · title「가입상담신청」
+      「[본인부담금 자동이체 서비스] 무료방문상담 신청」·효성ITX 위탁 고지
+
+부가 모듈 목록(h3): 인공지능상담 엔젤아이 · 엔젤 VR · 모바일 앱 기록 · 보호자용 앱(굽은나무) ·
+  태블릿 기록 · 전자결재 · 고위험군 명찰 · IoT · 쇼핑몰 · 가정통신문/급여비용명세서/기록지 이메일·SMS
+
+ogada CMS 5-method parity (`CmsPaymentMethodCatalog` @BE):
+  AUTO_DEBIT_CMS → /billing/cms (250원/1건) ✅
+  VIRTUAL_ACCOUNT → /billing/cms (300원/1건) ✅
+  CARD → /billing/easy-pay ✅
+  MULTI_ACCOUNT_SETTLEMENT → /billing/cms ✅
+  CASH_RECEIPT → /billing/cash-receipts ✅
+→ silverangel 마케팅 3종(+다계좌·현금영수증) **in-app 5/5 FULL** · 효성은 외부 상담 랜딩만.
+
+### 2-2 ★★ 공단평가 연계 · 주야간보호 지표 (필수업무 · 확인)
+
+HTML 내 「주야간보호 N」번호 집합 **27개**(1,2,5–9,11,13,15–17,19–27,29,30,32–35):
+  · **주야간보호 21** = 위험도 평가(낙상·욕창·인지)
+  · **주야간보호 27** = **기능회복훈련** 「확인」(목욕 ≠ 27)
+  · **주야간보호 34** = 급여제공 결과평가 · 주1회 상태변화
+  · **목욕제공** = 「필수사항 아니며 목욕서비스 제공시 청구 가능」(평가 필수 ❌)
+→ PLN 과거 「27 목욕」 framing 과 충돌 시 **지표번호 정본 = 기능회복훈련** 으로 정정 권고.
+  (목욕은 G-BATHING 청구 기능으로 별도 · 평가 필수 지표 아님)
+
+평가 매뉴얼 PDF 신규 evidence:
+  https://www.silverangel.kr/download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf
+  HTTP 200 · 11,958,320B · md5 `b13dcafc` · `%PDF-1.4` 「확인」
+  (전문 OCR은 사이클 시간 제약으로 「미확인」·HTML 지표 표가 1차 정본)
+
+mainService h3: 계획·평가달력 · 공단(Longterm) 연계 · P-Bank · 카카오톡 보호자 서명 ·
+  일정관리 · QR/터치스크린 · 개인별 기록 · KPI — **이동서비스/배차/송영 메뉴 0** 「확인」.
+
+================================================================
+3. lcms.or.kr CMS 포털 · 배너 rotation
+================================================================
+| URL | HTTP | size | md5(8) | 판정 |
+|-----|-----:|-----:|--------|------|
+| https://www.lcms.or.kr/ | 200 | 50,554 | 6c0d22b4 | vs BNK-697 50,740/`c0c66076` DRIFT |
+
+배너 class: BNK-697 `ad_cont type1` → BNK-704 **`ad_cont type2`** (+ login_type1/type3 병존)
+→ 마케팅 배너 A/B rotation carry (기능 변화 아님) · title「엔젤시스템」.
+
+================================================================
+4. ogada git 실측 (BNK-703 이후 +1/+1 · G16·V190 deepen)
+================================================================
+FE develop: **654b2c6** (WT CLEAN · BNK-703 `@175c570` → +1)
+  `fix(v1.2.1/G16): normalize vehicle shuttle addresses to match BE`
+  · VehiclesPage create/update ↔ VehicleService.normalizeAddress · FE test **507**(+1)
+  · Route **124** · Page **98** · ahead origin/test **1** · origin/develop **0** SYNCED
+
+BE develop: **bd43f59** (WT CLEAN · BNK-703 `@3e627b3` → +1)
+  `test(v2/QA-B95): extend transport shuttle probe to V190 integrity`
+  · V190 shuttle address CHECK · day-status flags-synced · updated_by tenant FK
+  · @Test **2077**(+1) · Test.java **279** · V1–V190 · ahead origin/test **614**
+
+모듈 KPI **84.31%** carry · `/(payroll|accounting)` **0** → sole P1(+6.90pp→91.21%)
+merge residual **615**(FE1+BE614)
+
+================================================================
+5. 부수 재실측
+================================================================
+ezCare FAQ /help/faq.ez: 200 · 80,057B · md5 `ad32a60a`(BNK-703 `d37da8a7` counter DRIFT)
+  · 233 rowid · hit_sum **3,646,336**(+4) · Top-1 21601=83,903 · **size-lock 18-cycle**
+
+================================================================
+6. per-cycle minimum 충족
+================================================================
+· 신규 증거 URL: ✅ Hyosung CMS addon ANGELSYS + 평가매뉴얼 daycare PDF
+· 메뉴/필드/워크플로 1블록+: ✅ CMS 3+2 method · 필수업무 27지표 · NHIS #44 러-1~4
+· COMPETITOR_MATRIX 1행+ @HEAD: ✅ `@654b2c6`/`@bd43f59`
+· BENCHMARK_REPORT §소절: ✅ §704
+
+가정 번복 1: 「주야간보호 27=목욕」→ **27=기능회복훈련** 「확인」·목욕=비필수 청구
+신규 core 갭 0 · candidate 변동 0 · P0/P1 재정렬 없음 · M11/M12 sole P1 carry
+미확인 carry: longterm 502/610 · systemFeature 404 · 평가 PDF OCR 전문

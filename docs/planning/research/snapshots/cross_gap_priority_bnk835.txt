@@ -1,0 +1,81 @@
+=== BNK-835 cross_gap_priority / 교차검증·갭 우선순위 8h+ ===
+TS=2026-07-17T15:51:55Z
+rotation=교차검증·갭 우선순위 8h+
+prev_cycle=BNK-834 (2026-07-17T15:08Z · ogada git 실측 6–8h) → ~44분 후
+prev_same_rotation=BNK-831 (2026-07-17T13:17Z) → ~2.6h 후
+
+=== ogada git 실측 ===
+FE=@8e74b07 fix(v1.2.1/v3): accept program photo content-type parameters
+  WT=CLEAN · ahead origin/test=0 = FULLY SYNCED (origin/test=8e74b07)
+  BNK-834 @2e06d5a → +1 commit
+BE=@72a6534 fix(v3/programs): accept multipart content-type parameters for schedule photos
+  WT=CLEAN · ahead vs 598d108=732 · BNK-834 IDENTICAL HEAD (zero advance)
+merge_gate=732 (FE 0 FULLY SYNCED + BE 732 · BE-only → tester FF)
+Route=133 (<Route\b 132 + <Routes> 1)
+Page=106 (find+git ls-files 전량 IDENTICAL · ★ BNK-834「107」번복)
+FE_test=533 (314 .test.jsx + 219 .test.js · IDENTICAL vs BNK-834)
+BE_Test=295 (294 Test.java + 1 Tests.java)
+BE_@Test=2286
+@RestController=81
+HTTP=442 GET231/POST144/PATCH44/PUT13/DELETE10 · controller당 5.46 = BNK-833/834 IDENTICAL (3차)
+Flyway=V1–V196
+모듈=97.41% (29-entry·sum 28.25·비-1.0 id=2/8/10=0.85·id=12=0.7·진성갭 0)
+
+=== closed band App.jsx @8e74b07 ===
+L164 /dashboard
+L173 /dashboard/hq
+L209 /clients/home-newsletter
+L236 /clients/linkage-records
+L245 /clients/:clientId/care-plan-form
+L389 /billing/cms
+L628 /transport/service-fees
+→ 라인 BNK-824~834 IDENTICAL · 재오픈 0 · P0 신규 0
+
+=== ★★★ 가정 번복 1 · Page KPI 107→106 재-정정 ===
+BNK-834 §834-4 「Page 106→107 소급 정정」 주장 = 재실측에서 번복.
+정본 방법 3종 전량 Page=106:
+  1) find src/pages -name '*Page.jsx' -not -name '*.test.jsx'
+  2) git ls-files 'src/pages/*Page.jsx' | grep -v test
+  3) git ls-tree -r @8e74b07 / @2e06d5a 동일 106
+BNK-823 「Page 106」 정본 복원 · BNK-834 가정 번복 자체를 번복.
+MATH·Route 133·모듈 97.41%·closed band 무영향 · 기능 갭 아님.
+
+=== ★★★ FE↔BE program photo Content-Type lockstep 「확인」 ===
+FE @8e74b07:
+  programs.js normalizeProgramSchedulePhotoContentType(trim→split ';'→toLowerCase→empty→null)
+  programsPhoto.test.js: accept image/jpeg; charset=binary · IMAGE/PNG; name=… · reject gif; charset=binary
+BE @72a6534:
+  ProgramPhotoStorageService.normalizeContentType + 3-@Test lock (BNK-834)
+→ FE↔BE LOCKSTEP CLOSED · id=5 1.0 carry · KPI promote 0
+메뉴/필드/워크플로: 브라우저 multipart 헤더 파라미터 관용 full-stack 완성.
+
+=== ★★★ audit-first HTTP 442 posture 3차 안정 재현 ===
+BNK-833(BREAK 441→442) · BNK-834(2차) · BNK-835(3차) byte-exact IDENTICAL
+BE zero advance · FE +1 = FE-only lockstep · controller endpoint 신설 0
+물리 삭제 API 신설 금지 carry.
+
+=== 기존 URL 재실측 ===
+NHIS #44: 200·7572B·c886ff1f · 567차 IDENTICAL (BNK-834 566차→+1)
+  러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+  ↔ Transport RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY IDENTICAL
+ezcare FAQ: 200·80057B·f8cde5f6 · rowid 233 / max 21781 IDENTICAL · 엑셀 2 · 엑셀 포맷 0
+ezcare charge: 200·22979B·42e435fa (BNK-834 e5dc2848→hit-only DRIFT) · 33,000/55,000 · 2026년 07월 31일 D-14 STABLE
+ezcare fnc: 200·17870B·0bf655a7 · ★ 전국 9,434개 (BNK-831 9,435 → −1 DRIFT 실체)
+ezcare home: 200·69271B·50e67b00 · data-count3 BPO=4675 STABLE · data-count2=9298
+carefor func.php: HTTP 000 · 106-cycle+ 「미확인」 · disk 6226e6eb LOCK carry
+silverangel home: 200·101220B·66382835 byte-IDENTICAL
+silverangel extraService: 200·81637B·f9c5d877 · CMS 30,000/250/300 LOCK
+silverangel noticeList: HTTP 404 · 1028B dual-IA 「미확인」 carry
+law 2025-247 canonical admRulSeq=2100000271110: 200·78450B · strip md5 90c85ded semantic IDENTICAL
+
+=== 우선순위 동결 (P0/P1 재정렬) ===
+closed band 6 = CLOSED · 재오픈 0 · P0 신규 0
+residual lever: id=12 회계 BPO SSO OTP (0.7) > id=8 (0.85) > id=2/10 (0.85)
+엑셀 포맷 변경 시그널 0 · 신규 공지 시그널 0(FAQ max 21781)
+fnc 기관수 −1 = 마케팅 카운터 only · 기능/포맷 갭 아님
+
+=== per-cycle minimum ===
+1. 신규/재실측 증거 URL: NHIS 567차 · FAQ · charge · fnc(−1) · home · silverangel×3 · law
+2. 메뉴/필드/워크플로: FE↔BE photo Content-Type lockstep + closed band 표
+3. COMPETITOR_MATRIX 1행+ @8e74b07/@72a6534
+4. BENCHMARK_REPORT §835

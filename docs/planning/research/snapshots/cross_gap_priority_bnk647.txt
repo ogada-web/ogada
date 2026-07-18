@@ -1,0 +1,124 @@
+BNK-647 교차검증·갭 우선순위 8h+ — 2026-06-26T04:53Z (KST 13:53)
+=============================================================================
+rotation: 교차검증·갭 우선순위 (cross-verify · gap priority)
+초점: 4축+leave-ledger·P0/P1·candidate 갭 재정렬 · 이전 BNK 가정 번복 여부
+      · 미확인 항목 축소 · 신규 경쟁사 공지·엑셀 포맷 변경 스캔
+      · KPI 실측 정정 (BNK-646 @Test over-count)
+
+=============================================================================
+1. ogada baseline git 실측 (확인)
+=============================================================================
+FE develop : f851a59  WT CLEAN  (BNK-646 동일 SHA · HEAD zero advance 1-cycle)
+             fix(v1.2.1/QA-B95): scope new g21 seed blockers to g21 suites
+             ahead 254 vs origin/test=ab4de83
+BE develop : 0f19767  WT CLEAN  (BNK-646 동일 SHA · HEAD zero advance 1-cycle)
+             fix(v2/QA-B95): expose machine-readable g21 seed status code
+             ahead 581 vs origin/test=598d108
+merge gate : 835 (FE 254 + BE 581) carry  ← BNK-646 동일
+
+KPI 실측 @f851a59 / @0f19767:
+  - <Route\b>        : 118 (route element lines, src/App.jsx)
+  - <Routes>         : 1   (wrapper)
+  - <Route> total    : 119 (118 + 1)
+  - *Page.jsx        : 93  (전부 src/pages/ 하위)
+  - Flyway 마이그     : V1–V182 (182 files contiguous)
+  - BE Test.java     : 271
+  - BE Tests.java    : 1   → BE Test 합계 272
+  - BE @Test         : 1974   ★ 정정 (BNK-646 「1975」 over-count −1)
+  - BE @ParameterizedTest : 3 (별도 집계)
+  - FE test          : 482 (198 .test.js + 284 .test.jsx · .test.ts/.spec 0)
+  - 모듈 커버리지     : 80.86% (23.45/29 · competitorModuleCoverage.js 실측)
+  - reports route    : 28 (carry)
+
+=============================================================================
+2. ★ KPI 정정 — BE @Test 1975 → 1974 (가정 번복 1)
+=============================================================================
+BNK-646 README/decisions/baseline.yaml = BE @Test 「1975(+1)」.
+실측 `git grep -hoE '@Test\b' develop -- '*.java' | wc -l` = 1974 (occurrence 단위).
+       `@ParameterizedTest` = 3 (별도).
+BNK-645 baseline 「1974」가 옳음. BNK-646 +1 over-count.
+
+원인: BNK-646 BE commit 0f19767 ("expose machine-readable g21 seed status code")
+  6-file +43L (HealthController +8·LiveE2eController +4·LiveE2eOperationReadinessSupport +19
+  ·LiveE2eProbeResponse +1·HealthControllerTest +6·LiveE2eControllerTest +5).
+  test 2-file +11L 은 기존 메서드 내 assertion 확장 — 신규 @Test 메서드 0건.
+  `git show 0f19767 | grep '^[+-].*@Test\b'` = empty 로 확정.
+→ 후속 cycle은 BE @Test 1974 사용.
+
+비고: Route/page headline 컨벤션 점검 — baseline 「118 Route(117 <Route\b>+1 <Routes>)」
+  decomposition 의 「117 <Route\b>」은 실측 118 과 −1 차이. headline 「118 Route」는
+  <Route\b>=118 실측과 일치(기능 영향 0). page 「93(92 *Page.jsx+RootRedirect)」도
+  실측 *Page.jsx=93 과 headline 일치(decomposition 「92」만 −1). KPI 값 자체는 불변.
+
+=============================================================================
+3. 백본 evidence URL 재실측 (확인 · 399차)
+=============================================================================
+zero drift IDENTICAL (live HTTP 200 = disk md5):
+  - NHIS #44 이동서비스비    c886ff1f  7,572B   (러-1~4·편도50%·1일1회·별지 제22호 verbatim 불변)
+      https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  - silverangel daycare       c79c1be3  131,664B (BNK-645 service/→daycare/ refactor path·IDENTICAL)
+      https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+  - ezCare FAQ 21844          d0aa760c  14,474B  (엑셀 포맷 변경 0)
+      https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web
+
+counter/cachebuster DRIFT (본문 verbatim 불변 · BNK-633 plateau 종료·정상 drift 재개):
+  - ezCare home   ca15e95e  106,044B  mCnt {1:9286, 2:4606, 3:2353, 4:1820}
+                  (BNK-637 {1:9287,2:4603,...} 대비 9287→9286·4603→4606 counter drift)
+  - ezCare fnc    41ce0da8  17,870B   도입효과 9,358→9,363 (+5) · 가격 carry
+  - ezCare e01    67d5a2b1  47,089B   지역 분포 % 동적(서울 59.61% 등)·집계 carry
+  → 본 cycle 분석 위주 · 덮어쓰기는 다음 ezCare rotation 에서 검토
+
+미확인 carry:
+  - carefor func.php LIVE  HTTP 000 timeout (47-cycle+ 미확인 · canonical 6226e6eb 보존 · Wayback 검증 carry)
+  - silverangel noticeList.do / noticeView.do?Tmp_idx=221564  HTTP 404 1,028B 3c93af54
+      (BNK-645 service/→daycare/ URL refactor 맥락 · board 경로 IA 변경 가능성 · 221564 retraction D-day 6/30 carry)
+  - longterm 502 단기보호 · 610 통합재가  HTTP 404 carry (npbs 26.1.16 마이그 endpoint 장애)
+
+=============================================================================
+4. cross-verify — 4축+leave-ledger 7/7 route LIVE @f851a59 (확인)
+=============================================================================
+  G14 care-plan-form  : 1 route ref ✅
+  대시보드 dashboard   : 5 route ref ✅
+  다지점 hq           : 2 route ref ✅
+  v1.3-C transport    : 22 route ref ✅
+  v2 cms              : 3 route ref ✅
+  leave-ledger        : 1 route ref ✅
+  annual-leaves       : 1 route ref ✅
+→ P0/P1 재오픈 0 (BNK-549~647 carry)
+
+모듈 80.86% 분류 정본 (competitorModuleCoverage.js 29-feature 실측):
+  ✅ 완전 21 · △ 부분 3 · ❌ 갭 5
+  △ 부분 3: id=2 이동서비스 0.85 · id=8 직원·근태 0.85 · id=10 부가서비스 0.75
+  ❌ 갭 5  : id=1-5 가정통신문 · id=1-10 연계기록지 · id=6 위생·안전
+            · id=11 직원급여 · id=12 수입지출·회계
+            = MVP out-of-scope (재무/HR/시설인증 facility-admin 서식군)
+
+=============================================================================
+5. 갭 우선순위 재정렬 (planner 권장)
+=============================================================================
+P1 단일 최대 lever (carry · BNK-633 demand-signal):
+  M11 직원급여(id=11) + M12 회계(id=12) — 둘 다 ❌ 0 route
+  근거: ezCare 도움말 K008 수당/급여 + K012 재무회계 + K013 세무 + K014 4대보험
+        = 누적 view 37.6% (도움말 트래픽 #1 클러스터) + home banner rowid=434 재무회계 BPO
+  closure 시 80.86% → 87.76% (+6.9pp)
+  결정 question (PLAN_NOTES): in-app 구현 vs BPO 어댑터 (이지케어式 외주 위탁)
+
+P3 candidate carry (변동 0):
+  - G-FACILITY-MODE-EXTENSION   (BNK-645 · 시설 입소형 39% baseline · v3+ 시설 모드 epic)
+  - G-SATISFACTION-SURVEY-DIAL  (BNK-645 · 시설형 #45 만족도 유선조사)
+  - G-CLIENT-CONTRACT-BULK-PRINT (BNK-633/644 · BE landed · FE wire 후보)
+  - G-NHIS-SCHEDULE-IMPORT · G-RFID-CARE-PROVISION-DISPATCH · G-CIST-COGNITIVE-SCREENING-LOG
+  - 16th layer FE candidate g21SeedStatusCode parse (BNK-646 · FE 0 hit)
+
+=============================================================================
+6. per-cycle minimum 4종 충족
+=============================================================================
+[1] 재실측 + 변동 기록 : NHIS #44/silverangel/FAQ 21844 399차 zero drift
+                          + ezCare home/fnc/e01 counter DRIFT (plateau 종료)
+[2] 메뉴/필드/워크플로  : 모듈 80.86% ✅21/△3/❌5 분류 정본 + 4축 7/7 LIVE route block
+[3] COMPETITOR_MATRIX  : @f851a59/@0f19767 BNK-647 row 갱신
+[4] BENCHMARK_REPORT   : §647 소절 추가
+
+요약: HEAD zero advance(BNK-646 carry)·merge gate 835·KPI 정정 1(@Test 1975→1974)
+      ·재실측 zero drift 3·counter DRIFT 3·미확인 carry 3·candidate 변동 0
+      ·tester FF merge 835 가속 권장(양쪽 WT CLEAN·선행 commit 불필요)

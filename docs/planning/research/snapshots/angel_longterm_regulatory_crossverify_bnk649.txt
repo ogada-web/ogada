@@ -1,0 +1,76 @@
+BNK-649 — 엔젤·롱텀·규제 4–6h 교차검증 extract
+조사일: 2026-06-26T06:15:00Z (KST 15:15)
+rotation: silverangel/lcms 공개 기능·CMS 부가·law.go.kr NHIS #44 이동서비스비 러-1~4 · 2026 수가·평가 #27·단기보호·통합재가 교차검증 (PLAN_NOTES #44)
+
+=== ogada git 실측 ===
+FE develop: @8ceb25c (WT CLEAN · BNK-648 @6009ba7 HEAD +1)
+  commit: feat(v2/G-NHIS-SCHEDULE-IMPORT): wire visit NHIS import guidance panel
+  5-file +216L: VisitNhisImportGuidePanel.jsx +112L · tests +74L · VisitNhisImportPanel wire
+BE develop: @59e4e7f (WT CLEAN · BNK-648 carry HEAD zero advance)
+KPI: 118 <Route\b(+1 <Routes>) · 93 *Page.jsx · V1–V182 · BE Test 273 · @Test 1977 · FE test 483(198+285) · 모듈 80.86%(23.45/29 · ✅21 △3 ❌5) · merge gate 839(FE 256+BE 583)
+
+=== ★★★ NHIS #44 이동서비스비 — 401차 zero drift (PLAN_NOTES #44 1차 확인) ===
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f (401-cycle IDENTICAL)
+verbatim (20250701 정본):
+  ① 실거주지↔기관 최단거리(편도) 러-1~4 표 (lawImg SEQ_HISTORY=611677)
+  ② 1일 1회만 산정 · 편도만 이용 시 러-1~4 비용 50%
+  ③ 수급자 부담 없음
+  ④ 이동서비스 일지 작성·보관
+ogada: TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5) + TransportServiceLog(별지 제22호) + VisitNhisImportGuidePanel(longtermcare.or.kr portal link) = 경쟁 4종 유일 full-stack
+
+=== ★★★ G-NHIS-SCHEDULE-IMPORT — P2 partial → ✅ FE CLOSURE @8ceb25c ===
+BNK-648: BE @4567030 GET /visits/imports/nhis/guidance (FAQ 21298 cite) · FE wire 0
+BNK-649: FE VisitNhisImportGuidePanel — planImportSteps / billingImportSteps dual workflow
+  aria-labelledby plan/billing headings · portalUrl longtermcare.or.kr · browserRequirement Alert
+ezCare parity: FAQ 21298 계획일정(월초) vs 청구일정(청구 후·급여작업) 이중 import
+
+=== ★★ silverangel 주야간 프로그램 메뉴 catalog — daycareProgramProvided 401차 zero drift ===
+URL: https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do
+HTTP 200 · 67,987B · md5 f18e1c7a (401-cycle IDENTICAL)
+8카테고리 100+ leaf (정적 popup program_list_wrap1):
+  수급자관리: CIST·K-MMSE~2·GDS·가정통신문·욕구사정.계획.평가일정
+  급여제공계획: 이동서비스·출석부·프로그램뱅크·프로그램일지·공단 급여제공계획/평가
+  기록지: 목욕급여제공·사례관리회의·기록지 점검
+  보고서: 목욕서비스 제공현황·배변배뇨·식사제공
+  기관운영: 이동서비스·차량운행일지·목욕급여제공기록 (이중 트랙 — BNK-358 carry)
+ogada gap: CIST/K-MMSE/GDS P3 carry · 프로그램뱅크 △(id=5 ✅) · 가정통신문 ❌(id=1-5)
+
+=== ★★ silverangel 평가지표 #41-42 이동 + #27 목욕 — daycareEssentialWork 401차 zero drift ===
+URL: /newSilverangel/daycare/daycareEssentialWork.do · md5 c79c1be3 · 131,664B IDENTICAL
+#41: 이동서비스 수칙(운전자 자격·동승자 역할·차량안전·차량운행표)·수급자/보호자 제공
+#42: 운전자 외 직원 동승 · 이동서비스 시간 준수
+#27: 목욕제공 — 「필수사항 아니며 목욕서비스 제공시 청구 가능」(BNK-641 carry)
+ogada: /transport/* ✅ · /care/bathing-schedules partial+ ✅
+
+=== ★★ silverangel backbone zero drift 401차 ===
+fcltySlry/essentialWork.do 80517b18 166,023B · extraService f9c5d877 81,637B(CMS 5-method) · system_feature c9507190 45,601B(HP-UX·Oracle11g·WebLogic)
+
+=== ★ lcms.or.kr type2 rotation ===
+live md5 6c0d22b4 50,554B (type2 CMS cross-promo) ≠ canonical type1 c0c66076 50,740B · 3-type oscillation carry
+
+=== ★ MOHW 2026-126 본인부담상한 — counter DRIFT ===
+URL: list_no=1490826 · md5 87bc0b53 (was 940e3021)
+조회 2,680(+26) · DL 487(+3) · 미리보기 580 · 고시 제2026-126호 본문 verbatim 불변
+
+=== ★ longterm 502/610 — 응답 형식 변동(인프라) · 내용 「미확인」 ===
+selectLawDetail reqIdx=502/610: HTTP 200·327B XML nexacro ErrorMsg「No handler found for GET /npbs/r/a/100/selectLawDetail.do」
+  (BNK-641~648: HTTP 404 HTML error shell 861B fcadfbfe — 형식 변동 기록)
+moveBoardView menuId=npe0000000502: HTTP 200·422B d3c90b33 IDENTICAL (단기보호 shell)
+moveBoardView menuId=npe0000000610: HTTP 200·458B c26a5e57 IDENTICAL (통합재가 shell)
+canonical disk: longterm_502 b5aee8c1(74,060원 1등급) · longterm_610 0ea575be(월 10만원 가산) 보존
+
+=== ★ 신규 evidence URL — MOHW 보도자료 1488862 ===
+URL: https://www.mohw.go.kr/board.es?mid=a10503000000&bid=0027&act=view&list_no=1488862
+HTTP 200 · 119,381B · md5 6310a827
+제목: 「보건의료정책심의위원회」5차 회의(1.27.) 수급추계 공급 1안 논의 (2026-01-27)
+→ 장기요양 수가 직접 근거 아님 · 규제 스캔 negative · 2026 평가지표 고시 별도 URL 필요
+
+=== ★ silverangel notice — 221564 retraction D-4 ===
+notice_list_v2 md5 52c9457f · list 최상단 Tmp_idx 221563/221562 가시 · 221564 미노출 carry · 6/30 정식 게시 재검증
+
+=== planner 권장 ===
+P1 carry: M11/M12 BPO 어댑터 (+6.9pp)
+P2 carry: G-CLIENT-CONTRACT-BULK-PRINT FE wire
+P3 carry: G-RFID-CARE-PROVISION-DISPATCH · G-FACILITY-MODE-EXTENSION · 221564 D-4
+tester: merge gate 839 (FE 256+BE 583 · 양쪽 WT CLEAN)

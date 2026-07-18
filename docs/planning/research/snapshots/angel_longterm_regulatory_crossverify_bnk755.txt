@@ -1,0 +1,78 @@
+BNK-755 — 엔젤·롱텀·규제 4–6h 교차검증 (주력 extract)
+조사일: 2026-07-15T10:16Z (KST 2026-07-15 19:16)
+직전 동일 rotation: BNK-751 (2026-07-15T07:47Z) → ~2.5h 후
+직전 사이클: BNK-754 (2026-07-15T09:41Z·이지케어 2–4h) → ~35분 후
+
+============================================================
+0. ogada git 실측 (baseline)
+============================================================
+FE develop = 353eb7f  fix(v1.2.1/QA-B95): flatten nested live blocker composites
+  · WT CLEAN · BNK-754 @9dbdfc5 → +1 commit · ahead origin/test 0 = FULLY SYNCED (tester FF 흡수)
+BE develop = cdeb6bf  feat(v2/G-LINKAGE-RECORD): add branch-scoped linkage dispatch report API
+  · WT DIRTY 2U(untracked) · BNK-754 @cdeb6bf 동일 HEAD · ahead 659 vs 598d108
+  · 신규 untracked migration 2:
+      V195__client_linkage_records_org_branch_report_index.sql
+      V196__client_linkage_records_integrity_g_linkage.sql
+    = coder G-LINKAGE-RECORD 후속(org/branch report 인덱스 + 무결성) in-progress
+    → tester: 커밋 전 이관 불가(WT DIRTY) · planner: BNK-754 org-wide report BE 착지의 인덱스/무결성 후속
+
+KPI 실측:
+  Route 132 (<Route\b 131 + <Routes> 1)
+  Page 105 (*Page.jsx)
+  FE test 524 (216 .test.js + 308 .test.jsx)
+  BE Test 291 (*Test.java/*Tests.java)
+  BE @Test 2190 (grep -rE '@Test')
+  Flyway 커밋 V1–V194 (V195/V196 untracked·committed 신규 0)
+  accounting route 1 · payroll route 5
+  모듈 커버리지 97.07% (28.15/29) — 실측 재확인:
+      grep -E '^\s*\{ id:' coverage: 합 = 28.15 / 배열 29-entry = 0.9707
+      grep -oE 'coverage: [0-9.]+' 전체 = 30 / 29.15 = 0.9717 (line5 JSDoc `coverage: 1 = ✅` 오염·BNK-753 REVERT 확인)
+  merge gate 659 (FE 0 FULLY SYNCED + BE 659 · BE-heavy → tester FF)
+
+============================================================
+1. 규제 백본 10-URL live 재실측 = 실체 변동 0 (배너 회전만)
+============================================================
+| 대상 | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent (SEQ=1637·SEQ_CONTENTS=3281769) | 200 | 7,572B | c886ff1f | 489차 IDENTICAL |
+| silverangel extraService.do | 200 | 81,637B | f9c5d877 | IDENTICAL |
+| silverangel daycareEssentialWork.do | 200 | 131,664B | c79c1be3 | IDENTICAL |
+| silverangel noticeList.do | 404 | 1,028B | 3c93af54 | dual-IA carry (canonical ea7d6b3d disk) |
+| lcms.or.kr / | 200 | 50,554B | 6c0d22b4 | ★ 배너 DRIFT(type3→type2)·semantic IDENTICAL |
+| law.go.kr admRulInfoP (247호) | 200 | 78,450B | fe9ab02e | size-lock·cachebuster Time= only·본문 verbatim |
+| longterm 502 moveBoardView | 302 | 0B | d41d8cd9 | JS/session gate transient 「미확인」·disk shell carry |
+| longterm 610 moveBoardView | 200 | 458B | c26a5e57 | stub·transient 「미확인」·disk shell carry |
+
+NHIS #44 러-1~4 verbatim grep -oF (489차 zero drift):
+  러-1 : 1 | 러-4 : 1 | 편도 : 2 | 1일 1회 : 1 | 수급자가 부담 : 1 | 이동서비스 : 13
+  ↔ ogada TransportServiceFeeService: RU_1~4(TransportDistanceBand)·ONE_WAY_RATIO·ONE_PER_DAY 6-link (id=2 0.85)
+
+silverangel 효성CMS rate card verbatim (extraService):
+  자동이체 250원/1건(1) · 가상계좌 300원/1건(1) · 카드결제 별도문의(2)
+  ↔ ogada CmsPaymentMethodCatalog AUTO_DEBIT_CMS 250원 · VIRTUAL_ACCOUNT 300원 · CARD/별도문의 = zero drift (id=7-4 1.0)
+
+silverangel daycareEssentialWork: 기능회복(6)·27(9) = 「주야간보호 27 기능회복훈련」 지표27 원천 IDENTICAL
+  ↔ ogada G17 지표27(bathing/기능회복) carry
+
+============================================================
+2. lcms 배너 회전 DRIFT (신규 관찰)
+============================================================
+BNK-736 `ad_cont type1` (6b750291? no) → BNK-751 `type3` 6b750291 50,498B → BNK-755 `type2` 6c0d22b4 50,554B
+= 홈 마케팅 캐러셀 배너 회전(type1↔type2↔type3)·HTTP 200 유지·semantic IDENTICAL·decommission 불요.
+
+============================================================
+3. 갭 우선순위 (carry·재오픈 0)
+============================================================
+- coverage-0 진성갭: 0건 (id=1-10 연계기록지 G-LINKAGE FULL closure carry·coverage=1)
+- closed axes 재오픈 0: G14 care-plan-form·/dashboard(+hq)·V186–V190·/billing 3종·/clients/home-newsletter·/accounting·/payroll/*
+- residual operational lever: id=12 M12 credentials(0.7) → id=10 SMS/RFID-SMS(0.75) → id=2/8(0.85)
+- P3 만료일 7-category 「가정」 격상 0
+
+============================================================
+per-cycle minimum 4종 충족
+============================================================
+- 신규 증거 URL/재실측+변동: NHIS 489차·lcms type2 배너 DRIFT·law247 cachebuster·BE V195/V196 신규 untracked migration 관찰
+- 메뉴/필드/워크플로 블록: NHIS 러-1~4 ↔ TransportServiceFeeService crosswalk + CMS 250/300 + 지표27 + BE G-LINKAGE 후속 migration
+- COMPETITOR_MATRIX 1행+ @353eb7f/@cdeb6bf
+- BENCHMARK_REPORT §755 소절
+덮어쓰기 0 · zero drift IDENTICAL 4(NHIS 489차·extraService·essentialWork·law247 size-lock) · 배너 DRIFT 1(lcms) · transient 「미확인」 2(longterm 502/610) · 404 1(silverangel notice) · 가정 번복 0 · closure 0 · 신규 core 갭 0 · 상태 변경 2(FE +1 FULLY SYNCED·BE WT DIRTY 2U 신규 migration)

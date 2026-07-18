@@ -1,0 +1,207 @@
+# BNK-772 ogada git 실측 6–8h raw log
+# 조사일: 2026-07-15T20:46:00Z (KST 2026-07-16 05:46)
+# rotation: ogada 실측 — src/backend·src/frontend develop HEAD·Route·Page·테스트 수·모듈 커버 % 재산정. COMPETITOR_MATRIX ogada `@HEAD` SHA 열 일괄 갱신.
+# 직전 동일 rotation: BNK-764 (2026-07-15T15:57:00Z·ogada git 실측 6–8h) → ~4.8h 후
+# 직전 사이클: BNK-771 (2026-07-15T20:10:00Z·엔젤·롱텀·규제 4–6h) → ~36분 후
+
+===============================================================================
+[GIT HEAD 실측] — src/backend·src/frontend develop 재실측
+===============================================================================
+
+FE develop  a5f4098  fix(v1.2.1/QA-B95): accept semicolon-optional numeric HTML entities
+  - `git -C src/frontend rev-parse develop` → `a5f4098e94a6eac87268b5cfa75180c056f39afd`
+  - `git -C src/frontend status -s` → **WT CLEAN** (BNK-771 WT **DIRTY 6M** live-e2e/notification WIP → +1 commit + FF 흡수·CLEAN)
+  - `git -C src/frontend rev-parse origin/test` → `a5f4098` = **FULLY SYNCED** (ahead 0·BNK-771 ahead 1 → tester FF 흡수)
+  - BNK-771 `@eb270ae`(WT DIRTY 6M) → **+1 commit** `a5f4098` · 상태 변경 = FE WT DIRTY→CLEAN·FE HEAD +1·FE ahead 1→0
+
+BE  develop  e9f24f7  fix(v2/QA-B95): accept semicolon-optional numeric HTML entities
+  - `git -C src/backend rev-parse develop` → `e9f24f7532bc5a9841b51188317d9a1c88ff5121` (사이클 중 mid-cycle advance: 최초 실측 `89dc0a6` → 마감 `e9f24f7`·**+1 commit**)
+  - `git -C src/backend status -s` → **WT CLEAN**
+  - `git -C src/backend rev-list --count 598d108..HEAD` → **673** (BNK-771 672 → **+1**)
+  - BNK-771 `@89dc0a6` → **+1 commit** `e9f24f7`(FE `a5f4098` QA-B95 semicolon-optional 미러 BE 커밋)
+
+merge gate **673** (FE 0 FULLY SYNCED + BE 673 · BE-heavy → tester FF · 신규 마이그레이션 0)
+  ※ BNK-771 673(FE 1+BE 672) → 772 **673**(FE 0+BE 673) : FE 1-commit tester FF 흡수·BE +1 commit 상쇄·gate 동일
+
+===============================================================================
+[KPI 실측 재산정] — Route·Page·FE test·BE Test·@Test·Flyway
+===============================================================================
+
+Route            133  (<Route\b in App.jsx=132 + <Routes>=1)  ※ 테스트 제외 grep, App.jsx 단일 정본
+Page.jsx         106  (`find src -name '*Page.jsx' -not -name '*test*'` · ls-files 일치)
+FE test          529  (216 .test.js + 313 .test.jsx · `git ls-files '*.test.js*' | wc -l` 일치)
+                     - BNK-770 baseline: 525 (216 + 309)
+                     - BNK-771 DIRTY 6M header: 533 (220 + 313) — WIP 스냅샷
+                     - BNK-772 CLEAN post-FF: **529** (216 + 313) — .test.jsx 4 신규 반영·.test.js 4 WIP 소멸
+                     - Δ vs BNK-770 baseline = **+4**(전량 .test.jsx·UXD-180/live-e2e/HTML entity decode)
+BE Test          294  (293 *Test.java + 1 *Tests.java · `find src/test -name '*Test*.java' | wc -l`·carry)
+BE @Test         2224 (`grep -rhE '@Test\b' src/test --include='*.java' | wc -l` · BNK-771 2222 → **+2** (`e9f24f7` QA-B95 semicolon-optional numeric decode @Test 2건 추가))
+Flyway           V1–V196 (max V=196 · `ls .../db/migration/V*.sql | wc -l`=196)
+accounting route  1  (`/accounting` — `AccountingBpoPage` · sujifine BPO)
+payroll route     5  (`/payroll/{ledger,reports,basis,labor-cost-ratio,retirement-accrual}` · M11 FULL)
+billing route    17  (id=7-* SUPERSET · BNK-770 carry)
+transport route   9  (`/transport{,/shuttle-sheet,/compliance,/auto-dispatch,/service-fees,/vehicles,/runs/new,/runs/:runId,/outings}`)
+reports route    29  (`grep 'path="/.*reports/'` in App.jsx)
+
+===============================================================================
+[모듈 커버리지 실측 재산정] — src/frontend/src/config/competitorModuleCoverage.js @a5f4098
+===============================================================================
+
+배열 엔트리 (`^\s*\{ id:`)          = **29**
+배열 원소 coverage 합               = **28.25**
+`calculateWeightedModuleCoverage`   = 28.25 / 29 = **0.9741379...** = **97.41%**
+
+비-1.0 (4개):
+  id=2   「이동서비스」            0.85  (form polish 18/19/20 · residual)
+  id=8   「직원·근태」             0.85  (form polish)
+  id=10  「부가서비스(SMS·알림)」   0.85  (BNK-759 kind22 급여명세서 dispatch)
+  id=12  「수입지출·회계」          0.70  (M12 sujifine BPO SSO OTP credentials 후속)
+
+1.0 (25개):
+  id=1-1·1-3·1-5·1-7·1-9·1-10·3-1·4·5·6·7-1·7-2·7-2-1·7-3·7-4·7-6·7-10·9·11·26·43·nhis·qr·hq·platform
+  → coverage-0 진성갭 **0건**(id=1-10 연계기록지 BNK-749 closure 이후 zero carry)
+
+가정 번복 **0** (BNK-759/760/764/771 confirmed KPI 유지 · JSDoc grep=30 오염 배제 · BNK-753 정정 패턴 carry)
+KPI promote **0** (residual form polish 만 남음 · 진성갭 아님)
+
+===============================================================================
+[id=1-10 「연계기록지」 (carefor 1-10) FULL-STACK anchor 재확인]
+   — 장기 최대 진성갭(coverage 0)이 BNK-749 closure·BNK-756 org-report·BNK-764 defense-in-depth 로 완결된 것을 git 실측으로 다시 확인
+===============================================================================
+
+BE 도메인 파일 (`src/backend/src/main/java/com/ogada/backend/clientlinkage/`):
+  api/                (Controller·Response·Request DTO·ReportController·ReportResponse·PageResponse)
+  domain/             (Service·Support·ReportRow)
+  persistence/        (Entity·Repository)
+  system/V196ClientLinkageRecordsIntegrityReadinessProbe.java  (HealthController surface)
+
+BE Flyway 3-단계 (V194→V195→V196):
+  V194 client_linkage_records_carefor_1_10.sql
+    - 테이블·enum(HOSPITAL/HOME_CARE/TRANSFER)·nonempty·dispatch-pair·temporal CHECK
+    - Tenant FK(branch_org·client_org·created_by_org)·actor backstop
+  V195 client_linkage_records_org_branch_report_index.sql
+    - `idx_client_linkage_records_org_branch_status_created`
+      ON (organization_id, branch_id, record_status, created_at DESC)
+    - GET /api/v1/clients/linkage-records 지점 발송 리포트 핫패스 bound
+  V196 client_linkage_records_integrity_g_linkage.sql (defense-in-depth · DBA 2026-07-15)
+    1. target_institution ≤200 / summary ≤5000 길이 CHECK
+    2. (org, branch_id, client_id) → clients 3-way FK
+    3. trg_*_set_org_branch 트리거 (raw SQL 우회 DB 차단)
+    4. 퇴소 purge backing index (DATA_RETENTION §3)
+
+FE surface (`src/frontend/src/`):
+  api/services.js  linkage-records=**14-hit**·`^export.*[Ll]inkageRecord`=**7** exported functions
+    - fetchClientLinkageRecordsApi(clientId, params)   GET /clients/{clientId}/linkage-records
+    - fetchClientLinkageRecordsReportApi(params)       GET /clients/linkage-records (org report)
+    - fetchClientLinkageRecordApi(clientId, recordId)  GET /clients/{cId}/linkage-records/{rId}
+    - createClientLinkageRecordApi(clientId, payload)  POST
+    - updateClientLinkageRecordApi(cId, rId, payload)  PATCH
+    - dispatchClientLinkageRecord* / deleteClientLinkageRecord*
+  App.jsx: `path="/clients/linkage-records"` (org-wide report Route · BNK-756 정본)
+  pages/ClientLinkageRecordsReportPage.jsx (175L 리포트 페이지 · UXD-179 shell + submit-only 필터)
+  components/clients/ClientLinkageRecordsPanel.jsx (ClientDetail tab)
+  components/ui/ClientLinkageRecordForm.jsx (유형·대상기관·요약·퇴소후이용계획)
+  components/ui/ClientLinkageRecordsReportPanel.jsx (branchId/status/type/q/page/size 필터)
+
+`competitorModuleCoverage.js` id=1-10 line 21 verbatim: `{ id: "1-10", label: "연계기록지", coverage: 1 },` ✅
+
+경쟁 4종 비교(BNK-746·BNK-756·BNK-767 carry):
+  케어포 1-10 leaf: func.php 정적 정본 (LIVE HTTP 000 88-cycle+ · disk canonical `6226e6eb` 우선)
+  이지케어 : /new.ez ERP 로그인-gated · 「연계기록지」 leaf 「미확인」 (전용 UI 공개 미확인)
+  엔젤    : silverangel canonical [system_feature.do](https://www.silverangel.kr/silverangel/angelsystem/system_feature.do) 109-leaf grep(연계|linkage|referral)=0 · 재활 카테고리 「기능회복훈련」 leaf 별개(G17)
+  롱텀    : law.go.kr·수가 원천만·연계기록지 서식 없음
+
+★ ogada 유일 full-stack 4-layer 심화:
+  1. BE 15+ domain files + V194/195/196 3-migration integrity chain
+  2. FE 7 exported API + 5 컴포넌트/페이지 + `/clients/linkage-records` Route
+  3. defense-in-depth (길이 CHECK·3-way FK·trigger·purge index) — raw SQL 우회 DB 차단
+  4. HealthController V196 integrity readiness probe (`V196ClientLinkageRecordsIntegrityReadinessProbe`) — operational gate
+
+===============================================================================
+[Closed axes 14+ App.jsx LIVE 재확인] — 재오픈 0 · v1.3-C/v2 CMS/G14/대시보드/G-LINKAGE CLOSED carry
+===============================================================================
+
+grep -E 'path="/(clients/home-newsletter|clients/:clientId/care-plan-form|clients/linkage-records|dashboard|dashboard/hq|billing/(cms|easy-pay|cash-receipts)|accounting|payroll/(ledger|reports|basis|labor-cost-ratio|retirement-accrual))' src/App.jsx :
+
+  path="/clients/home-newsletter"           ✅ G2 가정통신문 (id=1-5 1.0)
+  path="/clients/:clientId/care-plan-form"  ✅ G14 개인별 급여제공계획서
+  path="/clients/linkage-records"           ✅ G-LINKAGE 연계기록지 (id=1-10 1.0)
+  path="/dashboard"                          ✅ 대시보드
+  path="/dashboard/hq"                       ✅ 다지점 HQ 대시보드
+  path="/billing/cms"                        ✅ v1.3-C CMS 자동이체
+  path="/billing/easy-pay"                   ✅ 간편결제
+  path="/billing/cash-receipts"              ✅ 현금영수증 (7-9)
+  path="/accounting"                         ✅ M12 sujifine BPO 진입
+  path="/payroll/ledger"                     ✅ M11-1
+  path="/payroll/reports"                    ✅ M11-6 간이지급명세서
+  path="/payroll/basis"                      ✅ M11-4 급여기초
+  path="/payroll/labor-cost-ratio"           ✅ M11-5 인건비 지출비율 60%+
+  path="/payroll/retirement-accrual"         ✅ M11-2 퇴직적립금
+
+→ **재오픈 0 · P0 격상 불요** · 15-route 모두 LIVE 재확인
+
+===============================================================================
+[규제 백본 zero drift — NHIS #44 이동서비스비 러-1~4 506차]
+===============================================================================
+
+curl -m 25 -A 'Mozilla/5.0 ogada-benchmark/1.0' 'https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769'
+  → HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · time_total 0.178s
+  → disk `docs/planning/research/snapshots/nhis_jo44_live_bnk771.html` (BNK-771 505차) md5 IDENTICAL
+
+verbatim grep -oE (LC_ALL=C.UTF-8):
+  1일 1회       1
+  러-1          1
+  러-4          1
+  수급자가 부담  1
+  이동서비스     13
+  편도           2
+
+→ verbatim IDENTICAL to BNK-771 505차. **506차 zero drift IDENTICAL**.
+   ogada `TransportServiceFeeService` RU_1~4·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` 6-link chain(id=2 0.85) 상수 재조정 불요.
+
+===============================================================================
+[BNK-771 → BNK-772 delta 요약]
+===============================================================================
+
+| KPI                | BNK-771 (dirty snapshot) | BNK-772 (clean post-FF) | Δ |
+|--------------------|-------------------------|------------------------|---|
+| FE SHA             | eb270ae                 | **a5f4098**            | +1 commit (`fix(v1.2.1/QA-B95): accept semicolon-optional numeric HTML entities`) |
+| FE WT              | **DIRTY 6M**            | **CLEAN**              | dirty absorbed |
+| FE ahead vs origin/test | 1                  | **0** = FULLY SYNCED   | tester FF 흡수 |
+| BE SHA             | 89dc0a6                 | **e9f24f7**            | +1 commit mid-cycle (`fix(v2/QA-B95): accept semicolon-optional numeric HTML entities` · FE `a5f4098` 미러) |
+| BE WT              | CLEAN                   | CLEAN                  | — |
+| BE ahead vs origin/test | 672                | **673**                | +1 |
+| merge gate         | 673                     | **673**                | 0 (FE FF -1 + BE +1 상쇄) |
+| Route              | 133                     | 133                    | 0 |
+| Page.jsx           | 106                     | 106                    | 0 |
+| FE test            | 533 (220+313·DIRTY)     | **529** (216+313)      | -4 (WIP 정리) / +4 vs BNK-770 baseline 525 |
+| BE Test            | 294                     | 294                    | 0 |
+| BE @Test           | 2222                    | **2224**               | +2 (QA-B95 semicolon-optional numeric decode @Test) |
+| Flyway max         | V196                    | V196                   | 0 |
+| 모듈 KPI           | 97.41% (28.25/29)       | **97.41%** (28.25/29)  | 0 · CONFIRMED |
+| NHIS #44 cycle     | 505차                    | **506차**               | +1 zero drift |
+
+상태 변경 총 **4건**: (a) FE +1 commit, (b) FE WT DIRTY→CLEAN, (c) FE ahead 1→0 FULLY SYNCED, (d) **BE +1 commit mid-cycle `e9f24f7` (FE QA-B95 numeric HTML entity semicolon-optional decode 미러 BE)**.
+가정 번복 0. closure 0(모두 carry). 신규 core 갭 0. KPI promote 0.
+
+===============================================================================
+[per-cycle minimum 4종 충족 체크]
+===============================================================================
+
+[✓] 신규 증거 URL 1건 이상: NHIS #44 라이브 재실측(506차) — `docs/planning/research/snapshots/nhis_jo44_live_bnk772.html`
+[✓] 경쟁사/ogada 메뉴/필드/워크플로 상세 1블록: id=1-10 연계기록지 full-stack 15+ file anchor 재확인 (BE domain·V194/195/196·FE 7 API·5 컴포넌트)
+[✓] COMPETITOR_MATRIX 1행 이상 ogada `@HEAD` SHA로 갱신: `@a5f4098`/`@89dc0a6` 3-row 추가 (BNK-772 rotation)
+[✓] BENCHMARK_REPORT §신규 소절: §772 4-소절 추가
+
+===============================================================================
+[즉시 액션 요약]
+===============================================================================
+
+tester    : merge **673** (FE 0 FULLY SYNCED + BE 673 · BE-heavy · 양쪽 WT CLEAN · FF 가속 · 신규 마이그레이션 0)
+planner   : baseline **FE `@eb270ae`→`@a5f4098`**(FULLY SYNCED)·**BE `@89dc0a6`→`@e9f24f7`**(mid-cycle +1 commit QA-B95 semicolon-optional numeric)
+            · merge gate **673** carry(FE FF -1 + BE +1 상쇄)·모듈 **97.41%** CONFIRMED (가정 번복 0)
+            · id=1-10 「연계기록지」 FULL-STACK anchor 정본화 재확인 (v2+ 최우선 진성갭 CLOSED 유지)
+            · closed axes 14+ route LIVE 재오픈 0
+            · P0 격상 불요·residual lever = M12 credentials(0.7)+form polish 3종(0.85)
+            · 규제 백본 506-cycle zero drift narrative carry
+            · 신규 마이그레이션 0 → 이관 blocker 없음

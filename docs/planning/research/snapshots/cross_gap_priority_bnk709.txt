@@ -1,0 +1,94 @@
+# BNK-709 교차검증·갭 우선순위 (8h+) — 2026-07-14T02:57Z
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-14T02:57:00Z -->
+
+rotation: 교차검증·갭 우선순위 8h+
+직전: BNK-708 (2026-07-14T02:13Z, ogada git 실측 6–8h) → ~44분 후 재실측
+ogada: FE @e18ee5c(+1 vs BNK-708 @bc9389d) / BE @5beaffb(+1 vs BNK-708 @bd901c4)
+
+================================================================================
+## 1. ogada git 실측 KPI (확인)
+================================================================================
+| 항목 | BNK-708 | BNK-709 | delta |
+|---|---|---|---|
+| FE HEAD | @bc9389d | **@e18ee5c** | +1 `feat(v1.2.1/M11): wire staff payroll ledger preview` |
+| BE HEAD | @bd901c4 | **@5beaffb** | +1 `feat(v2/M11): add staff payroll ledger preview API` |
+| FE WT | CLEAN | **CLEAN** | carry |
+| BE WT | CLEAN | **CLEAN** | carry |
+| FE origin/test | 95192f5 (ahead 2) | **bc9389d** (ahead **1**) | origin/test FF bc9389d(BNK-708 FE absorb) · residual e18ee5c |
+| BE origin/test..develop | 618 | **619** | +1 5beaffb |
+| merge gate | 620 (FE2+BE618) | **620** (FE1+BE619) | FE stream −1 / BE +1 · 합 불변 |
+| Route | 125(<Route\b 124+Routes 1) | **126**(<Route\b **125**+Routes 1) | +1 `/payroll/ledger` |
+| Page | 98 | **99** | +1 StaffPayrollLedgerPage |
+| FE test | 507 (210+297) | **510** (212+298) | +3 |
+| BE Test / @Test | 281 / 2080 | **282** (281+1) / **2083** | +1 / +3 |
+| Flyway | V1–V190 | V1–V190 | carry |
+| 모듈 % | 84.31% (24.45/29) | **85.52%** (24.80/29) | **+1.21pp** (id=11 0→0.35) |
+| /(payroll) | **0** | **1** (`/payroll/ledger`) | M11 PARTIAL LANDING |
+
+================================================================================
+## 2. ★★★ M11 급여대장 preview full-stack LANDING (메뉴/필드/워크플로 블록)
+================================================================================
+BNK-706 sole P1「M11 in-app 0」가 BNK-709 ~44분 내 **FE+BE cross-stream 1-cycle** 로 PARTIAL 착륙:
+
+| # | stream | SHA | 커밋 | 레이어 |
+|---|---|---|---|---|
+| ① | BE | `5beaffb` | `feat(v2/M11): add staff payroll ledger preview API` | API+Service+@Test |
+| ② | FE | `e18ee5c` | `feat(v1.2.1/M11): wire staff payroll ledger preview` | Route+Page+coverage 0.35 |
+
+**필드·워크플로 (확인)**:
+- Route: `GET` 화면 `/payroll/ledger` · API `POST /api/v1/staff/payroll/ledger-preview`
+- 요청 필드: `userId`(UUID) · `yearMonth`(YYYY-MM) · `basePay` · `allowances` · `deductions`
+- 응답 필드: `attendanceDays` · `grossPay`(=base+allowances) · `netPay`(=gross−deductions) · `relatedSurfaces[]`
+- FE 폼 htmlFor: `staff-payroll-user|year-month|base-pay|allowances|deductions` · result `data-testid=staff-payroll-preview-result`
+- coverage: `competitorModuleCoverage.js` id=`11` **0.35** (11-1 대장 + 11-3 수당/공제 preview · persist/퇴직/계약/비율/명세서 미착륙)
+- 경쟁: 케어포 M11 6-leaf FULL(func↔demo L11_*↔PDF p123–126) · 이지케어 FAQ 재무 클러스터 사후 안내 · 엔젤 in-app 급여 0 · 롱텀 N/A
+→ ogada는 **in-app preview 1-route+API** 로 M11 착수 — 케어포 풀 6-leaf 대비 **partial(0.35)** · 저장·Excel·법정 서식 = residual P1
+
+**가정 번복 1 (제품)**: BNK-706~708 「`/(payroll)=0` · M11 sole P1 전부 open」 → **「확인: `/payroll/ledger` LIVE · coverage 0.35 · sole P1 = M11 residual(11-2/4/5/6)」**.
+
+================================================================================
+## 3. 경쟁사 재실측 · 신규 공지·엑셀 포맷 스캔
+================================================================================
+| URL | HTTP | SIZE | md5 | 상태 vs BNK-708/705 |
+|---|---|---|---|---|
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | 7,572B | c886ff1f | **445차 zero drift IDENTICAL** · 러-1~4·편도·수급자 부담 X verbatim |
+| [silverangel notice list](https://www.silverangel.kr/silverangel/support/notice/list.do) | 200 | 5,707,602B | ea7d6b3d | IDENTICAL · 최신 Tmp_idx=**221572** · ≥221573 **0**(~17일 pause) |
+| [ezCare /help/faq.ez](https://ezcare.easyms.co.kr/help/faq.ez) | 200 | 80,057B | 81d3b009 | 233 rowid(max 21781) · hit_sum **3,646,453**(+78 vs BNK-706 3,646,375) · Top-1 21601=83,903 · **size-lock 21-cycle** |
+| [FAQ 21844](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web) | 200 | 14,474B | d0aa760c | **= BNK-694/702 IDENTICAL** · 마스킹(*) 엑셀 · 신규 포맷 변경 0 |
+| [FAQ 21845](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21845&type=web) | 200 | 13,915B | 5b78c947 | **= BNK-694/702 IDENTICAL** · 공단 엑셀 정상 조치 |
+| [law247](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) | 200 | 78,450B | da5b7f13 | size-lock · `Time=` md5 DRIFT · semantic IDENTICAL |
+| [Hyosung ANGELSYS](https://newap.hyosungcms.co.kr/addon/easy?type=ANGELSYS) | 200 | 24,073B | 438f9ced | IDENTICAL (BNK-704 baseline) |
+| [sujifine.co.kr/login](https://sujifine.co.kr/login) | 200 | 3,974B | 3d22761c | size-lock · md5 DRIFT vs BNK-706 `8e6e2744` · title「장기요양 재무회계 관리프로그램」**semantic IDENTICAL** |
+| [ezCare home](https://ezcare.easyms.co.kr/) | 200 | 70,055B | 639c53dd | 통계: 53.2%·9298·**4666**(+3 vs 4663)·2353·1820 · 집계 **2026.06.30** · 재무회계 대행 demand-signal **소폭↑** |
+
+엑셀 포맷·신규 규제 스캔 결론: FAQ 21844/21845 ~20일 IDENTICAL · NHIS #44 445차 · notice ≥221573=0 → **신규 규제/엑셀 포맷 변경 0** · import adapter 긴급 작업 불필요 재확인.
+홈 통계: 재무회계 대행 4,663→**4,666**(+3) = demand-signal 유지·강화(잠금 해제 1축).
+
+================================================================================
+## 4. P0/P1 재정렬 권고 (planner) — G14·대시보드·v1.3-C·v2 CMS
+================================================================================
+| ID | 유형 | 우선순위 | 비고 |
+|---|---|---|---|
+| **M11 residual (11-2/4/5/6)** | product P1 sole in-app | **P1 재정의** | coverage 0.35→1.0 = +0.65pp → **87.76%**(M12 skip 시). persist·퇴직적립·급여계약·인건비비율·간이지급명세서 |
+| M12 수지파인/BPO | product | **P1→P2/분기 carry** | (A)미추종/(B)BPO 어댑터 권고 유지 · in-app 필수 아님(BNK-706) · KPI 91.21%는 M12=1.0 가정 — M12 skip 시 목표 **87.76%** |
+| G14 care-plan-form | closed | **재오픈 0** | `/clients/:clientId/care-plan-form` LIVE |
+| v1.3-C transport×9 | closed | **재오픈 0** | shuttle-sheet·compliance·auto-dispatch·service-fees·vehicles·runs·outings·monthly + G16 chain CLOSED(BNK-705) |
+| v2 CMS 5-method | closed | **재오픈 0** | `/billing/cms`·easy-pay·cash-receipts LIVE · Hyosung evidence IDENTICAL |
+| G17 indicator27 | closed deepen | **재오픈 0** | 5-commit chain(BNK-708) carry |
+| leave-ledger | closed | **재오픈 0** | `/staff/annual-leaves`·`/staff/leave-ledger` LIVE |
+| G-NURSING-DIRECTIVE-EXPIRY | product gap | **P3 가정 유지** | DashboardPage/dashboardWidgetGroups **0 hit** · 격상 근거 0 |
+| G-CLIENT-CARE-AGREEMENT-EXPIRY | product gap | **P3 가정 유지** | employmentContract* 위젯만 「확인」 · 수급자계약 만료 **0** |
+| G-AI-NEEDS-ASSESSMENT-SUMMARY | product gap | **P2/P3 carry** | notice 221572 · ≥221573=0 (~17일 pause) |
+| ops QA-B116 | ops P0 | **유지** | origin/test push residual **619 BE** (+ FE 1) |
+
+가정 번복: **1**(M11=0 → M11△0.35 LANDING). P0 product 신규 0. closed axes 재오픈 0. P3 격상 0·번복 0.
+
+================================================================================
+## 5. per-cycle minimum checklist
+================================================================================
+[x] 신규/재실측 증거 URL 9+ (NHIS445·notice·FAQ list·21844/21845·law247·Hyosung·sujifine·home — 엑셀 IDENTICAL·home 4666 drift)
+[x] 메뉴/필드/워크플로 1블록 (M11 ledger preview 필드표 + FE/BE SHA + coverage 0.35)
+[x] COMPETITOR_MATRIX 1행+ @e18ee5c/@5beaffb (M11·P0/P1 재정렬·규제)
+[x] BENCHMARK_REPORT §709 (교차검증·갭 우선순위 8h+)
+[x] memory/decisions.md 최상단 BNK-709
+[x] snapshots/README + baseline FE/BE HEAD 갱신

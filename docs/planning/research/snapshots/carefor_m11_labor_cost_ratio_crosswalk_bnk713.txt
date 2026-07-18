@@ -1,0 +1,196 @@
+# BNK-713 케어포 M11 11-5 「인건비 지출비율 참고자료」 ↔ ogada `/staff/payroll/labor-cost-ratio-preview` full crosswalk (60% 규제 compliance 정본화)
+
+> 조사일: 2026-07-14T05:40:00Z (KST 2026-07-14 14:40)
+> Rotation: 케어포 역공학 0–2h (BNK-712 → +47분)
+> 초점: BE `907007e` labor-cost-ratio 60% compliance API landing ↔ 케어포 func.php 11-5 정적 「참고자료」 leaf 재검증 · 경쟁 4종 비교
+
+---
+
+## 1. ogada BE 신규 endpoint (`@907007e` · 188L 추가)
+
+```
+POST /api/v1/staff/payroll/labor-cost-ratio-preview
+    @PreAuthorize hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')
+    → payrollLedgerService.previewLaborCostRatio(request)
+```
+
+### 1.1 요청 스키마 (`StaffPayrollLaborCostRatioPreviewRequest` 23L record DTO)
+
+| 필드 | 타입 | 검증 (verbatim `@` 애너테이션) |
+|------|------|---------------------------------|
+| `yearMonth` | String | `@NotBlank` + `@Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])$")` |
+| `totalLaborCost` | BigDecimal | `@DecimalMin("0.00")` + `@Digits(integer = 12, fraction = 2)` |
+| `totalCareRevenue` | BigDecimal | `@DecimalMin("0.01")` + `@Digits(integer = 12, fraction = 2)` |
+
+### 1.2 응답 스키마 (`StaffPayrollLaborCostRatioPreviewResponse` 23L record DTO)
+
+| 필드 | 타입 | 값 (verbatim) |
+|------|------|---------------|
+| `yearMonth` | String | 요청과 동일 형식 `"YYYY-MM"` |
+| `totalLaborCost` | BigDecimal | 정규화(2자리 스케일) |
+| `totalCareRevenue` | BigDecimal | 정규화(2자리 스케일) |
+| `laborCostRatioPercent` | BigDecimal | `totalLaborCost / totalCareRevenue * 100`, HALF_UP scale=2 |
+| `statutoryThresholdPercent` | BigDecimal | **`60.00`** (`StaffPayrollSupport.LABOR_COST_RATIO_THRESHOLD_PERCENT`) |
+| `complianceGapPercent` | BigDecimal | `laborCostRatioPercent - 60.00` |
+| `complianceMet` | boolean | `gap >= 0` 이면 true |
+| `riskLevel` | String | `"COMPLIANT"` / `"ALERT"` |
+| `guidance` | String (verbatim ko) | ✅: `"법정 직접인건비 지출비율 60% 이상 기준을 충족했습니다."` / ⚠: `"법정 직접인건비 지출비율 60% 미만입니다. 수당/근로계약/급여기초 항목을 점검하세요."` |
+| `documentCode` | String | `"M11-5"` (`DOCUMENT_CODE_LABOR_COST_RATIO`) |
+| `surfaceKind` | String | `"STAFF_PAYROLL_LABOR_COST_RATIO_PREVIEW"` |
+| `relatedSurfaces` | List<...> | ledger + reports(AVAILABLE) + basis(AVAILABLE) + laborCostRatio(**PLANNED**) |
+
+### 1.3 관련 코드 위치 (`@907007e` 6-file · 188L)
+
+- `staffpayroll/api/StaffPayrollController.java` (+11L) — POST endpoint
+- `staffpayroll/api/StaffPayrollLaborCostRatioPreviewRequest.java` (+23L NEW)
+- `staffpayroll/api/StaffPayrollLaborCostRatioPreviewResponse.java` (+23L NEW)
+- `staffpayroll/domain/StaffPayrollLedgerService.java` (+41L) — `previewLaborCostRatio()` 메서드
+- `staffpayroll/domain/StaffPayrollSupport.java` (+25L) — `LABOR_COST_RATIO_THRESHOLD_PERCENT = 60.00` 상수 + `ROUTE_PAYROLL_LABOR_COST_RATIO = "/payroll/labor-cost-ratio"` 상수 + `DOCUMENT_CODE_LABOR_COST_RATIO = "M11-5"` + `laborCostRatioRelatedSurfaces()`
+- `staffpayroll/domain/StaffPayrollLedgerServiceTest.java` (+65L) — `previewLaborCostRatioShouldReturnCompliantWhenRatioIsOverThreshold` + 1 추가 @Test
+
+### 1.4 FE 상태
+
+- FE `/payroll/labor-cost-ratio` Route/Page: **📋 PLANNED** (BE `laborCostRatioSurface(SURFACE_PLANNED)` 명시)
+- FE HEAD `@10bf059` = G17 bathing 지표27 metadata normalize (payroll 무관)
+- 다음 사이클 FE 착지 예상: `StaffPayrollLaborCostRatioPage` + `/payroll/labor-cost-ratio` Route
+
+---
+
+## 2. 케어포 11-5 정적 leaf verbatim (`carefor_func.php` `6226e6eb` 98,328B disk byte-identical zero drift)
+
+**Grep 결과** (case sensitive 「인건비」·「지출비율」):
+
+```
+docs/planning/research/snapshots/carefor_func.php:777:      11-5. 인건비 지출비율 참고자료<br /><!--11-5. 인건비 지출비율 참고자료-->
+```
+
+**Depth-3 카탈로그 컨텍스트** (verbatim · `<div class="c1">` 상위 그룹):
+
+```
+<div class="c1">pc - 11.직원 급여관리</div>
+<div class="c2">
+  11-1. 월별 급여대장<br />
+  11-2. 퇴직적립금 관리<br />
+  11-3. 직원 급여계약 설정<br />
+  11-4. 급여기초 설정(수당/공제)<br />
+  11-5. 인건비 지출비율 참고자료<br />         ← ★ **「참고자료」** = static reference document
+  11-6.직원 급여대장 리포트(간이지급명세서)
+</div>
+```
+
+**성격**: 「참고자료」 문구 = 정적 리포트/참조 문서(reference material) — **compliance 알림/게이트 없음**. func.php 카탈로그 정본에서 명시적으로 「참고자료」 문구를 부여받은 유일한 leaf. 실제 60% 기준 lookup 도 데이터 로드도 없고, PDF/엑셀 다운로드형 static reference material 성격.
+
+**LIVE 상태**: `carefor.co.kr/daycare/func.php` HTTP **000** 20s timeout (직전 사이클 대비 continuing) — **68-cycle+** persistent 「미확인」 · disk `6226e6eb` 98,328B canonical Wayback id_ carry.
+
+---
+
+## 3. 경쟁 4종 11-5 「인건비 지출비율」 crosswalk (BNK-713 갱신)
+
+| 경쟁사 | 노출 형태 | 근거 URL/파일 | compliance 게이트 | 60% threshold 표시 | 실시간 경보 |
+|--------|-----------|--------------|------------------|-------------------|-------------|
+| **ogada `@907007e`** | ✅ **in-app live compliance API** (BE + tests) | `StaffPayrollController.previewLaborCostRatio` · `LABOR_COST_RATIO_THRESHOLD_PERCENT=60.00` · 「COMPLIANT/ALERT」 riskLevel + 한국어 verbatim guidance | ✅ **활성 판정**(`complianceMet` boolean + `complianceGapPercent` gap) | ✅ **60.00 상수** verbatim 노출 | ✅ (BE preview API · FE 착지 예정) |
+| **케어포** | △ 정적 「참고자료」 leaf | `carefor_func.php` 11-5(depth=3) verbatim「참고자료」 · demo `L11_M05` view.salary_labor* 유사 (미확인 login-gated) · PDF 매뉴얼 p124-125 예상 | ❌ 리포트 조회형 | ❌ 명시 없음 | ❌ 사후 통계 |
+| **이지케어** | △ FAQ K008 사후 안내 | ezcare `/help/faq.ez` K008「수당·급여관리」 64건 클러스터(BNK-633 정본) — 인건비 지출비율 관련 rowid 미확인 | ❌ | ❌ | ❌ |
+| **엔젤(silverangel)** | ❌ | systemFeature.do 404 carry(~150 사이클) · essential/extraService 급여 미노출 | ❌ | ❌ | ❌ |
+| **롱텀(공단)** | ✅ **규제 원천**(고시/평가매뉴얼) | law.go.kr 제2025-247호 · 장기요양 인건비 지출비율 60% 근거 | ❌ (규정만 · 시스템 X) | ✅ (규정 문언) | ❌ |
+
+**결론**: 60% 규제 threshold 를 **활성 compliance 판정 + 실시간 경보 형태로 in-app 노출하는 것은 경쟁 4종 중 ogada 유일**. 케어포는 「참고자료」 정적 리포트, 이지케어는 FAQ 사후 안내, 엔젤은 미노출, 롱텀은 규제 원천(고시)만. → **BNK-682 이후 반복 지목했던 마케팅 카피 후보가 실측 API 로 확정**.
+
+---
+
+## 4. ogada M11 6-leaf 재정본 (BNK-713 status)
+
+| leaf | 라벨 | @907007e/@10bf059 | Δ vs BNK-712 |
+|------|------|-------------------|--------------|
+| 11-1 | 급여대장 | △ `/payroll/ledger` preview (persist ❌·월 grid ❌) | carry |
+| 11-2 | 퇴직적립 | ❌ 0 route · **residual P1 만** | carry (sole P1 축소) |
+| 11-3 | 수당/공제 입력 | △ `StaffEmploymentContractRenewalPanel` + basis 매핑 | carry |
+| 11-4 | 수당/공제 마스터 | ✅ `/payroll/basis` + catalog API (BNK-712) | carry |
+| 11-5 | 인건비 지출비율 | △ **BE preview API LIVE**(60% threshold · COMPLIANT/ALERT) · FE 📋 PLANNED | **✅→△ 격상 (BE 착지·FE PLANNED)** |
+| 11-6 | 간이지급명세서 | ✅ `/payroll/reports` (BNK-711) | carry |
+
+**sole P1 재정의 chain**:
+
+- BNK-707~710: 11-2/4/5/6 (4-leaf residual)
+- BNK-711:     11-2/4/5    (3-leaf residual · 11-6 CLOSED)
+- BNK-712:     11-2/5      (2-leaf residual · 11-4 CLOSED)
+- **BNK-713:  11-2 만 · 11-5 BE-only landing** (1-leaf gap · BE ✅/FE 📋 PLANNED chain 시작)
+
+---
+
+## 5. KPI 재산정 (BNK-713)
+
+- BNK-712: 25.14/29 = **86.69%** (id=11 = 0.69)
+- BNK-713: id=11 rise from 0.69 → **~0.77** (11-5 BE-only preview = ~0.5 close · 1/6 weight = +0.083) → sum ≈ **25.22/29 = 86.97%** (+0.28pp)
+- 목표 (11-5 FE 착지 후 full ✅ · 11-2 landing): id=11 → 1.0 → 25.45/29 = **87.76%** (+0.79pp)
+- + M12 회계 (id=12 → 1.0): 26.45/29 = **91.21%** (+3.45pp)
+
+---
+
+## 6. 규제 backbone 재실측 (BNK-713 · 기존 URL)
+
+| 소스 | HTTP | SIZE(B) | md5 | 상태 |
+|------|------|---------|-----|------|
+| NHIS #44 이동서비스비 러-1~4 | 200 | 7,572 | `c886ff1f` | **448차 zero drift IDENTICAL** (live=disk · BNK-712 447차 → +1) |
+| carefor func.php LIVE | 000 | 0 | — | timeout **68-cycle+** 「미확인」 carry |
+| carefor func.php disk | — | 98,328 | `6226e6eb` | Wayback id_ canonical byte-identical zero drift |
+
+---
+
+## 7. ogada @HEAD 실측 (BNK-713 · git · 6-file BE + 2-file FE)
+
+| 지표 | BNK-712 | BNK-713 | Δ |
+|------|---------|---------|---|
+| FE HEAD | `9ea151b` | **`10bf059`** (+1) | `fix(v1.2.1/G17): normalize bathing indicator ownership metadata` (37+37L) |
+| BE HEAD | `eca95e3` | **`907007e`** (+1) | `feat(v2/M11): add labor-cost-ratio compliance preview API` (188L · 6-file) |
+| FE ahead origin/test | 1 | **1** | carry |
+| BE ahead origin/test | 621 | **622** | +1 |
+| Route (App.jsx `<Route\b`) | 127 | **127** | carry (11-5 FE 미착지) |
+| Route (App.jsx `<Routes>`) | 1 | **1** | carry |
+| Route total | 128 | **128** | carry |
+| Page (`*Page.jsx`) | 101 | **101** | carry (11-5 FE 미착지) |
+| FE test (.test.js) | 212 | **212** | carry |
+| FE test (.test.jsx) | 300 | **300** | carry (기존 파일 확장 = 카운트 동일) |
+| FE test total | 512 | **512** | carry |
+| BE Test.java | 282 | **282** | carry |
+| BE Tests.java | 1 | **1** | carry |
+| BE Test total | 283 | **283** | carry |
+| BE @Test | 2087 | **2089** | +2 (labor-cost-ratio 2 신규 @Test) |
+| Flyway V | V1–V190 | **V1–V190** | carry |
+| 모듈 coverage | 86.69% | **~86.97%** | +0.28pp (id=11 0.69→0.77) |
+| merge gate | 622 (FE 1 + BE 621) | **623** (FE 1 + BE 622) | +1 |
+
+**working tree**: 양쪽 **CLEAN** (`git status --short` 0-line).
+
+---
+
+## 8. 즉시 액션 · 다음 조사
+
+**즉시 (tester)**: merge **623** (FE 1 + BE 622 · 양쪽 WT CLEAN · FF 가속) — labor-cost-ratio compliance API 포함.
+
+**즉시 (planner)**:
+
+- baseline FE `@9ea151b` → **`@10bf059`** · BE `@eca95e3` → **`@907007e`** · merge gate 622 → **623**
+- **M11 sole P1 = 11-2 퇴직적립 만** (1-leaf gap · 11-5 BE-only landing · FE 착지 예정)
+- **★★★ 마케팅 카피 확정**: 「ogada는 장기요양 법정 직접인건비 지출비율 60% 기준을 **실시간 in-app compliance 판정**합니다 — 경쟁 4종(케어포 정적 참고자료·이지케어 FAQ 사후 안내·엔젤 미노출·롱텀 규제 원천만) 중 유일한 활성 compliance lever」 (BNK-682 carry · BNK-712 후보 확정)
+- REQUIREMENTS §M11 「11-5 인건비 지출비율 compliance preview API 착지」 + FE 착지 후속 US-PAYROLL-M11-LABOR-COST-RATIO 추가 검토
+- ROADMAP v1.2.1/v1.3 M11 residual 11-2 만으로 축소 반영
+
+**즉시 (coder)**:
+
+- FE `StaffPayrollLaborCostRatioPage` + `/payroll/labor-cost-ratio` Route 착지 (BE 라운드트립 검증 완료 상태) — id=11 full 0.85+ → module 87.76% (+0.79pp)
+- 향후 11-2 퇴직적립 preview (사업장 단위 accumulated balance) → M11 full closure = **87.76%**
+
+**다음 조사 우선순위 (2-4h 이지케어 next rotation)**:
+
+1. 이지케어 FAQ K008 클러스터에서 「인건비 지출비율/60%」 관련 rowid grep · in-app 미노출 재확인
+2. 이지케어 `/new.ez` pop_WAV6() 팝업 재확인 (급여 in-app UI 부재)
+3. 홈 통계 5-cycle lock 지속 여부 (재무회계 대행 4,663 기관 등)
+
+---
+
+## 9. 근거 스냅샷
+
+- 본 파일 (주력 · 케어포 11-5 disk canonical + ogada BE `907007e` full crosswalk + 경쟁 4종 비교표)
+- `docs/planning/research/snapshots/nhis_jo44.html` md5 `c886ff1f` 7,572B (**448차 zero drift IDENTICAL**)
+- `docs/planning/research/snapshots/carefor_func.php` md5 `6226e6eb` 98,328B (disk canonical byte-identical)

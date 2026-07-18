@@ -1,11 +1,56 @@
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T23:03:00Z -->
+<!-- twr-sync: TWR 2026-07-17T23:03:00Z — develop baseline 실측 · BE `be64fda` · FE `8b164c3` · ops 문서 전수 동기화 확인 ✅ · Q926~Q930 CHANGELOG 카드 완성 · 다음 신호 대기 -->
+
+### [TWR] 상태 체크포인트 (2026-07-17 — ops baseline sync complete)
+
+- **실측 baseline**: BE `be64fda` · FE `8b164c3` · Flyway **V1–V196** · 모듈 **97.41%** · **133 route · 106 page**
+- **ops 문서 동기화**: CHANGELOG · FAQ · USER_MANUAL · ADMIN_GUIDE · DEPLOYMENT_GUIDE **모두 최신 상태** ✅
+- **최근 기능 반영**: 업로드 magic-byte 확대(Q926~Q929) · 직원현황 인쇄/활동 사진 ARIA(Q930) · NoBreakSpace mid-token · M12 SSO path allowlist
+- **미해결 우선순위**: 출석 roster API 확장(coder) · QR 생성 payload(coder) · G-CASH-RECEIPT-NTS-API(P3) · L03/7-5(로드맵) · 데이터 보관·파기 정책(SEC)
+- **다음 신호**: develop push · merge gate · coder/uxd 변경 신호 시 갱신 시작
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T22:38:50Z -->
+<!-- coder-sync: COD 2026-07-17T22:38:50Z (frontend) — QA-B601 FE SEC-D34 visit+billing+caregiver+RFID excel pre-upload magic-byte `@3042a53` · BE QA-B599 lockstep · related 39/39 · WT CLEAN · Open 0(FE) · Planned QA-B116+QA-B95 · TSR FF 대기 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B601 SEC-D34 FE excel import pre-upload magic)
+
+- FE develop `fix(v1.2.1/v3): verify NHIS excel magic bytes before upload (SEC-D34)` `@3042a53` — `config/excelImportFiles.js` + Visit/NHIS/Caregiver/RFID panels · BE `@a788e6d` lockstep · OOXML/OLE · `;param` normalize · billing xlsx-only · related **39/39 PASS** · Open **0**(FE) · Planned **QA-B116+QA-B95** · tester FF 대기 · BankDepositImport residual carry · BE Open QA-B600(merge pending) 미포함.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T22:28:44Z -->
+<!-- coder-sync: COD 2026-07-17T22:28:44Z (backend) — QA-B599 BE SEC-D34 VisitService+NhisImportService excel magic-byte lockstep · caregiver QA-B598 후속 · related PASS · WT CLEAN · Open 0(BE) · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B599 SEC-D34 visit+NHIS import magic-byte)
+
+- BE develop `fix(v3/SEC-D34): verify visit and NHIS import excel magic bytes` `@a788e6d` — `VisitService`·`NhisImportService` 에 caregiver import 와 동일 확장자 + Content-Type `;param` normalize + OOXML(/OLE visit) magic fail-closed · MIME spoof/truncate reject · related **NhisImportServiceTest + VisitServiceTest PASS** · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · endpoint 신설 0(audit-first 442 유지) · BankDepositImport residual carry.
+
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-18T05:12:00Z -->
+<!-- planner-sync: PLN 231차 2026-07-18T05:12 UTC — BNK-850~857·TSR 1816~1829 · ★★★ SEC-D34 엑셀 import fail-closed 8-축 COMPLETE(매직 4-경로+null-safe+truncated+.xls OLE+empty-file+0-byte+empty-header+corrupt OOXML body·parser surface 5종·FE pre-upload+BE service/parser 2-layer·경쟁 4종 유일 SUPERIOR) · ★★★ FE VisitRfidDiffComparePanel 이중엑셀(공단계획+RFID) pre-upload 매직바이트 = 경쟁 4종 유일 파일 무결성 SUPERIOR(BNK-857·이지케어 FAQ 21589 verbatim) · ★★ npm audit high 1→0(form-data 4.0.6·QA-B606·dev-only) · ★★ NHIS #44 581차 zero drift · ★★ 도입 9,349(home 9,298·재무회계 대행 4,675) · ★ QA-B604~B607 Fixed+MERGED · ★ QA-B608 Open→Planned(FE develop→test pending 2·MEDIUM/BLOCK·기능 갭 아님) · baseline BE develop/test SYNCED@7fa8335(ahead 750)·FE develop@6f8e349·test@2789553(pending 2) · cross-stream BLOCK · operation BLOCK(QA-B608+750 BE=QA-B116+QA-B95) · Planned QA-B608+QA-B116+QA-B95 -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-18T00:15:00Z -->
+<!-- planner-sync: PLN 230차 2026-07-18T00:15 UTC — BNK-848~849·TSR 1810~1815 · ★★★ SEC-D34 4-path excel magic COMPLETE(QA-B598~B603·FE+BE lockstep·경쟁 4종 유일 SUPERIOR) · ★★ audit-first HTTP 442 IDENTICAL · ★★ NHIS #44 579차 · ★ QA-B602 Fixed+MERGED · ★ QA-B604/B605 Open→Planned · baseline BE@f6e4d88/FE@7ac3c84 · cross-stream BLOCK · residual 744 BE · Planned QA-B604+QA-B605+QA-B116+QA-B95 -->
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-17T19:42:00Z -->
 <!-- planner-sync: PLN 229차 2026-07-17T19:42 UTC — BNK-835~841·TSR 1793~1801 · ★★★ v3 photo SEC-D25 6-cycle COMPLETE·Page 106 정본·demo-work≠func M2 범위 분리·M7 billing PARITY·HTTP 442 6차·NHIS 573차·Open 0 · SYNCED(BE@c19bfa6·FE@dc81f6e) · residual 738 BE · Planned QA-B116+QA-B95 -->
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T21:54:52Z -->
+<!-- coder-sync: COD 2026-07-17T21:54:52Z (backend) — QA-B598 BE SEC-D34 요양보호사 NHIS import 확장자+Content-Type+OOXML/OLE magic-byte `@be64fda` · related 9/9 · WT CLEAN · Open 0(BE) · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B598 SEC-D34 caregiver NHIS import magic-byte)
+
+- BE develop `fix(v3/SEC-D34): verify caregiver NHIS import excel magic bytes` `@be64fda` — `StaffNhisCaregiverImportService` 에 VisitService/NhisImport lockstep 확장자(`.xlsx`/`.xls`) + Content-Type `;param` normalize + OOXML/OLE magic fail-closed · MIME spoof/truncate reject · related **9/9 PASS**(+5) · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · endpoint 신설 0(audit-first 442 유지) · SEC-D34 장기 Monitor 해소 · FE Open QA-B597(stream=frontend) 미포함.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T21:09:43Z -->
+<!-- coder-sync: COD 2026-07-17T21:09:43Z (backend) — QA-B595 BE v3/SEC-D25 grade-history + refresher-certificate magic-byte + content-type normalize `@ed94521` · related 14/14 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-17 — QA-B595 grade-history + refresher-certificate magic-byte SEC-D25)
+
+- BE develop `fix(v3/SEC-D25): verify grade-history and refresher-certificate magic bytes` `@ed94521` — `LtcGradeHistoryAttachmentStorageService`(PDF/PNG) + `StaffRefresherTrainingCertificateStorageService`(PDF/PNG/JPEG) 에 BenefitContract/StaffHr 와 동일 magic-byte + Content-Type `;param` normalize · MIME spoof/truncate fail-closed · `Files.write(payload)` · related **14/14 PASS** · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · endpoint 신설 0(audit-first 442 유지) · SEC-D25 핵심 첨부 표면 BE magic 착지(program/client photo·계약·HR·등급이력·보수교육) · FE pre-upload lockstep 후보.
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T20:35:15Z -->
 <!-- coder-sync: COD 2026-07-17T20:35:15Z (backend) — QA-B593 BE v3/SEC-D25 benefit-contract + staff-HR file magic-byte + content-type normalize `@324da07` · related 14/14 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
 
 ### [COD] 코더 메모 (2026-07-17 — QA-B593 benefit-contract + staff-HR magic-byte SEC-D25)
 
-- BE develop `fix(v3/SEC-D25): verify benefit-contract and staff-HR file magic bytes` `@324da07` — `BenefitContractAttachmentStorageService`(PDF/PNG) + `StaffHrFileStorageService`(PDF/PNG/JPEG) 에 photo 계열과 동일 magic-byte + Content-Type `;param` normalize · MIME spoof/truncate fail-closed · `Files.write(payload)` · related **14/14 PASS** · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · endpoint 신설 0(audit-first 442 유지) · 보수교육·등급이력 첨부는 SEC-D25 carry.
+- BE develop `fix(v3/SEC-D25): verify benefit-contract and staff-HR file magic bytes` `@324da07` — `BenefitContractAttachmentStorageService`(PDF/PNG) + `StaffHrFileStorageService`(PDF/PNG/JPEG) 에 photo 계열과 동일 magic-byte + Content-Type `;param` normalize · MIME spoof/truncate fail-closed · `Files.write(payload)` · related **14/14 PASS** · Open **0**(BE) · Planned **QA-B116+QA-B95** · tester FF 대기 · endpoint 신설 0(audit-first 442 유지) · 보수교육·등급이력 첨부는 SEC-D25 carry → **QA-B595 `@ed94521` 로 닫힘**.
 
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-17T20:07:58Z -->
 <!-- coder-sync: COD 2026-07-17T20:07:58Z (frontend) — QA-B592 FE v3/SEC-D25 client profile photo pre-upload magic-byte + ClientDetail wire `@e16f432` · BE QA-B591 `@cdba083` lockstep · related 9/9 · WT CLEAN · Open 0 · Planned QA-B116+QA-B95 -->
@@ -262,7 +307,47 @@
 # 기획 메모 (planning/PLAN_NOTES.md)
 
 > **작성**: planner 에이전트 (`PLN`) · tech_writer 에이전트 (`TWR`)  
-> **최종 갱신**: 2026-07-17 (229차 PLN — **자동 기획 동기화** BNK-835~841·TSR 1793~1801·★★★ v3 photo SEC-D25 6-cycle COMPLETE(BNK-833→840·QA-B576~B586·FE+BE magic)·★★★ Page KPI 107→106 재-정정(BNK-835)·★★★ demo-work≠func.php M2 범위 분리(BNK-841)·★★★ M7 billing PARITY+SUPERSET·★★★ audit-first HTTP 442 6차·★★ NHIS #44 573차·★★ M12 SSO SEC-D43 CLOSED·cross-stream SYNCED BE@c19bfa6/FE@dc81f6e·operation BLOCK 738 BE) | **400차 TWR** — safety template catalog·V185 integrity carry  
+> **최종 갱신**: 2026-07-18 (231차 PLN — **자동 기획 동기화** BNK-850~857·TSR 1816~1829·★★★ SEC-D34 엑셀 import fail-closed **8-축 COMPLETE**(매직 4-경로+null-safe+truncated+.xls OLE+empty-file+0-byte+empty-header+corrupt OOXML body·parser surface 5종·경쟁 4종 유일 SUPERIOR)·★★★ FE RFID compare 이중엑셀 pre-upload SUPERIOR(BNK-857·이지케어 FAQ 21589)·★★ npm audit high 0(form-data 4.0.6)·★★ NHIS #44 581차·★ QA-B604~B607 Fixed+MERGED·★ QA-B608 Open→Planned·baseline BE@7fa8335(ahead 750)/FE develop@6f8e349·test@2789553(pending 2)·cross-stream BLOCK·operation BLOCK·Planned QA-B608+QA-B116+QA-B95) | **400차 TWR** — safety template catalog·V185 integrity carry  
+
+### [PLN] QA 피드백 반영 (2026-07-18, 231차 — BNK-850~857 · TSR 1816~1829차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`7fa8335`** WT **CLEAN** · develop/test local **SYNCED** · ahead origin/test **750** vs `598d108`(SEC-D34 corrupt OOXML body parser-level lock 확산 MERGED · TSR1828) · FE develop **`6f8e349`** / test **`2789553`**(`test..develop` pending **2** = `1f9d49c`+`6f8e349`·tester FF 대기·origin/test `b23711f`) · **133 Route·106 page** · **V1–V196·BE post-merge 2381/2381 PASS**(63s·408·0F/0E/0S) · **npm 2737/2737**(TSR1824 carry·동일 test SHA) · **build 1234** · **npm audit high 0** · **HTTP 442** SEC-D34 8-축 후 IDENTICAL · **모듈 97.41%** | ROADMAP CURRENT BASELINE 231차 |
+| **QA Open→Planned** | **QA-B608** Open→Planned(FE develop→test pending 2·MEDIUM/BLOCK·COD FF 이관·제품 코드 무변경·기능 갭 아님·이관 규율 5·6·7) · Open **0** · Planned residual **QA-B608 + QA-B116**(750 BE) + **QA-B95** | QA_FEEDBACK · ROADMAP · PLAN_NOTES |
+| **QA-B604~B607 Fixed (★★★ SEC-D34)** | B604 pilot mock `getBytes()` null guard(BE `@f28e3d9`) · B605 RFID compare flaky `findByRole`(FE `@1cdfd5c`·TSR1817 verified) · B606 form-data 4.0.5→4.0.6 npm audit high 1→0(FE `@637bad8`·dev-only jsdom) · B607 truncated OOXML fail-closed(BE `@efbdbec`) · TSR1816~1823 FF+MERGED | QA_FEEDBACK Fixed · ROADMAP v1–v3 · USER_STORIES US-SEC-D34 |
+| **SEC-D34 fail-closed 8-축 COMPLETE (★★★ BNK-855/856)** | (a)매직바이트 4-경로 (b)null-safe payload(QA-B604) (c)truncated OOXML(QA-B607) (d).xls OLE magic (e)empty-file BE+FE empty-header (f)0-byte FE (g)**corrupt OOXML body**(POI 런타임 예외 fail-closed·no-info-leak·BNK-856·`@0a97b22`→`@7fa8335`) — parser surface **5종**(BankDeposit·Nhis·StaffNhisCaregiver·NhisVisitSchedule·RfidTransmission)·FE `excelImportFiles.js` 4-validator pre-upload + BE service/parser 2-layer defense-in-depth · KPI promote 0 | REQUIREMENTS §231 · USER_STORIES US-SEC-D34 · ROADMAP v3 · COMPETITOR_MATRIX |
+| **FE RFID compare 이중엑셀 SUPERIOR (★★★ BNK-857)** | `VisitRfidDiffComparePanel` 이 공단계획(plan)+RFID 두 엑셀을 `validateVisitNhisExcelImportFile` 로 pre-upload 매직바이트 검증(MIME 위조 시 `EXCEL_IMPORT_UNSUPPORTED_SIGNATURE_MESSAGE`·`compareVisitsRfidApi` 미호출) · 이지케어 FAQ rowid=**21589** 「RFID로 전송한 급여제공내역 ↔ 공단계획 비교」 verbatim workflow 대응 = **경쟁 4종 유일 파일 무결성 SUPERIOR** · 마케팅 「이중엑셀 대사까지 서명 검증」 carry | USER_STORIES US-SEC-D34·G21 · REQUIREMENTS §1-5 · PLAN_NOTES §추가 질문 |
+| **BNK-852~854 ★★** | NHIS #44 러-1~4 **581차** zero drift `c886ff1f` ↔ Transport `RU_1~4`·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` IDENTICAL(상수 재조정 불요) · longterm 502 월한도액 ±9B lnb 오실레이션 「양방향」(문서 위생·갭 아님) · 도입 기관 **9,349**(home 9,298·재무회계 대행 4,675·+3 DRIFT) · 이지케어 데모 ERP 셸 common.js 20260629 + 사용후기 popup transient(core 갭 아님) | REQUIREMENTS §1-5 · COMPETITOR_MATRIX · ROADMAP |
+
+**coder/ops 다음 액션 (231차)**: ① **COD/tester** FE develop→test FF 이관 **`1f9d49c`+`6f8e349`**(QA-B608) → pending 0 + post-merge full suite 재실측 ② origin/test push **750 BE**(QA-B116) ③ **QA-B95** operation 승격(실 bootstrap enable·B604~B607 폐루프) ④ SEC-D34 8-축·RFID 이중엑셀 마케팅 카피 확정(§추가 질문) ⑤ P3-Lever-D **FEE_SCHEDULE_CHANGE_NOTICE** v3+「가정」 carry ⑥ ~~SEC-D34 4-path~~ → **✅ 8-축 COMPLETE**(과대구축 금지·추가 축 Epic 불요).
+
+### 추가 질문 (자동 기획 동기화 231차)
+1. **SEC-D34 8-축 마케팅 (★★★ BNK-856/857)**: 「부분·손상·null·잘못된 OLE·빈 파일·빈 헤더·0-byte·손상 body 8-축 즉시 거부 — 이중엑셀 RFID 대사까지 OOXML 서명 검증」 카피를 온보딩/세일즈에 명문화할지? → **narrative carry·Epic 불요·경쟁 4종 유일 SUPERIOR**.
+2. **QA-B608 FF 이관 (★ MEDIUM/BLOCK)**: FE develop→test pending 2(`1f9d49c`+`6f8e349`·test-only) — tester/COD FF 이관 시점? → **transfer gate `test..develop==0` 강제·제품 코드 무변경·기능 갭 아님**.
+3. **corrupt OOXML body no-info-leak (★★ BNK-856)**: POI 런타임 예외 fail-closed 시 사용자 메시지 표준화(내부 스택 미노출) 명문화 시점? → **SECURITY_CHECKLIST 재사용·에러 응답 위생 §3 준수**.
+4. **parser surface 5종 회귀 커버리지 (★ BNK-855)**: RfidTransmission·NhisVisitSchedule parser corrupt-body 회귀 lock 대칭 완료 — 신규 parser 추가 시 8-축 회귀 템플릿 강제할지? → **테스트 템플릿 carry·재발 방지 §5**.
+5. **도입 기관 9,349 DRIFT (★ BNK-854)**: home 9,298 vs 재무회계 대행 4,675 = ~50% BPO 의존 → M12 회계 BPO SSO(id=12 0.7) 마케팅 demand-signal 재입증할지? → **COMPETITOR_MATRIX carry·격상 금지·ops credentials residual**.
+
+### [PLN] QA 피드백 반영 (2026-07-18, 230차 — BNK-848~849 · TSR 1810~1815차)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`f6e4d88`** WT **CLEAN** · ahead origin/test **744** vs `598d108`(SEC-D34 visit+NHIS+bank deposit magic · TSR1813) · FE develop/test/origin **`7ac3c84` FULLY SYNCED+PUSHED**(QA-B602 page/pilot excel fixture · TSR1814~1815) · **133 Route·106 page** · **V1–V196·BE post-merge 2362/2363**(1 FAIL QA-B604) · **npm 2735/2735**(TSR1815 corroboration) · **HTTP 442** SEC-D34 4-commit 후 IDENTICAL · **모듈 97.41%** | ROADMAP CURRENT BASELINE 230차 |
+| **QA Open→Planned** | **QA-B604** Open→Planned(COD P0 BLOCK·pilot mock `getBytes()` NPE) · **QA-B605** Open→Planned(P2 LOW flaky·non-BLOCK) · Open **0** · Planned residual **QA-B604+QA-B605+QA-B116**(744 BE)+**QA-B95** | QA_FEEDBACK · ROADMAP · USER_STORIES US-SEC-D34 |
+| **QA-B598~B603 Fixed (★★★ SEC-D34)** | 4-path excel import magic — FE pre-upload(`@3042a53`·QA-B601) + BE VisitService·NhisImportService·StaffNhisCaregiverImportService·BankDepositImportService(`@f6e4d88`·QA-B603) · 은행 입금 대사 xlsx-only OOXML = 경쟁 4종 유일 SUPERIOR · KPI promote 0 | USER_STORIES US-SEC-D34 · REQUIREMENTS §230 · ROADMAP v3 |
+| **QA-B601~B602 Fixed (★ SEC-D34 FE)** | FE excelImportFiles.js magic + page/pilot fixture OOXML sync · StaffPage+pilot **164/164** · full suite **2735/2735**(TSR1815) · FE transfer PASS | QA_FEEDBACK Fixed · ROADMAP v1–v3 |
+| **BNK-848~849 ★★★** | SEC-D34 4-path COMPLETE · audit-first HTTP **442 IDENTICAL** · endpoint 신설 0 · NHIS #44 **579차** zero drift | REQUIREMENTS §1-5 · COMPETITOR_MATRIX · ROADMAP |
+| **BNK-849 ★★** | BankDepositImportService magic-byte — 재무 lifecycle xlsx-only 정책 · 마케팅 「입금 대사까지 OOXML 서명 검증」 narrative carry | USER_STORIES US-L01 · US-SEC-D34 · PLAN_NOTES §추가 질문 |
+
+**coder/ops 다음 액션 (230차)**: ① **COD P0** QA-B604 pilot mock null guard → post-merge **2363/2363** ② **tester** BE transfer PASS 확인 ③ origin/test push **744 BE**(QA-B116) ④ **QA-B95** operation 승격 ⑤ **COD P2 optional** QA-B605 flaky `findByRole`/`waitFor` ⑥ SEC-D34 마케팅 카피 확정(§추가 질문) ⑦ P3 lever **10-2-1 FEE_SCHEDULE_CHANGE_NOTICE** carry.
+
+### 추가 질문 (자동 기획 동기화 230차)
+1. **SEC-D34 마케팅 (★★★ BNK-849)**: 「위조 엑셀 즉시 거부 — 입금 대사까지 OOXML 서명 검증」 카피를 온보딩/세일즈에 명문화할지? → **narrative carry·Epic 불요·경쟁 4종 유일 SUPERIOR 근거**.
+2. **QA-B604 fix 경로 (★ P0)**: (a) service null fail-closed vs (b) pilot mock stub — COD 선호? → **(a) 권장**(production defense-in-depth)·mock 보완 병행 가능.
+3. **QA-B605 flaky (★ P2 LOW)**: full-suite 병렬 부하 하 비결정적 · TSR1815 미재현 — COD fix 시점? → **non-BLOCK·QA-B604·744 push 선행**.
+4. **P3-Lever-D carry (★ BNK-844)**: FEE_SCHEDULE_CHANGE_NOTICE v3+「가정」 — 2026-07-31 charge promo 만료 후 재실측? → **ROADMAP v3 residual·scope 확정 대기**.
+5. **은행 8종 E2E live (★ BNK-53 P1)**: SEC-D34 완료 후 케어포 7-2 p.88 패리티 live 검증 우선순위? → **QA-B604 해소 후 QA-B116 체인**.
 
 ### [PLN] QA 피드백 반영 (2026-07-17, 229차 — BNK-835~841 · TSR 1793~1801차)
 

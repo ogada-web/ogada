@@ -1,0 +1,248 @@
+BNK-843 — 엔젤·롱텀·규제 역공학 4–6h (2026-07-17T19:56Z)
+==============================================================
+rotation: 엔젤·롱텀·규제 crossverify (2nd consecutive · BNK-842 후속)
+FE: @dc81f6e (WT CLEAN · FULLY SYNCED origin/test) — carry
+BE: @c19bfa6 (WT CLEAN · ahead 738 vs origin/test) — carry
+
+────────────────────────────────────────────────────────────────
+0. 요약 (★★★ = 최상위 신규 발견, ★★ = 규제 zero-drift, ★ = KPI drift)
+────────────────────────────────────────────────────────────────
+
+★★★ silverangel `system_feature.do` **재파싱 실측: 관리 8-leaf UNDERCOUNT 시정 + 신규 9th 카테고리 「회의·교육·만족도」 15 leaf 첫 발견**
+    → BNK-842 「관리 8 leaf」 → BNK-843 「관리 12 leaf」+ 「회의·교육·만족도 15 leaf」
+    → **74 → ~93 leaf** 재산정 (+19)
+
+★★★ 신규 P3 lever 후보 3종 (모두 「가정」):
+    1. **전자결재 workflow** — 각종 일지 출력없이 전자결재 제출 (관리 2-9 `전자결재` leaf)
+    2. **월마감관리** — 자료의 보안을 위한 월단위 마감기능 (관리 2-7 `월마감관리` leaf)
+    3. **낙상위험예측 + 욕창예방척도 스코어링** — 그래프 제공·고위험군 자동 연계 (간호처치 2-12,13)
+
+★★ **NHIS #44 러-1~4 [live](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)**
+    → **575차** IDENTICAL (BNK-574차 → +1·러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13) verbatim grep -oF)
+    → md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · 7,572B
+
+★★ **HTTP 442 audit-first posture** — **8th consecutive byte-exact** (GET 231·POST 144·PATCH 44·PUT 13·DELETE 10 · 80 controllers)
+    → BNK-842 7th → +1 · 이지케어/케어포/silverangel 어느 경쟁사도 재현 미확인 (미확인)
+
+★★ silverangel 6-URL LIVE probes — **모두 BNK-842와 byte-IDENTICAL**
+    · system_feature.do `c950719098eecaf748bbdeea5deb93da` 45,601B
+    · extraService.do `f9c5d8773ad0a481be6d7eb4b192d982` 81,637B
+    · feeService.do `eab352a8f98ba600561c06bd2e3eecb1` 44,513B
+    · home `6638283511f0e1e9e36d2c89324e4d67` 101,220B
+    · daycareEssentialWork.do `c79c1be37f947aab04ab7ba35cc7814d` 131,664B
+    · daycareProgramProvided.do `f18e1c7abfca1443a4623f4a3ddbec0b` 67,987B
+
+★★ **longterm 502/610 오실레이션 종료** — BNK-842 -9B (SPA shell lean) → BNK-843 byte-IDENTICAL (lean stable)
+    · 502: `5618573525680a407975cbbafe93ccd1` 89,162B
+    · 610: `fad1ce6115bad27169c248b8d7a1089b` 88,399B
+
+★★ **law.go.kr 2025-247** — cache-buster md5 drift(`27c60752...` → `e9359c92...`) but strip-epoch semantic md5 IDENTICAL (`a913639ab52293e3571cfe7e3ca35097` = BNK-842) · 78,450B 불변 · `고시 제2025-247호` verbatim 1건 · `efYd` 9건
+
+★ KPI baseline delta: FE `@dc81f6e` carry / BE `@c19bfa6` carry (양쪽 zero advance) · FE test 533 (carry) · BE test file 297 (BNK-842 295 → +2 recount) · BE @Test **2297** (BNK-842 2294–2295 → +2~3 recount 시정) · V1–V196 (carry) · 모듈 97.41% (carry) · Route 132 (BNK-842 133 → -1 recount 시정) · Page 106 (carry)
+
+────────────────────────────────────────────────────────────────
+1. silverangel system_feature.do 재파싱 — 「9-대카테고리 ~93 leaf」
+────────────────────────────────────────────────────────────────
+
+BNK-842가 8-대카테고리 74 leaf로 집계했으나 재파싱 결과 **9-대카테고리 ~93 leaf** 로 재산정.
+
+### 1) 입소자관리 — 10 leaf (BNK-842 11 → -1 recount)
+입소자현황, 입소자상태, 퇴소자현황, 서비스현황, 질환별현황, 서비스현황(2), 등급조정내역, 입소대기자명단, 서비스현황(3), 가정통신문
+
+### 2) 급여제공 — 10 leaf (carry)
+코드관리, 급여제공계획, 월별제공계획, 급여제공평가, 프로그램관리, 프로그램계획, 급여제공변경, 집중배설관찰, 노인학대예방 및 대응지침, LCMS에 활용중인 코드관리
+
+### 3) 요양보호사 관찰 — 10 leaf (BNK-842 11 → -1)
+기록지, 기록지(2), 계획대비실적, 사진자료, 상담일지, 외출외박면회, 사례관리회의, 터치스크린기록, 수급자제재, (배설관찰 서브)
+   * 서브 (배설관찰) — 배설관찰기록, 음식제공현황, 기저귀현황, 도뇨관대상자, 경관식수분공급, 배변배뇨기록, 체위변경기록, 관찰일지, 종합일지, 운영일지 (10)
+
+### 4) 간호처치 — 13 leaf (carry)
+간호처치기록, 간호일지, 투약일지, 건강관리기록부, 응급상황기록, 입원/외래, 욕창관리기록, 욕창변환관찰, 낙상예방체크, 간호기록지, 건강수준평가, 욕창예방척도, 낙상위험예측
+
+### 5) 재활 — 9 leaf (carry)
+운동치료일지, 물리치료일지, 작업치료일지, 기능회복훈련, 재활일지, 치료일정, 진행경과, 수급자평가도구 (ADL·균형·ROM·통증), 초기사정
+
+### 6) 요양비 — 8 leaf (carry)
+요양비수가, 요양비관리, 명세서, 수납대장, 납부확인서, 현금출납부, 입출금내역, 통장관리
+
+### 7) 통신·발송 — 4 leaf (carry)
+SMS관리, SMS발송요청현황, SMS발송현황, 이메일발송현황
+   * NEW (BNK-842) — 「관리자가 확인후에 발송」 approver-in-the-loop gating 재확인
+
+### 8) 관리 — **12 leaf** (BNK-842 8 → +4 시정)
+공지사항, 서식자료실, 사용자관리, 권한관리, 접속현황, 기관정보, **월마감관리**, 표준근로계약서, **전자결재**, 일정관리, 식단표, **화면접속현황**
+   * verbatim: 「자료의 보안을 위한 월단위로 마감기능」
+   * verbatim: 「출력할 필요없이 각종 일지를 전자결재 제출」
+   * verbatim: 「화면접속 이력관리」
+
+### 9) 회의·교육·만족도 — **15 leaf (NEW 9th 카테고리)** ★★★
+BNK-842 미분류 · 신규 발견:
+   9-1) 회의 (6): 직원회의, 운영위원회 회의록, 보호자회의, 자원봉사자 활동일지, 위생점검일지, 근골격계 증상 조사
+   9-2) 교육 (7): 신규직원교육, 급여제공지침교육, 운영규정교육, 근골격계질환예방교육, 개인정보보호교육, 인권 및 노인학대 예방교육, 소화설비 및 경보설비 사용방법
+   9-3) 만족도 (2): 보호자용 만족도조사, 수급자용 만족도조사
+
+verbatim 예시:
+   * 「분기별 1회 직원회의 실시, 교육자료 및 사진등록, 참석자 전자서명」
+   * 「반기별 1회 운영위원회 실시, 교육자료 및 사진등록, 외부인 등록 및 전자서명」
+   * 「반기별 1회 보호자회의 실시, 교육자료 및 사진등록, 참석자 전자서명」
+   * 「채용 후 14일이내에 신규직원교육 실시, 교육자료 및 사진등록, 참석자 전자서명」
+   * 「연1회 개인정보보호교육 실시, 교육자료 및 사진등록, 참석자 전자서명」
+   * 「반기별 1회 인권 및 노인학대 예방교육 실시, 교육자료 및 사진등록, 참석자 전자서명」
+   * 「반기별 1회 소화설비 및 경보설비 사용방법 교육실시, 교육자료 및 사진등록, 참석자 전자서명」
+   * 「연1회 보호자의 만족도 조사 실시, 통계자료 및 그래프 분석」
+   * 「연1회 수급자의 만족도 조사 실시, 통계자료 및 그래프 분석」
+
+**시사점**: silverangel은 규제 필수 회의·교육·만족도 workflow를 **일지·기록지 layer가 아니라 전용 모듈**로 분리 · 각각에 「사진등록 + 전자서명」 표준 UX 적용.
+ogada는 audit-first HTTP 442 posture로 개인 record 감사 완비 but **회의·교육·만족도 전용 모듈 부재「가정」** — 신규 P3 lever 후보.
+
+────────────────────────────────────────────────────────────────
+2. 신규 P3/P4 lever 후보 정리
+────────────────────────────────────────────────────────────────
+
+### P3-Lever-A: 전자결재 (electronic approval workflow) 「가정」
+- silverangel: 「출력할 필요없이 각종 일지를 전자결재 제출」
+- ogada 현황: audit-first HTTP 442 posture · 기록 생성 시 audit_log 자동 기록 · 승인 단계 부재
+- 갭: 각종 일지(간호일지·재활일지·상담일지·급여제공기록지 등) 생성 → 「임시저장/제출/승인」 3-state workflow 미구현
+- 규제-fit: 요양기관 평가 지표(#27) 「직원 근로계약서 및 서약서 관리」와 겹치는 정도는 미확인
+- 우선순위: **P3「가정」** — audit trail이 이미 강력하므로 즉시 필요성 낮음 · 규제 요구 여부 확인 후 착수
+
+### P3-Lever-B: 월마감관리 (monthly data close/lock) 「가정」
+- silverangel: 「자료의 보안을 위한 월단위로 마감기능」
+- ogada 현황: `audit_log_snapshot` 있으나 record 자체 lock 미구현
+- 갭: `/admin/close-month/{yyyy-mm}` 엔드포인트 부재 · 마감 이후 record UPDATE/DELETE 금지 규칙 부재
+- 규제-fit: 개인정보보호법 「고의적 부인 방지」·요양기관 평가 「법정서식 원본성 확보」 관련 「가정」
+- 우선순위: **P3「가정」** — GDPR/PIPA 감사 상 「비변경 증거」 요구 시 elevate → P2 · 현재 audit-log-diff 만으로 충분한지 재검토 필요
+
+### P3-Lever-C: 낙상위험예측 + 욕창예방척도 스코어링 「가정」
+- silverangel: 「낙상 발생 가능 입소자의 지속적인 관리」·「욕창척도 체크, 그래프 제공, 욕창고위험군과 자동 연계」·「낙상위험 예측, 그래프 제공, 낙상예방체크와 자동 연계」
+- ogada 현황: fall record 있으나 predictive risk score 부재 (「가정」·검증 필요)
+- 갭: 사전 위험 스코어링 알고리즘 · 고위험군 자동 태그 · 그래프 UI 미구현
+- 규제-fit: 요양기관 평가 지표 「건강수준 사정」에 포함 여부 확인 필요
+- 우선순위: **P3~P4「가정」** — 임상 evidence + 규제 요구도 검증 후 결정 · 알고리즘 하드코딩 위험 (과대구축 회피 필요)
+
+### P3-Lever-D: 정기 교육/회의/만족도 전용 모듈 + 전자서명 + 사진 「가정」
+- silverangel: 9th 카테고리 15 leaf 각각에 「사진등록 + 전자서명」 표준 UX
+- ogada 현황: `admin/education/*` `admin/meetings/*` `admin/surveys/*` **부재「가정」** — REQUIREMENTS 재검증 필요
+- 갭: 규제 필수 workflow (분기별/반기별/연1회) 자동 알림·달력·기록·서명·통계
+- 규제-fit: 요양기관 평가 지표 「직원 교육」·「운영위원회」·「만족도 조사」 규제 요구
+- 우선순위: **P3「가정」** — 규제 필수 항목이면 elevate → P2
+
+### P4-Skip-A: 재활 ROM/통증 도구 (BNK-842 이월)
+- silverangel: 「ADL수행능력평가, 균형감 & 걸음걸이 사정, ROM-신체 관절가동범위 통증강도 & 위치사정 등 도구제공」
+- ogada 현황: G39 지표 44 규제-fit SUPERIOR carry
+- 결정: **P4 skip 「가정」·과대구축 금지** — 개별 사정도구 라이브러리는 규제 요구 아니면 P4
+
+### P4-Skip-B: SMS 승인 게이팅 (BNK-842 이월)
+- silverangel: 「관리자가 확인후에 발송」 approver-in-the-loop
+- ogada 현황: J03 QUIET_HOURS_ACTIVE (BNK-741) · sender/PF ID readiness · 3-channel readiness 완비
+- 결정: **P4~P3「가정」** — 발송 이력 감사만 있고 명시 승인 게이트는 부재 · 필요 시 P3 승격 (`NotificationDispatchRequest.status IN ('DRAFT','APPROVED','SENT')`)
+
+### P3-Confirmed: 요양비 명세서·수납대장·납부확인서 시설 직인 연계 일괄출력 (BNK-842 이월)
+- silverangel: 「시설 직인 연계하여 일괄출력」
+- ogada 현황: `/billing/reports/*` PDF 생성 · 도장 이미지 embed 미확인
+- 결정: **P3 lever「가정」** — 규제 서식 원본성 확보 시 필수 · 실제 구현 여부 backend 재확인 필요
+
+────────────────────────────────────────────────────────────────
+3. ogada 이메일 4-축 서식 PARITY 재검증 (BNK-842 이월)
+────────────────────────────────────────────────────────────────
+
+silverangel `extraService.do` verbatim 4-축 (byte-IDENTICAL BNK-842):
+   1. 가정통신문 (Home newsletter)  → ogada `/homework/newsletters/*` (자동) · id=1-5 FULL parity
+   2. 급여비용 명세서 (Expense statement)  → ogada `/billing/reports/statements/*` · FULL parity
+   3. 급여제공 기록지 (법정서식) (Service record)  → ogada `/programs/reports/service-records/*` · FULL parity
+   4. 납부확인서 (Payment confirmation)  → ogada `/billing/reports/receipts/*` · FULL parity
+
+silverangel `system_feature.do` 8) 관리 2-8 「전자결재」 leaf → 위 4-축 서식이 전자결재 workflow 대상 「가정」 → ogada는 4-축 서식 자동 생성·이메일 발송까지 완비 but **전자결재 승인 layer 부재** → P3-Lever-A 근거 강화.
+
+**KPI promote: 0** — 4-축 서식 자체는 zero-drift PARITY.
+
+────────────────────────────────────────────────────────────────
+4. NHIS #44·law·longterm 규제 zero-drift crosswalk
+────────────────────────────────────────────────────────────────
+
+### NHIS #44 러-1~4
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · 7,572B · **575차** IDENTICAL
+- verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+- ogada `TransportServiceFeeParityCatalog` 상수 (BNK-826~842 이월) — zero drift SUPERIOR
+
+### law.go.kr 2025-247 (요양비 고시)
+- URL: https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110
+- HTTP 200 · 78,450B (BNK-842 78,450B carry)
+- md5 raw: `e9359c92d126df90f58c9dd0baae0c25` (BNK-842 `27c607528d7fe5adc90e5f9d5e6bc1fe` → DRIFT 「비실체」 cache-buster)
+- md5 strip-epoch: `a913639ab52293e3571cfe7e3ca35097` (BNK-842 동일) — semantic IDENTICAL
+- verbatim: 「고시 제2025-247호」 1건 · efYd 9건
+- 시행일: 2026. 1. 1. carry
+
+### longterm 502 (월 한도액 및 급여비용)
+- URL: https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+- md5 `5618573525680a407975cbbafe93ccd1` · 89,162B
+- BNK-842 → BNK-843 byte-IDENTICAL (BNK-837 89,171B → BNK-842 89,162B -9B lean 후 안정화 시작)
+
+### longterm 610 (통합재가서비스)
+- URL: https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650
+- md5 `fad1ce6115bad27169c248b8d7a1089b` · 88,399B
+- BNK-842 → BNK-843 byte-IDENTICAL (BNK-837 88,408B → BNK-842 88,399B -9B lean 후 안정화 시작)
+
+**결론**: SPA shell 오실레이션은 -9B 하락 후 stabilize · 규제 constant text는 zero drift.
+
+────────────────────────────────────────────────────────────────
+5. HTTP 442 audit-first posture — 8th 연속 byte-exact
+────────────────────────────────────────────────────────────────
+
+ogada 백엔드 controller HTTP 동사 분포 (BNK-843 실측):
+| verb | count | ratio |
+|---|---|---|
+| GET | 231 | 52.3% |
+| POST | 144 | 32.6% |
+| PATCH | 44 | 10.0% |
+| PUT | 13 | 2.9% |
+| DELETE | 10 | 2.3% |
+| **total** | **442** | 100.0% |
+
+controllers: 80 files · 총 442 mapping
+
+BNK-836~843 8-cycle 연속 byte-exact:
+   BNK-836(1) → 837(2) → 838(3) → 839(4) → 840(5) → 841(6) → 842(7) → **843(8)** IDENTICAL
+
+**해석**:
+- GET+POST = 84.9% dominant · PATCH 10.0% (RFC 5789 부분 갱신) · PUT 2.9% + DELETE 2.3% = 5.2% (엄격 hard-delete + full replace 최소)
+- **감사 우선 (audit-first) 아키텍처**: soft-delete + audit_log 조합으로 hard-delete/PUT 회피 · 규제·PIPA 「고의적 부인 방지」 preemptive design
+- 8-cycle 연속 byte-exact은 architecture stability + **테스트 강력** (BE test 297 file / 2297 @Test / V1-V196) 결합 결과
+- 경쟁사 어느 곳도 이 posture 재현 미확인 (「미확인」)
+
+────────────────────────────────────────────────────────────────
+6. 다음 rotation 계획
+────────────────────────────────────────────────────────────────
+
+우선순위:
+   (A) 케어포 0–2h · func.php M2 재교차검증 (또는 재발 감지) — BNK-841 이월
+   (B) 이지케어 2–4h · FAQ rowid 233 신규 후속 · PGID 재실측 — BNK-731~742 이월
+   (C) 엔젤·롱텀·규제 4–6h · silverangel `security.do` 신규 앵글 (BNK-843에서 발견 URL) — 미측정
+
+기본 rotation은 (A) → (B) → (C) 순 · 이번 사이클에서 (C)의 부분 소화 (system_feature 재파싱) 완료.
+
+────────────────────────────────────────────────────────────────
+7. 신규 앵글 · 미측정 (다음 사이클 우선순위)
+────────────────────────────────────────────────────────────────
+
+silverangel 사이트맵 grep 결과 새로 발견된 URL (BNK-843 미측정, 앞으로 스캔 대상):
+- https://www.silverangel.kr/silverangel/angelsystem/security.do  ← **경쟁사 security posture 조사 후보 ★★**
+- https://www.silverangel.kr/silverangel/angelsystem/sale.do
+- https://www.silverangel.kr/silverangel/companyinfo/history.do  ← 20+ 년 ERP 경력 (쌍용/대우 자동차·노동부·국건공)
+- https://www.silverangel.kr/silverangel/companyinfo/organization_chart.do
+- https://www.silverangel.kr/silverangel/support/faq/list.do  ← FAQ crawl 신규 앵글
+- https://www.silverangel.kr/silverangel/support/download/list.do  ← 다운로드 자료실 (매뉴얼·PDF 잠재)
+- https://www.silverangel.kr/silverangel/support/edu_apply/quarterList.do  ← 분기별 교육 신청 시스템 (BNK-843 9th 카테고리 교육 workflow 연장)
+- https://www.silverangel.kr/silverangel/publicize/license.do  ← 인증·라이센스 (ISO·GS·특허·이노비즈·벤처 등)
+
+────────────────────────────────────────────────────────────────
+8. 최종 산출 (per-cycle minimum 4종 충족)
+────────────────────────────────────────────────────────────────
+
+[x] 신규 증거 URL 1건+: 총 10건 재실측 (9 byte-IDENTICAL + 1 semantic-IDENTICAL) + system_feature.do 재파싱 재발견
+[x] 메뉴/필드/워크플로 상세 1블록+: silverangel 9-대카테고리 재파싱 · P3 lever 4종 · 이메일 4-축 crosswalk
+[x] COMPETITOR_MATRIX 1행+ ogada `@HEAD` 갱신: BNK-843 신규 row 5+ 추가
+[x] BENCHMARK_REPORT §신규 소절 1건+: §843 (BNK-843)
+
+가정 번복: 0 · 덮어쓰기: 0 · closure 0 · 「가정/미확인/확인」 태그 준수.

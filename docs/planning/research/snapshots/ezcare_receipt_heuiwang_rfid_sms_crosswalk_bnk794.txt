@@ -1,0 +1,55 @@
+# ezcare receipt-list + 본인부담 SMS + FAQ21475 crosswalk — BNK-794
+# fetched_at=2026-07-16T13:25:00Z
+# FE=@a3703a5 BE=@3937fa5 Route=133 Page=106 FE_test=534 BE_Test=294 BE_@Test=2255 V1-V196 module=97.41% merge_gate=700
+
+## Evidence URLs
+- NEW: https://docs.channel.io/ezcare/ko/articles/%EB%B3%B8%EC%9D%B8%EB%B6%80%EB%8B%B4%EA%B8%88-%EB%AC%B8%EC%9E%90-%EB%B0%9C%EC%86%A1-%EB%B0%A9%EB%B2%95-55b832a0 (본인부담금 문자 발송 방법)
+- NEW(cat): https://docs.channel.io/ezcare/ko/categories/%EB%AC%B8%EC%9E%90%EB%B0%9C%EC%86%A1-c7aa597e
+- REMEASURE: https://docs.channel.io/ezcare/ko/articles/%EA%B8%89%EC%97%AC%EC%A0%9C%EA%B3%B5%EB%82%B4%EC%97%AD-RFID-%EB%AC%B8%EC%9E%90-%EB%B0%9C%EC%86%A1%EB%B0%A9%EB%B2%95-ef3b7e04
+- REMEASURE: https://ezcare.easyms.co.kr/help/V.ez?rowid=21475
+- REMEASURE: https://ezcare.easyms.co.kr/new.ez?PGID=receipt-list
+- REMEASURE: https://ezcare.easyms.co.kr/help/V.ez?rowid=21702
+- REMEASURE: https://ezcare.easyms.co.kr/new/ezCare_charge.html · change_work · fnc · home
+- REMEASURE: NHIS #44 joHistoryContent SEQ_CONTENTS=3281769
+
+## ★★★ Channel 55b832a0 본인부담금 문자 발송 (NEW · 메뉴/필드/워크플로)
+- HTTP 200 bytes=230631 md5=9186ae1550e293ee4fab089e30b956ed snapshot=channelio_55b832a0_bnk794.html
+- workflow: [5 본인부담 청구] → 수급자 개별/일괄 선택 → SMS(문자발송) → 회신번호 선택 → 발송
+- log: [2 수급자 관리]>[2.1 문자보내기]>탭 문자발송내역
+- template: {doc_url} 치환코드 = 급여비용 명세서(24) PDF 링크 자동 첨부
+- constraint: 본인부담금 문자발송은 급여비용명세서(24) 서식만 반영 · 문구 기관 편집 가능
+- cross: mobile-sendW message_kind=11 「본인부담」 · messageAmt app10/sms20/mms50
+- ogada: 3-channel(알림톡+이메일+SMS) readiness + billing copay SMS path · id=10 0.85 SUPERIOR(알림톡 0-hit on ezcare)
+
+## ★★★ receipt-list 현금영수증 Excel 7-col + REGISSUE/CANCEL Ajax
+- demo PGID=receipt-list bytes=108582 md5=2035a7b437cc8a4a1b66523b97f4495a
+- tabs: 현금영수증 발행내역 / 발행 정보관리 · YmBar-receipt-list
+- dialog-receipt-regissue: telNum·amount·tax·BUYER_NM·BUYER_EMAIL·BUYER_TEL·memo
+- dialog-receipt-cancel · btn-receipt-regissue · btn-cancel-receipt · btn-save-receipt-info
+- excel colModel: 발행일시(EdiDate:10)·발행번호(ReceiptTypeNo:15)·총금액(amount_total:10)·공급가액(ReceiptSupplyAmt:10)·세액(ReceiptVAT:10)·상태(btn:10)·메모(memo:30)
+- ajax GET: /page/receipt/json-receipt.php?data=receipt-list-GET|receipt-patient-list-GET
+- ajax RUN: /page/receipt/run-receipt.php?mode=receipt-REGISSUE|receipt-CANCEL
+- ajax: /page/patient/run-patient.php?mode=patient-receipt-UPDATE
+- FAQ 21702 「본인부담금 현금영수증 발급 서비스」 200·5558B·md5=2878a327
+- ogada: /billing/cash-receipts CashReceiptIssuancePage + /billing/reports/receipts · PARITY · BUYER_* = UX polish asset(coverage 1.0 no demote)
+
+## ★★ FAQ 21475 희망이음 시군구 승인지연 → 방문일정 직접등록 5-step
+- HTTP 200 bytes=5886 md5=9fdf3686543d1a23264fb5451e4d7871
+- problem: 승인전 신입 요보 = 공단 방문일정 등록 가능 but Excel 연동자료에 직원정보 미생성 → 업로드 미반영
+- cause: 사회보장정보시스템(희망이음) 오류로 시군구 승인 지연
+- workaround 5-step: 3.방문일정관리>월체크>수급자선택>서비스구분·방문시간·제공서비스·급여제공자>+배정하기>저장
+- note: 2차 원청구 이후 급여금액(본인부담금) 확인
+- ogada: Visit manual create SUPERIOR + G-NHIS import unmatched/skipped recovery loop · 외부 희망이음 포털 out-of-scope
+
+## ★ 가격·도입·menu LOCK
+- charge: 셋팅 33,000(40%·~2026-07-31 D-15) · 기본료 10,000+(n-10)*500+vat · STABLE
+- change_work/fnc/charge headstatus: 전국 9,436개 STABLE
+- disk STALE 9,359 → OVERWRITE canonical ezcare_charge/change_work/fnc/home
+- home data-count: 53 / 9298 / 4675 / 2353 / 1820 (BPO 4675 STABLE)
+- demo: login 0000 · top-nav 95286775 LOCK · catalog 10/148/59
+- schedule-rfid dual excel form_plan_upload/form_rfid_upload carry
+- mobile-sendW messageAmt={app:10,sms:20,mms:50} kinds 1/11/12/13/19/21/22 IDENTICAL
+- duplicate-schedule shell 93393B · NotFound string 0 · feature UI empty/Ajax → 이중일정 preventive ogada SUPERIOR carry
+
+## NHIS #44 528차
+- 200 · 7572B · md5=c886ff1fd1d5ca2cb5dc76d30adde8ba IDENTICAL (BNK-793 527차 +1)

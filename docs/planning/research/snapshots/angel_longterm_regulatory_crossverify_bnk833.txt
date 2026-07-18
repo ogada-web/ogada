@@ -1,0 +1,151 @@
+# BNK-833 · 엔젤·롱텀·규제 역공학 4–6h 교차검증
+# 작성자: BNK · updated: 2026-07-17T14:35:00Z
+# rotation: agents.yaml > reverse_engineering.rotation_30min "4-6h": 엔젤·롱텀·규제
+
+## 0. ogada baseline (git 실측)
+
+- FE `@2e06d5a` (`feat(v1.2.1/v3): wire program schedule photo upload`) · WT CLEAN · BNK-832 `@ce2325c` → **+1** · ahead origin/test=`ce2325c` = **1** · tester FF 대기
+- BE `@1b8c764` (`feat(v3): add program schedule photo upload API and storage`) · WT CLEAN · BNK-832 `@b7f4337` → **+1** · ahead origin/test=`598d108` = **731**
+- merge gate **732** (FE 1 + BE 731 · BE-heavy → tester FF · 신규 마이그레이션 0 · Flyway V1–V196)
+- Route **133** (`<Route\b` 132 + `<Routes>` 1) · Page **106**
+- BE Test 294(293 Test.java + 1 Tests.java) · BE @Test **2284** (BNK-832 2283 → +1 photo upload)
+- FE test **533** (314 .test.jsx + 219 .test.js · BNK-832 530 → +3 photo upload tests)
+- @RestController **81** · HTTP **442** (GET 231 / POST **144**(+1) / PATCH 44 / PUT 13 / DELETE 10) · controller당 **5.46**
+  → ★★★ **audit-first posture 441→442 BREAK** (BNK-823 이후 첫 변동 · 원인 = `ProgramController` `@PostMapping("/schedule/{programId}/photo")` multipart)
+
+## 1. 규제 백본 11-URL live 재실측
+
+| # | URL | HTTP | size | md5 (BNK-833) | baseline | 판정 |
+|---|-----|------|------|---------------|----------|------|
+| 1 | NHIS #44 joHistoryContent | 200 | 7,572 | `c886ff1fd1d5ca2cb5dc76d30adde8ba` | BNK-831=`c886ff1f` | **565차 IDENTICAL ✅** |
+| 2 | silverangel home | 200 | 101,220 | `6638283511f0e1e9e36d2c89324e4d67` | BNK-830 | IDENTICAL |
+| 3 | silverangel system_feature.do | 200 | 45,601 | `c950719098eecaf748bbdeea5deb93da` | BNK-795 canonical | IDENTICAL · 이동서비스/배차/GPS/차량 **0-hit** |
+| 4 | silverangel extraService.do | 200 | 81,637 | `f9c5d8773ad0a481be6d7eb4b192d982` | BNK-815 | IDENTICAL · CMS 월 30,000/자동이체 250/가상계좌 300 LOCK |
+| 5 | silverangel feeService.do | 200 | 44,513 | `eab352a8f98ba600561c06bd2e3eecb1` | BNK-811 | IDENTICAL · 상세 단가 표 「미확인」(로그인-gated 가정) |
+| 6 | silverangel daycareEssentialWork.do | 200 | 131,664 | `c79c1be37f947aab04ab7ba35cc7814d` | BNK-811 | IDENTICAL · dual-numbering 27/41/42 |
+| 7 | **silverangel daycareProgramProvided.do (신규 증거 URL)** | 200 | 67,987 | `f18e1c7abfca1443a4623f4a3ddbec0b` | — | **신규** · 사진/업로드/첨부 **0-hit** |
+| 8 | longterm 502 (월 한도액 및 급여비용) | 200 | 71,008 | `d9ec1f8eecb5be8d308d3381ff0417ea` | BNK-830 `abd7150e` 71,017 | **DRIFT 비실체** (−9B = `var s16;` 제거) |
+| 9 | longterm 610 (통합재가서비스) | 200 | 70,237 | `21598558168836c1843e1857c7c72192` | BNK-830 `78eb1d44` 70,246 | **DRIFT 비실체** (−9B = `var s16;` 제거) |
+| 10 | law.go.kr admRulSeq=**2100000271110** (canonical 2025-247) | 200 | 78,450 | `8c998885be074d9ba11c28100bbe10df` | strip md5=`90c85ded` IDENTICAL | **semantic IDENTICAL** (Time= only · prmlNo 2025-247 · efYd 20260101) |
+| 11 | law.go.kr admRulSeq=**2100000268226** (alias) | 200 | 78,331 | `23b69623d17a338f578569c7819b10da` | BNK-830 먹는샘물 | **alias STABLE** · prmlNo 2025-165 먹는샘물 |
+| 12 | lcms.or.kr (正しい TLD · .co.kr=000) | 200 | 50,554 | `6c0d22b48da8fb30a0c49f34ce8c6864` | BNK-815 | IDENTICAL · type2 carousel · CJ/식단/MOU **0-hit** |
+
+## 2. ★★★ 신규 메뉴/필드/워크플로 — daycareProgramProvided × ogada program photo SUPERSET
+
+**확인** — [daycareProgramProvided.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do) HTTP 200·67,987B·`f18e1c7a`:
+
+공개 메뉴 블록(주야간보호 프로그램 목록 verbatim):
+- 프로그램뱅크 · 프로그램계획 · 프로그램일정 · 프로그램일지 · 프로그램계획/실시현황
+- 인지활동계획(치매) · 인지활동세부계획(치매) · 가상현실 프로그램(엔젤VR)
+- 급여제공평가 · 공단 급여제공평가 · CIST/K-MMSE · 각종 기록지
+
+**사진 관련 grep**: 사진=**0** · 업로드=**0** · 첨부=**0** · photo=**0** · 이미지=1(장식)
+
+↔ silverangel system_feature 「사진」13-hit 는 **회의/교육 사진등록·입소자별 사진 통합 관리·자원봉사자 사진 앱** — **프로그램 일정 활동사진 아님**.
+
+↔ ogada `@2e06d5a`/`@1b8c764`:
+- FE `ProgramSchedulePhotoUpload` · `POST /programs/schedule/{id}/photo` via `uploadProgramSchedulePhotoApi`
+- BE `ProgramController @PostMapping("/schedule/{programId}/photo")` multipart · `ProgramPhotoStorageService`
+- FE test +3 · BE @Test +1
+
+**판정**: 엔젤 공개 「제공 프로그램」 페이지에 **일정 행 활동사진 업로드 워크플로 0** · ogada v3 program schedule photo = **경쟁 공개면 대비 SUPERSET**(로그인 ERP 내부 「미확인」)·id=5 「프로그램 급여」 1.0 carry · KPI promote 0(이미 1.0).
+
+## 3. ★★★ audit-first HTTP 441→442 BREAK (첫 변동 since BNK-823)
+
+| HTTP verb | BNK-832/831 | BNK-833 | Δ |
+|-----------|-------------|---------|---|
+| GET | 231 | 231 | 0 |
+| POST | 143 | **144** | **+1** |
+| PATCH | 44 | 44 | 0 |
+| PUT | 13 | 13 | 0 |
+| DELETE | 10 | 10 | 0 |
+| **합계** | **441** | **442** | **+1** |
+
+원인: `ProgramController.java:72` `@PostMapping(value = "/schedule/{programId}/photo", consumes = MULTIPART_FORM_DATA_VALUE)`.
+
+**시사**:
+- 7차+ 연속 441 IDENTICAL 시리즈 **종료** — 그러나 POST+1 = **create/증거 축적** 방향 = audit-first read-create dominant **정합 유지**.
+- DELETE 10/442 = **2.3%** 최소 유지 · 물리 삭제 API 신설 금지 carry.
+- controller당 5.44→**5.46** · 신규 갭 0.
+
+## 4. NHIS #44 565차 ↔ Transport 6-link IDENTICAL
+
+verbatim grep (NHIS `c886ff1f` 7,572B):
+- 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+- 제34조 「주·야간보호급여 이동서비스비용 등」 · 편도 50% · 수급자 부담하지 아니한다 · 이동서비스 일지
+
+↔ BE `@1b8c764` Transport:
+- `TransportDistanceBand.RU_1~4` (5/10/20/999 km)
+- `ONE_WAY_RATIO=0.5` · `ONE_WAY_RATIO_LABEL="편도 비율"` · `ONE_PER_DAY_LABEL="1일 1회"`
+- `ONE_WAY_RATIO_NOTE` / `ONE_PER_DAY_NOTE` NHIS 문언 정합
+- `baseAmount.multiply(ONE_WAY_RATIO)` · 1일 1회 skip 로직
+
+**상수 재조정 불요** · id=2 0.85 carry · 경쟁 4종 대비 Transport full-stack SUPERIOR 재확인.
+
+## 5. CMS 부가 요금 LOCK + dual-numbering
+
+extraService `f9c5d877` verbatim:
+- 월 이용료 : **30,000원**
+- 자동이체 : **250원/1 건**
+- 가상계좌 : **300원/1 건**
+- 카드결제 : 별도문의
+- 3-method = 자동이체·가상계좌·카드
+
+↔ ogada G2b `/billing/cms` = **5-method SUPERSET** carry.
+
+essential `c79c1be3` dual-numbering:
+- 지표27 = 「주야간보호 27 기능회복훈련」 ≠ 일련27 「가족과의 소통」
+- 평가41 = 「이동서비스 수칙…」 · 평가42 = 「운전자 외 … 동승」
+
+## 6. longterm `var s16` 제거 = ephemeral shell JS 확정
+
+diff BNK-830 → BNK-833 (502·610 동일 패턴):
+```
+-var s16;
+```
+= −9B · SPA shell JS 카운터 변수 **추가(BNK-826)+제거(BNK-833)** = **ephemeral non-substantive**.
+본문 h2 pageTitle 「월 한도액 및 급여비용」/「통합재가서비스」 유지 · 단기보호 74,060·통합재가 월 10만 canary 「가정 유지·번복 아님」·규제 상수 재조정 불요.
+
+## 7. closed band 6 재오픈 0 (App.jsx `@2e06d5a`)
+
+- G14 `/clients/:clientId/care-plan-form` L245 LIVE
+- 대시보드 `/dashboard` L164 · `/dashboard/hq` L173 LIVE
+- G2 `/clients/home-newsletter` L209 LIVE
+- G-LINKAGE `/clients/linkage-records` L236 LIVE
+- v2 CMS `/billing/cms` L389 LIVE
+- v1.3-C `/transport/service-fees` L628 LIVE
+- transport 9-route 전량 LIVE
+
+**재오픈 0 · P0 신규 0 · 가정 번복 0**
+
+## 8. 모듈 커버 KPI
+
+`competitorModuleCoverage.js` `@2e06d5a`:
+- 29-entry · sum 28.25 / 29 = **97.41%**
+- 비-1.0: id=2 0.85 · id=8 0.85 · id=10 0.85 · id=12 0.7
+- 진성갭 0 · residual primary = id=12 회계 BPO SSO OTP(0.7)
+- program photo = id=5 이미 1.0 → KPI promote 0
+
+## 9. 상태 변경 요약
+
+| 항목 | BNK-832 | BNK-833 | 번복 |
+|------|---------|---------|------|
+| FE HEAD | `@ce2325c` FULLY SYNCED | `@2e06d5a` (+1 photo) ahead 1 | 0 |
+| BE HEAD | `@b7f4337` ahead 730 | `@1b8c764` (+1 photo API) ahead 731 | 0 |
+| HTTP verbs | 441 | **442** (+1 POST) | **0 (정합 유지·시리즈 종료)** |
+| FE test | 530 | **533** (+3) | 0 |
+| BE @Test | 2283 | **2284** (+1) | 0 |
+| NHIS #44 | (미재실측·carry) | **565차** | 0 |
+| 모듈 | 97.41% | 97.41% | 0 |
+| law canonical | 2100000271110 | 동일 STABLE | 0 |
+
+**가정 번복 0 · 신규 core 갭 0 · SUPERSET 1(program photo) · posture BREAK 1(441→442·정합)**
+
+## 10. per-cycle minimum 4종 충족
+
+1. 신규 증거 URL: daycareProgramProvided.do + lcms.or.kr 재실측 + NHIS/law/longterm 재실측
+2. 메뉴/필드/워크플로: §2 programProvided leaf 목록 × photo 0-hit × ogada photo upload
+3. COMPETITOR_MATRIX 1행+: program photo SUPERSET · HTTP 442 · NHIS 565차 · CMS LOCK
+4. BENCHMARK_REPORT §833 소절
+
+**근거 파일**: 본 txt · `nhis_jo44_live_bnk833.html` · `silverangel_*_live_bnk833.html`(×6) · `silverangel_daycareProgramProvided_live_bnk833.html` · `longterm_502/610_live_bnk833.html` · `law_*_bnk833.html` · `lcms_home_live_bnk833.html`

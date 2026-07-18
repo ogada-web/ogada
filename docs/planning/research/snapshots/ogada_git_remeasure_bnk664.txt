@@ -1,0 +1,92 @@
+BNK-664 — ogada git 실측 (6–8h rotation) · 2026-06-26T16:40:00Z (KST 01:40)
+================================================================================
+owner=BNK audience=PLN
+
+[1] ogada baseline git 실측 (확인 · git -C src/{backend,frontend} rev-parse develop)
+--------------------------------------------------------------------------------
+FE develop : 320ba06411162df83b2f84d4e816ed31f33efd36  (@320ba06)
+  - fix(v1.2.1/QA-B350): reset stale branch query filter
+  - 2026-06-26 (BNK-663 동일 SHA)
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 265 vs origin/test=ab4de83
+  - BNK-663 동일 SHA → HEAD zero advance 1-cycle
+
+BE develop : 3d4e58af507044a02b7ec2dd000257ad46169570  (@3d4e58a)
+  - fix(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): validate outcome counter integrity
+  - 2026-06-26 16:38:40 +0000 · co-author Cursor agent
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 592 vs origin/test=598d108
+  - BNK-663 `@45acb75` → HEAD +1
+
+merge gate : 857 (FE 265 + BE 592) — +1 BE-only vs BNK-663 856 · 양쪽 WT CLEAN → tester FF 가속 가능
+
+[2] KPI 실측 (7/8축 BNK-663 IDENTICAL · BE @Test +3 only)
+--------------------------------------------------------------------------------
+Route        : 118  (App.jsx `<Route\b`=118 + `<Routes>`=1 → 119 total)
+page         : 93   (`*Page.jsx` git ls-tree develop)
+migration    : V1–V183 (max V=183)
+BE Test 파일 : 274  (273 `Test.java` + 1 `Tests.java` IDENTICAL)
+BE @Test     : 1994 (`git grep -hoE '@Test\b' develop` · +3 vs BNK-663 1991 · @ParameterizedTest 3 별도)
+FE test 파일 : 485  (199 `.test.js` + 286 `.test.jsx` IDENTICAL)
+모듈 커버리지: 80.86% (23.45/29 · competitorModuleCoverage.js)
+               ✅완전 21 · △부분 3(2 이동 0.85·8 직원근태 0.85·10 부가 0.75) · ❌갭 5(1-5·1-10·6·11·12)
+reports route: 28 (App.jsx path="...report..." 실측)
+
+Δ vs BNK-663 : FE HEAD zero advance · BE HEAD +1 · BE @Test +3 · merge gate +1 · 나머지 6축 IDENTICAL
+
+[3] NHIS #44 이동서비스비 러-1~4 410차 zero drift IDENTICAL (확인 · 기존 URL 재실측)
+--------------------------------------------------------------------------------
+GET https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  → HTTP 200 · size 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  → disk docs/planning/research/snapshots/nhis_jo44_live_bnk649.html md5 c886ff1f · 7,572B IDENTICAL
+  → BNK-661 409차 → +1 (410차 zero drift)
+  verbatim 불변: 러-1~4 · 편도(50%) · 1일 1회 · 별지 제22호 · 수급자 부담 X
+
+[4] ★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE stage6 — outcome counter integrity validation
+    (확인 · @HEAD develop git show 3d4e58a · 메뉴/필드/워크플로 블록)
+--------------------------------------------------------------------------------
+BE `@3d4e58a` 2-file +43L:
+  NhisVisitScheduleImportOutcome.java (+18L):
+    private static void validateCounts(totalRows, importedCount, unmatchedCount, skippedCount)
+      · any counter < 0 → IllegalArgumentException("Import outcome counters must be non-negative.")
+      · totalRows==0 && any counter>0 → IllegalArgumentException("Row counters must be zero when totalRows is zero.")
+      · imported+unmatched+skipped > totalRows → IllegalArgumentException("Import outcome counters exceed total rows.")
+    resolve() entry calls validateCounts() before classification.
+
+  NhisVisitScheduleImportOutcomeTest.java (+25L · 3 신규 @Test):
+    · resolveShouldThrowWhenAnyCounterIsNegative (importedCount=-1)
+    · resolveShouldThrowWhenCountersExceedTotalRows (1+1+1 > totalRows=2)
+    · resolveShouldThrowWhenZeroTotalRowsHasNonZeroCounters (totalRows=0, imported=1)
+
+mvn test -Dtest=NhisVisitScheduleImportOutcomeTest → Tests run: 9, Failures: 0, Errors: 0, Skipped: 0 · BUILD SUCCESS
+
+의미: parser/aggregation 버그로 불가능한 카운터 조합(음수·합계 초과·빈 행+비영 카운터)이
+  PARTIAL/ALL_SKIPPED로 잘못 분류되어 운영자에게 오도 guidance가 노출되기 전에 fail-fast.
+  ezCare FAQ 21845 사후·수동 incident 공지(in-app 0) vs ogada 10-stage in-app 실시간 loop
+  + regression-safe contract deepening carry.
+
+10-stage BNK→COD chain progression:
+  candidate(BNK-655) → stage1 BE 분류(BNK-656) → stage2 FE inline guidance(BNK-656)
+  → controller routing test(BNK-658) → keep-unmatched-rows(BNK-659) → deep-link(BNK-659)
+  → git-grounded(BNK-660) → stage4 FE branch persistence(BNK-661) → service-layer test lock(BNK-661)
+  → stage5 FE stale branch reset + BE guidance highlight(BNK-663) → **stage6 counter integrity(BNK-664)**
+
+[5] per-cycle minimum (4종 충족)
+--------------------------------------------------------------------------------
+1. 기존 URL 재실측 + 변동 기록 : NHIS #44 410차 zero drift IDENTICAL (live HTTP 200 7,572B=disk c886ff1f)
+2. 메뉴/필드/워크플로 1블록     : [4] G-NHIS stage6 outcome counter integrity validation git-grounded
+3. COMPETITOR_MATRIX 1행+ @HEAD : BNK-664 row @320ba06/@3d4e58a (BE HEAD +1)
+4. BENCHMARK_REPORT §소절        : §664
+
+가정 번복 0 · 신규 core 갭 0 · closure 0 · 상태 변경 1(BE HEAD +1)
+KPI 변경 2(BE @Test 1991→1994 · merge gate 856→857) · 재실측 zero drift 1(NHIS #44 410차)
+신규 snapshot 1건(본 파일) · 덮어쓰기 0건 · npm test 미실행(vitest 동시 실행 중·rules §5 준수)
+
+[6] 다음 액션
+--------------------------------------------------------------------------------
+→ tester  : merge 857 (FE 265 + BE 592 · 양쪽 WT CLEAN · FF 가속 가능)
+→ planner : baseline FE @320ba06 carry (HEAD zero advance) · BE @45acb75→@3d4e58a · merge gate 857
+            · G-NHIS 10-stage chain stage6 counter integrity → regression-safe contract carry
+            · M11/M12 P1 BPO 어댑터 demand-signal carry (변동 0)
+            · 이지케어 도입 carry 9,356개 갱신 carry (BNK-663)
+→ BNK next: 엔젤·롱텀·규제 4–6h 또는 이지케어 2–4h

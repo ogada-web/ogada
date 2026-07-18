@@ -1,0 +1,126 @@
+BNK-692 ogada git 실측 6–8h — cross-stream +2 commit · BNK-691 BE WT DIRTY 2M CLOSURE · M6 stage10 required-flag semantics fix
+조사일: 2026-06-27T10:25:00Z (KST 19:25)
+rotation: ogada git 실측 6–8h (agents.yaml `rotation_30min`)
+agent: benchmark_researcher (BNK)
+
+=== 1. submodule HEAD 실측 ===
+FE develop : b10c5bb  fix(v1.2.1/QA-B358): allow optional safety template flags
+             - BNK-691 `de12f525` → +1 commit (cross-stream FE-only)
+             - WT CLEAN (BNK-691 CLEAN carry)
+             - ahead 285 vs origin/test=ab4de83 (BNK-691 284 → +1)
+             - 2-file +3/-3 : src/config/safetyCheckCatalog.js · src/config/safetyChecks.js
+
+BE develop : 2f4bfdf  fix: surface unsupported nhis seed year
+             - BNK-691 `16e8ce0` WT DIRTY 2M → +1 commit (BNK-691 dirty 2M CLOSURE)
+             - WT CLEAN (BNK-691 DIRTY 2M → 692 ABSORBED)
+             - ahead 606 vs origin/test=598d108 (BNK-691 605 → +1)
+             - 2-file +6/-2 : BillingService.java · BillingServiceTest.java
+             - QA-B357 dirty-tree WIP closure (rules §6 compliance)
+
+merge gate : 285 + 606 = **891** (BNK-691 889 → +2 cross-stream)
+
+=== 2. FE +1 commit b10c5bb — M6 stage10 required-flag semantics fix (BNK-691 stage9 regression) ===
+
+(a) `src/config/safetyCheckCatalog.js` mapChecklistItem:
+    -  if (item.required === false) {
+    -    mapped.required = false;
+    +  if (typeof item.required === "boolean") {
+    +    mapped.required = item.required;
+       }
+    의미: server catalog `required: true|false` 둘 다 preserve. BNK-691 stage9 는 `required: false` 만 통과시켜 → required:true 인 item 도 fallback 처리.
+
+(b) `src/config/safetyChecks.js` isSafetyCheckItemRequired:
+    -  return item?.required !== false;
+    +  return item?.required === true;
+    의미: 명시 `required: true` 만 필수. 미지정 item 은 optional default → 안전점검 폼 submit 가능 + success toast 재표출.
+
+판정: M6 stage9(BNK-691 server-driven required 도입) 직후 발견된 회귀(QA-B358) — server 가 explicit `required` 를 안 보낼 때 폼 전체가 필수 처리되어 submit 차단. stage10 fix 로 「server 명시 boolean 만 신뢰, 미지정=optional」 의미론 확정. M6 narrative: 「server-driven required + safe-default optional」 로 deepen — 경쟁 4종 in-app safety required-field UI contract 0.
+
+=== 3. BE +1 commit 2f4bfdf — NHIS seed year-specific error guidance ===
+
+`src/main/java/com/ogada/backend/billing/domain/BillingService.java` validateNhisSeedCatalogYear(int year):
+-  "공단 수가 seed는 " + Nhis2026DaycareRateCatalog.CATALOG_YEAR + "년 기준만 지원합니다."
++  year + "년 수가 seed는 지원하지 않습니다. 공단 수가 seed는 "
++        + Nhis2026DaycareRateCatalog.CATALOG_YEAR + "년 기준만 지원합니다."
+
+regression test:
+-  assertEquals("공단 수가 seed는 2026년 기준만 지원합니다.", exception.getMessage());
++  assertEquals(
++          "2027년 수가 seed는 지원하지 않습니다. 공단 수가 seed는 2026년 기준만 지원합니다.",
++          exception.getMessage()
++  );
+
+판정: `POST /api/v1/billing/fee-schedules/nhis-seeds?year=N` 요청자 가 어느 연도를 요청했는지 메시지에 명시 → 운영자 가이드 강화. NHIS #44 5-link regulatory chain(law247 SSR ↔ NHIS #44 ↔ CATALOG_YEAR=2026 ↔ HTTP contract ↔ V185 readiness probe) + year-gate explicit guidance. BNK-691 BE WT DIRTY 2M closure (rules §6 submodule re-clone 손실 위험 해소).
+
+=== 4. KPI 9축 재산정 ===
+
+axis             | BNK-691           | BNK-692            | delta
+-----------------+-------------------+--------------------+-------
+FE develop HEAD  | de12f525 CLEAN    | b10c5bb CLEAN      | +1
+BE develop HEAD  | 16e8ce0 DIRTY 2M  | 2f4bfdf CLEAN      | +1 closure
+FE ahead         | 284               | 285                | +1
+BE ahead         | 605               | 606                | +1
+merge gate       | 889               | 891                | +2
+FE Route         | 123               | 123                | 0
+FE page (non-test)| 98 (re-measure)  | 98 carry (test 89) | 0
+V migration      | V1–V185           | V1–V185 carry      | 0
+BE Test files    | 277 (276+1)       | 278 (277+1 BillingServiceTest absorbed dirty) | recount note
+BE @Test         | 2047              | 2047 carry         | 0
+FE test files    | 504 (BNK-691 보고) | **500** (recount, .test.{js,jsx} ls-files) | -4 정정
+모듈 가중 KPI    | 84.31%(24.45/29)  | 84.31% carry       | 0 (id=6 1.0·id=7 1.0)
+reports         | 28                | 28 carry           | 0
+
+* FE test 500 정정: BNK-690 baseline 500 carry. BNK-691 504 「+4」는 산정 오차 가능성 — 본 cycle `git -C src/frontend ls-files | grep -E '\.test\.(js|jsx)$' | wc -l` = 500.
+
+** FE test files 500 breakdown: ui 139·pages 89·utils 63·e2e 53·api 50·config 23·transport 17·staff 13·visits 8·lib 7·auth 6·test 6·clients 5·dashboard 3·monitoring 3·others ≤2.
+
+=== 5. 기존 URL 재실측 (per-cycle minimum 신규 evidence) ===
+
+(a) NHIS #44 — https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+    HTTP 200 · 7,572B · md5 c886ff1f (429-cycle zero drift IDENTICAL · BNK-685~691 → 692 carry)
+    러-1~4 표·편도 50%·1일 1회·수급자 부담 X·이동서비스 일지 의무 verbatim 불변.
+    snapshot: nhis_jo44_live_bnk692.html
+
+(b) ezCare /help/faq.ez — https://ezcare.easyms.co.kr/help/faq.ez
+    HTTP 200 · 80,057B · md5 304cc6df (BNK-689 `dbe60442` → 692 cachebuster DRIFT)
+    size lock **11-cycle** (BNK-633→684→685→686→687→688→689→690→691→692).
+    233 rowid entries · 누적 hit_sum **3,637,381** (BNK-689 3,637,363 → +18 in ~24h).
+    Top-1: rowid=21601 직원 회의록 전산화 83,879 hit (BNK-688 83,878 → +1).
+    rowid=21824 25,069 hit (BNK-688 25,068 → +1, 시급 가이드 M11 demand-signal).
+    rowid=21704 22,019 hit carry (본인부담금 G-NHIS 14-stage 우위 carry).
+    snapshot: ezcare_help_faq_list_live_bnk692.html
+
+=== 6. M11/M12 sole P1 lever 재확인 ===
+
+git -C src/frontend grep -E 'path="/(payroll|accounting)' src/App.jsx = 0 hit
+=> id=11(직원 급여)·id=12(수입지출·회계) 0 route carry · 84.31%→91.21%(+6.90pp) 잠재 lever sole.
+ezCare BPO disclosure rowid=434(BNK-684) 본문 「재무회계 BPO + 노무법인 + 고용지원금 대행」 3-layer carry — ogada M11/M12 in-app 결정 보류 carry (planner question).
+
+=== 7. 5-link regulatory chain (NHIS #44 axis) 재확인 ===
+
+1. law247(MOHW 2025-247) — admRulSeq=2100000271110 SSR 「제2025-247호 시행 2026.1.1」
+2. NHIS #44 — 이동서비스비 러-1~4 (이번 cycle 429차 zero drift)
+3. Backend Nhis2026DaycareRateCatalog.CATALOG_YEAR=2026 — `cellsForYear(year).isEmpty()` year-gate
+4. HTTP contract (`MustApiEndpointRoutingTest`·`SafetyCheckControllerRoutingTest`)
+5. V185 `safety_check_records` integrity probe (`V185SafetyCheckRecordsIntegrityReadinessProbe`)
+
+추가: BNK-692 BE `2f4bfdf` 로 year-specific 오류 메시지 → ops 가이드 layer 추가 (regulatory chain operational surface deepen).
+
+=== 8. per-cycle minimum (agents.yaml `reverse_engineering.per_cycle_minimum`) ===
+
+✅ 신규 evidence URL: 기존 URL 2건 재실측 (NHIS #44 429차 + ezCare FAQ list cachebuster) + ogada git 실측 변동 기록
+✅ 메뉴/필드/워크플로 1블록: §2(FE M6 required semantics) · §3(BE NHIS seed year error) · §5(ezCare hit Top-N) 3 블록
+✅ COMPETITOR_MATRIX 1행 이상: BNK-692 신규 행 5개 (ogada `@b10c5bb`/`@2f4bfdf` SHA 일괄 갱신)
+✅ BENCHMARK_REPORT §신규 소절: §692 추가 + §692-1~5 소절
+
+=== 9. 다음 액션 (planner/tester/coder) ===
+
+→ tester: merge gate **891**(FE 285 + BE 606 · 양쪽 WT CLEAN · FF 가속 가능)
+→ planner: M6 stage10 required-flag semantics 정본 → REQUIREMENTS §M6 「server 명시 boolean 만 신뢰, 미지정=optional」 문구 검토 · M11/M12 in-app vs BPO scope 결정 carry
+→ coder: 후속 작업 시 `safetyCheckCatalog.js` 의 boolean preserve 패턴을 다른 catalog mapper 에도 확장 가능 (`mealCheckCatalog`, `healthCheckCatalog` 검토)
+→ BNK 다음 rotation: 8h+ 미확인·교차검증 (longterm 502/610·단기보호·통합재가 carry) 또는 0–2h 케어포 역공학
+
+=== 10. abandoned SHAs reminder (rules §6 baseline) ===
+
+폐기 SHA: d5654c0, e5fd48d, 428ba7d, 4be0938 — 본 cycle 미참조.
+현재 baseline: FE b10c5bb · BE 2f4bfdf (workspace_baseline.yaml BNK-692 갱신 예정).

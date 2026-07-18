@@ -1,0 +1,163 @@
+BNK-653 — 엔젤·롱텀·규제 4–6h cross-verify (2026-06-26T08:55:00Z · KST 17:55)
+===============================================================================
+
+ogada baseline git 실측
+-----------------------------------------------------------------
+FE develop : @d759ade  (BNK-651 @0d0b587 → HEAD +2)
+  +2 commits:
+    96196ed  fix(ux/US-D05+G08): bulk export a11y and NHIS guide heading CSS
+    d759ade  fix(v2/G-CLIENT-CONTRACT-BULK-PRINT): normalize bulk export
+             branch/client ids
+  diff stat 0d0b587..d759ade: 7-file +96/-15
+    clients/ClientCarePlanBulkExportPanel.jsx        +47/-? (branch/client id 정규화)
+    clients/ClientCarePlanBulkExportPanel.test.jsx   +40
+    visits/VisitNhisImportGuidePanel.jsx             +1
+    visits/VisitNhisImportGuidePanel.test.jsx        +4
+    visits/VisitNhisImportPanel.jsx                  +8
+    visits/VisitNhisImportPanel.test.jsx             +2
+    styles/components.css                            +9
+  WT CLEAN · ahead 257 → 259 (+2 vs origin/test=ab4de83)
+
+BE develop : @9664f29  (BNK-650/651/652 carry · HEAD zero advance 3-cycle)
+  WT DIRTY 6M + 1 untracked
+    M  src/main/java/.../system/HealthController.java
+    M  src/main/java/.../system/LiveE2eBootstrapService.java
+    M  src/main/java/.../system/LiveE2eController.java
+    M  src/main/java/.../system/LiveE2eOperationReadinessSupport.java
+    M  src/test/java/.../system/LiveE2eControllerTest.java
+    M  src/test/java/.../system/LiveE2eOperationReadinessSupportTest.java
+    ?? src/main/resources/db/migration/V183__client_care_plan_forms_branch_plan_year_index.sql
+  WT diff: +101/-28 6-file (QA-B95 cluster 18th-layer candidate · g21-seed/
+           recovered-auth probe refactor in-progress)
+  WT @Test : 1982 (HEAD 1980 +2 DIRTY) — DIRTY 2 신규 @Test 在 LiveE2eControllerTest
+           및 LiveE2eOperationReadinessSupportTest
+  V183 untracked: client_care_plan_forms (org, branch_id, plan_year) equality
+           prefix 인덱스 신규 — BNK-651 BE @4df9465 bulk-export 쿼리 backing
+           (V149 attendance/billing · V60 cms_enrollments · V136 bathing
+           schedules와 동일 정책)
+  ahead 584 vs origin/test=598d108
+
+KPI (HEAD 실측)
+  118 <Route\b · 93 *Page.jsx · V1–V182 (+V183 untracked)
+  BE Test 273(272 Test.java+1 Tests.java) · BE @Test 1980 (HEAD) · WT 1982
+  FE test 485 (199 .test.js + 286 .test.jsx) · 모듈 80.86% (23.45/29)
+  reports route 28
+
+merge gate : 841 → 843 (+2 FE-only vs BNK-652 841)
+
+엔젤·롱텀·규제 라이브 재실측
+-----------------------------------------------------------------
+NHIS #44 이동서비스비 러-1~4 (403차)
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229
+    &DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f  → zero drift IDENTICAL
+  러-1~4 4-tier · 편도 50% · 1일 1회 · 별지 제22호 verbatim 불변
+  ogada TransportServiceFeeService(RU_1~RU_4 + ONE_WAY_RATIO=0.5 +
+    중복 청구 skip) + TransportServiceLog(V148/V154/V155) full-stack ✅
+  경쟁 4종(케어포·이지케어·엔젤·롱텀) 동등 노출 0 → 유일 우위 403-cycle carry
+  PLAN_NOTES #44 1차 확인 carry
+
+silverangel 7-URL backbone (403차)
+  /newSilverangel/daycare/daycareEssentialWork.do      200/131,664B/c79c1be3
+    → zero drift IDENTICAL · 33 indicator + #27 목욕 + #41-42 이동서비스
+  /newSilverangel/service/extraService.do              200/ 81,637B/f9c5d877
+    → zero drift IDENTICAL · CMS 5-method(자동이체/가상계좌/카드/다계좌/
+      현금영수증) · 효성CMS 250원 · 가상계좌 300원 · 1600-6859
+    *** BNK-645 「URL refactor service/→daycare/」 부분 정정 ***
+      ⇒ daycareEssentialWork.do만 refactor 대상 (BNK-645 daycare 경로 200)
+      ⇒ extraService.do는 여전히 /service/extraService.do 정본
+      ⇒ /newSilverangel/daycare/extraService.do = 404 1,028B 3c93af54
+      ⇒ silverangel.kr IA는 「3-track 마이그」가 아니라 「daycare 카탈로그
+         페이지 1건만 daycare/ 폴더로 이동·시설/공통 서비스는 카탈로그 종류와
+         관계 없이 service/ 폴더 유지」가 정확한 framing
+  /newSilverangel/daycare/daycareProgramProvided.do    200/ 67,987B/f18e1c7a
+    → 403차 zero drift IDENTICAL · 8카테고리 100+ leaf · 이동서비스 이중트랙
+  /newSilverangel/fcltySlry/essentialWork.do           200/166,023B/80517b18
+    → zero drift IDENTICAL · 시설 입소형 33 평가지표 (BNK-645 NEW carry)
+  /silverangel/angelsystem/system_feature.do            200/ 45,601B/c9507190
+    → zero drift IDENTICAL · HP-UX · Oracle11g · WebLogic LCMS stack
+  /newSilverangel/service/businessSupportService.do    200/ 75,878B/a13cb5ac
+    → zero drift IDENTICAL · 4회차 10일 SLA onboarding
+  silverangel /silverangel/support/notice/list.do       200/3,594,181B/52c9457f
+    → 최신 가시 Tmp_idx=221551 (BNK-622/632 carry) · 신규 공지 0건
+    → 221564 retraction window D-4 (6/30 D-day · 6/18 → ~8일 stale)
+    → P3 3종 「6/30 재검증 보류」 carry: G-NURSING-MISSED-RECORD-DASHBOARD
+      · G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE · G-LEGAL-FORM-SIGNATURE-IMAGE
+
+lcms.or.kr (BNK-619 framing carry)
+  https://www.lcms.or.kr/                              200/ 50,740B/c0c66076
+    → zero drift IDENTICAL · type1 정본 캐노니컬 carry
+  BNK-649 transient type2 `6c0d22b4`(50,554B) 안정화 → type1 회귀
+  lcms.kr(.kr TLD) ≠ lcms.or.kr 별개 도메인 framing carry (BNK-619 정정)
+
+MOHW 2026-126 본인부담상한 고시 — counter DRIFT 덮어쓰기
+  https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826
+    &mid=a10409020000
+  on-disk(BNK-649) 87bc0b53 109,872B · live(BNK-653) ef64f867 109,872B
+  Δ 다운로드 첨부① 487 → 488 (+1)
+  Δ 미리보기 첨부① 580 → 582 (+2)
+  본문 verbatim 불변 (제2026-126호 본인부담상한액)
+  → 덮어쓰기 (mohw_gosi_2026_126.html)
+
+law247 (제2025-247호 admRulInfoP) — cachebuster DRIFT 덮어쓰기
+  https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+  on-disk(BNK-645) ffd9a3ca 78,450B · live(BNK-653) 50c968c4 78,450B
+  Δ ?Time=1782445019 → ?Time=1782464269 (+19,250 cachebuster)
+  strip-cachebuster md5 diff 0 → 본문 verbatim 불변 (시행 2026.1.1)
+  → 덮어쓰기 (law_mohw_2025_247_admRulInfoP.html)
+
+longterm 502/610 (R&D endpoint 회귀)
+  /npbs/d/m/000/selectLawDetail.web?reqIdx=502        404 / 861B / fcadfbfe
+  /npbs/d/m/000/selectLawDetail.web?reqIdx=610        404 / 861B / fcadfbfe
+  BNK-649: 200 XML nexacro error 327B `04887143` (transient endpoint open)
+  BNK-653: 404 HTML error shell 861B `fcadfbfe` (BNK-641 pattern 회귀)
+  → 「endpoint 불안정」 미확인 carry (canonical disk b5aee8c1 105,552B
+    단기보호 1등급 74,060 · 0ea575be 91,421B 통합재가 가산 월 10만원 보존)
+  npbs 26.1.16 신규 홈페이지 마이그 이후 selectLawDetail.web 4 응답 형식
+    rotation 관측 (200 HTML 105,552B → 302 securityException → 200 XML
+    nexacro 327B → 404 HTML 861B) · 정상 endpoint 재현 URL 미확인 carry
+
+상태 변화·KPI
+-----------------------------------------------------------------
+가정 번복      : 1 (BNK-645 「3-track 마이그·service/→daycare/ 전면 refactor」
+                    가설 → 「daycareEssentialWork.do 단건 refactor」로 축소
+                    정정 — silverangel.kr IA는 폴더 분리 일관 정책 아님)
+신규 core 갭   : 0
+candidate 변동 : 0 (P3 「6/30 재검증 보류」 3종 carry)
+closure        : 0
+상태 변경      : 1 (FE +2 advance G-CLIENT-CONTRACT-BULK-PRINT 3-cycle deepen
+                    `d759ade` normalize ids + `96196ed` a11y polish · WT CLEAN
+                    · BE WT DIRTY 6M + V183 untracked 1-cycle carry — coder
+                    QA-B95 18th layer probe refactor + dba V183 commit 권장)
+KPI 변경       : 2 (merge gate 841 → 843 · ahead FE 257 → 259)
+KPI carry      : 8 (Route 118 · page 93 · BE Test 273 · BE @Test 1980 ·
+                    FE test 485 · 모듈 80.86% · reports 28 · V1–V182)
+재실측 zero drift : 8 (NHIS #44 403차 · silverangel essential/extra/
+                    programProvided/fcltySlry/system_feature/businessSupport
+                    + lcms type1)
+DRIFT verbatim 불변 : 2 (MOHW 2026-126 counter +1/+2 · law247 cachebuster
+                    +19,250) → 덮어쓰기 2건
+미확인 carry   : 3 (longterm 502/610 response format rotation · silverangel
+                    notice 221564 D-4 · carefor func.php LIVE timeout 53-cycle)
+신규 snapshot  : 1 (angel_longterm_regulatory_crossverify_bnk653.txt)
+덮어쓰기       : 2 (mohw_gosi_2026_126.html · law_mohw_2025_247_admRulInfoP.html)
+엑셀 포맷 변경 : 0
+per-cycle minimum : 4종 충족 (URL 1+ · 메뉴/필드 1+ · MATRIX 1+ @HEAD · §소절 1+)
+
+권장
+-----------------------------------------------------------------
+즉시(coder)  : BE WT DIRTY 6M commit closure — QA-B95 cluster 18th-layer
+               g21-seed/recovered-auth probe refactor 「작은 단위 커밋」 규칙
+               (rules §6 push 누락 위험 해소). 신규 @Test 2건 흡수 필요.
+즉시(dba)    : V183 untracked client_care_plan_forms_branch_plan_year_index
+               commit + push (BNK-651 BE bulk-export 쿼리 backing — V149
+               attendance/billing 동일 패턴 · backfill 불요 · 안전)
+즉시(tester) : merge 843 (FE 259 + BE 584 · FE WT CLEAN · BE WT DIRTY 6M +
+               V183 untracked → 선행 coder/dba commit 후 가속 권장)
+planner      : baseline FE @0d0b587 → @d759ade (HEAD +2 advance · WT CLEAN ·
+               7-file +96/-15 a11y + bulk-export id 정규화 · 7th BNK→COD
+               link FAQ 21507 cite chain BNK-651→653 3-cycle deepen) ·
+               BE @9664f29 carry (HEAD zero advance 3-cycle · WT DIRTY) ·
+               merge gate 841 → 843 · BNK-645 silverangel URL refactor
+               framing 정정 (3-track → daycare 단건) · M11/M12 P1
+               demand-signal carry (BPO 어댑터 결정 question)

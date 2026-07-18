@@ -1,0 +1,84 @@
+=== BNK-792 ogada git 실측 6–8h crosswalk (2026-07-16T11:58Z) ===
+작성: benchmark_researcher [BNK] | rotation: 6–8h ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정
+직전 동일 rotation: BNK-783(2026-07-16T04:03Z ogada git 실측) → ~7.9h 후
+직전 사이클: BNK-791(2026-07-16T11:18Z 엔젤·롱텀·규제 4–6h) → ~40분 후 재실측
+
+────────────────────────────────────────────────────────────────────
+1. SUBMODULE develop HEAD 실측 (git rev-parse / status)
+────────────────────────────────────────────────────────────────────
+FE src/frontend  develop @f73413d  (full f73413d075ce5e00415eaeb8162aaa4138091b04)
+  · 커밋: fix(v1.2.1/QA-B95): decode NoBreak, word-joiner and named space HTML entities
+  · WT: CLEAN (git status --porcelain = 0)
+  · BNK-791 `@cf8a248`(WT DIRTY 4M·coder in-progress) → +1 · WT DIRTY 4M → CLEAN
+  · ahead origin/test: 0 = FULLY SYNCED (tester FF 흡수)
+  · 최근 3: f73413d(NoBreak/word-joiner/named space) ← cf8a248(dash/minus/hyphen) ← e45dacb(zero-width/tab/newline named)
+
+BE src/backend   develop @fde0606  (full fde0606307bb0eeefc9daf9eb0c8a62c1afedcb4)
+  · 커밋: fix(v2/QA-B95): decode HTML space aliases in blocker parser
+  · WT: CLEAN (git status --porcelain = 0)
+  · BNK-791 `@5b59e83` → +2: 7883a90(word-joiner+named space) · fde0606(HTML space aliases)
+  · ahead: 697 vs 598d108 (= origin/test..develop 697) = merge gate
+  · 최근 3: fde0606(HTML space aliases) ← 7883a90(word-joiner+named space) ← 5b59e83(NoBreak zero-width named)
+
+superproject 포인터(git ls-tree HEAD): src/backend 0ad3b073 · src/frontend 56797a84 (구 포인터·develop 미추적 — submodule develop 실측이 우선)
+
+────────────────────────────────────────────────────────────────────
+2. Route / Page / Test KPI 실측
+────────────────────────────────────────────────────────────────────
+Route   133  = App.jsx <Route\b 132 + <Routes> 1
+Page    106  = find src/frontend/src -name '*Page.jsx' (pages/*.jsx non-test 107 → *Page 정본 106)
+FE test 530  = 313 *.test.jsx + 217 *.test.js
+BE Test 294  = 293 *Test.java + 1 *Tests.java (*IT.java 0)
+BE @Test 2254 = grep -rE '@Test\b' src/backend/src/test (Δ0 vs BNK-791 · space-entity 케이스가 parameterized @Test 로 흡수)
+Flyway  V1–V196 (max 버전 V196 · 신규 0 · 파일명 최대 V99 는 alpha-sort artifact, 실 버전 max=V196)
+
+모듈 route 분포(App.jsx path= grep):
+  billing 17 · care 16 · staff 13 · transport 9 · payroll 5 · accounting 1
+TransportServiceFeeService/ParityCatalog 존재 확인(6-link RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY·id=2 0.85)
+
+────────────────────────────────────────────────────────────────────
+3. 모듈 커버리지 KPI (carry·가정 번복 0)
+────────────────────────────────────────────────────────────────────
+모듈 97.41% (28.25/29 · 25×1.0 + 3×0.85(id=2/8/10) + 1×0.7(id=12 M12 credentials))
+coverage-0: 0건 · residual PRIMARY id=12 0.7(M12 재무회계 대행 env credentials)
+merge gate 697 (FE 0 FULLY SYNCED + BE 697 · BE-heavy → tester FF)
+
+────────────────────────────────────────────────────────────────────
+4. QA-B95 fail-closed HTML space-entity decode sub-family (FE↔BE LOCKSTEP)
+────────────────────────────────────────────────────────────────────
+이번 사이클 델타 = 공백-엔티티(space-entity) sub-family fail-closed 확산:
+  FE @f73413d diff (cf8a248..f73413d): 6-file 확산
+    · src/config/notificationChannelStatus.js(+13) + .test.js(+25)
+    · src/e2e/liveBackendProbe.js(+12) · liveConfig.js(+10) · liveGlobalSetup.js(+10)
+    · src/test/liveE2eHarness.test.js(+32)
+    = readiness AND live-harness 양 flow 동시 fail-closed (NoBreak/&NoBreak;·word-joiner \u2060·named space)
+  BE @fde0606 diff (5b59e83..fde0606): 2-file
+    · system/LiveE2eOperationReadinessSupport.java(+53) + Test(+59)
+    = blocker parser HTML space aliases decode
+
+계보(HTML entity decode fail-closed): triple-encoded(BNK-777) → named-num(BNK-780) →
+  semicolon-optional(BNK-782) → nbsp(BNK-783) → soft-hyphen(BNK-784) →
+  zero-width/tab/newline(BNK-789 18-layer) → NoBreak zero-width(BNK-791) →
+  **word-joiner/named space/HTML space aliases(BNK-792) = space-entity sub-family 20+ layer**
+경쟁 4종 in-app live E2E operational gate = 「미확인」 carry → ogada 유일 full-stack fail-closed.
+
+────────────────────────────────────────────────────────────────────
+5. 기존 URL 재실측 (per-cycle minimum · 증거 URL)
+────────────────────────────────────────────────────────────────────
+NHIS #44 이동서비스비 joHistoryContent — HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  = 본문 IDENTICAL (BNK-791 525차 → +1 = 526차)
+  grep -oiE: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자(7)·이동서비스(13)
+  ↔ ogada TransportServiceFeeService 6-link 정합 · 규제 상수 재조정 불요
+  snapshot: nhis_jo44_live_bnk792.html (신규 저장)
+
+────────────────────────────────────────────────────────────────────
+6. 갭·우선순위 (planner 반영)
+────────────────────────────────────────────────────────────────────
+· P0 신규 0 · 가정 번복 0 · closed band(G14·대시보드·v1.3-C·v2 CMS) 재오픈 0
+· residual PRIMARY id=12 0.7(M12 재무회계 대행 env credentials) → id=2/8/10 0.85(form polish)
+· 엔젤 CJ프레시웨이 MOU 식단 GTM 시그널(BNK-791) = COMPETITOR_MATRIX 기록만·core 갭 아님
+· merge gate BE-heavy 697 → tester FF 대상(FE 0 FULLY SYNCED)
+
+per-cycle minimum 4종 충족: 증거 URL(NHIS 526차 재실측) · 메뉴/필드/워크플로 1블록(§4 space-entity decode)
+  · COMPETITOR_MATRIX 3행 @HEAD 갱신 · BENCHMARK_REPORT §792 소절.
+신규 snapshot 2(본 crosswalk·nhis_jo44_live_bnk792.html). 덮어쓰기 0. zero drift IDENTICAL 1(NHIS).

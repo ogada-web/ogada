@@ -1,0 +1,120 @@
+# carefor_m5_tri_source_view_alias_crosswalk_bnk802.txt
+# BNK-802 | 2026-07-16T18:00:04Z | 케어포 역공학 0–2h
+# 초점: func.php Module 5 「프로그램 급여」 13-leaf · demo-work left_sub5 14-loadPage ·
+#       programReports.js careforView 별칭 drift · 리포트 번호 −1 · 시설 셸 이동서비스 0
+#       ↔ ogada `@73aa6dd`/`@4622896` Route 1:1 재앵커 (BNK-735 `@47bc428` STALE)
+#
+# === Source (역공학 근거) ===
+# 케어포 disk canonical:
+#   carefor_func.php `6226e6eb92fdd25ed3e50842a5e8a00b` 98,328B LOCK (toolbar-stripped)
+#   carefor_func_menu_catalog.json `06b90debe19f5aa7964e18fbeeca638a` module_counts["5"]=13
+#   carefor_demo_work_wb_20250712_id_bnk777.html `ebee4d4724cd5e633696268067a4d85f` 71,742B
+#
+# LIVE 재실측 (2026-07-16T17:58~18:00Z):
+#   https://www.carefor.co.kr/daycare/func.php (http/https)  HTTP **000** timeout · **90-cycle+** 「미확인」
+#   https://demo-work.carefor.co.kr/                          HTTP **000** timeout · **90-cycle+** 「미확인」
+#
+# 신규/재실측 증거 URL:
+#   ★ [Wayback demo-work id_ 20250712](https://web.archive.org/web/20250712000000id_/https://demo-work.carefor.co.kr/)
+#       HTTP 200 · 71,742B · md5 `ebee4d47` = disk bnk777 **byte IDENTICAL** (BNK-789→802 재확인)
+#   ★ [Wayback search_menu.js](https://web.archive.org/web/20241206000000id_/https://demo-work.carefor.co.kr/js/search_menu.js)
+#       HTTP 200 · 47,738B · md5 `c1c490eb` = disk `carefor_demo_search_menu_wb_202412_bnk761.js` IDENTICAL
+#   ★ [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+#       HTTP 200 · 7,572B · md5 `c886ff1f` = **536차** IDENTICAL (BNK-801 535차→+1)
+#
+# ogada git 실측:
+#   FE develop `@73aa6dd` fix(v1.2.1/QA-B95): decode fractional em space entity aliases
+#     WT CLEAN · ahead origin/test **3** vs `8a05640` · Route **133**(<Route\b 132+<Routes> 1) · Page **106**
+#     FE test **534**(313 .test.jsx+221 .test.js) — BNK-801「530」 recount +4(.test.js)
+#   BE develop `@4622896` fix(v2/QA-B95): decode SixPerEm and long space entity aliases
+#     WT CLEAN · BNK-801 `@e4123c3` → +1 · ahead **706** vs `598d108`
+#     BE Test **294**(293+1) · BE @Test **2261**(e4123c3 실측 2260→+1 SixPerEm; BNK-801 header「2261」은 e4123c3 over-count)
+#     Flyway V1–V196 · merge gate **709**(FE 3+BE 706)
+#   모듈 **97.41%**(28.25/29 · id=2/8/10=0.85 · id=12=0.7) · id=5 coverage **1.0** 재확인
+#
+# === ★★★ §1 func.php M5 13-leaf ↔ demo left_sub5 14-loadPage ↔ ogada (메뉴/필드/워크플로) ===
+#
+# | func# | func.php display (6226e6eb) | demo# | demo view (ebee4d47) | ogada `@73aa6dd` | 상태 |
+# |-------|-----------------------------|-------|----------------------|------------------|------|
+# | 5-1 | 프로그램 제공기록 | 5-1 | view.program_service_daily L05_M01 | `/programs` ProgramsPage participation | ✅ |
+# | 5-1-1 | 외부강사/자원봉사자 관리 | 5-1-1 | view.outside_lecturer_manage L05_M11 | — | ❌ P3 |
+# | — | (func 미노출) | **5-1-2** | view.family_region_exchange L05_M12 | — | ❌ demo-only |
+# | 5-2 | 프로그램 일정관리 | 5-2 | view.program_service L05_M02 | `/programs` schedule tab | ✅ |
+# | 5-3 | 프로그램 수급자 그룹 설정(필요시) | 5-3 | view.program_plan L05_M03 | V179 program_client_groups BE · FE 전용 UI 미노출 | △ |
+# | 5-3-1 | 프로그램 그룹 관리 | 5-3-1 | view.program_group L05_M05 | 동상 | △ |
+# | 5-4 | 프로그램 정보관리 | 5-4 | view.program_item L05_M04 | ActivityProgramEntity · FE master UI 미노출 | △ |
+# | 5-5 | 프로그램 의견수렴 및 반영 | 5-5 | view.program_evaluation L05_M10 | `/programs/provision-result-evaluations` G39/지표44 | ✅ SUPERSET |
+# | 5-5-1 | 프로그램관리자 업무수행일지 | 5-5-1 | view.social_worker_report L05_M14 **(치매)** | — | ❌ P3 |
+# | **5-6** | **프로그램 계획** (`<!--5-6.프로그램 콘텐츠-->`) | **5-10** | view.program_plan_ltcare L05_M09 rpt | 계획 입력 UI 미노출 · 리포트-only demo | △/❌ |
+# | **5-7** | 수급자 참여프로그램 리포트 | **5-6** | view.program_record L05_M06 rpt | `/programs/reports/participations` label **5-7** | ✅ |
+# | **5-8** | 프로그램 제공기록 리포트(운영기록지) | **5-7** | view.program_service_yearly L05_M07 rpt | `/programs/reports/provision-records` label **5-8** | ✅ |
+# | **5-9** | 프로그램 수급자 그룹 설정 이력 리포트 | **5-8** | view.program_plan_state L05_M08 rpt | `/programs/reports/group-history` label **5-9** | ✅ |
+# | **5-10** | 수급자 프로그램 일정 리포트 | **5-9** | view.program_service_rpt L05_M09 rpt | `/programs/reports/schedules` label **5-10** | ✅ |
+# | (superset) | — | — | — | `/programs/functional-recovery` G17 | ✅ SUPERSET |
+# | (hub) | — | — | — | `/programs/reports` hub | ✅ |
+#
+# 집계 (func 13-leaf 기준):
+#   ✅ FULL (FE+BE) : **7/13** (5-1·5-2·5-5·5-7·5-8·5-9·5-10) = 53.8%
+#   △ 부분/BE-only  : **4/13** (5-3·5-3-1·5-4·5-6) = 30.8%
+#   ❌ 미구현       : **2/13** (5-1-1·5-5-1) = 15.4%
+#   + demo-only 5-1-2 ❌ · demo 5-10 계획리포트 = func 5-6 축의 rpt 표면
+#   주 leaf(top 10): ✅7 · △2(5-3·5-4) · ❌1(5-6 계획/콘텐츠) ≈ **실질 90%** → id=5 **1.0** 유지
+#   vs BNK-735 `@47bc428`: 상태 Δ0 · HEAD만 재앵커 · **가정 번복 0**
+#
+# === ★★★ §2 careforView 별칭 drift (신규 필드 블록 · coder QA 자산) ===
+#
+# ogada `src/frontend/src/config/programReports.js` 는 **func.php 마케팅 번호(5-7~5-10)** 를 label 로 채택.
+# demo-work 실제 PHP view 경로와 **이름 불일치**(화면 타이틀은 동일 · 내부 alias 「가정」):
+#
+# | ogada careforView (programReports.js) | demo-work 실측 view | func# / demo# |
+# |---------------------------------------|---------------------|---------------|
+# | view.program_participation            | view.program_record | 5-7 / 5-6 |
+# | view.program_provision_record         | view.program_service_yearly | 5-8 / 5-7 |
+# | view.program_group_history            | view.program_plan_state | 5-9 / 5-8 |
+# | view.program_schedule                 | view.program_service_rpt | 5-10 / 5-9 |
+#
+# → **확인**: ogada label=func 정본 · view 상수=semantic alias · demo PHP path=운영 셸 실명.
+# → coder: 마이그레이션/교육 문서에는 **func# + demo view 실명** 병기 권고 · KPI promote 0.
+# → demo 리포트 구간 = func 대비 **번호 −1** (M7 리포트 +1 drift 와 대칭 · BNK-644/789 carry 재확인).
+#
+# === ★★ §3 5-6 dual-label (func.php verbatim) ===
+#
+# carefor_func.php L692:
+#   `5-6.프로그램 계획<br /><!--5-6.프로그램 콘텐츠-->`
+# catalog.json title "프로그램 콘텐츠" = HTML comment/legacy · **display authoritative = 「계획」**
+# BNK-735「label≠tooltip」관찰을 **display vs comment dual-label** 로 정밀화.
+# demo 는 동일 축을 **5-10 rpt view.program_plan_ltcare** 로만 노출(입력 leaf 부재).
+#
+# === ★★ §4 시설 셸 = 이동서비스 없음 + 리포트 밀도 ===
+#
+# demo-work (ebee4d47 · 시설 셸):
+#   loadPage **114** · class="rpt" **34** → density **29.8%**
+#   grep -oF: 이동서비스 **0** · 배차 **0** · transport **0** · view.transport **0**
+#   left_sub5 = 「5.프로그램 급여제공」14-loadPage · M2 이동서비스 nav **부재**
+# → **확인**: 주야간 func.php M2(이동서비스 10-leaf) ≠ demo 시설 셸(0) — BNK-789 재확인.
+# → ogada id=2 Transport 9-route + NHIS #44 6-link = func 정본 대비 유일 full-stack 차별화 carry.
+#
+# func.php 107-leaf title「리포트」: exact ~21/107≈19.6% · broad ~23.4%
+# ogada App.jsx path*report* ~29 / Route 133 ≈ **21.8%** (flat Route 분산)
+# M5 rpt: demo 5/14≈35.7% of L05 · ogada programs reports 4+hub / programs routes 8 = 50%+
+#
+# === ★ §5 NHIS #44 536차 + FAQ STABLE ===
+#
+# NHIS #44 `c886ff1f` 7,572B · 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+# ↔ TransportServiceFeeService RU_1~4 · ONE_WAY_RATIO=0.5 · 상수 재조정 불요 · id=2 0.85 carry
+# 이지케어 FAQ https://ezcare.easyms.co.kr/help/faq.ez 200·80,057B·rowid **233**·max **21781** IDENTICAL
+#   (엑셀 포맷 변경 0 · 인지활동북 21781 = `/programs` 인접 P3「가정」·MVP 격상 금지 carry)
+#
+# === planner 반영 ===
+# 1. programReports.js label = **func.php 정본(5-7~5-10)** 유지 — demo −1 번호는 footnote 만.
+# 2. careforView semantic alias ≠ demo PHP path — 교육/마이그레이션 병기 · 코드 rename 강제 아님.
+# 3. 5-6「계획」입력 UI · 5-1-2 가족교류 · 5-5-1 관리자일지 = P3「가정」·격상 금지.
+# 4. id=5 coverage **1.0** 유지 · KPI promote 0 · P0 신규 0 · 가정 번복 0.
+# 5. baseline FE `@73aa6dd`(ahead 3)/BE `@4622896`(ahead 706) · merge gate **709** BE-heavy → tester FF.
+# 6. 다음 rotation: 이지케어 2–4h.
+#
+# === per-cycle minimum ===
+# ✅ 신규/재실측 증거 URL 3 (Wayback demo · search_menu · NHIS 536차)
+# ✅ 메뉴/필드/워크플로 1블록 (M5 tri-source + careforView alias 표)
+# ✅ COMPETITOR_MATRIX 1행+ @HEAD 갱신
+# ✅ BENCHMARK_REPORT §802

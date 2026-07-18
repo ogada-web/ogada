@@ -1,11 +1,23 @@
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-06-27T03:45:00Z -->
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-13T21:45:00Z -->
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T01:50:00Z -->
-<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-15T05:48:00Z -->
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-18T00:15:00Z -->
+<!-- planner-sync: PLN 231차 2026-07-18T05:12 UTC — BNK-850~857·TSR 1816~1829 · ★★★ US-SEC-D34 fail-closed 8-축 COMPLETE(매직 4-경로+null-safe+truncated+.xls OLE+empty-file+0-byte+empty-header+corrupt OOXML body·parser surface 5종·경쟁 4종 유일 SUPERIOR) · ★★★ FE RFID compare 이중엑셀 pre-upload SUPERIOR(BNK-857·이지케어 FAQ 21589 verbatim) · ★★ npm audit high 0(form-data 4.0.6) · ★★ NHIS #44 581차 · ★ QA-B604~B607 Fixed+MERGED · ★ QA-B608 Open→Planned(FE develop→test pending 2) · baseline BE@7fa8335(ahead 750)/FE develop@6f8e349·test@2789553 · cross-stream BLOCK · Planned QA-B608+QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 230차 2026-07-18T00:15 UTC — BNK-848~849·TSR 1810~1815 · ★★★ US-SEC-D34 4-path excel magic COMPLETE(QA-B598~B603·FE+BE lockstep·경쟁 4종 유일 SUPERIOR) · ★★ audit-first HTTP 442 IDENTICAL · ★★ NHIS #44 579차 · ★ QA-B602 Fixed+MERGED · ★ QA-B604/B605 Planned · baseline BE@f6e4d88/FE@7ac3c84 · cross-stream BLOCK · residual 744 BE · Planned QA-B604+QA-B605+QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 229차 2026-07-17T19:42 UTC — BNK-835~841·TSR 1793~1801 · ★★★ US-P03 SEC-D25 6-cycle COMPLETE(QA-B576~B586·FE+BE magic defense-in-depth·케어포 plupload↔SUPERIOR) · ★★★ Page 106 정본(BNK-835) · ★★★ demo-work≠func.php M2 범위 분리(BNK-841)·M7 billing PARITY · ★★ audit-first HTTP 442 6차 · ★★ NHIS #44 573차 · 신규 스토리 0(US-P03 deepen) · SYNCED(BE@c19bfa6·FE@dc81f6e) · residual 738 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 227차 2026-07-17T11:12 UTC — BNK-820~828·TSR 1764~1778 · ★★★ audit-first API posture 5차(HTTP 441·물리 삭제 신설 금지)·closed band 6·모듈 97.41% 동결 · ★★★ US-T*/M2 PDF tri-source 8/10 PARITY+SUPERSET(BNK-825)·US-L*/M5·M7 본인부담 PARITY+SUPERSET(BNK-821/822) · ★★ NHIS #44 561차 · ★ QA-B95 operational hardening(기능 갭 아님)·신규 스토리 0 · SYNCED(FE@20f6ddc·BE@29e20dd) · residual 726 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 226차 2026-07-17T05:16 UTC — BNK-817~819·TSR 1758~1763 · ★★★ QA-B95 OpenCurly* typographic quote FE↔BE LOCKSTEP COMPLETE(QA-B554/B555) · ★★★ US-PAYROLL-M11 ezCare M6 14-leaf ↔ /payroll 5-route ✅5+△4·labor-cost-ratio SUPERSET(BNK-818) · ★★★ US-ACCOUNTING-M12 M8/M7 외부 popup out-of-scope 재확인 · ★★ carefor M1 /clients 11-route KPI 1.0(BNK-817) · ★★ BNK-819 테스트 밀도 = 보안·청구·transport narrative · 신규 스토리 0 · SYNCED(FE@ac3af73·BE@df2c1a0) · residual 720 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 224차 2026-07-16T20:50 UTC — BNK-800~806·TSR 1723~1735 · ★★★ US-J03-t SMS/Kakao Template Catalog 13 = ezCare 7 미러 + Kakao 6 SUPERSET(등원/귀가/일일요약/수납완료/가정통신문/응급·`ezcareMessageKind=null`) acceptance 확장·QA-B532(BE @54fd8dd)+B533(FE @ab9e853) Fixed(BNK-806) · ★★★ 이지케어 FAQ 233 crosswalk 급여/근태 34.8% top 지원 부담 → M11 payroll(US-L*/M11) FULL 투자 정당화(BNK-806) · ★★★ QA-B95 VeryVery* FE↔BE LOCKSTEP COMPLETE·모듈 97.41% CONFIRMED·closed band 6 재오픈 0(BNK-805) · ★★ M8 8-2/8-6/8-13 가정 번복 3건 재앵커(BNK-801) · 신규 스토리 0(전량 parity/SUPERSET carry) · SYNCED(FE@ab9e853·BE@54fd8dd) · residual 709 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 223차 2026-07-16T16:40 UTC — BNK-794~799·TSR 1709~1722 · ★★★ M10 기관평가 17-leaf ↔ ogada 실행 5-leaf(compliance/monitoring·workflow-catalog·training-logs) SUPERIOR — 실행 checklist 50%·매뉴얼 UI 신설 금지(BNK-798·US-FACILITY-NOTICE M10 회고 carry) · ★★★ QA-B95 space-entity → NoBreakSpace LOCKSTEP 21+ layer(B511~B524) · ★★ Channel 2026 수가·시급 10,320원 P3「가정」·FAQ 21781 인지활동북 시범 격상 금지 · ★★ 모듈 97.41% CONFIRMED·NHIS 533차 · 신규 스토리 0(전량 P3「가정」) · SYNCED(FE@8a05640·BE@ff80f0b) · residual 703 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 221차 2026-07-16T08:43 UTC — BNK-782~786·TSR 1674~1691 · ★★★ US-V06/G-SCHEDULE-FIX FAQ 21474 「일정확정」 2-step 선행조건(공단 청구일정 가져오기→본인부담금 대조→일괄확정) acceptance 명시·VisitBatchUnconfirmPanel 4-digit+6-cascade SUPERIOR(BNK-786) · ★★★ US-L*/M7 본인부담 11-leaf 1:1+SUPERSET 3축+CMS 9-fn CONFIRMED(BNK-785) · ★★★ QA-B95 16+ layer FE↔BE LOCKSTEP·모듈 97.41%(BNK-784) · ★★ 도입 9,436·NHIS 520차 · ★ QA-B489~B500 Fixed · SYNCED(FE@f9e1e91·BE@aa551fb) · residual 691 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 220차 2026-07-16T03:20 UTC — BNK-777~781·TSR 1650~1673 · ★★★ US-FACILITY-NOTICE M10 회고 · ★★★ US-T06-DUAL-NUMBERING FULL-STACK CLOSED · ★★★ US-ACCOUNTING-M12 blocker KO · ★★ US-FEE-SCHEDULE-CHANGE-NOTICE P3 · ★★ 모듈 97.41% · SYNCED(FE@483dfe1·BE@a8d0af5) · residual 682 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 219차 2026-07-15T23:45 UTC — BNK-771~776·TSR 1645~1650 · ★★★ US-J03-UNIT-RATES FULL-STACK CLOSED · ★★★ US-R08/M8 8-2·8-6 CLOSED(BNK-773) · ★★ dual-numbering guardrail(G17≠일련27) · ★★ 평가41·42 transport parity · ★★ 모듈 97.41% CONFIRMED · SYNCED(FE@79763a3·BE@0ad3b07) · residual 676 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 218차 2026-07-15T19:45 UTC — BNK-762~770·TSR 1628~1644b · ★★★ US-RFID-CARE-PROVISION-DISPATCH FULL-STACK CLOSED · ★★★ US-L* M7 11/11+SUPERSET+6(BNK-770) · ★★★ 모듈 97.41% CONFIRMED · ★★ US-NURSING M4 6/6(BNK-765) · ★ QA-B461~B471 Fixed · SYNCED(BE@cf700b9·FE@b4008b0) · residual 671 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 217차 2026-07-15T14:30 UTC — BNK-755~761·TSR 1614~1627 · ★★★ US-SMS-7KIND kind22 급여명세서 dispatch FULL-STACK CLOSED(id=10 0.85·발송 UI wire) · ★★★ 모듈 97.07→97.41% · ★★ M2 2-7/2-8/2-9 △→✅ CLOSED(id=2 0.85) · ★★ RFID care-provision SMS batch BE 착지(FE wire P2·격상 0) · SYNCED(BE@7868384·FE@3fddccd) · residual 665 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 216차 2026-07-15T10:05 UTC — BNK-748~754·TSR 1598~1613 · ★★★ US-CLIENT-LINKAGE-RECORD FULL CLOSURE(id=1-10 1.0·모듈 97.07%) · ★★ RFID SMS 평가29 근거 강화(격상 0) · ★ org-wide report FE P2 · SYNCED(BE@cdeb6bf·FE@353eb7f) · residual 659 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 215차 2026-07-15T05:48 UTC — BNK-742~747·TSR 1585~1597 · ★★★ US-V06 batch-unconfirm FULL CLOSURE · ★★★ US-CLIENT-LINKAGE-RECORD=G-LINKAGE-RECORD 스펙 · ★★ US-SMS-7KIND/RFID P2 · ★ lcms 번복 · SYNCED(BE@d248916·FE@0448efa) · residual 653 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 214차 2026-07-15T01:50 UTC — BNK-738~741·TSR 1578~1584 · ★★★ US-J03 quiet-hours non-emergency CLOSED · ★★ US-V06 batch-unconfirm P2 · ★ US-H03 expiry countdown carry · SYNCED(BE@c558f29·FE@655aaa7) · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 213차 2026-07-14T20:14 UTC — BNK-727~732·TSR 1558~1567b · ★★★ US-GUARDIAN-NEWSLETTER id=1-5 FULL 1.0 · ★★★ US-FACILITY-NOTICE-BOARD 10-4 FULL · ★★ QA-B414 Open→Planned · ★ US-SMS-7KIND/US-RFID-CARE-PROVISION v2+ carry · SYNCED(BE@1f3698d·FE@71839a6) · Planned QA-B414+QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 212차 2026-07-14T15:50 UTC — BNK-721~726·TSR 1544~1557차 · ★★★ US-GUARDIAN-NEWSLETTER id=1-5 0.5→0.65(launch+history)·authoring/compose FE(QA-B400)·board residual · ★★★ QA-B95 effective gate FULL-STACK · ★★ US-SMS-7KIND v2+ · ★ QA Open 0 · SYNCED(BE@5d6c007·FE@3bd50ac) · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 229차 2026-07-17T19:42 UTC — BNK-835~841·TSR 1793~1801 · ★★★ US-P03 SEC-D25 6-cycle COMPLETE(QA-B576~B586·FE+BE magic defense-in-depth·케어포 plupload↔SUPERIOR) · ★★★ Page 106 정본(BNK-835) · ★★★ demo-work≠func.php M2 범위 분리(BNK-841)·M7 billing PARITY · ★★ audit-first HTTP 442 6차 · ★★ NHIS #44 573차 · 신규 스토리 0(US-P03 deepen) · SYNCED(BE@c19bfa6·FE@dc81f6e) · residual 738 BE · Planned QA-B116+QA-B95 -->
+<!-- planner-sync: PLN 228차 2026-07-17T15:40 UTC — BNK-829~834·TSR 1779~1792 · ★★★ 신규 US-P03 프로그램 일정 활동사진 업로드 v3 ✅ FULL-STACK LANDED(QA-B576~B579·BE POST /programs/schedule/{id}/photo + ProgramSchedulePhotoUpload + content-type normalize·silverangel daycareProgramProvided 사진/업로드 0-hit ↔ SUPERSET·id=5 1.0) · ★★ audit-first HTTP 442 2차 안정 재현(program photo POST +1·물리 삭제 신설 금지) · ★★ Page KPI 106→107 소급 정정 · ★★ NHIS #44 566차 · 신규 스토리 1(US-P03) · SYNCED(BE@72a6534·FE@8e74b07) · residual 732 BE · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 211차 2026-07-14T11:24 UTC — BNK-720·TSR 1542~1543차 · ★★★ US-ACCOUNTING-M12 SSO handoff FULL CLOSURE(id=12 0.55→0.7·BE bpo-sso-handoff ✅·AVAILABLE on credentials) · ★★★ US-GUARDIAN-NEWSLETTER id=1-5 0→0.5 착지 · ★★ 신규 US-CLIENT-LINKAGE-RECORD(v2+)·US-ACCOUNTING-IN-APP-LEDGER(v3+ P3) · ★ QA Open 0 · SYNCED(BE@093ac88·FE@063c269) · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 210차 2026-07-14T11:15 UTC — BNK-707~719·TSR 1518~1543차 · ★★★ US-PAYROLL-M11 FULL CLOSURE(6-leaf full-stack·id=11 1.0) · ★★★ US-ACCOUNTING-M12 BPO 3-layer 착지(SSO OTP adapter·id=12 0.55·sole lever=BE bpo-sso-handoff) · ★★ 신규 US-CLIENT-LINKAGE-RECORD(연계기록지·v2+)·가정통신문 config 정정 · ★ QA-B374~B391 Fixed · Open 0 · cross-stream SYNCED(BE@093ac88·FE@063c269) · Planned QA-B116+QA-B95 -->
 <!-- planner-sync: PLN 208차 2026-07-14T01:33 UTC — BNK-702~706·TSR 1507~1517차 · ★★★ US-PAYROLL-M11 sole P1 · US-ACCOUNTING-M12=sujifine BPO branch · ★★★ G16 shuttle CLOSURE · ★★ US-O01 bathing≠eval27 · ★ QA-B344/B373 Fixed · Open 0 · local SYNCED(BE@6e874df·FE@95192f5) · Planned QA-B116+QA-B95 -->
@@ -80,11 +92,16 @@
 <!-- planner-sync: PLN 124차 2026-06-13T21:00 KST — BNK-164~167·TSR 538~549 · US-G00a G9-COG ✅ · US-D03 FAQ21824 checklist ✅ partial+ · US-M03-b G-7x-1 guard ✅ partial+ · merge FULLY UNBLOCKED(418) · FE `e77b7e4`/BE `edd2771` -->
 # 주간보호센터 웹 시스템 — 사용자 스토리 (planning/USER_STORIES.md)
 
-> **작성**: planner 에이전트  
-> **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-06-24 (196차 — **BNK-583~587 · G-SMS 6/6 dispatchImplemented + ezcareMessageKind closure · M7 10/10 core parity · merge gate 764**)  
-> **상태**: 초안 (Draft) — 사용자 승인 전  
-> **근거 문서**: `docs/planning/REQUIREMENTS.md`, `docs/planning/PLAN_NOTES.md`, `docs/planning/research/BENCHMARK_REPORT.md`, `docs/qa/QA_FEEDBACK.md`
+
+### US-ACCOUNTING-M12 — M12 SSO blocker guidance (PLN 220차 / 2026-07-16)
+
+ - 스토리: 회계/수납 관리자로서, 외부 BPO(Sujifine) 연동 시 SSO 전환에서 발생 가능한 blocker(credential missing, handoff 실패, callback mismatch)에 대해 운영·사용자 안내와 안정한 대체 흐름이 필요하다.
+ - 우선순위: v2 / Should (planner 권고: id=12 residual 0.7 → ops credentials 우선)
+ - 수용 기준:
+   - [ ] BE: SSO handoff API contract 문서화 및 실패/재시도 정책 정리 (`POST /api/v1/billing/accounting/bpo-sso-handoff`)
+   - [ ] FE: SSO 상태 badge 및 credentials setup 안내 UI 노출 (`AccountingBpoPage`)
+   - [ ] Ops: M12 credentials 배포 체크리스트 및 charge promo 만료(2026-07-31) 후 재실측 가이드
+
 
 ---
 
@@ -155,32 +172,34 @@
     - FE wire @ `0342076` · G16 parity empty-catalog UX micro-fix @ `8ed60cb` (BNK-641)
     - tester merge pending QA-B337(BE)+QA-B338(FE) — 이관 규율 6·14
 
-- US-PAYROLL-M11 / US-ACCOUNTING-M12 — Staff payroll + accounting epic (★★★ — **M11 FULL CLOSURE** · **M12 SSO handoff FULL CLOSURE 0.7** · BNK-720)
+- US-PAYROLL-M11 / US-ACCOUNTING-M12 — Staff payroll + accounting epic (★★★ — **M11 FULL CLOSURE** · **M12 SSO handoff FULL CLOSURE 0.7** · BNK-720 · **blocker KO BNK-780**)
   - 스토리: 센터장으로서, **직원 급여**(급여대장·수당/공제·간이지급명세서)를 ogada에서 처리하고, **재무회계**는 경쟁사와 같이 BPO(수지파인 계열) SSO handoff로 연동하고 싶다.
-  - 우선순위: **M11 ✅ CLOSED**(id=11 1.0) · **M12 ✅ SSO handoff CLOSED**(id=12 **0.7**·모듈 **91.90%**) · 잔여 = **ops facility credentials**(0.7→1.0)
+  - 우선순위: **M11 ✅ CLOSED**(id=11 1.0) · **M12 ✅ SSO handoff CLOSED**(id=12 **0.7**·모듈 **97.41%**) · 잔여 = **ops facility credentials**(0.7→1.0)·KPI promote 금지
   - 수용 기준(범위):
     - [x] **M11 in-app 6-leaf full-stack** — 11-1·11-2·11-3·11-4·11-5(60% compliance)·11-6 (BNK-712~715)
     - [x] **M12 (B) BPO 5-cycle** — 공개 포털(0.35) + API catalog(0.45) + FE SSO OTP(0.55) + health(BNK-719) + **BE handoff(0.7·BNK-720)**
     - [x] **(B) FE BPO launch** — `/accounting` `AccountingBpoPage` · `GET /billing/accounting/bpo-launch` · SSO badge · sujifine CTA
     - [x] **(B) BE BPO launch catalog** — `GET /api/v1/billing/accounting/bpo-launch` · `documentCode=M12-BPO`
     - [x] **(B) FE SSO OTP adapter** — `carefor_login` usmusid+otp · window `sujifineLogin` · 비밀번호 미전송 (@`2b03b5c` chain)
+    - [x] **(B) blocker KO guidance** — `describeAccountingBpoReadinessBlocker` · credentials/allowlist KO (BNK-780·QA-B483)
     - [x] **(B) BE SSO handoff API** — `POST /api/v1/billing/accounting/bpo-sso-handoff` · OTP from **env secrets** · credentials 설정 시 `SSO_AVAILABILITY→AVAILABLE` (@`093ac88`)
     - [ ] **ops**: 실환경 facility credentials 등록 → 실운영 SSO 검증(0.7→1.0)
     - [ ] **v3+ optional**: `G-ACCOUNTING-IN-APP-LEDGER` in-app 원장(이지케어 10-leaf·MVP out-of-scope)
 
-### [PLN] BNK-720 추가 스토리 (벤치마크 반영, 211차)
-- US-CLIENT-LINKAGE-RECORD / **G-LINKAGE-RECORD** — 연계기록지 (Should / **v2+ 최우선**) — **❌ 갭**(진성 0-커버리지·sole)·**스펙 초안 ✅ (BNK-746)**
+### [PLN] BNK-720 추가 스토리 (벤치마크 반영, 211차 → 216차 CLOSURE)
+- US-CLIENT-LINKAGE-RECORD / **G-LINKAGE-RECORD** — 연계기록지 (Should / **✅ FULL CLOSURE · BNK-749**)
   - 스토리: 사회복지사로서, 전원·퇴소 시 **연계기록지**(평가지표30「외부기관연계」)를 작성·발송하고 제공대장을 남기고 싶다.
-  - 우선순위: **v2+ 최우선**(BNK-745~746 — Module 1 leaf 11 전수 후 **sole coverage-0** · 모듈 93.62%→97%+ lever)
-  - 스펙 초안(G-LINKAGE-RECORD · PLAN_NOTES §추가 질문 215-1):
-    - Entity `client_linkage_records`(linkage_type HOSPITAL/HOME_CARE/TRANSFER/OTHER · target_institution · dispatched_at · summary · status DRAFT/DISPATCHED · org/branch · 감사 V19x)
-    - API `POST /clients/{id}/linkage-records` · `POST …/dispatch` · `GET /clients/linkage-records`
-    - FE `/clients/:id/linkage-records` · `/clients/linkage-records` · 가정통신문(1-5)/기관공지(10-4) CRUD 재사용
-  - 수용 기준(초안·미착수):
+  - 우선순위: **✅ CLOSED**(BNK-749 · 모듈 **97.07%** · coverage-0 소멸) · residual = org-wide report FE Route P2(BNK-754)
+  - 스펙·착지(G-LINKAGE-RECORD):
+    - Entity `client_linkage_records`(linkage_type HOSPITAL/HOME_CARE/TRANSFER · target_institution · dispatched_at · summary · status DRAFT/DISPATCHED · org/branch · V194)
+    - API list/get/create/update/dispatch/delete + org-wide `GET /api/v1/clients/linkage-records`(@`cdeb6bf`)
+    - FE ClientDetail tab「연계기록지」+Form+ReportPanel(@`d6f7069`) · OTHER type 제거
+  - 수용 기준:
     - [x] 연계기록지 작성 워크플로(성명·등급·심신기능상태·제공 급여·작성일자·퇴소 후 이용계획) — FE ClientDetail tab + BE V194 summary fold
     - [x] DRAFT→DISPATCHED + 대상 기관·발송 시각 — `POST …/dispatch` FE wire
-    - [x] 발송 리포트(수급자 스코프 list) — `ClientLinkageRecordsReportPanel` · org-wide GET 잔여(TWR Q2)
+    - [x] 발송 리포트(수급자 스코프 list) — `ClientLinkageRecordsReportPanel`
     - [x] 모듈 id=1-10 coverage 0→**1.0** (authoring+dispatch+client report)
+    - [ ] org-wide 발송 리포트 FE Route `/clients/linkage-records` — BE 착지·FE Route P2 polish(PLAN_NOTES §216-1)
 
 - US-GUARDIAN-NEWSLETTER — 가정통신문 (Should / v2) — **✅ FULL 1.0 CLOSED (BNK-721~730)**
   - 스토리: 센터장으로서, 월간 가정통신문을 보호자에게 발송하고 작성·이력·게시판으로 관리하고 싶다.
@@ -196,23 +215,56 @@
     - [x] compose→facility-notice **서버 DRAFT 영속** — `buildFacilityNoticeDraftPayloadFromCompose` → `POST /facility-notices` (QA-B408 @ `0210aaa`) · coverage **1.0**
     - [x] 서버 게시판형 CRUD·기관 공지(10-4) — BE V192 + FE CRUD/PATCH/attachmentUrl/GET detail (QA-B405~B412) · `board-ui-planned` **CLEAR**
 
-- US-FACILITY-NOTICE-BOARD — 기관 공지사항·자료실 (Should / v2) — **✅ FULL-STACK CLOSED (BNK-729~730)**
+- US-FACILITY-NOTICE-BOARD — 기관 공지사항·자료실 (Should / v2) — **✅ FULL-STACK CLOSED (BNK-729~730 · BNK-781 회고)**
   - 스토리: 센터장으로서, carefor 10-4처럼 기관 공지·자료실을 초안/게시 2단계로 관리하고 싶다.
-  - 우선순위: Should / v2 (BNK-727 P2 candidate → BNK-729/730 closure)
+  - 우선순위: Should / v2 (BNK-727 P2 candidate → BNK-729/730 closure → **BNK-781 M10 9-leaf 재크로스워크 확정**)
   - 수용 기준:
     - [x] BE `/api/v1/notifications/facility-notices` 6-endpoint · DRAFT/PUBLISHED · NOTICE|RESOURCE · org+branch · V192
     - [x] FE list/create/publish/delete/PATCH + attachmentUrl + GET detail (`apiFetch`/`services.js`)
+    - [x] M10 실질 대응 **7/9**(10-2·10-4·10-5·10-7 ✅ · BNK-781)
     - [ ] GUARDIAN(보호자) 열람 정책 — PLAN_NOTES §추가 질문 213 (미확정)
 
-- US-SMS-7KIND-TEMPLATE — SMS 7-kind template enum (Could / **v2+ operational lever**) — **kind22 enum-only CLOSED(BNK-744)** · dispatch UI residual
-  - 스토리: 관리자로서, 이지케어처럼 접속키·본인부담·일정표·급여제공내역·급여명세서 등 **종별 SMS 템플릿**을 선택해 발송하고 싶다.
-  - 우선순위: **v2+**(BNK-724/731/744) — catalog **7/7** incl. kind=22 `STAFF_PAYROLL_STATEMENT`(`dispatchImplemented=false`) · id=10 **0.75 carry**
-  - 수용 기준: [x] kind22 enum+라벨 · [ ] 발송 UI wire · pay-per-message economics 검토 · SMTP/알림톡과 채널 분리 유지
+- US-FEE-SCHEDULE-CHANGE-NOTICE — 수가변경안내 SMS (Could / **v3+ P3「가정」 · BNK-781**)
+  - 스토리: 청구 담당으로서, 공단 수가 연 개정 시 보호자에게 전용 수가변경안내 문자를 일괄 발송하고 싶다(carefor 10-2-1).
+  - 우선순위: **P3「가정」** — `FEE_SCHEDULE_CHANGE_NOTICE` 전용 템플릿 · 현행 `HOME_NEWSLETTER` 대체 가능 · **격상 아님**
+  - 수용 기준(초안·미착수): template catalog code · 연 개정 배치 대상 선택 · 발송 이력
 
-- US-RFID-CARE-PROVISION-DISPATCH — RFID→급여제공내역 문자 (Could / **v2+ P2 operational lever**) — compare ✅ · SMS UI ❌ (BNK-743)
+- US-SMS-7KIND-TEMPLATE — SMS 7-kind template enum (Could / **v2+ operational lever**) — **kind22 dispatch FULL-STACK CLOSED**(BE+FE)
+  - 스토리: 관리자로서, 이지케어처럼 접속키·본인부담·일정표·급여제공내역·급여명세서 등 **종별 SMS 템플릿**을 선택해 발송하고 싶다.
+  - 우선순위: **✅ FULL-STACK CLOSED**(BNK-724/731/744/753/754·217차) — catalog **7/7** incl. kind=22 `STAFF_PAYROLL_STATEMENT`(`dispatchImplemented=true`) · FE `StaffNotificationDispatchPanel`+`StaffPayrollReportsPage`(@`5b9656c`) · id=10 **0.85**
+  - 수용 기준: [x] kind22 enum+라벨 · [x] BE `POST /staff/notifications/staff-payroll-statement` · [x] 발송 UI wire(QA-B454) · pay-per-message economics 검토 · SMTP/알림톡과 채널 분리 유지
+
+- US-RFID-CARE-PROVISION-DISPATCH — RFID→급여제공내역 문자 (Could / **✅ FULL-STACK CLOSED · BNK-763**)
   - 스토리: 사회복지사로서, RFID 태그 실적과 공단 계획을 비교한 뒤 급여제공내역을 문자로 발송하고 싶다.
-  - 우선순위: **v2+ P2**(BNK-743 FAQ 21589 + `PGID=schedule-rfid`) — `compareVisitsRfidApi`+`VisitRfidDiffComparePanel` ✅ · RFID→SMS UI △
-  - 수용 기준(초안·미착수): RFID compare 결과 → `CARE_PROVISION_RECORD` / SMS kind=13 · 수급자|보호자 · quiet-hours 가드 · PLAN_NOTES §추가 질문 215-2
+  - 우선순위: **✅ FULL-STACK CLOSED**(BNK-763·FAQ 21589 + Channel.io TOP-10·**평가문항 29·월1회** · BNK-759~762 P2 residual 해소) — HOME_VISIT only · 주간보호 진성갭 아님 · id=10 **0.85**·KPI promote 0
+  - 수용 기준: [x] RFID compare Panel · [x] BE `POST …/rfid/care-provision-dispatch`(kind13 `CARE_PROVISION_RECORD`) · [x] FE `dispatchRfidCareProvisionApi`+Panel dispatch(yearMonth·clientIds·summary) · quiet-hours 가드 · QA-B455/B462
+
+- US-M7-COPAY-LIFECYCLE — 본인부담 M7 전수 대응 (Must / **✅ 11-leaf 100%+SUPERSET · BNK-770**)
+  - 스토리: 센터장으로서, 케어포 본인부담(7-1~7-10)과 동일하게 청구·입금·미납·CMS·간편결제·대장·환불·계산기를 처리하고 공단 import·본인부담률 마스터까지 쓰고 싶다.
+  - 우선순위: Must / v1 — carefor M7 **11/11=100%** ↔ ogada `/billing/*` **17-route**(SUPERSET +6) · id=7* **1.0** · BE 68-hit 7-x leaf ID 앵커(BNK-770) · US-L01~L06 개별 스토리 상위 패리티 재확인
+  - 수용 기준: [x] 7-1~7-10+7-2-1 Route/Panel · [x] 공단 import·대사·통계·copay-rates·fee-schedules SUPERSET · [x] 리포트 5축(charges/deposits/receipts/refunds/statistics)
+
+### [PLN] BNK-771~776 추가 스토리 (벤치마크 반영, 219차)
+
+- US-J03-UNIT-RATES — J03 발송 참고 단가 in-app 노출 (Should / **✅ FULL-STACK CLOSED · BNK-774**)
+  - 스토리: 관리자로서, 이지케어 `messageAmt`(앱10/SMS20/MMS50)와 동일한 참고 단가를 채널 readiness 화면에서 확인하고 싶다(청구·실과금과 무관).
+  - 우선순위: **✅ FULL-STACK CLOSED**(BNK-774·QA-B474) — BE `NotificationDispatchUnitRatesCatalog`+`GET …/dispatch-reference-unit-rates` · FE Panel prefers BE(`dispatchReferenceUnitRates`) · id=10 **0.85**·KPI promote 0
+  - 수용 기준: [x] BE APP10/SMS20/MMS50 catalog · [x] FE dedicated API wire+static fallback · [x] Solapi 실과금≠참고 단가 disclaimer
+
+- US-R08-M8 — 직원관리 M8 leaf-level 패리티 (Should / **✅ 13/15=86.7% · BNK-773**)
+  - 스토리: 인사 담당으로서, 케어포 Module 8(16-leaf)과 동일하게 근무일정·회의록·교육·건강검진·리포트를 관리하고 싶다.
+  - 우선순위: **✅ 8-2·8-6 CLOSED**(BNK-773 STALE 갱신) — `/staff/schedules`·`/staff/committee-meetings`(V181 3-type) · 잔여 8-3·8-8 = P3「가정」·id=8 **0.85**
+  - 수용 기준: [x] 8-2 `StaffMonthlySchedulePage` · [x] 8-6 OPERATING_COMMITTEE/GUARDIAN/WELFARE_COMPENSATION · [ ] 8-3 연간일정계획 · [ ] 8-8 자원봉사자(P3 defer)
+
+- US-T06-DUAL-NUMBERING — 평가지표 vs 필수업무 번호 혼동 방지 (Must / guardrail · **✅ FULL-STACK CLOSED · BNK-778/779**)
+  - 스토리: 평가 담당으로서, G17「주야간보호 27=기능회복」과 필수업무 일련 27「가족과의 소통」을 혼동하지 않고 각각 올바른 화면에서 기록하고 싶다.
+  - 우선순위: Must / guardrail — G17=`/programs/functional-recovery` **1.0** · GUARDIAN 회의=`/staff/committee-meetings` · **in-app dual-numbering 가드레일 = ogada 유일**
+  - 수용 기준: [x] G17 기능회복 3행 · [x] GUARDIAN committee meeting type · [x] BE dual-numbering API copy(`essentialDutySerial27Label`·`dualNumberingNoteKo`·BNK-778) · [x] FE indicator-27 UI surfacing(BNK-779·QA-B481)
+
+- US-T02-TRANSPORT-EVAL — 이동서비스 평가41·42+수가 패리티 (Must / **✅ in-app · BNK-775**)
+  - 스토리: 이동서비스 담당으로서, 평가 필수업무 41(수칙)·42(동승)과 NHIS #44 러-1~4·일지 요건을 한 시스템에서 충족하고 싶다.
+  - 우선순위: Must / v1.3-C — `/transport/*` 9-route + `TransportServiceFeeService` 6-link · 엔젤 공개 ERP 배차 0 vs ogada in-app 차별화 · id=2 **0.85**
+  - 수용 기준: [x] 배차·일지·수칙·동승 운영 · [x] NHIS #44 510차 상수 lock · [ ] form 18/19/20 polish(P2)
 
 - US-ACCOUNTING-IN-APP-LEDGER — in-app 재무회계 원장 (P3 candidate「가정」 / v3+)
   - 스토리: 대형 직영 센터장으로서, 이지케어 Module 7처럼 통장·결의서·예산·결산을 **in-app**으로 관리하고 싶다.
@@ -242,9 +294,10 @@
   - 스토리: 간호사로서, 인지선별검사(CIST) 결과를 건강기록과 분리해 관리하고 싶다.
   - 우선순위: P3「가정」 (BNK-633 — FAQ 21602 19,592 hit)
 
-- US-J04 — RFID care-provision dispatch trigger (P3 candidate「가정」)
+- US-J04 — RFID care-provision dispatch trigger — **✅ SUPERSEDED by US-RFID-CARE-PROVISION-DISPATCH FULL-STACK CLOSED**(BNK-763)
   - 스토리: 관리자로서, 급여제공기록지 RFID 전송분을 트리거로 보호자에게 자동 문자 발송하고 싶다.
-  - 우선순위: P3「가정」 (BNK-633 — FAQ 21589 22,756 hit·template `CARE_PROVISION_RECORD` ✅·trigger △)
+  - 우선순위: ~~P3 candidate「가정」~~ → **✅ CLOSED**(BNK-763 · HOME_VISIT only · FAQ 21589)
+  - 수용 기준: US-RFID-CARE-PROVISION-DISPATCH 준용
 
 ### [PLN] BNK-618~621 추가 스토리 (벤치마크 반영, 199차)
 - US-L06-b — EasyPay provider catalog FE wire (Should / v2) — **✅ closure @ `5914b2f`**
@@ -287,8 +340,8 @@
   - SafetyCheckController 4-endpoint + V184 + FE 4-route wire · id=6 **1.0** · module **84.31%**
 - US-PAYROLL-M11 — M11 in-app minimum set — **✅ FULL CLOSURE**(id=11 1.0 · BNK-712~715)
   - in-app **6/6 leaf** · 60% labor-cost-ratio active compliance(ogada 유일)
-- US-ACCOUNTING-M12 — M12 accounting BPO — **✅ SSO handoff FULL CLOSURE**(id=12 **0.7** · BNK-716~720)
-  - carefor = **sujifine SSO** · BE `POST /bpo-sso-handoff` · credentials 시 AVAILABLE · 잔여 = ops credentials(0.7→1.0)
+- US-ACCOUNTING-M12 — M12 accounting BPO — **✅ SSO handoff FULL CLOSURE**(id=12 **0.7** · BNK-716~720 · **blocker KO guidance BNK-780/QA-B483**)
+  - carefor = **sujifine SSO** · BE `POST /bpo-sso-handoff` · credentials 시 AVAILABLE · `describeAccountingBpoReadinessBlocker` KO(`sso-otp-credentials-missing`·`sso-portal-url-not-allowlisted`) · 잔여 = ops credentials(0.7→1.0)·KPI promote 금지
 
 ### [PLN] BNK-702~706 추가 스토리 (벤치마크 반영, 208차)
 - US-T05-g16-shuttle — G16 shuttle address integrity (v1.3-C/v2) — **✅ FULL CLOSURE**(BNK-705 6-commit)
@@ -337,14 +390,16 @@
     - catalog 6/6 `dispatchImplemented=true`
 
 ### [PLN] BNK-576/577 추가 스토리 (벤치마크 반영)
-- US-J03-t — SMS Template Catalog readiness (Should / v1.2.1) — **✅ closure @ `3f686e3`/`ef8bb4e`**
-  - 스토리: 센터장으로서, ezCare message_kind 기준 Solapi 템플릿 catalog(6종)와 dispatchImplemented 진척률을 대시보드·설정 화면에서 확인하고 싶다.
-  - 우선순위: Should → **v1.2.1 Must ✅** (BNK-576~587 13-cycle closure)
+- US-J03-t — SMS/Kakao Template Catalog readiness (Should / v1.2.1) — **✅ closure @ `3f686e3`/`ef8bb4e` → 확장 @ `54fd8dd`(BE)/`ab9e853`(FE)**
+  - 스토리: 센터장으로서, ezCare message_kind 기준 템플릿(7종)과 Kakao 알림톡 필수 템플릿(6종)의 dispatchImplemented 진척률을 대시보드·설정 화면에서 확인하고 싶다.
+  - 우선순위: Should → **v1.2.1 Must ✅** (BNK-576~587 13-cycle closure · BNK-806 Kakao SUPERSET 확장)
   - 수용 기준:
-    - `GET /api/v1/notifications/template-catalog` API — **6/6 dispatchImplemented**
-    - `NotificationChannelReadinessPanel` 6-col ezCare message_kind table + dispatch response `ezcareMessageKind`
+    - `GET /api/v1/notifications/template-catalog` API — **catalog 13(ezCare 7 미러 + Kakao 6 SUPERSET)**·`NOTIFICATION_TEMPLATE_CATALOG_TOTAL_COUNT=13`
+    - **ezCare 7**: `CLIENT_MONTHLY_SCHEDULE`(kind 12)·`CARE_PROVISION_RECORD`(13)·`STAFF_PAYROLL_STATEMENT`(22)·`STAFF_ACCESS_KEY`(1)·`BILLING_STATEMENT`(11)·`ELDER_ABUSE_PREVENTION_GUIDELINE`(19)·`STAFF_MONTHLY_SCHEDULE`(21)
+    - **Kakao 6 SUPERSET**(`ezcareMessageKind=null`·이지케어 mobile-sendW 미대응): `ATTENDANCE_ARRIVAL`·`ATTENDANCE_DEPARTURE`·`DAILY_CARE_SUMMARY`·`BILLING_PAYMENT_RECEIVED`·`HOME_NEWSLETTER`·`EMERGENCY_ALERT` → 보호자 알림 breadth 우위(id=10)
+    - `NotificationChannelReadinessPanel` 13-entry table + nullable `ezcareMessageKind` "—" 렌더 (QA-B533)
     - `DashboardPage`·`OrganizationSettingsPage` wire
-    - **잔여 P2**: Solapi live dispatch E2E only
+    - **잔여 P2**: Solapi/Kakao live dispatch E2E only
 
 - US-P01-b — Program group config micro-gap (P3 candidate)
   - 스토리: 사회복지사로서, 프로그램 그룹 설정·이력·콘텐츠·프로그램관리자 일지를 케어포 모듈5 수준으로 관리하고 싶다.
@@ -1625,6 +1680,7 @@
 - [x] **`paidAt`(입금일) 필수 가드** — BE `recordCopayPayment`·PAID 전환 전 입금일 필수 @ `ed730a2` · FE `PaymentRecordModal`/`BillingDetailPage` @ `0024c88` (BNK-73 · 케어포 7-2 패리티 · QA-B31/B33 Fixed)
 - [x] **은행엑셀 일괄입금** — BE import @ `e50533f`/`95bb34d` ✅ · FE `BankDepositImportPanel` @ `9ffff0c` ✅ (BNK-49·50)
 - [x] **(BNK-445~446, 180차)** **은행 8종 catalog+preview+import FE wire ✅** — BE `@e3b74a0`/`7d29a38` ✅ · FE `BankDepositImportPanel` @ `a18b30e` · **★ QA-B181 Fixed** · **G-BANK-EXCEL-8 ✅ full-stack closure**
+- [x] **(230차 · BNK-849 · QA-B603)** **SEC-D34 bank deposit import magic-byte** — BE `BankDepositImportService.readAndValidateImportFile` OOXML `PK\x03\x04` fail-closed · xlsx-only · `@f6e4d88` · endpoint 신설 0
 - [ ] **은행 8종 E2E live** — 케어포 7-2 p.88 패리티 검증 (BNK-53 P1 잔여)
 - [ ] `billing_claims` 상태 `PAID`(또는 부분입금) 전이
 - [ ] CMS·간편결제 **제외** (v2 — US-L03)
@@ -2061,6 +2117,8 @@
 - [x] **audit trail** — 응답 `executedBy`/`executedAt`/`unconfirmedCount`/`challengeMatched` (BE)
 - [x] **visits-only scope 확정** — ezCare `schedule-fix` 근거·transport 배차 unconfirm은 기존 run-level API 유지 (PLAN_NOTES 214-1)
 - [x] **FE wire** — `/visits` `VisitBatchUnconfirmPanel` · `fetchVisitBatchUnconfirmPreviewApi` + `batchUnconfirmVisitsApi`
+- [x] **일정확정 2-step 선행조건 (FAQ 21474 · BNK-786)** — 이지케어 `4. 일정확정`(`PGID=schedule-fix`)은 **① 공단 청구일정 가져오기 → ② 본인부담금 공단↔시스템 대조 → ③ 일정 일괄확정** 순서·엑셀 오류·월중 본인부담률 변경·선확정 시 금액 불일치를 확정 전 반드시 대조 → ogada 매핑: `VisitsPage` NHIS import · `GET /visits/nhis-comparison`(G21·`VisitNhisComparisonDetail`) · `batchConfirmVisitsApi`(confirm-lock) · `/billing/copay-rates`+본인부담률 이력 = **기능 parity 확정·진성갭 0**
+- [x] **운영 안전장치 SUPERIOR (BNK-786)** — 일괄취소 시 **4-digit confirmNum + 6-cascade reset 경고**(청구서·급여명세서·임금대장·퇴직금·공단명세 재대조·직원일정 재안내) = 이지케어 `dialog-bill-RESET` 대비 우위 · 마케팅 카피 후보 carry
 
 ---
 
@@ -2237,6 +2295,44 @@
 
 **인수 조건**
 - [ ] `/programs/reports/*` 4종 · 인쇄
+
+### US-P03 — 프로그램 일정 활동사진 업로드 ← **갱신 (229차 — BNK-833→840 · ✅ SEC-D25 6-cycle COMPLETE)**
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `social_worker`, `hq_admin` |
+| 스토리 | 사회복지사로서, **프로그램 일정 행 단위로 활동사진을 업로드**해 제공 증거를 남기고 싶다. |
+| 우선순위 | **v3 ✅ SEC-D25 6-cycle COMPLETE** (BNK-833→840 · QA-B576~B586 · 케어포 plupload vintage·M5 0-hit / silverangel 사진 0-hit ↔ ogada **경쟁 4종 유일 SUPERIOR** · id=5 **1.0**) |
+
+**인수 조건**
+- [x] BE `POST /programs/schedule/{programId}/photo` multipart + `ProgramPhotoStorageService` (`@1b8c764`·QA-B576)
+- [x] FE `ProgramSchedulePhotoUpload` wire → `ProgramsPage` (`@2e06d5a`·QA-B577)
+- [x] 허용 포맷 JPEG/PNG/WEBP allow-list + **content-type parameter normalize** (`image/jpeg; charset=binary` 등 실제 모바일/데스크톱 브라우저 헤더 관용 · BE `@72a6534` QA-B578 / FE `@8e74b07` QA-B579 · whitespace/multi-param `@a742788`)
+- [x] **SEC-D25 magic-byte** — BE `matchesMagicBytes` JPEG/PNG/WEBP (`@d1ff63a`·QA-B585) + FE pre-upload FileReader 12-byte `matchesProgramSchedulePhotoMagicBytes` (`@8e28fe0`·QA-B586) · MIME spoof/truncate fail-closed
+- [x] reject 시 verbatim「JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.」 + FE/BE @Test lock
+- [ ] **(P3「가정」)** 사진 보존/파기 주기·최대 용량·EXIF strip·저장 암호화 정책 명문화 (PLAN_NOTES §추가 질문 228-2/229-2)
+- [ ] **(P3「가정」)** ClientPhoto 등 타 첨부 축에 defense-in-depth pattern 재사용 여부 (BNK-840 · 과대구축 금지)
+
+### US-SEC-D34 — 엑셀 import 바이너리 서명 검증 (v3 SEC-D34) ← **갱신 (231차 — BNK-850~857 · ✅ fail-closed 8-축 COMPLETE)**
+
+| 항목 | 내용 |
+|------|------|
+| 역할 | `branch_admin`, `hq_admin`, `social_worker` |
+| 스토리 | 센터장으로서, **위조·MIME 스푸핑·손상된 엑셀 파일 업로드를 즉시 거부**해 공단·은행·RFID import 데이터 무결성을 보장하고 싶다. |
+| 우선순위 | **v3 ✅ SEC-D34 fail-closed 8-축 COMPLETE** (BNK-850~857 · QA-B598~B607 · parser surface 5종 · 경쟁 4종 유일 SUPERIOR · KPI promote 0) |
+
+**인수 조건 (fail-closed 8-축 · FE pre-upload + BE service/parser 2-layer defense-in-depth)**
+- [x] FE `excelImportFiles.js` — OOXML/OLE magic + Content-Type normalize + 4-step validate·4-validator (`@3042a53`·QA-B601)
+- [x] FE page/pilot test fixture OOXML sync (`@7ac3c84`·QA-B602)
+- [x] BE `VisitService`·`NhisImportService`·`StaffNhisCaregiverImportService`·`BankDepositImportService` — 매직바이트 4-경로 (`@f6e4d88`·QA-B598/B599/B603)
+- [x] **(축 b)** null-safe payload guard — 4-path `payload==null` fail-closed (`@f28e3d9`·QA-B604)
+- [x] **(축 c)** truncated OOXML signature fail-closed (`@efbdbec`·QA-B607)
+- [x] **(축 d~f)** .xls OLE magic + empty-file BE + FE empty-header + 0-byte FE fail-closed (`@9449e1f`/`@2789553`·QA-B95 lineage)
+- [x] **(축 g ★★★)** corrupt OOXML body fail-closed — POI 런타임 예외·no-info-leak · parser surface **5종**(BankDeposit·Nhis·StaffNhisCaregiver·NhisVisitSchedule·RfidTransmission) (`@0a97b22`→`@7fa8335`·BNK-855/856)
+- [x] **(★★★ BNK-857)** FE `VisitRfidDiffComparePanel` 이중엑셀(공단계획+RFID) pre-upload 매직바이트 — MIME 위조 시 `EXCEL_IMPORT_UNSUPPORTED_SIGNATURE_MESSAGE`·`compareVisitsRfidApi` 미호출 · 이지케어 FAQ 21589 RFID workflow verbatim 대응 · 경쟁 4종 유일 파일 무결성 SUPERIOR (`6f8e349`·QA-B608)
+- [x] audit-first HTTP **442 IDENTICAL** — SEC-D34 8-축 후 endpoint 신설 0 · service/parser layer only
+- [x] npm audit high **0** — form-data 4.0.5→4.0.6(dev-only jsdom·`@637bad8`·QA-B606)
+- [ ] **(Planned · QA-B608 MEDIUM/BLOCK)** FE develop→test FF 이관(`1f9d49c`+`6f8e349`·pending 2·test-only) → pending 0 + post-merge full suite 재실측
 
 ---
 
@@ -2644,7 +2740,7 @@
 | **G22 — 본인부담 대장 리포트 (7-6~10)** | 케어포 7장 | **v1.2.1 P1 ✅** @ `dbf485e` · **7-9 ✅** @ `212e010` | Epic **M** — US-M03·**US-M03-c** |
 | **G27 — 재가급여 월한도액 2026** | 케어포 **10-2-1** | **v1.2.1 ✅** @ `a92e625`/`20bc1be`/`fba5ea8` | Epic **M** — **US-M04** |
 | **G28 — 청구 생성기준·전월 가드** | 케어포 9-1 | **v1.2.1 ✅** @ `5bdb476`/`b953662` | Epic **M** — **US-M03-b** |
-| **G21 — 방문요양·이중 일정·NHIS import·billing confirm-lock·batch-confirm readiness·RFID compare** | 이지케어 3-1·FAQ21782·`schedule-rfid`·`schedule-form` | **v2 Must** `in_progress` — **★ batch-confirm readiness ✅** · **★ NHIS 명세 사전비교 BE ✅** · **RFID 7-code compare ✅** · **★★★ US-V06 batch-unconfirm ✅ CLOSED**(BNK-747) · **RFID→SMS P2**(BNK-743) · plan/claim 분리 UI P2 · **live E2E 잔여** | Epic **V** — US-V01~V06 |
+| **G21 — 방문요양·이중 일정·NHIS import·billing confirm-lock·batch-confirm readiness·RFID compare** | 이지케어 3-1·FAQ21782·`schedule-rfid`·`schedule-form` | **v2 Must** `in_progress` — **★ batch-confirm readiness ✅** · **★ NHIS 명세 사전비교 BE ✅** · **RFID 7-code compare ✅** · **★★★ US-V06 batch-unconfirm ✅ CLOSED**(BNK-747) · **RFID→SMS P2**(BNK-743/754·평가29) · plan/claim 분리 UI P2 · **live E2E 잔여** | Epic **V** — US-V01~V06 |
 | **G2-n — 보호자 명세·법정서식 발송** | 케어포 7-1 · 엔젤 **이메일** 법정서식 | **v2 P1** `in_progress` (API+UI @ `84f3441`/`c48fb67` · **templates 5종 partial** @ `0854fbd`/`eedcc80` · **SMTP 실연동 잔여** BNK-45) | US-G02 |
 | **G25 — 본인부담률 엑셀 업로드** | 케어포 1-1-2·공지920 | **v2 P2** | Epic **G** — **US-G25** |
 | **G23 — 대기 수급자** | 케어포 1-1-1 | **P2** | — |

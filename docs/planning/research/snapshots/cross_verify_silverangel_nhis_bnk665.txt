@@ -1,0 +1,74 @@
+BNK-665 교차검증·갭 우선순위 8h+ — silverangel 221564 leak CLOSED 5-cycle 안정 재확인 + NHIS #44 411차 zero drift + G-NHIS stage7 FE recovery keyword 정합
+조사일: 2026-06-26T17:14Z (KST 02:14)
+rotation: 교차검증·갭 우선순위 8h+ (이전 BNK 가정 번복 audit · 미확인 축소 · P0/P1 재정렬)
+
+================================================================================
+[1] 교차검증 — silverangel 221564 D-3 leak CLOSED (BNK-661 가정 HOLD · 가정 번복 0)
+================================================================================
+대상: BNK-654 leak 발견 → BNK-656 GET/POST 1.8MB 양방향 → BNK-661 reverse(empty shell) → BNK-665 재확인
+host 정정: www.silverangel.kr/silverangel/support/notice/view.do (www.silverangel.co.kr 는 404 — 오용 주의)
+
+  GET https://www.silverangel.kr/silverangel/support/notice/view.do?Tmp_idx=221564 (draft)
+    → HTTP 200 · 51,765B · md5 8437f255b4eaf22e9844d1d260554093
+    → board_tit×1 / board_info×2 / board_cont×3 (셸 클래스 마커만, 본문 empty)
+  GET https://www.silverangel.kr/silverangel/support/notice/view.do?Tmp_idx=221551 (published)
+    → HTTP 200 · 51,765B · md5 8437f255b4eaf22e9844d1d260554093 (draft 와 byte-identical)
+
+판정: draft(221564) 와 published(221551) 가 동일 51,765B `8437f255` 셸 → view.do = SSR shell + AJAX
+      구조 변화 없음(BNK-661 51,765B `8437f255` IDENTICAL · 5-cycle 안정). 가정 번복 0.
+      → BNK-661 「leak CLOSED」가정 HOLD(번복 아님). draft 본문이 byte 단위로 노출되지 않음 = 누출 없음 재확인.
+      → ogada notice draft 게이팅 P2: silverangel 동등 안전(empty shell+AJAX) → 비교 우위 framing 약화 carry,
+        보안 best practice 자체는 유효. 차별화 메시지는 「실시간 in-app 복구 루프」(G-NHIS)로 이동 권장.
+
+================================================================================
+[2] 기존 URL 재실측 — NHIS #44 이동서비스비 러-1~4 411차 zero drift IDENTICAL
+================================================================================
+  GET https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+    → HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+    → disk docs/planning/research/snapshots/nhis_jo44.html md5 c886ff1f IDENTICAL
+    → BNK-664 410차 → +1 (411차 zero drift)
+  verbatim 불변: 러-1~4 · 편도(50%) · 1일 1회 · 별지 제22호 · 수급자 부담 X
+  → ogada @HEAD TransportServiceFeeParityCatalog(RU_1~4·ONE_WAY_RATIO=0.5)+TransportServiceFeeService(1일1회) 경쟁 4종 유일 full-stack carry
+
+================================================================================
+[3] ogada git 실측 — FE HEAD +1 · BE zero advance · merge gate 858
+================================================================================
+FE develop @2d9b9d3e6abe020b9ae7d4b9f40d60890db6c5ed  (BNK-664 @320ba06 → HEAD +1)
+  fix(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): surface branch-aware recovery steps
+  3-file +24/-4: VisitNhisImportPanel.test.jsx +7 / config/visits.js +6-3 / config/visits.test.js +15-1
+  WT CLEAN · ahead 266 vs origin/test=ab4de83 (BNK-664 265 → +1)
+BE develop @3d4e58af507044a02b7ec2dd000257ad46169570  (BNK-664 @3d4e58a → zero advance)
+  WT CLEAN · ahead 592 vs origin/test=598d108 (carry)
+merge gate 858 (FE 266 + BE 592 · +1 FE-only vs BNK-664 857 · 양쪽 WT CLEAN → tester FF 가속 가능)
+
+KPI (git ls-tree -r --name-only develop · git grep develop):
+  Route 118 (<Route\b excl *.test.jsx) + <Routes> 1 (App.jsx) = 119   IDENTICAL
+  page 93 (*Page.jsx)                                                  IDENTICAL
+  BE Test 274 (273 *Test.java + 1 *Tests.java)                        IDENTICAL
+  BE @Test 1994 (git grep -hoE '@Test\b' develop · @ParameterizedTest 3 별도)  IDENTICAL
+  FE test 485 (199 .test.js + 286 .test.jsx)                          IDENTICAL
+  migration V1–V183                                                    IDENTICAL
+  모듈 80.86% (23.45/29 · ✅21/△3/❌5)                                  IDENTICAL
+  reports 28                                                           IDENTICAL
+  → 8/8축 BNK-664 IDENTICAL (FE HEAD/ahead 외 변경 0)
+
+================================================================================
+[4] G-NHIS-IMPORT-ERROR-STATUS-SURFACE stage7 — FE recovery keyword ↔ BE 7-step guidance 정합
+================================================================================
+FE @2d9b9d3 config/visits.js VISIT_IMPORT_RECOVERY_KEYWORDS 갱신 (BE guidance 5단계 → 7단계 정합):
+  UNMATCHED: ["UNMATCHED","인정번호·성명"] → ["UNMATCHED)이면","지점 필터","수급자 검색"]
+  PARTIAL:   +["반영 0건","outcomeStatus=PARTIAL"] 추가
+  doc 주석: "BE guidance 5단계와 정합" → "BE NhisVisitScheduleImportGuidance 7단계와 정합"
+의미: import 실패 후 inline 복구 안내 키워드 필터를 BE 7-step copy 와 정렬 →
+      branch-filter deep-link guidance(다지점 컨텍스트 보존)가 UNMATCHED/PARTIAL 행에 노출.
+11-stage BNK→COD chain: candidate(655)→BE분류(656)→FE inline(656)→controller test(658)→
+  keep-unmatched(659)→deep-link(659)→git-grounded(660)→FE branch persist+BE service lock(661)→
+  FE stale reset+BE highlight(663)→BE counter integrity(664)→**FE recovery keyword 정합(665)**.
+경쟁 4종 유일 full-stack 실시간 in-app 복구 loop + regression-safe contract 우위 deepening.
+
+================================================================================
+요약
+================================================================================
+신규 snapshot 1건(본 파일) · 덮어쓰기 0건 · zero drift IDENTICAL 2건(NHIS #44 411차·silverangel 셸 5-cycle)
+가정 번복 0(silverangel BNK-661 가정 HOLD 재확인) · 미확인 축소 1(silverangel host 정정+5-cycle 안정 확정)
+상태 변경 1(ogada FE HEAD +1) · KPI 변경 1(merge gate 857→858) · per-cycle minimum 4종 충족

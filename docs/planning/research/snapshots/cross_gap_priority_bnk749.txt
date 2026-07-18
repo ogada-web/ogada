@@ -1,0 +1,104 @@
+# 교차검증·갭 우선순위 — P0/P1 재정렬 + G-LINKAGE-RECORD FULL CLOSURE + 규제/공지/엑셀 스캔 (BNK-749)
+# 조사일: 2026-07-15T06:29:00Z (UTC) / KST 2026-07-15 15:29
+# 작성: benchmark_researcher [BNK]
+# rotation: 8h+ 교차검증·갭 우선순위 (이전 BNK 가정 번복·미확인 축소·G14/대시보드/v1.3-C/v2 CMS P0/P1 재정렬·신규 공지/엑셀 포맷 스캔)
+# 직전 동일 rotation: BNK-745(2026-07-15T03:37Z) → ~2.9h 후
+# 직전 사이클: BNK-748(2026-07-15T05:46Z·ogada git 실측 6–8h) → ~43분 후
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`d6f7069`** `feat(v1.2.1/G-LINKAGE-RECORD): wire client linkage records to BE API`
+  · WT **CLEAN** · ahead origin/test **2** (`origin/test=0448efa`)
+  · BNK-748 `@0448efa` → **+2** (`074b452` UXD-178 G-LINKAGE shell + `d6f7069` BE wire)
+  · `<Route\b`=131 + `<Routes>`=1 = **132**(carry) · `*Page.jsx`=**105**(carry)
+  · `.test.js`=216 · `.test.jsx`=308 = **524**(+5 vs BNK-748 519)
+  · accounting route 1 · payroll route 5
+- BE `develop` = **`5c683af`** `feat(v2/G21): add client linkage record module`
+  · WT **CLEAN** · ahead origin/test **654** (`test=598d108`)
+  · BNK-748 `@d248916` → **+1** (`5c683af`)
+  · `*Test.java`=290 · `*Tests.java`=1 = **291**(+1 Linkage) · `@Test`=**2183**(+5 vs BNK-748 2178)
+  · Flyway **V1–V194**(신규 V194=`client_linkage_records_carefor_1_10`)
+- 모듈 커버리지 `competitorModuleCoverage.js` = **29 entries · sum 28.15 · 28.15/29 = 97.07%**(BNK-748 27.15/29=93.62% → **+3.45pp**)
+  · id=1-10 **0→1.0** · id=1-5 1.0 · id=7-4 CMS 1.0 · id=12 **0.7** · id=10 **0.75** · id=2 **0.85** · id=8 **0.85**
+- merge gate **656** (FE 2 + BE 654 · BE-heavy · 양쪽 WT CLEAN → tester FF)
+  · vs BNK-748 **653**(FE 0 FULLY SYNCED + BE 653) = **FE +2 · BE +1**(G-LINKAGE-RECORD)
+
+### 교차검증 carry (closed chains · 가정 번복 아님)
+
+| chain | 근거 | 판정 |
+|---|---|---|
+| J03 3-channel + quiet-hours + SMS UI | BNK-741/744/748 carry | ✅ CLOSED |
+| US-V06 월단위 batch-unconfirm | BE `@d248916` cascade 6-entry + FE Panel(BNK-747) · UXD-178 a11y harden | ✅ CLOSED |
+| QA-B95 live-e2e default-safe | FE `@0448efa` opt-in fail-closed(BNK-748) | ✅ CLOSED |
+| G2 / id=1-5 · carefor 10-4 | FULL 1.0 | ✅ CLOSED |
+| CMS 요금 parity | `CmsPaymentMethodCatalog` 250/300 · id=7-4 1.0 | ✅ CLOSED carry |
+| **G-LINKAGE-RECORD / id=1-10** | BE V194+6-endpoint · FE ClientDetail tab+CRUD/dispatch wire | ✅ **FULL CLOSURE (BNK-749)** |
+
+## 1. ★★★ G-LINKAGE-RECORD FULL CLOSURE — sole 진성갭 id=1-10 소멸 (메뉴/필드/워크플로 블록)
+
+### 1-a. 케어포 1-10 ↔ ogada 구현 crosswalk (확인)
+
+| 축 | 케어포 (func.php · LIVE 000 「미확인」·disk) | ogada `@d6f7069`/`@5c683af` | 판정 |
+|---|---|---|---|
+| leaf | `1-10.연계기록지 발송 리포트` | ClientDetail tab `연계기록지` + `ClientLinkageRecordsReportPanel` | ✅ |
+| Entity | (미확인·정적 leaf) | `client_linkage_records` V194 · org/branch/client 멀티테넌트 · DRAFT/DISPATCHED | ✅ |
+| types | (미확인) | HOSPITAL\|HOME_CARE\|TRANSFER (CHECK · **OTHER 없음** = BNK-746 스펙 Δ) | ✅ 3-type |
+| API | (미확인) | GET/POST `/api/v1/clients/{id}/linkage-records` · GET/PATCH/DELETE `/{recordId}` · POST `/{recordId}/dispatch` = **6-endpoint** | ✅ |
+| FE 작성 | (미확인) | `ClientLinkageRecordForm` Field: 연계유형·대상기관·작성일·심신기능·제공급여 요약·퇴소 후 이용계획 · 초안 저장 / 발송 확정 | ✅ |
+| 발송 리포트 | report-type leaf | client-scoped ReportPanel(상태·유형·기관·발송시각) · **org-wide `/clients/linkage-records` Route 없음**(IA Δ·KPI 1.0 유지) | △ IA |
+| coverage | — | `competitorModuleCoverage.js` line20–21 `{ id:"1-10", coverage:1 }` | ✅ 0→1.0 |
+
+**결론(확인)**: BNK-746 G-LINKAGE-RECORD 스펙의 핵심(Entity+CRUD/dispatch+발송 이력) **FULL-STACK CLOSED**. OTHER type·org-wide 리포트 Route 는 구현 선택으로 생략(「확인」 IA Δ · 진성갭 재오픈 아님). 모듈 **93.62%→97.07%**.
+
+### 1-b. P0/P1 재정렬 · closed axes 재오픈 0 (메뉴/필드 블록)
+
+| 축 | Route / 스키마 | 재오픈 |
+|---|---|---|
+| **G14** | `/clients/:clientId/care-plan-form` | **0** |
+| **대시보드** | `/dashboard`·`/dashboard/hq` | **0** |
+| **v1.3-C** transport | V186–V190 | **0** |
+| **v2 CMS** | `/billing/{cms,easy-pay,cash-receipts}` | **0** |
+| 가정통신문 G2 | `/clients/home-newsletter` | n/a(FULL) |
+| M12 회계 | `/accounting` | n/a(id=12 0.7) |
+| M11 급여 | `/payroll/*` 5-route | n/a(FULL) |
+| **G-LINKAGE-RECORD** | ClientDetail tab `linkage` (전용 Route 0) | **CLOSED** |
+
+→ App.jsx closed-axes 13-path LIVE = **재오픈 0**.
+
+### 1-c. 갭 우선순위 Δ (BNK-745 → BNK-749)
+
+| id/축 | BNK-745 | BNK-749 | 실측 | 판정 | 우선순위 |
+|---|---|---|---|---|---|
+| **1-10 연계기록지** | **0**(sole 진성갭) | **1.0 FULL** | V194+6-API+ClientDetail wire · coverage 1 | ✅ **CLOSED** | lever 소멸 · PLAN_NOTES §215-1 CLOSE 후보 |
+| **12 수입지출·회계** | 0.7 | **0.7 carry** | `/accounting` LIVE·SSO OTP·실환경 credentials 미등록 | △ | **잔여 operational #1** |
+| **10 SMS·알림** | 0.75 | **0.75 carry** | J03 3-channel+quiet-hours+SMS UI·kind22 `dispatchImplemented=false`·RFID→SMS P2 | △ | **잔여 operational #2** |
+| 2 이동서비스 | 0.85 | 0.85 | NHIS #44 **483차** zero drift | △ | polish |
+| 8 직원·근태 | 0.85 | 0.85 | — | △ | 후속 |
+| G14/대시보드/v1.3-C/CMS/M11 | closed | closed | App.jsx LIVE | closed | **재오픈 0** |
+| P3 만료일 위젯 | 「가정」 | 「가정」 | dedicated Route 0(이지케어 patient-list BNK-739 참고) | 「가정」 | **격상 0** |
+| US-V06 batch-unconfirm | candidate | **CLOSED**(BNK-747) | carry | ✅ | — |
+
+- **가정 번복 1**: BNK-745~748 「sole 진성갭 = id=1-10 잔여」 → **CLOSED 로 번복**(상태 claim 갱신·경쟁 사실 오류 아님).
+- **신규 P0/P1 진성 갭(coverage 0)**: **0**(최초 사이클).
+- **closed axes 재오픈**: 0
+- **P3 dashboard 격상**: 0
+- **P0/P1 재정렬(확인)**: coverage-0 진성갭 **전량 소멸** → 최우선 = **operational levers**(M12 credentials → SMS dispatch/template → id=2/8 polish) · RFID SMS(BNK-743) P2 carry.
+
+## 2. 규제·공지·엑셀 재실측 (기존 URL · 신규 변경 스캔)
+
+| 소스 | HTTP·SIZE·md5 | 판정 |
+|---|---|---|
+| NHIS #44 이동서비스비 | 200·7,572B·`c886ff1f` | **483차** zero drift IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)) ↔ `TransportServiceFeeService` 6-link |
+| ezcare FAQ list | 200·80,057B·`00bfbc95` | size-lock · **hit-count DRIFT**(BNK-745 `1e4dfcef`→변경·~380-line diff·**rowid SETS IDENTICAL**·233·max 21781) → **엑셀 포맷 변경 0** |
+| FAQ 21844/21845 | 4,509B/`6aa1f62f` · 3,923B/`67233534` | chrome/내비 DRIFT(매뉴얼&가이드)·엑셀/마스킹 키워드 안정 → **포맷 변경 0** |
+| silverangel notice | 200·5,707,602B·`ea7d6b3d` | **IDENTICAL** · ≥221573 신규 공지 **0** |
+| carefor LIVE 3-URL | HTTP **000** 20s timeout | **79-cycle+** 「미확인」·disk `6226e6eb` 우선 |
+
+**결론(확인)**: 신규 규제/공지/엑셀 포맷 변경 **0** → import adapter·RU_1~4·CMS fee 상수 **긴급 재조정 불요**.
+
+## 3. planner 요약
+
+1. **★★★ id=1-10 G-LINKAGE-RECORD FULL CLOSURE** — REQUIREMENTS/USER_STORIES/ROADMAP/PLAN_NOTES §215-1 완료 반영·sole 진성갭 목록에서 제거·마케팅 카피 「연계기록지 작성→발송→이력을 ClientDetail 한 탭에서」.
+2. **★★ P0/P1 재정렬** — coverage-0 **0건** · 잔여 최우선 = id=12 credentials(0.7) → id=10 SMS dispatch/template(0.75) → id=2/8(0.85) · RFID SMS P2 · P3 만료일 「가정」 격상 0.
+3. **★ baseline** — FE `@0448efa`→**`@d6f7069`**(+2·ahead 2)·BE `@d248916`→**`@5c683af`**(+1·ahead 654·**V194**)·모듈 **97.07%**·merge gate **656**.
+4. **★ 규제 백본 483-cycle zero drift** — 상수 변경 불요.

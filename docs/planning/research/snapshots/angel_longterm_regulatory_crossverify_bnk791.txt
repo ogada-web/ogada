@@ -1,0 +1,69 @@
+BNK-791 엔젤·롱텀·규제 4-6h 역공학 크로스워크 (2026-07-16)
+======================================================================
+rotation: 엔젤·롱텀·규제 4–6h — silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4(NHIS #44)·2026 수가·평가27·단기보호·통합재가 교차검증
+직전 동일 rotation: BNK-787(2026-07-16T08:15Z) → ~2.8h 후
+직전 사이클: BNK-790(2026-07-16T10:50Z·이지케어 2-4h) → ~30분 후
+
+ogada baseline 실측 (git):
+  FE develop = cf8a248 (fix(v1.2.1/QA-B95): decode dash/minus/hyphen HTML entities in blockers)
+     WT DIRTY 4M (coder in-progress: notificationChannelStatus.js/.test.js·liveBackendProbe.js·liveE2eHarness.test.js)
+     ahead 0 vs origin/test=cf8a248 (FULLY SYNCED)
+  BE develop = 5b59e83 (fix(v2/QA-B95): decode NoBreak zero-width named entities)
+     WT CLEAN · ahead 695 vs origin/test=598d108 · BNK-790 7e02d58 → +1
+  Route 133 (<Route\b 132 + <Routes> 1) · Page 106 · billing 17 · payroll 5 · transport 9
+  FE test 530 (217 .test.js + 313 .test.jsx) · BE Test 294 (293 Test.java + 1 Tests.java) · BE @Test 2254 (+2 vs BNK-790 2252)
+  Flyway V1–V196 (신규 0) · 모듈 97.41% (29-entry·가정 번복 0)
+  merge gate 695 (FE 0 + BE 695 · BE-heavy → tester FF)
+
+======================================================================
+[1] ★★★ lcms(엔젤 CMS) home 배너 SEMANTIC DRIFT — CJ프레시웨이 MOU 식단 파트너십 (NEW)
+======================================================================
+URL: https://www.lcms.or.kr/  HTTP 200 · 50,498B · md5 6b7502914de15aa75cabe04740dfca2c
+canonical carry: lcms_home_live_bnk779.html = bnk787.html = c0c660760e9e5691491ace28f9d15f74 (50,740B · type1 배너 LOCK 다수 사이클)
+→ DRIFT: c0c66076(type1) → 6b750291(type3) · −242B · 다중 사이클 LOCK 후 최초 실체 변동 (cachebuster 아님)
+
+배너 diff (verbatim, section class 변경 ad_cont type1 → type3):
+  [이전 type1] "요양기관 홈페이지! 고민하지 마세요! / 엔젤에서 쉽고 빠르게 만들어 드립니다 / 총 3가지 퀄리티 높은 디자인" → 홈페이지 제작 promo, 체험하기 링크(websiteProvided.do)
+  [현재 type3] "엔젤시스템 & CJ프레시웨이 / 업무협약(MOU) 체결"
+     i:  "CJ프레시웨이와 MOU 체결을 통해 노인식단 전문영양사가 작성한 식단표 활용"
+     span:"노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로 식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다."
+     자세히보기 → https://silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864&Tmp_thread=1&Tmp_depth=0
+
+grep -oiF (lcms791.html):
+  식단 3 · 영양사 1 · CJ프레시웨이 2 · MOU 2
+  이동서비스 0 · 배차 0 · GPS 0 · 차량 0  → CMS 공개면 여전히 이동/배차/차량 leaf 0-hit
+
+판정: 엔젤시스템이 **식단/영양(meal-plan sourcing)** GTM 부가서비스로 확장(CJ프레시웨이 전문영양사 식단표 무상제공 + 식재료 구매계약).
+      이는 소프트웨어 core feature가 아니라 **파트너십/식자재 조달 번들** — ogada meal_records/식사기록 모듈과 인접하나 신규 구축 갭 아님.
+      P3 「가정」 GTM 시그널: ogada 식단표 템플릿/영양관리 관점 참고만 (격상 X).
+
+======================================================================
+[2] ★★★ NHIS #44 이동서비스비 러-1~4 — 525차 zero drift IDENTICAL
+======================================================================
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 본문 IDENTICAL (BNK-790 524차 → +1 = 525차)
+verbatim carry: 「‘러-1’부터 ‘러-4’까지 비용의 50%」·「1일 1회만 산정」·「수급자가 부담하지 아니한다」·편도 최단거리
+↔ ogada TransportServiceFeeService (RU_1~RU_4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY) + id=2 0.85 6-link chain = 경쟁 4종 유일 full-stack 우위 carry
+→ 규제 상수 재조정 불요.
+
+======================================================================
+[3] ★★ silverangel HTTP 000 (down) · longterm shell 세션-의존 DRIFT (미확인)
+======================================================================
+silverangel system_feature.do / fcltySlry/essentialWork.do : HTTP 000 (재실측 불가·타임아웃) → 미확인
+  disk canonical carry:
+    silverangel_system_feature_live_bnk787.html = c950719098eecaf748bbdeea5deb93da (45,601B)
+    silverangel_daycareEssentialWork_live_bnk787.html = c79c1be37f947aab04ab7ba35cc7814d (131,664B)
+  disk grep(daycareEssentialWork bnk787): 기능회복 6 · 이동서비스 6 · 동승 2 · 수칙 8 · 목욕 2 · 프로그램 49
+    → 평가 41·42 이동서비스 수칙/동승 carry · 지표27 「기능회복훈련」 ≠ 일련27 「가족과의 소통」 dual-numbering(G17 CLOSED) carry
+longterm:
+  502(단기보호) https://longtermcare.or.kr/npbs/e/b/502/npeb502m01.web : HTTP 200 · 71,008B · d9ec1f8e (canonical 89,162B) → shell SIZE DRIFT
+  610(통합재가) https://longtermcare.or.kr/npbs/e/b/610/npeb610m01.web : HTTP 200 · 70,237B · 21598558
+  → longterm shell 은 세션/인증서 상태에 따라 렌더 상이(로그인 필요 영역) = 미확인 · 단기보호 74,060/통합재가 월 10만원 상수(BNK-553 canonical)는 law.go.kr·NHIS 근거로 carry, shell DRIFT 로 번복 X.
+
+======================================================================
+[4] planner 반영 제안 (BNK-791)
+======================================================================
+- REQUIREMENTS/COMPETITOR_MATRIX: 엔젤 CMS(lcms) 신규 CJ프레시웨이 MOU 식단표/영양 부가서비스 = GTM 파트너십 시그널 (P3「가정」). ogada 식단/영양 core 갭 아님 — 식사기록 모듈 인접 참고만.
+- 규제 백본: NHIS #44 러-1~4 525차 zero drift → 이동서비스비 상수(ONE_WAY_RATIO=0.5·1일1회) 재조정 불요 · id=2 유일 full-stack 차별화 carry.
+- 미확인 축소: silverangel live 000 → disk canonical carry(가정 승격 X) · longterm shell 세션-의존 DRIFT 미확인.
+- 다음 rotation: ogada git 실측 6-8h(모듈 KPI·갭 우선순위 재산정) → 교차검증 8h+.

@@ -1,0 +1,9 @@
+BNK-845 carefor manual PDF zero-drift remeasure
+조사일: 2026-07-17T21:15:21Z
+URL: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+disk: carefor_manual_pdf_bnk825.pdf
+SIZE: 9992772
+md5: 96f7d45eaca91525068ec9bfb626fb18
+pages(pypdf): 132
+판정: BYTE-IDENTICAL vs BNK-825/821/690 (96f7d45e) — PDF TOC/본문 drift 0
+LIVE www.carefor.co.kr PDF/manual: HTTP 000 timeout (carefor LIVE DOWN carry)

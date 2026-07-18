@@ -1,0 +1,69 @@
+BNK-646 ogada git remeasure (cross-cycle KPI snapshot)
+조사일: 2026-06-26T04:15:00Z | rotation: ogada git 실측 6–8h (QA-B95 cluster 15th layer cross-stream)
+
+=== FE develop (확인) ===
+@f851a597215661bf016fa8071fe8d0b8474dbc01
+  commit msg: fix(v1.2.1/QA-B95): scope new g21 seed blockers to g21 suites
+  WT: CLEAN (git status -s = 0 lines)
+  ahead vs origin/test: 254
+  Δ vs BNK-645 (@a727862): HEAD +1
+  diff: 2-file +28L — `liveConfig.js`+3(`isG21Blocker` filter when !requireG21Ready) · `liveE2eHarness.test.js`+25(3 regression: ignore g21 blockers in non-G21 suites · keep when requireG21Ready · service-unavailable detail in skip reasons)
+
+=== BE develop (확인) ===
+@0f197679d95b1aba44355f38f76d27918e86aab2
+  commit msg: fix(v2/QA-B95): expose machine-readable g21 seed status code
+  WT: CLEAN (git status -s = 0 lines)
+  ahead vs origin/test: 581
+  Δ vs BNK-645 (@4df9465): HEAD +1
+  diff: 6-file +43L — `LiveE2eOperationReadinessSupport.resolveG21SeedStatusCode()` 6-value enum · `LiveE2eProbeResponse.g21SeedStatusCode` record field · `HealthController` `liveE2eG21SeedStatusCode` payload · `LiveE2eController` probe inject · test +11L (HealthControllerTest +6 · LiveE2eControllerTest +5)
+
+=== merge gate (확인) ===
+  835 (= 254 FE + 581 BE) = +2 cross-stream vs BNK-645 833
+  cross-stream: FE +1 / BE +1 = 양쪽 advance (BNK-645 FE-only +1 패턴 종료)
+
+=== KPI grep 실측 (확인 · BNK-645 대비 delta) ===
+| 지표 | 값 | Δ vs BNK-645 |
+|---|---|---|
+| Route | **118** (117 `<Route\b` + 1 `<Routes>` in App.jsx) | 0 |
+| page | **93** (`*Page.jsx`) | 0 |
+| FE test 파일 | **482** (198 .test.js + 284 .test.jsx) | 0 |
+| BE Test 파일 | **272** (271 `*Test.java` + 1 `*Tests.java`) | 0 |
+| BE @Test annotation | **1975** | +1 |
+| V*__ migration | **182** | 0 |
+| 모듈 coverage | **80.86% (23.45/29)** | 0 |
+| reports route (App.jsx) | **28** | 0 |
+
+=== QA-B95 cluster 15th layer — g21 seed status machine contract (확인 · 신규 workflow block) ===
+BE `g21SeedStatusCode` enum (machine-readable · `/health` + `/live-e2e/probe` dual expose):
+  - `disabled` — g21 seed bootstrap off
+  - `service-unavailable` — bootstrap on but g21 seed service down
+  - `error` — null status / probe failure
+  - `not-applicable` — branch context N/A (operation ready)
+  - `branch-missing-or-inactive` — branch missing or inactive
+  - `applicable` — g21 seed checks active
+
+Detail string (human-readable companion · BNK-643~645 carry):
+  `g21-seed=applicable visit-schedule={present|missing} billing-visit-schedule={present|missing} nhis-import={present|missing}`
+
+FE 15th layer scoping (`@f851a59`):
+  - `getEffectiveOperationBlockers()`: when `requireG21Ready=false`, filter `isG21Blocker()` tokens (g21-seed-missing · visit-schedule-missing · nhis-import-missing · g21-seed-service-unavailable 등)
+  - prevents non-G21 live suites from false-positive operation readiness blocks
+  - G21 suites (`requireG21Ready=true`) still surface full seed diagnostics + `g21 seed status:` detail line
+
+FE consume gap (16th layer candidate):
+  - `rg g21SeedStatusCode src/frontend` = **0 hit** (BE landed · FE parse pending)
+  - precedent: BNK-637~639 BE expose → FE consume pattern
+
+NHIS #44 cross-walk (carry):
+  - `nhis-import={present|missing}` probe element ↔ NHIS #44 공단 import batch seed
+  - ogada 경쟁 4종 유일 full-stack (TransportServiceFeeService + TransportServiceLog + import reconcile)
+
+=== 백본 zero drift 재실측 (398차) ===
+zero drift IDENTICAL:
+  - NHIS #44 live HTTP 200·7,572B·md5 `c886ff1f` (398차 · BNK-645 397차 carry +1)
+  - silverangel daycare/daycareEssentialWork.do HTTP 200·131,664B·md5 `c79c1be3` (398차)
+
+=== tester / coder / planner action (BNK-646) ===
+- tester: FF merge **835** (cross-stream +2·양쪽 WT CLEAN·선행 commit 불필요)
+- coder: QA-B95 **16th layer FE candidate** — `liveBackendProbe.js` parse `g21SeedStatusCode` / `liveE2eG21SeedStatusCode` (BE `@0f19767` landed · FE 0 hit)
+- planner: baseline FE `@a727862`→**`@f851a59`** · BE `@4df9465`→**`@0f19767`** · merge gate 833→**835** · KPI carry (Route/page/module unchanged) · M11/M12 P1 lever carry (+6.9pp)

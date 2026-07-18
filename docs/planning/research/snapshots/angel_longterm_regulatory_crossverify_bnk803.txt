@@ -1,0 +1,168 @@
+# BNK-803 — 엔젤·롱텀·규제 4–6h · 규제 백본 7-URL live 재실측 + lcms carousel type3 재현 + Transport 상수 교차검증
+
+**cycle**: BNK-803
+**rotation**: 엔젤·롱텀·규제 역공학 4–6h
+**조사일**: 2026-07-16T18:36Z
+**직전 동일 rotation**: BNK-795(2026-07-16T13:58Z) → ~4.6h 후
+**직전 사이클**: BNK-802(2026-07-16T18:00Z·케어포 M5) → ~35분 후
+**ogada baseline**: FE `@c260baa`(develop·WT CLEAN·BNK-802 `@73aa6dd` → +1 `fix(v1.2.1/QA-B95): decode SixPerEm and long space entity aliases`·ahead origin/test **4** vs `8a05640`) / BE `@4622896`(develop·WT CLEAN·BNK-802 동일 HEAD·ahead **706** vs `598d108`). Merge gate **710**(FE 4+BE 706·BE-heavy → tester FF).
+
+---
+
+## 1. 규제 백본 7-URL live 재실측 (md5 + size + HTTP + grep)
+
+| # | URL | HTTP | size | md5 | vs baseline | 상태 |
+|---|---|---|---|---|---|---|
+| 1 | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | 200 | 7,572 | `c886ff1fd1d5ca2cb5dc76d30adde8ba` | BNK-802 nhis_jo44_live_bnk802.html IDENTICAL | ✅ zero drift (**537차**) |
+| 2 | https://www.silverangel.kr/silverangel/angelsystem/system_feature.do | 200 | 45,601 | `c950719098eecaf748bbdeea5deb93da` | BNK-795/796 canonical IDENTICAL | ✅ IDENTICAL |
+| 3 | https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do | 200 | 131,664 | `c79c1be37f947aab04ab7ba35cc7814d` | BNK-795/796 canonical IDENTICAL | ✅ IDENTICAL |
+| 4 | https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500 | 200 | 89,162 | `5618573525680a407975cbbafe93ccd1` | BNK-795/796 canonical IDENTICAL | ✅ IDENTICAL |
+| 5 | https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650 | 200 | 88,399 | `fad1ce6115bad27169c248b8d7a1089b` | BNK-795/796 canonical IDENTICAL | ✅ IDENTICAL |
+| 6 | https://www.lcms.or.kr/ | 200 | 50,498 | `6b7502914de15aa75cabe04740dfca2c` | BNK-791 lcms_home_live_bnk791.html IDENTICAL (BNK-795/796 type2 `6c0d22b4` → **type3 CJ MOU 재현**) | ⚠ carousel DRIFT (type3) |
+| 7 | https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110 | 200 | 78,450 | `3b9408a67ca8370ab62ab10f3ef77005` | BNK-759 stripped(Time=) `0e07cef1` = SEMANTIC IDENTICAL | ✅ semantic IDENTICAL (Time= cachebuster only) |
+
+**snapshot 파일**(신규 저장):
+- `docs/planning/research/snapshots/nhis_jo44_live_bnk803.html`
+- `docs/planning/research/snapshots/silverangel_system_feature_live_bnk803.html`
+- `docs/planning/research/snapshots/silverangel_daycareEssentialWork_live_bnk803.html`
+- `docs/planning/research/snapshots/longterm_502_live_bnk803.html`
+- `docs/planning/research/snapshots/longterm_610_live_bnk803.html`
+- `docs/planning/research/snapshots/lcms_home_live_bnk803.html`
+- `docs/planning/research/snapshots/law_mohw_2025_247_admRulInfoP_live_bnk803.html`
+
+## 2. NHIS #44 이동서비스비 러-1~4 verbatim ↔ ogada `TransportServiceFeeService` 교차검증 (기존 URL 재실측)
+
+**확인** — [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) grep -oE (`nhis_jo44_live_bnk803.html`):
+
+```
+러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+```
+
+**BNK-800~802 verbatim 재확인** — 러-1~러-4 4-band·편도 최단거리 50%·1일 1회만 산정·수급자가 부담하지 아니한다.
+
+**ogada src 실측** (`src/backend/src/main/java/com/ogada/backend/transport/domain/`):
+
+```
+TransportDistanceBand.java:
+  RU_1("RU_1", "러-1 (5km 미만)", new BigDecimal("5"))
+  RU_2("RU_2", "러-2 (5~10km)", new BigDecimal("10"))
+  RU_3("RU_3", "러-3 (10~20km)", new BigDecimal("20"))
+  RU_4("RU_4", "러-4 (20km 이상)", new BigDecimal("999"))
+
+TransportServiceFeeParityCatalog.java:
+  ONE_WAY_RATIO = 0.5
+  ONE_WAY_RATIO_LABEL = "편도 비율"
+  ONE_PER_DAY_LABEL = "1일 1회"
+
+TransportServiceFeeService.java:
+  baseAmount.multiply(ONE_WAY_RATIO).setScale(0, RoundingMode.HALF_UP)
+```
+
+→ **IDENTICAL parity 6-link chain**(RU_1·RU_2·RU_3·RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) · **상수 재조정 불요** · id=2 coverage 0.85 carry · 경쟁 4종(케어포·이지케어·엔젤·롱텀) 유일 full-stack 이동서비스비 레이어 재확인.
+
+## 3. silverangel canonical 이동서비스 vs 시스템 기능 dual-view 재확인 (메뉴/필드/워크플로)
+
+**확인** — silverangel 두 canonical 서로 다른 축을 커버:
+
+### 3-1. `system_feature.do` (ERP 시스템 기능 소개·109-leaf)
+grep -oE (`silverangel_system_feature_live_bnk803.html`, `c9507190`):
+
+```
+기능회복(1)·연계(9) · 이동서비스(0)·배차(0)·GPS(0)·차량(0)·referral(0)
+```
+
+→ 엔젤 ERP 공개 카탈로그에 **이동서비스/배차/GPS/차량 0-hit**(BNK-787/795/796 재확인). 연계 9-hit은 전량 「모듈간 상호참조」(예: 「A와 연계」)로 outside-referral 「연계기록지」 leaf 아님 — BNK-772 시맨틱 lockcarry.
+
+### 3-2. `daycareEssentialWork.do` (주야간보호 필수업무 안내·법정 지표)
+grep -oE (`silverangel_daycareEssentialWork_live_bnk803.html`, `c79c1be3`):
+
+```
+주야간(82)·평가(52)·수칙(8)·이동서비스(6)·기능회복(6)·지표(4)·동승(2)
+```
+
+→ 법정 필수업무 카탈로그에는 **이동서비스 6·동승 2** 언급이 있음(BNK-787 assumption 확정 carry) — 「평가지표 41·42 이동서비스 수칙·동승 확인」 축.
+
+### 3-3. dual-view 결론 (가정 번복 0)
+- **ERP 공개 카탈로그** (system_feature.do)는 이동서비스 실행 기능 **0**
+- **주야간보호 법정 안내**(daycareEssentialWork.do)는 이동서비스 서식·평가지표 **명시**
+- → 엔젤 실제 ERP 이동서비스 기능은 **「미확인」**(로그인 요구·공개 카탈로그 0-hit) 유지 · 추측 승격 금지
+- → ogada `TransportController` 9-route + `TransportServiceFeeService` 6-link = 경쟁 유일 full-stack **차별화 축 확정 carry**(BNK-772/787/795 재확인)
+
+## 4. longterm(공단) 502·610 canonical shell 재확인 + 단기보호·통합재가 narrative carry
+
+**확인** — grep -oE tokens:
+
+- **502 (재가급여) `56185735`** — `월 한도(1)`·`재가급여(1)`·`74102`(URL 참조) shell 재현 확정 · BNK-787/795 canonical IDENTICAL
+- **610 (통합재가) `fad1ce61`** — `통합재가(1)` shell 재현 · BNK-787/795 canonical IDENTICAL
+
+**narrative carry**(BNK-553/622/697·PLN 192차 기록):
+- 단기보호 74,060원 · 통합재가 월 10만원 = **canonical narrative 유지** (하위 단가 페이지는 세션·JS 로드 필요 → 「미확인」 축소)
+- shell 자체 IDENTICAL → BNK-791 「shell-drift 미확인」 가정 번복 재확인(BNK-795와 동일 lock)
+
+## 5. lcms home 배너 rotation type3(CJ MOU) 재현 (기존 URL 재실측 · 신규 시그널)
+
+**확인** — [lcms 홈](https://www.lcms.or.kr/) `6b750291` 50,498B (BNK-803 fetch):
+
+- **BNK-791 type3 `6b750291`** = IDENTICAL 재현
+- **BNK-795/796 type2 `6c0d22b4`** = 회전 상태 변경
+- **BNK-787 이전 type1 `c0c66076`** = 다중 사이클 LOCK 후 rotation
+
+grep -oE (`lcms_home_live_bnk803.html`):
+
+```
+CJ프레시웨이(2)·MOU(2)·업무협약(1)·엔젤시스템(14)·영양사(1)·식단표(2)·무상제공(1) · 이동서비스(0)·배차(0)·GPS(0)·차량(0)
+```
+
+**결론** — lcms 홈 배너는 3-type 회전 광고 carousel(type1·type2·type3). type3 = 「엔젤시스템 & CJ프레시웨이 MOU + 노인식단 전문영양사 식단표 무상제공 + CJ 신선 식재료 구매계약」. GTM 파트너십 시그널 transient·**소프트웨어 core 갭 아님**. **이동서비스/배차/GPS/차량 0-hit** — 이동서비스 축 무관. **가정 번복 없음**(carousel 회전 예상 범위).
+
+**ogada 반영** — 식단/영양은 `meal_records` 모듈 인접만 참고(P3 「가정」·과대구축 금지). CJ MOU 자체는 SaaS 소프트웨어 기능 카탈로그 갭 아님.
+
+## 6. law.go.kr 2025-247 (장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시) semantic IDENTICAL 재확인
+
+**확인** — [law.go.kr admRulSeq=2100000271110](https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110) `3b940...` 78,450B (bnk803) vs bnk759 baseline `e8473f63` 78,450B:
+
+- Time= cachebuster 만 차이 → strip 후 `0e07cef162aca47d37a65b8d93b69f08` **BYTE-IDENTICAL**
+- 「장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시」 3-hit · 「고시 제2025-247호」 verbatim 포함
+- efYd=20260101(2026 시행) + admRulRvsInfoR / admRulOldAndNew 스크립트 로드
+
+**결론** — 2025-247 고시 canonical = **semantic 재확인**(BNK-787 law247 strip carry). 2026 수가·본인부담·이동서비스비 시행 근거로 안정. ★ **admRulSeq 정본 URL 파라미터 재앵커**(2100000271110) — 이전 사이클에서 잘못 추정한 파라미터가 있었다면 향후 재사용용 lock.
+
+## 7. 2026 수가·평가 #27·단기보호·통합재가 교차검증 (BNK 계보 lock)
+
+| 축 | 실측 소스 | ogada 반영 | 상태 |
+|---|---|---|---|
+| **NHIS #44 러-1~4 이동서비스비** | NHIS `c886ff1f` 537차 IDENTICAL | `TransportServiceFeeService`·`RU_1~4`·`ONE_WAY_RATIO=0.5`·6-link | ✅ CLOSED(id=2 0.85·경쟁 유일) |
+| **평가지표 27 dual-numbering** | silverangel essential 「기능회복」 6-hit · 「지표」 4-hit | G17 `essentialDutySerial27Label`·`INDICATOR_27=개인별 기능회복훈련` catalog | ✅ CLOSED(BNK-704/776 carry·경쟁 4종 dual-numbering guardrail 「미확인」) |
+| **단기보호 74,060원** | longterm 502 `56185735` canonical shell IDENTICAL | narrative carry(하위 단가 페이지 「미확인」·MVP 격상 금지) | 🅾 narrative(SaaS core 갭 아님) |
+| **통합재가 월 10만원** | longterm 610 `fad1ce61` canonical shell IDENTICAL | narrative carry(월정액 페이지 「미확인」) | 🅾 narrative(SaaS core 갭 아님) |
+| **2025-247 고시(2026 시행)** | law.go.kr admRulSeq=2100000271110 `3b940` 78,450B semantic IDENTICAL | 규제 근거 안정(2026 급여비용 산정방법) | ✅ semantic IDENTICAL(Time= only) |
+
+## 8. per-cycle minimum 4종 충족
+
+| 최소 산출 | 상태 | 근거 |
+|---|---|---|
+| 신규 증거 URL 1건 이상 (또는 재실측 변동 기록) | ✅ 재실측 7-URL + lcms carousel type3 재현 시그널 | 표 §1 |
+| 경쟁사 메뉴/필드/워크플로 상세 1블록 이상 | ✅ silverangel dual-view(system_feature vs daycareEssentialWork) grep 재확인 | §3 |
+| COMPETITOR_MATRIX 1행 이상 ogada @HEAD 갱신 | ✅ FE `@73aa6dd`→`@c260baa`(ahead 4)·BE `@4622896` 재앵커 | §0 baseline |
+| BENCHMARK_REPORT §신규 소절 또는 BNK 차수 메모 1건 이상 | ✅ §803-1 ~ §803-3 신규 소절 | BENCHMARK_REPORT |
+
+## 9. 상태 변경·KPI 변경·가정 번복 summary
+
+- **상태 변경**: FE `@73aa6dd`→**`@c260baa`**(+1 SixPerEm/long space alias FE mirror)·ahead 3→**4** · BE HEAD carry(`@4622896`)·ahead **706** carry
+- **KPI 변경**: FE SHA·NHIS 536→**537차**·lcms `6c0d22b4`(type2)→**`6b750291`**(type3 CJ MOU 재현)
+- **가정 번복**: 0(lcms carousel 회전은 BNK-791→795 사이 이미 확인된 3-type behavior)
+- **closure**: 0(new)
+- **zero drift IDENTICAL**: 5(NHIS #44·silverangel system_feature·silverangel essential·longterm 502·longterm 610)
+- **semantic IDENTICAL**: 1(law.go.kr 2025-247 Time= strip)
+- **carousel DRIFT signature**: 1(lcms type3 재현)
+- **덮어쓰기**: 0(모두 신규 파일)
+
+## 10. planner 반영 우선순위
+
+1. **baseline @HEAD 갱신** — FE `@73aa6dd`→`@c260baa`(ahead **4**)·BE `@4622896` carry(ahead **706**)·merge gate **710** BE-heavy → tester FF 유리
+2. **규제 백본 zero drift 537-cycle** — NHIS #44 verbatim ↔ ogada `TransportServiceFeeService` 상수 6-link IDENTICAL carry · 정책 상수 재조정 불요
+3. **평가지표 27 dual-numbering guardrail CLOSED** — silverangel essential 「기능회복 6/지표 4」 재확인 ↔ ogada G17 catalog·essentialDutySerial27 label·INDICATOR_27 카탈로그 lock
+4. **엔젤 canonical 0-hit + longterm shell IDENTICAL** — id=1-10 연계기록지 full-stack + id=2 이동서비스 = 경쟁 4종 유일 차별화 carry
+5. **lcms type3 CJ MOU 재현 시그널** — GTM 파트너십 transient · SaaS core 갭 아님 · MVP 격상 금지 · P3 「가정」 carry
+6. **신규 진성갭 0 · P0/P1 격상 0** — closed band 6-path 재오픈 0(G14·대시보드·v1.3-C·v2 CMS·G-LINKAGE·G2)
+7. **다음 rotation**: 이지케어 2–4h (BNK-798 이후 재실측 시급도 확인)

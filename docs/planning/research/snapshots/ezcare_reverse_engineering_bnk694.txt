@@ -1,0 +1,71 @@
+BNK-694 ezCare reverse engineering evidence
+timestamp=2026-06-27T11:52Z requested cycle; fetched=2026-06-27T11:53:35.887481+00:00
+
+[Fetch results]
+{"file": "ezcare_e01_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/?PG=e01", "status": 200, "bytes": 47130, "md5": "695bca9a", "final": "https://ezcare.easyms.co.kr/?PG=e01"}
+{"file": "ezcare_fnc_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/new/ezCare_fnc.html", "status": 200, "bytes": 17870, "md5": "850e932c", "final": "https://ezcare.easyms.co.kr/new/ezCare_fnc.html"}
+{"file": "ezcare_charge_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/new/ezCare_charge.html", "status": 200, "bytes": 22979, "md5": "3c5eef9b", "final": "https://ezcare.easyms.co.kr/new/ezCare_charge.html"}
+{"file": "ezcare_faq_21474_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21474&type=web", "status": 200, "bytes": 15369, "md5": "e7a6fa1c", "final": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21474&type=web"}
+{"file": "ezcare_faq_21589_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21589&type=web", "status": 200, "bytes": 15971, "md5": "a5e2e48c", "final": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21589&type=web"}
+{"file": "ezcare_faq_21778_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21778&type=web", "status": 200, "bytes": 14566, "md5": "8ed0cf75", "final": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21778&type=web"}
+{"file": "ezcare_faq_21844_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web", "status": 200, "bytes": 14474, "md5": "d0aa760c", "final": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web"}
+{"file": "ezcare_faq_21845_live_bnk694.html", "url": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21845&type=web", "status": 200, "bytes": 13915, "md5": "5b78c947", "final": "https://ezcare.easyms.co.kr/help/faq.ez?rowid=21845&type=web"}
+{"file": "ezcare_new_ez_demo_live_bnk694.html", "url": "existing-local", "status": "local", "bytes": 138122, "md5": "32964c2b"}
+{"file": "ezcare_help_faq_list_live_bnk694.html", "url": "existing-local", "status": "local", "bytes": 80057, "md5": "80e89c05"}
+{"file": "ezcare_home_live_bnk694.html", "url": "existing-local", "status": "local", "bytes": 106145, "md5": "c0f62f3e"}
+{"file": "nhis_jo44_live_bnk694.html", "url": "existing-local", "status": "local", "bytes": 7572, "md5": "c886ff1f"}
+{"file": "silverangel_notice_221564_live_bnk694.html", "url": "existing-local", "status": "local", "bytes": 1812677, "md5": "eb263a09"}
+
+[FAQ focus entries] total_entries=233 hit_sum=3637389
+{"rowid": "21589", "title": "급여제공기록지 RFID 전송분을 문자로 발송하고 싶어요.", "cats": "문자발송", "hit": 22766}
+{"rowid": "21473", "title": "본인부담금이 공단과 달라요!", "cats": "본인부담금,공단연동", "hit": 22019}
+{"rowid": "21298", "title": "공단에 등록한 일정을 이지케어에 업로드하는 방법은?", "cats": "일정관리,공단연동", "hit": 19397}
+{"rowid": "21474", "title": "일정확정은 언제해야 하나요?", "cats": "일정관리,본인부담금,공단연동", "hit": 16575}
+{"rowid": "21614", "title": "공단일정 가져오기시 25년 수가로 적용이 안돼요.(공단수가 재산정)", "cats": "일정관리", "hit": 16232}
+{"rowid": "21657", "title": "일정확정 가이드", "cats": "일정관리,본인부담금", "hit": 14697}
+{"rowid": "21167", "title": "일정확정을 취소하고 싶어요", "cats": "일정관리", "hit": 14436}
+{"rowid": "21778", "title": "공단과 본인부담금이 다를때 조치방법", "cats": "본인부담금", "hit": 2566}
+{"rowid": "21563", "title": "엣지(edge)에서 엑셀파일 다운로드가 안될때 처리방법", "cats": "서식출력/설정,기타", "hit": 16091}
+{"rowid": "21172", "title": "공단일정 이지케어 가져올때 계획일정, 청구일정 올리는 시점을 알고 싶어요?", "cats": "일정관리,공단연동", "hit": 15340}
+{"rowid": "21534", "title": "크롬(chrome)에서 엑셀파일 다운로드가 안될때 처리방법", "cats": "서식출력/설정,기타", "hit": 15178}
+
+[new.ez top nav]
+{"no": "1", "title": "직원", "items": [{"label": "관리", "href": "?PGID=worker-list"}]}
+{"no": "2", "title": "수급자", "items": [{"label": "관리", "href": "?PGID=patient-list"}]}
+{"no": "3", "title": "방문일정", "items": [{"label": "관리", "href": "javascript:ScheduleManager('','')"}]}
+{"no": "4", "title": "RFID점검", "items": [{"label": "일정확정", "href": "?PGID=schedule-fix"}]}
+{"no": "5", "title": "본인부담", "items": [{"label": "청구", "href": "?PGID=pAmt-a100"}, {"label": "CMS", "href": "#none"}]}
+{"no": "6", "title": "직원급여", "items": [{"label": "관리", "href": "javascript:pop_WAV6()"}]}
+{"no": "7", "title": "재무회계", "items": [{"label": "현황", "href": "javascript:ezcare_w4c()"}]}
+{"no": "8", "title": "세무·사회보험", "items": []}
+{"no": "9", "title": "기관관리", "items": [{"label": "서류함", "href": "?PGID=docAsm-d100"}, {"label": "스케쥴", "href": "?PGID=agency-schedule"}]}
+{"no": "10", "title": "기관평가", "items": [{"label": "현황", "href": "/new.ez?PGID=guide-E100&tmp=1782560958#tab0"}]}
+
+[new.ez quick links sample]
+{"label": "직원관리", "href": "?PGID=worker-list"}
+{"label": "수급자관리", "href": "?PGID=patient-list"}
+{"label": "일정관리", "href": "javascript:ScheduleManager('','')"}
+{"label": "급여관리", "href": "javascript:pop_WAV6()"}
+{"label": "RFID태그 비교", "href": "javascript:RfidTagCompare()"}
+{"label": "FAQ", "href": "#"}
+
+[new.ez field/id hints]
+btn-carmatch-open
+btn-help-F1
+dialog-call-detail
+dialog-goyong24-post
+dialog-post-insert
+
+[public price/institution snippets]
+<h5 class="intro-sub-title"><span class="blue-color-txt">이지케어 이용현황</span> (전국 9,357개 기관 이용중)</h5> </div> <div class="graph-box-wrap"> <div class="area"> <div class="graph-box"> <ul class="graph-box-lis
+class="intro-sub-txt">단위: 개소 / 전국재가센터수(방문요양 기준): 17,489개 / 이용시설수: 9,357개 / 점유율: 53.50% / 집계일: 2026.06.26</p> </div> </div> </div> <div class="sub-tab-con area" id="fixedIntroCon03"> <h4 class="intro-icon-with-ti
+/ul> </div> <p class="intro-sub-txt">단위: 개소 / 전국재가센터수(방문요양 기준): 17,489개 / 이용시설수: 9,357개 / 점유율: 53.50% / 집계일: 2026.06.26</p> </div> </div> </div> <div class="sub-tab-con area" id="fixedIntroCon03">
+ze:11px; letter-spacing:-1px;">(2026년 06월 30일까지)</span> → <B style="color:red;">33,000원</B> <!-- <span style="text-decoration:line-through; font-size:15px;">55,000원</span> <span style='font-size:15px; font-weight:bold; color:red;'>100%
+:12pt"> <span style="text-decoration:line-through; font-size:15px;">55,000원</span> <span style='font-size:15px; font-weight:bold; color:red;'>40%할인</span><span style="font-size:11px; letter-spacing:-1px;">(2026년 06월 30일까지)</span
+<b>37명</b>일 경우 ▶ 기본료(10,000원) + ((37명-10) * 500원) + 2,350원(vat) = <b>25,850원</b></td> </tr> </TABLE> <h3 class="sub_title">월 이용요금표</h3> <div id="charge_table"> <table border=0 cellpadding=1 cellspacing=1 bgcolo
+<dt>공단사이트와의 연동</dt> <dd>간편하게 작성된 이지케어 일정은 클릭 한 번으로 공단의 급여내역 통보서로 등록되고, RFID테그 내역을 실시간으로 모니터링 하여 이지케어 일정과 간편하게 비교/분석할 수 있습니다.<br> <span style="font-size:12px; font-weight:bold; color:red">2016.03.28 서비스종료(엑셀파일 연동으로 변경)</span
+class="st1">동반자</span>를 옆에 둔 것 같은 프로그램!!</span></h3> <h3 class="sub_title">셋팅비(가입비)</h3> <TABLE width=600 border=0 cellpadding=5 cellspacing=2> <TR> <TD style="font-size:12pt"> <span style="text-decorati
+</tr> </TABLE> <a name="cTab"></a> <h3 class="sub_title">월 이용료</h3> <TABLE width=650 border=0 cellpadding=5 cellspacing=2> <TR> <TD style="font-size:12pt; font-weight:bold; font-family:나눔고딕;">기본료(1
+
+[ogada git]
+{"fe": "154ebee", "fe_status": "CLEAN", "be": "2f4bfdf", "be_status": "M src/test/java/com/ogada/backend/billing/domain/BillingServiceTest.java", "routes": 123, "page_strict": 97, "fe_tests": 500, "be_test_files": 279, "be_at_test": 2046, "payroll_accounting_routes": []}

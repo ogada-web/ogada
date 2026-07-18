@@ -1,0 +1,98 @@
+# BNK-776 cross_gap_priority extract
+조사일: 2026-07-15T23:33:19Z
+rotation: 교차검증·갭 우선순위 8h+
+직전 동일 rotation: BNK-769 (2026-07-15T18:55:00Z) → ~4.6h 후
+직전 사이클: BNK-775 (2026-07-15T22:56:31Z·엔젤·롱텀·규제 4–6h) → ~37분 후
+
+## ogada git
+FE 79763a3 WT CLEAN ahead origin/test 0 = FULLY SYNCED
+  (BNK-775 ahead 1 → tester FF 흡수 · origin/test=79763a3)
+BE 0ad3b07 WT CLEAN ahead 676 vs 598d108 (HEAD zero advance vs BNK-775)
+Route 133 (132+1) Page 106 FE test 530(217+313) BE Test 294(293+1) BE @Test 2232 Flyway V1-V196
+모듈 97.41% (28.25/29) residuals: id=12 0.7, id=2/8/10 0.85
+merge gate 676 (FE 0 FULLY SYNCED + BE 676 · BE-heavy → tester FF)
+accounting 1 · payroll 5 · billing 17 · transport 9 · staff 13
+
+## closed axes LIVE (재오픈 0 · 14/14)
+- /clients/:clientId/care-plan-form   (G14)
+- /dashboard
+- /dashboard/hq
+- /clients/home-newsletter            (G2)
+- /clients/linkage-records            (G-LINKAGE)
+- /billing/cms                        (v1.3-C / v2 CMS)
+- /billing/easy-pay
+- /billing/cash-receipts
+- /accounting                         (M12 entry)
+- /payroll/ledger
+- /payroll/reports
+- /payroll/basis
+- /payroll/labor-cost-ratio
+- /payroll/retirement-accrual         (M11 5-route)
+
+## P0/P1 재정렬 (확인)
+coverage-0 진성갭: 0건 (id=1-10 연계기록지 1.0 CLOSED carry)
+1. PRIMARY residual: id=12 0.7 M12 BPO SSO OTP credentials (ops)
+2. form polish: id=2 / id=8 / id=10 = 0.85 (KPI promote 금지)
+3. P3「가정」defer: 4-doc batch dispatch UX · dashboard expiry widget · 8-3/8-8
+4. CLOSED carry 재오픈 0: v1.3-C CMS · v2 CMS · G14 · 대시보드(+hq) · G2 · M11 · M12 accounting · G-LINKAGE · J03 unit-rate(BNK-774)
+가정 번복(코드/갭): 0 · KPI promote: 0 · 신규 core 갭: 0
+
+## ★★★ dual-numbering 교차검증 (메뉴/필드/워크플로 · BNK-775 정밀화 · 번복 아님)
+근거: silverangel_daycareEssentialWork_live_bnk776.html md5 c79c1be3 IDENTICAL(BNK-775)
+
+| 축 | 번호 | 라벨(확인) | 성격 |
+|---|---|---|---|
+| 필수업무 표 일련번호 | **27** | **가족과의 소통** | 보호자 회의 반기 1회+ · 일시·장소·방법·내용·결과·참석자 |
+| 공단 평가지표 라벨 | **주야간보호 27** | **기능회복훈련** | crosswalk 컬럼「주야간보호 27 기능회복훈련」×3 · G17/BNK-704 정본 |
+| 필수업무 표 일련번호 | **41** | **이동서비스수칙** | 운전자 자격·동승 역할·차량안전·사고조치·운행표 · 계약서+일지 |
+| 필수업무 표 일련번호 | **42** | **이동서비스**(수) | 운전자 외 직원 동승 · 시간 준수 |
+
+판정: BNK-775「지표27=기능회복」= **공단 라벨 기준 유지**(번복 아님).
+주의: 필수업무 일련번호 27을 공단 지표27로 혼동 금지.
+BNK-775 가정 번복(평가41·42=이동서비스) = **재확인 유지**.
+system_feature ERP 배차/GPS 0-hit IDENTICAL · programProvided leaf「이동서비스」IDENTICAL.
+
+## evidence URLs
+NHIS44|200|7572|c886ff1fd1d5ca2cb5dc76d30adde8ba|https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769|nhis_jo44_live_bnk776.html|**510차** IDENTICAL(BNK-775 509→+1)
+CHANNEL_HUB|200|220250|cadd097262002496ac93df3593dff273|https://docs.channel.io/ezcare/ko|ezcare_channel_docs_hub_bnk776.html|**신규 증거 URL** · hub 엑셀3·RFID3
+FAQ|200|80057|4ab774a27d16b1c03a6a7ba47fb27117|https://ezcare.easyms.co.kr/help/faq.ez|ezcare_help_faq_list_live_bnk776.html|hit-only DRIFT · rowid 233 IDENTICAL · 엑셀 포맷 0
+FAQ21298|200|16644|56f80ab6f7846d20656a3cf35b829923|https://ezcare.easyms.co.kr/help/faq.ez?rowid=21298|ezcare_faq_rowid_21298_bnk776.html|공단일정 자동/엑셀 · 포맷0
+FAQ21450|200|17278|e1eb78e1b27eaf15eb74ffde02784e15|https://ezcare.easyms.co.kr/help/faq.ez?rowid=21450|ezcare_faq_rowid_21450_bnk776.html|RFID 엑셀 업로드 · 포맷0
+FAQ21844|200|14474|(md5)|https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844|ezcare_faq_rowid_21844_bnk776.html|마스킹→정상화 · 포맷0
+FAQ21845|200|13915|(md5)|https://ezcare.easyms.co.kr/help/faq.ez?rowid=21845|ezcare_faq_rowid_21845_bnk776.html|엑셀 · 포맷0
+HOME|200|70720|7693ac2da84daa94c997d31175a14b31|https://ezcare.easyms.co.kr/|ezcare_home_live_bnk776.html|53.2/9298/4673/2353/1820 VALUE STABLE · carousel size DRIFT
+CHARGE|200|22979|376f3159dbf49200372674f915779b9d|https://ezcare.easyms.co.kr/new/ezCare_charge.html|ezcare_charge_live_bnk776.html|셋팅 33,000 · 「2026년 07월 31일까지」=**D-16** VALUE
+FNC|200|17870|be00971c6276d51e31c935992661b420|https://ezcare.easyms.co.kr/new/ezCare_fnc.html|ezcare_fnc_live_bnk776.html|도입 9,433 STABLE
+CHANGEWORK|200|26157|d2904d850e08a7582ae9998bd70dc851|https://ezcare.easyms.co.kr/new/ezCare_change_work.html|ezcare_change_work_live_bnk776.html|재실측
+CHANNEL_TOP10|200|238819|026abc1fa430dc1928c6510238233162|https://docs.channel.io/ezcare/ko/articles/…TOP-10-79c05b96|ezcare_channel_top10_live_bnk776.html|RFID7·엑셀3 keyword STABLE
+ESSENTIAL|200|131664|c79c1be37f947aab04ab7ba35cc7814d|https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do|IDENTICAL|dual-numbering 정본
+PROG|200|67987|f18e1c7abfca1443a4623f4a3ddbec0b|https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do|IDENTICAL|leaf 이동서비스
+SYSFEAT|200|45601|c950719098eecaf748bbdeea5deb93da|https://www.silverangel.kr/silverangel/angelsystem/system_feature.do|IDENTICAL|배차 0-hit
+EXTRA|200|81637|f9c5d8773ad0a481be6d7eb4b192d982|https://www.silverangel.kr/newSilverangel/service/extraService.do|IDENTICAL|CMS 250/300·4-doc
+FEE|200|44513|eab352a8f98ba600561c06bd2e3eecb1|https://www.silverangel.kr/newSilverangel/service/feeService.do|IDENTICAL
+LCMS|200|50554|6c0d22b48da8fb30a0c49f34ce8c6864|https://www.lcms.or.kr/|IDENTICAL|type2 LOCK
+LT502|200|89162|5618573525680a407975cbbafe93ccd1|https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500|=bnk771/767 shell · vs bnk775 −9B (var s16 소멸) semantic IDENTICAL
+LT610|200|88399|fad1ce6115bad27169c248b8d7a1089b|https://www.longtermcare.or.kr/npbs/e/b/610/npeb610m01.web?menuId=npe0000000650|=bnk771/767 shell · vs bnk775 −9B semantic IDENTICAL
+LAW247|200|78450|bf94c55e…|https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110|Time=-only · strip≡bnk775
+MOHW|200|103113|d590271896996d16e3431318f1005eeb|https://www.mohw.go.kr/board.es?mid=a10409020000&bid=0026&act=view&list_no=1488862|IDENTICAL
+NOTICE_SA|404|1028|3c93af54…|https://www.silverangel.kr/newSilverangel/customer/noticeList.do|dual-IA 404 · 신규 공지 「미확인」
+NOTICE_EZ|404|2265|c8839f4e…|https://ezcare.easyms.co.kr/help/notice.ez|404 · 공지 「미확인」
+CAREFOR|000|0|-|https://www.carefor.co.kr/daycare/func.php|HTTP 000 89-cycle+ · disk 6226e6eb 우선
+
+## NHIS verbatim
+러-1: 1 · 러-4: 1 · 편도: 2 · 1일 1회: 1 · 수급자가 부담: 1 · 이동서비스: 13
+→ 510차 zero drift · Transport 6-link 상수 재조정 불요
+
+## 엑셀/공지/가격 스캔
+- FAQ list rowid SETS IDENTICAL 233 max 21781 · 엑셀=브라우저 DL FAQ만 · **포맷 변경 0**
+- FAQ 21298/21450/21844/21845 재실측 · 컬럼/양식/포맷 변경 키워드 0
+- Channel.io hub **신규** · TOP-10 keyword STABLE
+- charge 셋팅 33,000 D-16 VALUE · home 도입 카운터 VALUE STABLE
+- silverangel/ezcare notice 404 · 신규 공지 실체 「미확인」(변경 0으로 해석 불가·스캔 시도 기록)
+- carefor LIVE 000 89-cycle+
+
+## 상태 변경
+FE ahead origin/test 1→0 = FULLY SYNCED (BNK-775 tip 흡수)
+BE HEAD zero advance · merge gate 677→676 (FE tip 흡수·BE-heavy 유지)
+가정 번복(갭/KPI): 0 · dual-numbering 정밀화 1 · KPI promote 0 · 신규 core 갭 0
+per-cycle minimum 4종 충족

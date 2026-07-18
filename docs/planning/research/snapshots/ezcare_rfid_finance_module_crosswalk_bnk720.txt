@@ -1,0 +1,133 @@
+BNK-720 — 이지케어 역공학 2–4h (주력 extract)
+조사일: 2026-07-14T11:11Z (KST 19:11)
+rotation: 이지케어 ERP 데모 진입 + RFID·재무회계·급여 모듈 crosswalk + live 재실측
+
+================================================================================
+1. 이지케어 데모 ERP 진입 (./scripts/ezcare-demo-fetch.sh --menu-catalog)
+================================================================================
+- login: POST /page/login.php oCode=DEMO → code=0000 (성공)
+- title: "[DEMO 이지케어] 체험 이지케어 재가복지센터"
+- demo shell: ezcare_new_ez_demo.html 139,957B md5 2ca971f69b9f0d527ddae9253276c3a9
+    · BNK-714 139,940B `78e39680` → +17B md5 DRIFT (본문 semantic IDENTICAL·cachebuster/위젯 카운터)
+- top-nav JS: ezcare_top_nav_v2.js 25,470B md5 95286775... (?20260428) ZERO DRIFT (7주+)
+- menu catalog: 10 module · 148 leaf · 59 PGID (BNK-700/714 semantic IDENTICAL scope carry)
+- 10 top-nav 모듈:
+    1:직원  2:수급자  3:방문일정  4:RFID점검  5:본인부담
+    6:직원급여  7:재무회계  8:세무·사회보험  9:기관관리  10:기관평가
+
+================================================================================
+2. Module 4 「RFID점검」 = 독립 모듈 (3-leaf) — 신규 워크플로 블록
+================================================================================
+leaf:
+  - RFID태그 내역 ↔ 공단계획 비교   | schedule-rfid / /schedule_plan/rfid_compare.html
+  - 일정확정                          | schedule-fix
+데모 셸 grep: RFID_tagId · RFID점검 · RFID태그 비교
+워크플로: RFID 태그 실적(요양보호사 방문 태깅) ↔ 공단(NHIS) 방문계획 대조 → 일정확정
+  = 실적/계획 reconciliation 후 확정 (RFID = 이지케어 마케팅 핵심 차별화)
+ogada 매핑: care_provision RFID ✅ · nhis import·reconciliation(id=nhis 1.0) 이 계획↔실적 대조 유사
+  · RFID 단말 dispatch(태그 하드웨어) MVP out-of-scope carry (G-RFID-CARE-PROVISION-DISPATCH P3「가정」)
+
+================================================================================
+3. Module 3 「방문일정」 (13-leaf) — 이중(듀얼) 관점 일정
+================================================================================
+  - 수급자-일정관리                | /schedule_plan/
+  - 관리자-일정관리                | /social_worker/schedule.html
+  - 일정표 출력 및 문자발송        | schedule-p100
+      · 수급자 일정표(제공기록지)  | schedule-p100#tab0
+      · 요양보호사 일정표(근무현황표)| schedule-p100#tab1   ← 이중(수급자/요양보호사) 뷰
+  - 연간 서비스제공 명단           | schedule-p300 (수급자 tab0 / 요양보호사 tab1)
+  - 방문현황(일일, 주간, 월간)     | schedule-p500 / /schedule_print/statusTable.html
+  - 중증수당 일정 집계             | /PU.ez?PGID=schedule-s100 (요양보호사/수급자 tab)
+핵심: 이지케어 「듀얼/중복일정」 마케팅 = 수급자 관점 + 요양보호사 관점 이중 렌더(#tab0/#tab1)
+ogada 매핑: /schedule 계열 ✅ · 방문요양(재가) 중심 vs ogada 주야간보호 센터 중심 (도메인 차이)
+
+================================================================================
+4. Module 7 「재무회계」 = in-app 회계 모듈 (10-leaf) ★★★ M12 아키텍처 재조명
+================================================================================
+  - 통장내역 조회/입력   - 검토요청 답변 입력   - 결의서 조회 및 수정
+  - 회계장부 출력        - 추경보고            - 예산보고
+  - 결산보고             - 이전 회계 (/ABook/main.html)   - 인증서 재등록
+=> 이지케어는 재무회계를 in-app 모듈로 제공 (통장/결의서/예산/결산/회계장부)
+   ↔ 케어포 M12 = 외부 BPO(수지파인 SSO) only
+   ↔ ogada M12 = 외부 BPO handoff(수지파인 parity·093ac88 SSO handoff API landing)
+
+BUT: 이지케어 home 「재무회계 대행 4,668기관」 = 이용기관 9,298 중 ~50.2% 가 BPO(대행) 병행
+   => 이지케어조차 in-app + BPO 대행 이원 운영 · ogada 외부 BPO 채택은 demand-signal(~50% BPO)로 검증
+   => in-app 회계 원장은 v3+ differentiation gap 후보: G-ACCOUNTING-IN-APP-LEDGER「가정」
+
+================================================================================
+5. Module 6 「직원급여」 (15-leaf) — 인건비 지급 비율 = 참고자료 재확인
+================================================================================
+  - 급여명세서 작성 및 관리 (/worker_allowance_V6/load.ez)
+  - 연간 급여 및 사회보험 누계 (월별/직원별 tab)
+  - 퇴직금 적립 (/worker_allowance_V5/severance_pay.html)
+  - 인건비 지급 비율 참고자료 (wAllowance-payrollcost / payroll_cost_rate.html) ← 정적 참고자료
+  - 급여기초자료 설정 (수당산정방식·분개값 / 사회보험 현황 / 월급제 수당)
+  - 목욕/간호 건별수당 설정
+=> 이지케어 인건비 지급비율 = 「참고자료」(payroll_cost_rate.html·static reference)
+   ↔ ogada 11-5 = active 60% 법정 compliance 판정(COMPLIANT/ALERT) full-stack
+   => ogada 11-5 active compliance 유일성 재확인 (케어포·이지케어 모두 참고자료 static)
+
+================================================================================
+6. 이지케어 live 재실측 (기존 URL DRIFT 기록)
+================================================================================
+- faq.ez        80,057B md5 e4a24765...  (BNK-719 9e3648e0 → cachebuster md5 DRIFT·size-lock)
+    · rowid 233 · max rowid 21781 (carry)
+- home          69,774B md5 c5407220...
+    · 시장점유율 53.2% · 이용기관 9,298 · 월 공단청구 2,353억 · 종사자 급여 1,820억 (zero drift)
+    · 재무회계 대행 4,668 (BNK-717 4,666 → +2 counter DRIFT) · 집계일 2026.06.30 (carry)
+- price         52,025B md5 c615be81...  · 셋팅비 33,000 · 구독 55,000 · 무료 프로모션 (carry)
+
+================================================================================
+7. ogada @HEAD 실측 (git develop)
+================================================================================
+BE develop 093ac88  feat(v2/M12): add accounting BPO SSO OTP handoff API
+   · WT CLEAN · ahead 629 vs origin/test=598d108
+   · BE Test 284(283 Test.java+1 Tests.java) · BE @Test 2111(+6 vs BNK-719 2105) · V1–V190
+FE develop 063c269  fix(v1.2.1/M12): align module coverage KPI and SSO blocker messaging
+   · WT CLEAN · ahead 1 vs origin/test=b12f259
+   · Route 131(<Route\b 130+<Routes> 1) · 104 *Page.jsx · FE test 516(213 .test.js+303 .test.jsx)
+   · 모듈 91.90%(26.65/29) · accounting route 1 · payroll route 5
+merge gate 630 (FE 1 + BE 629 · BE-heavy · 양쪽 WT CLEAN → tester FF)
+
+--------------------------------------------------------------------------------
+★★★ M12 SSO handoff full-stack CLOSURE (id=12 0.55→0.7) — BNK-717/718/719 잔여 lever 소멸
+--------------------------------------------------------------------------------
+BE 093ac88: POST /api/v1/billing/accounting/bpo-sso-handoff
+   · usmusid + minted OTP (env secrets 기반·하드코딩 없음·rules §3 준수)
+   · facility credentials 설정 시 SSO_AVAILABILITY promote(PLANNED→AVAILABLE)
+   · AccountingBpoController+15 / AccountingBpoSsoHandoffResponse(NEW) / AccountingBpoService+120
+     / AccountingBpoSupport+44 / HealthController+10 / application.yml+5 / +tests(79/27/34/33L)
+FE 063c269: SSO readiness blocker 문자열을 BE AccountingBpoSupport credentials-missing 상수와 정합
+   · competitorModuleCoverage id=12 0.55→0.7 · id=1-5 0→0.5
+M12 진행 요약: 716(launch page+catalog 0→0.35) → 717(health readiness 0.35→0.45)
+   → 718(FE SSO OTP adapter 0.45→0.55) → 719(FE health 소비 operational 2-layer)
+   → 720(BE handoff API + FE 정합 0.55→0.7) = full-stack SSO handoff 완성
+잔여 lever = 실환경 facility credentials 등록(운영 배포) 만 · 0.7→1.0 = 실운영 SSO 검증
+
+--------------------------------------------------------------------------------
+★★★ 커버리지 config 감사 반영 (BNK-719 §719-1 가정 번복 후보 → coder 착지)
+--------------------------------------------------------------------------------
+id=1-5 「가정통신문」 coverage 0 → 0.5 (BNK-719 저평가 finding → FE 063c269 정합)
+   · 월간 가정통신문 이메일 dispatch full-stack LIVE 반영 · authoring 미착지로 △(0.5)
+모듈 89.66% → 91.90% (+2.24pp · 26.00 → 26.65/29)
+   · id=1-5 +0.5 + id=12 +0.15 = +0.65 sum
+id=1-10 「연계기록지」 coverage 0 = 진성 갭 carry (평가지표 30 외부기관연계·v2+ 후보)
+
+================================================================================
+8. 규제 백본 재실측 (기존 URL·zero drift)
+================================================================================
+NHIS #44 이동서비스비 러-1~4: nhis_jo44_live_bnk720.html 7,572B c886ff1f
+   · 455차 zero drift IDENTICAL (BNK-719 454차 → +1)
+   · grep: 러-1·러-4·편도(2)·1일 1회·수급자가 부담하지 verbatim 불변
+   ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회) 6-link chain(id=2 0.85) carry
+
+================================================================================
+9. per-cycle minimum 충족 · 요약
+================================================================================
+- 신규 증거 URL: 이지케어 데모 ERP RFID(Module 4)·재무회계(Module 7) leaf 실측 + NHIS 455차 재실측
+- 메뉴/필드/워크플로 블록: RFID↔공단계획 대조·이중일정·in-app 재무회계 10-leaf·급여 15-leaf (§2-5)
+- COMPETITOR_MATRIX: ogada @093ac88/@063c269 3행 갱신
+- BENCHMARK_REPORT: §720 소절 추가
+- 덮어쓰기 0 · 가정 번복 0(반영 확인 1: id=1-5 config→0.5) · 신규 candidate 1(G-ACCOUNTING-IN-APP-LEDGER v3+)
+- 미확인 carry: 이지케어 login-gated PGID 상세 화면(데모 셸 top-nav 만)·carefor func.php HTTP 000

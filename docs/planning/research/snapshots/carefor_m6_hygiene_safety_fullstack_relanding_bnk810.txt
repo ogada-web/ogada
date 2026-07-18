@@ -1,0 +1,110 @@
+BNK-810 — 케어포 역공학 0–2h · func.php Module 6 「위생·안전 점검관리」 5-leaf FULL-STACK 재앵커
+조사일: 2026-07-16T23:14:00Z · rotation: 케어포 역공학 0–2h
+작성자: benchmark_researcher [BNK] · doc:owner=BNK doc:audience=PLN
+
+====================================================================
+0. ogada git 실측 (@develop HEAD) — BNK-809(@b753586/@d247cdf) 대비 delta
+====================================================================
+FE develop  7ee1cf1  fix(v1.2.1/QA-B95): ignore blank tokens in primary operation blocker
+            WT CLEAN · BNK-809 @b753586 → +1 · ahead origin/test 1 (origin/test=6900a8f·tester FF 대기)
+BE develop  d247cdf  fix(v2/QA-B95): decode semi HTML entity in blocker parser
+            WT DIRTY 2M (LiveE2eOperationReadinessSupport.java + Test · coder WIP · HEAD zero advance)
+            ahead 712 vs 598d108 · BNK-809 동일 HEAD carry
+merge gate  713 (FE 1 + BE 712 · BE-heavy → tester FF · 신규 마이그레이션 0)
+Route 133 (<Route\b 132 + <Routes> 1) · Page 106 (*Page.jsx)
+FE test 534 (313 .test.jsx + 221 .test.js)
+BE Test 294 (293 Test.java + 1 Tests.java) · BE @Test 2266 (BNK-809 2265 → +1)
+Flyway V1–V196 (max V196·신규 0) · accounting 1 · payroll 5 · billing 17 · care 16 · nursing 16
+  · transport 9 · staff 13 · programs 8 · compliance 2 · meals 1 · safety 5(+hub)
+모듈 97.41% (28.25/29·id=2/8/10=0.85·id=12=0.7·id=6=1.0·coverage-0 진성갭 0)
+
+====================================================================
+1. 케어포 LIVE / Wayback 재실측 (증거 URL)
+====================================================================
+LIVE http://www.carefor.co.kr/daycare/func.php     → HTTP 000 (timeout) 「미확인」
+LIVE https://www.carefor.co.kr/daycare/func.php    → HTTP 000 「미확인」
+LIVE https://demo-work.carefor.co.kr/              → HTTP 000 「미확인」
+→ LIVE 000 = 93-cycle+ carry · disk canonical LOCK (추측 승격 금지):
+   carefor_func.php               md5 6226e6eb92fdd25ed3e50842a5e8a00b · 98,328B
+   carefor_demo_work_raw_remeasure_bnk706.html  md5 ebee4d4724cd5e633696268067a4d85f · 71,742B
+
+★ 기존 URL 재실측 — Wayback demo-work id_ 2025-07-12
+URL  https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/
+HTTP 200 · 71,742B · md5 ebee4d47 = disk raw BYTE-IDENTICAL
+저장 carefor_demo_work_wb_20250712_id_remeasure_bnk810.html
+
+★ 기존 URL 재실측 — Wayback func.php marketing capture 2025-11-11
+URL  https://web.archive.org/web/20251111064651id_/https://www.carefor.co.kr/daycare/func.php
+HTTP 200 · 96,780B · md5 c069d5c804319967dae93b1a08dbfe22 = BNK-761 mkt IDENTICAL
+(주야간 정본은 disk 6226e6eb · mkt 캡처는 별도 마케팅 셸 — 덮어쓰기 금지)
+
+★ NHIS #44 이동서비스비
+URL  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f = 543차 IDENTICAL (BNK-809 542차 → +1)
+verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+저장 nhis_jo44_live_bnk810.html
+
+====================================================================
+2. ★★★ NEW — M6 「위생·안전 점검관리」 5-leaf FULL-STACK 재앵커 (가정 번복 2)
+====================================================================
+func.php verbatim (disk 6226e6eb · <!--6-x-->):
+  6-1.주간식단표 · 6-2.일일점검 · 6-3.정기점검 · 6-3-1.감염병 관리 · 6-4.시설운영일지
+PDF TOC (carefor_manual_pdf_toc_extract_bnk690 · md5 96f7d45e):
+  「6.위생·안전점검관리」 — ch.6 정본 라벨 일치
+
+demo-work left_sub6 (ebee4d47 · 시설 셸):
+| pamcode | title | view.* | class |
+| L06_M01 | 6-1.주간식단표 | /share/safe/view.weekly_menu | |
+| L06_M02 | 6-2.일일점검 | /share/safe/view.daily_check | |
+| L06_M03 | 6-3.정기점검 | /share/safe/view.regularly_check | |
+| L06_M07 | 6-3-1.감염병 관리 | /share/safe/view.infection_manage | submp |
+| L06_M04 | 6-4.시설운영일지 | /safe/view.daily_center | |
+| L06_M06 | 6-1-1.식단표 제공 협약 | (COMMENTED submp_noready) | — |
+
+리포트 밀도: L06 class=rpt **0/5 (0%)** · submp 1 · 시설 셸 이동서비스/배차/transport **0-hit**
+↔ M7 본인부담 rpt 4/11(36.4%) 대조 — M6=점검 워크플로·리포트 leaf 없음
+
+ogada App.jsx @7ee1cf1 1:1:
+| carefor | ogada route | Page | App.jsx | BE API | 판정 |
+| 6-1 | /meals | MealsPage | L691 | meal menus/records | ✅ |
+| 6-2 | /safety/daily-checks | SafetyDailyChecksPage | L709 | GET/POST /api/v1/safety/daily-checks | ✅ |
+| 6-3 | /safety/periodic-checks | SafetyPeriodicChecksPage | L718 | GET/POST /api/v1/safety/periodic-checks | ✅ |
+| 6-3-1 | /safety/infection-control | SafetyInfectionControlPage | L727 | GET/POST /api/v1/safety/infection-control | ✅ |
+| 6-4 | /safety/operation-log | SafetyOperationLogPage | L736 | GET/POST /api/v1/safety/operation-logs | ✅ |
+= **5/5 = 100% FULL-STACK** · hub `/safety` L700 → daily-checks Navigate
++ catalog GET /api/v1/safety/check-template-catalog
++ Flyway V184__safety_check_records.sql · V185__…_integrity_us_q01.sql
++ FE api/safetyCheckServices.js (apiFetch) · competitorModuleCoverage id=6 coverage **1.0**
+
+가정 번복 (확인):
+1. BNK-541 catalog ogada_module6_route_map: 6-2~6-4 = 「📋 v3.1 P1 PLANNED」
+   → App.jsx LIVE + SafetyCheckController + V184/V185 = **✅ LIVE FULL** (STALE 폐기)
+2. BNK-675: 「App.jsx 미배선·UI shell only·coverage 0」
+   → Route wired + services apiFetch E2E + id=6 **1.0** = **FULL CLOSURE 확인**
+
+잔여 P3「가정」(번복 아님):
+- demo COMMENTED 6-1-1 식단표 제공 협약 — ogada 미대응 · MVP 격상 금지
+
+KPI promote 0 (id=6 이미 1.0 · 본 사이클은 catalog STALE 정리)
+
+====================================================================
+3. M7 본인부담 7-x ↔ /billing 17-route PARITY carry (번호식 흐름 재확인)
+====================================================================
+BNK-797/785 carry @HEAD 재확인 — App.jsx billing* 17-route 유지:
+  7-1→/billing · 7-2→/payments · 7-2-1→/cash-receipts · 7-3→/overdue · 7-4→/cms
+  · 7-5→/easy-pay · 7-6~7-9→/reports/{charges,deposits,receipts,refunds} · 7-10→/calculator
+= 11/11 PARITY + SUPERSET 5 (copay-rates·fee-schedules·statistics·nhis import×2)
+리포트 밀도: M7 rpt-class demo 4/11(36.4%) ↔ ogada /billing/reports/* 5/17(29.4%)
+
+====================================================================
+4. 요약 (per-cycle minimum 4종 충족)
+====================================================================
+- 신규/재실측 증거 URL: Wayback demo id_ IDENTICAL + NHIS #44 543차 + carefor LIVE 000 93-cycle+
+- 메뉴/필드/워크플로 1블록+: M6 5-leaf FULL-STACK crosswalk + demo L06 view.* + 가정 번복 2
+- COMPETITOR_MATRIX 1행+: @7ee1cf1/@d247cdf M6 재앵커 행
+- BENCHMARK_REPORT §810 소절
+- 덮어쓰기: catalog ogada_module6_route_map ONLY · func.php/demo disk 0
+- zero drift IDENTICAL 3 (NHIS 543·wb demo ebee4d47·wb func mkt c069d5c8)
+- 가정 번복 2 (BNK-541 PLANNED·BNK-675 UI-shell) · P0 신규 0 · KPI promote 0
+- planner: FE @b753586→@7ee1cf1(ahead 1) · BE @d247cdf(ahead 712·WT DIRTY coder WIP)
+  · merge gate 713 · M6 FULL CLOSURE catalog 동기화 · id=6 1.0 carry · 다음 rotation 이지케어 2–4h

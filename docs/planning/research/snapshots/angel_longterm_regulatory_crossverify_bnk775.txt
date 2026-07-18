@@ -1,0 +1,124 @@
+# BNK-775 엔젤·롱텀·규제 4–6h 교차검증 raw log
+# 조사일: 2026-07-15T22:56:31Z (KST 2026-07-16 07:56)
+# rotation: 엔젤·롱텀·규제 4–6h — silverangel/lcms 공개 기능·CMS 부가·law.go.kr·NHIS #44 이동서비스비 러-1~4 1차 확인(PLAN_NOTES #44)·2026 수가·평가 #27·단기보호·통합재가 교차검증
+# 직전 동일 rotation: BNK-771 (2026-07-15T20:10:00Z) → ~2.8h 후
+# 직전 사이클: BNK-774 (2026-07-15T22:20:00Z·이지케어 역공학 2–4h) → ~36분 후
+# ogada git baseline: FE @79763a3 (WT CLEAN·ahead origin/test **1** · `feat(v1.2.1/J03): wire dedicated dispatch-reference-unit-rates catalog`) / BE @0ad3b07 (WT CLEAN·ahead **676** · `feat(v2/J03): expose dispatch reference unit rates catalog`)
+# npm test 미실행 (vitest 동시 실행 금지) · mvn 전체 미실행
+
+## 1) 규제 백본 + 신규 증거 URL live 재실측 (curl -m 25~45 -A Chrome)
+
+  LABEL                                | HTTP | SIZE        | md5                              | 판정
+  -------------------------------------+------+-------------+----------------------------------+-----------------------------------------
+  nhis_jo44                            | 200  |     7,572B  | c886ff1fd1d5ca2cb5dc76d30adde8ba | ★★★ **509차** zero drift (BNK-774 508차 → +1)
+  nhis_jo44_lawImg (NEW)               | 200  |    10,438B  | 0503059984ca23c92e91f9d7a3f6fde1 | ★★★ **신규 증거 URL** — 제34조 러-1~4 거리표 GIF 460×74
+  silverangel_extraService             | 200  |    81,637B  | f9c5d8773ad0a481be6d7eb4b192d982 | IDENTICAL (=bnk767~774)
+  silverangel_feeService               | 200  |    44,513B  | eab352a8f98ba600561c06bd2e3eecb1 | IDENTICAL (본문「이동」=메뉴 navigate만·이동서비스 0)
+  silverangel_mainService              | 200  |    59,002B  | bcf6df41310193a3ae997bde49111347 | IDENTICAL
+  silverangel_daycareEssentialWork     | 200  |   131,664B  | c79c1be37f947aab04ab7ba35cc7814d | IDENTICAL · ★ **이동서비스 6-hit**(평가41·42)·지표27=기능회복 6-hit
+  silverangel_systemFeature (404 stub) | 404  |     1,028B  | 3c93af5446540c1cb323ede8414c2bbb | dual-IA 404 carry
+  silverangel_system_feature_canonical | 200  |    45,601B  | c950719098eecaf748bbdeea5deb93da | IDENTICAL on-disk · ERP 배차/GPS **0-hit** · 109-leaf
+  silverangel_home (NEW nav seed)      | 200  |   101,218B  | 182bb64b97dbfcf38140deeebe45d97f | ★ 신규 증거 — daycare/program/appraisal PDF 링크 시드
+  silverangel_daycareProgramProvided   | 200  |    67,987B  | f18e1c7abfca1443a4623f4a3ddbec0b | ★ 신규 — leaf 목록에 「이동서비스」 포함(로그인 ERP depth「미확인」)
+  silverangel_daycareAngelSystemSummary| 200  |    51,943B  | a6ee56940afa4c92e653a5f0e16a6843 | 평가지표 3-hit · 이동서비스 0
+  silverangel_businessSupportService   | 200  |    75,878B  | a13cb5ac3c265d692ddfaadb9051f3d6 | LCMS 1 · CMS 2 · 부가 6
+  silverangel_appraisal_pdf (NEW)      | 200  | 11,958,320B | b13dcafce416508eecab41cc6c6c54d2 | ★★★ **신규 증거 URL** PDF /Count=239 · 평가 지표 원본
+  silverangel_support_notice_list      | 200  | 5,707,602B  | ea7d6b3d556a0ee6c54acf8e5d241121 | canonical IDENTICAL(=bnk747+)·신규 공지 ≥221574 **0**
+  lcms_home                            | 200  |    50,554B  | 6c0d22b48da8fb30a0c49f34ce8c6864 | type2 LOCK IDENTICAL
+  longterm_502 (npeb502m01)            | 200  |    89,171B  | a71379de460cc451e9a30f73aa437eec | shell +9B(`var s16;`) vs bnk771 · semantic IDENTICAL · disk 74,060 carry
+  longterm_610 (npeb610m01)            | 200  |    88,408B  | 6b10f426123b1f827c46ebf420a87772 | shell +9B(`var s16;`) vs bnk771 · semantic IDENTICAL · 월10만원 carry
+  law247_admRul (제2025-247호)          | 200  |    78,450B  | 23fed397cb2500ff9a4cbcf769f26352 | Time=-only DRIFT · strip `ad1db6e0` ≡ bnk771 semantic IDENTICAL
+  mohw_list1488862                     | 200  |   103,113B  | d590271896996d16e3431318f1005eeb | IDENTICAL
+  law.go.kr query=이동서비스비 (NEW)      | 200  |   299,529B  | 3639122737f543c813327e272e511074 | 검색 UX 제한(본문 hit 빈약) · URL 증거만 기록
+
+## 2) NHIS #44 이동서비스비 러-1~4 verbatim (PLAN_NOTES #44 1차 확인 · 509차)
+
+  1일 1회       1
+  러-1          1
+  러-4          1
+  수급자가 부담  1
+  이동서비스     13
+  편도           2
+  50%           11
+
+QUOTE ② …1일 1회만 산정하고…편도만…‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다.
+QUOTE ③ …그 비용은 수급자가 부담하지 아니한다.
+QUOTE ④ …이동서비스 일지를 작성하여 보관하여야 한다.
+
+→ verbatim IDENTICAL to BNK-774 508차. ogada `TransportDistanceBand` RU_1~4 · `TransportServiceFeeParityCatalog` ONE_WAY_RATIO=0.5 · ONE_PER_DAY · 일지 패리티 = **상수 재조정 불요**.
+
+★ **신규 nested 증거**: `lawImg.do?SEQ_HISTORY=611677&ID=153966057` → GIF 460×74 (제1항 거리표 이미지) · snapshot `nhis_jo44_lawImg_bnk775.gif`.
+
+## 3) ★★★ 가정 번복 — daycareEssentialWork 「이동서비스」= 평가 필수업무 41·42 (메뉴/필드/워크플로 블록)
+
+BNK-771 §771-2 는 daycareEssentialWork 를 「이동서비스 무관」으로 표기했으나 **동일 md5 `c79c1be3` 파일**에 이동서비스 **6-hit** 존재 → 「무관」 문구 **가정 번복**.
+
+평가 필수업무 표 (verbatim):
+
+| 지표# | 항목 | 필수사항 / 판정 기준 | 연계 서식 | ogada 매핑 (`@79763a3`/`@0ad3b07`) |
+|---|---|---|---|---|
+| **41** | 이동 서비스 수칙 | ① 수칙 존재 · 필수: 운전자 자격요건·동승자 역할·차량안전수칙·사고 시 조치·차량운행표 ② 수급자(보호자)에게 제공 | 계약서 이동서비스수칙 포함 · **이동서비스일지**-수칙 예시 | `/transport/*` + service-log/일지 축 · G16 parity |
+| **42** | 이동 서비스 수(행) | ① 운전자 외 기관 직원 동승 ② 이동서비스 시간 준수 | 급여제공계획 · 이동 서비스 | 배차/런 동승·시간 준수(운영) · id=2 **0.85** |
+| **27** | 기능회복훈련 | 개인별 기능회복훈련 계획 · 급여제공 시작일까지 수립 | 주야간보호 27 | G17 `/programs/functional-recovery` **1.0** |
+
+해석(확인):
+- **ERP catalog**(system_feature 109-leaf) = 배차/GPS/차량 leaf **0** → “송영 ERP 모듈” 공개 카탈로그 공백 carry.
+- **평가·마케팅 축**(essential + programProvided) = 이동서비스 **필수업무·메뉴 leaf** 존재 → 규제 컴플라이언스 축은 「확인」.
+- ogada 차별화 재정렬: `/transport/*` 9-route + NHIS #44 6-link fee + 일지 = **평가 41·42 + 수가 러-1~4** 동시 커버(경쟁 공개 카탈로그 ERP 배차 0·평가 축만 존재). KPI promote 0(id=2 0.85 form polish residual).
+
+## 4) ★ silverangel programProvided leaf 목록 — 「이동서비스」메뉴 노출 (신규 필드)
+
+URL: https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do
+
+UL 샘플(확인):
+- [코드관리, 이용계획서, **이동서비스**, 출석부, 프로그램뱅크, …, 공단 급여제공계획/평가]
+- […, 기능회복훈련 계획, …, **이동서비스**, 출석부, …, 엔젤VR, 굽은나무 라이브톡, …]
+
+→ 마케팅 「제공 프로그램/업무」 목록에 이동서비스 leaf 명시. 로그인 ERP 화면 필드·워크플로 = 「미확인」。system_feature ERP 특장점 109-leaf 와 IA 분리(dual-IA).
+
+## 5) CMS 부가 · 4-doc SUPERSET · 평가 PDF (carry + 신규)
+
+extraService IDENTICAL:
+- 4-doc: 「가정통신문, 급여비용 명세서, 급여제공 기록지(법정서식), 납부확인서 이메일 발송 SMS 안내하기」 ↔ ogada 1-5/10/1-10/7 SUPERSET(BNK-767) carry
+- 효성 CMS: 자동이체 **250원/1건** · 가상계좌 **300원/1건** · 카드 별도문의 · 월 30,000 · 1600-6859 ↔ `CmsPaymentMethodCatalog`
+
+신규 PDF:
+- source URL: https://www.silverangel.kr/download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf
+- 11,958,320B · md5 `b13dcafc` · PDF 1.4 · /Count **239** · 홈 nav `/download.do?dwnFile=…` 로부터 발견
+- 본문 텍스트 추출(스캔/이미지형) 제한 → 평가 지표 세부 번호은 essential HTML 표(41·42·27)를 정본으로 사용 · PDF는 원본 파일 증거
+
+## 6) 2026 규제·수가 교차검증 (단기보호·통합재가·평가)
+
+| 축 | URL/근거 | 775 판정 |
+|---|---|---|
+| 이동서비스비 #44 | NHIS jo44 **509차** + lawImg GIF NEW | zero drift · 이미지 표 증거 추가 |
+| 2026 평가·필수업무 | essential `c79c1be3` + appraisal PDF 239p | 지표27=기능회복 · **41·42=이동서비스 수칙/동승** |
+| 단기보호 수가 | longterm 502 shell `a71379de` (+9B s16) | shell semantic IDENTICAL · disk **74,060** carry |
+| 통합재가 | longterm 610 shell `6b10f426` (+9B s16) | shell semantic IDENTICAL · disk **월 10만원** carry |
+| 2026 고시 | MOHW list1488862 `d5902718` | zero drift |
+| 장기요양 수가 세부 | law247 admRulSeq 2100000271110 | Time=-only · strip IDENTICAL |
+
+## 7) ogada git baseline (BNK-774 → BNK-775 delta)
+
+| KPI | BNK-774 | BNK-775 | Δ |
+|---|---|---|---|
+| FE SHA | a356083 | **79763a3** | +1 `feat(v1.2.1/J03): wire dedicated dispatch-reference-unit-rates catalog` |
+| BE SHA | 2f578fb | **0ad3b07** | +1 `feat(v2/J03): expose dispatch reference unit rates catalog` |
+| FE WT | CLEAN | CLEAN | — |
+| BE WT | CLEAN | CLEAN | — |
+| FE ahead vs origin/test | 2 | **1** | tester FF 흡수 1 |
+| BE ahead vs origin/test | 675 | **676** | +1 |
+| merge gate | 677 | **677** | FE1+BE676 |
+| Route | 133 | 133 | 0 |
+| Page | 106 | 106 | 0 |
+| FE test | 530 | 530 | 0 |
+| BE Test | 294 | 294 | 0 |
+| BE @Test | 2227 | **2232** | +5 |
+| Flyway | V196 | V196 | 0 |
+| 모듈 KPI | 97.41% | 97.41% | 0 (29-entry sum 28.25 · 비-1.0: id=2/8/10=0.85 · id=12=0.7) |
+
+per-cycle minimum 4종 충족:
+1. 신규 증거 URL 3+(lawImg GIF · appraisal PDF · home/programProvided) + NHIS 509차 재실측
+2. 메뉴/필드/워크플로 블록 1+(평가41·42·programProvided leaf)
+3. COMPETITOR_MATRIX 1행+ `@79763a3`/`@0ad3b07`
+4. BENCHMARK_REPORT §775

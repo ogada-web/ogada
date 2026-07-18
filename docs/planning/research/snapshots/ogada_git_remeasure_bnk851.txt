@@ -1,0 +1,53 @@
+BNK-851 ogada git 실측 (2026-07-18T00:51Z) — 엔젤·롱텀·규제 역공학 4–6h
+================================================================================
+
+[FRONTEND] src/frontend
+  develop HEAD : 1cdfd5c  test(v1.2.1/QA-B605): await async compare before dispatch button click
+  prev(BNK-850): 7ac3c84  test(v1.2.1/v3/QA-B602): sync page/pilot NHIS excel fixtures to OOXML magic bytes
+  +2 commit:
+    194823b  ux(a11y): announce photo upload success to screen readers (UXD-191)
+    1cdfd5c  test(v1.2.1/QA-B605): await async compare before dispatch button click
+  diff 7ac3c84..1cdfd5c : 5 files +19/-1
+    src/components/clients/ClientPhotoUpload.jsx                +6  (a11y SR live-region 성공 announce)
+    src/components/clients/ClientPhotoUpload.test.jsx           +3
+    src/components/programs/ProgramSchedulePhotoUpload.jsx      +6  (동일 a11y 패턴)
+    src/components/programs/ProgramSchedulePhotoUpload.test.jsx +3
+    src/components/visits/VisitRfidDiffComparePanel.test.jsx    +1/-1 (QA-B605 await async compare)
+  origin/test : 7ac3c84  → ahead 2 (BNK-850 FULLY SYNCED 이후 +2·tester FF 대기)
+  Route : 133 (App.jsx <Route\b 132 + <Routes> 1)
+  Page  : 106 (*Page.jsx not test)
+  FE test : 540 (225 .test.js + 315 .test.jsx) — carry (in-place +5/-1, 신규 파일 0)
+
+[BACKEND] src/backend
+  develop HEAD : f28e3d9  fix(v3/SEC-D34): fail-closed on null import payload (QA-B604)
+  prev(BNK-850): f6e4d88  fix(v3/SEC-D34): verify bank deposit import excel magic bytes
+  +1 commit:
+    f28e3d9  fix(v3/SEC-D34): fail-closed on null import payload (QA-B604)
+  diff f6e4d88..f28e3d9 : 5 files +10/-5
+    billing/domain/BankDepositImportService.java            +1/-1  (payload == null guard)
+    billing/domain/NhisImportService.java                   +1/-1
+    users/domain/StaffNhisCaregiverImportService.java       +1/-1
+    visits/domain/VisitService.java                         +1/-1
+    pilot/CognitiveSupportFeeSchedulePilotServiceFlowE2eTest.java +7/-1 (getBytes() OOXML stub)
+  commit body: QA-B599 이후 file.getBytes() 게이트에서 null payload(getInputStream만 stub한 mock)가
+               payload.length 도달 → NPE. 4개 엑셀 import service(NHIS/bank deposit/visit/caregiver)에
+               `payload == null` guard 추가로 fail-closed 계약 유지. pilot flow test 는 valid OOXML
+               서명으로 getBytes() stub → cognitive-support coverage guard 도달.
+  origin/test : 598d108  → ahead 745 (BNK-850 744 → +1)
+  BE Test : 297 (296 *Test.java + 1 *Tests.java)
+  BE @Test strict (^\s*@Test\b) : 2343 (BNK-850 IDENTICAL — QA-B604 in-place +6/-1 line, 신규 @Test method 0)
+  @RestController : 81
+  HTTP : 442 (GET231 / POST144 / PATCH44 / PUT13 / DELETE10) — endpoint 신설 0 (12차 byte-exact IDENTICAL BNK-836~850 → 851)
+  Flyway : V1–V196 (신규 0)
+
+[MERGE GATE]
+  744(BNK-850) → 745 (FE 2 ahead + BE 745·BE-heavy) → tester FF 대기
+
+[모듈 커버] 97.41% (28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0) carry
+
+[SEC-D34 엑셀 import 4-경로 null-safe fail-closed 완성]
+  QA-B604 = SEC-D34 엑셀 매직바이트 4-경로(VisitService·NhisImportService·
+  StaffNhisCaregiverImportService·BankDepositImportService)에 payload==null guard 통일 →
+  file.getBytes() 경로 NPE 회귀 차단·BusinessRuleException fail-closed 계약 유지.
+  = 엑셀 서명 검증 4-경로가 이제 null-payload 회귀까지 방어. 경쟁 4종(케어포·이지케어·엔젤·롱텀)
+    엑셀 서명 검증 공개 근거 0건 → SUPERIOR carry.

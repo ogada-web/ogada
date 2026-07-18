@@ -1,0 +1,96 @@
+# ogada git 실측 — BNK-856 (교차검증·갭 우선순위 8h+)
+# 조사일: 2026-07-18T04:23:00Z
+# owner=BNK audience=PLN
+
+## 1. submodule develop HEAD (git rev-parse / git log -1 실측)
+
+FE develop = 1f9d49c  fix(v1.2.1/v3/SEC-D34): validate bank deposit excel magic bytes before upload
+  - BNK-855 @2789553 → +1 commit
+  - diffstat (git show --stat 1f9d49c): 4 files, +77/-6
+      src/components/ui/BankDepositImportPanel.jsx      +13/-1
+      src/components/ui/BankDepositImportPanel.test.jsx +33
+      src/config/excelImportFiles.js                    +10
+      src/config/excelImportFiles.test.js               +27
+  - WT CLEAN · ahead 2 vs origin/test=b23711f (rev-list --left-right --count origin/test...develop = 0/2 · tester FF 대기)
+
+BE develop = 0a97b22  fix(v3/SEC-D34): fail closed on corrupt OOXML body in excel import parsers
+  - BNK-855 @9449e1f → +1 commit
+  - diffstat (git show --stat 0a97b22): 10 files, +146/-5
+      billing/domain/BankDepositExcelParser.java        +7/-1
+      billing/domain/NhisExcelParser.java               +7/-1
+      staff/domain/StaffNhisCaregiverExcelParser.java   +7/-1
+      visits/domain/NhisVisitScheduleExcelParser.java   +7/-1
+      visits/domain/RfidTransmissionExcelParser.java    +7/-1
+      billing/domain/BankDepositImportServiceTest.java  +37
+      billing/domain/NhisExcelParserTest.java           +16
+      staff/domain/StaffNhisCaregiverImportServiceTest.java +23
+      visits/domain/RfidTransmissionExcelParserTest.java +16
+      visits/domain/VisitServiceTest.java               +24
+  - WT CLEAN · ahead 749 vs origin/test=598d108
+
+merge gate = 751 (FE 2 tester FF 대기 + BE 749 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+## 2. KPI 재산정 (grep 실측)
+
+Route        = 133  (src/App.jsx: <Route\b 132 + <Routes> 1)
+Page         = 106  (src/pages/*Page.jsx not test)
+FE test      = 540  (225 .test.js + 315 .test.jsx · carry · FE +1 commit 은 test in-place expand · 신규 test 파일 0)
+BE Test 클래스 = 297 (296 *Test.java + 1 *Tests.java)
+BE @Test strict = 2358  (^\s*@Test\b · BNK-855 2353 → +5 · corrupt OOXML fail-closed 회귀 test)
+@RestController = 81  (Δ0)
+HTTP verb    = 442  (GET 231 / POST 144 / PATCH 44 / PUT 13 / DELETE 10) — 17차 byte-exact IDENTICAL (BNK-836~855 → 856 · SEC-D34 corrupt-body 하드닝 parser/service/test-layer dominant · endpoint 신설 0)
+Flyway       = V1–V196 (신규 0)
+모듈 커버    = 97.41% (28.25/29 · id=2/8/10=0.85 · id=12=0.7 · 진성갭 0) carry
+
+## 3. ★★★ SEC-D34 엑셀 import fail-closed 계보 — 8번째 축(corrupt OOXML body) + import parser surface 4→5 확장
+
+commit 0a97b22 본문 verbatim (요지):
+  "A crafted payload with a valid 4-byte OOXML/ZIP magic header (PK\x03\x04) but a
+   corrupt body clears the magic-byte gate yet is not a parseable workbook. POI's
+   XSSFWorkbook/WorkbookFactory then raises a runtime NotOfficeXmlFileException
+   (POIXMLException), which the parsers' `catch (IOException)` did not catch, so the
+   raw POI exception surfaced to the caller instead of failing closed ...
+   Wrap the five SEC-D34 excel import parsers (bank deposit, NHIS claim, caregiver
+   NHIS, NHIS visit schedule, RFID transmission) so any parse-time IOException or
+   RuntimeException is converted to a BusinessRuleException(엑셀 파일을 읽을 수 없습니다.),
+   while re-throwing the parsers' own BusinessRuleException validation messages unchanged."
+
+핵심 패턴 (RfidTransmissionExcelParser.java 실측):
+  - } catch (IOException exception) {                          // BNK-855 이전
+  + } catch (BusinessRuleException exception) { throw exception; }  // 검증 메시지 보존
+  + catch (IOException | RuntimeException exception) {
+  +     throw new BusinessRuleException("엑셀 파일을 읽을 수 없습니다.");  // fail-closed · no-info-leak
+
+find src/main -name "*ExcelParser.java" (5-parser surface, 전량 corrupt-body guard 적용):
+  1. BankDepositExcelParser        (은행 입금 대사)
+  2. NhisExcelParser               (NHIS 청구)
+  3. StaffNhisCaregiverExcelParser (요양보호사 NHIS)
+  4. NhisVisitScheduleExcelParser  (NHIS 방문일정)          ← BNK-856 명시 확산
+  5. RfidTransmissionExcelParser   (RFID 전송)               ← BNK-856 명시 확산 · 이지케어 RFID 이중엑셀 직접 대응
+
+SEC-D34 fail-closed 8-축 누적:
+  a 매직바이트 4-경로       BNK-848~849 (visit/청구NHIS/요양보호사NHIS/은행입금)
+  b null-safe payload       BNK-851 (QA-B604)
+  c truncated OOXML         BNK-853 (efbdbec)
+  d .xls OLE magic          BNK-854 (2f3be17)
+  e empty-file/empty-header BNK-854 (9449e1f BE / b23711f FE)
+  f 0-byte 회귀 lock        BNK-855 (2789553 FE)
+  g corrupt OOXML body      BNK-856 (0a97b22 BE) — 매직 통과 but body 손상 → POI 런타임 예외 fail-closed·no-info-leak
+  h FE 은행입금 pre-upload 매직 BNK-856 (1f9d49c FE) — BankDepositImportPanel 사전 서명 검증(BE lockstep)
+
+= 「부분·손상·null·OLE·빈파일·빈헤더·0-byte·corrupt-body」 8-축 회귀 방어 · FE pre-upload reject + BE storage 최종 보루 2-layer
+
+## 4. NHIS #44 러-1~4 live 재실측 (교차검증 rotation)
+
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f... · 583차 IDENTICAL (BNK-855 582차 → +1)
+hits: 러-1(1) · 러-4(1) · 편도(2) · 이동서비스(13)
+→ Transport 상수(ONE_WAY_RATIO=0.5·ONE_PER_DAY·RU_1~4) 재조정 불요 · id=2 0.85 carry
+snapshot: nhis_jo44_live_bnk856.html
+
+## 5. crosswalk 결론
+
+- ogada 유일 엑셀 import 바이너리 서명·fail-closed·no-info-leak 검증 SUPERIOR carry.
+- corrupt-body 축(g) 특기점: 매직바이트만 검증하는 방어를 우회(valid magic + corrupt ZIP body)하는 정교한 공격을 POI 런타임 예외까지 fail-closed 로 흡수 = 방어 깊이 심화.
+- RFID 전송 엑셀 파서 확산(5) = 이지케어 FAQ 문서화된 RFID 이중엑셀 import 워크플로에 직접 대응하는 축 (이지케어 매직/시그니처/fail-closed 공개 근거 0 「미확인」).
+- 경쟁 4종(케어포 M7 입금관리 · 이지케어 FAQ RFID/공단청구 · 엔젤 요양비 8-leaf · 롱텀 공단청구 엑셀) 매직/시그니처/fail-closed 공개 근거 0.

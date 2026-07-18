@@ -1,0 +1,131 @@
+BNK-703 케어포 역공학 0–2h — func 107-leaf 전수 · menu depth · 리포트 밀도 · M7 본인부담 7-x ↔ ogada billing 1:1
+조사일: 2026-07-13T22:30:00Z | rotation: 케어포 func.php·PDF·demo-work · ogada FE @175c570 / BE @3e627b3
+
+== live 재실측 ==
+carefor func.php LIVE (www.carefor.co.kr/daycare/func.php) : HTTP 000 timeout 15s = **65+ cycle** 「미확인」 carry
+demo-work LIVE (demo-work.carefor.co.kr)                  : HTTP 000 timeout 15s = **65+ cycle** 「미확인」 carry
+carefor manual PDF LIVE                                 : HTTP 000 timeout 15s
+Wayback id_ func.php (disk bnk690 canonical)             : 98,328B md5 **6226e6eb** = 290+cycle IDENTICAL
+PDF disk (bnk690)                                       : 9,992,772B md5 **96f7d45e** = 440+cycle IDENTICAL
+demo-work disk (bnk675)                                 : 71,742B md5 **ebee4d47** stable
+
+== ★★★ func.php PC 107-leaf 전수 (주야간 정본) ==
+leaf **107** · depth {2: 88, 3: 19} (= depth-2 82.2% · depth-3 17.8%)
+module_counts {1:11,2:10,3:11,4:10,5:13,6:5,7:11,8:15,9:6,10:9,11:6} sum=107
+※ agents.yaml 「109항목」= PC **107** + (APP 별도·문서 카운트 drift) — BNK-333/690 carry 재확인
+title 「리포트」 exact: **21/107 = 19.6%** → ['1-7', '1-8', '1-10', '2-9', '3-4', '3-5', '3-6', '4-3', '4-4', '4-5', '4-6-2', '4-6-3', '5-7', '5-8', '5-9', '5-10', '7-6', '7-7', '7-8', '8-12', '11-6']
+title 리포트|대장|통계|집계 broad: **25/107 = 23.4%**
+
+== ★★ demo-work 시설 셸 (disk · 이동서비스 없음 명시) ==
+loadPage `<li obj-type="loadPage">` recount: **112** (obj-type attr all: 114)
+`class="rpt"`: **34** → report UI density **30.4%** (of loadPage leaves)
+`view.transport.*` / 이동·송영·배차·탑승: **0 hit** → **시설 셸 = 이동서비스 미장착 재확인**(주야간 func M2 ≠ demo-work)
+M7 cost/cms/npay views unique: ['view.cost_master', 'view.cost_receipt', 'view.cost_master_statistic', 'view.cost_nopay', 'view.cms_manage', 'view.npay_manage', 'view.cost_master_patient_yearly', 'view.cost_master_report', 'view.cost_deposit_report', 'view.cost_receipt_report', 'view.cost_receipt_apply_yearly']
+7-10 간편계산기: demo view **0** (func-only) → ogada `/billing/calculator` = **superset**
+
+== ★★★ M7 본인부담 7-x 번호식 lifecycle ↔ ogada `@175c570` billing Route 1:1 ==
+lifecycle: 7-1 청구 → 명세서·발송 → 7-2 입금 → 7-3 미납 → 7-4 CMS → 7-5 간편결제 → 7-6~8 리포트 → 7-9 환불·통계 → 7-10 계산기
+
+| # | func leaf | demo view | ogada Route @175c570 | 판정 |
+|---|-----------|-----------|----------------------|------|
+| 7-1 | 본인부담금 청구관리 | `view.cost_master` | `/billing (+ /billing/claims/:claimId)` | ✅ FULL |
+| 7-2 | 본인부담금 입금관리 | `view.cost_receipt` | `/billing/payments` | ✅ FULL |
+| 7-2-1 | 의료비공제(연말정산) | `view.cost_receipt_apply_yearly` | `API medical-deduction/export (페이지 Route 없음·API)` | ✅ API |
+| 7-3 | 본인부담금 미납관리 | `view.cost_nopay` | `/billing/overdue` | ✅ FULL |
+| 7-4 | 본인부담금 자동이체 (CMS) | `view.cms_manage` | `/billing/cms` | ✅ FULL |
+| 7-5 | 본인부담금 간편결제 | `view.npay_manage` | `/billing/easy-pay` | ✅ FULL |
+| 7-6 | 본인부담금 청구대장 리포트 | `view.cost_master_report` | `/billing/reports/charges` | ✅ FULL |
+| 7-7 | 본인부담금 입금대장 리포트 | `view.cost_deposit_report` | `/billing/reports/deposits` | ✅ FULL |
+| 7-8 | 본인부담금 수납대장 리포트 | `view.cost_receipt_report` | `/billing/reports/receipts` | ✅ FULL |
+| 7-9 | 본인부담금 수납,환불내역 | `view.cost_master_statistic? + refund views` | `/billing/reports/refunds + /billing/reports/statistics` | ✅ FULL |
+| 7-10 | 본인부담금 간편계산기 | `(demo 0 · func-only)` | `/billing/calculator` | ✅ SUPERSET |
+
+ogada billing Route inventory @175c570:
+  - /billing/payments
+  - /billing/overdue
+  - /billing/cms
+  - /billing/easy-pay
+  - /billing/fee-schedules
+  - /billing/copay-rates
+  - /billing/reports/charges
+  - /billing/reports/deposits
+  - /billing/reports/receipts
+  - /billing/cash-receipts
+  - /billing/reports/refunds
+  - /billing/reports/statistics
+  - /billing/calculator
+  - /billing
+  - /billing/claims/:claimId
+  - /billing/imports/nhis
+  - /billing/imports/nhis/:batchId
+settings/billing paths: (none in App.jsx — G33 start-balance may be API-only)
+medical* paths: (none — API export)
+App.jsx contains start-balance string: False
+
+ogada billing **superset** vs carefor M7 11-leaf (+6):
+  - /billing/calculator
+  - /billing/cash-receipts
+  - /billing/copay-rates
+  - /billing/fee-schedules
+  - /billing/imports/nhis
+  - /billing/imports/nhis/:batchId
+  - /billing/claims/:claimId
+
+== menu depth · report density ↔ ogada ==
+carefor depth-2 heavy (88/107) = ERP 2단 메뉴 중심 · ogada = flat `/billing/*` Route graph (17 billing path)
+carefor demo report UI 34/112=30.4% · ogada FE Report*Page count=28 · billing reports 5종
+M7 module coverage id=7-* = 1.0 carry (competitorModuleCoverage.js)
+sole P1 lever = M11/M12 (`/(payroll|accounting)` 0) → 84.31%→91.21%
+
+== ogada git 실측 ==
+FE @175c570 WT CLEAN · ahead origin/develop=0 · ahead origin/test=0 (FULLY SYNCED) · +1 vs BNK-702 bd12f28
+BE @3e627b3 WT CLEAN · ahead origin/test=613 · +2 vs BNK-702 5366944 (V190 integrity + address normalize)
+Route 124 · Page 98 · FE test 506 · BE Test 280 · BE @Test 2076 · V1–V190 · 모듈 84.31%
+merge residual = BE-only 613 (FE stream CLOSED)
+
+== ★★★ NEW evidence — Wayback 2024-05 marketing shell ≠ catalog canonical ==
+URL: https://web.archive.org/web/20240515000000id_/https://www.carefor.co.kr/daycare/func.php
+HTTP 200 · 92,723B · md5 **00992037** (BNK-703 live refetch)
+vs canonical catalog: https://web.archive.org/web/.../carefor_func_wayback_live_bnk690.html · 98,328B · md5 **6226e6eb**
+
+| 축 | marketing shell (00992037) | catalog canonical (6226e6eb) | 의미 |
+|----|----------------------------|-----------------------------|------|
+| HTML comment `<!--N-N.` | **0** | **107** | marketing = plain-text `.c1/.c2` listing only |
+| numbered items | **103** | **107** | −4 leaf |
+| M7 leaves | **10** (7-1…7-9·7-2-1 · **7-10 없음**) | **11** (+**7-10 간편계산기**) | 계산기 = catalog/func-only · demo·marketing 모두 0 |
+| M6 leaves | **4** (6-3-1 미노출) | **5** | |
+| M3 leaves | **10** (3-1-4 식사선호도 미노출) | **11** | |
+| M12 수입지출 | **0**(모듈 헤더 없음) | (매뉴얼 p2에는 12번)·func leaf 별도 | M11/M12 product surface 약화 |
+| CMS/NPay CTA | `/addservice/info_cms.php`·`info_npay.php` | menu leaf 7-4·7-5 | **부가서비스 랜딩**으로 CMS/간편결제 상품화 |
+
+M7 marketing verbatim (확인):
+  7-1 청구 · 7-2 입금 · 7-2-1 의료비공제 · 7-3 미납 · 7-4 CMS · 7-5 간편결제
+  7-6 **연간** 청구대장 리포트 · 7-7 **월별** 입금대장 · 7-8 **월별** 수납대장 · 7-9 수납·환불
+  ※ 7-6~7-8 타이틀에 「연간/월별」 prefix — canonical comment는 prefix 없음(표기 drift)
+
+→ **planner 액션**: (1) agents.yaml「109항목」= PC catalog **107** 정본(6226e6eb) · 마케팅 103·APP 별도 = 「109」문서 drift 유지 고지
+  (2) ogada `/billing/calculator` = carefor **catalog-only 7-10** 대비 **triple-gap fill**(marketing 0 · demo 0 · ogada ✅) 마케팅 카피 후보
+  (3) carefor CMS/NPay를 addservice 상품 페이지로 노출 ↔ ogada `/billing/cms`·`/easy-pay` in-app 우위 유지
+
+== PDF · demo carry ==
+PDF disk bnk690 md5 **96f7d45e** 9,992,772B = 440+cycle IDENTICAL (LIVE timeout)
+demo-work disk bnk675 md5 **ebee4d47** 71,742B · loadPage li **112** · rpt **34/112=30.4%** · transport **0**
+
+== ogada KPI delta vs BNK-702 ==
+| 항목 | BNK-702 | BNK-703 | delta |
+|------|---------|---------|-------|
+| FE HEAD | bd12f28 WT DIRTY 2M | **175c570** WT CLEAN | +1 `ux(a11y/US-Q01): fix invalid shuttle sheet table semantics` · DIRTY CLOSURE |
+| BE HEAD | 5366944 WT DIRTY V190?? | **3e627b3** WT CLEAN | +2 (`2b3f3d9` V190 integrity + `3e627b3` address normalize) · DIRTY CLOSURE |
+| FE ahead origin/test | 0 SYNCED | **0** SYNCED | carry |
+| BE ahead origin/test | 611 | **613** | +2 |
+| Route/Page/FE test | 124/98/506 | 124/98/506 | IDENTICAL |
+| BE @Test | 2073 | **2076** | +3 |
+| V migrations | V1–V189(+V190 WIP) | **V1–V190** | V190 develop LANDING |
+| 모듈 % | 84.31% | 84.31% | IDENTICAL · M7=1.0 · M11/M12=0 sole P1 |
+
+== 부수 재실측 ==
+NHIS #44 joHistoryContent full-date: 200·7,572B·`c886ff1f` = **439차** zero drift IDENTICAL
+ezCare FAQ list: 200·80,057B(**size-lock 17-cycle**)·md5 `d37da8a7`(cachebuster)·233 rowid·hit_sum **3,646,332**(+10 vs BNK-702 3,646,322)·Top-1 21601=83,903
+
+증거 URL(신규): Wayback 20240515id_ func.php marketing shell
+증거 URL(재실측): NHIS #44 · ezCare FAQ · PDF/canonical disk · demo disk

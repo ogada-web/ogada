@@ -1,0 +1,103 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-13T19:03:00Z -->
+# BNK-698 — ogada git 실측 6–8h (주력 extract)
+
+**조사일**: 2026-07-13T19:03:00Z (KST 2026-07-14 04:03)
+**rotation**: ogada git 실측 6–8h — 직전 BNK-697(2026-07-13T18:19Z, 엔젤·롱텀·규제) → 단시간 재실측.
+
+## 1. HEAD · WT · merge gate (확인)
+
+| 축 | BNK-697 | BNK-698 | delta |
+|---|---|---|---|
+| FE develop | `@2704fd8` WT **DIRTY 29** | `@d873894` WT **CLEAN** | **+1 commit** · dirty→clean **CLOSURE** |
+| BE develop | `@60c4e36` WT CLEAN | `@60c4e36` WT CLEAN | HEAD zero advance |
+| FE ahead vs `origin/test=ab4de83` | ~287 | **288** | +1 |
+| BE ahead vs `origin/test=598d108` | 607 | **607** | 0 |
+| merge gate | ~894 | **895** (288+607) | +1 FE-only |
+
+**FE commit**: `d873894 feat(v1.2.1/QA-B360): add transport shuttle sheet workflow and stabilize labels`
+- 29 files · +3786/−98
+- NEW: `TransportShuttleSheetPage.jsx`(+test) · `TransportShuttleScheduleView.jsx`(+test) · `TransportShuttleSheetView.jsx`(+test) · `transportShuttleSheet.js`(+test 948+477L)
+- Route: `path="/transport/shuttle-sheet"` → App.jsx
+- BNK-697 「FE 29-file WT DIRTY → coder commit closure 재권장」 **해소** (rules §6)
+
+**BE**: `60c4e36 feat(v2/transport): persist shuttle run metadata and roster day status` carry · V186~V189 develop tracked · WT CLEAN.
+
+## 2. KPI 9축 재산정 (확인 · git 실측)
+
+| 축 | BNK-697 | BNK-698 | 명령/근거 |
+|---|---|---|---|
+| Route (`<Route\b` in App.jsx) | 123 (WT 124) | **124** | `git show develop:src/App.jsx \| grep -cE '<Route\b'` |
+| *Page.jsx strict | 97 | **98** | `git ls-files 'src/pages/*Page.jsx' \| wc -l` (+`TransportShuttleSheetPage.jsx`) |
+| FE test (.test.{js,jsx}) | 500 | **504** | ls-files 208.js + 296.jsx |
+| BE Test classes | 278 | **278** | find `*Test*.java` (277 Test + 1 Tests) |
+| BE @Test | 2052 | **2052** | `git grep -hoE '@Test\b' develop -- '*.java' \| wc -l` |
+| V migrations | V1–V189 | **V1–V189** | `ls-files …/V*.sql` = 189 |
+| 모듈 커버 | 84.31% (24.45/29) | **84.31%** | competitorModuleCoverage.js · M11/M12=0 |
+| reports route | 28 | **28** | path containing report |
+| M11/M12 | 0 route | **0 route** | `grep path="/(payroll\|accounting)` = 0 |
+
+**판정**: **5/9축 KPI delta** (FE HEAD · merge gate · Route 123→124 · Page 97→98 · FE test 500→504). 모듈 %·M11/M12 sole P1 lever(+6.90pp→91.21%) **IDENTICAL carry**.
+
+## 3. ★★★ 메뉴/필드/워크플로 블록 — 송영 셔틀 배차표 full-stack CLOSURE
+
+### 3-1 Route surface (확인 · develop App.jsx)
+
+`/transport` 9 route (BNK-697 WT 배선 → **698 develop 확정**):
+
+1. `/transport` — 배차·로스터 홈
+2. **`/transport/shuttle-sheet`** — **NEW LIVE** 송영 셔틀 배차표(시트)
+3. `/transport/compliance`
+4. `/transport/auto-dispatch`
+5. `/transport/service-fees` — NHIS #44 러-1~4
+6. `/transport/vehicles` — V187 셔틀 정류장 주소
+7. `/transport/runs/new`
+8. `/transport/runs/:runId`
+9. `/transport/outings`
+
+### 3-2 필드·API 워크플로 (확인 · TransportShuttleSheetPage + transportShuttleSheet.js)
+
+| 단계 | UI/필드 | API·함수 | 비고 |
+|---|---|---|---|
+| 1 | `runDate`(DateInput) · `direction`(승차/하차) | URL searchParams sync | Field render-prop |
+| 2 | 로스터 로드 | `fetchTransportRosterApi({runDate,direction})` | BE roster day status(V188/V189) |
+| 3 | 런 목록 로드 | `fetchTransportRunsApi({runDate,direction})` | departureRound(V186) |
+| 4 | 런 상세+경로 | `fetchRunDetailsMapWithRouteLegs` · `fetchTransportRoutePreviewApi` | 카카오 경로 미리보기 |
+| 5 | 열(column) 구성 | `buildShuttleSheetColumns(runs, runDetailsById)` | vehicleLabel·departureRound·탑승자 |
+| 6 | 미배정 이용자 | `findUnassignedRosterClients(roster, columns)` | 배차 누락 가시화 |
+| 7 | 차량 그리드 | `buildShuttleVehicleGrid(runColumns)` | 차량×회차 세로 블록 |
+| 8 | 제목 | `formatShuttleSheetTitle(runDate, directionLabel)` → 「M월 D일 (요일) 승차 송영표」 | 인쇄/운영 표기 |
+| 9 | 회차 라벨 | `formatDepartureRoundLabel(round, time)` → 「N차 출발 : HH:MM」 | V186 출발 회차 |
+
+**경쟁 대비**: 케어포 demo-work 이동서비스 nav **0** · 이지케어 `new.ez [4]RFID점검` 태그비교만 · 엔젤 배차 표 **미확인** → ogada **BE+FE full-stack 유일** (BNK-697 BE landing + BNK-698 FE landing).
+
+## 4. 증거 URL 재실측
+
+### 4-1 NHIS #44 — **434차** zero drift (확인)
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · 7,572B · md5 `c886ff1f` = disk BNK-697 IDENTICAL
+- verbatim: 「러-1」~「러-4」·「50%」·「1일 1회」·「수급자가 부담하지 아니한다」·「편도」 YES
+- snapshot: `nhis_jo44_live_bnk698.html`
+
+### 4-2 ezCare FAQ list — counter DRIFT +17 (확인)
+
+- URL: https://ezcare.easyms.co.kr/help/faq.ez
+- HTTP 200 · 80,057B(size-lock) · md5 `1cd1c5d3`(cachebuster)
+- 233 rowid · hit_sum **3,646,297**(BNK-696 3,646,280 → **+17**)
+- Top: 21601 회의록 83903 · 21274 44153 · 21529 37213 · 21723 시급 25114
+- snapshot: `ezcare_help_faq_list_live_bnk698.html`
+- M11/M12 demand-signal carry
+
+## 5. 갭·우선순위 (planner)
+
+1. **P0/P1 재오픈 0** — 11/17-route LIVE 유지 · shuttle-sheet 추가로 v1.3-C transport **최심 우위 문구 갱신** 권장.
+2. **M11/M12 sole P1 lever carry** — `/payroll`·`/accounting` 0 · 84.31%→91.21%(+6.90pp) · 이지케어 에코시스템(BNK-696) 대비 in-app vs BPO scope 결정 보류.
+3. **G-AI-NEEDS-ASSESSMENT-SUMMARY**(BNK-695) · longterm 502/610 「미확인」 carry.
+4. **tester**: merge gate **895** · 양쪽 WT CLEAN · FF 가속 가능.
+
+## 6. per-cycle minimum
+
+- [x] 신규/재실측 증거 URL 2건 (NHIS #44 · ezCare FAQ)
+- [x] 메뉴/필드/워크플로 1블록 (셔틀 배차표 9-step)
+- [x] COMPETITOR_MATRIX `@d873894`/`@60c4e36` 갱신
+- [x] BENCHMARK_REPORT §698

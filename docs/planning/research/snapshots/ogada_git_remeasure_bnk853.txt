@@ -1,0 +1,59 @@
+# ogada git 실측 (BNK-853 · 케어포 역공학 0-2h)
+
+## 조사일: 2026-07-18T02:16Z
+
+## Backend (`src/backend`)
+- develop HEAD: `efbdbeca32905fdced69f4556d9f9b0c1b435b21`
+  * commit msg: `test(v3/SEC-D34): lock truncated OOXML signature fail-closed on bank deposit import`
+- 직전 (BNK-852): `f28e3d9` → **+1 commit** (`efbdbec` truncated OOXML fail-closed lock)
+- WT: CLEAN
+- ahead vs origin/test (`598d108`): **746** (BNK-852 745 → +1)
+- BE Test 파일: **297** (296 `*Test.java` + 1 `*Tests.java` — carry)
+- BE `@Test` strict (`^\s*@Test\b` in `src/test/**/*.java`): **2345** (BNK-852 2343 → **+2** truncated OOXML fail-closed 회귀 lock)
+- `@RestController`: **81** (carry)
+- HTTP verbs (`src/main/**/*.java`): GET **231** · POST **144** · PATCH **44** · PUT **13** · DELETE **10** = **442** (BNK-836~852 IDENTICAL → **14차 byte-exact IDENTICAL**·endpoint 신설 0·service-layer 하드닝 dominant)
+- Flyway V1–V196 (carry)
+
+## Frontend (`src/frontend`)
+- develop HEAD: `637bad8823fbea5f73e09c51998ebd3181e9d906`
+  * commit msg: `fix(v1.2.1/QA-B606): bump form-data to 4.0.6 to clear npm audit high`
+- 직전 (BNK-852): `1cdfd5c` → **+3 commit** (`194823b` UXD-191 사진업로드 SR announce + `1cdfd5c` QA-B605 대기 already at BNK-852 + `7ac3c84` fixture already before + `637bad8` form-data 4.0.6 bump)
+- 실제 신규 이번 사이클: `637bad8` (QA-B606 form-data audit fix — 의존성 보안 패치)
+- origin/test = `637bad8` = **FULLY SYNCED** (ahead 0 · BNK-852 ahead 2 → tester FF 흡수 완료)
+- Route: **133** (`<Route\b` **132** in `src/App.jsx` + `<Routes>` 1) — carry
+- Page: **106** (`src/pages/**/*Page.jsx`) — carry
+- FE test 파일: **540** (225 `.test.js` + 315 `.test.jsx`) — carry(BNK-852→BNK-853 신규 test 파일 0·form-data 4.0.6 은 의존성 lock-file 만 변경)
+- 모듈 커버: **97.41%** (28.25/29 · 비-1.0 id=2/8/10=**0.85** · id=12=**0.7** · 진성갭 0)
+
+## merge gate
+- BE 746 + FE 0 = **BE-heavy · gate 746** — tester FF 대기(신규 마이그레이션 0 · migration 안전)
+
+## KPI trend (BNK-848~853)
+| 사이클 | FE HEAD | BE HEAD | @Test | HTTP | Route | Page | FE test |
+|---|---|---|---|---|---|---|---|
+| BNK-848 | 3042a53 | a788e6d | 2339 | 442 | 133 | 106 | 540 |
+| BNK-849 | 3042a53 | f6e4d88 | 2343 | 442 | 133 | 106 | 540 |
+| BNK-850 | 7ac3c84 | f6e4d88 | 2343 | 442 | 133 | 106 | 540 |
+| BNK-851 | 1cdfd5c | f28e3d9 | 2343 | 442 | 133 | 106 | 540 |
+| BNK-852 | 1cdfd5c | f28e3d9 | 2343 | 442 | 133 | 106 | 540 |
+| **BNK-853** | **637bad8** | **efbdbec** | **2345** | 442 | 133 | 106 | 540 |
+
+## HTTP 442 안정성
+- BNK-836→837→838→839→840→841→842→843→844→845→846→848→849→850→851→852→**853** = **14차 byte-exact IDENTICAL**
+- 안정성 함의: SEC-D34 엑셀 매직바이트 6-commit(`324da07`→`ed94521`→`a788e6d`→`be64fda`→`f6e4d88`→`f28e3d9`→`efbdbec`) 지속되지만 **endpoint 신설 0** — service-layer 하드닝 dominant 재확정.
+- SEC-D34 엑셀 서명 검증 = 경쟁 4종(케어포·이지케어·엔젤·롱텀) 공개 근거 0 → ogada 유일 SUPERIOR carry.
+
+## closed band 재확인 (App.jsx `@637bad8` LIVE)
+- G14 `/clients/:clientId/care-plan-form` ✅ carry
+- 대시보드 `/dashboard` (+`/dashboard/hq`) ✅ carry
+- G2 `/clients/home-newsletter` ✅ carry
+- G-LINKAGE `/clients/linkage-records` ✅ carry
+- v2 CMS `/billing/cms` ✅ carry
+- v1.3-C `/transport/service-fees` ✅ carry
+- P0 신규 0 · 가정 번복 0 · 우선순위 동결 carry
+
+## 판정
+- BE +1 commit(efbdbec) = truncated OOXML fail-closed 회귀 lock (SEC-D34 엑셀 매직바이트 검증 7번째 하드닝) · @Test +2 회귀 lock · endpoint 신설 0 (HTTP 442 14차 IDENTICAL).
+- FE +1 commit(637bad8) = form-data 4.0.6 npm audit high 해결 (의존성 보안 패치) · 신규 test 0 · Route/Page 신설 0.
+- SEC-D34 엑셀 서명 검증 계열 완전 착지: 6번째 매직 검증(BankDeposit) + null-safe fail-closed(QA-B604) + truncated OOXML fail-closed(efbdbec) = **fail-closed 3-layer defense** — 경쟁 4종 유일 SUPERIOR carry.
+- planner 액션 아이템 신규 0 — 우선순위 문서 재정렬 불요.

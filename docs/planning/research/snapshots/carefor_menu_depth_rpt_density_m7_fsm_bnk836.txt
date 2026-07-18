@@ -1,0 +1,143 @@
+# [BNK-836] 케어포 메뉴 depth × 시설셸 리포트 밀도 × M7 7-x 번호식 lifecycle FSM
+# 조사일: 2026-07-17T16:28:52Z | rotation: 케어포 역공학 0–2h
+# 출처(케어포):
+#   disk carefor_func.php md5 6226e6eb · 98,328B · 107-leaf (canonical LOCK)
+#   carefor_func_menu_catalog.json leaf_count 107 · module_counts M7=11
+#   Wayback func id_ 20260519072235 — 이번 사이클 HTTP 500(141KB error page)×2 · disk+bnk814 BYTE-IDENTICAL carry
+#   CDX from=20260501 → 최신 캡처 20260519072235 (신규 없음)
+#   demo-work Wayback id_ 20250712220444 → 200·71,742B·ebee4d47 BYTE-IDENTICAL (bnk810)
+#   LIVE www.carefor.co.kr/daycare/func.php · demo-work.carefor.co.kr → HTTP 000 (25s timeout) 107-cycle+
+# ogada 실측: FE @9e40c19 · BE @759b15e · Route 133 · Page 106 · FE test 537(314+223)
+#            BE Test 295 · @Test 2287 · @RestController 81 · HTTP 442 · Flyway V1–V196
+# 방법: catalog depth histogram · demo class=rpt 34 · M7 view.cost_* · App.jsx path LIVE grep
+# =============================================================================
+
+## 0. 근거 재실측 (라이브 + Wayback + CDX)
+
+| URL | HTTP | SIZE | md5 | 결과 |
+|-----|------|------|-----|------|
+| https://www.carefor.co.kr/daycare/func.php | **000** | 0 | — | LIVE **107-cycle+** 「미확인」 |
+| https://demo-work.carefor.co.kr/ | **000** | 0 | — | LIVE 107-cycle+ 「미확인」 |
+| Wayback func id_ 20260519072235 | **500**×2 | 141,476 | (error) | 일시 장애 · disk `6226e6eb` LOCK carry |
+| disk carefor_func.php / bnk814 Wayback | — | 98,328 | `6226e6eb` | **BYTE-IDENTICAL** zero drift |
+| Wayback demo id_ 20250712220444 | **200** | 71,742 | `ebee4d47` | BYTE-IDENTICAL vs bnk810 |
+| CDX carefor.co.kr/daycare/func.php from=20260501 | **200** | 185 | `8ebddbcf` | 최신=20260519 · 신규 캡처 0 |
+| NHIS #44 joHistoryContent | **200** | 7,572 | `c886ff1f` | **568차** IDENTICAL |
+
+→ 케어포 LIVE 회복 없음 · 정본은 disk/Wayback carry · 제품 변동 신호 0.
+
+## 1. ★★★ 신규 앵글 — 메뉴 depth 분포 (func.php 107-leaf)
+
+| depth (id segments) | 개수 | 비율 | 예시 |
+|---------------------|------|------|------|
+| depth-2 (`N-M`) | **88** | 82.2% | 7-1 청구관리 · 7-6 청구대장 리포트 |
+| depth-3 (`N-M-K`) | **19** | 17.8% | **7-2-1** 의료비공제 · 1-1-1 대기 수급자 · 4-6-2 물리치료 리포트 |
+| depth-4+ | **0** | 0% | — |
+
+**확인** — 케어포 IA = **2단 메뉴 중심**(max depth 3·`demo_facility_shell.menu_depth_max=2` 표기). agents.yaml 「109항목」은 **폐기 수치** — 정본 **107-leaf**(BNK-602 이후 전 사이클 IDENTICAL).
+
+depth-3 전수 19 (모듈별):
+M1:1 · M2:1 · M3:4 · M4:4 · M5:3 · M6:1 · **M7:1(7-2-1)** · M8:2 · M9:1 · M10:1 · M11:0
+
+→ M7 본인부담은 depth-3가 **연말정산 분기 1건만** — 나머지는 전부 depth-2 번호식 lifecycle.
+
+## 2. ★★★ 신규 앵글 — 시설셸 리포트 밀도 (demo-work loadPage/view)
+
+| 지표 | 값 | 근거 |
+|------|-----|------|
+| class=`rpt` | **34** | demo HTML grep IDENTICAL |
+| loadPage 문자열 | **115** | `ebee4d47` (BNK-825「114」±1 카운트법 차이 · 실체 동일 셸) |
+| unique view.* | ~110 | catalog `unique_view_count` 110 |
+| rpt 비율 | **34/110 ≈ 30.9%** | `demo_facility_shell.rpt_ratio` |
+| transport/이동/배차/송영 | **0** | 시설 셸 = 이동서비스 **없음** 명시 재확인 |
+| L07(M7) class=rpt | **4/11 = 36.4%** | 7-6·7-7·7-8·7-9 |
+
+### 모듈별 report-ish 밀도 (func.php title 키워드: 리포트·통계·대장·현황)
+
+| 모듈 | leaves | reportish | % | 비고 |
+|------|--------|-----------|---|------|
+| M1 | 11 | 5 | 45% | 현황/통계/연계 발송 |
+| M2 | 10 | 3 | 30% | demo 시설셸에 M2 이동 leaf **0** |
+| M3 | 11 | 4 | 36% | care reports |
+| M4 | 10 | 5 | 50% | 간호 리포트 최다 |
+| M5 | 13 | 4 | 31% | 프로그램 리포트 |
+| M6 | 5 | 0 | **0%** | checklist workflow (rpt 0 MATCH) |
+| **M7** | **11** | **3+1*** | **27% title / 36% class=rpt** | *7-9는 title에「리포트」없음·class=rpt |
+| M8 | 15 | 2 | 13% | |
+| M9 | 6 | 2 | 33% | 9-4 비품=비-core P4 |
+| M10 | 9 | 0 | 0% | 알림·포털 |
+| M11 | 6 | 2 | 33% | 급여대장 |
+
+### ogada 대비 IA 분기 (갭 아님)
+
+| 축 | 케어포 | ogada `@9e40c19` | 판정 |
+|----|--------|------------------|------|
+| 리포트 IA | flat menu leaf (`class=rpt` 형제) | nested `/billing/reports/*`·`/care/reports/*`·`/programs/reports/*` | **IA 선호** |
+| report-ish 비율 | 34/110 ≈ **30.9%** | 30 path / Route 133 ≈ **22.6%** | ogada 낮음 = 중첩 구조 |
+| M7 rpt | 4 leaf 번호(7-6~7-9) | 5 route (`charges/deposits/receipts/refunds/statistics`) | **PARITY+SUPERSET** |
+| 이동서비스 | func 10-leaf · **demo 0** | `/transport` 9-route SUPERSET | id=2 0.85 carry |
+
+→ 리포트 「메뉴 밀도」 차이는 **구조 차이**이지 기능 갭이 아님. P0/P1 격상 근거 0.
+
+## 3. ★★★ 신규 앵글 — M7 7-x 번호식 lifecycle FSM → ogada Route 1:1
+
+번호식 흐름(청구→수납→채널→대장→환불→계산기):
+
+```
+[7-1 청구]──►[7-2 입금]──►[7-3 미납]
+     │            │
+     │       [7-2-1 연말정산]  (depth-3 branch)
+     │
+     ├──►[7-4 CMS] ║ [7-5 간편결제]   (parallel payment channels)
+     │
+     ├──►[7-6 청구대장 rpt]──►[7-7 입금대장 rpt]──►[7-8 수납대장 rpt]
+     │
+     ├──►[7-9 수납·환불]
+     └──►[7-10 간편계산기]  (func-only · demo L07 미노출)
+```
+
+| # | func leaf | demo view | class | ogada Route `@9e40c19` | LIVE |
+|---|-----------|-----------|-------|--------------------------|------|
+| 1 | 7-1 청구관리 | view.cost_master | — | `/billing` (+`/claims/:claimId`) | ✅ |
+| 2 | 7-2 입금관리 | view.cost_receipt | — | `/billing/payments` | ✅ |
+| 3 | 7-2-1 의료비공제 | view.cost_master_statistic | submp | `/billing/reports/statistics` (+cash-receipts) | ✅ |
+| 4 | 7-3 미납관리 | view.cost_nopay | — | `/billing/overdue` | ✅ |
+| 5 | 7-4 CMS | view.cms_manage | — | `/billing/cms` | ✅ |
+| 6 | 7-5 간편결제 | view.npay_manage | — | `/billing/easy-pay` | ✅ |
+| 7 | 7-6 청구대장 | view.cost_master_report | **rpt** | `/billing/reports/charges` | ✅ |
+| 8 | 7-7 입금대장 | view.cost_deposit_report | **rpt** | `/billing/reports/deposits` | ✅ |
+| 9 | 7-8 수납대장 | view.cost_receipt_report | **rpt** | `/billing/reports/receipts` | ✅ |
+| 10 | 7-9 수납·환불 | view.cost_receipt_apply_yearly | **rpt** | `/billing/reports/refunds` | ✅ |
+| 11 | 7-10 간편계산기 | (demo 미노출) | — | `/billing/calculator` | ✅ |
+
+**ogada SUPERSET** (M7 대응 leaf 부재): `/billing/imports/nhis`(+batch)·`/billing/fee-schedules`·`/billing/copay-rates`·`/billing/cash-receipts` 심화.
+
+→ **11/11 PARITY + SUPERSET** · id=7-x coverage 전량 1.0 · KPI promote 0 · closed band `/billing/cms` L389 LIVE.
+
+## 4. ogada baseline (git 실측 · BNK-835 → BNK-836)
+
+| KPI | BNK-835 | BNK-836 | Δ |
+|-----|---------|---------|---|
+| FE HEAD | `@8e74b07` | `@9e40c19` | +2 (`bfd171d` UXD-189 · `9e40c19` QA-B95 named-num) |
+| BE HEAD | `@72a6534` | `@759b15e` | +1 (QA-B95 named-num lock) |
+| ahead origin/test | 0 FULLY SYNCED | **2** | tester FF 대기 |
+| BE ahead | 732 | **733** | +1 |
+| merge gate | 732 | **735** | FE2+BE733 |
+| Route / Page | 133 / 106 | 133 / **106** | 0 (정본 유지) |
+| FE test | 533 | **537**(314+223) | +4 |
+| BE @Test | 2286 | **2287** | +1 |
+| HTTP | 442 | **442** | **4차 IDENTICAL** |
+| 모듈 | 97.41% | **97.41%** | 0 (29-entry·28.25) |
+
+closed band 6 라인 IDENTICAL: L164/173/209/236/245/389/628.
+
+## 5. 결론 (planner)
+
+1. **메뉴 depth** — 케어포 2단 중심(88+19)·depth-4 없음 · 「109」→**107** 정본 재확인.
+2. **리포트 밀도** — 시설셸 30.9% flat rpt vs ogada 22.6% nested · **IA 차이≠갭** · M7 class=rpt 36.4% ↔ billing reports PARITY+SUPERSET.
+3. **7-x FSM** — 번호식 lifecycle 11/11 LIVE · 계산기·NHIS·수가 SUPERSET · id=7-x 1.0 동결.
+4. **시설 셸 이동서비스 0** — demo transport 0 재확인 · ogada `/transport` 차별 유지(id=2 0.85).
+5. **P0/P1 신규 0 · 재오픈 0** · residual lever id=12(0.7)>id=8(0.85).
+6. **LIVE 000 107-cycle+** · Wayback func 500 일시 · CDX 신규 0 · 제품 변동 신호 없음.
+
+**가정 번복 0** · **가정→확인 0**(이미 확인된 M7 PARITY 재실측 강화).

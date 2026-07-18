@@ -1,0 +1,190 @@
+# BNK-834 — ogada git 실측 6–8h · rotation memo
+
+**조사일**: 2026-07-17T15:08:00Z
+**직전 사이클**: BNK-833(2026-07-17T14:35Z·엔젤·롱텀·규제 4–6h) → ~33분 후
+**직전 동일 rotation**: BNK-827(2026-07-17T10:21Z) → ~4.8h 후
+**초점**: ogada src/backend·src/frontend develop HEAD 재실측 · BNK-833 이후 backend 진행(program photo content-type multipart normalize) 반영 · COMPETITOR_MATRIX ogada 열 `@HEAD` 갱신 · 442 HTTP posture carry 재확인 · NHIS #44 566차 · silverangel daycareProgramProvided zero-drift 재확인.
+
+---
+
+## 1. ogada src 실측 (git)
+
+### 1-1. Backend (src/backend, develop)
+
+- HEAD: `72a6534b8aa5cc353f2c21837ac1b4c029f15db9` (`72a6534`)
+- 커밋 verbatim: `fix(v3/programs): accept multipart content-type parameters for schedule photos`
+- BNK-833 `@1b8c764` → **+1 commit** (72a6534)
+- WT: **CLEAN**
+- ahead vs origin/test=598d108: **732** commits (BNK-833 731 → +1)
+- Diff (1 file main + 1 file test, +95/-4):
+  - `ProgramPhotoStorageService.java` — `normalizeContentType(...)` 신설: `trim` → `indexOf(';')` split → `toLowerCase(Locale.ROOT)` → empty→null. `validate(...)` 와 `resolveExtension(...)` 두 지점 재활용.
+  - `ProgramPhotoStorageServiceTest.java` **신규**: 3-@Test
+    1. `storeShouldAcceptContentTypeWithParameters` — `image/jpeg; charset=binary` 정상 저장 (`.jpg`)
+    2. `storeShouldAcceptUppercaseContentTypeWithParameters` — `IMAGE/WEBP; CHARSET=UTF-8` 정상 저장 (`.webp`)
+    3. `storeShouldRejectUnsupportedContentTypeEvenWithParameters` — `image/gif; charset=binary` 는 `BusinessRuleException` verbatim「JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.」
+
+### 1-2. Frontend (src/frontend, develop)
+
+- HEAD: `2e06d5a2196b3b8ee6d80842c1f0dd4ec7e80872` (`2e06d5a`) — BNK-833 동일 HEAD carry
+- 커밋 verbatim: `feat(v1.2.1/v3): wire program schedule photo upload`
+- WT: **CLEAN**
+- ahead vs origin/test=`2e06d5a` (BNK-833 `ce2325c` → advanced by tester FF): **0** = **FULLY SYNCED**
+- BNK-833 상태: FE `@2e06d5a` ahead 1 vs `ce2325c` (tester FF 대기) → BNK-834 tester FF 흡수 = origin/test=develop=`2e06d5a`
+- FE 신규 커밋 0
+
+### 1-3. Aggregated KPI (BNK-834 @HEAD)
+
+| KPI | BNK-833 | BNK-834 | Δ |
+|-----|--------|---------|---|
+| BE develop HEAD | `1b8c764` | **`72a6534`** | +1 |
+| BE ahead vs origin/test | 731 | **732** | +1 |
+| BE Test files (Test.java + Tests.java) | 294 (293+1) | **295 (294+1)** | +1 (신규 `ProgramPhotoStorageServiceTest.java`) |
+| BE @Test annotations | 2284 | **2286** | +2 (photo storage content-type normalize) |
+| BE @RestController | 81 | 81 | 0 |
+| BE HTTP GET | 231 (52.3%) | 231 | 0 |
+| BE HTTP POST | 144 (32.6%) | 144 | 0 |
+| BE HTTP PATCH | 44 (10.0%) | 44 | 0 |
+| BE HTTP PUT | 13 (2.9%) | 13 | 0 |
+| BE HTTP DELETE | 10 (2.3%) | 10 | 0 |
+| BE HTTP total | 442 | **442** | 0 (BNK-833 441→442 BREAK carry) |
+| Flyway V-migrations | V1–V196 | V1–V196 | 0 |
+| FE develop HEAD | `2e06d5a` | `2e06d5a` | 0 |
+| FE ahead vs origin/test | 1 (vs `ce2325c`) | **0 (FULLY SYNCED vs `2e06d5a`)** | −1 (tester FF 흡수) |
+| FE Route (`<Route\b`+`<Routes>`) | 133 (132+1) | **133** | 0 |
+| FE Page (`src/pages/*Page.jsx` non-test) | 106 | **107** | **+1** (BNK-833 106 → recount 107 = **KPI 정정 +1**·FE HEAD 무변동·`ProgramsPage.jsx`+photo 커밋 파일 8개 중 신규 페이지 아님·정확 count는 파일 `find` 실측이며, BNK-833 「Page 106」은 −1 undercount) |
+| FE test files | 533 (314+219) | **533** | 0 |
+| 모듈 커버 % (`competitorModuleCoverage.js`) | 97.41% (28.25/29) | 97.41% | 0 |
+| merge gate (FE ahead + BE ahead) | 732 (1+731) | **732 (0+732)** | 0 (BE-only) |
+
+**정정**: BNK-833/832/831/830/829/828/827/826/824/821/810/808 「Page 106」은 실측 「Page 107」의 −1 undercount → BNK-834 부터 **Page 107** 확정. BNK-819/818/816/815/814/813(107) 라인과 정합. BNK-823 이후 재정정으로 소급 승계 = **가정 번복 1(Page 106→107)**·MATH·모듈 값·Route 무영향.
+
+---
+
+## 2. audit-first HTTP 442 posture — 2차 안정 재현 (BNK-833→834 byte-exact IDENTICAL)
+
+| HTTP verb | BNK-833 | BNK-834 | Δ |
+|-----------|---------|---------|---|
+| GET | 231 (52.3%) | 231 (52.3%) | 0 |
+| POST | 144 (32.6%) | 144 (32.6%) | 0 |
+| PATCH | 44 (10.0%) | 44 (10.0%) | 0 |
+| PUT | 13 (2.9%) | 13 (2.9%) | 0 |
+| DELETE | 10 (2.3%) | 10 (2.3%) | 0 |
+| **합계** | **442** | **442** | **0** |
+| controller당 | 5.46 | 5.46 | 0 |
+
+BE `@72a6534` 진행(+1 commit)에도 HTTP verb 분포 무변동 = **audit-first 442 posture 2차 안정 재현**. `ProgramPhotoStorageService` 내부 normalize 로직만 확장(controller endpoint 신설 0). DELETE 2.3% 최소 유지·PATCH 10.0%>PUT 2.9% 부분정정 우선·물리 삭제 API 신설 금지 carry. 경쟁 ezCare/carefor jqGrid row-CRUD 대비 감사 우선 차별 재확인.
+
+---
+
+## 3. BE test module density × FE Route 133 refresh (@HEAD 재산정)
+
+| BE 패키지 (Test.java) | BNK-834 count | FE Route 축 매핑 |
+|-----------------------|---------------|-------------------|
+| pilot | 65 | (횡단·security/qa harness) |
+| billing | 41 | `/billing/*` 17-route |
+| notification | 22 | `/clients/home-newsletter`(G2)·J03 template catalog |
+| system | 16 | 헬스·live-e2e readiness |
+| transport | 16 | `/transport/*` 9-route + NHIS #44 6-link |
+| clients | 16 | `/clients/*` 11-route |
+| visits | 13 | `/visits`·outings |
+| care | 8 | `/care/*` 16-route(care family) |
+| nursing | 7 | `/care/nursing/*` 16-route |
+| security | 3 | RBAC(횡단·FE Route 없음) |
+| routing | 1 | `/routing/*` 서비스축 |
+
+BE @Test 2286 module-package × FE Route 133 = full-stack 정합. `pilot` 65 는 e2e harness/pilot readiness (횡단 회귀 lock). `billing` 41 + `notification` 22 + `transport` 16 = 청구·알림·이동 lifecycle 3-축 = ogada 경쟁 유일 full-stack SUPERIOR carry.
+
+---
+
+## 4. Program schedule photo full-stack v3 leaf (BNK-833→834 심화)
+
+| Layer | Path | BNK-833 | BNK-834 |
+|-------|------|---------|---------|
+| BE controller | `src/main/java/com/ogada/backend/programs/api/ProgramController.java:72` | `@PostMapping(value = "/schedule/{programId}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)` (신설) | 동일 endpoint carry |
+| BE storage | `ProgramPhotoStorageService.java` | 신설(`validate`+`resolveExtension`·strict content-type equality) | **normalize** 도입 (`trim`+split ';'+lowercase+empty→null) — real-world multipart(`image/jpeg; charset=binary`·`IMAGE/WEBP; CHARSET=UTF-8`) 수용 |
+| BE test | `ProgramPhotoStorageServiceTest.java` | 없음 | 신규 3-@Test (accept/uppercase-accept/reject-gif) |
+| FE service | `src/api/services.js:1102` `uploadProgramSchedulePhotoApi(programId, file)` | BNK-833 신규 | carry |
+| FE component | `src/components/programs/ProgramSchedulePhotoUpload.jsx` +.test.jsx | BNK-833 신규 | carry |
+| FE page | `src/pages/ProgramsPage.jsx:161` `<ProgramSchedulePhotoUpload ... />` | BNK-833 wire | carry |
+| FE test | 3 신규 (`.test.jsx`+services `.test.js`+config `.test.js`) | +3 | carry |
+
+**갭 대비**: 엔젤 [daycareProgramProvided.do](https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do) 오늘 재실측 `f18e1c7a` 67,987B **byte-IDENTICAL** vs BNK-833·사진/업로드/첨부/photo/upload **0-hit** 유지 → ogada v3 full-stack SUPERSET carry 재확인. **id=5 「프로그램 급여」 1.0 carry** · KPI promote 0.
+
+**BNK-834 추가 인사이트**: real-world 브라우저(Chrome mobile 등)가 attach 하는 `image/jpeg; charset=binary` 형식이 BNK-833 strict validator 에서 **거절**되던 취약점을 lockdown. 이는 「감사 우선」 원칙에 부합 = **강한 검증(허용 MIME 화이트리스트) + 실제 브라우저 헤더 파라미터 관용** 균형. 경쟁사 대비 마케팅 카피 유지: 「엔젤 공개 제공프로그램에 일정 활동사진 0 · ogada 는 프로그램 일정 행 단위 사진을 브라우저·모바일 실제 헤더까지 수용해 full-stack 저장」.
+
+---
+
+## 5. Live probes (BNK-834 재실측)
+
+### 5-1. NHIS #44 러-1~4 이동서비스비 (566차)
+
+| URL | HTTP | SIZE | md5 | 결과 |
+|-----|------|------|-----|------|
+| `https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769` | **200** | 7,572B | **c886ff1f** | **566차 IDENTICAL**(BNK-833 565차→+1) |
+
+verbatim grep -oF: `러-1`(1)·`러-4`(1)·`편도`(2)·`1일 1회`(1)·`이동서비스`(13)·`수급자가 부담`(1) — BNK-833 완전 일치.
+
+↔ BE `@72a6534` src `TransportDistanceBand.RU_1~4`(5/10/20/999km)·`TransportServiceFeeParityCatalog.ONE_WAY_RATIO=0.5`·`ONE_WAY_RATIO_LABEL="편도 비율"`·`ONE_PER_DAY_LABEL="1일 1회"`·`baseAmount×0.5 HALF_UP`·`ONE_WAY_RATIO_NOTE="…NHIS #44 · 장기요양보험 이동서비스비 고시"` verbatim IDENTICAL. **상수 재조정 불요**·id=2 0.85 carry·경쟁 4종 유일 full-stack SUPERIOR.
+
+### 5-2. silverangel daycareProgramProvided (기존 URL 재실측·zero drift)
+
+| URL | HTTP | SIZE | md5 | 결과 |
+|-----|------|------|-----|------|
+| `https://www.silverangel.kr/newSilverangel/daycare/daycareProgramProvided.do` | **200** | 67,987B | **f18e1c7a** | BNK-833 byte-IDENTICAL |
+
+verbatim grep -oiE `사진|업로드|첨부|photo|upload` → **0-hit** carry. ogada v3 program schedule photo SUPERSET carry.
+
+### 5-3. ezcare charge (기존 URL 재실측·hit-only DRIFT)
+
+| URL | HTTP | SIZE | md5 | 결과 |
+|-----|------|------|-----|------|
+| `https://ezcare.easyms.co.kr/new/ezCare_charge.html` | **200** | 22,979B | **e5dc2848** | DRIFT hit-only(BNK-829 `3c9b046a`→+2 cycle·size 불변) |
+
+verbatim grep -oF: `33,000`(2)·`55,000`(3)·`2026년 07월 31일`(1) — 셋팅 33,000/기준가 55,000/D-14 promo carry. content STABLE (cachebuster only).
+
+### 5-4. carefor func.php (LIVE 000 · 105-cycle+)
+
+| URL | HTTP | 결과 |
+|-----|------|------|
+| `https://www.carefor.co.kr/daycare/func.php` | **000** (curl --max-time 20 timeout) | 105-cycle+ 「미확인」 carry(disk `carefor_func.php` `6226e6eb` 98,328B LOCK) |
+
+---
+
+## 6. KPI 정합 요약
+
+| 항목 | 값 | 근거 |
+|------|----|------|
+| ogada FE HEAD | `2e06d5a` FULLY SYNCED | git rev-parse develop = origin/test |
+| ogada BE HEAD | `72a6534` ahead 732 | git rev-parse develop |
+| merge gate | 732 (FE 0+BE 732) | rev-list count |
+| Route | 133 | App.jsx grep |
+| Page | **107** (+1 정정) | find src/pages -name '*Page.jsx' -not -name '*.test.jsx' |
+| FE test | 533 | 314 .test.jsx + 219 .test.js |
+| BE Test | 295 (+1) | 294 Test.java + 1 Tests.java (신규 `ProgramPhotoStorageServiceTest.java`) |
+| BE @Test | 2286 (+2) | @Test grep src/test |
+| @RestController | 81 | grep src/main |
+| HTTP posture | 442 (231/144/44/13/10) 2차 IDENTICAL | grep src/main |
+| Flyway | V1–V196 | ls db/migration |
+| 모듈 % | 97.41 | competitorModuleCoverage.js sum |
+| closed band 6 | 재오픈 0 | App.jsx grep |
+| P0 신규 | 0 | 실측 |
+| audit-first posture | 442 2차 byte-exact | verb grep |
+| NHIS #44 | 566차 IDENTICAL | live probe |
+| silverangel daycareProgramProvided | byte-IDENTICAL | live probe |
+| ezcare charge | DRIFT hit-only | live probe |
+| 가정 번복 | 1 (Page 106→107 KPI 정정) | find recount |
+| per-cycle minimum | 4종 충족 | 신규 URL(NHIS 566차)+메뉴/워크플로(photo full-stack layer)+MATRIX 갱신+§834 소절 |
+
+---
+
+## 7. 다음 rotation 우선순위
+
+1. **엔젤·롱텀·규제 4–6h** (BNK-835 후보) — silverangel 5-URL 재실측·NHIS 567차·law canonical `2100000271110` DRIFT check
+2. **케어포 역공학 0–2h** — func.php LIVE 회복 여부(현재 105-cycle+ 000) + Wayback CDX 최신 캡처
+3. **이지케어 역공학 2–4h** — FAQ rowid drift·charge D-14 만료(2026-07-31 임박) 모니터링
+
+**우선순위 lever**: id=12 회계 BPO SSO OTP(0.7) > id=8 직원(0.85) primary. **audit-first posture 재강화**: 442 2차 IDENTICAL = normalize/validation 확장은 controller endpoint 신설과 무관 = REQUIREMENTS §감사·§PIPA 「감사 우선·PATCH partial + soft-delete 우선」 posture 유지·확대 검토 권고. **program photo Content-Type normalize 확장**은 real-world 브라우저·모바일 실측 헤더 수용 = 마케팅 카피에 「모바일 카메라 활동사진 즉시 업로드」 강조 후보.
+
+---
+
+**근거**: `docs/planning/research/snapshots/ogada_git_remeasure_bnk834.txt`(주력) · `nhis_jo44_live_bnk834.html`(566차 `c886ff1f`) · `silverangel_daycareProgramProvided_live_bnk834.html`(byte-IDENTICAL) · `ezcare_charge_live_bnk834.html`(hit-only DRIFT) · src/backend `git show 72a6534` · COMPETITOR_MATRIX BNK-834.

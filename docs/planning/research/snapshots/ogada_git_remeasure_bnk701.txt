@@ -1,0 +1,105 @@
+BNK-701 ogada git 실측 6–8h — full-stack transport day-status exclusion CLOSURE
+================================================================================
+조사일: 2026-07-13T21:14Z (KST 2026-07-14 06:14)
+로테이션: ogada git 실측 6–8h (BNK-700 이지케어 역공학 2–4h → 51분 후 재실측)
+직전 BNK-700 baseline: FE @e48db91 / BE @41cbc8a · merge gate 899
+
+★★★ FULL-STACK V188/V189 「금일 배차 제외」(day-status) 우회 CLOSURE — 3 commit landing
+--------------------------------------------------------------------------------
+BNK-700 이지케어 대시보드 위젯 catalog 정본화 이후 51분간 FE+BE 각각 자동 배차 제외
+정책의 남은 우회 경로 3건이 develop 에 순차 landing. 최종적으로 「suggest → create →
+update → confirm → FE draft manual」 5-단계 mutate 경로 전체에서 V188/V189 exclude
+가 강제되어 자동+수동 배차 우회 0.
+
+commit chain (BE b89c6db → BE 5366944 → FE d285899 → FE bd12f28):
+
+  1) BE b89c6db `test(v2/transport): lock suggest exclusion for roster day-status`
+     · src/test/**/TransportSuggestServiceTest.java +158/-1
+     · +2 @Test — 자동 배차 suggest 가 V188/V189 excluded roster 를 항상 omit
+       + 전원 제외 시 BusinessRuleException 명확 실패 lock
+
+  2) BE 5366944 `fix(v2/transport): reject day-status excluded clients on run mutate`
+     · src/main/java/.../TransportService.java +74/-4
+     · src/test/java/.../TransportServiceTest.java +142/-0
+     · +3 @Test — createRun · updateRun · confirmRun 진입 직전에
+       validateNoDayStatusExcludedClients(clientIds) 호출 추가 · manual DRAFT 우회 차단
+
+  3) FE d285899 `fix(v1.2.1/QA-B366): surface all-excluded day-status suggest guidance`
+     · src/components/transport/TransportSuggestPanel.jsx +19/-2
+     · src/components/transport/TransportSuggestPanel.test.jsx +32/-0
+     · src/config/transport.js +11/-0 — 신규 상수:
+         TRANSPORT_SUGGEST_ALL_EXCLUDED_MESSAGE (verbatim):
+           "자동 배차 제안 대상 이용자가 없습니다. 금일 배차 제외 표시를 확인하세요."
+         TRANSPORT_SUGGEST_EMPTY_ROSTER_MESSAGE (verbatim):
+           "배차 대상 이용자가 없습니다. 이용자 등록에서 배차 이용을 켜 주세요."
+     · src/pages/TransportPage.test.jsx +47/-0
+     · UX: totalRosterCount>0 AND rosterCount==0 → allExcludedByDayStatus 게이트
+       + Alert(warning) 사전 표시 + suggest 버튼 눌러도 정확한 원인 오류 메시지 라우팅.
+
+  4) FE bd12f28 `fix(v1.2.1/QA-B368): block day-status excluded clients on manual draft runs`
+     · src/components/transport/TransportAddRosterModal.{jsx,test.jsx} +46 / +49
+     · src/config/transport.{js,test.js} +19 / +19 — BE BusinessRuleException copy 정합 상수 추가
+     · src/pages/TransportRunNewPage.{jsx,test.jsx} +20 / +34
+     · src/pages/TransportRunDetailPage.jsx +29
+     · src/pages/transportUtils.js +4
+     · UX: 수동 「이용자 추가」 modal 및 신규 DRAFT run 페이지에서도 excluded client
+       추가 시 서버 오류 copy 로 즉시 안내 → BE V188/V189 게이트 우회 0.
+
+파일 diff 스탯 합계 (BNK-700 이후):
+  FE: 8-file · +254 / -2
+  BE: 3-file · +300 / -5
+
+정책 정본 verbatim (BE BusinessRuleException 메시지 = FE 상수와 정합):
+  - suggest 전원 제외: `자동 배차 제안 대상 이용자가 없습니다. 금일 배차 제외 표시를 확인하세요.`
+  - manual add roster/create run: BE 동일 copy 재사용 → FE 상수 (BNK-701 신규)
+
+★★ ogada baseline delta (BNK-700 → BNK-701)
+--------------------------------------------------------------------------------
+| KPI 축              | BNK-700 (@e48db91/@41cbc8a) | BNK-701 (@bd12f28/@5366944) | delta |
+|---------------------|-----------------------------|------------------------------|-------|
+| FE HEAD             | e48db91                     | **bd12f28**                  | +2 commit (QA-B366·QA-B368) |
+| BE HEAD             | 41cbc8a                     | **5366944**                  | +2 commit (b89c6db·5366944) |
+| FE ahead vs origin/test=ab4de83 | 290              | **292**                      | +2   |
+| BE ahead vs origin/test=598d108 | 609              | **611**                      | +2   |
+| merge gate          | 899                         | **903**                      | +4   |
+| FE Route (App.jsx `<Route\b`) | 124              | 124                          | carry (App.jsx 미변경) |
+| FE Page (strict `src/pages/*Page.jsx`) | 98      | 98                           | carry |
+| FE test files (.test.{js,jsx}) | 504 (208+296)   | **506 (209+297)**            | +2 (TransportRunNewPage.test.jsx 신규 · transport.test.js 신규) |
+| BE Test files (`*Test.java`+`*Tests.java`) | 280(279+1) | 280(279+1)             | carry |
+| BE @Test (`git grep -hoE '@Test\b'`) | 2068       | **2073**                     | +5 (suggest 2 · service 3) |
+| Flyway (V*.sql)     | V1–V189                     | V1–V189                      | carry (신규 마이그레이션 없음) |
+| 모듈 커버          | 84.31% (24.45/29)           | 84.31% (24.45/29)            | carry |
+| /(payroll\|accounting) route | 0                  | 0                            | carry → sole P1 lever +6.90pp→91.21% |
+| WT state            | 양쪽 CLEAN                  | 양쪽 CLEAN                   | carry |
+
+★★ 경쟁 4종 대비 배차 정책 우위 정본화 (BNK-701 재확인)
+--------------------------------------------------------------------------------
+- **케어포**: `daycare/func.php` 정본에 이동서비스 module 자체 부재 (BNK-666~700 60+ cycle carry) — 배차 제외 정책 자동/수동 게이트 개념 없음.
+- **이지케어**: `/new.ez [4]RFID점검` + `RfidTagCompare()` 태그 비교만 지원 — 배차 최적화 UI 및 「금일 배차 제외」 개념 미확인 (BNK-694 top-nav 10축 재확인 carry). FAQ 21589 「RFID → 급여제공내역 문자발송」 사후 통보만 지원.
+- **엔젤시스템**: 이동서비스 관리 워크플로 미확인 carry (silverangel systemFeature 404).
+- **롱텀(공단)**: NHIS #44 러-1~4 원천 규제만 제공(제외 정책 X).
+
+→ ogada `TransportService.validateNoDayStatusExcludedClients` + `TransportSuggestService`
+   V188/V189 exclusion + FE 4-page 정합 안내 copy = **경쟁 4종 유일 「금일 배차 제외」
+   full-stack enforcement chain** (suggest → auto route → manual draft → confirm 5-stage).
+
+★ NHIS #44 437차 zero drift · ezCare FAQ +5 · size-lock 15-cycle (기존 URL 재실측)
+--------------------------------------------------------------------------------
+- NHIS #44 `nhis_jo44_live_bnk701.html`
+  URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP=200 · SIZE=7,572 · md5=`c886ff1f` — 러-1~4·편도50%·1일1회·수급자부담X verbatim 불변.
+  437 cycle zero drift IDENTICAL (BNK-666~701).
+- ezCare FAQ list `ezcare_help_faq_list_live_bnk701.html`
+  URL: https://ezcare.easyms.co.kr/help/faq.ez
+  HTTP=200 · SIZE=80,057B (size-lock **15-cycle** BNK-633→701) · md5=`5489e566ed701070f81b74fc6af542f4`
+  233 rowid · faq-hit 합계 **3,646,315**(+5 vs BNK-700 3,646,310) · Top-1 rowid=21601 「직원 회의록 전산 관리」 83,903(zero drift) · Top-2 rowid=미확인 44,153 · Top-3 rowid=미확인 37,213.
+
+★ tester FF merge gate 903 (FE 292 + BE 611 · 양쪽 WT CLEAN · 선행 commit 불필요)
+--------------------------------------------------------------------------------
+
+per-cycle minimum 4종 충족:
+  · 신규 증거 URL 1건+: NHIS #44 437차 · FAQ 15-cycle size-lock (기존 URL 재실측 + 변동 기록)
+  · 메뉴/필드/워크플로 1블록+: FE+BE full-stack V188/V189 day-status enforcement chain 5-stage
+    (suggest → create → update → confirm → manual add roster) + verbatim BusinessRuleException copy
+  · COMPETITOR_MATRIX 1행+: BNK-701 delta 행 @HEAD SHA 갱신
+  · BENCHMARK_REPORT §신규 소절: §701 BNK-701 소절 추가

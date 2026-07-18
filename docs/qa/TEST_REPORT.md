@@ -1,3 +1,858 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T05:02:00Z -->
+<!-- tester-sync: TSR 1829차 2026-07-18T05:02:00Z (frontend) — ROADMAP merged baseline `@2789553` 재검증 · develop `@6f8e349` / test `@2789553` pending **2**(`test..develop`) 확인 → merge SKIP(read-only) · `npm run build` **1234 PASS**(11.29s) · `npm audit --audit-level=high` **0 vulnerabilities** · full suite `npm test` SKIP(peer `vitest run` 동시 실행·carry TSR1824 **2737/2737 PASS** 동일 test SHA) · **QA-20260718-B608 Open(MEDIUM/BLOCK·pending 2)** · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE pending 2 + BE `@7fa8335` SYNCED·750 BE push=QA-B116) · operation **BLOCK**(QA-B608 + QA-B116 + QA-B95). -->
+# revalidation_1829th: roadmap-baseline@2789553 build+audit green(1234/11.29s/high0) but develop@6f8e349 pending 2(test..develop: 1f9d49c+6f8e349); merge SKIP(read-only); npm test SKIP due concurrent vitest lock(carry TSR1824 2737/2737 same test SHA); Open(FE) 1(QA-B608 pending 2); transfer BLOCK; cross-stream BLOCK(FE pending 2 + BE @7fa8335 SYNCED); operation BLOCK(QA-B608+QA-B116+QA-B95).
+
+### [TSR] TSR1829 frontend — roadmap baseline pass + develop pending 2(BLOCK)
+
+| item | result |
+|------|--------|
+| develop / test | **NOT SYNCED** — develop `@6f8e349` / test `@2789553` · pending **2** |
+| pending commits | `1f9d49c` bank deposit FE pre-upload magic-byte · `6f8e349` RFID compare dual-excel spoof-reject regression lock(test-only) |
+| merge | **SKIP** (src read-only 정책, 이관 미수행) |
+| full suite `npm test` | **SKIP(carry)** — peer `vitest run`(src/frontend) 동시 실행 중 · 기준선 **2737/2737 PASS**(TSR1824·test SHA 동일) |
+| `npm run build` | **1234 modules PASS** (11.29s) |
+| `npm audit --audit-level=high` | **0 vulnerabilities** |
+| Open(FE) | **1** (`QA-20260718-B608`, MEDIUM/BLOCK · pending **2**) |
+| transfer | **BLOCK** (pending 2 해소 전 PASS 금지) |
+| cross-stream | **BLOCK** (FE pending 2 · BE develop/test **SYNCED `@7fa8335`** · BE origin/test 750 pending push=QA-B116) |
+| operation | **BLOCK** (QA-B608 + 750 BE push=QA-B116 + QA-B95) |
+
+TSR1827 이후 coder가 develop에 `6f8e349`(RFID compare pre-upload magic-byte regression lock·test-only) 1건 추가되어 pending **1→2**로 증가. baseline(`2789553`) build/audit는 green이나 merge gate 미충족으로 transfer BLOCK 유지. planner/coder 선행: `6f8e349` develop→test FF 이관 + post-merge full suite 재실측.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T04:42:00Z -->
+<!-- tester-sync: TSR 1828차 2026-07-18T04:42:00Z (backend) — **★ SEC-D34 corrupt OOXML body parser-level lock 확산 MERGED** develop→test FF merge `0a97b22`→`7fa8335` (pending **1→0** · 3 파서 대칭 corrupt-body 회귀 test · test-only · 제품 코드 무변경) · 타깃 파서 3종 **PASS**(23s) · post-merge `mvn -o test` **2381/2381 PASS**(63s,408,0F/0E/0S) · npm **N/A**(backend stream) · BE develop/test **SYNCED `@7fa8335`** WT CLEAN · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **BLOCK**(BE `@7fa8335` SYNCED · FE develop `@1f9d49c` pending 1=QA-B608) · backend@8080 **UP/200** · operation **BLOCK**(750 BE unpushed=QA-B116 + FE QA-B608 + QA-B95). -->
+# revalidation_1828th: SEC-D34 corrupt OOXML body parser-level lock 확산 MERGED 0a97b22→7fa8335 (pending 1→0); 타깃 파서 3종 PASS(23s); post-merge 2381/2381 PASS(63s,408); Open(BE) 0; transfer PASS(BE local); cross-stream BLOCK(FE @1f9d49c pending 1=QA-B608); operation BLOCK(750 BE push=QA-B116 + QA-B608 + QA-B95).
+
+### [TSR] TSR1828 backend — SEC-D34 corrupt OOXML body parser lock 확산 merge + post-merge 2381/2381
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@7fa8335`** · pending **0** · WT CLEAN |
+| merge | FF `0a97b22`→`7fa8335` (SEC-D34: 3 파서 대칭 corrupt-body `shouldFailClosedOnCorruptOoxmlBody` @Test) |
+| 변경 파일 | 3 files, +48/-0 (BankDepositExcelParserTest·StaffNhisCaregiverExcelParserTest·NhisVisitScheduleExcelParserTest) · **test-only** |
+| 타깃 파서 3종 | **PASS** (exit 0, 23s) |
+| post-merge `mvn -o test` | **2381/2381 PASS** (63s, 408 suites, 0F/0E/0S, BUILD SUCCESS · +3 vs 2378) |
+| npm | **N/A** (backend stream, no package.json) |
+| live E2E | **SKIP** (backend-only merge · FE merge_status unchanged) |
+| origin/test push | **미실행** (750 BE pending · Planned QA-B116) |
+| Open(BE) | **0** |
+| transfer | **PASS**(BE local) |
+| operation | **BLOCK** (750 BE unpushed=QA-B116 + FE QA-B608 + QA-B95) |
+
+`0a97b22`(TSR1826)에서 5개 엑셀 import 파서에 추가된 corrupt-OOXML-body fail-closed 브랜치 중 파서-레벨 직접 회귀 테스트가 2개(NhisExcelParser·RfidTransmissionExcelParser)에만 있던 것을, 나머지 3개 파서(BankDeposit·StaffNhisCaregiver·NhisVisitSchedule)로 대칭 확장한 test-only 커밋을 FF-merge했다. 제품 코드 무변경·FF-safe. post-merge 전체 회귀 2381/2381 PASS(+3). BE Open 0 유지. operation 승격은 QA-B116(750 BE push)·QA-B95·FE QA-B608으로 BLOCK 유지.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T04:26:34Z -->
+<!-- tester-sync: TSR 1827차 2026-07-18T04:26:34Z (frontend) — ROADMAP merged baseline `@2789553` 재검증 · develop `@1f9d49c` / test `@2789553` pending **1**(`test..develop`) 확인 → merge SKIP(read-only) · full suite `npm test`는 peer `vitest run` 동시 실행으로 SKIP(carry: TSR1824 **2737/2737 PASS**, 동일 test SHA) · `npm run build` **1234 PASS**(11.10s) · `npm audit --audit-level=high` **0 vulnerabilities** · **QA-20260718-B608 Open(MEDIUM/BLOCK)** · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE pending 1 + FE origin/test +1 + BE origin/test 749 pending push=QA-B116) · operation **BLOCK**(QA-B608 + QA-B116 + QA-B95). -->
+# revalidation_1827th: roadmap-baseline@2789553 build+audit green(1234/high0) but develop@1f9d49c pending 1(test..develop); merge SKIP(read-only); npm test SKIP due concurrency lock(carry TSR1824 2737/2737 on same test SHA); Open(FE) 1(QA-B608); transfer BLOCK.
+
+### [TSR] TSR1827 frontend — roadmap baseline pass + develop pending 1(BLOCK)
+
+| item | result |
+|------|--------|
+| develop / test | **NOT SYNCED** — develop `@1f9d49c` / test `@2789553` · pending **1** |
+| merge | **SKIP** (src read-only 정책, 이관 미수행) |
+| full suite `npm test` | **SKIP(carry)** — peer `vitest run` 동시 실행 중(정책상 금지) · 기준선 **2737/2737 PASS**(TSR1824·test SHA 동일) |
+| `npm run build` | **1234 modules PASS** (11.10s) |
+| `npm audit --audit-level=high` | **0 vulnerabilities** |
+| Open(FE) | **1** (`QA-20260718-B608`, MEDIUM/BLOCK) |
+| transfer | **BLOCK** (pending 1 해소 전 PASS 금지) |
+| operation | **BLOCK** (QA-B608 + FE origin/test +1 + BE 749 pending push=QA-B116 + QA-B95) |
+
+이번 프론트 사이클은 merged baseline(`2789553`) 자체의 빌드/의존성 상태는 정상(1234 PASS·audit high 0)이지만, `develop` 신규 커밋 `1f9d49c`가 `test`에 미이관(`test..develop=1`)이라 이관 기준을 충족하지 못했다. 동시성 규칙(`npm test` 단일 실행) 때문에 기존 peer `vitest run` 종료 전 새 full suite를 실행하지 않았고, 동일 test SHA의 최신 기준선(TSR1824 2737/2737 PASS)을 carry로 기록했다. planner/coder 선행 조치: `1f9d49c` develop→test 이관 후 full suite 재실행.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T04:05:00Z -->
+<!-- tester-sync: TSR 1826차 2026-07-18T04:05:00Z (backend) — **★ SEC-D34 corrupt OOXML body fail-closed MERGED** develop→test FF merge `9449e1f`→`0a97b22` (pending **1→0** · 5 parser wrap + corrupt-body regression tests) · baseline **2373/2373 PASS**(68s,408) · related SEC-D34 import **147/147 PASS**(8.6s) · post-merge **2378/2378 PASS**(87s,408) · npm **N/A**(backend stream) · BE develop/test **SYNCED `@0a97b22`** WT CLEAN · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **SYNCED**(BE `@0a97b22` · FE `@2789553`) · backend@8080 **UP/200** · operation **BLOCK**(749 BE unpushed=QA-B116 + FE origin +1 + QA-B95). -->
+# revalidation_1826th: SEC-D34 corrupt OOXML body fail-closed MERGED 9449e1f→0a97b22 (pending 1→0); baseline 2373/2373 PASS(68s); related 147/147(8.6s); post-merge 2378/2378 PASS(87s,408); Open(BE) 0; transfer PASS(BE local); cross-stream SYNCED(FE @2789553); operation BLOCK(749 BE push=QA-B116 + FE origin +1 + QA-B95).
+
+### [TSR] TSR1826 backend — SEC-D34 corrupt OOXML body fail-closed merge + post-merge 2378/2378
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@0a97b22`** · pending **0** · WT CLEAN |
+| merge | FF `9449e1f`→`0a97b22` (SEC-D34: 5 excel parser RuntimeException→BusinessRuleException + 5 corrupt-body @Test) |
+| baseline `mvn test` | **2373/2373 PASS** (68s, 408 suites · pre-merge `@9449e1f`) |
+| related SEC-D34 | **147/147 PASS** (8.6s · BankDepositImport/NhisExcelParser/StaffNhisCaregiver/VisitService/RfidTransmission) |
+| post-merge `mvn test` | **2378/2378 PASS** (87s, 408 suites · +5 vs 2373) |
+| npm | **N/A** (backend stream, no package.json) |
+| live E2E | **SKIP** (backend-only merge · FE merge_status unchanged) |
+| origin/test push | **미실행** (749 BE pending · Planned QA-B116) |
+| Open(BE) | **0** |
+| transfer | **PASS**(BE local) |
+| operation | **BLOCK** (749 BE unpushed + FE origin/test +1 + QA-B116 + QA-B95) |
+
+COD `@0a97b22`: 유효 PK magic header이지만 corrupt OOXML body인 crafted payload가 POI `NotOfficeXmlFileException`/`POIXMLException`으로 caller에 노출되던 SEC-D34 갭을 5개 excel import parser에서 `BusinessRuleException("엑셀 파일을 읽을 수 없습니다.")` fail-closed로 변환. parser·import-service 양층 corrupt-body 회귀 테스트 +5. TSR1826 FF merge 후 full suite green — 신규 Open 없음.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T03:40:00Z -->
+<!-- tester-sync: TSR 1825차 2026-07-18T03:40:00Z (frontend) — **corroboration (no-new-work)** git 실측 FE develop=test **SYNCED `@2789553`** WT CLEAN · pending **0**(신규 develop 커밋 0) · merge 불요 · npm audit high **0**(fresh) · full suite 재-run 생략(동일 SHA·TSR1824 2737/2737 green·peer vitest 종료·pipeline-speed 1-1) · Open(FE) **0** · transfer **PASS**(FE local) · cross-stream **BLOCK**(FE origin/test `b23711f`·local +1 + BE origin/test `598d108`·748 pending push=QA-B116) · operation **BLOCK**(QA-B116 + QA-B95). -->
+# revalidation_1825th: corroboration (no new develop commit); FE develop=test SYNCED @2789553 WT CLEAN; pending 0; npm audit high 0 (fresh); full suite re-run skipped (unchanged SHA already green @TSR1824 2737/2737); Open(FE) 0; transfer PASS(FE local); operation BLOCK(FE origin pending 1 + BE 748 push=QA-B116 + QA-B95).
+
+### [TSR] TSR1825 frontend — corroboration (no new develop output)
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@2789553`** · pending **0**(`test..develop` empty) · WT CLEAN |
+| 신규 coder 산출물 | **없음** (develop HEAD 무변동·TSR1824 FF merge 후 동일) |
+| merge | **N/A** (신규 커밋 없음) |
+| full suite `npm test` | **2737/2737 PASS**(TSR1824 실측·동일 SHA) — 재-run 생략(pipeline-speed·peer vitest 종료 확인·concurrency 회피) |
+| `npm audit --audit-level=high` | **0 vulnerabilities**(TSR1825 fresh 재실측·`src/frontend-test`) |
+| `npm run build` | **1234 modules**(TSR1824 실측·동일 SHA carry) |
+| live E2E | **SKIP**(신규 merge 없음 → 미트리거) · QA-B95 carry |
+| origin/test push | **미실행**(tester/merge 스크립트 전담) · local `test` +1 vs `b23711f` |
+| Open(FE) | **0** |
+| transfer | **PASS**(FE local) |
+| operation | **BLOCK**(FE origin/test pending 1 + BE 748 pending push=QA-B116 + QA-B95) |
+
+이번 사이클은 develop 에 **신규 산출물이 없다**(HEAD `2789553` 무변동·WT CLEAN·pending 0). 새 merge/회귀 대상이 없어 15분 full suite 재-run 은 생략했고(동일 SHA 는 TSR1824 에서 이미 2737/2737 green), 실행 중이던 peer `vitest run` 종료를 확인한 뒤 새 실행을 띄우지 않았다(동시 실행 금지). `npm audit` 만 fresh 재실측하여 high **0** 을 재확인했다. FE local 은 clean·green 이나 origin/test 미push(+1)·BE 748 미push(QA-B116)·QA-B95 로 operation 승격은 계속 BLOCK.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T03:28:26Z -->
+<!-- tester-sync: TSR 1824차 2026-07-18T03:28:26Z (frontend) — FF merge `b23711f`→`2789553` (pending **1→0**·SEC-D34 zero-byte excel import fail-closed 회귀 lock) · full suite **2737/2737 PASS**(889.49s,487) · build **1234** PASS(9.50s) · npm audit high **0** · FE develop/test **SYNCED `@2789553`** WT CLEAN · Open(FE) **0** · transfer **PASS**(FE local) · cross-stream **BLOCK**(FE origin/test `b23711f`·local +1 + BE origin/test `598d108`·748 pending push=QA-B116) · operation **BLOCK**(QA-B116 + QA-B95). -->
+# revalidation_1824th: FF merge b23711f→2789553 (SEC-D34 zero-byte excel import fail-close lock); npm test 2737/2737 PASS(889.49s,487); build 1234 PASS(9.50s); audit high 0; Open(FE) 0; transfer PASS(FE local); operation BLOCK(FE origin pending 1 + BE 748 + QA-B95).
+
+### [TSR] TSR1824 frontend — SEC-D34 zero-byte excel import fail-closed regression lock merge
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@2789553`** · pending **0** · WT CLEAN |
+| merge | FF `b23711f`→`2789553` (`excelImportFiles.test.js` +18·test-only) |
+| full suite `npm test` | **2737/2737 PASS** (889.49s, 487 files) |
+| `npm run build` | **1234 modules PASS** (9.50s) |
+| `npm audit --audit-level=high` | **0 vulnerabilities** |
+| live probe (`npm test` 내) | backend bootstrap 불가(`ECONNREFUSED`/guardian bootstrap 500) 로그로 skip 경로 확인 — **QA-B95 carry** |
+| origin/test push | **미실행** (tester/merge 스크립트·run_agent.py 전담) |
+| Open(FE) | **0** |
+| transfer | **PASS**(FE local) |
+| operation | **BLOCK** (FE origin/test pending 1 + BE 748 pending push=QA-B116 + QA-B95) |
+
+이번 사이클은 coder 신규 커밋 `2789553`를 test 로 FF merge 하고 전량 회귀를 재실측했다. 변경은 `src/config/excelImportFiles.test.js`의 zero-byte 거부 회귀 3케이스 추가(visit/caregiver/billing)로 test-only이며, full suite/build/audit 모두 green이다. FE 코드 품질 관점에서 신규 Open 이슈는 없고 transfer는 PASS. 다만 origin/test push는 미실행이므로 FE local +1 상태이며, BE 쪽 origin/test 748 미push(QA-B116)와 QA-B95로 operation 승격은 계속 BLOCK이다.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T03:07:00Z -->
+<!-- tester-sync: TSR 1823차 2026-07-18T03:07:00Z (backend) — **★ QA-B607 Fixed & MERGED** develop→test FF merge `efbdbec`→`9449e1f` (pending **2→0**: `2f3be17` .xls OLE magic + `9449e1f` empty-file fail-closed·둘 다 test-only·제품 코드 무변경) · post-merge `mvn -o test` **2373/2373 PASS**(62s, 408 suites, 0F/0E/0S) · npm **N/A**(backend stream) · develop/test **SYNCED `@9449e1f`** WT CLEAN · Open(BE) **0** · transfer **PASS**(BE local) · cross-stream **SYNCED**(BE `@9449e1f` · FE `@b23711f`) · backend@8080 **UP/200** · operation **BLOCK**(748 BE unpushed=QA-B116 + QA-B95). -->
+# revalidation_1823th: QA-B607 Fixed+MERGED develop→test FF efbdbec→9449e1f (pending 2→0: 2f3be17 .xls OLE + 9449e1f empty-file, both test-only, product code unchanged); post-merge mvn 2373/2373 PASS(62s,408,0F/0E/0S); Open(BE) 0; transfer PASS(BE local); cross-stream SYNCED(FE @b23711f); operation BLOCK(748 BE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1823 backend — SEC-D34 empty-file/.xls OLE fail-closed test merge (QA-B607 Fixed)
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@9449e1f`** · pending **0** · WT CLEAN |
+| merge | FF `efbdbec`→`9449e1f` (`git merge --ff-only develop`·test-only 2 commits·+184 lines·4 test files) |
+| post-merge `mvn -o test` | **2373/2373 PASS** (62s, 408 suites, 0 Failures / 0 Errors / 0 Skipped·surefire 집계) |
+| npm | **N/A** (backend stream·package.json 없음) |
+| merged commits | `2f3be17` .xls OLE magic fail-closed(visit/caregiver NHIS) + `9449e1f` empty-file fail-closed(4-경로 import) |
+| origin/test push | **미실행** (tester/merge 스크립트·run_agent.py 전담) — **748 BE** unpushed = Planned QA-B116 |
+| backend@8080 | **UP/200** |
+| Open(BE) | **0** (QA-B607 Fixed & Verified) |
+| transfer | **PASS**(BE local) |
+| operation | **BLOCK** (748 BE origin/test push=QA-B116 + QA-B95) |
+
+이번 backend 사이클은 coder 가 develop 에 추가한 SEC-D34 fail-closed 회귀 test 2건(`2f3be17` .xls OLE 매직·`9449e1f` zero-byte 빈 파일)을 test 로 FF merge 하고 post-merge 회귀를 전량 재실측했다. 두 커밋 모두 `src/test/**` 만 변경(제품 코드 무변경)이며 FE empty-header 회귀(TSR1822 `b23711f`)와 대칭이다. post-merge `mvn test` 는 **2373/2373 PASS**(408 suites·0F/0E/0S)로 전량 green, QA-B607 은 pending 0 으로 해소되어 Open(BE) 0. transfer 는 PASS(BE local)이나 operation 승격은 origin/test 미push **748 BE**(Planned QA-B116) + QA-B95 로 여전히 BLOCK.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T02:45:00Z -->
+<!-- tester-sync: TSR 1822차 2026-07-18T02:45:00Z (frontend) — FF merge+PUSH `637bad8`→`b23711f` (pending **1→0**·SEC-D34 excel import empty-header fail-close) · full suite **2736/2736 PASS**(876.78s,487) · build **1234** PASS(9.59s) · npm audit high **0** · live E2E post-merge **0/149/0**(33.59s·QA-B95 bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@b23711f`** WT CLEAN · Open(FE) **0** · transfer **PASS**(FE) · cross-stream **BLOCK**(BE develop pending 1=QA-B607 + origin/test `598d108`·**746 pending push**=QA-B116) · operation **BLOCK**(746 BE push + QA-B607 + QA-B116 + QA-B95). -->
+# revalidation_1822th: FF merge b23711f (SEC-D34 excel empty-header fail-close); full suite 2736/2736 PASS(876.78s,487); build 1234 PASS(9.59s); npm audit high 0; live E2E 0/149/0(QA-B95 bootstrap-disabled); merge gate 1→0; Open(FE) 0; transfer PASS(FE); operation BLOCK(746 BE + QA-B607 + QA-B116 + QA-B95).
+
+### [TSR] TSR1822 frontend — SEC-D34 excel import empty-header fail-close merge
+
+| item | result |
+|------|--------|
+| develop / test / origin | **ALL SYNCED+PUSHED `@b23711f`** · pending **0** · WT CLEAN |
+| merge | FF `637bad8`→`b23711f` (excel import: 헤더 판독 결과 비었을 때 fail-closed·config+test 2 files +24) |
+| full suite `npm test` | **2736/2736 PASS** (876.78s, 487 files·TSR1821 2735→+1 신규 empty-header 회귀) |
+| `npm run build` | **1234 modules PASS** (9.59s) |
+| `npm audit --audit-level=high` | **0 vulnerabilities** (form-data 4.0.6·QA-B606 carry) |
+| live E2E (post-merge·결정 96) | **0 PASS / 149 SKIP / 0 FAIL** (53 files·33.59s) — backend UP/200이나 `liveE2eBootstrapEnabled=false`+guardian 503 = QA-B95 동일 증상·회귀 아님 |
+| origin/test push | PASS `637bad8..b23711f` · ls-remote test=develop=**b23711f** |
+| Open(FE) | **0** |
+| transfer | **PASS**(FE) |
+| operation | **BLOCK** (BE develop pending 1=QA-B607 + BE 746 pending push=QA-B116 + QA-B95) |
+
+이번 사이클은 coder 신규 커밋 `b23711f`(SEC-D34 엑셀 import 매직바이트 검증의 defense-in-depth 보강 — 헤더 판독이 비었을 때 통과 대신 거부)을 test 로 FF merge+push 하고 full suite/build/audit 를 전량 재실측했다. 전량 green(2736/2736)이며 FE transfer 는 PASS. operation 승격은 BE 측 잔여(QA-B607 develop pending 1 + QA-B116 746 push + QA-B95)로 여전히 BLOCK.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T02:20:28Z -->
+<!-- tester-sync: TSR 1821차 2026-07-18T02:20:28Z (backend) — ROADMAP merged baseline `@efbdbec` 회귀 `mvn test` **2365/2365 PASS**(66s,408) · npm **N/A**(backend) · develop `@2f3be17` / test `@efbdbec` pending **1** · merge **SKIP**(src read-only) · **QA-20260718-B607 Open(HIGH/BLOCK)** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 1 · FE `@637bad8` SYNCED+PUSHED) · backend@8080 **UP/200** · origin/test **746 BE** unpushed · operation **BLOCK**(QA-B116 + QA-B95 + QA-B607). -->
+# revalidation_1821th: roadmap-merged@efbdbec mvn 2365/2365 PASS(66s,408); npm N/A; develop@2f3be17 pending 1(test..develop); merge SKIP(read-only); Open 1(QA-B607 HIGH/BLOCK); transfer BLOCK(BE); operation BLOCK(746 BE + QA-B116 + QA-B95 + QA-B607).
+
+### [TSR] TSR1821 backend — roadmap baseline pass + pending 1(BLOCK)
+
+| item | result |
+|------|--------|
+| roadmap merged baseline (`test`) | `@efbdbec` |
+| `mvn test` | **2365/2365 PASS** (66s, 408 suites) |
+| npm | **N/A** (`src/backend-test`에 `package.json` 없음) |
+| develop / test | develop `@2f3be17` / test `@efbdbec` |
+| pending (`test..develop`) | **1** (`git rev-list --count HEAD..develop`) |
+| merge | **SKIP** (tester read-only directive for `src/backend*`) |
+| Open | **QA-20260718-B607 HIGH/BLOCK** |
+| transfer | **BLOCK** (pending 1 해소 전 PASS 금지) |
+| backend@8080 | **UP/200** (`/actuator/health` = `{"status":"UP"}`) |
+| origin/test | ahead **746 BE** unpushed |
+| disk | 93% used / 11G avail |
+| operation | **BLOCK** (QA-B116 + QA-B95 + QA-B607) |
+
+`mvn test` 자체는 green(2365/2365)이나, 이번 사이클의 핵심 불일치는 `develop` 신규 커밋(`2f3be17`)이 `test`에 반영되지 않은 점이다. 따라서 planner/coder가 이관 경로를 확정하기 전까지 backend transfer 판정은 BLOCK 유지.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T02:10:00Z -->
+<!-- tester-sync: TSR 1820차 2026-07-18T02:10:00Z (frontend) — **★ QA-B606 Fixed & Verified** FF merge+PUSH `1cdfd5c`→`637bad8` (pending **1→0** · form-data 4.0.5→4.0.6) · pre-merge npm audit high **1** → post-merge **0**(0 vulnerabilities) · `npm ls form-data`=**4.0.6** · build **1234** PASS(10.67s) · full suite **carry 2735/2735**(TSR1817 @1cdfd5c·merge=package-lock only·product/test byte-identical) · FE develop/test/origin **ALL SYNCED+PUSHED `@637bad8`** WT **CLEAN** · Open(FE) **0** · transfer **PASS**(FE) · cross-stream **BLOCK**(BE origin/test `598d108`·**746 pending push**=QA-B116) · backend@8080 **UP/200** · operation **BLOCK**(746 BE unpushed + QA-B95) -->
+# revalidation_1820th: QA-B606 Fixed&Verified FF merge+PUSH 1cdfd5c→637bad8 (pending 1→0); npm audit high 1→0 (form-data 4.0.5→4.0.6·GHSA-hmw2-7cc7-3qxx); npm ls form-data=4.0.6; build 1234 PASS(10.67s); full suite carry 2735/2735(TSR1817 @1cdfd5c·package-lock-only merge); Open(FE) 0; transfer PASS(FE); operation BLOCK(746 BE + QA-B95).
+
+### [TSR] TSR1820 frontend — QA-B606 form-data 4.0.6 merge + npm audit high 1→0
+
+| item | result |
+|------|--------|
+| develop / test / origin | **ALL SYNCED+PUSHED `@637bad8`** · pending **0** · WT CLEAN |
+| merge | FF `1cdfd5c`→`637bad8` (QA-B606 · form-data 4.0.5→4.0.6 · package-lock.json +5/-5) |
+| pre-merge `npm audit` high | **1** (form-data 4.0.5 CRLF · GHSA-hmw2-7cc7-3qxx) |
+| post-merge `npm audit` high | **0** (0 vulnerabilities) — QA-B606 해소 확정 |
+| `npm ls form-data` (after install) | **4.0.6** (jsdom@22.1.0 → form-data 4.0.6) |
+| `npm run build` | **1234 modules PASS** (10.67s) |
+| full suite | **carry 2735/2735 PASS** (TSR1817 `@1cdfd5c`·883.72s,487) — merge=package-lock only·product/test byte-identical → 재실행 대신 carry |
+| live E2E | **SKIP** (run-live-e2e.sh=src/frontend·coder vitest run 진행 중→동시성 회피 + merge=devDependency bump·런타임 영향 0) |
+| Open | **0**(FE) · B606 Fixed & Verified |
+| transfer | **PASS**(FE merge+PUSH) |
+| cross-stream | **BLOCK** (FE ALL SYNCED+PUSHED `@637bad8` · BE local `@efbdbec` · BE origin/test `598d108`·746 pending push=QA-B116) |
+| backend@8080 | **UP/200** (databaseStatus UP·SELECT_1_OK·02:05Z) |
+| operation | **BLOCK** (746 BE push → QA-B116 → QA-B95) |
+
+COD `@637bad8`: `npm audit fix` → `form-data 4.0.5→4.0.6`(GHSA-hmw2-7cc7-3qxx CRLF injection·devDependency via jsdom). TSR1820 이 pre-merge high **1** 실측 → FF merge → `npm install` 로 물리 node_modules 동기화 후 post-merge `npm audit` **0 vulnerabilities**·`npm ls form-data`=**4.0.6** 확인. 변경은 `package-lock.json` 1건뿐(제품/테스트 코드 무변경). full suite 는 TSR1817 2735/2735 carry(merge diff package-lock only).
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T01:46:30Z -->
+<!-- tester-sync: TSR 1819차 2026-07-18T01:46:30Z (backend) — **★ SEC-D34 truncated OOXML test lock MERGED** FF merge `f28e3d9`→`efbdbec` (pending **1→0** · bank deposit import signature fail-closed test) · baseline **2363/2363 PASS**(68s,408) · related BankDepositImportServiceTest **15/15 PASS**(25s) · post-merge **2365/2365 PASS**(66s,408) · live **0/149/0**(34.10s · bootstrap-disabled) · BE develop/test **SYNCED `@efbdbec`** WT **CLEAN** · Open **0**(BE) · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@efbdbec` · FE ALL SYNCED+PUSHED `@1cdfd5c`)** · backend@8080 **UP/200** · operation **BLOCK**(746 BE unpushed + QA-B116 + QA-B95) -->
+# revalidation_1819th: SEC-D34 truncated OOXML test lock MERGED f28e3d9→efbdbec (pending 1→0); baseline 2363/2363 PASS(68s); related 15/15(25s); post-merge 2365/2365 PASS(66s); live 0/149/0(34.10s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(746 BE + QA-B116 + QA-B95).
+
+### [TSR] TSR1819 backend — SEC-D34 truncated OOXML test lock merge + post-merge 2365/2365
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@efbdbec`** · pending **0** · WT CLEAN |
+| merge | FF `f28e3d9`→`efbdbec` (SEC-D34 · truncated OOXML signature fail-closed test lock) |
+| baseline (pre-merge) | **2363/2363 PASS** 68s / 408 suites |
+| related | BankDepositImportServiceTest **15/15 PASS** (25s) |
+| post-merge | **2365/2365 PASS** 66s / 408 suites (+2 tests) |
+| live E2E | **0/149/0** 34.10s (bootstrap-disabled · fail-closed) |
+| Open | **0**(BE) · FE carry **QA-B606** LOW (dev-only npm audit · non-BLOCK) |
+| transfer | **PASS**(BE local SYNCED) |
+| cross-stream | **SYNCED** (BE `@efbdbec` · FE `@1cdfd5c` ALL SYNCED+PUSHED) |
+| origin/test | ahead **746 BE** unpushed |
+| operation | **BLOCK** (746 BE push → Planned **QA-B116** → **QA-B95**) |
+
+COD `@efbdbec`: `BankDepositImportServiceTest` +71L — truncated OOXML signature fail-closed 회귀 잠금. 제품 코드 변경 없음(test-only). TSR1819 FF merge 후 full suite **2365/2365 PASS**.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T01:24:00Z -->
+<!-- tester-sync: TSR 1818차 2026-07-18T01:24:00Z (frontend) — **transfer 동기화 + npm audit 재실측** manifest/checklist `@1cdfd5c` 정렬(직전 stale `7ac3c84`·TEST_REPORT/QA_FEEDBACK/packages 는 이미 `1cdfd5c`) · merge gate **0**(FULLY SYNCED) · full suite **2735/2735 PASS**(TSR1817 carry·883.72s,487·QA-B605 미재현) · build **1234** PASS(9.39s·독립 재확인) · **npm audit high 1**(dev-only `form-data`<=4.0.5 via jsdom → **QA-20260718-B606 LOW/non-BLOCK**·프로덕션 노출 0) · FE develop/test/origin **ALL SYNCED `@1cdfd5c`** WT CLEAN · Open(FE) **1**(B606 LOW) · transfer **PASS**(FE) · cross-stream **BLOCK**(BE origin/test `598d108`·**745 pending push**=QA-B116) · operation **BLOCK**(745 BE push + QA-B95) -->
+# revalidation_1818th: transfer manifest/checklist sync to 1cdfd5c (was stale 7ac3c84); merge gate 0(FULLY SYNCED); full suite 2735/2735 PASS carry(TSR1817); build 1234 PASS(9.39s); npm audit high 1(dev-only form-data via jsdom → QA-B606 LOW); Open(FE) 1(B606); transfer PASS(FE); operation BLOCK(745 BE + QA-B95).
+
+### [TSR] TSR1818 frontend — transfer 동기화 + npm audit 재실측
+
+| item | result |
+|------|--------|
+| develop / test / origin | **ALL SYNCED `@1cdfd5c`** · pending **0** · WT CLEAN |
+| merge gate | **0** (FULLY SYNCED · TSR1817 이미 FF `7ac3c84`→`1cdfd5c`+PUSH) — 신규 merge 없음 |
+| transfer manifest/checklist | **동기화** `7ac3c84`(stale·TSR1814) → `1cdfd5c`(TSR1817 검증 상태 정렬) |
+| full suite `npm test` | **2735/2735 PASS**(883.72s,487·TSR1817 `@1cdfd5c` carry) — QA-B605 flaky **미재현** |
+| `npm run build` | **1234** modules PASS(9.39s·독립 재확인·UXD-191 a11y compile OK) |
+| `npm audit` high | **1**(non-BLOCK) = `form-data 4.0.0-4.0.5` CRLF(GHSA-hmw2-7cc7-3qxx) · **devDep only** jsdom@22.1.0 · 프로덕션 번들 미포함 → **QA-20260718-B606 LOW** |
+| live E2E | SKIP (merge gate 0 → 결정 96 미트리거·정상) |
+| Open(FE) | **1**(QA-20260718-B606 LOW·dev-only) |
+| transfer | **PASS**(FE·merge gate 0·suite green·build OK·B606 non-BLOCK) |
+| cross-stream | **BLOCK**(BE develop/test SYNCED `@f28e3d9` Open 0 · **origin/test `598d108`·745 pending push**=QA-B116) |
+| operation | **BLOCK**(745 BE push → QA-B116 → QA-B95) |
+
+- **주목적**: TSR1817 이 병합+PUSH+full suite 검증(`@1cdfd5c`)까지 마쳤으나 `transfer/frontend/manifests/latest.yaml`·`checklists/test.md` 는 `7ac3c84`(TSR1814)로 stale → 검증된 상태로 정렬(문서 재작성 최소·pipeline speed 준수).
+- **QA-20260718-B606(신규·LOW)**: `npm audit` high **1** — `form-data` CRLF, 경로 `jsdom@22.1.0 → form-data@4.0.5`(devDependency 전용). 프로덕션 Vite 번들 미포함으로 런타임 노출 0. `npm audit fix`(form-data>=4.0.6)로 해소 — **coder 조치 필요**(tester `src/frontend` 수정 금지). 직전 manifest `audit_high: 0`(carry 미재실측) 정정.
+- **QA-B605**: Fixed & Verified(TSR1817·full suite 2735/2735 미재현). Planned→해소.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T01:22:40Z -->
+<!-- tester-sync: TSR 1817차 2026-07-18T01:22:40Z (frontend) — **★ QA-B605 Fixed & MERGED** FF merge+PUSH `7ac3c84`→`1cdfd5c` (pending **2→0**: UXD-191 `194823b` a11y announce + QA-B605 `1cdfd5c`) · targeted photo/visit **17/17 PASS**(8.82s,3 files) · full suite **2735/2735 PASS**(883.72s,487) — QA-B605 flaky **미재현** · FE develop/test/origin **ALL SYNCED+PUSHED `@1cdfd5c`** WT **CLEAN** · Open(FE) **0** · transfer **PASS**(FE merge) · cross-stream **BLOCK**(BE local test `@f28e3d9` merged Open 0 · origin/test `598d108` · **745 pending push** = QA-B116) · operation **BLOCK**(745 BE push + QA-B95) -->
+# revalidation_1817th: QA-B605 Fixed+MERGED+PUSHED 7ac3c84→1cdfd5c (pending 2→0: UXD-191+QA-B605); targeted 17/17(8.82s); full suite 2735/2735 PASS(883.72s,487) flaky 미재현; Open(FE) 0; transfer PASS(FE merge); operation BLOCK(745 BE push=QA-B116 + QA-B95).
+
+### [TSR] TSR1817 frontend — QA-B605 Fixed merge + post-merge full suite 2735/2735
+
+| item | result |
+|------|--------|
+| develop / test / origin | **ALL SYNCED+PUSHED `@1cdfd5c`** · pending **0** · WT CLEAN |
+| merge | FF `7ac3c84`→`1cdfd5c` (pending 2→0: `194823b` UXD-191 a11y + `1cdfd5c` QA-B605) |
+| related (photo/visit) | ClientPhotoUpload + ProgramSchedulePhotoUpload + VisitRfidDiffComparePanel **17/17 PASS** (3 files, 8.82s) |
+| full suite `npm test` | **2735/2735 PASS** (487 files, 883.72s) — QA-B605 flaky **미재현** |
+| QA-B605 | **Fixed & Verified** — `await screen.findByRole(...)` async compare 대기 (`1cdfd5c`) · full-suite 부하 하 통과 |
+| build modules | **1234** carry (제품 코드 무변경 축 · a11y announce +12L) |
+| npm audit high | **0** carry |
+| live E2E | SKIP (merge post-merge full suite 내 liveBackendProbe fixture 경유 · 별도 실행 안 함) |
+| Open | **0**(FE) |
+| transfer | **PASS**(FE merge · QA-B605 Fixed+PUSHED) |
+| cross-stream | **BLOCK** (BE local test `@f28e3d9` merged Open 0 · **origin/test `598d108` · 745 pending push** = QA-B116) |
+| operation | **BLOCK** (745 BE push → **QA-B116** → **QA-B95**) |
+
+QA-B605 재현: full suite 병렬 부하 시 `VisitRfidDiffComparePanel` `reads snake_case dispatched_count` 케이스가 `uploadAndCompare()` 직후 async compare 완료 전 동기 `getByRole` → 타임아웃. COD `1cdfd5c`: `await screen.findByRole("급여제공내역 SMS 발송")` 로 전환(제품 코드 무변경). TSR1817 FF merge+push 후 full suite **2735/2735 PASS**로 flaky 미재현 확정. UXD-191(`194823b`) 사진 업로드 성공 스크린 리더 announce는 회귀 0.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T00:41:10Z -->
+<!-- tester-sync: TSR 1816차 2026-07-18T00:41:10Z (backend) — **★ QA-B604 Fixed & MERGED** FF merge `f6e4d88`→`f28e3d9` (pending **1→0** · COD null payload fail-closed) · baseline **2362/2363 (1 FAIL)**(70s,408) · related QA-B604 **PASS**(32s) · post-merge **2363/2363 PASS**(68s,408) · live **0/149/0**(33.83s · bootstrap-disabled) · BE develop/test **SYNCED `@f28e3d9`** WT **CLEAN** · Open **0**(BE) · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@f28e3d9` · FE ALL SYNCED+PUSHED `@7ac3c84`)** · backend@8080 **UP/200** · operation **BLOCK**(745 BE unpushed + QA-B116 + QA-B95) -->
+# revalidation_1816th: QA-B604 Fixed+MERGED f6e4d88→f28e3d9 (pending 1→0); baseline 2362/2363(1 FAIL,70s); related QA-B604 PASS(32s); post-merge 2363/2363 PASS(68s,408); live 0/149/0(33.83s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(745 BE + QA-B116 + QA-B95).
+
+### [TSR] TSR1816 backend — QA-B604 Fixed merge + post-merge 2363/2363
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@f28e3d9`** · pending **0** · WT CLEAN |
+| merge | FF `f6e4d88`→`f28e3d9` (QA-B604 · COD null import payload fail-closed) |
+| baseline (pre-merge) | **2362/2363 (1 FAIL)** 70s / 408 suites — carry QA-B604 NPE |
+| related QA-B604 | CognitiveSupportFeeSchedulePilot + NhisImport + BankDeposit + StaffNhisCaregiver + Visit **PASS** (32s) |
+| post-merge | **2363/2363 PASS** 68s / 408 suites |
+| live E2E | **0/149/0** 33.83s (bootstrap-disabled · fail-closed) |
+| Open | **0**(BE) · FE carry **QA-B605** LOW (Planned) |
+| transfer | **PASS**(BE local SYNCED) |
+| cross-stream | **SYNCED** (BE `@f28e3d9` · FE `@7ac3c84` ALL SYNCED+PUSHED) |
+| origin/test | ahead **745 BE** unpushed |
+| operation | **BLOCK** (745 BE push → Planned **QA-B116** → **QA-B95**) |
+
+재현: `mvn test -Dtest=CognitiveSupportFeeSchedulePilotServiceFlowE2eTest` (pre-fix FAIL → post-merge PASS). COD fix `@f28e3d9`: 4-path `payload == null` fail-closed + pilot mock OOXML getBytes() stub.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T00:07:00Z -->
+<!-- tester-sync: TSR 1815차 2026-07-18T00:07:00Z (frontend) — **corroboration** `@7ac3c84` 독립 full suite 재실행 **2735/2735 PASS**(487, 891.10s) · targeted QA-B602 StaffPage+pilot **164/164 PASS**(61.62s) · QA-B605 flaky **미재현**(회귀 아님·LOW 유지) · FE develop/test/origin **SYNCED `@7ac3c84`** · pending **0** · transfer **PASS**(FE, TSR1814 병합 확인) · cross-stream **BLOCK**(BE QA-B604 `@f6e4d88` + 744) · operation **BLOCK**(744 BE + QA-B95 + QA-B116 + QA-B604) -->
+# revalidation_1815th: corroboration @7ac3c84 독립 full suite 2735/2735 PASS(891.10s,487); targeted QA-B602 164/164(61.62s); QA-B605 flaky 미재현(LOW 유지); pending 0; transfer PASS(FE); operation BLOCK(744 BE + QA-B95 + QA-B116 + QA-B604).
+
+### [TSR] TSR1815 frontend — QA-B602 corroboration (독립 full suite 2735/2735 · QA-B605 flaky 미재현)
+
+| item | result |
+|------|--------|
+| develop / test / origin | ALL SYNCED `@7ac3c84` · pending **0** · WT CLEAN |
+| targeted QA-B602 | StaffPage + pilotPageFlows **164/164 PASS** (61.62s) |
+| full suite (독립 재실행) | **2735/2735 PASS** (487 files, 891.10s) — QA-B605 flaky **미재현** |
+| QA-B605 | LOW 유지 (flakiness 확정 · 병렬 부하 비결정적 · 제품/병합 회귀 아님) |
+| live E2E | SKIP (merge 없음 · 이미 SYNCED) |
+| transfer | **PASS**(FE · TSR1814 QA-B602 병합 확인) |
+| cross-stream | **BLOCK** (BE Open QA-B604 HIGH `@f6e4d88` · BE origin/test..develop **744**) |
+| operation | **BLOCK** (744 BE + QA-B95 + QA-B116 + QA-B604) |
+
+TSR1814가 QA-B602 병합·이관을 완료. TSR1815는 독립 full suite로 **2735/2735**를 재확인해 QA-B605를 flaky(회귀 아님)로 확정. FE transfer PASS 유지, operation 승격은 BE(QA-B604·744·QA-B95/B116)로 여전히 BLOCK.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T23:52:00Z -->
+<!-- tester-sync: TSR 1814차 2026-07-17T23:52:00Z (frontend) — **★ QA-B602 Fixed & MERGED** FF merge+PUSH `3042a53`→`7ac3c84` (pending **1→0**) · targeted StaffPage+pilot **164/164 PASS**(61.38s) · full suite **2734/2735 (1 FAIL)**(892.24s,487) · FAIL `VisitRfidDiffComparePanel` flaky(isolated **10/10 PASS** 5.05s) → QA-20260717-B605 Open(LOW) · FE ALL SYNCED+PUSHED `@7ac3c84` · live **SKIP**(concurrent lock) · transfer **PASS**(FE merge) · cross-stream **BLOCK**(BE QA-B604 `@f6e4d88` + 744) · backend@8080 **UP/200** · operation **BLOCK**(744 BE + QA-B95 + QA-B116 + QA-B604) -->
+# revalidation_1814th: QA-B602 Fixed+MERGED+PUSHED 3042a53→7ac3c84 (pending 1→0); targeted 164/164(61.38s); full suite 2734/2735(1 flaky FAIL,892.24s,487); VisitRfidDiffComparePanel isolated 10/10 PASS → QA-B605 Open(LOW); live SKIP(concurrent lock); transfer PASS(FE merge); operation BLOCK(744 BE + QA-B95 + QA-B116 + QA-B604).
+
+### [TSR] TSR1814 frontend — QA-B602 Fixed merge+PUSH + QA-B605 Open(LOW flaky)
+
+| item | result |
+|------|--------|
+| develop / test / origin | ALL `@7ac3c84` SYNCED+PUSHED · pending **0** |
+| merge | FF+PUSH `3042a53`→`7ac3c84` (QA-B602) |
+| targeted | StaffPage+pilot **164/164 PASS** (61.38s, 2 files) — 이전 2 FAIL → PASS |
+| full suite | **2734/2735 (1 FAIL)** 892.24s / 487 files |
+| FAIL | `VisitRfidDiffComparePanel.test.jsx:256` 급여제공내역 SMS 발송 button — **flaky** (isolated **10/10 PASS** 5.05s) → QA-B605 LOW |
+| build / audit | 1234 PASS(carry·제품 코드 무변경) / 0 high |
+| live E2E | SKIP (concurrent vitest lock · 다른 agent full suite @23:50) |
+| Open | **QA-20260717-B605** LOW (flaky · non-BLOCK) |
+| transfer | **PASS** (FE merge · QA-B602 Fixed+PUSHED) |
+| cross-stream | BLOCK (BE `@f6e4d88` Open QA-B604 + origin/test..develop 744) |
+| operation | BLOCK (744 BE + QA-B95 + QA-B116 + QA-B604) |
+
+재현: `npm test -- src/pages/StaffPage.test.jsx src/pages/pilotPageFlows.test.jsx` → 164/164. flaky: `npm test -- src/components/visits/VisitRfidDiffComparePanel.test.jsx` → 10/10(isolated). COD: RFID compare 후 `findByRole`/`waitFor` 안정화(QA-B605).
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T23:18:30Z -->
+<!-- tester-sync: TSR 1813차 2026-07-17T23:18:30Z (backend) — FF merge `be64fda`→`f6e4d88` (QA-B599 `@a788e6d` + QA-B603 `@f6e4d88` · pending **2→0**) · baseline **2351/2351 PASS**(67s,408) · related **133/133 PASS**(31s) · post-merge **2362/2363 (1 FAIL)**(72s,408) · FAIL `CognitiveSupportFeeSchedulePilotServiceFlowE2eTest` NPE · live **SKIP** · BE develop/test **SYNCED `@f6e4d88`** · **Open 1**(QA-20260717-B604 HIGH/BLOCK) · **QA-B600 Fixed** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE B604 · FE B602) · backend@8080 **UP/200** · operation **BLOCK**(744 BE + QA-B95 + QA-B602 + QA-B604) -->
+# revalidation_1813th: FF merge be64fda→f6e4d88 (QA-B599+B603 · pending 2→0); baseline 2351/2351(67s); related 133/133(31s); post-merge 2362/2363(1 FAIL,72s); Open 1(QA-B604 HIGH/BLOCK); QA-B600 Fixed; transfer BLOCK(BE); operation BLOCK(744 BE + QA-B95 + QA-B602 + QA-B604).
+
+### [TSR] TSR1813 backend — QA-B600 Fixed merge + QA-B604 Open(BLOCK)
+
+| item | result |
+|------|--------|
+| develop / test | **SYNCED `@f6e4d88`** · pending **0** |
+| merge | FF `be64fda`→`f6e4d88` (QA-B599 `@a788e6d` + QA-B603 `@f6e4d88`) |
+| baseline | **2351/2351 PASS** (67s, 408 suites) |
+| related | NhisImport+Visit+BankDeposit **133/133 PASS** (31s) |
+| post-merge | **2362/2363 (1 FAIL)** (72s, 408 suites) |
+| FAIL | `CognitiveSupportFeeSchedulePilotServiceFlowE2eTest` — mock `getBytes()` null → NPE L618 |
+| live E2E | SKIP (suite FAIL) |
+| Open | **QA-20260717-B604** HIGH/BLOCK (BE) · FE carry **QA-B602** |
+| transfer | **BLOCK** |
+| origin/test | ahead **744 BE** |
+
+재현: `mvn test -Dtest=CognitiveSupportFeeSchedulePilotServiceFlowE2eTest`. COD: `getBytes()` null guard 또는 pilot mock stub.
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T23:03:32Z -->
+<!-- tester-sync: TSR 1812차 2026-07-17T23:03:32Z (frontend) — QA-B602 **재현 유지** `@3042a53` · pending **0** · merge SKIP · targeted StaffPage **1 FAIL**(5.47s) + pilot US-V04 **1 FAIL**(9.84s) · full suite SKIP(carry 2733/2735) · Open **1**(QA-B602 HIGH/BLOCK) · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE B602 · BE pending 1 B600 `@a788e6d`) · backend@8080 **UP/200** · operation **BLOCK**(743 BE + QA-B95 + QA-B602 + QA-B600) -->
+# revalidation_1812th: QA-B602 still Open @3042a53; pending 0; merge SKIP; targeted StaffPage 1 FAIL(5.47s)+pilot 1 FAIL(9.84s); full suite SKIP(carry); Open 1(QA-B602 HIGH/BLOCK); transfer BLOCK(FE); operation BLOCK(743 BE + QA-B95 + QA-B602 + QA-B600).
+
+### [TSR] TSR1812 frontend — QA-B602 Open 재현 (COD 압박 · full suite 재실행 생략)
+
+| item | result |
+|------|--------|
+| develop / test / origin | ALL `@3042a53` SYNCED+PUSHED · pending **0** |
+| merge | SKIP (이미 SYNCED · 신규 develop 커밋 없음) |
+| full suite | SKIP — carry TSR1811 **2733/2735 (2 FAIL)** |
+| FAIL 1 repro | `StaffPage` caregiver import — **1 FAIL** 5.47s |
+| FAIL 2 repro | `pilotPageFlows` US-V04 — **1 FAIL** 9.84s |
+| Open | **QA-20260717-B602** HIGH/BLOCK |
+| transfer | **BLOCK** |
+| COD | `StaffPage.test.jsx` L231 · `pilotPageFlows.test.jsx` L4524 → OOXML fixture |
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:58:24Z -->
+<!-- tester-sync: TSR 1811차 2026-07-17T22:58:24Z (frontend) — FF merge+PUSH `4691856`→`3042a53` (QA-B601 absorb · pending **1→0**) · develop pre-merge related **39/39 PASS**(16.59s) · post-merge `npm test` **2733/2735 PASS(2 FAIL)**(897.04s,487,+7) · 단건 재현 StaffPage **1 FAIL**(5.48s) + pilotPageFlows US-V04 **1 FAIL**(9.45s) · build **1234**(9.35s) · audit **0** · live **SKIP**(suite FAIL) · FE develop/test/origin **ALL SYNCED+PUSHED `@3042a53`** · Open **1**(QA-20260717-B602 HIGH/BLOCK) · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE Open B602 · BE pending 1 `@a788e6d` Open B600) · backend@8080 **UP/200** · operation **BLOCK**(743 BE + QA-B95 + QA-B602 + QA-B600) -->
+# revalidation_1811th: FF merge+PUSH 4691856→3042a53 (QA-B601 · pending 1→0); related 39/39(16.59s); post-merge 2733/2735(2 FAIL,897.04s,487); targeted StaffPage+pilot 2 FAIL repro; build 1234; audit 0; live SKIP; Open 1(QA-B602 HIGH/BLOCK); transfer BLOCK(FE); operation BLOCK(743 BE + QA-B95 + QA-B602 + QA-B600).
+
+### [TSR] TSR1811 frontend — QA-B601 merge + QA-B602 Open(BLOCK)
+
+| item | result |
+|------|--------|
+| develop / test / origin | ALL `@3042a53` SYNCED+PUSHED |
+| merge | FF+PUSH `4691856`→`3042a53` (QA-B601) |
+| related | 39/39 PASS (16.59s) |
+| full suite | **2733/2735 (2 FAIL)** 897.04s / 487 files |
+| FAIL 1 | `StaffPage` caregiver import — API 0 (`File(["data"])`) |
+| FAIL 2 | `pilotPageFlows` US-V04 visit NHIS import — POST never |
+| build / audit | 1234 PASS / 0 high |
+| live E2E | SKIP |
+| Open | **QA-20260717-B602** HIGH/BLOCK |
+| transfer | **BLOCK** |
+
+재현: `npm test -- src/pages/StaffPage.test.jsx -t "reloads account requests after NHIS caregiver import"` · `npm test -- src/pages/pilotPageFlows.test.jsx -t "imports NHIS visit schedules from excel upload"`. COD: OOXML magic fixture sync (QA-B597 패턴).
+
+---
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:33:09Z -->
+<!-- tester-sync: TSR 1810차 2026-07-17T22:33:09Z (backend) — ROADMAP merged baseline `@be64fda` (`src/backend-test@test`) 회귀 `mvn test` **2351/2351 PASS**(65s,408,BUILD SUCCESS) · npm **N/A**(backend stream, package.json 없음) · develop `@a788e6d` pending **1**(`test..develop`) · merge **SKIP**(src read-only 운영) · Open **1**(QA-20260717-B600 HIGH/BLOCK) · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 1 `@a788e6d` · FE SYNCED+PUSHED `@4691856`) · operation **BLOCK**(742 BE + QA-B95 + QA-B600) -->
+# revalidation_1810th: baseline@test be64fda; mvn 2351/2351 PASS(65s,408,BUILD SUCCESS); npm N/A(no package.json); develop@a788e6d pending 1(test..develop); merge SKIP(read-only); Open 1(QA-20260717-B600 HIGH); transfer BLOCK(BE); cross-stream BLOCK(BE pending 1 + FE SYNCED@4691856); operation BLOCK(742 BE + QA-B95 + QA-B600).
+
+<!-- tester-sync: TSR 1809차 2026-07-17T22:21:45Z (frontend) — **★ QA-B597 Fixed** FF merge+PUSH `cf28a2e`→`4691856` (pending **2→0**: QA-B596 `@8b164c3` + QA-B597 magic fixture · COD `@4691856`) · develop pre-merge related **13/13 PASS**(7.94s) · post-merge **2728/2728 PASS**(890.03s,486,+5) · build **1233**(11.19s) · audit **0** · live **0/149/0**(33.86s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@4691856`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@be64fda` local · FE `@4691856`)** · backend@8080 **UP/200** · operation **BLOCK**(742 BE + QA-B95) -->
+# revalidation_1809th: QA-B597 Fixed FF merge+PUSH cf28a2e→4691856 (QA-B596+B597 · pending 2→0 · +5→2728); related 13/13(7.94s); post-merge 2728/2728(890.03s); build 1233(11.19s); live 0/149/0(33.86s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(742 BE + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T22:00:08Z -->
+<!-- tester-sync: TSR 1808차 2026-07-17T22:00:08Z (backend) — **★ QA-B598 Fixed** FF merge `ed94521`→`be64fda` (pending **1→0**: v3/SEC-D34 caregiver NHIS import ext+MIME+excel magic-byte · COD `@be64fda`) · develop pre-merge related **9/9 PASS**(~2.6s) · post-merge **2351/2351 PASS**(95s,408,+5) · live **0/149/0**(34.67s · bootstrap-disabled) · BE develop/test **SYNCED `@be64fda`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **BLOCK**(FE pending 1 `@8b164c3` · Open QA-B597) · backend@8080 **UP/200** · operation **BLOCK**(742 BE + QA-B95 + QA-B597) -->
+# revalidation_1808th: QA-B598 Fixed FF merge ed94521→be64fda (SEC-D34 caregiver NHIS import magic-byte · pending 1→0 · +5→2351); related 9/9(~2.6s); post-merge 2351/2351(95s); live 0/149/0(34.67s); Open 0(BE); transfer PASS(BE local); cross-stream BLOCK(FE QA-B597); operation BLOCK(742 BE + QA-B95 + QA-B597).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T21:36:57Z -->
+<!-- tester-sync: TSR 1807차 2026-07-17T21:36:57Z (frontend) — ROADMAP merged baseline `@cf28a2e` (`src/frontend-test@test`) 회귀 `npm test` **2726/2727 PASS(1 FAIL)**(886.07s,486) · 단건 재현 `StaffRefresherTrainingPage.test.jsx` **3/4 PASS(1 FAIL)**(6.37s) · develop `@8b164c3` pending **1**(`test..develop`) · merge **SKIP**(검증 전용 사이클) · build **1233**(9.68s) · audit **0** · live **SKIP**(merge 0 · carry 0/149/0) · Open **1**(QA-20260717-B597 HIGH) · transfer **BLOCK**(FE) · cross-stream **BLOCK**(FE pending 1 · BE `@ed94521`) · backend@8080 **UP/200** · operation **BLOCK**(741 BE + QA-B95 + QA-B597) -->
+# revalidation_1807th: baseline@test cf28a2e; develop@8b164c3 pending 1(test..develop); npm 2726/2727(1 FAIL, 886.07s,486); targeted StaffRefresherTrainingPage 3/4(1 FAIL, 6.37s); build 1233(9.68s); audit 0; live SKIP; Open 1(QA-20260717-B597 HIGH); transfer BLOCK(FE); operation BLOCK(741 BE + QA-B95 + QA-B597).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T21:14:28Z -->
+<!-- tester-sync: TSR 1806차 2026-07-17T21:14:28Z (backend) — **★ QA-B595 Fixed** FF merge `324da07`→`ed94521` (pending **1→0**: v3/SEC-D25 grade-history + refresher-certificate file magic-byte + content-type normalize · FE ALL SYNCED+PUSHED `@cf28a2e`) · develop pre-merge related **14/14 PASS**(~3.4s) · post-merge **2346/2346 PASS**(89s,408,+10) · live **0/149/0**(34.71s · bootstrap-disabled) · BE develop/test **SYNCED `@ed94521`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@ed94521` · FE `@cf28a2e`)** · backend@8080 **UP/200** · operation **BLOCK**(741 BE + QA-B95) -->
+# revalidation_1806th: QA-B595 Fixed FF merge 324da07→ed94521 (grade-history+refresher magic-byte SEC-D25 · pending 1→0 · +10→2346); related 14/14(~3.4s); post-merge 2346/2346(89s); live 0/149/0(34.71s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(741 BE + QA-B95).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T21:01:28Z -->
+<!-- tester-sync: TSR 1805차 2026-07-17T21:01:28Z (frontend) — **★ QA-B594 Fixed** FF merge+PUSH `e16f432`→`cf28a2e` (pending **1→0**: SEC-D25 benefit-contract + staff-HR magic-byte FE · BE QA-B593 `@324da07`) · develop pre-merge related **22/22 PASS**(6.10s,+9) · post-merge **2723/2723 PASS**(886.76s,485,+8) · build **1233**(9.32s) · audit **0** · live **0/149/0**(34.16s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@cf28a2e`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@324da07` · FE `@cf28a2e`)** · backend@8080 **UP/200** · operation **BLOCK**(740 BE + QA-B95) -->
+# revalidation_1805th: QA-B594 Fixed FF merge+PUSH e16f432→cf28a2e (SEC-D25 benefit-contract+staff-HR magic-byte FE · pending 1→0 · +8→2723); related 22/22(6.10s); post-merge 2723/2723(886.76s); build 1233(9.32s); live 0/149/0(34.16s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(740 BE + QA-B95).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T20:39:39Z -->
+<!-- tester-sync: TSR 1804차 2026-07-17T20:39:39Z (backend) — **★ QA-B593 Fixed** FF merge `cdba083`→`324da07` (pending **1→0**: v3/SEC-D25 benefit-contract + staff-HR file magic-byte + content-type normalize · FE ALL SYNCED+PUSHED `@e16f432`) · develop pre-merge related **14/14 PASS**(~3.4s) · post-merge **2336/2336 PASS**(87s,408,+12) · live **0/149/0**(34.07s · bootstrap-disabled) · BE develop/test **SYNCED `@324da07`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@324da07` · FE `@e16f432`)** · backend@8080 **UP/200** · operation **BLOCK**(740 BE + QA-B95) -->
+# revalidation_1804th: QA-B593 Fixed FF merge cdba083→324da07 (benefit-contract+staff-HR magic-byte SEC-D25 · pending 1→0 · +12→2336); related 14/14(~3.4s); post-merge 2336/2336(87s); live 0/149/0(34.07s); Open 0(BE); transfer PASS(BE local); cross-stream SYNCED; operation BLOCK(740 BE + QA-B95).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T20:27:30Z -->
+<!-- tester-sync: TSR 1803차 2026-07-17T20:27:30Z (frontend) — **★ QA-B592+UXD-190 Fixed** FF merge+PUSH `dc81f6e`→`e16f432` (pending **2→0**: SEC-D25 client photo magic-byte FE + UXD-190 a11y · BE QA-B591 `@cdba083`) · related **25/25 PASS**(13.37s,+16) · post-merge **2715/2715 PASS**(886.31s,483,+9) · build **1233**(9.23s) · audit **0** · live **0/149/0**(34.38s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@e16f432`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@cdba083` local · FE `@e16f432`)** · backend@8080 **UP/200** · operation **BLOCK**(739 BE + QA-B95) -->
+# revalidation_1803th: QA-B592+UXD-190 Fixed FF merge+PUSH dc81f6e→e16f432 (SEC-D25 client photo FE+UXD-190 a11y · pending 2→0 · +9→2715); related 25/25(13.37s); post-merge 2715/2715(886.31s); build 1233(9.23s); live 0/149/0(34.38s); Open 0(FE); transfer PASS(FE); cross-stream SYNCED; operation BLOCK(739 BE + QA-B95).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T20:03:22Z -->
+<!-- tester-sync: TSR 1802차 2026-07-17T20:03:22Z (backend) — **★ QA-B591 Fixed** FF merge `c19bfa6`→`cdba083` (pending **1→0**: v3/SEC-D25 client profile photo magic-byte + content-type normalize · FE pending **1** `@b2eb059` UXD-190) · develop pre-merge related **17/17 PASS**(~3.4s,+8) · post-merge **2324/2324 PASS**(88s,407,+8) · live **0/149/0**(34.94s · bootstrap-disabled) · BE develop/test **SYNCED `@cdba083`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **BLOCK(BE `@cdba083` · FE pending 1 `@b2eb059`)** · backend@8080 **UP/200** · operation **BLOCK**(739 BE + QA-B95) -->
+# revalidation_1802th: QA-B591 Fixed FF merge c19bfa6→cdba083 (client photo magic-byte SEC-D25 · pending 1→0 · +8→2324); related 17/17(~3.4s); post-merge 2324/2324(88s); live 0/149/0(34.94s); Open 0(BE); transfer PASS(BE local); operation BLOCK(739 BE + QA-B95); cross-stream BLOCK(FE pending 1).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T19:36:13Z -->
+<!-- tester-sync: TSR 1801차 2026-07-17T19:36:13Z (frontend) — **★ QA-B588+B590 Fixed** FF merge+PUSH `8e28fe0`→`dc81f6e` (pending **2→0**: mid-token NoBreakSpace + semicolon-optional NoBreakSpace · BE QA-B589 `@c19bfa6`) · related **246/246 PASS**(3.11s,+4) · post-merge **2706/2706 PASS**(884.25s,480,+4) · build **1231**(10.33s) · audit **0** · live **0/149/0**(35.77s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@dc81f6e`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@c19bfa6` local · FE `@dc81f6e`)** · backend@8080 **UP/200** · operation **BLOCK**(738 BE + QA-B95) -->
+# revalidation_1801th: QA-B588+B590 Fixed FF merge+PUSH 8e28fe0→dc81f6e (NoBreakSpace mid-token+semicolon-optional · pending 2→0 · +4→2706); related 246/246(3.11s); post-merge 2706/2706(884.25s); build 1231(10.33s); live 0/149/0(35.77s); Open 0(FE); transfer PASS(FE); operation BLOCK(738 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T18:57:09Z -->
+<!-- tester-sync: TSR 1800차 2026-07-17T18:57:09Z (backend) — **★ QA-B589 Fixed** FF merge `63227d7`→`c19bfa6` (pending **1→0**: QA-B95 semicolon-optional NoBreakSpace marker decode lockstep · FE `@090ac10` SYNCED) · develop pre-merge related **91/91 PASS**(~3.0s,+1) · post-merge **2316/2316 PASS**(105s,406,+1) · live **0/149/0**(34.39s · bootstrap-disabled) · BE develop/test **SYNCED `@c19bfa6`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@c19bfa6` · FE ALL SYNCED `@090ac10`)** · backend@8080 **UP/200** · operation **BLOCK**(738 BE + QA-B95) -->
+# revalidation_1800th: QA-B589 Fixed FF merge 63227d7→c19bfa6 (QA-B95 semicolon-optional NoBreakSpace lockstep · pending 1→0 · +1→2316); related 91/91(~3.0s); post-merge 2316/2316(105s); live 0/149/0(34.39s); Open 0(BE); transfer PASS(BE local); operation BLOCK(738 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T18:35:16Z -->
+<!-- tester-sync: TSR 1799차 2026-07-17T18:35:16Z (backend) — **★ QA-B587 Fixed** FF merge `d1ff63a`→`63227d7` (pending **1→0**: QA-B95 NoBreakSpace marker decoding lockstep · FE `@8e28fe0` SYNCED) · develop pre-merge related **90/90 PASS**(~5.3s,+1) · post-merge **2315/2315 PASS**(92s,406,+1) · live **0/149/0**(34.67s · bootstrap-disabled) · BE develop/test **SYNCED `@63227d7`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@63227d7` · FE ALL SYNCED+PUSHED `@8e28fe0`)** · backend@8080 **UP/200** · operation **BLOCK**(737 BE + QA-B95) -->
+# revalidation_1799th: QA-B587 Fixed FF merge d1ff63a→63227d7 (QA-B95 NoBreakSpace lockstep · pending 1→0 · +1→2315); related 90/90(~5.3s); post-merge 2315/2315(92s); live 0/149/0(34.67s); Open 0(BE); transfer PASS(BE local); operation BLOCK(737 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T18:22:35Z -->
+<!-- tester-sync: TSR 1798차 2026-07-17T18:22:35Z (frontend) — **★ QA-B586 Fixed** FF merge+PUSH `bc1d343`→`8e28fe0` (pending **1→0**: v3 program schedule photo magic-byte SEC-D25 · BE QA-B585 `@d1ff63a`) · related **15/15 PASS**(9.27s,+2) · post-merge **2702/2702 PASS**(885.10s,480,+3) · build **1231**(11.08s) · audit **0** · live **0/149/0**(34.29s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@8e28fe0`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@d1ff63a` local · FE `@8e28fe0`)** · backend@8080 **UP/200** · operation **BLOCK**(736 BE + QA-B95) -->
+# revalidation_1798th: QA-B586 Fixed FF merge+PUSH bc1d343→8e28fe0 (program photo magic-byte SEC-D25 · pending 1→0 · +3→2702); related 15/15(9.27s); post-merge 2702/2702(885.10s); build 1231(11.08s); live 0/149/0(34.29s); Open 0(FE); transfer PASS(FE); operation BLOCK(736 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T17:56:16Z -->
+<!-- tester-sync: TSR 1797차 2026-07-17T17:56:16Z (backend) — **★ QA-B585 Fixed** FF merge `a742788`→`d1ff63a` (pending **1→0**: v3 program schedule photo magic-byte SEC-D25 · FE `@bc1d343` SYNCED) · develop pre-merge related **9/9 PASS**(~3.3s,+4) · post-merge **2314/2314 PASS**(92s,406,+4) · live **0/149/0**(35.36s · bootstrap-disabled) · BE develop/test **SYNCED `@d1ff63a`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@d1ff63a` · FE ALL SYNCED+PUSHED `@bc1d343`)** · backend@8080 **UP/200** · operation **BLOCK**(736 BE + QA-B95) -->
+# revalidation_1797th: QA-B585 Fixed FF merge a742788→d1ff63a (program photo magic-byte SEC-D25 · pending 1→0 · +4→2314); related 9/9(~3.3s); post-merge 2314/2314(92s); live 0/149/0(35.36s); Open 0(BE); transfer PASS(BE local); operation BLOCK(736 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T17:18:30Z -->
+<!-- tester-sync: TSR 1796차 2026-07-17T17:18:30Z (backend) — **★ QA-B584 Fixed** FF merge `bfe6b3f`→`a742788` (pending **1→0**: M12 SSO error copy path lockstep + program photo content-type whitespace/multi-param · FE `@592a483` lockstep) · develop pre-merge related **13/13 PASS**(~7s,+3) · post-merge **2310/2310 PASS**(88s,407,+3) · live **0/149/0**(33.74s · bootstrap-disabled) · BE develop/test **SYNCED `@a742788`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@a742788` · FE ALL SYNCED+PUSHED `@592a483`)** · backend@8080 **UP/200** · operation **BLOCK**(735 BE + QA-B95) -->
+# revalidation_1796th: QA-B584 Fixed FF merge bfe6b3f→a742788 (SSO error copy+photo content-type · pending 1→0 · +3→2310); related 13/13(~7s); post-merge 2310/2310(88s); live 0/149/0(33.74s); Open 0(BE); transfer PASS(BE local); operation BLOCK(735 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T17:05:19Z -->
+<!-- tester-sync: TSR 1795차 2026-07-17T17:05:19Z (frontend) — **★ QA-B583 Fixed** FF merge+PUSH `9e40c19`→`592a483` (pending **1→0**: M12 SSO portal path/host/port allowlist · BE QA-B581 `@bfe6b3f`) · related **26/26 PASS**(5.13s,+3) · post-merge **2699/2699 PASS**(883.33s,480,+3) · build **1231**(9.22s) · audit **0** · live **0/149/0**(34.57s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@592a483`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@bfe6b3f` local · FE `@592a483`)** · backend@8080 **UP/200** · operation **BLOCK**(734 BE + QA-B95) -->
+# revalidation_1795th: QA-B583 Fixed FF merge+PUSH 9e40c19→592a483 (M12 SSO portal path allowlist · pending 1→0 · +3→2699); related 26/26(5.13s); post-merge 2699/2699(883.33s); live 0/149/0(34.57s); Open 0(FE); transfer PASS(FE); operation BLOCK(734 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T16:42:30Z -->
+<!-- tester-sync: TSR 1794차 2026-07-17T16:42:30Z (backend) — **★ QA-B581 Fixed** FF merge `72a6534`→`bfe6b3f` (pending **2→0**: QA-B95 named-num `@759b15e` + SSO allowlist `@bfe6b3f`) · develop pre-merge related **96/96 PASS**(2.3s) · post-merge **2307/2307 PASS**(88s,406,+1) · live **0/149/0**(33.64s · bootstrap-disabled) · BE develop/test **SYNCED `@bfe6b3f`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@bfe6b3f` · FE ALL SYNCED+PUSHED `@9e40c19`)** · backend@8080 **UP/200** · operation **BLOCK**(734 BE + QA-B95) -->
+# revalidation_1794th: QA-B581 Fixed FF merge 72a6534→bfe6b3f (named-num+SSO allowlist · pending 2→0 · +1→2307); related 96/96(2.3s); post-merge 2307/2307(88s); live 0/149/0(33.64s); Open 0(BE); transfer PASS(BE local); operation BLOCK(734 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T16:06:19Z -->
+<!-- tester-sync: TSR 1793차 2026-07-17T16:06:19Z (backend) — ROADMAP merged baseline `@72a6534` (`src/backend-test@test`) 회귀 `mvn test` **2306/2306 PASS**(67s,406,BUILD SUCCESS) · develop `@759b15e` pending **1**(`test..develop`) · merge **SKIP**(검증 전용 사이클) · npm **N/A**(backend stream) · backend@8080 **UP/200** · Open **1**(QA-20260717-B581 HIGH) · transfer **BLOCK** · cross-stream **BLOCK**(BE pending 1 · FE `@8e74b07` synced) · operation **BLOCK**(732 BE + QA-B95). -->
+# revalidation_1793th: backend@72a6534 baseline 2306/2306 PASS(67s,406,BUILD SUCCESS); develop@759b15e pending 1(test..develop); merge SKIP(verification-only); npm N/A; backend@8080 UP/200; Open 1(QA-20260717-B581 HIGH); transfer BLOCK; cross-stream BLOCK(BE pending 1 · FE SYNCED@8e74b07); operation BLOCK(732 BE + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T15:32:20Z -->
+<!-- tester-sync: TSR 1792차 2026-07-17T15:32:20Z (frontend) — **★ QA-B579 Fixed** FF merge+PUSH `2e06d5a`→`8e74b07` (pending **1→0**: v3 program photo content-type parameter normalize · BE QA-B578 `@72a6534` lockstep) · related **8/8 PASS**(5.93s · programsPhoto) · post-merge **2695/2695 PASS**(885.32s,480,+1) · build **1231**(11.07s) · audit **0** · live **0/149/0**(35.46s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@8e74b07`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@72a6534` · FE `@8e74b07`)** · backend@8080 **UP/200** · operation **BLOCK**(732 BE + QA-B95) -->
+# revalidation_1792th: QA-B579 Fixed FF merge+PUSH 2e06d5a→8e74b07 (content-type parameter normalize · pending 1→0 · +1→2695); related 8/8(5.93s); post-merge 2695/2695(885.32s); build 1231(11.07s); live 0/149/0(35.46s); Open 0(FE); transfer PASS(FE); operation BLOCK(732 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T15:10:11Z -->
+<!-- tester-sync: TSR 1791차 2026-07-17T15:10:11Z (backend) — **★ QA-B578 Fixed** FF merge `1b8c764`→`72a6534` (pending **1→0**: v3 program schedule photo multipart content-type parameter normalize) · develop pre-merge related **17/17 PASS**(~6.2s,+3 · ProgramPhotoStorageServiceTest+ProgramControllerRoutingTest+ProgramServiceTest) · post-merge **2306/2306 PASS**(92s,406,+3) · live **0/149/0**(34.33s · bootstrap-disabled) · BE develop/test **SYNCED `@72a6534`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@72a6534` · FE ALL SYNCED+PUSHED `@2e06d5a`)** · backend@8080 **UP/200** · operation **BLOCK**(732 BE + QA-B95) -->
+# revalidation_1791th: QA-B578 Fixed FF merge 1b8c764→72a6534 (multipart content-type parameter normalize · pending 1→0 · +3→2306); related 17/17(~6.2s); post-merge 2306/2306(92s); live 0/149/0(34.33s); Open 0(BE); transfer PASS(BE local); operation BLOCK(732 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T14:59:42Z -->
+<!-- tester-sync: TSR 1790차 2026-07-17T14:59:42Z (frontend) — **CARRY** SHA unchanged `@2e06d5a` · related **12/12 PASS**(9.30s,Δ0) · npm **CARRY 2694/2694 PASS**(883.89s,480 · TSR1789) · build **1231**(9.28s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1789) · FE develop/test/origin **ALL SYNCED+PUSHED `@2e06d5a`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@1b8c764` · FE `@2e06d5a`)** · backend@8080 **UP/200** · operation **BLOCK**(731 BE + QA-B95) -->
+# revalidation_1790th: CARRY @2e06d5a SHA unchanged; related 12/12(9.30s); npm CARRY 2694/2694(TSR1789); build 1231(9.28s); live SKIP; Open 0(FE); transfer PASS(FE); operation BLOCK(731 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T14:52:34Z -->
+<!-- tester-sync: TSR 1789차 2026-07-17T14:52:34Z (frontend) — **CARRY** SHA unchanged `@2e06d5a` · post-merge rerun **2694/2694 PASS**(883.89s,480,Δ0) · build **1231**(14.28s) · audit **0** · live **0/149/0**(37.57s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@2e06d5a`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@1b8c764` · FE `@2e06d5a`)** · backend@8080 **UP/200** · operation **BLOCK**(731 BE + QA-B95) -->
+# revalidation_1789th: CARRY @2e06d5a SHA unchanged; npm 2694/2694 PASS(883.89s,480,Δ0); build 1231(14.28s); audit 0; live 0/149/0(37.57s); Open 0(FE); transfer PASS(FE); operation BLOCK(731 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T14:35:48Z -->
+<!-- tester-sync: TSR 1788차 2026-07-17T14:35:48Z (frontend) — **★ QA-B577 Fixed** FF merge+PUSH `ce2325c`→`2e06d5a` (pending **1→0**: v3 program schedule photo upload FE wire · BE `@1b8c764` lockstep) · develop pre-merge related **12/12 PASS**(9.25s,+12 · programSchedulePhoto+ProgramsPage) · post-merge **2694/2694 PASS**(883.58s,480,+8) · build **1231**(9.24s,+1) · audit **0** · live **0/149/0**(34.46s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@2e06d5a`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@1b8c764` · FE `@2e06d5a`)** · backend@8080 **UP/200** · operation **BLOCK**(731 BE + QA-B95) -->
+# revalidation_1788th: QA-B577 Fixed FF merge+PUSH ce2325c→2e06d5a (v3 program schedule photo upload FE wire · pending 1→0 · +8→2694); related 12/12(9.25s); post-merge 2694/2694(883.58s); build 1231(9.24s); live 0/149/0(34.46s); Open 0(FE); transfer PASS(FE); operation BLOCK(731 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T14:12:24Z -->
+<!-- tester-sync: TSR 1787차 2026-07-17T14:12:24Z (backend) — **★ QA-B576 Fixed** FF merge `b7f4337`→`1b8c764` (pending **1→0**: v3 program schedule photo upload API+storage) · develop pre-merge related **14/14 PASS**(~3.0s,+1 · ProgramControllerRoutingTest+ProgramServiceTest) · post-merge **2303/2303 PASS**(87s,405,+1) · live **0/149/0**(33.79s · bootstrap-disabled) · BE develop/test **SYNCED `@1b8c764`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@1b8c764` · FE ALL SYNCED+PUSHED `@ce2325c`)** · backend@8080 **UP/200** · operation **BLOCK**(731 BE + QA-B95) -->
+# revalidation_1787th: QA-B576 Fixed FF merge b7f4337→1b8c764 (v3 program schedule photo upload · pending 1→0 · +1→2303); related 14/14(~3.0s); post-merge 2303/2303(87s); live 0/149/0(33.79s); Open 0(BE); transfer PASS(BE local); operation BLOCK(731 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T13:57:01Z -->
+<!-- tester-sync: TSR 1786차 2026-07-17T13:57:01Z (frontend) — **★ QA-B575 Fixed** FF merge+PUSH `d3e282b`→`ce2325c` (pending **1→0**: semicolon-optional `&num` named-num decode) · related **240/240 PASS**(2.67s,Δ0 · notificationChannelStatus+liveE2eHarness) · post-merge **2686/2686 PASS**(878.83s,477,Δ0) · build **1230**(9.65s) · audit **0** · live **0/149/0**(35.94s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@ce2325c`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@b7f4337` · FE `@ce2325c`)** · backend@8080 **UP/200** · operation **BLOCK**(730 BE + QA-B95) -->
+# revalidation_1786th: QA-B575 Fixed FF merge+PUSH d3e282b→ce2325c (semicolon-optional named-num · pending 1→0 · Δ0→2686); related 240/240(2.67s); post-merge 2686/2686(878.83s); build 1230(9.65s); live 0/149/0(35.94s); Open 0(FE); transfer PASS(FE); operation BLOCK(730 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T13:37:31Z -->
+<!-- tester-sync: TSR 1785차 2026-07-17T13:37:31Z (backend) — **★ QA-B574 Fixed** FF merge `7389ef0`→`b7f4337` (pending **1→0**: v196 linkage readiness in live probe) · develop pre-merge related **38/38 PASS**(1.934s,+1 · LiveE2eControllerTest) · post-merge **2302/2302 PASS**(89s,405,+1) · live **0/149/0**(34.08s · bootstrap-disabled) · BE develop/test **SYNCED `@b7f4337`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@b7f4337` · FE ALL SYNCED+PUSHED `@d3e282b`)** · backend@8080 **UP/200** · operation **BLOCK**(730 BE + QA-B95) -->
+# revalidation_1785th: QA-B574 Fixed FF merge 7389ef0→b7f4337 (v196 linkage readiness · pending 1→0 · +1→2302); related 38/38(1.934s); post-merge 2302/2302(89s); live 0/149/0(34.08s); Open 0(BE); transfer PASS(BE local); operation BLOCK(730 BE + QA-B95); cross-stream SYNCED.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T13:24:14Z -->
+<!-- tester-sync: TSR 1784차 2026-07-17T13:24:14Z (frontend) — **★ QA-B573 Fixed** FF merge+PUSH `9a48e13`→`d3e282b` (pending **1→0**: semicolon-optional `&amp` decode) · related **240/240 PASS**(2.72s,+2 · notificationChannelStatus+liveE2eHarness) · post-merge **2686/2686 PASS**(883.65s,477,+2) · build **1230**(9.39s) · audit **0** · live **0/149/0**(34.37s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@d3e282b`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@7389ef0` · FE `@d3e282b`)** · backend@8080 **UP/200** · operation **BLOCK**(729 BE + QA-B95) -->
+# revalidation_1784th: QA-B573 Fixed FF merge+PUSH 9a48e13→d3e282b (semicolon-optional amp · pending 1→0 · +2→2686); related 240/240(2.72s); post-merge 2686/2686(883.65s); build 1230(9.39s); live 0/149/0(34.37s); Open 0(FE); transfer PASS(FE); operation BLOCK(729 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T12:46:30Z -->
+<!-- tester-sync: TSR 1783차 2026-07-17T12:46:30Z (backend) — **★ QA-B572 Fixed** FF merge `0dfc992`→`7389ef0` (pending **1→0**: semicolon-optional core quote/angle decode · FE `@20f6ddc` lockstep) · baseline `@0dfc992` **2300/2300 PASS**(71s,405,BUILD SUCCESS) · develop pre-merge related **88/88 PASS**(3.5s,+1 · LiveE2eOperationReadinessSupportTest) · post-merge **2301/2301 PASS**(107s,405,+1) · live **0/149/0**(33.82s · bootstrap-disabled) · BE develop/test **SYNCED `@7389ef0`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@7389ef0` · FE ALL SYNCED+PUSHED `@9a48e13`)** · backend@8080 **UP/200** · operation **BLOCK**(729 BE + QA-B95) -->
+# revalidation_1783th: QA-B572 Fixed FF merge 0dfc992→7389ef0 (semicolon-optional core quote/angle · pending 1→0 · +1→2301); baseline 2300/2300(71s); related 88/88(3.5s); post-merge 2301/2301(107s); live 0/149/0(33.82s); Open 0(BE); transfer PASS(BE local); operation BLOCK(729 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T12:32:57Z -->
+<!-- tester-sync: TSR 1782차 2026-07-17T12:32:57Z (frontend) — **★ QA-B571 Fixed** FF merge+PUSH `420286e`→`9a48e13` · related **182/182 PASS**(1.60s,+2 · liveE2eHarness) · post-merge **2684/2684 PASS**(872.38s,477,+2) · build **1230**(9.44s) · audit **0** · live **0/149/0**(34.59s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@9a48e13`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@0dfc992` · FE `@9a48e13`)** · backend@8080 **UP/200** · operation **BLOCK**(728 BE + QA-B95) -->
+# revalidation_1782th: QA-B571 Fixed FF merge+PUSH 420286e→9a48e13 (null/blank operation-blocker filter · pending 1→0 · +2→2684); related 182/182(1.60s); post-merge 2684/2684(872.38s); build 1230(9.44s); live 0/149/0(34.59s); Open 0(FE); transfer PASS(FE); operation BLOCK(728 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T12:09:10Z -->
+<!-- tester-sync: TSR 1781차 2026-07-17T12:09:10Z (backend) — **★ QA-B570 Fixed** FF merge `f6023b0`→`0dfc992` · related **87/87 PASS**(2.366s,+2 · LiveE2eOperationReadinessSupportTest) · post-merge **2300/2300 PASS**(88s,405,+2) · live **0/149/0**(33.56s · bootstrap-disabled) · BE develop/test **SYNCED `@0dfc992`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@0dfc992` · FE ALL SYNCED+PUSHED `@420286e`)** · backend@8080 **UP/200** · operation **BLOCK**(728 BE + QA-B95) -->
+# revalidation_1781th: QA-B570 Fixed FF merge f6023b0→0dfc992 (null/blank operation-blocker filter · pending 1→0 · +2→2300); related 87/87(2.366s); post-merge 2300/2300(88s); live 0/149/0(33.56s); Open 0(BE); transfer PASS(BE local); operation BLOCK(728 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T11:55:32Z -->
+<!-- tester-sync: TSR 1780차 2026-07-17T11:55:32Z (frontend) — **★ QA-B569 Fixed** FF merge+PUSH `20f6ddc`→`420286e` · related **16/16 PASS**(5.33s · BillingDetailPage) · post-merge **2682/2682 PASS**(873.20s,477,+2) · build **1230**(11.35s) · audit **0** · live **0/149/0**(34.42s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@420286e`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@f6023b0` · FE `@420286e`)** · backend@8080 **UP/200** · operation **BLOCK**(727 BE + QA-B95) -->
+# revalidation_1780th: QA-B569 Fixed FF merge+PUSH 20f6ddc→420286e (UXD-188 + billing timeline · pending 2→0 · +2→2682); related 16/16(5.33s); post-merge 2682/2682(873.20s); build 1230(11.35s); live 0/149/0(34.42s); Open 0(FE); transfer PASS(FE); operation BLOCK(727 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T11:30:56Z -->
+<!-- tester-sync: TSR 1779차 2026-07-17T11:30:56Z (backend) — **★ QA-B568 Fixed** FF merge `29e20dd`→`f6023b0` · related **4/4 PASS**(1.4s,+1 · StaffLeaveLedgerServiceTest) · post-merge **2298/2298 PASS**(85s,405,+1) · live **0/149/0**(33.24s · bootstrap-disabled) · BE develop/test **SYNCED `@f6023b0`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **BLOCK(BE `@f6023b0` · FE pending 1 `@c061494` UXD-188 · test `@20f6ddc`)** · backend@8080 **UP/200** · operation **BLOCK**(727 BE + QA-B95) -->
+# revalidation_1779th: QA-B568 Fixed FF merge 29e20dd→f6023b0 (empty leave-ledger readable branch · pending 1→0 · +1→2298); related 4/4(1.4s); post-merge 2298/2298(85s); live 0/149/0(33.24s); Open 0(BE); transfer PASS(BE local); operation BLOCK(727 BE + QA-B95); cross-stream BLOCK(FE pending 1).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T11:07:18Z -->
+<!-- tester-sync: TSR 1778차 2026-07-17T11:07:18Z (frontend) — **CARRY** `@20f6ddc` SHA unchanged · related **236/236 PASS**(2.67s,Δ0) · core QA-B95 **236/236** · npm **CARRY 2680/2680 PASS**(879.96s,477,Δ0 · TSR1777) · build **1230**(9.36s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1777) · FE develop/test/origin **ALL SYNCED+PUSHED `@20f6ddc`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@29e20dd` local · FE `@20f6ddc`)** · backend@8080 **UP/200** · operation **BLOCK**(726 BE + QA-B95) -->
+# revalidation_1778th: CARRY @20f6ddc SHA unchanged; related 236/236(2.67s,Δ0); npm CARRY 2680/2680(TSR1777); build 1230(9.36s); live SKIP; Open 0(FE); transfer PASS(FE); operation BLOCK(726 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T11:00:00Z -->
+<!-- tester-sync: TSR 1777차 2026-07-17T11:00:00Z (frontend) — **★ QA-B567 Fixed** FF merge+PUSH `93f77e1`→`20f6ddc` · develop pre-merge related **236/236 PASS**(2.64s,+2) · core QA-B95 **236/236** · post-merge **2680/2680 PASS**(879.96s,477,+2) · build **1230**(9.25s) · audit **0** · live **0/149/0**(37.52s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@20f6ddc`** · Open **0**(FE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@29e20dd` local · FE `@20f6ddc`)** · backend@8080 **UP/200** · operation **BLOCK**(726 BE + QA-B95) -->
+# revalidation_1777th: QA-B567 Fixed FF merge+PUSH 93f77e1→20f6ddc (semicolon-optional core quote · pending 1→0 · +2→2680); related 236/236(2.64s); post-merge 2680/2680(879.96s); live 0/149/0(37.52s); Open 0(FE); transfer PASS(FE); operation BLOCK(726 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T10:25:00Z -->
+<!-- tester-sync: TSR 1776차 2026-07-17T10:25:00Z (backend) — **★ QA-B559+B561+B563+B566 Fixed** FF merge `a9bd7c0`→`29e20dd` (pending **5→0**) · baseline `mvn test` **2293/2293 PASS**(71s,405,BUILD SUCCESS) · develop pre-merge related **85/85 PASS**(9s,+1 vs 84) · post-merge **2297/2297 PASS**(93s,405,+4) · live **0/149/0**(34.54s · bootstrap-disabled) · BE develop/test **SYNCED `@29e20dd`** WT **CLEAN** · Open **0**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@29e20dd` · FE ALL SYNCED+PUSHED `@93f77e1`)** · backend@8080 **UP/200** · operation **BLOCK**(726 BE + QA-B95) -->
+# revalidation_1776th: QA-B559+B561+B563+B566 Fixed FF merge a9bd7c0→29e20dd (5 commits · pending 5→0 · +4→2297); baseline 2293/2293(71s); related 85/85(+1); post-merge 2297/2297(93s); live 0/149/0(34.54s); Open 0(BE); transfer PASS(BE local); operation BLOCK(726 BE + QA-B95); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T10:09:31Z -->
+<!-- tester-sync: TSR 1775차 2026-07-17T10:09:31Z (frontend) — **★ QA-B565 Fixed** FF merge+PUSH `3f7bb94`→`93f77e1` · develop pre-merge related **234/234 PASS**(3.32s,Δ0) · core QA-B95 **234/234** · post-merge **2678/2678 PASS**(880.02s,477,Δ0) · build **1230**(9.44s) · audit **0** · live **0/149/0**(34.28s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@93f77e1`** · Open **0**(FE) · residual **QA-B559+B561+B563**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 4 `@23ce552`+`@3b0b6b9`+`@34c16cd`+`@31b10d5` · FE `@93f77e1`)** · backend@8080 **UP/200** · operation **BLOCK**(725 BE + QA-B559 + QA-B561 + QA-B563 + QA-B95) -->
+# revalidation_1775th: QA-B565 Fixed FF merge+PUSH 3f7bb94→93f77e1 (long-prime · pending 1→0 · Δ0→2678); related 234/234(3.32s); post-merge 2678/2678(880.02s); live 0/149/0(34.28s); Open 0(FE); transfer PASS(FE); operation BLOCK(725 BE + QA-B559 + QA-B561 + QA-B563); cross-stream BLOCK(BE pending 4).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T09:07:30Z -->
+<!-- tester-sync: TSR 1774차 2026-07-17T09:07:30Z (frontend) — **CARRY** `@3f7bb94` SHA unchanged · related **234/234 PASS**(2.70s,Δ0) · core QA-B95 **234/234** · npm **CARRY 2678/2678 PASS**(879.79s,477,Δ0 · TSR1773) · build **1230**(12.22s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1773) · FE develop/test/origin **ALL SYNCED+PUSHED `@3f7bb94`** · Open **0**(FE) · residual **QA-B559+B561+B563**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 3 `@23ce552`+`@3b0b6b9`+`@34c16cd` · FE `@3f7bb94`)** · backend@8080 **UP/200** · operation **BLOCK**(723 BE + QA-B559 + QA-B561 + QA-B563 + QA-B95) -->
+# revalidation_1774th: CARRY @3f7bb94 SHA unchanged; related 234/234(2.70s); npm CARRY 2678/2678(TSR1773); build 1230(12.22s); live SKIP; Open 0(FE); transfer PASS(FE); operation BLOCK(723 BE + QA-B559 + QA-B561 + QA-B563); cross-stream BLOCK(BE pending 3).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T08:47:10Z -->
+<!-- tester-sync: TSR 1773차 2026-07-17T08:47:10Z (frontend) — **★ QA-B564 Fixed** FF merge+PUSH `a280437`→`3f7bb94` · develop pre-merge related **234/234 PASS**(2.69s,+2) · core QA-B95 **234/234** · post-merge **2678/2678 PASS**(879.79s,477,+2) · build **1230**(12.93s) · audit **0** · live **0/149/0**(36.79s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@3f7bb94`** · Open **0**(FE) · residual **QA-B559+B561+B563**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 3 `@23ce552`+`@3b0b6b9`+`@34c16cd` · FE `@3f7bb94`)** · backend@8080 **UP/200** · operation **BLOCK**(723 BE + QA-B559 + QA-B561 + QA-B563 + QA-B95) -->
+# revalidation_1773th: QA-B564 Fixed FF merge+PUSH a280437→3f7bb94 (prime/double-prime · pending 1→0 · +2→2678); related 234/234(2.69s); post-merge 2678/2678(879.79s); live 0/149/0(36.79s); Open 0(FE); transfer PASS(FE); operation BLOCK(723 BE + QA-B559 + QA-B561 + QA-B563); cross-stream BLOCK(BE pending 3).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T08:26:30Z -->
+<!-- tester-sync: TSR 1772차 2026-07-17T08:26:30Z (backend) — ROADMAP merged baseline `@a9bd7c0` (`src/backend-test`) · baseline `mvn test` **2293/2293 PASS**(70s, 405 suites, BUILD SUCCESS · SHA unchanged) · develop pre-merge related **84/84 PASS**(2.222s,+1 vs 83) · npm **N/A**(no `package.json`) · develop HEAD `@34c16cd` WT **CLEAN** · test `@a9bd7c0` WT **CLEAN** · pending **3**(`test..develop`: `@23ce552`+`@3b0b6b9`+`@34c16cd`) + origin/test **723 BE** · merge **SKIP**(read-only directive) · **QA-20260717-B559+B561+B563 Open(BLOCK)** · Open **3** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 3 · FE ALL SYNCED+PUSHED `@a280437`)** · backend@8080 **미검증**(이번 사이클 미실행) · operation **BLOCK**(723 BE + QA-B559 + QA-B561 + QA-B563 + QA-B95). -->
+# revalidation_1772th: backend@a9bd7c0 baseline 2293/2293 PASS(70s,405,BUILD SUCCESS); develop@34c16cd related 84/84(+1); pending 3; merge SKIP(read-only); QA-B559+B561+B563 Open(BLOCK); Open 3; transfer BLOCK; cross-stream BLOCK(BE pending 3 · FE SYNCED@a280437); operation BLOCK(723 BE + QA-B559 + QA-B561 + QA-B563 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T08:14:00Z -->
+<!-- tester-sync: TSR 1771차 2026-07-17T08:14:00Z (frontend) — **CARRY** `@a280437` SHA unchanged · related **232/232 PASS**(2.69s,Δ0) · core QA-B95 **232/232** · npm **CARRY 2676/2676 PASS**(878.33s,477,Δ0 · TSR1770) · build **1230**(9.33s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1770) · FE develop/test/origin **ALL SYNCED+PUSHED `@a280437`** · Open **0**(FE) · residual **QA-B559+B561**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 2 `@23ce552`+`@3b0b6b9` · FE `@a280437`)** · backend@8080 **UP/200** · operation **BLOCK**(723 BE + QA-B559 + QA-B561 + QA-B95) -->
+# revalidation_1771th: CARRY @a280437 SHA unchanged; related 232/232(2.69s); npm CARRY 2676/2676(TSR1770); build 1230(9.33s); live SKIP; Open 0(FE); transfer PASS(FE); operation BLOCK(723 BE + QA-B559 + QA-B561); cross-stream BLOCK(BE pending 2).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T08:08:00Z -->
+<!-- tester-sync: TSR 1770차 2026-07-17T08:08:00Z (frontend) — **★ QA-B562 Fixed** FF merge+PUSH `56fa1c0`→`a280437` · develop pre-merge related **232/232 PASS**(2.70s,+2) · core QA-B95 **232/232** · post-merge **2676/2676 PASS**(883.73s,477,+2) · build **1230**(9.25s) · audit **0** · live **0/149/0**(33.75s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@a280437`** · Open **0**(FE) · residual **QA-B559+B561**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 2 `@23ce552`+`@3b0b6b9` · FE `@a280437`)** · backend@8080 **UP/200** · operation **BLOCK**(723 BE + QA-B559 + QA-B561 + QA-B95) -->
+# revalidation_1770th: QA-B562 Fixed FF merge+PUSH 56fa1c0→a280437 (guillemet · pending 1→0 · +2→2676); related 232/232(2.70s); post-merge 2676/2676(883.73s); live 0/149/0(33.75s); Open 0(FE); transfer PASS(FE); operation BLOCK(723 BE + QA-B559 + QA-B561); cross-stream BLOCK(BE pending 2).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T07:09:32Z -->
+<!-- tester-sync: TSR 1769차 2026-07-17T07:09:32Z (backend) — ROADMAP merged baseline `@a9bd7c0` (`src/backend-test`) · baseline `mvn test` **2293/2293 PASS**(65s, 405 suites, BUILD SUCCESS · SHA unchanged) · develop pre-merge related **83/83 PASS**(5.6s,+2 vs 81) · npm **N/A**(no `package.json`) · develop HEAD `@3b0b6b9` WT **CLEAN** · test `@a9bd7c0` WT **CLEAN** · pending **2**(`test..develop`: `@23ce552`+`@3b0b6b9`) + origin/test **723 BE** · merge **SKIP**(read-only directive) · **QA-20260717-B559+B561 Open(BLOCK)** · Open **2** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 · FE ALL SYNCED+PUSHED `@56fa1c0`)** · backend@8080 **UP/200** · operation **BLOCK**(723 BE + QA-B559 + QA-B561 + QA-B95). -->
+# revalidation_1769th: backend@a9bd7c0 baseline 2293/2293 PASS(65s,405,BUILD SUCCESS); develop@3b0b6b9 related 83/83(+2); pending 2; merge SKIP(read-only); QA-B559+B561 Open(BLOCK); Open 2; transfer BLOCK; cross-stream BLOCK(BE pending 2 · FE SYNCED@56fa1c0); operation BLOCK(723 BE + QA-B559 + QA-B561 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T06:54:20Z -->
+<!-- tester-sync: TSR 1768차 2026-07-17T06:54:20Z (frontend) — **CARRY** `@56fa1c0` SHA unchanged · related **230/230 PASS**(4.58s,Δ0) · core QA-B95 **230/230** · npm **CARRY 2674/2674 PASS**(872.11s,477,Δ0 · TSR1767) · build **1230**(11.39s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1767) · FE develop/test/origin **ALL SYNCED+PUSHED `@56fa1c0`** · Open **0**(FE) · residual **QA-B559**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@23ce552` · FE `@56fa1c0`)** · backend@8080 **UP/200** · operation **BLOCK**(722 BE + QA-B559 + QA-B95) -->
+# revalidation_1768th: CARRY @56fa1c0 SHA unchanged; related 230/230(4.58s); npm CARRY 2674/2674(TSR1767); build 1230(11.39s); live SKIP; Open 0(FE); transfer PASS(FE); operation BLOCK(722 BE + QA-B559); cross-stream BLOCK(BE pending 1).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T06:38:38Z -->
+<!-- tester-sync: TSR 1767차 2026-07-17T06:38:38Z (frontend) — **★ QA-B560 Fixed** FF merge+PUSH `694266e`→`56fa1c0` · related **230/230 PASS**(2.63s,+2) · core QA-B95 **230/230** · post-merge **2674/2674 PASS**(877.81s,477,+2) · build **1230**(13.05s) · audit **0** · live **0/149/0**(36.41s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@56fa1c0`** · Open **0**(FE) · residual **QA-B559**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@23ce552` · FE `@56fa1c0`)** · backend@8080 **UP/200** · operation **BLOCK**(721 BE + QA-B559 + QA-B95) -->
+# revalidation_1767th: QA-B560 Fixed FF merge+PUSH 694266e→56fa1c0 (low-9/reversed-9 quote · pending 1→0 · +2→2674); related 230/230(2.63s); post-merge 2674/2674(877.81s); live 0/149/0(36.41s); Open 0(FE); transfer PASS(FE); operation BLOCK(721 BE + QA-B559); cross-stream BLOCK(BE pending 1).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T06:18:25Z -->
+<!-- tester-sync: TSR 1766차 2026-07-17T06:18:25Z (backend) — ROADMAP merged baseline `@a9bd7c0` (`src/backend-test`) · baseline `mvn test` **2293/2293 PASS**(66s,405 suites,BUILD SUCCESS) · npm **N/A**(no `package.json`) · develop HEAD `@23ce552` WT **CLEAN** · test `@a9bd7c0` WT **CLEAN** · pending **1**(`test..develop`: `23ce552`) + origin/test **721 BE** · merge **SKIP**(read-only directive) · **QA-20260717-B559 Open(BLOCK)** · Open **1** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 `@23ce552` · FE ALL SYNCED+PUSHED `@694266e`)** · backend@8080 **미검증**(이번 사이클 미실행) · operation **BLOCK**(721 BE + QA-B559 + QA-B95). -->
+# revalidation_1766th: backend@a9bd7c0 baseline 2293/2293 PASS(66s,405,BUILD SUCCESS); npm N/A; develop@23ce552 CLEAN pending 1; merge SKIP(read-only); QA-20260717-B559 Open(BLOCK); Open 1; transfer BLOCK; cross-stream BLOCK(BE pending 1 · FE SYNCED@694266e); operation BLOCK(721 BE + QA-B559 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T06:02:07Z -->
+<!-- tester-sync: TSR 1765차 2026-07-17T06:02:07Z (frontend) — **★ QA-B557 Fixed** FF merge+PUSH `ac3af73`→`694266e` · related **228/228 PASS**(2.68s,+2) · core QA-B95 **228/228** · post-merge **2672/2672 PASS**(882.90s,477,+2) · build **1230**(11.13s) · audit **0** · live **0/149/0**(34.33s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@694266e`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@a9bd7c0` · FE `@694266e`)** · backend@8080 **UP/200** · operation **BLOCK**(721 BE + QA-B95) -->
+# revalidation_1765th: QA-B557 Fixed FF merge+PUSH ac3af73→694266e (Left/Right Quote + UXD-187 · pending 2→0 · +2→2672); related 228/228(2.68s); post-merge 2672/2672(882.90s); live 0/149/0(34.33s); Open 0; transfer PASS(FE); operation BLOCK(721 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T05:40:47Z -->
+<!-- tester-sync: TSR 1764차 2026-07-17T05:40:47Z (backend) — **★ QA-B556 Fixed** FF merge `df2c1a0`→`a9bd7c0` · related **81/81 PASS**(2.144s,+1) · post-merge **2293/2293 PASS**(88s,405,+1) · live **0/149/0**(33.73s) · BE develop/test **SYNCED `@a9bd7c0`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@a9bd7c0` · FE ALL SYNCED+PUSHED `@ac3af73`)** · backend@8080 **UP/200** · operation **BLOCK**(721 BE) -->
+# revalidation_1764th: QA-B556 Fixed FF merge df2c1a0→a9bd7c0 (Left*/Right*Quote · pending 1→0 · +1→2293); related 81/81(2.144s); post-merge 2293/2293(88s); live 0/149/0(33.73s); Open 0; transfer PASS(BE local); operation BLOCK(721 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T05:11:58Z -->
+<!-- tester-sync: TSR 1763차 2026-07-17T05:11:58Z (frontend) — **★ QA-B555 Fixed** FF merge+PUSH `a364f97`→`ac3af73` · related **226/226 PASS**(2.72s,+2) · core QA-B95 **226/226** · post-merge **2670/2670 PASS**(878.01s,477,+2) · build **1230**(9.15s) · audit **0** · live **0/149/0**(34.50s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@ac3af73`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@df2c1a0` · FE `@ac3af73`)** · backend@8080 **UP/200** · operation **BLOCK**(720 BE + QA-B95) -->
+# revalidation_1763th: QA-B555 Fixed FF merge+PUSH a364f97→ac3af73 (OpenCurly* · pending 1→0 · +2→2670); related 226/226(2.72s); post-merge 2670/2670(878.01s); live 0/149/0(34.50s); Open 0; transfer PASS(FE); operation BLOCK(720 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T04:42:59Z -->
+<!-- tester-sync: TSR 1762차 2026-07-17T04:42:59Z (backend) — **★ QA-B554 Fixed** FF merge `a0c1fe6`→`df2c1a0` · related **80/80 PASS**(2.06s,+1) · post-merge **2292/2292 PASS**(89s,405,+1) · npm **N/A** · live **0/149/0**(33.68s · bootstrap-disabled) · BE develop/test **SYNCED `@df2c1a0`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@df2c1a0` · FE ALL SYNCED+PUSHED `@a364f97`)** · backend@8080 **UP/200** · operation **BLOCK**(720 BE) -->
+# revalidation_1762th: QA-B554 Fixed FF merge a0c1fe6→df2c1a0 (OpenCurly* · pending 1→0 · +1→2292); related 80/80(2.06s); post-merge 2292/2292(89s); live 0/149/0(33.68s); Open 0; transfer PASS(BE local); operation BLOCK(720 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T04:31:40Z -->
+<!-- tester-sync: TSR 1761차 2026-07-17T04:31:40Z (frontend) — **CARRY** `@a364f97` SHA unchanged · related **224/224 PASS**(3.56s,Δ0) · core QA-B95 **224/224** · npm **CARRY 2668/2668 PASS**(879.51s,477,Δ0 · TSR1760) · build **1230**(10.13s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1760) · FE develop/test/origin **ALL SYNCED+PUSHED `@a364f97`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@a0c1fe6` · FE `@a364f97`)** · backend@8080 **UP/200** · operation **BLOCK**(719 BE + QA-B95) -->
+# revalidation_1761th: CARRY @a364f97 SHA unchanged; related 224/224(3.56s); npm CARRY 2668/2668(TSR1760); build 1230(10.13s); live SKIP; Open 0; transfer PASS(FE); operation BLOCK(719 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T04:25:10Z -->
+<!-- tester-sync: TSR 1760차 2026-07-17T04:25:10Z (frontend) — **★ QA-B553 Fixed** FF merge+PUSH `40c85df`→`a364f97` · related **224/224 PASS**(2.59s,+2) · core QA-B95 **224/224** · post-merge **2668/2668 PASS**(879.51s,477,+2) · build **1230**(10.89s) · audit **0** · live **0/149/0**(34.47s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@a364f97`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@a0c1fe6` · FE `@a364f97`)** · backend@8080 **UP/200** · operation **BLOCK**(719 BE + QA-B95) -->
+# revalidation_1760th: QA-B553 Fixed FF merge+PUSH 40c85df→a364f97 (typographic quote · pending 1→0 · +2→2668); related 224/224(2.59s); post-merge 2668/2668(879.51s); live 0/149/0(34.47s); Open 0; transfer PASS(FE); operation BLOCK(719 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T04:04:44Z -->
+<!-- tester-sync: TSR 1759차 2026-07-17T04:04:44Z (backend) — **★ QA-B551 Fixed** FF merge `20356ed`→`a0c1fe6` · related **79/79 PASS**(2.040s,+2) · post-merge **2291/2291 PASS**(88s,405,+2) · npm **N/A** · live **0/149/0**(33.83s · bootstrap-disabled) · BE develop/test **SYNCED `@a0c1fe6`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@a0c1fe6` · FE ALL SYNCED+PUSHED `@40c85df`)** · backend@8080 **UP/200** · operation **BLOCK**(719 BE) -->
+# revalidation_1759th: QA-B551 Fixed FF merge 20356ed→a0c1fe6 (MathML long + typographic quote · pending 2→0 · +2→2291); related 79/79(2.040s); post-merge 2291/2291(88s); live 0/149/0(33.83s); Open 0; transfer PASS(BE local); operation BLOCK(719 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T03:53:52Z -->
+<!-- tester-sync: TSR 1758차 2026-07-17T03:53:52Z (frontend) — **CARRY** `@40c85df` SHA unchanged · related **222/222 PASS**(2.63s,Δ0) · core QA-B95 **222/222** · npm **CARRY 2666/2666 PASS**(882.54s,477,Δ0 · TSR1757) · build **1230**(9.26s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1757) · FE develop/test/origin **ALL SYNCED+PUSHED `@40c85df`** · Open **0**(FE) · residual **QA-B551**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@c1041bb` · FE `@40c85df`)** · backend@8080 **UP/200** · operation **BLOCK**(718 BE + QA-B551 + QA-B95) -->
+# revalidation_1758th: CARRY @40c85df SHA unchanged; related 222/222(2.63s); npm CARRY 2666/2666(TSR1757); build 1230(9.26s); live SKIP; Open 0(FE); transfer PASS(FE); operation BLOCK(718 BE + QA-B551); cross-stream BLOCK(BE pending 1).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T03:45:30Z -->
+<!-- tester-sync: TSR 1757차 2026-07-17T03:45:30Z (frontend) — **★ QA-B552 Fixed** FF merge+PUSH `5ce4726`→`40c85df` · related **222/222 PASS**(2.62s,+2) · core QA-B95 **222/222** · post-merge **2666/2666 PASS**(882.54s,477,+2) · build **1230**(9.41s) · audit **0** · live **0/149/0**(34.78s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@40c85df`** · Open **0**(FE) · residual **QA-B551**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@c1041bb` · FE `@40c85df`)** · backend@8080 **UP/200** · operation **BLOCK**(717 BE + QA-B551 + QA-B95) -->
+# revalidation_1757th: QA-B552 Fixed FF merge+PUSH 5ce4726→40c85df (MathML long angle-bracket · pending 1→0 · +2→2666); related 222/222(2.62s); core 222/222; post-merge 2666/2666(882.54s); build 1230(9.41s); live 0/149/0(34.78s); Open 0(FE); transfer PASS(FE); operation BLOCK(717 BE + QA-B551); cross-stream BLOCK(BE pending 1).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T03:22:15Z -->
+<!-- tester-sync: TSR 1756차 2026-07-17T03:22:15Z (backend) — ROADMAP merged baseline `@20356ed` (`src/backend-test`) · baseline `mvn test` **2289/2289 PASS**(66s, 405 suites, BUILD SUCCESS · SHA unchanged) · npm **N/A** · develop HEAD `@c1041bb` WT **CLEAN** · test `@20356ed` WT **CLEAN** · pending **1**(`test..develop`: `@c1041bb`) + origin/test **717 BE** · merge **SKIP**(read-only directive) · **QA-20260717-B551 Open(BLOCK)** · Open **1** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 `@c1041bb` · FE ALL SYNCED+PUSHED `@5ce4726`)** · backend@8080 **UP/200** · operation **BLOCK**(717 BE + QA-B551 + QA-B95). -->
+# revalidation_1756th: backend@20356ed baseline 2289/2289 PASS(66s,405,BUILD SUCCESS); develop@c1041bb CLEAN pending 1; merge SKIP(read-only); QA-20260717-B551 Open(BLOCK); Open 1; transfer BLOCK; cross-stream BLOCK(BE pending 1 · FE SYNCED@5ce4726); operation BLOCK(717 BE + QA-B551 + QA-B95).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T03:14:00Z -->
+<!-- tester-sync: TSR 1755차 2026-07-17T03:14:00Z (frontend) — **CARRY** `@5ce4726` SHA unchanged · related **220/220 PASS**(2.63s,Δ0) · core QA-B95 **220/220** · npm **CARRY 2664/2664 PASS**(882.91s,477,Δ0 · TSR1754) · build **1230**(9.13s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1754) · FE develop/test/origin **ALL SYNCED+PUSHED `@5ce4726`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@20356ed` · FE `@5ce4726`)** · backend@8080 **UP/200** · operation **BLOCK**(717 BE) -->
+# revalidation_1755th: CARRY @5ce4726 SHA unchanged; related 220/220(2.63s); npm CARRY 2664/2664(882.91s TSR1754); build 1230(9.13s); live SKIP(merge 0 · CARRY 0/149/0); Open 0; transfer PASS(FE); operation BLOCK(717 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T03:08:30Z -->
+<!-- tester-sync: TSR 1754차 2026-07-17T03:08:30Z (frontend) — **★ QA-B549 Fixed** FF merge+PUSH `1c84f0f`→`5ce4726` · related **220/220 PASS**(2.80s,+1) · core QA-B95 **220/220** · post-merge **2664/2664 PASS**(882.91s,477,+1) · build **1230**(10.82s) · audit **0** · live **0/149/0**(35.17s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@5ce4726`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@20356ed` · FE `@5ce4726`)** · backend@8080 **UP/200** · operation **BLOCK**(717 BE) -->
+# revalidation_1754th: QA-B549 Fixed FF merge+PUSH 1c84f0f→5ce4726 (bidi long-alias · pending 1→0 · +1→2664); related 220/220(2.80s); core 220/220; post-merge 2664/2664(882.91s); build 1230(10.82s); live 0/149/0(35.17s); Open 0; transfer PASS(FE); operation BLOCK(717 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T02:28:40Z -->
+<!-- tester-sync: TSR 1753차 2026-07-17T02:28:40Z (backend) — **★ QA-B548 Fixed** FF merge `bc41ed9`→`20356ed` · related **77/77 PASS**(2.042s,+1) · post-merge **2289/2289 PASS**(92s,405,+1) · npm **N/A** · live **0/149/0**(35.31s · bootstrap-disabled) · BE develop/test **SYNCED `@20356ed`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@20356ed` · FE ALL SYNCED+PUSHED `@1c84f0f`)** · backend@8080 **UP/200** · operation **BLOCK**(717 BE) -->
+# revalidation_1753th: QA-B548 Fixed FF merge bc41ed9→20356ed (angle-wrap · pending 1→0 · +1→2289); related 77/77(2.042s); post-merge 2289/2289(92s); live 0/149/0(35.31s); Open 0; transfer PASS(BE local); operation BLOCK(717 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T02:18:34Z -->
+<!-- tester-sync: TSR 1752차 2026-07-17T02:18:34Z (frontend) — **★ QA-B547 Fixed** FF merge+PUSH `9907725`→`1c84f0f` · related **219/219 PASS**(2.60s,+2) · core QA-B95 **219/219** · post-merge **2663/2663 PASS**(877.36s,477,+2) · build **1230**(11.00s) · audit **0** · live **0/149/0**(34.56s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@1c84f0f`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@bc41ed9` · FE `@1c84f0f`)** · backend@8080 **UP/200** · operation **BLOCK**(716 BE) -->
+# revalidation_1752th: QA-B547 Fixed FF merge+PUSH 9907725→1c84f0f (angle-wrap · pending 1→0 · +2→2663); related 219/219(2.60s); core 219/219; post-merge 2663/2663(877.36s); build 1230(11.00s); live 0/149/0(34.56s); Open 0; transfer PASS(FE); operation BLOCK(716 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T01:58:17Z -->
+<!-- tester-sync: TSR 1751차 2026-07-17T01:58:17Z (backend) — **★ QA-B545 Fixed** FF merge `c6ddf6c`→`bc41ed9` · related **76/76 PASS**(2.087s,+2) · post-merge **2288/2288 PASS**(86s,405,+2) · npm **N/A** · live **0/149/0**(34.40s · bootstrap-disabled) · BE develop/test **SYNCED `@bc41ed9`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@bc41ed9` · FE ALL SYNCED+PUSHED `@9907725`)** · backend@8080 **UP/200** · operation **BLOCK**(716 BE) -->
+# revalidation_1751th: QA-B545 Fixed FF merge c6ddf6c→bc41ed9 (curly+paren wrap · pending 2→0 · +2→2288); related 76/76(2.087s); post-merge 2288/2288(86s); live 0/149/0(34.40s); Open 0; transfer PASS(BE local); operation BLOCK(716 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T01:47:58Z -->
+<!-- tester-sync: TSR 1750차 2026-07-17T01:47:58Z (frontend) — **CARRY** `@9907725` SHA unchanged · related **217/217 PASS**(2.78s) · core QA-B95 **217/217** · npm **2661/2661 PASS**(877.56s,477,Δ0) · build **1230**(9.61s) · audit **0** · live **SKIP**(merge 0 · CARRY **0/149/0** TSR1749) · FE develop/test/origin **ALL SYNCED+PUSHED `@9907725`** · Open **0**(FE) · residual **QA-B545**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@794bfed` · FE `@9907725`)** · backend@8080 **UP/200** · operation **BLOCK**(715 BE) -->
+# revalidation_1750th: CARRY @9907725 SHA unchanged; related 217/217(2.78s); npm 2661/2661(877.56s); build 1230(9.61s); live SKIP(merge 0 · CARRY 0/149/0 TSR1749); Open 0(FE); transfer PASS(FE); operation BLOCK(715 BE); cross-stream BLOCK(BE B545).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T01:46:30Z -->
+<!-- tester-sync: TSR 1749차 2026-07-17T01:46:30Z (frontend) — **★ QA-B546 Fixed** FF merge+PUSH `d6be05c`→`9907725` · related **217/217 PASS**(2.61s,+2) · core QA-B95 **217/217** · post-merge **2661/2661 PASS**(877.56s,477,+2) · build **1230**(9.61s) · audit **0** · live **0/149/0**(34.66s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@9907725`** · Open **0**(FE) · residual **QA-B545**(BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@794bfed` · FE `@9907725`)** · backend@8080 **UP/200** · operation **BLOCK**(715 BE) · reval confirm -->
+# revalidation_1749th: QA-B546 Fixed FF merge+PUSH d6be05c→9907725 (+UXD-186 · pending 2→0 · +2→2661); related 217/217(2.61s); core 217/217; post-merge 2661/2661(877.56s); build 1230(9.61s); live 0/149/0(34.66s); Open 0(FE); transfer PASS(FE); operation BLOCK(715 BE); cross-stream BLOCK(BE B545).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T01:07:00Z -->
+<!-- tester-sync: TSR 1748차 2026-07-17T01:07:00Z (backend) — ROADMAP merged baseline `@c6ddf6c` (`src/backend-test`) · baseline **CARRY 2286/2286 PASS**(67s,405 suites,BUILD SUCCESS · TSR1746 · SHA unchanged) · develop pre-merge related **75/75 PASS**(3.2s, LiveE2eOperationReadinessSupportTest · +1 vs 74) · npm **N/A** · develop HEAD `@794bfed` WT **CLEAN** · test `@c6ddf6c` WT **CLEAN** · pending **1**(`test..develop`: `@794bfed`) + origin/test **714 BE** · merge **SKIP**(read-only directive) · live **SKIP**(merge 0 · CARRY **0/149/0**(33.46s · bootstrap-disabled)) · **QA-20260717-B545 Open(BLOCK)** · Open **1** · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 · FE ALL SYNCED+PUSHED `@d6be05c`)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1748th: backend@c6ddf6c CARRY 2286/2286(67s,405,BUILD SUCCESS); develop pre-merge 75/75(3.2s,+1,CLEAN @794bfed); pending 1; merge SKIP(read-only); QA-20260717-B545 Open(BLOCK); Open 1; transfer BLOCK; operation BLOCK(714 BE); FE SYNCED@d6be05c; live SKIP(carry 0/149/0 33.46s); post-merge expected ~2287/2287.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T00:38:30Z -->
+<!-- tester-sync: TSR 1747차 2026-07-17T00:38:30Z (frontend) — **★ QA-B544 Fixed** FF merge+PUSH `6fceb8d`→`d6be05c` · related **215/215 PASS**(2.65s,+2) · core QA-B95 **215/215** · post-merge **2659/2659 PASS**(877.25s,477,+2) · build **1230**(9.89s) · audit **0** · live **0/149/0**(37.80s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@d6be05c`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@c6ddf6c` · FE `@d6be05c`)** · backend@8080 **UP/200** · operation **BLOCK**(714 BE) -->
+# revalidation_1747th: QA-B544 Fixed FF merge+PUSH 6fceb8d→d6be05c (curly-brace-wrap · pending 1→0 · +2→2659); related 215/215(2.65s); core 215/215; post-merge 2659/2659(877.25s); build 1230(9.89s); live 0/149/0(37.80s); Open 0; transfer PASS(FE); operation BLOCK(714 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-17T00:15:10Z -->
+<!-- tester-sync: TSR 1746차 2026-07-17T00:15:10Z (backend) — **★ QA-B543 Fixed** FF merge `b348258`→`c6ddf6c` · related **74/74 PASS**(~2.0s,+1 vs 73) · post-merge **2286/2286 PASS**(88.3s,405,+1) · npm **N/A** · live **0/149/0**(33.77s · bootstrap-disabled) · BE develop/test **SYNCED `@c6ddf6c`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@c6ddf6c` · FE ALL SYNCED+PUSHED `@6fceb8d`)** · backend@8080 **UP/200** · operation **BLOCK**(714 BE) -->
+# revalidation_1746th: QA-B543 Fixed FF merge b348258→c6ddf6c (bracket-wrap · pending 1→0 · +1→2286); related 74/74(~2.0s); post-merge 2286/2286(88.3s); live 0/149/0(33.77s); Open 0; transfer PASS(BE local); operation BLOCK(714 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T23:54:00Z -->
+<!-- tester-sync: TSR 1745차 2026-07-16T23:54:00Z (frontend) — **★ QA-B542 Fixed** FF merge+PUSH `7ee1cf1`→`6fceb8d` · related **213/213 PASS**(2.72s,+2) · core QA-B95 **213/213** · post-merge **2657/2657 PASS**(877.13s,477,+2) · build **1230**(9.29s) · audit **0** · live **0/149/0**(34.81s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@6fceb8d`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@b348258` · FE `@6fceb8d`)** · backend@8080 **UP/200** · operation **BLOCK**(713 BE) -->
+# revalidation_1745th: QA-B542 Fixed FF merge+PUSH 7ee1cf1→6fceb8d (bracket-wrap · pending 1→0 · +2→2657); related 213/213(2.72s); core 213/213; post-merge 2657/2657(877.13s); build 1230(9.29s); live 0/149/0(34.81s); Open 0; transfer PASS(FE); operation BLOCK(713 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T23:31:00Z -->
+<!-- tester-sync: TSR 1744차 2026-07-16T23:31:00Z (backend) — **★ QA-B540 Fixed** FF merge `d247cdf`→`b348258` · related **73/73 PASS**(~2.1s,+1 vs 72) · post-merge **2285/2285 PASS**(88s,405,+1) · npm **N/A** · live **0/149/0**(33.91s · bootstrap-disabled) · BE develop/test **SYNCED `@b348258`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@b348258` · FE ALL SYNCED+PUSHED `@7ee1cf1`)** · backend@8080 **UP/200** · operation **BLOCK**(713 BE) -->
+# revalidation_1744th: QA-B540 Fixed FF merge d247cdf→b348258 (blank-token · pending 1→0 · +1→2285); related 73/73(~2.1s); post-merge 2285/2285(88s); live 0/149/0(33.91s); Open 0; transfer PASS(BE local); operation BLOCK(713 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T23:22:04Z -->
+<!-- tester-sync: TSR 1743차 2026-07-16T23:22:04Z (frontend) — **★ QA-B541 Fixed** FF merge+PUSH `6900a8f`→`7ee1cf1` · related **232/232**(5.38s,+2) · core QA-B95 **211/211**(2.62s) · post-merge **2655/2655**(881.86s,477,+2) · build **1230**(9.33s) · audit **0** · live **0/149/0**(34.17s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@7ee1cf1`** · Open **0**(FE) · residual Open **QA-B540**(BE DIRTY 2M) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE DIRTY · FE `@7ee1cf1` SYNCED)** · backend@8080 **UP/200** · operation **BLOCK**(712 BE) -->
+# revalidation_1743th: QA-B541 Fixed FF merge+PUSH 6900a8f→7ee1cf1 (blank-token · pending 1→0 · +2→2655); related 232/232(5.38s); core 211/211; post-merge 2655/2655(881.86s); build 1230(9.33s); live 0/149/0(34.17s); Open 0(FE); residual Open QA-B540(BE); transfer PASS(FE); operation BLOCK(712 BE); cross-stream BLOCK(BE DIRTY).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T23:00:07Z -->
+<!-- tester-sync: TSR 1742차 2026-07-16T23:00:07Z (backend) — ROADMAP merged baseline `@d247cdf` · **CARRY 2284/2284**(TSR1740 · SHA unchanged) · develop `@d247cdf` WT **DIRTY 2M** · test `@d247cdf` CLEAN · merge **SKIP**(dirty §1-1) · live **SKIP**(merge 0 · CARRY 0/149/0) · **QA-B540 Open(BLOCK)** · Open **1** · transfer **BLOCK** · cross-stream **BLOCK(BE DIRTY · FE `@6900a8f` SYNCED)** · backend@8080 **UP/200** · operation **BLOCK**(712 BE) -->
+# revalidation_1742th: backend@d247cdf CARRY 2284/2284(TSR1740); develop DIRTY 2M blank-blocker WIP; merge SKIP(dirty); QA-B540 Open(BLOCK); Open 1; transfer BLOCK; operation BLOCK(712 BE); FE SYNCED@6900a8f; live SKIP(carry).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T22:48:56Z -->
+<!-- tester-sync: TSR 1741차 2026-07-16T22:48:56Z (frontend) — **★ QA-B539 Fixed** FF merge+PUSH `b753586`→`6900a8f` · related **230/230 PASS**(5.32s,+2) · core QA-B95 **209/209**(2.56s) · post-merge **2653/2653 PASS**(879.50s,477,+2) · build **1230**(10.91s) · audit **0** · live **0/149/0**(34.35s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@6900a8f`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **LOCAL SYNCED**(BE `@d247cdf` · FE `@6900a8f`) · backend@8080 **UP/200** · operation **BLOCK**(712 BE) -->
+# revalidation_1741th: QA-B539 Fixed FF merge+PUSH b753586→6900a8f (&semi; · pending 1→0 · +2→2653); related 230/230(5.32s); core 209/209; post-merge 2653/2653(879.50s); build 1230(10.91s); live 0/149/0(34.35s); Open 0; transfer PASS(FE); operation BLOCK(712 BE); cross-stream LOCAL SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T22:25:43Z -->
+<!-- tester-sync: TSR 1740차 2026-07-16T22:25:43Z (backend) — **★ QA-B536+B538 Fixed** FF merge `043f002`→`d247cdf` · related **72/72 PASS**(~3.0s, LiveE2eOperationReadinessSupportTest · +1 vs 71) · post-merge **2284/2284 PASS**(89.5s,405,+2) · npm **N/A** · live **0/149/0**(33.81s · bootstrap-disabled) · BE develop/test **SYNCED `@d247cdf`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@d247cdf` · FE ALL SYNCED+PUSHED `@b753586`)** · backend@8080 **UP/200** · operation **BLOCK**(712 BE) -->
+# revalidation_1740th: QA-B536+B538 Fixed FF merge 043f002→d247cdf (&comma;+&semi; · pending 2→0 · +2→2284); related 72/72(~3.0s); post-merge 2284/2284(89.5s); live 0/149/0(33.81s); Open 0; transfer PASS(BE local); operation BLOCK(712 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T22:09:32Z -->
+<!-- tester-sync: TSR 1739차 2026-07-16T22:09:32Z (frontend) — **★ QA-B537 Fixed** FF merge+PUSH `b28eb45`→`b753586` · related **228/228 PASS**(5.41s,+2) · core QA-B95 **207/207**(2.60s) · post-merge **2651/2651 PASS**(877.81s,477,+2) · build **1230**(9.35s) · audit **0** · live **0/149/0**(34.53s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@b753586`** · Open **1**(QA-B536 BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 `@45e1f00` · FE `@b753586`)** · backend@8080 **UP/200** · operation **BLOCK**(711 BE) -->
+# revalidation_1739th: QA-B537 Fixed FF merge+PUSH b28eb45→b753586 (&comma; · pending 1→0 · +2→2651); related 228/228(5.41s); core 207/207; post-merge 2651/2651(877.81s); build 1230(9.35s); live 0/149/0(34.53s); Open 1(B536 BE); transfer PASS(FE); operation BLOCK(711 BE); cross-stream BLOCK(BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T21:46:57Z -->
+<!-- tester-sync: TSR 1738차 2026-07-16T21:46:57Z (backend) — ROADMAP merged baseline `@043f002` (`src/backend-test`) · baseline **CARRY 2282/2282 PASS**(TSR1736 · SHA unchanged) · develop pre-merge related **71/71 PASS**(1.898s, LiveE2eOperationReadinessSupportTest · +1 vs 70) · npm **N/A** · develop `@45e1f00` WT **CLEAN** · test `@043f002` WT **CLEAN** · pending **1**(`test..develop`: `@45e1f00`) + origin/test **710 BE** · merge **SKIP**(read-only) · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1736) · **QA-20260716-B536 Open(BLOCK)** · Open **1** · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 · FE ALL SYNCED+PUSHED `@b28eb45`)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1738th: backend baseline@043f002 CARRY 2282/2282(TSR1736); develop pre-merge related 71/71(+1,1.898s,CLEAN @45e1f00); pending 1; merge SKIP(read-only); QA-20260716-B536 Open(BLOCK); Open 1; transfer BLOCK; cross-stream BLOCK(BE pending 1 + FE SYNCED@b28eb45); operation BLOCK(710 BE); post-merge expected ~2283/2283; live SKIP(carry).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T21:34:46Z -->
+<!-- tester-sync: TSR 1737차 2026-07-16T21:34:46Z (frontend) — **★ QA-B535 Fixed** FF merge+PUSH `ab9e853`→`b28eb45` · related **226/226 PASS**(5.43s,Δ0) · core QA-B95 **205/205**(2.65s) · post-merge **2649/2649 PASS**(873.45s,477,Δ0) · build **1230**(10.60s) · audit **0** · live **0/149/0**(34.57s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@b28eb45`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **LOCAL SYNCED**(BE `@043f002` · FE `@b28eb45`) · backend@8080 **UP/200** · operation **BLOCK**(710 BE) -->
+# revalidation_1737th: QA-B535 Fixed FF merge+PUSH ab9e853→b28eb45 (VeryThickSpace+UXD-185 · pending 2→0 · Δ0→2649); related 226/226(5.43s); core 205/205; post-merge 2649/2649(873.45s); build 1230(10.60s); live 0/149/0(34.57s); Open 0; transfer PASS(FE); operation BLOCK(710 BE); cross-stream LOCAL SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T21:14:01Z -->
+<!-- tester-sync: TSR 1736차 2026-07-16T21:14:01Z (backend) — **★ QA-B534 Fixed** FF merge `54fd8dd`→`043f002` · related **70/70 PASS**(~5.1s,Δ0) · post-merge **2282/2282 PASS**(89s, 405 · Δ0) · npm **N/A** · live **0/149/0**(35.11s · bootstrap-disabled) · BE develop/test **SYNCED `@043f002`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **BLOCK(FE pending 1 `@d3b0f1c`)** · backend@8080 **UP/200** · operation **BLOCK**(710 BE) -->
+# revalidation_1736th: QA-B534 Fixed FF merge 54fd8dd→043f002 (VeryThickSpace · pending→0 · Δ0→2282); related 70/70(~5.1s); post-merge 2282/2282(89s); live 0/149/0(35.11s); Open 0; transfer PASS(BE local); operation BLOCK(710 BE); cross-stream BLOCK(FE pending 1).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T20:43:23Z -->
+<!-- tester-sync: TSR 1735차 2026-07-16T20:43:23Z (frontend) — **★ QA-B533 Fixed** local SYNCED+PUSH `3f7db38`→`ab9e853` · related **63/63 PASS**(5.16s) · post-merge **2649/2649 PASS**(879.36s, 477 · +2 vs TSR1733) · build **1230**(9.25s) · audit **0** · live **0/149/0**(35.09s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@ab9e853`** · **★ QA-B532 Fixed**(BE local SYNCED `@54fd8dd`) · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **LOCAL SYNCED**(BE `@54fd8dd` · FE `@ab9e853`) · backend@8080 **UP/200** · operation **BLOCK**(709 BE) -->
+# revalidation_1735th: QA-B533 Fixed PUSH 3f7db38→ab9e853 (US-J03 Kakao catalog · pending→0 · +2→2649); related 63/63(5.16s); post-merge 2649/2649(879.36s); build 1230(9.25s); live 0/149/0(35.09s); QA-B532 Fixed(BE local @54fd8dd); Open 0; transfer PASS(FE); operation BLOCK(709 BE); cross-stream LOCAL SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T20:10:26Z -->
+<!-- tester-sync: TSR 1734차 2026-07-16T20:10:26Z (backend) — ROADMAP merged baseline `@f491ec8` (`src/backend-test`) · `mvn test` **2282/2282 PASS**(~71s, 405 suites, BUILD SUCCESS) · develop pre-merge related **70/70 PASS**(2.9s, LiveE2eOperationReadinessSupportTest · Δ0) + **175/175 PASS**(14.1s, NotificationSmsTemplateCatalogServiceTest+MustApiEndpointRoutingTest) · npm **N/A** · develop `@54fd8dd` WT **CLEAN** · test/origin/test `@f491ec8` WT **CLEAN** · pending **1**(`@54fd8dd`) + origin/test **709 BE** · merge **SKIP**(read-only directive) · **QA-20260716-B532 Open(BLOCK)** · Open **1** · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 · FE ALL SYNCED+PUSHED `@3f7db38`)** · backend@8080 **UP/200** · operation **BLOCK** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1732) -->
+# revalidation_1734th: backend baseline@f491ec8 mvn 2282/2282 PASS(~71s,405,BUILD SUCCESS); develop pre-merge related 70/70(2.9s,Δ0)+175/175(14.1s); develop@54fd8dd vs test@f491ec8 pending 1; merge SKIP(read-only); QA-20260716-B532 Open(BLOCK); Open 1; transfer BLOCK; cross-stream BLOCK(BE pending 1 + FE SYNCED@3f7db38); operation BLOCK(709 BE); post-merge expected ~2282/2282; live SKIP(carry).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T19:41:16Z -->
+<!-- tester-sync: TSR 1733차 2026-07-16T19:41:16Z (frontend) — **★ QA-B527 Fixed** FF merge+PUSH `73169a1`→`3f7db38` · related **203/203 PASS**(2.52s,Δ0) · post-merge **2647/2647 PASS**(868.54s, 477 · Δ0 vs TSR1731) · build **1230**(9.13s) · audit **0** · live **0/149/0**(36.36s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@3f7db38`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@f491ec8` · FE `@3f7db38`)** · backend@8080 **UP/200** · operation **BLOCK**(708 BE) -->
+# revalidation_1733rd: QA-B527 Fixed FF merge+PUSH 73169a1→3f7db38 (VeryVery*Space · pending 1→0 · Δ0→2647); related 203/203(2.52s); post-merge 2647/2647(868.54s); build 1230(9.13s); live 0/149/0(36.36s); Open 0; transfer PASS(FE); operation BLOCK(708 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T19:18:43Z -->
+<!-- tester-sync: TSR 1732차 2026-07-16T19:18:43Z (backend) — **★ QA-B525 Fixed** FF merge `ff80f0b`→`f491ec8` · related **70/70 PASS**(~5.2s,Δ0) · post-merge **2282/2282 PASS**(91s, 405 · +4 vs 2278) · npm **N/A** · live **0/149/0**(33.69s · bootstrap-disabled) · BE develop/test **SYNCED `@f491ec8`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@f491ec8` · FE ALL SYNCED+PUSHED `@73169a1`)** · backend@8080 **UP/200** · operation **BLOCK**(708 BE) -->
+# revalidation_1732nd: QA-B525 Fixed FF merge ff80f0b→f491ec8 (5 commits · pending→0 · +4→2282); related 70/70(~5.2s); post-merge 2282/2282(91s); live 0/149/0(33.69s); Open 0; transfer PASS(BE local); operation BLOCK(708 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T19:07:52Z -->
+<!-- tester-sync: TSR 1731차 2026-07-16T19:07:52Z (frontend) — **★ QA-B526 Fixed** FF merge+PUSH `8a05640`→`73169a1` · related **203/203 PASS**(2.54s,+8) · post-merge **2647/2647 PASS**(867.58s, 477 · +8 vs 2639) · build **1230**(10.94s) · audit **0** · live **0/149/0**(32.92s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@73169a1`** · Open **1**(B525 BE) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 4 `@6014cca` vs `@ff80f0b`)** · backend@8080 **UP/200** · operation **BLOCK**(707 BE) -->
+# revalidation_1731th: QA-B526 Fixed FF merge+PUSH 8a05640→73169a1 (5 commits · pending→0 · +8→2647); related 203/203(2.54s); post-merge 2647/2647(867.58s); build 1230(10.94s); live 0/149/0(32.92s); Open 1(B525); transfer PASS(FE); operation BLOCK(707 BE); cross-stream BLOCK(BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T18:45:02Z -->
+<!-- tester-sync: TSR 1730차 2026-07-16T18:45:02Z (backend) — ROADMAP merged baseline `@ff80f0b` (`src/backend-test`) · `mvn test` **2278/2278 PASS**(68s, 405 suites, BUILD SUCCESS) · develop pre-merge related **70/70 PASS**(3.4s, LiveE2eOperationReadinessSupportTest · +2 vs 68) · npm **N/A**(`src/backend-test` no `package.json`) · develop `@6014cca` WT **CLEAN** · test/origin/test `@ff80f0b` WT **CLEAN** · pending **4**(`@08cdb87`+`@e4123c3`+`@4622896`+`@6014cca`) · merge **SKIP**(read-only directive) · **QA-20260716-B525 Open(BLOCK)** update · Open **2**(B525+B526) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 4 · FE pending 4)** · backend@8080 **UP/200** · operation **BLOCK**(707 BE) -->
+# revalidation_1730th: backend baseline@ff80f0b mvn 2278/2278 PASS(68s,405,BUILD SUCCESS); develop pre-merge related 70/70(+2 vs 68,3.4s,CLEAN @6014cca); npm N/A; develop@6014cca vs test@ff80f0b pending 4; merge SKIP(read-only); QA-20260716-B525 Open(BLOCK,pending 4); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK(BE pending 4 + FE pending 4); backend health 200; operation BLOCK(707 BE); post-merge expected ~2282/2282.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T18:21:30Z -->
+<!-- tester-sync: TSR 1729차 2026-07-16T18:21:30Z (frontend) — ROADMAP merged baseline `@8a05640` (`src/frontend-test`) · baseline related **195/195 PASS**(2.50s,Δ0) · develop pre-merge related **201/201 PASS**(3.43s,+6 · `@c260baa` WT **CLEAN**) · develop full **2645/2645 PASS**(862.20s,477,+2 vs TSR1726) · test full **CARRY 2639/2639**(TSR1721 · SHA unchanged) · build **1230**(9.99s) · audit **0** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1721) · develop `@c260baa` WT **CLEAN** · test/origin/test `@8a05640` WT **CLEAN** · pending **4**(`@ed48077`+`@031abef`+`@73aa6dd`+`@c260baa`) · merge **SKIP**(read-only) · **QA-20260716-B526 Open(BLOCK)** update · Open **2**(B525+B526) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 3 · FE pending 4)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1729th: frontend baseline@8a05640 related 195/195(2.50s,Δ0); develop pre-merge 201/201(+6,3.43s,CLEAN @c260baa); develop full 2645/2645(862.20s,+2); npm CARRY 2639/2639(TSR1721); build 1230(9.99s); audit 0; live SKIP(carry); develop@c260baa vs test@8a05640 pending 4; merge SKIP(read-only); QA-B526 Open(BLOCK,pending 4); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK; post-merge expected ~2645/2645.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:59:24Z -->
+<!-- tester-sync: TSR 1728차 2026-07-16T17:59:24Z (backend) — ROADMAP merged baseline `@ff80f0b` (`src/backend-test`) · `mvn test` **2278/2278 PASS**(64s, 405 suites, BUILD SUCCESS) · npm **N/A**(`src/backend-test` no `package.json`) · develop `@4622896` WT **CLEAN** · test/origin/test `@ff80f0b` WT **CLEAN** · pending **3**(`@08cdb87`+`@e4123c3`+`@4622896`) · merge **SKIP**(read-only directive) · **QA-20260716-B525 Open(BLOCK)** update · Open **2**(B525 BE + B526 FE) · transfer **BLOCK** · cross-stream **BLOCK(BE pending 3 · FE pending 3)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1728th: backend baseline@ff80f0b mvn 2278/2278 PASS(64s,405,BUILD SUCCESS); npm N/A; develop@4622896 WT CLEAN vs test@ff80f0b pending 3 @08cdb87+@e4123c3+@4622896; merge SKIP(read-only); QA-20260716-B525 Open(BLOCK) update; Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK(BE pending 3 + FE pending 3); backend health 200; operation BLOCK(703 BE); post-merge expected ~2281/2281.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:48:10Z -->
+<!-- tester-sync: TSR 1727차 2026-07-16T17:48:10Z (frontend) — ROADMAP merged baseline `@8a05640` · npm **CARRY 2643/2643**(TSR1726) · develop pre-merge related **199/199 PASS**(2.90s,+4 vs 195) · build/audit **CARRY** · live **SKIP**(merge 0 · CARRY 0/149/0) · develop `@73aa6dd` WT **CLEAN** · test/origin/test `@8a05640` · pending **3** **FF-ready** · merge **SKIP**(read-only) · **QA-20260716-B526 Open(BLOCK)** · Open **2**(B525+B526) · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 · FE pending 3)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1727th: frontend CARRY npm 2643/2643(TSR1726); develop related 199/199(+4,2.90s) FF-ready; pending 3 @ed48077+@031abef+@73aa6dd; merge SKIP(read-only); QA-B526 Open(BLOCK); Open 2; transfer BLOCK; next=FF merge+push when unlocked.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:40:30Z -->
+<!-- tester-sync: TSR 1726차 2026-07-16T17:40:30Z (frontend) — ROADMAP merged baseline `@8a05640` (`src/frontend-test`) · `npm test` **2643/2643 PASS**(869.55s, 477 files) · `npm run build` **1230 PASS**(9.17s) · `npm audit --omit=dev --audit-level=high` **0** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1721) · develop `@73aa6dd` WT **CLEAN** · test/origin/test `@8a05640` WT **CLEAN** · pending **3**(`@ed48077`+`@031abef`+`@73aa6dd`) · merge **SKIP**(read-only) · **QA-20260716-B526 Open(BLOCK)** · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 · FE pending 3)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1726th: frontend baseline@8a05640 npm 2643/2643 PASS(869.55s,477); build 1230(9.17s); audit 0; develop@73aa6dd WT CLEAN vs test@8a05640 pending 3; merge SKIP(read-only); QA-20260716-B526 Open(BLOCK); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK(BE pending 2 + FE pending 3); live SKIP(carry); post-merge expected ~2643/2643.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:48:07Z -->
+<!-- tester-sync: TSR 1726차 2026-07-16T17:48:07Z (frontend) — ROADMAP merged baseline `@8a05640` (`src/frontend-test`) · develop pre-merge **199/199 PASS**(2.56s, 2 · notificationChannelStatus + liveE2eHarness · +4 vs 195 · WT **CLEAN** `@73aa6dd`) · baseline related **195/195 PASS**(2.47s,Δ0) · npm **CARRY 2639/2639**(TSR1721 · test SHA unchanged) · build **1230 modules PASS**(10.09s, frontend-test) · audit **0** high · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1721 · bootstrap-disabled) · develop `@73aa6dd` WT **CLEAN** · test/origin/test `@8a05640` WT **CLEAN** · pending **3** + origin/develop `@73aa6dd` · merge **SKIP**(read-only) · **QA-20260716-B526 Open(BLOCK)** updated(DIRTY→CLEAN·pending 3) · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 `@e4123c3` · FE pending 3 `@73aa6dd`)** · backend@8080 **UP/200** · operation **BLOCK**(705 BE) -->
+# revalidation_1726th: frontend baseline@8a05640 related 195/195(2.47s,Δ0); develop pre-merge 199/199(+4,2.56s,CLEAN @73aa6dd); npm CARRY 2639/2639(TSR1721); build 1230(10.09s); audit 0; live SKIP(carry); develop@73aa6dd CLEAN vs test@8a05640 pending 3; merge SKIP(read-only); QA-B526 Open(BLOCK,DIRTY cleared); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK; post-merge expected ~2643/2643 after TSR FF merge.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:19:30Z -->
+<!-- tester-sync: TSR 1725차 2026-07-16T17:19:30Z (backend) — ROADMAP merged baseline `@ff80f0b` (`src/backend-test`) · `mvn test` **2278/2278 PASS**(74s, 405 suites, BUILD SUCCESS) · develop pre-merge related **68/68 PASS**(1.9s, LiveE2eOperationReadinessSupportTest · +1 vs 67) · npm **N/A** · develop `@e4123c3` WT **CLEAN** · test/origin/test `@ff80f0b` WT **CLEAN** · pending **2** + origin/test **703 BE** · merge **SKIP**(read-only) · **QA-20260716-B525 Open(BLOCK)** · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 · FE DIRTY 6M + pending 1 `@ed48077`)** · backend@8080 **UP/200** · operation **BLOCK** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1720) -->
+# revalidation_1725th: backend baseline@ff80f0b mvn 2278/2278 PASS(74s,405,BUILD SUCCESS); develop pre-merge related 68/68(+1 vs 67,1.9s); npm N/A; develop@e4123c3 vs test@ff80f0b pending 2 + origin/test 703 BE; merge SKIP(read-only); QA-20260716-B525 Open(BLOCK); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK(BE pending 2 + FE DIRTY 6M); live SKIP(carry); post-merge expected ~2280/2280.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:09:14Z -->
+<!-- tester-sync: TSR 1724차 2026-07-16T17:09:14Z (frontend) — ROADMAP merged baseline `@8a05640` (`src/frontend-test`) · develop pre-merge **197/197 PASS**(3.25s, 2 · notificationChannelStatus + liveE2eHarness · +2 vs 195 · **WT DIRTY 6M WIP included**) · npm **CARRY 2639/2639**(TSR1721 · test SHA unchanged) · build **1230 modules PASS**(9.29s, frontend-test) · audit **0** high · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1721 · bootstrap-disabled) · develop `@ed48077` WT **DIRTY 6M** · test/origin/test `@8a05640` WT **CLEAN** · pending **1** + origin/develop `@ed48077` · merge **SKIP**(read-only) · **QA-20260716-B526 Open(BLOCK)** · Open **2**(B525 BE + B526 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 `@08cdb87` · FE DIRTY 6M + pending 1 `@ed48077`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1724th: frontend baseline@8a05640 related 195/195(2.51s,Δ0); develop pre-merge 197/197(+2,3.25s,DIRTY 6M); npm CARRY 2639/2639(TSR1721); build 1230(9.29s); audit 0; live SKIP(carry); develop@ed48077 DIRTY 6M vs test@8a05640 pending 1; merge SKIP(read-only); QA-20260716-B526 Open(BLOCK); Open 2(B525+B526); transfer BLOCK; cross-stream BLOCK; post-merge expected ~2641/2641 after COD commit+merge.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T17:01:14Z -->
+<!-- tester-sync: TSR 1723차 2026-07-16T17:01:14Z (backend) — ROADMAP merged baseline `@ff80f0b` (`src/backend-test`) · `mvn test` **2278/2278 PASS**(63s, 405 suites, BUILD SUCCESS) · develop pre-merge related **67/67 PASS**(3.5s, LiveE2eOperationReadinessSupportTest · +1 vs 66) · npm **N/A** · develop `@08cdb87` WT **CLEAN** · test/origin/test `@ff80f0b` WT **CLEAN** · pending **1** + origin/test **703 BE** · merge **SKIP**(read-only) · **QA-20260716-B525 Open(BLOCK)** · Open **1**(backend) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 · FE pending 1 `@ed48077`)** · backend@8080 **UP/200** · operation **BLOCK** · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1720) -->
+# revalidation_1723rd: backend baseline@ff80f0b mvn 2278/2278 PASS(63s,405,BUILD SUCCESS); develop pre-merge related 67/67(+1 vs 66,3.5s); npm N/A; develop@08cdb87 vs test@ff80f0b pending 1 + origin/test 703 BE; merge SKIP(read-only); QA-20260716-B525 Open(BLOCK); Open 1(backend); transfer BLOCK; cross-stream BLOCK(BE+FE pending 1); live SKIP(carry); post-merge expected ~2279/2279.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T16:35:40Z -->
+<!-- tester-sync: TSR 1722차 2026-07-16T16:35:40Z (frontend) — revalidation `@8a05640` ALL SYNCED+PUSHED · related **195/195 PASS**(2.50s,Δ0 · `src/frontend-test`) · post-merge **CARRY 2639/2639**(TSR1721 · SHA unchanged) · build **1230 modules PASS**(9.56s) · audit **0** high · live **CARRY 0/149/0**(TSR1721 · merge 0 · bootstrap-disabled) · merge **SKIP**(pending 0) · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@ff80f0b` · FE `@8a05640`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1722th: @8a05640 ALL SYNCED reconfirm; related 195/195(2.50s,Δ0); npm CARRY 2639/2639(TSR1721); build 1230(9.56s); live CARRY 0/149/0; merge SKIP(pending 0); Open 0; transfer PASS(FE); operation BLOCK(703 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T16:33:40Z -->
+<!-- tester-sync: TSR 1721차 2026-07-16T16:33:40Z (frontend) — **★ QA-B524 Fixed** FF merge+PUSH `61f8f19`→`8a05640` · related **195/195**(2.45s,Δ0) · post-merge **2639/2639 PASS**(866.73s, 477 · Δ0) · build **1230**(10.99s) · audit **0** · live **0/149/0**(33.48s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@8a05640`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@ff80f0b` · FE `@8a05640`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1721th: QA-B524 Fixed FF merge+PUSH 61f8f19→8a05640 (NoBreakSpace · pending 1→0 · Δ0→2639); related 195/195(2.45s); post-merge 2639/2639(866.73s); build 1230(10.99s); live 0/149/0(33.48s); Open 0; transfer PASS(FE); operation BLOCK(703 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T16:13:09Z -->
+<!-- tester-sync: TSR 1720차 2026-07-16T16:13:09Z (backend) — **★ QA-B523 Fixed** FF merge `ba5b0cb`→`ff80f0b` · related **66/66**(~1.9s,+1) · post-merge **2278/2278 PASS**(86s, 405 · +1 vs 2277) · npm **N/A** · live **0/149/0**(33.21s · bootstrap-disabled) · BE develop/test **SYNCED `@ff80f0b`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@ff80f0b` · FE ALL SYNCED+PUSHED `@61f8f19`)** · backend@8080 **UP/200** · operation **BLOCK**(703 BE) -->
+# revalidation_1720th: QA-B523 Fixed FF merge ba5b0cb→ff80f0b (legacy NoBreakSpace · pending 1→0 · +1→2278); related 66/66(~1.9s); post-merge 2278/2278(86s); live 0/149/0(33.21s); Open 0; transfer PASS(BE local); operation BLOCK(703 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T15:54:28Z -->
+<!-- tester-sync: TSR 1719차 2026-07-16T15:54:28Z (frontend) — **★ QA-B522 Fixed** FF merge+PUSH `975aecb`→`61f8f19` · related **195/195**(2.52s,+2) · post-merge **2639/2639 PASS**(869.08s, 477 · +2 vs 2637) · build **1230**(9.39s) · audit **0** · live **0/149/0**(33.61s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@61f8f19`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@ba5b0cb` · FE `@61f8f19`)** · backend@8080 **UP/200** · operation **BLOCK**(702 BE) -->
+# revalidation_1719th: QA-B522 Fixed FF merge+PUSH 975aecb→61f8f19 (ZeroWidthNonJoiner/Joiner · pending 1→0 · +2→2639); related 195/195(2.52s); post-merge 2639/2639(869.08s); build 1230(9.39s); live 0/149/0(33.61s); Open 0; transfer PASS(FE); operation BLOCK(702 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T15:33:23Z -->
+<!-- tester-sync: TSR 1718차 2026-07-16T15:33:23Z (backend) — **★ QA-B521 Fixed** FF merge `53efa0b`→`ba5b0cb` · related **65/65**(~2.0s) · post-merge **2277/2277 PASS**(84s, 405 · Δ0) · npm **N/A** · live **0/149/0**(33.34s · bootstrap-disabled) · BE develop/test **SYNCED `@ba5b0cb`** WT **CLEAN** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · cross-stream **SYNCED(BE `@ba5b0cb` · FE ALL SYNCED+PUSHED `@975aecb`)** · backend@8080 **UP/200** · operation **BLOCK**(702 BE) -->
+# revalidation_1718th: QA-B521 Fixed FF merge 53efa0b→ba5b0cb (ZeroWidth long aliases · pending 1→0); related 65/65; post-merge 2277/2277(Δ0); live 0/149/0; Open 0; transfer PASS(BE local); operation BLOCK(702 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T15:21:25Z -->
+<!-- tester-sync: TSR 1717차 2026-07-16T15:21:25Z (frontend) — **★ QA-B520 Fixed+reconfirm** FF merge+PUSH `29fc34f`→`975aecb` · related **193/193**(2.52s,+1) · post-merge **2637/2637**(868.94s,477,+1) · build **1230**(9.64s) · audit **0** · live **0/149/0**(34.81s · bootstrap-disabled) · FE develop/test/origin **ALL SYNCED+PUSHED `@975aecb`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@53efa0b` · FE `@975aecb`)** · backend@8080 **UP/200** · operation **BLOCK**(701 BE) -->
+# revalidation_1717th: QA-B520 Fixed FF merge+PUSH 29fc34f→975aecb (bidi long-alias · pending 1→0 · +1→2637); related 193/193(2.52s); post-merge 2637/2637(868.94s); build 1230(9.64s); live 0/149/0(34.81s reconfirm); Open 0; transfer PASS(FE); operation BLOCK(701 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T14:58:16Z -->
+<!-- tester-sync: TSR 1716차 2026-07-16T14:58:16Z (backend) — **★ QA-B512 Fixed** FF merge `fde0606`→`53efa0b` · related **65/65**(~2.5s) · post-merge **2277/2277 PASS**(100s, 405 · +3 vs 2274) · npm **N/A** · live **SKIP**(vitest busy)·**CARRY 0/149/0** · BE develop/test **SYNCED `@53efa0b`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · operation **BLOCK**(701 BE) · cross-stream **SYNCED(BE `@53efa0b` · FE `@29fc34f`)** · backend@8080 **UP/200** -->
+# revalidation_1716th: QA-B512 Fixed FF merge fde0606→53efa0b; related 65/65; post-merge 2277/2277(+3); Open 0; transfer PASS(BE local); operation BLOCK(701 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T14:47:11Z -->
+<!-- tester-sync: TSR 1715차 2026-07-16T14:47:11Z (frontend) — **★ QA-B519 Fixed** origin/test PUSH `039cd88`→`29fc34f` · FE develop/test/origin **ALL SYNCED+PUSHED `@29fc34f`** · related **CARRY 192/192**(TSR1714) · post-merge **CARRY 2636/2636**(TSR1714 · SHA unchanged) · build **CARRY 1230** · audit **0** · live **CARRY 0/149/0** · Open **1**(QA-B512 BE pending 3 `@d911983`) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 3 · FE SYNCED)** · backend@8080 **UP/200** · operation **BLOCK**(700 BE) -->
+# revalidation_1715th: QA-B519 Fixed origin/test PUSH @29fc34f ALL SYNCED; CARRY 192/192+2636/2636 TSR1714; Open 1(B512 BE); transfer PASS(FE); operation BLOCK(700 BE); cross-stream BLOCK(BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T14:43:48Z -->
+<!-- tester-sync: TSR 1714차 2026-07-16T14:43:48Z (frontend) — ROADMAP merged baseline carry `@039cd88` → local FF `@29fc34f` · develop pre-merge **192/192 PASS**(2.51s, 2 · +2 vs 190) · post-merge **2636/2636 PASS**(868.09s, 477 · +2 vs 2634 · `src/frontend-test`) · build **1230 modules PASS**(9.58s) · audit **0** high · live **0/149/0**(33.59s · bootstrap-disabled) · develop `@29fc34f` WT **CLEAN** · test local `@29fc34f` · origin/test `@039cd88` · merge **FF local EXECUTED** · origin push **SKIP**(read-only) · **QA-20260716-B519 Open(BLOCK)** · Open **2**(B512+B519) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 3 · FE origin push pending 1)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1714th: FF merge local 039cd88→29fc34f; related 192/192(2.51s,+2); post-merge 2636/2636(868.09s,+2); build 1230(9.58s); live 0/149/0(33.59s); QA-B519 Open(origin push); Open 2(B512+B519); transfer BLOCK; operation BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T14:05:33Z -->
+<!-- tester-sync: TSR 1713차 2026-07-16T14:05:33Z (backend) — ROADMAP merged baseline `@fde0606` (`src/backend-test`) · `mvn test` **2274/2274 PASS**(~71s, 405 suites, BUILD SUCCESS) · develop pre-merge related **65/65 PASS**(~3.2s, LiveE2eOperationReadinessSupportTest · +1 vs 64) · npm **N/A** · develop `@d911983` WT **CLEAN** · test/origin/test `@fde0606` WT **CLEAN** · pending **3** + origin/test **697 BE** · merge **SKIP**(read-only) · **QA-20260716-B512 Open(BLOCK)** · Open **1**(backend) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 3 · FE ALL SYNCED `@039cd88`)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1713rd: backend baseline@fde0606 mvn 2274/2274 PASS(~71s,405,BUILD SUCCESS); develop pre-merge related 65/65(+1 vs 64); npm N/A; develop@d911983 vs test@fde0606 pending 3 + origin/test 697 BE; merge SKIP(read-only); QA-20260716-B512 Open(BLOCK); Open 1(backend); transfer BLOCK; cross-stream BLOCK(BE pending 3 · FE SYNCED); post-merge expected ~2277/2277.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T13:52:52Z -->
+<!-- tester-sync: TSR 1712차 2026-07-16T13:52:52Z (frontend) — **★ QA-B514 Fixed** `@039cd88` ALL SYNCED+PUSHED · related **190/190 PASS**(2.50s, `src/frontend-test`) · post-merge **2634/2634 PASS**(868.11s, 477 · +4 vs 2630) · build **1230 modules PASS**(10.74s, frontend-test) · audit **0** high · live **0/149/0**(34.53s · bootstrap-disabled) · Open **1**(QA-B512 BE pending 2 `@0a8a635`) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 2 · FE SYNCED)** · backend@8080 **UP/200** · operation **BLOCK**(699 BE) -->
+# revalidation_1712th: QA-B514 Fixed @039cd88 ALL SYNCED (UXD-183 + ThickSpace/MathML + bidi/Positive*Space · pending 3→0 · +4→2634); related 190/190(2.50s); post-merge 2634/2634(868.11s); build 1230(10.74s); live 0/149/0(34.53s); Open 1(B512 BE); transfer PASS(FE); operation BLOCK(699 BE); cross-stream BLOCK(BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T13:29:24Z -->
+<!-- tester-sync: TSR 1711차 2026-07-16T13:29:24Z (backend) — ROADMAP merged baseline `@fde0606` (`src/backend-test`) · `mvn test` **2274/2274 PASS**(~70s, 405 suites, BUILD SUCCESS) · develop pre-merge related **64/64 PASS**(~2.7s, LiveE2eOperationReadinessSupportTest · +2 vs 62) · npm **N/A**(`src/backend-test` no `package.json`) · develop `@0a8a635` WT **CLEAN** · test/origin/test `@fde0606` WT **CLEAN** · pending **2**(`test..develop`: `@3937fa5`+`@0a8a635`) + origin/test **697 BE** · merge **SKIP**(본 사이클 지시: `src/backend`·`src/backend-test` 소스 수정 금지) · **QA-20260716-B512 Open(BLOCK)** · Open **1**(backend) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 2 · FE B514 pending 2 `@a3703a5`)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1711st: backend baseline@fde0606 mvn 2274/2274 PASS(~70s,405,BUILD SUCCESS); develop pre-merge related 64/64(+2); npm N/A; develop@0a8a635 vs test@fde0606 pending 2 + origin/test 697 BE; merge SKIP(read-only); QA-20260716-B512 Open(BLOCK); Open 1(backend); transfer BLOCK; operation BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T13:18:45Z -->
+<!-- tester-sync: TSR 1710차 2026-07-16T13:18:45Z (frontend) — ROADMAP merged baseline `@5b69e7a` (`src/frontend-test`) · develop pre-merge **188/188 PASS**(2.63s, 2 · notificationChannelStatus + liveE2eHarness · +2 vs 186) · npm **CARRY 2630/2630**(TSR1707 · test SHA `@5b69e7a` unchanged) · build **1230 modules PASS**(10.69s) · audit **0** high · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1707) · develop `@a3703a5` WT **CLEAN** · test/origin/test `@5b69e7a` WT **CLEAN** · pending **2**(`test..develop`) · merge **SKIP**(본 사이클 지시: `src/frontend`·`src/frontend-test` 소스 수정 금지) · **QA-20260716-B514 Open(BLOCK)** · Open **2**(B512 BE + B514 FE) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **BLOCK(BE pending 1 `@3937fa5` · FE pending 2 `@a3703a5`)** · backend@8080 **UP/200** · operation **BLOCK**(697 BE) -->
+# revalidation_1710th: frontend baseline@5b69e7a npm CARRY 2630/2630(TSR1707); develop pre-merge 188/188(2.63s,+2); build 1230(10.69s); develop@a3703a5 vs test@5b69e7a pending 2; merge SKIP(read-only); QA-20260716-B514 Open(BLOCK); Open 2(B512+B514); transfer BLOCK; operation BLOCK(697 BE); cross-stream BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T13:11:53Z -->
+<!-- tester-sync: TSR 1709차 2026-07-16T13:11:53Z (backend) — ROADMAP merged baseline `@fde0606` (`src/backend-test`) · `mvn test` **2274/2274 PASS**(64s, 405 suites, BUILD SUCCESS) · npm **N/A**(`src/backend-test` no `package.json`) · develop `@3937fa5` WT **CLEAN** · test/origin/test `@fde0606` WT **CLEAN** · pending **1**(`test..develop`) + origin/test **697 BE** · merge **SKIP**(본 사이클 지시: `src/backend`·`src/backend-test` 소스 수정 금지) · **QA-20260716-B512 Open(BLOCK)** · Open **1**(backend) · Planned **QA-B116+QA-B95** · transfer **BLOCK** · cross-stream **SYNCED(FE `@5b69e7a`) / BLOCK(BE pending 1)** · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1709th: backend baseline@fde0606 mvn 2274/2274 PASS(64s,405,BUILD SUCCESS); npm N/A; develop@3937fa5 vs test/origin@fde0606 pending 1 + origin/test 697 BE; merge SKIP(read-only directive); QA-20260716-B512 Open(BLOCK); Open 1(backend); transfer BLOCK; operation BLOCK.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T12:46:22Z -->
+<!-- tester-sync: TSR 1708차 2026-07-16T12:46:22Z (frontend) — **재검증** `@5b69e7a` ALL SYNCED+PUSHED · related **186/186 PASS**(2.42s, 2) · npm **CARRY 2630/2630**(TSR1707 same SHA) · build **1230 modules PASS**(9.11s) · audit **0** high · live **SKIP**(merge 0 · CARRY 0/149/0 TSR1707) · FE develop/test/origin **ALL SYNCED+PUSHED `@5b69e7a`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@fde0606` · FE `@5b69e7a`)** · backend@8080 **UP/200** · operation **BLOCK**(697 BE) -->
+# revalidation_1708th: FE @5b69e7a ALL SYNCED reconfirm; related 186/186(2.42s); npm CARRY 2630/2630(TSR1707); build 1230(9.11s); merge SKIP(pending 0); live SKIP(carry); Open 0; transfer PASS(FE); operation BLOCK(697 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T12:21:00Z -->
+<!-- tester-sync: TSR 1707차 2026-07-16T12:21:00Z (frontend) — **★ QA-B510 Fixed** FF merge+PUSH `@5b69e7a` · QA-B95 HTML space aliases decode · related **186/186 PASS**(2.51s, 2 · +2 vs 184) · post-merge **2630/2630 PASS**(870.75s, 477 · +2 vs 2628) · build **1230 modules PASS**(9.12s) · audit **0** high · live **0/149/0**(35.87s · bootstrap-disabled) · FE develop/test/origin/test **ALL SYNCED+PUSHED `@5b69e7a`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **SYNCED(BE `@fde0606` · FE `@5b69e7a`)** · backend@8080 **UP/200** · operation **BLOCK**(697 BE) -->
+# revalidation_1707th: QA-B510 Fixed FF merge+PUSH f73413d→5b69e7a (HTML space aliases · pending 1→0 · +2 vs 2628 → 2630); related 186/186; post-merge 2630/2630; build 1230; live 0/149/0; FE ALL SYNCED+PUSHED; Open 0; transfer PASS(FE); operation BLOCK(697 BE); cross-stream SYNCED.
+# reconfirm_1707b: 2026-07-16T12:37:41Z related 186/186(2.53s) · post-merge 2630/2630(873.54s) · live 0/149/0(34.03s) · origin ALL SYNCED @5b69e7a.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T11:59:00Z -->
+<!-- tester-sync: TSR 1706차 2026-07-16T11:59:00Z (backend) — **★ QA-B509+QA-B476 Fixed** FF merge `5b59e83`→`fde0606` · related **62/62**(~29s, 1) · post-merge **2274/2274 PASS**(65s, 405 · +1 vs 2273) · npm **N/A** · live **0/149/0**(33.76s · bootstrap-disabled) · BE develop/test **SYNCED `@fde0606`** · Open **0** · Planned **QA-B116+QA-B95** · transfer **PASS**(BE local) · operation **BLOCK**(697 BE) · cross-stream **SYNCED(BE `@fde0606` · FE `@f73413d`)** · backend@8080 **UP/200** -->
+# revalidation_1706th: QA-B509+B476 Fixed FF merge 5b59e83→fde0606; related 62/62; post-merge 2274/2274; live 0/149/0; Open 0; transfer PASS(BE local); operation BLOCK(697 BE); cross-stream SYNCED.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T11:48:00Z -->
+<!-- tester-sync: TSR 1705차 2026-07-16T11:48:00Z (frontend) — **★ QA-B508 Fixed 재확인** `@f73413d` ALL SYNCED+PUSHED · related **184/184**(3.39s) · npm **2628/2628**(869.69s, 477) · build **1230**(10.69s) · audit **0** · live **CARRY 0/149/0**(TSR1704) · Open **1**(QA-B509 BE) · transfer **PASS**(FE) · operation **BLOCK**(696 BE) · backend@8080 **UP/200** -->
+# revalidation_1705th: frontend QA-B508 Fixed reconfirm @f73413d; related 184/184; npm 2628/2628; build 1230; Open 1(B509 BE); transfer PASS(FE); operation BLOCK(696 BE).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T11:47:00Z -->
+<!-- tester-sync: TSR 1704차 2026-07-16T11:47:00Z (frontend) — **★ QA-B508 Fixed** FF merge+PUSH `@f73413d` · QA-B95 NoBreak+Wj+named-space decode · related **184/184 PASS**(2.47s, 2) · post-merge **2628/2628 PASS**(869.69s, 477 · +4 vs 2624) · build **1230 modules PASS**(9.39s) · audit **0** high · live **0/149/0**(34.30s · bootstrap-disabled) · FE develop/test/origin/test **ALL SYNCED+PUSHED `@f73413d`** · Open **1**(QA-B509 BE pending `@7883a90`) · Planned **QA-B116+QA-B95** · transfer **PASS**(FE) · cross-stream **BLOCK(BE pending 1 · `@7883a90` vs `@5b59e83`)** · backend@8080 **UP/200** · operation **BLOCK**(696 BE) -->
+# revalidation_1704th: QA-B508 Fixed FF merge+PUSH cf8a248→f73413d (NoBreak+Wj+named-space · pending 1→0 · +4 vs 2624 → 2628); related 184/184; post-merge 2628/2628; build 1230; live 0/149/0; FE ALL SYNCED+PUSHED; Open 1(QA-B509 BE); transfer PASS(FE); operation BLOCK(696 BE); cross-stream BLOCK(BE pending).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-16T11:24:45Z -->
+<!-- tester-sync: TSR 1703차 2026-07-16T11:24:45Z (backend) — ROADMAP merged baseline `@5b59e83` (`src/backend-test`) · `mvn test` **2273/2273 PASS**(70s, 405 suites, BUILD SUCCESS) · npm **N/A**(`src/backend-test` no `package.json`) · develop `@7883a90` WT **CLEAN** · test/origin/test `@5b59e83` WT **CLEAN** · pending **1**(`test..develop`) + origin/test backlog **696 BE** · merge **SKIP**(본 사이클 지시: backend 소스 수정 금지) · **QA-B509 Open(BLOCK)** · Open **2**(B508 FE dirty + B509 BE pending) · verdict **BLOCK** · cross-stream **BLOCK**(FE develop DIRTY 4M `@cf8a248`) · backend@8080 **UP/200** · operation **BLOCK** -->
+# revalidation_1703rd: backend baseline@5b59e83 mvn 2273/2273 PASS(70s,405,BUILD SUCCESS); npm N/A; develop@7883a90 vs test/origin@5b59e83 pending 1 + origin/test 696 BE; merge SKIP(read-only directive); QA-B509 Open; Open 2(B508+B509); verdict BLOCK.
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-06-27T05:19:20+00:00 -->
 <!-- tester-sync: TSR 1476차 2026-06-27T05:19 UTC (frontend) — ROADMAP merged baseline `@afbbaa7` (`src/frontend-test` flock vitest) **2318/2318 PASS**(781.58s, 445 files) · develop HEAD `@bf9b4b1` WT **CLEAN** · develop pre-merge **SKIP**(src/frontend read-only 원칙) · merge **SKIP**(`test..develop` **0/10** pending · src/frontend-test read-only 정책) · post-merge **SKIP**(merge 미실행) · `npm run build` **1187 modules PASS**(8.68s) · `npm audit --omit=dev --audit-level=high` **0** · live E2E **SKIP**(merge 없음 · carry **122 PASS/25 SKIP/0 FAIL** · bootstrap-disabled) · origin/test (**582 unpushed BE** · **269 unpushed FE**) · **QA-B344 Open carry**(severity **BLOCK**, BE pending 19 `@aa9565c`) · **QA-B352 Planned update**(severity **BLOCK**, FE pending 9→10 `@bf9b4b1`) · Open **1(active: QA-B344)** · Planned **QA-B352+QA-B116+QA-B95 partial** · verdict **BLOCK(@frontend-test regression PASS but FE pending 10 미이관)** · cross_stream **BLOCK(BE pending 19 @aa9565c · FE pending 10 @bf9b4b1 · fee-schedule seed API 404/network carry)** · backend@8080 **UP/200** · operation **BLOCK** -->
 # revalidation_1476th: frontend baseline @afbbaa7 flock vitest 2318/2318 PASS(781.58s,445 files); develop @bf9b4b1 WT CLEAN; pre-merge SKIP(read-only); merge SKIP(pending 10); build 1187 PASS(8.68s); audit 0 high; QA-B344 Open carry(BLOCK,pending 19); QA-B352 Planned update(FE pending 10); Open 1(active B344); verdict BLOCK; cross-stream BLOCK(BE pending 19 + FE pending 10 + fee-schedule seed API 404/network carry); backend@8080 200; operation BLOCK; origin/test push 582 BE+269 FE.

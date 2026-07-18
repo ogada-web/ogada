@@ -1,0 +1,95 @@
+# 교차검증·갭 우선순위 — ogada git 재실측 + 커버리지 config 정합성 감사 (BNK-719)
+# 조사일: 2026-07-14T10:26:00Z (UTC)
+# 작성: benchmark_researcher [BNK]
+# rotation: 8h+ 교차검증·갭 우선순위 (미확인 축소·이전 가정 번복 여부·P0/P1 재정렬)
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`b12f259`** `feat(v1.2.1/M12): wire accounting BPO health readiness on frontend`
+  · WT **CLEAN** · ahead origin/test **0** (`test=b12f259` = **FULLY SYNCED**)
+  · BNK-718 `@2b03b5c` → **+1 commit** (`b12f259`)
+  · `<Route\b`=130 + `<Routes>`=1 = **131** (carry) · `*Page.jsx`=**104** (carry)
+  · `.test.js`=213 · `.test.jsx`=303 = **516** (carry) · accounting route 1 · payroll route 5
+- BE `develop` = **`ac59458`** `feat(v2/QA-B95): split transport shuttle readiness into v189 and v190`
+  · WT **CLEAN** · ahead origin/test **628** (`test=598d108`)
+  · BNK-718 `@54a3e56` → **+1 commit** (`ac59458`)
+  · `*Test.java`=283 · `*Tests.java`=1 = **284** (carry) · `@Test`=**2105** (+1 vs BNK-718 2104)
+  · V1–V190 (carry)
+- 모듈 커버리지 `competitorModuleCoverage.js` (id 라인 한정 실측) = **29 entries · sum 26.00 · 26.00/29 = 89.66%** (id=12 0.55 carry)
+- merge gate **628** (FE 0 FULLY SYNCED + BE 628 · **BE-only** → tester FF · 양쪽 WT CLEAN · 선행 commit 불필요)
+
+### 이번 사이클 델타 커밋 2건 (확인)
+
+1. FE `b12f259` `feat(v1.2.1/M12): wire accounting BPO health readiness on frontend`
+   · 변경 5파일: `src/api/services.js`(+8)·`src/pages/AccountingBpoPage.jsx`(+34)·`AccountingBpoPage.test.jsx`(+73)·`src/utils/accountingBpo.js`(+51)·`accountingBpo.test.js`(+37)
+   · 내용: `GET /api/v1/health` accounting BPO 필드를 `bpo-launch` catalog 와 함께 소비 → SSO launch 가 operational readiness 를 따르도록(J03 parity)
+   · **M12 operational 2-layer 완성** = BE health readiness(BNK-717 `@54a3e56`) + FE health readiness 소비(BNK-719 `@b12f259`)
+   · Route/Page 신규 0 (기존 파일 확장) · id=12 **0.55 carry**(SSO adapter 착지분·health wiring 은 operational polish)
+2. BE `ac59458` `feat(v2/QA-B95): split transport shuttle readiness into v189 and v190`
+   · 변경 8파일: `HealthController`(+10)·`LiveE2eController`(+10)·`LiveE2eOperationReadinessSupport`(+90)·`V189TransportShuttleSchemaReadinessProbe`(+59)·+테스트 4
+   · 내용: live E2E 셔틀 readiness 를 base schema(v189) + V190 integrity 로 **분리** → health/probe 가 병합 단일 신호 대신 **구분된 operational blocker** 노출
+   · **id=2 이동서비스 operational readiness 세분화**(0.85 carry · G16 셔틀 backbone operational polish · 신규 기능 아님)
+
+## 1. ★★★ 커버리지 config 정합성 감사 = 가정 번복 후보 (신규 인사이트)
+
+교차검증 rotation 취지(「이전 BNK 가정 번복 여부」)에 따라 `competitorModuleCoverage.js`
+0-커버리지 2항목(id=1-5·1-10)을 실측 코드 대비 재검증 → **1건 저평가 발견**.
+
+### (A) id=1-5 「가정통신문」 coverage 0 → 실측 △ 부분구현 (★ 가정 번복 후보)
+
+- config: `{ id: "1-5", label: "가정통신문", coverage: 0 }`
+- **실측 = full-stack 구현 존재**:
+  · BE: `POST /api/v1/clients/{id}/notifications/home-newsletter` (services.js:1616 「G2 — 가정통신문 이메일 발송」)
+  · FE: `GuardianDocumentNotifyPanel.jsx` — `label:"가정통신문"`·`submitLabel:"가정통신문 이메일 발송"`·`successMessage:"가정통신문을 보호자에게 발송했습니다."`·설명「연결된 보호자에게 월간 가정통신문 이메일을 발송합니다 (케어포 10-2 급여안내 패리티).」
+  · 테스트: `GuardianDocumentNotifyPanel.test.jsx` 「dispatches home newsletter email when document type is 가정통신문 (G2)」
+- 판정: **coverage 0 은 stale/저평가** — 월간 가정통신문 이메일 발송(dispatch)은 full-stack LIVE.
+  다만 authoring/편집·발송이력 관리·게시판형 관리는 **미확인**(케어포 1-5 는 작성·관리 포함 가능) → **△(부분) 이 정확**(full ✅ 아님).
+- **권장(coder/planner)**: `competitorModuleCoverage.js` id=1-5 `coverage: 0 → 0.5`(△) 갱신 시 모듈 KPI **89.66% → 91.38%(+1.72pp)**. authoring 착지 시 ✅.
+- 근거 위치: `src/frontend/src/components/ui/GuardianDocumentNotifyPanel.jsx:35-41,80`·`src/api/services.js:1616-1622`
+
+### (B) id=1-10 「연계기록지」 coverage 0 = 실측 genuine 0 (진성 갭 확인 · v2+ 후보 재부상)
+
+- config: `{ id: "1-10", label: "연계기록지", coverage: 0 }`
+- 실측: FE `연계기록|linkage` grep → `competitorModuleCoverage.js` 만(구현 0) · BE `linkage|연계기록` → 0 hit · Route **0**
+- 판정: **진성 0-커버리지 갭 재확인**(BNK-624 crosswalk carry) — 저평가 아님.
+- 경쟁·법정 근거(BNK-624 재인용): 케어포 func.php marketing **1-10** 연계기록지 발송 리포트 / demo-work operational **1-12** `view.patient_connection_send_report`(pamcode `L01_M15`) / silverangel **평가지표 30 「외부기관연계」** 필수항목.
+  · 트리거: **전원·퇴소 시 종료상담 + 연계기록지 작성·제공**
+  · 본문 필수: 성명·등급·심신기능상태·제공한 급여·작성일자·퇴소 후 이용계획
+  · 제공대장 컬럼: 수급자명·제공일자·제공방법·수령자
+- **권장(planner)**: id=1-10 = 규제(평가지표 30) 연동 v2+ 후보 · closure 시 +0.034pp(1/29). ogada 매핑 가설 = 작성 `/clients/:id` 퇴소·전원 워크플로 + 발송 리포트 `/clients/reports/linkage-dispatch`.
+
+## 2. 잔여 갭 우선순위 재정렬 (P0/P1 재산정)
+
+| id | 라벨 | coverage | 판정 | 우선순위 |
+|---|---|---|---|---|
+| 1-5 | 가정통신문 | 0 (config) | ★ **저평가 — 실측 △ dispatch LIVE** | coder: config 0→0.5 (KPI +1.72pp) |
+| 12 | 수입지출·회계 | 0.55 | △ SSO adapter FE LIVE·BE handoff ❌ | **sole in-app lever** = BE `POST /bpo-sso-handoff` + `SSO_AVAILABILITY→AVAILABLE` |
+| 1-10 | 연계기록지 | 0 | 진성 갭(평가지표 30) | v2+ 후보(P3) |
+| 2 | 이동서비스 | 0.85 | △ operational readiness 세분화(BNK-719 v189/v190 split) | RU_1~4 6-link carry·operational polish |
+| 8 | 직원·근태 | 0.85 | △ carry | 후속 |
+| 10 | 부가서비스(SMS·알림) | 0.75 | △ J03 readiness health probe carry | 후속 |
+
+- **M12 잔여 lever 재확인(확인)**: FE SSO handoff client 존재(`fetchAccountingBpoSsoHandoffApi` → `POST /api/v1/billing/accounting/bpo-sso-handoff`·`services.js:3025`)·`normalizeAccountingBpoSsoHandoff`(`accountingBpo.js:207`) BUT **BE 엔드포인트 부재**(`SSO_AVAILABILITY = SURFACE_PLANNED`·`AccountingBpoSupport.java:26`) → **BE handoff API 가 M12 유일 in-app lever**(0.55→↑).
+- **closed axes 재오픈 0**: G14(`/care-plan-form`)·v1.3-C·v2 CMS(효성)·G17(indicator27 5-commit)·leave — 재오픈·격상·번복 0.
+- **P3 dashboard 2건**(G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY) 「가정」 유지(격상 0).
+
+## 3. 규제 백본 재실측 zero drift (기존 URL 재실측 · 신규 공지/엑셀 스캔)
+
+| 소스 | URL | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|---|
+| NHIS #44 이동서비스비 | nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do (SEQ=1637) | 200 | 7,572B | `c886ff1f` | **454차 zero drift IDENTICAL**(BNK-718 453차→+1·러-1/러-4/편도×2/1일 1회/수급자가 부담하지 verbatim) |
+| law247 고시 | law.go.kr/LSW/admRulInfoP.do (admRulSeq=2100000271110) | 200 | 78,450B | `d822952a` | size-lock · `Time=` cachebuster md5 DRIFT(BNK-717 `a264fd59`) · **시행 2026. 1. 1 verbatim IDENTICAL** |
+| silverangel 공지 list | silverangel.kr/silverangel/support/notice/list.do | 200 | 5,707,602B | `ea7d6b3d` | zero drift IDENTICAL · 최신 가시 Tmp_idx **221551** · **≥221573 = 0**(~18일+ pause) |
+| ezcare FAQ list | ezcare.easyms.co.kr/help/faq.ez | 200 | 80,057B | `9e3648e0` | size-lock · cachebuster md5 DRIFT · rowid **233**·max **21781**(신규 FAQ 0) |
+
+→ **신규 규제/공지/엑셀 포맷 변경 0** · import adapter 긴급 불요 · TransportServiceFeeService RU_1~4 6-link chain(id=2) 규제 정합 carry.
+
+## 4. 산출 요약
+
+- 신규 evidence URL(재실측): NHIS #44 454차·law247·silverangel notice·ezcare FAQ = **4건 재실측**(전부 semantic IDENTICAL, drift 4종 문서화)
+- 메뉴/필드/워크플로 블록: **커버리지 config 정합성 감사**(§1 A/B) — id=1-5 저평가 발견 + id=1-10 진성갭 재확인
+- COMPETITOR_MATRIX 1행+ `@HEAD` 갱신: FE `@b12f259`/BE `@ac59458` · 3행 §719
+- BENCHMARK_REPORT §BNK-719 소절 + memory/decisions.md 최상단
+- 가정 번복 후보 **1건**(id=1-5 0→△ 저평가·coder config lever) · 진성갭 재확인 1(id=1-10)
+- 덮어쓰기 0(canonical 유지) · zero drift IDENTICAL 4 · per-cycle minimum 4종 충족
+- 미확인 carry: carefor func.php/demo-work LIVE HTTP 000(disk canonical 우선) · longterm npbs 502/610 login-gated shell

@@ -1,0 +1,31 @@
+BNK-788 cross-check memo
+date_utc=2026-07-16T09:30:00Z
+rotation=교차검증·갭 우선순위
+
+[ogada-head]
+frontend_develop=f5dded25a4c607362b98c1e24dca1940aeae38ea
+backend_develop=431859ce6d74327f2fb2fdbfe419c664efd27185
+
+[evidence.remeasure]
+url=https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+http=200
+bytes=7572
+md5=c886ff1fd1d5ca2cb5dc76d30adde8ba
+summary=NHIS #44 러-1~4 본문 hash/size 유지(기존 대비 semantic identical). cycle counter +1 표기.
+
+url=https://ezcare.easyms.co.kr/new/ezCare_charge.html
+http=200
+bytes=22979
+md5=4fc4bd4856007dbbc9ca81f216f4f4fd
+summary=셋팅비 33,000원(40% 할인, 2026-07-31까지) 문구 유지 확인.
+
+[workflow_fields.block]
+source=docs/planning/research/snapshots/ezcare_new_ez_pgid_schedule-fix.html
+menu=PGID=schedule-fix
+field_or_hook=chk-ltm-fix, comp_ltm_fix_data, btn-fix-all, btn-fix-reset-all
+interpretation=공단 청구일정 가져오기 -> 본인부담 대조 -> 일정 일괄확정, 취소 시 4-digit 확인 절차.
+
+[priority]
+p0=없음(가정 번복 없음)
+p1=유지(id=12 credentials, id=2/8/10 form polish)
+p2=G14/대시보드/v1.3-C/v2 CMS closed carry

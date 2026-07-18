@@ -1,0 +1,93 @@
+BNK-819 ogada git 실측 6–8h — 2026-07-17T05:03:00Z
+=============================================================================
+rotation: ogada git 실측 6–8h (src/backend·src/frontend develop HEAD 재실측·Route·Page·test·모듈 커버 % 재산정)
+직전 사이클: BNK-818 (2026-07-17T04:22Z · 이지케어 역공학 2–4h) → ~41분 후
+직전 동일 rotation: BNK-816 (2026-07-17T02:58Z · ogada git 실측 6–8h) → ~2.1h 후
+
+## 1. submodule develop HEAD 재실측 (git rev-parse / log -1 / status)
+-----------------------------------------------------------------------------
+FE (src/frontend) develop HEAD : @ac3af73  WT CLEAN (## develop...origin/develop)
+    BNK-818 @a364f97 → +1 : fix(v1.2.1/QA-B95): decode OpenCurly* quote HTML entity aliases
+    ahead origin/test : 1  (tester FF 대기)
+BE (src/backend) develop HEAD  : @df2c1a0  WT CLEAN (## develop...origin/develop)
+    BNK-818 @a0c1fe6 → +1 : fix(v2/QA-B95): decode OpenCurly* typographic quote HTML aliases
+    ahead 598d108 : 720   ahead origin/test : 720
+merge gate : 721 (FE 1 + BE 720 · BE-heavy → tester FF)
+
+QA-B95 LOCKSTEP : FE `OpenCurly* quote HTML entity aliases` ↔ BE `OpenCurly* typographic quote HTML aliases`
+    = 계보(...typographic quote 792~818계열) 지속 · fail-closed readiness/live-harness 양 flow 미러.
+
+## 2. baseline KPI 재산정 (git ls-files / grep 실측)
+-----------------------------------------------------------------------------
+Route         : 133   (<Route\b 132 + <Routes> 1 · App.jsx)
+Page          : 107   (git ls-files 'src/pages/*.jsx' non-test)
+FE test       : 530   (.test.jsx 313 + .test.js 217)
+BE Test 파일  : 294   (*Test.java 293 + *Tests.java 1)
+BE @Test      : 2273  (BNK-818 2270 → +3)
+@RestController: 81   (Δ0 vs BNK-817/818)
+Flyway        : V1–V196 (196개 · 신규 0 · 최신 V194/V195/V196 = client_linkage_records carefor 1-10)
+모듈 커버리지 : 97.41% (28.25/29)
+    competitorModuleCoverage.js @ac3af73 29-entry · 비-1.0 4개 실 id:
+      id=2  이동서비스        0.85
+      id=8  직원·근태          0.85
+      id=10 부가서비스(SMS)    0.85
+      id=12 수입지출·회계      0.70
+    sum = 25(1.0×25) + 0.85×3 + 0.7 = 28.25 → 28.25/29 = 0.9741  (진성갭 0 · 가정 번복 0)
+
+## 3. ★★★ 신규 분석 블록 — BE @Test 2273 module-package 분포 × FE Route 133 distribution (full-stack 테스트 밀도 맵)
+-----------------------------------------------------------------------------
+BE @Test 상위 module package (src/test/java/com/ogada/backend/<pkg>):
+    security       366   (16.1% of 2273)
+    billing        310
+    system         248
+    pilot          172
+    routing        171
+    visits         169
+    notification   128
+    transport      105
+    clients         79
+    nursing         46
+    care            44
+    programs        40
+    users           28
+    attendance      27
+    safety          21
+    casemanagement  20
+    leadcaregiver   18
+    staffhr / regions / auth  17 각
+
+FE Route 상위 path prefix (App.jsx path="/<x>"):
+    billing 17 · nursing 16 · care 16 · staff 13 · clients 11 · transport 9 ·
+    programs 8 · attendance 7 · safety 5 · payroll 5 · guardian 3 · reports 2 ·
+    health 2 · guardians 2 · dashboard 2 · compliance 2 · visits 1 · settings 1 ·
+    platform 1 · organization 1
+
+교차 관측 (SUPERIOR · 과대구축 금지 근거):
+  - BE @Test 최다 축 = security 366 (전체 16.1%) → PII·RBAC·감사로그 heavy 테스트 투자
+    = 의료·복지 민감정보(개인정보보호법·장기요양보험법) 방어 정당화. FE Route 에는 security 전용
+    축 없음(횡단 관심사) → 테스트-only 밀집이 아키텍처 의도(보안 우선순위 2위)와 정합.
+  - billing : BE @Test 310(2위) ↔ FE Route 17(최다) = 청구·본인부담 lifecycle full-stack
+    테스트 밀도 최상위 정합(M7 11-leaf PARITY+SUPERSET 5 · CMS 5-method).
+  - transport : BE @Test 105 ↔ FE Route 9 + NHIS #44 6-link 상수 = 경쟁 4종 유일 full-stack의
+    테스트 뒷받침(id=2 0.85). system/pilot/routing 248/172/171 = SaaS 멀티테넌트·개통·라우팅
+    가드레일 = 다지점 breadth 테스트 우위.
+  → 신규 컨트롤러/route 진성갭 0 · KPI promote 0 · 테스트 밀도가 route 밀도·보안 우선순위와 정합.
+
+## 4. 규제 companion 재실측 — NHIS #44 러-1~4 이동서비스비 (기존 URL 재실측 + 변동 기록)
+-----------------------------------------------------------------------------
+URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+= BNK-818 nhis_jo44_live_bnk818.html md5 IDENTICAL → 552차 zero drift (BNK-818 551차 → +1)
+verbatim grep -oF: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+↔ ogada BE @df2c1a0 TransportDistanceBand.RU_1~4 (5/10/20/999km) · ONE_WAY_RATIO=0.5 ·
+   ONE_PER_DAY_LABEL="1일 1회" · TransportServiceFeeService baseAmount×0.5 HALF_UP = 상수 재조정 불요.
+snapshot 저장: nhis_jo44_live_bnk819.html
+
+## 5. per-cycle minimum 충족 확인
+-----------------------------------------------------------------------------
+[o] 신규 증거 URL 재실측 + 변동 기록 : NHIS #44 552차 (zero drift IDENTICAL)
+[o] 메뉴/필드/워크플로 1블록        : §3 BE @Test 2273 module 분포 × FE Route 133 (신규 분석 블록)
+[o] COMPETITOR_MATRIX 1행+ @HEAD    : @ac3af73/@df2c1a0 갱신 (BNK-819 4행)
+[o] BENCHMARK_REPORT §소절/차수 메모 : §819 소절
+신규 snapshot : 2 (본 txt · nhis_jo44_live_bnk819.html)
+덮어쓰기 : 0   zero drift IDENTICAL : 1 (NHIS 552차)   가정 번복 : 0

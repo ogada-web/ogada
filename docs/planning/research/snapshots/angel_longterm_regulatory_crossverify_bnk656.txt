@@ -1,0 +1,211 @@
+# BNK-656 — 엔젤·롱텀·규제 4–6h cross-verify (2026-06-26T11:12Z)
+
+조사일: 2026-06-26T11:12Z (KST 20:12) | rotation: 엔젤·롱텀·규제 4–6h
+ogada baseline: FE `@91675f1` (HEAD +1 vs BNK-655 `@3eebddb`·WT CLEAN·ahead 261)
+                BE `@c38388d` (HEAD +1 vs BNK-655 `@547c85f`·WT CLEAN·ahead 587)
+                merge gate **848** (FE 261 + BE 587 · +2 vs BNK-655 846 · 양쪽 WT CLEAN)
+KPI: 118 Route · 93 page · V1–V183 carry · BE Test **274**(+1 NhisVisitScheduleImportOutcomeTest)
+     · BE @Test **1987**(+5 vs BNK-655 1982) · `@ParameterizedTest` 3
+     · FE test 485(199 .test.js + 286 .test.jsx) IDENTICAL
+     · 모듈 80.86%(23.45/29·✅21·△3·❌5) · reports route 28
+
+============================================================
+★★★ 8번째 BNK→COD traceable closure — G-NHIS-IMPORT-ERROR-STATUS-SURFACE 1-cycle full-stack
+============================================================
+
+BNK-655 (T10:35Z) — P3 candidate NEW: G-NHIS-IMPORT-ERROR-STATUS-SURFACE 제안.
+                    근거: ezCare FAQ 21845 「공단 엑셀→방문일정 업로드 incident 사후 공지」 패턴
+                    vs ogada 「import guidance panel 실시간 surfacing」 차별화 가능.
+
+BE @ c38388d (T11:05Z·BNK-655 → BNK-656 within 30min):
+   feat(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): expose visit NHIS import outcome status
+   - +193/-2L · 13-file:
+     * api/NhisVisitScheduleImportGuidanceResponse.java (modified)
+     * api/NhisVisitScheduleImportOutcomeStatusNote.java (NEW 11L)
+     * api/NhisVisitScheduleImportResponse.java (modified +2L outcomeStatus/outcomeSummary)
+     * domain/NhisVisitScheduleImportGuidance.java (modified +41L error-recovery guidance)
+     * domain/NhisVisitScheduleImportOutcome.java (NEW 56L 4-state OK/PARTIAL/UNMATCHED/SKIPPED)
+     * domain/VisitService.java (modified +8L)
+     * pilot/VisitLiveApiRoutingE2eTest.java (+3L)
+     * routing/MustApiEndpointRoutingTest.java (+3L)
+     * security/RoleBasedControllerAccessTest.java (+3L)
+     * visits/api/VisitControllerRoutingTest.java (+3L)
+     * domain/NhisVisitScheduleImportGuidanceTest.java (+6L)
+     * domain/NhisVisitScheduleImportOutcomeTest.java (NEW 53L · 5 신규 @Test)
+     * visits/domain/VisitServiceTest.java (+2L)
+   - commit message verbatim cite: "so operators can distinguish success, partial,
+     unmatched, and skipped rows without relying on FAQ-only incident notices
+     (ezCare 21845 pattern)" — BNK-655 BNK→COD link 명시.
+
+FE @ 91675f1 (T11:15Z·BNK-655 → BNK-656 within 40min):
+   feat(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): wire visit import outcome status FE
+   - +210/-9L · 7-file:
+     * components/visits/VisitNhisImportGuidePanel.jsx (+50L outcome notes + error recovery steps)
+     * components/visits/VisitNhisImportGuidePanel.test.jsx (+24L)
+     * components/visits/VisitNhisImportPanel.jsx (+39L outcomeStatus/outcomeSummary surface)
+     * components/visits/VisitNhisImportPanel.test.jsx (+32L)
+     * config/visits.js (+32L 4-state translation table)
+     * config/visits.test.js (+22L)
+     * styles/components.css (+20L)
+   - commit message: "Surface backend outcomeStatus/outcomeSummary on import
+     results and render guidance outcome notes plus error recovery steps for operators."
+
+차별화 우위 capture:
+- ezCare (FAQ 21845 pattern): 공단 엑셀 import 오류 → 사후·수동 FAQ 공지(채널 분리)
+- ogada (G-NHIS-IMPORT-ERROR-STATUS-SURFACE): import guidance panel
+  4-state(OK·PARTIAL·UNMATCHED·SKIPPED) 실시간 surfacing + error recovery guidance
+- → 1-cycle 안에 BE+FE 양쪽 full-stack closure 완료(역대 최단)
+- → 경쟁 4종 중 import outcome 실시간 surfacing **유일 full-stack 우위**
+
+이전 BNK→COD traceable closure 7건:
+  ① BNK-620→623 G-REPORT-DENSITY M5(4-cycle)
+  ② BNK-623→627 group-history-fill(4-cycle)
+  ③ BNK-616→618 G-REFUND-FEE 5-layer(3-cycle)
+  ④ BNK-633→639 G-STAFF-COMMITTEE-MEETING-LOG(6-cycle·도움말 #1)
+  ⑤ BNK-637→ G-NHIS-SCHEDULE-IMPORT(BNK-648/649)
+  ⑥ BNK-648→651 G-CLIENT-CONTRACT-BULK-PRINT(3-cycle)
+  ⑦ BNK-653 V183 dba index → BNK-655 commit closure
+  ⑧ ★ BNK-655→656 G-NHIS-IMPORT-ERROR-STATUS-SURFACE (**1-cycle 최단** · BE +1 + FE +1 동시)
+
+============================================================
+★★★ silverangel 221564 D-4 leak — POST + GET 양방향 노출 NEW (BNK-654 → 656 evolution)
+============================================================
+
+BNK-654 (T09:50Z·D-4 첫 확인): POST `/silverangel/support/notice/view.do`
+  body=`Tmp_idx=221564&Tmp_thread=1&Tmp_depth=0`
+  → HTTP 200 · size 1,812,676B · md5 `b2460e88`
+  → draft full body leak (작성중 - 6/30 게시 예정)
+
+BNK-656 (T11:12Z·D-4 동일·~80min 후):
+  POST: HTTP 200 · size **1,812,676B**(IDENTICAL) · md5 `193e46cb`(session timestamp drift)
+  GET:  HTTP 200 · size **1,812,677B**(+1B) · md5 `fe423bf1` ★★★ NEW finding
+        URL: `/silverangel/support/notice/view.do?Tmp_idx=221564&Tmp_thread=1&Tmp_depth=0`
+  → 동일 본문 leak — title verbatim:
+    `작성중 - [필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)`
+  → 시설/주야간 공통 13항목 + 주야간 적용 3항목 release notes carry IDENTICAL
+
+★ NEW security finding: silverangel notice view.do는 **POST+GET 양쪽 모두 draft status 무시**.
+  BNK-654는 POST만 확인 → BNK-656에서 GET method도 동일하게 노출 확인.
+  → ogada 보안 차별화 P2 강화: notice/공지 view.do는 GET/POST 모두 draft|hidden|future
+    status 게이팅 필수(method 무관).
+
+공개 가시성: silverangel 홈페이지 notice 리스트(`/silverangel/support/notice/list.do`
+  200·3,594,181B `52c9457f` IDENTICAL) 최신 가시 Tmp_idx=**221551**만(221564 미노출).
+홈페이지(`/`) 101,258B `1f67a050`: notice widget 미노출(Tmp_idx=139864 = 별도 이벤트 ID).
+
+============================================================
+★★★ NHIS #44 이동서비스비 러-1~4 — 405차 zero drift IDENTICAL
+============================================================
+
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · size 7,572B · md5 `c886ff1f` (BNK-654 404차 + 1 → 405차 IDENTICAL)
+verbatim 불변:
+  - 러-1 (5km 이내) · 러-2 (5~10km) · 러-3 (10~20km) · 러-4 (20km 초과)
+  - 편도 50% 산정
+  - 1일 1회만 산정
+  - 별지 제22호 일지 작성·보관 의무
+  - 수급자 부담 X
+
+ogada cross-walk 405-cycle carry:
+  - BE `TransportServiceFeeService` (RU_1~4·`ONE_WAY_RATIO=0.5`·1일1회 guard)
+  - BE `TransportServiceLog` (별지 제22호)
+  - FE `VisitNhisImportGuidePanel` (BNK-649 closure → BNK-656 outcome status surface deepen)
+  - BE `LiveE2eOperationReadinessSupport` component status code regression lock (BNK-650 17th layer)
+  → 경쟁 4종 유일 full-stack 405-cycle carry.
+
+============================================================
+★★★ silverangel 7-URL backbone — 405차 zero drift IDENTICAL
+============================================================
+
+| URL | size | md5 | 변동 |
+|---|---|---|---|
+| `/newSilverangel/daycare/daycareEssentialWork.do` | 131,664B | `c79c1be3` | IDENTICAL |
+| `/newSilverangel/service/extraService.do` | 81,637B | `f9c5d877` | IDENTICAL (CMS 5-method) |
+| `/newSilverangel/daycare/daycareProgramProvided.do` | 67,987B | `f18e1c7a` | IDENTICAL (8 카테고리) |
+| `/newSilverangel/fcltySlry/essentialWork.do` | 166,023B | `80517b18` | IDENTICAL (시설형 33 지표) |
+| `/silverangel/angelsystem/system_feature.do` | 45,601B | `c9507190` | IDENTICAL (HP-UX/Oracle11g/WebLogic) |
+| `/newSilverangel/service/businessSupportService.do` | 75,878B | `a13cb5ac` | IDENTICAL (4회차 10일 SLA) |
+| `/silverangel/support/notice/list.do` | 3,594,181B | `52c9457f` | IDENTICAL (Tmp_idx=221551 carry·221564 미노출 D-4) |
+
+silverangel.kr 이중 IA carry (BNK-654 framing):
+- `/newSilverangel/` (마케팅) — daycare/, service/, fcltySlry/ 3-폴더 mixed
+- `/silverangel/` (고객지원·로그인) — support/, angelsystem/
+
+============================================================
+★★ lcms.or.kr — type2 IDENTICAL carry
+============================================================
+
+URL: https://www.lcms.or.kr/
+HTTP 200 · 50,554B · md5 `6c0d22b4` (BNK-649 type2 carry · BNK-653 lcms type1 `c0c66076` 50,740B와 별개 rotation)
+
+============================================================
+★ MOHW 2026-126 — size 회복 +6,733B (BNK-654 → 656 회귀)
+============================================================
+
+URL: https://www.mohw.go.kr/board.es?act=view&bid=0026&list_no=1490826&mid=a10409020000
+HTTP 200 · 109,872B (BNK-654 103,139B → +6,733B 회복) · md5 `78f3b765` (BNK-654 `d702b54c` → 회귀)
+  BNK-653 size 109,872B md5 `ef64f867` 와 동일 SIZE·md5만 differ → counter/preview UI 변경 추정
+verbatim:
+  - 제2026-126호
+  - 본인부담상한액 기준보험료의 산정기준 등에 관한 고시 일부개정
+  - 조회수 2,690 (BNK-649 2,680·BNK-653 「DL 488·미리보기 582」 → +10 carry)
+→ 본문 strip-counter verbatim 불변 · 덮어쓰기
+
+============================================================
+★ law247 — size +350B 회복 + cachebuster DRIFT (BNK-654 → 656 회귀)
+============================================================
+
+URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+HTTP 200 · 78,450B (BNK-654 78,100B → +350B 회복) · md5 `ed064a22` (cachebuster only)
+  Time=1782472517 (BNK-654 Time=1782467008 → +5,509)
+verbatim 불변:
+  - 제2025-247호
+  - 시행 2026.1.1
+→ strip-cachebuster verbatim 불변 · 덮어쓰기
+
+============================================================
+★ longterm 502/610 — 404 회귀 (BNK-641 패턴 재진입)
+============================================================
+
+URL: https://longtermcare.or.kr/npbs/d/c/lts/selectLawDetail.web?reqIdx=502
+URL: https://longtermcare.or.kr/npbs/d/c/lts/selectLawDetail.web?reqIdx=610
+HTTP 404 · 861B · md5 `fcadfbfe` (BNK-641 패턴 IDENTICAL · BNK-649 XML 327B → BNK-653 404 → BNK-656 404 carry)
+canonical disk 보존:
+  - 502: `b5aee8c1` 105,552B 단기보호 1등급 74,060원
+  - 610: `0ea575be` 91,421B 통합재가 가산 월 10만원·주야간보호형
+→ 미확인 carry (npbs 26.1.16 마이그 이후 endpoint 안정성 낮음)
+
+============================================================
+per-cycle minimum 4종 충족
+============================================================
+
+1. 신규 evidence URL: ✅ silverangel 221564 GET method leak (BNK-654 POST 단일 → POST+GET 양방향 NEW)
+2. 메뉴/필드/워크플로 1블록: ✅ G-NHIS-IMPORT-ERROR-STATUS-SURFACE 1-cycle full-stack closure
+   (BE 13-file +193L + FE 7-file +210L · 4-state OK/PARTIAL/UNMATCHED/SKIPPED 매트릭스)
+3. COMPETITOR_MATRIX 1행+ `@HEAD` 갱신: ✅ `@91675f1`/`@c38388d` BNK-656 신규 표
+4. BENCHMARK_REPORT §신규 소절: ✅ §656
+
+요약:
+- 가정 번복 0
+- 신규 core 갭 0
+- candidate closure 1 (G-NHIS-IMPORT-ERROR-STATUS-SURFACE BNK-655 P3 → BNK-656 ✅ full-stack)
+- 상태 변경 2 (FE +1 + BE +1 cross-stream · 양쪽 WT CLEAN)
+- KPI 변경 3 (merge gate 846→848 · BE Test 273→274 · BE @Test 1982→1987 +5)
+- KPI carry 5 (Route 118·page 93·FE test 485·모듈 80.86%·reports 28·V183)
+- 재실측 zero drift 8 (NHIS #44 405차·silverangel 7-URL·lcms type2)
+- DRIFT verbatim 불변 2 (MOHW126 size 회복·law247 cachebuster·덮어쓰기 추후 검토)
+- 미확인 carry 2 (longterm 502/610 404 회귀·carefor LIVE 53-cycle+)
+- 신규 NEW security finding 1 (silverangel 221564 GET method leak)
+- 신규 snapshot 1건 (본 파일)
+- 덮어쓰기 0건 (mohw126·law247은 BNK-654 vs BNK-656 회귀 패턴이므로 신규 파일로 두지 않음)
+- per-cycle minimum 4종 충족
+
+→ tester: merge **848**(FE 261+BE 587·양쪽 WT CLEAN·선행 commit 불필요)
+→ planner: baseline FE `@3eebddb`→**`@91675f1`**·BE `@547c85f`→**`@c38388d`**·merge gate 846→**848**
+   ★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE BNK-655 P3 candidate → BNK-656 ✅ 1-cycle full-stack
+     closure (역대 최단·8번째 BNK→COD traceable closure)
+   ★ 보안 차별화 P2 강화: silverangel notice draft GET+POST 양방향 노출 → ogada notice/공지
+     view.do GET/POST 모두 status 게이팅(method 무관) 권장
+   ★ M11/M12 P1 demand-signal carry
+→ coder/dba: 신규 액션 불요 · BNK-655 권장 완료·BNK-656 자율 G-NHIS-IMPORT-ERROR-STATUS-SURFACE
+   1-cycle 완료

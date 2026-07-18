@@ -1,0 +1,80 @@
+# ogada git 실측 BNK-827 (2026-07-17T10:21:00Z)
+# rotation: ogada git 실측 6–8h — develop HEAD·Route·Page·테스트·모듈 커버 % 재산정
+# 직전: BNK-826 (2026-07-17T09:39Z·엔젤·롱텀·규제 4–6h) → ~42min 후
+
+## git HEAD
+FE develop: 93f77e1fc1d8fe21865b60e24d6e3ebaf1034800
+  commit: fix(v1.2.1/QA-B95): decode long prime HTML entity aliases
+  WT: CLEAN
+  origin/test: 93f77e1 (= develop) → FULLY SYNCED (BNK-826 ahead 1 → tester FF 흡수)
+BE develop: 29e20dd267f37e6b427fd91661eee8bcdc063d51
+  commit: test(v2/QA-B95): isolate extended prime quote entity regression
+  WT: CLEAN
+  origin/test: 598d108 (feat(v2): add copay payment recording...)
+  ahead origin/test: 726 (BNK-826 725 → +1)
+
+## FE KPI
+Route: 133 (<Route\b 132 + <Routes> 1 in App.jsx)
+Page: 106 (git ls-files '*Page.jsx')
+FE test files: 530 (313 *.test.jsx + 217 *.test.js)
+Route module top: billing 17 · nursing 16 · care 16 · staff 13 · clients 11 · transport 9 · programs 8 · attendance 7 · safety 5 · payroll 5
+  billing+nursing+care = 49/133 = 36.8%
+
+## BE KPI
+@RestController: 81
+HTTP mappings: GET 231 (52.4%) · POST 143 (32.4%) · PATCH 44 (10.0%) · PUT 13 (2.9%) · DELETE 10 (2.3%) = 441 total
+  controller당 5.44 · audit-first read-create posture (BNK-823/824 IDENTICAL carry)
+BE Test classes: 294 (293 Test.java + 1 Tests.java)
+BE @Test: 2278 (BNK-826 2277 → +1)
+Flyway: V1–V196 (196 migrations)
+
+## BE @Test module-package distribution (top)
+security: 366 (16.1%)
+billing: 310 (13.6%)
+system: 253 (11.1%) — +5 vs BNK-819 248 · +1 this cycle (LiveE2eOperationReadinessSupportTest extended prime quote)
+pilot: 172
+routing: 171
+visits: 169
+notification: 128
+transport: 105
+clients: 79
+nursing: 46
+care: 44
+programs: 40
+attendance: 27
+safety: 21
+staffpayroll: 15
+
+## BE delta @31b10d5 → @29e20dd
++1 commit: test(v2/QA-B95): isolate extended prime quote entity regression
+  LiveE2eOperationReadinessSupport.java (+2 lines)
+  LiveE2eOperationReadinessSupportTest.java (+9/-1 lines)
+  = QA-B95 HTML entity decoder series continuation (extended prime quote alias isolation)
+
+## module coverage (competitorModuleCoverage.js @93f77e1)
+29 entries · sum 28.25 → 97.41%
+비-1.0: id=2 이동서비스 0.85 · id=8 직원·근태 0.85 · id=10 부가서비스 0.85 · id=12 회계 0.7
+진성갭: 0
+
+## closed band 6 (App.jsx grep @93f77e1)
+G14 /clients/:clientId/care-plan-form L245
+/dashboard L164 · /dashboard/hq L173
+/transport/service-fees L628 (v1.3-C)
+/billing/cms L389 (v2 CMS)
+/clients/linkage-records L236 (G-LINKAGE)
+/clients/home-newsletter L209 (G2)
+→ 6/6 LIVE · 라인 BNK-826 IDENTICAL · 재오픈 0
+
+## Transport 6-link NHIS parity (BE @29e20dd)
+TransportDistanceBand.RU_1~4 (5/10/20/999 km)
+ONE_WAY_RATIO=0.5 · ONE_PER_DAY_LABEL="1일 1회"
+baseAmount×0.5 HALF_UP = NHIS #44 verbatim IDENTICAL carry
+
+## merge gate
+726 = FE 0 (FULLY SYNCED) + BE 726 · BE-heavy → tester FF
+
+## NHIS #44 live (evidence URL 재실측)
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f
+grep: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+→ 560차 zero drift (BNK-826 559차 → +1)

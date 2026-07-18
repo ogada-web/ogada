@@ -1,0 +1,100 @@
+# m12_sso_otp_carefor_parity_bnk718.txt
+# BNK-718 M12 SSO OTP · carefor open_sujifine ↔ ogada FE adapter crosswalk
+# 2026-07-14T09:55:00Z
+
+## 케어포 (disk carefor_demo_work.html extract L639-720)
+```
+function open_sujifine()
+{
+    if('1' == '1')
+    {
+        alert("체험하기에서는 재무회계 서비스 접근이 불가능합니다.");
+        return false;
+    }
+
+    var f_sujifine = $("#openSujifineForm");
+
+    $(f_sujifine).find("input[name=usmusid]").val('');
+    $(f_sujifine).find("input[name=otp]").val('');
+
+    $.ajax({
+        type: "POST",
+        url: "/share/exe/sujifine/get.sujifine_id.exe.php",
+        data: {stmmgno: '588'},
+        async: false,
+        success: function(data){
+            data = $.parseJSON( data.replace(/\'/g, "\"") );
+
+            if(data.usmusid != '')
+            {
+                window.open('', "sujifineLogin", "width=1920,height=935,resizable=no,status=no,directories=no,location=no,menubar=no");
+
+                $(f_sujifine).find("input[name=usmusid]").val(data.usmusid);
+                $(f_sujifine).find("input[name=otp]").val(data.otp);
+
+                $(f_sujifine).submit();
+            }
+            else
+            {
+                alert("재무회계 서비스에 등록되지 않은 사용자입니다.");
+            }
+        }
+    });
+}
+
+function linkInzi()
+{
+    $.post("/share/exe/inzi/link.inzi.exe.php", {}, function(data1) {
+    	  $.post("/share/exe/inzi/login.inzi.exe.php", {}, function(data2) {
+            var param = $.parseJSON( data2 );
+            openInzi(param);
+        });
+    });
+}
+
+function openInzi(param)
+{
+    var thisForm = $("#openInziFrm");
+    thisForm.find("input[name=center_mgno]").val( param['center_mgno'] );
+    thisForm.find("input[name=center_manager_yn]").val( param['center_manager_yn'] );
+    thisForm.find("input[name=auth_key]").val( param['auth_key'] );
+    thisForm.submit();
+}
+</script>
+
+<form id="openInziFrm" name="openInziFrm" action="https://web.archive.org/web/20250712220444/https://inzi.carefor.co.kr/webapi/carefor_mamber_login" method="POST" target="_blank">
+  <input type="hidden" name="center_mgno">
+  <input type="hidden" name="center_manager_yn">
+  <input type="hidden" name="auth_key">
+</form>
+
+<form id="openSujifineForm" name="openSujifineForm" action="https://web.archive.org/web/20250712220444/https://www.sujifine.co.kr/carefor_login" method="post" target="sujifineLogin">
+  <input type="hidden" name="usmusid" value=""/>
+  <input type="hidden" name="otp" value=""/>
+</form>
+
+          
+                        <li style="cursor:pointer;background:none;border:0;padding:0;height:59px;overflow:visible;display:block" onclick="javascript:linkInzi();"><img src="/web/20250712220444im_/https://demo-work.carefor.co.kr/img_work/leftmenu_inzi.png" border="0"/></li>
+                      <li id="sujifine_btn" pamcode="sujifine" style="cursor:pointer;background:none;border:0;padding:0;height:59px;overflow:visible;" obj-type="loadPage" page-info="{'type':'left_sub12', 'view':'/share/sujifine/view.apply_sujifine'}" param-info="{'title':'재무회계'}"><img src="/web/20250712220444im_/https://demo-work.carefor.co.kr/img_work/leftmenu_suji.png" border="0"/></li>
+            
+          
+        </ul>
+      </div>
+
+
+
+      <div class="line5"></div>
+      <!--div class="gen"><a href="http://carefor.co.kr/pdf_manual/workcare.pdf" target="_blank"><img src="/img_work/btn_manual.png" border="0" /></a></div-->
+      <!--div class="gen" style="cursor:pointer;" obj-type="loadPage" page-info="{'type':'left_sub13', 'view':'/share/manage/view.shopping'}"  param-info="{'title':'쇼핑몰'}"><img src="/img_work/btn_shopping2.png" border="0" /></div-->
+```
+
+## ogada FE constants (@2b03b5c accountingBpo.js)
+- PORTAL_URL = https://sujifine.co.kr/login
+- SSO_PORTAL_URL = https://www.sujifine.co.kr/carefor_login
+- fields usmusid + otp · window sujifineLogin
+- POST /api/v1/billing/accounting/bpo-sso-handoff (client wired·BE ❌)
+
+## live carefor_login GET (신규 evidence)
+URL: https://www.sujifine.co.kr/carefor_login
+HTTP 404 · 10352B · md5 eae20ae0
+→ GET public landing 없음 = POST-only SSO endpoint (확인)

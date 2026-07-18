@@ -1,0 +1,108 @@
+BNK-796 cross-check memo
+date_utc=2026-07-16T14:41:05Z
+rotation=교차검증·갭 우선순위 8h+
+doc_signature=[BNK]
+
+[ogada-head]
+frontend_develop=29fc34f84d8e1f4fa23cd3118bfdbe319ce92b9c
+frontend_short=29fc34f
+frontend_msg=fix(v1.2.1/QA-B95): decode bidi embedding/isolate and NonBreakingSpace entities
+frontend_wt=CLEAN
+frontend_ahead_origin_test=1
+backend_develop=d911983a891518fea8f8ddfccfed94a875d5288f
+backend_short=d911983
+backend_msg=fix(v2/QA-B95): decode bidi embedding/isolate and NonBreakingSpace entities
+backend_wt=CLEAN
+backend_ahead_origin_test=700
+route=133
+page=106
+fe_test=534
+be_test=294
+be_atest=2258
+flyway=V1-V196
+module_pct=97.41
+module_sum=28.25/29
+merge_gate=701
+residual_primary=id=12 0.7 (M12 credentials)
+residual_secondary=id=2/8/10 0.85 form polish
+
+[assumption_reversal_audit]
+bnk791_silverangel_down→bnk795_up: RECONFIRMED IDENTICAL @bnk796 (c9507190 / c79c1be3) — 재번복 0
+bnk791_longterm_shell_drift→bnk795_canonical: RECONFIRMED IDENTICAL @bnk796 (56185735 / fad1ce61) — 재번복 0
+bnk791_lcms_cj_mou_gtm→bnk795_rotation_ad: RECONFIRMED type2 canonical 6c0d22b4 @bnk796 — 재번복 0
+new_reversals_this_cycle=0
+
+[unconfirmed_shrink]
+silverangel_live=확인(200 IDENTICAL) — 미확인 축소 유지
+longterm_502_610=확인(canonical IDENTICAL) — 미확인 축소 유지
+carefor_func_demo=미확인 HTTP 000 (86-cycle+) — disk 6226e6eb LOCK
+competitor_inapp_live_e2e_gate=미확인 carry
+excel_column_format_change_2026=0 (스캔 결과 없음)
+
+[closed_band_live_appjsx_@29fc34f]
+G14_care-plan-form=L245 path="/clients/:clientId/care-plan-form" LIVE
+dashboard=L164 /dashboard + L173 /dashboard/hq LIVE
+v1.3-C_transport_fee=L628 /transport/service-fees LIVE (+ transport cluster)
+v2_CMS=/billing/cms L389 LIVE
+also_LIVE=home-newsletter(209)·linkage-records(236)·accounting(407)·functional-recovery(754)·committee-meetings(1242)
+reopen=0
+
+[priority]
+p0=없음(가정 번복 없음·closed band 재오픈 없음·신규 core 갭 없음)
+p1=유지(id=12 credentials PRIMARY → id=2/8/10 form polish)
+p2=G14/대시보드/v1.3-C/v2 CMS CLOSED carry · NHIS #44 parity 문구 고정
+p3=lcms/CJ식단 회전광고·carefor 8-3/8-8 expire 「가정」
+
+[evidence.new]
+url=https://docs.channel.io/ezcare/ko/articles/2025%EB%85%84-%EA%B8%B0%EA%B4%80%EC%9A%B4%EC%98%81-%EB%B3%80%EA%B2%BD%EC%84%9C%EC%8B%9D-357710f9
+http=200
+bytes=231393
+md5=bd872285329f825e5eaf8754b3458fea
+title=2025년 기관운영 변경서식
+note=BENCHMARK_REPORT/COMPETITOR_MATRIX 기존 인용 0회 = 신규 증거 URL
+faq_mirror=https://ezcare.easyms.co.kr/help/faq.ez?rowid=21728 (2025년 계약서외 기관운영 변경서식 안내)
+snapshot=channelio_357710f9_bnk796.html
+
+[evidence.remeasure]
+url=https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+http=200 bytes=7572 md5=c886ff1fd1d5ca2cb5dc76d30adde8ba cycle=530 IDENTICAL
+
+url=https://ezcare.easyms.co.kr/new/ezCare_charge.html
+http=200 bytes=22979 md5=8631be9a8cfb76dfc95880981376b36c
+semantic=STABLE cachebuster-only (style.css?1784212719) · 셋팅 33,000 · 40% · ~2026-07-31 D-15 · 도입 9,436
+
+url=https://ezcare.easyms.co.kr/new/ezCare_change_work.html
+http=200 bytes=26157 md5=b643fc2b738e9d7a5d4337e827240ef2 semantic=STABLE CB-only · 9,436
+
+url=https://ezcare.easyms.co.kr/
+http=200 bytes=70126 md5=ad1e42ea13fea02e12abd2f299ee1365 data-count=53.2/9298/4675/2353/1820 BPO=4675 STABLE
+
+url=https://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+http=200 bytes=45601 md5=c950719098eecaf748bbdeea5deb93da IDENTICAL
+
+url=https://www.lcms.or.kr/
+http=200 bytes=50554 md5=6c0d22b48da8fb30a0c49f34ce8c6864 type2 IDENTICAL
+
+url=https://www.carefor.co.kr/daycare/func.php
+http=000 SIZE=0 미확인 86-cycle+
+
+[workflow_fields.block]
+source=channelio_357710f9_bnk796.html + FAQ 21728 + channelio_01fc1290_bnk796.html
+menu=서식출력/설정 · 2025 기관운영 변경서식 팩
+forms=
+  - 2025년 근로계약서(시급제)
+  - 2025년 근로계약서(월급제)
+  - 2025년 장기요양급여제공 변경계약서
+  - 2025년 장기요양급여제공계약서(+개인정보)-요양/목욕/간호
+  - 2025년 장기요양급여제공 표준계약서-요양/목욕/간호
+  - 수급자 제공자료 및 안내문(+동의서)
+  - 욕창예방 및 관리지침
+  - 신규: 퇴직금 지급기일 연장합의서 · 사직서
+interpretation=공단 엑셀 컬럼 포맷 변경 아님 · 기관운영 계약/동의 서식 연도 팩 · ogada staff contract/문서 출력 인접 P3「가정」·MVP 격상 금지
+related_excel_gate=01fc1290 업로드 시 변경된 일정 미반영 → [4 일정확정] 일괄/개별 확정취소 후 재업로드 · 급여명세서+원천세 신고 완료 시 확정취소 제한(재무 해제) · 공단 엑셀 스키마 변경 시그널 0
+
+[scan.excel_format_notice]
+channel_excelish_articles_reviewed=b2863b61,0ccb9026,01fc1290,90ded611,ecbc2f50,357710f9
+faq_rowid_sets=233 max=21781
+excel_column_format_change=0
+new_notice_format_change=0 (서식 팩만 NEW 문서화)

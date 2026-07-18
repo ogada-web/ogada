@@ -1,0 +1,167 @@
+# BNK-767 엔젤·롱텀·규제 4–6h 교차검증 raw log
+# 조사일: 2026-07-15T17:58:24Z (KST 2026-07-16 02:58)
+# rotation: 엔젤·롱텀·규제 4–6h
+# 직전 동일 rotation: BNK-763 (2026-07-15T15:20:19Z) → ~2.65h 후
+# 직전 사이클: BNK-766 (2026-07-15T17:15:53Z·이지케어 2–4h) → ~43분 후
+# ogada git baseline: FE @c779ca1 (WT CLEAN·ahead origin/test 1) / BE @2768252 (WT CLEAN·ahead 669)
+# npm test 미실행 (vitest 동시 실행 금지) · mvn 전체 미실행
+
+## 1) 규제 백본 11-URL live 재실측 (curl -m 20 -A 'Mozilla/5.0 ogada-benchmark')
+
+  LABEL                                | HTTP | SIZE     | md5                              | 판정
+  -------------------------------------+------+----------+----------------------------------+-----------------------------------------
+  nhis_jo44                            | 200  |   7,572B | c886ff1fd1d5ca2cb5dc76d30adde8ba | ★★ 501차 zero drift (BNK-766 500차 → +1)
+  silverangel_extraService             | 200  |  81,637B | f9c5d8773ad0a481be6d7eb4b192d982 | IDENTICAL (BNK-704~763 zero drift 유지)
+  silverangel_feeService               | 200  |  44,513B | eab352a8f98ba600561c06bd2e3eecb1 | IDENTICAL (=bnk691/704/763)
+  silverangel_mainService              | 200  |  59,002B | bcf6df41310193a3ae997bde49111347 | IDENTICAL (=bnk691/704/759/763)
+  silverangel_daycareEssentialWork     | 200  | 131,664B | c79c1be37f947aab04ab7ba35cc7814d | IDENTICAL (BNK-704~763 zero drift)
+  silverangel_systemFeature            | 404  |   1,028B | 3c93af5446540c1cb323ede8414c2bbb | dual-IA 404 carry (URL 미노출)
+  lcms_home                            | 200  |  50,554B | 6c0d22b48da8fb30a0c49f34ce8c6864 | ★ banner rotation type3→type2 (=bnk755/759/760·decommission 불요)
+  longterm_502 (npeb502m01)            | 200  |  89,162B | 5618573525680a407975cbbafe93ccd1 | =bnk763 shell (수가 74,060 disk carry)
+  longterm_610 (npeb610m01)            | 200  |  88,399B | fad1ce6115bad27169c248b8d7a1089b | =bnk763 shell (통합재가 월10만원 disk)
+  law247_admRul (제2025-247호)          | 200  |  78,450B | c2d6d5add01c22d1962ba76c038dfeee | Time= 파라미터-only DRIFT; strip 후 a913639ab52293e3571cfe7e3ca35097 ≡ bnk763
+  mohw_list1488862                     | 200  | 103,113B | d590271896996d16e3431318f1005eeb | IDENTICAL (=bnk763)
+
+## 2) NHIS #44 이동서비스비 러-1~4 verbatim (grep -oE)
+
+  1일 1회       1
+  러-1          1
+  러-4          1
+  수급자가 부담  1
+  이동서비스     13
+  편도           2
+
+→ verbatim IDENTICAL to BNK-766 500차 (마일스톤 카운터). ogada TransportServiceFeeService RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY 6-link chain 상수 재조정 불요.
+
+## 3) silverangel extraService — 부가서비스 10-catalog verbatim 재확인 (신규 필드 블록 carry deepen)
+
+정규식 추출 (LC_ALL=C.UTF-8 grep + python3 텍스트 정규화):
+
+  "부가서비스 편리한 본인부담금 납부(CMS) 엔젤 인공지능(AI) 챗봇 엔젤 가상현실(VR)
+   모바일(앱) 기록 보호자용 앱(굽은나무) 태블릿 기록 전자결재 고위험군 명찰
+   IOT와의 연계 쇼핑몰 본인부담금 자동관리(CMS) …"
+
+카탈로그 10항목 (BNK-763~767 IDENTICAL):
+  1. 편리한 본인부담금 납부(CMS)
+  2. 엔젤 인공지능(AI) 챗봇 (스마트폰/PC · 24시간 응답 「엔젤아이」)
+  3. 엔젤 가상현실(VR) (관광명소 VR 체험 · 심리·정서 안정)
+  4. 모바일(앱) 기록 (「스마트폰을 이용한 편리한 기록」·구글 플레이 스토어/앱 스토어)
+  5. 보호자용 앱(굽은나무) — 브랜드명 「굽은나무」 verbatim
+  6. 태블릿 기록
+  7. 전자결재 — 보호자동의 전자서명 · 서명&결재일시 자동연계 · 작성자 전자서명
+  8. 고위험군 명찰 — IoT 하드웨어(주간보호 부가서비스 아님)
+  9. IOT와의 연계
+  10. 쇼핑몰
+
+## 4) silverangel 효성 CMS 요금표 verbatim (BNK-704~763 zero drift → 767 IDENTICAL)
+
+  월 이용료 : 30,000원  (효성 CMS 별도문의)
+  건별 이용료
+    자동이체 : 250원/1건
+    가상계좌 : 300원/1건
+    카드결제 : 별도문의 (영세, 중소, 소상공인 우대수수료 적용)
+  가입안내 : 효성 CMS 담당자 · 가입문의 1600-6859
+
+→ ogada CmsPaymentMethodCatalog AUTO_DEBIT_CMS 250원 / VIRTUAL_ACCOUNT 300원 verbatim 일치 (fee drift 대응 불요).
+
+## 5) silverangel 「LCMS-엔젤시스템에서만 가능한」 4-doc set verbatim
+
+  가정통신문 / 급여비용 명세서 LCMS-엔젤시스템에서만 가능한
+  가정통신문, 각종 안내장 만들기
+  가정통신문, 급여비용 명세서, 급여제공 기록지(법정서식), 납부확인서 이메일 발송 SMS 안내하기
+
+4-doc catalog:
+  1. 가정통신문 (id=1-5 · ogada HomeNewsletter · FULL 1.0)
+  2. 급여비용 명세서 (id=10 · kind22 SMS dispatch · BNK-753/754 FULL-STACK CLOSED)
+  3. 급여제공 기록지(법정서식) (id=1-10 · 연계기록지 · BNK-749 FULL CLOSURE)
+  4. 납부확인서 (id=7 · BillingController)
+
+→ ogada 4-doc parity 전부 착지 (id=1-5 · id=10 kind22 · id=1-10 · id=7). 「LCMS-엔젤시스템에서만 가능한」 마케팅 문구는 부정확 = ogada 도 4-doc set 전부 구현 (BNK-767 확인).
+
+## 6) silverangel CJ프레시웨이 MOU verbatim
+
+  엔젤시스템 & CJ프레시웨이 업무협약(MOU) 체결
+  CJ프레시웨이와 MOU 체결을 통해 노인식단 전문영양사가 작성한 식단표 활용
+  노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로
+  식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다.
+
+→ carry: BNK-668~673 G-MEAL-PLAN-TEMPLATE P2 candidate (silverangel CMS+CJ MOU carousel vs ogada in-app 식단표 single-source·격상 불요·v3 defer).
+
+## 7) MOHW list1488862 재실측 (기존 URL)
+
+  https://www.mohw.go.kr/board.es?mid=a10409020000&bid=0026&act=view&list_no=1488862
+  HTTP 200 · 103,113B · d590271896996d16e3431318f1005eeb
+  = IDENTICAL to BNK-763 (`d5902718` prefix carry).
+  → 「보건복지부 고시 제2025-247호」 = law247 admRul 정본 mirror carry.
+
+## 8) law.go.kr 247호 semantic IDENTICAL
+
+  https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+  HTTP 200 · 78,450B · 원본 md5 c2d6d5ad (Time=1784138323 파라미터 5회 등장)
+  sed -E 's/Time=[0-9]+//g' → md5 a913639ab52293e3571cfe7e3ca35097
+  ≡ BNK-763 strip md5 (a913639a) — semantic IDENTICAL.
+  → 제2025-247호 「장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시」 78,450B SSR carry.
+
+## 9) longterm 502 / 610 shell 재실측 (기존 URL·SPA shell)
+
+  502 (급여비용): 200 · 89,162B · 5618573525680a407975cbbafe93ccd1  = bnk763 IDENTICAL
+  610 (통합재가): 200 · 88,399B · fad1ce6115bad27169c248b8d7a1089b  = bnk763 IDENTICAL
+  본문 grep hit: 502=[2026년(1)]  610=[통합재가(1)·2026년(1)]  — SPA shell (수가 값은 AJAX)
+  수가 disk carry: 단기보호 74,060 · 통합재가 월 10만원 (BNK-192·BNK-553 disk 정본)
+
+## 10) lcms.or.kr banner rotation
+
+  BNK-763: type3 (CJ MOU) `6b750291` 50,498B
+  BNK-767: type2 (silverangel CMS 1600-6859) `6c0d22b4` 50,554B
+    = bnk755/759/760 IDENTICAL LOCK
+  → 3-type carousel(type1 디자인 샘플 / type2 silverangel CMS / type3 silverangel + CJ MOU) 회전만 있음
+    = **실체 변동 0** · decommission 불요 (BNK-747 회복 유지)
+
+## 11) ogada git 실측 (rules §Baseline · workspace_baseline.yaml)
+
+  FE develop  : c779ca191d8925972af6c1d4569e7a05a2f2f18d  (WT CLEAN)
+    log -1    : c779ca1 fix(v1.2.1/QA-B95): multi-pass decode double-encoded HTML entities
+    prev BNK-766: e76e631 → +1
+    ahead vs origin/test: 1
+
+  BE develop  : 27682521a03b676df23faf51a92a3cc32d2bf0bb  (WT CLEAN)
+    log -1    : 2768252 fix(v2/QA-B95): decode case-insensitive named HTML entities
+    prev BNK-766: 556eeff → +1
+    ahead vs origin/test: 669
+
+  KPI 실측:
+    Route (App.jsx)      : <Route\b 132 + <Routes> 1 = 133  (carry)
+    Page (*Page.jsx)     : 106  (carry)
+    FE test (js+jsx)     : 216 + 309 = 525  (carry)
+    BE Test.java         : 293  (carry) + Tests.java 1 = 294
+    BE @Test (grep -rE) : 2220  (BNK-766 2219 · +1 case-insensitive decode 테스트)
+    Flyway V max         : V196  (carry · V194→V195→V196 = G-LINKAGE defense-in-depth)
+    accounting route     : 1     (carry · /accounting BNK-716)
+    payroll route        : 5     (carry · basis/labor-cost-ratio/ledger/reports/retirement-accrual)
+    모듈 coverage        : 28.25 / 29 = 97.41%
+      (배열 entry 29 · sum 28.25 · JSDoc grep=30 오염 배제·BNK-753/759 정정 carry)
+      비-1.0 5개: id=2/8/10 0.85 · id=12 0.7 · id=1-5 1.0 · id=1-10 1.0
+      coverage-0 = 0
+    merge gate           : FE 1 + BE 669 = 670  (BE-heavy → tester FF)
+
+## 12) closure / 가정 번복 / 신규 갭
+
+  closure                : 0
+  가정 번복              : 0
+  신규 core 갭          : 0
+  KPI promote           : 0
+
+## 13) per-cycle minimum 4종 충족 여부
+
+  1) 신규 증거 URL 1건+ or 기존 URL 재실측+변동 기록  : ✅ 규제 11-URL 재실측 (NHIS 501차 milestone·lcms type2 회전)
+  2) 경쟁사 메뉴/필드/워크플로 1블록+                : ✅ silverangel 부가서비스 10-catalog + CMS 요금 3-tier + 4-doc set + CJ MOU verbatim
+  3) COMPETITOR_MATRIX 1행+ ogada @HEAD 갱신          : ✅ (별도 커밋)
+  4) BENCHMARK_REPORT §신규 소절 또는 차수 메모 1건+ : ✅ §767 소절 3개
+
+## 14) planner 반영 제안
+
+  1. 규제 상수 고정 유지 (러-1~4·편도 50%·1일 1회·CMS 250/300·지표27=기능회복) · 501차 마일스톤 시점 코드 drift 금지.
+  2. LCMS-엔젤시스템 4-doc parity 재확인: 4/4 착지 (id=1-5·id=10 kind22·id=1-10·id=7) — 마케팅 「LCMS-엔젤시스템에서만 가능한」 부정확·ogada 4-doc superset (신규 갭 아님·KPI promote 0).
+  3. lcms banner type2/type3 회전은 무해 · decommission 격상 불요 (BNK-747 회복 carry).
+  4. G-MEAL-PLAN-TEMPLATE (CJ MOU 식단표) — v3+ P2 defer 유지 · 격상 불요 (silverangel 부가 라인업 재확인).
+  5. tester FF: merge gate 670 (BE 669+FE 1) — BE-heavy · QA-B95 HTML entity multi-pass decode 후속 push.

@@ -1,0 +1,64 @@
+BNK-766 이지케어 역공학 2–4h — change-list·schedule-rfid·mobile-sendW 재실측 + 메뉴 백본·가격·규제 crosswalk
+조사일: 2026-07-15T17:15Z (UTC) · 작성자 BNK · 독자 PLN
+==========================================================================================
+
+[0] ogada git 실측 baseline (@HEAD)
+- FE develop @e76e631 (WT CLEAN · BNK-765 @e837185 → +1 commit
+    `fix(v1.2.1/QA-B95): decode HTML entity live readiness blockers` · ahead origin/test 0 = FULLY SYNCED)
+- BE develop @556eeff (WT CLEAN · BNK-765 동일 HEAD · HEAD zero advance · ahead 668 vs test=598d108)
+- Route 133(<Route\b 132 + <Routes> 1) · Page 106 · FE test 525(216 .test.js + 309 .test.jsx)
+- BE Test 294(파일) · BE @Test 2219 (BNK-765 header 2218 · 동일 BE HEAD 556eeff → recount +1 · git 실측 우선)
+- Flyway V1–V196 · accounting route 1 · payroll route 5
+- 모듈 커버리지 97.41% (competitorModuleCoverage.js 배열 29-entry · sum 28.25 · 28.25/29)
+    · 비-1.0: id=2 이동서비스 0.85 · id=8 직원·근태 0.85 · id=10 부가서비스(SMS·알림) 0.85 · id=12 수입지출·회계 0.7
+    · JSDoc line5 `coverage: 1 = ✅` grep 오염(=30) 배열 파싱으로 배제 · 가정 번복 0
+- merge gate 668 (FE 0 FULLY SYNCED + BE 668 · BE-heavy → tester FF)
+
+[1] 이지케어 데모 ERP 진입 (scripts/ezcare-demo-fetch.sh --menu-catalog --batch change-list,schedule-rfid,mobile-sendW)
+- demo login: POST /page/login.php oCode=DEMO code=0000 → 세션 쿠키 → /new.ez
+- title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」
+- demo shell 138,662B (비로그인 /new.ez = 70B redirect stub `e1d52bd5` = 역공학 금지 stub 재확인)
+- top-nav JS: /assets/top-nav-item-V2.js?20260428 · md5 95286775000f06c8ad13688fcb0d6dbb
+    = committed IDENTICAL (BNK-758/762 `95286775` LOCK) = 메뉴 백본 zero drift
+- menu catalog: module 10 / leaf 148 / unique PGID 59 = IDENTICAL (BNK-750~762 nav 10/148/59)
+    (직원·수급자·방문일정·RFID점검·본인부담·직원급여·재무회계·세무·사회보험·기관관리·기관평가)
+
+[2] PGID 3종 재실측 = 실체 변동 0 (cachebuster/세션토큰-only DRIFT · semantic IDENTICAL)
+  파일 / 크기 / md5(BNK-766) / vs BNK-762 md5 / 판정
+  - change-list   100,278B  8f0edfdb…  ≠ 763998d2(bnk762)  size byte-IDENTICAL · form field name diff 0 → cachebuster-only
+  - schedule-rfid 150,501B  fcb55a03…  ≠ 1ae41719(bnk762)  size byte-IDENTICAL(=BNK-743 150,501B) → cachebuster-only
+  - mobile-sendW  133,272B  7dfbfbcb…  ≠ f3648d9f(bnk762)  size byte-IDENTICAL → cachebuster-only
+  결론: 3종 모두 페이지 바이트 크기 동일·필드/그리드/버튼 구조 변경 없음. md5 차이는 HTML 내 세션토큰/캐시버스터 뿐.
+
+[3] 신규 필드 블록 — mobile-sendW 문자 단가 ↔ id=10 SMS 가격 crosswalk 재확인
+- `messageAmt = {"app":10,"sms":20,"mms":50}` verbatim (BNK-754 최초 확인 → BNK-766 재확인 IDENTICAL)
+- ↔ 이지케어 charge 페이지 「문자 20~50원」 가격표 정합 (앱푸시 10 / SMS 20 / MMS 50)
+- ↔ ogada id=10 부가서비스(SMS·알림) 0.85: NotificationChannelReadinessService 3-channel(SMTP+알림톡 J03+SMS)
+    · message_kind 22 급여명세서 enum(BNK-744) · RFID→급여제공내역 SMS FULL-STACK(BNK-763 CLOSED)
+    · ogada 는 in-app 발송단가 노출은 미구현이나 3-channel readiness gate = 경쟁 4종 대비 우위(과대구축 금지)
+
+[4] change-list 8-col audit 재확인 (BNK-762 정본 carry)
+- ezGrid `{Ym} 변경사유` 8-col: sDate · pName · pCode · chg_what · memo · chg_before · chg_after · mName
+- 처리상태(승인 FSM) 컬럼 0 = 단순 감사(before/after) 로그 → ogada Visits change history parity 충분
+- planner: 승인 워크플로 FSM 과대구축 금지(P3 polish 「가정」·격상 0)
+
+[5] 도입·가격 재실측 (기존 URL 재실측 + 변동 기록)
+- home data-count: 53.2% / 9298 / 4673(재무회계 대행) / 2353(억) / 1820(억)
+    = BNK-762 4673 대비 zero drift (VALUE STABLE · 도입 카운터 정체)
+- 문자 단가 20~50원 (mobile-sendW messageAmt = charge 페이지 일치)
+
+[6] 규제 백본 재실측 — NHIS #44 러-1~4 이동서비스비 = 500차 IDENTICAL (마일스톤)
+- https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- 200 · 7,572B · c886ff1fd1d5ca2cb5dc76d30adde8ba · disk IDENTICAL (BNK-765 499차 → BNK-766 500차)
+- verbatim grep: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+- ↔ ogada TransportServiceFeeService RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY 6-link (id=2 0.85) · 상수 재조정 불요
+
+[7] planner 반영 제안
+- (P2 carry) id=10 SMS 발송단가(앱10/SMS20/MMS50) in-app 노출 = 이지케어 parity 참고 asset (진성갭 아님·과대구축 금지)
+- (P3 「가정」) change-list 승인 FSM 미도입 유지 = 단순 audit 로그로 충분
+- 신규 진성갭 0 · closure 0 · 가정 번복 0 · KPI promote 0
+
+신규 snapshot: ezcare_change_rfid_sms_remeasure_crosswalk_bnk766.txt(주력) · nhis_jo44_live_bnk766.html · ezcare_home_live_bnk766.html ·
+  ezcare_new_ez_pgid_mobile-sendW_bnk766.html · ezcare_new_ez_pgid_change-list_bnk766.html · ezcare_menu_catalog_bnk766.json
+덮어쓰기 0 (bare demo 셸/nav/catalog/PGID 3종 = 세션토큰 drift → revert)
+per-cycle minimum 4종 충족: 재실측+변동기록(PGID 3+NHIS 500차+home) · 필드 블록(messageAmt↔가격) · MATRIX 1행+ @HEAD · BENCHMARK §차수

@@ -1,0 +1,119 @@
+BNK-825 — 케어포 역공학 0–2h (2026-07-17T09:05:00Z)
+rotation: daycare/func.php 107-leaf 정본·매뉴얼 PDF p32–42 pypdf·demo-work 시설 셸 transport 0
+          · M2 이동서비스 workflow 필드 tri-source ↔ ogada /transport + /attendance Route 1:1
+          · PDF↔func 번호 drift 재확인 · ogada `@3f7bb94`/`@34c16cd`
+
+================================================================
+1. ogada git 실측
+================================================================
+FE develop  3f7bb94  fix(v1.2.1/QA-B95): decode prime/double-prime quote HTML entity aliases
+            WT CLEAN · ahead origin/test **0** = FULLY SYNCED
+            Route 133 (<Route\b 132 + <Routes> 1) · 106 *Page.jsx
+            FE test 530 (313 .test.jsx + 217 .test.js)
+BE develop  34c16cd  fix(v2/QA-B95): decode prime/double-prime quote HTML entity aliases
+            WT CLEAN · ahead **724** vs 598d108 (BNK-824 `@3b0b6b9` → **+1**)
+            BE Test 294 · BE @Test **2277** (+1 vs BNK-824 2276)
+            @RestController 81 · Flyway V1–V196
+모듈 coverage 97.41% (28.25/29 · id=2/8/10 0.85 · id=12 0.7)
+merge gate 724 (FE 0 FULLY SYNCED + BE 724 · BE-heavy → tester FF)
+
+================================================================
+2. live / Wayback 재실측 (증거 URL)
+================================================================
+LIVE  https://www.carefor.co.kr/daycare/func.php     HTTP **000** 28s timeout · **100-cycle+** streak
+LIVE  https://demo-work.carefor.co.kr/             HTTP **000** 28s timeout · **100-cycle+**
+→ disk canonical: carefor_func.php md5 `6226e6eb` 98,328B LOCK (BNK-814 59-day IDENTICAL carry)
+
+★ NEW evidence URL #1 — 매뉴얼 PDF Wayback pypdf 재실측 (p32–42 M2 workflow)
+URL   https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+HTTP  200 · SIZE 9,992,772B · md5 `96f7d45e` = BNK-821 **byte-IDENTICAL** → **558차** zero drift
+저장  carefor_manual_pdf_bnk825.pdf
+판정  132 pages · p32–42 M2 이동서비스 workflow 필드 extract (§3)
+
+★ 기존 URL 재실측 #2 — demo-work 시설 셸 (Wayback id_ 20250712 carry)
+URL   https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/
+HTTP  200 · 71,742B · md5 `ebee4d47` = BNK-777 **byte-IDENTICAL**
+판정  loadPage **114** · rpt class **34** (29.8%) · transport/M2 nav **0**
+        유일「차량」hit = 9-5.운영관리(차량/비품/CCTV) — M2 이동서비스 ≠ 시설운영 차량
+
+★ 기존 URL 재실측 #3 — NHIS #44
+URL   https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP  200 · 7,572B · md5 `c886ff1f` = BNK-824 **byte-IDENTICAL** → **558차** zero drift
+저장  nhis_jo44_live_bnk825.html
+
+================================================================
+3. ★★★ M2 PDF p32–42 workflow 필드 tri-source crosswalk (신규 분석 블록)
+================================================================
+근거: func catalog `6226e6eb` M2 10-leaf · PDF pypdf `96f7d45e` p32–42 ·
+      demo-work `ebee4d47` (시설 셸 transport 0) · ogada `@3f7bb94` Route grep
+
+### 3-1 PDF↔func 번호 drift (확인 — BNK-761 carry + pypdf 재확인)
+
+| PDF p | PDF 메뉴번호·제목 | func.php 정본 | drift |
+|-------|------------------|---------------|-------|
+| p34 | 2-1 일정관리 | 2-1 일정관리(공단연동) | ✅ |
+| p38 | 2-5 청구내역상세 | 2-5 청구내역상세(공단연동) | ✅ |
+| p39 | **2-3** 탑승관리 | **2-2** 탑승관리(차량 이용) | ⚠️ swap |
+| p40 | 2-4 차랑관리(오타) | 2-4 차량관리 | ✅(typo) |
+| p41 | **2-2** 출석관리 | **2-3** 출석관리(차량 미이용) | ⚠️ swap |
+| p42 | **2-6** 월간서비스제공현황 | **2-6** 공단 급여비용 청구 자료 | ⚠️ mismatch |
+
+→ **func.php + demo loadPage title = authoritative** (BNK-777 M3 drift 패턴 동일).
+  PDF p39/p41 은 2-2↔2-3 **표기 swap only** · Route/API 변경 불요.
+  PDF p42 「2-6 월간서비스제공현황」은 func 2-7/2-8 리포트군과 의미 중복「가정」·
+  func 2-6(공단 청구자료)과 **번호 재사용 drift**.
+
+### 3-2 PDF workflow 필드 → ogada Route (10-leaf PARITY + SUPERSET)
+
+| func | PDF workflow 핵심 필드 (pypdf verbatim 요약) | ogada Route/API (`@3f7bb94`) | 판정 |
+|------|-------------------------------------------|------------------------------|------|
+| 2-1 | 일정 일괄생성·공단 엑셀 업로드·차량일정변경·급여비용 예상·달력 색상(공단/청구/본인부담 lock) | `/visits` · `/billing/imports/nhis` · Visit schedule API | ✅ PARITY |
+| 2-1-1 | (func only·PDF M1 외출과 연계) | `/transport/outings` · G15 | ✅ |
+| 2-2 | 운전자/동승자/확인자·탑승시간·이동서비스 일지·**지도보기**·모바일 앱 탑승 | `/attendance/boarding` · `/transport/runs/*` · shuttle metadata | ✅+ SUPERSET(NHIS 러-1~4·service-fees) |
+| 2-3 | 출석확인 즉시저장·탑승시간 수정·일정시간 수정·월간/당일 출석 출력 | `/attendance/on-site` · `/attendance/checkin` · QR `/attendance/checkin/qr` | ✅+ SUPERSET(QR) |
+| 2-4 | 차량등록(탑승정원·운전자·정비·운행기록·주유량) | `/transport/vehicles` · run metadata V189+ | ✅ PARITY |
+| 2-5 | 청구내역상세 엑셀 업로드·주소라벨·공단 청구건수 표기 | `/billing/imports/nhis` · VisitNhisComparisonPanel | ✅+ SUPERSET |
+| 2-6 | (func) 공단 급여비용 청구 자료 | NHIS import cluster (dedicated page △ P3 carry) | △ |
+| 2-7 | PDF p32 흐름도「월간 서비스 변동현황」 | `/reports/transport-monthly` (variation API) | ✅ CLOSED(BNK-761) |
+| 2-8 | PDF p32「월간 입소자/출석 현황」 | `/reports/transport-monthly` (resident status API) | ✅ CLOSED |
+| 2-9 | 수급자 외출 리포트 | `/reports/client-outings` · ClientOutingReportPage JSDoc G15 2-9 | ✅ CLOSED |
+
+leaf 판정: ✅ **8** · ✅+ **2** · △ **1**(2-6 P3) · ❌ **0**
+id=2 「이동서비스」 coverage **0.85** = form 18/19/20 polish residual (KPI promote 0)
+
+### 3-3 ogada SUPERSET (경쟁 대비 차별 — demo 시설 셸 transport 0 대조)
+
+| lever | carefor | ogada |
+|-------|---------|-------|
+| 시설 데모 셸 | M2 nav **0** · transport grep **0** | `/transport/*` 9-route LIVE |
+| 이동서비스비 | func 2-x 차량·연료 (NHIS #44 청구 cluster △) | `TransportDistanceBand RU_1~4` + `ONE_WAY_RATIO=0.5` + `/transport/service-fees` |
+| 배차 | 수동 탑승기록·지도보기(PDF p39⑤) | `/transport/auto-dispatch` · `/transport/compliance` |
+| 출석 | 출석확인·모바일 탑승(PDF) | QR `/attendance/qr/generate` · `/attendance/checkin/qr` |
+| 감사 | jqGrid row-CRUD(추정) | audit-first DELETE 2.3%(BNK-823 carry) |
+
+### 3-4 PDF↔7-x lifecycle 연계 (확인)
+
+PDF p37③: 주황색 박스 = 본인부담금 청구완료 일정(삭제·수정 불가) → 「7-1.본인부담금청구관리」에서 청구삭제 후 수정
+↔ ogada `/billing` + `/billing/claims` + copay lock workflow (BNK-821 M7 closed band carry)
+→ M2 일정 색상 FSM ↔ M7 청구 lifecycle **cross-module coupling** 확인 · 신규 갭 0
+
+================================================================
+4. func.php 107 vs 「109」 정본 (확인)
+================================================================
+catalog leaf_count=107 · demo loadPage=114(含 sitemap) · unique func id=108(BNK-777)
+「109」= 108 menu + sitemap 1 「가정」·마케팅 shell 103-leaf ≠ catalog 107 (BNK-761)
+module_counts: M1=11 M2=10 M3=11 M4=10 M5=13 M6=5 M7=11 M8=15 M9=6 M10=9 M11=6 → sum **107**
+
+================================================================
+5. 산출·판정
+================================================================
+신규 snapshot 3: carefor_m2_pdf_workflow_tri_source_bnk825.txt · carefor_manual_pdf_bnk825.pdf · nhis_jo44_live_bnk825.html
+덮어쓰기 0 · zero drift IDENTICAL 2(PDF 558차·NHIS 558차)
+가정 번복 0 · P0/P1 격상 0 · KPI promote 0
+per-cycle minimum 4종 충족
+
+근거 URL:
+- PDF https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+- demo https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/
+- NHIS https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- ogada FE `@3f7bb94` / BE `@34c16cd`

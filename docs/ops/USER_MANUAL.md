@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T20:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T03:22:00Z -->
 # ogada 사용자 매뉴얼 (ops/USER_MANUAL.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-17 (Q924: 활동 사진 magic-byte SEC-D25 · Q925: NoBreakSpace mid-token strip · baseline `c19bfa6`/`090ac10` · Flyway **V1–V196**)
+> **최종 갱신**: 2026-07-18 (엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed FE·BE 회귀 고정 · 사진 업로드 성공 스크린리더 안내 UXD-191 · baseline `9449e1f`/`2789553` · Flyway **V1–V196**)
 > **대상 독자**: 주간보호센터 현장 사용자 — **통합 관리자**, **센터장**, **요양보호사**, **사회복지사**, **보호자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/planning/USER_STORIES.md`  
 > **기술 스택**: Java Spring Boot 3.x + React (Vite SPA) + PostgreSQL
@@ -25,14 +25,14 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | 역할별 메뉴·권한·업무 절차 | `sysadmin` 기술 설정 상세 (→ `ADMIN_GUIDE.md`) |
 | 보호자 QR 셀프 체크인 (B방식) | `caregiver`·`social_worker` 전용 **식단·일정 등록** (관리자만, §5-9) |
 
-### 1-3. 구현 상태 안내 (2026-07-17 develop HEAD `c19bfa6` / frontend `090ac10` 기준)
+### 1-3. 구현 상태 안내 (2026-07-18 develop HEAD `9449e1f` / frontend `2789553` 기준)
 
 | 영역 | 상태 | 비고 |
 |------|------|------|
-| 백엔드 API | **Must + … + V196 ✅** @ `c19bfa6` **SYNCED** · **v3 활동 사진 magic-byte ✅** (**Q924**) · **QA-B95 NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) · **v3 프로그램 일정 사진 업로드 ✅** (**Q917**·**Q920**) · **live probe V196 연계 무결성 ✅** (**Q918**) · **QA-B95 blank operation blocker 목록 ✅** (**Q912**) · **US-R01-c leave-ledger empty scope ✅** (**Q913**) · **QA-B95 core quote/angle 세미콜론 생략 BE lock ✅** (**Q911**) · **QA-B95 확장 prime ✅** (**Q910**) · **QA-B95 prime/double-prime 인용문 ✅** (**Q909**) · **QA-B95 guillemet 인용문 ✅** (**Q908**) · **QA-B95 low-9/reversed-9 인용문 ✅** (**Q907**) · **QA-B95 Left*/Right*Quote ✅** (**Q905**) · **QA-B95 OpenCurly* ✅** (**Q904**) · **QA-B95 typographic 인용문 ✅** (**Q903**) · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | Flyway **V186–V196** · BE Test **~2305** |
+| 백엔드 API | **Must + … + V196 ✅** @ `9449e1f` **SYNCED** · **엑셀 import null·빈(0바이트) 파일 fail-closed ✅** (**Q931~Q933**) · **SEC-D34 엑셀 import 4경로 ✅** (**Q931~Q932**) · **업로드 magic-byte 확대 ✅** (**Q926~Q929**) · **v3 활동 사진 magic-byte ✅** (**Q924**) · **QA-B95 NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) · **v3 프로그램 일정 사진 업로드 ✅** (**Q917**·**Q920**) · **live probe V196 연계 무결성 ✅** (**Q918**) · **QA-B95 blank operation blocker 목록 ✅** (**Q912**) · **US-R01-c leave-ledger empty scope ✅** (**Q913**) · **QA-B95 core quote/angle 세미콜론 생략 BE lock ✅** (**Q911**) · **QA-B95 확장 prime ✅** (**Q910**) · **QA-B95 prime/double-prime 인용문 ✅** (**Q909**) · **QA-B95 guillemet 인용문 ✅** (**Q908**) · **QA-B95 low-9/reversed-9 인용문 ✅** (**Q907**) · **QA-B95 Left*/Right*Quote ✅** (**Q905**) · **QA-B95 OpenCurly* ✅** (**Q904**) · **QA-B95 typographic 인용문 ✅** (**Q903**) · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | Flyway **V186–V196** · BE Test **~2305** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
-| 프론트엔드 | **133 route · 107 page** @ `090ac10` **SYNCED** | **활동 사진 magic-byte FE ✅** (**Q924**) · **NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **QA-B95 uppercase `&NUM` decode test lock ✅** (**Q923**) · **활동 사진 `ds-stack--tight` ✅** (**Q921**, UXD-189) · **세미콜론 생략 `&num` liveConfig ✅** (**Q919**) · **프로그램 일정 활동 사진 ✅** (**Q917**·**Q920**) · **Must ds-* 레이아웃 12종 ✅** (**Q914**, UXD-188) · **청구 상태 이력 타임스탬프 ✅** (**Q915**) · **blank operation blocker 목록 FE lockstep ✅** (**Q912**) · **세미콜론 생략 amp ✅** (**Q916**) · **Must ds-* 텍스트·동의·브레드크럼 9종 ✅** (**Q906**) · **세미콜론 생략 core quote/angle ✅** (**Q911**) · **확장 prime ✅** (**Q910**) · **prime/double-prime 인용문 ✅** (**Q909**) · **guillemet·low-9 인용문 ✅** (**Q908**·**Q907**) · **Left*/Right*Quote FE lockstep ✅** (**Q905**) · **OpenCurly*·typographic 인용문 ✅** (**Q904**·**Q903**) · **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **G2 branch scope fallback ✅** (**Q868**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **soft-hyphen decode ✅** (**Q859**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · **`/clients/home-newsletter` ✅** · **M11 `/payroll/*` 5화면 ✅** · … |
-| UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·**G2 가정통신문·기관 공지**·**연계기록지**·**프로그램 활동 사진(magic-byte)**·**RFID 급여제공내역 일괄 SMS**·**M11 급여 5화면+kind22 발송**·**M12 BPO·SSO**·**위원회·보호자 회의록(필수업무 27)** 등 | **모듈 KPI 97.41%** |
+| 프론트엔드 | **133 route · 106 page** @ `1f9d49c` **SYNCED** | **은행 입금 엑셀 FE 사전검증 ✅** (**Q932**) · **사진 업로드 성공 스크린리더 안내 ✅** (**Q933**, UXD-191) · **SEC-D34 엑셀 import FE 사전검증·빈 헤더 fail-closed ✅** (**Q931**) · **이용자 사진·급여계약·HR·등급이력·보수교육 magic-byte ✅** (**Q926~Q928**) · **인쇄/ARIA a11y ✅** (**Q930**) · **활동 사진 magic-byte FE ✅** (**Q924**) · **NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **QA-B95 uppercase `&NUM` decode test lock ✅** (**Q923**) · **활동 사진 `ds-stack--tight` ✅** (**Q921**, UXD-189) · **세미콜론 생략 `&num` liveConfig ✅** (**Q919**) · **프로그램 일정 활동 사진 ✅** (**Q917**·**Q920**) · **Must ds-* 레이아웃 12종 ✅** (**Q914**, UXD-188) · **청구 상태 이력 타임스탬프 ✅** (**Q915**) · **blank operation blocker 목록 FE lockstep ✅** (**Q912**) · **세미콜론 생략 amp ✅** (**Q916**) · **Must ds-* 텍스트·동의·브레드크럼 9종 ✅** (**Q906**) · **세미콜론 생략 core quote/angle ✅** (**Q911**) · **확장 prime ✅** (**Q910**) · **prime/double-prime 인용문 ✅** (**Q909**) · **guillemet·low-9 인용문 ✅** (**Q908**·**Q907**) · **Left*/Right*Quote FE lockstep ✅** (**Q905**) · **OpenCurly*·typographic 인용문 ✅** (**Q904**·**Q903**) · **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **G2 branch scope fallback ✅** (**Q868**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **soft-hyphen decode ✅** (**Q859**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · **`/clients/home-newsletter` ✅** · **M11 `/payroll/*` 5화면 ✅** · … |
+| UI 연동 완료 | **Must 기능 full-stack ✅** — 출석·청구·QR·**G2 가정통신문·기관 공지**·**연계기록지**·**프로그램·이용자 사진·서류함 magic-byte**·**RFID 급여제공내역 일괄 SMS**·**M11 급여 5화면+kind22 발송**·**M12 BPO·SSO**·**위원회·보호자 회의록(필수업무 27)** 등 | **모듈 KPI 97.41%** |
 | UI API 갭 | **P1**: **M11 급여 persist** · **수익·인건비 자동 집계** · **기관(테넌트)별 SSO 자격** · **P2**: **program reports FE `branchId` UI**(Q864·Q715 BE ✅) · **7-5 live PG** | |
 | **P2 Planned** | **L03 간호급여 잔여 5 leaf·7-5 live PG·J03 Solapi live dispatch·LCMS CMS 3-method·G34 SMS live·G-Payroll·G30 live E2E** | **G-STAFF-WELFARE P3**(FAQ21796) · **8-12 PDF 공식 서식**(Q315) · **선임 업무수행일지 템플릿 카탈로그** P3 (Q635 잔여) |
 | JWT 저장 | **access 메모리 + refresh `sessionStorage`** (SEC-005, 결정 96) | **같은 탭** 새로고침·뒤로가기 시 **`restoreSession()`** 으로 유지. **탭 닫기**·로그아웃 시 재로그인. **30분 idle** 시 SessionTimeoutModal (Q112) |
@@ -56,11 +56,12 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 
 아래 5개는 최근 구현이 누적되어 현장 인수 시 누락되기 쉬운 Must 기능입니다. **보호자·기관 소통**은 FAQ **Q881** 표(기관 공지 vs 가정통신문 vs 연계기록지)를 먼저 보고 채널을 고르세요.
 
-> **IT live 전환 참고**: 알림 채널 readiness·live E2E operation gate는 게이트웨이 HTML entity 래퍼(**대괄호·중괄호·소괄호·꺾쇠·MathML 꺾쇠·인용문·확장 prime·세미콜론 생략 quote/amp/num·NoBreakSpace mid-token strip·blank operation blocker**, FAQ **Q895·Q897·Q898·Q900·Q901·Q903~Q912·Q916·Q919·Q923·Q925**)와 **bidi long-alias live harness(Q902)** · **V196 probe(Q918)** 를 BE+FE가 동일 규칙으로 풀어 fail-closed합니다. **카카오 필수 6종 live 전 점검(Must)** 은 FAQ **Q896** — catalog **`HOME_NEWSLETTER`** 는 보호자 발송용이며 **기관 공지 게시판과 별 채널**(Q881). **보호자·기관 소통 채널**은 FAQ **Q881**. **이용자 등록 동의·라벨 a11y(Must)** 는 FAQ **Q906**. **간호·요양·QR·HR 레이아웃(Must)** 은 FAQ **Q914**. **청구 상세 상태 이력 시각**은 FAQ **Q915**. **프로그램 일정 활동 사진(Must)** 은 FAQ **Q917**·**Q920**·**Q921**·**Q924**(magic-byte).
+> **IT live 전환 참고**: 알림 채널 readiness·live E2E operation gate는 게이트웨이 HTML entity 래퍼(**대괄호·중괄호·소괄호·꺾쇠·MathML 꺾쇠·인용문·확장 prime·세미콜론 생략 quote/amp/num·NoBreakSpace mid-token strip·blank operation blocker**, FAQ **Q895·Q897·Q898·Q900·Q901·Q903~Q912·Q916·Q919·Q923·Q925**)와 **bidi long-alias live harness(Q902)** · **V196 probe(Q918)** 를 BE+FE가 동일 규칙으로 풀어 fail-closed합니다. **카카오 필수 6종 live 전 점검(Must)** 은 FAQ **Q896** — catalog **`HOME_NEWSLETTER`** 는 보호자 발송용이며 **기관 공지 게시판과 별 채널**(Q881). **보호자·기관 소통 채널**은 FAQ **Q881**. **이용자 등록 동의·라벨 a11y(Must)** 는 FAQ **Q906**. **간호·요양·QR·HR 레이아웃(Must)** 은 FAQ **Q914**. **청구 상세 상태 이력 시각**은 FAQ **Q915**. **프로그램·이용자 사진·서류함 magic-byte(Must)** 는 FAQ **Q917**·**Q920**·**Q921**·**Q924**·**Q926~Q929**. **공단·은행 엑셀 import 서명(SEC-D34)** 은 FAQ **Q931**·**Q932**. **직원현황 인쇄·활동 사진 ARIA** 는 FAQ **Q930**.
 
 | 구분 | 화면(프론트) | 핵심 API(백엔드) | 운영 확인 포인트 |
 |------|--------------|------------------|------------------|
-| **프로그램 일정 활동 사진 (v3 Must, Q917·Q920·Q921·Q924)** | `/programs` 일정 표 **「활동 사진」** | `POST /api/v1/programs/schedule/{programId}/photo` · `GET …/schedule?date=` (`photoStorageKey`) | **JPEG/PNG/WEBP ≤5MB** · **Content-Type 파라미터 strip** · **magic-byte 서명 일치** · **`ds-stack--tight` 간격** · **hq/branch/social/caregiver** · **등록됨/미등록** |
+| **프로그램 일정 활동 사진 (v3 Must, Q917·Q920·Q921·Q924·Q930·Q933)** | `/programs` 일정 표 **「활동 사진」** | `POST /api/v1/programs/schedule/{programId}/photo` · `GET …/schedule?date=` (`photoStorageKey`) | **JPEG/PNG/WEBP ≤5MB** · **Content-Type 파라미터 strip** · **magic-byte 서명 일치** · **오류 ARIA** · **성공 `role="status"` 안내** · **`ds-stack--tight` 간격** · **hq/branch/social/caregiver** · **등록됨/미등록** |
+| **이용자 프로필·서류함·공단 엑셀 업로드 (Must, Q926~Q931·Q933)** | `/clients/:id` 사진·급여계약·등급 이력 · `/staff` HR·보수교육·요양보호사 · `/visits`·`/billing/imports/nhis` NHIS | `POST …/clients/{id}/photo` · attachments · `POST …/imports/nhis*` · `POST …/staff/imports/nhis-caregivers*` | **사진 JPEG/PNG/WEBP**(성공 `role="status"` 안내) · **PDF/이미지 서류** · **엑셀 OOXML/OLE 서명(SEC-D34)·null fail-closed** · MIME 위장 거부 |
 | **이용자 등록 동의·라벨 a11y (Must, Q906)** | `/clients/new` · `/clients/:id/edit` · `/guardian/checkin` · `/transport` | *(CSS `components.css` — API 변경 없음)* | **`ds-consent-box`** 주민번호 동의 · **`ds-field-label`** · **`ds-page-breadcrumb`** · **`ds-submit-block`** · **`ds-transport-map__refresh-hint`** (`0438a17`, UXD-187) |
 | 기능회복훈련 (G17) | `/programs/functional-recovery` | `GET/POST/PATCH /api/v1/programs/functional-recovery/plans` · `.../records` · `GET .../compliance` | **주야간 평가지표 25–27** 정본 · **`dualNumberingNoteKo`**(평가27≠필수업무27「가족과의 소통」) · 계획 수립률·30일 내 시작·월 1회 이상 급여제공 기록 (Q773·**Q850**) |
 | 사례관리 (G32) | `/case-management/meetings` | `GET/POST/PATCH /api/v1/case-management/meetings` · `GET .../compliance` | 회의/평가 누락, 참석자별 의견 누락, 회의 결과 반영 누락 |
@@ -78,8 +79,8 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 운영 관
 | **재무회계 BPO 진입 (M12, Q782·Q784·Q785·Q787·Q801·Q854·Q860)** | `/accounting` | `GET …/bpo-launch` · `POST …/bpo-sso-handoff` · `GET /api/v1/health` | **공개 로그인** · **SSO(env 자격·blocker 없을 때·HQ/BRANCH만)** · **SSO 잔여 블로커 안내·버튼 숨김** · ogada **비밀번호 미수집** |
 | **가정통신문·기관 공지 게시판 (G2, Q788~Q800·Q803~Q808·Q811·Q858·Q868·Q878·Q881)** | `/clients/home-newsletter` · `#facility-notices` | `GET …/launch` · `GET …/authoring` · `POST …/compose-preview` · `GET/POST/PATCH …/facility-notices` · `GET …/{id}` · `GET …/dispatch-history?branchId=&yearMonth=&status=&q=` · `GET /api/v1/health` | **운영 준비**(야간=후속·조용한 시간대, Q811) · **작성 미리보기(발송 없음)** · **서버 DRAFT·수정·복제(후 바로 수정)·상세·첨부 http(s)·분류 NOTICE/RESOURCE만·기관 공지/자료실** · **게시·삭제 후 빈 페이지 자동 복구**(Q858) · **지점 컨텍스트 불안정 시 첫 유효 지점 fallback**(Q868) · **좁은 화면 표 가로 스크롤은 카드 안만**(Q878) · **소속 지점 발송 이력+필터(기본 20건)** · 발송은 이용자 상세 (Q217) |
 | 청구 생성 가드 | `/dashboard`, `/dashboard/hq` | `GET /api/v1/dashboard/branch` · `GET /api/v1/dashboard/hq` | `claimGenerationGuardBlocked=true` 시 전월 미납 해결 전 신규 청구 생성 금지 |
-| 공단 요양보호사 일괄 요청 (G-STAFF-NHIS-EXCEL-IMPORT) | `/staff` | `POST /api/v1/staff/imports/nhis-caregivers/preview` · `POST …/nhis-caregivers` | 미리보기 `APPLIED` 행 체크·선택 등록·`onImported` refresh · 빈 선택 `422` (Q573·Q576) |
-| 은행 입금 형식·dry-run (G-BANK-EXCEL-8) | `/billing/payments` | `GET /api/v1/billing/imports/bank-deposits/formats` · `POST …/preview` · `POST …/bank-deposits` | **「미리보기」→ `APPLIED` 체크→「선택 행 등록」** · 8종 은행 헤더 (Q572·Q576) |
+| 공단 요양보호사 일괄 요청 (G-STAFF-NHIS-EXCEL-IMPORT) | `/staff` | `POST /api/v1/staff/imports/nhis-caregivers/preview` · `POST …/nhis-caregivers` | 미리보기 `APPLIED` 행 체크·선택 등록·`onImported` refresh · **FE+BE 엑셀 서명(SEC-D34, Q929·Q931)** · 빈 선택 `422` (Q573·Q576) |
+| 은행 입금 형식·dry-run (G-BANK-EXCEL-8) | `/billing/payments` | `GET /api/v1/billing/imports/bank-deposits/formats` · `POST …/preview` · `POST …/bank-deposits` | **「미리보기」→ `APPLIED` 체크→「선택 행 등록」** · **xlsx OOXML 서명 FE+BE 검증(Q932)** · 8종 은행 헤더 (Q572·Q576) |
 | 직원 휴직 lifecycle (G-STAFF-LEAVE-STATUS) | `/staff` · `/staff/{userId}` | `GET /api/v1/staff/lifecycle-summary` · `PATCH /api/v1/users/{userId}` | **`StaffLifecycleSummaryPanel`** `onLeaveCount` · **`StaffLifecyclePanel`** 「휴직」·복직 (Q584) |
 | 입금·수납 대장 반월·이중기준 (G-BILLING) | `/billing/reports/deposits` · `/receipts` | `GET /api/v1/billing/reports/deposits?period=` · `GET …/receipts?basis=` | **`BillingReportPage`** **「입금 구간」**·**「집계 기준」** · **「적용 조건:」** summary · 응답 **`appliedFilters`** (Q585·Q587·Q588) |
 | 방문요양 NHIS 불일치 대시보드 (G21) | `/dashboard` · `/dashboard/hq` | `GET /api/v1/dashboard/branch` · `GET /api/v1/dashboard/hq` | **`nhisComparisonGapCount`** · **「공단 일정 불일치」** StatCard · home-visit-like 지점만 (`0796821`/`fe7df60`, Q594) |
@@ -1012,6 +1013,7 @@ SideNav **청구** 그룹 — **`PaymentPage`·`OverduePage`·`EasyPayPage`·`Cm
 2. (다지점) 상단 **지점 선택기**에서 대상 지점을 선택합니다.
 3. 하단 **「은행 입금 엑셀 일괄 등록」** 카드에서 **적용 월**을 선택합니다.
 4. 은행 인터넷뱅킹에서 받은 **입금 내역 xlsx**(.xlsx)를 선택합니다.
+   - **`.xlsx`(OOXML)만** 지원합니다 — **`.xls`는 거부**됩니다 (Q932). 이제 **브라우저가 업로드 전에 먼저** 검사하고 서버도 재검사합니다: 확장자만 바꾼 비엑셀 파일은 「엑셀 파일 시그니처가 올바르지 않습니다.」로, **내용이 없는 0바이트 파일**은 「업로드할 엑셀 파일이 필요합니다.」로, **서명은 맞지만 내용이 손상된 파일**은 「엑셀 파일을 읽을 수 없습니다.」(Q934)로 거부됩니다.
    - **「지원 은행 8종 엑셀 형식 (케어포 7-2 p.88)」** 을 펼치면 KB국민·우리·NH농협·신한·하나·부산·대구·광주 **컬럼 예시**를 확인할 수 있습니다 (Q258). 기동 시 **`GET …/bank-deposits/formats`** catalog도 자동 조회합니다 (Q572).
    - 각 은행 행의 **「샘플」** 버튼으로 **최소 컬럼 레이아웃** `.xlsx`를 내려받아 형식을 확인할 수 있습니다 (`b9845ac`, Q258).
 5. **「미리보기」**를 클릭합니다. 실제 수납 없이 **행별 매칭 결과**가 표시됩니다 — **`APPLIED`(자동 매칭 가능)** 행은 **자동 체크**됩니다 (Q572).
@@ -1325,7 +1327,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 0-1. **수가표 연도 가드 (US-G04, Q260·Q392)**: 선택 **청구 월의 연도**에 **등급(1~5)×이용시간대 25칸** 수가표가 모두 등록되지 않으면 **`FeeScheduleYearGuardBanner`** warning이 표시되고 **업로드가 비활성**됩니다. 배너·업로드 차단 오류는 **`GET /billing/fee-schedules/year-coverage?year=`** 응답 **`message`** 를 **우선 표시**합니다 — 예: `{year}년 수가표가 {n}/25칸만 등록되어 있습니다` (`57114b8`, Q392). **인지지원등급(ltcGrade 0) 5칸**은 **별도 집계**(`cognitiveRegistered`/`cognitiveComplete`, Q311) — **NHIS import gate는 표준 25칸만** 검사합니다. API **로딩 중·오류** 시에도 업로드를 차단합니다. **「수가표 등록」** 링크(`/billing/fee-schedules`)에서 **「공단 2026 수가 시드」** 또는 셀별 등록 후 재시도하세요. **`POST /billing/imports/nhis`** 도 동일 규칙으로 **`422`**를 반환합니다 (`970c7af`·`8f208e4`).
 
 1. **청구**(`/billing`) → **「NHIS 엑셀 import (P7)」** → `/billing/imports/nhis`.
-2. **청구 월**·엑셀 파일 선택 후 **업로드** (0·0-1번 조건 충족 시).
+2. **청구 월**·엑셀 파일 선택 후 **업로드** (0·0-1번 조건 충족 시). **`.xlsx`(OOXML) only** — 브라우저·서버 모두 **파일 서명(SEC-D34, Q931)** 을 검사합니다. 확장자만 바꾼 파일은 「엑셀 파일 시그니처가 올바르지 않습니다.」로, **내용이 없는 0바이트·빈 파일**은 「업로드할 엑셀 파일이 필요합니다.」로 거부됩니다.
 3. import **배치 목록**에서 해당 배치 링크 → **reconciliation** (`/billing/imports/nhis/:batchId`).
 4. **`NhisScheduleConfirmLockGuide`** 로 해당 배치 월의 **확정·수납 청구 건수**를 확인합니다 — locked 시 **재import 경고**만 표시되며, 아래 **수동 매칭은 계속** 가능합니다 (Q209).
 5. 상단 **매칭 상태 요약**(StatCard)에서 **일치·차이·미매칭·대기(보류)** 건수를 확인합니다 (UXD-58, Q182).
@@ -1371,7 +1373,7 @@ POST /api/v1/billing/easy-pay/claims/{claimId}/payment
 케어포 **8-1-2** 와 같이 공단(NHIS)에서 받은 **요양보호사 정보 엑셀**로 직원 계정 요청을 한꺼번에 등록할 수 있습니다 (`hq_admin`·`branch_admin`).
 
 1. **운영 → 직원 관리**(`/staff`) 상단 **「공단 요양보호사 엑셀 업로드」** 카드를 확인합니다.
-2. **요양보호사 엑셀 (.xlsx)** 파일을 선택하고 **「미리보기」**를 클릭합니다.
+2. **요양보호사 엑셀 (.xlsx 또는 .xls)** 파일을 선택하고 **「미리보기」**를 클릭합니다. 확장자·MIME만 맞춘 위장 파일은 서버에서 거부되고, **내용이 없는 0바이트·빈 파일**은 「업로드할 엑셀 파일이 없습니다.」로 거부됩니다 (FAQ **Q929**·**Q931**).
 3. 표에서 **행·성명·생년월일·인력번호·이메일·상태**를 확인합니다.
 
 | 미리보기 상태 | 의미 | 조치 |
@@ -2792,7 +2794,7 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 1. SideNav **기록 → 프로그램 관리**로 이동합니다.
 2. **기록일**을 선택하면 당일 프로그램 일정이 표시됩니다 (`GET /api/v1/programs/schedule?date=` — 응답에 **`photoStorageKey`** 포함).
 3. **`hq_admin`·`branch_admin`** — 일정이 비어 있으면 **`ProgramScheduleForm`** 에서 프로그램명·시간 등을 입력하고 **등록**합니다 (`POST /api/v1/programs/schedule`).
-4. **활동 사진 (Q917·Q920·Q921·Q924)** — 일정 표 **「활동 사진」** 열에서 **등록됨/미등록**을 확인합니다. **`hq_admin`·`branch_admin`·`social_worker`·`caregiver`** 는 JPEG·PNG·WEBP(최대 5MB) 파일을 선택해 업로드합니다 (`POST /api/v1/programs/schedule/{programId}/photo`). **`image/jpeg; charset=binary`** 처럼 Content-Type에 파라미터가 붙어도 허용됩니다 (Q920). **파일 내용 서명(magic-byte)이 MIME과 일치**해야 합니다 — 확장자만 바꾼 비이미지 파일은 「JPEG, PNG, WEBP 형식의 프로그램 사진만…」으로 거부됩니다 (Q924). 업로드 칸(상태·파일·버튼·오류)은 **밀착 세로 간격**으로 표시됩니다 (Q921).
+4. **활동 사진 (Q917·Q920·Q921·Q924·Q930)** — 일정 표 **「활동 사진」** 열에서 **등록됨/미등록**을 확인합니다. **`hq_admin`·`branch_admin`·`social_worker`·`caregiver`** 는 JPEG·PNG·WEBP(최대 5MB) 파일을 선택해 업로드합니다 (`POST /api/v1/programs/schedule/{programId}/photo`). **`image/jpeg; charset=binary`** 처럼 Content-Type에 파라미터가 붙어도 허용됩니다 (Q920). **파일 내용 서명(magic-byte)이 MIME과 일치**해야 합니다 — 확장자만 바꾼 비이미지 파일은 「JPEG, PNG, WEBP 형식의 프로그램 사진만…」으로 거부됩니다 (Q924). 오류는 **스크린리더가 파일 입력과 연결**해 읽습니다 (Q930). 업로드 칸(상태·파일·버튼·오류)은 **밀착 세로 간격**으로 표시됩니다 (Q921). **업로드 성공**은 표 배너 없이 **소리 안내 영역(`role="status"`)** 으로 스크린리더에 전달됩니다 (Q933, UXD-191).
 5. `GET /api/v1/programs/participations?date=` 로 참여 기록을 확인합니다. 목록 표에 **「미제공 사유 (G17b)」** 열이 표시됩니다 — **인지활동형(`COGNITIVE`)** 프로그램 **불참** 건만 사유 라벨이 채워집니다 (FE `487416d`, Q334).
 6. **`ProgramParticipationForm`** 에서 이용자·프로그램·참여/불참·만족도를 입력하고 **저장**합니다 (`POST /api/v1/programs/participations`).
    - **참여(`ATTENDED`)** — 만족도(1~5) **필수** · **미제공 사유 입력 불가** (BE `3bd6a43`)
@@ -2807,13 +2809,13 @@ ogada **도입 직후** 기존 수기·타 ERP에서 이관한 **미수·선납 
 | `OTHER` | 기타 |
 
 > **법적 근거**: MOHW 2025-247 **제32조** — 주야간보호 **인지활동형 프로그램 미제공** 시 급여제공기록지 **사유 기재** (FAQ Q333).  
-> **활동 사진**: 이용자 프로필 사진과 별도입니다. 일정 행 단위 **활동 증거**용입니다 (FAQ **Q917**·**Q920**·**Q921**·**Q924**).
+> **활동 사진**: 이용자 프로필 사진(Q926)과 별도입니다. 일정 행 단위 **활동 증거**용입니다 (FAQ **Q917**·**Q920**·**Q921**·**Q924**·**Q930**·**Q933**).
 
 | API | 용도 |
 |-----|------|
 | `GET /api/v1/programs/schedule?date=YYYY-MM-DD` | 당일 프로그램 일정 — **`photoStorageKey`** |
 | `POST /api/v1/programs/schedule` | 일정 등록 (`hq_admin`·`branch_admin`) — `programType`에 **`COGNITIVE`** 지정 가능 |
-| `POST /api/v1/programs/schedule/{programId}/photo` | 활동 사진 업로드 (multipart `file`) — JPEG/PNG/WEBP ≤5MB · Content-Type 파라미터 strip · **magic-byte 검증** (**Q917**·**Q920**·**Q924**) |
+| `POST /api/v1/programs/schedule/{programId}/photo` | 활동 사진 업로드 (multipart `file`) — JPEG/PNG/WEBP ≤5MB · Content-Type 파라미터 strip · **magic-byte 검증** (**Q917**·**Q920**·**Q924**·**Q930**) |
 | `GET /api/v1/programs/participations?date=YYYY-MM-DD` | 참여 기록 목록 — **`skipReason`** 포함 |
 | `POST /api/v1/programs/participations` | 참여·만족도·**`skipReason`** 등록·갱신 |
 
@@ -3385,7 +3387,7 @@ NHIS **청구 일정**과 **계획 일정** 페어가 일치하는지 **일괄�
 4. 화면 하단 **「공단 방문일정 엑셀 import」** 패널 **상단** — **`VisitNhisImportGuidePanel`** 에서 **Chrome·Edge 브라우저 안내**, 공단 포털 링크, **계획(PLAN)·청구(BILLING) 각 4단계** 절차, **`scheduleKind` 설명**, **import 결과 상태 5종(`SUCCESS`/`PARTIAL`/…)** , **오류·부분 반영 시 조치 7단계**, CONFIRMED 재업로드 주의, **「방문 일정 · 공단 명세 비교」** 링크를 확인합니다 (Q731·Q735·Q740, FE `cda2a10`/`2d9b9d3`). guidance API가 일시 실패하면 이 안내 블록만 숨겨지고 **아래 import 폼은 그대로** 사용할 수 있습니다.
 5. 같은 패널 **import 폼**에서:
    - **일정 종류** — `PLAN`(계획) 또는 `BILLING`(청구)
-   - **방문일정 엑셀** — **`.xlsx` 파일만** 선택 (Chrome·Edge에서 공단 파일 다운로드 권장). **`.xls`·CSV·PDF는 거부**됩니다 (Q278, `3c7b247`·`18e2b4c`). **`application/vnd.ms-excel`** MIME도 허용됩니다.
+   - **방문일정 엑셀** — **`.xlsx` 또는 `.xls`** 선택 (Chrome·Edge에서 공단 파일 다운로드 권장). **CSV·PDF·위장 파일은 거부**됩니다 (Q278·Q297·**Q931**). 업로드 **전** 브라우저가 **OOXML/OLE 서명**을 검사하고, 서버도 동일 규칙으로 재검증합니다.
    - **계획** 선택 시 — **「청구 일정도 함께 생성」** 토글으로 페어 BILLING 자동 생성 여부 선택
 6. **엑셀 import** 를 누르면 업로드 후 **`outcomeStatus` 기반 Alert**(전체 반영·부분 반영·미매칭·전체 건너뜀·빈 파일)와 **등록·미매칭·건너뜀** 건수가 표시됩니다 (Q735). **`PARTIAL`/`UNMATCHED`/`ALL_SKIPPED`/`EMPTY`** 또는 API 오류 시 Alert **바로 아래** **`VisitNhisImportRecoverySteps`** 가 **outcome별 복구 단계**를 보여 줍니다 (Q738, `e4dbe9a`).
 7. Alert **요약**·인라인 복구 단계와 결과 표에서 행별 **인정번호·방문일·시간·결과 Badge·사유·조치**를 확인합니다. **`UNMATCHED`** 행의 **「수급자 찾기」** 를 누르면 **`/clients?branchId={지점}&q={인정번호}`** 로 이동해 목록 **지점 FilterChip·검색**이 prefill 됩니다 (Q738·Q739, `562560a`). **해당 지점에 등록 수급자가 없으면** FilterChip이 **`전체`** 로 reset 되어 **`q` 검색**으로 타 지점 수급자가 보일 수 있습니다 (Q741, `320ba06`). **다지점** 조직에서는 import **지점과 동일**하게 좁혀져 타 지점 수급자 혼선을 줄입니다.
@@ -3404,8 +3406,8 @@ NHIS **청구 일정**과 **계획 일정** 페어가 일치하는지 **일괄�
 1. SideNav **기록 → 방문 일정**(`/visits`)으로 이동합니다.
 2. 화면 하단 **「RFID 계획·태그 비교 (7-code)」** 패널(`VisitRfidDiffComparePanel`)을 찾습니다.
 3. 상단 **info Alert** 에서 **RFID 특이사항란 = 별지 서식 동등** 안내를 확인합니다 (Q514, FAQ21817) — 불일치 시 **`/care/weekly-service-records`·`/care/service-special-notes`** 에서 보정하세요.
-4. **급여계획 엑셀 (planFile)** — 공단 방문요양 급여계획 xlsx를 선택합니다.
-5. **RFID 전송 엑셀 (rfidFile)** — RFID 태그 전송 내역 xlsx를 선택합니다.
+4. **급여계획 엑셀 (planFile)** — 공단 방문요양 급여계획 **xlsx 또는 xls**를 선택합니다 (**Q931** 서명 검증).
+5. **RFID 전송 엑셀 (rfidFile)** — RFID 태그 전송 내역 **xlsx 또는 xls**를 선택합니다 (**Q931**).
 6. **엑셀 비교**를 누르면 **계획·RFID 행 수**·**7-code 집계 chip**·**행별 diff 표**(인정번호·방문일·계획·태그·차이 코드)가 표시됩니다.
 7. **차이 코드**는 **COMP_01~09** 외 **소문자·공백·`COMP_4`/`comp-4` 변형**·**쉼표 구분 문자열**도 **표준 `COMP_04` 등으로 정규화**해 badge·집계 chip에 표시됩니다 (`570912e`, Q456).
 8. **차이가 0건**이면 **초록 success Alert** 「업로드한 급여계획과 RFID 전송 내역 사이에 차이가 없습니다.」가 표시됩니다 (`f232285`, Q482).
@@ -5000,6 +5002,8 @@ PATCH /api/v1/care/bathing-schedules/{recordId}
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-18 | **Q931~Q932** — §1-3·§4-6·§4-7·§5-11 **SEC-D34 엑셀 import 4경로** · baseline **`f6e4d88`/`3042a53`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q926~Q930** — §1-3·§1-5·§4-3·§4-7·§5-9 **업로드 magic-byte 확대 · 인쇄/ARIA a11y** · baseline **`be64fda`/`8b164c3`** · Flyway **V1–V196** |
 | 2026-07-17 | **Q924 · Q925** — §1-3·§1-5·§5-9 **활동 사진 magic-byte · NoBreakSpace mid-token strip** · baseline **`c19bfa6`/`090ac10`** · Flyway **V1–V196** |
 | 2026-07-17 | **Q922 · Q923** — §1-3·§1-5·§4-6-5 **M12 SSO `/carefor_login` allowlist · uppercase `&NUM` decode test lock** · baseline **`a742788`/`bc1d343`** · Flyway **V1–V196** |
 | 2026-07-17 | **Q921 · Q919 갱신** — §1-3·§1-5·§5-9 **활동 사진 `ds-stack--tight` · 세미콜론 생략 `&num` BE+liveConfig** · baseline **`759b15e`/`9e40c19`** · Flyway **V1–V196** |

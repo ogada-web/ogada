@@ -1,0 +1,173 @@
+BNK-724 이지케어 역공학 2–4h 교차검증 (2026-07-14T13:56Z)
+==========================================================
+rotation: 이지케어 역공학 — `./scripts/ezcare-demo-fetch.sh` 데모 로그인 → /new.ez + PGID batch(mobile-notice,
+  mobile-sendP, mobile-sendW, mobile-sendO) 신규 4-PGID 스냅샷·top-nav-V2 재실측·FAQ 리스트·home data-count
+직전 동일 rotation: BNK-720(2026-07-14T11:11Z) → ~2.8h 후
+직전 사이클: BNK-723(2026-07-14T13:10Z·케어포 역공학) → ~46분 후
+
+── ogada git 실측 (@develop HEAD) ──────────────────────────
+FE develop  : b7c9fa4  feat(v1.2.1/G2): wire home newsletter launch page and dispatch history
+              WT DIRTY 2M (HomeNewsletterLaunchPage.jsx +5/−2·test.jsx +20 branchId param wire·coder in-progress)
+              BNK-723 @b7c9fa4 → HEAD zero advance (SHA 동일) · origin/test=b7c9fa4 → ahead 0 = FULLY SYNCED
+BE develop  : ac422cc  feat(v2/G2): add home newsletter authoring catalog and compose preview
+              WT CLEAN · BNK-723 @9254721 → +2 commits (3ea0832 M12 SSO handoff controller tests + ac422cc G2 authoring)
+              ahead 633 vs origin/test=598d108 (BNK-723 631 → +2)
+merge gate  : 633 (FE 0 FULLY SYNCED + BE 633 · BE-heavy·FE WT DIRTY 2M 미커밋 → coder 선행 권장 후 tester FF)
+
+KPI 실측:
+  Route      132 (<Route\b 131 + <Routes> 1 · carry — 신규 route 0 · FE HEAD zero advance)
+  *Page.jsx  105 (carry — 신규 page 0)
+  FE test    518 (.test.js 214 + .test.jsx 304 · carry — WT DIRTY 는 인플레이스 확장)
+  BE Test    288 (Test.java 287 + Tests.java 1 · +2 files: AccountingBpoControllerTest + GuardianHomeNewsletterAuthoringServiceTest)
+  BE @Test   2135 (BNK-723 2125 recount → +10 · M12 SSO handoff controller test +5? · G2 authoring test +6·routing/security expand)
+  Flyway     V1–V190 (carry)
+  accounting route 1 · payroll route 5 (basis/labor-cost-ratio/ledger/reports/retirement-accrual)
+  competitorModuleCoverage: 29-entry · sum 26.80 · 26.80/29 = 92.41% (carry)
+    → id=1-5 「가정통신문」 0.65 carry (config 미갱신 — BE authoring landing 반영 potential lever)
+    → id=12 「수입지출·회계」 0.7 carry
+
+★★★ ezcare `mobile-notice` PGID = 「모바일 앱 공지사항」 authoring catalog (신규 evidence URL) ★★★
+  URL: https://ezcare.easyms.co.kr/new.ez?PGID=mobile-notice (demo 로그인 필요)
+  HTTP 200 · 118,239B · md5 3e719726695bda35f77ef2f6e4c9b456
+  section title(verbatim): 「7. 모바일 앱 공지사항」
+  tabs(verbatim): 「공지사항→직원」·「공지사항→수급자」 (2-tab dual-audience authoring)
+  compose form fields:
+    <input name=subject>  — 공지 대상/필터 subject (수급자·직원 선택)
+    <input name=title>    — 공지 제목 (본문 헤딩)
+    <input name=addFile[]> — 첨부 파일 (multi-upload)
+    <input name=keyword>  — 목록 검색 키워드
+  H3 verbatim: 「새 공지글 작성」·「제목」
+  키워드 빈도: 공지×17·저장×7·수급자×9·대상×3·제목×6
+  ⚠ 접근 제한 발견(verbatim): 「Access denied · admin 님은 현재 페이지 이용권한이 없습니다.」
+     → demo admin 계정으로 authoring 화면 렌더는 되지만 실제 저장·발송은 권한 gated
+     (「미확인」: 유료 계정에서만 발송 활성화되는지 login-gated 미확인 carry)
+  채널: 「앱 공지사항 (→요보사)」+「앱 공지사항 (→수급자)」 — app-based dialog UX
+     (top-nav Mod1 직원·Mod2 수급자 각각 leaf, `action=dialog`·`url=mobile-notice#tabs-mobile-app-notice-01/02`)
+
+★★★ ezcare `mobile-sendP/W/O` PGID = 「문자 발송」 3-target authoring + smsLog (신규 evidence URL) ★★★
+  URL: https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendP (수급자용)   HTTP 200 · 129,252B · md5 6167d480
+  URL: https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendW (직원용)    HTTP 200 · 133,272B · md5 53ecf342
+  URL: https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendO (기관관리·번호직접) HTTP 200 · 121,978B · md5 326b1780
+  H3 verbatim: 「문자 보내기→ 수급자」·「문자 보내기→ 직원」·「문자 보내기→ 번호직접」
+  compose form fields (공통):
+    <input name=subject>
+    <textarea name=message>
+    <input name=method> radio: value=app「쪽지로 발송」 · value=sms「문자로 발송」(default checked)
+    <select name=rPhone>  발신번호(rPhone)
+    <textarea name=uPhone> (sendO 전용·수신번호 직접입력)
+  smsLog / reciveLog 통합(발송이력 필터):
+    <select name=message_kind_smsLog> 7-kind classification(verbatim option value/label):
+      1「접속키 발송」·11「본인부담」·12「일정표-수급자」·13「급여제공내역」·19「직원인권보호」
+      ·21「일정표-직원」·22「급여명세서」
+    <input name=method_smsLog> radio: app·mms·sms (delivery channel 로그 필터)
+    <input name=uKind_smsLog>  radio: o(기관)·p(수급자)·w(직원) (수신주체 필터)
+    <input name=charge_pointLog> — **포인트 결제 로그**(포인트×22·충전×6 hit·유료 pay-per-message)
+  ⚠ 알림톡(KakaoTalk) 언급 0-hit — 카카오/알림톡/KakaoTalk grep = 0
+     → 이지케어 데모 노출 채널 = SMS(문자) + 앱쪽지 2종 · **알림톡 미확인**(공식 데모 노출 없음)
+
+── ogada `@ac422cc` id=1-5 「가정통신문」 authoring 4-layer landing (BE ONLY·FE PLANNED) ──
+BE feat(v2/G2): add home newsletter authoring catalog and compose preview  (신규 15-file · +516/−21)
+  API 신규 2:
+    GET /api/v1/notifications/home-newsletter/authoring
+      → GuardianHomeNewsletterAuthoringResponse {documentCode(G2-HOME-NEWSLETTER)·surfaceKind(GUARDIAN_HOME_NEWSLETTER_AUTHORING)
+         ·pageTitle「가정통신문 작성」·authoringApiPath·composePreviewApiPath·dispatchApiPath·dispatchHistoryApiPath
+         ·templateCode(HOME_NEWSLETTER)·helpTextKo·followUpNoteKo·authoringAvailability=AVAILABLE
+         ·authoringReadinessBlockers(board-ui-planned 잔여 1·authoring-ui-planned 는 @deprecated legacy)
+         ·emailSubjectTemplateKo「[ogada] 가정통신문」·composeFields[]·relatedSurfaces[]}
+    POST /api/v1/notifications/home-newsletter/compose-preview
+      → req {yearMonth·summary·clientName·centerName} → res {templateCode·yearMonth·subject·bodyText
+         ·dispatchApiPath·composePreviewGuidanceKo「미리보기는 발송하지 않습니다.」}
+  composeFields 카탈로그(2-entry) verbatim:
+    {fieldKey=yearMonth·label「대상 연월」·inputType=month·required=true·maxLength=7·pattern=^\d{4}-\d{2}$
+     ·helpTextKo「YYYY-MM 형식 (필수)」}
+    {fieldKey=summary·label「요약」·inputType=textarea·required=false·maxLength=500·pattern=null
+     ·helpTextKo「보호자 이메일 본문에 포함될 선택 요약 (최대 500자)」}
+  authoring PLANNED→AVAILABLE promote(SURFACE_AVAILABLE 상수) · board 는 여전히 PLANNED(잔여 blocker 1)
+  RBAC: HQ_ADMIN/BRANCH_ADMIN/SOCIAL_WORKER (RoleBasedControllerAccessTest 77L +1 클래스 · MustApiEndpointRoutingTest +52L 확장)
+  Test: GuardianHomeNewsletterAuthoringServiceTest 80L +1 클래스(compose preview·catalog·blocker 검증)
+  FE 상태: WT DIRTY 2M 는 dispatch-history branchId 파라미터 wire (authoring UI 아직 미착지)
+  → id=1-5 잠재 lever: compose FE 착지 + config 0.65→0.85(board PLANNED 잔여)
+
+★★ crosswalk — ezcare authoring/messaging vs ogada `@ac422cc` G2 authoring ★★
+| 축                    | 이지케어 mobile-notice/sendP/W/O               | ogada `@ac422cc` G2                                 | 판정 |
+|-----------------------|------------------------------------------------|----------------------------------------------------|------|
+| 채널(channel)         | SMS·MMS·앱쪽지(2-way) · 알림톡 0·이메일 0     | SMTP 이메일(HOME_NEWSLETTER template) · 알림톡(J03)·SMS(services.js) | ogada superset (**+이메일·+알림톡**) |
+| authoring 대상        | 직원+수급자 2-tab dual audience               | 보호자 이메일 (수급자당 dispatch)                    | 유사(대상 상이·family newsletter vs staff notice) |
+| compose 필드          | subject·title·addFile[] free-form + kind 7종  | yearMonth(pattern·required)·summary(500자·optional) | ezcare = free-form authoring · ogada = template-driven fixed |
+| classification        | 7-kind(접속키/본인부담/일정표/급여제공내역/직원인권보호/일정표직원/급여명세서) | template_code = HOME_NEWSLETTER 단일               | ezcare = **kind 우위**(7-way) · ogada = template 단일 |
+| preview               | 미확인(demo access denied)                    | POST /compose-preview subject+bodyText 렌더(no-dispatch guarantee) | **ogada 유일 in-app compose preview** |
+| history               | smsLog + reciveLog 통합(kind/method/uKind 필터·charge_pointLog) | GET /dispatch-history (branch-scoped·page/size)   | 유사 lifecycle·ogada는 email dispatch만 |
+| pricing               | 포인트 결제(pay-per-message·충전×6·포인트×22)  | 미과금(내부 SMTP)                                   | ezcare = **paid SMS economics** · ogada = free email |
+| board(게시판)         | app-notice 2-tab dual audience(dialog UI)     | board-ui-planned 잔여 blocker                       | ezcare 우위(app board 존재) · ogada v2+ candidate |
+| readiness health      | 미확인(공개 health endpoint 없음)             | /api/v1/health notificationLiveEmailDispatchReady + notificationLiveAlimtalkDispatchReady + blockers | **ogada 유일 3-probe health readiness**(BNK-715/717/721 TRIPLE narrative carry) |
+
+★ ezcare live 재실측 ─────────────────────────────────────────
+✅ ezcare 데모 셸 = md5 DRIFT semantic IDENTICAL (size DRIFT 미미)
+   URL: https://ezcare.easyms.co.kr/new.ez (데모 로그인 필요)
+   HTTP 200 · 139,957B · md5 78e7bc7e9066e2b77c23162f78b3c27e
+   BNK-720 md5 2ca971f6(139,957B·+17B DRIFT) → BNK-724 78e7bc7e(139,957B·size zero drift·md5 DRIFT semantic IDENTICAL)
+   top-nav-V2.js: 25,470B · md5 95286775000f06c8ad13688fcb0d6dbb (BNK-720/714 zero drift · **7주+ carry**)
+   10 module 정본 재확인: 1직원·2수급자·3방문일정·4RFID점검·5본인부담·6직원급여·7재무회계·8세무·사회보험·9기관관리·10기관평가
+   menu catalog: 148 leaf · 59 unique PGID · module_count=10 (BNK-720 carry)
+   신규 PGID 스냅샷 4-file: mobile-notice·mobile-sendP·mobile-sendW·mobile-sendO
+     (기존: mobile-aKey·mobile-apply·mobile-returnNumber → 총 7-PGID mobile-*)
+   messaging leaf grep(top-nav): 「문자 보내기」×3(Mod1직원·Mod2수급자·Mod9기관관리)·「앱 공지사항」×2(Mod1·Mod2)
+     ·「일정표 출력 및 문자발송」×1(Mod3)·「문자 발신번호 관리」×1(Mod9)·「앱 초대하기 (접속키·초대장)」×3(Mod1)
+
+△ ezcare FAQ 리스트 = size-lock · cachebuster md5 DRIFT · rowid max carry
+   URL: https://ezcare.easyms.co.kr/help/faq.ez
+   HTTP 200 · 80,057B · md5 a018fc01f700100c1a392adac722e0ae
+   BNK-722 de0ce96b → BNK-724 a018fc01 (cachebuster md5 DRIFT · size zero drift)
+   unique rowid 233 · max 21781 · 신규 rowid 0 (BNK-722 233·max 21781 carry)
+
+△ ezcare home = 카운터 IDENTICAL · testimonial rotation semantic 무변
+   URL: https://ezcare.easyms.co.kr/
+   HTTP 200 · 71,065B · md5 f123a296d53fabea8984d3f92eb5b0f7
+   BNK-722 69,798B c26b87c3e → BNK-724 71,065B f123a296 (size +1267B DRIFT · CSS cachebuster 1784032469→1784037429)
+   data-count 5종 IDENTICAL: 53.2%·9,298·4,668·2,353·1,820 (집계일 2026.06.30 verbatim)
+   신규 관찰: testimonial 배너 rotation(BNK-722 「인천 주안무지개 2010」 → BNK-724 「대구 비지팅엔젤스 2018」 등)
+     · 신규 testimonial 문구 「노인장기요양보험 공단으로 일정등록이 자동연계」
+     · 신규 testimonial 문구 「요양과 목욕의 일정이 중복되는 것을 방지」(← ogada G17/G-BATHING indicator27 semantic parallel)
+   → **가정 번복 아님** · 카운터/집계일/기능 축 무변 · testimonial rotation 은 marketing surface
+
+✅ NHIS #44 이동서비스비 러-1~4 = 459차 zero drift IDENTICAL
+   URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+   HTTP 200 · 7,572B · md5 c886ff1f (BNK-723 458차 → +1)
+   verbatim grep(-o): 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담하지(1)·이동서비스(13)
+   ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회) 6-link chain (id=2 이동서비스 0.85) carry
+
+── 판정 요약 ────────────────────────────────────────────────
+가정 번복      : 0 (ezcare authoring/messaging 채널 축 = 기존 「미확인」 → 「확인: SMS·앱쪽지 2-channel·알림톡 0·email 0」 신규 evidence )
+신규 core 갭   : 0 (ogada G2 authoring BE landing = residual authoring lever 축소·FE compose UI 잔여)
+신규 evidence URL : 4 (mobile-notice·mobile-sendP·mobile-sendW·mobile-sendO PGID 데모 인증 획득)
+상태 변경      : 1 (BE +2 commit·FE HEAD zero advance·FE WT DIRTY 2M coder in-progress)
+KPI 변경       : 4 (BE Test 286→288·BE @Test 2125→2135·merge gate 633→633 carry·config 0.65 carry — coder 재산 pending)
+zero drift IDENTICAL : 2 (NHIS #44 459차·ezcare top-nav-V2 25,470B/95286775 7주+·ezcare data-count 5종)
+size-lock md5 DRIFT semantic IDENTICAL : 2 (ezcare FAQ list 80,057B/a018fc01 cachebuster·ezcare home 71,065B/f123a296 CSS cachebuster+testimonial rotation)
+덮어쓰기        : 0 (bnk724 suffix 신규 · demo shell·top-nav 는 canonical 파일명 in-place refresh)
+미확인 carry   : 3 (mobile-notice 유료 계정 실제 저장·carefor func.php/demo-work HTTP 000·longterm npbs 502/610 login-gated shell)
+per-cycle minimum 4종 충족: 신규 evidence(mobile-notice/sendP/W/O 4-PGID + NHIS 459차)·
+  메뉴/필드/워크플로 1블록+(ezcare authoring 4-tab compose + SMS 7-kind classification)·
+  COMPETITOR_MATRIX 1행+ ogada @b7c9fa4/@ac422cc 로 갱신·
+  BENCHMARK_REPORT §724 신규 소절
+
+── planner 반영 제안 ────────────────────────────────────────
+1. baseline: FE @b7c9fa4 (HEAD zero advance·WT DIRTY 2M coder in-progress) · BE @9254721→@ac422cc(+2 commits)
+   · merge gate 633(BE-heavy·FE WT DIRTY → coder 선행 커밋 필요 후 tester FF)
+2. id=1-5 「가정통신문」 authoring 착지 lever(BE AVAILABLE·FE PLANNED):
+   REQUIREMENTS §G2 / USER_STORIES US-GUARDIAN-NEWSLETTER 에
+   「compose preview(subject/body 렌더)·yearMonth pattern(^\d{4}-\d{2}$)·summary 500자·이메일 subject template=[ogada] 가정통신문」반영.
+   config coverage 0.65→0.85 lever (board-ui-planned 잔여 1 · authoring-ui-planned @deprecated).
+3. **경쟁 채널 우위 3-channel narrative 확정** (BNK-715/717/721 → BNK-724 refresh):
+   ogada = SMTP 이메일 + 알림톡(J03) + SMS · 3-channel /api/v1/health readiness probe TRIPLE
+   ezcare = SMS(문자·paid points) + 앱쪽지 2-channel · **알림톡 0·이메일 0**(공식 데모 노출 없음)
+   → 마케팅 narrative: 「ogada는 알림톡·이메일·SMS 3-채널 발송을 in-app 헬스 프로브로 실시간 점검합니다」
+4. **ezcare SMS 7-kind classification** = ogada dispatch template 확장 후보(planner v2+):
+   접속키/본인부담/일정표(수/직)/급여제공내역/직원인권보호/급여명세서 → template_code enum 확장 candidate.
+   특히 kind=13 「급여제공내역」 ↔ ogada US-G2-CARE-PROVISION-RECORD parity 재확인 ·
+   kind=22 「급여명세서」 ↔ ogada M11 payroll statement dispatch(v2 candidate).
+5. **paid SMS economics「가정」**: ezcare charge_pointLog(포인트 결제) = SMS 발송 유료 모델.
+   ogada 는 무료 SMTP 이메일 + 알림톡(카카오 유료 API 상수) → 원가 구조 비교 planner memo 후보.
+6. board-ui-planned 잔여 blocker → v2+ 후보 US-GUARDIAN-NEWSLETTER-BOARD「가정」
+   (ezcare app-notice dual-tab 참고·수급자용+직원용 2-audience).
+7. 규제 백본 459-cycle zero drift = 이동서비스비 러-1~4 full-stack 우위 narrative carry(경쟁 4종 유일 in-app 6-link chain).

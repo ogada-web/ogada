@@ -1,0 +1,321 @@
+BNK-684 — 이지케어 역공학 2-4h · 주력 extract (txt)
+===================================================================
+조사일: 2026-06-27T04:10:00Z (KST 13:10)
+rotation: 이지케어 역공학 2-4h
+주요 신규 evidence:
+  1) home `/` banner FLIP — 추천 이벤트 → [공지] 재무회계 처리방침 변경 (rowid=434)
+  2) [공지] 재무회계 처리방침 변경(rowid=434) 본문 — 노무법인 수탁사 추가
+  3) FAQ taxonomy 정밀화 — 213 entry parsed · 14 single-cat · 46 multi-tag 조합
+  4) 재무회계 카테고리 FAQ 6건 rowid 전수
+  5) ogada git: FE @58599c0 (+1 a11y) / BE @7a9ed71 (+1 V185 DB integrity migration)
+
+
+===================================================================
+§1. ezCare 「재무회계 대행 서비스」 BPO 모델 verbatim — 신규 evidence URL
+===================================================================
+
+[신규 evidence URL]
+https://ezcare.easyms.co.kr/?PG=b01&rowid=434
+  HTTP 200 · 39,856B · md5 b09c7b0af7afc67889b360338bf6d1cc · disk
+  → docs/planning/research/snapshots/ezcare_notice_434_bpo_disclosure_bnk684.html
+  Title: 이지케어 재가장기요양기관 업무관리 프로그램
+  제목  : [공지] 이지케어 재무회계서비스 개인정보처리방침 변경 안내
+  등록일: 2025-06-26
+  조회  : 4,928
+  본문 verbatim 핵심:
+    「안녕하세요. 이지케어 재무회계입니다.」
+    「이지케어 재무회계서비스를 이용해 주시는 고객 여러분께 감사드립니다.」
+    「1. 약관 개정 사유: 이지케어 재무회계서비스 고용노동부 고용지원금 대행
+       신청 위탁법인 추가」
+    「2. 개정 반영일자: 2025년 06월 27일」
+    「3. 개정내용: 제3조 노무법인 수탁사 추가」
+
+[신규 evidence — 사이트맵 verbatim 메뉴]
+home / (`ezcare.easyms.co.kr/`) 사이트맵 + 페이지 GNB 에 명시:
+    「재무회계 대행 서비스소개(제공내용&특징)」
+    「재무회계 대행 소개&제공 서비스 제공」
+    「제공 서비스」「서비스 특징」(재무회계 대행 별도 sub-page)
+    「★ 이용 요금표」(재무회계 대행 별도 요금표 페이지)
+    「★ 웹 카달로그 보기」「가입하기 / 이용 신청하기」(별도 가입 경로)
+
+→ 판정(확인): 이지케어 = SaaS(주야간 ERP /new.ez) + **재무회계 대행 BPO**(별도 위탁법인) +
+  **고용노동부 고용지원금 대행**(노무법인 수탁) 패키지 모델.
+  ogada 단일 SaaS 도메인 모델과 정책 분기점.
+
+[신규 evidence — home banner FLIP]
+disk(BNK-672) `ezcare_home.html` `6444d6f6` 106,139B :
+  「[추천 이벤트] 이지케어·이지케어 재무회계 추천하고 다양한 선물 받아가세요」
+  (cafe.naver.com/egcare/24211)
+LIVE (BNK-684) 106,098B md5 615fb756008c20096f6e20c8257d8eb7 (−41B):
+  「[공지] 이지케어 재무회계 서비스 개인정보 처리방침 변경안내」
+  (`/?PG=b01&rowid=434`)
++ 옵션 reorder: 「집체교육 참석을 통해」 dropdown 위치 변경 1건
++ JS cachebuster Time=1782533480 (BNK-672 1782516574)
+
+→ banner FLIP = 재무회계 BPO 의 운영 가시화 (privacy policy revision 공지로
+  메인 banner 차지) · marketing → compliance 전환 lever
+
+
+===================================================================
+§2. ezCare FAQ taxonomy 정밀화 — 233 rowid · 213 parsed entry
+===================================================================
+
+[신규 evidence — FAQ taxonomy 재측정]
+URL: https://ezcare.easyms.co.kr/help/faq.ez
+HTTP 200 · 80,057B · md5 cf9d879c20f4df68485df0d41df329c3 (BNK-682 2f469d0a → 재 cachebuster DRIFT)
+size 7-cycle IDENTICAL (BNK-633→682→684 80,057B 불변)
+→ docs/planning/research/snapshots/ezcare_help_faq_list_taxonomy_bnk684.html
+
+rowid link 카운트 : 233 (BNK-672 carry IDENTICAL)
+parsed FAQ entry : **213** (rowid + Q. + 카테고리 + faq-hit 4-축 모두 매칭)
+누적 hit sum     : **3,637,316** (BNK-682 3,637,307 → **+9** in ~75min)
+
+카테고리 분포(단일 + multi-tag 조합 46종):
+   37  수당/급여관리
+   21  직원관리,수당/급여관리
+   15  4대보험
+   14  서식출력/설정
+   12  본인부담금
+   12  수급자관리
+   11  일정관리
+    9  기타
+    7  세무
+    7  직원관리
+    6  서식출력/설정,기타
+    6  수급자관리,서식출력/설정
+    6  재무회계
+    4  직원관리,서식출력/설정
+    3  일정관리,공단연동
+    3  이용료/요금
+    3  직원관리,수급자관리
+    2  본인부담금,일정관리
+    2  문자발송
+    2  모바일앱
+    2  일정관리,본인부담금
+    2  서식출력/설정,직원관리
+    2  이용료/요금,기타
+    2  수당/급여관리,직원관리
+    2  직원관리,일정관리
+    (이하 1건 single-occurrence multi-tag 21종)
+
+[중요] 결제·재무 cluster (M11/M12 demand-signal):
+  수당/급여관리(단일+조합 포함) 직접 출현 = 37 + 21 + 1 + 1 + 1 + 1 = **62 entry**
+  본인부담금  (단일+조합 포함) 직접 출현 = 12 + 2 + 2 + 1 + 1 + 1 + 1 + 1 + 1 = **22 entry**
+  4대보험     = 15 entry
+  세무        = 7 entry
+  재무회계    = 6 entry
+  이용료/요금 = 3 + 2 = 5 entry
+  ─────────────────────────────────────────────
+  Finance cluster (M11/M12 demand) ≈ **80/213 = 37.6%** (BNK-672 carry confirm)
+  Finance cluster hit_sum ≈ **1,166,940** = total 3,637,316 의 32.1%
+
+[**가정 번복 1건**]
+BNK-672 「FAQ 233 rowid · 14 카테고리 · 결제·재무 클러스터 123 출현 37.6%」
+→ 실측 정정:
+  · 233 rowid : raw `rowid=N` 출현 카운트 (검색 dropdown 등 중복 포함 raw link)
+  · 213 entry : `rowid=N&type=web">…Q.…</a><span>cat</span><span class="faq-hit">N` 4-axis 매칭
+  · 14 카테고리 : single-cat 14종 (수당/급여·직원·서식출력/설정·수급자·일정·기타·4대보험·문자발송·세무·공단연동·재무회계·이용료/요금·모바일앱·본인부담금)
+  · multi-tag 조합 : 46 종(예: 직원관리,수당/급여관리 21건 · 서식출력/설정,기타 6건)
+  · finance cluster 비중 : **37.6% (80/213)** carry-confirm
+→ BNK-672 「123 출현」 = 단순 sum (수당64+본인부담26+4대보험15+세무7+재무회계6+이용료5=123)
+   였으나 multi-tag 조합 중복 sum 으로 213 분모 대비 over-count 가능 했음.
+   정정된 entry-level 분모 80/213 = 37.6% 가 정확 (비중 일치).
+
+
+===================================================================
+§3. 재무회계 카테고리 FAQ 6건 rowid 전수 — M12 demand-signal
+===================================================================
+
+| rowid  | hit    | title verbatim                                                       |
+|--------|--------|----------------------------------------------------------------------|
+| 21620  | 15,290 | 기관 폐업 시, 진행해야 할 회계, 세무, 4대보험 업무는 무엇인가요?      |
+| 21624  | 15,102 | 기관에서 해야 하는 회계 업무는 무엇이 있나요?                        |
+| 21619  | 14,915 | 예산, 결산을 기한 내에 제출하지 못했는데 어떻게 해야 하나요?         |
+| 21694  | 14,494 | '통장 계좌 조회서비스(통장 거래내역)' 대해 알고싶어요.                |
+| 21625  | 14,302 | 회계업무에 대해 미처리 또는 오처리했을 때 불이익이 있나요?           |
+| 21650  | 14,229 | 결산보고에 대해 궁금합니다.                                          |
+
+총 6 FAQ · hit_sum = **88,332** · 평균 hit = 14,722 (전체 평균 15,654 의 94%)
+→ 재무회계 FAQ 본문 = 「what is 회계 업무 / 기한 / 통장 거래 / 결산 보고」 = ALL
+  「외부 위탁 BPO 대행」 안내성 FAQ (어떻게 in-app 으로 회계를 처리하는가 아님)
+→ ogada M12「수입지출·회계」 의 정책 분기점:
+   A. ogada in-app 모듈로 구현 (ezCare 와 다른 모델 · 차별화 lever)
+   B. 어댑터 + BPO 위탁(ezCare 와 동일 모델 · TCO 비교 우위 필요)
+
+→ 결정: PLAN_NOTES「### [PLN] M11/M12 BPO vs in-app 결정」 carry 권고.
+
+
+===================================================================
+§4. FAQ Top-10 demand — M11 / 회의록 / 본인부담금
+===================================================================
+
+  rowid    cat                 hit    title 요약
+  -------  ------------------- ------ ----------------------------------------
+  21601    직원,서식출력/설정  83,878 직원 회의록을 전산으로 작성, 관리하고 싶어요!
+  21274    기타                44,143 비밀번호(패스워드) 변경
+  21529    서식출력,기타       36,714 파일 자동열기 설정과 해제
+  21723    수당/급여관리       25,068 2025년 요양보호사 시급 가이드
+  21668    4대보험             23,942 만 65세 이상 고용·산재보험 가입 면제
+  21193    일정관리,문자발송   23,903 일정표를 문자로 보내고 싶어요
+  21589    문자발송            22,764 급여제공기록지 RFID 전송분 문자 발송
+  21473    본인부담금,공단연동 22,019 본인부담금이 공단과 달라요!
+  21277    서식출력/설정       20,936 일정표 출력 시 테두리 선이 안 나와요
+  21247    수당/급여관리       20,913 보전수당 의미가 무엇인가요?
+
+[Top-1 = 직원 회의록 전산화 (83,878 hit) — ogada FULL PARITY]
+→ ogada `staff_committee_meeting_logs` (V181/V182 US-R08 BNK-682 carry) 가
+  정확히 이 demand 의 in-app target. ★★ deepen narrative.
+
+[Top-4 = 시급 가이드 (25,068 hit) — M11 미충족 carry]
+→ ogada `/payroll/*` 0 route (BNK-679) · 「2025/2026 시급 가이드」 PDF/FAQ 자산
+  부재. M11 sole P1 lever (+3.45pp via 11-1·11-3·11-6) demand-signal deepen.
+
+[Top-5 = 65세 이상 고용·산재보험 (23,942 hit) — M11 4대보험]
+→ ezCare 4대보험 15 FAQ 클러스터의 핵심 hit · ogada `/payroll`·`/accounting`
+  미구현 carry (M11 sole P1 lever).
+
+[Top-8 = 21473 본인부담금 vs 공단 (22,019 hit) — G-NHIS 14-stage 우위 carry]
+→ ogada `NhisVisitScheduleImportOutcome` 4-state + `errorRecoveryKeywordNotes`
+  4-key map(BNK-670 stage9 · BNK-672 14-stage chain) **경쟁 4종 유일 full-stack**
+  in-app 실시간 복구 loop. ezCare 사후 수동 FAQ (BNK-676 carry).
+
+
+===================================================================
+§5. ogada git 실측 — FE +1 a11y · BE +1 V185 integrity
+===================================================================
+
+FE develop: `58599c01286c014671cb797689a3fb1f03bb336f`
+   prev (BNK-683): @d1d0adf
+   +1 commit:
+     feat(UXD/US-Q01): safety module a11y pass — time dateTime, useId, FE-16 items class
+     7 files +52/-10 (4 SafetyPage + 2 Form + 1 components.css)
+     - 4 Safety pages: date columns (checkDate/recordDate/logDate) wrapped in
+       <time dateTime> per WCAG 1.3.1 (88차 StaffDetailPage pattern)
+     - SafetyOperationLogForm + InfectionControlLogForm: useId() migration
+       (heading ID collision safety)
+     - components.css: .ds-safety-checklist__items margin-top token (FE-16)
+     - DESIGN_SYSTEM.md §94 review findings + coder memos
+   WT DIRTY (still 2M from BNK-683):
+     M src/e2e/liveFeeScheduleSeed.js          +9 (QA-B355 regression carry)
+     M src/test/liveFeeScheduleSeed.test.js   +24
+     → BNK-683 +33L uncommitted **2-cycle persist** (rules §6 closure 필요)
+   ahead vs origin/test: **277** (BNK-683 276 → +1)
+
+BE develop: `7a9ed71619e4b2378032ee4ace740c0d6656cc9b`
+   prev (BNK-683): @92770fd
+   +1 commit:
+     feat(v2/US-Q01): add V185 safety_check_records DB integrity checks
+     11 files +440/-14 (V185 SQL + 4 system + 1 readiness probe + 5 test)
+   WT CLEAN
+   ahead vs origin/test: **600** (BNK-683 599 → +1)
+
+merge gate: FE 277 + BE 600 = **877** (BNK-683 875 → +2 cross-stream)
+
+V185 NEW migration — `V185__safety_check_records_integrity_us_q01.sql`:
+   target: safety_check_records (V184 round 204 적재 0건 → backfill 불요)
+   3 CHECK constraint NEW (defense-in-depth · DB CHECK 미러):
+     1. chk_safety_check_records_payload_json_object
+        `CHECK (jsonb_typeof(payload_json) = 'object')`
+        — V157 case_management_meetings.attendee_opinions array CHECK 패턴
+     2. chk_safety_check_records_sub_form_code_shape
+        `record_type='PERIODIC'` → sub_form_code IN
+          (HYGIENE, NURSING_SUPPLIES, MEAL_SERVICE, FIRE_SAFETY, MEDICATION, DISINFECTION)
+        ELSE sub_form_code IS NULL
+     3. chk_safety_check_records_result_code_shape
+        `record_type IN ('DAILY','PERIODIC')` → result_code NOT NULL
+        `record_type IN ('INFECTION','OPERATION')` → result_code NULL
+   Intentional P3 exclusion (도큐멘티드):
+     - payload_json 내부 checklist item key/value · inspectorName nonempty
+       → JSONB 요소 집계 plain CHECK 불가 · 앱 codec 책임
+     - (org, branch, created_by) → user_branches 3-way FK
+       → hq_admin 정당 작성 (V171 billing_report_filters · V182 동일 정책)
+     - recorded_on <= CURRENT_DATE — non-immutable
+
+   추가: V185SafetyCheckRecordsIntegrityReadinessProbe (Java 51L) +
+        HealthController/LiveE2eController 통합(+15/+14L) + 5 신규 Test
+        (HealthControllerTest +118 / LiveE2eBootstrap +13 / LiveE2eController +32 /
+         LiveE2eOperationReadinessSupport +79 / V185 readiness probe +55)
+   → BE @Test 2024 → **2030** (+6 신규 @Test)
+
+KPI 종합 (BNK-684 baseline):
+  Route       : 123 (BNK-683 IDENTICAL)
+  page        : 97~98 (a11y commit 4 pages modify · page 추가 0)
+  Migration   : V1–**V185** (+1 vs BNK-683 V184)
+  BE Test파일 : 277 (IDENTICAL)
+  BE @Test\b  : **2030** (+6 vs BNK-683 2024 · V185 integrity probe + LiveE2e)
+  FE test     : 497 (204 .test.js + 293 .test.jsx · BNK-683 IDENTICAL)
+  module%     : 84.31% (24.45/29 · id=6 carry 1.0)
+  reports     : 14 (paths/*Report*.jsx)
+
+→ 8축 중 3축 KPI delta: V185 +1 · BE @Test +6 · merge gate +2
+→ M6 closure deepen: V184 (BNK-678 도입) → V185 (BNK-684 DB integrity defense-in-depth)
+  「표층 RBAC + 심층 RBAC test + DB CHECK 3중 게이트」 narrative carry.
+→ QA-B355 FE WT DIRTY 1-cycle persist (BNK-683 regression carry)
+  · BNK-682 1-cycle closure 가 BNK-683 새 작업 시 다시 더러워진 패턴 (2-cycle)
+  · rules §6 coder commit + push 필요.
+
+
+===================================================================
+§6. per-cycle minimum 충족 체크
+===================================================================
+  [✅] 신규 evidence URL 1건 이상:
+       - https://ezcare.easyms.co.kr/?PG=b01&rowid=434 (NEW · BPO disclosure)
+       - https://ezcare.easyms.co.kr/help/faq.ez (213 parsed taxonomy)
+       - https://ezcare.easyms.co.kr/ (banner FLIP)
+  [✅] 메뉴/필드/워크플로 1블록:
+       - 이지케어 「재무회계 대행 서비스소개·서비스 특징·이용 요금표·웹 카달로그·가입」 (사이트맵 verbatim 메뉴 트리)
+       - 재무회계 카테고리 FAQ 6 rowid 전수 (21620·21624·21619·21694·21625·21650)
+  [✅] COMPETITOR_MATRIX 1행 ogada @HEAD:
+       - M12 회계/수입지출 행 + 이지케어 BPO + ogada `@58599c0`/`@7a9ed71`
+  [✅] BENCHMARK_REPORT §신규 소절:
+       - §684 (BNK-684) 추가
+
+  덮어쓰기: 0 (3개 모두 신규 _bnk684 suffix)
+  zero drift VALUE: 4 (e01·fnc·charge·change_work size 4-cycle lock)
+  cachebuster md5 DRIFT: 6 (home·faq·fnc·charge·change_work·home JS)
+  가정 번복: 1 (BNK-672 finance cluster 123 → entry-level 80/213 정정)
+  상태 변경: 2 (home banner type FLIP·BPO disclosure 가시화)
+  KPI 변경: 3 (V185 +1·BE @Test +6·merge gate +2)
+  미확인: 0
+
+
+===================================================================
+§7. ogada 기획 시사 — planner P1/P2 lever
+===================================================================
+
+[★★★ M12 회계/수입지출 sole P1 lever 정밀화]
+   ezCare = SaaS + 재무회계 BPO + 노무·고용지원금 BPO 묶음
+   ogada @58599c0/@7a9ed71 = SaaS-only · `/accounting/*` 0 route
+   → 결정 question:
+      (A) ogada in-app M12 모듈 구축 (11-3 회계, 12-x 수입지출 leaf 구현)
+         · 11-5 인건비 지출비율 60%+ 모니터(법정 compliance 차별화)
+         · 차별화 narrative: 「BPO 수수료 0 · SaaS-only · in-app dashboard」
+      (B) 외부 회계법인 어댑터 + BPO 파트너십 (ezCare 동등 모델)
+         · TCO 비교 우위 필요 (이지케어 재무회계 별도 요금표 가져와야 비교 가능)
+      (C) hybrid — 기초 회계는 in-app · 결산보고/세무 BPO 어댑터만
+   → PLAN_NOTES 「### [PLN] M11/M12 BPO vs in-app 결정」 carry
+
+[★★ M6 closure 3중 게이트 narrative]
+   V184 (테이블) → 표층 RBAC (controller @PreAuthorize) → 심층 RBAC test (256L @Test)
+   → V185 (DB CHECK 3 constraint) → readiness probe (HealthController integration)
+   = 경쟁 4종 유일 in-app **표층 RBAC + 심층 RBAC test + DB CHECK + readiness probe**
+     **4중 게이트** (BNK-682 「2중 게이트」 → BNK-684 「4중 게이트」 narrative deepen)
+
+[★ FAQ Top-1 (직원 회의록 83,878 hit) — US-R08 FULL PARITY carry]
+   ogada V181/V182 `staff_committee_meeting_logs` (BNK-682 carry)
+   ↔ ezCare rowid=21601 demand-signal 1위
+   → 마케팅 카피: 「이지케어 FAQ 1위 demand 를 ogada 가 in-app 으로 처리」
+
+[★ QA-B355 FE WT DIRTY 2-cycle persist (rules §6 CRITICAL)]
+   BNK-682 1-cycle closure → BNK-683 regression → BNK-684 persist
+   coder 즉시 commit (+33L)·push 권장.
+
+
+===================================================================
+다음 액션 (BNK-684 → BNK-685)
+===================================================================
+  → coder: FE WT DIRTY +33L commit (rules §6 closure)
+  → planner: M12 BPO vs in-app 결정·M11 시급 가이드 자산·M6 4중 게이트 narrative
+  → tester: merge gate **877** FF (BE WT CLEAN·FE WT DIRTY 선행 closure)
+  → BNK 다음 rotation: 엔젤·롱텀·규제 4-6h (rotation_30min) — silverangel 6-URL +
+     NHIS #44 423차 + law247 seq271110 + lcms type rotation 재실측.

@@ -1,0 +1,56 @@
+# BNK-841 · 케어포 demo-work loadPage/view 파싱 재교차검증
+# 작성자: BNK · updated: 2026-07-17T19:02:00Z
+# rotation: 케어포 역공학 0–2h — demo-work 시설 셸 loadPage/view · 이동서비스 없음 · M7 본인부담 번호식 흐름
+
+## 1. live URL 재실측
+- https://www.carefor.co.kr/daycare/func.php — HTTP 000 · SIZE 0 · md5 - · error `URLError: <urlopen error timed out>`
+- https://demo-work.carefor.co.kr/ — HTTP 000 · SIZE 0 · md5 - · error `URLError: <urlopen error timed out>`
+- https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 — HTTP 200 · SIZE 7572 · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · error ``
+
+## 2. ogada @develop HEAD 실측
+- frontend develop: `dc81f6e` · test(v1.2.1/QA-B95): lock semicolon-optional NoBreakSpace marker decode · WT CLEAN
+- backend develop: `c19bfa6` · fix(v2/QA-B95): lock semicolon-optional NoBreakSpace marker decode · WT CLEAN
+- Route count method `<Route` in App.jsx: 133 · Page method `src/pages/*Page.jsx` excl test: 106
+
+## 3. demo-work 시설 셸 loadPage/view 계량
+- source: `docs/planning/research/snapshots/carefor_demo_work_wayback_remeasure_bnk836.html` · md5 `078d32ed243658150fd6ebe645e956dd` · SIZE 71152
+- `loadPage` 문자열: 115
+- `<li obj-type="loadPage">` 파싱 행: 112
+- unique `view.*`/path: 111
+- `class=rpt`: 34 · ratio 34/111 = 30.6%
+- transport keyword hits in facility shell: {'이동서비스': 0, '배차': 0, '송영': 0, 'transport': 0, 'vehicle': 0, 'driver': 0} (시설 셸 이동서비스/배차/송영 없음 판정)
+
+### module histogram
+- L01: loadPage 13 · rpt 5
+- L02: loadPage 14 · rpt 6
+- L03: loadPage 13 · rpt 5
+- L04: loadPage 4 · rpt 2
+- L05: loadPage 14 · rpt 5
+- L06: loadPage 5 · rpt 0
+- L07: loadPage 10 · rpt 4
+- L08: loadPage 14 · rpt 3
+- L09: loadPage 7 · rpt 1
+- L10: loadPage 11 · rpt 2
+- L11: loadPage 6 · rpt 1
+
+## 4. M7 본인부담 loadPage/view 상세
+- L07_M01 · class `-` · view `/share/cost/view.cost_master` · title `7-1.본인부담금 청구관리`
+- L07_M02 · class `-` · view `/share/cost/view.cost_receipt` · title `7-2.본인부담금 입금관리`
+- L07_M09 · class `submp` · view `/share/cost/view.cost_master_statistic` · title `7-2-1.의료비공제(연말정산)`
+- L07_M03 · class `-` · view `/share/cost/view.cost_nopay` · title `7-3.본인부담금 미납관리`
+- L07_M11 · class `-` · view `/share/cost/view.cms_manage` · title `7-4.본인부담금 자동이체 (CMS)`
+- L07_M12 · class `-` · view `/share/cost/view.npay_manage` · title `7-5.본인부담금 간편결제`
+- L07_M05 · class `rpt` · view `/share/cost/view.cost_master_report` · title `7-6.본인부담금 청구대장 리포트`
+- L07_M06 · class `rpt` · view `/share/cost/view.cost_deposit_report` · title `7-7.본인부담금 입금대장 리포트`
+- L07_M07 · class `rpt` · view `/share/cost/view.cost_receipt_report` · title `7-8.본인부담금 수납대장 리포트`
+- L07_M10 · class `rpt` · view `/share/cost/view.cost_receipt_apply_yearly` · title `7-9.본인부담금 수납,환불내역`
+
+## 5. func.php 주야간 정본 교차 확인
+- source: `docs/planning/research/snapshots/carefor_func.php` · md5 `781b67e1734b93fc337b323bba89e691` · SIZE 97546
+- `이동서비스` hits: 3 (정적 주야간 func.php에는 M2 이동서비스 10-leaf 존재)
+- demo-work 시설 셸에는 이동서비스/배차/송영 0-hit: 케어포 공개 데모는 시설 셸이며 주야간 이동서비스 실제 셸을 노출하지 않음.
+
+## 6. 판정
+- 확인: 케어포 demo-work Wayback 셸은 `loadPage` 기반 평면 메뉴이며, M7 본인부담은 `view.cost_*` 10행 + CMS/간편결제 view로 번호식 lifecycle을 노출한다.
+- 확인: 시설 셸에는 이동서비스/배차/송영이 0-hit이므로, func.php M2 이동서비스와 demo-work 셸은 동일 범위가 아니다. ogada `/transport` full-stack 비교는 func.php/NHIS 기준으로 유지한다.
+- 가정: live carefor HTTP 000이 지속되어 최신 운영 셸 drift는 미확인. Wayback `ebee4d47`과 disk canonical `6226e6eb`을 carry한다.

@@ -1,0 +1,101 @@
+BNK-721 엔젤·롱텀·규제 4–6h 교차검증 (2026-07-14T11:51Z)
+==========================================================
+rotation: 엔젤·롱텀·규제 (silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4·2026 수가/평가 #27·단기보호/통합재가 고시)
+직전 동일 rotation: BNK-717(2026-07-14T09:07Z) → ~2.7h 후
+직전 사이클: BNK-720(2026-07-14T11:11Z·이지케어 역공학) → ~40분 후
+
+── ogada git 실측 (@develop HEAD) ──────────────────────────
+FE develop  : 7c5767c  ux(a11y): announce new tab on M12 BPO external portal link (UXD-175)
+              WT CLEAN · BNK-720 @063c269 → +1 commit · ahead 1 vs origin/test=063c269
+BE develop  : 6ab4d67  feat(v2/G2): add home newsletter launch catalog API
+              WT CLEAN · BNK-720 @093ac88 → +1 commit · ahead 630 vs origin/test=598d108
+merge gate  : 631 (FE 1 + BE 630 · BE-heavy → tester FF)
+
+KPI 실측:
+  Route      131 (<Route\b 130 + <Routes> 1 · carry — 신규 route 0)
+  *Page.jsx  104 (carry — 신규 page 0)
+  FE test    516 (.test.js 213 + .test.jsx 303 · carry — in-place 확장)
+  BE Test    285 (Test.java 284 + Tests.java 1 · +1 GuardianHomeNewsletterLaunchServiceTest.java)
+  BE @Test   2119 (BNK-720 2111 → +8 · G2 newsletter launch catalog + health readiness @Test)
+  Flyway     V1–V190 (carry)
+  accounting route 1 · payroll route 5 (basis/labor-cost-ratio/ledger/reports/retirement-accrual)
+  competitorModuleCoverage: 29-entry · sum 26.65 · 26.65/29 = 91.90% (carry)
+    → id=1-5 「가정통신문」 0.5 carry · id=12 「수입지출·회계」 0.7 carry
+    (grep 'coverage:' 27.65 는 docstring line 5 「coverage: 1 = ✅」 false-positive 포함 — id 라인 한정 실측 = 26.65)
+
+★★★ id=1-5 「가정통신문」 operational readiness DEEPEN (BE @6ab4d67) ★★★
+  BE `feat(v2/G2): add home newsletter launch catalog API`
+   = GET /api/v1/clients/.../notifications/home-newsletter/launch (dispatch metadata launch catalog)
+     + /api/v1/health 에 가정통신문 email readiness probe 노출
+     신규 5-file: GuardianHomeNewsletterLaunchResponse(+39)·GuardianHomeNewsletterRelatedSurfaceResponse(+17)
+      ·GuardianHomeNewsletterLaunchService(+72)·GuardianHomeNewsletterSupport(+90)
+      ·GuardianHomeNewsletterLaunchServiceTest(+99) · US-GUARDIAN-NEWSLETTER
+  → id=1-5 「가정통신문」 이력:
+     BNK-719/720: full-stack dispatch LIVE (GuardianDocumentNotifyPanel + POST .../home-newsletter · config 0→0.5)
+     BNK-721 delta: launch catalog API + /api/v1/health readiness probe 추가
+  → config coverage 0.5 carry (authoring/관리 UX 미착지 → 1.0 아님) · BUT operational readiness 는 심화
+  → ★ operational readiness TRIPLE narrative 확립 = /api/v1/health 3-probe:
+       M12 회계 BPO readiness (BNK-717) + J03 알림 채널 readiness (BNK-715) + G2 가정통신문 email readiness (BNK-721)
+       = 경쟁 4종(케어포/이지케어/엔젤/롱텀) 미확인 in-app operational readiness 우위 후보
+  crosswalk: ogada 가정통신문 launch catalog ↔ 케어포 10-2 급여안내 leaf ↔ silverangel extraService 부가/알림
+
+── 엔젤·롱텀·규제 live 재실측 ────────────────────────────────
+✅ NHIS #44 이동서비스비 러-1~4 = 456차 zero drift IDENTICAL
+   URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+   HTTP 200 · 7,572B · md5 c886ff1f (live=disk nhis_jo44_live_bnk720.html IDENTICAL · BNK-720 455차 → +1)
+   verbatim grep: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담하지(1)·이동서비스(13)
+   ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회) 6-link chain (id=2 이동서비스 0.85) carry
+
+✅ silverangel essential = live=disk IDENTICAL (평가지표 27 = 기능회복훈련 정본 재확인)
+   URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+   HTTP 200 · 131,664B · md5 c79c1be3 (disk silverangel_daycareEssentialWork_live_bnk704.html IDENTICAL)
+   본문 grep: 기능회복(6·평가지표 27=기능회복훈련 6-hit) vs 목욕(2·비필수 별도 청구)
+   ↔ ogada G17(기능회복=필수)/G-BATHING(목욕=비필수 별도 청구) full-stack chain carry
+   [관찰] legacy path https://www.silverangel.kr/silverangel/daycare/daycareEssentialWork.do = HTTP 404(1028B)
+          → canonical 은 /newSilverangel/ prefix (path 정본 재확인 · semantic 무변 · 가정 번복 아님)
+
+✅ silverangel extraService = live=disk IDENTICAL (CMS 5-method 부가서비스)
+   URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+   HTTP 200 · 81,637B · md5 f9c5d877
+   ↔ ogada CmsPaymentMethodCatalog 5/5 collectionImplemented parity (id=7-4 CMS·간편결제 1.0) carry
+
+✅ silverangel notice list = zero drift · 신규 공지 0 (~18일+ pause 지속)
+   URL: https://www.silverangel.kr/silverangel/support/notice/list.do
+   HTTP 200 · 5,707,602B · md5 ea7d6b3d (BNK-719/720 IDENTICAL) · 최신 가시 Tmp_idx 221551 · ≥221573 = 0
+   (파일 5.7MB — 저장 생략·md5 참조만)
+
+△ lcms.or.kr = type2 배너 rotation transient DRIFT (semantic IDENTICAL)
+   URL: https://www.lcms.or.kr/
+   HTTP 200 · 50,554B · md5 6c0d22b4 (canonical type1 c0c66076 50,740B) · <title>엔젤시스템</title>
+   = 알려진 type1/type2 배너 순환 transient (BNK-717과 동일 md5) · canonical 덮어쓰기 아님 · 저장 생략
+
+△ law.go.kr admRul (제2025-247호) = size-lock · Time= cachebuster md5 DRIFT · semantic IDENTICAL
+   URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+   HTTP 200 · 78,450B · md5 688d737f (BNK-719 d822952a → Time= 토큰 md5-only DRIFT)
+   시행 2026. 1. 1 verbatim IDENTICAL · 저장: law_247_admRulInfoP_live_bnk721.html
+
+── 판정 요약 ────────────────────────────────────────────────
+가정 번복      : 0
+신규 core 갭   : 0
+candidate 변동 : 0
+상태 변경      : 2 (FE +1 commit·BE +1 commit·양쪽 WT CLEAN)
+KPI 변경       : 3 (BE Test 284→285·BE @Test 2111→2119·merge gate 630→631 · coverage 91.90% carry)
+zero drift IDENTICAL : 4 (NHIS #44 456차·silverangel essential·extraService·notice list)
+transient DRIFT semantic IDENTICAL : 2 (lcms type2 배너·law247 Time= 토큰)
+신규 관찰      : 1 (silverangel essential legacy path 404 → newSilverangel canonical 재확인)
+덮어쓰기        : 0 (canonical 유지·live snapshot 은 bnk721 suffix 신규 4건)
+미확인 carry   : 2 (longterm npbs 502/610 login-gated shell·carefor func.php/demo-work HTTP 000)
+per-cycle minimum 4종 충족: 신규 evidence(NHIS 456차 재실측 + law247 Time= md5 DRIFT 기록)·
+  메뉴/필드/워크플로 1블록(id=1-5 가정통신문 launch catalog + operational readiness triple)·
+  COMPETITOR_MATRIX 1행+ @7c5767c/@6ab4d67·BENCHMARK_REPORT §BNK-721
+
+── planner 반영 제안 ────────────────────────────────────────
+1. baseline: FE @063c269→@7c5767c · BE @093ac88→@6ab4d67 · merge gate 631 (tester FF·BE-heavy)
+2. id=1-5 가정통신문 operational readiness deepen: REQUIREMENTS §G2 / USER_STORIES US-GUARDIAN-NEWSLETTER 에
+   「가정통신문 = dispatch full-stack + launch catalog + /api/v1/health email readiness probe」 반영
+   (config coverage 0.5 carry · authoring/관리 UX 착지 시 1.0 lever)
+3. operational readiness TRIPLE narrative = /api/v1/health 3-probe(M12 회계 + J03 알림 + G2 가정통신문)
+   = 경쟁 4종 미확인 in-app operational 우위 후보 (마케팅 narrative lever)
+4. 규제 백본 456-cycle zero drift = 이동서비스비 러-1~4 full-stack 우위 narrative carry (경쟁 4종 유일)
+5. 잔여 lever: M12 SSO 실환경 credentials(0.7→↑) · G-ACCOUNTING-IN-APP-LEDGER(v3+ 「가정」) ·
+   P3 dashboard 2건(G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY) 「가정」 유지

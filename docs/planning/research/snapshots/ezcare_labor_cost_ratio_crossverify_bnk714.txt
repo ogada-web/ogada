@@ -1,0 +1,124 @@
+# BNK-714 이지케어 역공학 2–4h — 증거 스냅샷
+# 조사일: 2026-07-14T06:19:00Z (KST 2026-07-14 15:19)
+# rotation: 이지케어 역공학 2–4h (직전 동일 rotation BNK-700 /new.ez 데모 → ezCare demo 재진입)
+# 초점: ★★★ M11 residual 11-5 「인건비 지출비율」 FE page LANDING = full-stack CLOSURE (ogada git 실측)
+#       + 이지케어 데모/FAQ 재실측 (인건비 지출비율 rowid 전수 0-hit = ogada 11-5 유일성 재확인)
+
+================================================================================
+[1] ogada git 실측 (submodule develop) — BNK-713 → BNK-714 delta
+================================================================================
+# FE
+$ git -C src/frontend rev-parse --short develop        → aa86734
+$ git -C src/frontend rev-parse --short origin/test     → aa86734   (= FULLY SYNCED)
+$ git -C src/frontend rev-list --count origin/test..develop → 0
+$ git -C src/frontend log -1 --oneline develop
+  aa86734 feat(v1.2.1/M11): wire labor-cost-ratio compliance preview page
+  (BNK-713 doc'd @10bf059 → +1 commit = 11-5 FE page 착지)
+$ git -C src/frontend status --porcelain                → (empty · WT CLEAN)
+
+# BE
+$ git -C src/backend rev-parse --short develop          → bd06646
+$ git -C src/backend rev-parse --short origin/test       → 598d108
+$ git -C src/backend rev-list --count origin/test..develop → 623
+$ git -C src/backend log -1 --oneline develop
+  bd06646 fix(v2/M11): align payroll basis availability and lock endpoint coverage
+  (BNK-713 doc'd @907007e → +1 commit)
+
+# KPI (git grep / ls-files 실측)
+FE Route  : <Route\b 128 + <Routes> 1 = 129 total   (BNK-713 127+1=128 → +1 `/payroll/labor-cost-ratio`)
+FE Page   : *Page.jsx 102                            (BNK-713 101 → +1 StaffPayrollLaborCostRatioPage.jsx)
+FE test   : .test.js 212 + .test.jsx 301 = 513       (BNK-713 212+300=512 → +1 StaffPayrollLaborCostRatioPage.test.jsx)
+FE payroll routes : /payroll/basis · /payroll/labor-cost-ratio · /payroll/ledger · /payroll/reports  (4·BNK-712 3 → +1)
+FE reports route  : path~reports 29 (carry)
+BE Test   : *Test.java 282 + *Tests.java 1 = 283     (carry)
+BE @Test  : 2093                                     (BNK-713 @907007e 2089 → +4·bd06646 RBAC+routing endpoint coverage)
+Flyway    : V1–V190 (carry)
+모듈 커버리지 : 25.30/29 = 87.24%  (BNK-712 25.14/29=86.69% → +0.55pp)
+  id=11 「직원 급여」 coverage : 0.85  (BNK-712 0.69 → +0.16)
+  id=12 「수입지출·회계」 coverage : 0
+merge gate : 623 (FE 0 FULLY SYNCED + BE 623 · BE-only → tester FF 가속)
+
+================================================================================
+[2] ★★★ M11 residual 11-5 「인건비 지출비율」 full-stack CLOSURE (가정 번복)
+================================================================================
+# BNK-713: BE-only landing (@907007e) · FE 📋 PLANNED
+# BNK-714: FE page 착지 → full-stack LIVE (가정 번복 11-5 △→✅)
+
+## FE (aa86734)
+src/App.jsx:1164          path="/payroll/labor-cost-ratio"   (Route 등록)
+src/pages/StaffPayrollLaborCostRatioPage.jsx (신규 *Page.jsx)
+  L14  import { previewStaffPayrollLaborCostRatioApi } from "../api/services";
+       → rules §6 준수: apiFetch/services.js 경유 (raw fetch·JWT 누락 없음)
+  L124 const riskLevel = preview?.riskLevel || (preview?.complianceMet ? "COMPLIANT" : "ALERT");
+  L137 "월별 직접인건비와 장기요양 급여수입을 입력하면 법정 60% 기준 충족 여부를..." (verbatim copy)
+  L145 label="대상 월"  · L162 label="직접인건비 합계"  · L182 label="장기요양 급여수입"
+  L237 <dt>지출비율</dt> · L242 <dd>{formatPayrollPercent(thresholdPercent)}</dd>
+  L252 status={riskLevel}  (COMPLIANT/ALERT 배지)
+  L265 tone={preview.complianceMet ? "success" : "danger"}
+  data-testid: staff-payroll-labor-cost-ratio-summary / -guidance
+src/config/competitorModuleCoverage.js:42  { id: "11", label: "직원 급여", coverage: 0.85 }
+
+## BE (bd06646 — basis availability align + endpoint coverage lock)
+StaffPayrollSupport.java:  basisSurface(SURFACE_PLANNED) → basisSurface(SURFACE_AVAILABLE)  ×3
+  (basis page 착지 반영 → relatedSurfaces basis=AVAILABLE)
+MustApiEndpointRoutingTest.java  +143L  ("/payroll/basis","AVAILABLE" · labor-cost-ratio "PLANNED"→ 이제 route)
+RoleBasedControllerAccessTest.java +81L  (payroll catalog + preview endpoint RBAC 회귀 방지)
+  .andExpect(jsonPath("$.laborCostRatioPercent").value(61.00))  ← 61% > 60% = COMPLIANT 예시
+StaffPayrollLedgerServiceTest.java  +2/-2
+
+## BE endpoint 계약 (BNK-713 @907007e carry · 재확인)
+POST /api/v1/staff/payroll/labor-cost-ratio-preview
+  @PreAuthorize hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')
+  req  : yearMonth(@Pattern ^\d{4}-(0[1-9]|1[0-2])$) · totalLaborCost(@DecimalMin 0.00) · totalCareRevenue(@DecimalMin 0.01)
+  res  : laborCostRatioPercent · statutoryThresholdPercent=60.00 · complianceGapPercent · complianceMet(boolean)
+         · riskLevel "COMPLIANT"/"ALERT" · guidance(한국어 2종 verbatim) · documentCode "M11-5"
+  guidance ✅ : "법정 직접인건비 지출비율 60% 이상 기준을 충족했습니다."
+  guidance ⚠ : "법정 직접인건비 지출비율 60% 미만입니다. 수당/근로계약/급여기초 항목을 점검하세요."
+
+## sole P1 축소
+BNK-713: M11 residual 11-2 퇴직적립 만 (11-5 BE-only)
+BNK-714: M11 residual 11-2 퇴직적립 만 (11-5 full-stack CLOSED · 1-leaf gap 유지)
+KPI 목표: 11-2 착지 시 M11 full closure = 87.76%(25.45/29)·+M12=91.21%(26.45/29)
+
+================================================================================
+[3] ★★★ 이지케어 FAQ 인건비 지출비율 rowid 전수 0-hit (11-5 유일성 재확인)
+================================================================================
+$ curl -s "https://ezcare.easyms.co.kr/help/faq.ez"  → HTTP 200 · 80,057B
+  md5 e068efea765e8ca7d8011fffb4c8be50  (BNK-700 ce70e112 → cachebuster md5 DRIFT · size-lock 유지)
+  rowid 전수 = 233 (zero drift)
+$ grep -iE 'rowid=[0-9]+[^>]*>[^<]*(인건비|지출비율)[^<]*' ezfaq.html  → 0-hit
+  → 이지케어 도움말 233건 중 「인건비 지출비율」 compliance 전용 FAQ 없음
+  → ogada 11-5 in-app 60% 활성 compliance 판정 = 경쟁 4종 유일 재확인
+  (이지케어는 수당/급여관리 K008 64건 클러스터 사후 안내만 · BNK-633 정본 carry)
+FAQ hit_sum : 3,646,590  (BNK-700 3,646,310 → +280)
+FAQ Top-1   : rowid=21601 「직원 회의록」 83,905 (BNK-700 83,903 → +2)
+FAQ Top5 hit: 83,905 / 44,153 / 37,220 / 25,117 / 24,872
+
+================================================================================
+[4] 이지케어 /new.ez 데모 셸 재실측 (demo login → /new.ez)
+================================================================================
+$ ./scripts/ezcare-demo-fetch.sh  (POST /page/login.php oCode=DEMO → session → /new.ez)
+  demo_shell  ezcare_new_ez_demo.html  139,940B  md5 78e39680b9b4e8fdacbdf821c194e2b4
+              (BNK-700 139,949B a9d550d2 → -9B md5 DRIFT · 셸 정형 carry)
+  top_nav_js  ezcare_top_nav_v2.js      25,470B  md5 95286775000f06c8ad13688fcb0d6dbb
+              (top-nav-item-V2.js?20260428 · 7주+ zero drift lock)
+  redirect_stub ezcare_new_ez_redirect.html 70B  (비로그인 stub · 역공학 금지 carry)
+  module 10 / leaf: 1:일정 2:수급자 3:방문일정 4:RFID점검 5:본인부담 6:직원급여 7:재무회계 8:세무·사회보험 9:기관관리 10:기관평가
+  # 이지케어 6:직원급여 module 존재하나 인건비 지출비율 compliance 판정 노출 미확인(login-gated ERP 팝업 pop_WAV6 carry)
+
+================================================================================
+[5] ★ 규제 백본 zero drift — NHIS #44 449차
+================================================================================
+$ curl -s "https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769"
+  → HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba  (= disk IDENTICAL · BNK-713 448차 → 449차)
+  grep: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자(7)  — verbatim 불변
+  ↔ ogada TransportServiceFeeService (RU_1~4·ONE_WAY_RATIO=0.5·1일1회) 6-link chain carry
+
+================================================================================
+[6] per-cycle minimum 충족
+================================================================================
+- 신규 증거 URL 재실측 + 변동 : ezCare FAQ(md5 DRIFT·hit +280)·demo shell(-9B DRIFT)·NHIS #44(449차) ✅
+- 메뉴/필드/워크플로 1블록+     : 11-5 full-stack 계약 블록 + ezCare 데모 10-module + FAQ 인건비 0-hit ✅
+- COMPETITOR_MATRIX 1행+ @HEAD : @aa86734/@bd06646 3행 갱신 ✅
+- BENCHMARK_REPORT §소절+       : §714(3 소절) ✅
+- 덮어쓰기 0 · 가정 번복 1(11-5 △→✅) · KPI 변경 다수(FE Route/Page/test·BE @Test·모듈·id=11·merge gate)

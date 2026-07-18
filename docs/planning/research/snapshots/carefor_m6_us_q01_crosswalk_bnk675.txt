@@ -1,0 +1,152 @@
+# BNK-675 — 케어포 M6 위생·안전 ↔ ogada US-Q01 (Epic Q) 4-leaf cross-walk + demo-work raw `id_` toolbar-free 재실측
+# 조사일: 2026-06-26T22:50:00Z | rotation: 케어포 역공학 0–2h
+# 작성: benchmark_researcher [BNK]
+# HEAD: FE @724f4a9 (BNK-674 @aa0559b → +2: e19328a + 724f4a9 · WT CLEAN · ahead 272) /
+#       BE @8342f92 (BNK-674 @7fcdfde → +1 · WT CLEAN · ahead 596)
+# merge gate: 868 (FE 272 + BE 596 · +3 vs BNK-674 865)
+
+## §0 per-cycle minimum 충족 요약
+- 신규/재실측 evidence URL: Wayback `2id_` raw of `demo-work.carefor.co.kr/` (71,742B `ebee4d47` toolbar-free) — canonical disk(75,587B `b2e8e5c8` toolbar-wrapped)와 **semantic IDENTICAL**
+- 메뉴/필드/워크플로 1블록: carefor func.php M6 5-leaf authoritative + ogada `src/frontend/src/config/safetyChecks.js` 4 routes + 6-3 sub-form 6 types cross-walk
+- COMPETITOR_MATRIX 1행+: 4-row BNK-675 delta(M6 4-leaf UI shell start·Wayback raw IDENTICAL·BE QA-B95 stage2·baseline KPI) — `@724f4a9`/`@8342f92` 갱신
+- BENCHMARK_REPORT §675 소절 + decisions.md 최상단 entry
+
+## §1 ★★★ NEW Epic Q (US-Q01) — M6 위생·안전 ogada full-stack UI shell 시작 (확인 · ogada git 실측 · 메뉴/필드/워크플로 블록)
+
+### 1-1 commit 실측 (FE develop +2 @ 724f4a9)
+- `e19328a` `fix(v1.2.1/G16): derive one-per-day note from parity rules` (4-file modify +82L · transport NHIS copy fallback derivation)
+- `724f4a9` `feat(UXD/US-Q01): add safety module UI shell and G16 note a11y` (13-file +1168L):
+  - `src/config/safetyChecks.js` +155L (NEW) — `SAFETY_ROUTES` 4종·`SAFETY_SUB_FORM_TYPES` 6종·`DAILY_CHECK_TEMPLATE` 8항·`PERIODIC_CHECK_TEMPLATES` 6×3~4항·`INFECTION_SYMPTOM_OPTIONS` 5종·`INFECTION_ACTION_OPTIONS` 4종·`SAFETY_CHECK_RESULT` 4-state(PASS/FAIL/NA/PARTIAL)·`summarizeChecklistResult()` helper
+  - `src/config/safetyChecks.test.js` +59L (NEW) — 4-route lock·6-sub-form lock·summarize PASS/FAIL/PARTIAL
+  - `src/components/ui/SafetyChecklistForm.jsx` +259L (NEW) — 일일/정기 점검 체크리스트 폼
+  - `src/components/ui/SafetyChecklistForm.test.jsx` +61L (NEW)
+  - `src/components/ui/SafetyContextNav.jsx` +37L (NEW) — Epic Q 컨텍스트 nav
+  - `src/components/ui/SafetyContextNav.test.jsx` +47L (NEW)
+  - `src/components/ui/SafetySubFormPanel.jsx` +47L (NEW)
+  - `src/components/ui/SafetySubFormPanel.test.jsx` +32L (NEW)
+  - `src/components/ui/InfectionControlLogForm.jsx` +194L (NEW) — 감염병 관리 일지 폼
+  - `src/components/ui/SafetyOperationLogForm.jsx` +192L (NEW) — 시설운영일지 폼
+  - `src/components/ui/index.js` +5L · `src/styles/components.css` +75L
+  - `src/components/transport/TransportServiceFeePanel.jsx` +6/-1 — G16 onePerDayNote `id="transport-service-fee-one-per-day-note"` a11y
+
+### 1-2 carefor func.php M6 5-leaf authoritative ↔ ogada US-Q01 cross-walk (확인)
+`grep -oE '<!--6-[0-9-]+\.[^-]*--' docs/planning/research/snapshots/carefor_func.php` 직접 grep:
+```
+<!--6-1.주간식단표--
+<!--6-2.일일점검--
+<!--6-3.정기점검--
+<!--6-3-1.감염병 관리--
+<!--6-4.시설운영일지--
+```
+
+| carefor M6 leaf | func.php verbatim | ogada US-Q01 mapping (`safetyChecks.js`) | route | 상태 |
+|---|---|---|---|---|
+| 6-1 | 주간식단표 | `/meal-plan` (M6 외부 기존 ogada route carry) | (외부) | ✅ |
+| **6-2** | 일일점검 | `SAFETY_ROUTES[0]` `DAILY` · `DAILY_CHECK_TEMPLATE` 8항(floor_clean·restroom·kitchen_hygiene·handwash·ventilation·emergency_exit·fire_extinguisher·medication_storage) | `/safety/daily-checks` | △ UI shell only(App.jsx 미배선) |
+| **6-3** | 정기점검 | `SAFETY_ROUTES[1]` `PERIODIC` · `SAFETY_SUB_FORM_TYPES` 6종(HYGIENE·NURSING_SUPPLIES·MEAL_SERVICE·FIRE_SAFETY·MEDICATION·DISINFECTION) · `PERIODIC_CHECK_TEMPLATES` 6 sub × 3~4 항 | `/safety/periodic-checks` | △ UI shell only |
+| **6-3-1** | 감염병 관리 | `SAFETY_ROUTES[2]` `INFECTION` · `InfectionControlLogForm.jsx` · `INFECTION_SYMPTOM_OPTIONS` 5종(FEVER·RESPIRATORY·DIGESTIVE·SKIN·OTHER) · `INFECTION_ACTION_OPTIONS` 4종(ISOLATION·REPORT·DISINFECTION·MONITORING) | `/safety/infection-control` | △ UI shell only |
+| **6-4** | 시설운영일지 | `SAFETY_ROUTES[3]` `OPERATION` · `SafetyOperationLogForm.jsx` | `/safety/operation-log` | △ UI shell only |
+
+→ **결론**: BNK-620 P1 deepen (M6 6-3 PDF sub-form 6종 식별·BNK-620 §3) → 56-cycle 만에 **FE UXD UI shell first stage** landed. **4-leaf 동시 closure 시작** = ogada 모듈 6 (현재 `competitorModuleCoverage.js` `coverage: 0`) ❌→△ 진입.
+
+### 1-3 향후 stage 예측 (가정 — backend/route wiring 미반영)
+- **Stage 1 (✅ 완료)**: FE UI shell + config(`safetyChecks.js` 155L) + 폼 컴포넌트 5개(SafetyChecklistForm·SafetyContextNav·SafetySubFormPanel·InfectionControlLogForm·SafetyOperationLogForm) + 4 .test.{js,jsx} 추가
+- **Stage 2 (미반영)**: `src/App.jsx` 4 route 등록 (`/safety/daily-checks`·`/safety/periodic-checks`·`/safety/infection-control`·`/safety/operation-log`) → Route count 118 → **122** (+4)
+- **Stage 3 (미반영)**: backend `SafetyCheckController`/`InfectionControlController`/`OperationLogController` + Flyway V184+ migration
+- **Stage 4 (미반영)**: `competitorModuleCoverage.js` id=6 `coverage: 0` → 0.6(△ 4-of-5) or 0.8(△ near-full) or 1.0(✅) → 모듈 KPI 80.86% → **83.79%~84.31%** (+2.93~3.45pp)
+
+**KPI projection**: M6 full closure(1.0) = **+3.45pp** (24.45/29) — M11/M12 P1(+6.9pp)와 함께 **2nd P1 lever 확정**. M6 + M11/M12 동시 closure = 80.86% → **91.27%** (+10.41pp).
+
+## §2 ★★★ demo-work.carefor.co.kr Wayback `id_` raw toolbar-free 재실측 (확인 · 신규 evidence·방법론)
+
+### 2-1 fetch 결과
+- URL: `http://web.archive.org/web/2id_/https://demo-work.carefor.co.kr/`
+- 실측: HTTP **200** · **71,742B** · md5 **`ebee4d47`** · time 15.2s
+- 캐노니컬 disk `carefor_demo_work.html`: 75,587B · md5 `b2e8e5c8` (toolbar-wrapped)
+- Delta: −3,845B (Wayback `bundle-playback.js` + `wombat.js` injection 제거 only)
+
+### 2-2 semantic crosswalk (확인 · grep 직접)
+| 측정 | canonical disk `b2e8e5c8` (75,587B) | raw `id_` `ebee4d47` (71,742B) | drift |
+|---|---:|---:|:--:|
+| `<title>` | 케어포-노인장기요양 관리프로그램 | 케어포-노인장기요양 관리프로그램 | **0** |
+| `loadPage` matches | 115 | 115 | **0** |
+| `view.<func>` unique | 117 | 117 | **0** |
+| `rpt` class | 34 | 34 | **0** |
+| `pamcode L\d+_M\d+` | 116 | 116 | **0** |
+| **semantic verdict** | — | — | **IDENTICAL** |
+
+### 2-3 결론
+- BNK-666 §1 「func.php Wayback `id_` raw = canonical byte-identical」 방법론을 **demo-work 까지 확장 적용**.
+- demo-work `id_` raw 는 byte-NEW(`ebee4d47`)이지만 **semantic IDENTICAL** (5/5축 0 drift) — 3,845B 차이 = Wayback toolbar JS injection only.
+- canonical disk(`b2e8e5c8` toolbar-wrapped)는 carry, 신규 `carefor_demo_work_raw_bnk675.html`(`ebee4d47` toolbar-free)은 별축 **pristine baseline** 으로 보존(덮어쓰기 금지).
+- LIVE `https://demo-work.carefor.co.kr/` HTTP **000 timeout** carry(BNK-666 56-cycle+ → **60-cycle** 도달).
+
+## §3 ★★ carefor M2 송영(이동서비스) 10-leaf vs demo 0-hit 시설 셸 재확인 (확인 · 재실측)
+
+### 3-1 func.php M2 verbatim (확인)
+`grep -oE '<!--2-[0-9-]+\.[^-]*--' carefor_func.php`:
+- 2-1.일정관리(공단연동)
+- 2-1-1.외출 관리
+- 2-2.탑승관리(차량 이용)
+- 2-3.출석관리(차량 미이용)
+- 2-4.차량관리
+- 2-5.청구내역상세(공단연동)
+- 2-6.공단 입퇴소내용 자료(공단연동)
+- 2-7.월간 서비스 변동현황
+- 2-8.월간 입소자, 일정, 서비스 현황
+- 2-9.수급자 외출 리포트
+
+→ **10 leaf** authoritative carry (BNK-640 §M2 10-leaf 재확인 · `이동서비스` grep 3 = M2 송영 블록 verbatim 불변)
+
+### 3-2 demo-work shell `transport`/`송영` 0-hit (확인)
+- `grep -oE 'view\.transport[a-z_]*' carefor_demo_work_raw_bnk675.html` = **0 hit**
+- `grep -oE 'view\.[a-z_]*(transport|trans|car|vehicle|outing)[a-z_]*' carefor_demo_work_raw_bnk675.html` = **0 hit**
+- canonical disk `b2e8e5c8` 동일 결과 (BNK-640 carry)
+
+→ **결론**: demo-work shell = 시설 (재가/방문) 셸, **이동서비스 모듈 미장착**. carefor 마케팅 func.php M2 10-leaf는 주야간보호 ERP 전용 — demo 0 hit 확정 carry. ogada `/transport/*` 17 route + NHIS #44 러-1~4 full-stack 차별화 deepen(BNK-528 carry).
+
+## §4 ★ ogada git 실측 KPI (BNK-674 → BNK-675)
+
+| 축 | BNK-674 (@aa0559b/@7fcdfde) | BNK-675 (@724f4a9/@8342f92) | Δ |
+|---|---|---|---|
+| FE HEAD | `aa0559b` | **`724f4a9`** | **+2** (e19328a G16 derive + 724f4a9 US-Q01 UI shell) |
+| BE HEAD | `7fcdfde` | **`8342f92`** | **+1** (QA-B95 null g21 seed live-e2e parity) |
+| FE ahead vs `origin/test=ab4de83` | 270 | **272** | +2 |
+| BE ahead vs `origin/test=598d108` | 595 | **596** | +1 |
+| merge gate | 865 | **868** | **+3** (FE +2 + BE +1) |
+| FE Route(`<Route\b` in App.jsx) | 118 | **118** | 0 (US-Q01 route 아직 미배선) |
+| FE *Page.jsx | 93 | **93** | 0 |
+| Flyway V1–V183 | 183 | **183** | 0 |
+| BE Test.java | 274 | **274** | 0 (+1 Tests.java 동일) |
+| BE @Test | 1999 | **2000** | +1 (HealthControllerTest live-e2e parity) |
+| FE test (.test.{js,jsx}) | 485 (199+286) BNK-674 보고 489 over-count carry | **489** (200+289) | **+4** (US-Q01 4 NEW test files) |
+| 모듈 coverage % | 80.86% | **80.86%** | 0 (US-Q01 UI shell only · coverage matrix 미반영) |
+| reports route | 28 | **28** | 0 |
+| FE WT | CLEAN | **CLEAN** | (in-progress files closed by 724f4a9 commit) |
+| BE WT | CLEAN | **CLEAN** | carry |
+
+### 4-1 BNK-674 FE test 보고 over-count 가정 번복 1
+- BNK-674 reported FE test **489 (203+286)** — git ls-tree `aa0559b` 실측: **485 (199+286)** = **−4 over-count**.
+- BNK-675 시점 develop `@724f4a9` 실측: **489 (200+289)** = +4 vs 485 (US-Q01 4 NEW test files = SafetyChecklistForm.test·SafetyContextNav.test·SafetySubFormPanel.test·safetyChecks.test).
+- 결과적으로 BNK-674 의 「489」 수치 자체는 우연히 BNK-675 와 일치하지만 분포는 다름(BNK-674 203+286 ≠ BNK-675 200+289).
+- **정정**: BNK-674 baseline FE test 정본 = **485 (199+286)** carry · BNK-675 시점 489 (200+289).
+
+## §5 보고 — 변경/검증 종합
+
+- 가정 번복: **1** (BNK-674 FE test 489 over-count → 실측 baseline 485)
+- 신규 core 갭: **0** (M6 4-leaf는 candidate에서 in-progress 로 진행)
+- candidate: **M6 closure stage2~4 NEW** — App.jsx 4-route 등록 + backend API + competitorModuleCoverage matrix 갱신 (+2.93~3.45pp)
+- 상태 변경: **3** — FE HEAD +2 · BE HEAD +1 · M6 ❌→△ 진입(UI shell)
+- KPI 변경: **3** — BE @Test 2000 · FE test 489(분포 정정) · merge gate 868
+- 신규 snapshot: **2건** (`carefor_demo_work_raw_bnk675.html`·`carefor_m6_us_q01_crosswalk_bnk675.txt`)
+- 덮어쓰기: 0건 (canonical disk 보존)
+- zero drift IDENTICAL: 2건 (carefor func.php Wayback `id_` raw `6226e6eb`·demo-work semantic 5/5축)
+- per-cycle minimum 4종 충족
+
+## §6 planner 제안 (요약)
+
+1. **★★★ M6 위생·안전 P1 2nd lever 진입 확정** — US-Q01 UI shell 4-leaf 동시 진행 = ogada module 6 ❌→△. M11/M12 P1(+6.9pp) + M6(+3.45pp) = **+10.41pp** projection. ROADMAP P1 우선순위 carry · M6 closure 후속 stage(route 배선 → BE API → matrix 갱신) coder/tester 핸드오프 필요.
+2. **★★ carefor M6 5-leaf authoritative ↔ ogada US-Q01 4-route + 6-3 sub-form 6종 + 감염병 5/4 옵션 cross-walk** — `safetyChecks.js` JSDoc 「케어포 M6 6-2~6-4」 명시 = BNK-620 P1 deepen → BNK-675 UI shell 동작 evidence chain.
+3. **★★ demo-work Wayback `id_` raw toolbar-free baseline 확립** — semantic 5/5축 IDENTICAL → BNK-666 func.php 방법론 demo-work 까지 확장. canonical disk(toolbar-wrapped)는 carry, raw(`ebee4d47`)는 pristine 별축 보존. LIVE 60-cycle timeout carry.
+4. **★ ogada cross-stream HEAD +3 = merge gate 868** — 양쪽 WT CLEAN → tester FF merge 868 가속 가능 (선행 commit 불필요).
+5. **다음 rotation 후보**: 이지케어 2–4h (FAQ taxonomy carry 측정) 또는 엔젤·롱텀·규제 4–6h.

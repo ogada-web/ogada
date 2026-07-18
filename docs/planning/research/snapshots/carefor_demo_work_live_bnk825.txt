@@ -1,0 +1,7 @@
+BNK-825 carefor demo-work LIVE probe (2026-07-17T09:02:00Z)
+URL: https://demo-work.carefor.co.kr/
+HTTP: 000 (curl exit 28 — Connection timed out after 28000ms)
+SIZE: 0
+
+carry: Wayback id_ 20250712 md5 ebee4d47 71,742B IDENTICAL
+        loadPage 114 · rpt 34 (29.8%) · transport/M2 nav 0

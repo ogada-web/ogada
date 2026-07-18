@@ -1,0 +1,122 @@
+# 교차검증·갭 우선순위 — J03 quiet-hours 야간발송 readiness full-stack + P0/P1 재정렬 + 공지/엑셀 스캔 (BNK-741)
+# 조사일: 2026-07-15T01:07:00Z (UTC) / KST 2026-07-15 10:07
+# 작성: benchmark_researcher [BNK]
+# rotation: 8h+ 교차검증·갭 우선순위 (미확인 축소·이전 가정 번복 여부·P0/P1 재정렬·신규 공지/엑셀 스캔)
+# 직전 동일 rotation: BNK-738(2026-07-14T23:00Z) → ~2.1h 후
+# 직전 사이클: BNK-740(2026-07-15T00:24Z·엔젤·롱텀·규제 4–6h) → ~43분 후
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`fb6ea17`** `fix(v1.2.1/J03): surface non-emergency dispatch-now readiness`
+  · WT **CLEAN** · ahead origin/test **0** = **FULLY SYNCED** (`origin/test=fb6ea17`)
+  · BNK-740 `@200515b` → **+1 commit**(`fb6ea17`) · tester FF 흡수(FULLY SYNCED)
+  · `<Route\b`=131 + `<Routes>`=1 = **132**(carry) · `*Page.jsx`=**105**(carry)
+  · `.test.js`=214 · `.test.jsx`=304 = **518**(carry)
+  · accounting route 1 · payroll route 5
+- BE `develop` = **`124915d`** `feat(v2/J03): expose quiet-hours aware channel availability`
+  · WT **CLEAN** · ahead origin/test **646** (`test=598d108`)
+  · BNK-740 `@0c45e19`(ahead 645) → **+1 commit**(`124915d`)
+  · `*Test.java`=288 · `*Tests.java`=1 = **289**(carry) · `@Test`=**2164**(grep -rE·Δ0 vs BNK-740·strict annotation 2163·J03 commit은 기존 @Test 본문 확장·신규 @Test 0)
+  · Flyway **V1–V192**(192 files · tip `V192__facility_notices_carefor_10_4`·신규 0)
+- 모듈 커버리지 `competitorModuleCoverage.js` = **29 entries · sum 27.15 · 27.15/29 = 93.62%**(carry)
+  · id=1-5 **1.0** · id=1-7 대시보드 **1.0** · id=7-4 CMS **1.0** · id=12 **0.7** · id=10 **0.75** · id=2 **0.85** · id=8 **0.85** · id=1-10 **0**
+- merge gate **646** (FE 0 FULLY SYNCED + BE 646 · BE-heavy · 양쪽 WT CLEAN → tester FF)
+  · vs BNK-740 **645**(FE 0+BE 645) = **BE +1** (J03 quiet-hours BE)
+
+### 교차검증 carry (closed chains · 가정 번복 아님)
+
+| chain | 근거 | 판정 |
+|---|---|---|
+| J03 채널 상태 alias BE↔FE | FE `normalizeNotificationChannelStatus` + BE `@JsonProperty` alias 3종 | ✅ CLOSED carry(BNK-733) |
+| **J03 quiet-hours 야간발송 readiness** | BE `nonEmergency{Alimtalk,Email}DispatchAvailableNow`+`QUIET_HOURS_ACTIVE` blocker + FE normalizer/panel | ✅ **NEW CLOSED(BNK-741)** |
+| G2 / id=1-5 | compose→DRAFT→board→clone/guard→editable categories | ✅ FULL 1.0(BNK-730~740) |
+| carefor 10-4 | BE V192 6-endpoint + FE board + clone/guard | ✅ full-stack |
+| CMS 요금 parity | `CmsPaymentMethodCatalog` 5-entry ↔ 효성CMS 250/300원 verbatim | ✅ zero drift carry(BNK-740) |
+
+## 1. ★★★ J03 quiet-hours 야간발송 non-emergency readiness FULL-STACK CLOSURE (메뉴/필드/워크플로 블록)
+
+### 1-a. BE `@124915d` `feat(v2/J03): expose quiet-hours aware channel availability` (8-file·+42/−1)
+
+- `NotificationChannelReadinessService`:
+  - `boolean quietHoursActive = quietHoursPolicy.isActiveNow();`
+  - `boolean nonEmergencyAlimtalkDispatchAvailableNow = liveAlimtalkReady && !quietHoursActive;`
+  - `boolean nonEmergencyEmailDispatchAvailableNow = liveEmailReady && !quietHoursActive;`
+  - `if (quietHoursActive) { readinessBlockers.add("QUIET_HOURS_ACTIVE"); }`
+- `NotificationChannelStatusResponse`: 신규 필드 2 (`nonEmergencyAlimtalkDispatchAvailableNow`·`nonEmergencyEmailDispatchAvailableNow`) + `quietHoursActive` 노출
+- 회귀 커버: `NotificationChannelReadinessServiceTest`(+12)·`GuardianHomeNewsletterLaunchServiceTest`(+2)·`NotificationChannelStatusPilotServiceFlowE2eTest`(+7)·`MustApiEndpointRoutingTest`(+4)·`RoleBasedControllerAccessTest`(+2)·`HealthControllerTest`(+4)
+
+### 1-b. FE `@fb6ea17` `fix(v1.2.1/J03): surface non-emergency dispatch-now readiness` (5-file·+67)
+
+- `config/notificationChannelStatus.js normalizeNotificationChannelStatus(raw)`:
+  - `quietHoursActive`·`liveAlimtalkDispatchReady`·`liveEmailDispatchReady` 정규화
+  - `nonEmergencyAlimtalkDispatchAvailableNow = (boolean 수용) ?? (liveAlimtalkDispatchReady && !quietHoursActive)` — BE 미제공 시 FE fallback 계산
+  - `nonEmergencyEmailDispatchAvailableNow` 동일 fallback
+- `components/ui/NotificationChannelReadinessPanel.jsx`(+19)·`.test.jsx`(+9)·`config/notificationChannelStatus.test.js`(+21)·`notificationChannelStatusLiveApi.e2e.test.js`(+2)
+
+### 1-c. 판정 — 3-channel readiness 차별화 심화 (경쟁 crosswalk)
+
+| 제품 | 알림 채널 | quiet-hours(야간발송 억제) readiness | 판정 |
+|---|---|---|---|
+| 케어포 | 문자 중심 (func.php M8 leaf·LIVE 000) | 「미확인」 | disk carry |
+| 이지케어 | **2-channel**(SMS+앱쪽지·알림톡/이메일 0-hit·BNK-724/731) | 「미확인」 (RFID-triggered SMS만) | demo grep |
+| 엔젤 | LCMS 위탁·효성CMS 4-doc 이메일 | 「미확인」 | BNK-736/740 |
+| **ogada** | **3-channel**(SMTP+알림톡 J03/Solapi+SMS) | ✅ **in-app `/api/v1/health` + Panel 실시간 노출**(`nonEmergency*DispatchAvailableNow`·`QUIET_HOURS_ACTIVE` blocker) | **경쟁 4종 유일 심화** |
+
+- 마케팅 카피 후보: 「ogada는 알림톡·이메일 non-emergency 발송을 quiet-hours(야간) 정책에 맞춰 실시간 readiness(`QUIET_HOURS_ACTIVE`)로 표시해 오발송을 방지합니다.」
+- KPI promote 아님(id=10 SMS·알림 0.75 carry — operational readiness 심화이지 coverage 갭 해소 아님).
+
+## 2. ★★★ P0/P1 재정렬 · closed axes 재오픈 0 · 이전 가정 번복 여부 (메뉴/필드/워크플로 블록)
+
+### 2-a. closed axes Route LIVE 재확인 (App.jsx grep 실측)
+
+| 축 | Route | 스키마/백본 | 재오픈 |
+|---|---|---|---|
+| **G14** 계획서 서식 | `/clients/:clientId/care-plan-form` | ClientCarePlanFormPage LIVE | **0** |
+| **대시보드** | `/dashboard` (+ id=1-7 coverage 1.0) | 현황·통계 LIVE | **0** |
+| **v1.3-C** transport | V186–V190 integrity | shuttle+day-status | **0** |
+| **v2 CMS** | `/billing/cms`·`/billing/easy-pay`·`/billing/cash-receipts` | CmsPaymentMethodCatalog 5-method(250/300원 verbatim) | **0** |
+| 가정통신문 G2 | `/clients/home-newsletter` | id=1-5 1.0 | n/a(FULL) |
+| M12 회계 BPO | `/accounting` | id=12 0.7 · credentials 잔여 | n/a |
+
+→ closed axes 5축 App.jsx grep 전부 LIVE 재확인 = **재오픈 0**.
+
+### 2-b. 갭 우선순위 표 (BNK-738 → BNK-741 Δ)
+
+| id/축 | BNK-738 | BNK-741 | 실측 | 판정 | 우선순위 |
+|---|---|---|---|---|---|
+| **1-10 연계기록지** | 0 | **0** | FE/BE 구현 0(coverage only) | 진성 갭 | **v2+ 최우선 신규 모듈**(평가지표 30) |
+| **12 수입지출·회계** | 0.7 | **0.7 carry** | `/accounting` LIVE·SSO handoff·실환경 credentials 미등록 | △ | **잔여 operational lever #1** |
+| **10 SMS·알림** | 0.75 | **0.75 carry** | J03 3-channel + **quiet-hours non-emergency readiness(BNK-741)**·SMS 7-kind template enum v2+ | △ | **잔여 operational lever #2**(J03 심화·coverage 갭은 template enum) |
+| 2 이동서비스 | 0.85 | 0.85 | RU_1~4 6-link·NHIS #44 **475차** zero drift | △ | operational polish |
+| 8 직원·근태 | 0.85 | 0.85 | — | △ | 후속 |
+| **1-5 가정통신문** | 1.0 FULL | 1.0 FULL | home-newsletter + facility-notice full-stack | ✅ CLOSED | lever 소멸 carry |
+| **G14 / v1.3-C / v2 CMS / 대시보드** | closed | closed | App.jsx LIVE | closed | **재오픈 0** |
+| **P3 dashboard 2건** | 「가정」 | 「가정」 | G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY 0 dedicated Route | 「가정」 | **격상 0**(이지케어 patient-list 만료일 카운트다운 BNK-739 참고 asset carry) |
+| 이지케어 월단위 batch-unconfirm | v2+ candidate | v2+ candidate | `unconfirmTransportRunApi` 단일만 | operational | carry(BNK-739 P2 lever candidate) |
+
+- **가정 번복 0**
+- **신규 P0/P1 진성 갭**: 0
+- **closed axes 재오픈**: 0
+- **P3 dashboard 격상**: 0
+- **P0/P1 재정렬(확인)**: BNK-738 「sole 진성갭 id=1-10 · operational levers = M12 credentials + SMS 7-kind」 carry — BNK-741 는 id=10 축을 **J03 quiet-hours readiness 로 operational 심화**(coverage 갭 아님·template enum 잔여).
+
+## 3. 규제·공지·엑셀 재실측 (기존 URL · 신규 변경 스캔)
+
+| 소스 | HTTP·SIZE·md5 | 판정 |
+|---|---|---|
+| NHIS #44 이동서비스비 | 200·7,572B·`c886ff1f` | **475차** zero drift IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)) |
+| ezcare FAQ list | 200·80,057B·`af1b92dd` | size-lock · hit-count DRIFT(BNK-739 `850420d0`→변경) · rowid **233**·max **21781** carry · 「엑셀」 2-hit(브라우저 다운로드 FAQ)·신규 rowid 0 → **엑셀 포맷 변경 0** |
+| silverangel notice `customer/noticeList.do` | **404**·1,028B | dual-IA(canonical=`support/notice/list.do` `ea7d6b3d` carry) · 재실측 skip=BNK-738 carry |
+| silverangel extraService (효성CMS) | (재실측 skip = BNK-740 carry) | `f9c5d877` 81,637B IDENTICAL · 요금 250/300원 verbatim carry |
+| carefor func.php / demo-work | **000** timeout | 「미확인」 **80-cycle+** · disk `6226e6eb` 98,328B canonical 우선 |
+
+→ **신규 규제/공지/엑셀 포맷 변경 0** · import adapter 긴급 불요 · 신규 candidate 0.
+
+## 4. 산출 요약
+
+- 신규/재실측 evidence URL: NHIS #44 **475차** zero drift · ezcare FAQ list hit-only DRIFT · silverangel customer 404(dual-IA) = **재실측 3건**(+ carefor 000 carry)
+- 메뉴/필드/워크플로: **J03 quiet-hours 야간발송 non-emergency readiness full-stack CLOSURE** §1 + **P0/P1 재정렬(closed axes LIVE 재확인·재오픈 0)** §2
+- COMPETITOR_MATRIX 1행+ `@fb6ea17`/`@124915d` 갱신
+- BENCHMARK_REPORT §BNK-741 + memory/decisions.md 최상단
+- 가정 번복 0 · 상태 변경 2(FE +1 FULLY SYNCED·BE +1 ahead 646) · closure 1(J03 quiet-hours) · closed axes 재오픈 0 · P3 dashboard 격상 0 · 엑셀/공지 변경 0
+- 덮어쓰기 0 · per-cycle minimum 4종 충족

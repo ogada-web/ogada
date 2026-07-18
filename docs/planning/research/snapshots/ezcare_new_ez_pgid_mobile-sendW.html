@@ -33,7 +33,7 @@
 	<script src="/assets/ui-custom.js?20260318" type="text/javascript"></script>
 
 	<link href="/assets/common.css?20260514" rel="stylesheet" type="text/css" />
-	<script src="/assets/common.js?20260324234" type="text/javascript"></script>
+	<script src="/assets/common.js?20260629" type="text/javascript"></script>
 
 <!-- 상단 메인메뉴 항목 -->
 	<script src="/assets/top-nav-item-V2.js?20260428" type="text/javascript"></script>
@@ -204,13 +204,13 @@
 			</li>
 			<li class="nav-menu-item nav-dropdown" nav-no="10" >
 				<a>기관평가</a>
-				<a href="/new.ez?PGID=guide-E100&tmp=1782281756#tab0" class="direct-link" hit-id="49000">현황</a>
+				<a href="/new.ez?PGID=guide-E100&tmp=1784207910#tab0" class="direct-link" hit-id="49000">현황</a>
 			</li>
 
 			<li class="nav-menu-divider"></li>
 		</ul><!-- #nav-menu -->
 		<div class="nav-tail d-flex align-items-center">
-						
+									
 			<a class="ui-button btn-remote mr-2">원격지원</a>
 			<!-- <a class="ui-button btn-remote-mac mr-2" dev>원격-Mac</a> -->
 			<a class="ui-button btn-power" href="javascript:log_out()" style=""><svg class="icon"><use xlink:href="#icon-power"></use></svg></a>
@@ -278,7 +278,7 @@
 						
 			<!-- <li class="small_title ">이지케어</li> -->
 			<li>
-								<a class="nav-link popup-icon mt-5" style="padding:5px;background:#D6E9FC;color:#3269C8;font-weight: bold;" href="javascript:;" onclick="window.open('/page/landing/common/review.html', 'ezc-review', 'width=800, height=1000');" hit-id="3221">사용후기</a>
+								<a class="nav-link popup-icon mt-5" style="padding:5px;background:#D6E9FC;color:#3269C8;font-weight: bold;" href="javascript:;" onclick="window.open('/landing/?page=review_v1', 'ezc-review', 'width=900, height=1200');" hit-id="3221">사용후기</a>
 				<a class="nav-link " href="javascript:;" onclick="window.open('/page/landing/common/charge.202310.html', 'ezc-charge', 'width=800, height=1000');" hit-id="3222" style="padding:5px">월 이용요금<span></span></a>
 				
 				<div class="grid">
@@ -1113,7 +1113,7 @@ function ageGroup(age){
 
 <script>
 	function dateTrim(val, opt, rows){
-		var Ymd = "2026-06-24";
+		var Ymd = "2026-07-16";
 		val = val.replace(Ymd, "");
 		return $.trim(val);
 	}
@@ -1828,7 +1828,7 @@ function ageGroup(age){
 		//window.open('/event/HSCMS/inquiry.html','HSCMS_inquiry','width=600,height=700,scrollbars=yes,status=yes,left=5,top=5');효성상담신청창 리뉴얼 주소로 변경
 	});
 	$("button.HSCMS_register").click(function(){
-		window.open("https://view.efnc.co.kr/online-join?registrationId=20260624EASYMDEMO1117464637&productCode=EASYM-001&zipcode=42251&address1=%EB%8C%80%EA%B5%AC%EA%B4%91%EC%97%AD%EC%8B%9C+%EC%88%98%EC%84%B1%EA%B5%AC+%EC%95%8C%ED%8C%8C%EC%8B%9C%ED%8B%B02%EB%A1%9C+18&address2=%28%EC%8B%9C%EC%A7%80%EB%8F%99%29+%E3%85%87%E3%85%87%E3%85%87%E3%85%87&agencyUserId=A0000wizcms", "a1782281756", "width=700, height=700,scrollbars=yes,status=yes,left=5,top=5");
+		window.open("https://view.efnc.co.kr/online-join?registrationId=20260716EASYMDEMO1495194902&productCode=EASYM-001&zipcode=42251&address1=%EB%8C%80%EA%B5%AC%EA%B4%91%EC%97%AD%EC%8B%9C+%EC%88%98%EC%84%B1%EA%B5%AC+%EC%95%8C%ED%8C%8C%EC%8B%9C%ED%8B%B02%EB%A1%9C+18&address2=%28%EC%8B%9C%EC%A7%80%EB%8F%99%29+%E3%85%87%E3%85%87%E3%85%87%E3%85%87&agencyUserId=A0000wizcms", "a1784207910", "width=700, height=700,scrollbars=yes,status=yes,left=5,top=5");
 	});
 
 	$("button.go_ez_event").click(function(){  //

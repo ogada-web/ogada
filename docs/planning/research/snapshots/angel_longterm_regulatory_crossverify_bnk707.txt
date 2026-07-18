@@ -1,0 +1,58 @@
+BNK-707 엔젤·롱텀·규제 4–6h 교차검증 (2026-07-14T01:34Z)
+================================================================
+rotation: 엔젤·롱텀·규제 — silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 재실측
+                       + 2026 평가지표 #27 정본 교차검증 (PLAN_NOTES #44)
+
+[ogada @HEAD 실측] git -C src/{frontend,backend} rev-parse develop
+  FE develop  95192f5  "fix: align indicator 27 copy with functional recovery"
+              WT CLEAN · ahead 0 vs origin/test (**FULLY SYNCED** — tester FF 완료)
+  BE develop  6e874df  "test(v2/G-BATHING): lock indicator27 compliance response"
+              WT CLEAN · ahead 617 vs origin/test=598d108
+  merge gate = FE 0 + BE 617 = **617 BE-only** (FE 이미 test 반영 → tester FF BE-only 가속)
+  Route 124(<Route\b 123+<Routes> 1) · *Page.jsx 98 · reports route 20
+  FE test 507(210 .test.js + 297 .test.jsx)
+  BE Test 280(279 Test.java + 1 Tests.java) · BE @Test 2079 · Flyway V1–V190
+
+--------------------------------------------------------------------
+★★★ 신규 정본화: silverangel 평가지표 27 = 「기능회복훈련」 ↔ ogada G17/G-BATHING 3-commit full-stack chain
+--------------------------------------------------------------------
+silverangel daycareEssentialWork.do (131,664B `c79c1be3` live=disk IDENTICAL)
+  · "기능회복" 6 hits (지표 27 = 기능회복훈련 지원 — 주야간보호 필수 평가지표)
+  · "목욕"     2 hits (목욕급여 = 별도 항목·필수 아님·제공 시 청구 — BNK-704 정정 carry)
+  → 과거 일부 노트의 「평가#27 목욕」 표기는 오분류였고, BNK-704~707 재실측으로
+    「지표27 = 기능회복훈련, 목욕 = 비필수 별도」 로 정본화.
+
+ogada 최근 3-commit cross-stream chain (지표27 정본 반영):
+  ① BE c08329a  fix(v2/G17): clarify daycare indicator 27 owns functional recovery
+  ② BE 6e874df  test(v2/G-BATHING): lock indicator27 compliance response
+  ③ FE 95192f5  fix: align indicator 27 copy with functional recovery
+  = silverangel 평가지표 27 정본(기능회복훈련) ↔ ogada G17(기능회복) + G-BATHING(목욕 별도 compliance)
+    을 백엔드 응답·테스트·프론트 카피까지 3-layer full-stack 정합.
+  경쟁 4종(케어포 func.php 정적·이지케어 RFID·엔젤 systemFeature 404·롱텀 규제만) 대비
+    「평가지표 27 기능회복/목욕 분리 + FE 카피 정합」 in-app 정본화는 ogada 유일.
+
+--------------------------------------------------------------------
+★★ 규제 백본 재실측 (live HTTP 재확인 + md5/size diff)
+--------------------------------------------------------------------
+NHIS #44 이동서비스비 러-1~4    HTTP 200 · 7,572B · `c886ff1f` = **443차 zero drift IDENTICAL**
+  (BNK-706 442차 → +1) · 러-1~4·편도50%·1일1회·수급자 부담 X verbatim 불변
+  ↔ ogada TransportServiceFeeService 6-link chain 경쟁 4종 유일 full-stack carry
+  URL: joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+
+silverangel essential                HTTP 200 · 131,664B · `c79c1be3` = zero drift IDENTICAL (live=disk)
+silverangel extraService (CMS 부가)  HTTP 200 · 81,637B  · `f9c5d877` = zero drift IDENTICAL (효성 CMS 5-method)
+silverangel notice list              HTTP 200 · 5,707,602B · `ea7d6b3d` = zero drift IDENTICAL
+  · 최신 published Tmp_idx ≤ 221572 · **≥221573 = 0** (신규 공지 0 · ~16일 pause 지속)
+lcms.or.kr                           HTTP 200 · 50,740B · `c0c66076` = zero drift IDENTICAL (단일 ERP CMS)
+law247 (제2025-247호)                HTTP 200 · 78,450B · `17aa057f` = **size-lock · md5 DRIFT only**
+  (BNK-705 `41880b04` → `Time=` 동적 토큰 cachebuster · 시행 2026.1.1 verbatim IDENTICAL)
+longterm 502 단기보호                HTTP **302** · 0B = **「미확인」 carry** (session gate · canonical disk 보존)
+
+--------------------------------------------------------------------
+[per-cycle minimum 충족]
+  · 신규 증거 URL: 재실측 7-URL + 변동 기록(NHIS 443차·law247 md5 DRIFT) ✅
+  · 메뉴/필드/워크플로 1블록: 지표27 기능회복/목욕 분리 3-commit crosswalk ✅
+  · COMPETITOR_MATRIX 1행+ @HEAD(FE 95192f5/BE 6e874df) 갱신 ✅
+  · BENCHMARK_REPORT §BNK-707 차수 메모 ✅
+[가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 덮어쓰기 0]
+[미확인 carry: longterm 502(302)·610 404]

@@ -1,0 +1,128 @@
+BNK-645 angel/longterm/regulatory cross-verify extract
+조사일: 2026-06-26T03:40:00Z | rotation: 엔젤·롱텀·규제 4–6h (PLAN_NOTES #44·#27·2026 수가 교차)
+
+=== ogada git @develop HEAD (확인) ===
+FE @a727862 (WT CLEAN, BNK-644 @a8f4e8e HEAD +1)
+  fix(v1.2.1/QA-B95): prioritize g21 service-unavailable seed reason
+  ahead 253 vs origin/test=ab4de83
+BE @4df9465 (WT CLEAN, BNK-644 carry HEAD zero advance 1-cycle)
+  feat(v2/G-CLIENT-CONTRACT-BULK-PRINT): add care plan bulk export API
+  ahead 580 vs origin/test=598d108
+merge gate 833 (+1 FE-only vs BNK-644 832)
+118 Route(117 <Route\b + 1 <Routes>) · 93 page · V1–V182 · BE Test 272 · BE @Test 1974 · FE test 482 carry (find 198 .test.js + 284 .test.jsx = 482 file count) · 모듈 80.86% (23.45/29 grep 실측 `competitorModuleCoverage.js`)
+
+→ ★ KPI 정정: BNK-644 「FE test 486」 vs git ls-tree (198+284=482) — 「.test.ts/.spec」 추가 4건 가능성 carry, find 정본 482 채택 시 carry.
+→ ★ 모듈 80.86% — BNK-643/644 「81.5%·~81.0%」 vs 실측 23.45/29 (`{id:7-4 1.0, id:8 0.85, id:10 0.75, id:2 0.85}` 외 ❌5 + ✅21) = 0.8086. KPI 가정 정정 1.
+
+=== NHIS #44 이동서비스비 러-1~4 — 397차 zero drift (확인) ===
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f (live=disk nhis_jo44.html IDENTICAL)
+제34조 verbatim (2025-07-01 시행):
+  ① 최단거리(편도) 러-1~러-4 표 (lawImg SEQ_HISTORY=611677)
+  ② 1일 1회만 산정 · 편도만 이용 시 러-1~4 비용 50%
+  ③ 수급자 부담 X
+  ④ 이동서비스 일지 작성·보관 (별지 제22호 세부는 ⑤ 공단 이사장 정함)
+ogada: TransportServiceFeeService(RU_1~RU_4·ONE_WAY_RATIO=0.5·1일1회 guard) + TransportServiceLog(V148/V154/V155 별지 제22호) + TransportParityRulesPanel(catalog API empty hide) + FE @a727862 QA-B95 14th hardening (g21 service-unavailable seed reason prioritize)
+경쟁: 케어포 △(func 2-x 차량) · 이지케어 △ · 엔젤 △(#41-42 체크리스트) · 롱텀 ✅(규정 본문) → ogada 경쟁 4종 유일 full-stack 397-cycle carry
+
+=== ★★★ NEW evidence: silverangel URL refactor (service/ → daycare/) — 「확인」 ===
+**OLD path (BNK-641 이전 carry)**:
+  https://www.silverangel.kr/newSilverangel/service/daycareEssentialWork.do → **HTTP 404** · 1,028B · `3c93af54`(error shell)
+  https://www.silverangel.kr/newSilverangel/service/businessSupportService.do → 직접 probe 시 HTTP 404 transient (재시도 시 200)
+**NEW path (BNK-645 발견)**:
+  https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do → **HTTP 200 · 131,664B · md5 c79c1be3 IDENTICAL** (콘텐츠는 동일·URL prefix만 `service/` → `daycare/`)
+  https://www.silverangel.kr/ 홈 anchor verbatim: `<a href="/newSilverangel/daycare/daycareEssentialWork.do">`(2회)·`<a href="/newSilverangel/fcltySlry/essentialWork.do">`(2회)
+**의미**:
+  · silverangel.kr 의 IA가 service-type 별 폴더 분리 (`daycare/` 주야간보호 · `fcltySlry/` 시설 입소형 · `service/` 공통 CMS/요금)
+  · BNK-641 이전 `service/daycareEssentialWork.do` URL 인용은 carry redirect 권장 — REQUIREMENTS/BENCHMARK_REPORT 인용 URL 정정 후보
+  · canonical on-disk silverangel_essential.html `c79c1be3` 131,664B은 새 URL과 IDENTICAL → 디스크 우선 정책 유지·덮어쓰기 0
+
+=== ★★★ NEW URL DISCOVERY — silverangel fcltySlry/essentialWork.do (시설 입소형 평가지표) — 「확인」 ===
+URL: https://www.silverangel.kr/newSilverangel/fcltySlry/essentialWork.do
+HTTP 200 · 166,023B · md5 **80517b18** (신규 snapshot: `silverangel_fcltySlry_essentialWork_bnk645.html`)
+**페이지 구성**:
+  <title>엔젤시스템</title>
+  <h2>업무내용</h2>·<h2>필수교육</h2>(평가 매뉴얼·법정 의무교육)·<h2>공단평가 연계</h2>
+  부서별 일상업무·주기별 업무(매일·매주·매월·분기·발생시)·식사제공현황·배설관찰기록·관찰일지·도뇨관/경관식/수분공급·종합일지·체위변경기록·배변배뇨기록·기록지 점검
+**33 평가지표 cross-walk** (시설 입소형):
+  · 평가지표 2 운영계획 및 평가 / 3 운영위원회 회의 / 4 직원교육 / 5 직원건강관리
+  · 평가지표 11 재난상황대응 / 12 시설안전 / 13 수급자(보호자) / 14 가족 및 지역사회 교류 / 15 수급자의 권리 / 17 야간보호 / 19 노인인권보호 / 20 생애말기돌봄
+  · 평가지표 22 감염관리 / 23 수급자 건강관리 / 24 통합적사정 / 25 급여제공계획 수립 및 제공 / 26 구강관리 / 27 목욕 서비스 / 28 배설관리 / 29 욕창예방 및 관리 / 30 투약 및 약품관리
+  · 평가지표 31 신체기능 프로그램 / 32 인지기능 프로그램 / 33 여가활동 프로그램 / 34 기능회복훈련 계획 / 35 기능회복훈련 / 37 급여제공 결과평가 / 38 사례관리 / 39 간호 및 의료서비스
+  · 평가지표 40 체중관리 / 41 백신 접종률 / 44 식사(간식) 제공결과 / 45 서비스 만족도 조사(유선)
+**ogada cross-walk** (시설 입소형 33 → ogada coverage):
+  ✅ 직접 parity: #4 직원교육 (`/staff/training`+`/staff/training-logs`) · #5 직원건강관리 (`/staff/health-checkups`) · #23 건강관리 (`/care/health-records`) · #24 통합사정 (`/clients/needs-assessments`·`/clients/care-plan-form`) · #25 급여제공계획 (`/clients/care-plan-form` 별지#5) · #26 구강관리 (`/care/oral-hygiene`) · #27 목욕 (`/care/bathing-schedules`·V177/V178 indicator-27 ✅) · #28 배설관리 (`/care/elimination-records`) · #29 욕창 (`/nursing/pressure-ulcer/*` 5-route) · #30 투약 (`/nursing/medication-delivery`) · #34/#35 기능회복훈련 (`/programs/functional-recovery` G17) · #38 사례관리 (`/case-management/*` G32) · #39 간호 (`/nursing/*`)
+  △ partial: #2 운영계획 (`/dashboard` widgets·연간 운영계획 ❌)·#3 운영위원회 (BE V181 `staff_committee_meeting_logs` BE FULL CRUD landed BNK-639·**FE wire G-STAFF-COMMITTEE-MEETING-FE carry** 진행 BNK-640 FE landed @ `0342076`)·#13 수급자 권리·#14 가족 지역사회 교류
+  ❌ MVP out-of-scope (시설 입소형 한정): #11 재난상황대응 (의무이지만 분리 화면 0)·#12 시설안전 (M6 v3.1 P1 safety_checks 스키마 carry)·#15 권리 행사 절차·#17 야간보호 (시설 한정·주야간보호 ogada MVP 정합 아님)·#19 인권보호 교육 (training-logs 일부 포함)·#20 생애말기돌봄 (시설 한정)·#22 감염관리 (M6 v3.1 P1 carry)·#37 결과평가 (`/programs/reports/*` 부분)·#40 체중관리 (`/nursing/weight`·미완)·#41 백신 (별도 ❌)·#44 식사 결과 (`/care/meal-*` partial)·#45 만족도 조사 (PLAN_NOTES question)
+
+**중요 결정 사항** (BNK-645 인사이트):
+  1. silverangel `fcltySlry/essentialWork.do` (시설 입소형) vs `daycare/daycareEssentialWork.do` (주야간보호) **2-track 분리** 입증 → ogada MVP는 「주야간보호」 단일 track이므로 daycare/ catalog만 비교 1차 baseline. **시설 입소형 catalog는 v3+ 「시설 모드」 확장 시 reference**.
+  2. 시설형 33 평가지표 중 **ogada ✅ 13건·△ 4건·❌ 16건** = ogada 시설 입소형 coverage 39% (13/33). v3 시설 모드 epic은 단일 최대 P3 candidate.
+  3. M6 v3.1 P1 `safety_checks` 스키마(BNK-620 carry)는 시설형 #11/#12/#22 3-indicator dispatch 후보.
+  4. #45 만족도 조사 (유선) — 신규 P3「가정」 candidate `G-SATISFACTION-SURVEY-DIAL` (silverangel 시설형 정본).
+
+=== silverangel 평가지표 #41-42 이동서비스 + #27 목욕 ↔ ogada (확인 · 397차 carry) ===
+essential daycareEssentialWork.do (주야간 → `c79c1be3` IDENTICAL · `daycare/` path 정합)
+fcltySlry essentialWork.do (시설 → `80517b18` 신규)
+공통 indicator #27 목욕 「필수사항 아님·제공시 청구」 carry
+주야간형 #41-42 이동서비스 (수칙·차량운행표·동승·시간준수) 시설형 catalog에는 미노출 (시설은 외부 이동 비범위) → ogada `/transport/*` 주야간 차별화 우위 carry
+
+=== silverangel CMS 5-method + LCMS 인프라 + 온보딩 4회차 (확인 · 397차) ===
+extraService.do HTTP 200 · 81,637B · f9c5d877 IDENTICAL
+  자동이체(효성CMS)·가상계좌·카드·다계좌정산·현금영수증 · 1600-6859 · 250원/300원 · 월 30,000원
+feeService.do HTTP 200 · 44,513B · eab352a8 IDENTICAL
+mainService.do HTTP 200 · 59,002B · bcf6df41 IDENTICAL
+system_feature.do HTTP 200 · 45,601B · c9507190 IDENTICAL (HP-UX·Oracle 11g·WebLogic 인프라 verbatim)
+businessSupportService.do HTTP 200 · 75,878B · a13cb5ac IDENTICAL (도입 후 관리 4회차·10일 SLA carry BNK-634)
+→ silverangel 본진 5-URL zero drift 397차 carry
+
+=== lcms.or.kr (확인 · framing 정정 carry) ===
+https://www.lcms.or.kr/ → HTTP 200 · **50,740B · md5 c0c66076** (lcms_root.html canonical IDENTICAL)
+※ lcms_or_kr_renew_bnk618.html `6c0d22b4`(50,554B)는 BNK-618 transient type rotation snapshot — BNK-619에서 정정·canonical 우선
+3-type rotation 사이클 carry (type1 `c0c66076` 50,740B · type2 `6c0d22b4` 50,554B · type3 BNK-471 carry) → 본 cycle live = type1
+
+=== silverangel notice 221564 (확인 · D-4 retraction window 지속) ===
+view.do?Tmp_idx=221564 HTTP 200 · 51,765B · 44223150 shell (BNK-618 HAS-DATA `ffe82a0d` 미복귀)
+6/30 정식 게시 D-4 carry · BNK-618 P3 3종 「6/30 재검증 보류」 carry:
+  · G-NURSING-MISSED-RECORD-DASHBOARD
+  · G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE
+  · G-LEGAL-FORM-SIGNATURE-IMAGE
+※ BNK-641 「D-4」 → BNK-645 「D-4」 (조사일 차이 0·6/30 정식 게시일)
+
+=== MOHW 2026-126 본인부담상한 (확인 · counter DRIFT) ===
+HTTP 200 · 109,510B (size 불변) · md5 3965b857 → **940e3021** (counter only)
+  첨부 다운로드/미리보기 counter +N (485회/576회 등)
+  본문 verbatim 「제2026-126호」 「본인부담상한액」 strings 불변 · diff 0
+→ mohw_gosi_2026_126.html 덮어쓰기 (verbatim 불변·counter DRIFT)
+
+=== law247 행정규칙 (확인 · cachebuster DRIFT) ===
+HTTP 200 · 78,450B (size 불변) · md5 6c32b661 → **ffd9a3ca** (cachebuster Time= 시드 변동)
+  본문 verbatim 「제2025-247호」 「시행 2026.1.1」 「장기요양」 불변
+→ law_mohw_2025_247_admRulInfoP.html 덮어쓰기 (verbatim 불변·cachebuster DRIFT)
+
+=== longterm 502 단기보호 · 610 통합재가 (미확인 · 47-cycle+) ===
+selectLawDetail.web?reqIdx=502 → HTTP **404** · 861B · `fcadfbfe` (error shell)
+selectLawDetail.web?reqIdx=610 → HTTP **404** · 861B · `fcadfbfe` (동일 error shell)
+canonical on-disk 보존: longterm_502.html `b5aee8c1` 105,552B (1등급 74,060) · longterm_610.html `0ea575be` 91,421B (2종 이상 가산 월 10만원·주야간보호형)
+※ npbs 신규홈페이지 26.1.16. 마이그레이션 이후 R&D endpoint 장애 47-cycle+ carry · canonical disk 우선 정책
+
+=== ogada KPI 정정 (BNK-645 「가정 번복 2」) ===
+1. **모듈 coverage**: BNK-643 「~81.0%」·BNK-644 「81.5%」 → grep 실측 `competitorModuleCoverage.js` `@a727862` **0.8086** (23.45/29). 29-feature 채점 합 = 1×21 + 0.85×2 + 0.75×1 + 0×5 = 23.45.
+2. **FE test 파일 수**: BNK-644 「486」 → `find -name '*.test.js' -o -name '*.test.jsx'` 실측 **482** (198 .test.js + 284 .test.jsx). 4건 over-count 정정. carry: 신규 BNK-644 cycle 추가 4건 가능성 — 차기 cycle 재검증 필요.
+
+=== 잔여 우선순위 (BNK-645) ===
+P1: M11/M12 (+6.9pp) carry (BNK-633/637 demand-signal carry)
+P2: v1.3-C NHIS #44 parity 문구 고정(397-cycle) carry
+P3: silverangel 221564 D-4 (6/30 정식 게시 재검증)
+P3 NEW: G-SATISFACTION-SURVEY-DIAL「가정」 (silverangel 시설형 #45 carry)
+P3 NEW: G-FACILITY-MODE-EXTENSION「가정」 (silverangel fcltySlry catalog 33 indicator·v3+ 시설 모드·39% baseline)
+미확인: longterm 502/610 47-cycle+ · ogada FE test 정정 차기 재검증
+
+=== per-cycle minimum (충족) ===
+- 신규 증거 URL ≥1: ✅ `https://www.silverangel.kr/newSilverangel/fcltySlry/essentialWork.do` (NEW snapshot)
+- 메뉴/필드/워크플로 1블록+: ✅ 시설형 33 평가지표 + 주기별 업무 9-축 cross-walk
+- COMPETITOR_MATRIX `@a727862`/`@4df9465` 갱신: ✅ BNK-645 block 추가
+- BENCHMARK_REPORT §645 소절: ✅ 추가
+- 백본 5+URL 재실측: NHIS #44·silverangel 5-URL·lcms.or.kr·MOHW126·law247·longterm 502/610 = 11-URL zero drift / DRIFT / 미확인 분류
+- 덮어쓰기 2건: mohw126·law247 (verbatim 불변)
+- 신규 snapshot 3건: silverangel_fcltySlry_essentialWork_bnk645.html · angel_longterm_regulatory_crossverify_bnk645.txt · ogada_git_remeasure_bnk645.txt

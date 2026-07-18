@@ -1,0 +1,90 @@
+# BNK-838 · ogada git 실측 6–8h
+# 작성자: BNK · updated: 2026-07-17T17:43:00Z
+# rotation: agents.yaml > reverse_engineering.rotation_30min "6-8h": ogada git 실측·모듈 커버 KPI·갭 우선순위 재산정
+# 초점: src/backend·src/frontend develop HEAD 재실측 · M12 accounting BPO SSO error-copy full-stack lockstep 「확인」 · NHIS #44 570차
+
+## 0. ogada baseline (git 실측)
+
+- FE `@bc1d343` (`test(v1.2.1/QA-B95): lock uppercase semicolon-optional named-num decode`) · WT CLEAN · BNK-837 `@592a483` → **+1** · ahead origin/test **0** = **FULLY SYNCED**(origin/test=`bc1d343`·tester FF 592a483+bc1d343 흡수)
+- BE `@a742788` (`fix(v3/accounting): align SSO allowlist error copy with FE path guidance`) · WT CLEAN · BNK-837 `@bfe6b3f` → **+1** · ahead **735** vs `598d108`
+- merge gate **735** (FE 0 FULLY SYNCED + BE 735 · **BE-only** → tester FF · 신규 마이그레이션 0 · Flyway V1–V196)
+- Route **133** (`<Route\b` 132 + `<Routes>` 1 · App.jsx grep 실측 · carry)
+- Page **106** (find + `git ls-tree -r` 2종 실측 · 2e06d5a↔bc1d343 diff 0 · BNK-834「107」over-count 재-정정 carry)
+- Flyway **V1–V196** (max V196 · 신규 0)
+- BE Test **295** (294 *Test.java + 1 *Tests.java) · @RestController **81**
+- BE @Test **2290** (`@Test` 정밀 카운트 = raw 2291 − `@TestPropertySource` 1 · BNK-837 2287 → **+3** · a742788 SSO error-copy lockstep 3-@Test)
+- HTTP **442** (GET **231**·POST **144**·PATCH **44**·PUT **13**·DELETE **10**) — bfe6b3f→a742788 byte-exact IDENTICAL = audit-first posture 안정 재현(BNK-834~838 무변동·controller endpoint 신설 0)
+- FE test **533** (219 .test.js + 314 .test.jsx) — 592a483↔bc1d343 파일 수 IDENTICAL · bc1d343 = `notificationChannelStatus.test.js` in-place +16 assertion(신규 파일 0)
+- 모듈 **97.41%** (`competitorModuleCoverage.js` 29-entry·sum 28.25·비-1.0 id=2/8/10=0.85·id=12=0.7·진성갭 0·residual primary = id=12 회계 BPO SSO)
+
+## 1. ★★★ M12 재무회계 외부 BPO — SSO allowlist **error-copy** full-stack lockstep 「확인」 (메뉴/필드/워크플로)
+
+BNK-837 §837-1 은 SSO portal **validation** (`isAllowlistedPortalUrl` FE↔BE 미러)까지 확인했다.
+BNK-838 는 BE `@a742788` (`fix(v3/accounting): align SSO allowlist error copy with FE path guidance`)가
+그 **거부 시 사용자 오류 메시지**까지 FE와 byte-IDENTICAL 로 정렬한 것을 확인한다 (SEC-D43 error-copy leg 완성).
+
+### 1-a. a742788 diff (git 실측)
+
+```
+ .../accounting/domain/AccountingBpoSupport.java        |  3 +-   ← MESSAGE 상수 정렬
+ .../accounting/domain/AccountingBpoServiceTest.java    | 16 ++    ← FE QA-B583 lockstep @Test
+ .../accounting/domain/ProgramPhotoStorageServiceTest.java | 48 ++ ← content-type 회귀 lock (별건)
+```
+
+신규 @Test `portalUrlNotAllowlistedMessageShouldMirrorFePathGuidance` verbatim 주석:
+`// FE QA-B583 ACCOUNTING_BPO_SSO_PORTAL_URL_NOT_ALLOWLISTED_MESSAGE_KO lockstep`
+→ 「경로만」 등 토큰 포함 assert (FE 문구와 동일 구성 강제).
+
+### 1-b. 메시지 상수 byte-IDENTICAL crosswalk
+
+| Layer | 상수 | 값 (verbatim) |
+|-------|------|----------------|
+| BE `AccountingBpoSupport.java` | `SSO_PORTAL_URL_NOT_ALLOWLISTED_MESSAGE_KO` | "재무회계 SSO 포털 URL이 허용되지 않습니다. ACCOUNTING_BPO_SSO_PORTAL_URL 은 https://sujifine.co.kr/carefor_login 또는 https://www.sujifine.co.kr/carefor_login 경로만 사용할 수 있습니다." |
+| FE `src/utils/accountingBpo.js` | `ACCOUNTING_BPO_SSO_PORTAL_URL_NOT_ALLOWLISTED_MESSAGE_KO` | (동일 문자열 · byte-IDENTICAL) |
+
+**판정**: M12 SSO handoff = validation(§837) + error-copy(§838) **양 leg full-stack lockstep CLOSED**.
+케어포 `open_sujifine`(하드코드 form POST·오류 메시지 없음) 대비 ogada 는 allowlist 거부 시
+**동일 한국어 안내 문구를 FE·BE 양쪽에서 일관 제공** = 운영자 self-service 복구 UX SUPERSET.
+id=12 residual **0.7 carry** (SSO 활성화 = 시설 자격 env 대기·PLANNED 게이팅·기능 갭 아님·「가정」 격상 금지).
+silverangel 공개 4-URL 외부회계/BPO/SSO/OTP **0-hit** carry → 경쟁 공개면 유일 보안-하드닝 SSO handoff.
+
+## 2. ★★★ QA-B95 uppercase semicolon-optional named-num decode lock (FE `@bc1d343`)
+
+- FE bc1d343 = `notificationChannelStatus.test.js` +16 assertion (in-place·신규 파일 0).
+- 대문자 세미콜론-옵셔널 named-num 엔티티(예: `&AMP`·`&COPY` 등 대문자 alias) live-readiness decoder 파싱 lock.
+- BNK-837 `@592a483`(FE lockstep) → BNK-838 `@bc1d343`(uppercase 확장·회귀 lock) — QA-B95 계열 operational hardening carry.
+- 기능 갭 아님·KPI promote 0·모듈 무영향.
+
+## 3. NHIS #44 이동서비스비 러-1~4 재실측 — 570차 IDENTICAL
+
+**확인** — [NHIS #44 joHistoryContent](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP 200·7,572B·`c886ff1f` = BNK-837 569차 → **570차 byte-IDENTICAL**.
+- verbatim(grep -oF): 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·이동서비스(13)
+↔ BE `@a742788` Transport: `RU_1~4`(5/10/20/999km)·`ONE_WAY_RATIO=0.5`·`ONE_PER_DAY` 상수 IDENTICAL → 상수 재조정 불요 · id=2 0.85 carry · 경쟁 4종 유일 full-stack SUPERIOR.
+
+## 4. HEAD 진행·KPI delta 요약
+
+| 항목 | BNK-837 | BNK-838 | 번복 |
+|------|---------|---------|------|
+| FE HEAD | `@592a483` ahead 1 | `@bc1d343` (+1 QA-B95 uppercase) ahead **0 FULLY SYNCED** | 0 |
+| BE HEAD | `@bfe6b3f` ahead 734 | `@a742788` (+1 SSO error-copy) ahead **735** | 0 |
+| merge gate | 735 (FE1+BE734) | **735**(FE0+BE735·BE-only) | 0 |
+| BE @Test | 2287 | **2290**(+3 SSO error-copy lockstep) | 0 |
+| BE Test | 294(+Tests 1) | **295**(294+1) | 0 |
+| HTTP verb | 442 | **442** byte-exact | 0 |
+| Route | 133 | 133 | 0 |
+| Page | 106 | 106(재확인·2-HEAD diff 0) | 0 |
+| FE test | 533(314+219) | 533(314+219·in-place) | 0 |
+| NHIS #44 | 569차 | **570차** | 0 |
+| M12 SSO | validation full-stack | **+ error-copy full-stack lockstep** | 0(SUPERSET leg 추가) |
+| 모듈 | 97.41% | 97.41% | 0 |
+
+**가정 번복 0** · 신규 core 갭 0 · SUPERSET leg 1(M12 SSO error-copy) · Page 106 재확인(BNK-834 「107」 재-정정 carry).
+
+## 5. per-cycle minimum 4종 충족
+
+1. **신규 증거 URL/재실측**: NHIS #44 570차 byte-IDENTICAL (기존 URL 재실측 + 변동 0 기록)
+2. **메뉴/필드/워크플로 1블록+**: §1 M12 SSO error-copy full-stack lockstep crosswalk(BE↔FE 메시지 상수 byte-IDENTICAL·a742788 diff·QA-B583 @Test)
+3. **COMPETITOR_MATRIX 1행+ `@HEAD`**: M12 재무회계 BPO 행 `@bc1d343`/`@a742788` 갱신
+4. **BENCHMARK_REPORT §838 소절**
+
+**근거 파일**: 본 txt · `nhis_jo44_live_bnk838.html`(570차) · BE `AccountingBpoSupport.java`(a742788) · FE `accountingBpo.js`(592a483) · git 실측(`git -C src/backend rev-parse develop`=a742788·`src/frontend`=bc1d343)

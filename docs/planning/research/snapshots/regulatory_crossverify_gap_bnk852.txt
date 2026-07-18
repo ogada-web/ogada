@@ -1,0 +1,56 @@
+BNK-852 교차검증·갭 우선순위 8h+ — 규제/경쟁 백본 live 재실측 md5/SIZE 비교
+================================================================================
+조사일: 2026-07-18T01:32Z | UA: curl/Chrome | 방법: curl -sS -m 30~40 → size_download + md5sum
+
+[규제/경쟁 백본 6-URL live 재실측 (기존 URL 재실측 + 변동 기록)]
+--------------------------------------------------------------------------------
+# | target                     | HTTP | SIZE     | md5(raw)   | vs BNK-851        | 판정
+--+----------------------------+------+----------+------------+-------------------+---------------------------
+1 | NHIS #44 이동서비스비       | 200  |  7,572B  | c886ff1f   | 580차 c886ff1f    | 581차 byte-IDENTICAL zero drift
+2 | silverangel system_feature | 200  | 45,601B  | c9507190   | c9507190          | byte-IDENTICAL
+3 | silverangel extraService   | 200  | 81,637B  | f9c5d877   | f9c5d877          | byte-IDENTICAL (CMS fee LOCK)
+4 | longterm 502 월한도액       | 200  | 89,162B  | 56185735   | a71379de/89,171B  | LEAN 재복귀 -9B (±9B lnb 오실레이션)
+5 | law 2025-247 canonical     | 200  | 78,450B  | 49560ebf(raw) / a913639a(strip Time=) | af1d2b46(raw)/a913639a(strip) | semantic IDENTICAL
+6 | carefor daycare/func.php   | 000  |     0B   | —          | LIVE 000 carry    | LIVE 차단 111-cycle+ · disk 6226e6eb LOCK
+
+URL:
+1 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+2 https://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+3 https://www.silverangel.kr/newSilverangel/service/extraService.do
+4 https://www.longtermcare.or.kr/npbs/e/b/502/npeb502m01.web?menuId=npe0000000500
+5 https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110
+6 https://www.carefor.co.kr/daycare/func.php
+
+[verbatim grep 근거]
+--------------------------------------------------------------------------------
+law 2025-247:
+  strip 's/Time=[0-9]*//g' → md5 a913639a = BNK-835/837/851 strip IDENTICAL (Time= epoch 캐시버스터-only DRIFT).
+  verbatim: "제2025-247호"×1 · "장기요양급여 제공기준"×3 → 2025 수가 고시 본문 semantic IDENTICAL.
+
+longterm 502 월한도액:
+  <title></title> 공백 · 본문 SPA JS-load · grep: "민원 상담실"×2 · "월 한도액"×1.
+  SIZE 89,162B / md5 56185735 = BNK-842 lean 재복귀 (BNK-851 full-shell a71379de/89,171B → -9B).
+  → SPA shell lnb 토글 오실레이션(±9B) 방향 재역전 = 비실체 DRIFT 확정. canonical 백본 carry.
+
+silverangel system_feature / extraService:
+  system_feature 45,601B c9507190 · extraService 81,637B f9c5d877 = BNK-851/843 byte-IDENTICAL.
+  → CMS 3-method(30,000/250/300) LOCK · "이동서비스/배차/GPS/차량" 0-hit 재확인 carry.
+
+NHIS #44:
+  7,572B c886ff1f = 581차 byte-IDENTICAL. 러-1~4 이동서비스비 정액/편도 구조 verbatim carry.
+  ↔ ogada Transport RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY IDENTICAL → 상수 재조정 불요.
+
+[갭 우선순위 재확인 (가정 번복 스캔) — App.jsx `@1cdfd5c` LIVE]
+--------------------------------------------------------------------------------
+  · closed band 재오픈 0 · P0 신규 0 · 가정 번복 0.
+  · G14 케어플랜 /clients/:clientId/care-plan-form · 대시보드 /dashboard(+/dashboard/hq) ·
+    G2 가정통신문 /clients/home-newsletter · G-LINKAGE /clients/linkage-records ·
+    v2 CMS /billing/cms · v1.3-C /transport/service-fees = 전량 LIVE carry.
+  · 모듈 97.41%(28.25/29) — 비-1.0 id=2/8/10=0.85·id=12=0.7 · 진성갭 0 CARRY.
+  · SEC-D34 엑셀 서명 검증 4-경로(QA-B604 null-safe) → 경쟁 4종 유일 SUPERIOR carry.
+
+[결론]
+  · NHIS #44 581차 · silverangel 2-URL · law strip 3종 IDENTICAL → 규제/경쟁 백본 semantic zero drift.
+  · longterm 502 ±9B lnb 오실레이션이 이번엔 lean 방향으로 재역전 = 비실체 DRIFT 확정(양방향 관측).
+  · carefor func.php LIVE 000 111-cycle+ carry · disk canonical 6226e6eb LOCK.
+  · 우선순위 동결 · 가정 번복 0 · P0 신규 0 · ogada 모듈 97.41% CARRY.

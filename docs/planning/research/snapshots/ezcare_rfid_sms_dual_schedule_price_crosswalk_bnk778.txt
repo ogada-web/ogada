@@ -1,0 +1,109 @@
+# BNK-778 — 이지케어 역공학 2–4h crosswalk
+# 조사일: 2026-07-16T00:50:00Z (KST 09:50)
+# rotation: 이지케어 역공학 2–4h
+# 직전 동일 rotation: BNK-774 (2026-07-15T22:20:00Z) → ~2.5h 후
+# 직전 사이클: BNK-777 (케어포 0–2h · 2026-07-16T00:08:00Z) → ~42분 후
+# ogada FE @a89a873 (WT CLEAN · BNK-777 @9181ca8 → +1 QA-B95 triple-encoded · ahead origin/test 2)
+# ogada BE @74ae324 (WT CLEAN · BNK-777 @33f388df → +1 G17 dual-numbering guardrail · ahead 678 vs 598d108)
+# Route 133 · Page 106 · FE test 534(221+313) · BE Test 293 · BE @Test 2236(+3) · V1–V196
+# 모듈 97.41%(28.25/29) · merge gate 680(FE 2+BE 678 · BE-heavy → tester FF)
+# npm test 미실행(vitest 동시 실행 금지)
+
+## 1. ★★★ 신규 증거 URL — Channel.io 「급여제공내역 RFID 문자 발송방법」(ef3b7e04)
+
+- URL: https://docs.channel.io/ezcare/ko/articles/%EA%B8%89%EC%97%AC%EC%A0%9C%EA%B3%B5%EB%82%B4%EC%97%AD-RFID-%EB%AC%B8%EC%9E%90-%EB%B0%9C%EC%86%A1%EB%B0%A9%EB%B2%95-ef3b7e04
+- HTTP 200 · 234,935B · md5 7420955e · snapshot: ezcare_channel_rfid_sms_ef3b7e04_bnk778.html
+- 확인(인용):
+  · 「요양보호사가 태그전송한 급여제공 내역을 문자로 수급자(보호자)에게 문자 전송할 수 있어요.」
+  · 워크플로: [RFID점검] > [RFID태그내역 ↔ 공단계획 비교] > 탭「급여제공내역(요양) 전송」
+    → 수급자 일괄/개별 선택 → 발송번호(수급자/보호자) → 문자 발송
+  · 「평가문항 29번에 따라, 급여제공기록지 RFID 전송분은 수급자에게 월 1회 이상 제공」
+  · 수신 예시 문구: 「급여제공 서비스내역(방문요양)」
+  · 발송내역 확인: [2 수급자] > [2.1 문자보내기] > 문자발송내역 > 문자종류「급여제공내역」
+
+### FAQ 21589 교차 (기존 URL 재실측 · 동일 워크플로)
+
+- URL: https://ezcare.easyms.co.kr/help/V.ez?rowid=21589
+- HTTP 200 · 5,989B · md5 16fd80ba · snapshot: ezcare_help_V_21589_bnk778.html
+- 확인: 「방문요양만 가능」·평가문항 29·월1회이상 · 메뉴 경로 4.RFID점검 > 4.1 비교 동일
+
+### ogada 패리티 (확인 · BNK-763 CLOSED carry)
+
+- BE POST /api/v1/visits/imports/rfid/care-provision-dispatch · kind13 · HOME_VISIT only
+- FE VisitRfidDiffComparePanel + dispatchRfidCareProvisionApi
+- id=10 0.85 · KPI promote 0 · 주간보호 과대반영 금지(재가 RFID 축)
+
+## 2. ★★★ 메뉴/필드/워크플로 — M3 이중일정 13-leaf + change-list/RFID/messageAmt LOCK
+
+### demo ERP (scripts/ezcare-demo-fetch.sh)
+
+- login code 0000 · title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」
+- top-nav top-nav-item-V2.js?20260428 md5 95286775 LOCK (=bnk774)
+- catalog module 10 / leaf 148 / PGID 59 structural IDENTICAL (=bnk774)
+
+### M3 방문일정 13-leaf (이중 축)
+
+| leaf | url/action | 이중 축 |
+|------|------------|---------|
+| 수급자-일정관리 | /schedule_plan/ popup | 수급자 |
+| 관리자-일정관리 | /social_worker/schedule.html popup | 요양보호사(관리) |
+| 일정표 출력 및 문자발송 | schedule-p100 link | — |
+| 수급자 일정표(제공기록지) | schedule-p100#tab0 | tab0 수급자 |
+| 요양보호사 일정표(근무현황표) | schedule-p100#tab1 | tab1 요양보호사 |
+| 연간 서비스제공 명단 | schedule-p300 | — |
+| 수급자 / 요양보호사 | schedule-p300#tab0/#tab1 | 이중 |
+| 방문현황(일일,주간,월간) | schedule-p500 | — |
+| 중증수당 일정 집계 | PU.ez?PGID=schedule-s100 | — |
+| 요양보호사 기준 / 수급자 기준 | schedule-s100#tab0/#tab1 | 이중 |
+| 방문현황(print) | /schedule_print/statusTable.html | — |
+
+↔ ogada: VisitsPage(수급자) + StaffMonthlySchedulePage(요양보호사) 이중 축 ✅ · 진성갭 아님
+
+### PGID 재실측 (byte / semantic)
+
+| PGID | bytes | vs bnk774 | 판정 |
+|------|-------|-----------|------|
+| change-list | 100,278 | IDENTICAL | 8-col audit(sDate·pName·pCode·chg_what·memo·chg_before·chg_after·mName) · 처리상태 0 · 승인 FSM 금지 |
+| schedule-rfid | 150,501 | IDENTICAL | grid 4(grid_match_list·grid_match_list_worker·grid_send_tag_time·grid_tag_time) |
+| mobile-sendW | 133,270 | −1B | messageAmt={"app":10,"sms":20,"mms":50} VALUE IDENTICAL · cachebuster-only |
+| duplicate-schedule | 93,401 | IDENTICAL | Page NotFound CONFIRMED |
+
+## 3. ★★★ ogada G17 dual-numbering FULL-STACK CLOSURE (BNK-776 제안 착지)
+
+- BE @74ae324 feat(v2/G17): expose dual-numbering guardrail on indicator-27 compliance
+- FunctionalRecoveryComplianceResponse / FunctionalRecoveryIndicatorCatalog:
+  · indicator27Label = 개인별 기능회복훈련 계획 (공단 주야간보호 27)
+  · essentialDutySerial27Label = 「가족과의 소통」
+  · essentialDutySerial27Route → /staff/committee-meetings meetingType=GUARDIAN
+  · dualNumberingNoteKo verbatim ≠ 분리
+- BNK-776 planner 제안 「REQUIREMENTS/G17 dual-numbering 명기」 → **코드 가드레일 CLOSED**
+- G17 coverage 1.0 유지 · KPI promote 0 · 가정 번복 0
+
+## 4. ★ 가격·도입·FAQ·규제 재실측
+
+| 축 | 근거 | 판정 |
+|----|------|------|
+| home 도입 | data-count 53.2/9298/**4672**(−1 vs bnk776 4673)/2353/1820 | BPO **VALUE DRIFT −1** · 가격 시그널 아님 |
+| fnc | 전국 **9,433**개 기관 · RFID/엑셀/일정중복 verbatim | VALUE STABLE |
+| charge | 셋팅 **33,000**(「2026년 07월 31일까지」40%할인) · 例 25,850 · 정가 55,000 · 문자 20~50원 | **D-16** VALUE STABLE |
+| FAQ list | rowid 233 · max 21781 · 엑셀 포맷 변경 키워드 0 | hit-only DRIFT · 포맷 변경 0 |
+| Channel hub | docs.channel.io/ezcare/ko md5 210a2da9 (vs bnk776 cadd0972 shell DRIFT) | semantic 유지 |
+| Channel TOP-10 | f883d336 IDENTICAL(=bnk766 semantic LOCK) | keyword STABLE |
+| 신규 보조 | 공단일정 업로드 b2863b61 · 문자발송 category c7aa597e | 신규 증거 보조 |
+| NHIS #44 | c886ff1f 7,572B | **512차** IDENTICAL(러-1·러-4·편도·1일1회·수급자부담·이동서비스) |
+
+## 5. planner 제안
+
+1. G17 dual-numbering: BE 가드레일 착지 확인 → REQUIREMENTS/USER_STORIES에 「공단27≠필수업무일련27」 문구 sync(이미 코드 반영).
+2. RFID SMS: Channel ef3b7e04 = FAQ 21589 정본 워크플로 · ogada HOME_VISIT dispatch CLOSED · 주간보호 MVP 추가 UI 금지.
+3. residual PRIMARY = id=12 M12 credentials(0.7) → form polish id=2/8/10(0.85) · KPI promote 금지.
+4. charge promo D-16(2026-07-31) 만료 후 재실측 · home BPO 4672 추이 모니터링.
+5. 다음 rotation: 엔젤·롱텀·규제 4–6h 또는 교차검증 8h+.
+
+## 6. per-cycle minimum checklist
+
+- [x] 신규 증거 URL 1+ (ef3b7e04 RFID SMS · +b2863b61 · +c7aa597e category)
+- [x] 메뉴/필드/워크플로 1블록+ (M3 13-leaf + RFID SMS workflow + change-list 8-col)
+- [x] COMPETITOR_MATRIX 1행+ @HEAD 갱신
+- [x] BENCHMARK_REPORT §778 소절
+- 가정 번복 0 · closure 1(G17 dual-numbering BE) · 신규 core 갭 0 · KPI promote 0

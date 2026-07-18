@@ -1,0 +1,20 @@
+BNK-686 ogada git 실측 6–8h — US-Q01 M6 server template catalog API + 11-route LIVE + merge gate 882
+조사일: 2026-06-27T05:45:00Z
+
+FE develop: cf73ae80d84c1f2126369df21fa55c6be4b10808 (@cf73ae8)
+  WT: CLEAN
+  ahead origin/test: 280
+  vs BNK-685 dd5571d: +2 commit (bf9b4b1 harness · cf73ae8 server wire)
+
+BE develop: 72924bbbb27b807a62057d1554d4b54940bbc4f7 (@72924bb)
+  WT: CLEAN
+  ahead origin/test: 602
+  vs BNK-685 7a9ed71: +2 commit (aa9565c catalog API · 72924bb routing contract test)
+
+merge gate: 882 (+4 vs BNK-685 878)
+
+KPI vs BNK-685:
+  Route 123 · Page 98(+1) · V185 · BE Test 279(+2) · BE @Test 2043(+13) · FE test 500(+3) · Module 84.31% · Reports 28 · WT CLEAN both
+
+11-route LIVE @cf73ae8: unchanged (4-axis+leave-ledger 7 + M6 safety 4)
+M11/M12: /payroll/* /accounting/* 0 route — sole P1 lever unchanged

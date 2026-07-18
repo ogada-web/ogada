@@ -1,0 +1,32 @@
+BNK-852 ogada git 실측 (2026-07-18T01:32Z) — 교차검증·갭 우선순위 8h+
+================================================================================
+
+[FRONTEND] src/frontend
+  develop HEAD : 1cdfd5c  test(v1.2.1/QA-B605): await async compare before dispatch button click
+  prev(BNK-851): 1cdfd5c  (동일 HEAD · zero advance)
+  +0 commit (BNK-851 IDENTICAL)
+  origin/test : 1cdfd5c  → ahead 0 = FULLY SYNCED (BNK-851 ahead 2 → tester FF 흡수)
+  Route : 133 (App.jsx <Route\b 132 + <Routes> 1)
+  Page  : 106 (*Page.jsx not test)
+  FE test : 540 (225 .test.js + 315 .test.jsx) — carry
+
+[BACKEND] src/backend
+  develop HEAD : f28e3d9  fix(v3/SEC-D34): fail-closed on null import payload (QA-B604)
+  prev(BNK-851): f28e3d9  (동일 HEAD · zero advance)
+  +0 commit (BNK-851 IDENTICAL)
+  origin/test : 598d108  → ahead 745 (BNK-851 IDENTICAL)
+  BE Test : 297 (296 *Test.java + 1 *Tests.java)
+  BE @Test strict (^\s*@Test\b) : 2343 (BNK-851 IDENTICAL)
+  @RestController : 81
+  HTTP : 442 (GET231 / POST144 / PATCH44 / PUT13 / DELETE10) — endpoint 신설 0 (13차 byte-exact IDENTICAL BNK-836~851 → 852)
+  Flyway : V1–V196 (신규 0)
+
+[MERGE GATE]
+  745 (FE 0 FULLY SYNCED + BE 745·BE-heavy) → tester FF 대기 · 신규 마이그레이션 0
+
+[모듈 커버] 97.41% (28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0) carry
+
+[사이클 성격]
+  git develop HEAD FE·BE 모두 BNK-851 IDENTICAL(zero advance) — pipeline coder/tester가 이 30분 창에서
+  develop 신규 커밋 미착지. origin/test 만 FE 2→0(tester FF 흡수)·BE 745 carry.
+  → 이번 사이클은 규제/경쟁 백본 live 교차검증 + 우선순위 재확인(가정 번복 스캔)에 집중.

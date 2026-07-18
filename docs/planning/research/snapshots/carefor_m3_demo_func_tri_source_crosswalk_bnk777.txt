@@ -1,0 +1,89 @@
+# BNK-777 케어포 역공학 0–2h — func.php 108-leaf · demo-work L02↔M3 tri-source · PDF p46–50 · ogada /care/* view.* 1:1
+# 조사일: 2026-07-16T00:08:00Z (KST 2026-07-16 09:08)
+# 작성: benchmark_researcher [BNK]
+
+## 신규·재실측 evidence URL (확인)
+
+| # | URL | HTTP | SIZE | md5 | 비고 |
+|---|-----|------|------|-----|------|
+| 1 | [Wayback demo-work id_ 20250712](https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/) | **200** | 71,742B | `ebee4d47` | **BNK-777 재실측** = BNK-761 disk **byte IDENTICAL LOCK** · loadPage **114** · rpt **34** · transport **0** |
+| 2 | [Wayback manual PDF p46](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=46) | **200** | 9,992,772B | `96f7d45e` | M3 「3-1.요양급여 제공 기록」 workflow authoritative · 511-cycle PDF zero drift |
+| 3 | [NHIS #44 joHistory](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | **200** | 7,572B | `c886ff1f` | **511차** IDENTICAL(BNK-776 510차→+1) |
+| 4 | carefor LIVE func.php + demo-work | **000** | — | — | timeout 20s · **90-cycle+** 「미확인」 · disk `6226e6eb`/`ebee4d47` 우선 |
+
+## §1 func.php 108-leaf 전수 — 「109항목」 정정 (메뉴/필드/워크플로 · 확인)
+
+**확인** — disk `carefor_func.php` md5 `6226e6eb` 98,328B (Wayback id_ · LIVE 000 90-cycle+).
+
+| 지표 | 값 | 비고 |
+|------|-----|------|
+| unique leaf id | **108** | regex `(N-N(-N)?)\.` dedupe |
+| module sum | **108** | M1=11·M2=10·M3=11·M4=10·M5=13·M6=5·M7=11·M8=16·M9=6·M10=9·M11=6 |
+| depth-1 (x-y) | 88 | 81.5% |
+| depth-2 (x-y-z) | 20 | sub-leaf |
+| catalog JSON (BNK-449) | 107 | 1-leaf undercount carry — **func disk 108 authoritative** |
+| 「109」 관행 | **가정** | 108 + sitemap(1) 또는 marketing-only 1-leaf(7-10 calculator func-only) 혼용 — **정본 leaf count = 108** |
+
+## §2 ★★★ tri-source numbering drift — func M3(3-x) ↔ demo L02(display 2-x) ↔ PDF(3-x) (신규 필드 블록)
+
+**확인** — demo-work 시설 셸 `left_sub2` = 「2.요양급여제공」 nav · HTML comment·param title = **2-x 표기** · func.php·PDF = **3-x 표기** · **view.* endpoint = 공통 정본**.
+
+| func M3 (3-x) | demo L02 (2-x display) | view.* (loadPage) | PDF p46–50 | ogada Route `@9181ca8` | 판정 |
+|---------------|------------------------|-------------------|------------|--------------------------|------|
+| 3-1 요양급여 제공 기록 | 2-1 | `/share/care/view.care_service_weekly` L02_M01 | p46 3-1 | `/care/weekly-service-records` | ✅ |
+| 3-1-1 통합식사도움 | 2-1-1 | `view.total_meal` L02_M13 | p46 ① | `/care/meal-assistance-records` | ✅ |
+| 3-1-2 간호(바이탈,투약) | 2-1-2 | `view.nursing_service` L02_M14 | p46 ② | `/nursing/service` + weekly | ✅ |
+| 3-1-3 특이사항 | 2-1-3 | `view.care_service_bigo_all` L02_M15 | p46 ③ | `/care/service-special-notes` | ✅ |
+| 3-1-4 식사 만족도 | 2-1-4 | `view.meal_satisfaction` L02_M16 | — | `/care/meal-preference-surveys` | ✅ |
+| 3-2 상태변화 기록 | **demo nav 0** | *(mobile app · PDF p47)* | p47 3-2 | `/care/reports/position-change` | △ demo shell 미노출·ogada ✅ |
+| 3-3 목욕일정 | 2-3 | `view.care_bath_manage` L02_M03 | p48 3-3 | `/care/bathing-schedules` | ✅ |
+| 3-4 요양/식사/화장실 rpt | 2-5 | `view.care_meal_excretion` L02_M04 rpt | p50 | `/care/reports/meal-excretion` | ✅ |
+| 3-5 목욕도움 rpt | 2-6 | `view.bath_help` L02_M05 rpt | p49 3-5 | `/care/reports/bath-help` | ✅ |
+| 3-6 급여제공 rpt | 2-9 | `view.patient_service` L02_M11 rpt | p50 | `/care/reports/patient-service` | ✅ |
+| 3-7 서비스 집계 | 2-10 | `view.service` L02_M12 rpt | — | `/care/reports/service-summary` | ✅ |
+
+**demo L02 superset(func M3 외)** — 2-2 `view.care_excretion` 집중배설 → `/care/intensive-excretion` ✅ · 2-4 `view.care_sanction` 신체제재 → `/care/body-restraint` ✅ · 2-7 `view.position_YC_report` → `/care/reports/position-change` ✅ · 2-8 `view.total_excretion` rpt → `/care/reports/intensive-excretion` ✅
+
+**판정**: func M3 leaf **11/11 ogada parity** (BNK-699 carry 재확인) · demo shell = **view.* authoritative** · **display 번호(2-x vs 3-x) 혼용 금지** — BE migration comment `L02_M*` = demo pamcode · func `3-x` = marketing/PDF.
+
+## §3 demo-work 시설 셸 — loadPage/view · 이동서비스 0 · 리포트 밀도 (재확인)
+
+**확인** — `carefor_demo_work_wb_20250712_id_bnk777.html` `ebee4d47` IDENTICAL.
+
+| 지표 | demo-work | func.php | ogada |
+|------|-----------|----------|-------|
+| loadPage | **114** | — | Route **133**(132+1) |
+| class=rpt | **34** (29.8%) | reportish title 27/108 (25.0%) | report paths **29** (22.0%) |
+| transport/배차 | **0** | M2 10-leaf | `/transport/*` **9** + NHIS #44 |
+| L02 care nav | **14** leaf (incl. superset) | M3 **11** | `/care/*` **16** route |
+| L03 nursing nav | **14** leaf | M4 **10** | `/nursing/*` **15** + reports |
+
+## §4 M7 본인부담 7-x ↔ `/billing/*` 17-route carry (BNK-770 재확인 · 확인)
+
+leaf **11/11=100%** · id=7-* **1.0** · BE `케어포 7-x` **68-hit** · 리포트 밀도 carefor 27.3% ↔ ogada 29.4% · PDF p85–91 tri-source carry.
+
+## §5 ogada baseline git 실측 (2026-07-16T00:08Z)
+
+| KPI | 값 |
+|-----|-----|
+| FE | `@9181ca8` `ux(a11y): fix FE-16 unit-rates CSS and forced-colors (UXD-181)` · WT **DIRTY 5M** (live-e2e/notification WIP) · ahead origin/test **1** |
+| BE | `@33f388df` `fix(v2/QA-B95): harden triple-encoded blocker entity decoding` · WT **CLEAN** · ahead **677** |
+| Route / Page | **133** / **106** |
+| FE test | **534** (221+313) |
+| BE Test / @Test | **294** / **2233** |
+| Flyway | **V1–V196** |
+| billing / transport / staff | **17** / **9** / **13** |
+| 모듈 KPI | **97.41%** (28.25/29) |
+| merge gate | **678** (FE 1+BE 677 · BE-heavy · FE WT DIRTY 선행) |
+
+## §6 BE view.* 코드 앵커 (M3/L02 domain · git 실측)
+
+`grep -rE 'L02_M|view\.care_|view\.meal_satisfaction|view\.bath_help|view\.patient_service|케어포 3-' src/backend` → **109-hit** (Controller·Service·Flyway V130–V142 · CareReportController 7-endpoint).
+
+## planner 제안
+
+1. **Route/문서 명명** — ogada JSDoc·migration에 「func 3-x / demo L02_Mxx / view.*」 3-way anchor 유지(BNK-735 M5 view.* pattern 확장).
+2. **3-2 상태변화** — demo shell 미노출·PDF mobile → ogada `/care/reports/position-change` **1.0 유지** · P3 mobile capture defer.
+3. **번호 drift 교육** — planner/UX: demo 「2.요양급여」= func 「3.요양급여」= PDF module 3 — **view.* 로 crosswalk**.
+4. **차별화 narrative** — demo transport 0 vs ogada 9-route + func M2 10-leaf + NHIS #44 carry.
+5. **KPI promote 0** — id=3-1 이미 1.0 · residual PRIMARY id=12 0.7.

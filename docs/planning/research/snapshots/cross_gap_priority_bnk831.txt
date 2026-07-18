@@ -1,0 +1,160 @@
+# BNK-831 — 교차검증·갭 우선순위 8h+
+# 조사일: 2026-07-17T13:17:00Z
+# 직전 사이클: BNK-830 (2026-07-17T12:28:00Z · 엔젤·롱텀·규제 4–6h) → ~49분 후
+# 직전 동일 rotation: BNK-828 (2026-07-17T11:00:00Z · 교차검증·갭 우선순위 8h+) → ~2.3h 후
+
+## 0. baseline (git 실측)
+
+FE `/home/ubuntu/ogada/src/frontend`
+- develop HEAD: `d3e282b974a89fb17bb2c1f63fa8b795bf518bb7`
+- 커밋 subject: `fix(v1.2.1/QA-B95): accept semicolon-optional amp HTML entities`
+- WT: CLEAN
+- BNK-830 `@9a48e13` → **+1 commit**
+- ahead vs origin/test (`9a48e13`): **1** (tester FF 대기 · BNK-830 ahead 1 vs `420286e` → tester FF 흡수로 origin/test=`9a48e13`)
+- Route: `<Route\b`=132 + `<Routes>`=1 = **133**
+- Page: `git ls-files '*Page.jsx'` = **106**
+- FE test: `.test.js`=217 + `.test.jsx`=313 = **530**
+
+BE `/home/ubuntu/ogada/src/backend`
+- develop HEAD: `7389ef02b33d2ae76c2db3c581d492245b642b67`
+- 커밋 subject: `test(v2/QA-B95): lock semicolon-optional core quote entity decode`
+- WT: CLEAN
+- BNK-830 `@0dfc992` → **+1 commit**
+- ahead vs origin/test (`598d108`): **729**
+- BE Test files: `*Test.java`+`*Tests.java` = **294** (293+1)
+- BE @Test (loose `^\s*@Test`): **2282** (BNK-830 2281 → **+1** lockstep regression)
+- @RestController class: **81** (Δ0)
+- HTTP verb mapping: **441** (BNK-823/824/826/827/828/830 IDENTICAL → **7차**)
+  - @GetMapping: **231** (52.4%)
+  - @PostMapping: **143** (32.4%)
+  - @PatchMapping: **44** (10.0%)
+  - @PutMapping: **13** (2.9%)
+  - @DeleteMapping: **10** (2.3%)
+- Flyway migrations: V1–V196 (196 files·신규 0)
+- merge gate: **730** (FE 1 + BE 729 · BE-heavy → tester FF)
+
+## 1. ★★★ BNK-828 BE lockstep 「가정」→「확인」 (교차검증 · 가정 승격 1)
+
+BNK-828 §1 기록:
+> BE는 `29e20dd` carry(zero advance) — BE는 아직 semicolon-optional 대응 미착지 → **다음 BE 사이클 lockstep 대응 후보** 「가정」
+
+**확인** — BE `@7389ef0` commit message verbatim:
+> Add FE @20f6ddc lockstep regression so &quot/&apos/&lt/&gt without mandatory semicolons at token boundaries stay fail-closed for live readiness blockers.
+
+- `LiveE2eOperationReadinessSupport.java` +3L decoder
+- `LiveE2eOperationReadinessSupportTest.java` +54L · **+1 @Test**
+- FE `@d3e282b` 후속: semicolon-optional **amp** (`&amp` before numeric) entities · 6 files·+47/−5 · `it(` 2건 QA-B95·BE lockstep
+
+= **QA-B95 FE↔BE semicolon-optional LOCKSTEP CLOSED** · operational hardening only · 기능 갭 아님 · KPI promote 0 · 모듈 97.41% carry.
+**가정 번복 0 · 가정→확인 승격 1**(BNK-828 BE lockstep).
+
+## 2. ★★★ audit-first API posture 7차 안정 재현 (BNK-823/824/826/827/828/830/831 BYTE-EXACT)
+
+| HTTP verb | annotation | BNK-831 | BNK-830 | BNK-828 | 비율 |
+|-----------|------------|---------|---------|---------|------|
+| GET | @GetMapping | **231** | 231 | 231 | 52.4% |
+| POST | @PostMapping | **143** | 143 | 143 | 32.4% |
+| PATCH | @PatchMapping | **44** | 44 | 44 | 10.0% |
+| PUT | @PutMapping | **13** | 13 | 13 | 2.9% |
+| DELETE | @DeleteMapping | **10** | 10 | 10 | 2.3% |
+| 합계 | — | **441** | 441 | 441 | 100% |
+
+controller당 **5.44** · BE +728 commit(BNK-823 이후·오늘 BNK-831 lockstep 포함) posture 무변동 = **감사 우선 read-create dominant API 설계 7차 안정 재현**.
+DELETE 2.3% 최소 = soft-delete/감사 보관(PIPA) · PATCH>PUT 부분정정 우선 · 물리 삭제 API 신설 금지 · 신규 갭 0.
+
+## 3. ★★★ 우선순위 동결 — closed band 6 App.jsx `@d3e282b` LIVE 재오픈 0
+
+App.jsx grep 실측 (라인 BNK-824/827/828/830 IDENTICAL):
+
+```
+164:        path="/dashboard"
+173:        path="/dashboard/hq"
+209:        path="/clients/home-newsletter"
+236:        path="/clients/linkage-records"
+245:        path="/clients/:clientId/care-plan-form"
+389:        path="/billing/cms"
+628:        path="/transport/service-fees"
+```
+
+| Epic/축 | Route | 라인 | P0/P1 재정렬 |
+|---------|-------|------|-------------|
+| 대시보드 | `/dashboard` + `/dashboard/hq` | L164/L173 | **CLOSED** · 재오픈 0 |
+| G2 가정통신문 | `/clients/home-newsletter` | L209 | **CLOSED** |
+| G-LINKAGE | `/clients/linkage-records` | L236 | **CLOSED** |
+| G14 급여제공계획서 | `/clients/:clientId/care-plan-form` | L245 | **CLOSED** |
+| v2 CMS | `/billing/cms` | L389 | **CLOSED** (id=7-4 1.0) |
+| v1.3-C 이동서비스비 | `/transport/service-fees` | L628 | **CLOSED** (id=2 0.85 residual polish) |
+
+**P0 신규 0 · 재오픈 0 · P0/P1 재격상 0**.
+
+## 4. ★★ 모듈 커버 97.41% CONFIRMED + residual lever
+
+`competitorModuleCoverage.js` `@d3e282b`:
+- 29-entry · sum **28.25** · **97.41%**
+- 비-1.0: id=2/8/10=**0.85** · id=12=**0.7**
+- **진성갭 0**
+- residual lever **primary = id=12(0.7·회계 BPO SSO OTP)** · secondary = id=2/8/10(0.85·form/dispatch polish)
+- KPI promote 0 · 과대구축 금지
+
+## 5. ★★ BNK-830 규제 앵커 URL 정정 재확인 (기존 URL 재실측)
+
+| URL | HTTP·size | md5 | 서빙 | 판정 |
+|-----|-----------|-----|------|------|
+| `?admRulSeq=2100000271110` (canonical) | 200·78,450 | `6c666a75` | 장기요양급여 제공기준… 고시 **2025-247** · efYd=20260101 | **재확인 ✅** (Time= only vs BNK-830 stripTime IDENTICAL) |
+| `?admRulSeq=2100000268226` (BNK-826 alias) | 200·78,331 | `56ef1c61` | **먹는샘물**… 고시 2025-165 | **BNK-830 정정 유지** · 폐기 권고 carry |
+
+→ 가정 번복 **추가 0**(BNK-830 URL 정정 재확인만).
+
+## 6. ★★ NHIS #44 564차 zero drift ↔ Transport 6-link
+
+[NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769)
+- HTTP 200 · 7,572B · md5 `c886ff1f` = BNK-830 **byte-IDENTICAL** → **564차**
+- grep: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+- ↔ BE `@7389ef0` `TransportDistanceBand.RU_1~4` · `ONE_WAY_RATIO=0.5` · `ONE_PER_DAY_LABEL="1일 1회"` IDENTICAL
+- 상수 재조정 불요 · id=2 **0.85** carry
+
+## 7. ★ 신규 공지·엑셀 포맷 스캔 = 시그널 0
+
+| 출처 | HTTP | size | md5 | 시그널 |
+|------|------|------|-----|--------|
+| [carefor func.php](https://www.carefor.co.kr/daycare/func.php) | **000** | — | — | **103-cycle+** 「미확인」·disk `6226e6eb` LOCK |
+| [ezCare FAQ](https://ezcare.easyms.co.kr/help/faq.ez) | 200 | 80,057 | `2975fd14` (BNK-829 `938d5665`→DRIFT hit-only) | rowid **233**/max **21781** IDENTICAL·엑셀 **2**·엑셀 포맷 **0**·rowid SET symdiff **0** |
+| [ezCare charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 200 | 22,979 | `a3755797` (hit-only DRIFT) | 셋팅 **33,000**/기준가 55,000·**D-14(07/31)** STABLE |
+| [ezCare fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | 17,870 | `3dfc4f7c` | 도입 **9,435** STABLE |
+| [ezCare home](https://ezcare.easyms.co.kr/) | 200 | 69,841 | `f9c0e5e2` | BPO `data-count3=**4675**` STABLE |
+| [silverangel home](https://www.silverangel.kr/) | 200 | 101,220 | `66382835` | byte-IDENTICAL (BNK-830) |
+| [silverangel notice](https://www.silverangel.kr/newSilverangel/notice/noticeList.do) | **404** | — | — | dual-IA 「미확인」 carry |
+
+= **신규 진성갭 0** · **엑셀 포맷 변경 0** · **가격 재조정 시그널 0** · **신규 P0 후보 0**.
+
+## 8. 가정 번복·미확인 축소 표
+
+| 항목 | BNK-828/830 | BNK-831 | 판정 |
+|------|-------------|---------|------|
+| BE semicolon-optional lockstep | 「가정」(미착지) | BE `@7389ef0` LIVE | **가정→확인 승격 1** |
+| closed band 6 | LIVE | LIVE 재오픈 0 | 0 |
+| law 2025-247 canonical URL | `2100000271110` (BNK-830 정정) | 재확인 | 추가 번복 0 |
+| carefor LIVE | 000 102-cycle+ | 000 **103-cycle+** | 「미확인」 유지 |
+| FAQ 엑셀 포맷 | 0 | 0 | 시그널 0 |
+| 모듈 97.41% | CONFIRMED | CONFIRMED | KPI promote 0 |
+
+**가정 번복 0 · 가정→확인 1 · 「미확인」 축소 0 · P0 신규 0**
+
+## 9. planner 권고 (P0/P1 재정렬)
+
+1. **closed band 6·모듈 97.41% 동결 유지** — G14/대시보드/v1.3-C/v2 CMS/G-LINKAGE/G2 재오픈 금지.
+2. **residual lever primary = id=12 회계 BPO SSO OTP(0.7)** — sole in-app KPI lever(+약 1.0pp 여지)·과대구축 금지.
+3. **audit-first posture 7차 확정** — 물리 삭제 API 신설 금지·soft-delete/PATCH partial 유지.
+4. **QA-B95 FE↔BE lockstep CLOSED** — 추가 entity alias는 회귀 테스트 동반만.
+5. **다음 rotation 후보**: 케어포 0–2h (LIVE 000 103-cycle+ 회복 여부) 또는 이지케어 2–4h (BNK-829 M4/M9 후속).
+
+## 10. per-cycle minimum
+
+| 최소산출 | BNK-831 |
+|----------|---------|
+| 신규 증거 URL 1건+ (또는 재실측+변동) | ✅ NHIS 564차·FAQ/charge/fnc/home·law canonical/alias·silverangel home · carefor 000 변동 기록 |
+| 메뉴/필드/워크플로 상세 1블록+ | ✅ closed band 6 P0/P1 재정렬 표 + audit-first 7차 + BE lockstep 승격 |
+| COMPETITOR_MATRIX 1행+ @HEAD | ✅ `@d3e282b`/`@7389ef0` |
+| BENCHMARK_REPORT §소절/차수 | ✅ §831 |
+
+**근거 파일**: 본 txt · `nhis_jo44_live_bnk831.html` · `ezcare_faq_live_bnk831.html` · `ezcare_charge_live_bnk831.html` · `ezcare_fnc_live_bnk831.html` · `ezcare_home_live_bnk831.html` · `silverangel_home_live_bnk831.html` · `law_mohw_2025_247_admRulInfoP_live_bnk831.html` · `law_alias_2100000268226_live_bnk831.html`

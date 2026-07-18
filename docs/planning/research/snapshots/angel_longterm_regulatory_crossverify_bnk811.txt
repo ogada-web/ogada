@@ -1,0 +1,109 @@
+BNK-811 — 엔젤·롱텀·규제 역공학 4–6h 교차검증 (2026-07-16T23:47:46Z)
+================================================================================
+rotation: 엔젤·롱텀·규제 (silverangel/lcms 공개 기능·CMS 부가·law.go.kr/NHIS 이동서비스비 러-1~4 · 2026 수가·평가 지표27·단기보호·통합재가)
+직전 동일 rotation: BNK-807 (2026-07-16T21:12Z) → ~2.6h 후
+직전 사이클: BNK-810 (2026-07-16T23:14Z·케어포 0–2h) → ~34분 후
+ogada baseline: FE @6fceb8d / BE @b348258 (둘 다 WT CLEAN · origin/develop SYNCED)
+
+--------------------------------------------------------------------------------
+0. ogada @HEAD 실측 (git 실측)
+--------------------------------------------------------------------------------
+FE develop @6fceb8d  WT CLEAN  — `fix(v1.2.1/QA-B95): decode square-bracket wrapping HTML entities`
+    (BNK-810 @7ee1cf1 → +1 · ahead origin/test 1 vs 6900a8f · tester FF 대기)
+BE develop @b348258  WT CLEAN  — `fix(v2/QA-B95): ignore blank tokens in operation blocker resolve`
+    (BNK-810 @d247cdf → advanced · ahead 713 vs 598d108)
+Route 133 (App.jsx <Route\b 132 + <Routes> 1)
+Page  106 (*Page.jsx)
+FE test 534 (313 .test.jsx + 221 .test.js)
+BE Test 294 (293 *Test.java + 1 *Tests.java) · @Test 2266 · Flyway V1–V196
+module coverage: 29-entry / sum 28.25 = 97.41% CONFIRMED
+  비-1.0: id=2/8/10=0.85 · id=12=0.7 · 나머지 25=1.0 · coverage-0 진성갭 0
+도메인 route: accounting 1·payroll 5·billing 17·care 16·nursing 16·transport 9·
+  staff 13·programs 8·compliance 2·meals 1·safety 5(+hub)
+merge gate 714 (FE 1 + BE 713 · BE-heavy → tester FF)
+
+--------------------------------------------------------------------------------
+1. 규제 백본 7-URL live 재실측 = 실체 변동 0 (기존 URL 재실측)
+--------------------------------------------------------------------------------
+URL                                              HTTP  size(B)   md5(prefix)  결과
+NHIS #44 이동서비스비 (joHistoryContent.do)      200   7,572     c886ff1f     **544차** IDENTICAL(BNK-810 543→+1)
+silverangel system_feature.do                    200   45,601    c9507190     BNK-807 IDENTICAL
+silverangel daycareEssentialWork.do              200   131,664   c79c1be3     BNK-807 IDENTICAL
+lcms.or.kr (home)                                200   50,740    c0c66076     type1 canonical STABLE(BNK-807 동일·carousel 회전 0)
+longterm 502 (npeb502m01.web)                    200   89,162    56185735     shell IDENTICAL(월 한도·재가급여·단기보호 74,060 narrative carry)
+longterm 610 (npeb610m01.web)                    200   88,399    fad1ce61     shell IDENTICAL(통합재가 marker·월 10만원 narrative carry)
+law.go.kr 2025-247 (admRulInfoP.do)              200   78,450    5b97b760(raw) strip Time= = BNK-807 semantic IDENTICAL(efYd=20260101)
+
+NHIS #44 verbatim grep -oF (BNK-807/810 IDENTICAL):
+  러-1: 1 · 러-4: 1 · 편도: 2 · 1일 1회: 1 · 수급자가 부담: 1 · 이동서비스: 13
+  snippet: 「‘러-1’부터 ‘러-4’까지 비용의 50%를 산정」·「이동서비스비용은 … 수급자가 부담」
+law247: 2025-247(4)·장기요양급여 제공기준(3)·20260101(2)·이동서비스/러-1 shell 0(고시 본문 별도)
+
+--------------------------------------------------------------------------------
+2. ★★★ 신규 증거·메뉴/필드/워크플로 — silverangel home notice DRIFT + CMS 부가 요금 LOCK + dual-numbering/41·42 verbatim
+--------------------------------------------------------------------------------
+A) [silverangel.kr home](https://www.silverangel.kr/) 200·101,220B·`66382835`
+   vs BNK-775 `182bb64b` 101,218B = **notice DRIFT**(제품 기능 변동 0)
+   - notice idx 221572「7월 둘째 주」→ **221573「7월 셋째 주」** (주간 공지 롤링)
+   - CJ프레시웨이 MOU 배너 LIVE: 「엔젤시스템 & CJ프레시웨이 업무협약(MOU) 체결」
+     · 「노인식단 전문영양사가 작성한 식단표 활용」·「식단표 무상제공」
+     → lcms home type1(`c0c66076`) 은 CJ 0-hit 이지만 **silverangel 홈에 CJ MOU canonical 상주**
+     → GTM/식단 파트너십 = SaaS core 갭 아님(P3「가정」·BNK-791/807 carry·가정 번복 0)
+   - CMS promo: 「본인부담금 자동이체(CMS) 서비스」·자동출금/카드/가상계좌
+   - 이동서비스/배차 home **0-hit** (ERP 미제공 시그널 재확인)
+   - 연계기록지 = 교육 사례 텍스트 2-hit(전용 leaf 아님) ↔ ogada id=1-10 SUPERSET carry
+
+B) [extraService.do](https://www.silverangel.kr/newSilverangel/service/extraService.do) 200·81,637B·`f9c5d877`
+   = BNK-775 IDENTICAL · CMS 부가 요금 LOCK:
+   | 항목 | 요금 |
+   |---|---|
+   | 월 이용료 | 30,000원 |
+   | 자동이체(CMS) | 250원/1건 |
+   | 가상계좌 | 300원/1건 |
+   | 카드결제 | 별도문의 |
+   | 정산 | 효성 CMS · 연동정보 입력 필수 |
+   → 제공서비스 = 자동이체·가상계좌·카드결제 3-method(ogada G2b `/billing/cms` 5-method SUPERSET carry)
+   → VR/AI/모바일 = 부가 GTM · MVP 격상 금지
+
+C) [feeService.do](https://www.silverangel.kr/newSilverangel/service/feeService.do) 200·44,513B·`eab352a8`
+   = BNK-775/776 IDENTICAL · 이용요금 셸(가격 표 로그인-gated 「미확인」)·CMS/CJ 배너 cross-link
+
+D) daycareEssentialWork.do dual-numbering + 평가41·42 verbatim (메뉴/필드/워크플로):
+   | 축 | verbatim | ogada |
+   |---|---|---|
+   | 공단 지표27 | 「주야간보호 27 기능회복훈련」·「개인별 기능회복훈련 계획」 | G17 `/programs/functional-recovery` · INDICATOR_27 CLOSED |
+   | 필수업무 일련27 | 「27 가족과의 소통」·보호자 회의 반기 1회 | dual-numbering guardrail ≠ 지표27 |
+   | 평가41 | 「41 이동 서비스 수칙」·운전자 자격·동승자 역할·차량운행표 | US-T02 · id=2 0.85 |
+   | 평가42 | 「42 이동 서비스」·「운전자 외 기관의 직원이 동승」·시간 준수 | 동승 2-hit |
+   | ERP system_feature | 이동서비스/배차/GPS/차량 **0** · 연계 9 내부 · 기능회복 1 | vs 법정 essential 이동서비스 6 |
+   → 엔젤 = 법정 안내 O / ERP 이동서비스비·거리밴드 SW **X**
+   → ogada Transport 9-route + NHIS #44 6-link = 경쟁 4종 유일 full-stack
+
+E) 평가지표 PDF URL(신규 증거·바이너리 미보관):
+   https://www.silverangel.kr/download.do?dwnFile=LongTermCare_Appraisal_Indicator(daycare).pdf
+   HTTP 200 · 11,958,320B · md5 `b13dcafc` · PDF 1.4 · disk 보존 생략(용량)·URL+md5만 기록
+
+--------------------------------------------------------------------------------
+3. NHIS #44 verbatim ↔ ogada TransportServiceFee 6-link 상수 IDENTICAL (SUPERIOR)
+--------------------------------------------------------------------------------
+ogada src @b348258 실측:
+  TransportDistanceBand.java:
+    RU_1 "러-1 (5km 미만)"  5 · RU_2 "러-2 (5~10km)" 10 ·
+    RU_3 "러-3 (10~20km)" 20 · RU_4 "러-4 (20km 이상)" 999
+  TransportServiceFeeParityCatalog.java:
+    ONE_WAY_RATIO = 0.5 · ONE_WAY_RATIO_LABEL = "편도 비율" · ONE_PER_DAY_LABEL = "1일 1회"
+  TransportServiceFeeService.java:287 baseAmount × ONE_WAY_RATIO HALF_UP
+  → 상수 재조정 불요 · id=2 0.85 carry
+
+--------------------------------------------------------------------------------
+4. per-cycle minimum 충족 요약
+--------------------------------------------------------------------------------
+[o] 신규 증거 URL / 재실측 변동: silverangel home notice DRIFT(221573)·extraService CMS 요금·feeService·
+    appraisal PDF URL · NHIS #44 544차 · 규제 백본 7-URL
+[o] 메뉴/필드/워크플로 1블록+: dual-numbering 27 + 평가41·42 + CMS 3-method 요금표 + ERP 0-hit dual-view
+[o] COMPETITOR_MATRIX 1행+ @HEAD: FE @6fceb8d / BE @b348258
+[o] BENCHMARK_REPORT §811 신규 소절
+신규 snapshot 10(HTML)+1(this txt). 덮어쓰기 0(홈/fee/extra/규제 백본 신규 bnk811 파일).
+zero drift IDENTICAL 8(NHIS·sys·ess·lcms·lt502·lt610·fee·extra).
+semantic IDENTICAL 1(law247 Time= strip). notice DRIFT 1(home). 가정 번복 0.
+PDF 바이너리 미보관(URL+md5 only).

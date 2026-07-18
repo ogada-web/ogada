@@ -1,0 +1,71 @@
+BNK-787 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-07-16T08:50:00Z / KST 17:50)
+================================================================================
+rotation: 엔젤·롱텀·규제 (agents.yaml rotation_30min 4-6h)
+직전 동일 rotation: BNK-779(2026-07-16T01:14Z) → ~7.6h 후
+직전 사이클: BNK-786(2026-07-16T08:15Z·이지케어) → ~35분 후
+
+[ogada git 실측 baseline]
+  FE develop @f9e1e91  fix(v1.2.1/QA-B95): decode unicode-escaped and bare decimal HTML entities in blockers
+     WT CLEAN · BNK-786 @f9e1e91 동일 HEAD (HEAD zero advance) · ahead origin/test 0 = FULLY SYNCED (tester FF 흡수: BNK-786 ahead 1 → 0)
+  BE develop @aa551fb  fix(v2/QA-B95): decode equals/colon/backslash HTML entities in blockers
+     WT CLEAN · BNK-786 @aa551fb 동일 HEAD (HEAD zero advance) · ahead 691 vs origin/test=598d108
+  Route 133 (<Route\b 132 + <Routes> 1) · Page 106 (git+fs 실측 · BNK-784~786 header 107 = +1 over-count → 106 정정)
+  FE test 530 (217 .test.js + 313 .test.jsx) · BE Test 294 (293 Test.java + 1 Tests.java) · BE @Test 2250
+  Flyway V1–V196 (top V196 · 신규 0) · 모듈 97.41% (competitorModuleCoverage.js 29-entry · 가정 번복 0)
+  merge gate 691 (FE 0 FULLY SYNCED + BE 691 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+[규제 백본 live 재실측 — 실체 변동 0]
+  URL                                            HTTP  bytes    md5           판정
+  --------------------------------------------------------------------------------
+  NHIS #44 joHistoryContent(러-1~4)              200   7,572   c886ff1f      521차 IDENTICAL (BNK-786 520차 → +1)
+  silverangel system_feature.do                  200  45,601   c9507190      IDENTICAL (canonical LOCK)
+  silverangel extraService.do                    200  81,637   f9c5d877      IDENTICAL
+  silverangel daycareEssentialWork.do            200 131,664   c79c1be3      IDENTICAL
+  silverangel feeService.do                      200  44,513   eab352a8      IDENTICAL
+  lcms.or.kr                                     200  50,740   c0c66076      IDENTICAL (type1 · BNK-779 회귀 LOCK)
+  longterm 502 (단기보호)                        200  89,162   56185735      IDENTICAL (shell)
+  longterm 610 (통합재가)                        200  88,399   fad1ce61      IDENTICAL (shell)
+  law247 admRulInfoP(제2025-247호)               200  78,450   df0b0719 raw  Time= cachebuster-only DRIFT
+     └ sed 's/Time=[0-9]+//g' strip → a913639a = BNK-779 semantic IDENTICAL
+  MOHW list1488862                               200 103,113   d5902718      IDENTICAL
+
+[NHIS #44 이동서비스비 러-1~4 verbatim grep -oF (7,572B · c886ff1f)]
+  러-1: 1   러-4: 1   편도: 2   1일 1회: 1   수급자가 부담: 1   이동서비스: 13
+  → ogada TransportServiceFeeService 6-link (RU_1=13·RU_2=3·RU_3=2·RU_4=3·ONE_WAY_RATIO=14·ONE_PER_DAY=17)
+    상수 재조정 불요 · id=2 0.85 form polish lever carry.
+
+[silverangel system_feature.do 109-leaf ERP 캔버스 grep -oiF (45,601B · c9507190)]
+  이동서비스: 0   배차: 0   GPS: 0   차량: 0   referral: 0   연계: 9
+  → 연계 9-hit 전량 내부 모듈 상호참조(정보시스템/입소자카드/지역사회/변경기록지/요양비/욕창)
+    = 병원↔재가↔전원 referral 전용 leaf 0 · 배차/GPS/이동서비스 dispatch 0
+  ↔ ogada id=1-10 「연계기록지」 full-stack(V194→V195→V196·2-controller·FE 5-컴포넌트) 유일 차별화 재확인
+  ↔ ogada id=2 주간보호 이동서비스(TransportController 9-route + NHIS #44 6-link) = 엔젤 공개 0-hit 대비 우위.
+
+[silverangel daycareEssentialWork.do 평가지표 grep -oF (131,664B · c79c1be3)]
+  기능회복: 6   이동서비스: 6   27: 9   동승: 2   수칙: 8
+  → 공단 지표27 = 「기능회복훈련」 (6-hit) · 평가 41·42 = 이동서비스 수칙/동승 (BNK-775 assumption 확정·carry)
+  ↔ ogada dual-numbering guardrail: 필수업무 일련27 「가족과의 소통」 ≠ 공단 지표27 「기능회복」
+    (G17 FULL-STACK CLOSED · BNK-779 FE @793a43c + BE @74ae324) · 재오픈 0.
+
+[silverangel extraService.do 효성CMS + 4-doc grep -oF (81,637B · f9c5d877)]
+  자동이체: 6   가상계좌: 7   250: 3   300: 3   가정통신문: 4   급여제공: 4
+  → 효성CMS 자동이체 250원/가상계좌 300원 ↔ ogada CmsPaymentMethodCatalog (AUTO_DEBIT_CMS 250·VIRTUAL_ACCOUNT 300) IDENTICAL
+  → 「엔젤에서만 가능」 4-doc(가정통신문·급여비용 명세서·급여제공 기록지·납부확인서) ↔ ogada 4/4 SUPERSET
+    (id=1-5 가정통신문 1.0 · id=10 급여명세서 SMS 0.85 · id=1-10 급여제공 기록지 1.0 · id=7 납부확인서 1.0)
+
+[판정 요약]
+  zero drift IDENTICAL: 9 (NHIS 521차·silverangel system_feature/extra/essential/fee·lcms·longterm 502/610·MOHW)
+  DRIFT semantic-IDENTICAL: 1 (law247 Time= cachebuster-only strip 후 IDENTICAL)
+  덮어쓰기: 0 (canonical md5 전량 IDENTICAL 또는 semantic IDENTICAL)
+  가정 번복: 0
+  KPI 정정: 1 (Page 107 → 106 git+fs 실측·over-count 정정)
+  closure: 0
+  신규 core 갭: 0
+  per-cycle minimum 4종 충족: 신규 URL 재실측(NHIS 521차 등 10-URL)·필드 블록(system_feature 0-hit dual-layer)·COMPETITOR_MATRIX @f9e1e91/@aa551fb·BENCHMARK_REPORT §787
+
+[planner 반영 제안]
+  - baseline FE @f9e1e91 FULLY SYNCED(ahead 0)·BE @aa551fb ahead 691·merge gate 691·Page 106 정정.
+  - 규제 백본 521-cycle(NHIS) + 10-URL zero drift narrative carry · 이동서비스비 러-1~4 상수 재조정 불요.
+  - id=2 주간보호 이동서비스 + id=1-10 연계기록지 = 엔젤 공개 canonical 0-hit 대비 ogada 유일 full-stack 차별화 재확인.
+  - dual-numbering(일련27 가족소통 ≠ 지표27 기능회복) G17 CLOSED carry · 평가 41·42 이동서비스 수칙/동승 확정.
+  - residual PRIMARY id=12 M12 SSO credentials(0.7) → id=2/8/10 form polish(0.85) · KPI promote 0.

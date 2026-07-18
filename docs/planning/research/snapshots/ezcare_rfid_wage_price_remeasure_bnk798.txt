@@ -1,0 +1,53 @@
+# BNK-798 supplement · RFID 이중엑셀 + 이중일정 NotFound + 2026 시급가이드 + 가격/도입 재실측
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-16T16:02:28Z -->
+
+Cycle: 2026-07-16T16:02:28Z · completes incomplete BNK-798 body (snapshots existed; BENCHMARK/MATRIX/decisions pending)
+
+## A. PGID=schedule-rfid 이중엑셀 (재실측 · LOCK)
+
+- URL: https://ezcare.easyms.co.kr/new.ez?PGID=schedule-rfid (demo auth via ezcare-demo-fetch.sh)
+- snapshot: `ezcare_new_ez_pgid_schedule-rfid_bnk798.html`
+- forms: `form_plan_upload` + `form_rfid_upload` (이중 업로드)
+- grids×4: `grid_match_list` · `grid_match_list_worker` · `grid_tag_time` · `grid_send_tag_time`
+- RFID hits ≥30 · excel/xlsx hints ≥70
+- Channel carry: https://docs.channel.io/ezcare/ko/articles/요양보호사-태그-전송-내역-확인방법-556858d9 (BNK-790)
+- ogada: `compareVisitsRfidApi` · VisitRfidDiffComparePanel · care-provision SMS CLOSED — **주간보호 UI 추가 금지**(방문요양-only)
+
+## B. PGID=duplicate-schedule NotFound (재실측)
+
+- snapshot: `ezcare_new_ez_pgid_duplicate-schedule_bnk798.html`
+- verbatim: 「페이지를 찾을 수 없습니다.」
+- ogada SUPERIOR: `VisitService.ensureNoDuplicateVisitSlot` preventive — 이중일정 PGID 과대구축 금지
+
+## C. PGID=change-list 처리상태 (재실측)
+
+- snapshot: `ezcare_new_ez_pgid_change-list_bnk798.html`
+- 「처리상태」 컬럼 hit = 0 (승인 FSM 미노출 carry · BNK-790)
+- 승인 FSM 과대구축 금지
+
+## D. 신규 증거 URL — Channel d466db47 「2026년 요양보호사 시급 가이드」
+
+- URL: https://docs.channel.io/ezcare/ko/articles/2026%EB%85%84-%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%EC%8B%9C%EA%B8%89-%EA%B0%80%EC%9D%B4%EB%93%9C-d466db47
+- HTTP 200 · snapshot `channelio_2026_wage_guide_d466db47_bnk798.html`
+- title: 2026년 요양보호사 시급 가이드
+- verbatim: 기본 시급(10,320원) · 시급가이드.pdf · 포괄시급/근로계약시급 · 방문일정 등록 시점 시급 반영 · 가족요양/일반요양 이중 시급
+- sibling: 56906f99 「2026년 장기요양 급여비용」(BNK-798 primary)
+- ogada: `/payroll/*` 5-route + staff 시급 필드 인접 · **공단 엑셀 컬럼 포맷 변경 아님** · P3「가정」·MVP 격상 금지
+
+## E. 가격·도입 재실측 (VALUE)
+
+| URL | VALUE | 판정 |
+|-----|-------|------|
+| charge 셋팅 | 33,000원 (정가 55,000·40%·~2026-07-31 = D-15) | STABLE |
+| fnc/change_work 도입 | **9,435개** (BNK-796 9,436 → −1) | A/B·계단식 「가정」 |
+| change_work 후기 | 5,003건 | STABLE-ish |
+| home BPO data-count | 4675 · 9298 · 2353 · 1820 | BPO STABLE |
+| FAQ rowid | 233 · max 21781 | IDENTICAL SET · 엑셀 포맷 변경 0 |
+| top-nav-item-V2.js | md5 95286775… 25,470B | 8주+ LOCK |
+| NHIS #44 | c886ff1f 7,572B | **532차** IDENTICAL |
+
+## F. demo ERP
+
+- `./scripts/ezcare-demo-fetch.sh --batch schedule-rfid,duplicate-schedule,schedule-fix,change-list,patient-list --menu-catalog`
+- login code 0000 · oCode DEMO · title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」
+- catalog: module 10 / leaf 148 / unique pgid 59

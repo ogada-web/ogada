@@ -1,0 +1,70 @@
+BNK-641 angel/longterm/regulatory cross-verify extract
+조사일: 2026-06-26T01:04:41Z | rotation: 엔젤·롱텀·규제 4–6h (PLAN_NOTES #44·#27·2026 수가 교차)
+
+=== ogada git @develop HEAD ===
+FE @8ed60cb (WT CLEAN, BNK-640 @0342076 HEAD +1)
+  fix: hide parity rules section when catalog empty
+  2-file +15/-5: TransportParityRulesPanel.jsx + test
+  ahead 250 vs origin/test
+BE @3ae8098 (WT DIRTY 5 — LiveE2e/Health 5-file in-progress, BNK-640 carry)
+  feat(v2/G-STAFF-COMMITTEE-MEETING-LOG): add finalized meeting print export API
+  ahead 577 vs origin/test
+merge gate 827 (+1 FE-only vs BNK-640 826)
+118 Route (118 <Route + 1 <Routes>) · 93 page · V1–V181 · BE Test 272 · BE @Test 1971 · FE test 482 · 모듈 ~81.0% carry
+
+=== NHIS #44 이동서비스비 러-1~4 — 396차 zero drift (확인) ===
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1f (live=disk nhis_jo44.html IDENTICAL)
+제34조 verbatim (2025-07-01 시행):
+  ① 최단거리(편도) 러-1~러-4 표 (lawImg SEQ_HISTORY=611677)
+  ② 1일 1회만 산정 · 편도만 이용 시 러-1~4 비용 50%
+  ③ 수급자 부담 X
+  ④ 이동서비스 일지 작성·보관 (별지 제22호 세부는 ⑤ 공단 이사장 정함)
+ogada: TransportServiceFeeService + TransportServiceLog + TransportParityRulesPanel + FE 8ed60cb empty-catalog hide
+경쟁: 케어포 △(func 2-x 차량) · 이지케어 △ · 엔젤 △(#41-42 체크리스트) · 롱텀 ✅(규정 본문) → ogada 유일 full-stack
+
+=== silverangel 평가지표 #41-42 + #27 목욕 ↔ ogada cross-walk (확인) ===
+essential daycareEssentialWork.do HTTP 200 · 131,664B · c79c1be3 IDENTICAL
+#41 이동서비스수칙(기): 운전자 자격·동승자 역할·차량안전·사고조치·차량운행표 + 수급자(보호자) 제공
+  증빙: 수급자현황-계약서 이동서비스수칙 / 이동서비스일지-수칙 예시
+#42 이동서비스(수): 운전자 외 직원 동승 · 이동서비스 시간 준수
+  증빙: 급여제공계획 / 이동서비스
+#27 목욕제공: 「필수사항 아니며 목욕서비스 제공시 청구 가능」
+ogada: /transport/* + NHIS #44 산정/일지 ✅ · /care/bathing-schedules + /care/reports/bath-help partial+ ✅ (BNK-596~599 carry)
+갭: 엔젤은 평가 체크리스트·일지 화면 정적 텍스트만 — 러-1~4 산정·편도50%·1일1회 자동 guard 없음
+
+=== silverangel CMS 5-method + system_feature LCMS stack (확인) ===
+extraService.do HTTP 200 · 81,637B · f9c5d877 IDENTICAL
+  자동이체(CMS)·가상계좌·카드·다계좌정산·현금영수증 · 1600-6859 · 효성CMS 이용료 별도
+system_feature.do HTTP 200 · 45,601B · c9507190 IDENTICAL (신규 live 재실측)
+  LCMS 유형 표: HP-UX(유닉스) · Oracle 11g · WebLogic · 코드관리
+businessSupportService.do HTTP 200 · 75,878B · a13cb5ac IDENTICAL
+  도입 후 관리 4회차: 직무교육일로부터 10일째 (온보딩 SLA cross-walk BNK-634 carry)
+
+=== lcms.or.kr (확인) ===
+https://www.lcms.or.kr/ HTTP 200 · 50,554B · md5 6c0d22b4 IDENTICAL (lcms_or_kr_renew_bnk618.html)
+「요양시설통합사례관리솔루션」 eGovFramework renewal carry
+※ lcms_home_bnk634.html c0c66076 50,740B = 별도 rotation shell (type1/2/3) — 본 cycle .or.kr 정본 6c0d22b4 우선
+
+=== longterm 502 단기보호 · 610 통합재가 (미확인) ===
+selectLawDetail.web?reqIdx=502 HTTP 404 · 861B fcadfbfe (error shell)
+selectLawDetail.web?reqIdx=610 HTTP 404 · 861B fcadfbfe (동일 error shell)
+canonical on-disk 보존: longterm_502.html b5aee8c1 (1등급 74,060) · longterm_610.html 0ea575be (가산 월 10만원)
+46-cycle+ carry 「미확인」— live R&D endpoint 장애 지속
+
+=== silverangel notice 221564 (확인 · D-4) ===
+view.do?Tmp_idx=221564 HTTP 200 · 51,765B · 44223150 shell (BNK-618 HAS-DATA ffe82a0d 미복귀)
+6/30 정식 게시 D-4 · P3 3종 재검증 보류 carry
+
+=== MOHW 2026-126 본인부담상한 (확인 · counter DRIFT) ===
+HTTP 200 · 조회 2,644→2,654 (+10) · DL 483→484 · 미리보기 571→575
+md5 806a4361→3965b857 (counter-only · 제2026-126호 본문 불변) → mohw_gosi_2026_126.html 덮어쓰기
+
+=== FE G16 UX micro-closure (확인) ===
+8ed60cb: TransportParityRulesPanel — BE catalog empty 시 section null return (로딩 완료·에러 없음·rules.length===0)
+에러 시 STATIC_PARITY_RULES fallback 유지 (fail-open NHIS #44 문구 노출)
+test +12L regression lock
+
+=== 잔여 우선순위 ===
+P1: M11/M12 (+6.9pp) · P2: v1.3-C NHIS #44 parity 문구 고정(396-cycle) · P3: silverangel 221564 D-4
+미확인: longterm 502/610 live 404 · BE WT DIRTY 5 (QA-B95 13th layer candidate)

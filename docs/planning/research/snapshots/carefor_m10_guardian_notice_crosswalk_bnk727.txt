@@ -1,0 +1,148 @@
+# 케어포 역공학 0–2h — Module 10 「보호자 알림·홈페이지 서비스」 9-leaf ↔ ogada 1:1 crosswalk (BNK-727)
+# 조사일: 2026-07-14T15:49:00Z (UTC) / KST 2026-07-15 00:49
+# 작성: benchmark_researcher [BNK]
+# rotation: 0–2h 케어포 역공학 (func.php canonical 재사용·모듈 10 심층·G2 authoring 착지 대응)
+# 직전 사이클: BNK-726(2026-07-14T15:16Z·교차검증·갭 우선순위 8h+) → ~33분 후
+# 직전 동일 rotation: BNK-723(2026-07-14T13:17Z·M7 본인부담 7-leaf) → ~2.5h 후
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`3bd50ac`** `feat(v1.2.1/G2): wire home newsletter authoring compose preview`
+  · WT **CLEAN** · ahead origin/test **0** (`origin/test=3bd50ac` = **FULLY SYNCED** · tester FF 흡수)
+  · BNK-726 `@5805d68` → **+1 commit** (`3bd50ac`) · Δ 6-file +543/−5 (delta commit)
+  · `<Route\b`=131 + `<Routes>`=1 = **132**(carry) · `*Page.jsx`=**105**(carry)
+  · `.test.js`=214 · `.test.jsx`=304 = **518**(carry · in-place expand only)
+- BE `develop` = **`5d6c007`** `fix(v2/QA-B95): expose effective live-e2e operation gate`
+  · WT **CLEAN** · ahead origin/test **634** (`test=598d108`)
+  · BNK-726 `@5d6c007` → **HEAD zero advance**
+  · `*Test.java`=287 · `*Tests.java`=1 = **288** · `@Test`=**2135**(carry)
+  · V1–V190 (190 migration files)
+- 모듈 커버리지 `competitorModuleCoverage.js` = **29 entries · sum 26.80 · 26.80/29 = 92.41%**
+  · id=1-5 **0.65 carry**(코더가 KPI 반영 미실행 · FE authoring UI 착지에도 coverage 미갱신 = 「가정 유지·번복 아님」)
+  · id=10 SMS·알림 0.75 · id=12 회계 0.7
+- merge gate **634** (FE 0 FULLY SYNCED + BE 634 · BE-only · 양쪽 WT CLEAN → tester FF 가속)
+
+### 이번 사이클 델타 커밋 1건 (확인)
+
+1. FE `3bd50ac` `feat(v1.2.1/G2): wire home newsletter authoring compose preview` (6-file · +543/−5)
+   - `HomeNewsletterLaunchPage.jsx` +248L: `Field`/`MonthInput`/`TextInput`/`Textarea` compose form
+     · fields: `yearMonth`(월) / `summary`(요약) / `clientName`(이용자) / `centerName`(센터)
+     · `applyApiErrorToForm` 필드 단위 오류 표출 · `previewHomeNewsletterComposeApi` 호출
+   - `utils/homeNewsletter.js` +83L: `HOME_NEWSLETTER_AUTHORING_API_PATH`, `HOME_NEWSLETTER_COMPOSE_PREVIEW_API_PATH`, `normalizeHomeNewsletterAuthoring`, `normalizeHomeNewsletterComposePreview`
+   - `api/services.js` +19L: `fetchHomeNewsletterAuthoringApi`, `previewHomeNewsletterComposeApi` (apiFetch 준수)
+   - Test: `HomeNewsletterLaunchPage.test.jsx` +96L · `billingGuardianPlatformServices.test.js` +52L · `homeNewsletter.test.js` +50L
+   - **효과**: BNK-724 BE authoring/compose-preview API + BNK-726 QUAD Health = FE UI 착지 → G2 「가정통신문 작성·미리보기」 in-app full-stack 정합 (기존은 dispatch 화면만 존재)
+
+## 1. ★★★ 케어포 func.php Module 10 「보호자 알림·홈페이지 서비스」 9-leaf 정본 (신규 심층)
+
+**출처**: `docs/planning/research/snapshots/carefor_func.php` md5 `6226e6eb92fdd25ed3e50842a5e8a00b` · 98,328B · disk canonical (BNK-706 재확인 carry · LIVE `www.carefor.co.kr` HTTP **000** timeout 25s **72-cycle+** 「미확인」 지속)
+
+| # | 케어포 func 항목 | 카테고리 | 워크플로 힌트 |
+|---|---|---|---|
+| 10-1 | 문자메시지 발송 | SMS console | 관리자가 직접 SMS 작성·발송 (수동 콘솔) |
+| 10-2 | 급여제공내역 안내 발송 | 청구 안내 | 월간 급여제공기록 → 보호자에게 안내 (자동/수동) |
+| 10-2-1 | 수가변경안내 발송 | 안내 발송 | 공단 수가 변경 시 보호자에게 안내 (연 1~2회 이벤트) |
+| 10-3 | 보호자 급여기록 열람내역 | 열람 로그 | 보호자가 자신의 어르신 급여기록 조회한 내역 audit trail |
+| 10-4 | 기관 공지사항, 자료실 | 게시판 | 시설 공지·다운로드 자료 (일반 게시판) |
+| 10-5 | 홈페이지 서비스 (= 가정통신문 · 근거: 매뉴얼 대응) | 가정통신문 | 월간 뉴스레터·안내문 authoring + 발송 |
+| 10-6 | 보호자 앱 관리 | 보호자 앱 | 보호자 앱 계정·구독·앱 알림 설정 |
+| 10-7 | 안내발송내역(문자, 이메일) | 발송 이력 | SMS·이메일 발송 이력 감사 |
+| 10-8 | 평가항목 및 사전 준비자료 출력 | 평가 준비 | 정기평가(3년) 사전 준비 자료 인쇄 |
+
+- **9-leaf 총계** (매뉴얼 module 10 목차 대응·func.php `10-` prefix grep 실측 = **9-hit** IDENTICAL)
+- 케어포 정본은 **정적 leaf**(depth=3 UI 링크만)·데모 사이트 HTTP 000 「미확인」 (loadPage/view 파싱 불가)
+
+## 2. ★★★ ogada 1:1 crosswalk (post-@3bd50ac G2 authoring 착지 반영)
+
+| # | 케어포 func | ogada 대응 | 판정 | 근거 |
+|---|---|---|---|---|
+| 10-1 | 문자메시지 발송 | BE `NotificationChannelStatusController.channel-status`+`template-catalog`(관리자 template SMS 채널 status만) · **FE SMS 콘솔 없음** | ❌ | app.jsx 검색 `sms` 관련 route **0** · in-app 자유 SMS 작성 UI 미착지 |
+| 10-2 | 급여제공내역 안내 발송 | BE `StaffClientNotificationHistoryController.POST /care-provision-record` + `.POST /elder-abuse-prevention-guideline` + `.POST /client-monthly-schedule` (3-endpoint 자동 안내) · FE `/clients/care-plan-notifications` (Care-Plan 알림 페이지) | △ | 케어포 「수동 안내」 vs ogada **3-kind 자동 알림 endpoint** (경쟁 우위 후보) |
+| 10-2-1 | 수가변경안내 발송 | ❌ (전용 endpoint 없음 · 일반 `/care-provision-record` 활용 가능) | ❌ | 연 1~2회 이벤트성 · MVP out-of-scope 가정 |
+| 10-3 | 보호자 급여기록 열람내역 | BE `GuardianNotificationHistoryController.GET` (보호자 수신 이력) + `GuardianNotificationPreferenceController` · FE 미착지 | △ | 「보호자 수신 로그」는 있으나 「보호자 열람 audit」는 부분(별도 열람 trail 미확인) |
+| 10-4 | 기관 공지사항, 자료실 | ❌ (route `/notice`·`/board`·`/announcements` 0-hit 실측) · `/clients/:clientId/files`(개인 파일)만 | ❌ | **진성 갭 candidate** — 기관 전체 공지·자료실 (P2 후보 · silverangel notice 참조) |
+| 10-5 | **홈페이지 서비스 (=가정통신문)** | **FE `/clients/home-newsletter` LIVE + authoring compose preview `@3bd50ac` NEW** · BE `NotificationChannelStatusController.GET /home-newsletter/launch|authoring` + `POST /compose-preview` + `GET /dispatch-history` 4-endpoint | ✅ | **BNK-724~727 4-cycle full-stack chain** — launch(BNK-721) → authoring API(BNK-724) → compose-preview API(BNK-724) → **compose FE UI(BNK-727)** |
+| 10-6 | 보호자 앱 관리 | FE `/guardian`(로그인)·`/guardians`·`/guardians/:id`·`/guardian/invitations/:token/accept` + `StaffGuardianNotificationPreferenceController` | ✅ | 보호자 계정·초대·알림 preference 관리 (앱 별도 미착지 · 웹 UI 대응) |
+| 10-7 | 안내발송내역(문자, 이메일) | BE `GET /home-newsletter/dispatch-history` (BNK-722) + `StaffClientNotificationHistoryController.GET` (branch-scoped) · FE dispatch-history 노출 in HomeNewsletterLaunchPage | ✅ | 이메일 dispatch history LIVE · SMS 별도 tab은 미확인 |
+| 10-8 | 평가항목 및 사전 준비자료 출력 | ❌ (전용 route 미착지 · `/safety/periodic-checks`·`/programs/reports` 부분 대응) | ❌ | **P3 후보** — silverangel `daycareEssentialWork` 정본 활용 가능 |
+
+**총계**: **✅ 3 / △ 2 / ❌ 4 (진성 갭 3 + 미착지 1)** — 케어포 정본 대비 33.3% ✅ 완전 + 22.2% △ 부분 = **55.5% 실질 대응**
+
+### 판정 근거 (git 실측)
+
+- `10-1 SMS 콘솔`: `grep -oE 'path="/[^"]*"' src/App.jsx | grep -iE "sms"` = **0-hit** · BE `NotificationChannelStatusController` 는 channel-status 조회만 · FE 관리자 SMS 자유 작성 UI 부재
+- `10-4 기관 공지`: `grep -iE "notice|board|announcement|bulletin"` FE route = **0-hit** · silverangel `noticeList.do` 대응 미구현
+- `10-5 가정통신문 authoring`: FE `HomeNewsletterLaunchPage.jsx` `47-hit` on `yearMonth|clientName|centerName|summary` + `Field`+`Textarea` compose form 착지 + `previewHomeNewsletterComposeApi` 호출 = **full-stack 정합 확인**
+- `10-8 평가 준비`: silverangel `daycareEssentialWork` 정본 (BNK-707 6-hit) 활용 가능하나 전용 「평가 사전 준비 자료 인쇄」 페이지 미착지
+
+## 3. ★★ 경쟁 4종 Module 10 대응 대비 (신규 3-way crosswalk)
+
+| leaf | 케어포 | 이지케어 | 엔젤 | ogada @3bd50ac |
+|---|---|---|---|---|
+| 10-1 SMS console | ✅ 정적 leaf | ✅ FAQ 21589 RFID SMS + `mobile-notice` 2-tab (BNK-724 free-form SMS + preset 7-kind) | △ LCMS 위탁 (외부 CMS) | ❌ FE 미착지 (BE channel-status만) |
+| 10-2 급여 안내 | ✅ 정적 leaf | △ FAQ 21601 `mobile-notice` 앱쪽지 preset | △ | ✅ **BE 3-kind endpoint 자동 안내 = 유일 심화** |
+| 10-4 기관 공지 | ✅ 정적 leaf | ✅ `notice.ez` 기관 공지 (BNK-694 카테고리) | ✅ silverangel `noticeList.do` (BNK-654 leak 후 shell-only) | ❌ **진성 갭 (P2 candidate)** |
+| 10-5 가정통신문 | ✅ 정적 leaf | ⚪ 「홈페이지 서비스」 대응 미확인 | ⚪ | ✅ **@3bd50ac authoring compose preview LIVE = full-stack 최심화** |
+| 10-7 발송 이력 | ✅ 정적 leaf | ✅ `mobile-notice` 발송 이력 | ⚪ | ✅ dispatch-history LIVE (BNK-722) |
+
+- **ogada 심화 우위 2건**:
+  1. 10-2 「자동 안내 3-kind endpoint」 (care-provision-record + elder-abuse-prevention-guideline + client-monthly-schedule) — 경쟁 4종 중 자동화 최심화
+  2. 10-5 「authoring compose preview」 — 경쟁 4종 중 in-app 미리보기 노출 유일 (케어포 정적 leaf, 이지케어 대응 미확인, 엔젤 CMS 위탁)
+- **ogada 진성 갭 2건**:
+  1. 10-1 SMS 콘솔 — 이지케어 mobile-notice 대비 미착지 (BNK-724 candidate carry)
+  2. 10-4 기관 공지사항 게시판 — 경쟁 3종 모두 대응 · ogada 미착지 (**신규 P2 candidate**)
+
+## 4. ★ 케어포 disk canonical 재확인 (72-cycle+ carry)
+
+| 파일 | 크기 | md5 | 판정 |
+|---|---|---|---|
+| `carefor_func.php` (disk canonical) | 98,328B | `6226e6eb92fdd25ed3e50842a5e8a00b` | **byte-identical** carry (BNK-706 재실측 → BNK-727 zero drift) |
+| `carefor_func_wayback_id_remeasure_bnk706.html` | 98,328B | `6226e6eb92fdd25ed3e50842a5e8a00b` | canonical과 byte-identical |
+| `carefor_demo_work_raw_bnk675.html` | 71,742B | `ebee4d4724cd5e633696268067a4d85f` | BNK-706 재실측과 byte-identical |
+| LIVE `www.carefor.co.kr/daycare/func.php` | 0B | HTTP **000** timeout 25s | **72-cycle+ 「미확인」** (BNK-726 71차→+1) |
+| LIVE `demo-work.carefor.co.kr` | 0B | HTTP **000** timeout 25s | 72-cycle+ carry |
+| LIVE `www.carefor.co.kr/` root | 0B | HTTP **000** timeout 15s | 신규 재확인 zero |
+
+- func.php `10-` prefix grep = **9-hit** (10-1 ~ 10-8 + 10-2-1) — 정본 항목수 IDENTICAL
+- func.php 「가정통신문」 keyword grep = 2-hit (1-5 「가정통신문」 자체 leaf + 10-5 「홈페이지 서비스」 매뉴얼 대응)
+- 덮어쓰기 0건 (canonical 유지 · LIVE 000 지속)
+
+## 5. ★ 규제 백본 (기존 URL 재확인 · BNK-726 carry)
+
+- NHIS #44 이동서비스비 러-1~4 = **461차 zero drift IDENTICAL** carry (BNK-726 461차 → 이번 사이클 재실측 skip = 8h+ 교차검증 roll 예약)
+- silverangel `noticeList.do` = ≥221573 **0** carry (~19일+ pause) · shell-only refactor carry (BNK-661)
+- ezcare FAQ 21844/21845 = IDENTICAL carry (엑셀 포맷 변경 0)
+
+## 6. 산출 요약 (per-cycle minimum 4종 충족 확인)
+
+- **신규 evidence URL 재실측 3건**: `www.carefor.co.kr/daycare/func.php` HTTP 000 (72차) · `demo-work.carefor.co.kr` HTTP 000 · `www.carefor.co.kr/` 신규 root fetch HTTP 000 → 「미확인」 지속 확정 + disk canonical `carefor_func.php` md5 `6226e6eb` byte-identical carry
+- **메뉴/필드/워크플로 상세 1블록**: §1 **케어포 Module 10 「보호자 알림·홈페이지 서비스」 9-leaf 정본** (10-1 ~ 10-8 + 10-2-1) + §2 **ogada 1:1 crosswalk** (✅3/△2/❌4 · post-@3bd50ac G2 착지)
+- **COMPETITOR_MATRIX 1행 이상 갱신**: id=10 SMS·알림 · id=1-5 가정통신문 · id=1-3 보호자 관리 · notice(신규) 4행 `@3bd50ac`/`@5d6c007` 갱신
+- **BENCHMARK_REPORT §BNK-727 신규 소절 1건**
+
+### 이번 사이클 인사이트
+
+- **G2 authoring compose 4-cycle full-stack chain CLOSED** (BNK-721 launch → BNK-724 API → BNK-726 Health QUAD → **BNK-727 FE compose UI**) — 케어포 10-5 「홈페이지 서비스」 정적 leaf 대비 authoring+preview in-app 착지 = 경쟁 4종 유일 심화
+- **모듈 커버리지 id=1-5 = 0.65 carry (KPI 미갱신 「가정 유지·번복 아님」)** — FE compose 착지에도 `competitorModuleCoverage.js` 0.65 그대로 · 코더의 KPI 반영 별도 사이클 필요 (planner 리포트 반영)
+- **신규 P2 candidate 1건**: id=10-4 「기관 공지사항, 자료실 게시판」 — 경쟁 3종(케어포·이지케어·엔젤) 모두 대응 · ogada 미착지 (silverangel notice/이지케어 notice.ez 참조 가능)
+- **신규 심화 우위 확인 1건**: id=10-2 「자동 안내 3-kind endpoint」 (`care-provision-record` + `elder-abuse-prevention-guideline` + `client-monthly-schedule`) — 경쟁 4종 중 자동화 최심화 = 마케팅 카피 후보
+
+### 다음 사이클 우선순위 (BNK-728 이지케어 역공학 2-4h)
+
+1. **이지케어 `mobile-notice` 2-tab 재실측** (SMS free-form + preset 7-kind) → 10-1 「SMS 콘솔」 UI 패턴 참고 (P2 candidate 스펙 fleshing)
+2. **이지케어 `notice.ez` 기관 공지 카테고리·필드 실측** → 10-4 「기관 공지사항, 자료실」 P2 candidate 근거 확보
+3. FAQ 21601 `mobile-notice` rowid 상세 (BNK-724 candidate carry)
+
+### 미확인 carry / 재현 실패
+
+- carefor `www.carefor.co.kr/daycare/func.php`·`demo-work.carefor.co.kr` HTTP 000 = **72-cycle+ 「미확인」** (원인: 조사 환경 IP 차단·CDN·firewall 추정 · disk canonical 우선 원칙 유지)
+- longterm npbs `502/610` = login-gated shell carry
+- ezcare 데모 셸 = transient (BNK-724 재실측)
+
+### 상태 변경 / KPI 변경
+
+- **상태 변경 2건**: FE +1 commit (`@5805d68` → `@3bd50ac`) · FE origin/test = `3bd50ac` (**tester FF 흡수 · FULLY SYNCED**) · merge gate carry **634** (BE-only)
+- **KPI 변경 0건**: Route 132·Page 105·FE test 518·BE Test 288·BE @Test 2135·모듈 92.41% 모두 carry (in-place expand only · KPI axes zero delta)
+- **가정 번복 0건** (id=1-5 KPI 0.65 유지·번복 아님 — coder KPI 갱신 별도 사이클)
+- **closed axes 재오픈 0건** (G14·v1.3-C·v2 CMS carry)
+- **P3 dashboard 격상 0건** (G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY carry)

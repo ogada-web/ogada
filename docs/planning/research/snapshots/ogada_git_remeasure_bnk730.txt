@@ -1,0 +1,124 @@
+BNK-730 — 케어포 역공학 0–2h · ogada git 실측 + carefor func.php M10/M1 leaf 재크로스워크
+====================================================================================
+조사일: 2026-07-14T18:13:01Z (KST 2026-07-15 03:13)
+직전 사이클: BNK-729 (2026-07-14T17:26:00Z · ogada git 실측 6–8h) → ~47분 후
+rotation: 0–2h 케어포 func.php·매뉴얼·demo-work UX 패턴
+
+------------------------------------------------------------------------------------
+[1] ogada git 실측 (submodule develop HEAD)
+------------------------------------------------------------------------------------
+FE develop = 0210aaa  feat(v1.2.1/G2): persist compose preview as facility-notice DRAFT
+  · WT CLEAN · BNK-729 @bb48b6c → +2 commit
+      d613826 feat(v1.2.1/G2): wire facility notices board CRUD in launch page
+      0210aaa feat(v1.2.1/G2): persist compose preview as facility-notice DRAFT
+  · ahead 1 vs origin/test=d613826 (tester FF'd FE to d613826)
+
+BE develop = 82a83e3  feat(v2/QA-B95): expose suppressed bootstrap blockers in operation gate
+  · WT CLEAN · BNK-729 @55b8f84 → +1 commit
+  · ahead 639 vs origin/test=598d108
+
+KPI:
+  Route 132 (<Route\b 131 + <Routes> 1) — carry
+  *Page.jsx 105 — carry
+  FE test 518 (214 .test.js + 304 .test.jsx) — carry (in-place expand only)
+  BE Test 289 (288 *Test.java + 1 *Tests.java) — carry
+  BE @Test 2155 (+1 vs BNK-729 2154)
+  Flyway V1–V192 — carry (신규 마이그레이션 0)
+  accounting route 1 · payroll route 5 — carry
+  모듈 커버리지 = 27.15/29 = 93.62% (id=1-5 0.85→1.0 · +0.52pp)
+  merge gate 640 (FE 1 + BE 639 · BE-heavy → tester FF)
+
+------------------------------------------------------------------------------------
+[2] ★★★ id=1-5 「가정통신문」 FULL CLOSURE (0.85→1.0) — compose preview → facility-notice DRAFT 서버 영속
+------------------------------------------------------------------------------------
+BNK-729 가 flag 한 "잔여 1.0 lever = FE session draft를 POST /facility-notices(DRAFT) 로 승격" 이 BNK-730 에서 CLOSED.
+
+FE 0210aaa `src/utils/homeNewsletter.js` 신규:
+  · buildFacilityNoticeDraftPayloadFromCompose(form, preview)
+      = compose form(yearMonth·summary·clientName·centerName) + preview(subject·bodyText)
+        → POST /notifications/facility-notices payload(category=NOTICE·DRAFT)
+  · HOME_NEWSLETTER_FACILITY_NOTICE_TITLE_MAX = 200
+  · HOME_NEWSLETTER_FACILITY_NOTICE_BODY_MAX = 5000
+  · HOME_NEWSLETTER_DRAFT_NOTICE_CATEGORY = "NOTICE"
+  · HOME_NEWSLETTER_DRAFT_BOARD_HELP (verbatim):
+      "미리보기 결과를 기관 공지 DRAFT로 서버에 저장합니다. 작성 폼 복원용 메타(연월·이용자·센터)는
+       이 화면 세션에도 함께 보관합니다."
+
+FE 0210aaa `src/pages/HomeNewsletterLaunchPage.jsx`:
+  · line 209: const created = await createFacilityNoticeApi(payload);
+  · line 215: "가정통신문 초안을 서버(DRAFT)에 저장했습니다. 작성 폼 복원 메타는 세션 게시판에도 보관합니다."
+  · line 946: 버튼 "서버 초안(DRAFT) 저장" (draftSaving ? "초안 저장 중…")
+
+FE config `competitorModuleCoverage.js`:
+  · { id: "1-5", label: "가정통신문", coverage: 1 }  ← 0.85→1.0
+  · comment verbatim: "// + facility-notices 10-4 CRUD + compose→DRAFT server persist (id=1-5 FULL)"
+
+full-stack chain (BNK-719 → BNK-730):
+  dispatch(719/720) → launch page + dispatch-history(722) → authoring/compose-preview API BE(724)
+  → Health QUAD(726) → FE compose UI(727) → board-style history + V191 index(728)
+  → FE session draft board + 서버 이력 필터 wire + BE V192 FacilityNotice CRUD(729)
+  → FE board CRUD wire(730 d613826) + FE compose→DRAFT 서버 영속(730 0210aaa) = **1.0 FULL**
+
+------------------------------------------------------------------------------------
+[3] ★★★ id=10-4 「기관 공지사항, 자료실」 FULL-STACK END-TO-END (BE V192 + FE board CRUD wire)
+------------------------------------------------------------------------------------
+FE d613826 `src/api/services.js` 신규 4-function (모두 apiFetch 준수·JWT 자동):
+  · fetchFacilityNoticesApi   GET  /api/v1/notifications/facility-notices?page&size&branchId&noticeCategory&recordStatus
+  · createFacilityNoticeApi   POST /api/v1/notifications/facility-notices          (초안 생성 DRAFT)
+  · publishFacilityNoticeApi  POST /api/v1/notifications/facility-notices/{id}/publish  (게시)
+  · deleteFacilityNoticeApi   DELETE /api/v1/notifications/facility-notices/{id}   (초안 삭제)
+  → HomeNewsletterLaunchPage 하단 게시판 UI 에 wire (BNK-729 flag "board-ui-planned 잔여" 해소)
+
+BE (BNK-729 @55b8f84 carry) V192 facility_notices_carefor_10_4:
+  · com.ogada.backend.facilitynotice 패키지 8-file · 6-endpoint · DRAFT/PUBLISHED workflow
+  · notice_category = NOTICE|RESOURCE (carefor 10-4 leaf verbatim 「기관 공지사항, 자료실」 2-축)
+  · org+branch 복합 FK · 감사 트리거 set_created_by → ogada_read_actor_user_id()
+
+판정: 케어포 10-4 = 정적 leaf(LIVE 000 74-cycle+ 「미확인」) · 이지케어 notice.ez = 로그인-gated
+      · 엔젤 noticeList.do = shell-only · 롱텀 N/A
+      → ogada = BE full CRUD + FE 게시판 UI + DRAFT/PUBLISHED + 다지점 scope + 감사 트리거
+        = 경쟁 4종 대비 **full-stack 심화 우위 (BE+FE 모두 착지)**
+
+------------------------------------------------------------------------------------
+[4] 케어포 func.php disk canonical 재확인 (LIVE HTTP 000 · 74-cycle+ 「미확인」)
+------------------------------------------------------------------------------------
+LIVE 재실측:
+  https://www.carefor.co.kr/daycare/func.php   → HTTP 000 (curl 28 · 25s timeout)
+  https://demo-work.carefor.co.kr/             → HTTP 000 (curl 28 · 25s timeout)
+disk canonical carefor_func.php md5 = 6226e6eb92fdd25ed3e50842a5e8a00b · 98,328B (byte-identical carry)
+
+func.php Module 10 「보호자 알림·홈페이지 서비스」 9-leaf verbatim grep (disk):
+  10-1   문자메시지 발송                       → ogada ❌ (SMS 콘솔 v2+)
+  10-2   급여제공내역 안내 발송                → ogada △/✅ (BE 3-kind 자동 안내 endpoint · 경쟁 유일)
+  10-2-1 수가변경안내 발송                     → ogada ❌ (수가 개정 자동 안내 v2+)
+  10-3   보호자 급여기록 열람내역             → ogada △ (열람 로그)
+  10-4   기관 공지사항, 자료실                → ogada ✅ FULL-STACK (BE V192 + FE board CRUD · BNK-729/730)
+  10-5   홈페이지 서비스 (=가정통신문)        → ogada ✅ id=1-5 1.0 compose→DRAFT 영속 (BNK-730)
+  10-6   보호자 앱 관리                        → ogada ✅
+  10-7   안내발송내역(문자, 이메일)           → ogada ✅ dispatch-history board-style + V191 index
+  10-8   평가항목 및 사전 준비자료 출력       → ogada ❌ (평가 준비 자료 별도)
+
+Module 10 대응: ✅5 / △2 / ❌2 (BNK-727 ✅3/△2/❌4 → BNK-730 10-4·10-5 착지로 ✅5 상향)
+
+------------------------------------------------------------------------------------
+[5] 규제 백본 zero drift — NHIS #44 러-1~4 464차
+------------------------------------------------------------------------------------
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  = nhis_jo44_live_bnk729.html IDENTICAL (BNK-729 463차 → BNK-730 464차 · +1)
+  verbatim grep -o: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+↔ ogada TransportServiceFeeService RU_1~4·ONE_WAY_RATIO=0.5·1일1회 6-link chain (id=2 이동서비스 0.85) carry
+
+------------------------------------------------------------------------------------
+[6] 사이클 요약 (per-cycle minimum 4종 충족)
+------------------------------------------------------------------------------------
+· 신규/재실측 증거 URL: NHIS #44 464차(재실측 IDENTICAL) + carefor 3-URL LIVE 000 재실측
+· 메뉴/필드/워크플로 블록: carefor func.php Module 10 9-leaf ↔ ogada crosswalk (10-4·10-5 착지 반영)
+· COMPETITOR_MATRIX: ogada 열 @0210aaa/@82a83e3 갱신 (id=1-5 FULL·id=10-4 full-stack)
+· BENCHMARK_REPORT: §730 신규 소절
+신규 snapshot 2건: ogada_git_remeasure_bnk730.txt(주력) · nhis_jo44_live_bnk730.html
+덮어쓰기 0 · zero drift IDENTICAL 1(NHIS 464차) · 가정 번복 0
+KPI 변경: BE @Test 2154→2155 · 모듈 93.10%→93.62% · id=1-5 0.85→1.0 · merge gate 641→640
+상태 변경: FE +2 commit·BE +1 commit(carry)·양쪽 WT CLEAN
+closure 2: id=1-5 「가정통신문」 FULL(1.0) · id=10-4 「기관 공지사항, 자료실」 full-stack end-to-end
+미확인 carry 2: carefor func.php/demo-work LIVE 000 · longterm npbs 502/610 login-gated

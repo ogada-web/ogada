@@ -1,0 +1,90 @@
+BNK-779 엔젤·롱텀·규제 4–6h — angel/longterm/regulatory cross-verify (주력 extract)
+조사일: 2026-07-16T01:14:00Z (KST 2026-07-16 10:14)
+rotation: 엔젤·롱텀·규제 4–6h — silverangel/lcms 공개 + law.go.kr 이동서비스비 러-1~4(PLAN_NOTES #44) + 2026 수가/평가 교차검증
+직전 동일 rotation: BNK-775(2026-07-15T22:56:31Z) → ~2.3h 후
+직전 사이클: BNK-778(2026-07-16T00:50:00Z·이지케어 2–4h) → ~24분 후
+
+================================================================
+[1] ogada git 실측 (submodule develop HEAD)
+================================================================
+FE develop = 793a43c  feat(v1.2.1/G17): surface dual-numbering guardrail on indicator-27 UI
+  · WT CLEAN · BNK-778 @a89a873 → +1 commit · ahead origin/test = 3
+BE develop = 74ae324  feat(v2/G17): expose dual-numbering guardrail on indicator-27 compliance
+  · WT DIRTY 1M (src/test/java/com/ogada/backend/system/LiveE2eOperationReadinessSupportTest.java +51·coder QA-B95 test WIP)
+  · HEAD zero advance vs BNK-778 · ahead vs origin/test(598d108) = 678
+merge gate = 681 (FE 3 + BE 678 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+KPI 실측:
+  Route 133 (App.jsx <Route\b 132 + <Routes> 1)
+  Page  106 (*Page.jsx ls-files)
+  FE test 530 (217 .test.js + 313 .test.jsx)   [BNK-778 header 534 → git ls-files recount -4·「가정」recount·git 우선]
+  BE Test 294 (293 Test.java + 1 Tests.java)
+  BE @Test 2236 (grep -rE '@Test' src/test)
+  Flyway V1–V196 (max version 196)
+  accounting route 1 · payroll route 5 (basis·labor-cost-ratio·ledger·reports·retirement-accrual)
+  모듈 97.41% (competitorModuleCoverage.js 배열 29-entry · sum 28.25 · 28.25/29 = 0.97413)
+    비-1.0 4개: id=2 이동서비스 0.85 · id=8 직원·근태 0.85 · id=10 부가서비스 0.85 · id=12 수입지출·회계 0.7
+    나머지 25 = 1.0 (id=1-10 연계기록지 1.0 포함) · coverage-0 진성갭 0건
+    JSDoc line5 `coverage: 1 = ✅` 오염 배제(BNK-753 패턴) · 가정 번복 0
+
+================================================================
+[2] ★★★ G17 dual-numbering guardrail FULL-STACK CLOSURE
+================================================================
+BE `@74ae324` (BNK-778) `feat(v2/G17): expose dual-numbering guardrail on indicator-27 compliance`
+  ↔ FE `@793a43c` (BNK-779) `feat(v1.2.1/G17): surface dual-numbering guardrail on indicator-27 UI`
+= dual-numbering(필수업무 일련 27 = 「가족과의 소통」 ≠ 공단 주야간보호 지표 27 = 「기능회복훈련」) 가드레일이
+  BE compliance 응답 노출(BNK-778) + FE UI surfacing(BNK-779) 양단 착지 = BNK-775/776 dual-numbering
+  정밀화 finding 의 full-stack CLOSURE.
+  id=26 「기능회복훈련(G17)」 coverage 1.0 재확인 · KPI promote 0(이미 1.0) · 모듈 97.41% 유지.
+  경쟁 4종: 공단/엔젤 평가지표 원천 있으나 in-app dual-numbering 혼동 가드레일 UI 「미확인」 = ogada 유일.
+
+================================================================
+[3] ★★★ silverangel system_feature 연계 9-hit 정밀화 (신규 필드 블록)
+================================================================
+확인 — https://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+  HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da = BNK-771/775 canonical IDENTICAL
+grep -oiE '배차|GPS|차량|이동서비스|송영' = 0-hit (ERP 공개 셸에 배차/차량/이동서비스 leaf 없음)
+grep -oiE '연계' = 9-hit — 문맥 실측(내부 모듈 간 연계 서술이며 연계기록지 전용 leaf 아님):
+  L294 「정보시스템간의 연계강화를 통해서 조직 운영상의 효율성 제고」
+  L567 「입소대기자 관리, 입소 확정 후 입소자관리카드와 연계」
+  L595 「여가프로그램, 치매예방프로그램, 지역사회연계 등 프로그램 실시 이력」
+  L597 「급여제공 변경기록, 변경사항 기록지와 연계」
+  L626 「외출/외박/면회 발생시 기록, 요양비 관리와 연계」
+  L699 「욕창척도 체크, 그래프 제공, 욕창고위험군과 자동 연계」
+  (+ 3 추가 내부 연계 서술)
+판정: 연계기록지(병원↔재가↔전원 referral/discharge-transfer 전용 문서) leaf = 0
+  → 종전 "linkage 0-hit" 서술을 "연계 9-hit이나 전량 내부 모듈 상호참조·전용 referral 문서 0" 로 정밀화.
+  ogada id=1-10 「연계기록지」 full-stack(V194→V195→V196·2-controller·7-endpoint·5-component·coverage 1.0) 차별화 재확인.
+
+================================================================
+[4] ★★ 규제 백본 12-URL live 재실측 = 실체 변동 0
+================================================================
+NHIS #44 러-1~4 [513차] joHistoryContent.do?...SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = live=disk IDENTICAL
+  verbatim grep -oE: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+  ↔ ogada TransportServiceFeeService RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY 6-link chain(id=2 0.85) carry · 상수 drift 불요
+silverangel extraService  f9c5d877 81,637B IDENTICAL (효성CMS 자동이체 250원/가상계좌 300원 ↔ CmsPaymentMethodCatalog)
+silverangel daycareEssentialWork c79c1be3 131,664B IDENTICAL
+  grep: 기능회복(6)·이동서비스(6)·수칙(8)·동승(2)·평가지표(4) — 평가 41·42 이동서비스 수칙/동승 BNK-775 finding carry
+longterm 502  56185735 89,162B IDENTICAL shell (단기보호 disk 74,060 carry)
+longterm 610  fad1ce61 88,399B IDENTICAL shell (통합재가 월10만원 carry)
+law247 admRulSeq=2100000271110  69c0afb7 78,450B → sed 's/Time=[0-9]+//g' strip = a913639a = semantic IDENTICAL (cachebuster-only drift)
+MOHW list_no=1488862  d5902718 103,113B IDENTICAL
+
+================================================================
+[5] ★ lcms.or.kr 배너 회전 DRIFT (semantic IDENTICAL)
+================================================================
+lcms_home  c0c660760e9e5691491ace28f9d15f74 50,740B · HTTP 200
+  banner grep: type1(2)·type3(1) = type1 배너 dominant
+  BNK-775 type2 `6c0d22b4` → BNK-779 type1 `c0c66076`(=BNK-747 회귀) = 3-type carousel 회전
+  실체 변동 0 · decommission 불요 · 미확인 아님(HTTP 200 정상)
+
+================================================================
+per-cycle minimum 4종 충족:
+  · 신규 증거 URL: 기존 URL 재실측 + 변동 기록(lcms 배너 type2→type1 회전·law247 Time= 회전)
+  · 메뉴/필드/워크플로 1블록: [3] system_feature 연계 9-hit 문맥 정밀화
+  · COMPETITOR_MATRIX 1행+ @793a43c/@74ae324 갱신
+  · BENCHMARK_REPORT §779 소절
+덮어쓰기 0 · zero drift IDENTICAL: NHIS 513차·extraService·essential·longterm 502/610·MOHW·system_feature·law247(strip)
+DRIFT semantic-IDENTICAL: lcms 배너 회전·law247 Time=
+가정 번복 0 · closure 1(G17 dual-numbering full-stack) · 신규 core 갭 0 · KPI promote 0

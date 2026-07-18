@@ -1,0 +1,101 @@
+# BNK-774 — 이지케어 역공학 2–4h crosswalk extract
+# 조사일: 2026-07-15T22:20:00Z (KST 2026-07-16 07:20)
+# rotation: 이지케어 역공학 2–4h (직전 동일 rotation BNK-766 @17:15Z → ~5.1h 후)
+# ogada FE @a356083 / BE @2f578fb · 모듈 97.41% · merge gate 677
+
+## 1. git KPI (ogada @develop HEAD 실측)
+
+| KPI | 값 |
+|---|---|
+| FE develop | `a356083` (WT CLEAN · ahead origin/test **2** · BNK-773 `@b0b9ace` → +1 `feat(v1.2.1/J03): prefer BE dispatchReferenceUnitRates…` · mid `56797a8` surface rates on origin/test) |
+| BE develop | `2f578fb` (WT CLEAN · ahead **675** vs `598d108` · BNK-773 `@74e90c1` → +1 `feat(v2/J03): expose SMS dispatch reference unit rates`) |
+| Route / Page | 133 (<Route\b 132+<Routes> 1) / 106 |
+| FE test | 530 (217 .test.js + 313 .test.jsx) |
+| BE Test / @Test | 294 (293+1) / **2227** (+1 vs BNK-773 2226) |
+| Flyway | V1–V196 |
+| staff/billing/transport/payroll/accounting | 13 / 17 / 9 / 5 / 1 |
+| 모듈 | **97.41%** (28.25/29 · 비-1.0: id=2/8/10=0.85 · id=12=0.7) |
+| merge gate | **677** (FE 2 + BE 675 · BE-heavy → tester FF) |
+
+## 2. ★★★ CLOSURE — ogada J03 in-app 발송 참고 단가 ↔ ezcare messageAmt (BNK-766 P2 → CLOSED)
+
+**확인** — 이지케어 demo `PGID=mobile-sendW` verbatim:
+```
+var messageAmt = {"app":10,"sms":20,"mms":50}
+```
+근거 URL: `https://ezcare.easyms.co.kr/new.ez?PGID=mobile-sendW` (demo login oCode=DEMO code=0000)
+snapshot: `ezcare_new_ez_pgid_mobile-sendW_bnk774.html` 133,271B · md5 `89de405f`
+(BNK-766 133,272B · −1B = `tmp=` cachebuster only · messageAmt VALUE IDENTICAL)
+
+**확인** — ogada FULL-STACK:
+- BE `@2f578fb` `NotificationDispatchUnitRatesCatalog` APP=10 / SMS=20 / MMS=50 · SOURCE=`ezCare mobile-sendW messageAmt (BNK-754/766)` · NOTE=참고 단가(Solapi 실과금 아님)
+- FE `@a356083` `NotificationChannelReadinessPanel` prefers BE `dispatchReferenceUnitRates` + FE static fallback `notificationDispatchUnitRates.js` locks {app:10,sms:20,mms:50}
+- `competitorModuleCoverage.js` id=10 comment: in-app 참고 단가 착지 · **coverage 0.85 · KPI promote 0**(참고 노출≠발송 자동화 polish 완결)
+
+**판정**: BNK-766 「in-app 발송단가 노출 P2 carry」 **CLOSED**(참고/운영 안내). 진성갭 아님. id=10 promote 금지.
+
+## 3. ★★★ 메뉴/필드/워크플로 블록 — demo ERP 재실측 (실체 변동 0 + M3 이중일정)
+
+**확인** — `./scripts/ezcare-demo-fetch.sh --menu-catalog --batch change-list,schedule-rfid,mobile-sendW,duplicate-schedule`
+- login code **0000** · title 「[DEMO 이지케어] 체험 이지케어 재가복지센터」
+- top-nav JS `top-nav-item-V2.js?20260428` md5 **`95286775` LOCK** (BNK-758/762/766 IDENTICAL)
+- menu catalog **10 module / 148 leaf / 59 PGID** structural IDENTICAL vs bnk766 (fetched_at only)
+
+### Module 3 「방문일정」 13-leaf — 이중 일정(수급자↔요양보호사) 정본
+
+| leaf | url/PGID | 이중 축 |
+|---|---|---|
+| 수급자-일정관리 | `/schedule_plan/` | 수급자 |
+| 관리자-일정관리 | `/social_worker/schedule.html` | 관리자 |
+| 일정표 출력 및 문자발송 | `schedule-p100` | — |
+| 수급자 일정표(제공기록지) | `schedule-p100#tab0` | tab0 수급자 |
+| 요양보호사 일정표(근무현황표) | `schedule-p100#tab1` | tab1 요양보호사 |
+| 연간 서비스제공 명단 | `schedule-p300` | — |
+| 수급자 / 요양보호사 | `schedule-p300#tab0/1` | 이중 |
+| 방문현황(일일·주간·월간) | `schedule-p500` | — |
+| 중증수당 일정 집계 | `schedule-s100` | — |
+| 요양보호사 기준 / 수급자 기준 | `schedule-s100#tab0/1` | 이중 |
+| 방문현황(print) | `/schedule_print/statusTable.html` | — |
+
+↔ ogada: `VisitsPage`(수급자) + `StaffMonthlySchedulePage`(요양보호사) + batch confirm/unconfirm · **진성갭 아님**(재가 방문일정 도메인).
+
+### Module 4 「RFID점검」 3-leaf
+- `schedule-rfid` RFID태그↔공단계획 비교 (이중 엑셀 · ezGrid **5** · grid id 4종: `grid_match_list`·`grid_match_list_worker`·`grid_tag_time`·`grid_send_tag_time`)
+- popup `rfid_compare.html`
+- `schedule-fix` 일정확정
+↔ ogada: `VisitRfidDiffComparePanel` + `dispatchRfidCareProvisionApi`(FAQ 21589 CLOSED BNK-763) · 주간보호 과대반영 금지(가정).
+
+### change-list 8-col audit (처리상태 0)
+cols: `sDate·pName·pCode·chg_what·memo·chg_before·chg_after·mName` · **처리상태 0** · 승인 FSM 과대구축 금지(BNK-762 carry).
+bytes **100,278 IDENTICAL** (md5 session drift).
+
+### duplicate-schedule = Page NotFound CONFIRMED
+verbatim 「Page Not Found」「페이지를 찾을 수 없습니다」 · 93,401B · **일정중복 전용 PGID 미구현**(마케팅 fnc「일정중복」은 일정표 UX 카피 · 전용 화면 ≠).
+
+## 4. ★ 가격·도입·FAQ·Channel.io · NHIS #44 508차
+
+| 소스 | HTTP | md5/크기 | 판정 |
+|---|---|---|---|
+| [home](https://ezcare.easyms.co.kr/) | 200 | `3feeb587` 70,262B | data-count **53.2/9298/4673/2353/1820 VALUE STABLE** (HTML 캐러셀 DRIFT) |
+| [fnc](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 200 | `cb43a3d1` 17,870B | 도입 **9,433** · RFID/엑셀/일정중복 카피 · **신규 증거 URL 재실측** |
+| [charge](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 200 | `0324b778` 22,979B | 셋팅 **33,000**(「2026년 07월 31일까지」=**D-16**)·例 25,850·정가 55,000 · **VALUE IDENTICAL** · style.css? cachebuster-only |
+| [change_work](https://ezcare.easyms.co.kr/new/ezCare_change_work.html) | 200 | `6e5e0c01` 26,157B | **신규 증거 URL** · 도입효과·가산수가/본인부담 카피 · 처리상태 0 |
+| [FAQ list](https://ezcare.easyms.co.kr/help/faq.ez) | 200 | `9d5749cb` 80,057B | rowid **233**·max **21781** · 엑셀 hit=브라우저 DL FAQ 2건(엣지/크롬) · **포맷 변경 0** |
+| FAQ 21298/21450/21589/21844/21845 | 200 | (rowid snapshots) | 공단엑셀 2-track·RFID·문자·마스킹 pair · 신규 포맷 0 |
+| [Channel.io TOP-10](https://docs.channel.io/ezcare/ko/articles/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96) | 200 | `026abc1f` 238,819B | keyword hit STABLE(RFID7/문자28/엑셀3) · shell md5 DRIFT |
+| [NHIS #44](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) | 200 | `c886ff1f` 7,572B | **508차** IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)) |
+
+## 5. planner 제안
+
+1. **id=10 0.85 유지** — 참고 단가 in-app 노출 CLOSED여도 Solapi 실과금 연동·템플릿 polish residual → KPI promote 금지.
+2. **마케팅 카피**: 「ogada는 이지케어 messageAmt(앱10/SMS20/MMS50)와 동일한 참고 단가를 채널 readiness에 표시합니다(청구 미사용)」。
+3. **change-list 승인 FSM / duplicate-schedule PGID** — 과대구축 금지(처리상태 0 · Page NotFound).
+4. residual PRIMARY: id=12 0.7 → id=2/8/10 0.85. P0 격상 0.
+5. promo D-16 — 2026-07-31 이후 charge 재실측 필수.
+
+## 6. per-cycle minimum
+
+- [x] 신규/재실측 증거 URL: change_work · fnc · charge · home · FAQ · Channel.io · NHIS #44 · demo PGID 4종
+- [x] 메뉴/필드/워크플로 블록: M3 13-leaf 이중일정 + change-list 8-col + RFID 4-grid + messageAmt→J03 closure
+- [x] COMPETITOR_MATRIX 1행+ @a356083/@2f578fb
+- [x] BENCHMARK_REPORT §774

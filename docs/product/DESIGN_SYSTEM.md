@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-17T19:55:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-18T05:30:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-17 (190차 — **SEC-D25·M12·QA-B95 6커밋 재점검 + 직원현황 필터 `screen-only` 정합 + 프로그램 사진 오류 ARIA + §113·§114** — 189차(§113 CSS) 이후 coder 신규 커밋 6건(`9e40c19`/`bc1d343`/`090ac10`/`dc81f6e` QA-B95·`592a483` M12 SSO allowlist·`8e28fe0` SEC-D25 magic bytes) 재점검. QA-B95·M12는 로직 전용(변경 불요). ① **PLAN_NOTES UXD-189 CLOSURE** — `StaffStatusReportPage` 조회 필터 Card의 오용 `ds-staff-status-report-print-zone`(미정의·인쇄 시 필터 잔존 위험)을 본 페이지 기존 패턴 `ds-staff-status-report-screen-only`로 교체(`@media print`에서 필터·출력물 버튼 동시 숨김). ② **`ProgramSchedulePhotoUpload`** — SEC-D25 검증/업로드 오류 `Alert`에 안정 `id`·파일 input `aria-invalid`+`aria-describedby`(WCAG 3.3.1·4.1.2). ③ **§113** 본문 보강(UXD-189 CSS)·**§114** 신규. baseline FE `@dc81f6e` → UXD-190.)
+> **최종 갱신**: 2026-07-18 (192차 — **인쇄 시 컨텍스트 네비 전역 숨김 + §116** — 리포트 인쇄 출력물에 앱 내비게이션(`.ds-context-nav`)이 섞이는 갭 발견. 전역 `@media print`는 `.ds-sidenav`·`.ds-topbar`만 숨기고 컨텍스트 네비는 `.ds-care-report-print-root` 스코프 안에서만 숨겨, `BillingReportPage`·`BillingStatisticsReportPage`·`ClientOutingReportPage`·`TransportMonthlyReportsPage`(네비가 print-zone Card의 형제)는 인쇄물에 앱 메뉴가 노출됐다. 네비는 어떤 화면에서도 인쇄되지 않아야 하므로 `.ds-context-nav`를 `.ds-sidenav`·`.ds-topbar`와 동일하게 **전역 print-hide 그룹으로 승격**(페이지 스코프 중복 규칙 제거). 스크린 렌더링 무영향(`@media print` 한정). `src/styles/printStylesheet.test.js`(신규 2)로 잠금 + `TransportMonthlyReportsPage`(1) 회귀 재확인. **§116** 신규. baseline FE `@6f8e349` → UXD-192. `npm test`(3/3)·build PASS.)
+> **이전 갱신**: 2026-07-18 (191차 — **SEC-D25·D34 6커밋 재점검 + 사진 업로드 성공 SR 알림(WCAG 4.1.3) + §115** — 190차(§114) 이후 coder 신규 커밋 6건(`e16f432`/`cf28a2e`/`8b164c3`/`4691856`/`3042a5`/`7ac3c84` SEC-D25 이미지·SEC-D34 엑셀 magic-byte 사전검증)을 재점검. 신규 오류는 모두 기존 접근성 표면(`Alert tone=danger`→role=alert·`FileUpload error` `aria-invalid`·페이지 Alert + xlsx-only `help`)으로 라우팅돼 회귀 없음. 신규 `ClientPhotoUpload`은 `ProgramSchedulePhotoUpload`(§114) 정합 클론. ① **`ClientPhotoUpload`·`ProgramSchedulePhotoUpload`(쌍둥이)** — 업로드 성공이 부모 재렌더로 「미등록」→「등록됨」 시각 전환만 일어나 SR에 안내되지 않던 **WCAG 4.1.3** 갭을 상주 `ds-sr-only role="status"` polite live region으로 동시 해소(조밀 표 시각 잡음 없음). ② **§115** 신규. baseline FE `@dc81f6e` → UXD-191 `@7ac3c84`. `npm test`(7/7)·build PASS.)
+> **이전 갱신**: 2026-07-17 (190차 — **SEC-D25·M12·QA-B95 6커밋 재점검 + 직원현황 필터 `screen-only` 정합 + 프로그램 사진 오류 ARIA + §113·§114** — 189차(§113 CSS) 이후 coder 신규 커밋 6건(`9e40c19`/`bc1d343`/`090ac10`/`dc81f6e` QA-B95·`592a483` M12 SSO allowlist·`8e28fe0` SEC-D25 magic bytes) 재점검. QA-B95·M12는 로직 전용(변경 불요). ① **PLAN_NOTES UXD-189 CLOSURE** — `StaffStatusReportPage` 조회 필터 Card의 오용 `ds-staff-status-report-print-zone`(미정의·인쇄 시 필터 잔존 위험)을 본 페이지 기존 패턴 `ds-staff-status-report-screen-only`로 교체(`@media print`에서 필터·출력물 버튼 동시 숨김). ② **`ProgramSchedulePhotoUpload`** — SEC-D25 검증/업로드 오류 `Alert`에 안정 `id`·파일 input `aria-invalid`+`aria-describedby`(WCAG 3.3.1·4.1.2). ③ **§113** 본문 보강(UXD-189 CSS)·**§114** 신규. baseline FE `@dc81f6e` → UXD-190.)
 > **이전 갱신**: 2026-07-17 (189차 — **v3 프로그램 사진 업로드(BNK-834) 2커밋 재점검 + FE-16 `ds-stack--tight` 승격 + §113** — 188차(§112) 이후 coder 신규 커밋 2건(`2e06d5a` v3 프로그램 일정 사진 업로드 wire·`8e74b07` multipart content-type 파라미터 허용)을 hyphen 인식 className 감사로 재점검. `8e74b07`은 백엔드 수용 로직 전용(FE UI 무관·변경 불요). `2e06d5a`가 추가한 **`ProgramSchedulePhotoUpload`** 의 `ds-stack--tight`(상태 라벨+파일 입력+버튼+오류 Alert 마이크로 스택)가 CSS 미정의로 `ds-stack`(space-6) 폴백 없이 gap 0으로 붙던 FE-16 갭을, `ds-stack--sm`(space-3) 패턴에 맞춰 `flex` column·`gap: var(--space-2)`(더 촘촘)로 승격. 컴포넌트 a11y(sr-only label↔`htmlFor` input·`aria-label`·업로드 `aria-busy`·`Spinner label`·오류 `Alert tone=danger`)는 표준 준수 확인(변경 불요). 잔여 미정의 토큰(compliance 페이지 마커·`ds-pressure-ulcer-lifecycle` 패널 패스스루·`ds-copay-calculator`/`ds-needs-assessment-form` 블록·런타임 `ds-badge--${tone}`/`print-only--${id}`)은 §97 시맨틱 컨테이너 관례로 규칙 불요 유지. `ds-staff-status-report-print-zone`(인쇄 시 필터 Card 표시 여부)는 인쇄 동작 확인 필요 → PLAN_NOTES `### UX 설계 질문` 기록. baseline FE `@8e74b07` → UXD-189. CSS-only·`npm run build` PASS.)
 > **이전 갱신**: 2026-07-17 (188차 — **QA-B95 6커밋 재점검 + FE-16 레이아웃 클래스 12종 승격 + 청구 상태 타임라인 `<time>` + §112** — 187차(§111) 이후 coder 신규 커밋 6건(`694266e`/`56fa1c0`/`a280437`/`3f7bb94`/`93f77e1`/`20f6ddc` QA-B95 quote entity decode)은 로직 전용(변경 불요). 정확한 className 감사로 **레이아웃·간격 영향 미정의 12종**(`ds-card--form`·`ds-timeline--compact`·`ds-qr-scan`·`ds-lifecycle__links`/`__link-list`·`ds-billing-report__section-header`·`ds-risk-assessment-panel__period-select`·`ds-staff-hr-files*`·`ds-benefit-contract-files*`·`ds-staff-refresher-certificates*`·`ds-transport-compliance__workflow`) 승격. **`BillingDetailPage` 상태 이력** 평문 시각 → `<time dateTime>`(WCAG 1.3.1). `--color-success-text` 토큰 정합. baseline FE `@20f6ddc` → UXD-188 `@c061494`.)
 > **이전 갱신**: 2026-07-17 (187차 — **QA-B95 6커밋 재점검 + FE-16 텍스트·간격·그룹 클래스 9종 승격 + §111** — 186차(§110) 이후 coder 신규 커밋 6건(`9907725`/`1c84f0f`/`5ce4726`/`40c85df`/`a364f97`/`ac3af73` QA-B95 wrapping/bidi/MathML/typographic quote entity decode)은 `notificationChannelStatus.js`·live E2E harness **로직 전용**으로 신규 UI·ARIA 표면 없음(변경 불요). 감사 스크립트 좌측 경계 누락 오탐(`recor`+`ds-heading`·`nee`+`ds-assessment*`)을 정정한 재감사로, 실제 소비되나 CSS 미정의였던 **텍스트·간격·그룹 클래스 9종**(`ds-text-strong`·`ds-card__lede`·`ds-table__meta`·`ds-field-label`·`ds-field__label`·`ds-consent-box`·`ds-page-breadcrumb`·`ds-submit-block`·`ds-transport-map__refresh-hint`)을 승격. `ds-consent-box`(민감정보 동의 묶음)에 `forced-colors` 경계선 보강, 나머지 미정의 ~50종은 자식이 레이아웃 전담하는 시맨틱 컨테이너로 §97 관례상 규칙 불요 유지. baseline FE `@ac3af73` → UXD-187. CSS-only·`npm run build` PASS.)
@@ -6069,6 +6071,87 @@ CSS-only 변경·JSX 불변·회귀 없음.
 
 - `ProgramSchedulePhotoUpload.test.jsx` · `StaffStatusReportPage.test.jsx` a11y/인쇄 클래스 회귀.
 - `npm test`(해당 파일)·`npm run build`.
+
+---
+
+## §115. SEC-D25·D34 6커밋 재점검 + 사진 업로드 성공 SR 알림(WCAG 4.1.3) (191차) [UXD]
+
+> **190차(§114) 이후 coder 신규 커밋 6건**(`e16f432` 이용자 사진 magic·`cf28a2e` 급여계약·직원HR magic·`8b164c3` 등급이력·보수교육 magic·`4691856` 보수교육 fixture·`3042a53` NHIS excel magic(SEC-D34)·`7ac3c84` fixture) 재점검. baseline FE `@dc81f6e` → UXD-191 `@7ac3c84`.
+
+### 115-1. coder 커밋 분류 — 오류 표면 재점검
+
+6커밋은 모두 **업로드 전 magic-byte 검증**(SEC-D25 이미지·SEC-D34 엑셀)을 추가하며, 신규 오류를 **기존 접근성 표면**으로 라우팅해 회귀 없음:
+
+| 대상 | 신규 오류 경로 | a11y 판정 |
+|---|---|---|
+| `ClientPhotoUpload`(신규) | `Alert tone=danger`(role=alert)·file input `aria-invalid`+`aria-describedby` | ✅ `ProgramSchedulePhotoUpload`(§114) 정합 클론 |
+| `VisitNhisImportPanel`·`StaffNhisCaregiverImportPanel`·`VisitRfidDiffComparePanel` | `FileUpload error`(필드 단위·`aria-invalid`) | ✅ 변경 불요 |
+| `NHISImportPage` | 페이지 `Alert tone=danger` + `FileUpload help`(xlsx-only 안내·WCAG 3.3.2)·`accept` xlsx 정합 | ✅ 변경 불요 |
+
+`accept` 필터와 검증기 정합 확인 — 방문/요양보호사 import는 `.xlsx,.xls`(allowXls) · 청구내역 import는 xlsx-only(coder가 `accept`·`help` 갱신). 불일치 없음.
+
+### 115-2. 사진 업로드 성공 SR 알림 — WCAG 4.1.3 갭 해소
+
+`ClientPhotoUpload`·`ProgramSchedulePhotoUpload`(쌍둥이)는 업로드 성공 시 부모 재렌더로 「미등록」→「등록됨」 시각 전환만 일어나고 **live region이 없어 스크린리더 사용자에게 성공이 안내되지 않던** WCAG 4.1.3 갭을, 두 컴포넌트에 동일하게 해소.
+
+| 항목 | 내용 |
+|---|---|
+| `<span className="ds-sr-only" role="status">` | 업로드 UI(`canUpload`) 내 **상주** polite live region — 성공 시 「{이름} 프로필/활동 사진을 업로드했습니다.」 삽입 |
+| 시각 무영향 | `ds-sr-only`로 숨김 — 조밀한 프로그램 일정 표에 성공 배너 시각 잡음 없음(시각 사용자는 기존 「등록됨」 전환으로 확인) |
+| 새 파일 선택 시 초기화 | 재업로드 흐름에서 이전 성공 문구 잔존 방지 |
+
+### 115-3. a11y·접근성 결정
+
+- 성공은 **polite**(`role=status`), 오류는 **assertive**(`Alert tone=danger`→`role=alert`) — 흐름 방해 최소화(§6 규칙 정합).
+- 쌍둥이 컴포넌트는 **의도적 동일 구조** 유지 — 한쪽만 개선하지 않고 동시 적용.
+
+### 115-4. coder 전달 메모
+
+1. **파일 업로드 컴포넌트**는 오류(assertive)뿐 아니라 **성공도 `role="status"`(polite)로 SR 안내**한다 — 시각 전환이 부모 prop 재렌더로만 일어나는 경우 특히 필요(WCAG 4.1.3).
+2. 시각 잡음이 우려되는 표/조밀 레이아웃에서는 성공 알림을 `ds-sr-only` live region으로 둔다.
+3. SEC-D25/D34 검증기(`clientPhotos.js`·`programs.js`·`excelImportFiles.js`)의 오류 문구는 BE 메시지 verbatim lockstep 유지 — UI는 라우팅만 담당.
+
+### 115-5. 검증
+
+- `ClientPhotoUpload.test.jsx`(4) · `ProgramSchedulePhotoUpload.test.jsx`(3) — 성공 `role=status`·`ds-sr-only` 문구 회귀 추가. **7/7 PASS**.
+- `npm run build` PASS · 린트 0.
+
+---
+
+## §116. 인쇄 시 컨텍스트 네비 전역 숨김 — 리포트 출력물 크롬 정합 (192차) [UXD]
+
+> 191차(§115) 이후 신규 coder 커밋 재점검 중 **인쇄 출력물에 앱 내비게이션이 섞이는 갭**을 발견해 해소. baseline FE `@6f8e349` → UXD-192.
+
+### 116-1. 발견한 갭 — 리포트 인쇄에 컨텍스트 네비 잔존
+
+전역 `@media print`(`components.css`)는 `.ds-sidenav`·`.ds-topbar`(앱 크롬)를 숨기지만 **컨텍스트 네비(`.ds-context-nav`)는 `.ds-care-report-print-root` 스코프 안에서만** 숨겨졌다. 케어 리포트 페이지는 네비를 print-root 내부에 두어 숨겨졌으나, 아래 리포트 페이지는 네비가 **print-zone Card의 형제**로 렌더돼 인쇄물에 앱 메뉴가 그대로 노출됐다:
+
+| 페이지 | 컨텍스트 네비 | 인쇄 시 상태(수정 전) |
+|---|---|---|
+| `BillingReportPage` | `BillingReportsContextNav` | ❌ 인쇄됨 |
+| `BillingStatisticsReportPage` | `BillingReportsContextNav` | ❌ 인쇄됨 |
+| `ClientOutingReportPage` | `TransportContextNav` | ❌ 인쇄됨 |
+| `TransportMonthlyReportsPage` | `TransportContextNav` | ❌ 인쇄됨 |
+
+### 116-2. 조치 — 네비 숨김을 전역으로 승격
+
+네비게이션은 **어떤 화면에서도 인쇄되지 않아야** 하므로, `.ds-context-nav`를 `.ds-sidenav`·`.ds-topbar`와 동일하게 전역 `@media print { … display: none !important }` 그룹으로 승격. 페이지 스코프 `.ds-care-report-print-root .ds-context-nav` 중복 규칙은 제거(전역 규칙이 대체).
+
+### 116-3. a11y·접근성 결정
+
+- 인쇄 출력물은 **콘텐츠(리포트 표·요약)만** 남기고 화면 전용 탐색 크롬은 제외 — 인쇄 밀도·가독성 향상, 케어 리포트와 동작 정합.
+- 스크린 렌더링에는 무영향(`@media print` 한정) — 회귀 위험 없음.
+
+### 116-4. coder 전달 메모
+
+1. 인쇄 대상 페이지에 새 탐색/필터 UI를 추가할 때는 `.ds-context-nav`·`.ds-filter-row`·`.ds-*__filters` 등 **이미 전역 print-hide 대상인 클래스**를 재사용하면 별도 인쇄 처리가 불필요하다.
+2. 화면 전용 영역을 인쇄에서 빼려면 페이지별 `-print-zone`/`screen-only` 스코프보다 **전역 print-hide 대상 클래스 재사용**을 우선한다(§113·§114 대비 중복 규칙 축소).
+
+### 116-5. 검증
+
+- `src/styles/printStylesheet.test.js`(신규, 2) — 전역 print 숨김 그룹에 `.ds-sidenav`·`.ds-topbar`·(스코프 없는)`.ds-context-nav` 포함 + 페이지 스코프 규칙 미잔존 잠금. **PASS**.
+- `TransportMonthlyReportsPage.test.jsx`(1) 회귀 재확인 — PASS.
+- `npm run build` PASS · 린트 0.
 
 ---
 

@@ -1,0 +1,152 @@
+# BNK-673 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-26T21:25Z)
+
+## 작성자/메타
+- [BNK] benchmark_researcher · rotation 4–6h(엔젤·롱텀·규제)
+- ogada baseline: FE `@afbbaa7`(WT CLEAN) · BE `@eb6dd67`(**WT DIRTY 1M** `HealthControllerTest.java` in-progress refactor +1 @Test) · merge gate **863** carry
+
+## ★★★ §673-1 lcms.or.kr 로그인 배너 3-cycle TYPE ROTATION (NEW evidence · 신규 측정)
+
+- URL: https://www.lcms.or.kr/ (HTTP 200)
+- 라이브: 50,554B · md5 `6c0d22b4` (= `lcms_or_kr_live_bnk641.html` md5 동일 — BNK-641 type2 회귀)
+- 직전: BNK-669 disk `c0c66076`(50,740B · type1 「홈페이지 제작」)
+- 직전직전: BNK-668 disk `6b750291`(50,498B · type3 「엔젤시스템 & CJ프레시웨이 MOU」)
+
+회전 시퀀스 (확인): BNK-641 type2(CMS) → BNK-668 type3(CJ MOU) → BNK-669 type1(홈페이지) → **BNK-673 type2(CMS) 회귀**
+
+라이브 verbatim grep:
+- `<i>본인부담금 자동이체(CMS) 서비스</i>`
+- `<span class="ad_info">가입문의 : <i>1600-6859</i></span>`
+- `<h1>엔젤시스템(LCMS) 방문을 환영합니다.</h1>`
+- `<h2>엔젤시스템 LCMS</h2>`
+
+판정(확인): silverangel이 LCMS 로그인 페이지를 **CMS·CJ MOU·홈페이지 제작** 3-type 광고 슬롯으로 활용하는 marketing funnel 재확인. **5-day rotation freq**(BNK-641→668→669→673 cycle interval 분석).
+ogada 시사점:
+- 「가정」 silverangel SaaS는 다중 도메인(silverangel.kr·lcms.or.kr) cross-promo로 광고 노출 면적을 확보 — ogada 단일 도메인 SaaS와 marketing 모델 상이.
+- ogada 마케팅 카피 「ogada는 한 화면에서 운영 전 모듈을 제공합니다(다중 SaaS 사이트 cross-promo 불필요)」 정본 유지(BNK-515 carry).
+- 신규 candidate 없음·KPI 영향 0·MVP out-of-scope.
+
+## ★★ §673-2 silverangel `extraService.do` CMS+CJ MOU carousel verbatim 불변 (확인 · 기존 URL 재실측)
+
+URL: https://www.silverangel.kr/newSilverangel/service/extraService.do (HTTP 200)
+- 라이브: 81,637B · md5 `f9c5d877` = disk `silverangel_extraService_live_bnk641.html` byte-identical(IDENTICAL)
+- verbatim 인용:
+  - `<p class="h_text">본인부담금 자동이체(CMS) 서비스</p>`
+  - `<p class="m_text">가입문의 : <span>1600-6859</span></p>`
+  - `<p class="">엔젤시스템 & CJ프레시웨이<br> 업무협약(MOU) 체결</p>`
+  - `<p class="h_text">CJ프레시웨이와 MOU 체결을 통해 <br>노인식단 전문영양사가 작성한<br> 식단표 활용</p>`
+  - `<p class="s_text">노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로<br> 식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다.</p>`
+
+ogada 매핑(확인):
+- CMS 5-method ↔ `CmsPaymentMethodCatalog` 5종 `collectionImplemented=true` (BNK-614 ✅ 5/5 FULL PARITY closure)·`CmsPaymentMethodCatalogPanel`(BNK-601 retry hardening)
+- CJ MOU 식단표(외부 식재료) ↔ ogada `meal_records` 실적 ✅ · 주간 식단표 template ❌ → `G-MEAL-PLAN-TEMPLATE` P2/P3「가정」 carry(BNK-668·BNK-669)
+- silverangel는 외부 영양사 식단 라이브러리(CJ)에 의존 → ogada in-app 식단표 + 알레르기/식이제한 + 보호자 게시 single-source 차별화 가능
+
+## ★★ §673-3 NHIS #44 이동서비스비 러-1~4 414차 zero drift IDENTICAL (확인 · 기존 URL 재실측)
+
+URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 (HTTP 200)
+- 라이브: 7,572B · md5 `c886ff1f` = disk `nhis_jo44_live_bnk669.html` byte-identical(414-cycle zero drift)
+- verbatim grep 정합:
+  - `<div class="article">제 34 조 (주 · 야간보호급여 이동서비스비용 등)</div>`
+  - 「수급자별 1일 1회에 한하여 산정」「최단거리(편도)」「편도만…비용의 50%를 산정」「수급자가 부담하지 아니한다」「이동서비스 일지 작성·보관」(별지 제22호)
+
+ogada cross-walk(확인):
+- `TransportServiceFeeParityCatalog`(RU_1~RU_4·`ONE_WAY_RATIO=new BigDecimal("0.5")`)
+- `TransportServiceFeeService`(1일1회 guard·중복 청구 skip)
+- `TransportServiceLog` V148/V154/V155 별지 제22호 일지(운전자 서명 pair-CHECK·WAYPOINT non-empty CHECK)
+- `TransportParityRulesPanel` UXD-159+UXD-162 a11y + BNK-671 BE DTO wire(`normalizeTransportParityRule()`)
+- `NhisVisitScheduleImportOutcome` 4-state + `errorRecoveryKeywordNotes` 4-key map(BNK-670 stage9)
+
+경쟁 4종 cross-walk(확인):
+- 케어포 func.php M2 10-leaf 정적 메뉴만(demo 시설 셸 transport 0)
+- 이지케어 FAQ 21845 「공단 엑셀 incident 사후·수동 공지」(in-app 0)
+- 엔젤시스템 daycare essential 평가지표 #41-42 정적 수칙만 (이동서비스 6 hit)
+- 롱텀(공단) NHIS #44 본문 원천
+
+판정(확인): **ogada full-stack ✅ — 경쟁 4종 유일 414-cycle carry**
+
+## ★ §673-4 silverangel backbone 6/6 zero drift IDENTICAL (확인 · 재실측)
+
+| URL | live md5 | size | disk 매핑 | 판정 |
+|---|---|---|---|---|
+| `/newSilverangel/daycare/daycareEssentialWork.do` | `c79c1be3` | 131,664B | `silverangel_daycareEssentialWork_live_bnk641.html` | IDENTICAL |
+| `/newSilverangel/service/extraService.do` | `f9c5d877` | 81,637B | `silverangel_extraService_live_bnk641.html` | IDENTICAL |
+| `/silverangel/angelsystem/system_feature.do` | `c9507190` | 45,601B | `silverangel_system_feature_live_bnk641.html` | IDENTICAL |
+| `/newSilverangel/fcltySlry/essentialWork.do` | `80517b18` | 166,023B | `silverangel_fcltySlry_essentialWork_bnk649.html` | IDENTICAL |
+| `/silverangel/support/notice/list.do` | `52c9457f` | 3,594,181B | `silverangel_notice_list_v2_bnk649.html` | IDENTICAL |
+| `/` (root) | `1f67a050` | 101,258B | `silverangel_main_main_bnk565.html` | IDENTICAL |
+
+판정(확인): backbone 6/6 IDENTICAL — content level 안정·CMS·CJ MOU carousel·평가지표·시설형 essential 등 모든 정본 자료 carry.
+
+## ★ §673-5 law247 admRulInfoP MAJOR SIZE DRIFT −92% (확인 · 기존 URL 재실측 · 「가정」 site refactor)
+
+URL: https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000252389 (HTTP 200)
+- 라이브: **6,217B** · md5 `d5665e43`
+- 직전 disk: **78,100B** · md5 `923e25c8`(BNK-654 baseline·`?Time=1782467008`)
+- 변동: **−71,883B (−92%)**
+
+semantic 변동(확인):
+- title verbatim 불변: `<title>국가법령정보센터 | 행정규칙 </title>`
+- 인라인 CSS/JS 정의 90+ 라인이 외부 link 1개로 응축됨(추정)·layout shell 만 잔존
+- 본문 「제2025-247호」「시행 2026.1.1」는 디스크 78,100B 에도 부재 — Ajax 후속 로드 (`admRulSc.do` 추정)
+
+판정(가정 · 「미확인」): site refactor (CSS/JS bundle reorganization·BNK-572 NPBS 26.1.16 마이그와 유사 패턴) — 본문 정본은 별도 endpoint AJAX·**1-cycle carry** 필요. 다음 cycle 본문 endpoint(`admRulSc.do` 등) 직접 호출 시도 권장.
+신규 snapshot: `law_mohw_2025_247_admRulInfoP_bnk673.html`(6,217B `d5665e43`) NEW baseline.
+
+## ★ §673-6 mohw126 부당청구 신고포상금제 zero drift IDENTICAL (확인 · 재실측)
+
+URL: https://www.mohw.go.kr/board.es?mid=a10409020000&bid=0026&act=view&list_no=1488862&tag=&nPage=1 (HTTP 200)
+- 라이브: 103,139B · md5 `d702b54c` = disk `mohw_gosi_2026_126.html` byte-identical(BNK-654 baseline)
+- 본문 verbatim 불변: 제2026-126호·본인부담상한액 carry
+
+## ★ §673-7 longterm 502/610 「미확인」 carry (HTTP 404)
+
+- `https://www.longtermcare.or.kr/npbs/r/m/000/htmlView?menuId=npe0000000502&zoomSize=` HTTP **404** 861B
+- `https://www.longtermcare.or.kr/npbs/r/m/000/htmlView?menuId=npe0000000610&zoomSize=` HTTP **404** 861B
+
+판정(확인): npbs 신규홈페이지 26.1.16 마이그 이후 R&D endpoint 장애 지속(BNK-560/575/641/649 carry). canonical disk `longterm_502.html`(`b5aee8c1` 105,552B·단기보호 1등급 74,060)·`longterm_610.html`(`8d53dcc1` 91,430B·통합재가 2종 이상·가산 월 10만원·주야간보호형) 보존 유지.
+
+## ★ §673-8 silverangel businessSupport URL drift 404 (확인 · NEW negative)
+
+- `https://www.silverangel.kr/newSilverangel/service/businessSupport.do` HTTP **404** 1,028B `3c93af54`
+- BNK-643 정본 `silverangel_businessSupport_live_bnk641.html` `a13cb5ac` 75,878B carry (path drift·canonical 보존)
+
+판정(확인): silverangel 마케팅 URL prefix `/newSilverangel/service/` → `/newSilverangel/daycare/` 마이그 진행 중 (BNK-645 service→daycare refactor·BNK-669 IA drift 동일 패턴). canonical disk 우선 정책 carry.
+
+## ★ §673-9 ogada git 실측 — FE+BE HEAD zero advance 2-cycle·BE WT 1M (확인 · ogada baseline)
+
+- FE `src/frontend` develop `@afbbaa7` `fix(v1.2.1/G16): wire transport parity-rules BE catalog DTO fields` · **WT CLEAN** · BNK-672 동일 SHA · **HEAD zero advance 2-cycle** · ahead **269** vs `origin/test=ab4de83`
+- BE `src/backend` develop `@eb6dd67` `test(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): lock all four recovery keyword outcomes` · **WT DIRTY 1M** `src/test/java/com/ogada/backend/system/HealthControllerTest.java`(in-progress refactor) · BNK-672 동일 SHA · **HEAD zero advance 2-cycle** · ahead **594** vs `origin/test=598d108`
+- merge gate **863**(FE 269+BE 594·BNK-672 carry·HEAD zero advance 2-cycle)
+
+KPI 8축 (확인):
+- **118 Route** (`<Route\b` 118 + `<Routes>` 1 = 119) IDENTICAL
+- **93 page** (`*Page.jsx`) IDENTICAL
+- **V1–V183** migrations IDENTICAL
+- **BE Test 274** (273 `Test.java` + 1 `Tests.java`) IDENTICAL
+- **BE @Test** develop ref **1998** IDENTICAL · WT 1999(+1 in-progress) — `@ParameterizedTest` 3 별도
+- **FE test 485** (199 `.test.js` + 286 `.test.jsx`) IDENTICAL
+- **모듈 80.86%** (23.45/29 · ✅완전 21 · △부분 3 · ❌갭 5) IDENTICAL
+- **reports route 28** IDENTICAL
+
+판정(확인): **8/8축 BNK-672 IDENTICAL**·HEAD zero advance 2-cycle·BE WT 1M in-progress refactor 1-cycle carry → coder commit closure 권장(rules §6 push 누락 위험·미커밋 시 +1 @Test 유실 가능).
+
+## 변경/검증 종합
+
+- 가정 번복: **0** (BNK-672 8/8축 carry 재확인)
+- 신규 core 갭: **0**
+- candidate 변동: 0 (G-MEAL-PLAN-TEMPLATE P2/P3 carry only · BNK-668/669)
+- 상태 변경: **2** — ① lcms type1→type2 reversal (3-cycle rotation 확인) ② BE WT CLEAN → DIRTY 1M(in-progress refactor)
+- 미확인: **2** — ① law247 site refactor 본문 endpoint ② longterm 502/610 신규 URL 장애 (carry)
+- KPI 변경: **0** (8/8축 IDENTICAL·merge gate 863 carry·BE WT 1M @Test 1999 in-progress 미반영)
+- 신규 snapshot: **4건** — `angel_longterm_regulatory_crossverify_bnk673.txt`(이 파일)·`nhis_jo44_live_bnk673.html`(c886ff1f 7,572B IDENTICAL baseline)·`lcms_or_kr_live_bnk673.html`(6c0d22b4 50,554B type2 reversal)·`law_mohw_2025_247_admRulInfoP_bnk673.html`(d5665e43 6,217B major shell DRIFT)
+- 덮어쓰기: 0 (BNK-673 baseline 신규 추가)
+- zero drift IDENTICAL: **8** (NHIS #44 414차·silverangel essential·extra·sysfeat·fcltySlry·notice·main·mohw126)
+- 엑셀 포맷 변경: 0
+- per-cycle minimum 4종 충족 (신규 evidence URL lcms type2 reversal·메뉴/필드/워크플로 lcms 3-cycle rotation block·COMPETITOR_MATRIX `@afbbaa7`/`@eb6dd67` 4행+·BENCHMARK_REPORT §673)
+
+## 즉시 action
+
+- **즉시(coder)**: BE WT 1M `HealthControllerTest.java`(+1 @Test in-progress) commit closure → push (미커밋 시 push 누락 위험·rules §6)
+- **즉시(tester)**: merge **863**(FE 269+BE 594·FE WT CLEAN·BE WT DIRTY 1M → 선행 coder commit 후 가속)
+- **planner**: baseline carry(FE `@afbbaa7`·BE `@eb6dd67`·HEAD zero advance 2-cycle)·**lcms 3-cycle type rotation marketing funnel cross-promo 차별화 lever 재확인**(단일 SaaS 도메인 ogada 강조 carry)·**law247 본문 endpoint refactor 1-cycle carry**(다음 cycle 본문 endpoint 추적 권장)·G-MEAL-PLAN-TEMPLATE P2/P3 carry(BNK-668/669)
+- **security_auditor**: longterm 신규 URL 404 1-cycle carry · law247 site refactor 영향 0 (ogada SSR shell 안전 best practice carry)

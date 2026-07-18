@@ -1,0 +1,64 @@
+# [BNK-832] 케어포 daycare/func.php 107-leaf × ogada Route 잔여 갭 재검증 (BNK-602 → @HEAD delta)
+# 조사일: 2026-07-17T13:50Z | rotation: 케어포 역공학 0–2h
+# 출처(케어포): docs/planning/research/snapshots/carefor_func.php (md5 6226e6eb·98,328B·107-leaf)
+#              docs/planning/research/snapshots/carefor_func_full_menu_crosswalk_bnk602.txt (BNK-602 기준선)
+#              Wayback id_ 20260519072235 재fetch → md5 6226e6eb 98,328B BYTE-IDENTICAL (zero drift)
+# ogada 실측: FE @ce2325c (src/App.jsx <Route\b 132 + <Routes> 1 = Route 133 · Page 106)
+#            BE @b7f4337 (@RestController 81 · @Test 2283 · Flyway V1–V196 · HTTP 441)
+# 방법: git show develop:src/App.jsx | grep path=" (132 route) + git grep -il 대상 컴포넌트/서비스
+#       BNK-602 crosswalk 의 ❌/△ 항목만 @HEAD 재조회 → 폐쇄/잔여 재산정
+# =============================================================================
+
+## 0. 근거 재실측 (라이브 + Wayback)
+
+- 케어포 [func.php](https://www.carefor.co.kr/daycare/func.php) : LIVE HTTP **000** (curl --max-time 20 timeout) · **104-cycle+ carry** (BNK-825 100-cycle+ → +4) · disk 6226e6eb LOCK
+- 케어포 [demo-work](https://demo-work.carefor.co.kr/) : LIVE HTTP **000** (curl --max-time 20 timeout) carry
+- Wayback [func.php id_ 20260519072235](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) : **200·98,328B·6226e6eb** → disk canonical BYTE-IDENTICAL (재fetch·zero drift)
+- Wayback CDX (from=20260101) : 최신 캡처 = 20260519072235 (신규 캡처 없음·20260511→20260519 digest 2-byte toolbar diff only)
+- NHIS #44 이동서비스비 : 이번 사이클 미재측(케어포 rotation) · 직전 BNK-831 564차 IDENTICAL carry
+
+## 1. BNK-602 crosswalk ❌/△ 항목의 @HEAD 재검증 (핵심 발견 — 폐쇄 5)
+
+BNK-602(2026-06-24·~23일 전) 는 func.php 107-leaf 대비 ogada 6-gap 을 기록했다.
+@ce2325c/@b7f4337 재조회 결과 **다수 폐쇄 확인**:
+
+| func.php leaf | BNK-602 판정 | @HEAD 재검증 | 근거 (ogada Route/컴포넌트) |
+|---|---|---|---|
+| 1-5 가정통신문 | (P2 후속) | ✅ **CLOSED** | `/clients/home-newsletter` (G2·id=1-5 coverage 1.0·launch+authoring+compose+board history) |
+| 8-2 근무일정표 | ❌ (no route) | ✅ **CLOSED** | `/staff/schedules` |
+| 8-6 회의록(운영위원회) | ❌ (사례관리 only) | ✅ **CLOSED** | `/staff/committee-meetings` (사례관리 `/case-management/meetings` 와 분리) |
+| 10-4 기관 공지사항·자료실 | ❌ | ✅ **CLOSED** | `/clients/home-newsletter#facility-notices` (navConfig 「기관 공지·자료실」) + BE FacilityNotice CRUD 6-endpoint (BNK-729 V192·DRAFT/PUBLISHED) |
+| 11-1~11-6 직원 급여관리 6-leaf | ❌ (★★★ P2 신규 갭) | ✅ **FULL CLOSURE** | `/payroll/ledger`·`/retirement-accrual`·`/basis`·`/labor-cost-ratio`·`/reports` 5-route (id=11 coverage 1.0) |
+
+→ **BNK-602 대비 진성 갭 5→잔여 재산정**. func.php 정본 대비 ogada 는 급여관리(M11)·공지자료실(M10-4)·근무일정/회의록(M8-2/8-6)·가정통신문(1-5) 全 폐쇄.
+
+## 2. 잔여 진성 갭 재산정 (@HEAD 실측 — 과대구축 금지 관점)
+
+| func.php leaf | @HEAD 상태 | 판정 | 비고 |
+|---|---|---|---|
+| 8-3 연간 일정계획 | △ 부분 | 「가정」 partial | `/staff/schedules` 는 근무일정 중심 · 연간계획 전용 뷰 미착지 → id=8 **0.85** residual 정합 |
+| 8-8 자원봉사자 활동일지(필요시) | △ 부분 | 「가정」 partial | 자원봉사/외부강사 언급 = `StaffTrainingLogPage` + 프로그램 5-1-1 내부 · 전용 활동일지 route 부재 → id=8 **0.85** residual |
+| 9-4 비품관리대장 | ❌ 부재 | **비-core** | inventory/asset/비품 전용 route 0 · SaaS core 갭 아님 · 과대구축 금지(rules §12) → 영업/운영 판단 P4 |
+| 9-5 연간 부담금현황 | △ 부분 | 「가정」 partial | `/billing/reports/statistics` 에 흡수 가능 · 전용 연간뷰 「미확인」 |
+| 10-3 보호자 급여기록 열람내역 | ✅ 대응 | CLOSED | `GuardianBillingDetailModal`+`GuardianDailySummary`+`GuardianDocumentNotifyPanel` (보호자 포털 live) |
+| 10-6 보호자 앱 관리 | △ 부분 | 「가정」 partial | `GuardianInvitationList`+`GuardianCheckinPage`+초대 토큰 = 웹 포털 · 네이티브 앱 스토어 배포는 별도「미확인」 |
+
+→ **잔여 진성 갭 = id=8 lever (8-3 연간계획·8-8 자원봉사 활동일지) P3 minor + M9-4 비품관리대장 비-core P4**.
+   나머지(9-5·10-3·10-6)는 부분 대응/흡수 = KPI promote 근거 아님·과대구축 금지.
+
+## 3. 모듈 커버리지 정합 (competitorModuleCoverage.js @ce2325c 재확인)
+
+29-entry · 비-1.0 = id=2(0.85 이동서비스)·id=8(0.85 직원·근태)·id=10(0.85 부가서비스)·id=12(0.7 회계)
+sum 28.25 / 29 = **97.41%** CONFIRMED (진성갭 0·KPI promote 0)
+
+- id=8 **0.85** = §2 잔여(8-3 연간계획·8-8 자원봉사 활동일지) primary lever
+- id=12 **0.7** = 회계 BPO SSO OTP (env-gated AVAILABLE·잔여 최대 lever·M11/M12 계열)
+- func.php 대비 진성 갭이 id=8·id=12 로 수렴 = 케어포 정본 커버리지 사실상 포화
+
+## 4. 결론 (planner 반영)
+
+- **가정 번복 0** : func.php 107-leaf canonical 6226e6eb zero drift(104-cycle+ LIVE 000·Wayback 재fetch IDENTICAL)
+- **신규 관측** : BNK-602(23일 전) 6-gap → @HEAD 재검증 결과 **5 폐쇄**(1-5·8-2·8-6·10-4·M11 6-leaf) · 잔여 진성 = id=8 lever(8-3·8-8) P3 minor + M9-4 비품 비-core P4
+- **P0/P1 신규 0·재오픈 0** : func.php 대비 ogada 는 급여·공지자료실·근무일정 全 착지 = 케어포 대비 갭 사실상 소진
+- **주력 lever** : id=12 회계(0.7) > id=8 직원(0.85) — 케어포 M11 급여관리는 이미 100% 커버, M12 회계는 ogada가 BPO SSO OTP 로 초과 대응 중
+- **과대구축 금지** : M9-4 비품관리대장은 SaaS core 아님 — 신설 근거 부족(영업/운영 판단으로 이월)

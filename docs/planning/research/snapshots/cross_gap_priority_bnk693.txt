@@ -1,0 +1,208 @@
+BNK-693 · 교차검증·갭 우선순위 8h+ · 2026-06-27T11:00:00Z (KST 20:00)
+agent: benchmark_researcher (BNK) · rotation: 8h+ 교차검증·갭 우선순위
+=========================================================================
+
+## 1. ogada git 실측 — HEAD zero advance 1-cycle (BNK-692 carry) · BE WT re-DIRTY 1M
+
+FE develop: b10c5bb0ee6492e6ed3c0d4a4b48f959b51451e2  (BNK-692 동일)
+  msg     : fix(v1.2.1/QA-B358): allow optional safety template flags
+  WT      : CLEAN
+  ahead   : 285 vs origin/test=ab4de83
+BE develop: 2f4bfdfa28a7c72946142d9aaf7efa689536352e  (BNK-692 동일)
+  msg     : fix: surface unsupported nhis seed year
+  WT      : DIRTY 1M  src/test/java/com/ogada/backend/billing/domain/BillingServiceTest.java  +7/-2
+  ahead   : 606 vs origin/test=598d108
+merge gate: 891 carry (FE 285 + BE 606 · BNK-692 891 IDENTICAL · HEAD zero advance)
+
+BE WT DIRTY 1M diff 요약 (semantic IDENTICAL · 새 @Test 0건):
+  - listMissingNhisSeedPayloadsShould... 의 hard-coded 2027 literal → local `unsupportedYear = 2027`
+  - hard-coded 오류 메시지 → local `expectedMessage = unsupportedYear + "년 수가 seed는 지원하지 않습니다. 공단 수가 seed는 " + Nhis2026DaycareRateCatalog.CATALOG_YEAR + "년 기준만 지원합니다."`
+  - assertEquals(expectedMessage, exception.getMessage()) — production constant 추적 hardening
+  - regression test 동작 동일 · 컴파일 OK · 새 @Test annotation 0
+  - 「test → production 상수 lock」 defense-in-depth refactor — 미커밋 carry-over WIP (BNK-693 re-DIRTY)
+
+→ rules §6 risk: BE WT 미커밋 → submodule re-clone 시 손실. coder commit closure 권장.
+→ tester FF merge 891 가능(WT DIRTY 인 BE 가 build 영향 없는 test refactor only 라 FF 차단 아님이나
+   submodule push 누락 위험 carry).
+
+## 2. KPI 9축 재산정 — 7/9축 BNK-692 IDENTICAL · 2축 정정 (가정 번복 2건)
+
+| 축 | BNK-692 | BNK-693 실측 | delta |
+|---|---|---|---|
+| FE HEAD | b10c5bb | b10c5bb | IDENTICAL |
+| BE HEAD | 2f4bfdf | 2f4bfdf | IDENTICAL |
+| FE ahead | 285 | 285 | IDENTICAL |
+| BE ahead | 606 | 606 | IDENTICAL |
+| merge gate | 891 | 891 | IDENTICAL |
+| FE WT | CLEAN | CLEAN | IDENTICAL |
+| BE WT | CLEAN | DIRTY 1M | re-DIRTY (refactor WIP) |
+| Route (`<Route\b` + `<Routes>`) | 123 | 122+1=123 | IDENTICAL |
+| Page (`src/pages/*Page.jsx` 엄격) | 98 (정정 후 카운트) | **97 strict** (+RootRedirect=98) | **정정** (BNK-692 over-count 1건) |
+| BE Test (.java) | 278 (277 Test+1 Tests) | 278 (277+1) | IDENTICAL |
+| BE @Test (`git grep -hoE '@Test\\b' develop`) | 2047 | **2046** | **정정** −1 (BNK-692 over-count) |
+| FE test files (.test.{js,jsx}) | 500 (207+293) | 500 (207+293) | IDENTICAL |
+| 모듈 coverage(competitorModuleCoverage.js) | 84.31% (24.45/29) | 84.31% (24.45/29) | IDENTICAL |
+| reports | 28 | 28 | IDENTICAL |
+| V 마이그레이션 | V1–V185 | V1–V185 | IDENTICAL |
+
+가정 번복 2건:
+① BNK-692 reported BE @Test 2047 → BNK-693 git grep 실측 2046 (BNK-691 2047 또한 over-count 의심 carry — 동일 SHA `16e8ce0` 위에서 develop 측정).
+② BNK-692 reported page 98 *Page.jsx → BNK-693 strict `git ls-files 'src/pages/*Page.jsx'` = **97**.
+   광의 `git ls-files | grep -E '^src/pages/.*\.jsx$' | grep -v test` = 98 (97 strict + 1 RootRedirect/Layout 등).
+   BNK-693 정본: **97 *Page.jsx 엄격 / 98 with RootRedirect**.
+
+## 3. 4축 + leave-ledger + M6 11-route LIVE @b10c5bb — P0/P1 재오픈 0 (104-cycle, BNK-549~693)
+
+src/App.jsx 실측 (path 정의 그대로):
+  - G14   /clients/:clientId/care-plan-form
+  - G26   /dashboard
+  - G26   /dashboard/hq
+  - v2    /billing/cms
+  - v1.3-C /transport (root + compliance, auto-dispatch, service-fees, vehicles, runs/new, runs/:runId, outings) = 8
+  - leave-ledger /staff/leave-ledger
+  - annual-leaves /staff/annual-leaves
+  - M6 safety /safety (root) + /safety/daily-checks + /safety/periodic-checks + /safety/infection-control + /safety/operation-log = 5
+
+→ 4축(G14·G26·v1.3-C·v2 CMS) + leave-ledger 2 + M6 safety 5 = **17-route LIVE @b10c5bb** (subset 11+ 핵심) ·
+   P0/P1 재오픈 0건 (BNK-549~693 104-cycle 누적 carry).
+→ 재정렬 권고: 없음.
+
+## 4. M11/M12 sole P1 lever 재확인 (BNK-679~692 carry)
+
+`grep -E 'path="/(payroll|accounting)' src/App.jsx` = **0 hit**
+`git ls-files 'src/pages/Payroll*' 'src/pages/Accounting*'` = **0 file**
+→ id=11(직원 급여) 0 · id=12(수입지출·회계) 0 = **유일 P1 lever**(+6.90pp → 84.31%→**91.21%**) 재확인.
+
+PLAN_NOTES 205차 추가 질문 #1~#3 (M11 in-app min set·M12 scope boundary·M11-5 labor-cost-ratio) carry.
+ezCare 재무회계 BPO disclosure(rowid=434 home banner + sitemap 별도 메뉴) = 외부 BPO 모델 vs ogada in-app
+결정 분기점 carry.
+
+## 5. NHIS #44 이동서비스비 러-1~4 — 430차 zero drift IDENTICAL
+
+URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP : 200
+SIZE : 7,572B
+md5  : c886ff1fd1d5ca2cb5dc76d30adde8ba  (BNK-685~692 IDENTICAL · 430-cycle)
+disk : snapshots/nhis_jo44_live_bnk693.html
+
+verbatim 불변 (재인용):
+  - 러-1~4 표 (최단거리 편도 기준)
+  - 편도만 산정 시 비용의 50%를 산정 (ONE_WAY_RATIO=0.5)
+  - 1일 1회만 산정
+  - 수급자가 부담하지 아니한다
+  - 이동서비스 일지 작성·보관 의무 (별지 제22호)
+
+→ 5-link → BNK-692 **6-link** operational chain carry (법령 → catalog → year-gate → HTTP contract → V185 readiness probe → year-specific error guidance).
+
+## 6. ezCare FAQ 도움말 list — counter DRIFT +4 in ~24min · size-lock 12-cycle
+
+URL  : https://ezcare.easyms.co.kr/help/faq.ez
+HTTP : 200
+SIZE : 80,057B  (size-lock 12-cycle BNK-633→692→693)
+md5  : cd288c1721a39d009efc5c1e1cbbf3ba  (BNK-692 304cc6df → 693 cachebuster DRIFT)
+disk : snapshots/ezcare_help_faq_list_live_bnk693.html
+
+entries  : 233 rowid (unique) · 14 카테고리 carry
+hit_sum  : 3,637,385  (BNK-692 3,637,381 → **+4** in ~24min — short-interval baseline)
+
+Top-10 (BNK-693 실측):
+   1. rowid=21601 직원 회의록 전산 작성   83,879  (BNK-692 83,879 — IDENTICAL)
+   2. rowid=21274                          44,143
+   3. rowid=21529                          36,714
+   4. rowid=21723 시급 가이드              25,069  (BNK-692 25,069 — IDENTICAL · 결제·재무 P1 demand)
+   5. rowid=21356                          24,254
+   6. rowid=21668                          23,946
+   7. rowid=21193                          23,903
+   8. rowid=21574                          22,873
+   9. rowid=21589 급여제공기록지 RFID 문자  22,766  (BNK-672 RFID 단일 hit carry)
+  10. rowid=21447                          22,485
+
+대표 rowid 재확인:
+  - 21473 본인부담금 공단 차이 22,019  (G-NHIS 14-stage 우위 carry)
+  - 21618 국공휴일 유급휴일 수당 19,607  (K008 수당)
+  - 21610 yearly                  16,763
+  - 21474 희망이음                 16,575
+  - 21704                          16,490
+  - 21620 폐업 회계/세무/4대보험   15,290  (K012 재무회계 BPO cluster)
+  - 21624 회계업무                 15,102
+  - 21694 통장 거래                14,494
+
+→ 결제·재무 클러스터(K008 수당+K012 재무+K013 본인부담+K014 4대보험) 누적 hit 약 32% (BNK-684 정밀화 carry).
+→ M11/M12 sole P1 lever P1 demand-signal carry.
+→ BNK-693 정정: BNK-692 「rowid=21824 시급 25,069」는 typo · 실제 정본 rowid=**21723** (`<span class="faq-hit">25069</span>`).
+
+## 7. ezCare home — 「[공지] rowid=434 BPO」 marketing→compliance flip 9-cycle carry (BNK-684→693)
+
+URL  : https://ezcare.easyms.co.kr/
+HTTP : 200
+SIZE : 106,104B (BNK-688 106,145B → BNK-693 −41B counter DRIFT)
+md5  : 9c38680ece7a0e157f1d1ad903d90737
+disk : snapshots/ezcare_home_live_bnk693.html
+
+banner 정본:
+  <a href="/?PG=b01&rowid=434" target="_blank">
+    <span>[공지]</span>
+    이지케어 재무회계 서비스 개인정보 처리방침 변경안내
+  </a>
+
+mCnt counter (이지케어 도입 카운터 mCnt={1:N1,2:N2,3:N3,4:N4}):
+  1. 주야간보호 9,287   (BNK-688 9,286 → +1)
+  2. 시설입소   4,610   (BNK-679 4,608 → +2)
+  3. (재가) 2,353       carry
+  4. (방문) 1,820       carry
+
+→ ezCare = SaaS + 재무회계 BPO + 노무법인 위탁 + 고용노동부 고용지원금 대행 3-layer 모델 carry (BNK-684).
+→ ogada `/payroll/*`·`/accounting/*` 0 route = sole P1 lever vs BPO 어댑터 결정 carry.
+
+## 8. silverangel 221564 6/30 D-3 leak persist — size IDENTICAL · md5 cachebuster DRIFT
+
+URL  : https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564&Tmp_thread=1&Tmp_depth=0
+HTTP : 200
+SIZE : 1,812,677B  (BNK-685/686/691 IDENTICAL · 4-cycle size lock)
+md5  : cd4993e35df214720b2ffdef901f048a
+       (BNK-691 8e758f81 → 693 cachebuster DRIFT · BNK-686 0b5d9aa0 → 691 → 693 view counter only)
+
+semantic 불변:
+  title : 「작성중 - [필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)」
+  date  : 2026-06-30 verbatim (D-3 from BNK-693 2026-06-27)
+  body  : 시설/주야간 공통 13항목 + 주야간 적용 3항목 release notes leaked (BNK-654/685 carry)
+
+→ BNK-685 「leak RE-OPEN」 (BNK-661 「CLOSED」 가정 번복) carry · ogada `NoticeViewPage` SSR draft 게이팅
+   비교 우위 framing RESTORED carry · 6/30 D-day 정식 게시 D-3 monitor 계속.
+→ P3 candidate 10종(BNK-654 3종 + BNK-685 신규 7종) 6/30 재검증 보류 carry.
+
+## 9. 결산 (per-cycle minimum 4종 확인)
+
+신규 evidence URL          : 4건 (NHIS #44 430차 · ezCare FAQ list 693 · ezCare home 693 · silverangel 221564 D-3 693)
+경쟁사 메뉴/필드/워크플로  : 1블록 (BE BillingServiceTest WT diff +7/-2 production-constant lock refactor 분석 +
+                              NHIS #44 5→6-link operational chain re-verify)
+COMPETITOR_MATRIX @HEAD    : 5행 갱신 (ogada `@b10c5bb`/`@2f4bfdf` carry · BNK-692 → BNK-693 KPI 정정·재실측 row)
+BENCHMARK_REPORT §차수     : §693 신규 추가 (5 소절)
+
+신규 snapshot 5건:
+  - cross_gap_priority_bnk693.txt           (이 파일·주력 extract)
+  - nhis_jo44_live_bnk693.html              (zero drift IDENTICAL 430차)
+  - ezcare_help_faq_list_live_bnk693.html   (cachebuster DRIFT · +4 hit)
+  - ezcare_home_live_bnk693.html            (banner 「[공지] BPO」 9-cycle carry · mCnt +3)
+  - silverangel_notice_221564_live_bnk693.html (leak persist D-3 · cachebuster DRIFT)
+덮어쓰기 0.
+zero drift IDENTICAL : 1 (NHIS #44 430차)
+cachebuster DRIFT    : 3 (ezCare FAQ list · ezCare home · silverangel 221564)
+가정 번복            : 2 (BNK-692 BE @Test 2047→2046 정정 · BNK-692 page 98→strict 97)
+상태 변경            : 1 (BE WT CLEAN → DIRTY 1M re-regression · QA-B357 rules §6 risk re-open)
+KPI 변경             : 2 (BE @Test 2046 정정 · page 97 strict 정정)
+closure              : 0
+미확인 carry         : 2 (longterm 502/610 ~131-cycle · silverangel 221564 leak D-3)
+
+## 10. 다음 액션
+
+→ coder  : BE WT DIRTY 1M `BillingServiceTest.java` +7/-2 production-constant lock refactor commit closure
+           (rules §6 submodule re-clone 손실 위험 · 새 @Test 0건이므로 작은 단위 commit 추천).
+→ tester : merge gate **891**(FE 285 + BE 606 · BE WT DIRTY 1M = test refactor only · build 영향 없음이나
+           coder commit 후 FF 권장).
+→ planner: ① BE @Test 2047 → **2046** 정정 적용(향후 cycle baseline) · ② page strict 97 *Page.jsx
+           정본화(98 with RootRedirect) · ③ M11/M12 in-app vs BPO scope 결정 carry · ④ 6/30 D-3
+           silverangel release notes 16항목 재검증 D-day prep · ⑤ 「test → production 상수 lock」 패턴을
+           BillingService 외 NHIS·Safety catalog test 에도 확장 검토.
+→ BNK 다음 rotation: 0–2h 케어포 역공학(func.php 28-cycle+ Wayback re-baseline) 또는 2–4h 이지케어
+                     (FAQ rowid=434 BPO disclosure deep-dive).

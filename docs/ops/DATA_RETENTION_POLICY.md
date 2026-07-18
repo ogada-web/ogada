@@ -1,11 +1,11 @@
-<!-- doc:owner=DBA doc:audience=COD,PLN,TSR updated=2026-07-17T00:50:02Z -->
+<!-- doc:owner=DBA doc:audience=COD,PLN,TSR updated=2026-07-17T19:46:00Z -->
 # 데이터 보존·파기 정책 (ops/DATA_RETENTION_POLICY.md)
 
 > **작성**: db_architect 에이전트
 > **최초 작성일**: 2026-06-05
 > **상태**: MVP v1 기준 (법령·센터 내부 규정 확정 전 운영 가이드)
 > **근거**: `docs/planning/REQUIREMENTS.md` §3-2-1, §4, 개인정보보호법(PIPA), 노인장기요양보험법
-> **DBA round 224** (BE `@c6ddf6c`): round 223(`54fd8dd`) 이후 5 commit — QA-B95 bootstrap blocker HTML entity 디코드 harden만(persist 0) — Must 도메인(출석·청구·감사·알림) 보존 cohort 변경 없음. V149/V153/V171/V191 인덱스 및 기존 CHECK/FK로 retention·purge 경로 충족. `client_linkage_records` 보존(§2·§3 V194–V196)도 불변 — **live `ogada` flyway max=V193** 이므로 V194–V196 migrate 후 purge index `idx_client_linkage_records_client_purge` 가 실효.
+> **DBA round 228** (BE `@c19bfa6`): round 227(`72a6534`) 이후 6 commit — **SEC-D25** program schedule photo magic-byte 검증(`d1ff63a`, JPEG/PNG/WEBP 헤더 8바이트)·회계 SSO 포털 URL allowlist path/port/query/fragment/userInfo 검증(`bfe6b3f`/`a742788`)·QA-B95 부트스트랩 HTML entity 파서 harden(`759b15e`/`63227d7`/`c19bfa6`) — 전부 앱/보안 로직·**persist 0건**. 활동사진 오브젝트(§2 이미지·PII 인접) MIME 위장 차단은 **앱**(`ProgramPhotoStorageService`) 책임 유지(payload 바이트열 = DB 컬럼 대상 부재·`activity_programs.photo_storage_key` V49 는 UUID key 만 저장). 회계 SSO 포털 URL 은 환경변수(`ACCOUNTING_BPO_SSO_PORTAL_URL`)로 관리·§7 최소 수집·외부 위임 원칙 유지. Must 도메인(출석·청구·감사·알림) cohort 불변. **live `ogada` flyway max=V193** — V194–V196 migrate 후 linkage purge index 실효(round 214~227 carry).
 
 ---
 
@@ -26,6 +26,7 @@
 | 고유식별정보 | `clients.resident_registration_no_encrypted` | **동의 후 암호화 저장**, 미동의 시 NULL, 마스킹 표시, 복호화 audit |
 | 준식별정보 | `clients.phone_encrypted`, `address_encrypted`, `branches.phone_encrypted`, `users.phone_encrypted`(V44 guardian) | **암호화 권장**, 부분 마스킹 |
 | 민감정보 | `health_records` (건강·투약·낙상) | TLS 전송, RBAC, audit |
+| 이미지·프로필/활동사진 (PII 인접) | `clients.photo_storage_key`(V2)·`activity_programs.photo_storage_key`(V49 · v3 `POST /programs/schedule/{programId}/photo`) | DB에는 **스토리지 키만** 저장(VARCHAR 512). 파일 본체는 로컬/오브젝트 스토리지(`ogada.storage.client-photos` · `ogada.storage.program-photos` / `PROGRAM_PHOTOS_DIR`). **활동사진은 입소자 얼굴이 포함될 수 있어 준식별·민감 가능** — RBAC(지점 스코프)·TLS·디스크 at-rest 암호화(볼륨/OS 권장) 적용. MIME allow-list JPEG/PNG/WEBP·최대 5MB는 **앱**(`ProgramPhotoStorageService`) 강제 + **SEC-D25 magic-byte 검증**(V228 round — `d1ff63a`): Content-Type 은 image/jpeg 이나 실제 payload 는 실행 파일/HTML 인 MIME 위장 공격을 첫 8바이트로 거부(JPEG `FF D8 FF`·PNG `89 50 4E 47 0D 0A 1A 0A`·WEBP `RIFF...WEBP`). payload 바이트열은 DB 컬럼 대상 부재 → immutable CHECK 로 표현 불가·앱 책임 유지. **EXIF strip·앱 레벨 파일 암호화는 P3**(미구현 시 디스크 암호화로 대체). blank key nonempty CHECK 는 clients/programs 동일 **P3 보류** |
 | 요양기록 L02 | `intensive_excretion_observation_records`·`body_restraint_records` (V130–V132) | v3.1 L02_M02/M07 — `observation_detail`·`intervention`·`reason`·`notes`·`alternative_attempted`·`release_reason` 본문은 평문(준식별·민감 가능). `recorded_by` audit 추적(V132 partial index) |
 | 요양기록 L02 — 주간 제공기록·목욕 | `care_service_weekly_records` (V134/V135) · `bathing_schedules` (V136/V137/**V139**/**V177/V178**) | v3.1 L02_M01/M03 — `physical_care_notes`·`cognitive_activity_notes`·`meal_assistance_notes`·`nursing_notes`·`program_participation_notes`·`state_change_notes`·`special_notes`·`provision_notes`·`notes` 본문은 평문(준식별·민감 가능). `bathing_schedules.bath_type` 4종(FULL_BATH/PARTIAL_BATH/FOOT_BATH/SHAMPOO_ONLY)·`status` 4종(SCHEDULED/COMPLETED/CANCELLED/SKIPPED)·CANCELLED·SKIPPED 사유(`notes`)는 **V139** `chk_bathing_schedules_cancelled_skipped_requires_notes` DB 강제. **V177** 목욕 **청구 준수**(BATHING_CLAIM_COMPLIANCE·BNK-704 — 주야간 평가지표 27은 **기능회복훈련**이며 목욕이 아님) 사전/사후 관찰 — `pre_observation_notes`·`post_observation_notes` TEXT(준식별·민감 가능 — 피부·혈압 등 건강 상태 메모), COMPLETED 시 둘 다 비공백 필수(`chk_bathing_schedules_completed_requires_pre_post_observation`). **V178** defense-in-depth: `chk_bathing_schedules_pre/post_observation_notes_nonempty`(비완료 상태에서도 raw SQL 우회 공백 적재 차단). `recorded_by` audit 추적(V135/V137 partial index) |
 | 요양기록 L02 — 통합식사도움 | `meal_assistance_records` (V140/**V141**) | v3.1 L02_M13 — `assistance_detail`·`nutritionist_note` 본문은 평문(준식별·민감 가능). `meal_type` 3종(BREAKFAST/LUNCH/SNACK)·`intake_level` 3종·`diet_restriction` 5종 CHECK. `recorded_by` audit 추적(**V141** `idx_meal_assistance_records_org_recorded_by` partial). `meal_records`(V49)와 별도 테이블 — L02 상세 식사도움 전용 |
@@ -92,7 +93,7 @@
 | 고충상담 기록 (`grievance_counseling_records`, v2 G42 — V97/V98/**V102**) | **접수일(`counseled_at`) 기준 5년** | FAQ21814 지표7 고충상담·전자결재·**사후관리(`follow_up_recorded_at`)** 증빙(US-T14·BNK-161). 사후관리는 결재 후 1회만 기록(V102 CHECK·앱 `recordFollowUp`). target=CLIENT cohort는 이용자 퇴소 purge 시 동반 삭제(`idx_grievance_counseling_records_client_purge` V98). target=CAREGIVER cohort는 직원 퇴사 후 3년 보존(인사기록)과 별도로 본 행 5년 우선 적용(`idx_grievance_counseling_records_org_staff_user` V98). 익명함(`ANONYMOUS_BOX`·`target_type=OTHER`)·target=OTHER는 식별자 없이 본 cohort로 별도 cutoff |
 | 모니터링 자체점검 (`monitoring_self_diagnoses`, v2 G30 — V100/V101) | **점검월 기준 5년** | FAQ21841 지점 월별 자체점검표(항목 1~15) — 평가·감사 증빙. 이용자 비참조(지점 단위) — 지점 폐쇄 시 cohort 정리. 작성자(`created_by`) audit 추적(`idx_monitoring_self_diagnoses_org_created_by` V101) |
 | 모니터링 전화상담 (`monitoring_phone_consultations`, v2 G30 — V100/V101/**V138**) | **상담월 기준 5년** | FAQ21836 지점×월×이용자 안부전화 기록(`consultation_notes` 본문 준식별·민감 가능) + **V138** `satisfied BOOLEAN`(FAQ21841 "유선상담 5명·60% 만족" 임계값) — 급여 외 사례관리 증빙. `satisfied`는 응답 만족 여부 bool — PII 미포함, 보존 cohort 영향 없음(컬럼·UK·인덱스 불변). 이용자 퇴소 purge 시 동반 삭제(`idx_monitoring_phone_consultations_client_purge` V101) + UK `(org, branch, year, month, client_id)` cohort 접두어 |
-| 식단·프로그램 일정 (`meal_menus`, `activity_programs`, v3 — V49) | **일정일 기준 2년** | 운영 참조용 — purge: `idx_meal_menus_org_branch_date`·`idx_activity_programs_org_branch_date` |
+| 식단·프로그램 일정 (`meal_menus`, `activity_programs`, v3 — V49) | **일정일 기준 2년** | 운영 참조용 — purge: `idx_meal_menus_org_branch_date`·`idx_activity_programs_org_branch_date`. **`activity_programs.photo_storage_key` 활동사진**: DB 행 purge 시 **동일 cohort**로 키 NULL/행 DELETE + 오브젝트 스토리지 파일(`programs/{orgId}/{programId}/{uuid}.{jpg\|png\|webp}`) **별도 삭제 배치**(인정기간 첨부·HR 파일함과 동일 — DB CASCADE만으로 파일 미삭제). 용량≤5MB·JPEG/PNG/WEBP는 앱 강제(DB CHECK 없음). EXIF GPS/얼굴 메타 strip = 앱 P3 |
 | 청구서·명세·공단 import | **청구 연도 기준 5년** | 세무·회계 보존 관행. `nhis_import_rows.match_status_reason`(V54)은 사용자 안내용 보류 사유만 저장하고 내부 예외·스택·원본 파일 경로는 저장 금지 |
 | 본인부담금 환불 메타 (`billing_claims.refunded_*`, V71/V74) | **청구 연도 기준 5년** | 수납·환불 증빙 — `billing_claims` 행과 동일 cohort. purge: `idx_billing_claims_org_branch_status_refunded_at`(V71) |
 | 수가표·본인부담률 이력 | **영구(또는 10년)** | 과거 청구 재현·감사 |
@@ -206,6 +207,7 @@
 - 쿼리·API에 `organization_id` **강제** — 타 Tenant 데이터 조회·파기 명령 불가.
 - `ogada_platform_admin`: Tenant 메타데이터만, 이용자 PII 기본 비접근.
 - 데이터 반출: Tenant `hq_admin` 승인 + audit, 암호화 파일·만료 링크 권장.
+- **외부 SSO 위임 (v3/M12 회계 BPO)**: 재무회계(수지파인) 포털은 외부 SaaS 로 위임 — ogada DB는 회계 원장/명세 저장 안 함. SSO handoff URL 은 환경변수(`ACCOUNTING_BPO_SSO_PORTAL_URL`)로 관리하며 화이트리스트(host∈{sujifine.co.kr, www.sujifine.co.kr}·path=`/carefor_login`·port=443·no query/fragment/userInfo)를 앱(`AccountingBpoSupport`, round 228 `bfe6b3f`)이 강제. OTP handoff 는 세션 스코프 인메모리(persist 0건) — DB 컬럼 대상 부재.
 
 ---
 

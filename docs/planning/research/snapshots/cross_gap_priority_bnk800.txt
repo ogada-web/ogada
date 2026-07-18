@@ -1,0 +1,98 @@
+BNK-800 — 교차검증·갭 우선순위 (8h+ rotation) · 2026-07-16T17:11Z
+================================================================================
+목적: 이전 BNK 가정 번복 여부 점검 · 미확인 항목 축소 · closed band(G14·대시보드·
+      v1.3-C·v2 CMS·G-LINKAGE·G2) 재오픈 여부 · P0/P1 재정렬 · 신규 경쟁사
+      공지·엑셀 포맷 변경 스캔.
+직전 사이클: BNK-799(2026-07-16T16:36Z·ogada git 실측 6–8h) → ~35분 후.
+직전 동일 rotation: BNK-796(2026-07-16T14:41Z·교차검증 8h+) → ~2.5h 후.
+
+--------------------------------------------------------------------------------
+1. ogada git 실측 (baseline 재산정 — 문서 과거 SHA보다 우선)
+--------------------------------------------------------------------------------
+FE develop : ed48077  ux(a11y): fix ds-muted and add ds-checkbox-group FE-16 (UXD-184)
+             · WT DIRTY (coder WIP: notificationChannelStatus.js·liveBackendProbe.js·
+               liveConfig.js·liveGlobalSetup.js 등 5M — live-e2e/notification 배선)
+             · BNK-799 @8a05640 → +1 commit (UXD a11y FE-16)
+             · ahead origin/test 1 vs 8a05640
+BE develop : 08cdb87  fix(v2/QA-B95): decode figure/punctuation/ideographic space entity aliases
+             · WT CLEAN
+             · BNK-799 @ff80f0b → +1 commit (QA-B95 space-entity alias decode)
+             · ahead 704 vs 598d108
+
+집계 (git grep/ls-files 실측):
+  Route         : 133  (<Route\b 132 App.jsx + <Routes> 1)
+  Page          : 106  (*Page.jsx ls-files)
+  FE test       : 530  (.test.jsx 313 + .test.js 217)
+  BE Test file  : 294  (293 *Test.java + 1 *Tests.java)
+  BE @Test      : 2260 (BNK-799 2258 → +2 · figure/punctuation/ideographic space @Test)
+  Flyway        : V1–V196 (신규 0)
+  모듈별 route  : accounting 1 · payroll 5 · billing 17 · care 16 · nursing 16 ·
+                  transport 9 · staff 13 · compliance 2
+  merge gate    : 705 (FE 1 + BE 704 · BE-heavy → tester FF)
+
+--------------------------------------------------------------------------------
+2. 모듈 커버 KPI 97.41% CONFIRMED (가정 번복 0)
+--------------------------------------------------------------------------------
+src/config/competitorModuleCoverage.js 배열 29-entry:
+  non-1.0 4개 — id=2 이동서비스 0.85 · id=8 직원·근태 0.85 ·
+                id=10 부가서비스(SMS·알림) 0.85 · id=12 수입지출·회계 0.7
+  나머지 25 = 1.0
+  sum = 25 + 0.85×3 + 0.7 = 28.25 → 28.25/29 = 97.41%
+coverage-0 진성갭 0건 · KPI promote 0 · BNK-759/764/771/799 CONFIRMED carry.
+
+--------------------------------------------------------------------------------
+3. closed band 재오픈 0 (App.jsx @ed48077 LIVE grep 실측)
+--------------------------------------------------------------------------------
+  /clients/:clientId/care-plan-form   (G14)              LIVE
+  /dashboard · /dashboard/hq          (대시보드)         LIVE
+  /transport/service-fees             (v1.3-C)           LIVE
+  /billing/cms                        (v2 CMS·id=7-4)    LIVE
+  /clients/linkage-records            (G-LINKAGE·id=1-10) LIVE
+  /clients/home-newsletter            (G2·id=1-5)        LIVE
+→ 6-band 전부 LIVE · 재오픈 0 · P0 신규 0.
+
+--------------------------------------------------------------------------------
+4. 규제 백본 zero drift — NHIS #44 러-1~4 534차
+--------------------------------------------------------------------------------
+URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+= BNK-799(533차) c886ff1f IDENTICAL (zero drift · +1 = 534차)
+verbatim grep -oF: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+↔ ogada TransportServiceFeeParityCatalog:
+  ONE_WAY_RATIO = new BigDecimal("0.5")   · ONE_WAY_RATIO_LABEL = "편도 비율"
+  ONE_PER_DAY_LABEL = "1일 1회"            · Rule[ONE_WAY_RATIO,ONE_PER_DAY,...]
+  TransportServiceFeeService: RU_1~4 · ONE_WAY_RATIO 편도 산식(baseAmount×0.5 HALF_UP)
+→ 상수 재조정 불요 · id=2 0.85 carry · 경쟁 4종 유일 full-stack 프레이밍 verifiable.
+
+--------------------------------------------------------------------------------
+5. 신규 경쟁사 공지·엑셀 포맷 변경 스캔 — 시그널 0
+--------------------------------------------------------------------------------
+이지케어 FAQ 목록 재실측:
+  URL  : https://ezcare.easyms.co.kr/help/faq.ez
+  HTTP 200 · 80,057B · rowid 233-entry · max rowid 21781
+  = BNK-799(233·max 21781) IDENTICAL → 신규 FAQ 0 · 엑셀 컬럼/포맷 변경 0.
+케어포 LIVE : daycare/func.php (https) HTTP 000 88-cycle+ 「미확인」 carry
+              disk canonical carefor_func.php md5 6226e6eb92fdd25ed3e50842a5e8a00b
+              98,328B LOCK · 덮어쓰기 0.
+
+--------------------------------------------------------------------------------
+6. 가정 번복 / 상태 변경 / KPI 변경 요약
+--------------------------------------------------------------------------------
+가정 번복        : 0
+closure          : 0 (6-band CLOSED carry)
+상태 변경        : 3 (FE +1 commit·FE WT DIRTY coder WIP·BE +1 commit)
+KPI 변경         : 3 (FE SHA 8a05640→ed48077 · BE SHA ff80f0b→08cdb87 · BE @Test 2258→2260)
+NHIS 회차        : 533 → 534 (IDENTICAL)
+신규 진성갭      : 0 · P0/P1 격상 0
+per-cycle minimum: 충족 (신규 URL 재실측 3 · 워크플로 1블록 · MATRIX 1행+ · REPORT §800)
+
+--------------------------------------------------------------------------------
+7. planner 반영 (요약)
+--------------------------------------------------------------------------------
+- baseline FE @8a05640→@ed48077(ahead 1·WT DIRTY coder WIP)·BE @ff80f0b→@08cdb87(ahead 704)
+- Route 133·Page 106·FE test 530·BE Test 294·BE @Test 2260·V1–V196·모듈 97.41% CONFIRMED
+- merge gate 705(FE 1+BE 704·BE-heavy → tester FF·신규 마이그레이션 0)
+- 우선순위 동결: P0 신규 0·closed band 6 재오픈 0·P1 residual id=12 0.7(M12 credentials
+  PRIMARY)→id=2/8/10 0.85(form polish) carry
+- 규제 백본 534차 zero drift·Transport 상수 재조정 불요·엑셀 포맷 변경 0
+- 다음 rotation: 케어포 0–2h (func.php·매뉴얼·demo-work)

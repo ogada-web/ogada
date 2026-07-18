@@ -1,0 +1,84 @@
+# ezCare RFID·이중일정(계획/청구)·FAQ triplet 역공학 crosswalk (BNK-648)
+
+조사일: 2026-06-26T05:40Z (KST 14:40)
+rotation: 이지케어 역공학 2–4h — `/new.ez`·`ezCare_fnc.html`·FAQ rowid·RFID·이중 일정·가격·도입 재실측
+ogada baseline: FE `@6009ba7` · BE `@59e4e7f` (양쪽 WT **CLEAN** · merge gate **838**)
+방법: live HTTP fetch + `./scripts/ezcare-demo-fetch.sh` POST demo login + FAQ 본문 정적 파싱
+
+## 1. 가격·도입 재실측 (확인 · HTTP 200 · 2026-06-26)
+
+| URL | SIZE | md5 | BNK-647 → BNK-648 변동 |
+|---|---|---|---|
+| [/](https://ezcare.easyms.co.kr/) | 106,109B | `4aada1f0` | mCnt `{1:9287,2:4607,3:2353,4:1820}` — mCnt[1] 9286→**9287**(+1)·mCnt[2] 4606→**4607**(+1) · **banner CONTENT DRIFT reversal** — rowid=434 재무회계 BPO 공지 → 「[추천 이벤트] 재무회계 추천」 cafe 링크 복귀 |
+| [/new/ezCare_fnc.html](https://ezcare.easyms.co.kr/new/ezCare_fnc.html) | 17,870B | `17ebe880` | 도입 **9,363→9,364**(+1) verbatim「전국 9,364개 기관 사용중」 |
+| [/?PG=e01](https://ezcare.easyms.co.kr/?PG=e01) | 47,130B | `e5469a13` | 이용시설 **9,355→9,361**(+6)·점유율 **53.70%→53.74%**(+0.04pp)·집계일 **2026.06.26** · 전국재가 17,420 |
+| [/new/ezCare_charge.html](https://ezcare.easyms.co.kr/new/ezCare_charge.html) | 22,979B | `088c5238` | 가격 **33,000/25,850/55,000 verbatim 불변** · 40%할인 **2026-06-30** 마감 carry · 기본료 10,000+초과 500원/인 |
+| [/new/ezCare_change_work.html](https://ezcare.easyms.co.kr/new/ezCare_change_work.html) | 26,157B | `5212b145` | 후기 **4,965건·RFID·듀얼/트리플 모니터** marketing verbatim 불변 |
+| [FAQ 21844](https://ezcare.easyms.co.kr/help/faq.ez?rowid=21844&type=web) | 14,474B | `d0aa760c` | **400차 zero drift IDENTICAL** · 엑셀 PII 마스킹(*) 포맷 변경 0 |
+
+## 2. ★★★ FAQ triplet 본문 역공학 (신규 evidence URL 3건)
+
+### FAQ 21589 — RFID 급여제공기록지 문자발송 (22,760 hit · top-30 #9)
+
+출처: `ezcare_faq_21589_live_bnk648.html` · HTTP 200 · 15,971B · md5 `a5e2e48c`
+
+워크플로 (확인):
+- 대상: **방문요양만** — 요양보호사 RFID 전송 급여제공내역을 수급자/보호자에게 문자 발송
+- 메뉴 경로: `4.RFID점검` > `4.1 RFID태그내역 ↔ 공단계획 비교` > `급여제공내역(요양)전송` 탭
+- 평가: 「평가문항 29번: 급여제공기록지 RFID 전송분은 수급자에게 **월 1회이상** 제공」
+- 단계: (1) `공단계획 ↔ 태그비교 결과`에서 RFID 전송내역 업로드 → (4) 발송번호(수급자/보호자) → (5) **일괄 또는 개별** 문자발송
+- 발송내역 조회: `2.수급자` > `2.1 문자보내기` > `문자발송내역` > 문자종류 **「급여제공내역」**
+- ogada: `CARE_PROVISION_RECORD`(message_kind=13 ALIMTALK) ✅ · RFID 트리거·월 1회 compliance surface **0 hit** → P3 `G-RFID-CARE-PROVISION-DISPATCH` carry
+
+### FAQ 21298 — 공단 일정 업로드 이중 워크플로 (19,392 hit · top-30 #19)
+
+출처: `ezcare_faq_21298_live_bnk648.html` · HTTP 200 · 16,644B · md5 `56f80ab6`
+
+이중 일정(계획/청구) 워크플로 (확인):
+- 메뉴: `3.방문일정 관리` > `공단일정(자동/엑셀) 이지케어에 올리기`
+- **계획일정 가져오기**: **월초** 계획일정 업로드 → 일정표 출력/관리
+- **청구일정 가져오기**: **공단청구 완료 후** → 급여비용명세서·**직원 급여작업**
+- 재업로드: 「**확정된 일정은 제외하고 모든일정 초기화**」 체크 옵션
+- 엑셀 컬럼: 첨부 PNG `일정관리_가져오기00_1_1.png`·`01_1.PNG`·`02_2.PNG` (공단 export 포맷 가이드)
+- ogada: BE `@4567030` `GET /api/v1/visits/imports/nhis/guidance` — `NhisVisitScheduleImportGuidance` **plan/billing dual steps** commit msg verbatim cite FAQ 21298 → **★★★ BNK-633 P2「가정」→ BE partial closure** · FE VisitsPage import panel ✅ · guidance wire **0 hit** (P2 FE wire 후보)
+
+### FAQ 21507 — 변경계약서 일괄출력 (19,674 hit · top-30 #16)
+
+출처: `ezcare_faq_21507_live_bnk648.html` · HTTP 200 · 14,407B · md5 `b634a89e`
+
+워크플로 (확인):
+- 메뉴: `3.방문일정` > `수급자 일정표(제공기록지)` > **변경계약서 일괄출력**
+- 단계: (1) 월선택 → (2) 대상자 체크(일괄/개별) → (3) **변경계약서** 클릭 다운로드
+- 첨부: `변경계약서 일괄출력.png`
+- ogada: `G-CLIENT-CONTRACT-BULK-PRINT` — BE `@4df9465` bulk-export API ✅ · FE 「일괄 출력」wire **0 hit** carry (P2)
+
+## 3. RFID 처리상태·엑셀 컬럼 (데모 PGID schedule-rfid 재실측)
+
+| PGID | SIZE | md5 | Δ vs BNK-617 |
+|---|---|---|---|
+| [schedule-rfid](https://ezcare.easyms.co.kr/new.ez?PGID=schedule-rfid) | 150,501B | `b8897ce6` | session DRIFT (`e0f7cf36`→`b8897ce6`) · **semantic IDENTICAL** — size 동일 |
+| [duplicate-schedule](https://ezcare.easyms.co.kr/new.ez?PGID=duplicate-schedule) | 93,401B | `1a7686a1` | session DRIFT · **negative carry** — `faqDir=duplicate` 고객지원 dialog only·이중일정 검출 UI **미확인** |
+
+`grid_match_list` colModel **comp_01~09 처리상태 플래그** (확인 · schedule-rfid):
+- comp_01 모두(태그안함) · comp_03 종료 · comp_04/05 시작/종료 · comp_06 30분 · comp_08 직접입력 · comp_07 제공자다름 · comp_09 계획없음
+- 필터 라디오: detail_03 종료만안함 · detail_04 시작 · detail_05 종료 · detail_07 급여제공자다름 · detail_09 계획없음
+- 엑셀: `mode=rfid_upload` · download `"{Ym} 계획&태그 비교 결과"` · `"{Ym} 급여제공자별 비교 결과"`
+- 주의 문구: 계획 270분초과 분리·동일일정 중복·RFID 잘못된 시간/제공자 → 비교 오류 가능
+
+demo shell: `ezcare_new_ez_demo.html` `1c5a83b3`(139,401B session DRIFT) · top-nav `95286775` zero drift · 10-module 148-leaf
+
+## 4. ogada 갭·제안 (planner)
+
+| 코드 | ezCare 근거 | ogada BNK-648 | 우선순위 |
+|---|---|---|---|
+| G-NHIS-SCHEDULE-IMPORT | FAQ 21298 plan/billing 이중 import | BE `@4567030` guidance API ✅ · import UI `/visits` ✅ · **FE guidance wire 0 hit** | **P2 → △ partial closure** — FE onboarding panel 후보 |
+| G-RFID-CARE-PROVISION-DISPATCH | FAQ 21589 RFID→문자·평가29 월1회 | message_kind=13 ✅ · RFID trigger 0 | P3 carry |
+| G-CLIENT-CONTRACT-BULK-PRINT | FAQ 21507 일괄출력 | BE bulk-export ✅ · FE wire 0 | P2 carry |
+| QA-B95 16th layer | N/A | FE `@6009ba7` `g21SeedStatusCode` parse **CLOSURE** | ✅ closed |
+
+## 5. per-cycle minimum 충족
+
+- 신규 evidence URL: FAQ 21589·21298·21507 본문 3건 + schedule-rfid 재실측
+- 메뉴/필드/워크플로: §2 triplet + §3 comp_01~09 + 이중일정 plan/billing
+- COMPETITOR_MATRIX: `@6009ba7`/`@59e4e7f` 갱신 예정
+- BENCHMARK_REPORT §648 소절 추가 예정

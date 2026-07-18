@@ -1,0 +1,111 @@
+# 교차검증·갭 우선순위 — QA-B95 full-stack CLOSURE + P0/P1 재확인 + 공지/엑셀 스캔 (BNK-726)
+# 조사일: 2026-07-14T15:16:00Z (UTC) / KST 2026-07-14 00:16(+1d = 2026-07-15 00:16 KST)
+# 작성: benchmark_researcher [BNK]
+# rotation: 8h+ 교차검증·갭 우선순위 (미확인 축소·이전 가정 번복 여부·P0/P1 재정렬·신규 공지/엑셀 스캔)
+# 직전 동일 rotation: BNK-722(2026-07-14T12:36Z) → ~2.7h 후
+# 직전 사이클: BNK-725(2026-07-14T14:42Z·ogada git 실측) → ~34분 후
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`5805d68`** `fix(v1.2.1/QA-B95): honor effective live-e2e operation gate`
+  · WT **CLEAN** · ahead origin/test **0** = **FULLY SYNCED** (`origin/test=5805d68`)
+  · BNK-725 `@5805d68` → **HEAD zero advance** (ahead 1→0 = tester FF 흡수)
+  · `<Route\b`=131 + `<Routes>`=1 = **132**(carry) · `*Page.jsx`=**105**(carry)
+  · `.test.js`=214 · `.test.jsx`=304 = **518**(carry · in-place expand only)
+  · accounting route 1 · payroll route 5
+- BE `develop` = **`5d6c007`** `fix(v2/QA-B95): expose effective live-e2e operation gate`
+  · WT **CLEAN** · ahead origin/test **634** (`test=598d108`)
+  · BNK-725 `@ac422cc` → **+1 commit** (`5d6c007`) = **BNK-725 WT DIRTY 5M 흡수**
+  · 5-file +140/−4: `HealthController`·`LiveE2eController`·`LiveE2eProbeResponse`+2 tests
+  · `*Test.java`=287 · `*Tests.java`=1 = **288**(carry) · `@Test`=**2135**(carry)
+  · V1–V190 (190 migration files · tip `V190__transport_shuttle_…`)
+- 모듈 커버리지 `competitorModuleCoverage.js` (id 라인 한정) = **29 entries · sum 26.80 · 26.80/29 = 92.41%**
+  · id=1-5 **0.65 carry** · id=12 0.7 · id=1-10 0 · comment: `compose/board △`
+- merge gate **634** (FE 0 FULLY SYNCED + BE 634 · BE-only · 양쪽 WT CLEAN → tester FF)
+
+### 이번 사이클 델타 커밋 1건 (확인)
+
+1. BE `5d6c007` `fix(v2/QA-B95): expose effective live-e2e operation gate` (5-file · +140/−4)
+   · `liveE2eEffectiveOperationReady/Blocker(s)/Reason` → Health + LiveE2e 응답
+   · BNK-725 「가정」 operational readiness QUAD 후보 → **확인**: `homeNewsletterAuthoringAvailability` Health 필드 **committed**
+   · FE `@5805d68` effective gate 파싱과 full-stack 정합
+
+## 1. ★★★ QA-B95 effective operation gate FULL-STACK CLOSURE (메뉴/필드/워크플로 블록)
+
+| layer | SHA | 필드/동작 | 판정 |
+|---|---|---|---|
+| FE harness | `@5805d68` | `liveE2eEffectiveOperationReady/Blockers/Reason` 파싱 · bootstrap-only 오차단 방지 | ✅ BNK-725 |
+| BE Health/LiveE2e | `@5d6c007` | 동일 필드 expose · EffectiveOperationGateSnapshot | ✅ **NEW landing** |
+| Health G2 authoring | carry/`5d6c007` bundle | `homeNewsletterAuthoringAvailability` (=AVAILABLE) | ✅ **QUAD probe 확인** |
+
+### `/api/v1/health` operational readiness QUAD (확인)
+
+| # | probe 축 | 근거 cycle | Health 필드 예 |
+|---|---|---|---|
+| 1 | M12 회계 BPO | BNK-717 | `accountingBpoCatalogAvailable`·`accountingBpoSsoAvailability` |
+| 2 | J03 알림 채널 | BNK-715 | `notificationLiveAlimtalkDispatchReady`·`notificationLiveEmailDispatchReady` |
+| 3 | G2 가정통신문 dispatch | BNK-721 | `homeNewsletterCatalogAvailable`·`homeNewsletterDispatchReady` |
+| 4 | G2 가정통신문 authoring | BNK-724 API + **BNK-726 Health** | `homeNewsletterAuthoringAvailability` |
+
+→ 경쟁 4종 in-app operational readiness probe **미확인** → ogada **operational 우위 narrative deepen**(TRIPLE→QUAD).
+
+**「가정」유지**: authoringAvailability=AVAILABLE 이어도 FE compose/board UI 미착지 → coverage **0.65 carry**(1.0 아님·BNK-722/724/725 가정 **유지**·번복 아님).
+
+## 2. ★★★ P0/P1 재정렬 · closed axes 재오픈 0 · 이전 가정 번복 여부
+
+| id/축 | coverage | Route/실측 | 판정 | 우선순위 |
+|---|---|---|---|---|
+| **1-5 가정통신문** | **0.65** | `/clients/home-newsletter` LIVE · authoring API AVAILABLE · **compose FE ❌** | △ | **잔여 lever = authoring compose FE**(0.65→0.85)+board(→1.0) |
+| **12 수입지출·회계** | 0.7 | `/accounting` LIVE · SSO handoff API · credentials 미등록 | △ | **잔여 lever = 실환경 credentials**(운영·0.7→1.0) |
+| **1-10 연계기록지** | 0 | FE/BE 구현 0 | 진성 갭 | v2+ (평가지표 30) P3 carry |
+| 2 이동서비스 | 0.85 | RU_1~4 6-link | △ | operational polish |
+| 8 직원·근태 | 0.85 | — | △ | 후속 |
+| 10 SMS·알림 | 0.75 | J03 readiness | △ | 후속 |
+| **G14** | ✅ | `/clients/:clientId/care-plan-form` App.jsx:235 LIVE | closed | **재오픈 0** |
+| **v1.3-C** transport+G16 | ✅ | V186–V190 · Health integrity | closed | **재오픈 0** |
+| **v2 CMS** | ✅ | `/billing/cms`(379)·`easy-pay`(388)·`cash-receipts`(451) LIVE | closed | **재오픈 0** |
+| **P3 dashboard 2건** | 0 | G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY 0 Route | 「가정」 | **격상 0** |
+| G-ACCOUNTING-IN-APP-LEDGER | — | v3+ 「가정」 | MVP out-of-scope | carry |
+| SMS 7-kind template | — | BNK-724 candidate | v2+ | carry |
+
+- **가정 번복 0**
+- **심화 확인 1**: BNK-725 BE WT DIRTY QA-B95 → `@5d6c007` **committed** (dirty 위험 소멸)
+- **진성갭 재확인 1**: id=1-10 연계기록지 0
+- **미확인 축소 1**: operational readiness QUAD Health 필드 「가정」→「확인」
+- **P0/P1 재정렬 불요**(BNK-722 carry 유지): sole in-app levers = **1-5 authoring FE + M12 credentials**
+
+### 경쟁 crosswalk (가정통신문 authoring)
+
+| 제품 | authoring | 채널 | 판정 |
+|---|---|---|---|
+| 케어포 | func.php 1-5 가정통신문(작성 포함 가능·LIVE 000 「미확인」) | — | ✅ 정적 leaf |
+| 이지케어 | mobile-notice free-form 2-tab + SMS 7-kind(BNK-724) | SMS+앱쪽지 | △ 2-channel |
+| 엔젤 | LCMS 위탁 | 외부 | △ |
+| ogada | template yearMonth+summary · compose FE 미착지 · 3-channel health | 이메일+알림톡+SMS | △ 0.65 · **operational QUAD 우위** |
+
+## 3. 규제·공지·엑셀 재실측 (기존 URL · 신규 변경 스캔)
+
+| 소스 | HTTP·SIZE·md5 | 판정 |
+|---|---|---|
+| NHIS #44 이동서비스비 | 200·7,572B·`c886ff1f` | **461차** zero drift IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담하지(1)·이동서비스(13)) |
+| law247 고시 | 200·78,450B·`f61678ce` | size-lock · Time= md5 DRIFT · 시행 2026.1.1 IDENTICAL |
+| silverangel notice (canonical) | 200·5,707,602B·`ea7d6b3d` | IDENTICAL vs BNK-709 · ≥221573 **0**(~19일+ pause) |
+| silverangel wrong path | **404**·1,028B·`3c93af54` | `/newSilverangel/community/noticeList.do` — dual-IA 재확인(BNK-654 carry·가정 번복 아님) |
+| silverangel essential | 200·131,664B·`c79c1be3` | IDENTICAL(기능회복6·목욕2) |
+| ezcare FAQ list | 200·80,057B·`a9a6cc8e` | size-lock · cachebuster md5 DRIFT · rowid **233**·max **21781** · 「엑셀」2-hit(브라우저 다운로드 FAQ만·포맷 변경 0) |
+| ezcare FAQ 21844 | 200·14,474B·`d0aa760c` | IDENTICAL vs BNK-722(엑셀 포맷 변경 0) |
+| ezcare FAQ 21845 | 200·13,915B·`5b78c947` | IDENTICAL |
+| ezcare home | 200·**69,060B**·`628d450d` | size −766B vs BNK-725 69,826B · data-count **53.2/9298/4668/2353/1820** IDENTICAL · 집계 2026.06.30 · **가정 번복 아님**(testimonial/cachebuster) |
+| sujifine login | 200·3,974B·`784154fb` | size-lock · CSRF md5 DRIFT · title「장기요양 재무회계 관리프로그램」IDENTICAL |
+| carefor func.php | **000** timeout | 「미확인」 **71-cycle+** · disk `6226e6eb` 98,328B canonical 우선 |
+
+→ **신규 규제/공지/엑셀 포맷 변경 0** · import adapter 긴급 불요 · 신규 candidate 0.
+
+## 4. 산출 요약
+
+- 신규/재실측 evidence URL: NHIS #44 461차 · law247 · FAQ list/21844/21845 · home · sujifine · notice canonical + wrong-path 404 · essential · carefor 000 = **재실측 9건+**
+- 메뉴/필드/워크플로: **QA-B95 full-stack CLOSURE + health QUAD + P0/P1 재확인** §1–2
+- COMPETITOR_MATRIX 1행+ `@5805d68`/`@5d6c007` 갱신
+- BENCHMARK_REPORT §BNK-726 + memory/decisions.md 최상단
+- 가정 번복 0 · 심화 확인 1(QA-B95 BE commit) · 미확인 축소 1(QUAD Health) · closed axes 재오픈 0 · P3 dashboard 격상 0
+- 덮어쓰기 0 · per-cycle minimum 4종 충족

@@ -1,0 +1,39 @@
+BNK-854 — ogada git 실측 (이지케어 역공학 2-4h 로테이션)
+조사일: 2026-07-18T02:58Z
+
+[FRONTEND] src/frontend develop
+  HEAD  b23711f  fail-close excel import when header read is empty
+  BNK-853 @637bad8 → +1 commit (SEC-D34 FE 하드닝: 엑셀 import 헤더 읽기 결과 empty 시 fail-close)
+  WT CLEAN · FULLY SYNCED origin/test (rev-list --left-right --count origin/test...develop = 0  0)
+  Route 133 (App.jsx <Route 132 + <Routes> 1) · Page 106
+  FE test 540 (225 .test.js + 315 .test.jsx) — carry
+
+[BACKEND] src/backend develop
+  HEAD  9449e1f  test(v3/SEC-D34): lock empty-file fail-closed on excel import services
+  BNK-853 @efbdbec → +2 commits:
+    2f3be17 test(v3/SEC-D34): lock .xls OLE magic fail-closed on visit and caregiver NHIS import
+    9449e1f test(v3/SEC-D34): lock empty-file fail-closed on excel import services
+  WT CLEAN · ahead 748 vs 598d108 (merge base)
+  BE Test 297 (296 *Test.java + 1 *Tests.java)
+  @Test strict 2353 (^\s*@Test\b) — BNK-853 2345 → +8 (.xls OLE magic + empty-file fail-closed 회귀 lock)
+  @RestController 81 · Flyway V1–V196
+
+[HTTP verb 매핑] src/backend/src/main (grep @*Mapping)
+  GetMapping    231
+  PostMapping   144
+  PatchMapping   44
+  PutMapping     13
+  DeleteMapping  10
+  합계          442  — BNK-836~853 → 854 = 15차 byte-exact IDENTICAL
+  (BE +2 commit 은 test-only fail-closed lock · endpoint 신설 0 · service-layer 하드닝 dominant)
+
+[merge gate] 748 (FE 0 FULLY SYNCED + BE 748 · BE-heavy → tester FF · 신규 마이그레이션 0)
+[모듈 커버] 97.41% carry (28.25/29 · id=2/8/10=0.85 · id=12=0.7 · 진성갭 0)
+
+[판정] SEC-D34 엑셀 import fail-closed 계보 확장 (BNK-853→854):
+  (a) 매직바이트 4-경로 (BNK-848~849)
+  (b) null-safe payload (BNK-851 QA-B604)
+  (c) truncated OOXML fail-closed (BNK-853 efbdbec)
+  (d) .xls OLE magic fail-closed (BNK-854 2f3be17)
+  (e) empty-file fail-closed (BNK-854 9449e1f) + FE empty-header fail-close (b23711f)
+  = 「부분·손상·null·잘못된 OLE·빈 파일·빈 헤더」 6-축 회귀 방어 · 경쟁 4종 유일 SUPERIOR carry

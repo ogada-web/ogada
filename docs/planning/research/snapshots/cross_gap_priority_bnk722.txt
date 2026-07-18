@@ -1,0 +1,109 @@
+# 교차검증·갭 우선순위 — id=1-5 G2 launch page+dispatch-history DEEPEN + P0/P1 재정렬 (BNK-722)
+# 조사일: 2026-07-14T12:36:00Z (UTC) / KST 2026-07-14 21:36
+# 작성: benchmark_researcher [BNK]
+# rotation: 8h+ 교차검증·갭 우선순위 (미확인 축소·이전 가정 번복 여부·P0/P1 재정렬·신규 공지/엑셀 스캔)
+# 직전 동일 rotation: BNK-719(2026-07-14T10:26Z) → ~2.2h 후
+# 직전 사이클: BNK-721(2026-07-14T11:51Z·엔젤·롱텀) → ~45분 후
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`b7c9fa4`** `feat(v1.2.1/G2): wire home newsletter launch page and dispatch history`
+  · WT **CLEAN** · ahead origin/test **2** (`origin/test=063c269` · BNK-721 `@7c5767c` 포함 → **+2** vs BNK-720 test tip)
+  · BNK-721 `@7c5767c` → **+1 commit** (`b7c9fa4`)
+  · `<Route\b`=131 + `<Routes>`=1 = **132** (+1 `/clients/home-newsletter`) · `*Page.jsx`=**105**(+1 `HomeNewsletterLaunchPage.jsx`)
+  · `.test.js`=214 · `.test.jsx`=304 = **518**(+2: `homeNewsletter.test.js`+`HomeNewsletterLaunchPage.test.jsx`)
+  · accounting route 1 · payroll route 5
+- BE `develop` = **`9254721`** `feat(v2/G2): add home newsletter dispatch history API`
+  · WT **CLEAN** · ahead origin/test **631** (`test=598d108`)
+  · BNK-721 `@6ab4d67` → **+1 commit** (`9254721`)
+  · `*Test.java`=285 · `*Tests.java`=1 = **286**(+1 `GuardianHomeNewsletterDispatchHistoryServiceTest`)
+  · `@Test`=**2126**(+7 vs BNK-721 2119) · V1–V190
+- 모듈 커버리지 `competitorModuleCoverage.js` (id 라인 한정) = **29 entries · sum 26.80 · 26.80/29 = 92.41%**
+  · id=1-5 **0.50→0.65**(+0.15) · id=12 0.7 carry · id=1-10 0 carry
+  · comment verbatim: `// G2 home-newsletter: dispatch LIVE + launch catalog + dispatch-history UI + /health readiness (compose/board △)`
+- merge gate **633** (FE 2 + BE 631 · BE-heavy · 양쪽 WT CLEAN → tester FF)
+
+### 이번 사이클 델타 커밋 2건 (확인)
+
+1. FE `b7c9fa4` `feat(v1.2.1/G2): wire home newsletter launch page and dispatch history` (10-file +997/−4)
+   · `App.jsx`+10 Route `/clients/home-newsletter` · `HomeNewsletterLaunchPage.jsx` 300L · `homeNewsletter.js` 296L
+   · `services.js`+35 (`/home-newsletter/launch`·`/home-newsletter/dispatch-history`) · navConfig·ClientsContextNav
+   · `competitorModuleCoverage.js` id=1-5 **0.5→0.65**
+2. BE `9254721` `feat(v2/G2): add home newsletter dispatch history API` (10-file +445/−4)
+   · `GET /api/v1/notifications/home-newsletter/dispatch-history` (page/size · branch-scoped)
+   · `GuardianHomeNewsletterDispatchHistory{Service,Response,PageResponse}` + routing/RBAC tests
+
+## 1. ★★★ id=1-5 「가정통신문」 G2 4-layer DEEPEN (메뉴/필드/워크플로 블록)
+
+BNK-719~722 G2 chain:
+
+| 단계 | cycle | 착지 | coverage |
+|---|---|---|---|
+| dispatch email | BNK-719/720 | `POST .../home-newsletter` + `GuardianDocumentNotifyPanel` | 0→0.5 |
+| launch catalog + health | BNK-721 | `GET .../launch` + `/api/v1/health` email readiness | 0.5 carry |
+| **launch page + dispatch-history UI** | **BNK-722** | `/clients/home-newsletter` + `GET .../dispatch-history` | **0.5→0.65** |
+
+### FE 워크플로 (`HomeNewsletterLaunchPage`)
+
+1. 진입 `/clients/home-newsletter` → catalog fetch(`GET .../launch`) + health readiness 병합
+2. 표기: 발송 준비 상태 · authoringAvailability(SURFACE_PLANNED) · authoring blockers(`authoring-ui-planned`)
+3. 안내: 「수급자 상세의 보호자 문서 발송 패널에서 월간 가정통신문 이메일을 실행합니다.」
+4. **발송 이력** 섹션 → `GET .../dispatch-history` 페이지네이션 목록
+5. relatedSurfaces 바로가기(보호자 문서 발송 패널 등)
+6. **미착지(authoring)**: compose/board 작성 UI = PLANNED(coverage 1.0 아님)
+
+### 경쟁 crosswalk
+
+| 제품 | 가정통신문 | 판정 |
+|---|---|---|
+| 케어포 | func.php 1-5 가정통신문 + 10-2 급여안내(정적 leaf·작성·관리 포함 가능) | ✅ 작성 포함(가정) |
+| 이지케어 | FAQ 알림 클러스터 · in-app launch/history 미확인 | △ |
+| 엔젤 | extraService 「LCMS-엔젤시스템에서만」 가정통신문·안내장(외부 SaaS) | △ 위탁 |
+| ogada | dispatch + launch catalog + health + **launch page + history** · authoring PLANNED | △→△+(0.65) |
+
+→ ogada = 경쟁 대비 **operational/launch/history 심화**(authoring 잔여·케어포 작성 parity 미달).
+
+## 2. P0/P1 재정렬 · closed axes · 이전 가정 번복 여부
+
+| id/축 | coverage | 판정 | 우선순위 |
+|---|---|---|---|
+| **1-5 가정통신문** | **0.65** | △ launch+history LIVE · authoring PLANNED | **잔여 lever = authoring UI**(0.65→1.0) |
+| **12 수입지출·회계** | 0.7 | △ SSO handoff full-stack · credentials 미등록 | **잔여 lever = 실환경 credentials**(운영·0.7→1.0) |
+| **1-10 연계기록지** | 0 | 진성 갭(평가지표 30) | v2+ 후보(P3) carry |
+| 2 이동서비스 | 0.85 | △ RU_1~4 6-link | operational polish |
+| 8 직원·근태 | 0.85 | △ | 후속 |
+| 10 SMS·알림 | 0.75 | △ J03 readiness | 후속 |
+| **G14** `/care-plan-form` | ✅ Route LIVE | closed | **재오픈 0** |
+| **v1.3-C** transport×9+G16 | ✅ | closed | **재오픈 0** |
+| **v2 CMS** `/billing/cms`·easy-pay·cash-receipts | ✅ | closed | **재오픈 0** |
+| **P3 dashboard 2건** | 0 | G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY | **「가정」 유지·격상 0** |
+| G-ACCOUNTING-IN-APP-LEDGER | — | v3+ 「가정」 | MVP out-of-scope carry |
+
+- **가정 번복 0**: BNK-721 「authoring 미착지 → 1.0 아님」 **유지 확인**(0.65=launch/history deepen ≠ authoring).
+- **번복 아님·심화 확인 1**: BNK-719 저평가→0.5 → BNK-722 **0.65**(coder chain 연속 착지).
+- **진성갭 재확인 1**: id=1-10 연계기록지 FE/BE 구현 0(config/coverage 주석 외 linkage 실구현 0).
+
+## 3. 규제·공지·엑셀 재실측 (기존 URL · 신규 변경 스캔)
+
+| 소스 | HTTP·SIZE·md5 | 판정 |
+|---|---|---|
+| NHIS #44 이동서비스비 | 200·7,572B·`c886ff1f` | **457차** zero drift IDENTICAL(BNK-721 456차→+1·러-1/러-4/편도×2/1일 1회/수급자가 부담하지·이동서비스 13-hit) |
+| law247 고시 | 200·78,450B·`3950b756` | size-lock · Time= md5 DRIFT · 시행 2026.1.1 IDENTICAL |
+| silverangel notice | 200·5,707,602B·`ea7d6b3d` | IDENTICAL · max Tmp_idx ≤221572 · **≥221573=0**(~18일+ pause) |
+| ezcare FAQ list | 200·80,057B·`de0ce96b` | size-lock · cachebuster md5 DRIFT · rowid **233**·max **21781**·신규 FAQ 0 · 「엑셀」 2-hit(포맷 변경 신호 0) |
+| ezcare FAQ 21844 | 200·14,474B·`d0aa760c` | IDENTICAL(엑셀 포맷 변경 0) |
+| ezcare FAQ 21845 | 200·13,915B·`5b78c947` | IDENTICAL |
+| ezcare home | 200·69,798B·`26b87c3e` | data-count **53.2/9298/4668/2353/1820** IDENTICAL(+24B cachebuster)·집계 2026.06.30 |
+| sujifine login | 200·3,974B·`be7819c1` | size-lock · CSRF md5 DRIFT · title「장기요양 재무회계 관리프로그램」IDENTICAL |
+| carefor func.php | **000** timeout | 「미확인」 carry(disk canonical `6226e6eb` 우선) |
+
+→ **신규 규제/공지/엑셀 포맷 변경 0** · import adapter 긴급 불요.
+
+## 4. 산출 요약
+
+- 신규/재실측 evidence URL: NHIS #44 457차 · law247 · FAQ list/21844/21845 · home · sujifine · notice = **재실측 7건+**
+- 메뉴/필드/워크플로: **G2 가정통신문 4-layer**(dispatch→catalog/health→**launch page+history**) §1
+- COMPETITOR_MATRIX 1행+ `@b7c9fa4`/`@9254721` 갱신
+- BENCHMARK_REPORT §BNK-722 + memory/decisions.md 최상단
+- 가정 번복 0 · 심화 확인 1(id=1-5 0.5→0.65) · closed axes 재오픈 0 · P3 dashboard 격상 0
+- 덮어쓰기 0 · per-cycle minimum 4종 충족

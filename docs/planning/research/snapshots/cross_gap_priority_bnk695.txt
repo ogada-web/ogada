@@ -1,0 +1,187 @@
+BNK-695 · 교차검증·갭 우선순위 8h+ · 2026-07-13T16:52:00Z (KST 2026-07-14 01:52)
+=========================================================================
+agent: benchmark_researcher (BNK) · rotation: 8h+ 교차검증·갭 우선순위
+주의: 직전 cycle(BNK-694)은 2026-06-27 · 본 cycle 은 2026-07-13 → 약 16일 경과 long-interval 재실측.
+
+## 1. ogada git 실측 — FE HEAD +1 · BE HEAD zero advance · 양쪽 WT DIRTY (transport 셔틀/로스터 WIP)
+
+FE develop: 154ebeedffe2bedbaec54b12db3c58c0e4864331
+  msg     : test(v1.2.1/QA-B358): sync safety required-flag unit tests with optional default
+  prev    : b10c5bb (BNK-692~694) → +1 commit
+  WT      : DIRTY — 20 M + 8 ?? (transport 셔틀 시트/로스터 WIP·아래 §1-b)
+  ahead   : 286 vs origin/test=ab4de83  (BNK-694 285 → +1)
+BE develop: 2f4bfdfa28a7c72946142d9aaf7efa689536352e  (BNK-692~694 동일·HEAD zero advance 3-cycle)
+  msg     : fix: surface unsupported nhis seed year
+  WT      : DIRTY — 26 M + 8 ?? (BillingServiceTest 3-cycle carry + transport 셔틀/로스터 WIP)
+  ahead   : 606 vs origin/test=598d108
+merge gate: 892 (FE 286 + BE 606 · BNK-694 891 → +1 FE)
+
+## 1-b. 신규 coder WIP 감지 — v1.3-C transport 「송영 셔틀 배차표 + 일자별 로스터 상태」 (미커밋)
+
+FE 신규(??) 4쌍:
+  - src/components/transport/TransportShuttleScheduleView.jsx (+test)
+  - src/components/transport/TransportShuttleSheetView.jsx (+test)
+  - src/lib/transportShuttleSheet.js (+test)
+  - src/pages/TransportShuttleSheetPage.jsx (+test)
+BE 신규(??):
+  - transport/api/TransportRosterDayStatusResponse.java
+  - transport/api/UpdateTransportRosterDayStatusRequest.java
+  - transport/persistence/TransportRosterDayStatusEntity.java + Repository.java
+  - db/migration/V186__transport_runs_departure_round.sql       (출발 회차/왕복 방향)
+  - db/migration/V187__vehicles_shuttle_addresses.sql           (차량 셔틀 정류장 주소)
+  - db/migration/V188__transport_roster_day_status.sql          (일자별 배차 상태)
+  - db/migration/V189__transport_roster_day_status_unify.sql
+
+→ 벤치마크 각주: 케어포 demo-work 「이동서비스 nav 0」(BNK-592 carry) · 이지케어 carmatch/RFID 태그비교만
+  (배차 최적화 표 ❌·new.ez [4]RFID점검·btn-carmatch-open) → ogada 「송영 셔틀 배차표(sheet)+로스터 일자상태+
+  차량 정류장 주소+회차」 full-stack 배차 deepen = 경쟁 4종 대비 이동서비스 단일 최심 우위 확대(v1.3-C).
+→ rules §6 risk: FE 8?? + BE 8?? + BillingServiceTest 3-cycle carry 미커밋 → submodule re-clone 손실 위험.
+   coder commit closure 권장(V186~V189 마이그레이션 미커밋 상태 = tester merge 반영 불가).
+
+## 2. KPI 9축 — BNK-693/694 IDENTICAL carry (정정값 2건 유지)
+
+| 축 | BNK-694 | BNK-695 실측 | delta |
+|---|---|---|---|
+| FE HEAD | 154ebee (CLEAN) | 154ebee (DIRTY) | WT DIRTY (transport WIP) |
+| BE HEAD | 2f4bfdf | 2f4bfdf | IDENTICAL (zero advance 3-cycle) |
+| FE ahead | 285 | 286 | +1 (154ebee commit) |
+| BE ahead | 606 | 606 | IDENTICAL |
+| merge gate | 891 | 892 | +1 FE |
+| Route (`<Route\b`) | 123 | 123 | IDENTICAL |
+| Page (`*Page.jsx` strict) | 97 | 97 | IDENTICAL (BNK-692 「98」 over-count 정정 carry) |
+| BE Test 파일 (.java) | 278(277+1) | 278(277 Test+1 Tests) | IDENTICAL |
+| BE @Test (`grep -hoE '@Test\b'`) | 2046 | 2046 | IDENTICAL (BNK-692 「2047」 over-count 정정 carry·@ParameterizedTest 3 별도) |
+| FE test files (.test.{js,jsx}) | 500 | 500 | IDENTICAL |
+| 모듈 coverage | 84.31% (24.45/29) | 84.31% (24.45/29) | IDENTICAL |
+| V 마이그레이션 | V1–V185 (+V186~189 untracked) | V1–V185 (+V186~189 untracked WIP) | IDENTICAL committed |
+
+정정값 재확인 (BNK-692 SHA `2f4bfdf`/`b10c5bb` 위에서 재현):
+  - BE @Test = 2046 (BNK-692 2047 over-count) — BNK-693/694 정정 carry 재입증.
+  - Page *Page.jsx strict = 97 (BNK-692 98 over-count) — BNK-693/694 정정 carry 재입증.
+→ 신규 가정 번복 아님(carry). 이번 cycle 신규 가정 번복은 §3 silverangel leak closure.
+
+## 3. ★★★ silverangel 221564 draft leak CLOSED — 6/30 D-day 경과 후 공식 게시 확인 (가정 번복 + closure)
+
+BNK-693 「leak persist D-3 (1,812,677B `cd4993e3` 작성중 draft)」 → BNK-695 재실측:
+
+URL  : https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564&...
+HTTP : 200
+SIZE : 51,765B   (BNK-693 1,812,677B → −1,760,912B)
+md5  : 44223150   (BNK-599/619/645 shell 패턴 동일)
+검증 : 「작성중」 0회 · title 「엔젤시스템」 셸 · board_tit empty · release-notes body 노출 0
+
+→ draft(Tmp_idx=221564)는 6/30 이후 회수(shell 복귀)됨. leak 창 CLOSED.
+→ 가정 번복: BNK-685 「leak RE-OPEN」·BNK-693 「D-3 persist」 → BNK-695 「6/30 경과 후 CLOSED(정식 게시로 대체)」.
+
+### 3-b. ★★★ 6/30 공식 공지 정식 게시 확인 — Tmp_idx=221566 (BNK-654 leak 가설 → 「확인」 승격)
+
+notice list `list.do`(5,707,602B) 파싱: 최신 가시 주간 공지 4건 —
+  221563 6월 셋째 주  ·  221566 [필독][시설·주야간] 6/30 정식  ·  221571 7월 첫째 주  ·  221572 7월 둘째 주
+
+공식 221566 view.do: HTTP 200 · 3,898,875B · md5 49db2753 · 조회 673 · 등록일 2026-06-30 · 작성자 (주)엔젤시스템
+disk: silverangel_notice_221566_official_bnk695.html
+
+[시설/주야간 공통] 13항목 (BNK-654 leak 본문과 verbatim 일치·이제 정식 게시):
+  1. 메인화면 - 공지 열람 이력 미유지 현상 개선
+  2. 간호 간호처치기록 - 입원/외박 중에도 '병문안' 서비스 항목 생성·수정 가능
+  3. 간호 간호처치기록 - '지연' 상태값 변경 기능 추가(지연→사유선택 시 '기타' 전환·대시보드 일괄적용)
+  4. 간호 간호처치기록 - 급여계획 일괄생성 시 '계획 횟수 전체 생성' 옵션 추가
+  5. 간호 간호처치기록 - 목록 정렬 기준이 출력·엑셀 동일 적용
+  6. 간호 간호처치기록 - 급여계획에 '간호처치기록 설정(NEW)' 버튼 + 관리>기관정보>관리자설정 미이행 설정 탭
+  7. 간호 건강관리기록부 - 매일 자동 생성 설정에 '주말생성여부' 옵션
+  8. 간호 건강관리기록부 - 생활실/호실 선택 후 일일기록(등록) 시 해당 수급자 체크박스 자동 활성화
+  9. 간호 건강관리기록부 - 입소(예정)일 이전 날짜 등록/기초정보 생성 불가
+ 10. 간호 건강관리기록부 - 생활실/호실 정렬 시 수급자명 가나다순 정렬
+ 11. 간호 건강관리기록부 - 법정서식 출력 시 서명 이미지 표시
+ 12. 간호 건강관리기록부 - 일괄수정 시 생활실/호실·수급자명 정렬 가능
+ 13. 보고서 관찰일지(상태변화기록) - 작성자 선택 목록 오름차순(이름순) 정렬
+[주야간 적용] 3항목:
+  1. 간호 건강관리기록부 - 매일 자동 생성 설정에 '공휴일 생성' 옵션
+  2. 간호 욕창위험도평가 주석문 변경(신규 수급자 급여제공 시작일까지 실시)
+  3. 간호 낙상위험도평가(Huhn·Gyldenvand and Shedd 1989·보봐스기념병원) 주석문 변경
+
+→ BNK-654 도출 P3 candidate 9종(G-NURSING-DELAY-TO-OTHER-AUTOTRANSFORM·G-NURSING-FULL-COUNT-BULK-PLAN·
+  G-NURSING-LIST-EXPORT-SORT-PARITY·G-NURSING-MISSED-RECORD-ADMIN-SETTINGS·G-HEALTH-RECORD-WEEKEND-AUTOGEN-TOGGLE·
+  G-HEALTH-RECORD-ROOM-CLIENT-AUTOSORT·G-HEALTH-RECORD-PRE-ADMISSION-GUARD·G-RISK-ASSESSMENT-ANNOTATION-STANDARDIZE 등)
+  = 이제 「가정(leak)」 → 「확인(공식 게시)」 승격. planner ROADMAP 재검토 근거 확정.
+→ 경쟁사 개발 초점 = 간호/건강관리기록부 depth (13/16 = 81% 이 간호 모듈). ogada M4 간호(cov 1)·M6 안전 대비
+  「미이행 설정·자동생성 옵션·서명 이미지·정렬 parity」 세부 옵션 gap 재점검 권장.
+
+## 4. ★★★ 신규 경쟁 기능 — silverangel 「AI 판단근거 기반 총평」(욕구사정) 최초 AI 기능 등장 (7월 둘째 주 221572)
+
+URL  : .../notice/view.do?...Tmp_idx=221572  · HTTP 200 · 72,743B · md5 1efe10bd · 등록일 2026-07-09 · 조회 834
+disk : silverangel_notice_221572_july_w2_bnk695.html
+
+[시설/주야간 적용] 6항목 — 핵심:
+  1. ★ 입소자관리(수급자 관리) - 욕구사정 총평에 'AI 판단근거 기반 총평'(NEW) 버튼 추가
+     -. 욕구사정 판단근거 기반으로 AI가 총평 생성
+     -. 판단근거 항목 하나라도 미작성 시 생성 불가(누락 항목 안내)
+     -. 하루 최대 100회 무료
+     -. AI 생성 후 1회 이상 수정해야 저장 가능(참고용·기관 책임 고지)
+  2. 급여제공계획 - 공단연계 급여제공계획 상세조회/출력 순서를 작성순서와 동일 조정
+  3. 기관운영 교육(직원대상) - 신규직원 교육현황 추가(급여개시일로부터 7일 이내 미제공 시 주황색 표시)
+  4. 기관운영 교육 - 실시현황 화면/출력 개선(서명 표시·동일날짜 2회 참석 시 횟수 표시 예 2026-07-09(2))
+  5. 기관운영 교육 - 출석인원 직원명단 표시 기준 개선(교육일자 기준 입·퇴사일 체크박스 비활성화)
+  6. 기관운영 직원 관리 - 근골격계질환 증상조사표 출력 시 서명 표시
+
+→ ★ 경쟁사 최초 생성형 AI 기능 확인 — silverangel 「욕구사정 AI 총평」. ogada 대응 0
+  (`git -C src/frontend/backend grep -i 'ai\|gpt\|llm\|총평'` 후속 확인 필요).
+→ 신규 candidate 제안(planner): **G-AI-NEEDS-ASSESSMENT-SUMMARY** P2/P3「가정」
+   — 욕구사정(assessment) 판단근거 → AI 총평 draft 생성·수정 필수·rate limit(일 100회)·책임 고지 UX.
+   ogada `ClientDetailPage > assessment` tab 이미 존재 → AI 총평 add-on 후보. 차별화·리스크(개인정보·정확성) 동반.
+→ 신규 candidate: G-STAFF-NEW-HIRE-TRAINING-7DAY-TRACKER(신규직원 7일 교육 현황·주황 경고) P3「가정」.
+→ 신규 candidate: G-MUSCULOSKELETAL-SURVEY-SIGNATURE(근골격계 증상조사표 서명) P3「가정」.
+
+## 5. NHIS #44 이동서비스비 러-1~4 — 431차+ zero drift IDENTICAL (16일 경과에도 불변)
+
+URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP : 200 · SIZE 7,572B · md5 c886ff1f (BNK-685~694 IDENTICAL · 16일 경과 후에도 불변)
+disk : nhis_jo44_live_bnk695.html
+verbatim 불변: 러-1~4 · 편도 50%(ONE_WAY_RATIO=0.5) · 1일 1회 · 수급자 부담 X · 별지 제22호 일지
+→ ogada `TransportServiceFeeService` full-stack ✅ 경쟁 4종 유일 우위 carry.
+  (본 cycle coder 의 셔틀 배차표/로스터 WIP 는 이 우위를 UX 레이어로 확대하는 방향.)
+
+## 6. ezCare FAQ 도움말 list — 16일 long-interval counter +8,888
+
+URL  : https://ezcare.easyms.co.kr/help/faq.ez · HTTP 200 · SIZE 80,057B (size-lock 13-cycle carry)
+md5  : fcecfafd (BNK-694 80e89c05 → DRIFT)
+disk : ezcare_help_faq_list_live_bnk695.html
+entries: 233 rowid · hit_sum 3,646,277 (BNK-694 3,637,389 → +8,888 in ~16일 ≈ +555/day)
+Top-5 hit: 83,903(rowid=21601 직원 회의록 전산·+24) · 44,153(21274) · 37,213(21529) · 25,114(21723 시급·+45) · 24,846(21356)
+→ 결제·재무 클러스터(K008 수당+K012 재무+K013 본인부담+K014 4대보험) 지속 성장 = M11/M12 sole P1 lever demand-signal carry.
+→ M11/M12 closure 시 84.31%→91.21%(+6.90pp) 유일 P1 lever 재확인.
+
+## 7. 결산 (per-cycle minimum 4종)
+
+신규 evidence URL       : 5건 (NHIS #44 431차 · ezCare FAQ list · silverangel 221564 CLOSED · 221566 공식 · 221572 AI)
+경쟁사 메뉴/필드/워크플로: 2블록 (silverangel 6/30 정식 13+3 feature 목록 · 7월 2주 AI 총평 6-feature 목록)
+COMPETITOR_MATRIX @HEAD : 갱신 (ogada `@154ebee`/`@2f4bfdf` · AI-욕구사정 신규 행 추가)
+BENCHMARK_REPORT §차수   : §BNK-695 신규 추가
+
+신규 snapshot 5건:
+  - cross_gap_priority_bnk695.txt              (이 파일·주력 extract)
+  - nhis_jo44_live_bnk695.html                 (zero drift IDENTICAL 431차)
+  - ezcare_help_faq_list_live_bnk695.html      (cachebuster DRIFT · +8,888 hit 16일)
+  - silverangel_notice_221564_live_bnk695.html (leak CLOSED · shell 복귀)
+  - silverangel_notice_221566_official_bnk695.html (6/30 정식 게시 13+3 feature)
+  - silverangel_notice_221572_july_w2_bnk695.html  (AI 총평 등 6 feature)
+덮어쓰기 0.
+zero drift IDENTICAL : 1 (NHIS #44 431차)
+cachebuster/counter DRIFT : 1 (ezCare FAQ list)
+가정 번복            : 1 (silverangel 221564 leak D-3 persist → 6/30 경과 후 CLOSED·정식 게시로 대체)
+closure              : 1 (BNK-654 leak 가설 → 221566 정식 게시 「확인」 승격)
+신규 candidate       : 3 (G-AI-NEEDS-ASSESSMENT-SUMMARY P2/P3 · G-STAFF-NEW-HIRE-TRAINING-7DAY-TRACKER P3 · G-MUSCULOSKELETAL-SURVEY-SIGNATURE P3)
+KPI 변경             : 1 (merge gate 891→892 · FE ahead +1)
+상태 변경            : 2 (FE HEAD +1 · 양쪽 WT DIRTY transport 셔틀/로스터 WIP)
+미확인 carry         : 1 (longterm 502/610 long-cycle)
+
+## 8. 다음 액션
+
+→ coder  : ① BE BillingServiceTest 3-cycle 미커밋 carry + transport 셔틀/로스터 WIP(FE 8?? · BE 8?? · V186~V189)
+            작은 단위 commit closure (rules §6 submodule re-clone 손실 위험 · V186~V189 미커밋 = merge 반영 불가).
+→ tester : merge gate 892(FE 286 + BE 606). 단 transport 셔틀 WIP·BillingServiceTest 미커밋 → coder commit 후 FF 권장.
+→ planner: ① 신규 candidate 3종 ROADMAP 등재 검토 — 특히 **G-AI-NEEDS-ASSESSMENT-SUMMARY**(경쟁사 최초 AI 기능·
+            차별화·개인정보/정확성 리스크 동반) 우선 논의. ② BNK-654 leak 도출 P3 9종 「가정」→「확인」 승격 반영
+            (221566 정식 게시). ③ silverangel 개발 초점 = 간호/건강관리기록부 depth → ogada M4/M6 세부 옵션 gap 재점검.
+            ④ M11/M12 sole P1 lever(+6.90pp) carry. ⑤ v1.3-C transport 셔틀 배차표 = 경쟁 이동서비스 단일 최심 우위 확대 서사.
+→ BNK 다음 rotation: 0–2h 케어포(func.php Wayback re-baseline) 또는 2–4h 이지케어(carmatch/RFID vs ogada 셔틀 배차 대조).

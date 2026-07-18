@@ -1,0 +1,61 @@
+BNK-801 (2026-07-16) — 케어포 역공학 0–2h
+케어포 func.php Module 8 「직원/인사관리」 15-leaf ↔ ogada staff/payroll Route 1:1 RE-crosswalk (post staff-HR landing)
+=======================================================================================================
+
+출처(역공학 소스):
+- canonical: docs/planning/research/snapshots/carefor_func_menu_catalog.json (disk md5 3c44ac2e·leaf_count 107·module_counts["8"]=15)
+- carefor_func.php disk 6226e6eb92fdd25ed3e50842a5e8a00b 98,328B (LIVE 3-URL HTTP 000 재확인 — 아래 §LIVE)
+- ogada 실측 HEAD: FE develop @73aa6dd / BE develop @e4123c3 (2026-07-16 git 실측)
+- 직전 module8 route map anchor: catalog.ogada_module8_route_map = BNK-486(2026-06-21) @ebdf737 (STALE)
+
+핵심 발견(★★★ 가정 번복 3건 — BNK-486 이후 staff-HR 3-leaf 착지):
+  8-2 근무일정표      BNK-486 「— △ P3」 → @73aa6dd /staff/schedules (StaffMonthlySchedulePage) ✅
+  8-6 회의록(보호자,복지및포상) BNK-486 「— △ P3」 → @73aa6dd /staff/committee-meetings (StaffCommitteeMeetingPage) ✅ FULL-STACK
+  8-13 연차,유급휴일 대장 BNK-486 「— ❌ HR P3」 → @73aa6dd /staff/annual-leaves + /staff/leave-ledger ✅ FULL-STACK
+  → ✅ 9 → 12 · △ 4 → 2 · ❌ 2 → 1
+
+Module 8 15-leaf 전수 crosswalk (@73aa6dd/@e4123c3):
+-----------------------------------------------------------------------------------------------------
+carefor      | title                             | ogada route (@73aa6dd)                          | demo_view                | 상태(BNK-486→801)
+-------------|-----------------------------------|-------------------------------------------------|--------------------------|------------------
+8-1          | 직원 정보관리                     | /staff · /staff/:id · StaffNhisCaregiverImportPanel | view.staff_manage    | ✅ carry
+8-1-1        | 선임 요양보호사 업무수행일지      | /staff/lead-caregiver-log                       | view.senior_staff_work_report | ✅ carry
+8-2          | 근무일정표                        | /staff/schedules (StaffMonthlySchedulePage)     | view.work_plan           | △→✅ 가정 번복
+8-3          | 연간 일정계획                     | (월간=/staff/schedules 인접·연간 전용 화면 없음) | view.schedule_manage     | △ P3 carry
+8-4          | 출퇴근 및 근무관리                | /staff/attendance (StaffWorkAttendancePage)     | view.staff_work_manage   | ✅ carry
+8-5          | 사례관리 회의록                   | /case-management/meetings (CaseManagementPage)  | view.patient_case_meeting| ✅ carry
+8-6          | 회의록(보호자,복지및포상)         | /staff/committee-meetings (StaffCommitteeMeetingPage) | view.staff_meeting  | △→✅ 가정 번복 FULL-STACK
+8-7          | 교육일지(인권,재난,소화,직원권익) | /staff/training-logs (StaffTrainingLogPage)     | view.staff_education     | ✅ carry
+8-7-1        | 요양보호사 보수교육               | /staff/training (StaffRefresherTrainingPage)    | commented out            | ✅ carry
+8-8          | 자원봉사자 활동일지               | — (out-of-scope)                                | view.staff_daily_volunteer | ❌ P3 carry
+8-9          | 고충처리 관리                     | /staff/grievance-counselings (GrievanceCounselingPage) | alert→9-5 redirect | ✅ carry
+8-10         | 건강검진관리                      | /staff/health-checkups (StaffHealthCheckupsPage)| view.staff_yearly_report | ✅ carry
+8-11         | 질향상노력                        | — (시설 인증 인접·전용 화면 없음)               | view.center_quality      | △ P3 carry
+8-12         | 현황 리포트                       | /staff/reports/status (StaffStatusReportPage)   | view.staff_report rpt    | ✅ carry
+8-13         | 연차,유급휴일 대장                | /staff/annual-leaves (StaffAnnualLeavePage) + /staff/leave-ledger (StaffLeaveLedgerPage) | view.staff_work_report rpt | ❌→✅ 가정 번복 FULL-STACK
+(8-13 drift) | 급여제공 리포트 (demo drift)      | /payroll/* 5-route (ledger·reports·basis·labor-cost-ratio·retirement-accrual) | — | ✅ M11 CLOSED carry
+
+집계: ✅ 12 · △ 2(8-3 연간계획·8-11 질향상) · ❌ 1(8-8 자원봉사) / 15-leaf
+      vs BNK-486 @ebdf737: ✅ 9 · △ 4 · ❌ 2 → staff-HR 3-leaf 착지로 +3 ✅
+
+BE full-stack 착지 근거(git ls-files 실측 @e4123c3):
+- 8-6: staffcommitteemeeting/api/StaffCommitteeMeetingController.java · domain/StaffCommitteeMeetingService.java · persistence/StaffCommitteeMeetingLogEntity.java · test/StaffCommitteeMeetingServiceTest.java
+- 8-13(연차): staffannualleave/api/StaffAnnualLeaveController.java · domain/StaffAnnualLeaveService.java · persistence/StaffAnnualLeaveYearlyEntity.java · test/StaffAnnualLeaveServiceTest.java + pilot/StaffAnnualLeavePilotServiceFlowE2eTest.java
+- 8-13(휴일대장): staffleaveledger/api/StaffLeaveLedgerController.java · domain/StaffLeaveLedgerService.java · persistence/StaffLeaveLedgerEntryEntity.java · test/StaffLeaveLedgerServiceTest.java + pilot/StaffLeaveLedgerPilotServiceFlowE2eTest.java
+- 8-2: visits/domain/StaffMonthlyScheduleNotificationService.java (+ FE StaffMonthlySchedulePage)
+
+KPI 시사점(coder P2 candidate·「가정」):
+- config/competitorModuleCoverage.js id="8" 「직원·근태」 coverage=0.85 = BNK-486 anchor carry.
+- 재-crosswalk 결과 ✅ 12/15(△ 2·❌ 1) → 8-8 자원봉사(out-of-scope)·8-3/8-11(partial) 제외 시 실질 커버리지 ≥ 0.9.
+- 권고: coder 가 id="8" 0.85 → 0.9 재평가 candidate (BNK researcher 는 src/ 편집 금지 — 문서 권고만). 승격 강제 아님·planner 판단.
+
+§LIVE — 케어포 3-URL 재실측(2026-07-16, per-cycle 재실측):
+- https://www.carefor.co.kr/daycare/func.php  → HTTP 000 (timeout)
+- http://www.carefor.co.kr/daycare/func.php   → HTTP 000 (timeout)
+- http://demo-work.carefor.co.kr/             → HTTP 000 (timeout)
+→ 89-cycle+ 「미확인」 유지 · disk canonical carefor_func.php 6226e6eb 98,328B LOCK · 덮어쓰기 0.
+
+결론:
+- ★★★ Module 8 「직원/인사관리」 = 케어포 func.php 15-leaf ↔ ogada staff/payroll ✅ 12/15 (BNK-486 9→12) — staff-HR 3-leaf(8-2 근무일정표·8-6 회의록·8-13 연차/휴일대장) 착지로 catalog module8 route map STALE 재앵커.
+- 잔여 △ 8-3(연간계획)·8-11(질향상)·❌ 8-8(자원봉사) = P3 out-of-scope·격상 불요.
+- P0 신규 0 · 신규 진성갭 0 · KPI 재평가 candidate 1(id=8 0.85→0.9 coder 판단).

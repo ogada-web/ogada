@@ -1,0 +1,107 @@
+BNK-650 ogada git remeasure (cross-cycle KPI snapshot)
+조사일: 2026-06-26T06:57:00Z | rotation: ogada git 실측 6–8h (QA-B95 17th-layer 컴포넌트 status code regression-safe test lock)
+
+=== FE develop (확인) ===
+@8ceb25c46aa66ff8b9f0c79e1abf99c0bef0b8e0
+  commit msg: feat(v2/G-NHIS-SCHEDULE-IMPORT): wire visit NHIS import guidance panel
+  WT: CLEAN (git status -s = 0 lines)
+  ahead vs origin/test: 256
+  Δ vs BNK-649 (@8ceb25c): HEAD zero advance 1-cycle
+  diff: 0L (carry · BNK-649 last advance was FE-only +1 G-NHIS-SCHEDULE-IMPORT FE guidance panel)
+
+=== BE develop (확인) ===
+@9664f293ddd03e43b36807261a4e6b5d6aedb156
+  commit msg: test(v2/QA-B95): lock g21 seed component status code resolution
+  WT: CLEAN (git status -s = 0 lines)
+  ahead vs origin/test: 584
+  Δ vs BNK-649 (@59e4e7f): HEAD +1
+  diff: 1-file +59L — `LiveE2eOperationReadinessSupportTest.java` +59L (3 신규 @Test)
+    · resolveG21SeedStatusCodesShouldHandleNotApplicableSeeds — not-applicable branch
+    · resolveG21SeedStatusCodesShouldHandleBranchMissingSeeds — branch-missing-or-inactive branch
+    · resolveG21SeedStatusCodesShouldExposePresentAndMissingComponentsWhenApplicable — applicable + 3-component present/missing matrix (visit-schedule·billing-visit-schedule·nhis-import)
+  commit body verbatim:「Add unit tests for not-applicable, branch-missing, and applicable present/missing component codes so QA-B95 14th-layer readiness probes stay regression-safe without parsing detail strings.」
+
+=== merge gate (확인) ===
+  840 (= 256 FE + 584 BE) = +1 BE-only vs BNK-649 839
+  cross-stream: FE 0 / BE +1 = BE-only advance (BNK-649 FE-only +1 패턴 대칭 종료)
+
+=== KPI grep 실측 (확인 · BNK-649 대비 delta) ===
+| 지표 | 값 | Δ vs BNK-649 |
+|---|---|---|
+| Route | **118** (`<Route\b` in src/App.jsx) + 1 `<Routes>` = 119 total | 0 |
+| page | **93** (`src/**/*Page.jsx` git ls-files) | 0 |
+| FE test 파일 | **483** (198 `*.test.js` + 285 `*.test.jsx`) | 0 |
+| BE Test 파일 | **273** (272 `*Test.java` + 1 `*Tests.java`) | 0 |
+| BE @Test annotation | **1980** (`git grep -hoE '@Test\b' -- '*.java'` occurrence) | **+3** |
+| @ParameterizedTest | **3** (별도 집계 carry) | 0 |
+| V*__ migration | **182** (V1–V182) | 0 |
+| 모듈 coverage | **80.86%** (23.45/29 · ✅21·△3·❌5) | 0 |
+| reports route (App.jsx) | **28** (`path=.*reports`) | 0 |
+
+근거 명령:
+  git -C src/backend grep -hoE '@Test\b' -- '*.java' | wc -l  →  1980
+  git -C src/backend ls-files '*Test.java' | wc -l            →  272
+  git -C src/backend ls-files '*Tests.java' | wc -l           →    1
+  git -C src/frontend ls-files 'src/**/*Page.jsx' | wc -l     →   93
+  git -C src/frontend ls-files '*.test.js' | wc -l            →  198
+  git -C src/frontend ls-files '*.test.jsx' | wc -l           →  285
+  git -C src/frontend grep -hoE '<Route\b' -- src/App.jsx | wc -l   → 118
+  git -C src/frontend grep -hoE '<Routes\b' -- src/App.jsx | wc -l  →   1
+  git -C src/backend ls-files 'src/main/resources/db/migration/V*__*.sql' | wc -l → 182
+
+=== QA-B95 cluster 17th layer — regression test lock (확인 · 신규 workflow block) ===
+BNK-625~648 16-layer 완결 후 BNK-650 추가 layer:
+  · BNK-643 13th: BE `g21SeedStatusDetail` probe surface (`@14964f6`)
+  · BNK-644 14th: FE `liveBackendProbe`/`liveConfig`/harness 14-layer end-to-end (`@a8f4e8e`)
+  · BNK-645 hardening: `prioritize g21 service-unavailable seed reason` (`@a727862`)
+  · BNK-646 15th: BE `g21SeedStatusCode` 6-value enum (`@0f19767`) + FE `isG21Blocker` suite scoping (`@f851a59`)
+  · BNK-648 16th: FE `liveBackendProbe.js`/`liveConfig.js` code-based G21 branching + harness +98L (`@6009ba7`)
+  · BNK-648 BE component readiness: `expose g21 seed component readiness codes` (`@59e4e7f`)
+  · **BNK-650 17th NEW**: BE `LiveE2eOperationReadinessSupportTest` +3 @Test = **3-state matrix lock** (not-applicable·branch-missing·applicable-with-component-matrix) — QA automation 이 detail string parsing 없이 컴포넌트별 status code 로 진단 가능하도록 contract 고정
+
+세부 코드 resolver 5종 (BE):
+  · `resolveG21SeedStatusCode(status)` — overall (disabled/service-unavailable/error/not-applicable/branch-missing-or-inactive/applicable)
+  · `resolveG21VisitScheduleStatusCode(status)` — present/missing/not-applicable/branch-missing-or-inactive
+  · `resolveG21BillingVisitScheduleStatusCode(status)` — present/missing/...
+  · `resolveG21NhisImportStatusCode(status)` — present/missing/...  ← NHIS #44 cross-walk
+  · `resolveG21SeedStatusDetail(status)` — human-readable detail string
+
+테스트 케이스 cross-walk:
+  · not-applicable: 단일 지점 운영 (branch context N/A) → all 4 component code = not-applicable
+  · branch-missing: branch 미설정 / 비활성 → all 4 = branch-missing-or-inactive
+  · applicable present/missing: 각 컴포넌트별 seed 존재 여부 매트릭스(2^3=8 가능) → present/missing 단위 surface
+
+→ 경쟁 4종 (케어포·이지케어·엔젤·롱텀) 동등 live readiness probe + 컴포넌트별 status code regression test = **0 노출** (BNK-642~650 9-cycle carry).
+
+=== 백본 zero drift 재실측 (402차) ===
+zero drift IDENTICAL (3-URL live 재실측):
+  · NHIS #44 이동서비스비 러-1~4: live HTTP 200·7,572B·md5 `c886ff1f` (402차 · BNK-649 401차 carry +1)
+    verbatim 불변: ① 러-1~4 편도 최단거리 표 · ② 1일1회·편도50% · ③ 수급자 부담 X · ④ 일지 작성·보관
+  · silverangel `daycareEssentialWork.do`: live HTTP 200·131,664B·md5 `c79c1be3` (402차 zero drift)
+  · silverangel `daycareProgramProvided.do`: live HTTP 200·67,987B·md5 `f18e1c7a` (402차 zero drift · 8카테고리 100+ leaf)
+
+ogada `TransportServiceFeeService`(RU_1~4·`ONE_WAY_RATIO=0.5`·1일1회) + `TransportServiceLog`(별지 제22호) + `VisitNhisImportGuidePanel`(BNK-649 `@8ceb25c` portal link longtermcare.or.kr) = **경쟁 4종 유일 full-stack** carry (402-cycle).
+
+=== g21 component status code ↔ NHIS #44 cross-walk (신규 deepen) ===
+17th layer test lock 으로 다음 contract 확정:
+  · `nhis-import-status-code=present` ⇔ 공단 일정 import seed 데이터 적재 완료 ⇔ NHIS #44 portal sync 가능
+  · `nhis-import-status-code=missing` ⇔ seed 미적재 ⇔ FE `VisitNhisImportGuidePanel` planImportSteps/billingImportSteps 안내 (BNK-649 FE closure)
+  · `nhis-import-status-code=branch-missing-or-inactive` ⇔ 지점 비활성 ⇔ FAQ 21298 「확정 제외 초기화」 unavailable
+  · `nhis-import-status-code=not-applicable` ⇔ 단일 지점 운영 ⇔ NHIS #44 portal 직접 안내
+
+→ BE component status code (BNK-650 lock) ↔ FE guidance panel (BNK-649 `@8ceb25c` closure) = end-to-end full-stack QA-DX 3-요소 진단 확정.
+
+=== 갭 우선순위 carry (BNK-650 변동 0) ===
+- **P1 carry**: M11 직원급여(id=11) + M12 회계(id=12) — 둘 다 ❌ 0 route. 단일 P1 lever +6.9pp(80.86→87.76%). 결정 question(PLAN_NOTES): in-app 구현 vs BPO 어댑터.
+- **P2 carry**: `G-CLIENT-CONTRACT-BULK-PRINT` FE 일괄출력 wire (BE bulk-export `@4df9465` ✅·FE 0 hit).
+- **P3 carry**: `G-RFID-CARE-PROVISION-DISPATCH`(FAQ 21589·평가29 월1회)·`G-FACILITY-MODE-EXTENSION`(시설형 39%)·`G-SATISFACTION-SURVEY-DIAL`(시설형 #45)·`G-CIST-COGNITIVE-SCREENING-LOG`(FAQ 19,592 hit)·`G-NHIS-EXCEL-RECONCILE`(FAQ 21844 PII masking)·221564 6/30 D-4.
+- closure 0 · 가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 (BNK-649 carry).
+
+=== 4축+leave-ledger LIVE 7/7 carry (확인) ===
+  G14 care-plan-form 1 ✅ · 대시보드 5 ✅ · hq 2 ✅ · transport 22 ✅ · cms 3 ✅ · leave-ledger 1 ✅ · annual-leaves 1 ✅
+  → P0/P1 재오픈 0 · BNK-549~650 carry · 가정 번복 0 (96-cycle)
+
+=== tester / coder / planner action (BNK-650) ===
+- tester: FF merge **840** (BE-only +1 vs 839·양쪽 WT CLEAN·선행 commit 불필요)
+- coder: QA-B95 17th BE 테스트 lock 완료 — 후속 작업 없음. P2 carry `G-CLIENT-CONTRACT-BULK-PRINT-FE-WIRE`(BE landed·FE 0 hit) 1순위 권장.
+- planner: baseline FE `@8ceb25c` carry · BE `@59e4e7f`→**`@9664f29`** · merge gate 839→**840** · KPI carry (Route/page/module/V*/FE test/BE Test 전부 IDENTICAL · @Test +3 only) · M11/M12 P1 lever carry (+6.9pp) · QA-B95 17-layer regression-safe contract 확정.

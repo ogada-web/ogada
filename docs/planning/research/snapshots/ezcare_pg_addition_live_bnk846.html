@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=1200, initial-scale=0.3">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="Title" content="">
+    <meta name="Subject" content="">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="방문일정관리, 수급자관리, 요양보호사급여관리, 재가센터 업무서식제공, 가산수가계산, 재가기관 업무관리프로그램">
+    <meta name="reply-to" content="">
+    <meta name="Robots" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="이지케어">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="https://ezcare.easyms.co.kr/">
+    <meta name="twitter:card" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:domain" content="">
+    <meta name="google-site-verification" content="">
+    <meta name="naver-site-verification" content="">
+    <title>이지케어 재가장기요양기관 업무관리 프로그램</title>
+    <link rel="icon" href="/homepage2/assets/images/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/homepage2/assets/images/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/homepage2/assets/images/favicon/apple-touch-icon.png">
+    <!-- jquery -->
+    <script src="/homepage/js/vendor/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.number.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.cookie.js"></script>
+    <!-- 이지케어 유입분석 -->
+    <script src="/assets/accessClick.log.js?20230308" type="text/javascript"></script>
+    <!-- assets -->
+    <link rel="stylesheet" href="/homepage2/assets/css/reset.css?1784325223" />
+    <link rel="stylesheet" href="/homepage2/assets/css/base.css?1784325223" />
+    <link rel="stylesheet" href="/homepage2/assets/css/layout.css?1784325223" />
+    <link rel="stylesheet" href="/homepage2/assets/css/ez_alert.css?1784325223" />
+    <!-- <link rel="stylesheet" href="/homepage2/assets/css/responsive.css" /> -->
+    <script src="/homepage2/assets/js/common.js?1784325223"></script>
+    <script src="/homepage2/assets/js/ez_alert.js?1784325223"></script>
+    <script src="/homepage2/assets/js/home.js?1784325223"></script>
+    <link rel="stylesheet" href="/homepage2/assets/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/homepage2/assets/vendor/aos/aos.css">
+</head>
+<script>
+var PGID = 'addition'; // 2022.08.26 주팀장추가  accessClick
+var loginCheck = 0;
+var chk = 0;
+
+$(function() {
+    dep1 = 0,
+        dep2 = 0;
+});
+
+var _NGUL = "wcs.naver.net/wcslog.js";
+if (location.protocol == "https:") { var nUrl = "https://" + _NGUL; } else { var nUrl = "http://" + _NGUL; }
+document.write("<scr" + "ipt type='text/javascript' src='" + nUrl + "'></scr" + "ipt>");
+</script>
+
+<body>
+    <style>
+</style>
+
+<header class="header" id="header">
+	<div class="inner">
+		<div class="logo">
+			<a href="/index.html">
+				<img src="/homepage2/assets/images/logo_easycare_60h.svg" alt="재가장기요약기관 업무통합 ERP 이지케어" style="height:55px">	
+			</a>
+		</div>
+
+		<button type="button" class="menu-toggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+	  </button>
+
+		<nav class="nav">
+			<ul class="gnb">
+				<li><a class="" href="/index.html?PG=about">이지케어 소개</a></li>
+				<li><a class="" href="/index.html?PG=visit">방문요양 </a></li>
+				<li><a class="" href="/index.html?PG=daycare">주야간보호 </a></li>
+				<li><a class="" href="/index.html?PG=w4c">재무회계 대행</a></li>
+				<li><a class="active" href="/index.html?PG=addition">부가서비스</a></li>
+				<li><a class="" href="/index.html?PG=price">요금안내</a></li>
+				<li><a class="" href="/index.html?PG=signup_select">이용신청</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>						<link rel="stylesheet" href="/homepage2/assets/css/sub.css" />
+<!-- 부가서비스 안내 시작 -->
+<section class="service-list">
+    <div class="inner">
+        <div class="service-title-wrap section-head">
+            <h1 class="section-title">기관 운영 부담을 줄이는<br/>부가서비스를 한곳에서 확인하세요.</h1>
+            <p class="section-subtitle">
+                채용, 인지활동, 수납관리, 금융조회, 현금영수증 발급, 공동구매까지<br>
+				장기요양기관 운영에 필요한 업무 지원 서비스를 이지케어에서 함께 이용할 수 있습니다.
+            </p>
+        </div>
+        <div class="service-cards">
+            <!-- 01 인지활동 -->
+            <div class="service-card">
+                <div class="service-content">
+                    <h2>인지활동북</h2>
+                    <p class="helper-text">
+                        인지활동 자료와 월간계획표를 활용해 프로그램 준비 시간을 줄이고,<br>
+						센터 프로그램 운영을 체계적으로 관리할 수 있습니다.
+                    </p>
+                    <div class="service-btn-wrap">
+                        <a onclick="window.open('https://ezcare.easyms.co.kr/login.DEMO.html?inji2.ez','인지활동북','width=1500, height=1100')" class="btn btn-dark" hit-id="54490">바로가기</a>
+                        <!-- <a href="#" class="service-link">자세히 보기 →</a> -->
+                    </div>
+                </div>
+                <div class="service-image">
+					<img src="/homepage2/assets/images/addition-feature-img02.png" alt="부가서비스 인지활동"/>
+				</div>
+            </div>
+            <!-- 02 요양보호사 구인구직 -->
+            <div class="service-card">
+                <div class="service-content">
+                    <h2>요양보호사 구인구직</h2>
+                    <p class="helper-text">
+                        요양보호사 채용 공고 등록부터 지원자 확인까지,<br>
+						이지케어 안에서 구인 업무를 간편하게 진행할 수 있습니다.
+                    </p>
+                    <div class="service-btn-wrap">
+                        <a onclick="window.open('https://app-front.ezc.kr/service','구인구직','width=600, height=1100')" class="btn btn-dark" hit-id="54500">바로가기</a>
+                        <!-- <a href="#" class="service-link">자세히 보기 →</a> -->
+                    </div>
+                </div>
+                <div class="service-image">
+					<img src="/homepage2/assets/images/addition-feature-img03.png" alt="부가서비스 인지활동"/>
+				</div>
+            </div>
+            <!-- 03 공동구매 -->
+            <div class="service-card">
+                <div class="service-content">
+                    <h2>공동구매</h2>
+                    <p class="helper-text">
+                        센터 운영 물품부터 명절 선물까지 필요한 품목을 <br>
+						합리적인 조건으로 구매할 수 있도록 지원합니다.
+                    </p>
+                    <div class="service-btn-wrap">
+                        <!-- <a href="#" class="btn btn-dark">바로가기</a> -->
+                        <!-- <a href="#" class="service-link">자세히 보기 →</a> -->
+                    </div>
+                </div>
+                <div class="service-image">
+					<img src="/homepage2/assets/images/addition-feature-img01.png" alt="부가서비스 공동구매"/>
+				</div>
+            </div>
+            <!-- 04 본인부담금 자동이체 -->
+            <div class="service-card">
+                <div class="service-content">
+                    <h2>본인부담금 자동이체</h2>
+                    <p class="helper-text">
+                        매월 반복되는 본인부담금 수납 업무를 자동화해 미납 확인,<br>
+						출금 관리, 보호자 안내 부담을 줄일 수 있습니다.
+                    </p>
+                    <div class="service-btn-wrap">
+                        <!-- <a href="#" class="service-link">자세히 보기 →</a> -->
+                    </div>
+                </div>
+                <div class="service-image">
+					<img src="/homepage2/assets/images/addition-feature-img04.png" alt="부가서비스 본인부담금자동이체"/>
+				</div>
+            </div>
+            <!-- 05 통장거래내역 조회 -->
+            <div class="service-card">
+                <div class="service-content">
+                    <h2>통장거래내역 조회</h2>
+                    <p class="helper-text">
+                        기관 통장 입출금 내역을 이지케어에서 확인해<br>
+						입금 확인, 수납 대조, 본인부담금 관리 업무를 더 효율적으로 처리할 수 있습니다.
+                    </p>
+                    <div class="service-btn-wrap">
+                        <!-- <a href="#" class="service-link">자세히 보기 →</a> -->
+                    </div>
+                </div>
+                <div class="service-image">
+					<img src="/homepage2/assets/images/addition-feature-img05.png" alt="부가서비스 통장거래내역"/>
+				</div>
+            </div>
+            <!-- 06 현금영수증 발급 -->
+            <div class="service-card">
+                <div class="service-content">
+                    <h2>현금영수증 발급</h2>
+                    <p class="helper-text">
+                        본인부담금 수납 후 수급자·보호자에게 현금영수증을<br>
+						바로 발급해 발급 누락을 줄이고 수납 업무를 간편하게 처리할 수 있습니다.
+                    </p>
+                    <div class="service-btn-wrap">
+                        <!-- <a href="#" class="service-link">자세히 보기 →</a> -->
+                    </div>
+                </div>
+                <div class="service-image">
+					<img src="/homepage2/assets/images/addition-feature-img06.png" alt="부가서비스 현금영수증 발급"/>
+				</div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 부가서비스 안내 끝 -->
+<!-- 핵심 기능 시작 -->
+<section class="service-benefit">
+    <div class="inner">
+        <div class="benefit-title-wrap block-head">
+            <h1 class="block-title">ERP와 부가서비스를 함께 이용하면<br/>운영 흐름이 더 단순해집니다.</h1>
+            <p class="block-subtitle">
+               수납, 채용, 프로그램 준비, 비용 관리까지<br>
+			   기관 운영에 필요한 업무를 이지케어 안에서 한곳에서 처리할 수 있습니다.
+            </p>
+        </div>
+        <div class="benefit-list" data-aos="fade-up" data-aos-delay="50">
+            <div class="benefit-item">
+                <div class="benefit-icon">
+					<img src="/homepage2/assets/images/addition-benefit-img01.svg">
+				</div>
+                <h3>반복 업무 부담 감소</h3>
+                <p class="helper-text">
+                    수납 확인, 현금영수증 발급, 반복 안내 업무를 줄일 수 있습니다.
+                </p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">
+					<img src="/homepage2/assets/images/addition-benefit-img02.svg">
+				</div>
+                <h3>채용 업무 간소화</h3>
+                <p class="helper-text">
+                    요양보호사 구인 공고 등록과 지원자 확인을 한곳에서 관리합니다.
+                </p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">
+					<img src="/homepage2/assets/images/addition-benefit-img03.svg">
+				</div>
+                <h3>운영비 부담 완화</h3>
+                <p class="helper-text">
+                    공동구매와 부가서비스를 활용해 기관 운영비 부담을 낮출 수 있습니다.
+                </p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">
+					<img src="/homepage2/assets/images/addition-benefit-img04.svg">
+				</div>
+                <h3>운영 지원 확대</h3>
+                <p class="helper-text">
+                    인지활동, 수납, 채용 등 기관 운영에 필요한 지원 영역을 넓혀갑니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 핵심 기능 끝 -->
+<!-- 이용기관 후기 시작 -->
+<section class="service-review">
+    <div class="inner">
+        <div class="service-review-title-wrap block-head">
+            <h1 class="block-title">실제 기관은 부가서비스를 이렇게 활용하고 있습니다.</h1>
+            <p class="block-subtitle">
+                수납, 채용, 인지활동 등 반복 업무를 줄인 실제 활용 사례를 확인해 보세요.
+            </p>
+        </div>
+        <div class="service-review-list" data-aos="fade-up" data-aos-delay="50">
+            <div class="service-review-item">
+                <span class="service-review-badge">
+					<img src="/homepage2/assets/images/visit-pain-icon.svg">
+                    본인부담금 자동이체 이용 기관
+                </span>
+                <p class="service-review-text">
+                    본인부담금 수납이 자동화되어 일일이 입력하지 않아도 되어 편리합니다. 처리도 정확해 만족하고 있습니다.
+                </p>
+                <div class="service-review-info">
+                    <strong class="service-review-name">열린방문요양센터</strong>
+                    <span class="service-review-date">2026-02-04</span>
+                </div>
+            </div>
+            <div class="service-review-item">
+                <span class="service-review-badge">
+					<img src="/homepage2/assets/images/visit-pain-icon.svg">
+                    현금영수증 발급
+                </span>
+                <p class="service-review-text">
+                    수납 관련 서류 업무가 간소화되었고, 현금영수증 발급이 가능해 보호자 만족도도 높아졌습니다.
+                </p>
+                <div class="service-review-info">
+                    <strong class="service-review-name">실로암 재가 장기 요양센터</strong>
+                    <span class="service-review-date">2026-03-11</span>
+                </div>
+            </div>
+            <div class="service-review-item">
+                <span class="service-review-badge">
+					<img src="/homepage2/assets/images/visit-pain-icon.svg">
+                    인지활동북 이용기관
+                </span>
+                <p class="service-review-text">
+                    프로그램 준비가 편리해져 업무 효율이 높아졌고, 5등급 인지활동 자료를 수급자에게 맞춰 제공할 수 있어 도움이 됩니다.
+                </p>
+                <div class="service-review-info">
+                    <strong class="service-review-name">더사랑 재가 복지센터</strong>
+                    <span class="service-review-date">2026-05-03</span>
+                </div>
+            </div>
+        </div>
+        <div class="service-review-more-wrap">
+            <a onclick="openReview();" class="impact-btn" hit-id="54680"> 활용 사례 더 보기 →</a>
+        </div>
+    </div>
+</section>
+<!-- 이용기관 후기 끝 -->
+<!-- CTA 영역 시작 -->
+<section class="sub-cta">
+    <div class="inner" data-aos="fade-up" data-aos-delay="100">
+        <div class="cta-title-wrap section-head">
+			<p class="cta-title section-title">
+               기관 운영 방식에 맞는<br/> 필요한 부가서비스를 함께 알아보세요.
+            </p>
+            <!-- <p class="cta-title section-title">
+                필요한 부가서비스부터 선택해 이용해 보세요.
+            </p>
+            <p class="block-subtitle " style="color:#fff">
+                현재 이용 중인 ERP 환경과 기관 운영 방식에 맞춰<br>적용 가능한 부가서비스를 안내해 드립니다.
+            </p> -->
+			
+        </div>
+        <div class="cta-btn-wrap">
+            <a onclick="openInquiry('landingw4c')" class="cta-btn" hit-id="54690">
+                부가서비스 이용문의 →
+            </a>
+        </div>
+    </div>
+</section>
+<!-- CTA 영역 끝 -->
+<script src="/homepage2/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/homepage2/assets/vendor/aos/aos.js"></script>
+<script src="/homepage2/assets/js/main.js"></script>
+<div class="float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <a onclick="demoAction();">방문요양 ERP 체험</a>
+        <a onclick="demoDaycare();">주야간보호 ERP 체험</a>
+        <a onclick="demoW4c();">재무회계 체험</a>
+    </div>
+    <div class="horiz-line"></div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review">이용기관 사용기</a>
+        <a onclick="openEzMain('/login.html');" class="float-run-btn">
+            이지케어<br>
+            실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    <!-- <div class="d-flex">
+        <a href="?PG=joo-price">Link 1</a>
+        <a href="?PG=joo-signup-agree">Link 2</a>
+    </div> 주상무님 요금안내&이용신청-->
+    <button type="button" class="">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>
+<!--button type="button" class="float-top-btn">
+    <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+</button> 우하단 버튼이었음 -->
+<!-- 260706 플로팅 메뉴 수정
+<div class="new-float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <ul>
+            <li hit-id="54340"><a onclick="demoAction();">방문요양 ERP<br>체험</a></li>
+            <li hit-id="54410"><a onclick="demoDaycare();">주야간보호 ERP<br>체험</a></li>
+            <li hit-id="54420"><a onclick="demoW4c();">재무회계<br>체험</a></li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이용기관<br>사용기</a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입문의</a>
+		
+        <a onclick="openEzMain('/login.html');" class="float-run-btn" hit-id="54360">
+            이지케어 실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>-->
+<!-- 260709 플로팅 메뉴 수정-->
+<div class="float-menu-ver2">
+    <div class="float-top">
+        <ul class="float-exp-list">
+            <li hit-id="54340">
+                <a onclick="demoAction();">방문요양 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54410">
+                <a onclick="demoDaycare();">주야간보호 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54420">
+                <a onclick="demoW4c();">재무회계<span class="exp-badge">체험</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이지케어 <strong>이용후기</strong></a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입상담</a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div> 
+<script>
+document.querySelector('.float-top-btn').addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+</script><!-- if ($PG !== 'main') -->
+<footer id="footer" class="footer">
+	<div class="inner">
+		<div class="footer-top">
+			<ul>
+				<li class="accent">
+					<a onclick="openFooterModal('T1');">개인정보처리방침</a>
+				</li>
+				<li>
+					<a onclick="openFooterModal('T2');">이용약관</a>
+				</li>
+				<li>
+					<a href="/index.html?PG=contact">제휴문의</a>
+				</li>
+			</ul>
+		</div>
+		<div class="footer-bottom">
+			<div class="footer-bottom-wrap">
+				<div class="footer-company">
+					<p>
+						<span>법인명</span>
+						<strong>주식회사 이지엠소프트</strong>
+						<span>대표자명</span>
+						<strong>최병인</strong>
+					</p>
+					<p>
+						<span>주소</span>
+						<strong>대구광역시 수성구 알파시티2로 18, 4층(시지동 583-2, 에이스빌딩)</strong>
+					</p>
+					<p>
+						<span>사업자등록번호</span>
+						<strong>502-86-19289</strong>
+						<span>통신판매업 신고번호</span>
+						<strong>2012-대구수성구-0396</strong>
+					</p>
+					<p>
+						<span>개인정보관리책임자</span>
+						<strong>최병인</strong>
+					</p>
+				</div>
+				<div class="footer-cs">
+					<p class="footer-cs-title">고객센터</p>
+					<a href="tel:16440340" class="footer-cs-tel">
+						1644-0340
+					</a>
+					<p class="footer-cs-time">
+						09:30~17:30 (평일) 주말·공휴일 휴무
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<link rel="stylesheet" href="/homepage2/assets/css/popup/modal.css" />
+
+<section class="layer-section" id="footer-modal" onclick="closeFooterModalOnDim(event)">
+	<div class="modal modal-lg">
+		<div class="modal-header">
+			<h2 class="modal-title" id="footer-modal-title">안내</h2>
+			<button type="button" class="modal-close" onclick="closeFooterModal()">
+				<img src="/homepage2/assets/images/icon-close.svg" alt="닫기">
+			</button>
+		</div>
+		<div class="modal-body" id="footer-modal-body">
+			<div class="modal-content" id="footer-modal-content">content html</div>
+		</div>
+		<div class="modal-footer">
+			<div>
+			</div>
+			<div class="modal-footer-buttons">
+				<button type="button" class="modal-btn btn-secondary" onclick="closeFooterModal()">닫기</button>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+
+function closeFooterModal() {
+  document.body.style.overflow = 'initial';
+  document.body.style.paddingRight = 'initial';
+  var modal = document.getElementById('footer-modal');
+  if (!modal) return null;
+  modal.style.display = 'none';
+}
+
+function closeFooterModalOnDim(event) {
+  if (event.target === event.currentTarget) {
+    closeFooterModal();
+  }
+}
+
+async function openFooterModal(termType) {
+  const modal = document.getElementById('footer-modal');
+  const contentBody = document.getElementById('footer-modal-body');
+  const modalContent = document.getElementById('footer-modal-content');
+
+  if (!modal || !modalContent) return null;
+
+  const termMap = {
+    T1: {
+      title: '이지엠소프트(이지케어) <b>개인정보 처리방침</b>',
+      url: '/homepage2/assets/html/term_visit_privacy.html',
+    },
+    T2: {
+      title: '이지케어 서비스 <b>이용약관</b>',
+      url: '/homepage2/assets/html/term_visit_service.html',
+    },
+  };
+
+  const footer = termMap[termType];
+  const modalTitle = document.getElementById('footer-modal-title');
+
+  document.body.style.overflow = 'hidden';
+  document.body.style.paddingRight = '17px';
+  modal.style.display = 'flex';
+  if (contentBody) contentBody.scrollTop = 0;
+
+  if (!footer) {
+    if (modalTitle) modalTitle.innerHTML = '약관';
+    modalContent.innerHTML = '<p>약관 정보를 찾을 수 없습니다.</p>';
+    return null;
+  }
+
+  if (modalTitle) modalTitle.innerHTML = footer.title;
+  modalContent.innerHTML = '<p>약관을 불러오는 중입니다.</p>';
+
+  try {
+    const response = await fetch(footer.url, {
+      method: 'GET',
+      credentials: 'same-origin',
+      cache: 'no-cache',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to load footer html.');
+    }
+
+    modalContent.innerHTML = await response.text();
+    if (contentBody) contentBody.scrollTop = 0;
+  } catch (error) {
+    console.error(error);
+    modalContent.innerHTML = '<p>약관을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>';
+  }
+}
+</script>
+    <script>
+    function pop_calc() {
+        var cw = screen.availWidth;
+        var ch = screen.availHeight;
+        sw = 800;
+        sh = 760;
+        mw = (cw - sw) / 2;
+        mh = (ch - sh) / 2;
+        window.open('/page/landing/daycare.t1.202404/chargecalc.html', 'popup', 'width=' + sw + ', height=' + sh + ',left=' + mw + ',top=' + mh + ',toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no');
+    }
+
+    function popup_daycare_intro() {
+        var url = "/landing.ez?type=daycare.t1.202404&route=47540";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    function popup_event() {
+        var url = "/landing.ez?type=event.202307&route=2954";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    setInterval(function() {
+        // console.log('login check interval (homepage2)', loginCheck, $.cookie('login_uid'));
+        if (!loginCheck && $.cookie("login_uid")) {
+            console.log('login 안 되어있음');
+            ezAjax({
+                type: "POST",
+                async: false,
+                url: "/?mode=login_check",
+                dataType: "json",
+                success: function(data) {
+                    loginCheck = 1;
+                    $("#oInfo-name").text(data.organ);
+                    $("#login_User_Name").text(data.User_Name);
+                    $(".login.on").show();
+                    $(".login.off").hide();
+                }
+            });
+        } else if (loginCheck && !$.cookie("login_uid")) {
+            loginCheck = 0;
+            $(".login.on").hide();
+            $(".login.off").show();
+        }
+    }, 1000);
+
+    if (loginCheck) {
+        $('.login.on').show();
+        $('.login.off').hide();
+    } else {
+        $('.login.on').hide();
+        $('.login.off').show();
+    }
+    </script>
+
+
+
+<!-- 이지케어 분석 , 리뉴얼 홈페이지 2026.07.06 추가 -->
+<script type="text/javascript">
+var _route = "";
+if(_route && _route!="2100") accessClick.hit(_route, "_route");
+accessClick.hit(1100);
+</script>
+
+<script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+<script type="text/javascript">
+    if(!wcs_add) var wcs_add = {};
+    wcs_add["wa"] = "11a756aafdf88e0";
+    if(window.wcs) {
+      wcs_do();
+    }
+</script>
+
+</body>
+
+</html>

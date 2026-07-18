@@ -1,0 +1,189 @@
+BNK-682 ogada git 실측 6–8h (BNK-681 → BNK-682 · 2026-06-27T02:55Z)
+=================================================================
+
+[GIT 실측 — FE+1 / BE+1 cross-stream HEAD advance · QA-B355 dirty-tree CLEAR · WT 양쪽 CLEAN]
+--------------------------------------------------------------------
+
+FE develop:  47a068c(BNK-677) → f7061c4(BNK-678~681 carry·WT DIRTY 1M+1U 2-cycle) → **d1d0adf**(BNK-682·WT CLEAN)
+BE develop:  8342f92(BNK-677) → ac699192(BNK-678~679 carry) → 1f2803c(BNK-680~681 carry) → **92770fd**(BNK-682·WT CLEAN)
+
+FE HEAD     d1d0adf  fix(v2/live-e2e): harden fee schedule seed harness and lock regression tests
+                     Date: 2026-06-27 02:23:46 +0000
+                     2-file +97/-7 (`src/e2e/liveFeeScheduleSeed.js` +46/-7 · NEW `src/test/liveFeeScheduleSeed.test.js` 58L)
+                     커밋 메시지 verbatim:
+                       Add LIVE_E2E_SKIP_FEE_SEED bypass, explicit 404/network diagnostics for
+                       apply-nhis-seeds, and unit tests so QA-B355 dirty-tree is cleared for merge.
+
+BE HEAD     92770fd  test(v2/US-Q01): lock safety RBAC and fee seed HTTP contracts
+                     Date: 2026-06-27 02:18:15 +0000
+                     1-file +256 (`src/test/java/com/ogada/backend/security/RoleBasedControllerAccessTest.java`)
+                     커밋 메시지 verbatim:
+                       Add RoleBasedControllerAccessTest coverage for SafetyCheckController
+                       (HQ/branch admin/social worker allow, caregiver/guardian deny) and for
+                       NHIS fee-schedule seed endpoints (HQ-only apply, 422 on unsupported year).
+
+Ahead vs test:  FE 276 vs origin/test=ab4de83  (BNK-681 275 → +1)
+                BE 599 vs origin/test=598d108  (BNK-681 598 → +1)
+Merge gate:     875 (BNK-681 874 → +1+1 cross-stream)
+
+[KPI matrix — 8/8축 vs BNK-681]
+--------------------------------------------------------------------
+
+123  Route       (<Route\b 122 + <Routes> 1)        — IDENTICAL
+ 97  Page        (*Page.jsx)                        — IDENTICAL
+V1–V184          (last V184__safety_check_records)  — IDENTICAL
+277  BE Test     (276 Test.java + 1 Tests.java)     — IDENTICAL (+1 file vs BNK-680 277·실측 277 carry)
+2024 BE @Test    (`git grep -hoE '@Test\b' develop -- '*.java' | wc -l`) — **+14 vs BNK-681 2010**
+                 (BNK-681 +2 year-gate · BNK-682 +14 = 4 fee-seed gate test + 10 safety RBAC nested @Test)
+497  FE test     (204 .test.js + 293 .test.jsx)     — IDENTICAL (BNK-681 untracked 58L `liveFeeScheduleSeed.test.js`
+                                                                  → BNK-682 commit absorb·develop ref 그대로)
+84.31%  모듈     (24.45/29 `competitorModuleCoverage.js`) — IDENTICAL (M6 closure carry)
+28   reports route                                  — IDENTICAL
+
+7/8축 IDENTICAL · 1축 BE @Test +14.
+
+[★★★ QA-B355 dirty-tree CLEAR — FE+BE cross-stream 4-axis hardening 1-cycle closure]
+--------------------------------------------------------------------
+
+BNK-680 baseline: BE `@1f2803c` `fix(v2/billing): reject unsupported NHIS fee seed years`
+  - `BillingService.validateNhisSeedCatalogYear(year)` fail-fast (BusinessRuleException)
+  - `listMissingNhisSeedPayloads/applyMissingNhisSeedFeeSchedules` 진입점 year-gate
+  - +2 @Test (year=2027 reject)
+  - WT CLEAN
+
+BNK-680 cross-stream: FE `@f7061c4` 동일 SHA에서 **WT DIRTY 1M+1U** 발생
+  - `src/e2e/liveFeeScheduleSeed.js` +39/-7L (LIVE_E2E_SKIP_FEE_SEED env + 404 reason surfacing)
+  - NEW `src/test/liveFeeScheduleSeed.test.js` 58L (untracked)
+
+BNK-681: FE WT DIRTY 2-cycle 미해소 carry · coder commit 권고
+
+BNK-682: FE `@d1d0adf` commit closure (WT CLEAN)
+  - 2-file +97/-7: `liveFeeScheduleSeed.js` +46/-7 (LIVE_E2E_SKIP_FEE_SEED·404/network diagnostics)
+                  +`liveFeeScheduleSeed.test.js` 58L NEW
+  - `isTruthyEnv("1"|"true"|"yes")` skip path + missing endpoint 404 reason 명시 surfacing
+  - QA-B355 dirty-tree CLEAR for merge
+
+BNK-682: BE `@92770fd` cross-stream RBAC + HTTP contract lock (WT CLEAN)
+  - +256L `RoleBasedControllerAccessTest.java`
+  - SafetyCheckAccess `@Nested @WebMvcTest(SafetyCheckController.class)` 10 @Test
+    · daily-checks · periodic-checks · infection-control · operation-logs 4 endpoint
+    · HQ_ADMIN/BRANCH_ADMIN/SOCIAL_WORKER allow · CAREGIVER/CLIENT_USER/GUARDIAN deny
+    · 5-role × 4-endpoint full RBAC matrix(주요 cell 10건 sampling)
+  - Fee-schedule NHIS seed HTTP contracts 4 @Test
+    · applyNhisSeedsShouldAllowHqAdmin (200·HQ_ADMIN)
+    · applyNhisSeedsShouldDenyBranchAdmin (403)
+    · applyNhisSeedsShouldRejectUnsupportedYear (422·year=2027)
+    · listNhisSeedPayloadsShouldRejectUnsupportedYear (422·year=2027)
+
+→ G16/G-NHIS year-gate 4-axis full-stack 동시 hardening:
+  ① BE service layer (BNK-680 +2 @Test)
+  ② BE controller HTTP contract (BNK-682 +4 @Test)
+  ③ BE controller RBAC contract (BNK-682 +6 safety @Test)
+  ④ FE harness skip+diagnostics (BNK-682 commit +6 @Test 추정·실측 carry)
+
+[★★★ Safety RBAC 4-endpoint × 5-role matrix lock — M6 closure BE-side validation]
+--------------------------------------------------------------------
+
+BNK-678: M6 id=6 위생·안전 0→1.0 (SafetyCheckController + V184 + FE wire)
+BNK-682: BE RBAC lock (HQ/branch admin/social worker allow · caregiver/guardian deny)
+
+`/api/v1/safety/daily-checks` GET·POST       — SOCIAL_WORKER ✅ · CAREGIVER ❌ · GUARDIAN ❌
+`/api/v1/safety/periodic-checks` GET·POST    — BRANCH_ADMIN ✅ · HQ_ADMIN ✅
+`/api/v1/safety/infection-control` GET·POST  — SOCIAL_WORKER ✅ · CAREGIVER ❌
+`/api/v1/safety/operation-logs` GET·POST     — SOCIAL_WORKER ✅ · CLIENT_USER ❌
+
+vs 경쟁 4종 (공개 자료 RBAC test 노출 0):
+  - 케어포 func.php M6: HQ-only sole 운영 (RBAC matrix 미공개)
+  - 이지케어 K005 FAQ: 사후 안내 (RBAC contract 미공개)
+  - 엔젤 daycareEssentialWork: 평가지표 정적 (RBAC 분리 ❌)
+  - 롱텀(공단): NHIS #44 본문만 (RBAC N/A)
+
+ogada 우위: in-app **RBAC contract test 1923+ → 2024**(BNK-681 → BNK-682 +14) = 4종 유일 full-stack
+              표층 RBAC × 심층 RBAC test 2중 게이트 차별화 narrative carry.
+
+[★★ NHIS #44 421차 zero drift IDENTICAL]
+--------------------------------------------------------------------
+
+LIVE `https://www.nhis.or.kr/.../joHistoryContent.do?SEQ=1637&SEQ_CONTENTS=3281769`
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+
+vs disk `docs/planning/research/snapshots/nhis_jo44_live_bnk681.html`
+  md5 c886ff1fd1d5ca2cb5dc76d30adde8ba  ← IDENTICAL (421-cycle 불변)
+
+새 disk `docs/planning/research/snapshots/nhis_jo44_live_bnk682.html` 보존.
+
+→ BE `Nhis2026DaycareRateCatalog.CATALOG_YEAR=2026` year-gate (BNK-680 +2·BNK-682 +4 HTTP test) 의
+   본문 원천 NHIS #44 [시행 2026.1.1] 제2025-247호 「제34조 이동서비스비」 421-cycle 불변.
+
+[★★ ezCare FAQ list cumulative counter — +29 in ~2h (BNK-678 → BNK-682)]
+--------------------------------------------------------------------
+
+LIVE `https://ezcare.easyms.co.kr/help/faq.ez`
+  HTTP 200 · 80,057B · md5 2f469d0a586c6697c76c1acea781fd3d
+  - 233 rowid · 14 카테고리 IDENTICAL (5-cycle size carry BNK-633→682)
+  - 누적 hit sum = **3,637,307** (BNK-678 3,637,278 → +29 · BNK-672 3,637,250 → +57)
+  - 결제·재무 클러스터 (K008+K014+K013+K012) 37.6% carry → ogada M11/M12 P1 demand-signal carry
+
+→ size lock + md5 cachebuster DRIFT 패턴 carry · 본문 verbatim 불변(2-cycle 추정)
+   덮어쓰기 0 (BNK-682 신규 measure file 별도 보존).
+
+[★ 4축+leave-ledger 7/7 route LIVE @d1d0adf — P0/P1 재정렬 carry]
+--------------------------------------------------------------------
+
+App.jsx route grep:
+  /care-plan-form         (G14)          ✅
+  /dashboard              (G26)          ✅
+  /hq                     (G26)          ✅
+  /transport*             (G16 v1.3-C)   ✅ (22-route)
+  /cms                    (v2 G2b)       ✅ (3-route)
+  /leave-ledger           (US-R01-c)     ✅
+  /annual-leaves          (US-R01-c)     ✅
+  /safety/daily-checks    (US-Q01 M6)    ✅
+  /safety/periodic-checks (US-Q01 M6)    ✅
+  /safety/infection-control(US-Q01 M6)   ✅
+  /safety/operation-log   (US-Q01 M6)    ✅
+
+P0 unchanged · M6 closure → P1 lever 2→1 (BNK-678) · M11/M12 sole remaining P1 lever
+(in-app 최소 set 11-1·11-3·11-6 → +3.45pp · M11+M12 → +6.90pp 91.21%) carry from BNK-679.
+
+[per_cycle_minimum 4종 충족 — BNK-682]
+--------------------------------------------------------------------
+
+1) 신규 evidence URL 1건 이상:
+   · NHIS #44 421차 재실측 + 변동 0건 기록 (zero drift IDENTICAL carry)
+   · ezCare FAQ list 재실측 + counter +29 변동 기록
+
+2) 경쟁사 메뉴/필드/워크플로 상세 1블록 이상:
+   · Safety RBAC 4-endpoint × 5-role matrix block (vs 경쟁 4종 RBAC 미공개 비교)
+   · NHIS fee-seed HTTP contracts 4 @Test 블록 (HQ_ADMIN/BRANCH_ADMIN allow/deny · 422 year reject)
+
+3) COMPETITOR_MATRIX 1행 이상 ogada `@HEAD` SHA 갱신:
+   · `@d1d0adf`/`@92770fd` 4-row entry 추가 (BENCHMARK_REPORT.md 직접 갱신·matrix는 동일 헤더)
+
+4) BENCHMARK_REPORT §신규 소절:
+   · §682 section (QA-B355 dirty-tree CLEAR · Safety RBAC lock · NHIS 421차 · FAQ +29)
+
+[delta 요약]
+--------------------------------------------------------------------
+
+가정 번복:        0
+신규 core 갭:     0 (M6 ✅ carry · M11/M12 sole P1 lever carry)
+candidate 변동:   0
+closure:          1 (QA-B355 FE WT DIRTY 2-cycle → CLEAN)
+상태 변경:        2 (FE +1 commit·WT DIRTY→CLEAN · BE +1 commit·WT CLEAN carry)
+KPI 변경:         2 (BE @Test 2010→2024 +14 · merge gate 874→875 +1)
+미확인 carry:     1 (longterm 502/610 carry)
+신규 snapshot:    3건 (ogada_git_remeasure_bnk682.txt · nhis_jo44_live_bnk682.html · ezcare_help_faq_list_remeasure_bnk682.html)
+덮어쓰기:         0건
+재실측 zero drift:2건 (NHIS #44 421차 IDENTICAL · ezCare FAQ list size IDENTICAL md5 DRIFT)
+엑셀 포맷 변경:   0
+
+[즉시 액션]
+--------------------------------------------------------------------
+
+→ tester:  merge **875** (FE 276+BE 599·양쪽 WT CLEAN·선행 commit 불필요·FF 가속)
+→ planner: baseline FE `@f7061c4`→**`@d1d0adf`**·BE `@1f2803c`→**`@92770fd`**·merge gate 874→**875**
+           · QA-B355 dirty-tree CLEAR (BNK-680 cross-stream gap closure)
+           · Safety RBAC 4-endpoint × 5-role matrix lock
+           · M11/M12 sole P1 lever scope (BNK-679 carry) 결정 보류 carry
+           · 11-5 인건비 지출비율(법정 60%+) compliance 차별화 후보 carry

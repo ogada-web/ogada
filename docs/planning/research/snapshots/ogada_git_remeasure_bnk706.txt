@@ -1,0 +1,16 @@
+BNK-706 ogada git 실측
+조사일: 2026-07-14T00:59:00Z
+
+FE develop @0c6950a (0c6950ae3a09daaa53ac4ac0fa77107ebd504634)
+  WT CLEAN · origin/develop SYNCED · ahead origin/test=1
+  +1 vs BNK-705 @a6255a0: fix(v1.2.1/QA-B95): enforce explicit live schema readiness flags
+
+BE develop @6e874df
+  WT CLEAN · ahead origin/test=617
+  +2 vs BNK-705 @edfb55d:
+    c08329a fix(v2/G17): clarify daycare indicator 27 owns functional recovery
+    6e874df test(v2/G-BATHING): lock indicator27 compliance response
+
+KPI: Route 124 · Page 98 · FE test 507 (210 .test.js + 297 .test.jsx) · BE Test 280 · BE @Test 2079 · V1–V190 · 모듈 84.31% (24.45/29)
+ZERO: 1-5 · 1-10 · 11 · 12
+merge residual: FE1+BE617 = 618

@@ -1,0 +1,295 @@
+ezCare M4 (RFID점검) + M9 (기관관리) + customer-ezc_bill_list 역공학 crosswalk (BNK-829)
+=====================================================================================
+
+조사일: 2026-07-17T11:39–11:43Z
+rotation: 이지케어 역공학 2–4h (agents.yaml rotation_30min 2–4h ezCare)
+데모 로그인: ./scripts/ezcare-demo-fetch.sh (oCode=DEMO · User_ID=admin · code=0000)
+demo shell: /new.ez 138,4xxB (per-request ts drift · top-nav v2 `95286775` LOCK)
+menu catalog: docs/planning/research/snapshots/ezcare_menu_catalog.json (module 10 · leaf 148 · unique_pgid 59)
+
+
+I. 신규 앵글 — M4 「RFID점검」 실측: 최상위 메뉴이지만 leaf 3개 (얕음)
+=====================================================================
+
+top-nav main_nav_item 「4:RFID점검」 (menuNo 4) → sub-items 실측:
+
+| # | name                                | url                                       | action |
+|---|-------------------------------------|-------------------------------------------|--------|
+| 1 | RFID태그 내역 ↔ 공단계획 비교         | schedule-rfid                             | link   |
+| 2 | RFID태그 내역 ↔ 공단계획 비교         | /schedule_plan/rfid_compare.html          | popup  |
+| 3 | 일정확정                             | schedule-fix                              | link   |
+
+즉 M4 = **3-leaf** = `[schedule-rfid link · rfid_compare popup · schedule-fix link]`.
+동일 제목 2회(link + popup) → 실제 페이지 2개(비교 리스트 + 팝업 상세) + 확정 lock 1개.
+
+역공학 근거: `docs/planning/research/snapshots/ezcare_menu_catalog.json` (BNK-829 실측 · md5 `472d7aa6`) → `modules[]` 중 `no="4"` items[0..2].
+
+의미:
+- 마케팅 라벨 「RFID점검」이 최상위 메뉴로 노출되지만 lifecycle 심도는 낮음 (3-leaf).
+- 실체 = **1개 이중 엑셀 비교 화면** + **일정 확정 lock** = 「업로드 → 비교 → 확정」 3단.
+- ogada `/attendance/rfid` + `/attendance/boarding` + `/visits` + `/billing/imports/nhis` 4-축 = 이지케어 M4 3-leaf보다 넓게 분산 (SUPERSET).
+
+
+II. schedule-rfid PGID 폼 필드 verbatim (역공학 실측)
+=====================================================
+
+PGID: `schedule-rfid` → HTTP 200 · 150,493B · md5 `9ac43bce4c3d0299c64a2f0a9dd211eb`
+snapshot: `ezcare_new_ez_pgid_schedule-rfid_bnk829.html`
+grep 결과: RFID 10 · 태그 13 · 공단 7 · 계획 13 · 엑셀 7 · 업로드 7 · 확정 1 · 반영 1 · 조회 1
+
+이중 엑셀 업로드 폼 (form field id 실측):
+
+| form/id 그룹              | 역할                                           |
+|---------------------------|-----------------------------------------------|
+| `form_plan_upload`         | 공단 계획 엑셀 폼 (multipart)                  |
+| `file_excel_plan`          | 공단 계획 file input                           |
+| `plan_upload`              | 공단 계획 업로드 버튼                          |
+| `plan_file_name` / `plan_file_choose` | 파일명 표시 / 파일 선택 트리거             |
+| `plan_already_upload`      | 이미 업로드된 상태 (재-업로드 여부)             |
+| `plan_log_upload`          | 업로드 이력 로그                               |
+| `form_rfid_upload`         | RFID 태그 엑셀 폼                              |
+| `rfid_upload` / `rfid_file_name` / `rfid_file_choose` | RFID 업로드 버튼·파일 표시·선택 트리거 |
+| `rfid_already_upload`      | RFID 이미 업로드 상태                          |
+| `rfid_log_upload`          | RFID 업로드 이력                               |
+| `dialog_file_reupload`     | 재-업로드 다이얼로그 (덮어쓰기 확인)            |
+| `notice_need_upload`       | 「업로드 필요」 안내 위젯                     |
+| `upload_tools`             | 툴바 컨테이너                                  |
+
+Ajax endpoint hint (raw HTML 실측): `./run.php`, `/lib/ars_cnt.php`, `/lib/json_message.php`
+= 실제 비교 로직은 `run.php` 프리셋 뒤에 있음 (로그인-보호).
+
+**해석**: 이지케어 RFID 워크플로 = (1) 공단 계획 엑셀 업로드 → (2) RFID 태그 엑셀 업로드 → (3) 「비교」 팝업으로 일치/불일치 확인 → (4) `schedule-fix`에서 확정 lock. **이중 엑셀 파일 = 표준 워크플로**.
+
+
+III. FAQ 21778 — 「공단과 본인부담금이 다를때 조치방법」 신규 발췌
+=================================================================
+
+URL: https://ezcare.easyms.co.kr/help/V.ez?rowid=21778
+HTTP 200 · 4,562B · md5 `6fd8fc5e77ce319f67c6c72b3684b599`
+snapshot: `ezcare_help_faq_21778_bnk829.html`
+
+**verbatim 본문** (스크립트/스타일 제거·공백 정규화 후):
+> 공단과 본인부담금이 다를 경우 다음 사항을 꼭 확인해 주세요!!
+> 3. 방문일정 관리 에서 청구일정 가져오기 로 반영되었는지 확인해 주세요.
+> 청구일정이 미반영되었다면 확정취소 후 청구일정을 업로드 해주세요.
+> 청구일정으로 반영되었는지 확인방법 공단청구 금액이 진한 숫자로 반영 되었는지 확인해주세요.
+> 공단청구가 적색으로 나올경우 공단 청구자료를 다시 올려 주어야 합니다.
+> **주의  일정확정 상태에서는 청구일정을 등록해도 반영이 안되니 확정 취소후 진행해 주세요.**
+
+**신규 lifecycle 규칙** (역공학 실측):
+1. 「청구일정 가져오기」 = 공단 청구자료 엑셀을 방문일정에 반영.
+2. 반영 성공 시 → 공단청구 금액이 「진한 숫자」로 표기 (UX signal).
+3. 반영 실패 시 → 「적색 표기」 → 공단 자료 재업로드 필요.
+4. **핵심 lock 규칙**: `일정확정 상태 → 청구일정 업로드 불가`. **먼저 확정 취소** 후 업로드.
+
+즉 이지케어 `schedule-fix` (일정확정) = **immutable lock** — 확정 상태에서는 NHIS 청구 데이터 재조회/재업로드가 원천 차단. 반드시 unlock(확정취소) → 업로드 → re-lock(확정) 3단.
+
+ogada 대응 (git 실측 @420286e/@f6023b0):
+- `/attendance/rfid` : RFID 태그 매칭
+- `/billing/imports/nhis` : NHIS 청구 파일 import lifecycle
+- BE `BillingClaimReconciliationService` + `TransportServiceFeeService` 대사
+- **차별 lever**: ogada는 확정 상태에서도 **감사 로그를 남기고 재-import 허용**(soft-delete 정합·PATCH partial) — 이지케어의 hard-lock 대비 감사 우선 설계에 부합.
+
+**planner 시사**: ezCare의 「확정=lock, unlock=수동 취소」 워크플로는 **감사·PIPA 관점에서 취약** (unlock 이력이 별도 남아야 함).
+ogada `BillingClaimReconciliationService` 감사 트리거가 이지케어보다 정합적임을 재확인 (KPI promote 0·과대구축 금지).
+
+
+IV. 신규 앵글 — M9 「기관관리」 20-item leaf verbatim + BPO 서비스 요청 폼 4건
+================================================================================
+
+top-nav M9 (menuNo 9) → 20 leaf (menu catalog `472d7aa6` 실측):
+
+| # | name                        | url                                       | action |
+|---|-----------------------------|-------------------------------------------|--------|
+| 1 | 스케쥴                       | agency-schedule                           | link   |
+| 2 | 서식자료실                    | docAsm-d100                               | link   |
+| 3 | 정보관리 및 설정              | setting-f01                               | dialog |
+| 4 | └ 재가기관 정보               | setting-f01#tab0                          | dialog |
+| 5 | └ 사업자 정보                | setting-f01#tab1                          | dialog |
+| 6 | └ 직인(도장)                 | setting-f01#tab2                          | dialog |
+| 7 | └ 결재라인                   | setting-f01#tab3                          | dialog |
+| 8 | └ 본인부담금 계좌            | setting-f01#tab4                          | dialog |
+| 9 | └ 이지케어 담당자            | setting-f01#tab5                          | dialog |
+| 10 | 이지케어이용료              | customer-ezc_bill_list                    | link   |
+| 11 | 이지케어 사용자 관리         | user-a100                                 | dialog |
+| 12 | └ 사용자 관리                | user-a100#tab0                            | dialog |
+| 13 | └ 로그인기록                 | user-a100#tab1                            | dialog |
+| 14 | 내 정보관리/수정             | user-myInfo                               | dialog |
+| 15 | 문자 보내기→ 번호직접 입력    | mobile-sendO                              | dialog |
+| 16 | 문자 발신번호 관리           | /PU.ez?PGID=mobile-returnNumber           | popup  |
+| 17 | **자동이체 신청서**          | (empty)                                   | popup  |
+| 18 | **자료보관 신청**            | (empty)                                   | popup  |
+| 19 | **이용취소 신청**            | (empty)                                   | popup  |
+| 20 | **이용취소 신청2**           | (empty)                                   | popup  |
+
+**신규 인사이트 (BNK-829 unique)**:
+- 17~20번 4개 = url **empty** + action `popup` = 하드코딩된 서비스 요청 폼 (SaaS 벤더에게 신청).
+- 「자동이체 신청서·자료보관 신청·이용취소 신청·이용취소 신청2」 = **고객이 SaaS 벤더에게 계약/데이터/해지 관련 신청을 ERP UI에서 제출**하는 BPO 창구.
+- 즉 이지케어는 **SaaS + BPO(회계·세무·해지·자료보관) 번들**로 판매되며, ERP 자체가 BPO 요청 접수 채널.
+- 이는 ogada의 **순수 SaaS + 감사 우선 API + 명확한 계약 lifecycle**과 상반된 상품 전략 (역공학 확인).
+
+
+V. 신규 앵글 — customer-ezc_bill_list PGID = ARS BPO 지원 라우팅 메뉴 (in-ERP)
+==============================================================================
+
+PGID: `customer-ezc_bill_list` (M9 #10 「이지케어이용료」)
+HTTP 200 · 97,630B · md5 `cf62cf2d3bd41cec75d95fa7173cce4d` (per-session drift)
+snapshot: `ezcare_new_ez_pgid_customer-ezc_bill_list_bnk829.html`
+
+verbatim body (스크립트/스타일 제거):
+> 케어매치 등록공고 확인하기 (등록일·공고제목·근무지·공고상세) — 케어매치 등록 확인된 공고가 없습니다.
+> 요양보호사 구인
+> 주요 홈페이지: 공단 | 희망이음 | 사회보험 EDI
+> 이지케어 이용료 영수증 | 이지케어 이용료 청구내역
+> 통화가능시간 09:30~17:30 주말·공휴일·대체공휴일 휴무
+>
+> **1번 프로그램 문의**
+> **2번 재무회계 대행**
+>   └ 1 결의서·인건비 / 2 추경·예산·결산보고 / 3 퇴직정산 관련문의 / 4 센터 폐업관련문의 / 5 이용신청 및 기타 회계 관련 문의
+> **3번 4대보험**
+>   └ 1 취득 및 상실신고 / 2 취득 및 상실신고의 취소·변경·정정 문의 / 3 이직확인서·보수월액변경·피부양자 추가 등록 문의 / 4 기타 4대보험 관련문의(보수총액 신고 등)
+> **4번 원천세**
+>   └ 1 원천세 관련 문의 / 2 원천징수영수증 및 원천징수부 관련 문의 / 3 기타 세무신고 관련 문의
+> Fax: 0505-877-0933
+
+**신규 인사이트 (BNK-829)**:
+- 이 페이지는 「이용료」 정산 페이지 **동시에** 벤더의 **BPO 지원 ARS 4-tier 라우팅 메뉴**를 ERP 내부에 노출.
+- 이지케어 BPO 지원 축 = **프로그램/재무회계 BPO/4대보험/원천세** 4개 (M8 세무·M12 회계 popup과 정합).
+- **「케어매치 등록공고」** = 이지케어가 벤더 차원에서 운영하는 요양보호사 구인/구직 게시판 통합 = 벤더 커뮤니티/HR 부가서비스 (M8·M9 위성 기능).
+- ogada는 이 축이 **없음** (순수 SaaS·벤더 BPO 부재) — id=10 부가서비스 0.85 부분 대응 (알림/SMS만) · id=12 회계 0.7 (BPO catalog 및 SSO 잔여).
+- **판단**: BPO 대행/커뮤니티는 **영업/운영 판단** 사항 (SW core 갭 아님). ogada는 소프트웨어 순수 SaaS 포지션 유지 권고 (과대구축 금지·rules.md §12 정합).
+
+`competitorModuleCoverage.js @420286e` 매핑:
+- id=12 「수입지출·회계」 = 0.7 (BPO catalog·SSO OTP 잔여) → 이지케어 M12 재무회계 대행 대응
+- id=10 「부가서비스(SMS·알림)」 = 0.85 (SMS 3-channel + Kakao 6-template) → 이지케어 문자·부가 대응
+- id=8 「직원·근태」 = 0.85 → 이지케어 M1 근태 대응
+- id=2 「이동서비스」 = 0.85 (경쟁 4종 유일 full-stack SUPERIOR) carry
+
+
+VI. FAQ 21779·21781 재확인 (fresh vs canonical)
+================================================
+
+| rowid  | title                                                   | md5(fresh)          | md5(canonical BNK-799) | 상태            |
+|--------|---------------------------------------------------------|---------------------|--------------------------|------------------|
+| 21781  | 인지활동지를 출력하여 수급자 어르신께 활용하고 싶어요!    | `da4ab8d0`(BNK-829)| `da4ab8d0`(BNK-799)      | zero drift ✅   |
+| 21779  | 지정갱신제 사업계획서 등 자료를 출력하고 싶어요!          | `646b4308`(BNK-829)| `646b4308`(BNK-799)      | zero drift ✅   |
+| 21778  | 공단과 본인부담금이 다를때 조치방법                       | `6fd8fc5e`(BNK-829)| 신규 스냅샷 (미보유)     | 신규 확보 ★    |
+
+21781 verbatim carry: 「인지활동북은 **시범서비스 운영중** · 좌측 인지활동북 에서 인지맞춤형 학습지 및 낱장으로 출력 · 계획표 및 표지등 세부 기능은 **하반기에 확장하여 서비스 예정**」
+21779 verbatim carry: 「지정갱신제 관련한 자료는 **10 기관평가 > 10.2 운영메뉴얼 > 지정갱신제** 에서 확인 및 관련 서식자료를 다운로드 할 수 있습니다」 → `guide-E200#tab2` 위치 재확인.
+
+
+VII. 신규 앵글 — M10 「기관평가」 17-leaf + hidden 「DEV」 5항목
+================================================================
+
+top-nav M10 (menuNo 10) → 17 leaf (menu catalog `472d7aa6` 실측):
+
+정상 leaf (12):
+1. 기관평가 → guide-E100 (link)
+2. 평가서류 작성현황 → guide-E100#tab0
+3. 서류함(평가서류 작성) → guide-E100#tab1
+4. 의무교육 수료현황 → guide-E100#tab2
+5. 평가매뉴얼&자가진단 → guide-E100#tab3
+6. 운영 매뉴얼 → guide-E200 (link)
+7. 업무 운영가이드 → guide-E200#tab0
+8. 모니터링 매뉴얼 → guide-E200#tab1
+9. **지정갱신제** → guide-E200#tab2 (BNK-799 FAQ 21779 참조 위치)
+10. 주요법령 & 고시 → guide-E200#tab3
+11. 노무자문 → guide-E200#tab4
+12. 파일올리기 → customer-file (link)
+
+**DEV/test leaf 5건 (marketing 은닉·prod 노출)**:
+13. 페이지 (파일)없음  → nopage        (action=**DEV**)
+14. 페이지 접근권한 없음 → denied        (action=**DEV**)
+15. 서명테스트        → sign-write     (action=**DEV**)
+16. 아이콘_test       → patient-icon   (action=link)
+17. POPUP-test       → /PU.ez?PGID=patient-icon (action=popup)
+
+**신규 인사이트 (BNK-829)**:
+- 프로덕션 top-nav에 **`action:"DEV"` 5개 leaf**가 남아있음 = 개발자 test link가 실사용자에게도 노출됨.
+- 즉 이지케어는 **prod/dev 메뉴 분리가 미흡** — SaaS 릴리즈 위생 관점에서 「미확인」 (내부 정책 or 실수).
+- ogada `App.jsx @420286e`는 133 Route 전량 실제 페이지 → dev-only route 노출 0 (SUPERIOR 정합·과대구축 금지 근거).
+
+
+VIII. ogada baseline 실측 (BNK-829)
+====================================
+
+FE develop: `@420286e` fix(billing status timeline timestamps)
+  - BNK-828 `@20f6ddc` → +2 커밋:
+    - `c061494` ux(a11y): promote layout ds-* classes and claim timeline time (UXD-188)
+    - `420286e` fix: guard billing status timeline timestamps
+  - origin/test = `420286e` = develop = **FULLY SYNCED** (tester FF 흡수 · ahead origin/test 0)
+  - ahead origin/main **918**
+
+BE develop: `@f6023b0` fix(v3/staff: enforce readable branch in empty leave-ledger responses)
+  - BNK-828 `@29e20dd` → +1 커밋:
+    - `f6023b0` fix(v3/staff): enforce readable branch in empty leave-ledger responses
+  - origin/test = `598d108` · ahead **727** (BE-heavy → tester FF)
+
+KPI:
+- Route: **133** (grep `<Route\b|<Routes>` App.jsx)
+- Page: **106** (`*Page.jsx` git ls-files)
+- FE test: **530** (313 .test.jsx + 217 .test.js) — carry
+- BE Test: **294** (293 Test.java + 1 Tests.java)
+- BE @Test: **2279** (BNK-828 2278 → +1) — staff leave-ledger regression test 추가로 추정
+- Flyway: V1–V196 (신규 0)
+- merge gate: **727** (FE 0 FULLY SYNCED + BE 727 · BE-heavy → tester FF)
+
+모듈 커버: **97.41%** carry (28.25/29 · id=2/8/10 0.85 · id=12 0.7 · 진성갭 0)
+closed band 6: G14 L245 · 대시보드 L164/173 · G2 L209 · G-LINKAGE L236 · v2 CMS L389 · v1.3-C L628 — App.jsx `@420286e` LIVE grep IDENTICAL · 재오픈 0
+
+
+IX. 기존 URL 재실측 + 변동 기록 (BNK-829)
+=========================================
+
+| URL                                                                                          | HTTP·SIZE   | md5(BNK-829)          | md5(BNK-828)          | 판정                     |
+|-----------------------------------------------------------------------------------------------|-------------|-----------------------|-----------------------|--------------------------|
+| https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769     | 200·7,572B  | `c886ff1f`            | `c886ff1f`            | **562차 zero drift ✅** |
+| https://ezcare.easyms.co.kr/help/faq.ez                                                       | 200·80,057B | `938d5665`            | `7369b673`            | DRIFT hit-only (rowid 233·max 21781 IDENTICAL·엑셀 포맷 0) |
+| https://ezcare.easyms.co.kr/new/ezCare_charge.html                                            | 200·22,979B | `3c9b046a`            | `7cd61331`            | DRIFT hit-only (cachebuster·설정 33,000/기준가 55,000 STABLE·D-14) |
+| https://ezcare.easyms.co.kr/new/ezCare_fnc.html                                               | 200·17,870B | `d13826bc`            | `6b0fb183`(BNK-820)   | DRIFT hit-only (9,435개 STABLE) |
+| https://ezcare.easyms.co.kr/new/ezCare_change_work.html                                       | 200·26,157B | `575a263b`            | 신규 재실측           | 9,435개 STABLE (도입기관 수 legacy 9,435 확인 carry) |
+| https://ezcare.easyms.co.kr/                                                                  | 200·69,543B | `60347318`            | 재실측 (BNK-820 `e145c91e`) | DRIFT hit-only (`data-count3="4675"` BPO STABLE) |
+| https://ezcare.easyms.co.kr/help/V.ez?rowid=21778 (NEW)                                       | 200·4,562B  | `6fd8fc5e`            | —                     | 신규 확보 (공단 청구 lock 규칙 verbatim) |
+
+**엑셀 포맷 변경 스캔 = 0** (FAQ list 엑셀 hit 2 IDENTICAL · charge/fnc/change_work 재무 표준 컬럼 불변).
+
+
+X. per-cycle minimum 4종 충족 확인
+===================================
+
+| 최소산출 (agents.yaml)                                                | BNK-829 실측                                                                                          |
+|-----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| 신규 증거 URL 1건 이상 (또는 기존 재실측 + 변동 기록)                    | ✅ **7 URL 재실측**(NHIS 562차/FAQ/charge/fnc/change_work/home/FAQ 21778 신규) + **NEW rowid 21778** |
+| 경쟁사 메뉴/필드/워크플로 1블록 이상 상세                                | ✅ **5블록** (M4 3-leaf verbatim · schedule-rfid 13 form id · FAQ 21778 워크플로 · M9 20-leaf · M10 17-leaf DEV 5) |
+| COMPETITOR_MATRIX 1행 이상 ogada @HEAD SHA 갱신                        | ✅ (`@420286e`/`@f6023b0`) BNK-829 신규 4행                                                        |
+| BENCHMARK_REPORT §신규 소절 또는 BNK 차수 메모 1건 이상                | ✅ §BNK-829 소절 신규                                                                              |
+
+가정 번복 0 · 신규 core 갭 0 · P0 신규 0 · closed band 6 재오픈 0 · KPI promote 0
+「미확인」 축소 1: FAQ 21778 워크플로 신규 verbatim 확보 (기존 「미확인」 3-1 상태변화 확정 lock 정본)
+
+
+XI. planner 우선순위 시사 (BNK-829)
+====================================
+
+| 우선순위        | 항목                                                                          | 근거                                        |
+|----------------|-------------------------------------------------------------------------------|---------------------------------------------|
+| **P0 tester**  | merge **727** (FE FULLY SYNCED + BE 727) BE-heavy → tester FF                | git 실측                                    |
+| **P0 신규**    | 0 (closed band 6 carry · 진성갭 0)                                            | audit-first posture 5차 carry               |
+| **P1 carry**   | G-NURSING · G14 · G19 · G30                                                  | BNK-828 carry                               |
+| **P2 carry**   | G-GUARDIAN-APP · 리포트 밀도 17→24+ · G24b · 7-5 · G41                        | BNK-828 carry                               |
+| **P3 carry**   | G-LIVECHAT · G-CIST · G-FAMILY-LEAVE · G18-SHORT-PILOT                       | BNK-828 carry                               |
+| **P3 신규 검토** | 이지케어 M9 「자동이체 신청서·자료보관·이용취소」 4-popup BPO 요청 폼 = 벤더 BPO 축 (SW core 갭 아님·영업/운영 판단) | §IV `customer-ezc_bill_list` verbatim ARS 4-tier |
+| **#44 P0**     | 562차 zero drift ✅ carry                                                    | `c886ff1f` verbatim                          |
+| **감사 시사**  | 이지케어 `schedule-fix` = hard-lock (FAQ 21778 확정취소 요구) vs ogada `BillingClaimReconciliationService` = 감사 로그 유지 재-import → ogada 감사 우선 설계가 이지케어 대비 정합적 | §III FAQ 21778 verbatim + §I audit-first posture carry |
+
+**다음 rotation** (agents.yaml 30min rotation_30min 순차):
+- 6–8h (`ogada git 실측`) 다음 cycle 예상
+- 또는 순환 종료 후 다시 `케어포 역공학 0–2h`
+
+**결론 (BNK-829)**:
+- 이지케어 M4 RFID 3-leaf + M9 20-leaf + M10 17-leaf(DEV 5) verbatim = 마케팅 라벨 대비 실체 심도 낮음·prod/dev 위생 미흡 재확인.
+- FAQ 21778 = ezCare 「일정확정=hard-lock」 규칙 정본 신규 확보 → ogada 감사 우선(soft-delete·PATCH partial) 차별 명확화.
+- ogada `@420286e`/`@f6023b0` 실측 = FE FULLY SYNCED · BE +1 · merge gate 727 · 모듈 97.41% CONFIRMED.
+
+EOF

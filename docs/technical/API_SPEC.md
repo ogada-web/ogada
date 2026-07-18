@@ -1713,12 +1713,12 @@
 
 ## 9-3. 급여계약 첨부 (Benefit Contract Attachments) — US-T10 / G14
 
-> **상태**: backend **`6f3315a`** — GET 목록·다운로드, POST 업로드, DELETE **PRESENT** — Flyway **V84/V85**. frontend **`ClientBenefitContractAttachmentPanel` ✅** @ `2642838`·`5be9070` — 파일함·업로드·미리보기·삭제 **PRESENT**. **P2**: FAQ21805 갱신·해지·전자서명 workflow. REQUIREMENTS §3-2·USER_STORIES US-T10.
+> **상태**: backend **`324da07`** — GET 목록·다운로드, POST 업로드, DELETE **PRESENT** — Flyway **V84/V85**. frontend **`ClientBenefitContractAttachmentPanel` ✅** @ `2642838`·`5be9070` — 파일함·업로드·미리보기·삭제 **PRESENT**. **P2**: FAQ21805 갱신·해지·전자서명 workflow. REQUIREMENTS §3-2·USER_STORIES US-T10. **SEC-D25 (QA-B593)**: POST 업로드는 Content-Type `;param` normalize + PDF `%PDF` / PNG `89 50 4E 47…` magic-byte fail-closed(MIME spoof/truncate reject).
 
 | 메서드 | 경로 | 설명 | 권한 |
 |--------|------|------|------|
 | GET | `/clients/{clientId}/benefit-contract-attachments` | 급여계약서 파일함 목록 | hq_admin, branch_admin, social_worker, caregiver |
-| POST | `/clients/{clientId}/benefit-contract-attachments` | 급여계약서 PDF·PNG 업로드 | branch_admin, social_worker |
+| POST | `/clients/{clientId}/benefit-contract-attachments` | 급여계약서 PDF·PNG 업로드(**magic-byte**) | branch_admin, social_worker |
 | GET | `/clients/{clientId}/benefit-contract-attachments/{attachmentId}` | 첨부파일 인라인 미리보기·다운로드 | hq_admin, branch_admin, social_worker, caregiver |
 | DELETE | `/clients/{clientId}/benefit-contract-attachments/{attachmentId}` | 첨부파일 삭제 | branch_admin, social_worker |
 

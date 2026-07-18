@@ -1,0 +1,42 @@
+BNK-643 교차검증·갭 우선순위 — 2026-06-26T02:15:00Z
+ogada @4e574ce/@14964f6 · merge gate 830 · 4축+leave-ledger 93-cycle P0/P1 재오픈 0
+
+[A] 4축 cross-walk (가정 번복 0)
+| 축 | ogada Route/API | 경쟁사 | 판정 |
+| G14 plan-form | /clients/:clientId/care-plan-form | 케어포 1-x·이지케어 K003 | ✅ closure carry |
+| G14 functional-recovery | /programs/functional-recovery | 케어포 M3·엔젤 essential | ✅ |
+| G26 dashboard | /dashboard + nhisComparisonGap·kakaoQuota widgets | 이지케어 정적·엔젤 △ | ✅ ogada HQ widget superset |
+| v1.3-C NHIS#44 | /transport/service-fees + RU_1~4·ONE_WAY_RATIO=0.5 | NHIS #44 c886ff1f 398차 | ✅ 경쟁 4종 유일 full-stack |
+| v2 CMS 5-method | /billing/cms + /billing/easy-pay | 엔젤 extra f9c5d877 CMS 5-method | ✅ 5/5 carry |
+| leave-ledger | /staff/leave-ledger | ezCare worker-b100 5-tab partial | ✅ US-R01-c carry |
+
+[B] QA-B95 cluster
+BNK-642 candidate(DIRTY 5) → BNK-643 CLOSURE @14964f6 BE commit
+FE g21SeedStatusDetail parse: 0 hit → 14th layer candidate (probe consume·diagnostics surface)
+g21-seed 3-요소 cross-walk carry: visit-schedule·billing-visit-schedule·nhis-import
+
+[C] ezCare counter DRIFT — plateau day 6+ 종료 (NEW evidence)
+| URL | 지표 | BNK-637~642 carry | BNK-643 live | Δ |
+| ?PG=e01 | 방문요양 기준 시설수 | 17,489 | 17,420 | -69 |
+| ?PG=e01 | 이용시설수 | 9,354 | 9,355 | +1 |
+| ?PG=e01 | 점유율 | 53.49% | 53.70% | +0.21pp |
+| ?PG=e01 | 집계일 | 2026.06.25 | 2026.06.26 | +1일 |
+| ezCare_fnc.html | 도입 기관(표 내 9,3xx) | 9,357 | 9,358 | +1 |
+| home mCnt[1] 재가센터 | 9,287 | 9,281 | -6 (메트릭 divergence) |
+판정: e01·fnc **semantic counter DRIFT** (cachebuster+콘텐츠) · plateau 6-cycle 종료 · M11/M12 P1 demand-signal carry 유지
+
+[D] 신규 negative — silverangel notice 전 경로 HTTP 404
+/newSilverangel/notice/noticeView.do?Tmp_idx=221564 → 404 1028B 3c93af54
+/silverangel/notice/noticeView.do?Tmp_idx=221564 → 404 동일 shell
+221551 view/list 동일 404 → 6/30 D-3 재검증 「미확인」강화 · canonical shell 44223150 on-disk carry
+
+[E] 엑셀·규제 스캔
+FAQ 21844 d0aa760c IDENTICAL 398차 · PII 마스킹·방문일정 연동 안내 불변 → 엑셀 포맷 변경 0
+NHIS #44 c886ff1f IDENTICAL 398차
+longterm 502 d3c90b33 shell 47-cycle+ carry
+
+[F] P0/P1/P2 재정렬 (변동 0)
+P1: M11/M12 BPO 어댑터 단일 lever (+6.9pp)
+P2: v1.3-C parity 문구 · G-REPORT-DENSITY 잔여 6
+P3: 221564 D-3 · G-CASE-MANAGER-EXECUTION-LOG carry
+tester: FF merge 830 가속 권장 (양쪽 WT CLEAN)

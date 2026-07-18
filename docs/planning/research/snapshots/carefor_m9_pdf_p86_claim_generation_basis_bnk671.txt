@@ -1,0 +1,79 @@
+# 케어포 M9 9-1 청구명세서 생성기준 · PDF p86 M7↔M9 cross-link + demo L09 loadPage 재실측 (BNK-671)
+# 조사일: 2026-06-26T20:15:00Z (KST 05:15)
+# 작성: benchmark_researcher [BNK]
+
+## 신규 evidence URL (확인)
+
+1. [매뉴얼 PDF p.86 청구내역 생성하기](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=86) — HTTP **200** · 9,992,772B · **★ BNK-671 신규 quadruple-source 축** — M7 7-1 청구 워크플로 ↔ M9 9-1 설정 cross-link
+2. [Wayback demo-work 20260519](https://web.archive.org/web/20260519072235/https://demo-work.carefor.co.kr/) — HTTP **200** · **75,583B** · md5 **`6c8081e7`** (BNK-671 live 재실측 · disk `carefor_demo_work.html` 75,587B `b2e8e5c8` wrapper DRIFT · **loadPage 114·rpt 34 semantic IDENTICAL**)
+3. [Wayback func.php id_ raw](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) — HTTP **200** · **98,328B** · md5 **`6226e6eb`** = canonical disk byte-identical (56-cycle 재확인)
+4. carefor LIVE HTTP **000 timeout 56-cycle** (func.php + demo-work + intro/si/func.php · BNK-667 55 → +1 · 2026-06-26T20:05Z)
+
+## §1 PDF p86 M7↔M9 cross-link — 청구명세서 생성기준 (BNK-671 신규 workflow block · 확인)
+
+### verbatim (PDF p.86 · pypdf extract)
+
+```
+메뉴위치 : 7-1.본인부담금 청구관리
+매월 단위로 수급자의 급여제공내역을 계산하여 명세서를 생성 또는 수정, 발송 할 수 있는 서비스입니다.
+① 청구서 발행일 : 청구명세서에 찍히는 청구일자를 설정하는 기능
+② 청구내역 생성 : 해당 수급자 개별로 청구서 생성 시킬 수 있음
+③ 청구내역 일괄 생성 : 기관의 모든 수급자를 일괄적으로 청구서 생성을 시킴
+④ 명세서 수정 : 해당 수급자 개별로 상세내역(일 급여수가, 식사여부, 비급여 항목 등) 수정 기능
+※ 월 중간에 인정등급이 바뀐 경우, "1-1.수급자 정보관리 - 인정기간 변경등록"에서 인정정보를 수정한 후
+   청구서를 생성시켜야 함 (인정정보를 변경안하고 청구서생성을 시키면 인정기간 만료 후는 계산이 안됨)
+※ 청구명세서 계산시 급여기록(공단-청구상세내역 엑셀파일)로 할 것인지, 급여일정(2-1.일정관리)로
+   할 것인지 설정은 9-1.시설정보설정 - 본인부담금정보 - 청구명세서 생성기준에서 설정이 가능합니다.
+```
+
+### tri-source ↔ ogada Route 1:1 (확인)
+
+| 케어포 축 | 필드/옵션 | demo L09 view | ogada | 상태 |
+|---|---|---|---|---|
+| M7 7-1 청구관리 | 월별 명세 생성·일괄·수정 | `view.cost_master` L07_M01 | `/billing` · `/billing/claims/:id` | ✅ |
+| M9 9-1 시설정보설정 | 본인부담금정보 하위 | `view.center_master` L09_M01 | `/organization/settings` `BillingSettingsPanel` | ✅ |
+| 생성기준 A | **급여일정(2-1.일정관리)** | *(9-1 설정 UI · demo 미로그인)* | `claimGenerationBasis=ATTENDANCE_SCHEDULE` 「급여일정(출석) 기반」 | ✅ |
+| 생성기준 B | **급여기록(공단-청구상세내역 엑셀)** | *(9-1 설정 UI)* | `claimGenerationBasis=NHIS_IMPORT` 「공단 청구내역 엑셀」 | ✅ |
+| API | — | — | `GET/PATCH /api/v1/settings/billing` (`fetchBillingSettingsApi`) | ✅ |
+| 인정기간 변경 선행 | 1-1 인정기간 변경등록 | `view.patient_master` | `/clients/:id` 인정기간 | ✅ carry |
+
+→ **결정**: PDF p86 cross-link = ogada **US-M03 / G33 billing settings cluster** 와 **1:1 parity** (케어포 9-1 하위 2-option toggle). M7 quadruple-source(PDF p91 −1 drift)와 별축 — **설정 cross-link는 PDF p86 authoritative**.
+
+## §2 demo L09 M9 7-leaf authoritative 재확인 (확인 · wayback 20260519)
+
+| pamcode | title (nav) | view endpoint | HTML comment stale |
+|---|---|---|---|
+| L09_M01 | 9-1.시설정보설정 | `/basic/view.center_master` | — |
+| L09_M09 | 9-1-1.기초작업 및 기초설정 | `/share/basic/view.basic_set` | — |
+| L09_M02 | 9-2.건물 및 생활실 설정 | `/basic/view.center_room` | — |
+| L09_M03 | 9-3.요양급여 수가설정 | `/basic/view.service_cost` | — |
+| L09_M04 | 9-4.이용요금 결제 및 연장 | `/share/basic/view.service_pay` | — |
+| L09_M05 | 9-5.운영관리 (차량/비품/CCTV/고충/특별침실) | `/share/basic/view.operational_manage` | `<!-- 9-5.차량관리 -->` **stale** |
+| L09_M07 | 9-6.연간 부담금현황 (rpt) | `/basic/view.sales_amount` | `<!-- 9-7.연간 부담금현황 -->` **stale** |
+
+daycare `func.php` **6-leaf stale** 재확인: 9-2=수가·9-4=비품·9-5=연간부담 (demo/intro_si **7-leaf** 불일치 carry · BNK-667 M9 drift).
+
+## §3 demo-work 시설 셸 — 이동서비스 없음 (56-cycle 재확인)
+
+- `obj-type="loadPage"` **114** · `class="rpt"` **34** (29.8%) · M2 demo **0** · grep `이동서비스|view.transport|배차` **0**
+- func M2 이동서비스 **10-leaf** vs demo **0** vs ogada `/transport/*`+G16+NHIS #44 = **ogada 차별화 우위** carry
+
+## §4 ogada baseline (2026-06-26T20:15Z git 실측)
+
+- FE `@afbbaa7` WT **CLEAN** · ahead **269** (BNK-670 `@5636508` **HEAD +1** `fix(v1.2.1/G16): wire transport parity-rules BE catalog DTO fields` 7-file +132/-88L)
+- BE `@eb6dd67` WT **CLEAN** · ahead **594** (BNK-670 `@331f24b` **HEAD +1** `test(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): lock all four recovery keyword outcomes` 3-file +46L)
+- merge gate **863**(FE 269+BE 594 · +2 vs BNK-670 861)
+- **118 Route·93 page·V1–V183·BE Test 274·BE @Test 1998(+2)·FE test 485·모듈 80.86%·reports 28**
+
+## G16 stage — FE parity-rules BE DTO wire (확인)
+
+- `transportServiceFee.js` `normalizeTransportParityRule(rule)` — BE `GET /transport/service-fee-parity-rules` DTO(`code`·`label`·`description`) consume
+- `TransportParityRulesPanel` static mock 제거 → BE catalog 우선 + `STATIC_TRANSPORT_PARITY_RULES` fallback
+- 케어포 func M2-5 이동서비스비 ↔ ogada G16 `/transport/service-fees` NHIS #44 패리티 deepen
+
+## planner 제안 (요약)
+
+1. **M9 9-1 청구명세서 생성기준** — ogada ✅ FULL PARITY · 문서화만(US-M03 carry)
+2. **G-M9-OPERATIONAL-MANAGE** P2 — `view.operational_manage` 5-sub(차량/비품/CCTV/고충/특별침실) · ogada `/transport/vehicles`+`/staff/grievance-counselings` only
+3. M9 func.php stale 인용 금지 — demo L09+intro_si+PDF p86 authoritative
+4. demo 시설 셸 transport 0 vs ogada G16 = 차별화 메시지 유지

@@ -1,0 +1,231 @@
+BNK-783 · ogada git 실측 6–8h · 2026-07-16T04:03Z (KST 2026-07-16 13:03)
+================================================================================
+
+Rotation: ogada git 실측 6–8h (agents.yaml `benchmark_researcher.reverse_engineering.rotation_30min` 6-8h)
+Prev cycle: BNK-782 (2026-07-16T03:22Z, 이지케어 역공학 2–4h) — ~41분 후
+Prev same-rotation: BNK-780 (2026-07-16T01:56Z, ogada git 실측) — ~2.1h 후
+
+================================================================================
+1. baseline delta (BNK-782 → BNK-783)
+================================================================================
+
+frontend (submodule src/frontend):
+  BNK-782 HEAD : 483dfe1  fix(v1.2.1/G2): recover notice board page after mutations  ahead=0 FULLY SYNCED
+  BNK-783 HEAD : b42174a  fix(v1.2.1/M12): demote SSO launch when blockers remain    ahead=1 vs origin/test=483dfe1
+  delta        : +1 commit · WT CLEAN → CLEAN · ahead 0→1 (tester FF 대기)
+  files        : src/pages/AccountingBpoPage.test.jsx +36 · src/utils/accountingBpo.js +12/-10 · src/utils/accountingBpo.test.js +21
+  QA           : QA-B490 closure (SSO PLANNED demotion + launch guard 3-way)
+  Author/date  : jwj3400 · 2026-07-16 03:55:08 UTC · Co-authored-by: Cursor
+
+backend (submodule src/backend):
+  BNK-782 HEAD : a8d0af5  fix(v2/QA-B95): decode semicolon-optional named blocker entities  ahead=682
+  BNK-783 HEAD : 4bf5684  fix(v2/QA-B95): decode nbsp-escaped bootstrap blocker details    ahead=683
+  delta        : +1 commit · WT CLEAN → CLEAN · ahead 682→683 (BE-heavy · tester FF)
+  files        : LiveE2eOperationReadinessSupport.java +5/-1 · LiveE2eOperationReadinessSupportTest.java +51
+  QA           : QA-B95 nbsp-entity + Unicode NBSP(\u00a0) fail-closed decode
+  Author/date  : jwj3400 · 2026-07-16 03:48:52 UTC · Co-authored-by: Cursor
+
+merge gate (develop ahead origin/test):
+  FE ahead 1 + BE ahead 683 = 684 (BNK-782 682 → +2 · BE-heavy · tester FF)
+  Backend has 683 develop→test commits pending — merge queue steady growth (BNK-780 679 → BNK-781 681 → BNK-782 682 → BNK-783 683).
+
+================================================================================
+2. Route / Page / Test / Migration (grep 실측)
+================================================================================
+
+frontend @ b42174a:
+  <Route\b in src/App.jsx           : 132  (`grep -cE '^\s*<Route\b' src/App.jsx`)
+  <Routes> count                    : 1
+  Route total                       : 133  (carry vs BNK-782)
+  *Page.jsx count                   : 106  (`find src/pages -name '*Page.jsx' ! -name '*.test.jsx'`)
+  *.test.js                         : 217  (carry)
+  *.test.jsx                        : 313  (carry)
+  FE test total                     : 530  (217+313 · carry vs BNK-782)
+  accounting route                  : 1    (`/accounting` = AccountingBpoPage · id=12 0.7 residual)
+  payroll route                     : 5    (basis · labor-cost-ratio · ledger · reports · retirement-accrual · M11 FULL)
+  billing route                     : 17   (id=7-* FULL)
+  transport route                   : 9    (id=2 · 0.85 form polish lever)
+  staff route                       : 13   (id=8 · 0.85 form polish lever)
+
+backend @ 4bf5684:
+  *Test.java + *Tests.java          : 294 (293 Test.java + 1 Tests.java · carry vs BNK-782)
+  @Test count (grep -r "@Test")     : 2241 (+1 vs BNK-782 2240 · nbsp-escape decode @Test)
+  Flyway V*                         : V1–V196 (carry · 신규 0 · V196 = client_linkage_records_integrity_g_linkage)
+    latest: V193 facility_notices_attachment_url_format
+            V194 client_linkage_records_carefor_1_10
+            V195 client_linkage_records_org_branch_report_index
+            V196 client_linkage_records_integrity_g_linkage
+
+module coverage (src/frontend/src/config/competitorModuleCoverage.js @b42174a):
+  entries         : 29 (`grep -cE '^\s*\{ id:'`)
+  sum             : 28.25 (25 × 1.0 + 3 × 0.85 + 1 × 0.7)
+    1.0 (25) : 1-1 · 1-3 · 1-5 · 1-7 · 1-9 · 1-10 · 3-1 · 4 · 5 · 6 · 7-1 · 7-2 · 7-2-1 · 7-3 · 7-4 · 7-6 · 7-10 · 9 · 11 · 26 · 43 · nhis · qr · hq · platform
+    0.85 (3) : id=2 이동서비스(form polish) · id=8 직원·근태(form polish) · id=10 부가서비스(SMS·알림 catalog)
+    0.7 (1)  : id=12 수입지출·회계(M12 credentials residual PRIMARY)
+  coverage %      : 28.25 / 29 = 0.97413793... = **97.41%** (carry · 가정 번복 0 · KPI promote 0)
+  JSDoc "coverage: 1" comment on line 5 = 1 false-positive if grep raw (BNK-753 오염 배제 패턴)
+
+================================================================================
+3. Signal analysis — 이번 사이클 핵심 관측 3건
+================================================================================
+
+★★★ #1  M12 SSO defense-in-depth 심화 · id=12 residual 안전장치 강화
+--------------------------------------------------------------------
+FE `@b42174a` `fix(v1.2.1/M12): demote SSO launch when blockers remain` = 3-지점 방어:
+
+  (a) normalizeAccountingBpoLaunch(raw)
+      const blockers = Array.isArray(raw?.ssoReadinessBlockers)
+        ? raw.ssoReadinessBlockers.map((item) => String(item)).filter(Boolean) : [];
+      const hasSsoBlockers = blockers.length > 0;
+      const ssoAvailability =
+        raw?.ssoAvailability === ACCOUNTING_BPO_SSO_AVAILABLE && !hasSsoBlockers
+          ? ACCOUNTING_BPO_SSO_AVAILABLE
+          : ACCOUNTING_BPO_SSO_PLANNED;
+    → catalog raw payload 에서 blockers 있으면 AVAILABLE → PLANNED 자동 강등.
+
+  (b) mergeAccountingBpoLaunchWithHealth(catalog, healthReadiness)
+      const hasSsoBlockers = blockers.length > 0;
+      return { ...catalog,
+        ssoAvailability: hasSsoBlockers ? ACCOUNTING_BPO_SSO_PLANNED : ssoAvailability,
+        ...
+      };
+    → /api/v1/health merge 시에도 blocker 존재 시 PLANNED 유지 (BE health readiness 와 이중 일치).
+
+  (c) canLaunchAccountingBpoSso(catalog)
+      return catalog?.ssoAvailability === ACCOUNTING_BPO_SSO_AVAILABLE &&
+        catalog?.portalLaunchReady !== false &&
+        catalog?.credentialsCollected !== true &&
+        !(Array.isArray(catalog?.ssoReadinessBlockers) && catalog.ssoReadinessBlockers.length > 0);
+    → 최종 launch 액션 표시 게이팅에서 blockers 4번째 조건 추가.
+
+QA-B490 closure · id=12 M12 0.7 residual PRIMARY carry · KPI promote 0 (하드코딩된 credentials 부재는 그대로).
+아키텍처 의미: BE `describeAccountingBpoReadinessBlocker`(BNK-780)+`bpo-sso-handoff` 429/allowlist BE 방어 위에
+FE 3-단 자체 안전장치 = defense-in-depth. 경쟁 4종 in-app BPO SSO safety guard "미확인" carry.
+
+Test 추가:
+  - accountingBpo.test.js : normalizeAccountingBpoLaunch demote + merge demote + canLaunch guard (+3 case)
+  - AccountingBpoPage.test.jsx : blocker present → "SSO 실행" 버튼 렌더링 X 및 planned 안내 (2 case)
+
+
+★★★ #2  BE QA-B95 nbsp-entity + Unicode NBSP fail-closed decode
+--------------------------------------------------------------------
+BE `@4bf5684` `fix(v2/QA-B95): decode nbsp-escaped bootstrap blocker details` = LiveE2eOperationReadinessSupport 하드닝:
+
+  (a) 신규 패턴:
+      NAMED_HTML_ENTITY_NBSP = &nbsp(?:;|(?=$|[^a-zA-Z0-9]))  // case-insensitive
+      NON_BREAKING_SPACE = '\u00a0'  // Unicode NBSP 문자
+
+  (b) normalizeBootstrapBlockerToken:
+      String normalized = token.replace(NON_BREAKING_SPACE, ' ').trim();
+      → Unicode NBSP 를 일반 공백으로 치환 후 trim (앞뒤 wrapping punctuation 제거 진입).
+
+  (c) decodeHtmlEntities:
+      decoded = NAMED_HTML_ENTITY_NBSP.matcher(decoded).replaceAll(" ");
+      → HTML `&nbsp;`(semi-colon optional) 를 공백으로 치환 후 numeric 엔티티 파이프라인 진입.
+
+Test @Test 추가 1건:
+  resolveOperationBlockersShouldDecodeNbspEscapedBootstrapDetails()
+    - staffBootstrapDetails = "&nbsp;bootstrap=disabled&nbsp;"
+    - guardianBootstrapDetails = "\u00a0guardian-bootstrap=disabled\u00a0"
+    → blockers containsExactly ["staff-bootstrap-not-ready","guardian-bootstrap-not-ready","bootstrap-disabled"]
+    → resolveOperationBlocker → "bootstrap-disabled"
+  = 2-way(entity + Unicode) fail-closed lock.
+
+QA-B95 hardening 계보 lineage (최근 15+ cycle):
+  … triple-encoded blocker entity(a89a873 BNK-777) → named-num HTML(2cefb1d BNK-780) →
+  semicolon-optional named entity(a8d0af5 BNK-782·BE) → nbsp entity(4bf5684 BNK-783 신규)
+= gateway wrapper 다중 인코딩 페이로드 방어의 15+ layer.
+경쟁 4종 in-app live E2E operational gate parity "미확인" carry (ogada 유일 차별화 · 결정 심화).
+
+
+★★ #3  closed axes 16-path 재확인 · 모듈 97.41% CARRY · 가정 번복 0
+--------------------------------------------------------------------
+App.jsx 132 <Route> LIVE 재확인:
+  /clients/home-newsletter  · /clients/linkage-records  · /clients/:clientId/care-plan-form
+  /dashboard  · /dashboard/hq
+  /billing/cms  · /billing/easy-pay  · /billing/cash-receipts
+  /accounting  · /payroll/basis  · /payroll/labor-cost-ratio  · /payroll/ledger  · /payroll/reports  · /payroll/retirement-accrual
+  /programs/functional-recovery  · /staff/committee-meetings
+= 16-path LIVE · 재오픈 0 · v1.3-C/v2 CMS/G14/대시보드/G2/M11/M12/G-LINKAGE/J03 CLOSED carry.
+
+Residual PRIMARY: id=12 M12 SSO 실환경 credentials(0.7) — env USMUSID/OTP_SECRET 대기.
+Residual P3 lever: id=2/8/10 = 0.85 form polish · 격상 아님.
+Coverage-0 gap: 0건 (신규 0).
+KPI promote 이번 사이클: **0** (M12 방어 심화는 UX 안전성 강화이며 credentials 부재는 그대로).
+
+================================================================================
+4. 규제 백본 zero drift · NHIS #44 러-1~4 517차
+================================================================================
+
+Fetch: `curl -sS -o docs/planning/research/snapshots/nhis_jo44_live_bnk783.html --max-time 30
+  "https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769"`
+HTTP=200 · BYTES=7572 · md5=c886ff1fd1d5ca2cb5dc76d30adde8ba
+  = BNK-782 (516차) IDENTICAL · +1 → **517차** live=disk zero drift.
+
+grep -oiE "러-[0-9]|이동서비스|편도|수급자.*부담|1일 1회" verbatim:
+  이동서비스: 9-hit (본문 verbatim carry)
+  본문 앵커: "이동서비스비용은 이용 횟수에 관계없이 1일 1회만 산정하고, 수급자가 이동서비스를 편도만
+  (기관으로 이송 또는 수급자의 거주지로 이송하는 경우) 이용한 경우에는 제1항의 표에 따른 '러-1'부터
+  '러-4'까지 비용의 50%를 산정한다"
+  → ogada TransportServiceFeeService 6-link chain(RU_1~RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY) 상수 재조정 불요.
+
+carefor LIVE `www.carefor.co.kr/daycare/func.php`·`demo-work.carefor.co.kr` HTTP **000** timeout 25s carry
+  = **94-cycle+** 「미확인」 · disk canonical `carefor_func.php` `6226e6eb` 98,328B LOCK 우선 (BNK-782 93-cycle → +1).
+longterm npbs 502/610 login-gated carry · silverangel notice ~18일+ pause carry.
+
+================================================================================
+5. planner 반영 요약 (BENCHMARK_REPORT §783 · COMPETITOR_MATRIX BNK-783)
+================================================================================
+
+★★★ baseline 실측 갱신:
+  FE `@483dfe1` → **`@b42174a`** (M12 SSO demote)
+  BE `@a8d0af5` → **`@4bf5684`** (QA-B95 nbsp decode)
+  merge gate **682 → 684** (BE 683 + FE 1 · BE-heavy · tester FF 대기)
+  Route 133 · Page 106 · FE test 530 · BE Test 294 · BE @Test **2241**(+1) · V1–V196 · 모듈 **97.41%** carry · 가정 번복 0
+
+★★★ M12 SSO defense-in-depth 심화:
+  - id=12 M12 0.7 residual PRIMARY carry (env credentials 부재는 그대로) · KPI promote 0
+  - FE 3-지점(normalize·merge·canLaunch) blocker-aware demotion = 경쟁 4종 in-app SSO safety guard 「미확인」 대비 ogada 유일 심화
+  - QA-B490 closure · Test +5 case (util 3 + Page 2)
+
+★★★ QA-B95 nbsp fail-closed 15+ layer 하드닝:
+  - HTML `&nbsp;` + Unicode NBSP `\u00a0` 2-way decode + wrapper trim
+  - @Test 2240 → 2241 (+1 assertion parity lock)
+  - 3-way blocker (staff/guardian bootstrap + composite) fail-closed assert
+  - 경쟁 4종 in-app operational gate 「미확인」 = ogada 유일 계보 carry
+
+★ 규제 백본 zero drift:
+  - NHIS #44 러-1~4 **517차** IDENTICAL · 상수 재조정 불요
+  - carefor LIVE HTTP 000 94-cycle+ carry · disk canonical LOCK
+
+per-cycle minimum 4종 충족 여부:
+  [O] 신규 증거 URL 1건+: nhis_jo44_live_bnk783.html (재실측) · git show(FE b42174a + BE 4bf5684) primary 증거
+  [O] 경쟁사 메뉴/필드/워크플로 1블록+: M12 SSO demote 3-지점 방어 표(§#1) + QA-B95 nbsp layer table(§#2)
+  [O] COMPETITOR_MATRIX 1행+ @HEAD SHA: FE `@b42174a` / BE `@4bf5684` · merge gate 684
+  [O] BENCHMARK_REPORT §신규 소절: §783 (§783-1 ~ §783-4)
+
+closure 이번 사이클: **0** (M12 카버리지 유지 · defense-in-depth 심화이며 residual 그대로)
+신규 core 갭 이번 사이클: **0**
+가정 번복: **0**
+상태 변경 2건: FE +1 commit (M12 demote), BE +1 commit (QA-B95 nbsp)
+
+================================================================================
+6. 미확인 · P3 lever · 다음 우선순위
+================================================================================
+
+미확인 carry:
+  - carefor LIVE `func.php`·`demo-work.carefor.co.kr` HTTP 000 94-cycle+ (disk canonical 우선 · BNK-782 93-cycle → +1)
+  - longterm npbs 502/610 login-gated · silverangel notice ~18일+ pause
+  - 이지케어 in-app SSO safety guard 「미확인」 (경쟁사 소스 비공개 · 반증 부재)
+
+P3 lever carry (격상 아님):
+  - id=2 이동서비스 form polish (0.85)
+  - id=8 직원 form polish (0.85)
+  - id=10 부가서비스 (0.85 · 10-1 SMS 콘솔 · 10-2-1 수가변경안내 템플릿 · BNK-781 제안)
+  - id=12 M12 SSO 실환경 credentials (0.7 · PRIMARY residual)
+
+다음 조사 우선순위 (rotation_30min):
+  - 8h+ 로테이션 → 교차검증·이전 BNK-782 마케팅 카피 3건 후속 검증(preventive duplicate·top-3 완결 3축·재가 out-of-scope)
+  - 0-2h 로테이션 → 케어포 func.php M10 후속(BNK-781 10-2-1 lever P3 · 수가변경안내 fee-change 템플릿)
+  - 2-4h 로테이션 → 이지케어 재실측 (change_work counter 계단식 성장 카운터 재확인 · FAQ hit-count DRIFT)
+  - 4-6h 로테이션 → 엔젤 silverangel · lcms · law.go.kr · NHIS #44 518차 규제 재실측

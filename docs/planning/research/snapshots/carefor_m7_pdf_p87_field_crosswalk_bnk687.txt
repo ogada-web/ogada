@@ -1,0 +1,70 @@
+BNK-687 케어포 역공학 0–2h — M7 PDF p87–92 필드·워크플로 전수·M6 template catalog item-id cross-walk·func 107-leaf·demo-work 111·시설 셸 transport 0
+조사일: 2026-06-27T06:30:00Z (KST 15:30) | rotation: 0–2h 케어포 func.php·매뉴얼 PDF·demo-work·ogada Route/API 1:1
+
+== live 재실측 ==
+carefor func.php LIVE (www.carefor.co.kr/daycare/func.php)     : HTTP 000 · 25s timeout = **63-cycle** carry (BNK-683 62→+1)
+demo-work LIVE (demo-work.carefor.co.kr)                      : HTTP 000 · 50s timeout = **63-cycle** carry
+Wayback 2id_ func.php/demo-work                               : HTTP 302 empty = **1-cycle** fetch fail · disk baseline carry
+NHIS #44 LIVE                                                   : HTTP 200 · 7,572B · md5 **c886ff1f** = 425-cycle IDENTICAL (`nhis_jo44_live_bnk687.html`)
+케어포 매뉴얼 PDF Wayback (Dov8rzFqBv.pdf)                      : HTTP 200 · **9,992,772B** · md5 **96f7d45e** = on-disk BNK-490 prefix IDENTICAL (`carefor_manual_pdf_refetch_bnk687.txt`)
+
+== func.php PC 107-leaf 전수 (주야간보호 정본 · grep `<!--N-N.`) ==
+모듈 11 · leaf 107 · depth {2:88, 3:19} · title-keyword report-dense 24/107 (리포트 21·통계 1·대장 7) · BNK-683 「31/107」= broader leaf+rpt-class carry
+| M# | leaf | 비고 |
+|----|------|------|
+| M1 | 11 | 수급자관리 |
+| M2 | 10 | **이동서비스관리** (주야간 전용) |
+| M3 | 11 | 요양급여제공 |
+| M4 | 10 | 간호/물리(작업) |
+| M5 | 13 | 프로그램 |
+| M6 | 5 | 위생·안전 (6-1~6-4 + 6-3-1) |
+| M7 | 11 | 본인부담금 (7-1~7-10 + 7-2-1) |
+| M8 | 15 | 직원관리 |
+| M9 | 6 | 기초설정 |
+| M10 | 9 | 부가서비스 |
+| M11 | 6 | 직원 급여 (**ogada 0 route — sole P1 lever**) |
+
+※ agents.yaml 「109항목」= PC 107 + APP 19 = **126 total** carry. disk md5 `6226e6eb` 98,328B = BNK-666+ byte-identical baseline.
+
+== demo-work 시설 셸 (carefor_demo_work.html canonical disk) ==
+loadPage `<li obj-type="loadPage">` : **111** (BNK-683 raw 110 → **+1** canonical disk re-parse carry)
+`class` rpt                     : **34** (30.6% report UI density)
+`view.transport.*` / 이동·송영·배차 : **0 hit** → **시설 셸 = 이동서비스 미장착 재확인**
+M7 demo nav                     : **10** (`view.cost_*` 9 + CMS/npay 2 — 7-4/7-5 reorder vs func numbering)
+
+== ★★★ M7 PDF p87–92 필드·워크플로 전수 ↔ ogada API 1:1 (신규 evidence · 메뉴/필드/워크플로 블록) ==
+근거: [Wayback PDF p87](https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf#page=87) HTTP 200 · 9,992,772B · md5 `96f7d45e` · 조사일 2026-06-27
+
+| PDF | carefor leaf | PDF 필드·워크플로 (verbatim 요약) | ogada `@db15b566`/`@72924bb` | 판정 |
+|-----|--------------|-----------------------------------|------------------------------|------|
+| p87 | 7-1 | ① 우편·문자·이메일·직접수령 일괄 발송 ② 주소라벨·명세서·영수증·청구리스트 출력·발송내역 엑셀 ※우편만 발송일 수정·문자/이메일 자동기록 수정불가 | `POST/GET/PATCH /api/v1/billing/claims/{id}/statement-dispatches` (G-7-1-4CHANNEL) · `BillingDetailPage` 「명세 4채널 발송」 | ✅ FULL |
+| p88 | 7-2 | ① 입금처리(년월 선택→납부) ② 청구이력·입금내역 조회 ③ 연간 납부확인서 ④ **은행 거래내역 엑셀 일괄 입금**(국민·우리·농협·신한·KEB하나·부산·대구·광주 등) | `BankDepositImportPanel` · `GET /billing/payments/bank-deposit-formats` (G-BANK-EXCEL-8) · `POST .../bank-deposit-import` · `payment-receipt-notify` | ✅ FULL |
+| p89 | 7-3 | ① 미납개월·총액 ② 독려 전화/문자/기타 기록 ③ 상세 미납·관리내역 ④ **미납 조정·삭제** ⑤ 미납대상 문자안내 | `GET/POST /billing/overdue/.../collection-records` · `GET/POST .../adjustments` (G-BILLING-OVERDUE-ADJUSTMENT) · `/billing/overdue` | ✅ FULL |
+| p90 | 7-3† | **청구시작 기준금액** — 도입 전 미납/선납 입력 · 1회 생성 후 잠금 | `POST /settings/billing/start-balance` (G33) · `POST .../settle` (US-L01) | ✅ FULL |
+| p91 | 7-6~7-8 | 청구대장(연간)·입금대장(월·1~15·16~말)·수납대장(청구기준/수납기준) ※PDF 구번호 7-5/7-6/7-7 (−1 drift negative) | `/billing/reports/charges` · `deposits` · `receipts` · `refunds` · `statistics` | ✅ FULL |
+| p92 | 7-2-1·7-8 | ① 국세청 의료비공제 업로드 포맷 엑셀 ② 본인부담금 월별 청구·입금·미수 통계 | `GET /billing/reports/medical-deduction/export` (G26) · `/billing/reports/statistics` · `MedicalExpenseDeductionPanel` | ✅ FULL |
+
+† p90 「7-3 청구시작」vs func 7-3=미납 번호 충돌 = BNK-662 quadruple-source negative carry · ogada G33 별도 settings route.
+
+**M7 module 7 coverage: 1.0 carry** · sole P1 lever = **M11/M12** (+6.90pp → 91.21%)
+ogada billing superset (func 7-x 미노출): `/billing/calculator` · `/billing/cash-receipts` · `/billing/copay-rates` · `/billing/fee-schedules` · `/billing/imports/nhis/*` · `/billing/claims/:claimId`
+
+== ★★ M6 func 5-leaf ↔ ogada SafetyCheckTemplateCatalog item-id cross-walk (BNK-686 후속) ==
+| func leaf | ogada route / catalog | item-id / sub-form | 판정 |
+|-----------|----------------------|-------------------|------|
+| 6-1 주간식단표 | `/meals` 당일 식단 등록 only | weekly menu table ❌ | △ **gap** — P3 `G-WEEKLY-MEAL-PLAN` candidate |
+| 6-2 일일점검 | `/safety/daily-checks` | daily 8: `floor_clean`·`restroom`·`kitchen_hygiene`·`handwash`·`ventilation`·`emergency_exit`·`fire_extinguisher`·`medication_storage` | ✅ |
+| 6-3 정기점검 | `/safety/periodic-checks` | 6 sub-form HYGIENE(4)·NURSING_SUPPLIES(3)·MEAL_SERVICE(3)·FIRE_SAFETY(4)·MEDICATION(3)·DISINFECTION(3) | ✅ |
+| 6-3-1 감염병 관리 | `/safety/infection-control` | symptom 5 + action 4 options (catalog-driven) | ✅ |
+| 6-4 시설운영일지 | `/safety/operation-log` | operation log free-form | ✅ |
+
+FE `@db15b566` stage6: `useSafetyCheckTemplateCatalog` API 실패 시 **local fallback UI surfacing** (`SafetyDailyChecksPage` 등 pilot notice) — BNK-686 server catalog + BNK-687 offline resilience deepen.
+BE `SafetyCheckTemplateCatalog.java` mirrors `safetyChecks.js` · `careforRef` verbatim on 6 sub-forms.
+
+== ogada git 실측 @db15b566 / @72924bb ==
+FE develop `@db15b566` WT **CLEAN** (BNK-686 `@cf73ae8` → **+1 commit** `chore(v1.2.1/US-Q01): surface local safety template fallback` 4-file +49L·ahead **281**)
+BE develop `@72924bb` WT **DIRTY 1M** (`SafetyCheckControllerRoutingTest.java` +21/-9L uncommitted)
+merge gate **883**(+1 FE-only vs BNK-686 882)
+123 Route · 97 page · V1–V185 · BE @Test 2043 · FE test 500(207+293) · 모듈 84.31%(id=6 ✅·id=7 ✅ 1.0) · reports 28
+
+KPI 영향: M7 field-level **FULL PARITY 6/6 PDF pages** · M6 id=6 **1.0 carry** · 6-1 주간식단표 △ = module 6 완전 1.0 아님(식단표 별축 gap · KPI 영향 0)

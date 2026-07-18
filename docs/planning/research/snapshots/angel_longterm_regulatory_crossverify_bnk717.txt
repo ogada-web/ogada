@@ -1,0 +1,95 @@
+BNK-717 엔젤·롱텀·규제 4–6h 교차검증 (2026-07-14T09:07Z)
+==========================================================
+rotation: 엔젤·롱텀·규제 (silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4·2026 수가/평가 #27·단기보호/통합재가 고시)
+직전 동일 rotation: BNK-711(2026-07-14T04:10Z) → ~4.9h 후
+직전 사이클: BNK-716(2026-07-14T08:32Z·케어포 역공학) → ~35분 후
+
+── ogada git 실측 (@develop HEAD) ──────────────────────────
+FE develop  : 84b336b  feat(v1.2.1/M12): wire accounting BPO launch catalog from API
+              WT CLEAN · BNK-716 @891231d → +1 commit · ahead 1 vs origin/test=891231d
+BE develop  : 54a3e56  feat(v2/M12): surface accounting BPO readiness in health
+              WT CLEAN · BNK-716 @edaa9e9 → +1 commit · ahead 627 vs origin/test=598d108
+merge gate  : 628 (FE 1 + BE 627 · BE 대량은 test 브랜치 미FF 상태 carry)
+
+KPI 실측:
+  Route      131 (<Route\b 130 + <Routes> 1 · carry — 신규 route 0)
+  *Page.jsx  104 (carry — 신규 page 0)
+  FE test    516 (.test.js 213 + .test.jsx 303 · carry — in-place 확장)
+  BE Test    284 (Test.java 283 + Tests.java 1 · carry)
+  BE @Test   2104 (BNK-716 2103 → +1 · accounting BPO health readiness @Test)
+  Flyway     V1–V190 (carry)
+  accounting route 1 · payroll route 5 (basis/labor-cost-ratio/ledger/reports/retirement-accrual)
+  competitorModuleCoverage: 29-entry · sum 25.90 · 25.90/29 = 89.31%
+    → id=12 「수입지출·회계」 0.35 → 0.45 (+0.10) · 모듈 88.97% → 89.31% (+0.34pp)
+
+★★★ M12 「수입지출·회계」 2-layer DEEPEN (id=12 0.35→0.45) ★★★
+  BNK-716: FE `/accounting` AccountingBpoPage 가 하드코딩 metadata 로 포털 오픈
+  BNK-717 delta:
+   ① FE @84b336b `feat(v1.2.1/M12): wire accounting BPO launch catalog from API`
+      = AccountingBpoPage 가 BE `GET /api/v1/billing/accounting/bpo-launch` catalog 를
+        실제로 fetch 하여 포털 제목/URL/relatedSurfaces 를 API-driven 으로 렌더 (하드코딩 제거)
+   ② BE @54a3e56 `feat(v2/M12): surface accounting BPO readiness in health`
+      = `/api/v1/health` 에 accounting BPO readiness 필드 노출 (J03 알림 readiness 패턴과 동일)
+        HealthController + HealthControllerTest + AccountingBpoService/Support 확장 · +1 @Test
+  → M12 = 「케어포 외부 BPO(수지파인 SSO) parity 를 in-app 진입점으로 감싼 하이브리드」에
+    (a) API-driven catalog 소비 + (b) operational health readiness probe 두 layer 추가
+  → sole core 갭 소멸 후 M12 심화 단계(0.35→0.45) · 잔여 lever = SSO OTP 어댑터(0.45→↑)
+
+── 엔젤·롱텀·규제 live 재실측 ────────────────────────────────
+✅ NHIS #44 이동서비스비 러-1~4 = 452차 zero drift IDENTICAL
+   URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+   HTTP 200 · 7,572B · md5 c886ff1f (live=disk nhis_jo44.html IDENTICAL · BNK-716 451차 → +1)
+   verbatim grep: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담하지 아니한다(1)·이동서비스(13)·50%(11)
+   ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회) 6-link chain (id=2 이동서비스 0.85) carry
+
+✅ silverangel essential = live=disk IDENTICAL (평가지표 27 = 기능회복훈련 정본 재확인)
+   URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+   HTTP 200 · 131,664B · md5 c79c1be3
+   본문 grep: 기능회복(6·평가지표 27=기능회복훈련 6-hit) vs 목욕(2·비필수 별도 청구)
+   ↔ ogada G17(기능회복=필수 소유)/G-BATHING(목욕=비필수 별도 청구) 5-commit full-stack chain carry
+
+✅ silverangel extraService = live=disk IDENTICAL (CMS 5-method)
+   URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+   HTTP 200 · 81,637B · md5 f9c5d877
+   ↔ ogada CmsPaymentMethodCatalog 5/5 collectionImplemented parity carry
+
+✅ silverangel notice list = zero drift · 신규 공지 0 (~18일+ pause 지속)
+   URL: https://www.silverangel.kr/silverangel/support/notice/list.do
+   HTTP 200 · 5,707,602B · md5 ea7d6b3d (BNK-709/711 IDENTICAL) · 최신 가시 Tmp_idx 221551 · ≥221573 = 0
+   (파일 5.7MB — 저장 생략·md5 참조만)
+
+△ lcms.or.kr = type2 배너 rotation transient DRIFT (semantic IDENTICAL)
+   URL: https://www.lcms.or.kr/
+   HTTP 200 · 50,554B · md5 6c0d22b4 (canonical lcms_root.html c0c66076 50,740B = type1)
+   ad_cont type2 배너 · <title>엔젤시스템</title> · 자산/카피 semantic IDENTICAL
+   = BNK-618 lcms_or_kr_renew_bnk618.html(6c0d22b4)와 동일 = 알려진 type1/type2 배너 순환 transient
+   저장: lcms_or_kr_type2_bnk717.html (canonical 덮어쓰기 아님)
+
+△ law.go.kr admRul (제2025-247호) = size-lock · Time= cachebuster md5 DRIFT · semantic IDENTICAL
+   URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+   HTTP 200 · 78,450B · md5 a264fd59 (BNK-711 786bb404 → Time= 토큰 md5-only DRIFT)
+   Time=1784020204 cachebuster · 시행 2026. 1. 1 verbatim IDENTICAL
+   저장: law_247_admRulInfoP_live_bnk717.html
+
+── 판정 요약 ────────────────────────────────────────────────
+가정 번복      : 0 (M12 id=12 0.35→0.45 는 KPI 심화·가정 번복 아님)
+신규 core 갭   : 0
+candidate 변동 : 0
+상태 변경      : 2 (FE +1 commit·BE +1 commit·양쪽 WT CLEAN)
+KPI 변경       : 4 (BE @Test 2103→2104·id=12 0.35→0.45·모듈 88.97%→89.31%·merge gate)
+zero drift IDENTICAL : 4 (NHIS #44 452차·silverangel essential·extraService·notice list)
+transient DRIFT semantic IDENTICAL : 2 (lcms type2 배너·law247 Time= 토큰)
+덮어쓰기        : 0 (canonical 유지·live snapshot 은 bnk717 suffix 신규)
+미확인 carry   : 2 (longterm npbs 502/610 login-gated shell·carefor func.php/demo-work HTTP 000)
+per-cycle minimum 4종 충족: 신규 evidence(NHIS 452차 재실측+law247/lcms DRIFT 기록)·
+  메뉴/필드/워크플로 1블록(M12 2-layer deepen + silverangel 평가지표 27 hits)·
+  COMPETITOR_MATRIX 1행+ @84b336b/@54a3e56·BENCHMARK_REPORT §BNK-717
+
+── planner 반영 제안 ────────────────────────────────────────
+1. baseline: FE @891231d→@84b336b · BE @edaa9e9→@54a3e56 · merge gate 628 (tester FF·BE-only 대량)
+2. M12 심화: REQUIREMENTS §M12 / USER_STORIES US-ACCOUNTING-M12 에
+   「재무회계 BPO 진입 = API-driven catalog 소비 + /api/v1/health readiness probe」 반영 (id=12 0.45)
+3. 잔여 lever: M12 SSO OTP 어댑터(0.45→↑) 단일 · P3 dashboard 2건
+   (G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY) 「가정」 유지
+4. 규제 백본 452-cycle zero drift = 이동서비스비 full-stack 우위 narrative carry (경쟁 4종 유일)
+5. 알림/회계 readiness health probe 2종(J03 + M12) = operational 우위 후보 narrative

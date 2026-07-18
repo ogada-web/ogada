@@ -1,0 +1,76 @@
+BNK-732 — ogada git 실측 6–8h rotation (2026-07-14T19:32Z / KST 2026-07-15 04:32)
+================================================================================
+직전 동일 rotation: BNK-729(2026-07-14T17:26Z·ogada git 실측) → ~2.1h 후
+직전 사이클: BNK-731(2026-07-14T18:58Z·이지케어 역공학 2–4h) → ~34분 후
+
+[git HEAD 실측]
+- FE develop HEAD: 4d1b01c2d7c75cd9fb299f10ca465377764373ef (4d1b01c)
+    · git -C src/frontend rev-parse develop
+    · WT: CLEAN (git status --short = 0 line)
+    · BNK-731 `@4d1b01c` 동일 SHA → HEAD zero advance 1-cycle
+    · ahead origin/test: 0  = FULLY SYNCED (test 브랜치가 4d1b01c 로 따라잡음·BNK-731 ahead 1 → 0)
+    · HEAD msg: feat(v1.2.1/G2): wire facility-notice DRAFT PATCH and attachmentUrl (2026-07-14 18:52:12Z)
+- BE develop HEAD: 1f3698d63c6e34efd56da65dcd56bacda0dda639 (1f3698d)
+    · git -C src/backend rev-parse develop
+    · WT: CLEAN (git status --short = 0 line)
+    · BNK-731 `@bf96c29` → +1 commit: 1f3698d fix(v2/J03): add channel-status API spec compatibility aliases (2026-07-14 19:28:25Z·Co-authored-by Cursor)
+    · ahead origin/test: 641 (BNK-731 640 → +1)
+
+[merge gate]
+- FE 0 (FULLY SYNCED) + BE 641 = 641 (BE-only·양쪽 WT CLEAN → tester FF 가능)
+- BNK-731 641(FE 1+BE 640) → 총합 carry, composition shift(FE merged·BE +1)
+
+[KPI 실측 — 표준 measure]
+- Route: 132 = 131 `<Route\b`(src/App.jsx grep -cE) + 1 `<Routes>`   (carry)
+- Page:  105 *Page.jsx (ls src/pages/*Page.jsx | wc -l)               (carry)
+- FE test: 518 = 214 .test.js + 304 .test.jsx
+    · git grep -l '' develop -- 'src/**/*.test.js'  = 214
+    · git grep -l '' develop -- 'src/**/*.test.jsx' = 304
+- BE Test files: 289 = 288 *Test.java + 1 *Tests.java
+    · git grep -l '' develop -- 'src/test/**/*Test.java'  = 288
+    · git grep -l '' develop -- 'src/test/**/*Tests.java' = 1
+- BE @Test: 2160  (git grep -hoE '@Test\b' develop -- 'src/test/**' | wc -l)
+    · bf96c29(BNK-731) = 2160 · 1f3698d(현재) = 2160  → HEAD +1 commit 이 test 파일 3-line 추가했으나 신규 @Test 메서드 0(alias 검증 assertion)
+    · BNK-731 header 「2161」 → **−1 recount**(문서화된 over-count 정정 패턴과 동일·낮은 git 실측값 채택)
+- Flyway: V1–V192 (max V192·신규 0·carry)
+- accounting route 1 · payroll route 5 (App.jsx grep) carry
+- 모듈 커버리지: 27.15/29 = 0.93620 = **93.62%** (carry)
+    · competitorModuleCoverage.js COMPETITOR_FEATURE_COVERAGE 29-entry
+    · non-1.0: id=1-10 연계기록지 0 · id=2 이동서비스 0.85 · id=8 직원·근태 0.85 · id=10 부가서비스(SMS·알림) 0.75 · id=12 수입지출·회계 0.7
+    · 24×1.0 + 0 + 0.85 + 0.85 + 0.75 + 0.7 = 27.15 → /29 = 93.62%
+    · V12_MODULE_COVERAGE_TARGET 0.60 초과 +33.62pp 여유
+
+[★ BNK-732 focus 블록 — BE @1f3698d J03 채널 상태 API_SPEC 호환 alias (메뉴/필드/워크플로 상세)]
+파일: src/main/java/com/ogada/backend/notification/api/NotificationChannelStatusResponse.java (+24L)
+- record NotificationChannelStatusResponse 기존 필드(발췌):
+    alimtalkProvider · emailProvider · solapiApiKeyConfigured · solapiApiSecretConfigured
+    · solapiSenderIdConfigured · solapiKakaoPfIdConfigured · smtpHostConfigured
+    · liveAlimtalkDispatchReady · liveEmailDispatchReady · quietHoursActive
+    · configuredTemplateCount · requiredTemplateCount · templates[] · missingTemplateCodes[]
+    · missingSolapiConfigKeys[] · missingEmailConfigKeys[] · readinessBlockers[]
+- 신규 @JsonProperty alias 3종 (API_SPEC 명명 안정화·기존 consumer 무중단):
+    solapiSenderNumberConfigured  → solapiSenderIdConfigured
+    kakaoChannelIdConfigured      → solapiKakaoPfIdConfigured
+    requiredAlimtalkTemplates     → templates
+- Test: NotificationChannelReadinessServiceTest.java +3L (alias 노출 검증·신규 @Test 0)
+- 해석: J03 알림 채널 readiness( `/api/v1/health` alimtalk/email probe )가 API_SPEC 필드명과
+  정합. ogada 3-channel 우위(이메일 SMTP + 알림톡 J03/Solapi + SMS) 대비 이지케어 2-channel
+  (SMS+앱쪽지·알림톡/이메일 0-hit·BNK-724/731)·케어포 문자 중심 narrative 강화.
+  liveAlimtalkDispatchReady/liveEmailDispatchReady = 경쟁 미확인 in-app operational readiness lever.
+
+[규제 백본 재실측 — NHIS #44 이동서비스비 러-1~4]
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+- **465차 zero drift** (BNK-730 464차 → +1·BNK-731 이지케어 rotation 으로 미측정)
+- live md5 = disk canonical(nhis_jo44_live_bnk730.html) IDENTICAL
+- verbatim grep -oE: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+- ↔ ogada `TransportServiceFeeService`(RU_1~4·ONE_WAY_RATIO=0.5·1일1회 guard) 6-link chain(id=2 0.85) carry
+- snapshot: nhis_jo44_live_bnk732.html (IDENTICAL carry·덮어쓰기 아님·신규 차수 파일)
+
+[per-cycle minimum 충족]
+1. 재실측 evidence URL 1: NHIS #44 465차 zero drift (live 재실측+변동 기록)
+2. 메뉴/필드/워크플로 블록 1: BE @1f3698d NotificationChannelStatusResponse J03 alias 3종 + 17-field readiness record
+3. COMPETITOR_MATRIX 1행+ @4d1b01c/@1f3698d 갱신
+4. BENCHMARK_REPORT §732 소절
+
+덮어쓰기 0. 가정 번복 0. 신규 core 갭 0. closure 0(HEAD advance BE +1 = doc-compat alias only).

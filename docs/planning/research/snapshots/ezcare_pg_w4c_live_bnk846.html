@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=1200, initial-scale=0.3">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="Title" content="">
+    <meta name="Subject" content="">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="방문일정관리, 수급자관리, 요양보호사급여관리, 재가센터 업무서식제공, 가산수가계산, 재가기관 업무관리프로그램">
+    <meta name="reply-to" content="">
+    <meta name="Robots" content="">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="이지케어">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="https://ezcare.easyms.co.kr/">
+    <meta name="twitter:card" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:domain" content="">
+    <meta name="google-site-verification" content="">
+    <meta name="naver-site-verification" content="">
+    <title>이지케어 재가장기요양기관 업무관리 프로그램</title>
+    <link rel="icon" href="/homepage2/assets/images/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/homepage2/assets/images/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/homepage2/assets/images/favicon/apple-touch-icon.png">
+    <!-- jquery -->
+    <script src="/homepage/js/vendor/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.number.js"></script>
+    <script type="text/javascript" src="/assets/jquery/plugin/jquery.cookie.js"></script>
+    <!-- 이지케어 유입분석 -->
+    <script src="/assets/accessClick.log.js?20230308" type="text/javascript"></script>
+    <!-- assets -->
+    <link rel="stylesheet" href="/homepage2/assets/css/reset.css?1784325223" />
+    <link rel="stylesheet" href="/homepage2/assets/css/base.css?1784325223" />
+    <link rel="stylesheet" href="/homepage2/assets/css/layout.css?1784325223" />
+    <link rel="stylesheet" href="/homepage2/assets/css/ez_alert.css?1784325223" />
+    <!-- <link rel="stylesheet" href="/homepage2/assets/css/responsive.css" /> -->
+    <script src="/homepage2/assets/js/common.js?1784325223"></script>
+    <script src="/homepage2/assets/js/ez_alert.js?1784325223"></script>
+    <script src="/homepage2/assets/js/home.js?1784325223"></script>
+    <link rel="stylesheet" href="/homepage2/assets/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/homepage2/assets/vendor/aos/aos.css">
+</head>
+<script>
+var PGID = 'w4c'; // 2022.08.26 주팀장추가  accessClick
+var loginCheck = 0;
+var chk = 0;
+
+$(function() {
+    dep1 = 0,
+        dep2 = 0;
+});
+
+var _NGUL = "wcs.naver.net/wcslog.js";
+if (location.protocol == "https:") { var nUrl = "https://" + _NGUL; } else { var nUrl = "http://" + _NGUL; }
+document.write("<scr" + "ipt type='text/javascript' src='" + nUrl + "'></scr" + "ipt>");
+</script>
+
+<body>
+    <style>
+</style>
+
+<header class="header" id="header">
+	<div class="inner">
+		<div class="logo">
+			<a href="/index.html">
+				<img src="/homepage2/assets/images/logo_easycare_60h.svg" alt="재가장기요약기관 업무통합 ERP 이지케어" style="height:55px">	
+			</a>
+		</div>
+
+		<button type="button" class="menu-toggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+	  </button>
+
+		<nav class="nav">
+			<ul class="gnb">
+				<li><a class="" href="/index.html?PG=about">이지케어 소개</a></li>
+				<li><a class="" href="/index.html?PG=visit">방문요양 </a></li>
+				<li><a class="" href="/index.html?PG=daycare">주야간보호 </a></li>
+				<li><a class="active" href="/index.html?PG=w4c">재무회계 대행</a></li>
+				<li><a class="" href="/index.html?PG=addition">부가서비스</a></li>
+				<li><a class="" href="/index.html?PG=price">요금안내</a></li>
+				<li><a class="" href="/index.html?PG=signup_select">이용신청</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>						<link rel="stylesheet" href="/homepage2/assets/css/sub.css" />
+<!-- 주야간 메인 시작 -->
+<section class="w4c-main">
+    <div class="inner">
+        <div class="w4c-title-wrap section-head">
+            <p class="w4c-title section-title">
+                회계·세무·4대보험을 넘어 노무까지<br />
+                실무형 회계 파트너, 이지케어 재무회계
+            </p>
+            <p class="w4c-desc section-subtitle">
+                국내 최고의 요양 전문 회계·세무·노무 전문가와 함께<br />
+                현장 실무부터 행정까지 확실하게 챙겨 드립니다.
+            </p>
+        </div>
+        <div class="img-wrap" data-aos="fade-up" data-aos-delay="50">
+            <img src="/homepage2/assets/images/w4c-main-img.png" />
+        </div>
+    </div>
+</section>
+<!-- 주야간 메인 끝 -->
+<!-- 말풍선 후기 시작 -->
+<section class="w4c-pain">
+    <div class="inner">
+        <div class="pain-title-wrap block-head">
+            <h1 class="block-title block-title">
+                센터 운영,<br />
+                직접 처리하기엔 점점 복잡하고<br />
+                어려워지고 있습니다.
+            </h1>
+            <p class="w4c-pain-desc block-subtitle">
+                요양 기관을 둘러싼 규정이 엄격해지고 있습니다.<br />
+                한 번의 실수가 영업정지, 가산세, 과태료로 이어질 수 있습니다.
+            </p>
+        </div>
+        <div class="w4c-pain-chat" data-aos="fade-up" data-aos-delay="50">
+            <div class="chat-box">
+                <p class="quotes-text">
+                    <img src="/homepage2/assets/images/w4c-pain-icon.svg" />
+                    <strong>강화되는 시·군·구 회계 지도점검 </strong>
+                </p>
+                <p class="chat-desc">
+                    회계 규정 위반이 발견되면 영업정지 등 행정처분으로 이어질 수 있습니다.
+                </p>
+            </div>
+            <div class="chat-box">
+                <p class="quotes-text">
+                    <img src="/homepage2/assets/images/w4c-pain-icon.svg" />
+                    <strong>요양 시장으로 확대되는 국세청 세무조사</strong>
+                </p>
+                <p class="chat-desc">
+                    국세청의 관심이 높아지는 요양 시장, 원천세 신고 오류는 가산세로 이어질 수 있습니다.
+                </p>
+            </div>
+            <div class="chat-box">
+                <p class="quotes-text">
+                    <img src="/homepage2/assets/images/w4c-pain-icon.svg" />
+                    <strong>사회보험 업무 기한을 놓치면 과태료</strong>
+                </p>
+                <p class="chat-desc">
+                    취득·상실 신고 기한을 놓치면, 과태료 등 불이익이 발생할 수 있습니다.
+                </p>
+            </div>
+            <div class="chat-box">
+                <p class="quotes-text">
+                    <img src="/homepage2/assets/images/w4c-pain-icon.svg" />
+                    <strong>노무 리스크 노출 기관 증가</strong>
+                </p>
+                <p class="chat-desc">
+                    근로계약·급여 관리가 부실하면, 근로감독 조사로 이어질 수 있습니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 주요기능 영역 시작 -->
+<section class="w4c-feature">
+    <div class="inner">
+        <div class="feature-title-wrap block-head">
+            <h1 class="feature-title block-title">
+                회계부터 세무·노무까지<br />
+                필요한 업무를 한 곳에서 해결합니다.
+            </h1>
+        </div>
+        <!-- 01 -->
+        <div class="feature-card">
+            <div class="feature-content">
+                <div class="feature-text-area">
+                    <h2>
+                        이지케어 ERP와 연동되어<br />
+                        클릭 한번으로 빠르고 정확한 신고 진행
+                    </h2>
+                    <ul class="feature-tab">
+                        <li class="active" data-image="/homepage2/assets/images/w4c-feature-part1-img01.png">
+                            매월 원천세 신고
+                        </li>
+                        <li data-image="/homepage2/assets/images/w4c-feature-part1-img02.png">
+                            상·하반기 간이지급명세서 제출
+                        </li>
+                        <li data-image="/homepage2/assets/images/w4c-feature-part1-img03.png">
+                            퇴직금 정산
+                        </li>
+                        <li data-image="/homepage2/assets/images/w4c-feature-part1-img04.png">
+                            연말정산
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="feature-image">
+                <img src="/homepage2/assets/images/w4c-feature-img01-1.png" alt="">
+            </div>
+        </div>
+        <!-- 02 -->
+        <div class="feature-card reverse">
+            <div class="feature-content">
+                <div class="feature-text-area">
+                    <h2>
+                        전산으로 처리되는<br />
+                        누락 없고 지연 없는 회계 처리
+                    </h2>
+                    <ul class="feature-tab">
+                        <li class="active" data-image="/homepage2/assets/images/w4c-feature-part2-img01.png">매월 결의서 작성</li>
+                        <li data-image="/homepage2/assets/images/w4c-feature-part2-img02.png">결산보고</li>
+                        <li data-image="/homepage2/assets/images/w4c-feature-part2-img03.png">회계장부 전산 제공</li>                        
+                    </ul>
+                    <ul class="no-img-tab">
+                        <li>예산보고 (신설기관 대상 예산보고 포함)</li>                     
+                        <li>추경보고</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="feature-image">
+                <img src="/homepage2/assets/images/w4c-feature-part2-img01.png" alt="">
+            </div>
+        </div>
+        <!-- 03 -->
+        <div class="feature-card">
+            <div class="feature-content">
+                <div class="feature-text-area">
+                    <h2>
+                        취득·상실부터 휴·복직 신고까지,<br />
+                        광범위한 사회보험 업무 대행
+                    </h2>
+                    <ul class="feature-tab">
+                        <li class="active" data-image="/homepage2/assets/images/w4c-feature-part3-img01.png">취득·상실 신고 대상 알림 서비스 제공</li>
+                        <li data-image="/homepage2/assets/images/w4c-feature-part3-img02.png">취득·상실 신고</li>
+                        <li data-image="/homepage2/assets/images/w4c-feature-part3-img03.png">보수총액신고</li>
+                    </ul>                    
+                    <ul class="no-img-tab">
+                        <li>신설기관 성립신고</li>    
+                        <li>이직확인서 / 휴·복직 신고 / 피부양자 신고 등</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="feature-image">
+                <img src="/homepage2/assets/images/w4c-feature-part3-img01.png"/>
+            </div>
+        </div>
+        <!-- 04 -->
+        <div class="feature-card reverse">
+            <div class="feature-content">
+                <div class="feature-text-area">
+                    <h2>요양 전문 노무사의 체계적인 업무 지원</h2>
+                    <ul class="helper-text">
+                        <li>노무 전용 1:1 문의 상담 게시판 운영</li>
+                        <li>근로계약서 검토 및 작성 지원</li>
+                        <li>근로자와의 분쟁 발생 시 노무사 자문 지원</li>
+                    </ul>
+                    <p class="noti">※ 사건화된 상담은 별도 이용료가 발생할 수 있습니다.</p>
+                </div>
+            </div>
+            <div class="feature-image">
+                <img src="/homepage2/assets/images/w4c-feature-part4-img01.png" />
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 주요기능 영역 끝 -->
+<!-- 기관 도입 전후 시작 -->
+<section class="w4c-impact">
+    <div class="inner">
+        <div class="impact-title-wrap block-head">
+            <h1 class="block-title">이지케어 재무회계 서비스는 이런 차이를 만듭니다. </h1>
+            <p class="block-subtitle">
+                회계를 직접 처리하거나 타 회계 대행업체를 이용하는 기관이<br />
+                이지케어 재무회계를 도입했을 때 겪게 되는 업무 변화를 확인해 보세요.
+            </p>
+        </div>
+    </div>    
+    <div class="impact-compare" data-aos="fade-up" data-aos-delay="50">
+        <img src="/homepage2/assets/images/w4c-table-img.png" alt="이지케어 도입 전후 차이" />
+    </div>
+</section>
+<!-- 기관 도입 전후 끝 -->
+<!-- 이지케어 채널 시작 -->
+<section class="easy-community">
+    <div class="inner">
+        <div class="community-title-wrap block-head">
+            <h1 class="block-title">처음이어도 괜찮습니다.</h1>
+            <p class="block-subtitle">
+                사용 영상, 이지케어 공식 카페, 전화·원격지원을 통해<br>
+                처음 사용하는 기관도 주요 기능과 업무 정보를 쉽게 확인할 수 있습니다.
+            </p>
+        </div>
+        <div class="community-links">
+            <a onclick="window.open('https://youtube.com/channel/UCMXiZ7oHTkDLACeHvTKkG8A?si=YmFheBrEkrPoK94n','이지케어 유튜브','width=1280, height=1000')"class="community-card" hit-id="54670">
+                <div class="community-icon youtube">
+                    <img src="/homepage2/assets/images/visit-community-youtube.png" alt="유튜브 아이콘">
+                </div>
+                <span>이지케어 유튜브 채널</span>
+                <span class="go-text">
+                    바로가기 →
+                </span>
+            </a>
+            <a onclick="window.open('https://cafe.naver.com/egcare/','이지케어 네이버 카페','width=1280, height=1000')" class="community-card" hit-id="54660">
+                <div class="community-icon cafe">
+                    <img src="/homepage2/assets/images/visit-community-cafe.png" alt="네이버카페 아이콘">
+                </div>
+                <span>이지케어 네이버 카페</span>
+                <span class="go-text">
+                    바로가기 →
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
+<!-- 이지케어 채널 끝 -->
+<!-- 재무회계 파트너 시작 -->
+<section class="w4c-partner">
+    <div class="inner">
+        <div class="partner-title-wrap block-head">
+            <h1>
+                이지케어 재무회계는 회계·세무 및 노무 분야의<br/>
+                공신력 있는 법인과 함께 서비스를 제공합니다.
+            </h1>
+        </div>
+        <div class="partner-logo-list" data-aos="fade-up" data-aos-delay="50">
+            <div class="partner-logo">
+                <img src="/homepage2/assets/images/w4c-partner-logo01.png" alt="서울회계법인">
+            </div>
+            <div class="partner-logo">
+                <img src="/homepage2/assets/images/w4c-partner-logo02.png" alt="노무법인 프로">
+            </div>
+            <div class="partner-logo">
+                <img src="/homepage2/assets/images/w4c-partner-logo03.png" alt="주도">
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 재무회계 파트너 끝 -->
+<!-- CTA 영역 시작 -->
+<section class="sub-cta">
+    <div class="inner" data-aos="fade-up" data-aos-delay="100">
+        <div class="cta-title-wrap section-head">
+            <p class="cta-title section-title">
+                실무를 확실하게 챙겨주는 ‘실무형 회계 파트너‘<br />
+                검증된 서비스를 직접 경험해 보세요.<!-- 이지케어 재무회계의  -->
+            </p>
+        </div>
+        <div class="cta-btn-wrap">
+            <a class="cta-btn active" onclick="demoW4c('quickmenu');"  hit-id="54580">
+                무료 체험하기 →
+            </a>
+            <a href="?PG=price" class="cta-btn" hit-id="54570">
+                요금 안내 보기 →
+            </a>
+            <!-- <a href="?PG=price" class="cta-btn">
+                상담 신청하기 →
+            </a>
+            <a href="?PG=price" class="cta-btn">
+                무료 이벤트 확인하기 →
+            </a> -->
+        </div>
+    </div>
+</section>
+<script>
+    document.querySelectorAll('.feature-card').forEach(card => {
+
+        const tabs = card.querySelectorAll('.feature-tab li');
+        const image = card.querySelector('.feature-image img');
+
+        // 첫 번째(active) 이미지 세팅
+        const activeTab = card.querySelector('.feature-tab li.active');
+
+        if (activeTab) {
+            image.src = activeTab.dataset.image;
+        }
+
+        tabs.forEach(tab => {
+
+            tab.addEventListener('click', () => {
+
+                tabs.forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+
+                image.style.opacity = 0;
+
+                setTimeout(() => {
+                    image.src = tab.dataset.image;
+                    image.style.opacity = 1;
+                }, 200);
+
+            });
+
+        });
+
+    });
+</script>
+<script src="/homepage2/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/homepage2/assets/vendor/aos/aos.js"></script>
+<script src="/homepage2/assets/js/main.js"></script>
+<div class="float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <a onclick="demoAction();">방문요양 ERP 체험</a>
+        <a onclick="demoDaycare();">주야간보호 ERP 체험</a>
+        <a onclick="demoW4c();">재무회계 체험</a>
+    </div>
+    <div class="horiz-line"></div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review">이용기관 사용기</a>
+        <a onclick="openEzMain('/login.html');" class="float-run-btn">
+            이지케어<br>
+            실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    <!-- <div class="d-flex">
+        <a href="?PG=joo-price">Link 1</a>
+        <a href="?PG=joo-signup-agree">Link 2</a>
+    </div> 주상무님 요금안내&이용신청-->
+    <button type="button" class="">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>
+<!--button type="button" class="float-top-btn">
+    <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+</button> 우하단 버튼이었음 -->
+<!-- 260706 플로팅 메뉴 수정
+<div class="new-float-menu">
+    <div class="float-top">
+        <p class="top-title">체험하기</p>
+        <ul>
+            <li hit-id="54340"><a onclick="demoAction();">방문요양 ERP<br>체험</a></li>
+            <li hit-id="54410"><a onclick="demoDaycare();">주야간보호 ERP<br>체험</a></li>
+            <li hit-id="54420"><a onclick="demoW4c();">재무회계<br>체험</a></li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이용기관<br>사용기</a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입문의</a>
+		
+        <a onclick="openEzMain('/login.html');" class="float-run-btn" hit-id="54360">
+            이지케어 실행하기
+        </a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div>-->
+<!-- 260709 플로팅 메뉴 수정-->
+<div class="float-menu-ver2">
+    <div class="float-top">
+        <ul class="float-exp-list">
+            <li hit-id="54340">
+                <a onclick="demoAction();">방문요양 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54410">
+                <a onclick="demoDaycare();">주야간보호 ERP<span class="exp-badge">체험</span></a>
+            </li>
+            <li hit-id="54420">
+                <a onclick="demoW4c();">재무회계<span class="exp-badge">체험</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="float-middle">
+        <a onclick="openReview();" class="float-review" hit-id="1321">이지케어 <strong>이용후기</strong></a>
+        <a onclick="openInquiry('homepage')" class="float-joezCare/homepage2/float.htmlin" hit-id="54430">가입상담</a>
+    </div>
+    <div class="float-bottom">
+        <span>고객센터</span>
+        <strong>1644 0340</strong>
+    </div>
+    
+    <button type="button" class="float-top-btn">
+        <img src="/homepage2/assets/images/top-arrow-up.svg" alt="상단으로">
+    </button>
+</div> 
+<script>
+document.querySelector('.float-top-btn').addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+</script><!-- if ($PG !== 'main') -->
+<footer id="footer" class="footer">
+	<div class="inner">
+		<div class="footer-top">
+			<ul>
+				<li class="accent">
+					<a onclick="openFooterModal('T1');">개인정보처리방침</a>
+				</li>
+				<li>
+					<a onclick="openFooterModal('T2');">이용약관</a>
+				</li>
+				<li>
+					<a href="/index.html?PG=contact">제휴문의</a>
+				</li>
+			</ul>
+		</div>
+		<div class="footer-bottom">
+			<div class="footer-bottom-wrap">
+				<div class="footer-company">
+					<p>
+						<span>법인명</span>
+						<strong>주식회사 이지엠소프트</strong>
+						<span>대표자명</span>
+						<strong>최병인</strong>
+					</p>
+					<p>
+						<span>주소</span>
+						<strong>대구광역시 수성구 알파시티2로 18, 4층(시지동 583-2, 에이스빌딩)</strong>
+					</p>
+					<p>
+						<span>사업자등록번호</span>
+						<strong>502-86-19289</strong>
+						<span>통신판매업 신고번호</span>
+						<strong>2012-대구수성구-0396</strong>
+					</p>
+					<p>
+						<span>개인정보관리책임자</span>
+						<strong>최병인</strong>
+					</p>
+				</div>
+				<div class="footer-cs">
+					<p class="footer-cs-title">고객센터</p>
+					<a href="tel:16440340" class="footer-cs-tel">
+						1644-0340
+					</a>
+					<p class="footer-cs-time">
+						09:30~17:30 (평일) 주말·공휴일 휴무
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<link rel="stylesheet" href="/homepage2/assets/css/popup/modal.css" />
+
+<section class="layer-section" id="footer-modal" onclick="closeFooterModalOnDim(event)">
+	<div class="modal modal-lg">
+		<div class="modal-header">
+			<h2 class="modal-title" id="footer-modal-title">안내</h2>
+			<button type="button" class="modal-close" onclick="closeFooterModal()">
+				<img src="/homepage2/assets/images/icon-close.svg" alt="닫기">
+			</button>
+		</div>
+		<div class="modal-body" id="footer-modal-body">
+			<div class="modal-content" id="footer-modal-content">content html</div>
+		</div>
+		<div class="modal-footer">
+			<div>
+			</div>
+			<div class="modal-footer-buttons">
+				<button type="button" class="modal-btn btn-secondary" onclick="closeFooterModal()">닫기</button>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+
+function closeFooterModal() {
+  document.body.style.overflow = 'initial';
+  document.body.style.paddingRight = 'initial';
+  var modal = document.getElementById('footer-modal');
+  if (!modal) return null;
+  modal.style.display = 'none';
+}
+
+function closeFooterModalOnDim(event) {
+  if (event.target === event.currentTarget) {
+    closeFooterModal();
+  }
+}
+
+async function openFooterModal(termType) {
+  const modal = document.getElementById('footer-modal');
+  const contentBody = document.getElementById('footer-modal-body');
+  const modalContent = document.getElementById('footer-modal-content');
+
+  if (!modal || !modalContent) return null;
+
+  const termMap = {
+    T1: {
+      title: '이지엠소프트(이지케어) <b>개인정보 처리방침</b>',
+      url: '/homepage2/assets/html/term_visit_privacy.html',
+    },
+    T2: {
+      title: '이지케어 서비스 <b>이용약관</b>',
+      url: '/homepage2/assets/html/term_visit_service.html',
+    },
+  };
+
+  const footer = termMap[termType];
+  const modalTitle = document.getElementById('footer-modal-title');
+
+  document.body.style.overflow = 'hidden';
+  document.body.style.paddingRight = '17px';
+  modal.style.display = 'flex';
+  if (contentBody) contentBody.scrollTop = 0;
+
+  if (!footer) {
+    if (modalTitle) modalTitle.innerHTML = '약관';
+    modalContent.innerHTML = '<p>약관 정보를 찾을 수 없습니다.</p>';
+    return null;
+  }
+
+  if (modalTitle) modalTitle.innerHTML = footer.title;
+  modalContent.innerHTML = '<p>약관을 불러오는 중입니다.</p>';
+
+  try {
+    const response = await fetch(footer.url, {
+      method: 'GET',
+      credentials: 'same-origin',
+      cache: 'no-cache',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to load footer html.');
+    }
+
+    modalContent.innerHTML = await response.text();
+    if (contentBody) contentBody.scrollTop = 0;
+  } catch (error) {
+    console.error(error);
+    modalContent.innerHTML = '<p>약관을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>';
+  }
+}
+</script>
+    <script>
+    function pop_calc() {
+        var cw = screen.availWidth;
+        var ch = screen.availHeight;
+        sw = 800;
+        sh = 760;
+        mw = (cw - sw) / 2;
+        mh = (ch - sh) / 2;
+        window.open('/page/landing/daycare.t1.202404/chargecalc.html', 'popup', 'width=' + sw + ', height=' + sh + ',left=' + mw + ',top=' + mh + ',toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no');
+    }
+
+    function popup_daycare_intro() {
+        var url = "/landing.ez?type=daycare.t1.202404&route=47540";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    function popup_event() {
+        var url = "/landing.ez?type=event.202307&route=2954";
+        var opt = "width=1300, height=1200,left=0,top=0,toolbar=no, location=no, directories=no, status=no, menubar=no, resizable=no, scrollbars=no, copyhistory=no";
+        window.open(url, "daycare.t1.202404", opt);
+    }
+
+    setInterval(function() {
+        // console.log('login check interval (homepage2)', loginCheck, $.cookie('login_uid'));
+        if (!loginCheck && $.cookie("login_uid")) {
+            console.log('login 안 되어있음');
+            ezAjax({
+                type: "POST",
+                async: false,
+                url: "/?mode=login_check",
+                dataType: "json",
+                success: function(data) {
+                    loginCheck = 1;
+                    $("#oInfo-name").text(data.organ);
+                    $("#login_User_Name").text(data.User_Name);
+                    $(".login.on").show();
+                    $(".login.off").hide();
+                }
+            });
+        } else if (loginCheck && !$.cookie("login_uid")) {
+            loginCheck = 0;
+            $(".login.on").hide();
+            $(".login.off").show();
+        }
+    }, 1000);
+
+    if (loginCheck) {
+        $('.login.on').show();
+        $('.login.off').hide();
+    } else {
+        $('.login.on').hide();
+        $('.login.off').show();
+    }
+    </script>
+
+
+
+<!-- 이지케어 분석 , 리뉴얼 홈페이지 2026.07.06 추가 -->
+<script type="text/javascript">
+var _route = "";
+if(_route && _route!="2100") accessClick.hit(_route, "_route");
+accessClick.hit(1100);
+</script>
+
+<script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+<script type="text/javascript">
+    if(!wcs_add) var wcs_add = {};
+    wcs_add["wa"] = "11a756aafdf88e0";
+    if(window.wcs) {
+      wcs_do();
+    }
+</script>
+
+</body>
+
+</html>

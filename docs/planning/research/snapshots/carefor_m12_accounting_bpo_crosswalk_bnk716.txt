@@ -1,0 +1,83 @@
+# BNK-716 — 케어포 역공학 0–2h · M12 재무회계 외부 BPO(수지파인) 착지 crosswalk
+# 조사일: 2026-07-14 (KST 17:xx) | rotation: 케어포 func.php·demo-work·매뉴얼 + M12 BPO 분기 실측
+# owner=BNK audience=PLN
+
+## 0. ogada git 실측 (submodule develop)
+- FE develop `891231d` `feat(v1.2.1/M12): wire accounting BPO launch page for sujifine parity`
+  · WT CLEAN · ahead origin/test **0** (test=891231d = FULLY SYNCED)
+  · Route **131**(`<Route\b` 130 + `<Routes>` 1 · +1 `/accounting`)
+  · `*Page.jsx` **104**(+1 `AccountingBpoPage.jsx`)
+  · FE test **516**(213 .test.js + 303 .test.jsx · +2: `accountingBpo.test.js` + `AccountingBpoPage.test.jsx`)
+  · accounting route 1(`/accounting`) · payroll route 5
+- BE develop `edaa9e9` `feat(v2/M12): add accounting BPO launch catalog API`
+  · WT CLEAN · ahead origin/test **1** vs `ec7c6cb`
+  · `*Test.java` 283 + `*Tests.java` 1 = BE Test **284**(+1 `AccountingBpoServiceTest.java`)
+  · BE `@Test` **2103**(+5 vs BNK-715 2098) · V1–V190
+- 모듈 커버리지 실측 `competitorModuleCoverage.js` (id 라인 한정, 29-entry):
+  · id="12" 「수입지출·회계」 coverage **0 → 0.35**
+  · sum **25.80** / 29 = **88.97%** (BNK-715 25.45/87.76% → +1.21pp)
+- merge gate **1** (FE 0 FULLY SYNCED + BE 1 · BE-only → tester FF)
+
+## 1. M12 착지 내용 (ogada = 케어포 외부 BPO 분기 parity)
+### FE (`src/utils/accountingBpo.js` · `AccountingBpoPage.jsx`)
+- ACCOUNTING_BPO_ROUTE = "/accounting"
+- ACCOUNTING_BPO_PAGE_TITLE = "재무회계 (외부 BPO)"
+- ACCOUNTING_BPO_PORTAL_URL = "https://sujifine.co.kr/login"
+- ACCOUNTING_BPO_PORTAL_PRODUCT_NAME = "수지파인"
+- ACCOUNTING_BPO_PORTAL_TITLE = "장기요양 재무회계 관리프로그램"
+- HELP(verbatim): "케어포 M12와 동일하게 수입·지출·결의 등 재무회계는 외부 BPO(수지파인)에서 처리합니다.
+  ogada는 직원 급여(M11)를 in-app으로 제공하고, 재무회계는 포털 진입만 안내합니다."
+- SSO 후속(verbatim): "기관 SSO(OTP) 자동 로그인은 후속 어댑터에서 연동합니다. 지금은 공개 로그인 화면만 새 창으로 엽니다."
+- openAccountingBpoPortal(): window.open(URL, "_blank", "noopener,noreferrer") — **credentials 미전송**
+- VIEW_ROLES = { hq_admin, branch_admin, social_worker }
+
+### BE (`billing/accounting/…`)
+- AccountingBpoController: `GET /api/v1/billing/accounting/bpo-launch`
+  `@PreAuthorize("hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')")`
+- AccountingBpoSupport: STORY_REF="US-ACCOUNTING-M12"·DOCUMENT_CODE="M12-BPO"·SURFACE_KIND="ACCOUNTING_BPO_LAUNCH"
+  · SSO_AVAILABILITY = PLANNED (OTP 어댑터 후속)
+  · relatedSurfaces[]: US-PAYROLL-M11 `/payroll/ledger`(AVAILABLE)·US-L01 `/billing`(AVAILABLE)·self `/accounting`(AVAILABLE)
+- AccountingBpoLaunchResponse / AccountingBpoRelatedSurfaceResponse DTO 2종
+- 부수: StaffPayrollSupport 퇴직적립 relatedSurface AVAILABLE 로 표시(FE 페이지 착지 반영)
+
+## 2. 신규 evidence URL — 수지파인 포털 (M12 BPO target 확인)
+- GET https://sujifine.co.kr/login → HTTP **200** · 3,974B · md5 `e19329b4`
+  · `<title>장기요양 재무회계 관리프로그램</title>` — ogada PORTAL_TITLE 상수와 **verbatim 일치**
+  · grep: 재무회계 2 · 장기요양 1 · 로그인 3 · 아이디 2 · login form
+- GET https://sujifine.co.kr/ → HTTP **302** → Location `https://sujifine.co.kr/login`
+- 결론: ogada M12 상수(PORTAL_URL·PORTAL_TITLE·PORTAL_PRODUCT_NAME)가 실제 포털과 정합 = 「확인」
+
+## 3. 케어포 M12 재확인 (external BPO 정본)
+- LIVE `carefor.co.kr/daycare/func.php` HTTP **000** 20s timeout (69-cycle+) → 「미확인」 carry
+- disk canonical `carefor_func.php` `6226e6eb` 98,328B byte-identical zero drift
+- func.php grep: 「재무회계」 **2-hit** · 「수지파인」 0 · 「12-」 prefix leaf **0**
+  → 케어포 M12(수입지출·회계) = func.php in-app 메뉴 leaf 부재 = **외부 BPO(수지파인) SSO 분기 정본 재확인**(BNK-706 carry)
+- demo-work.carefor.co.kr HTTP 000 carry 「미확인」
+
+## 4. 경쟁 4종 M12 교차검증
+| 항목 | ogada `@891231d`/`@edaa9e9` | 케어포 | 이지케어 | 엔젤 | 롱텀 |
+|------|------|--------|----------|------|------|
+| 재무회계(수입지출) | △ in-app **BPO 진입 페이지**(수지파인 launch·SSO PLANNED)·id=12 0.35 | 외부 BPO(수지파인 SSO·func 12- leaf 0) | home 「재무회계 대행 4,6xx기관」 통계·자체 대행 서비스 | ❌ systemFeature 404 | ✅ 규제 원천만 |
+| 급여(M11) | ✅ in-app full-stack(11-1~11-6·id=11 1.0) | 정적 6-leaf | FAQ 사후 | ❌ | N/A |
+
+정성 차이: ogada = **급여(M11) in-app + 재무회계(M12) BPO 진입 안내**의 하이브리드.
+케어포는 M12 전체를 수지파인 외부 SSO로 위임 → ogada 는 동일 BPO를 **in-app 진입점(RBAC·credentials 미전송)** 으로 감싼 parity + a11y 우위.
+
+## 5. 규제 백본 재실측
+- NHIS #44 이동서비스비: GET(joHistoryContent SEQ=1637) HTTP 200 · 7,572B · `c886ff1f`
+  = **451차 zero drift IDENTICAL**(BNK-715 450차 → +1) · 러-1~4·편도50%·1일1회·수급자부담X verbatim
+  ↔ ogada `TransportServiceFeeService` 6-link chain(id=2 이동서비스 0.85) carry
+
+## 6. 가정 번복·상태 변경
+- 가정 번복 1: M12(id=12) 「수지파인 외부 BPO carry·미착지·sole P1」(BNK-706~715) → **in-app BPO launch 착지 0→0.35**
+- KPI 변경: 모듈 87.76%→88.97%·id=12 0→0.35·Route 130→131·Page 103→104·FE test 514→516·BE Test 283→284·BE @Test 2098→2103·merge gate 625→1(FE FULLY SYNCED 후 BE-only)
+- 덮어쓰기 0 (func.php disk canonical 우선·zero drift)
+- 신규 snapshot 2: 본 crosswalk txt + `sujifine_login_live_bnk716.html`
+
+## 7. planner 제안
+- baseline FE `@02d185a`→`@891231d`(FULLY SYNCED)·BE `@ec7c6cb`→`@edaa9e9`·merge gate 1(BE-only)
+- **M12 착지 정본** — id=12 0→0.35 · ROADMAP·REQUIREMENTS §M12·USER_STORIES US-ACCOUNTING-M12 「재무회계 = 수지파인 외부 BPO 진입(SSO OTP 후속)」 갱신
+- **sole core 갭 소멸** — 이제 잔여 KPI lever = (a) M12 SSO OTP 어댑터로 id=12 0.35→↑ (b) P3 dashboard 2건(G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY)
+- **마케팅 카피 후보**: 「ogada는 직원 급여(M11)를 in-app으로 직접 관리하고, 재무회계(M12)는 검증된 외부 BPO(수지파인)로 안전하게 분기합니다 — 자격증명은 ogada에 저장하지 않습니다.」
+- security_auditor: `/accounting` = credentials 미전송·`noopener,noreferrer` new-window·RBAC 3-role → 위험 낮음. SSO OTP 어댑터 착지 시 시크릿 관리(env·secret manager) 검토 필요.
+- 미확인 carry: carefor LIVE func.php/demo-work HTTP 000(disk canonical 우선)·이지케어 데모 셸 transient.

@@ -1,0 +1,68 @@
+BNK-816 — ogada git 실측 6–8h (2026-07-17T02:58Z)
+====================================================================
+rotation: ogada git 실측 — src/backend·src/frontend develop HEAD·Route·page·module
+         커버 %·backend @RestController 인벤토리 재산정. COMPETITOR_MATRIX ogada 열 @HEAD 갱신.
+
+[1] SUBMODULE HEAD 실측 (git rev-parse develop / log -1)
+--------------------------------------------------------------------
+frontend develop : 5ce4726  fix(v1.2.1/QA-B95): decode bidi long-alias entities on live-e2e paths
+                   2026-07-17 02:34:05 +0000
+                   WT CLEAN · BNK-815 @1c84f0f → +1 commit
+                   ahead origin/test 0  (origin/test=5ce4726) = FULLY SYNCED (tester FF 흡수)
+
+backend  develop : 20356ed  fix(v2/QA-B95): decode angle wrapping HTML entities in readiness blockers
+                   2026-07-17 02:24:48 +0000
+                   WT CLEAN · BNK-815 @bc41ed9 → +1 commit
+                   ahead origin/test 717 (origin/test=598d108)
+
+merge gate : 717 (FE 0 FULLY SYNCED + BE 717 · BE-heavy → tester FF)
+
+[2] FE Route / Page / Test 실측
+--------------------------------------------------------------------
+App.jsx <Route\b        : 132  (+ <Routes> 1 = Route 133)
+src/pages/*.jsx (non-test): 107
+FE test files           : 530  (313 *.test.jsx + 217 *.test.js)  [git ls-files]
+
+[3] BE Controller / Entity / Migration / Test 실측
+--------------------------------------------------------------------
+@RestController         : 83   (NEW 이번 사이클 재산정 · 직전 사이클 Route/Page 위주였음)
+Flyway V*.sql           : 196  (V1–V196 · 신규 0)
+BE Test.java files      : 293  (+ 1 Tests.java = BE Test 294)
+BE @Test methods        : 2270 (grep -E "^\s*@Test" · +1 vs BNK-815 2269)
+
+[4] ★ NEW 분석 블록 — FE Route module distribution (grep path="/<mod>" App.jsx @5ce4726)
+--------------------------------------------------------------------
+  billing        17    nursing        16    care           16
+  staff          13    clients        11    transport       9
+  programs        8    attendance      7    safety          5
+  payroll         5    guardian(포털)  3    reports         2
+  health          2    guardians       2    dashboard       2
+  compliance      2    (singles ×11: visits·settings·platform·organization·
+                        meals·login·forbidden·case-management·branches·accounting)
+  → 상위 3축 billing/nursing/care = 49/133 (36.8%) · 청구+간호+요양급여 lifecycle 밀집.
+  → 83 @RestController ↔ 133 Route ↔ 196 Flyway ↔ 107 Page = full-stack 4-layer 정합
+    (컨트롤러 수 > FE 상위 route 축 = BE API breadth 우위 · 다지점·SaaS·감사 트리거 포함).
+
+[5] ★ 규제 백본 재실측 — NHIS #44 러-1~4 (기존 URL 재실측 + 변동 기록)
+--------------------------------------------------------------------
+URL  : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP : 200 · SIZE 7,572 · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+차수 : 549차 IDENTICAL (BNK-815 548차 → +1)
+verbatim grep -oE : 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+ogada src @20356ed:
+  TransportDistanceBand.java   RU_1 5km / RU_2 10km / RU_3 20km / RU_4 999km(20km 이상)
+  TransportServiceFeeParityCatalog.java   ONE_WAY_RATIO=0.5 · ONE_PER_DAY_LABEL="1일 1회"
+  TransportServiceFeeService.java   baseAmount × 0.5 setScale(0, HALF_UP)
+→ NHIS verbatim = ogada 상수 IDENTICAL · 재조정 불요 · id=2 0.85 carry · 경쟁 4종 유일 full-stack.
+
+[6] 모듈 커버 KPI
+--------------------------------------------------------------------
+모듈 97.41% (28.25/29) CARRY · 비-1.0 4개: id=2/8/10=0.85 · id=12=0.7 · 진성갭 0 · 가정 번복 0.
+
+[7] 판정 / planner 반영
+--------------------------------------------------------------------
+- P0 신규 0 · closed band 6(G14·대시보드·v1.3-C·v2 CMS·G-LINKAGE·G2) 재오픈 0.
+- baseline: FE @1c84f0f→@5ce4726(FULLY SYNCED) · BE @bc41ed9→@20356ed(ahead 717).
+- backend 83 @RestController 인벤토리 = FE 상위 route 축 대비 API breadth 우위 재확인
+  (다지점/SaaS/알림/감사 컨트롤러 포함) → 과대구축 금지 · 신규 컨트롤러 진성갭 0.
+- 다음 rotation: 미확인(#44 등)·교차검증 8h+.

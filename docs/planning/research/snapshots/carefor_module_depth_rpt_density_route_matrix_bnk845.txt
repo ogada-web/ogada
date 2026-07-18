@@ -1,0 +1,82 @@
+BNK-845 케어포 역공학 0–2h — L01~L11 모듈 depth × 리포트 밀도 × ogada Route 1:1 매트릭스
+조사일: 2026-07-17T21:15:21Z | rotation: 케어포 0–2h
+
+== 증거 URL (확인) ==
+- LIVE func.php https://www.carefor.co.kr/daycare/func.php → HTTP 000 timeout (109-cycle+ carry)
+- LIVE demo-work https://demo-work.carefor.co.kr/ → HTTP 000 timeout
+- Wayback func id_ https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php → 200 · 98,328B · md5 6226e6eb = disk BYTE-IDENTICAL
+- Wayback demo id_ https://web.archive.org/web/20250712220444id_/https://demo-work.carefor.co.kr/ → 200 · 71,742B · md5 ebee4d47 BYTE-IDENTICAL (BNK-836/841)
+- PDF Wayback https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf → disk 9,992,772B · md5 96f7d45e · pages 132 · zero drift
+- NHIS #44 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 → 200 · 7,572B · c886ff1f = 577차 IDENTICAL
+- CDX func 2025: latest capture 20251111172825 length≈23427 (marketing shell) · full 98KB menu = 20260519 id_ only
+
+== 정본 계량 ==
+- func.php catalog leaf_count = 107 (agents.yaml「109」·마케팅 109 → 실측 107 · depth2=88 depth3=19)
+- demo loadPage li = 112 · class=rpt = 34 (30.4%) · submp = 18
+- demo transport keywords 이동서비스/배차/송영/transport/vehicle/driver = 0-hit (시설 셸)
+- func 「이동서비스」 hit = 3 · M2 10-leaf 정본 유지
+
+== ★★★ L01~L11 모듈 × depth × rpt 밀도 × ogada Route (메뉴/필드/워크플로) ==
+| Mod | PDF/func명 | func leaf | depth3 | demo leaf | demo rpt | rpt% | ogada Route band | 판정 |
+|-----|------------|-----------|--------|-----------|----------|------|------------------|------|
+| L01 | 수급자관리 | 11 | 1 | 13 | 5 | 38.5% | /clients/* (11-route band) + home-newsletter + linkage | ✅  |
+| L02 | 이동서비스관리 | 10 | 1 | 14 | 6 | 42.9% | /transport/* (9) + /attendance + /transport/outings + /reports/transport-monthly | ✅ SUPERIOR(/transport) demo 0 transport·func 10-leaf — 범위 분리 |
+| L03 | 요양급여제공 | 11 | 4 | 13 | 5 | 38.5% | /care/* + /care/reports/* (9) | ✅  |
+| L04 | 간호/물리급여제공 | 10 | 4 | 4 | 2 | 50.0% | /nursing/* + nursing reports | ✅ demo undercount 10→4 (시설셸 remapping) |
+| L05 | 프로그램급여제공 | 13 | 3 | 14 | 5 | 35.7% | /programs/* + /programs/reports/* (5) | ✅  |
+| L06 | 위생·안전점검관리 | 5 | 1 | 5 | 0 | 0.0% | /meals + /safety/* | ✅ rpt 0% MATCH ogada /safety |
+| L07 | 본인부담금관리 | 11 | 1 | 10 | 4 | 40.0% | /billing/* (17) incl reports 5 + calculator + cms + easy-pay | ✅ demo 10 vs func 11 (7-10 계산기 demo 미노출) |
+| L08 | 직원관리 | 15 | 2 | 14 | 3 | 21.4% | /staff/* + /case-management/meetings + /staff/reports/status | ✅  |
+| L09 | 기초설정및운영관리 | 6 | 1 | 7 | 1 | 14.3% | /settings/* + facility notices + inventory(P4) | ✅  |
+| L10 | 부가서비스 | 9 | 1 | 11 | 2 | 18.2% | J03 notifications + guardian portal + facility notices | ✅  |
+| L11 | 직원급여관리 | 6 | 0 | 6 | 1 | 16.7% | /payroll/* (5) | ✅  |
+| TOT | — | 107 | 19 | 111 | 34 | 30.6% | Route path=132 · report-path 29 (22.0%) | nested IA vs flat rpt |
+
+== ★★ 리포트 밀도 갭 (BNK-549/814 carry + BNK-845 재계량) ==
+- carefor demo flat rpt leaves = 34/111 = 30.6%
+- ogada App.jsx path=*reports* unique = 29 / Route 132 = 22.0%
+- Δ = 8.7%p (flat leaf% vs nested route% — 방법론 상이·절대 갭 아님)
+- ogada SUPERSET axes: billing reports 5 + care reports 9 + programs reports 5 + nursing reports + staff/payroll/transport/client-outings
+- P2 candidate carry (BNK-549): L02/L05/L08 추가 rpt wire 시 leaf% 개선 가능 — KPI promote 0 (기능 커버 이미 PARITY+)
+- report paths: /billing/reports/charges, /billing/reports/deposits, /billing/reports/receipts, /billing/reports/refunds, /billing/reports/statistics, /care/reports/bath-help, /care/reports/hospital-visits, /care/reports/intensive-excretion, /care/reports/meal-excretion, /care/reports/medication-delivery, /care/reports/nursing-service, /care/reports/patient-service, /care/reports/position-change, /care/reports/service-summary, /nursing/pressure-ulcer/reports, /nursing/pressure-ulcer/reports/provision, /nursing/service/reports, /nursing/service/reports/hospital-visits, /nursing/service/reports/medication-delivery, /nursing/service/reports/total, /payroll/reports, /programs/reports, /programs/reports/group-history, /programs/reports/participations, /programs/reports/provision-records, /programs/reports/schedules, /reports/client-outings, /reports/transport-monthly, /staff/reports/status
+
+== ★★★ M7 본인부담 7-x 번호식 ↔ /billing/* (1:1) ==
+| 7-x | demo pamcode | view | ogada | 판정 |
+| 7-1 | L07_M01 | cost_master | /billing · /billing/claims/:claimId | ✅ |
+| 7-2 | L07_M02 | cost_receipt | /billing/payments | ✅ |
+| 7-2-1 | L07_M09 | cost_master_statistic | /billing/reports/statistics · cash-receipts | ✅ |
+| 7-3 | L07_M03 | cost_nopay | /billing/overdue | ✅ |
+| 7-4 | L07_M11 | cms_manage | /billing/cms | ✅ |
+| 7-5 | L07_M12 | npay_manage | /billing/easy-pay | ✅ |
+| 7-6 | L07_M05 | cost_master_report | /billing/reports/charges | ✅ rpt |
+| 7-7 | L07_M06 | cost_deposit_report | /billing/reports/deposits | ✅ rpt |
+| 7-8 | L07_M07 | cost_receipt_report | /billing/reports/receipts | ✅ rpt |
+| 7-9 | L07_M10 | cost_receipt_apply_yearly | /billing/reports/refunds | ✅ rpt |
+| 7-10 | (func-only) | — | /billing/calculator | ✅ SUPERSET — demo L07 미노출 |
+- billing routes @HEAD: 17 = /billing, /billing/calculator, /billing/cash-receipts, /billing/claims/:claimId, /billing/cms, /billing/copay-rates, /billing/easy-pay, /billing/fee-schedules, /billing/imports/nhis, /billing/imports/nhis/:batchId, /billing/overdue, /billing/payments, /billing/reports/charges, /billing/reports/deposits, /billing/reports/receipts, /billing/reports/refunds, /billing/reports/statistics
+- 판정: 11/11 PARITY+SUPERSET · id=7-x 전량 1.0 · KPI promote 0
+
+== ★★ PDF 목차 (pypdf p1–p6 · 확인) ==
+- p2 12분할: 1수급자 2이동서비스 3요양급여 4간호/물리 5프로그램 6위생·안전 7본인부담 8직원 9기초설정 10부가 11직원급여 12수입지출
+- func.php PC = 11 module / 107 leaf (M12 수입지출 = 별도·catalog 미포함)
+- p5 목차 7.본인부담금 관리 · p84–92 workflow (BNK-690/821 carry)
+- p3 목차 1.수급자 · p4 3.요양급여 · p6 11.직원급여
+
+== ★ M2 이동서비스 범위 분리 (재확인) ==
+- transport routes: 9 = /transport, /transport/auto-dispatch, /transport/compliance, /transport/outings, /transport/runs/:runId, /transport/runs/new, /transport/service-fees, /transport/shuttle-sheet, /transport/vehicles
+- demo 시설 셸 0-hit ≠ 케어포 미지원 · 비교 기준 = func.php M2 + NHIS #44
+- id=2 coverage 0.85 carry
+
+== ogada baseline (git 실측) ==
+- FE @cf28a2e fix(v1.2.1/v3): verify benefit-contract and staff-HR magic bytes before upload (SEC-D25) · FULLY SYNCED · ahead 0
+- BE @ed94521 fix(v3/SEC-D25): verify grade-history and refresher-certificate magic bytes · ahead 741 vs origin/test
+- Route path=132 · Page 106 · FE test 538(223+315) · BE Test 297(296+1) · BE @Test raw 2326 · @RestController 81 · HTTP 442(GET231/POST144/PATCH44/PUT13/DELETE10) 10차 · V1–V196 · 모듈 97.41% · merge gate 741
+
+== 기획 제안 (planner) ==
+1. agents.yaml「109」표기 → 실측 107(depth 88+19) 문서 정합 유지
+2. 리포트 밀도 P2: flat leaf% 추격보다 nested /care|/programs|/staff reports IA 유지 + L02/L05 집계 deepen만 검토
+3. demo L04 undercount·7-10 demo 미노출 = 시설셸≠주야간 정본 — 마케팅/비교 시 func+PDF 우선
+4. /transport SUPERIOR narrative: 경쟁 공개 demo에 이동서비스 미노출
+5. SEC-D25 첨부 축 확산(BNK-844→845 FE+BE) = 기능갭 아님·보안 SUPERIOR
+
+per-cycle minimum: 신규/재실측 URL ✅ · 메뉴블록 ✅ · MATRIX ✅ · REPORT § ✅

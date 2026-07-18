@@ -1,0 +1,154 @@
+# BNK-780 — ogada git 실측 6–8h · baseline 재산정 · M12 SSO blocker guidance · 모듈 97.41% CONFIRMED
+# 조사일: 2026-07-16T01:56:20Z (KST 2026-07-16 10:56)
+# rotation: ogada git 실측 6–8h — src/backend·src/frontend develop HEAD·Route·Page·테스트·모듈 커버 %
+# owner=BNK audience=PLN
+# 직전 동일 rotation: BNK-772(2026-07-15T20:46:00Z) → ~5.2h 후
+# 직전 사이클: BNK-779(2026-07-16T01:14:00Z·엔젤·롱텀·규제 4–6h) → ~42분 후
+
+## 0. ogada submodule git 실측 (확인)
+
+| KPI | 값 | 산출 근거 |
+|---|---|---|
+| FE develop HEAD | `07198a2` | `git rev-parse develop` · `clarify accounting BPO SSO blocker guidance` |
+| FE WT | **CLEAN** | `git status --porcelain` 무출력 |
+| FE ahead vs origin/test | **1** | origin/test=`793a43c`(BNK-779 HEAD·tester FF 흡수) → develop +1 |
+| BE develop HEAD | `97450eb` | `git rev-parse develop` · `test(v2/QA-B95): lock triple-encoded semicolon-optional blocker decode parity` |
+| BE WT | **CLEAN** | BNK-779 DIRTY 1M(`LiveE2eOperationReadinessSupportTest.java`) → **committed** |
+| BE ahead vs origin/test | **679** | `git rev-list --count 598d108..HEAD`(BNK-779 678 → +1) |
+| Route | **133** | `<Route\b` 132 + `<Routes>` 1 · App.jsx |
+| Page.jsx | **106** | `find src/pages -name '*Page.jsx' ! -name '*.test.*'` |
+| FE test | **530** | 217 `.test.js` + 313 `.test.jsx` |
+| BE Test files | **294** | 293 `*Test.java` + 1 `*Tests.java` |
+| BE @Test | **2236** | `git ls-files src/test/**/*.java \| xargs rg -c '^\s*@Test'`(BNK-779 2236 · Δ0·기존 본문+51L lock) |
+| Controllers | **80** | `*Controller.java` |
+| Flyway | **V1–V196** | 196 files · 신규 0 |
+| Domain routes | accounting **1** · payroll **5** · billing **17** · transport **9** · staff **13** · care **16** · nursing **16** · programs **8** | App.jsx `path="/…"` |
+| 모듈 커버리지 | **97.41%**(28.25/29) | 29-entry · 비-1.0: id=2/8/10=0.85 · id=12=0.7 · JSDoc grep=30 오염 배제 |
+| merge gate | **680** | FE 1 + BE 679 · BE-heavy → tester FF |
+| npm test | **미실행** | vitest run 이미 기동 중(PID 3781464)·VITEST_CONCURRENCY 금지 |
+| mvn test | **미실행** | 전체 suite 미실행 · @Test 집계만 |
+
+### BNK-779 → BNK-780 delta
+
+| 항목 | BNK-779 | BNK-780 | Δ |
+|---|---|---|---|
+| FE SHA | 793a43c (ahead 3) | **07198a2** (ahead **1**) | +1 M12 SSO blocker guidance · tester FF로 ahead 3→0 후 +1 |
+| FE WT | CLEAN | CLEAN | 0 |
+| BE SHA | 74ae324 (ahead 678·**DIRTY 1M**) | **97450eb** (ahead **679**·**CLEAN**) | +1 QA-B95 test lock · dirty 흡수 |
+| merge gate | 681 | **680** | −1 (FE FF −2 net + BE +1) |
+| Route/Page/FE test | 133/106/530 | 133/106/530 | 0 |
+| BE @Test | 2236 | **2236** | 0 (lock 전용·신규 @Test 메서드 0) |
+| 모듈 KPI | 97.41% | **97.41%** | 0 · CONFIRMED · 가정 번복 0 |
+| NHIS #44 | 513차 | **514차** | +1 zero drift |
+| id=12 | 0.7 | **0.7** | blocker UX 심화 · KPI promote **금지** |
+
+## 1. ★★★ M12 재무회계 SSO blocker guidance FULL-STACK UX (메뉴/필드/워크플로 블록)
+
+**확인** — FE `@07198a2` `clarify accounting BPO SSO blocker guidance`(4-file·+83/−6) = id=12 residual(0.7)의 **운영자 가독 blocker 안내** 착지. coverage promote 아님.
+
+### 워크플로 (ogada `/accounting` · carefor `open_sujifine()` parity)
+
+```
+1) GET /api/v1/billing/accounting/bpo-launch  → catalog(ssoAvailability PLANNED|AVAILABLE · ssoReadinessBlockers[])
+2) GET /api/v1/health                         → accountingBpo* readiness merge
+3) 화면: StatusBadge(SSO 준비됨|SSO 후속) + readinessBlockers.map(describeAccountingBpoReadinessBlocker)
+4a) credentials 부재/allowlist 실패 → 공개 포털 window.open(https://sujifine.co.kr/login) only
+4b) AVAILABLE + canLaunchAccountingBpoSso     → POST /billing/accounting/bpo-sso-handoff
+                                              → form POST usmusid+otp → https://www.sujifine.co.kr/carefor_login
+                                              → window name=sujifineLogin
+```
+
+### 필드·상수 블록 (FE `src/utils/accountingBpo.js` @07198a2)
+
+| 상수/필드 | 값 | 비고 |
+|---|---|---|
+| ACCOUNTING_BPO_ROUTE | `/accounting` | App.jsx LIVE |
+| ACCOUNTING_BPO_PORTAL_URL | `https://sujifine.co.kr/login` | 공개 로그인 |
+| ACCOUNTING_BPO_SSO_PORTAL_URL | `https://www.sujifine.co.kr/carefor_login` | carefor SSO POST target |
+| FORM fields | `usmusid` · `otp` | password 미저장 |
+| WINDOW_NAME | `sujifineLogin` | carefor parity |
+| BLOCKER credentials | `sso-otp-credentials-missing` | env `ACCOUNTING_BPO_USMUSID`·`ACCOUNTING_BPO_OTP_SECRET` |
+| BLOCKER allowlist | `sso-portal-url-not-allowlisted` | host ∈ {sujifine.co.kr, www.sujifine.co.kr} |
+| describeAccountingBpoReadinessBlocker() | **NEW** @07198a2 | 운영자 KO guidance |
+| canLaunchAccountingBpoSso() | AVAILABLE ∧ credentials ∧ allowlist | launch gate |
+| relatedSurfaces | `/payroll/ledger`·`/billing`·`/accounting` | M11/청구 교차링크 |
+
+### BE 대응 (이미 착지 · BNK-716/718/720 carry · HEAD `@97450eb` 무관)
+
+- `AccountingBpoSupport.ssoReadinessBlockers(credentialsReady, portalUrlAllowlisted)`
+- `SSO_READINESS_BLOCKER_CREDENTIALS_MISSING` / `…_PORTAL_URL_NOT_ALLOWLISTED`
+- `POST …/bpo-sso-handoff` · rate-limit 429 · allowlist 422/400 · SEC-D43
+- Health: `accountingBpoPortalLaunchReady` · `accountingBpoSsoAvailability` · `accountingBpoReadinessBlockers`
+
+### 경쟁 4종 대비
+
+| 축 | ogada `@07198a2`/`@97450eb` | 케어포 | 이지케어 | 엔젤 | 롱텀 |
+|---|---|---|---|---|---|
+| 재무회계 M12 | △ BPO launch+SSO OTP env-gated · **blocker KO guidance NEW** · id=12 **0.7** | 외부 BPO 수지파인(`open_sujifine` usmusid+otp)·func 12-leaf 0 | home 「재무회계 대행」통계·자체 대행 | ❌ 공개 ERP 재무회계 leaf 「미확인」 | 규제 원천 N/A |
+| in-app blocker UX | ✅ `describeAccountingBpoReadinessBlocker` | 체험불가 alert only(demo) | 「미확인」 | 「미확인」 | N/A |
+
+**판정**: id=12 **0.7 residual PRIMARY 유지** — 실환경 credentials 주입 전 KPI promote 금지. blocker guidance = ops 온보딩 비용↓ · coverage 산식 변경 0.
+
+## 2. ★★ 수지파인 포털 재실측 (신규·기존 URL · M12 증거)
+
+### A. [sujifine.co.kr/login](https://sujifine.co.kr/login) — 공개 로그인
+
+- 조사일 2026-07-16T01:56Z · HTTP **200** · 3,974B · md5 `19d1eefb0f3bef70d87e1527886c7360`
+- vs BNK-726 `784154fb` … → **csrf-token/_token only DRIFT** · SIZE IDENTICAL · form fields IDENTICAL
+- form: `POST https://sujifine.co.kr/login` · fields `_token`·`login_id`·`login_password`·`login_token`·`agmcode`·`rememberId`·push_* · title「장기요양 재무회계 관리프로그램」 verbatim = ogada `PORTAL_TITLE`
+- snapshot: `sujifine_login_live_bnk780.html`
+
+### B. [www.sujifine.co.kr/carefor_login](https://www.sujifine.co.kr/carefor_login) — SSO POST target
+
+- GET HTTP **404** · 10,352B · md5 `eae20ae0676bc7d2fafd6be4537aac95` = BNK-718 `sujifine_carefor_login_get_bnk718.html` **byte IDENTICAL**
+- 가정(유지): GET은 404 셸 · POST(usmusid+otp)만 유효 — 로그인 세션 없이 POST body 「미확인」
+- snapshot: `sujifine_carefor_login_live_bnk780.html`
+
+## 3. ★★ closed axes 16-path App.jsx LIVE · 재오픈 0
+
+| 축 | Route | hit |
+|---|---|---|
+| G2 가정통신문 | `/clients/home-newsletter` | 1 |
+| G-LINKAGE | `/clients/linkage-records` | 1 |
+| G14 급여제공계획서 | `/clients/:clientId/care-plan-form` | 1 |
+| 대시보드 | `/dashboard` · `/dashboard/hq` | 1·1 |
+| CMS/간편결제/현금영수증 | `/billing/{cms,easy-pay,cash-receipts}` | 1·1·1 |
+| M12 회계 BPO | `/accounting` | 1 |
+| M11 5-leaf | `/payroll/{ledger,reports,basis,labor-cost-ratio,retirement-accrual}` | 5 |
+| G17 기능회복 | `/programs/functional-recovery` | 1 |
+| G32 회의록 | `/staff/committee-meetings` | 1 |
+
+→ coverage-0 **0건** · closed axes 재오픈 **0** · P0 격상 불요.
+residual: PRIMARY **id=12 0.7**(credentials) → id=2/8/10 **0.85**(form polish·KPI promote 금지).
+
+## 4. ★ NHIS #44 이동서비스비 러-1~4 **514차** zero drift
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+- HTTP **200** · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = BNK-779 disk **IDENTICAL**(513차→**514차**)
+- verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+- ↔ `TransportServiceFeeService` RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY 6-link(id=2 0.85) · 상수 재조정 불요
+- snapshot: `nhis_jo44_live_bnk780.html`
+
+## 5. carefor LIVE
+
+- `carefor.co.kr/daycare/func.php` · `demo-work.carefor.co.kr` → HTTP **000**(timeout 12s) · **91-cycle+** 「미확인」 · disk canonical `6226e6eb` 우선
+
+## 6. 가정 번복 · closure · KPI promote
+
+- 가정 번복 **0**
+- closure **0**(M12 blocker UX = residual 심화·coverage 0.7 유지)
+- KPI promote **0**
+- 신규 core 갭 **0**
+- per-cycle minimum 4종 충족:
+  1. 증거 URL — sujifine login 재실측 + carefor_login IDENTICAL + NHIS 514차
+  2. 메뉴/필드/워크플로 — M12 SSO blocker guidance 블록
+  3. COMPETITOR_MATRIX — ogada `@07198a2`/`@97450eb` 행 갱신
+  4. BENCHMARK_REPORT — §780
+
+## 7. planner 제안
+
+1. baseline FE `@793a43c`→**`@07198a2`** · BE `@74ae324`→**`@97450eb`**(DIRTY→CLEAN) · merge gate **680**
+2. REQUIREMENTS §M12 / US-ACCOUNTING-M12: 「SSO readiness blocker KO guidance(`describeAccountingBpoReadinessBlocker`) · credentials env 필수 · password 미저장」 문구 sync
+3. residual PRIMARY = **실환경 ACCOUNTING_BPO_USMUSID·OTP_SECRET 주입**(id=12 0.7→↑ 후보) · form polish id=2/8/10 promote 금지
+4. tester FF merge **680**(FE 1+BE 679·양쪽 WT CLEAN·신규 마이그레이션 0)
+5. 모듈 **97.41% CONFIRMED** · closed axes 재오픈 0 · 규제 백본 514차 zero drift carry

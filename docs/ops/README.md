@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-17T20:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-18T03:22:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
-> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (활동 사진 magic-byte · NoBreakSpace mid-token · M12 SSO allowlist · 모듈 **97.41%**)  
-> **최종 갱신**: 2026-07-17 (TWR — Q924 · Q925 · baseline `c19bfa6`/`090ac10`)
+> **상태**: MVP v1 개발 중 — **develop baseline 동기화** (사진 업로드 성공 스크린리더 안내 · SEC-D34 엑셀 import 4경로·null·빈(0바이트) 파일 fail-closed · 업로드 magic-byte · M12 SSO · 모듈 **97.41%**)  
+> **최종 갱신**: 2026-07-18 (TWR — 빈(0바이트)·빈 헤더 엑셀 import fail-closed FE·BE 회귀 고정 · baseline `9449e1f`/`2789553`)
 
 ---
 
@@ -29,7 +29,17 @@
 - 모니터링·로그 수집
 - 백업·복구
 
-**최신 항목** (2026-07-17):
+**최신 항목** (2026-07-18):
+- **Q933** — **사진 업로드 성공 스크린리더 안내**(이용자·활동 사진 `role="status"`) FE (`194823b`, UXD-191) · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed** FE·BE 4경로 회귀 고정 (`b23711f`/`9449e1f`) — Q930·Q931 계열
+- **Q931** — **SEC-D34 엑셀 import FE 사전검증**(방문·청구 NHIS·요양보호사) BE+FE lockstep (`a788e6d`/`3042a53`) — Q278·Q929 확장
+- **Q932** — **은행 입금 엑셀 OOXML magic-byte** BE only (`f6e4d88`, SEC-D34) — Q572 후속
+
+**이전 항목** (2026-07-17):
+- **Q926** — **이용자 프로필 사진 magic-byte**(SEC-D25) BE+FE (`cdba083`/`e16f432`) — Q924 계열
+- **Q927** — **급여계약서·직원 HR** magic-byte BE+FE (`324da07`/`cf28a2e`)
+- **Q928** — **등급 이력·보수교육 이수증** magic-byte BE+FE (`ed94521`/`8b164c3`)
+- **Q929** — **공단 요양보호사 엑셀** OOXML/OLE magic-byte BE (`be64fda`, SEC-D34) — Q573 후속
+- **Q930** — **직원현황 인쇄 필터 숨김 · 활동 사진 오류 ARIA** (`b2eb059`, UXD-190)
 - **Q924** — **프로그램 활동 사진 magic-byte 검증(SEC-D25)** BE+FE · MIME 위장 거부 (`d1ff63a`/`8e28fe0`) — Q917·Q920 후속
 - **Q925** — live E2E **`&NoBreakSpace;` mid-token strip** BE+FE lockstep (`c19bfa6`/`090ac10`) — Q882 정정
 - **Q922** — **M12 SSO `/carefor_login` path allowlist** BE+FE lockstep · query/fragment/userinfo/non-443 reject (`bfe6b3f`/`a742788`/`592a483`) — Q801·Q787 확장

@@ -1,0 +1,89 @@
+BNK-753 — 교차검증·갭 우선순위 8h+ (2026-07-15T08:58Z)
+================================================================
+rotation: 교차검증·갭 우선순위 — 이전 BNK 가정 번복 여부·미확인 축소·closed axes 재오픈 스캔
+직전 동일 rotation: BNK-749(2026-07-15T06:29Z) → ~2.5h 후
+직전 사이클: BNK-752(2026-07-15T08:20Z·ogada git 실측 6–8h) → ~38분 후
+
+================================================================
+★★★ #1 교차검증 CORE — BNK-752 모듈 커버리지 KPI 오류 발견 → 가정 번복(97.17% → 97.07%)
+================================================================
+BNK-752 header/§752-1/decisions 는 "모듈 count 30·sum 29.15·97.17%(29.15/30)" 로
+BNK-749~751 이 carry 해 온 97.07%(28.15/29) 를 "undercount 정정" 이라 주장했다.
+
+git 실측(develop HEAD `33f59a9`) 결과 = 오류 확인:
+
+  competitorModuleCoverage.js `COMPETITOR_FEATURE_COVERAGE` 배열 엔트리:
+    grep -cE '^\s*\{ id:' → 29 (배열 원소 29개)
+    배열 원소만 coverage 합산 → count=29 sum=28.15 pct=0.9707
+
+  BNK-752 가 쓴 `grep -oE 'coverage: [0-9.]+'` → count=30 sum=29.15 (오염):
+    line 5 JSDoc 주석 `* coverage: 1 = ✅ 완전, 0.6 = △ 부분, 0 = ❌ 갭`
+    의 "coverage: 1" 을 30번째 "모듈" 로 誤계수 → 1.0 이중가산.
+
+  실제 런타임 함수 검증(코드 그대로 파싱):
+    const covs=[...array.matchAll(/coverage:\s*([0-9.]+)/g)]  → array count=29 sum=28.15 pct=0.9707
+    calculateWeightedModuleCoverage(COMPETITOR_FEATURE_COVERAGE)
+      = total(28.15) / features.length(29) = 0.9707
+
+  → in-app 실제 표시 값 = 97.07%(28.15/29).  BNK-752 의 29.15/30 은 코드가 산출하지 않는 값.
+
+결론(가정 번복): rules §Baseline「문서·코드 HEAD 불일치 시 git 실측 우선」에 따라
+  BNK-752 의 97.17%(29.15/30) 를 폐기하고 97.07%(28.15/29) 로 복원(REVERT).
+  이는 BNK-749/750/751 이 이미 올바르게 carry 한 값과 일치.
+  v1.2 KPI ≥60% 충족 유지·상수/코드 변경 불요.
+
+모듈 엔트리 실측 29개:
+  1.0 축(25): 1-1·1-3·1-5·1-7·1-9·1-10 연계기록지·3-1·4·5·26·43·6·7-1·7-2·
+             7-2-1·7-3·7-4·7-6·7-10·9·11·nhis·qr·hq·platform
+  비-1.0 축(4): id=2 이동서비스 0.85 · id=8 직원·근태 0.85 ·
+               id=10 부가서비스(SMS·알림) 0.75 · id=12 수입지출·회계 0.7
+  coverage-0: 0건 (G-LINKAGE closure 이후 carry)
+
+================================================================
+★★ #2 갭 우선순위 재정렬 — closed axes 재오픈 0 · residual operational lever
+================================================================
+- id=1-10 연계기록지: coverage=1 verbatim(line 21) — G-LINKAGE-RECORD FULL 유지(BNK-749 closure carry)·재오픈 0.
+- sole coverage-0 진성갭: 0건.
+- residual(비-1.0) 우선순위: id=12 수입지출·회계 0.7 (M12 SSO 실환경 credentials)
+                          → id=10 부가서비스 0.75 (SMS dispatch/template enum·RFID SMS P2)
+                          → id=2 이동서비스 0.85 / id=8 직원·근태 0.85 (polish)
+- closed axes(G14 care-plan-form·/dashboard(+hq)·V186–V190·/billing/{cms,easy-pay,cash-receipts}·
+  /clients/home-newsletter·/accounting·/payroll/*): 코드 상수·Route LIVE carry·재오픈 0.
+- P3 만료일 카운트다운 위젯(이지케어 home expire 7-category): 「가정」 유지·격상 0.
+
+================================================================
+★ #3 규제/경쟁사 URL 재실측 (기존 URL) — 실체 변동 0
+================================================================
+- NHIS #44 이동서비스비 (joHistoryContent SEQ=1637):
+    HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · 487차(BNK-752 486차→+1) IDENTICAL
+    러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13) verbatim grep -oE
+    ↔ ogada TransportServiceFeeService 6-link chain(id=2 0.85) carry
+- carefor func.php LIVE: HTTP 000 (connect timeout) · 82-cycle+ 「미확인」 · disk canonical 6226e6eb 98,328B 우선
+- ezcare FAQ list (help/faq.ez): HTTP 200 · 80,057B · md5 ab3142857673cfcab7c3a0662a2a87fd
+    hit-count-only DRIFT (BNK-750 bb94b142 → 변경) · rowid SETS IDENTICAL(233·max 21781)
+    → 엑셀 포맷 변경 0
+- silverangel notice (support/notice/list.do): HTTP 000 (connect fail) 「미확인」 · canonical ea7d6b3d carry(≥221573 신규 공지 0)
+
+================================================================
+ogada git 실측 (develop HEAD)
+================================================================
+FE develop  @33f59a9  fix(v1.2.1/QA-B95): harden live readiness boolean parsing
+            WT CLEAN · ahead origin/test 0 = FULLY SYNCED (BNK-752 @33f59a9 ahead 1 → tester FF 흡수)
+BE develop  @e7efe02  fix(v2/QA-B95): harden bootstrap blocker detail parsing
+            WT CLEAN · ahead 658 vs 598d108 (BNK-752 @d271cc3 ahead 657 → +1 commit)
+merge gate  658 (FE 0 FULLY SYNCED + BE 658 · BE-heavy → tester FF)
+
+Route 132 (<Route\b 131 + <Routes> 1)   Page 105
+FE test 524 (216 .test.js + 308 .test.jsx)
+BE Test 291 (290 Test.java + 1 Tests.java)   BE @Test 2188 (+1 vs BNK-752 2187 · QA-B95 detail parsing @Test)
+Flyway V1–V194   accounting route 1   payroll route 5
+모듈 97.07%(28.15/29)  ← BNK-752 97.17%(29.15/30) 가정 번복 REVERT
+
+================================================================
+per-cycle minimum 4종 충족
+================================================================
+- 재실측 증거 URL: NHIS #44 487차 + carefor 000 + ezcare FAQ DRIFT(hit-only) + silverangel 000
+- 메뉴/필드/워크플로 블록: 모듈 커버리지 KPI 교차검증(BNK-752 grep 오염 실증)·갭 우선순위 재정렬
+- COMPETITOR_MATRIX 1행+ @33f59a9/@e7efe02 갱신
+- BENCHMARK_REPORT §753 신규 소절 3
+덮어쓰기 0 · 가정 번복 1(BNK-752 KPI) · closure 0 · 신규 core 갭 0

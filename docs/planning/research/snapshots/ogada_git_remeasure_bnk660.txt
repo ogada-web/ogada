@@ -1,0 +1,121 @@
+BNK-660 — ogada git 실측 (6–8h rotation) · 2026-06-26T14:02:00Z (KST 23:02)
+================================================================================
+owner=BNK audience=PLN
+
+[1] ogada baseline git 실측 (확인 · git -C src/{backend,frontend} rev-parse develop)
+--------------------------------------------------------------------------------
+FE develop : cda2a10960dd21a7be01fc700404743c0ccb0ae2  (@cda2a10)
+  - feat(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): link unmatched import rows to client search
+  - 2026-06-26 13:19:48 +0000
+  - WT CLEAN (git status --porcelain empty · 0 lines)
+  - ahead 263 vs origin/test=ab4de83
+  - BNK-659 동일 SHA → HEAD zero advance 1-cycle
+
+BE develop : ffa57ea514d59edec9967206f67164532838189e  (@ffa57ea)
+  - fix(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): keep unmatched rows visible on zero-import outcome
+  - 2026-06-26 13:12:15 +0000
+  - WT CLEAN (git status --porcelain empty · 0 lines)
+  - ahead 589 vs origin/test=598d108
+  - BNK-659 동일 SHA → HEAD zero advance 1-cycle
+
+merge gate : 852 (FE 263 + BE 589) — BNK-659 carry · 양쪽 WT CLEAN → tester FF 가속 가능
+
+[2] KPI 실측 (전부 BNK-659 IDENTICAL · HEAD zero advance·8/8축)
+--------------------------------------------------------------------------------
+Route        : 118  (App.jsx `<Route\b`=118 + `<Routes>`=1 → 119 total)
+               · git -C src/frontend grep -hoE '<Route\b' develop -- 'src/App.jsx' | wc -l
+page         : 93   (`*Page.jsx` git ls-files develop -- '*Page.jsx')
+migration    : V1–V183 (max V=183 · git ls-files develop db/migration/V*.sql)
+BE Test 파일 : 274  (273 `Test.java` + 1 `Tests.java`)
+BE @Test     : 1989 (`git grep -hoE '@Test\b' develop -- '*.java' | wc -l` occurrence·@ParameterizedTest 3 별도)
+FE test 파일 : 485  (199 `.test.js` + 286 `.test.jsx` · `.test.ts`/`.spec` 0)
+모듈 커버리지: 80.86% (23.45/29 · src/config/competitorModuleCoverage.js 29-feature)
+               ✅완전 21 · △부분 3(2 이동 0.85·8 직원근태 0.85·10 부가 0.75) · ❌갭 5(1-5·1-10·6·11·12)
+reports route: 28 (App.jsx path="...reports..." 실측)
+
+Δ vs BNK-659 : 전 8축 IDENTICAL (HEAD zero advance 1-cycle·양쪽 WT CLEAN)
+
+[3] NHIS #44 이동서비스비 러-1~4 408차 zero drift IDENTICAL (확인 · 기존 URL 재실측)
+--------------------------------------------------------------------------------
+GET https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  → HTTP 200 · size 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  → disk docs/planning/research/snapshots/nhis_jo44.html md5 c886ff1f · 7,572B IDENTICAL
+  → BNK-658 407차 → +1 (408차 zero drift · BNK-659는 이지케어 rotation으로 #44 미측정)
+  verbatim 불변: 러-1~4 · 편도(50%) · 1일 1회 · 별지 제22호 · 수급자 부담 X
+
+[4] ★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE 3-stage full-stack 복구 루프 git-grounded
+    (확인 · @HEAD develop git grep/show · 메뉴/필드/워크플로 블록)
+--------------------------------------------------------------------------------
+공단 엑셀 → 방문일정 import 시 오류·미매칭 행을 운영자가 in-app으로 복구하는
+3-stage end-to-end loop가 @HEAD develop 에 완성됨. 경쟁 4종(케어포·이지케어·엔젤·롱텀)
+공개 자료에는 import 결과 4-state 분류·복구 deep-link 노출 0 (이지케어는 FAQ 21845
+사후·수동 incident 공지만) → ogada 경쟁 4종 유일 full-stack 실시간 surfacing 우위.
+
+stage 1 — BE 분류 (BE @ffa57ea · visits/domain/NhisVisitScheduleImportOutcome.java)
+  classify(importedCount, unmatchedCount, skippedCount) → 4-state:
+    · imported==0 && unmatched>0 && skipped==0  → UNMATCHED
+    · imported==0 && skipped>0 && unmatched==0  → ALL_SKIPPED
+        "반영 0건 — 중복·확정일정·퇴소 등으로 N건이 건너뛰어졌습니다."
+    · 그 외(mixed 0-import 포함)                → PARTIAL
+        "반영 N건 (미매칭 X, 건너뜀 Y)"
+  BNK-659 ffa57ea fix: ALL_SKIPPED 를 skip-only batch 로 제한 (unmatched==0 조건 추가).
+  → mixed 0-import(unmatched>0 && skipped>0) batch 가 ALL_SKIPPED 로 잘못 분류되어
+    미매칭 인정번호·성명 actionable fix 가 숨겨지던 버그 제거 → PARTIAL fall-through 로
+    미매칭+건너뜀 양쪽 count surface (commit body verbatim: "keep unmatched rows visible").
+
+stage 2 — FE inline guidance (FE @e4dbe9a · components/visits/VisitNhisImportGuidePanel.jsx
+    + VisitNhisImportPanel.jsx · config/visits.js resolveVisitImportOutcome)
+  outcome 4-state(OK/PARTIAL/UNMATCHED/ALL_SKIPPED)별 inline 복구 단계(recovery steps)·
+  tone(IMPORTED/미매칭/건너뜀) 표시. visits.js 4-state 번역 테이블.
+
+stage 3 — FE deep-link 복구 (FE @cda2a10 · utils/clientListFilters.js NEW 31L
+    + components/visits/VisitNhisImportPanel.jsx +21L · pages/ClientListPage.jsx +11L)
+  buildClientListSearchHref(인정번호) → "/clients?q=<ltc cert number>"
+    · CLIENT_LIST_SEARCH_QUERY_PARAM = "q"
+    · 빈/whitespace → "/clients" (no query) guard
+  ClientListPage.readClientListSearchFromQuery(searchParams) → URL ?q= 초기 검색어 로드
+  → UNMATCHED 행에서 click 한 번으로 인정번호 사전필터된 수급자 목록 진입 → 매칭 수정 →
+    복구 루프 종료 (commit body verbatim: "closing the recovery loop after inline outcome
+    guidance (ezCare 21845 pattern deepen)").
+
+git-grounded 파일 (git -C src/{backend,frontend} grep -l develop):
+  BE @ffa57ea:
+    - transport/domain/TransportServiceFeeParityCatalog.java (RU_1~4·ONE_WAY_RATIO=new BigDecimal("0.5"))
+    - transport/domain/TransportServiceFeeService.java        (1일1회 guard)
+    - visits/domain/NhisVisitScheduleImportOutcome.java       (4-state classify · BNK-659 fix)
+    - visits/api/NhisVisitScheduleImportOutcomeStatusNote.java
+    - visits/api/NhisVisitScheduleImportGuidanceResponse.java
+    - visits/domain/NhisVisitScheduleImportGuidance.java
+  FE @cda2a10:
+    - components/visits/VisitNhisImportGuidePanel.jsx
+    - components/visits/VisitNhisImportPanel.jsx
+    - config/visits.js (resolveVisitImportOutcome)
+    - utils/clientListFilters.js (buildClientListSearchHref·readClientListSearchFromQuery NEW)
+    - pages/VisitsPage.jsx · pages/ClientListPage.jsx
+
+→ ezCare FAQ 21845 「260626_공단 엑셀…」 = 사후·수동 incident 공지(FAQ 채널 분리·in-app 0)
+  vs ogada = 분류(BE) → inline guidance(FE) → deep-link 복구(FE) 3-stage in-app 실시간 loop.
+  8번째 BNK→COD closure(BNK-655 P3 candidate → BNK-656 1-cycle full-stack) 후속 hardening:
+  BNK-658 test coverage(97b94e7) → BNK-659 zero-import 행 가시성(ffa57ea) + 미매칭 client-search
+  연결(cda2a10·e4dbe9a) → BNK-660 git-grounded 3-stage loop 완성 재입증.
+
+[5] per-cycle minimum (4종 충족)
+--------------------------------------------------------------------------------
+1. 기존 URL 재실측 + 변동 기록 : NHIS #44 408차 zero drift IDENTICAL (live HTTP 200 7,572B=disk c886ff1f)
+2. 메뉴/필드/워크플로 1블록     : [4] G-NHIS-IMPORT-ERROR-STATUS-SURFACE 3-stage full-stack 복구 루프 git-grounded
+3. COMPETITOR_MATRIX 1행+ @HEAD : BNK-660 row @cda2a10/@ffa57ea (HEAD zero advance carry)
+4. BENCHMARK_REPORT §소절        : §660
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · closure 0 · 상태 변경 0(HEAD zero advance·양쪽 WT CLEAN)
+KPI 변경 0 (전부 BNK-659 IDENTICAL·8/8축) · 재실측 zero drift 1(NHIS #44 408차) · 미확인 carry 0 추가
+신규 snapshot 1건(본 파일) · 덮어쓰기 0건 · 엑셀 포맷 변경 0
+
+[6] 다음 액션
+--------------------------------------------------------------------------------
+→ tester  : merge 852 (FE 263 + BE 589 · 양쪽 WT CLEAN · 선행 commit 불필요 · FF 가속 가능)
+→ planner : baseline FE @cda2a10 / BE @ffa57ea carry (HEAD zero advance 1-cycle)
+            · merge gate 852 carry · KPI 전부 IDENTICAL (8/8축)
+            · G-NHIS-IMPORT-ERROR-STATUS-SURFACE 3-stage 복구 루프 완성 → ROADMAP closure 확정 가능
+            · M11/M12 P1 BPO 어댑터 demand-signal carry (변동 0)
+            · BNK-654 P3 9건 + 「6/30 D-day」 3종 ✅ carry (변동 0)
+→ coder/dba : 추가 액션 불요 (양쪽 WT CLEAN · 미커밋 carry 0)

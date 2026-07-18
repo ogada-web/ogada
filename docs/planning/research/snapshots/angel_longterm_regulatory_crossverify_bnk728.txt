@@ -1,0 +1,122 @@
+BNK-728 엔젤·롱텀·규제 4–6h 교차검증 (2026-07-14T16:38Z)
+==========================================================
+rotation: 엔젤·롱텀·규제 (silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4·2026 수가/평가 #27·단기보호/통합재가 고시)
+직전 동일 rotation: BNK-721(2026-07-14T11:51Z) → ~4.8h 후
+직전 사이클: BNK-727(2026-07-14T15:49Z·케어포 역공학) → ~49분 후
+
+── ogada git 실측 (@develop HEAD) ──────────────────────────
+FE develop  : 6706f65  feat(v1.2.1/G2): add board-style newsletter history controls
+              WT CLEAN · BNK-727 @3bd50ac → +1 commit · ahead 1 vs origin/test=3bd50ac
+BE develop  : b054ca6  feat(v2/G2): surface centerName and summary on home newsletter dispatch history
+              WT CLEAN · BNK-727 @5d6c007 → +2 commit(944b18f V191 index + b054ca6) · ahead 636 vs origin/test=598d108
+merge gate  : 637 (FE 1 + BE 636 · BE-heavy → tester FF)
+
+KPI 실측:
+  Route      132 (<Route\b 131 + <Routes> 1 · carry — 신규 route 0)
+  *Page.jsx  105 (carry — 신규 page 0)
+  FE test    518 (.test.js 214 + .test.jsx 304 · carry — in-place 확장)
+  BE Test    288 (287 Test.java + 1 Tests.java · carry)
+  BE @Test   2137 (BNK-727 2135 → +2 · G2 dispatch-history centerName/summary @Test)
+  Flyway     V1–V191 (신규 V191 = notifications dispatch-history query index · BNK-727 V1–V190 → +1)
+  accounting route 1 · payroll route 5 (basis/labor-cost-ratio/ledger/reports/retirement-accrual)
+  competitorModuleCoverage: 29-entry · id=1-5 「가정통신문」 0.65 carry · id=7-4 CMS 1.0 carry · id=12 「수입지출·회계」 0.65 carry
+    (coder 모듈 KPI 미갱신 = 「가정 유지·번복 아님」 · BNK-727 92.41% carry)
+
+★★★ id=1-5 「가정통신문」 G2 dispatch-history board-style DEEPEN (FE @6706f65 + BE @b054ca6·V191) ★★★
+  FE `feat(v1.2.1/G2): add board-style newsletter history controls`
+   = 가정통신문 발송 이력 게시판형(board-style) 목록 컨트롤 UI wire
+  BE `feat(v2/G2): surface centerName and summary on home newsletter dispatch history`
+   = dispatch-history 응답에 centerName·summary 필드 노출
+   + `944b18f feat(v2/G2): add notifications dispatch-history query index (V191)`
+     = Flyway V191 신규 마이그레이션 (dispatch-history 조회 인덱스 = 이력 조회 성능/영속 심화)
+  → id=1-5 「가정통신문」 full-stack chain 이력:
+     BNK-719/720 dispatch LIVE(config 0→0.5) → BNK-721 launch catalog + health readiness
+     → BNK-722 launch page + dispatch-history UI(0.5→0.65) → BNK-724 authoring/compose API(BE)
+     → BNK-727 authoring compose FE UI(5-stage full-stack CLOSED)
+     → BNK-728 delta: **dispatch-history board-style UI + centerName/summary 필드 + V191 조회 인덱스**
+  → config coverage 0.65 carry(authoring/board 관리 UX 완성 lever 잔여 → 1.0 아님) · 이력 조회 UX/영속 심화
+  crosswalk: ogada 가정통신문 board-style history ↔ 케어포 10-7 발송 이력 leaf ↔ 이지케어 mobile-notice authoring(BNK-724)
+
+── 엔젤·롱텀·규제 live 재실측 ────────────────────────────────
+✅ NHIS #44 이동서비스비 러-1~4 = 462차 zero drift IDENTICAL
+   URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+   HTTP 200 · 7,572B · md5 c886ff1f (live=disk nhis_jo44_live_bnk726/728.html IDENTICAL · BNK-726 461차 → +1)
+   verbatim grep -o: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+   ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회) 6-link chain (id=2 이동서비스 0.85) carry
+
+✅ silverangel essential = live=disk IDENTICAL (평가지표 27 = 기능회복훈련 정본 재확인)
+   URL: https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+   HTTP 200 · 131,664B · md5 c79c1be3 (disk silverangel_daycareEssentialWork_live_bnk726.html IDENTICAL)
+   본문 grep: 기능회복(평가지표 27=기능회복훈련) vs 목욕(비필수 별도 청구)
+   ↔ ogada G17(기능회복=필수)/G-BATHING(목욕=비필수 별도 청구) full-stack chain carry
+
+✅ silverangel extraService = live=disk IDENTICAL (본인부담금 CMS 자동관리 — 신규 필드 블록 추출)
+   URL: https://www.silverangel.kr/newSilverangel/service/extraService.do
+   HTTP 200 · 81,637B · md5 f9c5d877 (BNK-721 f9c5d877 IDENTICAL)
+   ── 본인부담금 자동관리(CMS) 3-method 요금표 (verbatim 실측) ──
+     · 자동이체(CMS)  : 250원/1건  — 효성 CMS 연동정보 입력 필수·매달 자동이체·납부 여부 매달 체크 불필요
+     · 가상계좌       : 300원/1건  — 가족 대표 1인 발급(다른 가족 입금도 대표 이름으로 처리)·원하는 은행 선택 송금수수료 절감
+     · 카드결제       : 별도문의    — 신용카드 매달 자동납부·현금 부담 완화
+     · 계좌분리 정산  : 효성 CMS 별도문의 (=다계좌 정산)
+     · 이용요금은 효성CMS에 납부 (=CMS 벤더 = 효성 CMS)
+   ── 부가서비스 10-catalog (verbatim heading) ──
+     본인부담금 자동관리(CMS)·인공지능상담 엔젤아이·엔젤 VR(가상현실 여행)·모바일 앱 기록
+     ·보호자용 앱(굽은나무)·태블릿 기록·전자결재·고위험군 명찰·IoT기술·쇼핑몰
+     → 보호자용 앱 브랜드명 「굽은나무」 신규 확인
+
+★★★ 신규 crosswalk — ogada CmsPaymentMethodCatalog ↔ silverangel 효성CMS 요금표 ★★★
+   ogada BE src/main/java/com/ogada/backend/billing/cms/domain/CmsPaymentMethodCatalog.java (@develop b054ca6) 5-method 실측:
+     1. AUTO_DEBIT_CMS       「자동이체(CMS)」 250원/1건  ← silverangel 자동이체(CMS) 250원/1건 **verbatim 일치**(확인)
+     2. VIRTUAL_ACCOUNT      「가상계좌」      300원/1건  ← silverangel 가상계좌 300원/1건 **verbatim 일치**(확인)
+     3. CARD                 「카드결제」                 ← silverangel 카드결제 별도문의
+     4. MULTI_ACCOUNT_SETTLEMENT 「다계좌 정산」          ← silverangel 「계좌분리 정산」(효성CMS 별도문의) parity
+     5. CASH_RECEIPT         「현금영수증」               ← silverangel 미노출 (**ogada superset**)
+   → ★ 핵심: ogada CMS 요금표(자동이체 250원·가상계좌 300원)가 효성CMS 실 rate card 와 **verbatim 일치**
+       = ogada CmsPaymentMethodCatalog 가 실 벤더(효성CMS) 요금 기반 정본화 확인 (id=7-4 CMS 1.0 근거 강화)
+   → ★ ogada 5-method = silverangel 3-노출 + 다계좌정산 + 현금영수증 superset (id=7-4 CMS superset 재확인)
+
+△ lcms.or.kr = canonical type1 (this cycle live = canonical · BNK-717/721 type2 transient → 728 type1 회복)
+   URL: https://www.lcms.or.kr/
+   HTTP 200 · 50,740B · md5 c0c66076 (canonical type1 · <title>엔젤시스템</title>)
+   = 알려진 type1/type2 배너 순환 transient · 이번 사이클은 canonical type1 노출 · 저장 생략(canonical 기존 보유)
+   nav grep: 로그인·체험하기·엔젤시스템 설치파일 내려받기·기록지 큰화면 (CMS desktop client 셸 재확인)
+
+△ law.go.kr admRul (제2025-247호) = size-lock · Time= cachebuster md5 DRIFT · semantic IDENTICAL
+   URL: https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2100000271110
+   HTTP 200 · 78,450B · md5 7350b55f (BNK-726 f61678ce → Time= 토큰 md5-only DRIFT)
+   시행 2026. 1. 1 verbatim IDENTICAL · 저장: law_247_admRulInfoP_live_bnk728.html
+
+✅ silverangel notice list = zero drift · 신규 공지 0 (~18일+ pause 지속 재확인)
+   URL: https://www.silverangel.kr/silverangel/support/notice/list.do
+   HTTP 200 · 5,707,602B · md5 ea7d6b3d (BNK-726 IDENTICAL · 최신 가시 Tmp_idx 221551 · ≥221573 = 0)
+   (파일 5.7MB — 저장 생략·md5 참조만)
+
+── 판정 요약 ────────────────────────────────────────────────
+가정 번복      : 0
+신규 core 갭   : 0
+candidate 변동 : 0
+상태 변경      : 2 (FE +1 commit·BE +2 commit·양쪽 WT CLEAN)
+KPI 변경       : 3 (BE @Test 2135→2137·Flyway V190→V191·merge gate 635→637)
+zero drift IDENTICAL : 4 (NHIS #44 462차·silverangel essential·extraService·notice list)
+transient/token DRIFT semantic IDENTICAL : 2 (lcms type1↔type2 배너 순환·law247 Time= 토큰)
+신규 필드 블록 : 1 (silverangel 효성CMS 3-method 요금표 ↔ ogada CmsPaymentMethodCatalog 5-method verbatim crosswalk)
+신규 관찰      : 1 (보호자용 앱 브랜드명 「굽은나무」·부가서비스 10-catalog verbatim)
+덮어쓰기        : 0 (canonical 유지·live snapshot 은 bnk728 suffix 신규 3건)
+미확인 carry   : 2 (longterm npbs 502/610 login-gated shell·carefor func.php/demo-work HTTP 000)
+per-cycle minimum 4종 충족: 신규 evidence(NHIS 462차 재실측 + law247 Time= md5 DRIFT + silverangel extraService 요금표 실측)·
+  메뉴/필드/워크플로 1블록(효성CMS 3-method 요금표 ↔ ogada 5-method verbatim crosswalk)·
+  COMPETITOR_MATRIX 1행+ @6706f65/@b054ca6·BENCHMARK_REPORT §BNK-728
+
+── planner 반영 제안 ────────────────────────────────────────
+1. baseline: FE @3bd50ac→@6706f65 · BE @5d6c007→@b054ca6 · merge gate 637 (tester FF·BE-heavy)
+2. id=1-5 가정통신문 dispatch-history deepen: REQUIREMENTS §G2 / USER_STORIES US-GUARDIAN-NEWSLETTER 에
+   「가정통신문 발송 이력 = board-style 목록 + centerName/summary 필드 + V191 조회 인덱스(영속·성능)」 반영
+   (config coverage 0.65 carry · authoring/board 관리 UX 완성 시 1.0 lever)
+3. ★ id=7-4 CMS 요금표 정본 근거 확정: ogada CmsPaymentMethodCatalog(자동이체 250원·가상계좌 300원)가
+   효성CMS 실 rate card 와 verbatim 일치 = 실 벤더 요금 기반 정본화 · 5-method superset(다계좌정산+현금영수증)
+   → 마케팅 카피 「ogada 본인부담금 CMS = 효성CMS 표준 요금(자동이체 250원/가상계좌 300원) + 다계좌정산·현금영수증 확장」 근거
+4. 규제 백본 462-cycle zero drift = 이동서비스비 러-1~4 full-stack 우위 narrative carry (경쟁 4종 유일)
+5. 잔여 lever: M12 SSO 실환경 credentials(0.65→↑) · G-ACCOUNTING-IN-APP-LEDGER(v3+ 「가정」) ·
+   P3 dashboard 2건(G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY) 「가정」 유지
+6. [신규 관찰] 엔젤 보호자용 앱 브랜드명 「굽은나무」·부가서비스 10-catalog(엔젤아이 AI상담·엔젤 VR·전자결재·
+   고위험군 명찰·IoT·쇼핑몰) = 엔젤 시스템 부가 라인업 재확인 · ogada 대비 부가서비스는 v2+ 차별화 축(진성 갭 아님)

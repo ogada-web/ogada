@@ -1,0 +1,58 @@
+# carefor func.php Module 3 「요양급여 제공 기록」 11-leaf ↔ ogada /care·/nursing crosswalk
+# BNK-793 (2026-07-16 · 케어포 역공학 0–2h)
+# 근거 disk canonical: carefor_func_menu_catalog.json md5 3c44ac2eb27680e6b3fdfda8f1cf48f1 (39,797B · 107-leaf · source carefor_func.php 6226e6eb 98,328B)
+# ogada baseline: FE @5b69e7a (WT CLEAN·ahead origin/test 0 = FULLY SYNCED) / BE @fde0606 (WT CLEAN·ahead 697 vs 598d108)
+# LIVE 재실측: carefor func.php(http/https)·demo-work root HTTP 000 (85-cycle+ 타임아웃) → disk canonical LOCK. 덮어쓰기 0.
+
+## 1. carefor Module 3 정본 (module_counts["3"]=11)
+3-1    요양급여 제공 기록
+3-1-1  통합식사도움기록
+3-1-2  간호급여 제공기록(요양보호사)
+3-1-3  요양급여 특이사항 관리
+3-1-4  식사(간식) 선호도 조사 및 반영
+3-2    상태변화 기록
+3-3    목욕일정 및 제공현황
+3-4    요양/식사(조치사항)/화장실 리포트
+3-5    목욕도움 리포트
+3-6    급여제공 리포트
+3-7    급여제공 서비스 집계
+
+## 2. 1:1 crosswalk → ogada App.jsx(@5b69e7a) Route 실측
+| carefor leaf | ogada Route | 판정 | 근거 |
+|---|---|---|---|
+| 3-1 요양급여 제공 기록        | /care/weekly-service-records        | ✅ | 주간 급여제공 기록 정본 |
+| 3-1-1 통합식사도움기록        | /care/meal-assistance-records       | ✅ | 식사도움 기록 |
+| 3-1-2 간호급여 제공기록(요보) | /nursing/service (+/care/reports/nursing-service) | ✅ | 간호급여 제공 + 리포트 |
+| 3-1-3 요양급여 특이사항 관리  | /care/service-special-notes         | ✅ | 특이사항 |
+| 3-1-4 식사(간식) 선호도 조사  | /care/meal-preference-surveys       | ✅ | 선호도 조사·반영 |
+| 3-2 상태변화 기록             | /nursing/vital-checks (+/health·/health/:clientId) | ✅ | 활력징후·건강상태 변화 |
+| 3-3 목욕일정 및 제공현황      | /care/bathing-schedules             | ✅ | 목욕일정·제공현황 |
+| 3-4 요양/식사/화장실 리포트   | /care/reports/meal-excretion        | ✅ | 식사·배설 리포트 |
+| 3-5 목욕도움 리포트           | /care/reports/bath-help             | ✅ | 목욕도움 리포트 |
+| 3-6 급여제공 리포트           | /care/reports/patient-service       | ✅ | 급여제공 리포트 |
+| 3-7 급여제공 서비스 집계      | /care/reports/service-summary       | ✅ | 서비스 집계 |
+= 11/11 착지 (PARITY)
+
+## 3. ogada SUPERSET (carefor M3 미대응 — care/nursing 심화)
+- /care/intensive-excretion            집중배설 기록 (carefor 무)
+- /care/reports/intensive-excretion    집중배설 리포트
+- /care/body-restraint                 신체구속(억제대) 기록 — 평가지표 대응
+- /care/reports/position-change         체위변경 리포트
+- /care/reports/medication-delivery     투약전달 리포트
+- /care/reports/hospital-visits         병원동행 리포트
+- /nursing/pressure-ulcer + assessment/plan/records/reports/reports/provision   욕창 6-route full-stack
+- /nursing/oral-care-checks             구강관리 점검
+- /nursing/emergency-records            응급상황 기록
+- /nursing/excretion-tubes             배설(도뇨/장루) 관리
+- /nursing/weight-records               체중 기록
+→ /care 16-route + /nursing 16-route = carefor M3 11-leaf 대비 급여제공·간호 기록 심화 SUPERSET
+
+## 4. coverage config 정합 (competitorModuleCoverage.js @5b69e7a)
+- id=3-1 「요양 급여제공 기록」 coverage=1.0
+- id=4  「간호·물리 급여」    coverage=1.0
+→ M3 11/11 crosswalk + nursing SUPERSET 가 KPI 1.0 뒷받침. KPI promote 0·가정 번복 0.
+
+## 5. 판정
+- 케어포 M3 요양급여 제공 기록 = ogada /care 16-route 로 11/11 PARITY 착지
+- ogada 는 집중배설·신체구속·체위변경·욕창 6-route 등 간호 심화 SUPERSET 보유 → 급여제공/간호 기록 축 ogada 우위
+- 케어포 LIVE 3-URL HTTP 000 (85-cycle+) → disk canonical 6226e6eb LOCK carry. 덮어쓰기 0.

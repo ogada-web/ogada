@@ -1,0 +1,149 @@
+BNK-677 — ogada git 실측 (6–8h rotation) · 2026-06-27T00:15:00Z (KST 09:15)
+================================================================================
+owner=BNK audience=PLN
+
+[1] ogada baseline git 실측 (확인 · git -C src/{backend,frontend} rev-parse develop)
+--------------------------------------------------------------------------------
+FE develop : 47a068cdacbf012e7c3a3e954e23062c18ac4f15  (@47a068c)
+  - feat(v1.2.1/US-Q01): wire safety module routes and pilot draft pages
+  - 2026-06-26 22:57:19 +0000
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 273 vs origin/test=ab4de83
+  - BNK-676 동일 SHA → HEAD zero advance 2-cycle
+
+BE develop : 8342f928685e903789c92dee72b46be2eab62871  (@8342f92)
+  - test(v2/QA-B95): lock null g21 seed health probe parity with live-e2e
+  - 2026-06-26 22:47:00 +0000
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 596 vs origin/test=598d108
+  - BNK-676 동일 SHA → HEAD zero advance 2-cycle
+
+merge gate : 869 (FE 273 + BE 596) — carry vs BNK-676 869 (양쪽 WT CLEAN → tester FF 가속 가능)
+
+[2] KPI 실측 (8/8축 BNK-676 IDENTICAL · HEAD zero advance 2-cycle plateau)
+--------------------------------------------------------------------------------
+Route        : 123  (`grep -c '<Route\b' src/frontend/src/App.jsx` = 123 + `<Routes>` 1 = 124 total)
+page         : 97   (`git ls-tree -r --name-only 47a068c | grep 'Page\.jsx$' | wc -l`)
+migration    : V1–V183 (max V183)
+BE Test 파일 : 275  (274 *Test.java + 1 *Tests.java · BNK-676 표기 「274」= Test.java only carry)
+BE @Test     : 2000 (`git -C src/backend grep -hoE '@Test\b' develop -- '*.java' | wc -l`)
+FE test 파일 : 491  (201 .test.js + 290 .test.jsx · git ls-tree @47a068c)
+모듈 커버리지: 80.86% (23.45/29 · competitorModuleCoverage.js · ✅21/△3/❌5)
+               ❌갭 5: id=1-5 가정통신문·1-10 연계기록지·6 위생·안전·11 직원급여·12 수입지출회계
+               id=6 위생·안전 coverage: 0 (matrix 미반영 · FE route/UI shell stage2 only)
+reports route: 28 (`grep -cE 'path=.*report' src/frontend/src/App.jsx`)
+
+Δ vs BNK-676 : FE/BE HEAD zero advance · merge gate 869 carry · 8/8 KPI IDENTICAL
+
+[3] ★★★ US-Q01 stage2.5 pilot draft localStorage workflow — git-grounded deep-dive
+    (확인 · 메뉴/필드/워크플로 블록 · @47a068c commit 13-file +555L)
+--------------------------------------------------------------------------------
+commit `@47a068c` JSDoc: 「Route App.jsx /safety/* four pages to the UXD checklist shell,
+add SideNav entry and RBAC for branch_admin/social_worker/hq_admin, and persist pilot drafts
+locally until the safety_checks API lands.」
+
+#### Route·RBAC·Nav (App.jsx + sevenRoleRouteMatrix.js + navConfig.js)
+| route | page | RBAC allowed |
+|---|---|---|
+| `/safety` → redirect | `/safety/daily-checks` | branch_admin, social_worker, hq_admin |
+| `/safety/daily-checks` | SafetyDailyChecksPage | ↑ |
+| `/safety/periodic-checks` | SafetyPeriodicChecksPage | ↑ |
+| `/safety/infection-control` | SafetyInfectionControlPage | ↑ |
+| `/safety/operation-log` | SafetyOperationLogPage | ↑ |
+
+SideNav: navConfig.js label 「위생·안전 점검」 → `/safety/daily-checks`
+
+#### Pilot draft storage (safetyDraftStorage.js — localStorage until BE API)
+- key prefix: `ogada.safety.drafts.v1.{branchId}.{kind}`
+- kind enum: `daily` | `periodic` | `infection` | `operation`
+- API: `listSafetyDrafts` · `appendSafetyDraft` · `removeSafetyDraft`
+- cap: 50 records per kind/branch (`.slice(0, 50)`)
+- record shape: `{ id, savedAt, ...payload }` (id = timestamp-random)
+
+#### SafetyPilotNotice (FE pilot UX contract)
+verbatim: 「파일럿: 점검·일지 기록은 이 브라우저에 초안으로 저장됩니다. 서버 API 연동 후 지점 공유 저장으로 전환됩니다.」
+
+#### 4-page workflow (daily example — SafetyDailyChecksPage.jsx)
+1. `SafetyContextNav` — 4-route tab nav (SAFETY_ROUTES)
+2. `SafetyPilotNotice` — pilot banner
+3. `SafetyChecklistForm` — template=DAILY_CHECK_TEMPLATE (8 items)
+4. `handleSubmit` → `appendSafetyDraft("daily", branchId, payload)` → localStorage
+5. `SafetyRecentDraftsPanel` — columns: checkDate, inspectorName, resultCode, savedAt
+
+판정: stage2(route 배선) + stage2.5(pilot localStorage persistence) = △+ (UI+local draft only).
+      stage3(BE SafetyCheckController + Flyway V184+) · stage4(competitorModuleCoverage id=6 → 1.0) pending.
+      carefor M6 = server-side ERP full persistence · ogada pilot = browser-local interim (가정: stage3 전까지 지점 공유 ❌).
+
+#### @47a068c safety file inventory (18 files git ls-tree)
+config: safetyChecks.js · safetyChecks.test.js
+pages: SafetyDailyChecksPage.jsx(+test) · SafetyPeriodicChecksPage.jsx · SafetyInfectionControlPage.jsx · SafetyOperationLogPage.jsx
+components/ui: SafetyChecklistForm(+test) · SafetyContextNav(+test) · SafetyOperationLogForm · SafetySubFormPanel(+test)
+components/safety: SafetyPilotNotice.jsx · SafetyRecentDraftsPanel.jsx
+utils: safetyDraftStorage.js · safetyDraftStorage.test.js
+
+[4] ★★ M6 3-way crosswalk — carefor func.php ↔ ogada US-Q01 ↔ silverangel 2026 평가지표
+    (확인 · 메뉴/필드/워크플로 블록)
+--------------------------------------------------------------------------------
+carefor func.php M6 5-leaf (disk `carefor_func.php` grep verbatim · BNK-675 carry IDENTICAL):
+  6-1.주간식단표 · 6-2.일일점검 · 6-3.정기점검 · 6-3-1.감염병 관리 · 6-4.시설운영일지
+
+ogada @47a068c mapping:
+| carefor leaf | ogada route/component | status |
+|---|---|---|
+| 6-1 주간식단표 | `/meal-plan` (기존) | ✅ |
+| 6-2 일일점검 | `/safety/daily-checks` + DAILY_CHECK_TEMPLATE 8항 | △ pilot localStorage |
+| 6-3 정기점검 | `/safety/periodic-checks` + SAFETY_SUB_FORM_TYPES 6종 × PERIODIC_CHECK_TEMPLATES | △ pilot |
+| 6-3-1 감염병 | `/safety/infection-control` + INFECTION_SYMPTOM 5 · ACTION 4 | △ pilot |
+| 6-4 시설운영일지 | `/safety/operation-log` + SafetyOperationLogForm | △ pilot |
+
+silverangel daycareEssentialWork.do 2026 평가지표 (재실측 · §5):
+  - 위생 4 · 점검 19 · 감염 17 · 안전 10 hit (HTML grep)
+  - 필수 서식 예: 위생점검일지 · 식중독예방일일점검표 · 감염예방일지 · 감염병 대응체계 · 소화설비 및 경보설비 점검표
+  - ogada PERIODIC_CHECK_TEMPLATES 6종(HYGIENE·NURSING_SUPPLIES·MEAL_SERVICE·FIRE_SAFETY·MEDICATION·DISINFECTION) = silverangel 「위생점검일지·감염예방일지·소화설비 점검표」 필수 항목 subset cover (가정: PDF 서식 1:1 아님)
+
+[5] ★ NHIS #44 416차 zero drift IDENTICAL (확인 · 기존 URL 재실측)
+--------------------------------------------------------------------------------
+GET https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  → HTTP 200 · size 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  → disk docs/planning/research/snapshots/nhis_jo44_live_bnk674.html md5 c886ff1f IDENTICAL
+  → BNK-676 415차 → +1 (416차 zero drift)
+
+[6] ★ silverangel daycareEssentialWork.do 재실측 (확인 · 기존 URL 재실측)
+--------------------------------------------------------------------------------
+GET https://www.silverangel.kr/newSilverangel/daycare/daycareEssentialWork.do
+  → HTTP 200 · size 131,664B · md5 c79c1be37f947aab04ab7ba35cc7814d
+  → disk silverangel_daycareEssentialWork_bnk649.html md5 c79c1be3 IDENTICAL (zero drift)
+  → snapshot: silverangel_daycareEssentialWork_live_bnk677.html (carry·덮어쓰기)
+
+[7] per-cycle minimum (4종 충족)
+--------------------------------------------------------------------------------
+1. 기존 URL 재실측 + 변동 기록 : NHIS #44 416차 zero drift · silverangel daycareEssentialWork zero drift
+2. 메뉴/필드/워크플로 1블록     : [3] US-Q01 stage2.5 pilot localStorage + [4] M6 3-way crosswalk
+3. COMPETITOR_MATRIX 1행+ @HEAD : BNK-677 row @47a068c/@8342f92 (carry · 8/8 IDENTICAL)
+4. BENCHMARK_REPORT §소절        : §677
+
+가정 번복 0 · KPI 변경 0 · 상태 변경 0(HEAD zero advance 2-cycle)
+신규 snapshot 2건(본 파일 + silverangel_daycareEssentialWork_live_bnk677.html) · 덮어쓰기 1건(silverangel carry)
+npm test / mvn test 미실행 (vitest 동시 실행 금지 · rules §5 준수)
+
+[8] 갭·MVP 우선순위 (REQUIREMENTS·ROADMAP 대비)
+--------------------------------------------------------------------------------
+P1 sole levers (변동 0):
+  - M11/M12: `/payroll/*`·`/accounting/*` 0 route → +6.9pp projection
+  - M6 id=6: route+UI+pilot localStorage △ → stage3 BE API → +3.45pp projection
+  - dual lever +10.41pp (80.86% → 91.27%) carry
+
+US-Q01 stage progression:
+  stage1 UI shell (BNK-675 @724f4a9) → stage2 route 배선 (BNK-676 @47a068c) →
+  **stage2.5 pilot localStorage (BNK-677 git-grounded)** → stage3 BE controller/Flyway → stage4 matrix id=6 1.0
+
+차별화 carry:
+  - G-NHIS 14-stage in-app 복구 loop = 경쟁 4종 유일 full-stack
+  - `/transport/*` 17 route + NHIS #44 = 경쟁 4종 유일
+
+[9] 다음 액션
+--------------------------------------------------------------------------------
+→ tester  : merge 869 (FE 273 + BE 596 · 양쪽 WT CLEAN · 2-cycle carry · FF 가속)
+→ planner : baseline FE @47a068c / BE @8342f92 carry · 8/8 KPI plateau · US-Q01 stage2.5 pilot contract 정본화
+→ coder   : M6 stage3 — BE SafetyCheckController + Flyway V184+ · stage4 competitorModuleCoverage id=6 → 1.0
+→ BNK next: 엔젤·롱텀·규제 4–6h 또는 이지케어 2–4h (rotation cycle)

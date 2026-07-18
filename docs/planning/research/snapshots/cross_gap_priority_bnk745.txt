@@ -1,0 +1,94 @@
+# 교차검증·갭 우선순위 — P0/P1 재정렬 + closed axes LIVE 재확인 + 규제/공지/엑셀 스캔 (BNK-745)
+# 조사일: 2026-07-15T03:37:00Z (UTC) / KST 2026-07-15 12:37
+# 작성: benchmark_researcher [BNK]
+# rotation: 8h+ 교차검증·갭 우선순위 (미확인 축소·이전 가정 번복 여부·P0/P1 재정렬·신규 공지/엑셀 스캔)
+# 직전 동일 rotation: BNK-741(2026-07-15T01:07Z) → ~2.5h 후
+# 직전 사이클: BNK-744(2026-07-15T03:06Z·ogada git 실측 6–8h) → ~31분 후
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`a772736`** `fix(v1.2.1/G2): honor active branch scope in newsletter launch`
+  · WT **CLEAN** · ahead origin/test **1** (`origin/test=6b0f2ae`)
+  · BNK-744 `@6b0f2ae`(ahead 1) → 6b0f2ae 는 test 이관(tester FF) · **+1 commit**(`a772736`)
+  · `<Route\b`=131 + `<Routes>`=1 = **132**(carry) · `*Page.jsx`=**105**(carry)
+  · `.test.js`=214 · `.test.jsx`=304 = **518**(carry)
+  · accounting route 1 · payroll route 5
+- BE `develop` = **`cf1dada`** `fix(v2/QA-B95): expose effective gate bootstrap suppression signal`
+  · WT **CLEAN** · ahead origin/test **651** (`test=598d108`)
+  · BNK-744 `@93f33af`(ahead 650) → **+1 commit**(`cf1dada`)
+  · `*Test.java`=288 · `*Tests.java`=1 = **289**(carry) · `@Test`=**2166**(grep -rE·+1 vs BNK-744 header 2165·QA-B95 gate suppression @Test)
+  · Flyway **V1–V193**(193 files·carry·신규 0·tip `V193`)
+- 모듈 커버리지 `competitorModuleCoverage.js` = **29 entries · sum 27.15 · 27.15/29 = 93.62%**(carry)
+  · id=1-5 **1.0** · id=1-7 대시보드 **1.0** · id=7-4 CMS **1.0** · id=12 **0.7** · id=10 **0.75** · id=2 **0.85** · id=8 **0.85** · id=1-10 **0**
+- merge gate **652** (FE 1 + BE 651 · BE-heavy · 양쪽 WT CLEAN → tester FF)
+  · vs BNK-744 **651**(FE 1 + BE 650) = **BE +1** (QA-B95 gate suppression signal)
+
+### 교차검증 carry (closed chains · 가정 번복 아님)
+
+| chain | 근거 | 판정 |
+|---|---|---|
+| J03 채널 상태 alias BE↔FE | FE `normalizeNotificationChannelStatus` + BE `@JsonProperty` alias 3종 | ✅ CLOSED carry(BNK-733) |
+| J03 quiet-hours 야간발송 readiness | BE `nonEmergency{Alimtalk,Email}DispatchAvailableNow`+`QUIET_HOURS_ACTIVE` blocker + FE normalizer/panel | ✅ CLOSED carry(BNK-741) |
+| **J03 3-channel SMS readiness UI** | FE Panel `liveSmsDispatchReady`+`nonEmergencySmsDispatchAvailableNow`+quiet-hours 3-channel | ✅ CLOSED carry(BNK-744) |
+| G2 / id=1-5 | compose→DRAFT→board→clone/guard→editable categories→branch-scope | ✅ FULL 1.0(BNK-730~745) |
+| carefor 10-4 | BE V192 6-endpoint + FE board + clone/guard | ✅ full-stack carry |
+| CMS 요금 parity | `CmsPaymentMethodCatalog` 5-entry ↔ 효성CMS 250/300원 verbatim | ✅ zero drift carry(BNK-740) |
+| message_kind 22 「급여명세서」 enum | BE catalog 7/7 ↔ mobile-sendW · `dispatchImplemented=false` | △ carry(BNK-744·id=10 0.75) |
+
+## 1. ★★★ P0/P1 재정렬 · closed axes 재오픈 0 · 이전 가정 번복 여부 (메뉴/필드/워크플로 블록)
+
+### 1-a. closed axes Route LIVE 재확인 (App.jsx grep 실측)
+
+| 축 | Route | 스키마/백본 | 재오픈 |
+|---|---|---|---|
+| **G14** 계획서 서식 | `/clients/:clientId/care-plan-form` | ClientCarePlanFormPage LIVE | **0** |
+| **대시보드** | `/dashboard`·`/dashboard/hq` (+ id=1-7 coverage 1.0) | 현황·통계 LIVE | **0** |
+| **v1.3-C** transport | V186–V190 integrity | shuttle+day-status | **0** |
+| **v2 CMS** | `/billing/cms`·`/billing/easy-pay`·`/billing/cash-receipts` | CmsPaymentMethodCatalog 5-method(250/300원 verbatim) | **0** |
+| 가정통신문 G2 | `/clients/home-newsletter` | id=1-5 1.0 · branch-scope(`@a772736`) | n/a(FULL) |
+| M12 회계 BPO | `/accounting` | id=12 0.7 · credentials 잔여 | n/a |
+| M11 급여 | `/payroll/{basis,labor-cost-ratio,ledger,reports,retirement-accrual}` 5-route | id=11 1.0 | n/a(FULL) |
+
+→ closed axes 5축 App.jsx grep 전부 LIVE 재확인 = **재오픈 0** (`grep -oE 'path="[^"]*(care-plan-form|dashboard|billing/cms|easy-pay|cash-receipts|...)"'` 실측 13-path 매칭).
+
+### 1-b. 갭 우선순위 표 (BNK-741 → BNK-745 Δ)
+
+| id/축 | BNK-741 | BNK-745 | 실측 | 판정 | 우선순위 |
+|---|---|---|---|---|---|
+| **1-10 연계기록지** | 0 | **0** | `competitorModuleCoverage.js` line20 `{ id: "1-10", label: "연계기록지", coverage: 0 }` · dedicated Route 0 · CareProvisionRecordPanel 은 transport linkage(id=2)만 | **진성 갭 (유일 coverage-0)** | **v2+ 최우선 신규 모듈**(평가지표 30·타 기관 연계 기록) |
+| **12 수입지출·회계** | 0.7 | **0.7 carry** | `/accounting` LIVE·SSO OTP handoff·실환경 credentials 미등록 | △ | **잔여 operational lever #1** |
+| **10 SMS·알림** | 0.75 | **0.75 carry** | J03 3-channel + quiet-hours + SMS UI(BNK-744)·kind 22 enum `dispatchImplemented=false`·SMS 7-kind template enum v2+ | △ | **잔여 operational lever #2**(J03 심화·coverage 갭은 dispatch impl+template enum) |
+| 2 이동서비스 | 0.85 | 0.85 | RU_1~4 6-link·NHIS #44 **479차** zero drift | △ | operational polish |
+| 8 직원·근태 | 0.85 | 0.85 | — | △ | 후속 |
+| **1-5 가정통신문** | 1.0 FULL | 1.0 FULL | home-newsletter + facility-notice full-stack + branch-scope | ✅ CLOSED | lever 소멸 carry |
+| **G14 / v1.3-C / v2 CMS / 대시보드 / M11** | closed | closed | App.jsx LIVE | closed | **재오픈 0** |
+| **P3 dashboard 2건** | 「가정」 | 「가정」 | G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY dedicated Route 0 | 「가정」 | **격상 0**(이지케어 patient-list 만료일 카운트다운 BNK-739 참고 asset carry) |
+| 이지케어 월단위 batch-unconfirm | v2+ candidate | v2+ candidate | `unconfirmTransportRunApi` 단일만 | operational | carry(BNK-739 P2 lever candidate) |
+
+- **가정 번복 0**
+- **신규 P0/P1 진성 갭**: 0
+- **closed axes 재오픈**: 0
+- **P3 dashboard 격상**: 0
+- **P0/P1 재정렬(확인)**: BNK-741 「sole 진성갭 id=1-10 · operational levers = M12 credentials + SMS dispatch/template」 carry — id=10 축은 BNK-744 J03 3-channel SMS UI 로 operational 심화 완료(coverage 갭 잔여 = kind 22+ dispatch 미구현·template enum v2+).
+
+## 2. 규제·공지·엑셀 재실측 (기존 URL · 신규 변경 스캔)
+
+| 소스 | HTTP·SIZE·md5 | 판정 |
+|---|---|---|
+| NHIS #44 이동서비스비 | 200·7,572B·`c886ff1f` | **479차** zero drift IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13) verbatim grep -oE) ↔ ogada `TransportServiceFeeService` 6-link(id=2 0.85) |
+| ezcare FAQ list | 200·80,057B·`1e4dfcef` | size-lock · **hit-count DRIFT**(BNK-743 `a4b820d8`→변경·76-line diff·rowid SETS IDENTICAL) · rowid **233**·max **21781** carry · 신규 rowid 0 · 「엑셀」 grep-hit 44(본문 FAQ 상수·신규 포맷 변경 0) → **엑셀 포맷 변경 0** |
+| silverangel notice `support/notice/list.do` | 200·5,707,602B·`ea7d6b3d` | **IDENTICAL**(BNK-738 canonical carry) · ≥221573 신규 공지 0 |
+| silverangel extraService (효성CMS) | (재실측 skip = BNK-740 carry) | `f9c5d877` 81,637B IDENTICAL · 요금 250/300원 verbatim carry |
+| carefor func.php / demo-work 3-URL | **000** timeout | 「미확인」 **83-cycle+** · disk `6226e6eb` 98,328B canonical 우선 |
+
+→ **신규 규제/공지/엑셀 포맷 변경 0** · import adapter 긴급 불요 · 신규 candidate 0.
+
+## 3. 산출 요약
+
+- 신규/재실측 evidence URL: NHIS #44 **479차** zero drift IDENTICAL · ezcare FAQ list hit-only DRIFT(rowid SETS IDENTICAL) · silverangel notice IDENTICAL · carefor 000 carry = **재실측 4건**
+- 메뉴/필드/워크플로: **P0/P1 재정렬(closed axes 5축+M11 LIVE 재확인·재오픈 0)** §1 + **갭 우선순위 Δ 표**(sole 진성갭 id=1-10 재확인)
+- COMPETITOR_MATRIX 1행+ `@a772736`/`@cf1dada` 갱신
+- BENCHMARK_REPORT §BNK-745 + memory/decisions.md 최상단
+- 가정 번복 0 · 상태 변경 2(FE +1 commit·BE +1 commit·양쪽 WT CLEAN) · closure 0 · closed axes 재오픈 0 · P3 dashboard 격상 0 · 엑셀/공지 변경 0
+- KPI 변경 3(BE @Test 2165→2166·merge gate 651→652·FE @6b0f2ae→@a772736·BE @93f33af→@cf1dada)
+- 덮어쓰기 0 · per-cycle minimum 4종 충족

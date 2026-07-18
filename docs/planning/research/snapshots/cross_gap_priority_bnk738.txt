@@ -1,0 +1,104 @@
+# 교차검증·갭 우선순위 — P0/P1 재정렬(post-G2 FULL) + FE FULLY SYNCED + 공지/엑셀 스캔 (BNK-738)
+# 조사일: 2026-07-14T23:00:00Z (UTC) / KST 2026-07-15 08:00
+# 작성: benchmark_researcher [BNK]
+# rotation: 8h+ 교차검증·갭 우선순위 (미확인 축소·이전 가정 번복 여부·P0/P1 재정렬·신규 공지/엑셀 스캔)
+# 직전 동일 rotation: BNK-733(2026-07-14T20:11Z) → ~2.8h 후
+# 직전 사이클: BNK-737(2026-07-14T22:25Z·ogada git 실측) → ~35분 후
+
+## 0. ogada @HEAD git 실측 (확인)
+
+- FE `develop` = **`d4e1e68`** `feat(v1.2.1/G2): clone facility notices to DRAFT and guard attachment URLs`
+  · WT **CLEAN** · ahead origin/test **0** = **FULLY SYNCED** (`origin/test=d4e1e68`)
+  · BNK-737 `@d4e1e68` ahead 1 → **tester FF 흡수**(ahead 1→0) · **HEAD zero advance** (SHA carry)
+  · `<Route\b`=131 + `<Routes>`=1 = **132**(carry) · `*Page.jsx`=**105**(carry)
+  · `.test.js`=214 · `.test.jsx`=304 = **518**(carry)
+  · accounting route 1 · payroll route 5
+- BE `develop` = **`2e29bc7`** `fix(v2/QA-B95): treat blank guardian credentials as missing`
+  · WT **CLEAN** · ahead origin/test **643** (`test=598d108`)
+  · BNK-737 동일 SHA · **HEAD zero advance**
+  · `*Test.java`=288 · `*Tests.java`=1 = **289**(carry) · `@Test`=**2161**(carry)
+  · Flyway **V1–V192**(192 files · tip `V192__facility_notices_carefor_10_4`)
+- 모듈 커버리지 `competitorModuleCoverage.js` = **29 entries · sum 27.15 · 27.15/29 = 93.62%**(carry)
+  · id=1-5 **1.0** · id=7-4 CMS **1.0** · id=12 **0.7** · id=10 **0.75** · id=2 **0.85** · id=8 **0.85** · id=1-10 **0**
+- merge gate **643** (FE 0 FULLY SYNCED + BE 643 · BE-only · 양쪽 WT CLEAN → tester FF)
+  · vs BNK-737 **644**(FE 1+BE 643) = **FE FF −1** ★상태 변경
+
+### 교차검증 carry (closed chains · 가정 번복 아님)
+
+| chain | 근거 | 판정 |
+|---|---|---|
+| J03 alias BE↔FE | FE `normalizeNotificationChannelStatus` + BE `@JsonProperty` alias 3종 | ✅ CLOSED carry(BNK-733) |
+| G2 / id=1-5 | compose→DRAFT→board→clone/guard(`buildFacilityNoticeClonePayload`·`isSafeFacilityNoticeAttachmentUrl`) | ✅ FULL 1.0(BNK-730~737) |
+| carefor 10-4 | BE V192 6-endpoint + FE board + clone/guard | ✅ full-stack |
+| QA-B95 blank guardian | BE `@2e29bc7` fail-closed | ✅ carry |
+
+## 1. ★★★ P0/P1 재정렬 · closed axes 재오픈 0 · 이전 가정 번복 여부 (메뉴/필드/워크플로 블록)
+
+### 1-a. closed axes Route LIVE 재확인 (App.jsx)
+
+| 축 | Route (line) | 스키마/백본 | 재오픈 |
+|---|---|---|---|
+| **G14** 계획서 서식 | `/clients/:clientId/care-plan-form` L235 | ClientCarePlanFormPage LIVE | **0** |
+| **대시보드** | `/dashboard` L163 · `/dashboard/hq` L172 | id=1-7 coverage 1.0 | **0** |
+| **v1.3-C** transport | V186–V190 integrity | shuttle+day-status | **0** |
+| **v2 CMS** | `/billing/cms` L379 · `/billing/easy-pay` L388 · `/billing/cash-receipts` L451 | CmsPaymentMethodCatalog 5-method | **0** |
+| 가정통신문 G2 | `/clients/home-newsletter` L208 | id=1-5 1.0 | n/a(FULL) |
+| M12 회계 BPO | `/accounting` L397 | id=12 0.7 · credentials 잔여 | n/a |
+
+### 1-b. 갭 우선순위 표 (BNK-726→BNK-738 Δ)
+
+| id/축 | BNK-726 | BNK-738 | Route/실측 | 판정 | 우선순위 |
+|---|---|---|---|---|---|
+| **1-5 가정통신문** | 0.65 (compose FE ❌) | **1.0 FULL** | home-newsletter LIVE + facility-notice clone/guard | ✅ CLOSED | **lever 소멸**(BNK-726 sole in-app lever 해제) |
+| **10-4 기관 공지** | P2 candidate(미착지) | **FULL + clone deepen** | V192 + FE board/clone | ✅ CLOSED | P2 해제 |
+| **12 수입지출·회계** | 0.7 | **0.7 carry** | `/accounting` LIVE · SSO handoff · credentials 미등록 | △ | **잔여 operational lever #1**(실환경 credentials) |
+| **1-10 연계기록지** | 0 | **0** | FE/BE 구현 0(coverage only) | 진성 갭 | **v2+ 최우선 신규 모듈**(평가지표 30) |
+| 2 이동서비스 | 0.85 | 0.85 | RU_1~4 6-link · NHIS #44 zero drift | △ | operational polish |
+| 8 직원·근태 | 0.85 | 0.85 | — | △ | 후속 |
+| 10 SMS·알림 | 0.75 | 0.75 | J03 3-channel readiness · SMS 7-kind v2+ | △ | **잔여 operational lever #2**(template enum) |
+| **G14 / v1.3-C / v2 CMS** | closed | closed | App.jsx LIVE | closed | **재오픈 0** |
+| **P3 dashboard 2건** | 「가정」 | 「가정」 | G-NURSING-DIRECTIVE-EXPIRY·G-CLIENT-CARE-AGREEMENT-EXPIRY 0 dedicated Route | 「가정」 | **격상 0** |
+| G-ACCOUNTING-IN-APP-LEDGER | v3+ | v3+ | — | MVP out | carry |
+| SMS 7-kind / RFID care-provision | v2+ | v2+ | BNK-724/731 | v2+ | carry |
+
+- **가정 번복 0**
+- **상태 변경 1**: FE ahead 1→**0 FULLY SYNCED**(tester FF)·merge gate 644→**643**(BE-only)
+- **P0/P1 재정렬(확인)**: BNK-726 「sole in-app levers = 1-5 authoring FE + M12 credentials」 → **BNK-738 「sole coverage-0 진성갭 = id=1-10 · sole operational 1.0 levers = M12 credentials + SMS 7-kind」**
+- **신규 P0/P1 진성 갭**: 0
+- **closed axes 재오픈**: 0
+- **P3 dashboard 격상**: 0
+
+### 1-c. 경쟁 crosswalk (잔여 lever)
+
+| 제품 | 연계기록지(1-10) | CMS/청구 | 알림 채널 | 판정 |
+|---|---|---|---|---|
+| 케어포 | func.php 1-10 정적 leaf(LIVE 000 「미확인」) | 7-x + CMS leaf | 문자 중심 | disk carry |
+| 이지케어 | 「미확인」 | FAQ 청구/일정확정 | **2-channel**(SMS+앱·알림톡 0) | BNK-724/731 |
+| 엔젤 | shell/외부 | 효성CMS rate card | LCMS 위탁 | BNK-736 |
+| **ogada** | **coverage 0** | CMS 5-method + 3 Route LIVE | **3-channel readiness** | CMS/채널 우위 · **1-10 진성갭** |
+
+## 2. 규제·공지·엑셀 재실측 (기존 URL · 신규 변경 스캔)
+
+| 소스 | HTTP·SIZE·md5 | 판정 |
+|---|---|---|
+| NHIS #44 이동서비스비 | 200·7,572B·`c886ff1f` | **472차** zero drift IDENTICAL(러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)) |
+| law247 고시 | 200·78,450B·`16d55b75` | size-lock · Time=`1784069978` md5 DRIFT · 시행 2026.1.1 IDENTICAL |
+| silverangel notice (canonical) | 200·5,707,602B·`ea7d6b3d` | IDENTICAL vs BNK-726 · ≥221573 **0**(~20일+ pause)·최고 221572 |
+| silverangel wrong path | **404**·1,028B·`3c93af54` | `/community/noticeList.do` dual-IA 재확인 |
+| ezcare FAQ list | 200·80,057B·`7ca8562d` | size-lock · cachebuster md5 DRIFT · rowid **233**·max **21781** · 「엑셀」2-hit(브라우저 다운로드 FAQ)·신규 rowid 0 |
+| ezcare FAQ 21844 | 200·14,474B·`d0aa760c` | IDENTICAL vs BNK-731/726(**엑셀 포맷 변경 0**) |
+| ezcare FAQ 21845 | 200·13,915B·`5b78c947` | IDENTICAL |
+| ezcare home | 200·69,549B·`1c0fcd0b` | data-count **53.2/9298/4668/2353/1820** IDENTICAL · 집계 2026.06.30 · size cachebuster DRIFT(가정 번복 아님) |
+| ezcare notice `?PG=notice` | 200·69,906B·`6949e4c4` | 포맷/마스킹/공단일정/업로드 **0-hit** · 신규 엑셀 공지 0 |
+| carefor func.php / demo-work | **000** timeout | 「미확인」 **78-cycle+** · disk `6226e6eb` 98,328B canonical 우선 |
+
+→ **신규 규제/공지/엑셀 포맷 변경 0** · import adapter 긴급 불요 · 신규 candidate 0.
+
+## 3. 산출 요약
+
+- 신규/재실측 evidence URL: NHIS #44 472차 · law247 · FAQ list/21844/21845 · home · notice PG · silverangel notice canonical + wrong-path 404 · carefor 000 = **재실측 9건+**
+- 메뉴/필드/워크플로: **P0/P1 재정렬(1-5 lever 소멸→1-10 진성갭 최우선) + closed axes LIVE 재확인** §1
+- COMPETITOR_MATRIX 1행+ `@d4e1e68`/`@2e29bc7` 갱신
+- BENCHMARK_REPORT §BNK-738 + memory/decisions.md 최상단
+- 가정 번복 0 · 상태 변경 1(FE FULLY SYNCED) · closed axes 재오픈 0 · P3 dashboard 격상 0 · 엑셀/공지 변경 0
+- 덮어쓰기 0 · per-cycle minimum 4종 충족

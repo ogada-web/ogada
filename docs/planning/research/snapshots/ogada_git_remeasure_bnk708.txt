@@ -1,0 +1,77 @@
+BNK-708 ogada git 실측 (2026-07-14T02:13Z)
+================================================
+FE develop  bc9389d  "fix(v1.2.1/G17): wire bathing claim vs indicator27 ownership"
+            WT CLEAN · ahead 2 vs origin/test=95192f5
+            (origin/test FF 진행: ab4de83 → 95192f5 = BNK-707 FE HEAD 이미 test 반영)
+BE develop  bd901c4  "feat(v2/G17): expose indicator27 ownership on compliance response"
+            WT CLEAN · ahead 618 vs origin/test=598d108
+
+merge gate = FE 2 + BE 618 = 620 (양쪽 WT CLEAN → tester FF 가속)
+
+KPI (git grep/ls-files 실측 @develop):
+  Route 125 (<Route\b 124 + <Routes> 1)      [BNK-707 124 = 123+1 → +1]
+  *Page.jsx 98                                [carry]
+  reports route 28 (path=~reports · billing/care/programs/staff)  [metric 재확인]
+  FE test 507 (210 .test.js + 297 .test.jsx) [carry]
+  BE Test 281 (280 Test.java + 1 Tests.java) [BNK-707 280 → +1]
+  BE @Test 2080                              [BNK-707 2079 → +1]
+  Flyway V1–V190                             [carry]
+  모듈 84.31% (24.45/29)                      [carry]
+
+델타 vs BNK-707 (FE @95192f5 / BE @6e874df):
+  FE HEAD +2 : 95192f5
+    → 9578aa3  ux(a11y/FE-16): style day-status excluded roster items (UXD-173)
+    → bc9389d  fix(v1.2.1/G17): wire bathing claim vs indicator27 ownership
+  BE HEAD +1 : 6e874df
+    → bd901c4  feat(v2/G17): expose indicator27 ownership on compliance response
+  ahead: FE 0 → 2 (origin/test FF ab4de83→95192f5, develop +2) · BE 617 → 618 (+1)
+  merge residual: 617 BE-only → 620 (FE 2 + BE 618)
+  KPI: Route +1(<Route\b 123→124) · BE Test +1(280→281) · BE @Test +1(2079→2080)
+       Page/FE test/V/모듈 전축 carry
+
+--------------------------------------------------------------------
+★★★ G17 indicator27 ownership = 기능회복훈련 vs 목욕급여 분리 — 5-commit full-stack chain
+--------------------------------------------------------------------
+BNK-707 3-commit(BE c08329a G17 clarify · BE 6e874df G-BATHING test lock ·
+        FE 95192f5 카피 정합) 위에 BNK-708 +2:
+  ④ BE bd901c4  expose indicator27 ownership on compliance response
+     → 컴플라이언스 응답에 지표27 소유(기능회복) 필드 노출
+     (BathingScheduleIndicator27ComplianceResponse · FunctionalRecoveryComplianceResponse)
+  ⑤ FE bc9389d  wire bathing claim vs indicator27 ownership
+     → 목욕급여 청구(별도·비필수) ↔ 지표27(기능회복·필수) 소유 구분을 화면에 wire
+= 지표27 = 기능회복훈련 정본을 응답(c08329a)·테스트(6e874df)·카피(95192f5)
+  + 컴플라이언스 응답 소유 노출(bd901c4)·목욕청구 vs 지표27 소유 FE wire(bc9389d)
+  까지 5-layer full-stack 정합.
+관련 BE 클래스(git grep indicator27):
+  care/bathschedule/{BathingScheduleIndicator27Catalog,
+    BathingScheduleIndicator27ComplianceResponse,
+    BathingScheduleIndicator27ClientComplianceEntry, BathingScheduleService}
+  programs/{FunctionalRecoveryIndicatorCatalog, FunctionalRecoveryComplianceResponse,
+    FunctionalRecoveryService} · dashboard/DashboardService
+경쟁 4종(케어포 func.php 정적·이지케어 FAQ 사후·엔젤 systemFeature 404·롱텀 규제 원천)
+  중 평가지표 27 기능회복/목욕 분리 in-app 정본화 = ogada 유일 · 5-commit 심화.
+
+부가: FE 9578aa3 UXD-173 = 「금일 배차 제외」(day-status) roster 항목 a11y 스타일
+  (G16 이동서비스 셔틀 5-stage enforcement BNK-701 → 시각 표시 polish) — Route/Page 영향 0.
+
+--------------------------------------------------------------------
+★★ 규제 백본 live 재실측 (정확 host)
+--------------------------------------------------------------------
+NHIS #44 이동서비스비 러-1~4  HTTP 200 · 7,572B · c886ff1f = 444차 zero drift IDENTICAL
+  URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  verbatim 확인: 러-1·러-4·편도(2)·수급자가 부담 (live=disk nhis_jo44.html IDENTICAL)
+silverangel essential          HTTP 200 · 131,664B · c79c1be3 = zero drift IDENTICAL (live=disk)
+
+[negative control · 오인 방지 노트]
+  longterm npbs `www.longtermcare.or.kr/npbs/r/a/201/joHistoryContent.do` GET/POST
+    → HTTP 200 · 328/329B · b14d4da7 Nexacro "No handler found" (해당 host에 GET/POST 핸들러 없음)
+  = NHIS #44 canonical 이 아님(host 상이) · 캐노니컬은 nhis.or.kr/lm/lmxsrv/law/ 확정 · 덮어쓰기 0.
+
+--------------------------------------------------------------------
+[per-cycle minimum 충족]
+  · 신규 증거 URL / 재실측 + 변동: NHIS #44 444차 zero drift + npbs host negative control 기록 ✅
+  · 메뉴/필드/워크플로 1블록: G17 indicator27 ownership 5-commit full-stack chain ✅
+  · COMPETITOR_MATRIX 1행+ @HEAD(FE bc9389d / BE bd901c4) 갱신 ✅
+  · BENCHMARK_REPORT §BNK-708 차수 메모 ✅
+[가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · 덮어쓰기 0]
+[미확인 carry: longterm 502(302)·610 404]

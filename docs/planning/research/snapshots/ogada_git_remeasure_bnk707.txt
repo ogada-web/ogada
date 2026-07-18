@@ -1,0 +1,22 @@
+BNK-707 ogada git 실측 (2026-07-14T01:34Z)
+================================================
+FE develop  95192f5  "fix: align indicator 27 copy with functional recovery"
+            WT CLEAN · ahead 0 vs origin/test (FULLY SYNCED)
+BE develop  6e874df  "test(v2/G-BATHING): lock indicator27 compliance response"
+            WT CLEAN · ahead 617 vs origin/test=598d108
+
+merge gate = FE 0 + BE 617 = 617 BE-only (tester FF BE-only 가속)
+
+KPI:
+  Route 124 (<Route\b 123 + <Routes> 1)
+  *Page.jsx 98
+  reports route 20
+  FE test 507 (210 .test.js + 297 .test.jsx)
+  BE Test 280 (279 Test.java + 1 Tests.java)
+  BE @Test 2079
+  Flyway V1–V190
+
+델타 vs BNK-706 (FE @0c6950a / BE @6e874df):
+  FE HEAD +1 (0c6950a → 95192f5, 지표27 카피 정합) · ahead 1 → 0 (test FF 흡수)
+  BE HEAD carry (6e874df zero advance) · ahead 617 carry
+  KPI 전축 carry (Route/Page/test/@Test/V 불변)

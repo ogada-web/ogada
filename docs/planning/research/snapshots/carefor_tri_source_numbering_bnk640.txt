@@ -1,0 +1,193 @@
+# 케어포 tri-source 모듈 번호·leaf 전수 crosswalk (BNK-640)
+# 조사일: 2026-06-26T00:28:58Z
+# 작성: benchmark_researcher [BNK]
+
+## 신규 evidence (확인)
+1. on-disk `carefor_func.php` md5 `6226e6eb` (98,328B·107-leaf) — zero drift vs BNK-639
+2. on-disk `carefor_demo_work.html` — 114 loadPage·34 rpt·이동서비스 title 0 hit
+3. carefor.co.kr/daycare/func.php LIVE HTTP **000 timeout 45-cycle** (2026-06-26)
+4. demo-work.carefor.co.kr LIVE HTTP **000 timeout 45-cycle** (2026-06-26)
+5. demo 8-6 `view.staff_meeting` ↔ ogada `/staff/committee-meetings` `@0342076` FULL closure
+
+## func.php 마케팅 모듈 11종 (확인)
+- M1 수급자관리: 34 leaves (regex approx)
+- M2 이동서비스관리: 15 leaves (regex approx)
+- M3 요양 급여제공: 16 leaves (regex approx)
+- M4 간호/물리(작업) 급여제공: 11 leaves (regex approx)
+- M5 프로그램 급여제공: 14 leaves (regex approx)
+- M6 위생.안전 점검관리: 10 leaves (regex approx)
+- M7 본인부담금관리: 14 leaves (regex approx)
+- M8 직원관리: 16 leaves (regex approx)
+- M9 기초설정 및 운영관리: 7 leaves (regex approx)
+- M10 부가서비스: 10 leaves (regex approx)
+- M11 직원 급여관리: 7 leaves (regex approx)
+
+## func.php leaf 전수: 107건
+
+### Module 1 (11 leaves)
+  1-1. 수급자 정보관리
+  1-1-1. 대기 수급자 관리
+  1-2. 전체 기초평가 현황
+  1-3. 기초평가 관리
+  1-4. 상담일지
+  1-5. 가정통신문
+  1-6. 수급자 안내사항/예방접종
+  1-7. 수급자 현황 리포트
+  1-8. 수급자 월별 통계 리포트
+  1-9. 수급자 등급 변동 현황
+  1-10. 연계기록지 발송 리포트
+
+### Module 2 (10 leaves)
+  2-1. 일정관리(공단연동)
+  2-1-1. 외출 관리
+  2-2. 탑승관리(차량 이용)
+  2-3. 출석관리(차량 미이용)
+  2-4. 차량관리
+  2-5. 청구내역상세(공단연동)
+  2-6. 공단 입퇴소내용 자료(공단연동)
+  2-7. 월간 서비스 변동현황
+  2-8. 월간 입소자, 일정, 서비스 현황
+  2-9. 수급자 외출 리포트
+
+### Module 3 (11 leaves)
+  3-1. 요양급여 제공 기록
+  3-1-1. 통합식사도움기록
+  3-1-2. 간호급여 제공기록(바이탈,투약)
+  3-1-3. 요양급여 특이사항 관리
+  3-1-4. 식사(간식) 만족도 조사 및 반영
+  3-2. 상태변화 기록
+  3-3. 목욕일정 및 제공현황
+  3-4. 요양/식사(조치사항)/화장실 리포트
+  3-5. 목욕도움 리포트
+  3-6. 급여제공 리포트
+  3-7. 급여제공 서비스 집계
+
+### Module 4 (10 leaves)
+  4-1. 간호급여 제공기록(간호,투약,진료)
+  4-1-1. 통합 간호관리 기록
+  4-2. 응급상황 기록(필요시)
+  4-3. 통합 간호제공 리포트
+  4-4. 병의원 진료내역 리포트
+  4-5. 투약제공 리포트
+  4-6. 물리/작업치료 제공기록(필요시)
+  4-6-1. 물리(작업)치료 일정
+  4-6-2. 물리(작업)치료 제공 리포트
+  4-6-3. 물리(작업)치료 일정 리포트
+
+### Module 5 (13 leaves)
+  5-1. 프로그램 제공기록
+  5-1-1. 외부강사/자원봉사자 관리
+  5-2. 프로그램 일정관리
+  5-3. 프로그램 수급자 그룹 설정(필요시)
+  5-3-1. 프로그램 그룹 관리
+  5-4. 프로그램 정보관리
+  5-5. 프로그램 의견수렴 및 반영
+  5-5-1. 프로그램관리자 업무수행일지
+  5-6. 프로그램 계획
+  5-7. 수급자 참여프로그램 리포트
+  5-8. 프로그램 제공기록 리포트(운영기록지)
+  5-9. 프로그램 수급자 그룹 설정 이력 리포트
+  5-10. 수급자 프로그램 일정 리포트
+
+### Module 6 (5 leaves)
+  6-1. 주간식단표
+  6-2. 일일점검
+  6-3. 정기점검
+  6-3-1. 감염병 관리
+  6-4. 시설운영일지
+
+### Module 7 (11 leaves)
+  7-1. 본인부담금 청구관리
+  7-2. 본인부담금 입금관리
+  7-2-1. 의료비공제(연말정산)
+  7-3. 본인부담금 미납관리
+  7-4. 본인부담금 자동이체 (CMS)
+  7-5. 본인부담금 간편결제
+  7-6. 본인부담금 청구대장 리포트
+  7-7. 본인부담금 입금대장 리포트
+  7-8. 본인부담금 수납대장 리포트
+  7-9. 본인부담금 수납,환불내역
+  7-10. 본인부담금 간편계산기
+
+### Module 8 (15 leaves)
+  8-1. 직원 정보관리
+  8-1-2. 선임 요양보호사 업무수행일지
+  8-2. 근무일정표
+  8-3. 연간 일정계획
+  8-4. 출퇴근 및 근무관리
+  8-5. 사례관리 회의록
+  8-6. 회의록(운영위원회)
+  8-7. 교육일지
+  8-7-1. 요양보호사 보수교육
+  8-8. 자원봉사자 활동일지(필요시)
+  8-9. 고충처리 관리
+  8-10. 건강검진관리
+  8-11. 질향상노력(삭제예정)
+  8-12. 직원 현황 리포트
+  8-13. 연차,유급휴일 대장
+
+### Module 9 (6 leaves)
+  9-1. 시설정보설정
+  9-1-1. 기초작업 및 기초설정
+  9-2. 요양급여 수가설정
+  9-3. 이용요금 결제 및 연장
+  9-4. 비품관리대장
+  9-5. 연간 부담금현황
+
+### Module 10 (9 leaves)
+  10-1. 문자메시지 발송
+  10-2. 급여제공내역 안내 발송
+  10-2-1. 수가변경안내 발송
+  10-3. 보호자 급여기록 열람내역
+  10-4. 기관 공지사항, 자료실
+  10-5. 홈페이지 서비스
+  10-6. 보호자 앱 관리
+  10-7. 안내발송내역(문자, 이메일)
+  10-8. 평가항목 및 사전 준비자료 출력
+
+### Module 11 (6 leaves)
+  11-1. 월별 급여대장
+  11-2. 퇴직적립금 관리
+  11-3. 직원 급여계약 설정
+  11-4. 급여기초 설정(수당/공제)
+  11-5. 인건비 지출비율 참고자료
+  11-6. 직원 급여대장 리포트(간이지급명세서)
+
+## demo-work loadPage 전수: 114건 (rpt class 34)
+
+## tri-source 모듈 번호 재매핑 (확인·핵심)
+| func.php M# | func 명칭 | demo L# | demo 명칭 | 비고 |
+|---|---|---|---|---|
+| 1 | 수급자 정보관리 | L01 | 수급자관리 | 1:1·demo +2 leaf(1-11,1-12) |
+| 2 | 이동서비스관리 | — | — | **demo 0 hit·시설 셸 한계** |
+| 3 | 요양급여제공 | L02 | 요양급여 | 번호 -1 drift |
+| 4 | 간호급여제공 | L03 | 간호급여 | 번호 -1 drift |
+| 4-6 | 물리치료( func 4-6 sub) | L04 | 물리(작업)치료 | demo 별도 L04 |
+| 5 | 프로그램관리 | L05 | 프로그램 | demo +1(5-1-2 가족교류) |
+| 6 | 시설운영관리 | L06 | 위생*안전 | demo rpt 0 |
+| 7 | 본인부담금관리 | L07 | 본인부담금 | 10 leaf 1:1 |
+| 8 | 직원관리 | L08 | 직원관리 | 8-6 view.staff_meeting |
+| 9 | 기초설정 | L09 | 기초설정 | 9-5 차량만 잔존 |
+| 10 | 부가서비스 | L10 | 부가서비스 |  |
+| 11 | 직원급여관리 | L11 | 급여관리 |  |
+
+## L07 본인부담 7-x demo pamcode ↔ ogada Route (확인)
+- 7-1.본인부담금 청구관리 | L07_M01 | `/share/cost/view.cost_master` | ogada `/billing + /billing/claims/:id` | ✅
+- 7-2-1.의료비공제(연말정산) | L07_M09 | `/share/cost/view.cost_master_statistic` | ogada `/billing/reports/statistics` | ✅
+- 7-2.본인부담금 입금관리 | L07_M02 | `/share/cost/view.cost_receipt` | ogada `/billing/payments` | ✅
+- 7-3.본인부담금 미납관리 | L07_M03 | `/share/cost/view.cost_nopay` | ogada `/billing/overdue` | ✅
+- 7-4.본인부담금 자동이체 (CMS) | L07_M11 | `/share/cost/view.cms_manage` | ogada `/billing/cms` | ✅
+- 7-5.본인부담금 간편결제 | L07_M12 | `/share/cost/view.npay_manage` | ogada `/billing/easy-pay` | ✅
+- 7-6.본인부담금 청구대장 리포트 | L07_M05 | `/share/cost/view.cost_master_report` | ogada `/billing/reports/charges` | ✅
+- 7-7.본인부담금 입금대장 리포트 | L07_M06 | `/share/cost/view.cost_deposit_report` | ogada `/billing/reports/deposits` | ✅
+- 7-8.본인부담금 수납대장 리포트 | L07_M07 | `/share/cost/view.cost_receipt_report` | ogada `/billing/reports/receipts` | ✅
+- 7-9.본인부담금 수납,환불내역 | L07_M10 | `/share/cost/view.cost_receipt_apply_yearly` | ogada `/billing/reports/refunds` | ✅
+
+## 8-6 위원회/보호자 회의록 demo 필드 (확인)
+- title: 8-6.회의록(운영위원회,보호자)
+- pamcode: L08_M05
+- view: `/share/staff/view.staff_meeting`
+- ogada: `/staff/committee-meetings` + 3-type tab + draft/finalize + export `@0342076`/`@3ae8098` ✅ FULL
+
+## 109 vs 107 leaf 정리 (가정)
+- 마케팅 「109항목」= 107 operational leaf + 2 삭제예정/주석(8-11 질향상노력·demo noready)

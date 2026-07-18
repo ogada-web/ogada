@@ -33,7 +33,7 @@
 	<script src="/assets/ui-custom.js?20260318" type="text/javascript"></script>
 
 	<link href="/assets/common.css?20260514" rel="stylesheet" type="text/css" />
-	<script src="/assets/common.js?20260324234" type="text/javascript"></script>
+	<script src="/assets/common.js?20260629" type="text/javascript"></script>
 
 <!-- 상단 메인메뉴 항목 -->
 	<script src="/assets/top-nav-item-V2.js?20260428" type="text/javascript"></script>
@@ -204,13 +204,13 @@
 			</li>
 			<li class="nav-menu-item nav-dropdown" nav-no="10" >
 				<a>기관평가</a>
-				<a href="/new.ez?PGID=guide-E100&tmp=1782390212#tab0" class="direct-link" hit-id="49000">현황</a>
+				<a href="/new.ez?PGID=guide-E100&tmp=1784333424#tab0" class="direct-link" hit-id="49000">현황</a>
 			</li>
 
 			<li class="nav-menu-divider"></li>
 		</ul><!-- #nav-menu -->
 		<div class="nav-tail d-flex align-items-center">
-						
+									
 			<a class="ui-button btn-remote mr-2">원격지원</a>
 			<!-- <a class="ui-button btn-remote-mac mr-2" dev>원격-Mac</a> -->
 			<a class="ui-button btn-power" href="javascript:log_out()" style=""><svg class="icon"><use xlink:href="#icon-power"></use></svg></a>
@@ -278,7 +278,7 @@
 						
 			<!-- <li class="small_title ">이지케어</li> -->
 			<li>
-								<a class="nav-link popup-icon mt-5" style="padding:5px;background:#D6E9FC;color:#3269C8;font-weight: bold;" href="javascript:;" onclick="window.open('/page/landing/common/review.html', 'ezc-review', 'width=800, height=1000');" hit-id="3221">사용후기</a>
+								<a class="nav-link popup-icon mt-5" style="padding:5px;background:#D6E9FC;color:#3269C8;font-weight: bold;" href="javascript:;" onclick="window.open('/landing/?page=review_v1', 'ezc-review', 'width=900, height=1200');" hit-id="3221">사용후기</a>
 				<a class="nav-link " href="javascript:;" onclick="window.open('/page/landing/common/charge.202310.html', 'ezc-charge', 'width=800, height=1000');" hit-id="3222" style="padding:5px">월 이용요금<span></span></a>
 				
 				<div class="grid">
@@ -983,7 +983,7 @@ function ageGroup(age){
 		<div id="tabs-schedule-s100-01" style="display:flex;">
 			<div class="grid">
 				<form class="grid-search size-sm">
-					<input type="hidden" name="Ym" value="2026-06" />
+					<input type="hidden" name="Ym" value="2026-07" />
 					<!-- <ul class="label d-flex">
 						<li>
 							<em>명단</em>
@@ -1021,7 +1021,7 @@ function ageGroup(age){
 		<div id="tabs-schedule-s100-02" style="display:flex;">
 			<div class="grid">
 				<form class="grid-search size-sm">
-					<input type="hidden" name="Ym" value="2026-06"/>
+					<input type="hidden" name="Ym" value="2026-07"/>
 					<!-- <ul class="label d-flex">
 						<li>
 							<em>명단</em>
@@ -1052,7 +1052,7 @@ function ageGroup(age){
 </div>
 
 <script>
-	var Ym = "2026-06";
+	var Ym = "2026-07";
 
 	ui_tab_YmBar("#YmBar-schedule-s100", Ym, function(gYm, query){
 		Ym = gYm;

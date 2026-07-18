@@ -33,7 +33,7 @@
 	<script src="/assets/ui-custom.js?20260318" type="text/javascript"></script>
 
 	<link href="/assets/common.css?20260514" rel="stylesheet" type="text/css" />
-	<script src="/assets/common.js?20260324234" type="text/javascript"></script>
+	<script src="/assets/common.js?20260629" type="text/javascript"></script>
 
 <!-- 상단 메인메뉴 항목 -->
 	<script src="/assets/top-nav-item-V2.js?20260428" type="text/javascript"></script>
@@ -204,13 +204,13 @@
 			</li>
 			<li class="nav-menu-item nav-dropdown" nav-no="10" >
 				<a>기관평가</a>
-				<a href="/new.ez?PGID=guide-E100&tmp=1782164448#tab0" class="direct-link" hit-id="49000">현황</a>
+				<a href="/new.ez?PGID=guide-E100&tmp=1784217706#tab0" class="direct-link" hit-id="49000">현황</a>
 			</li>
 
 			<li class="nav-menu-divider"></li>
 		</ul><!-- #nav-menu -->
 		<div class="nav-tail d-flex align-items-center">
-						
+									
 			<a class="ui-button btn-remote mr-2">원격지원</a>
 			<!-- <a class="ui-button btn-remote-mac mr-2" dev>원격-Mac</a> -->
 			<a class="ui-button btn-power" href="javascript:log_out()" style=""><svg class="icon"><use xlink:href="#icon-power"></use></svg></a>
@@ -278,7 +278,7 @@
 						
 			<!-- <li class="small_title ">이지케어</li> -->
 			<li>
-								<a class="nav-link popup-icon mt-5" style="padding:5px;background:#D6E9FC;color:#3269C8;font-weight: bold;" href="javascript:;" onclick="window.open('/page/landing/common/review.html', 'ezc-review', 'width=800, height=1000');" hit-id="3221">사용후기</a>
+								<a class="nav-link popup-icon mt-5" style="padding:5px;background:#D6E9FC;color:#3269C8;font-weight: bold;" href="javascript:;" onclick="window.open('/landing/?page=review_v1', 'ezc-review', 'width=900, height=1200');" hit-id="3221">사용후기</a>
 				<a class="nav-link " href="javascript:;" onclick="window.open('/page/landing/common/charge.202310.html', 'ezc-charge', 'width=800, height=1000');" hit-id="3222" style="padding:5px">월 이용요금<span></span></a>
 				
 				<div class="grid">
@@ -805,6 +805,7 @@ function ageGroup(age){
 			}
 
 			$("#btn-carmatch-open.blink").mouseover(function(){
+				//if($.cookie("carematch-sidebar-bubble")!="hide") $("#carematch-sidebar-bubble").show();
 				$("#carematch-sidebar-bubble").show();
 
 				// // 사이드바 버튼 hover 시 띄운 알림말풍선 2초 후 사라지도록
@@ -812,6 +813,9 @@ function ageGroup(age){
 				// bubbleClose = setTimeout(function() {
 				// 	$("#carematch-sidebar-bubble").fadeOut();
 				// }, 2000);
+			});
+			$("#btn-carmatch-open.blink").mouseleave(function(){
+				$("#carematch-sidebar-bubble").fadeOut();				
 			});
 
 			 // 구인구직 알림 말풍선 (#carematch-sidebar-bubble) 에 hover 시 timeout 을 취소한다
@@ -1094,6 +1098,12 @@ function ageGroup(age){
 				<li>
 					<label><input type="checkbox" name="listSet" value="perform"/>업무수행일지</label>
 				</li>
+				<li>
+					<label><input type="checkbox" name="listSet" value="ltm_sDate"/>급여개시일</label>
+				</li>
+				<li>
+					<label><input type="checkbox" name="listSet" value="ltm_eDate"/>급여종료일</label>
+				</li>
 			</ul>
 					</div>
 
@@ -1104,7 +1114,7 @@ function ageGroup(age){
 				<b style="color:red;text-decoration:underline">가급적 전월 조회는 최소 1회 이상</b> 하셔야 합니다.<br><br>
 			</div>
 			<div class="d-flex">
-				<input type="text" class="date" id="ltm_Ym" value="2026-06" style="width:70px; padding-left:5px;"/> 월				
+				<input type="text" class="date" id="ltm_Ym" value="2026-07" style="width:70px; padding-left:5px;"/> 월				
 				<button type="button" class="ui-button ml-2" id="btn-ltm-patient">이력(자료) 조회하기</button> 
 				<button type="button" class="ui-button ml-auto" dialog-close>취소</button>
 			</div>
@@ -1422,7 +1432,7 @@ span.btn-patient-mody-state:hover{cursor:pointer; background:#ff9900 !important;
 						</div>
 						<div class="d-flex justify-content-between size-sm mt-1">
 							<button class="ui-button size-sm" onclick="ScheduleManager(pCode,'')" ><svg class="icon"><use xlink:href="#icon-calendar"></use></svg> 일정관리</button>
-							<button class="ui-button size-sm" onclick="pop_service_total(pCode,'2026-06')"><svg class="icon"><use xlink:href="#icon-calendar"></use></svg> 일정집계</button>
+							<button class="ui-button size-sm" onclick="pop_service_total(pCode,'2026-07')"><svg class="icon"><use xlink:href="#icon-calendar"></use></svg> 일정집계</button>
 						</div>
 						</div>
 					</div>
@@ -2439,7 +2449,7 @@ span.btn-patient-mody-state:hover{cursor:pointer; background:#ff9900 !important;
 </div>
 </div>
 <script>
-	var Ym = "2026-06",
+	var Ym = "2026-07",
 		set_tab_03 = false;
 	
 	$("#sel_Ym", "#tabs-unit-pInfo-03").text(Ym);
@@ -2870,7 +2880,7 @@ span.btn-patient-mody-state:hover{cursor:pointer; background:#ff9900 !important;
 		</div>
 	</div>
 			<div id="banner_CMS">
-				<div class="cms_copyright" hit-id="47340">😃 이지케어 이용기관 중 <span style="color:blue">1610개(14.5%) 기관은</span> 이미 <span style="color:blue">본인부담금</span>을 <span style="color:blue">자동이체로 수납</span>하고 있습니다. </div>
+				<div class="cms_copyright" hit-id="47330">😃 전기, 휴대폰 요금처럼 <span style="color:blue">본인부담금</span>도 <span style="color:blue">자동이체로 수납</span> 처리할 수 있습니다.  </div>
 				</div>
 	</div>
 
@@ -3962,7 +3972,7 @@ span.btn-patient-mody-state:hover{cursor:pointer; background:#ff9900 !important;
 <script type="text/javascript" src="/schedule_plan/calendar.js?20210526"></script>
 
 <script>
-	var Ym = "2026-06",
+	var Ym = "2026-07",
 		calendar = new Calendar("#pInfo-calendar", {"btmMargin":270, "maxHeight":450}),
 		base_data = {
 			"dateInfo":{},
@@ -4107,7 +4117,7 @@ span.btn-patient-mody-state:hover{cursor:pointer; background:#ff9900 !important;
 		}
 
 		/* 오늘날짜 체크 [ */
-		var today = "2026-06-23"
+		var today = "2026-07-17"
 		$("#pInfo-calendar table td[sDate='"+today+"']").addClass("today");
 		/*] 오늘날짜 체크 */
 
@@ -5277,7 +5287,7 @@ span.btn-patient-mody-state:hover{cursor:pointer; background:#ff9900 !important;
 	});
 	
 </script></div>
-		<div id="tabs-unit-pInfo-11"><!-- <link rel="stylesheet" href="/page/patient/unit-pInfo-tab-11-css.css?1782164448"> -->
+		<div id="tabs-unit-pInfo-11"><!-- <link rel="stylesheet" href="/page/patient/unit-pInfo-tab-11-css.css?1784217706"> -->
 
 
 <style>
@@ -5520,7 +5530,7 @@ span.btn-patient-mody-state:hover{cursor:pointer; background:#ff9900 !important;
 				$("#eval-body .eval-year ul li:not(:first-child)").remove();
 
 				//인지기능검사 준비 중 출력위해 강제 추가
-									data.unshift( { rDate:"2026-06-23", kind:"inji" } );
+									data.unshift( { rDate:"2026-07-17", kind:"inji" } );
 				
 				$.each(data, function(idx, val){
 					var year = val.rDate.substring(0,4),
@@ -7229,10 +7239,10 @@ div[id*='dialog-patient-pInfo'] .label .ui-group.size-sm .ui-button{font-size:11
 </div>
 <!-- ▲▲ div#wrap end -->
 <script type="text/javascript" src="/js2/plugin/jquery.ui.monthpicker.js"></script>
-<script type="text/javascript" src="/assets/gw_module_new.js?1782164448"></script>
+<script type="text/javascript" src="/assets/gw_module_new.js?1784217706"></script>
 <link rel="stylesheet" type="text/css" href="/assets/gw_module_new.css?20210517" />
 
-<script type="text/javascript" src="/assets/smartaib4pc/smart.scrap.js?1782164448"></script>
+<script type="text/javascript" src="/assets/smartaib4pc/smart.scrap.js?1784217706"></script>
 
 <script type="text/javascript">
 	let pCode_to_set_pInfo;//24.03.29
@@ -7540,7 +7550,9 @@ div[id*='dialog-patient-pInfo'] .label .ui-group.size-sm .ui-button{font-size:11
 						else return  "class='grid-number' style='color:black'";
 					}
 			}},
-			{ label:'업무수행일지', name:'perform', align:'center', width:'80', hidden:true, excel:13 }
+			{ label:'업무수행일지', name:'perform', align:'center', width:'80', hidden:true, excel:13 },
+			{ label:'급여개시일', name:'ltm_sDate', align:'center', width:'80', hidden:true, excel:13 },
+			{ label:'급여종료일', name:'ltm_eDate', align:'center', width:'80', hidden:true, excel:13 }
         ],		
 		loadComplete:function(d){
 			//console.log(d);
@@ -8341,8 +8353,8 @@ div[id*='dialog-patient-pInfo'] .label .ui-group.size-sm .ui-button{font-size:11
 		$('.scrap_button').trigger('click');
 		let gongdan_pRate=[], gongdan_dLevel=[], gridOpened = false; gongdan_contract_whole=[];
 		
-		let module_ym = "2026-06".replace(/-/g, '');// 전월 계산
-		let b_month = new Date("2026-06");
+		let module_ym = "2026-07".replace(/-/g, '');// 전월 계산
+		let b_month = new Date("2026-07");
 		b_month.setMonth(b_month.getMonth() - 1);// 전전월 계산
 		let bb_month = new Date(b_month);
 		bb_month.setMonth(bb_month.getMonth() - 1);	// 연월 형식으로 변환

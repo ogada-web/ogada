@@ -1,0 +1,91 @@
+BNK-764 ogada git 실측 6–8h (2026-07-15T15:57:00Z)
+=========================================================================
+직전 동일 rotation: BNK-756(2026-07-15T10:54Z) → ~5.05h 후
+직전 사이클: BNK-763(2026-07-15T15:20:19Z·엔젤·롱텀·규제 4–6h) → ~37분 후
+
+[GIT HEAD 실측]
+FE develop  5843845  feat(v1.2.1/G-RFID): wire care-provision SMS batch dispatch UI
+  - WT CLEAN · origin/test=5843845 · ahead 0 = FULLY SYNCED (BNK-763 ahead 2 → tester FF 흡수)
+  - BNK-763 `@5843845` HEAD zero advance (동일 SHA) · 상태 변경 = FE ahead/test 2→0 뿐
+BE  develop  27de3a3  fix(v2/QA-B95): parse nested JSON unicode bootstrap blocker payloads
+  - WT CLEAN · origin/test=598d108 · ahead 666 (BNK-763 666 carry)
+  - BNK-763 `@27de3a3` HEAD zero advance (동일 SHA)
+
+merge gate 666 (FE 0 FULLY SYNCED + BE 666 · BE-heavy → tester FF · 신규 마이그레이션 0)
+  ※ BNK-763 668(FE 2+BE 666) → 764 666(FE 0+BE 666) : FE 2-commit tester FF 흡수 반영
+
+[KPI 실측 — 전량 carry (HEAD zero advance)]
+Route         133  (<Route\b 132 [App.jsx 단일] + <Routes> 1)  ※ 테스트 제외 grep
+Page.jsx      106  (*Page.jsx ls-files · 테스트 제외)
+FE test       525  (.test.js 216 + .test.jsx 309)
+BE Test file  294  (*Test.java 293 + *Tests.java 1)
+BE @Test      2216 (grep -rE '@Test' *.java)
+Flyway        V1–V196 (max 196)
+accounting route 1 · payroll route 5 · reports route 29
+
+[모듈 커버리지 실측 재산정 — competitorModuleCoverage.js]
+배열 엔트리(^\s*\{ id:)         = 29
+배열 원소 coverage 합            = 28.25
+calculateWeightedModuleCoverage = 28.25 / 29 = 0.97413... = 97.41%
+  비-1.0: id=2 0.85 · id=8 0.85 · id=10 0.85 · id=12 0.7  (4개)
+  1.0   : 나머지 25개 (id=1-10 연계기록지 포함 — coverage-0 진성갭 0건)
+  ※ raw `grep -oE 'coverage: [0-9.]+'`=30 은 line5 JSDoc 주석 `* coverage: 1 = ✅ 완전`
+    誤계수(BNK-752 오염 패턴). 배열 파싱으로 배제 → 가정 번복 0 (BNK-759/760 CONFIRMED 유지).
+
+=========================================================================
+[메뉴/필드/워크플로 블록] id=1-10 연계기록지 (carefor 1-10) FULL-STACK anchor 재크로스워크
+ — 장기 최대 진성갭(coverage 0)이 BNK-749 closure 이후 defense-in-depth 까지 확정된 것을 git 실측으로 정본화
+
+BE Flyway 3-단계:
+  V194__client_linkage_records_carefor_1_10.sql
+    - 신규 테이블 · enum/nonempty/dispatch-pair/temporal CHECK · Tenant FK(branch_org·client_org·created_by_org) · actor backstop
+  V195__client_linkage_records_org_branch_report_index.sql
+    - `idx_client_linkage_records_org_branch_status_created`
+      ON (organization_id, branch_id, record_status, created_at DESC)
+    - GET /api/v1/clients/linkage-records 핫패스 bound (조직 파티션 full-scan 방지)
+  V196__client_linkage_records_integrity_g_linkage.sql (defense-in-depth · DBA 2026-07-15)
+    1. target_institution ≤200 / summary ≤5000 길이 CHECK (raw SQL 초과 적재 차단 · V193/V159 패턴)
+    2. (org, branch_id, client_id) → clients 3-way FK (client.branch ≠ record.branch 불일치 차단 · V164/V136/V5 패턴)
+    3. trg_*_set_org_branch 트리거 (client_id 로부터 org/branch 자동 복사 · raw SQL 우회 DB 차단 · V164/V180 패턴)
+    4. 퇴소 purge backing index (DATA_RETENTION §3 연계기록지 cohort 스캔)
+
+BE Controller 2개:
+  ClientLinkageRecordController        @RequestMapping /api/v1/clients/{clientId}/linkage-records
+    - 이용자별 CRUD + dispatch (list·get·create·update·dispatch·delete)
+  ClientLinkageRecordReportController  @RequestMapping /api/v1/clients/linkage-records
+    - @PreAuthorize hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER')
+    - GET params: branchId · status(ALL|DRAFT|DISPATCHED) · linkageType(ALL|HOSPITAL|HOME_CARE|TRANSFER) · q · page · size
+
+BE 도메인 상수 (ClientLinkageRecordSupport):
+  TYPE   = HOSPITAL · HOME_CARE · TRANSFER   (BusinessRuleException 「HOSPITAL, HOME_CARE, TRANSFER 만 허용」)
+  STATUS = DRAFT → DISPATCHED (dispatch 1-way · edit 는 DRAFT 만 허용)
+  TARGET_INSTITUTION_MAX_LENGTH = 200 · SUMMARY_MAX_LENGTH = 5000 (@Size + service requireMaxLength)
+
+FE services.js 7-함수:
+  fetchClientLinkageRecordsApi (list) · fetchClientLinkageRecordsReportApi (org report)
+  · fetchClientLinkageRecordApi (get) · createClientLinkageRecordApi · updateClientLinkageRecordApi
+  · dispatchClientLinkageRecordApi · deleteClientLinkageRecordApi
+
+FE Route/Page/Panel:
+  Route `/clients/linkage-records`  (App.jsx · org-wide report)
+  Page  ClientLinkageRecordsReportPage.jsx (필터 recordStatus·linkageType·q · submit-only apply · UXD-179)
+  Panel ClientLinkageRecordsReportPanel.jsx · ClientLinkageRecordsPanel.jsx (ClientDetail tab 「연계기록지」)
+
+판정: coverage 1.0 (BNK-749 closure · BNK-753/759/760 CONFIRMED) · KPI promote 0 (이미 1.0)
+차별화: 3-way FK + 트리거 + 길이 CHECK 로 raw-SQL 다계층 방어 =
+        경쟁 4종(케어포·이지케어·엔젤·롱텀) 공개 자료에서 연계기록지 무결성 방어 노출 「미확인」 → ogada 우위 narrative.
+
+=========================================================================
+[신규 증거 URL 재실측] NHIS #44 이동서비스비 (기존 URL 재실측)
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · 498차 zero drift (BNK-763 497차 → +1)
+  verbatim grep -oE : 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+  ↔ ogada TransportServiceFeeService RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY 6-link (id=2 0.85) · 상수 재조정 불요
+  snapshot: nhis_jo44_live_bnk764.html (disk IDENTICAL)
+
+=========================================================================
+[요약]
+신규 snapshot 2 (ogada_git_remeasure_bnk764.txt 주력 · nhis_jo44_live_bnk764.html)
+덮어쓰기 0 · zero drift IDENTICAL 1(NHIS 498차) · 가정 번복 0 · closure 0(BNK-749/756 착지 정본화) · 신규 core 갭 0
+상태 변경 1 (FE ahead/test 2→0 FULLY SYNCED · tester FF 흡수) · KPI 변경 1 (merge gate 668→666)
+per-cycle minimum 4종 충족 (증거 URL 재실측 · 메뉴/필드/워크플로 블록 · MATRIX @HEAD 행 · BENCHMARK §소절)

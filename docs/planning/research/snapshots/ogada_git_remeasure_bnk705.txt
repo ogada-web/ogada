@@ -1,0 +1,62 @@
+# BNK-705 ogada git 실측 — 2026-07-14T00:14Z
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-14T00:14:00Z -->
+
+rotation: 교차검증·갭 우선순위 8h+
+직전: BNK-704 (2026-07-13T23:08Z) → ~66분 후 재측정
+방법: `git -C src/{frontend,backend} rev-parse develop` + `git status -sb` + `rev-list --count origin/{develop,test}..develop` + `rg '<Route\b' src/App.jsx` + `find src -name '*.test.js*' | wc -l` + `rg -c '@Test\b' src/test/java`
+
+================================================================================
+## FE (src/frontend)
+================================================================================
+- HEAD: @a6255a0 `fix(v1.2.1/QA-B372): send blank shuttle addresses as empty string on PATCH` (2026-07-13T23:55:33Z)
+- WT: **CLEAN**
+- origin/develop..develop: **0** (pushed) — develop=origin/develop=origin/test=@a6255a0
+- new since BNK-704 (@654b2c6): **+1 commit**
+  - a6255a0 QA-B372: FE `toVehicleShuttleAddressPayload` blank→"" empty string PATCH alignment · +47/−8 · 4 file(vehicles.js + vehicles.test.js + VehiclesPage.jsx + VehiclesPage.test.jsx)
+
+## FE KPI
+| 항목 | BNK-704 | BNK-705 |
+|---|---|---|
+| `<Route ` in src/App.jsx | 124 | **124** |
+| src/pages/*Page.jsx | 98 | **98** |
+| src/pages/*Page.test.jsx | 87 | **87** |
+| find src -name '*.test.js*' | 507 | **507** |
+| rg -c '(it\|test)\(' src '**/*.test.js*' | 2447 | **2448** (+1 VehiclesPage.test.jsx it 블록) |
+
+================================================================================
+## BE (src/backend)
+================================================================================
+- HEAD: @edfb55d `fix(v2/QA-B95): expose V190 transport shuttle integrity readiness` (2026-07-13T23:43:08Z)
+- WT: **CLEAN**
+- origin/develop..develop: **0** (pushed) — develop=origin/develop=@edfb55d
+- origin/test..develop: **615** (BNK-704 614 → +1 edfb55d)
+- new since BNK-704 (@bd43f59): **+1 commit**
+  - edfb55d QA-B95: HealthController + LiveE2eController + LiveE2eProbeResponse `v190TransportShuttleIntegrity` 노출 + HealthControllerTest + LiveE2eControllerTest 확장 · +15 · 5 file(신규 @Test 0, 기존 assertion 확장)
+
+## BE KPI
+| 항목 | BNK-704 | BNK-705 |
+|---|---|---|
+| Flyway V*.sql (max) | V190 | **V190** carry |
+| `@Test` total (rg -c) | 2077 | **2077** carry |
+| test file (rg -l @Test) | 279 | **279** carry |
+| merge residual (origin/test..develop) | 614 | **615** (+1 edfb55d) |
+
+================================================================================
+## Combined
+================================================================================
+| 항목 | BNK-704 | BNK-705 |
+|---|---|---|
+| FE HEAD | @654b2c6 | **@a6255a0** |
+| BE HEAD | @bd43f59 | **@edfb55d** |
+| FE ahead vs test | 1 | **0** (SYNCED) |
+| BE ahead vs test | 614 | **615** |
+| merge residual | 615 | **615** (all BE-only) |
+| 모듈 커버 % | 84.31% (24.45/29) | **84.31%** carry |
+| WT (FE/BE) | CLEAN/CLEAN | **CLEAN/CLEAN** |
+
+================================================================================
+## Round-trip 검증 · rules §6 준수
+================================================================================
+- FE: WT CLEAN·develop=origin/develop → **rules §6 push 누락 위험 0** carry
+- BE: WT CLEAN·develop=origin/develop → **rules §6 push 누락 위험 0** carry
+- **tester FF residual 615**(BE-only): 선행 commit 불필요 · 최우선 회귀 시나리오 「셔틀 주소 blank→branch fallback · V190 CHECK CONSTRAINT · `/live-e2e` `v190TransportShuttleIntegrity` 플래그」

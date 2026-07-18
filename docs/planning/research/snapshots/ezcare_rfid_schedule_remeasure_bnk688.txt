@@ -1,0 +1,105 @@
+# 이지케어 역공학 2–4h (BNK-688 · 2026-06-27T07:05Z)
+# rotation: /new.ez demo · schedule-rfid PGID · duplicate-schedule PGID · FAQ RFID/이중일정 · 가격·도입 재실측 · ogada `@2e35298`/`@fbd403c`
+
+## 1. ogada git 실측 (확인 · companion: `ogada_git_remeasure_bnk688.txt`)
+
+| 축 | BNK-687 | BNK-688 | delta |
+|---|---|---|---|
+| FE HEAD | `@db15b566` WT CLEAN | `@2e35298` WT CLEAN | +1 (`test: lock template fallback alerts on safety pages`) |
+| BE HEAD | `@72924bb` WT **DIRTY 1M** | `@fbd403c` WT **CLEAN** | +1 routing test absorb · DIRTY→CLEAN ✅ |
+| merge gate | 883 | **884** | +2 cross-stream |
+| Route·page·FE test·BE @Test | 123·97·500·2043 | 123·97·500·**2042** | BE @Test −1 (routing test in-file) |
+| 모듈 | 84.31% | 84.31% | = (M11/M12 sole P1 lever) |
+
+## 2. ★★★ [신규 evidence URL] 데모 PGID schedule-rfid — RFID comp_01~09 + 2-엑셀 워크플로 (확인)
+
+**URL**: `https://ezcare.easyms.co.kr/new.ez?PGID=schedule-rfid` (데모 `POST /page/login.php` oCode=DEMO → 세션)
+**조사일**: 2026-06-27 · HTTP 200 · **150,498B** · md5 **`e4922cfcda0a4efecd5d9d0b2a40fb9e`**
+**스냅샷**: `ezcare_new_ez_pgid_schedule-rfid.html` (demo-fetch 갱신)
+
+### 2-1. top-nav 모듈 (menuNo 4 「RFID점검」·`ezcare_top_nav_v2.js`)
+
+| menuNo | menuName | leaf |
+|---|---|---|
+| 4 | RFID점검 | `RFID태그 내역 ↔ 공단계획 비교` → PGID **schedule-rfid** · `일정확정` → PGID **schedule-fix** |
+
+전체 데모 셸: **10 modules · 148 leaf · 59 unique PGID** (`ezcare_menu_catalog.json` 갱신)
+
+### 2-2. 화면 탭·2-엑셀 업로드 워크플로 (verbatim)
+
+- H4: 「4. 공단 계획↔태그 비교」
+- 탭: `#tag_all` 공단 계획↔태그 비교 결과 · `#tag_time` · `#tag_worker` · `#send_tag_time` 급여제공내역(요양)전송
+- 업로드: 「계획일정 엑셀파일」+ 「RFID전송내역 엑셀파일」→ 「공단 계획 ↔ RFID 새로 가져오기」
+- 안내: 「본 프로그램은 공단 엑셀 ①계획일정 ②RFID 전송내역을 대입하여 아래의 항목을 검출」
+- **비실시간**: 「태그내역 비교는 실시간이 아닙니다. 공단 엑셀파일을 업로드한 시점을 기준」
+
+### 2-3. `grid_match_list` colModel — 처리상태 comp_01~09 (확인)
+
+| comp | UI 라벨 (detail radio) | groupHeader |
+|---|---|---|
+| comp_01 | 모두 안함 | 태그안함 |
+| comp_03 | 종료만 안함 | 태그안함 |
+| comp_04 | 시작 | 태그(인정) 시간차 |
+| comp_05 | 종료 | 태그(인정) 시간차 |
+| comp_06 | 인정시간 (30분) | 태그(인정) 시간차 |
+| comp_08 | 직접 입력 | — |
+| comp_07 | 급여제공자 다름 | — |
+| comp_09 | 계획없음 | — |
+
+기타 그리드 컬럼: `plan_sDate`·`plan_pName`·`plan_pGroup`·`plan_sName`(이중일정 2건 감지 시 「270분초과」/「공단 엑셀파일 오류 검토(2건이상 감지)」) · `plan_sTime`~`tag_eTime` · `plan_terM`/`tag_terM`/`terM_dif` · `plan_wName1`/`tag_wName` · `comp_tag_list` 비교내역 N건
+엑셀 다운로드: `"{Ym} 계획&태그 비교 결과"` · hidden 케어항목 분(신체·인지·가사 등) excel 컬럼
+
+### 2-4. ogada G21 cross-walk (확인 · `@2e35298`)
+
+| ezCare | ogada |
+|---|---|
+| comp_01~09 9-flag | `VISIT_RFID_DIFF_CODES` + `POST /api/v1/visits/imports/rfid/compare` |
+| 2-엑셀 업로드(계획+RFID) | multipart `planFile`·`rfidFile` |
+| 급여제공내역 문자발송 탭 | `message_kind=13` ✅ · RFID trigger 자동발송 **0** (FAQ 21589 사후 수동) |
+
+판정: **RFID diff matrix FULL PARITY** · ezCare = 엑셀 배치 비교 + 문자 사후 발송 · ogada = in-app API compare + year-gate/regulatory chain 우위 carry
+
+## 3. ★★ [신규 evidence URL] duplicate-schedule PGID — explicit 404 (상태 변경 · 확인)
+
+**URL**: `https://ezcare.easyms.co.kr/new.ez?PGID=duplicate-schedule` (데모 세션)
+**조사일**: 2026-06-27 · HTTP 200 shell · **93,398B** · md5 **`95be2eaf5c43301282d8b97da4898700`**
+**스냅샷**: `ezcare_new_ez_pgid_duplicate-schedule.html`
+
+본문 verbatim: 「Page Not Found」「페이지를 찾을 수 없습니다.」「주소가 변경 혹은 삭제되어 요청하신 페이지를 찾을 수 없습니다.」
+
+**상태 이력**: BNK-545~648 = job-post **negative misroute** shell(93,401B·faqDir=duplicate) → **BNK-688 explicit 404** = PGID **폐기/미배포** 확정(가정: 이중일정 검출 UI 통합·Channel.io 도움말 `8d304da8`로 이관)
+
+**ogada**: `/visits` 이중 방문·`G-NHIS-SCHEDULE-IMPORT` plan/billing dual import = in-app 유지 · ezCare duplicate PGID 폐기와 무관
+
+## 4. ★★ FAQ triplet 재실측 — RFID·이중일정·엑셀 (확인)
+
+| rowid | hit | md5 bnk688 | 주제 | 메뉴 경로 (verbatim) |
+|---|---|---|---|---|
+| 21589 | (view) | `a5e2e48c` 15,971B | RFID 전송분 문자 | `4.RFID점검` > `4.1 RFID↔공단계획` > `급여제공내역(요양)전송` · 5-step 일괄/개별 문자 |
+| 21298 | (view) | `56f80ab6` 16,644B | 이중일정 plan/billing | `3.방문일정` > `공단일정(자동/엑셀) 이지케어에 올리기` > `계획일정 가져오기`(월초) / `청구일정 가져오기`(청구 후) |
+| 21844 | — | `d0aa760c` 14,474B | 엑셀 마스킹 | **zero drift** BNK-648~688 stable |
+
+FAQ list: `/help/faq.ez` 200·80,057B·md5 `fd1fc431` · 233 rowid · 누적 hit **3,637,353**(+24 vs BNK-686 3,637,329)
+
+## 5. ★ 도입·가격 재실측 (VALUE drift + zero drift)
+
+| URL | 지표 | BNK-663/672 | BNK-688 | 판정 |
+|---|---|---|---|---|
+| `/?PG=e01` | 이용시설 | 9,356 | **9,357** | **+1 VALUE DRIFT** |
+| `/?PG=e01` | 점유율 | 53.50% | **53.50%** | = (9,357/17,489) |
+| `/?PG=e01` | 전국재가 | 17,489 | 17,489 | zero drift |
+| `/new/ezCare_fnc.html` | 도입 헤더 | 9,359 | **9,360** | **+1** (마케팅 헤더) |
+| `/new/ezCare_charge.html` | 셋팅/구독 | 33,000/25,850/55,000 | 동일 verbatim | zero drift VALUE |
+| home `/` | mCnt[1] | 9,286 | **9,287** | **+1** counter |
+
+**가정**: fnc 헤더 9,360 vs e01 상세 9,357 = **마케팅 헤더·상세 집계 비동기**(3개 차이·원인 미확인)
+
+## 6. planner 제안 (ogada MVP)
+
+1. **G21 RFID** — comp_01~09 parity 유지 · FAQ 21589 자동 trigger는 P3 out-of-scope carry
+2. **G-NHIS-SCHEDULE-IMPORT** — FAQ 21298 plan/billing dual steps BE guidance ✅ · FE wire P2 carry
+3. **duplicate-schedule PGID 폐기** — ogada 이중일정은 `/visits` + import guidance로 커버 · 별도 404-style PGID 불필요
+4. **마케팅** — 도입 카운터 e01 **9,357** 기준 갱신 권장 (BNK-663 9,356 → +1 반등)
+5. **M11/M12** — sole P1 lever(+6.90pp) · ezCare FAQ finance 37.6% demand-signal carry
+
+(per-cycle minimum 4종 충족 · 신규 evidence URL 2건 · 메뉴/필드/워크플로 블록 §2–§4)

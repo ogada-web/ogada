@@ -1,0 +1,81 @@
+BNK-815 엔젤·롱텀·규제 역공학 4–6h — 규제 백본 재실측 + silverangel 부가서비스 10-catalog × ogada scope cross-map
+조사일: 2026-07-17T02:17:00Z
+ogada baseline: FE @1c84f0f (WT CLEAN·ahead origin/test 0 FULLY SYNCED) / BE @bc41ed9 (WT CLEAN·ahead 716 vs 598d108)
+
+======================================================================
+[1] 규제 백본 7-URL live 재실측 (HTTP·SIZE·md5 ↔ 직전 canonical)
+======================================================================
+URL                                                          HTTP  SIZE(B)   md5(short)  판정
+NHIS #44 이동서비스비(joHistoryContent SEQ=1637)              200   7,572     c886ff1f    IDENTICAL(BNK-814 547차→+1 548차)
+silverangel system_feature.do                                200   45,601    c9507190    IDENTICAL(BNK-807/811 canonical)
+silverangel daycareEssentialWork.do                          200   131,664   c79c1be3    IDENTICAL
+silverangel extraService.do                                  200   81,637    f9c5d877    IDENTICAL(CMS 부가서비스 정본)
+silverangel feeService.do                                    200   44,513    eab352a8    IDENTICAL
+silverangel home(/)                                          200   101,220   66382835    IDENTICAL(BNK-811 notice 221573 top·zero drift)
+longterm 502(npeb502m01)                                     200   89,162    56185735    shell IDENTICAL
+longterm 610(npeb610m01)                                     200   88,399    fad1ce61    shell IDENTICAL
+lcms home(/)                                                 200   50,554    6c0d22b4    type2 canonical(BNK-795/796 LOCK·BNK-811 type1→type2 carousel 회전)
+law247 admRulSeq=2100000271110(raw)                          200   78,450    c64453aa    Time= cachebuster DRIFT
+law247 strip 'Time=[0-9]+'                                   -     -         a913639a    semantic IDENTICAL(BNK-807/759 고시 제2025-247호·efYd=20260101)
+
+→ zero drift IDENTICAL 6(NHIS·silverangel system_feature/essential/extraService/feeService/home) + longterm shell 2 + semantic 1(law247) + carousel 1(lcms type2)
+→ 실체 콘텐츠 변동 0 · 가정 번복 0 · 신규 진성갭 0
+
+======================================================================
+[2] NHIS #44 러-1~4 verbatim ↔ ogada Transport 6-link 상수 (재교차검증·SUPERIOR)
+======================================================================
+NHIS 본문 grep -oE (nhis_jo44_live_bnk815.html):
+  러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+ogada src @bc41ed9 실측:
+  TransportDistanceBand.java   RU_1 "러-1 (5km 미만)" 5 · RU_2 "러-2 (5~10km)" 10 · RU_3 "러-3 (10~20km)" 20 · RU_4 "러-4 (20km 이상)" 999
+  TransportServiceFeeParityCatalog.java  ONE_WAY_RATIO=0.5 · ONE_WAY_RATIO_LABEL="편도 비율" · ONE_PER_DAY_LABEL="1일 1회"
+  TransportServiceFeeService.java   baseAmount × ONE_WAY_RATIO setScale(0, HALF_UP)
+→ 상수 재조정 불요 · id=2 0.85 carry · 경쟁 4종(케어포 시설 셸 M2 leaf 0·이지케어 로그인-gated 미확인·엔젤 ERP system_feature 이동서비스 0-hit·롱텀 원천만) 유일 full-stack 이동서비스비 레이어
+
+======================================================================
+[3] ★ 신규 분석 블록 — silverangel extraService.do 부가서비스 10-catalog × ogada scope cross-map
+     (silverangel_extraService_live_bnk815.html `f9c5d877` grep -oiF verbatim)
+======================================================================
+grep hit(전체 페이지·내비 포함): CMS 12 · VR 13 · 엔젤아이 7 · 쇼핑몰 6 · 굽은나무 5 · 명찰 5 · 전자결재 5 · 태블릿 4 · 보호자용 앱 3 · 챗봇 1 · IOT 1
+
+엔젤 부가서비스 항목            성격                        ogada 대응                                    판정
+-----------------------------  --------------------------  --------------------------------------------  ----------------------------
+① CMS(자동이체/가상계좌)        결제 SW                     /billing/cms CmsPaymentMethodCatalog 5-method  ogada SUPERSET(엔젤 3-method↔ogada 5)
+② 엔젤아이 AI 챗봇              외부 AI 서비스              (없음)                                        out-of-scope(외부 SaaS)
+③ 엔젤 VR                       하드웨어+콘텐츠             (없음)                                        out-of-scope(HW)
+④ 모바일(앱) 기록               직원 앱                     웹 반응형 기록(SPA)                            인접(P3「가정」)
+⑤ 보호자용 앱(굽은나무)         외부 앱 번들                guardian 포털+알림톡/SMS(J03 13-template)      대체 경로(SUPERSET breadth)
+⑥ 태블릿 기록                   HW 번들                     웹 반응형                                      인접(P3)
+⑦ 전자결재                      결재 워크플로               (없음·M8 인접)                                out-of-scope(별도 도메인)
+⑧ 고위험군 명찰(RFID/NFC)       HW 태그                     transport roster/attendance(태그 인접)         인접(P3)
+⑨ IOT와의 연계                  HW 연동                     (없음)                                        out-of-scope(HW)
+⑩ 쇼핑몰                        커머스                      (없음)                                        out-of-scope(커머스)
+
+→ 부가서비스 10종 中 SW core 진성갭 후보 0건: ①CMS는 ogada SUPERSET·⑤보호자앱은 J03 알림 breadth로 대체 커버
+  ·②③⑥⑦⑧⑨⑩은 HW/외부앱/커머스/별도도메인 = out-of-scope(과대구축 금지)
+→ 엔젤 GTM 전략 = SW 코어 + HW/외부앱/커머스 번들(엔젤아이·VR·명찰·IOT·쇼핑몰) → 하드웨어 판매 연계형
+→ ogada 차별화 = 순수 웹 SaaS · 이동서비스비 full-stack · 연계기록지 full-stack · KPI promote 0
+
+======================================================================
+[4] silverangel 4-doc 법정서식 SMS 발송 ↔ ogada 4/4 SUPERSET (재확인)
+======================================================================
+extraService verbatim: 가정통신문(4) · 급여비용 명세서(2) · 급여제공 기록지(1) · 납부확인서(1)
+↔ ogada: id=1-5 가정통신문 1.0 · id=10 kind22 급여명세서 SMS 0.85 · id=1-10 급여제공 기록지=연계기록지 1.0 · id=7 납부확인서 1.0
+→ 「엔젤에서만 가능」 마케팅 문구 부정확 = ogada 4-doc SUPERSET(BNK-767 재확인·격상 0)
+
+======================================================================
+[5] silverangel dual-view (ERP vs 법정 안내) 재확인
+======================================================================
+system_feature.do(ERP)         : 이동서비스 0 · 배차 0 · GPS 0 · 차량 0 · 연계 9(전량 내부 모듈 상호참조) · 기능회복 1
+daycareEssentialWork.do(법정)  : 이동서비스 6 · 동승 2 · 수칙 8 · 기능회복 6 · 지표 4 · 주야간 82
+→ ERP 제품에는 이동서비스/배차 UI 미노출 vs 법정 안내에는 이동서비스 수칙 존재
+  = 엔젤 ERP는 이동서비스 배차/GPS 미지원(법정 의무만 문서 안내) ↔ ogada TransportController 9-route+NHIS #44 6-link 유일 full-stack
+→ 평가 dual-numbering carry: 공단 지표27=기능회복 ≠ 필수업무 일련27=가족과의 소통(G17 FULL-STACK CLOSED·BNK-779)
+
+======================================================================
+per-cycle minimum 충족
+======================================================================
+· 신규 증거 URL: 7-URL 재실측(NHIS 548차·lcms type2 carousel 회전 변동 기록) ✔
+· 메뉴/필드/워크플로 1블록: [3] extraService 부가서비스 10-catalog × ogada scope cross-map(신규) ✔
+· COMPETITOR_MATRIX 1행 @HEAD(FE @1c84f0f/BE @bc41ed9) 갱신 ✔
+· BENCHMARK_REPORT §815 소절 ✔

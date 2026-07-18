@@ -1,0 +1,142 @@
+BNK-670 — ogada git 실측 (6–8h rotation) · 2026-06-26T19:45:00Z (KST 04:45)
+================================================================================
+owner=BNK audience=PLN
+
+[1] ogada baseline git 실측 (확인 · git -C src/{backend,frontend} rev-parse develop)
+--------------------------------------------------------------------------------
+FE develop : 5636508d15e4380be006dcd11b74ba9f6f38c541  (@5636508)
+  - feat(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): consume guidance recovery keyword notes
+  - 2026-06-26 18:43:44 +0000 · co-author Cursor agent
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 268 vs origin/test=ab4de83
+  - BNK-669 동일 SHA → HEAD zero advance 1-cycle
+
+BE develop : 331f24b80bb3728dc7d07c7d359bd28a5f4e8917  (@331f24b)
+  - feat(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): expose recovery keyword notes in guidance API
+  - 2026-06-26 17:59:30 +0000 · co-author Cursor agent
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 593 vs origin/test=598d108
+  - BNK-669 동일 SHA → HEAD zero advance 1-cycle
+
+merge gate : 861 (FE 268 + BE 593) — carry vs BNK-669 861 (양쪽 WT CLEAN → tester FF 가속 가능)
+
+[2] KPI 실측 (8/8축 BNK-666/667 IDENTICAL · BNK-669 FE test +4 가정 번복)
+--------------------------------------------------------------------------------
+Route        : 118  (`grep -rE "<Route\b" src --include='*.jsx' --include='*.tsx' --include='*.js' --exclude-dir=__tests__ --exclude='*.test.*'` = 118 hits in src/App.jsx + `<Routes>`=1 → 119 total)
+page         : 93   (`find src -name '*Page.jsx'` git tracked)
+migration    : V1–V183 (max V183 = `client_care_plan_forms_branch_plan_year_index`)
+BE Test 파일 : 274  (`find src/test -name '*Test.java'`=273 + `*Tests.java`=1)
+BE @Test     : 1996 (`git grep -hoE '@Test\b' develop -- '*.java' | wc -l` · @ParameterizedTest 3 별도)
+                BNK-669 1996 carry · zero advance (commit 5636508는 FE only)
+FE test 파일 : 485  (`find src -name '*.test.js'`=199 + `*.test.jsx`=286 · `.test.ts*`=0)
+                ★ BNK-669 "489(203+286, +4 vs 485)" 가정 번복 — 실측 199+286=485 (zero change)
+                근거: `git show 5636508 --stat` 4-file modification only — 신규 .test.js 0건
+                       (VisitNhisImportPanel.test.jsx +21·visits.test.js +20 modify·visits.js+VisitNhisImportPanel.jsx 본체)
+모듈 커버리지: 80.86% (23.45/29 · competitorModuleCoverage.js · BNK-665~669 carry)
+               ✅완전 21 · △부분 3(2 이동 0.85·8 직원근태 0.85·10 부가 0.75) · ❌갭 5(1-5·1-10·6·11·12)
+reports route: 28 (App.jsx `grep -cE 'path=.*report'` = 28 · BNK-664~669 carry)
+
+Δ vs BNK-669 : FE/BE HEAD zero advance · merge gate 861 carry · FE test 489→**485**(가정 번복)
+              · 나머지 7축 IDENTICAL
+
+[3] ★★ NHIS #44 이동서비스비 러-1~4 — 413차 zero drift IDENTICAL (확인 · 기존 URL 재실측)
+--------------------------------------------------------------------------------
+GET https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  → HTTP 200 · size 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · time 0.19s
+  → disk docs/planning/research/snapshots/nhis_jo44_live_bnk649.html md5 c886ff1f · 7,572B IDENTICAL
+  → BNK-669 412차 → +1 (413차 zero drift) · BNK-668 transient shell 번복 후 2-cycle stable
+  verbatim 불변(grep 실측):
+    · 러-1 · 러-4 (구간 4종 carry)
+    · 「편도」 1 hit · 「50%」 1 hit · 「1일 1회만」 1 hit
+    · 「이동서비스비용은 ... 수급자가 부담하지 아니한다」 verbatim
+    · 「이동서비스 일지를 작성하여 보관하여야 한다」 verbatim
+  (별지 제22호는 NHIS #44 본문이 아닌 MOHW126 별지 form·`TransportServiceFeeParityCatalog` 본문 comment 인용 carry)
+
+[4] ★★★ G-NHIS-IMPORT-ERROR-STATUS-SURFACE 13-stage chain — stage9 BE+FE wire 정합 git-grounded
+    (확인 · 메뉴/필드/워크플로 블록 · BNK→COD chain 역대 최장)
+--------------------------------------------------------------------------------
+BE `@331f24b` (BNK-667 stage8):
+  src/main/java/com/ogada/backend/visits/api/NhisVisitScheduleImportRecoveryKeywordNote.java
+    record NhisVisitScheduleImportRecoveryKeywordNote(String code, List<String> keywords)
+  src/main/java/com/ogada/backend/visits/domain/NhisVisitScheduleImportGuidance.java
+    ERROR_RECOVERY_KEYWORD_NOTES = List.of(
+      UNMATCHED   → ["UNMATCHED)이면", "지점 필터", "수급자 검색"]
+      PARTIAL     → ["부분", "PARTIAL", "건너뜀", "미매칭", "수동", "반영 0건", "outcomeStatus=PARTIAL"]
+      ALL_SKIPPED → ["건너뜀", "outcomeStatus", "재다운로드"]
+      EMPTY       → ["재다운로드", "outcomeStatus", "엑셀"]
+    )
+    → toResponse() exposes errorRecoveryKeywordNotes in NhisVisitScheduleImportGuidanceResponse
+  test/.../NhisVisitScheduleImportRecoveryKeywordAlignmentTest.java (+52L NEW)
+  test/.../VisitControllerRoutingTest.java (+8L · routing)
+  test/.../NhisVisitScheduleImportGuidanceTest.java (+11L · contract)
+
+FE `@5636508` (BNK-669 stage9):
+  src/config/visits.js resolveVisitImportRecoveryKeywords(outcomeCode, keywordNotes)
+    · `keywordNotes` (API contract) 우선 — 4-key code match
+    · static VISIT_IMPORT_RECOVERY_KEYWORDS (4-key UNMATCHED/PARTIAL/ALL_SKIPPED/EMPTY) fallback
+    · resolveVisitImportRecoverySteps(outcomeCode, steps, keywordNotes) propagates keywordNotes
+  src/components/visits/VisitNhisImportPanel.jsx
+    · `const recoveryKeywordNotes = guidance?.errorRecoveryKeywordNotes;`
+    · resolveVisitImportRecoverySteps(...result.outcomeStatus..., guidance.errorRecoverySteps, recoveryKeywordNotes)
+    · apiError 경로도 동일 keywordNotes 전파
+  src/config/visits.test.js +20L
+    "prefers guidance API errorRecoveryKeywordNotes over static keywords" 회귀 lock
+  src/components/visits/VisitNhisImportPanel.test.jsx +21L
+    guidance mock에 errorRecoveryKeywordNotes 주입·정합 확인
+
+판정: BE→FE wire 정합 완전 (BE record schema = FE consumer key 동일·4-state 모두 keyword coverage)
+      → 운영자가 import 결과 UNMATCHED·PARTIAL·ALL_SKIPPED·EMPTY 각각에 대해
+         FE 정적 mirror 가 BE copy 변경에 drift 하지 않도록 server-authoritative consume.
+경쟁 4종(케어포·이지케어·엔젤·롱텀) 중 **유일** in-app 실시간 복구 loop full-stack carry —
+ezCare FAQ 21845 사후·수동 공지 vs ogada 13-stage in-app 우위 deepen.
+
+13-stage BNK→COD chain progression (역대 최장):
+  candidate(BNK-655) → stage1 BE 분류(BNK-656) → stage2 FE inline guidance(BNK-656)
+  → controller routing test(BNK-658) → keep-unmatched-rows(BNK-659) → deep-link(BNK-659)
+  → git-grounded(BNK-660) → stage4 FE branch persistence(BNK-661) → service-layer test lock(BNK-661)
+  → stage5 FE stale branch reset + BE guidance highlight(BNK-663)
+  → stage6 BE counter integrity validation(BNK-664)
+  → stage7 FE recovery keyword ↔ BE 7-step 정합(BNK-665)
+  → stage8 BE guidance API errorRecoveryKeywordNotes expose(BNK-667/@331f24b)
+  → **stage9 FE consume errorRecoveryKeywordNotes(BNK-669/@5636508)**
+  → **stage9-lock BE+FE wire 정합 git-grounded(BNK-670 · 본 cycle 분석)**
+
+[5] ★ BNK-669 가정 번복 — FE test 489 → 485 (KPI 정정)
+--------------------------------------------------------------------------------
+BNK-669 §669-5: "FE test 489(203+286, +4 vs 485)"
+실측 (BNK-670):
+  find src -name '*.test.js'  | wc -l = 199
+  find src -name '*.test.jsx' | wc -l = 286
+  합계                                = **485** (zero change vs BNK-666/667/668)
+
+원인 분석:
+  git show 5636508 --stat (BNK-669 신규 commit)
+    src/components/visits/VisitNhisImportPanel.jsx     | 10 +++++--   (본체)
+    src/components/visits/VisitNhisImportPanel.test.jsx| 21 ++++++++++++++- (modify 기존)
+    src/config/visits.js                               | 31 +++++++++++++++++++--- (본체)
+    src/config/visits.test.js                          | 20 ++++++++++++ (modify 기존)
+  → 신규 test 파일 0건 · 기존 2-test 파일 modify only · 합계 485 carry.
+
+정정: BNK-669 매트릭스·BENCHMARK_REPORT §669-5 「FE test 489(+4)」 → 「FE test 485 carry」.
+       BNK-666 baseline 「FE test 485(199+286)」 이 옳음 · BNK-669 +4 over-count.
+
+[6] per-cycle minimum (4종 충족)
+--------------------------------------------------------------------------------
+1. 기존 URL 재실측 + 변동 기록 : NHIS #44 413차 zero drift IDENTICAL (live HTTP 200 7,572B=disk c886ff1f)
+2. 메뉴/필드/워크플로 1블록     : [4] G-NHIS 13-stage stage9-lock BE+FE wire 정합 (errorRecoveryKeywordNotes 4-key map)
+3. COMPETITOR_MATRIX 1행+ @HEAD : BNK-670 row @5636508/@331f24b (carry · 가정 번복 1)
+4. BENCHMARK_REPORT §소절        : §670
+
+가정 번복 1 (BNK-669 FE test 489 → 485) · 신규 core 갭 0 · closure 0 · 상태 변경 0(HEAD zero advance)
+KPI 변경 1 (FE test 489→485 정정) · 재실측 zero drift 1(NHIS #44 413차)
+신규 snapshot 1건(본 파일) · 덮어쓰기 0건 · npm test 미실행(vitest 동시 실행 가능성·rules §5 준수)
+
+[7] 다음 액션
+--------------------------------------------------------------------------------
+→ tester  : merge 861 (FE 268 + BE 593 · 양쪽 WT CLEAN · FF 가속 가능 · 2-cycle carry)
+→ planner : baseline FE @5636508 carry (HEAD zero advance) · BE @331f24b carry · merge gate 861
+            · G-NHIS 13-stage chain stage9-lock BE+FE wire 정합 git-grounded → 운영 copy 단일 source(BE) 우위 carry
+            · FE test 485 carry (BNK-669 489 가정 번복) — KPI 매트릭스 정정 권장
+            · `G-MEAL-PLAN-TEMPLATE` P2/P3 carry (BNK-668/669 lcms·extraService carousel)
+            · M11/M12 P1 BPO 어댑터 demand-signal carry (변동 0)
+→ BNK next: 케어포 0–2h 또는 이지케어 2–4h (4-rotation cycle 다음 슬롯)

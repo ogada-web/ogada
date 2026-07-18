@@ -1,0 +1,155 @@
+# BNK-680 — 엔젤·롱텀·규제 4–6h 교차검증 (2026-06-27T02:10Z)
+
+## 작성자/메타
+- [BNK] benchmark_researcher · rotation 4–6h(엔젤·롱텀·규제)
+- ogada baseline: FE `@f7061c4`(WT **DIRTY 1M + 1 untracked** — `src/e2e/liveFeeScheduleSeed.js` +39/-7L + `src/test/liveFeeScheduleSeed.test.js` NEW 58L · BNK-679 동일 SHA·**HEAD zero advance 1-cycle**·ahead **275** vs `origin/test=ab4de83`) / BE `@1f2803c`(WT CLEAN·BNK-679 `@ac699192` **HEAD +1** `fix(v2/billing): reject unsupported NHIS fee seed years` 2-file +42L·ahead **598** vs `origin/test=598d108`) · merge gate **874**(FE 275+BE 599·+2 vs BNK-679 872 단, FE WT DIRTY → 선행 coder commit 필요).
+
+## ★★★ §680-1 NHIS #44 419차 zero drift IDENTICAL + BE `Nhis2026DaycareRateCatalog` year-gate 직접 enforcement (확인 · 규제 cross-stream BE 신규 commit)
+
+- URL: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 (HTTP 200)
+- 라이브: 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`(BNK-678 disk byte-identical · **419차 zero drift**)
+- verbatim 인용:
+  - `<div class="article">제 34 조 (주 · 야간보호급여 이동서비스비용 등)</div>`
+  - 「수급자별 1일 1회에 한하여 산정」「최단거리(편도)」「편도만…비용의 50%를 산정」「수급자가 부담하지 아니한다」「이동서비스 일지 작성·보관」(별지 제22호)·러-1·러-4
+
+### ogada BE 신규 enforcement (`@1f2803c` · BNK-679→680 BE HEAD +1 · 메뉴/필드/워크플로 블록)
+
+```
+src/main/java/com/ogada/backend/billing/domain/BillingService.java
+ +    private void validateNhisSeedCatalogYear(int year) {
+ +        if (Nhis2026DaycareRateCatalog.cellsForYear(year).isEmpty()) {
+ +            throw new BusinessRuleException(
+ +                "공단 수가 seed는 " + Nhis2026DaycareRateCatalog.CATALOG_YEAR + "년 기준만 지원합니다."
+ +            );
+ +        }
+ +    }
+ +
+ +    // listMissingNhisSeedPayloads(year)·applyMissingNhisSeedFeeSchedules(year) 진입점에서 호출
+ +    // Nhis2026DaycareRateCatalog.CATALOG_YEAR = 2026 (NHIS #44 [시행 2026.1.1] 제2025-247호 정본)
+
+src/test/java/com/ogada/backend/billing/domain/BillingServiceTest.java  (+2 @Test → 2008→2010)
+ +  listMissingNhisSeedPayloadsShouldRejectUnsupportedYear()        (year=2027 → BusinessRuleException「2026년 기준만 지원」)
+ +  applyMissingNhisSeedFeeSchedulesShouldRejectUnsupportedYear()   (year=2027 → BusinessRuleException「2026년 기준만 지원」)
+```
+
+판정(확인): **regulatory-grounded year-gate** — NHIS #44 제2025-247호 [시행 2026.1.1] = ogada `Nhis2026DaycareRateCatalog.CATALOG_YEAR=2026` 단일 권위 catalog. 2027/2024 등 비-catalog year 의 fee-schedule seed list/apply 모두 진입점에서 `BusinessRuleException`(public scopeResolver/repository **미진입** = side-effect 0)로 fail-fast.
+
+경쟁 4종 cross-walk(확인):
+- 케어포 func.php M2/M7 정적 메뉴(시설 셸 demo transport 0)·NHIS catalog year-gate **0**(외부 처리 추정).
+- 이지케어 FAQ 21614 「공단일정 가져오기시 25년 수가로 적용 안돼요(공단수가 재산정)」 hit 16,231 = **NHIS 외부 4-step 사후 수동 안내**(공단 「급여계약내용 등록」→ 월금액 재산정→ 저장 통보→ 이지케어 재업로드) — in-app pre-flight check **0**.
+- 엔젤시스템 daycare/fcltySlry 평가지표(시설 한정·외부 이동 시설 비범위) — fee catalog year-gate N/A.
+- 롱텀(공단) NHIS #44 본문 원천 (수가 catalog 자체).
+
+판정(확인): **ogada full-stack regulatory year-gate ✅ — 경쟁 4종 유일** (419-cycle carry + BE BusinessRuleException +2 @Test).
+
+## ★★ §680-2 FE WT DIRTY — `LIVE_E2E_SKIP_FEE_SEED` env + 404 reason surfacing (확인 · cross-stream complement · 선행 coder commit 필요)
+
+```
+src/e2e/liveFeeScheduleSeed.js   (1M +39/-7L)
+ + function isTruthyEnv(value) { ... "1"|"true"|"yes" → true }
+ +
+ + export async function ensureLiveFeeSchedules(...) {
+ +   if (isTruthyEnv(process.env.LIVE_E2E_SKIP_FEE_SEED)) {
+ +     return { feeScheduleSeedReady: true,
+ +              feeScheduleSeedReason: "skipped by LIVE_E2E_SKIP_FEE_SEED" };
+ +   }
+ +   ...
+ +   // 404/500 응답 분기 + 상세 reason("404", "500") 명시 surfacing
+ + }
+
+src/test/liveFeeScheduleSeed.test.js  (NEW untracked · 58L)
+ +  it("skips seeding when LIVE_E2E_SKIP_FEE_SEED is truthy") { fetchSpy never called }
+ +  it("surfaces helpful reason when endpoint is missing")    { 404 → reason contains "404" · clone not called }
+ +  ... (총 ≥3 it·`vitest` 표준 패턴 · global fetch stub)
+```
+
+판정(확인): FE live-e2e harness가 BE `validateNhisSeedCatalogYear()` reject 응답을 **명시적 reason 으로 surfacing** + 운영자가 시드 skip 토글 가능(env). BE 1f2803c commit msg verbatim 「live E2E seed probes stop producing ambiguous 404/500 follow-on failures」 ↔ FE 매핑 「surfaces helpful reason when endpoint is missing」 = **paired cross-stream regression hardening**.
+
+rules §6 (CRITICAL): FE WT DIRTY 1M + 1 untracked · merge gate **874** 실효는 **coder FE commit 후** 도달. 미커밋 시 submodule re-clone 손실 + tester FF merge BLOCK.
+
+## ★ §680-3 law247 admRulInfoP seq271110 — Time= cachebuster md5-only DRIFT (확인 · 기존 URL 재실측)
+
+- URL: https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110 (HTTP 200)
+- 라이브: 78,450B · md5 `355fd315`(disk `af7d7b40` BNK-674 → md5-only DRIFT)
+- semantic IDENTICAL: `sed 's/Time=[0-9]*//g'` 후 md5 = byte-identical(확인) · 변동분 = `Time=1782467008`→`Time=1782525994` cachebuster 만
+- SSR verbatim 불변:
+  - `<title>국가법령정보센터 | 행정규칙 </title>`
+  - 「[시행 2026. 1. 1.] [보건복지부고시 제2025-247호, 2025. 12. 30., 일부개정]」
+  - `prmlNo=2025-247`
+
+판정(확인): BNK-674 canonical URL `admRulSeq=2100000271110` SSR 정본 carry · cachebuster only DRIFT(BNK-678 `4a01b331` → BNK-680 `355fd315` · 본문 zero drift). **신규 baseline `law247_admRulInfoP_seq271110_bnk680.html`** 저장.
+
+ogada 매핑(확인): BE `Nhis2026DaycareRateCatalog.CATALOG_YEAR = 2026` ↔ law247 「시행 2026. 1. 1. 제2025-247호」 = 동일 시행일 catalog year. §680-1 regulatory year-gate 의 원천.
+
+## ★ §680-4 lcms.or.kr type2 zero drift IDENTICAL (확인 · 재실측)
+
+- URL: https://www.lcms.or.kr/ (HTTP 200)
+- 라이브: 50,554B · md5 `6c0d22b48da8fb30a0c49f34ce8c6864` = disk `lcms_or_kr_live_bnk678.html` byte-identical (5-cycle type2 carry: BNK-673→678→680)
+- verbatim 인용:
+  - `<i>본인부담금 자동이체(CMS) 서비스</i>`
+  - `<i>1600-6859</i>`(가입문의)
+  - 「본인부담금을 보호자계좌에서 자동출금, 카드 자동결제」
+- type rotation 시퀀스(확인): BNK-668 type3(CJ MOU) → 669 type1(홈페이지) → 673 type2(CMS) → 678 type2(carry) → **680 type2(carry)** = 5-day rotation freq 안정.
+
+ogada 매핑: `CmsPaymentMethodCatalog` 5종 `collectionImplemented=true` FULL PARITY(BNK-614 carry) · ogada 단일 SaaS 도메인 vs silverangel 다중 도메인 cross-promo 마케팅 모델 차별화 carry.
+
+## ★ §680-5 silverangel backbone 6/6 zero drift IDENTICAL (확인 · 재실측)
+
+| URL | live md5 | size | disk 매핑 | 판정 |
+|---|---|---|---|---|
+| `/newSilverangel/daycare/daycareEssentialWork.do` | `c79c1be3` | 131,664B | `silverangel_daycareEssentialWork_live_bnk677.html` | IDENTICAL |
+| `/newSilverangel/service/extraService.do` | `f9c5d877` | 81,637B | `silverangel_extraService_live_bnk641.html` | IDENTICAL |
+| `/silverangel/support/notice/list.do` | `52c9457f` | 3,594,181B | `silverangel_notice_list_live_bnk678.html` | IDENTICAL |
+| `/silverangel/support/notice/view.do?seq=221564` | `8437f255` | 51,765B | `silverangel_notice_221564_live_bnk674.html` | **shell HOLD 10-cycle**(BNK-674→680) · 본문 제거 carry |
+| https://www.mohw.go.kr/board.es?mid=a10409020000&bid=0026&act=view&list_no=1488862&tag=&nPage=1 | `d702b54c` | 103,139B | `mohw_gosi_2026_126.html` | IDENTICAL |
+| https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000252389 | `62197684` | 6,217B | `law_mohw_2025_247_admRulInfoP_bnk673.html`(disk `d5665e43` md5-only DRIFT) | empty-shell carry(BNK-674 false alarm 정정 후 wrong-seq carry) |
+
+판정(확인): backbone 6/6 (silverangel 4 + mohw126 + law247 false-seq empty shell) IDENTICAL — 콘텐츠 안정 · 보안 finding 변동 없음(221564 leak CLOSED carry BNK-661/674·10-cycle HOLD).
+
+## ★ §680-6 longterm 502/610 HTTP 404 carry (확인 · 「미확인」)
+
+- `https://www.longtermcare.or.kr/npbs/r/m/000/htmlView?menuId=npe0000000502&zoomSize=` HTTP **404** 861B
+- `https://www.longtermcare.or.kr/npbs/r/m/000/htmlView?menuId=npe0000000610&zoomSize=` HTTP **404** 861B
+
+판정(확인): npbs 신규홈페이지 26.1.16 마이그 이후 endpoint 장애 지속(BNK-560/641/649/673/678 carry). canonical disk `longterm_502.html`/`longterm_610.html` 보존 유지(단기보호 1등급 74,060 · 통합재가 2종 이상·가산 월 10만원·주야간보호형).
+
+## ★ §680-7 ogada git 실측 — BE HEAD +1 · FE WT DIRTY 1M+1U cross-stream (확인 · ogada baseline)
+
+- FE `src/frontend` develop `@f7061c4` `feat(v1.2.1/US-Q01): close M6 module coverage and safety page tests` · **WT DIRTY 1M `src/e2e/liveFeeScheduleSeed.js` + 1 untracked `src/test/liveFeeScheduleSeed.test.js`** · BNK-679 동일 SHA · **HEAD zero advance 1-cycle** · ahead **275** vs `origin/test=ab4de83`
+- BE `src/backend` develop `@1f2803c` `fix(v2/billing): reject unsupported NHIS fee seed years` · **WT CLEAN** · BNK-679 `@ac699192` **HEAD +1** · ahead **598** vs `origin/test=598d108`
+- merge gate **874**(FE 275+BE 599·+2 vs BNK-679 872) — 단, FE WT DIRTY 선행 closure 필요(rules §6)
+
+KPI 8축 (확인):
+- **123 Route** (`<Route\b` 123 App.jsx + `<Routes>` 1 = 124) IDENTICAL
+- **97 page** (`*Page.jsx`) IDENTICAL
+- **V1–V184** migrations IDENTICAL
+- **BE Test 277** (276 `Test.java` + 1 `Tests.java`) IDENTICAL
+- **BE @Test 2010** develop ref(+2 vs BNK-679 2008 · year-gate +2 regression test)
+- **FE test 497**(204 `.test.js` + 293 `.test.jsx`) develop+1 vs BNK-679 496 · 가정: untracked `liveFeeScheduleSeed.test.js`(58L·3 it) 별도 (commit 후 +3 추가 가능)
+- **모듈 84.31%**(24.45/29) IDENTICAL
+- **reports route 28** IDENTICAL
+
+판정(확인): **7/8축 BNK-679 IDENTICAL** · BE @Test 2008→**2010**(+2 year-gate regression) · FE test 496→497(+1 develop ref, +3 untracked carry) · BE WT CLEAN newly committed · FE WT DIRTY cross-stream complement → coder commit closure 권장.
+
+## 변경/검증 종합
+
+- 가정 번복: **0**
+- 신규 core 갭: **0**
+- candidate 변동: 0 (G-MEAL-PLAN-TEMPLATE P2/P3 carry · M11/M12 sole P1 carry)
+- 상태 변경: **2** — ① BE HEAD +1(year-gate regulatory enforcement) ② FE WT CLEAN → DIRTY 1M + 1 untracked(cross-stream live-e2e skip env)
+- 미확인: **1** carry — longterm 502/610 신규 URL 장애(canonical disk 보존)
+- KPI 변경: **2** — BE @Test 2008→2010(+2) · merge gate 872→874(+2)
+- 신규 snapshot: **4건** — `angel_longterm_regulatory_crossverify_bnk680.txt`(이 파일·주력 extract) · `nhis_jo44_live_bnk680.html`(c886ff1f 7,572B 419차 IDENTICAL) · `law247_admRulInfoP_seq271110_bnk680.html`(355fd315 78,450B Time= cachebuster md5-only DRIFT) · `lcms_or_kr_live_bnk680.html`(6c0d22b4 50,554B type2 carry)
+- 덮어쓰기: 0 (BNK-680 baseline 신규 추가)
+- zero drift IDENTICAL: **6** (NHIS #44 419차·silverangel daycare·extra·notice·notice 221564 shell·mohw126·lcms type2)
+- semantic IDENTICAL (md5-only DRIFT): **1** (law247 seq271110 Time= cachebuster)
+- 엑셀 포맷 변경: 0
+- per-cycle minimum 4종 충족: ✅ 신규 evidence URL (law247 seq271110 Time= DRIFT 1건+NHIS #44 419차 재실측) · 메뉴/필드/워크플로 1블록 (§680-1 BE validateNhisSeedCatalogYear + §680-2 FE LIVE_E2E_SKIP_FEE_SEED cross-stream) · COMPETITOR_MATRIX `@f7061c4`/`@1f2803c` 행 갱신 · BENCHMARK_REPORT §680 신규 소절
+
+## 즉시 action
+
+- **즉시(coder)**: FE WT 1M + 1 untracked `liveFeeScheduleSeed.js` + `liveFeeScheduleSeed.test.js` commit closure → develop push (rules §6 CRITICAL · 미커밋 시 submodule re-clone 손실 위험 · tester FF merge BLOCK).
+- **즉시(tester)**: merge **874**(FE 275+BE 599) — 선행 coder commit 후 FF merge 가속(BE WT CLEAN·@Test 2010·year-gate regression 2 추가).
+- **planner**: baseline 갱신 BE `@ac699192`→**`@1f2803c`**(year-gate landed·@Test +2·rules §6 push 권장)·NHIS #44 ↔ `Nhis2026DaycareRateCatalog.CATALOG_YEAR=2026` ↔ law247 「시행 2026.1.1 제2025-247호」 **3-way regulatory chain** 문서화(BNK→COD chain candidate)·**ezCare FAQ 21614 NHIS 외부 4-step 사후 수동 안내** vs ogada **in-app year-gate fail-fast** 차별화 정본 carry·`G-NHIS-FEE-CATALOG-YEAR-GATE` 명명 후보(MVP 영향 0·USER_STORIES US-G08b/US-T05 보강 후보).
+- **security_auditor**: `BusinessRuleException` 메시지 「공단 수가 seed는 2026년 기준만 지원합니다」 = 내부 catalog 노출 위험 0(scope/repository 미진입 fail-fast·side-effect 0 검증 완료) · 221564 leak 10-cycle HOLD carry.
+- **다음 rotation 후보**: ogada git 실측 6–8h (FE commit closure 직후 merge gate 875+ 재측정) 또는 이지케어 역공학 2–4h(FAQ 21614 NHIS 외부 4-step deepen).

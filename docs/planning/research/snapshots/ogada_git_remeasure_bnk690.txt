@@ -1,0 +1,40 @@
+BNK-690 ogada git 실측 — 케어포 역공학 0–2h companion · cross-stream +2 · QA-B355 CLOSURE · M6 stage8 metadata test lock
+조사일: 2026-06-27T09:05:00Z
+
+== HEAD ==
+FE `@6dcf7d14863a6dbdec46ad02786821d9c7ea55ea` WT CLEAN (ahead origin/test **283**)
+BE `@16e8ce0bd492d4d12a69bb8f4af2ab246456d723` WT CLEAN (ahead origin/test **605**)
+merge gate **888** (283+605 · BNK-689 886 → **+2**)
+
+== commits (BNK-689 → 690) ==
+FE `6dcf7d1` fix(v2/live-e2e): harden fee schedule seed preflight diagnostics
+  - liveFeeScheduleSeed.js +22/-1 · liveFeeScheduleSeed.test.js +21L
+  - fail-fast missing base URL · actionable network failure reasons · skip/auth/404/network regression lock
+  - **QA-B355 FE WT DIRTY 2-cycle persist → CLOSURE** (BNK-688 re-dirty → 689 persist → 690 absorbed)
+
+BE `16e8ce0` test: lock safety template catalog metadata
+  - SafetyCheckTemplateCatalogTest.java NEW +43L · **9 @Test**
+  - M6 narrative stage7(`81e3c11` field metadata) → **stage8 deep unit lock**
+
+== KPI ==
+| 축 | BNK-689 | BNK-690 | delta |
+|----|---------|---------|-------|
+| FE HEAD | 2e35298 | 6dcf7d1 | +1 |
+| BE HEAD | 81e3c11 | 16e8ce0 | +1 |
+| merge gate | 886 | 888 | +2 |
+| Route | 123 | 123 | 0 |
+| page | 98 | 97 | −1† |
+| BE @Test | 2043 | 2047 | +4 |
+| FE test | 500 | 500 carry | 0‡ |
+| 모듈 % | 84.31% | 84.31% | 0 |
+| FE WT | DIRTY 2M | CLEAN | closure |
+| BE WT | CLEAN | CLEAN | 0 |
+
+† page 98→97: non-test pages/*.jsx recount at `@6dcf7d1` — Route 123 unchanged · planner baseline page=97 채택
+‡ FE test 500: vitest run 미실행(동시실행 금지) · harness +3 it 추정 carry
+
+== billing Route grep `@6dcf7d1` (M7 1:1 재확인) ==
+/billing/payments · /billing/overdue · /billing/cms · /billing/easy-pay · /billing/reports/{charges,deposits,receipts,refunds,statistics} · /billing/calculator · /billing/cash-receipts · /billing/copay-rates · /billing/fee-schedules · /billing/imports/nhis · /billing/claims/:claimId · /billing (17)
+
+== payroll/accounting ==
+grep `path="/(payroll|accounting)` = 0 → M11/M12 sole P1 lever carry

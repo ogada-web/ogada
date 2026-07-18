@@ -1,0 +1,86 @@
+BNK-642 ogada git 실측 (6–8h rotation) — 2026-06-26T01:41:00Z (KST 10:41)
+================================================================================
+owner=BNK audience=PLN  |  근거: git -C src/{backend,frontend} 실측 + 오프라인 md5
+
+[A] develop HEAD 실측 (확인)
+--------------------------------------------------------------------------------
+FE develop : 8ed60cb536ffa70fffd6d39d1e46aa3d210dadcc
+             "fix: hide parity rules section when catalog empty"
+             2026-06-26 00:56:49 +0000  | WT CLEAN (porcelain 0)
+             ahead 250 vs origin/test=ab4de83
+BE develop : 3ae809855bc4e5818611616ff2e107a4f04bee1a
+             "feat(v2/G-STAFF-COMMITTEE-MEETING-LOG): add finalized meeting print export API"
+             2026-06-26 00:12:32 +0000  | WT DIRTY 5 (porcelain 5)
+             ahead 577 vs origin/test=598d108
+merge gate : 827 (BE 577 + FE 250) = BNK-641 IDENTICAL
+
+→ BNK-641(@8ed60cb/@3ae8098, gate 827)와 HEAD·gate 완전 동일 = HEAD zero advance 1-cycle.
+  (FE WT CLEAN·BE WT DIRTY 5 동일 carry. coder 미커밋 5-file 잔존.)
+
+[B] KPI 재산정 (확인 · 방법론: BNK 정본 grep 패턴)
+--------------------------------------------------------------------------------
+Route        : 118  (rg -c '<Route\b' src/App.jsx = 118 · <Routes> = 1 · path= 118)
+page         : 93   (src/pages/*Page.jsx 92 + RootRedirect)
+FE test      : 482  (.test.js 198 + .test.jsx 284)
+BE Test file : 272  (Test.java 271 + Tests.java 1)
+BE @Test     : 1971 (rg '@Test\b' -o)
+Flyway       : V1–V181 (181 migration 파일)
+reports route: 29  (rg -c 'reports' src/App.jsx — BNK-641 28 기록 대비 counting +1, 신규 route 0)
+→ Route·page·테스트·V 전부 BNK-641 IDENTICAL. (reports counting 29 vs 기록 28 = grep 라인 재집계, 신규 reports route 0.)
+
+[C] BE WT DIRTY 5 정밀 분석 — QA-B95 13th layer candidate (확인 · 미커밋)
+--------------------------------------------------------------------------------
+git diff --stat:
+  HealthController.java                       24 +++----------------  (-19)
+  LiveE2eController.java                        8 ++++++++           (+8)
+  LiveE2eOperationReadinessSupport.java        21 +++++++++++++++++++ (+21)
+  LiveE2eProbeResponse.java                     1 +                  (+1)
+  LiveE2eControllerTest.java                   15 +++++++++++++++     (+15)
+  5 files changed, 50 insertions(+), 19 deletions(-)
+
+성격: 리팩터 + probe surface 확장
+  1) HealthController private resolveG21SeedStatusDetail() + 3 상수 →
+     LiveE2eOperationReadinessSupport static 메서드/상수로 hoist (단일 source).
+  2) LiveE2eProbeResponse record 에 신규 필드 String g21SeedStatusDetail 추가.
+  3) LiveE2eController 가 3 분기(disabled·service-unavailable·applicable)에서
+     g21SeedStatusDetail 을 probe 응답에 주입.
+  4) LiveE2eControllerTest +15L 5-케이스 assertion lock.
+
+g21-seed status detail 값 (verbatim):
+  - "g21-seed=disabled"
+  - "g21-seed=service-unavailable"
+  - "g21-seed=error"
+  - "g21-seed=not-applicable"
+  - "g21-seed=branch-missing-or-inactive"
+  - "g21-seed=applicable visit-schedule=%s billing-visit-schedule=%s nhis-import=%s"
+        (각 present|missing)
+
+→ G21 seed = live-e2e 운영준비 시드: 방문일정(visit-schedule) + 청구방문일정
+  (billing-visit-schedule) + NHIS import(nhis-import) 3-요소 readiness 를
+  granular 하게 노출. QA-B95 cluster 의 13번째 layer 후보 (BNK-625~641 12-layer 누적).
+  coder 커밋 후 BE ahead +1 → merge gate 828 예상.
+
+[D] g21-seed ↔ NHIS #44 / 청구 import 워크플로 cross-walk (신규 블록 · 확인)
+--------------------------------------------------------------------------------
+g21-seed 3-요소가 ogada 의 NHIS 연동 운영 lifecycle 와 1:1:
+  visit-schedule         → 방문일정(/visit-schedules 계열) 시드
+  billing-visit-schedule → 청구용 방문일정(/billing/* 연계) 시드
+  nhis-import            → 공단 import 배치(NHIS #44 이동서비스비/청구 import)
+→ probe 가 "어느 시드가 missing 인지" present/missing 으로 분해 = 운영준비
+  실패 진단을 요소 단위로 actionable 하게 만든 QA-DX 패턴.
+  경쟁 4종(케어포·이지케어·엔젤·롱텀) 공개자료에 동등 live readiness probe 노출 0.
+
+[E] 백본 4종 오프라인 md5 zero-drift 재실측 (확인 · network-independent)
+--------------------------------------------------------------------------------
+  c886ff1fd1d5ca2cb5dc76d30adde8ba  nhis_jo44_live_bnk584.html      (NHIS #44 · 397차)
+  c79c1be37f947aab04ab7ba35cc7814d  silverangel_essential.html      (평가지표 #41-42/#27)
+  f9c5d8773ad0a481be6d7eb4b192d982  silverangel_extraService.html   (CMS 5-method)
+  6226e6eb92fdd25ed3e50842a5e8a00b  carefor_func.php                (107-leaf 정본)
+→ BNK-641 기록 md5 4종 전부 IDENTICAL. NHIS #44 397-cycle zero drift carry.
+
+[F] planner 제안 (요약)
+--------------------------------------------------------------------------------
+  P1 carry : M11/M12 결제·재무 BPO 어댑터 단일 lever (+6.9pp)
+  P2 carry : NHIS #44 parity 문구 「러-1~4·편도50%·1일1회·일지④」 v1.3-C 고정 (397차)
+  coder    : BE WT DIRTY 5 commit 우선 (QA-B95 13th layer g21-seed status detail) → gate 828
+  tester   : FF merge 827 (FE advance·BE dirty 선행 commit 권장)

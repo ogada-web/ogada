@@ -1,0 +1,86 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-06-26T18:45:00Z -->
+BNK-668 — 엔젤·롱텀·규제 역공학 4–6h (조사일 2026-06-26T18:45Z / KST 03:45)
+rotation: silverangel/lcms 공개 기능·CMS 부가·law.go.kr 이동서비스비 러-1~4 #44 재실측 · 2026 수가·단기보호·통합재가 고시 교차검증
+
+================================================================================
+1. ★★★ lcms.or.kr 로그인 배너 DRIFT — type2(본인부담 CMS) → type3(CJ프레시웨이 MOU 식단표) [신규 evidence]
+================================================================================
+GET https://www.lcms.or.kr/  HTTP 200
+  live  : 50,498B  md5 6b7502914de15aa75cabe04740dfca2c   (BNK-668)
+  disk  : 50,554B  md5 6c0d22b48da8fb30a0c49f34ce8c6864   (BNK-649 carry · −56B)
+판정: VALUE/CONTENT DRIFT (cachebuster 아님) → 덮어쓰기 없이 신규 파일 lcms_or_kr_live_bnk668.html 추가(prior bnk649 baseline 보존·비교용)
+
+배너 슬롯 회전 (login ad_cont 섹션):
+  [이전 disk type2] 본인부담금 자동이체(CMS) 서비스
+    "매월 발생하는 본인부담금을 보호자계좌에서 자동출금, 카드 자동결제,
+     가상계좌 입금 등의 방법으로 편리하게 납부할 수 있는 기능을 제공합니다."
+    → link: https://www.silverangel.kr/newSilverangel/service/extraService.do
+
+  [현재 live type3] 엔젤시스템 & CJ프레시웨이 업무협약(MOU) 체결  ★NEW
+    "CJ프레시웨이와 MOU 체결을 통해 노인식단 전문영양사가 작성한 식단표 활용"
+    "노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로 식단표 무상제공 및
+     CJ의 신선한 식재료 구매계약이 가능합니다."
+    → link: https://silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864&Tmp_thread=1&Tmp_depth=0
+
+해석(확인): 엔젤시스템 LCMS 로그인 배너가 「본인부담 CMS 자동이체」(결제 부가서비스)에서
+  「CJ프레시웨이 식단표/식재료 partnership」(급식·영양 부가서비스)으로 마케팅 전환.
+  엔젤시스템 부가서비스 라인업: ① 본인부담 CMS 자동수납 ② 식단표(영양사 작성)·식재료 발주 — 둘 다 carry.
+
+ogada 갭(가정): meal_records(식사 기록·실적)는 있으나 **주간 식단표(meal-plan template)·영양사 식단 생성·식단 게시** 기능은 약함.
+  → P2/P3 candidate G-MEAL-PLAN-TEMPLATE: in-app 주간/월간 식단표 작성·보호자 포털 게시·영양 메모.
+  외부 식재료 구매계약(CJ)은 ogada 범위 밖 → in-app 식단표·알레르기/식이제한 연동에 집중 권장.
+
+================================================================================
+2. ★★ silverangel 공개 backbone — zero drift IDENTICAL carry
+================================================================================
+GET https://www.silverangel.kr/silverangel/angelsystem/system_feature.do
+  HTTP 200 · 45,601B · md5 c950719098eecaf748bbdeea5deb93da = disk IDENTICAL (BNK-656 carry)
+  본문: 기능 8·보호자 13·투약 6·문자 3 hit (출결·RFID·투약·청구·보호자·문자 backbone 불변)
+GET https://www.silverangel.kr/silverangel/support/notice/list.do
+  HTTP 200 · 3,594,181B · md5 52c9457f4e34a7d3c49275e5bf337677 = disk IDENTICAL (BNK-656 carry)
+  (host 정정 재확인: www.silverangel.kr/silverangel/... · .co.kr 404)
+
+================================================================================
+3. ★★ NHIS #44 이동서비스비 러-1~4 — live shell content-empty (미확인 transient) · disk verbatim 보존
+================================================================================
+GET https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?...SEQ_CONTENTS=3281769
+  live  : HTTP 200 · 2,808B · md5 5675d51cf701c53c34675cd8006625ce
+          title "건강Law" 셸만 반환 · 조문 본문(러-1~4·편도50%·별지 제22호) **미렌더(0 hit)**
+  disk  : 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba — 러-1·러-4 verbatim 포함
+판정: live 가 content body 미렌더 셸(SEQ_CONTENTS 비-SSR 또는 세션/anti-bot 추정·「미확인」).
+  → disk canonical 보존(덮어쓰기 금지). 러-1~4 본문 = disk 7,572B `c886ff1f` 412차 carry.
+  ogada full-stack carry: TransportServiceFeeParityCatalog(RU_1~4·ONE_WAY_RATIO=0.5)+
+  TransportServiceFeeService(1일1회 guard)+NhisVisitScheduleImportOutcome 4-state — 경쟁 4종 유일.
+
+================================================================================
+4. ★ MOHW 2026-126 부당청구 신고포상금제 고시 — board-mid variant re-measure (body verbatim same)
+================================================================================
+GET mohw.go.kr/board.es?mid=a10409010000&bid=0026&act=view&list_no=1488862 (법률/시행령 board)
+  HTTP 200 · 103,127B · md5 bfd42a228cc407a0c5ff5b092c32aa72
+  disk  : 103,139B · md5 d702b54c... (mid=a10409020000 훈령/예규/고시 board · BNK-654 carry)
+  diff = board mid 경로/meta title(법률/시행령 vs 훈령/예규/고시)·조회수 counter only.
+  동일 list_no=1488862 「장기요양기관 부당청구 신고포상금제」 gosi body verbatim IDENTICAL → disk 보존.
+
+================================================================================
+5. ★ longterm(공단) 502 단기보호 — HTTP 302 redirect carry · disk stub 보존
+================================================================================
+GET longtermcare.or.kr/...moveBoardView?menuId=npe0000000502 → HTTP 302 · 0B
+  BNK-653/656 redirect/404 패턴 IDENTICAL · disk 327B XML stub 보존 · 「미확인」 carry.
+
+================================================================================
+ogada git 실측 (@HEAD develop)
+================================================================================
+FE develop @2cf47a8  "test: harden care service notes test isolation"  WT CLEAN  ahead 267 vs origin/test=ab4de83
+  (BNK-667 @2d9b9d3 → HEAD +1)
+BE develop @331f24b  "feat(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): expose recovery keyword notes in guidance API"
+  WT CLEAN  ahead 593 vs origin/test=598d108  (BNK-667 동일 SHA · HEAD zero advance 1-cycle)
+merge gate 860 (FE 267 + BE 593 · +1 FE-only vs BNK-667 859 · 양쪽 WT CLEAN → tester FF 가속 가능)
+
+per-cycle minimum 충족:
+  · 신규 증거 URL: lcms type3 CJ프레시웨이 MOU 배너 + angel_news_view.do?Tmp_idx=139864
+  · 메뉴/필드/워크플로 1블록: 엔젤시스템 부가서비스(CMS 수납 + 식단표/식재료) 라인업 + ogada G-MEAL-PLAN-TEMPLATE 갭
+  · COMPETITOR_MATRIX 1행+ @2cf47a8/@331f24b 갱신
+  · BENCHMARK_REPORT §668 신규 소절
+신규 snapshot 2건: lcms_or_kr_live_bnk668.html · angel_longterm_regulatory_crossverify_bnk668.txt
+덮어쓰기 0건 · zero drift IDENTICAL 2건(silverangel system_feature·notice list) · 가정 번복 0
+상태 변경 2(lcms 배너 type2→type3·ogada FE HEAD +1) · KPI 변경 1(merge gate 859→860)

@@ -1,0 +1,74 @@
+BNK-748 — ogada git 실측 6–8h (2026-07-15T05:46Z / KST 14:46)
+================================================================
+rotation: ogada git 실측 6–8h. 직전 동일 rotation BNK-744(2026-07-15T03:06Z) → ~2.7h 후.
+직전 사이클 BNK-747(2026-07-15T05:10Z·엔젤·롱텀·규제 4–6h) → ~36분 후.
+
+── git HEAD 실측 ────────────────────────────────────────────────
+FE develop  = 0448efa  fix(v1.2.1/QA-B95): require explicit opt-in for bootstrap-suppressed live readiness
+              (WT CLEAN · BNK-747 @2da7ead → +1 commit · ahead origin/test 0 = FULLY SYNCED · origin/test 도 0448efa 로 FF)
+BE develop  = d248916  feat(v2/US-V06): add monthly visit batch-unconfirm with challenge
+              (WT CLEAN · HEAD zero advance vs BNK-747 · ahead 653 vs origin/test=598d108)
+merge gate  = 653 (FE 0 FULLY SYNCED + BE 653 · BE-heavy · 양쪽 WT CLEAN → tester FF)
+
+git -C src/frontend log a772736..develop --oneline:
+  0448efa fix(v1.2.1/QA-B95): require explicit opt-in for bootstrap-suppressed live readiness   ← BNK-748 신규
+  2da7ead feat(v1.2.1/US-V06): wire monthly visit batch-unconfirm panel                          (BNK-747)
+  7d9dd70 fix(v1.2.1/QA-B95): surface effective gate bootstrap suppression                        (BNK-746)
+
+── KPI 실측 ─────────────────────────────────────────────────────
+Route        = 132  (App.jsx grep -oE '<Route\b' 131 + '<Routes>' 1)
+*Page.jsx    = 105  (git ls-tree develop)
+FE test      = 519  (214 .test.js + 305 .test.jsx · carry vs BNK-747 · in-place expand only)
+BE Test      = 290  (289 Test.java + 1 Tests.java · carry)
+BE @Test     = 2178 (grep -rE '@Test' src/test · same HEAD d248916 · BNK-747 header 2177 → recount +1)
+Flyway       = V1–V193 (max V193 · 신규 0)
+accounting route = 1 · payroll route = 5
+모듈 커버   = 93.62% (27.15/29 · competitorModuleCoverage.js · carry)
+  <1 entry 5: id=1-10 0 · id=2 0.85 · id=8 0.85 · id=10 0.75 · id=12 0.7
+  나머지 24 entry = 1.0 → 24.0 + 3.15 = 27.15 / 29 = 0.93620
+
+── ★★★ QA-B95 live-e2e default-safe 하드닝 (FE @0448efa · 워크플로 블록) ─
+FE src/e2e/liveConfig.js 신규:
+  function isLiveBootstrapSuppressionAllowed() {
+      process.env.LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION === "1" ||
+      process.env.LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION === "true"
+  }
+  const operationSuppressedByBootstrap =
+      operationReady && hasFreshState && isLiveEffectiveOperationSuppressedByBootstrap();
+  (operationSuppressedByBootstrap && !isLiveBootstrapSuppressionAllowed())
+    → "operation readiness suppressed by bootstrap blockers
+       (set LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1 to allow)"
+동작: live E2E 스위트가 bootstrap-suppressed operation readiness 를 기본 pass 로 취급하지 않음(fail-closed).
+      진단 목적일 때만 LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION 명시 opt-in 으로 우회.
+= BNK-745/746/747 BE 「suppressed bootstrap blocker 분리·prioritize」 3-cycle 흐름의 FE 폐루프.
+  BE @d248916 operation gate: bootstrap-only blocker 를 effective blocker 와 분리 노출(진단 가시성).
+경쟁 대비: carefor/ezcare/angel/longterm 어느 곳도 live smoke 스위트용 in-app operational
+          readiness gate(bootstrap vs effective 분리) 노출 「미확인」 = ogada QA/운영 규율 차별화.
+KPI promote 0 (coverage 무관 · 운영 신뢰성 lever).
+
+── US-V06 batch-unconfirm status carry (BE @d248916) ─────────────
+BE VisitService.BATCH_UNCONFIRM_CASCADE_IMPACTS 6-entry (BNK-747 CLOSED):
+  COPAY_INVOICE · BENEFIT_STATEMENT · PAYROLL_LEDGER · RETIREMENT_ACCRUAL
+  · NHIS_RECONCILIATION · STAFF_SCHEDULE_NOTIFY (SUPERSET 2축)
+GET/POST /visits/batch-unconfirm[-preview] · 4-digit challengeCode · cascade ack required.
+BE HEAD 무변동 → 기능 carry, KPI promote 0.
+
+── 규제 백본 재실측 (기존 URL) ───────────────────────────────────
+NHIS #44 이동서비스비 러-1~4:
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · **482차** (BNK-747 481차 → +1)
+  live=disk nhis_jo44_live_bnk748.html cmp IDENTICAL (zero drift)
+  grep -oE 검증: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+  ↔ ogada TransportServiceFeeService RU_1~4 · ONE_WAY_RATIO=0.5 · 1일1회 6-link chain (id=2 0.85) carry
+carefor LIVE 3-URL (daycare/func.php · demo-work.carefor.co.kr · loadPage.php): HTTP 000 (78-cycle+ 「미확인」·disk 6226e6eb 우선)
+
+── 검증 ────────────────────────────────────────────────────────
+npm test 미실행 (vitest 동시 실행 금지 · docs/qa/VITEST_CONCURRENCY.md) · mvn 전체 미실행.
+per-cycle minimum 4종 충족:
+  1) 재실측 URL 1+ = NHIS #44 482차 (+carefor LIVE 000 재확인)
+  2) 워크플로 블록 1+ = QA-B95 live-e2e default-safe 하드닝 (FE liveConfig.js 실측)
+  3) COMPETITOR_MATRIX 1행+ ogada @0448efa/@d248916 갱신
+  4) BENCHMARK_REPORT §748 소절 추가
+
+덮어쓰기 0 · 가정 번복 0 · closure 0 · 상태 변경 1(FE +1 FULLY SYNCED) · KPI 정정 1(BE @Test 2177→2178 recount).
+신규 snapshot 2: ogada_git_remeasure_bnk748.txt(주력) · nhis_jo44_live_bnk748.html

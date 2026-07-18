@@ -1,0 +1,8 @@
+BNK-825 carefor func.php LIVE probe (2026-07-17T09:02:00Z)
+URL: https://www.carefor.co.kr/daycare/func.php
+HTTP: 000 (curl exit 28 — Connection timed out after 28001ms)
+SIZE: 0
+md5: (empty file — fetch failed)
+
+carry: disk canonical carefor_func.php md5 6226e6eb 98,328B
+streak: 100-cycle+ LIVE timeout (BNK-824 99-cycle+ → +1)

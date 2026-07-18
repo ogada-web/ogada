@@ -1,0 +1,227 @@
+# BNK-685 — 엔젤·롱텀·규제 4–6h · cross-verify (2026-06-27T04:58Z)
+
+## 0. ogada git 실측 (작업자: BNK / 후속: tester FF merge 878)
+
+| 축 | BNK-684 | BNK-685 | delta |
+|---|---|---|---|
+| FE HEAD develop | `@58599c0`(WT DIRTY 2-cycle persist) | **`@dd5571d`**(WT **CLEAN** · BNK-684 → +1 commit) | +1 commit · ★★★ QA-B355 3-cycle dirty CLEAR |
+| BE HEAD develop | `@7a9ed71`(WT CLEAN) | `@7a9ed71`(WT CLEAN · HEAD zero advance 1-cycle) | carry |
+| FE ahead `origin/test` | 277 | **278** | +1 |
+| BE ahead `origin/test` | 600 | 600 | carry |
+| merge gate | 877 | **878** | +1 FE-only |
+| Route(`<Route\b`) | 123 | 123 | IDENTICAL |
+| page(`*Page.jsx`) | 97 | 97 | IDENTICAL |
+| Migration | V1–V185 | V1–V185 | IDENTICAL |
+| BE Test files | 277 + 1 Tests.java | 277 + 1 Tests.java | IDENTICAL |
+| BE `@Test\b` (`git grep -hoE '@Test\b' develop -- '*.java' \| wc -l`) | 2030 | 2030 | IDENTICAL |
+| FE test (`find src -name '*.test.{js,jsx}'`) | 497(204+293) | 497(204+293) | IDENTICAL |
+| 모듈 coverage | 84.31%(24.45/29 · id=6 ✅ · id=7 ✅) | 84.31% | IDENTICAL |
+| reports route | 28 | 28 | IDENTICAL |
+
+→ **8/9축 BNK-684 IDENTICAL** · 1축 KPI delta(merge gate 877→878 / FE +1 commit).
+→ **QA-B355 dirty-tree 3-cycle persist FINALLY CLEAR**(BNK-682 closure → 683 regression → 684 persist → **685 commit absorbed**).
+
+## 1. FE `@dd5571d` commit 본문 (확인 · ogada git 실측)
+
+```
+fix(v2/live-e2e): surface auth hints in fee schedule seed harness
+
+Add explicit 401/403 handling with token guidance for apply-nhis-seeds
+and lock the regression path so QA-B355 dirty-tree stays clear after merge.
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+
+ src/e2e/liveFeeScheduleSeed.js       |  9 ++++
+ src/test/liveFeeScheduleSeed.test.js | 24 ++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+```
+
+→ BNK-682 `@d1d0adf` 후속 deepen — apply-nhis-seeds 401/403 인증 단서(토큰 guidance) explicit handling + regression test lock.
+→ 「FE harness skip+diagnostics」 axis(BNK-682 ④) deepen — auth-mode hints surfacing.
+→ rules §6 「coder must commit before push」 충족 closure(3-cycle 누적 손실 위험 해소).
+
+## 2. ★★★ silverangel 221564 leak RE-OPENED with NEW body — BNK-661 「leak CLOSED」 가정 번복 (D-3, 2026-06-27)
+
+### 2-1. 상태 변화 history
+
+| BNK | 시각 | HTTP | size | md5 | 본문 상태 |
+|---|---|---|---|---|---|
+| 618 | 2026-06-25 | 200 | 88,732B | `ffe82a0d` | HAS-DATA(draft body 노출) |
+| 634 | 2026-06-25 | 200 | 51,765B | `44223150` | shell only(HOLD) |
+| 654 | 2026-06-26 | 200 | 1,812,677B | `b2460e88` | HAS-DATA(release notes 16항목) |
+| 661 | 2026-06-26 (~50min later) | 200 | 51,765B | `8437f255` | shell only(BNK-661 CLOSED 결론) |
+| 674 | 2026-06-26 | 200 | 51,765B | `8437f255` | shell carry |
+| **685** | **2026-06-27 D-3** | 200 | **1,812,677B** | **`120554af`** | **HAS-DATA RE-OPEN(body 갱신·새 md5)** |
+
+→ **가정 번복 1건(★★★ critical)** — BNK-661 「~50min retraction window·hotfix shell-only refactor」 = ❌ 정확하지 않음 · 실제 패턴은 「silverangel 이 draft body 를 D-day 직전 주기적으로 공개 visibility 토글 + 본문 갱신」 · 정식 보안 게이팅 미적용.
+
+### 2-2. board_tit verbatim (작성중 · 2026-06-30 발행 예정)
+
+```
+작성중 - [필독][시설·주야간] 엔젤시스템 기능 추가 및 개선 안내(2026-06-30)
+```
+
+### 2-3. board_cont 본문 verbatim(요약 — 16 항목 release notes, BNK-654 carry 와 비교해 md5 변경 = 본문 갱신)
+
+**시설 / 주야간 공통 13항목**:
+1. 메인화면 — 메뉴 이동 시 열람한 엔젤 공지사항의 열람 이력이 유지되지 않는 현상 개선
+2. 간호 — 간호처치기록 입원/외박 중인 경우에도 「병문안」 관련 서비스 항목의 생성 및 수정이 가능하도록 개선
+3. 간호 — 간호처치기록 「지연」 상태값 변경 기능 추가 (사유 선택 시 「기타」 자동 변경)
+4. 간호 — 간호처치기록 급여계획 일괄생성 시 전체 횟수 생성 옵션 기능 추가
+5. 간호 — 간호처치기록 목록 정렬 기준이 출력 및 엑셀 다운로드 시 동일하게 적용되도록 개선
+6. 간호 — 간호처치기록 - 급여계획(일간/주간/월간)에 간호처치기록 설정(NEW) 버튼 추가 + 관리자설정 탭에 「미이행 건수 표시」 + 「2026년 5월 이전 미이행 숨김/표시」 설정 (★ ogada `G-NURSING-MISSED-RECORD-DASHBOARD` candidate parity)
+7. 간호 — 건강관리기록부 매일 자동 생성 설정에 **주말 생성 여부 옵션 추가** (★ ogada `G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE` candidate parity)
+8. 간호 — 건강관리기록부 생활실/호실 선택 후 일일기록(등록) 실행 시 해당 수급자의 체크박스 자동 활성화
+9. 간호 — 건강관리기록부에 입소예정일 이전 날짜에는 등록 및 기초정보 생성 불가
+10. 간호 — 건강관리기록부에 생활실/호실 정렬 시 수급자명이 가나다순으로 정렬
+11. 간호 — 건강관리기록부 **법정서식 출력 시 서명 이미지 표시** (★ ogada `G-LEGAL-FORM-SIGNATURE-IMAGE` candidate parity)
+12. 간호 — 건강관리기록부에 일괄수정 시 정렬이 가능하도록 개선
+13. 보고서 — 관찰일지(상태변화기록) 작성자 선택 목록이 오름차순(이름순)으로 정렬되어 표시되도록 개선
+
+**주야간 적용 3항목**:
+1. 간호 — 건강관리기록부 - 매일 자동 생성 설정에 **공휴일 생성 옵션 추가**
+2. 간호 — 욕창위험도평가 주석문 변경(「신규 수급자는 급여제공 시작일까지 실시」)
+3. 간호 — 낙상위험도평가(Huhn/Gyldenvand and Shedd 1989/보봐스기념병원) 주석문 변경
+
+### 2-4. ogada cross-walk + 가정 번복 후속
+
+| BNK-654 P3 candidate | BNK-685 confirm | ogada baseline |
+|---|---|---|
+| G-NURSING-MISSED-RECORD-DASHBOARD | ✅ 시설/주야간 공통 #6 본문 verbatim 「미이행 표시·2026년 5월 이전 숨김/표시」 설정 명시 | △ ogada nursing 16-route + `staff_committee_meeting_logs` US-R08 carry · 미이행 dashboard 별도 ❌ |
+| G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE | ✅ 공통 #7(주말) + 주야간 #1(공휴일) 본문 verbatim | △ ogada `/health-records` BE 자동 생성 spec 명시 ❌(BNK-204~310 carry) |
+| G-LEGAL-FORM-SIGNATURE-IMAGE | ✅ 공통 #11 본문 verbatim 「서명 이미지 표시」 | △ ogada caregiver/social-worker 서명 PDF 출력 partial(BNK-300~315 carry) |
+
+→ 3종 모두 6/30 D-day silverangel 정식 게시 직전 leak로 **재확인** · ogada **3-cycle 누적 cross-walk evidence 확정** · planner P3 검토 status 「6/30 재검증 보류」 → **재검증 완료**.
+
+### 2-5. 보안 framing — ogada notice draft 게이팅 우위 RE-CONFIRMED
+
+| BNK | silverangel notice/view.do 보안 status | ogada `NoticeViewPage` 게이팅 우위 framing |
+|---|---|---|
+| 618 | leak (status 무시 · 직접 idx POST · full body 응답) | ✅ 강한 우위 차별화 narrative |
+| 661 | CLOSED (shell-only refactor 추정) | △ 약화 — silverangel 동등 안전 |
+| **685** | **leak RE-OPENED with NEW body** (D-3) | ✅ **강한 우위 차별화 narrative RESTORED** |
+
+→ **가정 번복 1건**(BNK-661 framing 약화 → BNK-685 framing 복원) · marketing copy 후보 「ogada는 SSR 단계에서 draft/hidden/future 게이팅으로 작성중인 공지의 사전 노출을 차단합니다」 carry · `NoticeViewPage` 구현 시 SSR draft 게이팅 default 권장.
+
+## 3. ★★★ NHIS #44 423차 zero drift IDENTICAL (확인 · 재실측 · regulatory chain)
+
+- LIVE `https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769` → HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba`
+- vs disk `nhis_jo44_live_bnk683.html`(BNK-683 422차) md5 IDENTICAL · 423-cycle 본문 불변
+- 신규 disk `nhis_jo44_live_bnk685.html` 보존(덮어쓰기 0)
+
+판정(확인): 「law247 SSR ↔ NHIS #44 본문 ↔ ogada `Nhis2026DaycareRateCatalog.CATALOG_YEAR=2026` ↔ HTTP contract test(BNK-682 +4 @Test) ↔ V185 readiness probe(BNK-684 5 @Test)」 **5-link full-stack regulatory chain** carry · 경쟁 4종 유일 in-app fail-fast year-gate.
+
+## 4. ★★★ silverangel 7-URL backbone zero drift IDENTICAL (확인 · 재실측)
+
+| URL | live HTTP | size | md5 | disk match |
+|---|---|---|---|---|
+| `daycare/daycareEssentialWork.do` | 200 | 131,664B | `c79c1be3` | BNK-681 IDENTICAL |
+| `daycare/daycareAngelSystemSummary.do` | 200 | 51,943B | `a6ee5694` | BNK-681 IDENTICAL |
+| `daycare/daycareProgramProvided.do` | 200 | 67,987B | `f18e1c7a` | BNK-494~681 carry IDENTICAL |
+| `service/extraService.do` | 200 | 81,637B | `f9c5d877` | CMS 5-method verbatim carry |
+| `service/mainService.do` | 200 | 59,002B | `bcf6df41` | IDENTICAL |
+| `service/feeService.do` | 200 | 44,513B | `eab352a8` | IDENTICAL |
+| `fcltySlry/essentialWork.do` | 200 | 166,023B | `80517b18` | BNK-645/649 시설 입소형 33 평가지표 IDENTICAL |
+| `service/businessSupport.do` | **404** | 1,028B | `3c93af54` | 폐기 carry(BNK-678~681 IDENTICAL) |
+| `support/notice/list.do` | 200 | 3,594,181B | `52c9457f` | latest visible Tmp_idx=221551 IDENTICAL |
+
+판정(확인): silverangel 백본 컨텐츠 9-axis(7 zero drift IDENTICAL + 1 404 폐기 + 1 leak 변화) · 메뉴/필드/워크플로 변경 0 in 4-cycle(BNK-681~685).
+
+## 5. ★★ lcms.or.kr type1 rotation BACK (확인 · 상태 변경 1건)
+
+- LIVE `https://www.lcms.or.kr/` → HTTP 200 · 50,740B · md5 `c0c660760e9e5691491ace28f9d15f74`
+- vs canonical `lcms_root.html`(BNK-619 type1 baseline) md5 IDENTICAL
+- BNK-681 type3(CJ MOU 식단표) 50,498B `6b750291` → **BNK-685 type1**(디자인 샘플) 50,740B `c0c66076` (+242B · md5 변경)
+
+type rotation 빈도 (BNK-668~685, ~17 cycles):
+```
+BNK-668: type3 (CJ MOU)
+BNK-669: type1 (디자인 샘플)
+BNK-673: type2 (CMS 자동이체)
+BNK-678: type2
+BNK-680: type2 (5-cycle carry)
+BNK-681: type3 (CJ MOU)
+BNK-685: type1 (디자인 샘플)
+```
+
+→ rotation 패턴: type1↔type2↔type3 광고 carousel · **3-type 모두 silverangel 자매 도메인 cross-promo**(type1 디자인 샘플 · type2 silverangel CMS 「1600-6859」 · type3 silverangel + CJ프레시웨이 MOU 식단표).
+
+판정(확인): SaaS+디자인/식재료/CMS B2B bundled 가치제안 carousel(P3 후보 carry · MVP out-of-scope · ogada SaaS-only narrative 비교).
+
+## 6. ★★ law247 admRulInfoP seq271110 Time= cachebuster md5-only DRIFT (확인 · 재실측)
+
+- LIVE `https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000271110` → HTTP 200 · 78,450B · md5 `ba2383ce73463971c1109f82b42423f6`
+- vs BNK-681 `e695a241` · BNK-680 `355fd315` · 모두 다른 md5
+- `sed -E 's/Time=[0-9]+//g'` 후 md5 = `a913639a` (BNK-680/681/685 모두 IDENTICAL)
+- SSR verbatim 「[시행 2026. 1. 1.] [보건복지부고시 제2025-247호, 2025. 12. 30., 일부개정]」 본문 불변(BNK-674 canonical carry)
+- 신규 disk `law247_admRulInfoP_seq271110_bnk685.html` 보존(덮어쓰기 0)
+
+판정(확인): cachebuster `Time=N` only DRIFT · semantic IDENTICAL · 422차 NHIS #44 lookup target 동일.
+
+## 7. ★ mohw126 「mid=a10409020000」 zero drift IDENTICAL + URL 정정 carry (확인 · 재실측)
+
+- LIVE 원본 fetch URL `mid=a10409010000`(BNK 자체 오타) → HTTP 200 · 103,127B · md5 `bfd42a22` · 카테고리 「법률/시행령/시행규칙」(별 카테고리 · 제2026-126호 본문 0) · `og:url` mid 정정 동일
+- LIVE 정정 URL `mid=a10409020000&bid=0026&act=view&list_no=1488862&tag=&nPage=1` → HTTP 200 · 103,139B · md5 `d702b54c12f4f723026a9d4ba357ab52`
+- vs canonical disk `mohw_gosi_2026_126.html` md5 **IDENTICAL** · 「훈령/예규/고시/지침」 카테고리 · 제2026-126호 본인부담상한액 verbatim 불변
+
+판정(확인): mohw126 canonical mid=a10409020000 zero drift · BNK 자체 fetch 오타(mid=a10409010000) 정정 · canonical disk 권위 유지 · 덮어쓰기 0.
+
+## 8. ★ longterm 502 · 610 — 「미확인」 carry (재실측)
+
+- LIVE `502 단기보호` → HTTP 200 · 422B · `d3c90b333be1f8d818978eaf0917ba76` = `npbs/exception/securityException` shell(BNK-560 carry · ~125 cycle persist)
+- LIVE `610 통합재가&bKey=B0020` → HTTP 200 · 90,700B · `8706bc2c4f22cfb4a58cb27297542ab8` = page-title 「거짓청구 장기요양기관 명단공표(미사용)」 · 통합재가 0 keyword(BNK-575 NEW URL→menu 재맵 carry)
+- canonical disk 보존: `longterm_502_live_partial_shell_bnk556.html` 105,552B `b5aee8c1`(단기보호 1등급 74,060) · `longterm_610_live_partial_shell_bnk560.html` 91,430B `8d53dcc1`(통합재가 2종 이상 · 가산 월 10만원 · 주야간보호형 verbatim)
+
+판정(미확인): npbs 신규홈페이지 26.1.16 마이그 이후 R&D endpoint 장애 ~125-cycle persist · canonical disk 우선 carry · ogada G18-SHORT 영향 0.
+
+## 9. ★ 신규 BNK→COD 시그널 — silverangel 6/30 release notes 16항목 P3 cross-walk RECONFIRMED
+
+BNK-654 P3 candidate 3종 모두 BNK-685 leak 본문 verbatim cross-walk 재확인:
+
+| P3 candidate | silverangel 6/30 verbatim | ogada baseline 갭 |
+|---|---|---|
+| G-NURSING-MISSED-RECORD-DASHBOARD | 시설/주야간 공통 #6 | △ ogada 미이행 dashboard 0 hit · 신규 P3「확인」 |
+| G-HEALTH-RECORD-HOLIDAY-AUTOGEN-TOGGLE | 공통 #7(주말) + 주야간 #1(공휴일) | △ ogada 자동 생성 holiday toggle 0 hit · 신규 P3「확인」 |
+| G-LEGAL-FORM-SIGNATURE-IMAGE | 공통 #11 | △ ogada caregiver 서명 PDF partial · BE/FE wire 미상 |
+
+추가 신규 P3 candidate 후보 (BNK-685 신규 인지):
+- **G-NURSING-DELAY-AUTOMATION**(공통 #3) — 「지연」 상태 사유 선택 시 「기타」 자동 변경 + 대시보드 일괄 적용 (★ workflow automation parity)
+- **G-NURSING-FULL-COUNT-BULK-PLAN**(공통 #4) — 급여계획 「계획 횟수 전체 생성」 옵션 (★ bulk operation parity)
+- **G-OBSERVATION-LOG-WRITER-SORT**(공통 #13) — 관찰일지 작성자 가나다순 정렬 (★ list UX parity · 소형)
+- **G-LIFEROOM-RESIDENT-SORT**(공통 #10) — 생활실/호실 정렬 시 수급자명 가나다순 (★ list UX parity · 소형)
+- **G-PRE-ADMISSION-GUARD**(공통 #9) — 입소예정일 이전 등록 차단 (★ data integrity parity)
+- **G-NURSING-DELAY-EXPORT-PARITY**(공통 #5) — 목록 정렬 출력/엑셀 다운로드 동일 적용 (★ export consistency)
+- **G-RISK-ASSESSMENT-ANNOTATION-STANDARDIZE**(주야간 #2+#3) — 욕창/낙상 위험도평가 주석문 평가지표 정합 (★ 평가지표 정합)
+
+→ 모두 **「가정」 P3 candidate carry** · MVP out-of-scope · planner ROADMAP v3+ 검토 후보.
+
+## 10. 산출물 요약 (per-cycle minimum 4종 충족)
+
+- **신규 evidence URL 1건+ 충족**: silverangel 221564 leak RE-OPEN(NEW md5 `120554af` 1,812,677B HAS-DATA D-3) ↔ BNK-661 「closed」 가정 번복 ★★★
+- **메뉴/필드/워크플로 1블록+ 충족**: silverangel 6/30 release notes 16항목 verbatim + 신규 P3 candidate 7건 cross-walk
+- **COMPETITOR_MATRIX 1행+ `@HEAD` 갱신 충족**: `@dd5571d`/`@7a9ed71` · merge gate 878 · QA-B355 3-cycle CLEAR
+- **BENCHMARK_REPORT §685 신규 소절 1건+ 충족**: §685-1~§685-8
+
+| 축 | 건수 | 비고 |
+|---|---|---|
+| 신규 snapshot | **5건** | `angel_longterm_regulatory_crossverify_bnk685.txt`(주력 extract) · `nhis_jo44_live_bnk685.html`(423차 IDENTICAL) · `law247_admRulInfoP_seq271110_bnk685.html`(Time= md5-only DRIFT) · `lcms_or_kr_live_bnk685.html`(type1 rotation back) · `silverangel_daycareEssentialWork_live_bnk685.html`(zero drift) · `silverangel_notice_221564_leak_reopen_bnk685.html`(★★★ leak re-open evidence·MD5 변경) |
+| 덮어쓰기 | **0건** | canonical 디스크 보존 정책 유지 |
+| zero drift IDENTICAL | **8건** | NHIS #44 423차 · silverangel 7-URL(daycare 3·service 3·fcltySlry 1) · mohw126 canonical mid 정정 |
+| md5-only DRIFT(semantic IDENTICAL) | **1건** | law247 Time= cachebuster |
+| 상태 변경 | **3건** | FE +1 commit·QA-B355 3-cycle dirty CLEAR · lcms type3→type1 rotation back · silverangel 221564 leak CLOSED→RE-OPEN(가정 번복) |
+| 가정 번복 | **2건** | ① BNK-661 「silverangel 221564 leak CLOSED」 → BNK-685 RE-OPEN(D-3 HAS-DATA NEW md5) ② BNK-685 mohw126 fetch URL 오타 `mid=a10409010000` 정정(canonical mid=a10409020000) |
+| KPI 변경 | **1건** | merge gate 877→878(FE +1 commit) |
+| closure | **1건** | QA-B355 FE WT DIRTY 3-cycle persist(BNK-682→683→684→**685**) FINALLY CLEAR |
+| 미확인 carry | **1건** | longterm 502/610 npbs 26.1.16 마이그 ~125-cycle persist |
+
+## 11. 다음 액션
+
+→ **즉시(tester)**: merge **878**(FE 278+BE 600·양쪽 WT CLEAN·선행 commit 불필요·FF 가속 권장).
+→ **planner**:
+  - baseline FE `@58599c0`→**`@dd5571d`** · BE `@7a9ed71` carry · merge gate 877→**878**.
+  - ★★★ **silverangel 221564 leak RE-OPEN 가정 번복** — BNK-661 보안 framing 약화 → **framing RESTORED**(ogada `NoticeViewPage` draft 게이팅 비교 우위 narrative 강한 우위로 복원).
+  - ★★ silverangel 6/30 D-3 release notes 16항목 → P3 candidate 3종(기존) + 7종(신규) 검토 timing 「D-day 6/30 즉시」 ROADMAP carry.
+  - ★ lcms.or.kr type1 rotation back — SaaS+B2B bundled carousel narrative carry · ogada SaaS-only 차별화 carry.
+  - ★ M11/M12 sole P1 lever(+6.90pp → 91.21%) scope 결정 carry(BNK-679/684 carry).
+  - ★ M6 「4중 게이트」 narrative(BNK-684) + V185 readiness probe carry.
+→ **BNK 다음 rotation**: ogada git 실측 6–8h(rotation_30min) — 11-route LIVE 재확인 · M11/M12 sole P1 lever scope 정밀화 · ezCare FAQ counter +N 추가 측정 · QA-B355 closure verify.

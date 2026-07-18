@@ -1,0 +1,53 @@
+BNK-688 ogada git 실측 6–8h — 2026-06-27T07:40:00Z (KST 16:40)
+=================================================================
+
+[git HEAD 실측]
+  FE develop HEAD : 2e3529814175a322e58702f5866adaa485800655  (@2e35298)
+    last commit   : 2026-06-27 06:42:42 +0000
+                    test(v1.2.1/US-Q01): lock template fallback alerts on safety pages
+    WT status     : DIRTY 2M  (src/e2e/liveFeeScheduleSeed.js · src/test/liveFeeScheduleSeed.test.js)
+    ahead vs origin/test : 282  (+1 vs BNK-687 281)
+    delta vs BNK-687 @db15b566 : +1 commit (2-file +32L safety page fallback regression tests)
+
+  BE develop HEAD : 81e3c118e0b500091c9e0d15a2e39884139855ee  (@81e3c11)
+    last commit   : 2026-06-27 07:26:37 +0000
+                    feat(v2/US-Q01): deepen safety template catalog schema metadata
+    prev commit   : fbd403c  test: lock safety routing contracts (1-file +21/-9)
+    WT status     : CLEAN  (BNK-687 WT DIRTY 1M routing test → absorbed/clean)
+    ahead vs origin/test : 604  (+2 vs BNK-687 602)
+    delta vs BNK-687 @72924bb : +2 commit (fbd403c routing contracts + 81e3c11 template schema 5-file +48/-33)
+
+  merge gate (FE ahead + BE ahead) : 886  (+3 vs BNK-687 883)
+
+[KPI baseline 재산정]
+  Route (path= in App.jsx)              : 123     (IDENTICAL)
+  page  (non-test src/pages/*.jsx)      : 98      (+1 re-measure vs BNK-687 97 · BNK-686 98 동일)
+  Flyway migration                      : V1–V185 (IDENTICAL)
+  BE Test files (*Test.java/*Tests.java): 279     (IDENTICAL)
+  BE @Test (git grep -hoE '@Test\b')    : 2043    (IDENTICAL)
+  FE test (.test.js + .test.jsx)        : 500 (207 + 293)  (IDENTICAL)
+  모듈 커버 (competitorModuleCoverage)  : 84.31% (24.45 / 29)  (IDENTICAL · id=6 ✅ · id=7 ✅ 1.0 carry)
+  reports                               : 28 carry
+
+[KPI delta axes — 4/9]
+  1. FE develop HEAD +1
+  2. BE develop HEAD +2
+  3. merge gate +3 (883 → 886)
+  4. FE WT CLEAN → DIRTY (QA-B355 harness re-dirty) / BE WT DIRTY → CLEAN (closure)
+
+[M6 US-Q01 narrative — stage7]
+  BE 81e3c11: SafetyChecklistTemplateItemResponse + SafetyCheckTemplateCatalog
+    → per-item required/helpText metadata = server-driven field-level guidance (FE 하드코딩 제거)
+    → MustApiEndpointRoutingTest + SafetyCheckControllerRoutingTest jsonPath contract lock
+  FE 2e35298: SafetyInfectionControlPage.test.jsx + SafetyPeriodicChecksPage.test.jsx
+    → catalog API unavailable 시 local fallback notice 가시성 regression lock (offline resilience)
+  게이트 누적: server catalog + RBAC + deep RBAC test + DB CHECK + readiness probe + server field metadata = 6중
+
+[재실측 zero drift]
+  NHIS #44 : live HTTP 200 · 7,572B · md5 c886ff1f = nhis_jo44_live_bnk688.html disk IDENTICAL (426-cycle)
+  ezCare FAQ list : 80,057B (8-cycle size lock) · md5 fd1fc431 (cachebuster DRIFT) · 233 rowid · 누적 hit 3,637,353 (+24 vs BNK-686)
+
+[QA-B355 carry — rules §6]
+  FE liveFeeScheduleSeed.{js,test.js} uncommitted 재발 (BNK-685 closure → 686/687 clean 2-cycle → 688 re-dirty)
+  → coder commit + push origin develop 권장 (submodule re-clone 손실 위험)
+  → tester FF merge 886 (BE WT CLEAN 선행 불필요 · FE WT DIRTY 선행 closure 권장)

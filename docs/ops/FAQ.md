@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T20:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T04:31:00Z -->
 # ogada 자주 묻는 질문 (ops/FAQ.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-17 (Q924: 활동 사진 magic-byte SEC-D25 · Q925: NoBreakSpace mid-token strip · baseline `c19bfa6`/`090ac10` · Flyway **V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-07-18 (Q934 신설: 손상 엑셀 fail-closed · Q932 갱신: 은행 입금 엑셀 FE 사전검증 추가 · baseline `0a97b22`/`1f9d49c` · Flyway **V1–V196** · 모듈 **97.41%**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: 주간보호센터 **현장 사용자**, **센터 운영·IT 담당**, **ogada 플랫폼 운영자**  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/USER_MANUAL.md`, `docs/ops/ADMIN_GUIDE.md`  
@@ -16,14 +16,14 @@
 ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능별**로 정리했습니다.  
 상세 조작 절차는 [`USER_MANUAL.md`](ops/USER_MANUAL.md), 플랫폼·기술 관리는 [`ADMIN_GUIDE.md`](ops/ADMIN_GUIDE.md), 배포·인프라는 [`DEPLOYMENT_GUIDE.md`](ops/DEPLOYMENT_GUIDE.md)를 참고하세요.
 
-### 구현 상태 안내 (2026-07-17 develop HEAD `c19bfa6` / frontend `090ac10` 기준)
+### 구현 상태 안내 (2026-07-18 develop HEAD `0a97b22` / frontend `1f9d49c` 기준)
 
 | 영역 | 상태 | FAQ에서의 의미 |
 |------|------|----------------|
-| 백엔드 API | **Must + … + V196 ✅** @ `c19bfa6` **SYNCED** · **v3 활동 사진 magic-byte ✅** (**Q924**, SEC-D25) · **QA-B95 NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) · **v3 프로그램 일정 사진 업로드 ✅** (**Q917**·**Q920**) · **live probe V196 연계 무결성 ✅** (**Q918**) · **QA-B95 blank operation blocker 목록 ✅** (**Q912**) · **US-R01-c leave-ledger empty scope ✅** (**Q913**) · **QA-B95 core quote/angle 세미콜론 생략 BE lock ✅** (**Q911**) · **QA-B95 확장 prime(bprime/tprime/qprime/backprime) ✅** (**Q910**) · **QA-B95 prime/double-prime 인용문 ✅** (**Q909**) · **QA-B95 guillemet 인용문 ✅** (**Q908**) · **QA-B95 low-9/reversed-9 인용문 ✅** (**Q907**) · **QA-B95 Left*/Right*Quote ✅** (**Q905**) · **QA-B95 OpenCurly* ✅** (**Q904**) · **QA-B95 typographic 인용문 ✅** (**Q903**) · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~295 suites** · Flyway **V186–V196** |
+| 백엔드 API | **Must + … + V196 ✅** @ `0a97b22` **SYNCED** · **엑셀 import 손상(내용 깨진) 파일 fail-closed ✅** (**Q934**, SEC-D34, 5개 파서) · **엑셀 import null·빈(0바이트) 파일 fail-closed ✅** (**Q931~Q933**, SEC-D34) · **SEC-D34 엑셀 import 4경로 magic-byte ✅** (**Q931~Q932**) · **업로드 magic-byte 확대 ✅** (**Q926~Q929**, SEC-D25/D34) · **v3 활동 사진 magic-byte ✅** (**Q924**, SEC-D25) · **QA-B95 NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) · **v3 프로그램 일정 사진 업로드 ✅** (**Q917**·**Q920**) · **live probe V196 연계 무결성 ✅** (**Q918**) · **QA-B95 blank operation blocker 목록 ✅** (**Q912**) · **US-R01-c leave-ledger empty scope ✅** (**Q913**) · **QA-B95 core quote/angle 세미콜론 생략 BE lock ✅** (**Q911**) · **QA-B95 확장 prime(bprime/tprime/qprime/backprime) ✅** (**Q910**) · **QA-B95 prime/double-prime 인용문 ✅** (**Q909**) · **QA-B95 guillemet 인용문 ✅** (**Q908**) · **QA-B95 low-9/reversed-9 인용문 ✅** (**Q907**) · **QA-B95 Left*/Right*Quote ✅** (**Q905**) · **QA-B95 OpenCurly* ✅** (**Q904**) · **QA-B95 typographic 인용문 ✅** (**Q903**) · **QA-B95 MathML 꺾쇠 long alias ✅** (**Q901**) · **QA-B95 꺾쇠 wrapping ✅** (**Q900**) · **QA-B95 소괄호 wrapping ✅** (**Q898**) · **QA-B95 중괄호 wrapping ✅** (**Q897**) · **QA-B95 semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **J03 template-catalog 13(ezCare 7+Kakao 6) ✅** (**Q889**·**Q896**) · **QA-B95 comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **QA-B95 VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**·**Q902**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **HTML space alias ✅** (**Q874**) · **NoBreak ✅** (**Q872**) · **word-joiner·named space ✅** (**Q873**) · **dash/minus/hyphen ✅** (**Q871**) · **zero-width named entity ✅** (**Q869**) · **tab/newline named entity ✅** (**Q870**) · **invisible Cf ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **soft-hyphen·whitespace ✅** (**Q859**) · **G17 지표27 이중번호 ✅** (**Q850**) · **J03 참고 단가 전용 카탈로그 ✅** (**Q851**) · … | BE Test **~295 suites** · Flyway **V186–V196** |
 | 데이터베이스 | Flyway **V1–V196** | **V196** 연계기록 무결성 · **V195** 지점 리포트 인덱스 · **V194** `client_linkage_records` · **V193** 첨부 http(s) · **V192** 기관 공지 |
-| 프론트엔드 | **133 route · 107 page** @ `090ac10` **SYNCED** | **활동 사진 magic-byte FE lockstep ✅** (**Q924**) · **NoBreakSpace mid-token strip FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **QA-B95 uppercase `&NUM` decode test lock ✅** (**Q923**) · **활동 사진 `ds-stack--tight` ✅** (**Q921**, UXD-189) · **세미콜론 생략 `&num` liveConfig ✅** (**Q919**) · **프로그램 일정 활동 사진 ✅** (**Q917**·**Q920**) · **Must ds-* 레이아웃 12종 ✅** (**Q914**, UXD-188) · **청구 상태 이력 타임스탬프 ✅** (**Q915**) · **blank operation blocker 목록 FE lockstep ✅** (**Q912**) · **세미콜론 생략 amp ✅** (**Q916**) · **Must ds-* 텍스트·동의·브레드크럼 9종 ✅** (**Q906**, UXD-187) · **세미콜론 생략 core quote/angle ✅** (**Q911**) · **확장 prime ✅** (**Q910**) · **prime/double-prime 인용문 ✅** (**Q909**) · **guillemet·low-9 인용문 ✅** (**Q908**·**Q907**) · **Left*/Right*Quote FE lockstep ✅** (**Q905**) · **OpenCurly*·typographic 인용문 ✅** (**Q904**·**Q903**) · **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi long-alias live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
-| 본 FAQ | **Q217 정정** · **Q788~Q925** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
+| 프론트엔드 | **133 route · 106 page** @ `1f9d49c` **SYNCED** | **은행 입금 엑셀 FE 사전검증 ✅** (**Q932**, SEC-D34) · **사진 업로드 성공 스크린리더 안내 ✅** (**Q933**, UXD-191) · **SEC-D34 엑셀 import FE 사전검증·빈 헤더 fail-closed ✅** (**Q931**) · **이용자 사진·급여계약·HR·등급이력·보수교육 magic-byte ✅** (**Q926~Q928**) · **직원현황 인쇄·활동 사진 ARIA ✅** (**Q930**) · **활동 사진 magic-byte FE lockstep ✅** (**Q924**) · **NoBreakSpace mid-token strip FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **QA-B95 uppercase `&NUM` decode test lock ✅** (**Q923**) · **활동 사진 `ds-stack--tight` ✅** (**Q921**, UXD-189) · **세미콜론 생략 `&num` liveConfig ✅** (**Q919**) · **프로그램 일정 활동 사진 ✅** (**Q917**·**Q920**) · **Must ds-* 레이아웃 12종 ✅** (**Q914**, UXD-188) · **청구 상태 이력 타임스탬프 ✅** (**Q915**) · **blank operation blocker 목록 FE lockstep ✅** (**Q912**) · **세미콜론 생략 amp ✅** (**Q916**) · **Must ds-* 텍스트·동의·브레드크럼 9종 ✅** (**Q906**, UXD-187) · **세미콜론 생략 core quote/angle ✅** (**Q911**) · **확장 prime ✅** (**Q910**) · **prime/double-prime 인용문 ✅** (**Q909**) · **guillemet·low-9 인용문 ✅** (**Q908**·**Q907**) · **Left*/Right*Quote FE lockstep ✅** (**Q905**) · **OpenCurly*·typographic 인용문 ✅** (**Q904**·**Q903**) · **MathML 꺾쇠 long alias ✅** (**Q901**) · **bidi long-alias live harness ✅** (**Q902**) · **꺾쇠 wrapping ✅** (**Q900**) · **소괄호 wrapping ✅** (**Q898**, BE+FE) · **Must ds-* 26종 정식화 ✅** (**Q899**) · **중괄호 wrapping ✅** (**Q897**) · **카탈로그 13종·행 헤더 a11y ✅** (**Q889**·**Q892**·**Q896**) · **semi·blank·대괄호 wrapping ✅** (**Q893**·**Q894**·**Q895**) · **연계·발송 체크박스 a11y ✅** (**Q888**) · **comma·VeryThickSpace ✅** (**Q890**·**Q891**) · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space ✅** (**Q883~Q887**) · **NoBreakSpace legacy ✅** (**Q882**·**Q925**) · **ZeroWidthNonJoiner/Joiner long ✅** (**Q880**) · **bidi long-form alias ✅** (**Q879**) · **ThickSpace·MathML invisible ✅** (**Q875**) · **bidi marks·Positive*Space ✅** (**Q876**) · **bidi embedding·NonBreakingSpace ✅** (**Q877**) · **G2 표 모바일 스크롤 ✅** (**Q878**) · **HTML space alias ✅** (**Q874**) · **NoBreak·word-joiner/named space ✅** (**Q872**·**Q873**) · **dash/minus/hyphen entity ✅** (**Q871**) · **zero-width·tab/newline named entity ✅** (**Q869**·**Q870**) · **invisible Unicode Cf strip ✅** (**Q861**) · **추가 유니코드 공백 ✅** (**Q862**) · **M12 BPO SSO 블로커 시 launch 숨김 ✅** (**Q860**) · **G2 branch scope fallback ✅** (**Q868**) · **기관 공지 빈 페이지 복구 ✅** (**Q858**) · **참고 단가 전용 API 우선 ✅** (**Q851**) · **RFID 일괄 SMS ✅** (**Q832**·**Q838**) · **연계기록지 페이지네이션 ✅** (**Q842**) · … |
+| 본 FAQ | **Q217 정정** · **Q788~Q933** | **P1 잔여**: M11 **급여 persist** · **수익·인건비 자동 집계** · **기관별 SSO 자격** · **프로그램 리포트 FE `branchId` UI**(Q864·Q715) |
 
 ### [TWR] Must 기능 보강 FAQ (운영 우선)
 
@@ -69,7 +69,7 @@ ogada 도입·운영 과정에서 자주 반복되는 질문을 **역할·기능
 
 ### Q573. 공단 **요양보호사 엑셀**으로 직원 계정 요청을 한꺼번에 넣을 수 있나요? (G-STAFF-NHIS-EXCEL-IMPORT)
 
-**A.** **✅ BE+FE Full-stack Fixed (`4315ee2`·`2f6f3bc`, G-STAFF-NHIS-EXCEL-IMPORT)** — 케어포 **8-1-2** 패턴입니다. **`/staff` → `StaffNhisCaregiverImportPanel`** 에서 미리보기·선택·등록·계정 요청 목록 갱신까지 한 화면에서 처리합니다.
+**A.** **✅ BE+FE Full-stack Fixed (`4315ee2`·`2f6f3bc`, G-STAFF-NHIS-EXCEL-IMPORT)** — 케어포 **8-1-2** 패턴입니다. **`/staff` → `StaffNhisCaregiverImportPanel`** 에서 미리보기·선택·등록·계정 요청 목록 갱신까지 한 화면에서 처리합니다. **엑셀 파일 서명(OOXML/OLE magic-byte)** 은 브라우저·서버 **이중 검사**합니다 (**Q929·Q931**, `be64fda`/`3042a53`).
 
 | 단계 | 화면·API |
 |------|----------|
@@ -12755,6 +12755,9 @@ SideNav **이동 → 수칙·계약 (G15)** 또는 **`TransportContextNav`** **�
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-18 | **Q934 신설 · Q932 갱신** — **손상(내용 깨진) 엑셀 5개 파서 fail-closed(「엑셀 파일을 읽을 수 없습니다.」)** · **은행 입금 엑셀 FE 사전검증 추가(.xlsx only)** · baseline **`0a97b22`/`1f9d49c`** · Flyway **V1–V196** |
+| 2026-07-18 | **Q931~Q933** — **SEC-D34 엑셀 import 4경로**(방문·청구·요양보호사 FE+BE · 은행 입금 BE) · **import null·빈(0바이트)·빈 헤더 파일 fail-closed(FE·BE 회귀 고정)** · **사진 업로드 성공 스크린리더 안내(UXD-191)** · baseline **`9449e1f`/`2789553`** · Flyway **V1–V196** |
+| 2026-07-17 | **Q926~Q930** — **이용자 사진·급여계약·HR·등급이력·보수교육·요양보호사 엑셀 magic-byte · 인쇄/ARIA a11y** · baseline **`be64fda`/`8b164c3`** · Flyway **V1–V196** |
 | 2026-07-17 | **Q924 · Q925** — **활동 사진 magic-byte(SEC-D25) · NoBreakSpace mid-token strip BE+FE** · baseline **`c19bfa6`/`090ac10`** · Flyway **V1–V196** |
 | 2026-07-17 | **Q922 · Q923** — **M12 SSO `/carefor_login` path allowlist BE+FE · uppercase `&NUM` decode test lock** · baseline **`a742788`/`bc1d343`** · Flyway **V1–V196** |
 | 2026-07-17 | **Q921 · Q919 갱신** — **활동 사진 `ds-stack--tight`(UXD-189) · 세미콜론 생략 `&num` BE+liveConfig lockstep** · baseline **`759b15e`/`9e40c19`** · Flyway **V1–V196** |
@@ -17238,6 +17241,173 @@ function normalizeLiveOperationBlockers(blockers) {
 > **Q882와의 관계**: Q882 = `&NoBreakSpace;` legacy alias 자체. Q925 = **mid-token strip BE+FE 정합**(공백→strip 정정). 현장 업무 화면 영향 없음.
 
 > 관련: **Q882** · **Q872** · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q926. 이용자 **프로필 사진**도 파일 내용(magic-byte)을 검사하나요? (SEC-D25, BE `cdba083` · FE `e16f432`)
+
+**A.** **✅ BE+FE Fixed (Q926)** — 프로그램 활동 사진(Q924)과 같은 방식으로, 이용자 상세 **프로필 사진**도 **JPEG/PNG/WEBP 서명**을 브라우저·서버에서 이중 검사합니다. 확장자·MIME만 맞춘 위장 파일은 「JPEG, PNG, WEBP 형식의 이미지만 업로드할 수 있습니다.」로 거부됩니다.
+
+| 항목 | 내용 |
+|------|------|
+| 화면 | **`/clients/:id`** — **`ClientPhotoUpload`** |
+| API | `POST /api/v1/clients/{clientId}/photo` (multipart) |
+| 검증 | Content-Type 파라미터 strip · JPEG `FF D8 FF` · PNG `89 50 4E 47…` · WEBP `RIFF….WEBP` |
+| 권한 | 기존 프로필 사진 업로드 권한과 동일 |
+
+> **활동 사진과의 구분**: Q917/Q924 = `/programs` 일정 행 **활동 증거**. Q926 = 이용자 **프로필** 사진.
+
+> 관련: **Q924** · **Q917** · USER_MANUAL §4-3 · ADMIN_GUIDE §1-4 · DEPLOYMENT_GUIDE §1-4 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q927. **급여계약서·직원 HR 서류**도 magic-byte 검증이 되나요? (SEC-D25, BE `324da07` · FE `cf28a2e`)
+
+**A.** **✅ BE+FE Fixed (Q927)** — MIME 위장 PDF/이미지를 막기 위해 서명 검사를 넣었습니다.
+
+| 채널 | 화면 | 허용 형식 | 거부 안내 |
+|------|------|-----------|----------|
+| **급여계약서 파일함** | `/clients/:id` **「급여계약」** | **PDF·PNG** ≤10MB | 「PDF 또는 PNG 파일만…」 |
+| **직원 HR 파일함** | `/staff/:id` **「HR 파일함」** | **PDF·PNG·JPEG** ≤10MB | 「PDF 또는 이미지(PNG/JPEG)…」 |
+
+| 계층 | 커밋 |
+|------|------|
+| **BE** | `BenefitContractAttachmentStorageService` · `StaffHrFileStorageService` (`324da07`) |
+| **FE** | `benefitContractAttachments.js` · `staffHrFiles.js` (`cf28a2e`) |
+
+> 관련: Q285 · Q298 · USER_MANUAL §4-3·§4-7 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q928. **등급 이력 첨부·보수교육 이수증**도 파일 서명을 검사하나요? (SEC-D25, BE `ed94521` · FE `8b164c3`)
+
+**A.** **✅ BE+FE Fixed (Q928)** — Q927과 동일 계열입니다.
+
+| 채널 | 화면 | 허용 형식 | 거부 안내 |
+|------|------|-----------|----------|
+| **등급 이력(이용계획서) 첨부** | `/clients/:id` **「등급 이력」** | **PDF·PNG** ≤10MB | 「PDF 또는 PNG 형식만…」 |
+| **보수교육 이수증** | `/staff/training` | **PDF·PNG·JPEG** ≤10MB | 「PDF 또는 이미지(PNG/JPEG)…」 |
+
+| 계층 | 커밋 |
+|------|------|
+| **BE** | `LtcGradeHistoryAttachmentStorageService` · `StaffRefresherTrainingCertificateStorageService` (`ed94521`) |
+| **FE** | `gradeHistoryAttachments.js` · `staffRefresherTrainingCertificates.js` (`8b164c3`) |
+
+> 관련: Q274 · Q295 · USER_MANUAL §4-3·§4-7 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q929. **공단 요양보호사 엑셀**도 파일 서명(magic-byte)을 검사하나요? (SEC-D34, BE `be64fda`)
+
+**A.** **✅ BE+FE Fixed (Q929·Q931, SEC-D34)** — `/staff` **「공단 요양보호사 엑셀 업로드」** 미리보기·등록 **전(FE)·저장 전(BE)** 에 **확장자 + Content-Type(;param strip) + 파일 서명**을 검사합니다.
+
+| 확장자 | 서명(앞부분) | 비고 |
+|--------|--------------|------|
+| **`.xlsx`** | OOXML/ZIP `50 4B 03 04` | 공단 원본 xlsx |
+| **`.xls`** | OLE Compound `D0 CF 11 E0…` | 구형 엑셀 |
+
+| 오류 문구 | 의미 |
+|----------|------|
+| 「xlsx 또는 xls 형식의 엑셀 파일만 업로드할 수 있습니다.」 | 확장자 또는 **magic 불일치**(PDF 등을 xlsx로 위장) |
+| 「엑셀 파일 콘텐츠 타입만 업로드할 수 있습니다.」 | Content-Type allow-list 밖 |
+
+| 「엑셀 파일 시그니처가 올바르지 않습니다.」 | **magic-byte 불일치**(PDF 등을 xlsx/xls로 위장) |
+
+> **방문·청구 NHIS import(Q278·Q931)** 도 동일 SEC-D34 계열입니다. Q278은 Content-Type allow-list, Q931은 **FE+BE magic-byte full-stack**입니다.
+
+> 관련: **Q573** · **Q931** · USER_MANUAL §4-7-0 · ADMIN_GUIDE §1-4 · CHANGELOG 2026-07-18
+
+---
+
+### [TWR] Q931. **방문·청구·요양보호사 엑셀**도 브라우저에서 파일 서명을 검사하나요? (SEC-D34, FE `3042a53` · BE `a788e6d`/`be64fda`)
+
+**A.** **✅ BE+FE Fixed (Q931, SEC-D34)** — 공단에서 받은 엑셀 3종은 **업로드 버튼 전**에 브라우저가 **파일 앞부분 서명**을 검사하고, 서버도 동일 규칙으로 재검증합니다.
+
+| 화면 | 확장자 | 서명 | FE 사전검증 | BE 저장 전 |
+|------|--------|------|:-----------:|:----------:|
+| **`/visits` 공단 방문일정** | `.xlsx` \| `.xls` | OOXML / OLE | ✅ | ✅ (`a788e6d`) |
+| **`/billing/imports/nhis` 청구내역상세** | **`.xlsx` only** | OOXML | ✅ | ✅ (`a788e6d`) |
+| **`/staff` 요양보호사 엑셀** | `.xlsx` \| `.xls` | OOXML / OLE | ✅ | ✅ (`be64fda`) |
+| **`/visits` RFID 비교** plan/rfid | `.xlsx` \| `.xls` | OOXML / OLE | ✅ | ✅ (방문 import 동일) |
+
+| 오류 문구 | 의미 |
+|----------|------|
+| 「xlsx 또는 xls 형식의 엑셀 파일만…」 | 방문·요양보호사 — 확장자 또는 magic 불일치 |
+| 「xlsx 형식의 엑셀 파일만…」 | 청구 NHIS — `.xls` 거부 |
+| 「엑셀 파일 시그니처가 올바르지 않습니다.」 | MIME·확장자는 맞지만 **내용이 엑셀이 아님** |
+| 「업로드할 엑셀 파일이 필요합니다/없습니다.」 | **내용이 없는 0바이트·빈 파일** — FE·BE 양쪽에서 거부 (`b23711f`/`9449e1f`) |
+
+**현장 조치**: 공단 포털에서 **원본 xlsx/xls**를 다시 받아 업로드하세요. 확장자만 `.xlsx`로 바꾼 PDF·텍스트, **내용이 비어 있는 0바이트 파일**은 거부됩니다.
+
+> 관련: **Q278** · **Q297** · **Q929** · USER_MANUAL §4-6·§5-11 · CHANGELOG 2026-07-18
+
+---
+
+### [TWR] Q932. **은행 입금 엑셀**도 파일 서명을 검사하나요? (SEC-D34, BE `f6e4d88` · FE `1f9d49c`)
+
+**A.** **✅ BE+FE Fixed (Q932, SEC-D34)** — **`/billing/payments` 「은행 입금 엑셀 일괄 등록」** 은 **`.xlsx`(OOXML) only**입니다. 이제 **브라우저가 업로드(미리보기) 전에 먼저** 확장자·형식·서명·0바이트를 검사하고, 서버도 **미리보기·등록 API** 호출 시 **ZIP local header `PK\x03\x04`** 서명을 재검사합니다. **`.xls`는 지원하지 않습니다.**
+
+| 화면 | 확장자 | 서명 | FE 사전검증 | BE 저장 전 |
+|------|--------|------|:-----------:|:----------:|
+| **`/billing/payments` 은행 입금** | **`.xlsx` only** | OOXML | ✅ (`1f9d49c`) | ✅ (`f6e4d88`) |
+
+| 오류 문구 | 의미 |
+|----------|------|
+| 「xlsx 형식의 엑셀 파일만 업로드할 수 있습니다.」 | `.xls` 또는 잘못된 확장자 |
+| 「엑셀 파일 시그니처가 올바르지 않습니다.」 | 확장자는 xlsx지만 **내용이 OOXML이 아님** |
+| 「업로드할 엑셀 파일이 필요합니다.」 | **내용이 없는 0바이트 파일** — FE·BE 양쪽에서 거부 |
+
+> **변경점** — 예전에는 은행 입금만 BE(미리보기 API) 단계에서 거부했으나, 이제 다른 엑셀 import 화면(Q931)과 동일하게 **브라우저 사전검증**이 붙어 API 호출 없이 즉시 막힙니다. 정상 흐름(Q572)은 그대로입니다.
+
+> 관련: **Q572** · **Q576** · **Q931** · **Q934** · USER_MANUAL §4-6 · ADMIN_GUIDE §6-2 · CHANGELOG 2026-07-18
+
+---
+
+### [TWR] Q930. 직원현황 **인쇄**에 필터가 나오고, 활동 사진 오류가 스크린리더에 안 들려요. (UXD-190, FE `b2eb059`)
+
+**A.** **✅ FE Fixed (Q930)** — 두 가지 접근성 보강입니다.
+
+| 화면 | 변경 |
+|------|------|
+| **`/staff/status-report`** | 조회 필터 Card를 **화면 전용(screen-only)** 으로 바꿔 **인쇄물에 필터가 나오지 않음** |
+| **`/programs` 「활동 사진」** | 검증 오류 시 파일 input에 **`aria-invalid`** · **`aria-describedby`** 로 danger Alert 연결 (magic-byte 거부 포함, Q924) |
+
+> 관련: **Q924** · **Q917** · **Q933** · USER_MANUAL §5-9 · CHANGELOG 2026-07-17
+
+---
+
+### [TWR] Q933. 사진을 올렸는데 **스크린리더로는 등록 성공을 알 수 없어요.** (UXD-191, FE `194823b`)
+
+**A.** **✅ FE Fixed (Q933, WCAG 4.1.3)** — 이전에는 업로드가 성공하면 화면 표시만 **「미등록 → 등록됨」** 으로 바뀌어, 화면을 보지 못하는 사용자는 성공 여부를 알기 어려웠습니다. 이제 두 화면 모두 **소리 안내 전용 영역(`role="status"` polite)** 이 상주해 등록 성공을 읽어줍니다.
+
+| 화면 | 안내 |
+|------|------|
+| **`/clients/:id` 이용자 사진** (`ClientPhotoUpload`) | 업로드 성공 시 **등록 완료**를 스크린리더가 안내 |
+| **`/programs` 「활동 사진」** (`ProgramSchedulePhotoUpload`) | 일정 표가 조밀해도 **시각 배너 없이** 스크린리더로만 성공을 안내 |
+
+> **오류 안내는 그대로** — 검증·서명 오류는 기존 접근성 경로(danger Alert `role="alert"` · 파일 input `aria-invalid`)로 읽힙니다 (Q930·Q924). 화면 배치·버튼 위치는 변경 없습니다.
+
+> 관련: **Q930** · **Q924** · **Q917** · USER_MANUAL §5-9 · CHANGELOG 2026-07-18
+
+---
+
+### [TWR] Q934. 확장자·서명은 맞는데 **엑셀을 열자 시스템 오류**가 났어요. (SEC-D34, BE `0a97b22`)
+
+**A.** **✅ BE Fixed (Q934, SEC-D34)** — 파일 앞부분 서명(`PK\x03\x04`)은 정상 xlsx처럼 보이지만 **실제 내용(본문)이 깨진 파일**은 서명 검사(Q931~Q932)를 통과한 뒤 엑셀 해석 단계에서 실패합니다. 예전에는 이때 내부 시스템 오류가 화면에 그대로 노출될 수 있었으나, 이제 항상 **「엑셀 파일을 읽을 수 없습니다.」** 로 안전하게 거부합니다(fail-closed).
+
+| 적용 화면 (엑셀 일괄등록) | 파서 |
+|--------------------------|------|
+| **`/billing/payments` 은행 입금** | `BankDepositExcelParser` |
+| **`/billing/imports/nhis` 청구내역상세** | `NhisExcelParser` |
+| **`/staff` 요양보호사 NHIS** | `StaffNhisCaregiverExcelParser` |
+| **`/visits` 공단 방문일정** | `NhisVisitScheduleExcelParser` |
+| **`/visits` RFID 비교** | `RfidTransmissionExcelParser` |
+
+**현장 조치**: 공단·은행 포털에서 **원본 xlsx**를 다시 내려받아 업로드하세요. 압축이 깨졌거나 다운로드가 중단된 파일은 이 문구로 거부됩니다.
+
+> **차이점** — 확장자·MIME·서명 불일치는 「…시그니처가 올바르지 않습니다.」(Q931~Q932), **서명은 맞지만 본문이 손상**된 경우는 「…읽을 수 없습니다.」(Q934)입니다. 파일 자체의 검증 문구(예: 필수 열 누락)는 그대로 표시됩니다.
+
+> 관련: **Q931** · **Q932** · **Q929** · USER_MANUAL §4-6·§4-7 · CHANGELOG 2026-07-18
 
 ---
 

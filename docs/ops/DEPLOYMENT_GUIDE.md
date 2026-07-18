@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T20:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T00:00:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-17 (Q924: 활동 사진 magic-byte SEC-D25 · Q925: NoBreakSpace mid-token strip · baseline `c19bfa6`/`090ac10` · Flyway **V1–V196**)
+> **최종 갱신**: 2026-07-18 (엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed FE·BE 회귀 고정 · 사진 업로드 성공 스크린리더 안내 UXD-191 · baseline `9449e1f`/`2789553` · Flyway **V1–V196**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -57,9 +57,9 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | 인증 | JWT (RS256) + RBAC | access 30분, refresh 7일 |
 | 멀티테넌트 | Organization → Branch | `organization_id` 강제 격리 |
 
-> **구현 상태 (2026-07-17 develop HEAD `c19bfa6` / frontend `090ac10` 기준)**:
-> - **백엔드**: Must API + **V1–V196** · **SYNCED @ `c19bfa6`**. **활동 사진 magic-byte ✅** (**Q924**) · **NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) ·
-> - **프론트엔드**: **133 route · 107 page** @ **`090ac10`** **SYNCED**. **활동 사진 magic-byte FE ✅** (**Q924**) · **NoBreakSpace mid-token FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **uppercase `&NUM` decode test lock ✅** (**Q923**) ·
+> **구현 상태 (2026-07-18 develop HEAD `9449e1f` / frontend `2789553` 기준)**:
+> - **백엔드**: Must API + **V1–V196** · **SYNCED @ `9449e1f`**. **엑셀 import null·빈(0바이트) 파일 fail-closed ✅** (**Q931~Q933**, SEC-D34) · **SEC-D34 엑셀 import 4경로 magic-byte ✅** (**Q931~Q932**) · **업로드 magic-byte 확대 ✅** (**Q926~Q929**) · **활동 사진 magic-byte ✅** (**Q924**) · **NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) ·
+> - **프론트엔드**: **133 route · 106 page** @ **`2789553`** **SYNCED**. **사진 업로드 성공 스크린리더 안내 ✅** (**Q933**, UXD-191) · **SEC-D34 엑셀 import FE 사전검증·빈 헤더 fail-closed ✅** (**Q931**) · **이용자 사진·서류함 magic-byte FE ✅** (**Q926~Q928**) · **인쇄/ARIA a11y ✅** (**Q930**) · **활동 사진 magic-byte FE ✅** (**Q924**) · **NoBreakSpace mid-token FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **uppercase `&NUM` decode test lock ✅** (**Q923**) ·
 > - **merge gate**: **FE FULLY SYNCED · BE ahead ~734** · **BE Test ~2305 @Test** · **FE test ~533** · **모듈 KPI 97.41%**
 > - **마이그레이션**: V43 … **V196** 연계기록 무결성 (**Q827**·**Q918**) · **V195** 지점 리포트 인덱스 (**Q826**) · **V194** `client_linkage_records` (**Q819**) · **V193** `facility_notices` attachment http(s) CHECK (**Q816**) · **V192** `facility_notices` (10-4) · **V191** dispatch-history 인덱스 · **V190** shuttle nonempty CHECK · … Flyway 자동 실행.
 > - **프로덕션 주의**: Solapi·FCMS·SMTP·**PG(stub)** 미사용 시 **`NOTIFICATION_PROVIDER=stub`** · **`NOTIFICATION_EMAIL_PROVIDER=stub`** · **`FCMS_PROVIDER=stub`** 기본값 유지. 야간 발송은 **설정 ready ≠ 지금 발송 가능**(Q809·**Q812**) · 가정통신문 **운영 준비도 동일**(Q811). 알림 패널 **참고 단가**는 **비청구**(Q844·**Q851**). 템플릿 카탈로그 **13종**(Q889)·Kakao 6종 **live 전 점검**(Q896). 프로그램 사진 저장 디렉터리 **`ogada.storage.program-photos.storage-dir`**(기본 `./data/program-photos`, Q917·**Q924**) 쓰기 권한 확인. §4-3·§4-6·§4-8 참고.
@@ -87,7 +87,10 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | QA-B95 semicolon-optional amp (**Q916**) | `notificationChannelStatus.test.js` · `liveE2eHarness.test.js` · channel-status UI | `&amp`/`&AMP` without `;` at token boundary → `&` then numeric decode (`d3e282b`) — Q840·Q841 확장 |
 | QA-B95 semicolon-optional `&num`/`&NUM` (**Q919**·**Q923**) | `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js` · `liveConfig.js` · channel-status UI | `&num`/`&NUM` without `;` before digits → `#` then numeric decode (BE `759b15e`/`a742788` · FE `ce2325c`/`9e40c19`/`bc1d343`) — Q855 확장 |
 | QA-B95 NoBreakSpace mid-token strip (**Q925**·**Q882**) | `LiveE2eOperationReadinessSupportTest` · `notificationChannelStatus.test.js` · `liveE2eHarness.test.js` | `&NoBreakSpace;` → **strip(empty)** · mid-token rejoin · semicolon-optional lock (`63227d7`/`c19bfa6`/`090ac10`) |
-| v3 program schedule photo (**Q917**·**Q920**·**Q921**·**Q924**) | `POST /api/v1/programs/schedule/{programId}/photo` · UI **`/programs`** · `ProgramControllerRoutingTest` · `ProgramsPage.test.jsx` · `ProgramPhotoStorageServiceTest` · `programsPhoto.test.js` · `components.css` §113 | multipart `file` · JPEG/PNG/WEBP ≤5MB · **Content-Type 파라미터 strip** · **magic-byte SEC-D25** · **`ds-stack--tight`** · **`photoStorageKey`** · roles hq/branch/social/caregiver (`d1ff63a`/`8e28fe0`/`72a6534`/`8e74b07`/`bfd171d`) · storage-dir writable |
+| v3 program schedule photo (**Q917**·**Q920**·**Q921**·**Q924**·**Q930**) | `POST /api/v1/programs/schedule/{programId}/photo` · UI **`/programs`** · `ProgramControllerRoutingTest` · `ProgramsPage.test.jsx` · `ProgramPhotoStorageServiceTest` · `programsPhoto.test.js` · `components.css` §113 | multipart `file` · JPEG/PNG/WEBP ≤5MB · **Content-Type 파라미터 strip** · **magic-byte SEC-D25** · **오류 ARIA** · **`ds-stack--tight`** · **`photoStorageKey`** · roles hq/branch/social/caregiver (`d1ff63a`/`8e28fe0`/`72a6534`/`8e74b07`/`bfd171d`/`b2eb059`) · storage-dir writable |
+| SEC-D34 엑셀 import magic-byte (**Q931~Q932**) | `VisitServiceTest` · `NhisImportServiceTest` · `StaffNhisCaregiverImportServiceTest` · `BankDepositImportServiceTest` · FE `excelImportFiles.test.js` · `VisitNhisImportPanel.test.jsx` · `StaffNhisCaregiverImportPanel.test.jsx` | 방문·청구 NHIS · 요양보호사 · 은행 입금 xlsx OOXML · FE 3경로 pre-upload (`a788e6d`/`be64fda`/`f6e4d88`/`3042a53`) |
+| 업로드 magic-byte 확대 (**Q926~Q929**) | `ClientPhotoStorageServiceTest` · `BenefitContractAttachmentStorageServiceTest` · `StaffHrFileStorageServiceTest` · `LtcGradeHistoryAttachmentStorageServiceTest` · `StaffRefresherTrainingCertificateStorageServiceTest` · FE `clientPhotos`/`benefitContractAttachments`/`staffHrFiles`/`gradeHistoryAttachments`/`staffRefresherTrainingCertificates` tests | 이용자 사진 JPEG/PNG/WEBP · 급여계약 PDF/PNG · HR·이수증 PDF/PNG/JPEG · 등급 이력 PDF/PNG (`cdba083`/`324da07`/`ed94521`/`e16f432`/`cf28a2e`/`8b164c3`) |
+| 직원현황 인쇄·활동 사진 ARIA (**Q930**) | UI **`/staff/status-report`** · **`/programs`** · `StaffStatusReportPage.test.jsx` · `ProgramSchedulePhotoUpload.test.jsx` | 필터 screen-only · `aria-invalid`/`aria-describedby` (`b2eb059`) |
 | G-LINKAGE-RECORD V196 live probe (**Q918**) | `GET /api/v1/system/live-e2e/probe` · `LiveE2eControllerTest` | **`v196ClientLinkageRecordsIntegrityCheckReady`** present · health lockstep (**Q827**) (`b7f4337`) |
 | US-R01-c leave-ledger empty scope (**Q913**) | `GET /api/v1/staff/leave-ledger/users/{userId}?year=` · `StaffLeaveLedgerServiceTest` | empty 행 시 read scope 내 `branchId`/`branchName` · scope 밖 **403** (`f6023b0`) |
 | Must ds-* 레이아웃 12종 (**Q914**) | UI 간호·요양·QR·HR·청구·송영 · `components.css` §112 | `ds-card--form`·`ds-timeline--compact`·`ds-qr-scan`·`ds-staff-hr-files` 등 (`c061494`, UXD-188) |
@@ -2266,6 +2269,8 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-18 | **Q931~Q933** — §1 스모크 **사진 업로드 성공 스크린리더 안내(UXD-191) · 엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed(FE·BE 회귀 고정)** · baseline **`9449e1f`/`2789553`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q926~Q930** — §1-3·§1-4 스모크 **업로드 magic-byte 확대 · 인쇄/ARIA a11y** · baseline **`be64fda`/`8b164c3`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q924 · Q925** — §1-3·§1-4 스모크 **활동 사진 magic-byte · NoBreakSpace mid-token strip** · baseline **`c19bfa6`/`090ac10`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q922 · Q923** — §1-3·§1-4 스모크 **M12 SSO `/carefor_login` allowlist · uppercase `&NUM` decode test lock** · baseline **`a742788`/`bc1d343`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q921 · Q919 갱신** — §1-3·§1-4 스모크 **활동 사진 `ds-stack--tight` · 세미콜론 생략 `&num` BE+liveConfig** · baseline **`759b15e`/`9e40c19`** · Flyway **V1–V196** · 모듈 **97.41%** |

@@ -1,0 +1,32 @@
+BNK-690 케어포 매뉴얼 PDF 목차 역공학 — module 7 본인부담금관리 장(목차 p83–91) verbatim
+조사일: 2026-06-27T09:05:00Z | URL: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+HTTP: 200 | SIZE: 9,992,772B | md5: 96f7d45eaca91525068ec9bfb626fb18 | 426-cycle zero drift IDENTICAL (BNK-687→690)
+
+== p2 모듈 12분할 개요 (확인) ==
+「1.수급자관리 2.이동서비스관리 3.요양급여제공 4.간호/물리급여제공 5.프로그램급여제공 6.위생·안전점검관리 7.본인부담금관리 8.직원관리 9.기초설정및운영관리 10.부가서비스 11.직원급여관리 12.수입지출관리」
+→ func.php PC 107-leaf + M2 이동서비스(주야간 전용) · demo-work 시설 셸 = M2 transport 0 carry
+
+== p5 목차 — 7.본인부담금 관리 (확인 · 신규 evidence · PDF 목차 정본) ==
+| 목차 인쇄 p | 목차 항목 (verbatim) | func leaf | demo pamcode | ogada route `@6dcf7d1` |
+|------------|---------------------|-----------|--------------|----------------------|
+| 83 | 7.본인부담금 관리 (장 시작) | M7 11-leaf | L07 10-nav | `/billing/*` 17 route |
+| 84 | 본인부담금 업무흐름도 | (흐름도) | — | G33 청구시작 → 7-1 청구 → 7-2 입금 → 7-3 미납 |
+| 85 | 청구내역 생성하기 | 7-1 청구관리 | L07_M01 `view.cost_master` | `/billing` · `/billing/claims/:claimId` |
+| 86 | 본인부담금 각종 명세서 및 발송내역 | 7-1 (4채널) | L07_M01 | `statement-dispatches` · `BillingDetailPage` |
+| 87 | 본인부담금 입금관리 및 입금처리 방법 | 7-2 입금관리 | L07_M02 `view.cost_receipt` | `/billing/payments` · `BankDepositImportPanel` |
+| 88 | 본인부담금 미납관리 | 7-3 미납관리 | L07_M03 `view.cost_nopay` | `/billing/overdue` |
+| 89 | 청구시작 기준금액 설정 | G33 숨은화면† | demo 0 | `POST /settings/billing/start-balance` |
+| 90 | 각종 입금,수납 리포트 안내 | 7-6~7-8 리포트 3종 | L07_M05~M07 | `/billing/reports/{charges,deposits,receipts}` |
+| 91 | 의료비 공제 및 본인부담금 통계 | 7-2-1·7-9 | L07_M09·M10 | `/billing/reports/statistics` · `medical-deduction/export` · `/billing/reports/refunds` |
+
+† p89 「청구시작」= func 7-3 번호와 PDF 본문 충돌(BNK-662 quadruple-source negative carry) · ogada G33 별도 settings route.
+
+== func-only / ogada superset (확인) ==
+| func leaf | demo nav | ogada superset |
+|-----------|----------|----------------|
+| 7-4 CMS | L07_M11 ✅ | `/billing/cms` |
+| 7-5 간편결제 | L07_M12 ✅ | `/billing/easy-pay` |
+| 7-10 간편계산기 | **0** (func-only) | `/billing/calculator` ✅ |
+
+== L07 pamcode ↔ display title numbering drift (확인 · demo HTML) ==
+L07_M11 nav title=「7-4.CMS」 comment stale「7-5」 · L07_M10 title=「7-9.수납,환불」 comment stale「7-10」 → **func.php comment authoritative** (BNK-683 carry 재확인)

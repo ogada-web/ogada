@@ -1,0 +1,89 @@
+# BNK-705 교차검증·갭 우선순위 (8h+) — 2026-07-14T00:14Z
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-14T00:14:00Z -->
+
+rotation: 교차검증·갭 우선순위 8h+
+직전: BNK-704 (2026-07-13T23:08Z, 엔젤·롱텀·규제 4–6h) → ~66분 후 재실측
+ogada: FE @a6255a0(+1 vs BNK-704 @654b2c6) / BE @edfb55d(+1 vs BNK-704 @bd43f59)
+
+================================================================================
+## 1. ogada git 실측 KPI (확인)
+================================================================================
+| 항목 | BNK-704 | BNK-705 | delta |
+|---|---|---|---|
+| FE HEAD | @654b2c6 | **@a6255a0** | +1 commit (QA-B372 blank shuttle→"" empty on PATCH) |
+| BE HEAD | @bd43f59 | **@edfb55d** | +1 commit (QA-B95 V190 integrity readiness surface) |
+| FE WT | CLEAN | **CLEAN** | carry |
+| BE WT | CLEAN | **CLEAN** | carry |
+| FE origin/develop..develop | 1 | **0** (pushed) | FE stream FULLY SYNCED (develop=origin/develop=origin/test=@a6255a0) |
+| BE origin/develop..develop | 614 | **0** (pushed) | BE develop=origin/develop=@edfb55d · origin/test=@598d108(2026-06-08) |
+| BE origin/test..develop | 614 | **615** | +1 edfb55d |
+| merge residual | 615 (FE1+BE614) | **615 BE-only** | FE FF+push 완료 · BE +1 |
+| Route / Page | 124 / 98 | 124 / 98 | carry |
+| FE test 파일 | 507 | 507 | carry (VehiclesPage.test.jsx +36줄 assertion 확장) |
+| BE Test 파일 / @Test | 279 / 2077 | 279 / 2077 | carry (edfb55d assertion 확장·신규 @Test 0) |
+| Flyway tracked | V1–V190 | V1–V190 | carry (V190 committed BNK-703 landing carry) |
+| /(payroll\|accounting) | 0 | 0 | sole product P1 lever carry |
+| 모듈 % | 84.31% (24.45/29) | 84.31% | carry |
+
+================================================================================
+## 2. G16 셔틀 주소 3-layer defense-in-depth end-to-end CLOSURE (메뉴/필드/워크플로 블록)
+================================================================================
+BNK-702 → BNK-705(~2h20m) 사이 **G16 셔틀 주소 chain**이 5-commit tick-tock 으로 완전 close:
+
+| # | 계층 | SHA | 커밋 | 파일·범위 |
+|---|---|---|---|---|
+| 1 | FE a11y | @175c570 | ux(a11y/US-Q01) fix invalid shuttle sheet table semantics (UXD-172) | Transport{Sheet,Schedule}View.jsx role table→list |
+| 2 | BE DB | @3e627b3 | fix(v2/transport) normalize shuttle addresses consistently + `2b3f3d9` V190 integrity SQL 대체 (WT CLEAN transition) | VehicleService.resolveShuttleAddress trim + blank→branch fallback |
+| 3 | BE DB | @bd43f59 | test(v2/QA-B95) extend transport shuttle probe to V190 integrity | V189TransportShuttleSchemaReadinessProbe 확장 (+33/-11) |
+| 4 | FE FORM | @654b2c6 | fix(v1.2.1/G16) normalize vehicle shuttle addresses to match BE | 셔틀 폼 blank/공백 정규화 |
+| 5 | FE PATCH | @a6255a0 | fix(v1.2.1/QA-B372) send blank shuttle addresses as empty string on PATCH | vehicles.js `toVehicleShuttleAddressPayload` blank "" 전송 → BE branch-depot fallback 트리거 |
+| 6 | BE OPS | @edfb55d | fix(v2/QA-B95) expose V190 transport shuttle integrity readiness | HealthController + LiveE2eController + LiveE2eProbeResponse `v190TransportShuttleIntegrity` 플래그 노출 |
+
+**End-to-end 검증 chain**: FE 폼 blank/공백 → FE payload "" empty string → BE VehicleService resolveShuttleAddress trim+fallback → DB V190 CHECK `length(btrim(shuttle_start_address)) > 0` OR NULL → V189 unify `absent_today = skip_dispatch` CHECK → Tenant FK MATCH SIMPLE → **Health/LiveE2e probe `v190TransportShuttleIntegrity` 노출** (운영자 마이그레이션 baseline 직접 검증 가능).
+
+**경쟁 4종 대비 우위**:
+- 케어포: `demo-work.carefor.co.kr` 시설 셸 이동서비스 nav **0** (M2 func.php 정본과 별개)
+- 이지케어: `/new.ez` RFID 태그비교만 · 셔틀 주소 branch fallback + DB CHECK 정본 **0**
+- 엔젤: silverangel systemFeature 404 · CMS 5-method(BNK-704) 확인되나 이동서비스 셔틀 정본 **0**
+- 롱텀: NHIS #44 원천 규제만 (ERP 없음)
+
+→ **v1.3-C 이동서비스 우위 문구 재갱신 후보**: 「FE→BE 5-commit chain(a11y·form·payload·resolve·CHECK·health) end-to-end 셔틀 주소 branch-depot fallback + V190 integrity health probe — 경쟁 4종 유일」
+
+================================================================================
+## 3. 경쟁사 재실측 · 신규 공지·엑셀 포맷 스캔
+================================================================================
+| URL | HTTP | SIZE | md5 | 상태 vs BNK-704 |
+|---|---|---|---|---|
+| NHIS #44 joHistoryContent(full date) | 200 | 7,572B | c886ff1f | **441차 zero drift IDENTICAL** · 러-1~4·편도50%·1일1회·수급자부담X 6/6 verbatim |
+| silverangel notice list.do | 200 | 5,707,602B | ea7d6b3d | **IDENTICAL** · 최신 Tmp_idx=**221572** · ≥221573 **0** (15-day pause since BNK-695 AI 총평) |
+| ezCare /help/faq.ez | 200 | 80,057B | d5dae99d | size-lock **19-cycle** · 233 rowid(max 21781) · hit_sum **3,646,358**(+22 vs BNK-704 3,646,336) · Top-1 21601=83,903 |
+| law247 admRulSeq=2100000271110 | 200 | 78,450B | 41880b04 | **md5 DRIFT semantic IDENTICAL**(`Time=` 동적 토큰 rotation) · size-lock carry |
+| MOHW 2026-126호 board.es | 200 | 103,113B | d5902718 | **md5 DRIFT semantic IDENTICAL**(og:url `&tag=&nPage=1` 제거 · disk `d702b54c` 103,139B 대비 -26B) |
+
+엑셀 포맷 스캔 결론: NHIS #44 441차 불변·notice ≥221573 0 → **신규 규제/엑셀 포맷 변경 0** (~66분 delta 실측). BNK-702 결론 「~19일 zero drift · import adapter 긴급 작업 불필요」 재확인.
+
+================================================================================
+## 4. P0/P1 재정렬 권고 (planner)
+================================================================================
+| ID | 유형 | 우선순위 | 비고 |
+|---|---|---|---|
+| M11/M12 payroll·accounting | product P1 sole lever | **P1 유지** | +6.90pp→91.21%; ezCare FAQ +22 재무 클러스터 demand-signal carry |
+| G16 shuttle address chain | product delta | **CLOSED** | 3-layer defense-in-depth end-to-end (BNK-702 open→BNK-705 close) |
+| BE V190 integrity | ops / rules §6 | **CLOSED** | BNK-703 landing · BNK-705 health probe surface (`v190TransportShuttleIntegrity`) |
+| FE shuttle a11y role | ops / rules §6 | **CLOSED** | @175c570 BNK-703 landing |
+| G-NURSING-DIRECTIVE-EXPIRY | product gap | **P3 가정 유지** | dashboardSummary export 0 · 격상 근거 0(재검) |
+| G-CLIENT-CARE-AGREEMENT-EXPIRY | product gap | **P3 가정 유지** | 직원 employmentContract*와 별개 「확인」 재확인 |
+| G-AI-NEEDS-ASSESSMENT-SUMMARY | product gap | **P2/P3 carry** | silverangel 221572 15일 pause · 신규 공지 0 |
+| G14/G26/v1.3-C/v2 CMS/leave/M6 | closed axes | **재오픈 0** | 17-route LIVE(~157-cycle carry) |
+
+가정 번복: **0** (제품 갭). 상태 변경: BE 615(+1) BE-only·V190 integrity health probe LANDING · G16 chain CLOSED.
+미확인 축소: BNK-702 「V190 untracked ops P0」 「FE a11y ops P0」 두 건 모두 CLOSED · 「V190 baseline 직접 검증 불가」 → 「확인: `/live-e2e` `v190TransportShuttleIntegrity` 필드」.
+
+================================================================================
+## 5. per-cycle minimum checklist
+================================================================================
+[x] 신규/재실측 증거 URL 5+ (NHIS #44·notice list·FAQ list·law247·MOHW126 — 66분 delta zero-drift 재확인)
+[x] 메뉴/필드/워크플로 1블록 (G16 셔틀 주소 6-commit tick-tock chain 표 + 경쟁 4종 대비 우위)
+[x] COMPETITOR_MATRIX 1행+ @a6255a0/@edfb55d(이동서비스·헬스체크 행)
+[x] BENCHMARK_REPORT §705(교차검증·갭 우선순위 8h+ · 66분 delta · G16 chain CLOSED)
+[x] memory/decisions.md 최상단 BNK-705

@@ -1,0 +1,26 @@
+BNK-687 ogada git 실측 — 케어포 0–2h companion
+조사일: 2026-06-27T06:30:00Z
+
+FE develop: db15b566f95e5e1d8f67c68fae1fea910b215288
+  WT: CLEAN
+  delta vs BNK-686 cf73ae8: +1 commit
+  msg: chore(v1.2.1/US-Q01): surface local safety template fallback
+  files: SafetyDailyChecksPage.jsx + SafetyInfectionControlPage.jsx + SafetyPeriodicChecksPage.jsx + test
+  ahead origin/test: 281
+
+BE develop: 72924bbbb27b807a62057d1554d4b54940bbc4f7
+  WT: DIRTY 1M (SafetyCheckControllerRoutingTest.java +21/-9L)
+  delta vs BNK-686: HEAD zero advance
+  ahead origin/test: 602
+
+merge gate: 883 (281+602, +1 vs BNK-686 882)
+
+KPI:
+  Route (<Route in App.jsx): 123
+  Page (*Page.jsx in pages/): 97
+  FE test: 500 (207 .test.js + 293 .test.jsx)
+  BE @Test: 2043
+  reports routes: 28
+  module coverage: 84.31% (id=6 ✅ id=7 ✅ 1.0)
+
+delta vs BNK-686: merge gate +1 · FE +1 commit · BE WT CLEAN→DIRTY

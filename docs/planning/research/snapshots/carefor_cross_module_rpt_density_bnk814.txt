@@ -1,0 +1,74 @@
+# [BNK-814] 케어포 daycare/func.php × ogada 모듈 리포트 밀도 교차검증
+# 조사일: 2026-07-17T01:37Z | rotation: 케어포 역공학 0–2h
+# 출처: docs/planning/research/snapshots/carefor_func.php (md5 6226e6eb·98,328B)
+#       docs/planning/research/snapshots/carefor_func_wayback_20260519_id_bnk814.html (md5 6226e6eb IDENTICAL)
+# ogada src: FE @9907725 (src/frontend/src/App.jsx <Route\b 132 + <Routes> 1 = Route 133)
+#           BE @794bfed
+# 방법: grep -E "^\s*<n>-[0-9]" (leaf count) + grep -cE '(리포트|통계|현황|집계|대장)'
+#       ogada rg -c 'path="/<mod>[/"]' src/App.jsx + rg -c 'path="/<mod>/reports'
+# =============================================================================
+
+## 1. 케어포 daycare/func.php M1–M11 리포트 밀도 (전수 파싱)
+
+M1 (수급자)         : total 11 · rpt 5  ( 45.5%)  ← 1-2 전체현황·1-7 리포트·1-8 통계·1-9 등급 변동·1-10 발송 리포트
+M2 (탑승/차량/공단) : total 10 · rpt 3  ( 30.0%)  ← 2-7 월간 변동현황·2-8 월간 입소자 현황·2-9 외출 리포트
+M3 (요양급여)       : total 11 · rpt 5  ( 45.5%)  ← 3-3 목욕 제공현황·3-4/3-5/3-6 리포트·3-7 서비스 집계
+M4 (간호/치료)      : total 10 · rpt 5  ( 50.0%)  ← 4-3/4-4/4-5 리포트·4-6-2/4-6-3 물리치료 리포트 (최다 %)
+M5 (프로그램)       : total 13 · rpt 4  ( 30.8%)  ← 5-7/5-8/5-9/5-10 리포트
+M6 (위생·안전)      : total  5 · rpt 0  (  0.0%)  ← 리포트/통계 leaf 부재 (rpt-free)
+M7 (본인부담)       : total 11 · rpt 3  ( 27.3%)  ← 7-6/7-7/7-8/7-9 대장(4 중 3 매칭) — 7-6 청구·7-8 수납·7-9 환불
+M8 (직원)           : total 15 · rpt 2  ( 13.3%)  ← 8-11 리포트·8-13 연차/휴일대장
+M9 (기초설정/운영)  : total  6 · rpt 2  ( 33.3%)  ← 9-x 부가 대장
+M10 (부가서비스)    : total  9 · rpt 0  (  0.0%)  ← 발송/알림 위주 (rpt-free)
+M11 (급여회계)      : total  6 · rpt 2  ( 33.3%)  ← 11-3/11-6 대장·리포트
+─────────────────────────────────────────────────────────────
+합계                : total 107 (기존 「109」 marketing 표기 대비 실측 -2)
+
+## 2. ogada Route 밀도 (@9907725 src/frontend/src/App.jsx 실측)
+
+clients   : 11 route · reports  0     ← 리포트는 dashboard/care/billing 등에 분산
+billing   : 17 route · reports  5 (29.4%) ← charges/deposits/receipts/refunds/statistics
+care      : 16 route · reports  9 (56.3%) ← meal-excretion·bath-help·intensive-excretion·position-change·patient-service·service-summary·nursing-service·hospital-visits·medication-delivery
+programs  :  8 route · reports  5 (62.5%) ← reports + participations/provision-records/group-history/schedules
+staff     : 13 route · reports  1 ( 7.7%) ← reports/status
+payroll   :  5 route · reports  1 (20.0%)
+nursing   : 16 route · reports  0
+safety    :  5 route · reports  0
+transport :  9 route · reports  0
+accounting:  1 route
+compliance:  2 route
+meals     :  1 route
+dashboard :  2 route
+
+## 3. 케어포 M × ogada 모듈 리포트 밀도 대조 (핵심 발견)
+
+M3 요양급여      45.5% ← ogada care     56.3% (9/16)   → **SUPERIOR**  (rpt 밀도 +10.8pp)
+M4 간호/치료     50.0% ← ogada nursing   0.0% (0/16)   → **INFERIOR** (nursing 컨트롤러 out-of-Route)
+M5 프로그램      30.8% ← ogada programs 62.5% (5/8)    → **SUPERIOR**  (rpt 밀도 +31.7pp)
+M7 본인부담      27.3% ← ogada billing  29.4% (5/17)   → **PARITY**   +SUPERSET 5 (BNK-797)
+M8 직원          13.3% ← ogada staff     7.7% (1/13)   → **BALANCED** (스태프 lifecycle 재사용)
+M11 급여회계     33.3% ← ogada payroll  20.0% (1/5)    → **BALANCED**
+M6 위생·안전      0.0% ← ogada safety    0.0% (0/5)    → **MATCH**    (BNK-810 5/5 재앵커)
+M10 부가서비스    0.0% ← ogada (분산)              → 발송/알림 lifecycle 재조립
+
+## 4. 리포트 부재 leaf 재확인
+
+M4 nursing rpt 0 = 컨트롤러 계층에 통합(NursingEmergencyRecord·NursingOralCareCheck·NursingVitalCheck 등) → App.jsx Route 는 form/list 착지 위주 · 이지케어·엔젤 대비 실측 격차 없음 「가정」
+M2 transport rpt 0 = TransportServiceFeeService/TransportRoster action route 중심 · rpt 는 대시보드 카드로 흡수 「가정」
+
+## 5. 근거 재실측 (라이브 재교차검증)
+
+- 케어포 [func.php](https://www.carefor.co.kr/daycare/func.php) : LIVE HTTP **000** (curl --max-time 15 timeout 3연속) · **96-cycle+ carry** · disk 6226e6eb LOCK
+- 케어포 [demo-work](https://demo-work.carefor.co.kr/) : LIVE HTTP **000** carry
+- 케어포 PDF `Dov8rzFqBv.pdf` : LIVE HTTP **000** carry
+- Wayback [func.php id_ 20260519](https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php) : **200·98,328B·`6226e6eb`** → disk canonical BYTE-IDENTICAL (신규 fresh evidence · 59 days ago) → 재실측 zero drift
+- Wayback [search_menu.js id_ 20260609](https://web.archive.org/web/20260609231630id_/https://demo-work.carefor.co.kr/js/search_menu.js) : **200·47,738B·`c1c490eb`** → BNK-757 snapshot BYTE-IDENTICAL (신규 fresh evidence · 38 days ago)
+- [NHIS #44 이동서비스비](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) : 200·7,572B·`c886ff1f` **547차** IDENTICAL (BNK-813 546차→+1) · 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+
+## 6. 결론
+
+- **가정 번복 0** : M6 rpt=0 vs safety=0 재확인 · M7 rpt 밀도 케어포 27.3% ↔ ogada billing 29.4% PARITY carry
+- **신규 관측 (P4 참고)** : ogada care 56.3% · programs 62.5% rpt 밀도가 케어포 대응 모듈보다 SUPERIOR → G-CARE/G-PROG 리포트 세분화 지속 근거
+- **주력 gap** : ogada nursing 리포트 Route 부재 → 「가정」 nursing 리포트는 컨트롤러 내부에 있음 (하위 페이지에서 fetch) · rpt-Route 명시 필요 여부는 planner 판단
+- **fresh evidence** : Wayback 20260519 (func.php) + 20260609 (search_menu.js) 두 URL byte-IDENTICAL → 케어포 canonical 안정
+- **NHIS #44 547차** : Transport 6-link 상수 재조정 불요 · id=2 0.85 carry

@@ -1,0 +1,74 @@
+BNK-679 — 케어포 역공학 0–2h · func.php M11 직원급여 6-leaf authoritative cross-walk
+조사일: 2026-06-27 (KST) | rotation: 케어포 0–2h (BNK-678 「다음 rotation: func.php M11 cross-walk」 직접 후속)
+작성: benchmark_researcher [BNK] | doc:owner=BNK doc:audience=PLN
+
+====================================================================
+1. 증거 재실측 (확인)
+====================================================================
+- LIVE  https://www.carefor.co.kr/daycare/func.php          → HTTP 000 connection timeout 25s (61-cycle 연속 timeout carry · BNK-666 56→+5)
+- LIVE  https://demo-work.carefor.co.kr/                     → HTTP 000 timeout (carry)
+- WAYBACK raw id_ http://web.archive.org/web/2id_/https://www.carefor.co.kr/daycare/func.php
+        → HTTP 200 · 98,328B · md5 6226e6eb92fdd25ed3e50842a5e8a00b
+        → disk snapshots/carefor_func.php md5 6226e6eb... = BYTE-IDENTICAL (zero drift · Wayback raw baseline 62-cycle+ stable)
+- 판정: LIVE 장기 timeout 에도 Wayback `id_` raw fallback baseline 확정 carry (BNK-666 §1 방법론).
+
+====================================================================
+2. func.php M11 「직원 급여」 6-leaf 정본 (verbatim grep · <!--11-N.)
+====================================================================
+grep -oE '<!--11-[0-9]+\.[^-]*' carefor_func.php  (Wayback raw fetch 와 disk 동일 verbatim)
+
+| leaf  | 케어포 메뉴명 (verbatim)                       | 기능 추정 (역공학)                                  | ogada @f7061c4/@ac699192 |
+|-------|-----------------------------------------------|----------------------------------------------------|--------------------------|
+| 11-1  | 월별 급여대장                                  | 직원 월 급여 명세·지급 대장 (월 단위 grid)          | ❌ /payroll/* 0 route     |
+| 11-2  | 퇴직적립금 관리                                | 퇴직급여 충당·적립 누계 관리                        | ❌                        |
+| 11-3  | 직원 급여계약 설정                             | 직원별 기본급·계약 조건 (근로계약 연계)             | △ 근로계약 lifecycle만(StaffEmploymentContractRenewalPanel) · 급여액 ❌ |
+| 11-4  | 급여기초 설정(수당/공제)                       | 수당·공제 항목 마스터 (4대보험·세금 base)           | ❌                        |
+| 11-5  | 인건비 지출비율 참고자료                       | 장기요양 인건비 지출비율(법정 60%+) 모니터          | ❌ (FAQ K008·21710 = ezCare 도 사후 안내) |
+| 11-6  | 직원 급여대장 리포트(간이지급명세서)           | 급여대장 PDF·간이지급명세서 출력                    | ❌                        |
+
+주: func.php 에는 `<!--12-` prefix 모듈 없음 (grep 0 hit). ogada 분류상 M12「수입지출·회계」는
+   케어포 func.php 정적 메뉴에 별도 12-x leaf 로 노출되지 않음 — 케어포는 급여(11)에 인건비 지출비율(11-5)을
+   포함하고 회계는 별도 모듈/외부 처리 추정(미확인). ogada competitorModuleCoverage 의 id=12 는 ogada 자체 분류.
+
+====================================================================
+3. ogada 갭 실측 (git grounded · src/frontend @f7061c4)
+====================================================================
+- grep -rEi 'payroll|accounting|급여대장|salary' src (route|path=)  → 0 hit
+- find src -iname '*payroll*' -o -iname '*accounting*' -o -iname '*salary*'  → 0 file
+- competitorModuleCoverage.js: id=11「직원 급여」coverage 0 · id=12「수입지출·회계」coverage 0
+- 부분 인접: StaffEmploymentContractRenewalPanel = 근로계약 갱신 lifecycle (11-3 의 "계약" 일부) — 급여액·대장 미구현
+
+====================================================================
+4. module coverage 산식 재검증 (확인 · 29 모듈)
+====================================================================
+sum=24.45 / 29 = 0.8431 = 84.31% (BNK-678 IDENTICAL)
+  · 1.0 ×22 = 22.0  (1-1·1-3·1-7·1-9·3-1·4·5·26·43·6·7-1·7-2·7-2-1·7-3·7-4·7-6·7-10·9·nhis·qr·hq·platform)
+  · 0.85×2  = 1.70  (id=2 이동서비스 · id=8 직원·근태)
+  · 0.75×1  = 0.75  (id=10 부가서비스)
+  · 0.0 ×4  = 0.0   (1-5 가정통신문 · 1-10 연계기록지 · 11 직원급여 · 12 회계)
+M11+M12 closure(0→1 each): (24.45+2)/29 = 26.45/29 = 0.9121 = 91.21% (+6.90pp) — sole P1 lever
+M11 단독 closure: 25.45/29 = 87.76% (+3.45pp) · M12 단독: 동일 +3.45pp
+
+====================================================================
+5. 경쟁사 cross-walk (M11 직원급여)
+====================================================================
+| 경쟁사     | 급여 모듈 근거                                                        | 깊이 |
+|------------|----------------------------------------------------------------------|------|
+| 케어포     | func.php 11-1~11-6 정적 메뉴 6-leaf (월급여대장·퇴직적립·계약·수당공제·지출비율·리포트) | full in-app ERP |
+| 이지케어   | FAQ 결제·재무 클러스터 123 출현 (수당/급여 64·재무회계 6·4대보험 15·세무 7) — K008/K012/K014 | in-app + 사후 FAQ |
+| 엔젤시스템 | system_feature 급여 언급 △ (미확인 상세)                              | △    |
+| 롱텀(공단) | N/A (수가·고시 only)                                                  | N/A  |
+| ogada      | 0 route · 근로계약 lifecycle 인접만                                   | ❌    |
+
+====================================================================
+6. ogada 기획 제안 (planner)
+====================================================================
+- M11/M12 = sole remaining P1 lever (+6.90pp → 91.21%) — M6 closure 후 유일 최대 KPI lever.
+- 케어포 11-1~11-6 = in-app full ERP 정본. 이지케어 = FAQ finance cluster 123 demand-signal + BPO rowid=434 어댑터형.
+- 스코프 결정 질문(다년 carry): in-app 6-leaf 모듈 vs BPO 어댑터(이지케어 모델) 하이브리드. 본 cross-walk 로
+  in-app 경로 시 최소 leaf 세트 확정 가능: (필수) 11-1 월별 급여대장 · 11-3 급여계약(급여액) · 11-6 리포트(간이지급명세서)
+  → id=11 0→1 = +3.45pp; (선택) 11-2 퇴직적립 · 11-4 수당/공제 · 11-5 지출비율.
+- 11-5 인건비 지출비율 = 장기요양 법정 인건비 지출비율 모니터 → 규제 compliance 차별화 후보(법정 60%+ 경보).
+
+per-cycle minimum 충족: 증거 재실측(Wayback raw byte-identical + LIVE 61-cycle timeout) · M11 6-leaf 메뉴/필드 블록 ·
+COMPETITOR_MATRIX 1행+ @HEAD · BENCHMARK_REPORT §679 소절.

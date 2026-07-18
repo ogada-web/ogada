@@ -1,0 +1,76 @@
+# carefor_m11_payroll_leaf_crosswalk_bnk734.txt
+# BNK-734 | 2026-07-14T20:52:00Z | 케어포 역공학 0-2h
+# 초점: func.php Module 11 「직원 급여관리」 6-leaf ↔ ogada /payroll/* leaf-level 1:1 전수 재크로스워크
+#       (BNK-602 §M11 「★★★ P2 신규 갭 0/6 — /payroll/* 전무」 → 6/6 FULL CLOSED 회고 확정)
+#
+# === Source (역공학 근거) ===
+# 케어포: func.php disk canonical 6226e6eb92fdd25ed3e50842a5e8a00b (98,328B·toolbar-stripped)
+#   - LIVE https://www.carefor.co.kr/daycare/func.php = HTTP 000 timeout 25s (75-cycle+ 「미확인」·IP/CDN 차단 추정)
+#   - disk canonical 우선 원칙(snapshots/README) — M11 6-leaf verbatim grep -oF (각 2-hit = 메뉴 라벨 + tooltip):
+#       "월별 급여대장":2  "퇴직적립금":2  "급여계약":2  "급여기초":2  "인건비":2  "급여대장 리포트":2  "직원 급여관리"(모듈 헤더):1
+# ogada: git 실측 FE develop @47bc428 / BE develop @79d4279 (WT CLEAN·아래 KPI 블록)
+#
+# === carefor func.php Module 11 「직원 급여관리」 (6-leaf·주야간보호 daycare) ===
+#   11-1. 월별 급여대장
+#   11-2. 퇴직적립금 관리
+#   11-3. 직원 급여계약 설정
+#   11-4. 급여기초 설정(수당/공제)
+#   11-5. 인건비 지출비율 참고자료
+#   11-6. 직원 급여대장 리포트
+#
+# === leaf-level 1:1 crosswalk (ogada @47bc428 FE / @79d4279 BE) ===
+#
+# | carefor M11 leaf              | ogada FE route (Page)                                  | ogada BE endpoint (/api/v1/staff/payroll)                   | 상태 |
+# |-------------------------------|--------------------------------------------------------|-------------------------------------------------------------|------|
+# | 11-1 월별 급여대장            | /payroll/ledger (StaffPayrollLedgerPage)               | POST /ledger-preview (StaffPayrollLedgerService.previewLedger) | ✅  |
+# | 11-2 퇴직적립금 관리          | /payroll/retirement-accrual (StaffPayrollRetirementAccrualPage) | POST /retirement-accrual-preview                   | ✅  |
+# | 11-3 직원 급여계약 설정       | /payroll/basis (StaffPayrollBasisPage)                 | POST /ledger-preview (BE comment "M11 minimum set (11-1, 11-3)") | ✅  |
+# | 11-4 급여기초 설정(수당/공제) | /payroll/basis (StaffPayrollBasisPage)                 | GET /allowance-deduction-catalog (StaffPayrollAllowanceDeductionCatalog) | ✅  |
+# | 11-5 인건비 지출비율 참고자료 | /payroll/labor-cost-ratio (StaffPayrollLaborCostRatioPage) | POST /labor-cost-ratio-preview                          | ✅ ★ogada 우위 |
+# | 11-6 직원 급여대장 리포트     | /payroll/reports (StaffPayrollReportsPage)             | POST /simple-payment-statement-preview (간이지급명세서)     | ✅  |
+#
+# => 6/6 FULL parity (id=11 「직원 급여」 competitorModuleCoverage.js coverage=1.0
+#    comment verbatim: "US-PAYROLL-M11: 11-1~11-6 FE wire complete (ledger·retirement·basis·labor-cost-ratio·statement)")
+#
+# === ogada 우위 (11-5 differentiator) ===
+# 케어포 11-5 = "인건비 지출비율 **참고자료**"(정적 문서 열람) · 이지케어 payroll_cost_rate.html = static(BNK-720 재확인)
+# ogada 11-5 = ACTIVE compliance preview:
+#   StaffPayrollSupport.java:
+#     LABOR_COST_RATIO_THRESHOLD_PERCENT = new BigDecimal("60.00")   ← 인건비 지출비율 60% 법정 기준 active guard
+#     DOCUMENT_CODE_LABOR_COST_RATIO = "M11-5"
+#     ROUTE_PAYROLL_LABOR_COST_RATIO = "/payroll/labor-cost-ratio"
+#     LABOR_COST_RATIO_SURFACE_KIND = "STAFF_PAYROLL_LABOR_COST_RATIO_PREVIEW"
+#   POST /labor-cost-ratio-preview → 실시간 인건비율 계산 + 60% 기준 대비 준수/미달 판정
+# => 케어포·이지케어 static 참고자료 대비 ogada 유일 active 60% compliance preview (경쟁 3종 중 유일)
+#
+# === superset (M11 초과 ogada 기능) ===
+# 11-6 초과: POST /simple-payment-statement-preview = 간이지급명세서 미리보기(국세청 제출용 문서 자동화)
+#            StaffPayrollSimplePaymentStatementPreviewResponse + StaffPayrollStatementLineResponse
+# RBAC: 5-endpoint 모두 @PreAuthorize hasAnyRole('HQ_ADMIN','BRANCH_ADMIN','SOCIAL_WORKER') (권한 분리)
+#
+# === 갭 이력 (P2 → CLOSED 회고) ===
+# BNK-602 (2026-06-24): "[M11] 직원 급여관리 (6-leaf) ← ★★★ P2 신규 갭 (ogada /payroll/* 없음)"
+#                       11-1~11-6 모두 "→ ogada ❌ NO /payroll route"
+# BNK-734 (2026-07-14): 6/6 ✅ FULL (FE 5-route + BE 5-endpoint + coverage 1.0) = P2 갭 완전 해소 확정
+#
+# === ogada git 실측 KPI (@47bc428 / @79d4279) ===
+# FE develop HEAD: 47bc428  ux(a11y/FE-16): harden G2 home-newsletter a11y and define .ds-pre (UXD-176) · WT CLEAN
+#   - BNK-733 @71839a6 → +1 · ahead origin/test(71839a6) 1
+# BE develop HEAD: 79d4279  fix(v2/M12): autowire accounting bpo service ctor · WT CLEAN
+#   - BNK-733 @1f3698d → advance · ahead origin/test(598d108) 642
+# Route: 132 (131 <Route\b + 1 <Routes>·carry)  Page: 105 (*Page.jsx·carry)
+# FE test: 518 (214 .test.js + 304 .test.jsx·carry)
+# BE Test files: 289 (288 *Test.java + 1 *Tests.java·carry)   BE @Test: 2161 (+1 vs BNK-733 2160)
+# Flyway: V1–V192 (max V192·신규 0·carry)   accounting route 1  payroll route 5
+# 모듈 커버리지: 93.62% (27.15/29·carry) — id=11 「직원 급여」 1.0 carry (M11 6/6 확정)
+# merge gate: FE ahead 1 + BE ahead 642 = 643 (양쪽 WT CLEAN·BE-heavy → tester FF)
+#
+# === 규제 백본 재실측 (NHIS #44·467차) ===
+# 확인 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+#   HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 467차 zero drift (BNK-733 466차 → +1) · live=disk IDENTICAL
+#   verbatim grep -oF: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+#   snapshot: nhis_jo44_live_bnk734.html (신규 차수 파일·IDENTICAL carry·덮어쓰기 아님)
+#   ↔ ogada TransportServiceFeeService(RU_1~4·ONE_WAY_RATIO=0.5·1일1회 guard) 6-link chain(id=2 0.85) carry
+#
+# 덮어쓰기 0 · 가정 번복 0 · 신규 core 갭 0 · closure(회고 확정) 1 (M11 직원 급여관리 0/6 → 6/6 FULL)
+# per-cycle minimum 4종 충족: 재실측 URL 1(NHIS 467차)·워크플로 블록 1(M11 6-leaf ↔ /payroll crosswalk)·MATRIX 1행+ @47bc428/@79d4279·BENCHMARK §734

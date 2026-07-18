@@ -1,0 +1,82 @@
+# BNK-666 — 케어포 func.php Wayback `id_` raw = canonical byte-identical 검증 · func.php 107-leaf 재실측 · LIVE 000 carry
+# 조사일: 2026-06-26T17:55:00Z | rotation: 케어포 역공학 0–2h
+# 작성: benchmark_researcher [BNK]
+# HEAD: FE @2d9b9d3 / BE @3d4e58a (BNK-665 동일 — HEAD zero advance 1-cycle · 양쪽 WT CLEAN)
+
+## §0 per-cycle minimum 충족 요약
+- 신규/재실측 evidence URL: Wayback `id_` raw func.php(신규 경로) + LIVE 000 재측정 + NHIS #44 disk 재실측
+- 메뉴/필드/워크플로 1블록: func.php 107 numbered-leaf 모듈별 재집계 + M7 본인부담 11-leaf authoritative 번호 verbatim
+- COMPETITOR_MATRIX 1행+ `@2d9b9d3`/`@3d4e58a` 갱신 (BNK-666 delta)
+- BENCHMARK_REPORT §666 소절
+
+## §1 ★★★ Wayback `id_` raw = canonical disk byte-identical (BNK-666 신규 — 방법론 강화)
+
+| 경로 | URL | HTTP | SIZE | md5 | 비고 |
+|---|---|---:|---:|---|---|
+| LIVE direct | https://www.carefor.co.kr/daycare/func.php | **000** | 0 | — | connection timeout 8s (carry·BNK-662 54-cycle+ 지속) |
+| Wayback 2026 redirect | https://web.archive.org/web/2026/.../func.php | 302 | 0 | — | redirect stub |
+| **Wayback `id_` raw** | http://web.archive.org/web/**2id_**/https://www.carefor.co.kr/daycare/func.php → resolved `20260519072235id_` | **200** | **98,328** | **`6226e6eb`** | **★ canonical disk `carefor_func.php` 와 `cmp` byte-for-byte IDENTICAL** |
+| (참고) Wayback rewriter-wrapped | …/web/20260519072235/…/func.php | 200 | 104,181 | `8403b7cf` | toolbar/rewriter prefix 포함(BNK-662 측정) |
+
+→ **결론**: Wayback `id_`(raw·rewriter 무) 경로는 toolbar/cachebuster 오염 없이 **canonical 98,328B `6226e6eb` 와 정확히 일치**. LIVE 가 HTTP 000(장기 timeout)인 동안에도 `id_` raw 가 **재현 가능한 canonical 원천**임을 입증 → canonical disk 무손상(pristine) 재확인. 향후 carefor func.php 재실측은 LIVE→실패 시 Wayback `id_` raw fallback 으로 byte-identical 검증 가능.
+
+## §2 func.php 107 numbered-leaf 재집계 (확인 · canonical `6226e6eb` 직접 grep)
+
+`grep -oE '<!--[[:space:]]*[0-9]+-[0-9]+' carefor_func.php` = **107** operational numbered leaf
+
+| 모듈 | leaf 수 | 모듈명(대표) |
+|---|---:|---|
+| M1 | 11 | 수급자/보호자/현황·통계 |
+| M2 | 10 | 이동서비스(송영) |
+| M3 | 11 | 요양 급여제공 기록 |
+| M4 | 10 | 간호·물리 |
+| M5 | 13 | 프로그램 급여 |
+| M6 | 5 | 위생·안전 |
+| M7 | 11 | 본인부담금 |
+| M8 | 15 | 직원관리 |
+| M9 | 6 | 기초설정·수가 |
+| M10 | 9 | 부가서비스 |
+| M11 | 6 | 회계/재무 |
+| **합계** | **107** | + `8-11.질향상노력(삭제예정)` 1 = **108** · demo noready 주석 2 = **109 마케팅 합계** carry |
+
+- `삭제예정` grep = **1** (8-11.질향상노력) · `이동서비스` grep = **3** (M2 송영 블록)
+- BNK-662 §1 「107 numbered + 삭제예정 1 + demo noready 2 = 109」 재입증 (drift 0)
+
+## §3 M7 본인부담 11-leaf — func.php HTML comment authoritative 번호 verbatim (확인)
+
+```
+<!--7-1.본인부담금 청구관리--
+<!--7-2.본인부담금 입금관리--
+<!--7-2-1.의료비공제(연말정산)--
+<!--7-3.본인부담금 미납관리--
+<!--7-4.본인부담금 자동이체 (CMS)--
+<!--7-5.본인부담금 간편결제--
+<!--7-6.본인부담금 청구대장 리포트--
+<!--7-7.본인부담금 입금대장 리포트--
+<!--7-8.본인부담금 수납대장 리포트--
+<!--7-9.본인부담금 수납,환불내역--
+<!--7-10.본인부담금 간편계산기--
+```
+
+→ **func.php HTML comment = quadruple-source 정본 1순위** 재확인(BNK-662 §3 cross-walk).
+  - func.php comment 「7-4.CMS / 7-5.간편결제 / 7-6~7-8 rpt」 = **demo `param-info title` 와 일치** (demo **내부** HTML comment 만 stale `7-5/7-6/...` drift·BNK-662 §3-2 carry).
+  - PDF p.91 구번호(7-5/7-6/7-7 rpt)는 **−1 시프트 negative** carry (BNK-662 §3-4).
+
+### ogada Route 1:1 매핑 (변동 0 · module 7 = 1.0 carry)
+7-1→`/billing` · 7-2→`/billing/payments` · 7-2-1→`/billing/reports/statistics` · 7-3→`/billing/overdue` · 7-4→`/billing/cms` · 7-5→`/billing/easy-pay` · 7-6→`/billing/reports/charges` · 7-7→`/billing/reports/deposits` · 7-8→`/billing/reports/receipts` · 7-9→`/billing/reports/refunds` · 7-10→`/billing/calculator`(ogada superset·demo 0 hit)
+→ **10✅ + 1 superset(7-10) + G33 청구시작 숨은화면 ✅** = module 7 coverage **1.0**
+
+## §4 ogada @HEAD 실측 (BNK-666 · HEAD zero advance)
+- FE `@2d9b9d3` WT **CLEAN** · ahead **266** vs `origin/test=ab4de83` (BNK-665 동일 SHA · HEAD zero advance 1-cycle)
+- BE `@3d4e58a` WT **CLEAN** · ahead **592** vs `origin/test=598d108` (BNK-665 동일 SHA · HEAD zero advance 1-cycle)
+- **118 Route(`<Route\b` 118 + `<Routes>` 1 = 119)·93 page(`*Page.jsx`)·V1–V183·BE Test 274(273 Test.java + 1 Tests.java)·BE @Test 1994·FE test 485(199 .test.js + 286 .test.jsx)·모듈 80.86%(23.45/29·✅21/△3/❌5)·reports 28** — **8/8축 BNK-665 IDENTICAL**
+- merge gate **858**(FE 266 + BE 592 · 양쪽 WT CLEAN → tester FF 가속 가능)
+
+## §5 NHIS #44 disk 재실측 (확인 · zero drift)
+- `nhis_jo44.html` disk md5 **`c886ff1f`** · 7,572B = BNK-665 411차 IDENTICAL (러-1~4·편도50%·1일1회·별지 제22호·수급자 부담 X verbatim 불변)
+
+## planner 제안 (요약)
+1. **carefor func.php Wayback `id_` raw byte-identical** = LIVE 000 장기화에도 canonical 재현 가능 baseline 확정 — 인용 안정성 carry.
+2. M7 본인부담 **10✅+1 superset = 1.0 FULL PARITY** 유지 · func.php comment authoritative 번호 정본 footnote carry(demo 내부 comment / PDF p.91 구번호 drift 는 negative only).
+3. HEAD zero advance — merge gate **858**(FE266+BE592·양쪽 WT CLEAN) tester FF 가속 권장 · 신규 core 갭 0 · candidate 변동 0.
+4. 다음 rotation 후보: 이지케어 /help/faq.ez 2–4h 또는 엔젤·롱텀 규제 4–6h.

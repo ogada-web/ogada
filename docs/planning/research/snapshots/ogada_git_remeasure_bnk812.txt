@@ -1,0 +1,91 @@
+BNK-812 — ogada git 실측 6–8h rotation (2026-07-17T00:21Z)
+================================================================
+목적: src/backend·src/frontend develop HEAD·테스트·Route·Page·모듈 커버 % 재산정
+      → COMPETITOR_MATRIX ogada @HEAD 열 일괄 갱신. rules.md §Baseline(문서 SHA보다 git 실측 우선).
+직전 동일 rotation: BNK-808 (2026-07-16T21:48Z) → ~2.5h 후.
+직전 사이클: BNK-811 (2026-07-16T23:47Z·엔젤·롱텀·규제 4–6h) → ~34분 후.
+
+[1] git HEAD 실측 (git -C src/{backend,frontend} rev-parse develop)
+----------------------------------------------------------------
+FE develop = d6be05c  fix(v1.2.1/QA-B95): decode curly-brace wrapping HTML entities
+   BNK-811 @6fceb8d → +1 (6fceb8d square-bracket wrapping → d6be05c curly-brace wrapping)
+   WT CLEAN · ahead origin/test 1 vs 6900a8f · tester FF 대기
+BE develop = c6ddf6c  fix(v2/QA-B95): decode square-bracket wrapping HTML entities
+   BNK-811 @b348258 → +1 (b348258 blank tokens → c6ddf6c square-bracket wrapping)
+   WT CLEAN · ahead origin/test 714 vs 598d108
+merge gate = 715 (FE 1 + BE 714·BE-heavy → tester FF)
+★ QA-B95 LOCKSTEP: FE curly-brace wrapping ↔ BE square-bracket wrapping (entity-wrapper 계열 연장)
+
+[2] Route / Page 실측 (src/frontend/src/App.jsx)
+----------------------------------------------------------------
+<Route\b (rg -c App.jsx) = 132 · <Routes> = 1 → Route 총 133 (carry BNK-804~811)
+*Page.jsx (git ls-files 'src/**/*Page.jsx') = 106 (carry)
+도메인 분해 (rg -c 'path="/<prefix>' App.jsx):
+  billing 17 · care 16 · nursing 16 · staff 13 · transport 9 · programs 8
+  payroll 5 · accounting 1 · compliance 2 · meals 1 · safety 5(+hub /safety)
+  dashboard 2 · clients 11 · guardian 5 · health 2 · reports 2(직접 path)
+  ※ reports 29(중첩·/programs/reports·/staff/... 등) BNK-808 carry 표기 가능 — 본 사이클은 직접 path 2 실측
+
+[3] 테스트 실측
+----------------------------------------------------------------
+FE test 530  = 313 *.test.jsx + 217 *.test.js
+  ※ BNK-811 header 「534(313+221)」 → ls-files recount 530(313+217) 정정(BNK-797/808 패턴·가정 번복 아님)
+BE Test 294  = 293 *Test.java + 1 *Tests.java
+BE @Test 2267 = rg -c "@Test" src/backend/src/test (BNK-811 2266 → +1·square-bracket wrapping probe)
+Flyway 마이그레이션 = V1–V196 (max V196·신규 0 vs BNK-808~811)
+Controllers = 80
+* npm test / mvn test full suite 미실행 — 집계(rg/find/ls-files) 우선·vitest 동시 실행 0 (rules.md §5 CRITICAL)
+
+[4] 모듈 커버리지 실측 (src/frontend/src/config/competitorModuleCoverage.js)
+----------------------------------------------------------------
+canonical 29-entry · sum 28.25 · 비-1.0 4개:
+   id=2 이동서비스 0.85 · id=8 직원·근태 0.85 ·
+   id=10 부가서비스(SMS·알림) 0.85 · id=12 수입지출·회계 0.7 · 나머지 25 = 1.0
+모듈 = 28.25 / 29 = 97.41% CONFIRMED
+coverage-0 진성갭 0건 · 가정 번복 0 · KPI promote 0
+
+[5] closed band 6-path LIVE 재확인 (App.jsx @d6be05c)
+----------------------------------------------------------------
+G14     /clients/:clientId/care-plan-form     L245
+대시보드 /dashboard (+ /dashboard/hq)         L164/173
+v1.3-C  /transport/service-fees               L628
+v2 CMS  /billing/cms                          L389
+G-LINKAGE /clients/linkage-records            L236
+G2      /clients/home-newsletter              L209
+→ 전부 LIVE · 재오픈 0 · P0 신규 0
+
+[6] 규제·가격 백본 재실측 (기존 URL 재실측·per-cycle minimum)
+----------------------------------------------------------------
+NHIS #44 이동서비스비
+  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do
+    ?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  **545차** IDENTICAL (BNK-811 544차 → +1 · byte-IDENTICAL vs nhis_jo44_live_bnk811.html)
+  verbatim: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+  ↔ ogada src @c6ddf6c:
+    TransportDistanceBand.RU_1~4 (5/10/20/999km)
+    TransportServiceFeeParityCatalog.ONE_WAY_RATIO=0.5 · ONE_WAY_RATIO_LABEL="편도 비율"
+      · ONE_PER_DAY_LABEL="1일 1회"
+    TransportServiceFeeService baseAmount×ONE_WAY_RATIO setScale(0, HALF_UP) :287
+  → NHIS verbatim IDENTICAL · 상수 재조정 불요 · id=2 0.85 carry
+  snapshot: nhis_jo44_live_bnk812.html (c886ff1f)
+
+이지케어 charge (가격 STABLE · strip semantic IDENTICAL)
+  https://ezcare.easyms.co.kr/new/ezCare_charge.html
+  HTTP 200 · 22,979B · md5 aebf7465ae42e192892288751635de3d
+  (raw md5 ≠ BNK-809/806 · cachebuster/NUM strip 후 byte-IDENTICAL)
+  인용: 셋팅 33,000원 · 「2026년 07월 31일까지」 · 도입 9,435(교차 페이지 표기)
+  snapshot: ezcare_charge_live_bnk812.html
+
+케어포 daycare/func.php LIVE: HTTP 000 (timeout) · 94-cycle+ 「미확인」·disk LOCK carry
+
+[7] planner 반영 요약
+----------------------------------------------------------------
+- baseline SHA: FE @6fceb8d→@d6be05c (ahead 1) · BE @b348258→@c6ddf6c (ahead 714)
+  (.agents/workspace_baseline.yaml develop 필드 STALE → git 실측 우선)
+- 모듈 97.41% CONFIRMED · 진성갭 0 · closed band 6 재오픈 0
+- FE test recount 534→530 정정 (ls-files)
+- residual PRIMARY id=12 0.7 (M12 SSO OTP credentials) → id=2/8/10 0.85 form polish
+- P0 ops = merge gate 715 (FE 1+BE 714·BE-heavy → tester FF)
+- 규제 백본 545차 zero drift · Transport 상수 재조정 불요
+- 다음 rotation: 8h+ 교차검증 (이전 가정 번복 여부·미확인 축)

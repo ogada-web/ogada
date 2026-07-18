@@ -1,0 +1,11 @@
+# 케어포 주야간보호 사용매뉴얼 PDF live refetch (BNK-690)
+# URL: https://web.archive.org/web/20260528120000id_/https://www.carefor.co.kr/ct_att/contents_article/0/202206/12/Dov8rzFqBv.pdf
+# 조사일: 2026-06-27T09:05:00Z | HTTP: 200 | SIZE: 9,992,772B | md5: 96f7d45eaca91525068ec9bfb626fb18
+# on-disk BNK-687 md5: 96f7d45e — IDENTICAL · 426-cycle PDF baseline zero drift
+
+== 신규: p5 목차 module 7 장 (83–91) verbatim extract ==
+→ `carefor_manual_pdf_toc_extract_bnk690.txt` (pypdf page 5 extract · BNK-690 신규 evidence)
+
+== p87–92 field anchors (BNK-687 carry · ogada FULL PARITY 유지) ==
+p87 body(명세 4채널) · p88 은행엑셀 8행 · p89 미납조정 · p90 G33 · p91 리포트 3종 · p92 의료비공제+통계
+※ 목차 인쇄 p 번호 vs PDF viewer #page= anchor ±2 offset carry — tri-source 시 목차·func·demo title 우선

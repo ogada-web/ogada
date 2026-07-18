@@ -1,0 +1,89 @@
+# BNK-844 cross-verify · gap priority (8h+)
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-17T20:42:00Z -->
+조사일: 2026-07-17T20:42:00Z
+rotation: 교차검증·갭 우선순위 8h+ (직전 BNK-843 엔젤·롱텀 4–6h → ~46분 후)
+
+## 0. ogada git 실측
+- FE develop: e16f4327f4ef48ea1a7e9e03a710b4a35b6b9aee
+  - log: fix(v1.2.1/v3): verify client photo magic bytes before upload (SEC-D25)
+  - mid: b2eb059 ux(a11y): hide staff status filters on print and wire photo error ARIA (UXD-190)
+  - WT CLEAN · origin/test=e16f432 FULLY SYNCED · ahead origin/test 0
+- BE develop: 324da07b6d46608a66a87ac281b1be108c526ae3
+  - log: fix(v3/SEC-D25): verify benefit-contract and staff-HR file magic bytes
+  - mid: cdba083 fix(v3/clients): verify client photo magic bytes (SEC-D25)
+  - WT CLEAN · ahead origin/test 740 vs 598d108
+- merge gate: 740 (FE 0 + BE 740 · BE-only → tester FF · 신규 Flyway 0 · V1–V196)
+- Route: 132 (App.jsx path= attr exact)
+- Page: 106 (find *Page.jsx -not test)
+- FE test (git ls-tree develop): 536 = 221 .test.js + 315 .test.jsx (BNK-843 header 533 → +3)
+- BE Test files: 299 (BNK-843 297 → +2)
+- BE @Test raw: 2316 (@TestPropertySource 1 → precise 2315 「가정」)
+- @RestController (controller with mapping): 80
+- HTTP: GET231/POST144/PATCH44/PUT13/DELETE10 = 442 · 9차 byte-exact IDENTICAL (BNK-836~844)
+- 모듈: 97.41% (28.25/29 · id=2/8/10=0.85 · id=12=0.7 · 진성갭 0) carry
+
+## 1. ★★★ 가정 번복 1 — P3-Lever-D 「전용 모듈 부재」시정
+BNK-843 가정: ogada `admin/education/*`·`admin/meetings/*`·`admin/surveys/*` 부재 → 15-leaf 전량 갭.
+교차검증 (App.jsx @e16f432 LIVE):
+
+| silverangel 9th leaf 축 | ogada Route (확인) | 판정 |
+|---|---|---|
+| 직원/운영위/보호자 회의 | `/staff/committee-meetings` L1242 (US-R08 FULL CLOSURE) | ✅ 분산 커버 |
+| 사례관리 회의 | `/case-management/meetings` L835 | ✅ 분산 커버 |
+| 교육(보수·신규 등) | `/staff/training` L1125 · `/staff/training-logs` L1134 (G34) | ✅ 분산 커버 (전용 7-leaf UX 아님) |
+| 만족도(프로그램) | `/programs` 만족도 + `/care/meal-preference-surveys` L963 | △ 부분 (보호자/수급자 연1회 전용 조사 ≠) |
+| 자원봉사자 활동일지 | id=8 residual 8-8 △ (BNK-832 carry) | △ 부분 |
+| 위생점검일지 | `/safety/*` M6 FULL (BNK-810) | ✅ 인접 커버 |
+| 통일 UX 「사진등록+참석자 전자서명」 | 선임요양보호사 SignLeadCaregiverWorkLogModal 등 부분 | △ unified 15-leaf UX 부재 |
+
+결론 (번복): 「전용 모듈 절대 부재」→「분산 Route로 회의·교육·일부 만족도 커버 + silverangel식 15-leaf 통합 모듈·사진+전자서명 표준 UX 갭」.
+P3-Lever-D 유지하되 범위 축소: unified UX + 규제 평가 지표 대응 체크리스트. elevate 조건부 P2는 규제-fit 확인 후.
+
+## 2. ★★★ closed band 6 재오픈 0 · P0/P1 재정렬
+App.jsx @e16f432 라인 IDENTICAL (BNK-835/842/843 carry):
+- 대시보드: L164 `/dashboard` · L173 `/dashboard/hq`
+- G2 가정통신문: L209 `/clients/home-newsletter`
+- G-LINKAGE: L236 `/clients/linkage-records`
+- G14: L245 `/clients/:clientId/care-plan-form`
+- v2 CMS: L389 `/billing/cms`
+- v1.3-C: L628 `/transport/service-fees`
+P0 신규 0 · closed band 재오픈 0.
+residual lever: id=12(0.7 회계 BPO SSO env 대기) primary > id=2/8/10(0.85).
+BNK-843 P3-Lever A/B/C 「가정」유지 · D 범위 축소(§1).
+P3-Lever-A 전자결재: G42 `/staff/grievance-counselings` approval queue partial+ 존재 → 「전면 부재」아님 · 「각종 일지 범용 3-state FSM」갭만 유지.
+
+## 3. ★★★ SEC-D25 surface 확장 (메뉴/필드/워크플로 · SUPERIOR · 기능갭 아님)
+BNK-840 program photo 6-cycle → BNK-844 client/benefit/staff-HR 확장:
+- FE `@e16f432` `clientPhotos.js`: JPEG/PNG/WEBP magic + `validateClientPhotoFile` pre-upload
+- BE `@cdba083` `ClientPhotoStorageService.matchesMagicBytes`
+- BE `@324da07` `BenefitContractAttachmentStorageService` + `StaffHrFileStorageService` magic-byte
+HTTP 442 불변 = controller endpoint 신설 0 · service-layer hardening only.
+경쟁 공개면 MIME spoof 방어 full-stack 사례 0 = SUPERIOR narrative 강화 · KPI promote 0.
+
+## 4. ★★ 경쟁사 공지·엑셀·가격 스캔
+| 증거 | URL | HTTP | SIZE | md58 | 판정 |
+|---|---|---|---|---|---|
+| NHIS #44 | nhis joHistoryContent SEQ=1637 | 200 | 7572 | c886ff1f | **576차** byte-IDENTICAL (러-1(1)·러-4(1)·편도(2)·1일1회(1)·수급자가부담(1)·이동서비스(13)) |
+| ezcare FAQ | /help/faq.ez | 200 | 80057 | c4e8e664 | rowid **233**/max **21781** · 엑셀 포맷 변경 **0**(브라우저 다운로드 도움만) |
+| ezcare charge | /new/ezCare_charge.html | 200 | 22979 | 4c6bd6b1 | 33,000원 · 2026-07-31까지 · **D-14** · semantic md5 a32576d6 = BNK-835 IDENTICAL (raw cachebuster DRIFT only) |
+| ezcare fnc | /new/ezCare_fnc.html | 200 | 17870 | 98902878 | 도입 **9,434개** STABLE |
+| ezcare home | / | 200 | 71562 | e5579093 | 재무회계 BPO **4675** STABLE |
+| silverangel home | / | 200 | 101220 | 66382835 | byte-IDENTICAL |
+| silverangel extra | extraService.do | 200 | 81637 | f9c5d877 | CMS 월30,000/자동이체250/가상계좌300 LOCK |
+| law 2025-247 | admRulSeq=2100000271110 | 200 | 78450 | 4bb0bfd4 raw | size 불변 · 「고시 제2025-247호」 verbatim · strip epoch DRIFT 「비실체」 |
+| carefor func.php | daycare/func.php | **000** | — | — | LIVE timeout **108-cycle+** carry · disk canonical 유지 |
+| carefor demo-work | demo-work.carefor.co.kr | **000** | — | — | LIVE timeout carry |
+
+## 5. P0/P1 재정렬 요약 (planner)
+1. P0 신규 0 · closed band 6 동결
+2. residual primary = id=12 (0.7) — 기능갭 아님
+3. P3-Lever-D 가정 번복 → 범위 축소 (unified UX only)
+4. P3-Lever A/B/C 유지 · elevate 트리거 없음
+5. SEC-D25 확장 = 보안 하드닝 · 마케팅 「첨부 전면 MIME 위조 방어」 narrative 후보
+6. 엑셀/가격 시그널 0 · NHIS 576차 상수 재조정 불요
+
+## 6. per-cycle minimum
+- 신규/재실측 증거 URL: NHIS #44 + ezcare FAQ/charge/fnc/home + silverangel 2 + law (≥1) ✅
+- 메뉴/필드/워크플로 블록: §1 P3-Lever-D crosswalk + §3 SEC-D25 surface ✅
+- COMPETITOR_MATRIX @HEAD 갱신 ✅
+- BENCHMARK_REPORT §844 ✅

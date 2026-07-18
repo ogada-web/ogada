@@ -1,0 +1,93 @@
+# BNK-771 엔젤·롱텀·규제 4–6h 교차검증 raw log
+# 조사일: 2026-07-15T20:10:00Z (KST 2026-07-16 05:10)
+# rotation: 엔젤·롱텀·규제 4–6h — silverangel/lcms 공개 기능·CMS 부가·law.go.kr·NHIS #44 이동서비스비 러-1~4 1차 확인(PLAN_NOTES #44)·2026 수가·평가·단기보호·통합재가 교차검증
+# 직전 동일 rotation: BNK-767 (2026-07-15T17:58:24Z) → ~2.2h 후
+# 직전 사이클: BNK-770 (2026-07-15T19:32:00Z·케어포 역공학 0–2h) → ~38분 후
+# ogada git baseline: FE @eb270ae (WT **DIRTY 6M** live-e2e/notification in-progress·ahead origin/test **1**) / BE @89dc0a6 (WT CLEAN·ahead **672**)
+# npm test 미실행 (vitest 동시 실행 금지) · mvn 전체 미실행
+
+## 1) 규제 백본 12-URL live 재실측 (curl -m 25 -A 'Mozilla/5.0 ogada-benchmark/1.0')
+
+  LABEL                                | HTTP | SIZE     | md5                              | 판정
+  -------------------------------------+------+----------+----------------------------------+-----------------------------------------
+  nhis_jo44                            | 200  |   7,572B | c886ff1fd1d5ca2cb5dc76d30adde8ba | ★★★ **505차** zero drift (BNK-770 504차 → +1)
+  silverangel_extraService             | 200  |  81,637B | f9c5d8773ad0a481be6d7eb4b192d982 | IDENTICAL (=bnk767~770)
+  silverangel_feeService               | 200  |  44,513B | eab352a8f98ba600561c06bd2e3eecb1 | IDENTICAL
+  silverangel_mainService              | 200  |  59,002B | bcf6df41310193a3ae997bde49111347 | IDENTICAL
+  silverangel_daycareEssentialWork     | 200  | 131,664B | c79c1be37f947aab04ab7ba35cc7814d | IDENTICAL (지표27 「기능회복」 6-hit carry)
+  silverangel_systemFeature (404 stub) | 404  |   1,028B | 3c93af5446540c1cb323ede8414c2bbb | dual-IA 404 carry (`/newSilverangel/service/systemFeature.do`)
+  silverangel_system_feature_canonical | 200  |  45,601B | c950719098eecaf748bbdeea5deb93da | ★ **신규 URL 재실측** — on-disk `silverangel_system_feature.html` IDENTICAL (zero drift)
+  lcms_home                            | 200  |  50,554B | 6c0d22b48da8fb30a0c49f34ce8c6864 | IDENTICAL type2 LOCK (=bnk767/769/770)
+  longterm_502 (npeb502m01)            | 200  |  89,162B | 5618573525680a407975cbbafe93ccd1 | =bnk763 shell (단기보호 수가 JS shell·disk 74,060 carry)
+  longterm_610 (npeb610m01)            | 200  |  88,399B | fad1ce6115bad27169c248b8d7a1089b | =bnk763 shell (통합재가 월10만원 disk carry)
+  law247_admRul (제2025-247호)          | 200  |  78,450B | 5d2f624ba465d1fd4e3d43e6a95d7edd | Time= 파라미터-only DRIFT; strip 후 a913639a ≡ bnk767 semantic IDENTICAL
+  mohw_list1488862                     | 200  | 103,113B | d590271896996d16e3431318f1005eeb | IDENTICAL (=bnk767)
+
+## 2) NHIS #44 이동서비스비 러-1~4 verbatim (grep -oE · PLAN_NOTES #44 1차 확인 재확인)
+
+  1일 1회       1
+  러-1          1
+  러-4          1
+  수급자가 부담  1
+  이동서비스     13
+  편도           2
+
+→ verbatim IDENTICAL to BNK-770 504차. ogada `TransportServiceFeeService` RU_1~4·ONE_WAY_RATIO=0.5·ONE_PER_DAY 6-link chain 상수 재조정 불요.
+
+## 3) ★★★ silverangel 공개 IA — 이동서비스/배차 **0-hit** crosswalk (신규 필드 블록)
+
+5개 공개 페이지 본문 grep (LC_ALL=C.UTF-8 · 이동서비스|배차|차량|운행|GPS):
+
+  extraService.do          0
+  feeService.do            0
+  mainService.do           0
+  system_feature.do (canonical)  0
+  daycareEssentialWork.do  0  (「기능회복」6-hit·「목욕」2-hit — G17 carry·이동서비스 무관)
+
+`system_feature.do` 10-카테고리 leaf 재파싱 (BNK-411 structural extract zero drift · md5 `c9507190` IDENTICAL):
+  입소자관리 10 · 급여제공계획 9 · 기록지 9 · 보고서 10 · 간호 13 · 재활 9 · 요양비관리 8 · SMS관리 4 · 관리 12 · 기관운영 15 = **109 leaf**
+  재활 카테고리 leaf 「기능회복훈련」 verbatim 존재 ↔ ogada G17/id=26 **1.0** 정합
+  **이동서비스·배차·차량·GPS leaf 0건** = 엔젤 공개 ERP 카탈로그에 주야간 이동서비스 모듈 **미노출**(로그인 ERP 「미확인」)
+
+ogada 대비:
+  id=2 「이동서비스」 coverage **0.85** — `/transport/*` Route cluster·NHIS #44 6-link·배차/셔틀/월간리포트 FULL (BNK-761 M2 2-7~2-9 CLOSED)
+  → **주간보호 MVP 차별화**: ogada 는 경쟁 공개 카탈로그(케어포 demo-work transport 0·엔젤 0-hit·이지케어 데모 미확인) 대비 이동서비스 in-app 구현 우위. KPI promote 0(residual form polish).
+
+## 4) LCMS A/B Type + CMS 부가 verbatim (BNK-767 carry · 771 IDENTICAL)
+
+system_feature.do 「시스템 특장점 02」:
+  - LCMS(Longterm Care Management System) 유형 — A Type / B Type 분류 verbatim
+  - HP-UX·Oracle·WebLogic 레거시 스택 (BNK-641 carry · md5 zero drift)
+extraService.do 부가 10-catalog + 효성 CMS 250/300/월30,000/1600-6859 — BNK-767 IDENTICAL carry
+
+## 5) 2026 규제·수가 교차검증 (단기보호·통합재가·평가)
+
+| 축 | URL/근거 | 771 판정 |
+|---|---|---|
+| 이동서비스비 #44 | NHIS jo44 505차 | zero drift · ogada 상수 고정 |
+| 2026 평가·필수업무 | daycareEssentialWork `c79c1be3` | zero drift · 지표27=기능회복 6-hit |
+| 단기보호 수가 | longterm 502 shell `56185735` | shell IDENTICAL · 본문 금액 JS 로드 → disk **74,060** carry(BNK-556) |
+| 통합재가 | longterm 610 shell `fad1ce61` | shell IDENTICAL · disk **월 10만원** carry(BNK-556) |
+| 2026 고시 | MOHW list1488862 `d5902718` | zero drift |
+| 장기요양 수가 세부 | law247 admRulSeq 2100000271110 | Time=-only · semantic IDENTICAL |
+
+longterm 502/610 pageTitle only in static HTML — 금액은 SPA/JS 로드(공개 역공학 한계). disk carry 수치 변경 0.
+
+## 6) ogada git baseline (BNK-770 → BNK-771 delta)
+
+| KPI | BNK-770 | BNK-771 | Δ |
+|---|---|---|---|
+| FE SHA | b4008b0 | eb270ae | +1 commit (`ux(a11y): Skeleton, ProgressBar, SkipLink, calendar day markers UXD-180`) |
+| BE SHA | cf700b9 | 89dc0a6 | +1 commit (`fix: harden html entity decoding for live readiness`) |
+| FE WT | CLEAN | **DIRTY 6M** | live-e2e/notification in-progress |
+| BE WT | CLEAN | CLEAN | — |
+| merge gate | 672 | **673** | FE 1+BE 672 |
+| Route | 133 | 133 | 0 |
+| Page | 106 | 106 | 0 |
+| FE test | 525 | **533** | +8 (220 .test.js + 313 .test.jsx) |
+| BE Test | 294 | 294 | 0 |
+| BE @Test | 2221 | **2222** | +1 |
+| Flyway | V196 | V196 | 0 |
+| 모듈 KPI | 97.41% | 97.41% | 0 (29-entry sum 28.25) |
+
+per-cycle minimum 4종 충족: 신규 URL 1+(canonical system_feature) · 메뉴/필드 블록 1+(transport 0-hit) · MATRIX 1행+ · BENCHMARK §771 1건+

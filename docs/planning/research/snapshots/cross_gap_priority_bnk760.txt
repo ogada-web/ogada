@@ -1,0 +1,108 @@
+BNK-760 — 교차검증·갭 우선순위 8h+ (2026-07-15T13:32:09Z)
+================================================================
+rotation: 교차검증·갭 우선순위 — 이전 BNK 가정 번복 여부·미확인 축소·G14·대시보드·v1.3-C·v2 CMS P0/P1 재정렬·공지/엑셀 스캔
+직전 동일 rotation: BNK-753(2026-07-15T08:58Z) → ~4.6h 후
+직전 사이클: BNK-759(2026-07-15T12:55Z·엔젤·롱텀·규제 4–6h) → ~37분 후
+
+================================================================
+★★★ #1 교차검증 CORE — BNK-759 모듈 KPI 97.41% CONFIRMED (가정 번복 0)
+================================================================
+BNK-759 는 BNK-758 carry 97.07%(id=10=0.75) 를 undercount 로 보고
+FE `@5b9656c` kind22 반영 후 id=10 **0.85**·모듈 **97.41%(28.25/29)** 로 정정했다.
+
+git 실측(develop HEAD FE `2c5bb2a` / coverage 파일 BNK-759 이후 무변동):
+
+  competitorModuleCoverage.js `COMPETITOR_FEATURE_COVERAGE`:
+    배열 엔트리 parse `{ id: … coverage: }` → count **29** · sum **28.25** · pct **97.41%**
+    raw `grep coverage:` = 30 (= line 5 JSDoc `* coverage: 1 = ✅` 포함 — BNK-753 이 지적한
+      오염 패턴과 동일) BUT 배열-only 파싱을 쓰면 29/28.25/97.41 로 **정합**.
+    → BNK-752 식 「30/29.15/97.17」 오류와 다름: BNK-759 는 배열 파싱 기준을 올바르게 적용.
+
+  id=10 verbatim line 44: `coverage: 0.85` + 주석
+    `G-SMS-TEMPLATE-CATALOG: … kind22 payroll @ BE 7de86eb`
+  비-1.0 축(4): id=2 **0.85** · id=8 **0.85** · id=10 **0.85** · id=12 **0.7**
+  1.0 축(25): 1-1·1-3·1-5·1-7·1-9·1-10 연계기록지·3-1·4·5·26·43·6·7-*·9·11·nhis·qr·hq·platform
+  coverage-0: **0건**
+
+결론(확인·가정 번복 0): BNK-759 KPI 정정 **유지**. 모듈 **97.41%(28.25/29)** 가 코드 실측 정본.
+v1.2 KPI ≥60% 충족 유지·상수/코드 변경 불요.
+
+================================================================
+★★★ #2 RFID care-provision SMS FE wire — P2 residual 재확인 (BNK-759 후속)
+================================================================
+BNK-759 주장: BE `@c080529` `POST /api/v1/visits/imports/rfid/care-provision-dispatch`
+  (FAQ 21589·kind13·HOME_VISIT only) 착지 · FE wire **0-hit** = P2.
+
+BNK-760 재실측:
+  - BE HEAD `@79aa377` (+1 QA-B95 object-form · RFID endpoint **상속 유지**)
+  - FE `services.js`: `compareVisitsRfidApi` → `/visits/imports/rfid/compare` ONLY
+  - FE `VisitRfidDiffComparePanel.jsx`: compare-only (dispatch/care-provision-dispatch **0-hit**)
+  - FE grep `care-provision-dispatch` in src/frontend: **0** (G39 client notify path는 별축)
+  → **P2 residual CONFIRMED · 격상 0**. 주간보호 QR/출석 축 진성갭 아님(BNK-758 가정 carry).
+
+================================================================
+★★ #3 갭 우선순위 재정렬 — closed axes 재오픈 0 · residual lever
+================================================================
+App.jsx closed axes LIVE 재확인 (재오픈 0):
+  G14 `/clients/:clientId/care-plan-form`
+  `/dashboard` · `/dashboard/hq`
+  `/clients/home-newsletter` · `/clients/linkage-records`
+  `/billing/cms` · `/billing/easy-pay` · `/billing/cash-receipts`
+  `/accounting`
+  `/payroll/{ledger,reports,basis,labor-cost-ratio,retirement-accrual}` 5-route
+
+P0/P1 재정렬(coverage-0 진성갭 없음 이후 operational levers):
+  1. id=12 수입지출·회계 **0.7** — M12 BPO SSO 실환경 credentials (PRIMARY residual)
+  2. id=2/8/10 **0.85** (동률) — 이동서비스 polish / 직원·근태 / SMS·알림 template polish
+  3. RFID FE wire (HOME_VISIT only) — **P2** (coverage 무관·진성갭 아님)
+  4. P3 이지케어 home expire 7-category 만료 위젯 — 「가정」 유지·**격상 0**
+
+v1.3-C / v2 CMS / 대시보드(+hq) / G14: **CLOSED carry · 재오픈 0 · P0 격상 불요**.
+
+================================================================
+★ #4 규제/경쟁사 URL 재실측 — 엑셀·공지 실체 변경 0
+================================================================
+- NHIS #44 joHistoryContent SEQ=1637:
+    HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · **494차**(BNK-759 493차→+1) IDENTICAL
+    러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+    ↔ ogada TransportServiceFeeService 6-link(id=2 0.85) · **규제 상수 재조정 불요**
+- ezcare FAQ list help/faq.ez:
+    HTTP 200 · 80,057B · md5 `976ce76aa1588cf57d349809668b2a21`
+    (BNK-758 `0810f9fb`→변경 = faq-hit view-count only DRIFT)
+    rowid SETS IDENTICAL 233 · max 21781 · 엑셀 grep 2(본문)·포맷 변경 **0**
+- ezcare home:
+    HTTP 200 · 69,642B · md5 `3ae1050dfe3de8ce0a66ec9d03b5d8f1`
+    data-count: 53 / 9298 / **4673** / 2353 / 1820
+    (BNK-754: 53.2% / 9,298 / **4,672** / 2,353 / 1,820 → 재무회계 대행 **+1**)
+    가격·엑셀 포맷 시그널 아님(도입 카운터 only)
+- silverangel extraService: 200 · 81,637B · `f9c5d877` IDENTICAL(=bnk759) · CMS 250/300
+- lcms.or.kr: 200 · 50,554B · `6c0d22b4` type2 LOCK IDENTICAL(=bnk755/759)
+- silverangel noticeList: HTTP **404** · 1,028B · `3c93af54` dual-IA carry(canonical `ea7d6b3d`)
+- carefor func.php / demo-work: HTTP **000** 「미확인」 84-cycle+ · disk `6226e6eb` 우선
+
+================================================================
+ogada git 실측 (develop HEAD)
+================================================================
+FE develop  @2c5bb2a  fix(v1.2.1/QA-B95): accept object-form live operation blockers
+            WT CLEAN · ahead origin/test **0** = **FULLY SYNCED**
+            (BNK-759 `@5b9656c` → +1)
+BE develop  @79aa377  fix(v2/QA-B95): harden bootstrap blocker parsing for object-form tokens
+            WT CLEAN · ahead **664** vs `598d108`
+            (BNK-759 `@c080529` → +1 · RFID SMS endpoint 상속)
+merge gate  **664** (FE 0 FULLY SYNCED + BE 664 · BE-heavy → tester FF)
+
+Route 133 (<Route\b 132 + <Routes> 1)   Page 106
+FE test 525 (216 .test.js + 309 .test.jsx)
+BE Test 294 (293 Test.java + 1 Tests.java)   BE @Test **2214** (+2 vs BNK-759 2212)
+Flyway V1–V196   accounting route 1   payroll route 5
+모듈 **97.41%(28.25/29)**  ← BNK-759 정정 CONFIRMED
+
+================================================================
+per-cycle minimum 4종 충족
+================================================================
+- 재실측 증거 URL: NHIS #44 **494차** + FAQ hit-only + home BPO+1 + carefor 000 + silverangel/lcms IDENTICAL
+- 메뉴/필드/워크플로 블록: 모듈 KPI 교차검증(CONFIRMED)·RFID FE wire 0-hit·갭 P0/P1 재정렬
+- COMPETITOR_MATRIX 1행+ `@2c5bb2a`/`@79aa377` 갱신
+- BENCHMARK_REPORT §760 신규 소절
+덮어쓰기 0 · 가정 번복 **0** · closure 0 · 신규 core 갭 **0**
+상태 변경 2(FE +1 FULLY SYNCED·BE +1 ahead 664)·KPI 변경 1(BE @Test 2212→2214)

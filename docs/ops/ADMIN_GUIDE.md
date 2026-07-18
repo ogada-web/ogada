@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-17T20:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T00:00:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-17 (Q924: 활동 사진 magic-byte SEC-D25 · Q925: NoBreakSpace mid-token strip · baseline `c19bfa6`/`090ac10` · **Flyway V1–V196**)  
+> **최종 갱신**: 2026-07-18 (엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed FE·BE 회귀 고정 · 사진 업로드 성공 스크린리더 안내 UXD-191 · baseline `9449e1f`/`2789553` · **Flyway V1–V196**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,12 +50,17 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-07-17 develop HEAD `c19bfa6` / frontend `090ac10`)
+### 1-4. 구현 상태 안내 (2026-07-18 develop HEAD `9449e1f` / frontend `2789553`)
 
-> **이관·QA (TSR)**: BE develop **@ `c19bfa6`** · FE develop **@ `090ac10`** · **cross-stream SYNCED**
+> **이관·QA (TSR)**: BE develop **@ `9449e1f`** · FE develop **@ `2789553`** · **cross-stream SYNCED**
 > 
 > **기능 클로저**: 
-> - **v3 프로그램 일정 활동 사진** ✅ (**Q917**·**Q920**·**Q921**·**Q924**): **`POST /programs/schedule/{id}/photo`** multipart · JPEG/PNG/WEBP ≤5MB · **Content-Type 파라미터 strip** · **magic-byte 서명 검증(SEC-D25)** · FE **`/programs` 「활동 사진」** · **`ds-stack--tight`** (`d1ff63a`/`8e28fe0`/`72a6534`/`8e74b07`/`bfd171d`) · 저장 디렉터리 `ogada.storage.program-photos.storage-dir`
+> - **사진 업로드 성공 스크린리더 안내** ✅ (**Q933**, UXD-191): 이용자 사진·활동 사진 성공을 **`role="status"` polite live region**으로 안내 — 시각 배너 미추가 (`194823b`)
+> - **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed** ✅ (**Q931~Q933**, SEC-D34): 4경로 import 서비스에서 **`payload == null`·0바이트·`payload.length == 0`** 가드로 빈 파일도 안전 거부, FE는 FileReader 빈 헤더까지 fail-closed — FE·BE 회귀 테스트 고정 (`b23711f`/`9449e1f`)
+> - **SEC-D34 엑셀 import 4경로 magic-byte** ✅ (**Q931~Q932**): **방문 NHIS** · **청구 NHIS** · **요양보호사 NHIS** · **은행 입금** — BE **`a788e6d`/`be64fda`/`f6e4d88`** · FE **`excelImportFiles.js`** 사전검증 3경로 (`3042a53`) — 은행 입금은 **BE only** (xlsx OOXML)
+> - **업로드 파일 서명(magic-byte) 확대** ✅ (**Q926~Q929**, SEC-D25/D34): 이용자 사진 · 급여계약 · 직원 HR · 등급 이력 · 보수교육 이수증 · 공단 요양보호사 엑셀(OOXML/OLE) — BE **`cdba083`/`324da07`/`ed94521`/`be64fda`** · FE **`e16f432`/`cf28a2e`/`8b164c3`**
+> - **직원현황 인쇄·활동 사진 오류 ARIA** ✅ (**Q930**, UXD-190): screen-only 필터 · `aria-invalid`/`aria-describedby` (`b2eb059`)
+> - **v3 프로그램 일정 활동 사진** ✅ (**Q917**·**Q920**·**Q921**·**Q924**·**Q930**): **`POST /programs/schedule/{id}/photo`** multipart · JPEG/PNG/WEBP ≤5MB · **Content-Type 파라미터 strip** · **magic-byte 서명 검증(SEC-D25)** · FE **`/programs` 「활동 사진」** · **`ds-stack--tight`** (`d1ff63a`/`8e28fe0`/`72a6534`/`8e74b07`/`bfd171d`/`b2eb059`) · 저장 디렉터리 `ogada.storage.program-photos.storage-dir`
 > - **QA-B95 NoBreakSpace mid-token strip** ✅ (**Q925**·**Q882**): **`&NoBreakSpace;` → strip(empty)** BE+FE — mid-token 마커 재결합 · 세미콜론 생략 lock (`63227d7`/`c19bfa6`/`090ac10`)
 > - **live probe V196 연계 무결성** ✅ (**Q918**): probe **`v196ClientLinkageRecordsIntegrityCheckReady`** health lockstep (`b7f4337`) — Q827 후속
 > - **M12 SSO `/carefor_login` path allowlist** ✅ (**Q922**): HTTPS + sujifine host + **`/carefor_login` only** — query/fragment/userinfo/non-443 reject — BE **`bfe6b3f`/`a742788`** · FE **`592a483`**
@@ -3975,6 +3980,8 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-18 | **Q931~Q933** — §1-4 **사진 업로드 성공 스크린리더 안내(UXD-191) · 엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed(FE·BE 회귀 고정)** · baseline **`9449e1f`/`2789553`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-17 | **Q926~Q930** — §1-4 **업로드 magic-byte 확대 · 인쇄/ARIA a11y** · baseline **`be64fda`/`8b164c3`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q924 · Q925** — §1-4 **활동 사진 magic-byte · NoBreakSpace mid-token strip** · baseline **`c19bfa6`/`090ac10`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q922 · Q923** — §1-4·§6-2-24f **M12 SSO `/carefor_login` allowlist · uppercase `&NUM` decode test lock** · baseline **`a742788`/`bc1d343`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q921 · Q919 갱신** — §1-4 **활동 사진 `ds-stack--tight` · 세미콜론 생략 `&num` BE+liveConfig** · baseline **`759b15e`/`9e40c19`** · Flyway **V1–V196** · 모듈 **97.41%** |

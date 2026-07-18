@@ -1,0 +1,50 @@
+BNK-855 — ogada git 실측 (ogada git 실측 6-8h 로테이션)
+조사일: 2026-07-18T03:41Z
+
+[FRONTEND] src/frontend develop
+  HEAD  2789553  test(v1.2.1/v3/SEC-D34): lock zero-byte excel import fail-closed (BE 9449e1f lockstep)
+  BNK-854 @b23711f → +1 commit (SEC-D34 FE 회귀 lock: 0-byte 엑셀 payload fail-closed · BE 9449e1f empty-file lockstep)
+    diffstat: src/config/excelImportFiles.test.js | 18 ++++++++++ (1 file, +18, 신규 파일 0)
+  WT CLEAN · ahead 1 vs origin/test=b23711f (rev-list --left-right --count origin/test...develop = 0  1)
+  Route 133 (App.jsx <Route 132 + <Routes> 1) · Page 106 (*Page.jsx not test)
+  FE test 540 (225 .test.js + 315 .test.jsx) — carry (2789553 은 excelImportFiles.test.js in-place +18 · 신규 test 파일 0)
+
+[BACKEND] src/backend develop
+  HEAD  9449e1f  test(v3/SEC-D34): lock empty-file fail-closed on excel import services
+  BNK-854 @9449e1f → carry (zero advance · BE 무변동)
+  WT CLEAN · ahead 748 vs 598d108 (merge base=origin/test)
+  BE Test 297 (296 *Test.java + 1 *Tests.java)
+  @Test strict 2353 (^\s*@Test\b) — BNK-854 2353 IDENTICAL (BE zero advance)
+  @RestController 81 · Flyway V1–V196 (신규 0)
+
+[HTTP verb 매핑] src/backend/src/main (grep @*Mapping)
+  GetMapping    231  (52.3%)
+  PostMapping   144  (32.6%)
+  PatchMapping   44  (10.0%)
+  PutMapping     13  ( 2.9%)
+  DeleteMapping  10  ( 2.3%)
+  합계          442  — BNK-836~854 → 855 = 16차 byte-exact IDENTICAL
+  controller당 5.46 · audit-first read-create dominant (GET+POST 84.9%)
+  DELETE 2.3% 최소 = soft-delete/감사 보관 (PIPA 정합) · PATCH 44 > PUT 13 부분정정 우선
+
+[merge gate] 749 (FE 1 tester FF 대기 + BE 748 · BE-heavy → tester FF · 신규 마이그레이션 0)
+[모듈 커버] 97.41% carry (28.25/29 · id=2/8/10=0.85 · id=12=0.7 · 진성갭 0 · grep 30-hit 중 1 JSDoc 배제)
+
+[규제 백본 re-measure]
+  NHIS #44 러-1~4 live joHistoryContent.do (SEQ=1637 · SEQ_CONTENTS=3281769)
+    HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+    582차 byte-exact IDENTICAL (BNK-852 581차 이후 이지케어/케어포 축 2-cycle carry → +1)
+    verbatim grep -oF: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+  ↔ BE @9449e1f TransportServiceFeeParityCatalog RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY 상수 IDENTICAL
+    → 재조정 불요 · id=2 0.85 carry
+
+[판정] SEC-D34 엑셀 import fail-closed 계보 7-축 FE 회귀 lock 완성 (BNK-854→855):
+  (a) 매직바이트 4-경로 (BNK-848~849): visit · 청구 NHIS · 요양보호사 NHIS · 은행 입금 대사
+  (b) null-safe payload (BNK-851 QA-B604)
+  (c) truncated OOXML fail-closed (BNK-853 efbdbec)
+  (d) .xls OLE magic fail-closed (BNK-854 2f3be17)
+  (e) empty-file fail-closed BE (BNK-854 9449e1f) + FE empty-header fail-close (b23711f)
+  (f) zero-byte fail-closed FE 회귀 lock (BNK-855 2789553 · BE 9449e1f lockstep)
+  = 「부분·손상·null·잘못된 OLE·빈 파일·빈 헤더·0-byte」 7-축 회귀 방어
+  = 경쟁 4종 유일 엑셀 import 바이너리 서명·fail-closed 검증 SUPERIOR carry
+  = FE↔BE defense-in-depth 2-layer 완전 lockstep (pre-upload UX reject + storage 최종 보루)

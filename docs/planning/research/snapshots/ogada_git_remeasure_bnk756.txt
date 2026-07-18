@@ -1,0 +1,81 @@
+BNK-756 — ogada git 실측 6–8h (2026-07-15T10:54:00Z / KST 19:54)
+================================================================
+
+[rotation] ogada git 실측 — src/backend·src/frontend develop HEAD·Route·Page·@Test·Flyway·모듈 커버 % 재산정
+직전 동일 rotation BNK-752(2026-07-15T08:20Z) → ~2.6h 후
+직전 사이클 BNK-755(2026-07-15T10:16Z·엔젤·롱텀·규제 4–6h) → ~38분 후
+
+[1] git HEAD 실측
+- FE develop HEAD = a2db731 (a2db731a84901e667c3f0c8b058268428f0fa03c)
+    · BNK-755 @353eb7f → +2:
+        8b8095a ux(a11y): add G-LINKAGE org-wide report route and draft labels (UXD-179)
+        a2db731 fix(v1.2.1/UXD-179): apply linkage report filters only on submit
+    · WT CLEAN · ahead origin/test 2 (origin/develop..develop 0)
+    · 8b8095a files (14): src/App.jsx(+10) · src/pages/ClientLinkageRecordsReportPage.jsx(+175 신규)
+        · ClientLinkageRecordsReportPage.test.jsx(+128 신규) · services.js(+19) · navConfig.js(+6)
+        · ClientsContextNav.jsx(+5) · ClientLinkageRecordsPanel/ReportPanel/Form 조정
+    · a2db731 files (2): ClientLinkageRecordsReportPage.jsx(±43·필터 submit-only) · .test.jsx(+1)
+- BE develop HEAD = 9dff00f (9dff00f68535c85ff4bda230c726f0617b9a6a92)
+    · BNK-755 @cdeb6bf → +1:
+        9dff00f feat(v2/G-LINKAGE-RECORD): land V195/V196 integrity readiness gate
+    · WT CLEAN (BNK-755 DIRTY 2U → 커밋 완료) · ahead 660 (vs 598d108) · origin/develop..develop 0
+- merge gate = FE 2 + BE 660 = 662 (BE-heavy → tester FF)
+
+[2] ★★★ 신규 상태 변경 — G-LINKAGE-RECORD org-wide report END-TO-END 착지 = BNK-754/755 후속 폐루프 완성
+- BNK-754: BE `GET /api/v1/clients/linkage-records` org/branch report API 착지 · **FE Route 미완** 플래그
+- BNK-755: BE WT **DIRTY 2U** = untracked V195/V196 (coder 후속 in-progress)
+- BNK-756 실측 = 두 미완 항목 모두 CLOSED:
+    (a) FE Route 착지 — `8b8095a` `ClientLinkageRecordsReportPage.jsx`(175 line) + `/clients/linkage-records`
+        App.jsx route(line 236) + navConfig + ClientsContextNav + services.js
+        → BNK-754 「FE Route 미완」 해소 · a2db731 UXD-179 필터 submit-only polish
+    (b) V195/V196 COMMITTED — BE `9dff00f` 로 landed (BNK-755 untracked → 커밋)
+        V195__client_linkage_records_org_branch_report_index.sql
+          = (organization_id, branch_id) 프리픽스 커버 인덱스(idx_*_org_branch_status_created)
+            → report 핫패스 bound (org 파티션 전체 스캔 방지)
+        V196__client_linkage_records_integrity_g_linkage.sql
+          = target_institution(200)/summary(5000) 길이 CHECK · client×branch FK
+            · set_org_branch · purge index (defense-in-depth·V193/V159 패턴)
+- 판정: id=1-10 연계기록지(coverage=1) org-wide report 조회·무결성 후속이 코드+마이그레이션+FE 전 계층 착지.
+  coverage 무관(id=1-10 이미 1.0)·KPI promote 0 · 모듈 97.07% carry.
+
+[3] KPI 실측 (기존 방법론)
+- Route     = 133   (App.jsx <Route\b 132 + <Routes> 1)  ← BNK-755 132 → +1 (linkage-records route)
+- Page      = 106   (src/pages *Page.(jsx|tsx))           ← BNK-755 105 → +1 (ClientLinkageRecordsReportPage)
+- FE test   = 525   (src/**/*.test.js* files · 216 js + 309 jsx) ← BNK-755 524 → +1 (jsx +1)
+- BE Test   = 292   (*Test.java + *Tests.java files)       ← BNK-755 291 → +1
+- BE @Test  = 2197  (grep -rE @Test src/test)              ← BNK-755 2190 → +7
+- Flyway    = V1–V196 (196 migrations · COMMITTED)         ← BNK-755 V1–V194 committed(V195/V196 untracked) → +2 committed
+- accounting route 1 · payroll route 5
+
+[4] 모듈 커버리지 실측 = 97.07% (28.15/29) — carry (BNK-753 정정 방법론 재확인)
+- src/frontend/src/config/competitorModuleCoverage.js
+- `grep -cE '^\s*\{ id:'` = 29 (배열 엔트리)
+- `grep -oE 'coverage: [0-9.]+'` = 30 count / sum 29.15 → line 5 JSDoc 주석 `* coverage: 1 = ✅ 완전` 1.0 이중가산 오염
+- 코드 실측: 엔트리 29 · sum 28.15 · 28.15/29 = 0.9707 = 97.07%
+- 비-1.0 축 (4): id=2 이동서비스 0.85 · id=8 직원·근태 0.85 · id=10 부가서비스(SMS) 0.75 · id=12 수입지출·회계 0.70
+- coverage-0 = 0건 (G-LINKAGE-RECORD closure 이후 carry)
+- BNK-752 97.17%(29.15/30) 은 BNK-753 에서 폐기·REVERT 됨 (JSDoc grep 오염) — 재승격 없음
+
+[5] ★ 규제 백본 재실측 (기존 URL)
+- NHIS #44 이동서비스비 (joHistoryContent SEQ=1637)
+    HTTP 200 · 7,572B · md5 c886ff1f · 490차 IDENTICAL (BNK-755 489차 → +1)
+    grep -oE: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13) = zero drift
+- carefor func.php LIVE : HTTP 000 (connect timeout 20s) · 82-cycle+ 「미확인」 · disk canonical 6226e6eb
+
+[6] per-cycle minimum 충족
+- 재실측 URL: NHIS #44 490차 (재실측+변동 기록) + carefor 000
+- 워크플로 블록: G-LINKAGE-RECORD org-wide report END-TO-END 착지 crosswalk (FE Route + V195/V196 committed)
+- MATRIX 1행+: @a2db731 / @9dff00f
+- BENCHMARK §756 소절 + 신규 snapshot 2 (ogada_git_remeasure_bnk756.txt · nhis_jo44_live_bnk756.html)
+
+[7] residual operational (carry)
+- id=12 credentials(0.7) → id=10 SMS dispatch/RFID SMS P2(0.75) → id=2/8(0.85) polish
+- P3 만료일 카운트다운 위젯 「가정」 격상 0
+
+[8] planner 반영 요약
+1. ★★★ G-LINKAGE-RECORD org-wide report END-TO-END 착지 — BNK-754 「FE Route 미완」 + BNK-755 「BE WT DIRTY 2U」 2개 후속 항목 모두 CLOSED
+   (FE `/clients/linkage-records` report page + V195/V196 committed) · coverage 무관·KPI promote 0
+2. ★★ Flyway V1–V196 committed (BNK-755 untracked V195/V196 → 커밋 완료) · BE WT CLEAN 회복
+3. ★ 규제 490-cycle zero drift → 상수 긴급 변경 불요
+4. baseline FE @a2db731 / BE @9dff00f · merge gate 662 (FE 2 + BE 660·BE-heavy → tester FF)
+- npm test 미실행 (vitest 동시 실행 금지·VITEST_CONCURRENCY) · mvn 전체 미실행

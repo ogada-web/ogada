@@ -1,0 +1,82 @@
+# BNK-663 — 이지케어 역공학 2–4h · 도입/이용시설 카운터 첫 하락 DRIFT (adoption counter decrease)
+# 조사일: 2026-06-26 (KST) | rotation: 이지케어 역공학 2–4h
+# 방법: live HTTP fetch + 디스크 스냅샷 md5/SIZE 비교 + 값 verbatim grep
+# 출처(live, 모두 HTTP 200):
+#   https://ezcare.easyms.co.kr/?PG=e01
+#   https://ezcare.easyms.co.kr/new/ezCare_fnc.html
+#   https://ezcare.easyms.co.kr/new/ezCare_charge.html
+#   https://ezcare.easyms.co.kr/new/ezCare_change_work.html
+#   https://ezcare.easyms.co.kr/
+#   https://ezcare.easyms.co.kr/help/faq.ez
+#   https://ezcare.easyms.co.kr/help/faq.ez?rowid=21845&type=web
+
+================================================================================
+★★★ 신규 finding — 이지케어 도입/이용시설 카운터 첫 하락 (VALUE DRIFT, −4)
+================================================================================
+직전 BNK-655~661(4~5 cycle) 동안 도입/이용시설 카운터는 zero drift(또는 +1~+5 증가)였으나
+BNK-663 에서 처음으로 −4 하락 관측. (가정: 폐업 반영 또는 집계 정정 — 「미확인」)
+
+| URL          | 항목        | BNK-659/661 carry | BNK-663 live | delta |
+|--------------|-------------|-------------------|--------------|-------|
+| /?PG=e01     | 이용시설수  | 9,360개           | **9,356개**  | −4    |
+| /?PG=e01     | 점유율      | 53.52%            | **53.50%**   | −0.02 |
+| /?PG=e01     | 전국재가    | 17,489            | 17,489       | 0     |
+| /new/ezCare_fnc.html | 도입효과 | 9,363개      | **9,359개**  | −4    |
+
+verbatim (/?PG=e01): 「이용시설수: 9,356개 / 점유율: 53.50% / 집계일: 2026.06.26」
+verbatim (/new/ezCare_fnc.html): 「9,359개」(도입효과 섹션)
+※ 점유율 = 이용시설수 / 전국재가 = 9,356 / 17,489 = 53.50% (산식 정합)
+
+================================================================================
+스냅샷 md5/SIZE 비교 (live vs disk)
+================================================================================
+| 파일                              | live size | live md5   | disk(prev) md5 | 판정 |
+|-----------------------------------|-----------|------------|----------------|------|
+| ezcare_pg_e01.html                | 47,130B   | a864ea1f   | 168e851c(47,089) | VALUE DRIFT → 덮어쓰기 |
+| ezcare_ezCare_fnc.html            | 17,870B   | 5da78073   | 6fb93bb2       | VALUE DRIFT → 덮어쓰기 |
+| ezcare_help_faq_list_bnk633.html  | 80,057B   | 086fa810   | 87a7947f       | COUNTER DRIFT → 덮어쓰기 |
+| ezcare_charge.html                | 22,979B   | 85103687   | bbb31a22       | cachebuster only → disk 보존 |
+| ezcare_change_work.html           | 26,157B   | c3d43364   | 502add15       | cachebuster only → disk 보존 |
+| ezcare_home.html                  | 106,139B  | c4922d5b   | 89bbea3b(106,098) | cachebuster only → disk 보존 |
+| ezcare_faq_21845_nhis_excel...    | 13,915B   | 5b78c947   | 5b78c947       | IDENTICAL zero drift |
+
+================================================================================
+값 zero drift carry (verbatim 불변)
+================================================================================
+- charge: 셋팅 33,000 / 37명 25,850 / 구독 55,000 (+옵션 45,000 · 10,000) verbatim 불변
+- change_work: RFID 2 · 중복일정 1 · 듀얼 1 · 트리플 1 (이중/중복 일정·RFID 케어제공 verbatim 불변)
+- home mCnt = {1: 9286, 2: 4608, 3: 2353, 4: 1820} (BNK-655/659 IDENTICAL) · banner [추천 이벤트] cafe.naver.com/egcare carry
+- FAQ 21845 (공단 엑셀→방문일정 incident 사후·수동 공지) 13,915B `5b78c947` IDENTICAL (게시 이래 BNK-655~663 불변)
+
+================================================================================
+/help/faq.ez taxonomy — 누적조회 +24 COUNTER DRIFT (값 안정)
+================================================================================
+- 233 rowid · 14 카테고리(K001~K014) zero drift (count IDENTICAL)
+- 누적조회 합계: BNK-659 3,637,199 → **BNK-663 3,637,223** (+24)
+- top viewed: rowid=21601(운영자 최대 pain-point) carry · 21723 25,068 carry
+- K012 재무회계 · K013 세무 · K014 4대보험 · K008 수당/급여관리 = ogada M11/M12 갭(직원급여 id=11 · 회계 id=12)과 일치
+  → M11/M12 P1 demand-signal 재입증 (closure 시 80.86% → 87.76% +6.9pp)
+
+================================================================================
+ogada @HEAD git 실측 (BNK-663)
+================================================================================
+- FE develop `@320ba06` (BNK-661/662 `@562560a` → HEAD +1) WT CLEAN
+  · `fix(v1.2.1/QA-B350): reset stale branch query filter` (ClientListPage.jsx +12 / .test.jsx +29 · 2-file +39/-2)
+  · ahead 265 vs origin/test=ab4de83
+- BE develop `@45acb75` (BNK-661/662 `@9b91e0f` → HEAD +1) WT CLEAN
+  · `chore: highlight branch-aware NHIS import recovery` (NhisVisitScheduleImportGuidance.java +2 / Test +3 · 2-file +5/-2)
+  · ahead 591 vs origin/test=598d108
+- KPI 8축: 118 Route(`<Route` 118+`<Routes>` 1=119) · 93 page · V1–V183 · BE Test 274(273 Test.java+1 Tests.java)
+  · BE @Test 1991 · FE test 485(199 .test.js+286 .test.jsx) · 모듈 80.86%(23.45/29·✅21/△3/❌5) · reports 28
+  → 전부 BNK-661/662 IDENTICAL · HEAD FE+1/BE+1 · merge gate 856 (FE 265+BE 591·+2 cross-stream vs BNK-662 854)
+- 두 신규 commit 모두 branch-aware NHIS import recovery 후속(G-NHIS-IMPORT-ERROR-STATUS-SURFACE chain stage5)
+  → ezCare FAQ 21845 사후·수동 incident 공지(in-app 0) vs ogada chain in-app 실시간 loop = 경쟁 4종 유일 full-stack 우위 carry
+
+================================================================================
+per-cycle minimum 충족
+================================================================================
+- 신규 evidence: 이지케어 도입/이용시설 카운터 첫 −4 하락 DRIFT (값 변동 기록)
+- 메뉴/필드/워크플로 1블록: /help/faq.ez 14-카테고리 누적조회 +24 + e01/fnc 카운터 산식 정합
+- COMPETITOR_MATRIX 1행+ `@320ba06`/`@45acb75` 갱신
+- BENCHMARK_REPORT §663 신규 소절
+- 덮어쓰기 3건(e01·fnc·faq_list) · disk 보존 3건(charge·change_work·home cachebuster) · IDENTICAL 1건(FAQ 21845)

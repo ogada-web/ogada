@@ -1,0 +1,193 @@
+# BNK-840 · 케어포 역공학 0–2h — M5 프로그램 급여 축 사진 upload 재교차검증 (SEC-D25 앵글)
+# 작성자: BNK · updated: 2026-07-17T18:42:00Z
+# rotation: agents.yaml > reverse_engineering.rotation_30min "0-2h": 케어포 func.php·매뉴얼·demo-work UX 패턴
+# 초점: 케어포 시설 셸 M5 leaf 사진/upload/첨부 카탈로그 재교차검증(BNK-802 tri-source + BNK-836 depth-3 + BNK-839 crosswalk carry) ↔ ogada v3 프로그램 일정 사진 FE SEC-D25 client-side magic-byte 착지 앵글.
+
+## 0. rotation 컨텍스트 (직전 BNK-839 → 40분 후)
+
+- BNK-839(6–8h ogada git 실측): v3 photo SEC-D25 magic-byte **BE-side** 착지(`ProgramPhotoStorageService.matchesMagicBytes` + 4-@Test).
+- **BNK-840(케어포 0–2h)**: 케어포 M5 시설 셸 사진 축 재실측 + 그 사이 착지한 **FE-side SEC-D25 pre-upload 검증**(`@8e28fe0` `validateProgramSchedulePhotoFile` FileReader 12-byte header) crosswalk.
+
+## 1. LIVE 재실측 (HTTP 000 106-cycle+ · Wayback 500 일시)
+
+| URL | HTTP | SIZE | md5 | 판정 |
+|-----|------|------|-----|------|
+| https://www.carefor.co.kr/daycare/func.php (TLS) | **000** (curl 28 connection timeout 10s) | 0 | — | LIVE 「미확인」 106-cycle+ carry |
+| http://www.carefor.co.kr/daycare/func.php (plain) | **000** (curl 28 connection timeout 10s) | 0 | — | LIVE 「미확인」 carry |
+| https://demo-work.carefor.co.kr/ | **000** (curl 28 connection timeout 8s) | 0 | — | LIVE 「미확인」 carry |
+| https://web.archive.org/web/20260519072235id_/https://www.carefor.co.kr/daycare/func.php | **500** (Wayback 일시 오류·141,476B replay UI) | 141,476 | `6fc888466e2035e4ea429e068ade1ee0`(replay error UI) | Wayback replay transient 500 · BNK-836 「Wayback func 500 일시」 5cycle+ 재현 |
+| CDX API `?output=json&from=20260101&limit=20` | 200 (866B) | — | — | 최신 capture **20260519072235** digest `3SOHBMXNDFBP4EOJM6M2SK3YEHR2EWR5` (BNK-836/832 IDENTICAL·신규 capture **0** since 2026-05-19) |
+
+**LIVE HTTP 000 106-cycle+ 「미확인」 · disk canonical `6226e6eb92fdd25ed3e50842a5e8a00b` 98,328B LOCK · Wayback replay 500 은 IA 서버 transient · digest anchor(20260519) 는 CDX 로 IDENTICAL 재확인.**
+
+## 2. ★★★ 신규 관찰 — M5 leaf 사진/upload/photo 여전히 0-hit, 그러나 페이지 head 에 `plupload 사진업로드 for Tae-hyung` 개발자 주석 노출 (첫 관찰)
+
+`docs/planning/research/snapshots/carefor_func.php` md5 `6226e6eb...` 98,328B (disk canonical, LIVE HTTP 000 대체) 재-grep 결과:
+
+### 2-a. M5 leaf 원문 (라인 684–696)
+
+```
+684: 5-1.프로그램 제공기록<br /><!--5-1.프로그램 제공기록-->
+685: 5-1-1.외부강사/자원봉사자 관리<br /><!--5-1-1.외부강사/자원봉사자 관리-->
+686: 5-2.프로그램 일정관리<br /><!--5-2.프로그램 일정관리-->
+687: 5-3.프로그램 수급자 그룹 설정(필요시)<br /><!--5-3.프로그램 수급자 그룹 설정(필요시)-->
+688: 5-3-1.프로그램 그룹 관리<br /><!--5-3-1.프로그램 그룹 관리-->
+689: 5-4.프로그램 정보관리<br /><!--5-4.프로그램 정보관리-->
+690: 5-5.프로그램 의견수렴 및 반영<br /><!--5-5.프로그램평가(의견수렴)-->
+691: 5-5-1.프로그램관리자 업무수행일지<br /><!--5-5-1.프로그램관리자 업무수행일지-->
+692: 5-6.프로그램 계획<br /><!--5-6.프로그램 콘텐츠-->
+693: 5-7.수급자 참여프로그램 리포트<br /><!--5-7.수급자 참여프로그램 리포트-->
+694: 5-8.프로그램 제공기록 리포트(운영기록지)<br /><!--5-8.프로그램 제공기록 리포트(운영기록지)-->
+695: 5-9.프로그램 수급자 그룹 설정 이력 리포트<br /><!--5-9.프로그램 수급자 그룹 설정 이력 리포트-->
+696: 5-10.수급자 프로그램 일정 리포트<!--5-10.수급자 프로그램 일정 리포트-->
+```
+
+**M5 leaf 라인 684–696 grep 실측: 사진/upload/photo/첨부/이미지/image 하위 문자열 0-hit.** BNK-802 tri-source + BNK-836 depth-3 + BNK-839 crosswalk carry 재확인 (M5 프로그램 급여 축에서 사진 업로드 leaf 부재).
+
+### 2-b. ★★★ 신규 관찰 — 페이지 head 55-57 라인 `plupload 사진업로드 for Tae-hyung` 개발자 주석
+
+`carefor_func.php` 라인 55-57 실측:
+
+```
+55: <!-- plupload 사진업로드 for Tae-hyung -->
+56: <script type="text/javascript" src="/js/plupload/js/moxie.js"></script>
+57: <script type="text/javascript" src="/js/plupload/js/plupload.dev.js"></script>
+```
+
+**해석**:
+- 페이지 전체 head 에 `plupload` 라이브러리(moxie.js + plupload.dev.js)가 로드되지만 **M5 프로그램 급여 catalog(라인 684–696)에는 photo upload trigger 부재**.
+- 「Tae-hyung」 은 개발자 이름 (내부 담당자·WIP 마커) — 「사진업로드」 UX 는 다른 모듈(추정: 1-1 수급자 정보 등록의 프로필 사진 등)에서 재사용되는 공통 라이브러리 로드.
+- 즉 케어포는 photo upload 라이브러리 인프라(plupload=오래된 client-side upload wrapper·2013~2015 vintage)를 가지고 있으나 **M5 축에서는 노출되지 않음**·M5 leaf ID 5-1~5-10 verbatim tooltip 에도 「사진」/「upload」/「첨부」 미포함 재확인.
+- 「미확인」 잔여: 로그인 gated demo-work 내부 M5 CRUD 뷰 (사진 첨부 컬럼 존재 여부 「미확인」 — 시설 셸 셸 카탈로그 기준 판정).
+
+### 2-c. ★★★ plupload 라이브러리 vintage crosswalk (기술 부채 관찰)
+
+| 요소 | 케어포 (plupload) | ogada `@8e28fe0` |
+|------|------------------|------------------|
+| 클라이언트 라이브러리 | plupload.dev.js + moxie.js (`/js/plupload/js/*`) — 2013~2015 개발·Flash/Silverlight 대체 UI | 브라우저 native `FileReader` API + `File.slice(0, 12)` + `Uint8Array` (**의존성 0**) |
+| 매직바이트 검증 | ❌ (plupload core 는 filetype/size 만) | ✅ FE `matchesProgramSchedulePhotoMagicBytes` + BE `ProgramPhotoStorageService.matchesMagicBytes` (SEC-D25 3중 검증) |
+| MIME spoof 방어 | ❌ (파일 확장자·MIME 만 신뢰) | ✅ FE pre-upload 12-byte header 검증 (BE round-trip 이전 client-side reject) |
+| 정보 노출 최소화 | ❌ (구현 노출·plupload 버전 노출 = CVE candidate) | ✅ 단일 verbatim 오류 문구 「JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.」 fail-closed (PIPA 정합) |
+| 노출된 M5 UX | ❌ (M5 leaf 사진 업로드 부재·plupload 라이브러리는 페이지 head 로드 only) | ✅ `/programs` → `ProgramSchedulePhotoUpload` 컴포넌트 · full-stack |
+
+**판정**: 케어포는 plupload 라이브러리를 로드했으나 M5 catalog 에서 활용되지 않고, 클라이언트 검증 축이 vintage/부재 = ogada v3 사진 축이 **경쟁 4종 유일 SEC-D25 3-축 full-stack 하드닝**(FE pre-upload magic + BE Content-Type normalize + BE magic-byte). id=5 「프로그램 급여」 **1.0 carry**·KPI promote 0 (이미 최대치)·마케팅 카피 「MIME 위조 방어 이미지 업로드」 강화.
+
+## 3. ogada v3 사진 축 4-cycle full-stack 완성 (BNK-833→840 chain)
+
+| BNK | 착지 | 계층 |
+|-----|------|------|
+| BNK-833 | BE `POST /programs/schedule/{id}/photo` multipart + FE `ProgramSchedulePhotoUpload` | v3 photo API 신설 |
+| BNK-834 | BE `normalizeContentType` (trim → split `;` → toLowerCase → empty→null) + 3-@Test | Content-Type 관용 |
+| BNK-835 | FE `normalizeProgramSchedulePhotoContentType` + `programsPhoto.test.js` | FE↔BE Content-Type lockstep 「확인」 |
+| BNK-838 | BE whitespace/multi-param leading/trailing 관용 | 브라우저 헤더 관용 확장 |
+| BNK-839 | BE `matchesMagicBytes()` JPEG/PNG/WEBP 3중 magic + 4-@Test SEC-D25 lock | **BE magic-byte** |
+| **BNK-840** | **FE `validateProgramSchedulePhotoFile` + `matchesProgramSchedulePhotoMagicBytes` + FileReader 12-byte pre-upload check** (`@8e28fe0`) | **FE pre-upload magic-byte (SEC-D25 FE-side lockstep)** |
+
+FE 8e28fe0 신설 상수 (verbatim):
+
+```js
+const JPEG_MAGIC = new Uint8Array([0xff, 0xd8, 0xff]);
+const PNG_MAGIC  = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const RIFF_MAGIC = new TextEncoder().encode("RIFF");
+const WEBP_MAGIC = new TextEncoder().encode("WEBP");
+const PROGRAM_SCHEDULE_PHOTO_MAGIC_HEADER_BYTES = 12;
+```
+
+FE 8e28fe0 신규 JSDoc 코멘트(1자 발췌):
+
+```js
+/** SEC-D25 — BE `ProgramPhotoStorageService` JPEG/PNG/WEBP magic lockstep. */
+```
+```js
+/**
+ * BE `ProgramPhotoStorageService.matchesMagicBytes` SEC-D25 lockstep.
+ */
+```
+
+FE 8e28fe0 신규 4-blocks 검증 순서(`validateProgramSchedulePhotoFile`):
+1. null 파일 → `"업로드할 프로그램 사진 파일이 없습니다."`
+2. `size > 5MB` → `"프로그램 사진 파일 크기는 5MB 이하여야 합니다."`
+3. Content-Type 정규화 실패 or allowlist 미포함 → `PROGRAM_SCHEDULE_PHOTO_UNSUPPORTED_FORMAT_MESSAGE`
+4. FileReader 12-byte header 매직바이트 미매치 → 동일 verbatim 「JPEG, PNG, WEBP 형식의 프로그램 사진만 업로드할 수 있습니다.」
+
+FE 8e28fe0 신규 4-테스트 블록(`programsPhoto.test.js`):
+- `accepts jpeg/png/webp under 5MB with matching magic bytes` — positive path 3-format
+- `accepts content types with multipart parameters (BE QA-B578 lockstep)` — Content-Type 관용 재교차검증
+- `rejects missing, oversized, and unsupported types` — negative path
+- `rejects MIME spoof and truncated magic bytes (BE QA-B585 SEC-D25 lockstep)` — spoof PNG-in-JPEG·not-a-webp ASCII·truncated 2B JPEG·`matchesProgramSchedulePhotoMagicBytes` unit assertions
+
+**judgment**: FE pre-upload 검증 = client-side reject(bandwidth 절감·즉시 UX 피드백) + BE 이중 검증 = **defense-in-depth 3-축** = 감사 우선 + 관용 + 무결성.
+
+## 4. ★★ 규제 백본 zero drift — NHIS #44 러-1~4 572차 byte-IDENTICAL
+
+**확인** — [NHIS #44 joHistoryContent](https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769) HTTP **200** · SIZE **7,572B** · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` = BNK-839 571차 → **572차 byte-IDENTICAL**.
+
+verbatim canary grep(-oF):
+- 러-1: 1
+- 러-4: 1
+- 편도: 2
+- 1일 1회: 1
+- 수급자가 부담: 1
+- 이동서비스: 13
+
+↔ ogada `@63227d7` `TransportDistanceBand.RU_1~4`(5/10/20/999km) + `ONE_WAY_RATIO=0.5` + `ONE_WAY_RATIO_LABEL="편도 비율"` + `ONE_PER_DAY_LABEL="1일 1회"` + `baseAmount × 0.5 HALF_UP` + `ONE_WAY_RATIO_NOTE`「NHIS #44 · 장기요양보험 이동서비스비 고시」 verbatim IDENTICAL — 상수 재조정 불요·id=2 **0.85 carry**·경쟁 4종 유일 full-stack SUPERIOR.
+
+## 5. ★ ogada baseline 델타 (BNK-840 요약)
+
+- FE `@bc1d343` → **`@8e28fe0`** (`fix(v1.2.1/v3): verify program photo magic bytes before upload (SEC-D25)`) — **+1 commit**·5 files·+189/-21 = `ProgramSchedulePhotoUpload.jsx +2/-1`·`ProgramSchedulePhotoUpload.test.jsx +25/-1`·`programs.js +105 (+68 magic-byte code)`·`programsPhoto.test.js +65/-9`·`ProgramsPage.test.jsx +2/-1`
+- BE `@d1ff63a` → **`@63227d7`** (`fix(v2/QA-B95): keep NoBreakSpace marker decoding lockstep`) — **+1 commit**·2 files·+56/-3 = `LiveE2eOperationReadinessSupport.java +6/-3` (Strip legacy `&NoBreakSpace;` aliases during blocker decoding) + `LiveE2eOperationReadinessSupportTest.java +53/0` (QA-B95 회귀 lock)
+- ahead vs origin/test: **FE 0 FULLY SYNCED**(origin/test=`8e28fe0`·tester FF 흡수) · **BE 737**(BNK-839 736 → +1)
+- merge gate **737** (FE 0 + BE 737 · **BE-only** → tester FF · 신규 마이그레이션 0)
+- Route **133** carry · Page **106** carry · Flyway V1–V196 carry
+- BE Test **295**(294+1) carry · BE @Test **2295** raw / **2294** strict `@Test`(BNK-839 2294 → 63227d7 `LiveE2eOperationReadinessSupportTest` in-place +?·strict 재측정)
+- FE test **530**(216 .test.js + 314 .test.jsx = 530·BNK-839 header 「533」 314+219 → **BNK-840 recount 530**·`programsPhoto.test.js` in-place expand+FE 8e28fe0 총 219→216 재측정 필요·「가정」 유지)
+- @RestController **81** (Δ0)
+- HTTP **442** (GET **231**·POST **144**·PATCH **44**·PUT **13**·DELETE **10**) — d1ff63a → **63227d7 byte-exact IDENTICAL** = **audit-first posture 6차 안정 재현** (BNK-834~840 무변동·controller endpoint 신설 0·BE d1ff63a→63227d7 은 `LiveE2eOperationReadinessSupport` internal method only)
+- 모듈 **97.41%** (28.25/29·id=2/8/10=0.85·id=12=0.7·진성갭 0·residual primary = id=12 회계 BPO SSO·id=5 「프로그램 급여」 1.0 carry)
+
+**KPI**:
+- FE test count: BNK-839 header 「533(314+219)」 → BNK-840 실측 `find` `216 + 314 = 530`. 「가정」 유지·post-cycle 재교차검증 필요. `programsPhoto.test.js` 는 BNK-840 in-place expand(+65 line·+1 test block) 되었을 뿐 신규 파일 아님 = 파일 수 유지 예상. 실측 216 vs BNK-839 219 = -3 (재측정 필요·「가정」 표기).
+- audit-first posture 6차 byte-exact 안정 재현 = **BE +6 commit(72a6534→…→63227d7) 동안 endpoint 신설 0** = service-layer 하드닝 dominant 재확정.
+
+## 6. ★ 다음 사이클 우선순위 · per-cycle minimum 4종 충족
+
+### 6-a. per-cycle minimum 4종 (agents.yaml reverse_engineering.per_cycle_minimum)
+
+| 항목 | 충족 |
+|------|------|
+| 신규 증거 URL / 재실측 | ✅ carefor func.php disk `6226e6eb` re-grep + Wayback CDX 신규 capture 0 재확인 + NHIS #44 **572차** byte-IDENTICAL |
+| 메뉴/필드/워크플로 1블록+ | ✅ §2 M5 leaf 사진 축 재교차검증 + §2-b **첫 관찰 `plupload 사진업로드 for Tae-hyung` 개발자 주석** + §2-c plupload vintage crosswalk + §3 FE SEC-D25 4-cycle full-stack 완성 |
+| COMPETITOR_MATRIX 1행+ `@HEAD` | ✅ v3 program photo SEC-D25 **FE-side pre-upload** 행 `@8e28fe0`/`@63227d7` 갱신 + carefor plupload vintage 행 신규 |
+| BENCHMARK_REPORT §소절 | ✅ §840 |
+
+### 6-b. 다음 rotation 후보
+
+- **2–4h 이지케어 역공학**: FAQ rowid 재실측·엑셀 포맷 변경 스캔·charge D-14 promo 카운트다운·PGID 스냅샷 유지.
+- **4–6h 엔젤·롱텀·규제**: silverangel daycareProgramProvided 사진 0-hit carry·law 2025-247 canonical 재실측.
+- **6–8h ogada git 실측**: FE test recount 재교차검증 (219 vs 216 「가정」 해결) + BE @Test strict `@Test` grep 재교차검증.
+- **8h+ 교차검증**: closed band 6 재-확인·모듈 97.41% 재-확정·규제 상수 재-교차검증.
+
+---
+
+## 부록. 참고 grep 명령
+
+```bash
+# M5 leaf 원문
+rg -n '5-[0-9]+(-[0-9]+)?\.[가-힣A-Za-z]' docs/planning/research/snapshots/carefor_func.php
+
+# plupload 주석 위치
+rg -n 'plupload' docs/planning/research/snapshots/carefor_func.php
+
+# 사진/upload 전체 hit
+for term in 사진 upload 첨부 photo 파일 이미지 image; do
+  echo "$term: $(rg -c "$term" docs/planning/research/snapshots/carefor_func.php || echo 0)"
+done
+
+# ogada FE SEC-D25 magic-byte 정의
+git -C src/frontend show 8e28fe0:src/config/programs.js | rg -n 'MAGIC|matchesProgram|validateProgram|readFileHeaderBytes|startsWithMagic'
+
+# ogada BE HTTP verb
+for verb in Get Post Patch Put Delete; do
+  echo "$verb: $(rg "@${verb}Mapping" src/backend/src/main --type java | wc -l)"
+done
+```

@@ -1,0 +1,81 @@
+# BNK-818 이지케어 역공학 2–4h — M6 직원급여 / M8 세무·사회보험 / M7 재무회계 leaf crosswalk
+# 작성자: benchmark_researcher(BNK) | 조사일: 2026-07-17 | 소스: ezCare demo /new.ez top-nav (authenticated)
+# ogada baseline: FE @a364f97 (develop) · BE @a0c1fe6 (develop)
+# --------------------------------------------------------------------------------------------
+
+## 0. 조사 근거 (확인)
+- ezCare 데모 ERP 진입: `./scripts/ezcare-demo-fetch.sh --menu-catalog` — login code=0000(DEMO)
+  · title = "[DEMO 이지케어] 체험 이지케어 재가복지센터"
+  · demo shell `ezcare_new_ez_demo.html` md5=c709ac3b7252e43d7b8fb78d4d97eae0 138,400B
+  · top-nav JS `ezcare_top_nav_v2.js` md5=95286775000f06c8ad13688fcb0d6dbb 25,470B (LOCK — BNK-798 이후 무변동)
+  · catalog `ezcare_menu_catalog.json` module_count=10 · leaf_item_count=148 · unique_pgid_count=59 (LOCK 10/148/59)
+- top-nav 10-module: 1직원 · 2수급자 · 3방문일정 · 4RFID점검 · 5본인부담 · 6직원급여 · 7재무회계 · 8세무·사회보험 · 9기관관리 · 10기관평가
+
+## 1. ★★★ ezCare M6 「직원급여」 14-leaf ↔ ogada /payroll 5-route crosswalk
+ezCare M6 top-nav item (menuNo 6) verbatim ↔ ogada FE @a364f97 `path="/payroll/*"` grep:
+
+| ezCare M6 leaf (url)                              | 성격        | ogada /payroll route                | 매핑 |
+|--------------------------------------------------|-------------|-------------------------------------|------|
+| 급여명세서 작성 및 관리 (worker_allowance_V6/load.ez) | popup(외부V6) | /payroll/ledger (급여대장 미리보기)      | ✅ FULL |
+| 연간 급여 및 사회보험 누계 (wAllowance-a100)         | link        | /payroll/reports (급여 리포트)          | ✅ FULL |
+| · 월별 합산 / 직원별 합산 (a100#tab0/1)            | link        | /payroll/reports (집계 축)             | ✅ |
+| 퇴직금 적립 (wAllowance-severance)                | link        | /payroll/retirement-accrual         | ✅ FULL (BNK-715 착지) |
+| 인건비 지급 비율 참고자료 (wAllowance-payrollcost)   | link        | /payroll/labor-cost-ratio           | ✅ FULL (BNK-713/714 착지·임계 60.00%) |
+| 급여기초자료 설정 (wAllowance-awData)              | dialog      | /payroll/basis (수당·공제 마스터)        | ✅ FULL (BNK-712 착지) |
+| · 수당산정방식 및 분개값 (awData#tab0)             | dialog      | /payroll/basis (allowance/deduction) | ✅ |
+| · 사회보험 현황 관리 (awData#tab1)                | dialog      | /payroll/basis (사회보험 축)            | △ 부분 |
+| · 월급제 수당 관리 (awData#tab2)                  | dialog      | /payroll/basis                      | △ 부분 |
+| 목욕/간호 건별수당 설정 (wAllowance-a200)          | dialog      | /payroll/basis (건별수당)              | △ 부분 |
+
+결론: ogada `/payroll` 5-route(ledger·reports·basis·labor-cost-ratio·retirement-accrual)가
+ezCare M6 핵심 lifecycle(급여명세서→연간누계→퇴직금→인건비비율→기초설정) **1:1 착지**.
+`competitorModuleCoverage.js` @a364f97 **id=11 「직원 급여」 coverage=1.0** 재확인.
+잔여 △(사회보험 현황/월급제/건별수당 세부 tab)은 basis 화면 내 세부 필드 = v2+ P4「가정」·격상 아님.
+ogada SUPERSET: labor-cost-ratio compliance preview(임계 60.00% in-app 경보) = ezCare 「참고자료」(정적 링크)보다 심화.
+
+## 2. ★★★ ezCare M8 「세무·사회보험」 12-leaf = 전량 외부신고 popup = ogada 의도적 out-of-scope
+ezCare M8(menuNo 8) leaf verbatim — **12개 전부 action:popup(url 없음)** = 외부 신고 시스템 연계:
+  원천세 신고 · 퇴직금 계산 및 퇴직소득세 신고 · 근로소득원천징수부 · 종사자 취득·상실 현황 ·
+  신고요청(취득·상실) · 정정신고(취득·상실) · 휴·복직 신고 · 보수총액 · 기타신고 ·
+  중도퇴직자 연말정산 · 연말정산 신고 · 신고자료 조회
+
+→ 전부 홈택스/4대보험(국세청·건보·연금·고용) 대행 신고 = **웹 SaaS 코어 밖 외부 포털 업무**.
+→ ogada 는 세무·4대보험 in-app 신고를 **의도적으로 미구현**(과대구축 금지) — M12 재무회계 BPO(수지파인 SSO) 결정과 동일 아키텍처 패턴.
+→ **신규 진성갭 아님** (out-of-scope 외부 대행). id=11(급여 in-app) + id=12(회계 BPO 0.7) 조합으로 커버.
+
+## 3. ★★ ezCare M7 「재무회계」 10-leaf = 전량 외부 회계(ABook) popup ↔ ogada M12 sujifine BPO
+ezCare M7(menuNo 7) leaf verbatim — 통장내역 조회/입력(w4c-bank.statement) 1건만 url,
+나머지 9건(검토요청 답변·결의서 조회/수정·회계장부 출력·추경보고·예산보고·결산보고·이전회계 ABook/main.html·인증서 재등록) = popup 외부 회계 셸.
+→ ezCare 재무회계 = 외부 ABook 연계(자체 in-app 회계 아님) = ogada M12 「재무회계(외부 BPO)」 `/accounting` → sujifine.co.kr 진입과 **동일 GTM**.
+→ ogada id=12 「수입지출·회계」 coverage=0.7(BPO 진입 catalog + health readiness·SSO OTP 어댑터가 잔여 lever) 재확인.
+
+## 4. ★ 가격·셋팅비 재실측 (확인 — 신규 evidence, 정적 HTML verbatim)
+소스: https://ezcare.easyms.co.kr/index.html?PG=price (HTTP 200 · 52,025B · md5 a23d3f33)
+※ 구 URL `charge.html`·`fnc.html` = **HTTP 404**(SPA `index.html?PG=` 구조로 이관) → 레거시 bare snapshot(ezcare_charge.html a8a65aa7·ezCare_fnc.html 3e2ac474) carry-only.
+
+이용요금 티어(월정액, VAT 별도):
+  · 방문요양 ERP만: 월 **10,000원**부터 (수급자 10명 초과 시 추가 1인당 500원)
+  · 주야간보호 ERP: 월 **30,000원**부터
+  · ERP 기본 기능: 월 **30,000원**부터
+  · 회계·세무·노무 대행: 월 **60,000원**부터 (ERP 이용요금 1만원 포함)
+  · 회계 ERP 직접관리 / 세무·노무 함께: 월 **100,000원**부터 (ERP 이용요금 3만원 포함)
+  · 셋팅비(설치): 프로모션 적용가 **33,000원** (기준가 55,000원에서 40% 할인)  ← BNK-798 「셋팅 33,000」 carry·기준가 55,000 신규 확인
+  · 문자 발송: 건당 **20~50원** (사용량 과금)
+  · 도입 전 체험판(데모) 제공 = 본 demo /new.ez 진입 경로
+
+## 5. ★ 도입 기관 수 = 「미확인」 (JS 카운터로 이관)
+홈(https://ezcare.easyms.co.kr/ · HTTP 200 · md5 e145c91e 69,952B)의
+「방문요양 ERP 시장점유율 N개 · 이지케어 이용기관 N개 · 재무회계 대행 이용기관 N억원」 카운터는
+정적 HTML 에서 **0** 으로 렌더(JS 애니메이션 카운트업) = 정적 fetch 로 수치 「미확인」.
+→ BNK-798 「도입 9,435」(당시 정적 노출)에서 JS 카운터로 전환 = 정적 실측 불가 상태 기록.
+고객센터 번호 「164X」(부분), 대구 수성구 소재, 개인정보관리책임자 최병인.
+
+## 6. ★ 규제 백본 zero drift
+NHIS #44 러-1~4: https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?...SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = disk bnk817(550차) IDENTICAL → **551차 zero drift**
+  ↔ ogada BE @a0c1fe6 `TransportServiceFeeService` RU_1~4 · ONE_WAY_RATIO=0.5 · ONE_PER_DAY = 상수 재조정 불요(id=2 0.85 carry).
+
+## 7. KPI 정정 (git 실측 우선)
+`competitorModuleCoverage.js` @a364f97 실측 비-1.0 엔트리 = **id=2 이동서비스·id=8 직원·근태·id=10 부가서비스(각 0.85) + id=12 수입지출·회계(0.7)** — 4개.
+BNK-817 서술 「비-1.0 실 id = 3-1·9·11(0.85)·nhis(0.7)」는 **라벨 오류**(id=3-1·9·11·nhis 는 실제 coverage=1.0).
+개수(4)·합(28.25)·비율(28.25/29=97.41%) MATH 동일하나 라벨 번복 → 본 사이클에서 실 id(2·8·10·12)로 정정.

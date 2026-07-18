@@ -1,0 +1,166 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-15T09:41:14Z -->
+# BNK-754 이지케어 역공학 2–4h — Channel.io TOP-10 · RFID→SMS V.ez · mobile-sendW 요금 경제 · 도입/가격 재실측
+
+**조사일**: 2026-07-15T09:41:14Z (KST 2026-07-15 18:41)
+**rotation**: 이지케어 역공학 2–4h
+**직전 동일 rotation**: BNK-750 (2026-07-15T07:05Z) → ~2.6h 후
+**직전 사이클**: BNK-753 (2026-07-15T08:58Z·교차검증 8h+) → ~43분 후
+**ogada**: FE `@9dbdfc5` (WT CLEAN·ahead origin/test **0** = FULLY SYNCED) / BE `@cdeb6bf` (WT CLEAN·ahead **659**)
+**모듈**: 97.07%(28.15/29) · Route 132 · Page 105 · FE test 524(216+308) · BE Test 291 · @Test 2190 · Flyway V1–V194 · merge gate **659**
+
+---
+
+## 1. 신규 증거 URL — Channel.io docs TOP-10 (확인)
+
+| 항목 | 값 |
+|---|---|
+| URL | https://docs.channel.io/ezcare/ko/articles/자주-묻는-질문-TOP-10-79c05b96 |
+| URL(encoded) | https://docs.channel.io/ezcare/ko/articles/%EC%9E%90%EC%A3%BC-%EB%AC%BB%EB%8A%94-%EC%A7%88%EB%AC%B8-TOP-10-79c05b96 |
+| HTTP | **200** |
+| SIZE | 238,819B (저장 `ezcare_channel_top10_bnk754.html`) |
+| md5 | `80ab11987819786157f8d60a0bd16e53` |
+| title | 자주 하는 질문 |
+| 진입점 | ERP 데모 셸 FAQ 팝업 `window.open('https://docs.channel.io/ezcare/ko/articles/…TOP-10-79c05b96','ezFaq',…)` (hit-id=4813) |
+
+### Channel.io 도움말 분류 taxonomy (13 · verbatim)
+
+직원관리 · 수급자관리 · **일정관리** · **본인부담금** · 급여관리 · 사회보험 · 서식출력/설정 · 서류함(평가서류작성) · 통합앱 · **문자발송** · 사용자관리 · **이용료/요금** · (본문 hub)
+
+### TOP-10 hub 본문 하이라이트 (확인 · 기획 연결)
+
+| # | 아티클 제목 (verbatim) | ogada 매핑 |
+|---|---|---|
+| A | 본인부담금 금액이 공단과 불일치하면 어떻게 하나요? | `/billing/*` id=7 1.0 · 공단 reconciliation |
+| B | **직원인권보호 문자 발송을 하고싶어요!** | mobile-sendW kind=19 · id=10 SMS △ |
+| C | **수급자에게 급여제공내역 RFID를 문자로 보내고 싶어요.** | V.ez?rowid=21589 · RFID SMS **P2 lever** |
+| D | 2026년 장기요양 급여비용 및 본인부담 비교표 | 규제/수가 carry |
+| E | 2026년 장기요양기관 확정 평가매뉴얼 변경 내용 정리 | 평가지표 carry |
+| F | 노동절(5월 1일) 유급휴일·수당 클러스터 (4건) | M11 payroll id=8 0.85 |
+
+---
+
+## 2. Channel.io 연계 V.ez 매뉴얼 (확인 · RFID→SMS 워크플로)
+
+| URL | HTTP | SIZE | md5 | 제목 |
+|---|---|---|---|---|
+| https://ezcare.easyms.co.kr/help/V.ez?rowid=21450 | 200 | 7,308B | `ee764fdb…` | 계획일정 대비 요양보호사의 태그전송 내역을 확인하고 싶어요? |
+| https://ezcare.easyms.co.kr/help/V.ez?rowid=21589 | 200 | 5,989B | `16fd80ba…` | 급여제공기록지 RFID 전송분을 문자로 발송하고 싶어요. |
+
+### V.ez 21450 워크플로 (verbatim 요약)
+
+1. 공단 계획일정 + RFID 전송내역 **엑셀 업로드**(비실시간·비교시마다 재업로드)
+2. 「공단계획 ↔ 태그 비교 결과」에서 점검 항목 확인
+3. schedule-rfid `PGID` 그리드 4종 연계 (BNK-743/750 carry)
+
+### V.ez 21589 워크플로 (verbatim 요약) — ★ RFID→SMS P2 정본
+
+1. RFID점검 > 4.1 RFID태그내역 ↔ 공단계획 비교 > 급여제공내역(요양)전송
+2. **평가문항 29번**: 급여제공기록지 RFID 전송분은 수급자에게 **월 1회이상** 제공
+3. 요양보호사 RFID 전송 급여제공내역 → **수급자 문자 발송**(방문요양만)
+4. ogada: `VisitRfidDiffComparePanel`+compare API ✅ · **RFID→SMS dispatch UI 부재** = P2「가정」유지(격상 0·근거 강화만)
+
+---
+
+## 3. 메뉴/필드/워크플로 블록 — mobile-sendW 「문자 보내기→직원」 SMS 요금 경제 (확인)
+
+**증거**: `./scripts/ezcare-demo-fetch.sh --menu-catalog --batch schedule-rfid,mobile-sendW,change-list`
+- login code **0000** · title `[DEMO 이지케어] 체험 이지케어 재가복지센터`
+- nav **10 module** · catalog **10/148/59** (구조 IDENTICAL)
+- `PGID=mobile-sendW` 200 · 133,272B · md5 `af0e685b`
+
+### 7-kind classification (`message_kind` / option value)
+
+| value | label (verbatim) |
+|---|---|
+| 1 | 접속키 발송 |
+| 11 | 본인부담 |
+| 12 | 일정표-수급자 |
+| 13 | 급여제공내역 |
+| 19 | 직원인권보호 |
+| 21 | 일정표-직원 |
+| 22 | 급여명세서 |
+
+### method + messageAmt (포인트 · JS verbatim)
+
+```js
+var messageAmt = {"app":10,"sms":20,"mms":50}
+```
+
+| method | 표시 | 포인트/건 | 마케팅 「문자 발송 건당 20~50원」 정합 |
+|---|---|---|---|
+| app | 쪽지 | **10** | 앱 채널(가격페이지 별도·포인트) |
+| sms | 단문 | **20** | ✅ 하한 |
+| mms | 장문 | **50** | ✅ 상한 |
+
+### form fields (발송·로그)
+
+`method` · `rPhone` · `message_kind_smsLog` · `method_smsLog` · `uKind_smsLog`(w/p/o) · `rdate_smsLog`(읽음) · `charge_pointLog` · `keyword_smsLog` · `sDate_st/ed_smsLog`
+
+### ↔ ogada crosswalk
+
+| ezcare | ogada | 판정 |
+|---|---|---|
+| 7-kind SMS enum + pay-per-message | health notification readiness(J03) + SMS dispatch 「미확인」 template enum | △ id=10 **0.75** residual |
+| messageAmt 10/20/50 | 가격 차별화: ogada G2 **알림톡+이메일+SMS 3-channel** vs ezcare **앱쪽지+SMS 2-channel**(알림톡 0-hit·BNK-724) | ✅ 마케팅 우위 carry |
+| RFID→문자(kind 13 연계·V.ez 21589) | RFID compare ✅ · SMS UI ❌ | **P2 lever** (coverage-0 아님) |
+| Channel.io 인앱 도움말 | in-app operational readiness gate(QA-B95) 유일 | 차별화(도움말 UX ≠ 기능 갭) |
+
+---
+
+## 4. 가격·도입 기관 수 재실측 (확인 · DRIFT)
+
+| 지표 | BNK-743 | BNK-754 | Δ |
+|---|---|---|---|
+| 시장점유율 (home data-count1) | 53.2% | **53.2%** | 0 |
+| 이용기관 (data-count2) | 9,298 | **9,298** | 0 |
+| 재무회계 대행 이용기관 (data-count3) | 4,670 | **4,672** | **+2 DRIFT** |
+| 월 공단청구 (억) | 2,353 | **2,353** | 0 |
+| 종사자 급여 (억) | 1,820 | **1,820** | 0 |
+| fnc headstatus 「전국 N개 기관 사용중」 | 9,429 | **9,433** | **+4 DRIFT** |
+| price Core 월 | 10,000원부터 | 10,000원부터 | VALUE IDENTICAL |
+| price Total 월 | 55,000원부터 | 55,000원부터 | VALUE IDENTICAL |
+| 셋팅비 | 33,000(기준 55,000·40%↓) | 동일 · **~7월 31일까지** | VALUE IDENTICAL |
+| 문자 발송 | 건당 20~50원 | 동일(= messageAmt sms/mms) | VALUE IDENTICAL |
+| charge 예시 37명 | 25,850원 | 25,850원 | IDENTICAL |
+
+집계일 표기(home): `이지케어 내부 운영 데이터 (집계일 : 2026.06.30)` — 카운터 JS는 동일 snapshot 내 data-count 속성값 기준(확인).
+
+price md5 DRIFT(`50698689` vs BNK-743 `ed1f8864`) · size 52,025 IDENTICAL · timestamp/cachebuster-only → **norm EQUAL**.
+fnc md5 DRIFT(`0bbbd7dc` vs `0a04073d`) · size 17,870 · **도입 수치만 실변화**.
+
+---
+
+## 5. FAQ / 규제 / 데모 셸
+
+| 대상 | HTTP | SIZE | md5 | 판정 |
+|---|---|---|---|---|
+| help/faq.ez | 200 | 80,057 | `fee8dae5` | hit-only DRIFT(BNK-753 `ab314285`)·rowid SETS IDENTICAL **233**·max **21781**·hit_sum 3,647,862(+52) → **엑셀 포맷 변경 0** |
+| FAQ body 21298/21474/21589/21844/21845 | 200 | — | `56f80ab6`/`e7a6fa1c`/`a5e2e48c`/`d0aa760c`/`5b78c947` | **byte IDENTICAL**(BNK-731 lock) |
+| NHIS #44 | 200 | 7,572 | `c886ff1f` | **488차** zero drift |
+| demo /new.ez | 200 | 138,605 | `d255c351` | session drift · nav 10 IDENTICAL |
+| schedule-rfid | 200 | 150,501 | `48de9f03` | size-lock vs BNK-743 · session md5 DRIFT |
+| top-nav-item-V2.js | 200 | 25,470 | `95286775` | catalog 10/148/59 |
+
+---
+
+## 6. ogada git delta (vs BNK-753)
+
+| | BNK-753 | BNK-754 |
+|---|---|---|
+| FE | `@33f59a9` FULLY SYNCED | `@9dbdfc5` `fix(v1.2.1/QA-B95): unwrap bracketed operation blocker tokens` · FULLY SYNCED |
+| BE | `@e7efe02` ahead 658 | `@cdeb6bf` `feat(v2/G-LINKAGE-RECORD): add branch-scoped linkage dispatch report API` · ahead **659** |
+| @Test | 2188 | **2190**(+2) |
+| 모듈 | 97.07% | **97.07%** carry |
+| merge gate | 658 | **659** |
+
+**BE landing (확인)**: `GET /api/v1/clients/linkage-records` (branchId·status·linkageType·q) = BNK-749 「org-wide OTHER 미구현」 **IA Δ의 BE 측 부분 착지**. FE services/Route 미와이어 → FE wire = coder P2 polish(coverage-0 재오픈 아님·id=1-10 1.0 유지).
+
+---
+
+## 7. planner 요약
+
+1. **RFID→SMS = Channel.io TOP-10 + V.ez 21589 정본으로 P2 lever 근거 강화**(평가문항 29번·월1회) — coverage promote 0.
+2. **SMS 요금 경제 messageAmt 10/20/50** ↔ 마케팅 20~50원 정합 · ogada 3-channel(알림톡+이메일+SMS) 차별화 카피 유지.
+3. **도입 카운터 DRIFT**(BPO +2·fnc +4) — 시장점유/이용기관/가격표 VALUE 불변 · ~7/31 셋팅비 프로모션 임박 모니터링.
+4. **G-LINKAGE org-wide report BE landing** — FE Route `/clients/linkage-records` wire 권고(P2 IA·진성갭 아님).
+5. residual 유지: id=12 0.7 → id=10 0.75 → id=2/8 0.85 · P3 만료일 「가정」.

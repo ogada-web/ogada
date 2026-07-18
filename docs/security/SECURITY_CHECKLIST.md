@@ -1,11 +1,11 @@
-<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-06-25T17:30:00+09:00 -->
+<!-- doc:owner=SEC doc:audience=COD,PLN,TSR updated=2026-07-18T02:21:00+09:00 -->
 # 보안 체크리스트 (security/SECURITY_CHECKLIST.md)
 
 > **작성**: security_auditor (`SEC`)  
 > **용도**: develop 구현·test 이관·프로덕션 배포 전 게이트  
 > **연계**: `SECURITY_AUDIT.md`, `THREAT_MODEL.md`, `QA_FEEDBACK.md` `[SEC]` 항목
 
-> **2026-06-25 25차 재점검**: develop backend **`49fe2e7`**(+572 vs origin/test `598d108`·**WT CLEAN**·local test **SYNCED**·BE TSR 1408차 merge) · frontend **`2c9abd6`**(+241 vs origin/test `ab4de83`·**WT CLEAN**·local test `75c0f51` +2 behind). origin/test P0 포함(572 BE/241 FE unpushed). **★ G-NHIS-MASKED-NAME-FALLBACK**(`NhisClientResolver`·`matched.size()==1` 단일후보 강제·org+branch scope·PII reveal 차단) · **★ V178 9종 CHECK**(CMS collection request·bathing defense-in-depth·amount>0·시간성·VIRTUAL↔bank_code·MULTI↔split_count) · **★ G-REPORT-DENSITY branch filter**(ProgramReportController HQ/BRANCH/SOCIAL_WORKER·`resolveBranchScope`·org+branch scope) · **★ ProductionSecretValidator 3-form env 봉인**(4표면 bootstrap env fail-fast·SEC-D29 진전) · **★ G16 RBAC fix**(transport parity-rules HQ/BRANCH only 정합) · G2b CMS 가상계좌·다계좌 정산(HQ/BRANCH only·`validateBranchWriteScope`·SUCCEEDED 멱등) · QA-B95 enforce-bootstrap-readiness(true 기본·false 운영 위험 SEC-D38 Monitor) · 7-9 refund fee validation · FE 7종+ API 전부 `apiFetch` 경유(SEC-D17 Fixed 유지·raw fetch 0) 전부 RBAC·tenant-safe Pass · **★ 25차 신규 BLOCK급 Open 0건** · **신규 SEC-D38**(enforce-bootstrap-readiness=false 시 operationReady=true 오보·인증 우회 없음·Low/Monitor)·**신규 SEC-D39**(CMS 가상계좌 번호 응답·HQ/BRANCH only·guardian 확장 시 last4 권고·Low/Monitor). SEC-D33·D34·D4(4 파서)·D32·D36·D37·D17·D19·D23·D24·D14·SEC-008 prod 유지. SEC-D18 더 악화(572+241 unpushed·+21/+23 vs 24차). **★ BE local test SYNCED**(TSR 1408차·24차 +1behind → 25차 SYNCED 진전).
+> **2026-07-18 31차 재점검**: develop backend **`a742788`**(+735 vs origin/test `598d108`·**WT CLEAN**) · frontend **`592a483`**(+0 vs origin/test **`592a483`**·**★ FULLY SYNCED**·**WT CLEAN**·SEC-D35 Fixed). origin/test P0 포함(SEC-D14). **★ v3 program schedule photo**(RBAC+tenant·5MB·MIME allowlist·UUID key · SEC-D25 표면 +1) · **★ SEC-D43 path allowlist deepen**(`/carefor_login`+query/fragment 거부) · J03 Kakao template-catalog · QA-B95 decode 지속 · **31차 신규 BLOCK Open 0** · SEC-D4·D41·D42·D25·D33·D34·D40·D44~D46·D26 carry. npm audit prod **0건**·dev **1 HIGH form-data**.
 
 ---
 
@@ -81,6 +81,11 @@
 | B-9 | FCMS/SMTP prod credential startup 검증 | Medium | ◑ Solapi·SMTP config-time fail-closed ☑(SEC-D15) · FCMS apiKey 미검증 ☐(SEC-D20·stub) |
 | B-11 | 간편결제 prod 실 PG provider 필수 (stub 기본값 금지) | Medium | ☐ SEC-D28 — `ogada.easy-pay.provider` stub `matchIfMissing=true` · prod credential startup 검증 없음 |
 | B-12 | prod에서 `LIVE_E2E_BOOTSTRAP_ENABLED`/`LIVE_E2E` **금지** · live-e2e bootstrap 무인증 endpoint 비활성 | Medium | ◑ SEC-D29 — `ProductionSecretValidator` prod 거부 ✓ · bootstrap 응답 **password 필드 0** ✓ · blank credential fail-fast ✓ · probe default guardian cred 허용(QA-B95·non-prod) · permitAll 유지 |
+| B-16 | Accounting BPO SSO — password 미저장·OTP만 전달 · env credential fail-closed | High | ☑ `AccountingBpoService` usmusid+HMAC OTP only · `CREDENTIALS_COLLECTED=false` · 공백 env `BusinessRuleException`(28차) |
+| B-17 | Accounting BPO SSO — HQ/BRANCH only · per-actor rate limit · portal URL host+**path** allowlist · (장기) org-scoped credential | Medium | ◑ **SEC-D43 Mitigated 강화**(`bf96c29`+`bfe6b3f`) — HQ/BRANCH only ☑ · actor/org rate limit ☑ · sujifine https host ☑ · **path `/carefor_login`+query/fragment 거부** ☑(`bfe6b3f`) · org-scoped credential ☐(잔여 Low) |
+| B-18 | US-V06 batch-unconfirm challenge entropy ≥6 digit(or alphanumeric) + fail throttle | Low | ☐ SEC-D44 — 현재 4-digit SecureRandom·actor-scope·TTL10m·consume-once |
+| B-19 | kind22 payroll `notifications.payload_json` 급여액 redact/TTL purge | Low | ☐ SEC-D45 — netPay/paymentTotal/deductionTotal 평문(SEC-D37 family) |
+| B-20 | facility notice `attachment_url` host allowlist 또는 내부 스토리지 첨부 | Low | ☐ SEC-D46 — scheme http(s)+≤500 app+V193 ☑ · host unrestricted |
 
 ---
 
@@ -91,7 +96,7 @@
 | C-1 | SQL — JPA/JdbcClient 파라미터 바인딩만 | BLOCK | ☑ |
 | C-2 | Raw SQL 문자열 concat 금지 (코드 리뷰) | BLOCK | ☑ |
 | C-3 | React `dangerouslySetInnerHTML` 금지 | High | ☑ |
-| C-4 | 파일 업로드 — 크기·MIME·**magic-byte** 검증 | High | ☐ (사진·NHIS·은행입금 xlsx·급여계약서·등급이력·직원 HR·보수교육·**요양보호사 NHIS** — SEC-D25/D34: 크기 ☑·Content-Type ◑(요양보호사 import 미검증·SEC-D34)·magic-byte ☐·저장 키 UUID 서버 생성) |
+| C-4 | 파일 업로드 — 크기·MIME·**magic-byte** 검증 | High | ☐ (사진·**프로그램 일정 사진(v3)**·NHIS·은행입금 xlsx·급여계약서·등급이력·직원 HR·보수교육·**요양보호사 NHIS** — SEC-D25/D34: 크기 ☑·Content-Type ◑(요양보호사 import 미검증·SEC-D34·program photo는 jpeg/png/webp allowlist+`;param` strip)·magic-byte ☐·저장 키 UUID 서버 생성) |
 | C-5 | xlsx 파싱 — 확장자+Content-Type+POI 5.4.0+ | High | ☐ (NHIS·은행입금·RFID(G21)·**요양보호사(신규)** 4표면, SEC-D4·D34 — 요양보호사 import는 `WorkbookFactory` 자동판별만·확장자 체크 부재) |
 | C-6 | API DTO `@Valid`·Bean Validation | Medium | ☑ (auth·주요 API) |
 | C-7 | CSV/Excel export 수식(formula) 인젝션 방어(`=`/`+`/`-`/`@` prefix sanitize) | Low | ☐ SEC-D33 — 명세 export·NTS 의료비공제 export `csvEscape`가 quote만·prefix 미중화(CWE-1236) |
@@ -156,18 +161,22 @@
 
 | # | 항목 | BLOCK 조건 |
 |---|------|------------|
-| H-0 | **develop P0 패치 `origin/test` 반영** | ☑ — `origin/test`=`598d108`/`ab4de83` (SEC-D14 Fixed) · develop **572+241 ahead**(BE local test **SYNCED**·FE local test +2 behind·origin push pending·SEC-D18 악화) |
+| H-0 | **develop P0 패치 `origin/test` 반영** | ☑ — `origin/test`=`598d108`/`e76e631` (SEC-D14 Fixed) · develop **668 BE + 0 FE ahead**(**★ FE FULLY SYNCED**·BE push pending·SEC-D18 비대칭 극단) |
 | H-1 | 위 **BLOCK** 항목 0건 (develop baseline) | **충족** — develop ☑ · `origin/test` P0 ☑ |
-| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — SEC-D17·D19·D23·D24 Fixed · SEC-D22·D25·D26·D28·D32·D33·D34·**D36·D37**·D4·A06-1·SEC-D29·D35 audit Open/Monitor(**BLOCK 아님**) |
+| H-2 | `QA_FEEDBACK` `[SEC]` Open 0건 | ☑ — SEC-D17·D19·D23·D24·**D35** Fixed · SEC-D43 **Mitigated(path 강화)** · SEC-D22·D25(표면+program photo)·D26·D28·D32·D33·D34·D36·D37·D4·A06-1·D29·**D41·D42·D44·D45·D46** audit Open/Monitor(**BLOCK 아님**) |
 | H-3 | TSR 크로스테넌트·권한 거부 테스트 통과 | 필수 · `RoleBasedControllerAccessTest`(account-request·G-STAFF-NHIS·G-7-1 export·**G-SMS staff-access-key**)·live-e2e pilot E2E 회귀 |
 | H-4 | `.env`·키 파일 Git 미포함 | ◑ — **SEC-D22**: WT `.gitignore` `*.env` 무시 ☑ · parent repo HEAD 커밋 선행 권고 |
 | H-5 | 파일럿 센터 개인정보 처리방침·동의 UI | PLN 확인 |
 | H-6 | J01 `SecurityConfig` 코드 리뷰 | ☑ develop lineage (SEC-D8 Fixed) · 필터 순서(SEC-D24 Fixed) |
-| H-7 | workspace baseline = git 실측 HEAD | ☑ `49fe2e7`/`2c9abd6` (25차 실측·**WT CLEAN**·BE local test SYNCED·SEC-D35 Mitigated carry) |
-| H-8 | develop→test merge·origin push | ◑ — **develop WT CLEAN** · BE local test **SYNCED**(TSR 1408차 완료·25차 진전) · FE local test `75c0f51` +2 behind · **origin/test push 미실행**(572 BE/241 FE·SEC-D18 더 악화 +21/+23) |
+| H-7 | workspace baseline = git 실측 HEAD | ☑ `e4123c3`/`ed48077` (30차 실측·BE **CLEAN** · FE **DIRTY 6M**) |
+| H-8 | develop→test merge·origin push | ◑ — BE **CLEAN** · FE **DIRTY 6M** · **origin/test**: BE **705** unpushed · FE **1** pending(SEC-D18 비대칭) |
 | H-9 | live-e2e bootstrap credential fail-fast | ☑ SEC-D29 — blank credential fail-fast·trim 정규화(`7848b0f`)·password 필드 0 · 24차 HealthControllerTest G21 seed detail lock으로 readiness 회귀 가드 추가 |
 | H-10 | 외부 SMS/Alimtalk dispatchReady fail-closed(credential 부재) | ☑ 24차 — `NotificationChannelReadinessService` 채널-credential 게이트(`fed6f1f`)·`isLiveConfigured` 마커 거부(stub/placeholder/change-me)·SEC-D15 deepen |
 | H-11 | staff manual SMS quiet-hours guard(KST 22:00~08:00) | ☑ 24차 — `NotificationService.dispatchManualStaffSms`가 `NotificationQuietHoursPolicy.isActiveNow` 시 `BusinessRuleException` 즉시 거부(v2/J03 lineage 정합) |
+| H-12 | Accounting BPO SSO least-privilege·throttle·portal host+path allowlist | ☑ SEC-D43 **Mitigated 강화**(`bf96c29`+`bfe6b3f`) — 잔여 org-scoped credential만 장기 |
+| H-13 | US-V06 batch-unconfirm challenge entropy | ☐ SEC-D44 Monitor |
+| H-14 | FacilityNotice attachment host allowlist / kind22 payroll payload redact | ☐ SEC-D46·D45 Monitor |
+| H-15 | J03 dispatch-reference-unit-rates HQ/BRANCH only · 정적 catalog · secret 0 | ☑ 30차 — `NotificationChannelStatusController` `@PreAuthorize(HQ/BRANCH)` · `NotificationDispatchUnitRatesCatalog.REFERENCE` |
 
 ---
 
@@ -183,4 +192,4 @@
 
 ---
 
-*마지막 점검: 2026-06-25 (25차) | develop HEAD `49fe2e7`/`2c9abd6`(**WT CLEAN**·BE local test SYNCED·TSR 1408차 merge) · G-NHIS-MASKED-NAME-FALLBACK(single-candidate guard·PII reveal 차단) Pass · V178 9종 CHECK(DB-level defense-in-depth) Pass · G-REPORT-DENSITY branch filter(org+branch scope·resolveBranchScope) Pass · G16 RBAC fix(transport HQ/BRANCH 정합) Pass · G2b CMS 가상계좌·다계좌(RBAC+멱등) Pass · ProductionSecretValidator 3-form env봉인(SEC-D29 진전) Pass · FE 7종+ API apiFetch(SEC-D17 유지) Pass · **신규 SEC-D38**(enforce-bootstrap-readiness=false 운영 설정 위험·Low/Monitor·인증 우회 없음)·**신규 SEC-D39**(CMS 가상계좌 번호·HQ/BRANCH only·guardian 확장 시 last4 권고·Low/Monitor) · SEC-D33/D34/D36/D37/D4(4 파서)/D32 carry · origin push pending(572+241·SEC-D18 더 악화 +21/+23) · 잔존 poi-ooxml·Boot 패치·SEC-D22 커밋·form-data dev*
+*마지막 점검: 2026-07-18 (31차) | develop HEAD `a742788`/`592a483`(양 스트림 **CLEAN** · SEC-D35 Fixed) · **v3 program photo Pass**(SEC-D25 +1) · **SEC-D43 path allowlist 강화** · FE origin/test **FULLY SYNCED** · SEC-D44/D45/D46 Open(Monitor) · SEC-D4/D41/D42/D33/D34/D40/D26 carry · origin BE **735**/FE **0** unpushed(SEC-D18)*

@@ -1,0 +1,93 @@
+BNK-723 — 케어포 역공학 0–2h (2026-07-14T13:10Z)
+rotation: 케어포 (daycare/func.php 109항목·매뉴얼 PDF 목차·demo-work loadPage/view — 본인부담 7-x 번호식 흐름 ogada Route 1:1 매핑)
+
+================================================================
+1. ogada git 실측 (baseline carry — HEAD zero advance vs BNK-722)
+================================================================
+FE develop  b7c9fa4  feat(v1.2.1/G2): wire home newsletter launch page and dispatch history
+            WT CLEAN · ahead 2 vs origin/test=063c269
+            Route 132 (<Route\b 131 + <Routes> 1, src/App.jsx)
+            105 *Page.jsx · FE test 518 (214 .test.js + 304 .test.jsx)
+            accounting route 1 · payroll route 5 · /clients/home-newsletter route 1
+BE develop  9254721  feat(v2/G2): add home newsletter dispatch history API
+            WT CLEAN · ahead 631 vs origin/test=598d108
+            BE Test 286 (285 Test.java + 1 Tests.java)
+            BE @Test 2125  (git grep -hoE '@Test\b' develop -- '*.java' | wc -l)
+              ↳ BNK-722 header 「2126」 → −1 recount (이전 over-count 패턴 동일·낮은 실측값 carry)
+            Flyway V1–V190 (마지막 V190__transport_shuttle_and_roster_day_status_integrity)
+merge gate 633 (FE 2 + BE 631 · BE-heavy → tester FF · 선행 commit 불필요)
+
+================================================================
+2. 케어포 func.php LIVE 재실측 (69-cycle+ 「미확인」 carry)
+================================================================
+LIVE  https://www.carefor.co.kr/daycare/func.php    HTTP 000  (20s timeout)
+LIVE  https://carefor.co.kr/daycare/func.php         HTTP 000  (20s timeout)
+LIVE  https://demo-work.carefor.co.kr/               HTTP 000  (20s timeout)
+disk canonical  carefor_func.php  6226e6eb92fdd25ed3e50842a5e8a00b  98,328B  byte-identical (zero drift)
+  · 「재무회계」 2-hit · 「12-」 prefix leaf 0 (M12 회계 = 수지파인 외부 BPO SSO carry, BNK-706/716/720)
+catalog  carefor_func_menu_catalog.json  leaf_count 107 · module_counts{1:11,2:10,3:11,4:10,5:13,6:5,7:11,8:15,9:6,10:9,11:6}
+
+================================================================
+3. 케어포 Module 7 「본인부담금」 11-leaf lifecycle ↔ ogada /billing/* 1:1 (전수·leaf 정밀)
+================================================================
+carefor func.php leaf              ogada route / component / endpoint                            상태
+---------------------------------  ------------------------------------------------------------  ----
+7-1  본인부담금 청구관리           /billing (BillingPage) · /billing/claims/:claimId             ✅
+                                    (BillingDetailPage) · GET /api/v1/billing/claims
+7-2  본인부담금 입금관리           /billing/payments (PaymentPage) ·                             ✅
+                                    /api/v1/billing/claims/{claimId}/payments
+7-2-1 의료비공제(연말정산)         MedicalExpenseDeductionPanel (FE) +                            ✅ ← 신규 확정
+                                    BE MedicalExpenseDeductionResponse /                          (이전 △ 추정 번복)
+                                    ...ItemResponse / ...ReportItemResponse /
+                                    ...ReportListResponse / ...ReportSummaryResponse +
+                                    MedicalExpenseDeductionYearBasis (연말정산 연도 기준)
+                                    · 근거 현금영수증 /api/v1/billing/cash-receipt-issuances
+7-3  본인부담금 미납관리           /billing/overdue                                               ✅
+7-4  본인부담금 자동이체(CMS)      /billing/cms · /api/v1/billing/cms/enrollments ·               ✅
+                                    .../virtual-account · .../multi-account-settlement · .../debit
+                                    · cms/payment-method-catalog
+7-5  본인부담금 간편결제           /billing/easy-pay · /api/v1/billing/easy-pay/provider-catalog  ✅
+                                    · .../claims/{claimId}/payment
+7-6  본인부담금 청구대장 리포트    /billing/reports/charges (BillingReportPage)                   ✅
+7-7  본인부담금 입금대장 리포트    /billing/reports/deposits                                      ✅
+7-8  본인부담금 수납대장 리포트    /billing/reports/receipts                                      ✅
+7-9  본인부담금 수납,환불내역      /billing/reports/refunds · /api/v1/billing/copay/                ✅
+                                    refund-fee-preview · .../refund-fee-policy-catalog
+7-10 본인부담금 간편계산기         /billing/calculator (CopayCalculatorPage)                      ✅
+---------------------------------  ------------------------------------------------------------  ----
+합계: 11/11 ✅ full parity
+
+ogada superset (케어포 M7 leaf 를 초과하는 in-app 항목):
+  /billing/copay-rates (CopayRatePage · 본인부담률)
+  /billing/fee-schedules (+ apply-nhis-seeds · nhis-seed-payloads · year-coverage · 공단 수가 seed)
+  /billing/imports/nhis (+ :batchId · 공단 방문일정 import)
+  /billing/reports/statistics (BillingStatisticsReportPage)
+  /billing/cash-receipts (CashReceiptIssuancePage · CashReceiptRegisterModal · CashReceiptLegalAlerts)
+  /api/v1/billing/claims/generation-guard · monthly-cap-guard (청구 생성/월 상한 가드)
+  /api/v1/billing/claims/{id}/statement-dispatches · statement-export · payment-receipt-notify
+  /api/v1/billing/fee-surcharge-preview · fee-surcharge-rates
+  /api/v1/billing/imports/bank-deposits (+ formats · preview · 은행 입금 대사)
+
+해석: 케어포 M7 본인부담 lifecycle(청구→입금→미납→자동이체/간편결제→리포트 4종→계산기)은
+ogada /billing/* 에 leaf-level 1:1 로 전부 대응하며, 7-2-1 의료비공제(연말정산) 같은
+sub-sub-leaf 까지 ogada full-stack(MedicalExpenseDeductionPanel + 5 DTO + YearBasis)로 커버.
+추가로 ogada 는 공단 수가 seed·NHIS import·통계·청구 가드·명세서 dispatch·은행 대사 등
+케어포 M7 leaf 목록에 없는 운영 자동화 superset 을 보유 → id=7 본인부담 coverage 1.0 재확인.
+
+================================================================
+4. 규제 백본 재실측 (NHIS #44 이동서비스비 러-1~4 — 458차)
+================================================================
+URL  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  live=disk nhis_jo44_live_bnk723.html IDENTICAL (BNK-722 457차 → +1 = 458차 zero drift)
+verbatim grep: 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담하지(1)·이동서비스(13)
+↔ ogada TransportServiceFeeService (RU_1~4 · ONE_WAY_RATIO=0.5 · 1일1회) 6-link chain (id=2 이동서비스 0.85) carry
+
+================================================================
+5. per-cycle minimum 충족 요약
+================================================================
+· 신규/재실측 증거 URL: carefor func.php/demo-work LIVE 000 재실측(carry) + NHIS #44 458차 live=disk IDENTICAL
+· 메뉴/필드/워크플로 블록: 케어포 Module 7 본인부담 11-leaf ↔ ogada /billing/* leaf-level 1:1 전수 (§3)
+· COMPETITOR_MATRIX: BNK-723 2행 @b7c9fa4/@9254721 갱신
+· BENCHMARK_REPORT: §BNK-723 소절 추가
+덮어쓰기 0 · 가정 번복 1 (7-2-1 의료비공제 △→✅) · 신규 core 갭 0 · HEAD zero advance

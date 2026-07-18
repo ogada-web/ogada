@@ -1,0 +1,107 @@
+BNK-686 교차검증·갭 우선순위 8h+ — ogada git 실측 6–8h + US-Q01 M6 server template catalog API + 11-route LIVE 재확인 + 경쟁사 엑셀·공지 재실측
+조사일: 2026-06-27T05:45:00Z (KST 14:45)
+
+=== ogada @HEAD git 실측 (BNK-685 `@dd5571d`/`@7a9ed71` → BNK-686 `@cf73ae8`/`@72924bb`) ===
+
+FE develop: cf73ae80d84c1f2126369df21fa55c6be4b10808 (@cf73ae8)
+  WT: CLEAN
+  ahead origin/test: 280 (+2 vs BNK-685 278)
+  commits since dd5571d:
+    bf9b4b1 feat(v1.2.1/US-Q01): add safety live API harness and template catalog wire
+    cf73ae8 feat(v1.2.1/US-Q01): wire safety pages to server template catalog API
+
+BE develop: 72924bbbb27b807a62057d1554d4b54940bbc4f7 (@72924bb)
+  WT: CLEAN
+  ahead origin/test: 602 (+2 vs BNK-685 600)
+  commits since 7a9ed71:
+    aa9565c feat(v2/US-Q01): expose safety checklist template catalog API
+    72924bb test(v2/US-Q01): lock safety M6 routing and template catalog HTTP contract
+
+merge gate: 882 (FE 280 + BE 602) — +4 vs BNK-685 878
+
+KPI 9-axis vs BNK-685:
+  Route:     123 (identical)
+  Page:      98 (+1 — safety template catalog wiring pages/tests)
+  V:         V185 (identical)
+  BE Test:   279 files (+2)
+  BE @Test:  2043 (+13)
+  FE test:   500 (207 .test.js + 293 .test.jsx) (+3 vs 497)
+  Module:    84.31% (24.45/29 · id=6 ✅ · id=7 ✅ 1.0 carry)
+  Reports:   28 (carry)
+  WT:        양쪽 CLEAN (identical)
+
+=== ★★★ US-Q01 M6 stage5 — server-driven template catalog API (메뉴/필드/워크플로 블록 · 신규 evidence) ===
+
+[확인] BE `GET /api/v1/safety/check-template-catalog` — `SafetyCheckController` + `SafetyCheckTemplateCatalog.java`
+  · daily 8 checklist items (floor_clean·restroom·kitchen_hygiene·handwash·ventilation·emergency_exit·fire_extinguisher·medication_storage)
+  · periodic 6 sub-forms (HYGIENE·NURSING_SUPPLIES·MEAL_SERVICE·FIRE_SAFETY·MEDICATION·DISINFECTION) × 3~4 items each
+  · infection 5 options + operation log shape
+  · JSDoc: 「US-Q01 · REQUIREMENTS §3-14 · carefor M6 6-2~6-3」 · mirrors frontend `safetyChecks.js`
+  · create endpoints validate checklist item IDs against catalog (`SafetyCheckRecordService`)
+
+[확인] FE `useSafetyCheckTemplateCatalog` hook — `GET /safety/check-template-catalog` via `services.js`
+  · local fallback when API unavailable (offline resilience)
+  · wired on SafetyDailyChecksPage · SafetyPeriodicChecksPage · SafetyInfectionControlPage
+  · live E2E harness: `safetyCheckLiveApi.e2e.test.js` (M6 four-endpoint list flows)
+
+[확인] BE test lock — `MustApiEndpointRoutingTest.SafetyCheckRouting` 9 US-Q01 endpoints
+  · jsonPath contract assertions aligned with frontend `safetyChecks.js` catalog shapes
+  · `SafetyCheckControllerRoutingTest` + `SafetyCheckTemplateCatalogTest` + RBAC matrix extend
+
+M6 narrative evolution: BNK-684 「4중 게이트」(RBAC + deep RBAC test + DB CHECK + readiness probe)
+  → BNK-686 「5중 게이트」= **server-driven template catalog** + 4중 게이트 carry
+  · 경쟁 4종(케어포 func M6·이지케어 FAQ K005·엔젤 평가지표·롱텀) 공개 server template catalog API + contract test 노출 0
+
+=== ★★★ 4-axis + leave-ledger + M6 11-route LIVE — P0/P1 재정렬 없음 (교차검증) ===
+
+| Epic | Route | @cf73ae8 |
+|---|---|---|
+| G14 care-plan-form | `/clients/:clientId/care-plan-form` | ✅ LIVE |
+| dashboard | `/dashboard` · `/dashboard/hq` | ✅ LIVE |
+| v1.3-C G16 | `/transport/service-fees` | ✅ LIVE |
+| v2 CMS | `/billing/cms` | ✅ LIVE (App.jsx 1 route · CmsPage) |
+| leave-ledger | `/leave-ledger` · `/annual-leaves` | ✅ LIVE |
+| US-Q01 M6 | `/safety/daily-checks` · `/periodic-checks` · `/infection-control` · `/operation-log` | ✅ LIVE |
+
+P0 carry: G14·dashboard·v1.3-C·v2 CMS·M6 safety — 재정렬 없음
+P1 sole lever carry: M11/M12 `/payroll/*`·`/accounting/*` 0 route → +6.90pp(84.31%→91.21%) scope 결정 보류
+
+=== 경쟁사 재실측 (8 URL) ===
+
+silverangel 221564 (D-2):
+  URL: https://www.silverangel.kr/silverangel/support/notice/view.do?pageNo=1&Tmp_idx=221564&Tmp_thread=1&Tmp_depth=0
+  HTTP 200 · 1,812,677B · md5 0b5d9aa0 (BNK-685 120554af DRIFT)
+  diff vs BNK-685: view counter `<dd>11</dd>` → `<dd>12</dd>` ONLY (4-line diff)
+  release notes 16항목 본문: semantic IDENTICAL carry · leak persists · 제목 `작성중` carry
+
+NHIS #44 424차:
+  HTTP 200 · 7,572B · md5 c886ff1f IDENTICAL (424-cycle)
+
+ezCare FAQ list:
+  HTTP 200 · 80,057B · md5 8a5599c0 (cachebuster DRIFT vs BNK-685 cf9d879c)
+  hit sum: 3,637,329 (+13 vs BNK-685 3,637,316 in ~45min)
+
+ezCare FAQ 21844 (엑셀 포맷 스캔):
+  HTTP 200 · 14,474B · md5 d0aa760c IDENTICAL (BNK-678~686 zero drift · 포맷 변경 0)
+  verbatim: 「공단 개인정보보호 강화 조치로 공단 엑셀 자료 내 수급자, 종사자 이름 일부가 마스킹(*) 처리」
+
+ezCare FAQ 21845 (엑셀 incident):
+  HTTP 200 · 13,915B · md5 5b78c947 IDENTICAL (BNK-655~686 stable)
+
+ezCare notice 434 (BPO disclosure counter):
+  HTTP 200 · 39,897B · md5 2445272a (+41B vs BNK-684 39,856B · counter/cachebuster DRIFT · 본문 BPO disclosure carry)
+
+lcms.or.kr:
+  HTTP 200 · 50,740B · md5 c0c66076 IDENTICAL (type1 · 2-cycle stable)
+
+law247 seq271110:
+  HTTP 200 · 78,450B · md5 db0c29c3 (Time= cachebuster DRIFT · sed strip → a913639a semantic IDENTICAL)
+
+=== 가정 번복 ===
+0건 (silverangel 221564 md5 DRIFT = view counter only · BNK-685 leak/HAS-DATA 결론 유지)
+
+=== per-cycle minimum ===
+✅ 신규 evidence URL: BE `GET /api/v1/safety/check-template-catalog` (server template catalog API)
+✅ 메뉴/필드/워크플로 1블록+: M6 template catalog daily/periodic/infection items verbatim
+✅ COMPETITOR_MATRIX 1행+ @cf73ae8/@72924bb
+✅ BENCHMARK_REPORT §686

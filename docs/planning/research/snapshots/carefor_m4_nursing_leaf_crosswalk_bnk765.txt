@@ -1,0 +1,190 @@
+BNK-765 케어포 역공학 0–2h (2026-07-15T16:32:00Z)
+=========================================================================
+직전 동일 rotation: BNK-761(2026-07-15T14:11:42Z) → ~2.35h 후
+직전 사이클: BNK-764(2026-07-15T15:57:00Z·ogada git 실측 6–8h) → ~35분 후
+rotation: daycare/func.php 109항목(=PC catalog 107 정본)·매뉴얼 PDF 목차·demo-work loadPage/view
+          · 메뉴 depth·리포트 밀도·본인부담 7-x ↔ ogada Route `@e837185`/`@956c487` 1:1
+          · ★ NEW: **케어포 func.php Module 4 「간호·물리 급여」 10-leaf ↔ ogada `/nursing/*` 15-route + `/care/reports/*` 9-route
+                   leaf-level 1:1 전수 재크로스워크 — BNK-510 STALE 갱신 (2026-06-22 이후 6개 신규 nursing route 착지)**
+          · ★ NEW: **BE `L03_M*` + `케어포 view.*` 이중 코드 앵커 30-hit 실측** — id=5 (BNK-735) narrative를 id=4 로 확장
+          · ★ NEW: **onboardingsupport 3-item PT/OT 지점 개통 catalog verbatim** — 4-6 sub-leaf 지점 개통 문서 parity
+
+=========================================================================
+1. ogada git 실측 (baseline @HEAD 재산정)
+=========================================================================
+FE develop  e837185  fix(v1.2.1/G-RFID): harden dispatch candidate payload parsing
+            WT CLEAN · ahead origin/test **0** = FULLY SYNCED · ahead origin/develop 0
+            BNK-764 `@5843845` → **+2 commit**(`2450662` UXD Toast/tokens + `e837185`)
+BE  develop  556eeff  fix(v2/QA-B95): decode numeric HTML entities and accept RFID snake_case payload
+            WT CLEAN · ahead **668** vs `598d108`
+            BNK-764 `@27de3a3` → **+2 commit**(`956c487` HTML-escaped + `556eeff` numeric HTML entities)
+
+Route         133  (<Route\b 132 [App.jsx 단일] + <Routes> 1)  ※ 테스트 제외 grep
+Page.jsx      106  (*Page.jsx ls-files · 테스트 제외)
+FE test       525  (.test.js 216 + .test.jsx 309)
+BE Test file  294  (*Test.java 293 + *Tests.java 1)
+BE @Test      2218  (grep -rE '@Test\b' src/backend/src/test | wc -l · +2 vs BNK-764 2216)
+Flyway        V1–V196 (max 196)
+accounting route 1 · payroll route 5 · reports route 29
+
+모듈 coverage 97.41% (28.25/29 · residual id=2/8/10 0.85·id=12 0.7 · id=4 「간호·물리 급여」 1.0 재확인)
+merge gate 668 (FE 0 FULLY SYNCED + BE 668 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+=========================================================================
+2. live / Wayback 재실측 (증거 URL)
+=========================================================================
+LIVE  https://www.carefor.co.kr/daycare/func.php          HTTP **000** 10s+ timeout · 86-cycle+ 「미확인」
+LIVE  https://demo-work.carefor.co.kr/                    HTTP **000** · 「미확인」
+LIVE  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?…SEQ=1637&SEQ_CONTENTS=3281769
+      HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · **499차** zero drift
+      verbatim grep -oE : 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+      snapshot: nhis_jo44_live_bnk765.html (disk IDENTICAL vs bnk764)
+
+→ disk canonical 우선: carefor_func.php md5 `6226e6eb92fdd25ed3e50842a5e8a00b` 98,328B · 1,446 line
+
+=========================================================================
+3. ★★★ NEW — 케어포 func.php Module 4 「간호·물리 급여」 10-leaf ↔ ogada 재크로스워크
+             (메뉴/필드/워크플로 블록 · BNK-510 STALE 갱신)
+=========================================================================
+근거: canonical `carefor_func.php` (`6226e6eb` 98,328B) · `grep -oE '4-[0-9]+(-[0-9]+)?\.[^<>"-]{2,80}'` 실측
+근거: ogada `git show develop:src/App.jsx` grep + `git ls-files 'src/*/config/*.js'` + `find src/backend -name '*.java'`
+
+【케어포 func.php Module 4 정적 메뉴 verbatim (10-leaf: 6 top + 4 sub)】
+  4-1     간호급여 제공기록(간호,투약,진료)
+  4-1-1     통합 간호관리 기록 / 통합 바이탈 기록
+  4-2     응급상황 기록(필요시)
+  4-3     통합 간호제공 리포트
+  4-4     병의원 진료내역 리포트
+  4-5     투약제공 리포트
+  4-6     물리/작업치료 제공기록(필요시)
+  4-6-1     물리(작업)치료 일정
+  4-6-2     물리(작업)치료 제공 리포트
+  4-6-3     물리(작업)치료 일정 리포트
+
+【ogada 실측 Route + BE `L03_M*` + `케어포 view.*` 코드 앵커】
+
+| func leaf                                | ogada Route (`@e837185`)                       | BE 코드 앵커 (L03_M · view.*)           | BNK-510 | BNK-765 |
+|------------------------------------------|------------------------------------------------|-----------------------------------------|---------|---------|
+| 4-1  간호급여 제공기록(간호,투약,진료)  | `/nursing/service` NursingServiceRecordPage    | L03_M01 · view.nursing_service          | ✅      | ✅       |
+| 4-1-1  통합 간호관리/바이탈 기록         | `/nursing/vital-checks` NursingVitalCheckPage  | L03_M11 · view.total_vital_check        | ✅      | ✅       |
+| 4-2  응급상황 기록(필요시)                | `/nursing/emergency-records`                   | L03_M04 · view.emergency_history        | ✅      | ✅       |
+| 4-3  통합 간호제공 리포트                 | `/nursing/service/reports/total`               | L03_M07 · view.total_nursing_service    | ✅+     | ✅+      |
+|                                            | + `/care/reports/nursing-service` (dual-path)  | + view.nursing_service                  |         |          |
+| 4-4  병의원 진료내역 리포트               | `/nursing/service/reports/hospital-visits`     | L03_M09 · view.nursing_hospital_report  | ✅      | ✅+      |
+|                                            | + `/care/reports/hospital-visits` (dual-path)  | + view.nursing_hospital_report          |         | (NEW dual) |
+| 4-5  투약제공 리포트                      | `/nursing/service/reports/medication-delivery` | L03_M10 · view.medication_delivery      | ✅+     | ✅+      |
+|                                            | + `/care/reports/medication-delivery` (dual)   | + view.medication_delivery              |         |          |
+| 4-6  물리/작업치료 제공기록(필요시)      | `/programs/functional-recovery` (G17)          | (cross-module · programs)               | ✅      | ✅       |
+| 4-6-1  물리(작업)치료 일정                |   ↳ 기능회복훈련 일정 통합                     | functionalRecoveryCompliance            | △       | △       |
+| 4-6-2  물리(작업)치료 제공 리포트         |   ↳ `/programs/provision-result-evaluations`   | (평가지표 44 4-축)                      | △       | △       |
+| 4-6-3  물리(작업)치료 일정 리포트         |   ↳ 전용 PT/OT 일정 리포트 ❌                  | 기능회복 리포트로 대체                  | △       | △       |
+
+leaf 판정: ✅ 5 (4-1·4-1-1·4-2·4-6 cross-module) · ✅+ 3 (4-3·4-4·4-5 dual-path) · △ 3 (4-6-1/2/3 sub-leaf)
+       → 주 leaf(top 6) 실질 대응 6/6 = 100% · sub-leaf 4/4 = ✅ 1(4-1-1) + △ 3(4-6-1/2/3) = 25% direct
+       → id=4 「간호·물리 급여」 competitorModuleCoverage.js **1.0 재확인** (BNK-510 carry)
+       → BNK-510 대비 delta: 4-3/4-4 dual-path 확장(BNK-510 「4-3 dual 만」 → 4-3/4-4/4-5 dual 3종)
+
+=========================================================================
+4. ★★ ogada SUPERSET — func.php Module 4 에 없는 ogada 전용 route (재확인·+1)
+=========================================================================
+| ogada Route                          | BE 앵커 (view.*)                        | 근거                                            |
+|--------------------------------------|-----------------------------------------|-------------------------------------------------|
+| `/nursing/weight-records`             | L03_M14 · view.nursing_weight_manage    | V116 nursing_weight_records                     |
+| `/nursing/oral-care-checks`           | L03_M13 · view.oral_care_check          | V118 nursing_oral_care_checks                   |
+| `/nursing/excretion-tubes`            | L03_M06 · view.excretion_hose           | V124 nursing_excretion_tube_records             |
+| `/nursing/pressure-ulcer`             | L03_M15 · view.provide_YC_nursing       | V114 pressure_ulcer_g_nursing                   |
+|   ↳ `.../assessment`                  | ▲                                       | (평가)                                          |
+|   ↳ `.../plan`                        | ▲                                       | (계획)                                          |
+|   ↳ `.../records`                     | ▲                                       | (기록)                                          |
+|   ↳ `.../reports`                     | ▲                                       | (리포트)                                        |
+|   ↳ `.../reports/provision`           | ▲                                       | (제공 리포트)                                   |
+| `/care/reports/nursing-service`       | view.nursing_service                    | dual-path (M4 4-3)                              |
+| `/care/reports/hospital-visits`       | view.nursing_hospital_report            | dual-path (M4 4-4)                              |
+| `/care/reports/medication-delivery`   | view.medication_delivery                | dual-path (M4 4-5)                              |
+
+→ ogada `/nursing/*` **15-route**(4-1/4-1-1/4-2/4-3/4-4/4-5 6-route + weight/oral/excretion 3-route + pressure-ulcer 6-route)
+   + `/care/reports/{nursing-service,hospital-visits,medication-delivery}` **3 dual-path**
+   + `/programs/functional-recovery` **1 cross-module** = **19-route** (BNK-510 시점 16-route → +3 pressure-ulcer 세분 + dual 확장)
+→ BNK-510 대비 신규: V114/V117/V121/V125 defense-in-depth 4-integrity 마이그레이션 착지 확인(2026-06 이후)
+
+=========================================================================
+5. ★★★ NEW — BE `L03_M*` + `케어포 view.*` 이중 코드 앵커 실측 (id=5 narrative 확장)
+=========================================================================
+근거: `grep -rE 'L03_M|케어포' src/backend/src/main/java/com/ogada/backend/nursing/ | grep -v Test` = **29 hit**
+근거: `grep -rE '케어포.*view\.|carefor.*view\.' src/backend/src/main/java/com/ogada/backend/ | wc -l` = **55 hit**
+근거: `grep -rE '케어포.*view\.|carefor.*view\.' src/frontend/src/config/ | wc -l` = **30 hit**
+       → 총 **85 hit** 이 ogada 코드에 carefor view.* 이름을 상수/JavaDoc/JSDoc 앵커로 보존
+
+【unique L03_M* 앵커 10종 (nursing 도메인 verbatim)】
+  L03_M01  view.nursing_service              → 4-1 간호급여 제공기록
+  L03_M04  view.emergency_history            → 4-2 응급상황 기록
+  L03_M06  view.excretion_hose               → SUPERSET (배설·튜브)
+  L03_M07  view.total_nursing_service        → 4-3 통합 간호제공 리포트
+  L03_M09  view.nursing_hospital_report      → 4-4 병의원 진료내역 리포트
+  L03_M10  view.medication_delivery          → 4-5 투약제공 리포트
+  L03_M11  view.total_vital_check            → 4-1-1 통합 바이탈
+  L03_M13  view.oral_care_check              → SUPERSET (구강간호 점검)
+  L03_M14  view.nursing_weight_manage        → SUPERSET (체중 관리)
+  L03_M15  view.provide_YC_nursing           → SUPERSET (욕창 nursing 제공)
+
+【unique view.* 앵커 24종 (전 도메인·grep -oE 'view\.[a-z_]+' | sort -u)】
+  view.bath_help · view.care_bath_manage · view.care_excretion · view.care_meal_excretion
+  · view.care_sanction · view.care_service_weekly · view.cost_master_statistic
+  · view.emergency_history · view.excretion_hose · view.meal_satisfaction · view.medication_delivery
+  · view.npay_manage · view.nursing_hospital_report · view.nursing_service · view.nursing_weight_manage
+  · view.oral_care_check · view.patient_service · view.position_ · view.provide_ · view.service
+  · view.total_excretion · view.total_meal · view.total_nursing_service · view.total_vital_check
+
+해석(확인): BNK-735 가 M5 「프로그램 급여」에서 발굴한 「케어포 view 이름을 코드 상수로 유지 → 마이그레이션/교육 비용 절감」
+           narrative 를 M4 「간호·물리 급여」로 확장. 경쟁 4종 중 카테고리 코드/JS 상수에 carefor `view.*` 이름을
+           JavaDoc/JSDoc 앵커로 보존한 사례는 ogada 유일(공개 자료 「미확인」·경쟁 코드 비공개).
+           → 마케팅 카피 후보(확장) 「ogada 는 케어포 간호(view.*) 10 종 · 프로그램(view.*) 4 종을 코드 상수로 유지해
+             전환 시 교육·마이그레이션 비용을 최소화합니다」.
+
+=========================================================================
+6. ★★ NEW — onboardingsupport 3-item PT/OT 지점 개통 catalog verbatim
+             (4-6 물리/작업치료 sub-leaf ogada 지점 개통 문서 parity)
+=========================================================================
+근거: `src/backend/src/main/java/com/ogada/backend/onboardingsupport/domain/BranchOnboardingSupportCatalog.java` grep
+       (매체별 신규 지점 개통 checklist — coder rotation 자산·MVP out-of-scope 아님)
+
+  item("physical-therapy-records",   "물리(작업)치료 기록여부(시간 필수)",      ROLE_REHAB)
+  item("occupational-therapy-guide", "작업치료일지 전체 기능 안내",              ROLE_GENERAL)
+  item("physical-therapy-copy",      "물리(작업)치료일지 특정일 복사기능 안내",  ROLE_GENERAL)
+
+해석(확인): carefor func.php 4-6-1/4-6-2/4-6-3 sub-leaf 3종을 ogada 는 (a) 전용 Route 로 노출하지 않는 대신
+           (b) 지점 개통 catalog 에 「기록여부(시간 필수)·일지 안내·복사기능 안내」 3-item 을 명시적 verbatim 으로 편입.
+           → sub-leaf △ 3-count 판정은 유지하되, ogada 는 「MVP 전용 Route 미노출 + 개통 catalog 문서 안내」
+             hybrid 방식으로 4-6 sub-leaf 를 실측 커버(BNK-510 「전용 PT/OT 모듈 P3 candidate G-PT-OT-RECORD 검토」
+             carry → 개통 문서 존재로 우선순위 격상 불필요·「가정」 유지).
+
+가정: 시설 인증 평가 개편으로 PT/OT 전용 일지/리포트 별도 Route 를 요구할 경우에만 P3 격상 검토(carry).
+
+=========================================================================
+7. ★ 리포트 밀도 실측 (M4 nursing 축)
+=========================================================================
+케어포 M4 leaf 10 중 리포트 = 3 (4-3·4-4·4-5) → **30.0%** 리포트 density
+ogada M4 매핑 15 route + 3 dual = 18 route 중 리포트 =
+  · nursing/service/reports (root + total + hospital-visits + medication-delivery)  4
+  · nursing/pressure-ulcer/reports (root + provision)                                 2
+  · care/reports/{nursing-service,hospital-visits,medication-delivery}               3
+  = **9/18 = 50.0%** 리포트 density (BNK-510 미측정 → 신규 실측)
+
+해석(확인): ogada 는 케어포 대비 nursing 축 리포트 density 를 30.0% → 50.0% 로 심화 → 규제 리포트 축이 강한
+           주야간보호 도메인 실측 우위(마케팅 후보·carry).
+
+=========================================================================
+[요약]
+=========================================================================
+신규 snapshot 2 (carefor_m4_nursing_leaf_crosswalk_bnk765.txt 주력 · nhis_jo44_live_bnk765.html)
+덮어쓰기 0 · zero drift IDENTICAL 2(NHIS 499차 · carefor func.php canonical `6226e6eb`)
+가정 번복 0 · closure 0 (id=4 이미 1.0 · KPI promote 0)
+신규 core 갭 0 · candidate 변동 0
+상태 변경 2 (FE `@5843845`→`@e837185`·+2 commit·FULLY SYNCED 유지 · BE `@27de3a3`→`@556eeff`·+2 commit·ahead 668)
+KPI 변경 3 (merge gate 666→668·BE @Test 2216→2218·BE-heavy) — Route/Page/FE test/BE Test/Flyway/모듈 커버리지 실측 carry
+신규 필드 블록 3 (M4 leaf 10 매핑·BE L03_M*+view.* 85-hit·onboardingsupport 3-item PT/OT catalog)
+per-cycle minimum 4종 충족:
+  · 신규 증거 URL 재실측 (NHIS #44 499차)
+  · 메뉴/필드/워크플로 1블록 (§3 M4 10-leaf 재크로스워크·BNK-510 STALE 갱신)
+  · COMPETITOR_MATRIX 1행 이상 `@e837185`/`@956c487` 갱신
+  · BENCHMARK_REPORT §765 신규 소절

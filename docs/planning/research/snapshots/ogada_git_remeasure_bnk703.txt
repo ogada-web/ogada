@@ -1,0 +1,13 @@
+BNK-703 ogada git 실측 (케어포 rotation 부수)
+조사일: 2026-07-13T22:30:00Z
+FE develop @175c570 WT CLEAN · origin/develop=0 · origin/test=0 FULLY SYNCED
+  log: 175c570 ux(a11y/US-Q01): fix invalid shuttle sheet table semantics (UXD-172)
+  (BNK-702 WT DIRTY 2M shuttle a11y → CLOSURE)
+BE develop @3e627b3 WT CLEAN · origin/test ahead=613
+  log: 3e627b3 fix(v2/transport): normalize shuttle addresses consistently
+       2b3f3d9 Add transport roster integrity checks and normalize shuttle addresses
+  V190__transport_shuttle_and_roster_day_status_integrity.sql develop LANDING
+  (BNK-702 WT DIRTY untracked V190 → CLOSURE)
+Route 124 · Page 98 · FE test 506 · BE Test 280 · BE @Test 2076 · V1–V190 · 모듈 84.31%
+merge residual = BE-only 613 (FE stream CLOSED)
+/(payroll|accounting) = 0 → M11/M12 sole P1

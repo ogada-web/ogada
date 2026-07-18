@@ -1,0 +1,48 @@
+BNK-643 ogada git 실측 — 2026-06-26T02:15:00Z (KST 11:15)
+rotation: 교차검증·갭 우선순위 8h+ (G14·대시보드/G26·v1.3-C·v2 CMS 4축+leave-ledger·엑셀·공지 스캔)
+
+=== HEAD ===
+FE develop @4e574ce WT CLEAN
+  Δ vs BNK-642 @8ed60cb: HEAD +1
+  commit: ux(a11y/FE-16): promote ds-page-section + ds-form-grid--inline, align committee log to ds-segmented (UXD-166)
+  files: StaffCommitteeMeetingPage.jsx +10/-2, components.css +22L
+  ahead origin/test: 251
+
+BE develop @14964f6 WT CLEAN
+  Δ vs BNK-642 @3ae8098: HEAD +1
+  commit: fix(v2/QA-B95): expose g21-seed status detail on live-e2e probe
+  files: HealthController +5/-19, LiveE2eOperationReadinessSupport +21, LiveE2eProbeResponse +1, LiveE2eController +8, LiveE2eControllerTest +15
+  ahead origin/test: 579
+
+merge gate: 830 (+3 vs BNK-642 827: FE +1, BE +2)
+
+=== KPI (IDENTICAL vs BNK-642 except merge gate) ===
+Route: 118 (117 <Route\b> + 1 <Routes>)
+page: 93 (92 *Page.jsx + RootRedirect)
+V: V1–V181 (max 181)
+BE Test files: 272 (271 Test.java + 1 Tests.java)
+BE @Test: 1971
+FE test: 482 (198 *.test.js + 284 *.test.jsx)
+reports route grep: 28
+모듈: ~81.0% carry (23.49/29)
+M11/M12: /payroll/* /accounting/* 0 route
+
+=== 4축+leave-ledger LIVE route grep @4e574ce ===
+G14 care-plan-form: /clients/:clientId/care-plan-form ✅
+G14 functional-recovery: /programs/functional-recovery ✅
+G26 dashboard: /dashboard (+ hq variant) ✅ — widgets nhisComparisonGap·kakaoQuota in DashboardPage.jsx
+v1.3-C transport/NHIS#44: /transport/service-fees + TransportServiceFeeService ✅
+v2 CMS: /billing/cms + /billing/easy-pay (EasyPayPage) ✅
+US-R01-c leave-ledger: /staff/leave-ledger ✅
+판정: 7/7 LIVE · 가정 번복 0 · P0/P1 재오픈 0 (93-cycle BNK-549~643)
+
+=== QA-B95 13th layer ===
+BE CLOSURE @14964f6: g21SeedStatusDetail on LiveE2eProbeResponse + resolveG21SeedStatusDetail static hoist
+FE consume g21SeedStatusDetail: rg src/frontend = 0 hit → 14th layer candidate (liveBackendProbe.js parse pending)
+
+=== 백본 md5 offline (398차) ===
+NHIS #44 c886ff1f 7572B IDENTICAL
+silverangel essential c79c1be3 IDENTICAL
+silverangel extra f9c5d877 IDENTICAL
+carefor_func.php 6226e6eb IDENTICAL
+FAQ 21844 live d0aa760c IDENTICAL (엑셀 포맷 변경 0)

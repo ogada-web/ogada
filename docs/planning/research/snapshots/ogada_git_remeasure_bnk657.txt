@@ -1,0 +1,86 @@
+BNK-657 — ogada git 실측 (6–8h rotation) · 2026-06-26T11:58:00Z (KST 20:58)
+================================================================================
+owner=BNK audience=PLN
+
+[1] ogada baseline git 실측 (확인 · git -C src/{backend,frontend} rev-parse develop)
+--------------------------------------------------------------------------------
+FE develop : 91675f1d7b11d80b5d0d5630b65505574de1a4b0  (@91675f1)
+  - feat(v1.2.1/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): wire visit import outcome status FE
+  - 2026-06-26 11:15:43 +0000
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 261 vs origin/test=ab4de83
+  - BNK-656 동일 SHA → HEAD zero advance 1-cycle
+
+BE develop : c38388ddb7fa8d22f2fa8fb93330a04e3ec9c0a9  (@c38388d)
+  - feat(v2/G-NHIS-IMPORT-ERROR-STATUS-SURFACE): expose visit NHIS import outcome status
+  - 2026-06-26 11:05:45 +0000
+  - WT CLEAN (git status --porcelain empty)
+  - ahead 587 vs origin/test=598d108
+  - BNK-656 동일 SHA → HEAD zero advance 1-cycle
+
+merge gate : 848 (FE 261 + BE 587) — BNK-656 carry · 양쪽 WT CLEAN → tester FF 가속 가능
+
+[2] KPI 실측 (전부 BNK-656 IDENTICAL · HEAD zero advance)
+--------------------------------------------------------------------------------
+Route        : 118  (App.jsx `<Route\b`=118 + `<Routes>`=1 → 119 total)
+page         : 93   (`*Page.jsx` git ls-tree develop)
+migration    : V1–V183 (183 files · git ls-tree develop db/migration/V*)
+BE Test 파일 : 274  (273 `Test.java` + 1 `Tests.java`)
+BE @Test     : 1987 (`git grep -hoE '@Test\b' develop -- '*.java' | wc -l` occurrence·@ParameterizedTest 3 별도)
+FE test 파일 : 485  (199 `.test.js` + 286 `.test.jsx` · `.test.ts`/`.spec` 0)
+모듈 커버리지: 80.86% (23.45/29 · src/config/competitorModuleCoverage.js 29-feature grep 실측)
+               ✅완전 21 · △부분 3(2 이동 0.85·8 직원근태 0.85·10 부가 0.75) · ❌갭 5(1-5·1-10·6·11·12)
+reports route: 28 (App.jsx path="...reports..." 실측)
+
+Δ vs BNK-656 : 전 항목 IDENTICAL (HEAD zero advance 1-cycle·양쪽 WT CLEAN)
+
+[3] NHIS #44 이동서비스비 406차 zero drift IDENTICAL (확인 · 기존 URL 재실측)
+--------------------------------------------------------------------------------
+GET https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  → HTTP 200 · size 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+  → disk docs/planning/research/snapshots/nhis_jo44.html md5 c886ff1f IDENTICAL
+  → BNK-656 405차 → +1 (406차 zero drift)
+  verbatim 불변: 러-1~4 · 편도(50%) · 1일 1회 · 별지 제22호 · 수급자 부담 X
+
+[4] ogada full-stack cross-walk git-grounded (확인 · @HEAD develop git grep)
+--------------------------------------------------------------------------------
+BE @c38388d:
+  - transport/domain/TransportServiceFeeService.java                 (러-1~4 fee 산정)
+  - transport/domain/TransportServiceFeeParityCatalog.java
+      · RU_1 / RU_2 / RU_3 / RU_4  (거리 4구간)
+      · ONE_WAY_RATIO = new BigDecimal("0.5")  (편도 50%)
+      · ONE_WAY_RATIO_NOTE (parity copy 상수)
+  - visits/domain/NhisVisitScheduleImportOutcome.java                (NEW BNK-656·4-state)
+      · OK / PARTIAL / UNMATCHED / SKIPPED
+  - visits/api/NhisVisitScheduleImportOutcomeStatusNote.java         (NEW BNK-656)
+FE @91675f1:
+  - components/visits/VisitNhisImportGuidePanel.jsx                  (outcome notes + error recovery)
+  - components/visits/VisitNhisImportPanel.jsx                       (outcomeStatus/outcomeSummary surface)
+  - config/visits.js : resolveVisitImportOutcome(outcomeStatus, outcomeSummary)
+      · IMPORTED / UNMATCHED(미매칭) / SKIPPED(건너뜀) tone 테이블
+      · OK / PARTIAL / UNMATCHED(이용자 미매칭) / ALL_SKIPPED(전체 건너뜀)
+
+→ NHIS #44 이동서비스비 러-1~4 4-rule + 공단 엑셀 import outcome 4-state 모두
+  ogada @HEAD develop 에 full-stack 존재 확인. 경쟁 4종(케어포·이지케어·엔젤·롱텀)
+  공개 자료에는 이동서비스비 산정 BE 로직·import outcome 실시간 surfacing 노출 0
+  (이지케어는 FAQ 21845 사후·수동 incident 공지만) → ogada 경쟁 4종 유일 full-stack 우위 406-cycle carry.
+
+[5] per-cycle minimum (4종 충족)
+--------------------------------------------------------------------------------
+1. 기존 URL 재실측 + 변동 기록 : NHIS #44 406차 zero drift IDENTICAL (live HTTP 200=disk c886ff1f)
+2. 메뉴/필드/워크플로 1블록     : [4] NHIS #44 ↔ ogada full-stack git-grounded cross-walk
+3. COMPETITOR_MATRIX 1행+ @HEAD : BNK-657 row @91675f1/@c38388d (HEAD zero advance carry)
+4. BENCHMARK_REPORT §소절        : §657
+
+가정 번복 0 · 신규 core 갭 0 · candidate 변동 0 · closure 0 · 상태 변경 0(HEAD zero advance·양쪽 WT CLEAN)
+KPI 변경 0 (전부 BNK-656 IDENTICAL) · 재실측 zero drift 1(NHIS #44 406차) · 미확인 carry 0 추가
+신규 snapshot 1건(본 파일) · 덮어쓰기 0건 · 엑셀 포맷 변경 0
+
+[6] 다음 액션
+--------------------------------------------------------------------------------
+→ tester  : merge 848 (FE 261 + BE 587 · 양쪽 WT CLEAN · 선행 commit 불필요 · FF 가속 가능)
+→ planner : baseline FE @91675f1 / BE @c38388d carry (HEAD zero advance 1-cycle)
+            · merge gate 848 carry · KPI 전부 IDENTICAL
+            · M11/M12 P1 BPO 어댑터 demand-signal carry (변동 0)
+            · BNK-654 P3 9건 + 「6/30 D-day」 3종 ✅ carry (변동 0)
+→ coder/dba : 추가 액션 불요 (양쪽 WT CLEAN · 미커밋 carry 0)

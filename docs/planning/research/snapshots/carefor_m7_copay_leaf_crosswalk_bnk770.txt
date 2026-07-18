@@ -1,0 +1,149 @@
+BNK-770 케어포 역공학 0–2h (2026-07-15T19:32:00Z)
+=========================================================================
+직전 동일 rotation: BNK-765(2026-07-15T16:32:00Z·케어포 M4 nursing) → ~3h 후
+직전 사이클: BNK-769(2026-07-15T18:55:00Z·교차검증 8h+) → ~37분 후
+rotation: daycare/func.php 109항목(=PC catalog 107 정본)·매뉴얼 PDF 목차·demo-work loadPage/view
+          · 메뉴 depth·리포트 밀도·본인부담 7-x ↔ ogada Route `@b4008b0`/`@cf700b9` 1:1
+          · ★ NEW: **케어포 func.php Module 7 「본인부담」 11-leaf ↔ ogada `/billing/*` 17-route
+                   leaf-level 1:1 전수 재크로스워크 — BNK-723(~47 cycle 前) STALE 갱신**
+          · ★ NEW: **BE billing 도메인 `케어포 7-x` verbatim 코드 앵커 실측** — id=4(BNK-765)·id=5(BNK-735)
+                   view.* 상수 보존 narrative 를 id=7 「본인부담」 청구 lifecycle 로 확장
+          · ★ NEW: **리포트 밀도 M7 축 실측** — carefor 3/11(27.3%) ↔ ogada 5/17(29.4%)
+
+=========================================================================
+1. ogada git 실측 (baseline @HEAD 재산정)
+=========================================================================
+FE develop  b4008b0  fix(v1.2.1/QA-B95): decode uppercase hex HTML entities in readiness blockers
+            WT CLEAN · ahead origin/test **1** vs `fd6b996`(BNK-769 FE tip)
+            BNK-769 `@fd6b996` → **+1 commit**
+BE  develop  cf700b9  fix(v2/QA-B95): decode uppercase hex HTML entities in bootstrap blockers
+            WT CLEAN · ahead **671** vs `598d108`
+            BNK-769 `@baa1792` → **+1 commit**
+
+Route         133  (<Route\b 132 [App.jsx 단일] + <Routes> 1)  ※ 테스트 제외 grep
+Page.jsx      106  (*Page.jsx ls-files · 테스트 제외)
+FE test       525  (.test.js 216 + .test.jsx 309)
+BE Test file  294  (*Test.java 293 + *Tests.java 1)
+BE @Test      2221  (grep -rE '@Test\b' src/backend/src/test | wc -l · +1 vs BNK-769 2220·uppercase hex decode @Test)
+Flyway        V1–V196 (max 196)
+accounting route 1 · payroll route 5 · billing route 17
+
+모듈 coverage 97.41% (28.25/29 · residual id=2/8/10 0.85·id=12 0.7 · id=7-* 「본인부담」 1.0 재확인)
+merge gate 672 (FE 1 + BE 671 · BE-heavy → tester FF · 신규 마이그레이션 0)
+
+=========================================================================
+2. live / Wayback 재실측 (증거 URL)
+=========================================================================
+LIVE  https://www.carefor.co.kr/daycare/func.php          HTTP **000** 20s+ timeout · 87-cycle+ 「미확인」
+LIVE  https://demo-work.carefor.co.kr/                    HTTP **000** 20s+ timeout · 「미확인」
+LIVE  https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?…SEQ=1637&SEQ_CONTENTS=3281769
+      HTTP 200 · 7,572B · md5 `c886ff1fd1d5ca2cb5dc76d30adde8ba` · **504차** zero drift
+      verbatim grep -oE : 러-1(1)·러-4(1)·편도(2)·1일 1회(1)·수급자가 부담(1)·이동서비스(13)
+      snapshot: nhis_jo44_live_bnk770.html (disk IDENTICAL vs bnk769·503차→504차)
+
+→ disk canonical 우선: carefor_func.php md5 `6226e6eb92fdd25ed3e50842a5e8a00b` 98,328B · 1,446 line
+
+=========================================================================
+3. ★★★ NEW — 케어포 func.php Module 7 「본인부담」 11-leaf ↔ ogada 재크로스워크
+             (메뉴/필드/워크플로 블록 · BNK-723 STALE 갱신)
+=========================================================================
+근거: canonical `carefor_func.php` (`6226e6eb` 98,328B) · `grep -oE '7-[0-9]+(-[0-9]+)?\.[^<>"]{2,70}'` 실측
+근거: ogada `git show develop:src/App.jsx` grep(path="/billing*") + `git ls-files '*Page.jsx'`
+
+【케어포 func.php Module 7 정적 메뉴 verbatim (11-leaf: 10 top + 1 sub)】
+  7-1     본인부담금 청구관리
+  7-2     본인부담금 입금관리
+  7-2-1     의료비공제(연말정산)
+  7-3     본인부담금 미납관리
+  7-4     본인부담금 자동이체 (CMS)
+  7-5     본인부담금 간편결제
+  7-6     본인부담금 청구대장 리포트
+  7-7     본인부담금 입금대장 리포트
+  7-8     본인부담금 수납대장 리포트
+  7-9     본인부담금 수납,환불내역
+  7-10    본인부담금 간편계산기
+
+【ogada 실측 Route + Page + BE `케어포 7-x` 코드 앵커】
+
+| func leaf                       | ogada Route (`@b4008b0`)                  | Page / 컴포넌트                     | BE 코드 앵커        | 판정 | coverage.js |
+|---------------------------------|-------------------------------------------|-------------------------------------|---------------------|------|-------------|
+| 7-1  본인부담금 청구관리        | `/billing` + `/billing/claims/:claimId`   | BillingPage · BillingDetailPage     | 케어포 7-1/7-2      | ✅   | id=7-1 1.0  |
+| 7-2  본인부담금 입금관리        | `/billing/payments`                       | PaymentPage                         | 케어포 7-2 일괄입금 | ✅   | id=7-2 1.0  |
+| 7-2-1  의료비공제(연말정산)     | (PaymentPage 내 패널) + CSV export        | MedicalExpenseDeductionPanel        | 케어포 7-2-1        | ✅   | id=7-2-1 1.0|
+| 7-3  본인부담금 미납관리        | `/billing/overdue`                        | OverduePage                         | (미납 arrears)      | ✅   | id=7-3 1.0  |
+| 7-4  본인부담금 자동이체 (CMS)  | `/billing/cms`                            | CmsPage                             | 케어포 7-4          | ✅   | id=7-4 1.0  |
+| 7-5  본인부담금 간편결제        | `/billing/easy-pay`                       | EasyPayPage · EasyPayPanel · Catalog| (easyPay config)    | ✅   | id=7-4 1.0  |
+| 7-6  본인부담금 청구대장 리포트 | `/billing/reports/charges`                | BillingReportPage                   | view.npay_manage    | ✅   | (report)    |
+| 7-7  본인부담금 입금대장 리포트 | `/billing/reports/deposits`               | BillingReportPage                   | view.npay_manage    | ✅   | (report)    |
+| 7-8  본인부담금 수납대장 리포트 | `/billing/reports/receipts`               | BillingReportPage                   | 케어포 7-8·G-CASH…  | ✅   | id=7-6 1.0  |
+| 7-9  본인부담금 수납,환불내역   | `/billing/reports/refunds` + cash-receipts| RefundRecordModal · CashReceipt…    | copayRefundFee.js   | ✅   | (report)    |
+| 7-10 본인부담금 간편계산기      | `/billing/calculator`                     | CopayCalculatorPage                 | 케어포 7-10         | ✅   | id=7-10 1.0 |
+
+leaf 판정: ✅ 11/11 = **100%** (top 10 + sub 7-2-1 전수 대응)
+       → id=7-1·7-2·7-2-1·7-3·7-4·7-6·7-10 competitorModuleCoverage.js **1.0 재확인** (7-* 축 전원 1.0)
+       → BNK-723 대비 delta: 7-2-1 의료비공제 CSV export + 7-5 easy-pay provider catalog + 7-9 환불 RefundRecordModal 확장 확인
+       → coverage-0 진성갭 M7 축 **0건** · KPI promote 0
+
+=========================================================================
+4. ★★ ogada SUPERSET — func.php Module 7 에 없는 ogada 전용 billing route
+=========================================================================
+| ogada Route                     | Page                          | 근거 / 차별점                                   |
+|---------------------------------|-------------------------------|-------------------------------------------------|
+| `/billing/copay-rates`          | CopayRatePage                 | 본인부담률 마스터(감경대상·경감률) — carefor 정적 메뉴 미노출 |
+| `/billing/fee-schedules`        | (fee schedule)                | 수가 스케줄 마스터 — id=9 기초설정·수가 연계     |
+| `/billing/imports/nhis`         | (NHIS import)                 | 공단 청구 엑셀 import·대사(reconciliation) — id=nhis 1.0 |
+| `/billing/imports/nhis/:batchId`| (batch 상세)                  | import 배치 단위 대사·오류 라인 추적            |
+| `/billing/reports/statistics`   | BillingStatisticsReportPage   | 본인부담 통계 리포트 — view.cost_master_statistic|
+
+→ ogada `/billing/*` **17-route**(청구/입금/미납/CMS/간편결제/계산기 6 + reports 5 + copay-rates/fee-schedules/imports 4 + claims 상세 1 + cash-receipts 1)
+   vs carefor Module 7 정적 메뉴 11-leaf → **ogada SUPERSET +6 route**(공단 import·대사·통계·본인부담률 마스터가 carefor 정적 메뉴에 없음)
+
+=========================================================================
+5. ★★★ NEW — BE billing 도메인 `케어포 7-x` verbatim 코드 앵커 실측 (id=7 narrative 확장)
+=========================================================================
+근거: `grep -rE '케어포|carefor' src/backend/src/main/java/com/ogada/backend/billing/ | grep -v Test | wc -l` = **68 hit**
+근거: `grep -rhoE '케어포 7-[0-9]+(-[0-9]+)?' src/backend/src/main/java | sort -u`
+
+【unique 케어포 7-x 앵커 (billing 도메인 verbatim)】
+  케어포 7-1/7-2          → 청구·입금 lifecycle 공통 앵커
+  케어포 7-2              → 본인부담금 입금관리(일괄입금·US-L01·p.88 G-BANK-EXCEL-8)
+  케어포 7-2-1            → 의료비공제(연말정산)
+  케어포 7-4              → 자동이체 CMS
+  케어포 7-8              → 수납대장(수납년도/청구년도 옵션·G-CASH-RECEIPT-TAX-DEDUCT)
+  view.npay_manage       → 본인부담(納/npay) 관리 view
+  view.cost_master_statistic → 본인부담 원가 통계 view
+
+해석(확인): BNK-735(M5 프로그램 view.*)·BNK-765(M4 nursing L03_M*+view.* 85-hit) 가 발굴한
+           「케어포 view/leaf 이름을 코드 상수·JavaDoc 앵커로 보존 → 마이그레이션/교육 비용 절감」
+           narrative 를 M7 「본인부담」 청구 lifecycle 로 확장. billing 도메인 단독 68-hit 이 carefor
+           7-x leaf ID 를 코드에 직접 앵커 = 경쟁 4종 중 ogada 유일(공개 자료 「미확인」·경쟁 코드 비공개).
+           → 마케팅 카피 후보(확장) 「ogada 는 케어포 본인부담(7-1~7-10) 청구 lifecycle 을 leaf ID·view.* 상수로
+             코드에 보존해 전환 시 교육·마이그레이션 비용을 최소화합니다」.
+
+=========================================================================
+6. ★ 리포트 밀도 실측 (M7 본인부담 축)
+=========================================================================
+케어포 M7 leaf 11 중 리포트 = 3 (7-6 청구대장·7-7 입금대장·7-8 수납대장) → **27.3%** 리포트 density
+   (+ 7-9 수납,환불내역 = 목록형 준-리포트)
+ogada M7 매핑 17 route 중 리포트 = 5
+  · billing/reports/{charges·deposits·receipts·refunds·statistics}                   5
+  = **5/17 = 29.4%** 리포트 density (BNK-723 미측정 → 신규 실측)
+
+해석(확인): ogada 는 케어포 M7 대비 리포트 축(청구/입금/수납/환불/통계 5)을 정본 유지하면서
+           공단 import·대사·본인부담률 마스터 SUPERSET 을 추가 → 규제 청구 lifecycle 실측 우위(마케팅 후보·carry).
+
+=========================================================================
+[요약]
+=========================================================================
+신규 snapshot 2 (carefor_m7_copay_leaf_crosswalk_bnk770.txt 주력 · nhis_jo44_live_bnk770.html)
+덮어쓰기 0 · zero drift IDENTICAL 2(NHIS 504차 · carefor func.php canonical `6226e6eb`)
+가정 번복 0 · closure 0 (id=7-* 이미 1.0 · KPI promote 0)
+신규 core 갭 0 · candidate 변동 0
+상태 변경 2 (FE `@fd6b996`→`@b4008b0`·+1 commit·ahead 1 · BE `@baa1792`→`@cf700b9`·+1 commit·ahead 671)
+KPI 변경 2 (merge gate 670→672·BE @Test 2220→2221) — Route/Page/FE test/BE Test file/Flyway/모듈 커버리지 carry
+신규 필드 블록 3 (M7 leaf 11 매핑·BE billing 케어포 7-x 68-hit·M7 리포트 밀도 27.3%↔29.4%)
+per-cycle minimum 4종 충족:
+  · 신규 증거 URL 재실측 (NHIS #44 504차 · carefor LIVE 000 87-cycle+)
+  · 메뉴/필드/워크플로 1블록 (§3 M7 11-leaf 재크로스워크·BNK-723 STALE 갱신)
+  · COMPETITOR_MATRIX 1행 이상 `@b4008b0`/`@cf700b9` 갱신
+  · BENCHMARK_REPORT §770 신규 소절

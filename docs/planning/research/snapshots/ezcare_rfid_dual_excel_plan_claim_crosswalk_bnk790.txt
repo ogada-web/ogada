@@ -1,0 +1,52 @@
+<!-- doc:owner=BNK doc:audience=PLN updated=2026-07-16T10:50:00Z -->
+# BNK-790 — 이지케어 역공학 2–4h · RFID 이중엑셀·계획/청구 dual-track · 가격·도입 재실측
+
+## ogada @HEAD
+- FE `@cf8a248` fix(v1.2.1/QA-B95): decode dash/minus/hyphen HTML entities · WT CLEAN · ahead origin/test **1**
+- BE `@7e02d58` fix(v2/QA-B95): decode dash/minus/hyphen HTML entities · WT CLEAN · ahead **694**
+- Route **133** (<Route\b 132 + <Routes> 1) · Page **106** · FE test files **530**(217+313) · BE Test **294** · BE @Test **2252** · Flyway V1–V196 · 모듈 **97.41%**(28.25/29) · merge gate **695**
+
+## 신규/재실측 증거 URL
+| 증거 | URL | HTTP | bytes | md5 | 판정 |
+|---|---|---|---|---|---|
+| Channel 8d304da8 계획일정과 청구일정의 차이 | https://docs.channel.io/ezcare/ko/articles/%EA%B3%84%ED%9A%8D%EC%9D%BC%EC%A0%95%EA%B3%BC-%EC%B2%AD%EA%B5%AC%EC%9D%BC%EC%A0%95%EC%9D%98-%EC%B0%A8%EC%9D%B4-8d304da8 | 200 | 252791 | `cea08b2f58825e72364809cbbe822e4e` | DRIFT vs disk a19ae43e/249115B → SIZE+3676B · semantic「계획=안내·청구=정산」IDENTICAL |
+| Channel 556858d9 요양보호사 태그 전송 내역 | https://docs.channel.io/ezcare/ko/articles/%EC%9A%94%EC%96%91%EB%B3%B4%ED%98%B8%EC%82%AC-%ED%83%9C%EA%B7%B8-%EC%A0%84%EC%86%A1-%EB%82%B4%EC%97%AD-%ED%99%95%EC%9D%B8%EB%B0%A9%EB%B2%95-556858d9 | 200 | 228517 | `ba5599edaf40e5692f4b8babfc54dc84` | 3검출(시작/종료미전송·30분·제공자다름) verbatim · SIZE+3.5KB vs BNK-68 era 224931B |
+| ezCare charge | https://ezcare.easyms.co.kr/new/ezCare_charge.html | 200 | 22979 | `c7571c840444077fd225485757827d2b` | 셋팅 33,000(40%·~2026-07-31 D-15) semantic IDENTICAL · raw md5 cachebuster DRIFT |
+| ezCare change_work | https://ezcare.easyms.co.kr/new/ezCare_change_work.html | 200 | 26157 | `5c243eb48a05123171c0dc2ca2da8ffa` | 도입 **9,436개** STABLE(=BNK-786) |
+| ezCare fnc | https://ezcare.easyms.co.kr/new/ezCare_fnc.html | 200 | 17870 | `6b0fd8d355a252be4e041c510a56e528` | 도입 9,436 · RFID/엑셀 카피 STABLE |
+| ezCare home | https://ezcare.easyms.co.kr/ | 200 | 70269 | `113a32bf157c9b2f09d894aeb34c4e70` | data-count 53.2%/9298/**4675**(+1 vs BNK-786 4674)/2353/1820 |
+| FAQ 21450 | https://ezcare.easyms.co.kr/help/V.ez?rowid=21450 | 200 | 7308 | `ee764fdbb142ef6c11f8bb8ec63783b3` | 계획일정 대비 태그전송 · md5 ee764fdb IDENTICAL(=BNK-786 era) |
+| NHIS #44 | https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769 | 200 | 7572 | `c886ff1fd1d5ca2cb5dc76d30adde8ba` | 본문 c886ff1f 7,572B **524차**(+1 vs BNK-789 523) IDENTICAL |
+
+## 메뉴/필드/워크플로 — PGID=schedule-rfid 이중엑셀 (확인)
+demo fetch login code **0000** · top-nav md5 `95286775` LOCK · catalog **10/148/59**
+
+| 구성요소 | 실측 | ogada 대응 |
+|---|---|---|
+| `form_plan_upload` | `action=./run.php` · `file_excel_plan` · `mode=ltm_sDataUpload` · Ym=2026-07 | NHIS plan import / visits import 「가정」 |
+| `form_rfid_upload` | `file_excel` · RFID전송내역 엑셀 · `get_ltm_rfid` | `compareVisitsRfidApi` + RFID import |
+| grids×4 | `grid_match_list`·`grid_match_list_worker`·`grid_tag_time`·`grid_send_tag_time` | VisitRfidDiffComparePanel |
+| 검출 3조건 (Channel 556858d9) | 시작/종료 태그 미전송 · 인정시간 **30분** 이상 차이 · 급여제공자 다름 | RFID diff compare CLOSED carry |
+| `btn-send-tag-time-all` | 태그시간 SMS 일괄발송 | care-provision SMS CLOSED(BNK-763/778) · 주간보호 과대구축 금지 |
+| FAQ help | rowid **21450** | 매뉴얼&가이드 교차 |
+| bytes | 150,493B · md5 `ea535913` (−8B vs 150,501 session DRIFT) | semantic IDENTICAL |
+
+## 이중일정 · change-list · schedule-fix
+- **Module 3 방문일정** catalog 13-leaf dual-tab(수급자↔요양보호사) carry
+- **`PGID=duplicate-schedule`** 93,393B · 「페이지를 찾을 수 없습니다」 **NotFound** 재확인(BNK-786 shell-로드 해석 → **negative PGID** 유지 · 사후 리포트 부재)
+- ogada `VisitService.ensureNoDuplicateVisitSlot` = **preventive SUPERIOR** vs ezcare 사후/미존재 PGID
+- **change-list** 8-col audit: `sDate·pName·pCode·chg_what·memo·chg_before·chg_after·mName` · **처리상태 0** · 승인 FSM 금지
+- **schedule-fix** `chk-ltm-form`·`btn-form-all`·`btn-form-reset-all` · help 21208/21778 · FAQ 21474 IDENTICAL `797439bf`
+- **mobile-sendW** `messageAmt={"app":10,"sms":20,"mms":50}` VALUE IDENTICAL
+
+## Channel 8d304da8 dual-track (확인)
+- 「계획일정은 안내용, 청구일정은 정산용」 verbatim
+- 청구일정 = 공단 청구 완료 후 RFID 전송/직접입력 기반
+- 차이 원인 예시: 태그분±계획분·미제공·2회방문 2h미만 합산·야간가산
+- → schedule-form 일정확정 전 청구일정 재upload = FAQ 21474 2-step 과 동일 lifecycle
+
+## planner 제안
+1. 주간보호 MVP: RFID 이중엑셀·방문요양-only SMS **과대구축 금지**(CLOSED carry)
+2. 방문 중복: preventive slot guard 유지 = 이지케어 duplicate-schedule NotFound 대비 **차별 카피**
+3. 가격 시그널: 셋팅 33,000(~7/31)·도입 9,436 STABLE · 전략 변경 트리거 없음
+4. P0 신규 0 · residual id=12 / id=2·8·10 form polish carry

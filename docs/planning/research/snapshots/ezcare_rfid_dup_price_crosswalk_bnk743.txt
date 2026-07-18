@@ -1,0 +1,97 @@
+BNK-743 이지케어 역공학 2–4h 재실측 (2026-07-15T02:30Z)
+==========================================================
+rotation: 이지케어 역공학 — `./scripts/ezcare-demo-fetch.sh` demo 로그인(oCode=DEMO code=0000)
+→ PGID batch schedule-rfid,duplicate-schedule,change-list + FAQ rowid 5건 + home/price/fnc + NHIS #44.
+직전 동일 rotation BNK-739(2026-07-14T23:39Z·schedule-fix/receipt-list/patient-list) → ~2.9h 후.
+직전 사이클 BNK-742(2026-07-15T01:54Z·케어포 0–2h) → ~36분 후.
+
+── ogada git 실측 (@develop HEAD) ──────────────────────────
+FE develop  : 6dbdd99  fix(v1.2.1/g2): separate draft creation vs publish timestamps
+              (+2 vs BNK-742 655aaa7: cc212ac UXD-177 a11y + 6dbdd99)
+              WT CLEAN · origin/test 대비 ahead 0 = FULLY SYNCED
+BE develop  : adaee26  feat(v2/J03): surface SMS dispatch readiness in channel health
+              (+2 vs BNK-742 c558f29: e108b25 V193 attachment_url CHECK + adaee26 SMS)
+              WT CLEAN · origin/test=598d108 대비 ahead 649
+KPI          : Route 132(131 <Route>+1 <Routes>) · Page 105 · FE test 518(214 js+304 jsx)
+               BE Test 289(288+1) · BE @Test 2166(+1 vs BNK-742 2165) · Flyway V1–V193(신규 V193)
+coverage     : 29-entry · 27.15/29 = 93.62% (id=1-10 0 · id=10 0.75 · id=12 0.7 · id=2 0.85)
+merge gate   : 649 (FE 0 FULLY SYNCED + BE 649 · BE-heavy · 양쪽 WT CLEAN → tester FF)
+
+── NEW evidence: PGID=schedule-rfid (메뉴/필드/워크플로 블록) ─
+확인: https://ezcare.easyms.co.kr/new.ez?PGID=schedule-rfid
+  demo 세션 · HTTP 200 · 150,501B · md5 1caf92007d3d08aee8f7aebb98bce582
+  저장: ezcare_new_ez_pgid_schedule-rfid.html + _bnk743.html
+  top-nav: menuName 'RFID점검' · leaf「RFID태그 내역 ↔ 공단계획 비교」 url=schedule-rfid
+           (+ popup /schedule_plan/rfid_compare.html)
+  도움말: help/V.ez?rowid=21450 200·7,308B·md5 ee764fdbb142ef6c11f8bb8ec63783b3
+    title「계획일정 대비 요양보호사의 태그전송 내역을 확인하고 싶어요?」
+    verbatim: 「태그 비교는 실시간이 아니므로 비교시마다 계획일정과 RFID 전송내역 파일을 올려주셔야」
+  워크플로(확인):
+    1) 계획일정 엑셀 + RFID 전송내역 엑셀 이중 업로드(「먼저 공단 엑셀파일(계획일정, RFID 전송내역)을 업로드하세요」)
+    2) 「공단 계획 ↔ RFID 새로 가져오기」 버튼 → 비교 그리드
+    3) grid_match_list / grid_match_list_worker / grid_send_tag_time / grid_tag_time
+    4) 불일치 검출 축: 시간차(terM_dif)·제공자 다름(comp_08)·계획 없음(comp_07)·시작/종료/30분…
+    5) RFID 태그 본문 필드: tag_body/인지자극/일상생활/인지행동/정서지원/가사/신체·식사·인지기능/대소변 실수/특이사항
+    6) 문자보내기 dialog: 쪽지/문자 dual · chk-type 수급자|보호자(default 보호자) · 312Byte 장문 50p/건
+       FAQ 21589 연계: 「RFID로 전송한 급여제공내역을 수급자에게 문자로 발송」(방문요양만)
+  sKind radio: 전체/방문요양/방문목욕/방문간호
+  ogada parity:
+    ✅ compareVisitsRfidApi POST /api/v1/visits/imports/rfid/compare (multipart planFile·rfidFile)
+    ✅ VisitRfidDiffComparePanel.jsx (~330L)
+    △ RFID 불일치→요보사 문자 / 급여제공내역→수급자·보호자 SMS 는 panel SMS hit 0
+       → planner P2 operational lever candidate (id=10 0.75 심화·진성갭 아님)
+    ✅ BE `@adaee26` liveSmsDispatchReady + nonEmergencySmsDispatchAvailableNow
+       = J03 3-channel quiet-hours readiness 완성(알림톡·이메일·SMS)
+
+── PGID=duplicate-schedule — decommission 재확인 ───────────
+확인: https://ezcare.easyms.co.kr/new.ez?PGID=duplicate-schedule
+  HTTP 200 · 93,401B · md5 e236a2ba2e1f06126771ed13e0d2c6a5
+  본문 H1「Page NotFound :(」「페이지를 찾을 수 없습니다.」(BNK-688 이후 동일)
+  top-nav-item-V2.js: `duplicate-schedule` 토큰 0 · 「중복」 0
+  마케팅 ezCare_fnc.html 만 「일정중복 및 계산오류 등의 실수를 미연에 방지」 claim 잔존
+  해석: 전용 PGID 폐기 · 중복방지=일정관리 내장 claim · 역공학 대상 leaf 아님(가정 번복 아님)
+
+── PGID=change-list (보조 필드 블록) ───────────────────────
+확인: https://ezcare.easyms.co.kr/new.ez?PGID=change-list
+  HTTP 200 · 100,278B · md5 e34a47ade91ff972c6999cc6e73a9855
+  nav: 「변경사유 조회」 DEV attr · colModel 8:
+    sDate 변경일 · pName 수급자 · pCode 정보 · chg_what 변경사유 · memo 변경내용
+    · chg_before 변경 전 · chg_after 변경 후 · mName 작성자
+  필터: Ym + patient + worker
+  ogada: ClientDetail grade/contract 이력 분산 · 단일「변경사유 조회」표 UX 「미확인」/P3 candidate
+
+── 가격·도입 재실측 ────────────────────────────────────────
+확인: https://ezcare.easyms.co.kr/ · HTTP 200 · 69,758B · md5 8f49ae951e7a746554605cedc31d88f8
+  data-count: 시장점유율 53.2 · 이용기관 9,298 · 재무회계 대행 **4,670**(BNK-731/738 4,668 → **+2 DRIFT**)
+             · 월 공단청구 2,353억 · 종사자 급여 1,820억 · 집계일 2026.06.30
+  M12 BPO demand: 4,670/9,298 ≈ 50.2% (carry · +2만)
+확인: https://ezcare.easyms.co.kr/index.html?PG=price · HTTP 200 · 52,025B · md5 ed1f8864e56a4514040044aeff4fce1a
+  vs BNK-731 `3bcb947c` → **cachebuster-only DRIFT**(css/js ?1784055595→1784082558)·가격 문구 semantic IDENTICAL
+  셋팅비 33,000원(기준가 55,000·40%할인) · Core 월 10,000원부터 · 문자 20~50원 · 수급자 10명 초과 1인당 500원
+확인: https://ezcare.easyms.co.kr/new/ezCare_fnc.html · HTTP 200 · 17,870B · md5 0a04073d9d94303713344c94e1c28c3f
+  vs BNK-731 `64e4fa90`: cachebuster + **headstatus 도입 9,427→9,429(+2)** DRIFT
+  기능 claim IDENTICAL: 일정중복 방지 · 공단 엑셀 대입 · RFID 실시간 모니터링·비교/분석
+
+── FAQ rowid 재실측 ────────────────────────────────────────
+FAQ list: help/faq.ez 200·80,057B·md5 a4b820d896d5fc18c880c05da4ffaf6c
+  vs BNK-741 af1b92dd → **hit-count-only DRIFT** · rowid 233·max 21781 · 엑셀 2-hit · RFID 1-hit
+FAQ 21298: 16,644B md5 56f80ab6 IDENTICAL(공단일정 계획/청구 2-track upload)
+FAQ 21474: 15,369B md5 e7a6fa1c IDENTICAL(일정확정 post-claim reconciliation)
+FAQ 21589: 15,971B md5 a5e2e48c IDENTICAL(RFID→급여제공내역 문자)
+FAQ 21844: 14,474B md5 d0aa760c IDENTICAL(엑셀 마스킹) → **엑셀 포맷 변경 0**
+FAQ 21845: 13,915B md5 5b78c947 IDENTICAL(정상 조치)
+
+── 규제 ───────────────────────────────────────────────────
+NHIS #44: 200·7,572B·md5 c886ff1fd1d5ca2cb5dc76d30adde8ba · **477차** zero drift IDENTICAL
+  (BNK-742 476차 → +1)
+
+── per-cycle minimum ───────────────────────────────────────
+1. 신규/재실측 증거 URL: schedule-rfid · change-list · home(+2 BPO) · price · fnc(+2 도입) · FAQ5 · NHIS 477차
+2. 메뉴/필드/워크플로: schedule-rfid 이중엑셀→비교→문자 블록 + change-list 8-col + duplicate NotFound
+3. COMPETITOR_MATRIX 1행+ @6dbdd99/@adaee26
+4. BENCHMARK_REPORT §743
+
+덮어쓰기: canonical bare PGID 3(schedule-rfid/duplicate-schedule/change-list)·demo shell.
+신규 차수 파일: *_bnk743.html/txt 다수. 가정 번복 0. 신규 core 갭 0.
+operational lever candidate 1: RFID mismatch/care-record SMS dispatch UI.
+CLOSURE 부분: J03 SMS readiness(@adaee26) = 3-channel quiet-hours 완성.

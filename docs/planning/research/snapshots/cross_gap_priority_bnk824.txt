@@ -1,0 +1,103 @@
+BNK-824 — 교차검증·갭 우선순위 8h+ (2026-07-17T08:16:00Z)
+=========================================================================
+직전 사이클: BNK-823 (2026-07-17T07:35Z · ogada git 실측 6–8h)
+직전 동일 rotation: BNK-820 (2026-07-17T05:45Z · 교차검증 8h+) → ~2.5h 후
+초점: 이전 BNK 가정 번복 여부 · 미확인 항목 축소 · closed band P0/P1 재정렬 ·
+      신규 경쟁사 공지·엑셀 포맷 변경 스캔 · BNK-823 audit-first posture 재현
+
+-------------------------------------------------------------------------
+[1] ogada git 실측 (FE/BE develop)  — HEAD IDENTICAL to BNK-823
+-------------------------------------------------------------------------
+FE develop = a280437  (BNK-823 @a280437 → 동일 HEAD·신규 커밋 0)
+  git log -1: a280437 fix(v1.2.1/QA-B95): decode guillemet quote HTML entity aliases
+  WT: CLEAN
+  ahead origin/test = 0  → FULLY SYNCED (BNK-823 ahead 1 → tester FF 흡수·origin/test=a280437)
+BE develop = 3b0b6b9  (BNK-823 @3b0b6b9 → 동일 HEAD·신규 커밋 0)
+  git log -1: 3b0b6b9 fix(v2/QA-B95): decode guillemet quote HTML entity aliases
+  WT: CLEAN
+  ahead 598d108..HEAD = 723
+
+KPI (grep 실측·HEAD 무변동 → BNK-823 carry IDENTICAL):
+  <Route\b in src/App.jsx        = 132   (+ <Routes> 1 = Route 133)
+  git ls-files '*Page.jsx'       = 106   (전량 src/pages/·BNK-823 정정값 재확인)
+  FE test files (.test./.spec.)  = 530   (313 .test.jsx + 217 .test.js)
+  BE *Test.java/*Tests.java/*IT  = 294   (293 files w/ @Test + 1)
+  BE @Test (grep -rE line)       = 2276  (grep -o occurrence 2275·한 라인 2건)
+  @RestController                = 81
+  Flyway V*.sql max              = V196  (count 196·신규 0)
+  merge gate                     = 723   (FE 0 FULLY SYNCED + BE 723·BE-heavy → tester FF)
+
+-------------------------------------------------------------------------
+[2] ★★★ BNK-823 audit-first API posture 교차재현 = byte-exact IDENTICAL
+-------------------------------------------------------------------------
+src/main grep 실측 (@3b0b6b9):
+  @GetMapping    = 231  (52.4%)
+  @PostMapping   = 143  (32.4%)
+  @PatchMapping  =  44  (10.0%)
+  @PutMapping    =  13  ( 2.9%)
+  @DeleteMapping =  10  ( 2.3%)
+  ------------------------------
+  합계           = 441  (81 @RestController · controller당 5.44)
+
+→ BNK-823 §823-1 「audit-first / read-create dominant posture」 수치 전량 재현
+  IDENTICAL (GET+POST 84.8% 조회·생성 우세 · DELETE 2.3% 최소 = soft-delete/
+  감사 보관 PIPA 정합 · PATCH 44 > PUT 13 부분정정 우선). 일회성 아님·안정 확인.
+  경쟁 ezCare/carefor jqGrid row-CRUD(행 삭제 흔함) 대비 감사 우선 설계 차별 carry.
+  삭제 API 신설 금지(soft-delete 유지)·과대구축 금지·신규 갭 0.
+
+-------------------------------------------------------------------------
+[3] closed band 6 재오픈 여부 — App.jsx grep 실측 (@a280437)
+-------------------------------------------------------------------------
+  L164  path="/dashboard"                       대시보드
+  L173  path="/dashboard/hq"                     대시보드 HQ
+  L209  path="/clients/home-newsletter"          G2 가정통신문
+  L236  path="/clients/linkage-records"          G-LINKAGE 연계기록지
+  L245  path="/clients/:clientId/care-plan-form" G14 케어플랜
+  L389  path="/billing/cms"                       v2 CMS
+  L628  path="/transport/service-fees"           v1.3-C 이동서비스비
+→ 6/6 LIVE · 라인 번호 BNK-820/823 IDENTICAL · 재오픈 0 · 가정 번복 0 · P0 신규 0
+
+-------------------------------------------------------------------------
+[4] 모듈 97.41% CONFIRMED — competitorModuleCoverage.js 재검산
+-------------------------------------------------------------------------
+  29-entry · 비-1.0 4개: id=2(이동서비스) 0.85 · id=8(직원·근태) 0.85 ·
+                        id=10(부가서비스 SMS·알림) 0.85 · id=12(수입지출·회계) 0.7
+  sum = 25×1.0 + 0.85+0.85+0.85+0.7 = 28.25
+  28.25 / 29 = 0.97413... = 97.41%  (진성갭 0·가정 번복 0)
+
+-------------------------------------------------------------------------
+[5] NHIS #44 러-1~4 이동서비스비 557차 zero drift ↔ Transport 6-link
+-------------------------------------------------------------------------
+  live https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+  HTTP 200 · 7,572B · md5 c886ff1f = BNK-823 byte-IDENTICAL → 557차 zero drift
+  (러-1(1)·러-4(1)·편도(2)·1일 1회(1)·이동서비스(13))
+  ↔ BE @3b0b6b9 실측:
+    TransportDistanceBand.RU_1~4 = 5/10/20/999km (러-1~4)
+    TransportServiceFeeParityCatalog.ONE_WAY_RATIO = 0.5 (편도 비율)
+    ONE_PER_DAY_LABEL = "1일 1회"
+    TransportServiceFeeService:287 baseAmount×ONE_WAY_RATIO HALF_UP
+  = NHIS 고시 verbatim IDENTICAL · 상수 재조정 불요 · id=2 0.85 carry
+  · 경쟁 4종(케어포/이지케어/엔젤/롱텀) 유일 full-stack
+
+-------------------------------------------------------------------------
+[6] 신규 경쟁사 공지·엑셀 포맷 변경 스캔 = 시그널 0
+-------------------------------------------------------------------------
+  케어포 daycare/func.php  LIVE HTTP 000 (28s timeout) · 99-cycle+ streak
+                           disk carefor_func.php 6226e6eb LOCK 유지
+  이지케어 FAQ help/faq.ez  HTTP 200 · 80,057B · rowid count 233 · max 21781
+                           = BNK-813/820 IDENTICAL · 엑셀 포맷 변경 0 (엑셀 hit 2건
+                           = 기존 FAQ 본문·양식변경/신규 공지 0)
+  이지케어 charge          HTTP 200 · 22,979B · 셋팅 33,000(2건)·기준가 55,000(3건)·
+                           월 10,000(13건)·30,000(1건) = 가격 티어 STABLE
+→ 신규 진성갭 0 · P0/P1 격상 0 · 엑셀 포맷 변경 0
+
+=========================================================================
+결론 (planner 반영):
+- 우선순위 동결: closed band 6 재오픈 0·가정 번복 0·P0 신규 0.
+- BNK-823 audit-first posture(441 verb) = 안정 재현 → 설계 방향 유지·삭제 API
+  신설 금지(soft-delete/감사 보관). 경쟁 jqGrid row-CRUD 대비 감사 우위 narrative.
+- 모듈 97.41%(28.25/29) CONFIRMED · residual lever = id=12(0.7·회계 BPO) primary.
+- NHIS #44 557차 zero drift·Transport 상수 재조정 불요.
+- baseline FE @a280437(FULLY SYNCED)·BE @3b0b6b9(ahead 723)·merge gate 723.
+- 다음 rotation: 케어포 0–2h 또는 이지케어 2–4h.
+근거 snapshot: nhis_jo44_live_bnk824.html · (FAQ/charge live 재실측 in-memory)

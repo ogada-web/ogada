@@ -1,0 +1,35 @@
+BNK-699 케어포 Module 3 「요양급여 제공기록·식사·목욕」 11-leaf ↔ ogada /care/* 전수 cross-walk
+======================================================================================
+
+출처(source)
+- 정본: docs/planning/research/snapshots/carefor_func.php (canonical md5 6226e6eb·98,328B·Wayback id_ 6226e6eb)
+- 메뉴 카탈로그: docs/planning/research/snapshots/carefor_func_menu_catalog.json (md5 3c44ac2e·107 leaf·module 3 = 11 leaf)
+- LIVE 재실측: https://carefor.co.kr/daycare/func.php · https://www.carefor.co.kr/daycare/func.php · https://demo-work.carefor.co.kr/ → 전부 HTTP 000 connection timeout(25s) — 60+ cycle 「미확인」 carry(BNK-558~699). 본문은 canonical disk(zero drift)로 검증.
+- ogada FE: git develop @c012ed0 · git grep path="/care/*" 실측(2026-07-13)
+
+Module 3 leaf(11) → ogada Route cross-walk
+------------------------------------------
+| carefor 3-x | 메뉴명                              | ogada Route                            | 판정 |
+|-------------|-------------------------------------|----------------------------------------|------|
+| 3-1         | 요양급여 제공 기록                   | /nursing/service · /care/weekly-service-records | ✅ |
+| 3-1-1       | 통합식사도움기록                     | /care/meal-assistance-records          | ✅ |
+| 3-1-2       | 간호급여 제공기록(요양보호사)        | /care/weekly-service-records (급여제공) | ✅ |
+| 3-1-3       | 요양급여 특이사항 관리               | /care/service-special-notes            | ✅ |
+| 3-1-4       | 식사(간식) 선호도 조사 및 반영       | /care/meal-preference-surveys          | ✅ |
+| 3-2         | 상태변화 기록                        | /care/reports/position-change · health | ✅ |
+| 3-3         | 목욕일정 및 제공현황                 | /care/bathing-schedules                | ✅ |
+| 3-4         | 요양/식사(조치사항)/화장실 리포트    | /care/reports/meal-excretion           | ✅ |
+| 3-5         | 목욕도움 리포트                      | /care/reports/bath-help                | ✅ |
+| 3-6         | 급여제공 리포트                      | /care/reports/patient-service          | ✅ |
+| 3-7         | 급여제공 서비스 집계                 | /care/reports/service-summary          | ✅ |
+
+판정 요약
+- Module 3 leaf 11/11 = 100% ✅ (competitorModuleCoverage.js id=3-1 coverage=1 정합 재확인)
+- 리포트 밀도(3-4~3-7): 4-leaf 리포트 전부 매핑(meal-excretion·bath-help·patient-service·service-summary) + ogada superset 3(/care/reports/intensive-excretion·position-change·nursing-service)
+- ogada superset(carefor Module 3 미노출): /care/body-restraint(신체제한)·/care/intensive-excretion(집중배설)·/nursing/pressure-ulcer/*(욕창 5-route)·/nursing/weight-records·/nursing/oral-care-checks·/nursing/excretion-tubes
+- 식사 도메인: carefor 3-1-1 통합식사도움 + 3-1-4 선호도 조사 2-leaf ↔ ogada /meals + /care/meal-assistance-records + /care/meal-preference-surveys 3-route = ogada 완전+우위
+
+인사이트(planner)
+- Module 3 「요양급여 제공기록」은 케어포 정본(11-leaf) 대비 ogada full parity + 욕창/신체제한/집중배설 superset → 급여제공 기록 도메인 경쟁 우위 재확인(KPI 영향 0·id=3-1 이미 1.0).
+- 리포트 밀도 4/4 매핑 = carefor 리포트-중심 IA 대비 ogada 동등(리포트 route 28 carry).
+- LIVE 60+ cycle timeout 지속 → canonical disk 우선 정책 유지(덮어쓰기 0).

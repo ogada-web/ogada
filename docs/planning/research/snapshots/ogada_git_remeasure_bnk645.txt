@@ -1,0 +1,71 @@
+BNK-645 ogada git remeasure (cross-cycle KPI snapshot)
+조사일: 2026-06-26T03:40:00Z | rotation: 엔젤·롱텀·규제 4–6h (병행 git 실측)
+
+=== FE develop (확인) ===
+@a727862fe56f67d9e58d08886e1c51f2accdbd28
+  commit msg: fix(v1.2.1/QA-B95): prioritize g21 service-unavailable seed reason
+  WT: CLEAN (git status -s = 0 lines)
+  ahead vs origin/test=ab4de83: 253
+  Δ vs BNK-644 (@a8f4e8e): HEAD +1
+  Δ vs BNK-643 (@4e574ce): HEAD +2 (a8f4e8e wire g21 status detail · a727862 prioritize service-unavailable)
+
+=== BE develop (확인) ===
+@4df9465c24d6fabbf0e7bd361bb17503eaaa305a
+  commit msg: feat(v2/G-CLIENT-CONTRACT-BULK-PRINT): add care plan bulk export API
+  WT: CLEAN (git status -s = 0 lines)
+  ahead vs origin/test=598d108: 580
+  Δ vs BNK-644 (@4df9465): HEAD zero advance 1-cycle (양쪽 carry)
+  pre-context: 14964f6 expose g21-seed status detail · b4958f1 V182 integrity · 3ae8098 print export · 68b08b0 CRUD API
+
+=== merge gate (확인) ===
+  833 (= 253 FE + 580 BE) = +1 FE-only vs BNK-644 832
+  cross-stream: FE +1 / BE 0 = 한 측 advance
+
+=== KPI grep 실측 (확인) ===
+| 지표 | 값 | 측정 명령 |
+|---|---|---|
+| Route | **118** (117 `<Route\b` + 1 `<Routes>`) | `rg -c '<Route\b' src/App.jsx && rg -c '<Routes>' src/App.jsx` |
+| page  | **93** (`*Page.jsx`, RootRedirect 포함) | `find src/pages -name '*Page.jsx' -type f \| wc -l` |
+| FE test 파일 | **482** (198 .test.js + 284 .test.jsx) | `find src -name '*.test.js' / '*.test.jsx' -type f \| wc -l` |
+| BE Test 파일 | **272** (271 `*Test.java` + 1 `*Tests.java`) | `find src -name '*Test.java' / '*Tests.java' \| wc -l` |
+| BE @Test annotation | **1974** | `grep -rE '@Test\b' --include='*.java' src/ \| wc -l` |
+| V*__ migration | **182** (V179/V180 program_client_groups · V181/V182 staff_committee_meeting_logs) | `ls src/main/resources/db/migration/ \| grep -E '^V[0-9]+__' \| wc -l` |
+| 모듈 coverage (`competitorModuleCoverage.js`) | **80.86% (23.45/29)** — id=2 0.85·id=8 0.85·id=10 0.75·❌5(1-5·1-10·6·11·12)·✅21 | grep `competitorModuleCoverage.js` `@a727862` |
+
+★ **가정 번복 (KPI 정정)**:
+  1. 모듈 81.5%/~81.0% (BNK-643/644 claim) → 실측 **80.86%** (23.45/29 grep `competitorModuleCoverage.js`).
+  2. FE test 486 (BNK-644 claim) → find 실측 **482** (198+284). carry: .test.ts/.spec 확장 가능성 차기 cycle 검증.
+
+=== 백본 zero drift / DRIFT / 미확인 분류 (397차) ===
+zero drift IDENTICAL:
+  - NHIS #44 `c886ff1f` 7,572B (397차)
+  - silverangel essential `c79c1be3` 131,664B (live URL `daycare/daycareEssentialWork.do`·OLD path `service/` 404)
+  - silverangel extra `f9c5d877` 81,637B
+  - silverangel fee `eab352a8` 44,513B
+  - silverangel main `bcf6df41` 59,002B
+  - silverangel system_feature `c9507190` 45,601B (HP-UX·Oracle 11g·WebLogic)
+  - silverangel businessSupport `a13cb5ac` 75,878B (도입 4회차 10일 SLA)
+  - lcms.or.kr `c0c66076` 50,740B (type1 rotation·canonical lcms_root.html)
+  - silverangel notice 221564 `44223150` 51,765B (D-4 retraction shell)
+  - carefor func.php disk canonical `6226e6eb` 98,328B
+
+DRIFT (verbatim 불변·counter/cachebuster only · 덮어쓰기 2건):
+  - MOHW 2026-126 `3965b857`→`940e3021`·109,510B·첨부 counter +N
+  - law 2025-247 `6c32b661`→`ffd9a3ca`·78,450B·cachebuster Time=
+
+미확인 (HTTP 404 · canonical disk 보존):
+  - longterm 502 단기보호 `fcadfbfe` 861B error shell·canonical `b5aee8c1` 105,552B 보존 (47-cycle+)
+  - longterm 610 통합재가 `fcadfbfe` 861B error shell·canonical `0ea575be` 91,421B 보존 (47-cycle+)
+  - silverangel `service/daycareEssentialWork.do` 「OLD path」 404 (1,028B `3c93af54`) — NEW `daycare/daycareEssentialWork.do` 가 정본 IDENTICAL
+
+NEW evidence (BNK-645):
+  - silverangel `/newSilverangel/fcltySlry/essentialWork.do` HTTP 200·166,023B·`80517b18` (시설 입소형 33 평가지표·신규 snapshot `silverangel_fcltySlry_essentialWork_bnk645.html`)
+
+=== 신규 candidate (BNK-645) ===
+- P3「가정」 `G-FACILITY-MODE-EXTENSION` — silverangel fcltySlry 33 indicator catalog · 현재 ogada 시설형 baseline 13/33 = 39%·v3+ 시설 모드 epic
+- P3「가정」 `G-SATISFACTION-SURVEY-DIAL` — silverangel 시설형 #45 만족도 조사(유선) · ogada 0 hit
+
+=== tester / coder / planner action (BNK-645) ===
+- tester: FF merge **833** (FE+1 advance·BE carry·양쪽 WT CLEAN·선행 commit 불필요)
+- coder: QA-B95 cluster 15th layer 후보 (cluster carry · g21 service-unavailable seed reason prioritize의 후속) — operation 승격 신호 확인 후 step
+- planner: baseline FE `@a8f4e8e`→**`@a727862`**·BE `@4df9465` carry·merge gate 832→**833**·KPI 정정 2(모듈 80.86%·FE test 482)·신규 P3 candidate 2종 등재 검토·M11/M12 P1 lever carry

@@ -1,0 +1,138 @@
+BNK-768 — 교차검증·갭 우선순위 8h+ (2026-07-15T18:42:00Z)
+================================================================
+rotation: 교차검증·갭 우선순위 — 이전 BNK 가정 번복 여부·미확인 축소·G14·대시보드·v1.3-C·v2 CMS 등 P0/P1 재정렬·엑셀/공지/규제 변경 스캔
+직전 동일 rotation: BNK-760(2026-07-15T13:32:09Z) → ~5.15h 후
+직전 사이클: BNK-767(2026-07-15T17:58:24Z·엔젤·롱텀·규제 4–6h) → ~44분 후
+
+================================================================
+★★★ #1 교차검증 CORE — 모듈 KPI 97.41%(28.25/29) CONFIRMED · id=10 0.85 유지 · 가정 번복 0
+================================================================
+BNK-767 은 id=10 kind22(SMS 급여명세서) 착지 이후 모듈 **97.41%(28.25/29)** carry.
+BNK-768 develop HEAD FE `fd6b996` 실측 재산정:
+
+  src/frontend/src/config/competitorModuleCoverage.js `COMPETITOR_FEATURE_COVERAGE`:
+    배열 엔트리 parse `{ id: … coverage: … }` → count **29** · sum **28.25** · pct **97.41%**
+    raw `grep coverage:` = 30 (line 5 JSDoc `* coverage: 1 = ✅` 오염 — BNK-753/759/760 지적 패턴)
+      → 배열-only 파싱 시 29/28.25/97.41 정합.
+
+  id=10 verbatim: `coverage: 0.85` (kind22 급여명세서 SMS FE `5b9656c` + BE `7de86eb` FULL-STACK)
+  비-1.0 축(4): id=2 **0.85** · id=8 **0.85** · id=10 **0.85** · id=12 **0.7**
+  1.0 축(25):
+    1-1 수급자 · 1-3 보호자 · 1-5 가정통신문 · 1-7 대시보드 · 1-9 등급변동 · 1-10 연계기록지
+    3-1 요양 급여제공 · 4 간호·물리 · 5 프로그램 · 26 기능회복 · 43 사례관리 · 6 위생·안전
+    7-1 청구 · 7-2 입금 · 7-2-1 의료비공제 · 7-3 미납 · 7-4 CMS · 7-6 수납 · 7-10 계산기
+    9 기초설정 · 11 직원급여 · nhis · qr · hq · platform
+  coverage-0: **0건**
+
+결론(확인·가정 번복 0): BNK-760/767 KPI 정정 **유지**. 모듈 **97.41%(28.25/29)**가 코드 실측 정본.
+v1.2 KPI ≥60% 충족 유지 · 상수/코드 변경 불요.
+
+================================================================
+★★★ #2 P0/P1 재정렬 — closed axes 14-path App.jsx LIVE 재확인 · 재오픈 0
+================================================================
+src/frontend/src/App.jsx `grep -oE 'path="[^"]+"'` 실측 132-Route + <Routes> 1 = **133-Route**.
+closed axes(coder BNK-745~767 착지) grep 실측 = 14-path LIVE:
+
+  G14        path="/clients/:clientId/care-plan-form"
+  Dashboard  path="/dashboard"
+  Dashboard  path="/dashboard/hq"
+  G2         path="/clients/home-newsletter"
+  G-LINKAGE  path="/clients/linkage-records"    ← BNK-749 CLOSURE, BNK-756 org report, BNK-764 defense-in-depth
+  v1.3-C CMS path="/billing/cms"
+  v1.3-C CMS path="/billing/easy-pay"
+  v1.3-C CMS path="/billing/cash-receipts"
+  M12        path="/accounting"
+  M11 (5)    path="/payroll/basis"
+  M11        path="/payroll/labor-cost-ratio"
+  M11        path="/payroll/ledger"
+  M11        path="/payroll/reports"
+  M11        path="/payroll/retirement-accrual"
+
+**재오픈 0** · coverage-0 진성갭 **0건** · sole 진성갭 candidate 아님(id=1-10 이미 1.0 · V194→V196 정본화).
+
+P0/P1 재정렬(coverage-0 진성갭 없음 이후 operational levers):
+  1. id=12 수입지출·회계 **0.7** — M12 BPO SSO 실환경 credentials (PRIMARY residual · BNK-720 SSO OTP 착지)
+  2. id=2/8/10 **0.85** (동률) — 이동서비스 form polish / 직원·근태 form polish / SMS 발송단가 노출 (모두 non-blocking)
+  3. 4-doc SUPERSET(BNK-767): 가정통신문+명세서+기록지+납부확인서 batch dispatch UX — v3+ P3 「가정」 defer (개별 dispatch 착지 완료)
+  4. RFID FE wire (HOME_VISIT only) — BNK-763 FULL-STACK CLOSED · **재오픈 0** · 주간보호 진성갭 아님
+  5. P3 이지케어 home expire 7-category 만료 위젯 — 「가정」 유지·**격상 0**
+
+v1.3-C / v2 CMS / 대시보드(+hq) / G14 / M11 / G2 / G-LINKAGE / M12 accounting: **CLOSED carry · 재오픈 0 · P0 격상 불요**.
+
+================================================================
+★★ #3 「LCMS-엔젤시스템에서만」 4-doc SUPERSET 크로스워크 재확인 (BNK-767 carry · 마케팅 부정확)
+================================================================
+silverangel extraService.do verbatim(BNK-767 → BNK-768 IDENTICAL 재확인):
+
+  「전자결재 가정통신문 / 급여비용 명세서 **LCMS-엔젤시스템에서만 가능한**
+   가정통신문, 각종 안내장 만들기 가정통신문, **급여비용 명세서**,
+   **급여제공 기록지(법정서식)**, **납부확인서** 이메일 발송 SMS 안내하기」
+
+ogada 4-doc 착지 실측(BNK-745~767 착지 chain):
+  1. 가정통신문       → id=1-5   `HomeNewsletterLaunchPage` + `POST /notifications/home-newsletter/compose-preview` **1.0**(BNK-730)
+  2. 급여비용 명세서  → id=10    kind22 `POST /api/v1/staff/notifications/staff-payroll-statement` + StaffNotificationDispatchPanel **0.85**(BNK-753/754)
+  3. 급여제공 기록지  → id=1-10  `client_linkage_records` V194→V195→V196 + 2-controller + FE services 7-함수 **1.0**(BNK-749/764)
+  4. 납부확인서       → id=7     `BillingController` 납부확인서 + `EmailNotificationContent` **1.0**(BNK-740)
+
+**결론**: silverangel 「LCMS-엔젤시스템에서만」 = **부정확** · ogada 4-doc **SUPERSET**(3-channel 알림톡 J03+SMS+이메일) · **신규 갭 아님 · KPI promote 0**.
+4-doc 통합 batch dispatch UX 는 v3+ P3 「가정」 defer 유지(과대구축 후보).
+
+================================================================
+★ #4 규제/경쟁사 15-URL 재실측 — 엑셀·공지·규제 실체 변경 0
+================================================================
+| 대상                                                                | HTTP | SIZE     | md5           | 판정                                            |
+|---------------------------------------------------------------------|------|----------|---------------|-------------------------------------------------|
+| NHIS #44 joHistoryContent SEQ=1637                                  | 200  | 7,572B   | c886ff1f      | ★★★ **502차** zero drift(BNK-767 501차→+1)     |
+| silverangel extraService.do                                         | 200  | 81,637B  | f9c5d877      | IDENTICAL(=bnk767 · 4-doc verbatim carry)      |
+| silverangel feeService.do                                           | 200  | 44,513B  | eab352a8      | IDENTICAL(=bnk767)                              |
+| silverangel mainService.do                                          | 200  | 59,002B  | bcf6df41      | IDENTICAL(=bnk767)                              |
+| silverangel daycareEssentialWork.do                                 | 200  | 131,664B | c79c1be3      | IDENTICAL(=bnk767 · 지표27 기능회복 6-hit)     |
+| silverangel systemFeature.do                                        | 404  | 1,028B   | 3c93af54      | dual-IA 404 carry(canonical `ea7d6b3d`)         |
+| lcms.or.kr                                                          | 200  | 50,498B  | 6b750291      | ★ **banner type2→type3 회전** (=BNK-763/751 LOCK · 3-type carousel · 실체 변동 0 · decommission 불요) |
+| longterm 502 (단기보호)                                             | 200  | 89,162B  | 56185735      | IDENTICAL(=bnk767 shell · 수가 74,060 disk carry) |
+| longterm 610 (통합재가)                                             | 200  | 88,399B  | fad1ce61      | IDENTICAL(=bnk767 shell · 월 10만원 disk carry) |
+| law.go.kr 247호 admRulInfoP                                         | 200  | 78,450B  | b00305c0      | Time=1784140974 파라미터-only · sed strip 후 `a913639a` ≡ bnk767 semantic IDENTICAL |
+| MOHW list1488862                                                    | 200  | 103,113B | d5902718      | IDENTICAL(=bnk767 · 고시 제2025-247호 mirror)  |
+| ezcare home (BPO/도입 카운터)                                       | 200  | 70,144B  | 3e5a18a0      | data-count 53.2%/9298/**4673**/2353/1820 zero drift(=bnk766 VALUE STABLE) |
+| ezcare help/faq.ez                                                  | 200  | 80,057B  | 900eeb77      | rowid SETS IDENTICAL 233·max 21781·엑셀 grep 2 = **hit-only DRIFT** (BNK-766 → md5 변경 = view counter only) |
+| ezcare charge.html                                                  | 200  | 22,979B  | 11161488      | 셋팅 33,000원 verbatim carry(~2026-07-31 promo D-16 → ~7/31 만료 임박) |
+| ezcare fnc.html                                                     | 200  | 17,870B  | 3a7c9066      | 9,433 / 9,471 counter carry(=bnk762)            |
+| carefor daycare/func.php                                            | 000  | 0        | -             | 「미확인」 85-cycle+ · disk canonical `6226e6eb` 우선 |
+
+zero drift IDENTICAL 9(NHIS 502차·silverangel 4-URL·longterm 502/610·MOHW·systemFeature 404 dual-IA).
+banner rotation 1(lcms type2→type3·semantic IDENTICAL·decommission 불요).
+Time=-only DRIFT 1(law247·strip 후 IDENTICAL).
+hit-only DRIFT 1(FAQ list·rowid SETS IDENTICAL·엑셀 포맷 0).
+「미확인」 carry 1(carefor LIVE 000 85-cycle+).
+
+**엑셀 포맷 변경 0 · 공지 실체 변경 0 · 규제 실체 변경 0**.
+
+================================================================
+★ #5 ogada git 실측 (develop HEAD · 2026-07-15T18:42:00Z)
+================================================================
+FE develop  @fd6b996  feat(v1.2.1/G-LINKAGE): add report pagination controls
+            WT CLEAN · ahead origin/test=c779ca1 **1**
+            (BNK-767 `@c779ca1` → +1 commit · tester FF 흡수 발생 후 신규 1)
+BE develop  @baa1792  test(live-e2e): cover url+html encoded blocker decode
+            WT CLEAN · ahead **670** vs `598d108`
+            (BNK-767 `@2768252` → +1 commit)
+merge gate  **671** (FE 1 + BE 670 · BE-heavy → tester FF)
+
+Route 133 (<Route\b 132 + <Routes> 1)   Page 106
+FE test 525 (216 .test.js + 309 .test.jsx)
+BE Test 294 (293 Test.java + 1 Tests.java)   BE @Test **2221** (+1 vs BNK-767 2220 · live-e2e blocker decode @Test)
+Flyway V1–V196   accounting route 1   payroll route 5
+모듈 **97.41%(28.25/29)**  ← BNK-760/767 CONFIRMED · JSDoc grep=30 오염 배제
+
+================================================================
+per-cycle minimum 4종 충족
+================================================================
+- 재실측 증거 URL: NHIS #44 **502차** + silverangel 4 IDENTICAL + longterm 502/610 shell IDENTICAL
+                 + law247 Time=-only + MOHW IDENTICAL + lcms type2→type3 banner 회전 semantic IDENTICAL
+                 + ezcare home 카운터 IDENTICAL + FAQ hit-only + charge D-16 + fnc carry
+                 + carefor 000 85-cycle+
+- 메뉴/필드/워크플로 블록: closed axes 14-path App.jsx LIVE 재확인·재오픈 0 · P0/P1 재정렬 · 4-doc SUPERSET carry
+- COMPETITOR_MATRIX 1행+ `@fd6b996`/`@baa1792` 갱신
+- BENCHMARK_REPORT §768 신규 소절
+덮어쓰기 0 · 가정 번복 **0** · closure 0 · 신규 core 갭 **0**
+상태 변경 2(FE +1 · BE +1) · KPI 변경 3(FE `@c779ca1`→`@fd6b996` · BE `@2768252`→`@baa1792` · BE @Test 2220→2221)

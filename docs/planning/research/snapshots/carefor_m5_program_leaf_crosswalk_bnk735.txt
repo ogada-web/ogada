@@ -1,0 +1,123 @@
+# carefor_m5_program_leaf_crosswalk_bnk735.txt
+# BNK-735 | 2026-07-14T21:02:00Z | 케어포 역공학 0-2h
+# 초점: func.php Module 5 「프로그램 급여」 13-leaf ↔ ogada /programs·/provision-result-evaluations
+#       leaf-level 1:1 전수 재크로스워크 + 리포트 4-축 careforView verbatim 검증
+#
+# === Source (역공학 근거) ===
+# 케어포: func.php disk canonical 6226e6eb92fdd25ed3e50842a5e8a00b (98,328B·toolbar-stripped)
+#   - LIVE https://www.carefor.co.kr/daycare/func.php = HTTP 000 timeout 20s (76-cycle+·BNK-660~735·「미확인」·IP/CDN 차단 추정)
+#   - LIVE https://demo-work.carefor.co.kr/ = HTTP 000 timeout 20s
+#   - LIVE https://demo-work.carefor.co.kr/loadPage.php = HTTP 000 timeout 20s
+#   - disk canonical 우선 원칙 (snapshots/README) — Module 5 13-leaf verbatim `grep -oE '5-[0-9]+(-[0-9]+)?\.[^<>"]{3,60}'`:
+#       5-1.프로그램 제공기록 · 5-1-1.외부강사/자원봉사자 관리
+#       5-2.프로그램 일정관리 · 5-3.프로그램 수급자 그룹 설정(필요시) · 5-3-1.프로그램 그룹 관리
+#       5-4.프로그램 정보관리
+#       5-5.프로그램평가(의견수렴) [tooltip verbatim: "프로그램 의견수렴 및 반영"]  ← 신규 관찰: label≠tooltip
+#       5-5-1.프로그램관리자 업무수행일지
+#       5-6.프로그램 콘텐츠 [tooltip verbatim: "프로그램 계획"]                     ← 신규 관찰: label≠tooltip
+#       5-7.수급자 참여프로그램 리포트 · 5-8.프로그램 제공기록 리포트(운영기록지)
+#       5-9.프로그램 수급자 그룹 설정 이력 리포트 · 5-10.수급자 프로그램 일정 리포트
+#     (총 13-leaf = 10 top + 3 sub. `carefor_func_menu_catalog.json` `module_counts.5=13` 일치)
+# ogada: git 실측 FE develop @47bc428 / BE develop @79d4279
+#   - FE WT DIRTY 4M (HomeNewsletterLaunchPage.jsx/.test.jsx + utils/homeNewsletter.js/.test.js — coder G2 in-progress·M5 무관)
+#   - BE WT CLEAN · Route 132(<Route\b 131+<Routes> 1) · 105 *Page.jsx · FE test 518(214+304)
+#   - BE Test 289(288 Test.java+1 Tests.java) · BE @Test 2160 (BNK-734 header 2161 → 735 recount 2160·1 over-count 정정)
+#   - Flyway V1–V192(max)·V179/V180 = program_client_groups_us_p01 (BE 코멘트 "케어포 5-3·5-9" verbatim)
+#
+# === carefor func.php Module 5 「프로그램 급여」 13-leaf ↔ ogada @47bc428/@79d4279 1:1 crosswalk ===
+#
+# | carefor M5 leaf                                | ogada FE route (Page)                          | ogada BE endpoint (/api/v1/*)                                    | 상태 | 근거·비고 |
+# |------------------------------------------------|------------------------------------------------|-------------------------------------------------------------------|------|-----------|
+# | 5-1 프로그램 제공기록                          | /programs (ProgramsPage — Participation tab)   | POST /programs/participations (ProgramService.createParticipation) | ✅  | ProgramParticipationForm.jsx·V113 skip_reason g17b·CognitiveActivitySkipReason enum |
+# | 5-1-1 외부강사/자원봉사자 관리                 | ❌ 미구현                                       | ❌                                                                | ❌  | sub-leaf out-of-scope·자원봉사자 활동은 8-8 별 leaf carry(M8 out-of-scope) |
+# | 5-2 프로그램 일정관리                          | /programs (ProgramsPage — Schedule tab)        | POST /programs/schedule + GET /programs/schedule                  | ✅  | ProgramScheduleForm.jsx·SCHEDULE_ADMIN_ROLES=hq/branch admin RBAC |
+# | 5-3 프로그램 수급자 그룹 설정(필요시)          | (report 5-9 로 노출)                            | (V179 program_client_groups·V180 integrity)                       | △  | BE 스키마 완성(ProgramClientGroupEntity+ProgramClientGroupMemberEntity)·V179 comment verbatim "케어포 5-3·5-9"·전용 관리 UI 미노출 |
+# | 5-3-1 프로그램 그룹 관리                       | (report 5-9 로 노출)                            | (V179 program_client_groups)                                      | △  | 5-3 동일 lineage sub-leaf |
+# | 5-4 프로그램 정보관리                          | (프로그램 마스터 UI 미노출)                     | ActivityProgramEntity + ActivityProgramRepository                 | △  | BE 프로그램 catalog master 존재·전용 FE 마스터 UI 미노출·MVP 카탈로그는 코드 상수 PROGRAM_TYPES 반사 |
+# | 5-5 프로그램평가(의견수렴)                     | /programs/provision-result-evaluations (ProvisionResultEvaluationPage) | POST + GET + PATCH /provision-result-evaluations · GET /compliance | ✅ ★ogada 우위 | G39·평가지표 44 4-축(연간 evaluation·월간 record·주간 상태변화·30일 반영)·`INDICATOR44_*_LABEL` 4-상수·carefor 「의견수렴」 단순 leaf → ogada 규제 지표 44 구조화 심화 |
+# | 5-5-1 프로그램관리자 업무수행일지              | ❌ 미구현                                       | ❌                                                                | ❌  | sub-leaf out-of-scope·M8-1-1 「선임 요양보호사 업무수행일지」와 동일 계열·업무수행일지 카테고리 v2+ candidate 「가정」 |
+# | 5-6 프로그램 콘텐츠 [tooltip: 프로그램 계획]   | (컨텐츠 라이브러리 미노출)                       | (ActivityProgram catalog에서 부분)                                | ❌  | carefor label/tooltip 불일치(콘텐츠↔계획) 신규 관찰·정적 컨텐츠 라이브러리·MVP 밖·계획은 5-2 일정관리로 부분 대체 |
+# | 5-7 수급자 참여프로그램 리포트                 | /programs/reports/participations (ProgramReportsPage) | GET /programs/reports/participations                              | ✅  | programReports.js: `careforView: "view.program_participation"` verbatim mapping·printLabel "수급자 참여프로그램 리포트 인쇄" carefor 라벨 verbatim |
+# | 5-8 프로그램 제공기록 리포트(운영기록지)       | /programs/reports/provision-records            | GET /programs/reports/provision-records                           | ✅  | `careforView: "view.program_provision_record"` verbatim |
+# | 5-9 프로그램 수급자 그룹 설정 이력 리포트      | /programs/reports/group-history                | GET /programs/reports/group-history                               | ✅  | `careforView: "view.program_group_history"` verbatim·V179 backing table |
+# | 5-10 수급자 프로그램 일정 리포트               | /programs/reports/schedules                    | GET /programs/reports/schedules                                   | ✅  | `careforView: "view.program_schedule"` verbatim |
+#
+# === Leaf 상태 집계 ===
+# ✅ FULL wire (FE+BE)   : 7/13 = 53.8%   (5-1·5-2·5-5·5-7·5-8·5-9·5-10)
+# △ BE-only / 부분 UI    : 3/13 = 23.1%   (5-3·5-3-1·5-4)
+# ❌ 미구현/out-of-scope : 3/13 = 23.1%   (5-1-1 외부강사·5-5-1 관리자 업무수행일지·5-6 컨텐츠[tooltip 계획])
+#
+# 주 leaf(top 10) 기준: ✅ 7/10 · △ 2/10 (5-3·5-4) · ❌ 1/10 (5-6)  =  "MVP 실질 대응 90%"(주 leaf 9/10)
+# sub-leaf(3) 3종 모두 ❌ (외부강사·관리자 일지·계획 컨텐츠)  =  v2+ 후보 3건
+#
+# => id=5 「프로그램 급여」 competitorModuleCoverage.js coverage=1.0 확인
+#    (주 leaf 90% + 리포트 4/4 careforView verbatim + G39 평가지표 44 심화 = superset 정합·1.0 유지)
+#
+# === ogada 우위 (M5 관점) ===
+# 1. 5-5 「의견수렴」 → G39/평가지표 44 4-축 구조화 (경쟁 4종 유일 규제 지표 정합)
+#    - INDICATOR44_ANNUAL_EVALUATION_LABEL      (연간 평가)
+#    - INDICATOR44_MONTHLY_RECORD_LABEL         (월간 기록)
+#    - INDICATOR44_WEEKLY_STATE_CHANGE_LABEL    (주간 상태변화)
+#    - INDICATOR44_REFLECTION_30D_LABEL         (30일 반영)
+#    - PROVISION_RESULT_ANNUAL_EVALUATION_GAP_ALERT + PROVISION_RESULT_REFLECTION_GAP_ALERT
+#    ↔ carefor 5-5 = 단순 "의견수렴" leaf(label≠tooltip) · 이지케어/엔젤/롱텀 = 규제 지표 44 정합 미확인
+#
+# 2. 5-7~5-10 리포트 4-축 = careforView verbatim 매핑 (FE 소스에 케어포 view 이름 상수화)
+#    - view.program_participation / view.program_provision_record
+#    - view.program_group_history / view.program_schedule
+#    ↔ 케어포 리포트 화면과 1:1 대응 = 마이그레이션·교육 비용 절감 narrative
+#
+# 3. FunctionalRecovery(기능회복훈련) = 별 프로그램 모듈 (@RequestMapping "/api/v1/programs/functional-recovery")
+#    - GET/POST/PATCH /plans + GET /compliance = 평가지표 27 기능회복 통합(G17·id=26 별개 1.0)
+#    ↔ carefor func.php 「기능회복훈련」은 daycare 셀렉트 leaf 미확인(별 depth 하위·시설형 fcltySlry 별)
+#
+# === 신규 관찰(sub-leaf label/tooltip 불일치 = 신규 필드 블록) ===
+# 5-5 label "프로그램평가(의견수렴)" ≠ tooltip "프로그램 의견수렴 및 반영"
+#     → 케어포 UX 축이 "평가"에서 "의견수렴"으로 완화된 흔적·ogada G39 지표 44 정합이 더 규제-fit
+# 5-6 label "프로그램 콘텐츠"       ≠ tooltip "프로그램 계획"
+#     → 컨텐츠 vs 계획 축의 혼용·ogada는 계획은 5-2 일정관리에·컨텐츠 라이브러리는 out-of-scope
+#
+# === 갭 후보 (planner 검토) ===
+# (P3 「가정」·MVP 밖·v2+ 후보 = 상승 필수 아님)
+# G-PROGRAM-EXTERNAL-INSTRUCTOR   : 5-1-1 외부강사/자원봉사자 대장 관리 UI (프로그램별 배정·이력)
+# G-PROGRAM-CONTENT-LIBRARY       : 5-6 프로그램 콘텐츠(계획) 라이브러리 (재사용 계획 문서·PDF/이미지 첨부)
+# G-PROGRAM-MANAGER-WORK-LOG      : 5-5-1 프로그램 관리자 업무수행일지 (M8-1-1 선임 요보사 일지와 통합 후보)
+# G-PROGRAM-GROUP-CONFIG-UI       : 5-3/5-3-1 그룹 관리 mutation UI (V179 BE 완성·FE 관리 UI 미노출)
+# G-PROGRAM-CATALOG-MASTER-UI     : 5-4 프로그램 정보관리 마스터 UI (ActivityProgram catalog·상수 → 관리 UI 승격)
+# → 5-3/5-4는 BE 완성·FE 미노출로 "얕은 갭" — id=5 1.0 유지 근거는 리포트 4/4 + 5-5 규제 심화이므로 격상 불필요
+#
+# === ogada git 실측 KPI (@47bc428 / @79d4279) ===
+# FE develop HEAD: 47bc428  ux(a11y/FE-16): harden G2 home-newsletter a11y and define .ds-pre (UXD-176)
+#   - WT DIRTY 4M (HomeNewsletterLaunchPage.jsx/.test.jsx + utils/homeNewsletter.js/.test.js — G2 후속 in-progress·M5 무관)
+#   - BNK-734 @47bc428 → HEAD zero advance 1-cycle · ahead origin/test(71839a6) = 1
+# BE develop HEAD: 79d4279  fix(v2/M12): autowire accounting bpo service ctor
+#   - WT CLEAN · BNK-734 @79d4279 → HEAD zero advance 1-cycle · ahead origin/test(598d108) = 642
+# Route 132(<Route\b 131+<Routes> 1·carry) · Page 105 (*Page.jsx·carry)
+# FE test 518 (214 .test.js + 304 .test.jsx·carry) · BE Test 289 (288 *Test.java + 1 *Tests.java·carry)
+# BE @Test 2160 (실측 `git grep -hoE '@Test\b' develop -- '*.java' | wc -l` · BNK-734 header 2161 → 735 recount 2160 · 1 over-count 정정)
+# Flyway V1–V192(max·carry·신규 0) · accounting route 1 · payroll route 5
+# 모듈 커버리지: 93.62% (27.15/29·carry) — id=5 「프로그램 급여」 1.0 재확인 (M5 crosswalk 근거)
+# merge gate: FE ahead 1 + BE ahead 642 = 643 (BE-heavy·FE WT DIRTY 4M → coder 선행 후 tester FF)
+#
+# === 규제 백본 재실측 (NHIS #44·469차 zero drift IDENTICAL) ===
+# 확인 https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+#   HTTP 200 · 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba = 469차 zero drift (BNK-734 468차 → +1) · live=disk IDENTICAL
+#   verbatim grep -oE: 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+#   snapshot: nhis_jo44_live_bnk735.html (신규 차수 파일·IDENTICAL carry·덮어쓰기 아님)
+#   ↔ ogada TransportServiceFeeService(RU_1~4 · ONE_WAY_RATIO=0.5 · 1일1회 guard) 6-link chain(id=2 0.85) carry
+#
+# === carefor LIVE 3-URL 상태 (76-cycle+ 「미확인」) ===
+# https://www.carefor.co.kr/daycare/func.php       HTTP 000 size 0    time 20.001s  (BNK-660~735 지속 timeout)
+# https://demo-work.carefor.co.kr/                 HTTP 000 size 0    time 20.001s
+# https://demo-work.carefor.co.kr/loadPage.php     HTTP 000 size 0    time 20.002s
+# → disk canonical 우선 정책 유지 (snapshots/README.md) · IP/CDN 차단 추정 · 덮어쓰기 0
+#
+# === 요약 ===
+# 재실측 zero drift 1 (NHIS #44 469차)  ·  덮어쓰기 0  ·  가정 번복 0
+# 신규 P0/P1 갭 0  ·  P3 candidate v2+ 5건(「가정」·격상 아님)
+# KPI 정정 1 (BE @Test 2161 → 실측 2160 · BNK-734 over-count -1)
+# 상태 변경 0 (양쪽 HEAD zero advance 1-cycle · FE WT DIRTY 4M carry = G2 coder in-progress)
+# closure 1 (id=5 「프로그램 급여」 1.0 근거 M5 leaf 정밀 crosswalk 확정 · BNK-6 §8-1 결정 49 정합 재확인)
+# 신규 필드 블록 2 (5-5 label≠tooltip · 5-6 label≠tooltip 관찰)
+# per-cycle minimum 4종 충족: 재실측 URL 1(NHIS 469차·carefor 3-URL) · 워크플로 블록 1(M5 13-leaf ↔ /programs crosswalk)
+#                              MATRIX 1행+ @47bc428/@79d4279 · BENCHMARK §735 소절

@@ -1,0 +1,1303 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko" class="sub">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>엔젤시스템</title>
+<link type="image/png" rel="shortcut icon" href="/css/egovframework/lcms_renew/images/favicon.png">
+<meta name="Keywords" content="요양시설통합사례관리솔루션 엔젤시스템">
+<meta name="subject" content="요양시설통합사례관리솔루션 엔젤시스템">
+<meta name="description" content="요양시설통합사례관리솔루션 엔젤시스템">
+<!-- <link rel="stylesheet" href="/css/egovframework/lcms_renew/css/board.css"> 
+<link rel="stylesheet" href="/css/egovframework/lcms_renew/css/style.css"> -->
+<link rel="stylesheet" href="/css/egovframework/lcms_renew/css/login.css">
+<style>
+.layer_popup{
+	z-index : 900;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+/* absolute / margin 을 통한 화면 정중앙 정렬 및 디자인*/
+.layer{
+	z-index : 902;
+    width: 602px;
+    height: 842px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 10px -4px;
+}
+
+/* 딤드 처리 */
+.dimmed{
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 901;
+}
+
+/* IEwarning-Layer-pop */
+.pop-layer2 { display: none; }
+.pop-layer2 .dim2 { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; opacity: 0.65; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)"; z-index: 1000; }
+.pop-layer2 .align_wrap2 { display: table; position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.pop-layer2 .align_wrap2 .align2 { display: table-cell; vertical-align: middle; text-align: center; }
+.pop-layer2 .pop-layer-wrap2 { display: inline-block; position: relative; top:100; left: 100;  width: 1070px; height: 570px; background-color: #efefef; border: 1px solid #393939; z-index: 1001;}
+.pop-layer2 .pop-layer-title2 { overflow: hidden; padding: 0 20px; background-color: #7297d8; color: #fff; line-height: 45px; }
+.pop-layer2 .pop-layer-title2 .header-tit2 { display: inline-block; font-size: 22px; font-weight: bold; color: inherit; }
+.pop-layer2 .pop-layer-body2 { padding: 10px; }
+.pop-layer2 .pop-layer-body2 .btn_area-sort2 { overflow: hidden; width: 640px; margin: -5px; }
+.pop-layer2 .pop-layer-body2 .btn_area-sort2 .btn_touch-gray2 { display: table; float: left; width: 150px; height: 50px; margin: 5px; }
+.pop-layer2 .pop-layer-body2 .btn_area-sort2 .btn_touch-gray2:active, .pop-layer2 .pop-layer-body2 .btn_area-sort2 .btn_touch-gray2:hover { background-color: #5791cc; }
+.pop-layer2 .pop-layer-body2 .btn_area-sort2 .btn_touch-gray2 .align2 { display: table-cell; vertical-align: middle; }
+.pop-layer2 .pop-layer-body2 .btn_area-row32 { overflow: hidden; width: 480px; margin: -5px; }
+.pop-layer2 .pop-layer-body2 .btn_area-row32 .btn_touch-gray2 { display: table; float: left; width: 150px; height: 50px; margin: 5px; }
+.pop-layer2 .pop-layer-body2 .btn_area-row32 .btn_touch-gray2:active, .pop-layer2 .pop-layer-body2 .btn_area-row32 .btn_touch-gray2:hover { background-color: #5791cc; }
+.pop-layer2 .pop-layer-body2 .btn_area-row32 .btn_touch-gray2 .align2 { display: table-cell; vertical-align: middle; }
+.pop-layer2 .pop-layer-close2 { position: absolute; top: -1px; right: -44px; }
+.pop-layer2 .pop-layer-close2 .btn-pop_close2 { display: block; width: 43px; padding-top: 36px; padding-bottom: 10px; background: #393939 url(../images/common/btn_pop_close.png) no-repeat 12px 10px; color: #fff; text-align: center; }
+
+.btn-black{
+	float: right;
+	height: 26px;
+	border-radius: 3px;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 23px;
+	text-align: center;
+	vertical-align: middle;
+	border-color: #111;
+	background: #111;
+	color: #fff;
+}
+
+.hiddenClickDiv {
+    background-color: lavenderblush;
+    height: 15px;
+    width: 100%;
+}
+
+</style>
+
+<!--[if lt IE 9]>
+<link rel="stylesheet" href="/css/egovframework/lcms_renew/css/ie8.css">
+<script src="/css/egovframework/lcms_renew/js/html5shiv.min.js"></script>
+<script src="/css/egovframework/lcms_renew/js/jquery.pseudo.js"></script>
+<script src="/css/egovframework/lcms_renew/js/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="/js/egovframework/com/roll/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src='/js/egovframework/lcms/cmm/warningLayer.js'></script>
+<script type="text/javascript" src="/js/egovframework/com/roll/jcarousellite_1.0.1.js"></script>
+<script type="text/javascript">
+
+document.write("<div class=\"loading2 pop-layer2\" id=\"IEMsgLayer\">");
+document.write("	<div class=\"dim2\"></div>");
+document.write("	<div class=\"align_wrap2\">");
+document.write("		<div class=\"align2\">");
+document.write("			<div class=\"pop-layer-wrap2\">");
+document.write("				<div> ");
+document.write("<map name=\"brows\" id=\"brows\" >");
+document.write("<area href=\"http://www.google.com/chrome\" shape=\"rect\" coords=\"48,222,159,253\">");
+document.write("<area  href=\"\" onclick=\"alert('윈도우10 사용자는 마이크로소프트 엣지가 기본으로 설치되어 있어 따로 설치하실 필요 없습니다. 윈도우10 이하 사용자일 경우 이동되는 사이트에서 마이크르소포트 엣지를 설치하시기 바랍니다.');goEdge(); return false;\" shape=\"rect\" coords=\"175,220,283,255\">");
+document.write("<area href=\"http://whale.naver.com/ko/download\" shape=\"rect\" coords=\"304,221,407,254\">");
+document.write("</map>");
+document.write("					<img usemap=\"#brows\" src=\"/css/egovframework/lcms_renew/images/common/IEWarning.png\">");
+document.write("				</div>");
+document.write("			</div>");
+document.write("		</div>");
+document.write("	</div>");
+document.write("	</div>");
+document.write("</div>");
+
+
+function IEMsgLayerVisible(){
+    //MsgLayer.style.visibility   = "visible";
+    //MsgLayer.focus();
+	
+    $("#IEMsgLayer").show();
+    $(':focus').blur(); 
+    //$("#MsgLayer").focus();
+}
+
+function IEMsgLayerHidden(){
+	$("#MsgLayer").hide();
+
+}
+function goEdge(){
+	location.href="http://www.microsoft.com/ko-kr/edge";
+
+}
+
+</script>
+<script type="text/javascript">
+var param_f_code = "";
+function setCookie (name, value, expires) {
+    document.cookie = name + "=" + escape (value) +
+    "; path=/; expires=" + expires.toGMTString();
+}
+
+function getCookie(name) {
+	/*
+    var search = Name + "=";
+    
+    if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+        offset = document.cookie.indexOf(search);
+    
+        if (offset != -1) { // 쿠키가 존재하면
+        offset += search.length;
+
+        // set index of beginning of value
+        end = document.cookie.indexOf(";", offset)
+        // 쿠키 값의 마지막 위치 인덱스 번호 설정
+        if (end == -1)
+            end = document.cookie.length;
+            return unescape(document.cookie.substring(offset, end));
+        }
+    }
+    
+    return "";
+    */
+    
+	var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    var result = null;
+    if(value) {
+    	result = decodeURIComponent(value[2]);
+    }
+	return result;
+}
+
+function saveid(form) {
+    var expdate = new Date();
+    // 기본적으로 10일동안 기억하게 함. 일수를 조절하려면 * 30에서 숫자를 조절하면 됨
+    expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 10); // 10일
+    setCookie("_saveid", form.id.value, expdate);
+    setCookie("_savecd", form.f_code.value, expdate);
+    /* setCookie("_saveid", form.sid.value, expdate);
+    setCookie("_savecd", form.s_code.value, expdate); */   
+}
+
+
+function getid(form) {
+	form.id.value = getCookie("_saveid");
+    
+    if(param_f_code == ""){
+        form.f_code.value = getCookie("_savecd");
+    }
+
+    if(form.id.value == ""){
+        form.id.focus();
+    }else{
+        form.pwd.focus();
+    }
+    
+    form.sid.value = getCookie("_saveid");
+
+    if(param_f_code == ""){
+        form.s_code.value = getCookie("_savecd");
+    }
+}
+
+function getPost(mode){
+    
+    form = document.vipsFrm;
+    
+    if(mode == "silverangel"){
+    
+        var s_code = form.s_code.value;
+        var sid	   = form.sid.value;
+        var passwd = form.passwd.value;
+
+        //시설코드,아이디 트림처리
+        form.s_code.value = s_code.trim();
+        form.sid.value	  = sid.trim();
+
+        if(s_code == "sscare" && sid == "angeludc"){
+        	alert("권한이 없습니다.")
+        	form.sid.focus();
+        	return false;
+        }
+
+        if( s_code == null || s_code == ''){
+            alert("시설코드를 입력하세요");
+            form.sf_code.focus();   
+            return false;
+        }
+        if( sid == null || sid == ''){
+            alert("아이디를 입력하세요");
+            form.sid.focus();
+            return false;
+        }
+        if( passwd == null || passwd == ''){
+            alert("패스워드를 입력하세요");
+            form.passwd.focus();
+            return false;
+        }
+        
+        //2021-10-25 13시 ~ 아이디에 한글이 입력되어있으면 안됨 
+        var regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+        if(regExp.test(sid) && parseInt(serverToday()) > 20211025130000){
+        	alert("아이디를 확인하세요.(한글 입력불가)");
+        	form.sid.focus();
+        	return;
+        }
+        
+
+        form.target = "_self";
+        form.action = "https://silverangel.kr/";
+           
+        try{
+
+               var params = {};
+               params.id = sid;
+               params.f_code = s_code;
+               params.pwd = passwd;
+               
+               // silverangel Id,Pwd 체크(Mysql)
+               $.ajax({
+                   url: '/silverangel/login/selectSilvarAngelIdPwd.do',
+                   data: params,
+                   type: 'POST',
+                   async:false,
+                   dataType: 'json',
+                   success: function(response) { 
+                    fn_silvaerangel_authKey(response);
+                   },
+                   error: function (jqXHR, textStatus, errorThrown){
+                       //alert("Error : " + textStatus + " / " + errorThrown);
+                   }
+               });
+               
+           }catch(e){
+              // alert("실버엔젤 : "+e.message);
+           }
+
+           return;
+           
+    //lcms.or.kr LOGIN          
+    }else if(mode == "lcms"){
+
+        var v_fcode = form.f_code.value;
+        var v_id 	= form.id.value;
+        var v_pwd 	= form.pwd.value;
+        
+		//시설코드,아이디 트림처리
+        form.f_code.value	= v_fcode.trim();
+        form.id.value		= v_id.trim();
+
+        if(v_fcode == "sscare" && v_id == "angeludc"){
+        	alert("권한이 없습니다.")
+        	form.id.focus();
+        	return false;
+        }
+
+        if( v_fcode == null || v_fcode == ''){
+            alert("시설코드를 입력하세요");
+            form.f_code.focus();
+            return false;
+        }
+        if( v_id == null || v_id == ''){
+            alert("아이디를 입력하세요");
+            form.id.focus();
+            return false;
+        }
+        if( v_pwd == null || v_pwd == ''){
+            alert("패스워드를 입력하세요");
+            form.pwd.focus();
+            return false;
+        }
+        
+        //2021-10-25 13시~ 아이디에 한글이 입력되어있으면 안됨 
+        var regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+        if(regExp.test(v_id) && parseInt(serverToday()) > 20211025130000){
+        	alert("아이디를 확인하세요.(한글 입력불가)");
+        	form.id.focus();
+        	return;
+        }
+
+        //자동저장 체크시 아이디 저장
+        if($("input:checkbox[id='chk_auto']").is(":checked")){
+        	saveid(document.vipsFrm);
+        }
+        
+		var link = document.location.href;
+		var url = "/cmm/userLogin.do";
+
+   		form.whichLogin.value = mode;
+   		form.saveName.value = "getPost";
+   		if(ajaxLoginAndAgreement()){
+   			return;
+   		}else{
+	        form.target = "_self";
+	        form.action = url;
+	        MsgLayerVisible();
+	        form.submit();
+   		}    
+        return;
+        try{
+            var params = {};
+            params.id = form.id.value;
+            params.f_code = form.f_code.value;
+            params.pwd = form.pwd.value;
+               
+               // silverangel 인증키 조회(오라클)
+            $.ajax({
+                url: '/cmm/selectAngleAuthKey.do',
+                data: params,
+                type: 'POST',
+                async:false,
+                dataType: 'json',
+                success: function(response) { //fn_silverangel_sesstion(response,params); 
+                },
+                error: function (jqXHR, textStatus, errorThrown){
+                    //alert("Error : " + textStatus + " / " + errorThrown);
+                }
+            });
+            
+        }catch(e){
+            //alert("오라클 키 :"+e.message);
+        }
+        
+        
+        
+    //엔젤몰로그인            
+    }else if(mode == "angelmall"){
+        
+        var m_id 	= form.mb_id.value;
+        var m_pwd	= form.mb_password.value;
+        
+        //아이디 트림처리
+        form.mb_id.value = m_id.trim();
+        
+        if( m_id == null || m_id == ''){
+            alert("아이디를 입력하세요");
+            form.mb_id.focus();
+            return false;
+        }
+        if( m_pwd == null || m_pwd == ''){
+            alert("패스워드를 입력하세요");
+            form.mb_password.focus();
+            return false;
+        }
+        form.target = "_self";
+        form.action = "https://www.silverangel.co.kr/bbs/login_check.php";
+        form.submit();
+    } else if(mode == "angelmall_nonMmbr"){ //엔젤몰 비회원구매
+        
+        form.target = "_self";
+        form.action = "https://www.silverangel.co.kr/";
+        form.submit();
+      
+    } else if (mode == "angelmall_join") { //엔젤몰 회원가입
+    	
+    	form.target = "_self";
+        form.action = "https://www.silverangel.co.kr/bbs/register.php";
+        form.submit();
+    	
+    } else if (mode == "angelmall_find_idpw"){ //엔젤몰 아이디 비밀번호 찾기 -- 로그인 화면으로 이동
+    	
+    	form.target = "_self";
+        form.action = "https://www.silverangel.co.kr/bbs/login.php";
+        form.submit();
+
+    //터치스크린 로그인    
+    }else if(mode == "Lcms"){
+    	
+    	var v_fcode = form.f_code.value;
+        var v_id 	= form.id.value;
+        var v_pwd	= form.pwd.value;
+
+        //시설코드,아이디 트림처리
+        form.f_code.value = v_fcode.trim(); 
+        form.id.value	  = v_id.trim();  
+        
+        if(v_fcode == "sscare" && v_id == "angeludc"){
+        	alert("권한이 없습니다.")
+        	form.id.focus();
+        	return false;
+        }
+
+        //2021-10-25 13시 ~ 아이디에 한글이 입력되어있으면 안됨 
+        var regExp = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+        if(regExp.test(v_id) && parseInt(serverToday()) > 20211025130000){
+        	alert("아이디를 확인하세요.(한글 입력불가)");
+        	form.id.focus();
+        	return;
+        }
+        
+        //2022.10.19 셋 다 입력되어 있으면 로그인 처리
+        if(v_fcode != "" && v_id != "" && v_pwd != ""){
+	        
+        	if($("input:checkbox[id='chk_auto']").is(":checked")){ //자동저장 체크시
+				saveid(document.vipsFrm);
+        	}
+        	
+			var link = document.location.href;
+			var url = "/cmm/touchLogin.do";
+
+	   		form.whichLogin.value = mode;
+	   		if(ajaxLoginAndAgreement()){
+	   			form.saveName.value = "getPost"
+	   			if(form.touchAgree.value == "Y"){
+	   				openAgreementLayerPop(form.whichLogin.value, form.f_code.value, form.id.value, form.pwd.value, form.saveName.value);
+	   				form.touchAgree.value = "";
+	   				return;
+	   			}
+		        form.target = "_self";
+		        form.action = "/record/touch/viewTouchLogin.do?f_code="+v_fcode+"&id="+v_id;
+		        form.submit()
+	   		}else{
+	   			form.saveName.value = "getPost";
+		        form.target = "_self";
+		        form.action = url;
+		        form.submit();
+	   		}
+        } else { //하나라도 비어있으면 기록지 로그인 화면으로 이동
+       		form.whichLogin.value = mode;
+       		form.saveName.value = "js_login"
+	        ajaxLoginAndAgreement();
+        
+	        form.target = "_self";
+	        form.action = "/record/touch/viewTouchLogin.do?f_code="+v_fcode+"&id="+v_id;
+	        form.submit();
+	        
+        }
+        
+    }
+    
+}
+
+// [TEMP:SMS_SENDER_AUTH] 시작
+var kmcNokAcknowledged = false;
+
+function openKmcNokLayerPop(whichLogin, f_code, id, pwd, saveName) {
+	var elId = 'kmcNokLayerPop';
+	MsgLayerVisible();
+	if ($("#" + elId).length == 0) {
+		var html = "<div class='pop-layer workerWin' id='" + elId + "'>";
+		html += "<div class='dim'></div>";
+		html += "<div class='align_wrap'>";
+		html += "<div class='align'>";
+		html += "<div class='pop-layer-wrap' style='z-index:1000; background-color:#eee !important; border:0px solid #393939 !important; border-radius:12px; padding:20px; min-width:720px;' id='" + elId + "2'>";
+		html += "</div></div></div></div>";
+		$(html).appendTo("body");
+	}
+	var params = { f_code: f_code, id: id, pwd: pwd, whichLogin: whichLogin, saveName: saveName };
+	$("#" + elId + "2").load('/cmm/selectSmsNumberMngLoginPop.do', params, function(response, status) {
+		if (status == "error") {
+			alert("팝업 로딩 중 오류가 발생했습니다.");
+		} else {
+			MsgLayerHidden();
+			$('#' + elId).show();
+		}
+	});
+}
+// [TEMP:SMS_SENDER_AUTH] 끝
+
+function ajaxLoginAndAgreement(){
+	
+	var form = document.vipsFrm
+	var rtnChk = false;
+	var params = $('#vipsFrm').serializeArray();
+	var whichLogin = form.whichLogin.value;
+	var f_code = form.f_code.value;
+	var id = form.id.value;
+	var pwd = form.pwd.value;
+	var saveName = form.saveName.value;   
+	var msg = "";
+	
+	$.ajax({
+		url: "/cmm/selectAjaxAgreement.do"
+		,type: "POST"
+		,data: params 
+		,dataType: "text"
+		,async: false
+		,success: function(data) {
+			if(data == "ALLOK") {
+                return;
+            }else if(data === "TMP_OK"){
+                form.tmpLogin.value = "Y";
+                return;
+			}else if(data == "LOGINOKAGREENO"){
+				rtnChk = true;
+				if(whichLogin == "Lcms"){
+					form.touchAgree.value = "Y";
+				}else{
+					openAgreementLayerPop(whichLogin, f_code, id, pwd, saveName);
+					
+				}
+				return;
+			}else if(data == "KMCNOK"){ // [TEMP:SMS_SENDER_AUTH]
+				if(kmcNokAcknowledged){
+					return;
+				}
+				rtnChk = true;
+				openKmcNokLayerPop(whichLogin, f_code, id, pwd, saveName);
+				return;
+			}else if(data == "KRERR"){
+				msg = "아이디를 확인하세요.(한글 입력불가)"
+			}else if(data == "TIME"){
+				msg = "로그인 가능한 시간이 아닙니다.\n가능한시간(21시~06시)"
+			}else if(data == "IPERR"){
+				msg = "다음 내용을 확인 바랍니다.\n\n1. 기관 외부에서 로그인하는 경우\n   귀 기관 정보 보호를 위하여 외부 접속은 차단되어 있습니다.\n   귀 기관 관리자에게 확인 바랍니다.\n\n2. 기관 내부에서 로그인하는 경우\n   귀 기관 인터넷 주소가 변경되었습니다.\n   인터넷 장비(공유기)의 전원을 상시 유지합니다.\n   귀 기관 관리자에게 문의하여 IP를 등록합니다."
+			}else if(data == "IDERR"){
+				msg = "시설 코드가 다르거나 등록된 아이디가 아닙니다.\n시설 코드와 아이디는 대소문자를 구분합니다.\n시설 코드 또는 아이디 확인은 요양기관 관리자에게 확인 바랍니다."
+			}else if(data == "PWERR"){
+				msg = "비밀번호가 등록된 것과 다릅니다.\n다시 확인하고 입력하세요.\n비밀번호를 잊어버린 경우 요양기관 관리자에게 확인 바랍니다.";
+			}else if(data == "BLCOK"){
+				msg = "귀 기관은 현재 접속이 차단되어 있는 상태입니다.";
+			}else{
+				msg = "로그인에 실패했습니다. 잠시 후 다시 시도해주세요."
+			}
+			rtnChk = true;
+			return alert(msg);
+		}
+		,error:function(msg){
+			alert("로그인에 실패 했습니다.");
+			rtnChk = true;
+		}
+	})
+	return rtnChk;
+}
+    
+// silverangel 인증키 조회(Mysql)
+fn_silvaerangel_authKey = function(data){
+    
+    if(data.chk == "IDEEOR"){
+        alert("등록되지 않은 사용자 입니다.");
+        return;
+    }
+    
+    if(data.chk == "PWDEEOR"){
+        alert("비밀번호를 확인하세요.");
+        return;
+    }
+    
+    if(data.chk == "CONEEOR"){
+    	alert("서버 접속이 원할하지 않습니다. 잠시후 다시 시도해주세요.");
+    	return;
+    }
+    
+    if(data.chk == "loginOK"){
+        
+        var form = document.loginTransportFrm;
+        var form2 = document.vipsFrm;
+        
+        form.f_code.value = form2.s_code.value;
+        form.user_id.value = form2.sid.value;
+        form.user_password.value = form2.passwd.value;
+    	form.target = "_self";
+        form.action = "https://www.silverangel.kr/silverangel/login/login.do";
+        MsgLayerVisible();
+        form.submit();
+       
+    }
+    
+    return;
+};
+
+// silverangel 세션 만들기
+fn_silverangel_sesstion = function(data,obj){
+	if(data.auth_key) { 
+        var form = document.loginTransportFrm;
+        form.s_id    .value = obj.f_code + obj.id;
+        form.s_code  .value = obj.f_code;
+        form.auth_key.value = data.auth_key;
+        form.action = "https://www.silverangel.kr/out/login_check.do";
+        form.submit();
+	}
+    MsgLayerHidden();
+    
+    /*
+    if(data.auth_key) { 
+        var params = {};
+        params.s_id = obj.f_code + obj.id;
+        params.s_code = obj.f_code;
+        params.auth_key = data.auth_key;
+        
+        try{
+            $.ajax({
+                url: 'http://silverangel.kr/out/login_check.do',
+                crossdomain: true,
+                data: params,
+                type: 'POST',
+                dataType: "jsonp",
+                jsonp : "callback",
+                contentType: "application/json; charset=utf-8",
+                cache:false,
+                success: function(obj){
+                    alert(obj.flag);
+                	formSubmit();
+                	MsgLayerHidden();
+                	
+                },
+                error: function (jqXHR, textStatus, errorThrown){
+                    alert("Error : " + textStatus + " / " + errorThrown);
+                    formSubmit();
+                    MsgLayerHidden();
+                }
+            });
+        }catch(e){
+             alert(e.message);
+        	formSubmit();
+        	MsgLayerHidden();
+        }
+    }else{
+    	formSubmit();
+    	MsgLayerHidden();
+    }
+    */
+    
+    return;
+    
+};
+
+function formSubmit(){
+	document.vipsFrm.submit();
+}
+function uriMove(uriMode){
+
+    form = document.vipsFrm;
+    
+    if(uriMode == "angelMall" ){
+        form.target = "_blank";
+        form.action = "http://www.silverangel.co.kr/bbs/login.php";
+    }else if(uriMode == "Lcms"){
+        form.target = "_blank";
+        form.action = "/record/touch/viewTouchLogin.do";
+    }else if(uriMode = "silverAngel"){
+        form.target = "_blank";
+        form.action = "http://silverangel.kr";
+    }
+        form.submit();
+}
+    
+function onEnterkey(target) {
+   var key = event.keyCode;
+   
+   if(key == 13){
+       getPost(target);
+   }
+}
+
+function apPOP(){
+    var alarmWin;
+    var nLeft = (window.screen.width - 980 ) / 2;
+    var nTop = (window.screen.height- 900) / 3;
+
+    alarmWin = window.open("/common/popup/popup.html", "pop", "width=931, height=700, resizable=no, status=no, scrollbars=no, menubar=no");
+    alarmWin.focus();
+}
+
+function serverToday(){ 
+	  var xmlHttp; 
+	  //분기하지 않으면 IE에서만 작동된다. 
+	  if (window.XMLHttpRequest) { // IE 7.0 이상, 크롬, 파이어폭스일 경우 분기 
+	    xmlHttp = new XMLHttpRequest(); 
+	    xmlHttp.open('HEAD',window.location.href.toString(),false);
+	    xmlHttp.setRequestHeader("Content-Type", "text/html"); 
+	    xmlHttp.send(''); 
+	  }else if (window.ActiveXObject) { 
+	    xmlHttp = new ActiveXObject('Msxml2.XMLHTTP');
+	    xmlHttp.open('HEAD',window.location.href.toString(),false);
+	    xmlHttp.setRequestHeader("Content-Type", "text/html"); 
+	    xmlHttp.send(''); 
+	  } 
+	  var st = xmlHttp.getResponseHeader("Date");
+	  var curDate = new Date(st); 
+	  var curDateFmt; var year = curDate.getFullYear(); 
+	  var month = curDate.getMonth()+1; 
+	  var day = curDate.getDate(); 
+	  var hours = curDate.getHours(); 
+	  var minutes = curDate.getMinutes(); 
+	  var seconds = curDate.getSeconds();
+	  if(parseInt(month) < 10){ 
+	    month = 0 + "" + month; 
+	  } 
+	  if(parseInt(day) < 10){ 
+	      day = 0 + "" + day; 
+	  } 
+	  if(parseInt(hours) < 10){ 
+	      hours = 0 + "" + hours; 
+	  }
+	  if(parseInt(minutes) < 10){ 
+	      minutes = 0 + "" + minutes; 
+	  } 
+	  if(parseInt(seconds) < 10){ 
+		  seconds = 0 + "" + seconds; 
+	  }
+	  curDateFmt = parseInt(year + "" + month + "" + day + "" + hours + "" + minutes + "" + seconds); 
+	  return curDateFmt; 
+	}
+    
+function gotoRegPage() {
+    window.location.href = "/reg/viewRegStep.do";
+}
+
+function hiddenClickDiv() {
+    window.location.href = "/reg/regTestingPage.do";
+}
+
+//SSL 무한 로딩 테스트
+/* function sslLodingSubmit(){
+	
+	var form = document.sslFrm;
+	
+	var sslLodingCnt = $("#sslLodingCnt").val();
+	
+	if(!sslLodingCnt || sslLodingCnt == "") sslLodingCnt = 0;
+	
+	sslLodingCnt = parseInt(sslLodingCnt)+1;
+	
+	$("#sslLodingCnt").val(sslLodingCnt);
+	
+	
+	location.href="/cmm/viewIndex.do?sslLodingCnt="+sslLodingCnt;
+	
+    //form.target = "_self";
+    //form.action = "/cmm/viewIndex.do";
+    //form.submit();
+	
+} */
+
+$(document).ready(function(){
+
+	var protocol = location.protocol;
+	var link = document.location.href;
+	
+	if(link.indexOf("lcms")!=-1){
+		if(protocol.indexOf("http:")!=-1){ // http 진입 시 https 전환
+			location.href="https://www.lcms.or.kr";
+			return false;
+		}
+	}
+	
+    if( getCookiee( "appLayer8" ) != "done8"){
+
+        $('#appLayer8').css("display", "inline");
+    }
+	
+    if( getCookiee( "appLayer9" ) != "done9"){
+
+        $('#appLayer9').css("display", "inline");
+    }
+	
+	
+	
+	IEMsgLayerHidden();
+	var today = new Date();
+	var curr_year = today.getFullYear(); // 년도
+	var curr_month = today.getMonth() + 1;  // 월
+	var curr_date = today.getDate();  // 날짜
+	var curr_hour = today.getHours();
+	var curr_minute = today.getMinutes();
+	var curr_sec = today.getSeconds();
+	
+	var curr_day = curr_month+"/"+curr_date+"/"+curr_year+" ";
+	var curr_time = curr_hour + ":" + curr_minute + ":" + curr_sec;
+	var curr = new Date(Date.parse(curr_day + curr_time));
+	
+	var open_day = "11/16/2020 ";
+	var open_time = "00:00:00";
+	var open = new Date(Date.parse(open_day + open_time));
+	
+	
+	if(Date.parse(curr_day + curr_time) > Date.parse (open_day +  open_time)){
+	     
+	  	var agent = navigator.userAgent.toLowerCase();
+	  	if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
+	  		var new_popup = window.open('microsoft-edge:http://lcms.or.kr');
+	  		$('input').prop('readonly', true);
+	  		IEMsgLayerVisible();
+	  		new_popup.close();
+	  	}
+
+	}
+	
+	
+
+    if(param_f_code != ""){
+        document.vipsFrm.f_code.value = param_f_code;
+    }
+
+    var msg = '';
+
+    if(msg != "IDERR"){
+    
+        form = document.vipsFrm;
+        
+        getid(form);
+    }
+
+    // 메세지 처리
+    if(msg == "IDERR"){
+
+        form = document.vipsFrm;
+        alert("시설 코드가 다르거나 등록된 아이디가 아닙니다.\n시설 코드와 아이디는 대소문자를 구분합니다.\n시설 코드 또는 아이디 확인은 요양기관 관리자에게 확인 바랍니다.");
+        form.id.value = "";
+        form.id.focus();
+    }else if(msg == "PWERR"){
+        alert("비밀번호가 등록된 것과 다릅니다.\n다시 확인하고 입력하세요.\n비밀번호를 잊어버린 경우 요양기관 관리자에게 확인 바랍니다.");
+    }else if(msg == "IPERR"){
+        alert("다음 내용을 확인 바랍니다.\n\n1. 기관 외부에서 로그인하는 경우\n   귀 기관 정보 보호를 위하여 외부 접속은 차단되어 있습니다.\n   귀 기관 관리자에게 확인 바랍니다.\n\n2. 기관 내부에서 로그인하는 경우\n   귀 기관 인터넷 주소가 변경되었습니다.\n   인터넷 장비(공유기)의 전원을 상시 유지합니다.\n   귀 기관 관리자에게 문의하여 IP를 등록합니다.");
+    }else if(msg == "TIME"){
+    	alert("로그인가능한 시간이 아닙니다.\n가능한시간(21시~06시)");
+    }else if(msg == "N"){
+    	alert("권한이 없습니다.");
+    }else if(msg == "KRERR"){
+    	alert("아이디를 확인하세요.(한글 입력불가)");
+    }
+});
+
+//F5막기
+document.onkeydown = function(e){
+    key = (e) ? e.keyCode : event.keyCode;
+    if(key==116){
+        if(e){
+        	   e.preventDefault();
+        	 }
+        else{
+            event.keyCode = 0;
+            event.returnValue = false;
+            }
+    }
+}
+
+function getCookiee(Name) {
+    var search = Name + "=";
+
+    if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면
+        offset = document.cookie.indexOf(search)
+        if (offset != -1) { // 쿠키가 존재하면
+            offset += search.length
+
+            // set index of beginning of value
+            end = document.cookie.indexOf(";", offset)
+            // 쿠키 값의 마지막 위치 인덱스 번호 설정
+            if (end == -1)
+                end = document.cookie.length
+            return unescape(document.cookie.substring(offset, end))
+        }
+    }
+    return "";
+}
+function setCookie(name, value, expires) {
+	document.cookie = name + "=" + escape(value) + "; path=/; expires="
+			+ expires.toGMTString();
+}
+
+function noHomeClose(IDX) {
+	var expdate = new Date();
+	expdate.setDate(expdate.getDate() + 1); // 하루만 그만보기
+	expdate.setHours(0, 0, 0, 0);
+
+	if(IDX == 'A'){
+		setCookie("HompageMake", "done", expdate);
+	}else{
+		if($('#nohome').is(":checked") == true){
+			setCookie("HompageMake", "done", expdate);
+		}	
+	}
+	
+
+	$('.layer_popup').remove();
+}
+
+//레이어 닫기
+function closeAppLayer(chk){
+		$('#appLayer'+chk).css("display", "none");
+}
+
+//실버엔젤에서 history.back()해서 돌아왔을 때 로딩창이 사라지게 하기 위한 스크립트
+window.onpageshow = function(event) {
+    if ( event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+    	MsgLayerHidden();
+    }
+}
+</script>
+</head>
+<body class="login">
+
+<div class="layer_popup" style="display: none;">
+	<div class="layer">
+		<map name="homepagemake" id="homepagemake">
+			<area href="http://www.google.com/chrome" shape="rect" coords="48,222,159,253">
+			<area href="https://www.silverangel.kr/newSilverangel/webSite/websiteProvided.do" target="_blank" shape="rect" coords="400,695,200,752">
+			<area href="" onclick="$('.layer_popup').remove(); return false;" shape="rect" coords="567,34,530,67">
+			<area href="" onclick="noHomeClose('A'); return false;" shape="rect" coords="61,276,302,236">
+		</map>
+		<img src="/css/egovframework/lcms_renew/images/common/homepagemake.jpg" usemap="#homepagemake">
+		<div class="checks" style="bottom: 32px; left: 15px;"><input type="checkbox" id="nohome" onclick="noHomeClose()"><label for="nohome">오늘은 그만보기</label></div>
+	</div>
+	<div class="dimmed"></div>
+</div>
+<form name="loginTransportFrm" method="post">
+<input type="hidden" name="cmd" value="in"/>
+<input type="hidden" name="f_code"/>
+<input type="hidden" name="user_id"/>
+<input type="hidden" name="user_password"/>
+
+</form>
+
+<form name="sslFrm" id="sslFrm" method="post">
+	<input type="hidden" name="sslLodingCnt" id="sslLodingCnt" value="0" />
+</form>
+
+<form name="vipsFrm" id="vipsFrm" method="post">
+<input type="hidden" name="auth_key" />
+<input type="hidden" name="s_id" />
+<input type="hidden" name="CHK" value="MANAGE">
+<input type="hidden" name="whichLogin" value="">
+<input type="hidden" name="saveName" value="">
+<input type="hidden" name="touchAgree" value="">
+<input type="hidden" name="tmpLogin" value="">
+
+	<div id="sslLayer" style="display:none; position:relative; z-index:1;">
+		<div style="overflow:auto; position:absolute; border:1px solid #7297d8; background-color:#FFF; text-align:left; width: 73%; height: 800px; margin-left: 255px; margin-top: 85px;">
+			<div style="margin-top: 15px; margin-right: 15px;">
+				<button type="button" class="btn-black" onclick="$('#sslLayer').css('display', 'none'); return false;">닫기</button>
+			</div>
+			<br/>
+			<div style="margin: 10px 0px 0px 20px; font-size: 18px; line-height: 32px;">
+				<span style="color: red; font-size: 22px;">※ 크롬 로그인 이상 현상 해결방법 안내 ※</span><br/>
+				본 메시지는 귀하의 크롬 브라우저 설정이 변경된 경우 표시됩니다.<br/>
+				해당 현상은 해당 컴퓨터의 크롬 브라우저에 원인이 있습니다.<br/>
+				<span style="color: red;">아래 방법으로 해결하고 브라우저 종료 후 브라우저를 재시작합니다.</span><br/><br/>
+				1. 엔젤시스템 접속<br/><br/>
+				2. 상단 주소창 좌측의 'X' 표시 클릭하여 화면 멈춤<br/>
+				<img src="/images/egovframework/lcms/login/ssl_img1.png" alt="sslImg1"><br/><br/>
+				
+				3. 상단 주소창 좌측의 '자물쇠' 아이콘 클릭<br/>
+				<img src="/images/egovframework/lcms/login/ssl_img2.png" alt="sslImg2"><br/><br/>
+				
+				4. 사이트 설정 클릭<br/>
+				<img src="/images/egovframework/lcms/login/ssl_img3.png" alt="sslImg3"><br/><br/>
+				
+				5. 설정화면에서 마우스 스크롤하여 아래쪽 '안전하지 않은 콘텐츠' 항목을 '허용'으로 설정<br/>
+				<img src="/images/egovframework/lcms/login/ssl_img4.png" alt="sslImg4"><br/><br/>
+				
+				6. 설정화면 상단에서 좌측 화살표 클릭한 후 창 닫기<br/>
+				<img src="/images/egovframework/lcms/login/ssl_img5.png" alt="sslImg5"><br/><br/>
+				
+				7. 위와 같이 설정한 후 엔젤시스템을 다시 접속하면 정상입니다.<br/><br/>
+	
+				엔젤시스템(LCMS) 이용에 감사드립니다.<br/><br/>
+			</div>
+		</div>
+	</div>
+			    
+    <!-- 2022.10.17 리뉴얼 -->
+    <div class="login_wrap">
+        
+        <section class="login_cont">
+            <h1 class="login_tit">
+                <i>장기요양 서비스 관리의 표준</i> 엔젤시스템에 오신 것을 환영합니다.
+            </h1>
+
+            <div class="login_box">
+                <!-- <a href="#" class="btn_down" title="다운로드">엔젤시스템 설치파일 내려받기</a> -->
+                
+<!-- 				긴급(주석)  -->
+<!-- 			<div id="appLayer8" style="display:none; overflow:hidden; margin-left:450px; margin-top: 50px; position:absolute; width:500px; height:400px; background-color:#FFF; text-align:center; z-index:10;"> -->
+<!-- 				<img src="/css/egovframework/lcms_renew/images/common/error_layerPopup2.jpg" usemap="#mainLayer1" alt="ANGEL-ACCOUNT" style="width: 100%;"> -->
+<!-- 				<map name="mainLayer1" id="mainLayer1"> -->
+<!-- 					닫기(주석) -->
+<!-- 					<area onclick="closeAppLayer(8); return false;" coords="0,357,498,396" style="cursor: pointer;"> -->
+<!-- 				</map> -->
+<!-- 			</div> -->
+                
+<!-- 				해결(주석)  -->
+<!-- 			<div id="appLayer9" style="display:none; overflow:hidden; margin-left:450px; margin-top: 50px; position:absolute; width:500px; height:400px; background-color:#FFF; text-align:center; z-index:10;"> -->
+<!-- 				<img src="/css/egovframework/lcms_renew/images/common/solve_layerPopup.jpg" usemap="#mainLayer2" alt="ANGEL-ACCOUNT" style="width: 100%;"> -->
+<!-- 				<map name="mainLayer2" id="mainLayer2"> -->
+<!-- 					닫기(주석) -->
+<!-- 					<area onclick="closeAppLayer(9); return false;" coords="0,357,498,396" style="cursor: pointer;"> -->
+<!-- 				</map> -->
+<!-- 			</div> -->
+								
+                <ul class="login_type">
+                    <li class="type_1">
+                        <div class="login_set">
+                        	<div class="login_type1_img" style="cursor: pointer;" onclick="window.open('http://www.silverangel.co.kr/')"></div>
+                            <h3 class="form_tit" style="cursor: pointer;" onclick="window.open('http://www.silverangel.co.kr/')"><span>요양용품전문점</span>엔젤쇼핑몰</h3>
+                            <div class="login_form">
+                                <div class="form_wrap">
+                                    <div class="input_wrap">
+                                        <div class="inp_box">
+                                            <input type="text" class="login_inp" name="mb_id" id="mb_id" placeholder="아이디">
+                                        </div>
+                                        <div class="inp_box">
+                                            <input type="password" class="login_inp" name="mb_password" id="mb_password" onkeydown="onEnterkey('angelMall');" placeholder="비밀번호">
+                                        </div>
+                                    </div>
+    
+                                    <div class="btn_wrap">
+                                        <button type="button" class="btn_usr" onclick="getPost('angelmall_join')">회원가입</button>
+                                        <button type="button" class="btn_usr" onclick="getPost('angelmall_nonMmbr')">비회원으로 주문하기</button>
+                                    </div>
+                                    
+                                    <ul class="link_wrap">
+                                        <li>
+                                            <a href="#" class="lnk_item" onclick="getPost('angelmall_find_idpw')">아이디/비밀번호 찾기</a>
+                                        </li>
+                                        <!-- <li>
+                                            <a href="#" class="lnk_item">비밀번호 찾기</a>
+                                        </li> -->
+                                    </ul>
+
+                                </div>
+                                <button type="button" class="btn_submit" onclick="getPost('angelmall')">로그인</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="type_2">
+                        <div class="login_set">
+                            <h3 class="form_tit"><span>요양시설통합사례관리솔루션</span>엔젤시스템</h3>
+                            <div class="login_form">
+                                <div class="form_wrap">
+                                    <div class="input_wrap">
+                                        <div class="inp_box">
+                                            <input type="text" class="login_inp col_b" name="f_code" id="f_code" placeholder="시설코드">
+                                        </div>
+                                        <div class="inp_box">
+                                            <input type="text" class="login_inp col_b" name="id" id="id" placeholder="아이디">
+                                        </div>
+                                        <div class="inp_box">
+                                            <input type="password" class="login_inp col_b" name="pwd" id="pwd" onkeydown="onEnterkey('lcms');" placeholder="비밀번호">
+                                        </div>
+                                    </div>
+    
+                                    <div class="etc_wrap">
+                                        <div class="chk_box">
+                                            <input type="checkbox" class="log_chk" id="chk_auto" title="자동저장 설정" checked>
+                                            <label for="chk_auto">자동저장</label>
+                                        </div>
+                                        
+                                        <button type="button" class="btn_doc" onclick="getPost('Lcms')">기록지 큰화면</button>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn_submit col_b" onclick="getPost('lcms')"><span>로그인</span></button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="type_3">
+                        <div class="login_set">
+                        	<div class="login_type3_img" style="cursor: pointer;" onclick="window.open('https://www.silverangel.kr/')"></div>
+                            <h3 class="form_tit" style="cursor: pointer;" onclick="window.open('https://www.silverangel.kr/')"><span>문의하세요</span>고객지원</h3>
+                            <div class="login_form">
+                                <div class="form_wrap">
+                                    <div class="input_wrap">
+                                        <div class="inp_box">
+                                            <input type="text" class="login_inp" name="s_code" id="s_code" placeholder="시설코드">
+                                        </div>
+                                        <div class="inp_box">
+                                            <input type="text" class="login_inp" name="sid" id="sid" placeholder="아이디">
+                                        </div>
+                                        <div class="inp_box">
+                                            <input type="password" class="login_inp" name="passwd" id="passwd" onkeydown="onEnterkey('silverangel');" placeholder="비밀번호">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn_submit" onclick="getPost('silverangel')">로그인</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </section>
+        
+        
+    
+
+	
+
+	
+        <section class="ad_cont type3">
+            <div class="ad_slogan">
+                <p>엔젤시스템 & CJ프레시웨이<br>업무협약(MOU) 체결</p>
+            </div>
+            <div class="ad_head">
+                <p class="ad_tit">
+                    <i>CJ프레시웨이와 MOU 체결을 통해 노인식단 전문영양사가 작성한 식단표 활용</i>
+                    <span>노인복지의 선도적 기업인 엔젤시스템과 CJ의 협업 첫 단계로<br> 식단표 무상제공 및 CJ의 신선한 식재료 구매계약이 가능합니다.</span>
+                </p>
+                <a href="https://silverangel.kr/silverangel/publicize/angel_news_view.do?Tmp_idx=139864&Tmp_thread=1&Tmp_depth=0" target="_blank" class="exp_link">자세히보기</a>
+            </div>
+        </section>
+	
+    </div>
+	
+	<!-- 2022.10.17 리뉴얼 전 -->
+	<!-- <div class="skipnav">
+		<a href="#content">컨텐츠 바로가기</a>
+	</div>
+	<div class="wrap-bg"></div>
+	<div id="wrap" class="wrap">
+		<section id="content">
+			<section class="cont-tit">
+				<div class="cont-tit-bg">
+					<div class="blind">
+						<h1>엔젤시스템(LCMS) 방문을 환영합니다.</h1>
+						<p class="sub_title">어르신도 우리도 환하게 웃어요!</p>
+						<p>국내유일의 특허등록 사례관리시스템</p>
+						<p>특허등록번호:제 10-1120519호</p>
+					</div>
+				</div>
+			</section>
+			<section class="login_area">
+				<div class="col_wrap">
+					<div class="col_3">
+						<div class="box-login">
+							<div class="box-top">
+								<a class="tit_link">
+									<div class="align">
+										<div class="box-tit">
+											<img src="/css/egovframework/lcms_renew/images/content/txt_loginbox1.png" alt="img" onClick="javaScript:uriMove('angelMall')">
+											<div class="blind">
+												<h2>엔젤쇼핑몰</h2>
+												<p>요양용품전문</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="box-body">
+								<div class="inp_area">
+									<span class="inp">
+										<label for="inp2">아이디</label>
+										<input type="text" id="mb_id" name="mb_id">
+									</span>
+									<span class="inp">
+										<label for="inp3">비밀번호</label>
+										<input type="password" id="mb_password" name="mb_password" onKeyDown="javaScript:onEnterkey('angelMall');">
+									</span>
+								</div>
+							</div>
+							<p class="noti">※ 본 사이트는 보안규정을 준수 합니다.</p>
+							<div class="btn_area">
+								<a class="btn btn-blue" onClick="javaScript:getPost('angelmall')">로그인</a>
+								<a class="btn btn-gray" onClick="javaScript:getPost('angelmall_nonMmbr')">비회원 구매</a>
+							</div>
+							<div class="banner_area">
+								<a href="http://www.silverangel.co.kr"><img src="/images/egovframework/lcms/cmm/angelmall.gif" alt="" /></a>
+							</div>
+						</div>
+					</div>
+					<div class="col_3">
+						<div class="box-login">
+							<div class="box-top">
+								<a class="tit_link">
+									<div class="align">
+										<div class="box-tit">
+											<img src="/css/egovframework/lcms_renew/images/content/txt_loginbox2.png" alt="img" onClick="javaScript:uriMove('Lcms')">
+											<div class="blind">
+												<h2>엔젤시스템 LCMS</h2>
+												<p>요양시설통합사례관리솔루션</p>
+												<p>스마트 & 터치</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="box-body">
+								<div class="inp_area">
+									<span class="inp">
+										<label for="inp1">시설코드</label>
+										<input type="text" id="f_code" name="f_code">
+									</span>
+									<span class="inp">
+										<label for="inp2">아이디</label>
+										<input type="text" id="id" name="id">
+									</span>
+									<span class="inp">
+										<label for="inp3">비밀번호</label>
+										<input type="password" id="pwd" name="pwd" onKeyDown="javaScript:onEnterkey('lcms');">
+									</span>
+								</div>
+							</div>
+							<div class="btn_area">
+								<a class="btn btn-blue" onClick="javaScript:getPost('lcms')">로그인</a>
+								<a class="btn btn-gray" onClick="javaScript:getPost('Lcms')">기록지 큰화면</a>
+							</div>
+							<div class="banner_area">
+								<img src="/images/egovframework/lcms/cmm/img_center.gif" alt="" />
+							</div>
+						</div>
+					</div>
+					<div class="col_3">
+						<div class="box-login">
+							<div class="box-top">
+								<a class="tit_link">
+									<div class="align">
+										<div class="box-tit">
+											<img src="/css/egovframework/lcms_renew/images/content/txt_loginbox3.png" alt="img" onClick="javaScript:uriMove('silverAngel')">
+											<div class="blind">
+												<h2>고객지원&서비스</h2>
+												<p>묻고답하기/공지사항/자료실</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="box-body">
+								<div class="inp_area">
+									<span class="inp">
+										<label for="inp1">시설코드</label>
+										<input type="text" id="s_code" name="s_code">
+									</span>
+									<span class="inp">
+										<label for="inp2">아이디</label>
+										<input type="text" id="sid" name="sid">
+									</span>
+									<span class="inp">
+										<label for="inp3">비밀번호</label>
+										<input type="password" id="passwd" name="passwd" value="" onKeyDown="javaScript:onEnterkey('silverangel');">
+									</span>
+								</div>
+							</div>
+							<div class="btn_area">
+								<a class="btn btn-blue" onclick="getPost('silverangel')">로그인</a>
+							</div>
+							<div class="banner_area">
+								<a href="http://www.silverangel.kr"><img src="/images/egovframework/lcms/cmm/silverangel.gif" alt="" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div style="width: 100%;">
+					<div style="width: 13%; float:left; margin-left: 10px; margin-top: 6px;">
+						<img src="/css/egovframework/lcms_renew/images/common/logo_co.png"/>
+					</div>
+					<div style="width: 85%; float:left; margin-top:15px;">
+						<p style="line-height: 45px;">인천광역시 부평구 부평대로 293, 712호 (청천동, 부평테크시티) 대표전화 : 032-277-9797 대표자 : 표영재 사업자번호 : 122-86-14661</p>
+					</div>
+					
+				</div>
+				
+			</section>
+		</section>
+	</div> -->
+	<script type="text/javascript" src="/css/egovframework/lcms_renew/js/plugins.js"></script>
+	<script type="text/javascript" src="/css/egovframework/lcms_renew/js/select2.min.js"></script>
+	<script type="text/javascript" src="/css/egovframework/lcms_renew/js/common.js"></script>
+	<script type="text/javascript" src="/js/egovframework/lcms/cmm/loginAgreementFunction.js"></script>
+</form>
+</body>
+</html>

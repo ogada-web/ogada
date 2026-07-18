@@ -1,0 +1,71 @@
+BNK-655 이지케어 역공학 2–4h — live 재실측 + 신규 FAQ 21845 (공단 엑셀 방문일정 연동)
+조사일: 2026-06-26 (KST) | rotation: 이지케어 역공학 (/new.ez·fnc·e01·charge·change_work·/help/faq.ez·FAQ rowid 전수·가격·도입 기관 수)
+
+================================================================================
+1. ★★★ 신규 증거 URL — ezCare FAQ rowid=21845 (당일 게시 · 공단연동 카테고리)
+================================================================================
+URL : https://ezcare.easyms.co.kr/help/faq.ez?rowid=21845&type=web
+HTTP: 200 | size 13,915B | md5 5b78c947c7f2203d97c2e1077c7296d4
+이전(BNK-503 probe): rowid=21845 = 13,327B 미게시 shell → BNK-655 13,915B 게시 CONTENT (+588B)
+
+제목(verbatim): 「260626_공단 엑셀 작업에 따른 방문일정 연동안내 방문일정 업로드 정상 안내」
+본문(verbatim): "안녕하세요. 이지케어입니다. 금일 발생한 공단 엑셀 자료 관련 오류 사항은 현재
+              정상 조치 완료되어 계획일정 업로드는 정상적으로 이용가능 하오니 업무에
+              참고하시길 바랍니다. 감사합니다."
+콜센터: 1644-0340
+카테고리(faq.ez nav): 전체/이용료·요금/직원관리/수급자관리/일정관리/서식출력·설정/
+                    본인부담금/공단연동/수당·급여관리/모바일앱/문자발송/재무회계/세무/4대보험/기타
+
+해석(확인): 「260626_」 접두 = 2026-06-26 당일 게시. 이지케어는 **공단(NHIS) 엑셀 → 방문일정
+업로드** 연동을 일일-critical 워크플로로 운영하며, 공단 엑셀 자료 오류 발생 시 **당일 incident
+공지**를 FAQ 채널로 발행한다(계획일정 업로드 = 월초 계획 워크플로, BNK-648 FAQ 21298 「계획(월초)
+vs 청구(청구 후) 이중 워크플로」 chain 재확인).
+
+ogada cross-walk:
+- ogada G-NHIS-SCHEDULE-IMPORT = BE `4567030 feat(v2/G-NHIS-SCHEDULE-IMPORT): add visit schedule
+  NHIS import guidance API` + FE `8ceb25c feat(v2/G-NHIS-SCHEDULE-IMPORT): wire visit NHIS import
+  guidance panel`(VisitNhisImportGuidePanel) — BNK-648/649 closure carry.
+- 시사점(planner): 공단 엑셀 import는 외부 데이터 의존 → **import 상태/오류 surfacing**(성공·부분실패·
+  포맷오류)이 운영 차별화 포인트. ezCare는 사후 incident 공지(수동), ogada는 import 결과를 패널에
+  실시간 노출(guidance panel) → 우위 가능. P3 candidate: G-NHIS-IMPORT-ERROR-STATUS-SURFACE.
+
+================================================================================
+2. 이지케어 마케팅·FAQ 6-URL live 재실측 DRIFT (덮어쓰기)
+================================================================================
+| URL | size | md5(old→new) | 값 변동 |
+|---|---|---|---|
+| /?PG=e01 | 47,130B (IDENTICAL) | 0b96fd18→08dbea2b | 이용시설 9,360·점유율 53.52% **값 zero drift**(cachebuster only)·집계 2026.06.2x·전국재가 carry |
+| /new/ezCare_fnc.html | 17,870B (IDENTICAL) | 4507d164→fa474e63 | 도입 9,362→**9,363**(+1) |
+| / (home) | 106,133→106,098B (-35B) | 76755572→89bbea3b | mCnt {1:9285→**9286**(+1), 2:4606→**4608**(+2), 3:2353 carry, 4:1820 carry} |
+| /help/faq.ez | 80,057B (IDENTICAL) | 6f4b66ff→87f3c3d3 | faq-hit 합계 3,637,120→**3,637,171**(+51)·233 rowid·14 카테고리(K001~K014) carry |
+| /new/ezCare_charge.html | 22,979B (IDENTICAL) | 909efeaf→4cb53227 | 33,000/25,850/55,000(+10,000 옵션) verbatim 불변(cachebuster) |
+| /new/ezCare_change_work.html | 26,157B (IDENTICAL) | 9b5ea9b4→502add15 | RFID·후기 verbatim 불변(cachebuster) |
+
+요약: 6/6 md5 DRIFT(전부 덮어쓰기). 실질 카운터 증가 3건(fnc +1·home mCnt +1/+2·faq +51).
+e01 점유율 53.52% 값 zero drift(BNK-654 동일)·가격 verbatim 불변·엑셀 포맷 변경 0.
+
+================================================================================
+3. ogada git 실측 (BNK-655 · 양쪽 HEAD advance · BE WT DIRTY 4-cycle carry CLOSURE)
+================================================================================
+| 축 | SHA | Δ vs BNK-654 | 비고 |
+|---|---|---|---|
+| FE develop | @3eebddb | **HEAD +1** | fix(v1.2.1/QA-B95): wire g21 component status codes from health probe · WT CLEAN · ahead 260 |
+| BE develop | @547c85f | **HEAD +2** | 1c7064d fix(v2/QA-B95): normalize null g21 seed status + 547c85f feat(v2/G-CLIENT-CONTRACT-BULK-PRINT): index care plan forms by branch and plan year · WT CLEAN · ahead 586 |
+
+★★ BNK-650~654 「BE WT DIRTY 6M + V183 untracked」 4-cycle carry → **CLOSURE**:
+  - QA-B95 18th-layer probe refactor → `1c7064d` 커밋
+  - V183 `client_care_plan_forms_branch_plan_year_index` untracked → `547c85f`(G-CLIENT-CONTRACT-BULK-PRINT)로 커밋
+  - 양쪽 WT 이제 CLEAN. rules §6 push 누락 위험 해소.
+
+KPI: 118 Route(+1 <Routes>=119)·93 page·V1–V183(+1 committed)·BE Test 273(272 Test.java+1 Tests.java)·
+     BE @Test 1982(HEAD·BNK-654 HEAD 1980 +2 = DIRTY 흡수)·@ParameterizedTest 3·FE test 485(199+286)·
+     모듈 80.86%(competitorModuleCoverage.js diff 0)·reports 28.
+merge gate: 260+586 = **846**(BNK-654 843 → +3).
+
+================================================================================
+4. per-cycle minimum 충족
+================================================================================
+- 신규 증거 URL: ✅ FAQ 21845(당일 게시 공단 엑셀 incident 공지) — re-measure 아닌 NEW URL.
+- 메뉴/필드/워크플로 1블록: ✅ 21845 본문 + 공단 엑셀 방문일정 연동 워크플로 + faq.ez 14 카테고리.
+- COMPETITOR_MATRIX 1행 @HEAD 갱신: ✅ @3eebddb/@547c85f.
+- BENCHMARK_REPORT §소절: ✅ §655.

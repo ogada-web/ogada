@@ -1,0 +1,76 @@
+BNK-697 — 엔젤·롱텀·규제 4–6h 역공학 벤치마크 (주력 extract)
+조사일: 2026-07-13T18:19:00Z (KST 2026-07-14 03:19)
+직전: BNK-696(2026-07-13T17:37Z, 이지케어 역공학) · rotation=엔젤·롱텀·규제 4–6h
+방법: live 재실측 (curl -m, UA=Mozilla) + md5/size 비교 + ogada git 실측 (docs/·memory/ 만 갱신, src/ 변경 금지)
+
+================================================================
+1. 규제 backbone 재실측 (엔젤·롱텀·law·MOHW·NHIS)
+================================================================
+| # | URL | HTTP | size(B) | md5(8) | 직전 대비 | 판정 |
+|---|-----|-----:|--------:|--------|----------|------|
+| 1 | NHIS #44 joHistoryContent (SEQ=1637 SEQ_CONTENTS=3281769) | 200 | 7,572 | c886ff1f | disk IDENTICAL | 433차 zero drift 「확인」 |
+| 2 | silverangel /newSilverangel/service/extraService.do | 200 | 81,637 | f9c5d877 | IDENTICAL | zero drift (CMS 효성 연동) |
+| 3 | silverangel /newSilverangel/daycare/daycareEssentialWork.do | 200 | 131,664 | c79c1be3 | IDENTICAL | zero drift (시설 33 평가지표) |
+| 4 | silverangel /newSilverangel/service/systemFeature.do | 404 | 1,028 | 3c93af54 | IDENTICAL | migrated→daycare/ carry (BNK-645 URL refactor) |
+| 5 | silverangel /silverangel/support/notice/list.do?pageNo=1 | 200 | 5,707,602 | ea7d6b3d | disk 3,594,181 → +2,113,421 | 구조 DRIFT (본문 편입 증가) |
+| 6 | lcms.or.kr / | 200 | 50,740 | c0c66076 | BNK-691 type3 6b750291 → type1 | rotation DRIFT (type3→type1 재순환) |
+| 7 | MOHW 고시 bid=0026 list_no=1488862 (2026-126호) | 200 | 103,113 | d5902718 | disk d702b54c 103,139(-26B) | md5 DRIFT · semantic IDENTICAL |
+| 8 | law.go.kr admRulInfoP admRulSeq=2100000271110 (제2025-247호) | 200 | 78,450 | 11ed6598 | disk 923e25c8 size-lock | md5 DRIFT · semantic IDENTICAL |
+
+NHIS #44 verbatim (러-1~4 이동서비스비 · PLAN_NOTES #44 1차 확인 carry):
+  · "‘러-1’부터 ‘러-4’까지 비용의 50%를 산정한다."
+  · "수급자의 실 거주지에서 장기요양기관으로 … 수급자의 실 거주지로 이동서비스를 제공한 경우 산정"
+  · "수급자의 실거주지까지의 최단거리(편도)에 따라 다음"  (편도만 산정)
+  · "1일 1회만 산정하고, 수급자가 이동서비… (수급자가 부담하지 아니한다.)"
+  → 러-1~4 · 편도 50% · 1일 1회 · 수급자 부담 X = 433차 verbatim 불변.
+
+MOHW 126호 md5 DRIFT 원인 (diff 실측): og:url/twitter:url meta 의 `&tag=&nPage=1` query 제거만 (-26B).
+  제목·본문 「고시/지침 < 법령 < 정보」·2026년 고시 IDENTICAL → semantic zero drift.
+law247 md5 DRIFT 원인 (grep 실측): 동적 토큰 `Time=1783966827` (cachebuster).
+  제목 「장기요양급여 제공기준 및 급여비용 산정방법 등에 관한 고시」 IDENTICAL → semantic zero drift.
+
+silverangel notice list 최신 Tmp_idx 실측 (grep -oa): … 221563·221566·221570·221571·221572.
+  → 최신 = 221572 (7월 2주 「AI 판단근거 기반 총평」·BNK-695 확인분) · BNK-695 이후 신규 공지 0.
+  list.do size +2.1MB 증가 = 221566(6/30 필독)·221571·221572 대용량 본문 편입에 따른 구조 DRIFT.
+
+lcms type1/type3 rotation 이력: BNK-685/686 type1(c0c66076) → BNK-691 type3(6b750291 CJ MOU) → BNK-697 type1(c0c66076) 복귀.
+  = 마케팅 배너 A/B 또는 캠페인 회전 pattern carry (기능 변화 아님).
+
+longterm(공단) 502(단기보호)/610(통합재가): 직전 cycles HTTP 404 ~130-cycle persist → 이번 미조회(carry) · 「미확인」 유지.
+
+================================================================
+2. ogada git 실측 (6–8h 축 병행) — ★★★ BE transport 셔틀/로스터 WIP CLOSURE
+================================================================
+FE develop: 2704fd8 (WT DIRTY 29 files · HEAD zero advance vs BNK-696 2704fd8)
+  · transport 심화 통합 WIP: App.jsx·api/services.js·TransportContextNav·TransportLoadPreviousRunModal·
+    TransportServiceLogRunsPanel(+test)·TransportSuggestPanel(+test)·TransportVehicleSelect.test·
+    lib/transportRosterDispatch(+test)·TransportPage(+test)·TransportRunDetailPage·TransportRunNewPage(+test)·
+    VehiclesPage(+test)·transportUtils(+test) 등 = 셔틀/로스터/차량/배차 end-to-end wiring 진행중.
+  · App.jsx <Route\b: develop 123 · WT 124 (+1 route 배선중).
+
+BE develop: 60c4e36 (WT CLEAN) — BNK-696 @2f4bfdf → +1 commit
+  · `feat(v2/transport): persist shuttle run metadata and roster day status`
+  · V186__transport_runs_departure_round · V187__vehicles_shuttle_addresses ·
+    V188__transport_roster_day_status · V189__transport_roster_day_status_unify → 전부 develop 커밋 반영.
+  · BE @Test 2052 (BNK-696 2046 → +6, shuttle run metadata/roster day status 테스트).
+  · Test.java 278 + Tests.java 1.
+
+판정: BNK-695/696 이 2-cycle 「미커밋(rules §6 submodule re-clone 손실 위험)」으로 경고한
+  BE 「송영 셔틀 배차표·일자별 로스터 상태·차량 정류장 주소·출발 회차」 WIP 가 60c4e36 로 CLOSURE.
+  → tester merge 반영 가능(BE WT CLEAN). FE 는 아직 심화 wiring WT DIRTY(29 file) — commit closure 재권장.
+  경쟁 4종 대비 이동서비스(배차/셔틀) full-stack 최심 우위 확대(v1.3-C) — 케어포 demo 이동서비스 nav 0·
+  이지케어 RFID점검+태그비교만(배차 최적화 표 ❌)·엔젤/롱텀 미확인.
+
+================================================================
+3. per-cycle minimum 충족
+================================================================
+· 신규 증거 URL/재실측 변동: ✅ notice list +2.1MB 구조 DRIFT · lcms type3→type1 rotation · MOHW126/law247 md5 DRIFT (semantic IDENTICAL) · NHIS #44 433차 zero drift.
+· 메뉴/필드/워크플로 1블록+: ✅ NHIS #44 러-1~4 이동서비스비 산정 규칙 verbatim 블록 + ogada transport 셔틀/로스터 자산 블록.
+· COMPETITOR_MATRIX 1행+ @HEAD: ✅ @2704fd8/@60c4e36 로 갱신.
+· BENCHMARK_REPORT §소절: ✅ §697.
+
+신규 snapshot 5건: 본 txt · nhis_jo44_live_bnk697.html · lcms_or_kr_live_bnk697.html ·
+  mohw_gosi_2026_126_live_bnk697.html · law_247_admRulInfoP_live_bnk697.html.
+덮어쓰기 0 · zero drift IDENTICAL 3(NHIS 433차·silverangel extraService·essential) · 404 carry 1(systemFeature) ·
+  구조 DRIFT 1(notice list) · rotation DRIFT 1(lcms) · md5 DRIFT semantic IDENTICAL 2(MOHW126·law247) ·
+  ★★★ closure 1(BE transport WIP 60c4e36) · 미확인 carry 1(longterm 502/610).

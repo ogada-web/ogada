@@ -1,0 +1,28 @@
+BNK-683 ogada git 실측 — 케어포 M7 crosswalk companion · QA-B355 REGRESSION · NHIS #44 422차
+조사일: 2026-06-27T03:40:00Z
+
+FE develop: d1d0adf27fd0bfdbe53162ab0014a9eee6518286
+  WT: DIRTY 2M (src/e2e/liveFeeScheduleSeed.js +9L · src/test/liveFeeScheduleSeed.test.js +24L)
+  ahead origin/test: 276
+  vs BNK-682: HEAD identical · WT CLEAN→DIRTY regression (+33L uncommitted)
+
+BE develop: 92770fd54b029c37920e0569f44eee8e8d66d529
+  WT: CLEAN
+  ahead origin/test: 599
+  vs BNK-682: identical
+
+merge gate: 875 (FE 276 + BE 599) — unchanged
+
+KPI 8-axis vs BNK-682:
+  Route: 123 (identical)
+  Page: 97 (identical)
+  BE @Test: 2024 (identical)
+  FE test: 497 (identical)
+  Module: 84.31% (identical)
+  Reports: 28 (identical)
+  V: V184 (identical)
+  WT: FE DIRTY regression (delta)
+
+11-route LIVE carry: 4-axis+leave-ledger 7 + M6 safety 4 = unchanged @d1d0adf
+
+M11/M12 sole P1 lever: /payroll/* /accounting/* route grep 0 — unchanged

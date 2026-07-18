@@ -1,0 +1,127 @@
+BNK-784 — 교차검증·갭 우선순위 8h+ (ogada git 실측 병행)
+조사일: 2026-07-16T04:47:00Z (KST 2026-07-16 13:47)
+직전 동일 rotation: BNK-776(2026-07-15T23:33:19Z) → ~5.2h 후
+직전 사이클: BNK-783(2026-07-16T04:03:00Z·ogada git 실측 6–8h) → ~44분 후
+
+======================================================================
+1. ogada git 실측 (submodule develop HEAD)
+======================================================================
+FE develop HEAD : 83e6296  fix(v1.2.1/QA-B95): decode soft-hyphen and whitespace HTML entities
+                  (2026-07-16T04:26:49Z · Author jwj3400)
+FE WT           : CLEAN
+FE ahead        : origin/test=b42174a → ahead 1 (soft-hyphen commit·tester FF 대기)
+                  ※ BNK-783 FE @b42174a → tester 가 origin/test 를 b42174a 까지 FF → 신규 +1
+
+BE develop HEAD : c67c7ed  fix(v2/QA-B95): decode soft-hyphen and whitespace HTML entities
+                  (2026-07-16T04:19:47Z · Author jwj3400)
+BE WT           : CLEAN
+BE ahead        : 598d108 → ahead 684 (+1 vs BNK-783 683 · BE-heavy backlog carry)
+
+merge gate      : 685 (FE 1 + BE 684 · BE-heavy → tester FF)  [BNK-783 684 → +1]
+
+Route           : 133  (App.jsx <Route\b 132 + <Routes> 1)
+Page            : 107  (src/pages/*.jsx, .test.jsx 제외 · find 재확인)
+                  ※ BNK-783 header 106 → recount +1 (신규 페이지 아님 · 최근 추가 페이지
+                    HomeNewsletterLaunchPage/AccountingBpoPage/FunctionalRecoveryPage 는
+                    본 사이클 이전 · 과거 헤더 slight undercount 정정 · git 실측 우선)
+FE test files   : 530  (rg -l *.test.js/*.test.jsx)
+FE test cases   : 2680 (it/test 호출 합)
+BE Test files   : 293
+BE @Test        : 2242 (+1 vs BNK-783 2241 · soft-hyphen decode @Test)
+Flyway          : V1–V196 (신규 0 · V196=client_linkage_records_integrity_g_linkage)
+accounting 1·payroll 5·billing 17·transport 9·staff 13
+
+======================================================================
+2. 모듈 커버리지 재산정 — 97.41% CONFIRMED · 가정 번복 0
+======================================================================
+src/frontend/src/config/competitorModuleCoverage.js @83e6296
+COMPETITOR_FEATURE_COVERAGE 배열 = 29-entry
+  1.0 (25): 1-1·1-3·1-5·1-7·1-9·1-10·3-1·4·5·26·43·6·7-1·7-2·7-2-1·7-3·7-4·7-6·7-10·9·11·nhis·qr·hq·platform
+  0.85 (3): id=2 이동서비스 · id=8 직원·근태 · id=10 부가서비스(SMS·알림)
+  0.7  (1): id=12 수입지출·회계
+합 = 25 + 3×0.85 + 0.7 = 28.25 / 29 = 0.9741379… = 97.41%
+JSDoc line5 `coverage: 1 = ✅` 주석은 grep 오염 (BNK-753 패턴 배제)
+→ 가정 번복 0 · KPI promote 0 · coverage-0 진성갭 0건
+
+======================================================================
+3. ★★★ 교차검증 #1 — QA-B95 fail-closed 16+ layer 하드닝 · FE↔BE LOCKSTEP
+======================================================================
+본 사이클 신규 commit (FE·BE 동일 title, 동일일 lockstep):
+  BE c67c7ed  LiveE2eOperationReadinessSupport.java (+34/−3) + Test (+51)
+    - private static final char SOFT_HYPHEN = '\u00ad';
+    - normalizeBootstrapBlockerToken: .replace(String.valueOf(SOFT_HYPHEN), "")  (mid-token 제거)
+    - en/em/thin space entity 정규화 (nbsp/ensp/emsp/thinsp)
+    - @Test 2241→2242(+1): resolveOperationBlockersShouldDecodeSoftHyphenAndWhitespaceHtmlEntities()
+  FE 83e6296  6-file 확산 (+131/−10):
+    - src/config/notificationChannelStatus.js (+21) + .test.js (+23)
+    - src/e2e/liveBackendProbe.js (+21)
+    - src/e2e/liveConfig.js (+18)
+    - src/e2e/liveGlobalSetup.js (+18)
+    - src/test/liveE2eHarness.test.js (+40)
+    → FE 가 이번 사이클 decode 를 readiness(notificationChannelStatus) AND
+      live-harness(liveBackendProbe/liveConfig/liveGlobalSetup) 양 flow 로 확산
+      = 단일 util 을 넘어 FE 전 라이브니스 경로 fail-closed 정합
+
+하드닝 계보 (gateway wrapper 인코딩 fail-closed):
+  triple-encoded (BNK-777 a89a873/33f388df)
+   → named-num    (BNK-780 2cefb1d/97450eb)
+   → snake_case   (BNK-781 1411b54)
+   → semicolon-optional named (BNK-782 a8d0af5)
+   → nbsp + Unicode \u00a0    (BNK-783 4bf5684)
+   → soft-hyphen \u00ad + en/em/thin space (BNK-784 83e6296/c67c7ed)  ← 신규
+  = 9+ cycle · 16+ layer 인코딩 방어 · FE↔BE 폐루프
+경쟁 4종 in-app live E2E operational gate 「미확인」 carry = ogada 유일 결정 심화
+
+======================================================================
+4. ★★★ 교차검증 #2 — closed axes 16-path App.jsx LIVE · 재오픈 0
+======================================================================
+grep 실측 (path= 라인 번호):
+  /clients/home-newsletter          line 209
+  /clients/linkage-records          line 236
+  /clients/:clientId/care-plan-form line 245
+  /accounting                       line 407
+  /programs/functional-recovery     line 754
+  /staff/committee-meetings         line 1242
+  + /dashboard(+hq) · /billing/{cms,easy-pay,cash-receipts} · /payroll 5-route
+= 16-path LIVE · 재오픈 0
+CLOSED band carry: v1.3-C · v2 CMS · G14 · 대시보드 · G2 · M11 · M12 · G-LINKAGE · J03
+
+======================================================================
+5. ★★ 갭 우선순위 재정렬 (P0/P1) — 신규 진성갭 0
+======================================================================
+PRIMARY residual : id=12 M12 SSO 실환경 credentials (0.7)
+                   — env USMUSID+OTP_SECRET 부재 (FE 3-지점 defense-in-depth BNK-783 심화)
+secondary lever  : id=2 이동서비스 form polish (0.85)
+                   id=8 직원·근태 form polish (0.85)
+                   id=10 부가서비스 SMS/알림 (0.85)
+P3 lever (격상 X): 케어포 10-2-1 수가변경안내 fee-change 템플릿 (FEE_SCHEDULE_CHANGE_NOTICE·「가정」)
+→ coverage-0 진성갭 0건 · KPI promote 0 · 가정 번복 0
+
+======================================================================
+6. ★ 규제 백본 재실측 — NHIS #44 러-1~4 518차 zero drift
+======================================================================
+URL : https://www.nhis.or.kr/lm/lmxsrv/law/joHistoryContent.do?DATE_END=20231229&DATE_START=20250701&SEQ=1637&SEQ_CONTENTS=3281769
+HTTP 200 · SIZE 7,572B · md5 c886ff1fd1d5ca2cb5dc76d30adde8ba
+keyword grep : 러-1(1) · 러-4(1) · 편도(2) · 1일 1회(1) · 수급자가 부담(1) · 이동서비스(13)
+= BNK-783 517차 → +1 = 518차 IDENTICAL
+↔ ogada TransportServiceFeeService 6-link (RU_1~RU_4·ONE_WAY_RATIO=0.5·ONE_PER_DAY·id=2 0.85)
+→ 상수 재조정 불요
+snapshot: nhis_jo44_live_bnk784.html
+
+======================================================================
+7. 미확인 carry
+======================================================================
+- carefor LIVE HTTP 000 95-cycle+ (disk canonical 6226e6eb 98,328B 우선)
+- longterm npbs 502/610 login-gated
+- silverangel notice ~18일+ pause
+- 경쟁 4종 in-app SSO safety guard · live E2E operational gate 반증 부재
+
+======================================================================
+8. per-cycle minimum 충족
+======================================================================
+[O] 신규 증거 URL / 재실측 : NHIS #44 518차 재실측 (zero drift 기록)
+[O] 메뉴/필드/워크플로 1블록+ : QA-B95 soft-hyphen 16+ layer 계보 + FE 6-file 확산 블록
+[O] COMPETITOR_MATRIX 1행+ @HEAD : @83e6296/@c67c7ed 로 3행 갱신
+[O] BENCHMARK_REPORT §소절+ : §784 신규 소절 3
+신규 snapshot 2 (cross_gap_priority_bnk784.txt · nhis_jo44_live_bnk784.html)
+덮어쓰기 0 · zero drift IDENTICAL 2(NHIS 518차·carefor func.php canonical) · 가정 번복 0 · closure 0
