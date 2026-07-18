@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-18T10:36:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-18T15:45:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-18 (193차 — **id=2 이동 회차·정차 상한 FE 검증 접근성 재점검 + SEC-D34 상수화 + §117** — 192차(§116) 이후 coder 신규 커밋 6건(`2789553` SEC-D34 0-byte·`1f9d49c` 은행입금 magic-byte·`6f8e349` RFID pre-upload·`51a3db4` NHIS import MIME-spoof·`3e89ab7` pilotPageFlows fixture·`495040f` 빈 파일 copy house-style·`5e816e6` UNREADABLE 상수화·`f72af3f` 회차 사전 검증·`0d37788` 정차 상한 상수화) 재점검. ① **무음 반환→오류 노출 개선(WCAG 4.1.3)** — `MAX_TRANSPORT_ROUTE_STOPS`(=17) 초과 시 `setActionError(TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE)`로 전환돼, 이전엔 정차 추가 버튼이 조용히 무시됐던 갭 해소. `actionError` 표면은 `Alert tone=danger`(role=alert·assertive) ✅. ② **`TransportRunNewPage` 회차 필드 오류** — `roundError` → `Field error={roundError}` → `aria-invalid`+`role=alert` `<p>` 연결(WCAG 3.3.1·4.1.2). 입력 변경 시 오류 자동 해제·서버 오류도 필드 단위로 노출. ③ SEC-D34 커밋들은 magic-byte 검증·로직 전용·기존 `Alert`/`FileUpload error` 표면 재사용(변경 불요). ④ 신규 `ds-*` 클래스 0건 — FE-16 이슈 없음. **§117** 신규. baseline FE `@6f8e349` → UXD-193 `@0d37788`. CSS-only·`npm test` 해당 파일 PASS.)
+> **최종 갱신**: 2026-07-18 (194차 — **id=2 이동 회차(departureRound) 입력 6커밋 접근성 재점검 + 서버 필드 오류 이중 `role="alert"` 제거 + §118** — 193차(§117) 이후 coder 신규 커밋 6건(`93f4932` 이전 배차 로드 시 stale 회차 오류 해제·`23b47ea` `parseDepartureRoundInput` 공용 헬퍼 추출·`af1d4f6` 저장 차단 시 회차 필드 포커스·`d6f3889` 지수/16진 표기 거부·`8766331` Integer 상한 초과 거부·`b115ae0` 네이티브 `max` 상한 부여) 재점검. 다섯 커밋은 검증·포커스 로직 및 네이티브 제약 정합으로 접근성 강화(WCAG 2.4.3 포커스 이동·3.3.1 오류 식별·`Field error`→`aria-invalid`+`role=alert`)를 이미 갖춤. ① **서버 회차 필드 오류 이중 안내 제거(WCAG 3.3.1·4.1.3)** — `handleSaveDraft` catch 에서 BE `fieldErrors.departureRound` 를 받으면 `setRoundError`(필드 `role=alert`)와 **함께** 상단 일반 `setActionError`(또 다른 `role=alert`)를 무조건 설정해, 두 개의 `role="alert"` 가 동시에 안내되고 메시지가 중복(「입력값을 확인하세요.」 vs 「회차는 1 이상이어야 합니다.」)되던 갭을, 필드 오류일 땐 필드 단위로만 노출하고 그 외 오류만 상단 Alert 로 라우팅하도록 `else` 분기 전환(§67·§92 필드 오류 라우팅 패턴 정합). ② 네이티브 `max=MAX_DEPARTURE_ROUND`·`min="1"`·`step="1"` 이 JS 가드·BE `@Min(1) Integer` 계약과 lockstep 확인(변경 불요). ③ 신규 `ds-*` 클래스 0건 — FE-16 이슈 없음. **§118** 신규. baseline FE `@0d37788` → UXD-194. `npm test`(8/8)·build PASS.)
+> **이전 갱신**: 2026-07-18 (193차 — **id=2 이동 회차·정차 상한 FE 검증 접근성 재점검 + SEC-D34 상수화 + §117** — 192차(§116) 이후 coder 신규 커밋 6건(`2789553` SEC-D34 0-byte·`1f9d49c` 은행입금 magic-byte·`6f8e349` RFID pre-upload·`51a3db4` NHIS import MIME-spoof·`3e89ab7` pilotPageFlows fixture·`495040f` 빈 파일 copy house-style·`5e816e6` UNREADABLE 상수화·`f72af3f` 회차 사전 검증·`0d37788` 정차 상한 상수화) 재점검. ① **무음 반환→오류 노출 개선(WCAG 4.1.3)** — `MAX_TRANSPORT_ROUTE_STOPS`(=17) 초과 시 `setActionError(TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE)`로 전환돼, 이전엔 정차 추가 버튼이 조용히 무시됐던 갭 해소. `actionError` 표면은 `Alert tone=danger`(role=alert·assertive) ✅. ② **`TransportRunNewPage` 회차 필드 오류** — `roundError` → `Field error={roundError}` → `aria-invalid`+`role=alert` `<p>` 연결(WCAG 3.3.1·4.1.2). 입력 변경 시 오류 자동 해제·서버 오류도 필드 단위로 노출. ③ SEC-D34 커밋들은 magic-byte 검증·로직 전용·기존 `Alert`/`FileUpload error` 표면 재사용(변경 불요). ④ 신규 `ds-*` 클래스 0건 — FE-16 이슈 없음. **§117** 신규. baseline FE `@6f8e349` → UXD-193 `@0d37788`. CSS-only·`npm test` 해당 파일 PASS.)
 > **이전 갱신**: 2026-07-18 (192차 — **인쇄 시 컨텍스트 네비 전역 숨김 + §116** — 리포트 인쇄 출력물에 앱 내비게이션(`.ds-context-nav`)이 섞이는 갭 발견. 전역 `@media print`는 `.ds-sidenav`·`.ds-topbar`만 숨기고 컨텍스트 네비는 `.ds-care-report-print-root` 스코프 안에서만 숨겨, `BillingReportPage`·`BillingStatisticsReportPage`·`ClientOutingReportPage`·`TransportMonthlyReportsPage`(네비가 print-zone Card의 형제)는 인쇄물에 앱 메뉴가 노출됐다. 네비는 어떤 화면에서도 인쇄되지 않아야 하므로 `.ds-context-nav`를 `.ds-sidenav`·`.ds-topbar`와 동일하게 **전역 print-hide 그룹으로 승격**(페이지 스코프 중복 규칙 제거). 스크린 렌더링 무영향(`@media print` 한정). `src/styles/printStylesheet.test.js`(신규 2)로 잠금 + `TransportMonthlyReportsPage`(1) 회귀 재확인. **§116** 신규. baseline FE `@6f8e349` → UXD-192. `npm test`(3/3)·build PASS.)
 > **이전 갱신**: 2026-07-18 (191차 — **SEC-D25·D34 6커밋 재점검 + 사진 업로드 성공 SR 알림(WCAG 4.1.3) + §115** — 190차(§114) 이후 coder 신규 커밋 6건(`e16f432`/`cf28a2e`/`8b164c3`/`4691856`/`3042a5`/`7ac3c84` SEC-D25 이미지·SEC-D34 엑셀 magic-byte 사전검증)을 재점검. 신규 오류는 모두 기존 접근성 표면(`Alert tone=danger`→role=alert·`FileUpload error` `aria-invalid`·페이지 Alert + xlsx-only `help`)으로 라우팅돼 회귀 없음. 신규 `ClientPhotoUpload`은 `ProgramSchedulePhotoUpload`(§114) 정합 클론. ① **`ClientPhotoUpload`·`ProgramSchedulePhotoUpload`(쌍둥이)** — 업로드 성공이 부모 재렌더로 「미등록」→「등록됨」 시각 전환만 일어나 SR에 안내되지 않던 **WCAG 4.1.3** 갭을 상주 `ds-sr-only role="status"` polite live region으로 동시 해소(조밀 표 시각 잡음 없음). ② **§115** 신규. baseline FE `@dc81f6e` → UXD-191 `@7ac3c84`. `npm test`(7/7)·build PASS.)
 > **이전 갱신**: 2026-07-17 (190차 — **SEC-D25·M12·QA-B95 6커밋 재점검 + 직원현황 필터 `screen-only` 정합 + 프로그램 사진 오류 ARIA + §113·§114** — 189차(§113 CSS) 이후 coder 신규 커밋 6건(`9e40c19`/`bc1d343`/`090ac10`/`dc81f6e` QA-B95·`592a483` M12 SSO allowlist·`8e28fe0` SEC-D25 magic bytes) 재점검. QA-B95·M12는 로직 전용(변경 불요). ① **PLAN_NOTES UXD-189 CLOSURE** — `StaffStatusReportPage` 조회 필터 Card의 오용 `ds-staff-status-report-print-zone`(미정의·인쇄 시 필터 잔존 위험)을 본 페이지 기존 패턴 `ds-staff-status-report-screen-only`로 교체(`@media print`에서 필터·출력물 버튼 동시 숨김). ② **`ProgramSchedulePhotoUpload`** — SEC-D25 검증/업로드 오류 `Alert`에 안정 `id`·파일 input `aria-invalid`+`aria-describedby`(WCAG 3.3.1·4.1.2). ③ **§113** 본문 보강(UXD-189 CSS)·**§114** 신규. baseline FE `@dc81f6e` → UXD-190.)
@@ -6223,6 +6224,66 @@ CSS-only 변경·JSX 불변·회귀 없음.
 - `TransportRunNewPage.test.jsx` — `roundError` Field error·`aria-invalid`·서버 오류 필드 라우팅.
 - `config/transport.test.js` — `MAX_TRANSPORT_ROUTE_STOPS`·`TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE` 상수 회귀.
 - CSS-only 변경 없음 — `npm run build` PASS.
+
+---
+
+## §118. id=2 이동 회차(departureRound) 입력 6커밋 재점검 + 서버 필드 오류 이중 `role="alert"` 제거 (194차) [UXD]
+
+> **193차(§117) 이후 coder 신규 커밋 6건** (`93f4932` 이전 배차 로드 시 stale 회차 오류 해제 · `23b47ea` `parseDepartureRoundInput` 공용 헬퍼 추출 · `af1d4f6` 저장 차단 시 회차 필드 포커스 · `d6f3889` 지수/16진 표기 거부 · `8766331` Integer 상한 초과 거부 · `b115ae0` 네이티브 `max` 상한) 재점검. baseline FE `@0d37788` → UXD-194.
+
+### 118-1. coder 커밋 분류
+
+| 커밋 | 성격 | UI 조치 |
+|---|---|---|
+| `93f4932` | 이전 배차 로드 시 `setRoundError("")`로 stale 오류 해제 | 로드 데이터와 회차 a11y 상태 정합 — 변경 불요 |
+| `23b47ea` | `parseDepartureRoundInput`+`DEPARTURE_ROUND_INVALID_MESSAGE` `config/transport.js` 추출 | 로직 DRY — 변경 불요 |
+| `af1d4f6` | 저장 차단(사전 검증·서버 오류) 시 `roundInputRef.current?.focus()` | **WCAG 2.4.3·3.3.1** 강화 — 변경 불요 |
+| `d6f3889` | `^\d+$` 정규식으로 `1e2`/`0x1f` 등 지수·16진 표기 거부 | 로직 전용 — 변경 불요 |
+| `8766331` | `MAX_DEPARTURE_ROUND`(2147483647) 상한 초과 거부 | 로직 전용 — 변경 불요 |
+| `b115ae0` | 네이티브 `max={MAX_DEPARTURE_ROUND}` 부여 | 네이티브 제약 ↔ JS 가드 ↔ BE `@Min(1) Integer` lockstep — 변경 불요 |
+
+### 118-2. 서버 회차 필드 오류 이중 안내 제거 (§118 신규 조치)
+
+#### 변경 전 (`handleSaveDraft` catch)
+```js
+if (err instanceof ApiError && err.fieldErrors?.departureRound) {
+  setRoundError(err.fieldErrors.departureRound);   // 필드 <p role="alert">
+  roundInputRef.current?.focus();
+}
+setActionError(err instanceof ApiError ? err.message : "임시 저장에 실패했습니다."); // 상단 Alert role="alert"
+```
+- 서버가 `fieldErrors.departureRound`를 반환하면 **필드 오류 + 상단 일반 Alert** 두 개의 `role="alert"`가 동시에 안내되고, 메시지가 중복(예: 상단 「입력값을 확인하세요.」 + 필드 「회차는 1 이상이어야 합니다.」).
+
+#### 변경 후
+```js
+if (err instanceof ApiError && err.fieldErrors?.departureRound) {
+  setRoundError(err.fieldErrors.departureRound);
+  roundInputRef.current?.focus();
+} else {
+  setActionError(err instanceof ApiError ? err.message : "임시 저장에 실패했습니다.");
+}
+```
+- 회차 필드 오류일 땐 **필드 단위로만** 노출(포커스 이동 포함), 그 외 오류(네트워크·기타)만 상단 Alert로 라우팅.
+
+#### a11y 결정
+- **WCAG 3.3.1** — 필드 오류는 해당 필드에 귀속(§67 `EasyPayPanel`·§92 `GrievanceFollowUpModal` 필드 오류 라우팅 패턴 정합).
+- **WCAG 4.1.3** — 동시 다중 `role="alert"` assertive 안내 중복 제거(SR 이중 낭독 방지).
+- 필드 오류는 이미 `Field error`→`aria-invalid`+`role=alert`+포커스 이동(§117-2·`af1d4f6`)으로 완결 — 상단 요약 Alert 불필요.
+
+### 118-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — `TransportRunNewPage.jsx` 편집은 catch 분기 로직 정합만, CSS 무변경. 네이티브 `.ds-input[aria-invalid="true"]` danger 경계선(components.css §608~644)은 기존 정의 재사용.
+
+### 118-4. coder 전달 메모
+
+1. **서버 필드 오류**(`ApiError.fieldErrors.*`)를 필드 state로 라우팅했다면, 같은 catch에서 상단 공통 Alert(`actionError`)를 **함께** 설정하지 않는다 — `else`로 분기(이중 `role="alert"` 방지).
+2. 회차·수량 등 숫자 입력의 네이티브 `min`/`max`/`step`은 JS 가드(`parseDepartureRoundInput`)·BE 제약과 **3자 lockstep**을 유지한다.
+3. 저장 차단 시 오류가 발생한 첫 입력으로 포커스를 이동한다(WCAG 2.4.3) — `useRef`+`focus()` 패턴 유지.
+
+### 118-5. 검증
+
+- `TransportRunNewPage.test.jsx` — 8/8 PASS(서버 필드 오류 시 상단 「입력값을 확인하세요.」 미노출 단언 +1).
+- `npm run build` PASS · 린트 0.
 
 ---
 
