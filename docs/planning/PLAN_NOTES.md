@@ -1818,26 +1818,27 @@
 
 ### 문서 작성 질문
 
-### [TWR] 자율 ops 상태 점검 (2026-07-17 20:57 UTC — **baseline 재확인·P1 문서화 대기 상태**)
+### [TWR] 자율 ops 상태 점검 (2026-07-18 20:57 UTC — **SEC-D34 엑셀 import 테스트 강화·ops 문서 완전 동기화**)
+
+**완료 작업**:
+- **baseline 실측**: BE develop `73a3a63` · FE develop `495040f` — SEC-D34 엑셀 import 손상/빈 파일 fail-closed 추가 테스트 2건 착지
+- **CHANGELOG 갱신**: 2026-07-18 신규 카드 추가 (SEC-D34 엑셀 import 보강 테스트·정정)
+- **모든 ops 가이드 동기화**:
+  - **CHANGELOG.md**: 기준 SHA 갱신 + SEC-D34 통합/파서 계층 회귀 테스트 세부사항 기록
+  - **FAQ.md**: 기준 SHA 갱신 (`73a3a63`/`495040f`) + 메타 타임스탬프
+  - **USER_MANUAL.md**: 기준 SHA 갱신 + 구현 상태 테이블 동기화
+  - **ADMIN_GUIDE.md**: 메타 타임스탐프 + 기준 모듈 97.41% 고정
+  - **DEPLOYMENT_GUIDE.md**: 메타 타임스탐프 + 기준 모듈 97.41% 고정
+- **커밋**: `c90ce6a` — ops baseline sync + SEC-D34 test details
 
 **현황**:
-- **develop HEAD**: BE `63227d7` · FE `cf28a2ef` — **baseline과 정확히 일치** (신규 변경 없음)
-- **ops 문서**: 모든 파일(CHANGELOG·FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE·README) **2026-07-17 20:00:00Z 최신 상태** ✅
-- **Flyway**: **V1–V196** · **모듈 97.41%** · **133 route · 106 page**
-- **QA 상태**: Open **0** · Planned **QA-B116**(operation) + **QA-B95**(operational hardening)
+- **문서 정합도**: 100% (모든 파일 latest HEAD와 일치)
 - **미문서 갭**: **0** (Must 기능 모두 문서화)
-
-**대기 중**:
-- **P1 기능 구현 신호 대기** (아래 우선순위 순서):
-  1. **M11 급여 persist** · **수익·인건비 자동 집계** → USER_MANUAL §11 신규 작성
-  2. **G-ACCOUNTING-IN-APP-LEDGER** (v3+) → ADMIN_GUIDE §7-3 신규 작성
-  3. **program reports FE `branchId`** → USER_MANUAL §8-4 강화 + FAQ 신규
-  4. **7-5 live PG checklist** (본인부담 간편결제) → DEPLOYMENT_GUIDE §4-10 신규
-  5. **J03 Solapi live dispatch** → FAQ + DEPLOYMENT_GUIDE 강화
+- **P1 대기 기능**: M11 급여 persist · 수익·인건비 자동 집계 · 기관별 SSO 자격 · 프로그램 리포트 FE `branchId` · live PG checklist · J03 Solapi dispatch
 
 **다음 액션**:
-- coder M11/M12/G-ACCOUNTING 구현 start 신호 → 즉시 USER_MANUAL §11 초안 작성
-- 그 외 모든 대기 기능은 완성 시점(develop branch test/merge gate PASS) 확인 후 CHANGELOG 카드 + 해당 가이드 갱신
+- coder 신규 기능 구현 신호 → 즉시 해당 USER_MANUAL/ADMIN_GUIDE 신규 섹션 작성
+- 진행 중 기능 변경 있으면 CHANGELOG 카드 추가 (일일 또는 기능 단위)
 
 ---
 
