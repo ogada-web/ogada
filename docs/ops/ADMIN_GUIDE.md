@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T00:00:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T07:45:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-18 (엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed FE·BE 회귀 고정 · 사진 업로드 성공 스크린리더 안내 UXD-191 · baseline `9449e1f`/`2789553` · **Flyway V1–V196**)  
+> **최종 갱신**: 2026-07-18 (엑셀 import 테스트 강화 · baseline `73a3a63`/`495040f` · **Flyway V1–V196** · 모듈 **97.41%**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  

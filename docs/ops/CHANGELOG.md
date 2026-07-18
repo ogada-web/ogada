@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-18T04:31:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-18T07:45:00Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`0a97b22`** · FE **`1f9d49c`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`73a3a63`** · FE **`495040f`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,7 @@
 
 ## 최근 7일 요약
 
-- **2026-07-18** — **손상된 엑셀(서명만 맞고 내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙) · **SEC-D34 엑셀 import 4경로 full-stack**(방문·청구 NHIS·요양보호사 FE 사전검증 · 은행 입금 BE OOXML) · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트 고정) · **.xls(OLE)·잘린 서명 위장 파일 거부 회귀 테스트 보강** · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **form-data 보안 취약점(npm audit high) 해소** · ops FAQ·매뉴얼 갱신
+- **2026-07-18** — **리포트 인쇄에서 좌측/상단 메뉴 숨김**(청구·청구통계·이용자 외출·교통 월간 리포트 — 인쇄물에 앱 메뉴 미출력) · **엑셀 일괄등록 빈/없는 파일 안내 문구 통일**(방문·청구 NHIS도 「업로드할 엑셀 파일이 없습니다.」로 5개 화면 동일) · **손상된 엑셀(서명만 맞고 내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙) · **SEC-D34 엑셀 import 4경로 full-stack**(방문·청구 NHIS·요양보호사 FE 사전검증 · 은행 입금 BE OOXML) · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트 고정) · **.xls(OLE)·잘린 서명 위장 파일 거부 회귀 테스트 보강** · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **form-data 보안 취약점(npm audit high) 해소** · ops FAQ·매뉴얼 갱신
 - **2026-07-17** — **업로드 파일 서명 검증 확대**(이용자 사진·급여계약·HR·등급이력·보수교육·요양보호사 엑셀) · **직원현황 인쇄·활동 사진 오류 ARIA** · 활동 사진 magic-byte · NoBreakSpace mid-token · M12 SSO allowlist
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
@@ -25,16 +25,70 @@
 
 ## 2026-07-18
 
-### 📝 손상 엑셀 안전 거부·은행 입금 사전검증 ops 문서화
+### 📝 SEC-D34 엑셀 import 보강 테스트·정정 
+- **에이전트**: COD
+- **한 일**: develop HEAD 실측 후 **BE `73a3a63` / FE `495040f`** 로 기준(CHANGELOG+FAQ) 동기화. **엑셀 import 손상 OOXML·빈 파일 fail-closed 회귀 테스트**를 **방문 통합 계층**과 **은행/요양보호사/방문 파서 계층** 양쪽에서 고정했고, **필수엑셀 사본 누락** 사전검증을 import entrypoints 5종에서 강화했습니다. 
+- **내 화면/업무에 영향**: 없음 — 테스트·정정 전용. 제품 흐름 변화 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `73a3a63`(missing copy lock) + `b3e7cce`(empty/missing 문구 통일) + `2c102e5`(visit integration fail-closed) + `7fa8335`(parser corrupt body) + `0a97b22`(parser fail-closed)
+- FE: `495040f`(FE empty/missing 문구) + `3e89ab7`(은행 입금 import OOXML fixture) + `51a3db4`(NHIS MIME-spoof reject) + `d0c8fd2`(인쇄 메뉴 숨김) + `6f8e349`(RFID 이중엑셀 magic-byte)
+- 회귀: 손상·위장·빈·0바이트·빈헤더 5개 계층 고정 · 제품 정상 흐름 변화 없음
+
+</details>
+
+### ✅ 리포트 인쇄 메뉴 숨김·엑셀 안내 문구 통일 ops 문서화
 - **에이전트**: TWR
-- **한 일**: develop HEAD 실측 후 CHANGELOG 기준(BE `0a97b22` · FE `1f9d49c`)을 갱신하고, **서명만 맞고 내용이 깨진 엑셀 파일의 안전 거부**와 **은행 입금 엑셀 브라우저 사전검증 추가**를 변경 기록·FAQ에 반영했습니다.
+- **한 일**: develop HEAD 실측 후 CHANGELOG 기준(BE `b3e7cce` · FE `3e89ab7`)을 갱신하고, **리포트 인쇄 시 화면 메뉴 숨김**(UXD-192)과 **엑셀 일괄등록 빈/없는 파일 안내 문구 통일**을 변경 기록·FAQ에 반영했습니다.
 - **내 화면/업무에 영향**: 없음 — 운영·배포 가이드·FAQ만 갱신
 - **상태**: 완료
 
 <details><summary>자세히</summary>
 
-- 실측: BE develop `0a97b22` · FE develop `1f9d49c` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
-- FAQ Q932 갱신(은행 입금 FE 사전검증 추가) · Q934 신설(손상 엑셀 fail-closed) · Q931~Q933 유지
+- 실측: BE develop `b3e7cce` · FE develop `3e89ab7` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FAQ Q935 신설(리포트 인쇄 메뉴 숨김) · Q934 보강(빈/없는 파일 안내 문구 통일) · Q930~Q933 유지
+
+</details>
+
+### ✅ 리포트 인쇄물에서 화면 메뉴 숨김 (FE, UXD-192)
+- **에이전트**: UXD
+- **한 일**: **청구·청구 통계·이용자 외출·교통 월간 리포트**를 인쇄하면 이전에는 화면 좌측/상단 **앱 이동 메뉴(context navigation)** 가 인쇄물에 함께 찍혔습니다. 이제 이 메뉴를 전역 인쇄 규칙에 포함해 **모든 리포트 인쇄물에서 메뉴가 나오지 않도록** 정리했습니다.
+- **내 화면/업무에 영향**: **`/billing/reports` · `/billing/statistics` · `/clients` 외출 리포트 · 교통 월간 리포트** — 화면 표시는 그대로, **인쇄물이 깔끔해져** 리포트 본문만 출력됨
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `styles/components.css` — `@media print` 전역 숨김 그룹에 `.ds-context-nav` 승격(`.ds-sidenav`·`.ds-topbar`와 동일), 페이지 한정 규칙 제거 (`d0c8fd2`)
+- 대상: `BillingReportPage` · `BillingStatisticsReportPage` · `ClientOutingReportPage` · `TransportMonthlyReportsPage`
+- 회귀: `printStylesheet.test.js` — 전역 인쇄 숨김 계약 고정 · 화면 렌더링 변화 없음(인쇄 전용)
+
+</details>
+
+### ✅ 엑셀 일괄등록 「빈/없는 파일」 안내 문구 통일 (BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 파일을 첨부하지 않았거나 내용이 없는 엑셀을 올릴 때, **공단 방문일정·청구 NHIS** 화면만 「업로드할 엑셀 파일이 **필요합니다**.」로, 나머지(요양보호사·은행 입금·서류 저장) 화면은 「업로드할 엑셀 파일이 **없습니다**.」로 문구가 갈렸습니다. 이제 **모든 엑셀 일괄등록 화면이 「업로드할 엑셀 파일이 없습니다.」** 로 동일하게 안내합니다.
+- **내 화면/업무에 영향**: 정상 업로드는 그대로. 빈/없는 파일을 올렸을 때 **화면마다 다르던 안내 문구가 하나로 통일**됨
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: `VisitService` · `NhisImportService` — `MISSING_EXCEL_MESSAGE` 상수(「업로드할 엑셀 파일이 없습니다.」)로 empty/missing 분기 통일 (`b3e7cce`)
+- 회귀: `VisitServiceTest` · `NhisImportServiceTest` 기대 문구 정정 · 제품 흐름 변화 없음(문구 일치)
+
+</details>
+
+### ✅ 엑셀 import 손상/빈 파일 거부 회귀 테스트 보강 (FE·BE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 손상·위장·빈 엑셀 거부 동작이 앞으로도 깨지지 않도록 **회귀 테스트를 여러 계층에 추가**했습니다. **손상된 본문**(파서 계층·방문 통합 계층), **RFID 비교 이중 엑셀 사전검증**, **청구 NHIS 위장(MIME 스푸핑) 사전 거부**, **은행 입금 엑셀 픽스처**를 실제 서명과 일치시켰습니다.
+- **내 화면/업무에 영향**: 없음 — 테스트 전용. 제품 동작 변화 없음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- BE: 손상 OOXML 본문 fail-closed를 은행/요양보호사/방문 **파서 계층**(`7fa8335`)과 **방문 통합 계층 `VisitService`**(`2c102e5`)에서 고정
+- FE: RFID 비교 이중 엑셀 업로드 전 매직바이트 검증(`6f8e349`) · 청구 NHIS import MIME 스푸핑 사전 거부(`51a3db4`) · `pilotPageFlows` US-L01 은행 입금 import OOXML 픽스처 정정(`3e89ab7`, QA-B609)
 
 </details>
 
