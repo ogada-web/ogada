@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=human updated=2026-07-18T07:45:00Z -->
+<!-- doc:owner=TWR doc:audience=human updated=2026-07-18T10:42:58Z -->
 # ogada 변경 기록
 
 > **누가 쓰나**: TWR(문서 에이전트)  
 > **누가 읽나**: 운영·기획 담당자 — 개발 세부사항은 각 카드 맨 아래 「자세히」만 보면 됩니다.  
-> **기준**: develop 최신 코드 · BE **`73a3a63`** · FE **`495040f`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
+> **기준**: develop 최신 코드 · BE **`924b8d8`** · FE **`23b47ea`** · **133 route·106 page·Flyway V1–V196** · **모듈 97.41%**
 
 ## 읽는 법
 
@@ -13,7 +13,7 @@
 
 ## 최근 7일 요약
 
-- **2026-07-18** — **리포트 인쇄에서 좌측/상단 메뉴 숨김**(청구·청구통계·이용자 외출·교통 월간 리포트 — 인쇄물에 앱 메뉴 미출력) · **엑셀 일괄등록 빈/없는 파일 안내 문구 통일**(방문·청구 NHIS도 「업로드할 엑셀 파일이 없습니다.」로 5개 화면 동일) · **손상된 엑셀(서명만 맞고 내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙) · **SEC-D34 엑셀 import 4경로 full-stack**(방문·청구 NHIS·요양보호사 FE 사전검증 · 은행 입금 BE OOXML) · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트 고정) · **.xls(OLE)·잘린 서명 위장 파일 거부 회귀 테스트 보강** · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **form-data 보안 취약점(npm audit high) 해소** · ops FAQ·매뉴얼 갱신
+- **2026-07-18** — **픽업 배차 「회차」 입력 사전 검증**(1 이상 정수만 허용 — 잘못된 값은 저장 전 회차 칸에 바로 안내) · **배차 정차 상한(17개) 초과 시 사유 안내**(지점·경유지 추가가 막힐 때 「정차 순서는 최대 17개까지 가능합니다.」 표시) · **엑셀 일괄등록 안내 문구를 코드 한 곳(상수)으로 정리**(「업로드할 엑셀 파일이 없습니다.」·「엑셀 파일을 읽을 수 없습니다.」 — 화면·문구 변화 없는 내부 정리, SEC-D34) · **리포트 인쇄에서 좌측/상단 메뉴 숨김**(청구·청구통계·이용자 외출·교통 월간 리포트 — 인쇄물에 앱 메뉴 미출력, UXD-192) · **엑셀 일괄등록 빈/없는 파일 안내 문구 통일**(방문·청구 NHIS도 「업로드할 엑셀 파일이 없습니다.」로 5개 화면 동일) · **손상된 엑셀(내용이 깨진 파일) 안전 거부**(엑셀 import 5개 파서 「엑셀 파일을 읽을 수 없습니다.」, SEC-D34 fail-closed) · **은행 입금 엑셀 브라우저 사전검증 추가**(업로드 전 위장·0바이트 거부, BE와 동일 규칙, SEC-D34) · **활동/이용자 사진 업로드 성공 스크린리더 안내** · **엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed**(FE·BE 양쪽 회귀 테스트, SEC-D34)
 - **2026-07-17** — **업로드 파일 서명 검증 확대**(이용자 사진·급여계약·HR·등급이력·보수교육·요양보호사 엑셀) · **직원현황 인쇄·활동 사진 오류 ARIA** · 활동 사진 magic-byte · NoBreakSpace mid-token · M12 SSO allowlist
 - **2026-07-16** — live E2E **`&comma;`·`&VeryThickSpace;`** · **템플릿 카탈로그 표 행 헤더 a11y** · **알림톡 카탈로그 13종** · **VeryVery*·MathSpace·SixPerEm·fractional em·figure space** · **연계·발송 체크박스 a11y** · NoBreakSpace · bidi·zero-width · **G2 표 모바일 스크롤**
 - **2026-07-15** — **G2 가정통신문·기관 공지·자료실** 게시판 FULL · **M12 회계 BPO launch·SSO** · 발송이력 board-style 필터
@@ -25,6 +25,44 @@
 
 ## 2026-07-18
 
+### ✅ 픽업 배차 「회차」 입력, 저장 전에 바로 확인 (FE)
+- **에이전트**: COD
+- **한 일**: **새 픽업 배차**(`/transport/runs/new`) 화면의 **회차** 칸에 **0·음수·소수** 같은 잘못된 값을 넣고 임시 저장하면, 이전에는 값이 서버까지 갔다가 되돌아온 뒤에야 화면 상단 알림으로만 안내됐습니다. 이제 **저장을 누르는 즉시 회차 칸 아래에 「회차는 1 이상의 정수를 입력하세요.」** 로 안내하고, 서버가 회차 관련 오류를 돌려줄 때도 같은 칸에 표시합니다. 비워 두면 예전처럼 **다음 회차로 자동 배정**됩니다.
+- **내 화면/업무에 영향**: **`/transport/runs/new`** — 회차를 잘못 입력했을 때 **어느 칸이 문제인지 바로** 보이고, 불필요한 저장 시도가 줄어듦
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `924b8d8` · FE develop `23b47ea` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- FE: `TransportRunNewPage.jsx` — 저장 전 회차 값이 있으면 `Number.isInteger` && `>= 1` 검증 후 차단, `Field error`로 필드 단위 표시, 서버 `fieldErrors.departureRound` 매핑, 입력 변경 시 오류 초기화
+</details>
+
+### ✅ 배차 정차 상한 초과 시 사유 안내 (FE)
+- **에이전트**: COD
+- **한 일**: 루트 상세(`/transport/runs/:runId`)에서 **지점·경유지**를 계속 추가하다 전체 **정차 상한(17개)** 에 걸리면, 이전에는 **아무 반응 없이 추가만 안 되던** 상태였습니다. 이제 상한에 막히면 **「정차 순서는 최대 17개까지 가능합니다.」** 로 사유를 화면에 안내합니다.
+- **내 화면/업무에 영향**: **`/transport/runs/:runId`** — 지점/경유지 추가가 안 될 때 **왜 막혔는지** 바로 알 수 있음
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- FE: `config/transport.js` — 하드코딩 `17`을 `MAX_TRANSPORT_ROUTE_STOPS` 상수·`TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE` 로 분리, `TransportRunDetailPage.jsx` 지점 추가·경유지 추가 경로에서 상한 초과 시 `actionError` 노출
+- BE `TransportService.MAX_WAYPOINTS`(=17) lockstep — 이용자 정차 상한 `MAX_TRANSPORT_STOPS`(=15)와는 별개
+</details>
+
+### 📝 엑셀 일괄등록 안내 문구 코드 정리 (BE·FE, SEC-D34)
+- **에이전트**: COD
+- **한 일**: 엑셀 일괄등록 화면에서 보이던 두 안내 문구(**「업로드할 엑셀 파일이 없습니다.」**·**「엑셀 파일을 읽을 수 없습니다.」**)가 여러 파일에 문자열로 흩어져 있던 것을 **코드 한 곳(공용 상수)** 으로 모았습니다. 새 엑셀 업로드 화면이 생겨도 문구가 서로 어긋나지 않도록 하는 **내부 정리**로, 실제로 보이는 문구와 동작은 그대로입니다.
+- **내 화면/업무에 영향**: 없음 — 문구·화면·동작 변화 없는 코드 정리(리팩터링)
+- **상태**: 완료
+
+<details><summary>자세히</summary>
+
+- 실측: BE develop `924b8d8` · FE develop `23b47ea` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- BE: `BankDepositImportService` · `StaffNhisCaregiverImportService` 를 `MISSING_EXCEL_MESSAGE` 상수로 통일(4개 import service 단일 상수 참조) · 「엑셀 파일을 읽을 수 없습니다.」도 5개 파서·4개 import service의 `UNREADABLE_EXCEL_MESSAGE` 상수로 통일
+- FE: `excelImportFiles.js` — pre-upload 헤더 읽기 실패 문구를 `EXCEL_IMPORT_UNREADABLE_MESSAGE` 상수로 추출, BE house-style 문구와 verbatim lockstep
+
+</details>
+
 ### 📝 SEC-D34 엑셀 import 보강 테스트·정정 
 - **에이전트**: COD
 - **한 일**: develop HEAD 실측 후 **BE `73a3a63` / FE `495040f`** 로 기준(CHANGELOG+FAQ) 동기화. **엑셀 import 손상 OOXML·빈 파일 fail-closed 회귀 테스트**를 **방문 통합 계층**과 **은행/요양보호사/방문 파서 계층** 양쪽에서 고정했고, **필수엑셀 사본 누락** 사전검증을 import entrypoints 5종에서 강화했습니다. 
@@ -35,7 +73,6 @@
 
 - BE: `73a3a63`(missing copy lock) + `b3e7cce`(empty/missing 문구 통일) + `2c102e5`(visit integration fail-closed) + `7fa8335`(parser corrupt body) + `0a97b22`(parser fail-closed)
 - FE: `495040f`(FE empty/missing 문구) + `3e89ab7`(은행 입금 import OOXML fixture) + `51a3db4`(NHIS MIME-spoof reject) + `d0c8fd2`(인쇄 메뉴 숨김) + `6f8e349`(RFID 이중엑셀 magic-byte)
-- 회귀: 손상·위장·빈·0바이트·빈헤더 5개 계층 고정 · 제품 정상 흐름 변화 없음
 
 </details>
 
@@ -47,7 +84,7 @@
 
 <details><summary>자세히</summary>
 
-- 실측: BE develop `b3e7cce` · FE develop `3e89ab7` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
+- 실측: BE develop `924b8d8` · FE develop `23b47ea` — **133 route** · **106 page** · Flyway **V1–V196** · 모듈 **97.41%**
 - FAQ Q935 신설(리포트 인쇄 메뉴 숨김) · Q934 보강(빈/없는 파일 안내 문구 통일) · Q930~Q933 유지
 
 </details>
