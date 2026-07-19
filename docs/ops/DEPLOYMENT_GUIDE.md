@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T01:10:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T13:10:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-18 (엑셀 import 안내 문구 상수 통일(리팩터링) · baseline `49349e4`/`5e816e6` · Flyway **V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-07-19 (기선 갱신 BE `6d3c766` / FE `e8ff8dc` · **Flyway V1–V196** · 모듈 **97.41%**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
