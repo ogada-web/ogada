@@ -1,3 +1,149 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T18:25:00Z -->
+<!-- tester-sync: TSR 1954차 2026-07-19T18:25:00Z (frontend) — ROADMAP merged baseline `@fa838f5` 재확인 reconfirm · develop/test **SYNCED `@fa838f5`** WT CLEAN · pending **0**(`rev-list --left-right test...develop`=`0 0`) · merge **N/A**(TSR1952 이후 신규 develop 커밋 없음) · full `npm test` **SKIP**(TSR1943 2802/2802 PASS carry·baseline 무변동·vitest concurrent `src/frontend` PID2079315 §5 CRITICAL·rules §1-1) · `npm audit --audit-level=high` **0 vulnerabilities**(fresh 1.04s) · backend `/api/v1/health`=200 · disk **79G/47%**(ENOSPC 회복 유지) · vitest 동시 실행 **감지**(src/frontend PID2079315·본 세션 미기동) · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@fa838f5` both pending 0) · operation **BLOCK**(QA-B116 FE +38·BE +774 + QA-B95). -->
+
+## Checklist (frontend · test `@fa838f5` · develop `@fa838f5` · TSR1954)
+
+| # | gate | result | notes |
+|---|------|--------|-------|
+| 1 | test branch HEAD matches manifest | PASS | `fa838f5` |
+| 2 | develop HEAD recorded | PASS | `fa838f5` (WT **CLEAN**) |
+| 3 | develop→test pending | PASS | **0** (`rev-list --left-right test...develop`=`0 0`) |
+| 4 | develop→test merge | **N/A (SYNCED)** | develop==test `@fa838f5` · TSR1952 이후 신규 develop 커밋 없음 |
+| 5 | full suite `npm test` | **SKIP** | TSR1943 **2802/2802 PASS** (491 files·918.64s·0F·exit 0) carry · baseline 무변동 · vitest concurrent `src/frontend` PID2079315 §5 CRITICAL · rules §1-1 |
+| 6 | targeted (changed files) | **N/A** | reconfirm cycle — TSR1952 targeted 3/3 PASS carry |
+| 7 | `npm run build` | **PASS (carry)** | TSR1952 **1234 modules** (9.27s) |
+| 8 | `npm audit` high | **PASS** | high **0** critical **0** (fresh 재실행·1.04s) |
+| 9 | live E2E smoke (결정 96) | SKIP | **QA-B95 carry** (`liveE2eBootstrapEnabled=false`) · backend `/api/v1/health`=200 |
+| 10 | working tree clean (develop) | PASS | WT **CLEAN** (`fa838f5`) |
+| 11 | origin/test push | SKIP | tester/merge 스크립트 전담 · local `test`는 origin/test(`b23711f`) 대비 **+38** = QA-B116 |
+| 12 | Open QA severity BLOCK (frontend product) | PASS | Open(FE product) **0** |
+| **verdict** | | **PASS** (FE local transfer) | SYNCED pending 0 · TSR1943 full 2802/2802 carry + fresh audit high 0 + health 200 corroboration |
+
+### Note
+- **TSR1954**: baseline `@fa838f5` 무변동 재확인 사이클. TSR1952(18:00Z) 이후 신규 develop 커밋·미커밋 변경 없음. `src/frontend`(develop WT)에서 타 vitest run(PID2079315) 진행 중 → §5 CRITICAL 동시 실행 금지 준수, full `npm test` 신규 기동 미수행. rules §1-1에 따라 full 재실행 SKIP. `npm audit --audit-level=high` **fresh 재실행**(high 0·critical 0·1.04s) + backend `/api/v1/health`=200 비충돌 corroboration 수행.
+- **회귀 baseline**: TSR1943 full `npm test` **2802/2802 PASS** (`@fa838f5`·491 files·918.64s·exit 0) carry.
+- **operation BLOCK 잔존**: origin/test push 미실행(**FE +38**·QA-B116) + live-E2E bootstrap-disabled(QA-B95).
+- Full history: `docs/qa/TEST_REPORT.md`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T18:00:00Z -->
+<!-- tester-sync: TSR 1952차 2026-07-19T18:00:00Z (frontend) — **★ UXD-202 a11y `.ds-table-wrap` needs-assessment compare 1커밋 MERGED** develop→test FF `6a9e85e`→`fa838f5`(pending **1→0**·`--ff-only`·FF-safe·merge-base==test HEAD) · targeted `npm test -- ClientNeedsAssessmentCompare.test.jsx` **3/3 PASS**(1.22s) + TSR1943 full **2802/2802 PASS** carry(델타=additive a11y 2파일) · `npm run build` **PASS**(9.27s) · backend `/api/v1/health`=200 · vitest 동시 실행 **없음** · disk **79G/47%**(ENOSPC 회복) · develop/test **SYNCED `@fa838f5`** WT CLEAN · Open(FE product) **0**(QA-20260719-B627 cross-stream BLOCK 해소) · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@fa838f5` both pending 0) · operation **BLOCK**(QA-B116 FE +38·BE +774 + QA-B95). -->
+
+## Checklist (frontend · test `@fa838f5` · develop `@fa838f5` · TSR1952)
+
+| # | gate | result | notes |
+|---|------|--------|-------|
+| 1 | test branch HEAD matches manifest | PASS | `fa838f5` |
+| 2 | develop HEAD recorded | PASS | `fa838f5` (WT **CLEAN**) |
+| 3 | develop→test pending | PASS | **0** after FF (`rev-list --left-right test...develop`=`0 0`) |
+| 4 | develop→test merge | **MERGED (FF)** | `6a9e85e`→`fa838f5` (UXD-202·pending 1→0·`--ff-only`·merge-base==test HEAD·v1.2.1 merge_status ready) |
+| 5 | full suite `npm test` | **PASS (carry)** | TSR1943 **2802/2802 PASS**(491 files·918.64s·0F·exit 0) · 델타 `6a9e85e→fa838f5`=additive a11y 2파일 |
+| 6 | targeted (UXD-202 1 file) | **PASS** | `npm test -- ClientNeedsAssessmentCompare.test.jsx` **3/3 PASS**(1.22s·clean summary·`@fa838f5`) |
+| 7 | `npm run build` (fresh) | **PASS** | 9.27s (1234 modules carry) |
+| 8 | `npm audit` high | **PASS (carry)** | high **0** (TSR1950 carry · 델타 additive a11y·dep 무변동) |
+| 9 | live E2E smoke (결정 96) | SKIP | **QA-B95 carry** (`liveE2eBootstrapEnabled=false`) · 수동 FF merge라 auto live-e2e 미트리거 · backend `/api/v1/health`=200 |
+| 10 | working tree clean (develop) | PASS | WT **CLEAN** (`fa838f5`) |
+| 11 | origin/test push | SKIP | tester/merge 스크립트 전담 · local `test`는 origin/test(`b23711f`) 대비 **+38** = QA-B116 |
+| 12 | Open QA severity BLOCK (frontend product) | PASS | Open(FE product) **0** (QA-20260719-B627 cross-stream BLOCK 해소) |
+| **verdict** | | **PASS** (FE local transfer) | UXD-202 FF merged·targeted 3/3 clean summary + full 2802/2802 carry green·build+health PASS |
+
+### Note
+- **TSR1952**: coder가 `develop`에 신규 커밋 `fa838f5`(UXD-202)를 착지 → develop 1 ahead of test(`6a9e85e`)·FF-safe·WT CLEAN. `src/frontend-test@test`에서 `git merge --ff-only develop`로 이관(pending 1→0). 이로써 직전 사이클(TSR1951)에서 backend가 열었던 **cross-stream BLOCK QA-20260719-B627**(frontend `test..develop` 0/1 pending) 해소.
+- **UXD-202**: `ClientNeedsAssessmentCompare`가 공유 Table 컴포넌트의 `.ds-table-wrap`(overflow-x:auto)을 우회하던 유일한 raw `ds-table`였음 → 좁은 뷰포트에서 3년 비교 3열 테이블의 가로 오버플로 위험(FE-16·WCAG 1.4.10 Reflow·§107/§126). 래퍼 추가 + 회귀 단언 동봉. `ds-*` 신규 클래스 0·CSS 무변경(behavior-neutral).
+- **검증 전략(rules §1-1)**: 델타가 순수 additive a11y 2파일 → 15분 full suite 대신 changed test 파일 targeted 재실행(**3/3 PASS**)으로 델타 커버 + build/health corroboration. Full-suite green baseline = TSR1943 `@6a9e85e` **2802/2802 PASS** carry(델타 CSS·dep 무변동으로 유효).
+- **operation BLOCK 잔존**: origin/test push 미실행(**FE +38**·QA-B116) + live-E2E bootstrap-disabled(QA-B95).
+- Full history: `docs/qa/TEST_REPORT.md`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T17:40:00Z -->
+<!-- tester-sync: TSR 1950차 2026-07-19T17:40:00Z (frontend) — tester QA 이관 재확인 cycle · develop/test/origin-develop **SYNCED `@6a9e85e`** WT CLEAN · pending **0**(`rev-list --left-right test...develop`=`0 0`) · merge **N/A**(TSR1939 이후 신규 develop 커밋 없음) · full `npm test` **2802/2802 PASS** carry(TSR1943·491 files·918.64s·0F·exit 0·동일 baseline 유효) · vitest 동시 실행 **없음** · `npm audit --audit-level=high` **0 vulnerabilities**(fresh·1.2s) · build **PASS** carry(1234 modules) · backend `/api/v1/health`=200 · disk **949M/100%** 극압박(악화·ENOSPC 리스크) · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@6a9e85e` both pending 0) · operation **BLOCK**(QA-B116 FE +37·BE +774 + QA-B95). -->
+
+## Checklist (frontend · test `@6a9e85e` · develop `@6a9e85e` · TSR1950)
+
+| # | gate | result | notes |
+|---|------|--------|-------|
+| 1 | test branch HEAD matches manifest | PASS | `6a9e85e` |
+| 2 | develop HEAD recorded | PASS | `6a9e85e` (WT **CLEAN**) |
+| 3 | develop→test pending | PASS | **0** (`rev-list --left-right test...develop`=`0 0`) |
+| 4 | develop→test merge | **N/A (SYNCED)** | develop==test==origin/develop `@6a9e85e` · TSR1939 이후 신규 develop 커밋 없음 |
+| 5 | full suite `npm test` | **PASS (carry)** | TSR1943 **2802/2802 PASS** (491 files · 918.64s · 0F · exit 0) · baseline `@6a9e85e` 무변동 → 유효 · disk 100% ENOSPC 회피로 재실행 SKIP (rules §1-1) |
+| 6 | vitest 동시 실행 | **없음** | `ps aux | grep '[v]itest run'` clear |
+| 7 | `npm run build` | **PASS (carry)** | TSR1943 **1234 modules** |
+| 8 | `npm audit` high | **PASS** | high **0** (0 vulnerabilities · **fresh 재실행** 1.2s) |
+| 9 | live E2E smoke (결정 96) | SKIP | **QA-B95 carry** (`liveE2eBootstrapEnabled=false`) · backend `/api/v1/health`=200 |
+| 10 | working tree clean (develop) | PASS | WT **CLEAN** (`6a9e85e`) |
+| 11 | origin/test push | SKIP | tester/merge 스크립트 전담 · local `test`는 origin/test(`b23711f`) 대비 **+37** = QA-B116 |
+| 12 | Open QA severity BLOCK (frontend product) | PASS | Open(FE product) **0** |
+| **verdict** | | **PASS** (FE local transfer) | SYNCED pending 0 · 2802/2802 carry + fresh audit high 0 · health 200 corroboration PASS |
+
+### Note
+- **TSR1950**: baseline `@6a9e85e` 무변동 재확인 사이클. 신규 develop 커밋 없음 → merge N/A. 동일 baseline TSR1943 full **2802/2802 PASS** carry를 유효 판정으로 사용(rules §1-1·baseline 무변동). 저비용 `npm audit --audit-level=high`를 **fresh 재실행**해 **0 vulnerabilities** 재확인 + backend `/api/v1/health`=200.
+- **disk 회복(ENOSPC 리스크 해소)**: 사이클 중 host 정리로 **949M/100% → 79G/46%** 로 대폭 회복. TSR1888~1948 지속되던 disk 극압박(QA-B624/B626 근본 원인)이 해소되어 다음 full `npm test`(918s) 안전 실행 가능.
+- **operation BLOCK 잔존**: origin/test push 미실행(**FE +37**·QA-B116) + live-E2E bootstrap-disabled(QA-B95).
+- Full history: `docs/qa/TEST_REPORT.md`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T17:19:00Z -->
+<!-- tester-sync: TSR 1948차 2026-07-19T17:19:00Z (frontend) — tester QA 이관 재확인 cycle · develop/test/origin-develop **SYNCED `@6a9e85e`** WT CLEAN · pending **0**(`rev-list --left-right test...develop`=`0 0`) · merge **N/A**(TSR1939 이후 신규 develop 커밋 없음) · full `npm test` **2802/2802 PASS** carry(TSR1943·491 files·918.64s·0F·exit 0·동일 baseline 유효) · vitest 동시 실행 **없음**(TSR1946 감지 외부 PID 2035573 종료) · `npm audit --audit-level=high` **0 vulnerabilities**(fresh 재실행) · build **PASS** carry(1234 modules) · backend `/api/v1/health`=200 · disk **1.2G/100%** 극압박 지속 · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@6a9e85e` both pending 0) · operation **BLOCK**(QA-B116 FE +37·BE +774 + QA-B95). -->
+
+## Checklist (frontend · test `@6a9e85e` · develop `@6a9e85e` · TSR1948)
+
+| # | gate | result | notes |
+|---|------|--------|-------|
+| 1 | test branch HEAD matches manifest | PASS | `6a9e85e` |
+| 2 | develop HEAD recorded | PASS | `6a9e85e` (WT **CLEAN**) |
+| 3 | develop→test pending | PASS | **0** (`rev-list --left-right test...develop`=`0 0`) |
+| 4 | develop→test merge | **N/A (SYNCED)** | develop==test==origin/develop `@6a9e85e` · TSR1939 이후 신규 develop 커밋 없음 |
+| 5 | full suite `npm test` | **PASS (carry)** | TSR1943 **2802/2802 PASS** (491 files · 918.64s · 0F · exit 0) · 동일 baseline `@6a9e85e` → 유효 · disk 100% ENOSPC 회피로 재실행 SKIP (rules §1-1) |
+| 6 | vitest 동시 실행 | **없음** | TSR1946 감지 외부 PID 2035573 종료 확인 (`ps aux | grep '[v]itest run'` clear) |
+| 7 | `npm run build` | **PASS (carry)** | TSR1943 **1234 modules** |
+| 8 | `npm audit` high | **PASS** | high **0** (0 vulnerabilities · **fresh 재실행** this cycle) |
+| 9 | live E2E smoke (결정 96) | SKIP | **QA-B95 carry** (`liveE2eBootstrapEnabled=false`) · backend `/api/v1/health`=200 |
+| 10 | working tree clean (develop) | PASS | WT **CLEAN** (`6a9e85e`) |
+| 11 | origin/test push | SKIP | tester/merge 스크립트 전담 · local `test`는 origin/test(`b23711f`) 대비 **+37** = QA-B116 |
+| 12 | Open QA severity BLOCK (frontend product) | PASS | Open(FE product) **0** |
+| **verdict** | | **PASS** (FE local transfer) | SYNCED pending 0 · 2802/2802 carry + fresh audit high 0 · build+health corroboration PASS |
+
+### Note
+- **TSR1948**: baseline `@6a9e85e` 무변동 재확인 사이클. 신규 develop 커밋 없음 → merge N/A. TSR1946 이 감지했던 외부 `vitest run`(PID 2035573)이 종료되어 동시 실행 없음이나, disk가 **1.2G/100%** 극압박이라 918s full suite 재실행 대신 동일 baseline TSR1943 full **2802/2802 PASS** carry를 유효 판정으로 사용(rules §1-1). 대신 저비용 `npm audit --audit-level=high`를 **fresh 재실행**해 **0 vulnerabilities** 재확인 + backend `/api/v1/health`=200.
+- **disk 극압박(ENOSPC 리스크)**: 1.2G/100% 지속. append-only 리포트·다음 full `npm test`(918s) 시 ENOSPC 재발 위험(QA-B624/B626 근본 원인). **host 정리 필요**(infra — tester 쓰기 범위 밖).
+- **operation BLOCK 잔존**: origin/test push 미실행(**FE +37**·QA-B116) + live-E2E bootstrap-disabled(QA-B95).
+- Full history: `docs/qa/TEST_REPORT.md`
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T17:08:13Z -->
+<!-- tester-sync: TSR 1946차 2026-07-19T17:08:13Z (frontend) — tester QA 이관 재확인 cycle · develop/test/origin-develop **SYNCED `@6a9e85e`** WT CLEAN · pending **0**(`rev-list --left-right test...develop`=`0 0`) · merge **N/A**(TSR1939 이후 신규 develop 커밋 없음) · full `npm test` **2802/2802 PASS** carry(TSR1943·491 files·918.64s·0F·exit 0) · **동시 vitest 실행 중**(PID 2035573·16:55 시작·본 세션 미기동) → 신규 npm test **미기동**(동시성 금지 준수) · build **PASS** carry(1234 modules) · audit high **0** carry · backend `/api/v1/health`=200 · disk **1.2G/100%** 극압박(악화) · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@6a9e85e` both pending 0) · operation **BLOCK**(QA-B116 FE +37·BE +774 + QA-B95). -->
+
+## Checklist (frontend · test `@6a9e85e` · develop `@6a9e85e` · TSR1946)
+
+| # | gate | result | notes |
+|---|------|--------|-------|
+| 1 | test branch HEAD matches manifest | PASS | `6a9e85e` |
+| 2 | develop HEAD recorded | PASS | `6a9e85e` (WT **CLEAN**) |
+| 3 | develop→test pending | PASS | **0** (`rev-list --left-right test...develop`=`0 0`) |
+| 4 | develop→test merge | **N/A (SYNCED)** | develop==test==origin/develop `@6a9e85e` · TSR1939 이후 신규 develop 커밋 없음 |
+| 5 | full suite `npm test` | **PASS (carry)** | TSR1943 **2802/2802 PASS** (491 files · 918.64s · 0F · exit 0) · baseline 무변동으로 유효 |
+| 6 | vitest 동시 실행 | **감지(외부)** | PID 2035573 (16:55 시작 · **본 세션 미기동**) — 동시성 금지 규칙 준수, 신규 run 미기동 |
+| 7 | `npm run build` | **PASS (carry)** | TSR1943 **1234 modules** |
+| 8 | `npm audit` high | **PASS** | high **0** (TSR1943 carry) |
+| 9 | live E2E smoke (결정 96) | SKIP | **QA-B95 carry** (`liveE2eBootstrapEnabled=false`) · backend `/api/v1/health`=200 |
+| 10 | working tree clean (develop) | PASS | WT **CLEAN** (`6a9e85e`) |
+| 11 | origin/test push | SKIP | tester/merge 스크립트 전담 · local `test`는 origin/test(`b23711f`) 대비 **+37** = QA-B116 |
+| 12 | Open QA severity BLOCK (frontend product) | PASS | Open(FE product) **0** |
+| **verdict** | | **PASS** (FE local transfer) | SYNCED pending 0 · 2802/2802 carry · build+audit+health PASS |
+
+### Note
+- **TSR1946**: baseline `@6a9e85e` 무변동 재확인 사이클. 신규 develop 커밋 없음 → merge N/A. **외부 vitest full run이 이미 실행 중**(PID 2035573, 16:55~)이라 동시성 금지 규칙(`docs/qa/VITEST_CONCURRENCY.md`)에 따라 **신규 `npm test`를 기동하지 않고** TSR1943의 동일 baseline full **2802/2802 PASS** carry를 유효 판정으로 사용.
+- **disk 극압박 악화**: 1.5G → **1.2G/100%**. append-only 리포트·live-e2e ENOSPC 재발 위험 지속(QA-B626/live-e2e FAIL 이력의 근본 원인). host 정리 필요(infra — tester 쓰기 범위 밖).
+- **operation BLOCK 잔존**: origin/test push 미실행(**FE +37**·BE +774 = QA-B116) + live-E2E bootstrap-disabled(QA-B95).
+- Full history: `docs/qa/TEST_REPORT.md`
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T16:43:44Z -->
 <!-- tester-sync: TSR 1944차 2026-07-19T16:43:44Z (frontend) — tester QA 이관 검증 cycle · develop/test/origin-develop **SYNCED `@6a9e85e`** WT CLEAN · pending **0**(`rev-list --left-right test...develop`=`0 0`) · merge **N/A**(TSR1939 이후 신규 develop 커밋 없음) · full `npm test` **2802/2802 PASS** carry(TSR1943·491 files·918.64s·0F·exit 0·16:26:18Z) · 별도 run 16:25:30→16:41:49Z 정상 종료 · build **PASS** carry(1234 modules·11.57s) · audit **0** carry · backend `/api/v1/health`=200 · vitest 동시 실행 **없음** · disk **1.5G/100%** 극압박 · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@6a9e85e` both pending 0) · operation **BLOCK**(QA-B116 FE +37·BE +774 + QA-B95). -->
 
