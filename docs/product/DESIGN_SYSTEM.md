@@ -1,9 +1,10 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-19T15:35:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-19T17:55:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-19 (201차 — **청구·수가·백업·보호자명세 화면 일자 열 `<time dateTime>` 기계 판독 정합 확산 + §125** — 200차(§124)가 모니터링·이력 패널을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **청구 상세·수납 목록·수가표·본인부담 비율·백업 이력·청구 기준 설정·보호자 명세** 화면으로 확산. `toLocaleDateString/toLocaleString("ko-KR")` 평문 렌더 패턴을 전역 감사해 남은 WCAG 1.3.1 갭 8곳을 확인·정합. 직접 래핑: `BillingDetailPage`(수납일 `paidAt`·환불일 `refundedAt` 각 조건부 `<time>`)·`PaymentPage`(수납일 `p.paidAt`)·`FeeScheduleTable`(적용 시작일 `effectiveFrom`)·`CopayRateTable`(적용 시작일 `effectiveFrom`)·`BackupSettingsPanel`(시작 시각 `startedAt`·완료 시각 `completedAt`). JSX 반환 헬퍼 전환: `BillingSettingsPanel.formatLockedAt`(잠금 일시 `lockedAt`)·`GuardianBillingDetailModal.formatPaidAt`(입금일 `paidAt`) — 반환 타입을 string→JSX `<time dateTime={value}>`로 전환(소비 `<dd>`·`<td>`에서 React 렌더링 정합). **신규 `ds-*` 0건**·CSS 무변경. 7개 test 파일에 `<time datetime>` 회귀 단언 추가·`npm test`(flock) **7파일 40/40 PASS**·build PASS. baseline FE `@c2fb261` → UXD-201.)
+> **최종 갱신**: 2026-07-19 (202차 — **욕구사정 비교 표 `.ds-table-wrap` 가로 오버플로 래퍼 정합 + §126** — 201차(§125)가 일자 열 `<time dateTime>` 확산을 마친 뒤 coder 신규 커밋 0건(HEAD=`6a9e85e` UXD-201 자체)이라 USER_STORIES·FLOWCHART 대비 접근성 재점검을 자발 수행. §107(`HomeNewsletterLaunchPage` 원시 표 `.ds-table-wrap` 누락)에서 확립한 「원시 `ds-table`는 공용 `Table` 컴포넌트와 동일하게 `<div class="ds-table-wrap">`(`overflow-x:auto`)로 래핑」 규율로 `<table className="ds-table …">` 직접 소비처를 전수 재감사. 다른 원시 소비처 8종(`GuardianBillingDetailModal`·`FeeSurchargeGuidePanel`·`DiscrepancyComparePanel`·`GuardianInvitationList`·`HomeNewsletterLaunchPage`·`StaffPayrollReportsPage`·`StaffPayrollBasisPage`·`PaymentRecordModal`)은 모두 래핑됐으나, **`ClientNeedsAssessmentCompare`(US-T09·G24b 이전 회계연도 욕구사정 diff)** 단 1곳만 래퍼 없이 3열 비교 표를 노출해 좁은 뷰포트에서 카드 밖 가로 오버플로(WCAG 1.4.10 Reflow 위반 위험)하던 §107 회귀를 확인·정합(caption·`scope`·`ds-table__row--changed`·`변경` Badge 보존). `ds-calendar__table`·`ds-copay-calculator__result-table`(2열 키-값)·`ds-billing-claim-print-table`(인쇄 전용)은 자체 CSS·특수 레이아웃이라 대상 외. **신규 `ds-*` 0건**·CSS 무변경. `ClientNeedsAssessmentCompare.test.jsx`에 `.ds-table-wrap` 래퍼 회귀 단언 추가·`npm test`(flock) **1파일 3/3 PASS**·build PASS. baseline FE `@6a9e85e` → UXD-202.)
+> **이전 갱신**: 2026-07-19 (201차 — **청구·수가·백업·보호자명세 화면 일자 열 `<time dateTime>` 기계 판독 정합 확산 + §125** — 200차(§124)가 모니터링·이력 패널을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **청구 상세·수납 목록·수가표·본인부담 비율·백업 이력·청구 기준 설정·보호자 명세** 화면으로 확산. `toLocaleDateString/toLocaleString("ko-KR")` 평문 렌더 패턴을 전역 감사해 남은 WCAG 1.3.1 갭 8곳을 확인·정합. 직접 래핑: `BillingDetailPage`(수납일 `paidAt`·환불일 `refundedAt` 각 조건부 `<time>`)·`PaymentPage`(수납일 `p.paidAt`)·`FeeScheduleTable`(적용 시작일 `effectiveFrom`)·`CopayRateTable`(적용 시작일 `effectiveFrom`)·`BackupSettingsPanel`(시작 시각 `startedAt`·완료 시각 `completedAt`). JSX 반환 헬퍼 전환: `BillingSettingsPanel.formatLockedAt`(잠금 일시 `lockedAt`)·`GuardianBillingDetailModal.formatPaidAt`(입금일 `paidAt`) — 반환 타입을 string→JSX `<time dateTime={value}>`로 전환(소비 `<dd>`·`<td>`에서 React 렌더링 정합). **신규 `ds-*` 0건**·CSS 무변경. 7개 test 파일에 `<time datetime>` 회귀 단언 추가·`npm test`(flock) **7파일 40/40 PASS**·build PASS. baseline FE `@c2fb261` → UXD-201.)
 > **이전 갱신**: 2026-07-19 (200차 — **모니터링·이력 패널 일자·시각 열 `<time dateTime>` 기계 판독 정합 확산 + §124** — 199차(§123)가 청구·평가·알림 목록 표를 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **설정·모니터링·이력 패널**로 확장. `new Date(iso).toLocaleString/toLocaleDateString("ko-KR")`을 `<td>` 안에 평문 렌더하던 남은 WCAG 1.3.1 갭을 전역 감사해 4개 패널 5열을 확인·정합. 이미 `<time>` 정합된 `CmsCollectionPanel`·`BillingLedgerTable`(§123)과 불일치하던 `LoginHistoryPanel`(로그인 시각 `createdAt`)·`AuditLogPanel`(발생 시각 `createdAt`)·`NotificationHistoryPanel`(발송 시각 `sentAt`/`createdAt`)·`FeeRateHistoryPanel`(적용 시작 `effectiveFrom`·등록일 `createdAt`)의 일자·시각 셀을 조건부 `value ? <time dateTime={iso}>{로캘표시}</time> : "—"` 로 래핑. 날짜+시각 결합 셀은 `dateTime`에 완전 ISO·표시 텍스트는 로캘 포맷 유지(§123-4 정합). `GuardianDailySummary` 체크인/체크아웃(시각 단독·`<dd>`)은 §121·§122 원칙대로 평문 유지·대상 외. **신규 `ds-*` 0건**·CSS 무변경. 3개 기존 test에 `<time datetime>` 회귀 단언 추가·`FeeRateHistoryPanel` 신규 test 추가·`npm test`(flock) **4파일 12/12 PASS**·build PASS. baseline FE `@e8ff8dc` → UXD-200.)
 > **이전 갱신**: 2026-07-19 (199차 — **청구·평가·알림 목록 표 일자 열 `<time dateTime>` 기계 판독 정합 확산 + §123** — 198차(§122)가 비리포트 CRUD·기록 목록 화면의 일자 셀을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **청구 대장(US-M03)·compliance 현황(G38·G40b·G24b)·평가/알림 이력 표**로 확장. `<td>{...Date}</td>`·`formatDate(...)`·`{new Date(...).toLocaleDateString()}` 3가지 평문 렌더 패턴을 전역 감사해 남은 WCAG 1.3.1 갭 10곳(청구 대장 3열 포함)을 확인·정합. `CashReceiptIssuancePage.formatDate`(이미 `<time>` 반환) 패턴에 맞춰: `BillingLedgerTable`(입금일·환불일·수납일 — 공용 `renderDateCell` 헬퍼)·`NeedsAssessmentStatusPage`(homeVisitDate)·`PeriodicRiskAssessmentStatusPage`(ltcCertValidFrom)·`CarePlanNotificationPage`(ltcCertValidFrom)는 `formatDate` 헬퍼가 `<time dateTime={iso}>{iso}</time>` 반환하도록 통일, `OverduePage`(lastReminderAt)·`HealthDetailPage`(recordedAt)·`GuardianDetailPage`(sentAt 날짜+시각)·`ProvisionResultEvaluationPage`(evaluationDate)·`FunctionalRecoveryPage`(annualExecutionDate)·`VisitRfidDiffComparePanel`(visitDate)는 셀 조건부 `value ? <time> : "—"` 래핑. 빈 값은 placeholder 유지·`formatWeekRange`·시각 결합 셀은 §121·§122 원칙대로 평문 유지. **신규 `ds-*` 0건**·CSS 무변경. 7개 test 파일에 `<time>` 회귀 단언 추가·`npm test`(flock) 7파일 43/43 PASS + `OverduePage`·`HealthDetailPage` 회귀 2파일 8/8 PASS·build PASS. baseline FE `@c3f0e05` → UXD-199.)
 > **이전 갱신**: 2026-07-19 (198차 — **비(非)리포트 목록 표 일자 열 `<time dateTime>` 기계 판독 정합 확산 + §122** — 197차(§121)가 L02 리포트 화면군의 인라인 표 일자 열을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 이어가 **리포트 외 CRUD·목록 화면**에서도 일자 셀이 `<td>{item.xxxDate}</td>` **평문**으로 남은 WCAG 1.3.1 갭 8곳을 확인·정합. 8개 표를 `<time dateTime={item.X}>{item.X}</time>`로 래핑: `CaseManagementPage`(meetingDate·회의일)·`NursingWeightRecordPage`(measureDate·측정일)·`NursingOralCareCheckPage`(checkDate·점검일)·`NursingEmergencyRecordPage`(occurrenceDate·발생일)·`NursingVitalCheckPage`(checkDate·점검일, 시각과 결합된 셀은 날짜 부분만 래핑)·`PressureUlcerPage`(careDate·간호 기록일)·`LeadCaregiverWorkLogPage`(logDate·기록 일자)·`ClientOutingReportPage`(outingDate)·`components/outing/ClientOutingPanel`(outingDate). **신규 `ds-*` 0건**·CSS 무변경. 9개 test 파일에 `<time>` 회귀 단언 추가·`npm test`(flock) 9파일 70/70 PASS·build PASS. baseline FE `@aab11b2` → UXD-198.)
@@ -6601,6 +6602,37 @@ aria-describedby={
 
 - 7개 test 파일(`BillingDetailPage`·`PaymentPage`·`FeeScheduleTable`·`CopayRateTable`·`BackupSettingsPanel`·`BillingSettingsPanel`·`GuardianBillingDetailModal`)에 `<time datetime>` 회귀 단언 추가(`BillingDetailPage`는 수납·환불 분리 2건).
 - `npm test`(flock 잠금 경유) **7파일 40/40 PASS** · `npm run build` PASS · 신규 `ds-*` 0건.
+
+---
+
+## §126. 욕구사정 비교 표 `.ds-table-wrap` 가로 오버플로 래퍼 정합 (202차) [UXD]
+
+> **201차(§125)** 가 일자 열 `<time dateTime>` 확산을 마친 뒤, coder 신규 커밋 0건(HEAD=`6a9e85e` UXD-201 자체)이라 USER_STORIES·FLOWCHART 대비 접근성 재점검을 자발 수행. §107(`HomeNewsletterLaunchPage` 원시 표 `.ds-table-wrap` 누락)에서 확립한 「원시 `ds-table`는 공용 `Table` 컴포넌트와 동일하게 `<div class="ds-table-wrap">`(`overflow-x:auto`)로 래핑」 규율을 전역 재감사. baseline FE `@6a9e85e` → UXD-202.
+
+### 126-1. 갭 — 원시 `ds-table`가 반응형 오버플로 래퍼를 우회 (FE-16 · WCAG 1.4.10 Reflow)
+
+공용 `Table` 컴포넌트(`components/ui/Table.jsx`)는 항상 `<div class="ds-table-wrap">`(`overflow-x:auto`)로 표를 감싸 좁은 뷰포트에서 표가 카드 밖으로 넘치지 않게 한다. 전역 감사에서 **`<table className="ds-table …">`를 직접 렌더하는 소비처**를 전수 점검한 결과, 다른 원시 소비처(`GuardianBillingDetailModal`·`FeeSurchargeGuidePanel`·`DiscrepancyComparePanel`·`GuardianInvitationList`·`HomeNewsletterLaunchPage`·`StaffPayrollReportsPage`·`StaffPayrollBasisPage`·`PaymentRecordModal`)는 모두 `.ds-table-wrap`로 감쌌으나, **`ClientNeedsAssessmentCompare`(US-T09·G24b 이전 회계연도 욕구사정 diff)** 단 1곳만 래퍼 없이 3열(항목·이전연도·현재연도) 비교 표를 노출해, 모바일 등 좁은 뷰포트에서 값이 길 때 표가 카드 밖으로 가로 오버플로(WCAG 1.4.10 Reflow 위반 위험)하던 §107 패턴 회귀를 확인.
+
+- `ds-calendar__table`(`DatePickerCalendar`·`VisitCalendar`)·`ds-copay-calculator__result-table`(`CopayCalculatorPanel`, 2열 키-값)·`ds-billing-claim-print-table`(`BillingStatementPrintPanel`, 인쇄 전용)은 자체 CSS·특수 레이아웃이라 대상 외(§97 관례).
+
+### 126-2. 조치 — 비교 표를 `.ds-table-wrap`로 래핑
+
+- `ClientNeedsAssessmentCompare`의 `<table className="ds-table ds-table--compact">`를 `<div className="ds-table-wrap">`로 감쌈(caption·`scope`·`ds-table__row--changed`·`변경` Badge 보존).
+- 순수 반응형 래퍼 추가라 시각·데이터·동작 불변.
+
+### 126-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — `.ds-table-wrap`은 §107 이전부터 정의된 기존 클래스, 마크업 래퍼만 추가·CSS 무변경.
+
+### 126-4. coder 전달 메모
+
+1. **원시 표 규율** — 새 표는 가능하면 공용 `Table` 컴포넌트를 쓰고, 부득이 원시 `<table className="ds-table">`를 렌더할 때는 반드시 `<div class="ds-table-wrap">`로 감싼다(overflow-x:auto·§107·§126).
+2. 좁은 뷰포트 검증 시 3열 이상 데이터 표는 가로 오버플로를 반드시 확인한다.
+
+### 126-5. 검증
+
+- `ClientNeedsAssessmentCompare.test.jsx`에 `.ds-table-wrap` 래퍼 회귀 단언 1건 추가.
+- `npm test`(flock 잠금 경유) **1파일 3/3 PASS** · `npm run build` PASS · 신규 `ds-*` 0건.
 
 ---
 
