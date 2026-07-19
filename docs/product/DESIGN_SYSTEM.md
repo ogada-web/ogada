@@ -1,9 +1,16 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-18T15:45:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-19T15:35:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-18 (194차 — **id=2 이동 회차(departureRound) 입력 6커밋 접근성 재점검 + 서버 필드 오류 이중 `role="alert"` 제거 + §118** — 193차(§117) 이후 coder 신규 커밋 6건(`93f4932` 이전 배차 로드 시 stale 회차 오류 해제·`23b47ea` `parseDepartureRoundInput` 공용 헬퍼 추출·`af1d4f6` 저장 차단 시 회차 필드 포커스·`d6f3889` 지수/16진 표기 거부·`8766331` Integer 상한 초과 거부·`b115ae0` 네이티브 `max` 상한 부여) 재점검. 다섯 커밋은 검증·포커스 로직 및 네이티브 제약 정합으로 접근성 강화(WCAG 2.4.3 포커스 이동·3.3.1 오류 식별·`Field error`→`aria-invalid`+`role=alert`)를 이미 갖춤. ① **서버 회차 필드 오류 이중 안내 제거(WCAG 3.3.1·4.1.3)** — `handleSaveDraft` catch 에서 BE `fieldErrors.departureRound` 를 받으면 `setRoundError`(필드 `role=alert`)와 **함께** 상단 일반 `setActionError`(또 다른 `role=alert`)를 무조건 설정해, 두 개의 `role="alert"` 가 동시에 안내되고 메시지가 중복(「입력값을 확인하세요.」 vs 「회차는 1 이상이어야 합니다.」)되던 갭을, 필드 오류일 땐 필드 단위로만 노출하고 그 외 오류만 상단 Alert 로 라우팅하도록 `else` 분기 전환(§67·§92 필드 오류 라우팅 패턴 정합). ② 네이티브 `max=MAX_DEPARTURE_ROUND`·`min="1"`·`step="1"` 이 JS 가드·BE `@Min(1) Integer` 계약과 lockstep 확인(변경 불요). ③ 신규 `ds-*` 클래스 0건 — FE-16 이슈 없음. **§118** 신규. baseline FE `@0d37788` → UXD-194. `npm test`(8/8)·build PASS.)
+> **최종 갱신**: 2026-07-19 (201차 — **청구·수가·백업·보호자명세 화면 일자 열 `<time dateTime>` 기계 판독 정합 확산 + §125** — 200차(§124)가 모니터링·이력 패널을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **청구 상세·수납 목록·수가표·본인부담 비율·백업 이력·청구 기준 설정·보호자 명세** 화면으로 확산. `toLocaleDateString/toLocaleString("ko-KR")` 평문 렌더 패턴을 전역 감사해 남은 WCAG 1.3.1 갭 8곳을 확인·정합. 직접 래핑: `BillingDetailPage`(수납일 `paidAt`·환불일 `refundedAt` 각 조건부 `<time>`)·`PaymentPage`(수납일 `p.paidAt`)·`FeeScheduleTable`(적용 시작일 `effectiveFrom`)·`CopayRateTable`(적용 시작일 `effectiveFrom`)·`BackupSettingsPanel`(시작 시각 `startedAt`·완료 시각 `completedAt`). JSX 반환 헬퍼 전환: `BillingSettingsPanel.formatLockedAt`(잠금 일시 `lockedAt`)·`GuardianBillingDetailModal.formatPaidAt`(입금일 `paidAt`) — 반환 타입을 string→JSX `<time dateTime={value}>`로 전환(소비 `<dd>`·`<td>`에서 React 렌더링 정합). **신규 `ds-*` 0건**·CSS 무변경. 7개 test 파일에 `<time datetime>` 회귀 단언 추가·`npm test`(flock) **7파일 40/40 PASS**·build PASS. baseline FE `@c2fb261` → UXD-201.)
+> **이전 갱신**: 2026-07-19 (200차 — **모니터링·이력 패널 일자·시각 열 `<time dateTime>` 기계 판독 정합 확산 + §124** — 199차(§123)가 청구·평가·알림 목록 표를 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **설정·모니터링·이력 패널**로 확장. `new Date(iso).toLocaleString/toLocaleDateString("ko-KR")`을 `<td>` 안에 평문 렌더하던 남은 WCAG 1.3.1 갭을 전역 감사해 4개 패널 5열을 확인·정합. 이미 `<time>` 정합된 `CmsCollectionPanel`·`BillingLedgerTable`(§123)과 불일치하던 `LoginHistoryPanel`(로그인 시각 `createdAt`)·`AuditLogPanel`(발생 시각 `createdAt`)·`NotificationHistoryPanel`(발송 시각 `sentAt`/`createdAt`)·`FeeRateHistoryPanel`(적용 시작 `effectiveFrom`·등록일 `createdAt`)의 일자·시각 셀을 조건부 `value ? <time dateTime={iso}>{로캘표시}</time> : "—"` 로 래핑. 날짜+시각 결합 셀은 `dateTime`에 완전 ISO·표시 텍스트는 로캘 포맷 유지(§123-4 정합). `GuardianDailySummary` 체크인/체크아웃(시각 단독·`<dd>`)은 §121·§122 원칙대로 평문 유지·대상 외. **신규 `ds-*` 0건**·CSS 무변경. 3개 기존 test에 `<time datetime>` 회귀 단언 추가·`FeeRateHistoryPanel` 신규 test 추가·`npm test`(flock) **4파일 12/12 PASS**·build PASS. baseline FE `@e8ff8dc` → UXD-200.)
+> **이전 갱신**: 2026-07-19 (199차 — **청구·평가·알림 목록 표 일자 열 `<time dateTime>` 기계 판독 정합 확산 + §123** — 198차(§122)가 비리포트 CRUD·기록 목록 화면의 일자 셀을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **청구 대장(US-M03)·compliance 현황(G38·G40b·G24b)·평가/알림 이력 표**로 확장. `<td>{...Date}</td>`·`formatDate(...)`·`{new Date(...).toLocaleDateString()}` 3가지 평문 렌더 패턴을 전역 감사해 남은 WCAG 1.3.1 갭 10곳(청구 대장 3열 포함)을 확인·정합. `CashReceiptIssuancePage.formatDate`(이미 `<time>` 반환) 패턴에 맞춰: `BillingLedgerTable`(입금일·환불일·수납일 — 공용 `renderDateCell` 헬퍼)·`NeedsAssessmentStatusPage`(homeVisitDate)·`PeriodicRiskAssessmentStatusPage`(ltcCertValidFrom)·`CarePlanNotificationPage`(ltcCertValidFrom)는 `formatDate` 헬퍼가 `<time dateTime={iso}>{iso}</time>` 반환하도록 통일, `OverduePage`(lastReminderAt)·`HealthDetailPage`(recordedAt)·`GuardianDetailPage`(sentAt 날짜+시각)·`ProvisionResultEvaluationPage`(evaluationDate)·`FunctionalRecoveryPage`(annualExecutionDate)·`VisitRfidDiffComparePanel`(visitDate)는 셀 조건부 `value ? <time> : "—"` 래핑. 빈 값은 placeholder 유지·`formatWeekRange`·시각 결합 셀은 §121·§122 원칙대로 평문 유지. **신규 `ds-*` 0건**·CSS 무변경. 7개 test 파일에 `<time>` 회귀 단언 추가·`npm test`(flock) 7파일 43/43 PASS + `OverduePage`·`HealthDetailPage` 회귀 2파일 8/8 PASS·build PASS. baseline FE `@c3f0e05` → UXD-199.)
+> **이전 갱신**: 2026-07-19 (198차 — **비(非)리포트 목록 표 일자 열 `<time dateTime>` 기계 판독 정합 확산 + §122** — 197차(§121)가 L02 리포트 화면군의 인라인 표 일자 열을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 이어가 **리포트 외 CRUD·목록 화면**에서도 일자 셀이 `<td>{item.xxxDate}</td>` **평문**으로 남은 WCAG 1.3.1 갭 8곳을 확인·정합. 8개 표를 `<time dateTime={item.X}>{item.X}</time>`로 래핑: `CaseManagementPage`(meetingDate·회의일)·`NursingWeightRecordPage`(measureDate·측정일)·`NursingOralCareCheckPage`(checkDate·점검일)·`NursingEmergencyRecordPage`(occurrenceDate·발생일)·`NursingVitalCheckPage`(checkDate·점검일, 시각과 결합된 셀은 날짜 부분만 래핑)·`PressureUlcerPage`(careDate·간호 기록일)·`LeadCaregiverWorkLogPage`(logDate·기록 일자)·`ClientOutingReportPage`(outingDate)·`components/outing/ClientOutingPanel`(outingDate). **신규 `ds-*` 0건**·CSS 무변경. 9개 test 파일에 `<time>` 회귀 단언 추가·`npm test`(flock) 9파일 70/70 PASS·build PASS. baseline FE `@aab11b2` → UXD-198.)
+> **이전 갱신**: 2026-07-19 (197차 — **L02 리포트 표 일자 열 `<time dateTime>` 기계 판독 정합 + §121** — 196차(§120) 이후 coder 신규 기능 커밋 0건(`0ff9c7d`는 UXD-196 후속 프로그램 리포트 회귀 test 전용)이라 USER_STORIES·FLOWCHART 대비 접근성 재점검을 자발 수행. §120에서 손댄 **L02 리포트 화면군** 표의 **일자 열**이 공용 패널(`ProgramReportPanel`·`NursingServiceReportPanel`, 이미 `<time dateTime>` 사용)과 달리 `<td>{item.xxxDate}</td>` **평문**으로 남아 보조기술이 날짜로 인식하지 못하던 **WCAG 1.3.1** 갭을, 인라인 표를 직접 렌더하는 5개 페이지(`BathHelpReportPage`·`CareMealExcretionReportPage`·`IntensiveExcretionReportPage`·`PositionChangeReportPage`·`PatientServiceReportPage`)의 일자 셀을 `<time dateTime={item.X}>{item.X}</time>`로 래핑해 정합(총 10개 셀: scheduledDate·recordDate·observationDate·assessedOn·careDate·restraintDate 등). **주간 범위 열**(`formatWeekRange`)은 단일 `datetime`으로 표현 불가라 평문 유지. `ServiceSummaryReportPage`는 일자 열 없음·`Nursing*`는 공용 패널 경유라 대상 외. **신규 `ds-*` 0건**·CSS 무변경. 5개 test 파일에 `<time>` 회귀 단언 추가·`npm test`(flock) 17/17 PASS·build PASS. baseline FE `@0ff9c7d` → UXD-197.)
+> **이전 갱신**: 2026-07-19 (196차 — **L02·L03·M5 리포트 9종 시작일 `aria-invalid`+`aria-describedby` 일괄 정합 + §120** — 195차(§119) 이후 coder 신규 커밋 7건(`32b7ae3` UXD-195 transport-fee 날짜 오류 라우팅·`ab9ef17` UXD-195 follow-up 포커스 이동·`cf360d7` L02_M12 역방향 기간 사전 차단·`c3a0cac` L02_M11 역방향 기간 사전 차단·`ca31864` L02 나머지 5종(M05·M04·M03·M17·M14) 역방향 기간 사전 차단·`d4d9887` L03 3종(M07/M09/M10) 역방향 기간 사전 차단·`60716c6` M5 프로그램 리포트 역방향 기간 사전 차단) 재점검. `32b7ae3`·`ab9ef17`은 UXD-195 자체 커밋이라 재점검 대상 외. **역방향 기간 차단 패턴** — 신규 5커밋은 `resolveCareReportDateRangeError`/`resolveProgramReportDateRangeError` 공용 헬퍼를 주입해 종료일 `Field error={dateRangeError}`(→ `role="alert"` id `*-to-date-error` + `aria-invalid`) 패턴을 올바르게 적용했으나, **시작일 `DateInput`이 `aria-invalid`·`aria-describedby`를 받지 못하던 WCAG 3.3.1·4.1.2 갭** — 두 필드 모두 범위 위반이지만 종료일만 스크린리더에 잘못된 상태로 표시됐다. §119 `TransportServiceFeePanel` 이중 필드 오류 라우팅 패턴(`시작일: aria-invalid={dateRangeError ? true : p["aria-invalid"]}` + `aria-describedby → 종료일 error id`)을 **9개 리포트 페이지**(`BathHelpReportPage`·`CareMealExcretionReportPage`·`CareNursingServiceReportPage`·`IntensiveExcretionReportPage`·`PositionChangeReportPage`·`NursingServiceReportsPage`·`ServiceSummaryReportPage`·`PatientServiceReportPage`·`ProgramReportsPage`)에 일괄 적용해 두 필드 모두 `aria-invalid` 전달, 안내는 종료일 단일 `role="alert"` 만 사용(중복 방지). **신규 `ds-*` 클래스 0건** — FE-16 이슈 없음. **§120** 신규. baseline FE `@60716c6` → UXD-196. `npm test`(flock 잠금 경유) 9파일 38/38 PASS.)
+> **이전 갱신**: 2026-07-18 (195차 — **id=2 이동서비스비(G16) 조회 기간 검증 6커밋 접근성 재점검 + 기간 오류 필드 라우팅 + §119** — 194차(§118) 이후 coder 신규 커밋 6건(`5aaee88` 회차 입력 wheel blur·`9f12482` 클라이언트 목록 payload 정규화·`9b0481d` 재조회 시 stale 생성 배너 해제·`3b903c8` 역방향 기간 사전 거부·`171075f` 빈 기간 사전 거부·`6c280d0` 거부된 기간에서 stale 청구 기록 해제) 재점검. `5aaee88`(number 입력 wheel→blur 데이터 무결성)·`9f12482`·`9b0481d`·`6c280d0`(payload·배너·목록 상태 정리)은 로직 전용으로 신규 UI·ARIA 표면 없음(변경 불요). ① **`TransportServiceFeePanel` 조회 기간 오류 필드 라우팅(WCAG 3.3.1·4.1.2)** — `3b903c8`·`171075f`가 추가한 빈/역방향 기간 검증 오류(`resolveTransportServiceFeeDateRangeError`)를 상단 일반 `Alert tone=danger`(`setError`)로만 노출해, 실제 위반 필드인 「시작일」·「종료일」 `DateInput` 이 `aria-invalid` 도, 오류 메시지와의 프로그램적 연결(`aria-describedby`)도 못 받던 갭을, 코드베이스 필드 오류 라우팅 관례(§67·§92·§117·§118)에 맞춰 별도 `dateRangeError` state 로 분리. 「종료일」 `Field error={dateRangeError}` → 단일 `role="alert"`(`id=service-fee-to-error`)·`aria-invalid`, 「시작일」은 `aria-invalid`+`aria-describedby`→종료일 오류 id 로 연결해 두 필드 모두 잘못된 상태를 알리되 안내는 한 번만(중복 `role=alert` 회피). API 오류는 상단 Alert 유지. ② 신규 `ds-*` 클래스 0건 — FE-16 이슈 없음. **§119** 신규. baseline FE `@eca424f` → UXD-195 `@6c280d0`. `npm test`(전체 488파일 2770 PASS·해당 파일 12/12)·build PASS.)
+> **이전 갱신**: 2026-07-18 (194차 — **id=2 이동 회차(departureRound) 입력 6커밋 접근성 재점검 + 서버 필드 오류 이중 `role="alert"` 제거 + §118** — 193차(§117) 이후 coder 신규 커밋 6건(`93f4932` 이전 배차 로드 시 stale 회차 오류 해제·`23b47ea` `parseDepartureRoundInput` 공용 헬퍼 추출·`af1d4f6` 저장 차단 시 회차 필드 포커스·`d6f3889` 지수/16진 표기 거부·`8766331` Integer 상한 초과 거부·`b115ae0` 네이티브 `max` 상한 부여) 재점검. 다섯 커밋은 검증·포커스 로직 및 네이티브 제약 정합으로 접근성 강화(WCAG 2.4.3 포커스 이동·3.3.1 오류 식별·`Field error`→`aria-invalid`+`role=alert`)를 이미 갖춤. ① **서버 회차 필드 오류 이중 안내 제거(WCAG 3.3.1·4.1.3)** — `handleSaveDraft` catch 에서 BE `fieldErrors.departureRound` 를 받으면 `setRoundError`(필드 `role=alert`)와 **함께** 상단 일반 `setActionError`(또 다른 `role=alert`)를 무조건 설정해, 두 개의 `role="alert"` 가 동시에 안내되고 메시지가 중복(「입력값을 확인하세요.」 vs 「회차는 1 이상이어야 합니다.」)되던 갭을, 필드 오류일 땐 필드 단위로만 노출하고 그 외 오류만 상단 Alert 로 라우팅하도록 `else` 분기 전환(§67·§92 필드 오류 라우팅 패턴 정합). ② 네이티브 `max=MAX_DEPARTURE_ROUND`·`min="1"`·`step="1"` 이 JS 가드·BE `@Min(1) Integer` 계약과 lockstep 확인(변경 불요). ③ 신규 `ds-*` 클래스 0건 — FE-16 이슈 없음. **§118** 신규. baseline FE `@0d37788` → UXD-194. `npm test`(8/8)·build PASS.)
 > **이전 갱신**: 2026-07-18 (193차 — **id=2 이동 회차·정차 상한 FE 검증 접근성 재점검 + SEC-D34 상수화 + §117** — 192차(§116) 이후 coder 신규 커밋 6건(`2789553` SEC-D34 0-byte·`1f9d49c` 은행입금 magic-byte·`6f8e349` RFID pre-upload·`51a3db4` NHIS import MIME-spoof·`3e89ab7` pilotPageFlows fixture·`495040f` 빈 파일 copy house-style·`5e816e6` UNREADABLE 상수화·`f72af3f` 회차 사전 검증·`0d37788` 정차 상한 상수화) 재점검. ① **무음 반환→오류 노출 개선(WCAG 4.1.3)** — `MAX_TRANSPORT_ROUTE_STOPS`(=17) 초과 시 `setActionError(TRANSPORT_ROUTE_STOPS_LIMIT_MESSAGE)`로 전환돼, 이전엔 정차 추가 버튼이 조용히 무시됐던 갭 해소. `actionError` 표면은 `Alert tone=danger`(role=alert·assertive) ✅. ② **`TransportRunNewPage` 회차 필드 오류** — `roundError` → `Field error={roundError}` → `aria-invalid`+`role=alert` `<p>` 연결(WCAG 3.3.1·4.1.2). 입력 변경 시 오류 자동 해제·서버 오류도 필드 단위로 노출. ③ SEC-D34 커밋들은 magic-byte 검증·로직 전용·기존 `Alert`/`FileUpload error` 표면 재사용(변경 불요). ④ 신규 `ds-*` 클래스 0건 — FE-16 이슈 없음. **§117** 신규. baseline FE `@6f8e349` → UXD-193 `@0d37788`. CSS-only·`npm test` 해당 파일 PASS.)
 > **이전 갱신**: 2026-07-18 (192차 — **인쇄 시 컨텍스트 네비 전역 숨김 + §116** — 리포트 인쇄 출력물에 앱 내비게이션(`.ds-context-nav`)이 섞이는 갭 발견. 전역 `@media print`는 `.ds-sidenav`·`.ds-topbar`만 숨기고 컨텍스트 네비는 `.ds-care-report-print-root` 스코프 안에서만 숨겨, `BillingReportPage`·`BillingStatisticsReportPage`·`ClientOutingReportPage`·`TransportMonthlyReportsPage`(네비가 print-zone Card의 형제)는 인쇄물에 앱 메뉴가 노출됐다. 네비는 어떤 화면에서도 인쇄되지 않아야 하므로 `.ds-context-nav`를 `.ds-sidenav`·`.ds-topbar`와 동일하게 **전역 print-hide 그룹으로 승격**(페이지 스코프 중복 규칙 제거). 스크린 렌더링 무영향(`@media print` 한정). `src/styles/printStylesheet.test.js`(신규 2)로 잠금 + `TransportMonthlyReportsPage`(1) 회귀 재확인. **§116** 신규. baseline FE `@6f8e349` → UXD-192. `npm test`(3/3)·build PASS.)
 > **이전 갱신**: 2026-07-18 (191차 — **SEC-D25·D34 6커밋 재점검 + 사진 업로드 성공 SR 알림(WCAG 4.1.3) + §115** — 190차(§114) 이후 coder 신규 커밋 6건(`e16f432`/`cf28a2e`/`8b164c3`/`4691856`/`3042a5`/`7ac3c84` SEC-D25 이미지·SEC-D34 엑셀 magic-byte 사전검증)을 재점검. 신규 오류는 모두 기존 접근성 표면(`Alert tone=danger`→role=alert·`FileUpload error` `aria-invalid`·페이지 Alert + xlsx-only `help`)으로 라우팅돼 회귀 없음. 신규 `ClientPhotoUpload`은 `ProgramSchedulePhotoUpload`(§114) 정합 클론. ① **`ClientPhotoUpload`·`ProgramSchedulePhotoUpload`(쌍둥이)** — 업로드 성공이 부모 재렌더로 「미등록」→「등록됨」 시각 전환만 일어나 SR에 안내되지 않던 **WCAG 4.1.3** 갭을 상주 `ds-sr-only role="status"` polite live region으로 동시 해소(조밀 표 시각 잡음 없음). ② **§115** 신규. baseline FE `@dc81f6e` → UXD-191 `@7ac3c84`. `npm test`(7/7)·build PASS.)
@@ -6284,6 +6291,316 @@ if (err instanceof ApiError && err.fieldErrors?.departureRound) {
 
 - `TransportRunNewPage.test.jsx` — 8/8 PASS(서버 필드 오류 시 상단 「입력값을 확인하세요.」 미노출 단언 +1).
 - `npm run build` PASS · 린트 0.
+
+---
+
+## §119. id=2 이동서비스비(G16) 조회 기간 검증 6커밋 재점검 + 기간 오류 필드 라우팅 (195차) [UXD]
+
+> **194차(§118) 이후 coder 신규 커밋 6건** (`5aaee88` 회차 입력 wheel→blur · `9f12482` 클라이언트 목록 payload 정규화 · `9b0481d` 재조회 시 stale 생성 배너 해제 · `3b903c8` 역방향 기간 사전 거부 · `171075f` 빈 기간 사전 거부 · `6c280d0` 거부된 기간에서 stale 청구 기록 해제) 재점검. baseline FE `@eca424f` → UXD-195(`32b7ae3`·`ab9ef17`).
+
+### 119-1. coder 커밋 분류
+
+| 커밋 | 성격 | UI 조치 |
+|---|---|---|
+| `5aaee88` | number 입력 wheel→blur(스크롤 값 변경 방지) | 데이터 무결성 로직 — 변경 불요 |
+| `9f12482` | 클라이언트 목록 payload 정규화 | 로직 전용 — 변경 불요 |
+| `9b0481d` | 재조회 시 stale 생성 배너 해제 | 상태 정리 로직 — 변경 불요 |
+| `6c280d0` | 거부된 기간에서 stale 청구 기록 해제 | 상태 정리 로직 — 변경 불요 |
+| `3b903c8` | 역방향 기간 사전 거부(`resolveTransportServiceFeeDateRangeError`) | **§119 조치 대상** — 오류 필드 라우팅 |
+| `171075f` | 빈 기간 사전 거부 | **§119 조치 대상** — 오류 필드 라우팅 |
+
+### 119-2. 조회 기간 오류 필드 라우팅 (§119 신규 조치 — `32b7ae3`·`ab9ef17`)
+
+#### 갭
+`3b903c8`·`171075f`가 추가한 빈/역방향 기간 검증 오류를 상단 일반 `Alert tone=danger`(`setError`)로만 노출해, 실제 위반 필드인 「시작일」·「종료일」 `DateInput`이 `aria-invalid`도, 오류 메시지와의 프로그램적 연결(`aria-describedby`)도 받지 못했다(WCAG 3.3.1·4.1.2).
+
+#### 조치
+코드베이스 필드 오류 라우팅 관례(§67·§92·§117·§118)에 맞춰 별도 `dateRangeError` state로 분리.
+
+- 「종료일」 `Field error={dateRangeError}` → 단일 `role="alert"`(`id=service-fee-to-error`) + `aria-invalid`.
+- 「시작일」 `DateInput` → `aria-invalid={dateRangeError ? true : p["aria-invalid"]}` + `aria-describedby`를 종료일 오류 id로 연결.
+- 두 필드 모두 잘못된 상태를 알리되 안내는 **한 번만**(중복 `role="alert"` 회피).
+- API 오류는 기존 상단 Alert 유지.
+- `ab9ef17`(follow-up) — 차단 시 첫 무효 날짜 필드로 포커스 이동(WCAG 2.4.3).
+
+### 119-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — `TransportServiceFeePanel.jsx` 편집은 오류 라우팅·포커스 로직만, CSS 무변경.
+
+### 119-4. 검증
+
+- `TransportServiceFeePanel.test.jsx` — 해당 파일 12/12 PASS.
+- 전체 `npm test` 488파일 2770 PASS · `npm run build` PASS.
+
+---
+
+## §120. L02·L03·M5 리포트 9종 시작일 `aria-invalid`+`aria-describedby` 일괄 정합 (196차) [UXD]
+
+> **195차(§119) 이후 coder 신규 커밋 7건** (`32b7ae3`·`ab9ef17`은 UXD-195 자체 커밋 — 재점검 대상 외 / `cf360d7` L02_M12 · `c3a0cac` L02_M11 · `ca31864` L02 나머지 5종(M05·M04·M03·M17·M14) · `d4d9887` L03 3종(M07/M09/M10) · `60716c6` M5 프로그램 리포트 — 모두 역방향 기간 사전 차단) 재점검. baseline FE `@60716c6` → UXD-196.
+
+### 120-1. 갭 — 시작일 필드의 잘못된 상태 누락
+
+5개 coder 커밋(`cf360d7`·`c3a0cac`·`ca31864`·`d4d9887`·`60716c6`)은 `resolveCareReportDateRangeError`/`resolveProgramReportDateRangeError` 공용 헬퍼를 주입해 **종료일** `Field error={dateRangeError}`(→ `role="alert"` id `*-to-date-error` + `aria-invalid`) 패턴을 올바르게 적용했다.
+
+그러나 **시작일 `DateInput`이 `aria-invalid`·`aria-describedby`를 받지 못하는** WCAG 3.3.1·4.1.2 갭이 남았다 — 역방향 기간은 시작일·종료일 **두 필드 모두** 위반이지만, 스크린리더에는 종료일만 잘못된 상태로 노출됐다.
+
+### 120-2. 조치 — §119 이중 필드 오류 라우팅 패턴 일괄 적용
+
+§119 `TransportServiceFeePanel` 패턴을 **9개 리포트 페이지**에 일괄 적용:
+
+```jsx
+// 시작일 DateInput (Field render-prop 내부, p = controlProps)
+aria-invalid={dateRangeError ? true : p["aria-invalid"]}
+aria-describedby={
+  dateRangeError
+    ? [p["aria-describedby"], "<page>-to-date-error"].filter(Boolean).join(" ") || undefined
+    : p["aria-describedby"]
+}
+```
+
+- 두 필드 모두 `aria-invalid` 전달, 안내(`role="alert"`)는 **종료일 단일** 메시지만 사용(중복 방지).
+- 페이지별 종료일 오류 id: `bhr-to-date-error`(BathHelp) · `cmer` 계열(CareMealExcretion) · `cnsr-to-date-error`(CareNursingService) · `ier` 계열(IntensiveExcretion) · `pcr` 계열(PositionChange) · `nsr-to-date-error`(NursingServiceReports) · `ssr-to-date-error`(ServiceSummary) · `psr` 계열(PatientService) · `program-report-to-date-error`(ProgramReports).
+
+| 페이지 | 모듈 |
+|---|---|
+| `BathHelpReportPage` | L02 목욕도움 |
+| `CareMealExcretionReportPage` | L02 식사·배설 |
+| `CareNursingServiceReportPage` | L03 간호 |
+| `IntensiveExcretionReportPage` | L02_M02 집중배설 |
+| `PositionChangeReportPage` | L02 체위변경 |
+| `NursingServiceReportsPage` | L03 간호 |
+| `ServiceSummaryReportPage` | L02_M12 서비스 요약 |
+| `PatientServiceReportPage` | L02_M11 환자 서비스 |
+| `ProgramReportsPage` | M5 프로그램 |
+
+### 120-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — 9개 페이지 편집은 시작일 `DateInput`에 ARIA 속성 2종만 추가, CSS 무변경. 네이티브 `.ds-input[aria-invalid="true"]` danger 경계선 재사용.
+
+### 120-4. coder 전달 메모
+
+1. 두 필드(시작일·종료일)가 함께 위반하는 **기간 검증**에서는, 두 필드 모두 `aria-invalid`를 전달하되 `role="alert"` 안내 메시지는 **한 곳(종료일)만** 두고 나머지 필드는 `aria-describedby`로 그 오류 id를 참조한다(중복 낭독 방지).
+2. `Field` render-prop의 `p["aria-invalid"]`·`p["aria-describedby"]`를 **덮어쓰지 말고 병합**한다(`dateRangeError` 없을 때 원래 controlProps 유지).
+
+### 120-5. 검증
+
+- 9개 리포트 test 파일 — `npm test`(flock 잠금 경유) **38/38 PASS**.
+- 신규 `ds-*` 0건 · CSS 무변경.
+
+---
+
+## §121. L02 리포트 표 일자 열 `<time dateTime>` 기계 판독 정합 (197차) [UXD]
+
+> **196차(§120) 이후 coder 신규 커밋 0건** (`0ff9c7d`은 UXD-196 후속 프로그램 리포트 회귀 test 전용). 신규 coder 기능 커밋이 없어 USER_STORIES·FLOWCHART 대비 접근성 재점검을 자발 수행하던 중, §120에서 손댄 **L02 리포트 화면군** 표의 일자 열이 `<time>` 시맨틱 없이 평문으로 남아 있는 WCAG 1.3.1 갭 확인. baseline FE `@0ff9c7d` → UXD-197.
+
+### 121-1. 갭 — 리포트 표 일자 열 기계 판독 시맨틱 누락 (WCAG 1.3.1)
+
+공용 패널 `ProgramReportPanel`·`NursingServiceReportPanel`은 이미 표의 일자 열을 `<time dateTime={iso}>{iso}</time>`로 렌더해 기계 판독 가능한 날짜 시맨틱(WCAG 1.3.1)을 제공한다. 그러나 **표를 페이지 인라인으로 직접 렌더하는 L02 리포트 페이지들**은 같은 리포트 화면군인데도 일자 셀을 `<td>{item.xxxDate}</td>` **평문**으로 노출해, 보조기술이 값을 날짜로 인식하지 못하던 회귀가 남아 있었다.
+
+### 121-2. 조치 — 일자 셀 `<time dateTime>` 래핑
+
+패널의 확립된 패턴(fallback 없이 값 그대로 래핑)에 맞춰 각 일자 셀을 `<td><time dateTime={item.X}>{item.X}</time></td>`로 정합:
+
+| 페이지 | 일자 열 |
+|---|---|
+| `BathHelpReportPage` | `scheduledDate`(예정일) |
+| `CareMealExcretionReportPage` | `recordDate`(기록일) · `observationDate`(관찰일) |
+| `IntensiveExcretionReportPage` | `observationDate`(관찰일) |
+| `PositionChangeReportPage` | `assessedOn`(평가일) · `careDate`(처치일) |
+| `PatientServiceReportPage` | `recordDate` · `scheduledDate` · `observationDate` · `restraintDate` |
+
+- **주간 범위 열은 제외** — `formatWeekRange(weekStartDate, weekEndDate)`가 반환하는 `"YYYY-MM-DD ~ YYYY-MM-DD"` 문자열은 단일 `datetime`으로 표현할 수 없어 평문 유지(단일 날짜 시맨틱 오용 방지).
+- `ServiceSummaryReportPage`는 일자 열이 없어 대상 외. `NursingServiceReportsPage`·`CareNursingServiceReportPage`는 이미 `<time>`을 쓰는 공용 패널을 통해 렌더(변경 불요).
+
+### 121-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — 셀 내용 시맨틱 래핑만 추가, CSS 무변경. 가시 텍스트·정렬·동작 불변.
+
+### 121-4. coder 전달 메모
+
+1. 리포트/목록 표에 새 **일자 열**을 추가할 때는 평문 대신 `<time dateTime={isoDate}>{isoDate}</time>`로 감싼다(WCAG 1.3.1 — `ProgramReportPanel`·`NursingServiceReportPanel` 패턴).
+2. **기간(범위)** 셀은 두 날짜를 한 문자열로 합치므로 단일 `<time>`으로 표현하지 말고 평문 유지(또는 시작·종료를 각각 별도 `<time>`으로 분리).
+
+### 121-5. 검증
+
+- 대상 5개 리포트 test 파일에 `<time dateTime>` 회귀 단언 추가 후 `npm test`(flock 잠금 경유) **17/17 PASS**.
+- `npm run build` PASS · 신규 `ds-*` 0건 · CSS 무변경.
+
+## §122. 비리포트 목록 표 일자 열 `<time dateTime>` 기계 판독 정합 확산 (198차) [UXD]
+
+> **197차(§121)** 이 L02 리포트 화면군의 인라인 표 일자 열을 정합한 데 이어, USER_STORIES·FLOWCHART 대비 접근성 재점검을 확장해 **리포트 외 CRUD·목록 화면**에서도 동일 갭이 남아 있는지 코드베이스 전역(`<td>{...Date}</td>` 패턴)을 감사, 8곳 확인·정합. baseline FE `@aab11b2` → UXD-198.
+
+### 122-1. 갭 — CRUD·목록 표 일자 열 기계 판독 시맨틱 누락 (WCAG 1.3.1)
+
+리포트 화면군(§121)과 달리, 일자를 표에 노출하는 **일반 목록/CRUD 페이지**들은 여전히 일자 셀을 `<td>{item.xxxDate}</td>` **평문**으로 렌더해 보조기술이 값을 날짜로 인식하지 못했다. 이미 `<time>`을 쓰는 동종 페이지(`NursingServiceRecordPage`·`BathingSchedulePage`·`Safety*` 등)와 시맨틱이 불일치했다.
+
+### 122-2. 조치 — 일자 셀 `<time dateTime>` 래핑
+
+`ProgramReportPanel`/§121 패턴(fallback 없이 값 그대로 래핑)에 맞춰 각 일자 셀을 `<td><time dateTime={item.X}>{item.X}</time></td>`로 정합:
+
+| 페이지·컴포넌트 | 일자 열 |
+|---|---|
+| `CaseManagementPage` | `meetingDate`(회의일) |
+| `NursingWeightRecordPage` | `measureDate`(측정일) |
+| `NursingOralCareCheckPage` | `checkDate`(점검일) |
+| `NursingEmergencyRecordPage` | `occurrenceDate`(발생일) |
+| `NursingVitalCheckPage` | `checkDate`(점검일) — 시각과 결합된 셀에서 **날짜 부분만** `<time>`으로 래핑, 시각 텍스트는 그대로 유지 |
+| `PressureUlcerPage` | `careDate`(욕창간호 기록일) |
+| `LeadCaregiverWorkLogPage` | `logDate`(기록 일자) |
+| `ClientOutingReportPage` | `outingDate`(외출일) |
+| `components/outing/ClientOutingPanel` | `outingDate`(외출일) |
+
+- **계획/실적 시각 열**(`plannedDeparture~plannedReturn`, `actualDeparture→actualReturn`)은 두 시각을 한 문자열로 합치므로 단일 `<time>`으로 표현하지 않고 평문 유지(§121 주간 범위 열과 동일 원칙).
+
+### 122-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — 셀 내용 시맨틱 래핑만 추가, CSS 무변경. 가시 텍스트·정렬·동작 불변.
+
+### 122-4. coder 전달 메모
+
+1. **리포트뿐 아니라 모든 목록/CRUD 표**의 일자 열도 평문 대신 `<time dateTime={isoDate}>{isoDate}</time>`로 감싼다(WCAG 1.3.1).
+2. **날짜+시각이 한 셀**에 있을 때는 날짜만 `<time>`으로 감싸고 시각 텍스트는 그대로 두거나, 시각까지 포함한 완전한 ISO 값을 `dateTime`에 넣는다(부분 값과 표시 텍스트를 혼동시키지 않도록 주의).
+3. **기간(범위)** 셀은 단일 `<time>`으로 표현하지 말고 평문 유지 또는 시작·종료를 각각 별도 `<time>`으로 분리.
+
+### 122-5. 검증
+
+- 대상 9개 test 파일에 `<time dateTime>` 회귀 단언 추가 후 `npm test`(flock 잠금 경유) **9파일 70/70 PASS**.
+- `npm run build` PASS · 신규 `ds-*` 0건 · CSS 무변경.
+
+## §123. 청구·평가·알림 목록 표 일자 열 `<time dateTime>` 기계 판독 정합 확산 (199차) [UXD]
+
+> **198차(§122)** 가 비리포트 CRUD·목록 화면의 일자 셀을 정합한 데 이어, 접근성 재점검을 **청구 대장·compliance 현황·알림/이력 표**로 확장. `<td>{...Date}</td>`·`formatDate(...)`·`{new Date(...).toLocaleDateString()}` 3가지 평문 렌더 패턴을 전역 감사해 남은 WCAG 1.3.1 갭 10곳을 확인·정합. baseline FE `@c3f0e05` → UXD-199.
+
+### 123-1. 갭 — 청구/평가/알림 표 일자 열 기계 판독 시맨틱 누락 (WCAG 1.3.1)
+
+§122가 기록계 화면을 정합한 뒤에도, **청구 대장(US-M03)·G38/G40b/G24b compliance 현황·평가 이력·알림 이력** 표들이 여전히 일자를 평문으로 렌더했다. 세 갈래로 나뉘었다.
+
+1. **`formatDate` 헬퍼가 평문 문자열 반환** — `NeedsAssessmentStatusPage`·`PeriodicRiskAssessmentStatusPage`·`CarePlanNotificationPage`(각 `String(value).slice(0,10)` 반환)·`BillingLedgerTable`(`toLocaleDateString` 반환).
+2. **셀에서 인라인 `new Date(...).toLocaleDateString/toLocaleString`** — `OverduePage`(`lastReminderAt`)·`HealthDetailPage`(`recordedAt`)·`GuardianDetailPage`(`sentAt`, 날짜+시각).
+3. **`{value || "-"}` 평문** — `ProvisionResultEvaluationPage`(`evaluationDate`)·`FunctionalRecoveryPage`(`annualExecutionDate`)·`VisitRfidDiffComparePanel`(`visitDate`).
+
+이미 `formatDate`가 `<time>`을 반환하던 `CashReceiptIssuancePage`는 정합 완료 상태라 대상 외(패턴 확인).
+
+### 123-2. 조치 — 일자 셀 `<time dateTime>` 래핑
+
+`CashReceiptIssuancePage.formatDate`(이미 `<time>` 반환) 패턴에 맞춰 정합:
+
+| 페이지·컴포넌트 | 일자 열 | 방식 |
+|---|---|---|
+| `BillingLedgerTable` | 입금일(`paidAt`)·환불일(`refundedAt`)·수납일(`paidAt`/`receiptDate`) | 공용 `renderDateCell` 헬퍼(값 없으면 `—`) |
+| `NeedsAssessmentStatusPage` | 가정방문 일자(`homeVisitDate`) | `formatDate` 헬퍼 → `<time>` 반환 |
+| `PeriodicRiskAssessmentStatusPage` | 급여 시작일(`ltcCertValidFrom`) | `formatDate` 헬퍼 → `<time>` 반환 |
+| `CarePlanNotificationPage` | 급여 시작일(`ltcCertValidFrom`) | `formatDate` 헬퍼 → `<time>` 반환 |
+| `OverduePage` | 최근 안내일(`lastReminderAt`) | 셀 조건부 `<time>` |
+| `HealthDetailPage` | 기록일(`recordedAt`) | 셀 조건부 `<time>` |
+| `GuardianDetailPage` | 알림 시각(`sentAt`, 날짜+시각) | 셀 조건부 `<time>`(`dateTime`에 완전 ISO) |
+| `ProvisionResultEvaluationPage` | 평가 일자(`evaluationDate`) | 셀 조건부 `<time>` |
+| `FunctionalRecoveryPage` | 연간 실시일(`annualExecutionDate`) | 셀 조건부 `<time>` |
+| `VisitRfidDiffComparePanel` | 방문일(`visitDate`) | 셀 조건부 `<time>` |
+
+- 값이 없을 때는 `<time>` 대신 기존 placeholder(`—`/`-`) 유지 — 빈 `dateTime` 회피.
+- `formatWeekRange`(주간 범위)·계획/실적 시각 결합 셀은 §121·§122 원칙대로 평문 유지.
+
+### 123-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — 셀 내용 시맨틱 래핑만 추가, CSS 무변경. 가시 텍스트·정렬·`ds-tabular-nums`·동작 불변.
+
+### 123-4. coder 전달 메모
+
+1. **일자 노출 헬퍼(`formatDate` 등)는 문자열 대신 `<time dateTime={iso}>{표시}</time>`를 반환**하도록 통일하면 소비 표 전체가 한 번에 정합된다(`CashReceiptIssuancePage`·본 3개 페이지 패턴).
+2. **날짜+시각 결합 셀**(`sentAt` 등)은 `dateTime`에 완전 ISO 문자열을 넣고 표시 텍스트는 로캘 포맷을 유지한다.
+3. 값이 없을 수 있는 셀은 `value ? <time…> : "—"` 조건부로 감싸 빈 `dateTime`을 만들지 않는다.
+
+### 123-5. 검증
+
+- 대상 7개 test 파일(`BillingLedgerTable`·`NeedsAssessmentStatusPage`·`PeriodicRiskAssessmentStatusPage`·`CarePlanNotificationPage`·`ProvisionResultEvaluationPage`·`FunctionalRecoveryPage`·`VisitRfidDiffComparePanel`)에 `<time dateTime>` 회귀 단언 추가 후 `npm test`(flock 잠금 경유) **7파일 43/43 PASS**.
+- `OverduePage`·`HealthDetailPage`(기존 mock이 해당 일자 필드 미설정이라 셀이 `—` 렌더·동작 불변) 회귀 **2파일 8/8 PASS**. `GuardianDetailPage`는 전용 test 없어 build로 검증.
+- `npm run build` PASS · 신규 `ds-*` 0건 · CSS 무변경.
+
+## §124. 모니터링·이력 패널 일자·시각 열 `<time dateTime>` 기계 판독 정합 확산 (200차) [UXD]
+
+> **199차(§123)** 가 청구·평가·알림 목록 표를 정합한 뒤, 접근성 재점검을 **설정·모니터링·이력 패널**(로그인 이력·감사 로그·알림 발송 이력·수가 변경 이력)로 확장. `new Date(iso).toLocaleString/toLocaleDateString("ko-KR")`을 `<td>` 안에 평문으로 렌더하던 남은 WCAG 1.3.1 갭 5열을 확인·정합. baseline FE `@e8ff8dc` → UXD-200.
+
+### 124-1. 갭 — 모니터링/이력 표 일자·시각 열 기계 판독 시맨틱 누락 (WCAG 1.3.1)
+
+§123이 청구·평가 화면을 정합한 뒤에도, 다음 4개 패널이 단일 ISO 값을 `<td>` 안에 `new Date(...).toLocaleString(...)` **평문**으로 렌더해 보조기술이 날짜·시각으로 인식하지 못했다. 이미 정합된 `CmsCollectionPanel`(요청/완료일시 `<time>`)·`BillingLedgerTable`(§123 `renderDateCell`)과 불일치.
+
+1. **`LoginHistoryPanel`**(REQUIREMENTS §3-1) — 「로그인 시각」열(`createdAt`, 날짜+시각).
+2. **`AuditLogPanel`**(US-I03) — 「발생 시각」열(`createdAt`, 날짜+시각).
+3. **`NotificationHistoryPanel`**(US-J03) — 「발송 시각」열(`sentAt`/`createdAt`, 날짜+시각).
+4. **`FeeRateHistoryPanel`**(US-G00a) — 「적용 시작」열(`effectiveFrom`, 날짜)·「등록일」열(`createdAt`, 날짜+시각).
+
+### 124-2. 조치 — 일자·시각 셀 `<time dateTime>` 래핑
+
+| 컴포넌트 | 열 | 방식 |
+|---|---|---|
+| `LoginHistoryPanel` | 로그인 시각(`createdAt`) | 셀 조건부 `<time dateTime={createdAt}>{toLocaleString}</time>` |
+| `AuditLogPanel` | 발생 시각(`createdAt`) | 셀 조건부 `<time>` |
+| `NotificationHistoryPanel` | 발송 시각(`sentAt`/`createdAt`) | 셀 조건부 `<time>` |
+| `FeeRateHistoryPanel` | 적용 시작(`effectiveFrom`)·등록일(`createdAt`) | 셀 조건부 `<time>` |
+
+- 값이 없을 때는 기존 placeholder(`—`) 유지 — 빈 `dateTime` 회피.
+- 날짜+시각 결합 셀은 `dateTime`에 완전 ISO 문자열을 넣고 표시 텍스트는 로캘 포맷(`toLocaleString("ko-KR")`)을 유지(§123-4 원칙 정합).
+- `GuardianDailySummary` 체크인/체크아웃(시각 단독·`<dd>`)은 §121·§122 시각 결합 원칙대로 평문 유지 — 대상 외.
+
+### 124-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — 셀 내용 시맨틱 래핑만 추가, CSS 무변경. 가시 텍스트·`ds-masked`·정렬·동작 불변.
+
+### 124-4. 검증
+
+- 대상 3개 기존 test(`LoginHistoryPanel`·`AuditLogPanel`·`NotificationHistoryPanel`)에 `container.querySelector("time")` `datetime` 회귀 단언 추가.
+- `FeeRateHistoryPanel`(전용 test 부재)에 신규 test 추가 — 적용 시작(날짜)·등록일(날짜+시각) 2열 `<time datetime>` 노출 단언.
+- `npm test`(flock 잠금 경유) **4파일 12/12 PASS** · `npm run build` PASS · 신규 `ds-*` 0건.
+
+---
+
+## §125. 청구·수가·백업·보호자명세 화면 일자 열 `<time dateTime>` 기계 판독 정합 확산 (201차) [UXD]
+
+> **200차(§124)** 가 설정·모니터링·이력 패널을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **청구 상세(US-G07)·수납 목록(US-L01)·수가표(US-G00a)·본인부담 비율(US-G00b)·백업 이력(US-I03)·청구 기준 설정(US-M03)·보호자 명세(US-J02)** 화면으로 확산. baseline FE `@c2fb261` → UXD-201.
+
+### 125-1. 갭 — 청구·수가·백업·보호자명세 화면 일자 열 기계 판독 시맨틱 누락 (WCAG 1.3.1)
+
+§124가 이력 패널을 정합한 뒤에도, 다음 7개 파일·8개 일자 셀이 `toLocaleDateString/toLocaleString("ko-KR")` 평문으로 남았다.
+
+1. **`BillingDetailPage`**(US-G07) — 수납일(`paidAt`, 수납완료 조건부)·환불일(`refundedAt`, 환불 조건부) 2열 — `<dl>` 내 `<dd>` 직접 평문.
+2. **`PaymentPage`**(US-L01) — 수납일(`p.paidAt`, 유무 조건부) 1열 — 표 `<td>` 직접 평문.
+3. **`FeeScheduleTable`**(US-G00a) — 적용 시작일(`effectiveFrom`, 유무 조건부) 1열 — 표 `<td>` 직접 평문.
+4. **`CopayRateTable`**(US-G00b) — 적용 시작일(`effectiveFrom`, 유무 조건부) 1열 — 표 `<td>` 직접 평문.
+5. **`BackupSettingsPanel`**(US-I03) — 시작 시각(`startedAt`)·완료 시각(`completedAt`) 2열 — 표 `<td>` 직접 평문.
+6. **`BillingSettingsPanel`**(US-M03) — 잠금 일시(`lockedAt`) 1열 — `formatLockedAt()` 헬퍼가 string 반환 → `<dd>` 평문.
+7. **`GuardianBillingDetailModal`**(US-J02) — 입금일(`paidAt`) 1열 — `formatPaidAt()` 헬퍼가 string 반환 → `rows` 배열 경유 `<td>` 평문.
+
+### 125-2. 조치 — 일자 셀 `<time dateTime>` 래핑
+
+| 파일 | 열 | 방식 |
+|---|---|---|
+| `BillingDetailPage` | 수납일(`paidAt`) | `isPaid && claim.paidAt` 조건부 `<time dateTime={claim.paidAt}>` |
+| `BillingDetailPage` | 환불일(`refundedAt`) | `isRefunded` 조건부 `value ? <time dateTime={v}> : "—"` |
+| `PaymentPage` | 수납일(`p.paidAt`) | `value ? <time dateTime={v}> : "—"` |
+| `FeeScheduleTable` | 적용 시작일(`effectiveFrom`) | `value ? <time dateTime={v}> : "—"` |
+| `CopayRateTable` | 적용 시작일(`effectiveFrom`) | `value ? <time dateTime={v}> : "—"` |
+| `BackupSettingsPanel` | 시작 시각(`startedAt`)·완료 시각(`completedAt`) | 각 `value ? <time dateTime={v}> : "—"` |
+| `BillingSettingsPanel` | 잠금 일시(`lockedAt`) | `formatLockedAt` 반환 타입 string→JSX `<time dateTime={value}>` |
+| `GuardianBillingDetailModal` | 입금일(`paidAt`) | `formatPaidAt` 반환 타입 string→JSX `<time dateTime={value}>` |
+
+- 값이 없을 때는 기존 placeholder(`—`/`null`) 유지 — 빈 `dateTime` 회피(§123-4 원칙 정합).
+- `formatLockedAt`·`formatPaidAt`은 소비 컨텍스트(`<dd>`·`<td>`)가 모두 React 렌더링 경로라 JSX 반환으로 안전하게 전환 가능.
+
+### 125-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** — 셀 내용 시맨틱 래핑만 추가, CSS 무변경.
+
+### 125-4. coder 전달 메모
+
+1. **formatDate 헬퍼 패턴** — 반환 타입을 `string` 대신 `JSX.Element | string`으로 전환하면 소비 표 전체가 한 번에 정합된다(`CashReceiptIssuancePage`·`BillingSettingsPanel`·`GuardianBillingDetailModal` 패턴).
+2. **값 없음 처리** — `value ? <time dateTime={value}>{display}</time> : "—"` 패턴을 일관 적용한다. 빈 `dateTime` 속성은 만들지 않는다.
+3. **날짜만 vs 날짜+시각** — `effectiveFrom` 등 날짜 전용 ISO(`YYYY-MM-DD`)는 `dateTime`에 그대로, `startedAt`·`completedAt`·`lockedAt` 등 시각 포함 ISO는 완전한 ISO 8601(오프셋 포함)을 `dateTime`에 넣는다.
+
+### 125-5. 검증
+
+- 7개 test 파일(`BillingDetailPage`·`PaymentPage`·`FeeScheduleTable`·`CopayRateTable`·`BackupSettingsPanel`·`BillingSettingsPanel`·`GuardianBillingDetailModal`)에 `<time datetime>` 회귀 단언 추가(`BillingDetailPage`는 수납·환불 분리 2건).
+- `npm test`(flock 잠금 경유) **7파일 40/40 PASS** · `npm run build` PASS · 신규 `ds-*` 0건.
 
 ---
 
