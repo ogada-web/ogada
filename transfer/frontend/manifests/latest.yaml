@@ -1,40 +1,44 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T10:17:00Z -->
-<!-- tester-sync: TSR 1902차 2026-07-19T10:17:00Z (frontend) — ROADMAP merged baseline `@c3f0e05` git 재실측 · develop/test/origin-develop **SYNCED `@c3f0e05`** WT CLEAN · pending **0** · merge **N/A** · full `npm test` **SKIP**(TSR1900 targeted 70/70 PASS carry + TSR1897 2791/2791 PASS carry · 신규 develop 커밋 없음 · concurrent vitest in src/frontend §5 CRITICAL · disk 5.1G(97%) tight · rules §1-1) · corroboration: `npm run build` **1234 PASS**(11.41s) · `npm audit --audit-level=high` **0 vulnerabilities** · backend `/api/v1/health`=200 · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@c3f0e05`) · operation **BLOCK**(QA-B116 origin/test push FE +34·BE +774 + QA-B95 live-e2e bootstrap-disabled). -->
-# updated: 2026-07-19T10:17:00Z
-# tsr1902: merged-baseline reconfirm @c3f0e05(git remeasure); develop/test/origin-develop SYNCED @c3f0e05 WT CLEAN pending 0; merge N/A; full npm test SKIP(TSR1900 targeted 70/70 PASS carry+TSR1897 2791/2791 PASS carry, no new develop commit, concurrent vitest §5 CRITICAL, disk 5.1G(97%) tight, rules §1-1); corroboration build 1234 PASS(11.41s), audit high 0, backend health 200; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @c3f0e05); operation BLOCK=QA-B116(origin/test push FE+34·BE+774)+QA-B95(live-e2e bootstrap-disabled).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T16:43:44Z -->
+<!-- tester-sync: TSR 1944차 2026-07-19T16:43:44Z (frontend) — tester QA 이관 검증 cycle · develop/test/origin-develop SYNCED `@6a9e85e` WT CLEAN · pending 0(`rev-list --left-right test...develop`=`0 0`) · merge N/A(TSR1939 이후 신규 develop 커밋 없음) · full `npm test` 2802/2802 PASS carry(TSR1943·491 files·918.64s·0F·exit 0·16:26:18Z) · 별도 run 16:25:30→16:41:49Z exit 0 · build 1234 PASS carry(11.57s) · audit 0 carry · backend `/api/v1/health`=200 · vitest 동시 실행 없음 · disk 1.5G/100% 극압박 · Open(FE product) 0 · transfer PASS(FE local) · cross-stream LOCAL SYNCED(BE `@6d3c766` + FE `@6a9e85e` both pending 0) · operation BLOCK(QA-B116 origin/test push FE +37·BE +774 + QA-B95 live-e2e bootstrap-disabled). -->
+# updated: 2026-07-19T16:43:44Z
+# tsr1944: tester QA cycle @6a9e85e; develop/test/origin-develop SYNCED @6a9e85e WT CLEAN pending 0(left-right 0 0); merge N/A(no new develop commit since TSR1939); npm test 2802/2802 PASS carry(TSR1943,491 files,918.64s,0F,exit 0)+secondary run 16:25:30-16:41:49Z exit 0+build 1234 PASS carry+audit high 0 carry+backend health 200+no vitest running; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @6a9e85e); disk 1.5G/100% 극압박; operation BLOCK=QA-B116(origin/test push FE+37,BE+774)+QA-B95.
 
 stream: frontend
-test_branch_head: "c3f0e05"
-develop_head: "c3f0e05"
+test_branch_head: "6a9e85e"
+develop_head: "6a9e85e"
 origin_test_head: "b23711f"
-origin_develop_head: "c3f0e05"
-merge_range: "N/A (SYNCED @c3f0e05 · pending 0)"
+origin_develop_head: "6a9e85e"
+merge_range: "test...develop: 0 0 (rev-list --left-right = SYNCED, no new develop commit since TSR1939)"
 pending_absorbed: 0
-related_tests: "TSR1902 reconfirm @c3f0e05 · full npm test SKIP(TSR1900 targeted 70/70 PASS carry+TSR1897 2791/2791 PASS carry·no new commit·concurrent vitest §5·disk 5.1G tight·rules §1-1) · npm run build PASS(11.41s·1234 modules) · npm audit high 0 · backend /api/v1/health=200"
-core_qa_b95: "live E2E bootstrap-disabled carry(QA-B95): backend UP(/api/v1/health=200) 이나 liveE2eBootstrapEnabled=false — OGADA_LIVE_E2E_BOOTSTRAP_ENABLED 미설정 시 seed/login 불가"
-post_merge_npm: "TSR1900 targeted 70/70 PASS(9 files·45.56s). Full suite green = TSR1897 @aab11b2 2791/2791 PASS carry(delta aab11b2→c3f0e05 = additive a11y 9 files only)."
-post_merge_files: 9
-corroboration_tsr1902: "develop/test/origin-develop SYNCED @c3f0e05(git remeasure·pending 0·WT CLEAN). Full npm test SKIP(TSR1900 targeted 70/70 PASS carry+TSR1897 2791/2791 PASS carry·no new develop commit·concurrent vitest in src/frontend §5 CRITICAL·disk 5.1G(97%) tight·rules §1-1). Non-conflicting corroboration: npm run build PASS(11.41s·1234 modules), npm audit --audit-level=high 0 vulnerabilities, backend /api/v1/health=200."
-corroboration_tsr1900: "FF merge aab11b2→c3f0e05(UXD-198 a11y <time dateTime> lists·behavior-neutral). pending 1→0·develop/test/origin-develop SYNCED @c3f0e05·WT CLEAN. Targeted npm test -- <9 changed test files> 70/70 PASS(45.56s). Non-conflicting corroboration: npm run build PASS(9.36s·1234 modules), npm audit --audit-level=high 0 vulnerabilities, backend /api/v1/health=200. disk 5.2G(97%) tight → full 15min suite 대신 targeted(rules §1-1)."
+absorbed_commits: "none (reconfirm cycle — develop==test==origin/develop @6a9e85e since TSR1939 UXD-201 FF merge)"
+related_tests: "TSR1944 tester QA cycle @6a9e85e: npm test 2802/2802 PASS carry(TSR1943,491 files,918.64s,0F,exit 0) + secondary run 16:25:30-16:41:49Z exit 0 + build 1234 PASS carry + audit high 0 carry + backend health 200 + no vitest running. TSR1943 independent full rerun baseline carry."
+core_qa_b95: "live E2E bootstrap-disabled carry(QA-B95): backend UP(/api/v1/health=200) 이나 liveE2eBootstrapEnabled=false"
+post_merge_npm: "TSR1944 tester QA cycle @6a9e85e: npm test 2802/2802 PASS carry(TSR1943), secondary run exit 0(16:41:49Z), npm run build PASS carry(1234 modules), npm audit high 0 carry, backend health 200, vitest concurrency none."
+post_merge_files: 0
+targeted_files: "n/a (full suite rerun)"
+delta_note: "baseline unchanged at @6a9e85e (no new develop commit since TSR1939)"
+corroboration_tsr1915: "historical full npm test 2792/2792 PASS(490 files·903.90s·0F) at @c3f0e05"
+corroboration_tsr1939: "historical targeted npm test 53/53 PASS(7 UXD-201 files·15.53s·@6a9e85e) + build PASS(9.60s) + audit high 0 + backend health 200"
+corroboration_tsr1943: "fresh full npm test 2802/2802 PASS(491 files·918.64s·0F·exit 0) + build PASS(11.57s) + audit high 0 + backend health 200"
 failing_tests: []
 build_modules: 1234
 audit_high: 0
-audit_high_detail: "npm audit --audit-level=high 결과 0 vulnerabilities(high 0·TSR1902·src/frontend-test·build 11.41s PASS)."
-live_e2e: "SKIP (QA-B95 carry: live E2E bootstrap-disabled · backend UP /health=200 이나 liveE2eBootstrapEnabled=false · origin/test push QA-B116 선행)"
+audit_high_detail: "npm audit --audit-level=high high 0 (0 vulnerabilities) — TSR1943 rerun(@6a9e85e)."
+live_e2e: "SKIP (QA-B95 carry: live E2E bootstrap-disabled · backend UP /health=200 · 수동 FF merge라 auto live-e2e 미트리거 · origin/test push QA-B116 선행)"
 open_qa_frontend: 0
 open_qa_residual: 0
-residual_qa: ""
+residual_qa: "none (QA-B625 Fixed & Verified TSR1917 · QA-B626 Fixed & Verified TSR1919)"
 planned: ["QA-B116", "QA-B95"]
 transfer_verdict: PASS
-transfer_note: "FE transfer PASS(local) — TSR1902 reconfirm @c3f0e05. develop==test==origin/develop @c3f0e05·WT CLEAN·pending 0·Open(FE product) 0; corroboration build PASS(11.41s·1234 modules)+audit high 0+backend health 200. operation 승격은 origin/test push(QA-B116)+QA-B95 잔존."
-cross_stream: "LOCAL SYNCED(BE develop/test @6d3c766 pending 0 Open 0[TSR1901] + FE develop/test @c3f0e05 pending 0 Open 0). origin/test push 미실행: FE local test +34 vs origin/test b23711f · BE local test +774 vs origin/test 598d108 = QA-B116."
-backend_health: "UP — GET /api/v1/health=200 (TSR1902)"
-operation: "BLOCK (origin/test push QA-B116[BE +774·FE +34] + QA-B95 live bootstrap disabled)"
+transfer_note: "FE transfer PASS(FE local) — reconfirm @6a9e85e SYNCED pending 0(left-right 0 0)·WT CLEAN·no new develop commit since TSR1939. explicit full rerun npm test 2802/2802 PASS + build 1234 PASS + audit high 0 + backend health 200 corroboration. Open(FE product) 0. operation 승격은 QA-B116(origin/test push)·QA-B95(live-e2e bootstrap) 잔존."
+cross_stream: "LOCAL SYNCED(BE develop/test @6d3c766 pending 0 Open 0 + FE develop/test @6a9e85e pending 0 Open 0). origin/test push 미실행: FE local test +37 vs origin/test b23711f · BE local test +774 vs origin/test 598d108 = QA-B116."
+backend_health: "UP — GET /api/v1/health=200 (TSR1943 re-checked)"
+operation: "BLOCK (origin/test push QA-B116[BE +774·FE +37] + QA-B95 live bootstrap disabled)"
 backend_local_head: "6d3c766"
 backend_test_head: "6d3c766"
 backend_develop_head: "6d3c766"
 backend_origin_test_head: "598d108"
-frontend_package: "transfer/frontend/packages/develop-test-diff-20260719-TSR1900.md"
-qa_open: ""
-qa_absorbed: "QA-20260719-B624 (Fixed & Verified: /tmp cleanup·TSR1890 npm test 2791/2791 PASS)"
-merge_status: merged
+frontend_package: "transfer/frontend/packages/develop-test-diff-20260719-TSR1944.md"
+qa_open: "none"
+qa_absorbed: "UXD-201 (TSR1939 develop→test FF merged) · UXD-200 (TSR1927 develop→test FF merged) · QA-20260719-B626 (Fixed & Verified TSR1919) · QA-20260719-B625 (Fixed & Verified TSR1917)"
+merge_status: synced

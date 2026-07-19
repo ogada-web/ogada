@@ -1,3 +1,911 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T16:43:44Z -->
+<!-- tester-sync: TSR 1944 2026-07-19T16:43:44Z (frontend) - tester QA cycle; ROADMAP merged baseline @6a9e85e; develop/test/origin-develop SYNCED @6a9e85e pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1939); full npm test carry TSR1943 2802/2802 PASS(491 files,918.64s,0F,exit 0); secondary concurrent run completed cleanly at 16:41:49Z(process exit 0 confirmed); build PASS(1234 modules,11.57s carry); audit high 0 carry; backend /api/v1/health=200; no vitest running; disk 1.5G/100%; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @6a9e85e both pending 0); operation BLOCK unchanged(QA-B116 origin/test push FE +37·BE +774 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1944 frontend — tester QA 이관 검증 cycle `@6a9e85e` (PASS)
+
+| item | result |
+|------|--------|
+| merge | **N/A** — TSR1939 이후 신규 `develop` 커밋 없음 (develop/test/origin-develop `@6a9e85e` SYNCED) |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| full suite `npm test` | **PASS (carry)** — TSR1943 **2802/2802** (491 files · 918.64s · 0F · exit 0 at 16:26:18Z) |
+| secondary run | **완료** — 별도 프로세스(16:25:30Z→16:41:49Z) 정상 종료(exit 0 confirmed, no crash) |
+| `npm run build` | **PASS (carry)** — 1234 modules (11.57s · TSR1943) |
+| `npm audit` high | **PASS** — high **0** (TSR1943 carry) |
+| backend `/api/v1/health` | **200** (16:43:44Z 재확인) |
+| vitest concurrency | **없음** (PID 2010515 16:41:49Z 종료 확인) |
+| worktree branch / SHA | `test` / `6a9e85e` (WT CLEAN) |
+| disk | **1.5G / 100%** (극압박 지속) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | LOCAL SYNCED (BE `@6d3c766` + FE `@6a9e85e` both pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +37 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: tester QA 이관 사이클. baseline `@6a9e85e`(develop/test/origin-develop SYNCED·WT CLEAN·pending 0) 무변동. TSR1943 full `npm test` **2802/2802 PASS**(491 files·918.64s·exit 0·16:26:18Z)가 동일 baseline에서 실행된 직전 full rerun이므로 유효 carry. 별도 프로세스(16:25:30→16:41:49Z)도 정상 종료 확인. build 1234 PASS·audit high 0·backend health 200 모두 통과. 신규 FE product Open 없음, local transfer **PASS**. operation 승격은 `QA-B116`(origin/test push FE +37·BE +774)·`QA-B95`(live-e2e bootstrap-disabled)만 잔존. 디스크 1.5G/100% 극압박은 지속 리스크.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T16:26:47Z -->
+<!-- tester-sync: TSR 1943 2026-07-19T16:26:47Z (frontend) - ROADMAP merged baseline @6a9e85e independent full rerun; develop/test/origin-develop SYNCED @6a9e85e pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1939); full npm test 2802/2802 PASS(491 files,918.64s,0F,exit 0); build PASS(11.57s,1234 modules); audit high 0; backend /api/v1/health=200; no vitest concurrency; disk 1.5G/99% tight; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @6a9e85e both pending 0); operation BLOCK unchanged(QA-B116 origin/test push FE +37·BE +774 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1943 frontend — ROADMAP merged baseline `@6a9e85e` independent full rerun (PASS)
+
+| item | result |
+|------|--------|
+| merge | **N/A** — TSR1939 이후 신규 `develop` 커밋 없음 (develop/test/origin-develop `@6a9e85e` SYNCED) |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| full suite `npm test` | **PASS** — **2802/2802** (491 files · 918.64s · 0F · exit 0) |
+| `npm run build` | **PASS** — 1234 modules (11.57s) |
+| `npm audit` high | **PASS** — high **0** (0 vulnerabilities) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none |
+| worktree branch / SHA | `test` / `6a9e85e` (WT CLEAN) |
+| disk | 1.5G free / 99% used (tight) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | LOCAL SYNCED (BE `@6d3c766` + FE `@6a9e85e` both pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +37 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: 요청된 회귀·통합 검증을 위해 `src/frontend-test@test`에서 baseline `@6a9e85e` full `npm test`를 독립 재실행해 **2802/2802 PASS**를 확인했다. 같은 사이클에서 `npm run build`(1234 modules)와 `npm audit --audit-level=high`(0 vulnerabilities), backend health 200, vitest 동시 실행 없음까지 확인되어 기능·품질 게이트는 모두 통과했다. 신규 FE product Open은 없으며 local transfer는 **PASS**다. operation 승격은 기존 잔여 이슈 `QA-B116`/`QA-B95`로만 BLOCK 상태다.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T16:08:00Z -->
+<!-- tester-sync: TSR 1942 2026-07-19T16:08:00Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(67s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right origin/develop...test 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1940); Open(BE product) 0(no new); backend /api/v1/health=200; disk 1.7G/99% tight carry(worsening 1.8G->1.7G); transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @6a9e85e both pending 0); operation BLOCK unchanged(QA-B116 origin/test push BE +774, FE +37 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1942 backend — ROADMAP merged baseline `@6d3c766` 독립 재검증 (PASS)
+
+| item | result |
+|------|--------|
+| merge | **N/A** — TSR1940 이후 신규 `develop` 커밋 없음 (develop/test `@6d3c766` SYNCED) |
+| develop/test divergence | **0/0** (`rev-list --left-right origin/develop...test`) |
+| `mvn -o test` | **PASS** — **2433/2433**(409 report · 67s · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| npm | **N/A** — backend stream |
+| Open(BE product) | **0** — 신규 없음 |
+| backend `/api/v1/health` | **200** |
+| disk | **1.7G/99%** tight (worsening 1.8G→1.7G) — 대용량 append-only 리포트 성장 지속 리스크 |
+| 판정 | **PASS**(BE local) · transfer **PASS**(BE local) |
+| cross-stream | **LOCAL SYNCED** — BE `@6d3c766` + FE `@6a9e85e` both pending 0 · Open 0 |
+| operation | **BLOCK** — QA-B116(origin/test push BE +774 · FE +37) + QA-B95(live-e2e bootstrap-disabled) |
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T15:56:00Z -->
+<!-- tester-sync: TSR 1941 2026-07-19T15:56:00Z (frontend) - ROADMAP merged baseline @6a9e85e reconfirm; develop/test/origin-develop SYNCED @6a9e85e pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1939); full npm test + build SKIP(TSR1915 2792/2792 @c3f0e05 + TSR1939 targeted 53/53 @6a9e85e carry, disk 1.8G/99% 극압박, rules section 1-1); corroboration npm audit high 0(fresh·0.97s) + backend /api/v1/health=200 + no vitest concurrency; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @6a9e85e both pending 0); operation BLOCK unchanged(QA-B116 origin/test push FE +37·BE +774 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1941 frontend — ROADMAP merged baseline `@6a9e85e` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| merge | **N/A** — TSR1939 이후 신규 `develop` 커밋 없음 (develop/test/origin-develop `@6a9e85e` SYNCED) |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| full suite `npm test` | **SKIP** — TSR1915 **2792/2792 PASS**(`@c3f0e05`) + TSR1939 targeted **53/53 PASS**(`@6a9e85e`) carry · baseline unchanged · disk 1.8G/99% 극압박 · rules §1-1 |
+| `npm run build` | **SKIP (carry)** — TSR1939 1234 modules PASS(9.60s) · 모듈 그래프 무변동 |
+| `npm audit` high | **PASS** — high **0** (0 vulnerabilities · fresh 0.97s) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none |
+| worktree branch / SHA | `test` / `6a9e85e` (WT CLEAN) |
+| disk | 1.8G free / 99% used (극압박) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | LOCAL SYNCED (BE `@6d3c766` + FE `@6a9e85e` both pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +37 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: TSR1939(UXD-201 FF merge) 이후 `develop`에 신규 커밋이 없어 merge는 N/A. merged baseline `@6a9e85e`에서 git 재실측 → develop==test==origin/develop `@6a9e85e`·WT CLEAN·pending 0(left-right `0 0`). disk 1.8G/99% 극압박 + baseline 무변동 → rules §1-1에 따라 15분 full suite·build 재실행 SKIP(TSR1915 full 2792/2792 + TSR1939 targeted 53/53 green carry). 비충돌 corroboration으로 `npm audit --audit-level=high` **0**(fresh)·backend `/api/v1/health`=200·vitest 동시 실행 없음 확인. 신규 product Open 없음, local transfer **PASS**. operation 승격은 미변경 `QA-B116`(origin/test push FE +37·BE +774)·`QA-B95`(live-e2e bootstrap-disabled)만 잔존.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T15:54:00Z -->
+<!-- tester-sync: TSR 1940 2026-07-19T15:54:00Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(67s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right origin/develop...test 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1938); Open(BE product) 0(no new); backend /api/v1/health=200; disk 1.8G/99% tight carry; transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @6a9e85e both pending 0); operation BLOCK unchanged(QA-B116 origin/test push BE +774·FE +37 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1940 backend — ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| 항목 | 결과 |
+|------|--------|
+| merge | **N/A** — TSR1938 이후 신규 `develop` 커밋 없음 (develop/test `@6d3c766` SYNCED) |
+| `mvn -o test` | **PASS** — **2433/2433** (409 report · 0F/0E/0S · 67s · BUILD SUCCESS · EXIT 0) |
+| worktree branch / SHA | `test` / `6d3c766` (WT CLEAN) |
+| develop/test divergence | **0/0** (`rev-list --left-right origin/develop...test`) |
+| backend `/api/v1/health` | 200 |
+| disk | 1.8G free / 99% used (tight) |
+| Open(BE product) | **0** (신규 없음) |
+| transfer | **PASS** (BE local) |
+| cross-stream | LOCAL SYNCED (BE `@6d3c766` + FE `@6a9e85e` both pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push BE +774 · FE +37) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: TSR1938 이후 `develop`에 신규 커밋이 없어 merge는 N/A. merged baseline `@6d3c766`에서 `src/backend-test@test` `mvn -o test`를 독립 재실행 → **2433/2433 PASS**(409 report · 0F/0E/0S · BUILD SUCCESS). develop/test `@6d3c766` SYNCED·WT CLEAN(left-right 0/0), backend health 200 corroboration. 신규 product Open 없음, local transfer **PASS**. operation 승격은 미변경 `QA-B116`(origin/test push BE +774·FE +37)·`QA-B95`(live-e2e bootstrap-disabled)만 잔존.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T15:44:00Z -->
+<!-- tester-sync: TSR 1939 2026-07-19T15:44:00Z (frontend) - ★ UXD-201 a11y <time dateTime> billing/fee/backup/guardian 1 commit MERGED develop→test FF c2fb261→6a9e85e (pending 1→0; --ff-only; FF-safe; merge-base==test HEAD); targeted npm test 53/53 PASS(7 changed .test.jsx,15.53s,clean summary,@6a9e85e) + full 2792/2792 PASS(@c3f0e05,TSR1915) carry(delta=additive a11y 14 files); build PASS(9.60s); audit high 0; backend /api/v1/health=200; no vitest concurrency; develop/test SYNCED @6a9e85e WT CLEAN; disk 1.9G/99% 극압박; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @6a9e85e both pending 0); local test +37 vs origin/test b23711f=QA-B116; operation BLOCK(QA-B116+QA-B95) carry. NO new Open. -->
+
+### [TSR] TSR1939 frontend — UXD-201 a11y `<time dateTime>` billing/fee/backup/guardian develop→test FF MERGED (PASS)
+
+| item | result |
+|------|--------|
+| merge | **MERGED (FF)** — `c2fb261`→`6a9e85e` (UXD-201 · pending 1→0 · `--ff-only` · merge-base==test HEAD) |
+| commit | `fix(a11y/billing): wrap billing/fee/backup/guardian date cells in <time dateTime> (UXD-201)` (14 files · +231/-27 · behavior-neutral) |
+| targeted `npm test` (7 changed) | **PASS** — **53/53** (7 files · 15.53s · clean summary · `@6a9e85e`) |
+| full suite carry | TSR1915 **2792/2792 PASS** (490 files · 903.90s · 0F · `@c3f0e05`) |
+| `npm run build` | **PASS** (9.60s · 1234 modules carry) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none |
+| worktree branch / SHA | `test` / `6a9e85e` (WT CLEAN) |
+| develop/test divergence | **0/0** (`rev-list --left-right HEAD...develop`) |
+| disk | 1.9G free / 99% used (극압박) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +37 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: coder가 `develop`에 UXD-201(`6a9e85e`)을 착지 — 청구/수가/백업/보호자 청구 상세 화면의 ISO 날짜·시각 셀을 `<time dateTime>`로 래핑하는 behavior-neutral additive a11y(WCAG 1.3.1, UXD-198~200 계보). `src/frontend-test@test`에서 `git merge --ff-only`로 이관(pending 1→0). disk 1.9G/99% 극압박 + 순수 additive a11y 델타 특성상 rules §1-1에 따라 15분 full suite 대신 변경 7개 test 파일 targeted 재실행(**53/53 PASS**)으로 델타 전량 커버 + `npm run build` PASS(9.60s) + `npm audit` high 0 + backend health 200 corroboration. Full-suite green baseline = TSR1915 `@c3f0e05` **2792/2792 PASS** carry. 신규 product Open 없음, local transfer **PASS**. operation 승격은 미변경 `QA-B116`(origin/test push)·`QA-B95`(live-e2e bootstrap)만 잔존.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T15:37:34Z -->
+<!-- tester-sync: TSR 1938 2026-07-19T15:37:34Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(66s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1936); Open(BE product) 0(no new); backend /api/v1/health=200; disk 1.9G/99% tight carry; transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK unchanged(QA-B116 origin/test push BE +774·FE +36 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1938 backend — ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| 항목 | 결과 |
+| --- | --- |
+| 기준 버전 | ROADMAP merged baseline backend `6d3c766` |
+| 실행 위치 | `src/backend-test` (`test` worktree) |
+| `mvn -o test` | **PASS** — **2433/2433** (409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · 66s) |
+| 브랜치 정합성 | `develop=test=6d3c766`, pending **0** (`rev-list --left-right test...develop` = 0/0), WT CLEAN |
+| merge 상태 | **N/A** (TSR1936 이후 신규 develop 커밋 없음) |
+| Open(BE product) | **0** (신규 없음) |
+| backend `/api/v1/health` | 200 |
+| 디스크 | 1.9G free / 99% used (tight carry) |
+| transfer | **PASS** (BE local) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push BE +774 · FE +36) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Backend merged baseline `@6d3c766` remains green. Full regression in `src/backend-test@test` re-run is clean (`2433/2433 PASS`), and `develop`/`test` remain SYNCED with pending 0 and clean working trees. No new product Open issue is found; local transfer stays **PASS**. Operation promotion remains blocked only by unchanged push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T15:08:00Z -->
+<!-- tester-sync: TSR 1937 2026-07-19T15:08:00Z (frontend) - ROADMAP merged baseline @c2fb261 reconfirm; develop/test/origin-develop SYNCED @c2fb261 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1927); full npm test + build SKIP(TSR1915 2792/2792 @c3f0e05 + TSR1927/1929 targeted 12/12 carry, disk 2.1G/99% 극압박, rules §1-1); corroboration npm audit high 0(fresh·0.9s) + backend /api/v1/health=200 + no vitest concurrency; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK=QA-B116(origin/test push FE +36·BE +774)+QA-B95(live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1937 frontend — ROADMAP merged baseline `@c2fb261` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` / build | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 + TSR1927/1929 targeted **12/12 PASS** carry · baseline unchanged · disk 2.1G/99% 극압박 · rules §1-1) |
+| worktree branch / SHA | `test` / `c2fb261` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1927) |
+| `npm audit` high | **0** (0 vulnerabilities · fresh re-run 0.9s) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +36 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@c2fb261` unchanged since TSR1927 (UXD-200 already merged). `develop`/`test`/`origin/develop` remain SYNCED with pending 0 and clean working tree. Under extreme disk pressure (2.1G/99%), full suite + build are skipped per rules §1-1, carrying TSR1915 full **2792/2792 PASS** and TSR1927/1929 targeted **12/12 PASS**; corroborated by fresh `npm audit` high **0** + backend health **200** + no vitest concurrency. No new product Open; local transfer **PASS**. Operation promotion blocked only by unchanged `QA-B116` (origin/test push) and `QA-B95` (live-e2e bootstrap).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:59:00Z -->
+<!-- tester-sync: TSR 1936 2026-07-19T15:06:19Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(66s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1934); Open(BE product) 0(no new); backend /api/v1/health=200; disk 2.2G/99% tight carry; transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK unchanged(QA-B116 origin/test push BE +774·FE +36 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+### [TSR] TSR1936 backend — ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| 항목 | 결과 |
+| --- | --- |
+| 기준 버전 | ROADMAP merged baseline backend `6d3c766` |
+| 실행 위치 | `src/backend-test` (`test` worktree) |
+| `mvn -o test` | **PASS** — **2433/2433** (409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · 66s) |
+| 브랜치 정합성 | `develop=test=6d3c766`, pending **0** (`rev-list --left-right test...develop` = 0/0), WT CLEAN |
+| merge 상태 | **N/A** (TSR1934 이후 신규 develop 커밋 없음) |
+| Open(BE product) | **0** (신규 없음) |
+| backend `/api/v1/health` | 200 |
+| 디스크 | 2.2G free / 99% used (tight carry) |
+| transfer | **PASS** (BE local) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push BE +774 · FE +36) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Backend merged baseline `@6d3c766` remains green. Full regression in `src/backend-test@test` re-run is clean (`2433/2433 PASS`), and `develop`/`test` remain SYNCED with pending 0 and clean working trees. No new product Open issue is found; local transfer stays **PASS**. Operation promotion remains blocked only by unchanged push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+<!-- tester-sync: TSR 1935 2026-07-19T14:59:00Z (frontend) - ROADMAP merged baseline @c2fb261 reconfirm; develop/test/origin-develop SYNCED @c2fb261 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1927); full npm test + build SKIP(TSR1915 2792/2792 @c3f0e05 + TSR1927/1929 targeted 12/12 carry, disk 2.2G/99% 극압박, rules §1-1); corroboration npm audit high 0(fresh) + backend /api/v1/health=200 + no vitest concurrency; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK=QA-B116(origin/test push FE +36·BE +774)+QA-B95(live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1935 frontend — ROADMAP merged baseline `@c2fb261` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` / build | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 + TSR1927/1929 targeted **12/12 PASS** carry · baseline unchanged · disk 2.2G/99% 극압박 · rules §1-1) |
+| worktree branch / SHA | `test` / `c2fb261` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1927) |
+| `npm audit` high | **0** (0 vulnerabilities · fresh re-run) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| live E2E | SKIP (QA-B95 bootstrap-disabled) |
+| local test vs origin/test | **+36** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** (BE `@6d3c766` + FE `@c2fb261` both pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +36 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@c2fb261` (UXD-200 a11y `<time dateTime>` panels) unchanged since TSR1927; develop/test/origin-develop stay SYNCED (pending 0, WT CLEAN) with no new develop commits. Per rules §1-1, at disk 2.2G/99% and unchanged baseline the 15-min full suite + build are skipped in favor of the green carry (TSR1915 full 2792/2792 + TSR1927/1929 targeted 12/12) plus fresh `npm audit` high 0 and backend health 200 corroboration. Local transfer stays **PASS**; operation promotion remains blocked only by unchanged push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:55:14Z -->
+<!-- tester-sync: TSR 1934 2026-07-19T14:55:14Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(66s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1932); Open(BE product) 0(no new); backend /api/v1/health=200; disk 2.3G/99% tight carry; transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK unchanged(QA-B116 origin/test push BE +774·FE +36 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1934 backend — ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **PASS** — **2433/2433** (409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · 66s) |
+| worktree branch / SHA | `test` / `6d3c766` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1932) |
+| backend `/api/v1/health` | 200 |
+| disk | 2.3G free (99%) tight |
+| Open (BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** (BE `@6d3c766` + FE `@c2fb261`) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push BE +774 · FE +36) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Backend merged baseline `@6d3c766` (SEC-D34 excel-amount normalize 9-commit merge) remains green. Full regression in `src/backend-test@test` re-run is clean (`2433/2433 PASS`); develop/test stay SYNCED (pending 0, WT CLEAN) with no new develop commits since TSR1932. Local transfer stays **PASS**; operation promotion remains blocked only by unchanged push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:47:00Z -->
+<!-- tester-sync: TSR 1933 2026-07-19T14:47:00Z (frontend) - ROADMAP merged baseline @c2fb261 reconfirm; develop/test/origin-develop SYNCED @c2fb261 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1927); full npm test + build SKIP(TSR1915 2792/2792 @c3f0e05 + TSR1927/1929 targeted 12/12 carry, disk 2.3G/99% 극압박, rules §1-1); corroboration npm audit high 0(fresh) + backend /api/v1/health=200 + no vitest concurrency; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK=QA-B116(origin/test push FE +36·BE +774)+QA-B95(live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1933 frontend — ROADMAP merged baseline `@c2fb261` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` / build | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 + TSR1927/1929 targeted **12/12 PASS** carry · baseline unchanged · disk 2.3G/99% 극압박 · rules §1-1) |
+| worktree branch / SHA | `test` / `c2fb261` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1927) |
+| `npm audit` high | **0** (0 vulnerabilities · fresh re-run) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| live E2E | SKIP (QA-B95 bootstrap-disabled) |
+| local test vs origin/test | **+36** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** (BE `@6d3c766` + FE `@c2fb261` both pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +36 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@c2fb261` (UXD-200 a11y `<time dateTime>` monitoring/history panels) stays green. develop/test/origin-develop remain SYNCED (pending 0/0, WT CLEAN) with no new develop commits since the TSR1927 FF merge. Disk pressure worsened to 2.3G/99%, so per rules §1-1 the full suite and build are skipped in favor of the carried green baselines (full 2792/2792 + targeted 12/12), corroborated by a fresh `npm audit` high 0, backend health 200, and no vitest concurrency. Local transfer stays **PASS**; operation promotion remains blocked only by the unchanged push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:44:04Z -->
+<!-- tester-sync: TSR 1932 2026-07-19T14:44:04Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(66s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1930); Open(BE product) 0(no new); backend /api/v1/health=200; disk 2.4G/99% tight carry; transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK unchanged(QA-B116 origin/test push BE +774·FE +36 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1932 backend — ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **PASS** — **2433/2433** (409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · 66s) |
+| worktree branch / SHA | `test` / `6d3c766` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1930) |
+| backend `/api/v1/health` | 200 |
+| disk | 2.4G free (99%) tight |
+| Open (BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** (BE `@6d3c766` + FE `@c2fb261`) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push BE +774 · FE +36) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Backend merged baseline `@6d3c766` (SEC-D34 excel-amount normalize 9-commit merge) remains green. Full regression in `src/backend-test@test` re-run is clean (`2433/2433 PASS`); develop/test stay SYNCED (pending 0, WT CLEAN) with no new develop commits since TSR1930. Local transfer stays **PASS**; operation promotion remains blocked only by unchanged push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:37:00Z -->
+<!-- tester-sync: TSR 1931 2026-07-19T14:37:00Z (frontend) - ROADMAP merged baseline @c2fb261 reconfirm; develop/test/origin-develop SYNCED @c2fb261 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1927); full npm test SKIP(TSR1915 2792/2792 @c3f0e05 + TSR1927/1929 targeted 12/12 carry, disk 2.5G/99% tight, rules §1-1); corroboration npm audit high 0(fresh) + backend /api/v1/health=200 + no vitest concurrency; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK=QA-B116(origin/test push FE +36·BE +774)+QA-B95(live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1931 frontend — ROADMAP merged baseline `@c2fb261` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 + TSR1927/1929 targeted **12/12 PASS** carry · baseline unchanged · disk 2.5G/99% tight · rules §1-1) |
+| worktree branch / SHA | `test` / `c2fb261` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1927) |
+| `npm audit` high | **0** (0 vulnerabilities · fresh re-run) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| live E2E | SKIP (QA-B95 bootstrap-disabled) |
+| local test vs origin/test | **+36** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** (BE `@6d3c766` + FE `@c2fb261` both pending 0) |
+| operation gate | **BLOCK** — QA-B116 (origin/test push FE +36 · BE +774) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@c2fb261` unchanged since UXD-200 was merged (TSR1927); `develop==test==origin/develop` SYNCED (pending 0, WT CLEAN) and no new develop commits. Under severe disk pressure (2.5G/99%) with no baseline change, the 15-min full suite is skipped per rules §1-1, relying on TSR1915 full **2792/2792 PASS** + TSR1927/1929 targeted **12/12 PASS** carry, corroborated by a fresh `npm audit` high **0** and backend health **200**. Open(FE product) **0**; local transfer stays **PASS**; operation promotion still blocked only by unchanged `QA-B116` (origin/test push) and `QA-B95` (live-e2e bootstrap).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:33:11Z -->
+<!-- tester-sync: TSR 1930 2026-07-19T14:33:11Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(68s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1928); Open(BE product) 0(no new); transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK unchanged(QA-B116 origin/test push BE +774·FE +36 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1930 backend - ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **PASS** - **2433/2433** (409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · 68s) |
+| worktree branch / SHA | `test` / `6d3c766` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1928) |
+| Open (BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** (BE `@6d3c766` + FE `@c2fb261`) |
+| operation gate | **BLOCK** - QA-B116 (origin/test push BE +774 · FE +36) + QA-B95 (live-e2e bootstrap-disabled) |
+
+**Summary**: Backend merged baseline `@6d3c766` remains green with no new develop commits since TSR1928. `src/backend-test@test` full regression re-run stays clean (`2433/2433 PASS`) and develop/test remain SYNCED (pending 0, WT CLEAN). Local transfer stays **PASS**; operation promotion remains blocked only by unchanged push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:26:07Z -->
+<!-- tester-sync: TSR 1929 2026-07-19T14:26:07Z (frontend) - ROADMAP merged baseline @c2fb261 reconfirm; develop/test/origin-develop SYNCED @c2fb261 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1927); full npm test SKIP(TSR1915 2792/2792 + TSR1927 targeted 12/12 carry, disk 2.7G/99% tight, rules §1-1); corroboration targeted 12/12 PASS(4 UXD-200 files,7.17s) + npm run build 1234 PASS(11.13s) + npm audit high 0 + backend /api/v1/health=200 + no vitest concurrency; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK=QA-B116(origin/test push FE +36·BE +774)+QA-B95(live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1929 frontend — ROADMAP merged baseline `@c2fb261` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 + TSR1927 targeted **12/12 PASS** carry · baseline unchanged · disk 2.7G/99% tight · rules §1-1) |
+| targeted `npm test` (UXD-200 4 files) | **PASS** — **12/12** (4 files · 7.17s · clean summary · `@c2fb261`) |
+| `npm run build` (fresh) | **PASS** — **1234 modules** (11.13s) |
+| worktree branch / SHA | `test` / `c2fb261` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1927) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| live E2E | SKIP (QA-B95 bootstrap-disabled) |
+| local test vs origin/test | **+36** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** — FE `@c2fb261` pending 0 Open 0 + BE `@6d3c766` pending 0 Open 0 |
+| disk | 2.7G free (99%) tight |
+| operation | **BLOCK** (QA-B116 origin/test push FE +36/BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@c2fb261` (UXD-200) remains green with no new develop commits since TSR1927. develop/test/origin-develop stay SYNCED (pending 0, WT CLEAN). Full suite re-run skipped under rules §1-1 (baseline unchanged, disk tight); targeted UXD-200 re-run **12/12 PASS**, build, audit, and backend health corroborate no regression. Local transfer stays **PASS**; operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:26:07Z -->
+<!-- tester-sync: TSR 1929 2026-07-19T14:26:07Z (frontend) - ROADMAP merged baseline @c2fb261 reconfirm; develop/test/origin-develop SYNCED @c2fb261 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1927); full npm test SKIP(TSR1915 2792/2792 + TSR1927 targeted 12/12 carry, disk 2.7G/99% tight, rules §1-1); corroboration targeted 12/12 PASS(4 UXD-200 files,7.17s) + npm run build 1234 PASS(11.13s) + npm audit high 0 + backend /api/v1/health=200 + no vitest concurrency; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); operation BLOCK=QA-B116(origin/test push FE +36·BE +774)+QA-B95(live-e2e bootstrap-disabled). NO new Open. -->
+
+### [TSR] TSR1929 frontend — ROADMAP merged baseline `@c2fb261` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 + TSR1927 targeted **12/12 PASS** carry · baseline unchanged · disk 2.7G/99% tight · rules §1-1) |
+| targeted `npm test` (UXD-200 4 files) | **PASS** — **12/12** (4 files · 7.17s · clean summary · `@c2fb261`) |
+| `npm run build` (fresh) | **PASS** — **1234 modules** (11.13s) |
+| worktree branch / SHA | `test` / `c2fb261` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1927) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| live E2E | SKIP (QA-B95 bootstrap-disabled) |
+| local test vs origin/test | **+36** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** — FE `@c2fb261` pending 0 Open 0 + BE `@6d3c766` pending 0 Open 0 |
+| disk | 2.7G free (99%) tight |
+| operation | **BLOCK** (QA-B116 origin/test push FE +36/BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@c2fb261` (UXD-200) remains green with no new develop commits since TSR1927. develop/test/origin-develop stay SYNCED (pending 0, WT CLEAN). Full suite re-run skipped under rules §1-1 (baseline unchanged, disk tight); targeted UXD-200 re-run **12/12 PASS**, build, audit, and backend health corroborate no regression. Local transfer stays **PASS**; operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:24:00Z -->
+<!-- tester-sync: TSR 1928 2026-07-19T14:24:00Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(67s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1926); Open(BE product) 0(no new); @RestController 81; HTTP 442(GET231/POST144/PATCH44/PUT13/DELETE10); @Test strict 2413; Flyway V196; transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); disk 2.7G/99% tight carry; operation BLOCK unchanged(QA-B116 origin/test push BE +774·FE +36 + QA-B95 live-e2e bootstrap-disabled). NO new Open. -->
+# tsr1928_backend: merged-baseline independent re-verify @6d3c766 PASS(2433/2433, 409 report, 67s, 0F/0E/0S, BUILD SUCCESS); test branch confirmed, develop/test left-right 0/0, Open(BE product)=0, @RestController 81, HTTP 442, @Test strict 2413, Flyway V196, transfer PASS(BE local), cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261), disk 2.7G/99% tight, operation BLOCK unchanged(QA-B116+QA-B95). NO new Open.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:12:48Z -->
+<!-- tester-sync: TSR 1927 2026-07-19T14:12:48Z (frontend) - ★ UXD-200 a11y <time dateTime> monitoring/history panels 1 commit MERGED develop→test FF e8ff8dc→c2fb261 (pending 1→0; --ff-only; FF-safe); targeted npm test 12/12 PASS(4 files,5.64s,clean summary,@c2fb261) + full 2792/2792 PASS(@c3f0e05,TSR1915) carry(delta=additive a11y 8 files); build PASS(9.31s); audit high 0; backend /api/v1/health=200; no vitest concurrency; develop/test/origin-develop SYNCED @c2fb261 WT CLEAN; disk 2.8G/99% tight; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @c2fb261 both pending 0); local test +36 vs origin/test=QA-B116; operation BLOCK(QA-B116+QA-B95) carry. NO new Open. -->
+
+### [TSR] TSR1927 frontend - UXD-200 a11y `<time dateTime>` monitoring/history panels MERGED develop→test (PASS)
+
+| item | result |
+|------|--------|
+| develop→test merge | **MERGED (FF)** - `e8ff8dc`→`c2fb261` (UXD-200 · pending 1→0 · `--ff-only` · merge-base==test HEAD) |
+| targeted `npm test` (UXD-200 4 files) | **PASS** - **12/12** (4 files · 5.64s · clean summary · `@c2fb261`) |
+| full `npm test` (carry) | **PASS** - TSR1915 **2792/2792** (490 files · 903.90s · 0F @`c3f0e05`) · delta=additive a11y 8 files |
+| `npm run build` (fresh) | **PASS** - 9.31s (모듈 그래프 무변동 · 1234 carry) |
+| worktree branch / SHA | `test` / `c2fb261` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| live E2E | SKIP (QA-B95 bootstrap-disabled · 수동 FF merge라 auto 미트리거) |
+| local test vs origin/test | **+36** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** - FE `@c2fb261` pending 0 Open 0 + BE `@6d3c766` pending 0 Open 0 |
+| disk | 2.8G free (99%) tight |
+| operation | **BLOCK** (QA-B116 origin/test push FE +36/BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: coder landed `c2fb261` (UXD-200) on develop — additive a11y wrapping login-history/audit-log/notification-history/fee-rate-history panel date-time cells in conditional `<time dateTime>` (WCAG 1.3.1, behavior-neutral, tests bundled). FF-merged develop→test (pending 1→0) in `src/frontend-test`. Targeted re-run on the 4 changed test files is **12/12 PASS** (clean summary) and covers the full delta; TSR1915 full-suite **2792/2792 PASS** carries the regression baseline. Build, audit, and backend health corroborate no regression. Local transfer **PASS**; operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`). Detail: `transfer/frontend/packages/develop-test-diff-20260719-TSR1927.md`.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T14:09:00Z -->
+<!-- tester-sync: TSR 1926 2026-07-19T14:09:00Z (backend) - src/backend-test@test mvn -o test 2433/2433 PASS(70s, 409 report, 0F/0E/0S, BUILD SUCCESS, EXIT 0); ROADMAP merged baseline @6d3c766 independent re-verify; develop/test SYNCED @6d3c766 pending 0(rev-list --left-right test...develop 0/0) WT CLEAN; merge N/A(no new develop commit since TSR1924); Open(BE product) 0; local test +774 vs origin/test=QA-B116; transfer PASS(BE local); operation BLOCK(QA-B116+QA-B95) carry. NO new Open. -->
+
+### [TSR] TSR1926 backend - ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **PASS** - **2433/2433** (409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · 70s) |
+| worktree branch / SHA | `test` / `6d3c766` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1924) |
+| Open (BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** (BE `@6d3c766` + FE `@e8ff8dc`) |
+| disk | 2.8G/99% tight (carry) |
+| operation gate | **BLOCK** - QA-B116 (origin/test push BE +774 · FE +35) + QA-B95 (live-e2e bootstrap-disabled) |
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T13:49:22Z -->
+<!-- tester-sync: TSR 1925 2026-07-19T13:49:22Z (frontend) - ROADMAP merged baseline @e8ff8dc reconfirm; develop/test/origin-develop SYNCED @e8ff8dc pending 0(rev-list --left-right test...develop=0/0) WT CLEAN; merge N/A(no new develop commit since TSR1919); full npm test SKIP(TSR1915 2792/2792 PASS carry, disk 3.0G/98% tight, rules §1-1); corroboration npm run build 1234 PASS(9.51s) + npm audit high 0 + backend /api/v1/health=200 + no vitest concurrency; local test +35 vs origin/test b23711f=QA-B116; Open(FE product) 0; transfer PASS(FE local); operation BLOCK(QA-B116+QA-B95) carry. NO new Open. -->
+
+### [TSR] TSR1925 frontend - ROADMAP merged baseline `@e8ff8dc` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 carry · delta covered by TSR1919 targeted 51/51 PASS · disk 3.0G/98% tight · rules §1-1) |
+| `npm run build` (fresh) | **PASS** - **1234 modules** (9.51s) |
+| worktree branch / SHA | `test` / `e8ff8dc` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1919) |
+| `npm audit` high | **0** (0 vulnerabilities) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| local test vs origin/test | **+35** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** (QA-B626 Fixed & Verified TSR1919 carry) |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** - FE `@e8ff8dc` pending 0 Open 0 + BE `@6d3c766` pending 0 Open 0 |
+| disk | 3.0G free (98%) tight carry |
+| operation | **BLOCK** (QA-B116 origin/test push FE +35/BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@e8ff8dc` remains green with no new develop commits since TSR1919. develop/test/origin-develop stay SYNCED (pending 0, WT CLEAN). Full suite re-run skipped under rules §1-1 (baseline unchanged, disk tight); build, audit, and backend health corroborate no regression. Local transfer stays **PASS**; operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T13:46:39Z -->
+<!-- tester-sync: TSR 1924 2026-07-19T13:46:39Z (backend) - ROADMAP merged baseline @6d3c766 independent re-verify; src/backend-test@test mvn -o test 2433/2433 PASS(69s/409 report/0F/0E/0S/BUILD SUCCESS/EXIT 0); test branch confirmed; develop/test SYNCED pending 0; merge N/A(no new develop commit since TSR1922); Open(BE product) 0; transfer PASS(BE local); operation BLOCK(QA-B116+QA-B95) carry. NO new Open. -->
+
+### [TSR] TSR1924 backend - ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` (full) | **PASS** - **2433/2433** (409 report / 69s / 0F/0E/0S / BUILD SUCCESS / EXIT 0) |
+| worktree branch / SHA | `test` / `6d3c766` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1922) |
+| @RestController / Flyway | 81 / V196 |
+| local test vs origin/test | **+774** = QA-B116 (push handled by tester/merge script) |
+| Open(BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** - BE `@6d3c766` pending 0 Open 0 + FE `@e8ff8dc` pending 0 Open 0 |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774/FE +35 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: `src/backend-test@test` merged baseline remains green with no regressions and no new backend Open issues. develop/test stay SYNCED at `@6d3c766` with pending 0. Local transfer stays **PASS**; operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T13:38:00Z -->
+<!-- tester-sync: TSR 1923 2026-07-19T13:38:00Z (frontend) - ROADMAP merged baseline @e8ff8dc reconfirm; develop/test/origin-develop SYNCED @e8ff8dc pending 0(rev-list --left-right test...develop=0/0) WT CLEAN; merge N/A(no new develop commit since TSR1919); full npm test SKIP(TSR1915 2792/2792 PASS carry, disk 3.1G/98% tight, rules §1-1); corroboration npm run build 1234 PASS(9.45s) + backend /api/v1/health=200 + no vitest concurrency; local test +35 vs origin/test b23711f=QA-B116; Open(FE product) 0; transfer PASS(FE local); operation BLOCK(QA-B116+QA-B95) carry. NO new Open. -->
+
+### [TSR] TSR1923 frontend - ROADMAP merged baseline `@e8ff8dc` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| full `npm test` | **SKIP** (TSR1915 **2792/2792 PASS** @c3f0e05 carry · delta covered by TSR1919 targeted 51/51 PASS · disk 3.1G/98% tight · rules §1-1) |
+| `npm run build` (fresh) | **PASS** - **1234 modules** (9.45s) |
+| worktree branch / SHA | `test` / `e8ff8dc` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1919) |
+| `npm audit` high | **0** (TSR1921 carry · baseline unchanged) |
+| backend `/api/v1/health` | 200 |
+| vitest concurrency | none (§5 clear) |
+| local test vs origin/test | **+35** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** (QA-B626 Fixed & Verified TSR1919 carry) |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** - FE `@e8ff8dc` pending 0 Open 0 + BE `@6d3c766` pending 0 Open 0 |
+| disk | 3.1G free (98%) tight carry |
+| operation | **BLOCK** (QA-B116 origin/test push FE +35/BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: Frontend merged baseline `@e8ff8dc` stays green with no new develop commits since TSR1919. develop/test/origin-develop remain SYNCED (pending 0, WT CLEAN). Full suite re-run skipped under rules §1-1 (baseline unchanged, disk tight); non-conflicting build + backend health corroborate no regression. Local transfer stays **PASS**; operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T13:35:00Z -->
+<!-- tester-sync: TSR 1922 2026-07-19T13:35:00Z (backend) - ROADMAP merged baseline @6d3c766 independent re-verify; src/backend-test@test mvn -o test 2433/2433 PASS(64s/409 report/0F/0E/0S/BUILD SUCCESS/EXIT 0); test branch confirmed; develop/test SYNCED pending 0; merge N/A(no new develop commit since TSR1920); Open(BE product) 0; transfer PASS(BE local); operation BLOCK(QA-B116+QA-B95) carry. -->
+
+### [TSR] TSR1922 backend - ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` (full) | **PASS** - **2433/2433** (409 report / 64s / 0F/0E/0S / BUILD SUCCESS / EXIT 0) |
+| worktree branch / SHA | `test` / `6d3c766` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit since TSR1920) |
+| @RestController / Flyway | 81 / V196 |
+| backend `/api/v1/health` | 200 |
+| local test vs origin/test | **+774** = QA-B116 (push handled by tester/merge script) |
+| Open(BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** - BE `@6d3c766` pending 0 Open 0 + FE `@e8ff8dc` pending 0 Open 0 |
+| disk | 3.2G free (98%) tight carry |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774/FE +35 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: `src/backend-test@test` merged baseline remains green with no regressions and no new backend Open issues. develop/test stay SYNCED at `@6d3c766` with pending 0. Local transfer stays **PASS**; operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T13:26:00Z -->
+<!-- tester-sync: TSR 1921 2026-07-19T13:26:00Z (frontend) - ROADMAP merged baseline @e8ff8dc reconfirm; develop/test/origin-develop SYNCED @e8ff8dc pending 0(rev-list --left-right test...develop=0/0) WT CLEAN; merge N/A(no new develop commit since TSR1919); full npm test SKIP(TSR1915 2792/2792 PASS carry, disk 3.2G/98% tight, rules §1-1); corroboration npm run build 1234 PASS(9.12s) + npm audit high 0 + backend /api/v1/health=200 + no vitest concurrency; local test +35 vs origin/test b23711f=QA-B116; Open(FE product) 0; transfer PASS(FE local); operation BLOCK(QA-B116+QA-B95) carry. -->
+
+### [TSR] TSR1921 frontend - ROADMAP merged baseline `@e8ff8dc` reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| develop/test/origin-develop | **SYNCED `@e8ff8dc`** WT CLEAN / pending 0 (`rev-list --left-right test...develop`=0/0) |
+| merge | **N/A** (no new develop commit since TSR1919) |
+| full `npm test` | **SKIP** — TSR1915 **2792/2792 PASS** carry (490 files / 903.90s / 0F) · baseline unchanged · disk 3.2G(98%) tight · rules §1-1 |
+| `npm run build` (fresh) | **PASS** — 1234 modules (9.12s) |
+| `npm audit --audit-level=high` | **0 vulnerabilities** |
+| vitest concurrency | **none** (§5 clear) · disk 3.2G(98%) tight |
+| backend `/api/v1/health` | 200 |
+| local test vs origin/test | **+35** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** (QA-B626 Fixed & Verified TSR1919 carry) |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** — FE `@e8ff8dc` pending 0 Open 0 + BE `@6d3c766` pending 0 Open 0 |
+| operation | **BLOCK** (QA-B116 origin/test push FE +35/BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: No develop commit landed since TSR1919 (`@e8ff8dc`, pending 0, WT clean, no vitest concurrency). Per rules §1-1 the 15-min full suite is skipped (baseline unchanged, disk 3.2G/98% tight); TSR1915 full-suite green (**2792/2792 PASS** @c3f0e05, delta since = additive a11y-only) carries. Fresh non-conflicting corroboration this cycle all PASS: `npm run build` **1234 modules** (9.12s), `npm audit --audit-level=high` **0**, backend `/api/v1/health` **200**. Open(FE product) stays **0** (QA-B626 Fixed & Verified in TSR1919). FE local transfer **PASS**; operation promotion still blocked only by QA-B116 (origin/test push lag, tester/merge script owns) and QA-B95 (live-e2e bootstrap-disabled).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T13:22:38Z -->
+<!-- tester-sync: TSR 1920 2026-07-19T13:22:38Z (backend) - ROADMAP merged baseline @6d3c766 independent re-verify; src/backend-test@test mvn -o test 2433/2433 PASS(65s/409 report/0F/0E/0S/BUILD SUCCESS/EXIT 0); test branch confirmed; develop/test SYNCED pending 0; merge N/A(no new develop commit); Open(BE product) 0; transfer PASS(BE local); operation BLOCK(QA-B116+QA-B95) carry. -->
+
+### [TSR] TSR1920 backend - ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` (full) | **PASS** - **2433/2433** (409 report / 65s / 0F/0E/0S / BUILD SUCCESS / EXIT 0) |
+| worktree branch / SHA | `test` / `6d3c766` |
+| develop/test divergence | **0/0** (`rev-list --left-right test...develop`) |
+| merge | **N/A** (no new develop commit) |
+| Open(BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774/FE +35 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: `src/backend-test@test` merged baseline is still green with no regressions and no new backend Open issues. Local transfer stays PASS, while operation promotion remains blocked only by push/bootstrap residuals (`QA-B116`, `QA-B95`).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T13:14:00Z -->
+<!-- tester-sync: TSR 1919 2026-07-19T13:14:00Z (frontend) - develop/test/origin-develop SYNCED @e8ff8dc pending 0 WT CLEAN; QA-B626(regression run terminated before summary·exit 143) Fixed & Verified via targeted npm test 51/51 PASS(9 files·29.47s·clean summary·@e8ff8dc) + full 2792/2792 PASS(@c3f0e05·TSR1915) carry; build 1234 PASS(9.33s); audit high 0; backend health 200; no vitest concurrency; disk 3.6G(98%) tight; Open(FE product) 0; transfer PASS(FE local); operation BLOCK(QA-B116+QA-B95) carry. -->
+
+### [TSR] TSR1919 frontend - baseline `@e8ff8dc` reconfirm + QA-B626 Fixed & Verified (PASS)
+
+| item | result |
+|------|--------|
+| targeted `npm test` (@test `e8ff8dc`, 9 UXD-199 files) | **PASS** - **51/51** (9 files / 29.47s / **clean summary**) |
+| full `npm test` (@c3f0e05 · TSR1915 carry) | **PASS** - **2792/2792** (490 files / 903.90s / 0F) |
+| develop/test/origin-develop | **SYNCED `@e8ff8dc`** WT CLEAN / pending 0 (`rev-list --left-right test...develop`=0/0) |
+| merge | **N/A** (no new develop commit since TSR1917) |
+| `npm run build` | **PASS** - 1234 modules (9.33s) |
+| `npm audit --audit-level=high` | **0 vulnerabilities** |
+| vitest concurrency | **none** (§5 clear) · disk 3.6G(98%) tight |
+| backend `/api/v1/health` | 200 |
+| local test vs origin/test | **+35** = QA-B116 (push handled by tester/merge script) |
+| Open(FE product) | **0** (QA-B626 Fixed & Verified) |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** - FE `@e8ff8dc` pending 0 Open 0 + BE `@6d3c766` pending 0 Open 0 |
+| operation | **BLOCK** (QA-B116 origin/test push FE +35/BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: No develop commit landed since TSR1917 (`@e8ff8dc`, pending 0, WT clean). This cycle re-verifies `QA-B626` (TSR1914 regression run terminated with exit 143 / no summary line): the termination is confirmed as a transient SIGTERM under disk pressure (3.6~3.8G / 98%), not a test failure. Targeted `npm test` on the 9 changed UXD-199 files at the current baseline yields a **clean 51/51 PASS** summary; full-suite green carries from TSR1915 (**2792/2792 PASS** @c3f0e05). build / audit / backend health all PASS, no vitest concurrency. `QA-B626` moved to **Fixed & Verified** -> Open(FE product) **0**, FE local transfer stays **PASS**. operation promotion still blocked by QA-B116 (origin/test push lag, tester/merge script owns) and QA-B95 (live-e2e bootstrap-disabled).
+
+---
+
+### [TSR] TSR1918 backend - ROADMAP merged baseline `@6d3c766` independent re-verify (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` (full) | **PASS** - **2433/2433** (409 report / 72s / 0F/0E/0S / BUILD SUCCESS / EXIT 0) |
+| develop/test/origin-develop | **SYNCED `@6d3c766`** WT CLEAN / pending 0 (`rev-list --left-right origin/develop...test`=0/0) |
+| merge | **N/A** (no new develop commit since TSR1916) |
+| @RestController / HTTP / Flyway | 81 / 442(GET231/POST144/PATCH44/PUT13/DELETE10) / V196 |
+| local test vs origin/test | **+774** = QA-B116 (push handled by tester/merge script) |
+| Open(BE product) | **0** (no new) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** - BE `@6d3c766` pending 0 Open 0 + FE `@e8ff8dc` pending 0 Open 0 |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774/FE +35 + QA-B95 live-e2e bootstrap-disabled) |
+
+**Summary**: No develop commit landed since TSR1916 (`@6d3c766`). Independent full `mvn -o test` re-verify at the merged baseline yields **2433/2433 PASS** (0F/0E/0S). develop==test==origin/develop, WT clean, pending 0 -> BE local transfer stays **PASS**. No new Open. operation promotion still blocked by QA-B116 (origin/test push lag, tester/merge script owns) and QA-B95 (live-e2e bootstrap-disabled).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T12:58:00Z -->
+<!-- tester-sync: TSR 1917차 2026-07-19T12:58:00Z (frontend) — develop→test SYNCED `@e8ff8dc`(UXD-199 a11y `<time dateTime>`)·pending 0(`rev-list --left-right test...develop`=`0 0`)·WT CLEAN · **QA-B625(develop→test pending 1) Fixed & Verified** · 회귀: 변경 9 test 파일 targeted `npm test` **51/51 PASS**(29.05s) + TSR1915 full **2792/2792 PASS**(`@c3f0e05`) carry(델타=additive a11y 9파일) · `npm run build` **1234 PASS**(9.71s) · `npm audit --audit-level=high` **0** · backend `/api/v1/health`=200 · Open(FE product) 0 · transfer **PASS**(FE local) · cross-stream LOCAL SYNCED(BE `@6d3c766` + FE `@e8ff8dc` both pending 0) · operation BLOCK(QA-B116 origin/test push FE +35·BE +774 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1917_frontend: develop→test SYNCED @e8ff8dc pending 0(left-right 0/0) WT CLEAN; QA-B625(pending 1 UXD-199) Fixed & Verified; targeted npm test 51/51 PASS(9 files,29.05s) + full 2792/2792 PASS(@c3f0e05,TSR1915) carry(delta=additive a11y 9 files); build 1234 PASS(9.71s); audit high 0; backend health 200; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @e8ff8dc); operation BLOCK=QA-B116(origin/test push FE+35·BE+774)+QA-B95(live-e2e bootstrap-disabled). NO new Open.
+
+### [TSR] TSR1917 frontend — develop→test SYNCED `@e8ff8dc` · QA-B625 해소 (PASS · FE local)
+
+| item | result |
+|------|--------|
+| develop/test/origin-develop | **SYNCED `@e8ff8dc`** WT CLEAN · pending 0 (`rev-list --left-right test...develop`=`0 0`) |
+| merge | **N/A (SYNCED)** — UXD-199 pending 1→0 FF 이관 흡수 완료 |
+| targeted `npm test` (변경 9 files @`e8ff8dc`) | **PASS** — **51/51** (9 files · 29.05s · 0F) |
+| full `npm test` (@`c3f0e05` · TSR1915 carry) | **2792/2792 PASS** (490 files · 903.90s · 0F) |
+| 델타 커버 | `c3f0e05→e8ff8dc` = additive a11y `<time dateTime>` 17 files(+116/-14·behavior-neutral) → 변경 9 test 파일 targeted 전량 커버 |
+| `npm run build` | **PASS** — **1234 modules** (9.71s) |
+| `npm audit --audit-level=high` | **0 vulnerabilities** |
+| backend `/api/v1/health` | **200** |
+| live E2E (결정 96) | **SKIP** (QA-B95 bootstrap-disabled carry) |
+| local test vs origin/test | **+35** vs `b23711f` = QA-B116 (push tester/merge 전담) |
+| Open(FE product) | **0** (QA-B625 Fixed & Verified) |
+| transfer | **PASS** (FE local) |
+| cross-stream | **LOCAL SYNCED** — BE develop/test `@6d3c766` pending 0 Open 0 + FE develop/test `@e8ff8dc` pending 0 Open 0 |
+| operation | **BLOCK** (QA-B116 origin/test push FE +35·BE +774 + QA-B95 live-e2e bootstrap-disabled) |
+
+**변경 요약**: TSR1915(test `@c3f0e05`·develop `@e8ff8dc`·pending 1) 이후 develop→test FF 이관이 완료되어 현재 develop==test==origin/develop `@e8ff8dc`·pending 0·WT CLEAN이 되었다. 이로써 **QA-B625(develop→test pending 1) 해소**. 델타(`c3f0e05→e8ff8dc`)는 UXD-199 순수 additive a11y `<time dateTime>` markup(billing/compliance/notification 리스트 날짜 셀·17 files·behavior-neutral) → disk 3.8G(98%) tight 상황에서 rules §1-1에 따라 15분 full suite 대신 변경 9 test 파일 targeted 재실행(**51/51 PASS**)으로 델타 전량 커버 + build/audit/health corroboration. Full-suite green baseline = TSR1915 `@c3f0e05` **2792/2792 PASS** carry. Open(FE product) 0 · FE local transfer PASS. operation 승격은 QA-B116(origin/test push)·QA-B95(live-e2e bootstrap) 잔존.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T12:52:00Z -->
+<!-- tester-sync: TSR 1916차 2026-07-19T12:52:00Z (backend) — ROADMAP merged baseline `@6d3c766` 독립 재검증 · `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(65s·409 report·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop/test SYNCED `@6d3c766` WT CLEAN · pending 0(rev-list 0/0) · merge N/A(신규 develop 커밋 없음) · Open(BE product) 0(신규 없음) · @RestController 81 · HTTP 442 · Flyway V196 · transfer PASS(BE local) · cross-stream LOCAL SYNCED(BE `@6d3c766` + FE `@e8ff8dc` both pending 0) · disk 3.8G(98%) tight carry · operation BLOCK(QA-B116 origin/test push BE +774·FE +35 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1916_backend: merged-baseline independent re-verify @6d3c766; mvn -o test 2433/2433 PASS(65s,409 report,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED @6d3c766 WT CLEAN pending 0(rev-list 0/0); merge N/A(no new develop commit); Open(BE product) 0(no new); @RestController 81; HTTP 442; Flyway V196; transfer PASS(BE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @e8ff8dc both pending 0); disk 3.8G(98%) tight; operation BLOCK=QA-B116(origin/test push BE+774·FE+35)+QA-B95(live-e2e bootstrap-disabled). NO new Open.
+
+### [TSR] TSR1916 backend — ROADMAP merged baseline `@6d3c766` 독립 재검증 (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` (full) | **PASS** — **2433/2433** (409 report · 65s · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test/origin-develop | **SYNCED `@6d3c766`** WT CLEAN · pending 0 (`test..develop` rev-list 0/0) |
+| merge | **N/A** (신규 develop 커밋 없음) |
+| @RestController / HTTP / Flyway | 81 / 442(GET231·POST144·PATCH44·PUT13·DELETE10) / V196 |
+| local test vs origin/test | **+774** = QA-B116 (push tester/merge 전담) |
+| Open(BE product) | **0** (신규 Open 없음) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **LOCAL SYNCED** — FE develop/test `@e8ff8dc` pending 0 (UXD-199 FF 이관 완료 · git 실측) |
+| disk | **3.8G free (98%)** — tight carry (live E2E ENOSPC 리스크) |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774·FE +35 + QA-B95 live-e2e bootstrap-disabled) |
+
+**변경 요약**: `src/backend-test@test`에서 merged baseline `@6d3c766`를 독립 재검증했다. `mvn -o test` **2433/2433 PASS**. 신규 develop 커밋·미커밋 변경 없음(pending 0) → merge N/A, 신규 QA Open 없음, BE local 이관 PASS 유지. cross-stream: frontend develop/test 모두 `@e8ff8dc`로 SYNCED(pending 0).
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T12:41:05Z -->
+<!-- tester-sync: TSR 1915차 2026-07-19T12:41:05Z (frontend) — ROADMAP merged baseline `@c3f0e05` full rerun 성공 · `src/frontend-test@test` `npm test` **2792/2792 PASS**(490 files·903.90s·0F) · `npm run build` **PASS**(1234 modules·9.32s) · `npm audit --audit-level=high` **0 vulnerabilities** · backend `/api/v1/health`=200 · develop `@e8ff8dc` / test `@c3f0e05` pending 1(`test..develop`=1) · merge 미수행(소스 수정 금지) · QA-B626 Fixed & Verified · Open(FE product) 1(QA-B625) · transfer BLOCK(FE pending 1) · operation BLOCK(QA-B116 + QA-B95). -->
+# tsr1915_frontend: full npm test rerun PASS(2792/2792,490 files,903.90s,0F); build 1234 PASS, audit high 0, backend health 200; develop@test mismatch persists(e8ff8dc vs c3f0e05, pending 1); QA-B626 fixed; Open(FE product) 1(QA-B625); transfer BLOCK; operation BLOCK=QA-B116+QA-B95.
+
+### [TSR] TSR1915 frontend — ROADMAP merged baseline `@c3f0e05` full rerun (BLOCK)
+
+| item | result |
+|------|--------|
+| full `npm test` | **PASS** — **2792/2792** (490 files · 903.90s · 0F) |
+| targeted `npm test -- <UXD-199 7 files>` | N/A — full suite 재실행으로 커버 |
+| `npm run build` | **PASS** (1234 modules · 9.32s) |
+| `npm audit --audit-level=high` | **PASS** (0 vulnerabilities) |
+| backend `/api/v1/health` | **200** |
+| develop/test | **BLOCK** — develop `@e8ff8dc` / test `@c3f0e05` · pending **1** (`test..develop`=1) |
+| pending commit | `e8ff8dc` `fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)` |
+| Open(FE product) | **1** (`QA-20260719-B625`) |
+| transfer | **BLOCK** (FE pending 1) |
+| operation | **BLOCK** (QA-B116 origin/test push FE +34·BE +774 + QA-B95 bootstrap-disabled) |
+
+**변경 요약**: `src/frontend-test@test`에서 full `npm test`를 다시 실행해 `2792/2792 PASS`를 확보했고 직전 종료 이슈(QA-B626)를 해소했다. 다만 `develop @e8ff8dc`의 1커밋(UXD-199)이 test로 이관되지 않아 transfer는 BLOCK으로 유지한다.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T12:09:18Z -->
+<!-- tester-sync: TSR 1913차 2026-07-19T12:09:18Z (frontend) — ROADMAP merged baseline `@c3f0e05` full re-run · `src/frontend-test@test` `npm test` **2792/2792 PASS**(490 files·896.92s·0F) · `npm run build` **1234 PASS**(9.33s) · `npm audit --audit-level=high` **0 vulnerabilities** · backend `/api/v1/health`=200 · vitest 동시 실행 없음 · develop `@e8ff8dc` / test `@c3f0e05` pending 1(commit UXD-199) · source-edit 금지 지침 준수로 수동 merge 미수행 · Open(FE product) 1 · transfer BLOCK(FE pending 1) · cross-stream BLOCK(BE `@6d3c766` SYNCED + FE pending 1) · operation BLOCK(QA-B116 origin/test push FE +34·BE +774 + QA-B95 live-e2e bootstrap-disabled). -->
+# tsr1913_frontend: full rerun on test@c3f0e05 PASS(npm 2792/2792, build 1234, audit high 0, backend health 200, no concurrent vitest); develop@e8ff8dc vs test@c3f0e05 pending 1(commit UXD-199), manual merge skipped per source-edit prohibition; Open(FE product) 1; transfer BLOCK(FE pending 1); operation BLOCK=QA-B116+QA-B95.
+
+### [TSR] TSR1913 frontend — ROADMAP merged baseline `@c3f0e05` full re-run (BLOCK)
+
+| item | result |
+|------|--------|
+| `npm test` (full) | **PASS** — **2792/2792** (490 files · 896.92s · 0F) |
+| `npm run build` | **PASS** (1234 modules · 9.33s) |
+| `npm audit --audit-level=high` | **PASS** (0 vulnerabilities) |
+| backend `/api/v1/health` | **200** |
+| vitest 동시 실행 | **없음** (`no vitest run processes`) |
+| develop/test | **BLOCK** — develop `@e8ff8dc` / test `@c3f0e05` · pending **1** (`test..develop`=1) |
+| pending commit | `e8ff8dc` `fix(a11y/lists): wrap billing/compliance/notification table date columns in <time dateTime> (UXD-199)` |
+| merge | SKIP — source-edit 금지 지침 준수(수동 merge 미수행) |
+| Open(FE product) | **1** (이관 대기 BLOCK) |
+| transfer | **BLOCK** (FE pending 1) |
+| operation | **BLOCK** (QA-B116 origin/test push FE +34·BE +774 + QA-B95 bootstrap-disabled) |
+
+**변경 요약**: `src/frontend-test@test`에서 전체 회귀를 다시 실행해 테스트/빌드/감사/헬스를 모두 통과했다. 다만 `develop @e8ff8dc`의 1커밋이 test로 아직 이관되지 않아 transfer는 BLOCK으로 유지했다.
+
+---
+
+<!-- tester-sync: TSR 1912차 2026-07-19T11:50:00Z (backend) — ROADMAP merged baseline `@6d3c766` 독립 재검증 · `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(66s·409 report·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop/test SYNCED `@6d3c766` WT CLEAN · pending 0(rev-list 0/0) · merge N/A(신규 develop 커밋 없음) · Open(BE product) 0(신규 없음) · @RestController 81 · HTTP 442(GET231/POST144/PATCH44/PUT13/DELETE10) · Flyway V196 · transfer PASS(BE local) · cross-stream BLOCK(FE develop `@e8ff8dc` / test `@c3f0e05` pending 1·frontend tester FF 대기) · disk 4.3G(98%) tight carry · operation BLOCK(QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1912_backend: merged-baseline independent re-verify @6d3c766; mvn -o test 2433/2433 PASS(66s,409 report,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED @6d3c766 WT CLEAN pending 0(rev-list 0/0); merge N/A(no new develop commit); Open(BE product) 0(no new); @RestController 81; HTTP 442; Flyway V196; transfer PASS(BE local); cross-stream BLOCK(FE test @c3f0e05 pending 1·frontend tester FF 대기); disk 4.3G(98%) tight; operation BLOCK=QA-B116(origin/test push BE+774·FE+34)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1912 backend — ROADMAP merged baseline `@6d3c766` 독립 재검증 (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` (full) | **PASS** — **2433/2433** (409 report · 66s · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test/origin-develop | **SYNCED `@6d3c766`** WT CLEAN · pending 0 (`test..develop` rev-list 0/0) |
+| merge | **N/A** (신규 develop 커밋 없음) |
+| @RestController / HTTP / Flyway | 81 / 442(GET231·POST144·PATCH44·PUT13·DELETE10) / V196 |
+| local test vs origin/test | **+774** = QA-B116 (push tester/merge 전담) |
+| Open(BE product) | **0** (신규 Open 없음) |
+| transfer | **PASS** (BE local) |
+| cross-stream | **BLOCK** — FE develop `@e8ff8dc` / test `@c3f0e05` pending **1** (신규 FE develop 커밋 · frontend tester FF 대기) |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) |
+
+**변경 요약**: `src/backend-test@test`에서 merged baseline `@6d3c766` 를 독립 재검증했다. `mvn -o test` **2433/2433 PASS**(surefire 409 report aggregate·0F/0E/0S). 신규 develop 커밋·미커밋 변경 없음(pending 0)이라 merge N/A, 신규 QA Open 없음, 이관 판정 PASS(BE local) 유지. cross-stream: frontend develop 에 신규 커밋 1건(`@e8ff8dc`)이 test(`@c3f0e05`)로 아직 FF 안 됨 → frontend tester 사이클 대기.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T11:27:00Z -->
+<!-- tester-sync: TSR 1911차 2026-07-19T11:27:00Z (frontend) — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm · develop/test/origin-develop SYNCED `@c3f0e05` WT CLEAN · pending 0(rev-list 0/0) · merge N/A(신규 develop 커밋 없음) · vitest 동시 실행 없음 · full `npm test` SKIP(TSR1903 2792/2792 PASS carry · 신규 develop 커밋 없음 · disk 4.5G(97%) tight · rules §1-1) · fresh 비충돌 corroboration `npm run build` PASS(9.27s·1234 modules) · `npm audit --audit-level=high` 0 vulnerabilities · backend `/api/v1/health`=200 · Open(FE product) 0 · transfer PASS(FE local) · cross-stream LOCAL SYNCED(BE `@6d3c766` + FE `@c3f0e05`) · operation BLOCK(QA-B116 origin/test push FE +34·BE +774 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1911_frontend: merged-baseline reconfirm @c3f0e05(git remeasure); develop/test/origin-develop SYNCED @c3f0e05 WT CLEAN pending 0(rev-list 0/0); merge N/A(no new develop commit); no concurrent vitest; full npm test SKIP(TSR1903 2792/2792 PASS carry, no new develop commit, disk 4.5G(97%) tight, rules §1-1); fresh corroboration build PASS(9.27s·1234 modules), audit high 0, backend health 200; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @c3f0e05); operation BLOCK=QA-B116(origin/test push FE+34·BE+774)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1911 frontend — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| `npm test` (full) | **SKIP** — TSR1903 **2792/2792 PASS** carry (490 files·901.87s·0F) · 신규 develop 커밋 없음 · disk 4.5G(97%) tight · rules §1-1 |
+| `npm run build` (fresh) | **PASS** (1234 modules · 9.27s) |
+| `npm audit --audit-level=high` | **PASS** (0 vulnerabilities) |
+| backend `/api/v1/health` | **200** |
+| vitest 동시 실행 | **없음** (`ps aux \| grep '[v]itest run'` clear) |
+| develop/test/origin-develop | **SYNCED `@c3f0e05`** WT CLEAN · pending 0 (`test..develop` rev-list 0/0) |
+| local test vs origin/test | **+34** vs `origin/test`=`b23711f` = QA-B116 (push tester/merge 전담) |
+| Open(FE product) | **0** (신규 Open 없음 · `## Open`=QA-B95 live-e2e auto-fail lineage) |
+| transfer | **PASS** (FE local) |
+| operation | **BLOCK** (QA-B116 origin/test push FE +34·BE +774 + QA-B95 bootstrap-disabled) |
+
+**변경 요약**: `src/frontend-test@test`에서 merged baseline `@c3f0e05` 를 git 재실측했다. TSR1903 full-suite **2792/2792 PASS** 이후 신규 develop 커밋·미커밋 변경 없음(pending 0). vitest 동시 실행이 없어 disk(4.5G/97%) 여유를 고려해 15분 full suite 대신 **fresh** build+audit+health 비충돌 corroboration으로 green을 재확인했다(rules §1-1). 신규 QA Open 없음, 이관 판정 PASS(FE local) 유지.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T11:23:27Z -->
+<!-- tester-sync: TSR 1910차 2026-07-19T11:23:27Z (backend) — ROADMAP merged baseline `@6d3c766` 독립 재검증 · `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(64s·409 report·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop/test SYNCED `@6d3c766` WT CLEAN · pending 0(rev-list 0/0) · merge N/A(신규 develop 커밋 없음) · Open(BE product) 0(신규 없음) · transfer PASS(BE local) · cross-stream LOCAL SYNCED(FE `@c3f0e05` pending 0·Open 0) · operation BLOCK(QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1910_backend: merged-baseline independent re-verify @6d3c766; mvn -o test 2433/2433 PASS(64s,409 report,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED @6d3c766 WT CLEAN pending 0(rev-list 0/0); merge N/A(no new develop commit); Open(BE product) 0(no new); transfer PASS(BE local); cross-stream LOCAL SYNCED(FE @c3f0e05 pending 0·Open 0); operation BLOCK=QA-B116(origin/test push BE+774·FE+34)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1910 backend — ROADMAP merged baseline `@6d3c766` 독립 재검증 (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **2433/2433 PASS** (64s · 409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test | **SYNCED `@6d3c766`** WT CLEAN · pending 0 (`test..develop` rev-list 0/0) |
+| merge | **N/A** (신규 develop 커밋 없음) |
+| local test vs origin/test | **+774** vs `origin/test` = QA-B116 (push tester/merge 전담) |
+| Open(BE product) | **0** (신규 Open 없음) |
+| transfer | **PASS** (BE local) |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774 · FE +34 + QA-B95 bootstrap-disabled) |
+
+**변경 요약**: `src/backend-test@test`에서 merged baseline `@6d3c766` 기준 전체 회귀를 재실행해 green을 재확인했다. 신규 develop 커밋과 신규 QA Open은 없고, 이관 판정은 PASS(BE local)를 유지한다.
+
+---
+
+<!-- tester-sync: TSR 1909차 2026-07-19T11:16:00Z (frontend) — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm · develop/test/origin-develop SYNCED `@c3f0e05` WT CLEAN · pending 0 · merge N/A(신규 develop 커밋 없음) · full `npm test` SKIP(TSR1903 2792/2792 PASS carry · disk 4.5G(97%) tight · rules §1-1) · 비충돌 corroboration `npm run build` PASS(9.54s·1234 modules) · `npm audit --audit-level=high` 0 vulnerabilities · backend `/api/v1/health`=200 · Open(FE product) 0 · transfer PASS(FE local) · cross-stream LOCAL SYNCED(BE `@6d3c766` + FE `@c3f0e05`) · operation BLOCK(QA-B116 origin/test push FE +34·BE +774 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1909_frontend: merged-baseline reconfirm @c3f0e05(git remeasure); develop/test/origin-develop SYNCED @c3f0e05 WT CLEAN pending 0; merge N/A(no new develop commit); full npm test SKIP(TSR1903 2792/2792 PASS carry, disk 4.5G(97%) tight, rules §1-1); corroboration build PASS(9.54s·1234 modules), audit high 0, backend health 200; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @c3f0e05); operation BLOCK=QA-B116(origin/test push FE+34·BE+774)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1909 frontend — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm (PASS)
+
+| item | result |
+|------|--------|
+| `npm test` (full) | **SKIP** — TSR1903 **2792/2792 PASS** carry (490 files·901.87s·0F) · 신규 develop 커밋 없음 · disk 4.5G(97%) tight · rules §1-1 |
+| `npm run build` | **PASS** (1234 modules · 9.54s) |
+| `npm audit --audit-level=high` | **PASS** (0 vulnerabilities) |
+| develop/test/origin-develop | **SYNCED `@c3f0e05`** WT CLEAN · pending 0 (`test..develop`=0) |
+| local test vs origin/test | **+34** vs `b23711f` = QA-B116 (push tester/merge 전담) |
+| merge | **N/A** (신규 develop 커밋 없음) |
+| backend health | UP (`/api/v1/health`=200) |
+| Open(FE product) | **0** (`## Open`=QA-B95 live-e2e auto-fail lineage only) |
+| transfer | **PASS** (FE local) |
+| operation | **BLOCK** (QA-B116 origin/test push + QA-B95 bootstrap-disabled) |
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T11:12:01Z -->
+<!-- tester-sync: TSR 1908차 2026-07-19T11:12:01Z (backend) — ROADMAP merged baseline `@6d3c766` 독립 재검증 · `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(66s·409 report·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop/test SYNCED `@6d3c766` WT CLEAN · pending 0(rev-list 0/0) · merge N/A(신규 develop 커밋 없음) · Open(BE product) 0(신규 없음) · transfer PASS(BE local) · cross-stream LOCAL SYNCED(FE `@c3f0e05` pending 0·Open 0) · operation BLOCK(QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1908_backend: merged-baseline independent re-verify @6d3c766; mvn -o test 2433/2433 PASS(66s,409 report,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED @6d3c766 WT CLEAN pending 0(rev-list 0/0); merge N/A(no new develop commit); Open(BE product) 0(no new); transfer PASS(BE local); cross-stream LOCAL SYNCED(FE @c3f0e05 pending 0·Open 0); operation BLOCK=QA-B116(origin/test push BE+774·FE+34)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1908 backend — ROADMAP merged baseline `@6d3c766` 독립 재검증 (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **2433/2433 PASS** (66s · 409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test | **SYNCED `@6d3c766`** WT CLEAN · pending 0 (`test..develop` rev-list 0/0) |
+| merge | **N/A** (신규 develop 커밋 없음) |
+| Open(BE product) | **0** (신규 Open 없음) |
+| transfer | **PASS** (BE local) |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774 · FE +34 + QA-B95 bootstrap-disabled) |
+
+**변경 요약**: `src/backend-test@test`에서 merged baseline `@6d3c766` 기준 전체 회귀를 재실행해 green을 재확인했다. 신규 develop 커밋과 신규 QA Open은 없고, 이관 판정은 PASS(BE local)를 유지한다.
+
+---
+
+<!-- tester-sync: TSR 1907차 2026-07-19T11:03:00Z (frontend) — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm · develop/test/origin-develop **SYNCED `@c3f0e05`** WT CLEAN · pending **0** · merge **N/A**(신규 develop 커밋 없음) · full `npm test` **SKIP**(TSR1903 2792/2792 PASS carry · concurrent vitest in src/frontend PID1836780 §5 CRITICAL · disk 4.6G(97%) tight · rules §1-1) · 비충돌 corroboration: `npm run build` **PASS**(11.24s·1234 modules) · `npm audit --audit-level=high` **0 vulnerabilities** · backend `/api/v1/health`=200 · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@c3f0e05`) · operation **BLOCK**(QA-B116 origin/test push FE +34·BE +774 + QA-B95 live-e2e bootstrap-disabled). -->
+# tsr1907_frontend: merged-baseline reconfirm @c3f0e05(git remeasure); develop/test/origin-develop SYNCED @c3f0e05 WT CLEAN pending 0; merge N/A(no new develop commit); full npm test SKIP(TSR1903 2792/2792 PASS carry, concurrent vitest src/frontend PID1836780 §5 CRITICAL, disk 4.6G(97%) tight, rules §1-1); corroboration build PASS(11.24s·1234 modules), audit high 0, backend health 200; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @c3f0e05); operation BLOCK=QA-B116(origin/test push FE+34·BE+774)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1907 frontend — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm (PASS · TSR1903 carry)
+
+| item | result |
+|------|--------|
+| merge | **N/A** — develop/test/origin-develop already SYNCED `@c3f0e05` (pending 0·WT CLEAN·`test..develop` rev-list 0) |
+| full `npm test` | **SKIP** — TSR1903 **2792/2792 PASS**(490 files·901.87s·0F) carry · 신규 develop 커밋 없음 · concurrent vitest in `src/frontend`(PID1836780) §5 CRITICAL · disk 4.6G(97%) tight · rules §1-1 |
+| `npm run build` | **PASS** (1234 modules · 11.24s · `src/frontend-test`) |
+| `npm audit --audit-level=high` | **PASS** (0 vulnerabilities) |
+| backend health | **UP** — GET `/api/v1/health` = 200 |
+| Open(FE product) | **0** (신규 Open 없음 · `## Open` = QA-B95 live-e2e auto-fail lineage only) |
+| transfer | **PASS** (FE local) |
+| operation | **BLOCK** (QA-B116 origin/test push FE +34·BE +774 + QA-B95 bootstrap-disabled) |
+
+**변경 요약**: 신규 develop 커밋이 없어(`develop`==`test`==`origin/develop`==`c3f0e05`·WT CLEAN·pending 0) 이관 merge 는 N/A. `src/frontend` develop 워크트리에서 타 `vitest run`(PID1836780)이 진행 중이라 §5 CRITICAL(동시실행 금지)에 따라 full `npm test`를 재실행하지 않고 TSR1903 `@c3f0e05` **2792/2792 PASS** 결과를 carry했다. rules §1-1(문서만 갱신하는 긴 사이클 회피)에 따라 `src/frontend-test@test`에서 비충돌 corroboration(`npm run build` 1234 modules PASS·`npm audit` high 0·backend `/api/v1/health`=200)만 수행했다.
+
+**잔여 리스크**: 신규 QA Open 없음. operation 승격 BLOCK 은 origin/test push 미실행(QA-B116·FE +34·BE +774)과 live-e2e bootstrap-disabled(QA-B95) 두 건만 carry. disk 4.6G(97%) tight — FE live-e2e ENOSPC 리스크 carry.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T10:51:00Z -->
+<!-- tester-sync: TSR 1906차 2026-07-19T10:51:00Z (backend) — ROADMAP merged baseline `@6d3c766` 독립 재검증 · `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(66s·409 report·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop/test SYNCED `@6d3c766` WT CLEAN · pending 0(rev-list 0/0) · merge N/A(신규 develop 커밋 없음) · Open(BE) 0(신규 없음) · @RestController 81 · Flyway V196 · disk 4.8G(97%) tight carry · transfer PASS(BE local) · cross-stream LOCAL SYNCED(FE `@c3f0e05` pending 0·Open 0) · operation BLOCK(QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1906_backend: merged-baseline independent re-verify @6d3c766; mvn -o test 2433/2433 PASS(66s,409 report,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED @6d3c766 WT CLEAN pending 0(rev-list 0/0); merge N/A(no new develop commit); Open(BE) 0(no new); @RestController 81; Flyway V196; disk 4.8G(97%) tight carry; transfer PASS(BE local); cross-stream LOCAL SYNCED(FE @c3f0e05 pending 0·Open 0); operation BLOCK=QA-B116(origin/test push BE+774·FE+34)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1906 backend — ROADMAP merged baseline `@6d3c766` 독립 재검증 (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **2433/2433 PASS** (66s · 409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test | **SYNCED `@6d3c766`** WT CLEAN · pending 0 (`test..develop` rev-list 0/0) |
+| merge | **N/A** (신규 develop 커밋 없음) |
+| Open(BE product) | **0** (신규 없음) |
+| @RestController / Flyway | 81 / V196 (carry) |
+| disk | 4.8G free (97%) tight — backend mvn 영향 없음, FE live-e2e ENOSPC 리스크 carry |
+| transfer | **PASS** (BE local) |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) |
+
+**변경 요약**: 신규 develop 커밋이 없어(`develop`==`test`==`6d3c766`·WT CLEAN·pending 0) 이관 merge 는 N/A. tester 핵심 검증으로 `src/backend-test@test`에서 `mvn -o test` 전체 회귀를 독립 재실행해 green을 재확인했다.
+
+**잔여 리스크**: 신규 QA Open 없음. operation 승격 BLOCK 은 origin/test push 미실행(QA-B116·BE +774·FE +34)과 live-e2e bootstrap-disabled(QA-B95) 두 건만 carry.
+
+---
+
+<!-- tester-sync: TSR 1905차 2026-07-19T10:43:00Z (frontend) — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm · develop/test/origin-develop **SYNCED `@c3f0e05`** WT CLEAN · pending **0** · merge **N/A** · full `npm test` **SKIP**(TSR1903 2792/2792 PASS carry · 신규 develop 커밋 없음 · concurrent vitest in src/frontend PID1825944 §5 CRITICAL · disk 4.9G(97%) tight · rules §1-1) · 비충돌 corroboration: `npm run build` **1234 PASS**(10.76s) · `npm audit --audit-level=high` **0 vulnerabilities** · backend `/api/v1/health`=200 · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@c3f0e05`) · operation **BLOCK**(QA-B116 origin/test push FE +34·BE +774 + QA-B95 live-e2e bootstrap-disabled). -->
+# tsr1905_frontend: merged-baseline reconfirm @c3f0e05(git remeasure); develop/test/origin-develop SYNCED @c3f0e05 WT CLEAN pending 0; merge N/A; full npm test SKIP(TSR1903 2792/2792 PASS carry, no new develop commit, concurrent vitest src/frontend PID1825944 §5 CRITICAL, disk 4.9G(97%) tight, rules §1-1); corroboration build 1234 PASS(10.76s), audit high 0, backend health 200; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @c3f0e05); operation BLOCK=QA-B116(origin/test push FE+34·BE+774)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1905 frontend — ROADMAP merged baseline `@c3f0e05` git 재실측 reconfirm (PASS · TSR1903 carry)
+
+| item | result |
+|------|--------|
+| merge | **N/A** — develop/test/origin-develop already SYNCED `@c3f0e05` (pending 0·WT CLEAN) |
+| full `npm test` | **SKIP** — TSR1903 **2792/2792 PASS**(490 files·901.87s·0F) carry · 신규 develop 커밋 없음 · concurrent vitest in `src/frontend`(PID1825944) §5 CRITICAL · disk 4.9G(97%) tight · rules §1-1 |
+| `npm run build` | **PASS** (1234 modules · 10.76s) |
+| `npm audit --audit-level=high` | **PASS** (0 vulnerabilities) |
+| backend health | **UP** — GET `/api/v1/health` = 200 |
+| Open(FE product) | **0** (신규 Open 없음) |
+| transfer | **PASS** (FE local) |
+| operation | **BLOCK** (QA-B116 origin/test push FE +34·BE +774 + QA-B95 bootstrap-disabled) |
+
+**변경 요약**: 신규 develop 커밋이 없어(`develop`==`test`==`origin/develop`==`c3f0e05`·WT CLEAN·pending 0) 이관 merge 는 N/A. `src/frontend` develop 워크트리에서 타 `vitest run`(PID1825944)이 진행 중이라 §5 CRITICAL(동시실행 금지)에 따라 full `npm test`를 재실행하지 않고, TSR1903 `@c3f0e05` 2792/2792 PASS 결과를 carry했다. rules §1-1(문서만 갱신하는 긴 사이클 회피)에 따라 `src/frontend-test@test`에서 비충돌 corroboration(`npm run build` 1234 modules PASS·`npm audit` high 0·backend health 200)만 수행했다.
+
+**잔여 리스크**: 신규 QA Open 없음. operation 승격 BLOCK 은 origin/test push 미실행(QA-B116·FE +34·BE +774)과 live-e2e bootstrap-disabled(QA-B95) 두 건만 carry — planner/harness 영역.
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T10:29:00Z -->
+<!-- tester-sync: TSR 1903차 2026-07-19T10:29:00Z (backend) — ROADMAP merged baseline `@6d3c766` 독립 재검증 · `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(66s·409 report·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop/test SYNCED `@6d3c766` WT CLEAN · pending 0(rev-list 0/0) · merge N/A(신규 develop 커밋 없음) · Open(BE) 0(신규 없음) · @RestController 81 · Flyway V196 · disk 4.9G(97%) tight carry · transfer PASS(BE local) · cross-stream LOCAL SYNCED(FE `@c3f0e05` pending 0·Open 0) · operation BLOCK(QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) carry. -->
+# tsr1903_backend: merged-baseline independent re-verify @6d3c766; mvn -o test 2433/2433 PASS(66s,409 report,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop/test SYNCED @6d3c766 WT CLEAN pending 0(rev-list 0/0); merge N/A(no new develop commit); Open(BE) 0(no new); @RestController 81; Flyway V196; disk 4.9G(97%) tight carry; transfer PASS(BE local); cross-stream LOCAL SYNCED(FE @c3f0e05 pending 0·Open 0); operation BLOCK=QA-B116(origin/test push BE+774·FE+34)+QA-B95(live-e2e bootstrap-disabled).
+
+### [TSR] TSR1903 backend — ROADMAP merged baseline `@6d3c766` 독립 재검증 (PASS)
+
+| item | result |
+|------|--------|
+| `mvn -o test` | **2433/2433 PASS** (66s · 409 report · 0F/0E/0S · BUILD SUCCESS · EXIT 0) |
+| develop/test | **SYNCED `@6d3c766`** WT CLEAN · pending 0 (`test..develop` rev-list 0/0) |
+| merge | **N/A** (신규 develop 커밋 없음) |
+| Open(BE product) | **0** (신규 없음) |
+| @RestController / Flyway | 81 / V196 (carry) |
+| disk | 4.9G free (97%) tight — backend mvn 영향 없음, FE live-e2e ENOSPC 리스크 carry |
+| transfer | **PASS** (BE local) |
+| operation | **BLOCK** (QA-B116 origin/test push BE +774·FE +34 + QA-B95 live-e2e bootstrap-disabled) |
+
+**변경 요약**: 신규 develop 커밋이 없어(`develop`==`test`==`6d3c766`·WT CLEAN·pending 0) 이관 merge 는 N/A. rules §1-1(문서만 갱신하는 긴 사이클 회피)에 따라 장문 리포트 재작성 없이 tester 핵심 가치인 회귀 검증만 `src/backend-test@test`에서 독립 재실행(`mvn -o test` **2433/2433 PASS**·surefire 409 report 집계)했다.
+
+**잔여 리스크**: 신규 QA Open 없음. operation 승격 BLOCK 은 origin/test push 미실행(QA-B116·BE +774·FE +34)과 live-e2e bootstrap-disabled(QA-B95) 두 건만 carry — planner/harness 영역.
+
+---
+
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T10:17:00Z -->
 <!-- tester-sync: TSR 1902차 2026-07-19T10:17:00Z (frontend) — ROADMAP merged baseline `@c3f0e05` git 재실측 · develop/test/origin-develop **SYNCED `@c3f0e05`** WT CLEAN · pending **0** · merge **N/A** · full `npm test` **SKIP**(TSR1900 targeted 70/70 PASS carry + TSR1897 2791/2791 PASS carry · 신규 develop 커밋 없음 · concurrent vitest in src/frontend §5 CRITICAL · disk 5.1G(97%) tight · rules §1-1) · corroboration: `npm run build` **1234 PASS**(11.41s) · `npm audit --audit-level=high` **0 vulnerabilities** · backend `/api/v1/health`=200 · Open(FE product) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@c3f0e05`) · operation **BLOCK**(QA-B116 origin/test push FE +34·BE +774 + QA-B95 live-e2e bootstrap-disabled). -->
 # tsr1902_frontend: merged-baseline reconfirm @c3f0e05(git remeasure); develop/test/origin-develop SYNCED @c3f0e05 WT CLEAN pending 0; merge N/A; full npm test SKIP(TSR1900 targeted 70/70 PASS carry+TSR1897 2791/2791 PASS carry, no new develop commit, concurrent vitest §5 CRITICAL, disk 5.1G(97%) tight, rules §1-1); corroboration build 1234 PASS(11.41s), audit high 0, backend health 200; Open(FE product) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @c3f0e05); operation BLOCK=QA-B116(origin/test push FE+34·BE+774)+QA-B95(live-e2e bootstrap-disabled).
