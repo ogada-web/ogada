@@ -1,10 +1,10 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-18T03:22:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD,TSR,UXD,DBA,BNK updated=2026-07-19T01:10:00Z -->
 # ogada 운영 문서 (docs/ops/)
 
 > **작성**: tech_writer 에이전트  
 > **생성일**: 2026-06-13  
 > **상태**: MVP v1 개발 중 — **develop baseline 동기화** (사진 업로드 성공 스크린리더 안내 · SEC-D34 엑셀 import 4경로·null·빈(0바이트) 파일 fail-closed · 업로드 magic-byte · M12 SSO · 모듈 **97.41%**)  
-> **최종 갱신**: 2026-07-18 (TWR — 빈(0바이트)·빈 헤더 엑셀 import fail-closed FE·BE 회귀 고정 · baseline `9449e1f`/`2789553`)
+> **최종 갱신**: 2026-07-18 (TWR — 엑셀 import 안내 문구 공용 상수 통일(리팩터링·문구 무변) · baseline `49349e4`/`5e816e6`)
 
 ---
 

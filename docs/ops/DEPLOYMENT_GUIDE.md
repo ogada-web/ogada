@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T07:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T01:10:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-18 (엑셀 import 테스트 강화 · baseline `73a3a63`/`495040f` · Flyway **V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-07-18 (엑셀 import 안내 문구 상수 통일(리팩터링) · baseline `49349e4`/`5e816e6` · Flyway **V1–V196** · 모듈 **97.41%**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -57,7 +57,7 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | 인증 | JWT (RS256) + RBAC | access 30분, refresh 7일 |
 | 멀티테넌트 | Organization → Branch | `organization_id` 강제 격리 |
 
-> **구현 상태 (2026-07-18 develop HEAD `9449e1f` / frontend `2789553` 기준)**:
+> **구현 상태 (2026-07-18 develop HEAD `49349e4` / frontend `5e816e6` 기준)**:
 > - **백엔드**: Must API + **V1–V196** · **SYNCED @ `9449e1f`**. **엑셀 import null·빈(0바이트) 파일 fail-closed ✅** (**Q931~Q933**, SEC-D34) · **SEC-D34 엑셀 import 4경로 magic-byte ✅** (**Q931~Q932**) · **업로드 magic-byte 확대 ✅** (**Q926~Q929**) · **활동 사진 magic-byte ✅** (**Q924**) · **NoBreakSpace mid-token strip ✅** (**Q925**) · **M12 SSO `/carefor_login` path allowlist ✅** (**Q922**) · **QA-B95 세미콜론 생략 `&num` BE lock ✅** (**Q919**) ·
 > - **프론트엔드**: **133 route · 106 page** @ **`2789553`** **SYNCED**. **사진 업로드 성공 스크린리더 안내 ✅** (**Q933**, UXD-191) · **SEC-D34 엑셀 import FE 사전검증·빈 헤더 fail-closed ✅** (**Q931**) · **이용자 사진·서류함 magic-byte FE ✅** (**Q926~Q928**) · **인쇄/ARIA a11y ✅** (**Q930**) · **활동 사진 magic-byte FE ✅** (**Q924**) · **NoBreakSpace mid-token FE lock ✅** (**Q925**) · **M12 SSO path allowlist FE lockstep ✅** (**Q922**) · **uppercase `&NUM` decode test lock ✅** (**Q923**) ·
 > - **merge gate**: **FE FULLY SYNCED · BE ahead ~734** · **BE Test ~2305 @Test** · **FE test ~533** · **모듈 KPI 97.41%**

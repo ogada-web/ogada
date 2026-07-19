@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-18T07:45:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-19T01:10:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-18 (엑셀 import 테스트 강화 · baseline `73a3a63`/`495040f` · **Flyway V1–V196** · 모듈 **97.41%**)  
+> **최종 갱신**: 2026-07-19 (기선 갱신 BE `68c2378` / FE `cf360d7` · **Flyway V1–V196** · 모듈 **97.41%**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -50,7 +50,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > **비유**: `ogada_platform_admin`은 통신사 매장의 **회선 개통** 담당, `sysadmin`은 고객사 IT의 **내부 시스템·백업** 담당, `hq_admin`은 센터 **운영 총괄** 담당입니다. (REQUIREMENTS §1-3)  
 > **역할 코드 (V160, Q556)**: JWT·DB **`role_code`는 `ogada_platform_admin`** — 구 **`platform_admin`** 은 2026-06-20 이후 **마이그레이션·폐기**.
 
-### 1-4. 구현 상태 안내 (2026-07-18 develop HEAD `9449e1f` / frontend `2789553`)
+### 1-4. 구현 상태 안내 (2026-07-18 develop HEAD `49349e4` / frontend `5e816e6`)
 
 > **이관·QA (TSR)**: BE develop **@ `9449e1f`** · FE develop **@ `2789553`** · **cross-stream SYNCED**
 > 
@@ -508,7 +508,7 @@ readiness Q644(placeholder·누락 key)와 별도로 **런타임 발송** 단계
 4b. **G26 본인부담 통계 yearBasis+NTS CSV (Q534)**: **`GET /billing/reports/medical-deduction?yearBasis=PAID_YEAR|CLAIM_YEAR`** · **`GET …/medical-deduction/export`** — **`BillingStatisticsReportPage`** segmented control·**「국세청 CSV」** (`ceeaeb9`/`19ed7f3`)
 4c. **G-BILLING-PRIOR-DEPOSIT-GUARD 청구 생성 가드 (Q571, BE `3bbfc00`·FE `a2f599c`)**: **`GET /dashboard/branch`**·**`/dashboard/hq`** — **`claimGenerationGuardBlocked`·`unpaidPriorMonthClaimCount`** · **`GET /billing/claims/generation-guard`** — 전월 미입금·G33 미정산 시 **`blocked=true`** · 대시보드 **「청구 생성 제한 (7-1 선행입금 가드)」** StatCard · `/billing` **`ClaimGenerationGuardBanner`** (Q310, UXD-145)
 4c2. **G-BILLING-DEPOSIT-ORDER-GUARD 입금 순서 가드 (Q614, BE `a6eb8b7`)**: **`BillingService.assertPriorDepositOrderForClients()`** — **`POST /claims/{id}/payments`** · **`BankDepositImportService`** earliest-month auto-match — **이전 미납 청구 선행** · **`422`「이전 미납 청구(YYYY-MM) 입금 선행이 필요합니다.」** · **`BillingServiceTest`** · **`BankDepositImportServiceTest`**
-4d. **G-BANK-EXCEL-8 은행 입금 형식·preview (Q572·Q579, BE `07a85a3`·`e3b74a0`·`7d29a38`·`6ed7cd4`·FE `a18b30e`·`a7d9a2f`)**: **`GET /billing/imports/bank-deposits/formats`** — 8종 catalog · **`POST …/bank-deposits/preview`** — dry-run·`detectedFormatId` · **`POST …/bank-deposits`** — 빈·non-positive `rowNumbers` → `422` (Q576) · **미리보기에 없는 `rowNumbers` → `422`** (Q579) · FE **`BankDepositImportPanel`** **미리보기·선택 등록** + **UXD-146 a11y** (Q581) ✅**
+4d. **G-BANK-EXCEL-8 은행 입금 형식·preview (Q572·Q579·Q941, BE `07a85a3`·`e3b74a0`·`7d29a38`·`6ed7cd4`·`dc261ed`·FE `a18b30e`·`a7d9a2f`)**: **`GET /billing/imports/bank-deposits/formats`** — 8종 catalog · **`POST …/bank-deposits/preview`** — dry-run·`detectedFormatId` · **`POST …/bank-deposits`** — 빈·non-positive `rowNumbers` → `422` (Q576) · **미리보기에 없는 `rowNumbers` → `422`** (Q579) · **`BankDepositExcelParser.parseAmount`** — 공백 천 단위·「원」 표시서식 정규화(SEC-D34·`NhisExcelParser` lockstep·Q941) · FE **`BankDepositImportPanel`** **미리보기·선택 등록** + **UXD-146 a11y** (Q581) ✅**
 4e. **G-STAFF-NHIS-EXCEL-IMPORT (Q573·Q577, BE `6f7f145`·`2f6f3bc`·FE `4315ee2`)**: **`POST /staff/imports/nhis-caregivers/preview`** · **`POST /staff/imports/nhis-caregivers`** — **`StaffNhisCaregiverImportService`** → **`user_account_requests` PENDING** · **`/staff` `StaffNhisCaregiverImportPanel`** full-stack wire · **V165** 선행 마이그레이션 필수
 4f. **G-STAFF-LEAVE-STATUS (Q584, BE `1d7cee2`/`68d4457`·FE `2581347`/`1a614c9`)**: **`GET /staff/lifecycle-summary`** — **`onLeaveCount`** 등 6종 · **`StaffLifecycleSummaryPanel`** · **`StaffLifecyclePanel`** 「휴직」·복직 · **UXD-147** a11y
 4g. **G-BILLING deposit half-month·receipt dual-basis (Q585·Q586·Q587·Q588, BE `b96d038`·`375fb9d`·`14935a3`·`7b99313`·FE `e38ccfd`·`c6a412f`/`580a86b`)**: **`GET /billing/reports/deposits?period=FULL|FIRST_HALF|SECOND_HALF`** · **`GET …/receipts?basis=PAYMENT|CLAIM`** — **`BillingReportPage`** segmented control · **`resolveBillingReportScopeLabel`** · **「적용 조건:」** summary · **UXD-148 a11y** · 응답 **`appliedFilters`** echo · invalid `month`/`period`/`basis` → **`422`**
@@ -2106,10 +2106,10 @@ US-O03 **욕창 위험평가·체위변경 케어** 기록을 기간별 집계�
 | Service | **`CareReportService.getPatientServiceReport`** (`2cf0908`) |
 | 집계 | L02_M01 weekly · L02_M13 meal · L02_M03 bath(COMPLETED) · L02_M02 excretion · L02_M07 restraint — counts + 5 detail arrays |
 | RBAC | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` 403** (`2495753`, Q383) |
-| FE UI | **`PatientServiceReportPage`** `/care/reports/patient-service` (`ff9c8c5`) · **`CareReportContextNav`** 6탭 · **인쇄** |
+| FE UI | **`PatientServiceReportPage`** `/care/reports/patient-service` (`c3a0cac`) · **`CareReportContextNav`** 6탭 · **인쇄** · **역방향 기간 사전 차단(Q943)** |
 | 테스트 | **`CareReportServiceTest.getPatientServiceReport*`** · **`CareReportLiveApiRoutingE2eTest`** · FE **`PatientServiceReportPage.test`** · **`patientServiceReportLiveApi.e2e.test.js`** · **`pilotPageFlows`** |
 
-> 현장: USER_MANUAL §5-33 · FAQ Q373 · REQUIREMENTS L02 v3.1 rpt cluster
+> 현장: USER_MANUAL §5-33 · FAQ Q373 · **Q943**(역방향 기간 사전 차단) · REQUIREMENTS L02 v3.1 rpt cluster
 
 ### 6-2-24. L02_M12 급여제공 서비스 집계 리포트 (케어포 view.service, BNK-258, BE·FE Fixed)
 
@@ -2121,10 +2121,10 @@ US-O03 **욕창 위험평가·체위변경 케어** 기록을 기간별 집계�
 | Service | **`CareReportService.getServiceSummaryReport`** (`2cf0908`) |
 | 집계 | `clientCount`·branch totals·`rows[]` per-client 5종 counts + `totalServiceEntries` |
 | RBAC | **`hq_admin`·`branch_admin`·`social_worker`** — **`caregiver` 403** (`2495753`, Q383) (활성 지점 스코프) |
-| FE UI | **`ServiceSummaryReportPage`** `/care/reports/service-summary` (`ff9c8c5`) · **인쇄** |
+| FE UI | **`ServiceSummaryReportPage`** `/care/reports/service-summary` (`cf360d7`) · **인쇄** · **역방향 기간 사전 차단(Q942)** |
 | 테스트 | **`CareReportServiceTest.getServiceSummaryReport*`** · **`CareReportLiveApiRoutingE2eTest`** · FE **`ServiceSummaryReportPage.test`** · **`serviceSummaryReportLiveApi.e2e.test.js`** |
 
-> 현장: USER_MANUAL §5-34 · FAQ Q374 · **P2**: CSV export
+> 현장: USER_MANUAL §5-34 · FAQ Q374 · **Q942**(역방향 기간 사전 차단) · **P2**: CSV export
 
 ### 6-2-25. L02_M16 식사(간식) 선호도 조사 (케어포 view.meal_satisfaction, G-MEAL-PREFERENCE, BNK-258, BE·FE Fixed)
 
