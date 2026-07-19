@@ -1,3 +1,93 @@
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T08:58:00Z -->
+<!-- tester-sync: TSR 1888? 2026-07-19T08:58:00Z (frontend) ? ROADMAP merged baseline `@aab11b2` ??? � `/tmp` 19G ??(88,439 vitest ??? ??�6.4G ??) ? `npm test` ??? � **2791/2791 PASS**(925.52s�490 files�0F) � `npm run build` **1234 PASS**(10.04s) � `npm audit --audit-level=high` **0 vulnerabilities** � develop/test SYNCED `@aab11b2` WT CLEAN � pending **0** � **QA-B624 Fixed & Verified**(disk cleanup) � Open(FE) **0** � transfer **PASS**(FE local) � cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@aab11b2`) � operation **BLOCK**(origin/test push FE +33�BE +774=QA-B116 + QA-B95). -->
+# tsr1888_frontend: merged-baseline revalidation @aab11b2; /tmp cleanup(88439 stale vitest dirs removed,6.4G freed); npm test 2791/2791 PASS(925.52s,490 files,0F); build 1234 PASS(10.04s); audit high 0; SYNCED @aab11b2 WT CLEAN pending 0; QA-B624 Fixed & Verified(disk restored); Open(FE) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @aab11b2); operation BLOCK=origin/test push(FE+33�BE+774=QA-B116)+QA-B95.
+
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1888 post-cleanup)** ? host disk ENOSPC (`QA-20260719-B624`)
+
+- **id**: QA-20260719-B624
+- **severity**: HIGH (BLOCK) ? **RESOLVED**
+- **stream**: frontend (infra)
+- **status**: **Fixed & Verified (TSR1888)** ? `/tmp` ? vitest ??(88,439 dirs�~7GB) ?? ? `npm test` ??? **2791/2791 PASS**(925.52s�490 files�0F)
+- **found_at**: 2026-07-19T07:29:46Z (TSR1888 ?? ?? � ENOSPC)
+- **resolved_at**: 2026-07-19T08:58:00Z (TSR1888 post-cleanup ???)
+- **version**: merged baseline `aab11b2` (UXD-197 already merged)
+- **summary**: ?? `npm test` ??? ENOSPC ? ~599s ? ??(failed suites 398/490�passed 543)??. `/tmp`? ??? 88,439? vitest ? ???? ????(June~??July�~7GB)? `find /tmp -maxdepth 1 -type d -mtime +7`?? ??? 6.4G ?? ? ??? ? **2791/2791 PASS**.
+- **tests**: ??? `npm test` **2791/2791 PASS**(925.52s � 490 files � 0F) / `npm run build` **1234 PASS**(10.04s) / `npm audit --audit-level=high` **0 vulnerabilities**
+- **evidence**: ?? ? `df /` = `100%(154M avail)` ? ?? ? `6.4G avail`(`96%`) ? `npm test` PASS
+- **assignee**: TSR (disk cleanup ??�??)
+- **impact**: frontend transfer **PASS**(FE local) � Open(FE) **0** � operation BLOCK ??(QA-B116+QA-B95)
+- **prevention**: `npm test` ?? ? ?? ??? 5G ?? ?? ???? ?? ?? (harness ? `/tmp` ?? ?? ?? ?? ???? ??)
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T06:48:00Z -->
+<!-- tester-sync: TSR 1886? 2026-07-19T06:48:00Z (backend) ? ROADMAP merged baseline `@6d3c766` ??? � `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(91s�409 report�0F/0E/0S�BUILD SUCCESS�EXIT 0) � develop/test SYNCED `@6d3c766` WT CLEAN � pending **0**(`test..develop`) � merge **N/A**(SEC-D34 9?? TSR1884?? ?? merged�?? develop ?? ??) � Open(BE) **0**(?? ??) � ??? QA-20260717-B600(`a788e6d`) = test ?? ?? ? **Fixed & Verified** ?? � @RestController 81 � HTTP 442 � Flyway V196 � transfer **PASS**(BE local) � cross-stream **BLOCK**(FE pending **1** = `aab11b2` UXD-197 ? **TSR1887 ??**) � operation **BLOCK**(origin/test push BE ahead **774** + FE ahead **33** = QA-B116 + QA-B95 live-e2e bootstrap-disabled). -->
+# tester_1886_backend: roadmap-baseline@6d3c766 re-verify mvn -o test 2433/2433 PASS(91s,409 report,0F/0E/0S,EXIT 0); develop/test SYNCED @6d3c766 WT CLEAN; pending 0(test..develop); merge N/A(already merged TSR1884, no new develop commit); Open(BE) 0(no new); stale QA-B600(a788e6d) confirmed ancestor of test ? corrected to Fixed & Verified; @RestController 81; HTTP 442; Flyway V196; transfer PASS(BE local); cross-stream BLOCK(FE pending 1 = aab11b2 UXD-197 ? resolved TSR1887); operation BLOCK(origin/test push BE ahead 774 + FE ahead 33 = QA-B116 + QA-B95 live-e2e bootstrap-disabled).
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T04:30:00Z -->
+<!-- tester-sync: TSR 1885차 2026-07-19T04:30:00Z (frontend) — **★ v1.2.1 reversed date-range/a11y pre-block 4커밋 MERGED** develop→test FF merge `ca31864`→`0ff9c7d` (pending **4→0** · merge_status: ready(PLN235·v1.2.1) 정합·FF-safe merge-base==test HEAD) · post-merge `src/frontend-test@test` `npm test` **2791/2791 PASS**(904.25s·490 files·+1 vs TSR1882) · `npm run build` **1234 PASS**(9.38s) · `npm audit --audit-level=high` **0 vulnerabilities** · develop/test **SYNCED `@0ff9c7d`** WT CLEAN · **QA-20260719-B622 Fixed & Verified**(`d4d9887`+`60716c6`+`5789173`+`0ff9c7d` = nursing/program reversed date-range FE 사전 차단 + UXD-196 dual-field a11y error routing 9리포트 + 회귀·신규 Open 없음) · Open(FE) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` pending 0 + FE `@0ff9c7d` pending 0·both Open 0) · operation **BLOCK** 잔존 = origin/test push(FE +32·BE +774·QA-B116) + QA-B95(live-e2e bootstrap-disabled). -->
+# tester_1885_frontend: v1.2.1 reversed date-range/a11y pre-block 4 commits MERGED develop→test FF ca31864→0ff9c7d (pending 4→0; merge_status ready(PLN235) aligned; FF-safe merge-base==test HEAD); post-merge npm test 2791/2791 PASS(904.25s,490 files,+1 vs TSR1882 2790); build 1234 PASS(9.38s); audit high 0; SYNCED @0ff9c7d WT CLEAN; QA-B622 Fixed & Verified(d4d9887 nursing + 60716c6 program reports reversed date-range FE pre-block + 5789173 UXD-196 a11y dual-field error routing 9 reports + 0ff9c7d regression; no new Open); Open(FE) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766 + FE @0ff9c7d both pending 0·Open 0); operation BLOCK = origin/test push(FE +32·BE +774=QA-B116) + QA-B95(live-e2e bootstrap-disabled). Residual Planned: QA-B116 + QA-B95.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T04:25:00Z -->
+<!-- tester-sync: TSR 1884차 2026-07-19T03:45:00Z (backend) — **★ SEC-D34 excel-amount normalize 9커밋 MERGED** develop→test FF merge `ad2c0b1`→`6d3c766` (pending **9→0** · merge_status: ready 발화 정합·FF-safe merge-base==test HEAD) · post-merge `src/backend-test@test` `mvn -o test` **2433/2433 PASS**(~93s·409 report·0F/0E/0S·EXIT 0·+23 vs baseline 2410) · develop/test **SYNCED `@6d3c766`** WT CLEAN · **QA-B615~B621 (7건) Fixed & Verified**(+ `e60e288` DRY refactor·`6d3c766` no-break/ideographic space normalize·신규 Open 없음) · Open(BE) **0** · @RestController **81** · HTTP **442**(GET231/POST144/PATCH44/PUT13/DELETE10) · Flyway **V196** · transfer **PASS**(BE local) · operation **BLOCK** 잔존 = origin/test push(BE ahead **774**·QA-B116) + QA-B95(live-e2e bootstrap-disabled) · cross-stream **BLOCK**(FE pending **3** = QA-B622 + UXD-196 a11y 이관 대기). -->
+# tester_1884_backend: SEC-D34 excel-amount normalize 9 commits MERGED develop→test FF ad2c0b1→6d3c766 (pending 9→0; merge_status ready aligned; FF-safe); post-merge mvn -o test 2433/2433 PASS(~93s,409 report,0F/0E/0S,EXIT 0,+23 vs 2410); SYNCED @6d3c766 WT CLEAN; QA-B615~B621(7) Fixed & Verified(+ e60e288 DRY refactor + 6d3c766 no-break/ideographic space normalize; no new Open); Open(BE) 0; @RestController 81; HTTP 442(GET231/POST144/PATCH44/PUT13/DELETE10); Flyway V196; transfer PASS(BE local); operation BLOCK = origin/test push(BE ahead 774=QA-B116) + QA-B95(live-e2e bootstrap-disabled); cross-stream BLOCK(FE pending **3** = d4d9887 + 60716c6 + 5789173/QA-B622 lineage). NOTE: ROADMAP v3 merge_status=ready still shows(harness will flip to merged on next build via already-up-to-date auto-merge); tester did not edit ROADMAP.
+
+<!-- doc:owner=PLN doc:audience=TSR,COD updated=2026-07-19T04:25:00Z -->
+<!-- planner-sync: PLN 235차 2026-07-19T02:55:00Z — **QA-B615~B622 8건 Open→Planned 반영 완료** · ACTION 이행: ROADMAP `## v3`(backend) + `## v1.2.1`(frontend) **`merge_status: ready` 설정 완료**(parse 검증·backend→v3·frontend→v1.2.1) → 다음 build `run_agent.py maybe_merge_version_to_test` 가 develop→test FF 이관(BE pending 8 = QA-B615~B621·`ExcelAmountNormalizer` DRY refactor 포함 / FE pending **3** = QA-B622 + UXD-196 a11y cross-field error routing) → 이관 후 tester 가 post-merge full suite 재검증 시 Fixed & Verified 전환 예상 · v3 스코프 재조정(G4 재무회계 v3+「가정」·G20 시설급여 범위 분리 v3.1+ 이월·비-merge-blocking) 으로 [merge-blocking] 완료 기준 충족 = coder self-flip 거부(PLAN_NOTES [COD] 코더 질문) 해소 · 전 항목 **기능 갭 아님·이관 적체** · Planned residual = QA-B615~B622 + QA-B116(origin/test push) + QA-B95(operation) · 상세 = ROADMAP `## QA 피드백 반영 (235차)` · PLAN_NOTES `### [PLN] QA 피드백 반영 (235차)`. -->
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T02:44:37Z -->
+<!-- tester-sync: TSR 1882차 2026-07-19T02:44:37Z (frontend) — ROADMAP merged baseline `@ca31864` 재검증 · `src/frontend-test@test` `npm test` **2790/2790 PASS**(898.47s·490 files·+5 vs TSR1879) · `npm run build` **1234 PASS**(9.34s) · `npm audit --audit-level=high` **0 vulnerabilities** · develop `@60716c6`(WT CLEAN·origin/develop SYNCED) / test `@ca31864` pending **2**(`d4d9887`+`60716c6`) · merge **SKIP**(auto-merge 미발화: ROADMAP frontend `merge_status`≠`ready`) · Open(FE) **1**(QA-B622 유지) · transfer **BLOCK**(FE pending 2) · cross-stream **BLOCK**(BE pending 8 + FE pending 2) · operation **BLOCK**(QA-B615~B622+QA-B116+QA-B95) · **ACTION: COD/PLN frontend `merge_status: ready` 설정**. -->
+# tester_1882_frontend: roadmap-baseline@ca31864 npm test 2790/2790 PASS(898.47s,490 files,+5 vs TSR1879); build 1234 PASS(9.34s); audit high 0; develop@60716c6(WT CLEAN·origin SYNCED) pending 2(test..develop: d4d9887+60716c6) vs test@ca31864; merge SKIP(merge_status not fired); Open(FE) 1(QA-B622 unchanged); transfer BLOCK(FE pending 2 → **3 after UXD-196 a11y commit @5789173**); cross-stream BLOCK(BE pending 8 + FE pending 3); operation BLOCK(QA-B615~B622+QA-B116+QA-B95); ACTION COD/PLN set frontend merge_status: ready.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-19T04:25:00Z -->
+<!-- coder-sync: COD 2026-07-19T02:30:00Z (frontend) — **M5 프로그램 리포트 역방향 조회기간 FE 사전 차단 (id=2 form polish · L02 care-report 계보 확장)** develop `@d4d9887` → +1 commit · `ProgramReportsPage`(5-7 참여/5-8 제공기록/5-9 그룹이력/5-10 일정 4-variant)가 역방향 조회 기간(시작일 > 종료일)을 서버에 보낸 뒤에야 BE `ProgramReportService.resolveDateWindow` 의 400(`종료일은 시작일 이후여야 합니다.`)을 표면화하던 문제를 FE 에서 사전 차단 — 신규 공용 헬퍼 `resolveProgramReportDateRangeError`/`isProgramReportDateRangeInOrder`/`PROGRAM_REPORT_DATE_RANGE_INVALID_MESSAGE`(`config/programReports.js`·BE 문구 verbatim lockstep·care-report·transport-fee 도메인 헬퍼 패턴 미러)를 `load` 가드 선두에 연결해 역방향이면 왕복 없이 종료일 필드에 사유 노출(`role="alert"` + `aria-invalid`)·직전 stale 집계 제거·결측 endpoint 는 BE 기본 기간 대체이므로 사전 차단 대상 아님(care-report L02 계보와 동일 semantics) · 단건 `npm test -- programReports.test.js ProgramReportsPage.test.jsx` **10/10 PASS**(config 4 신규 + page 5 기존 + 역방향 차단 회귀 1) · build **PASS**(9.54s) · lint 0 · WT CLEAN 예정 · Open **0**(FE·신규 기능 갭 아님) · Planned QA-B622(develop→test FF 이관 대기)+QA-B116+QA-B95 · TSR full-suite 재검증·develop→test FF 대기 -->
+# coder_frontend: M5 program-reports reversed date-range FE pre-block (id=2 form polish, extends L02 care-report lineage); develop d4d9887 → +1; ProgramReportsPage (5-7 participations/5-8 provision-records/5-9 group-history/5-10 schedules 4 variants) sent a reversed range (from>to) to the BE and only surfaced ProgramReportService.resolveDateWindow's 400 ("종료일은 시작일 이후여야 합니다.") after the round-trip; added shared helpers resolveProgramReportDateRangeError/isProgramReportDateRangeInOrder/PROGRAM_REPORT_DATE_RANGE_INVALID_MESSAGE in config/programReports.js (verbatim BE lockstep, mirrors care-report + transport-fee domain-config pattern) and wired them at the head of the load guard so a reversed range is rejected up front, anchored to the 종료일 field (role="alert" + aria-invalid), clears the stale aggregate; missing endpoints stay valid since BE substitutes the default window; targeted npm test -- programReports.test.js ProgramReportsPage.test.jsx 10/10 PASS(4 new config + 5 existing page + 1 new reversed-range regression); build PASS(9.54s); lint 0; Open 0(FE, not a feature gap); Planned QA-B622(develop→test FF)+QA-B116+QA-B95; awaiting TSR full-suite + develop→test FF.
+
+<!-- coder-sync: COD 2026-07-19T04:25:00Z (frontend) — **UXD-196 a11y: start-date also reflects reversed range errors across 9 reports + regression test** develop `@5789173` → +1 commit · L02 7리포트 + L03 1 + M5 1 의 시작일 필드에 종료일 오류 id(`aria-describedby`)와 오류 상태(`aria-invalid`)를 라우팅해 WCAG 3.3.1/4.1.2 2-필드 일관성을 보장(TransportServiceFeePanel §119 anchor 확산) · 신규 회귀 `ProgramReportsPage clears date range error after correction` 추가(`ProgramReportsPage.test.jsx`)로 오류 해제 시 시작일 상태가 복구되는지 검증 · 단건 `npm test -- ProgramReportsPage.test.jsx` **PASS**(locked) · build/lint 스킵(기존 green baseline) · WT CLEAN 예정 · Open **0**(FE·신규 기능 갭 아님) · Planned QA-B622 + QA-B116 + QA-B95 · develop/test delta **3**(`d4d9887`+`60716c6`+`5789173`) FF 대기 -->
+<!-- coder_frontend: UXD-196 a11y dual-field error routing rollout; develop 60716c6→5789173 (+1); propagated the §119 TransportServiceFeePanel pattern to 9 form-polished reports (L02 7 + L03 1 + M5 1) so the start-date input mirrors the reversed range error via aria-invalid + aria-describedby, keeping screen readers in sync with the end-date alert; added regression "clears the date range error after correcting the inputs" in ProgramReportsPage.test.jsx to ensure the from-date recovers once the user submits a valid range; targeted npm test -- ProgramReportsPage.test.jsx PASS (locked); build/lint skipped (baseline green); WT CLEAN pending; Open 0(FE); Planned QA-B622 + QA-B116 + QA-B95; develop/test delta 3 awaiting FF. -->
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T02:18:00Z -->
+<!-- tester-sync: TSR 1880차 2026-07-19T02:18:00Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(67s·408 suites·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@e60e288`(WT CLEAN·origin/develop SYNCED) / test `@ad2c0b1` pending **8**(`dc261ed`+`ec7a1ce`+`68c2378`+`1d067d9`+`ce656d5`+`c88687a`+`c7b6608`+`e60e288`) · merge **SKIP**(auto-merge 미발화: ROADMAP v3 `merge_status: pending`≠`ready` · tester 수동 merge 미수행) · **신규 커밋 `e60e288`은 순수 refactor**(`ExcelAmountNormalizer` 공용 추출·behavior-neutral) → **신규 Open ID 없음**(SEC-D34 배치에 포함) · Open(BE) **7**(B615~B621 불변) · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 8 + FE `@ca31864` pending 1=QA-B622) · operation **BLOCK**(QA-B615+B616+B617+B618+B619+B620+B621+B622+QA-B116+QA-B95) · **★ 핵심 escalation 유지**: COD/PLN이 v3 backend `merge_status: ready` 설정해야 다음 빌드 auto-merge 발화(SEC-D34 8커밋 FF 이관·QA-B615~B621 Fixed & Verified 전환). -->
+# tester_1880_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(67s,408 suites,0F/0E/0S,BUILD SUCCESS,EXIT 0); develop@e60e288(WT CLEAN·origin SYNCED) pending 8(test..develop: dc261ed+ec7a1ce+68c2378+1d067d9+ce656d5+c88687a+c7b6608+e60e288); merge SKIP(auto-merge NOT fired: ROADMAP v3 merge_status=pending!=ready · tester manual merge not performed); NEW commit e60e288 = pure refactor(extract shared ExcelAmountNormalizer, behavior-neutral) → NO new Open ID(folded into SEC-D34 batch); Open(BE) 7(B615~B621 unchanged); transfer BLOCK(BE); cross-stream BLOCK(BE pending 8 + FE @ca31864 pending 1=QA-B622); operation BLOCK(QA-B615+B616+B617+B618+B619+B620+B621+B622+QA-B116+QA-B95); ROOT CAUSE unchanged: v3 merge_status pending → build auto-merge never fires → 8 SEC-D34 commits stuck; ACTION COD/PLN set v3 backend merge_status: ready.
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T01:57:16Z -->
+<!-- tester-sync: TSR 1879차 2026-07-19T01:57:16Z (frontend) — ROADMAP merged baseline `@ca31864` 재검증 · `src/frontend-test@test` `npm test` **2785/2785 PASS**(900.83s·489 files·+1 vs TSR1877) · build **1234 PASS**(9.58s) · audit high **0** · develop `@d4d9887`(WT CLEAN·origin/develop SYNCED) / test `@ca31864` pending **1**(`d4d9887`) · merge **SKIP**(ROADMAP frontend `merge_status` 미발화·tester 수동 merge 미수행) · **QA-20260719-B622 Open(HIGH/BLOCK) 신규** · Open(FE) **1** · transfer **BLOCK**(FE) · cross-stream **BLOCK**(BE pending 7 + FE pending 1) · operation **BLOCK**(QA-B615+B616+B617+B618+B619+B620+B621+B622+QA-B116+QA-B95). -->
+# tester_1879_frontend: roadmap-baseline@ca31864 npm test 2785/2785 PASS(900.83s,489 files,+1); build 1234 PASS(9.58s); audit high 0; develop@d4d9887 pending 1(test..develop: d4d9887) vs test@ca31864; merge SKIP(merge_status not fired); NEW Open QA-B622(HIGH/BLOCK); Open(FE) 1; transfer BLOCK(FE pending 1); cross-stream BLOCK(BE pending 7 + FE pending 1); operation BLOCK(QA-B615+B616+B617+B618+B619+B620+B621+B622+QA-B116+QA-B95); ACTION COD/PLN set frontend merge_status ready.
+
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1885 `@0ff9c7d`)** — v1.2.1 FE reversed date-range/a11y pre-block develop→test 이관 적체 (`d4d9887`+`60716c6`+`5789173`+`0ff9c7d`, QA-20260719-B622) — develop→test FF merge(pending 4→0)·post-merge `npm test` **2791/2791 PASS**
+
+> **TSR1885 종결**: PLN 235차가 v1.2.1(frontend) `merge_status: ready`를 설정(다중 사이클 이관 적체 ROOT-CAUSE 해소)함에 따라 develop→test FF 이관을 **EXECUTED**했다(`ca31864`→`0ff9c7d`·pending 4→0·merge-base==test HEAD FF-safe). post-merge `src/frontend-test@test` full-suite `npm test **2791/2791 PASS**`(904.25s·490 files·+1 vs TSR1882), `npm run build **1234 PASS**`(9.38s), `npm audit high **0**`로 회귀 없음을 확인. develop/test **SYNCED `@0ff9c7d`** WT CLEAN·신규 Open 없음.
+
+- **id**: QA-20260719-B622
+- **severity**: HIGH (BLOCK) → **RESOLVED**
+- **stream**: frontend
+- **status**: **Fixed & Verified (TSR1885)** — develop→test FF merge `ca31864`→`0ff9c7d`(pending 4→0)·post-merge full suite green(`2791/2791 PASS`)·`test..develop=0`·develop/test SYNCED `@0ff9c7d`.
+- **found_at**: 2026-07-19T01:57:16Z (TSR1879 · `d4d9887`) · **resolved 2026-07-19T04:30:00Z (TSR1885 FF merge)**
+- **version**: v1.2.1 / care-report & nursing/program form-polish + UXD-196 a11y dual-field error routing
+- **summary**: 이관 4-commit = ① `d4d9887` `NursingServiceReportsPage` 역방향 기간 FE 사전 차단 ② `60716c6` `ProgramReportsPage` 4-variant 역방향 기간 FE 사전 차단(+`config/programReports.js`) ③ `5789173` **UXD-196 a11y** start-date `aria-invalid`+`aria-describedby` 라우팅 9리포트(L02 7 + L03 1 + M5 1) ④ `0ff9c7d` 오류 해제 시 시작일 상태 복구 회귀. 전부 id=2 form polish·care-report reversed date-range 계보(기능 갭 아님). merge_status(PLN235) 정합으로 develop→test FF 이관 완료.
+- **tests**: `src/frontend-test@test` `@0ff9c7d` post-merge full-suite — `npm test` **2791/2791 PASS**(904.25s·490 files·0F·+1 vs TSR1882 2790) / `npm run build` **1234 modules PASS**(9.38s) / `npm audit --audit-level=high` **0 vulnerabilities**.
+- **evidence**: FF merge `Updating ca31864..0ff9c7d Fast-forward`(20 files +303/-7) · `git -C src/frontend-test rev-list --count test..develop` = `0` · develop/test 둘 다 `@0ff9c7d`(SYNCED·WT CLEAN)
+- **assignee**: COD/PLN(merge_status 설정 완료) · tester(FF merge EXECUTED·post-merge verify)
+- **impact**: frontend transfer **PASS**(local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` pending 0 + FE `@0ff9c7d` pending 0) · operation **BLOCK** 잔존(QA-B116 origin/test push + QA-B95)
+- **prevention**: FE form-polish 커밋 직후 same-cycle `test..develop` 0/0 여부와 `merge_status: ready` 발화 상태 점검 — 미발화면 즉시 COD/PLN escalate(적체 누적 금지)
+- **expected**: frontend `merge_status: ready` → develop→test pending **0** + post-merge full `npm test` PASS + Open(FE) **0**
+- **actual**: **달성** — pending **0**(FF merged) · post-merge PASS(**2791/2791**) · Open(FE) **0** · transfer **PASS**(FE local)
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T01:33:00Z -->
+<!-- tester-sync: TSR 1878차 2026-07-19T01:33:00Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(67s·408 suites·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@c7b6608`(WT CLEAN·origin/develop SYNCED) / test `@ad2c0b1` pending **7**(`dc261ed`+`ec7a1ce`+`68c2378`+`1d067d9`+`ce656d5`+`c88687a`+`c7b6608`) · merge **SKIP**(auto-merge 미발화: ROADMAP v3 `merge_status`≠`ready` · tester 수동 merge 금지 `run_agent.py`:1638) · **QA-20260719-B621 Open(HIGH/BLOCK) 신규** · Open(BE) **7**(B615~B621) · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 7 + FE `@ca31864` SYNCED) · operation **BLOCK**(QA-B615+B616+B617+B618+B619+B620+B621+QA-B116+QA-B95) · **핵심 escalation 유지**: COD/PLN이 v3 backend `merge_status: ready` 설정 필요. -->
+# tester_1878_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(67s,408 suites,0F/0E/0S); develop@c7b6608(WT CLEAN·origin SYNCED) pending 7(test..develop: dc261ed+ec7a1ce+68c2378+1d067d9+ce656d5+c88687a+c7b6608); merge SKIP(auto-merge NOT fired: ROADMAP v3 merge_status!=ready · tester manual merge forbidden run_agent.py:1638); NEW Open QA-B621(HIGH/BLOCK); Open(BE) 7(B615~B621); transfer BLOCK(BE); cross-stream BLOCK(BE pending 7 + FE @ca31864 SYNCED); operation BLOCK(QA-B615+B616+B617+B618+B619+B620+B621+QA-B116+QA-B95); ACTION COD/PLN set v3 backend merge_status: ready.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T00:52:00Z -->
+<!-- tester-sync: TSR 1877차 2026-07-19T00:52:00Z (frontend) — **★ 나머지 L02 care-report reversed date-range FE pre-block MERGED** develop→test FF merge `c3a0cac`→`ca31864` (pending **1→0**) · post-merge full suite `npm test` **2784/2784 PASS**(897.13s·489 files·+5 vs TSR1875) · build **1234 PASS**(10.75s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@ca31864`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@c88687a` pending 6=QA-B615+B616+B617+B618+B619+B620 + FE `@ca31864` SYNCED) · operation **BLOCK**(BE origin/test + 28 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 + QA-B619 + QA-B620 + QA-B95). -->
+# tester_1877_frontend: 나머지 L02 care-report reversed date-range FE pre-block MERGED c3a0cac→ca31864 (pending 1→0); post-merge full suite 2784/2784 PASS(897.13s·489 files·+5 vs TSR1875 2779); build 1234 PASS(10.75s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @ca31864 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE @c88687a pending 6=QA-B615+B616+B617+B618+B619+B620 + FE @ca31864 SYNCED); operation BLOCK(BE origin/test + 28 FE push=QA-B116 + QA-B615+B616+B617+B618+B619+B620 + QA-B95).
+<!-- coder-sync: COD 2026-07-18T23:52:00Z (frontend) — **L02_M11 수급자별 급여제공 리포트 역방향 기간 FE 사전 차단 (care-report form polish)** develop `@cf360d7` → `@c3a0cac` (+1 commit) · `PatientServiceReportPage` 가 역방향 조회 기간(시작일 > 종료일)을 서버에 보낸 뒤에야 BE `CareReportService.resolveDateWindow` 의 400(`종료일은 시작일 이후여야 합니다.`)을 표면화하던 문제를 FE 에서 사전 차단 — 직전 사이클(`@cf360d7` L02_M12)이 추가한 공용 헬퍼 `resolveCareReportDateRangeError`(config/careReports.js·BE 문구 verbatim lockstep)를 `load` 가드(clientId 확인 이후)에 연결해 역방향이면 왕복 없이 종료일 필드에 사유 노출(`role="alert"` + `aria-invalid`)·직전 stale 집계 제거·결측값은 BE 기본 기간 대체이므로 사전 차단 대상 아님(id=2 form polish 계보·L02_M12 미러) · 중복 3회이던 빈-리포트 객체는 `EMPTY_PATIENT_SERVICE_REPORT` 단일 상수로 통합 · 단건 `npm test -- PatientServiceReportPage.test.jsx` **3/3 PASS**(기존 2 + 신규 역방향 차단 회귀) · build PASS(9.09s) · lint 0 · WT CLEAN · ahead origin/develop **1** · Open **0**(FE·신규 기능 갭 아님) · Planned QA-B116+QA-B95 · TSR full-suite 재검증·develop→test FF 대기 -->
+# coder_frontend: L02_M11 patient-service reversed date-range FE pre-block (care-report form polish); develop cf360d7→c3a0cac (+1); PatientServiceReportPage sent a reversed range (from>to) to the BE and only surfaced CareReportService.resolveDateWindow's 400 ("종료일은 시작일 이후여야 합니다.") after the round-trip; wired the shared resolveCareReportDateRangeError helper (added last cycle @cf360d7 for L02_M12, verbatim BE lockstep in config/careReports.js) into the load guard after the clientId check so a reversed range is rejected up front, anchored to the 종료일 field (role="alert" + aria-invalid), clears the stale aggregate; missing endpoints stay valid since BE substitutes the default window (id=2 form-polish lineage, mirrors L02_M12); folded the 3x duplicated empty-report object into a single EMPTY_PATIENT_SERVICE_REPORT constant; targeted npm test -- PatientServiceReportPage.test.jsx 3/3 PASS(2 existing + 1 new reversed-range regression); build PASS(9.09s); lint 0; WT CLEAN; ahead origin/develop 1; Open 0(FE); Planned QA-B116+QA-B95; TSR re-verify + develop→test FF.
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T00:40:07Z -->
+<!-- tester-sync: TSR 1876차 2026-07-19T00:40:07Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(66s·408 suites·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@c88687a`(WT CLEAN·origin/develop SYNCED) / test `@ad2c0b1` pending **6**(`dc261ed`+`ec7a1ce`+`68c2378`+`1d067d9`+`ce656d5`+`c88687a`) · merge **SKIP**(auto-merge 미발화: ROADMAP v3 `merge_status`≠`ready` · tester 수동 merge 금지 `run_agent.py`:1638) · **QA-20260719-B620 Open(HIGH/BLOCK) 신규** · Open(BE) **6**(B615~B620) · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 6 + FE `@c3a0cac` SYNCED) · operation **BLOCK**(QA-B615+B616+B617+B618+B619+B620+QA-B116+QA-B95) · **핵심 escalation 유지**: COD/PLN이 v3 backend `merge_status: ready` 설정 필요. -->
+# tester_1876_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(66s,408 suites,0F/0E/0S); develop@c88687a(WT CLEAN·origin SYNCED) pending 6(test..develop: dc261ed+ec7a1ce+68c2378+1d067d9+ce656d5+c88687a); merge SKIP(auto-merge NOT fired: ROADMAP v3 merge_status!=ready · tester manual merge forbidden run_agent.py:1638); NEW Open QA-B620(HIGH/BLOCK); Open(BE) 6(B615~B620); transfer BLOCK(BE); cross-stream BLOCK(BE pending 6 + FE @c3a0cac SYNCED); operation BLOCK(QA-B615+B616+B617+B618+B619+B620+QA-B116+QA-B95); ACTION COD/PLN set v3 backend merge_status: ready.
+<!-- tester-sync: TSR 1875차 2026-07-19T00:07:18Z (frontend) — **★ L02_M11 patient-service reversed date-range FE pre-block MERGED** develop→test FF merge `cf360d7`→`c3a0cac` (pending **1→0**) · post-merge full suite `npm test` **2779/2779 PASS**(890.20s·489 files·+1 vs TSR1873) · build **1234 PASS**(9.63s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@c3a0cac`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@ce656d5` pending 5=QA-B615+QA-B616+QA-B617+QA-B618+QA-B619 + FE `@c3a0cac` SYNCED) · operation **BLOCK**(BE origin/test + 27 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 + QA-B619 + QA-B95). -->
+# tester_1875_frontend: L02_M11 patient-service reversed date-range FE pre-block MERGED cf360d7→c3a0cac (pending 1→0); post-merge full suite 2779/2779 PASS(890.20s·489 files·+1 vs TSR1873); build 1234 PASS(9.63s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @c3a0cac WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE @ce656d5 pending 5=QA-B615+B616+B617+B618+B619 + FE @c3a0cac SYNCED); operation BLOCK(BE origin/test + 27 FE push=QA-B116 + QA-B615+B616+B617+B618+B619 + QA-B95).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T23:43:00Z -->
+<!-- tester-sync: TSR 1874차 2026-07-18T23:43:00Z (backend) — ROADMAP merged baseline `@ad2c0b1` 재검증 · `src/backend-test@test` `mvn -o test` **2410/2410 PASS**(67s·408 suites·0F/0E/0S·BUILD SUCCESS·EXIT 0) · develop `@ce656d5`(WT CLEAN·origin/develop SYNCED) / test `@ad2c0b1` pending **5**(`test..develop`: `dc261ed`+`ec7a1ce`+`68c2378`+`1d067d9`+`ce656d5`) · merge **SKIP**(auto-merge 미발화: ROADMAP v3 `merge_status`≠`ready` · tester 수동 merge 금지 `run_agent.py`:1638) · **QA-20260718-B615+B616+B617+B618+B619 Open(HIGH/BLOCK)** · Open(BE) **5** · transfer **BLOCK**(BE) · cross-stream **BLOCK**(BE pending 5 + FE `@cf360d7` SYNCED pending 0 + origin/test 765 BE + 26 FE push=QA-B116) · operation **BLOCK**(QA-B615+B616+B617+B618+B619+QA-B116+QA-B95) · **★ 핵심 escalation 유지**: COD/PLN이 v3 backend `merge_status: ready` 설정해야 다음 빌드 auto-merge 발화. -->
+# tester_1874_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(67s,408 suites,0F/0E/0S); develop@ce656d5(WT CLEAN·origin SYNCED) pending 5(test..develop: dc261ed+ec7a1ce+68c2378+1d067d9+ce656d5); merge SKIP(auto-merge NOT fired: ROADMAP v3 merge_status!=ready · tester manual merge forbidden run_agent.py:1638); Open(BE) 5(QA-B615+B616+B617+B618+B619 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 5 + FE @cf360d7 SYNCED + 765 BE + 26 FE push=QA-B116); operation BLOCK(QA-B615+B616+B617+B618+B619+QA-B116+QA-B95); ROOT CAUSE unchanged: merge_status not ready prevents auto-merge.
 <!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T23:55:00Z -->
 <!-- tester-sync: TSR 1873차 2026-07-18T23:55:00Z (frontend) — **★ L02_M12 care-report service-summary reversed date-range FE pre-block MERGED** develop→test FF merge `ab9ef17`→`cf360d7` (pending **1→0**) · post-merge full suite `npm test` **2778/2778 PASS**(892.51s·489 files·+5 vs TSR1871) · build **1234 PASS**(9.31s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@cf360d7`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@1d067d9` pending 4=QA-B615+QA-B616+QA-B617+QA-B618 + FE `@cf360d7` SYNCED) · operation **BLOCK**(BE origin/test + 26 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 + QA-B95). -->
 # tester_1873_frontend: L02_M12 care-report service-summary reversed date-range FE pre-block MERGED ab9ef17→cf360d7 (pending 1→0); post-merge full suite 2778/2778 PASS(892.51s·489 files·+5 vs TSR1871); build 1234 PASS(9.31s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @cf360d7 WT CLEAN; no new Open(Open(FE) 0); transfer PASS(FE local); cross-stream BLOCK(BE @1d067d9 pending 4=QA-B615+QA-B616+QA-B617+QA-B618 + FE @cf360d7 SYNCED); operation BLOCK(BE origin/test + 26 FE push=QA-B116 + QA-B615+B616+B617+B618 + QA-B95).
@@ -10,8 +100,71 @@
 # tester_1870_backend: roadmap-baseline@ad2c0b1 mvn -o test 2410/2410 PASS(66s,0F/0E/0S); develop@68c2378 pending 3(test..develop: dc261ed+ec7a1ce+68c2378); merge SKIP(read-only); Open(BE) 3(QA-B615+B616+B617 HIGH/BLOCK); transfer BLOCK(BE); cross-stream BLOCK(BE pending 3 + FE develop@32b7ae3 pending 1 vs test@6c280d0 + 765 BE + 23 FE push=QA-B116); operation BLOCK(QA-B615+QA-B616+QA-B617+QA-B116+QA-B95).
 <!-- coder-sync: COD 2026-07-18T22:24:00Z (backend) — **SEC-D34 엑셀 import 금액 ₩ 원화 기호 정규화(row-level resilience)** develop `@68c2378` → `@1d067d9` (+1 commit) · NHIS/공단·은행 export 가 금액 열을 통화 서식으로 저장하면 POI `DataFormatter` 가 한글 `원` 대신 `₩`(U+20A9) 원화 기호를 붙여 렌더링(`"₩765,000"`·`"₩1,250,000"`)하는데 `NhisExcelParser.normalizeNumeric`·`BankDepositExcelParser.parseAmount` 가 `원`만 제거해 `₩` 접두 금액이 `BigDecimal`/`Integer` 파싱 실패 → null → **유효 청구/입금 행을 조용히 누락**(대사 상태 왜곡)하던 문제를 형제 정규화 계보(`@ad2c0b1`·`@dc261ed`)와 동일하게 `.replace("\u20A9","")` 추가로 보정(정상 입력 behavior-neutral·FE↔BE SEC-D34 lockstep) · 단건 `mvn -o test -Dtest=NhisExcelParserTest,BankDepositExcelParserTest` **27/27 PASS**(NhisExcelParserTest 12→13·BankDepositExcelParserTest 13→14·+2 회귀 `shouldNormalizeWonSignPrefixedAmount*`) · lint 0 · WT CLEAN · Open **0**(신규 기능 갭 아님) · Planned QA-B116+QA-B95 · 선행 커밋 `@dc261ed`/`@ec7a1ce`/`@68c2378` 미이관 carry → develop→test FF 대기(tester/merge 전담) -->
 # coder_backend: SEC-D34 excel import amount won-sign (₩ U+20A9) normalize (row-level resilience); develop 68c2378→1d067d9 (+1); NHIS/은행 exports that format the amount column as currency render the won sign via POI DataFormatter as ₩ (U+20A9) rather than the hangul 원 ("₩765,000"·"₩1,250,000"), but NhisExcelParser.normalizeNumeric/BankDepositExcelParser.parseAmount only stripped 원, so a ₩-prefixed amount failed BigDecimal/Integer parse → null → silently dropped a valid claim/deposit row and skewed reconciliation; added .replace("\u20A9","") aligned with the sibling normalize lineage (@ad2c0b1·@dc261ed), behavior-neutral for valid input (FE↔BE SEC-D34 lockstep); targeted mvn -o test -Dtest=NhisExcelParserTest,BankDepositExcelParserTest 27/27 PASS(Nhis 12→13·BankDeposit 13→14·+2 regressions shouldNormalizeWonSignPrefixedAmount*); lint 0; WT CLEAN; Open 0(not a new functional gap); Planned QA-B116+QA-B95; prior commits @dc261ed/@ec7a1ce/@68c2378 still pending transfer → develop→test FF (tester/merge owned).
+<!-- coder-sync: COD 2026-07-19T01:20:00Z (backend) — **SEC-D34 엑셀 import 금액 fullwidth digit(U+FF10–U+FF19) 정규화(row-level resilience)** develop `@c88687a` → `@c7b6608` (+1 commit) · 한국어 IME fullwidth 모드가 금액 숫자를 ０-９(U+FF10–U+FF19)로 렌더(`"￦１，２５０，０００"`)하는데 ￦·fullwidth comma 제거 후에도 fullwidth digit 잔존 → `BigDecimal`/`Integer` 파싱 실패 → null → **유효 청구/입금 행 조용히 누락** → `mapFullwidthDigitsToAscii` 공용 헬퍼 추가(ASCII 입력 behavior-neutral·fullwidth-currency normalize 계보 완성·FE↔BE SEC-D34 lockstep) · 단건 `mvn -o test -Dtest=NhisExcelParserTest,BankDepositExcelParserTest` **33/33 PASS**(Nhis 15→16·BankDeposit 16→17·+2 회귀) · lint 0 · WT CLEAN · Open **0**(신규 기능 갭 아님) · Planned QA-B116+QA-B95 · 선행 6커밋 미이관 carry → develop→test FF 대기(merge_status≠ready BLOCK) -->
+# coder_backend: SEC-D34 excel import amount fullwidth-digit (U+FF10–U+FF19) normalize (row-level resilience); develop c88687a→c7b6608 (+1); Korean IME fullwidth mode renders digits as fullwidth (０-９) e.g. "￦１，２５０，０００"; after stripping ￦ and ， fullwidth digits still failed BigDecimal/Integer parse → null → silently dropped valid claim/deposit rows; added shared mapFullwidthDigitsToAscii helper (behavior-neutral for ASCII input) applied before existing separator stripping, completing fullwidth-currency normalize lineage; targeted mvn -o test -Dtest=NhisExcelParserTest,BankDepositExcelParserTest 33/33 PASS(Nhis 15→16·BankDeposit 16→17·+2 regressions shouldNormalizeFullwidthDigitAmount*); lint 0; WT CLEAN; Open 0(not a new functional gap); Planned QA-B116+QA-B95; prior 6 commits still pending transfer → develop→test FF (tester/merge owned, blocked by merge_status!=ready).
 
-### [TSR] Open — v3/SEC-D34 BE develop 미이관(test..develop) excel import 금액 ₩ 원화 기호 정규화 (`1d067d9`, QA-20260718-B618)
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1884 `@6d3c766`)** — v3/SEC-D34 BE excel import 금액 fullwidth digit(U+FF10–U+FF19) 정규화 (`c7b6608`, QA-20260719-B621) — develop→test FF merge(pending 9→0)·post-merge `mvn -o test` **2433/2433 PASS**
+
+> **TSR1878 신규**: COD `@c7b6608`로 `test..develop`가 **6→7**으로 증가. `c7b6608`는 `NhisExcelParser.normalizeNumeric`·`BankDepositExcelParser.parseAmount`에 fullwidth digit(U+FF10–U+FF19, `０-９`) 정규화 `mapFullwidthDigitsToAscii` 헬퍼를 추가해 `"￦１，２５０，０００"` 같은 IME fullwidth 금액 셀이 파싱 실패→null→유효 행 누락되던 케이스를 보정한다(단건 33/33 PASS·+2 회귀). 기능 결함이 아니라 **develop→test 미이관**이 블로커.
+
+- **id**: QA-20260719-B621
+- **severity**: **HIGH (BLOCK)**
+- **stream**: backend
+- **status**: **Open** — baseline(`src/backend-test@test` `@ad2c0b1`) 회귀는 green(2410/2410)이나 develop이 `@c7b6608`로 전진해 `test..develop=7`. auto-merge 미발화(merge_status≠ready)로 이관 게이트 불충족.
+- **found_at**: 2026-07-19T01:33:00Z (TSR1878 · `src/backend-test@test` revalidation · COD `@c7b6608` 신규 감지)
+- **version**: v3 / SEC-D34 — excel import amount fullwidth digit(U+FF10–U+FF19) normalization row-level resilience
+- **summary**: COD `@c7b6608`는 한국어 IME fullwidth 모드로 렌더된 금액 셀(０-９ fullwidth digit)이 기존 ￦/fullwidth comma 정규화 후에도 파싱 실패해 유효 행이 누락되던 문제를 `mapFullwidthDigitsToAscii`로 보정한다(SEC-D34 fullwidth-currency normalize 계보 완성·저위험). 회귀 테스트도 추가됐지만 test 브랜치 미이관 상태다.
+- **tests**: `src/backend-test@test` `mvn -o test` **2410/2410 PASS** (67s · 408 suites · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · baseline `@ad2c0b1`)
+- **evidence**: `git -C src/backend rev-list --left-right --count test...develop` = `0 7` · `git -C src/backend log --oneline test..develop` = `c7b6608`,`c88687a`,`ce656d5`,`1d067d9`,`68c2378`,`ec7a1ce`,`dc261ed` · develop=`c7b6608` / test=`ad2c0b1`
+- **assignee**: **COD/PLN** — v3 backend 완료 기준 확인 후 ROADMAP `merge_status: ready` 설정(→ 다음 빌드 auto-merge FF). tester 수동 merge 금지.
+- **impact**: backend transfer **BLOCK** · cross-stream **BLOCK**(FE `@ca31864` SYNCED · BE pending 7) · operation **BLOCK**
+- **prevention**: SEC-D34 normalize 계열 커밋 직후 same-cycle `merge_status` 확인 및 auto-merge 발화 여부 점검
+- **expected**: v3 `merge_status: ready` → 빌드 auto-merge pending **0** + post-merge full `mvn -o test` PASS + Open(BE) **0**
+- **actual**: pending **7**(미이관) · baseline PASS · Open(BE) **7** · transfer **BLOCK**
+
+---
+
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1884 `@6d3c766`)** — v3/SEC-D34 BE excel import 금액 fullwidth comma(U+FF0C) 그룹 정규화 (`c88687a`, QA-20260719-B620) — develop→test FF merge(pending 9→0)·post-merge `mvn -o test` **2433/2433 PASS**
+
+> **TSR1876 신규**: COD `@c88687a`(2026-07-19T00:24 coder-sync)로 `test..develop`가 **5→6**으로 증가. `c88687a`는 `NhisExcelParser.normalizeNumeric`·`BankDepositExcelParser.parseAmount`에 fullwidth comma(U+FF0C, `，`) 정규화를 추가해 `"1，250，000"` 같은 금액 셀이 파싱 실패→null→유효 행 누락되던 케이스를 보정한다(단건 회귀 추가 포함). 기능 결함이 아니라 **develop→test 미이관**이 블로커.
+
+- **id**: QA-20260719-B620
+- **severity**: **HIGH (BLOCK)**
+- **stream**: backend
+- **status**: **Open** — baseline(`src/backend-test@test` `@ad2c0b1`) 회귀는 green(2410/2410)이나 develop이 `@c88687a`로 전진해 `test..develop=6`(TSR1878: **7**로 증가·`c7b6608` 추가). auto-merge 미발화(merge_status≠ready)로 이관 게이트 불충족.
+- **found_at**: 2026-07-19T00:40:07Z (TSR1876 · `src/backend-test@test` revalidation · COD `@c88687a` 신규 감지)
+- **version**: v3 / SEC-D34 — excel import amount fullwidth comma(U+FF0C) grouped numeric normalization row-level resilience
+- **summary**: COD `@c88687a`는 NHIS/은행 엑셀 금액 셀의 fullwidth comma(`，`, U+FF0C) 그룹 표기 때문에 `BigDecimal`/`Integer` 파싱이 실패해 유효 행이 누락되던 문제를 `NhisExcelParser`/`BankDepositExcelParser` 정규화로 보정한다(SEC-D34 계보·저위험). 회귀 테스트도 추가됐지만 test 브랜치 미이관 상태다.
+- **tests**: `src/backend-test@test` `mvn -o test` **2410/2410 PASS** (66s · 408 suites · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · baseline `@ad2c0b1`)
+- **evidence**: `git -C src/backend rev-list --left-right --count test...develop` = `0 6` · `git -C src/backend log --oneline test..develop` = `c88687a`,`ce656d5`,`1d067d9`,`68c2378`,`ec7a1ce`,`dc261ed` · develop=`c88687a` / test=`ad2c0b1`
+- **assignee**: **COD/PLN** — v3 backend 완료 기준 확인 후 ROADMAP `merge_status: ready` 설정(→ 다음 빌드 auto-merge FF). tester 수동 merge 금지.
+- **impact**: backend transfer **BLOCK** · cross-stream **BLOCK**(FE `@c3a0cac` SYNCED · BE pending 6) · operation **BLOCK**
+- **prevention**: SEC-D34 normalize 계열 커밋 직후 same-cycle `merge_status` 확인 및 auto-merge 발화 여부 점검
+- **expected**: v3 `merge_status: ready` → 빌드 auto-merge pending **0** + post-merge full `mvn -o test` PASS + Open(BE) **0**
+- **actual**: pending **6**(미이관) · baseline PASS · Open(BE) **6** · transfer **BLOCK**
+
+---
+
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1884 `@6d3c766`)** — v3/SEC-D34 BE excel import 금액 fullwidth won sign(U+FFE6) 정규화 (`ce656d5`, QA-20260718-B619) — develop→test FF merge(pending 9→0)·post-merge `mvn -o test` **2433/2433 PASS**
+
+- **id**: QA-20260718-B619
+- **severity**: **HIGH (BLOCK)**
+- **stream**: backend
+- **status**: **Open** — ROADMAP merged baseline(`src/backend-test@test` `@ad2c0b1`) 회귀는 green이지만 develop이 `@ce656d5`까지 전진해 `test..develop=5`(`dc261ed`,`ec7a1ce`,`68c2378`,`1d067d9`,`ce656d5`). auto-merge 미발화(merge_status≠ready)로 이관 게이트 불충족.
+- **found_at**: 2026-07-18T23:43:00Z (TSR1874 · `src/backend-test@test` revalidation)
+- **version**: v3 / SEC-D34 — excel import amount fullwidth won sign(U+FFE6) normalization row-level resilience
+- **summary**: COD `@ce656d5`는 엑셀 금액 셀의 fullwidth won sign(U+FFE6) 표기를 정규화하지 못해 파싱 실패로 유효 행이 누락되던 케이스를 `NhisExcelParser`/`BankDepositExcelParser`에서 보강하고 회귀 테스트를 추가한 커밋이다. 기능 결함보다는 **develop→test 미이관 적체**가 현재 블로커다.
+- **tests**: `src/backend-test@test` `mvn -o test` **2410/2410 PASS** (67s · 408 suites · 0F/0E/0S · BUILD SUCCESS · EXIT 0 · baseline `@ad2c0b1`)
+- **evidence**: `git -C src/backend rev-list --left-right --count test...develop` = `0 5` · `git -C src/backend log --oneline test..develop` = `ce656d5`,`1d067d9`,`68c2378`,`ec7a1ce`,`dc261ed`
+- **assignee**: **COD/PLN** — v3 backend 완료 기준 확인 후 ROADMAP `merge_status: ready` 설정(→ 다음 빌드 auto-merge FF). tester 수동 merge 금지.
+- **impact**: backend transfer **BLOCK** · cross-stream **BLOCK**(FE `@cf360d7` SYNCED · BE pending 5) · operation **BLOCK**
+- **prevention**: SEC-D34 normalize 계열 커밋 후 same-cycle `merge_status` 확인 및 auto-merge 발화 여부 점검
+- **expected**: v3 `merge_status: ready` → 빌드 auto-merge pending **0** + post-merge full `mvn -o test` PASS + Open(BE) **0**
+- **actual**: pending **5**(미이관) · baseline PASS · Open(BE) **5** · transfer **BLOCK**
+
+---
+
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1884 `@6d3c766`)** — v3/SEC-D34 BE excel import 금액 ₩ 원화 기호 정규화 (`1d067d9`, QA-20260718-B618) — develop→test FF merge(pending 9→0)·post-merge `mvn -o test` **2433/2433 PASS**
 
 > **TSR1872 신규**: COD `@1d067d9`(2026-07-18T22:24 coder-sync)로 `test..develop`가 **3→4**로 증가. `1d067d9`는 `NhisExcelParser.normalizeNumeric`·`BankDepositExcelParser.parseAmount`에 `.replace("\u20A9","")`(₩ U+20A9)를 추가해 통화 서식 셀(POI `DataFormatter`가 한글 `원` 대신 `₩` 렌더)의 `₩765,000`·`₩1,250,000` 접두 금액이 파싱 실패→null→유효 청구/입금 행 누락되던 문제를 보정(SEC-D34 계보·behavior-neutral·단건 27/27 PASS 보고). 기능 결함이 아니라 **이관 미완료**가 블로커.
 >
@@ -34,7 +187,7 @@
 
 ---
 
-### [TSR] Open — v3/SEC-D34 BE develop 미이관(test..develop) parser normalize lockstep test 커밋 추가 누락 (`68c2378`, QA-20260718-B617)
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1884 `@6d3c766`)** — v3/SEC-D34 BE parser normalize lockstep test 커밋 (`68c2378`, QA-20260718-B617) — develop→test FF merge(pending 9→0)·post-merge `mvn -o test` **2433/2433 PASS**
 
 - **id**: QA-20260718-B617
 - **severity**: **HIGH (BLOCK)**
@@ -116,7 +269,7 @@
 
 ---
 
-### [TSR] Open — v3/SEC-D34 BE develop 미이관(test..develop) bank deposit amount whitespace-grouped parse normalize (`dc261ed`, QA-20260718-B615)
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1884 `@6d3c766`)** — v3/SEC-D34 BE bank deposit amount whitespace-grouped parse normalize (`dc261ed`, QA-20260718-B615) — develop→test FF merge(pending 9→0)·post-merge `mvn -o test` **2433/2433 PASS**
 
 > **TSR1870 갱신**: `test..develop`가 `3`으로 증가(`dc261ed`,`ec7a1ce`,`68c2378`)하여 이 항목을 다시 **Open**으로 유지한다. `dc261ed` 는 `BankDepositExcelParser.parseAmount` 의 공백 그룹핑 입금액 정규화(row-level resilience·behavior-neutral·단건 13/13 PASS 보고)로 기능 갭은 아니며, 핵심 블로커는 develop→test FF 이관 미완료다.
 
@@ -138,7 +291,7 @@
 
 ---
 
-### [TSR] Open — v3/SEC-D34 BE develop 미이관(test..develop) NHIS service-days day-marker suffix normalize (`ec7a1ce`, QA-20260718-B616)
+### [TSR] ~~Open~~ **Fixed & Verified (TSR1884 `@6d3c766`)** — v3/SEC-D34 BE NHIS service-days day-marker suffix normalize (`ec7a1ce`, QA-20260718-B616) — develop→test FF merge(pending 9→0)·post-merge `mvn -o test` **2433/2433 PASS**
 
 > **TSR1870 갱신**: `test..develop`가 `3`으로 증가(`dc261ed`,`ec7a1ce`,`68c2378`)하여 이 항목을 다시 **Open**으로 유지한다. `ec7a1ce` 는 `NhisExcelParser.normalizeNumeric` 의 급여일수 「일」 day-marker 접미 정규화(row-level resilience·금액 셀 behavior-neutral·단건 12/12 PASS 보고)이며, 블로커는 기능 결함이 아니라 이관 미완료다.
 
@@ -7231,6 +7384,70 @@ tester 발견 → Open → planner 기획 반영(Planned) → coder 수정(Fixed
 <!-- planner-sync: PLN 230차 2026-07-18T00:15 UTC — QA-B604+B605 Open→Planned · Open 0 · Planned QA-B604(COD P0)+QA-B605(P2 LOW)+QA-B116(744 BE)+QA-B95 · BNK-848~849 → ROADMAP/REQUIREMENTS/USER_STORIES/PLAN_NOTES · ★★★ SEC-D34 4-path COMPLETE · baseline BE@f6e4d88·FE@7ac3c84 -->
 
 ## Open
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T06:00:27Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 228
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] API=http://127.0.0.1:8080 email=test@test.com client=cafe0001-0001-4000-8000-000000000001 write=0 [live-e2e] warn: backend live-e2e bootstrap 비활성 — POST /bootstrap 시드가 동작하지 않습니다 [live-e2e] hint: 백엔드 재기동 시 export LIVE_E2E_BOOTSTRAP_ENABLED=1 (일반 dev UI에는 넣지 마세요) npm ERR! code ENOSPC npm ERR! syscall write npm ERR! errno -28 npm ERR! nospc ENOSPC: no space left on device, write npm ERR! nospc There a`
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T05:48:27Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 228
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] API=http://127.0.0.1:8080 email=test@test.com client=cafe0001-0001-4000-8000-000000000001 write=0 [live-e2e] warn: backend live-e2e bootstrap 비활성 — POST /bootstrap 시드가 동작하지 않습니다 [live-e2e] hint: 백엔드 재기동 시 export LIVE_E2E_BOOTSTRAP_ENABLED=1 (일반 dev UI에는 넣지 마세요) npm ERR! code ENOSPC npm ERR! syscall write npm ERR! errno -28 npm ERR! nospc ENOSPC: no space left on device, write npm ERR! nospc There a`
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T05:31:21Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 228
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] API=http://127.0.0.1:8080 email=test@test.com client=<none> write=0 [live-e2e] warn: backend live-e2e bootstrap 비활성 — POST /bootstrap 시드가 동작하지 않습니다 [live-e2e] hint: 백엔드 재기동 시 export LIVE_E2E_BOOTSTRAP_ENABLED=1 (일반 dev UI에는 넣지 마세요) [live-e2e] warn: LIVE_E2E_CLIENT_ID 없음 — pilotLiveApi 일부·guardian 테스트 실패 가능 [live-e2e] hint: scripts/seed-dev-fixtures.sql 또는 이용자 1건 등록 후 재실행 npm ERR! code ENOSPC npm ER`
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T05:19:22Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 228
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] API=http://127.0.0.1:8080 email=test@test.com client=<none> write=0 [live-e2e] warn: backend live-e2e bootstrap 비활성 — POST /bootstrap 시드가 동작하지 않습니다 [live-e2e] hint: 백엔드 재기동 시 export LIVE_E2E_BOOTSTRAP_ENABLED=1 (일반 dev UI에는 넣지 마세요) [live-e2e] warn: LIVE_E2E_CLIENT_ID 없음 — pilotLiveApi 일부·guardian 테스트 실패 가능 [live-e2e] hint: scripts/seed-dev-fixtures.sql 또는 이용자 1건 등록 후 재실행 npm ERR! code ENOSPC npm ER`
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T05:07:27Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 2
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] fatal: API가 응답하지 않습니다 — http://127.0.0.1:8080 [live-e2e] hint: backend 기동 후 다시 실행 (docs/ops/DEPLOYMENT_GUIDE.md §3-4)`
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T04:54:59Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 2
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] fatal: API가 응답하지 않습니다 — http://127.0.0.1:8080 [live-e2e] hint: backend 기동 후 다시 실행 (docs/ops/DEPLOYMENT_GUIDE.md §3-4)`
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T04:42:34Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 2
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] fatal: API가 응답하지 않습니다 — http://127.0.0.1:8080 [live-e2e] hint: backend 기동 후 다시 실행 (docs/ops/DEPLOYMENT_GUIDE.md §3-4)`
+
+### [TSR] post-merge live E2E FAIL — v1.2.1 (2026-07-19T04:32:24Z)
+
+- **severity**: HIGH
+- **stream**: frontend
+- **exit**: 1
+- **요약**: `./scripts/run-live-e2e.sh` 실패 — 백엔드 기동·DB 마이그레이션·`scripts/dev-live-e2e.env` 확인
+- **로그 tail**: `[setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists [live-e2e] API=http://127.0.0.1:8080 email=test@test.com client=cafe0001-0001-4000-8000-000000000001 write=0  > ogada-frontend@0.0.1 test:live-e2e > bash ../../scripts/run-frontend-live-e2e.sh  [setup-dev-live-e2e-env] ok: /home/ubuntu/ogada/scripts/dev-live-e2e.env already exists   RUN  v4.1.8 /home/ubuntu/ogada/src/frontend   ❯ src/e2e/pilotLivePages.e2e.test.jsx (0 test)  ❯ src/e2e/staffHealthCheckupLiveAp`
 
 _(**TSR 1868차 (backend)** — Open(BE) **2** active · **QA-20260718-B615**(`dc261ed` bank deposit whitespace-grouped amount) + **QA-20260718-B616**(`ec7a1ce` NHIS day-marker service days) · develop `@ec7a1ce` / test `@ad2c0b1` pending **2** · baseline `mvn -o test` **2410/2410 PASS**(65s) · merge **SKIP**(src read-only) · BE origin/test `598d108`·**765 pending push**=QA-B116 · FE develop/test **SYNCED `@171075f`** Open 0 · FE origin/test `b23711f`·**+22 pending push**=QA-B116 · transfer **BLOCK**(BE) · cross-stream **BLOCK** · operation **BLOCK**(QA-B615+QA-B616+QA-B116+QA-B95))_
 
@@ -18394,44 +18611,4 @@ _(coder가 develop에서 수정 완료 — develop HEAD 검증 통과 항목만)
 - **found_at**: 2026-06-06 (TSR 24차)
 - **fixed_at**: 2026-06-06
 - **verified_at**: 2026-06-06T21:28 (COD 17차) · **2026-06-06T21:32 (TSR 25차 독립 검증 — `git -C src/frontend status` clean @ `ed1bf22`, `npm audit --audit-level=high` **0 vulnerabilities**, all 0 vulnerabilities, `npm test` 13/5 · `npm run build` 111 modules PASS — 18차 planner 반영)**
-- **summary**: esbuild GHSA-67mh-4wv8-2f99·vite path traversal·vitest UI GHSA-5xrq-8626 — vite `^6.4.3`·vitest `^4.1.8`·`overrides.esbuild ^0.25.0`로 dev audit 0건. 24차 5 vuln(4 moderate·1 critical) → 25차 0 vuln. dev chain 전용(prod 번들 무관)이라 동일 사이클 Open→Fixed
-- **changes**: `package.json` overrides + vite/vitest 메이저 업그레이드, `package-lock.json` (+390/-303)
-
-### [COD] v1.2 — frontend develop working tree 재오염 #2 (대시보드 실데이터 WIP 미커밋)
-- **id**: QA-20260606-B07
-- **severity**: BLOCK
-- **stream**: frontend
-- **version**: v1.2 (recurrence #2) / v1.1 (merge 게이트)
-- **found_at**: 2026-06-06 (TSR 23차)
-- **fixed_at**: 2026-06-06
-- **verified_at**: 2026-06-06T21:28 (COD 17차) · **2026-06-06T21:32 (TSR 25차 독립 검증 — `git -C src/frontend status` clean @ `a84473f`/`ed1bf22`, `git cat-file -e HEAD:src/pages/dashboardWidgets.js`·`dashboardWidgets.test.js` PRESENT, HEAD `npm test` 13/5 PASS·`npm run build` 111 modules PASS — 이관 규율 5·6·7 PASS — 18차 planner 반영)**
-- **summary**: US-M02 대시보드 실데이터 위젯 8 files develop 커밋 — `dashboardWidgets.js/.test.js`·DashboardPage API 연동·Must 페이지 보강. 23차 dirty 8 files → 25차 일괄 커밋·CLEAN
-- **changes**: `a84473f feat(v1.2-p0): 대시보드 실데이터 위젯·Must 페이지 API 보강 (US-M02)` (8 files +636/-170) — `dashboardWidgets.js`·`dashboardWidgets.test.js`(3 tests PASS)·`DashboardPage.jsx`·`services.js`·`AttendancePage`·`ClientFormPage`·`GuardiansPage`·`GuardianListCard`
-
-### [COD] [SEC] v1 — ProductionSecretValidator PII_ENCRYPTION_KEY startup 검증
-- **id**: SEC-20260606-006
-- **severity**: MEDIUM
-- **stream**: backend
-- **version**: v1
-- **found_at**: 2026-06-06
-- **fixed_at**: 2026-06-06
-- **summary**: prod 프로필 startup 시 `PII_ENCRYPTION_KEY` 필수 검증 추가 — PiiCryptoService 런타임 실패 대신 기동 단계 차단
-- **changes**: `ProductionSecretValidator.java`, `ProductionSecretValidatorTest.java`
-
----
-
-## 기록 템플릿 (tester용)
-
-```markdown
-### [OPEN] v1 — 짧은 제목
-- **id**: QA-YYYYMMDD-001
-- **severity**: BLOCK | HIGH | MEDIUM | LOW
-- **stream**: backend | frontend
-- **version**: v1
-- **found_at**: YYYY-MM-DD
-- **summary**: 한 줄 요약
-- **steps**: 재현 절차
-- **expected**: 기대 결과 (USER_STORIES / API_SPEC 근거)
-- **actual**: 실제 결과
-- **artifacts**: transfer/.../test.md, docs/qa/TEST_REPORT.md §...
-```
+- **summary**: esbuild GHSA-67mh-4wv8-2f99·vite path traversal·vitest UI GHSA-5xrq-8626 — vite `^6.4.3`·vitest `^4.1.8`·`overrides.esbuild ^0.25.0`로 dev audit 0건. 24�

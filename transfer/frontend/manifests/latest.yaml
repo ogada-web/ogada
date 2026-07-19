@@ -1,48 +1,39 @@
-<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-18T23:55:00Z -->
-<!-- tester-sync: TSR 1873차 2026-07-18T23:55:00Z (frontend) — **★ L02_M12 care-report service-summary reversed date-range FE pre-block MERGED** develop→test FF merge `ab9ef17`→`cf360d7` (pending **1→0**) · post-merge full suite `npm test` **2778/2778 PASS**(892.51s·489 files·+5 vs TSR1871) · `npm run build` **1234 PASS**(9.31s) · `npm audit high` **0**(0 vulnerabilities) · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@cf360d7`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@1d067d9` pending 4=QA-B615+QA-B616+QA-B617+QA-B618 + FE `@cf360d7` SYNCED) · operation **BLOCK**(BE origin/test + 26 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 + QA-B95). -->
-<!-- tester-sync: TSR 1871차 2026-07-18T21:55:00Z (frontend) — **★ UXD-195 service-fee date-range a11y focus MERGED** develop→test FF merge `6c280d0`→`ab9ef17` (pending **2→0**) · post-merge full suite `npm test` **2773/2773 PASS**(893.86s·488 files·+4 vs TSR1869) · `npm run build` **1234 PASS**(9.23s) · `npm audit high` **0**(0 vulnerabilities) · live E2E **SKIP**(QA-B95 carry: `/health=200` UP 이나 `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@ab9ef17`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@68c2378` pending 3=QA-B615+QA-B616+QA-B617 + FE `@ab9ef17` SYNCED) · operation **BLOCK**(BE origin/test + 25 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B95). -->
-<!-- tester-sync: TSR 1869차 2026-07-18T20:42:00Z (frontend) — **★ G16 service-fee stale-records clear on rejected date-range MERGED** develop→test FF merge `171075f`→`6c280d0` (pending **1→0**) · post-merge full suite `npm test` **2769/2769 PASS**(900.28s·488 files·+1 vs TSR1867) · `npm run build` **1234 PASS**(10.91s) · `npm audit high` **0**(0 vulnerabilities) · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@ec7a1ce` pending 2=QA-B615+QA-B616 + FE `@6c280d0` SYNCED) · operation **BLOCK**(765 BE + 23 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B95). -->
-<!-- tester-sync: TSR 1867차 2026-07-18T20:05:00Z (frontend) — **★ G16 service-fee missing date-range FE pre-block MERGED** develop→test FF merge `3b903c8`→`171075f` (pending **1→0**) · post-merge full suite `npm test` **2768/2768 PASS**(896.27s·488 files·+3 vs TSR1865) · build **1234 PASS**(9.41s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@171075f`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **BLOCK**(BE `@dc261ed` pending 1=QA-B615 + FE `@171075f` SYNCED) · operation **BLOCK**(765 BE + 22 FE origin/test push=QA-B116 + QA-B615 + QA-B95). -->
-<!-- tester-sync: TSR 1865차 2026-07-18T19:35:00Z (frontend) — **★ G16 date-range FE pre-block MERGED** develop→test FF merge `9b0481d`→`3b903c8` (pending **1→0**) · post-merge full suite `npm test` **2765/2765 PASS**(890.96s·488 files·+2 vs TSR1863) · build **1234 PASS**(11.04s) · audit high **0** · live E2E **SKIP**(QA-B95 carry: `liveE2eBootstrapEnabled=false`) · develop/test **SYNCED `@3b903c8`** WT CLEAN · **신규 Open 없음**(Open(FE) **0**) · transfer **PASS**(FE local) · cross-stream **SYNCED local**(BE `@6329323` + FE `@3b903c8` SYNCED·both Open 0) · operation **BLOCK**(764 BE + 21 FE origin/test push=QA-B116 + QA-B95). -->
-# updated: 2026-07-18T23:55:00Z
-# tsr1873: FF merge ab9ef17→cf360d7 (pending 1→0); commit cf360d7 fix(v1.2.1/care-reports) pre-block reversed date range before service-summary round-trip(L02_M12 form polish); post-merge full suite 2778/2778 PASS(892.51s·489 files·+5 vs TSR1871); build 1234 PASS(9.31s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry·liveE2eBootstrapEnabled=false); SYNCED @cf360d7 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream BLOCK(BE @1d067d9 pending 4=QA-B615+QA-B616+QA-B617+QA-B618 + FE @cf360d7 SYNCED); operation BLOCK(BE origin/test + 26 FE push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 + QA-B95).
-# tsr1871: FF merge 6c280d0→ab9ef17 (pending 2→0); 2 commits(32b7ae3 route service-fee date-range error to date fields + ab9ef17 focus first invalid service-fee date field on blocked 조회/생성·UXD-195 a11y); post-merge full suite 2773/2773 PASS(893.86s·488 files·+4 vs TSR1869); build 1234 PASS(9.23s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry·/health=200 UP·liveE2eBootstrapEnabled=false); SYNCED @ab9ef17 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream BLOCK(BE @68c2378 pending 3=QA-B615+QA-B616+QA-B617 + FE @ab9ef17 SYNCED); operation BLOCK(BE origin/test + 25 FE push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B95).
-# tsr1869: FF merge 171075f→6c280d0 (pending 1→0); commit 6c280d0 fix G16 TransportServiceFeePanel clear stale fee records on rejected service-fee date range(id=2 form polish); post-merge full suite 2769/2769 PASS(900.28s·488 files·+1 vs TSR1867); build 1234 PASS(10.91s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @6c280d0 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream BLOCK(BE @ec7a1ce pending 2=QA-B615+QA-B616 + FE @6c280d0 SYNCED); operation BLOCK(765 BE + 23 FE push=QA-B116 + QA-B615 + QA-B616 + QA-B95).
-# tsr1867: FF merge 3b903c8→171075f (pending 1→0); commit 171075f fix G16 TransportServiceFeePanel reject missing service-fee date range before API round-trip(id=2 form polish); post-merge full suite 2768/2768 PASS(896.27s·488 files·+3 vs TSR1865); build 1234 PASS(9.41s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @171075f WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream BLOCK(BE @dc261ed pending 1=QA-B615 + FE @171075f SYNCED); operation BLOCK(765 BE + 22 FE push=QA-B116 + QA-B615 + QA-B95).
-# tsr1865: FF merge 9b0481d→3b903c8 (pending 1→0); commit 3b903c8 fix G16 TransportServiceFeePanel reject reversed date range before API round-trip(id=2 form polish); post-merge full suite 2765/2765 PASS(890.96s·488 files·+2 vs TSR1863); build 1234 PASS(11.04s); audit high 0; live E2E SKIP(QA-B95 bootstrap-disabled carry); SYNCED @3b903c8 WT CLEAN; Open(FE) 0; transfer PASS(FE local); cross-stream SYNCED local(BE @6329323 + FE @3b903c8 SYNCED·both Open 0); operation BLOCK(764 BE + 21 FE push=QA-B116 + QA-B95).
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-19T08:58:00Z -->
+<!-- tester-sync: TSR 1888차 2026-07-19T08:58:00Z (frontend) — ROADMAP merged baseline `@aab11b2` 재검증 · `/tmp` 정리(88,439 stale vitest dirs·~7GB·6.4G 확보) 후 `npm test` 재실행 · **2791/2791 PASS**(925.52s·490 files·0F) · `npm run build` **1234 PASS**(10.04s) · `npm audit --audit-level=high` **0 vulnerabilities** · develop/test SYNCED `@aab11b2` WT CLEAN · pending **0** · **QA-B624 Fixed & Verified** · Open(FE) **0** · transfer **PASS**(FE local) · cross-stream **LOCAL SYNCED**(BE `@6d3c766` + FE `@aab11b2`) · operation **BLOCK**(QA-B116 + QA-B95). -->
+# updated: 2026-07-19T08:58:00Z
+# tsr1888: merged-baseline revalidation @aab11b2; /tmp cleanup(88439 stale vitest dirs,~7GB,6.4G freed); npm test 2791/2791 PASS(925.52s,490 files,0F); build 1234 PASS(10.04s); audit high 0; SYNCED @aab11b2 WT CLEAN pending 0; QA-B624 Fixed & Verified; Open(FE) 0; transfer PASS(FE local); cross-stream LOCAL SYNCED(BE @6d3c766+FE @aab11b2); operation BLOCK=origin/test push(FE+33·BE+774=QA-B116)+QA-B95.
 
 stream: frontend
-test_branch_head: "cf360d7"
-develop_head: "cf360d7"
+test_branch_head: "aab11b2"
+develop_head: "aab11b2"
 origin_test_head: "b23711f"
-origin_develop_head: "cf360d7"
-merge_range: "FF merge ab9ef17→cf360d7 (pending 1→0). 1 commit: cf360d7 fix(v1.2.1/care-reports) pre-block reversed date range before service-summary round-trip (L02_M12 form polish)."
-pending_absorbed: 1
-related_tests: "TSR1873 @cf360d7 · full suite 2778/2778 PASS(892.51s·489 files·+5 vs TSR1871) · build 1234 PASS(9.31s) · audit high 0."
-core_qa_b95: "live E2E bootstrap-disabled carry(QA-B95): backend UP(/api/v1/health=200) 이나 liveE2eBootstrapEnabled=false — OGADA_LIVE_E2E_BOOTSTRAP_ENABLED 미설정 시 seed/login 불가(실행 로그 guardian bootstrap HTTP 500 / staff ECONNREFUSED)"
-post_merge_npm: "2778/2778 PASS (892.51s · 489 files · +5 vs TSR1871)"
-post_merge_files: 489
-corroboration_tsr1873: "develop→test FF merge 1-commit(cf360d7 L02_M12 care-report service-summary reversed date-range FE pre-block). ServiceSummaryReportPage.jsx +24/-3(load guard+종료일 field error) + careReports.js new(+40, shared helper resolveCareReportDateRangeError+CARE_REPORT_DATE_RANGE_INVALID_MESSAGE) + careReports.test.js new(+34·4 config tests) + ServiceSummaryReportPage.test.jsx +42(1 regression reversed-range pre-block). post-merge full suite 2778/2778 PASS(+5 vs TSR1871 2773). build 1234 PASS(9.31s). audit high 0."
-corroboration_tsr1871: "develop→test FF merge 2-commit(UXD-195 a11y: 32b7ae3 route service-fee date-range error to date fields + ab9ef17 focus first invalid date field on blocked 조회/생성). TransportServiceFeePanel.jsx +146/-52(필드 단위 오류 라우팅·focus), TransportServiceFeePanel.test.jsx +96(a11y focus/error 회귀), transportServiceFee.js +25 + transportServiceFee.test.js +14(신규 config). post-merge full suite 2773/2773 PASS(+4 vs TSR1869 2769). build 1234 PASS(9.23s). audit high 0."
+origin_develop_head: "aab11b2"
+merge_range: "N/A — already SYNCED @aab11b2 (harness absorbed 0ff9c7d→aab11b2 UXD-197 L02 report <time dateTime> a11y)"
+pending_absorbed: 0
+related_tests: "TSR1888 revalidation @aab11b2 · /tmp cleanup(88439 stale vitest dirs,~7GB,6.4G freed) · npm test 2791/2791 PASS(925.52s·490 files·0F) · build 1234 PASS(10.04s) · audit high 0"
+core_qa_b95: "live E2E bootstrap-disabled carry(QA-B95): backend UP(/api/v1/health=200) 이나 liveE2eBootstrapEnabled=false — OGADA_LIVE_E2E_BOOTSTRAP_ENABLED 미설정 시 seed/login 불가"
+post_merge_npm: "2791/2791 PASS (925.52s · 490 files · 0F · post /tmp cleanup QA-B624 resolved)"
+post_merge_files: 490
+corroboration_tsr1888: "develop/test SYNCED @aab11b2(pending 0). Initial run(07:29Z) failed ENOSPC(disk 100%,250M avail). Cleaned /tmp(88439 stale vitest dirs,~7GB removed,6.4G freed). Rerun npm test 2791/2791 PASS(925.52s,490 files,0F). build 1234 PASS(10.04s). audit high 0. QA-B624 Fixed & Verified."
 failing_tests: []
 build_modules: 1234
 audit_high: 0
-audit_high_detail: "npm audit --audit-level=high 결과 0 vulnerabilities(high 0·TSR1873·src/frontend-test)."
+audit_high_detail: "npm audit --audit-level=high 결과 0 vulnerabilities(high 0·TSR1888·src/frontend-test)."
 live_e2e: "SKIP (QA-B95 carry: live E2E bootstrap-disabled · backend UP /health=200 이나 liveE2eBootstrapEnabled=false · origin/test push QA-B116 선행)"
 open_qa_frontend: 0
 open_qa_residual: 0
 residual_qa: ""
-planned: ["QA-B116", "QA-B615", "QA-B616", "QA-B617", "QA-B618", "QA-B95"]
+planned: ["QA-B116", "QA-B95"]
 transfer_verdict: PASS
-transfer_note: "FE transfer PASS — TSR1873: FF merge ab9ef17→cf360d7 (1 commit · L02_M12 care-report service-summary reversed date-range FE pre-block). full suite 2778/2778 PASS(892.51s·+5 vs TSR1871)·build 1234 PASS(9.31s)·audit high 0. Open(FE) 0. origin/test push(+26) 및 live E2E bootstrap-disabled는 QA-B116→QA-B615→QA-B616→QA-B617→QA-B618→QA-B95."
-cross_stream: "BLOCK(BE develop @1d067d9 pending 4=QA-B615(bank deposit whitespace-grouped amount parse)+QA-B616(NHIS service-days day-marker suffix normalize)+QA-B617(SEC-D34 parser normalize lockstep test)+QA-B618(excel import ₩ won-sign normalize) 미이관 + FE @cf360d7 develop/test SYNCED Open 0 · FE origin/test b23711f·local +26 · BE origin/test 598d108·pending push=QA-B116)"
-backend_health: "BLOCK: BE develop @1d067d9 / test @ad2c0b1 pending 4(QA-B615+QA-B616+QA-B617+QA-B618 HIGH/BLOCK) · Open(BE) 4"
-operation: "BLOCK (BE origin/test + 26 FE origin/test push=QA-B116 + QA-B615 + QA-B616 + QA-B617 + QA-B618 BE 이관 + QA-B95 live bootstrap disabled)"
-backend_local_head: "ad2c0b1"
-backend_test_head: "ad2c0b1"
-backend_develop_head: "1d067d9"
+transfer_note: "FE transfer PASS(local) — TSR1888 merged baseline @aab11b2 revalidation · /tmp cleanup(88439 stale vitest dirs,6.4G freed) → npm test 2791/2791 PASS(925.52s·490 files·0F) · build 1234 · audit high 0 · develop/test SYNCED WT CLEAN · pending 0 · Open(FE) 0 · QA-B624 Fixed & Verified. operation 승격은 origin/test push(QA-B116)+QA-B95 잔존."
+cross_stream: "LOCAL SYNCED(BE develop/test @6d3c766 pending 0 Open 0[TSR1884] + FE develop/test @aab11b2 pending 0 Open 0). origin/test push 미실행: FE local test +33 vs origin/test b23711f · BE local test +774 vs origin/test 598d108 = QA-B116."
+backend_health: "LOCAL SYNCED: BE develop/test @6d3c766(TSR1884 SEC-D34 9커밋 merged·pending 0) · Open(BE) 0"
+operation: "BLOCK (origin/test push QA-B116[BE +774·FE +33] + QA-B95 live bootstrap disabled)"
+backend_local_head: "6d3c766"
+backend_test_head: "6d3c766"
+backend_develop_head: "6d3c766"
 backend_origin_test_head: "598d108"
-frontend_package: "transfer/frontend/packages/develop-test-diff-20260718-TSR1873.md"
+frontend_package: "N/A (revalidation cycle — no new merge, no new diff)"
 qa_open: ""
-qa_absorbed: ""
-merge_status: synced
+qa_absorbed: "QA-20260719-B624 (Fixed & Verified: /tmp cleanup restored 6.4G·npm test 2791/2791 PASS)"
+merge_status: merged
