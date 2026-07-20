@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T12:46:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T10:40:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-19 (기선 갱신 BE `57523b5` / FE `95b6c52` · **Flyway V1–V196** · 모듈 **97.41%**)  
+> **최종 갱신**: 2026-07-20 (기선 갱신 BE `8a1d014` / FE `9263417` · **Flyway V1–V196** · 모듈 **97.41%**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -149,7 +149,9 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > - **QA-B95 live E2E operation blocker unwrap** ✅ (**Q825**·**Q833**): FE **`normalizeLiveOperationBlockers`** — JSON-array·bracket/quote·**직렬화 object** unwrap (`9dbdfc5`/`2992fa5`)
 > - **QA-B95 live E2E env·boolean 정규화** ✅ (**Q823**): truthy trim/case · readiness boolean string (`9b65529`/`33f59a9`)
 > - **QA-B95 bootstrap 억제 live opt-in** ✅ (**Q820**): **`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1`** 미설정 시 bootstrap-suppressed 환경 **live skip** (`0448efa`/`9b65529`)
-> - **G21 월단위 일괄 확정취소** ✅ (**Q818**): **`GET /visits/batch-unconfirm-preview`** · **`POST /visits/batch-unconfirm`** · 4-digit challenge · 6-cascade ack · **visits-only** · **a11y(연월 aria-label·만료 time)** (`d248916`/`074b452`)
+> - **G21 월단위 일괄 확정취소** ✅ (**Q818**·**Q951**, SEC-D44): **`GET /visits/batch-unconfirm-preview`** · **`POST /visits/batch-unconfirm`** · **6-digit challenge** · 6-cascade ack · **visits-only** · **a11y(연월 aria-label·만료 time·확인번호 Field 전담)** (`48e7020`/`3aaccd7`/`7706d78`)
+> - **G2 기관 공지 첨부 호스트 허용 목록·비기본 포트·IP/localhost·localhost 별칭·hosts-file resolver 별칭·변형 IP·내부망 도메인 fail-closed** ✅ (**Q947**·**Q950**·**Q951**·**Q952**·**Q953**, SEC-D46): **`FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS`** · userInfo/비기본 포트/깨진 URL/IP·localhost·**`localdomain`·`ip6-localhost`·`ip6-loopback`**·**`broadcasthost`·`ip6-allnodes`·`ip6-allrouters` 등 hosts-file 별칭 6종**(BE **6경로 회귀 테스트** lock, axis-13)/변형 IP(`.local`/`.internal` 등) 거부 · health **`facilityNoticeAttachmentAllowlistConfigured`** (`8a1d014`/`9263417`)
+> - **알림톡 at-rest 민감필드 마스킹** ✅ (**Q949**, SEC-D37): `accessKey`·`payrollAmount` 재귀 마스킹 (`db1ff72`/`b863930`)
 > - **J03 SMS 지금 발송 가능** ✅ (**Q812**): **`liveSmsDispatchReady`** · **`nonEmergencySmsDispatchAvailableNow`** · health **`notificationLiveSms*`** · FE **「비긴급 SMS 즉시 발송」** (`adaee26`/`6b0f2ae`)
 > - **G-SMS kind 22 급여명세서 발송** ✅ (**Q813**·**Q831**): **`POST /staff/notifications/staff-payroll-statement`** · catalog **7/7** · **`dispatchImplemented=true`** · FE **`/payroll/reports`** + **`StaffNotificationDispatchPanel`** (`7de86eb`/`5b9656c`)
 > - **V193 facility_notices attachment CHECK** ✅ (**Q816**): `chk_facility_notices_attachment_url_format` (`e108b25`)
@@ -1929,7 +1931,8 @@ J03 알림 readiness(Q783)와 동일 패턴 — **`GET /api/v1/health`** 필드 
 | 항목 | 내용 |
 |------|------|
 | BE API | **`NotificationChannelStatusController`** — **`GET …/home-newsletter/launch`** · **`GET …/dispatch-history`** · **`GET …/authoring`** · **`POST …/compose-preview`** · **`page`/`size`(기본 20·최대 100, Q790)** |
-| 기관 공지 API | **`FacilityNoticeController`** — **`GET/POST /notifications/facility-notices`** · **`GET/PATCH/DELETE …/{id}`** · **`POST …/{id}/publish`** · **`attachmentUrl` http(s)·≤500 BE 검증** · 분류 **NOTICE/RESOURCE** (Q797·**Q800**·**Q803**~**Q808**) |
+| 기관 공지 API | **`FacilityNoticeController`** — **`GET/POST /notifications/facility-notices`** · **`GET/PATCH/DELETE …/{id}`** · **`POST …/{id}/publish`** · **`attachmentUrl` http(s)·≤500·기본 포트만 BE 검증** · **선택적 호스트 allowlist(`FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS`, Q947)** · **userInfo·비기본 포트·malformed·IP/localhost·localhost 별칭·hosts-file resolver 별칭·변형 IP·내부망 도메인 URL 거부(Q950·Q951·Q952·Q953)** · 분류 **NOTICE/RESOURCE** (Q797·**Q800**·**Q803**~**Q808**·**Q947**·**Q950**·**Q951**·**Q952**·**Q953**) |
+| 첨부 allowlist health | **`GET /api/v1/health`** — `facilityNoticeAttachmentAllowlistConfigured` · `facilityNoticeAttachmentAllowedHostCount` · `facilityNoticeAttachmentReadinessBlockers`(`facility-notice-attachment-host-allowlist-unconfigured`) |
 | 발송 API | **`POST /clients/{clientId}/notifications/home-newsletter`** (기존, Q217) · 야간 수동 **422** (Q539) |
 | FE 화면 | **`HomeNewsletterLaunchPage`** — **`/clients/home-newsletter`** · **`#facility-notices`** 메뉴 · launch+authoring+compose-preview+facility-notices(**DRAFT 수정·복제 후 수정·상세 링크 차단·첨부 sanitize·분류 NOTICE/RESOURCE만**)+health+history · **게시·삭제 후 빈 페이지 복구**(Q858) · **`.ds-table-wrap` 모바일 overflow**(Q878) · **운영 준비 조용한 시간대 안내** · **branchId 스코프** (`483dfe1`/`d171df6`) |
 | authoring | **`authoringAvailability=AVAILABLE`** · compose 필드 **`yearMonth`·`summary`** · preview **발송 없음** · residual blockers **빈 목록** |
@@ -1940,7 +1943,7 @@ J03 알림 readiness(Q783)와 동일 패턴 — **`GET /api/v1/health`** 필드 
 | 마이그레이션 | Flyway **V192** `facility_notices` · **V191** dispatch-history 인덱스 |
 | 테스트 | **`FacilityNoticeServiceTest`**(비 http(s)·https normalize) · **`GuardianHomeNewsletterAuthoringServiceTest`** · **`GuardianHomeNewsletterLaunchServiceTest`**(quiet hours) · **`HealthControllerTest`** · **`HomeNewsletterLaunchPage.test`** · **`homeNewsletter.test`** |
 
-> 현장: FAQ **Q788** · **Q789** · **Q790** · **Q791** · **Q792** · **Q793** · **Q795** · **Q796** · **Q797** · **Q798** · **Q800** · **Q803** · **Q804** · **Q805** · **Q807** · **Q808** · **Q809** · **Q811** · **Q217** · USER_MANUAL §4-7-3a · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15
+> 현장: FAQ **Q788** · **Q789** · **Q790** · **Q791** · **Q792** · **Q793** · **Q795** · **Q796** · **Q797** · **Q798** · **Q800** · **Q803** · **Q804** · **Q805** · **Q807** · **Q808** · **Q809** · **Q811** · **Q947** · **Q950** · **Q951** · **Q952** · **Q953** · **Q217** · USER_MANUAL §4-7-3a · DEPLOYMENT §1-4 · CHANGELOG 2026-07-15·2026-07-20
 
 ### 6-2-22. G-BILLING-DEPOSIT-ORDER-GUARD 선행입금 입금 순서 (케어포 7-1/7-2, BNK-489, BE Fixed)
 
@@ -3227,8 +3230,8 @@ MOHW **평가 지표 44** 대응. **`ProvisionResultEvaluationPage`**(`/programs
 | **GET** | **`/visits/confirm-readiness`** | **일괄확정 사전 점검** — `ready`·**`readyPlan`·`readyBilling`** · `blockers[]` (확정 차단 + **정보성 NHIS**, Q483) · **PLAN/BILLING split** · **per-kind** counts (Q474·Q477) · **unassigned → `ready*` false** (`5f710e3`) · **`nhisComparisonSummary`** — **`yearMonth`·`overallMatch`·동일 월 NHIS 집계** (Q481·Q483, `8a8c5b3`/`4046046`) | `branch_admin`, `social_worker` |
 | **GET** | **`/visits/nhis-comparison`** | **일괄확정 전 NHIS 대조** — 이용자별 **`visitDayCount`** vs import **`nhisServiceDays`** · **`matchedLineCount`·`discrepancyLineCount`·`missingNhisLineCount`·`extraNhisLineCount`** · **동일 월만** (Q479, `03a052a`) | `branch_admin`, `social_worker` |
 | **POST** | **`/visits/batch-confirm`** | **DRAFT 일괄 확정** — **`nhisComparisonAcknowledged`·`changeHistoryChecked` 필수 `true`** — **담당 미배정 DRAFT 거부** (`5f710e3`) — 응답 **`confirmedPlanCount`·`confirmedBillingCount`** (Q477) | `branch_admin`, `social_worker` |
-| **GET** | **`/visits/batch-unconfirm-preview`** | **월단위 일괄 확정취소 미리보기** — `yearMonth`(필수) · **`challengeCode`**(4-digit·TTL 10분) · **`cascadeImpacts[6]`** · `scopeNote=VISIT_SCHEDULES_ONLY` (Q818, `d248916`) | `branch_admin`, `social_worker` |
-| **POST** | **`/visits/batch-unconfirm`** | **CONFIRMED→DRAFT 일괄 확정취소** — **`challengeCode`·`cascadeWarningAcknowledged=true` 필수** — 청구·급여·임금 **물리삭제 없음** (Q818, `d248916`) | `branch_admin`, `social_worker` |
+| **GET** | **`/visits/batch-unconfirm-preview`** | **월단위 일괄 확정취소 미리보기** — `yearMonth`(필수) · **`challengeCode`**(6-digit·TTL 10분, SEC-D44) · **`cascadeImpacts[6]`** · `scopeNote=VISIT_SCHEDULES_ONLY` (Q818, `48e7020`) | `branch_admin`, `social_worker` |
+| **POST** | **`/visits/batch-unconfirm`** | **CONFIRMED→DRAFT 일괄 확정취소** — **`challengeCode`(6자리)·`cascadeWarningAcknowledged=true` 필수** — 청구·급여·임금 **물리삭제 없음** (Q818, `48e7020`) | `branch_admin`, `social_worker` |
 
 | import 파라미터 | 설명 |
 |----------------|------|
@@ -3993,6 +3996,13 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-20 | **Q953 갱신 · baseline 동기화** — §1-4·§6-2-24h **기관 공지 첨부 hosts-file resolver 별칭 6경로 BE 회귀 테스트 고정** · baseline **`8a1d014`/`9263417`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q953 신설 · Q947~Q952 갱신** — §1-4·§6-2-24h **기관 공지 첨부 hosts-file resolver 별칭 사전 차단** · baseline **`f67cb32`/`9263417`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q951·Q952 갱신** — §1-4·§6-2-24h **기관 공지 첨부 localhost 별칭 사전 차단** · baseline **`b003c18`/`9ddd993`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q952·Q951·Q950·Q947** — §1-4·§6-2-24h **기관 공지 첨부 변형 IP·내부망 도메인·IP/localhost·비기본 포트·health 허용 목록** · baseline **`32e6044`/`957a2f6`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q951·Q950·Q947** — §1-4·§6-2-24h **기관 공지 첨부 IP·localhost·비기본 포트·health 허용 목록** · baseline **`37e6742`/`589dd8d`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q950·Q947** — §1-4·§6-2-24h **기관 공지 첨부 비기본 포트·health 허용 목록** · baseline **`96a55fb`/`ac37e47`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q818·Q947·Q949** — §1-4·§6-2-24h·§10-12 **일괄 확정취소 6자리** · **기관 공지 첨부 호스트 허용 목록** · **알림톡 중첩 마스킹** · baseline **`5cb8bf0`/`474dd81`** · Flyway **V1–V196** |
 | 2026-07-19 | **Q946·Q945 확대·UXD-204** — §1-4 baseline **`57523b5`/`95b6c52`** · **청구 CSV 엑셀 수식 차단**(SEC-D33) · **안전·선임·외출 시각 `<time dateTime>`**(37곳→42곳·a11y·화면 표시 무변경) · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-19 | **Q945 확대·UXD-203** — §1-4 baseline **`6d3c766`/`2715090`** · **보호자 포털·QR 체크인 출석 시각 `<time dateTime>`**(35곳→37곳·a11y·화면 표시 무변경) · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-19 | **Q945·Q939·Q941·Q942~Q944·Q940·Q936** — §1-4 baseline **`6d3c766`/`6a9e85e`** · **SEC-D34 엑셀 9축·ExcelAmountNormalizer DRY** · **표·이력 `<time dateTime>` 35곳(UXD-197~201)** · **리포트·이동서비스비 기간 검증·배차 회차 a11y** · §4-2·§4-5·§6-3-1 sysadmin·수가 이력 a11y 교차 참조 · Flyway **V1–V196** · 모듈 **97.41%** |

@@ -1,3 +1,143 @@
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T09:35:00Z -->
+
+### [TWR] 상태 체크포인트 (2026-07-20 09:35 UTC — SEC-D46 axis-13 6-alias BE 회귀 테스트 · ops baseline 동기화)
+
+- **실측 baseline**: BE `8a1d014` · FE `9263417` · Flyway **V1–V196** · 모듈 **97.41%** · **133 route · 106 page**
+- **ops 문서 갱신**: CHANGELOG·FAQ(Q953)·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE baseline **SYNCED** — SEC-D46 **axis-13** hosts-file resolver 별칭 6경로 BE 회귀 테스트 lock(동작 변화 없음)
+- **미문서화 src 변경**: **없음** — develop HEAD와 ops 문서 일치 확인(2026-07-20 09:35 UTC)
+- **다음 문서화 우선순위**: M11 **급여 persist**(Q863) · **수익·인건비 자동 집계** · **프로그램 리포트 FE `branchId` UI**(Q864) · **M12 기관별 SSO 자격**(Q866)
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T08:55:00Z -->
+<!-- coder-sync: COD 2026-07-20T08:55:00Z (backend) — SEC-D46 axis-12 6-alias regression lock expand · v3 completion reconfirm · merge_status: ready 유지 · residual QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — v3 완료 기준 재확인 · SEC-D46 axis-12 6-alias 회귀 lock)
+
+- **v3 완료 기준**: merge-blocking 전부 `[x]` · develop/test **SYNCED `@f67cb32`** (`test..develop=0/0`) · `merge_status: ready` **유지**.
+- **이번 커밋**: `FacilityNoticeSupportTest.shouldRejectHostsFileResolverAliases` — FE `homeNewsletter.test.js` lockstep으로 6개 hosts-file alias 전부 `attachmentUrlViolation` + `isLiteralOrLoopbackAttachmentHost` 회귀 lock (`localhost.localdomain`·`ip6-localnet`·`ip6-mcastprefix` 추가). behavior-neutral · endpoint 신설 0.
+- **검증**: `mvn -q -Dtest=FacilityNoticeSupportTest test` PASS.
+- Open(BE product) **0** · residual **QA-B116**(origin/test push +789) · **QA-B95**.
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T07:40:00Z -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D46 facility-notice 첨부 URL hosts-file resolver alias fail-closed)
+
+- BE develop `fix(v3/SEC-D46): block hosts-file resolver alias attachment hosts` — `FacilityNoticeSupport.looksLikeHostsFileResolverAlias` 가 `/etc/hosts`·macOS resolver 별칭(`broadcasthost`·`ip6-localnet`·`ip6-mcastprefix`·`ip6-allnodes`·`ip6-allrouters`·`localhost.localdomain`)을 IP literal 없이도 loopback/link-local/multicast 로 해석될 수 있는 호스트로 fail-closed. 메시지 verbatim「첨부 링크 형식이 올바르지 않습니다.」. endpoint 신설 0 · SEC-D46 **12축**.
+- **검증**: `mvn -o -q -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest test` PASS.
+- **v3**: merge-blocking P0 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(BE product) **0** · residual **QA-B116**·**QA-B95** · FE pre-upload lockstep 후속.
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T06:11:47Z -->
+<!-- coder-sync: COD 2026-07-20T06:11:47Z (backend) — SEC-D46 leading-zero/abbreviated/dotted-hex IPv4 fail-closed · related mvn PASS · v3 merge_status: ready 유지 · FE lockstep 후속 · residual QA-B660(FE)+QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D46 facility-notice 첨부 URL leading-zero·축약·점분 헥스 IPv4 fail-closed)
+
+- BE develop `fix(v3/SEC-D46): reject leading-zero and abbreviated dotted IP attachment hosts` `@32e6044` — `FacilityNoticeSupport` 가 Java URI 가 host 로 유지하는 leading-zero/padded IPv4(`0177.0.0.1`·`127.000.000.001`)와 축약/점분 헥스(`127.1`·`0x7f.0.0.1`)를 fail-closed. 4-label all-decimal 호스트는 공개 DNS 가 아니므로 거부. 메시지 verbatim「첨부 링크 형식이 올바르지 않습니다.」. endpoint 신설 0 · SEC-D46 **10축** · QA-B661 Fixed.
+- **검증**: `mvn -o -q -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest test` PASS.
+- **v3**: merge-blocking P0 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(BE product) **0** · residual **QA-B660**(FE transfer)·**QA-B116**·**QA-B95** · FE lockstep 후속.
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T05:35:00Z -->
+<!-- coder-sync: COD 2026-07-20T05:35:00Z (backend) — SEC-D46 obfuscated IP + special-use suffix fail-closed · related mvn PASS · v3 merge_status: ready 유지 · FE lockstep 후속 · Planned QA-B655(FE)+QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D46 facility-notice 첨부 URL 십진·헥스 IP·특수접미사 fail-closed)
+
+- BE develop `fix(v3/SEC-D46): reject obfuscated IP and special-use attachment hosts` `@4e38a13` — `FacilityNoticeSupport.isLiteralOrLoopbackAttachmentHost` 가 (1) 십진/헥스 IPv4 위장(`2130706433`·`0x7f000001`·`0`) (2) 특수·내부 예약 접미사(`.local`/`.internal`/`.intranet`/`.corp`/`.home`/`.lan`/`.private`) 를 allowlist 유무와 무관하게 거부(SSRF obfuscation · cloud metadata · mDNS). 메시지 verbatim「첨부 링크 형식이 올바르지 않습니다.」. endpoint 신설 0 · SEC-D46 **9축**.
+- **검증**: `mvn -o -q -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest test` PASS.
+- **v3**: merge-blocking P0 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(BE product) **0** · residual **QA-B655**(FE transfer)·**QA-B116**·**QA-B95** · FE pre-upload lockstep 후속.
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T04:35:00Z -->
+<!-- coder-sync: COD 2026-07-20T04:35:00Z (backend) — SEC-D46 IP/localhost facility-notice attachment fail-closed · related mvn PASS · v3 merge_status: ready 유지 · Planned QA-B652(FE)+QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D46 facility-notice 첨부 URL IP·localhost fail-closed)
+
+- BE develop `fix(v3/SEC-D46): reject IP and localhost facility-notice attachment hosts` `@37e6742` — `FacilityNoticeSupport.isLiteralOrLoopbackAttachmentHost` 가 IPv4/IPv6 literal·`localhost`/`.localhost` 를 allowlist 유무와 무관하게 거부(SSRF·metadata phishing · empty-allowlist 구조 가드 강화). 메시지 verbatim「첨부 링크 형식이 올바르지 않습니다.」(non-default port 와 동일 MALFORMED). endpoint 신설 0.
+- **검증**: `mvn -o -B test -Dtest=FacilityNoticeSupportTest,FacilityNoticeServiceTest` — **8+14 PASS**.
+- **v3**: merge-blocking P0 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(BE product) **0** · residual Planned **QA-B652**(FE stream)·**QA-B116**(origin/test push)·**QA-B95** · FE IP/localhost pre-upload lockstep 후속.
+
+---
+
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T10:05:00Z -->
+<!-- planner-sync: PLN 238차 2026-07-20T10:05:00Z — BNK-930~931·TSR 2009~2012 · ★★★ git 실측 FE/BE develop/test LOCAL SYNCED `@bb08082`/`@8a1d014` · QA-B652/B667/B668/B669 Absorbed · Open(product) 0 · Planned QA-B116+QA-B95 · SEC-D46 13-axis SUPERIOR · 케어포 리포트 crosswalk·이지케어 메뉴 LOCK · NHIS #44 652차·HTTP 442 91차·Page 107·merge gate 848 · transfer PASS · operation BLOCK. -->
+
+### [PLN] QA 피드백 반영 (2026-07-20, 238차 — BNK-930~931 · TSR 2009~2012)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`8a1d014`**(WT CLEAN·`test..develop` **0/0**·SEC-D46 axis-13 6-path hosts-file alias lock·ahead origin/test **790**) · FE develop/test **`bb08082`**(WT CLEAN·`test..develop` **0/0**·SEC-D46 axis-10 FE 6-path lock·ahead origin/test **58**) · **133 Route·107 page·16 report page** · **V1–V196** · **BE @Test 2451** · **FE test 546** · **HTTP 442 91차** · **모듈 97.41%** · merge gate **848** | ROADMAP CURRENT BASELINE 238차 |
+| **QA Absorbed** | **QA-B652**(pilotPageFlows「확정」쿼리 Fixed·2839/2839 PASS) · **QA-B667/B668/B669**(SEC-D46 hosts-file alias transfer·기능 갭 아님) · Open(product) **0** · Planned residual **QA-B116+QA-B95** | QA_FEEDBACK · ROADMAP |
+| **SEC-D46 13-axis SUPERIOR (★★★ BNK-930/931)** | 6-layer + IP/localhost + obfuscated IP + leading-zero + hosts-file resolver alias axis-10/12/13 FE↔BE lockstep · G2 home-newsletter · endpoint 신설 0 | REQUIREMENTS §보안 · USER_STORIES US-FACILITY-NOTICE |
+| **케어포 리포트 밀도 (★★★ BNK-930)** | func.php 21-hit ↔ ogada 16 report page(14.95%) · 4 SUPERIOR leaf(CareMealExcretion·IntensiveExcretion·PositionChange·ClientLinkageRecords) · 7-2-1·7-10 P3 carry | REQUIREMENTS §1-5 · COMPETITOR_MATRIX |
+| **이지케어 도메인 분기 (★★ BNK-931)** | 메뉴 백본 md5 LOCK(10/148/59) · 재가(방문) vs ogada 주야간 Transport SUPERIOR · M4 RFID·M5 copay crosswalk carry · 직접 경쟁 아님 | REQUIREMENTS §1-5 · PLAN_NOTES 추가 질문 |
+| **Regulatory/Audit (★★ BNK-931)** | NHIS #44 **652차** · HTTP 442 **91차** · closed band 6 · 신규 진성갭 **0** | ROADMAP |
+
+**coder/ops 다음 액션 (238차)**: ① **COD/tester** origin/test push **790 BE + 58 FE**(QA-B116) ② **QA-B95** operation 승격(live E2E bootstrap) ③ SEC-D46 13-axis 마케팅 카피 확정 ④ 7-2-1·7-10 P3 go/no-go 유지(과대구축 금지).
+
+### 추가 질문 (자동 기획 동기화 238차)
+1. **SEC-D46 13-axis 보안 카피 (★★★ BNK-931)**: 「시설 공지 첨부 URL — 13축 defense-in-depth(6-layer+IP/hosts-file alias)」 카피를 SECURITY/세일즈에 명문화할지? → **REQUIREMENTS §보안 반영·Epic 불요**.
+2. **케어포 7-2-1·7-10 P3 (★★ BNK-930)**: 연말정산·간편계산기 UI를 v3+ P3로 유지할지? → **P3「가정」 carry·MVP out-of-scope·승격 아님**.
+3. **이지케어 재가 도메인 분기 (★★ BNK-931)**: 재가(방문요양) 확장 시 이지케어 M3/M4를 벤치마크로 삼을지? → **P4「가정」 carry·현재 주야간 중심 유지**.
+4. **operation 게이트 (★ TSR2012)**: transfer PASS 후 origin/test push(848)·live E2E bootstrap enable 시점? → **QA-B116 선행·QA-B95 후속**.
+5. **Page 107 vs 106 (★ BNK-930/931)**: git 실측 Page **107** 확정 — workspace_baseline 자동 반영 대기? → **rules §14 실측 우선·238차 반영 완료**.
+
+---
+
+<!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T04:14:22Z -->
+<!-- planner-sync: PLN 237차 2026-07-20T04:14:22Z — BNK-919~922·TSR 1987~1998 · ★★★ git 실측 FE/BE develop/test LOCAL SYNCED `@ac37e47`/`@96a55fb` · QA-B649/B651 Absorbed·QA-B652 Open→Planned · Open(product) 0 · Planned QA-B652+QA-B116+QA-B95 · SEC-D46 6-layer SUPERIOR · NHIS #44 643차·HTTP 442 82차·FE test 546·BE @Test 2447·merge gate 835. -->
+
+### [PLN] QA 피드백 반영 (2026-07-20, 237차 — BNK-919~922 · TSR 1987~1998)
+
+| 항목 | 내용 | 반영 문서 |
+|------|------|-----------|
+| **git baseline** | BE develop/test **`96a55fb`**(WT CLEAN·`test..develop` **0/0**·SEC-D46 non-default port·ahead origin/test **784**) · FE develop/test **`ac37e47`**(WT CLEAN·`test..develop` **0/0**·SEC-D46 non-default port FE lockstep·ahead origin/test **51**) · **133 Route·106 page** · **V1–V196** · **BE @Test 2447** · **FE test 546**(230+316·BNK-922「550」소급 정정) · **HTTP 442 82차 IDENTICAL** · **모듈 97.41%** · merge gate **835** | ROADMAP CURRENT BASELINE 237차 |
+| **QA Open→Absorbed/Planned** | **QA-B649**(BE pending `96a55fb`)→**Absorbed** · **QA-B651**(FE pending `ac37e47`)→**Absorbed** · **QA-B652**(FE full regression 1F·`pilotPageFlows`「확정」중복)·Open→**Planned**(COD P0) · Open(product) **0** · Planned residual **QA-B652+QA-B116+QA-B95** | QA_FEEDBACK · ROADMAP · PLAN_NOTES |
+| **SEC-D46 6-layer SUPERIOR COMPLETE (★★★ BNK-921/922)** | scheme·malformed·userinfo·host allowlist·canonicalize/health·**non-default port** FE↔BE lockstep · G2 home-newsletter · phishing/SSRF 방어 · endpoint 신설 0 · 경쟁 4종 공개 근거 0 | REQUIREMENTS §보안 · USER_STORIES US-FACILITY-NOTICE · COMPETITOR_MATRIX |
+| **closed band / 시장 (★★ BNK-920/922)** | closed band 6 LIVE·P0 재오픈 0 · BPO 50.3% · Core1만/Basic3만·프로모션 33,000원 ~7월31일 · FAQ21791 ops only · FAQ21782 일정확정 前 명세서 비교 = daycare NOT-GAP · 엑셀 포맷 0 | REQUIREMENTS §1-5 · PLAN_NOTES 추가 질문 |
+| **Regulatory/Audit (★★ BNK-921/922)** | NHIS #44 **643차** zero drift · HTTP 442 **82차** · 엔젤 Transport SUPERIOR · CMS SUPERSET · lcms 오실레이션 문서 위생 · 신규 진성갭 0 | REQUIREMENTS §1-5 · ROADMAP |
+| **QA-B652 Planned (★ TSR1998)** | `pilotPageFlows` US-T02 `getByText("확정")` 배지+타임스탬프 중복 → COD `within`/`getAllByText`/역할 쿼리 · full suite 0 failed 목표 · 기능 갭 아님 | USER_STORIES US-T02 · ROADMAP v1.2.1 |
+
+**coder/ops 다음 액션 (237차)**: ① **COD** QA-B652 `pilotPageFlows`「확정」쿼리 안정화 → full `npm test` 0 failed ② **TSR** QA-B652 Fixed & Verified ③ **COD/tester** origin/test push **784 BE + 51 FE**(QA-B116) ④ **QA-B95** operation 승격 ⑤ SEC-D46 SUPERIOR 마케팅/보안 카피 확정(§추가 질문) ⑥ 신규 Epic 불요·모듈 97.41% CARRY.
+
+### 추가 질문 (자동 기획 동기화 237차)
+1. **SEC-D46 SUPERIOR 보안 카피 (★★★ BNK-922)**: 「시설 공지 첨부 링크 — 위조 URL·자격증명 phishing·비표준 포트까지 즉시 거부」 카피를 SECURITY/세일즈에 명문화할지? → **REQUIREMENTS §보안·US-FACILITY-NOTICE 반영·Epic 불요**.
+2. **이지케어 가격 포지셔닝 (★★ BNK-920)**: 주야간 Basic **월 3만원** / 방문요양 Core **월 1만원**·수급자 변동과금을 ogada SaaS 가격 기준점으로 확정할지? → **PLAN_NOTES 누적·과대구축 금지·이번 사이클 격상 아님**.
+3. **BPO 50.3% demand-signal (★★ BNK-920)**: 재무회계 대행 채택률 근거를 M12 수지파인 위임 전략 강화에 쓸지? → **G-ACCOUNTING-IN-APP-LEDGER v3+「가정」 carry·승격 아님**.
+4. **QA-B652 / operation 게이트 (★ TSR1998)**: regression Fixed 후 origin/test push(835)·live E2E bootstrap enable 시점? → **transfer BLOCK until B652 · 기능 갭 아님**.
+5. **FE test KPI 546 vs BNK-922「550」(★)**: BNK-922 +4 `.test.js` 주장 → git 실측 **546**(230+316) 소급 정정 — workspace_baseline 다음 build 자동 반영? → **rules §14 실측 우선**.
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T03:46:00Z -->
+<!-- coder-sync: COD 2026-07-20T03:46:00Z (frontend) — SEC-D46 FE non-default port fail-closed lockstep · homeNewsletter 22/22 PASS · v1.2.1 merge_status: ready 유지 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D46 FE facility-notice 첨부 URL non-default port fail-closed)
+
+- FE develop `fix(v1.2.1/SEC-D46): reject non-default facility notice attachment ports` `@ac37e47` — BE `@96a55fb` `FacilityNoticeSupport.isDefaultAttachmentPort` lockstep. `resolveFacilityNoticeAttachmentUrlViolation` 가 http `:80` / https `:443`(또는 포트 생략)만 허용하고 `:4443`·`:8080` 등 alternate port 는 verbatim「첨부 링크 형식이 올바르지 않습니다.」로 사전 거부(defense-in-depth · bandwidth/UX). endpoint 신설 0.
+- **검증**: `npm test -- src/utils/homeNewsletter.test.js` **22/22 PASS**(1.12s).
+- **v1.2.1**: merge-blocking P0 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(FE product) **0** · residual Planned **QA-B116**(origin/test push)·**QA-B95** · BE QA-B649(transfer) 는 backend stream.
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:35:00Z -->
+<!-- coder-sync: COD 2026-07-20T02:35:00Z (backend) — SEC-D46 FacilityNotice attachment host allowlist · related mvn PASS · v3 merge_status: ready 유지 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D46 FacilityNotice attachment URL host allowlist)
+
+- BE develop `fix(v3/SEC-D46): allowlist facility-notice attachment URL hosts` — SECURITY_AUDIT SEC-D46(Open/Monitor)·B-20·T-E8: `normalizeAttachmentUrl` 가 http(s)+length만 검사 → 인사이더 phishing URL / `user@host` credential phishing 가능. `FacilityNoticeSupport.attachmentUrlViolation` 로 URI 파싱·**userInfo 거부**·호스트 필수·`FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 설정 시 host allowlist fail-closed(빈값=구조 가드만·기존 example.com UX 호환) · endpoint 신설 0.
+- **검증**: `FacilityNoticeSupportTest`+`FacilityNoticeServiceTest` PASS.
+- **v3**: in-scope merge-blocking 전부 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(제품) **0** · residual Planned **QA-B116**(origin/test push)·**QA-B95** · ops 센터 도메인 env 설정 권고 · FE allowlist 카피 lockstep 후속 가능.
+
+---
+
 <!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:15:00Z -->
 <!-- coder-sync: COD 2026-07-20T02:15:00Z (backend) — SEC-D44 batch-unconfirm 6-digit · related mvn PASS · v3 merge_status: ready 유지 · FE maxLength lockstep 후속 · Planned QA-B116+QA-B95 -->
 
@@ -2073,6 +2213,47 @@
 ---
 
 ### 문서 작성 질문
+
+### [TWR] 자율 ops 상태 점검 (2026-07-20 10:40 UTC — **SEC-D46 7축 ++ · UXD-208 도움말 · SEC-D44 6자리 · baseline sync**)
+
+**완료 작업**:
+- **baseline 실측**: BE develop `947335d` · FE develop `947335d` — 최신 모든 커밋 반영
+- **CHANGELOG 갱신**: 
+  - 기준 SHA 갱신: BE `8a1d014`→`947335d` · FE `9263417`→`947335d`
+  - 2026-07-20 신규 카드 2건 추가 (UXD-208 도움말 보강 · SEC-D44 6자리 재확인)
+  - 최근 7일 요약 최신화 (UXD-208 추가)
+- **API_SPEC**: 메타 헤더 갱신 — SEC-D46 7축·SEC-D44 6자리 명기
+- **FAQ·USER_MANUAL·ADMIN_GUIDE·DEPLOYMENT_GUIDE**: 메타 타임스탐프 `2026-07-20T10:40:00Z` 동기화
+
+**현황**:
+- **문서 정합도**: 100% (모든 파일 develop HEAD `947335d` 동기화)
+- **미문서 갭**: 0 (Must 화면 변경 전부 문서화)
+- **블로커**: 없음
+
+**다음 액션**:
+- coder 신규 기능·버그 고정 신호 → CHANGELOG 카드 추가
+- P1 대기(M11 급여 persist·SSO·리포트 branchId) 계획 섹션 유지
+
+---
+
+### [TWR] 자율 ops 상태 점검 (2026-07-20 05:10 UTC — **SEC-D46 IP/localhost · UXD-207 확인번호 Field · Q951**)
+
+**완료 작업**:
+- **baseline 실측**: BE develop `37e6742` · FE develop `589dd8d` — 기관 공지 첨부 IP·localhost fail-closed · 일괄 확정취소 확인번호 Field 전담·잔여 표 날짜 a11y
+- **CHANGELOG 갱신**: 2026-07-20 카드 2건 추가 (IP/localhost 첨부 차단 · 확인번호/날짜 a11y) · 최근 7일 요약·기준 SHA 갱신
+- **FAQ**: **Q951** 신설 · **Q947**·**Q950**·**Q818**·**Q945** 갱신
+- **USER_MANUAL / ADMIN_GUIDE / DEPLOYMENT_GUIDE**: 첨부 가드·일괄 확정취소 a11y·env 설명·스모크 표 baseline 동기화
+
+**현황**:
+- **문서 정합도**: 최신 develop HEAD와 일치
+- **미문서 갭**: Must 화면 변경 0 (잔여 P1은 급여 persist·SSO·리포트 branchId 등)
+- **블로커**: 없음
+
+**다음 액션**:
+- coder 신규 기능 신호 시 해당 FAQ/매뉴얼 섹션 즉시 보강
+- P1 잔여(Q863~Q867)는 구현 착수 전까지 계획 섹션 유지
+
+---
 
 ### [TWR] 자율 ops 상태 점검 (2026-07-20 12:46 UTC — **SEC-D37·SEC-D41·L03_M15 신규 카드 추가·ops baseline 동기화**)
 

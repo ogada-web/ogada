@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T12:46:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T10:40:00Z -->
 # ogada 배포 가이드 (ops/DEPLOYMENT_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-19 (기선 갱신 BE `57523b5` / FE `95b6c52` · **Flyway V1–V196** · 모듈 **97.41%**)
+> **최종 갱신**: 2026-07-20 (기선 갱신 BE `8a1d014` / FE `9263417` · **Flyway V1–V196** · 모듈 **97.41%**)
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **DevOps·인프라 담당**, **ogada 플랫폼 운영자** (`ogada_platform_admin` 협업), **고객 센터 IT** (`sysadmin` 협업)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md` §1-4, §4, `docs/technical/API_SPEC.md`, `docs/ops/ADMIN_GUIDE.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -150,8 +150,9 @@ ogada는 전국 주간보호센터·요양기관을 위한 **B2B SaaS 멀티테�
 | G-RFID compare + candidates (**Q832**·**Q838**) | `POST /api/v1/visits/imports/rfid/compare` (multipart plan+rfid) | 200 · **`diffCodeCounts`** · **`dispatchCandidates[]`** (`clientId`/`client_id`·`ltcCertNo`) · snake_case·직렬화 수용 · `HOME_VISIT` only (`c080529`/`e837185`) |
 | G-RFID care-provision batch (**Q832**·**Q838**) | `POST /api/v1/visits/imports/rfid/care-provision-dispatch` body `{"branchId":"…","yearMonth":"2026-06","clientIds":["…"]}` or snake_case | 200 · **`templateCode=CARE_PROVISION_RECORD`** · **`ezcareMessageKind=13`** · **`dispatchedCount`** · non-HOME_VISIT → **422** · quiet-hours → **422** (`c080529`/`556eeff`) |
 | G-RFID care-provision FE wire (**Q832**·**Q838**) | UI **`/visits`** — **`VisitRfidDiffComparePanel`** | 비교 후 **「급여제공내역 SMS 일괄 발송」** · 연월·후보 체크·요약 · **`dispatched_count`** alias · **`VisitRfidDiffComparePanel.test`** PASS (`e837185`/`e76e631`) |
-| G21 batch-unconfirm preview (**Q818**) | `GET /api/v1/visits/batch-unconfirm-preview?yearMonth=YYYY-MM&branchId={uuid}` | 200 · **`challengeCode`**(4-digit) · **`cascadeImpacts.length=6`** · **`scopeNote=VISIT_SCHEDULES_ONLY`** · **`confirmedCount`** (`d248916`) |
-| G21 batch-unconfirm UI (**Q818**) | UI **`/visits`** — **`VisitBatchUnconfirmPanel`** | **「일괄 확정취소 시작」** Modal · 6-cascade ack · challenge 입력 · **연월 aria-label·만료 `<time>`** · **`VisitBatchUnconfirmPanel.test`** PASS (`074b452`) |
+| G21 batch-unconfirm preview (**Q818**, SEC-D44) | `GET /api/v1/visits/batch-unconfirm-preview?yearMonth=YYYY-MM&branchId={uuid}` | 200 · **`challengeCode`**(6-digit) · **`cascadeImpacts.length=6`** · **`scopeNote=VISIT_SCHEDULES_ONLY`** · **`confirmedCount`** (`48e7020`) |
+| G21 batch-unconfirm UI (**Q818**·**Q951**) | UI **`/visits`** — **`VisitBatchUnconfirmPanel`** | **「일괄 확정취소 시작」** Modal · 6-cascade ack · **6자리** challenge 입력 · **연월 aria-label·만료 `<time>`** · **확인번호 오류 Field 전담** · **`VisitBatchUnconfirmPanel.test`** PASS (`3aaccd7`/`7706d78`) |
+| G2 facility notice attachment host allowlist (**Q947**·**Q950**·**Q951**·**Q952**·**Q953**) | `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` + `POST …/facility-notices` + `GET /health` | 허용 밖 호스트·userInfo·**비기본 포트**·**IP/localhost·localhost 별칭·hosts-file resolver 별칭 6종**·**변형 IP·내부망 도메인**·malformed URL → **422**/FE 사전 차단 · health `facilityNoticeAttachmentAllowlistConfigured` (`8a1d014`) |
 | G-LINKAGE-RECORD API (**Q819**·**Q822**) | `POST /api/v1/clients/{clientId}/linkage-records` body `{"linkageType":"HOSPITAL","targetInstitution":"○○병원","summary":"심신상태·급여 요약"}` | 200 · **`recordStatus=DRAFT`** · **`social_worker` JWT → 200** · **`caregiver` JWT → 403** · **기관>200·요약>5000 → 422** · Flyway **V194–V196** (`9dff00f`) |
 | G-LINKAGE-RECORD dispatch (**Q819**) | `POST …/linkage-records/{recordId}/dispatch` | 200 · **`recordStatus=DISPATCHED`** · **`dispatchedAt`** 설정 · DRAFT 아닌 행 → **422** |
 | G-LINKAGE-RECORD 지점 리포트 (**Q826**·**Q829**) | `GET /api/v1/clients/linkage-records?status=&linkageType=&q=&page=0&size=20` | 200 · **`items[]`** with **`clientName`** · **`social_worker` → 200** · Flyway **V195** · UI **「조회」 확정 후** fetch (`a2db731`) |
@@ -464,6 +465,7 @@ openssl rsa -in jwt-private.pem -pubout -out jwt-public.pem
 || `ACCOUNTING_BPO_SSO_PORTAL_URL` | — | `https://www.sujifine.co.kr/carefor_login` | SSO POST 대상 URL — **`sujifine.co.kr`/`www.sujifine.co.kr` · https만** (Q801) |
 || `ACCOUNTING_BPO_SSO_HANDOFF_ACTOR_RATE_LIMIT_PER_MINUTE` | — | `10` | 행위자 분당 SSO mint 상한 (Q801) |
 || `ACCOUNTING_BPO_SSO_HANDOFF_ORG_RATE_LIMIT_PER_MINUTE` | — | `30` | 기관 분당 SSO mint 상한 (Q801) |
+|| `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` | 운영 권장 | (빈) | 기관 공지·자료실 첨부 URL **허용 호스트**(쉼표 구분·끝점 점/IDN 정규화). **빈 값=호스트 제한 없음**(http(s)·기본 포트·userInfo·**IP/localhost·localhost 별칭·hosts-file resolver 별칭·변형 IP·내부망 도메인 가드**만). **IP·localhost·`localdomain`·`ip6-localhost`·`ip6-loopback`·`broadcasthost`·`ip6-allnodes` 등·`.local`/`.internal` 등은 목록에 넣어도 거부**. 예: `drive.google.com,nhis.or.kr` (**Q947**·**Q950**·**Q951**·**Q952**·**Q953**, SEC-D46). 운영 권장: 설정 후 health `facilityNoticeAttachmentAllowlistConfigured=true` 확인 |
 
 환경변수 설정 예시:
 
@@ -1060,6 +1062,7 @@ npx vitest run --config vitest.live.config.js src/e2e/transportLiveApi.e2e.test.
 | `ACCOUNTING_BPO_SSO_PORTAL_URL` | carefor_login POST URL | `https://www.sujifine.co.kr/carefor_login` |
 | `ACCOUNTING_BPO_SSO_HANDOFF_ACTOR_RATE_LIMIT_PER_MINUTE` | 행위자 분당 mint 상한 | `10` |
 | `ACCOUNTING_BPO_SSO_HANDOFF_ORG_RATE_LIMIT_PER_MINUTE` | 기관 분당 mint 상한 | `30` |
+| `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` | 기관 공지 첨부 URL 허용 호스트(쉼표·정규화) | (빈 — 호스트 제한 없음·IP/localhost·localhost 별칭·hosts-file resolver 별칭·변형 IP·내부망 도메인은 항상 거부, Q947·Q950·Q951·Q952·Q953) |
 
 > **보안**: OTP secret·usmusid는 **시크릿 매니저**에만 둡니다. **재무 계정 비밀번호는 ogada에 저장하지 않습니다**. handoff 응답의 `otp`는 **짧은 수명**(약 5분 창)이며 로그에 남기지 마세요. **포털 URL 호스트는 `sujifine.co.kr` / `www.sujifine.co.kr`(https)만** 허용 — 그 외는 health **`sso-portal-url-not-allowlisted`** · handoff **422** (Q801). **SSO mint는 `hq_admin`·`branch_admin`만** — `social_worker`는 공개 로그인 사용.
 >
@@ -2273,6 +2276,13 @@ REQUIREMENTS §4: 가용성 **99.5%** 이상. 월 ~3.6시간 이하 다운타임
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-20 | **Q953 갱신 · baseline 동기화** — §1-4·§3-3 스모크 **기관 공지 첨부 hosts-file resolver 별칭 6경로 BE 회귀 테스트 고정** · baseline **`8a1d014`/`9263417`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-20 | **Q953 신설 · Q947~Q952 갱신** — §1-4·§3-3 스모크 **기관 공지 첨부 hosts-file resolver 별칭 사전 차단** · baseline **`f67cb32`/`9263417`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-20 | **Q951·Q952 갱신** — §1-4·§3-3 스모크 **기관 공지 첨부 localhost 별칭 사전 차단** · baseline **`b003c18`/`9ddd993`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-20 | **Q952·Q951·Q950·Q947** — §1-4·§3-3 스모크 **기관 공지 첨부 변형 IP·내부망 도메인·IP/localhost·비기본 포트·health 허용 목록** · baseline **`32e6044`/`957a2f6`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-20 | **Q951·Q950·Q947** — §1-4·§3-3 스모크 **기관 공지 첨부 IP·localhost·비기본 포트·health 허용 목록** · baseline **`37e6742`/`589dd8d`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-20 | **Q950·Q947** — §1-4·§3-3 스모크 **기관 공지 첨부 비기본 포트·health 허용 목록** · baseline **`96a55fb`/`ac37e47`** · Flyway **V1–V196** · 모듈 **97.41%** |
+| 2026-07-20 | **Q818·Q947** — §1-4·§3-3 스모크 **일괄 확정취소 6자리** · **`FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS`** · baseline **`5cb8bf0`/`474dd81`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-19 | **Q946·Q945** — §1 스모크 **청구 CSV 엑셀 수식 차단(SEC-D33) · 안전·선임·외출 `<time dateTime>`(UXD-204)** · baseline **`57523b5`/`95b6c52`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-18 | **Q931~Q933** — §1 스모크 **사진 업로드 성공 스크린리더 안내(UXD-191) · 엑셀 import null·빈(0바이트)·빈 헤더 파일 fail-closed(FE·BE 회귀 고정)** · baseline **`9449e1f`/`2789553`** · Flyway **V1–V196** · 모듈 **97.41%** |
 | 2026-07-17 | **Q926~Q930** — §1-3·§1-4 스모크 **업로드 magic-byte 확대 · 인쇄/ARIA a11y** · baseline **`be64fda`/`8b164c3`** · Flyway **V1–V196** · 모듈 **97.41%** |

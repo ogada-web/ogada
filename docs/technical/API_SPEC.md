@@ -1,5 +1,5 @@
-<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-17T20:00:00Z -->
-<!-- planner-sync: PLN 228차 2026-07-17T15:40 UTC — v3 program schedule photo upload endpoint 추가 `POST /programs/schedule/{programId}/photo`(multipart·JPEG/PNG/WEBP·content-type parameter normalize·QA-B576~B579·BE @72a6534/FE @8e74b07) · silverangel 사진 0-hit ↔ SUPERSET·id=5 1.0 -->
+<!-- doc:owner=PLN,TWR doc:audience=COD,TSR,UXD,DBA,BNK updated=2026-07-20T10:40:00Z -->
+<!-- tech_writer-sync: TWR 2026-07-20 — **SEC-D46 IP/localhost/resolver/obfuscate/ports/broken-URL URL guard 7축** · **SEC-D44 batch-unconfirm 6-digit validation** · **UXD-208 attachment URL help** · BE `947335d` / FE `947335d` · V1–V196 · baseline SYNCED · merge gate 848 -->
 <!-- tech_writer-sync: TWR 2026-07-16 — **§4-2 G-LINKAGE-RECORD** CRUD+dispatch+**지점 리포트** · V194–**V196** · Q819·Q822·**Q826**·**Q827** · BE `d247cdf` / FE `6900a8f` -->
 <!-- planner-sync: PLN 197차 2026-06-24T22:30 UTC — BNK-596~599 G2b CMS payment-method-catalog + G16 parity-rules BE API · BE `bd1e87e`/FE `c3c6272` baseline -->
 <!-- tech_writer-sync: TWR 344차 2026-06-24T23:45:00Z — **G2b CMS collection methods closure** · **`POST/GET .../virtual-account`** · **`POST/GET .../multi-account-settlement`** · **V176 integration** · BE `dac8ebd`·FE `c3c6272`·V1–V176·112 route·91 page·**merge gate 778** · **신규 섹션**: CMS 가상계좌·다계좌 정산 API (Q704) · **FAQ Q701·Q704 신규** · **USER_MANUAL §4-6 정정** · **다음**: G16 FE parity-rules wire · G2b CMS FE panel UI (가상계좌·다계좌) P2 -->
@@ -1415,7 +1415,7 @@
 | POST | `/api/v1/notifications/facility-notices/{noticeId}/publish` | 초안 → 게시 | 동일 |
 | DELETE | `/api/v1/notifications/facility-notices/{noticeId}` | 초안 삭제 (게시본 삭제 불가) | 동일 |
 
-**필드**: `noticeCategory`=`NOTICE`\|`RESOURCE` · `title`≤200 · `bodyText`≤5000 · `attachmentUrl`≤500(optional·자료실 URL · **blank→null** · **반드시 `http://` 또는 `https://` 접두** · 위반 시 `BUSINESS_RULE`) · `recordStatus`=`DRAFT`\|`PUBLISHED` · `publishedAt`.
+**필드**: `noticeCategory`=`NOTICE`\|`RESOURCE` · `title`≤200 · `bodyText`≤5000 · `attachmentUrl`≤500(optional·자료실 URL · **blank→null** · **반드시 `http://` 또는 `https://` 접두** · **SEC-D46**: URI 파싱·userInfo 거부·호스트 필수 · `FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS` 설정 시 host allowlist fail-closed · 위반 시 `BUSINESS_RULE`) · `recordStatus`=`DRAFT`\|`PUBLISHED` · `publishedAt`.
 
 **목록 필터**: `category`/`status`=`ALL`/blank=no filter · `q`≤100(제목·본문) · page size 기본 20·최대 100.
 
