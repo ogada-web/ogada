@@ -1,9 +1,9 @@
-<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T10:40:00Z -->
+<!-- doc:owner=TWR doc:audience=PLN,COD updated=2026-07-20T13:56:00Z -->
 # ogada 관리자 가이드 (ops/ADMIN_GUIDE.md)
 
 > **작성**: tech_writer 에이전트  
 > **최초 작성일**: 2026-06-05  
-> **최종 갱신**: 2026-07-20 (기선 갱신 BE `8a1d014` / FE `9263417` · **Flyway V1–V196** · 모듈 **97.41%**)  
+> **최종 갱신**: 2026-07-20 (기선 갱신 BE `a0a6643` / FE `554a319` · **Flyway V1–V196** · 모듈 **97.41%**)  
 > **상태**: 초안 (Draft)  
 > **대상 독자**: **ogada 플랫폼 운영자** (`ogada_platform_admin`), **고객 센터 IT·시스템 관리자** (`sysadmin`)  
 > **기준 문서**: `docs/planning/REQUIREMENTS.md`, `docs/technical/API_SPEC.md`, `docs/planning/FLOWCHART.md`, `docs/ops/DATA_RETENTION_POLICY.md`  
@@ -150,7 +150,7 @@ ogada에는 **두 종류의「시스템 관리자」**가 있습니다. 혼동�
 > - **QA-B95 live E2E env·boolean 정규화** ✅ (**Q823**): truthy trim/case · readiness boolean string (`9b65529`/`33f59a9`)
 > - **QA-B95 bootstrap 억제 live opt-in** ✅ (**Q820**): **`LIVE_E2E_ALLOW_BOOTSTRAP_SUPPRESSION=1`** 미설정 시 bootstrap-suppressed 환경 **live skip** (`0448efa`/`9b65529`)
 > - **G21 월단위 일괄 확정취소** ✅ (**Q818**·**Q951**, SEC-D44): **`GET /visits/batch-unconfirm-preview`** · **`POST /visits/batch-unconfirm`** · **6-digit challenge** · 6-cascade ack · **visits-only** · **a11y(연월 aria-label·만료 time·확인번호 Field 전담)** (`48e7020`/`3aaccd7`/`7706d78`)
-> - **G2 기관 공지 첨부 호스트 허용 목록·비기본 포트·IP/localhost·localhost 별칭·hosts-file resolver 별칭·변형 IP·내부망 도메인 fail-closed** ✅ (**Q947**·**Q950**·**Q951**·**Q952**·**Q953**, SEC-D46): **`FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS`** · userInfo/비기본 포트/깨진 URL/IP·localhost·**`localdomain`·`ip6-localhost`·`ip6-loopback`**·**`broadcasthost`·`ip6-allnodes`·`ip6-allrouters` 등 hosts-file 별칭 6종**(BE **6경로 회귀 테스트** lock, axis-13)/변형 IP(`.local`/`.internal` 등) 거부 · health **`facilityNoticeAttachmentAllowlistConfigured`** (`8a1d014`/`9263417`)
+> - **G2 기관 공지 첨부 호스트 허용 목록·비기본 포트·IP/localhost·localhost 별칭(localhost6 포함)·hosts-file resolver 별칭·변형 IP·내부망 도메인 fail-closed** ✅ (**Q947**·**Q950**·**Q951**·**Q952**·**Q953**·**Q954**·**Q955**, SEC-D46): **`FACILITY_NOTICE_ATTACHMENT_ALLOWED_HOSTS`** · userInfo/비기본 포트/깨진 URL/IP·localhost·**`localdomain`·`ip6-localhost`·`ip6-loopback`·`localhost6`·`localhost6.localdomain`·`localhost6.localdomain6`**·**`broadcasthost`·`ip6-allnodes`·`ip6-allrouters` 등 hosts-file 별칭 6종**(BE **support+service+잔여 별칭 회귀 테스트** lock · FE **unit+화면 폼+상세 보기** lock)/변형 IP(`.local`/`.internal` 등) 거부 · **FE 첨부 URL 도움말(13축, UXD-208)** · **상세 보기 차단 사유 구체 표시(Q955)** · health **`facilityNoticeAttachmentAllowlistConfigured`** (`a0a6643`/`554a319`)
 > - **알림톡 at-rest 민감필드 마스킹** ✅ (**Q949**, SEC-D37): `accessKey`·`payrollAmount` 재귀 마스킹 (`db1ff72`/`b863930`)
 > - **J03 SMS 지금 발송 가능** ✅ (**Q812**): **`liveSmsDispatchReady`** · **`nonEmergencySmsDispatchAvailableNow`** · health **`notificationLiveSms*`** · FE **「비긴급 SMS 즉시 발송」** (`adaee26`/`6b0f2ae`)
 > - **G-SMS kind 22 급여명세서 발송** ✅ (**Q813**·**Q831**): **`POST /staff/notifications/staff-payroll-statement`** · catalog **7/7** · **`dispatchImplemented=true`** · FE **`/payroll/reports`** + **`StaffNotificationDispatchPanel`** (`7de86eb`/`5b9656c`)
@@ -3996,6 +3996,9 @@ sysadmin이 /staff/training-logs에서 교육 등록 → 자동 기한 해제
 
 | 날짜 | 변경 내용 |
 |------|----------|
+| 2026-07-20 | **Q955·Q953 갱신 · baseline 동기화** — §1-4·§6-2-24h **기관 공지 상세 첨부 차단 사유 구체 표시** · **hosts-file resolver 잔여 별칭 BE 서비스 계층 회귀 테스트 고정** · baseline **`a0a6643`/`554a319`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q953 갱신 · baseline 동기화** — §1-4·§6-2-24h **localhost6 서비스·화면 폼 계층 회귀 테스트 고정** · baseline **`c79865e`/`d605e0d`** · Flyway **V1–V196** |
+| 2026-07-20 | **Q954·Q951·Q953 갱신 · baseline 동기화** — §1-4·§6-2-24h **localhost6 hosts-file 별칭·첨부 URL 도움말(UXD-208)** · baseline **`0fbc0ec`/`75459d7`** · Flyway **V1–V196** |
 | 2026-07-20 | **Q953 갱신 · baseline 동기화** — §1-4·§6-2-24h **기관 공지 첨부 hosts-file resolver 별칭 6경로 BE 회귀 테스트 고정** · baseline **`8a1d014`/`9263417`** · Flyway **V1–V196** |
 | 2026-07-20 | **Q953 신설 · Q947~Q952 갱신** — §1-4·§6-2-24h **기관 공지 첨부 hosts-file resolver 별칭 사전 차단** · baseline **`f67cb32`/`9263417`** · Flyway **V1–V196** |
 | 2026-07-20 | **Q951·Q952 갱신** — §1-4·§6-2-24h **기관 공지 첨부 localhost 별칭 사전 차단** · baseline **`b003c18`/`9ddd993`** · Flyway **V1–V196** |
