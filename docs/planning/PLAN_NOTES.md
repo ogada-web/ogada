@@ -1,3 +1,27 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:15:00Z -->
+<!-- coder-sync: COD 2026-07-20T02:15:00Z (backend) — SEC-D44 batch-unconfirm 6-digit · related mvn PASS · v3 merge_status: ready 유지 · FE maxLength lockstep 후속 · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — SEC-D44 US-V06 batch-unconfirm challenge 6-digit)
+
+- BE develop `fix(v3/SEC-D44): raise batch-unconfirm challenge entropy to 6 digits` — SECURITY_AUDIT SEC-D44(Open/Monitor)·B-18: US-V06 `VisitBatchUnconfirmChallengeStore` 가 4-digit(`nextInt(10_000)`·키스페이스 10^4)라 JWT 탈취 시 brute 공간이 작음. SEC-D36 staff access-key 와 동일하게 **`100_000..999_999`(6-digit·키스페이스 10^6)** 로 상향 · `BatchUnconfirmVisitSchedulesRequest` `@Pattern(\\d{6})` · consume 시 legacy 4-digit fail-closed · TTL/스코프/consume-once 불변 · endpoint 신설 0.
+- **검증**: `VisitBatchUnconfirmChallengeStoreTest`+`VisitServiceTest` batch-unconfirm+`VisitControllerRoutingTest` batch-unconfirm **8/8 PASS**.
+- **v3**: in-scope merge-blocking 전부 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF.
+- Open(제품) **0** · residual Planned **QA-B116**(origin/test push)·**QA-B95** · **FE** `VisitBatchUnconfirmPanel` `maxLength=4` → 6 lockstep 은 frontend 스트림 후속.
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:00:00Z -->
+<!-- coder-sync: COD 2026-07-20T02:00:00Z (frontend) — L03 nursing/care report date-range stale-error clear · 14/14 PASS · v1.2.1 merge_status: ready 유지 · QA-B636 transfer carry · Planned QA-B116+QA-B95 -->
+
+### [COD] 코더 메모 (2026-07-20 — L03 간호·요양 리포트 기간 정정 시 stale date-error clear)
+
+- FE develop `fix(v1.2.1/nursing): clear stale nursing/care report date error after correction` — `NursingServiceReportsPage`·`CareNursingServiceReportPage`에 PressureUlcer L03_M15(`@6f1e620`) stale-clear `useEffect` 이식. 역방향→유효 범위 복귀 시 조회 클릭 없이 종료일 `role="alert"`/`aria-invalid` 즉시 해제 · `resolveCareReportDateRangeError` lockstep.
+- **검증**: targeted `npm test --` NursingServiceReportsPage + CareNursingServiceReportPage **14/14 PASS**(9.70s).
+- **v1.2.1**: merge-blocking P0 전부 `[x]` · `merge_status: ready` **유지** · 다음 build develop→test FF(QA-B636 Absorbed 기대 · UXD-206+본 커밋).
+- Open(제품) **0**(QA-B637 Fixed) · residual Open(transfer) **QA-B636** · Planned **QA-B116**·**QA-B95** · SEC-D44 FE lockstep은 BE 6-digit 선착지 후 후속.
+
+---
+
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T01:26:06Z -->
 <!-- planner-sync: PLN 236차 2026-07-20T01:26:06Z — BNK-915~918·TSR 1982~1986 · ★★★ git 실측 FE/BE develop/test LOCAL SYNCED `@6f1e620`/`@b863930` · QA-B635 Absorbed·QA-B634 Absorbed · Open 0 · Planned QA-B116+QA-B95 · L03_M15 form-polish 한 쌍·SEC-D37 nested redact SUPERIOR · NHIS #44 639차·HTTP 442 78차·FE test 546. -->
 

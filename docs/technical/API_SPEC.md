@@ -1504,7 +1504,7 @@
 | GET | `/visits/confirm-readiness` | 일괄확정 사전 점검 (`from`, `to`, `scheduleKind`, `branchId`) | `branch_admin`, `social_worker` |
 | GET | `/visits/nhis-comparison` | 일정 수량 vs 최신 NHIS import 명세 사전 비교 (`from`, `to`, `branchId`) | `branch_admin`, `social_worker` |
 | POST | `/visits/batch-confirm` | NHIS 비교·변경이력 확인 후 DRAFT 일괄확정 | `branch_admin`, `social_worker` |
-| GET | `/visits/batch-unconfirm-preview` | 월단위 일괄 확정취소 미리보기(4-digit challenge·6-cascade 경고) | `branch_admin`, `social_worker` |
+| GET | `/visits/batch-unconfirm-preview` | 월단위 일괄 확정취소 미리보기(6-digit challenge·6-cascade 경고·SEC-D44) | `branch_admin`, `social_worker` |
 | POST | `/visits/batch-unconfirm` | 월단위 CONFIRMED→DRAFT 일괄 확정취소(challenge+cascade ack) | `branch_admin`, `social_worker` |
 | POST | `/visits/{visitId}/cancel` | 일정 취소 | `branch_admin`, `social_worker` |
 | POST | `/visits/{visitId}/check-in` | 체크인 (`method`: `MOBILE` \| `MANUAL`) | `social_worker`, `caregiver` |
@@ -1528,8 +1528,8 @@
 
 **월단위 일괄 확정취소 (`GET /visits/batch-unconfirm-preview` + `POST /visits/batch-unconfirm`)** — US-V06 / G-VISIT-BATCH-UNCONFIRM-MONTHLY / ezCare `schedule-fix` `dialog-bill-RESET` 패리티(visits-only):
 
-- **`GET /visits/batch-unconfirm-preview`**: `yearMonth`(필수 `YYYY-MM`), `scheduleKind`(선택), `branchId`(선택). 응답 `VisitBatchUnconfirmPreviewResponse` — `confirmedCount`/`confirmedPlanCount`/`confirmedBillingCount`/`draftCount`, **`challengeCode`**(4-digit·actor/org/branch/yearMonth scoped·TTL 10분), `challengeExpiresAt`, **`cascadeImpacts[6]`**(본인부담금청구서·급여명세서·임금대장·퇴직금·공단명세 재대조·직원일정 재안내), `scopeNote=VISIT_SCHEDULES_ONLY`.
-- **`POST /visits/batch-unconfirm`**: 본문 `BatchUnconfirmVisitSchedulesRequest` — `yearMonth`, `scheduleKind`(선택), `branchId`(선택), **`challengeCode`**(필수 4-digit), **`cascadeWarningAcknowledged`**(필수 `true`). 응답 `BatchUnconfirmVisitSchedulesResponse` — `unconfirmedCount`/`unconfirmedVisitIds[]`/`executedBy`/`executedAt`/`challengeMatched`/`cascadeImpacts`.
+- **`GET /visits/batch-unconfirm-preview`**: `yearMonth`(필수 `YYYY-MM`), `scheduleKind`(선택), `branchId`(선택). 응답 `VisitBatchUnconfirmPreviewResponse` — `confirmedCount`/`confirmedPlanCount`/`confirmedBillingCount`/`draftCount`, **`challengeCode`**(6-digit·`100000..999999`·SEC-D44/SEC-D36 lockstep·actor/org/branch/yearMonth scoped·TTL 10분), `challengeExpiresAt`, **`cascadeImpacts[6]`**(본인부담금청구서·급여명세서·임금대장·퇴직금·공단명세 재대조·직원일정 재안내), `scopeNote=VISIT_SCHEDULES_ONLY`.
+- **`POST /visits/batch-unconfirm`**: 본문 `BatchUnconfirmVisitSchedulesRequest` — `yearMonth`, `scheduleKind`(선택), `branchId`(선택), **`challengeCode`**(필수 6-digit), **`cascadeWarningAcknowledged`**(필수 `true`). 응답 `BatchUnconfirmVisitSchedulesResponse` — `unconfirmedCount`/`unconfirmedVisitIds[]`/`executedBy`/`executedAt`/`challengeMatched`/`cascadeImpacts`.
 - **동작**: 해당 월 `CONFIRMED` 방문일정(+페어 CONFIRMED)을 `DRAFT`로 되돌리고 `confirmedAt`/`confirmedBy`를 비움. 청구·급여·임금·퇴직 데이터는 **물리 삭제하지 않음**(6-cascade는 재작업 경고).
 - **게이트**: challenge 불일치/만료 → `400` 「확인번호가 일치하지 않거나 만료…」 · `cascadeWarningAcknowledged=false` → `400` 「연쇄 초기화 경고를 확인한 뒤…」 · CONFIRMED 0건 → `400`.
 

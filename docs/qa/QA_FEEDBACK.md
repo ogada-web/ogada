@@ -1,3 +1,83 @@
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:15:00Z -->
+<!-- coder-sync: COD 2026-07-20T02:15:00Z (backend) — SEC-D44 US-V06 batch-unconfirm challenge 4→6 digit · VisitBatchUnconfirmChallengeStore SEC-D36 lockstep · related mvn PASS · v3 merge_status: ready 유지 · Planned QA-B116+QA-B95 · FE maxLength lockstep 후속 -->
+
+### [COD] Fixed — v3/SEC-D44 US-V06 batch-unconfirm challenge entropy 6-digit
+
+- **id**: QA-20260720-B638
+- **severity**: LOW (SEC-D44 Monitor · non-product-BLOCK)
+- **stream**: backend
+- **status**: Fixed (develop `@48e7020` · transfer = next build FF)
+- **found_at**: 2026-07-20T02:15:00Z
+- **version**: v3 / SEC-D44 / US-V06
+- **summary**: `VisitBatchUnconfirmChallengeStore` challenge를 4-digit(`0000..9999`) → **6-digit(`100000..999999`)** 로 상향(키스페이스 10^4→10^6·SEC-D36 staff access-key entropy lockstep). `BatchUnconfirmVisitSchedulesRequest.@Pattern(\\d{6})` · consume fail-closed(legacy 4-digit 거부) · TTL 10분·actor/org/branch/yearMonth·consume-once 불변. endpoint 신설 0.
+- **tests**: `VisitBatchUnconfirmChallengeStoreTest` 2 · `VisitServiceTest` batch-unconfirm 4 · `VisitControllerRoutingTest` batch-unconfirm 2 = **8/8 PASS**
+- **next**: FE `VisitBatchUnconfirmPanel` `maxLength=4` → 6 lockstep(frontend 스트림) · develop→test FF · origin/test push(QA-B116)
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T02:04:55Z -->
+<!-- tester-sync: TSR 1988 2026-07-20T02:04:55Z (frontend) — FE test@6f1e620 / develop@d50f5ca DIVERGED 0/2 pending(`4632b93` UXD-206 + `d50f5ca` L03 nursing/care stale-clear); merge SKIP; baseline targeted 25/25@frontend-test + develop corroboration 60/60 PASS; build PASS(9.40s)·audit 0·health 200; full 2825/2825 carry; Open(FE)=1(QA-B636 pending 2); Open(BE)=0(SYNCED @b863930); transfer BLOCK(FE); operation BLOCK(QA-B116 FE+47·BE+779 + QA-B95). -->
+
+### [TSR] TSR1988 frontend — develop→test pending 2 재확인 (BLOCK · Open QA-B636 carry)
+
+| item | result |
+|------|--------|
+| ROADMAP 기준 | v1.2.1 `merge_status: ready` · test baseline `@6f1e620` |
+| tests (test WT) | targeted **25/25 PASS** (4 files · 16.76s · flock) |
+| tests (develop) | corroboration **60/60 PASS** (8 files · 26.70s · pending UXD-206+L03) |
+| build/audit | `npm run build` **PASS** (9.40s · 1236) · audit high **0** |
+| develop/test divergence | **0/2** (`rev-list --left-right test...develop`) |
+| pending commits | `4632b93` (UXD-206) · `d50f5ca` (L03 nursing/care stale-clear · QA-B637 Fixed) |
+| merge | **SKIP** (tester manual merge 금지) |
+| Open(FE transfer) | **1** (`QA-20260720-B636`, BLOCK, carry · pending **2**) |
+| Open(BE transfer) | **0** (BE SYNCED `@b863930`) |
+| transfer | **BLOCK** (FE pending 2) |
+| operation | **BLOCK** — QA-B116 (FE +47 · BE +779) + QA-B95 |
+
+### [TSR] Open — frontend develop→test pending 2 (`QA-20260720-B636`)
+
+- **id**: QA-20260720-B636
+- **severity**: BLOCK
+- **stream**: frontend
+- **status**: Open (carry · TSR1988 confirmed pending **2**)
+- **found_at**: 2026-07-20T01:54:20Z
+- **updated_at**: 2026-07-20T02:04:55Z
+- **version**: v1.2.1 / UXD-206 + L03 nursing·care stale-clear
+- **summary**: `frontend-test@6f1e620` 대비 develop `@d50f5ca` 미이관 **2**커밋. (1) `4632b93` UXD-206 SEC-D41 date-range single-field alert + confirmed/paid `<time>` (2) `d50f5ca` L03 nursing/care report stale date-error clear(QA-B637 Fixed). **기능 갭 아님·transfer만**. develop WT **CLEAN**. `merge_status: ready`인데 auto-merge 미발화·tester 수동 merge 금지.
+- **tests**: test WT targeted **25/25 PASS** · develop corroboration **60/60 PASS** · build PASS(9.40s) · audit high 0 · health 200 · full **2825/2825** carry(TSR1984)
+- **evidence**: `git -C src/frontend-test rev-list --left-right --count HEAD...develop` → `0 2` · `git log --oneline HEAD..develop` → `d50f5ca` + `4632b93` · diffstat 16 files (+167/−11)
+- **assignee**: PLN,COD,UXD (auto-merge 발화) · TSR (FF 후 재검증)
+- **impact**: FE transfer PASS 불가 · cross-stream BLOCK(FE only) · QA-B116 origin/test push 지연(현재 FE local test +45 · develop +47 vs origin/test)
+- **prevention**: `merge_status: ready` + develop 신규 커밋 시 `maybe_merge_version_to_test(frontend)` 즉시 재발화 · `test..develop=0/0`을 이관 완료 조건으로 강제
+- **expected**: `src/frontend-test` `test..develop=0/0` 및 `QA-20260720-B636` Absorbed
+- **actual**: `test..develop=0/2` (`4632b93` + `d50f5ca`)
+
+---
+
+<!-- doc:owner=COD doc:audience=TSR,PLN,SEC updated=2026-07-20T02:00:00Z -->
+<!-- coder-sync: COD 2026-07-20T02:00:00Z (frontend) — L03 nursing/care report date-range stale-error clear · NursingServiceReportsPage+CareNursingServiceReportPage · 14/14 PASS · v1.2.1 merge_status: ready 유지 · QA-B636 transfer carry(UXD-206+본 커밋) · Planned QA-B116+QA-B95 -->
+
+### [COD] Fixed — v1.2.1/L03 간호·요양 리포트 역방향 기간 정정 시 stale date-error clear
+
+- **id**: QA-20260720-B637
+- **severity**: MEDIUM (form polish · non-BLOCK · L03_M15 lineage)
+- **stream**: frontend
+- **status**: Fixed (develop `@d50f5ca` · transfer pending = QA-B636)
+- **found_at**: 2026-07-20T02:00:00Z
+- **version**: v1.2.1 / L03 nursing·care reports
+- **summary**: `NursingServiceReportsPage`·`CareNursingServiceReportPage`가 역방향 기간 pre-block 후 유효 범위로 정정해도 종료일 `role="alert"` 가 즉시 풀리지 않을 수 있던 UX를 PressureUlcer L03_M15 stale-clear(`@6f1e620`) 패턴으로 정합 — `useEffect`가 `resolveCareReportDateRangeError` 재평가 후 `dateRangeError` 즉시 clear(조회 클릭 불요).
+- **tests**: targeted COD **14/14 PASS**(9.70s) · TSR1988 develop corroboration **60/60**에 포함
+- **files**: `NursingServiceReportsPage.jsx`·`.test.jsx` · `CareNursingServiceReportPage.jsx`·`.test.jsx`
+- **evidence**: `git -C src/frontend rev-parse HEAD` → `d50f5ca` · `test..develop` → `0 2` (`4632b93` UXD-206 + `d50f5ca`)
+- **related**: QA-B633/B635 L03_M15 · QA-B622 care-report pre-block · QA-B636 transfer
+- **next**: develop→test FF(QA-B636 Absorbed 시 본 Fixed도 흡수) · origin/test push(QA-B116)
+
+---
+
+<!-- doc:owner=TSR doc:audience=PLN,COD updated=2026-07-20T01:54:20Z -->
+<!-- tester-sync: TSR 1987 2026-07-20T01:54:20Z (backend) - ROADMAP merged baseline @b863930 independent fresh full re-verify; src/backend-test@test mvn -o -B test 2454/2454 PASS(01:29 min,0F/0E/0S,BUILD SUCCESS,EXIT 0); backend develop/test SYNCED 0/0(transfer PASS local). cross-stream re-check found frontend-test DIVERGED 0/1 pending(`4632b93` UXD-206) after PLN236 sync snapshot; tester manual merge 금지로 NEW Open(FE transfer) 1 BLOCK(QA-20260720-B636). backend /api/v1/health=200(UP, liveE2eBootstrapEnabled=false); disk 75G/49% healthy; operation BLOCK(QA-B116 origin/test push FE+45·BE+779 + QA-B95). NOTE TSR1988: pending enlarged to 0/2 (`4632b93`+`d50f5ca`). -->
+
+
 <!-- doc:owner=PLN doc:audience=COD,TSR,UXD,DBA,BNK,TWR updated=2026-07-20T01:26:06Z -->
 <!-- planner-sync: PLN 236차 2026-07-20T01:26:06Z — BNK-915~918·TSR 1982~1986 · git 실측 FE/BE develop/test **SYNCED** `@6f1e620`/`@b863930` (`test..develop=0/0`) · QA-B635 Open→**Absorbed**(local FF)·QA-B634 Absorbed carry · Open **0** · Planned residual **QA-B116**(origin/test push FE+45·BE+779=merge gate 824)+**QA-B95** · ★★★ L03_M15 form-polish 한 쌍(pre-block `@03c0a2f`+stale-clear `@6f1e620`) · ★★★ SEC-D37 nested recursive redact `@b863930` SUPERIOR · NHIS #44 639차·HTTP 442 78차·FE test 546 소급 정정 · 신규 진성갭 0. -->
 
@@ -89,22 +169,17 @@
 | cross-stream | **BLOCK** (BE pending 1, FE pending 0) |
 | operation | **BLOCK** — QA-B116 (FE +44 · BE +778) + QA-B95 |
 
-### [TSR] Open — backend develop→test pending 1 (`QA-20260720-B634`)
+### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending 1 (`QA-20260720-B634`)
 
 - **id**: QA-20260720-B634
-- **severity**: BLOCK
+- **severity**: BLOCK → **cleared**
 - **stream**: backend
-- **status**: Open
+- **status**: Absorbed (PLN236 / TSR1986 · BE SYNCED `@b863930` · `test..develop=0/0`)
 - **found_at**: 2026-07-20T01:13:34Z
-- **version**: v3 / SEC-D37 (post-absorb baseline `db1ff72`)
-- **summary**: develop `b863930`(nested notification secrets at-rest redact) 1커밋이 test 미이관(`test..develop=0/1`). v3 `merge_status: ready`인데 auto-merge 미발화·tester 수동 merge 금지라 BE transfer PASS 불가.
-- **tests**: `src/backend-test@test` `mvn -o -B test` **2453/2453 PASS**(01:29 min · HEAD `@db1ff72`)
-- **evidence**: `git -C src/backend-test rev-list --left-right --count HEAD...develop` → `0 1` · `git log --oneline HEAD..develop` → `b863930 fix(v3/SEC-D37): redact nested notification secrets at rest` · diffstat 2 files (`NotificationPayloadRedactor` + Test)
-- **assignee**: PLN,COD
-- **impact**: BE transfer PASS 불가 · cross-stream BLOCK(BE only) · QA-B116 해소 지연 · SEC-D37 nested redact이 test에 미반영
-- **prevention**: build 시 `maybe_merge_version_to_test(backend)` 발화 확인 · `test..develop=0/0`을 이관 완료 조건으로 강제 · incremental SEC 커밋도 ready 상태에서 FF 흡수
-- **expected**: `test..develop` = `0/0` 및 BE transfer PASS
-- **actual**: `test..develop` = `0/1` (`b863930` pending)
+- **version**: v3 / SEC-D37 (post-absorb baseline `db1ff72` → `b863930`)
+- **summary**: TSR1985 시점 develop `b863930` 미이관(`0/1`)이었으나 이후 local FF로 Absorbed. TSR1988 재실측 BE develop/test **SYNCED** `@b863930`.
+- **evidence**: `src/backend-test` HEAD=`b863930` · left-right `0 0`
+- **note**: operation gate(QA-B116 BE+779)는 별도 잔존.
 
 ### [TSR] ~~Open~~ **Absorbed** — frontend develop→test pending (`QA-20260720-B631`)
 
@@ -132,22 +207,17 @@
 | transfer | **BLOCK** (FE pending 1) |
 | operation | **BLOCK** — QA-B116 (FE +43 · BE +778) + QA-B95 |
 
-### [TSR] Open (carry) — frontend develop→test pending 1 (`QA-20260720-B631`)
+### [TSR] ~~Open (carry)~~ **Absorbed** — frontend develop→test pending 1 (`QA-20260720-B631`)
 
 - **id**: QA-20260720-B631
-- **severity**: BLOCK
+- **severity**: BLOCK → **cleared**
 - **stream**: frontend
-- **status**: Open (carry, 2026-07-20T01:00:50Z · original `1841144` absorbed on test · residual pending `03c0a2f`)
+- **status**: Absorbed (TSR1985/1986 · residual `03c0a2f` on test · superseded by QA-B635→Absorbed · current Open = QA-B636)
 - **found_at**: 2026-07-20T00:15:22Z
 - **version**: v1.2.1 (post-merge baseline `1841144`)
-- **summary**: 원래 pending이던 `1841144`(SEC-D41)는 test에 흡수됨. 현재 develop `03c0a2f`(L03_M15 pressure-ulcer 역방향 기간 FE pre-block) 1커밋이 test 미이관(`test..develop=0/1`)이라 FE transfer PASS 불가.
-- **tests**: full **2825/2825 PASS**(TSR1984) · build PASS(10.78s) · audit high 0 · health 200 · targeted pressure-ulcer **11/11 PASS**(8.89s) · safety **34/34 PASS**(14.09s)
-- **evidence**: `git log --oneline test..develop` → `03c0a2f fix(v1.2.1/nursing): pre-block reversed date range before pressure-ulcer provision report`
-- **assignee**: PLN,COD
-- **impact**: FE transfer PASS 불가 · cross-stream BLOCK(FE only) · QA-B116 해소 지연
-- **prevention**: `merge_status: ready` 후 auto-merge 발화·`test..develop=0/0`을 이관 완료 조건으로 강제
-- **expected**: `test..develop` = `0/0` 및 FE transfer PASS
-- **actual**: `test..develop` = `0/1` (`03c0a2f` pending)
+- **summary**: 원래 pending `1841144`/`03c0a2f`는 test에 흡수 완료. 현행 Open은 `QA-B636`(pending `4632b93`+`d50f5ca`).
+- **evidence**: test HEAD progressed `1841144`→`03c0a2f`→`6f1e620`
+- **note**: operation gate(QA-B116) 잔존.
 
 ### [TSR] ~~Open~~ **Absorbed** — backend develop→test pending (`QA-20260719-B628`)
 

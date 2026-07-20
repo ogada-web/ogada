@@ -175,7 +175,7 @@ v3 — Extensions & market differentiation (P3)
   - M12 실운영 SSO 검증(facility credentials)·0.7→1.0
   - `G-ACCOUNTING-IN-APP-LEDGER` / 10-2-1 fee-change template / photo retention policy / **8-8 자원봉사자 활동일지(P4「가정」·BNK-867)** go/no-go
   - acceptance tests and performance baseline
-- Status: in_progress (backend active) — **★ 236차: BE develop/test LOCAL SYNCED `@b863930`**(`test..develop=0/0`·QA-B634 Absorbed) · `merge_status: ready` 유지 · **SEC-D37 nested recursive redact COMPLETE** · SEC-D33/D34/D41/D25 CLOSED carry · **G4/G20 이월 유지**(235차) · **M11/M12/id=1-5/10-4/1-10/J03/US-V06/kind22/RFID/G17/M2·M4·M7·M10/SEC-D25+SEC-D34+SEC-D37 = ✅ product CLOSED/LANDED**(M12 residual=ops) · residual PRIMARY = **origin/test push**(QA-B116)·**QA-B95**.
+- Status: in_progress (backend active) — **★ COD SEC-D44**: BE develop **+1 pending**(batch-unconfirm 6-digit·다음 build FF) · `merge_status: ready` 유지 · **SEC-D44 BE COMPLETE** · SEC-D37 nested recursive redact COMPLETE · SEC-D33/D34/D41/D25 CLOSED carry · **G4/G20 이월 유지**(235차) · residual PRIMARY = **origin/test push**(QA-B116)·**QA-B95** · FE SEC-D44 lockstep 후속.
 
 ---
 
@@ -1240,7 +1240,7 @@ v3 — Extensions & market differentiation (P3)
 ## v1.2.1 — develop-only 패리티 잔여 (BNK-12·14·16·17·18·19·20·22·25·28·31·33·35·38·41·42·45·49·50·52·53·56·58·59~61·65~69·95~119차 · **결정 92**)
 
 - **status**: in_progress
-- **merge_status**: ready — **★ 완료 기준 재확인(PLN 236차 2026-07-20T01:26Z)**: v1.2.1 merge-blocking P0 **`[x]`** 유지 · develop/test **LOCAL SYNCED `@6f1e620`**(`test..develop=0/0`) · **QA-B627/B630/B633 Fixed** · **QA-B635 Absorbed**(L03_M15 stale-error clear) · **L03_M15 form-polish 한 쌍 COMPLETE**(pre-block+stale-clear·BNK-917/918) · Open(FE product) **0** · operation BLOCK=QA-B116(origin/test FE+45)+QA-B95
+- **merge_status**: ready — **★ 완료 기준 재확인(COD 2026-07-20T02:00Z)**: v1.2.1 merge-blocking P0 **`[x]`** 유지 · FE develop **UXD-206 `@4632b93` + L03 nursing/care stale-clear**(QA-B637 Fixed) · test 미이관 = **QA-B636**(transfer only·다음 build FF) · **QA-B627/B630/B633 Fixed** · **QA-B635 Absorbed** · **L03_M15 form-polish 한 쌍 COMPLETE** + L03 nursing/care stale-clear 확산 · Open(FE product) **0** · operation BLOCK=QA-B116(origin/test)+QA-B95
 - **stream**: frontend + backend
 - **목표**: 케어포 func.php 대비 **78.28% carry**(≥60% PASS) · **merge-blocking 닫힘** · P0(**live E2E env 구성** `scripts/dev-live-e2e.env` · **tester merge(612)**) · P1(**live E2E run** G-NURSING·G14·G19·G30 harness `41d8de5`/`8cb8789`/`73df04d`/`73094f9`·**G19 provider discovery FE wire P1**·**G41b `LIVE_E2E` manual verify P2**·G34/G34b/G42 **live API E2E run**·**8-12 print layout P2**·**J03 Solapi live P2**·**7-5 live PG P2**·G7 실파일·SMTP+FCMS·US-L01 live·**US-R03 P2**·v1.3 live E2E) · P2(**L02 v3.1 Must 5건**·**G39 guardian dispatch**·**G30 ±2개월 evidence window**·**monitoring 12지표**·21815 변경사유·G21 확정 lock·RFID split-view) · P3(**G-FAMILY-LEAVE evidence ✅**·**G18-SHORT-PILOT 연장**·G-LIVECHAT·G-CIST·**G-STAFF-MEETING**·K008~K014·G-HOMEPAGE·G-STAFF-WELFARE)
 - **선행**: v1.2 `merge_status: merged` · QA-B12·SEC-D14 Fixed(75차)
@@ -1633,7 +1633,7 @@ v3 — Extensions & market differentiation (P3)
 ## v3 — 확장 모듈 · **재무회계** · **시설급여** (결정 90)
 
 - **status**: in_progress
-- **merge_status**: ready — **★ 완료 기준 재확인(PLN 236차 2026-07-20T01:26Z)**: v3 in-scope merge-blocking **전부 `[x]`** · develop/test **LOCAL SYNCED `@b863930`**(`test..develop=0/0`) · SEC-D41 Fixed · **SEC-D37/D45 nested recursive redact COMPLETE**(`@b863930`·QA-B634 Absorbed) · SEC-D33/D34 carry · `merge_status: ready` **유지** · operation BLOCK=QA-B116(origin/test BE+779)+QA-B95
+- **merge_status**: ready — **★ 완료 기준 재확인(COD 2026-07-20T02:15Z)**: v3 in-scope merge-blocking **전부 `[x]`** · **SEC-D44** batch-unconfirm challenge 6-digit BE 선착지 · SEC-D37/D45 nested redact COMPLETE · SEC-D33/D34/D41/D25 carry · `merge_status: ready` **유지** · 다음 build develop→test FF · operation BLOCK=QA-B116(origin/test)+QA-B95 · FE SEC-D44 `maxLength` lockstep 후속
 - **stream**: backend + frontend + DBA
 - **목표**: 식사·프로그램·직원 + ~~**재무회계(G4)** + **시설급여(G20)**~~ — **W5~8 (7/7~8/9)** · **★ 235차 스코프 재조정**: G4 재무회계·G20 시설급여를 **v3.1/v3+「가정」으로 공식 이월**(아래 완료 기준 참조) → v3 in-scope(식사·프로그램·직원·사진·SEC-D25/SEC-D34)만으로 완료 기준 충족.
 - **완성 목표**: **2026-08-09** (결정 91)
