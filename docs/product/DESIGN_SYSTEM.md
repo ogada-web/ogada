@@ -1,9 +1,11 @@
-<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-20T01:45:00Z -->
+<!-- doc:owner=UXD doc:audience=PLN,COD,TSR updated=2026-07-20T10:30:00Z -->
 # ogada 디자인 시스템 (product/DESIGN_SYSTEM.md)
 
 > **작성**: ux_designer 에이전트 (`UXD`)
 > **최초 작성일**: 2026-06-06
-> **최종 갱신**: 2026-07-20 (206차 — **SEC-D41 안전 조회 기간 이중 `role="alert"` 해소 + 이동·의료비 확정/입금 시각 `<time dateTime>` 확산 + §130** — 205차(§129·코드 `@25a0259`, 문서 소급) 이후 coder 신규 커밋 `1841144`(SEC-D41 안전 목록 기간 창)·`03c0a2f`/`6f1e620`(L03_M15 욕창 제공 역방향 기간·stale clear, UXD-196 필드 라우팅 이미 정합)·`cd0595d`(QA-B627 key dedup, UI 무관) 재점검. ① **`SafetyRecordDateRangeFilter`** — 시작·종료 양 `Field`에 동일 `error`를 넣어 **이중 `role="alert"`** 가 생기고, hook `loadError` Alert 까지 동일 문구를 세 번 안내하던 WCAG 3.3.1·4.1.2 갭을 §120 패턴으로 정합(종료일만 `Field error`·시작일 `aria-invalid`+`aria-describedby`→종료일 error id)·`useSafetyServerRecords` 는 기간 거부 시 `loadError`를 비워 페이지 Alert 중복을 제거. ② **이동 확정 시각** — `TransportPage`·`TransportServiceLogRunsPanel`·`TransportRunDetailPage`의 `confirmedAt` 평문 → `<time dateTime>`. ③ **의료비공제 입금일** — `MedicalExpenseDeductionPanel` `paidAt` → `<time dateTime>`(CSV 헬퍼 string 유지). **신규 `ds-*` 0건**·CSS 무변경. 관련 test PASS·build PASS. baseline FE `@6f1e620` → UXD-206(`@4632b93`).)
+> **최종 갱신**: 2026-07-20 (208차 — **SEC-D46 13-axis 첨부 URL help 확장 + §132** — 207차(§131·`@7706d78`) 이후 coder 신규 커밋 6건(`589dd8d`/`957a2f6`/`4bebda7`/`9ddd993`/`9263417`/`bb08082` SEC-D46 IP·localhost·내부·예약·hosts-file alias fail-closed + US-T02 확정 쿼리) 재점검. 로직은 `homeNewsletter.js`·test 전용(신규 JSX 표면 0). ① **US-FACILITY-NOTICE SEC-D46 help** — §131 help가 포트·계정정보만 안내하던 갭을, 13-axis 검증(IP literal·obfuscated·leading-zero·abbreviated·localhost·`.local`/`.internal`/`.corp`·hosts-file resolver alias 6-path)과 정합되도록 `FACILITY_NOTICE_ATTACHMENT_URL_HELP` 상수로 승격(`공개 도메인만(IP·localhost·내부·예약 호스트 불가)`). 오류는 기존 `Field error`+`aria-invalid` 유지(WCAG 3.3.1·4.1.2). ② **US-T02** pilotPageFlows test-only — UI/a11y 무관(변경 불요). **신규 `ds-*` 0건**·CSS 무변경. `npm test`(flock) 2파일 PASS·build PASS. baseline FE `@bb08082` → UXD-208.)
+> **이전 갱신**: 2026-07-20 (207차 — **SEC-D44 확인번호 필드 alert 라우팅 + SEC-D46 첨부 URL help + 잔여 일자 `<time>` 확산 + §131** — 206차(§130·`@4632b93`) 이후 coder 신규 커밋 `d50f5ca`/`474dd81`(L02·간호 기간 stale clear, UXD-196 이미 정합)·`3aaccd7`(SEC-D44 6자리 challenge)·`72c9cc2`/`ac37e47`(SEC-D46 첨부 URL fail-closed) 재점검. ① **`VisitBatchUnconfirmPanel`** — 확인번호 불일치·`fieldErrors.challengeCode`·클라이언트 자릿수 위반이 상단 `submitError` Alert로만 가 필드 `aria-invalid`가 없던 WCAG 3.3.1·4.1.2 갭을 §118 패턴으로 정합(`challengeError` → `Field error` 단일 `role="alert"`·포커스 복귀·일반 오류만 상단 Alert). ② **SEC-D46** — 첨부 URL `Field help`에 기본 포트(80/443)·계정정보 금지 안내(오류는 기존 `Field error` 유지). ③ **잔여 일자 열** — `TransportMonthlyReportsPage.occurredOn`·`PressureUlcerPage.assessedOn`·`GuardianInvitationList.expiresAt` → `<time dateTime>`. **신규 `ds-*` 0건**·CSS 무변경. `npm test`(flock) 5파일 51/51 PASS·build PASS. baseline FE `@ac37e47` → UXD-207(`@7706d78`).)
+> **이전 갱신**: 2026-07-20 (206차 — **SEC-D41 안전 조회 기간 이중 `role="alert"` 해소 + 이동·의료비 확정/입금 시각 `<time dateTime>` 확산 + §130** — baseline FE `@6f1e620` → UXD-206(`@4632b93`).)
 > **이전 갱신**: 2026-07-19 (205차 — **건강·투약·사고 이력 시각 `<time dateTime>` 정합 + §129** — coder `@25a0259`/`formatHealthHistoryTimestamp` · HealthPage·ClientDetailPage. 본 사이클 소급 기록.)
 > **이전 갱신**: 2026-07-19 (204차 — **안전·선임일지·외출 화면 일자·시각 열 `<time dateTime>` 기계 판독 정합 확산 + §128** — 203차(§127·코드만, UXD-203)가 보호자 포털·QR 체크인 시각을 정합한 뒤, USER_STORIES·FLOWCHART 대비 접근성 재점검을 **안전 점검(US-Q01)·선임 요양보호사 업무수행일지(US-S01)·외출(G15)** 화면으로 확산. `formatSafetySavedAt`(4페이지 표 「저장 시각」)·`signatureSignedAtLabel`(전자서명 시각)·외출 「실제」열(`actualDepartureAt`/`actualReturnAt` 템플릿 문자열)이 `toLocaleString` 평문으로 남아 보조기술이 날짜·시각으로 인식하지 못하던 WCAG 1.3.1 갭을 확인·정합. `formatSafetySavedAt`·`signatureSignedAtLabel`을 string→JSX(`<time dateTime>`)로 전환하고, `ClientOutingPanel`·`ClientOutingReportPage`의 실제 출발·복귀 구간을 Fragment+조건부 `<time>`로 재구성(화살표 구분 텍스트 유지). **신규 `ds-*` 0건**·CSS 무변경. 관련 test에 `<time datetime>` 회귀 단언 추가·`npm test`(flock) 대상 PASS·build PASS. baseline FE `@95b6c52` → UXD-204.)
 > **이전 갱신**: 2026-07-19 (203차 — **보호자 출석·QR 체크인 시각 `<time dateTime>` 정합 + §127** — `GuardianDailySummary.formatTime`(체크인/체크아웃)·`GuardianCheckinPage` 처리 완료 시각을 UXD-200/201 패턴으로 래핑. 코드 `@2715090`·문서 §127 본 사이클 소급 기록.)
@@ -6754,7 +6756,78 @@ L03_M15 `PressureUlcerPage` 제공 리포트는 이미 종료일 단일 alert + 
 - `useSafetyServerRecords`·`SafetyDailyChecksPage`·`TransportPage`·`TransportServiceLogRunsPanel`·`TransportRunDetailPage`·`MedicalExpenseDeductionPanel` 관련 test PASS.
 - `npm test`(flock) 대상 파일 · `npm run build` PASS · 신규 `ds-*` 0건.
 
+---
 
+## §131. SEC-D44 확인번호 필드 alert 라우팅 + SEC-D46 help + 잔여 일자 `<time>` (207차) [UXD]
+
+> **206차(§130)** 이후 coder 신규 커밋 `d50f5ca`/`474dd81`(기간 stale clear)·`3aaccd7`(SEC-D44 6자리)·`72c9cc2`/`ac37e47`(SEC-D46) 재점검. baseline FE `@ac37e47` → UXD-207(`@7706d78`).
+
+### 131-1. 갭 — US-V06 확인번호 오류가 필드에 연결되지 않음 (WCAG 3.3.1·4.1.2)
+
+`VisitBatchUnconfirmPanel`이 SEC-D44로 확인번호를 6자리로 잠근 뒤에도, 서버 불일치·`fieldErrors.challengeCode`·방어적 클라이언트 자릿수 위반이 **상단 `submitError` Alert**로만 노출되어 확인번호 `TextInput`에 `aria-invalid`·필드 `role="alert"`가 없었다(§118 `departureRound` 이중 alert 회귀와 동일 패턴).
+
+L02·간호 기간 stale clear(`474dd81`/`d50f5ca`)는 UXD-196 필드 라우팅을 이미 따르므로 변경 불요. SEC-D46 위반 메시지는 이미 `noticeFormErrors.attachmentUrl` → `Field error`로 연결됨.
+
+### 131-2. 조치
+
+| 파일 | 조치 |
+|---|---|
+| `VisitBatchUnconfirmPanel` | `challengeError` state · `Field error` 전담 · `resolveUnconfirmSubmitError`로 challenge/`확인번호` 메시지 필드 라우팅 · 입력 변경 시 해제 · 실패 후 포커스 복귀 |
+| `HomeNewsletterLaunchPage` | 첨부 URL help에 「기본 포트(80/443)만 · 계정정보 포함 불가」 명시(SEC-D46) |
+| `TransportMonthlyReportsPage` | 변동현황 `occurredOn` → `<time dateTime>` |
+| `PressureUlcerPage` | 평가 목록 `assessedOn` → `<time dateTime>` |
+| `GuardianInvitationList` | 만료일 `expiresAt` → `<time dateTime>` |
+
+### 131-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** · CSS 무변경.
+
+### 131-4. coder 전달 메모
+
+1. **확인번호·OTP성 필드** — 서버 `fieldErrors.challengeCode`(또는 메시지에 「확인번호」)는 상단 Alert가 아니라 해당 `Field error`만 사용한다(§118·§131). 일반 오류만 페이지/모달 Alert.
+2. **SEC-D46 첨부 URL** — 클라이언트 `resolveFacilityNoticeAttachmentUrlViolation` 결과를 반드시 `Field error={noticeFormErrors.attachmentUrl}`로 노출. help는 허용 스킴·기본 포트·계정정보 금지를 짧게 안내.
+3. **표 일자 열** — ISO/YYYY-MM-DD 단일 값은 `<time dateTime={v}>{v}</time>`(빈 값 placeholder). 주간 범위·시각 결합 셀은 §121·§122 평문 유지.
+
+### 131-5. 검증
+
+- `VisitBatchUnconfirmPanel`·`TransportMonthlyReportsPage`·`PressureUlcerPage`·`GuardianInvitationList`·`HomeNewsletterLaunchPage` — `npm test`(flock) **5파일 51/51 PASS**.
+- `npm run build` PASS · 신규 `ds-*` 0건.
+
+---
+
+## §132. SEC-D46 13-axis 첨부 URL help 확장 (208차) [UXD]
+
+> **207차(§131)** 이후 coder 신규 커밋 6건(`589dd8d`~`bb08082` SEC-D46 hosts-file alias·IP/localhost·내부·예약 호스트 fail-closed) 재점검. baseline FE `@bb08082` → UXD-208.
+
+### 132-1. 갭 — help가 13-axis 검증 범위를 반영하지 못함 (WCAG 3.3.2)
+
+§131 help는 `http(s)`·기본 포트·계정정보 금지만 안내했으나, coder가 확장한 SEC-D46 검증은 **IP literal·obfuscated·leading-zero·abbreviated IPv4·localhost·`.local`/`.internal`/`.corp`·hosts-file resolver alias**까지 fail-closed한다. 운영자가 사전에 알 수 없어 오류 메시지(「첨부 링크 형식이 올바르지 않습니다.」)만으로는 수정 방향을 추측해야 했다.
+
+`resolveFacilityNoticeAttachmentUrlViolation`·`Field error`·`aria-invalid` 연결은 §131대로 유지(변경 불요).
+
+### 132-2. 조치
+
+| 파일 | 조치 |
+|---|---|
+| `homeNewsletter.js` | `FACILITY_NOTICE_ATTACHMENT_URL_HELP` 상수 신설 — 13-axis operator 규칙 단일 원천 |
+| `HomeNewsletterLaunchPage` | 첨부 URL `Field help={FACILITY_NOTICE_ATTACHMENT_URL_HELP}` |
+
+help 문구: `선택 · http(s) · 공개 도메인만(IP·localhost·내부·예약 호스트 불가) · 기본 포트(80/443)만 · 계정정보 포함 불가 · 최대 500자`
+
+### 132-3. FE-16 점검
+
+신규 `ds-*` 클래스: **0건** · CSS 무변경.
+
+### 132-4. coder 전달 메모
+
+1. **SEC-D46 help·violation 동기화** — `resolveFacilityNoticeAttachmentUrlViolation` 규칙을 추가·변경할 때 `FACILITY_NOTICE_ATTACHMENT_URL_HELP`를 함께 갱신한다.
+2. **오류 라우팅** — violation 메시지는 상단 Alert가 아니라 `Field error={noticeFormErrors.attachmentUrl}`만 사용(§131·§118).
+3. **detail view** — unsafe URL은 `role="note"` blocked span + scheme/malformed 상수 노출(기존 패턴 유지).
+
+### 132-5. 검증
+
+- `homeNewsletter.test.js`·`HomeNewsletterLaunchPage.test.jsx` — `npm test`(flock) PASS.
+- `npm run build` PASS · 신규 `ds-*` 0건.
 
 ---
 
